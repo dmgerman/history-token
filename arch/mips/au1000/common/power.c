@@ -1385,7 +1385,7 @@ mdefine_line|#define MAX_CPU_FREQ 396
 r_char
 id|buf
 (braket
-l_int|8
+id|TMPBUFLEN
 )braket
 comma
 op_star

@@ -143,4 +143,15 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|early_intel_workaround
+c_func
+(paren
+r_struct
+id|cpuinfo_x86
+op_star
+id|c
+)paren
+suffix:semicolon
 eof

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
+macro_line|#include &lt;asm/8253pit.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 id|MODULE_AUTHOR
 c_func
@@ -140,7 +141,7 @@ l_int|32767
 )paren
 id|count
 op_assign
-id|CLOCK_TICK_RATE
+id|PIT_TICK_RATE
 op_div
 id|value
 suffix:semicolon

@@ -5120,6 +5120,29 @@ l_string|&quot;freeing tty structure...&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t; * Prevent flush_to_ldisc() from rescheduling the work for later.  Then&n;&t; * kill any delayed work.&n;&t; */
+id|clear_bit
+c_func
+(paren
+id|TTY_DONT_FLIP
+comma
+op_amp
+id|tty-&gt;flags
+)paren
+suffix:semicolon
+id|cancel_delayed_work
+c_func
+(paren
+op_amp
+id|tty-&gt;flip.work
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Wait for -&gt;hangup_work and -&gt;flip.work handlers to terminate&n;&t; */
+id|flush_scheduled_work
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Shutdown the current line discipline, and reset it to N_TTY.&n;&t; * N.B. why reset ldisc when we&squot;re releasing the memory??&n;&t; */
 r_if
 c_cond
@@ -5182,29 +5205,6 @@ id|N_TTY
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Prevent flush_to_ldisc() from rescheduling the work for later.  Then&n;&t; * kill any delayed work.&n;&t; */
-id|clear_bit
-c_func
-(paren
-id|TTY_DONT_FLIP
-comma
-op_amp
-id|tty-&gt;flags
-)paren
-suffix:semicolon
-id|cancel_delayed_work
-c_func
-(paren
-op_amp
-id|tty-&gt;flip.work
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Wait for -&gt;hangup_work and -&gt;flip.work handlers to terminate&n;&t; */
-id|flush_scheduled_work
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* &n;&t; * The release_mem function takes care of the details of clearing&n;&t; * the slots and preserving the termios structure.&n;&t; */
 id|release_mem
 c_func

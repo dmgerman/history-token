@@ -2102,7 +2102,7 @@ mdefine_line|#define Au1500_PCI_MEM_START      0x440000000
 DECL|macro|Au1500_PCI_MEM_END
 mdefine_line|#define Au1500_PCI_MEM_END        0x44FFFFFFF
 DECL|macro|PCI_IO_START
-mdefine_line|#define PCI_IO_START    (Au1500_PCI_IO_START + 0x300)
+mdefine_line|#define PCI_IO_START    (Au1500_PCI_IO_START + 0x1000)
 DECL|macro|PCI_IO_END
 mdefine_line|#define PCI_IO_END      (Au1500_PCI_IO_END)
 DECL|macro|PCI_MEM_START
@@ -2114,7 +2114,7 @@ mdefine_line|#define PCI_FIRST_DEVFN (0&lt;&lt;3)
 DECL|macro|PCI_LAST_DEVFN
 mdefine_line|#define PCI_LAST_DEVFN  (19&lt;&lt;3)
 DECL|macro|IOPORT_RESOURCE_START
-mdefine_line|#define IOPORT_RESOURCE_START 0x00000000
+mdefine_line|#define IOPORT_RESOURCE_START 0x00001000 /* skip the legacy ide probing */
 DECL|macro|IOPORT_RESOURCE_END
 mdefine_line|#define IOPORT_RESOURCE_END   0xffffffff
 DECL|macro|IOMEM_RESOURCE_START
@@ -2171,5 +2171,55 @@ macro_line|#elif defined(CONFIG_SOC_AU1100)
 DECL|macro|NUM_ETH_INTERFACES
 mdefine_line|#define NUM_ETH_INTERFACES 1
 macro_line|#endif
+multiline_comment|/* Processor information base on prid.&n; * Copied from PowerPC.&n; */
+DECL|struct|cpu_spec
+r_struct
+id|cpu_spec
+(brace
+multiline_comment|/* CPU is matched via (PRID &amp; prid_mask) == prid_value */
+DECL|member|prid_mask
+r_int
+r_int
+id|prid_mask
+suffix:semicolon
+DECL|member|prid_value
+r_int
+r_int
+id|prid_value
+suffix:semicolon
+DECL|member|cpu_name
+r_char
+op_star
+id|cpu_name
+suffix:semicolon
+DECL|member|cpu_od
+r_int
+r_int
+id|cpu_od
+suffix:semicolon
+multiline_comment|/* Set Config[OD] */
+DECL|member|cpu_bclk
+r_int
+r_int
+id|cpu_bclk
+suffix:semicolon
+multiline_comment|/* Enable BCLK switching */
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|cpu_spec
+id|cpu_specs
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_struct
+id|cpu_spec
+op_star
+id|cur_cpu_spec
+(braket
+)braket
+suffix:semicolon
 macro_line|#endif
 eof

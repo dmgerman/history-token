@@ -254,6 +254,10 @@ id|hugetlb_zero
 comma
 id|hugetlb_infinity
 suffix:semicolon
+r_extern
+r_int
+id|sysctl_hugetlb_shm_group
+suffix:semicolon
 r_static
 r_inline
 r_void

@@ -89,6 +89,9 @@ mdefine_line|#define PORT_IRDA&t;54
 multiline_comment|/* Samsung S3C2410 SoC and derivatives thereof */
 DECL|macro|PORT_S3C2410
 mdefine_line|#define PORT_S3C2410    55
+multiline_comment|/* SGI IP22 aka Indy / Challenge S / Indigo 2 */
+DECL|macro|PORT_IP22ZILOG
+mdefine_line|#define PORT_IP22ZILOG&t;56
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

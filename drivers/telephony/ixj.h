@@ -4051,20 +4051,6 @@ id|readers
 comma
 id|writers
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020400
-DECL|member|poll_q
-r_struct
-id|wait_queue
-op_star
-id|poll_q
-suffix:semicolon
-DECL|member|read_q
-r_struct
-id|wait_queue
-op_star
-id|read_q
-suffix:semicolon
-macro_line|#else
 DECL|member|poll_q
 id|wait_queue_head_t
 id|poll_q
@@ -4073,7 +4059,6 @@ DECL|member|read_q
 id|wait_queue_head_t
 id|read_q
 suffix:semicolon
-macro_line|#endif
 DECL|member|read_buffer
 DECL|member|read_buffer_end
 r_char
@@ -4097,19 +4082,10 @@ r_int
 r_int
 id|read_buffer_ready
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020400
-DECL|member|write_q
-r_struct
-id|wait_queue
-op_star
-id|write_q
-suffix:semicolon
-macro_line|#else
 DECL|member|write_q
 id|wait_queue_head_t
 id|write_q
 suffix:semicolon
-macro_line|#endif
 DECL|member|write_buffer
 DECL|member|write_buffer_end
 r_char

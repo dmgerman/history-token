@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
@@ -4704,18 +4705,70 @@ op_amp
 id|CLONE_STOPPED
 )paren
 )paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Do the wakeup last. On SMP we treat fork() and&n;&t;&t;&t; * CLONE_VM separately, because fork() has already&n;&t;&t;&t; * created cache footprint on this CPU (due to&n;&t;&t;&t; * copying the pagetables), hence migration would&n;&t;&t;&t; * probably be costy. Threads on the other hand&n;&t;&t;&t; * have less traction to the current CPU, and if&n;&t;&t;&t; * there&squot;s an imbalance then the scheduler can&n;&t;&t;&t; * migrate this fresh thread now, before it&n;&t;&t;&t; * accumulates a larger cache footprint:&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|clone_flags
+op_amp
+id|CLONE_VM
+)paren
+id|wake_up_forked_thread
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+r_else
 id|wake_up_forked_process
 c_func
 (paren
 id|p
 )paren
 suffix:semicolon
-multiline_comment|/* do this last */
+)brace
 r_else
+(brace
+r_int
+id|cpu
+op_assign
+id|get_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
 id|p-&gt;state
 op_assign
 id|TASK_STOPPED
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpu_is_offline
+c_func
+(paren
+id|task_cpu
+c_func
+(paren
+id|p
+)paren
+)paren
+)paren
+id|set_task_cpu
+c_func
+(paren
+id|p
+comma
+id|cpu
+)paren
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 op_increment
 id|total_forks
 suffix:semicolon

@@ -54,7 +54,7 @@ id|translation
 (brace
 )brace
 r_extern
-r_void
+r_int
 id|parse_unisys_oem
 (paren
 r_char
@@ -83,7 +83,7 @@ suffix:semicolon
 DECL|function|mps_oem_check
 r_static
 r_inline
-r_void
+r_int
 id|mps_oem_check
 c_func
 (paren
@@ -119,6 +119,7 @@ op_star
 )paren
 id|mpc-&gt;mpc_oemptr
 suffix:semicolon
+r_return
 id|parse_unisys_oem
 c_func
 (paren
@@ -132,12 +133,15 @@ id|oem_table-&gt;oem_length
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* Hook from generic ACPI tables.c */
 DECL|function|acpi_madt_oem_check
 r_static
 r_inline
-r_void
+r_int
 id|acpi_madt_oem_check
 c_func
 (paren
@@ -171,6 +175,7 @@ op_amp
 id|oem_entries
 )paren
 )paren
+r_return
 id|parse_unisys_oem
 c_func
 (paren
@@ -182,6 +187,9 @@ id|oem_addr
 comma
 id|oem_entries
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* __ASM_MACH_MPPARSE_H */

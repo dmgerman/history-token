@@ -932,6 +932,10 @@ c_cond
 id|type
 op_ne
 l_int|3
+op_logical_and
+id|type
+op_ne
+l_int|10
 )paren
 op_logical_and
 op_logical_neg

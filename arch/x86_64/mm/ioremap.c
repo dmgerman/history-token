@@ -571,12 +571,18 @@ id|high_memory
 )paren
 )paren
 (brace
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 r_char
 op_star
 id|t_addr
 comma
 op_star
 id|t_end
+suffix:semicolon
+r_struct
+id|page
+op_star
+id|page
 suffix:semicolon
 id|t_addr
 op_assign
@@ -595,12 +601,6 @@ id|size
 op_minus
 l_int|1
 )paren
-suffix:semicolon
-macro_line|#ifndef CONFIG_DISCONTIGMEM&t; 
-r_struct
-id|page
-op_star
-id|page
 suffix:semicolon
 r_for
 c_loop

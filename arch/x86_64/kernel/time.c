@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;asm/8253pit.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/vsyscall.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
@@ -83,7 +84,7 @@ r_int
 r_int
 id|vxtime_hz
 op_assign
-l_int|1193182
+id|PIT_TICK_RATE
 suffix:semicolon
 DECL|variable|report_lost_ticks
 r_int
@@ -2036,7 +2037,7 @@ id|outb
 c_func
 (paren
 (paren
-l_int|1193182
+id|PIT_TICK_RATE
 op_div
 (paren
 l_int|1000
@@ -2054,7 +2055,7 @@ id|outb
 c_func
 (paren
 (paren
-l_int|1193182
+id|PIT_TICK_RATE
 op_div
 (paren
 l_int|1000

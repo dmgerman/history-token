@@ -417,7 +417,7 @@ id|ii_iowa
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * hub_pio_init  -  PIO-related hub initalization&n; *&n; * @hub:&t;hubinfo structure for our hub&n; **/
+multiline_comment|/*&n; * hub_pio_init  -  PIO-related hub initalization&n; *&n; * @hub:&t;hubinfo structure for our hub&n; */
 DECL|function|hub_pio_init
 r_void
 id|hub_pio_init
@@ -440,7 +440,7 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* initialize big window piomaps for this hub */
-id|CLEAR_BITMAP
+id|bitmap_zero
 c_func
 (paren
 id|HUB_DATA

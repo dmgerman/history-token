@@ -1703,7 +1703,7 @@ macro_line|#endif
 multiline_comment|/*&n;&t; * Look for partitions in two passes:&n;&t; * First find the primary and DOS-type extended partitions.&n;&t; * On the second pass look inside *BSD, Unixware and Solaris partitions.&n;&t; */
 id|state-&gt;next
 op_assign
-l_int|5
+id|DOS_EXTENDED_PARTITION
 suffix:semicolon
 r_for
 c_loop
@@ -1713,8 +1713,8 @@ op_assign
 l_int|1
 suffix:semicolon
 id|slot
-op_le
-l_int|4
+OL
+id|DOS_EXTENDED_PARTITION
 suffix:semicolon
 id|slot
 op_increment
@@ -1905,8 +1905,8 @@ op_assign
 l_int|1
 suffix:semicolon
 id|slot
-op_le
-l_int|4
+OL
+id|DOS_EXTENDED_PARTITION
 suffix:semicolon
 id|slot
 op_increment

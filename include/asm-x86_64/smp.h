@@ -126,9 +126,10 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_char
+id|cpumask_t
 id|cpu_sibling_map
 (braket
+id|NR_CPUS
 )braket
 suffix:semicolon
 r_extern

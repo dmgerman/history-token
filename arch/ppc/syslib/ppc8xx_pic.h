@@ -3,6 +3,7 @@ DECL|macro|_PPC_KERNEL_PPC8xx_H
 mdefine_line|#define _PPC_KERNEL_PPC8xx_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 r_extern
 r_struct
 id|hw_interrupt_type

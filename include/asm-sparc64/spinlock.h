@@ -202,6 +202,8 @@ mdefine_line|#define _raw_spin_lock(lock)&t;_do_spin_lock(lock, &quot;spin_lock&
 DECL|macro|_raw_spin_unlock
 mdefine_line|#define _raw_spin_unlock(lock)&t;_do_spin_unlock(lock)
 macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
+DECL|macro|_raw_spin_lock_flags
+mdefine_line|#define _raw_spin_lock_flags(lock, flags) _raw_spin_lock(lock)
 multiline_comment|/* Multi-reader locks, these are much saner than the 32-bit Sparc ones... */
 macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
 DECL|typedef|rwlock_t

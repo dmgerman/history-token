@@ -3,7 +3,10 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
+macro_line|#include &lt;linux/reiserfs_acl.h&gt;
+macro_line|#include &lt;linux/reiserfs_xattr.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/quotaops.h&gt;
 DECL|macro|INC_DIR_INODE_NLINK
 mdefine_line|#define INC_DIR_INODE_NLINK(i) if (i-&gt;i_nlink != 1) { i-&gt;i_nlink++; if (i-&gt;i_nlink &gt;= REISERFS_LINK_MAX) i-&gt;i_nlink=1; }
 DECL|macro|DEC_DIR_INODE_NLINK
@@ -490,6 +493,8 @@ id|path
 (brace
 id|reiserfs_warning
 (paren
+id|sb
+comma
 l_string|&quot;vs-7000: search_by_entry_key: search_by_key returned item position == 0&quot;
 )paren
 suffix:semicolon
@@ -529,6 +534,8 @@ id|path
 suffix:semicolon
 id|reiserfs_warning
 (paren
+id|sb
+comma
 l_string|&quot;vs-7002: search_by_entry_key: no path to here&quot;
 )paren
 suffix:semicolon
@@ -1150,7 +1157,9 @@ id|IO_ERROR
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;zam-7001: io error in %s&bslash;n&quot;
+id|dir-&gt;i_sb
+comma
+l_string|&quot;zam-7001: io error in %s&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1314,6 +1323,66 @@ op_eq
 id|NAME_FOUND
 )paren
 (brace
+multiline_comment|/* Hide the .reiserfs_priv directory */
+r_if
+c_cond
+(paren
+id|reiserfs_xattrs
+(paren
+id|dir-&gt;i_sb
+)paren
+op_logical_and
+op_logical_neg
+id|old_format_only
+c_func
+(paren
+id|dir-&gt;i_sb
+)paren
+op_logical_and
+id|REISERFS_SB
+c_func
+(paren
+id|dir-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|priv_root
+op_logical_and
+id|REISERFS_SB
+c_func
+(paren
+id|dir-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|priv_root-&gt;d_inode
+op_logical_and
+id|de.de_objectid
+op_eq
+id|le32_to_cpu
+(paren
+id|INODE_PKEY
+c_func
+(paren
+id|REISERFS_SB
+c_func
+(paren
+id|dir-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|priv_root-&gt;d_inode
+)paren
+op_member_access_from_pointer
+id|k_objectid
+)paren
+)paren
+(brace
+r_return
+id|ERR_PTR
+(paren
+op_minus
+id|EACCES
+)paren
+suffix:semicolon
+)brace
 id|inode
 op_assign
 id|reiserfs_iget
@@ -1359,6 +1428,25 @@ id|EACCES
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Propogate the priv_object flag so we know we&squot;re in the priv tree */
+r_if
+c_cond
+(paren
+id|is_reiserfs_priv_object
+(paren
+id|dir
+)paren
+)paren
+id|REISERFS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_flags
+op_or_assign
+id|i_priv_object
+suffix:semicolon
 )brace
 id|reiserfs_write_unlock
 c_func
@@ -2018,8 +2106,10 @@ id|NAME_FOUND
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;zam-7002:%s: &bslash;&quot;reiserfs_find_entry&bslash;&quot; has returned&quot;
-l_string|&quot; unexpected value (%d)&bslash;n&quot;
+id|dir-&gt;i_sb
+comma
+l_string|&quot;zam-7002:%s: &bslash;&quot;reiserfs_find_entry&bslash;&quot; &quot;
+l_string|&quot;has returned unexpected value (%d)&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2059,7 +2149,9 @@ id|MAX_GENERATION_NUMBER
 multiline_comment|/* there is no free generation number */
 id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_add_entry: Congratulations! we have got hash function screwed up&bslash;n&quot;
+id|dir-&gt;i_sb
+comma
+l_string|&quot;reiserfs_add_entry: Congratulations! we have got hash function screwed up&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2164,8 +2256,10 @@ id|NAME_NOT_FOUND
 (brace
 id|reiserfs_warning
 (paren
+id|dir-&gt;i_sb
+comma
 l_string|&quot;vs-7032: reiserfs_add_entry: &quot;
-l_string|&quot;entry with this key (%K) already exists&bslash;n&quot;
+l_string|&quot;entry with this key (%K) already exists&quot;
 comma
 op_amp
 id|entry_key
@@ -2212,6 +2306,8 @@ comma
 op_amp
 id|entry_key
 comma
+id|dir
+comma
 id|buffer
 comma
 id|paste_size
@@ -2253,18 +2349,6 @@ suffix:semicolon
 id|dir-&gt;i_size
 op_add_assign
 id|paste_size
-suffix:semicolon
-id|dir-&gt;i_blocks
-op_assign
-(paren
-(paren
-id|dir-&gt;i_size
-op_plus
-l_int|511
-)paren
-op_rshift
-l_int|9
-)paren
 suffix:semicolon
 id|dir-&gt;i_mtime
 op_assign
@@ -2315,11 +2399,21 @@ op_star
 id|inode
 )paren
 (brace
+id|DQUOT_DROP
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 id|make_bad_inode
 c_func
 (paren
 id|inode
 )paren
+suffix:semicolon
+id|inode-&gt;i_flags
+op_or_assign
+id|S_NOQUOTA
 suffix:semicolon
 id|iput
 c_func
@@ -2394,6 +2488,33 @@ op_assign
 id|current-&gt;fsgid
 suffix:semicolon
 )brace
+id|DQUOT_INIT
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|DQUOT_ALLOC_INODE
+c_func
+(paren
+id|inode
+)paren
+)paren
+(brace
+id|drop_new_inode
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EDQUOT
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2441,6 +2562,9 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
+r_int
+id|locked
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2481,8 +2605,25 @@ id|retval
 r_return
 id|retval
 suffix:semicolon
+id|locked
+op_assign
+id|reiserfs_cache_default_acl
+(paren
+id|dir
+)paren
+suffix:semicolon
 id|reiserfs_write_lock
 c_func
+(paren
+id|dir-&gt;i_sb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|locked
+)paren
+id|reiserfs_write_lock_xattrs
 (paren
 id|dir-&gt;i_sb
 )paren
@@ -2517,6 +2658,16 @@ comma
 id|dentry
 comma
 id|inode
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|locked
+)paren
+id|reiserfs_write_unlock_xattrs
+(paren
+id|dir-&gt;i_sb
 )paren
 suffix:semicolon
 r_if
@@ -2684,6 +2835,9 @@ id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
 suffix:semicolon
+r_int
+id|locked
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2738,8 +2892,25 @@ id|retval
 r_return
 id|retval
 suffix:semicolon
+id|locked
+op_assign
+id|reiserfs_cache_default_acl
+(paren
+id|dir
+)paren
+suffix:semicolon
 id|reiserfs_write_lock
 c_func
+(paren
+id|dir-&gt;i_sb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|locked
+)paren
+id|reiserfs_write_lock_xattrs
 (paren
 id|dir-&gt;i_sb
 )paren
@@ -2779,6 +2950,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|locked
+)paren
+id|reiserfs_write_unlock_xattrs
+(paren
+id|dir-&gt;i_sb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|retval
 )paren
 (brace
@@ -2786,12 +2967,17 @@ r_goto
 id|out_failed
 suffix:semicolon
 )brace
+id|inode-&gt;i_op
+op_assign
+op_amp
+id|reiserfs_special_inode_operations
+suffix:semicolon
 id|init_special_inode
 c_func
 (paren
 id|inode
 comma
-id|mode
+id|inode-&gt;i_mode
 comma
 id|rdev
 )paren
@@ -2942,6 +3128,9 @@ id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
 suffix:semicolon
+r_int
+id|locked
+suffix:semicolon
 macro_line|#ifdef DISPLACE_NEW_PACKING_LOCALITIES
 multiline_comment|/* set flag that new packing locality created and new blocks for the content     * of that directory are not displaced yet */
 id|REISERFS_I
@@ -3001,8 +3190,25 @@ id|retval
 r_return
 id|retval
 suffix:semicolon
+id|locked
+op_assign
+id|reiserfs_cache_default_acl
+(paren
+id|dir
+)paren
+suffix:semicolon
 id|reiserfs_write_lock
 c_func
+(paren
+id|dir-&gt;i_sb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|locked
+)paren
+id|reiserfs_write_lock_xattrs
 (paren
 id|dir-&gt;i_sb
 )paren
@@ -3051,6 +3257,16 @@ comma
 id|dentry
 comma
 id|inode
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|locked
+)paren
+id|reiserfs_write_unlock_xattrs
+(paren
+id|dir-&gt;i_sb
 )paren
 suffix:semicolon
 r_if
@@ -3449,9 +3665,14 @@ id|inode-&gt;i_nlink
 op_ne
 l_int|1
 )paren
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_rmdir: empty directory has nlink != 2 (%d)&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;%s: empty directory has nlink &quot;
+l_string|&quot;!= 2 (%d)&quot;
+comma
+id|__FUNCTION__
 comma
 id|inode-&gt;i_nlink
 )paren
@@ -3487,18 +3708,6 @@ op_sub_assign
 id|DEH_SIZE
 op_plus
 id|de.de_entrylen
-)paren
-suffix:semicolon
-id|dir-&gt;i_blocks
-op_assign
-(paren
-(paren
-id|dir-&gt;i_size
-op_plus
-l_int|511
-)paren
-op_rshift
-l_int|9
 )paren
 suffix:semicolon
 id|reiserfs_update_sd
@@ -3746,10 +3955,14 @@ op_logical_neg
 id|inode-&gt;i_nlink
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;reiserfs_unlink: deleting nonexistent file (%s:%lu), %d&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;%s: deleting nonexistent file &quot;
+l_string|&quot;(%s:%lu), %d&quot;
+comma
+id|__FUNCTION__
 comma
 id|reiserfs_bdevname
 (paren
@@ -3829,18 +4042,6 @@ op_sub_assign
 id|de.de_entrylen
 op_plus
 id|DEH_SIZE
-)paren
-suffix:semicolon
-id|dir-&gt;i_blocks
-op_assign
-(paren
-(paren
-id|dir-&gt;i_size
-op_plus
-l_int|511
-)paren
-op_rshift
-l_int|9
 )paren
 suffix:semicolon
 id|dir-&gt;i_ctime
@@ -4133,6 +4334,7 @@ id|symname
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* We would inherit the default ACL here, but symlinks don&squot;t get ACLs */
 id|journal_begin
 c_func
 (paren
@@ -4202,7 +4404,7 @@ suffix:semicolon
 id|inode-&gt;i_op
 op_assign
 op_amp
-id|page_symlink_inode_operations
+id|reiserfs_symlink_inode_operations
 suffix:semicolon
 id|inode-&gt;i_mapping-&gt;a_ops
 op_assign
@@ -5656,7 +5858,9 @@ l_int|0
 )paren
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-7060: reiserfs_rename: couldn&squot;t not cut old name. Fsck later?&bslash;n&quot;
+id|old_dir-&gt;i_sb
+comma
+l_string|&quot;vs-7060: reiserfs_rename: couldn&squot;t not cut old name. Fsck later?&quot;
 )paren
 suffix:semicolon
 id|old_dir-&gt;i_size
@@ -5664,18 +5868,6 @@ op_sub_assign
 id|DEH_SIZE
 op_plus
 id|old_de.de_entrylen
-suffix:semicolon
-id|old_dir-&gt;i_blocks
-op_assign
-(paren
-(paren
-id|old_dir-&gt;i_size
-op_plus
-l_int|511
-)paren
-op_rshift
-l_int|9
-)paren
 suffix:semicolon
 id|reiserfs_update_sd
 (paren
@@ -5807,6 +5999,124 @@ dot
 id|rename
 op_assign
 id|reiserfs_rename
+comma
+dot
+id|setattr
+op_assign
+id|reiserfs_setattr
+comma
+dot
+id|setxattr
+op_assign
+id|reiserfs_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|reiserfs_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|reiserfs_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|reiserfs_removexattr
+comma
+dot
+id|permission
+op_assign
+id|reiserfs_permission
+comma
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * symlink operations.. same as page_symlink_inode_operations, with xattr&n; * stuff added&n; */
+DECL|variable|reiserfs_symlink_inode_operations
+r_struct
+id|inode_operations
+id|reiserfs_symlink_inode_operations
+op_assign
+(brace
+dot
+id|readlink
+op_assign
+id|page_readlink
+comma
+dot
+id|follow_link
+op_assign
+id|page_follow_link
+comma
+dot
+id|setattr
+op_assign
+id|reiserfs_setattr
+comma
+dot
+id|setxattr
+op_assign
+id|reiserfs_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|reiserfs_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|reiserfs_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|reiserfs_removexattr
+comma
+dot
+id|permission
+op_assign
+id|reiserfs_permission
+comma
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * special file operations.. just xattr/acl stuff&n; */
+DECL|variable|reiserfs_special_inode_operations
+r_struct
+id|inode_operations
+id|reiserfs_special_inode_operations
+op_assign
+(brace
+dot
+id|setattr
+op_assign
+id|reiserfs_setattr
+comma
+dot
+id|setxattr
+op_assign
+id|reiserfs_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|reiserfs_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|reiserfs_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|reiserfs_removexattr
+comma
+dot
+id|permission
+op_assign
+id|reiserfs_permission
 comma
 )brace
 suffix:semicolon

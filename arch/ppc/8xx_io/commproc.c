@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/8xx_immap.h&gt;
 macro_line|#include &lt;asm/commproc.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 r_extern
 r_int
 id|get_pteptr
@@ -145,6 +146,7 @@ DECL|function|m8xx_cpm_reset
 id|m8xx_cpm_reset
 c_func
 (paren
+r_void
 )paren
 (brace
 r_volatile
@@ -156,10 +158,6 @@ r_volatile
 id|cpm8xx_t
 op_star
 id|commproc
-suffix:semicolon
-id|pte_t
-op_star
-id|pte
 suffix:semicolon
 id|imp
 op_assign

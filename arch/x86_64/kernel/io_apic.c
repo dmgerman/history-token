@@ -736,6 +736,9 @@ suffix:semicolon
 id|u32
 id|vendor
 suffix:semicolon
+id|u8
+id|type
+suffix:semicolon
 r_class
 op_assign
 id|read_pci_config
@@ -855,7 +858,6 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* No multi-function device? */
-id|u8
 id|type
 op_assign
 id|read_pci_config_byte

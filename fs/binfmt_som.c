@@ -1227,7 +1227,7 @@ id|som_format
 suffix:semicolon
 )brace
 DECL|variable|init_som_binfmt
-id|module_init
+id|core_initcall
 c_func
 (paren
 id|init_som_binfmt

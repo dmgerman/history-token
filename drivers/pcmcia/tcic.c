@@ -41,8 +41,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;tcic.c 1.111 2000/02/15 04:13:12 (David Hinds)&quot;
 suffix:semicolon

@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hwrpb.h&gt;
+macro_line|#include &lt;asm/8253pit.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
@@ -823,8 +824,6 @@ id|cc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Calibrate CPU clock using legacy 8254 timer/counter. Stolen from&n; * arch/i386/time.c.&n; */
-DECL|macro|PIC_TICK_RATE
-mdefine_line|#define PIC_TICK_RATE&t;1193180UL
 DECL|macro|CALIBRATE_LATCH
 mdefine_line|#define CALIBRATE_LATCH&t;0xffff
 DECL|macro|TIMEOUT_COUNT
@@ -833,8 +832,8 @@ r_static
 r_int
 r_int
 id|__init
-DECL|function|calibrate_cc_with_pic
-id|calibrate_cc_with_pic
+DECL|function|calibrate_cc_with_pit
+id|calibrate_cc_with_pit
 c_func
 (paren
 r_void
@@ -963,7 +962,7 @@ r_int
 )paren
 id|cc
 op_star
-id|PIC_TICK_RATE
+id|PIT_TICK_RATE
 )paren
 op_div
 (paren
@@ -1075,7 +1074,7 @@ op_assign
 id|validate_cc_value
 c_func
 (paren
-id|calibrate_cc_with_pic
+id|calibrate_cc_with_pit
 c_func
 (paren
 )paren

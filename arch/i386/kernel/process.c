@@ -2226,11 +2226,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * These bracket the sleeping functions..&n; */
-DECL|macro|first_sched
-mdefine_line|#define first_sched&t;((unsigned long) scheduling_functions_start_here)
-DECL|macro|last_sched
-mdefine_line|#define last_sched&t;((unsigned long) scheduling_functions_end_here)
 DECL|macro|top_esp
 mdefine_line|#define top_esp                (THREAD_SIZE - sizeof(unsigned long))
 DECL|macro|top_ebp
@@ -2350,13 +2345,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|in_sched_functions
+c_func
+(paren
 id|eip
-OL
-id|first_sched
-op_logical_or
-id|eip
-op_ge
-id|last_sched
+)paren
 )paren
 r_return
 id|eip
@@ -2385,10 +2379,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|last_sched
-macro_line|#undef last_sched
-DECL|macro|first_sched
-macro_line|#undef first_sched
 multiline_comment|/*&n; * sys_alloc_thread_area: get a yet unused TLS descriptor index.&n; */
 DECL|function|get_free_idx
 r_static
@@ -2641,7 +2631,7 @@ mdefine_line|#define GET_BASE(desc) ( &bslash;&n;&t;(((desc)-&gt;a &gt;&gt; 16) 
 DECL|macro|GET_LIMIT
 mdefine_line|#define GET_LIMIT(desc) ( &bslash;&n;&t;((desc)-&gt;a &amp; 0x0ffff) | &bslash;&n;&t; ((desc)-&gt;b &amp; 0xf0000) )
 DECL|macro|GET_32BIT
-mdefine_line|#define GET_32BIT(desc)&t;&t;(((desc)-&gt;b &gt;&gt; 23) &amp; 1)
+mdefine_line|#define GET_32BIT(desc)&t;&t;(((desc)-&gt;b &gt;&gt; 22) &amp; 1)
 DECL|macro|GET_CONTENTS
 mdefine_line|#define GET_CONTENTS(desc)&t;(((desc)-&gt;b &gt;&gt; 10) &amp; 3)
 DECL|macro|GET_WRITABLE

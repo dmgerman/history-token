@@ -2550,7 +2550,7 @@ id|aout_format
 suffix:semicolon
 )brace
 DECL|variable|init_aout_binfmt
-id|module_init
+id|core_initcall
 c_func
 (paren
 id|init_aout_binfmt

@@ -25,10 +25,10 @@ DECL|macro|default_write_expire
 mdefine_line|#define default_write_expire (HZ / 4)
 multiline_comment|/*&n; * read_batch_expire describes how long we will allow a stream of reads to&n; * persist before looking to see whether it is time to switch over to writes.&n; */
 DECL|macro|default_read_batch_expire
-mdefine_line|#define default_read_batch_expire (HZ / 4)
+mdefine_line|#define default_read_batch_expire (HZ / 2)
 multiline_comment|/*&n; * write_batch_expire describes how long we want a stream of writes to run for.&n; * This is not a hard limit, but a target we set for the auto-tuning thingy.&n; * See, the problem is: we can send a lot of writes to disk cache / TCQ in&n; * a short amount of time...&n; */
 DECL|macro|default_write_batch_expire
-mdefine_line|#define default_write_batch_expire (HZ / 16)
+mdefine_line|#define default_write_batch_expire (HZ / 8)
 multiline_comment|/*&n; * max time we may wait to anticipate a read (default around 6ms)&n; */
 DECL|macro|default_antic_expire
 mdefine_line|#define default_antic_expire ((HZ / 150) ? HZ / 150 : 1)
@@ -4354,6 +4354,14 @@ comma
 id|rq
 )paren
 suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+id|arq-&gt;state
+op_ne
+id|AS_RQ_QUEUED
+)paren
+suffix:semicolon
 id|list_add
 c_func
 (paren
@@ -4362,6 +4370,10 @@ id|rq-&gt;queuelist
 comma
 id|insert
 )paren
+suffix:semicolon
+id|arq-&gt;state
+op_assign
+id|AS_RQ_DISPATCHED
 suffix:semicolon
 r_if
 c_cond
@@ -4376,18 +4388,6 @@ c_func
 op_amp
 id|arq-&gt;io_context-&gt;aic-&gt;nr_dispatched
 )paren
-suffix:semicolon
-id|WARN_ON
-c_func
-(paren
-id|arq-&gt;state
-op_ne
-id|AS_RQ_QUEUED
-)paren
-suffix:semicolon
-id|arq-&gt;state
-op_assign
-id|AS_RQ_DISPATCHED
 suffix:semicolon
 id|ad-&gt;nr_dispatched
 op_increment
@@ -5348,6 +5348,54 @@ id|ad
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Account a request that is inserted directly onto the dispatch queue.&n; * arq-&gt;io_context-&gt;aic-&gt;nr_dispatched should not need to be incremented&n; * because only new requests should come through here: requeues go through&n; * our explicit requeue handler.&n; */
+DECL|function|as_account_queued_request
+r_static
+r_void
+id|as_account_queued_request
+c_func
+(paren
+r_struct
+id|as_data
+op_star
+id|ad
+comma
+r_struct
+id|request
+op_star
+id|rq
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|blk_fs_request
+c_func
+(paren
+id|rq
+)paren
+)paren
+(brace
+r_struct
+id|as_rq
+op_star
+id|arq
+op_assign
+id|RQ_DATA
+c_func
+(paren
+id|rq
+)paren
+suffix:semicolon
+id|arq-&gt;state
+op_assign
+id|AS_RQ_DISPATCHED
+suffix:semicolon
+id|ad-&gt;nr_dispatched
+op_increment
+suffix:semicolon
+)brace
+)brace
 r_static
 r_void
 DECL|function|as_insert_request
@@ -5507,6 +5555,14 @@ comma
 id|ad-&gt;dispatch
 )paren
 suffix:semicolon
+id|as_account_queued_request
+c_func
+(paren
+id|ad
+comma
+id|rq
+)paren
+suffix:semicolon
 id|as_antic_stop
 c_func
 (paren
@@ -5525,6 +5581,14 @@ op_amp
 id|rq-&gt;queuelist
 comma
 id|ad-&gt;dispatch
+)paren
+suffix:semicolon
+id|as_account_queued_request
+c_func
+(paren
+id|ad
+comma
+id|rq
 )paren
 suffix:semicolon
 id|as_antic_stop

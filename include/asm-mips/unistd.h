@@ -543,14 +543,32 @@ DECL|macro|__NR_tgkill
 mdefine_line|#define __NR_tgkill&t;&t;&t;(__NR_Linux + 266)
 DECL|macro|__NR_utimes
 mdefine_line|#define __NR_utimes&t;&t;&t;(__NR_Linux + 267)
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind&t;&t;&t;(__NR_Linux + 268)
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy&t;&t;(__NR_Linux + 269)
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy&t;&t;(__NR_Linux + 270)
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open&t;&t;&t;(__NR_Linux + 271)
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink&t;&t;&t;(__NR_Linux + 272)
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend&t;&t;(__NR_Linux + 273)
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive&t;&t;(__NR_Linux + 274)
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify&t;&t;&t;(__NR_Linux + 275)
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr&t;&t;(__NR_Linux + 276)
 multiline_comment|/*&n; * Offset of the last Linux o32 flavoured syscall&n; */
 DECL|macro|__NR_Linux_syscalls
-mdefine_line|#define __NR_Linux_syscalls&t;&t;267
+mdefine_line|#define __NR_Linux_syscalls&t;&t;276
 macro_line|#endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
 DECL|macro|__NR_O32_Linux
 mdefine_line|#define __NR_O32_Linux&t;&t;&t;4000
 DECL|macro|__NR_O32_Linux_syscalls
-mdefine_line|#define __NR_O32_Linux_syscalls&t;&t;267
+mdefine_line|#define __NR_O32_Linux_syscalls&t;&t;276
 macro_line|#if _MIPS_SIM == _MIPS_SIM_ABI64
 multiline_comment|/*&n; * Linux 64-bit syscalls are in the range from 5000 to 5999.&n; */
 DECL|macro|__NR_Linux
@@ -1009,14 +1027,32 @@ DECL|macro|__NR_tgkill
 mdefine_line|#define __NR_tgkill&t;&t;&t;(__NR_Linux + 225)
 DECL|macro|__NR_utimes
 mdefine_line|#define __NR_utimes&t;&t;&t;(__NR_Linux + 226)
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind&t;&t;&t;(__NR_Linux + 227)
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy&t;&t;(__NR_Linux + 228)
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy&t;&t;(__NR_Linux + 229)
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open&t;&t;&t;(__NR_Linux + 230)
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink&t;&t;&t;(__NR_Linux + 231)
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend&t;&t;(__NR_Linux + 232)
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive&t;&t;(__NR_Linux + 233)
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify&t;&t;&t;(__NR_Linux + 234)
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr&t;&t;(__NR_Linux + 235)
 multiline_comment|/*&n; * Offset of the last Linux flavoured syscall&n; */
 DECL|macro|__NR_Linux_syscalls
-mdefine_line|#define __NR_Linux_syscalls&t;&t;226
+mdefine_line|#define __NR_Linux_syscalls&t;&t;235
 macro_line|#endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
 DECL|macro|__NR_64_Linux
 mdefine_line|#define __NR_64_Linux&t;&t;&t;5000
 DECL|macro|__NR_64_Linux_syscalls
-mdefine_line|#define __NR_64_Linux_syscalls&t;&t;226
+mdefine_line|#define __NR_64_Linux_syscalls&t;&t;235
 macro_line|#if _MIPS_SIM == _MIPS_SIM_NABI32
 multiline_comment|/*&n; * Linux N32 syscalls are in the range from 6000 to 6999.&n; */
 DECL|macro|__NR_Linux
@@ -1483,14 +1519,32 @@ DECL|macro|__NR_tgkill
 mdefine_line|#define __NR_tgkill&t;&t;&t;(__NR_Linux + 229)
 DECL|macro|__NR_utimes
 mdefine_line|#define __NR_utimes&t;&t;&t;(__NR_Linux + 230)
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind&t;&t;&t;(__NR_Linux + 231)
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy&t;&t;(__NR_Linux + 232)
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy&t;&t;(__NR_Linux + 233)
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open&t;&t;&t;(__NR_Linux + 234)
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink&t;&t;&t;(__NR_Linux + 235)
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend&t;&t;(__NR_Linux + 236)
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive&t;&t;(__NR_Linux + 237)
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify&t;&t;&t;(__NR_Linux + 238)
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr&t;&t;(__NR_Linux + 239)
 multiline_comment|/*&n; * Offset of the last N32 flavoured syscall&n; */
 DECL|macro|__NR_Linux_syscalls
-mdefine_line|#define __NR_Linux_syscalls&t;&t;230
+mdefine_line|#define __NR_Linux_syscalls&t;&t;239
 macro_line|#endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
 DECL|macro|__NR_N32_Linux
 mdefine_line|#define __NR_N32_Linux&t;&t;&t;6000
 DECL|macro|__NR_N32_Linux_syscalls
-mdefine_line|#define __NR_N32_Linux_syscalls&t;&t;230
+mdefine_line|#define __NR_N32_Linux_syscalls&t;&t;239
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* XXX - _foo needs to be __foo, while __NR_bar could be _NR_bar. */
 DECL|macro|_syscall0

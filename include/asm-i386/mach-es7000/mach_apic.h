@@ -91,7 +91,7 @@ macro_line|#endif
 DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID&t;(0xff)
 DECL|macro|NO_IOAPIC_CHECK
-mdefine_line|#define NO_IOAPIC_CHECK (0)
+mdefine_line|#define NO_IOAPIC_CHECK (1)
 DECL|function|check_apicid_used
 r_static
 r_inline
@@ -605,9 +605,19 @@ id|num_bits_set
 op_eq
 id|NR_CPUS
 )paren
+macro_line|#if defined CONFIG_ES7000_CLUSTERED_APIC
 r_return
 l_int|0xFF
 suffix:semicolon
+macro_line|#else
+r_return
+id|cpu_to_logical_apicid
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* &n;&t; * The cpus in the mask must all be on the apic cluster.  If are not &n;&t; * on the same apicid cluster return default value of TARGET_CPUS. &n;&t; */
 id|cpu
 op_assign
@@ -677,9 +687,19 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+macro_line|#if defined CONFIG_ES7000_CLUSTERED_APIC
 r_return
 l_int|0xFF
 suffix:semicolon
+macro_line|#else
+r_return
+id|cpu_to_logical_apicid
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 id|apicid
 op_assign

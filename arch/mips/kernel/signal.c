@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/asm.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -36,15 +37,6 @@ r_struct
 id|pt_regs
 op_star
 id|regs
-)paren
-suffix:semicolon
-r_extern
-id|asmlinkage
-r_void
-id|do_syscall_trace
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Atomically swap in the new signal mask, and wait for a signal.&n; */
@@ -1196,6 +1188,10 @@ id|TIF_SYSCALL_TRACE
 id|do_syscall_trace
 c_func
 (paren
+op_amp
+id|regs
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|__asm__
@@ -2796,6 +2792,38 @@ id|regs
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/*&n;&t; * We want the common case to go fast, which is why we may in certain&n;&t; * cases get here from kernel mode. Just return without doing anything&n;&t; * if so.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+(brace
+id|refrigerator
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_goto
+id|no_signal
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2845,6 +2873,8 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|no_signal
+suffix:colon
 multiline_comment|/*&n;&t; * Who&squot;s code doesn&squot;t conform to the restartable syscall convention&n;&t; * dies here!!!  The li instruction, a single machine instruction,&n;&t; * must directly be followed by the syscall instruction.&n;&t; */
 r_if
 c_cond

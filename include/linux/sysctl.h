@@ -623,6 +623,12 @@ op_assign
 l_int|24
 comma
 multiline_comment|/* block dump mode */
+DECL|enumerator|VM_HUGETLB_GROUP
+id|VM_HUGETLB_GROUP
+op_assign
+l_int|25
+comma
+multiline_comment|/* permitted hugetlb group */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */

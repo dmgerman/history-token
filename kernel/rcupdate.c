@@ -670,7 +670,7 @@ id|cpu
 )paren
 )paren
 (brace
-id|list_splice
+id|__list_splice
 c_func
 (paren
 op_amp
@@ -728,7 +728,7 @@ id|cpu
 )paren
 )paren
 (brace
-id|list_splice
+id|__list_splice
 c_func
 (paren
 op_amp

@@ -4922,7 +4922,7 @@ op_eq
 id|tsk-&gt;tgid
 )paren
 (brace
-id|wake_up_interruptible
+id|wake_up_interruptible_sync
 c_func
 (paren
 op_amp
@@ -4934,7 +4934,7 @@ suffix:semicolon
 )brace
 r_do
 (brace
-id|wake_up_interruptible
+id|wake_up_interruptible_sync
 c_func
 (paren
 op_amp

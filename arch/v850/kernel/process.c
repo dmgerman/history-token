@@ -620,9 +620,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * These bracket the sleeping functions..&n; */
 DECL|macro|first_sched
-mdefine_line|#define first_sched&t;((unsigned long) scheduling_functions_start_here)
+mdefine_line|#define first_sched&t;((unsigned long)__sched_text_start)
 DECL|macro|last_sched
-mdefine_line|#define last_sched&t;((unsigned long) scheduling_functions_end_here)
+mdefine_line|#define last_sched&t;((unsigned long)__sched_text_end)
 DECL|function|get_wchan
 r_int
 r_int

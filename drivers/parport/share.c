@@ -537,7 +537,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;parport_unregister_driver - deregister a parallel port device driver&n; *&t;@arg: structure describing the driver that was given to&n; *&t;      parport_register_driver()&n; *&n; *&t;This should be called by a parallel port device driver that&n; *&t;has registered itself using parport_register_driver() when it&n; *&t;is about to be unloaded.&n; *&n; *&t;When it returns, the driver&squot;s attach() routine will no longer&n; *&t;be called, and for each port that attach() was called for, the&n; *&t;detach() routine will have been called.&n; *&n; *&t;All the driver&squot;s attach() and detach() calls are guaranteed to have&n; *&t;finished by the time this function returns.&n; **/
+multiline_comment|/**&n; *&t;parport_unregister_driver - deregister a parallel port device driver&n; *&t;@drv: structure describing the driver that was given to&n; *&t;      parport_register_driver()&n; *&n; *&t;This should be called by a parallel port device driver that&n; *&t;has registered itself using parport_register_driver() when it&n; *&t;is about to be unloaded.&n; *&n; *&t;When it returns, the driver&squot;s attach() routine will no longer&n; *&t;be called, and for each port that attach() was called for, the&n; *&t;detach() routine will have been called.&n; *&n; *&t;All the driver&squot;s attach() and detach() calls are guaranteed to have&n; *&t;finished by the time this function returns.&n; **/
 DECL|function|parport_unregister_driver
 r_void
 id|parport_unregister_driver

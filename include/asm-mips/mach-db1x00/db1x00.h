@@ -2,7 +2,14 @@ multiline_comment|/*&n; * AMD Alchemy DB1x00 Reference Boards&n; *&n; * Copyrigh
 macro_line|#ifndef __ASM_DB1X00_H
 DECL|macro|__ASM_DB1X00_H
 mdefine_line|#define __ASM_DB1X00_H
-multiline_comment|/*&n; * Overlay data structure of the Db1x00 board registers.&n; * Registers located at physical 1E0000xx, KSEG1 0xAE0000xx&n; */
+macro_line|#ifdef CONFIG_MIPS_DB1550
+DECL|macro|BCSR_KSEG1_ADDR
+mdefine_line|#define BCSR_KSEG1_ADDR 0xAF000000
+macro_line|#else
+DECL|macro|BCSR_KSEG1_ADDR
+mdefine_line|#define BCSR_KSEG1_ADDR 0xAE000000
+macro_line|#endif
+multiline_comment|/*&n; * Overlay data structure of the Db1x00 board registers.&n; * Registers located at physical 0E0000xx, KSEG1 0xAE0000xx&n; */
 r_typedef
 r_volatile
 r_struct
@@ -13,11 +20,21 @@ r_int
 r_int
 id|whoami
 suffix:semicolon
+DECL|member|reserved0
+r_int
+r_int
+id|reserved0
+suffix:semicolon
 DECL|member|status
 multiline_comment|/*04*/
 r_int
 r_int
 id|status
+suffix:semicolon
+DECL|member|reserved1
+r_int
+r_int
+id|reserved1
 suffix:semicolon
 DECL|member|switches
 multiline_comment|/*08*/
@@ -25,11 +42,21 @@ r_int
 r_int
 id|switches
 suffix:semicolon
+DECL|member|reserved2
+r_int
+r_int
+id|reserved2
+suffix:semicolon
 DECL|member|resets
 multiline_comment|/*0C*/
 r_int
 r_int
 id|resets
+suffix:semicolon
+DECL|member|reserved3
+r_int
+r_int
+id|reserved3
 suffix:semicolon
 DECL|member|pcmcia
 multiline_comment|/*10*/
@@ -37,11 +64,21 @@ r_int
 r_int
 id|pcmcia
 suffix:semicolon
+DECL|member|reserved4
+r_int
+r_int
+id|reserved4
+suffix:semicolon
 DECL|member|specific
 multiline_comment|/*14*/
 r_int
 r_int
 id|specific
+suffix:semicolon
+DECL|member|reserved5
+r_int
+r_int
+id|reserved5
 suffix:semicolon
 DECL|member|leds
 multiline_comment|/*18*/
@@ -49,11 +86,21 @@ r_int
 r_int
 id|leds
 suffix:semicolon
+DECL|member|reserved6
+r_int
+r_int
+id|reserved6
+suffix:semicolon
 DECL|member|swreset
 multiline_comment|/*1C*/
 r_int
 r_int
 id|swreset
+suffix:semicolon
+DECL|member|reserved7
+r_int
+r_int
+id|reserved7
 suffix:semicolon
 DECL|typedef|BCSR
 )brace

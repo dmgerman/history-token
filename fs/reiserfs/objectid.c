@@ -161,9 +161,13 @@ op_eq
 id|U32_MAX
 )paren
 (brace
-id|printk
+id|reiserfs_warning
 (paren
-l_string|&quot;REISERFS: get_objectid: no more object ids&bslash;n&quot;
+id|s
+comma
+l_string|&quot;%s: no more object ids&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|reiserfs_restore_prepared_buffer
@@ -685,7 +689,9 @@ suffix:semicolon
 )brace
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-15011: reiserfs_release_objectid: tried to free free object id (%lu)&bslash;n&quot;
+id|s
+comma
+l_string|&quot;vs-15011: reiserfs_release_objectid: tried to free free object id (%lu)&quot;
 comma
 (paren
 r_int

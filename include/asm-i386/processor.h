@@ -113,6 +113,11 @@ r_int
 id|x86_cache_size
 suffix:semicolon
 multiline_comment|/* in KB - valid for CPUS which support this&n;&t;&t;&t;&t;    call  */
+DECL|member|x86_cache_alignment
+r_int
+id|x86_cache_alignment
+suffix:semicolon
+multiline_comment|/* In bytes */
 DECL|member|fdiv_bug
 r_int
 id|fdiv_bug
@@ -1861,5 +1866,11 @@ op_star
 id|c
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SCHED_SMT
+DECL|macro|ARCH_HAS_SCHED_DOMAIN
+mdefine_line|#define ARCH_HAS_SCHED_DOMAIN
+DECL|macro|ARCH_HAS_SCHED_WAKE_IDLE
+mdefine_line|#define ARCH_HAS_SCHED_WAKE_IDLE
+macro_line|#endif
 macro_line|#endif /* __ASM_I386_PROCESSOR_H */
 eof

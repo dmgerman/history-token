@@ -41,7 +41,7 @@ r_int
 id|smp_num_siblings
 suffix:semicolon
 r_extern
-r_int
+id|cpumask_t
 id|cpu_sibling_map
 (braket
 )braket

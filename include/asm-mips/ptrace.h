@@ -108,6 +108,21 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
+r_extern
+id|asmlinkage
+r_void
+id|do_syscall_trace
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_int
+id|entryexit
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* _ASM_PTRACE_H */
 eof

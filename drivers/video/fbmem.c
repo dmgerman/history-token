@@ -601,6 +601,23 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|gbefb_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|gbefb_setup
+c_func
+(paren
+r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|rivafb_init
 c_func
 (paren
@@ -1408,6 +1425,16 @@ comma
 id|sgivwfb_init
 comma
 id|sgivwfb_setup
+)brace
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_FB_GBE
+(brace
+l_string|&quot;gbefb&quot;
+comma
+id|gbefb_init
+comma
+id|gbefb_setup
 )brace
 comma
 macro_line|#endif
@@ -5730,22 +5757,13 @@ op_or_assign
 id|_PAGE_PCD
 suffix:semicolon
 macro_line|#elif defined(__mips__)
-id|pgprot_val
+id|vma-&gt;vm_page_prot
+op_assign
+id|pgprot_noncached
 c_func
 (paren
 id|vma-&gt;vm_page_prot
 )paren
-op_and_assign
-op_complement
-id|_CACHE_MASK
-suffix:semicolon
-id|pgprot_val
-c_func
-(paren
-id|vma-&gt;vm_page_prot
-)paren
-op_or_assign
-id|_CACHE_UNCACHED
 suffix:semicolon
 macro_line|#elif defined(__hppa__)
 id|pgprot_val

@@ -31,11 +31,18 @@ op_assign
 id|HZ
 suffix:semicolon
 DECL|variable|nmi_perfctr_msr
+r_static
 r_int
 r_int
 id|nmi_perfctr_msr
 suffix:semicolon
 multiline_comment|/* the MSR to reset in NMI handler */
+DECL|variable|nmi_p4_cccr_val
+r_static
+r_int
+r_int
+id|nmi_p4_cccr_val
+suffix:semicolon
 r_extern
 r_void
 id|show_registers
@@ -110,8 +117,10 @@ DECL|macro|P4_ESCR_OS
 mdefine_line|#define P4_ESCR_OS&t;&t;(1&lt;&lt;3)
 DECL|macro|P4_ESCR_USR
 mdefine_line|#define P4_ESCR_USR&t;&t;(1&lt;&lt;2)
-DECL|macro|P4_CCCR_OVF_PMI
-mdefine_line|#define P4_CCCR_OVF_PMI&t;&t;(1&lt;&lt;26)
+DECL|macro|P4_CCCR_OVF_PMI0
+mdefine_line|#define P4_CCCR_OVF_PMI0&t;(1&lt;&lt;26)
+DECL|macro|P4_CCCR_OVF_PMI1
+mdefine_line|#define P4_CCCR_OVF_PMI1&t;(1&lt;&lt;27)
 DECL|macro|P4_CCCR_THRESHOLD
 mdefine_line|#define P4_CCCR_THRESHOLD(N)&t;((N)&lt;&lt;20)
 DECL|macro|P4_CCCR_COMPLEMENT
@@ -130,7 +139,7 @@ mdefine_line|#define MSR_P4_IQ_COUNTER0&t;0x30C
 DECL|macro|P4_NMI_CRU_ESCR0
 mdefine_line|#define P4_NMI_CRU_ESCR0&t;(P4_ESCR_EVENT_SELECT(0x3F)|P4_ESCR_OS|P4_ESCR_USR)
 DECL|macro|P4_NMI_IQ_CCCR0
-mdefine_line|#define P4_NMI_IQ_CCCR0&t;&bslash;&n;&t;(P4_CCCR_OVF_PMI|P4_CCCR_THRESHOLD(15)|P4_CCCR_COMPLEMENT|&t;&bslash;&n;&t; P4_CCCR_COMPARE|P4_CCCR_REQUIRED|P4_CCCR_ESCR_SELECT(4)|P4_CCCR_ENABLE)
+mdefine_line|#define P4_NMI_IQ_CCCR0&t;&bslash;&n;&t;(P4_CCCR_OVF_PMI0|P4_CCCR_THRESHOLD(15)|P4_CCCR_COMPLEMENT|&t;&bslash;&n;&t; P4_CCCR_COMPARE|P4_CCCR_REQUIRED|P4_CCCR_ESCR_SELECT(4)|P4_CCCR_ENABLE)
 DECL|function|check_nmi_watchdog
 r_int
 id|__init
@@ -1236,6 +1245,23 @@ id|nmi_perfctr_msr
 op_assign
 id|MSR_P4_IQ_COUNTER0
 suffix:semicolon
+id|nmi_p4_cccr_val
+op_assign
+id|P4_NMI_IQ_CCCR0
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_if
+c_cond
+(paren
+id|smp_num_siblings
+op_eq
+l_int|2
+)paren
+id|nmi_p4_cccr_val
+op_or_assign
+id|P4_CCCR_OVF_PMI1
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1372,7 +1398,7 @@ c_func
 (paren
 id|MSR_P4_IQ_CCCR0
 comma
-id|P4_NMI_IQ_CCCR0
+id|nmi_p4_cccr_val
 comma
 l_int|0
 )paren
@@ -1707,7 +1733,7 @@ c_func
 (paren
 id|MSR_P4_IQ_CCCR0
 comma
-id|P4_NMI_IQ_CCCR0
+id|nmi_p4_cccr_val
 comma
 l_int|0
 )paren

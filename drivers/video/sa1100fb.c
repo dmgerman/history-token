@@ -6442,8 +6442,6 @@ id|CPUFREQ_POLICY_NOTIFIER
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* This driver cannot be unloaded at the moment */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

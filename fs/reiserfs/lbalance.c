@@ -6297,7 +6297,9 @@ id|i
 )paren
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-10240: leaf_paste_entries: directory item (%h) corrupted (prev %a, cur(%d) %a)&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;vs-10240: leaf_paste_entries: directory item (%h) corrupted (prev %a, cur(%d) %a)&quot;
 comma
 id|ih
 comma
@@ -6335,7 +6337,9 @@ id|i
 )paren
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-10250: leaf_paste_entries: directory item (%h) corrupted (cur(%d) %a, next %a)&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;vs-10250: leaf_paste_entries: directory item (%h) corrupted (cur(%d) %a, next %a)&quot;
 comma
 id|ih
 comma

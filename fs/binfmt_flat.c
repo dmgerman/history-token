@@ -4262,7 +4262,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************/
 DECL|variable|init_flat_binfmt
-id|module_init
+id|core_initcall
 c_func
 (paren
 id|init_flat_binfmt

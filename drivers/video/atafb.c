@@ -12826,8 +12826,6 @@ l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* TODO: This driver cannot be unloaded yet */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -14473,25 +14471,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* Not reached because the usecount will never&n;&t;   be decremented to zero */
-id|unregister_framebuffer
-c_func
-(paren
-op_amp
-id|fb_info
-)paren
-suffix:semicolon
-multiline_comment|/* atari_stram_free( screen_base ); */
-multiline_comment|/* TODO: further clean up ... */
 )brace
 macro_line|#endif /* MODULE */
 eof

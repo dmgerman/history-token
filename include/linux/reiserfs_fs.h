@@ -37,6 +37,24 @@ mdefine_line|#define ROUND_UP(x) _ROUND_UP(x,8LL)
 multiline_comment|/* debug levels.  Right now, CONFIG_REISERFS_CHECK means print all debug&n;** messages.&n;*/
 DECL|macro|REISERFS_DEBUG_CODE
 mdefine_line|#define REISERFS_DEBUG_CODE 5 /* extra messages to help find/debug errors */ 
+r_void
+id|reiserfs_warning
+(paren
+r_struct
+id|super_block
+op_star
+id|s
+comma
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
 multiline_comment|/* assertions handling */
 multiline_comment|/** always check a condition and panic if it&squot;s false. */
 DECL|macro|RASSERT
@@ -395,6 +413,8 @@ DECL|macro|NO_BALANCING_NEEDED
 mdefine_line|#define NO_BALANCING_NEEDED  (-4)
 DECL|macro|NO_MORE_UNUSED_CONTIGUOUS_BLOCKS
 mdefine_line|#define NO_MORE_UNUSED_CONTIGUOUS_BLOCKS (-5)
+DECL|macro|QUOTA_EXCEEDED
+mdefine_line|#define QUOTA_EXCEEDED -6
 DECL|typedef|b_blocknr_t
 r_typedef
 id|__u32
@@ -439,6 +459,7 @@ op_star
 id|REISERFS_I
 c_func
 (paren
+r_const
 r_struct
 id|inode
 op_star
@@ -1014,21 +1035,6 @@ mdefine_line|#define V1_DIRENTRY_UNIQUENESS 500
 DECL|macro|V1_ANY_UNIQUENESS
 mdefine_line|#define V1_ANY_UNIQUENESS 555 
 singleline_comment|// FIXME: comment is required
-r_extern
-r_void
-id|reiserfs_warning
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
-multiline_comment|/* __attribute__( ( format ( printf, 1, 2 ) ) ); */
 singleline_comment|//
 singleline_comment|// here are conversion routines
 singleline_comment|//
@@ -1088,9 +1094,10 @@ suffix:semicolon
 r_default
 suffix:colon
 id|reiserfs_warning
-c_func
 (paren
-l_string|&quot;vs-500: unknown uniqueness %d&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;vs-500: unknown uniqueness %d&quot;
 comma
 id|uniqueness
 )paren
@@ -1156,9 +1163,10 @@ suffix:semicolon
 r_default
 suffix:colon
 id|reiserfs_warning
-c_func
 (paren
-l_string|&quot;vs-501: unknown type %d&bslash;n&quot;
+l_int|NULL
+comma
+l_string|&quot;vs-501: unknown type %d&quot;
 comma
 id|type
 )paren
@@ -3891,6 +3899,11 @@ r_void
 id|reiserfs_check_lock_depth
 c_func
 (paren
+r_struct
+id|super_block
+op_star
+id|s
+comma
 r_char
 op_star
 id|caller
@@ -4732,6 +4745,11 @@ id|item_head
 op_star
 id|ih
 comma
+r_struct
+id|inode
+op_star
+id|inode
+comma
 r_const
 r_char
 op_star
@@ -4756,6 +4774,11 @@ r_struct
 id|cpu_key
 op_star
 id|key
+comma
+r_struct
+id|inode
+op_star
+id|inode
 comma
 r_const
 r_char
@@ -4835,6 +4858,11 @@ r_struct
 id|reiserfs_transaction_handle
 op_star
 id|th
+comma
+r_struct
+id|inode
+op_star
+id|inode
 comma
 r_struct
 id|key
@@ -5209,7 +5237,28 @@ id|inode
 )paren
 suffix:semicolon
 r_void
+id|reiserfs_update_sd_size
+(paren
+r_struct
+id|reiserfs_transaction_handle
+op_star
+id|th
+comma
+r_struct
+id|inode
+op_star
+id|inode
+comma
+id|loff_t
+id|size
+)paren
+suffix:semicolon
+DECL|function|reiserfs_update_sd
+r_static
+r_inline
+r_void
 id|reiserfs_update_sd
+c_func
 (paren
 r_struct
 id|reiserfs_transaction_handle
@@ -5221,7 +5270,18 @@ id|inode
 op_star
 id|inode
 )paren
+(brace
+id|reiserfs_update_sd_size
+c_func
+(paren
+id|th
+comma
+id|inode
+comma
+id|inode-&gt;i_size
+)paren
 suffix:semicolon
+)brace
 r_void
 id|sd_attrs_to_i_attrs
 c_func
@@ -5247,6 +5307,21 @@ comma
 id|__u16
 op_star
 id|sd_attrs
+)paren
+suffix:semicolon
+r_int
+id|reiserfs_setattr
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+comma
+r_struct
+id|iattr
+op_star
+id|attr
 )paren
 suffix:semicolon
 multiline_comment|/* namei.c */
@@ -5422,6 +5497,16 @@ r_extern
 r_struct
 id|inode_operations
 id|reiserfs_dir_inode_operations
+suffix:semicolon
+r_extern
+r_struct
+id|inode_operations
+id|reiserfs_symlink_inode_operations
+suffix:semicolon
+r_extern
+r_struct
+id|inode_operations
+id|reiserfs_special_inode_operations
 suffix:semicolon
 r_extern
 r_struct
@@ -5664,7 +5749,37 @@ id|noreturn
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* __attribute__( ( format ( printf, 2, 3 ) ) ) */
+r_void
+id|reiserfs_info
+(paren
+r_struct
+id|super_block
+op_star
+id|s
+comma
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
+r_void
+id|reiserfs_printk
+(paren
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
 r_void
 id|reiserfs_debug
 (paren
@@ -5686,7 +5801,6 @@ dot
 dot
 )paren
 suffix:semicolon
-multiline_comment|/* __attribute__( ( format ( printf, 3, 4 ) ) ); */
 r_void
 id|print_virtual_node
 (paren
@@ -6323,7 +6437,14 @@ id|reiserfs_transaction_handle
 op_star
 id|th
 comma
+r_struct
+id|inode
+op_star
+comma
 id|b_blocknr_t
+comma
+r_int
+id|for_unformatted
 )paren
 suffix:semicolon
 r_int
@@ -6737,5 +6858,8 @@ DECL|macro|reiserfs_write_lock
 mdefine_line|#define reiserfs_write_lock( sb ) lock_kernel()
 DECL|macro|reiserfs_write_unlock
 mdefine_line|#define reiserfs_write_unlock( sb ) unlock_kernel()
+multiline_comment|/* xattr stuff */
+DECL|macro|REISERFS_XATTR_DIR_SEM
+mdefine_line|#define REISERFS_XATTR_DIR_SEM(s) (REISERFS_SB(s)-&gt;xattr_dir_sem)
 macro_line|#endif /* _LINUX_REISER_FS_H */
 eof

@@ -23,6 +23,11 @@ suffix:semicolon
 r_extern
 r_struct
 id|genapic
+id|apic_es7000
+suffix:semicolon
+r_extern
+r_struct
+id|genapic
 id|apic_default
 suffix:semicolon
 DECL|variable|genapic
@@ -49,6 +54,9 @@ id|apic_summit
 comma
 op_amp
 id|apic_bigsmp
+comma
+op_amp
+id|apic_es7000
 comma
 op_amp
 id|apic_default

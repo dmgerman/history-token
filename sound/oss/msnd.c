@@ -92,8 +92,6 @@ suffix:semicolon
 op_increment
 id|num_devs
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -165,8 +163,6 @@ l_int|NULL
 suffix:semicolon
 op_decrement
 id|num_devs
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|msnd_get_num_devs

@@ -1196,7 +1196,7 @@ mdefine_line|#define IDLE_ENOUGH(cpu,now) &bslash;&n;&t;&t;(idle_cpu(cpu) &amp;&
 DECL|macro|IRQ_ALLOWED
 mdefine_line|#define IRQ_ALLOWED(cpu, allowed_mask)&t;cpu_isset(cpu, allowed_mask)
 DECL|macro|CPU_TO_PACKAGEINDEX
-mdefine_line|#define CPU_TO_PACKAGEINDEX(i) &bslash;&n;&t;&t;((physical_balance &amp;&amp; i &gt; cpu_sibling_map[i]) ? cpu_sibling_map[i] : i)
+mdefine_line|#define CPU_TO_PACKAGEINDEX(i) (first_cpu(cpu_sibling_map[i]))
 DECL|macro|MAX_BALANCED_IRQ_INTERVAL
 mdefine_line|#define MAX_BALANCED_IRQ_INTERVAL&t;(5*HZ)
 DECL|macro|MIN_BALANCED_IRQ_INTERVAL
@@ -1622,6 +1622,9 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
+id|load
+suffix:semicolon
+r_int
 r_int
 id|useful_load_threshold
 op_assign
@@ -1875,14 +1878,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|physical_balance
-op_logical_and
 id|i
-OG
-id|cpu_sibling_map
-(braket
+op_ne
+id|CPU_TO_PACKAGEINDEX
+c_func
+(paren
 id|i
-)braket
+)paren
 )paren
 r_continue
 suffix:semicolon
@@ -1958,14 +1960,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|physical_balance
-op_logical_and
 id|i
-OG
-id|cpu_sibling_map
-(braket
+op_ne
+id|CPU_TO_PACKAGEINDEX
+c_func
+(paren
 id|i
-)braket
+)paren
 )paren
 r_continue
 suffix:semicolon
@@ -2235,12 +2236,8 @@ op_assign
 id|move_this_load
 suffix:semicolon
 multiline_comment|/* For physical_balance case, we accumlated both load&n;&t; * values in the one of the siblings cpu_irq[],&n;&t; * to use the same code for physical and logical processors&n;&t; * as much as possible. &n;&t; *&n;&t; * NOTE: the cpu_irq[] array holds the sum of the load for&n;&t; * sibling A and sibling B in the slot for the lowest numbered&n;&t; * sibling (A), _AND_ the load for sibling B in the slot for&n;&t; * the higher numbered sibling.&n;&t; *&n;&t; * We seek the least loaded sibling by making the comparison&n;&t; * (A+B)/2 vs B&n;&t; */
-r_if
-c_cond
-(paren
-id|physical_balance
-op_logical_and
-(paren
+id|load
+op_assign
 id|CPU_IRQ
 c_func
 (paren
@@ -2248,24 +2245,45 @@ id|min_loaded
 )paren
 op_rshift
 l_int|1
+suffix:semicolon
+id|for_each_cpu_mask
+c_func
+(paren
+id|j
+comma
+id|cpu_sibling_map
+(braket
+id|min_loaded
+)braket
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|load
 OG
 id|CPU_IRQ
 c_func
 (paren
-id|cpu_sibling_map
-(braket
-id|min_loaded
-)braket
+id|j
 )paren
 )paren
+(brace
+multiline_comment|/* This won&squot;t change cpu_sibling_map[min_loaded] */
+id|load
+op_assign
+id|CPU_IRQ
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
 id|min_loaded
 op_assign
-id|cpu_sibling_map
-(braket
-id|min_loaded
-)braket
+id|j
 suffix:semicolon
+)brace
+)brace
 id|cpus_and
 c_func
 (paren

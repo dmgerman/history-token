@@ -174,6 +174,8 @@ DECL|macro|TAB2
 mdefine_line|#define   TAB2&t;00004000
 DECL|macro|TAB3
 mdefine_line|#define   TAB3&t;00006000
+DECL|macro|XTABS
+mdefine_line|#define   XTABS&t;00006000&t;/* required by POSIX to == TAB3 */
 DECL|macro|CRDLY
 mdefine_line|#define CRDLY&t;00030000
 DECL|macro|CR0
@@ -202,8 +204,6 @@ DECL|macro|VT0
 mdefine_line|#define   VT0&t;00000000
 DECL|macro|VT1
 mdefine_line|#define   VT1&t;00200000
-DECL|macro|XTABS
-mdefine_line|#define XTABS&t;01000000 /* Hmm.. Linux/i386 considers this part of TABDLY.. */
 multiline_comment|/* c_cflag bit meaning */
 DECL|macro|CBAUD
 mdefine_line|#define CBAUD&t;0000377

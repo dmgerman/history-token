@@ -961,6 +961,16 @@ r_int
 id|nr_requests
 suffix:semicolon
 multiline_comment|/* Max # of requests */
+DECL|member|nr_congestion_on
+r_int
+r_int
+id|nr_congestion_on
+suffix:semicolon
+DECL|member|nr_congestion_off
+r_int
+r_int
+id|nr_congestion_off
+suffix:semicolon
 DECL|member|max_sectors
 r_int
 r_int

@@ -1,12 +1,15 @@
 multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; */
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
+macro_line|#include &lt;linux/reiserfs_acl.h&gt;
+macro_line|#include &lt;linux/reiserfs_xattr.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/quotaops.h&gt;
 multiline_comment|/*&n;** We pack the tails of files on file close, not at the time they are written.&n;** This implies an unnecessary copy of the tail and an unnecessary indirect item&n;** insertion/balancing, for files that are written in one write.&n;** It avoids unnecessary tail packings (balances) for files that are written in&n;** multiple writes and are small enough to have tails.&n;** &n;** file_release is called by the VFS layer when the file is closed.  If&n;** this is the last open file descriptor, and the file&n;** small enough to have a tail, and the tail is currently in an&n;** unformatted node, the tail is converted back into a direct item.&n;** &n;** We use reiserfs_truncate_file to pack the tail, since it already has&n;** all the conditions coded.  &n;*/
 DECL|function|reiserfs_file_release
 r_static
@@ -306,243 +309,6 @@ op_minus
 id|EIO
 suffix:colon
 l_int|0
-suffix:semicolon
-)brace
-DECL|function|reiserfs_setattr
-r_static
-r_int
-id|reiserfs_setattr
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-id|dentry
-comma
-r_struct
-id|iattr
-op_star
-id|attr
-)paren
-(brace
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|dentry-&gt;d_inode
-suffix:semicolon
-r_int
-id|error
-suffix:semicolon
-id|reiserfs_write_lock
-c_func
-(paren
-id|inode-&gt;i_sb
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|attr-&gt;ia_valid
-op_amp
-id|ATTR_SIZE
-)paren
-(brace
-multiline_comment|/* version 2 items will be caught by the s_maxbytes check&n;&t;** done for us in vmtruncate&n;&t;*/
-r_if
-c_cond
-(paren
-id|get_inode_item_key_version
-c_func
-(paren
-id|inode
-)paren
-op_eq
-id|KEY_FORMAT_3_5
-op_logical_and
-id|attr-&gt;ia_size
-OG
-id|MAX_NON_LFS
-)paren
-(brace
-id|error
-op_assign
-op_minus
-id|EFBIG
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-multiline_comment|/* fill in hole pointers in the expanding truncate case. */
-r_if
-c_cond
-(paren
-id|attr-&gt;ia_size
-OG
-id|inode-&gt;i_size
-)paren
-(brace
-id|error
-op_assign
-id|generic_cont_expand
-c_func
-(paren
-id|inode
-comma
-id|attr-&gt;ia_size
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|REISERFS_I
-c_func
-(paren
-id|inode
-)paren
-op_member_access_from_pointer
-id|i_prealloc_count
-OG
-l_int|0
-)paren
-(brace
-r_struct
-id|reiserfs_transaction_handle
-id|th
-suffix:semicolon
-multiline_comment|/* we&squot;re changing at most 2 bitmaps, inode + super */
-id|journal_begin
-c_func
-(paren
-op_amp
-id|th
-comma
-id|inode-&gt;i_sb
-comma
-l_int|4
-)paren
-suffix:semicolon
-id|reiserfs_discard_prealloc
-(paren
-op_amp
-id|th
-comma
-id|inode
-)paren
-suffix:semicolon
-id|journal_end
-c_func
-(paren
-op_amp
-id|th
-comma
-id|inode-&gt;i_sb
-comma
-l_int|4
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_goto
-id|out
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-(paren
-(paren
-(paren
-id|attr-&gt;ia_valid
-op_amp
-id|ATTR_UID
-)paren
-op_logical_and
-(paren
-id|attr-&gt;ia_uid
-op_amp
-op_complement
-l_int|0xffff
-)paren
-)paren
-op_logical_or
-(paren
-(paren
-id|attr-&gt;ia_valid
-op_amp
-id|ATTR_GID
-)paren
-op_logical_and
-(paren
-id|attr-&gt;ia_gid
-op_amp
-op_complement
-l_int|0xffff
-)paren
-)paren
-)paren
-op_logical_and
-(paren
-id|get_inode_sd_version
-(paren
-id|inode
-)paren
-op_eq
-id|STAT_DATA_V1
-)paren
-)paren
-(brace
-multiline_comment|/* stat data of format v3.5 has 16 bit uid and gid */
-id|error
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-id|error
-op_assign
-id|inode_change_ok
-c_func
-(paren
-id|inode
-comma
-id|attr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|error
-)paren
-id|inode_setattr
-c_func
-(paren
-id|inode
-comma
-id|attr
-)paren
-suffix:semicolon
-id|out
-suffix:colon
-id|reiserfs_write_unlock
-c_func
-(paren
-id|inode-&gt;i_sb
-)paren
-suffix:semicolon
-r_return
-id|error
 suffix:semicolon
 )brace
 multiline_comment|/* I really do not want to play with memory shortage right now, so&n;   to simplify the code, we are not going to write more than this much pages at&n;   a time. This still should considerably improve performance compared to 4k&n;   at a time case. This is 32 pages of 4k size. */
@@ -1319,6 +1085,8 @@ comma
 op_amp
 id|key
 comma
+id|inode
+comma
 (paren
 r_char
 op_star
@@ -1437,7 +1205,9 @@ id|ENOSPC
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-9008: search_by_key (%K) returned %d&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;green-9008: search_by_key (%K) returned %d&quot;
 comma
 op_amp
 id|key
@@ -1476,6 +1246,8 @@ id|key
 comma
 op_amp
 id|ins_ih
+comma
+id|inode
 comma
 (paren
 r_char
@@ -2077,6 +1849,8 @@ comma
 op_amp
 id|key
 comma
+id|inode
+comma
 (paren
 r_char
 op_star
@@ -2206,7 +1980,10 @@ id|ENOSPC
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;green-9009: search_by_key (%K) returned %d&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;green-9009: search_by_key (%K) &quot;
+l_string|&quot;returned %d&quot;
 comma
 op_amp
 id|key
@@ -2241,6 +2018,8 @@ comma
 op_amp
 id|ins_ih
 comma
+id|inode
+comma
 (paren
 r_char
 op_star
@@ -2272,16 +2051,6 @@ singleline_comment|// the caller is responsible for closing the transaction
 singleline_comment|// unless we return an error, they are also responsible for logging
 singleline_comment|// the inode.
 singleline_comment|//
-id|inode-&gt;i_blocks
-op_add_assign
-id|blocks_to_allocate
-op_lshift
-(paren
-id|inode-&gt;i_blkbits
-op_minus
-l_int|9
-)paren
-suffix:semicolon
 id|pathrelse
 c_func
 (paren
@@ -2526,6 +2295,8 @@ c_func
 (paren
 id|th
 comma
+id|inode
+comma
 id|le32_to_cpu
 c_func
 (paren
@@ -2534,6 +2305,8 @@ id|allocated_blocks
 id|i
 )braket
 )paren
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -3802,9 +3575,11 @@ l_int|1
 )paren
 (brace
 id|reiserfs_warning
-c_func
 (paren
-l_string|&quot;green-9001: reiserfs_prepare_file_region_for_write called with zero number of pages to process&bslash;n&quot;
+id|inode-&gt;i_sb
+comma
+l_string|&quot;green-9001: reiserfs_prepare_file_region_for_write &quot;
+l_string|&quot;called with zero number of pages to process&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5915,6 +5690,31 @@ dot
 id|setattr
 op_assign
 id|reiserfs_setattr
+comma
+dot
+id|setxattr
+op_assign
+id|reiserfs_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|reiserfs_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|reiserfs_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|reiserfs_removexattr
+comma
+dot
+id|permission
+op_assign
+id|reiserfs_permission
 comma
 )brace
 suffix:semicolon

@@ -22,6 +22,8 @@ multiline_comment|/*&n; * If CONFIG_SMP is set, pull in the _raw_* definitions&n
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;asm/spinlock.h&gt;
 macro_line|#else
+DECL|macro|_raw_spin_lock_flags
+mdefine_line|#define _raw_spin_lock_flags(lock, flags) _raw_spin_lock(lock)
 macro_line|#if !defined(CONFIG_PREEMPT) &amp;&amp; !defined(CONFIG_DEBUG_SPINLOCK)
 DECL|macro|atomic_dec_and_lock
 macro_line|# define atomic_dec_and_lock(atomic,lock) atomic_dec_and_test(atomic)
@@ -212,7 +214,7 @@ mdefine_line|#define write_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_write
 DECL|macro|read_unlock
 mdefine_line|#define read_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_read_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while(0)
 DECL|macro|spin_lock_irqsave
-mdefine_line|#define spin_lock_irqsave(lock, flags) &bslash;&n;do { &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;} while (0)
+mdefine_line|#define spin_lock_irqsave(lock, flags) &bslash;&n;do { &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock_flags(lock, flags); &bslash;&n;} while (0)
 DECL|macro|spin_lock_irq
 mdefine_line|#define spin_lock_irq(lock) &bslash;&n;do { &bslash;&n;&t;local_irq_disable(); &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;} while (0)
 DECL|macro|spin_lock_bh

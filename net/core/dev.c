@@ -2006,7 +2006,7 @@ op_minus
 id|ENFILE
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;dev_change_name - change name of a device&n; *&t;@dev: device&n; *&t;@name: name (or format string) must be at least IFNAMSIZ&n; *&n; *&t;Change name of a device, can pass format strings &quot;eth%d&quot;.&n; *&t;for wildcarding.&n; */
+multiline_comment|/**&n; *&t;dev_change_name - change name of a device&n; *&t;@dev: device&n; *&t;@newname: name (or format string) must be at least IFNAMSIZ&n; *&n; *&t;Change name of a device, can pass format strings &quot;eth%d&quot;.&n; *&t;for wildcarding.&n; */
 DECL|function|dev_change_name
 r_int
 id|dev_change_name

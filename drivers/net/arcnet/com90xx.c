@@ -546,7 +546,7 @@ c_func
 (paren
 id|D_INIT_REASONS
 comma
-l_string|&quot;(check_region)&bslash;n&quot;
+l_string|&quot;(request_region)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|BUGMSG2
@@ -876,7 +876,7 @@ c_func
 (paren
 id|D_INIT_REASONS
 comma
-l_string|&quot;(check_mem_region)&bslash;n&quot;
+l_string|&quot;(request_mem_region)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|BUGMSG2

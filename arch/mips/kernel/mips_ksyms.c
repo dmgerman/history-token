@@ -147,6 +147,15 @@ c_func
 id|strchr
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIPS64
+DECL|variable|strncmp
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|strncmp
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|strlen
 id|EXPORT_SYMBOL_NOVERS
 c_func

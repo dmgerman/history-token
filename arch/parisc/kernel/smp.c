@@ -938,6 +938,16 @@ id|lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+multiline_comment|/* Can deadlock when called with interrupts disabled */
+id|WARN_ON
+c_func
+(paren
+id|irqs_disabled
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|data.func
 op_assign
 id|func

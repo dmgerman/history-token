@@ -232,8 +232,7 @@ id|size
 op_assign
 l_int|0x00200000
 comma
-dot
-singleline_comment|//size = MTDPART_SIZ_FULL,
+singleline_comment|//.size = MTDPART_SIZ_FULL,
 )brace
 )brace
 suffix:semicolon

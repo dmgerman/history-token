@@ -1295,6 +1295,11 @@ DECL|function|reiserfs_warning
 r_void
 id|reiserfs_warning
 (paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
 r_const
 r_char
 op_star
@@ -1311,12 +1316,111 @@ c_func
 id|fmt
 )paren
 suffix:semicolon
-multiline_comment|/* console_print (error_buf); */
+r_if
+c_cond
+(paren
+id|sb
+)paren
 id|printk
 (paren
 id|KERN_WARNING
-l_string|&quot;%s&quot;
+l_string|&quot;ReiserFS: %s: warning: %s&bslash;n&quot;
 comma
+id|reiserfs_bdevname
+(paren
+id|sb
+)paren
+comma
+id|error_buf
+)paren
+suffix:semicolon
+r_else
+id|printk
+(paren
+id|KERN_WARNING
+l_string|&quot;ReiserFS: warning: %s&bslash;n&quot;
+comma
+id|error_buf
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* No newline.. reiserfs_info calls can be followed by printk&squot;s */
+DECL|function|reiserfs_info
+r_void
+id|reiserfs_info
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+(brace
+id|do_reiserfs_warning
+c_func
+(paren
+id|fmt
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sb
+)paren
+id|printk
+(paren
+id|KERN_NOTICE
+l_string|&quot;ReiserFS: %s: %s&quot;
+comma
+id|reiserfs_bdevname
+(paren
+id|sb
+)paren
+comma
+id|error_buf
+)paren
+suffix:semicolon
+r_else
+id|printk
+(paren
+id|KERN_NOTICE
+l_string|&quot;ReiserFS: %s&quot;
+comma
+id|error_buf
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* No newline.. reiserfs_printk calls can be followed by printk&squot;s */
+DECL|function|reiserfs_printk
+r_void
+id|reiserfs_printk
+(paren
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+(brace
+id|do_reiserfs_warning
+c_func
+(paren
+id|fmt
+)paren
+suffix:semicolon
+id|printk
+(paren
 id|error_buf
 )paren
 suffix:semicolon
@@ -1350,15 +1454,32 @@ c_func
 id|fmt
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|s
+)paren
 id|printk
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s&quot;
+l_string|&quot;ReiserFS: %s: %s&bslash;n&quot;
+comma
+id|reiserfs_bdevname
+(paren
+id|s
+)paren
 comma
 id|error_buf
 )paren
 suffix:semicolon
-macro_line|#else
+r_else
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;ReiserFS: %s&bslash;n&quot;
+comma
+id|error_buf
+)paren
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -1399,7 +1520,12 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_EMERG
-l_string|&quot;%s&quot;
+l_string|&quot;REISERFS: panic (device %s): %s&bslash;n&quot;
+comma
+id|reiserfs_bdevname
+(paren
+id|sb
+)paren
 comma
 id|error_buf
 )paren
@@ -1794,7 +1920,7 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-id|reiserfs_warning
+id|reiserfs_printk
 (paren
 l_string|&quot;INTERNAL NODE (%ld) contains %z&bslash;n&quot;
 comma
@@ -1812,7 +1938,7 @@ comma
 id|from
 )paren
 suffix:semicolon
-id|reiserfs_warning
+id|reiserfs_printk
 (paren
 l_string|&quot;PTR %d: %y &quot;
 comma
@@ -1854,7 +1980,7 @@ id|dc
 op_increment
 )paren
 (brace
-id|reiserfs_warning
+id|reiserfs_printk
 (paren
 l_string|&quot;KEY %d: %k PTR %d: %y &quot;
 comma
@@ -1981,7 +2107,7 @@ id|printk
 l_string|&quot;&bslash;n===================================================================&bslash;n&quot;
 )paren
 suffix:semicolon
-id|reiserfs_warning
+id|reiserfs_printk
 (paren
 l_string|&quot;LEAF NODE (%ld) contains %z&bslash;n&quot;
 comma
@@ -2001,7 +2127,7 @@ id|PRINT_LEAF_ITEMS
 )paren
 )paren
 (brace
-id|reiserfs_warning
+id|reiserfs_printk
 (paren
 l_string|&quot;FIRST ITEM_KEY: %k, LAST ITEM KEY: %k&bslash;n&quot;
 comma
@@ -2099,7 +2225,7 @@ id|printk
 l_string|&quot;-------------------------------------------------------------------------------&bslash;n&quot;
 )paren
 suffix:semicolon
-id|reiserfs_warning
+id|reiserfs_printk
 (paren
 l_string|&quot;|%2d| %h |&bslash;n&quot;
 comma

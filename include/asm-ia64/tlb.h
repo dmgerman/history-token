@@ -545,6 +545,8 @@ op_plus
 id|PAGE_SIZE
 suffix:semicolon
 )brace
+DECL|macro|tlb_migrate_prepare
+mdefine_line|#define tlb_migrate_prepare(mm) flush_tlb_mm(mm)
 DECL|macro|tlb_start_vma
 mdefine_line|#define tlb_start_vma(tlb, vma)&t;&t;&t;do { } while (0)
 DECL|macro|tlb_end_vma

@@ -441,7 +441,7 @@ macro_line|#ifdef __i386__
 DECL|macro|GET_TIME
 mdefine_line|#define GET_TIME(x)&t;do { if (cpu_has_tsc) rdtscl(x); else x = get_time_pit(); } while (0)
 DECL|macro|DELTA
-mdefine_line|#define DELTA(x,y)&t;(cpu_has_tsc?((y)-(x)):((x)-(y)+((x)&lt;(y)?1193182L/HZ:0)))
+mdefine_line|#define DELTA(x,y)&t;(cpu_has_tsc ? ((y) - (x)) : ((x) - (y) + ((x) &lt; (y) ? CLOCK_TICK_RATE / HZ : 0)))
 DECL|macro|TIME_NAME
 mdefine_line|#define TIME_NAME&t;(cpu_has_tsc?&quot;TSC&quot;:&quot;PIT&quot;)
 DECL|function|get_time_pit

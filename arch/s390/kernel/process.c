@@ -1388,11 +1388,6 @@ op_assign
 id|current-&gt;thread.per_info
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * These bracket the sleeping functions..&n; */
-DECL|macro|first_sched
-mdefine_line|#define first_sched&t;((unsigned long) scheduling_functions_start_here)
-DECL|macro|last_sched
-mdefine_line|#define last_sched&t;((unsigned long) scheduling_functions_end_here)
 DECL|function|get_wchan
 r_int
 r_int
@@ -1552,13 +1547,12 @@ macro_line|#endif
 r_if
 c_cond
 (paren
+op_logical_neg
+id|in_sched_functions
+c_func
+(paren
 id|r14
-OL
-id|first_sched
-op_logical_or
-id|r14
-op_ge
-id|last_sched
+)paren
 )paren
 r_return
 id|r14
@@ -1591,8 +1585,4 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|last_sched
-macro_line|#undef last_sched
-DECL|macro|first_sched
-macro_line|#undef first_sched
 eof

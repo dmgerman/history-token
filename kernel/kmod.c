@@ -793,7 +793,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|usermodehelper_init
-id|__initcall
+id|core_initcall
 c_func
 (paren
 id|usermodehelper_init

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_i.h&gt;
+macro_line|#include &lt;linux/quotaops.h&gt;
 DECL|macro|PREALLOCATION_SIZE
 mdefine_line|#define PREALLOCATION_SIZE 9
 multiline_comment|/* different reiserfs block allocator options */
@@ -41,7 +42,7 @@ mdefine_line|#define  displacing_large_files(s)&t;&t;test_bit(_ALLOC_displacing_
 DECL|macro|displacing_new_packing_localities
 mdefine_line|#define  displacing_new_packing_localities(s)&t;test_bit(_ALLOC_displacing_new_packing_localities, &amp;SB_ALLOC_OPTS(s))
 DECL|macro|SET_OPTION
-mdefine_line|#define SET_OPTION(optname) &bslash;&n;   do { &bslash;&n;        reiserfs_warning(&quot;reiserfs: option &bslash;&quot;%s&bslash;&quot; is set&bslash;n&quot;, #optname); &bslash;&n;        set_bit(_ALLOC_ ## optname , &amp;SB_ALLOC_OPTS(s)); &bslash;&n;    } while(0)
+mdefine_line|#define SET_OPTION(optname) &bslash;&n;   do { &bslash;&n;        reiserfs_warning(s, &quot;reiserfs: option &bslash;&quot;%s&bslash;&quot; is set&quot;, #optname); &bslash;&n;        set_bit(_ALLOC_ ## optname , &amp;SB_ALLOC_OPTS(s)); &bslash;&n;    } while(0)
 DECL|macro|TEST_OPTION
 mdefine_line|#define TEST_OPTION(optname, s) &bslash;&n;    test_bit(_ALLOC_ ## optname , &amp;SB_ALLOC_OPTS(s))
 DECL|function|get_bit_address
@@ -137,7 +138,9 @@ id|s
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-4010: is_reusable: block number is out of range %lu (%u)&bslash;n&quot;
+id|s
+comma
+l_string|&quot;vs-4010: is_reusable: block number is out of range %lu (%u)&quot;
 comma
 id|block
 comma
@@ -187,8 +190,10 @@ id|bh-&gt;b_blocknr
 (brace
 id|reiserfs_warning
 (paren
+id|s
+comma
 l_string|&quot;vs: 4020: is_reusable: &quot;
-l_string|&quot;bitmap block %lu(%u) can&squot;t be freed or reused&bslash;n&quot;
+l_string|&quot;bitmap block %lu(%u) can&squot;t be freed or reused&quot;
 comma
 id|block
 comma
@@ -228,8 +233,10 @@ id|s
 (brace
 id|reiserfs_warning
 (paren
+id|s
+comma
 l_string|&quot;vs-4030: is_reusable: there is no so many bitmap blocks: &quot;
-l_string|&quot;block=%lu, bitmap_nr=%d&bslash;n&quot;
+l_string|&quot;block=%lu, bitmap_nr=%d&quot;
 comma
 id|block
 comma
@@ -293,8 +300,10 @@ l_int|0
 (brace
 id|reiserfs_warning
 (paren
+id|s
+comma
 l_string|&quot;vs-4040: is_reusable: corresponding bit of block %lu does not &quot;
-l_string|&quot;match required value (i==%d, j==%d) test_bit==%d&bslash;n&quot;
+l_string|&quot;match required value (i==%d, j==%d) test_bit==%d&quot;
 comma
 id|block
 comma
@@ -339,8 +348,10 @@ id|s
 (brace
 id|reiserfs_warning
 (paren
+id|s
+comma
 l_string|&quot;vs-4050: is_reusable: this is root block (%u), &quot;
-l_string|&quot;it must be busy&bslash;n&quot;
+l_string|&quot;it must be busy&quot;
 comma
 id|SB_ROOT_BLOCK
 (paren
@@ -533,7 +544,7 @@ id|SB_BMAP_NR
 id|s
 )paren
 comma
-l_string|&quot;Bitmap %d is out of range (0..%d)&bslash;n&quot;
+l_string|&quot;Bitmap %d is out of range (0..%d)&quot;
 comma
 id|bmap_n
 comma
@@ -562,10 +573,11 @@ op_logical_neg
 id|bi
 )paren
 (brace
-id|printk
-c_func
+id|reiserfs_warning
 (paren
-l_string|&quot;Hey, bitmap info pointer is zero for bitmap %d!&bslash;n&quot;
+id|s
+comma
+l_string|&quot;NULL bitmap info pointer for bitmap %d&quot;
 comma
 id|bmap_n
 )paren
@@ -1342,8 +1354,16 @@ id|reiserfs_transaction_handle
 op_star
 id|th
 comma
+r_struct
+id|inode
+op_star
+id|inode
+comma
 id|b_blocknr_t
 id|block
+comma
+r_int
+id|for_unformatted
 )paren
 (brace
 r_struct
@@ -1429,8 +1449,10 @@ id|rs
 (brace
 id|reiserfs_warning
 (paren
+id|s
+comma
 l_string|&quot;vs-4075: reiserfs_free_block: &quot;
-l_string|&quot;block %lu is out of range on %s&bslash;n&quot;
+l_string|&quot;block %lu is out of range on %s&quot;
 comma
 id|block
 comma
@@ -1478,8 +1500,10 @@ id|bh-&gt;b_data
 (brace
 id|reiserfs_warning
 (paren
+id|s
+comma
 l_string|&quot;vs-4080: reiserfs_free_block: &quot;
-l_string|&quot;free_block (%s:%lu)[dev:blocknr]: bit already cleared&bslash;n&quot;
+l_string|&quot;free_block (%s:%lu)[dev:blocknr]: bit already cleared&quot;
 comma
 id|reiserfs_bdevname
 (paren
@@ -1569,9 +1593,18 @@ comma
 id|sbh
 )paren
 suffix:semicolon
-id|s-&gt;s_dirt
-op_assign
+r_if
+c_cond
+(paren
+id|for_unformatted
+)paren
+id|DQUOT_FREE_BLOCK_NODIRTY
+c_func
+(paren
+id|inode
+comma
 l_int|1
+)paren
 suffix:semicolon
 )brace
 DECL|function|reiserfs_free_block
@@ -1583,8 +1616,16 @@ id|reiserfs_transaction_handle
 op_star
 id|th
 comma
+r_struct
+id|inode
+op_star
+id|inode
+comma
 id|b_blocknr_t
 id|block
+comma
+r_int
+id|for_unformatted
 )paren
 (brace
 r_struct
@@ -1636,7 +1677,11 @@ c_func
 (paren
 id|th
 comma
+id|inode
+comma
 id|block
+comma
+id|for_unformatted
 )paren
 suffix:semicolon
 )brace
@@ -1649,6 +1694,11 @@ r_struct
 id|reiserfs_transaction_handle
 op_star
 id|th
+comma
+r_struct
+id|inode
+op_star
+id|inode
 comma
 id|b_blocknr_t
 id|block
@@ -1685,7 +1735,11 @@ c_func
 (paren
 id|th
 comma
+id|inode
+comma
 id|block
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1711,6 +1765,19 @@ id|save
 op_assign
 id|ei-&gt;i_prealloc_block
 suffix:semicolon
+r_int
+id|dirty
+op_assign
+l_int|0
+suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+op_amp
+id|ei-&gt;vfs_inode
+suffix:semicolon
 macro_line|#ifdef CONFIG_REISERFS_CHECK
 r_if
 c_cond
@@ -1720,9 +1787,10 @@ OL
 l_int|0
 )paren
 id|reiserfs_warning
-c_func
 (paren
-l_string|&quot;zam-4001:%s: inode has negative prealloc blocks count.&bslash;n&quot;
+id|th-&gt;t_super
+comma
+l_string|&quot;zam-4001:%s: inode has negative prealloc blocks count.&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1741,6 +1809,8 @@ c_func
 (paren
 id|th
 comma
+id|inode
+comma
 id|ei-&gt;i_prealloc_block
 )paren
 suffix:semicolon
@@ -1750,7 +1820,24 @@ suffix:semicolon
 id|ei-&gt;i_prealloc_count
 op_decrement
 suffix:semicolon
+id|dirty
+op_assign
+l_int|1
+suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|dirty
+)paren
+id|reiserfs_update_sd
+c_func
+(paren
+id|th
+comma
+id|inode
+)paren
+suffix:semicolon
 id|ei-&gt;i_prealloc_block
 op_assign
 id|save
@@ -1797,7 +1884,6 @@ c_cond
 (paren
 id|ei-&gt;i_prealloc_count
 )paren
-(brace
 id|__discard_prealloc
 c_func
 (paren
@@ -1806,7 +1892,6 @@ comma
 id|ei
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|reiserfs_discard_all_prealloc
 r_void
@@ -1870,9 +1955,10 @@ id|ei-&gt;i_prealloc_count
 )paren
 (brace
 id|reiserfs_warning
-c_func
 (paren
-l_string|&quot;zam-4001:%s: inode is in prealloc list but has no preallocated blocks.&bslash;n&quot;
+id|th-&gt;t_super
+comma
+l_string|&quot;zam-4001:%s: inode is in prealloc list but has no preallocated blocks.&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2364,9 +2450,10 @@ r_continue
 suffix:semicolon
 )brace
 id|reiserfs_warning
-c_func
 (paren
-l_string|&quot;zam-4001: %s : unknown option - %s&bslash;n&quot;
+id|s
+comma
+l_string|&quot;zam-4001: %s : unknown option - %s&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2560,7 +2647,7 @@ c_func
 op_logical_neg
 id|bh
 comma
-l_string|&quot;green-4002: Illegal path specified to get_left_neighbor&bslash;n&quot;
+l_string|&quot;green-4002: Illegal path specified to get_left_neighbor&quot;
 )paren
 suffix:semicolon
 id|ih
@@ -3808,6 +3895,92 @@ c_func
 id|hint
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hint-&gt;formatted_node
+)paren
+(brace
+r_int
+id|quota_ret
+suffix:semicolon
+macro_line|#ifdef REISERQUOTA_DEBUG
+id|reiserfs_debug
+(paren
+id|s
+comma
+l_string|&quot;reiserquota: allocating %d blocks id=%u&quot;
+comma
+id|amount_needed
+comma
+id|hint-&gt;inode-&gt;i_uid
+)paren
+suffix:semicolon
+macro_line|#endif
+id|quota_ret
+op_assign
+id|DQUOT_ALLOC_BLOCK_NODIRTY
+c_func
+(paren
+id|hint-&gt;inode
+comma
+id|amount_needed
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|quota_ret
+)paren
+multiline_comment|/* Quota exceeded? */
+r_return
+id|QUOTA_EXCEEDED
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hint-&gt;preallocate
+op_logical_and
+id|hint-&gt;prealloc_size
+)paren
+(brace
+macro_line|#ifdef REISERQUOTA_DEBUG
+id|reiserfs_debug
+(paren
+id|s
+comma
+l_string|&quot;reiserquota: allocating (prealloc) %d blocks id=%u&quot;
+comma
+id|hint-&gt;prealloc_size
+comma
+id|hint-&gt;inode-&gt;i_uid
+)paren
+suffix:semicolon
+macro_line|#endif
+id|quota_ret
+op_assign
+id|DQUOT_PREALLOC_BLOCK_NODIRTY
+c_func
+(paren
+id|hint-&gt;inode
+comma
+id|hint-&gt;prealloc_size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|quota_ret
+)paren
+id|hint-&gt;preallocate
+op_assign
+id|hint-&gt;prealloc_size
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
 r_while
 c_loop
 (paren
@@ -3846,6 +4019,44 @@ id|second_pass
 )paren
 (brace
 multiline_comment|/* it was a second pass; we must free all blocks */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hint-&gt;formatted_node
+)paren
+(brace
+macro_line|#ifdef REISERQUOTA_DEBUG
+id|reiserfs_debug
+(paren
+id|s
+comma
+l_string|&quot;reiserquota: freeing (nospace) %d blocks id=%u&quot;
+comma
+id|amount_needed
+op_plus
+id|hint-&gt;prealloc_size
+op_minus
+id|nr_allocated
+comma
+id|hint-&gt;inode-&gt;i_uid
+)paren
+suffix:semicolon
+macro_line|#endif
+id|DQUOT_FREE_BLOCK_NODIRTY
+c_func
+(paren
+id|hint-&gt;inode
+comma
+id|amount_needed
+op_plus
+id|hint-&gt;prealloc_size
+op_minus
+id|nr_allocated
+)paren
+suffix:semicolon
+multiline_comment|/* Free not allocated blocks */
+)brace
 r_while
 c_loop
 (paren
@@ -3857,10 +4068,15 @@ c_func
 (paren
 id|hint-&gt;th
 comma
+id|hint-&gt;inode
+comma
 id|new_blocknrs
 (braket
 id|nr_allocated
 )braket
+comma
+op_logical_neg
+id|hint-&gt;formatted_node
 )paren
 suffix:semicolon
 r_return
@@ -3885,6 +4101,74 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hint-&gt;formatted_node
+op_logical_and
+id|amount_needed
+op_plus
+id|hint-&gt;prealloc_size
+OG
+id|nr_allocated
+op_plus
+id|REISERFS_I
+c_func
+(paren
+id|hint-&gt;inode
+)paren
+op_member_access_from_pointer
+id|i_prealloc_count
+)paren
+(brace
+multiline_comment|/* Some of preallocation blocks were not allocated */
+macro_line|#ifdef REISERQUOTA_DEBUG
+id|reiserfs_debug
+(paren
+id|s
+comma
+l_string|&quot;reiserquota: freeing (failed prealloc) %d blocks id=%u&quot;
+comma
+id|amount_needed
+op_plus
+id|hint-&gt;prealloc_size
+op_minus
+id|nr_allocated
+op_minus
+id|INODE_INFO
+c_func
+(paren
+id|hint-&gt;inode
+)paren
+op_member_access_from_pointer
+id|i_prealloc_count
+comma
+id|hint-&gt;inode-&gt;i_uid
+)paren
+suffix:semicolon
+macro_line|#endif
+id|DQUOT_FREE_BLOCK_NODIRTY
+c_func
+(paren
+id|hint-&gt;inode
+comma
+id|amount_needed
+op_plus
+id|hint-&gt;prealloc_size
+op_minus
+id|nr_allocated
+op_minus
+id|REISERFS_I
+c_func
+(paren
+id|hint-&gt;inode
+)paren
+op_member_access_from_pointer
+id|i_prealloc_count
+)paren
+suffix:semicolon
 )brace
 r_return
 id|CARRY_ON
@@ -4139,11 +4423,15 @@ c_func
 (paren
 id|hint-&gt;th
 comma
+id|hint-&gt;inode
+comma
 op_star
 (paren
 op_decrement
 id|new_blocknrs
 )paren
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace

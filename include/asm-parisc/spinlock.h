@@ -13,6 +13,8 @@ DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(x) ((x)-&gt;lock == 0)
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(x)&t;do { barrier(); } while(((volatile spinlock_t *)(x))-&gt;lock == 0)
+DECL|macro|_raw_spin_lock_flags
+mdefine_line|#define _raw_spin_lock_flags(lock, flags) _raw_spin_lock(lock)
 macro_line|#if 1
 DECL|macro|_raw_spin_lock
 mdefine_line|#define _raw_spin_lock(x) do { &bslash;&n;&t;while (__ldcw (&amp;(x)-&gt;lock) == 0) &bslash;&n;&t;&t;while (((x)-&gt;lock) == 0) ; } while (0)
