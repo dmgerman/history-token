@@ -663,6 +663,12 @@ id|pci_dev
 op_star
 id|pci_dev
 suffix:semicolon
+multiline_comment|/* &n;     * Support for driverfs filesystem&n;     */
+DECL|member|host_driverfs_dev
+r_struct
+id|device
+id|host_driverfs_dev
+suffix:semicolon
 multiline_comment|/*&n;     * We should ensure that this is aligned, both for better performance&n;     * and also because some compilers (m68k) don&squot;t automatically force&n;     * alignment to a long boundary.&n;     */
 DECL|member|hostdata
 r_int
@@ -912,6 +918,11 @@ id|SHpnt-&gt;pci_dev
 op_assign
 id|pdev
 suffix:semicolon
+id|SHpnt-&gt;host_driverfs_dev.parent
+op_assign
+op_amp
+id|pdev-&gt;dev
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Prototypes for functions/data in scsi_scan.c&n; */
 r_extern
@@ -1095,6 +1106,11 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Used by new queueing code. &n;                                           Selects command for blkdevs */
+DECL|member|scsi_driverfs_driver
+r_struct
+id|device_driver
+id|scsi_driverfs_driver
+suffix:semicolon
 )brace
 suffix:semicolon
 r_void

@@ -1454,6 +1454,7 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 DECL|struct|cdrom_write_settings
 r_struct
 id|cdrom_write_settings
@@ -1514,6 +1515,12 @@ id|devfs_handle_t
 id|de
 suffix:semicolon
 multiline_comment|/* real driver should create this  */
+DECL|member|cdrom_driverfs_dev
+r_struct
+id|device
+id|cdrom_driverfs_dev
+suffix:semicolon
+multiline_comment|/* driverfs implementation */
 DECL|member|number
 r_int
 id|number
