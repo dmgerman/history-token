@@ -188,7 +188,7 @@ op_assign
 r_new
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * list_add_rcu - add a new entry to rcu-protected list&n; * @new: new entry to be added&n; * @head: list head to add it after&n; *&n; * Insert a new entry after the specified head.&n; * This is good for implementing stacks.&n; */
+multiline_comment|/**&n; * list_add_rcu - add a new entry to rcu-protected list&n; * @new: new entry to be added&n; * @head: list head to add it after&n; *&n; * Insert a new entry after the specified head.&n; * This is good for implementing stacks.&n; *&n; * The caller must take whatever precautions are necessary&n; * (such as holding appropriate locks) to avoid racing&n; * with another list-mutation primitive, such as list_add_rcu()&n; * or list_del_rcu(), running on this same list.&n; * However, it is perfectly legal to run concurrently with&n; * the _rcu list-traversal primitives, such as&n; * list_for_each_entry_rcu().&n; */
 DECL|function|list_add_rcu
 r_static
 id|__inline__
@@ -218,7 +218,7 @@ id|head-&gt;next
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * list_add_tail_rcu - add a new entry to rcu-protected list&n; * @new: new entry to be added&n; * @head: list head to add it before&n; *&n; * Insert a new entry before the specified head.&n; * This is useful for implementing queues.&n; */
+multiline_comment|/**&n; * list_add_tail_rcu - add a new entry to rcu-protected list&n; * @new: new entry to be added&n; * @head: list head to add it before&n; *&n; * Insert a new entry before the specified head.&n; * This is useful for implementing queues.&n; *&n; * The caller must take whatever precautions are necessary&n; * (such as holding appropriate locks) to avoid racing&n; * with another list-mutation primitive, such as list_add_tail_rcu()&n; * or list_del_rcu(), running on this same list.&n; * However, it is perfectly legal to run concurrently with&n; * the _rcu list-traversal primitives, such as&n; * list_for_each_entry_rcu().&n; */
 DECL|function|list_add_tail_rcu
 r_static
 id|__inline__
@@ -307,7 +307,7 @@ op_assign
 id|LIST_POISON2
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * list_del_rcu - deletes entry from list without re-initialization&n; * @entry: the element to delete from the list.&n; *&n; * Note: list_empty on entry does not return true after this, &n; * the entry is in an undefined state. It is useful for RCU based&n; * lockfree traversal.&n; *&n; * In particular, it means that we can not poison the forward &n; * pointers that may still be used for walking the list.&n; */
+multiline_comment|/**&n; * list_del_rcu - deletes entry from list without re-initialization&n; * @entry: the element to delete from the list.&n; *&n; * Note: list_empty on entry does not return true after this, &n; * the entry is in an undefined state. It is useful for RCU based&n; * lockfree traversal.&n; *&n; * In particular, it means that we can not poison the forward &n; * pointers that may still be used for walking the list.&n; *&n; * The caller must take whatever precautions are necessary&n; * (such as holding appropriate locks) to avoid racing&n; * with another list-mutation primitive, such as list_del_rcu()&n; * or list_add_rcu(), running on this same list.&n; * However, it is perfectly legal to run concurrently with&n; * the _rcu list-traversal primitives, such as&n; * list_for_each_entry_rcu().&n; *&n; * Note that the caller is not permitted to immediately free&n; * the newly deleted entry.  Instead, either synchronize_kernel()&n; * or call_rcu() must be used to defer freeing until an RCU&n; * grace period has elapsed.&n; */
 DECL|function|list_del_rcu
 r_static
 r_inline
@@ -662,18 +662,18 @@ mdefine_line|#define list_for_each_entry_continue(pos, head, member) &t;&t;&bsla
 multiline_comment|/**&n; * list_for_each_entry_safe - iterate over list of given type safe against removal of list entry&n; * @pos:&t;the type * to use as a loop counter.&n; * @n:&t;&t;another type * to use as temporary storage&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the list_struct within the struct.&n; */
 DECL|macro|list_for_each_entry_safe
 mdefine_line|#define list_for_each_entry_safe(pos, n, head, member)&t;&t;&t;&bslash;&n;&t;for (pos = list_entry((head)-&gt;next, typeof(*pos), member),&t;&bslash;&n;&t;&t;n = list_entry(pos-&gt;member.next, typeof(*pos), member);&t;&bslash;&n;&t;     &amp;pos-&gt;member != (head); &t;&t;&t;&t;&t;&bslash;&n;&t;     pos = n, n = list_entry(n-&gt;member.next, typeof(*n), member))
-multiline_comment|/**&n; * list_for_each_rcu&t;-&t;iterate over an rcu-protected list&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
+multiline_comment|/**&n; * list_for_each_rcu&t;-&t;iterate over an rcu-protected list&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; *&n; * This list-traversal primitive may safely run concurrently with&n; * the _rcu list-mutation primitives such as list_add_rcu()&n; * as long as the traversal is guarded by rcu_read_lock().&n; */
 DECL|macro|list_for_each_rcu
 mdefine_line|#define list_for_each_rcu(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next, prefetch(pos-&gt;next); pos != (head); &bslash;&n;        &t;pos = pos-&gt;next, ({ smp_read_barrier_depends(); 0;}), prefetch(pos-&gt;next))
 DECL|macro|__list_for_each_rcu
 mdefine_line|#define __list_for_each_rcu(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next; pos != (head); &bslash;&n;        &t;pos = pos-&gt;next, ({ smp_read_barrier_depends(); 0;}))
-multiline_comment|/**&n; * list_for_each_safe_rcu&t;-&t;iterate over an rcu-protected list safe&n; *&t;&t;&t;&t;&t;against removal of list entry&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @n:&t;&t;another &amp;struct list_head to use as temporary storage&n; * @head:&t;the head for your list.&n; */
+multiline_comment|/**&n; * list_for_each_safe_rcu&t;-&t;iterate over an rcu-protected list safe&n; *&t;&t;&t;&t;&t;against removal of list entry&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @n:&t;&t;another &amp;struct list_head to use as temporary storage&n; * @head:&t;the head for your list.&n; *&n; * This list-traversal primitive may safely run concurrently with&n; * the _rcu list-mutation primitives such as list_add_rcu()&n; * as long as the traversal is guarded by rcu_read_lock().&n; */
 DECL|macro|list_for_each_safe_rcu
 mdefine_line|#define list_for_each_safe_rcu(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); &bslash;&n;&t;&t;pos = n, ({ smp_read_barrier_depends(); 0;}), n = pos-&gt;next)
-multiline_comment|/**&n; * list_for_each_entry_rcu&t;-&t;iterate over rcu list of given type&n; * @pos:&t;the type * to use as a loop counter.&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the list_struct within the struct.&n; */
+multiline_comment|/**&n; * list_for_each_entry_rcu&t;-&t;iterate over rcu list of given type&n; * @pos:&t;the type * to use as a loop counter.&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the list_struct within the struct.&n; *&n; * This list-traversal primitive may safely run concurrently with&n; * the _rcu list-mutation primitives such as list_add_rcu()&n; * as long as the traversal is guarded by rcu_read_lock().&n; */
 DECL|macro|list_for_each_entry_rcu
 mdefine_line|#define list_for_each_entry_rcu(pos, head, member)&t;&t;&t;&bslash;&n;&t;for (pos = list_entry((head)-&gt;next, typeof(*pos), member),&t;&bslash;&n;&t;&t;     prefetch(pos-&gt;member.next);&t;&t;&t;&bslash;&n;&t;     &amp;pos-&gt;member != (head); &t;&t;&t;&t;&t;&bslash;&n;&t;     pos = list_entry(pos-&gt;member.next, typeof(*pos), member),&t;&bslash;&n;&t;&t;     ({ smp_read_barrier_depends(); 0;}),&t;&t;&bslash;&n;&t;&t;     prefetch(pos-&gt;member.next))
-multiline_comment|/**&n; * list_for_each_continue_rcu&t;-&t;iterate over an rcu-protected list &n; *&t;&t;&t;continuing after existing point.&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
+multiline_comment|/**&n; * list_for_each_continue_rcu&t;-&t;iterate over an rcu-protected list &n; *&t;&t;&t;continuing after existing point.&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; *&n; * This list-traversal primitive may safely run concurrently with&n; * the _rcu list-mutation primitives such as list_add_rcu()&n; * as long as the traversal is guarded by rcu_read_lock().&n; */
 DECL|macro|list_for_each_continue_rcu
 mdefine_line|#define list_for_each_continue_rcu(pos, head) &bslash;&n;&t;for ((pos) = (pos)-&gt;next, prefetch((pos)-&gt;next); (pos) != (head); &bslash;&n;        &t;(pos) = (pos)-&gt;next, ({ smp_read_barrier_depends(); 0;}), prefetch((pos)-&gt;next))
 multiline_comment|/* &n; * Double linked lists with a single pointer list head. &n; * Mostly useful for hash tables where the two pointer list head is &n; * too wasteful.&n; * You lose the ability to access the tail in O(1).&n; */
@@ -823,7 +823,7 @@ op_assign
 id|LIST_POISON2
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * hlist_del_rcu - deletes entry from hash list without re-initialization&n; * @n: the element to delete from the hash list.&n; *&n; * Note: list_unhashed() on entry does not return true after this, &n; * the entry is in an undefined state. It is useful for RCU based&n; * lockfree traversal.&n; *&n; * In particular, it means that we can not poison the forward&n; * pointers that may still be used for walking the hash list.&n; */
+multiline_comment|/**&n; * hlist_del_rcu - deletes entry from hash list without re-initialization&n; * @n: the element to delete from the hash list.&n; *&n; * Note: list_unhashed() on entry does not return true after this, &n; * the entry is in an undefined state. It is useful for RCU based&n; * lockfree traversal.&n; *&n; * In particular, it means that we can not poison the forward&n; * pointers that may still be used for walking the hash list.&n; *&n; * The caller must take whatever precautions are necessary&n; * (such as holding appropriate locks) to avoid racing&n; * with another list-mutation primitive, such as hlist_add_head_rcu()&n; * or hlist_del_rcu(), running on this same list.&n; * However, it is perfectly legal to run concurrently with&n; * the _rcu list-traversal primitives, such as&n; * hlist_for_each_entry().&n; */
 DECL|function|hlist_del_rcu
 r_static
 r_inline
@@ -932,6 +932,7 @@ op_amp
 id|h-&gt;first
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * hlist_add_head_rcu - adds the specified element to the specified hlist,&n; * while permitting racing traversals.&n; * @n: the element to add to the hash list.&n; * @h: the list to add to.&n; *&n; * The caller must take whatever precautions are necessary&n; * (such as holding appropriate locks) to avoid racing&n; * with another list-mutation primitive, such as hlist_add_head_rcu()&n; * or hlist_del_rcu(), running on this same list.&n; * However, it is perfectly legal to run concurrently with&n; * the _rcu list-traversal primitives, such as&n; * hlist_for_each_entry(), but only if smp_read_barrier_depends()&n; * is used to prevent memory-consistency problems on Alpha CPUs.&n; * Regardless of the type of CPU, the list-traversal primitive&n; * must be guarded by rcu_read_lock().&n; *&n; * OK, so why don&squot;t we have an hlist_for_each_entry_rcu()???&n; */
 DECL|function|hlist_add_head_rcu
 r_static
 id|__inline__
