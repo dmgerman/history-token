@@ -903,6 +903,11 @@ id|pos
 op_assign
 id|buffer
 suffix:semicolon
+r_const
+r_char
+op_star
+id|string
+suffix:semicolon
 multiline_comment|/* if someone is sending us data, just throw it away */
 r_if
 c_cond
@@ -939,13 +944,9 @@ c_cond
 (paren
 id|us-&gt;pusb_dev-&gt;manufacturer
 )paren
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;       Vendor: %s&bslash;n&quot;
-comma
+id|string
+op_assign
 id|us-&gt;pusb_dev-&gt;manufacturer
-)paren
 suffix:semicolon
 r_else
 r_if
@@ -953,19 +954,21 @@ c_cond
 (paren
 id|us-&gt;unusual_dev-&gt;vendorName
 )paren
+id|string
+op_assign
+id|us-&gt;unusual_dev-&gt;vendorName
+suffix:semicolon
+r_else
+id|string
+op_assign
+l_string|&quot;Unknown&quot;
+suffix:semicolon
 id|SPRINTF
 c_func
 (paren
 l_string|&quot;       Vendor: %s&bslash;n&quot;
 comma
-id|us-&gt;unusual_dev-&gt;vendorName
-)paren
-suffix:semicolon
-r_else
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;       Vendor: Unknown&bslash;n&quot;
+id|string
 )paren
 suffix:semicolon
 r_if
@@ -973,13 +976,9 @@ c_cond
 (paren
 id|us-&gt;pusb_dev-&gt;product
 )paren
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;      Product: %s&bslash;n&quot;
-comma
+id|string
+op_assign
 id|us-&gt;pusb_dev-&gt;product
-)paren
 suffix:semicolon
 r_else
 r_if
@@ -987,19 +986,21 @@ c_cond
 (paren
 id|us-&gt;unusual_dev-&gt;productName
 )paren
+id|string
+op_assign
+id|us-&gt;unusual_dev-&gt;productName
+suffix:semicolon
+r_else
+id|string
+op_assign
+l_string|&quot;Unknown&quot;
+suffix:semicolon
 id|SPRINTF
 c_func
 (paren
 l_string|&quot;      Product: %s&bslash;n&quot;
 comma
-id|us-&gt;unusual_dev-&gt;productName
-)paren
-suffix:semicolon
-r_else
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;      Product: Unknown&bslash;n&quot;
+id|string
 )paren
 suffix:semicolon
 r_if
@@ -1007,19 +1008,21 @@ c_cond
 (paren
 id|us-&gt;pusb_dev-&gt;serial
 )paren
+id|string
+op_assign
+id|us-&gt;pusb_dev-&gt;serial
+suffix:semicolon
+r_else
+id|string
+op_assign
+l_string|&quot;None&quot;
+suffix:semicolon
 id|SPRINTF
 c_func
 (paren
 l_string|&quot;Serial Number: %s&bslash;n&quot;
 comma
-id|us-&gt;pusb_dev-&gt;serial
-)paren
-suffix:semicolon
-r_else
-id|SPRINTF
-c_func
-(paren
-l_string|&quot;Serial Number: None&bslash;n&quot;
+id|string
 )paren
 suffix:semicolon
 multiline_comment|/* show the protocol and transport */
