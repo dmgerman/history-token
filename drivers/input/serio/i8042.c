@@ -1,14 +1,14 @@
 multiline_comment|/*&n; *  i8042 keyboard and mouse controller driver for Linux&n; *&n; *  Copyright (c) 1999-2002 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
