@@ -3021,10 +3021,6 @@ op_star
 id|filp-&gt;private_data
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|error
 suffix:semicolon
 id|u32
