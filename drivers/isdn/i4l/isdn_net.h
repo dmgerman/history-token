@@ -153,8 +153,7 @@ r_void
 id|isdn_net_hangup
 c_func
 (paren
-r_struct
-id|net_device
+id|isdn_net_local
 op_star
 )paren
 suffix:semicolon
