@@ -1763,6 +1763,7 @@ suffix:colon
 r_if
 c_cond
 (paren
+(paren
 id|retval
 op_assign
 id|put_user
@@ -1777,9 +1778,9 @@ op_star
 id|arg
 )paren
 )paren
+)paren
 r_return
-op_minus
-id|EFAULT
+id|retval
 suffix:semicolon
 r_return
 l_int|0
