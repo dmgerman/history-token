@@ -790,13 +790,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|WARN_ON
-c_func
-(paren
-op_logical_neg
-id|current_sdev-&gt;sdev_target-&gt;starget_sdev_user
-)paren
-suffix:semicolon
 id|current_sdev-&gt;sdev_target-&gt;starget_sdev_user
 op_assign
 l_int|NULL
@@ -816,7 +809,6 @@ c_func
 id|current_sdev-&gt;request_queue
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * After unlock, this races with anyone clearing starget_sdev_user,&n;&t; * but we always enter this function again, avoiding any problems.&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
