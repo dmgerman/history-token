@@ -4125,7 +4125,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#if defined(CONFIG_USB_SERIAL_PL2303) || defined(CONFIG_USB_SERIAL_PL2303_MODULE)
-macro_line|#if 1
 multiline_comment|/* BEGIN HORRIBLE HACK FOR PL2303 */
 multiline_comment|/* this is needed due to the looney way its endpoints are set up */
 r_if
@@ -4273,13 +4272,18 @@ c_func
 l_string|&quot;PL-2303 hack: descriptors matched but endpoints did not&quot;
 )paren
 suffix:semicolon
+id|kfree
+(paren
+id|serial
+)paren
+suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 )brace
 multiline_comment|/* END HORRIBLE HACK FOR PL2303 */
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/* found all that we need */
 id|info
