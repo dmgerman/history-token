@@ -800,7 +800,7 @@ suffix:semicolon
 )brace
 id|pr_debug
 (paren
-l_string|&quot;%s: %s %s %s %s %s %s&bslash;n&quot;
+l_string|&quot;%s: %s %s %s %s %s %s %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -832,6 +832,11 @@ comma
 id|envp
 (braket
 l_int|3
+)braket
+comma
+id|envp
+(braket
+l_int|4
 )braket
 )paren
 suffix:semicolon
@@ -1639,13 +1644,6 @@ op_star
 id|kobj
 )paren
 (brace
-r_struct
-id|kobject
-op_star
-id|ret
-op_assign
-id|kobj
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1672,13 +1670,8 @@ id|kobj-&gt;refcount
 )paren
 suffix:semicolon
 )brace
-r_else
-id|ret
-op_assign
-l_int|NULL
-suffix:semicolon
 r_return
-id|ret
+id|kobj
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;kobject_cleanup - free kobject resources. &n; *&t;@kobj:&t;object.&n; */

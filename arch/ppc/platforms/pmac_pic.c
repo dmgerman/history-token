@@ -3045,7 +3045,7 @@ op_amp
 id|pmacpic_sysclass
 )paren
 suffix:semicolon
-id|sys_device_register
+id|sysdev_register
 c_func
 (paren
 op_amp
