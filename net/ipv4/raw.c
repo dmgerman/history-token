@@ -1047,6 +1047,11 @@ id|raw_sendmsg
 c_func
 (paren
 r_struct
+id|kiocb
+op_star
+id|iocb
+comma
+r_struct
 id|sock
 op_star
 id|sk
@@ -1750,6 +1755,11 @@ r_int
 id|raw_recvmsg
 c_func
 (paren
+r_struct
+id|kiocb
+op_star
+id|iocb
+comma
 r_struct
 id|sock
 op_star
