@@ -2249,6 +2249,9 @@ id|HIGH_BITS_OFFSET
 )paren
 id|tmp.port_high
 op_assign
+(paren
+r_int
+)paren
 id|port-&gt;iobase
 op_rshift
 id|HIGH_BITS_OFFSET
