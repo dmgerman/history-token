@@ -18,7 +18,7 @@ mdefine_line|#define _X2KEY(x) ((x) == XFRM_INF ? 0 : (x))
 DECL|macro|_KEY2X
 mdefine_line|#define _KEY2X(x) ((x) == 0 ? XFRM_INF : (x))
 multiline_comment|/* List of all pfkey sockets. */
-DECL|variable|pfkey_table
+r_static
 id|HLIST_HEAD
 c_func
 (paren
