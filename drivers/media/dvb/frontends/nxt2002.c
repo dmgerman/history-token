@@ -3301,7 +3301,7 @@ comma
 dot
 id|frequency_max
 op_assign
-l_int|806000000
+l_int|860000000
 comma
 multiline_comment|/* stepsize is just a guess */
 dot
