@@ -2519,6 +2519,13 @@ id|ESRCH
 )brace
 comma
 (brace
+id|nfserr_io
+comma
+op_minus
+id|ETXTBSY
+)brace
+comma
+(brace
 op_minus
 l_int|1
 comma
