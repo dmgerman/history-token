@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Cryptographic API.&n; *&n; * Cipher operations.&n; *&n; * Copyright (c) 2002 James Morris &lt;jmorris@intercode.com.au&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option) &n; * any later version.&n; *&n; */
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -371,29 +372,51 @@ l_int|1
 suffix:semicolon
 id|src_p
 op_assign
-id|scatterwalk_whichbuf
+id|walk_in.data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|scatterwalk_across_pages
 c_func
 (paren
 op_amp
 id|walk_in
 comma
 id|bsize
-comma
-id|tmp_src
 )paren
+)paren
+)paren
+id|src_p
+op_assign
+id|tmp_src
 suffix:semicolon
 id|dst_p
 op_assign
-id|scatterwalk_whichbuf
+id|walk_out.data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|scatterwalk_across_pages
 c_func
 (paren
 op_amp
 id|walk_out
 comma
 id|bsize
-comma
-id|tmp_dst
 )paren
+)paren
+)paren
+id|dst_p
+op_assign
+id|tmp_dst
 suffix:semicolon
 id|in_place
 op_assign
