@@ -9736,6 +9736,11 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|lock_cpu_hotplug
+c_func
+(paren
+)paren
+suffix:semicolon
 id|read_lock
 c_func
 (paren
@@ -9786,6 +9791,11 @@ c_func
 (paren
 op_amp
 id|tasklist_lock
+)paren
+suffix:semicolon
+id|unlock_cpu_hotplug
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
