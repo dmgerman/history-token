@@ -7013,15 +7013,15 @@ id|dev
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Update the statistics needed by the upper interface */
-multiline_comment|/* This should be the last statistic related command&n;&t;&t; * as it&squot;s async. now */
+)brace
+multiline_comment|/* Issue command to dump statistics from device.        */
+multiline_comment|/* Check for command completion on next watchdog timer. */
 id|e100_dump_stats_cntrs
 c_func
 (paren
 id|bdp
 )paren
 suffix:semicolon
-)brace
 id|wmb
 c_func
 (paren
@@ -9742,6 +9742,11 @@ id|DUMP_STAT_COMPLETED
 )paren
 )paren
 (brace
+op_star
+id|pcmd_complete
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_bool|false
 suffix:semicolon
