@@ -8514,7 +8514,7 @@ suffix:semicolon
 id|__u32
 id|mss
 op_assign
-id|tcp_skb_psize
+id|tcp_skb_mss
 c_func
 (paren
 id|skb
