@@ -20,6 +20,7 @@ macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;linux/libata.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &quot;libata.h&quot;
 r_static
 r_int
@@ -137,6 +138,20 @@ id|qc
 comma
 id|u8
 id|drv_stat
+)paren
+suffix:semicolon
+r_static
+r_void
+id|swap_buf_le16
+c_func
+(paren
+id|u16
+op_star
+id|buf
+comma
+r_int
+r_int
+id|buf_words
 )paren
 suffix:semicolon
 DECL|variable|ata_unique_id
@@ -3171,6 +3186,14 @@ r_goto
 id|err_out
 suffix:semicolon
 )brace
+id|swap_buf_le16
+c_func
+(paren
+id|dev-&gt;id
+comma
+id|ATA_ID_WORDS
+)paren
+suffix:semicolon
 multiline_comment|/* print device capabilities */
 id|printk
 c_func
@@ -7274,6 +7297,56 @@ id|drv_stat
 )paren
 suffix:semicolon
 )brace
+DECL|function|swap_buf_le16
+r_static
+r_void
+id|swap_buf_le16
+c_func
+(paren
+id|u16
+op_star
+id|buf
+comma
+r_int
+r_int
+id|buf_words
+)paren
+(brace
+macro_line|#ifdef __BIG_ENDIAN
+r_int
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|words
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|buf
+(braket
+id|i
+)braket
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|buf
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+macro_line|#endif /* __BIG_ENDIAN */
+)brace
 DECL|function|ata_mmio_data_xfer
 r_static
 r_void
@@ -7353,10 +7426,14 @@ op_increment
 id|writew
 c_func
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|buf16
 (braket
 id|i
 )braket
+)paren
 comma
 id|mmio
 )paren
@@ -7383,10 +7460,14 @@ id|buf16
 id|i
 )braket
 op_assign
+id|cpu_to_le16
+c_func
+(paren
 id|readw
 c_func
 (paren
 id|mmio
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -7421,14 +7502,14 @@ id|dwords
 op_assign
 id|buflen
 op_rshift
-l_int|2
+l_int|1
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|write_data
 )paren
-id|outsl
+id|outsw
 c_func
 (paren
 id|ap-&gt;ioaddr.data_addr
@@ -7439,7 +7520,7 @@ id|dwords
 )paren
 suffix:semicolon
 r_else
-id|insl
+id|insw
 c_func
 (paren
 id|ap-&gt;ioaddr.data_addr
