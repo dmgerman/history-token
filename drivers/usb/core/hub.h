@@ -313,7 +313,10 @@ multiline_comment|/* for interrupt polling pipe */
 multiline_comment|/* buffer for urb ... 1 bit each for hub and children, rounded up */
 DECL|member|buffer
 r_char
+(paren
+op_star
 id|buffer
+)paren
 (braket
 (paren
 id|USB_MAXCHILDREN
@@ -326,6 +329,29 @@ op_div
 l_int|8
 )braket
 suffix:semicolon
+DECL|member|buffer_dma
+id|dma_addr_t
+id|buffer_dma
+suffix:semicolon
+multiline_comment|/* DMA address for buffer */
+r_union
+(brace
+DECL|member|hub
+r_struct
+id|usb_hub_status
+id|hub
+suffix:semicolon
+DECL|member|port
+r_struct
+id|usb_port_status
+id|port
+suffix:semicolon
+DECL|member|status
+)brace
+op_star
+id|status
+suffix:semicolon
+multiline_comment|/* buffer for status reports */
 DECL|member|error
 r_int
 id|error

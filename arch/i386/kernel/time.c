@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -695,6 +695,21 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|rtc_sysclass
+r_static
+r_struct
+id|sysdev_class
+id|rtc_sysclass
+op_assign
+(brace
+id|set_kset_name
+c_func
+(paren
+l_string|&quot;rtc&quot;
+)paren
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* XXX this driverfs stuff should probably go elsewhere later -john */
 DECL|variable|device_i8253
 r_static
@@ -704,25 +719,15 @@ id|device_i8253
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;rtc&quot;
-comma
-dot
 id|id
 op_assign
 l_int|0
 comma
 dot
-id|dev
+id|cls
 op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;i8253 Real Time Clock&quot;
-comma
-)brace
+op_amp
+id|rtc_sysclass
 comma
 )brace
 suffix:semicolon
@@ -735,13 +740,33 @@ c_func
 r_void
 )paren
 (brace
-r_return
+r_int
+id|error
+op_assign
+id|sysdev_class_register
+c_func
+(paren
+op_amp
+id|rtc_sysclass
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
+)paren
+id|error
+op_assign
 id|sys_device_register
 c_func
 (paren
 op_amp
 id|device_i8253
 )paren
+suffix:semicolon
+r_return
+id|error
 suffix:semicolon
 )brace
 DECL|variable|time_init_device

@@ -152,15 +152,19 @@ DECL|macro|USB_STOR_XFER_SHORT
 mdefine_line|#define USB_STOR_XFER_SHORT&t;1&t;/* transferred less than expected */
 DECL|macro|USB_STOR_XFER_STALLED
 mdefine_line|#define USB_STOR_XFER_STALLED&t;2&t;/* endpoint stalled              */
+DECL|macro|USB_STOR_XFER_LONG
+mdefine_line|#define USB_STOR_XFER_LONG&t;3&t;/* device tried to send too much */
 DECL|macro|USB_STOR_XFER_ERROR
-mdefine_line|#define USB_STOR_XFER_ERROR&t;3&t;/* transfer died in the middle   */
+mdefine_line|#define USB_STOR_XFER_ERROR&t;4&t;/* transfer died in the middle   */
 multiline_comment|/*&n; * Transport return codes&n; */
 DECL|macro|USB_STOR_TRANSPORT_GOOD
 mdefine_line|#define USB_STOR_TRANSPORT_GOOD&t;   0   /* Transport good, command good&t;   */
 DECL|macro|USB_STOR_TRANSPORT_FAILED
 mdefine_line|#define USB_STOR_TRANSPORT_FAILED  1   /* Transport good, command failed   */
+DECL|macro|USB_STOR_TRANSPORT_NO_SENSE
+mdefine_line|#define USB_STOR_TRANSPORT_NO_SENSE 2  /* Command failed, no auto-sense    */
 DECL|macro|USB_STOR_TRANSPORT_ERROR
-mdefine_line|#define USB_STOR_TRANSPORT_ERROR   2   /* Transport bad (i.e. device dead) */
+mdefine_line|#define USB_STOR_TRANSPORT_ERROR   3   /* Transport bad (i.e. device dead) */
 multiline_comment|/*&n; * We used to have USB_STOR_XFER_ABORTED and USB_STOR_TRANSPORT_ABORTED&n; * return codes.  But now the transport and low-level transfer routines&n; * treat an abort as just another error (-ENOENT for a cancelled URB).&n; * It is up to the invoke_transport() function to test for aborts and&n; * distinguish them from genuine communication errors.&n; */
 multiline_comment|/*&n; * CBI accept device specific command&n; */
 DECL|macro|US_CBI_ADSC
