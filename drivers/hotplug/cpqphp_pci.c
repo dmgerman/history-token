@@ -5255,7 +5255,7 @@ id|cpqhp_nic_irq
 (brace
 id|cpqhp_nic_irq
 op_assign
-id|ctrl-&gt;interrupt
+id|ctrl-&gt;cfgspc_irq
 suffix:semicolon
 )brace
 r_if
@@ -5267,7 +5267,7 @@ id|cpqhp_disk_irq
 (brace
 id|cpqhp_disk_irq
 op_assign
-id|ctrl-&gt;interrupt
+id|ctrl-&gt;cfgspc_irq
 suffix:semicolon
 )brace
 id|dbg
