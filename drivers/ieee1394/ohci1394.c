@@ -14407,6 +14407,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+op_star
 id|ohci-&gt;csr_config_rom_cpu
 )paren
 )paren

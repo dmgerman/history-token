@@ -15654,6 +15654,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+op_star
 id|mbox
 )paren
 )paren
@@ -15755,6 +15756,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+op_star
 id|mbox
 )paren
 )paren
@@ -16163,6 +16165,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+op_star
 id|mbox
 )paren
 )paren
@@ -16240,6 +16243,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+op_star
 id|mbox
 )paren
 )paren
