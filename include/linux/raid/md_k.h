@@ -498,15 +498,19 @@ id|page
 op_star
 id|sb_page
 suffix:semicolon
-DECL|member|sb
-id|mdp_super_t
-op_star
-id|sb
+DECL|member|sb_loaded
+r_int
+id|sb_loaded
 suffix:semicolon
 DECL|member|sb_offset
 id|sector_t
 id|sb_offset
 suffix:semicolon
+DECL|member|preferred_minor
+r_int
+id|preferred_minor
+suffix:semicolon
+multiline_comment|/* autorun support */
 multiline_comment|/* A device can be in one of three states based on two flags:&n;&t; * Not working:   faulty==1 in_sync==0&n;&t; * Fully working: faulty==0 in_sync==1&n;&t; * Working, but not&n;&t; * in sync with array&n;&t; *                faulty==0 in_sync==0&n;&t; *&n;&t; * It can never have faulty==1, in_sync==1&n;&t; * This reduces the burden of testing multiple flags in many cases&n;&t; */
 DECL|member|faulty
 r_int
@@ -608,6 +612,10 @@ suffix:semicolon
 DECL|member|raid_disks
 r_int
 id|raid_disks
+suffix:semicolon
+DECL|member|max_disks
+r_int
+id|max_disks
 suffix:semicolon
 DECL|member|state
 r_int
