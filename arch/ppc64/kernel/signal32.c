@@ -201,20 +201,6 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS32
-comma
-l_string|&quot;sys32_sigaction - entered - pid=%ld current=%lx comm=%s&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -296,16 +282,6 @@ id|ret
 r_return
 id|ret
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;sys32_sigaction flags =%lx  &bslash;n&quot;
-comma
-id|new_ka.sa.sa_flags
-)paren
-suffix:semicolon
 id|siginitset
 c_func
 (paren
@@ -323,6 +299,7 @@ c_func
 (paren
 id|sig
 comma
+(paren
 id|act
 ques
 c_cond
@@ -330,7 +307,9 @@ op_amp
 id|new_ka
 suffix:colon
 l_int|NULL
+)paren
 comma
+(paren
 id|oact
 ques
 c_cond
@@ -338,6 +317,7 @@ op_amp
 id|old_ka
 suffix:colon
 l_int|NULL
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -403,20 +383,6 @@ id|oact-&gt;sa_mask
 )paren
 suffix:semicolon
 )brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS32
-comma
-l_string|&quot;sys32_sigaction - exited - pid=%ld current=%lx comm=%s&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -457,20 +423,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS32
-comma
-l_string|&quot;sys32_sigpending - entered - pid=%ld current=%lx comm=%s&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
 id|set_fs
 (paren
 id|KERNEL_DS
@@ -503,20 +455,6 @@ id|set
 r_return
 op_minus
 id|EFAULT
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS32
-comma
-l_string|&quot;sys32_sigpending - exited - pid=%ld current=%lx comm=%s&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
 suffix:semicolon
 r_return
 id|ret
@@ -571,20 +509,6 @@ op_assign
 id|get_fs
 c_func
 (paren
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS32
-comma
-l_string|&quot;sys32_sigprocmask - entered - pid=%ld current=%lx comm=%s&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
 )paren
 suffix:semicolon
 r_if
@@ -664,20 +588,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS32
-comma
-l_string|&quot;sys32_sigprocmask - exited - pid=%ld current=%lx comm=%s&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -744,20 +654,6 @@ suffix:semicolon
 r_int
 r_int
 id|prevsp
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;sys32_sigreturn - entered - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
 suffix:semicolon
 id|sc
 op_assign
@@ -1781,41 +1677,11 @@ r_goto
 id|badframe
 suffix:semicolon
 )brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;sys32_sigreturn - normal exit returning %ld - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|ret
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
 id|badframe
 suffix:colon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS32NI
-comma
-l_string|&quot;sys32_sigreturn - badframe - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
 id|do_exit
 c_func
 (paren
@@ -3282,23 +3148,6 @@ r_return
 suffix:semicolon
 id|badframe
 suffix:colon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;setup_frame32 - badframe in setup_frame, regs=%p frame=%p newsp=%lx&bslash;n&quot;
-comma
-id|regs
-comma
-id|frame
-comma
-id|newsp
-)paren
-suffix:semicolon
-id|PPCDBG_ENTER_DEBUGGER
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#if DEBUG_SIG
 id|printk
 c_func
@@ -4512,16 +4361,6 @@ suffix:semicolon
 id|sigset32_t
 id|set32
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;sys32_rt_sigaction - entered - sig=%x &bslash;n&quot;
-comma
-id|sig
-)paren
-suffix:semicolon
 multiline_comment|/* XXX: Don&squot;t preclude handling different sized sigset_t&squot;s.  */
 r_if
 c_cond
@@ -4901,16 +4740,6 @@ id|oact-&gt;sa_flags
 )paren
 suffix:semicolon
 )brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;sys32_rt_sigaction - exiting - sig=%x &bslash;n&quot;
-comma
-id|sig
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -4973,19 +4802,6 @@ op_assign
 id|get_fs
 c_func
 (paren
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;sys32_rt_sigprocmask - entered how=%x &bslash;n&quot;
-comma
-(paren
-r_int
-)paren
-id|how
 )paren
 suffix:semicolon
 r_if
@@ -8022,23 +7838,6 @@ r_return
 suffix:semicolon
 id|badframe
 suffix:colon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;setup_frame32 - badframe in setup_frame, regs=%p frame=%p newsp=%lx&bslash;n&quot;
-comma
-id|regs
-comma
-id|frame
-comma
-id|newsp
-)paren
-suffix:semicolon
-id|PPCDBG_ENTER_DEBUGGER
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#if DEBUG_SIG
 id|printk
 c_func
@@ -8960,30 +8759,6 @@ op_amp
 id|current-&gt;sigmask_lock
 )paren
 suffix:semicolon
-id|ifppcdebug
-c_func
-(paren
-id|PPCDBG_SYS32
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|signr
-)paren
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;do_signal32 - processing signal=%2lx - pid=%ld, comm=%s &bslash;n&quot;
-comma
-id|signr
-comma
-id|current-&gt;pid
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -9203,6 +8978,9 @@ suffix:colon
 r_case
 id|SIGWINCH
 suffix:colon
+r_case
+id|SIGURG
+suffix:colon
 r_continue
 suffix:semicolon
 r_case
@@ -9331,66 +9109,6 @@ suffix:semicolon
 multiline_comment|/* NOTREACHED */
 )brace
 )brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot; do signal :sigaction flags = %lx &bslash;n&quot;
-comma
-id|ka-&gt;sa.sa_flags
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot; do signal :on sig stack  = %lx &bslash;n&quot;
-comma
-id|on_sig_stack
-c_func
-(paren
-id|regs-&gt;gpr
-(braket
-l_int|1
-)braket
-)paren
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot; do signal :reg1  = %lx &bslash;n&quot;
-comma
-id|regs-&gt;gpr
-(braket
-l_int|1
-)braket
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot; do signal :alt stack  = %lx &bslash;n&quot;
-comma
-id|current-&gt;sas_ss_sp
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot; do signal :alt stack size  = %lx &bslash;n&quot;
-comma
-id|current-&gt;sas_ss_size
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9412,7 +9130,6 @@ l_int|1
 )paren
 )paren
 )paren
-(brace
 id|newsp
 op_assign
 (paren
@@ -9421,7 +9138,6 @@ op_plus
 id|current-&gt;sas_ss_size
 )paren
 suffix:semicolon
-)brace
 r_else
 id|newsp
 op_assign
@@ -9525,13 +9241,11 @@ id|newsp
 op_eq
 id|frame
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* no signals delivered */
-)brace
-singleline_comment|// Invoke correct stack setup routine 
+multiline_comment|/* Invoke correct stack setup routine */
 r_if
 c_cond
 (paren
