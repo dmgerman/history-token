@@ -15341,7 +15341,7 @@ op_star
 id|s1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Need to check ASC here; if it is &quot;special,&quot; then&n;&t; * the ASCQ is variable, and indicates failed component number.&n;&t; * We must treat the ASCQ as a &quot;dont care&quot; while searching the&n;&t; * mptscsih_ASCQ_Table[] by masking it off, and then restoring it later&n;&t; * on when we actually need to identify the failed component.&n;&t; */
+multiline_comment|/*&n;&t; * Need to check ASC here; if it is &quot;special,&quot; then&n;&t; * the ASCQ is variable, and indicates failed component number.&n;&t; * We must treat the ASCQ as a &quot;don&squot;t care&quot; while searching the&n;&t; * mptscsih_ASCQ_Table[] by masking it off, and then restoring it later&n;&t; * on when we actually need to identify the failed component.&n;&t; */
 r_if
 c_cond
 (paren

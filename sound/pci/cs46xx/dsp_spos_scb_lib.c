@@ -5360,7 +5360,7 @@ id|chip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* dont touch anything if SPDIF is open */
+multiline_comment|/* don&squot;t touch anything if SPDIF is open */
 r_if
 c_cond
 (paren
@@ -5506,7 +5506,7 @@ id|ins
 op_assign
 id|chip-&gt;dsp_spos_instance
 suffix:semicolon
-multiline_comment|/* dont touch anything if SPDIF is open */
+multiline_comment|/* don&squot;t touch anything if SPDIF is open */
 r_if
 c_cond
 (paren

@@ -12245,7 +12245,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* IP addresses are the same and the link is up, &n;                         * we dont have to do anything here. Therefore, exit */
+multiline_comment|/* IP addresses are the same and the link is up, &n;                         * we don&squot;t have to do anything here. Therefore, exit */
 r_return
 l_int|0
 suffix:semicolon

@@ -4059,7 +4059,7 @@ suffix:semicolon
 id|mega_driver_info
 id|driver_info
 suffix:semicolon
-multiline_comment|/* If this is not our command dont do anything */
+multiline_comment|/* If this is not our command don&squot;t do anything */
 r_if
 c_cond
 (paren
@@ -8770,7 +8770,7 @@ id|BOARD_64BIT
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/* Hmmm...Should we not make this more modularized so that in future we dont add&n;&t;&t;   for each firmware */
+multiline_comment|/* Hmmm...Should we not make this more modularized so that in future we don&squot;t add&n;&t;&t;   for each firmware */
 r_if
 c_cond
 (paren
@@ -8829,7 +8829,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#if 0
 multiline_comment|/*&n;&t;&t;&t; * This routine is called with well know values and we&n;&t;&t;&t; * should not be getting what we have not asked.&n;&t;&t;&t; * Also, the check is not right. It should have been for&n;&t;&t;&t; * pci_vendor_id not subsysvid - AM&n;&t;&t;&t; */
-multiline_comment|/* If we dont detect this valid subsystem vendor id&squot;s &n;&t;&t;&t;   we refuse to load the driver &n;&t;&t;&t;   PART of PC200X compliance&n;&t;&t;&t; */
+multiline_comment|/* If we don&squot;t detect this valid subsystem vendor id&squot;s &n;&t;&t;&t;   we refuse to load the driver &n;&t;&t;&t;   PART of PC200X compliance&n;&t;&t;&t; */
 r_if
 c_cond
 (paren

@@ -9992,7 +9992,7 @@ comma
 id|STATUS_INTS
 )paren
 suffix:semicolon
-multiline_comment|/* Note there is a race condition between the last two lines that&n;&t;   I dont know how to get rid of right now... */
+multiline_comment|/* Note there is a race condition between the last two lines that&n;&t;   I don&squot;t know how to get rid of right now... */
 )brace
 DECL|function|disable_interrupts
 r_static

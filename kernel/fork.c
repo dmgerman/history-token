@@ -1738,7 +1738,7 @@ id|tsk-&gt;clear_child_tid
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * We dont check the error code - if userspace has&n;&t;&t; * not set up a proper pointer then tough luck.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We don&squot;t check the error code - if userspace has&n;&t;&t; * not set up a proper pointer then tough luck.&n;&t;&t; */
 id|put_user
 c_func
 (paren

@@ -2866,7 +2866,7 @@ dot
 id|chnl_no
 )braket
 suffix:semicolon
-multiline_comment|/* We only need to know if this child has fan status monitored.&n;&t; * We dont care which channels since we have the mask already.&n;&t; */
+multiline_comment|/* We only need to know if this child has fan status monitored.&n;&t; * We don&squot;t care which channels since we have the mask already.&n;&t; */
 id|pchild-&gt;mon_type
 (braket
 l_int|0
@@ -2929,7 +2929,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* We only need to know if this child has global addressing &n;&t; * line monitored.  We dont care which channels since we know &n;&t; * the mask already (ENVCTRL_GLOBALADDR_ADDR_MASK).&n;&t; */
+multiline_comment|/* We only need to know if this child has global addressing &n;&t; * line monitored.  We don&squot;t care which channels since we know &n;&t; * the mask already (ENVCTRL_GLOBALADDR_ADDR_MASK).&n;&t; */
 id|pchild-&gt;mon_type
 (braket
 l_int|0
@@ -2983,7 +2983,7 @@ dot
 id|chnl_no
 )braket
 suffix:semicolon
-multiline_comment|/* We only need to know if this child has voltage status monitored.&n;&t; * We dont care which channels since we have the mask already.&n;&t; */
+multiline_comment|/* We only need to know if this child has voltage status monitored.&n;&t; * We don&squot;t care which channels since we have the mask already.&n;&t; */
 id|pchild-&gt;mon_type
 (braket
 l_int|0

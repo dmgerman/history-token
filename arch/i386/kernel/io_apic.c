@@ -25,7 +25,7 @@ id|ioapic_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/*&n; *&t;Is the SiS APIC rmw bug present ?&n; *&t;-1 = dont know, 0 = no, 1 = yes&n; */
+multiline_comment|/*&n; *&t;Is the SiS APIC rmw bug present ?&n; *&t;-1 = don&squot;t know, 0 = no, 1 = yes&n; */
 DECL|variable|sis_apic_bug
 r_int
 id|sis_apic_bug

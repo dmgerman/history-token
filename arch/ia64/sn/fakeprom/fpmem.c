@@ -651,7 +651,7 @@ id|numbytes
 op_sub_assign
 id|NODE0_HOLE_SIZE
 suffix:semicolon
-multiline_comment|/*&n;                                 * UGLY hack - we must skip overr the kernel and&n;                                 * PROM runtime services but we dont exactly where it is.&n;                                 * So lets just reserve:&n;&t;&t;&t;&t; *&t;node 0&n;&t;&t;&t;&t; *&t;&t;0-1MB for PAL&n;&t;&t;&t;&t; *&t;&t;1-4MB for SAL&n;&t;&t;&t;&t; *&t;node 1-N&n;&t;&t;&t;&t; *&t;&t;0-1 for SAL&n;                                 */
+multiline_comment|/*&n;                                 * UGLY hack - we must skip overr the kernel and&n;                                 * PROM runtime services but we don&squot;t exactly where it is.&n;                                 * So lets just reserve:&n;&t;&t;&t;&t; *&t;node 0&n;&t;&t;&t;&t; *&t;&t;0-1MB for PAL&n;&t;&t;&t;&t; *&t;&t;1-4MB for SAL&n;&t;&t;&t;&t; *&t;node 1-N&n;&t;&t;&t;&t; *&t;&t;0-1 for SAL&n;                                 */
 r_if
 c_cond
 (paren

@@ -14908,7 +14908,7 @@ comma
 l_int|0x00000000
 )brace
 suffix:semicolon
-macro_line|#if 0 /* All zeros, dont eat up space with it. */
+macro_line|#if 0 /* All zeros, don&squot;t eat up space with it. */
 id|u32
 id|tg3FwData
 (braket
@@ -18753,7 +18753,7 @@ comma
 l_int|0x00000000
 )brace
 suffix:semicolon
-macro_line|#if 0 /* All zeros, dont eat up space with it. */
+macro_line|#if 0 /* All zeros, don&squot;t eat up space with it. */
 id|u32
 id|tg3TsoFwData
 (braket

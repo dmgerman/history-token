@@ -5636,7 +5636,7 @@ op_logical_neg
 id|chunk_size
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * &squot;default chunksize&squot; in the old md code used to&n;&t;&t;&t; * be PAGE_SIZE, baaad.&n;&t;&t;&t; * we abort here to be on the safe side. We dont&n;&t;&t;&t; * want to continue the bad practice.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * &squot;default chunksize&squot; in the old md code used to&n;&t;&t;&t; * be PAGE_SIZE, baaad.&n;&t;&t;&t; * we abort here to be on the safe side. We don&squot;t&n;&t;&t;&t; * want to continue the bad practice.&n;&t;&t;&t; */
 id|printk
 c_func
 (paren

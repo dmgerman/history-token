@@ -3598,7 +3598,7 @@ mdefine_line|#define&t;BRIDGE_RRB_INUSE(r)&t;(0x00000001&lt;&lt;(r))
 multiline_comment|/* RRB clear register */
 DECL|macro|BRIDGE_RRB_CLEAR
 mdefine_line|#define&t;BRIDGE_RRB_CLEAR(r)&t;(0x00000001&lt;&lt;(r))
-multiline_comment|/* Defines for the virtual channels so we dont hardcode 0-3 within code */
+multiline_comment|/* Defines for the virtual channels so we don&squot;t hardcode 0-3 within code */
 DECL|macro|VCHAN0
 mdefine_line|#define VCHAN0&t;0&t;/* virtual channel 0 (ie. the &quot;normal&quot; channel) */
 DECL|macro|VCHAN1

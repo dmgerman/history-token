@@ -2733,7 +2733,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif&t;/* PIC_LATER */
-multiline_comment|/* &n;&t; * If the latency timer has already been set, by prom or by the&n;&t; * card itself, use that value.  Otherwise look at the device&squot;s&n;&t; * &squot;min_gnt&squot; and attempt to calculate a latency time. &n;&t; *&n;&t; * NOTE: For now if the device is on the &squot;real time&squot; arbitration&n;&t; * ring we dont set the latency timer.  &n;&t; *&n;&t; * WAR: SGI&squot;s IOC3 and RAD devices target abort if you write a &n;&t; * single byte into their config space.  So don&squot;t set the Latency&n;&t; * Timer for these devices&n;&t; */
+multiline_comment|/* &n;&t; * If the latency timer has already been set, by prom or by the&n;&t; * card itself, use that value.  Otherwise look at the device&squot;s&n;&t; * &squot;min_gnt&squot; and attempt to calculate a latency time. &n;&t; *&n;&t; * NOTE: For now if the device is on the &squot;real time&squot; arbitration&n;&t; * ring we don&squot;t set the latency timer.  &n;&t; *&n;&t; * WAR: SGI&squot;s IOC3 and RAD devices target abort if you write a &n;&t; * single byte into their config space.  So don&squot;t set the Latency&n;&t; * Timer for these devices&n;&t; */
 id|lt_time
 op_assign
 id|do_pcibr_config_get

@@ -5736,7 +5736,7 @@ id|pic_ctrl_reg
 op_or_assign
 id|PIC_CTRL_PAR_EN_ATE
 suffix:semicolon
-multiline_comment|/* PIC BRINGUP WAR (PV# 862253): dont enable write request&n;&t; * parity checking.&n;&t; */
+multiline_comment|/* PIC BRINGUP WAR (PV# 862253): don&squot;t enable write request&n;&t; * parity checking.&n;&t; */
 r_if
 c_cond
 (paren

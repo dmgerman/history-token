@@ -7181,7 +7181,7 @@ suffix:semicolon
 r_case
 l_int|0x8
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;**&t;JUMP / CALL&n;&t;&t;&t;**&t;dont&squot;t relocate if relative :-)&n;&t;&t;&t;*/
+multiline_comment|/*&n;&t;&t;&t;**&t;JUMP / CALL&n;&t;&t;&t;**&t;don&squot;t relocate if relative :-)&n;&t;&t;&t;*/
 r_if
 c_cond
 (paren
@@ -16679,7 +16679,7 @@ id|div
 op_div
 id|clk
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t;Why not to try the immediate lower divisor and to choose &n;&t;**&t;the one that allows the fastest output speed ?&n;&t;**&t;We dont want input speed too much greater than output speed.&n;&t;*/
+multiline_comment|/*&n;&t;**&t;Why not to try the immediate lower divisor and to choose &n;&t;**&t;the one that allows the fastest output speed ?&n;&t;**&t;We don&squot;t want input speed too much greater than output speed.&n;&t;*/
 r_if
 c_cond
 (paren

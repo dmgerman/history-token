@@ -1230,7 +1230,7 @@ op_complement
 l_int|0x40
 suffix:semicolon
 )brace
-multiline_comment|/* work out the button status, but dont do&n;&t;&t;   anything with it for now */
+multiline_comment|/* work out the button status, but don&squot;t do&n;&t;&t;   anything with it for now */
 r_if
 c_cond
 (paren

@@ -1605,7 +1605,7 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;dma_timer_expiry&t;-&t;handle a DMA timeout&n; *&t;@drive: Drive that timed out&n; *&n; *&t;An IDE DMA transfer timed out. In the event of an error we ask&n; *&t;the driver to resolve the problem, if a DMA transfer is still&n; *&t;in progress we continue to wait (arguably we need to add a &n; *&t;secondary &squot;I dont care what the drive thinks&squot; timeout here)&n; *&t;Finally if we have an interrupt but for some reason got the&n; *&t;timeout first we complete the I/O. This can occur if an &n; *&t;interrupt is lost or due to bugs.&n; */
+multiline_comment|/**&n; *&t;dma_timer_expiry&t;-&t;handle a DMA timeout&n; *&t;@drive: Drive that timed out&n; *&n; *&t;An IDE DMA transfer timed out. In the event of an error we ask&n; *&t;the driver to resolve the problem, if a DMA transfer is still&n; *&t;in progress we continue to wait (arguably we need to add a &n; *&t;secondary &squot;I don&squot;t care what the drive thinks&squot; timeout here)&n; *&t;Finally if we have an interrupt but for some reason got the&n; *&t;timeout first we complete the I/O. This can occur if an &n; *&t;interrupt is lost or due to bugs.&n; */
 DECL|function|dma_timer_expiry
 r_static
 r_int

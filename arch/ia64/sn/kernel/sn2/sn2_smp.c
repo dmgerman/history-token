@@ -1303,7 +1303,7 @@ id|mycnode
 op_assign
 id|local_nodeid
 suffix:semicolon
-multiline_comment|/* &n;&t; * For now, we dont want to spin uninterruptibly waiting&n;&t; * for the lock. Makes hangs hard to debug.&n;&t; */
+multiline_comment|/* &n;&t; * For now, we don&squot;t want to spin uninterruptibly waiting&n;&t; * for the lock. Makes hangs hard to debug.&n;&t; */
 id|local_irq_save
 c_func
 (paren

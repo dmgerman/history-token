@@ -862,7 +862,7 @@ r_volatile
 id|u_char
 id|lport_timer_set
 suffix:semicolon
-multiline_comment|/* Hmmm... We dont want to Initialize while closing */
+multiline_comment|/* Hmmm... We don&squot;t want to Initialize while closing */
 DECL|member|dont_init
 id|u_char
 id|dont_init

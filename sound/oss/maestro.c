@@ -16797,7 +16797,7 @@ comma
 id|n
 )paren
 suffix:semicolon
-multiline_comment|/* turn off power management unless:&n;&t; *&t;- the user explicitly asks for it&n;&t; * &t;&t;or&n;&t; *&t;&t;- we&squot;re not a 2e, lesser chipps seem to have problems.&n;&t; *&t;&t;- we&squot;re not on our _very_ small whitelist.  some implemenetations&n;&t; *&t;&t;&t;really dont&squot; like the pm code, others require it.&n;&t; *&t;&t;&t;feel free to expand this as required.&n;&t; */
+multiline_comment|/* turn off power management unless:&n;&t; *&t;- the user explicitly asks for it&n;&t; * &t;&t;or&n;&t; *&t;&t;- we&squot;re not a 2e, lesser chipps seem to have problems.&n;&t; *&t;&t;- we&squot;re not on our _very_ small whitelist.  some implemenetations&n;&t; *&t;&t;&t;really don&squot;t like the pm code, others require it.&n;&t; *&t;&t;&t;feel free to expand this as required.&n;&t; */
 DECL|macro|SUBSYSTEM_VENDOR
 mdefine_line|#define SUBSYSTEM_VENDOR(x) (x&amp;0xffff)
 r_if

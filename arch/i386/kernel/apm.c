@@ -2334,7 +2334,7 @@ id|APM_SUCCESS
 suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_APM_DISPLAY_BLANK) &amp;&amp; defined(CONFIG_VT)
-multiline_comment|/**&n; *&t;apm_console_blank&t;-&t;blank the display&n; *&t;@blank: on/off&n; *&n; *&t;Attempt to blank the console, firstly by blanking just video device&n; *&t;zero, and if that fails (some BIOSes dont support it) then it blanks&n; *&t;all video devices. Typically the BIOS will do laptop backlight and&n; *&t;monitor powerdown for us.&n; */
+multiline_comment|/**&n; *&t;apm_console_blank&t;-&t;blank the display&n; *&t;@blank: on/off&n; *&n; *&t;Attempt to blank the console, firstly by blanking just video device&n; *&t;zero, and if that fails (some BIOSes don&squot;t support it) then it blanks&n; *&t;all video devices. Typically the BIOS will do laptop backlight and&n; *&t;monitor powerdown for us.&n; */
 DECL|function|apm_console_blank
 r_static
 r_int

@@ -1053,7 +1053,7 @@ c_func
 id|TASK_RUNNING
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * NOTE: we dont remove ourselves from the waitqueue because&n;&t; * we are the only user of it.&n;&t; */
+multiline_comment|/*&n;&t; * NOTE: we don&squot;t remove ourselves from the waitqueue because&n;&t; * we are the only user of it.&n;&t; */
 r_if
 c_cond
 (paren

@@ -265,7 +265,7 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * These work around paging, however they dont guarentee you&squot;re on the&n; * right page.&n; */
+multiline_comment|/*&n; * These work around paging, however they don&squot;t guarentee you&squot;re on the&n; * right page.&n; */
 DECL|macro|SIFREADB
 mdefine_line|#define SIFREADB(reg) (inb(dev-&gt;base_addr + ((reg&lt;0x8)?reg:reg-0x8)))
 DECL|macro|SIFWRITEB

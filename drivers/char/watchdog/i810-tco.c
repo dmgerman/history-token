@@ -346,7 +346,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Reload (trigger) the timer. Lock is needed so we dont reload it during&n; * a reprogramming event&n; */
+multiline_comment|/*&n; * Reload (trigger) the timer. Lock is needed so we don&squot;t reload it during&n; * a reprogramming event&n; */
 DECL|function|tco_timer_reload
 r_static
 r_void

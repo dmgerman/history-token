@@ -335,7 +335,7 @@ m_assert
 id|xm
 )paren
 suffix:semicolon
-multiline_comment|/* we dont gen exact zeros (probably should) */
+multiline_comment|/* we don&squot;t gen exact zeros (probably should) */
 m_assert
 (paren
 (paren

@@ -58,7 +58,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/* the vpn of i &amp; 0xf is so we dont write similar TLB entries&n;&t; * in the same 4-way entry group. details.. &n;&t; */
+multiline_comment|/* the vpn of i &amp; 0xf is so we don&squot;t write similar TLB entries&n;&t; * in the same 4-way entry group. details.. &n;&t; */
 id|save_and_cli
 c_func
 (paren

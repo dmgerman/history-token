@@ -8368,7 +8368,7 @@ id|bdp-&gt;next_cu_cmd
 r_case
 id|RESUME_NO_WAIT
 suffix:colon
-multiline_comment|/*last cu command was a CU_RESMUE if this is a 558 or newer we dont need to&n;&t;&t; * wait for command word to clear, we reach here only if we are bachlor&n;&t;&t; */
+multiline_comment|/*last cu command was a CU_RESMUE if this is a 558 or newer we don&squot;t need to&n;&t;&t; * wait for command word to clear, we reach here only if we are bachlor&n;&t;&t; */
 id|e100_exec_cmd
 c_func
 (paren
