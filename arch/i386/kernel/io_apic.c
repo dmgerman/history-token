@@ -2405,6 +2405,26 @@ id|irqbalance_disabled
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* disable irqbalance completely if there is only one processor online */
+r_if
+c_cond
+(paren
+id|num_online_cpus
+c_func
+(paren
+)paren
+OL
+l_int|2
+)paren
+(brace
+id|irqbalance_disabled
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Enable physical balance only if more than 1 physical processor&n;&t; * is present&n;&t; */
 r_if
 c_cond
@@ -4528,7 +4548,14 @@ id|FIRST_SYSTEM_VECTOR
 )paren
 (brace
 id|offset
-op_increment
+op_assign
+(paren
+id|offset
+op_plus
+l_int|1
+)paren
+op_amp
+l_int|7
 suffix:semicolon
 id|current_vector
 op_assign
@@ -4537,19 +4564,6 @@ op_plus
 id|offset
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|current_vector
-op_eq
-id|FIRST_SYSTEM_VECTOR
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;ran out of interrupt sources!&quot;
-)paren
-suffix:semicolon
 id|IO_APIC_VECTOR
 c_func
 (paren

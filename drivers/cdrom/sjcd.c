@@ -3884,12 +3884,7 @@ r_void
 )paren
 (brace
 r_return
-op_logical_neg
-id|blk_queue_empty
-c_func
-(paren
-id|QUEUE
-)paren
+id|CURRENT
 op_logical_and
 id|CURRENT-&gt;cmd
 op_eq
