@@ -7,8 +7,8 @@ DECL|macro|I2C_TDA985x_L
 mdefine_line|#define I2C_TDA985x_L      0xb4 /* also used by 9873 */
 DECL|macro|I2C_TDA985x_H
 mdefine_line|#define I2C_TDA985x_H      0xb6
-DECL|macro|I2C_TDA9874A
-mdefine_line|#define I2C_TDA9874A       0xb0 /* also used by 9875 */
+DECL|macro|I2C_TDA9874
+mdefine_line|#define I2C_TDA9874        0xb0 /* also used by 9875 */
 DECL|macro|I2C_TEA6300
 mdefine_line|#define I2C_TEA6300        0x80
 DECL|macro|I2C_TEA6420

@@ -347,6 +347,10 @@ DECL|member|prevmode
 r_int
 id|prevmode
 suffix:semicolon
+DECL|member|norm
+r_int
+id|norm
+suffix:semicolon
 multiline_comment|/* thread */
 DECL|member|thread
 r_struct
@@ -373,8 +377,14 @@ DECL|member|done
 r_int
 id|done
 suffix:semicolon
+DECL|member|watch_stereo
+r_int
+id|watch_stereo
+suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|VIDEO_MODE_RADIO
+mdefine_line|#define VIDEO_MODE_RADIO 16      /* norm magic for radio mode */
 multiline_comment|/* ---------------------------------------------------------------------- */
 multiline_comment|/* i2c addresses                                                          */
 DECL|variable|normal_i2c
@@ -410,7 +420,7 @@ id|I2C_TDA985x_H
 op_rshift
 l_int|1
 comma
-id|I2C_TDA9874A
+id|I2C_TDA9874
 op_rshift
 l_int|1
 comma
@@ -1279,14 +1289,18 @@ id|current
 )paren
 r_break
 suffix:semicolon
+multiline_comment|/* don&squot;t do anything for radio or if mode != auto */
 r_if
 c_cond
 (paren
-l_int|0
-op_ne
+id|chip-&gt;norm
+op_eq
+id|VIDEO_MODE_RADIO
+op_logical_or
 id|chip-&gt;mode
+op_ne
+l_int|0
 )paren
-multiline_comment|/* don&squot;t do anything if mode != auto */
 r_continue
 suffix:semicolon
 multiline_comment|/* have a look what&squot;s going on */
@@ -1345,6 +1359,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|generic_checkmode
+r_static
 r_void
 id|generic_checkmode
 c_func
@@ -1401,6 +1416,24 @@ c_cond
 (paren
 id|mode
 op_amp
+id|VIDEO_SOUND_STEREO
+)paren
+id|desc
+op_member_access_from_pointer
+id|setmode
+c_func
+(paren
+id|chip
+comma
+id|VIDEO_SOUND_STEREO
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|mode
+op_amp
 id|VIDEO_SOUND_LANG1
 )paren
 id|desc
@@ -1429,24 +1462,6 @@ c_func
 id|chip
 comma
 id|VIDEO_SOUND_LANG2
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|mode
-op_amp
-id|VIDEO_SOUND_STEREO
-)paren
-id|desc
-op_member_access_from_pointer
-id|setmode
-c_func
-(paren
-id|chip
-comma
-id|VIDEO_SOUND_STEREO
 )paren
 suffix:semicolon
 r_else
@@ -1496,6 +1511,7 @@ mdefine_line|#define TDA9840_TEST_INT1SN 0x1 /* Integration time 0.5s when set *
 DECL|macro|TDA9840_TEST_INTFU
 mdefine_line|#define TDA9840_TEST_INTFU 0x02 /* Disables integrator function */
 DECL|function|tda9840_getmode
+r_static
 r_int
 id|tda9840_getmode
 c_func
@@ -1561,6 +1577,7 @@ id|mode
 suffix:semicolon
 )brace
 DECL|function|tda9840_setmode
+r_static
 r_void
 id|tda9840_setmode
 c_func
@@ -1760,6 +1777,7 @@ multiline_comment|/* lower 3 bits control timing current for alignment: -30% (0x
 DECL|macro|TDA985x_ADJ
 mdefine_line|#define TDA985x_ADJ&t;1&lt;&lt;7 /* Stereo adjust on/off (wideband and spectral */
 DECL|function|tda9855_volume
+r_static
 r_int
 id|tda9855_volume
 c_func
@@ -1777,6 +1795,7 @@ l_int|0x27
 suffix:semicolon
 )brace
 DECL|function|tda9855_bass
+r_static
 r_int
 id|tda9855_bass
 c_func
@@ -1794,6 +1813,7 @@ l_int|0x06
 suffix:semicolon
 )brace
 DECL|function|tda9855_treble
+r_static
 r_int
 id|tda9855_treble
 c_func
@@ -1815,6 +1835,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|tda985x_getmode
+r_static
 r_int
 id|tda985x_getmode
 c_func
@@ -1855,6 +1876,7 @@ id|VIDEO_SOUND_MONO
 suffix:semicolon
 )brace
 DECL|function|tda985x_setmode
+r_static
 r_void
 id|tda985x_setmode
 c_func
@@ -2037,6 +2059,7 @@ mdefine_line|#define TDA9873_STEREO      2 /* Stereo sound is identified     */
 DECL|macro|TDA9873_DUAL
 mdefine_line|#define TDA9873_DUAL        4 /* Dual sound is identified       */
 DECL|function|tda9873_getmode
+r_static
 r_int
 id|tda9873_getmode
 c_func
@@ -2102,6 +2125,7 @@ id|mode
 suffix:semicolon
 )brace
 DECL|function|tda9873_setmode
+r_static
 r_void
 id|tda9873_setmode
 c_func
@@ -2248,6 +2272,7 @@ id|sw_data
 suffix:semicolon
 )brace
 DECL|function|tda9873_checkit
+r_static
 r_int
 id|tda9873_checkit
 c_func
@@ -2294,9 +2319,9 @@ l_int|0x80
 suffix:semicolon
 )brace
 multiline_comment|/* ---------------------------------------------------------------------- */
-multiline_comment|/* audio chip description - defines+functions for tda9874a                */
+multiline_comment|/* audio chip description - defines+functions for tda9874h and tda9874a   */
 multiline_comment|/* Dariusz Kowalewski &lt;darekk@automex.pl&gt;                                 */
-multiline_comment|/* Subaddresses for TDA9874A (slave rx) */
+multiline_comment|/* Subaddresses for TDA9874H and TDA9874A (slave rx) */
 DECL|macro|TDA9874A_AGCGR
 mdefine_line|#define TDA9874A_AGCGR&t;&t;0x00&t;/* AGC gain */
 DECL|macro|TDA9874A_GCONR
@@ -2346,10 +2371,10 @@ mdefine_line|#define TDA9874A_I2SOSR&t;&t;0x16&t;/* I2S-bus output select */
 DECL|macro|TDA9874A_I2SOLAR
 mdefine_line|#define TDA9874A_I2SOLAR&t;0x17&t;/* I2S-bus output level adj. */
 DECL|macro|TDA9874A_MDACOSR
-mdefine_line|#define TDA9874A_MDACOSR&t;0x18&t;/* mono DAC output select */
+mdefine_line|#define TDA9874A_MDACOSR&t;0x18&t;/* mono DAC output select (tda9874a) */
 DECL|macro|TDA9874A_ESP
-mdefine_line|#define TDA9874A_ESP&t;&t;0xFF&t;/* easy standard progr. */
-multiline_comment|/* Subaddresses for TDA9874A (slave tx) */
+mdefine_line|#define TDA9874A_ESP&t;&t;0xFF&t;/* easy standard progr. (tda9874a) */
+multiline_comment|/* Subaddresses for TDA9874H and TDA9874A (slave tx) */
 DECL|macro|TDA9874A_DSR
 mdefine_line|#define TDA9874A_DSR&t;&t;0x00&t;/* device status */
 DECL|macro|TDA9874A_NSR
@@ -2390,6 +2415,14 @@ op_assign
 l_int|0xc0
 suffix:semicolon
 multiline_comment|/* default config. input pin: SIFSEL=0 */
+DECL|variable|tda9874a_NCONR
+r_static
+r_int
+id|tda9874a_NCONR
+op_assign
+l_int|0x01
+suffix:semicolon
+multiline_comment|/* default NICAM config.: AMSEL=0,AMUTE=1 */
 DECL|variable|tda9874a_ESP
 r_static
 r_int
@@ -2398,11 +2431,28 @@ op_assign
 l_int|0x07
 suffix:semicolon
 multiline_comment|/* default standard: NICAM D/K */
+DECL|variable|tda9874a_dic
+r_static
+r_int
+id|tda9874a_dic
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* device id. code */
 multiline_comment|/* insmod options for tda9874a */
 DECL|variable|tda9874a_SIF
 r_static
 r_int
 id|tda9874a_SIF
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+DECL|variable|tda9874a_AMSEL
+r_static
+r_int
+id|tda9874a_AMSEL
 op_assign
 op_minus
 l_int|1
@@ -2426,10 +2476,295 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
+id|tda9874a_AMSEL
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
 id|tda9874a_STD
 comma
 l_string|&quot;i&quot;
 )paren
+suffix:semicolon
+multiline_comment|/*&n; * initialization table for tda9874 decoder:&n; *  - carrier 1 freq. registers (3 bytes)&n; *  - carrier 2 freq. registers (3 bytes)&n; *  - demudulator config register&n; *  - FM de-emphasis register (slow identification mode)&n; * Note: frequency registers must be written in single i2c transfer.&n; */
+DECL|struct|tda9874a_MODES
+r_static
+r_struct
+id|tda9874a_MODES
+(brace
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|cmd
+id|audiocmd
+id|cmd
+suffix:semicolon
+DECL|variable|tda9874a_modelist
+)brace
+id|tda9874a_modelist
+(braket
+l_int|9
+)braket
+op_assign
+(brace
+(brace
+l_string|&quot;A2, B/G&quot;
+comma
+(brace
+l_int|9
+comma
+(brace
+id|TDA9874A_C1FRA
+comma
+l_int|0x72
+comma
+l_int|0x95
+comma
+l_int|0x55
+comma
+l_int|0x77
+comma
+l_int|0xA0
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+)brace
+comma
+(brace
+l_string|&quot;A2, M (Korea)&quot;
+comma
+(brace
+l_int|9
+comma
+(brace
+id|TDA9874A_C1FRA
+comma
+l_int|0x5D
+comma
+l_int|0xC0
+comma
+l_int|0x00
+comma
+l_int|0x62
+comma
+l_int|0x6A
+comma
+l_int|0xAA
+comma
+l_int|0x20
+comma
+l_int|0x22
+)brace
+)brace
+)brace
+comma
+(brace
+l_string|&quot;A2, D/K (1)&quot;
+comma
+(brace
+l_int|9
+comma
+(brace
+id|TDA9874A_C1FRA
+comma
+l_int|0x87
+comma
+l_int|0x6A
+comma
+l_int|0xAA
+comma
+l_int|0x82
+comma
+l_int|0x60
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+)brace
+comma
+(brace
+l_string|&quot;A2, D/K (2)&quot;
+comma
+(brace
+l_int|9
+comma
+(brace
+id|TDA9874A_C1FRA
+comma
+l_int|0x87
+comma
+l_int|0x6A
+comma
+l_int|0xAA
+comma
+l_int|0x8C
+comma
+l_int|0x75
+comma
+l_int|0x55
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+)brace
+comma
+(brace
+l_string|&quot;A2, D/K (3)&quot;
+comma
+(brace
+l_int|9
+comma
+(brace
+id|TDA9874A_C1FRA
+comma
+l_int|0x87
+comma
+l_int|0x6A
+comma
+l_int|0xAA
+comma
+l_int|0x77
+comma
+l_int|0xA0
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+)brace
+)brace
+comma
+(brace
+l_string|&quot;NICAM, I&quot;
+comma
+(brace
+l_int|9
+comma
+(brace
+id|TDA9874A_C1FRA
+comma
+l_int|0x7D
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x88
+comma
+l_int|0x8A
+comma
+l_int|0xAA
+comma
+l_int|0x08
+comma
+l_int|0x33
+)brace
+)brace
+)brace
+comma
+(brace
+l_string|&quot;NICAM, B/G&quot;
+comma
+(brace
+l_int|9
+comma
+(brace
+id|TDA9874A_C1FRA
+comma
+l_int|0x72
+comma
+l_int|0x95
+comma
+l_int|0x55
+comma
+l_int|0x79
+comma
+l_int|0xEA
+comma
+l_int|0xAA
+comma
+l_int|0x08
+comma
+l_int|0x33
+)brace
+)brace
+)brace
+comma
+(brace
+l_string|&quot;NICAM, D/K&quot;
+comma
+multiline_comment|/* default */
+(brace
+l_int|9
+comma
+(brace
+id|TDA9874A_C1FRA
+comma
+l_int|0x87
+comma
+l_int|0x6A
+comma
+l_int|0xAA
+comma
+l_int|0x79
+comma
+l_int|0xEA
+comma
+l_int|0xAA
+comma
+l_int|0x08
+comma
+l_int|0x33
+)brace
+)brace
+)brace
+comma
+(brace
+l_string|&quot;NICAM, L&quot;
+comma
+(brace
+l_int|9
+comma
+(brace
+id|TDA9874A_C1FRA
+comma
+l_int|0x87
+comma
+l_int|0x6A
+comma
+l_int|0xAA
+comma
+l_int|0x79
+comma
+l_int|0xEA
+comma
+l_int|0xAA
+comma
+l_int|0x09
+comma
+l_int|0x33
+)brace
+)brace
+)brace
+)brace
 suffix:semicolon
 DECL|function|tda9874a_setup
 r_static
@@ -2481,6 +2816,14 @@ suffix:colon
 l_int|0x02
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tda9874a_dic
+op_eq
+l_int|0x11
+)paren
+(brace
 id|chip_write
 c_func
 (paren
@@ -2491,6 +2834,37 @@ comma
 l_int|0x80
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* dic == 0x07 */
+id|chip_cmd
+c_func
+(paren
+id|chip
+comma
+l_string|&quot;tda9874_modelist&quot;
+comma
+op_amp
+id|tda9874a_modelist
+(braket
+id|tda9874a_STD
+)braket
+dot
+id|cmd
+)paren
+suffix:semicolon
+id|chip_write
+c_func
+(paren
+id|chip
+comma
+id|TDA9874A_FMMR
+comma
+l_int|0x00
+)paren
+suffix:semicolon
+)brace
 id|chip_write
 c_func
 (paren
@@ -2520,10 +2894,9 @@ id|chip
 comma
 id|TDA9874A_NCONR
 comma
-l_int|0x00
+id|tda9874a_NCONR
 )paren
 suffix:semicolon
-multiline_comment|/* not 0x04 as doc. table 10 says! */
 id|chip_write
 c_func
 (paren
@@ -2535,6 +2908,39 @@ l_int|0x00
 )paren
 suffix:semicolon
 multiline_comment|/* 0 dB */
+multiline_comment|/* Note: If signal quality is poor you may want to change NICAM */
+multiline_comment|/* error limit registers (NLELR and NUELR) to some greater values. */
+multiline_comment|/* Then the sound would remain stereo, but won&squot;t be so clear. */
+id|chip_write
+c_func
+(paren
+id|chip
+comma
+id|TDA9874A_NLELR
+comma
+l_int|0x14
+)paren
+suffix:semicolon
+multiline_comment|/* default */
+id|chip_write
+c_func
+(paren
+id|chip
+comma
+id|TDA9874A_NUELR
+comma
+l_int|0x50
+)paren
+suffix:semicolon
+multiline_comment|/* default */
+r_if
+c_cond
+(paren
+id|tda9874a_dic
+op_eq
+l_int|0x11
+)paren
+(brace
 id|chip_write
 c_func
 (paren
@@ -2562,7 +2968,6 @@ suffix:colon
 l_int|0x80
 )paren
 suffix:semicolon
-multiline_comment|/* 0x81 */
 id|chip_write
 c_func
 (paren
@@ -2600,11 +3005,70 @@ comma
 id|tda9874a_ESP
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* dic == 0x07 */
+id|chip_write
+c_func
+(paren
+id|chip
+comma
+id|TDA9874A_AMCONR
+comma
+l_int|0xfb
+)paren
+suffix:semicolon
+id|chip_write
+c_func
+(paren
+id|chip
+comma
+id|TDA9874A_SDACOSR
+comma
+(paren
+id|tda9874a_mode
+)paren
+ques
+c_cond
+l_int|0x81
+suffix:colon
+l_int|0x80
+)paren
+suffix:semicolon
+id|chip_write
+c_func
+(paren
+id|chip
+comma
+id|TDA9874A_AOSR
+comma
+l_int|0x00
+)paren
+suffix:semicolon
+singleline_comment|// or 0x10
+)brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;tda9874a_setup(): %s [0x%02X].&bslash;n&quot;
+comma
+id|tda9874a_modelist
+(braket
+id|tda9874a_STD
+)braket
+dot
+id|name
+comma
+id|tda9874a_STD
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
 DECL|function|tda9874a_getmode
+r_static
 r_int
 id|tda9874a_getmode
 c_func
@@ -2622,6 +3086,10 @@ id|nsr
 comma
 id|mode
 suffix:semicolon
+r_int
+id|necr
+suffix:semicolon
+multiline_comment|/* just for debugging */
 id|mode
 op_assign
 id|VIDEO_SOUND_MONO
@@ -2675,10 +3143,77 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_minus
+l_int|1
+op_eq
+(paren
+id|necr
+op_assign
+id|chip_read2
+c_func
+(paren
+id|chip
+comma
+id|TDA9874A_NECR
+)paren
+)paren
+)paren
+(brace
+r_return
+id|mode
+suffix:semicolon
+)brace
+multiline_comment|/* need to store dsr/nsr somewhere */
+id|chip-&gt;shadow.bytes
+(braket
+id|MAXREGS
+op_minus
+l_int|2
+)braket
+op_assign
+id|dsr
+suffix:semicolon
+id|chip-&gt;shadow.bytes
+(braket
+id|MAXREGS
+op_minus
+l_int|1
+)braket
+op_assign
+id|nsr
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|tda9874a_mode
 )paren
 (brace
-multiline_comment|/* check also DSR.RSSF and DSR.AMSTAT bits? */
+multiline_comment|/* Note: DSR.RSSF and DSR.AMSTAT bits are also checked.&n;&t;&t; * If NICAM auto-muting is enabled, DSR.AMSTAT=1 indicates&n;&t;&t; * that sound has (temporarily) switched from NICAM to&n;&t;&t; * mono FM (or AM) on 1st sound carrier due to high NICAM bit&n;&t;&t; * error count. So in fact there is no stereo in this case :-(&n;&t;&t; * But changing the mode to VIDEO_SOUND_MONO would switch&n;&t;&t; * external 4052 multiplexer in audio_hook().&n;&t;&t; */
+macro_line|#if 0
+r_if
+c_cond
+(paren
+(paren
+id|nsr
+op_amp
+l_int|0x02
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|dsr
+op_amp
+l_int|0x10
+)paren
+)paren
+(brace
+multiline_comment|/* NSR.S/MB=1 and DSR.AMSTAT=0 */
+id|mode
+op_or_assign
+id|VIDEO_SOUND_STEREO
+suffix:semicolon
+)brace
+macro_line|#else
 r_if
 c_cond
 (paren
@@ -2687,12 +3222,13 @@ op_amp
 l_int|0x02
 )paren
 (brace
-multiline_comment|/* NSR.S/MB */
+multiline_comment|/* NSR.S/MB=1 */
 id|mode
 op_or_assign
 id|VIDEO_SOUND_STEREO
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2701,7 +3237,7 @@ op_amp
 l_int|0x01
 )paren
 (brace
-multiline_comment|/* NSR.D/SB */
+multiline_comment|/* NSR.D/SB=1 */
 id|mode
 op_or_assign
 id|VIDEO_SOUND_LANG1
@@ -2720,7 +3256,7 @@ op_amp
 l_int|0x02
 )paren
 (brace
-multiline_comment|/* DSR.IDSTE */
+multiline_comment|/* DSR.IDSTE=1 */
 id|mode
 op_or_assign
 id|VIDEO_SOUND_STEREO
@@ -2734,7 +3270,7 @@ op_amp
 l_int|0x04
 )paren
 (brace
-multiline_comment|/* DSR.IDDUA */
+multiline_comment|/* DSR.IDDUA=1 */
 id|mode
 op_or_assign
 id|VIDEO_SOUND_LANG1
@@ -2746,11 +3282,13 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;tda9874a_getmode(): DSR=0x%X, NSR=0x%X, return: %d.&bslash;n&quot;
+l_string|&quot;tda9874a_getmode(): DSR=0x%X, NSR=0x%X, NECR=0x%X, return: %d.&bslash;n&quot;
 comma
 id|dsr
 comma
 id|nsr
+comma
+id|necr
 comma
 id|mode
 )paren
@@ -2760,6 +3298,7 @@ id|mode
 suffix:semicolon
 )brace
 DECL|function|tda9874a_setmode
+r_static
 r_void
 id|tda9874a_setmode
 c_func
@@ -2773,16 +3312,77 @@ r_int
 id|mode
 )paren
 (brace
+multiline_comment|/* Disable/enable NICAM auto-muting (based on DSR.RSSF status bit). */
+multiline_comment|/* If auto-muting is disabled, we can hear a signal of degrading quality. */
+r_if
+c_cond
+(paren
+id|tda9874a_mode
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|chip-&gt;shadow.bytes
+(braket
+id|MAXREGS
+op_minus
+l_int|2
+)braket
+op_amp
+l_int|0x20
+)paren
+(brace
+multiline_comment|/* DSR.RSSF=1 */
+id|tda9874a_NCONR
+op_and_assign
+l_int|0xfe
+suffix:semicolon
+)brace
+multiline_comment|/* enable */
+r_else
+id|tda9874a_NCONR
+op_or_assign
+l_int|0x01
+suffix:semicolon
+multiline_comment|/* disable */
+id|chip_write
+c_func
+(paren
+id|chip
+comma
+id|TDA9874A_NCONR
+comma
+id|tda9874a_NCONR
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Note: TDA9874A supports automatic FM dematrixing (FMMR register)&n;&t; * and has auto-select function for audio output (AOSR register).&n;&t; * Old TDA9874H doesn&squot;t support these features.&n;&t; * TDA9874A also has additional mono output pin (OUTM), which&n;&t; * on same (all?) tv-cards is not used, anyway (as well as MONOIN).&n;&t; */
+r_if
+c_cond
+(paren
+id|tda9874a_dic
+op_eq
+l_int|0x11
+)paren
+(brace
 r_int
 id|aosr
 op_assign
 l_int|0x80
-comma
+suffix:semicolon
+r_int
 id|mdacosr
 op_assign
+(paren
+id|tda9874a_mode
+)paren
+ques
+c_cond
 l_int|0x82
+suffix:colon
+l_int|0x80
 suffix:semicolon
-multiline_comment|/* note: TDA9874A has auto-select function for audio output */
 r_switch
 c_cond
 (paren
@@ -2804,7 +3404,7 @@ id|aosr
 op_assign
 l_int|0x80
 suffix:semicolon
-multiline_comment|/* dual A/A */
+multiline_comment|/* auto-select, dual A/A */
 id|mdacosr
 op_assign
 (paren
@@ -2825,7 +3425,7 @@ id|aosr
 op_assign
 l_int|0xa0
 suffix:semicolon
-multiline_comment|/* dual B/B */
+multiline_comment|/* auto-select, dual B/B */
 id|mdacosr
 op_assign
 (paren
@@ -2881,7 +3481,152 @@ id|mdacosr
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+multiline_comment|/* dic == 0x07 */
+r_int
+id|fmmr
+comma
+id|aosr
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|mode
+)paren
+(brace
+r_case
+id|VIDEO_SOUND_MONO
+suffix:colon
+id|fmmr
+op_assign
+l_int|0x00
+suffix:semicolon
+multiline_comment|/* mono */
+id|aosr
+op_assign
+l_int|0x10
+suffix:semicolon
+multiline_comment|/* A/A */
+r_break
+suffix:semicolon
+r_case
+id|VIDEO_SOUND_STEREO
+suffix:colon
+r_if
+c_cond
+(paren
+id|tda9874a_mode
+)paren
+(brace
+id|fmmr
+op_assign
+l_int|0x00
+suffix:semicolon
+id|aosr
+op_assign
+l_int|0x00
+suffix:semicolon
+multiline_comment|/* handled by NICAM auto-mute */
+)brace
+r_else
+(brace
+id|fmmr
+op_assign
+(paren
+id|tda9874a_ESP
+op_eq
+l_int|1
+)paren
+ques
+c_cond
+l_int|0x05
+suffix:colon
+l_int|0x04
+suffix:semicolon
+multiline_comment|/* stereo */
+id|aosr
+op_assign
+l_int|0x00
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|VIDEO_SOUND_LANG1
+suffix:colon
+id|fmmr
+op_assign
+l_int|0x02
+suffix:semicolon
+multiline_comment|/* dual */
+id|aosr
+op_assign
+l_int|0x10
+suffix:semicolon
+multiline_comment|/* dual A/A */
+r_break
+suffix:semicolon
+r_case
+id|VIDEO_SOUND_LANG2
+suffix:colon
+id|fmmr
+op_assign
+l_int|0x02
+suffix:semicolon
+multiline_comment|/* dual */
+id|aosr
+op_assign
+l_int|0x20
+suffix:semicolon
+multiline_comment|/* dual B/B */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|chip-&gt;mode
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|chip_write
+c_func
+(paren
+id|chip
+comma
+id|TDA9874A_FMMR
+comma
+id|fmmr
+)paren
+suffix:semicolon
+id|chip_write
+c_func
+(paren
+id|chip
+comma
+id|TDA9874A_AOSR
+comma
+id|aosr
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;tda9874a_setmode(): req. mode %d; FMMR=0x%X, AOSR=0x%X.&bslash;n&quot;
+comma
+id|mode
+comma
+id|fmmr
+comma
+id|aosr
+)paren
+suffix:semicolon
+)brace
+)brace
 DECL|function|tda9874a_checkit
+r_static
 r_int
 id|tda9874a_checkit
 c_func
@@ -2954,17 +3699,55 @@ comma
 id|sic
 )paren
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
 (paren
 id|dic
-op_amp
-l_int|0xff
-)paren
 op_eq
 l_int|0x11
+)paren
+op_logical_or
+(paren
+id|dic
+op_eq
+l_int|0x07
+)paren
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;tvaudio: found tda9874%s.&bslash;n&quot;
+comma
+(paren
+id|dic
+op_eq
+l_int|0x11
+)paren
+ques
+c_cond
+l_string|&quot;a (new)&quot;
+suffix:colon
+l_string|&quot;h (old)&quot;
+)paren
+suffix:semicolon
+id|tda9874a_dic
+op_assign
+id|dic
+suffix:semicolon
+multiline_comment|/* remember device id. */
+r_return
+l_int|1
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* not found */
+)brace
 DECL|function|tda9874a_initialize
+r_static
 r_int
 id|tda9874a_initialize
 c_func
@@ -3076,6 +3859,53 @@ l_string|&quot;tda9874a: STD parameter must be between 0 and 8.&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|tda9874a_AMSEL
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|tda9874a_AMSEL
+op_eq
+l_int|0
+)paren
+(brace
+id|tda9874a_NCONR
+op_assign
+l_int|0x01
+suffix:semicolon
+)brace
+multiline_comment|/* auto-mute: analog mono input */
+r_else
+r_if
+c_cond
+(paren
+id|tda9874a_AMSEL
+op_eq
+l_int|1
+)paren
+(brace
+id|tda9874a_NCONR
+op_assign
+l_int|0x05
+suffix:semicolon
+)brace
+multiline_comment|/* auto-mute: 1st carrier FM or AM */
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;tda9874a: AMSEL parameter must be 0 or 1.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 id|tda9874a_setup
 c_func
 (paren
@@ -3122,6 +3952,7 @@ mdefine_line|#define TEA6420_S_SE       0x04  /* stereo E */
 DECL|macro|TEA6420_S_GMU
 mdefine_line|#define TEA6420_S_GMU      0x05  /* general mute */
 DECL|function|tea6300_shift10
+r_static
 r_int
 id|tea6300_shift10
 c_func
@@ -3137,6 +3968,7 @@ l_int|10
 suffix:semicolon
 )brace
 DECL|function|tea6300_shift12
+r_static
 r_int
 id|tea6300_shift12
 c_func
@@ -3169,6 +4001,7 @@ mdefine_line|#define TDA8425_S1_OFF     0xEE  /* audio off (mute on) */
 DECL|macro|TDA8425_S1_ON
 mdefine_line|#define TDA8425_S1_ON      0xCE  /* audio on (mute off) - &quot;linear stereo&quot; mode */
 DECL|function|tda8425_shift10
+r_static
 r_int
 id|tda8425_shift10
 c_func
@@ -3186,6 +4019,7 @@ l_int|0xc0
 suffix:semicolon
 )brace
 DECL|function|tda8425_shift12
+r_static
 r_int
 id|tda8425_shift12
 c_func
@@ -3523,11 +4357,11 @@ comma
 (brace
 id|name
 suffix:colon
-l_string|&quot;tda9874a&quot;
+l_string|&quot;tda9874h/a&quot;
 comma
 id|id
 suffix:colon
-id|I2C_DRIVERID_TDA9874A
+id|I2C_DRIVERID_TDA9874
 comma
 id|checkit
 suffix:colon
@@ -3544,13 +4378,13 @@ id|tda9874a
 comma
 id|addr_lo
 suffix:colon
-id|I2C_TDA9874A
+id|I2C_TDA9874
 op_rshift
 l_int|1
 comma
 id|addr_hi
 suffix:colon
-id|I2C_TDA9874A
+id|I2C_TDA9874
 op_rshift
 l_int|1
 comma
@@ -4157,7 +4991,7 @@ multiline_comment|/* find description for the chip */
 id|dprintk
 c_func
 (paren
-l_string|&quot;tvaudio: chip @ addr=0x%x&bslash;n&quot;
+l_string|&quot;tvaudio: chip found @ i2c-addr=0x%x&bslash;n&quot;
 comma
 id|addr
 op_lshift
@@ -4238,12 +5072,18 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+l_string|&quot;tvaudio: found %s&bslash;n&quot;
+comma
+id|desc-&gt;name
+)paren
+suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;tvaudio: %s matches:%s%s%s&bslash;n&quot;
-comma
-id|desc-&gt;name
+l_string|&quot;tvaudio: matches:%s%s%s.&bslash;n&quot;
 comma
 (paren
 id|desc-&gt;flags
@@ -4773,6 +5613,27 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_case
+id|AUDC_SET_RADIO
+suffix:colon
+id|dprintk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;tvaudio: AUDC_SET_RADIO&bslash;n&quot;
+)paren
+suffix:semicolon
+id|chip-&gt;norm
+op_assign
+id|VIDEO_MODE_RADIO
+suffix:semicolon
+id|chip-&gt;watch_stereo
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* del_timer(&amp;chip-&gt;wt); */
+r_break
+suffix:semicolon
 multiline_comment|/* --- v4l ioctls --- */
 multiline_comment|/* take care: bttv does userspace copying, we&squot;ll get a&n;&t;   kernel pointer here... */
 r_case
@@ -4858,6 +5719,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|chip-&gt;norm
+op_ne
+id|VIDEO_MODE_RADIO
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|desc-&gt;getmode
 )paren
 id|va-&gt;mode
@@ -4875,6 +5744,7 @@ id|va-&gt;mode
 op_assign
 id|VIDEO_SOUND_MONO
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
@@ -5021,6 +5891,11 @@ op_logical_and
 id|va-&gt;mode
 )paren
 (brace
+id|chip-&gt;watch_stereo
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* del_timer(&amp;chip-&gt;wt); */
 id|chip-&gt;mode
 op_assign
 id|va-&gt;mode
@@ -5036,6 +5911,31 @@ id|va-&gt;mode
 )paren
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+)brace
+r_case
+id|VIDIOCSCHAN
+suffix:colon
+(brace
+r_struct
+id|video_channel
+op_star
+id|vc
+op_assign
+id|arg
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;tvaudio: VIDIOCSCHAN&bslash;n&quot;
+)paren
+suffix:semicolon
+id|chip-&gt;norm
+op_assign
+id|vc-&gt;norm
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -5113,7 +6013,6 @@ id|id
 suffix:colon
 id|I2C_DRIVERID_TVAUDIO
 comma
-multiline_comment|/* FIXME */
 id|flags
 suffix:colon
 id|I2C_DF_NOTIFY
@@ -5143,6 +6042,10 @@ id|name
 suffix:colon
 l_string|&quot;(unset)&quot;
 comma
+id|flags
+suffix:colon
+id|I2C_CLIENT_ALLOW_USE
+comma
 id|driver
 suffix:colon
 op_amp
@@ -5151,6 +6054,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|audiochip_init_module
+r_static
 r_int
 id|audiochip_init_module
 c_func
@@ -5228,6 +6132,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|audiochip_cleanup_module
+r_static
 r_void
 id|audiochip_cleanup_module
 c_func

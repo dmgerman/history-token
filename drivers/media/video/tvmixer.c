@@ -8,8 +8,9 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kdev_t.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/sound.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1661,6 +1662,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ----------------------------------------------------------------------- */
 DECL|function|tvmixer_init_module
+r_static
 r_int
 id|tvmixer_init_module
 c_func
@@ -1707,6 +1709,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|tvmixer_cleanup_module
+r_static
 r_void
 id|tvmixer_cleanup_module
 c_func
