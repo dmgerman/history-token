@@ -6382,8 +6382,8 @@ id|agp_intel_probe
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* intel_agp_init() must not be declared static for explicit&n;   early initialization to work (ie i810fb) */
 DECL|function|agp_intel_init
-r_static
 r_int
 id|__init
 id|agp_intel_init
