@@ -148,6 +148,8 @@ DECL|macro|FIXADDR_START
 mdefine_line|#define FIXADDR_START&t;(FIXADDR_TOP - __FIXADDR_SIZE)
 DECL|macro|__fix_to_virt
 mdefine_line|#define __fix_to_virt(x)&t;(FIXADDR_TOP - ((x) &lt;&lt; PAGE_SHIFT))
+DECL|macro|__virt_to_fix
+mdefine_line|#define __virt_to_fix(x)&t;((FIXADDR_TOP - ((x)&amp;PAGE_MASK)) &gt;&gt; PAGE_SHIFT)
 r_extern
 r_void
 id|__this_fixmap_does_not_exist
@@ -189,6 +191,40 @@ id|__fix_to_virt
 c_func
 (paren
 id|idx
+)paren
+suffix:semicolon
+)brace
+DECL|function|virt_to_fix
+r_static
+r_inline
+r_int
+r_int
+id|virt_to_fix
+c_func
+(paren
+r_const
+r_int
+r_int
+id|vaddr
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|vaddr
+op_ge
+id|FIXADDR_TOP
+op_logical_or
+id|vaddr
+OL
+id|FIXADDR_START
+)paren
+suffix:semicolon
+r_return
+id|__virt_to_fix
+c_func
+(paren
+id|vaddr
 )paren
 suffix:semicolon
 )brace

@@ -296,9 +296,9 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|page-&gt;pte.chain
+id|page-&gt;pte.direct
 op_ne
-l_int|NULL
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -790,9 +790,9 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|page-&gt;pte.chain
+id|page-&gt;pte.direct
 op_ne
-l_int|NULL
+l_int|0
 )paren
 suffix:semicolon
 id|page-&gt;flags

@@ -307,8 +307,7 @@ id|chain
 suffix:semicolon
 multiline_comment|/* Reverse pte mapping pointer.&n;&t;&t;&t;&t;&t; * protected by PG_chainlock */
 DECL|member|direct
-id|pte_t
-op_star
+id|pte_addr_t
 id|direct
 suffix:semicolon
 DECL|member|pte
@@ -504,6 +503,26 @@ macro_line|#else /* CONFIG_HIGHMEM || WANT_PAGE_VIRTUAL */
 DECL|macro|page_address
 mdefine_line|#define page_address(page)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__va( ( ((page) - page_zone(page)-&gt;zone_mem_map)&t;&t;&bslash;&n;&t;&t;&t;+ page_zone(page)-&gt;zone_start_pfn) &lt;&lt; PAGE_SHIFT)
 macro_line|#endif /* CONFIG_HIGHMEM || WANT_PAGE_VIRTUAL */
+multiline_comment|/*&n; * Return true if this page is mapped into pagetables.  Subtle: test pte.direct&n; * rather than pte.chain.  Because sometimes pte.direct is 64-bit, and .chain&n; * is only 32-bit.&n; */
+DECL|function|page_mapped
+r_static
+r_inline
+r_int
+id|page_mapped
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_return
+id|page-&gt;pte.direct
+op_ne
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Error return values for the *_nopage functions&n; */
 DECL|macro|NOPAGE_SIGBUS
 mdefine_line|#define NOPAGE_SIGBUS&t;(NULL)
