@@ -2077,7 +2077,7 @@ id|dir
 op_assign
 id|parent-&gt;d_inode
 suffix:semicolon
-id|LIST_HEAD
+id|HLIST_HEAD
 c_func
 (paren
 id|head
@@ -2157,7 +2157,7 @@ c_func
 id|dentry
 )paren
 suffix:semicolon
-id|list_add
+id|hlist_add_head
 c_func
 (paren
 op_amp
@@ -2180,7 +2180,7 @@ r_while
 c_loop
 (paren
 op_logical_neg
-id|list_empty
+id|hlist_empty
 c_func
 (paren
 op_amp
@@ -2193,7 +2193,7 @@ op_assign
 id|list_entry
 c_func
 (paren
-id|head.next
+id|head.first
 comma
 r_struct
 id|dentry

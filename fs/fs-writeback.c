@@ -145,7 +145,7 @@ multiline_comment|/*&n;&t;&t; * Only add valid (hashed) inodes to the superblock
 r_if
 c_cond
 (paren
-id|list_empty
+id|hlist_unhashed
 c_func
 (paren
 op_amp
