@@ -768,6 +768,13 @@ comma
 id|sig
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|sig-&gt;siglock
+)paren
+suffix:semicolon
 id|do_notify_parent
 c_func
 (paren
@@ -778,6 +785,7 @@ id|leader-&gt;exit_signal
 suffix:semicolon
 )brace
 r_else
+(brace
 id|__remove_thread_group
 c_func
 (paren
@@ -793,6 +801,7 @@ op_amp
 id|sig-&gt;siglock
 )paren
 suffix:semicolon
+)brace
 )brace
 id|clear_tsk_thread_flag
 c_func
