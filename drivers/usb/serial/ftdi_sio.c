@@ -1027,6 +1027,20 @@ l_int|0x3ff
 )brace
 comma
 (brace
+id|USB_DEVICE_VER
+c_func
+(paren
+id|FTDI_VID
+comma
+id|INSIDE_ACCESSO
+comma
+l_int|0
+comma
+l_int|0x3ff
+)paren
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* Terminating entry */
 )brace
@@ -3371,6 +3385,16 @@ comma
 l_int|0x400
 comma
 l_int|0xffff
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|FTDI_VID
+comma
+id|INSIDE_ACCESSO
 )paren
 )brace
 comma

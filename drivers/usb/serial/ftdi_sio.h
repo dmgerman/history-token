@@ -232,6 +232,9 @@ DECL|macro|LINX_FUTURE_1_PID
 mdefine_line|#define LINX_FUTURE_1_PID   0xF44B   /* Linx future device */
 DECL|macro|LINX_FUTURE_2_PID
 mdefine_line|#define LINX_FUTURE_2_PID   0xF44C   /* Linx future device */
+multiline_comment|/* Inside Accesso contactless reader (http://www.insidefr.com) */
+DECL|macro|INSIDE_ACCESSO
+mdefine_line|#define INSIDE_ACCESSO&t;&t;0xFAD0
 multiline_comment|/* Commands */
 DECL|macro|FTDI_SIO_RESET
 mdefine_line|#define FTDI_SIO_RESET &t;&t;0 /* Reset the port */
