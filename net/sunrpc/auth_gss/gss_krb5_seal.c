@@ -120,7 +120,10 @@ l_string|&quot;RPC:     gss_krb5_seal&bslash;n&quot;
 suffix:semicolon
 id|now
 op_assign
-id|jiffies
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond

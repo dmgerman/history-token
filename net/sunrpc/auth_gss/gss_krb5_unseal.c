@@ -458,7 +458,10 @@ id|GSS_C_QOP_DEFAULT
 suffix:semicolon
 id|now
 op_assign
-id|jiffies
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 id|ret
 op_assign
