@@ -3764,7 +3764,7 @@ suffix:semicolon
 r_struct
 id|xfrm_policy
 op_star
-id|xfrm_policy_delete
+id|xfrm_policy_bysel
 c_func
 (paren
 r_int
@@ -3774,6 +3774,9 @@ r_struct
 id|xfrm_selector
 op_star
 id|sel
+comma
+r_int
+r_delete
 )paren
 suffix:semicolon
 r_struct
