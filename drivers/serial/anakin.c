@@ -2162,10 +2162,10 @@ l_int|1
 comma
 )brace
 suffix:semicolon
-r_static
-r_void
-id|__init
 DECL|function|anakin_console_init
+r_static
+r_int
+id|__init
 id|anakin_console_init
 c_func
 (paren
@@ -2178,6 +2178,9 @@ c_func
 op_amp
 id|anakin_console
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|anakin_console_init
