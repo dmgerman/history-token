@@ -87,6 +87,8 @@ id|DECLARE_MUTEX
 id|userspace_sem
 )paren
 suffix:semicolon
+DECL|macro|dprintk
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_GOVERNOR, &quot;userspace&quot;, msg)
 multiline_comment|/* keep track of frequency transitions */
 r_static
 r_int
@@ -114,6 +116,18 @@ op_star
 id|freq
 op_assign
 id|data
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;saving cpu_cur_freq of cpu %u to be %u kHz&bslash;n&quot;
+comma
+id|freq-&gt;cpu
+comma
+id|freq
+op_member_access_from_pointer
+r_new
+)paren
 suffix:semicolon
 id|cpu_cur_freq
 (braket
@@ -162,6 +176,16 @@ id|ret
 op_assign
 op_minus
 id|EINVAL
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;_cpufreq_set for cpu %u, freq %u kHz&bslash;n&quot;
+comma
+id|cpu
+comma
+id|freq
+)paren
 suffix:semicolon
 id|down
 c_func
@@ -1701,6 +1725,29 @@ id|cpufreq_policy
 )paren
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;managing cpu %u started (%u - %u kHz, currently %u kHz)&bslash;n&quot;
+comma
+id|cpu
+comma
+id|cpu_min_freq
+(braket
+id|cpu
+)braket
+comma
+id|cpu_max_freq
+(braket
+id|cpu
+)braket
+comma
+id|cpu_cur_freq
+(braket
+id|cpu
+)braket
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -1757,6 +1804,14 @@ op_amp
 id|freq_attr_scaling_setspeed.attr
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;managing cpu %u stopped&bslash;n&quot;
+comma
+id|cpu
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -1789,6 +1844,34 @@ id|cpu
 )braket
 op_assign
 id|policy-&gt;max
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;limit event for cpu %u: %u - %u kHz, currently %u kHz, last set to %u kHz&bslash;n&quot;
+comma
+id|cpu
+comma
+id|cpu_min_freq
+(braket
+id|cpu
+)braket
+comma
+id|cpu_max_freq
+(braket
+id|cpu
+)braket
+comma
+id|cpu_cur_freq
+(braket
+id|cpu
+)braket
+comma
+id|cpu_set_freq
+(braket
+id|cpu
+)braket
+)paren
 suffix:semicolon
 r_if
 c_cond
