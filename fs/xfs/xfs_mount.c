@@ -4038,6 +4038,8 @@ l_int|NULL
 comma
 id|sbp-&gt;sb_rootino
 comma
+l_int|0
+comma
 id|XFS_ILOCK_EXCL
 comma
 op_amp

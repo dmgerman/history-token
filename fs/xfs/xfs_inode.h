@@ -922,6 +922,8 @@ DECL|macro|XFS_ISTALE
 mdefine_line|#define XFS_ISTALE&t;0x0010&t;/* inode has been staled */
 DECL|macro|XFS_IRECLAIMABLE
 mdefine_line|#define XFS_IRECLAIMABLE 0x0020 /* inode can be reclaimed */
+DECL|macro|XFS_INEW
+mdefine_line|#define XFS_INEW&t;0x0040
 multiline_comment|/*&n; * Flags for inode locking.&n; */
 DECL|macro|XFS_IOLOCK_EXCL
 mdefine_line|#define&t;XFS_IOLOCK_EXCL&t;&t;0x001
@@ -1033,6 +1035,8 @@ multiline_comment|/*&n; * For multiple groups support: if S_ISGID bit is set in 
 DECL|macro|XFS_INHERIT_GID
 mdefine_line|#define XFS_INHERIT_GID(pip, vfsp)&t;&bslash;&n;&t;(((vfsp)-&gt;vfs_flag &amp; VFS_GRPID) || ((pip)-&gt;i_d.di_mode &amp; S_ISGID))
 multiline_comment|/*&n; * xfs_iget.c prototypes.&n; */
+DECL|macro|IGET_CREATE
+mdefine_line|#define IGET_CREATE&t;1
 r_void
 id|xfs_ihash_init
 c_func
@@ -1110,6 +1114,8 @@ id|xfs_trans
 op_star
 comma
 id|xfs_ino_t
+comma
+id|uint
 comma
 id|uint
 comma
