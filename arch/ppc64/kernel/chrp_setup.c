@@ -845,6 +845,12 @@ r_static
 r_int
 id|max_width
 suffix:semicolon
+r_static
+id|spinlock_t
+id|progress_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -920,6 +926,13 @@ l_string|&quot;set-indicator&quot;
 )paren
 suffix:semicolon
 )brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|progress_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -936,7 +949,8 @@ id|set_indicator
 op_eq
 id|RTAS_UNKNOWN_SERVICE
 )paren
-r_return
+r_goto
+id|chrp_progress_exit
 suffix:semicolon
 id|rtas_call
 c_func
@@ -956,7 +970,8 @@ comma
 id|hex
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|chrp_progress_exit
 suffix:semicolon
 )brace
 id|rtas_call
@@ -1086,6 +1101,15 @@ comma
 l_int|NULL
 comma
 l_char|&squot; &squot;
+)paren
+suffix:semicolon
+id|chrp_progress_exit
+suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|progress_lock
 )paren
 suffix:semicolon
 )brace

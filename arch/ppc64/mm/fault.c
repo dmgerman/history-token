@@ -128,13 +128,22 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* On an SLB miss we can only check for a valid exception entry */
+multiline_comment|/* On a kernel SLB miss we can only check for a valid exception entry */
 r_if
 c_cond
+(paren
+op_logical_neg
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+op_logical_and
 (paren
 id|regs-&gt;trap
 op_eq
 l_int|0x380
+)paren
 )paren
 (brace
 id|bad_page_fault
