@@ -1,9 +1,4 @@
 multiline_comment|/**&n; *&t;i2c-ali1563.c - i2c driver for the ALi 1563 Southbridge&n; *&n; *&t;Copyright (C) 2004 Patrick Mochel&n; *&n; *&t;The 1563 southbridge is deceptively similar to the 1533, with a&n; *&t;few notable exceptions. One of those happens to be the fact they&n; *&t;upgraded the i2c core to be 2.0 compliant, and happens to be almost&n; *&t;identical to the i2c controller found in the Intel 801 south&n; *&t;bridges.&n; *&n; *&t;This driver is based on a mix of the 15x3, 1535, and i801 drivers,&n; *&t;with a little help from the ALi 1563 spec.&n; *&n; *&t;This file is released under the GPLv2&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG 0
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
