@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * isdnhdlc.c  --  General purpose ISDN HDLC decoder.&n; *&n; *Copyright (C) 2002&t;Wolfgang M&#xfffd;es      &lt;wolfgang@iksw-muees.de&gt;&n; *&t;&t;2001 &t;Frode Isaksen      &lt;fisaksen@bewan.com&gt;&n; *              2001 &t;Kai Germaschewski  &lt;kai.germaschewski@gmx.de&gt;&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/crc16.h&gt;
+macro_line|#include &lt;linux/crc-ccitt.h&gt;
 macro_line|#include &quot;isdnhdlc.h&quot;
 multiline_comment|/*-------------------------------------------------------------------*/
 id|MODULE_AUTHOR
@@ -1409,7 +1409,7 @@ l_int|1
 suffix:semicolon
 id|hdlc-&gt;crc
 op_assign
-id|crc16_byte
+id|crc_ccitt_byte
 c_func
 (paren
 id|hdlc-&gt;crc
@@ -2064,7 +2064,7 @@ l_int|8
 (brace
 id|hdlc-&gt;crc
 op_assign
-id|crc16_byte
+id|crc_ccitt_byte
 c_func
 (paren
 id|hdlc-&gt;crc
