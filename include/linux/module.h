@@ -136,49 +136,6 @@ mdefine_line|#define MODULE_LICENSE(license)
 macro_line|#endif
 DECL|macro|MODULE_DEVICE_TABLE
 mdefine_line|#define MODULE_DEVICE_TABLE(type,name)&t;&t;&bslash;&n;  MODULE_GENERIC_TABLE(type##_device,name)
-DECL|struct|kernel_symbol_group
-r_struct
-id|kernel_symbol_group
-(brace
-multiline_comment|/* Links us into the global symbol list */
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-multiline_comment|/* Module which owns it (if any) */
-DECL|member|owner
-r_struct
-id|module
-op_star
-id|owner
-suffix:semicolon
-multiline_comment|/* Are we internal use only? */
-DECL|member|gplonly
-r_int
-id|gplonly
-suffix:semicolon
-DECL|member|num_syms
-r_int
-r_int
-id|num_syms
-suffix:semicolon
-DECL|member|syms
-r_const
-r_struct
-id|kernel_symbol
-op_star
-id|syms
-suffix:semicolon
-DECL|member|crcs
-r_const
-r_int
-r_int
-op_star
-id|crcs
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* Given an address, look for it in the exception tables */
 r_const
 r_struct
@@ -312,16 +269,44 @@ id|MODULE_NAME_LEN
 )braket
 suffix:semicolon
 multiline_comment|/* Exported symbols */
-DECL|member|symbols
+DECL|member|syms
+r_const
 r_struct
-id|kernel_symbol_group
-id|symbols
+id|kernel_symbol
+op_star
+id|syms
+suffix:semicolon
+DECL|member|num_ksyms
+r_int
+r_int
+id|num_ksyms
+suffix:semicolon
+DECL|member|crcs
+r_const
+r_int
+r_int
+op_star
+id|crcs
 suffix:semicolon
 multiline_comment|/* GPL-only exported symbols. */
-DECL|member|gpl_symbols
+DECL|member|gpl_syms
+r_const
 r_struct
-id|kernel_symbol_group
-id|gpl_symbols
+id|kernel_symbol
+op_star
+id|gpl_syms
+suffix:semicolon
+DECL|member|num_gpl_syms
+r_int
+r_int
+id|num_gpl_syms
+suffix:semicolon
+DECL|member|gpl_crcs
+r_const
+r_int
+r_int
+op_star
+id|gpl_crcs
 suffix:semicolon
 multiline_comment|/* Exception tables */
 DECL|member|extable
@@ -887,33 +872,6 @@ id|KBUILD_MODNAME
 )paren
 comma
 dot
-id|symbols
-op_assign
-(brace
-dot
-id|owner
-op_assign
-op_amp
-id|__this_module
-)brace
-comma
-dot
-id|gpl_symbols
-op_assign
-(brace
-dot
-id|owner
-op_assign
-op_amp
-id|__this_module
-comma
-dot
-id|gplonly
-op_assign
-l_int|1
-)brace
-comma
-dot
 id|init
 op_assign
 id|init_module
@@ -1057,21 +1015,6 @@ mdefine_line|#define MOD_DEC_USE_COUNT&t;do { } while (0)
 macro_line|#endif
 DECL|macro|__MODULE_STRING
 mdefine_line|#define __MODULE_STRING(x) __stringify(x)
-multiline_comment|/*&n; * The exception and symbol tables, and the lock&n; * to protect them.&n; */
-r_extern
-id|spinlock_t
-id|modlist_lock
-suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|extables
-suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|symbols
-suffix:semicolon
 multiline_comment|/* Use symbol_get and symbol_put instead.  You&squot;ll thank me. */
 DECL|macro|HAVE_INTER_MODULE
 mdefine_line|#define HAVE_INTER_MODULE
