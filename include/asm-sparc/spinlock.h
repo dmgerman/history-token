@@ -206,7 +206,7 @@ DECL|typedef|spinlock_t
 id|spinlock_t
 suffix:semicolon
 DECL|macro|SPIN_LOCK_UNLOCKED
-mdefine_line|#define SPIN_LOCK_UNLOCKED&t;{ 0, }
+mdefine_line|#define SPIN_LOCK_UNLOCKED&t;(spinlock_t) { 0 }
 DECL|macro|spin_lock_init
 mdefine_line|#define spin_lock_init(lock)   (*((unsigned char *)(lock)) = 0)
 DECL|macro|spin_is_locked
