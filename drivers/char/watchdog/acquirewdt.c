@@ -29,6 +29,13 @@ r_static
 id|spinlock_t
 id|acq_lock
 suffix:semicolon
+DECL|variable|expect_close
+r_static
+r_int
+id|expect_close
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n; *&t;You must set these - there is no sane way to probe for this board.&n; */
 DECL|macro|WDT_STOP
 mdefine_line|#define WDT_STOP 0x43
@@ -650,7 +657,7 @@ id|acq_notifier
 op_assign
 (brace
 dot
-id|self
+id|notifier_call
 op_assign
 id|acq_notify_sys
 comma
