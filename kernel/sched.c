@@ -3558,7 +3558,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Previously:&n; *&n; * #define CAN_MIGRATE_TASK(p,rq,this_cpu)&t;&bslash;&n; *&t;((!idle || (NS_TO_JIFFIES(now - (p)-&gt;timestamp) &gt; &bslash;&n; *&t;&t;cache_decay_ticks)) &amp;&amp; !task_running(rq, p) &amp;&amp; &bslash;&n; *&t;&t;&t;cpu_isset(this_cpu, (p)-&gt;cpus_allowed))&n; */
+multiline_comment|/*&n; * can_migrate_task - may task p from runqueue rq be migrated to this_cpu?&n; */
 r_static
 r_inline
 r_int
@@ -3589,25 +3589,7 @@ id|rq-&gt;timestamp_last_tick
 op_minus
 id|tsk-&gt;timestamp
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|idle
-op_logical_and
-(paren
-id|delta
-op_le
-id|JIFFIES_TO_NS
-c_func
-(paren
-id|cache_decay_ticks
-)paren
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
+multiline_comment|/*&n;&t; * We do not migrate tasks that are:&n;&t; * 1) running (obviously), or&n;&t; * 2) cannot be migrated to this CPU due to cpus_allowed, or&n;&t; * 3) are cache-hot on their current CPU.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3632,6 +3614,25 @@ c_func
 id|this_cpu
 comma
 id|tsk-&gt;cpus_allowed
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|idle
+op_logical_and
+(paren
+id|delta
+op_le
+id|JIFFIES_TO_NS
+c_func
+(paren
+id|cache_decay_ticks
+)paren
 )paren
 )paren
 r_return
@@ -3825,7 +3826,6 @@ comma
 id|run_list
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We do not migrate tasks that are:&n;&t; * 1) running (obviously), or&n;&t; * 2) cannot be migrated to this CPU due to cpus_allowed, or&n;&t; * 3) are cache-hot on their current CPU.&n;&t; */
 id|curr
 op_assign
 id|curr-&gt;prev
@@ -3878,6 +3878,7 @@ comma
 id|this_cpu
 )paren
 suffix:semicolon
+multiline_comment|/* Only migrate one task if we are idle */
 r_if
 c_cond
 (paren
