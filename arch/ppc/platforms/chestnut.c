@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;linux/mtd/physmap.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -29,15 +30,19 @@ macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mv64x60.h&gt;
 macro_line|#include &lt;platforms/chestnut.h&gt;
-DECL|variable|boot_base
+DECL|variable|sram_base
 r_static
-id|u32
-id|boot_base
+r_void
+id|__iomem
+op_star
+id|sram_base
 suffix:semicolon
-multiline_comment|/* Virtual addr of 8bit boot */
+multiline_comment|/* Virtual addr of Internal SRAM */
 DECL|variable|cpld_base
 r_static
-id|u32
+r_void
+id|__iomem
+op_star
 id|cpld_base
 suffix:semicolon
 multiline_comment|/* Virtual addr of CPLD Regs */
@@ -89,7 +94,6 @@ r_static
 r_void
 id|__init
 DECL|function|chestnut_calibrate_decr
-(def_block
 id|chestnut_calibrate_decr
 c_func
 (paren
@@ -135,10 +139,7 @@ comma
 l_int|1000000
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-)def_block
 r_static
 r_int
 DECL|function|chestnut_show_cpuinfo
@@ -409,9 +410,7 @@ op_assign
 l_int|4
 suffix:semicolon
 r_return
-(paren
 id|PCI_IRQ_TABLE_LOOKUP
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * FUNCTION: chestnut_setup_bridge&n; *&n; * DESCRIPTION: initalize board-specific settings on the MV64360&n; *&n; ****/
@@ -545,10 +544,6 @@ id|si.pci_0.latency_timer
 op_assign
 l_int|0x80
 suffix:semicolon
-id|si.window_preserve_mask_32_lo
-op_assign
-id|CHESTNUT_PRESERVE_MASK
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -564,6 +559,7 @@ id|i
 op_increment
 )paren
 (brace
+macro_line|#if defined(CONFIG_NOT_COHERENT_CACHE)
 id|si.cpu_prot_options
 (braket
 id|i
@@ -571,43 +567,86 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_NOT_CACHE_COHERENT
-id|si.cpu_snoop_options
+id|si.enet_options
 (braket
 id|i
 )braket
 op_assign
-id|MV64360_CPU_SNOOP_NONE
+id|MV64360_ENET2MEM_SNOOP_NONE
 suffix:semicolon
-macro_line|#else
-id|si.cpu_snoop_options
+id|si.mpsc_options
 (braket
 id|i
 )braket
 op_assign
-id|MV64360_CPU_SNOOP_WB
+id|MV64360_MPSC2MEM_SNOOP_NONE
 suffix:semicolon
-multiline_comment|/* risky */
-macro_line|#endif
-id|si.pci_0.acc_cntl_options
+id|si.idma_options
 (braket
 id|i
 )braket
 op_assign
-macro_line|#ifdef CONFIG_NOT_CACHE_COHERENT
+id|MV64360_IDMA2MEM_SNOOP_NONE
+suffix:semicolon
+id|si.pci_1.acc_cntl_options
+(braket
+id|i
+)braket
+op_assign
 id|MV64360_PCI_ACC_CNTL_SNOOP_NONE
 op_or
+id|MV64360_PCI_ACC_CNTL_SWAP_NONE
+op_or
+id|MV64360_PCI_ACC_CNTL_MBURST_128_BYTES
+op_or
+id|MV64360_PCI_ACC_CNTL_RDSIZE_256_BYTES
+suffix:semicolon
 macro_line|#else
+id|si.cpu_prot_options
+(braket
+id|i
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|si.enet_options
+(braket
+id|i
+)braket
+op_assign
+id|MV64360_ENET2MEM_SNOOP_NONE
+suffix:semicolon
+multiline_comment|/* errata */
+id|si.mpsc_options
+(braket
+id|i
+)braket
+op_assign
+id|MV64360_MPSC2MEM_SNOOP_NONE
+suffix:semicolon
+multiline_comment|/* errata */
+id|si.idma_options
+(braket
+id|i
+)braket
+op_assign
+id|MV64360_IDMA2MEM_SNOOP_NONE
+suffix:semicolon
+multiline_comment|/* errata */
+id|si.pci_1.acc_cntl_options
+(braket
+id|i
+)braket
+op_assign
 id|MV64360_PCI_ACC_CNTL_SNOOP_WB
 op_or
-multiline_comment|/* risky */
-macro_line|#endif
 id|MV64360_PCI_ACC_CNTL_SWAP_NONE
 op_or
 id|MV64360_PCI_ACC_CNTL_MBURST_32_BYTES
 op_or
 id|MV64360_PCI_ACC_CNTL_RDSIZE_32_BYTES
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* Lookup host bridge - on CPU 0 - no SMP support */
 r_if
@@ -701,6 +740,17 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|bh.ci
+op_member_access_from_pointer
+id|enable_window_32bit
+c_func
+(paren
+op_amp
+id|bh
+comma
+id|MV64x60_CPU2BOOT_WIN
+)paren
+suffix:semicolon
 id|mv64x60_set_32bit_window
 c_func
 (paren
@@ -714,6 +764,17 @@ comma
 id|CHESTNUT_32BIT_SIZE
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|bh.ci
+op_member_access_from_pointer
+id|enable_window_32bit
+c_func
+(paren
+op_amp
+id|bh
+comma
+id|MV64x60_CPU2DEV_0_WIN
 )paren
 suffix:semicolon
 id|mv64x60_set_32bit_window
@@ -731,6 +792,27 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|bh.ci
+op_member_access_from_pointer
+id|enable_window_32bit
+c_func
+(paren
+op_amp
+id|bh
+comma
+id|MV64x60_CPU2DEV_1_WIN
+)paren
+suffix:semicolon
+id|cpld_base
+op_assign
+id|ioremap
+c_func
+(paren
+id|CHESTNUT_CPLD_BASE
+comma
+id|CHESTNUT_CPLD_SIZE
+)paren
+suffix:semicolon
 id|mv64x60_set_32bit_window
 c_func
 (paren
@@ -744,6 +826,17 @@ comma
 id|CHESTNUT_UART_SIZE
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|bh.ci
+op_member_access_from_pointer
+id|enable_window_32bit
+c_func
+(paren
+op_amp
+id|bh
+comma
+id|MV64x60_CPU2DEV_2_WIN
 )paren
 suffix:semicolon
 id|mv64x60_set_32bit_window
@@ -761,7 +854,17 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Set up window for internal sram (256KByte insize) */
+id|bh.ci
+op_member_access_from_pointer
+id|enable_window_32bit
+c_func
+(paren
+op_amp
+id|bh
+comma
+id|MV64x60_CPU2DEV_3_WIN
+)paren
+suffix:semicolon
 id|mv64x60_set_32bit_window
 c_func
 (paren
@@ -772,51 +875,23 @@ id|MV64x60_CPU2SRAM_WIN
 comma
 id|CHESTNUT_INTERNAL_SRAM_BASE
 comma
-id|CHESTNUT_INTERNAL_SRAM_SIZE
+id|MV64360_SRAM_SIZE
 comma
 l_int|0
 )paren
 suffix:semicolon
-id|boot_base
-op_assign
-(paren
-id|u32
-)paren
-id|ioremap
-c_func
-(paren
-id|CHESTNUT_BOOT_8BIT_BASE
-comma
-id|CHESTNUT_BOOT_8BIT_SIZE
-)paren
-suffix:semicolon
-id|cpld_base
-op_assign
-(paren
-id|u32
-)paren
-id|ioremap
-c_func
-(paren
-id|CHESTNUT_CPLD_BASE
-comma
-id|CHESTNUT_CPLD_SIZE
-)paren
-suffix:semicolon
-multiline_comment|/*&n;    &t; * Configure internal SRAM -&n;    &t; * Cache coherent write back, incase&n;&t; *      CONFIG_MV64360_SRAM_CACHE_COHERENT set&n;    &t; * Parity enabled.&n;    &t; * Parity error propagation&n;    &t; * Arbitration not parked for CPU only&n;    &t; * Other bits are reserved.&n;    &t; */
-macro_line|#ifdef CONFIG_MV64360_SRAM_CACHE_COHERENT
-id|mv64x60_write
+id|bh.ci
+op_member_access_from_pointer
+id|enable_window_32bit
 c_func
 (paren
 op_amp
 id|bh
 comma
-id|MV64360_SRAM_CONFIG
-comma
-l_int|0x001600b2
+id|MV64x60_CPU2SRAM_WIN
 )paren
 suffix:semicolon
-macro_line|#else
+macro_line|#ifdef CONFIG_NOT_COHERENT_CACHE
 id|mv64x60_write
 c_func
 (paren
@@ -828,20 +903,37 @@ comma
 l_int|0x001600b0
 )paren
 suffix:semicolon
+macro_line|#else
+id|mv64x60_write
+c_func
+(paren
+op_amp
+id|bh
+comma
+id|MV64360_SRAM_CONFIG
+comma
+l_int|0x001600b2
+)paren
+suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;    &t; * Setting the SRAM to 0. Note that this generates parity errors on&n;&t; * internal data path in SRAM since it&squot;s first time accessing it&n;&t; * while after reset it&squot;s not configured&n;    &t;*/
+id|sram_base
+op_assign
+id|ioremap
+c_func
+(paren
+id|CHESTNUT_INTERNAL_SRAM_BASE
+comma
+id|MV64360_SRAM_SIZE
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|CHESTNUT_INTERNAL_SRAM_BASE
+id|sram_base
 comma
 l_int|0
 comma
-id|CHESTNUT_INTERNAL_SRAM_SIZE
+id|MV64360_SRAM_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Configure MPP pins for PCI DMA&n;&t; *&n;&t; * PCI Slot&t;GNT pin&t;&t;REQ pin&n;&t; *&t;0&t;MPP16&t;&t;MPP17&n;&t; *&t;1&t;MPP18&t;&t;MPP19&n;&t; *&t;2&t;MPP20&t;&t;MPP21&n;&t; *&t;3&t;MPP22&t;&t;MPP23&n;&t; */
@@ -1007,6 +1099,7 @@ id|bh
 comma
 id|MV64x60_GPP_IO_CNTL
 comma
+multiline_comment|/* Output */
 id|BIT
 c_func
 (paren
@@ -1068,7 +1161,6 @@ l_int|15
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Output */
 multiline_comment|/*&n;    &t; * Configure the following MPP pins to indicate a level&n;    &t; * triggered interrupt&n;    &t; *&n;       &t; * MPP24 - Board Reset (just map the MPP &amp; GPP for chestnut_reset)&n;       &t; * MPP25 - UART A  (high)&n;       &t; * MPP26 - UART B  (high)&n;&t; * MPP28 - PCI Slot 3 (low)&n;&t; * MPP29 - PCI Slot 2 (low)&n;&t; * MPP30 - PCI Slot 1 (low)&n;&t; * MPP31 - PCI Slot 0 (low)&n;    &t; */
 id|mv64x60_clr_bits
 c_func
@@ -1464,7 +1556,7 @@ l_int|31
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    &t; * Dismiss and then enable interrupt on CPU #0 high cause register&n;    &t; * BIT27 summarizes GPP interrupts 24-31&n;    &t;*/
+multiline_comment|/*&n;    &t; * Dismiss and then enable interrupt on CPU #0 high cause register&n;    &t; * BIT27 summarizes GPP interrupts 24-31&n;    &t; */
 id|mv64x60_set_bits
 c_func
 (paren
@@ -1609,7 +1701,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;IBM 750FX/GX port (C) 2004 MontaVista Software, Inc. (source@mvista.com)&bslash;n&quot;
+l_string|&quot;IBM 750FX/GX port (C) 2004 MontaVista Software, Inc.&quot;
+l_string|&quot; (source@mvista.com)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1627,9 +1720,71 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_MTD_PHYSMAP
+DECL|variable|ptbl
+r_static
+r_struct
+id|mtd_partition
+id|ptbl
+suffix:semicolon
+r_static
+r_int
+id|__init
+DECL|function|chestnut_setup_mtd
+id|chestnut_setup_mtd
+c_func
+(paren
+r_void
+)paren
+(brace
+id|memset
+c_func
+(paren
+op_amp
+id|ptbl
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|ptbl
+)paren
+)paren
+suffix:semicolon
+id|ptbl.name
+op_assign
+l_string|&quot;User FS&quot;
+suffix:semicolon
+id|ptbl.size
+op_assign
+id|CHESTNUT_32BIT_SIZE
+suffix:semicolon
+id|physmap_map.size
+op_assign
+id|CHESTNUT_32BIT_SIZE
+suffix:semicolon
+id|physmap_set_partitions
+c_func
+(paren
+op_amp
+id|ptbl
+comma
+l_int|1
+)paren
+suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
+DECL|variable|chestnut_setup_mtd
+id|arch_initcall
+c_func
+(paren
+id|chestnut_setup_mtd
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/**************************************************************************&n; * FUNCTION: chestnut_restart&n; *&n; * DESCRIPTION: ppc_md machine reset callback&n; *              reset the board via the CPLD command register&n; *&n; ****/
 r_static
 r_void
@@ -1659,16 +1814,9 @@ c_func
 (paren
 l_int|0x1
 comma
-(paren
-r_void
-id|__iomem
-op_star
-)paren
-(paren
 id|cpld_base
 op_plus
 l_int|3
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* GPP pin tied to MPP earlier */
@@ -1742,108 +1890,6 @@ c_func
 suffix:semicolon
 multiline_comment|/* NOTREACHED */
 )brace
-DECL|macro|SET_PCI_COMMAND_INVALIDATE
-mdefine_line|#define SET_PCI_COMMAND_INVALIDATE
-macro_line|#ifdef SET_PCI_COMMAND_INVALIDATE
-multiline_comment|/*&n; * Dave Wilhardt found that PCI_COMMAND_INVALIDATE must&n; * be set for each device if you are using cache coherency.&n; */
-r_static
-r_void
-id|__init
-DECL|function|set_pci_command_invalidate
-id|set_pci_command_invalidate
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|pci_dev
-op_star
-id|dev
-op_assign
-l_int|NULL
-suffix:semicolon
-id|u16
-id|val
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|dev
-op_assign
-id|pci_find_device
-c_func
-(paren
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
-id|dev
-)paren
-)paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|pci_read_config_word
-c_func
-(paren
-id|dev
-comma
-id|PCI_COMMAND
-comma
-op_amp
-id|val
-)paren
-suffix:semicolon
-id|val
-op_or_assign
-id|PCI_COMMAND_INVALIDATE
-suffix:semicolon
-id|pci_write_config_word
-c_func
-(paren
-id|dev
-comma
-id|PCI_COMMAND
-comma
-id|val
-)paren
-suffix:semicolon
-id|pci_write_config_byte
-c_func
-(paren
-id|dev
-comma
-id|PCI_CACHE_LINE_SIZE
-comma
-id|L1_CACHE_LINE_SIZE
-op_rshift
-l_int|2
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
-r_static
-r_void
-id|__init
-DECL|function|chestnut_pci_fixups
-id|chestnut_pci_fixups
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef SET_PCI_COMMAND_INVALIDATE
-id|set_pci_command_invalidate
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 multiline_comment|/**************************************************************************&n; * FUNCTION: chestnut_map_io&n; *&n; * DESCRIPTION: configure fixed memory-mapped IO&n; *&n; ****/
 r_static
 r_void
@@ -1855,54 +1901,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_MV64360_SRAM_CACHEABLE
-id|io_block_mapping
-c_func
-(paren
-id|CHESTNUT_INTERNAL_SRAM_BASE
-comma
-id|CHESTNUT_INTERNAL_SRAM_BASE
-comma
-id|CHESTNUT_INTERNAL_SRAM_SIZE
-comma
-id|_PAGE_KERNEL
-op_or
-id|_PAGE_GUARDED
-)paren
-suffix:semicolon
-macro_line|#else
-macro_line|#ifdef CONFIG_MV64360_SRAM_CACHE_COHERENT
-id|io_block_mapping
-c_func
-(paren
-id|CHESTNUT_INTERNAL_SRAM_BASE
-comma
-id|CHESTNUT_INTERNAL_SRAM_BASE
-comma
-id|CHESTNUT_INTERNAL_SRAM_SIZE
-comma
-id|_PAGE_KERNEL
-op_or
-id|_PAGE_GUARDED
-op_or
-id|_PAGE_COHERENT
-)paren
-suffix:semicolon
-macro_line|#else
-id|io_block_mapping
-c_func
-(paren
-id|CHESTNUT_INTERNAL_SRAM_BASE
-comma
-id|CHESTNUT_INTERNAL_SRAM_BASE
-comma
-id|CHESTNUT_INTERNAL_SRAM_SIZE
-comma
-id|_PAGE_IO
-)paren
-suffix:semicolon
-macro_line|#endif /* !CONFIG_MV64360_SRAM_CACHE_COHERENT */
-macro_line|#endif /* !CONFIG_MV64360_SRAM_CACHEABLE */
 macro_line|#if defined(CONFIG_SERIAL_TEXT_DEBUG) || defined(CONFIG_KGDB)
 id|io_block_mapping
 c_func
@@ -1954,8 +1952,6 @@ id|mb
 c_func
 (paren
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * FUNCTION: platform_init&n; *&n; * DESCRIPTION: main entry point for configuring board-specific machine&n; *              callbacks&n; *&n; ****/
@@ -2068,10 +2064,6 @@ id|ppc_md.setup_io_mappings
 op_assign
 id|chestnut_map_io
 suffix:semicolon
-id|ppc_md.pcibios_fixup
-op_assign
-id|chestnut_pci_fixups
-suffix:semicolon
 id|ppc_md.restart
 op_assign
 id|chestnut_restart
@@ -2112,10 +2104,6 @@ id|ppc_md.heartbeat
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ppc_md.pcibios_fixup
-op_assign
-id|chestnut_pci_fixups
-suffix:semicolon
 id|bh.p_base
 op_assign
 id|CONFIG_MV64X60_NEW_BASE
@@ -2151,8 +2139,6 @@ l_string|&quot;chestnut_init(): exit&quot;
 comma
 l_int|0
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 eof
