@@ -800,7 +800,7 @@ suffix:semicolon
 )brace
 id|pr_debug
 (paren
-l_string|&quot;%s: %s %s %s %s %s %s&bslash;n&quot;
+l_string|&quot;%s: %s %s %s %s %s %s %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -832,6 +832,11 @@ comma
 id|envp
 (braket
 l_int|3
+)braket
+comma
+id|envp
+(braket
+l_int|4
 )braket
 )paren
 suffix:semicolon
