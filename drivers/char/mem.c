@@ -498,7 +498,7 @@ id|_PAGE_NO_CACHE
 op_or
 id|_PAGE_GUARDED
 suffix:semicolon
-macro_line|#elif defined(__mc68000__)
+macro_line|#elif defined(__mc68000__) &amp;&amp; defined(CONFIG_MMU)
 macro_line|#ifdef SUN3_PAGE_NOCACHE
 r_if
 c_cond

@@ -8769,6 +8769,8 @@ id|likely
 c_func
 (paren
 id|objp
+op_ne
+l_int|NULL
 )paren
 )paren
 (brace

@@ -298,16 +298,16 @@ r_struct
 id|rpc_clnt
 op_star
 )paren
-id|rpc_allocate
+id|kmalloc
 c_func
 (paren
-l_int|0
-comma
 r_sizeof
 (paren
 op_star
 id|clnt
 )paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -483,7 +483,7 @@ comma
 id|flavor
 )paren
 suffix:semicolon
-id|rpc_free
+id|kfree
 c_func
 (paren
 id|clnt
@@ -672,7 +672,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|rpc_free
+id|kfree
 c_func
 (paren
 id|clnt
@@ -1757,9 +1757,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|task-&gt;tk_buffer
-op_assign
 id|rpc_malloc
 c_func
 (paren
@@ -1768,7 +1765,6 @@ comma
 id|bufsiz
 op_lshift
 l_int|1
-)paren
 )paren
 op_ne
 l_int|NULL
@@ -1911,15 +1907,9 @@ suffix:semicolon
 multiline_comment|/* Default buffer setup */
 id|bufsiz
 op_assign
-id|rpcproc_bufsiz
-c_func
-(paren
-id|clnt
-comma
-id|task-&gt;tk_msg.rpc_proc
-)paren
-op_plus
-id|RPC_SLACK_SPACE
+id|task-&gt;tk_bufsize
+op_rshift
+l_int|1
 suffix:semicolon
 id|sndbuf-&gt;head
 (braket

@@ -1,3 +1,5 @@
+multiline_comment|/*&n; * linux/net/sunrpc/timer.c&n; *&n; * Estimate RPC request round trip time.&n; *&n; * Based on packet round-trip and variance estimator algorithms described&n; * in appendix A of &quot;Congestion Avoidance and Control&quot; by Van Jacobson&n; * and Michael J. Karels (ACM Computer Communication Review; Proceedings&n; * of the Sigcomm &squot;88 Symposium in Stanford, CA, August, 1988).&n; *&n; * This RTT estimator is used only for RPC over datagram protocols.&n; *&n; * Copyright (C) 2002 Trond Myklebust &lt;trond.myklebust@fys.uio.no&gt;&n; */
+macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
@@ -21,19 +23,15 @@ op_star
 id|rt
 comma
 r_int
+r_int
 id|timeo
 )paren
 (brace
 r_int
-id|t
+r_int
+id|init
 op_assign
-(paren
-id|timeo
-op_minus
-id|RPC_RTO_INIT
-)paren
-op_lshift
-l_int|3
+l_int|0
 suffix:semicolon
 r_int
 id|i
@@ -45,13 +43,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|t
-OL
-l_int|0
+id|timeo
+OG
+id|RPC_RTO_INIT
 )paren
-id|t
+id|init
 op_assign
-l_int|0
+(paren
+id|timeo
+op_minus
+id|RPC_RTO_INIT
+)paren
+op_lshift
+l_int|3
 suffix:semicolon
 r_for
 c_loop
@@ -73,7 +77,7 @@ id|rt-&gt;srtt
 id|i
 )braket
 op_assign
-id|t
+id|init
 suffix:semicolon
 id|rt-&gt;sdrtt
 (braket
@@ -93,6 +97,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * NB: When computing the smoothed RTT and standard deviation,&n; *     be careful not to produce negative intermediate results.&n; */
 r_void
 DECL|function|rpc_update_rtt
 id|rpc_update_rtt
@@ -111,6 +116,7 @@ id|m
 )paren
 (brace
 r_int
+r_int
 op_star
 id|srtt
 comma
@@ -127,6 +133,16 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* jiffies wrapped; ignore this one */
+r_if
+c_cond
+(paren
+id|m
+OL
+l_int|0
+)paren
+r_return
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -136,7 +152,7 @@ l_int|0
 )paren
 id|m
 op_assign
-l_int|1
+l_int|1L
 suffix:semicolon
 id|srtt
 op_assign
@@ -207,6 +223,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Estimate rto for an nfs rpc sent via. an unreliable datagram.&n; * Use the mean and mean deviation of rtt for the appropriate type of rpc&n; * for the frequent rpcs and a default for the others.&n; * The justification for doing &quot;other&quot; this way is that these rpcs&n; * happen so infrequently that timer est. would probably be stale.&n; * Also, since many of these rpcs are&n; * non-idempotent, a conservative timeout is desired.&n; * getattr, lookup,&n; * read, write, commit     - A+4D&n; * other                   - timeo&n; */
 r_int
+r_int
 DECL|function|rpc_calc_rto
 id|rpc_calc_rto
 c_func
@@ -220,6 +237,7 @@ r_int
 id|timer
 )paren
 (brace
+r_int
 r_int
 id|res
 suffix:semicolon
