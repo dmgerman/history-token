@@ -2211,6 +2211,16 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+multiline_comment|/* This can happen with drivers abusing the special request field.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ar
+)paren
+r_return
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren

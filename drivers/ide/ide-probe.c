@@ -691,6 +691,9 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#else
+macro_line|# ifndef CONFIG_BLK_DEV_IDE_TCQ_DEPTH
+macro_line|#  define CONFIG_BLK_DEV_IDE_TCQ_DEPTH 1
+macro_line|# endif
 id|drive-&gt;queue_depth
 op_assign
 id|drive-&gt;id-&gt;queue_depth

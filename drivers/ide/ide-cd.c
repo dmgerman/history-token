@@ -984,9 +984,6 @@ id|rq-&gt;waiting
 op_assign
 id|wait
 suffix:semicolon
-(paren
-r_void
-)paren
 id|ide_do_drive_cmd
 c_func
 (paren
@@ -1092,6 +1089,16 @@ id|rq-&gt;current_nr_sectors
 id|uptodate
 op_assign
 l_int|1
+suffix:semicolon
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|rq-&gt;special
+op_assign
+l_int|NULL
 suffix:semicolon
 id|ide_end_request
 c_func

@@ -11843,12 +11843,6 @@ c_func
 (paren
 id|drive
 comma
-id|inode
-comma
-id|file
-comma
-id|cmd
-comma
 id|arg
 )paren
 suffix:semicolon
@@ -11881,12 +11875,6 @@ id|ide_task_ioctl
 c_func
 (paren
 id|drive
-comma
-id|inode
-comma
-id|file
-comma
-id|cmd
 comma
 id|arg
 )paren
