@@ -2792,7 +2792,10 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;usbfs: USBDEVFS_CONTROL failed dev %d rqt %u rq %u len %u ret %d&bslash;n&quot;
+l_string|&quot;usbfs: USBDEVFS_CONTROL failed &quot;
+l_string|&quot;cmd %s dev %d rqt %u rq %u len %u ret %d&bslash;n&quot;
+comma
+id|current-&gt;comm
 comma
 id|dev-&gt;devnum
 comma
