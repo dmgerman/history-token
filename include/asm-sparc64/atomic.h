@@ -118,6 +118,10 @@ DECL|macro|atomic_dec
 mdefine_line|#define atomic_dec(v) ((void)__atomic_sub(1, v))
 DECL|macro|atomic64_dec
 mdefine_line|#define atomic64_dec(v) ((void)__atomic64_sub(1, v))
+DECL|macro|atomic_add_negative
+mdefine_line|#define atomic_add_negative(i, v) (__atomic_add(i, v) &lt; 0)
+DECL|macro|atomic64_add_negative
+mdefine_line|#define atomic64_add_negative(i, v) (__atomic64_add(i, v) &lt; 0)
 multiline_comment|/* Atomic operations are already serializing */
 DECL|macro|smp_mb__before_atomic_dec
 mdefine_line|#define smp_mb__before_atomic_dec()&t;barrier()
