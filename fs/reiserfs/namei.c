@@ -5646,7 +5646,7 @@ id|old_inode_mode
 )paren
 op_logical_and
 op_logical_neg
-id|reiserfs_buffer_prepared
+id|buffer_journal_prepared
 c_func
 (paren
 id|dot_dot_de.de_bh
