@@ -1859,6 +1859,8 @@ id|tlb_gather_mmu
 c_func
 (paren
 id|mm
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|unmap_page_range

@@ -24,6 +24,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR HD_MAJOR
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device)&gt;&gt;6)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#ifdef __arm__
 DECL|macro|HD_IRQ
@@ -239,10 +241,25 @@ r_struct
 id|timer_list
 id|device_timer
 suffix:semicolon
+DECL|macro|TIMEOUT_VALUE
+mdefine_line|#define TIMEOUT_VALUE (6*HZ)
 DECL|macro|SET_TIMER
 mdefine_line|#define SET_TIMER&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;mod_timer(&amp;device_timer, jiffies + TIMEOUT_VALUE);&t;&bslash;&n;&t;} while (0)
+DECL|variable|do_hd
+r_static
+r_void
+(paren
+op_star
+id|do_hd
+)paren
+(paren
+r_void
+)paren
+op_assign
+l_int|NULL
+suffix:semicolon
 DECL|macro|SET_HANDLER
-mdefine_line|#define SET_HANDLER(x) &bslash;&n;if ((DEVICE_INTR = (x)) != NULL) &bslash;&n;&t;SET_TIMER; &bslash;&n;else &bslash;&n;&t;del_timer(&amp;device_timer);
+mdefine_line|#define SET_HANDLER(x) &bslash;&n;if ((do_hd = (x)) != NULL) &bslash;&n;&t;SET_TIMER; &bslash;&n;else &bslash;&n;&t;del_timer(&amp;device_timer);
 macro_line|#if (HD_DELAY &gt; 0)
 DECL|variable|last_req
 r_int
@@ -1746,6 +1763,8 @@ id|BBD_ERR
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2018,6 +2037,8 @@ l_int|0
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -2211,6 +2232,8 @@ id|i
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -2310,7 +2333,7 @@ r_int
 r_int
 id|dev
 suffix:semicolon
-id|DEVICE_INTR
+id|do_hd
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2382,6 +2405,8 @@ macro_line|#endif
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2481,6 +2506,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2525,7 +2552,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|DEVICE_INTR
+id|do_hd
 )paren
 r_return
 suffix:semicolon
@@ -2553,7 +2580,9 @@ id|QUEUE
 )paren
 )paren
 (brace
-id|CLEAR_INTR
+id|do_hd
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -2690,6 +2719,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2929,6 +2960,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -3353,9 +3386,9 @@ id|handler
 r_void
 )paren
 op_assign
-id|DEVICE_INTR
+id|do_hd
 suffix:semicolon
-id|DEVICE_INTR
+id|do_hd
 op_assign
 l_int|NULL
 suffix:semicolon

@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#endif
@@ -2309,11 +2310,7 @@ macro_line|#endif
 multiline_comment|/* Default root filesystem to sda2.  */
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0802
-)paren
+id|Root_SDA2
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check ASN in HWRPB for validity, report if bad.&n;&t; * FIXME: how was this failing?  Should we trust it instead,&n;&t; * and copy the value into alpha_mv.max_asn?&n; &t; */
 r_if

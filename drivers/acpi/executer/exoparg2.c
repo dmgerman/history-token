@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg2 - AML execution - opcodes with 2 arguments&n; *              $Revision: 106 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg2 - AML execution - opcodes with 2 arguments&n; *              $Revision: 108 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -577,12 +577,13 @@ multiline_comment|/*&n;&t;&t; * Convert the second operand if necessary.  The fi
 r_switch
 c_cond
 (paren
+id|ACPI_GET_OBJECT_TYPE
+(paren
 id|operand
 (braket
 l_int|0
 )braket
-op_member_access_from_pointer
-id|common.type
+)paren
 )paren
 (brace
 r_case
@@ -803,12 +804,13 @@ multiline_comment|/*&n;&t;&t; * At this point, the Source operand is either a Pa
 r_if
 c_cond
 (paren
+id|ACPI_GET_OBJECT_TYPE
+(paren
 id|operand
 (braket
 l_int|0
 )braket
-op_member_access_from_pointer
-id|common.type
+)paren
 op_eq
 id|ACPI_TYPE_PACKAGE
 )paren
@@ -848,14 +850,15 @@ r_if
 c_cond
 (paren
 (paren
+id|ACPI_GET_OBJECT_TYPE
+(paren
 id|operand
 (braket
 l_int|2
 )braket
-op_member_access_from_pointer
-id|common.type
+)paren
 op_eq
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_INTEGER
 )paren
 op_logical_and
 (paren
@@ -864,13 +867,13 @@ id|operand
 l_int|2
 )braket
 op_member_access_from_pointer
-id|reference.opcode
-op_eq
-id|AML_ZERO_OP
+id|common.flags
+op_amp
+id|AOPOBJ_AML_CONSTANT
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * There is no actual result descriptor (the Zero_op Result&n;&t;&t;&t;&t; * descriptor is a placeholder), so just delete the placeholder and&n;&t;&t;&t;&t; * return a reference to the package element&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * There is no actual result descriptor (the Zero_op/Constant Result&n;&t;&t;&t;&t; * descriptor is a placeholder), so just delete the placeholder and&n;&t;&t;&t;&t; * return a reference to the package element&n;&t;&t;&t;&t; */
 id|acpi_ut_remove_reference
 (paren
 id|operand
@@ -901,7 +904,10 @@ id|AML_INDEX_OP
 suffix:semicolon
 id|return_desc-&gt;reference.target_type
 op_assign
-id|temp_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|temp_desc
+)paren
 suffix:semicolon
 id|return_desc-&gt;reference.object
 op_assign

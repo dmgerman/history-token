@@ -326,13 +326,9 @@ multiline_comment|/* It&squot;s a directory, or we are required to confirm the f
 id|dprintk
 c_func
 (paren
-l_string|&quot;find_exported_dentry: need to look harder for %d/%d&bslash;n&quot;
+l_string|&quot;find_exported_dentry: need to look harder for %s/%d&bslash;n&quot;
 comma
-id|kdev_t_to_nr
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 op_star
 (paren

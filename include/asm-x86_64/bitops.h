@@ -1315,6 +1315,9 @@ DECL|macro|minix_test_bit
 mdefine_line|#define minix_test_bit(nr,addr) test_bit(nr,(void*)addr)
 DECL|macro|minix_find_first_zero_bit
 mdefine_line|#define minix_find_first_zero_bit(addr,size) &bslash;&n;&t;find_first_zero_bit((void*)addr,size)
+multiline_comment|/* find last set bit */
+DECL|macro|fls
+mdefine_line|#define fls(x) generic_fls(x)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _X86_64_BITOPS_H */
 eof

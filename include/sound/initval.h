@@ -372,6 +372,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(SNDRV_GET_ID) &amp;&amp; !defined(MODULE)
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 DECL|function|get_id
 r_static
 r_int

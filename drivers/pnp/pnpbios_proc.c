@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/pnpbios.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 DECL|variable|proc_pnp
 r_static
 r_struct

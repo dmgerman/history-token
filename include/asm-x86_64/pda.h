@@ -2,22 +2,32 @@ macro_line|#ifndef X86_64_PDA_H
 DECL|macro|X86_64_PDA_H
 mdefine_line|#define X86_64_PDA_H
 macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#ifndef ASM_OFFSET_H
-macro_line|#include &lt;asm/offset.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 multiline_comment|/* Per processor datastructure. %gs points to it while the kernel runs */
-multiline_comment|/* To use a new field with the *_pda macros it needs to be added to tools/offset.c */
 DECL|struct|x8664_pda
 r_struct
 id|x8664_pda
 (brace
+DECL|member|pcurrent
+r_struct
+id|task_struct
+op_star
+id|pcurrent
+suffix:semicolon
+multiline_comment|/* Current process */
+DECL|member|cpudata_offset
+r_int
+r_int
+id|cpudata_offset
+suffix:semicolon
 DECL|member|me
 r_struct
 id|x8664_pda
 op_star
 id|me
 suffix:semicolon
+multiline_comment|/* Pointer to itself */
 DECL|member|kernelstack
 r_int
 r_int
@@ -36,13 +46,6 @@ r_int
 id|irqrsp
 suffix:semicolon
 multiline_comment|/* Old rsp for interrupts. */
-DECL|member|pcurrent
-r_struct
-id|task_struct
-op_star
-id|pcurrent
-suffix:semicolon
-multiline_comment|/* Current process */
 DECL|member|irqcount
 r_int
 id|irqcount
@@ -116,12 +119,6 @@ DECL|macro|sizeof_field
 mdefine_line|#define sizeof_field(type,field)  (sizeof(((type *)0)-&gt;field))
 DECL|macro|typeof_field
 mdefine_line|#define typeof_field(type,field)  typeof(((type *)0)-&gt;field)
-macro_line|#ifndef __STR
-DECL|macro|__STR
-mdefine_line|#define __STR(x) #x
-macro_line|#endif
-DECL|macro|__STR2
-mdefine_line|#define __STR2(x) __STR(x) 
 r_extern
 r_void
 id|__bad_pda_field
@@ -130,10 +127,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|macro|pda_offset
+mdefine_line|#define pda_offset(field) offsetof(struct x8664_pda, field)
 DECL|macro|pda_to_op
-mdefine_line|#define pda_to_op(op,field,val) do { &bslash;&n;       switch (sizeof_field(struct x8664_pda, field)) { &t;&t;&bslash;&n;       case 2: asm volatile(op &quot;w %0,%%gs:&quot; __STR2(pda_ ## field) ::&quot;r&quot; (val):&quot;memory&quot;); break;&t;&bslash;&n;       case 4: asm volatile(op &quot;l %0,%%gs:&quot; __STR2(pda_ ## field) ::&quot;r&quot; (val):&quot;memory&quot;); break;&t;&bslash;&n;       case 8: asm volatile(op &quot;q %0,%%gs:&quot; __STR2(pda_ ## field) ::&quot;r&quot; (val):&quot;memory&quot;); break;&t;&bslash;&n;       default: __bad_pda_field(); &t;&t;&t;&t;&t;&bslash;&n;       } &bslash;&n;       } while (0)
+mdefine_line|#define pda_to_op(op,field,val) do { &bslash;&n;       switch (sizeof_field(struct x8664_pda, field)) { &t;&t;&bslash;&n;case 2: &bslash;&n;asm volatile(op &quot;w %0,%%gs:%c1&quot;::&quot;r&quot; (val),&quot;i&quot;(pda_offset(field)):&quot;memory&quot;); break; &bslash;&n;case 4: &bslash;&n;asm volatile(op &quot;l %0,%%gs:%c1&quot;::&quot;r&quot; (val),&quot;i&quot;(pda_offset(field)):&quot;memory&quot;); break; &bslash;&n;case 8: &bslash;&n;asm volatile(op &quot;q %0,%%gs:%c1&quot;::&quot;r&quot; (val),&quot;i&quot;(pda_offset(field)):&quot;memory&quot;); break; &bslash;&n;       default: __bad_pda_field(); &t;&t;&t;&t;&t;&bslash;&n;       } &bslash;&n;       } while (0)
 DECL|macro|pda_from_op
-mdefine_line|#define pda_from_op(op,field) ({ &bslash;&n;       typedef typeof_field(struct x8664_pda, field) T__; T__ ret__; &bslash;&n;       switch (sizeof_field(struct x8664_pda, field)) { &t;&t;&bslash;&n;       case 2: asm volatile(op &quot;w %%gs:&quot; __STR2(pda_ ## field) &quot;,%0&quot;:&quot;=r&quot; (ret__)::&quot;memory&quot;); break;&t;&bslash;&n;       case 4: asm volatile(op &quot;l %%gs:&quot; __STR2(pda_ ## field) &quot;,%0&quot;:&quot;=r&quot; (ret__)::&quot;memory&quot;); break;&t;&bslash;&n;       case 8: asm volatile(op &quot;q %%gs:&quot; __STR2(pda_ ## field) &quot;,%0&quot;:&quot;=r&quot; (ret__)::&quot;memory&quot;); break;&t;&bslash;&n;       default: __bad_pda_field(); &t;&t;&t;&t;&t;&bslash;&n;       } &bslash;&n;       ret__; })
+mdefine_line|#define pda_from_op(op,field) ({ &bslash;&n;       typedef typeof_field(struct x8664_pda, field) T__; T__ ret__; &bslash;&n;       switch (sizeof_field(struct x8664_pda, field)) { &t;&t;&bslash;&n;case 2: &bslash;&n;asm volatile(op &quot;w %%gs:%c1,%0&quot;:&quot;=r&quot; (ret__):&quot;i&quot;(pda_offset(field)):&quot;memory&quot;); break;&bslash;&n;case 4: &bslash;&n;asm volatile(op &quot;l %%gs:%c1,%0&quot;:&quot;=r&quot; (ret__):&quot;i&quot;(pda_offset(field)):&quot;memory&quot;); break;&bslash;&n;case 8: &bslash;&n;asm volatile(op &quot;q %%gs:%c1,%0&quot;:&quot;=r&quot; (ret__):&quot;i&quot;(pda_offset(field)):&quot;memory&quot;); break;&bslash;&n;       default: __bad_pda_field(); &t;&t;&t;&t;&t;&bslash;&n;       } &bslash;&n;       ret__; })
 DECL|macro|read_pda
 mdefine_line|#define read_pda(field) pda_from_op(&quot;mov&quot;,field)
 DECL|macro|write_pda

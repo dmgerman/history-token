@@ -1074,6 +1074,17 @@ op_star
 id|rq
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|u8
 id|dma_stat
 suffix:semicolon
@@ -1151,7 +1162,16 @@ comma
 id|rq-&gt;tag
 )paren
 suffix:semicolon
-id|__ide_end_request
+multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|__ata_end_request
 c_func
 (paren
 id|drive
@@ -1162,6 +1182,14 @@ op_logical_neg
 id|dma_stat
 comma
 id|rq-&gt;nr_sectors
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * we completed this command, check if we can service a new command&n;&t; */

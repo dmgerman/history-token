@@ -95,19 +95,13 @@ id|spinlock_t
 id|check_lock
 suffix:semicolon
 multiline_comment|/* clients which uses this queue (bitmap) */
-DECL|member|clients_bitmap
-r_int
-r_int
-id|clients_bitmap
-(braket
-id|SNDRV_SEQ_MAX_CLIENTS
-op_div
-r_sizeof
+id|bitmap_member
+c_func
 (paren
-r_int
-r_int
+id|clients_bitmap
+comma
+id|SNDRV_SEQ_MAX_CLIENTS
 )paren
-)braket
 suffix:semicolon
 DECL|member|clients
 r_int

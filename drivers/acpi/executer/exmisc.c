@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmisc - ACPI AML (p-code) execution - specific opcodes&n; *              $Revision: 104 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmisc - ACPI AML (p-code) execution - specific opcodes&n; *              $Revision: 106 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -56,7 +56,10 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 op_ne
 id|INTERNAL_TYPE_REFERENCE
 )paren
@@ -361,7 +364,11 @@ comma
 id|length2
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Point the return object to the new buffer&n;&t; */
+multiline_comment|/* Complete the buffer object initialization */
+id|return_desc-&gt;common.flags
+op_assign
+id|AOPOBJ_DATA_VALID
+suffix:semicolon
 id|return_desc-&gt;buffer.pointer
 op_assign
 (paren
@@ -471,17 +478,20 @@ id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * There are three cases to handle:&n;&t; * 1) Two Integers concatenated to produce a buffer&n;&t; * 2) Two Strings concatenated to produce a string&n;&t; * 3) Two Buffers concatenated to produce a buffer&n;&t; */
+multiline_comment|/*&n;&t; * There are three cases to handle:&n;&t; *&n;&t; * 1) Two Integers concatenated to produce a new Buffer&n;&t; * 2) Two Strings concatenated to produce a new String&n;&t; * 3) Two Buffers concatenated to produce a new Buffer&n;&t; */
 r_switch
 c_cond
 (paren
-id|obj_desc1-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc1
+)paren
 )paren
 (brace
 r_case
 id|ACPI_TYPE_INTEGER
 suffix:colon
-multiline_comment|/* Result of two integers is a buffer */
+multiline_comment|/* Result of two Integers is a Buffer */
 id|return_desc
 op_assign
 id|acpi_ut_create_internal_object
@@ -502,7 +512,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Need enough space for two integers */
+multiline_comment|/* Need enough buffer space for two integers */
 id|return_desc-&gt;buffer.length
 op_assign
 id|acpi_gbl_integer_byte_width
@@ -538,14 +548,6 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-id|return_desc-&gt;buffer.pointer
-op_assign
-(paren
-id|u8
-op_star
-)paren
-id|new_buf
-suffix:semicolon
 multiline_comment|/* Convert the first integer */
 id|this_integer
 op_assign
@@ -618,11 +620,25 @@ op_rshift_assign
 l_int|8
 suffix:semicolon
 )brace
+multiline_comment|/* Complete the buffer object initialization */
+id|return_desc-&gt;common.flags
+op_assign
+id|AOPOBJ_DATA_VALID
+suffix:semicolon
+id|return_desc-&gt;buffer.pointer
+op_assign
+(paren
+id|u8
+op_star
+)paren
+id|new_buf
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|ACPI_TYPE_STRING
 suffix:colon
+multiline_comment|/* Result of two Strings is a String */
 id|return_desc
 op_assign
 id|acpi_ut_create_internal_object
@@ -683,6 +699,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
+multiline_comment|/* Concatenate the strings */
 id|ACPI_STRCPY
 (paren
 id|new_buf
@@ -699,7 +716,7 @@ comma
 id|obj_desc2-&gt;string.pointer
 )paren
 suffix:semicolon
-multiline_comment|/* Point the return object to the new string */
+multiline_comment|/* Complete the String object initialization */
 id|return_desc-&gt;string.pointer
 op_assign
 id|new_buf
@@ -715,7 +732,7 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
-multiline_comment|/* Operand0 is a buffer */
+multiline_comment|/* Result of two Buffers is a Buffer */
 id|return_desc
 op_assign
 id|acpi_ut_create_internal_object
@@ -773,6 +790,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
+multiline_comment|/* Concatenate the buffers */
 id|ACPI_MEMCPY
 (paren
 id|new_buf
@@ -793,7 +811,11 @@ comma
 id|obj_desc2-&gt;buffer.length
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Point the return object to the new buffer&n;&t;&t; */
+multiline_comment|/* Complete the buffer object initialization */
+id|return_desc-&gt;common.flags
+op_assign
+id|AOPOBJ_DATA_VALID
+suffix:semicolon
 id|return_desc-&gt;buffer.pointer
 op_assign
 (paren
@@ -812,6 +834,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+multiline_comment|/* Invalid object type, should not happen here */
 id|status
 op_assign
 id|AE_AML_INTERNAL

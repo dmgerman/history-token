@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  acpi_utils.c - ACPI Utility Functions ($Revision: 5 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/*&n; *  acpi_utils.c - ACPI Utility Functions ($Revision: 7 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1632,7 +1632,7 @@ op_logical_or
 (paren
 id|element-&gt;type
 op_ne
-id|ACPI_TYPE_STRING
+id|ACPI_TYPE_ANY
 )paren
 )paren
 (brace
@@ -1663,64 +1663,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Convert reference (e.g. &quot;&bslash;_PR_.CPU_&quot;) to acpi_handle. */
-id|status
-op_assign
-id|acpi_get_handle
-c_func
-(paren
-id|handle
-comma
-id|element-&gt;string.pointer
-comma
-op_amp
-(paren
+multiline_comment|/* Get the  acpi_handle. */
 id|list-&gt;handles
 (braket
 id|i
 )braket
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-c_func
-(paren
-id|status
-)paren
-)paren
-(brace
-id|status
 op_assign
-id|AE_BAD_DATA
+id|element-&gt;reference.handle
 suffix:semicolon
-id|ACPI_DEBUG_PRINT
-c_func
-(paren
-(paren
-id|ACPI_DB_WARN
-comma
-l_string|&quot;Unable to resolve device reference [%s]&bslash;n&quot;
-comma
-id|element-&gt;string.pointer
-)paren
-)paren
-suffix:semicolon
-id|acpi_util_eval_error
-c_func
-(paren
-id|handle
-comma
-id|pathname
-comma
-id|status
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|ACPI_DEBUG_PRINT
 c_func
 (paren

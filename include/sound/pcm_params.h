@@ -121,7 +121,7 @@ mdefine_line|#define snd_mask_bits(mask) (*(mask))
 DECL|macro|INLINE
 mdefine_line|#define INLINE static inline
 DECL|macro|assert
-mdefine_line|#define assert(a)
+mdefine_line|#define assert(a) (void)(a)
 DECL|function|ld2
 id|INLINE
 r_int

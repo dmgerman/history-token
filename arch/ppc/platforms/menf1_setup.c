@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -101,36 +102,20 @@ id|initrd_start
 )paren
 id|ROOT_DEV
 op_assign
-id|MKDEV
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|0
-)paren
+id|Root_RAM0
 suffix:semicolon
 r_else
 macro_line|#endif
 macro_line|#ifdef CONFIG_ROOT_NFS
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x00ff
-)paren
+id|Root_NFS
 suffix:semicolon
-multiline_comment|/* /dev/nfs pseudo device */
 macro_line|#else
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0302
-)paren
+id|Root_HDA2
 suffix:semicolon
-multiline_comment|/* /dev/hda2 */
 macro_line|#endif
 macro_line|#ifdef CONFIG_DUMMY_CONSOLE
 id|conswitchp

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscreate - Create resource lists/tables&n; *              $Revision: 56 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscreate - Create resource lists/tables&n; *              $Revision: 57 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -400,14 +400,13 @@ multiline_comment|/*&n;&t;&t; * 1) First subobject:  Dereference the Address&n;&
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_INTEGER
-op_eq
+id|ACPI_GET_OBJECT_TYPE
 (paren
 op_star
 id|sub_object_list
 )paren
-op_member_access_from_pointer
-id|common.type
+op_eq
+id|ACPI_TYPE_INTEGER
 )paren
 (brace
 id|user_prt-&gt;address
@@ -429,14 +428,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Need Integer, found %s&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
-(paren
+id|acpi_ut_get_object_type_name
 (paren
 op_star
 id|sub_object_list
-)paren
-op_member_access_from_pointer
-id|common.type
 )paren
 )paren
 )paren
@@ -454,14 +449,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_INTEGER
-op_eq
+id|ACPI_GET_OBJECT_TYPE
 (paren
 op_star
 id|sub_object_list
 )paren
-op_member_access_from_pointer
-id|common.type
+op_eq
+id|ACPI_TYPE_INTEGER
 )paren
 (brace
 id|user_prt-&gt;pin
@@ -486,14 +480,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Need Integer, found %s&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
-(paren
+id|acpi_ut_get_object_type_name
 (paren
 op_star
 id|sub_object_list
-)paren
-op_member_access_from_pointer
-id|common.type
 )paren
 )paren
 )paren
@@ -511,12 +501,11 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
+id|ACPI_GET_OBJECT_TYPE
 (paren
 op_star
 id|sub_object_list
 )paren
-op_member_access_from_pointer
-id|common.type
 )paren
 (brace
 r_case
@@ -666,14 +655,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Need Integer, found %s&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
-(paren
+id|acpi_ut_get_object_type_name
 (paren
 op_star
 id|sub_object_list
-)paren
-op_member_access_from_pointer
-id|common.type
 )paren
 )paren
 )paren
@@ -699,14 +684,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_INTEGER
-op_eq
+id|ACPI_GET_OBJECT_TYPE
 (paren
 op_star
 id|sub_object_list
 )paren
-op_member_access_from_pointer
-id|common.type
+op_eq
+id|ACPI_TYPE_INTEGER
 )paren
 (brace
 id|user_prt-&gt;source_index
@@ -731,14 +715,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Need Integer, found %s&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
-(paren
+id|acpi_ut_get_object_type_name
 (paren
 op_star
 id|sub_object_list
-)paren
-op_member_access_from_pointer
-id|common.type
 )paren
 )paren
 )paren

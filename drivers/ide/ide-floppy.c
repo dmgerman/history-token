@@ -1710,7 +1710,7 @@ DECL|macro|IDEFLOPPY_MIN
 mdefine_line|#define IDEFLOPPY_MIN(a,b)&t;((a)&lt;(b) ? (a):(b))
 DECL|macro|IDEFLOPPY_MAX
 mdefine_line|#define&t;IDEFLOPPY_MAX(a,b)&t;((a)&gt;(b) ? (a):(b))
-multiline_comment|/*&n; *&t;idefloppy_end_request is used to finish servicing a request.&n; *&n; *&t;For read/write requests, we will call ide_end_request to pass to the&n; *&t;next buffer.&n; */
+multiline_comment|/*&n; *&t;idefloppy_end_request is used to finish servicing a request.&n; *&n; *&t;For read/write requests, we will call ata_end_request to pass to the&n; *&t;next buffer.&n; */
 DECL|function|idefloppy_end_request
 r_static
 r_int
@@ -1809,7 +1809,7 @@ id|REQ_SPECIAL
 )paren
 )paren
 (brace
-id|ide_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -3331,23 +3331,27 @@ suffix:semicolon
 id|idefloppy_ireason_reg_t
 id|ireason
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_wait_stat
+id|ata_status_poll
+c_func
 (paren
-op_amp
-id|startstop
-comma
 id|drive
-comma
-id|rq
 comma
 id|DRQ_STAT
 comma
 id|BUSY_STAT
 comma
 id|WAIT_READY
+comma
+id|rq
+comma
+op_amp
+id|startstop
 )paren
 )paren
 (brace
@@ -3386,24 +3390,19 @@ op_logical_or
 id|ireason.b.io
 )paren
 (brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
 l_string|&quot;ide-floppy: (IO,CoD) != (0,1) while issuing a packet command&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|ide_stopped
 suffix:semicolon
 )brace
+r_else
+(brace
 id|ata_set_handler
 (paren
 id|drive
@@ -3427,6 +3426,11 @@ l_int|12
 )paren
 suffix:semicolon
 multiline_comment|/* Send the actual packet */
+id|ret
+op_assign
+id|ide_started
+suffix:semicolon
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3436,7 +3440,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|ide_started
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * What we have here is a classic case of a top half / bottom half&n; * interrupt service routine. In interrupt mode, the device sends&n; * an interrupt to signal it&squot;s ready to receive a packet. However,&n; * we need to delay about 2-3 ticks before issuing the packet or we&n; * gets in trouble.&n; *&n; * So, follow carefully. transfer_pc1 is called as an interrupt (or&n; * directly). In either case, when the device says it&squot;s ready for a &n; * packet, we schedule the packet transfer to occur about 2-3 ticks&n; * later in transfer_pc2.&n; */
@@ -3519,24 +3523,27 @@ suffix:semicolon
 id|idefloppy_ireason_reg_t
 id|ireason
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_wait_stat
+id|ata_status_poll
 c_func
 (paren
-op_amp
-id|startstop
-comma
 id|drive
-comma
-id|rq
 comma
 id|DRQ_STAT
 comma
 id|BUSY_STAT
 comma
 id|WAIT_READY
+comma
+id|rq
+comma
+op_amp
+id|startstop
 )paren
 )paren
 (brace
@@ -3562,6 +3569,7 @@ suffix:semicolon
 id|ireason.all
 op_assign
 id|IN_BYTE
+c_func
 (paren
 id|IDE_IREASON_REG
 )paren
@@ -3575,25 +3583,20 @@ op_logical_or
 id|ireason.b.io
 )paren
 (brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
 l_string|&quot;ide-floppy: (IO,CoD) != (0,1) while issuing a packet command&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|ide_stopped
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The following delay solves a problem with ATAPI Zip 100 drives where&n;&t; * the Busy flag was apparently being deasserted before the unit was&n;&t; * ready to receive data. This was happening on a 1200 MHz Athlon&n;&t; * system. 10/26/01 25msec is too short, 40 and 50msec work well.&n;&t; * idefloppy_pc_intr will not be actually used until after the packet&n;&t; * is moved in about 50 msec.&n;&t; */
+r_else
+(brace
+multiline_comment|/*&n;&t;&t; * The following delay solves a problem with ATAPI Zip 100 drives where&n;&t;&t; * the Busy flag was apparently being deasserted before the unit was&n;&t;&t; * ready to receive data. This was happening on a 1200 MHz Athlon&n;&t;&t; * system. 10/26/01 25msec is too short, 40 and 50msec work well.&n;&t;&t; * idefloppy_pc_intr will not be actually used until after the packet&n;&t;&t; * is moved in about 50 msec.&n;&t;&t; */
 id|ata_set_handler
 c_func
 (paren
@@ -3609,6 +3612,11 @@ id|idefloppy_transfer_pc2
 )paren
 suffix:semicolon
 multiline_comment|/* fail == transfer_pc2 */
+id|ret
+op_assign
+id|ide_started
+suffix:semicolon
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3618,7 +3626,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|ide_started
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Issue a packet command&n; */

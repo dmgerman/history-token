@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -929,6 +930,49 @@ id|handle_real_irq
 suffix:semicolon
 )brace
 )brace
+DECL|variable|device_i8259A
+r_static
+r_struct
+id|device
+id|device_i8259A
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;i8259A&quot;
+comma
+id|bus_id
+suffix:colon
+l_string|&quot;0020&quot;
+comma
+)brace
+suffix:semicolon
+DECL|function|init_8259A_devicefs
+r_static
+r_int
+id|__init
+id|init_8259A_devicefs
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|register_sys_device
+c_func
+(paren
+op_amp
+id|device_i8259A
+)paren
+suffix:semicolon
+)brace
+DECL|variable|init_8259A_devicefs
+id|__initcall
+c_func
+(paren
+id|init_8259A_devicefs
+)paren
+suffix:semicolon
 DECL|function|init_8259A
 r_void
 id|__init

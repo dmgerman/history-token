@@ -8576,10 +8576,10 @@ r_else
 r_if
 c_cond
 (paren
-id|is_read_only
+id|bdev_read_only
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 )paren
 )paren
 (brace

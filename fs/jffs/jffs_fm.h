@@ -208,8 +208,8 @@ id|jffs_control
 op_star
 id|c
 comma
-id|kdev_t
-id|dev
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_void

@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;net/ipconfig.h&gt;
 multiline_comment|/* Define this to allow debugging output */
 DECL|macro|NFSROOT_DEBUG
@@ -1109,13 +1110,7 @@ id|line
 (brace
 id|ROOT_DEV
 op_assign
-id|mk_kdev
-c_func
-(paren
-id|UNNAMED_MAJOR
-comma
-l_int|255
-)paren
+id|Root_NFS
 suffix:semicolon
 r_if
 c_cond

@@ -1035,12 +1035,15 @@ id|eax
 suffix:semicolon
 id|badframe
 suffix:colon
-id|force_sig
+id|signal_fault
 c_func
 (paren
-id|SIGSEGV
+op_amp
+id|regs
 comma
-id|current
+id|frame
+comma
+l_string|&quot;32bit sigreturn&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1237,12 +1240,15 @@ id|eax
 suffix:semicolon
 id|badframe
 suffix:colon
-id|force_sig
+id|signal_fault
 c_func
 (paren
-id|SIGSEGV
+op_amp
+id|regs
 comma
-id|current
+id|frame
+comma
+l_string|&quot;32bit rt sigreturn&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2075,12 +2081,14 @@ id|ka-&gt;sa.sa_handler
 op_assign
 id|SIG_DFL
 suffix:semicolon
-id|force_sig
+id|signal_fault
 c_func
 (paren
-id|SIGSEGV
+id|regs
 comma
-id|current
+id|frame
+comma
+l_string|&quot;32bit signal setup&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2531,12 +2539,14 @@ id|ka-&gt;sa.sa_handler
 op_assign
 id|SIG_DFL
 suffix:semicolon
-id|force_sig
+id|signal_fault
 c_func
 (paren
-id|SIGSEGV
+id|regs
 comma
-id|current
+id|frame
+comma
+l_string|&quot;32bit rt signal setup&quot;
 )paren
 suffix:semicolon
 )brace

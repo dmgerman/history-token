@@ -402,8 +402,6 @@ macro_line|#include &quot;paride.h&quot;
 multiline_comment|/* set up defines for blk.h,  why don&squot;t all drivers do it this way ? */
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR   major
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;PF&quot;
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) minor(device)
 DECL|macro|DEVICE_OFF
@@ -4086,12 +4084,8 @@ c_func
 id|QUEUE
 )paren
 )paren
-(brace
-id|CLEAR_INTR
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|pf_unit
 op_assign
 id|unit
@@ -4135,6 +4129,8 @@ id|PF.capacity
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -4202,6 +4198,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -4235,6 +4233,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -4419,6 +4419,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -4554,6 +4556,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -4641,6 +4645,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -4763,6 +4769,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -4856,6 +4864,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -5019,6 +5029,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -5062,6 +5074,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon

@@ -751,7 +751,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|variable|mcount
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|mcount

@@ -908,10 +908,10 @@ suffix:colon
 id|intval
 op_assign
 (paren
-id|is_read_only
+id|bdev_read_only
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 op_ne
 l_int|0

@@ -89,10 +89,9 @@ op_assign
 id|inode-&gt;i_blksize
 suffix:semicolon
 )brace
-DECL|function|do_getattr
-r_static
+DECL|function|vfs_getattr
 r_int
-id|do_getattr
+id|vfs_getattr
 c_func
 (paren
 r_struct
@@ -234,7 +233,7 @@ id|error
 (brace
 id|error
 op_assign
-id|do_getattr
+id|vfs_getattr
 c_func
 (paren
 id|nd.mnt
@@ -298,7 +297,7 @@ id|error
 (brace
 id|error
 op_assign
-id|do_getattr
+id|vfs_getattr
 c_func
 (paren
 id|nd.mnt
@@ -360,7 +359,7 @@ id|f
 (brace
 id|error
 op_assign
-id|do_getattr
+id|vfs_getattr
 c_func
 (paren
 id|f-&gt;f_vfsmnt
