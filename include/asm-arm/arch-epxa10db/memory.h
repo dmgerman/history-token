@@ -15,8 +15,6 @@ DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;(0xc0000000UL)
 DECL|macro|PHYS_OFFSET
 mdefine_line|#define PHYS_OFFSET&t;(0x00000000UL)
-DECL|macro|PHYS_TO_NID
-mdefine_line|#define PHYS_TO_NID(addr)    (0)
 multiline_comment|/*&n; * On epxa10, the dram is contiguous&n; */
 DECL|macro|__virt_to_phys__is_a_macro
 mdefine_line|#define __virt_to_phys__is_a_macro
