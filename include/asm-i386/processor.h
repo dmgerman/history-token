@@ -113,6 +113,11 @@ r_int
 id|x86_cache_size
 suffix:semicolon
 multiline_comment|/* in KB - valid for CPUS which support this&n;&t;&t;&t;&t;    call  */
+DECL|member|x86_cache_alignment
+r_int
+id|x86_cache_alignment
+suffix:semicolon
+multiline_comment|/* In bytes */
 DECL|member|fdiv_bug
 r_int
 id|fdiv_bug
