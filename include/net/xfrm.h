@@ -675,7 +675,8 @@ id|output
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
 )paren
 suffix:semicolon
 multiline_comment|/* Estimate maximal size of result of transformation of a dgram */
