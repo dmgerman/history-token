@@ -256,7 +256,7 @@ l_int|0
 r_goto
 id|failure
 suffix:semicolon
-macro_line|#if 0&t;/* Don&squot;t even pretend that TCP works. It doesn&squot;t. */
+macro_line|#if CONFIG_NFSD_TCP
 id|error
 op_assign
 id|svc_makesock
