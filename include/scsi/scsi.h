@@ -466,8 +466,6 @@ DECL|macro|ACA
 mdefine_line|#define ACA                 0x24
 DECL|macro|QAS_REQUEST
 mdefine_line|#define QAS_REQUEST         0x55
-DECL|macro|IDENTIFY
-mdefine_line|#define IDENTIFY            0x80
 multiline_comment|/* Old SCSI2 names, don&squot;t use in new code */
 DECL|macro|BUS_DEVICE_RESET
 mdefine_line|#define BUS_DEVICE_RESET    TARGET_RESET
