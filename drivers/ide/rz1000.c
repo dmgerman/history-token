@@ -300,7 +300,7 @@ id|IDE_DATA_OFFSET
 op_eq
 l_int|0x170
 )paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_assign
 l_int|1
 suffix:semicolon

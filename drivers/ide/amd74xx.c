@@ -1798,7 +1798,7 @@ op_logical_neg
 (paren
 id|amd_enabled
 op_rshift
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 )paren
 op_amp
 l_int|1
@@ -2494,7 +2494,7 @@ op_amp
 id|amd_80w
 )paren
 op_rshift
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 op_amp
 l_int|1
@@ -2578,7 +2578,7 @@ id|i
 dot
 id|dn
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_star
 l_int|2
 op_plus
@@ -2639,7 +2639,7 @@ c_cond
 (paren
 id|amd_enabled
 op_rshift
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 op_amp
 l_int|1

@@ -36,7 +36,7 @@ suffix:semicolon
 id|number
 op_assign
 (paren
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 op_lshift
 l_int|1
 )paren
@@ -620,7 +620,7 @@ id|hwif2-&gt;mate
 op_assign
 id|hwif
 suffix:semicolon
-id|hwif2-&gt;channel
+id|hwif2-&gt;unit
 op_assign
 l_int|1
 suffix:semicolon

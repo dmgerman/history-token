@@ -192,7 +192,7 @@ suffix:semicolon
 id|reg
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x4c
@@ -368,7 +368,7 @@ suffix:semicolon
 id|reg
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x4c

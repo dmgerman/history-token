@@ -397,7 +397,7 @@ multiline_comment|/*&n; * After chip reset, the PIO timings are set to 0x0000e13
 DECL|macro|CS5530_BAD_PIO
 mdefine_line|#define CS5530_BAD_PIO(timings) (((timings)&amp;~0x80000000)==0x0000e132)
 DECL|macro|CS5530_BASEREG
-mdefine_line|#define CS5530_BASEREG(hwif)&t;(((hwif)-&gt;dma_base &amp; ~0xf) + ((hwif)-&gt;channel ? 0x30 : 0x20))
+mdefine_line|#define CS5530_BASEREG(hwif)&t;(((hwif)-&gt;dma_base &amp; ~0xf) + ((hwif)-&gt;unit ? 0x30 : 0x20))
 multiline_comment|/*&n; * cs5530_tuneproc() handles selection/setting of PIO modes&n; * for both the chipset and drive.&n; *&n; * The ide_init_cs5530() routine guarantees that all drives&n; * will have valid default PIO timings set up before we get here.&n; */
 DECL|function|cs5530_tuneproc
 r_static

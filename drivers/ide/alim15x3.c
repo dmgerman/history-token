@@ -1526,7 +1526,7 @@ suffix:semicolon
 r_int
 id|port
 op_assign
-id|hwif-&gt;index
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x5c
@@ -1536,7 +1536,7 @@ suffix:semicolon
 r_int
 id|portFIFO
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x55
@@ -1913,7 +1913,7 @@ suffix:semicolon
 r_int
 id|m5229_udma
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x57
@@ -3321,7 +3321,7 @@ multiline_comment|/*&n;&t;&t; * Allow ata66 if cable of current channel has 80 p
 id|ata66
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 ques
 c_cond
@@ -3498,7 +3498,7 @@ l_int|15
 suffix:semicolon
 id|hwif-&gt;irq
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|15
@@ -3535,7 +3535,7 @@ r_if
 c_cond
 (paren
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_logical_and
 id|ideic
 op_eq
@@ -3544,7 +3544,7 @@ l_int|0x03
 op_logical_or
 (paren
 op_logical_neg
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_logical_and
 op_logical_neg
 id|ideic
@@ -3581,7 +3581,7 @@ r_else
 r_if
 c_cond
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_logical_and
 op_logical_neg
 (paren

@@ -3306,7 +3306,7 @@ op_assign
 id|high_16
 op_plus
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x09
@@ -4623,7 +4623,7 @@ suffix:semicolon
 id|byte
 id|mask
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x08
@@ -4634,7 +4634,7 @@ r_int
 r_int
 id|c_mask
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 (paren
@@ -5017,7 +5017,7 @@ c_func
 (paren
 l_string|&quot;ULTRA66: %s channel of Ultra 66 requires an 80-pin cable for Ultra66 operation.&bslash;n&quot;
 comma
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_string|&quot;Secondary&quot;
@@ -5060,7 +5060,7 @@ c_func
 (paren
 l_string|&quot;Warning: %s channel requires an 80-pin cable for operation.&bslash;n&quot;
 comma
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_string|&quot;Secondary&quot;
@@ -6470,7 +6470,7 @@ op_assign
 id|high_16
 op_plus
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x24
@@ -6596,7 +6596,7 @@ c_func
 id|clock
 op_or
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x08
@@ -6690,7 +6690,7 @@ id|clock
 op_amp
 op_complement
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x08
@@ -6747,7 +6747,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 )paren
 (brace
 r_if
@@ -6916,7 +6916,7 @@ c_func
 (paren
 l_string|&quot;PDC202XX: %s channel reset.&bslash;n&quot;
 comma
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 ques
 c_cond
 l_string|&quot;Secondary&quot;
@@ -7000,7 +7000,7 @@ c_func
 (paren
 l_string|&quot;PDC202XX: %s channel reset.&bslash;n&quot;
 comma
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 ques
 c_cond
 l_string|&quot;Secondary&quot;
@@ -7710,7 +7710,7 @@ r_int
 id|mask
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 ques
 c_cond

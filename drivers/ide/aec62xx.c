@@ -2163,7 +2163,7 @@ suffix:semicolon
 id|byte
 id|ultra_pci
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x45
@@ -3718,7 +3718,7 @@ id|hwif
 id|byte
 id|mask
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x02
@@ -3877,7 +3877,7 @@ id|reg54h
 op_amp
 op_complement
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0xF0

@@ -403,7 +403,7 @@ macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
 r_if
 c_cond
 (paren
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 op_eq
 l_int|1
 op_logical_and
@@ -2014,7 +2014,7 @@ multiline_comment|/* Register this hardware interface within the global device t
 id|sprintf
 c_func
 (paren
-id|hwif-&gt;device.bus_id
+id|hwif-&gt;dev.bus_id
 comma
 l_string|&quot;%04x&quot;
 comma
@@ -2027,12 +2027,12 @@ suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|hwif-&gt;device.name
+id|hwif-&gt;dev.name
 comma
 l_string|&quot;ide&quot;
 )paren
 suffix:semicolon
-id|hwif-&gt;device.driver_data
+id|hwif-&gt;dev.driver_data
 op_assign
 id|hwif
 suffix:semicolon
@@ -2042,14 +2042,14 @@ c_cond
 (paren
 id|hwif-&gt;pci_dev
 )paren
-id|hwif-&gt;device.parent
+id|hwif-&gt;dev.parent
 op_assign
 op_amp
 id|hwif-&gt;pci_dev-&gt;dev
 suffix:semicolon
 r_else
 macro_line|#endif
-id|hwif-&gt;device.parent
+id|hwif-&gt;dev.parent
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2058,7 +2058,7 @@ id|device_register
 c_func
 (paren
 op_amp
-id|hwif-&gt;device
+id|hwif-&gt;dev
 )paren
 suffix:semicolon
 r_if
@@ -2360,7 +2360,7 @@ id|hwif-&gt;chipset
 op_ne
 id|ide_pdc4030
 op_logical_or
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_eq
 l_int|0
 )paren
@@ -3834,7 +3834,7 @@ id|dn
 op_assign
 (paren
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|2
@@ -3852,7 +3852,7 @@ comma
 l_string|&quot;host%d/bus%d/target%d/lun%d&quot;
 comma
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_logical_and
 id|hwif-&gt;mate
 )paren
@@ -3862,7 +3862,7 @@ id|hwif-&gt;mate-&gt;index
 suffix:colon
 id|hwif-&gt;index
 comma
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 comma
 id|unit
 comma

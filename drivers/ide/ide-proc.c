@@ -742,7 +742,7 @@ id|page
 l_int|0
 )braket
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_char|&squot;1&squot;

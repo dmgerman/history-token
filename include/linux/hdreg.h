@@ -1153,11 +1153,5 @@ DECL|macro|IDE_NICE_DSC_OVERLAP
 mdefine_line|#define IDE_NICE_DSC_OVERLAP&t;(0)&t;/* per the DSC overlap protocol */
 DECL|macro|IDE_NICE_ATAPI_OVERLAP
 mdefine_line|#define IDE_NICE_ATAPI_OVERLAP&t;(1)&t;/* not supported yet */
-DECL|macro|IDE_NICE_0
-mdefine_line|#define IDE_NICE_0&t;&t;(2)&t;/* when sure that it won&squot;t affect us */
-DECL|macro|IDE_NICE_1
-mdefine_line|#define IDE_NICE_1&t;&t;(3)&t;/* when probably won&squot;t affect us much */
-DECL|macro|IDE_NICE_2
-mdefine_line|#define IDE_NICE_2&t;&t;(4)&t;/* when we know it&squot;s on our expense */
 macro_line|#endif&t;/* _LINUX_HDREG_H */
 eof

@@ -1702,10 +1702,7 @@ suffix:semicolon
 r_int
 id|channel
 op_assign
-(paren
-r_int
-)paren
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 suffix:semicolon
 r_int
 id|slave
@@ -2250,7 +2247,7 @@ id|byte
 id|addr_mask
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 ques
 c_cond
@@ -2576,7 +2573,7 @@ id|u8
 id|addr_mask
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 ques
 c_cond
@@ -2788,7 +2785,7 @@ id|u8
 id|pciU
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 ques
 c_cond
@@ -2800,7 +2797,7 @@ id|u8
 id|pciD
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 ques
 c_cond
@@ -3314,7 +3311,7 @@ id|u8
 id|addr_mask
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 ques
 c_cond
@@ -5332,7 +5329,7 @@ id|byte
 id|mask
 op_assign
 (paren
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 )paren
 ques
 c_cond
@@ -5454,7 +5451,7 @@ id|byte
 id|dma_mask
 op_assign
 (paren
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 )paren
 ques
 c_cond
@@ -5466,7 +5463,7 @@ id|byte
 id|dma_reg
 op_assign
 (paren
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 )paren
 ques
 c_cond
@@ -5760,7 +5757,7 @@ id|u8
 id|addr_mask
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 ques
 c_cond
@@ -5934,7 +5931,7 @@ id|u8
 id|addr_mask
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 ques
 c_cond
@@ -6596,7 +6593,7 @@ id|byte
 id|addr_mask
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 ques
 c_cond
@@ -6649,7 +6646,7 @@ id|byte
 id|mask
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 ques
 c_cond

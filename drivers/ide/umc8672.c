@@ -756,7 +756,7 @@ id|ide_hwifs
 l_int|1
 )braket
 dot
-id|channel
+id|unit
 op_assign
 l_int|1
 suffix:semicolon

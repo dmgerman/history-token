@@ -10292,15 +10292,21 @@ id|idetape_read_position_result_t
 op_star
 id|result
 suffix:semicolon
-singleline_comment|//#if IDETAPE_DEBUG_LOG
-singleline_comment|//&t;if (tape-&gt;debug_level &gt;= 4)
+macro_line|#if IDETAPE_DEBUG_LOG
+r_if
+c_cond
+(paren
+id|tape-&gt;debug_level
+op_ge
+l_int|4
+)paren
 id|printk
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_read_position_callback&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|//#endif /* IDETAPE_DEBUG_LOG */
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 r_if
 c_cond
 (paren
@@ -11054,15 +11060,21 @@ suffix:semicolon
 r_int
 id|position
 suffix:semicolon
-singleline_comment|//#if IDETAPE_DEBUG_LOG
-singleline_comment|//        if (tape-&gt;debug_level &gt;= 4)
+macro_line|#if IDETAPE_DEBUG_LOG
+r_if
+c_cond
+(paren
+id|tape-&gt;debug_level
+op_ge
+l_int|4
+)paren
 id|printk
 (paren
 id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_read_position&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|//#endif /* IDETAPE_DEBUG_LOG */
+macro_line|#endif /* IDETAPE_DEBUG_LOG */
 macro_line|#ifdef NO_LONGER_REQUIRED
 id|idetape_flush_tape_buffers
 c_func

@@ -95,7 +95,7 @@ c_func
 l_int|0x51
 op_or
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_lshift
 l_int|3
 )paren
@@ -142,7 +142,7 @@ op_complement
 (paren
 l_int|1
 op_lshift
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 suffix:semicolon
 id|outw
@@ -525,7 +525,7 @@ c_func
 l_int|0x51
 op_or
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_lshift
 l_int|3
 )paren
@@ -598,7 +598,7 @@ l_int|0x10
 )paren
 id|hwif-&gt;irq
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|15
@@ -634,7 +634,7 @@ l_int|4
 )paren
 op_xor
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x0080
@@ -671,7 +671,7 @@ id|old
 comma
 id|compat
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x374
@@ -691,7 +691,7 @@ c_func
 l_int|0x54
 op_or
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_lshift
 l_int|3
 )paren

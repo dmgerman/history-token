@@ -1424,7 +1424,7 @@ suffix:semicolon
 id|byte
 id|drive_pci3
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x57
@@ -3161,7 +3161,7 @@ r_return
 l_int|1
 op_lshift
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_plus
 l_int|14
 )paren
@@ -3222,7 +3222,7 @@ r_return
 l_int|1
 op_lshift
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_plus
 l_int|14
 )paren
@@ -3312,7 +3312,7 @@ id|hwif-&gt;irq
 )paren
 id|hwif-&gt;irq
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|15

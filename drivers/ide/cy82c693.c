@@ -321,7 +321,7 @@ suffix:semicolon
 id|index
 op_assign
 (paren
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 op_eq
 l_int|0
 )paren
@@ -356,7 +356,7 @@ l_string|&quot;%s (ch=%d, dev=%d): DMA mode is %d (single=%d)&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 comma
 id|drive-&gt;select.b.unit
 comma
@@ -418,7 +418,7 @@ l_string|&quot;%s (ch=%d, dev=%d): set DMA mode to %d (single=%d)&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 comma
 id|drive-&gt;select.b.unit
 comma
@@ -807,7 +807,7 @@ l_string|&quot;%s (ch=%d, dev=%d): PIO timing is (addr=0x%X, ior=0x%X, iow=0x%X,
 comma
 id|drive-&gt;name
 comma
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 comma
 id|drive-&gt;select.b.unit
 comma
@@ -1031,7 +1031,7 @@ l_string|&quot;%s (ch=%d, dev=%d): set PIO timing to (addr=0x%X, ior=0x%X, iow=0
 comma
 id|drive-&gt;name
 comma
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 comma
 id|drive-&gt;select.b.unit
 comma

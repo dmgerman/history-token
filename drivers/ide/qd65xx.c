@@ -971,7 +971,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 op_logical_and
 id|drive-&gt;type
 op_ne
@@ -1574,7 +1574,7 @@ id|ide_hwifs
 id|i
 )braket
 dot
-id|channel
+id|unit
 op_assign
 id|i
 suffix:semicolon

@@ -2016,7 +2016,7 @@ id|byte
 id|regfast
 op_assign
 (paren
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 )paren
 ques
 c_cond
@@ -2240,7 +2240,7 @@ id|byte
 id|regfast
 op_assign
 (paren
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 )paren
 ques
 c_cond
@@ -3861,7 +3861,7 @@ suffix:semicolon
 id|byte
 id|regstate
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x54
@@ -3871,7 +3871,7 @@ suffix:semicolon
 id|byte
 id|reginfo
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x56
@@ -4132,7 +4132,7 @@ id|byte
 id|reset
 op_assign
 (paren
-id|drive-&gt;channel-&gt;channel
+id|drive-&gt;channel-&gt;unit
 )paren
 ques
 c_cond
@@ -4211,7 +4211,7 @@ id|byte
 id|reset
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 ques
 c_cond
@@ -4223,7 +4223,7 @@ id|byte
 id|state_reg
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 ques
 c_cond
@@ -4396,7 +4396,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 (brace
 multiline_comment|/* secondary channel */
@@ -5279,7 +5279,7 @@ id|byte
 id|regmask
 op_assign
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 ques
 c_cond
@@ -5610,7 +5610,7 @@ suffix:semicolon
 id|byte
 id|primary
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x4b
@@ -5620,7 +5620,7 @@ suffix:semicolon
 id|byte
 id|secondary
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x4f

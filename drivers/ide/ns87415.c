@@ -108,7 +108,7 @@ op_lshift
 (paren
 l_int|8
 op_plus
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 suffix:semicolon
 r_new
@@ -140,7 +140,7 @@ op_plus
 id|drive-&gt;select.b.unit
 op_plus
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_lshift
 l_int|1
 )paren
@@ -160,7 +160,7 @@ id|drive-&gt;select.b.unit
 )paren
 op_plus
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_lshift
 l_int|1
 )paren
@@ -576,7 +576,7 @@ op_amp
 l_int|1
 op_lshift
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_lshift
 l_int|1
 )paren
@@ -598,7 +598,7 @@ op_lshift
 (paren
 l_int|4
 op_plus
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 )paren
 )paren
 suffix:semicolon
@@ -795,7 +795,7 @@ id|using_inta
 )paren
 id|hwif-&gt;irq
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|15

@@ -4148,7 +4148,7 @@ op_assign
 id|hwif-&gt;mate-&gt;dma_base
 op_minus
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0
@@ -4196,7 +4196,7 @@ id|name
 suffix:semicolon
 id|dma_base
 op_add_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|8
@@ -5017,7 +5017,7 @@ id|hwif-&gt;pci_dev
 op_assign
 id|dev
 suffix:semicolon
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_assign
 id|port
 suffix:semicolon

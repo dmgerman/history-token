@@ -513,11 +513,6 @@ id|byte
 id|dsc_overlap
 suffix:semicolon
 multiline_comment|/* flag: DSC overlap */
-DECL|member|nice1
-id|byte
-id|nice1
-suffix:semicolon
-multiline_comment|/* flag: give potential excess bandwidth */
 DECL|member|waiting_for_dma
 r_int
 id|waiting_for_dma
@@ -595,20 +590,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* flag: ATAPI overlap (not supported) */
-DECL|member|nice0
-r_int
-id|nice0
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* flag: give obvious excess bandwidth */
-DECL|member|nice2
-r_int
-id|nice2
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* flag: give a share in our own bandwidth */
 DECL|member|doorlocking
 r_int
 id|doorlocking
@@ -1117,6 +1098,17 @@ DECL|struct|ata_channel
 r_struct
 id|ata_channel
 (brace
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+multiline_comment|/* device handle */
+DECL|member|unit
+r_int
+id|unit
+suffix:semicolon
+multiline_comment|/* channel number */
 DECL|member|next
 r_struct
 id|ata_channel
@@ -1144,6 +1136,15 @@ id|hw_regs_t
 id|hw
 suffix:semicolon
 multiline_comment|/* Hardware info */
+macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+suffix:semicolon
+multiline_comment|/* for pci chipsets */
+macro_line|#endif
 DECL|member|drives
 id|ide_drive_t
 id|drives
@@ -1369,20 +1370,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* can do full 32-bit dma */
-DECL|member|channel
-id|byte
-id|channel
-suffix:semicolon
-multiline_comment|/* for dual-port chips: 0=primary, 1=secondary */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
-DECL|member|pci_dev
-r_struct
-id|pci_dev
-op_star
-id|pci_dev
-suffix:semicolon
-multiline_comment|/* for pci chipsets */
-macro_line|#endif
 macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
 DECL|member|last_time
 r_int
@@ -1407,12 +1394,6 @@ id|byte
 id|bus_state
 suffix:semicolon
 multiline_comment|/* power state of the IDE bus */
-DECL|member|device
-r_struct
-id|device
-id|device
-suffix:semicolon
-multiline_comment|/* global device tree handle */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Register new hardware with ide&n; */

@@ -5115,7 +5115,7 @@ suffix:semicolon
 id|drive-&gt;device.parent
 op_assign
 op_amp
-id|drive-&gt;channel-&gt;device
+id|drive-&gt;channel-&gt;dev
 suffix:semicolon
 id|drive-&gt;device.driver_data
 op_assign

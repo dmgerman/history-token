@@ -4514,7 +4514,7 @@ suffix:semicolon
 id|byte
 id|mask
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|0x20
@@ -4572,7 +4572,7 @@ id|hwif
 (brace
 id|hwif-&gt;irq
 op_assign
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 ques
 c_cond
 l_int|15

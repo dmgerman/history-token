@@ -2261,7 +2261,7 @@ op_plus
 id|ICS_ARCIN_V6_INTRSTAT_1
 )paren
 suffix:semicolon
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_assign
 l_int|0
 suffix:semicolon
@@ -2306,7 +2306,7 @@ op_plus
 id|ICS_ARCIN_V6_INTRSTAT_2
 )paren
 suffix:semicolon
-id|mate-&gt;channel
+id|mate-&gt;unit
 op_assign
 l_int|1
 suffix:semicolon

@@ -2809,7 +2809,7 @@ id|cmd_hwif1-&gt;mate
 op_assign
 id|cmd_hwif0
 suffix:semicolon
-id|cmd_hwif1-&gt;channel
+id|cmd_hwif1-&gt;unit
 op_assign
 l_int|1
 suffix:semicolon

@@ -2848,7 +2848,7 @@ id|hwif-&gt;dma_extra
 )paren
 op_logical_and
 (paren
-id|hwif-&gt;channel
+id|hwif-&gt;unit
 op_eq
 l_int|0
 )paren
