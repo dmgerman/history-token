@@ -80,8 +80,6 @@ id|a0
 suffix:colon
 l_string|&quot;$1&quot;
 comma
-l_string|&quot;$16&quot;
-comma
 l_string|&quot;$22&quot;
 comma
 l_string|&quot;$23&quot;

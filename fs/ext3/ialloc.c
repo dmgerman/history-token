@@ -2106,8 +2106,12 @@ id|sb
 comma
 id|__FUNCTION__
 comma
-l_string|&quot;bad orphan ino %ld!  e2fsck was run?&bslash;n&quot;
+l_string|&quot;bad orphan ino %lu!  e2fsck was run?&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|ino
 )paren
 suffix:semicolon
@@ -2167,8 +2171,12 @@ id|sb
 comma
 id|__FUNCTION__
 comma
-l_string|&quot;inode bitmap error for orphan %ld&bslash;n&quot;
+l_string|&quot;inode bitmap error for orphan %lu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|ino
 )paren
 suffix:semicolon
@@ -2302,8 +2310,12 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;max_ino=%ld&bslash;n&quot;
+l_string|&quot;max_ino=%lu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|max_ino
 )paren
 suffix:semicolon
