@@ -3296,6 +3296,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 DECL|function|initrd_load
 r_static
 r_int
@@ -3306,7 +3307,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 id|create_dev
 c_func
 (paren
@@ -3339,7 +3339,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|rd_load_image
 c_func
@@ -3348,6 +3347,22 @@ l_string|&quot;/dev/initrd&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|function|initrd_load
+r_static
+r_inline
+r_int
+id|initrd_load
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * Prepare the namespace - decide what/where to mount, load ramdisks, etc.&n; */
 DECL|function|prepare_namespace
 r_void
