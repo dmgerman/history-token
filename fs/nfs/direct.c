@@ -813,6 +813,11 @@ c_func
 id|inode
 )paren
 comma
+dot
+id|lockowner
+op_assign
+id|current-&gt;files
+comma
 )brace
 comma
 dot
