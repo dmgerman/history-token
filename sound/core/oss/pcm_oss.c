@@ -11606,6 +11606,14 @@ id|area-&gt;vm_end
 op_minus
 id|area-&gt;vm_start
 suffix:semicolon
+id|runtime-&gt;silence_threshold
+op_assign
+l_int|0
+suffix:semicolon
+id|runtime-&gt;silence_size
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#ifdef OSS_DEBUG
 id|printk
 c_func
