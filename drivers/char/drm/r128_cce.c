@@ -3147,7 +3147,6 @@ op_star
 id|dev
 )paren
 (brace
-macro_line|#if __HAVE_IRQ
 multiline_comment|/* Make sure interrupts are disabled here because the uninstall ioctl&n;&t; * may not have been called from userspace and after dev_private&n;&t; * is freed, it&squot;s too late.&n;&t; */
 r_if
 c_cond
@@ -3163,7 +3162,6 @@ id|irq_uninstall
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

@@ -13,6 +13,7 @@ macro_line|#include &quot;drm_drawable.h&quot;
 macro_line|#include &quot;drm_drv.h&quot;
 macro_line|#include &quot;drm_fops.h&quot;
 macro_line|#include &quot;drm_init.h&quot;
+macro_line|#include &quot;drm_irq.h&quot;
 macro_line|#include &quot;drm_ioctl.h&quot;
 macro_line|#include &quot;drm_lock.h&quot;
 macro_line|#include &quot;drm_memory.h&quot;

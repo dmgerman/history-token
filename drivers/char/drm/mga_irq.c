@@ -4,9 +4,9 @@ macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;mga_drm.h&quot;
 macro_line|#include &quot;mga_drv.h&quot;
-DECL|function|mga_irq_handler
+DECL|function|mga_driver_irq_handler
 id|irqreturn_t
-id|mga_irq_handler
+id|mga_driver_irq_handler
 c_func
 (paren
 id|DRM_IRQ_ARGS
@@ -91,9 +91,9 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-DECL|function|mga_vblank_wait
+DECL|function|mga_driver_vblank_wait
 r_int
-id|mga_vblank_wait
+id|mga_driver_vblank_wait
 c_func
 (paren
 id|drm_device_t

@@ -1323,8 +1323,14 @@ id|DRIVER_MINOR
 r_return
 id|EINVAL
 suffix:semicolon
-macro_line|#ifdef DRIVER_SETVERSION
-id|DRIVER_SETVERSION
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.set_version
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|set_version
 c_func
 (paren
 id|dev
@@ -1333,7 +1339,6 @@ op_amp
 id|sv
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 l_int|0

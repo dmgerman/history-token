@@ -33,25 +33,9 @@ DECL|macro|__HAVE_COUNTER8
 mdefine_line|#define __HAVE_COUNTER8         _DRM_STAT_SECONDARY
 DECL|macro|__HAVE_COUNTER9
 mdefine_line|#define __HAVE_COUNTER9         _DRM_STAT_DMA
-multiline_comment|/* DMA customization:&n; */
-DECL|macro|__HAVE_DMA
-mdefine_line|#define __HAVE_DMA&t;&t;1
-DECL|macro|__HAVE_DMA_QUEUE
-mdefine_line|#define __HAVE_DMA_QUEUE&t;1
-DECL|macro|__HAVE_DMA_RECLAIM
-mdefine_line|#define __HAVE_DMA_RECLAIM&t;1
 multiline_comment|/* Driver will work either way: IRQ&squot;s save cpu time when waiting for&n; * the card, but are subject to subtle interactions between bios,&n; * hardware and the driver.&n; */
 multiline_comment|/* XXX: Add vblank support? */
 DECL|macro|USE_IRQS
 mdefine_line|#define USE_IRQS 0
-macro_line|#if USE_IRQS
-DECL|macro|__HAVE_IRQ
-mdefine_line|#define __HAVE_IRQ&t;&t;1
-DECL|macro|__HAVE_SHARED_IRQ
-mdefine_line|#define __HAVE_SHARED_IRQ&t;1
-macro_line|#else
-DECL|macro|__HAVE_IRQ
-mdefine_line|#define __HAVE_IRQ          0
-macro_line|#endif
 macro_line|#endif
 eof

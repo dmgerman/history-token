@@ -11,17 +11,17 @@ macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
 macro_line|#if HZ &lt; 100
 DECL|macro|TIMER_CONTROL
-macro_line|# define TIMER_CONTROL&t;TIMER_CONTROL1
+macro_line|# define TIMER_CONTROL&t;TIMER_CONTROL2
 DECL|macro|TIMER_LOAD
-macro_line|# define TIMER_LOAD&t;TIMER_LOAD1
+macro_line|# define TIMER_LOAD&t;TIMER_LOAD2
 DECL|macro|TIMER_CONSTANT
 macro_line|# define TIMER_CONSTANT&t;(508469/HZ)
 DECL|macro|TIMER_MODE
 macro_line|# define TIMER_MODE&t;(TIMER_C_ENABLE | TIMER_C_PERIODIC | TIMER_C_508KHZ)
 DECL|macro|TIMER_EOI
-macro_line|# define TIMER_EOI&t;TIMER_EOI1
+macro_line|# define TIMER_EOI&t;TIMER_EOI2
 DECL|macro|TIMER_IRQ
-macro_line|# define TIMER_IRQ&t;IRQ_T1UI
+macro_line|# define TIMER_IRQ&t;IRQ_T2UI
 macro_line|#else
 DECL|macro|TIMER_CONTROL
 macro_line|# define TIMER_CONTROL&t;TIMER_CONTROL3

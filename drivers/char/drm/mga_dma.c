@@ -2330,7 +2330,6 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_IRQ
 multiline_comment|/* Make sure interrupts are disabled here because the uninstall ioctl&n;&t; * may not have been called from userspace and after dev_private&n;&t; * is freed, it&squot;s too late.&n;&t; */
 r_if
 c_cond
@@ -2346,7 +2345,6 @@ id|irq_uninstall
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3084,6 +3082,14 @@ op_or
 id|DRIVER_REQUIRE_AGP
 op_or
 id|DRIVER_USE_MTRR
+op_or
+id|DRIVER_HAVE_DMA
+op_or
+id|DRIVER_HAVE_IRQ
+op_or
+id|DRIVER_IRQ_SHARED
+op_or
+id|DRIVER_IRQ_VBL
 suffix:semicolon
 id|dev-&gt;fn_tbl.pretakedown
 op_assign
@@ -3092,6 +3098,26 @@ suffix:semicolon
 id|dev-&gt;fn_tbl.dma_quiescent
 op_assign
 id|mga_driver_dma_quiescent
+suffix:semicolon
+id|dev-&gt;fn_tbl.vblank_wait
+op_assign
+id|mga_driver_vblank_wait
+suffix:semicolon
+id|dev-&gt;fn_tbl.irq_preinstall
+op_assign
+id|mga_driver_irq_preinstall
+suffix:semicolon
+id|dev-&gt;fn_tbl.irq_postinstall
+op_assign
+id|mga_driver_irq_postinstall
+suffix:semicolon
+id|dev-&gt;fn_tbl.irq_uninstall
+op_assign
+id|mga_driver_irq_uninstall
+suffix:semicolon
+id|dev-&gt;fn_tbl.irq_handler
+op_assign
+id|mga_driver_irq_handler
 suffix:semicolon
 )brace
 eof

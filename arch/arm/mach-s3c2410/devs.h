@@ -1,4 +1,4 @@
-multiline_comment|/* arch/arm/mach-s3c2410/devs.h&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Header file for s3c2410 standard platform devices&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     18-Aug-2004 BJD  Created initial version&n; *&n;*/
+multiline_comment|/* arch/arm/mach-s3c2410/devs.h&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Header file for s3c2410 standard platform devices&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *      18-Aug-2004 BJD  Created initial version&n; *&t;27-Aug-2004 BJD  Added timers 0 through 3&n;*/
 r_extern
 r_struct
 id|platform_device
@@ -53,6 +53,26 @@ r_extern
 r_struct
 id|platform_device
 id|s3c_device_nand
+suffix:semicolon
+r_extern
+r_struct
+id|platform_device
+id|s3c_device_timer0
+suffix:semicolon
+r_extern
+r_struct
+id|platform_device
+id|s3c_device_timer1
+suffix:semicolon
+r_extern
+r_struct
+id|platform_device
+id|s3c_device_timer2
+suffix:semicolon
+r_extern
+r_struct
+id|platform_device
+id|s3c_device_timer3
 suffix:semicolon
 r_extern
 r_struct

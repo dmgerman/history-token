@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &quot;s3c2410.h&quot;
 macro_line|#include &quot;devs.h&quot;
+macro_line|#include &quot;cpu.h&quot;
 DECL|variable|__initdata
 r_static
 r_struct
@@ -231,7 +232,7 @@ c_func
 r_void
 )paren
 (brace
-id|s3c2410_map_io
+id|s3c24xx_init_io
 c_func
 (paren
 id|smdk2410_iodesc
@@ -243,9 +244,17 @@ id|smdk2410_iodesc
 )paren
 )paren
 suffix:semicolon
-id|s3c2410_uartcfgs
-op_assign
+id|s3c2410_init_uarts
+c_func
+(paren
 id|smdk2410_uartcfgs
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|smdk2410_uartcfgs
+)paren
+)paren
 suffix:semicolon
 id|s3c2410_set_board
 c_func

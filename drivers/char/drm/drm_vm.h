@@ -1952,19 +1952,51 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifndef DRIVER_GET_MAP_OFS
-DECL|macro|DRIVER_GET_MAP_OFS
-mdefine_line|#define DRIVER_GET_MAP_OFS()&t;(map-&gt;offset)
-macro_line|#endif
-macro_line|#ifndef DRIVER_GET_REG_OFS
+DECL|function|core_get_map_ofs
+r_int
+r_int
+id|DRM
+c_func
+(paren
+id|core_get_map_ofs
+)paren
+(paren
+id|drm_map_t
+op_star
+id|map
+)paren
+(brace
+r_return
+id|map-&gt;offset
+suffix:semicolon
+)brace
+DECL|function|core_get_reg_ofs
+r_int
+r_int
+id|DRM
+c_func
+(paren
+id|core_get_reg_ofs
+)paren
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
+(brace
 macro_line|#ifdef __alpha__
-DECL|macro|DRIVER_GET_REG_OFS
-mdefine_line|#define DRIVER_GET_REG_OFS()&t;(dev-&gt;hose-&gt;dense_mem_base -&t;&bslash;&n;&t;&t;&t;&t; dev-&gt;hose-&gt;mem_space-&gt;start)
+r_return
+id|dev-&gt;hose-&gt;dense_mem_base
+op_minus
+id|dev-&gt;hose-&gt;mem_space-&gt;start
+suffix:semicolon
 macro_line|#else
-DECL|macro|DRIVER_GET_REG_OFS
-mdefine_line|#define DRIVER_GET_REG_OFS()&t;0
+r_return
+l_int|0
+suffix:semicolon
 macro_line|#endif
-macro_line|#endif
+)brace
 multiline_comment|/**&n; * mmap DMA memory.&n; *&n; * &bslash;param filp file pointer.&n; * &bslash;param vma virtual memory area.&n; * &bslash;return zero on success or a negative number on failure.&n; * &n; * If the virtual memory area has no offset associated with it then it&squot;s a DMA&n; * area, so calls mmap_dma(). Otherwise searches the map in drm_device::maplist,&n; * checks that the restricted flag is not set, sets the virtual memory operations&n; * according to the mapping type and remaps the pages. Finally sets the file&n; * pointer and calls vm_open().&n; */
 DECL|function|mmap
 r_int
@@ -2118,9 +2150,12 @@ r_continue
 suffix:semicolon
 id|off
 op_assign
-id|DRIVER_GET_MAP_OFS
+id|dev-&gt;fn_tbl
+dot
+id|get_map_ofs
 c_func
 (paren
+id|map
 )paren
 suffix:semicolon
 r_if
@@ -2375,9 +2410,12 @@ suffix:semicolon
 macro_line|#endif
 id|offset
 op_assign
-id|DRIVER_GET_REG_OFS
+id|dev-&gt;fn_tbl
+dot
+id|get_reg_ofs
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#ifdef __sparc__
