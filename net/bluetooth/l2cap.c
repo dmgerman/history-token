@@ -6781,9 +6781,11 @@ multiline_comment|/* Check for backlog size */
 r_if
 c_cond
 (paren
-id|parent-&gt;sk_ack_backlog
-OG
-id|parent-&gt;sk_max_ack_backlog
+id|sk_acceptq_is_full
+c_func
+(paren
+id|parent
+)paren
 )paren
 (brace
 id|BT_DBG
