@@ -13951,6 +13951,10 @@ op_plus
 id|window
 OG
 id|j
+op_logical_or
+id|j
+op_eq
+id|max_sectors
 )paren
 r_continue
 suffix:semicolon
