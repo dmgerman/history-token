@@ -1436,6 +1436,8 @@ id|pmc-&gt;next
 r_if
 c_cond
 (paren
+id|pgsr-&gt;gsr_interface
+op_logical_and
 id|pmc-&gt;ifindex
 op_ne
 id|pgsr-&gt;gsr_interface
