@@ -4765,7 +4765,7 @@ id|node
 comma
 id|secondary_hold
 comma
-id|cpuid
+id|reg
 )paren
 suffix:semicolon
 r_for
@@ -4809,7 +4809,7 @@ c_cond
 op_star
 id|acknowledge
 op_eq
-id|cpuid
+id|reg
 )paren
 (brace
 id|prom_printf
