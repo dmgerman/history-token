@@ -4256,10 +4256,6 @@ id|KERN_INFO
 l_string|&quot;raid1: dirty sb detected, updating.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|mddev-&gt;sb_dirty
-op_assign
-l_int|0
-suffix:semicolon
 id|md_update_sb
 c_func
 (paren

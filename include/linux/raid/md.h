@@ -158,7 +158,7 @@ id|thread
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|md_update_sb
 (paren
 id|mddev_t

@@ -2608,10 +2608,6 @@ id|KERN_INFO
 l_string|&quot;dirty sb detected, updating.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|mddev-&gt;sb_dirty
-op_assign
-l_int|0
-suffix:semicolon
 id|md_update_sb
 c_func
 (paren
