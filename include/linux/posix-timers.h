@@ -121,6 +121,22 @@ r_int
 id|res
 suffix:semicolon
 multiline_comment|/* in nano seconds */
+DECL|member|clock_getres
+r_int
+(paren
+op_star
+id|clock_getres
+)paren
+(paren
+id|clockid_t
+id|which_clock
+comma
+r_struct
+id|timespec
+op_star
+id|tp
+)paren
+suffix:semicolon
 DECL|member|abs_struct
 r_struct
 id|k_clock_abs
@@ -134,6 +150,9 @@ op_star
 id|clock_set
 )paren
 (paren
+id|clockid_t
+id|which_clock
+comma
 r_struct
 id|timespec
 op_star
@@ -147,6 +166,9 @@ op_star
 id|clock_get
 )paren
 (paren
+id|clockid_t
+id|which_clock
+comma
 r_struct
 id|timespec
 op_star
@@ -173,7 +195,7 @@ op_star
 id|nsleep
 )paren
 (paren
-r_int
+id|clockid_t
 id|which_clock
 comma
 r_int
@@ -182,7 +204,6 @@ comma
 r_struct
 id|timespec
 op_star
-id|t
 )paren
 suffix:semicolon
 DECL|member|timer_set
@@ -248,7 +269,7 @@ r_void
 id|register_posix_clock
 c_func
 (paren
-r_int
+id|clockid_t
 id|clock_id
 comma
 r_struct
@@ -272,8 +293,7 @@ r_int
 id|do_posix_clock_nonanosleep
 c_func
 (paren
-r_int
-id|which_clock
+id|clockid_t
 comma
 r_int
 id|flags
@@ -281,13 +301,14 @@ comma
 r_struct
 id|timespec
 op_star
-id|t
 )paren
 suffix:semicolon
 r_int
 id|do_posix_clock_nosettime
 c_func
 (paren
+id|clockid_t
+comma
 r_struct
 id|timespec
 op_star

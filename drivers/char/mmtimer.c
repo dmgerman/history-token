@@ -1308,6 +1308,9 @@ r_int
 id|sgi_clock_get
 c_func
 (paren
+id|clockid_t
+id|clockid
+comma
 r_struct
 id|timespec
 op_star
@@ -1354,6 +1357,9 @@ r_int
 id|sgi_clock_set
 c_func
 (paren
+id|clockid_t
+id|clockid
+comma
 r_struct
 id|timespec
 op_star
