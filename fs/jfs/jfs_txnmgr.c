@@ -212,12 +212,12 @@ id|TxLock
 suffix:semicolon
 multiline_comment|/* transaction lock table */
 multiline_comment|/*&n; *      transaction management lock&n; */
-DECL|variable|jfsTxnLock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|jfsTxnLock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|TXN_LOCK
 mdefine_line|#define TXN_LOCK()              spin_lock(&amp;jfsTxnLock)

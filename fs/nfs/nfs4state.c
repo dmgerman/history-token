@@ -10,12 +10,12 @@ macro_line|#include &quot;callback.h&quot;
 macro_line|#include &quot;delegation.h&quot;
 DECL|macro|OPENOWNER_POOL_SIZE
 mdefine_line|#define OPENOWNER_POOL_SIZE&t;8
-DECL|variable|state_spinlock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|state_spinlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|zero_stateid
 id|nfs4_stateid

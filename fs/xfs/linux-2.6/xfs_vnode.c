@@ -6,10 +6,11 @@ id|vn_generation
 suffix:semicolon
 multiline_comment|/* vnode generation number */
 DECL|variable|vnumber_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|vnumber_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Dedicated vnode inactive/reclaim sync semaphores.&n; * Prime number of hash buckets since address is used as the key.&n; */
 DECL|macro|NVSYNC

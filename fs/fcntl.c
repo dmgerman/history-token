@@ -2201,12 +2201,12 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|variable|fasync_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|fasync_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|fasync_cache
 r_static

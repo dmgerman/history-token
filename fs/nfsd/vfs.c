@@ -2955,12 +2955,12 @@ id|dp-&gt;d_inode-&gt;i_fop
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Obtain the readahead parameters for the file&n; * specified by (dev, ino).&n; */
-DECL|variable|ra_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ra_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_inline

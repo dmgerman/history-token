@@ -959,13 +959,13 @@ id|filp-&gt;f_mapping-&gt;host
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * pseudo-fs&n; */
-DECL|variable|__cacheline_aligned_in_smp
 r_static
-id|spinlock_t
-id|bdev_lock
 id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
+id|DEFINE_SPINLOCK
+c_func
+(paren
+id|bdev_lock
+)paren
 suffix:semicolon
 DECL|variable|bdev_cachep
 r_static

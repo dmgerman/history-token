@@ -11,10 +11,11 @@ macro_line|#include &quot;vlclient.h&quot;
 macro_line|#include &quot;kafstimod.h&quot;
 macro_line|#include &quot;internal.h&quot;
 DECL|variable|afs_server_peer_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|afs_server_peer_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|FS_SERVICE_ID
 mdefine_line|#define FS_SERVICE_ID&t;&t;1&t;/* AFS Volume Location Service ID */
