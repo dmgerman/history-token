@@ -60,6 +60,14 @@ id|cpufreq_frequency_table
 op_star
 id|powernow_table
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_POWERNOW_K8_ACPI
+multiline_comment|/* the acpi table needs to be kept. it&squot;s only available if ACPI was&n;&t; * used to determine valid frequency/vid/fid states */
+DECL|member|acpi_data
+r_struct
+id|acpi_processor_performance
+id|acpi_data
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* processor&squot;s cpuid instruction support */
@@ -298,6 +306,21 @@ id|data
 comma
 id|u32
 id|reqfid
+)paren
+suffix:semicolon
+r_static
+r_void
+id|powernow_k8_acpi_pst_values
+c_func
+(paren
+r_struct
+id|powernow_k8_data
+op_star
+id|data
+comma
+r_int
+r_int
+id|index
 )paren
 suffix:semicolon
 eof
