@@ -742,7 +742,11 @@ c_func
 (paren
 l_string|&quot;Device %s&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -1276,7 +1280,11 @@ c_func
 (paren
 l_string|&quot;Hot-pluggable device %s&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_for
