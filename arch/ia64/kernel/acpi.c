@@ -1756,7 +1756,6 @@ r_void
 id|__init
 DECL|function|acpi_numa_arch_fixup
 id|acpi_numa_arch_fixup
-c_func
 (paren
 r_void
 )paren
@@ -2742,13 +2741,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NUMA
+macro_line|# ifdef CONFIG_NUMA
 id|build_cpu_to_node_map
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|# endif
 macro_line|#endif
 multiline_comment|/* Make boot-up look pretty */
 id|printk
@@ -2766,7 +2765,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* --------------------------------------------------------------------------&n;                             PCI Interrupt Routing&n;   -------------------------------------------------------------------------- */
+multiline_comment|/*&n; * PCI Interrupt Routing&n; */
 macro_line|#ifdef CONFIG_PCI
 r_int
 id|__init
@@ -2961,7 +2960,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_PCI */
 multiline_comment|/* Assume IA64 always use I/O SAPIC */
 r_int
 id|__init
