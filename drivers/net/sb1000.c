@@ -505,7 +505,6 @@ id|name
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|sb1000_get_firmware_version
 c_func
@@ -532,7 +531,6 @@ id|do_end
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|sb1000_get_frequency
 c_func
@@ -554,7 +552,6 @@ id|frequency
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|sb1000_set_frequency
 c_func
@@ -575,7 +572,6 @@ id|frequency
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|sb1000_get_PIDs
 c_func
@@ -598,7 +594,6 @@ id|PID
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|sb1000_set_PIDs
 c_func
@@ -3292,7 +3287,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* get SB1000 firmware version */
 r_static
-r_inline
 r_int
 DECL|function|sb1000_get_firmware_version
 id|sb1000_get_firmware_version
@@ -3446,7 +3440,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* get SB1000 frequency */
 r_static
-r_inline
 r_int
 DECL|function|sb1000_get_frequency
 id|sb1000_get_frequency
@@ -3591,7 +3584,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* set SB1000 frequency */
 r_static
-r_inline
 r_int
 DECL|function|sb1000_set_frequency
 id|sb1000_set_frequency
@@ -3772,7 +3764,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* get SB1000 PIDs */
 r_static
-r_inline
 r_int
 DECL|function|sb1000_get_PIDs
 id|sb1000_get_PIDs
@@ -4085,7 +4076,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* set SB1000 PIDs */
 r_static
-r_inline
 r_int
 DECL|function|sb1000_set_PIDs
 id|sb1000_set_PIDs
