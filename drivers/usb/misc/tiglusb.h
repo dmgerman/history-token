@@ -55,11 +55,6 @@ r_int
 id|minor
 suffix:semicolon
 multiline_comment|/* which minor dev #? */
-DECL|member|devfs
-id|devfs_handle_t
-id|devfs
-suffix:semicolon
-multiline_comment|/* devfs device */
 DECL|member|state
 id|driver_state_t
 id|state
