@@ -2340,6 +2340,10 @@ op_assign
 op_amp
 id|dev-&gt;dma_mask
 suffix:semicolon
+id|dev-&gt;dev.coherent_dma_mask
+op_assign
+id|dev-&gt;dma_mask
+suffix:semicolon
 id|pr_debug
 c_func
 (paren

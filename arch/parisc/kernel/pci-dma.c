@@ -1654,8 +1654,8 @@ op_logical_neg
 id|dev
 op_logical_or
 op_star
-id|dev-&gt;dma_mask
-op_ne
+id|dev-&gt;coherent_dma_mask
+OL
 l_int|0xffffffff
 )paren
 id|gfp

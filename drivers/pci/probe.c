@@ -2662,10 +2662,6 @@ id|dev-&gt;dma_mask
 op_assign
 l_int|0xffffffff
 suffix:semicolon
-id|dev-&gt;consistent_dma_mask
-op_assign
-l_int|0xffffffff
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2715,6 +2711,10 @@ id|dev-&gt;dev.dma_mask
 op_assign
 op_amp
 id|dev-&gt;dma_mask
+suffix:semicolon
+id|dev-&gt;dev.coherent_dma_mask
+op_assign
+l_int|0xffffffffull
 suffix:semicolon
 r_return
 id|dev

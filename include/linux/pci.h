@@ -658,11 +658,6 @@ id|u64
 id|dma_mask
 suffix:semicolon
 multiline_comment|/* Mask of the bits of bus address this&n;&t;&t;&t;&t;&t;   device implements.  Normally this is&n;&t;&t;&t;&t;&t;   0xffffffff.  You only need to change&n;&t;&t;&t;&t;&t;   this if your device has broken DMA&n;&t;&t;&t;&t;&t;   or supports 64-bit transfers.  */
-DECL|member|consistent_dma_mask
-id|u64
-id|consistent_dma_mask
-suffix:semicolon
-multiline_comment|/* Like dma_mask, but for&n;&t;&t;&t;&t;&t;       pci_alloc_consistent mappings as&n;&t;&t;&t;&t;&t;       not all hardware supports&n;&t;&t;&t;&t;&t;       64 bit addresses for consistent&n;&t;&t;&t;&t;&t;       allocations such descriptors. */
 DECL|member|current_state
 id|u32
 id|current_state

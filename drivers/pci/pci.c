@@ -2198,7 +2198,7 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-id|dev-&gt;consistent_dma_mask
+id|dev-&gt;dev.coherent_dma_mask
 op_assign
 id|mask
 suffix:semicolon

@@ -817,6 +817,10 @@ op_assign
 op_amp
 id|edev-&gt;dma_mask
 suffix:semicolon
+id|edev-&gt;dev.coherent_dma_mask
+op_assign
+id|edev-&gt;dma_mask
+suffix:semicolon
 id|sprintf
 (paren
 id|edev-&gt;dev.bus_id

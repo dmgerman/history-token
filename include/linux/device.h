@@ -1357,6 +1357,11 @@ op_star
 id|dma_mask
 suffix:semicolon
 multiline_comment|/* dma mask (if dma&squot;able device) */
+DECL|member|coherent_dma_mask
+id|u64
+id|coherent_dma_mask
+suffix:semicolon
+multiline_comment|/* Like dma_mask, but for&n;&t;&t;&t;&t;&t;     alloc_coherent mappings as&n;&t;&t;&t;&t;&t;     not all hardware supports&n;&t;&t;&t;&t;&t;     64 bit addresses for consistent&n;&t;&t;&t;&t;&t;     allocations such descriptors. */
 DECL|member|dma_pools
 r_struct
 id|list_head
