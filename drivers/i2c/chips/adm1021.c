@@ -1223,12 +1223,14 @@ id|error1
 suffix:semicolon
 )brace
 multiline_comment|/* Fill in the remaining client fields and put it into the global list */
-id|strcpy
+id|strncpy
 c_func
 (paren
-id|new_client-&gt;name
+id|new_client-&gt;dev.name
 comma
 id|client_name
+comma
+id|DEVICE_NAME_SIZE
 )paren
 suffix:semicolon
 id|data-&gt;type

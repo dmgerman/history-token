@@ -460,13 +460,6 @@ DECL|struct|i2c_client
 r_struct
 id|i2c_client
 (brace
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|32
-)braket
-suffix:semicolon
 DECL|member|id
 r_int
 id|id

@@ -1064,7 +1064,7 @@ id|KERN_DEBUG
 l_string|&quot;i2c-core.o: &quot;
 l_string|&quot;detaching client %s:&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 )paren
 )paren
 suffix:semicolon
@@ -1324,7 +1324,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot; i2c-core.o: attach_client(%s) - enlarge I2C_CLIENT_MAX.&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 )paren
 suffix:semicolon
 id|out_unlock_list
@@ -1400,7 +1400,7 @@ comma
 l_string|&quot;client [%s] registered to adapter &quot;
 l_string|&quot;(pos. %d).&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 comma
 id|i
 )paren
@@ -1494,7 +1494,7 @@ id|KERN_ERR
 l_string|&quot;i2c-core.o: client_unregister [%s] failed, &quot;
 l_string|&quot;client not detached&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 )paren
 suffix:semicolon
 r_goto
@@ -1553,7 +1553,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot; i2c-core.o: unregister_client [%s] not found&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 )paren
 suffix:semicolon
 id|res
@@ -2081,7 +2081,7 @@ l_string|&quot;%02x&bslash;t%-32s&bslash;t%-32s&bslash;n&quot;
 comma
 id|client-&gt;addr
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 comma
 id|client-&gt;driver-&gt;name
 )paren
