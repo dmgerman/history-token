@@ -614,7 +614,6 @@ id|page
 comma
 l_string|&quot;MemTotal:     %8lu kB&bslash;n&quot;
 l_string|&quot;MemFree:      %8lu kB&bslash;n&quot;
-l_string|&quot;MemShared:    %8lu kB&bslash;n&quot;
 l_string|&quot;Buffers:      %8lu kB&bslash;n&quot;
 l_string|&quot;Cached:       %8lu kB&bslash;n&quot;
 l_string|&quot;SwapCached:   %8lu kB&bslash;n&quot;
@@ -644,12 +643,6 @@ id|K
 c_func
 (paren
 id|i.freeram
-)paren
-comma
-id|K
-c_func
-(paren
-id|i.sharedram
 )paren
 comma
 id|K

@@ -32,7 +32,7 @@ id|alg
 )paren
 (brace
 r_return
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|alg-&gt;cra_module

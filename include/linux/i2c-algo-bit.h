@@ -80,14 +80,18 @@ DECL|member|udelay
 r_int
 id|udelay
 suffix:semicolon
+multiline_comment|/* half-clock-cycle time in microsecs */
+multiline_comment|/* i.e. clock is (500 / udelay) KHz */
 DECL|member|mdelay
 r_int
 id|mdelay
 suffix:semicolon
+multiline_comment|/* in millisecs, unused */
 DECL|member|timeout
 r_int
 id|timeout
 suffix:semicolon
+multiline_comment|/* in jiffies */
 )brace
 suffix:semicolon
 DECL|macro|I2C_BIT_ADAP_MAX

@@ -77,6 +77,11 @@ id|list_head
 id|dev_list
 suffix:semicolon
 multiline_comment|/* devices on this bus */
+DECL|member|work
+r_struct
+id|work_struct
+id|work
+suffix:semicolon
 multiline_comment|/*&n;&t; * hardware info/state&n;&t; */
 DECL|member|driver
 r_struct

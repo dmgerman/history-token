@@ -942,7 +942,7 @@ c_cond
 id|nls
 op_logical_and
 op_logical_neg
-id|try_inc_mod_count
+id|try_module_get
 c_func
 (paren
 id|nls-&gt;owner

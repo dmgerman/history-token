@@ -267,6 +267,11 @@ r_static
 r_void
 id|ohci_dump_intr_mask
 (paren
+r_struct
+id|device
+op_star
+id|dev
+comma
 r_char
 op_star
 id|label
@@ -275,9 +280,12 @@ id|__u32
 id|mask
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;%s: 0x%08x%s%s%s%s%s%s%s%s%s&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s: 0x%08x%s%s%s%s%s%s%s%s%s&bslash;n&quot;
 comma
 id|label
 comma
@@ -389,6 +397,11 @@ r_static
 r_void
 id|maybe_print_eds
 (paren
+r_struct
+id|device
+op_star
+id|dev
+comma
 r_char
 op_star
 id|label
@@ -402,9 +415,12 @@ c_cond
 (paren
 id|value
 )paren
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;%s %08x&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s %08x&bslash;n&quot;
 comma
 id|label
 comma
@@ -476,6 +492,13 @@ id|regs
 op_assign
 id|controller-&gt;regs
 suffix:semicolon
+r_struct
+id|device
+op_star
+id|dev
+op_assign
+id|controller-&gt;hcd.controller
+suffix:semicolon
 id|__u32
 id|temp
 suffix:semicolon
@@ -489,9 +512,12 @@ id|regs-&gt;revision
 op_amp
 l_int|0xff
 suffix:semicolon
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;OHCI %d.%d, %s legacy support registers&quot;
+op_star
+id|dev
+comma
+l_string|&quot;OHCI %d.%d, %s legacy support registers&bslash;n&quot;
 comma
 l_int|0x03
 op_amp
@@ -527,9 +553,12 @@ op_amp
 id|regs-&gt;control
 )paren
 suffix:semicolon
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;control: 0x%08x%s%s%s HCFS=%s%s%s%s%s CBSR=%d&quot;
+op_star
+id|dev
+comma
+l_string|&quot;control: 0x%08x%s%s%s HCFS=%s%s%s%s%s CBSR=%d&bslash;n&quot;
 comma
 id|temp
 comma
@@ -630,9 +659,12 @@ op_amp
 id|regs-&gt;cmdstatus
 )paren
 suffix:semicolon
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;cmdstatus: 0x%08x SOC=%d%s%s%s%s&quot;
+op_star
+id|dev
+comma
+l_string|&quot;cmdstatus: 0x%08x SOC=%d%s%s%s%s&bslash;n&quot;
 comma
 id|temp
 comma
@@ -691,6 +723,8 @@ l_string|&quot;&quot;
 suffix:semicolon
 id|ohci_dump_intr_mask
 (paren
+id|dev
+comma
 l_string|&quot;intrstatus&quot;
 comma
 id|readl
@@ -702,6 +736,8 @@ id|regs-&gt;intrstatus
 suffix:semicolon
 id|ohci_dump_intr_mask
 (paren
+id|dev
+comma
 l_string|&quot;intrenable&quot;
 comma
 id|readl
@@ -712,9 +748,11 @@ id|regs-&gt;intrenable
 )paren
 suffix:semicolon
 singleline_comment|// intrdisable always same as intrenable
-singleline_comment|// ohci_dump_intr_mask (&quot;intrdisable&quot;, readl (&amp;regs-&gt;intrdisable));
+singleline_comment|// ohci_dump_intr_mask (dev, &quot;intrdisable&quot;, readl (&amp;regs-&gt;intrdisable));
 id|maybe_print_eds
 (paren
+id|dev
+comma
 l_string|&quot;ed_periodcurrent&quot;
 comma
 id|readl
@@ -726,6 +764,8 @@ id|regs-&gt;ed_periodcurrent
 suffix:semicolon
 id|maybe_print_eds
 (paren
+id|dev
+comma
 l_string|&quot;ed_controlhead&quot;
 comma
 id|readl
@@ -737,6 +777,8 @@ id|regs-&gt;ed_controlhead
 suffix:semicolon
 id|maybe_print_eds
 (paren
+id|dev
+comma
 l_string|&quot;ed_controlcurrent&quot;
 comma
 id|readl
@@ -748,6 +790,8 @@ id|regs-&gt;ed_controlcurrent
 suffix:semicolon
 id|maybe_print_eds
 (paren
+id|dev
+comma
 l_string|&quot;ed_bulkhead&quot;
 comma
 id|readl
@@ -759,6 +803,8 @@ id|regs-&gt;ed_bulkhead
 suffix:semicolon
 id|maybe_print_eds
 (paren
+id|dev
+comma
 l_string|&quot;ed_bulkcurrent&quot;
 comma
 id|readl
@@ -770,6 +816,8 @@ id|regs-&gt;ed_bulkcurrent
 suffix:semicolon
 id|maybe_print_eds
 (paren
+id|dev
+comma
 l_string|&quot;donehead&quot;
 comma
 id|readl
@@ -835,9 +883,12 @@ c_cond
 id|verbose
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;roothub.a: %08x POTPGT=%d%s%s%s%s%s NDP=%d&quot;
+op_star
+id|controller-&gt;hcd.controller
+comma
+l_string|&quot;roothub.a: %08x POTPGT=%d%s%s%s%s%s NDP=%d&bslash;n&quot;
 comma
 id|temp
 comma
@@ -918,9 +969,12 @@ id|roothub_b
 id|controller
 )paren
 suffix:semicolon
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;roothub.b: %08x PPCM=%04x DR=%04x&quot;
+op_star
+id|controller-&gt;hcd.controller
+comma
+l_string|&quot;roothub.b: %08x PPCM=%04x DR=%04x&bslash;n&quot;
 comma
 id|temp
 comma
@@ -946,9 +1000,12 @@ id|roothub_status
 id|controller
 )paren
 suffix:semicolon
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;roothub.status: %08x%s%s%s%s%s%s&quot;
+op_star
+id|controller-&gt;hcd.controller
+comma
+l_string|&quot;roothub.status: %08x%s%s%s%s%s%s&bslash;n&quot;
 comma
 id|temp
 comma
@@ -1071,11 +1128,12 @@ r_int
 id|verbose
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;OHCI controller %s state&quot;
+op_star
+id|controller-&gt;hcd.controller
 comma
-id|controller-&gt;hcd.self.bus_name
+l_string|&quot;OHCI controller state&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// dumps some of the state we know about
@@ -1089,9 +1147,12 @@ c_cond
 (paren
 id|controller-&gt;hcca
 )paren
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;hcca frame #%04x&quot;
+op_star
+id|controller-&gt;hcd.controller
+comma
+l_string|&quot;hcca frame #%04x&bslash;n&quot;
 comma
 id|controller-&gt;hcca-&gt;frame_no
 )paren
@@ -1770,13 +1831,25 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,32)
-DECL|macro|DRIVERFS_DEBUG_FILES
-macro_line|#&t;define DRIVERFS_DEBUG_FILES
-macro_line|#endif
+macro_line|#else
+DECL|function|ohci_dump
+r_static
+r_inline
+r_void
+id|ohci_dump
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|controller
+comma
+r_int
+id|verbose
+)paren
+(brace
+)brace
 macro_line|#endif /* DEBUG */
 multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifdef DRIVERFS_DEBUG_FILES
 r_static
 id|ssize_t
 DECL|function|show_list
@@ -2736,11 +2809,12 @@ id|dev_attr_periodic
 )paren
 suffix:semicolon
 singleline_comment|// registers
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;%s: created debug files&quot;
+op_star
+id|bus-&gt;hcd.controller
 comma
-id|bus-&gt;hcd.self.bus_name
+l_string|&quot;created debug files&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2773,33 +2847,5 @@ id|dev_attr_periodic
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* empty stubs for creating those files */
-DECL|function|create_debug_files
-r_static
-r_inline
-r_void
-id|create_debug_files
-(paren
-r_struct
-id|ohci_hcd
-op_star
-id|bus
-)paren
-(brace
-)brace
-DECL|function|remove_debug_files
-r_static
-r_inline
-r_void
-id|remove_debug_files
-(paren
-r_struct
-id|ohci_hcd
-op_star
-id|bus
-)paren
-(brace
-)brace
-macro_line|#endif /* DRIVERFS_DEBUG_FILES */
 multiline_comment|/*-------------------------------------------------------------------------*/
 eof
