@@ -214,6 +214,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|dev-&gt;agp
+op_logical_or
+op_logical_neg
 id|dev-&gt;agp-&gt;cant_use_aperture
 )paren
 (brace
