@@ -1184,15 +1184,12 @@ id|screen_bitmap
 suffix:semicolon
 DECL|member|v86flags
 DECL|member|v86mask
-DECL|member|v86mode
 DECL|member|saved_esp0
 r_int
 r_int
 id|v86flags
 comma
 id|v86mask
-comma
-id|v86mode
 comma
 id|saved_esp0
 suffix:semicolon
@@ -1206,7 +1203,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ { 0, 0 } , },&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0, 0, 0, 0, &t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ [0 ... 7] = 0 },&t;/* debugging registers */&t;&bslash;&n;&t;0, 0, 0,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ { 0, }, },&t;&t;/* 387 state */&t;&t;&t;&bslash;&n;&t;0,0,0,0,0,0,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;NULL,&t;&t;&t;/* io permissions */&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ { 0, 0 } , },&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0, 0, 0, 0, &t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ [0 ... 7] = 0 },&t;/* debugging registers */&t;&bslash;&n;&t;0, 0, 0,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ { 0, }, },&t;&t;/* 387 state */&t;&t;&t;&bslash;&n;&t;0,0,0,0,0,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;NULL,&t;&t;&t;/* io permissions */&t;&t;&bslash;&n;}
 DECL|macro|INIT_TSS
 mdefine_line|#define INIT_TSS  {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0,0, /* back_link, __blh */&t;&t;&t;&t;&bslash;&n;&t;sizeof(init_stack) + (long) &amp;init_stack, /* esp0 */&t;&bslash;&n;&t;__KERNEL_DS, 0, /* ss0 */&t;&t;&t;&t;&bslash;&n;&t;0,0,0,0,0,0, /* stack1, stack2 */&t;&t;&t;&bslash;&n;&t;0, /* cr3 */&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0,0, /* eip,eflags */&t;&t;&t;&t;&t;&bslash;&n;&t;0,0,0,0, /* eax,ecx,edx,ebx */&t;&t;&t;&t;&bslash;&n;&t;0,0,0,0, /* esp,ebp,esi,edi */&t;&t;&t;&t;&bslash;&n;&t;0,0,0,0,0,0, /* es,cs,ss */&t;&t;&t;&t;&bslash;&n;&t;0,0,0,0,0,0, /* ds,fs,gs */&t;&t;&t;&t;&bslash;&n;&t;GDT_ENTRY_LDT,0, /* ldt */&t;&t;&t;&t;&t;&bslash;&n;&t;0, INVALID_IO_BITMAP_OFFSET, /* tace, bitmap */&t;&t;&bslash;&n;&t;{~0, } /* ioperm */&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|start_thread
