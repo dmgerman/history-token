@@ -7,7 +7,6 @@ DECL|macro|PKT_COPY_THRESHOLD
 mdefine_line|#define PKT_COPY_THRESHOLD 512
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
