@@ -763,6 +763,16 @@ comma
 id|runtime
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|runtime-&gt;period_size
+op_eq
+id|runtime-&gt;buffer_size
+)paren
+r_goto
+id|__next_buf
+suffix:semicolon
 id|new_hw_ptr
 op_assign
 id|runtime-&gt;hw_ptr_base
@@ -802,11 +812,19 @@ op_div
 l_int|2
 )paren
 (brace
+macro_line|#ifdef CONFIG_SND_DEBUG
+r_if
+c_cond
+(paren
+id|runtime-&gt;periods
+OG
+l_int|1
+)paren
 id|snd_printd
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Unexpected hw_pointer value (stream = %i, delta: -%ld, max jitter = %ld): wrong interrupt acknowledge?&bslash;n&quot;
+l_string|&quot;Unexpected hw_pointer value [1] (stream = %i, delta: -%ld, max jitter = %ld): wrong interrupt acknowledge?&bslash;n&quot;
 comma
 id|substream-&gt;stream
 comma
@@ -820,10 +838,13 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
+id|__next_buf
+suffix:colon
 id|runtime-&gt;hw_ptr_base
 op_add_assign
 id|runtime-&gt;buffer_size
@@ -962,11 +983,19 @@ op_div
 l_int|2
 )paren
 (brace
+macro_line|#ifdef CONFIG_SND_DEBUG
+r_if
+c_cond
+(paren
+id|runtime-&gt;periods
+OG
+l_int|2
+)paren
 id|snd_printd
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Unexpected hw_pointer value (stream = %i, delta: -%ld, max jitter = %ld): wrong interrupt acknowledge?&bslash;n&quot;
+l_string|&quot;Unexpected hw_pointer value [2] (stream = %i, delta: -%ld, max jitter = %ld): wrong interrupt acknowledge?&bslash;n&quot;
 comma
 id|substream-&gt;stream
 comma
@@ -980,6 +1009,7 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
