@@ -1011,19 +1011,28 @@ id|fidvidctl.bits.FID
 op_assign
 id|fid
 suffix:semicolon
-id|fidvidctl.bits.VID
-op_assign
-id|vid
-suffix:semicolon
-multiline_comment|/* Note, we could set these lazily. Ie, only do voltage transition&n;&t;   if its changed since last time (Some speeds have the same voltage) */
 id|fidvidctl.bits.FIDC
 op_assign
 l_int|1
+suffix:semicolon
+multiline_comment|/* Set the voltage lazily. Ie, only do voltage transition&n;&t;   if its changed since last time (Some speeds have the same voltage) */
+r_if
+c_cond
+(paren
+id|fidvidctl.bits.VID
+op_ne
+id|vid
+)paren
+(brace
+id|fidvidctl.bits.VID
+op_assign
+id|vid
 suffix:semicolon
 id|fidvidctl.bits.VIDC
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 id|wrmsrl
 (paren
 id|MSR_K7_FID_VID_CTL

@@ -240,6 +240,46 @@ id|l_pid
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|F_GETLK64
+mdefine_line|#define F_GETLK64&t;12&t;/*  using &squot;struct flock64&squot; */
+DECL|macro|F_SETLK64
+mdefine_line|#define F_SETLK64&t;13
+DECL|macro|F_SETLKW64
+mdefine_line|#define F_SETLKW64&t;14
+multiline_comment|/*&n; * IA32 uses 4 byte alignment for 64 bit quantities,&n; * so we need to pack this structure.&n; */
+DECL|struct|compat_flock64
+r_struct
+id|compat_flock64
+(brace
+DECL|member|l_type
+r_int
+id|l_type
+suffix:semicolon
+DECL|member|l_whence
+r_int
+id|l_whence
+suffix:semicolon
+DECL|member|l_start
+id|compat_loff_t
+id|l_start
+suffix:semicolon
+DECL|member|l_len
+id|compat_loff_t
+id|l_len
+suffix:semicolon
+DECL|member|l_pid
+id|compat_pid_t
+id|l_pid
+suffix:semicolon
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 DECL|struct|compat_statfs
 r_struct
 id|compat_statfs
@@ -305,5 +345,9 @@ r_typedef
 id|u32
 id|compat_sigset_word
 suffix:semicolon
+DECL|macro|COMPAT_OFF_T_MAX
+mdefine_line|#define COMPAT_OFF_T_MAX&t;0x7fffffff
+DECL|macro|COMPAT_LOFF_T_MAX
+mdefine_line|#define COMPAT_LOFF_T_MAX&t;0x7fffffffffffffff
 macro_line|#endif /* _ASM_X86_64_COMPAT_H */
 eof

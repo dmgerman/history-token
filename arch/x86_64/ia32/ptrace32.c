@@ -10,6 +10,8 @@ macro_line|#include &lt;asm/user.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/debugreg.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
+macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/ldt.h&gt;
 macro_line|#include &lt;asm/fpu32.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;

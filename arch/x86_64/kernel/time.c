@@ -18,6 +18,8 @@ macro_line|#endif
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
+op_assign
+id|INITIAL_JIFFIES
 suffix:semicolon
 r_extern
 r_int
@@ -80,12 +82,16 @@ r_int
 r_int
 id|__jiffies
 id|__section_jiffies
+op_assign
+id|INITIAL_JIFFIES
 suffix:semicolon
 DECL|variable|__section_wall_jiffies
 r_int
 r_int
 id|__wall_jiffies
 id|__section_wall_jiffies
+op_assign
+id|INITIAL_JIFFIES
 suffix:semicolon
 DECL|variable|__section_xtime
 r_struct

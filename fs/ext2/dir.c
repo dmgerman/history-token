@@ -1624,6 +1624,16 @@ id|ext2_dirent
 op_star
 id|de
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|npages
+op_eq
+l_int|0
+)paren
+r_goto
+id|out
+suffix:semicolon
 multiline_comment|/* OFFSET_CACHE */
 op_star
 id|res_page

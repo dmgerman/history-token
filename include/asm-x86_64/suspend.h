@@ -34,10 +34,13 @@ comma
 id|ss
 suffix:semicolon
 DECL|member|gs_base
+DECL|member|gs_kernel_base
 DECL|member|fs_base
 r_int
 r_int
 id|gs_base
+comma
+id|gs_kernel_base
 comma
 id|fs_base
 suffix:semicolon

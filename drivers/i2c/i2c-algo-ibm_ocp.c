@@ -3,23 +3,12 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
-macro_line|#include &quot;i2c-algo-ibm_ocp.h&quot;
-singleline_comment|//ACC#include &lt;asm/ocp.h&gt;
-macro_line|#ifdef MODULE_LICENSE
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
+macro_line|#include &lt;linux/i2c-algo-ibm_ocp.h&gt;
+macro_line|#include &lt;asm/ocp.h&gt;
 multiline_comment|/* ----- global defines ----------------------------------------------- */
 DECL|macro|DEB
 mdefine_line|#define DEB(x) if (i2c_debug&gt;=1) x
@@ -32,18 +21,7 @@ mdefine_line|#define DEBPROTO(x) if (i2c_debug&gt;=9) x;
 multiline_comment|/* debug the protocol by showing transferred bits */
 DECL|macro|DEF_TIMEOUT
 mdefine_line|#define DEF_TIMEOUT 5
-multiline_comment|/* debugging - slow down transfer to have a look at the data .. &t;*/
-multiline_comment|/* I use this with two leds&amp;resistors, each one connected to sda,scl &t;*/
-multiline_comment|/* respectively. This makes sure that the algorithm works. Some chips   */
-multiline_comment|/* might not like this, as they have an internal timeout of some mils&t;*/
-multiline_comment|/*&n;#define SLO_IO      jif=jiffies;while(time_before_eq(jiffies,jif+i2c_table[minor].veryslow))&bslash;&n;                        if (need_resched) schedule();&n;*/
 multiline_comment|/* ----- global variables ---------------------------------------------&t;*/
-macro_line|#ifdef SLO_IO
-DECL|variable|jif
-r_int
-id|jif
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* module parameters:&n; */
 DECL|variable|i2c_debug
 r_static
@@ -52,14 +30,6 @@ id|i2c_debug
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|iic_scan
-r_static
-r_int
-id|iic_scan
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* have a look at what&squot;s hanging &squot;round&t;&t;*/
 multiline_comment|/* --- setting states on the bus with the right timing: ---------------&t;*/
 DECL|macro|iic_outb
 mdefine_line|#define iic_outb(adap, reg, val) adap-&gt;setiic(adap-&gt;data, (int) &amp;(reg), val)
@@ -2666,7 +2636,7 @@ comma
 id|iic-&gt;extsts
 )paren
 suffix:semicolon
-singleline_comment|// Mask off the irrelevant bits
+singleline_comment|// Mask off the irrelevent bits
 id|ret
 op_assign
 id|ret
@@ -3131,26 +3101,31 @@ id|i2c_algorithm
 id|iic_algo
 op_assign
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;IBM on-chip IIC algorithm&quot;
 comma
+dot
+id|id
+op_assign
 id|I2C_ALGO_OCP
 comma
+dot
+id|master_xfer
+op_assign
 id|iic_xfer
 comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-multiline_comment|/* slave_xmit&t;&t;*/
-l_int|NULL
-comma
-multiline_comment|/* slave_recv&t;&t;*/
+dot
+id|algo_control
+op_assign
 id|algo_control
 comma
-multiline_comment|/* ioctl&t;&t;*/
+dot
+id|functionality
+op_assign
 id|iic_func
 comma
-multiline_comment|/* functionality&t;*/
 )brace
 suffix:semicolon
 multiline_comment|/* &n; * registering functions to load algorithms at runtime &n; */
@@ -3208,10 +3183,6 @@ op_assign
 l_int|3
 suffix:semicolon
 multiline_comment|/* be replaced by defines&t;*/
-macro_line|#ifdef MODULE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|iic_init
 c_func
 (paren
@@ -3224,24 +3195,6 @@ c_func
 id|adap
 )paren
 suffix:semicolon
-multiline_comment|/* scan bus */
-multiline_comment|/* By default scanning the bus is turned off. */
-r_if
-c_cond
-(paren
-id|iic_scan
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot; i2c-algo-iic.o: scanning bus %s.&bslash;n&quot;
-comma
-id|adap-&gt;name
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -3260,79 +3213,12 @@ op_star
 id|adap
 )paren
 (brace
-r_int
-id|res
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|res
-op_assign
+r_return
 id|i2c_del_adapter
 c_func
 (paren
 id|adap
 )paren
-)paren
-OL
-l_int|0
-)paren
-r_return
-id|res
-suffix:semicolon
-id|DEB2
-c_func
-(paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-algo-iic.o: adapter unregistered: %s&bslash;n&quot;
-comma
-id|adap-&gt;name
-)paren
-)paren
-suffix:semicolon
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
-singleline_comment|//
-singleline_comment|// Done
-singleline_comment|//
-DECL|function|i2c_algo_iic_init
-r_int
-id|__init
-id|i2c_algo_iic_init
-(paren
-r_void
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;IBM On-chip iic (i2c) algorithm module 2002.27.03&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|i2c_algo_iic_exit
-r_void
-id|i2c_algo_iic_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
 suffix:semicolon
 )brace
 DECL|variable|i2c_ocp_add_bus
@@ -3365,20 +3251,10 @@ c_func
 l_string|&quot;PPC 405 iic algorithm&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_LICENSE
 c_func
 (paren
-id|iic_test
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|iic_scan
-comma
-l_string|&quot;i&quot;
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -3387,22 +3263,6 @@ c_func
 id|i2c_debug
 comma
 l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|iic_test
-comma
-l_string|&quot;Test if the I2C bus is available&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|iic_scan
-comma
-l_string|&quot;Scan for active chips on the bus&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -3411,20 +3271,6 @@ c_func
 id|i2c_debug
 comma
 l_string|&quot;debug level - 0 off; 1 normal; 2,3 more verbose; 9 iic-protocol&quot;
-)paren
-suffix:semicolon
-DECL|variable|i2c_algo_iic_init
-id|module_init
-c_func
-(paren
-id|i2c_algo_iic_init
-)paren
-suffix:semicolon
-DECL|variable|i2c_algo_iic_exit
-id|module_exit
-c_func
-(paren
-id|i2c_algo_iic_exit
 )paren
 suffix:semicolon
 eof

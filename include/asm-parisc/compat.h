@@ -266,6 +266,32 @@ id|l_pid
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|compat_flock64
+r_struct
+id|compat_flock64
+(brace
+DECL|member|l_type
+r_int
+id|l_type
+suffix:semicolon
+DECL|member|l_whence
+r_int
+id|l_whence
+suffix:semicolon
+DECL|member|l_start
+id|compat_loff_t
+id|l_start
+suffix:semicolon
+DECL|member|l_len
+id|compat_loff_t
+id|l_len
+suffix:semicolon
+DECL|member|l_pid
+id|compat_pid_t
+id|l_pid
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|compat_statfs
 r_struct
 id|compat_statfs
@@ -330,5 +356,9 @@ r_typedef
 id|u32
 id|compat_sigset_word
 suffix:semicolon
+DECL|macro|COMPAT_OFF_T_MAX
+mdefine_line|#define COMPAT_OFF_T_MAX&t;0x7fffffff
+DECL|macro|COMPAT_LOFF_T_MAX
+mdefine_line|#define COMPAT_LOFF_T_MAX&t;0x7fffffffffffffffL
 macro_line|#endif /* _ASM_PARISC_COMPAT_H */
 eof

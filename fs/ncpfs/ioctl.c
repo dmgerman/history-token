@@ -1984,7 +1984,7 @@ id|user.object_name_len
 suffix:semicolon
 id|server-&gt;auth.object_name
 op_assign
-id|user.object_name
+id|newname
 suffix:semicolon
 id|server-&gt;priv.len
 op_assign

@@ -3,6 +3,7 @@ DECL|macro|__X86_64_UACCESS_H
 mdefine_line|#define __X86_64_UACCESS_H
 multiline_comment|/*&n; * User space memory access functions&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/prefetch.h&gt;

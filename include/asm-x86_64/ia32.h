@@ -5,46 +5,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_IA32_EMULATION
 macro_line|#include &lt;linux/compat.h&gt;
 multiline_comment|/*&n; * 32 bit structures for IA32 support.&n; */
-DECL|struct|ia32_flock64
-r_struct
-id|ia32_flock64
-(brace
-DECL|member|l_type
-r_int
-id|l_type
-suffix:semicolon
-DECL|member|l_whence
-r_int
-id|l_whence
-suffix:semicolon
-DECL|member|l_start
-id|loff_t
-id|l_start
-suffix:semicolon
-multiline_comment|/* unnatural alignment */
-DECL|member|l_len
-id|loff_t
-id|l_len
-suffix:semicolon
-DECL|member|l_pid
-id|pid_t
-id|l_pid
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|macro|F_GETLK64
-mdefine_line|#define F_GETLK64&t;12&t;/*  using &squot;struct flock64&squot; */
-DECL|macro|F_SETLK64
-mdefine_line|#define F_SETLK64&t;13
-DECL|macro|F_SETLKW64
-mdefine_line|#define F_SETLKW64&t;14
 macro_line|#include &lt;asm/sigcontext32.h&gt;
 multiline_comment|/* signal.h */
 DECL|struct|sigaction32
@@ -486,6 +446,56 @@ DECL|macro|IA32_PAGE_OFFSET
 mdefine_line|#define IA32_PAGE_OFFSET 0xffffe000
 DECL|macro|IA32_STACK_TOP
 mdefine_line|#define IA32_STACK_TOP IA32_PAGE_OFFSET
+macro_line|#ifdef __KERNEL__
+r_struct
+id|user_desc
+suffix:semicolon
+r_int
+id|do_get_thread_area
+c_func
+(paren
+r_struct
+id|thread_struct
+op_star
+id|t
+comma
+r_struct
+id|user_desc
+op_star
+id|u_info
+)paren
+suffix:semicolon
+r_int
+id|do_set_thread_area
+c_func
+(paren
+r_struct
+id|thread_struct
+op_star
+id|t
+comma
+r_struct
+id|user_desc
+op_star
+id|u_info
+)paren
+suffix:semicolon
+r_int
+id|ia32_child_tls
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|p
+comma
+r_struct
+id|pt_regs
+op_star
+id|childregs
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* !CONFIG_IA32_SUPPORT */
 macro_line|#endif 
 eof

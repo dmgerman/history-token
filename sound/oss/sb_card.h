@@ -31,7 +31,7 @@ id|mpu
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_PNP_CARD
+macro_line|#ifdef CONFIG_PNP
 multiline_comment|/*&n; * SoundBlaster PnP tables and structures.&n; */
 multiline_comment|/* Card PnP ID Table */
 DECL|variable|sb_pnp_card_table

@@ -228,9 +228,37 @@ DECL|member|l_pid
 id|compat_pid_t
 id|l_pid
 suffix:semicolon
-DECL|member|__unused
+)brace
+suffix:semicolon
+DECL|macro|F_GETLK64
+mdefine_line|#define F_GETLK64       12
+DECL|macro|F_SETLK64
+mdefine_line|#define F_SETLK64       13
+DECL|macro|F_SETLKW64
+mdefine_line|#define F_SETLKW64      14    
+DECL|struct|compat_flock64
+r_struct
+id|compat_flock64
+(brace
+DECL|member|l_type
 r_int
-id|__unused
+id|l_type
+suffix:semicolon
+DECL|member|l_whence
+r_int
+id|l_whence
+suffix:semicolon
+DECL|member|l_start
+id|compat_loff_t
+id|l_start
+suffix:semicolon
+DECL|member|l_len
+id|compat_loff_t
+id|l_len
+suffix:semicolon
+DECL|member|l_pid
+id|compat_pid_t
+id|l_pid
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -298,5 +326,9 @@ r_typedef
 id|u32
 id|compat_sigset_word
 suffix:semicolon
+DECL|macro|COMPAT_OFF_T_MAX
+mdefine_line|#define COMPAT_OFF_T_MAX&t;0x7fffffff
+DECL|macro|COMPAT_LOFF_T_MAX
+mdefine_line|#define COMPAT_LOFF_T_MAX&t;0x7fffffffffffffffL
 macro_line|#endif /* _ASM_S390X_COMPAT_H */
 eof

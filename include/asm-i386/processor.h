@@ -1236,7 +1236,7 @@ suffix:semicolon
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.vm86_info = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.ts_io_bitmap = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|INIT_TSS
-mdefine_line|#define INIT_TSS  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.esp0&t;&t;= sizeof(init_stack) + (long)&amp;init_stack,&t;&bslash;&n;&t;.ss0&t;&t;= __KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;&t;.ldt&t;&t;= GDT_ENTRY_LDT,&t;&t;&t;&t;&bslash;&n;&t;.bitmap&t;&t;= INVALID_IO_BITMAP_OFFSET,&t;&t;&t;&bslash;&n;&t;.io_bitmap&t;= { [ 0 ... IO_BITMAP_SIZE ] = ~0 },&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_TSS  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.esp0&t;&t;= sizeof(init_stack) + (long)&amp;init_stack,&t;&bslash;&n;&t;.ss0&t;&t;= __KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;&t;.esp1&t;&t;= sizeof(init_tss[0]) + (long)&amp;init_tss[0],&t;&bslash;&n;&t;.ss1&t;&t;= __KERNEL_CS,&t;&t;&t;&t;&t;&bslash;&n;&t;.ldt&t;&t;= GDT_ENTRY_LDT,&t;&t;&t;&t;&bslash;&n;&t;.bitmap&t;&t;= INVALID_IO_BITMAP_OFFSET,&t;&t;&t;&bslash;&n;&t;.io_bitmap&t;= { [ 0 ... IO_BITMAP_SIZE ] = ~0 },&t;&t;&bslash;&n;}
 DECL|function|load_esp0
 r_static
 r_inline
@@ -1258,12 +1258,7 @@ id|tss-&gt;esp0
 op_assign
 id|esp0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cpu_has_sep
-)paren
-(brace
+multiline_comment|/* This can only happen when SEP is enabled, no need to test &quot;SEP&quot;arately */
 r_if
 c_cond
 (paren
@@ -1282,17 +1277,6 @@ c_func
 id|MSR_IA32_SYSENTER_CS
 comma
 id|__KERNEL_CS
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-id|wrmsr
-c_func
-(paren
-id|MSR_IA32_SYSENTER_ESP
-comma
-id|esp0
 comma
 l_int|0
 )paren

@@ -2680,7 +2680,7 @@ id|idx
 dot
 id|flags
 op_assign
-l_int|0
+id|IORESOURCE_AUTO
 suffix:semicolon
 )brace
 r_for
@@ -2734,7 +2734,7 @@ id|idx
 dot
 id|flags
 op_assign
-l_int|0
+id|IORESOURCE_AUTO
 suffix:semicolon
 )brace
 r_for
@@ -2786,7 +2786,7 @@ id|idx
 dot
 id|flags
 op_assign
-l_int|0
+id|IORESOURCE_AUTO
 suffix:semicolon
 )brace
 r_for
@@ -2838,7 +2838,7 @@ id|idx
 dot
 id|flags
 op_assign
-l_int|0
+id|IORESOURCE_AUTO
 suffix:semicolon
 )brace
 )brace
