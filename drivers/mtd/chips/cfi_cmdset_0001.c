@@ -16,10 +16,7 @@ macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 macro_line|#include &lt;linux/mtd/cfi.h&gt;
 multiline_comment|/* #define CMDSET0001_DISABLE_ERASE_SUSPEND_ON_WRITE */
-macro_line|#ifdef CONFIG_MTD_XIP
-DECL|macro|CMDSET0001_DISABLE_WRITE_SUSPEND
-mdefine_line|#define CMDSET0001_DISABLE_WRITE_SUSPEND
-macro_line|#endif
+multiline_comment|/* #define CMDSET0001_DISABLE_WRITE_SUSPEND */
 singleline_comment|// debugging, turns off buffer write mode if set to 1
 DECL|macro|FORCE_WORD_WRITE
 mdefine_line|#define FORCE_WORD_WRITE 0
@@ -771,7 +768,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CMDSET0001_DISABLE_WRITE_SUSPEND
-multiline_comment|/* The XIP config appears to have problems using write suspend at the moment */
 DECL|function|fixup_no_write_suspend
 r_static
 r_void
@@ -3423,6 +3419,10 @@ c_cond
 id|shared-&gt;writing
 op_eq
 id|chip
+op_logical_and
+id|chip-&gt;oldstate
+op_eq
+id|FL_READY
 )paren
 (brace
 multiline_comment|/* We own the ability to write, but we&squot;re done */
@@ -3489,44 +3489,39 @@ c_func
 id|loaner-&gt;mutex
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
+id|wake_up
+c_func
 (paren
-id|chip-&gt;oldstate
-op_ne
-id|FL_ERASING
+op_amp
+id|chip-&gt;wq
 )paren
-(brace
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|shared-&gt;erasing
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|chip-&gt;oldstate
-op_ne
-id|FL_WRITING
-)paren
 id|shared-&gt;writing
 op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|shared-&gt;lock
-)paren
-suffix:semicolon
-)brace
-)brace
 r_else
+r_if
+c_cond
+(paren
+id|shared-&gt;erasing
+op_eq
+id|chip
+op_logical_and
+id|shared-&gt;writing
+op_ne
+id|chip
+)paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * We own the ability to erase without the ability&n;&t;&t;&t; * to write, which means the erase was suspended&n;&t;&t;&t; * and some other partition is currently writing.&n;&t;&t;&t; * Don&squot;t let the switch below mess things up since&n;&t;&t;&t; * we don&squot;t have ownership to resume anything.&n;&t;&t;&t; */
 id|spin_unlock
 c_func
 (paren
@@ -3534,7 +3529,23 @@ op_amp
 id|shared-&gt;lock
 )paren
 suffix:semicolon
+id|wake_up
+c_func
+(paren
+op_amp
+id|chip-&gt;wq
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|shared-&gt;lock
+)paren
+suffix:semicolon
 )brace
 r_switch
 c_cond
