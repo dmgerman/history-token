@@ -201,6 +201,11 @@ id|machine_is_iq80321
 c_func
 (paren
 )paren
+op_logical_or
+id|machine_is_iq31244
+c_func
+(paren
+)paren
 )paren
 (brace
 singleline_comment|// all interrupts are inputs to chip

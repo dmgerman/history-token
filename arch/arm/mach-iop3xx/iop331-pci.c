@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/arm/mach-iop3xx/iop321-pci.c&n; *&n; * PCI support for the Intel IOP321 chipset&n; *&n; * Author: Rory Bolt &lt;rorybolt@pacbell.net&gt;&n; * Copyright (C) 2002 Rory Bolt&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+multiline_comment|/*&n; * arch/arm/mach-iop3xx/iop331-pci.c&n; *&n; * PCI support for the Intel IOP331 chipset&n; *&n; * Author: Dave Jiang (dave.jiang@intel.com)&n; * Copyright (C) 2003 Intel Corp.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -10,8 +10,8 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
-macro_line|#include &lt;asm/arch/iop321.h&gt;
-singleline_comment|// #define DEBUG
+macro_line|#include &lt;asm/arch/iop331.h&gt;
+singleline_comment|//#define DEBUG
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define  DBG(x...) printk(x)
@@ -19,11 +19,11 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define  DBG(x...) do { } while (0)
 macro_line|#endif
-multiline_comment|/*&n; * This routine builds either a type0 or type1 configuration command.  If the&n; * bus is on the 80321 then a type0 made, else a type1 is created.&n; */
-DECL|function|iop321_cfg_address
+multiline_comment|/*&n; * This routine builds either a type0 or type1 configuration command.  If the&n; * bus is on the 80331 then a type0 made, else a type1 is created.&n; */
+DECL|function|iop331_cfg_address
 r_static
 id|u32
-id|iop321_cfg_address
+id|iop331_cfg_address
 c_func
 (paren
 r_struct
@@ -118,10 +118,10 @@ id|addr
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine checks the status of the last configuration cycle.  If an error&n; * was detected it returns a 1, else it returns a 0.  The errors being checked&n; * are parity, master abort, target abort (master and target).  These types of&n; * errors occure during a config cycle where there is no device, like during&n; * the discovery stage.&n; */
-DECL|function|iop321_pci_status
+DECL|function|iop331_pci_status
 r_static
 r_int
-id|iop321_pci_status
+id|iop331_pci_status
 c_func
 (paren
 r_void
@@ -140,7 +140,7 @@ multiline_comment|/*&n;&t; * Check the status registers.&n;&t; */
 id|status
 op_assign
 op_star
-id|IOP321_ATUSR
+id|IOP331_ATUSR
 suffix:semicolon
 r_if
 c_cond
@@ -159,7 +159,7 @@ id|status
 )paren
 suffix:semicolon
 op_star
-id|IOP321_ATUSR
+id|IOP331_ATUSR
 op_assign
 id|status
 op_amp
@@ -173,7 +173,7 @@ suffix:semicolon
 id|status
 op_assign
 op_star
-id|IOP321_ATUISR
+id|IOP331_ATUISR
 suffix:semicolon
 r_if
 c_cond
@@ -192,7 +192,7 @@ id|status
 )paren
 suffix:semicolon
 op_star
-id|IOP321_ATUISR
+id|IOP331_ATUISR
 op_assign
 id|status
 op_amp
@@ -208,11 +208,11 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Simply write the address register and read the configuration&n; * data.  Note that the 4 nop&squot;s ensure that we are able to handle&n; * a delayed abort (in theory.)&n; */
-DECL|function|iop321_read
+DECL|function|iop331_read
 r_static
 r_inline
 id|u32
-id|iop321_read
+id|iop331_read
 c_func
 (paren
 r_int
@@ -246,12 +246,12 @@ id|addr
 comma
 l_string|&quot;r&quot;
 (paren
-id|IOP321_OCCAR
+id|IOP331_OCCAR
 )paren
 comma
 l_string|&quot;r&quot;
 (paren
-id|IOP321_OCCDR
+id|IOP331_OCCDR
 )paren
 )paren
 suffix:semicolon
@@ -262,8 +262,8 @@ suffix:semicolon
 multiline_comment|/*&n; * The read routines must check the error status of the last configuration&n; * cycle.  If there was an error, the routine returns all hex f&squot;s.&n; */
 r_static
 r_int
-DECL|function|iop321_read_config
-id|iop321_read_config
+DECL|function|iop331_read_config
+id|iop331_read_config
 c_func
 (paren
 r_struct
@@ -290,7 +290,7 @@ r_int
 r_int
 id|addr
 op_assign
-id|iop321_cfg_address
+id|iop331_cfg_address
 c_func
 (paren
 id|bus
@@ -303,7 +303,7 @@ suffix:semicolon
 id|u32
 id|val
 op_assign
-id|iop321_read
+id|iop331_read
 c_func
 (paren
 id|addr
@@ -322,7 +322,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|iop321_pci_status
+id|iop331_pci_status
 c_func
 (paren
 )paren
@@ -344,8 +344,8 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|iop321_write_config
-id|iop321_write_config
+DECL|function|iop331_write_config
+id|iop331_write_config
 c_func
 (paren
 r_struct
@@ -371,7 +371,7 @@ r_int
 r_int
 id|addr
 op_assign
-id|iop321_cfg_address
+id|iop331_cfg_address
 c_func
 (paren
 id|bus
@@ -394,7 +394,7 @@ l_int|4
 (brace
 id|val
 op_assign
-id|iop321_read
+id|iop331_read
 c_func
 (paren
 id|addr
@@ -404,7 +404,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|iop321_pci_status
+id|iop331_pci_status
 c_func
 (paren
 )paren
@@ -451,7 +451,7 @@ id|where
 )paren
 suffix:semicolon
 op_star
-id|IOP321_OCCDR
+id|IOP331_OCCDR
 op_assign
 id|val
 op_or
@@ -485,12 +485,12 @@ id|addr
 comma
 l_string|&quot;r&quot;
 (paren
-id|IOP321_OCCAR
+id|IOP331_OCCAR
 )paren
 comma
 l_string|&quot;r&quot;
 (paren
-id|IOP321_OCCDR
+id|IOP331_OCCDR
 )paren
 )paren
 suffix:semicolon
@@ -499,29 +499,29 @@ r_return
 id|PCIBIOS_SUCCESSFUL
 suffix:semicolon
 )brace
-DECL|variable|iop321_ops
+DECL|variable|iop331_ops
 r_static
 r_struct
 id|pci_ops
-id|iop321_ops
+id|iop331_ops
 op_assign
 (brace
 dot
 id|read
 op_assign
-id|iop321_read_config
+id|iop331_read_config
 comma
 dot
 id|write
 op_assign
-id|iop321_write_config
+id|iop331_write_config
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * When a PCI device does not exist during config cycles, the 80200 gets a&n; * bus error instead of returning 0xffffffff. This handler simply returns.&n; */
+multiline_comment|/*&n; * When a PCI device does not exist during config cycles, the XScale gets a&n; * bus error instead of returning 0xffffffff. This handler simply returns.&n; */
 r_int
-DECL|function|iop321_pci_abort
-id|iop321_pci_abort
+DECL|function|iop331_pci_abort
+id|iop331_pci_abort
 c_func
 (paren
 r_int
@@ -572,12 +572,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Scan an IOP321 PCI bus.  sys-&gt;bus defines which bus we scan.&n; */
-DECL|function|iop321_scan_bus
+multiline_comment|/*&n; * Scan an IOP331 PCI bus.  sys-&gt;bus defines which bus we scan.&n; */
+DECL|function|iop331_scan_bus
 r_struct
 id|pci_bus
 op_star
-id|iop321_scan_bus
+id|iop331_scan_bus
 c_func
 (paren
 r_int
@@ -596,141 +596,114 @@ c_func
 id|sys-&gt;busnr
 comma
 op_amp
-id|iop321_ops
+id|iop331_ops
 comma
 id|sys
 )paren
 suffix:semicolon
 )brace
-DECL|function|iop321_init
+DECL|function|iop331_init
 r_void
-id|iop321_init
+id|iop331_init
 c_func
 (paren
 r_void
 )paren
 (brace
-macro_line|#if CONFIG_ARCH_EP80219
-op_star
-id|IOP321_ATUCR
-op_assign
-l_int|0x2
-suffix:semicolon
-op_star
-id|IOP321_OIOWTVR
-op_assign
-l_int|0x90000000
-suffix:semicolon
-op_star
-id|IOP321_IABAR0
-op_assign
-l_int|0x00000004
-suffix:semicolon
-op_star
-id|IOP321_IABAR2
-op_assign
-l_int|0xa000000c
-suffix:semicolon
-op_star
-id|IOP321_IALR2
-op_assign
-l_int|0xe0000000
-suffix:semicolon
-macro_line|#endif
 id|DBG
 c_func
 (paren
-l_string|&quot;PCI:  Intel 80321 PCI init code.&bslash;n&quot;
+l_string|&quot;PCI:  Intel 80331 PCI init code.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;&bslash;tATU: IOP321_ATUCMD=0x%04x&bslash;n&quot;
+l_string|&quot;&bslash;tATU: IOP331_ATUCMD=0x%04x&bslash;n&quot;
 comma
 op_star
-id|IOP321_ATUCMD
+id|IOP331_ATUCMD
 )paren
 suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;&bslash;tATU: IOP321_OMWTVR0=0x%04x, IOP321_OIOWTVR=0x%04x&bslash;n&quot;
+l_string|&quot;&bslash;tATU: IOP331_OMWTVR0=0x%04x, IOP331_OIOWTVR=0x%04x&bslash;n&quot;
 comma
 op_star
-id|IOP321_OMWTVR0
+id|IOP331_OMWTVR0
 comma
 op_star
-id|IOP321_OIOWTVR
+id|IOP331_OIOWTVR
 )paren
 suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;&bslash;tATU: IOP321_ATUCR=0x%08x&bslash;n&quot;
+l_string|&quot;&bslash;tATU: IOP331_ATUCR=0x%08x&bslash;n&quot;
 comma
 op_star
-id|IOP321_ATUCR
+id|IOP331_ATUCR
 )paren
 suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;&bslash;tATU: IOP321_IABAR0=0x%08x IOP321_IALR0=0x%08x IOP321_IATVR0=%08x&bslash;n&quot;
+l_string|&quot;&bslash;tATU: IOP331_IABAR0=0x%08x IOP331_IALR0=0x%08x IOP331_IATVR0=%08x&bslash;n&quot;
 comma
 op_star
-id|IOP321_IABAR0
+id|IOP331_IABAR0
 comma
 op_star
-id|IOP321_IALR0
+id|IOP331_IALR0
 comma
 op_star
-id|IOP321_IATVR0
+id|IOP331_IATVR0
 )paren
 suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;&bslash;tATU: IOP321_ERBAR=0x%08x IOP321_ERLR=0x%08x IOP321_ERTVR=%08x&bslash;n&quot;
+l_string|&quot;&bslash;tATU: IOP331_ERBAR=0x%08x IOP331_ERLR=0x%08x IOP331_ERTVR=%08x&bslash;n&quot;
 comma
 op_star
-id|IOP321_ERBAR
+id|IOP331_ERBAR
 comma
 op_star
-id|IOP321_ERLR
+id|IOP331_ERLR
 comma
 op_star
-id|IOP321_ERTVR
+id|IOP331_ERTVR
 )paren
 suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;&bslash;tATU: IOP321_IABAR2=0x%08x IOP321_IALR2=0x%08x IOP321_IATVR2=%08x&bslash;n&quot;
+l_string|&quot;&bslash;tATU: IOP331_IABAR2=0x%08x IOP331_IALR2=0x%08x IOP331_IATVR2=%08x&bslash;n&quot;
 comma
 op_star
-id|IOP321_IABAR2
+id|IOP331_IABAR2
 comma
 op_star
-id|IOP321_IALR2
+id|IOP331_IALR2
 comma
 op_star
-id|IOP321_IATVR2
+id|IOP331_IATVR2
 )paren
 suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;&bslash;tATU: IOP321_IABAR3=0x%08x IOP321_IALR3=0x%08x IOP321_IATVR3=%08x&bslash;n&quot;
+l_string|&quot;&bslash;tATU: IOP331_IABAR3=0x%08x IOP331_IALR3=0x%08x IOP331_IATVR3=%08x&bslash;n&quot;
 comma
 op_star
-id|IOP321_IABAR3
+id|IOP331_IABAR3
 comma
 op_star
-id|IOP321_IALR3
+id|IOP331_IALR3
 comma
 op_star
-id|IOP321_IATVR3
+id|IOP331_IATVR3
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -739,7 +712,7 @@ c_func
 (paren
 l_int|4
 comma
-id|iop321_pci_abort
+id|iop331_pci_abort
 comma
 id|SIGBUS
 comma
@@ -751,7 +724,7 @@ c_func
 (paren
 l_int|6
 comma
-id|iop321_pci_abort
+id|iop331_pci_abort
 comma
 id|SIGBUS
 comma
@@ -763,7 +736,7 @@ c_func
 (paren
 l_int|8
 comma
-id|iop321_pci_abort
+id|iop331_pci_abort
 comma
 id|SIGBUS
 comma
@@ -775,7 +748,7 @@ c_func
 (paren
 l_int|10
 comma
-id|iop321_pci_abort
+id|iop331_pci_abort
 comma
 id|SIGBUS
 comma
@@ -790,7 +763,7 @@ l_int|16
 op_plus
 l_int|6
 comma
-id|iop321_pci_abort
+id|iop331_pci_abort
 comma
 id|SIGBUS
 comma

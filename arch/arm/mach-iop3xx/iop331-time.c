@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/arm/mach-iop3xx/iop321-time.c&n; *&n; * Timer code for IOP321 based systems&n; *&n; * Author: Deepak Saxena &lt;dsaxena@mvista.com&gt;&n; *&n; * Copyright 2002-2003 MontaVista Software Inc.&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; */
+multiline_comment|/*&n; * arch/arm/mach-iop3xx/iop331-time.c&n; *&n; * Timer code for IOP331 based systems&n; *&n; * Author: Dave Jiang &lt;dave.jiang@intel.com&gt;&n; *&n; * Copyright 2003 Intel Corp.&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -11,13 +11,13 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
-DECL|macro|IOP321_TIME_SYNC
-mdefine_line|#define IOP321_TIME_SYNC 0
-DECL|variable|iop321_latch
+DECL|macro|IOP331_TIME_SYNC
+macro_line|#undef IOP331_TIME_SYNC
+DECL|variable|iop331_latch
 r_static
 r_int
 r_int
-id|iop321_latch
+id|iop331_latch
 suffix:semicolon
 DECL|function|get_elapsed
 r_static
@@ -31,17 +31,17 @@ r_void
 )paren
 (brace
 r_return
-id|iop321_latch
+id|iop331_latch
 op_minus
 op_star
-id|IOP321_TU_TCR0
+id|IOP331_TU_TCR0
 suffix:semicolon
 )brace
-DECL|function|iop321_gettimeoffset
+DECL|function|iop331_gettimeoffset
 r_static
 r_int
 r_int
-id|iop321_gettimeoffset
+id|iop331_gettimeoffset
 c_func
 (paren
 r_void
@@ -98,7 +98,7 @@ l_int|1
 (brace
 id|elapsed
 op_add_assign
-id|iop321_latch
+id|iop331_latch
 suffix:semicolon
 )brace
 r_else
@@ -111,7 +111,7 @@ l_int|1
 )paren
 id|elapsed
 op_assign
-id|iop321_latch
+id|iop331_latch
 op_plus
 id|get_elapsed
 c_func
@@ -135,7 +135,7 @@ l_int|1000
 )paren
 )paren
 op_div
-id|iop321_latch
+id|iop331_latch
 suffix:semicolon
 r_return
 id|usec
@@ -143,8 +143,8 @@ suffix:semicolon
 )brace
 r_static
 id|irqreturn_t
-DECL|function|iop321_timer_interrupt
-id|iop321_timer_interrupt
+DECL|function|iop331_timer_interrupt
+id|iop331_timer_interrupt
 c_func
 (paren
 r_int
@@ -163,12 +163,12 @@ id|regs
 id|u32
 id|tisr
 suffix:semicolon
-macro_line|#ifdef IOP321_TIME_SYNC
+macro_line|#ifdef IOP331_TIME_SYNC
 id|u32
 id|passed
 suffix:semicolon
 DECL|macro|TM_THRESH
-mdefine_line|#define TM_THRESH (iop321_latch*2)
+mdefine_line|#define TM_THRESH (iop331_latch*2)
 macro_line|#endif
 id|asm
 r_volatile
@@ -197,13 +197,13 @@ id|tisr
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef IOP321_TIME_SYNC
+macro_line|#ifdef IOP331_TIME_SYNC
 id|passed
 op_assign
 l_int|0xffffffff
 op_minus
 op_star
-id|IOP321_TU_TCR1
+id|IOP331_TU_TCR1
 suffix:semicolon
 r_do
 (brace
@@ -229,12 +229,12 @@ c_cond
 (paren
 id|passed
 OG
-id|iop321_latch
+id|iop331_latch
 )paren
 (brace
 id|passed
 op_sub_assign
-id|iop321_latch
+id|iop331_latch
 suffix:semicolon
 )brace
 r_else
@@ -275,22 +275,22 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-DECL|variable|iop321_timer_irq
+DECL|variable|iop331_timer_irq
 r_static
 r_struct
 id|irqaction
-id|iop321_timer_irq
+id|iop331_timer_irq
 op_assign
 (brace
 dot
 id|name
 op_assign
-l_string|&quot;IOP321 Timer Tick&quot;
+l_string|&quot;IOP331 Timer Tick&quot;
 comma
 dot
 id|handler
 op_assign
-id|iop321_timer_interrupt
+id|iop331_timer_interrupt
 comma
 dot
 id|flags
@@ -310,10 +310,10 @@ id|irqaction
 op_star
 )paren
 suffix:semicolon
-DECL|function|iop321_init_time
+DECL|function|iop331_init_time
 r_void
 id|__init
-id|iop321_init_time
+id|iop331_init_time
 c_func
 (paren
 r_void
@@ -322,7 +322,7 @@ r_void
 id|u32
 id|timer_ctl
 suffix:semicolon
-id|iop321_latch
+id|iop331_latch
 op_assign
 (paren
 id|CLOCK_TICK_RATE
@@ -336,26 +336,26 @@ id|HZ
 suffix:semicolon
 id|gettimeoffset
 op_assign
-id|iop321_gettimeoffset
+id|iop331_gettimeoffset
 suffix:semicolon
 id|setup_irq
 c_func
 (paren
-id|IRQ_IOP321_TIMER0
+id|IRQ_IOP331_TIMER0
 comma
 op_amp
-id|iop321_timer_irq
+id|iop331_timer_irq
 )paren
 suffix:semicolon
 id|timer_ctl
 op_assign
-id|IOP321_TMR_EN
+id|IOP331_TMR_EN
 op_or
-id|IOP321_TMR_PRIVILEGED
+id|IOP331_TMR_PRIVILEGED
 op_or
-id|IOP321_TMR_RELOAD
+id|IOP331_TMR_RELOAD
 op_or
-id|IOP321_TMR_RATIO_1_1
+id|IOP331_TMR_RATIO_1_1
 suffix:semicolon
 id|asm
 r_volatile
@@ -365,7 +365,7 @@ suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
 (paren
-id|iop321_latch
+id|iop331_latch
 )paren
 )paren
 suffix:semicolon
@@ -381,16 +381,16 @@ id|timer_ctl
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef IOP321_TIME_SYNC
+macro_line|#ifdef IOP331_TIME_SYNC
 multiline_comment|/* Setup second timer */
 multiline_comment|/* setup counter */
 id|timer_ctl
 op_assign
-id|IOP321_TMR_EN
+id|IOP331_TMR_EN
 op_or
-id|IOP321_TMR_PRIVILEGED
+id|IOP331_TMR_PRIVILEGED
 op_or
-id|IOP321_TMR_RATIO_1_1
+id|IOP331_TMR_RATIO_1_1
 suffix:semicolon
 id|asm
 r_volatile

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/arm/mach-iop3xx/iq80321-pci.c&n; *&n; * PCI support for the Intel IQ80321 reference board&n; *&n; * Author: Rory Bolt &lt;rorybolt@pacbell.net&gt;&n; * Copyright (C) 2002 Rory Bolt&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * arch/arm/mach-iop3xx/iq80331-pci.c&n; *&n; * PCI support for the Intel IQ80331 reference board&n; *&n; * Author: Dave Jiang &lt;dave.jiang@intel.com&gt;&n; * Copyright (C) 2003 Intel Corp.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -10,21 +10,20 @@ multiline_comment|/*&n; * The following macro is used to lookup irqs in a standa
 DECL|macro|PCI_IRQ_TABLE_LOOKUP
 mdefine_line|#define PCI_IRQ_TABLE_LOOKUP(minid,maxid)&t;&bslash;&n;({ int _ctl_ = -1;&t;&t;&t;&t;&bslash;&n;   unsigned int _idsel = idsel - minid;&t;&t;&bslash;&n;   if (_idsel &lt;= maxid)&t;&t;&t;&t;&bslash;&n;      _ctl_ = pci_irq_table[_idsel][pin-1];&t;&bslash;&n;   _ctl_; })
 DECL|macro|INTA
-mdefine_line|#define INTA&t;IRQ_IQ80321_INTA
+mdefine_line|#define INTA&t;IRQ_IQ80331_INTA
 DECL|macro|INTB
-mdefine_line|#define INTB&t;IRQ_IQ80321_INTB
+mdefine_line|#define INTB&t;IRQ_IQ80331_INTB
 DECL|macro|INTC
-mdefine_line|#define INTC&t;IRQ_IQ80321_INTC
+mdefine_line|#define INTC&t;IRQ_IQ80331_INTC
 DECL|macro|INTD
-mdefine_line|#define INTD&t;IRQ_IQ80321_INTD
-DECL|macro|INTE
-mdefine_line|#define INTE&t;IRQ_IQ80321_I82544
+mdefine_line|#define INTD&t;IRQ_IQ80331_INTD
+singleline_comment|//#define INTE&t;IRQ_IQ80331_I82544
 r_static
 r_inline
 r_int
 id|__init
-DECL|function|iq80321_map_irq
-id|iq80321_map_irq
+DECL|function|iq80331_map_irq
+id|iq80331_map_irq
 c_func
 (paren
 r_struct
@@ -51,56 +50,27 @@ op_assign
 (brace
 multiline_comment|/*&n;&t;&t; * PCI IDSEL/INTPIN-&gt;INTLINE&n;&t;&t; * A       B       C       D&n;&t;&t; */
 (brace
-id|INTE
+id|INTB
 comma
-id|INTE
-comma
-id|INTE
-comma
-id|INTE
-)brace
-comma
-multiline_comment|/* Gig-E */
-(brace
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-)brace
-comma
-multiline_comment|/* Unused */
-(brace
 id|INTC
 comma
 id|INTD
 comma
 id|INTA
-comma
-id|INTB
 )brace
 comma
 multiline_comment|/* PCI-X Slot */
 (brace
-op_minus
-l_int|1
+id|INTC
 comma
-op_minus
-l_int|1
+id|INTC
 comma
-op_minus
-l_int|1
+id|INTC
 comma
-op_minus
-l_int|1
+id|INTC
 )brace
 comma
+multiline_comment|/* GigE  */
 )brace
 suffix:semicolon
 id|BUG_ON
@@ -111,25 +81,20 @@ template_param
 l_int|4
 )paren
 suffix:semicolon
-singleline_comment|//&t;return PCI_IRQ_TABLE_LOOKUP(4, 7);
 r_return
-id|pci_irq_table
-(braket
-id|idsel
-op_mod
-l_int|4
-)braket
-(braket
-id|pin
-op_minus
+id|PCI_IRQ_TABLE_LOOKUP
+c_func
+(paren
 l_int|1
-)braket
+comma
+l_int|7
+)paren
 suffix:semicolon
 )brace
-DECL|function|iq80321_setup
+DECL|function|iq80331_setup
 r_static
 r_int
-id|iq80321_setup
+id|iq80331_setup
 c_func
 (paren
 r_int
@@ -209,9 +174,9 @@ l_int|0
 dot
 id|start
 op_assign
-id|IQ80321_PCI_IO_BASE
+id|IQ80331_PCI_IO_BASE
 op_plus
-id|IQ80321_PCI_IO_OFFSET
+l_int|0x6e000000
 suffix:semicolon
 id|res
 (braket
@@ -220,13 +185,13 @@ l_int|0
 dot
 id|end
 op_assign
-id|IQ80321_PCI_IO_BASE
+id|IQ80331_PCI_IO_BASE
 op_plus
-id|IQ80321_PCI_IO_SIZE
+id|IQ80331_PCI_IO_SIZE
 op_minus
 l_int|1
 op_plus
-id|IQ80321_PCI_IO_OFFSET
+id|IQ80331_PCI_IO_OFFSET
 suffix:semicolon
 id|res
 (braket
@@ -235,7 +200,7 @@ l_int|0
 dot
 id|name
 op_assign
-l_string|&quot;IQ80321 PCI I/O Space&quot;
+l_string|&quot;IQ80331 PCI I/O Space&quot;
 suffix:semicolon
 id|res
 (braket
@@ -253,7 +218,7 @@ l_int|1
 dot
 id|start
 op_assign
-id|IQ80321_PCI_MEM_BASE
+id|IQ80331_PCI_MEM_BASE
 suffix:semicolon
 id|res
 (braket
@@ -262,9 +227,9 @@ l_int|1
 dot
 id|end
 op_assign
-id|IQ80321_PCI_MEM_BASE
+id|IQ80331_PCI_MEM_BASE
 op_plus
-id|IQ80321_PCI_MEM_SIZE
+id|IQ80331_PCI_MEM_SIZE
 suffix:semicolon
 id|res
 (braket
@@ -273,7 +238,7 @@ l_int|1
 dot
 id|name
 op_assign
-l_string|&quot;IQ80321 PCI Memory Space&quot;
+l_string|&quot;IQ80331 PCI Memory Space&quot;
 suffix:semicolon
 id|res
 (braket
@@ -310,14 +275,14 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Since the IQ80321 is a slave card on a PCI backplane,&n;&t; * it uses BAR1 to reserve a portion of PCI memory space for&n;&t; * use with the private devices on the secondary bus&n;&t; * (GigE and PCI-X slot). We read BAR1 and configure&n;&t; * our outbound translation windows to target that&n;&t; * address range and assign all devices in that&n;&t; * address range. W/O this, certain BIOSes will fail&n;&t; * to boot as the IQ80321 claims addresses that are&n;&t; * in use by other devices.&n;&t; *&n;&t; * Note that the same cannot be done  with I/O space,&n;&t; * so hopefully the host will stick to the lower 64K for&n;&t; * PCI I/O and leave us alone.&n;&t; */
+multiline_comment|/*&n;&t; * Since the IQ80331 is a slave card on a PCI backplane,&n;&t; * it uses BAR1 to reserve a portion of PCI memory space for&n;&t; * use with the private devices on the secondary bus&n;&t; * (GigE and PCI-X slot). We read BAR1 and configure&n;&t; * our outbound translation windows to target that&n;&t; * address range and assign all devices in that&n;&t; * address range. W/O this, certain BIOSes will fail&n;&t; * to boot as the IQ80331 claims addresses that are&n;&t; * in use by other devices.&n;&t; *&n;&t; * Note that the same cannot be done  with I/O space,&n;&t; * so hopefully the host will stick to the lower 64K for&n;&t; * PCI I/O and leave us alone.&n;&t; */
 id|sys-&gt;mem_offset
 op_assign
-id|IQ80321_PCI_MEM_BASE
+id|IQ80331_PCI_MEM_BASE
 op_minus
 (paren
 op_star
-id|IOP321_IABAR1
+id|IOP331_IABAR1
 op_amp
 id|PCI_BASE_ADDRESS_MEM_MASK
 )paren
@@ -353,30 +318,30 @@ l_int|NULL
 suffix:semicolon
 id|sys-&gt;io_offset
 op_assign
-id|IQ80321_PCI_IO_OFFSET
+id|IQ80331_PCI_IO_OFFSET
 suffix:semicolon
 id|iop3xx_pcibios_min_io
 op_assign
-id|IQ80321_PCI_IO_BASE
+id|IQ80331_PCI_IO_BASE
 suffix:semicolon
 id|iop3xx_pcibios_min_mem
 op_assign
-id|IQ80321_PCI_MEM_BASE
+id|IQ80331_PCI_MEM_BASE
 suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|iq80321_preinit
+DECL|function|iq80331_preinit
 r_static
 r_void
-id|iq80321_preinit
+id|iq80331_preinit
 c_func
 (paren
 r_void
 )paren
 (brace
-id|iop321_init
+id|iop331_init
 c_func
 (paren
 )paren
@@ -386,7 +351,7 @@ DECL|variable|__initdata
 r_static
 r_struct
 id|hw_pci
-id|iq80321_pci
+id|iq80331_pci
 id|__initdata
 op_assign
 (brace
@@ -403,29 +368,29 @@ comma
 dot
 id|setup
 op_assign
-id|iq80321_setup
+id|iq80331_setup
 comma
 dot
 id|scan
 op_assign
-id|iop321_scan_bus
+id|iop331_scan_bus
 comma
 dot
 id|preinit
 op_assign
-id|iq80321_preinit
+id|iq80331_preinit
 comma
 dot
 id|map_irq
 op_assign
-id|iq80321_map_irq
+id|iq80331_map_irq
 )brace
 suffix:semicolon
-DECL|function|iq80321_pci_init
+DECL|function|iq80331_pci_init
 r_static
 r_int
 id|__init
-id|iq80321_pci_init
+id|iq80331_pci_init
 c_func
 (paren
 r_void
@@ -434,7 +399,7 @@ r_void
 r_if
 c_cond
 (paren
-id|machine_is_iq80321
+id|machine_is_iq80331
 c_func
 (paren
 )paren
@@ -443,18 +408,18 @@ id|pci_common_init
 c_func
 (paren
 op_amp
-id|iq80321_pci
+id|iq80331_pci
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|iq80321_pci_init
+DECL|variable|iq80331_pci_init
 id|subsys_initcall
 c_func
 (paren
-id|iq80321_pci_init
+id|iq80331_pci_init
 )paren
 suffix:semicolon
 eof
