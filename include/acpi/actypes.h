@@ -612,8 +612,8 @@ DECL|macro|ACPI_TABLE_XSDT
 mdefine_line|#define ACPI_TABLE_XSDT                 (acpi_table_type) 6
 DECL|macro|ACPI_TABLE_MAX
 mdefine_line|#define ACPI_TABLE_MAX                  6
-DECL|macro|NUM_ACPI_TABLES
-mdefine_line|#define NUM_ACPI_TABLES                 (ACPI_TABLE_MAX+1)
+DECL|macro|NUM_ACPI_TABLE_TYPES
+mdefine_line|#define NUM_ACPI_TABLE_TYPES            (ACPI_TABLE_MAX+1)
 multiline_comment|/*&n; * Types associated with ACPI names and objects.  The first group of&n; * values (up to ACPI_TYPE_EXTERNAL_MAX) correspond to the definition&n; * of the ACPI object_type() operator (See the ACPI Spec). Therefore,&n; * only add to the first group if the spec changes.&n; *&n; * Types must be kept in sync with the global acpi_ns_properties&n; * and acpi_ns_type_names arrays.&n; */
 DECL|typedef|acpi_object_type
 r_typedef
@@ -1141,7 +1141,7 @@ r_struct
 id|acpi_table_info
 id|table_info
 (braket
-id|NUM_ACPI_TABLES
+id|NUM_ACPI_TABLE_TYPES
 )braket
 suffix:semicolon
 )brace

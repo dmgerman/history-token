@@ -40,7 +40,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|acpi_gbl_acpi_table_data
+id|acpi_gbl_table_data
 (braket
 id|table_desc-&gt;type
 )braket
@@ -281,11 +281,12 @@ l_string|&quot;Loading DSDT&bslash;n&quot;
 suffix:semicolon
 id|table_desc
 op_assign
-op_amp
-id|acpi_gbl_acpi_tables
+id|acpi_gbl_table_lists
 (braket
 id|ACPI_TABLE_DSDT
 )braket
+dot
+id|next
 suffix:semicolon
 multiline_comment|/* If table already loaded into namespace, just return */
 r_if
@@ -298,10 +299,6 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
-id|table_desc-&gt;table_id
-op_assign
-id|TABLE_ID_DSDT
-suffix:semicolon
 multiline_comment|/* Now load the single DSDT */
 id|status
 op_assign
@@ -338,7 +335,7 @@ id|ACPI_DB_INFO
 comma
 l_string|&quot;Loading %d SSDTs&bslash;n&quot;
 comma
-id|acpi_gbl_acpi_tables
+id|acpi_gbl_table_lists
 (braket
 id|ACPI_TABLE_SSDT
 )braket
@@ -350,11 +347,12 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Traverse list of SSDT tables&n;&t;&t; */
 id|table_desc
 op_assign
-op_amp
-id|acpi_gbl_acpi_tables
+id|acpi_gbl_table_lists
 (braket
 id|ACPI_TABLE_SSDT
 )braket
+dot
+id|next
 suffix:semicolon
 r_for
 c_loop
@@ -365,7 +363,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|acpi_gbl_acpi_tables
+id|acpi_gbl_table_lists
 (braket
 id|ACPI_TABLE_SSDT
 )braket
@@ -427,7 +425,7 @@ id|ACPI_DB_INFO
 comma
 l_string|&quot;Loading %d PSDTs&bslash;n&quot;
 comma
-id|acpi_gbl_acpi_tables
+id|acpi_gbl_table_lists
 (braket
 id|ACPI_TABLE_PSDT
 )braket
@@ -439,11 +437,12 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Traverse list of PSDT tables&n;&t;&t; */
 id|table_desc
 op_assign
-op_amp
-id|acpi_gbl_acpi_tables
+id|acpi_gbl_table_lists
 (braket
 id|ACPI_TABLE_PSDT
 )braket
+dot
+id|next
 suffix:semicolon
 r_for
 c_loop
@@ -454,7 +453,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|acpi_gbl_acpi_tables
+id|acpi_gbl_table_lists
 (braket
 id|ACPI_TABLE_PSDT
 )braket
