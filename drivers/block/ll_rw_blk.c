@@ -9980,6 +9980,9 @@ c_cond
 (paren
 op_logical_neg
 id|q
+op_logical_or
+op_logical_neg
+id|q-&gt;request_fn
 )paren
 r_return
 op_minus
@@ -10090,6 +10093,8 @@ r_if
 c_cond
 (paren
 id|q
+op_logical_and
+id|q-&gt;request_fn
 )paren
 (brace
 id|elv_unregister_queue
