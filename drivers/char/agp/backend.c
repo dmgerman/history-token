@@ -1091,7 +1091,6 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-op_amp
 id|agp_bridge
 comma
 l_int|0
