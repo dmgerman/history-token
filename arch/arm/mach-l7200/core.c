@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/mm/mm-lusl7200.c&n; *&n; *  Copyright (C) 2000 Steve Hill (sjhill@cotw.com)&n; *&n; *  Extra MM routines for L7200 architecture&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -347,7 +348,7 @@ l_int|0
 suffix:semicolon
 id|ROOT_DEV
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|RAMDISK_MAJOR

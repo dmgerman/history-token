@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/cerf.c&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -174,7 +175,7 @@ suffix:semicolon
 macro_line|#else
 macro_line|#error &quot;Undefined memory size for Cerfboard.&quot;
 macro_line|#endif
-singleline_comment|//&t;ROOT_DEV = MKDEV(RAMDISK_MAJOR,0);
+singleline_comment|//&t;ROOT_DEV = mk_kdev(RAMDISK_MAJOR,0);
 singleline_comment|//&t;setup_ramdisk(1,  0, 0, 8192);
 singleline_comment|//&t;// Save 2Meg for RAMDisk
 singleline_comment|//&t;setup_initrd(0xc0500000, 3*1024*1024);
