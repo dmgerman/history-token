@@ -1382,11 +1382,17 @@ id|next_state
 op_assign
 id|pr-&gt;power.state
 suffix:semicolon
-multiline_comment|/*&n;&t; * Promotion?&n;&t; * ----------&n;&t; * Track the number of longs (time asleep is greater than threshold)&n;&t; * and promote when the count threshold is reached.  Note that bus&n;&t; * mastering activity may prevent promotions.&n;&t; */
+multiline_comment|/*&n;&t; * Promotion?&n;&t; * ----------&n;&t; * Track the number of longs (time asleep is greater than threshold)&n;&t; * and promote when the count threshold is reached.  Note that bus&n;&t; * mastering activity may prevent promotions.&n;&t; * Do not promote above acpi_cstate_limit.&n;&t; */
 r_if
 c_cond
 (paren
 id|cx-&gt;promotion.state
+op_logical_and
+(paren
+id|cx-&gt;promotion.state
+op_le
+id|acpi_cstate_limit
+)paren
 )paren
 (brace
 r_if
@@ -1493,6 +1499,20 @@ suffix:semicolon
 )brace
 id|end
 suffix:colon
+multiline_comment|/*&n;&t; * Demote if current state exceeds acpi_cstate_limit&n;&t; */
+r_if
+c_cond
+(paren
+id|pr-&gt;power.state
+OG
+id|acpi_cstate_limit
+)paren
+(brace
+id|next_state
+op_assign
+id|acpi_cstate_limit
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * New Cx State?&n;&t; * -------------&n;&t; * If we&squot;re going to start using a new Cx state we must clean up&n;&t; * from the previous and prepare to use the new.&n;&t; */
 r_if
 c_cond
@@ -9468,6 +9488,18 @@ id|module_exit
 c_func
 (paren
 id|acpi_processor_exit
+)paren
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|acpi_cstate_limit
+comma
+id|acpi_cstate_limit
+comma
+id|uint
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|acpi_processor_set_thermal_limit
