@@ -2217,7 +2217,7 @@ c_func
 (paren
 id|disk-&gt;disk_name
 comma
-l_string|&quot;mtd%d&quot;
+l_string|&quot;mtdblock%d&quot;
 comma
 id|mtd-&gt;index
 )paren
