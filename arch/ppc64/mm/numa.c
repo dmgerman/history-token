@@ -509,6 +509,7 @@ l_string|&quot;memory&quot;
 )paren
 (brace
 r_int
+r_int
 op_star
 id|tmp1
 comma
