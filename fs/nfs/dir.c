@@ -6457,7 +6457,6 @@ id|error
 suffix:semicolon
 )brace
 DECL|function|nfs_access_get_cached
-r_static
 r_int
 id|nfs_access_get_cached
 c_func
@@ -6546,7 +6545,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|nfs_access_add_cache
-r_static
 r_void
 id|nfs_access_add_cache
 c_func
