@@ -28,6 +28,13 @@ op_star
 id|pcibios_scan_root
 c_func
 (paren
+r_void
+op_star
+id|acpi_handle
+comma
+r_int
+id|segment
+comma
 r_int
 id|bus
 )paren
@@ -92,8 +99,6 @@ DECL|macro|pci_dma_sync_single
 mdefine_line|#define pci_dma_sync_single&t;&t;platform_pci_dma_sync_single
 DECL|macro|pci_dma_sync_sg
 mdefine_line|#define pci_dma_sync_sg&t;&t;&t;platform_pci_dma_sync_sg
-DECL|macro|sg_dma_address
-mdefine_line|#define sg_dma_address&t;&t;&t;platform_pci_dma_address
 DECL|macro|pci_dma_supported
 mdefine_line|#define pci_dma_supported&t;&t;platform_pci_dma_supported
 multiline_comment|/* pci_unmap_{single,page} is not a nop, thus... */
@@ -129,6 +134,8 @@ DECL|macro|pci_controller_num
 mdefine_line|#define pci_controller_num(PDEV)&t;(0)
 DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;dma_length)
+DECL|macro|sg_dma_address
+mdefine_line|#define sg_dma_address(sg)&t;((sg)-&gt;dma_address)
 DECL|macro|HAVE_PCI_MMAP
 mdefine_line|#define HAVE_PCI_MMAP
 r_extern
@@ -153,5 +160,33 @@ r_int
 id|write_combine
 )paren
 suffix:semicolon
+DECL|struct|pci_controller
+r_struct
+id|pci_controller
+(brace
+DECL|member|acpi_handle
+r_void
+op_star
+id|acpi_handle
+suffix:semicolon
+DECL|member|iommu
+r_void
+op_star
+id|iommu
+suffix:semicolon
+DECL|member|segment
+r_int
+id|segment
+suffix:semicolon
+DECL|member|mem_offset
+id|u64
+id|mem_offset
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|PCI_CONTROLLER
+mdefine_line|#define PCI_CONTROLLER(busdev) ((struct pci_controller *) busdev-&gt;sysdata)
+DECL|macro|PCI_SEGMENT
+mdefine_line|#define PCI_SEGMENT(busdev)    (PCI_CONTROLLER(busdev)-&gt;segment)
 macro_line|#endif /* _ASM_IA64_PCI_H */
 eof

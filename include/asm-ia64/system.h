@@ -21,6 +21,11 @@ DECL|struct|pci_vector_struct
 r_struct
 id|pci_vector_struct
 (brace
+DECL|member|segment
+id|__u16
+id|segment
+suffix:semicolon
+multiline_comment|/* PCI Segment number */
 DECL|member|bus
 id|__u16
 id|bus
