@@ -2466,7 +2466,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IA32_SUPPORT
-id|ia32_boot_gdt_init
+id|ia32_mem_init
 c_func
 (paren
 )paren
