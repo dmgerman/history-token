@@ -920,7 +920,7 @@ id|serial
 l_int|40
 )braket
 suffix:semicolon
-multiline_comment|/* static strings, in iso 8859/1 */
+multiline_comment|/* static strings, in UTF-8 */
 DECL|variable|strings
 r_static
 r_struct
@@ -3049,7 +3049,7 @@ suffix:semicolon
 r_case
 id|USB_DT_STRING
 suffix:colon
-multiline_comment|/* wIndex == language code.&n;&t;&t;&t; * this driver only handles one language, you can&n;&t;&t;&t; * add others even if they don&squot;t use iso8859/1&n;&t;&t;&t; */
+multiline_comment|/* wIndex == language code.&n;&t;&t;&t; * this driver only handles one language, you can&n;&t;&t;&t; * add string tables for other languages, using&n;&t;&t;&t; * any UTF-8 characters&n;&t;&t;&t; */
 id|value
 op_assign
 id|usb_gadget_get_string
@@ -4064,6 +4064,25 @@ op_assign
 id|fs_sink_desc.bEndpointAddress
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|gadget-&gt;is_otg
+)paren
+(brace
+id|otg_descriptor.bmAttributes
+op_or_assign
+id|USB_OTG_HNP
+comma
+id|source_sink_config.bmAttributes
+op_or_assign
+id|USB_CONFIG_ATT_WAKEUP
+suffix:semicolon
+id|loopback_config.bmAttributes
+op_or_assign
+id|USB_CONFIG_ATT_WAKEUP
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
