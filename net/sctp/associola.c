@@ -1684,7 +1684,7 @@ id|SCTP_ACTIVE
 suffix:semicolon
 id|spc_state
 op_assign
-id|SCTP_ADDR_REACHABLE
+id|SCTP_ADDR_AVAILABLE
 suffix:semicolon
 r_break
 suffix:semicolon
