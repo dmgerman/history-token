@@ -3,6 +3,7 @@ macro_line|#ifndef __ASM_PROC_PROCESSOR_H
 DECL|macro|__ASM_PROC_PROCESSOR_H
 mdefine_line|#define __ASM_PROC_PROCESSOR_H
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;asm/proc/ptrace.h&gt;
 DECL|macro|KERNEL_STACK_SIZE
 mdefine_line|#define KERNEL_STACK_SIZE 4096
 DECL|struct|cpu_context_save
@@ -56,8 +57,38 @@ id|pc
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|INIT_CSS
-mdefine_line|#define INIT_CSS (struct cpu_context_save){ 0, 0, 0, 0, 0, 0, 0, 0, SVC26_MODE }
+DECL|function|init_pc_psr
+r_static
+r_inline
+r_void
+id|init_pc_psr
+c_func
+(paren
+r_struct
+id|cpu_context_save
+op_star
+id|s
+comma
+r_void
+op_star
+id|fn
+)paren
+(brace
+id|s-&gt;pc
+op_assign
+(paren
+(paren
+r_int
+r_int
+)paren
+id|fn
+)paren
+op_or
+id|PSR_I_BIT
+op_or
+id|SVC26_MODE
+suffix:semicolon
+)brace
 r_typedef
 r_struct
 (brace
