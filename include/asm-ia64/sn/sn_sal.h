@@ -767,7 +767,7 @@ id|ret_stuff.v2
 op_assign
 l_int|0
 suffix:semicolon
-id|SAL_CALL_NOLOCK
+id|SAL_CALL_REENTRANT
 c_func
 (paren
 id|ret_stuff
