@@ -7476,7 +7476,7 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;%s: lock status before, ofs=0x%08llx, len=0x%08X&bslash;n&quot;
+l_string|&quot;%s: lock status before, ofs=0x%08llx, len=0x%08zX&bslash;n&quot;
 comma
 id|__func__
 comma
@@ -7576,7 +7576,7 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;%s: lock status before, ofs=0x%08llx, len=0x%08X&bslash;n&quot;
+l_string|&quot;%s: lock status before, ofs=0x%08llx, len=0x%08zX&bslash;n&quot;
 comma
 id|__func__
 comma

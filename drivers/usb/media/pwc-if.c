@@ -4851,7 +4851,7 @@ c_func
 (paren
 id|TRACE_READ
 comma
-l_string|&quot;video_read(0x%p, %p, %d) called.&bslash;n&quot;
+l_string|&quot;video_read(0x%p, %p, %zd) called.&bslash;n&quot;
 comma
 id|vdev
 comma

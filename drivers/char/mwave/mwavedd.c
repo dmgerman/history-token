@@ -1366,7 +1366,7 @@ c_func
 (paren
 id|TRACE_MWAVE
 comma
-l_string|&quot;mwavedd::mwave_read entry file %p, buf %p, count %x ppos %p&bslash;n&quot;
+l_string|&quot;mwavedd::mwave_read entry file %p, buf %p, count %zx ppos %p&bslash;n&quot;
 comma
 id|file
 comma
@@ -1413,7 +1413,7 @@ c_func
 id|TRACE_MWAVE
 comma
 l_string|&quot;mwavedd::mwave_write entry file %p, buf %p,&quot;
-l_string|&quot; count %x ppos %p&bslash;n&quot;
+l_string|&quot; count %zx ppos %p&bslash;n&quot;
 comma
 id|file
 comma

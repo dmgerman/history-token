@@ -904,7 +904,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;blkmtd: write_pages: buf = %p to = %ld len = %d pagenr = %d offset = %d&bslash;n&quot;
+l_string|&quot;blkmtd: write_pages: buf = %p to = %ld len = %zd pagenr = %d offset = %d&bslash;n&quot;
 comma
 id|buf
 comma
@@ -1008,7 +1008,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;blkmtd: write: start_len = %d len = %d end_len = %d pagecnt = %d&bslash;n&quot;
+l_string|&quot;blkmtd: write: start_len = %zd len = %zd end_len = %zd pagecnt = %d&bslash;n&quot;
 comma
 id|start_len
 comma
@@ -1036,7 +1036,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;blkmtd: write: doing partial start, page = %d len = %d offset = %d&bslash;n&quot;
+l_string|&quot;blkmtd: write: doing partial start, page = %d len = %zd offset = %d&bslash;n&quot;
 comma
 id|pagenr
 comma
@@ -1089,7 +1089,7 @@ id|page
 id|err
 c_func
 (paren
-l_string|&quot;to = %lld start_len = %d len = %d end_len = %d pagenr = %d&bslash;n&quot;
+l_string|&quot;to = %lld start_len = %zd len = %zd end_len = %zd pagenr = %d&bslash;n&quot;
 comma
 id|to
 comma
@@ -1408,7 +1408,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;blkmtd: write: doing partial end, page = %d len = %d&bslash;n&quot;
+l_string|&quot;blkmtd: write: doing partial end, page = %d len = %zd&bslash;n&quot;
 comma
 id|pagenr
 comma
@@ -1459,7 +1459,7 @@ id|page
 id|err
 c_func
 (paren
-l_string|&quot;to = %lld start_len = %d len = %d end_len = %d pagenr = %d&bslash;n&quot;
+l_string|&quot;to = %lld start_len = %zd len = %zd end_len = %zd pagenr = %d&bslash;n&quot;
 comma
 id|to
 comma
@@ -1586,7 +1586,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;blkmtd: write: end, retlen = %d, err = %d&bslash;n&quot;
+l_string|&quot;blkmtd: write: end, retlen = %zd, err = %d&bslash;n&quot;
 comma
 op_star
 id|retlen
@@ -1687,7 +1687,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;blkmtd: erase: dev = `%s&squot; from = 0x%x len = 0x%lx&bslash;n&quot;
+l_string|&quot;blkmtd: erase: dev = `%s&squot; from = 0x%zx len = 0x%lx&bslash;n&quot;
 comma
 id|mtd-&gt;name
 op_plus
@@ -1778,7 +1778,7 @@ multiline_comment|/* Not a valid erase block */
 id|err
 c_func
 (paren
-l_string|&quot;erase: invalid erase request 0x%lX @ 0x%08X&quot;
+l_string|&quot;erase: invalid erase request 0x%lX @ 0x%08zX&quot;
 comma
 id|len
 comma
@@ -1809,7 +1809,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;Doing erase from = %d len = %ld&bslash;n&quot;
+l_string|&quot;Doing erase from = %zd len = %ld&bslash;n&quot;
 comma
 id|from
 comma
@@ -1960,16 +1960,12 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;blkmtd: read: dev = `%s&squot; from = %ld len = %d buf = %p&bslash;n&quot;
+l_string|&quot;blkmtd: read: dev = `%s&squot; from = %lld len = %zd buf = %p&bslash;n&quot;
 comma
 id|mtd-&gt;name
 op_plus
 l_int|9
 comma
-(paren
-r_int
-r_int
-)paren
 id|from
 comma
 id|len
@@ -2216,7 +2212,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;blkmtd: end read: retlen = %d, err = %d&bslash;n&quot;
+l_string|&quot;blkmtd: end read: retlen = %zd, err = %d&bslash;n&quot;
 comma
 id|thislen
 comma
@@ -2281,16 +2277,12 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;blkmtd: write: dev = `%s&squot; to = %ld len = %d buf = %p&bslash;n&quot;
+l_string|&quot;blkmtd: write: dev = `%s&squot; to = %lld len = %zd buf = %p&bslash;n&quot;
 comma
 id|mtd-&gt;name
 op_plus
 l_int|9
 comma
-(paren
-r_int
-r_int
-)paren
 id|to
 comma
 id|len
@@ -2499,7 +2491,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;calc_erase_regions, es = %d size = %d regions = %d&bslash;n&quot;
+l_string|&quot;calc_erase_regions, es = %zd size = %zd regions = %d&bslash;n&quot;
 comma
 id|erase_size
 comma
@@ -2753,7 +2745,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;calc_erase_regions done, es = %d size = %d regions = %d&bslash;n&quot;
+l_string|&quot;calc_erase_regions done, es = %zd size = %zd regions = %d&bslash;n&quot;
 comma
 id|erase_size
 comma

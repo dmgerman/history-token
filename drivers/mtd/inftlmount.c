@@ -899,7 +899,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;INFTL: allocation of PUtable &quot;
-l_string|&quot;failed (%d bytes)&bslash;n&quot;
+l_string|&quot;failed (%zd bytes)&bslash;n&quot;
 comma
 id|inftl-&gt;nb_blocks
 op_star
@@ -947,7 +947,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;INFTL: allocation of VUtable &quot;
-l_string|&quot;failed (%d bytes)&bslash;n&quot;
+l_string|&quot;failed (%zd bytes)&bslash;n&quot;
 comma
 id|inftl-&gt;nb_blocks
 op_star
@@ -1170,11 +1170,6 @@ r_int
 id|check_oob
 )paren
 (brace
-r_int
-id|i
-comma
-id|retlen
-suffix:semicolon
 id|u8
 id|buf
 (braket
@@ -1182,6 +1177,12 @@ id|SECTORSIZE
 op_plus
 id|inftl-&gt;mbd.mtd-&gt;oobsize
 )braket
+suffix:semicolon
+r_int
+id|retlen
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 id|DEBUG
 c_func
@@ -2035,9 +2036,10 @@ id|inftl_unittail
 id|h1
 suffix:semicolon
 r_int
-id|i
-comma
 id|retlen
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 id|u8
 op_star

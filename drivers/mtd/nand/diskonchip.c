@@ -3389,7 +3389,8 @@ id|this-&gt;phys_erase_shift
 suffix:semicolon
 r_int
 id|ret
-comma
+suffix:semicolon
+r_int
 id|retlen
 suffix:semicolon
 id|end
