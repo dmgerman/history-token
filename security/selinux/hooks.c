@@ -123,7 +123,7 @@ DECL|variable|selinux_enabled
 r_int
 id|selinux_enabled
 op_assign
-l_int|1
+id|CONFIG_SECURITY_SELINUX_BOOTPARAM_VALUE
 suffix:semicolon
 DECL|function|selinux_enabled_setup
 r_static
