@@ -3191,7 +3191,7 @@ op_eq
 id|LOOP_DEAD
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Add the command to the done-queue for later failover&n;&t;&t; * processing&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Add the command to the done-queue for later failover&n;&t;&t; * processing.&n;&t;&t; */
 id|cmd-&gt;result
 op_assign
 id|DID_NO_CONNECT
@@ -6411,26 +6411,21 @@ c_cond
 id|sdev-&gt;tagged_supported
 )paren
 (brace
-macro_line|#if defined(MODULE)
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
 id|ql2xmaxqdepth
-op_eq
+op_ne
 l_int|0
-op_logical_or
+op_logical_and
 id|ql2xmaxqdepth
-OG
-l_int|256
-)paren
+op_le
+l_int|0xffffU
 )paren
 id|queue_depth
 op_assign
 id|ql2xmaxqdepth
 suffix:semicolon
-macro_line|#endif 
 id|ql2xmaxqdepth
 op_assign
 id|queue_depth

@@ -3811,7 +3811,6 @@ op_eq
 id|FCS_DEVICE_LOST
 )paren
 (brace
-multiline_comment|/* v2.19.8 Ignore abort request if port is down */
 r_return
 l_int|1
 suffix:semicolon

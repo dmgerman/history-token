@@ -1137,7 +1137,7 @@ multiline_comment|/* Command Register - Reset Interrupt Disable. */
 id|w
 op_and_assign
 op_complement
-id|BIT_10
+id|PCI_COMMAND_INTX_DISABLE
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If this is a 2300 card and not 2312, reset the&n;&t;&t; * COMMAND_INVALIDATE due to a bug in the 2300. Unfortunately,&n;&t;&t; * the 2310 also reports itself as a 2300 so we need to get the&n;&t;&t; * fb revision level -- a 6 indicates it really is a 2300 and&n;&t;&t; * not a 2310.&n;&t;&t; */
 r_if
