@@ -4,8 +4,7 @@ r_int
 r_int
 id|__machine_arch_type
 suffix:semicolon
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/arch/uncompress.h&gt;
 macro_line|#ifdef STANDALONE_DEBUG
 DECL|macro|puts
