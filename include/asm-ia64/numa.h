@@ -114,6 +114,9 @@ id|paddr
 suffix:semicolon
 DECL|macro|local_nodeid
 mdefine_line|#define local_nodeid (cpu_to_node_map[smp_processor_id()])
+macro_line|#else /* !CONFIG_NUMA */
+DECL|macro|paddr_to_nid
+mdefine_line|#define paddr_to_nid(addr)&t;0
 macro_line|#endif /* CONFIG_NUMA */
 macro_line|#endif /* _ASM_IA64_NUMA_H */
 eof

@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#include &lt;asm/numa.h&gt;
 macro_line|#include &lt;asm/patch.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
@@ -1190,6 +1191,9 @@ comma
 op_star
 id|map_end
 suffix:semicolon
+r_int
+id|node
+suffix:semicolon
 id|pgd_t
 op_star
 id|pgd
@@ -1252,6 +1256,18 @@ r_int
 id|map_end
 )paren
 suffix:semicolon
+id|node
+op_assign
+id|paddr_to_nid
+c_func
+(paren
+id|__pa
+c_func
+(paren
+id|start
+)paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1294,9 +1310,15 @@ id|init_mm
 comma
 id|pgd
 comma
-id|alloc_bootmem_pages
+id|alloc_bootmem_pages_node
 c_func
 (paren
+id|NODE_DATA
+c_func
+(paren
+id|node
+)paren
+comma
 id|PAGE_SIZE
 )paren
 )paren
@@ -1329,9 +1351,15 @@ id|init_mm
 comma
 id|pmd
 comma
-id|alloc_bootmem_pages
+id|alloc_bootmem_pages_node
 c_func
 (paren
+id|NODE_DATA
+c_func
+(paren
+id|node
+)paren
+comma
 id|PAGE_SIZE
 )paren
 )paren
@@ -1367,9 +1395,15 @@ c_func
 id|__pa
 c_func
 (paren
-id|alloc_bootmem_pages
+id|alloc_bootmem_pages_node
 c_func
 (paren
+id|NODE_DATA
+c_func
+(paren
+id|node
+)paren
+comma
 id|PAGE_SIZE
 )paren
 )paren
