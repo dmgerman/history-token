@@ -6129,7 +6129,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|BUG_ON
+r_if
+c_cond
+(paren
+id|unlikely
 c_func
 (paren
 id|bio_sectors
@@ -6140,7 +6143,26 @@ id|bio
 OG
 id|q-&gt;max_sectors
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;bio too big (%u &gt; %u)&bslash;n&quot;
+comma
+id|bio_sectors
+c_func
+(paren
+id|bio
+)paren
+comma
+id|q-&gt;max_sectors
+)paren
 suffix:semicolon
+r_goto
+id|end_io
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * If this device has partitions, remap block n&n;&t;&t; * of partition p to block n+start(p) of the disk.&n;&t;&t; */
 id|blk_partition_remap
 c_func
@@ -6158,12 +6180,6 @@ c_func
 id|q
 comma
 id|bio
-)paren
-suffix:semicolon
-id|blk_put_queue
-c_func
-(paren
-id|q
 )paren
 suffix:semicolon
 )brace
