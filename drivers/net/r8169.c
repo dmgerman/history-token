@@ -2569,6 +2569,8 @@ c_func
 (paren
 id|timer
 comma
+id|jiffies
+op_plus
 id|RTL8169_PHY_TIMEOUT
 )paren
 suffix:semicolon
