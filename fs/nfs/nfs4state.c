@@ -3150,11 +3150,15 @@ r_if
 c_cond
 (paren
 (paren
+(paren
 r_struct
-id|nfs4_state
+id|nfs_open_context
 op_star
 )paren
 id|fl-&gt;fl_file-&gt;private_data
+)paren
+op_member_access_from_pointer
+id|state
 op_ne
 id|state
 )paren

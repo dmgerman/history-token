@@ -234,7 +234,7 @@ id|pages
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * nfs_direct_read_seg - Read in one iov segment.  Generate separate&n; *                        read RPCs for each &quot;rsize&quot; bytes.&n; * @inode: target inode&n; * @file: target file (may be NULL)&n; * user_addr: starting address of this segment of user&squot;s buffer&n; * count: size of this segment&n; * file_offset: offset in file to begin the operation&n; * @pages: array of addresses of page structs defining user&squot;s buffer&n; * nr_pages: size of pages array&n; */
+multiline_comment|/**&n; * nfs_direct_read_seg - Read in one iov segment.  Generate separate&n; *                        read RPCs for each &quot;rsize&quot; bytes.&n; * @inode: target inode&n; * @ctx: target file open context&n; * user_addr: starting address of this segment of user&squot;s buffer&n; * count: size of this segment&n; * file_offset: offset in file to begin the operation&n; * @pages: array of addresses of page structs defining user&squot;s buffer&n; * nr_pages: size of pages array&n; */
 r_static
 r_int
 DECL|function|nfs_direct_read_seg
@@ -247,9 +247,9 @@ op_star
 id|inode
 comma
 r_struct
-id|file
+id|nfs_open_context
 op_star
-id|file
+id|ctx
 comma
 r_int
 r_int
@@ -305,6 +305,11 @@ op_assign
 id|inode
 comma
 dot
+id|cred
+op_assign
+id|ctx-&gt;cred
+comma
+dot
 id|args
 op_assign
 (brace
@@ -320,7 +325,12 @@ comma
 dot
 id|lockowner
 op_assign
-id|current-&gt;files
+id|ctx-&gt;lockowner
+comma
+dot
+id|state
+op_assign
+id|ctx-&gt;state
 comma
 )brace
 comma
@@ -417,8 +427,6 @@ c_func
 (paren
 op_amp
 id|rdata
-comma
-id|file
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -508,7 +516,7 @@ r_return
 id|tot_bytes
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * nfs_direct_read - For each iov segment, map the user&squot;s buffer&n; *                   then generate read RPCs.&n; * @inode: target inode&n; * @file: target file (may be NULL)&n; * @iov: array of vectors that define I/O buffer&n; * file_offset: offset in file to begin the operation&n; * nr_segs: size of iovec array&n; *&n; * generic_file_direct_IO has already pushed out any non-direct&n; * writes so that this read will see them when we read from the&n; * server.&n; */
+multiline_comment|/**&n; * nfs_direct_read - For each iov segment, map the user&squot;s buffer&n; *                   then generate read RPCs.&n; * @inode: target inode&n; * @ctx: target file open context&n; * @iov: array of vectors that define I/O buffer&n; * file_offset: offset in file to begin the operation&n; * nr_segs: size of iovec array&n; *&n; * generic_file_direct_IO has already pushed out any non-direct&n; * writes so that this read will see them when we read from the&n; * server.&n; */
 r_static
 id|ssize_t
 DECL|function|nfs_direct_read
@@ -521,9 +529,9 @@ op_star
 id|inode
 comma
 r_struct
-id|file
+id|nfs_open_context
 op_star
-id|file
+id|ctx
 comma
 r_const
 r_struct
@@ -659,7 +667,7 @@ c_func
 (paren
 id|inode
 comma
-id|file
+id|ctx
 comma
 id|user_addr
 comma
@@ -725,7 +733,7 @@ r_return
 id|tot_bytes
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * nfs_direct_write_seg - Write out one iov segment.  Generate separate&n; *                        write RPCs for each &quot;wsize&quot; bytes, then commit.&n; * @inode: target inode&n; * @file: target file (may be NULL)&n; * user_addr: starting address of this segment of user&squot;s buffer&n; * count: size of this segment&n; * file_offset: offset in file to begin the operation&n; * @pages: array of addresses of page structs defining user&squot;s buffer&n; * nr_pages: size of pages array&n; */
+multiline_comment|/**&n; * nfs_direct_write_seg - Write out one iov segment.  Generate separate&n; *                        write RPCs for each &quot;wsize&quot; bytes, then commit.&n; * @inode: target inode&n; * @ctx: target file open context&n; * user_addr: starting address of this segment of user&squot;s buffer&n; * count: size of this segment&n; * file_offset: offset in file to begin the operation&n; * @pages: array of addresses of page structs defining user&squot;s buffer&n; * nr_pages: size of pages array&n; */
 r_static
 r_int
 DECL|function|nfs_direct_write_seg
@@ -738,9 +746,9 @@ op_star
 id|inode
 comma
 r_struct
-id|file
+id|nfs_open_context
 op_star
-id|file
+id|ctx
 comma
 r_int
 r_int
@@ -802,6 +810,11 @@ op_assign
 id|inode
 comma
 dot
+id|cred
+op_assign
+id|ctx-&gt;cred
+comma
+dot
 id|args
 op_assign
 (brace
@@ -817,7 +830,12 @@ comma
 dot
 id|lockowner
 op_assign
-id|current-&gt;files
+id|ctx-&gt;lockowner
+comma
+dot
+id|state
+op_assign
+id|ctx-&gt;state
 comma
 )brace
 comma
@@ -972,8 +990,6 @@ c_func
 (paren
 op_amp
 id|wdata
-comma
-id|file
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -1121,8 +1137,6 @@ c_func
 (paren
 op_amp
 id|wdata
-comma
-id|file
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -1180,10 +1194,10 @@ r_goto
 id|retry
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * nfs_direct_write - For each iov segment, map the user&squot;s buffer&n; *                    then generate write and commit RPCs.&n; * @inode: target inode&n; * @file: target file (may be NULL)&n; * @iov: array of vectors that define I/O buffer&n; * file_offset: offset in file to begin the operation&n; * nr_segs: size of iovec array&n; *&n; * Upon return, generic_file_direct_IO invalidates any cached pages&n; * that non-direct readers might access, so they will pick up these&n; * writes immediately.&n; */
-r_static
-id|ssize_t
+multiline_comment|/**&n; * nfs_direct_write - For each iov segment, map the user&squot;s buffer&n; *                    then generate write and commit RPCs.&n; * @inode: target inode&n; * @ctx: target file open context&n; * @iov: array of vectors that define I/O buffer&n; * file_offset: offset in file to begin the operation&n; * nr_segs: size of iovec array&n; *&n; * Upon return, generic_file_direct_IO invalidates any cached pages&n; * that non-direct readers might access, so they will pick up these&n; * writes immediately.&n; */
 DECL|function|nfs_direct_write
+r_static
+r_int
 id|nfs_direct_write
 c_func
 (paren
@@ -1193,9 +1207,9 @@ op_star
 id|inode
 comma
 r_struct
-id|file
+id|nfs_open_context
 op_star
-id|file
+id|ctx
 comma
 r_const
 r_struct
@@ -1331,7 +1345,7 @@ c_func
 (paren
 id|inode
 comma
-id|file
+id|ctx
 comma
 id|user_addr
 comma
@@ -1439,6 +1453,11 @@ op_assign
 id|iocb-&gt;ki_filp
 suffix:semicolon
 r_struct
+id|nfs_open_context
+op_star
+id|ctx
+suffix:semicolon
+r_struct
 id|dentry
 op_star
 id|dentry
@@ -1465,6 +1484,15 @@ id|iocb
 )paren
 r_return
 id|result
+suffix:semicolon
+id|ctx
+op_assign
+(paren
+r_struct
+id|nfs_open_context
+op_star
+)paren
+id|file-&gt;private_data
 suffix:semicolon
 r_switch
 c_cond
@@ -1494,7 +1522,7 @@ c_func
 (paren
 id|inode
 comma
-id|file
+id|ctx
 comma
 id|iov
 comma
@@ -1527,7 +1555,7 @@ c_func
 (paren
 id|inode
 comma
-id|file
+id|ctx
 comma
 id|iov
 comma
@@ -1589,6 +1617,18 @@ op_star
 id|file
 op_assign
 id|iocb-&gt;ki_filp
+suffix:semicolon
+r_struct
+id|nfs_open_context
+op_star
+id|ctx
+op_assign
+(paren
+r_struct
+id|nfs_open_context
+op_star
+)paren
+id|file-&gt;private_data
 suffix:semicolon
 r_struct
 id|dentry
@@ -1753,7 +1793,7 @@ c_func
 (paren
 id|inode
 comma
-id|file
+id|ctx
 comma
 op_amp
 id|iov
@@ -1837,6 +1877,18 @@ op_star
 id|file
 op_assign
 id|iocb-&gt;ki_filp
+suffix:semicolon
+r_struct
+id|nfs_open_context
+op_star
+id|ctx
+op_assign
+(paren
+r_struct
+id|nfs_open_context
+op_star
+)paren
+id|file-&gt;private_data
 suffix:semicolon
 r_struct
 id|dentry
@@ -2097,7 +2149,7 @@ c_func
 (paren
 id|inode
 comma
-id|file
+id|ctx
 comma
 op_amp
 id|iov
