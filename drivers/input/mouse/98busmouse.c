@@ -83,7 +83,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|pc98bm_interrupt
 c_func
 (paren
@@ -327,7 +327,7 @@ comma
 suffix:semicolon
 DECL|function|pc98bm_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|pc98bm_interrupt
 c_func
 (paren
@@ -523,6 +523,9 @@ id|PC98BM_ENABLE_IRQ
 comma
 id|PC98BM_CONTROL_PORT
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
