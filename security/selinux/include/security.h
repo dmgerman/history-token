@@ -11,6 +11,8 @@ DECL|macro|SECCLASS_NULL
 mdefine_line|#define SECCLASS_NULL&t;&t;&t;0x0000 /* no class */
 DECL|macro|SELINUX_MAGIC
 mdefine_line|#define SELINUX_MAGIC 0xf97cff8c
+DECL|macro|POLICYDB_VERSION
+mdefine_line|#define POLICYDB_VERSION 15
 macro_line|#ifdef CONFIG_SECURITY_SELINUX_BOOTPARAM
 r_extern
 r_int
