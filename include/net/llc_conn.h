@@ -5,7 +5,7 @@ multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;net/llc_if.h&gt;
 DECL|macro|DEBUG_LLC_CONN_ALLOC
-macro_line|#undef DEBUG_LLC_CONN_ALLOC
+mdefine_line|#define DEBUG_LLC_CONN_ALLOC
 DECL|struct|llc_timer
 r_struct
 id|llc_timer

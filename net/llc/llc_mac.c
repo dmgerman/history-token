@@ -70,7 +70,6 @@ id|skb-&gt;dev
 id|dprintk
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: skb-&gt;dev == NULL!&quot;
 comma
 id|__FUNCTION__
@@ -174,7 +173,6 @@ id|PACKET_OTHERHOST
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: PACKET_OTHERHOST&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -473,7 +471,6 @@ r_else
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: add to backlog&bslash;n&quot;
 comma
 id|__FUNCTION__

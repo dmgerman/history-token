@@ -807,8 +807,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* handle return of frames on lists */
-macro_line|#if 0
+macro_line|#ifdef DEBUG_LLC_CONN_ALLOC
 id|printk
 c_func
 (paren

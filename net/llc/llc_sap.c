@@ -145,7 +145,7 @@ id|sap-&gt;sk_list.lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_sap_unassign_sock - removes a connection from SAP&n; *&t;@sap: SAP&n; *&t;@sk: pointer to connection&n; *&n; *&t;This function removes a connection from connection_list of a SAP.&n; *&t;List locking is performed by caller (rtn_all_conns).&n; */
+multiline_comment|/**&n; *&t;llc_sap_unassign_sock - removes a connection from SAP&n; *&t;@sap: SAP&n; *&t;@sk: pointer to connection&n; *&n; *&t;This function removes a connection from sk_list.list of a SAP.&n; */
 DECL|function|llc_sap_unassign_sock
 r_void
 id|llc_sap_unassign_sock
