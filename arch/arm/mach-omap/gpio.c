@@ -2522,7 +2522,11 @@ c_func
 (paren
 l_int|1
 op_lshift
+(paren
 id|gpio
+op_amp
+l_int|0x0f
+)paren
 comma
 id|bank-&gt;base
 op_plus
@@ -2543,7 +2547,11 @@ c_func
 (paren
 l_int|1
 op_lshift
+(paren
 id|gpio
+op_amp
+l_int|0x0f
+)paren
 comma
 id|bank-&gt;base
 op_plus
@@ -2564,7 +2572,11 @@ c_func
 (paren
 l_int|1
 op_lshift
+(paren
 id|gpio
+op_amp
+l_int|0x1f
+)paren
 comma
 id|bank-&gt;base
 op_plus
