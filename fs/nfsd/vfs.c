@@ -4820,8 +4820,8 @@ id|iap
 id|iap-&gt;ia_valid
 op_and_assign
 id|ATTR_MODE
-multiline_comment|/* ~(ATTR_MODE|ATTR_UID|ATTR_GID)*/
 suffix:semicolon
+multiline_comment|/* Only the MODE ATTRibute is &n;&t;&t;&t;&t;&t;&t;     * even vaguely meaningful */
 r_if
 c_cond
 (paren
@@ -4842,8 +4842,9 @@ id|S_IALLUGO
 op_or
 id|S_IFLNK
 suffix:semicolon
-id|err
-op_assign
+r_if
+c_cond
+(paren
 id|notify_change
 c_func
 (paren
@@ -4851,21 +4852,9 @@ id|dnew
 comma
 id|iap
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
+op_eq
+l_int|0
 )paren
-id|err
-op_assign
-id|nfserrno
-c_func
-(paren
-id|err
-)paren
-suffix:semicolon
-r_else
 r_if
 c_cond
 (paren
@@ -4883,6 +4872,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* errors from notify_change are not&n;&t;&t;&t;&t; * propagated to client&n;&t;&t;&t;&t; */
 )brace
 )brace
 )brace
