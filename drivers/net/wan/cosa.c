@@ -2795,7 +2795,7 @@ suffix:semicolon
 id|free_netdev
 c_func
 (paren
-id|chan-&gt;ppp.dev
+id|chan-&gt;pppdev.dev
 )paren
 suffix:semicolon
 )brace
