@@ -195,26 +195,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Freeing function for a buddy system allocator.&n; *&n; * The concept of a buddy system is to maintain direct-mapped table&n; * (containing bit values) for memory blocks of various &quot;orders&quot;.&n; * The bottom level table contains the map for the smallest allocatable&n; * units of memory (here, pages), and each level above it describes&n; * pairs of units from the levels below, hence, &quot;buddies&quot;.&n; * At a high level, all that happens here is marking the table entry&n; * at the bottom level available, and propagating the changes upward&n; * as necessary, plus some accounting needed to play nicely with other&n; * parts of the VM system.&n; * At each level, we keep one bit for each pair of blocks, which&n; * is set to 1 iff only one of the pair is allocated.  So when we&n; * are allocating or freeing one, we can derive the state of the&n; * other.  That is, if we allocate a small block, and both were   &n; * free, the remainder of the region must be split into blocks.   &n; * If a block is freed, and its buddy is also free, then this&n; * triggers coalescing into a block of larger size.            &n; *&n; * -- wli&n; */
-r_static
-r_void
-id|FASTCALL
-c_func
-(paren
-id|__free_pages_ok
-(paren
-r_struct
-id|page
-op_star
-id|page
-comma
-r_int
-r_int
-id|order
-)paren
-)paren
-suffix:semicolon
 DECL|function|__free_pages_ok
-r_static
 r_void
 id|__free_pages_ok
 (paren
