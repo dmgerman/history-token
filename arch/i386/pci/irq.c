@@ -4048,6 +4048,10 @@ r_if
 c_cond
 (paren
 id|pcibios_enable_irq
+op_logical_or
+id|raw_pci_ops
+op_eq
+l_int|NULL
 )paren
 r_return
 l_int|0
