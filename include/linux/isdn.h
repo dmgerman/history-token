@@ -1764,25 +1764,6 @@ id|timer_list
 id|timer
 suffix:semicolon
 multiline_comment|/* Misc.-function Timer       */
-DECL|member|num
-r_char
-id|num
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-(braket
-id|ISDN_MSNLEN
-)braket
-suffix:semicolon
-multiline_comment|/* Remote number of active ch.*/
-DECL|member|m_idx
-r_int
-id|m_idx
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* Index for mdm....          */
 DECL|member|drv
 id|driver
 op_star
@@ -1821,65 +1802,6 @@ id|modem
 id|mdm
 suffix:semicolon
 multiline_comment|/* tty-driver-data            */
-DECL|member|rx_netdev
-id|isdn_net_dev
-op_star
-id|rx_netdev
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* rx netdev-pointers     */
-DECL|member|st_netdev
-id|isdn_net_dev
-op_star
-id|st_netdev
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* stat netdev-pointers   */
-DECL|member|ibytes
-id|ulong
-id|ibytes
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* Statistics incoming bytes  */
-DECL|member|obytes
-id|ulong
-id|obytes
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* Statistics outgoing bytes  */
-DECL|member|v110emu
-r_int
-id|v110emu
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* V.110 emulator-mode 0=none */
-DECL|member|v110use
-id|atomic_t
-id|v110use
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* Usage-Semaphore for stream */
-DECL|member|v110
-id|isdn_v110_stream
-op_star
-id|v110
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-multiline_comment|/* V.110 private data         */
 DECL|member|sem
 r_struct
 id|semaphore
