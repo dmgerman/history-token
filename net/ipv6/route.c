@@ -4879,6 +4879,13 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|dev_hold
+c_func
+(paren
+op_amp
+id|loopback_dev
+)paren
+suffix:semicolon
 id|rt-&gt;u.dst.flags
 op_assign
 id|DST_HOST
@@ -4893,11 +4900,8 @@ id|ip6_output
 suffix:semicolon
 id|rt-&gt;rt6i_dev
 op_assign
-id|dev_get_by_name
-c_func
-(paren
-l_string|&quot;lo&quot;
-)paren
+op_amp
+id|loopback_dev
 suffix:semicolon
 id|rt-&gt;u.dst.metrics
 (braket
