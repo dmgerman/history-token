@@ -23,14 +23,6 @@ macro_line|#include &quot;proc_mm.h&quot;
 macro_line|#include &quot;skas_ptrace.h&quot;
 macro_line|#include &quot;chan_user.h&quot;
 macro_line|#include &quot;signal_user.h&quot;
-macro_line|#ifdef PTRACE_SYSEMU
-DECL|variable|use_sysemu
-r_int
-id|use_sysemu
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 DECL|function|is_skas_winch
 r_int
 id|is_skas_winch
@@ -177,6 +169,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*To use the same value of using_sysemu as the caller, ask it that value (in local_using_sysemu)*/
 DECL|function|handle_trap
 r_static
 r_void
@@ -190,6 +183,9 @@ r_union
 id|uml_pt_regs
 op_star
 id|regs
+comma
+r_int
+id|local_using_sysemu
 )paren
 (brace
 r_int
@@ -234,15 +230,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef PTRACE_SYSEMU
 r_if
 c_cond
 (paren
 op_logical_neg
-id|use_sysemu
+id|local_using_sysemu
 )paren
 (brace
-macro_line|#endif
 id|err
 op_assign
 id|ptrace
@@ -358,9 +352,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef PTRACE_SYSEMU
 )brace
-macro_line|#endif
 id|handle_syscall
 c_func
 (paren
@@ -687,17 +679,27 @@ id|userspace_pid
 l_int|0
 )braket
 suffix:semicolon
+r_int
+id|local_using_sysemu
+suffix:semicolon
+multiline_comment|/*To prevent races if using_sysemu changes under us.*/
 id|restore_registers
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
-macro_line|#ifdef PTRACE_SYSEMU
+id|local_using_sysemu
+op_assign
+id|get_using_sysemu
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|use_sysemu
+id|local_using_sysemu
 )paren
 id|err
 op_assign
@@ -714,7 +716,6 @@ l_int|0
 )paren
 suffix:semicolon
 r_else
-macro_line|#endif
 id|err
 op_assign
 id|ptrace
@@ -830,6 +831,8 @@ c_func
 id|pid
 comma
 id|regs
+comma
+id|local_using_sysemu
 )paren
 suffix:semicolon
 r_break
@@ -894,11 +897,18 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-macro_line|#ifdef PTRACE_SYSEMU
+multiline_comment|/*Now we ended the syscall, so re-read local_using_sysemu.*/
+id|local_using_sysemu
+op_assign
+id|get_using_sysemu
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|use_sysemu
+id|local_using_sysemu
 )paren
 id|op
 op_assign
@@ -913,7 +923,6 @@ suffix:colon
 id|PTRACE_SYSEMU
 suffix:semicolon
 r_else
-macro_line|#endif
 id|op
 op_assign
 id|singlestepping_skas

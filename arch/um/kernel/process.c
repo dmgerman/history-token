@@ -1333,9 +1333,11 @@ c_func
 l_string|&quot;Checking syscall emulation patch for ptrace...&quot;
 )paren
 suffix:semicolon
-id|use_sysemu
-op_assign
+id|set_using_sysemu
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 id|pid
 op_assign
@@ -1504,9 +1506,11 @@ c_func
 l_string|&quot;found&bslash;n&quot;
 )paren
 suffix:semicolon
-id|use_sysemu
-op_assign
+id|set_using_sysemu
+c_func
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 r_else
