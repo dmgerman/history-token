@@ -1347,10 +1347,8 @@ DECL|macro|fb_writew
 mdefine_line|#define fb_writew __raw_writew
 DECL|macro|fb_writel
 mdefine_line|#define fb_writel __raw_writel
-macro_line|#if defined(__alpha__) || defined(__hppa__) || defined(__ia64__)
 DECL|macro|fb_writeq
 mdefine_line|#define fb_writeq __raw_writeq
-macro_line|#endif
 DECL|macro|fb_memset
 mdefine_line|#define fb_memset memset_io
 macro_line|#else

@@ -282,6 +282,7 @@ r_return
 id|g
 suffix:semicolon
 )brace
+macro_line|#ifdef MODULE
 DECL|function|init_module
 r_int
 id|init_module
@@ -305,6 +306,7 @@ r_void
 (brace
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|variable|fonts
 id|EXPORT_SYMBOL
 c_func
