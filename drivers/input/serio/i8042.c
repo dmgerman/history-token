@@ -2671,7 +2671,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Internal loopback test - filters out AT-type i8042&squot;s&n; */
+multiline_comment|/*&n; * Internal loopback test - filters out AT-type i8042&squot;s. Unfortunately&n; * SiS screwed up and their 5597 doesn&squot;t support the LOOP command even&n; * though it has an AUX port.&n; */
 id|param
 op_assign
 l_int|0x5a
@@ -2692,11 +2692,8 @@ id|param
 op_ne
 l_int|0xa5
 )paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n; * External connection test - filters out AT-soldered PS/2 i8042&squot;s&n; * 0x00 - no error, 0x01-0x03 - clock/data stuck, 0xff - general error&n; * 0xfa - no error on some notebooks which ignore the spec&n; * We ignore general error, since some chips report it even under normal&n; * operation.&n; */
+(brace
+multiline_comment|/*&n; * External connection test - filters out AT-soldered PS/2 i8042&squot;s&n; * 0x00 - no error, 0x01-0x03 - clock/data stuck, 0xff - general error&n; * 0xfa - no error on some notebooks which ignore the spec&n; * Because it&squot;s common for chipsets to return error on perfectly functioning&n; * AUX ports, we test for this only when the LOOP command failed.&n; */
 r_if
 c_cond
 (paren
@@ -2725,6 +2722,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 multiline_comment|/*&n; * Bit assignment test - filters out PS/2 i8042&squot;s in AT mode&n; */
 r_if
 c_cond
