@@ -1,6 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;e1000.h&quot;
-multiline_comment|/* Change Log&n; *&n; * 5.2.26&t;11/13/03&n; *   o Fixed endianess bug causing ethtool loopback diags to fail on ppc.&n; *   o Use pdev-&gt;irq rather than netdev-&gt;irq in preparation for MSI support.&n; *   o Report driver message on user override of InterruptThrottleRate&n; *     module parameter.&n; *   o Change I/O address storage from uint32_t to unsigned long.&n; *   o Added ethtool RINGPARAM support.&n; *&n; * 5.2.22&t;10/15/03&n; *   o Bug fix: SERDES devices might be connected to a back-plane&n; *     switch that doesn&squot;t support auto-neg, so add the capability&n; *     to force 1000/Full.  Also, since forcing 1000/Full, sample&n; *     RxSynchronize bit to detect link state.&n; *   o Bug fix: Flow control settings for hi/lo watermark didn&squot;t&n; *     consider changes in the Rx FIFO size, which could occur with&n; *     Jumbo Frames or with the reduced FIFO in 82547.&n; *   o Better propagation of error codes. [Janice Girouard &n; *     (janiceg@us.ibm.com)].&n; *   o Bug fix: hang under heavy Tx stress when running out of Tx&n; *     descriptors; wasn&squot;t clearing context descriptor when backing&n; *     out of send because of no-resource condition.&n; *   o Bug fix: check netif_running in dev-&gt;poll so we don&squot;t have to&n; *     hang in dev-&gt;close until all polls are finished.  [Robert&n; *     Ollson (robert.olsson@data.slu.se)].&n; *   o Revert TxDescriptor ring size back to 256 since change to 1024&n; *     wasn&squot;t accepted into the kernel.&n; *&n; * 5.2.16&t;8/8/03&n; */
+multiline_comment|/* Change Log&n; *&n; * 5.2.27&t;12/14/03&n; *   o Added netpoll support.&n; *   o Fixed endianess bug causing ethtool loopback diags to fail on ppc.&n; *   o Use pdev-&gt;irq rather than netdev-&gt;irq in preparation for MSI support.&n; *   o Report driver message on user override of InterruptThrottleRate&n; *     module parameter.&n; *   o Change I/O address storage from uint32_t to unsigned long.&n; *   o Added ethtool RINGPARAM support.&n; *&n; * 5.2.22&t;10/15/03&n; *   o Bug fix: SERDES devices might be connected to a back-plane&n; *     switch that doesn&squot;t support auto-neg, so add the capability&n; *     to force 1000/Full.  Also, since forcing 1000/Full, sample&n; *     RxSynchronize bit to detect link state.&n; *   o Bug fix: Flow control settings for hi/lo watermark didn&squot;t&n; *     consider changes in the Rx FIFO size, which could occur with&n; *     Jumbo Frames or with the reduced FIFO in 82547.&n; *   o Better propagation of error codes. [Janice Girouard &n; *     (janiceg@us.ibm.com)].&n; *   o Bug fix: hang under heavy Tx stress when running out of Tx&n; *     descriptors; wasn&squot;t clearing context descriptor when backing&n; *     out of send because of no-resource condition.&n; *   o Bug fix: check netif_running in dev-&gt;poll so we don&squot;t have to&n; *     hang in dev-&gt;close until all polls are finished.  [Robert&n; *     Ollson (robert.olsson@data.slu.se)].&n; *   o Revert TxDescriptor ring size back to 256 since change to 1024&n; *     wasn&squot;t accepted into the kernel.&n; *&n; * 5.2.16&t;8/8/03&n; */
 DECL|variable|e1000_driver_name
 r_char
 id|e1000_driver_name
@@ -23,7 +23,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.2.26-k1&quot;
+l_string|&quot;5.2.27-k1&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -1208,6 +1208,19 @@ id|pdev
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+multiline_comment|/* for netdump / net console */
+r_static
+r_void
+id|e1000_netpoll
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|e1000_notifier_reboot
 r_struct
 id|notifier_block
@@ -2203,6 +2216,12 @@ id|netdev-&gt;vlan_rx_kill_vid
 op_assign
 id|e1000_vlan_rx_kill_vid
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|netdev-&gt;poll_controller
+op_assign
+id|e1000_netpoll
+suffix:semicolon
+macro_line|#endif
 id|netdev-&gt;mem_start
 op_assign
 id|mmio_start
@@ -12029,6 +12048,49 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+multiline_comment|/*&n; * Polling &squot;interrupt&squot; - used by things like netconsole to send skbs&n; * without having to re-enable interrupts. It&squot;s not called while&n; * the interrupt routine is executing.&n; */
+DECL|function|e1000_netpoll
+r_static
+r_void
+id|e1000_netpoll
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|e1000_adapter
+op_star
+id|adapter
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|disable_irq
+c_func
+(paren
+id|adapter-&gt;pdev-&gt;irq
+)paren
+suffix:semicolon
+id|e1000_intr
+(paren
+id|adapter-&gt;pdev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|adapter-&gt;pdev-&gt;irq
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif
