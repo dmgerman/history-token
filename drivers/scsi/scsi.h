@@ -441,30 +441,12 @@ mdefine_line|#define SCSI_CMND_MAGIC 0xE25C23A5
 DECL|macro|SCSI_REQ_MAGIC
 mdefine_line|#define SCSI_REQ_MAGIC  0x75F6D354
 multiline_comment|/*&n; * Here is where we prototype most of the mid-layer.&n; */
-multiline_comment|/*&n; *  Initializes all SCSI devices.  This scans all scsi busses.&n; */
 r_extern
 r_int
 r_int
 id|scsi_logging_level
 suffix:semicolon
 multiline_comment|/* What do we log? */
-r_extern
-r_int
-r_int
-id|scsi_dma_free_sectors
-suffix:semicolon
-multiline_comment|/* How much room do we have left */
-r_extern
-r_int
-r_int
-id|scsi_need_isa_buffer
-suffix:semicolon
-multiline_comment|/* True if some devices need indirection&n;&t;&t;&t;&t;&t;&t;   * buffers */
-r_extern
-r_volatile
-r_int
-id|in_scan_scsis
-suffix:semicolon
 r_extern
 r_struct
 id|bus_type
@@ -713,6 +695,22 @@ id|SCpnt
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|scsi_prep_fn
+c_func
+(paren
+r_struct
+id|request_queue
+op_star
+id|q
+comma
+r_struct
+id|request
+op_star
+id|req
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|scsi_request_fn
 c_func
@@ -925,16 +923,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|scsi_detect_device
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|scsi_attach_device
 c_func
@@ -1062,11 +1050,6 @@ comma
 id|Scsi_Request
 op_star
 )paren
-suffix:semicolon
-multiline_comment|/*&n; * Prototypes for functions/data in hosts.c&n; */
-r_extern
-r_int
-id|max_scsi_hosts
 suffix:semicolon
 multiline_comment|/*&n; * Prototypes for functions in scsi_proc.c&n; */
 r_extern
@@ -2090,8 +2073,6 @@ DECL|macro|SCSI_MLQUEUE_HOST_BUSY
 mdefine_line|#define SCSI_MLQUEUE_HOST_BUSY   0x1055
 DECL|macro|SCSI_MLQUEUE_DEVICE_BUSY
 mdefine_line|#define SCSI_MLQUEUE_DEVICE_BUSY 0x1056
-DECL|macro|SCSI_SLEEP
-mdefine_line|#define SCSI_SLEEP(QUEUE, CONDITION) {&t;&t;    &bslash;&n;    if (CONDITION) {&t;&t;&t;            &bslash;&n;&t;DECLARE_WAITQUEUE(wait, current);&t;    &bslash;&n;&t;add_wait_queue(QUEUE, &amp;wait);&t;&t;    &bslash;&n;&t;for(;;) {&t;&t;&t;            &bslash;&n;&t;set_current_state(TASK_UNINTERRUPTIBLE);    &bslash;&n;&t;if (CONDITION) {&t;&t;            &bslash;&n;            if (in_interrupt())&t;                    &bslash;&n;&t;        panic(&quot;scsi: trying to call schedule() in interrupt&quot; &bslash;&n;&t;&t;      &quot;, file %s, line %d.&bslash;n&quot;, __FILE__, __LINE__);  &bslash;&n;&t;    schedule();&t;&t;&t;&bslash;&n;        }&t;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;        &bslash;&n;&t;    break;      &t;&t;&bslash;&n;&t;}&t;&t;&t;        &bslash;&n;&t;remove_wait_queue(QUEUE, &amp;wait);&bslash;&n;&t;current-&gt;state = TASK_RUNNING;&t;&bslash;&n;    }; }
 multiline_comment|/*&n; * old style reset request from external source&n; * (private to sg.c and scsi_error.c, supplied by scsi_obsolete.c)&n; */
 DECL|macro|SCSI_TRY_RESET_DEVICE
 mdefine_line|#define SCSI_TRY_RESET_DEVICE&t;1
