@@ -7877,6 +7877,14 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
+id|l2cap_raw_recv
+c_func
+(paren
+id|conn
+comma
+id|skb
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -8062,14 +8070,6 @@ r_case
 id|L2CAP_COMMAND_REJ
 suffix:colon
 multiline_comment|/* FIXME: We should process this */
-id|l2cap_raw_recv
-c_func
-(paren
-id|conn
-comma
-id|skb
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -8100,14 +8100,6 @@ suffix:colon
 r_case
 id|L2CAP_INFO_RSP
 suffix:colon
-id|l2cap_raw_recv
-c_func
-(paren
-id|conn
-comma
-id|skb
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -8115,7 +8107,7 @@ suffix:colon
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Uknown signaling command 0x%2.2x&quot;
+l_string|&quot;Unknown signaling command 0x%2.2x&quot;
 comma
 id|cmd.code
 )paren

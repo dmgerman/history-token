@@ -2851,7 +2851,7 @@ c_func
 r_struct
 id|usb_interface
 op_star
-id|iface
+id|intf
 comma
 r_const
 r_struct
@@ -2874,7 +2874,7 @@ op_assign
 id|interface_to_usbdev
 c_func
 (paren
-id|iface
+id|intf
 )paren
 suffix:semicolon
 r_struct
@@ -2900,9 +2900,9 @@ suffix:semicolon
 id|BT_DBG
 c_func
 (paren
-l_string|&quot;iface %p id %p&quot;
+l_string|&quot;intf %p id %p&quot;
 comma
-id|iface
+id|intf
 comma
 id|id
 )paren
@@ -2911,7 +2911,7 @@ multiline_comment|/* Check number of endpoints */
 r_if
 c_cond
 (paren
-id|iface-&gt;altsetting
+id|intf-&gt;altsetting
 (braket
 l_int|0
 )braket
@@ -2927,7 +2927,7 @@ suffix:semicolon
 id|bulk_out_ep
 op_assign
 op_amp
-id|iface-&gt;altsetting
+id|intf-&gt;altsetting
 (braket
 l_int|0
 )braket
@@ -2940,7 +2940,7 @@ suffix:semicolon
 id|bulk_in_ep
 op_assign
 op_amp
-id|iface-&gt;altsetting
+id|intf-&gt;altsetting
 (braket
 l_int|0
 )braket
@@ -3145,6 +3145,15 @@ id|hdev-&gt;driver_data
 op_assign
 id|bfusb
 suffix:semicolon
+id|SET_HCIDEV_DEV
+c_func
+(paren
+id|hdev
+comma
+op_amp
+id|intf-&gt;dev
+)paren
+suffix:semicolon
 id|hdev-&gt;open
 op_assign
 id|bfusb_open
@@ -3198,7 +3207,7 @@ suffix:semicolon
 id|usb_set_intfdata
 c_func
 (paren
-id|iface
+id|intf
 comma
 id|bfusb
 )paren
@@ -3238,7 +3247,7 @@ c_func
 r_struct
 id|usb_interface
 op_star
-id|iface
+id|intf
 )paren
 (brace
 r_struct
@@ -3249,7 +3258,7 @@ op_assign
 id|usb_get_intfdata
 c_func
 (paren
-id|iface
+id|intf
 )paren
 suffix:semicolon
 r_struct
@@ -3263,9 +3272,9 @@ suffix:semicolon
 id|BT_DBG
 c_func
 (paren
-l_string|&quot;iface %p&quot;
+l_string|&quot;intf %p&quot;
 comma
-id|iface
+id|intf
 )paren
 suffix:semicolon
 r_if
@@ -3279,7 +3288,7 @@ suffix:semicolon
 id|usb_set_intfdata
 c_func
 (paren
-id|iface
+id|intf
 comma
 l_int|NULL
 )paren

@@ -283,6 +283,11 @@ op_star
 id|proc
 suffix:semicolon
 macro_line|#endif
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
+suffix:semicolon
 DECL|member|owner
 r_struct
 id|module
@@ -1685,7 +1690,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_int
-id|hci_dev_proc_init
+id|hci_register_sysfs
 c_func
 (paren
 r_struct
@@ -1695,7 +1700,7 @@ id|hdev
 )paren
 suffix:semicolon
 r_void
-id|hci_dev_proc_cleanup
+id|hci_unregister_sysfs
 c_func
 (paren
 r_struct
@@ -1704,6 +1709,8 @@ op_star
 id|hdev
 )paren
 suffix:semicolon
+DECL|macro|SET_HCIDEV_DEV
+mdefine_line|#define SET_HCIDEV_DEV(hdev, pdev) ((hdev)-&gt;class_dev.dev = (pdev))
 multiline_comment|/* ----- LMP capabilities ----- */
 DECL|macro|lmp_rswitch_capable
 mdefine_line|#define lmp_rswitch_capable(dev) (dev-&gt;features[0] &amp; LMP_RSWITCH)

@@ -4293,6 +4293,15 @@ id|hdev-&gt;driver_data
 op_assign
 id|husb
 suffix:semicolon
+id|SET_HCIDEV_DEV
+c_func
+(paren
+id|hdev
+comma
+op_amp
+id|intf-&gt;dev
+)paren
+suffix:semicolon
 id|hdev-&gt;open
 op_assign
 id|hci_usb_open
