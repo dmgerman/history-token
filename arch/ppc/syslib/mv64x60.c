@@ -1512,14 +1512,14 @@ comma
 dot
 id|start
 op_assign
-id|MV64340_ETH_SHARED_REGS
+id|MV643XX_ETH_SHARED_REGS
 comma
 dot
 id|end
 op_assign
-id|MV64340_ETH_SHARED_REGS
+id|MV643XX_ETH_SHARED_REGS
 op_plus
-id|MV64340_ETH_SHARED_REGS_SIZE
+id|MV643XX_ETH_SHARED_REGS_SIZE
 op_minus
 l_int|1
 comma
@@ -1542,7 +1542,7 @@ op_assign
 dot
 id|name
 op_assign
-id|MV64XXX_ETH_SHARED_NAME
+id|MV643XX_ETH_SHARED_NAME
 comma
 dot
 id|id
@@ -1607,7 +1607,7 @@ suffix:semicolon
 DECL|variable|eth0_pd
 r_static
 r_struct
-id|mv64xxx_eth_platform_data
+id|mv643xx_eth_platform_data
 id|eth0_pd
 suffix:semicolon
 DECL|variable|eth0_device
@@ -1620,7 +1620,7 @@ op_assign
 dot
 id|name
 op_assign
-id|MV64XXX_ETH_NAME
+id|MV643XX_ETH_NAME
 comma
 dot
 id|id
@@ -1698,7 +1698,7 @@ suffix:semicolon
 DECL|variable|eth1_pd
 r_static
 r_struct
-id|mv64xxx_eth_platform_data
+id|mv643xx_eth_platform_data
 id|eth1_pd
 suffix:semicolon
 DECL|variable|eth1_device
@@ -1711,7 +1711,7 @@ op_assign
 dot
 id|name
 op_assign
-id|MV64XXX_ETH_NAME
+id|MV643XX_ETH_NAME
 comma
 dot
 id|id
@@ -1789,7 +1789,7 @@ suffix:semicolon
 DECL|variable|eth2_pd
 r_static
 r_struct
-id|mv64xxx_eth_platform_data
+id|mv643xx_eth_platform_data
 id|eth2_pd
 suffix:semicolon
 DECL|variable|eth2_device
@@ -1802,7 +1802,7 @@ op_assign
 dot
 id|name
 op_assign
-id|MV64XXX_ETH_NAME
+id|MV643XX_ETH_NAME
 comma
 dot
 id|id

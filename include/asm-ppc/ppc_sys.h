@@ -6,7 +6,9 @@ mdefine_line|#define __ASM_PPC_SYS_H
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#if defined(CONFIG_85xx)
+macro_line|#if defined(CONFIG_83xx)
+macro_line|#include &lt;asm/mpc83xx.h&gt;
+macro_line|#elif defined(CONFIG_85xx)
 macro_line|#include &lt;asm/mpc85xx.h&gt;
 macro_line|#else
 macro_line|#error &quot;need definition of ppc_sys_devices&quot;

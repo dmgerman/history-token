@@ -73,7 +73,7 @@ comma
 dot
 id|tree_lock
 op_assign
-id|SPIN_LOCK_UNLOCKED
+id|RW_LOCK_UNLOCKED
 comma
 dot
 id|a_ops
@@ -256,7 +256,7 @@ op_logical_neg
 id|error
 )paren
 (brace
-id|spin_lock_irq
+id|write_lock_irq
 c_func
 (paren
 op_amp
@@ -317,7 +317,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp
@@ -734,7 +734,7 @@ id|page
 op_member_access_from_pointer
 r_private
 suffix:semicolon
-id|spin_lock_irq
+id|write_lock_irq
 c_func
 (paren
 op_amp
@@ -747,7 +747,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|write_unlock_irq
 c_func
 (paren
 op_amp
@@ -1113,7 +1113,7 @@ id|page
 op_star
 id|page
 suffix:semicolon
-id|spin_lock_irq
+id|read_lock_irq
 c_func
 (paren
 op_amp
@@ -1150,7 +1150,7 @@ id|find_success
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irq
+id|read_unlock_irq
 c_func
 (paren
 op_amp
@@ -1204,7 +1204,7 @@ suffix:semicolon
 r_do
 (brace
 multiline_comment|/*&n;&t;&t; * First check the swap cache.  Since this is normally&n;&t;&t; * called after lookup_swap_cache() failed, re-calling&n;&t;&t; * that would confuse statistics.&n;&t;&t; */
-id|spin_lock_irq
+id|read_lock_irq
 c_func
 (paren
 op_amp
@@ -1233,7 +1233,7 @@ c_func
 id|found_page
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|read_unlock_irq
 c_func
 (paren
 op_amp

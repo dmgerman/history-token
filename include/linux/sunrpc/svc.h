@@ -838,7 +838,6 @@ op_star
 id|pg_stats
 suffix:semicolon
 multiline_comment|/* rpc statistics */
-multiline_comment|/* Override authentication. NULL means use default */
 DECL|member|pg_authenticate
 r_int
 (paren
@@ -848,9 +847,6 @@ id|pg_authenticate
 (paren
 r_struct
 id|svc_rqst
-op_star
-comma
-id|u32
 op_star
 )paren
 suffix:semicolon

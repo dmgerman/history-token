@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &lt;linux/i2c-vid.h&gt;
@@ -1223,11 +1224,6 @@ id|adm1026_detach_client
 comma
 )brace
 suffix:semicolon
-DECL|variable|adm1026_id
-r_static
-r_int
-id|adm1026_id
-suffix:semicolon
 DECL|function|adm1026_attach_adapter
 r_int
 id|adm1026_attach_adapter
@@ -1434,9 +1430,7 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): Initializing device&bslash;n&quot;
-comma
-id|client-&gt;id
+l_string|&quot;Initializing device&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Read chip config */
@@ -1477,9 +1471,7 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): ADM1026_REG_CONFIG1 is: 0x%02x&bslash;n&quot;
-comma
-id|client-&gt;id
+l_string|&quot;ADM1026_REG_CONFIG1 is: 0x%02x&bslash;n&quot;
 comma
 id|data-&gt;config1
 )paren
@@ -1502,10 +1494,8 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): Monitoring not currently &quot;
+l_string|&quot;Monitoring not currently &quot;
 l_string|&quot;enabled.&bslash;n&quot;
-comma
-id|client-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -1523,10 +1513,8 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): SMBALERT interrupts are &quot;
+l_string|&quot;SMBALERT interrupts are &quot;
 l_string|&quot;enabled.&bslash;n&quot;
-comma
-id|client-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -1544,10 +1532,8 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): in8 and in9 enabled. &quot;
+l_string|&quot;in8 and in9 enabled. &quot;
 l_string|&quot;temp3 disabled.&bslash;n&quot;
-comma
-id|client-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -1559,10 +1545,8 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): temp3 enabled.  in8 and &quot;
+l_string|&quot;temp3 enabled.  in8 and &quot;
 l_string|&quot;in9 disabled.&bslash;n&quot;
-comma
-id|client-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -1580,10 +1564,8 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): Automatic THERM, PWM, &quot;
+l_string|&quot;Automatic THERM, PWM, &quot;
 l_string|&quot;and temp limits enabled.&bslash;n&quot;
-comma
-id|client-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -1605,10 +1587,8 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): GPIO16 enabled.  THERM&quot;
+l_string|&quot;GPIO16 enabled.  THERM&quot;
 l_string|&quot;pin disabled.&bslash;n&quot;
-comma
-id|client-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -1620,10 +1600,8 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): THERM pin enabled.  &quot;
+l_string|&quot;THERM pin enabled.  &quot;
 l_string|&quot;GPIO16 disabled.&bslash;n&quot;
-comma
-id|client-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -1641,9 +1619,7 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): Vref is 2.50 Volts.&bslash;n&quot;
-comma
-id|client-&gt;id
+l_string|&quot;Vref is 2.50 Volts.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1655,9 +1631,7 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): Vref is 1.82 Volts.&bslash;n&quot;
-comma
-id|client-&gt;id
+l_string|&quot;Vref is 1.82 Volts.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1742,14 +1716,9 @@ c_func
 id|client
 )paren
 suffix:semicolon
-multiline_comment|/* If the user asks us to reprogram the GPIO config, then&n;&t; *   do it now.  But only if this is the first ADM1026.&n;&t; */
+multiline_comment|/* If the user asks us to reprogram the GPIO config, then&n;&t; * do it now.&n;&t; */
 r_if
 c_cond
-(paren
-id|client-&gt;id
-op_eq
-l_int|0
-op_logical_and
 (paren
 id|gpio_input
 (braket
@@ -1790,7 +1759,6 @@ l_int|0
 op_ne
 op_minus
 l_int|1
-)paren
 )paren
 (brace
 id|adm1026_fixup_gpio
@@ -1839,9 +1807,7 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): Setting CONFIG to: 0x%02x&bslash;n&quot;
-comma
-id|client-&gt;id
+l_string|&quot;Setting CONFIG to: 0x%02x&bslash;n&quot;
 comma
 id|value
 )paren
@@ -1948,9 +1914,7 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): GPIO config is:&quot;
-comma
-id|client-&gt;id
+l_string|&quot;GPIO config is:&quot;
 )paren
 suffix:semicolon
 r_for
@@ -1986,9 +1950,7 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;&bslash;t(%d): %sGP%s%d&bslash;n&quot;
-comma
-id|client-&gt;id
+l_string|&quot;&bslash;t%sGP%s%d&bslash;n&quot;
 comma
 id|data-&gt;gpio_config
 (braket
@@ -2026,9 +1988,7 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;&bslash;t(%d): FAN%d&bslash;n&quot;
-comma
-id|client-&gt;id
+l_string|&quot;&bslash;tFAN%d&bslash;n&quot;
 comma
 id|i
 )paren
@@ -2056,9 +2016,7 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;&bslash;t(%d): %sGP%s%d&bslash;n&quot;
-comma
-id|client-&gt;id
+l_string|&quot;&bslash;t%sGP%s%d&bslash;n&quot;
 comma
 id|data-&gt;gpio_config
 (braket
@@ -2102,9 +2060,7 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;&bslash;t(%d): %sGP%s16&bslash;n&quot;
-comma
-id|client-&gt;id
+l_string|&quot;&bslash;t%sGP%s16&bslash;n&quot;
 comma
 id|data-&gt;gpio_config
 (braket
@@ -2141,9 +2097,7 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;&bslash;t(%d): THERM&bslash;n&quot;
-comma
-id|client-&gt;id
+l_string|&quot;&bslash;tTHERM&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2643,11 +2597,13 @@ c_cond
 op_logical_neg
 id|data-&gt;valid
 op_logical_or
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_reading
-OG
+op_plus
 id|ADM1026_DATA_INTERVAL
 )paren
 )paren
@@ -2659,9 +2615,7 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): Reading sensor values&bslash;n&quot;
-comma
-id|client-&gt;id
+l_string|&quot;Reading sensor values&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -2897,11 +2851,13 @@ c_cond
 op_logical_neg
 id|data-&gt;valid
 op_logical_or
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_config
-OG
+op_plus
 id|ADM1026_CONFIG_INTERVAL
 )paren
 )paren
@@ -2913,9 +2869,7 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): Reading config values&bslash;n&quot;
-comma
-id|client-&gt;id
+l_string|&quot;Reading config values&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -3378,9 +3332,7 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;(%d): Setting VID from GPIO11-15.&bslash;n&quot;
-comma
-id|client-&gt;id
+l_string|&quot;Setting VID from GPIO11-15.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|data-&gt;vid
@@ -8374,11 +8326,6 @@ id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/* Fill in the remaining client fields */
-id|new_client-&gt;id
-op_assign
-id|adm1026_id
-op_increment
-suffix:semicolon
 id|data-&gt;type
 op_assign
 id|kind
@@ -8392,29 +8339,6 @@ c_func
 (paren
 op_amp
 id|data-&gt;update_lock
-)paren
-suffix:semicolon
-id|dev_dbg
-c_func
-(paren
-op_amp
-id|new_client-&gt;dev
-comma
-l_string|&quot;(%d): Assigning ID %d to %s at %d,0x%02x&bslash;n&quot;
-comma
-id|new_client-&gt;id
-comma
-id|new_client-&gt;id
-comma
-id|new_client-&gt;name
-comma
-id|i2c_adapter_id
-c_func
-(paren
-id|new_client-&gt;adapter
-)paren
-comma
-id|new_client-&gt;addr
 )paren
 suffix:semicolon
 multiline_comment|/* Tell the I2C layer a new client has arrived */

@@ -480,5 +480,7 @@ DECL|macro|HARD_RESET_NOW
 mdefine_line|#define HARD_RESET_NOW() ({&t;&t;&bslash;&n;        asm(&quot;&t;&t;&t;&t;&bslash;&n;&t;movew #0x2700, %sr;&t;&t;&bslash;&n;        moveal #0x4, %a0;&t;&t;&bslash;&n;        moveal (%a0), %a0;&t;&t;&bslash;&n;        jmp (%a0);&t;&t;&t;&bslash;&n;        &quot;);&t;&t;&t;&t;&bslash;&n;})
 macro_line|#endif
 macro_line|#endif
+DECL|macro|arch_align_stack
+mdefine_line|#define arch_align_stack(x) (x)
 macro_line|#endif /* _M68KNOMMU_SYSTEM_H */
 eof

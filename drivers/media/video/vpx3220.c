@@ -2203,13 +2203,6 @@ op_assign
 id|force
 )brace
 suffix:semicolon
-DECL|variable|vpx3220_i2c_id
-r_static
-r_int
-id|vpx3220_i2c_id
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|vpx3220_i2c_driver
 r_static
 r_struct
@@ -2391,11 +2384,6 @@ id|client-&gt;flags
 op_assign
 id|I2C_CLIENT_ALLOW_USE
 suffix:semicolon
-id|client-&gt;id
-op_assign
-id|vpx3220_i2c_id
-op_increment
-suffix:semicolon
 multiline_comment|/* Check for manufacture ID and part number */
 r_if
 c_cond
@@ -2481,7 +2469,7 @@ id|pn
 r_case
 l_int|0x4680
 suffix:colon
-id|snprintf
+id|strlcpy
 c_func
 (paren
 id|I2C_NAME
@@ -2489,6 +2477,8 @@ c_func
 (paren
 id|client
 )paren
+comma
+l_string|&quot;vpx3220a&quot;
 comma
 r_sizeof
 (paren
@@ -2498,12 +2488,6 @@ c_func
 id|client
 )paren
 )paren
-op_minus
-l_int|1
-comma
-l_string|&quot;vpx3220a[%d]&quot;
-comma
-id|client-&gt;id
 )paren
 suffix:semicolon
 r_break
@@ -2511,7 +2495,7 @@ suffix:semicolon
 r_case
 l_int|0x4260
 suffix:colon
-id|snprintf
+id|strlcpy
 c_func
 (paren
 id|I2C_NAME
@@ -2519,6 +2503,8 @@ c_func
 (paren
 id|client
 )paren
+comma
+l_string|&quot;vpx3216b&quot;
 comma
 r_sizeof
 (paren
@@ -2528,12 +2514,6 @@ c_func
 id|client
 )paren
 )paren
-op_minus
-l_int|1
-comma
-l_string|&quot;vpx3216b[%d]&quot;
-comma
-id|client-&gt;id
 )paren
 suffix:semicolon
 r_break
@@ -2541,7 +2521,7 @@ suffix:semicolon
 r_case
 l_int|0x4280
 suffix:colon
-id|snprintf
+id|strlcpy
 c_func
 (paren
 id|I2C_NAME
@@ -2549,6 +2529,8 @@ c_func
 (paren
 id|client
 )paren
+comma
+l_string|&quot;vpx3214c&quot;
 comma
 r_sizeof
 (paren
@@ -2558,12 +2540,6 @@ c_func
 id|client
 )paren
 )paren
-op_minus
-l_int|1
-comma
-l_string|&quot;vpx3214c[%d]&quot;
-comma
-id|client-&gt;id
 )paren
 suffix:semicolon
 r_break
@@ -2596,7 +2572,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|snprintf
+id|strlcpy
 c_func
 (paren
 id|I2C_NAME
@@ -2604,6 +2580,8 @@ c_func
 (paren
 id|client
 )paren
+comma
+l_string|&quot;forced vpx32xx&quot;
 comma
 r_sizeof
 (paren
@@ -2613,12 +2591,6 @@ c_func
 id|client
 )paren
 )paren
-op_minus
-l_int|1
-comma
-l_string|&quot;forced vpx32xx[%d]&quot;
-comma
-id|client-&gt;id
 )paren
 suffix:semicolon
 )brace

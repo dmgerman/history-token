@@ -191,10 +191,6 @@ id|c
 )paren
 )paren
 suffix:semicolon
-id|c-&gt;id
-op_assign
-id|pcf8583_driver.id
-suffix:semicolon
 id|c-&gt;addr
 op_assign
 id|addr

@@ -523,7 +523,7 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-id|spin_lock_init
+id|rwlock_init
 c_func
 (paren
 op_amp

@@ -2,6 +2,7 @@ multiline_comment|/*&n;    smsc47m1.c - Part of lm_sensors, Linux kernel modules
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -236,10 +237,6 @@ r_struct
 id|semaphore
 id|lock
 suffix:semicolon
-DECL|member|sysctl_id
-r_int
-id|sysctl_id
-suffix:semicolon
 DECL|member|update_lock
 r_struct
 id|semaphore
@@ -385,11 +382,6 @@ comma
 r_int
 id|init
 )paren
-suffix:semicolon
-DECL|variable|smsc47m1_id
-r_static
-r_int
-id|smsc47m1_id
 suffix:semicolon
 DECL|variable|smsc47m1_driver
 r_static
@@ -1774,11 +1766,6 @@ comma
 id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|smsc47m1_id
-op_increment
-suffix:semicolon
 id|init_MUTEX
 c_func
 (paren
@@ -2388,22 +2375,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_updated
-OG
+op_plus
 id|HZ
 op_plus
 id|HZ
 op_div
 l_int|2
-)paren
-op_logical_or
-(paren
-id|jiffies
-OL
-id|data-&gt;last_updated
 )paren
 op_logical_or
 id|init

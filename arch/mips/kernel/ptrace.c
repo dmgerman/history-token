@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
@@ -1149,7 +1150,10 @@ c_func
 (paren
 id|current
 comma
-id|regs-&gt;orig_eax
+id|regs-&gt;regs
+(braket
+l_int|2
+)braket
 comma
 id|regs-&gt;regs
 (braket

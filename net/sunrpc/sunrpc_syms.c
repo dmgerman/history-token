@@ -411,6 +411,13 @@ c_func
 id|svc_authenticate
 )paren
 suffix:semicolon
+DECL|variable|svc_set_client
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|svc_set_client
+)paren
+suffix:semicolon
 multiline_comment|/* RPC statistics */
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|rpc_proc_register

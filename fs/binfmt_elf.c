@@ -27,6 +27,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -452,32 +453,15 @@ id|k_platform
 op_plus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_HT
-multiline_comment|/*&n;&t;&t; * In some cases (e.g. Hyper-Threading), we want to avoid L1&n;&t;&t; * evictions by the processes running on the same package. One&n;&t;&t; * thing we can do is to shuffle the initial stack for them.&n;&t;&t; *&n;&t;&t; * The conditionals here are unneeded, but kept in to make the&n;&t;&t; * code behaviour the same as pre change unless we have&n;&t;&t; * hyperthreaded processors. This should be cleaned up&n;&t;&t; * before 2.6&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|smp_num_siblings
-OG
-l_int|1
-)paren
-id|STACK_ALLOC
+multiline_comment|/*&n;&t;&t; * In some cases (e.g. Hyper-Threading), we want to avoid L1&n;&t;&t; * evictions by the processes running on the same package. One&n;&t;&t; * thing we can do is to shuffle the initial stack for them.&n;&t;&t; */
+id|p
+op_assign
+id|arch_align_stack
 c_func
 (paren
 id|p
-comma
-(paren
-(paren
-id|current-&gt;pid
-op_mod
-l_int|64
-)paren
-op_lshift
-l_int|7
-)paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|u_platform
 op_assign
 (paren
@@ -2032,6 +2016,68 @@ DECL|macro|INTERPRETER_AOUT
 mdefine_line|#define INTERPRETER_AOUT 1
 DECL|macro|INTERPRETER_ELF
 mdefine_line|#define INTERPRETER_ELF 2
+DECL|function|randomize_stack_top
+r_static
+r_int
+r_int
+id|randomize_stack_top
+c_func
+(paren
+r_int
+r_int
+id|stack_top
+)paren
+(brace
+r_int
+r_int
+id|random_variable
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_RANDOMIZE
+)paren
+id|random_variable
+op_assign
+id|get_random_int
+c_func
+(paren
+)paren
+op_mod
+(paren
+l_int|8
+op_star
+l_int|1024
+op_star
+l_int|1024
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_STACK_GROWSUP
+r_return
+id|PAGE_ALIGN
+c_func
+(paren
+id|stack_top
+op_plus
+id|random_variable
+)paren
+suffix:semicolon
+macro_line|#else
+r_return
+id|PAGE_ALIGN
+c_func
+(paren
+id|stack_top
+op_minus
+id|random_variable
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 DECL|function|load_elf_binary
 r_static
 r_int
@@ -3126,6 +3172,22 @@ id|current-&gt;personality
 op_or_assign
 id|READ_IMPLIES_EXEC
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|current-&gt;personality
+op_amp
+id|ADDR_NO_RANDOMIZE
+)paren
+op_logical_and
+id|randomize_va_space
+)paren
+id|current-&gt;flags
+op_or_assign
+id|PF_RANDOMIZE
+suffix:semicolon
 id|arch_pick_mmap_layout
 c_func
 (paren
@@ -3148,7 +3210,11 @@ c_func
 (paren
 id|bprm
 comma
+id|randomize_stack_top
+c_func
+(paren
 id|STACK_TOP
+)paren
 comma
 id|executable_stack
 )paren
@@ -3175,6 +3241,40 @@ r_goto
 id|out_free_dentry
 suffix:semicolon
 )brace
+macro_line|#ifdef ARCH_HAS_SETUP_ADDITIONAL_PAGES
+id|retval
+op_assign
+id|arch_setup_additional_pages
+c_func
+(paren
+id|bprm
+comma
+id|executable_stack
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+OL
+l_int|0
+)paren
+(brace
+id|send_sig
+c_func
+(paren
+id|SIGKILL
+comma
+id|current
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_goto
+id|out_free_dentry
+suffix:semicolon
+)brace
+macro_line|#endif /* ARCH_HAS_SETUP_ADDITIONAL_PAGES */
 id|current-&gt;mm-&gt;start_stack
 op_assign
 id|bprm-&gt;p

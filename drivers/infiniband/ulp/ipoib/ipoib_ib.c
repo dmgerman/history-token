@@ -5,6 +5,7 @@ macro_line|#include &lt;ib_cache.h&gt;
 macro_line|#include &quot;ipoib.h&quot;
 macro_line|#ifdef CONFIG_INFINIBAND_IPOIB_DEBUG_DATA
 DECL|variable|data_debug_level
+r_static
 r_int
 id|data_debug_level
 suffix:semicolon
@@ -320,10 +321,6 @@ id|num_sge
 op_assign
 l_int|1
 comma
-dot
-id|recv_flags
-op_assign
-id|IB_RECV_SIGNALED
 )brace
 suffix:semicolon
 r_struct
@@ -495,6 +492,24 @@ comma
 id|id
 comma
 id|ret
+)paren
+suffix:semicolon
+id|dma_unmap_single
+c_func
+(paren
+id|priv-&gt;ca-&gt;dma_device
+comma
+id|addr
+comma
+id|IPOIB_BUF_SIZE
+comma
+id|DMA_FROM_DEVICE
+)paren
+suffix:semicolon
+id|dev_kfree_skb_any
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 id|priv-&gt;rx_ring

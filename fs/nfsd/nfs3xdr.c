@@ -4605,6 +4605,25 @@ c_func
 id|dparent
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dchild
+op_eq
+id|dparent
+)paren
+(brace
+multiline_comment|/* filesystem root - cannot return filehandle for &quot;..&quot; */
+id|dput
+c_func
+(paren
+id|dchild
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 )brace
 r_else
 id|dchild

@@ -590,7 +590,11 @@ l_int|NULL
 )paren
 id|print_name
 op_assign
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 id|dev
 op_assign

@@ -33,6 +33,7 @@ macro_line|#include &lt;asm/iSeries/HvCallHpt.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
 macro_line|#ifndef CONFIG_SMP
 DECL|variable|last_task_used_math
 r_struct
@@ -419,6 +420,15 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ALTIVEC */
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_struct
+id|cpu_usage
+comma
+id|cpu_usage_array
+)paren
+suffix:semicolon
 DECL|function|__switch_to
 r_struct
 id|task_struct
@@ -530,6 +540,63 @@ op_assign
 op_amp
 id|current-&gt;thread
 suffix:semicolon
+multiline_comment|/* Collect purr utilization data per process and per processor wise */
+multiline_comment|/* purr is nothing but processor time base                          */
+macro_line|#if defined(CONFIG_PPC_PSERIES)
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;firmware_features
+op_amp
+id|FW_FEATURE_SPLPAR
+)paren
+(brace
+r_struct
+id|cpu_usage
+op_star
+id|cu
+op_assign
+op_amp
+id|__get_cpu_var
+c_func
+(paren
+id|cpu_usage_array
+)paren
+suffix:semicolon
+r_int
+r_int
+id|start_tb
+comma
+id|current_tb
+suffix:semicolon
+id|start_tb
+op_assign
+id|old_thread-&gt;start_tb
+suffix:semicolon
+id|cu-&gt;current_tb
+op_assign
+id|current_tb
+op_assign
+id|mfspr
+c_func
+(paren
+id|SPRN_PURR
+)paren
+suffix:semicolon
+id|old_thread-&gt;accum_tb
+op_add_assign
+(paren
+id|current_tb
+op_minus
+id|start_tb
+)paren
+suffix:semicolon
+id|new_thread-&gt;start_tb
+op_assign
+id|current_tb
+suffix:semicolon
+)brace
+macro_line|#endif
 id|local_irq_save
 c_func
 (paren
@@ -1390,9 +1457,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_SLB
+)paren
 )paren
 (brace
 r_int
@@ -1416,9 +1485,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
+id|cpu_has_feature
+c_func
+(paren
 id|CPU_FTR_16M_PAGE
+)paren
 )paren
 id|sp_vsid
 op_or_assign
@@ -1690,6 +1761,13 @@ l_int|0
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
 )brace
+DECL|variable|start_thread
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|start_thread
+)paren
+suffix:semicolon
 DECL|function|set_fpexc_mode
 r_int
 id|set_fpexc_mode
@@ -2494,6 +2572,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|get_wchan
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_wchan
+)paren
+suffix:semicolon
 DECL|function|show_stack
 r_void
 id|show_stack

@@ -20,6 +20,7 @@ op_star
 id|base
 comma
 r_void
+id|__iomem
 op_star
 id|ctrl
 comma

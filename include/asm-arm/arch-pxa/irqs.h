@@ -212,10 +212,59 @@ DECL|macro|IRQ_S0_BVD1_STSCHG
 mdefine_line|#define IRQ_S0_BVD1_STSCHG&t;(IRQ_BOARD_END + 53)
 DECL|macro|IRQ_S1_BVD1_STSCHG
 mdefine_line|#define IRQ_S1_BVD1_STSCHG&t;(IRQ_BOARD_END + 54)
-multiline_comment|/*&n; * Figure out the MAX IRQ number.&n; *&n; * If we have an SA1111, the max IRQ is S1_BVD1_STSCHG+1.&n; * Otherwise, we have the standard IRQs only.&n; */
+DECL|macro|IRQ_LOCOMO_START
+mdefine_line|#define IRQ_LOCOMO_START&t;(IRQ_BOARD_END)
+DECL|macro|IRQ_LOCOMO_KEY
+mdefine_line|#define IRQ_LOCOMO_KEY&t;&t;(IRQ_BOARD_END + 0)
+DECL|macro|IRQ_LOCOMO_GPIO0
+mdefine_line|#define IRQ_LOCOMO_GPIO0&t;(IRQ_BOARD_END + 1)
+DECL|macro|IRQ_LOCOMO_GPIO1
+mdefine_line|#define IRQ_LOCOMO_GPIO1&t;(IRQ_BOARD_END + 2)
+DECL|macro|IRQ_LOCOMO_GPIO2
+mdefine_line|#define IRQ_LOCOMO_GPIO2&t;(IRQ_BOARD_END + 3)
+DECL|macro|IRQ_LOCOMO_GPIO3
+mdefine_line|#define IRQ_LOCOMO_GPIO3&t;(IRQ_BOARD_END + 4)
+DECL|macro|IRQ_LOCOMO_GPIO4
+mdefine_line|#define IRQ_LOCOMO_GPIO4&t;(IRQ_BOARD_END + 5)
+DECL|macro|IRQ_LOCOMO_GPIO5
+mdefine_line|#define IRQ_LOCOMO_GPIO5&t;(IRQ_BOARD_END + 6)
+DECL|macro|IRQ_LOCOMO_GPIO6
+mdefine_line|#define IRQ_LOCOMO_GPIO6&t;(IRQ_BOARD_END + 7)
+DECL|macro|IRQ_LOCOMO_GPIO7
+mdefine_line|#define IRQ_LOCOMO_GPIO7&t;(IRQ_BOARD_END + 8)
+DECL|macro|IRQ_LOCOMO_GPIO8
+mdefine_line|#define IRQ_LOCOMO_GPIO8&t;(IRQ_BOARD_END + 9)
+DECL|macro|IRQ_LOCOMO_GPIO9
+mdefine_line|#define IRQ_LOCOMO_GPIO9&t;(IRQ_BOARD_END + 10)
+DECL|macro|IRQ_LOCOMO_GPIO10
+mdefine_line|#define IRQ_LOCOMO_GPIO10&t;(IRQ_BOARD_END + 11)
+DECL|macro|IRQ_LOCOMO_GPIO11
+mdefine_line|#define IRQ_LOCOMO_GPIO11&t;(IRQ_BOARD_END + 12)
+DECL|macro|IRQ_LOCOMO_GPIO12
+mdefine_line|#define IRQ_LOCOMO_GPIO12&t;(IRQ_BOARD_END + 13)
+DECL|macro|IRQ_LOCOMO_GPIO13
+mdefine_line|#define IRQ_LOCOMO_GPIO13&t;(IRQ_BOARD_END + 14)
+DECL|macro|IRQ_LOCOMO_GPIO14
+mdefine_line|#define IRQ_LOCOMO_GPIO14&t;(IRQ_BOARD_END + 15)
+DECL|macro|IRQ_LOCOMO_GPIO15
+mdefine_line|#define IRQ_LOCOMO_GPIO15&t;(IRQ_BOARD_END + 16)
+DECL|macro|IRQ_LOCOMO_LT
+mdefine_line|#define IRQ_LOCOMO_LT&t;&t;(IRQ_BOARD_END + 17)
+DECL|macro|IRQ_LOCOMO_SPI_RFR
+mdefine_line|#define IRQ_LOCOMO_SPI_RFR&t;(IRQ_BOARD_END + 18)
+DECL|macro|IRQ_LOCOMO_SPI_RFW
+mdefine_line|#define IRQ_LOCOMO_SPI_RFW&t;(IRQ_BOARD_END + 19)
+DECL|macro|IRQ_LOCOMO_SPI_OVRN
+mdefine_line|#define IRQ_LOCOMO_SPI_OVRN&t;(IRQ_BOARD_END + 20)
+DECL|macro|IRQ_LOCOMO_SPI_TEND
+mdefine_line|#define IRQ_LOCOMO_SPI_TEND&t;(IRQ_BOARD_END + 21)
+multiline_comment|/*&n; * Figure out the MAX IRQ number.&n; *&n; * If we have an SA1111, the max IRQ is S1_BVD1_STSCHG+1.&n; * If we have an LoCoMo, the max IRQ is IRQ_LOCOMO_SPI_TEND+1&n; * Otherwise, we have the standard IRQs only.&n; */
 macro_line|#ifdef CONFIG_SA1111
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;(IRQ_S1_BVD1_STSCHG + 1)
+macro_line|#elif defined(CONFIG_SHARP_LOCOMO)
+DECL|macro|NR_IRQS
+mdefine_line|#define NR_IRQS&t;&t;&t;(IRQ_LOCOMO_SPI_TEND + 1)
 macro_line|#elif defined(CONFIG_ARCH_LUBBOCK) || &bslash;&n;      defined(CONFIG_MACH_MAINSTONE)
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;(IRQ_BOARD_END)
@@ -272,4 +321,13 @@ DECL|macro|MAINSTONE_S1_STSCHG_IRQ
 mdefine_line|#define MAINSTONE_S1_STSCHG_IRQ&t;MAINSTONE_IRQ(14)
 DECL|macro|MAINSTONE_S1_IRQ
 mdefine_line|#define MAINSTONE_S1_IRQ&t;MAINSTONE_IRQ(15)
+multiline_comment|/* LoCoMo Interrupts (CONFIG_SHARP_LOCOMO) */
+DECL|macro|IRQ_LOCOMO_KEY_BASE
+mdefine_line|#define IRQ_LOCOMO_KEY_BASE&t;(IRQ_BOARD_START + 0)
+DECL|macro|IRQ_LOCOMO_GPIO_BASE
+mdefine_line|#define IRQ_LOCOMO_GPIO_BASE&t;(IRQ_BOARD_START + 1)
+DECL|macro|IRQ_LOCOMO_LT_BASE
+mdefine_line|#define IRQ_LOCOMO_LT_BASE&t;(IRQ_BOARD_START + 2)
+DECL|macro|IRQ_LOCOMO_SPI_BASE
+mdefine_line|#define IRQ_LOCOMO_SPI_BASE&t;(IRQ_BOARD_START + 3)
 eof

@@ -21,7 +21,7 @@ op_assign
 dot
 id|ppc_sys_name
 op_assign
-l_string|&quot;MPC8540&quot;
+l_string|&quot;8540&quot;
 comma
 dot
 id|mask
@@ -76,7 +76,7 @@ comma
 dot
 id|ppc_sys_name
 op_assign
-l_string|&quot;MPC8560&quot;
+l_string|&quot;8560&quot;
 comma
 dot
 id|mask
@@ -149,7 +149,7 @@ comma
 dot
 id|ppc_sys_name
 op_assign
-l_string|&quot;MPC8541&quot;
+l_string|&quot;8541&quot;
 comma
 dot
 id|mask
@@ -210,7 +210,7 @@ comma
 dot
 id|ppc_sys_name
 op_assign
-l_string|&quot;MPC8541E&quot;
+l_string|&quot;8541E&quot;
 comma
 dot
 id|mask
@@ -273,7 +273,7 @@ comma
 dot
 id|ppc_sys_name
 op_assign
-l_string|&quot;MPC8555&quot;
+l_string|&quot;8555&quot;
 comma
 dot
 id|mask
@@ -348,7 +348,7 @@ comma
 dot
 id|ppc_sys_name
 op_assign
-l_string|&quot;MPC8555E&quot;
+l_string|&quot;8555E&quot;
 comma
 dot
 id|mask

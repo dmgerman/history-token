@@ -261,5 +261,7 @@ r_return
 id|x
 suffix:semicolon
 )brace
+DECL|macro|arch_align_stack
+mdefine_line|#define arch_align_stack(x) (x)
 macro_line|#endif
 eof

@@ -3127,11 +3127,13 @@ suffix:semicolon
 id|acct_update_integrals
 c_func
 (paren
+id|tsk
 )paren
 suffix:semicolon
 id|update_mem_hiwater
 c_func
 (paren
+id|tsk
 )paren
 suffix:semicolon
 id|group_dead

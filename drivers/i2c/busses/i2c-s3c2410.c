@@ -1471,9 +1471,8 @@ id|i2c
 comma
 r_struct
 id|i2c_msg
+op_star
 id|msgs
-(braket
-)braket
 comma
 r_int
 id|num
@@ -1650,9 +1649,8 @@ id|adap
 comma
 r_struct
 id|i2c_msg
+op_star
 id|msgs
-(braket
-)braket
 comma
 r_int
 id|num
@@ -1796,6 +1794,11 @@ dot
 id|retries
 op_assign
 l_int|2
+comma
+dot
+r_class
+op_assign
+id|I2C_CLASS_HWMON
 comma
 )brace
 comma

@@ -10877,7 +10877,11 @@ c_func
 (paren
 id|info-&gt;bus_info
 comma
-id|vptr-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|vptr-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 )brace

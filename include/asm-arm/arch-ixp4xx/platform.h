@@ -4,6 +4,13 @@ macro_line|#error &quot;Do not include this directly, instead #include &lt;asm/h
 macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#ifndef&t;__ARMEB__
+DECL|macro|REG_OFFSET
+mdefine_line|#define&t;REG_OFFSET&t;0
+macro_line|#else
+DECL|macro|REG_OFFSET
+mdefine_line|#define&t;REG_OFFSET&t;3
+macro_line|#endif
 multiline_comment|/*&n; * Expansion bus memory regions&n; */
 DECL|macro|IXP4XX_EXP_BUS_BASE_PHYS
 mdefine_line|#define IXP4XX_EXP_BUS_BASE_PHYS&t;(0x50000000)

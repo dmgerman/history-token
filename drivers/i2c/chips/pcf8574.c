@@ -202,11 +202,6 @@ id|pcf8574_detach_client
 comma
 )brace
 suffix:semicolon
-DECL|variable|pcf8574_id
-r_static
-r_int
-id|pcf8574_id
-suffix:semicolon
 multiline_comment|/* following are the sysfs callback functions */
 DECL|function|show_read
 r_static
@@ -597,11 +592,6 @@ id|client_name
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|pcf8574_id
-op_increment
 suffix:semicolon
 id|init_MUTEX
 c_func

@@ -5,11 +5,11 @@ mdefine_line|#define __IXDP2X01_H__
 DECL|macro|IXDP2X01_PHYS_CPLD_BASE
 mdefine_line|#define&t;IXDP2X01_PHYS_CPLD_BASE&t;&t;0xc6024000
 DECL|macro|IXDP2X01_VIRT_CPLD_BASE
-mdefine_line|#define&t;IXDP2X01_VIRT_CPLD_BASE&t;&t;0xfefdd000
+mdefine_line|#define&t;IXDP2X01_VIRT_CPLD_BASE&t;&t;0xfafff000
 DECL|macro|IXDP2X01_CPLD_REGION_SIZE
-mdefine_line|#define&t;IXDP2X01_CPLD_REGION_SIZE&t;0x1000
+mdefine_line|#define&t;IXDP2X01_CPLD_REGION_SIZE&t;0x00001000
 DECL|macro|IXDP2X01_CPLD_VIRT_REG
-mdefine_line|#define IXDP2X01_CPLD_VIRT_REG(reg) (volatile u32*)(IXDP2X01_VIRT_CPLD_BASE | reg)
+mdefine_line|#define IXDP2X01_CPLD_VIRT_REG(reg) (volatile unsigned long*)(IXDP2X01_VIRT_CPLD_BASE | reg)
 DECL|macro|IXDP2X01_CPLD_PHYS_REG
 mdefine_line|#define IXDP2X01_CPLD_PHYS_REG(reg) (volatile u32*)(IXDP2X01_PHYS_CPLD_BASE | reg)
 DECL|macro|IXDP2X01_UART1_VIRT_BASE

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * &t;w1.c&n; *&n; * Copyright (c) 2004 Evgeniy Polyakov &lt;johnpol@2ka.mipt.ru&gt;&n; * &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
-macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -11,6 +10,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;w1.h&quot;
 macro_line|#include &quot;w1_io.h&quot;
 macro_line|#include &quot;w1_log.h&quot;
@@ -119,13 +119,6 @@ id|DECLARE_COMPLETION
 c_func
 (paren
 id|w1_control_complete
-)paren
-suffix:semicolon
-r_static
-id|DECLARE_WAIT_QUEUE_HEAD
-c_func
-(paren
-id|w1_control_wait
 )paren
 suffix:semicolon
 DECL|function|w1_master_match
@@ -313,6 +306,7 @@ l_string|&quot;No family registered.&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|variable|w1_bus_type
+r_static
 r_struct
 id|bus_type
 id|w1_bus_type
@@ -465,6 +459,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|w1_master_attribute_show_name
+r_static
 id|ssize_t
 id|w1_master_attribute_show_name
 c_func
@@ -534,6 +529,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|function|w1_master_attribute_show_pointer
+r_static
 id|ssize_t
 id|w1_master_attribute_show_pointer
 c_func
@@ -605,6 +601,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|function|w1_master_attribute_show_timeout
+r_static
 id|ssize_t
 id|w1_master_attribute_show_timeout
 c_func
@@ -639,6 +636,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|function|w1_master_attribute_show_max_slave_count
+r_static
 id|ssize_t
 id|w1_master_attribute_show_max_slave_count
 c_func
@@ -710,6 +708,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|function|w1_master_attribute_show_attempts
+r_static
 id|ssize_t
 id|w1_master_attribute_show_attempts
 c_func
@@ -781,6 +780,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|function|w1_master_attribute_show_slave_count
+r_static
 id|ssize_t
 id|w1_master_attribute_show_slave_count
 c_func
@@ -852,6 +852,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|function|w1_master_attribute_show_slaves
+r_static
 id|ssize_t
 id|w1_master_attribute_show_slaves
 c_func
@@ -2939,8 +2940,6 @@ comma
 id|have_to_wait
 op_assign
 l_int|0
-comma
-id|timeout
 suffix:semicolon
 id|daemonize
 c_func
@@ -2967,47 +2966,18 @@ id|have_to_wait
 op_assign
 l_int|0
 suffix:semicolon
-id|timeout
-op_assign
-id|w1_timeout
-op_star
-id|HZ
-suffix:semicolon
-r_do
-(brace
-id|timeout
-op_assign
-id|interruptible_sleep_on_timeout
-c_func
-(paren
-op_amp
-id|w1_control_wait
-comma
-id|timeout
-)paren
-suffix:semicolon
 id|try_to_freeze
 c_func
 (paren
 id|PF_FREEZE
 )paren
 suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-op_logical_neg
-id|signal_pending
+id|msleep_interruptible
 c_func
 (paren
-id|current
-)paren
-op_logical_and
-(paren
-id|timeout
-OG
-l_int|0
-)paren
+id|w1_timeout
+op_star
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -3253,10 +3223,6 @@ op_star
 )paren
 id|data
 suffix:semicolon
-r_int
-r_int
-id|timeout
-suffix:semicolon
 r_struct
 id|list_head
 op_star
@@ -3291,47 +3257,18 @@ op_logical_neg
 id|dev-&gt;need_exit
 )paren
 (brace
-id|timeout
-op_assign
-id|w1_timeout
-op_star
-id|HZ
-suffix:semicolon
-r_do
-(brace
-id|timeout
-op_assign
-id|interruptible_sleep_on_timeout
-c_func
-(paren
-op_amp
-id|dev-&gt;kwait
-comma
-id|timeout
-)paren
-suffix:semicolon
 id|try_to_freeze
 c_func
 (paren
 id|PF_FREEZE
 )paren
 suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-op_logical_neg
-id|signal_pending
+id|msleep_interruptible
 c_func
 (paren
-id|current
-)paren
-op_logical_and
-(paren
-id|timeout
-OG
-l_int|0
-)paren
+id|w1_timeout
+op_star
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -3776,20 +3713,6 @@ id|module_exit
 c_func
 (paren
 id|w1_fini
-)paren
-suffix:semicolon
-DECL|variable|w1_create_master_attributes
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|w1_create_master_attributes
-)paren
-suffix:semicolon
-DECL|variable|w1_destroy_master_attributes
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|w1_destroy_master_attributes
 )paren
 suffix:semicolon
 eof

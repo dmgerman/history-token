@@ -306,7 +306,10 @@ r_void
 id|acct_update_integrals
 c_func
 (paren
-r_void
+r_struct
+id|task_struct
+op_star
+id|tsk
 )paren
 suffix:semicolon
 r_extern
@@ -326,7 +329,7 @@ mdefine_line|#define acct_auto_close(x)&t;do { } while (0)
 DECL|macro|acct_process
 mdefine_line|#define acct_process(x)&t;&t;do { } while (0)
 DECL|macro|acct_update_integrals
-mdefine_line|#define acct_update_integrals()&t;&t;do { } while (0)
+mdefine_line|#define acct_update_integrals(x)&t;&t;do { } while (0)
 DECL|macro|acct_clear_integrals
 mdefine_line|#define acct_clear_integrals(task)&t;do { } while (0)
 macro_line|#endif

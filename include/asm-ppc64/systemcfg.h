@@ -7,8 +7,11 @@ multiline_comment|/*&n; * If the major version changes we are incompatible.&n; *
 DECL|macro|SYSTEMCFG_MAJOR
 mdefine_line|#define SYSTEMCFG_MAJOR 1
 DECL|macro|SYSTEMCFG_MINOR
-mdefine_line|#define SYSTEMCFG_MINOR 0
+mdefine_line|#define SYSTEMCFG_MINOR 1
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/unistd.h&gt;
+DECL|macro|SYSCALL_MAP_SIZE
+mdefine_line|#define SYSCALL_MAP_SIZE      ((__NR_syscalls + 31) / 32)
 DECL|struct|systemcfg
 r_struct
 id|systemcfg
@@ -114,14 +117,22 @@ id|__u32
 id|icache_line_size
 suffix:semicolon
 multiline_comment|/* L1 i-cache line size&t;&t;0x6C */
-DECL|member|reserved0
-id|__u8
-id|reserved0
+DECL|member|syscall_map_64
+id|__u32
+id|syscall_map_64
 (braket
-l_int|3984
+id|SYSCALL_MAP_SIZE
 )braket
 suffix:semicolon
-multiline_comment|/* Reserve rest of page&t;&t;0x70 */
+multiline_comment|/* map of available syscalls 0x70 */
+DECL|member|syscall_map_32
+id|__u32
+id|syscall_map_32
+(braket
+id|SYSCALL_MAP_SIZE
+)braket
+suffix:semicolon
+multiline_comment|/* map of available syscalls */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
@@ -133,11 +144,5 @@ id|systemcfg
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* __ASSEMBLY__ */
-DECL|macro|SYSTEMCFG_PAGE
-mdefine_line|#define SYSTEMCFG_PAGE      0x5
-DECL|macro|SYSTEMCFG_PHYS_ADDR
-mdefine_line|#define SYSTEMCFG_PHYS_ADDR (SYSTEMCFG_PAGE&lt;&lt;PAGE_SHIFT)
-DECL|macro|SYSTEMCFG_VIRT_ADDR
-mdefine_line|#define SYSTEMCFG_VIRT_ADDR (KERNELBASE+SYSTEMCFG_PHYS_ADDR)
 macro_line|#endif /* _SYSTEMCFG_H */
 eof

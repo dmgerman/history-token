@@ -1,7 +1,32 @@
-multiline_comment|/*&n; *  init.c, Common initialization routines for NEC VR4100 series.&n; *&n; *  Copyright (C) 2003-2004  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  init.c, Common initialization routines for NEC VR4100 series.&n; *&n; *  Copyright (C) 2003-2005  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/vr41xx/vr41xx.h&gt;
+DECL|macro|IO_MEM_RESOURCE_START
+mdefine_line|#define IO_MEM_RESOURCE_START&t;0UL
+DECL|macro|IO_MEM_RESOURCE_END
+mdefine_line|#define IO_MEM_RESOURCE_END&t;0x1fffffffUL
+DECL|function|iomem_resource_init
+r_static
+r_void
+id|__init
+id|iomem_resource_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|iomem_resource.start
+op_assign
+id|IO_MEM_RESOURCE_START
+suffix:semicolon
+id|iomem_resource.end
+op_assign
+id|IO_MEM_RESOURCE_END
+suffix:semicolon
+)brace
 DECL|function|prom_init
 r_void
 id|__init
@@ -80,6 +105,16 @@ l_string|&quot; &quot;
 )paren
 suffix:semicolon
 )brace
+id|vr41xx_calculate_clock_frequency
+c_func
+(paren
+)paren
+suffix:semicolon
+id|iomem_resource_init
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|prom_free_prom_memory
 r_int

@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
-macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -3453,11 +3452,6 @@ comma
 id|end
 )paren
 suffix:semicolon
-id|acct_update_integrals
-c_func
-(paren
-)paren
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -6628,21 +6622,9 @@ c_func
 id|old_page
 )paren
 )paren
-(brace
 op_increment
 id|mm-&gt;rss
 suffix:semicolon
-id|acct_update_integrals
-c_func
-(paren
-)paren
-suffix:semicolon
-id|update_mem_hiwater
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 r_else
 id|page_remove_rmap
 c_func
@@ -8123,16 +8105,6 @@ suffix:semicolon
 id|mm-&gt;rss
 op_increment
 suffix:semicolon
-id|acct_update_integrals
-c_func
-(paren
-)paren
-suffix:semicolon
-id|update_mem_hiwater
-c_func
-(paren
-)paren
-suffix:semicolon
 id|pte
 op_assign
 id|mk_pte
@@ -8447,16 +8419,6 @@ suffix:semicolon
 )brace
 id|mm-&gt;rss
 op_increment
-suffix:semicolon
-id|acct_update_integrals
-c_func
-(paren
-)paren
-suffix:semicolon
-id|update_mem_hiwater
-c_func
-(paren
-)paren
 suffix:semicolon
 id|entry
 op_assign
@@ -8873,16 +8835,6 @@ id|new_page
 )paren
 op_increment
 id|mm-&gt;rss
-suffix:semicolon
-id|acct_update_integrals
-c_func
-(paren
-)paren
-suffix:semicolon
-id|update_mem_hiwater
-c_func
-(paren
-)paren
 suffix:semicolon
 id|flush_icache_page
 c_func
@@ -10237,16 +10189,12 @@ r_void
 id|update_mem_hiwater
 c_func
 (paren
-r_void
-)paren
-(brace
 r_struct
 id|task_struct
 op_star
 id|tsk
-op_assign
-id|current
-suffix:semicolon
+)paren
+(brace
 r_if
 c_cond
 (paren

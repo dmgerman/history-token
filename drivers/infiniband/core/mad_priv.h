@@ -30,7 +30,7 @@ mdefine_line|#define MAX_MGMT_VERSION&t;8
 DECL|macro|MAX_MGMT_OUI
 mdefine_line|#define MAX_MGMT_OUI&t;&t;8
 DECL|macro|MAX_MGMT_VENDOR_RANGE2
-mdefine_line|#define MAX_MGMT_VENDOR_RANGE2&t;IB_MGMT_CLASS_VENDOR_RANGE2_END - &bslash;&n;&t;&t;&t;&t;IB_MGMT_CLASS_VENDOR_RANGE2_START + 1
+mdefine_line|#define MAX_MGMT_VENDOR_RANGE2&t;(IB_MGMT_CLASS_VENDOR_RANGE2_END - &bslash;&n;&t;&t;&t;&t;IB_MGMT_CLASS_VENDOR_RANGE2_START + 1)
 DECL|struct|ib_mad_list_head
 r_struct
 id|ib_mad_list_head
@@ -177,6 +177,16 @@ DECL|member|local_work
 r_struct
 id|work_struct
 id|local_work
+suffix:semicolon
+DECL|member|canceled_list
+r_struct
+id|list_head
+id|canceled_list
+suffix:semicolon
+DECL|member|canceled_work
+r_struct
+id|work_struct
+id|canceled_work
 suffix:semicolon
 DECL|member|refcount
 id|atomic_t
@@ -575,6 +585,11 @@ id|IB_MAD_QPS_CORE
 )braket
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+id|kmem_cache_t
+op_star
+id|ib_mad_cache
 suffix:semicolon
 macro_line|#endif&t;/* __IB_MAD_PRIV_H__ */
 eof

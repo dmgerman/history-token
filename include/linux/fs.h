@@ -780,10 +780,10 @@ id|page_tree
 suffix:semicolon
 multiline_comment|/* radix tree of all pages */
 DECL|member|tree_lock
-id|spinlock_t
+id|rwlock_t
 id|tree_lock
 suffix:semicolon
-multiline_comment|/* and spinlock protecting it */
+multiline_comment|/* and rwlock protecting it */
 DECL|member|i_mmap_writable
 r_int
 r_int
@@ -6095,6 +6095,23 @@ id|mapping
 suffix:semicolon
 r_extern
 r_int
+id|invalidate_inode_pages2_range
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+id|pgoff_t
+id|start
+comma
+id|pgoff_t
+id|end
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|write_inode_now
 c_func
 (paren
@@ -6144,6 +6161,23 @@ r_struct
 id|address_space
 op_star
 id|mapping
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|filemap_write_and_wait_range
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
+id|loff_t
+id|lstart
+comma
+id|loff_t
+id|lend
 )paren
 suffix:semicolon
 r_extern

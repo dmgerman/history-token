@@ -6,7 +6,7 @@ multiline_comment|/*&n; * On board CPLD memory map&n; */
 DECL|macro|IXDP2X00_PHYS_CPLD_BASE
 mdefine_line|#define IXDP2X00_PHYS_CPLD_BASE&t;&t;0xc7000000
 DECL|macro|IXDP2X00_VIRT_CPLD_BASE
-mdefine_line|#define IXDP2X00_VIRT_CPLD_BASE&t;&t;0xfefdd000
+mdefine_line|#define IXDP2X00_VIRT_CPLD_BASE&t;&t;0xfafff000
 DECL|macro|IXDP2X00_CPLD_SIZE
 mdefine_line|#define IXDP2X00_CPLD_SIZE&t;&t;0x00001000
 DECL|macro|IXDP2X00_CPLD_REG

@@ -3283,9 +3283,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|cpu_has_feature
+c_func
 (paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
 id|CPU_FTR_16M_PAGE
 )paren
 )paren

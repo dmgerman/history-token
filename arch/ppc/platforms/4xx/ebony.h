@@ -8,19 +8,11 @@ macro_line|#include &lt;platforms/4xx/ibm440gp.h&gt;
 multiline_comment|/* F/W TLB mapping used in bootloader glue to reset EMAC */
 DECL|macro|PPC44x_EMAC0_MR0
 mdefine_line|#define PPC44x_EMAC0_MR0&t;0xE0000800
-multiline_comment|/* Macros to get at Ebony VPD info */
-DECL|macro|EBONY_VPD_BASE
-mdefine_line|#define EBONY_VPD_BASE&t;&t;0x00000001fffffe00ULL
-DECL|macro|EBONY_VPD_SIZE
-mdefine_line|#define EBONY_VPD_SIZE&t;&t;0x24
-DECL|macro|EBONY_NA0_OFFSET
-mdefine_line|#define EBONY_NA0_OFFSET&t;0x0c
-DECL|macro|EBONY_NA1_OFFSET
-mdefine_line|#define EBONY_NA1_OFFSET&t;0x18
-DECL|macro|EBONY_NA0_ADDR
-mdefine_line|#define EBONY_NA0_ADDR(base)&t;(base + EBONY_NA0_OFFSET)
-DECL|macro|EBONY_NA1_ADDR
-mdefine_line|#define EBONY_NA1_ADDR(base)&t;(base + EBONY_NA1_OFFSET)
+multiline_comment|/* Where to find the MAC info */
+DECL|macro|EBONY_OPENBIOS_MAC_BASE
+mdefine_line|#define EBONY_OPENBIOS_MAC_BASE   0xfffffe0c
+DECL|macro|EBONY_OPENBIOS_MAC_OFFSET
+mdefine_line|#define EBONY_OPENBIOS_MAC_OFFSET 0x0c
 multiline_comment|/* Default clock rates for Rev. B and Rev. C silicon */
 DECL|macro|EBONY_440GP_RB_SYSCLK
 mdefine_line|#define EBONY_440GP_RB_SYSCLK&t;33000000

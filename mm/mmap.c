@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
@@ -4374,16 +4373,6 @@ id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
 )brace
-id|acct_update_integrals
-c_func
-(paren
-)paren
-suffix:semicolon
-id|update_mem_hiwater
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|addr
 suffix:semicolon
@@ -5623,16 +5612,6 @@ comma
 id|vma-&gt;vm_file
 comma
 id|grow
-)paren
-suffix:semicolon
-id|acct_update_integrals
-c_func
-(paren
-)paren
-suffix:semicolon
-id|update_mem_hiwater
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -7756,16 +7735,6 @@ id|len
 )paren
 suffix:semicolon
 )brace
-id|acct_update_integrals
-c_func
-(paren
-)paren
-suffix:semicolon
-id|update_mem_hiwater
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|addr
 suffix:semicolon

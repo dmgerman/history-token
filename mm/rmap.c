@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -2213,11 +2212,6 @@ suffix:semicolon
 id|mm-&gt;rss
 op_decrement
 suffix:semicolon
-id|acct_update_integrals
-c_func
-(paren
-)paren
-suffix:semicolon
 id|page_remove_rmap
 c_func
 (paren
@@ -2616,11 +2610,6 @@ id|page_cache_release
 c_func
 (paren
 id|page
-)paren
-suffix:semicolon
-id|acct_update_integrals
-c_func
-(paren
 )paren
 suffix:semicolon
 id|mm-&gt;rss
