@@ -2961,6 +2961,8 @@ DECL|macro|SMB_QUERY_POSIX_ACL
 mdefine_line|#define SMB_QUERY_POSIX_ACL             0x204
 DECL|macro|SMB_QUERY_XATTR
 mdefine_line|#define SMB_QUERY_XATTR                 0x205
+DECL|macro|SMB_QUERY_ATTR_FLAGS
+mdefine_line|#define SMB_QUERY_ATTR_FLAGS            0x206  /* append,immutable etc. */
 DECL|macro|SMB_QUERY_FILE_INTERNAL_INFO
 mdefine_line|#define SMB_QUERY_FILE_INTERNAL_INFO    0x3ee
 DECL|macro|SMB_QUERY_FILE_ACCESS_INFO
@@ -2991,6 +2993,8 @@ DECL|macro|SMB_SET_POSIX_ACL
 mdefine_line|#define SMB_SET_POSIX_ACL               0x204
 DECL|macro|SMB_SET_XATTR
 mdefine_line|#define SMB_SET_XATTR                   0x205
+DECL|macro|SMB_SET_ATTR_FLAGS
+mdefine_line|#define SMB_SET_ATTR_FLAGS              0x206  /* append, immutable etc. */
 DECL|macro|SMB_SET_FILE_BASIC_INFO2
 mdefine_line|#define SMB_SET_FILE_BASIC_INFO2        0x3ec
 DECL|macro|SMB_SET_FILE_RENAME_INFORMATION

@@ -804,9 +804,9 @@ id|passwd
 suffix:semicolon
 )brace
 multiline_comment|/* Does the NTLMv2 owfs of a user&squot;s password */
+macro_line|#if 0  /* function not needed yet - but will be soon */
 r_static
 r_void
-DECL|function|ntv2_owf_gen
 id|ntv2_owf_gen
 c_func
 (paren
@@ -994,6 +994,7 @@ id|user_u
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif 
 multiline_comment|/* Does the des encryption from the NT or LM MD4 hash. */
 r_void
 DECL|function|SMBOWFencrypt

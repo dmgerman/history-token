@@ -1863,5 +1863,27 @@ op_star
 id|nls_codepage
 )paren
 suffix:semicolon
+r_int
+id|cifs_ioctl
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filep
+comma
+r_int
+r_int
+id|command
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
 macro_line|#endif&t;&t;&t;/* _CIFSPROTO_H */
 eof
