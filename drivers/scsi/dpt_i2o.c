@@ -11690,9 +11690,9 @@ c_func
 (paren
 id|pHba
 )paren
+)paren
 op_ne
 l_int|0
-)paren
 )paren
 (brace
 id|printk
@@ -11826,9 +11826,9 @@ c_func
 (paren
 id|pHba
 )paren
+)paren
 op_ne
 l_int|0
-)paren
 )paren
 (brace
 id|printk
