@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-multiline_comment|/*&n; * swapper_space is a fiction, retained to simplify the path through&n; * vmscan&squot;s shrink_list.  Only those fields initialized below are used.&n; */
+multiline_comment|/*&n; * swapper_space is a fiction, retained to simplify the path through&n; * vmscan&squot;s shrink_list, to make sync_page look nicer, and to allow&n; * future use of radix_tree tags in the swap cache.&n; */
 DECL|variable|swap_aops
 r_static
 r_struct
@@ -78,6 +78,15 @@ id|a_ops
 op_assign
 op_amp
 id|swap_aops
+comma
+dot
+id|i_mmap_nonlinear
+op_assign
+id|LIST_HEAD_INIT
+c_func
+(paren
+id|swapper_space.i_mmap_nonlinear
+)paren
 comma
 dot
 id|backing_dev_info

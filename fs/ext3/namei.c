@@ -11609,6 +11609,32 @@ id|old_inode
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * ok, that&squot;s it&n;&t; */
+r_if
+c_cond
+(paren
+id|le32_to_cpu
+c_func
+(paren
+id|old_de-&gt;inode
+)paren
+op_ne
+id|old_inode-&gt;i_ino
+op_logical_or
+id|old_de-&gt;name_len
+op_ne
+id|old_dentry-&gt;d_name.len
+op_logical_or
+id|strncmp
+c_func
+(paren
+id|old_de-&gt;name
+comma
+id|old_dentry-&gt;d_name.name
+comma
+id|old_de-&gt;name_len
+)paren
+op_logical_or
+(paren
 id|retval
 op_assign
 id|ext3_delete_entry
@@ -11622,17 +11648,13 @@ id|old_de
 comma
 id|old_bh
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
+)paren
 op_eq
 op_minus
 id|ENOENT
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * old_de could have moved out from under us.&n;&t;&t; */
+multiline_comment|/* old_de could have moved from under us during htree split, so&n;&t;&t; * make sure that we are deleting the right entry.  We might&n;&t;&t; * also be pointing to a stale entry in the unused part of&n;&t;&t; * old_bh so just checking inum and the name isn&squot;t enough. */
 r_struct
 id|buffer_head
 op_star
