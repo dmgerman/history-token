@@ -2830,6 +2830,35 @@ r_void
 r_int
 id|status
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64
+multiline_comment|/*&n;&t; * This is not really IA-64 specific.  Probably ought to be done on all platforms&n;&t; * that are (potentially) legacy-free.&n;&t; */
+r_if
+c_cond
+(paren
+id|kbd_read_status
+c_func
+(paren
+)paren
+op_eq
+l_int|0xff
+op_logical_and
+id|kbd_read_input
+c_func
+(paren
+)paren
+op_eq
+l_int|0xff
+)paren
+(brace
+id|kbd_exists
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_string|&quot;No keyboard controller preset&quot;
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n;&t; * Test the keyboard interface.&n;&t; * This seems to be the only way to get it going.&n;&t; * If the test is successful a x55 is placed in the input buffer.&n;&t; */
 id|kbd_write_command_w
 c_func
@@ -3128,6 +3157,16 @@ comma
 id|msg
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IA64
+r_if
+c_cond
+(paren
+op_logical_neg
+id|kbd_exists
+)paren
+r_return
+suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#if defined CONFIG_PSMOUSE
 id|psaux_init
