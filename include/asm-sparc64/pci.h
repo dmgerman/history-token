@@ -641,6 +641,26 @@ id|dev
 )paren
 (brace
 )brace
+DECL|function|pci_get_legacy_ide_irq
+r_static
+r_inline
+r_int
+id|pci_get_legacy_ide_irq
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|channel
+)paren
+(brace
+r_return
+id|PCI_IRQ_NONE
+suffix:semicolon
+)brace
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __SPARC64_PCI_H */
 eof
