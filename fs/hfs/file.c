@@ -16,6 +16,7 @@ id|file
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 id|hfs_rwarg_t
@@ -35,6 +36,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 id|hfs_rwarg_t
@@ -361,6 +363,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -534,6 +537,7 @@ id|filp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -774,6 +778,7 @@ id|xlate_to_user
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -825,9 +830,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * xlate_from_user()&n; *&n; * Like copy_from_user() while translating NL-&gt;CR;&n; */
-DECL|function|xlate_from_user
 r_static
 r_inline
+DECL|function|xlate_from_user
 r_int
 id|xlate_from_user
 c_func
@@ -838,6 +843,7 @@ id|data
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -915,6 +921,7 @@ id|hfs_u32
 id|pos
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1481,6 +1488,7 @@ id|pos
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
