@@ -4656,6 +4656,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|usb_serial_bus_register
+c_func
 (paren
 id|new_device
 )paren
@@ -4665,22 +4666,7 @@ c_cond
 (paren
 id|retval
 )paren
-r_goto
-id|error
-suffix:semicolon
-id|info
-c_func
-(paren
-l_string|&quot;USB Serial support registered for %s&quot;
-comma
-id|new_device-&gt;name
-)paren
-suffix:semicolon
-r_return
-id|retval
-suffix:semicolon
-id|error
-suffix:colon
+(brace
 id|err
 c_func
 (paren
@@ -4696,6 +4682,16 @@ c_func
 (paren
 op_amp
 id|new_device-&gt;driver_list
+)paren
+suffix:semicolon
+)brace
+r_else
+id|info
+c_func
+(paren
+l_string|&quot;USB Serial support registered for %s&quot;
+comma
+id|new_device-&gt;name
 )paren
 suffix:semicolon
 r_return
