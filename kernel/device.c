@@ -3369,9 +3369,6 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|pid
-suffix:semicolon
 id|DBG
 c_func
 (paren

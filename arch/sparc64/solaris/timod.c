@@ -69,6 +69,7 @@ id|arg
 )paren
 suffix:semicolon
 DECL|variable|timod_pagelock
+r_static
 id|spinlock_t
 id|timod_pagelock
 op_assign

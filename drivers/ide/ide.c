@@ -91,9 +91,10 @@ id|initializing
 suffix:semicolon
 multiline_comment|/* set while initializing built-in drivers */
 multiline_comment|/*&n; * protects global structures etc, we want to split this into per-hwgroup&n; * instead.&n; *&n; * anti-deadlock ordering: ide_lock -&gt; DRIVE_LOCK&n; */
-DECL|variable|ide_lock
+DECL|variable|__cacheline_aligned
 id|spinlock_t
 id|ide_lock
+id|__cacheline_aligned
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon

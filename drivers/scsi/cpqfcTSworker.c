@@ -494,7 +494,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|HostAdapter-&gt;host_lock
 comma
 id|flags
 )paren
@@ -529,7 +529,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|HostAdapter-&gt;host_lock
 comma
 id|flags
 )paren
@@ -8183,16 +8183,16 @@ r_goto
 id|Skip
 suffix:semicolon
 )brace
+singleline_comment|// STOP _que function
 id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|cpqfcHBAdata-&gt;HostAdapter-&gt;host_lock
 comma
 id|flags
 )paren
 suffix:semicolon
-singleline_comment|// STOP _que function
 id|PCI_TRACE
 c_func
 (paren
@@ -8209,7 +8209,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|cpqfcHBAdata-&gt;HostAdapter-&gt;host_lock
 comma
 id|flags
 )paren

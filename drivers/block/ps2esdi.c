@@ -2107,6 +2107,10 @@ id|CURRENT-&gt;rq_dev
 dot
 id|nr_sects
 )paren
+op_logical_and
+id|CURRENT-&gt;flags
+op_amp
+id|REQ_CMD
 )paren
 (brace
 macro_line|#if 0
@@ -2144,7 +2148,11 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 )paren
 (brace
 r_case

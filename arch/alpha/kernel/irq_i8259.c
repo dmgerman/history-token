@@ -18,6 +18,7 @@ op_assign
 l_int|0xffff
 suffix:semicolon
 DECL|variable|i8259_irq_lock
+r_static
 id|spinlock_t
 id|i8259_irq_lock
 op_assign

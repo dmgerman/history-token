@@ -163,6 +163,7 @@ DECL|typedef|efivar_entry_t
 id|efivar_entry_t
 suffix:semicolon
 DECL|variable|efivars_lock
+r_static
 id|spinlock_t
 id|efivars_lock
 op_assign

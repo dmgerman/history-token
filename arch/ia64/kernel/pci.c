@@ -41,6 +41,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * This interrupt-safe spinlock protects all accesses to PCI&n; * configuration space.&n; */
 DECL|variable|pci_lock
+r_static
 id|spinlock_t
 id|pci_lock
 op_assign

@@ -8042,6 +8042,14 @@ id|blocks
 op_assign
 id|iobuf-&gt;blocks
 suffix:semicolon
+r_struct
+id|buffer_head
+id|bh
+suffix:semicolon
+id|bh.b_dev
+op_assign
+id|inode-&gt;i_dev
+suffix:semicolon
 id|nr_blocks
 op_assign
 id|iobuf-&gt;length
@@ -8067,10 +8075,6 @@ id|blocknr
 op_increment
 )paren
 (brace
-r_struct
-id|buffer_head
-id|bh
-suffix:semicolon
 id|bh.b_state
 op_assign
 l_int|0
@@ -8200,6 +8204,7 @@ op_assign
 id|bh.b_blocknr
 suffix:semicolon
 )brace
+multiline_comment|/* This does not understand multi-device filesystems currently */
 id|retval
 op_assign
 id|brw_kiovec
@@ -8212,7 +8217,7 @@ comma
 op_amp
 id|iobuf
 comma
-id|inode-&gt;i_dev
+id|bh.b_dev
 comma
 id|blocks
 comma

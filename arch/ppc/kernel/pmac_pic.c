@@ -94,6 +94,7 @@ r_int
 id|max_real_irqs
 suffix:semicolon
 DECL|variable|pmac_pic_lock
+r_static
 id|spinlock_t
 id|pmac_pic_lock
 op_assign

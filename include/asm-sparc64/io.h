@@ -40,8 +40,15 @@ id|addr
 suffix:semicolon
 DECL|macro|bus_to_virt
 mdefine_line|#define bus_to_virt bus_to_virt_not_defined_use_pci_map
+r_extern
+r_int
+r_int
+id|phys_base
+suffix:semicolon
 DECL|macro|page_to_phys
-mdefine_line|#define page_to_phys(page)&t;(((page) - mem_map) &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define page_to_phys(page)&t;((((page) - mem_map) &lt;&lt; PAGE_SHIFT)+phys_base)
+DECL|macro|BIOVEC_MERGEABLE
+mdefine_line|#define BIOVEC_MERGEABLE(vec1, vec2)&t;&bslash;&n;&t;((((bvec_to_phys((vec1)) + (vec1)-&gt;bv_len) | bvec_to_phys((vec2))) &amp; (DMA_CHUNK_SIZE - 1)) == 0)
 multiline_comment|/* Different PCI controllers we support have their PCI MEM space&n; * mapped to an either 2GB (Psycho) or 4GB (Sabre) aligned area,&n; * so need to chop off the top 33 or 32 bits.&n; */
 r_extern
 r_int

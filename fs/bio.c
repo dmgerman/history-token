@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/prefetch.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|variable|bio_cachep
 id|kmem_cache_t
 op_star
@@ -81,7 +82,7 @@ id|bvec_list
 id|BIOVEC_NR_POOLS
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * if you change this list, also change bvec_alloc or things will&n; * break badly!&n; */
+multiline_comment|/*&n; * if you change this list, also change bvec_alloc or things will&n; * break badly! cannot be bigger than what you can fit into an&n; * unsigned short&n; */
 DECL|variable|bvec_pool_sizes
 r_static
 r_const
@@ -651,6 +652,10 @@ id|bio-&gt;bi_idx
 op_assign
 l_int|0
 suffix:semicolon
+id|bio-&gt;bi_hw_seg
+op_assign
+l_int|0
+suffix:semicolon
 id|bio-&gt;bi_size
 op_assign
 l_int|0
@@ -996,6 +1001,48 @@ id|bio
 )paren
 suffix:semicolon
 )brace
+DECL|function|bio_hw_segments
+r_inline
+r_int
+id|bio_hw_segments
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+comma
+r_struct
+id|bio
+op_star
+id|bio
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+(paren
+id|bio-&gt;bi_flags
+op_amp
+id|BIO_SEG_VALID
+)paren
+)paren
+)paren
+id|blk_recount_segments
+c_func
+(paren
+id|q
+comma
+id|bio
+)paren
+suffix:semicolon
+r_return
+id|bio-&gt;bi_hw_seg
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * &t;__bio_clone&t;-&t;clone a bio&n; * &t;@bio: destination bio&n; * &t;@bio_src: bio to clone&n; *&n; *&t;Clone a &amp;bio. Caller will own the returned bio, but not&n; *&t;the actual data it points to. Reference count of returned&n; * &t;bio will be one.&n; */
 DECL|function|__bio_clone
 r_inline
@@ -1036,7 +1083,7 @@ id|bio-&gt;bi_rw
 op_assign
 id|bio_src-&gt;bi_rw
 suffix:semicolon
-multiline_comment|/*&n;&t; * notes -- maybe just leave bi_idx alone. bi_max has no used&n;&t; * on a cloned bio&n;&t; */
+multiline_comment|/*&n;&t; * notes -- maybe just leave bi_idx alone. bi_max has no use&n;&t; * on a cloned bio. assume identical mapping for the clone&n;&t; */
 id|bio-&gt;bi_vcnt
 op_assign
 id|bio_src-&gt;bi_vcnt
@@ -1045,6 +1092,31 @@ id|bio-&gt;bi_idx
 op_assign
 id|bio_src-&gt;bi_idx
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bio_src-&gt;bi_flags
+op_amp
+(paren
+l_int|1
+op_lshift
+id|BIO_SEG_VALID
+)paren
+)paren
+(brace
+id|bio-&gt;bi_hw_seg
+op_assign
+id|bio_src-&gt;bi_hw_seg
+suffix:semicolon
+id|bio-&gt;bi_flags
+op_or_assign
+(paren
+l_int|1
+op_lshift
+id|BIO_SEG_VALID
+)paren
+suffix:semicolon
+)brace
 id|bio-&gt;bi_size
 op_assign
 id|bio_src-&gt;bi_size
@@ -1204,14 +1276,22 @@ l_int|NULL
 r_goto
 id|oom
 suffix:semicolon
+id|bbv-&gt;bv_len
+op_assign
+id|bv-&gt;bv_len
+suffix:semicolon
+id|bbv-&gt;bv_offset
+op_assign
+id|bv-&gt;bv_offset
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * if doing a copy for a READ request, no need&n;&t;&t;&t; * to memcpy page data&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|copy
 )paren
-r_goto
-id|fill_in
+r_continue
 suffix:semicolon
 r_if
 c_cond
@@ -1327,16 +1407,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-id|fill_in
-suffix:colon
-id|bbv-&gt;bv_len
-op_assign
-id|bv-&gt;bv_len
-suffix:semicolon
-id|bbv-&gt;bv_offset
-op_assign
-id|bv-&gt;bv_offset
-suffix:semicolon
 )brace
 id|b-&gt;bi_sector
 op_assign
@@ -1992,19 +2062,6 @@ suffix:semicolon
 )brace
 id|queue_io
 suffix:colon
-r_if
-c_cond
-(paren
-id|bio-&gt;bi_vcnt
-OG
-l_int|1
-)paren
-id|bio-&gt;bi_flags
-op_or_assign
-l_int|1
-op_lshift
-id|BIO_PREBUILT
-suffix:semicolon
 id|submit_bio
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Support for VIA 82Cxxx Audio Codecs&n; * Copyright 1999,2000 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n; *&n; * Distributed under the GNU GENERAL PUBLIC LICENSE (GPL) Version 2.&n; * See the &quot;COPYING&quot; file distributed with this software for more info.&n; *&n; * For a list of known bugs (errata) and documentation,&n; * see via-audio.pdf in linux/Documentation/DocBook.&n; * If this documentation does not exist, run &quot;make pdfdocs&quot;.&n; * If &quot;make pdfdocs&quot; fails, obtain the documentation from&n; * the driver&squot;s Website at&n; * http://gtf.org/garzik/drivers/via82cxxx/&n; *&n; */
+multiline_comment|/*&n; * Support for VIA 82Cxxx Audio Codecs&n; * Copyright 1999,2000 Jeff Garzik&n; *&n; * Distributed under the GNU GENERAL PUBLIC LICENSE (GPL) Version 2.&n; * See the &quot;COPYING&quot; file distributed with this software for more info.&n; *&n; * For a list of known bugs (errata) and documentation,&n; * see via-audio.pdf in linux/Documentation/DocBook.&n; * If this documentation does not exist, run &quot;make pdfdocs&quot;.&n; *&n; */
 DECL|macro|VIA_VERSION
 mdefine_line|#define VIA_VERSION&t;&quot;1.9.1&quot;
 macro_line|#include &lt;linux/config.h&gt;
@@ -11923,7 +11923,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&quot;
+l_string|&quot;Jeff Garzik&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

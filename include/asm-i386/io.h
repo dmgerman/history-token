@@ -201,6 +201,9 @@ DECL|macro|bus_to_virt
 mdefine_line|#define bus_to_virt phys_to_virt
 DECL|macro|page_to_bus
 mdefine_line|#define page_to_bus page_to_phys
+multiline_comment|/*&n; * can the hardware map this into one segment or not, given no other&n; * constraints.&n; */
+DECL|macro|BIOVEC_MERGEABLE
+mdefine_line|#define BIOVEC_MERGEABLE(vec1, vec2)&t;&bslash;&n;&t;((bvec_to_phys((vec1)) + (vec1)-&gt;bv_len) == bvec_to_phys((vec2)))
 multiline_comment|/*&n; * readX/writeX() are used to access memory mapped devices. On some&n; * architectures the memory mapped IO stuff needs to be accessed&n; * differently. On the x86 architecture, we just read/write the&n; * memory location directly.&n; */
 DECL|macro|readb
 mdefine_line|#define readb(addr) (*(volatile unsigned char *) __io_virt(addr))

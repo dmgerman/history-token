@@ -1608,7 +1608,7 @@ id|found
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is called from kswapd when we think we need some&n; * more memory, but aren&squot;t really sure how much. So we&n; * carefully try to free a _bit_ of our dcache, but not&n; * too much.&n; *&n; * Priority:&n; *   0 - very urgent: shrink everything&n; *  ...&n; *   6 - base-level: try to shrink a bit.&n; */
+multiline_comment|/*&n; * This is called from kswapd when we think we need some&n; * more memory, but aren&squot;t really sure how much. So we&n; * carefully try to free a _bit_ of our dcache, but not&n; * too much.&n; *&n; * Priority:&n; *   1 - very urgent: shrink everything&n; *  ...&n; *   6 - base-level: try to shrink a bit.&n; */
 DECL|function|shrink_dcache_memory
 r_int
 id|shrink_dcache_memory

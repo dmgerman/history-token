@@ -563,7 +563,7 @@ id|mftno
 suffix:semicolon
 r_return
 op_minus
-id|EINVAL
+id|EIO
 suffix:semicolon
 )brace
 id|ntfs_debug

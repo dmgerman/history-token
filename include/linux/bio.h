@@ -109,6 +109,12 @@ r_int
 id|bi_idx
 suffix:semicolon
 multiline_comment|/* current index into bvl_vec */
+DECL|member|bi_hw_seg
+r_int
+r_int
+id|bi_hw_seg
+suffix:semicolon
+multiline_comment|/* actual mapped segments */
 DECL|member|bi_size
 r_int
 r_int
@@ -158,8 +164,8 @@ DECL|macro|BIO_RW_BLOCK
 mdefine_line|#define BIO_RW_BLOCK&t;1&t;/* RW_AHEAD set, and read/write would block */
 DECL|macro|BIO_EOF
 mdefine_line|#define BIO_EOF&t;&t;2&t;/* out-out-bounds error */
-DECL|macro|BIO_PREBUILT
-mdefine_line|#define BIO_PREBUILT&t;3&t;/* not merged big */
+DECL|macro|BIO_SEG_VALID
+mdefine_line|#define BIO_SEG_VALID&t;3&t;/* nr_hw_seg valid */
 DECL|macro|BIO_CLONED
 mdefine_line|#define BIO_CLONED&t;4&t;/* doesn&squot;t own data */
 multiline_comment|/*&n; * bio bi_rw flags&n; *&n; * bit 0 -- read (not set) or write (set)&n; * bit 1 -- rw-ahead when set&n; * bit 2 -- barrier&n; */
@@ -186,9 +192,9 @@ DECL|macro|bio_barrier
 mdefine_line|#define bio_barrier(bio)&t;((bio)-&gt;bi_rw &amp; (1 &lt;&lt; BIO_BARRIER))
 multiline_comment|/*&n; * will die&n; */
 DECL|macro|bio_to_phys
-mdefine_line|#define bio_to_phys(bio)&t;(page_to_phys(bio_page((bio))) + bio_offset((bio)))
+mdefine_line|#define bio_to_phys(bio)&t;(page_to_phys(bio_page((bio))) + (unsigned long) bio_offset((bio)))
 DECL|macro|bvec_to_phys
-mdefine_line|#define bvec_to_phys(bv)&t;(page_to_phys((bv)-&gt;bv_page) + (bv)-&gt;bv_offset)
+mdefine_line|#define bvec_to_phys(bv)&t;(page_to_phys((bv)-&gt;bv_page) + (unsigned long) (bv)-&gt;bv_offset)
 multiline_comment|/*&n; * queues that have highmem support enabled may still need to revert to&n; * PIO transfers occasionally and thus map high pages temporarily. For&n; * permanent PIO fall back, user is probably better off disabling highmem&n; * I/O completely on that queue (see ide-dma for example)&n; */
 DECL|macro|__bio_kmap
 mdefine_line|#define __bio_kmap(bio, idx) (kmap(bio_iovec_idx((bio), (idx))-&gt;bv_page) + bio_iovec_idx((bio), (idx))-&gt;bv_offset)
@@ -200,13 +206,17 @@ DECL|macro|bio_kunmap
 mdefine_line|#define bio_kunmap(bio)&t;&t;__bio_kunmap((bio), (bio)-&gt;bi_idx)
 multiline_comment|/*&n; * merge helpers etc&n; */
 DECL|macro|__BVEC_END
-mdefine_line|#define __BVEC_END(bio) bio_iovec_idx((bio), (bio)-&gt;bi_vcnt - 1)
+mdefine_line|#define __BVEC_END(bio)&t;&t;bio_iovec_idx((bio), (bio)-&gt;bi_vcnt - 1)
+DECL|macro|__BVEC_START
+mdefine_line|#define __BVEC_START(bio)&t;bio_iovec_idx((bio), 0)
 DECL|macro|BIO_CONTIG
-mdefine_line|#define BIO_CONTIG(bio, nxt) &bslash;&n;&t;(bvec_to_phys(__BVEC_END((bio))) + (bio)-&gt;bi_size == bio_to_phys((nxt)))
+mdefine_line|#define BIO_CONTIG(bio, nxt) &bslash;&n;&t;BIOVEC_MERGEABLE(__BVEC_END((bio)), __BVEC_START((nxt)))
 DECL|macro|__BIO_SEG_BOUNDARY
 mdefine_line|#define __BIO_SEG_BOUNDARY(addr1, addr2, mask) &bslash;&n;&t;(((addr1) | (mask)) == (((addr2) - 1) | (mask)))
+DECL|macro|BIOVEC_SEG_BOUNDARY
+mdefine_line|#define BIOVEC_SEG_BOUNDARY(q, b1, b2) &bslash;&n;&t;__BIO_SEG_BOUNDARY(bvec_to_phys((b1)), bvec_to_phys((b2)) + (b2)-&gt;bv_len, (q)-&gt;seg_boundary_mask)
 DECL|macro|BIO_SEG_BOUNDARY
-mdefine_line|#define BIO_SEG_BOUNDARY(q, b1, b2) &bslash;&n;&t;__BIO_SEG_BOUNDARY(bvec_to_phys(__BVEC_END((b1))), bio_to_phys((b2)) + (b2)-&gt;bi_size, (q)-&gt;seg_boundary_mask)
+mdefine_line|#define BIO_SEG_BOUNDARY(q, b1, b2) &bslash;&n;&t;BIOVEC_SEG_BOUNDARY((q), __BVEC_END((b1)), __BVEC_START((b2)))
 DECL|macro|bio_io_error
 mdefine_line|#define bio_io_error(bio) bio_endio((bio), 0, bio_sectors((bio)))
 multiline_comment|/*&n; * drivers should not use the __ version unless they _really_ want to&n; * run through the entire bio and not just pending pieces&n; */
@@ -251,6 +261,24 @@ comma
 r_int
 comma
 r_int
+)paren
+suffix:semicolon
+r_struct
+id|request_queue
+suffix:semicolon
+r_extern
+r_inline
+r_int
+id|bio_hw_segments
+c_func
+(paren
+r_struct
+id|request_queue
+op_star
+comma
+r_struct
+id|bio
+op_star
 )paren
 suffix:semicolon
 r_extern

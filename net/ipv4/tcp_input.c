@@ -15410,6 +15410,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* Fall through */
 r_case
+id|TCP_LAST_ACK
+suffix:colon
+r_case
 id|TCP_ESTABLISHED
 suffix:colon
 id|tcp_data_queue

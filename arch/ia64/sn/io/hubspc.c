@@ -84,6 +84,7 @@ op_star
 id|cpuprom_head
 suffix:semicolon
 DECL|variable|cpuprom_spinlock
+r_static
 id|spinlock_t
 id|cpuprom_spinlock
 suffix:semicolon

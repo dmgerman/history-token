@@ -2586,6 +2586,7 @@ id|unused_inodes_flush_task
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This is called from kswapd when we think we need some&n; * more memory, but aren&squot;t really sure how much. So we&n; * carefully try to free a _bit_ of our icache, but not&n; * too much.&n; *&n; * Priority:&n; *   1 - very urgent: shrink everything&n; *  ...&n; *   6 - base-level: try to shrink a bit.&n; */
 DECL|function|shrink_icache_memory
 r_int
 id|shrink_icache_memory

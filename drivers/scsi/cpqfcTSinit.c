@@ -350,14 +350,7 @@ id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseU
 )paren
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot; ioremap&squot;d Membase: %p&bslash;n&quot;
-comma
-id|cpqfcHBAdata-&gt;fcChip.Registers.ReMapMemBase
-)paren
-suffix:semicolon
+multiline_comment|/* printk(&quot; ioremap&squot;d Membase: %p&bslash;n&quot;, cpqfcHBAdata-&gt;fcChip.Registers.ReMapMemBase); */
 id|DEBUG_PCI
 c_func
 (paren
@@ -541,7 +534,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|HostAdapter-&gt;host_lock
 )paren
 suffix:semicolon
 id|kernel_thread
@@ -579,7 +572,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|HostAdapter-&gt;host_lock
 )paren
 suffix:semicolon
 id|cpqfcHBAdata-&gt;notify_wt
@@ -799,20 +792,7 @@ r_continue
 suffix:semicolon
 )brace
 singleline_comment|// NOTE: (kernel 2.2.12-32) limits allocation to 128k bytes...
-id|printk
-c_func
-(paren
-l_string|&quot; scsi_register allocating %d bytes for FC HBA&bslash;n&quot;
-comma
-(paren
-id|ULONG
-)paren
-r_sizeof
-(paren
-id|CPQFCHBA
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* printk(&quot; scsi_register allocating %d bytes for FC HBA&bslash;n&quot;,&n;&t;&t;      (ULONG)sizeof(CPQFCHBA)); */
 id|HostAdapter
 op_assign
 id|scsi_register
@@ -1190,6 +1170,13 @@ id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseU
 )paren
 suffix:semicolon
 singleline_comment|// start our kernel worker thread
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|HostAdapter-&gt;host_lock
+)paren
+suffix:semicolon
 id|launch_FCworker_thread
 c_func
 (paren
@@ -1289,7 +1276,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|HostAdapter-&gt;host_lock
 )paren
 suffix:semicolon
 id|stop_time
@@ -1317,16 +1304,23 @@ c_func
 )paren
 suffix:semicolon
 singleline_comment|// (our worker task needs to run)
+)brace
 id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|HostAdapter-&gt;host_lock
 )paren
 suffix:semicolon
-)brace
 id|NumberOfAdapters
 op_increment
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|HostAdapter-&gt;host_lock
+)paren
 suffix:semicolon
 )brace
 singleline_comment|// end of while()
@@ -4918,7 +4912,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|Cmnd-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 id|retval
@@ -4935,7 +4929,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|Cmnd-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
@@ -5143,7 +5137,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|HostAdapter-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5365,7 +5359,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|HostAdapter-&gt;host_lock
 comma
 id|flags
 )paren

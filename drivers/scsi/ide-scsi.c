@@ -1053,7 +1053,8 @@ id|bio
 op_assign
 id|bio-&gt;bi_next
 suffix:semicolon
-id|kfree
+id|bio_put
+c_func
 (paren
 id|bhp
 )paren

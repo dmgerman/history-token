@@ -24,6 +24,7 @@ mdefine_line|#define cached_A1 (cached_8259[0])
 DECL|macro|cached_21
 mdefine_line|#define cached_21 (cached_8259[1])
 DECL|variable|i8259_lock
+r_static
 id|spinlock_t
 id|i8259_lock
 op_assign

@@ -198,22 +198,7 @@ id|cpqfcHBAdata-&gt;fcLQ
 op_assign
 l_int|NULL
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Allocating %u for %u Exchanges &quot;
-comma
-(paren
-id|ULONG
-)paren
-r_sizeof
-(paren
-id|FC_EXCHANGES
-)paren
-comma
-id|TACH_MAX_XID
-)paren
-suffix:semicolon
+multiline_comment|/* printk(&quot;Allocating %u for %u Exchanges &quot;, &n;&t;  (ULONG)sizeof(FC_EXCHANGES), TACH_MAX_XID); */
 id|fcChip-&gt;Exchanges
 op_assign
 id|pci_alloc_consistent
@@ -230,14 +215,7 @@ op_amp
 id|fcChip-&gt;exch_dma_handle
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;@ %p&bslash;n&quot;
-comma
-id|fcChip-&gt;Exchanges
-)paren
-suffix:semicolon
+multiline_comment|/* printk(&quot;@ %p&bslash;n&quot;, fcChip-&gt;Exchanges); */
 r_if
 c_cond
 (paren
@@ -272,20 +250,7 @@ id|FC_EXCHANGES
 )paren
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Allocating %u for LinkQ &quot;
-comma
-(paren
-id|ULONG
-)paren
-r_sizeof
-(paren
-id|FC_LINK_QUE
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/* printk(&quot;Allocating %u for LinkQ &quot;, (ULONG)sizeof(FC_LINK_QUE)); */
 id|cpqfcHBAdata-&gt;fcLQ
 op_assign
 id|pci_alloc_consistent
@@ -302,16 +267,7 @@ op_amp
 id|cpqfcHBAdata-&gt;fcLQ_dma_handle
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;@ %p (%u elements)&bslash;n&quot;
-comma
-id|cpqfcHBAdata-&gt;fcLQ
-comma
-id|FC_LINKQ_DEPTH
-)paren
-suffix:semicolon
+multiline_comment|/* printk(&quot;@ %p (%u elements)&bslash;n&quot;, cpqfcHBAdata-&gt;fcLQ, FC_LINKQ_DEPTH); */
 id|memset
 c_func
 (paren
@@ -741,22 +697,7 @@ singleline_comment|// Allocate SCSI Exchange State Table; aligned nearest @sizeo
 singleline_comment|// power-of-2 boundary
 singleline_comment|// LIVE DANGEROUSLY!  Assume the boundary for SEST mem will
 singleline_comment|// be on physical page (e.g. 4k) boundary.
-id|printk
-c_func
-(paren
-l_string|&quot;Allocating %u for TachSEST for %u Exchanges&bslash;n&quot;
-comma
-(paren
-id|ULONG
-)paren
-r_sizeof
-(paren
-id|TachSEST
-)paren
-comma
-id|TACH_SEST_LEN
-)paren
-suffix:semicolon
+multiline_comment|/* printk(&quot;Allocating %u for TachSEST for %u Exchanges&bslash;n&quot;, &n;&t;&t; (ULONG)sizeof(TachSEST), TACH_SEST_LEN); */
 id|fcChip-&gt;SEST
 op_assign
 id|fcMemManager
@@ -974,14 +915,7 @@ suffix:semicolon
 singleline_comment|// IIIIIIIIIIIII  INBOUND MESSAGE QUEUE
 singleline_comment|// Tell Tachyon where the Que starts
 singleline_comment|// set the Host&squot;s pointer for Tachyon to access
-id|printk
-c_func
-(paren
-l_string|&quot;  cpqfcTS: writing IMQ BASE %Xh  &quot;
-comma
-id|fcChip-&gt;IMQ-&gt;base
-)paren
-suffix:semicolon
+multiline_comment|/* printk(&quot;  cpqfcTS: writing IMQ BASE %Xh  &quot;, fcChip-&gt;IMQ-&gt;base ); */
 id|writel
 c_func
 (paren
@@ -1080,7 +1014,7 @@ suffix:semicolon
 singleline_comment|// failed
 )brace
 macro_line|#endif
-singleline_comment|//#if DBG
+macro_line|#if DBG
 id|printk
 c_func
 (paren
@@ -1092,7 +1026,7 @@ id|ULONG
 id|ulAddr
 )paren
 suffix:semicolon
-singleline_comment|//#endif
+macro_line|#endif
 id|writel
 c_func
 (paren
@@ -1147,20 +1081,7 @@ id|TL_MEM_SEST_BASE
 )paren
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;  cpqfcTS: SEST %p(virt): Wrote base %Xh @ %p&bslash;n&quot;
-comma
-id|fcChip-&gt;SEST
-comma
-id|fcChip-&gt;SEST-&gt;base
-comma
-id|fcChip-&gt;Registers.ReMapMemBase
-op_plus
-id|TL_MEM_SEST_BASE
-)paren
-suffix:semicolon
+multiline_comment|/* printk(&quot;  cpqfcTS: SEST %p(virt): Wrote base %Xh @ %p&bslash;n&quot;,&n;    fcChip-&gt;SEST, fcChip-&gt;SEST-&gt;base, &n;    fcChip-&gt;Registers.ReMapMemBase + TL_MEM_SEST_BASE); */
 id|writel
 c_func
 (paren
@@ -4762,16 +4683,7 @@ op_rshift
 l_int|2
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;  HBA Tachyon RevId %d.%d&bslash;n&quot;
-comma
-id|Major
-comma
-id|Minor
-)paren
-suffix:semicolon
+multiline_comment|/* printk(&quot;  HBA Tachyon RevId %d.%d&bslash;n&quot;, Major, Minor); */
 r_if
 c_cond
 (paren

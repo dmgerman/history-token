@@ -4571,6 +4571,11 @@ id|tape-&gt;onstream_write_error
 op_assign
 id|OS_PART_ERROR
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tape-&gt;waiting
+)paren
 id|complete
 c_func
 (paren
@@ -4662,6 +4667,11 @@ id|rq-&gt;current_nr_sectors
 op_assign
 id|rq-&gt;nr_sectors
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tape-&gt;waiting
+)paren
 id|complete
 c_func
 (paren

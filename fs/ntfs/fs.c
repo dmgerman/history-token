@@ -1407,23 +1407,9 @@ op_logical_neg
 id|err
 )paren
 (brace
-macro_line|#ifdef DEBUG
-r_if
-c_cond
-(paren
-id|cb.ph
-op_ne
-l_int|0x7fff
-op_logical_or
-id|cb.pl
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|done
 suffix:colon
+macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
@@ -1458,9 +1444,6 @@ comma
 id|filp-&gt;f_pos
 )paren
 suffix:semicolon
-macro_line|#else
-id|done
-suffix:colon
 macro_line|#endif
 r_return
 l_int|0

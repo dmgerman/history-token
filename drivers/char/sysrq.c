@@ -1335,6 +1335,7 @@ suffix:semicolon
 multiline_comment|/* END SIGNAL SYSRQ HANDLERS BLOCK */
 multiline_comment|/* Key Operations table and lock */
 DECL|variable|sysrq_key_table_lock
+r_static
 id|spinlock_t
 id|sysrq_key_table_lock
 op_assign

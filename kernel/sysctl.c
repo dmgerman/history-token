@@ -48,9 +48,11 @@ r_int
 id|max_threads
 suffix:semicolon
 r_extern
-r_int
+id|atomic_t
 id|nr_queued_signals
-comma
+suffix:semicolon
+r_extern
+r_int
 id|max_queued_signals
 suffix:semicolon
 r_extern

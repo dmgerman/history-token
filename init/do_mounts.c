@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/fd.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/nfs_mount.h&gt;
@@ -170,6 +171,50 @@ id|initrd_load
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|get_filesystem_list
+c_func
+(paren
+r_char
+op_star
+id|buf
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|wait_for_keypress
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+id|asmlinkage
+r_int
+id|sys_mount
+c_func
+(paren
+r_char
+op_star
+id|dev_name
+comma
+r_char
+op_star
+id|dir_name
+comma
+r_char
+op_star
+id|type
+comma
+r_int
+r_int
+id|flags
+comma
+r_void
+op_star
+id|data
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
@@ -1582,19 +1627,10 @@ op_star
 id|p
 suffix:semicolon
 r_int
-id|err
-suffix:semicolon
-r_int
 id|do_devfs
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_ROOT_NFS
-r_void
-op_star
-id|data
-suffix:semicolon
-macro_line|#endif
 id|root_mountflags
 op_or_assign
 id|MS_VERBOSE
@@ -1621,11 +1657,13 @@ c_func
 (paren
 id|ROOT_DEV
 )paren
-op_ne
+op_eq
 id|UNNAMED_MAJOR
 )paren
-r_goto
-id|skip_nfs
+(brace
+r_void
+op_star
+id|data
 suffix:semicolon
 id|data
 op_assign
@@ -1637,12 +1675,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|data
 )paren
-r_goto
-id|no_nfs
-suffix:semicolon
+(brace
+r_int
 id|err
 op_assign
 id|mount
@@ -1668,8 +1704,7 @@ id|err
 r_goto
 id|done
 suffix:semicolon
-id|no_nfs
-suffix:colon
+)brace
 id|printk
 c_func
 (paren
@@ -1687,8 +1722,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|skip_nfs
-suffix:colon
+)brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_FD
 r_if

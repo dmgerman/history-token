@@ -10749,6 +10749,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|variable|rtas_lock
+r_static
 id|spinlock_t
 id|rtas_lock
 op_assign
