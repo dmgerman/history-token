@@ -3490,20 +3490,14 @@ id|rec-&gt;used
 OG
 l_int|1
 )paren
-(brace
 multiline_comment|/* already set */
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|rec-&gt;lock
-)paren
-suffix:semicolon
-r_return
+id|changed
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
+r_else
+(brace
 id|rec-&gt;rate
 op_assign
 id|rate
@@ -3512,6 +3506,7 @@ id|changed
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 )brace
 id|spin_unlock
 c_func
@@ -3596,8 +3591,6 @@ r_if
 c_cond
 (paren
 id|rate_changed
-op_logical_or
-id|chip-&gt;no_vra
 )paren
 (brace
 id|snd_ac97_set_rate
@@ -3615,11 +3608,6 @@ suffix:colon
 id|runtime-&gt;rate
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rate_changed
-)paren
 id|snd_ac97_set_rate
 c_func
 (paren
@@ -9398,6 +9386,24 @@ id|VIA_DXS_ENABLE
 )brace
 comma
 multiline_comment|/* Shuttle SK41G */
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1458
+comma
+dot
+id|device
+op_assign
+l_int|0x5002
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* Gigabyte GA-7VAX */
 (brace
 dot
 id|vendor
