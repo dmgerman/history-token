@@ -25,6 +25,16 @@ r_static
 r_int
 id|num_counters
 suffix:semicolon
+DECL|variable|oprofile_running
+r_static
+r_int
+id|oprofile_running
+suffix:semicolon
+DECL|variable|mmcra_has_sihv
+r_static
+r_int
+id|mmcra_has_sihv
+suffix:semicolon
 DECL|function|power4_reg_setup
 r_static
 r_void
@@ -51,6 +61,29 @@ suffix:semicolon
 id|num_counters
 op_assign
 id|num_ctrs
+suffix:semicolon
+multiline_comment|/*&n;&t; * SIHV / SIPR bits are only implemented on POWER4+ (GQ) and above.&n;&t; * However we disable it on all POWER4 until we verify it works&n;&t; * (I was seeing some strange behaviour last time I tried).&n;&t; *&n;&t; * It has been verified to work on POWER5 so we enable it there.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|__is_processor
+c_func
+(paren
+id|PV_POWER4
+)paren
+op_logical_or
+id|__is_processor
+c_func
+(paren
+id|PV_POWER4p
+)paren
+)paren
+)paren
+id|mmcra_has_sihv
+op_assign
+l_int|1
 suffix:semicolon
 r_for
 c_loop
@@ -334,6 +367,10 @@ comma
 id|mmcr0
 )paren
 suffix:semicolon
+id|oprofile_running
+op_assign
+l_int|1
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -381,6 +418,10 @@ id|SPRN_MMCR0
 comma
 id|mmcr0
 )paren
+suffix:semicolon
+id|oprofile_running
+op_assign
+l_int|0
 suffix:semicolon
 id|dbg
 c_func
@@ -435,14 +476,6 @@ r_void
 )paren
 (brace
 )brace
-multiline_comment|/* XXX Not currently working */
-DECL|variable|mmcra_has_sihv
-r_static
-r_int
-id|mmcra_has_sihv
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n; * On GQ and newer the MMCRA stores the HV and PR bits at the time&n; * the SIAR was sampled. We use that to work out if the SIAR was sampled in&n; * the hypervisor, our exception vectors or RTAS.&n; */
 DECL|function|get_pc
 r_static
@@ -761,6 +794,8 @@ l_int|0
 r_if
 c_cond
 (paren
+id|oprofile_running
+op_logical_and
 id|ctr
 (braket
 id|i
