@@ -206,6 +206,21 @@ suffix:semicolon
 DECL|macro|find_lock_page
 mdefine_line|#define find_lock_page(mapping, index) &bslash;&n;&t;__find_lock_page(mapping, index, page_hash(mapping, index))
 r_extern
+r_struct
+id|page
+op_star
+id|find_trylock_page
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|add_to_page_cache
 c_func

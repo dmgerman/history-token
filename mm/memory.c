@@ -1258,7 +1258,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|swap_free
+id|free_swap_and_cache
 c_func
 (paren
 id|pte_to_swp_entry

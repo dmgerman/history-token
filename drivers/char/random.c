@@ -6715,6 +6715,8 @@ comma
 id|tmp
 comma
 id|nwords
+op_star
+l_int|4
 comma
 l_int|0
 )paren

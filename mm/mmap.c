@@ -107,11 +107,6 @@ id|free
 op_add_assign
 id|nr_swap_pages
 suffix:semicolon
-multiline_comment|/*&n;&t; * This double-counts: the nrpages are both in the page-cache&n;&t; * and in the swapper space. At the same time, this compensates&n;&t; * for the swap-space over-allocation (ie &quot;nr_swap_pages&quot; being&n;&t; * too small. &n;&t; */
-id|free
-op_add_assign
-id|swapper_space.nrpages
-suffix:semicolon
 multiline_comment|/*&n;&t; * The code below doesn&squot;t account for free space in the inode&n;&t; * and dentry slab cache, slab cache fragmentation, inodes and&n;&t; * dentries which will become freeable under VM load, etc.&n;&t; * Lets just hope all these (complex) factors balance out...&n;&t; */
 id|free
 op_add_assign

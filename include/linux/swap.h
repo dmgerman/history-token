@@ -575,6 +575,14 @@ c_func
 id|swp_entry_t
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|free_swap_and_cache
+c_func
+(paren
+id|swp_entry_t
+)paren
+suffix:semicolon
 DECL|struct|swap_list_t
 r_struct
 id|swap_list_t

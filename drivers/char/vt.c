@@ -5135,6 +5135,45 @@ c_func
 id|new_console
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * This can&squot;t appear below a successful kill_proc().  If it did,&n;&t; * then the *blank_screen operation could occur while X, having&n;&t; * received acqsig, is waking up on another processor.  This&n;&t; * condition can lead to overlapping accesses to the VGA range&n;&t; * and the framebuffer (causing system lockups).&n;&t; *&n;&t; * To account for this we duplicate this code below only if the&n;&t; * controlling process is gone and we&squot;ve called reset_vc.&n;&t; */
+r_if
+c_cond
+(paren
+id|old_vc_mode
+op_ne
+id|vt_cons
+(braket
+id|new_console
+)braket
+op_member_access_from_pointer
+id|vc_mode
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|vt_cons
+(braket
+id|new_console
+)braket
+op_member_access_from_pointer
+id|vc_mode
+op_eq
+id|KD_TEXT
+)paren
+id|unblank_screen
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+id|do_blank_screen
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * If this new console is under process control, send it a signal&n;&t; * telling it that it has acquired. Also check if it has died and&n;&t; * clean up (similar to logic employed in change_console())&n;&t; */
 r_if
 c_cond
@@ -5183,9 +5222,6 @@ c_func
 id|new_console
 )paren
 suffix:semicolon
-)brace
-)brace
-multiline_comment|/*&n;&t; * We do this here because the controlling process above may have&n;&t; * gone, and so there is now a new vc_mode&n;&t; */
 r_if
 c_cond
 (paren
@@ -5223,6 +5259,8 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
+)brace
+)brace
 )brace
 multiline_comment|/*&n;&t; * Wake anyone waiting for their VT to activate&n;&t; */
 id|vt_wake_waitactive

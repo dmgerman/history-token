@@ -1121,12 +1121,9 @@ id|mm_struct
 op_star
 id|mm
 suffix:semicolon
-multiline_comment|/* Then, look at the other mm&squot;s */
 id|counter
 op_assign
 id|mmlist_nr
-op_div
-id|priority
 suffix:semicolon
 r_do
 (brace
@@ -1339,9 +1336,9 @@ suffix:semicolon
 r_int
 id|max_mapped
 op_assign
-id|max_scan
-op_div
-l_int|4
+id|nr_pages
+op_star
+l_int|10
 suffix:semicolon
 id|spin_lock
 c_func

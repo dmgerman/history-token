@@ -2054,7 +2054,7 @@ op_assign
 id|owner
 suffix:colon
 id|THIS_MODULE
-dot
+comma
 id|open
 suffix:colon
 id|nbd_open
