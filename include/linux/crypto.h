@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_CRYPTO_H
 DECL|macro|_LINUX_CRYPTO_H
 mdefine_line|#define _LINUX_CRYPTO_H
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
