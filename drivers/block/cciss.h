@@ -132,6 +132,10 @@ DECL|member|cylinders
 r_int
 id|cylinders
 suffix:semicolon
+DECL|member|raid_level
+r_int
+id|raid_level
+suffix:semicolon
 DECL|typedef|drive_info_struct
 )brace
 id|drive_info_struct
@@ -314,6 +318,10 @@ suffix:semicolon
 DECL|member|nr_frees
 r_int
 id|nr_frees
+suffix:semicolon
+DECL|member|busy_configuring
+r_int
+id|busy_configuring
 suffix:semicolon
 singleline_comment|// Disk structures we need to pass back
 DECL|member|gendisk

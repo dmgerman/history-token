@@ -613,6 +613,37 @@ comma
 suffix:semicolon
 macro_line|#include &quot;cciss_scsi.c&quot;&t;&t;/* For SCSI tape support */
 multiline_comment|/*&n; * Report information about this controller.&n; */
+DECL|macro|ENG_GIG
+mdefine_line|#define ENG_GIG 1048576000
+DECL|macro|ENG_GIG_FACTOR
+mdefine_line|#define ENG_GIG_FACTOR (ENG_GIG/512)
+DECL|macro|RAID_UNKNOWN
+mdefine_line|#define RAID_UNKNOWN 6
+DECL|variable|raid_label
+r_static
+r_const
+r_char
+op_star
+id|raid_label
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;0&quot;
+comma
+l_string|&quot;4&quot;
+comma
+l_string|&quot;1(0+1)&quot;
+comma
+l_string|&quot;5&quot;
+comma
+l_string|&quot;5+1&quot;
+comma
+l_string|&quot;ADG&quot;
+comma
+l_string|&quot;UNKNOWN&quot;
+)brace
+suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|proc_cciss
 r_static
@@ -682,9 +713,71 @@ id|drive_info_struct
 op_star
 id|drv
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+r_int
+id|vol_sz
+comma
+id|vol_sz_frac
+suffix:semicolon
 id|ctlr
 op_assign
 id|h-&gt;ctlr
+suffix:semicolon
+multiline_comment|/* prevent displaying bogus info during configuration&n;&t; * or deconfiguration of a logical volume&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|CCISS_LOCK
+c_func
+(paren
+id|ctlr
+)paren
+comma
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|h-&gt;busy_configuring
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|CCISS_LOCK
+c_func
+(paren
+id|ctlr
+)paren
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
+id|h-&gt;busy_configuring
+op_assign
+l_int|1
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|CCISS_LOCK
+c_func
+(paren
+id|ctlr
+)paren
+comma
+id|flags
+)paren
 suffix:semicolon
 id|size
 op_assign
@@ -693,17 +786,16 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;%s:  Compaq %s Controller&bslash;n&quot;
-l_string|&quot;       Board ID: 0x%08lx&bslash;n&quot;
-l_string|&quot;       Firmware Version: %c%c%c%c&bslash;n&quot;
-l_string|&quot;       Memory Address: 0x%08lx&bslash;n&quot;
-l_string|&quot;       IRQ: %d&bslash;n&quot;
-l_string|&quot;       Logical drives: %d&bslash;n&quot;
-l_string|&quot;       Highest Logical Volume ID: %d&bslash;n&quot;
-l_string|&quot;       Current Q depth: %d&bslash;n&quot;
-l_string|&quot;       Max Q depth since init: %d&bslash;n&quot;
-l_string|&quot;       Max # commands on controller since init: %d&bslash;n&quot;
-l_string|&quot;       Max SG entries since init: %d&bslash;n&bslash;n&quot;
+l_string|&quot;%s: HP %s Controller&bslash;n&quot;
+l_string|&quot;Board ID: 0x%08lx&bslash;n&quot;
+l_string|&quot;Firmware Version: %c%c%c%c&bslash;n&quot;
+l_string|&quot;IRQ: %d&bslash;n&quot;
+l_string|&quot;Logical drives: %d&bslash;n&quot;
+l_string|&quot;Current Q depth: %d&bslash;n&quot;
+l_string|&quot;Current # commands on controller: %d&bslash;n&quot;
+l_string|&quot;Max Q depth since init: %d&bslash;n&quot;
+l_string|&quot;Max # commands on controller since init: %d&bslash;n&quot;
+l_string|&quot;Max SG entries since init: %d&bslash;n&bslash;n&quot;
 comma
 id|h-&gt;devname
 comma
@@ -739,19 +831,13 @@ comma
 r_int
 r_int
 )paren
-id|h-&gt;vaddr
-comma
-(paren
-r_int
-r_int
-)paren
 id|h-&gt;intr
 comma
 id|h-&gt;num_luns
 comma
-id|h-&gt;highest_lun
-comma
 id|h-&gt;Qdepth
+comma
+id|h-&gt;commands_outstanding
 comma
 id|h-&gt;maxQsinceinit
 comma
@@ -797,6 +883,9 @@ id|i
 op_increment
 )paren
 (brace
+id|sector_t
+id|tmp
+suffix:semicolon
 id|drv
 op_assign
 op_amp
@@ -814,6 +903,57 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
+id|vol_sz
+op_assign
+id|drv-&gt;nr_blocks
+suffix:semicolon
+id|sector_div
+c_func
+(paren
+id|vol_sz
+comma
+id|ENG_GIG_FACTOR
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Awkwardly do this:&n;&t;&t; * vol_sz_frac =&n;&t;&t; *     (drv-&gt;nr_blocks%ENG_GIG_FACTOR)*100/ENG_GIG_FACTOR;&n;&t;&t; */
+id|tmp
+op_assign
+id|drv-&gt;nr_blocks
+suffix:semicolon
+id|vol_sz_frac
+op_assign
+id|sector_div
+c_func
+(paren
+id|tmp
+comma
+id|ENG_GIG_FACTOR
+)paren
+suffix:semicolon
+multiline_comment|/* Now, vol_sz_frac = (drv-&gt;nr_blocks%ENG_GIG_FACTOR) */
+id|vol_sz_frac
+op_mul_assign
+l_int|100
+suffix:semicolon
+id|sector_div
+c_func
+(paren
+id|vol_sz_frac
+comma
+id|ENG_GIG_FACTOR
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|drv-&gt;raid_level
+OG
+l_int|5
+)paren
+id|drv-&gt;raid_level
+op_assign
+id|RAID_UNKNOWN
+suffix:semicolon
 id|size
 op_assign
 id|sprintf
@@ -823,20 +963,21 @@ id|buffer
 op_plus
 id|len
 comma
-l_string|&quot;cciss/c%dd%d: blksz=%d nr_blocks=%llu&bslash;n&quot;
+l_string|&quot;cciss/c%dd%d:&quot;
+l_string|&quot;&bslash;t%4d.%02dGB&bslash;tRAID %s&bslash;n&quot;
 comma
 id|ctlr
 comma
 id|i
 comma
-id|drv-&gt;block_size
+id|vol_sz
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|drv-&gt;nr_blocks
+id|vol_sz_frac
+comma
+id|raid_label
+(braket
+id|drv-&gt;raid_level
+)braket
 )paren
 suffix:semicolon
 id|pos
@@ -848,30 +989,6 @@ op_add_assign
 id|size
 suffix:semicolon
 )brace
-id|size
-op_assign
-id|sprintf
-c_func
-(paren
-id|buffer
-op_plus
-id|len
-comma
-l_string|&quot;nr_allocs = %d&bslash;nnr_frees = %d&bslash;n&quot;
-comma
-id|h-&gt;nr_allocs
-comma
-id|h-&gt;nr_frees
-)paren
-suffix:semicolon
-id|pos
-op_add_assign
-id|size
-suffix:semicolon
-id|len
-op_add_assign
-id|size
-suffix:semicolon
 op_star
 id|eof
 op_assign
@@ -898,6 +1015,10 @@ id|length
 id|len
 op_assign
 id|length
+suffix:semicolon
+id|h-&gt;busy_configuring
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 id|len
@@ -10125,7 +10246,7 @@ multiline_comment|/* is this an IO range */
 r_if
 c_cond
 (paren
-id|pdev_resource_flags
+id|pci_resource_flags
 c_func
 (paren
 id|pdev
@@ -10138,7 +10259,7 @@ l_int|0x01
 (brace
 id|c-&gt;io_mem_addr
 op_assign
-id|pdev_resource_start
+id|pci_resource_start
 c_func
 (paren
 id|pdev
@@ -10148,7 +10269,7 @@ id|i
 suffix:semicolon
 id|c-&gt;io_mem_length
 op_assign
-id|pdev_resource_end
+id|pci_resource_end
 c_func
 (paren
 id|pdev
@@ -10156,7 +10277,7 @@ comma
 id|i
 )paren
 op_minus
-id|pdev_resource_start
+id|pci_resource_start
 c_func
 (paren
 id|pdev
