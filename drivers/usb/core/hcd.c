@@ -1184,6 +1184,12 @@ op_logical_or
 id|urb-&gt;transfer_buffer_length
 OL
 id|len
+op_logical_or
+op_logical_neg
+id|HCD_IS_RUNNING
+(paren
+id|hcd-&gt;state
+)paren
 )paren
 (brace
 id|dev_dbg
@@ -1290,7 +1296,7 @@ op_amp
 id|urb-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* do nothing if the hc is gone or the urb&squot;s been unlinked */
+multiline_comment|/* do nothing if the urb&squot;s been unlinked */
 r_if
 c_cond
 (paren
@@ -1309,12 +1315,6 @@ id|urb-&gt;dev-&gt;bus-&gt;hcpriv
 )paren
 op_eq
 l_int|0
-op_logical_or
-op_logical_neg
-id|HCD_IS_RUNNING
-(paren
-id|hcd-&gt;state
-)paren
 )paren
 (brace
 id|spin_unlock
