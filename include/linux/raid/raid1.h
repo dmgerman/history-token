@@ -100,17 +100,9 @@ id|sector_t
 id|next_seq_sect
 suffix:semicolon
 DECL|member|thread
-DECL|member|resync_thread
 id|mdk_thread_t
 op_star
 id|thread
-comma
-op_star
-id|resync_thread
-suffix:semicolon
-DECL|member|resync_mirrors
-r_int
-id|resync_mirrors
 suffix:semicolon
 DECL|member|spare
 id|mirror_info_t

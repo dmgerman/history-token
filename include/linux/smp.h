@@ -156,6 +156,8 @@ r_void
 )paren
 (brace
 )brace
+DECL|macro|cpu_online_map
+mdefine_line|#define cpu_online_map&t;&t;&t;&t;1
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu)&t;&t;&t;&t;1
 DECL|macro|num_online_cpus
