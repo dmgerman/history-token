@@ -1869,10 +1869,10 @@ id|__copy_to_user
 c_func
 (paren
 op_amp
-id|scr-&gt;pt.ar_csd
+id|sc-&gt;sc_ar25
 comma
 op_amp
-id|sc-&gt;sc_ar25
+id|scr-&gt;pt.ar_csd
 comma
 l_int|2
 op_star
