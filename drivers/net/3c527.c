@@ -4,7 +4,7 @@ mdefine_line|#define DRV_NAME&t;&t;&quot;3c527&quot;
 DECL|macro|DRV_VERSION
 mdefine_line|#define DRV_VERSION&t;&t;&quot;0.7-SMP&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&t;&quot;2003/09/17&quot;
+mdefine_line|#define DRV_RELDATE&t;&t;&quot;2003/09/21&quot;
 DECL|variable|version
 r_static
 r_const
@@ -228,8 +228,7 @@ id|tx_count
 suffix:semicolon
 multiline_comment|/* buffers left */
 DECL|member|tx_ring_head
-r_volatile
-id|u16
+id|atomic_t
 id|tx_ring_head
 suffix:semicolon
 multiline_comment|/* index to tx en-queue end */
@@ -2597,8 +2596,15 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
 id|lp-&gt;tx_ring_head
-op_assign
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|lp-&gt;tx_ring_tail
 op_assign
 l_int|0
@@ -2689,9 +2695,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|lp-&gt;tx_ring_tail
-op_assign
+id|atomic_set
+c_func
+(paren
+op_amp
 id|lp-&gt;tx_ring_head
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|lp-&gt;tx_ring_tail
 op_assign
 l_int|0
 suffix:semicolon
@@ -3013,7 +3026,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mc32_send_packet&t;-&t;queue a frame for transmit&n; *&t;@skb: buffer to transmit&n; *&t;@dev: 3c527 to send it out of&n; *&n; *&t;Transmit a buffer. This normally means throwing the buffer onto&n; *&t;the transmit queue as the queue is quite large. If the queue is&n; *&t;full then we set tx_busy and return. Once the interrupt handler&n; *&t;gets messages telling it to reclaim transmit queue entries, we will&n; *&t;clear tx_busy and the kernel will start calling this again.&n; *&n; *      We do not disable interrupts or acquire any locks; this can&n; *      run concurrently with mc32_tx_ring(), and the function itself&n; *      is serialised at a higher layer. However, this makes it&n; *      crucial that we update lp-&gt;tx_ring_head only after we&squot;ve&n; *      established a valid packet in the tx ring (and is why we mark&n; *      tx_ring_head volatile).&n; *&n; **/
+multiline_comment|/**&n; *&t;mc32_send_packet&t;-&t;queue a frame for transmit&n; *&t;@skb: buffer to transmit&n; *&t;@dev: 3c527 to send it out of&n; *&n; *&t;Transmit a buffer. This normally means throwing the buffer onto&n; *&t;the transmit queue as the queue is quite large. If the queue is&n; *&t;full then we set tx_busy and return. Once the interrupt handler&n; *&t;gets messages telling it to reclaim transmit queue entries, we will&n; *&t;clear tx_busy and the kernel will start calling this again.&n; *&n; *      We do not disable interrupts or acquire any locks; this can&n; *      run concurrently with mc32_tx_ring(), and the function itself&n; *      is serialised at a higher layer. However, similarly for the&n; *      card itself, we must ensure that we update tx_ring_head only&n; *      after we&squot;ve established a valid packet on the tx ring (and&n; *      before we let the card &quot;see&quot; it, to prevent it racing with the&n; *      irq handler).&n; * &n; */
 DECL|function|mc32_send_packet
 r_static
 r_int
@@ -3043,10 +3056,15 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|u16
+id|u32
 id|head
 op_assign
+id|atomic_read
+c_func
+(paren
+op_amp
 id|lp-&gt;tx_ring_head
+)paren
 suffix:semicolon
 r_volatile
 r_struct
@@ -3146,7 +3164,7 @@ suffix:semicolon
 multiline_comment|/* We will need this to flush the buffer out */
 id|lp-&gt;tx_ring
 (braket
-id|lp-&gt;tx_ring_head
+id|head
 )braket
 dot
 id|skb
@@ -3191,15 +3209,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The new frame has been setup; we can now&n;&t; * let the card and interrupt handler &quot;see&quot; it&n;&t; */
+multiline_comment|/*&n;&t; * The new frame has been setup; we can now&n;&t; * let the interrupt handler and card &quot;see&quot; it&n;&t; */
+id|atomic_set
+c_func
+(paren
+op_amp
+id|lp-&gt;tx_ring_head
+comma
+id|head
+)paren
+suffix:semicolon
 id|p-&gt;control
 op_and_assign
 op_complement
 id|CONTROL_EOL
-suffix:semicolon
-id|lp-&gt;tx_ring_head
-op_assign
-id|head
 suffix:semicolon
 id|netif_wake_queue
 c_func
@@ -3702,7 +3725,12 @@ c_loop
 (paren
 id|lp-&gt;tx_ring_tail
 op_ne
+id|atomic_read
+c_func
+(paren
+op_amp
 id|lp-&gt;tx_ring_head
+)paren
 )paren
 (brace
 id|u16
@@ -4206,7 +4234,6 @@ id|dev
 suffix:semicolon
 )brace
 r_else
-(brace
 id|complete
 c_func
 (paren
@@ -4214,7 +4241,6 @@ op_amp
 id|lp-&gt;execution_cmd
 )paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
