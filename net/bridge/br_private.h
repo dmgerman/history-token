@@ -712,6 +712,9 @@ comma
 r_int
 op_star
 id|ifindices
+comma
+r_int
+id|num
 )paren
 suffix:semicolon
 multiline_comment|/* br_input.c */

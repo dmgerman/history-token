@@ -1091,6 +1091,9 @@ comma
 r_int
 op_star
 id|ifindices
+comma
+r_int
+id|num
 )paren
 (brace
 r_struct
@@ -1114,6 +1117,13 @@ comma
 id|list
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|p-&gt;port_no
+OL
+id|num
+)paren
 id|ifindices
 (braket
 id|p-&gt;port_no
