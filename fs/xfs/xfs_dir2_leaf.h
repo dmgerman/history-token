@@ -37,7 +37,7 @@ id|__uint32_t
 id|xfs_dir2_dataptr_t
 suffix:semicolon
 DECL|macro|XFS_DIR2_MAX_DATAPTR
-mdefine_line|#define&t;XFS_DIR2_MAX_DATAPTR&t;((xfs_dir2_dataptr_t)0x7fffffff)
+mdefine_line|#define&t;XFS_DIR2_MAX_DATAPTR&t;((xfs_dir2_dataptr_t)0xffffffff)
 DECL|macro|XFS_DIR2_NULL_DATAPTR
 mdefine_line|#define&t;XFS_DIR2_NULL_DATAPTR&t;((xfs_dir2_dataptr_t)0)
 multiline_comment|/*&n; * Structures.&n; */
