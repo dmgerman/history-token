@@ -16,30 +16,7 @@ mdefine_line|#define DRIVER_VERSION &quot;v0.03&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;Silicon Labs CP2101/CP2102 RS232 serial adaptor driver&quot;
 multiline_comment|/*&n; * Function Prototypes&n; */
-r_int
-id|cp2101_get_config
-c_func
-(paren
-r_struct
-id|usb_serial_port
-op_star
-comma
-id|u8
-)paren
-suffix:semicolon
-r_int
-id|cp2101_set_config
-c_func
-(paren
-r_struct
-id|usb_serial_port
-op_star
-comma
-id|u8
-comma
-id|u16
-)paren
-suffix:semicolon
+r_static
 r_int
 id|cp2101_open
 c_func
@@ -63,6 +40,7 @@ id|usb_serial_port
 op_star
 )paren
 suffix:semicolon
+r_static
 r_void
 id|cp2101_close
 c_func
@@ -76,6 +54,7 @@ id|file
 op_star
 )paren
 suffix:semicolon
+r_static
 r_void
 id|cp2101_get_termios
 c_func
@@ -120,6 +99,7 @@ id|usb_serial
 op_star
 )paren
 suffix:semicolon
+r_static
 r_void
 id|cp2101_shutdown
 c_func
@@ -212,6 +192,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|cp2101_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|cp2101_device
@@ -348,6 +329,7 @@ mdefine_line|#define BREAK_ON&t;&t;0x0000
 DECL|macro|BREAK_OFF
 mdefine_line|#define BREAK_OFF&t;&t;0x0001
 DECL|function|cp2101_get_config
+r_static
 r_int
 id|cp2101_get_config
 c_func
@@ -502,6 +484,7 @@ id|value
 suffix:semicolon
 )brace
 DECL|function|cp2101_set_config
+r_static
 r_int
 id|cp2101_set_config
 c_func
@@ -606,6 +589,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cp2101_open
+r_static
 r_int
 id|cp2101_open
 (paren
@@ -799,6 +783,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|cp2101_close
+r_static
 r_void
 id|cp2101_close
 (paren
@@ -860,6 +845,7 @@ multiline_comment|/* Reads the baud rate, data bits, parity and stop bits from t
 multiline_comment|/* Corrects any unsupported values*/
 multiline_comment|/* Configures the termios structure to reflect the state of the device*/
 DECL|function|cp2101_get_termios
+r_static
 r_void
 id|cp2101_get_termios
 (paren
@@ -2308,6 +2294,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cp2101_shutdown
+r_static
 r_void
 id|cp2101_shutdown
 (paren
