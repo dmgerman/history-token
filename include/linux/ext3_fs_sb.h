@@ -153,11 +153,6 @@ DECL|member|s_def_hash_version
 r_int
 id|s_def_hash_version
 suffix:semicolon
-DECL|member|s_debts
-id|u8
-op_star
-id|s_debts
-suffix:semicolon
 DECL|member|s_freeblocks_counter
 r_struct
 id|percpu_counter

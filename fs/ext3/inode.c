@@ -8141,6 +8141,10 @@ op_ne
 id|EXT3_JOURNAL_INO
 op_logical_and
 id|ino
+op_ne
+id|EXT3_RESIZE_INO
+op_logical_and
+id|ino
 OL
 id|EXT3_FIRST_INO
 c_func
@@ -8220,6 +8224,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|smp_rmb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|group_desc
 op_assign
 id|block_group

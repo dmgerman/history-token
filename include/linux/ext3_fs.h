@@ -233,6 +233,86 @@ DECL|macro|EXT3_STATE_JDATA
 mdefine_line|#define EXT3_STATE_JDATA&t;&t;0x00000001 /* journaled data exists */
 DECL|macro|EXT3_STATE_NEW
 mdefine_line|#define EXT3_STATE_NEW&t;&t;&t;0x00000002 /* inode is newly created */
+multiline_comment|/* Used to pass group descriptor data when online resize is done */
+DECL|struct|ext3_new_group_input
+r_struct
+id|ext3_new_group_input
+(brace
+DECL|member|group
+id|__u32
+id|group
+suffix:semicolon
+multiline_comment|/* Group number for this data */
+DECL|member|block_bitmap
+id|__u32
+id|block_bitmap
+suffix:semicolon
+multiline_comment|/* Absolute block number of block bitmap */
+DECL|member|inode_bitmap
+id|__u32
+id|inode_bitmap
+suffix:semicolon
+multiline_comment|/* Absolute block number of inode bitmap */
+DECL|member|inode_table
+id|__u32
+id|inode_table
+suffix:semicolon
+multiline_comment|/* Absolute block number of inode table start */
+DECL|member|blocks_count
+id|__u32
+id|blocks_count
+suffix:semicolon
+multiline_comment|/* Total number of blocks in this group */
+DECL|member|reserved_blocks
+id|__u16
+id|reserved_blocks
+suffix:semicolon
+multiline_comment|/* Number of reserved blocks in this group */
+DECL|member|unused
+id|__u16
+id|unused
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* The struct ext3_new_group_input in kernel space, with free_blocks_count */
+DECL|struct|ext3_new_group_data
+r_struct
+id|ext3_new_group_data
+(brace
+DECL|member|group
+id|__u32
+id|group
+suffix:semicolon
+DECL|member|block_bitmap
+id|__u32
+id|block_bitmap
+suffix:semicolon
+DECL|member|inode_bitmap
+id|__u32
+id|inode_bitmap
+suffix:semicolon
+DECL|member|inode_table
+id|__u32
+id|inode_table
+suffix:semicolon
+DECL|member|blocks_count
+id|__u32
+id|blocks_count
+suffix:semicolon
+DECL|member|reserved_blocks
+id|__u16
+id|reserved_blocks
+suffix:semicolon
+DECL|member|unused
+id|__u16
+id|unused
+suffix:semicolon
+DECL|member|free_blocks_count
+id|__u32
+id|free_blocks_count
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * ioctl commands&n; */
 DECL|macro|EXT3_IOC_GETFLAGS
 mdefine_line|#define&t;EXT3_IOC_GETFLAGS&t;&t;_IOR(&squot;f&squot;, 1, long)
@@ -242,6 +322,10 @@ DECL|macro|EXT3_IOC_GETVERSION
 mdefine_line|#define&t;EXT3_IOC_GETVERSION&t;&t;_IOR(&squot;f&squot;, 3, long)
 DECL|macro|EXT3_IOC_SETVERSION
 mdefine_line|#define&t;EXT3_IOC_SETVERSION&t;&t;_IOW(&squot;f&squot;, 4, long)
+DECL|macro|EXT3_IOC_GROUP_EXTEND
+mdefine_line|#define EXT3_IOC_GROUP_EXTEND&t;&t;_IOW(&squot;f&squot;, 7, unsigned long)
+DECL|macro|EXT3_IOC_GROUP_ADD
+mdefine_line|#define EXT3_IOC_GROUP_ADD&t;&t;_IOW(&squot;f&squot;, 8,struct ext3_new_group_input)
 DECL|macro|EXT3_IOC_GETVERSION_OLD
 mdefine_line|#define&t;EXT3_IOC_GETVERSION_OLD&t;&t;_IOR(&squot;v&squot;, 1, long)
 DECL|macro|EXT3_IOC_SETVERSION_OLD
@@ -827,10 +911,11 @@ id|__u8
 id|s_prealloc_dir_blocks
 suffix:semicolon
 multiline_comment|/* Nr to preallocate for dirs */
-DECL|member|s_padding1
+DECL|member|s_reserved_gdt_blocks
 id|__u16
-id|s_padding1
+id|s_reserved_gdt_blocks
 suffix:semicolon
+multiline_comment|/* Per group desc for online growth */
 multiline_comment|/*&n;&t; * Journaling support valid if EXT3_FEATURE_COMPAT_HAS_JOURNAL set.&n;&t; */
 DECL|member|s_journal_uuid
 multiline_comment|/*D0*/
@@ -1365,6 +1450,27 @@ r_int
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|ext3_free_blocks_sb
+(paren
+id|handle_t
+op_star
+comma
+r_struct
+id|super_block
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_int
 r_int
 id|ext3_count_free_blocks
@@ -1870,6 +1976,43 @@ comma
 id|__u32
 op_star
 id|next_hash
+)paren
+suffix:semicolon
+multiline_comment|/* resize.c */
+r_extern
+r_int
+id|ext3_group_add
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_struct
+id|ext3_new_group_data
+op_star
+id|input
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ext3_group_extend
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_struct
+id|ext3_super_block
+op_star
+id|es
+comma
+r_int
+r_int
+id|n_blocks_count
 )paren
 suffix:semicolon
 multiline_comment|/* super.c */
