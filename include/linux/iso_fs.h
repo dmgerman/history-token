@@ -1554,7 +1554,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 id|p
@@ -1583,7 +1583,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 id|p
@@ -1613,7 +1613,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 id|p
@@ -1642,7 +1642,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|p
@@ -1671,7 +1671,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|p
@@ -1701,7 +1701,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|p
