@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * arch/ppc64/kernel/iomap.c&n; *&n; * ppc64 &quot;iomap&quot; interface implementation.&n; *&n; * (C) Copyright 2004 Linus Torvalds&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
