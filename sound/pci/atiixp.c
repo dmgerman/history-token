@@ -95,6 +95,15 @@ op_assign
 l_int|48000
 )brace
 suffix:semicolon
+DECL|variable|ac97_quirk
+r_static
+r_char
+op_star
+id|ac97_quirk
+(braket
+id|SNDRV_CARDS
+)braket
+suffix:semicolon
 DECL|variable|spdif_aclink
 r_static
 r_int
@@ -197,6 +206,26 @@ c_func
 id|ac97_clock
 comma
 l_string|&quot;AC&squot;97 codec clock (default 48000Hz).&quot;
+)paren
+suffix:semicolon
+id|module_param_array
+c_func
+(paren
+id|ac97_quirk
+comma
+id|charp
+comma
+l_int|NULL
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ac97_quirk
+comma
+l_string|&quot;AC&squot;97 workaround for strange hardware.&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -5417,6 +5446,21 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ac97 mixer section&n; */
+DECL|variable|__devinitdata
+r_static
+r_struct
+id|ac97_quirk
+id|ac97_quirks
+(braket
+)braket
+id|__devinitdata
+op_assign
+(brace
+(brace
+)brace
+multiline_comment|/* terminator */
+)brace
+suffix:semicolon
 DECL|function|snd_atiixp_mixer_new
 r_static
 r_int
@@ -5430,6 +5474,11 @@ id|chip
 comma
 r_int
 id|clock
+comma
+r_const
+r_char
+op_star
+id|quirk_override
 )paren
 (brace
 id|ac97_bus_t
@@ -5665,7 +5714,19 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* snd_ac97_tune_hardware(chip-&gt;ac97, ac97_quirks); */
+id|snd_ac97_tune_hardware
+c_func
+(paren
+id|chip-&gt;ac97
+(braket
+l_int|0
+)braket
+comma
+id|ac97_quirks
+comma
+id|quirk_override
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6608,6 +6669,11 @@ c_func
 id|chip
 comma
 id|ac97_clock
+(braket
+id|dev
+)braket
+comma
+id|ac97_quirk
 (braket
 id|dev
 )braket
