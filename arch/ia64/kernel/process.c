@@ -2719,7 +2719,6 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* f0-f31 are always valid so we always return 1 */
 )brace
-id|asmlinkage
 r_int
 DECL|function|sys_execve
 id|sys_execve
