@@ -806,7 +806,11 @@ op_assign
 id|pci_device_to_OF_node
 c_func
 (paren
-id|ap-&gt;host_set-&gt;pdev
+id|to_pci_dev
+c_func
+(paren
+id|ap-&gt;host_set-&gt;dev
+)paren
 )paren
 suffix:semicolon
 r_if
