@@ -10,28 +10,6 @@ macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &quot;xattr.h&quot;
 macro_line|#include &quot;acl.h&quot;
-multiline_comment|/* These symbols may be needed by a module. */
-DECL|variable|ext2_xattr_get
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ext2_xattr_get
-)paren
-suffix:semicolon
-DECL|variable|ext2_xattr_list
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ext2_xattr_list
-)paren
-suffix:semicolon
-DECL|variable|ext2_xattr_set
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ext2_xattr_set
-)paren
-suffix:semicolon
 DECL|macro|HDR
 mdefine_line|#define HDR(bh) ((struct ext2_xattr_header *)((bh)-&gt;b_data))
 DECL|macro|ENTRY

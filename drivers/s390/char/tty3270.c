@@ -7264,11 +7264,6 @@ id|tty3270
 op_star
 id|tp
 suffix:semicolon
-r_int
-id|length
-comma
-id|ret
-suffix:semicolon
 id|tp
 op_assign
 id|tty-&gt;driver_data

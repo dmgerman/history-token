@@ -2999,9 +2999,19 @@ c_func
 )paren
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;swsusp: FATAL: cannot find swap device, try &quot;
+l_string|&quot;swapon -a!&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
+)brace
 r_return
 id|suspend_prepare_image
 c_func

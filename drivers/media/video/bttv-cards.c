@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    $Id: bttv-cards.c,v 1.28 2004/10/06 13:45:14 kraxel Exp $&n;&n;    bttv-cards.c&n;&n;    this file has configuration informations - card-specific stuff&n;    like the big tvcards array for the most part&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2001 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
+multiline_comment|/*&n;    $Id: bttv-cards.c,v 1.29 2004/10/13 10:39:00 kraxel Exp $&n;&n;    bttv-cards.c&n;&n;    this file has configuration informations - card-specific stuff&n;    like the big tvcards array for the most part&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2001 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -4310,7 +4310,7 @@ id|audio_hook
 op_assign
 id|terratv_audio
 comma
-multiline_comment|/* GPIO wiring:&n;               External 20 pin connector (for Active Radio Upgrade board)&n;               gpio00: i2c-sda&n;               gpio01: i2c-scl&n;               gpio02: om5610-data&n;               gpio03: om5610-clk&n;               gpio04: om5610-wre&n;               gpio05: om5610-stereo&n;               gpio06: rds6588-davn&n;               gpio07: Pin 7 n.c.&n;               gpio08: nIOW&n;               gpio09+10: nIOR, nSEL ?? (bt878)&n;                gpio09: nIOR (bt848)&n;                gpio10: nSEL (bt848)&n;              Sound Routing:&n;               gpio16: u2-A0 (1st 4052bt)&n;               gpio17: u2-A1&n;               gpio18: u2-nEN&n;               gpio19: u4-A0 (2nd 4052)&n;               gpio20: u4-A1&n;                       u4-nEN - GND&n;&t;    Btspy:&n;&t;  &t;00000 : Cdrom (internal audio input)&n;&t;&t;10000 : ext. Video audio input&n;&t;&t;20000 : TV Mono&n;&t;&t;a0000 : TV Mono/2&n;&t;       1a0000 : TV Stereo&t;&n;&t;&t;30000 : Radio&n;&t;&t;40000 : Mute&n;       */
+multiline_comment|/* GPIO wiring:&n;               External 20 pin connector (for Active Radio Upgrade board)&n;               gpio00: i2c-sda&n;               gpio01: i2c-scl&n;               gpio02: om5610-data&n;               gpio03: om5610-clk&n;               gpio04: om5610-wre&n;               gpio05: om5610-stereo&n;               gpio06: rds6588-davn&n;               gpio07: Pin 7 n.c.&n;               gpio08: nIOW&n;               gpio09+10: nIOR, nSEL ?? (bt878)&n;                gpio09: nIOR (bt848)&n;                gpio10: nSEL (bt848)&n;              Sound Routing:&n;               gpio16: u2-A0 (1st 4052bt)&n;               gpio17: u2-A1&n;               gpio18: u2-nEN&n;               gpio19: u4-A0 (2nd 4052)&n;               gpio20: u4-A1&n;                       u4-nEN - GND&n;&t;    Btspy:&n;&t;  &t;00000 : Cdrom (internal audio input)&n;&t;&t;10000 : ext. Video audio input&n;&t;&t;20000 : TV Mono&n;&t;&t;a0000 : TV Mono/2&n;&t;       1a0000 : TV Stereo&n;&t;&t;30000 : Radio&n;&t;&t;40000 : Mute&n;       */
 )brace
 comma
 (brace
@@ -6545,7 +6545,7 @@ comma
 )brace
 comma
 (brace
-multiline_comment|/* This is the ultimate cheapo capture card &n;&t; * just a BT848A on a small PCB!&n;&t; * Steve Hosgood &lt;steve@equiinet.com&gt; */
+multiline_comment|/* This is the ultimate cheapo capture card&n;&t; * just a BT848A on a small PCB!&n;&t; * Steve Hosgood &lt;steve@equiinet.com&gt; */
 dot
 id|name
 op_assign
@@ -6913,7 +6913,7 @@ comma
 )brace
 comma
 (brace
-multiline_comment|/* Miguel Angel Alvarez &lt;maacruz@navegalia.com&gt;&n;&t;   new Easy TV BT878 version (model CPH061) &n;&t;   special thanks to Informatica Mieres for providing the card */
+multiline_comment|/* Miguel Angel Alvarez &lt;maacruz@navegalia.com&gt;&n;&t;   new Easy TV BT878 version (model CPH061)&n;&t;   special thanks to Informatica Mieres for providing the card */
 dot
 id|name
 op_assign
@@ -9851,7 +9851,7 @@ id|tuner_type
 op_assign
 l_int|5
 comma
-multiline_comment|/* Notes:&n;&t;   - card lacks subsystem ID&n;&t;   - stereo variant w/ daughter board with tda9874a @0xb0&n;&t;   - Audio Routing: &n;&t;&t;always from tda9874 independent of GPIO (?)&n;&t;&t;external line in: unknown&n;&t;   - Other chips: em78p156elp @ 0x96 (probably IR remote control)&n;&t;              hef4053 (instead 4052) for unknown function&n;&t;*/
+multiline_comment|/* Notes:&n;&t;   - card lacks subsystem ID&n;&t;   - stereo variant w/ daughter board with tda9874a @0xb0&n;&t;   - Audio Routing:&n;&t;&t;always from tda9874 independent of GPIO (?)&n;&t;&t;external line in: unknown&n;&t;   - Other chips: em78p156elp @ 0x96 (probably IR remote control)&n;&t;              hef4053 (instead 4052) for unknown function&n;&t;*/
 )brace
 comma
 (brace
@@ -12772,7 +12772,7 @@ singleline_comment|//       GPIO14-12: n.c.
 singleline_comment|// LR90: GP9=GPIO23 .. GP1=GPIO15 (right above the bt878)
 singleline_comment|// lowest 3 bytes are remote control codes (no handshake needed)
 singleline_comment|// xxxFFF: No remote control chip soldered
-singleline_comment|// xxxF00(LR26/LR50), xxxFE0(LR90): Remote control chip (LVA001 or CF45) soldered 
+singleline_comment|// xxxF00(LR26/LR50), xxxFE0(LR90): Remote control chip (LVA001 or CF45) soldered
 singleline_comment|// Note: Some bits are Audio_Mask !
 id|ttype
 op_assign
@@ -12907,7 +12907,7 @@ op_assign
 l_int|4
 suffix:semicolon
 )brace
-singleline_comment|// No tuner present 
+singleline_comment|// No tuner present
 id|printk
 c_func
 (paren
@@ -17411,7 +17411,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ----------------------------------------------------------------------- */
 multiline_comment|/*  Imagenation L-Model PXC200 Framegrabber */
-multiline_comment|/*  This is basically the same procedure as &n; *  used by Alessandro Rubini in his pxc200 &n; *  driver, but using BTTV functions */
+multiline_comment|/*  This is basically the same procedure as&n; *  used by Alessandro Rubini in his pxc200&n; *  driver, but using BTTV functions */
 DECL|function|init_PXC200
 r_static
 r_void
@@ -17503,7 +17503,7 @@ op_lshift
 l_int|13
 )paren
 suffix:semicolon
-multiline_comment|/* GPIO inputs are pulled up, so no need to drive &n;&t; * reset pin any longer */
+multiline_comment|/* GPIO inputs are pulled up, so no need to drive&n;&t; * reset pin any longer */
 id|gpio_bits
 c_func
 (paren
@@ -17559,7 +17559,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&t;Initialise 12C508 PIC */
-multiline_comment|/*&t;The I2CWrite and I2CRead commmands are actually to the &n;&t; *&t;same chips - but the R/W bit is included in the address&n;&t; *&t;argument so the numbers are different */
+multiline_comment|/*&t;The I2CWrite and I2CRead commmands are actually to the&n;&t; *&t;same chips - but the R/W bit is included in the address&n;&t; *&t;argument so the numbers are different */
 id|printk
 c_func
 (paren
@@ -19710,7 +19710,7 @@ id|VIDEO_SOUND_LANG2
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Dariusz Kowalewski &lt;darekk@automex.pl&gt;&n; * sound control for FlyVideo 2000S (with tda9874 decoder) &n; * based on pvbt878p9b_audio() - this is not tested, please fix!!!&n; */
+multiline_comment|/*&n; * Dariusz Kowalewski &lt;darekk@automex.pl&gt;&n; * sound control for FlyVideo 2000S (with tda9874 decoder)&n; * based on pvbt878p9b_audio() - this is not tested, please fix!!!&n; */
 r_static
 r_void
 DECL|function|fv2000s_audio
@@ -20367,7 +20367,7 @@ id|BT848_GPIO_DATA
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ivc120_muxsel [Added by Alan Garfield &lt;alan@fromorbit.com&gt;]&n; *&n; * The IVC120G security card has 4 i2c controlled TDA8540 matrix&n; * swichers to provide 16 channels to MUX0. The TDA8540&squot;s have &n; * 4 indepedant outputs and as such the IVC120G also has the &n; * optional &quot;Monitor Out&quot; bus. This allows the card to be looking &n; * at one input while the monitor is looking at another.&n; *&n; * Since I&squot;ve couldn&squot;t be bothered figuring out how to add an&n; * independant muxsel for the monitor bus, I&squot;ve just set it to &n; * whatever the card is looking at.&n; *&n; *  OUT0 of the TDA8540&squot;s is connected to MUX0         (0x03)&n; *  OUT1 of the TDA8540&squot;s is connected to &quot;Monitor Out&quot;        (0x0C)&n; *&n; *  TDA8540_ALT3 IN0-3 = Channel 13 - 16       (0x03)&n; *  TDA8540_ALT4 IN0-3 = Channel 1 - 4         (0x03)&n; *  TDA8540_ALT5 IN0-3 = Channel 5 - 8         (0x03)&n; *  TDA8540_ALT6 IN0-3 = Channel 9 - 12                (0x03)&n; *&n; */
+multiline_comment|/*&n; * ivc120_muxsel [Added by Alan Garfield &lt;alan@fromorbit.com&gt;]&n; *&n; * The IVC120G security card has 4 i2c controlled TDA8540 matrix&n; * swichers to provide 16 channels to MUX0. The TDA8540&squot;s have&n; * 4 indepedant outputs and as such the IVC120G also has the&n; * optional &quot;Monitor Out&quot; bus. This allows the card to be looking&n; * at one input while the monitor is looking at another.&n; *&n; * Since I&squot;ve couldn&squot;t be bothered figuring out how to add an&n; * independant muxsel for the monitor bus, I&squot;ve just set it to&n; * whatever the card is looking at.&n; *&n; *  OUT0 of the TDA8540&squot;s is connected to MUX0         (0x03)&n; *  OUT1 of the TDA8540&squot;s is connected to &quot;Monitor Out&quot;        (0x0C)&n; *&n; *  TDA8540_ALT3 IN0-3 = Channel 13 - 16       (0x03)&n; *  TDA8540_ALT4 IN0-3 = Channel 1 - 4         (0x03)&n; *  TDA8540_ALT5 IN0-3 = Channel 5 - 8         (0x03)&n; *  TDA8540_ALT6 IN0-3 = Channel 9 - 12                (0x03)&n; *&n; */
 multiline_comment|/* All 7 possible sub-ids for the TDA8540 Matrix Switcher */
 DECL|macro|I2C_TDA8540
 mdefine_line|#define I2C_TDA8540        0x90
@@ -20631,7 +20631,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// 5-8 
+singleline_comment|// 5-8
 id|bttv_I2CWrite
 c_func
 (paren
@@ -21073,7 +21073,7 @@ c_loop
 (paren
 id|dev
 op_assign
-id|pci_get_class
+id|pci_find_class
 c_func
 (paren
 id|PCI_CLASS_BRIDGE_HOST
@@ -21179,7 +21179,7 @@ c_loop
 (paren
 id|dev
 op_assign
-id|pci_get_device
+id|pci_find_device
 c_func
 (paren
 id|PCI_VENDOR_ID_INTEL

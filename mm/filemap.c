@@ -341,6 +341,7 @@ id|filemap_fdatawrite
 )paren
 suffix:semicolon
 DECL|function|filemap_fdatawrite_range
+r_static
 r_int
 id|filemap_fdatawrite_range
 c_func
@@ -371,13 +372,6 @@ id|WB_SYNC_ALL
 )paren
 suffix:semicolon
 )brace
-DECL|variable|filemap_fdatawrite_range
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|filemap_fdatawrite_range
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * This is a mostly non-blocking flush.  Not suitable for data-integrity&n; * purposes - I/O may not be started against all dirty pages.&n; */
 DECL|function|filemap_flush
 r_int

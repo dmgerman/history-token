@@ -3675,6 +3675,8 @@ r_struct
 id|task_struct
 op_star
 id|p
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|retval

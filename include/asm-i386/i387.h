@@ -354,21 +354,5 @@ op_star
 id|fpu
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|dump_extended_fpu
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_struct
-id|user_fxsr_struct
-op_star
-id|fpu
-)paren
-suffix:semicolon
 macro_line|#endif /* __ASM_I386_I387_H */
 eof

@@ -3677,7 +3677,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end key_init() */
 DECL|variable|key_init
-id|subsys_initcall
+id|security_initcall
 c_func
 (paren
 id|key_init

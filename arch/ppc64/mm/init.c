@@ -1923,6 +1923,13 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+multiline_comment|/* We leave htlb_segs as it was, but for a fork, we need to&n;&t; * clear the huge_pgdir. */
+id|mm-&gt;context.huge_pgdir
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 id|again
 suffix:colon
 r_if
@@ -2057,6 +2064,12 @@ suffix:semicolon
 id|mm-&gt;context.id
 op_assign
 id|NO_CONTEXT
+suffix:semicolon
+id|hugetlb_mm_free_pgd
+c_func
+(paren
+id|mm
+)paren
 suffix:semicolon
 )brace
 DECL|function|mmu_context_init

@@ -515,14 +515,13 @@ c_func
 id|in_dev
 )paren
 suffix:semicolon
-id|smp_wmb
+id|rcu_assign_pointer
 c_func
 (paren
-)paren
-suffix:semicolon
 id|dev-&gt;ip_ptr
-op_assign
+comma
 id|in_dev
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SYSCTL
 id|devinet_sysctl_register

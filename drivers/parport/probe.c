@@ -1132,11 +1132,4 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|variable|parport_device_id
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|parport_device_id
-)paren
-suffix:semicolon
 eof

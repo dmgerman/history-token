@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2001 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/kernel.h&quot;
 macro_line|#include &quot;linux/module.h&quot;
+macro_line|#include &quot;linux/kallsyms.h&quot;
 macro_line|#include &quot;asm/page.h&quot;
 macro_line|#include &quot;asm/processor.h&quot;
 macro_line|#include &quot;sysrq.h&quot;
@@ -43,7 +44,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Call Trace: &quot;
+l_string|&quot;Call Trace:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|i
@@ -85,27 +86,6 @@ id|addr
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|i
-op_logical_and
-(paren
-(paren
-id|i
-op_mod
-l_int|6
-)paren
-op_eq
-l_int|0
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n   &quot;
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -114,17 +94,25 @@ comma
 id|addr
 )paren
 suffix:semicolon
-id|i
-op_increment
+id|print_symbol
+c_func
+(paren
+l_string|&quot;%s&quot;
+comma
+id|addr
+)paren
 suffix:semicolon
-)brace
-)brace
 id|printk
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+id|i
+op_increment
+suffix:semicolon
+)brace
+)brace
 )brace
 multiline_comment|/*&n; * The architecture-independent dump_stack generator&n; */
 DECL|function|dump_stack
@@ -177,5 +165,4 @@ id|sp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

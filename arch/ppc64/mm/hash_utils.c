@@ -1136,12 +1136,15 @@ id|secondary
 comma
 id|slot
 suffix:semicolon
-multiline_comment|/* XXX fix for large ptes */
 r_int
 r_int
-id|large
+id|huge
 op_assign
-l_int|0
+id|pte_huge
+c_func
+(paren
+id|pte
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1194,7 +1197,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|large
+id|huge
 )paren
 id|vpn
 op_assign
@@ -1216,7 +1219,7 @@ c_func
 (paren
 id|vpn
 comma
-id|large
+id|huge
 )paren
 suffix:semicolon
 id|secondary
@@ -1276,7 +1279,7 @@ id|slot
 comma
 id|va
 comma
-id|large
+id|huge
 comma
 id|local
 )paren

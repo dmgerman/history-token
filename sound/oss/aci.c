@@ -14,6 +14,7 @@ id|aci_port
 suffix:semicolon
 multiline_comment|/* as determined by bit 4 in the OPTi 929 MC4 register */
 DECL|variable|aci_idcode
+r_static
 r_int
 id|aci_idcode
 (braket
@@ -31,13 +32,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|aci_port
-)paren
-suffix:semicolon
-DECL|variable|aci_idcode
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|aci_idcode
 )paren
 suffix:semicolon
 DECL|variable|aci_version

@@ -1056,12 +1056,10 @@ id|ocp_sys_info.opb_bus_freq
 op_assign
 id|clocks.opb
 suffix:semicolon
-multiline_comment|/* Disable L2-Cache on broken hardware, enable it otherwise */
-id|ibm440gx_l2c_setup
+multiline_comment|/*&n;&t; * Always disable L2 cache. All revs/speeds of silicon&n;&t; * have parity error problems despite errata claims to&n;&t; * the contrary.&n;&t; */
+id|ibm440gx_l2c_disable
 c_func
 (paren
-op_amp
-id|clocks
 )paren
 suffix:semicolon
 id|ibm44x_platform_init

@@ -1576,11 +1576,6 @@ op_assign
 id|handle
 suffix:semicolon
 multiline_comment|/* enqueue is accessed locklessly - make sure it&squot;s visible&n;&t; * before we set a netdevice&squot;s qdisc pointer to sch */
-id|smp_wmb
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1615,7 +1610,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|list_add_tail
+id|list_add_tail_rcu
 c_func
 (paren
 op_amp

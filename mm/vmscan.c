@@ -1809,10 +1809,6 @@ id|zone-&gt;nr_inactive
 op_sub_assign
 id|nr_taken
 suffix:semicolon
-id|zone-&gt;pages_scanned
-op_add_assign
-id|nr_taken
-suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
@@ -2243,6 +2239,10 @@ id|pgscanned
 op_increment
 suffix:semicolon
 )brace
+id|zone-&gt;pages_scanned
+op_add_assign
+id|pgscanned
+suffix:semicolon
 id|zone-&gt;nr_active
 op_sub_assign
 id|pgmoved

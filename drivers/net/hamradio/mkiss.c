@@ -2354,9 +2354,12 @@ id|AXF_INUSE
 )paren
 suffix:semicolon
 multiline_comment|/* Clear ESCAPE &amp; ERROR flags */
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|ax-&gt;buflock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|netif_start_queue
 c_func
