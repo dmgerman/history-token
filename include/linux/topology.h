@@ -11,42 +11,8 @@ macro_line|#ifndef nr_cpus_node
 DECL|macro|nr_cpus_node
 mdefine_line|#define nr_cpus_node(node)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;cpumask_t __tmp__;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__tmp__ = node_to_cpumask(node);&t;&t;&t;&t;&bslash;&n;&t;&t;cpus_weight(__tmp__);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 macro_line|#endif
-DECL|function|__next_node_with_cpus
-r_static
-r_inline
-r_int
-id|__next_node_with_cpus
-c_func
-(paren
-r_int
-id|node
-)paren
-(brace
-r_do
-op_increment
-id|node
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|node
-OL
-id|numnodes
-op_logical_and
-op_logical_neg
-id|nr_cpus_node
-c_func
-(paren
-id|node
-)paren
-)paren
-suffix:semicolon
-r_return
-id|node
-suffix:semicolon
-)brace
 DECL|macro|for_each_node_with_cpus
-mdefine_line|#define for_each_node_with_cpus(node) &bslash;&n;&t;for (node = 0; node &lt; numnodes; node = __next_node_with_cpus(node))
+mdefine_line|#define for_each_node_with_cpus(node)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for_each_online_node(node)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (nr_cpus_node(node))
 macro_line|#ifndef node_distance
 multiline_comment|/* Conform to ACPI 2.0 SLIT distance definitions */
 DECL|macro|LOCAL_DISTANCE

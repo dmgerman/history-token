@@ -460,10 +460,6 @@ mdefine_line|#define node_present_pages(nid)&t;(NODE_DATA(nid)-&gt;node_present_
 DECL|macro|node_spanned_pages
 mdefine_line|#define node_spanned_pages(nid)&t;(NODE_DATA(nid)-&gt;node_spanned_pages)
 r_extern
-r_int
-id|numnodes
-suffix:semicolon
-r_extern
 r_struct
 id|pglist_data
 op_star

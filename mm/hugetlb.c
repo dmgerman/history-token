@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 DECL|variable|hugetlb_zero
 DECL|variable|hugetlb_infinity
 r_const
@@ -292,7 +293,10 @@ op_plus
 l_int|1
 )paren
 op_mod
-id|numnodes
+id|num_online_nodes
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -305,13 +309,11 @@ op_increment
 suffix:semicolon
 id|nr_huge_pages_node
 (braket
-id|page_zone
+id|page_to_nid
 c_func
 (paren
 id|page
 )paren
-op_member_access_from_pointer
-id|zone_pgdat-&gt;node_id
 )braket
 op_increment
 suffix:semicolon

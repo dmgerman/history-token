@@ -20,11 +20,20 @@ macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &quot;internal.h&quot;
+multiline_comment|/* MCD - HACK: Find somewhere to initialize this EARLY, or make this initializer cleaner */
 DECL|variable|node_online_map
 id|nodemask_t
 id|node_online_map
 op_assign
-id|NODE_MASK_NONE
+(brace
+(brace
+(braket
+l_int|0
+)braket
+op_assign
+l_int|1UL
+)brace
+)brace
 suffix:semicolon
 DECL|variable|node_possible_map
 id|nodemask_t
@@ -51,12 +60,6 @@ suffix:semicolon
 DECL|variable|nr_swap_pages
 r_int
 id|nr_swap_pages
-suffix:semicolon
-DECL|variable|numnodes
-r_int
-id|numnodes
-op_assign
-l_int|1
 suffix:semicolon
 DECL|variable|sysctl_lower_zone_protection
 r_int
@@ -5273,7 +5276,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_NUMA
 DECL|macro|MAX_NODE_LOAD
-mdefine_line|#define MAX_NODE_LOAD (numnodes)
+mdefine_line|#define MAX_NODE_LOAD (num_online_nodes())
 DECL|variable|node_load
 r_static
 r_int
@@ -5283,7 +5286,7 @@ id|node_load
 id|MAX_NUMNODES
 )braket
 suffix:semicolon
-multiline_comment|/**&n; * find_next_best_node - find the next node that should appear in a given&n; *    node&squot;s fallback list&n; * @node: node whose fallback list we&squot;re appending&n; * @used_node_mask: pointer to the bitmap of already used nodes&n; *&n; * We use a number of factors to determine which is the next node that should&n; * appear on a given node&squot;s fallback list.  The node should not have appeared&n; * already in @node&squot;s fallback list, and it should be the next closest node&n; * according to the distance array (which contains arbitrary distance values&n; * from each node to each node in the system), and should also prefer nodes&n; * with no CPUs, since presumably they&squot;ll have very little allocation pressure&n; * on them otherwise.&n; * It returns -1 if no node is found.&n; */
+multiline_comment|/**&n; * find_next_best_node - find the next node that should appear in a given&n; *    node&squot;s fallback list&n; * @node: node whose fallback list we&squot;re appending&n; * @used_node_mask: nodemask_t of already used nodes&n; *&n; * We use a number of factors to determine which is the next node that should&n; * appear on a given node&squot;s fallback list.  The node should not have appeared&n; * already in @node&squot;s fallback list, and it should be the next closest node&n; * according to the distance array (which contains arbitrary distance values&n; * from each node to each node in the system), and should also prefer nodes&n; * with no CPUs, since presumably they&squot;ll have very little allocation pressure&n; * on them otherwise.&n; * It returns -1 if no node is found.&n; */
 DECL|function|find_next_best_node
 r_static
 r_int
@@ -5294,7 +5297,7 @@ c_func
 r_int
 id|node
 comma
-r_void
+id|nodemask_t
 op_star
 id|used_node_mask
 )paren
@@ -5317,19 +5320,10 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|numnodes
-suffix:semicolon
-id|i
-op_increment
 )paren
 (brace
 id|cpumask_t
@@ -5344,17 +5338,21 @@ op_plus
 id|i
 )paren
 op_mod
-id|numnodes
+id|num_online_nodes
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t want a node to appear more than once */
 r_if
 c_cond
 (paren
-id|test_bit
+id|node_isset
 c_func
 (paren
 id|n
 comma
+op_star
 id|used_node_mask
 )paren
 )paren
@@ -5365,11 +5363,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
+id|node_isset
 c_func
 (paren
 id|node
 comma
+op_star
 id|used_node_mask
 )paren
 )paren
@@ -5456,11 +5455,12 @@ id|best_node
 op_ge
 l_int|0
 )paren
-id|set_bit
+id|node_set
 c_func
 (paren
 id|best_node
 comma
+op_star
 id|used_node_mask
 )paren
 suffix:semicolon
@@ -5501,13 +5501,8 @@ id|zonelist
 op_star
 id|zonelist
 suffix:semicolon
-id|DECLARE_BITMAP
-c_func
-(paren
+id|nodemask_t
 id|used_mask
-comma
-id|MAX_NUMNODES
-)paren
 suffix:semicolon
 multiline_comment|/* initialize zonelists */
 r_for
@@ -5560,18 +5555,19 @@ id|pgdat-&gt;node_id
 suffix:semicolon
 id|load
 op_assign
-id|numnodes
+id|num_online_nodes
+c_func
+(paren
+)paren
 suffix:semicolon
 id|prev_node
 op_assign
 id|local_node
 suffix:semicolon
-id|bitmap_zero
+id|nodes_clear
 c_func
 (paren
 id|used_mask
-comma
-id|MAX_NUMNODES
 )paren
 suffix:semicolon
 r_while
@@ -5585,6 +5581,7 @@ c_func
 (paren
 id|local_node
 comma
+op_amp
 id|used_mask
 )paren
 )paren
@@ -5843,11 +5840,24 @@ l_int|1
 suffix:semicolon
 id|node
 OL
-id|numnodes
+id|MAX_NUMNODES
 suffix:semicolon
 id|node
 op_increment
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|node_online
+c_func
+(paren
+id|node
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|j
 op_assign
 id|build_zonelists_node
@@ -5866,6 +5876,7 @@ comma
 id|k
 )paren
 suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -5880,6 +5891,19 @@ suffix:semicolon
 id|node
 op_increment
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|node_online
+c_func
+(paren
+id|node
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|j
 op_assign
 id|build_zonelists_node
@@ -5898,6 +5922,7 @@ comma
 id|k
 )paren
 suffix:semicolon
+)brace
 id|zonelist-&gt;zones
 (braket
 id|j
@@ -5920,21 +5945,11 @@ r_void
 r_int
 id|i
 suffix:semicolon
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|numnodes
-suffix:semicolon
-id|i
-op_increment
 )paren
-(brace
 id|build_zonelists
 c_func
 (paren
@@ -5945,13 +5960,15 @@ id|i
 )paren
 )paren
 suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
 l_string|&quot;Built %i zonelists&bslash;n&quot;
 comma
-id|numnodes
+id|num_online_nodes
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 )brace

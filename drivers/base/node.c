@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/node.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 DECL|variable|node_class
 r_static
 r_struct
@@ -546,19 +547,10 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|numnodes
-suffix:semicolon
-id|i
-op_increment
 )paren
 id|len
 op_add_assign
