@@ -231,6 +231,24 @@ op_star
 id|dst
 )paren
 suffix:semicolon
+r_void
+id|snd_ac97_restore_status
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
+r_void
+id|snd_ac97_restore_iec958
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
 multiline_comment|/* ac97_proc.c */
 macro_line|#ifdef CONFIG_PROC_FS
 r_void
