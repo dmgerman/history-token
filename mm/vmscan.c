@@ -95,6 +95,11 @@ DECL|member|may_writepage
 r_int
 id|may_writepage
 suffix:semicolon
+multiline_comment|/* This context&squot;s SWAP_CLUSTER_MAX. If freeing memory for&n;&t; * suspend, we effectively ignore SWAP_CLUSTER_MAX.&n;&t; * In this context, it doesn&squot;t matter that we scan the&n;&t; * whole list at once. */
+DECL|member|swap_cluster_max
+r_int
+id|swap_cluster_max
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The list of shrinker callbacks used by to apply pressure to&n; * ageable caches.&n; */
@@ -1710,7 +1715,7 @@ c_loop
 id|nr_scan
 op_increment
 OL
-id|SWAP_CLUSTER_MAX
+id|sc-&gt;swap_cluster_max
 op_logical_and
 op_logical_neg
 id|list_empty
@@ -2799,7 +2804,7 @@ c_cond
 (paren
 id|nr_active
 op_ge
-id|SWAP_CLUSTER_MAX
+id|sc-&gt;swap_cluster_max
 )paren
 id|zone-&gt;nr_scan_active
 op_assign
@@ -2829,7 +2834,7 @@ c_cond
 (paren
 id|nr_inactive
 op_ge
-id|SWAP_CLUSTER_MAX
+id|sc-&gt;swap_cluster_max
 )paren
 id|zone-&gt;nr_scan_inactive
 op_assign
@@ -2842,7 +2847,7 @@ l_int|0
 suffix:semicolon
 id|sc-&gt;nr_to_reclaim
 op_assign
-id|SWAP_CLUSTER_MAX
+id|sc-&gt;swap_cluster_max
 suffix:semicolon
 r_while
 c_loop
@@ -2869,7 +2874,7 @@ comma
 r_int
 r_int
 )paren
-id|SWAP_CLUSTER_MAX
+id|sc-&gt;swap_cluster_max
 )paren
 suffix:semicolon
 id|nr_active
@@ -2902,7 +2907,7 @@ comma
 r_int
 r_int
 )paren
-id|SWAP_CLUSTER_MAX
+id|sc-&gt;swap_cluster_max
 )paren
 suffix:semicolon
 id|nr_inactive
@@ -3176,6 +3181,10 @@ id|sc.priority
 op_assign
 id|priority
 suffix:semicolon
+id|sc.swap_cluster_max
+op_assign
+id|SWAP_CLUSTER_MAX
+suffix:semicolon
 id|shrink_caches
 c_func
 (paren
@@ -3223,7 +3232,7 @@ c_cond
 (paren
 id|total_reclaimed
 op_ge
-id|SWAP_CLUSTER_MAX
+id|sc.swap_cluster_max
 )paren
 (brace
 id|ret
@@ -3240,9 +3249,9 @@ c_cond
 (paren
 id|total_scanned
 OG
-id|SWAP_CLUSTER_MAX
+id|sc.swap_cluster_max
 op_plus
-id|SWAP_CLUSTER_MAX
+id|sc.swap_cluster_max
 op_div
 l_int|2
 )paren
@@ -3700,6 +3709,15 @@ id|sc.priority
 op_assign
 id|priority
 suffix:semicolon
+id|sc.swap_cluster_max
+op_assign
+id|nr_pages
+ques
+c_cond
+id|nr_pages
+suffix:colon
+id|SWAP_CLUSTER_MAX
+suffix:semicolon
 id|shrink_zone
 c_func
 (paren
@@ -3828,9 +3846,16 @@ multiline_comment|/*&n;&t;&t; * We do this so kswapd doesn&squot;t build up larg
 r_if
 c_cond
 (paren
+(paren
 id|total_reclaimed
 op_ge
 id|SWAP_CLUSTER_MAX
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|nr_pages
+)paren
 )paren
 r_break
 suffix:semicolon
