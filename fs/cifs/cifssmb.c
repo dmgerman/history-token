@@ -4238,6 +4238,8 @@ l_int|2
 op_star
 id|len_of_str
 )paren
+op_plus
+l_int|2
 suffix:semicolon
 id|pSMB-&gt;ByteCount
 op_add_assign
