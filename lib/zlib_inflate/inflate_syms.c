@@ -58,6 +58,13 @@ c_func
 id|zlib_inflateSyncPoint
 )paren
 suffix:semicolon
+DECL|variable|zlib_inflateIncomp
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|zlib_inflateIncomp
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
