@@ -150,7 +150,7 @@ id|stats
 suffix:semicolon
 DECL|member|my_addr
 r_struct
-id|at_addr
+id|atalk_addr
 id|my_addr
 suffix:semicolon
 )brace
@@ -2904,7 +2904,7 @@ id|ifr-&gt;ifr_addr
 suffix:semicolon
 multiline_comment|/* we&squot;ll keep the localtalk node address in dev-&gt;pa_addr */
 r_struct
-id|at_addr
+id|atalk_addr
 op_star
 id|aa
 op_assign
