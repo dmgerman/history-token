@@ -5322,7 +5322,7 @@ mdefine_line|#define WRITE64(n)               do {&t;&t;&t;&t;&bslash;&n;&t;*p++
 DECL|macro|WRITEMEM
 mdefine_line|#define WRITEMEM(ptr,nbytes)     do {&t;&t;&t;&t;&bslash;&n;&t;*(p + XDR_QUADLEN(nbytes) -1) = 0;                      &bslash;&n;&t;memcpy(p, ptr, nbytes);&t;&t;&t;&t;&t;&bslash;&n;&t;p += XDR_QUADLEN(nbytes);&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|WRITECINFO
-mdefine_line|#define WRITECINFO(c)&t;&t;do {&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.atomic);&t;&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.before_size);&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.before_ctime);&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.after_size);&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.after_ctime);&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define WRITECINFO(c)&t;&t;do {&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.atomic);&t;&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.before_ctime_sec);&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.before_ctime_nsec);&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.after_ctime_sec);&t;&t;&t;&t;&bslash;&n;&t;*p++ = htonl(c.after_ctime_nsec);&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|RESERVE_SPACE
 mdefine_line|#define RESERVE_SPACE(nbytes)&t;do {&t;&t;&t;&t;&bslash;&n;&t;p = resp-&gt;p;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;BUG_ON(p + XDR_QUADLEN(nbytes) &gt; resp-&gt;end);&t;&t;&bslash;&n;} while (0)
 DECL|macro|ADJUST_ARGS
@@ -5896,7 +5896,7 @@ op_amp
 id|FATTR4_WORD0_CHANGE
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * XXX: We currently use the inode ctime as the nfsv4 &quot;changeid&quot;&n;&t;&t; * attribute.  This violates the spec, which says&n;&t;&t; *&n;&t;&t; *    The server may return the object&squot;s time_modify attribute&n;&t;&t; *    for this attribute, but only if the file system object&n;&t;&t; *    can not be updated more frequently than the resolution&n;&t;&t; *    of time_modify.&n;&t;&t; *&n;&t;&t; * Since we only have 1-second ctime resolution, this is a pretty&n;&t;&t; * serious violation.  Indeed, 1-second ctime resolution is known&n;&t;&t; * to be a problem in practice in the NFSv3 world.&n;&t;&t; *&n;&t;&t; * The real solution to this problem is probably to work on&n;&t;&t; * adding high-resolution mtimes to the VFS layer.&n;&t;&t; *&n;&t;&t; * Note: Started using i_size for the high 32 bits of the changeid.&n;&t;&t; *&n;&t;&t; * Note 2: This _must_ be consistent with the scheme for writing&n;&t;&t; * change_info, so any changes made here must be reflected there&n;&t;&t; * as well.  (See xdr4.h:set_change_info() and the WRITECINFO()&n;&t;&t; * macro above.)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Note: This _must_ be consistent with the scheme for writing&n;&t;&t; * change_info, so any changes made here must be reflected there&n;&t;&t; * as well.  (See xdr4.h:set_change_info() and the WRITECINFO()&n;&t;&t; * macro above.)&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5914,16 +5914,15 @@ suffix:semicolon
 id|WRITE32
 c_func
 (paren
-id|stat.size
+id|stat.ctime.tv_sec
 )paren
 suffix:semicolon
 id|WRITE32
 c_func
 (paren
-id|stat.mtime.tv_sec
+id|stat.ctime.tv_nsec
 )paren
 suffix:semicolon
-multiline_comment|/* AK: nsec dropped? */
 )brace
 r_if
 c_cond
