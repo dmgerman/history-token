@@ -105,6 +105,14 @@ r_int
 id|slot
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|cbrick_type_get_nasid
+c_func
+(paren
+id|nasid_t
+)paren
+suffix:semicolon
 DECL|macro|IS_OPUS
 mdefine_line|#define IS_OPUS(nasid) (cbrick_type_get_nasid(nasid) == MODULE_OPUSBRICK)
 DECL|macro|IS_ALTIX
@@ -1546,9 +1554,6 @@ suffix:semicolon
 id|pciio_provider_t
 op_star
 id|pci_provider
-suffix:semicolon
-r_int
-id|cpuid
 suffix:semicolon
 id|vertex_hdl_t
 id|device_vertex
