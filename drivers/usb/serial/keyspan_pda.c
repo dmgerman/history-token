@@ -616,7 +616,7 @@ id|serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|tty
 suffix:semicolon
 r_for
@@ -702,7 +702,7 @@ id|serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|tty
 suffix:semicolon
 id|priv-&gt;tx_throttled
@@ -2800,7 +2800,6 @@ multiline_comment|/* error */
 id|usb_set_serial_port_data
 c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 l_int|0
@@ -2817,7 +2816,7 @@ id|serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|write_wait
 )paren
 suffix:semicolon
@@ -2898,7 +2897,6 @@ c_func
 id|usb_get_serial_port_data
 c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 l_int|0

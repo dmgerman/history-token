@@ -611,6 +611,9 @@ id|usb_set_serial_port_data
 c_func
 (paren
 id|serial-&gt;port
+(braket
+l_int|0
+)braket
 comma
 id|priv
 )paren
@@ -766,7 +769,12 @@ l_string|&quot;%s - port %d&quot;
 comma
 id|__FUNCTION__
 comma
-id|serial-&gt;port-&gt;number
+id|serial-&gt;port
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|number
 )paren
 suffix:semicolon
 r_for
@@ -791,7 +799,7 @@ id|serial-&gt;port
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|open_count
 OG
 l_int|0
@@ -799,7 +807,6 @@ l_int|0
 (brace
 id|kobil_close
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -815,7 +822,6 @@ c_func
 id|usb_get_serial_port_data
 c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -826,7 +832,6 @@ suffix:semicolon
 id|usb_set_serial_port_data
 c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i

@@ -3291,7 +3291,6 @@ id|i
 (brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -3303,7 +3302,7 @@ id|serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|read_urb
 suffix:semicolon
 id|port-&gt;bulk_in_endpointAddress
@@ -3312,7 +3311,7 @@ id|serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|bulk_in_endpointAddress
 suffix:semicolon
 id|port-&gt;bulk_in_buffer
@@ -3321,7 +3320,7 @@ id|serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|bulk_in_buffer
 suffix:semicolon
 )brace
@@ -3342,7 +3341,6 @@ id|i
 (brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -3354,7 +3352,7 @@ id|serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|write_urb
 suffix:semicolon
 id|port-&gt;bulk_out_size
@@ -3363,7 +3361,7 @@ id|serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|bulk_out_size
 suffix:semicolon
 id|port-&gt;bulk_out_endpointAddress
@@ -3372,7 +3370,7 @@ id|serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|bulk_out_endpointAddress
 suffix:semicolon
 id|port-&gt;bulk_out_buffer
@@ -3381,7 +3379,7 @@ id|serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|bulk_out_buffer
 suffix:semicolon
 )brace
@@ -3402,7 +3400,6 @@ id|i
 (brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -3414,7 +3411,7 @@ id|serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|interrupt_in_urb
 suffix:semicolon
 id|port-&gt;interrupt_in_endpointAddress
@@ -3423,7 +3420,7 @@ id|serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|interrupt_in_endpointAddress
 suffix:semicolon
 id|port-&gt;interrupt_in_buffer
@@ -3432,7 +3429,7 @@ id|serial-&gt;port
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|interrupt_in_buffer
 suffix:semicolon
 )brace

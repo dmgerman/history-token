@@ -409,6 +409,9 @@ id|usb_set_serial_port_data
 c_func
 (paren
 id|serial-&gt;port
+(braket
+l_int|0
+)braket
 comma
 id|priv
 )paren
@@ -417,7 +420,12 @@ id|init_waitqueue_head
 c_func
 (paren
 op_amp
-id|serial-&gt;port-&gt;write_wait
+id|serial-&gt;port
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|write_wait
 )paren
 suffix:semicolon
 r_return
@@ -468,7 +476,6 @@ c_func
 id|usb_get_serial_port_data
 c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -479,7 +486,6 @@ suffix:semicolon
 id|usb_set_serial_port_data
 c_func
 (paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i

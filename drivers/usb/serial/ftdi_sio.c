@@ -5060,7 +5060,6 @@ id|usb_serial_port
 op_star
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 l_int|0
@@ -5236,6 +5235,9 @@ id|usb_set_serial_port_data
 c_func
 (paren
 id|serial-&gt;port
+(braket
+l_int|0
+)braket
 comma
 id|priv
 )paren
@@ -5301,6 +5303,9 @@ id|usb_get_serial_port_data
 c_func
 (paren
 id|serial-&gt;port
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 id|priv-&gt;chip_type
@@ -5379,6 +5384,9 @@ id|usb_get_serial_port_data
 c_func
 (paren
 id|serial-&gt;port
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 id|priv-&gt;chip_type
@@ -5455,6 +5463,9 @@ id|usb_get_serial_port_data
 c_func
 (paren
 id|serial-&gt;port
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 id|priv-&gt;chip_type
@@ -5531,6 +5542,9 @@ id|usb_get_serial_port_data
 c_func
 (paren
 id|serial-&gt;port
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 id|priv-&gt;flags
@@ -5607,6 +5621,9 @@ id|usb_get_serial_port_data
 c_func
 (paren
 id|serial-&gt;port
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 id|priv-&gt;flags
@@ -5651,6 +5668,9 @@ op_star
 id|port
 op_assign
 id|serial-&gt;port
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_struct
 id|ftdi_private

@@ -1367,7 +1367,6 @@ id|tmp
 suffix:semicolon
 id|command_port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|COMMAND_PORT
@@ -1619,7 +1618,6 @@ op_increment
 (brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -2132,7 +2130,6 @@ op_decrement
 (brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -2352,7 +2349,6 @@ suffix:semicolon
 multiline_comment|/* free up our private data for our command port */
 id|command_port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|COMMAND_PORT
@@ -2384,7 +2380,6 @@ op_increment
 (brace
 id|port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|i
@@ -5100,7 +5095,6 @@ id|command
 suffix:semicolon
 id|command_port
 op_assign
-op_amp
 id|port-&gt;serial-&gt;port
 (braket
 id|COMMAND_PORT
@@ -6138,7 +6132,6 @@ l_int|0
 suffix:semicolon
 id|command_port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|COMMAND_PORT
@@ -6258,7 +6251,6 @@ id|flags
 suffix:semicolon
 id|command_port
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 id|COMMAND_PORT

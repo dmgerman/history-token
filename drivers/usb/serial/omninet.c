@@ -453,7 +453,6 @@ id|od
 suffix:semicolon
 id|wport
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 l_int|1
@@ -595,7 +594,6 @@ id|serial-&gt;dev
 (brace
 id|wport
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 l_int|1
@@ -945,7 +943,6 @@ id|usb_serial_port
 op_star
 id|wport
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 l_int|1
@@ -1180,7 +1177,6 @@ id|usb_serial_port
 op_star
 id|wport
 op_assign
-op_amp
 id|serial-&gt;port
 (braket
 l_int|1
