@@ -4473,7 +4473,7 @@ suffix:colon
 id|mmput
 c_func
 (paren
-id|mm
+id|p-&gt;mm
 )paren
 suffix:semicolon
 id|bad_fork_cleanup_signal
