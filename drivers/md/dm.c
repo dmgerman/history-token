@@ -2637,21 +2637,6 @@ op_amp
 id|md-&gt;flags
 )paren
 suffix:semicolon
-id|up_write
-c_func
-(paren
-op_amp
-id|md-&gt;lock
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Then we wait for the already mapped ios to&n;&t; * complete.&n;&t; */
-id|down_read
-c_func
-(paren
-op_amp
-id|md-&gt;lock
-)paren
-suffix:semicolon
 id|add_wait_queue
 c_func
 (paren
@@ -2662,6 +2647,14 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|md-&gt;lock
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Then we wait for the already mapped ios to&n;&t; * complete.&n;&t; */
 r_while
 c_loop
 (paren
@@ -2697,6 +2690,13 @@ id|current-&gt;state
 op_assign
 id|TASK_RUNNING
 suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|md-&gt;lock
+)paren
+suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
@@ -2707,14 +2707,6 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|up_read
-c_func
-(paren
-op_amp
-id|md-&gt;lock
-)paren
-suffix:semicolon
-multiline_comment|/* set_bit is atomic */
 id|set_bit
 c_func
 (paren
@@ -2722,6 +2714,13 @@ id|DMF_SUSPENDED
 comma
 op_amp
 id|md-&gt;flags
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|md-&gt;lock
 )paren
 suffix:semicolon
 r_return
