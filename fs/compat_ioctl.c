@@ -4393,7 +4393,7 @@ id|arg
 )paren
 (brace
 r_struct
-id|fb_cmap
+id|fb_cmap_user
 id|__user
 op_star
 id|cmap

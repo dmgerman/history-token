@@ -12543,8 +12543,6 @@ c_func
 op_amp
 id|palette_cmap
 comma
-l_int|1
-comma
 id|info
 )paren
 suffix:semicolon

@@ -2767,8 +2767,6 @@ c_func
 op_amp
 id|palette_cmap
 comma
-l_int|1
-comma
 id|info
 )paren
 suffix:semicolon
@@ -4448,14 +4446,14 @@ op_star
 id|info
 comma
 r_struct
-id|fb_cursor
+id|fb_cursor_user
 id|__user
 op_star
 id|sprite
 )paren
 (brace
 r_struct
-id|fb_cursor
+id|fb_cursor_user
 id|cursor_user
 suffix:semicolon
 r_struct
@@ -5167,8 +5165,6 @@ c_func
 op_amp
 id|info-&gt;cmap
 comma
-l_int|1
-comma
 id|info
 )paren
 suffix:semicolon
@@ -5306,8 +5302,6 @@ c_func
 op_amp
 id|cmap
 comma
-l_int|1
-comma
 id|info
 )paren
 suffix:semicolon
@@ -5378,7 +5372,7 @@ id|con2fb
 suffix:semicolon
 macro_line|#endif
 r_struct
-id|fb_cmap
+id|fb_cmap_user
 id|cmap
 suffix:semicolon
 r_void
@@ -5572,13 +5566,11 @@ id|EFAULT
 suffix:semicolon
 r_return
 (paren
-id|fb_set_cmap
+id|fb_set_user_cmap
 c_func
 (paren
 op_amp
 id|cmap
-comma
-l_int|0
 comma
 id|info
 )paren
@@ -5609,8 +5601,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 r_return
-(paren
-id|fb_copy_cmap
+id|fb_cmap_to_user
 c_func
 (paren
 op_amp
@@ -5618,9 +5609,6 @@ id|info-&gt;cmap
 comma
 op_amp
 id|cmap
-comma
-l_int|2
-)paren
 )paren
 suffix:semicolon
 r_case
