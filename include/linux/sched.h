@@ -474,6 +474,20 @@ DECL|member|context
 id|mm_context_t
 id|context
 suffix:semicolon
+multiline_comment|/* coredumping support */
+DECL|member|core_sem
+r_struct
+id|semaphore
+id|core_sem
+suffix:semicolon
+DECL|member|core_waiters
+id|atomic_t
+id|core_waiters
+suffix:semicolon
+DECL|member|core_wait
+id|wait_queue_head_t
+id|core_wait
+suffix:semicolon
 multiline_comment|/* aio bits */
 DECL|member|ioctx_list_lock
 id|rwlock_t
@@ -1151,6 +1165,11 @@ r_struct
 id|backing_dev_info
 op_star
 id|backing_dev_info
+suffix:semicolon
+multiline_comment|/* threaded coredumping support */
+DECL|member|core_waiter
+r_int
+id|core_waiter
 suffix:semicolon
 DECL|member|ptrace_message
 r_int
@@ -1855,6 +1874,18 @@ suffix:semicolon
 r_extern
 r_void
 id|force_sig
+c_func
+(paren
+r_int
+comma
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|force_sig_specific
 c_func
 (paren
 r_int
