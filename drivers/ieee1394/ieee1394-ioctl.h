@@ -2,8 +2,8 @@ multiline_comment|/* Base file for all ieee1394 ioctl&squot;s. Linux-1394 has al
 macro_line|#ifndef __IEEE1394_IOCTL_H
 DECL|macro|__IEEE1394_IOCTL_H
 mdefine_line|#define __IEEE1394_IOCTL_H
-macro_line|#include &lt;asm/ioctl.h&gt;
-macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/ioctl.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* AMDTP Gets 6 */
 DECL|macro|AMDTP_IOC_CHANNEL
 mdefine_line|#define AMDTP_IOC_CHANNEL&t;_IOW(&squot;#&squot;, 0x00, struct amdtp_ioctl)
@@ -76,7 +76,7 @@ mdefine_line|#define RAW1394_IOC_ISO_RECV_LISTEN_CHANNEL&t;&bslash;&n;&t;_IOW (&
 DECL|macro|RAW1394_IOC_ISO_RECV_UNLISTEN_CHANNEL
 mdefine_line|#define RAW1394_IOC_ISO_RECV_UNLISTEN_CHANNEL&t;&bslash;&n;&t;_IOW (&squot;#&squot;, 0x23, unsigned char)
 DECL|macro|RAW1394_IOC_ISO_RECV_SET_CHANNEL_MASK
-mdefine_line|#define RAW1394_IOC_ISO_RECV_SET_CHANNEL_MASK&t;&bslash;&n;&t;_IOW (&squot;#&squot;, 0x24, u64)
+mdefine_line|#define RAW1394_IOC_ISO_RECV_SET_CHANNEL_MASK&t;&bslash;&n;&t;_IOW (&squot;#&squot;, 0x24, __u64)
 DECL|macro|RAW1394_IOC_ISO_RECV_PACKETS
 mdefine_line|#define RAW1394_IOC_ISO_RECV_PACKETS&t;&t;&bslash;&n;&t;_IOW (&squot;#&squot;, 0x25, struct raw1394_iso_packets)
 DECL|macro|RAW1394_IOC_ISO_RECV_RELEASE_PACKETS

@@ -37,7 +37,8 @@ id|__u32
 id|shapeclock
 suffix:semicolon
 DECL|member|recovery
-id|__u32
+r_int
+r_int
 id|recovery
 suffix:semicolon
 multiline_comment|/* Time we can next clock a packet out on&n;&t;&t;&t;&t;   an empty queue */

@@ -1858,11 +1858,10 @@ id|bus-&gt;subsys
 )paren
 suffix:semicolon
 )brace
-DECL|function|bus_subsys_init
-r_static
+DECL|function|buses_init
 r_int
 id|__init
-id|bus_subsys_init
+id|buses_init
 c_func
 (paren
 r_void
@@ -1877,13 +1876,6 @@ id|bus_subsys
 )paren
 suffix:semicolon
 )brace
-DECL|variable|bus_subsys_init
-id|core_initcall
-c_func
-(paren
-id|bus_subsys_init
-)paren
-suffix:semicolon
 DECL|variable|bus_for_each_dev
 id|EXPORT_SYMBOL
 c_func

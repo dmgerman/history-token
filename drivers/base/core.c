@@ -449,13 +449,6 @@ op_amp
 id|dev-&gt;class_list
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|dev-&gt;intf_list
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;device_add - add device to device hierarchy.&n; *&t;@dev:&t;device.&n; *&n; *&t;This is part 2 of device_register(), though may be called &n; *&t;separately _iff_ device_initialize() has been called separately.&n; *&n; *&t;This adds it to the kobject hierarchy via kobject_add(), adds it&n; *&t;to the global and sibling lists for the device, then&n; *&t;adds it to the other relevant subsystems of the driver model.&n; */
 DECL|function|device_add
@@ -861,11 +854,10 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-DECL|function|device_subsys_init
-r_static
+DECL|function|devices_init
 r_int
 id|__init
-id|device_subsys_init
+id|devices_init
 c_func
 (paren
 r_void
@@ -880,13 +872,6 @@ id|devices_subsys
 )paren
 suffix:semicolon
 )brace
-DECL|variable|device_subsys_init
-id|core_initcall
-c_func
-(paren
-id|device_subsys_init
-)paren
-suffix:semicolon
 DECL|variable|device_initialize
 id|EXPORT_SYMBOL
 c_func
