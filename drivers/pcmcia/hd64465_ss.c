@@ -3247,9 +3247,6 @@ c_func
 r_void
 )paren
 (brace
-id|servinfo_t
-id|serv
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -3257,35 +3254,6 @@ r_int
 r_int
 id|v
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check API version&n;&t; */
-id|pcmcia_get_card_services_info
-c_func
-(paren
-op_amp
-id|serv
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|serv.Revision
-op_ne
-id|CS_RELEASE_CODE
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-id|MODNAME
-l_string|&quot;: Card Services release does not match!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 multiline_comment|/*&t;hd64465_io_debug = 1; */
 r_if
 c_cond
