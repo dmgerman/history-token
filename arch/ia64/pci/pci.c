@@ -478,6 +478,36 @@ id|KERN_INFO
 l_string|&quot;PCI: Using ACPI for IRQ routing&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
+r_extern
+id|acpi_status
+id|acpi_map_iosapic
+(paren
+id|acpi_handle
+comma
+id|u32
+comma
+r_void
+op_star
+comma
+r_void
+op_star
+op_star
+)paren
+suffix:semicolon
+id|acpi_get_devices
+c_func
+(paren
+l_int|NULL
+comma
+id|acpi_map_iosapic
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * PCI IRQ routing is set up by pci_enable_device(), but we&n;&t; * also do it here in case there are still broken drivers that&n;&t; * don&squot;t use pci_enable_device().&n;&t; */
 r_while
 c_loop
