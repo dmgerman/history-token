@@ -1781,21 +1781,11 @@ id|KERN_WARNING
 l_string|&quot;Destroying alive neighbour %p from %08lx&bslash;n&quot;
 comma
 id|neigh
-comma
-op_star
-(paren
-(paren
-(paren
-r_int
-r_int
-op_star
 )paren
-op_amp
-id|neigh
-)paren
-op_minus
-l_int|1
-)paren
+suffix:semicolon
+id|dump_stack
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
