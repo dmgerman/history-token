@@ -555,8 +555,21 @@ op_xor
 l_int|31
 suffix:semicolon
 )brace
-DECL|macro|HAVE_ARCH_GET_SIGNAL_TO_DELIVER
-mdefine_line|#define HAVE_ARCH_GET_SIGNAL_TO_DELIVER
+r_extern
+r_void
+id|ptrace_signal_deliver
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_void
+op_star
+id|cookie
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _M68K_SIGNAL_H */
 eof
