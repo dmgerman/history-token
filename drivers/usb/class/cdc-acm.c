@@ -1424,7 +1424,12 @@ c_func
 (paren
 id|acm-&gt;writeurb
 comma
-id|GFP_NOIO
+id|from_user
+ques
+c_cond
+id|GFP_KERNEL
+suffix:colon
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
