@@ -1151,6 +1151,14 @@ id|base
 op_rshift
 id|PAGE_CACHE_SHIFT
 suffix:semicolon
+multiline_comment|/* Note: The offset means that the length of the first&n;&t;&t; * page is really (PAGE_CACHE_SIZE - (base &amp; ~PAGE_CACHE_MASK)).&n;&t;&t; * In order to avoid an extra test inside the loop,&n;&t;&t; * we bump pglen here, and just subtract PAGE_CACHE_SIZE... */
+id|pglen
+op_add_assign
+id|base
+op_amp
+op_complement
+id|PAGE_CACHE_MASK
+suffix:semicolon
 )brace
 r_for
 c_loop
