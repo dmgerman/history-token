@@ -115,8 +115,14 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* OBSOLETE: see moduleparam.h for the right way. */
+DECL|macro|__setup_param
+mdefine_line|#define __setup_param(str, unique_id, fn)&t;&t;&t;&bslash;&n;&t;static char __setup_str_##unique_id[] __initdata = str;&t;&bslash;&n;&t;static struct obs_kernel_param __setup_##unique_id&t;&bslash;&n;&t;&t; __attribute_used__&t;&t;&t;&t;&bslash;&n;&t;&t; __attribute__((__section__(&quot;.init.setup&quot;)))&t;&bslash;&n;&t;&t;= { __setup_str_##unique_id, fn }
+DECL|macro|__setup_null_param
+mdefine_line|#define __setup_null_param(str, unique_id)&t;&t;&t;&bslash;&n;&t;__setup_param(str, unique_id, NULL)
 DECL|macro|__setup
-mdefine_line|#define __setup(str, fn)&t;&t;&t;&t;&t;&bslash;&n;&t;static char __setup_str_##fn[] __initdata = str;&t;&bslash;&n;&t;static struct obs_kernel_param __setup_##fn&t;&t;&bslash;&n;&t;&t; __attribute_used__&t;&t;&t;&t;&bslash;&n;&t;&t; __attribute__((__section__(&quot;.init.setup&quot;)))&t;&bslash;&n;&t;&t;= { __setup_str_##fn, fn }
+mdefine_line|#define __setup(str, fn)&t;&t;&t;&t;&t;&bslash;&n;&t;__setup_param(str, fn, fn)
+DECL|macro|__obsolete_setup
+mdefine_line|#define __obsolete_setup(str)&t;&t;&t;&t;&t;&bslash;&n;&t;__setup_null_param(str, __LINE__)
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/**&n; * module_init() - driver initialization entry point&n; * @x: function to be run at kernel boot time or module insertion&n; * &n; * module_init() will either be called during do_initcalls (if&n; * builtin) or at module insertion time (if a module).  There can only&n; * be one per module.&n; */
 DECL|macro|module_init
@@ -149,8 +155,14 @@ mdefine_line|#define module_init(initfn)&t;&t;&t;&t;&t;&bslash;&n;&t;static inli
 multiline_comment|/* This is only required if you want to be unloadable. */
 DECL|macro|module_exit
 mdefine_line|#define module_exit(exitfn)&t;&t;&t;&t;&t;&bslash;&n;&t;static inline exitcall_t __exittest(void)&t;&t;&bslash;&n;&t;{ return exitfn; }&t;&t;&t;&t;&t;&bslash;&n;&t;void cleanup_module(void) __attribute__((alias(#exitfn)));
+DECL|macro|__setup_param
+mdefine_line|#define __setup_param(str, unique_id, fn)&t;/* nothing */
+DECL|macro|__setup_null_param
+mdefine_line|#define __setup_null_param(str, unique_id) &t;/* nothing */
 DECL|macro|__setup
-mdefine_line|#define __setup(str,func) /* nothing */
+mdefine_line|#define __setup(str, func) &t;&t;&t;/* nothing */
+DECL|macro|__obsolete_setup
+mdefine_line|#define __obsolete_setup(str) &t;&t;&t;/* nothing */
 macro_line|#endif
 multiline_comment|/* Data marked not to be saved by software_suspend() */
 DECL|macro|__nosavedata
