@@ -68,5 +68,7 @@ DECL|macro|PR_TIMING_STATISTICAL
 macro_line|# define PR_TIMING_STATISTICAL  0       /* Normal, traditional,&n;                                                   statistical process timing */
 DECL|macro|PR_TIMING_TIMESTAMP
 macro_line|# define PR_TIMING_TIMESTAMP    1       /* Accurate timestamp based&n;                                                   process timing */
+DECL|macro|PR_SET_NAME
+mdefine_line|#define PR_SET_NAME    15&t;&t;/* Set process name */
 macro_line|#endif /* _LINUX_PRCTL_H */
 eof
