@@ -504,6 +504,15 @@ id|USBLP_QUIRK_BIDIR
 comma
 multiline_comment|/* HP DeskJet 830C */
 (brace
+l_int|0x03f0
+comma
+l_int|0x1104
+comma
+id|USBLP_QUIRK_BIDIR
+)brace
+comma
+multiline_comment|/* HP Deskjet 959C */
+(brace
 l_int|0x0409
 comma
 l_int|0xefbe
