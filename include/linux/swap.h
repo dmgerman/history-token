@@ -349,6 +349,13 @@ id|swapin_readahead
 c_func
 (paren
 id|swp_entry_t
+comma
+r_int
+r_int
+comma
+r_struct
+id|vm_area_struct
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* linux/mm/page_alloc.c */
@@ -712,6 +719,15 @@ id|read_swap_cache_async
 c_func
 (paren
 id|swp_entry_t
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
 )paren
 suffix:semicolon
 multiline_comment|/* linux/mm/swapfile.c */
@@ -867,7 +883,7 @@ mdefine_line|#define swap_duplicate(swp)&t;&t;&t;/*NOTHING*/
 DECL|macro|swap_free
 mdefine_line|#define swap_free(swp)&t;&t;&t;&t;/*NOTHING*/
 DECL|macro|read_swap_cache_async
-mdefine_line|#define read_swap_cache_async(swp)&t;&t;NULL
+mdefine_line|#define read_swap_cache_async(swp,vma,addr)&t;NULL
 DECL|macro|lookup_swap_cache
 mdefine_line|#define lookup_swap_cache(swp)&t;&t;&t;NULL
 DECL|macro|valid_swaphandles

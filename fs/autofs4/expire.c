@@ -120,8 +120,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_check_mount: dentry %p %.*s&bslash;n&quot;
+l_string|&quot;dentry %p %.*s&quot;
 comma
 id|dentry
 comma
@@ -131,7 +130,6 @@ r_int
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 id|mntget
@@ -217,11 +215,9 @@ suffix:colon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_check_mount: returning = %d&bslash;n&quot;
+l_string|&quot;returning = %d&quot;
 comma
 id|status
-)paren
 )paren
 suffix:semicolon
 id|mntput
@@ -280,8 +276,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_check_tree: parent %p %.*s&bslash;n&quot;
+l_string|&quot;parent %p %.*s&quot;
 comma
 id|top
 comma
@@ -291,7 +286,6 @@ r_int
 id|top-&gt;d_name.len
 comma
 id|top-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Negative dentry - give up */
@@ -388,8 +382,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_check_tree: dentry %p %.*s&bslash;n&quot;
+l_string|&quot;dentry %p %.*s&quot;
 comma
 id|dentry
 comma
@@ -399,7 +392,6 @@ r_int
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -560,8 +552,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_check_leaves: parent %p %.*s&bslash;n&quot;
+l_string|&quot;parent %p %.*s&quot;
 comma
 id|parent
 comma
@@ -571,7 +562,6 @@ r_int
 id|parent-&gt;d_name.len
 comma
 id|parent-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 id|spin_lock
@@ -636,8 +626,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_check_leaves: dentry %p %.*s&bslash;n&quot;
+l_string|&quot;dentry %p %.*s&quot;
 comma
 id|dentry
 comma
@@ -647,7 +636,6 @@ r_int
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -950,8 +938,7 @@ id|dentry
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_expire: checking mountpoint %p %.*s&bslash;n&quot;
+l_string|&quot;checking mountpoint %p %.*s&quot;
 comma
 id|dentry
 comma
@@ -961,7 +948,6 @@ r_int
 id|dentry-&gt;d_name.len
 comma
 id|dentry-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Can we expire this guy */
@@ -1112,8 +1098,7 @@ id|expired
 id|DPRINTK
 c_func
 (paren
-(paren
-l_string|&quot;autofs4_expire: returning %p %.*s&bslash;n&quot;
+l_string|&quot;returning %p %.*s&quot;
 comma
 id|expired
 comma
@@ -1123,7 +1108,6 @@ r_int
 id|expired-&gt;d_name.len
 comma
 id|expired-&gt;d_name.name
-)paren
 )paren
 suffix:semicolon
 id|spin_lock

@@ -554,7 +554,6 @@ l_int|128
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;svia_init_one -&n; *&t;@pdev:&n; *&t;@ent:&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&n; */
 DECL|function|svia_init_one
 r_static
 r_int
@@ -1353,7 +1352,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;svia_init -&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&n; */
 DECL|function|svia_init
 r_static
 r_int
@@ -1373,7 +1371,6 @@ id|svia_pci_driver
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;svia_exit -&n; *&n; *&t;LOCKING:&n; *&n; */
 DECL|function|svia_exit
 r_static
 r_void

@@ -145,7 +145,7 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 r_return
 id|tmp
-op_ne
+op_eq
 l_int|0
 suffix:semicolon
 )brace

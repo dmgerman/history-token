@@ -982,7 +982,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsi_translate - Translate then issue SCSI command to ATA device&n; *&t;@ap: ATA port to which the command is addressed&n; *&t;@dev: ATA device to which the command is addressed&n; *&t;@cmd: SCSI command to execute&n; *&t;@done: SCSI command completion function&n; *&n; *&t;Our -&gt;queuecommand() function has decided that the SCSI&n; *&t;command issued can be directly translated into an ATA&n; *&t;command, rather than handled internally.&n; *&n; *&t;This function sets up an ata_queued_cmd structure for the&n; *&t;SCSI command, and sends that ata_queued_cmd to the hardware.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_scsi_translate - Translate then issue SCSI command to ATA device&n; *&t;@ap: ATA port to which the command is addressed&n; *&t;@dev: ATA device to which the command is addressed&n; *&t;@cmd: SCSI command to execute&n; *&t;@done: SCSI command completion function&n; *&t;@xlat_func: Actor which translates @cmd to an ATA taskfile&n; *&n; *&t;Our -&gt;queuecommand() function has decided that the SCSI&n; *&t;command issued can be directly translated into an ATA&n; *&t;command, rather than handled internally.&n; *&n; *&t;This function sets up an ata_queued_cmd structure for the&n; *&t;SCSI command, and sends that ata_queued_cmd to the hardware.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_scsi_translate
 r_static
 r_void

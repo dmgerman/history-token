@@ -684,11 +684,6 @@ r_int
 id|do_writepage
 )paren
 (brace
-r_struct
-id|address_space
-op_star
-id|mapping
-suffix:semicolon
 id|LIST_HEAD
 c_func
 (paren
@@ -734,6 +729,11 @@ id|page_list
 )paren
 )paren
 (brace
+r_struct
+id|address_space
+op_star
+id|mapping
+suffix:semicolon
 r_struct
 id|page
 op_star
@@ -853,22 +853,6 @@ r_goto
 id|activate_locked
 suffix:semicolon
 )brace
-id|mapping
-op_assign
-id|page_mapping
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|may_enter_fs
-op_assign
-(paren
-id|gfp_mask
-op_amp
-id|__GFP_FS
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SWAP
 multiline_comment|/*&n;&t;&t; * Anonymous process memory has backing store?&n;&t;&t; * Try to allocate it some swap space here.&n;&t;&t; *&n;&t;&t; * XXX: implement swap clustering ?&n;&t;&t; */
 r_if
@@ -914,31 +898,37 @@ id|page
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|PageSwapCache
+macro_line|#endif /* CONFIG_SWAP */
+id|mapping
+op_assign
+id|page_mapping
 c_func
 (paren
 id|page
 )paren
-)paren
-(brace
-id|mapping
-op_assign
-op_amp
-id|swapper_space
 suffix:semicolon
 id|may_enter_fs
 op_assign
 (paren
 id|gfp_mask
 op_amp
+id|__GFP_FS
+)paren
+op_logical_or
+(paren
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
+op_logical_and
+(paren
+id|gfp_mask
+op_amp
 id|__GFP_IO
 )paren
+)paren
 suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_SWAP */
 multiline_comment|/*&n;&t;&t; * The page is mapped into the page tables of one or more&n;&t;&t; * processes. Try to unmap it here.&n;&t;&t; */
 r_if
 c_cond

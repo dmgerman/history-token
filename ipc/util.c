@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &quot;util.h&quot;
 multiline_comment|/**&n; *&t;ipc_init&t;-&t;initialise IPC subsystem&n; *&n; *&t;The various system5 IPC resources (semaphores, messages and shared&n; *&t;memory are initialised&n; */
 DECL|function|ipc_init
@@ -1607,7 +1608,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if !defined(__ia64__) &amp;&amp; !defined(__x86_64__) &amp;&amp; !defined(__hppa__)
+macro_line|#ifdef __ARCH_WANT_IPC_PARSE_VERSION
 multiline_comment|/**&n; *&t;ipc_parse_version&t;-&t;IPC call version&n; *&t;@cmd: pointer to command&n; *&n; *&t;Return IPC_64 for new style IPC and IPC_OLD for old style IPC. &n; *&t;The cmd value is turned from an encoding command and version into&n; *&t;just the command code.&n; */
 DECL|function|ipc_parse_version
 r_int
@@ -1643,5 +1644,5 @@ id|IPC_OLD
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* __ia64__ */
+macro_line|#endif /* __ARCH_WANT_IPC_PARSE_VERSION */
 eof

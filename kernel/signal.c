@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/siginfo.h&gt;
 multiline_comment|/*&n; * SLAB caches for signal bits.&n; */
 DECL|variable|sigqueue_cachep
@@ -8777,6 +8778,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
+macro_line|#ifdef __ARCH_WANT_SYS_SIGPENDING
 id|asmlinkage
 r_int
 DECL|function|sys_sigpending
@@ -8803,8 +8805,9 @@ id|set
 )paren
 suffix:semicolon
 )brace
-macro_line|#if !defined(__alpha__)
-multiline_comment|/* Alpha has its own versions with special arguments.  */
+macro_line|#endif
+macro_line|#ifdef __ARCH_WANT_SYS_SIGPROCMASK
+multiline_comment|/* Some platforms have their own version with special arguments others&n;   support only sys_rt_sigprocmask.  */
 id|asmlinkage
 r_int
 DECL|function|sys_sigprocmask
@@ -9182,7 +9185,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* __sparc__ */
 macro_line|#endif
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__) &amp;&amp; &bslash;&n;    !defined(__arm__) &amp;&amp; !defined(__s390__)
+macro_line|#ifdef __ARCH_WANT_SYS_SGETMASK
 multiline_comment|/*&n; * For backwards compatibility.  Functionality superseded by sigprocmask.&n; */
 id|asmlinkage
 r_int
@@ -9268,8 +9271,8 @@ r_return
 id|old
 suffix:semicolon
 )brace
-macro_line|#endif /* !defined(__alpha__) */
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__) &amp;&amp; !defined(__mips__) &amp;&amp; &bslash;&n;    !defined(__arm__)
+macro_line|#endif /* __ARCH_WANT_SGETMASK */
+macro_line|#ifdef __ARCH_WANT_SYS_SIGNAL
 multiline_comment|/*&n; * For backwards compatibility.  Functionality superseded by sigaction.&n; */
 id|asmlinkage
 r_int
@@ -9331,8 +9334,8 @@ r_int
 id|old_sa.sa.sa_handler
 suffix:semicolon
 )brace
-macro_line|#endif /* !alpha &amp;&amp; !__ia64__ &amp;&amp; !defined(__mips__) &amp;&amp; !defined(__arm__) */
-macro_line|#ifndef HAVE_ARCH_SYS_PAUSE
+macro_line|#endif /* __ARCH_WANT_SYS_SIGNAL */
+macro_line|#ifdef __ARCH_WANT_SYS_PAUSE
 id|asmlinkage
 r_int
 DECL|function|sys_pause
@@ -9356,7 +9359,7 @@ op_minus
 id|ERESTARTNOHAND
 suffix:semicolon
 )brace
-macro_line|#endif /* HAVE_ARCH_SYS_PAUSE */
+macro_line|#endif
 DECL|function|signals_init
 r_void
 id|__init
@@ -9386,23 +9389,11 @@ r_struct
 id|sigqueue
 )paren
 comma
-l_int|0
+id|SLAB_PANIC
 comma
 l_int|NULL
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sigqueue_cachep
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;signals_init(): cannot create sigqueue SLAB cache&quot;
 )paren
 suffix:semicolon
 )brace

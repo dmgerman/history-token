@@ -244,6 +244,10 @@ id|page
 suffix:semicolon
 )brace
 )brace
+DECL|macro|flush_dcache_mmap_lock
+mdefine_line|#define flush_dcache_mmap_lock(mapping) &bslash;&n;&t;spin_lock_irq(&amp;(mapping)-&gt;tree_lock)
+DECL|macro|flush_dcache_mmap_unlock
+mdefine_line|#define flush_dcache_mmap_unlock(mapping) &bslash;&n;&t;spin_unlock_irq(&amp;(mapping)-&gt;tree_lock)
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,page)&t;do { flush_kernel_dcache_page(page_address(page)); flush_kernel_icache_page(page_address(page)); } while (0)
 DECL|macro|flush_icache_range

@@ -21,67 +21,7 @@ macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;1.00&quot;
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_82801
-DECL|macro|PCI_DEVICE_ID_INTEL_82801
-mdefine_line|#define PCI_DEVICE_ID_INTEL_82801&t;0x2415
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_82901
-DECL|macro|PCI_DEVICE_ID_INTEL_82901
-mdefine_line|#define PCI_DEVICE_ID_INTEL_82901&t;0x2425
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH2
-DECL|macro|PCI_DEVICE_ID_INTEL_ICH2
-mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH2&t;0x2445
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH3
-DECL|macro|PCI_DEVICE_ID_INTEL_ICH3
-mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH3&t;0x2485
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH4
-DECL|macro|PCI_DEVICE_ID_INTEL_ICH4
-mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH4&t;0x24c5
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH5
-DECL|macro|PCI_DEVICE_ID_INTEL_ICH5
-mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH5&t;0x24d5
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH6_18
-DECL|macro|PCI_DEVICE_ID_INTEL_ICH6_18
-mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH6_18&t;0x266e
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_440MX
-DECL|macro|PCI_DEVICE_ID_INTEL_440MX
-mdefine_line|#define PCI_DEVICE_ID_INTEL_440MX&t;0x7195
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_ESB_5
-DECL|macro|PCI_DEVICE_ID_INTEL_ESB_5
-mdefine_line|#define PCI_DEVICE_ID_INTEL_ESB_5&t;0x25a6
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_SI_7012
-DECL|macro|PCI_DEVICE_ID_SI_7012
-mdefine_line|#define PCI_DEVICE_ID_SI_7012&t;&t;0x7012
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP1_AUDIO
-DECL|macro|PCI_DEVICE_ID_NVIDIA_MCP1_AUDIO
-mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP1_AUDIO&t;0x01b1
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP2_AUDIO
-DECL|macro|PCI_DEVICE_ID_NVIDIA_MCP2_AUDIO
-mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP2_AUDIO&t;0x006a
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP3_AUDIO
-DECL|macro|PCI_DEVICE_ID_NVIDIA_MCP3_AUDIO
-mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP3_AUDIO&t;0x00da
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_AMD_768_AUDIO
-DECL|macro|PCI_DEVICE_ID_AMD_768_AUDIO
-mdefine_line|#define PCI_DEVICE_ID_AMD_768_AUDIO&t;0x7445
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_AMD_8111_AC97
-DECL|macro|PCI_DEVICE_ID_AMD_8111_AC97
-mdefine_line|#define PCI_DEVICE_ID_AMD_8111_AC97&t;0x746d
-macro_line|#endif
+mdefine_line|#define DRIVER_VERSION &quot;1.01&quot;
 DECL|macro|MODULOP2
 mdefine_line|#define MODULOP2(a, b) ((a) &amp; ((b) - 1))
 DECL|macro|MASKP2
@@ -559,7 +499,7 @@ op_assign
 (brace
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_82801
+id|PCI_DEVICE_ID_INTEL_82801AA_5
 comma
 id|PCI_ANY_ID
 comma
@@ -575,7 +515,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_82901
+id|PCI_DEVICE_ID_INTEL_82801AB_5
 comma
 id|PCI_ANY_ID
 comma
@@ -607,7 +547,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_ICH2
+id|PCI_DEVICE_ID_INTEL_82801BA_4
 comma
 id|PCI_ANY_ID
 comma
@@ -623,7 +563,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_ICH3
+id|PCI_DEVICE_ID_INTEL_82801CA_5
 comma
 id|PCI_ANY_ID
 comma
@@ -639,7 +579,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_ICH4
+id|PCI_DEVICE_ID_INTEL_82801DB_5
 comma
 id|PCI_ANY_ID
 comma
@@ -655,7 +595,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_INTEL
 comma
-id|PCI_DEVICE_ID_INTEL_ICH5
+id|PCI_DEVICE_ID_INTEL_82801EB_5
 comma
 id|PCI_ANY_ID
 comma
@@ -735,7 +675,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_AMD
 comma
-id|PCI_DEVICE_ID_AMD_768_AUDIO
+id|PCI_DEVICE_ID_AMD_OPUS_7445
 comma
 id|PCI_ANY_ID
 comma
@@ -751,7 +691,7 @@ comma
 (brace
 id|PCI_VENDOR_ID_AMD
 comma
-id|PCI_DEVICE_ID_AMD_8111_AC97
+id|PCI_DEVICE_ID_AMD_8111_AUDIO
 comma
 id|PCI_ANY_ID
 comma
@@ -8037,11 +7977,11 @@ c_cond
 (paren
 id|state-&gt;card-&gt;pci_id
 op_eq
-id|PCI_DEVICE_ID_INTEL_82801
+id|PCI_DEVICE_ID_INTEL_82801AA_5
 op_logical_or
 id|state-&gt;card-&gt;pci_id
 op_eq
-id|PCI_DEVICE_ID_INTEL_82901
+id|PCI_DEVICE_ID_INTEL_82801AB_5
 )paren
 r_return
 id|put_user
@@ -12005,6 +11945,69 @@ r_return
 id|i
 suffix:semicolon
 )brace
+DECL|function|is_new_ich
+r_static
+r_int
+id|is_new_ich
+c_func
+(paren
+id|u16
+id|pci_id
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|pci_id
+)paren
+(brace
+r_case
+id|PCI_DEVICE_ID_INTEL_82801DB_5
+suffix:colon
+r_case
+id|PCI_DEVICE_ID_INTEL_82801EB_5
+suffix:colon
+r_case
+id|PCI_DEVICE_ID_INTEL_ESB_5
+suffix:colon
+r_case
+id|PCI_DEVICE_ID_INTEL_ICH6_18
+suffix:colon
+r_return
+l_int|1
+suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|ich_use_mmio
+r_static
+r_inline
+r_int
+id|ich_use_mmio
+c_func
+(paren
+r_struct
+id|i810_card
+op_star
+id|card
+)paren
+(brace
+r_return
+id|is_new_ich
+c_func
+(paren
+id|card-&gt;pci_id
+)paren
+op_logical_and
+id|card-&gt;use_mmio
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;i810_ac97_power_up_bus&t;-&t;bring up AC97 link&n; *&t;@card : ICH audio device to power up&n; *&n; *&t;Bring up the ACLink AC97 codec bus&n; */
 DECL|function|i810_ac97_power_up_bus
 r_static
@@ -12174,26 +12177,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ich_use_mmio
+c_func
 (paren
-id|card-&gt;pci_id
-op_eq
-id|PCI_DEVICE_ID_INTEL_ICH4
-op_logical_or
-id|card-&gt;pci_id
-op_eq
-id|PCI_DEVICE_ID_INTEL_ICH5
-op_logical_or
-id|card-&gt;pci_id
-op_eq
-id|PCI_DEVICE_ID_INTEL_ESB_5
-op_logical_or
-id|card-&gt;pci_id
-op_eq
-id|PCI_DEVICE_ID_INTEL_ICH6_18
-)paren
-op_logical_and
-(paren
-id|card-&gt;use_mmio
+id|card
 )paren
 )paren
 (brace
@@ -12529,26 +12516,10 @@ multiline_comment|/* If we have the SDATA_IN Map Register, as on ICH4, we&n;&t;&
 r_if
 c_cond
 (paren
+id|ich_use_mmio
+c_func
 (paren
-id|card-&gt;pci_id
-op_eq
-id|PCI_DEVICE_ID_INTEL_ICH4
-op_logical_or
-id|card-&gt;pci_id
-op_eq
-id|PCI_DEVICE_ID_INTEL_ICH5
-op_logical_or
-id|card-&gt;pci_id
-op_eq
-id|PCI_DEVICE_ID_INTEL_ESB_5
-op_logical_or
-id|card-&gt;pci_id
-op_eq
-id|PCI_DEVICE_ID_INTEL_ICH6_18
-)paren
-op_logical_and
-(paren
-id|card-&gt;use_mmio
+id|card
 )paren
 )paren
 (brace

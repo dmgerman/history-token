@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/radix-tree.h&gt;
+macro_line|#include &lt;linux/prio_tree.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/audit.h&gt;
@@ -785,22 +786,27 @@ suffix:semicolon
 multiline_comment|/* methods */
 DECL|member|i_mmap
 r_struct
-id|list_head
+id|prio_tree_root
 id|i_mmap
 suffix:semicolon
-multiline_comment|/* list of private mappings */
-DECL|member|i_mmap_shared
+multiline_comment|/* tree of private mappings */
+DECL|member|i_mmap_writable
+r_int
+r_int
+id|i_mmap_writable
+suffix:semicolon
+multiline_comment|/* count VM_SHARED mappings */
+DECL|member|i_mmap_nonlinear
 r_struct
 id|list_head
-id|i_mmap_shared
+id|i_mmap_nonlinear
 suffix:semicolon
-multiline_comment|/* list of shared mappings */
-DECL|member|i_shared_sem
-r_struct
-id|semaphore
-id|i_shared_sem
+multiline_comment|/*list VM_NONLINEAR mappings */
+DECL|member|i_mmap_lock
+id|spinlock_t
+id|i_mmap_lock
 suffix:semicolon
-multiline_comment|/* protect both above lists */
+multiline_comment|/* protect tree, count, list */
 DECL|member|truncate_count
 id|atomic_t
 id|truncate_count
@@ -920,6 +926,12 @@ r_struct
 id|list_head
 id|bd_list
 suffix:semicolon
+DECL|member|bd_inode_backing_dev_info
+r_struct
+id|backing_dev_info
+op_star
+id|bd_inode_backing_dev_info
+suffix:semicolon
 multiline_comment|/*&n;&t; * Private data.  You must have bd_claim&squot;ed the block_device&n;&t; * to use this.  NOTE:  bd_claim allows an owner to claim&n;&t; * the same device multiple times, the owner must take special&n;&t; * care to not mess up bd_private for that case.&n;&t; */
 DECL|member|bd_private
 r_int
@@ -962,7 +974,7 @@ id|mapping
 (brace
 r_return
 op_logical_neg
-id|list_empty
+id|prio_tree_empty
 c_func
 (paren
 op_amp
@@ -974,11 +986,11 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_mmap_shared
+id|mapping-&gt;i_mmap_nonlinear
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Might pages of this file have been modified in userspace?&n; * Note that i_mmap_shared holds all the VM_SHARED vmas: do_mmap_pgoff&n; * marks vma as VM_SHARED if it is shared, and the file was opened for&n; * writing i.e. vma may be mprotected writable even if now readonly.&n; */
+multiline_comment|/*&n; * Might pages of this file have been modified in userspace?&n; * Note that i_mmap_writable counts all VM_SHARED vmas: do_mmap_pgoff&n; * marks vma as VM_SHARED if it is shared, and the file was opened for&n; * writing i.e. vma may be mprotected writable even if now readonly.&n; */
 DECL|function|mapping_writably_mapped
 r_static
 r_inline
@@ -993,13 +1005,9 @@ id|mapping
 )paren
 (brace
 r_return
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|mapping-&gt;i_mmap_shared
-)paren
+id|mapping-&gt;i_mmap_writable
+op_ne
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Use sequence counter to get consistent i_size on 32-bit processors.&n; */
@@ -2667,6 +2675,8 @@ comma
 r_const
 r_char
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern

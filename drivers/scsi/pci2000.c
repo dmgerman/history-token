@@ -1039,7 +1039,6 @@ suffix:semicolon
 r_goto
 id|irq_return
 suffix:semicolon
-suffix:semicolon
 )brace
 id|outb_p
 (paren
@@ -1077,7 +1076,6 @@ l_int|16
 suffix:semicolon
 r_goto
 id|irq_return
-suffix:semicolon
 suffix:semicolon
 )brace
 id|error
@@ -1146,7 +1144,6 @@ suffix:semicolon
 r_goto
 id|irq_return
 suffix:semicolon
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -1189,7 +1186,6 @@ suffix:semicolon
 r_goto
 id|irq_return
 suffix:semicolon
-suffix:semicolon
 )brace
 id|OpDone
 (paren
@@ -1202,7 +1198,6 @@ l_int|16
 suffix:semicolon
 r_goto
 id|irq_return
-suffix:semicolon
 suffix:semicolon
 )brace
 id|outb_p

@@ -23,7 +23,7 @@ macro_line|#include &lt;linux/buffer_head.h&gt; /* for generic_osync_inode */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 multiline_comment|/*&n; * Shared mappings implemented 30.11.1994. It&squot;s not fully working yet,&n; * though.&n; *&n; * Shared mappings now work. 15.8.1995  Bruno.&n; *&n; * finished &squot;unifying&squot; the page and buffer cache and SMP-threaded the&n; * page-cache, 21.05.1999, Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; * SMP-threaded pagemap-LRU 1999, Andrea Arcangeli &lt;andrea@suse.de&gt;&n; */
-multiline_comment|/*&n; * Lock ordering:&n; *&n; *  -&gt;i_shared_sem&t;&t;(vmtruncate)&n; *    -&gt;private_lock&t;&t;(__free_pte-&gt;__set_page_dirty_buffers)&n; *      -&gt;swap_list_lock&n; *        -&gt;swap_device_lock&t;(exclusive_swap_page, others)&n; *          -&gt;mapping-&gt;tree_lock&n; *&n; *  -&gt;i_sem&n; *    -&gt;i_shared_sem&t;&t;(truncate-&gt;unmap_mapping_range)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;i_shared_sem&t;&t;(various places)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;lock_page&t;&t;(access_process_vm)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;i_sem&t;&t;&t;(msync)&n; *&n; *  -&gt;i_sem&n; *    -&gt;i_alloc_sem             (various)&n; *&n; *  -&gt;inode_lock&n; *    -&gt;sb_lock&t;&t;&t;(fs/fs-writeback.c)&n; *    -&gt;mapping-&gt;tree_lock&t;(__sync_single_inode)&n; *&n; *  -&gt;page_table_lock&n; *    -&gt;swap_device_lock&t;(try_to_unmap_one)&n; *    -&gt;private_lock&t;&t;(try_to_unmap_one)&n; *    -&gt;tree_lock&t;&t;(try_to_unmap_one)&n; *    -&gt;zone.lru_lock&t;&t;(follow_page-&gt;mark_page_accessed)&n; *&n; *  -&gt;task-&gt;proc_lock&n; *    -&gt;dcache_lock&t;&t;(proc_pid_lookup)&n; */
+multiline_comment|/*&n; * Lock ordering:&n; *&n; *  -&gt;i_mmap_lock&t;&t;(vmtruncate)&n; *    -&gt;private_lock&t;&t;(__free_pte-&gt;__set_page_dirty_buffers)&n; *      -&gt;swap_list_lock&n; *        -&gt;swap_device_lock&t;(exclusive_swap_page, others)&n; *          -&gt;mapping-&gt;tree_lock&n; *&n; *  -&gt;i_sem&n; *    -&gt;i_mmap_lock&t;&t;(truncate-&gt;unmap_mapping_range)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;i_mmap_lock&n; *      -&gt;page_table_lock&t;(various places, mainly in mmap.c)&n; *        -&gt;mapping-&gt;tree_lock&t;(arch-dependent flush_dcache_mmap_lock)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;lock_page&t;&t;(access_process_vm)&n; *&n; *  -&gt;mmap_sem&n; *    -&gt;i_sem&t;&t;&t;(msync)&n; *&n; *  -&gt;i_sem&n; *    -&gt;i_alloc_sem             (various)&n; *&n; *  -&gt;inode_lock&n; *    -&gt;sb_lock&t;&t;&t;(fs/fs-writeback.c)&n; *    -&gt;mapping-&gt;tree_lock&t;(__sync_single_inode)&n; *&n; *  -&gt;page_table_lock&n; *    -&gt;swap_device_lock&t;(try_to_unmap_one)&n; *    -&gt;private_lock&t;&t;(try_to_unmap_one)&n; *    -&gt;tree_lock&t;&t;(try_to_unmap_one)&n; *    -&gt;zone.lru_lock&t;&t;(follow_page-&gt;mark_page_accessed)&n; *&n; *  -&gt;task-&gt;proc_lock&n; *    -&gt;dcache_lock&t;&t;(proc_pid_lookup)&n; */
 multiline_comment|/*&n; * Remove a page from the page cache and free it. Caller has to make&n; * sure the page is locked and that nobody else uses it - or that usage&n; * is safe.  The caller must hold a write_lock on the mapping&squot;s tree_lock.&n; */
 DECL|function|__remove_from_page_cache
 r_void
@@ -144,6 +144,7 @@ id|address_space
 op_star
 id|mapping
 suffix:semicolon
+multiline_comment|/*&n;&t; * FIXME, fercrissake.  What is this barrier here for?&n;&t; */
 id|smp_mb
 c_func
 (paren
@@ -161,11 +162,7 @@ r_if
 c_cond
 (paren
 id|mapping
-)paren
-(brace
-r_if
-c_cond
-(paren
+op_logical_and
 id|mapping-&gt;a_ops
 op_logical_and
 id|mapping-&gt;a_ops-&gt;sync_page
@@ -179,27 +176,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|PageSwapCache
-c_func
-(paren
-id|page
-)paren
-)paren
-(brace
-id|swap_unplug_io_fn
-c_func
-(paren
-l_int|NULL
-comma
-id|page
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -644,12 +620,6 @@ op_eq
 l_int|0
 )paren
 (brace
-id|page_cache_get
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -677,6 +647,12 @@ op_logical_neg
 id|error
 )paren
 (brace
+id|page_cache_get
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|SetPageLocked
 c_func
 (paren
@@ -698,15 +674,6 @@ id|pagecache_acct
 c_func
 (paren
 l_int|1
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|page_cache_release
-c_func
-(paren
-id|page
 )paren
 suffix:semicolon
 )brace

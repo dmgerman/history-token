@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/kthread.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#ifdef CONFIG_NUMA
 DECL|macro|cpu_to_node_mask
 mdefine_line|#define cpu_to_node_mask(cpu) node_to_cpumask(cpu_to_node(cpu))
@@ -8548,7 +8549,7 @@ c_func
 id|set_user_nice
 )paren
 suffix:semicolon
-macro_line|#ifndef __alpha__
+macro_line|#ifdef __ARCH_WANT_SYS_NICE
 multiline_comment|/*&n; * sys_nice - change the priority of the current process.&n; * @increment: priority increment&n; *&n; * sys_setpriority is a more generic, but much slower function that&n; * does similar things.&n; */
 DECL|function|sys_nice
 id|asmlinkage
@@ -12444,7 +12445,8 @@ c_func
 (paren
 )paren
 op_logical_or
-id|cpu_is_offline
+op_logical_neg
+id|cpu_online
 c_func
 (paren
 id|cpu

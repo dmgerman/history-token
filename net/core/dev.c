@@ -8351,6 +8351,14 @@ id|SIOCSMIIREG
 op_logical_or
 id|cmd
 op_eq
+id|SIOCBRADDIF
+op_logical_or
+id|cmd
+op_eq
+id|SIOCBRDELIF
+op_logical_or
+id|cmd
+op_eq
 id|SIOCWANDEV
 )paren
 (brace
@@ -8867,6 +8875,12 @@ id|SIOCBONDINFOQUERY
 suffix:colon
 r_case
 id|SIOCBONDCHANGEACTIVE
+suffix:colon
+r_case
+id|SIOCBRADDIF
+suffix:colon
+r_case
+id|SIOCBRDELIF
 suffix:colon
 r_if
 c_cond

@@ -11,10 +11,12 @@ DECL|macro|flush_cache_range
 mdefine_line|#define&t;flush_cache_range(vma,a,b)
 DECL|macro|flush_cache_page
 mdefine_line|#define&t;flush_cache_page(vma,p)
-DECL|macro|flush_page_to_ram
-mdefine_line|#define&t;flush_page_to_ram(page)
 DECL|macro|flush_dcache_page
 mdefine_line|#define&t;flush_dcache_page(page)
+DECL|macro|flush_dcache_mmap_lock
+mdefine_line|#define&t;flush_dcache_mmap_lock(mapping)
+DECL|macro|flush_dcache_mmap_unlock
+mdefine_line|#define&t;flush_dcache_mmap_unlock(mapping)
 DECL|macro|flush_icache
 mdefine_line|#define&t;flush_icache()
 DECL|macro|flush_icache_page

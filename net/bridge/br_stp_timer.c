@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *&t;Spanning tree protocol; timer-related code&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_stp_timer.c,v 1.3 2000/05/05 02:17:17 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;br_private.h&quot;
 macro_line|#include &quot;br_private_stp.h&quot;
@@ -779,6 +780,39 @@ r_int
 )paren
 id|p
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* Report ticks left (in USER_HZ) used for API */
+DECL|function|br_timer_value
+r_int
+r_int
+id|br_timer_value
+c_func
+(paren
+r_const
+r_struct
+id|timer_list
+op_star
+id|timer
+)paren
+(brace
+r_return
+id|timer_pending
+c_func
+(paren
+id|timer
+)paren
+ques
+c_cond
+id|jiffies_to_clock_t
+c_func
+(paren
+id|timer-&gt;expires
+op_minus
+id|jiffies
+)paren
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 eof

@@ -1613,13 +1613,6 @@ op_star
 id|screen_base
 suffix:semicolon
 multiline_comment|/* Virtual address */
-DECL|member|display_fg
-r_struct
-id|vc_data
-op_star
-id|display_fg
-suffix:semicolon
-multiline_comment|/* Console visible on this display */
 DECL|member|currcon
 r_int
 id|currcon

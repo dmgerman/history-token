@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 multiline_comment|/* &n; * The timezone where the local system is located.  Used as a default by some&n; * programs who obtain this value by using gettimeofday.&n; */
 DECL|variable|sys_tz
 r_struct
@@ -18,7 +19,7 @@ c_func
 id|sys_tz
 )paren
 suffix:semicolon
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__)
+macro_line|#ifdef __ARCH_WANT_SYS_TIME
 multiline_comment|/*&n; * sys_time() can be implemented in user-level using&n; * sys_gettimeofday().  Is this for backwards compatibility?  If so,&n; * why not move it into the appropriate arch directory (for those&n; * architectures that need it).&n; *&n; * XXX This function is NOT 64-bit clean!&n; */
 DECL|function|sys_time
 id|asmlinkage
@@ -136,7 +137,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* __ARCH_WANT_SYS_TIME */
 DECL|function|sys_gettimeofday
 id|asmlinkage
 r_int

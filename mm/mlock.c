@@ -118,23 +118,10 @@ id|out
 suffix:semicolon
 )brace
 )brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|mm-&gt;page_table_lock
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * vm_flags is protected by the mmap_sem held in write mode.&n;&t; * It&squot;s okay if try_to_unmap_one unmaps a page just after we&n;&t; * set VM_LOCKED, make_pages_present below will bring it back.&n;&t; */
 id|vma-&gt;vm_flags
 op_assign
 id|newflags
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|mm-&gt;page_table_lock
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Keep track of amount of locked VM.&n;&t; */
 id|pages

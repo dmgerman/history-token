@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_UNISTD_H
 DECL|macro|_ASM_IA64_UNISTD_H
 mdefine_line|#define _ASM_IA64_UNISTD_H
-multiline_comment|/*&n; * IA-64 Linux syscall numbers and inline-functions.&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * IA-64 Linux syscall numbers and inline-functions.&n; *&n; * Copyright (C) 1998-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;asm/break.h&gt;
 DECL|macro|__BREAK_SYSCALL
 mdefine_line|#define __BREAK_SYSCALL&t;&t;&t;__IA64_BREAK_SYSCALL
@@ -469,12 +469,12 @@ DECL|macro|__NR_fstatfs64
 mdefine_line|#define __NR_fstatfs64&t;&t;&t;1257
 DECL|macro|__NR_statfs64
 mdefine_line|#define __NR_statfs64&t;&t;&t;1258
-DECL|macro|__NR_reserved1
-mdefine_line|#define __NR_reserved1&t;&t;&t;1259&t;/* reserved for NUMA interface */
-DECL|macro|__NR_reserved2
-mdefine_line|#define __NR_reserved2&t;&t;&t;1260&t;/* reserved for NUMA interface */
-DECL|macro|__NR_reserved3
-mdefine_line|#define __NR_reserved3&t;&t;&t;1261&t;/* reserved for NUMA interface */
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind&t;&t;&t;1259
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy&t;&t;1260
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy&t;&t;1261
 DECL|macro|__NR_mq_open
 mdefine_line|#define __NR_mq_open&t;&t;&t;1262
 DECL|macro|__NR_mq_unlink
@@ -490,8 +490,27 @@ mdefine_line|#define __NR_mq_getsetattr&t;&t;1267
 DECL|macro|__NR_kexec_load
 mdefine_line|#define __NR_kexec_load&t;&t;&t;1268
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;&t;&t;256 /* length of syscall table */
+macro_line|#ifdef CONFIG_IA32_SUPPORT
+DECL|macro|__ARCH_WANT_SYS_FADVISE64
+macro_line|# define __ARCH_WANT_SYS_FADVISE64
+DECL|macro|__ARCH_WANT_SYS_GETPGRP
+macro_line|# define __ARCH_WANT_SYS_GETPGRP
+DECL|macro|__ARCH_WANT_SYS_LLSEEK
+macro_line|# define __ARCH_WANT_SYS_LLSEEK
+DECL|macro|__ARCH_WANT_SYS_NICE
+macro_line|# define __ARCH_WANT_SYS_NICE
+DECL|macro|__ARCH_WANT_SYS_OLD_GETRLIMIT
+macro_line|# define __ARCH_WANT_SYS_OLD_GETRLIMIT
+DECL|macro|__ARCH_WANT_SYS_OLDUMOUNT
+macro_line|# define __ARCH_WANT_SYS_OLDUMOUNT
+DECL|macro|__ARCH_WANT_SYS_SIGPENDING
+macro_line|# define __ARCH_WANT_SYS_SIGPENDING
+DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
+macro_line|# define __ARCH_WANT_SYS_SIGPROCMASK
+macro_line|#endif
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
@@ -622,7 +641,7 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-r_int
+r_void
 DECL|function|_exit
 id|_exit
 (paren
@@ -630,7 +649,6 @@ r_int
 id|value
 )paren
 (brace
-r_return
 id|sys_exit
 c_func
 (paren
@@ -964,7 +982,7 @@ id|sigsetsize
 suffix:semicolon
 multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * Note, this macro can only be used in the file which defines sys_ni_syscall, i.e., in&n; * kernel/sys.c.  This version causes warnings because the declaration isn&squot;t a&n; * proper prototype, but we can&squot;t use __typeof__ either, because not all cond_syscall()&n; * declarations have prototypes at the moment.&n; */
 DECL|macro|cond_syscall
-mdefine_line|#define cond_syscall(x) asmlinkage long x() __attribute__((weak,alias(&quot;sys_ni_syscall&quot;)));
+mdefine_line|#define cond_syscall(x) asmlinkage long x (void) __attribute__((weak,alias(&quot;sys_ni_syscall&quot;)));
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_UNISTD_H */

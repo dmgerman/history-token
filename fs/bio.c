@@ -60,7 +60,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * if you change this list, also change bvec_alloc or things will&n; * break badly! cannot be bigger than what you can fit into an&n; * unsigned short&n; */
 DECL|macro|BV
-mdefine_line|#define BV(x) { .nr_vecs = x, .name = &quot;biovec-&quot; #x }
+mdefine_line|#define BV(x) { .nr_vecs = x, .name = &quot;biovec-&quot;__stringify(x) }
 DECL|variable|bvec_array
 r_static
 r_struct
@@ -2767,22 +2767,12 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_PANIC
 comma
 l_int|NULL
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|bp-&gt;slab
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;biovec: can&squot;t init slab cache&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2850,22 +2840,12 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_PANIC
 comma
 l_int|NULL
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|bio_slab
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;bio: can&squot;t create slab cache&bslash;n&quot;
 )paren
 suffix:semicolon
 id|bio_pool

@@ -95,20 +95,11 @@ l_int|8
 id|KM_PTE1
 comma
 DECL|enumerator|D
-DECL|enumerator|KM_PTE2
-id|D
-c_func
-(paren
-l_int|9
-)paren
-id|KM_PTE2
-comma
-DECL|enumerator|D
 DECL|enumerator|KM_IRQ0
 id|D
 c_func
 (paren
-l_int|10
+l_int|9
 )paren
 id|KM_IRQ0
 comma
@@ -117,7 +108,7 @@ DECL|enumerator|KM_IRQ1
 id|D
 c_func
 (paren
-l_int|11
+l_int|10
 )paren
 id|KM_IRQ1
 comma
@@ -126,7 +117,7 @@ DECL|enumerator|KM_SOFTIRQ0
 id|D
 c_func
 (paren
-l_int|12
+l_int|11
 )paren
 id|KM_SOFTIRQ0
 comma
@@ -135,7 +126,7 @@ DECL|enumerator|KM_SOFTIRQ1
 id|D
 c_func
 (paren
-l_int|13
+l_int|12
 )paren
 id|KM_SOFTIRQ1
 comma
@@ -144,7 +135,7 @@ DECL|enumerator|KM_TYPE_NR
 id|D
 c_func
 (paren
-l_int|14
+l_int|13
 )paren
 id|KM_TYPE_NR
 )brace

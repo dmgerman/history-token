@@ -1565,12 +1565,6 @@ DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|__swp_entry_to_pte
 mdefine_line|#define __swp_entry_to_pte(x)&t;((pte_t) { (x).val })
-DECL|typedef|pte_addr_t
-r_typedef
-id|pte_t
-op_star
-id|pte_addr_t
-suffix:semicolon
 macro_line|#ifndef __s390x__
 DECL|macro|PTE_FILE_MAX_BITS
 macro_line|# define PTE_FILE_MAX_BITS&t;26

@@ -375,6 +375,20 @@ c_cond
 id|vma
 )paren
 (brace
+id|memset
+c_func
+(paren
+id|vma
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|vma
+)paren
+)paren
+suffix:semicolon
 id|vma-&gt;vm_mm
 op_assign
 id|current-&gt;mm
@@ -411,22 +425,6 @@ op_or
 id|VM_MAYWRITE
 op_or
 id|VM_GROWSUP
-suffix:semicolon
-id|vma-&gt;vm_ops
-op_assign
-l_int|NULL
-suffix:semicolon
-id|vma-&gt;vm_pgoff
-op_assign
-l_int|0
-suffix:semicolon
-id|vma-&gt;vm_file
-op_assign
-l_int|NULL
-suffix:semicolon
-id|vma-&gt;vm_private_data
-op_assign
-l_int|NULL
 suffix:semicolon
 id|insert_vm_struct
 c_func
@@ -732,7 +730,7 @@ id|totalram_pages
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This is like put_dirty_page() but installs a clean page in the kernel&squot;s page table.&n; */
+multiline_comment|/*&n; * This installs a clean page in the kernel&squot;s page table.&n; */
 r_struct
 id|page
 op_star
@@ -1184,6 +1182,11 @@ comma
 id|HPAGE_SHIFT
 op_lshift
 l_int|2
+)paren
+suffix:semicolon
+id|ia64_srlz_d
+c_func
+(paren
 )paren
 suffix:semicolon
 macro_line|#endif

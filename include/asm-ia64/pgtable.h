@@ -126,7 +126,7 @@ multiline_comment|/*&n; * Definitions for second level:&n; *&n; * PMD_SHIFT dete
 DECL|macro|PMD_SHIFT
 mdefine_line|#define PMD_SHIFT&t;(PAGE_SHIFT + (PAGE_SHIFT-3))
 DECL|macro|PMD_SIZE
-mdefine_line|#define PMD_SIZE&t;(__IA64_UL(1) &lt;&lt; PMD_SHIFT)
+mdefine_line|#define PMD_SIZE&t;(1UL &lt;&lt; PMD_SHIFT)
 DECL|macro|PMD_MASK
 mdefine_line|#define PMD_MASK&t;(~(PMD_SIZE-1))
 DECL|macro|PTRS_PER_PMD
@@ -856,12 +856,6 @@ id|end
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|typedef|pte_addr_t
-r_typedef
-id|pte_t
-op_star
-id|pte_addr_t
-suffix:semicolon
 multiline_comment|/*&n; * IA-64 doesn&squot;t have any external MMU info: the page tables contain all the necessary&n; * information.  However, we use this routine to take care of any (delayed) i-cache&n; * flushing that may be necessary.&n; */
 r_extern
 r_void

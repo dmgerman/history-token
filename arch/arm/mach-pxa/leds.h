@@ -1,6 +1,15 @@
 multiline_comment|/*&n; * include/asm-arm/arch-pxa/leds.h&n; *&n; * Copyright (c) 2001 Jeff Sutherland, Accelent Systems Inc.&n; *&n; * blinky lights for various PXA-based systems:&n; *&n; */
 r_extern
 r_void
+id|idp_leds_event
+c_func
+(paren
+id|led_event_t
+id|evt
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|lubbock_leds_event
 c_func
 (paren
@@ -10,7 +19,7 @@ id|evt
 suffix:semicolon
 r_extern
 r_void
-id|idp_leds_event
+id|mainstone_leds_event
 c_func
 (paren
 id|led_event_t

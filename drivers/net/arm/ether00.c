@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  drivers/net/ether00.c&n; *&n; *  Copyright (C) 2001 A
 multiline_comment|/* includes */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;

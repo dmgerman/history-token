@@ -417,6 +417,8 @@ suffix:semicolon
 multiline_comment|/* Reserve HH_DATA_MOD byte aligned hard_header_len, but at least that much.&n; * Alternative is:&n; *   dev-&gt;hard_header_len ? (dev-&gt;hard_header_len +&n; *                           (HH_DATA_MOD - 1)) &amp; ~(HH_DATA_MOD - 1) : 0&n; *&n; * We could use other alignment values, but we must maintain the&n; * relationship HH alignment &lt;= LL alignment.&n; */
 DECL|macro|LL_RESERVED_SPACE
 mdefine_line|#define LL_RESERVED_SPACE(dev) &bslash;&n;&t;(((dev)-&gt;hard_header_len&amp;~(HH_DATA_MOD - 1)) + HH_DATA_MOD)
+DECL|macro|LL_RESERVED_SPACE_EXTRA
+mdefine_line|#define LL_RESERVED_SPACE_EXTRA(dev,extra) &bslash;&n;&t;((((dev)-&gt;hard_header_len+extra)&amp;~(HH_DATA_MOD - 1)) + HH_DATA_MOD)
 multiline_comment|/* These flag bits are private to the generic network queueing&n; * layer, they may not be explicitly referenced by any other&n; * code.&n; */
 DECL|enum|netdev_state_t
 r_enum

@@ -1061,6 +1061,7 @@ op_star
 id|addr
 comma
 r_int
+r_int
 id|val
 )paren
 (brace
@@ -1079,15 +1080,20 @@ l_string|&quot;rldimi %0,%1,7*8,4*8&bslash;n&quot;
 l_string|&quot;rldicl %1,%1,32,0&bslash;n&quot;
 l_string|&quot;rlwimi %0,%1,8,8,31&bslash;n&quot;
 l_string|&quot;rlwimi %0,%1,24,16,23&bslash;n&quot;
-l_string|&quot;std %0,0(%2)&bslash;n&quot;
+l_string|&quot;std %0,0(%3)&bslash;n&quot;
 l_string|&quot;sync&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|tmp
 )paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|val
+)paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;1&quot;
 (paren
 id|val
 )paren

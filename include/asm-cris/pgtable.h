@@ -956,11 +956,5 @@ DECL|macro|pte_to_pgoff
 mdefine_line|#define pte_to_pgoff(x)&t;(pte_val(x) &gt;&gt; 6)
 DECL|macro|pgoff_to_pte
 mdefine_line|#define pgoff_to_pte(x)&t;__pte(((x) &lt;&lt; 6) | _PAGE_FILE)
-DECL|typedef|pte_addr_t
-r_typedef
-id|pte_t
-op_star
-id|pte_addr_t
-suffix:semicolon
 macro_line|#endif /* _CRIS_PGTABLE_H */
 eof
