@@ -694,10 +694,6 @@ id|u8
 op_star
 id|mmio_start_virtual
 suffix:semicolon
-DECL|member|cursor_reset
-id|u32
-id|cursor_reset
-suffix:semicolon
 DECL|member|pitch
 id|u32
 id|pitch
