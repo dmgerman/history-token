@@ -534,7 +534,7 @@ id|hcd-&gt;pdev
 op_assign
 id|SA1111_FAKE_PCIDEV
 suffix:semicolon
-id|hcd-&gt;parent
+id|hcd-&gt;controller
 op_assign
 op_amp
 id|dev-&gt;dev
@@ -978,10 +978,6 @@ suffix:semicolon
 id|ohci-&gt;regs
 op_assign
 id|hcd-&gt;regs
-suffix:semicolon
-id|ohci-&gt;parent_dev
-op_assign
-id|hcd-&gt;parent
 suffix:semicolon
 r_if
 c_cond

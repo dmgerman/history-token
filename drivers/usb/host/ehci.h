@@ -35,12 +35,6 @@ r_int
 r_int
 id|unlink
 suffix:semicolon
-multiline_comment|/* qhs patched to recover from td queueing race&n;&t; * (can avoid by using &squot;dummy td&squot;, allowing fewer irqs)&n;&t; */
-DECL|member|qpatch
-r_int
-r_int
-id|qpatch
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* ehci_hcd-&gt;lock guards shared data against other CPUs:&n; *   ehci_hcd:&t;async, reclaim, periodic (and shadow), ...&n; *   hcd_dev:&t;ep[]&n; *   ehci_qh:&t;qh_next, qtd_list&n; *   ehci_qtd:&t;qtd_list&n; *&n; * Also, hold this lock when talking to HC registers or&n; * when updating hw_* fields in shared qh/qtd/... structures.&n; */
@@ -669,6 +663,12 @@ id|list_head
 id|qtd_list
 suffix:semicolon
 multiline_comment|/* sw qtd list */
+DECL|member|dummy
+r_struct
+id|ehci_qtd
+op_star
+id|dummy
+suffix:semicolon
 DECL|member|refcount
 id|atomic_t
 id|refcount

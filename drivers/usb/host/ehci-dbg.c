@@ -1417,6 +1417,9 @@ id|sizep
 id|u32
 id|scratch
 suffix:semicolon
+id|u32
+id|hw_curr
+suffix:semicolon
 r_struct
 id|list_head
 op_star
@@ -1451,6 +1454,14 @@ op_amp
 id|qh-&gt;hw_info1
 )paren
 suffix:semicolon
+id|hw_curr
+op_assign
+id|cpu_to_le32p
+(paren
+op_amp
+id|qh-&gt;hw_current
+)paren
+suffix:semicolon
 id|temp
 op_assign
 id|snprintf
@@ -1459,7 +1470,7 @@ id|next
 comma
 id|size
 comma
-l_string|&quot;qh/%p dev%d %cs ep%d %08x %08x&quot;
+l_string|&quot;qh/%p dev%d %cs ep%d %08x %08x (%08x %08x)&quot;
 comma
 id|qh
 comma
@@ -1486,6 +1497,14 @@ id|cpu_to_le32p
 (paren
 op_amp
 id|qh-&gt;hw_info2
+)paren
+comma
+id|hw_curr
+comma
+id|cpu_to_le32p
+(paren
+op_amp
+id|qh-&gt;hw_token
 )paren
 )paren
 suffix:semicolon
@@ -1533,7 +1552,18 @@ id|next
 comma
 id|size
 comma
-l_string|&quot;&bslash;n&bslash;ttd/%p %s len=%d %08x urb %p&quot;
+l_string|&quot;&bslash;n&bslash;t%std/%p %s len=%d %08x urb %p&quot;
+comma
+(paren
+id|hw_curr
+op_eq
+id|td-&gt;qtd_dma
+)paren
+ques
+c_cond
+l_string|&quot;*&quot;
+suffix:colon
+l_string|&quot;&quot;
 comma
 id|td
 comma
@@ -2881,13 +2911,11 @@ id|next
 comma
 id|size
 comma
-l_string|&quot;complete %ld unlink %ld qpatch %ld&bslash;n&quot;
+l_string|&quot;complete %ld unlink %ld&bslash;n&quot;
 comma
 id|ehci-&gt;stats.complete
 comma
 id|ehci-&gt;stats.unlink
-comma
-id|ehci-&gt;stats.qpatch
 )paren
 suffix:semicolon
 id|size

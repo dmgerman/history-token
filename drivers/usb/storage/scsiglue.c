@@ -159,7 +159,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Release all resources used by the virtual host&n; *&n; * NOTE: There is no contention here, because we&squot;re already deregistered&n; * the driver and we&squot;re doing each virtual host in turn, not in parallel&n; * Synchronization: BLK, no spinlock.&n; */
+multiline_comment|/* Release all resources used by the virtual host&n; *&n; * NOTE: There is no contention here, because we&squot;re already deregistered&n; * the driver and we&squot;re doing each virtual host in turn, not in parallel&n; * Synchronization: BKL, no spinlock.&n; */
 DECL|function|release
 r_static
 r_int

@@ -7698,7 +7698,7 @@ c_func
 (paren
 l_string|&quot;HID probe called for ifnum %d&quot;
 comma
-id|intf-&gt;ifnum
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 )paren
 suffix:semicolon
 r_if
@@ -7781,6 +7781,11 @@ op_logical_neg
 id|hid-&gt;claimed
 )paren
 (brace
+id|printk
+(paren
+l_string|&quot;HID device not claimed by input or hiddev&bslash;n&quot;
+)paren
+suffix:semicolon
 id|hid_disconnect
 c_func
 (paren
