@@ -31,7 +31,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;%lu&bslash;n&quot;
+l_string|&quot;%llu&bslash;n&quot;
 comma
 id|hotplug_seqnum
 )paren

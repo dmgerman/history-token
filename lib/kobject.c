@@ -436,8 +436,7 @@ id|path
 suffix:semicolon
 )brace
 DECL|variable|hotplug_seqnum
-r_int
-r_int
+id|u64
 id|hotplug_seqnum
 suffix:semicolon
 macro_line|#ifdef CONFIG_HOTPLUG

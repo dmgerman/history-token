@@ -13,8 +13,7 @@ DECL|macro|KOBJ_NAME_LEN
 mdefine_line|#define KOBJ_NAME_LEN&t;20
 multiline_comment|/* counter to tag the hotplug event, read only except for the kobject core */
 r_extern
-r_int
-r_int
+id|u64
 id|hotplug_seqnum
 suffix:semicolon
 DECL|struct|kobject
