@@ -111,6 +111,9 @@ DECL|macro|PORT_VR41XX_SIU
 mdefine_line|#define PORT_VR41XX_SIU&t;&t;65
 DECL|macro|PORT_VR41XX_DSIU
 mdefine_line|#define PORT_VR41XX_DSIU&t;66
+multiline_comment|/* Samsung S3C2400 SoC */
+DECL|macro|PORT_S3C2400
+mdefine_line|#define PORT_S3C2400&t;67
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
