@@ -90,7 +90,8 @@ r_int
 id|fd_mcs_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
 comma
 r_struct
