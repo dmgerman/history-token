@@ -859,9 +859,13 @@ op_ne
 l_int|NULL
 )paren
 (brace
+multiline_comment|/* We must use pci_device_to_OF_node() to make sure that&n;&t;&t; * we get the real &quot;final&quot; pointer to the device in the&n;&t;&t; * pci_dev sysdata and not the temporary PHB one&n;&t;&t; */
+r_struct
+id|device_node
+op_star
 id|dn
 op_assign
-id|PCI_GET_DN
+id|pci_device_to_OF_node
 c_func
 (paren
 id|dev
