@@ -22,9 +22,9 @@ mdefine_line|#define SUN4M_IOBASE_VADDR&t;0xfd000000 /* Base for mapping pages *
 DECL|macro|IOBASE_VADDR
 mdefine_line|#define IOBASE_VADDR&t;&t;0xfe000000
 DECL|macro|IOBASE_END
-mdefine_line|#define IOBASE_END&t;&t;0xfe300000
+mdefine_line|#define IOBASE_END&t;&t;0xfe600000
 DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START&t;&t;0xfe300000
+mdefine_line|#define VMALLOC_START&t;&t;0xfe600000
 multiline_comment|/* XXX Alter this when I get around to fixing sun4c - Anton */
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;&t;0xffc00000
