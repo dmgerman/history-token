@@ -2092,12 +2092,12 @@ id|cmd.parm.num
 comma
 l_string|&quot;%s&quot;
 comma
-id|isdn_map_eaz2msn
+id|isdn_slot_map_eaz2msn
 c_func
 (paren
-id|lp-&gt;msn
+id|lp-&gt;isdn_slot
 comma
-id|cmd.driver
+id|lp-&gt;msn
 )paren
 )paren
 suffix:semicolon
@@ -3970,12 +3970,10 @@ suffix:semicolon
 )brace
 id|ret
 op_assign
-id|isdn_slot_writebuf_skb_stub
+id|isdn_slot_write
 c_func
 (paren
 id|lp-&gt;isdn_slot
-comma
-l_int|1
 comma
 id|skb
 )paren
@@ -4735,7 +4733,7 @@ c_cond
 (paren
 id|chi
 op_assign
-id|isdn_get_free_channel
+id|isdn_get_free_slot
 c_func
 (paren
 id|ISDN_USAGE_NET
@@ -4759,7 +4757,7 @@ op_logical_and
 (paren
 id|chi
 op_assign
-id|isdn_get_free_channel
+id|isdn_get_free_slot
 c_func
 (paren
 id|ISDN_USAGE_NET
@@ -9538,7 +9536,7 @@ c_cond
 (paren
 id|chi
 op_assign
-id|isdn_get_free_channel
+id|isdn_get_free_slot
 c_func
 (paren
 id|ISDN_USAGE_NET
@@ -10024,7 +10022,7 @@ c_cond
 (paren
 id|chi
 op_assign
-id|isdn_get_free_channel
+id|isdn_get_free_slot
 c_func
 (paren
 id|ISDN_USAGE_NET
@@ -11410,7 +11408,7 @@ c_cond
 (paren
 id|i
 op_assign
-id|isdn_get_free_channel
+id|isdn_get_free_slot
 c_func
 (paren
 id|ISDN_USAGE_NET

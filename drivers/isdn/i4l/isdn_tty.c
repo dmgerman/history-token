@@ -591,8 +591,6 @@ comma
 id|tty-&gt;flip.flag_buf_ptr
 comma
 id|c
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* CISCO AsyncPPP Hack */
@@ -1372,12 +1370,10 @@ c_cond
 (paren
 id|slen
 op_assign
-id|isdn_slot_writebuf_skb_stub
+id|isdn_slot_write
 c_func
 (paren
 id|info-&gt;isdn_slot
-comma
-l_int|1
 comma
 id|skb
 )paren
@@ -2589,7 +2585,7 @@ c_func
 suffix:semicolon
 id|i
 op_assign
-id|isdn_get_free_channel
+id|isdn_get_free_slot
 c_func
 (paren
 id|usg
@@ -3473,7 +3469,7 @@ c_func
 suffix:semicolon
 id|i
 op_assign
-id|isdn_get_free_channel
+id|isdn_get_free_slot
 c_func
 (paren
 id|usg
@@ -3931,7 +3927,7 @@ c_func
 suffix:semicolon
 id|i
 op_assign
-id|isdn_get_free_channel
+id|isdn_get_free_slot
 c_func
 (paren
 id|usg
@@ -14639,17 +14635,6 @@ op_amp
 id|cmd
 )paren
 suffix:semicolon
-id|isdn_slot_command
-c_func
-(paren
-id|info-&gt;isdn_slot
-comma
-id|ISDN_CMD_ACCEPTD
-comma
-op_amp
-id|cmd
-)paren
-suffix:semicolon
 id|info-&gt;dialing
 op_assign
 l_int|16
@@ -14658,9 +14643,13 @@ id|info-&gt;emu.carrierwait
 op_assign
 l_int|0
 suffix:semicolon
-id|isdn_command
+id|isdn_slot_command
 c_func
 (paren
+id|info-&gt;isdn_slot
+comma
+id|ISDN_CMD_ACCEPTD
+comma
 op_amp
 id|cmd
 )paren

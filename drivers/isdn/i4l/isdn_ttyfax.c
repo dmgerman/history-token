@@ -1752,7 +1752,7 @@ suffix:semicolon
 multiline_comment|/* get a temporary connection to the first free fax driver */
 id|i
 op_assign
-id|isdn_get_free_channel
+id|isdn_get_free_slot
 c_func
 (paren
 id|ISDN_USAGE_FAX
