@@ -11419,6 +11419,12 @@ op_star
 id|thread
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|thread
+)paren
+(brace
 id|dprintk
 c_func
 (paren
@@ -11443,6 +11449,7 @@ op_amp
 id|thread-&gt;wqueue
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|md_register_thread
 id|mdk_thread_t
