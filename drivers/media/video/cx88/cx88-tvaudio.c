@@ -1420,7 +1420,7 @@ op_star
 id|core
 )paren
 (brace
-multiline_comment|/* This is officially wierd.. register dumps indicate windows&n;&t; * uses audio mode 4.. A2. Let&squot;s operate and find out. */
+multiline_comment|/* This is officially weird.. register dumps indicate windows&n;&t; * uses audio mode 4.. A2. Let&squot;s operate and find out. */
 r_static
 r_const
 r_struct

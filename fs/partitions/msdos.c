@@ -1559,6 +1559,12 @@ id|parse_solaris_x86
 )brace
 comma
 (brace
+id|NEW_SOLARIS_X86_PARTITION
+comma
+id|parse_solaris_x86
+)brace
+comma
+(brace
 l_int|0
 comma
 l_int|NULL

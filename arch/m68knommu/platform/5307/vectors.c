@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
@@ -15,7 +16,6 @@ macro_line|#include &lt;asm/coldfire.h&gt;
 macro_line|#include &lt;asm/mcftimer.h&gt;
 macro_line|#include &lt;asm/mcfsim.h&gt;
 macro_line|#include &lt;asm/mcfdma.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/mcfwdebug.h&gt;
 multiline_comment|/***************************************************************************/
 macro_line|#ifdef TRAP_DBG_INTERRUPT

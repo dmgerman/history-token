@@ -2131,7 +2131,7 @@ id|INTCSR_9052
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*      Process the result of trying to pass a recieved frame up the stack&n; */
+multiline_comment|/*      Process the result of trying to pass a received frame up the stack&n; */
 r_static
 r_void
 DECL|function|fst_process_rx_status

@@ -271,6 +271,10 @@ DECL|enumerator|NI_Sparse
 id|NI_Sparse
 comma
 multiline_comment|/* 1: Unnamed data attr is sparse (f).&n;&t;&t;&t;&t;   1: Create sparse files by default (d).&n;&t;&t;&t;&t;   1: Attribute is sparse (a). */
+DECL|enumerator|NI_TruncateFailed
+id|NI_TruncateFailed
+comma
+multiline_comment|/* 1: Last ntfs_truncate() call failed. */
 DECL|typedef|ntfs_inode_state_bits
 )brace
 id|ntfs_inode_state_bits
@@ -337,6 +341,11 @@ id|NINO_FNS
 c_func
 (paren
 id|Sparse
+)paren
+id|NINO_FNS
+c_func
+(paren
+id|TruncateFailed
 )paren
 multiline_comment|/*&n; * The full structure containing a ntfs_inode and a vfs struct inode. Used for&n; * all real and fake inodes but not for extent inodes which lack the vfs struct&n; * inode.&n; */
 r_typedef
@@ -689,8 +698,19 @@ id|mnt
 suffix:semicolon
 macro_line|#ifdef NTFS_RW
 r_extern
-r_void
+r_int
 id|ntfs_truncate
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|vi
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ntfs_truncate_vfs
 c_func
 (paren
 r_struct
