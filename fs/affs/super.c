@@ -370,7 +370,7 @@ l_int|NULL
 suffix:semicolon
 id|ei-&gt;vfs_inode.i_version
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 r_return
 op_amp
