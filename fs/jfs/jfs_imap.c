@@ -4257,13 +4257,7 @@ suffix:semicolon
 id|invalidate_pxd_metapages
 c_func
 (paren
-id|JFS_SBI
-c_func
-(paren
-id|ip-&gt;i_sb
-)paren
-op_member_access_from_pointer
-id|direct_inode
+id|ip-&gt;i_sb-&gt;s_bdev-&gt;bd_inode
 comma
 id|freepxd
 )paren
