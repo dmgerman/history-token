@@ -595,6 +595,14 @@ id|evdev_table
 (braket
 id|i
 )braket
+op_logical_or
+op_logical_neg
+id|evdev_table
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|exist
 )paren
 r_return
 op_minus
@@ -884,8 +892,11 @@ comma
 id|list-&gt;head
 op_ne
 id|list-&gt;tail
-op_logical_and
+op_logical_or
+(paren
+op_logical_neg
 id|list-&gt;evdev-&gt;exist
+)paren
 )paren
 suffix:semicolon
 r_if

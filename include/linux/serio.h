@@ -8,6 +8,7 @@ DECL|macro|SPIOCSTYPE
 mdefine_line|#define SPIOCSTYPE&t;_IOW(&squot;q&squot;, 0x01, unsigned long)
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|struct|serio
 r_struct
 id|serio
@@ -62,6 +63,10 @@ r_int
 r_int
 id|event
 suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|write
 r_int
 (paren
@@ -107,6 +112,7 @@ id|serio_dev
 op_star
 id|dev
 suffix:semicolon
+multiline_comment|/* Accessed from interrupt, writes must be protected by serio_lock */
 DECL|member|node
 r_struct
 id|list_head

@@ -42,9 +42,9 @@ mdefine_line|#define GRIP_LENGTH_XT&t;&t;4
 DECL|macro|GRIP_STROBE_XT
 mdefine_line|#define GRIP_STROBE_XT&t;&t;64&t;/* 64 us */
 DECL|macro|GRIP_MAX_CHUNKS_XT
-mdefine_line|#define GRIP_MAX_CHUNKS_XT&t;10&t;
+mdefine_line|#define GRIP_MAX_CHUNKS_XT&t;10
 DECL|macro|GRIP_MAX_BITS_XT
-mdefine_line|#define GRIP_MAX_BITS_XT&t;30&t;
+mdefine_line|#define GRIP_MAX_BITS_XT&t;30
 DECL|macro|GRIP_REFRESH_TIME
 mdefine_line|#define GRIP_REFRESH_TIME&t;HZ/50&t;/* 20 ms */
 DECL|struct|grip
