@@ -37,7 +37,7 @@ macro_line|# define __kernel_extbl(val, shift)&t;&t;&t;&t;&t;&bslash;&n;  ({ uns
 DECL|macro|__kernel_extwl
 macro_line|# define __kernel_extwl(val, shift)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;extwl %2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(shift), &quot;r&quot;(val));&t;&bslash;&n;     __kir; })
 DECL|macro|__kernel_cmpbge
-macro_line|# define __kernel_cmpbge(a, b)&t;&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;cmpbge %r2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(b), &quot;rJ&quot;(val));&t;&bslash;&n;     __kir; })
+macro_line|# define __kernel_cmpbge(a, b)&t;&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;cmpbge %r2,%1,%0&quot; : &quot;=r&quot;(__kir) : &quot;rI&quot;(b), &quot;rJ&quot;(a));&t;&bslash;&n;     __kir; })
 DECL|macro|__kernel_cttz
 macro_line|# define __kernel_cttz(x)&t;&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __kir;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__(&quot;cttz %1,%0&quot; : &quot;=r&quot;(__kir) : &quot;r&quot;(x));&t;&t;&t;&bslash;&n;     __kir; })
 DECL|macro|__kernel_ctlz
