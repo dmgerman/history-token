@@ -2246,11 +2246,4 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|variable|agp_3_5_enable
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|agp_3_5_enable
-)paren
-suffix:semicolon
 eof
