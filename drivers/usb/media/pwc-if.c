@@ -1,6 +1,6 @@
-multiline_comment|/* Linux driver for Philips webcam &n;   USB and Video4Linux interface part.&n;   (C) 1999-2003 Nemosoft Unv.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;*/
+multiline_comment|/* Linux driver for Philips webcam&n;   USB and Video4Linux interface part.&n;   (C) 1999-2004 Nemosoft Unv.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;*/
 multiline_comment|/*  &n;   This code forms the interface between the USB layers and the Philips&n;   specific stuff. Some adanved stuff of the driver falls under an&n;   NDA, signed between me and Philips B.V., Eindhoven, the Netherlands, and&n;   is thus not distributed in source form. The binary pwcx.o module &n;   contains the code that falls under the NDA.&n;   &n;   In case you&squot;re wondering: &squot;pwc&squot; stands for &quot;Philips WebCam&quot;, but &n;   I really didn&squot;t want to type &squot;philips_web_cam&squot; every time (I&squot;m lazy as&n;   any Linux kernel hacker, but I don&squot;t like uncomprehensible abbreviations&n;   without explanation).&n;   &n;   Oh yes, convention: to disctinguish between all the various pointers to&n;   device-structures, I use these names for the pointer variables:&n;   udev: struct usb_device *&n;   vdev: struct video_device *&n;   pdev: struct pwc_devive *&n;*/
-multiline_comment|/* Contributors:&n;   - Alvarado: adding whitebalance code&n;   - Alistar Moire: QuickCam 3000 Pro device/product ID&n;   - Tony Hoyle: Creative Labs Webcam 5 device/product ID&n;   - Mark Burazin: solving hang in VIDIOCSYNC when camera gets unplugged&n;   - Jk Fang: SOTEC Afina Eye ID&n;   - Xavier Roche: QuickCam Pro 4000 ID&n;   - Jens Knudsen: QuickCam Zoom ID&n;   - J. Debert: QuickCam for Notebooks ID&n;*/
+multiline_comment|/* Contributors:&n;   - Alvarado: adding whitebalance code&n;   - Alistar Moire: QuickCam 3000 Pro device/product ID&n;   - Tony Hoyle: Creative Labs Webcam 5 device/product ID&n;   - Mark Burazin: solving hang in VIDIOCSYNC when camera gets unplugged&n;   - Jk Fang: Sotec Afina Eye ID&n;   - Xavier Roche: QuickCam Pro 4000 ID&n;   - Jens Knudsen: QuickCam Zoom ID&n;   - J. Debert: QuickCam for Notebooks ID&n;*/
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -289,6 +289,17 @@ l_int|0x8116
 )brace
 comma
 multiline_comment|/* Afina Eye */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x06BE
+comma
+l_int|0x8116
+)paren
+)brace
+comma
+multiline_comment|/* new Afina Eye */
 (brace
 id|USB_DEVICE
 c_func
@@ -679,10 +690,21 @@ op_assign
 id|VID_HARDWARE_PWC
 comma
 dot
+id|release
+op_assign
+id|video_device_release
+comma
+dot
 id|fops
 op_assign
 op_amp
 id|pwc_fops
+comma
+dot
+id|minor
+op_assign
+op_minus
+l_int|1
 comma
 )brace
 suffix:semicolon
@@ -986,7 +1008,7 @@ id|ENXIO
 suffix:semicolon
 )brace
 macro_line|#endif&t;
-multiline_comment|/* Allocate Isochronous pipe buffers */
+multiline_comment|/* Allocate Isochronuous pipe buffers */
 r_for
 c_loop
 (paren
@@ -1857,7 +1879,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n;  &bslash;brief Reset all buffers, pointers and lists, except for the image_used[] buffer.&n;  &n;  If the image_used[] buffer is cleared too, mmap()/VIDIOCSYNC will run into trouble.&n; */
+multiline_comment|/**&n;  &bslash;brief Reset all buffers, pointers and lists, except for the image_used[] buffer.&n;&n;  If the image_used[] buffer is cleared too, mmap()/VIDIOCSYNC will run into trouble.&n; */
 DECL|function|pwc_reset_buffers
 r_static
 r_void
@@ -2090,7 +2112,7 @@ id|pdev-&gt;read_frame-&gt;sequence
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Decompression is a lenghty process, so it&squot;s outside of the lock.&n;&t;&t;&t;   This gives the isoc_handler the opportunity to fill more frames &n;&t;&t;&t;   in the mean time.&n;&t;&t;&t;*/
+multiline_comment|/* Decompression is a lenghty process, so it&squot;s outside of the lock.&n;&t;&t;&t;   This gives the isoc_handler the opportunity to fill more frames&n;&t;&t;&t;   in the mean time.&n;&t;&t;&t;*/
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2595,7 +2617,7 @@ id|flen
 op_plus
 id|fbuf-&gt;filled
 OG
-id|pdev-&gt;frame_size
+id|pdev-&gt;frame_total_size
 )paren
 (brace
 id|Trace
@@ -2603,11 +2625,11 @@ c_func
 (paren
 id|TRACE_FLOW
 comma
-l_string|&quot;Frame buffer overflow (flen = %d, frame_size = %d).&bslash;n&quot;
+l_string|&quot;Frame buffer overflow (flen = %d, frame_total_size = %d).&bslash;n&quot;
 comma
 id|flen
 comma
-id|pdev-&gt;frame_size
+id|pdev-&gt;frame_total_size
 )paren
 suffix:semicolon
 id|pdev-&gt;vsync
@@ -2835,7 +2857,7 @@ c_cond
 (paren
 id|fbuf-&gt;filled
 OL
-id|pdev-&gt;frame_size
+id|pdev-&gt;frame_total_size
 )paren
 (brace
 id|Trace
@@ -3217,7 +3239,7 @@ r_return
 op_minus
 id|ENFILE
 suffix:semicolon
-multiline_comment|/* Odd error, that should be noticeable */
+multiline_comment|/* Odd error, that should be noticable */
 )brace
 multiline_comment|/* Set alternate interface */
 id|ret
@@ -3544,7 +3566,7 @@ r_else
 id|Trace
 c_func
 (paren
-id|TRACE_OPEN
+id|TRACE_MEMORY
 comma
 l_string|&quot;URB 0x%p submitted.&bslash;n&quot;
 comma
@@ -4013,28 +4035,34 @@ id|sensor_type
 op_assign
 l_int|NULL
 suffix:semicolon
-id|i
+r_int
+id|ret
+suffix:semicolon
+id|ret
 op_assign
 id|pwc_get_cmos_sensor
 c_func
 (paren
 id|pdev
+comma
+op_amp
+id|i
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ge
+l_int|0
+)paren
+(brace
 r_switch
 c_cond
 (paren
 id|i
 )paren
 (brace
-r_case
-op_minus
-l_int|1
-suffix:colon
-multiline_comment|/* Unknown, show nothing */
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 l_int|0x00
 suffix:colon
@@ -4134,6 +4162,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+)brace
 r_if
 c_cond
 (paren
@@ -4146,7 +4175,7 @@ c_func
 (paren
 l_string|&quot;This %s camera is equipped with a %s (%d).&bslash;n&quot;
 comma
-id|pdev-&gt;vdev.name
+id|pdev-&gt;vdev-&gt;name
 comma
 id|sensor_type
 comma
@@ -4622,7 +4651,7 @@ c_func
 l_string|&quot;video_close() called on closed device?&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Dump statistics, but only if a reasonable amount of frames were&n;&t;   processed (to prevent endless log-entries in case of snap-shot&n;&t;   programs) &n;&t; */
+multiline_comment|/* Dump statistics, but only if a reasonable amount of frames were&n;&t;   processed (to prevent endless log-entries in case of snap-shot&n;&t;   programs)&n;&t; */
 r_if
 c_cond
 (paren
@@ -4811,6 +4840,9 @@ id|wait
 comma
 id|current
 )paren
+suffix:semicolon
+r_int
+id|bytes_to_read
 suffix:semicolon
 id|Trace
 c_func
@@ -5027,6 +5059,22 @@ comma
 l_string|&quot;Copying data to user space.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdev-&gt;vpalette
+op_eq
+id|VIDEO_PALETTE_RAW
+)paren
+id|bytes_to_read
+op_assign
+id|pdev-&gt;frame_size
+suffix:semicolon
+r_else
+id|bytes_to_read
+op_assign
+id|pdev-&gt;view.size
+suffix:semicolon
 multiline_comment|/* copy bytes to user space; we allow for partial reads */
 r_if
 c_cond
@@ -5035,11 +5083,11 @@ id|count
 op_plus
 id|pdev-&gt;image_read_pos
 OG
-id|pdev-&gt;view.size
+id|bytes_to_read
 )paren
 id|count
 op_assign
-id|pdev-&gt;view.size
+id|bytes_to_read
 op_minus
 id|pdev-&gt;image_read_pos
 suffix:semicolon
@@ -5074,7 +5122,7 @@ c_cond
 (paren
 id|pdev-&gt;image_read_pos
 op_ge
-id|pdev-&gt;view.size
+id|bytes_to_read
 )paren
 (brace
 multiline_comment|/* All data has been read */
@@ -5403,14 +5451,6 @@ suffix:semicolon
 r_int
 id|val
 suffix:semicolon
-id|p-&gt;colour
-op_assign
-l_int|0x8000
-suffix:semicolon
-id|p-&gt;hue
-op_assign
-l_int|0x8000
-suffix:semicolon
 id|val
 op_assign
 id|pwc_get_brightness
@@ -5514,7 +5554,7 @@ l_int|24
 suffix:semicolon
 id|p-&gt;palette
 op_assign
-id|VIDEO_PALETTE_YUV420P
+id|pdev-&gt;vpalette
 suffix:semicolon
 id|p-&gt;hue
 op_assign
@@ -5536,21 +5576,6 @@ op_assign
 id|arg
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; *&t;FIXME:&t;Suppose we are mid read&n;&t;&t;&t;        ANSWER: No problem: the firmware of the camera&n;&t;&t;&t;                can handle brightness/contrast/etc&n;&t;&t;&t;                changes at _any_ time, and the palette&n;&t;&t;&t;                is used exactly once in the uncompress&n;&t;&t;&t;                routine.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|p-&gt;palette
-op_logical_and
-id|p-&gt;palette
-op_ne
-id|VIDEO_PALETTE_YUV420P
-)paren
-(brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 id|pwc_set_brightness
 c_func
 (paren
@@ -5583,6 +5608,61 @@ comma
 id|p-&gt;colour
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;palette
+op_logical_and
+id|p-&gt;palette
+op_ne
+id|pdev-&gt;vpalette
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|p-&gt;palette
+)paren
+(brace
+r_case
+id|VIDEO_PALETTE_YUV420P
+suffix:colon
+r_case
+id|VIDEO_PALETTE_RAW
+suffix:colon
+id|pdev-&gt;vpalette
+op_assign
+id|p-&gt;palette
+suffix:semicolon
+r_return
+id|pwc_try_video_mode
+c_func
+(paren
+id|pdev
+comma
+id|pdev-&gt;image.x
+comma
+id|pdev-&gt;image.y
+comma
+id|pdev-&gt;vframes
+comma
+id|pdev-&gt;vcompression
+comma
+id|pdev-&gt;vsnapshot
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
 r_break
 suffix:semicolon
 )brace
@@ -5876,15 +5956,32 @@ r_if
 c_cond
 (paren
 id|vm-&gt;format
-op_logical_and
-id|vm-&gt;format
-op_ne
-id|VIDEO_PALETTE_YUV420P
 )paren
+(brace
+r_switch
+c_cond
+(paren
+id|vm-&gt;format
+)paren
+(brace
+r_case
+id|VIDEO_PALETTE_YUV420P
+suffix:colon
+r_case
+id|VIDEO_PALETTE_RAW
+suffix:colon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -6266,7 +6363,7 @@ id|arg
 suffix:semicolon
 id|vu-&gt;video
 op_assign
-id|pdev-&gt;vdev.minor
+id|pdev-&gt;vdev-&gt;minor
 op_amp
 l_int|0x3F
 suffix:semicolon
@@ -6736,7 +6833,7 @@ suffix:colon
 id|Info
 c_func
 (paren
-l_string|&quot;Philips PCVC730K (ToUCam Fun) USB webcam detected.&bslash;n&quot;
+l_string|&quot;Philips PCVC730K (ToUCam Fun)/PCVC830 (ToUCam II) USB webcam detected.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|name
@@ -6755,7 +6852,7 @@ suffix:colon
 id|Info
 c_func
 (paren
-l_string|&quot;Philips PCVC740K (ToUCam Pro) USB webcam detected.&bslash;n&quot;
+l_string|&quot;Philips PCVC740K (ToUCam Pro)/PCVC840 (ToUCam II) USB webcam detected.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|name
@@ -7212,6 +7309,96 @@ c_cond
 (paren
 id|vendor_id
 op_eq
+l_int|0x06be
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|product_id
+)paren
+(brace
+r_case
+l_int|0x8116
+suffix:colon
+multiline_comment|/* Basicly the same as the Sotec Afina Eye */
+id|Info
+c_func
+(paren
+l_string|&quot;AME CU-001 USB webcam detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;AME CU-001&quot;
+suffix:semicolon
+id|type_id
+op_assign
+l_int|730
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|vendor_id
+op_eq
+l_int|0x06be
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|product_id
+)paren
+(brace
+r_case
+l_int|0x8116
+suffix:colon
+multiline_comment|/* This is essentially the same cam as the Sotec Afina Eye */
+id|Info
+c_func
+(paren
+l_string|&quot;AME Co. Afina Eye USB webcam detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;AME Co. Afina Eye&quot;
+suffix:semicolon
+id|type_id
+op_assign
+l_int|750
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|vendor_id
+op_eq
 l_int|0x0d81
 )paren
 (brace
@@ -7382,6 +7569,14 @@ id|pdev-&gt;vframes
 op_assign
 id|default_fps
 suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|pdev-&gt;serial
+comma
+id|serial_number
+)paren
+suffix:semicolon
 id|pdev-&gt;features
 op_assign
 id|features
@@ -7417,16 +7612,6 @@ id|pdev-&gt;angle_range.tilt_max
 op_assign
 l_int|2500
 suffix:semicolon
-id|pdev-&gt;angle_range.zoom_min
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|pdev-&gt;angle_range.zoom_max
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 )brace
 id|init_MUTEX
 c_func
@@ -7454,10 +7639,42 @@ id|pdev-&gt;vcompression
 op_assign
 id|pwc_preferred_compression
 suffix:semicolon
+multiline_comment|/* Allocate video_device structure */
+id|pdev-&gt;vdev
+op_assign
+id|video_device_alloc
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdev-&gt;vdev
+op_eq
+l_int|0
+)paren
+(brace
+id|Err
+c_func
+(paren
+l_string|&quot;Err, cannot allocate video_device struture. Failing probe.&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|memcpy
 c_func
 (paren
-op_amp
 id|pdev-&gt;vdev
 comma
 op_amp
@@ -7472,18 +7689,22 @@ suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|pdev-&gt;vdev.name
+id|pdev-&gt;vdev-&gt;name
 comma
 id|name
 )paren
 suffix:semicolon
-id|pdev-&gt;vdev.owner
+id|pdev-&gt;vdev-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-id|pdev-&gt;vdev.priv
-op_assign
+id|video_set_drvdata
+c_func
+(paren
+id|pdev-&gt;vdev
+comma
 id|pdev
+)paren
 suffix:semicolon
 id|pdev-&gt;release
 op_assign
@@ -7613,7 +7834,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|pdev-&gt;vdev.release
+id|pdev-&gt;vdev-&gt;release
 op_assign
 id|video_device_release
 suffix:semicolon
@@ -7622,7 +7843,6 @@ op_assign
 id|video_register_device
 c_func
 (paren
-op_amp
 id|pdev-&gt;vdev
 comma
 id|VFL_TYPE_GRABBER
@@ -7646,6 +7866,13 @@ comma
 id|i
 )paren
 suffix:semicolon
+id|video_device_release
+c_func
+(paren
+id|pdev-&gt;vdev
+)paren
+suffix:semicolon
+multiline_comment|/* Drip... drip... drip... */
 id|kfree
 c_func
 (paren
@@ -7665,7 +7892,7 @@ c_func
 (paren
 l_string|&quot;Registered as /dev/video%d.&bslash;n&quot;
 comma
-id|pdev-&gt;vdev.minor
+id|pdev-&gt;vdev-&gt;minor
 op_amp
 l_int|0x3F
 )paren
@@ -7828,7 +8055,7 @@ r_goto
 id|disconnect_out
 suffix:semicolon
 )brace
-macro_line|#endif&t;
+macro_line|#endif
 multiline_comment|/* We got unplugged; this is signalled by an EPIPE error code */
 r_if
 c_cond
@@ -7878,7 +8105,6 @@ suffix:semicolon
 id|video_unregister_device
 c_func
 (paren
-op_amp
 id|pdev-&gt;vdev
 )paren
 suffix:semicolon
@@ -8222,7 +8448,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Nemosoft Unv. &lt;nemosoft@smcc.demon.nl&gt;&quot;
+l_string|&quot;Nemosoft Unv. &lt;webcam@smcc.demon.nl&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -8270,7 +8496,7 @@ suffix:semicolon
 id|Info
 c_func
 (paren
-l_string|&quot;Philips PCA645/646 + PCVC675/680/690 + PCVC730/740/750 webcam module version &quot;
+l_string|&quot;Philips webcam module version &quot;
 id|PWC_VERSION
 l_string|&quot; loaded.&bslash;n&quot;
 )paren
@@ -8278,13 +8504,19 @@ suffix:semicolon
 id|Info
 c_func
 (paren
-l_string|&quot;Also supports the Askey VC010, various Logitech QuickCams, Samsung MPC-C10 and MPC-C30,&bslash;n&quot;
+l_string|&quot;Supports Philips PCA645/646, PCVC675/680/690, PCVC720[40]/730/740/750 &amp; PCVC830/840.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|Info
 c_func
 (paren
-l_string|&quot;the Creative WebCam 5, SOTEC Afina Eye and Visionite VCS-UC300 and VCS-UM100.&bslash;n&quot;
+l_string|&quot;Also supports the Askey VC010, various Logitech Quickcams, Samsung MPC-C10 and MPC-C30,&bslash;n&quot;
+)paren
+suffix:semicolon
+id|Info
+c_func
+(paren
+l_string|&quot;the Creative WebCam 5 &amp; Pro Ex, SOTEC Afina Eye and Visionite VCS-UC300 and VCS-UM100.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -8603,7 +8835,7 @@ id|leds
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* Big device node whoopla. Basically, it allows you to assign a &n;&t;   device node (/dev/videoX) to a camera, based on its type &n;&t;   &amp; serial number. The format is [type[.serialnumber]:]node.&n;&n;           Any camera that isn&squot;t matched by these rules gets the next &n;           available free device node.&n;&t; */
+multiline_comment|/* Big device node whoopla. Basicly, it allows you to assign a&n;&t;   device node (/dev/videoX) to a camera, based on its type&n;&t;   &amp; serial number. The format is [type[.serialnumber]:]node.&n;&n;&t;   Any camera that isn&squot;t matched by these rules gets the next&n;&t;   available free device node.&n;&t; */
 r_for
 c_loop
 (paren

@@ -1,6 +1,8 @@
-multiline_comment|/* Linux driver for Philips webcam &n;   Decompression frontend.&n;   (C) 1999-2003 Nemosoft Unv. (webcam@smcc.demon.nl)&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
+multiline_comment|/* Linux driver for Philips webcam&n;   Decompression frontend.&n;   (C) 1999-2003 Nemosoft Unv. (webcam@smcc.demon.nl)&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 multiline_comment|/*&n;   This is where the decompression routines register and unregister &n;   themselves. It also has a decompressor wrapper function.&n;*/
+macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
+singleline_comment|// #include &lt;linux/sched.h&gt;
 macro_line|#include &quot;pwc.h&quot;
 macro_line|#include &quot;pwc-uncompress.h&quot;
 multiline_comment|/* This contains a list of all registered decompressors */
@@ -291,6 +293,29 @@ op_plus
 id|pdev-&gt;frame_header_size
 suffix:semicolon
 multiline_comment|/* Skip header */
+multiline_comment|/* Raw format; that&squot;s easy... */
+r_if
+c_cond
+(paren
+id|pdev-&gt;vpalette
+op_eq
+id|VIDEO_PALETTE_RAW
+)paren
+(brace
+id|memcpy
+c_func
+(paren
+id|image
+comma
+id|yuv
+comma
+id|pdev-&gt;frame_size
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -300,7 +325,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Uncompressed mode. We copy the data into the output buffer,&n;&t;&t;   using the viewport size (which may be larger than the image&n;&t;&t;   size). Unfortunately we have to do a bit of byte stuffing&n;&t;&t;   to get the desired output format/size.&n;&t;&t; */
-multiline_comment|/* &n;&t;&t;&t; * We do some byte shuffling here to go from the &n;&t;&t;&t; * native format to YUV420P.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We do some byte shuffling here to go from the&n;&t;&t;&t; * native format to YUV420P.&n;&t;&t;&t; */
 id|src
 op_assign
 (paren
@@ -497,7 +522,31 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Compressed; the decompressor routines will write the data &n;&t;&t;   in planar format immediately.&n;&t;&t; */
+multiline_comment|/* Compressed; the decompressor routines will write the data&n;&t;&t;   in planar format immediately.&n;&t;&t; */
+r_int
+id|flags
+suffix:semicolon
+id|flags
+op_assign
+id|PWCX_FLAG_PLANAR
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdev-&gt;vsize
+op_eq
+id|PSZ_VGA
+op_logical_and
+id|pdev-&gt;vframes
+op_eq
+l_int|5
+op_logical_and
+id|pdev-&gt;vsnapshot
+)paren
+id|flags
+op_or_assign
+id|PWCX_FLAG_BAYER
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -521,7 +570,7 @@ id|yuv
 comma
 id|image
 comma
-l_int|1
+id|flags
 comma
 id|pdev-&gt;decompress_data
 comma
