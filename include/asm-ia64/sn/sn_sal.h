@@ -361,7 +361,8 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-id|u64
+r_char
+op_star
 DECL|function|ia64_sn_get_klconfig_addr
 id|ia64_sn_get_klconfig_addr
 c_func
@@ -446,6 +447,15 @@ suffix:semicolon
 )brace
 r_return
 id|ret_stuff.v0
+ques
+c_cond
+id|__va
+c_func
+(paren
+id|ret_stuff.v0
+)paren
+suffix:colon
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Returns the next console character.&n; */
