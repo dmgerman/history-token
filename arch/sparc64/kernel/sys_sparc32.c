@@ -4447,6 +4447,9 @@ c_func
 (paren
 id|first
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 id|third

@@ -6236,6 +6236,9 @@ id|sys_shmget
 (paren
 id|first
 comma
+(paren
+r_int
+)paren
 id|second
 comma
 id|third
