@@ -828,7 +828,7 @@ id|current
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Unimplemented system calls.  This is called only for stuff that&n; * we&squot;re supposed to implement but haven&squot;t done so yet.  Everything&n; * else goes to sys_ni_syscall.&n; */
+multiline_comment|/*&n; * Unimplemented system calls.  This is called only for stuff that&n; * we&squot;re supposed to implement but haven&squot;t done so yet.  Everything&n; * else goes to sys_ni_syscall.&n; *&n; * XXX Remove this for v2.6.1.&n; */
 id|asmlinkage
 r_int
 DECL|function|ia64_ni_syscall
@@ -871,40 +871,6 @@ r_int
 id|stack
 )paren
 (brace
-r_struct
-id|pt_regs
-op_star
-id|regs
-op_assign
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-op_amp
-id|stack
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s(%d): &lt;sc%ld(%lx,%lx,%lx,%lx)&gt;&bslash;n&quot;
-comma
-id|current-&gt;comm
-comma
-id|current-&gt;pid
-comma
-id|regs-&gt;r15
-comma
-id|arg0
-comma
-id|arg1
-comma
-id|arg2
-comma
-id|arg3
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOSYS

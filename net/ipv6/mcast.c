@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
@@ -4599,22 +4600,25 @@ id|delay
 op_assign
 id|resptime
 suffix:semicolon
-multiline_comment|/* Do not start timer for addresses with link/host scope */
+multiline_comment|/* Do not start timer for these addresses */
 r_if
 c_cond
 (paren
-id|ipv6_addr_type
+id|ipv6_addr_is_ll_all_nodes
 c_func
 (paren
 op_amp
 id|ma-&gt;mca_addr
 )paren
-op_amp
+op_logical_or
+id|IPV6_ADDR_MC_SCOPE
+c_func
 (paren
-id|IPV6_ADDR_LINKLOCAL
-op_or
-id|IPV6_ADDR_LOOPBACK
+op_amp
+id|ma-&gt;mca_addr
 )paren
+OL
+id|IPV6_ADDR_SCOPE_LINKLOCAL
 )paren
 r_return
 suffix:semicolon
@@ -4698,6 +4702,10 @@ c_func
 op_amp
 id|ma-&gt;mca_refcnt
 )paren
+suffix:semicolon
+id|ma-&gt;mca_flags
+op_or_assign
+id|MAF_TIMER_RUNNING
 suffix:semicolon
 )brace
 DECL|function|mld_marksources
@@ -4880,6 +4888,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+multiline_comment|/* compute payload length excluding extension headers */
 id|len
 op_assign
 id|ntohs
@@ -4887,6 +4896,26 @@ c_func
 (paren
 id|skb-&gt;nh.ipv6h-&gt;payload_len
 )paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|ipv6hdr
+)paren
+suffix:semicolon
+id|len
+op_sub_assign
+(paren
+r_char
+op_star
+)paren
+id|skb-&gt;h.raw
+op_minus
+(paren
+r_char
+op_star
+)paren
+id|skb-&gt;nh.ipv6h
 suffix:semicolon
 multiline_comment|/* Drop queries with not link local source */
 r_if
@@ -10860,9 +10889,13 @@ id|MAF_TIMER_RUNNING
 )paren
 ques
 c_cond
+id|jiffies_to_clock_t
+c_func
+(paren
 id|im-&gt;mca_timer.expires
 op_minus
 id|jiffies
+)paren
 suffix:colon
 l_int|0
 )paren
