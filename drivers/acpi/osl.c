@@ -590,6 +590,7 @@ id|virt
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_os_get_physical_address
 id|acpi_os_get_physical_address
@@ -631,6 +632,7 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|macro|ACPI_MAX_OVERRIDE_LEN
 mdefine_line|#define ACPI_MAX_OVERRIDE_LEN 100
 DECL|variable|acpi_os_name
@@ -3325,6 +3327,7 @@ c_func
 id|acpi_os_signal_semaphore
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|u32
 DECL|function|acpi_os_get_line
 id|acpi_os_get_line
@@ -3380,6 +3383,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/* Assumes no unreadable holes inbetween */
 id|u8
 DECL|function|acpi_os_readable
@@ -3436,6 +3440,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|u8
 DECL|function|acpi_os_writable
 id|acpi_os_writable
@@ -3454,6 +3459,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 id|u32
 DECL|function|acpi_os_get_thread_id
 id|acpi_os_get_thread_id

@@ -163,6 +163,7 @@ id|acpi_get_current_resources
 )paren
 suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_possible_resources&n; *&n; * PARAMETERS:  device_handle   - a handle to the device object for the&n; *                                device we are querying&n; *              ret_buffer      - a pointer to a buffer to receive the&n; *                                resources for the device&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get a list of the possible resources&n; *              for a specific device.  The caller must first acquire a handle&n; *              for the desired device.  The resource data is placed in the&n; *              buffer pointed to by the ret_buffer variable.&n; *&n; *              If the function fails an appropriate status will be returned&n; *              and the value of ret_buffer is undefined.&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_get_possible_resources
 id|acpi_get_possible_resources
@@ -242,6 +243,7 @@ c_func
 id|acpi_get_possible_resources
 )paren
 suffix:semicolon
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_walk_resources&n; *&n; * PARAMETERS:  device_handle   - a handle to the device object for the&n; *                                device we are querying&n; *              Path            - method name of the resources we want&n; *                                (METHOD_NAME__CRS or METHOD_NAME__PRS)&n; *              user_function   - called for each resource&n; *              Context         - passed to user_function&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieves the current or possible resource list for the&n; *              specified device.  The user_function is called once for&n; *              each resource in the list.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_walk_resources

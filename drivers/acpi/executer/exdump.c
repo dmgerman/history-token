@@ -944,6 +944,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_FUTURE_USAGE
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_out*&n; *&n; * PARAMETERS:  Title               - Descriptive text&n; *              Value               - Value to be displayed&n; *&n; * DESCRIPTION: Object dump output formatting functions.  These functions&n; *              reduce the number of format strings required and keeps them&n; *              all in one place for easy modification.&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ex_out_string
@@ -2105,5 +2106,6 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 macro_line|#endif
 eof

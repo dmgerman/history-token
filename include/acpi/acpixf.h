@@ -32,12 +32,14 @@ id|acpi_terminate
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_subsystem_status
 (paren
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
 id|acpi_status
 id|acpi_enable
 (paren
@@ -50,6 +52,7 @@ id|acpi_disable
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_get_system_info
 (paren
@@ -59,6 +62,7 @@ op_star
 id|ret_buffer
 )paren
 suffix:semicolon
+macro_line|#endif
 r_const
 r_char
 op_star
@@ -74,6 +78,7 @@ id|acpi_purge_cached_objects
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_install_initialization_handler
 (paren
@@ -84,6 +89,7 @@ id|u32
 id|function
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * ACPI Memory manager&n; */
 r_void
 op_star
@@ -128,6 +134,7 @@ id|acpi_load_tables
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_load_table
 (paren
@@ -159,6 +166,7 @@ op_star
 id|out_table_header
 )paren
 suffix:semicolon
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 id|acpi_status
 id|acpi_get_table
 (paren
@@ -328,6 +336,7 @@ op_star
 id|return_object_buffer
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_evaluate_object_typed
 (paren
@@ -351,6 +360,7 @@ id|acpi_object_type
 id|return_type
 )paren
 suffix:semicolon
+macro_line|#endif
 id|acpi_status
 id|acpi_get_object_info
 (paren
@@ -510,6 +520,7 @@ op_star
 id|context
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_install_exception_handler
 (paren
@@ -517,6 +528,7 @@ id|acpi_exception_handler
 id|handler
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Event interfaces&n; */
 id|acpi_status
 id|acpi_acquire_global_lock
@@ -569,6 +581,7 @@ id|u32
 id|flags
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_clear_event
 (paren
@@ -587,6 +600,7 @@ op_star
 id|event_status
 )paren
 suffix:semicolon
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 id|acpi_status
 id|acpi_set_gpe_type
 (paren
@@ -639,6 +653,7 @@ id|u32
 id|flags
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_get_gpe_status
 (paren
@@ -656,6 +671,7 @@ op_star
 id|event_status
 )paren
 suffix:semicolon
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 id|acpi_status
 id|acpi_install_gpe_block
 (paren
@@ -713,6 +729,7 @@ op_star
 id|ret_buffer
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_get_possible_resources
 c_func
@@ -726,6 +743,7 @@ op_star
 id|ret_buffer
 )paren
 suffix:semicolon
+macro_line|#endif
 id|acpi_status
 id|acpi_walk_resources
 (paren
@@ -817,6 +835,7 @@ id|acpi_physical_address
 id|physical_address
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_get_firmware_waking_vector
 (paren
@@ -825,6 +844,7 @@ op_star
 id|physical_address
 )paren
 suffix:semicolon
+macro_line|#endif
 id|acpi_status
 id|acpi_get_sleep_type_data
 (paren

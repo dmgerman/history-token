@@ -9,6 +9,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;tbutils&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_handle_to_object&n; *&n; * PARAMETERS:  table_id            - Id for which the function is searching&n; *              table_desc          - Pointer to return the matching table&n; *                                      descriptor.&n; *&n; * RETURN:      Search the tables to find one with a matching table_id and&n; *              return a pointer to that table descriptor.&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_tb_handle_to_object
 id|acpi_tb_handle_to_object
@@ -108,6 +109,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_validate_table_header&n; *&n; * PARAMETERS:  table_header        - Logical pointer to the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check an ACPI table header for validity&n; *&n; * NOTE:  Table pointers are validated as follows:&n; *          1) Table pointer must point to valid physical memory&n; *          2) Signature must be 4 ASCII chars, even if we don&squot;t recognize the&n; *             name&n; *          3) Table must be readable for length specified in the header&n; *          4) Table checksum must be valid (with the exception of the FACS&n; *              which has no checksum because it contains variable fields)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_validate_table_header

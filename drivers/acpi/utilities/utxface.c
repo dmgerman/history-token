@@ -635,6 +635,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_FUTURE_USAGE
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_subsystem_status&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status of the ACPI subsystem&n; *&n; * DESCRIPTION: Other drivers that use the ACPI subsystem should call this&n; *              before making any other calls, to ensure the subsystem initial-&n; *              ized successfully.&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_subsystem_status
@@ -909,6 +910,7 @@ r_return
 id|AE_OK
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_purge_cached_objects&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Empty all caches (delete the cached objects)&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_purge_cached_objects

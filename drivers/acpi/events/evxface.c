@@ -12,6 +12,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;evxface&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_install_exception_handler&n; *&n; * PARAMETERS:  Handler         - Pointer to the handler function for the&n; *                                event&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Saves the pointer to the handler function&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_install_exception_handler
 id|acpi_install_exception_handler
@@ -86,6 +87,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_install_fixed_event_handler&n; *&n; * PARAMETERS:  Event           - Event type to enable.&n; *              Handler         - Pointer to the handler function for the&n; *                                event&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Saves the pointer to the handler function and then enables the&n; *              event.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_install_fixed_event_handler

@@ -82,6 +82,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_get_firmware_waking_vector&n; *&n; * PARAMETERS:  *physical_address   - Output buffer where contents of&n; *                                    the firmware_waking_vector field of&n; *                                    the FACS will be stored.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Access function for firmware_waking_vector field in FACS&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_get_firmware_waking_vector
 id|acpi_get_firmware_waking_vector
@@ -150,6 +151,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_enter_sleep_state_prep&n; *&n; * PARAMETERS:  sleep_state         - Which sleep state to enter&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Prepare to enter a system sleep state (see ACPI 2.0 spec p 231)&n; *              This function must execute with interrupts enabled.&n; *              We break sleeping into 2 stages so that OSPM can handle&n; *              various OS-specific tasks between the two steps.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_enter_sleep_state_prep

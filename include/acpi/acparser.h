@@ -449,6 +449,7 @@ id|u32
 id|argn
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 r_union
 id|acpi_parse_object
 op_star
@@ -476,6 +477,7 @@ op_star
 id|op
 )paren
 suffix:semicolon
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/* pswalk - parse tree walk routines */
 id|acpi_status
 id|acpi_ps_walk_parsed_aml
@@ -607,6 +609,7 @@ id|u32
 id|c
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|u32
 id|acpi_ps_get_name
 c_func
@@ -617,6 +620,7 @@ op_star
 id|op
 )paren
 suffix:semicolon
+macro_line|#endif
 r_void
 id|acpi_ps_set_name
 c_func

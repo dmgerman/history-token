@@ -11,6 +11,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;nsxfeval&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_evaluate_object_typed&n; *&n; * PARAMETERS:  Handle              - Object handle (optional)&n; *              *Pathname           - Object pathname (optional)&n; *              **external_params   - List of parameters to pass to method,&n; *                                    terminated by NULL.  May be NULL&n; *                                    if no parameters are being passed.&n; *              *return_buffer      - Where to put method&squot;s return value (if&n; *                                    any).  If NULL, no value is returned.&n; *              return_type         - Expected type of return object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and evaluate the given object, passing the given&n; *              parameters if necessary.  One of &quot;Handle&quot; or &quot;Pathname&quot; must&n; *              be valid (non-null)&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_evaluate_object_typed
 id|acpi_evaluate_object_typed
@@ -223,6 +224,7 @@ id|AE_TYPE
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_evaluate_object&n; *&n; * PARAMETERS:  Handle              - Object handle (optional)&n; *              Pathname            - Object pathname (optional)&n; *              external_params     - List of parameters to pass to method,&n; *                                    terminated by NULL.  May be NULL&n; *                                    if no parameters are being passed.&n; *              return_buffer       - Where to put method&squot;s return value (if&n; *                                    any).  If NULL, no value is returned.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and evaluate the given object, passing the given&n; *              parameters if necessary.  One of &quot;Handle&quot; or &quot;Pathname&quot; must&n; *              be valid (non-null)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_evaluate_object

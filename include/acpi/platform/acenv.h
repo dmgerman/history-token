@@ -113,8 +113,10 @@ macro_line|#endif /* ACPI_USE_STANDARD_HEADERS */
 multiline_comment|/*&n; * We will be linking to the standard Clib functions&n; */
 DECL|macro|ACPI_STRSTR
 mdefine_line|#define ACPI_STRSTR(s1,s2)      strstr((s1), (s2))
+macro_line|#ifdef ACPI_FUTURE_USAGE
 DECL|macro|ACPI_STRUPR
 mdefine_line|#define ACPI_STRUPR(s)          (void) acpi_ut_strupr ((s))
+macro_line|#endif
 DECL|macro|ACPI_STRLEN
 mdefine_line|#define ACPI_STRLEN(s)          (acpi_size) strlen((s))
 DECL|macro|ACPI_STRCPY
@@ -186,8 +188,10 @@ mdefine_line|#define va_start(ap, A)         (void) ((ap) = (((char *) &amp;(A))
 macro_line|#endif /* va_arg */
 DECL|macro|ACPI_STRSTR
 mdefine_line|#define ACPI_STRSTR(s1,s2)      acpi_ut_strstr ((s1), (s2))
+macro_line|#ifdef ACPI_FUTURE_USAGE
 DECL|macro|ACPI_STRUPR
 mdefine_line|#define ACPI_STRUPR(s)          (void) acpi_ut_strupr ((s))
+macro_line|#endif
 DECL|macro|ACPI_STRLEN
 mdefine_line|#define ACPI_STRLEN(s)          (acpi_size) acpi_ut_strlen ((s))
 DECL|macro|ACPI_STRCPY

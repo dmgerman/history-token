@@ -10,6 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dswstate&quot;
 )paren
+macro_line|#ifdef ACPI_FUTURE_USAGE
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_result_insert&n; *&n; * PARAMETERS:  Object              - Object to push&n; *              Index               - Where to insert the object&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Insert an object onto this walk&squot;s result stack&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_result_insert
@@ -346,6 +347,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_result_pop&n; *&n; * PARAMETERS:  Object              - Where to return the popped object&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop an object off the bottom of this walk&squot;s result stack.  In&n; *              other words, this is a FIFO.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_result_pop
@@ -1026,6 +1028,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_obj_stack_delete_all&n; *&n; * PARAMETERS:  walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Clear the object stack by deleting all objects that are on it.&n; *              Should be used with great care, if at all!&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_ds_obj_stack_delete_all
 id|acpi_ds_obj_stack_delete_all
@@ -1094,6 +1097,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_obj_stack_push&n; *&n; * PARAMETERS:  Object              - Object to push&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Push an object onto this walk&squot;s object/operand stack&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_obj_stack_push
@@ -1553,6 +1557,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_obj_stack_get_value&n; *&n; * PARAMETERS:  Index               - Stack index whose value is desired.  Based&n; *                                    on the top of the stack (index=0 == top)&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve an object from this walk&squot;s object stack.  Index must&n; *              be within the range of the current stack pointer.&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 r_void
 op_star
 DECL|function|acpi_ds_obj_stack_get_value
@@ -1629,6 +1634,7 @@ id|index
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_get_current_walk_state&n; *&n; * PARAMETERS:  Thread          - Get current active state for this Thread&n; *&n; * RETURN:      Pointer to the current walk state&n; *&n; * DESCRIPTION: Get the walk state that is at the head of the list (the &quot;current&quot;&n; *              walk state.)&n; *&n; ******************************************************************************/
 r_struct
 id|acpi_walk_state
