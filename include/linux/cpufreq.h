@@ -204,12 +204,16 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*********************************************************************&n; *                      CPUFREQ DRIVER INTERFACE                     *&n; *********************************************************************/
-DECL|typedef|cpufreq_policy_t
-r_typedef
+DECL|struct|cpufreq_driver
+r_struct
+id|cpufreq_driver
+(brace
+multiline_comment|/* needed by all drivers */
+DECL|member|verify
 r_int
 (paren
 op_star
-id|cpufreq_policy_t
+id|verify
 )paren
 (paren
 r_struct
@@ -218,18 +222,18 @@ op_star
 id|policy
 )paren
 suffix:semicolon
-DECL|struct|cpufreq_driver
-r_struct
-id|cpufreq_driver
-(brace
-multiline_comment|/* needed by all drivers */
-DECL|member|verify
-id|cpufreq_policy_t
-id|verify
-suffix:semicolon
 DECL|member|setpolicy
-id|cpufreq_policy_t
+r_int
+(paren
+op_star
 id|setpolicy
+)paren
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+)paren
 suffix:semicolon
 DECL|member|policy
 r_struct
