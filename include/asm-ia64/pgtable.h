@@ -98,6 +98,10 @@ DECL|macro|_PAGE_SIZE_64M
 mdefine_line|#define _PAGE_SIZE_64M&t;26
 DECL|macro|_PAGE_SIZE_256M
 mdefine_line|#define _PAGE_SIZE_256M&t;28
+DECL|macro|_PAGE_SIZE_1G
+mdefine_line|#define _PAGE_SIZE_1G&t;30
+DECL|macro|_PAGE_SIZE_4G
+mdefine_line|#define _PAGE_SIZE_4G&t;32
 DECL|macro|__ACCESS_BITS
 mdefine_line|#define __ACCESS_BITS&t;&t;_PAGE_ED | _PAGE_A | _PAGE_P | _PAGE_MA_WB
 DECL|macro|__DIRTY_BITS_NO_ED
