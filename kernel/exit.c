@@ -2802,6 +2802,11 @@ op_amp
 id|PT_TRACE_EXIT
 )paren
 )paren
+(brace
+id|current-&gt;ptrace_message
+op_assign
+id|code
+suffix:semicolon
 id|ptrace_notify
 c_func
 (paren
@@ -2814,6 +2819,7 @@ op_or
 id|SIGTRAP
 )paren
 suffix:semicolon
+)brace
 id|acct_process
 c_func
 (paren
