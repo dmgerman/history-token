@@ -223,7 +223,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PNP
 macro_line|#include &lt;linux/pnp.h&gt;
-macro_line|#include &lt;linux/acpi.h&gt;
 DECL|variable|i8042_pnp_kbd_registered
 r_static
 r_int
@@ -851,27 +850,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PNPACPI
-r_if
-c_cond
-(paren
-op_logical_neg
-id|acpi_disabled
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;PNP: No PS/2 (keyboard/mouse) controller found.&bslash;n&quot;
-)paren
-suffix:semicolon
+macro_line|#if defined(__ia64__)
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
-macro_line|#endif
+macro_line|#else
 id|printk
 c_func
 (paren
@@ -882,6 +866,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#endif
 )brace
 r_if
 c_cond
@@ -1015,6 +1000,7 @@ op_assign
 id|i8042_aux_irq
 suffix:semicolon
 )brace
+macro_line|#if defined(__ia64__)
 r_if
 c_cond
 (paren
@@ -1026,6 +1012,7 @@ id|i8042_noaux
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 id|i8042_data_reg
 op_assign
 id|i8042_pnp_data_reg
