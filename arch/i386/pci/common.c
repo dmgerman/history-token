@@ -113,6 +113,11 @@ id|value
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/*&n; * legacy, numa, and acpi all want to call pcibios_scan_root&n; * from their initcalls. This flag prevents that.&n; */
+DECL|variable|pcibios_scanned
+r_int
+id|pcibios_scanned
+suffix:semicolon
 multiline_comment|/*&n; * This interrupt-safe spinlock protects all accesses to PCI&n; * configuration space.&n; */
 DECL|variable|pci_config_lock
 id|spinlock_t
@@ -975,14 +980,12 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
+r_return
 id|pcibios_enable_irq
 c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 eof
