@@ -178,6 +178,20 @@ r_void
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|atari_mksound
+c_func
+(paren
+r_int
+r_int
+id|count
+comma
+r_int
+r_int
+id|ticks
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_HEARTBEAT
 r_static
 r_void

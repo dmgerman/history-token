@@ -457,6 +457,20 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|amiga_mksound
+c_func
+(paren
+r_int
+r_int
+id|count
+comma
+r_int
+r_int
+id|ticks
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_AMIGA_FLOPPY
 r_extern
 r_void
