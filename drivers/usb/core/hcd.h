@@ -903,9 +903,9 @@ id|dev
 suffix:semicolon
 multiline_comment|/* use these only before the device&squot;s address has been set */
 DECL|macro|usb_snddefctrl
-mdefine_line|#define usb_snddefctrl(dev)&t;&t;((PIPE_CONTROL &lt;&lt; 30) | __create_pipe(dev,0))
+mdefine_line|#define usb_snddefctrl(dev)&t;&t;((PIPE_CONTROL &lt;&lt; 30))
 DECL|macro|usb_rcvdefctrl
-mdefine_line|#define usb_rcvdefctrl(dev)&t;&t;((PIPE_CONTROL &lt;&lt; 30) | __create_pipe(dev,0) | USB_DIR_IN)
+mdefine_line|#define usb_rcvdefctrl(dev)&t;&t;((PIPE_CONTROL &lt;&lt; 30) | USB_DIR_IN)
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * HCD Root Hub support&n; */
 macro_line|#include &quot;hub.h&quot;
