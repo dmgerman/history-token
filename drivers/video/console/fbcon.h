@@ -301,6 +301,10 @@ DECL|member|blank_state
 r_int
 id|blank_state
 suffix:semicolon
+DECL|member|graphics
+r_int
+id|graphics
+suffix:semicolon
 DECL|member|cursor_data
 r_char
 op_star

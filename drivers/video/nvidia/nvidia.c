@@ -7065,6 +7065,11 @@ id|var-&gt;bits_per_pixel
 op_div
 l_int|8
 suffix:semicolon
+id|var-&gt;xres_virtual
+op_and_assign
+op_complement
+l_int|63
+suffix:semicolon
 id|pitch
 op_assign
 (paren
@@ -7481,8 +7486,6 @@ op_or
 id|FBINFO_HWACCEL_COPYAREA
 op_or
 id|FBINFO_HWACCEL_YPAN
-op_or
-id|FBINFO_MISC_MODESWITCHLATE
 suffix:semicolon
 id|fb_videomode_to_modelist
 c_func

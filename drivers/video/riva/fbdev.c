@@ -8494,8 +8494,6 @@ op_or
 id|FBINFO_HWACCEL_FILLRECT
 op_or
 id|FBINFO_HWACCEL_IMAGEBLIT
-op_or
-id|FBINFO_MISC_MODESWITCHLATE
 suffix:semicolon
 multiline_comment|/* Accel seems to not work properly on NV30 yet...*/
 r_if

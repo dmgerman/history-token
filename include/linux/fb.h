@@ -2172,12 +2172,8 @@ DECL|macro|FBINFO_HWACCEL_YWRAP
 mdefine_line|#define FBINFO_HWACCEL_YWRAP&t;&t;0x4000 /* optional */
 DECL|macro|FBINFO_MISC_USEREVENT
 mdefine_line|#define FBINFO_MISC_USEREVENT          0x10000 /* event request&n;&t;&t;&t;&t;&t;&t;  from userspace */
-DECL|macro|FBINFO_MISC_MODESWITCH
-mdefine_line|#define FBINFO_MISC_MODESWITCH         0x20000 /* mode switch */
-DECL|macro|FBINFO_MISC_MODESWITCHLATE
-mdefine_line|#define FBINFO_MISC_MODESWITCHLATE     0x40000 /* init hardware later */
 DECL|macro|FBINFO_MISC_TILEBLITTING
-mdefine_line|#define FBINFO_MISC_TILEBLITTING       0x80000 /* use tile blitting */
+mdefine_line|#define FBINFO_MISC_TILEBLITTING       0x20000 /* use tile blitting */
 DECL|struct|fb_info
 r_struct
 id|fb_info
