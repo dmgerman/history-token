@@ -735,6 +735,8 @@ id|pte_chain_alloc
 c_func
 (paren
 id|GFP_ATOMIC
+op_or
+id|__GFP_NOWARN
 )paren
 suffix:semicolon
 r_if
@@ -1259,6 +1261,8 @@ id|pte_chain_alloc
 c_func
 (paren
 id|GFP_ATOMIC
+op_or
+id|__GFP_NOWARN
 )paren
 suffix:semicolon
 r_if
@@ -6123,6 +6127,8 @@ id|pte_chain_alloc
 c_func
 (paren
 id|GFP_ATOMIC
+op_or
+id|__GFP_NOWARN
 )paren
 suffix:semicolon
 r_if

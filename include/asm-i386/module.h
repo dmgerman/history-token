@@ -53,7 +53,7 @@ mdefine_line|#define MODULE_PROC_FAMILY &quot;K7 &quot;
 macro_line|#elif defined CONFIG_MK8
 DECL|macro|MODULE_PROC_FAMILY
 mdefine_line|#define MODULE_PROC_FAMILY &quot;K8 &quot;
-macro_line|#elif defined CONFIG_MELAN
+macro_line|#elif defined CONFIG_X86_ELAN
 DECL|macro|MODULE_PROC_FAMILY
 mdefine_line|#define MODULE_PROC_FAMILY &quot;ELAN &quot;
 macro_line|#elif defined CONFIG_MCRUSOE

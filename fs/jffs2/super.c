@@ -515,6 +515,10 @@ op_assign
 op_amp
 id|jffs2_super_operations
 suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_NODIRATIME
+suffix:semicolon
 id|ret
 op_assign
 id|jffs2_do_fill_super

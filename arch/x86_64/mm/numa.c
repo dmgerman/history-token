@@ -10,8 +10,10 @@ macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
+macro_line|#ifndef Dprintk
 DECL|macro|Dprintk
 mdefine_line|#define Dprintk(x...)
+macro_line|#endif
 DECL|variable|node_data
 r_struct
 id|pglist_data

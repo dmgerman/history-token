@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/char/synclink.c&n; *&n; * $Id: synclink.c,v 4.16 2003/09/05 15:26:02 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink ISA and PCI&n; * high speed multiprotocol serial adapters.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * Derived from serial.c written by Theodore Ts&squot;o and Linus Torvalds&n; *&n; * Original release 01/11/99&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * This driver is primarily intended for use in synchronous&n; * HDLC mode. Asynchronous mode is also provided.&n; *&n; * When operating in synchronous mode, each call to mgsl_write()&n; * contains exactly one complete HDLC frame. Calling mgsl_put_char&n; * will start assembling an HDLC frame that will not be sent until&n; * mgsl_flush_chars or mgsl_write is called.&n; * &n; * Synchronous receive data is reported as complete frames. To accomplish&n; * this, the TTY flip buffer is bypassed (too small to hold largest&n; * frame and may fragment frames) and the line discipline&n; * receive entry point is called directly.&n; *&n; * This driver has been tested with a slightly modified ppp.c driver&n; * for synchronous PPP.&n; *&n; * 2000/02/16&n; * Added interface for syncppp.c driver (an alternate synchronous PPP&n; * implementation that also supports Cisco HDLC). Each device instance&n; * registers as a tty device AND a network device (if dosyncppp option&n; * is set for the device). The functionality is determined by which&n; * device interface is opened.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
+multiline_comment|/*&n; * linux/drivers/char/synclink.c&n; *&n; * $Id: synclink.c,v 4.21 2004/03/08 15:29:22 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink ISA and PCI&n; * high speed multiprotocol serial adapters.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * Derived from serial.c written by Theodore Ts&squot;o and Linus Torvalds&n; *&n; * Original release 01/11/99&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * This driver is primarily intended for use in synchronous&n; * HDLC mode. Asynchronous mode is also provided.&n; *&n; * When operating in synchronous mode, each call to mgsl_write()&n; * contains exactly one complete HDLC frame. Calling mgsl_put_char&n; * will start assembling an HDLC frame that will not be sent until&n; * mgsl_flush_chars or mgsl_write is called.&n; * &n; * Synchronous receive data is reported as complete frames. To accomplish&n; * this, the TTY flip buffer is bypassed (too small to hold largest&n; * frame and may fragment frames) and the line discipline&n; * receive entry point is called directly.&n; *&n; * This driver has been tested with a slightly modified ppp.c driver&n; * for synchronous PPP.&n; *&n; * 2000/02/16&n; * Added interface for syncppp.c driver (an alternate synchronous PPP&n; * implementation that also supports Cisco HDLC). Each device instance&n; * registers as a tty device AND a network device (if dosyncppp option&n; * is set for the device). The functionality is determined by which&n; * device interface is opened.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
 DECL|macro|VERSION
 mdefine_line|#define VERSION(ver,rel,seq) (((ver)&lt;&lt;16) | ((rel)&lt;&lt;8) | (seq))
 macro_line|#if defined(__i386__)
@@ -2767,7 +2767,7 @@ r_char
 op_star
 id|driver_version
 op_assign
-l_string|&quot;$Revision: 4.16 $&quot;
+l_string|&quot;$Revision: 4.21 $&quot;
 suffix:semicolon
 r_static
 r_int
@@ -26645,13 +26645,6 @@ id|info-&gt;pppdev.dev
 op_assign
 id|d
 suffix:semicolon
-id|sppp_attach
-c_func
-(paren
-op_amp
-id|info-&gt;pppdev
-)paren
-suffix:semicolon
 id|d-&gt;base_addr
 op_assign
 id|info-&gt;io_base
@@ -26667,6 +26660,19 @@ suffix:semicolon
 id|d-&gt;priv
 op_assign
 id|info
+suffix:semicolon
+id|sppp_attach
+c_func
+(paren
+op_amp
+id|info-&gt;pppdev
+)paren
+suffix:semicolon
+id|mgsl_setup
+c_func
+(paren
+id|d
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -27447,11 +27453,6 @@ id|mgsl_struct
 op_star
 id|info
 op_assign
-(paren
-r_struct
-id|mgsl_struct
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_if

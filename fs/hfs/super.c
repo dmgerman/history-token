@@ -1172,6 +1172,10 @@ op_assign
 op_amp
 id|hfs_super_operations
 suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_NODIRATIME
+suffix:semicolon
 id|init_MUTEX
 c_func
 (paren

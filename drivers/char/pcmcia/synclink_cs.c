@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/char/pcmcia/synclink_cs.c&n; *&n; * $Id: synclink_cs.c,v 4.15 2003/09/05 15:26:02 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink PC Card&n; * multiprotocol serial adapter.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
+multiline_comment|/*&n; * linux/drivers/char/pcmcia/synclink_cs.c&n; *&n; * $Id: synclink_cs.c,v 4.21 2004/03/08 15:29:23 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink PC Card&n; * multiprotocol serial adapter.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
 DECL|macro|VERSION
 mdefine_line|#define VERSION(ver,rel,seq) (((ver)&lt;&lt;16) | ((rel)&lt;&lt;8) | (seq))
 macro_line|#if defined(__i386__)
@@ -1633,7 +1633,7 @@ r_char
 op_star
 id|driver_version
 op_assign
-l_string|&quot;$Revision: 4.15 $&quot;
+l_string|&quot;$Revision: 4.21 $&quot;
 suffix:semicolon
 DECL|variable|serial_driver
 r_static
@@ -17546,13 +17546,6 @@ id|info-&gt;pppdev.dev
 op_assign
 id|d
 suffix:semicolon
-id|sppp_attach
-c_func
-(paren
-op_amp
-id|info-&gt;pppdev
-)paren
-suffix:semicolon
 id|d-&gt;base_addr
 op_assign
 id|info-&gt;io_base
@@ -17564,6 +17557,19 @@ suffix:semicolon
 id|d-&gt;priv
 op_assign
 id|info
+suffix:semicolon
+id|sppp_attach
+c_func
+(paren
+op_amp
+id|info-&gt;pppdev
+)paren
+suffix:semicolon
+id|mgslpc_setup
+c_func
+(paren
+id|d
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -18349,10 +18355,6 @@ id|MGSLPC_INFO
 op_star
 id|info
 op_assign
-(paren
-id|MGSLPC_INFO
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_if

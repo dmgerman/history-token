@@ -994,12 +994,6 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-id|update_atime
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
 id|out
 suffix:colon
 r_return
@@ -2076,12 +2070,6 @@ suffix:colon
 id|info-&gt;last_pos
 op_assign
 id|filp-&gt;f_pos
-suffix:semicolon
-id|update_atime
-c_func
-(paren
-id|inode
-)paren
 suffix:semicolon
 r_return
 l_int|0

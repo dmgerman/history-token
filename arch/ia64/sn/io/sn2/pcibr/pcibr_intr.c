@@ -238,7 +238,6 @@ suffix:semicolon
 r_int
 id|wid_num
 suffix:semicolon
-r_volatile
 r_struct
 id|sn_flush_device_list
 op_star

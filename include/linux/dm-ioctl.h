@@ -164,6 +164,31 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Used to retrieve the target versions&n; */
+DECL|struct|dm_target_versions
+r_struct
+id|dm_target_versions
+(brace
+DECL|member|next
+r_uint32
+id|next
+suffix:semicolon
+DECL|member|version
+r_uint32
+id|version
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * If you change this make sure you make the corresponding change&n; * to dm-ioctl.c:lookup_ioctl()&n; */
 r_enum
 (brace
@@ -211,6 +236,10 @@ comma
 DECL|enumerator|DM_TABLE_STATUS_CMD
 id|DM_TABLE_STATUS_CMD
 comma
+multiline_comment|/* Added later */
+DECL|enumerator|DM_LIST_VERSIONS_CMD
+id|DM_LIST_VERSIONS_CMD
+comma
 )brace
 suffix:semicolon
 DECL|macro|DM_IOCTL
@@ -241,14 +270,16 @@ DECL|macro|DM_TABLE_DEPS
 mdefine_line|#define DM_TABLE_DEPS    _IOWR(DM_IOCTL, DM_TABLE_DEPS_CMD, struct dm_ioctl)
 DECL|macro|DM_TABLE_STATUS
 mdefine_line|#define DM_TABLE_STATUS  _IOWR(DM_IOCTL, DM_TABLE_STATUS_CMD, struct dm_ioctl)
+DECL|macro|DM_LIST_VERSIONS
+mdefine_line|#define DM_LIST_VERSIONS _IOWR(DM_IOCTL, DM_LIST_VERSIONS_CMD, struct dm_ioctl)
 DECL|macro|DM_VERSION_MAJOR
 mdefine_line|#define DM_VERSION_MAJOR&t;4
 DECL|macro|DM_VERSION_MINOR
-mdefine_line|#define DM_VERSION_MINOR&t;0
+mdefine_line|#define DM_VERSION_MINOR&t;1
 DECL|macro|DM_VERSION_PATCHLEVEL
 mdefine_line|#define DM_VERSION_PATCHLEVEL&t;0
 DECL|macro|DM_VERSION_EXTRA
-mdefine_line|#define DM_VERSION_EXTRA&t;&quot;-ioctl (2003-06-04)&quot;
+mdefine_line|#define DM_VERSION_EXTRA&t;&quot;-ioctl (2003-12-10)&quot;
 multiline_comment|/* Status bits */
 DECL|macro|DM_READONLY_FLAG
 mdefine_line|#define DM_READONLY_FLAG&t;(1 &lt;&lt; 0) /* In/Out */

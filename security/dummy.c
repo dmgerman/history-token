@@ -604,10 +604,10 @@ r_static
 r_int
 id|dummy_sb_copy_data
 (paren
-r_const
-r_char
+r_struct
+id|file_system_type
 op_star
-id|fstype
+id|type
 comma
 r_void
 op_star

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_transport.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
@@ -699,6 +700,18 @@ suffix:semicolon
 id|shost-&gt;max_lun
 op_assign
 l_int|8
+suffix:semicolon
+multiline_comment|/* Give each shost a default transportt if the driver&n;&t; * doesn&squot;t yet support Transport Attributes */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|shost-&gt;transportt
+)paren
+id|shost-&gt;transportt
+op_assign
+op_amp
+id|blank_transport_template
 suffix:semicolon
 multiline_comment|/*&n;&t; * All drivers right now should be able to handle 12 byte&n;&t; * commands.  Every so often there are requests for 16 byte&n;&t; * commands, but individual low-level drivers need to certify that&n;&t; * they actually do something sensible with such commands.&n;&t; */
 id|shost-&gt;max_cmd_len

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
@@ -405,9 +406,8 @@ r_int
 r_int
 id|irq
 comma
-r_int
-r_int
-id|cpu
+id|cpumask_t
+id|mask
 )paren
 (brace
 macro_line|#ifdef CONFIG_SMP
@@ -415,6 +415,9 @@ r_int
 id|redir
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+id|cpu
 suffix:semicolon
 r_struct
 id|sn_intr_list_t
@@ -477,6 +480,14 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
+id|cpu
+op_assign
+id|first_cpu
+c_func
+(paren
+id|mask
+)paren
+suffix:semicolon
 id|sn_shub_redirect_intr
 c_func
 (paren
@@ -485,6 +496,13 @@ comma
 id|cpu
 )paren
 suffix:semicolon
+id|irq
+op_assign
+id|irq
+op_amp
+l_int|0xff
+suffix:semicolon
+multiline_comment|/* strip off redirect bit, if someone stuck it on. */
 (paren
 r_void
 )paren

@@ -1521,12 +1521,6 @@ id|filp-&gt;f_version
 op_assign
 id|inode-&gt;i_version
 suffix:semicolon
-id|update_atime
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -50,6 +50,7 @@ mdefine_line|#define ARGOFFSET R11
 DECL|macro|SWFRAME
 mdefine_line|#define SWFRAME ORIG_RAX
 DECL|variable|norcx
+DECL|variable|nor891011
 dot
 id|macro
 id|SAVE_ARGS
@@ -58,6 +59,10 @@ op_assign
 l_int|0
 comma
 id|norcx
+op_assign
+l_int|0
+comma
+id|nor891011
 op_assign
 l_int|0
 id|subq
@@ -223,6 +228,13 @@ op_plus
 "&bslash;"
 id|addskip
 )paren
+dot
+r_if
+c_cond
+"&bslash;"
+id|nor891011
+dot
+r_else
 id|movq
 op_mod
 id|r8
@@ -326,12 +338,16 @@ op_plus
 id|addskip
 )paren
 dot
+id|endif
+dot
 id|endm
 DECL|macro|ARG_SKIP
 mdefine_line|#define ARG_SKIP 9*8
 DECL|variable|addskip
 DECL|variable|skiprcx
 DECL|variable|skipr11
+DECL|variable|skipr8910
+DECL|variable|skiprdx
 dot
 id|macro
 id|RESTORE_ARGS
@@ -348,6 +364,14 @@ op_assign
 l_int|0
 comma
 id|skipr11
+op_assign
+l_int|0
+comma
+id|skipr8910
+op_assign
+l_int|0
+comma
+id|skiprdx
 op_assign
 l_int|0
 dot
@@ -367,6 +391,13 @@ op_mod
 id|r11
 dot
 id|endif
+dot
+r_if
+c_cond
+"&bslash;"
+id|skipr8910
+dot
+r_else
 id|movq
 l_int|1
 op_star
@@ -400,6 +431,8 @@ id|rsp
 comma
 op_mod
 id|r8
+dot
+id|endif
 dot
 r_if
 c_cond
@@ -440,6 +473,13 @@ op_mod
 id|rcx
 dot
 id|endif
+dot
+r_if
+c_cond
+"&bslash;"
+id|skiprdx
+dot
+r_else
 id|movq
 l_int|6
 op_star
@@ -451,6 +491,8 @@ id|rsp
 comma
 op_mod
 id|rdx
+dot
+id|endif
 id|movq
 l_int|7
 op_star

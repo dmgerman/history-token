@@ -2520,7 +2520,7 @@ id|flags
 (brace
 r_extern
 r_void
-id|ia64_invoke_kernel_thread_helper
+id|start_kernel_thread
 (paren
 r_void
 )paren
@@ -2536,7 +2536,7 @@ r_int
 op_star
 )paren
 op_amp
-id|ia64_invoke_kernel_thread_helper
+id|start_kernel_thread
 suffix:semicolon
 r_struct
 (brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptscsih.h&n; *      High performance SCSI / Fibre Channel SCSI Host device driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      (see also mptbase.c)&n; *&n; *  Copyright (c) 1999-2003 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:netscape.net)&n; *  (mailto:mpt_linux_developer@lsil.com)&n; *&n; *  $Id: mptscsih.h,v 1.21 2002/12/03 21:26:35 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptscsih.h&n; *      High performance SCSI / Fibre Channel SCSI Host device driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      (see also mptbase.c)&n; *&n; *  Copyright (c) 1999-2004 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:netscape.net)&n; *  (mailto:mpt_linux_developer@lsil.com)&n; *&n; *  $Id: mptscsih.h,v 1.21 2002/12/03 21:26:35 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 macro_line|#ifndef SCSIHOST_H_INCLUDED
@@ -9,13 +9,8 @@ multiline_comment|/*&n; *&t;SCSI Public stuff...&n; */
 multiline_comment|/*&n; *&t;Try to keep these at 2^N-1&n; */
 DECL|macro|MPT_FC_CAN_QUEUE
 mdefine_line|#define MPT_FC_CAN_QUEUE&t;127
-macro_line|#if defined MPT_SCSI_USE_NEW_EH
 DECL|macro|MPT_SCSI_CAN_QUEUE
 mdefine_line|#define MPT_SCSI_CAN_QUEUE&t;127
-macro_line|#else
-DECL|macro|MPT_SCSI_CAN_QUEUE
-mdefine_line|#define MPT_SCSI_CAN_QUEUE&t;63
-macro_line|#endif
 DECL|macro|MPT_SCSI_CMD_PER_DEV_HIGH
 mdefine_line|#define MPT_SCSI_CMD_PER_DEV_HIGH&t;31
 DECL|macro|MPT_SCSI_CMD_PER_DEV_LOW
@@ -40,7 +35,7 @@ macro_line|#else
 DECL|macro|MPT_SCSI_SG_DEPTH
 mdefine_line|#define MPT_SCSI_SG_DEPTH&t;40
 macro_line|#endif
-multiline_comment|/* To disable domain validation, comment the&n; * following line. No effect for FC devices.&n; * For SCSI devices, driver will negotiate to&n; * NVRAM settings (if available) or to maximum adapter&n; * capabilities.&n; */
+multiline_comment|/* To disable domain validation, uncomment the&n; * following line. No effect for FC devices.&n; * For SCSI devices, driver will negotiate to&n; * NVRAM settings (if available) or to maximum adapter&n; * capabilities.&n; */
 DECL|macro|MPTSCSIH_ENABLE_DOMAIN_VALIDATION
 mdefine_line|#define MPTSCSIH_ENABLE_DOMAIN_VALIDATION
 multiline_comment|/* SCSI driver setup structure. Settings can be overridden&n; * by command line options.&n; */
@@ -50,6 +45,8 @@ DECL|macro|MPTSCSIH_MAX_WIDTH
 mdefine_line|#define MPTSCSIH_MAX_WIDTH              1
 DECL|macro|MPTSCSIH_MIN_SYNC
 mdefine_line|#define MPTSCSIH_MIN_SYNC               0x08
+DECL|macro|MPTSCSIH_SAF_TE
+mdefine_line|#define MPTSCSIH_SAF_TE                 0
 DECL|struct|mptscsih_driver_setup
 r_struct
 id|mptscsih_driver_setup
@@ -66,10 +63,14 @@ DECL|member|min_sync_fac
 id|u8
 id|min_sync_fac
 suffix:semicolon
+DECL|member|saf_te
+id|u8
+id|saf_te
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|MPTSCSIH_DRIVER_SETUP
-mdefine_line|#define MPTSCSIH_DRIVER_SETUP                   &bslash;&n;{                                               &bslash;&n;        MPTSCSIH_DOMAIN_VALIDATION,             &bslash;&n;        MPTSCSIH_MAX_WIDTH,                     &bslash;&n;        MPTSCSIH_MIN_SYNC,                      &bslash;&n;}
+mdefine_line|#define MPTSCSIH_DRIVER_SETUP                   &bslash;&n;{                                               &bslash;&n;        MPTSCSIH_DOMAIN_VALIDATION,             &bslash;&n;        MPTSCSIH_MAX_WIDTH,                     &bslash;&n;        MPTSCSIH_MIN_SYNC,                      &bslash;&n;        MPTSCSIH_SAF_TE,                        &bslash;&n;}
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *&t;Various bits and pieces broke within the lk-2.4.0-testN series:-(&n; *&t;So here are various HACKS to work around them.&n; */
 multiline_comment|/*&n; *&t;tq_scheduler disappeared @ lk-2.4.0-test12&n; *&t;(right when &lt;linux/sched.h&gt; newly defined TQ_ACTIVE)&n; *&t;tq_struct reworked in 2.5.41. Include workqueue.h.&n; */

@@ -463,7 +463,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 l_int|7
@@ -1480,7 +1480,7 @@ id|VIA1_SOURCE_BASE
 )paren
 (brace
 r_return
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|irq
@@ -1613,7 +1613,7 @@ id|VIA1_SOURCE_BASE
 )paren
 (brace
 r_return
-id|sys_free_irq
+id|cpu_free_irq
 c_func
 (paren
 id|irq

@@ -575,6 +575,10 @@ id|vnode-&gt;cache
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* okay... it&squot;s a new inode */
+id|inode-&gt;i_flags
+op_or_assign
+id|S_NOATIME
+suffix:semicolon
 id|vnode-&gt;flags
 op_or_assign
 id|AFS_VNODE_CHANGED

@@ -2394,6 +2394,7 @@ c_func
 id|host_inode
 )paren
 )paren
+(brace
 id|ret
 op_assign
 id|host_file-&gt;f_op
@@ -2408,6 +2409,13 @@ comma
 id|dirent
 )paren
 suffix:semicolon
+id|update_atime
+c_func
+(paren
+id|host_inode
+)paren
+suffix:semicolon
+)brace
 )brace
 id|out
 suffix:colon

@@ -844,7 +844,7 @@ id|i
 )braket
 )paren
 (brace
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|i
@@ -989,7 +989,7 @@ op_assign
 id|devname
 suffix:semicolon
 multiline_comment|/* setting devname would be nice */
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|irq

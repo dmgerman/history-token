@@ -209,6 +209,11 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_NODIRATIME
+suffix:semicolon
+multiline_comment|/* and probably even noatime */
 id|sb-&gt;s_fs_info
 op_assign
 id|kmalloc

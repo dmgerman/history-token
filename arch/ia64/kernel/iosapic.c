@@ -301,6 +301,9 @@ comma
 r_int
 r_int
 id|dest
+comma
+r_int
+id|mask
 )paren
 (brace
 r_int
@@ -478,6 +481,19 @@ op_or
 id|dmode
 op_lshift
 id|IOSAPIC_DELIVERY_SHIFT
+)paren
+op_or
+(paren
+(paren
+id|mask
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+)paren
+op_lshift
+id|IOSAPIC_MASK_SHIFT
 )paren
 op_or
 id|vector
@@ -1804,6 +1820,8 @@ c_func
 id|vector
 comma
 id|dest
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -1991,6 +2009,8 @@ c_func
 id|vector
 comma
 id|dest
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -2100,6 +2120,8 @@ c_func
 id|vector
 comma
 id|dest
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -2418,6 +2440,8 @@ c_func
 id|vector
 comma
 id|dest
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|printk

@@ -1325,6 +1325,17 @@ id|cwq
 suffix:semicolon
 r_int
 id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* preempt-safe: keventd is per-cpu */
+r_int
+id|ret
+op_assign
+l_int|0
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -1333,12 +1344,6 @@ op_logical_neg
 id|keventd_wq
 )paren
 suffix:semicolon
-id|for_each_cpu
-c_func
-(paren
-id|cpu
-)paren
-(brace
 id|cwq
 op_assign
 id|keventd_wq-&gt;cpu_wq
@@ -1352,12 +1357,12 @@ id|current
 op_eq
 id|cwq-&gt;thread
 )paren
-r_return
+id|ret
+op_assign
 l_int|1
 suffix:semicolon
-)brace
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|function|init_workqueues
