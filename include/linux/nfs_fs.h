@@ -1232,16 +1232,6 @@ id|rpc_task
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|nfs_readdata_release
-c_func
-(paren
-r_struct
-id|rpc_task
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * linux/fs/mount_clnt.c&n; * (Used only by nfsroot module)&n; */
 r_extern
 r_int
