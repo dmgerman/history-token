@@ -916,6 +916,22 @@ c_cond
 id|set_loopback
 )paren
 (brace
+multiline_comment|/* ICH PHY loopback is broken */
+r_if
+c_cond
+(paren
+id|bdp-&gt;flags
+op_amp
+id|IS_ICH
+op_logical_and
+id|loopback_mode
+op_eq
+id|PHY_LOOPBACK
+)paren
+id|loopback_mode
+op_assign
+id|MAC_LOOPBACK
+suffix:semicolon
 multiline_comment|/* Configure loopback on MAC */
 id|e100_config_loopback_mode
 c_func
