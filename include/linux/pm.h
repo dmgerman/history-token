@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_PM_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Power management requests&n; */
 r_enum
 (brace
@@ -497,6 +498,9 @@ id|pm_power_off
 r_void
 )paren
 suffix:semicolon
+r_struct
+id|device
+suffix:semicolon
 DECL|struct|dev_pm_info
 r_struct
 id|dev_pm_info
@@ -511,6 +515,16 @@ id|u8
 op_star
 id|saved_state
 suffix:semicolon
+DECL|member|pm_users
+id|atomic_t
+id|pm_users
+suffix:semicolon
+DECL|member|pm_parent
+r_struct
+id|device
+op_star
+id|pm_parent
+suffix:semicolon
 DECL|member|entry
 r_struct
 id|list_head
@@ -518,6 +532,22 @@ id|entry
 suffix:semicolon
 macro_line|#endif
 )brace
+suffix:semicolon
+r_extern
+r_void
+id|device_pm_set_parent
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_struct
+id|device
+op_star
+id|parent
+)paren
 suffix:semicolon
 r_extern
 r_int
