@@ -3715,7 +3715,6 @@ DECL|macro|HUB_LONG_RESET_TIME
 mdefine_line|#define HUB_LONG_RESET_TIME&t;200
 DECL|macro|HUB_RESET_TIMEOUT
 mdefine_line|#define HUB_RESET_TIMEOUT&t;500
-multiline_comment|/* return: -1 on error, 0 on success, 1 on disconnect.  */
 DECL|function|hub_port_wait_reset
 r_static
 r_int
@@ -3798,12 +3797,9 @@ id|ret
 OL
 l_int|0
 )paren
-(brace
 r_return
-op_minus
-l_int|1
+id|ret
 suffix:semicolon
-)brace
 multiline_comment|/* Device went away? */
 r_if
 c_cond
@@ -3816,7 +3812,8 @@ id|USB_PORT_STAT_CONNECTION
 )paren
 )paren
 r_return
-l_int|1
+op_minus
+id|ENOTCONN
 suffix:semicolon
 multiline_comment|/* bomb out completely if something weird happened */
 r_if
@@ -3830,7 +3827,7 @@ id|USB_PORT_STAT_C_CONNECTION
 )paren
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 multiline_comment|/* if we`ve finished resetting, then break out of the loop */
 r_if
@@ -3915,10 +3912,9 @@ suffix:semicolon
 )brace
 r_return
 op_minus
-l_int|1
+id|EBUSY
 suffix:semicolon
 )brace
-multiline_comment|/* return: -1 on error, 0 on success, 1 on disconnect.  */
 DECL|function|hub_port_reset
 r_static
 r_int
@@ -4005,9 +4001,13 @@ r_if
 c_cond
 (paren
 id|status
-op_ne
+op_eq
 op_minus
-l_int|1
+id|ENOTCONN
+op_logical_or
+id|status
+op_eq
+l_int|0
 )paren
 (brace
 id|clear_port_feature
@@ -4063,8 +4063,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|status
 suffix:semicolon
 )brace
 DECL|function|hub_port_disable
@@ -4133,7 +4132,6 @@ DECL|macro|HUB_DEBOUNCE_STEP
 mdefine_line|#define HUB_DEBOUNCE_STEP&t; 25
 DECL|macro|HUB_DEBOUNCE_STABLE
 mdefine_line|#define HUB_DEBOUNCE_STABLE&t;  4
-multiline_comment|/* return: -1 on error, 0 on success, 1 on disconnect.  */
 DECL|function|hub_port_debounce
 r_static
 r_int
@@ -4219,8 +4217,7 @@ OL
 l_int|0
 )paren
 r_return
-op_minus
-l_int|1
+id|ret
 suffix:semicolon
 r_if
 c_cond
@@ -4311,17 +4308,16 @@ id|portstatus
 suffix:semicolon
 r_return
 (paren
-(paren
 id|portstatus
 op_amp
 id|USB_PORT_STAT_CONNECTION
-)paren
 )paren
 ques
 c_cond
 l_int|0
 suffix:colon
-l_int|1
+op_minus
+id|ENOTCONN
 suffix:semicolon
 )brace
 DECL|function|hub_set_address
@@ -4443,9 +4439,6 @@ comma
 id|j
 comma
 id|retval
-op_assign
-op_minus
-id|ENODEV
 suffix:semicolon
 r_int
 id|delay
@@ -4490,9 +4483,8 @@ id|usb_address0_sem
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the device; full speed may morph to high speed */
-r_switch
-c_cond
-(paren
+id|retval
+op_assign
 id|hub_port_reset
 c_func
 (paren
@@ -4504,31 +4496,24 @@ id|udev
 comma
 id|delay
 )paren
-)paren
-(brace
-r_case
-l_int|0
-suffix:colon
-multiline_comment|/* success, speed is known */
-r_break
 suffix:semicolon
-r_case
-l_int|1
-suffix:colon
-multiline_comment|/* disconnect, give to companion */
+r_if
+c_cond
+(paren
 id|retval
-op_assign
-op_minus
-id|EBUSY
-suffix:semicolon
-multiline_comment|/* FALL THROUGH */
-r_default
-suffix:colon
-multiline_comment|/* error */
+OL
+l_int|0
+)paren
+multiline_comment|/* error or disconnect */
 r_goto
 id|fail
 suffix:semicolon
-)brace
+multiline_comment|/* success, speed is known */
+id|retval
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5627,7 +5612,7 @@ c_cond
 id|status
 op_eq
 op_minus
-id|EBUSY
+id|ENOTCONN
 )paren
 r_break
 suffix:semicolon
