@@ -13,7 +13,7 @@ DECL|struct|machine_desc
 r_struct
 id|machine_desc
 (brace
-multiline_comment|/*&n;&t; * Note! The first four elements are used&n;&t; * by assembler code in head-armv.S&n;&t; */
+multiline_comment|/*&n;&t; * Note! The first five elements are used&n;&t; * by assembler code in head-armv.S&n;&t; */
 DECL|member|nr
 r_int
 r_int
