@@ -3988,6 +3988,10 @@ id|asoc
 r_goto
 id|nodata
 suffix:semicolon
+id|asoc-&gt;temp
+op_assign
+l_int|1
+suffix:semicolon
 id|skb
 op_assign
 id|chunk-&gt;skb

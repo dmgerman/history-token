@@ -3565,6 +3565,11 @@ DECL|member|addip_serial
 id|__u32
 id|addip_serial
 suffix:semicolon
+multiline_comment|/* Is it a temporary association? */
+DECL|member|temp
+id|__u8
+id|temp
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* An eyecatcher for determining if we are really looking at an&n; * association data structure.&n; */
