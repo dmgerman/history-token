@@ -7415,7 +7415,7 @@ id|commands
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Handle an &quot;Out of the blue&quot; SHUTDOWN ACK.&n; *&n; * Section: 8.4 5)&n; * 5) If the packet contains a SHUTDOWN ACK chunk, the receiver should&n; *   respond to the sender of the OOTB packet with a SHUTDOWN COMPLETE.&n; *   When sending the SHUTDOWN COMPLETE, the receiver of the OOTB packet&n; *   must fill in the Verification Tag field of the outbound packet with&n; *   the Verification Tag received in the SHUTDOWN ACK and set the&n; *   T-bit in the Chunk Flags to indicate that no TCB was found.&n; *&n; * Verification Tag:  8.5.1 E) Rules for packet carrying a SHUTDOWN ACK&n; *   If the receiver is in COOKIE-ECHOED or COOKIE-WAIT state the&n; *   procedures in section 8.4 SHOULD be followed, in other words it&n; *   should be treated as an Out Of The Blue packet.&n; *   [This means that we do NOT check the Verification Tag on these&n; *   chunks. --piggy ]&n; *&n; * Inputs&n; * (endpoint, asoc, type, arg, commands)&n; *&n; * Outputs&n; * (sctp_disposition_t)&n; *&n; * The return value is the disposition of the chunk.&n; */
+multiline_comment|/*&n; * Handle an &quot;Out of the blue&quot; SHUTDOWN ACK.&n; *&n; * Section: 8.4 5)&n; * 5) If the packet contains a SHUTDOWN ACK chunk, the receiver should&n; *   respond to the sender of the OOTB packet with a SHUTDOWN COMPLETE.&n; *   When sending the SHUTDOWN COMPLETE, the receiver of the OOTB packet&n; *   must fill in the Verification Tag field of the outbound packet with&n; *   the Verification Tag received in the SHUTDOWN ACK and set the&n; *   T-bit in the Chunk Flags to indicate that no TCB was found.&n; *&n; * Inputs&n; * (endpoint, asoc, type, arg, commands)&n; *&n; * Outputs&n; * (sctp_disposition_t)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_shut_8_4_5
 id|sctp_disposition_t
 id|sctp_sf_shut_8_4_5
@@ -7537,6 +7537,52 @@ suffix:semicolon
 )brace
 r_return
 id|SCTP_DISPOSITION_NOMEM
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Handle SHUTDOWN ACK in COOKIE_ECHOED or COOKIE_WAIT state.&n; *&n; * Verification Tag:  8.5.1 E) Rules for packet carrying a SHUTDOWN ACK&n; *   If the receiver is in COOKIE-ECHOED or COOKIE-WAIT state the&n; *   procedures in section 8.4 SHOULD be followed, in other words it&n; *   should be treated as an Out Of The Blue packet.&n; *   [This means that we do NOT check the Verification Tag on these&n; *   chunks. --piggy ]&n; *&n; */
+DECL|function|sctp_sf_do_8_5_1_E_sa
+id|sctp_disposition_t
+id|sctp_sf_do_8_5_1_E_sa
+c_func
+(paren
+r_const
+id|sctp_endpoint_t
+op_star
+id|ep
+comma
+r_const
+id|sctp_association_t
+op_star
+id|asoc
+comma
+r_const
+id|sctp_subtype_t
+id|type
+comma
+r_void
+op_star
+id|arg
+comma
+id|sctp_cmd_seq_t
+op_star
+id|commands
+)paren
+(brace
+multiline_comment|/* Although we do have an association in this case, it corresponds&n;&t; * to a restarted association. So the packet is treated as an OOTB&n;&t; * packet and the state function that handles OOTB SHUTDOWN_ACK is&n;&t; * called with a NULL association.&n;&t; */
+r_return
+id|sctp_sf_shut_8_4_5
+c_func
+(paren
+id|ep
+comma
+l_int|NULL
+comma
+id|type
+comma
+id|arg
+comma
+id|commands
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Process an unknown chunk.&n; *&n; * Section: 3.2. Also, 2.1 in the implementor&squot;s guide.&n; *&n; * Chunk Types are encoded such that the highest-order two bits specify&n; * the action that must be taken if the processing endpoint does not&n; * recognize the Chunk Type.&n; *&n; * 00 - Stop processing this SCTP packet and discard it, do not process&n; *      any further chunks within it.&n; *&n; * 01 - Stop processing this SCTP packet and discard it, do not process&n; *      any further chunks within it, and report the unrecognized&n; *      chunk in an &squot;Unrecognized Chunk Type&squot;.&n; *&n; * 10 - Skip this chunk and continue processing.&n; *&n; * 11 - Skip this chunk and continue processing, but report in an ERROR&n; *      Chunk using the &squot;Unrecognized Chunk Type&squot; cause of error.&n; *&n; * The return value is the disposition of the chunk.&n; */

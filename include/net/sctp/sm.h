@@ -279,6 +279,10 @@ DECL|variable|sctp_sf_unk_chunk
 id|sctp_state_fn_t
 id|sctp_sf_unk_chunk
 suffix:semicolon
+DECL|variable|sctp_sf_do_8_5_1_E_sa
+id|sctp_state_fn_t
+id|sctp_sf_do_8_5_1_E_sa
+suffix:semicolon
 multiline_comment|/* Prototypes for primitive event state functions.  */
 DECL|variable|sctp_sf_do_prm_asoc
 id|sctp_state_fn_t

@@ -1816,6 +1816,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|asoc
 op_assign
 id|sctp_lookup_association
@@ -1827,6 +1828,7 @@ id|paddr
 comma
 op_amp
 id|transport
+)paren
 )paren
 )paren
 (brace
