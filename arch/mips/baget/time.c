@@ -14,9 +14,9 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;asm/system.h&gt;  
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/baget/baget.h&gt;
-multiline_comment|/* &n; *  To have precision clock, we need to fix available clock frequency&n; */
+multiline_comment|/*&n; *  To have precision clock, we need to fix available clock frequency&n; */
 DECL|macro|FREQ_NOM
 mdefine_line|#define FREQ_NOM  79125  /* Baget frequency ratio */
 DECL|macro|FREQ_DEN
@@ -52,7 +52,7 @@ op_star
 id|FREQ_NOM
 )paren
 (brace
-multiline_comment|/* &n;&t;&t; *  We need no overflow checks, &n;&t;&t; *  due baget unable to work 3000 years...&n;&t;&t; *  At least without reboot...&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  We need no overflow checks,&n;&t;&t; *  due baget unable to work 3000 years...&n;&t;&t; *  At least without reboot...&n;&t;&t; */
 id|valid_ticks
 op_increment
 suffix:semicolon
@@ -245,10 +245,15 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-op_star
-id|tv
+id|tv-&gt;tv_sec
 op_assign
-id|xtime
+id|xtime.tv_sec
+suffix:semicolon
+id|tv-&gt;tv_usec
+op_assign
+id|xtime.tv_nsec
+op_div
+l_int|1000
 suffix:semicolon
 )brace
 r_while
@@ -277,15 +282,19 @@ id|tv
 )paren
 (brace
 id|write_seqlock_irq
+c_func
 (paren
 op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-id|xtime
+id|xtime.tv_usec
 op_assign
-op_star
-id|tv
+id|tv-&gt;tv_sec
+suffix:semicolon
+id|xtime.tv_nsec
+op_assign
+id|tv-&gt;tv_usec
 suffix:semicolon
 id|time_adjust
 op_assign
@@ -305,6 +314,7 @@ op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
 id|write_sequnlock_irq
+c_func
 (paren
 op_amp
 id|xtime_lock

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * init.c: PROM library initialisation code.&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov &n; */
+multiline_comment|/*&n; * init.c: PROM library initialisation code.&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
@@ -6,9 +6,24 @@ DECL|variable|arcs_cmdline
 r_char
 id|arcs_cmdline
 (braket
-id|COMMAND_LINE_SIZE
+id|CL_SIZE
 )braket
 suffix:semicolon
+DECL|function|get_system_type
+r_const
+r_char
+op_star
+id|get_system_type
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Should probably return one of &quot;BT23-201&quot;, &quot;BT23-202&quot; */
+r_return
+l_string|&quot;Baget&quot;
+suffix:semicolon
+)brace
 DECL|function|prom_init
 r_void
 id|__init

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * balo.c: BAget LOader&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; *&n; */
+multiline_comment|/*&n; * balo.c: BAget LOader&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -159,29 +159,36 @@ r_int
 id|mem_upper
 )paren
 (brace
+r_int
+r_int
+id|tmp
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
 (paren
 l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
-l_string|&quot;mfc0&bslash;t$1,$12&bslash;n&bslash;t&quot;
+l_string|&quot;mfc0&bslash;t$1, $12&bslash;n&bslash;t&quot;
 l_string|&quot;nop&bslash;n&bslash;t&quot;
 l_string|&quot;nop&bslash;n&bslash;t&quot;
 l_string|&quot;nop&bslash;n&bslash;t&quot;
-l_string|&quot;ori&bslash;t$1,$1,0xff00&bslash;n&bslash;t&quot;
-l_string|&quot;xori&bslash;t$1,$1,0xff00&bslash;n&bslash;t&quot;
-l_string|&quot;mtc0&bslash;t$1,$12&bslash;n&bslash;t&quot;
+l_string|&quot;ori&bslash;t$1, $1, 0xff00&bslash;n&bslash;t&quot;
+l_string|&quot;xori&bslash;t$1, $1, 0xff00&bslash;n&bslash;t&quot;
+l_string|&quot;mtc0&bslash;t$1, $12&bslash;n&bslash;t&quot;
 l_string|&quot;nop&bslash;n&bslash;t&quot;
 l_string|&quot;nop&bslash;n&bslash;t&quot;
 l_string|&quot;nop&bslash;n&bslash;t&quot;
-l_string|&quot;move&bslash;t$4,%1&bslash;n&bslash;t&quot;
-l_string|&quot;jr&bslash;t%0&bslash;n&bslash;t&quot;
+l_string|&quot;move&bslash;t%0, %2&bslash;n&bslash;t&quot;
+l_string|&quot;jr&bslash;t%1&bslash;n&bslash;t&quot;
 l_string|&quot;nop&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;tat&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&quot;
 suffix:colon
-multiline_comment|/* no outputs */
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp
+)paren
 suffix:colon
 l_string|&quot;Ir&quot;
 (paren
@@ -193,10 +200,6 @@ l_string|&quot;Ir&quot;
 id|mem_upper
 )paren
 suffix:colon
-l_string|&quot;$1&quot;
-comma
-l_string|&quot;$4&quot;
-comma
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon

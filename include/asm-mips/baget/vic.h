@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * vic.h: Various VIC controller defines.  The VIC is an interrupt controller&n; *        used in Baget/MIPS series.&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
-macro_line|#ifndef _MIPS_VIC_H
-DECL|macro|_MIPS_VIC_H
-mdefine_line|#define _MIPS_VIC_H
+multiline_comment|/*&n; * vic.h: Various VIC controller defines.  The VIC is an interrupt controller&n; *        used in Baget/MIPS series.&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
+macro_line|#ifndef _ASM_BAGET_VIC_H
+DECL|macro|_ASM_BAGET_VIC_H
+mdefine_line|#define _ASM_BAGET_VIC_H
 DECL|macro|VIC_VME_II
 mdefine_line|#define VIC_VME_II       0x3
 DECL|macro|VIC_VME_INT1
@@ -323,13 +323,13 @@ mdefine_line|#define VIC_RELEASE      0xD3
 DECL|macro|VIC_RELEASE_BLKXFER_BLEN
 mdefine_line|#define    VIC_RELEASE_BLKXFER_BLEN(x) ((x)&amp;0x1f)
 DECL|macro|VIC_RELEASE_ROR
-mdefine_line|#define    VIC_RELEASE_ROR             (0&lt;&lt;6) 
+mdefine_line|#define    VIC_RELEASE_ROR             (0&lt;&lt;6)
 DECL|macro|VIC_RELEASE_RWD
-mdefine_line|#define    VIC_RELEASE_RWD             (1&lt;&lt;6) 
+mdefine_line|#define    VIC_RELEASE_RWD             (1&lt;&lt;6)
 DECL|macro|VIC_RELEASE_ROC
-mdefine_line|#define    VIC_RELEASE_ROC             (2&lt;&lt;6) 
+mdefine_line|#define    VIC_RELEASE_ROC             (2&lt;&lt;6)
 DECL|macro|VIC_RELEASE_BCAP
-mdefine_line|#define    VIC_RELEASE_BCAP            (3&lt;&lt;6) 
+mdefine_line|#define    VIC_RELEASE_BCAP            (3&lt;&lt;6)
 DECL|macro|VIC_BXFER_CTRL
 mdefine_line|#define VIC_BXFER_CTRL   0xD7
 DECL|macro|VIC_BXFER_CTRL_MODULE
@@ -350,11 +350,11 @@ DECL|macro|VIC_BXFER_LEN_HI
 mdefine_line|#define VIC_BXFER_LEN_HI    0xDF
 DECL|macro|VIC_SYS_RESET
 mdefine_line|#define VIC_SYS_RESET    0xE3
-macro_line|#ifndef __LANGUAGE_ASSEMBLY__
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|vic_inb
 mdefine_line|#define vic_inb(p)    (*(volatile unsigned char *)(VIC_BASE + (p)))
 DECL|macro|vic_outb
 mdefine_line|#define vic_outb(v,p) (*((volatile unsigned char *)(VIC_BASE + (p))) = v)
-macro_line|#endif /* __LANGUAGE_ASSEMBLY__ */
-macro_line|#endif /* !(_MIPS_VIC_H) */
+macro_line|#endif /* !__ASSEMBLY__ */
+macro_line|#endif /* _ASM_BAGET_VIC_H */
 eof

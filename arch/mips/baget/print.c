@@ -1,11 +1,11 @@
-multiline_comment|/* $Id: print.c,v 1.1 1999/01/17 03:49:38 ralf Exp $&n; *&n; * print.c: Simple print fascility&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; *&n; */
+multiline_comment|/*&n; * print.c: Simple print fascility&n; *&n; * Copyright (C) 1998 Gleb Raiko &amp; Vladimir Roganov&n; */
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/baget/baget.h&gt;
 multiline_comment|/*&n; *  Define this to see &squot;baget_printk&squot; (debug) messages&n; */
 singleline_comment|// #define BAGET_PRINTK
-multiline_comment|/* &n; *  This function is same for BALO and Linux baget_printk,&n; *  and normally prints characted to second (UART A) console.&n; */
+multiline_comment|/*&n; *  This function is same for BALO and Linux baget_printk,&n; *  and normally prints characted to second (UART A) console.&n; */
 DECL|function|delay
 r_static
 r_void
