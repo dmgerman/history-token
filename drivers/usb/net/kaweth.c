@@ -2075,6 +2075,11 @@ id|urb-&gt;status
 op_eq
 op_minus
 id|ECONNABORTED
+op_logical_or
+id|urb-&gt;status
+op_eq
+op_minus
+id|ESHUTDOWN
 )paren
 )paren
 multiline_comment|/* we are killed - set a flag and wake the disconnect handler */
