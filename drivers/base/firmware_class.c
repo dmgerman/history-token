@@ -1503,7 +1503,7 @@ op_amp
 id|fw_priv-&gt;completion
 )paren
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
