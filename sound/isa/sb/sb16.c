@@ -3834,6 +3834,8 @@ comma
 id|cards
 op_assign
 l_int|0
+comma
+id|i
 suffix:semicolon
 r_static
 r_int
@@ -3940,8 +3942,8 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/* legacy auto configured cards */
-id|cards
-op_add_assign
+id|i
+op_assign
 id|snd_legacy_auto_probe
 c_func
 (paren
@@ -3950,16 +3952,38 @@ comma
 id|snd_sb16_probe_legacy_port
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PNP
-multiline_comment|/* PnP cards at last */
+r_if
+c_cond
+(paren
+id|i
+OG
+l_int|0
+)paren
 id|cards
 op_add_assign
+id|i
+suffix:semicolon
+macro_line|#ifdef CONFIG_PNP
+multiline_comment|/* PnP cards at last */
+id|i
+op_assign
 id|pnp_register_card_driver
 c_func
 (paren
 op_amp
 id|sb16_pnpc_driver
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+OG
+l_int|0
+)paren
+id|cards
+op_add_assign
+id|i
 suffix:semicolon
 macro_line|#endif
 r_if

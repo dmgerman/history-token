@@ -2192,6 +2192,8 @@ r_int
 id|dev
 comma
 id|cards
+comma
+id|i
 suffix:semicolon
 r_for
 c_loop
@@ -2237,8 +2239,8 @@ id|cards
 op_increment
 suffix:semicolon
 )brace
-id|cards
-op_add_assign
+id|i
+op_assign
 id|snd_legacy_auto_probe
 c_func
 (paren
@@ -2246,6 +2248,17 @@ id|possible_ports
 comma
 id|snd_gusextreme_legacy_auto_probe
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+OG
+l_int|0
+)paren
+id|cards
+op_add_assign
+id|i
 suffix:semicolon
 r_if
 c_cond
