@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB PhidgetServo driver 1.0&n; *&n; * Copyright (C) 2004 Sean Young &lt;sean@mess.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This is a driver for the USB PhidgetServo version 2.0 and 3.0 servo &n; * controllers available at: http://www.phidgets.com/ &n; *&n; * Note that the driver takes input as: degrees.minutes&n; * -23 &lt; degrees &lt; 203&n; * 0 &lt; minutes &lt; 59&n; *&n; * CAUTION: Generally you should use 0 &lt; degrees &lt; 180 as anything else&n; * is probably beyond the range of your servo and may damage it.&n; */
+multiline_comment|/*&n; * USB PhidgetServo driver 1.0&n; *&n; * Copyright (C) 2004 Sean Young &lt;sean@mess.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This is a driver for the USB PhidgetServo version 2.0 and 3.0 servo &n; * controllers available at: http://www.phidgets.com/ &n; *&n; * Note that the driver takes input as: degrees.minutes&n; * -23 &lt; degrees &lt; 203&n; * 0 &lt; minutes &lt; 59&n; *&n; * CAUTION: Generally you should use 0 &lt; degrees &lt; 180 as anything else&n; * is probably beyond the range of your servo and may damage it.&n; *&n; * Jun 16, 2004: Sean Young &lt;sean@mess.org&gt;&n; *  - cleanups&n; *  - was using memory after kfree()&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
@@ -15,17 +15,21 @@ mdefine_line|#define DRIVER_AUTHOR &quot;Sean Young &lt;sean@mess.org&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB PhidgetServo Driver&quot;
 DECL|macro|VENDOR_ID_GLAB
-mdefine_line|#define VENDOR_ID_GLAB&t;&t;&t;0x06c2
-DECL|macro|DEVICE_ID_4MOTOR_SERVO_30
-mdefine_line|#define DEVICE_ID_4MOTOR_SERVO_30&t;0x0038
-DECL|macro|DEVICE_ID_1MOTOR_SERVO_30
-mdefine_line|#define DEVICE_ID_1MOTOR_SERVO_30&t;0x0039
+mdefine_line|#define VENDOR_ID_GLAB&t;&t;&t;&t;0x06c2
+DECL|macro|DEVICE_ID_GLAB_PHIDGETSERVO_QUAD
+mdefine_line|#define DEVICE_ID_GLAB_PHIDGETSERVO_QUAD&t;0x0038
+DECL|macro|DEVICE_ID_GLAB_PHIDGETSERVO_UNI
+mdefine_line|#define DEVICE_ID_GLAB_PHIDGETSERVO_UNI&t;&t;0x0039
 DECL|macro|VENDOR_ID_WISEGROUP
-mdefine_line|#define VENDOR_ID_WISEGROUP&t;&t;0x0925
-DECL|macro|DEVICE_ID_1MOTOR_SERVO_20
-mdefine_line|#define DEVICE_ID_1MOTOR_SERVO_20&t;0x8101
-DECL|macro|DEVICE_ID_4MOTOR_SERVO_20
-mdefine_line|#define DEVICE_ID_4MOTOR_SERVO_20&t;0x8104
+mdefine_line|#define VENDOR_ID_WISEGROUP&t;&t;&t;0x0925
+DECL|macro|VENDOR_ID_WISEGROUP_PHIDGETSERVO_QUAD
+mdefine_line|#define VENDOR_ID_WISEGROUP_PHIDGETSERVO_QUAD&t;0x8101
+DECL|macro|VENDOR_ID_WISEGROUP_PHIDGETSERVO_UNI
+mdefine_line|#define VENDOR_ID_WISEGROUP_PHIDGETSERVO_UNI&t;0x8104
+DECL|macro|SERVO_VERSION_30
+mdefine_line|#define SERVO_VERSION_30&t;&t;&t;0x01
+DECL|macro|SERVO_COUNT_QUAD
+mdefine_line|#define SERVO_COUNT_QUAD&t;&t;&t;0x02
 DECL|variable|id_table
 r_static
 r_struct
@@ -41,8 +45,15 @@ c_func
 (paren
 id|VENDOR_ID_GLAB
 comma
-id|DEVICE_ID_4MOTOR_SERVO_30
+id|DEVICE_ID_GLAB_PHIDGETSERVO_QUAD
 )paren
+comma
+dot
+id|driver_info
+op_assign
+id|SERVO_VERSION_30
+op_or
+id|SERVO_COUNT_QUAD
 )brace
 comma
 (brace
@@ -51,8 +62,13 @@ c_func
 (paren
 id|VENDOR_ID_GLAB
 comma
-id|DEVICE_ID_1MOTOR_SERVO_30
+id|DEVICE_ID_GLAB_PHIDGETSERVO_UNI
 )paren
+comma
+dot
+id|driver_info
+op_assign
+id|SERVO_VERSION_30
 )brace
 comma
 (brace
@@ -61,8 +77,13 @@ c_func
 (paren
 id|VENDOR_ID_WISEGROUP
 comma
-id|DEVICE_ID_4MOTOR_SERVO_20
+id|VENDOR_ID_WISEGROUP_PHIDGETSERVO_QUAD
 )paren
+comma
+dot
+id|driver_info
+op_assign
+id|SERVO_COUNT_QUAD
 )brace
 comma
 (brace
@@ -71,8 +92,13 @@ c_func
 (paren
 id|VENDOR_ID_WISEGROUP
 comma
-id|DEVICE_ID_1MOTOR_SERVO_20
+id|VENDOR_ID_WISEGROUP_PHIDGETSERVO_UNI
 )paren
+comma
+dot
+id|driver_info
+op_assign
+l_int|0
 )brace
 comma
 (brace
@@ -97,13 +123,9 @@ id|usb_device
 op_star
 id|udev
 suffix:semicolon
-DECL|member|version
-r_int
-id|version
-suffix:semicolon
-DECL|member|quad_servo
-r_int
-id|quad_servo
+DECL|member|type
+id|ulong
+id|type
 suffix:semicolon
 DECL|member|pulse
 r_int
@@ -129,7 +151,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_static
-r_void
+r_int
 DECL|function|change_position_v30
 id|change_position_v30
 c_func
@@ -186,6 +208,8 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * pulse = 0 - 4095&n;&t; * angle = 0 - 180 degrees&n;&t; *&n;&t; * pulse = angle * 10.6 + 243.8&t;&n;&t; */
@@ -400,33 +424,18 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-op_ne
-l_int|6
-)paren
-id|dev_err
-c_func
-(paren
-op_amp
-id|servo-&gt;udev-&gt;dev
-comma
-l_string|&quot;retval = %d&bslash;n&quot;
-comma
-id|retval
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
 id|buffer
 )paren
 suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|change_position_v20
 id|change_position_v20
 c_func
@@ -483,6 +492,8 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * angle = 0 - 180 degrees&n;&t; * pulse = angle + 23&n;&t; */
@@ -580,33 +591,18 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-op_ne
-l_int|2
-)paren
-id|dev_err
-c_func
-(paren
-op_amp
-id|servo-&gt;udev-&gt;dev
-comma
-l_string|&quot;retval = %d&bslash;n&quot;
-comma
-id|retval
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
 id|buffer
 )paren
 suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
 )brace
 DECL|macro|show_set
-mdefine_line|#define show_set(value)&t;&bslash;&n;static ssize_t set_servo##value (struct device *dev,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;const char *buf, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int degrees, minutes;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_interface *intf = to_usb_interface (dev);&t;&t;&bslash;&n;&t;struct phidget_servo *servo = usb_get_intfdata (intf);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;minutes = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* must at least convert degrees */&t;&t;&t;&t;&bslash;&n;&t;if (sscanf (buf, &quot;%d.%d&quot;, &amp;degrees, &amp;minutes) &lt; 1) {&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (degrees &lt; -23 || degrees &gt; (180 + 23) ||&t;&t;&t;&bslash;&n;&t;    minutes &lt; 0 || minutes &gt; 59) {&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (servo-&gt;version &gt;= 3) &t;&t;&t;&t;&t;&bslash;&n;&t;&t;change_position_v30 (servo, value, degrees, minutes);&t;&bslash;&n;&t;else &t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;change_position_v20 (servo, value, degrees, minutes);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_servo##value (struct device *dev, char *buf) &t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_interface *intf = to_usb_interface (dev);&t;&t;&bslash;&n;&t;struct phidget_servo *servo = usb_get_intfdata (intf);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf (buf, &quot;%d.%02d&bslash;n&quot;, servo-&gt;degrees[value],&t;&bslash;&n;&t;&t;&t;&t;servo-&gt;minutes[value]);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(servo##value, S_IWUGO | S_IRUGO,&t;&t;&t;&bslash;&n;&t;  show_servo##value, set_servo##value);
+mdefine_line|#define show_set(value)&t;&bslash;&n;static ssize_t set_servo##value (struct device *dev,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;const char *buf, size_t count)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int degrees, minutes, retval;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_interface *intf = to_usb_interface (dev);&t;&t;&bslash;&n;&t;struct phidget_servo *servo = usb_get_intfdata (intf);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;minutes = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* must at least convert degrees */&t;&t;&t;&t;&bslash;&n;&t;if (sscanf (buf, &quot;%d.%d&quot;, &amp;degrees, &amp;minutes) &lt; 1) {&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (degrees &lt; -23 || degrees &gt; (180 + 23) ||&t;&t;&t;&bslash;&n;&t;    minutes &lt; 0 || minutes &gt; 59) {&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (servo-&gt;type &amp; SERVO_VERSION_30)&t;&t;&t;&t;&bslash;&n;&t;&t;retval = change_position_v30 (servo, value, degrees, &t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;minutes);&t;&bslash;&n;&t;else &t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;retval = change_position_v20 (servo, value, degrees, &t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;minutes);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return retval &lt; 0 ? retval : count;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_servo##value (struct device *dev, char *buf) &t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_interface *intf = to_usb_interface (dev);&t;&t;&bslash;&n;&t;struct phidget_servo *servo = usb_get_intfdata (intf);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf (buf, &quot;%d.%02d&bslash;n&quot;, servo-&gt;degrees[value],&t;&bslash;&n;&t;&t;&t;&t;servo-&gt;minutes[value]);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(servo##value, S_IWUGO | S_IRUGO,&t;&t;&t;&bslash;&n;&t;  show_servo##value, set_servo##value);
 id|show_set
 c_func
 (paren
@@ -664,8 +660,6 @@ r_struct
 id|phidget_servo
 op_star
 id|dev
-op_assign
-l_int|NULL
 suffix:semicolon
 id|dev
 op_assign
@@ -727,62 +721,10 @@ c_func
 id|udev
 )paren
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|udev-&gt;descriptor.idVendor
-)paren
-(brace
-r_case
-id|VENDOR_ID_WISEGROUP
-suffix:colon
-id|dev-&gt;version
+id|dev-&gt;type
 op_assign
-l_int|2
+id|id-&gt;driver_info
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|VENDOR_ID_GLAB
-suffix:colon
-id|dev-&gt;version
-op_assign
-l_int|3
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_switch
-c_cond
-(paren
-id|udev-&gt;descriptor.idProduct
-)paren
-(brace
-r_case
-id|DEVICE_ID_4MOTOR_SERVO_20
-suffix:colon
-r_case
-id|DEVICE_ID_4MOTOR_SERVO_30
-suffix:colon
-id|dev-&gt;quad_servo
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|DEVICE_ID_1MOTOR_SERVO_20
-suffix:colon
-r_case
-id|DEVICE_ID_1MOTOR_SERVO_30
-suffix:colon
-id|dev-&gt;quad_servo
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|usb_set_intfdata
 c_func
 (paren
@@ -804,7 +746,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;quad_servo
+id|dev-&gt;type
+op_amp
+id|SERVO_COUNT_QUAD
 )paren
 (brace
 id|device_create_file
@@ -846,23 +790,36 @@ id|interface-&gt;dev
 comma
 l_string|&quot;USB %d-Motor PhidgetServo v%d.0 attached&bslash;n&quot;
 comma
-id|dev-&gt;quad_servo
+id|dev-&gt;type
+op_amp
+id|SERVO_COUNT_QUAD
 ques
 c_cond
 l_int|4
 suffix:colon
 l_int|1
 comma
-id|dev-&gt;version
+id|dev-&gt;type
+op_amp
+id|SERVO_VERSION_30
+ques
+c_cond
+l_int|3
+suffix:colon
+l_int|2
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;version
-op_eq
-l_int|2
+op_logical_neg
+(paren
+id|dev-&gt;type
+op_amp
+id|SERVO_VERSION_30
 )paren
+)paren
+(brace
 id|dev_info
 c_func
 (paren
@@ -872,6 +829,7 @@ comma
 l_string|&quot;WARNING: v2.0 not tested! Please report if it works.&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -922,7 +880,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;quad_servo
+id|dev-&gt;type
+op_amp
+id|SERVO_COUNT_QUAD
 )paren
 (brace
 id|device_remove_file
@@ -962,12 +922,6 @@ c_func
 id|dev-&gt;udev
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|dev_info
 c_func
 (paren
@@ -976,14 +930,29 @@ id|interface-&gt;dev
 comma
 l_string|&quot;USB %d-Motor PhidgetServo v%d.0 detached&bslash;n&quot;
 comma
-id|dev-&gt;quad_servo
+id|dev-&gt;type
+op_amp
+id|SERVO_COUNT_QUAD
 ques
 c_cond
 l_int|4
 suffix:colon
 l_int|1
 comma
-id|dev-&gt;version
+id|dev-&gt;type
+op_amp
+id|SERVO_VERSION_30
+ques
+c_cond
+l_int|3
+suffix:colon
+l_int|2
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -1032,8 +1001,6 @@ r_void
 (brace
 r_int
 id|retval
-op_assign
-l_int|0
 suffix:semicolon
 id|retval
 op_assign
