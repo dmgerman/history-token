@@ -9659,9 +9659,35 @@ multiline_comment|/* bit 13: enable internal vref output for mic */
 multiline_comment|/* bit 12: disable center/lfe (swithable) */
 multiline_comment|/* bit 10: disable surround/line (switchable) */
 multiline_comment|/* bit 9: mix 2 surround off */
+multiline_comment|/* bit 4: undocumented; 0 mutes the CM9739A, which defaults to 1 */
+multiline_comment|/* bit 3: undocumented; surround? */
 multiline_comment|/* bit 0: dB */
 id|val
 op_assign
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_CM9739_MULTI_CHAN
+)paren
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|4
+)paren
+suffix:semicolon
+id|val
+op_or_assign
+(paren
+l_int|1
+op_lshift
+l_int|3
+)paren
+suffix:semicolon
+id|val
+op_or_assign
 (paren
 l_int|1
 op_lshift
