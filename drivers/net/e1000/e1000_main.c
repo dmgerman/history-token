@@ -1462,6 +1462,9 @@ id|netdev
 op_assign
 id|adapter-&gt;netdev
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 multiline_comment|/* hardware has been reset, we need to reload some things */
 id|e1000_set_multi
 c_func
@@ -1502,6 +1505,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|request_irq
 c_func
 (paren
@@ -1519,10 +1525,10 @@ comma
 id|netdev
 )paren
 )paren
+)paren
 (brace
 r_return
-op_minus
-l_int|1
+id|err
 suffix:semicolon
 )brace
 id|mod_timer
@@ -1865,6 +1871,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_uint16
 id|eeprom_data
 suffix:semicolon
@@ -1872,7 +1881,7 @@ r_if
 c_cond
 (paren
 (paren
-id|i
+id|err
 op_assign
 id|pci_enable_device
 c_func
@@ -1883,7 +1892,7 @@ id|pdev
 )paren
 (brace
 r_return
-id|i
+id|err
 suffix:semicolon
 )brace
 r_if
@@ -1891,7 +1900,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|i
+id|err
 op_assign
 id|pci_set_dma_mask
 c_func
@@ -1914,7 +1923,7 @@ r_if
 c_cond
 (paren
 (paren
-id|i
+id|err
 op_assign
 id|pci_set_dma_mask
 c_func
@@ -1933,7 +1942,7 @@ l_string|&quot;No usable DMA configuration, aborting&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|i
+id|err
 suffix:semicolon
 )brace
 id|pci_using_dac
@@ -1945,7 +1954,7 @@ r_if
 c_cond
 (paren
 (paren
-id|i
+id|err
 op_assign
 id|pci_request_regions
 c_func
@@ -1958,7 +1967,7 @@ id|e1000_driver_name
 )paren
 (brace
 r_return
-id|i
+id|err
 suffix:semicolon
 )brace
 id|pci_set_master
@@ -1986,6 +1995,11 @@ op_logical_neg
 id|netdev
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
 id|err_alloc_etherdev
 suffix:semicolon
@@ -2066,6 +2080,11 @@ op_logical_neg
 id|adapter-&gt;hw.hw_addr
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_goto
 id|err_ioremap
 suffix:semicolon
@@ -2230,10 +2249,14 @@ multiline_comment|/* setup the private structure */
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|e1000_sw_init
 c_func
 (paren
 id|adapter
+)paren
 )paren
 )paren
 (brace
@@ -2332,6 +2355,11 @@ id|KERN_ERR
 l_string|&quot;The EEPROM Checksum Is Not Valid&bslash;n&quot;
 )paren
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_goto
 id|err_eeprom
 suffix:semicolon
@@ -2365,6 +2393,11 @@ id|netdev-&gt;dev_addr
 )paren
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_goto
 id|err_eeprom
 suffix:semicolon
@@ -2640,8 +2673,7 @@ id|pdev
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_remove - Device Removal Routine&n; * @pdev: PCI device information struct&n; *&n; * e1000_remove is called by the PCI subsystem to alert the driver&n; * that it should release a PCI device.  The could be caused by a&n; * Hot-Plug event, or because the driver is going to be removed from&n; * memory.&n; **/
@@ -2869,7 +2901,7 @@ l_string|&quot;Unknown MAC Type&bslash;n&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* initialize eeprom parameters */
@@ -3010,14 +3042,21 @@ id|adapter
 op_assign
 id|netdev-&gt;priv
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 multiline_comment|/* allocate transmit descriptors */
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|e1000_setup_tx_resources
 c_func
 (paren
 id|adapter
+)paren
 )paren
 )paren
 (brace
@@ -3029,10 +3068,14 @@ multiline_comment|/* allocate receive descriptors */
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|e1000_setup_rx_resources
 c_func
 (paren
 id|adapter
+)paren
 )paren
 )paren
 (brace
@@ -3043,10 +3086,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
 id|e1000_up
 c_func
 (paren
 id|adapter
+)paren
 )paren
 )paren
 (brace
@@ -3082,8 +3129,7 @@ id|adapter
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EBUSY
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_close - Disables a network interface&n; * @netdev: network interface device structure&n; *&n; * Returns 0, this is not allowed to fail&n; *&n; * The close entry point is called when an interface is de-activated&n; * by the OS.  The hardware is still under the drivers control, but&n; * needs to be disabled.  A global MAC reset is issued to stop the&n; * hardware, and all transmit and receive resources are freed.&n; **/
