@@ -1259,7 +1259,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Cyrix: nibble offset 0x5C&n; */
+multiline_comment|/*&n; * Cyrix: nibble offset 0x5C&n; * 0x5C bits 7:4 is INTB bits 3:0 is INTA &n; * 0x5D bits 7:4 is INTD bits 3:0 is INTC&n; */
 DECL|function|pirq_cyrix_get
 r_static
 r_int
