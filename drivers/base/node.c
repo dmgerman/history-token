@@ -65,7 +65,7 @@ multiline_comment|/* 2004/06/03: buf currently PAGE_SIZE, need &gt; 1 char per 4
 id|BUILD_BUG_ON
 c_func
 (paren
-id|NR_CPUS
+id|MAX_NUMNODES
 op_div
 l_int|4
 OG
@@ -537,7 +537,7 @@ multiline_comment|/* buf currently PAGE_SIZE, need ~4 chars per node */
 id|BUILD_BUG_ON
 c_func
 (paren
-id|NR_NODES
+id|MAX_NUMNODES
 op_star
 l_int|4
 OG
