@@ -426,25 +426,6 @@ l_int|0
 )brace
 comma
 multiline_comment|/* EMU10K1 */
-macro_line|#if 0 /* FIXME: not working! */
-(brace
-l_int|0x1102
-comma
-l_int|0x0006
-comma
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Dell OEM version (EMU10K1) */
-macro_line|#endif
 (brace
 l_int|0x1102
 comma
