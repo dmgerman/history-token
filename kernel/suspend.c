@@ -2764,6 +2764,11 @@ id|nr_needed_pages
 op_assign
 l_int|0
 suffix:semicolon
+id|drain_local_pages
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pagedir_nosave
 op_assign
 l_int|NULL
@@ -2945,6 +2950,12 @@ id|pagedir_order_check
 op_assign
 id|pagedir_order
 suffix:semicolon
+id|drain_local_pages
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* During allocating of suspend pagedir, new cold pages may appear. Kill them */
 r_if
 c_cond
 (paren
