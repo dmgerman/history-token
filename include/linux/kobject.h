@@ -229,6 +229,9 @@ id|s
 )paren
 (brace
 r_return
+id|s
+ques
+c_cond
 id|container_of
 c_func
 (paren
@@ -244,6 +247,8 @@ id|subsystem
 comma
 id|kobj
 )paren
+suffix:colon
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|subsys_put
