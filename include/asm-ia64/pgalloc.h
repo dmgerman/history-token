@@ -5,6 +5,7 @@ multiline_comment|/*&n; * This file contains the functions and defines necessary
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * Very stupidly, we used to get new pgd&squot;s and pmd&squot;s, init their contents&n; * to point to the NULL versions of the next level page table, later on&n; * completely re-init them the same way, then free them up.  This wasted&n; * a lot of work and caused unnecessary memory traffic.  How broken...&n; * We fix this by caching them.&n; */
@@ -37,14 +38,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|likely
 c_func
 (paren
 id|ret
 op_ne
 l_int|NULL
-comma
-l_int|1
 )paren
 )paren
 (brace
@@ -111,14 +110,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|unlikely
 c_func
 (paren
 id|pgd
 op_eq
 l_int|NULL
-comma
-l_int|0
 )paren
 )paren
 (brace
@@ -137,14 +134,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|likely
 c_func
 (paren
 id|pgd
 op_ne
 l_int|NULL
-comma
-l_int|1
 )paren
 )paren
 id|clear_page
@@ -262,14 +257,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|likely
 c_func
 (paren
 id|ret
 op_ne
 l_int|NULL
-comma
-l_int|1
 )paren
 )paren
 (brace
@@ -338,14 +331,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|likely
 c_func
 (paren
 id|pmd
 op_ne
 l_int|NULL
-comma
-l_int|1
 )paren
 )paren
 id|clear_page
@@ -501,14 +492,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|likely
 c_func
 (paren
 id|pte
 op_ne
 l_int|NULL
-comma
-l_int|1
 )paren
 )paren
 id|clear_page
@@ -559,14 +548,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|likely
 c_func
 (paren
 id|pte
 op_ne
 l_int|NULL
-comma
-l_int|1
 )paren
 )paren
 id|clear_page
