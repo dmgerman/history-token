@@ -9,6 +9,8 @@ macro_line|#include &quot;saa7134-reg.h&quot;
 macro_line|#include &quot;saa7134.h&quot;
 macro_line|#include &lt;media/saa6752hs.h&gt;
 multiline_comment|/* ------------------------------------------------------------------ */
+DECL|macro|TS_PACKET_SIZE
+mdefine_line|#define TS_PACKET_SIZE 188 /* TS packets 188 bytes */
 DECL|variable|ts_debug
 r_static
 r_int
@@ -57,10 +59,30 @@ comma
 l_string|&quot;number of ts buffers, range 2-32&quot;
 )paren
 suffix:semicolon
-DECL|macro|TS_PACKET_SIZE
-mdefine_line|#define TS_PACKET_SIZE 188 /* TS packets 188 bytes */
-DECL|macro|TS_NR_PACKETS
-mdefine_line|#define TS_NR_PACKETS 312
+DECL|variable|ts_nr_packets
+r_static
+r_int
+r_int
+id|ts_nr_packets
+op_assign
+l_int|30
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|ts_nr_packets
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ts_nr_packets
+comma
+l_string|&quot;size of a ts buffers (in ts packets)&quot;
+)paren
+suffix:semicolon
 DECL|macro|dprintk
 mdefine_line|#define dprintk(fmt, arg...)&t;if (ts_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s/ts: &quot; fmt, dev-&gt;name , ## arg)
 multiline_comment|/* ------------------------------------------------------------------ */
@@ -341,7 +363,7 @@ id|TS_PACKET_SIZE
 suffix:semicolon
 id|lines
 op_assign
-id|TS_NR_PACKETS
+id|ts_nr_packets
 suffix:semicolon
 id|size
 op_assign
@@ -512,7 +534,7 @@ id|size
 op_assign
 id|TS_PACKET_SIZE
 op_star
-id|TS_NR_PACKETS
+id|ts_nr_packets
 suffix:semicolon
 r_if
 c_cond
@@ -1466,7 +1488,7 @@ id|f-&gt;fmt.pix.sizeimage
 op_assign
 id|TS_PACKET_SIZE
 op_star
-id|TS_NR_PACKETS
+id|ts_nr_packets
 suffix:semicolon
 r_return
 l_int|0
@@ -1512,7 +1534,7 @@ id|f-&gt;fmt.pix.sizeimage
 op_assign
 id|TS_PACKET_SIZE
 op_star
-id|TS_NR_PACKETS
+id|ts_nr_packets
 suffix:semicolon
 r_return
 l_int|0
@@ -1813,6 +1835,28 @@ id|tsbufs
 op_assign
 id|VIDEO_MAX_FRAME
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ts_nr_packets
+OL
+l_int|4
+)paren
+id|ts_nr_packets
+op_assign
+l_int|4
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ts_nr_packets
+OG
+l_int|312
+)paren
+id|ts_nr_packets
+op_assign
+l_int|312
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -1922,7 +1966,7 @@ id|SAA7134_TS_DMA0
 comma
 (paren
 (paren
-id|TS_NR_PACKETS
+id|ts_nr_packets
 op_minus
 l_int|1
 )paren
@@ -1939,7 +1983,7 @@ comma
 (paren
 (paren
 (paren
-id|TS_NR_PACKETS
+id|ts_nr_packets
 op_minus
 l_int|1
 )paren
@@ -1960,7 +2004,7 @@ comma
 (paren
 (paren
 (paren
-id|TS_NR_PACKETS
+id|ts_nr_packets
 op_minus
 l_int|1
 )paren

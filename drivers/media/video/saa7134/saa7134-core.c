@@ -3239,16 +3239,47 @@ comma
 id|status
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|report
+op_amp
+id|SAA7134_IRQ_REPORT_PE
+)paren
+(brace
+multiline_comment|/* disable all parity error */
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s/irq: looping -- clearing enable bits&bslash;n&quot;
+l_string|&quot;%s/irq: looping -- &quot;
+l_string|&quot;clearing PE (parity error!) enable bit&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+id|saa_clearl
+c_func
+(paren
+id|SAA7134_IRQ2
+comma
+id|SAA7134_IRQ2_INTE_PE
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 multiline_comment|/* disable all irqs */
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s/irq: looping -- &quot;
+l_string|&quot;clearing all enable bits&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
 id|saa_writel
 c_func
 (paren
@@ -3265,6 +3296,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 )brace
 id|out
 suffix:colon
