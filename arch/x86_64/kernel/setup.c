@@ -43,6 +43,7 @@ macro_line|#include &lt;asm/bootsetup.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
+macro_line|#include &lt;asm/mach_apic.h&gt;
 multiline_comment|/*&n; * Machine setup..&n; */
 DECL|variable|boot_cpu_data
 r_struct
@@ -3115,9 +3116,6 @@ comma
 id|tmp
 suffix:semicolon
 r_int
-id|initial_apic_id
-suffix:semicolon
-r_int
 id|cpu
 op_assign
 id|smp_processor_id
@@ -3283,21 +3281,16 @@ id|index_msb
 id|index_msb
 op_increment
 suffix:semicolon
-id|initial_apic_id
-op_assign
-id|hard_smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 id|phys_proc_id
 (braket
 id|cpu
 )braket
 op_assign
-id|initial_apic_id
-op_rshift
+id|phys_pkg_id
+c_func
+(paren
 id|index_msb
+)paren
 suffix:semicolon
 id|printk
 c_func

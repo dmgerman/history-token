@@ -23,5 +23,7 @@ DECL|macro|send_IPI_all
 mdefine_line|#define send_IPI_all (genapic-&gt;send_IPI_all)
 DECL|macro|cpu_mask_to_apicid
 mdefine_line|#define cpu_mask_to_apicid (genapic-&gt;cpu_mask_to_apicid)
+DECL|macro|phys_pkg_id
+mdefine_line|#define phys_pkg_id&t;(genapic-&gt;phys_pkg_id)
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof
