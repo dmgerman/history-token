@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.69 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.73 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1251,7 +1251,6 @@ comma
 id|dbf_txt
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * TODO: the chpid may be not the chpid with the link incident,&n;&t; * but the chpid the report came in through. How to handle???&n;&t; */
 id|clear_bit
 c_func
 (paren
@@ -1761,6 +1760,129 @@ id|page
 suffix:semicolon
 )brace
 r_static
+r_int
+DECL|function|__get_chpid_from_lir
+id|__get_chpid_from_lir
+c_func
+(paren
+r_void
+op_star
+id|data
+)paren
+(brace
+r_struct
+id|lir
+(brace
+id|u8
+id|iq
+suffix:semicolon
+id|u8
+id|ic
+suffix:semicolon
+id|u16
+id|sci
+suffix:semicolon
+multiline_comment|/* incident-node descriptor */
+id|u32
+id|indesc
+(braket
+l_int|28
+)braket
+suffix:semicolon
+multiline_comment|/* attached-node descriptor */
+id|u32
+id|andesc
+(braket
+l_int|28
+)braket
+suffix:semicolon
+multiline_comment|/* incident-specific information */
+id|u32
+id|isinfo
+(braket
+l_int|28
+)braket
+suffix:semicolon
+)brace
+op_star
+id|lir
+suffix:semicolon
+id|lir
+op_assign
+(paren
+r_struct
+id|lir
+op_star
+)paren
+id|data
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|lir-&gt;iq
+op_amp
+l_int|0x80
+)paren
+)paren
+multiline_comment|/* NULL link incident record */
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|lir-&gt;indesc
+(braket
+l_int|0
+)braket
+op_amp
+l_int|0xc0000000
+)paren
+)paren
+multiline_comment|/* node descriptor not valid */
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|lir-&gt;indesc
+(braket
+l_int|0
+)braket
+op_amp
+l_int|0x10000000
+)paren
+)paren
+multiline_comment|/* don&squot;t handle device-type nodes - FIXME */
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+multiline_comment|/* Byte 3 contains the chpid. Could also be CTCA, but we don&squot;t care */
+r_return
+(paren
+id|u16
+)paren
+(paren
+id|lir-&gt;indesc
+(braket
+l_int|0
+)braket
+op_amp
+l_int|0x000000ff
+)paren
+suffix:semicolon
+)brace
+r_static
 r_void
 DECL|function|do_process_crw
 id|do_process_crw
@@ -1771,6 +1893,9 @@ op_star
 id|ignore
 )paren
 (brace
+r_int
+id|chpid
+suffix:semicolon
 r_struct
 (brace
 r_struct
@@ -1824,17 +1949,12 @@ id|reserved6
 suffix:semicolon
 id|u32
 id|ccdf
+(braket
+l_int|96
+)braket
 suffix:semicolon
 multiline_comment|/* content-code dependent field */
-id|u32
-id|reserved7
-suffix:semicolon
-id|u32
-id|reserved8
-suffix:semicolon
-id|u32
-id|reserved9
-suffix:semicolon
+multiline_comment|/* ccdf has to be big enough for a link-incident record */
 )brace
 op_star
 id|sei_area
@@ -2075,15 +2195,41 @@ l_int|4
 comma
 l_string|&quot;chsc_process_crw: &quot;
 l_string|&quot;channel subsystem reports link incident,&quot;
-l_string|&quot; source is chpid %x&bslash;n&quot;
+l_string|&quot; reporting source is chpid %x&bslash;n&quot;
 comma
 id|sei_area-&gt;rsid
 )paren
 suffix:semicolon
+id|chpid
+op_assign
+id|__get_chpid_from_lir
+c_func
+(paren
+id|sei_area-&gt;ccdf
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chpid
+OL
+l_int|0
+)paren
+id|CIO_CRW_EVENT
+c_func
+(paren
+l_int|4
+comma
+l_string|&quot;%s: Invalid LIR, skipping&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_else
 id|s390_set_chpid_offline
 c_func
 (paren
-id|sei_area-&gt;rsid
+id|chpid
 )paren
 suffix:semicolon
 r_break

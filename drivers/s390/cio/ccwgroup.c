@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/ccwgroup.c&n; *  bus driver for ccwgroup&n; *   $Revision: 1.6 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *                       IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/ccwgroup.c&n; *  bus driver for ccwgroup&n; *   $Revision: 1.7 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *                       IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -705,6 +705,8 @@ r_if
 c_cond
 (paren
 id|value
+op_eq
+l_int|1
 )paren
 id|ccwgroup_set_online
 c_func
@@ -713,11 +715,23 @@ id|gdev
 )paren
 suffix:semicolon
 r_else
+r_if
+c_cond
+(paren
+id|value
+op_eq
+l_int|0
+)paren
 id|ccwgroup_set_offline
 c_func
 (paren
 id|gdev
 )paren
+suffix:semicolon
+r_else
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_return
 id|count
@@ -764,9 +778,9 @@ comma
 id|online
 ques
 c_cond
-l_string|&quot;1&bslash;n&quot;
+l_string|&quot;yes&bslash;n&quot;
 suffix:colon
-l_string|&quot;0&bslash;n&quot;
+l_string|&quot;no&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/device.c&n; *  bus driver for ccw devices&n; *   $Revision: 1.54 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/device.c&n; *  bus driver for ccw devices&n; *   $Revision: 1.57 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1269,8 +1269,11 @@ id|dev
 )paren
 suffix:semicolon
 r_int
-r_int
-id|value
+id|i
+suffix:semicolon
+r_char
+op_star
+id|tmp
 suffix:semicolon
 r_if
 c_cond
@@ -1281,26 +1284,26 @@ id|cdev-&gt;drv
 r_return
 id|count
 suffix:semicolon
-id|sscanf
+id|i
+op_assign
+id|simple_strtoul
 c_func
 (paren
 id|buf
 comma
-l_string|&quot;%u&quot;
-comma
 op_amp
-id|value
+id|tmp
+comma
+l_int|16
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|value
-)paren
-(brace
-r_if
-c_cond
-(paren
+id|i
+op_eq
+l_int|0
+op_logical_and
 id|cdev-&gt;drv-&gt;set_online
 )paren
 id|ccw_device_set_online
@@ -1309,12 +1312,14 @@ c_func
 id|cdev
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 r_if
 c_cond
 (paren
+id|i
+op_eq
+l_int|1
+op_logical_and
 id|cdev-&gt;drv-&gt;set_offline
 )paren
 id|ccw_device_set_offline
@@ -1323,7 +1328,11 @@ c_func
 id|cdev
 )paren
 suffix:semicolon
-)brace
+r_else
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_return
 id|count
 suffix:semicolon
@@ -1733,18 +1742,31 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Add a &quot;steal lock&quot; attribute to boxed devices.&n; * This allows to trigger an unconditional reserve ccw to eckd dasds&n; * (if the device is something else, there should be no problems more than&n; * a command reject; we don&squot;t have any means of finding out the device&squot;s&n; * type if it was boxed at ipl/attach).&n; */
+multiline_comment|/*&n; * Add a &quot;steal lock&quot; attribute to boxed devices.&n; * This allows to trigger an unconditional reserve ccw to eckd dasds&n; * (if the device is something else, there should be no problems more than&n; * a command reject; we don&squot;t have any means of finding out the device&squot;s&n; * type if it was boxed at ipl/attach for older devices and under VM).&n; */
 r_void
 DECL|function|ccw_device_add_stlck
 id|ccw_device_add_stlck
 c_func
 (paren
+r_void
+op_star
+id|data
+)paren
+(brace
 r_struct
 id|ccw_device
 op_star
 id|cdev
+suffix:semicolon
+id|cdev
+op_assign
+(paren
+r_struct
+id|ccw_device
+op_star
 )paren
-(brace
+id|data
+suffix:semicolon
 id|device_create_file
 c_func
 (paren
@@ -1975,6 +1997,27 @@ comma
 id|sch-&gt;irq
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|state
+op_eq
+id|DEV_STATE_BOXED
+)paren
+id|device_create_file
+c_func
+(paren
+op_amp
+id|cdev-&gt;dev
+comma
+op_amp
+id|dev_attr_steal_lock
+)paren
+suffix:semicolon
 id|out
 suffix:colon
 id|put_device
@@ -2061,6 +2104,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|DEV_STATE_BOXED
+suffix:colon
+multiline_comment|/* Device did not respond in time. */
+r_case
 id|DEV_STATE_OFFLINE
 suffix:colon
 multiline_comment|/* &n;&t;&t; * We can&squot;t register the device in interrupt context so&n;&t;&t; * we schedule a work item.&n;&t;&t; */
@@ -2096,12 +2143,6 @@ op_member_access_from_pointer
 id|kick_work
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|DEV_STATE_BOXED
-suffix:colon
-multiline_comment|/* Device did not respond in time. */
 r_break
 suffix:semicolon
 )brace
