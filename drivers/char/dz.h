@@ -310,16 +310,6 @@ DECL|member|close_wait
 id|wait_queue_head_t
 id|close_wait
 suffix:semicolon
-DECL|member|session
-r_int
-id|session
-suffix:semicolon
-multiline_comment|/* Session of opening process */
-DECL|member|pgrp
-r_int
-id|pgrp
-suffix:semicolon
-multiline_comment|/* pgrp of opening process */
 DECL|member|is_console
 r_int
 r_char
