@@ -2820,8 +2820,6 @@ r_void
 r_int
 r_int
 id|nr_needed_pages
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|error
@@ -2846,6 +2844,11 @@ c_func
 (paren
 id|KERN_CRIT
 l_string|&quot;Suspend machine: Not enough free pages for highmem&bslash;n&quot;
+)paren
+suffix:semicolon
+id|restore_highmem
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
