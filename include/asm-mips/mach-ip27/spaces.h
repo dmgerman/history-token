@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 99 Ralf Baechle&n; * Copyright (C) 2000, 2002  Maciej W. Rozycki&n; * Copyright (C) 1990, 1999 by Silicon Graphics, Inc.&n; */
-macro_line|#ifndef _ASM_MACH_SPACES_H
-DECL|macro|_ASM_MACH_SPACES_H
-mdefine_line|#define _ASM_MACH_SPACES_H
+macro_line|#ifndef _ASM_MACH_IP27_SPACES_H
+DECL|macro|_ASM_MACH_IP27_SPACES_H
+mdefine_line|#define _ASM_MACH_IP27_SPACES_H
 multiline_comment|/*&n; * IP27 uses the R10000&squot;s uncached attribute feature.  Attribute 3 selects&n; * uncached memory addressing.&n; */
 DECL|macro|CAC_BASE
 mdefine_line|#define CAC_BASE&t;&t;0xa800000000000000
@@ -27,5 +27,5 @@ DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;&t;CAC_BASE
 DECL|macro|HIGHMEM_START
 mdefine_line|#define HIGHMEM_START&t;&t;(~0UL)
-macro_line|#endif /* _ASM_MACH_SPACES_H */
+macro_line|#endif /* _ASM_MACH_IP27_SPACES_H */
 eof

@@ -1244,6 +1244,13 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|vdma_phys2log
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vdma_phys2log
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Translate a logical DMA address to a physical address&n; */
 DECL|function|vdma_log2phys
 r_int
@@ -1628,6 +1635,13 @@ id|R4030_CHNL_ENABLE
 )paren
 suffix:semicolon
 )brace
+DECL|variable|vdma_enable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vdma_enable
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Disable a DMA channel&n; */
 DECL|function|vdma_disable
 r_void
@@ -1777,6 +1791,13 @@ id|JAZZ_DUMMY_DEVICE
 )paren
 suffix:semicolon
 )brace
+DECL|variable|vdma_disable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vdma_disable
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Set DMA mode. This function accepts the mode values used&n; * to set a PC-style DMA controller. For the SCSI and FDC&n; * channels, we also set the default modes each time we&squot;re&n; * called.&n; * NOTE: The FAST and BURST dma modes are supported by the&n; * R4030 Rev. 2 and PICA chipsets only. I leave them disabled&n; * for now.&n; */
 DECL|function|vdma_set_mode
 r_void
@@ -1967,6 +1988,13 @@ id|mode
 suffix:semicolon
 )brace
 )brace
+DECL|variable|vdma_set_mode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vdma_set_mode
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Set Transfer Address&n; */
 DECL|function|vdma_set_addr
 r_void
@@ -2010,6 +2038,13 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+DECL|variable|vdma_set_addr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vdma_set_addr
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Set Transfer Count&n; */
 DECL|function|vdma_set_count
 r_void
@@ -2056,6 +2091,13 @@ id|count
 )paren
 suffix:semicolon
 )brace
+DECL|variable|vdma_set_count
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vdma_set_count
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Get Residual&n; */
 DECL|function|vdma_get_residue
 r_int

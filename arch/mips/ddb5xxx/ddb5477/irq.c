@@ -169,24 +169,15 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+DECL|function|arch_init_irq
 r_void
-DECL|function|ddb5477_irq_setup
-id|ddb5477_irq_setup
+id|__init
+id|arch_init_irq
 c_func
 (paren
 r_void
 )paren
 (brace
-id|db_run
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;ddb5477_irq_setup invoked.&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* by default, we disable all interrupts and route all vrc5477&n;&t; * interrupts to pin 0 (irq 2) */
 id|ddb_out32
 c_func

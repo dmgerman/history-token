@@ -5349,6 +5349,7 @@ id|info-&gt;irq
 comma
 id|ACPI_GPE_LEVEL_TRIGGERED
 comma
+op_amp
 id|ipmi_acpi_gpe
 comma
 id|info
@@ -5425,6 +5426,7 @@ l_int|NULL
 comma
 id|info-&gt;irq
 comma
+op_amp
 id|ipmi_acpi_gpe
 )paren
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * arch/mips/ddb5xxx/ddb5477/setup.c&n; *     Setup file for DDB5477.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * Copyright (C) 2004 by Ralf Baechle (ralf@linux-mips.org)&n; *&n; * arch/mips/ddb5xxx/ddb5477/setup.c&n; *     Setup file for DDB5477.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -22,7 +22,6 @@ macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/gdb-stub.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
-macro_line|#include &lt;asm/pci_channel.h&gt;
 macro_line|#include &lt;asm/ddb5xxx/ddb5xxx.h&gt;
 macro_line|#include &quot;lcd44780.h&quot;
 DECL|macro|USE_CPU_COUNTER_TIMER
@@ -621,24 +620,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|ddb5477_irq_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-(paren
-op_star
-id|irq_setup
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_struct
 id|pci_controller
 id|ddb5477_ext_controller
@@ -666,10 +647,6 @@ id|ddb5477_board_init
 c_func
 (paren
 )paren
-suffix:semicolon
-id|irq_setup
-op_assign
-id|ddb5477_irq_setup
 suffix:semicolon
 id|set_io_port_base
 c_func

@@ -5,6 +5,110 @@ mdefine_line|#define _ASM_PCI_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#ifdef __KERNEL__
+multiline_comment|/*&n; * This file essentially defines the interface between board&n; * specific PCI code and MIPS common PCI code.  Should potentially put&n; * into include/asm/pci.h file.&n; */
+macro_line|#include &lt;linux/ioport.h&gt;
+multiline_comment|/*&n; * Each pci channel is a top-level PCI bus seem by CPU.  A machine  with&n; * multiple PCI channels may have multiple PCI host controllers or a&n; * single controller supporting multiple channels.&n; */
+DECL|struct|pci_controller
+r_struct
+id|pci_controller
+(brace
+DECL|member|next
+r_struct
+id|pci_controller
+op_star
+id|next
+suffix:semicolon
+DECL|member|bus
+r_struct
+id|pci_bus
+op_star
+id|bus
+suffix:semicolon
+DECL|member|pci_ops
+r_struct
+id|pci_ops
+op_star
+id|pci_ops
+suffix:semicolon
+DECL|member|mem_resource
+r_struct
+id|resource
+op_star
+id|mem_resource
+suffix:semicolon
+DECL|member|mem_offset
+r_int
+r_int
+id|mem_offset
+suffix:semicolon
+DECL|member|io_resource
+r_struct
+id|resource
+op_star
+id|io_resource
+suffix:semicolon
+DECL|member|io_offset
+r_int
+r_int
+id|io_offset
+suffix:semicolon
+DECL|member|index
+r_int
+r_int
+id|index
+suffix:semicolon
+multiline_comment|/* For compatibility with current (as of July 2003) pciutils&n;&t;   and XFree86. Eventually will be removed. */
+DECL|member|need_domain_info
+r_int
+r_int
+id|need_domain_info
+suffix:semicolon
+DECL|member|iommu
+r_int
+id|iommu
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Used by boards to register their PCI busses before the actual scanning.&n; */
+r_extern
+r_struct
+id|pci_controller
+op_star
+id|alloc_pci_controller
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|register_pci_controller
+c_func
+(paren
+r_struct
+id|pci_controller
+op_star
+id|hose
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * board supplied pci irq fixup routine&n; */
+r_extern
+r_int
+id|pcibios_map_irq
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|u8
+id|slot
+comma
+id|u8
+id|pin
+)paren
+suffix:semicolon
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n;   already-configured bus numbers - to be used for buggy BIOSes&n;   or architectures with incomplete PCI setup by the loader */
 r_extern
 r_int
@@ -215,6 +319,76 @@ op_star
 id|res
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI_DOMAINS
+DECL|macro|pci_domain_nr
+mdefine_line|#define pci_domain_nr(bus) ((struct pci_controller *)(bus)-&gt;sysdata)-&gt;index
+r_static
+r_inline
+r_int
+DECL|function|pci_name_bus
+id|pci_name_bus
+c_func
+(paren
+r_char
+op_star
+id|name
+comma
+r_struct
+id|pci_bus
+op_star
+id|bus
+)paren
+(brace
+r_struct
+id|pci_controller
+op_star
+id|hose
+op_assign
+id|bus-&gt;sysdata
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+id|hose-&gt;need_domain_info
+op_eq
+l_int|0
+)paren
+)paren
+(brace
+id|sprintf
+c_func
+(paren
+id|name
+comma
+l_string|&quot;%02x&quot;
+comma
+id|bus-&gt;number
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|sprintf
+c_func
+(paren
+id|name
+comma
+l_string|&quot;%04x:%02x&quot;
+comma
+id|hose-&gt;index
+comma
+id|bus-&gt;number
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PCI_DOMAINS */
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* implement the pci_ DMA API in terms of the generic device dma_ one */
 macro_line|#include &lt;asm-generic/pci-dma-compat.h&gt;
@@ -232,5 +406,17 @@ id|dev
 )paren
 (brace
 )brace
+multiline_comment|/* Do platform specific device initialization at pci_enable_device() time */
+r_extern
+r_int
+id|pcibios_plat_dev_init
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASM_PCI_H */
 eof

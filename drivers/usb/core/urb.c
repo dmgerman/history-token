@@ -857,6 +857,15 @@ id|URB_ASYNC_UNLINK
 )paren
 (brace
 macro_line|#ifdef CONFIG_DEBUG_KERNEL
+r_if
+c_cond
+(paren
+id|printk_ratelimit
+c_func
+(paren
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -871,6 +880,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|usb_kill_urb
 c_func

@@ -21,7 +21,7 @@ macro_line|#include &quot;qdio.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
 macro_line|#include &quot;chsc.h&quot;
 DECL|macro|VERSION_QDIO_C
-mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.89 $&quot;
+mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.93 $&quot;
 multiline_comment|/****************** MODULE PARAMETER VARIABLES ********************/
 id|MODULE_AUTHOR
 c_func
@@ -2236,11 +2236,11 @@ comma
 id|dbf_text
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 id|q-&gt;timing.busy_start
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* CONFIG_QDIO_DEBUG */
 r_break
 suffix:semicolon
 r_case
@@ -8631,10 +8631,11 @@ suffix:colon
 l_int|3
 suffix:semicolon
 id|u32
+id|word_with_d_bit
+suffix:semicolon
+multiline_comment|/* set to 0x10000000 to enable&n;&t;&t; * time delay disablement facility */
+id|u32
 id|reserved5
-(braket
-l_int|2
-)braket
 suffix:semicolon
 id|u32
 id|subsystem_id
@@ -8798,6 +8799,11 @@ l_int|16
 )paren
 op_plus
 id|irq_ptr-&gt;irq
+suffix:semicolon
+multiline_comment|/* enables the time delay disablement facility. Don&squot;t care&n;&t; * whether it is really there (i.e. we haven&squot;t checked for&n;&t; * it) */
+id|scssc_area-&gt;word_with_d_bit
+op_assign
+l_int|0x10000000
 suffix:semicolon
 id|result
 op_assign
@@ -11662,6 +11668,7 @@ op_amp
 id|irq_ptr-&gt;setting_up_sema
 )paren
 suffix:semicolon
+multiline_comment|/* QDR must be in DMA area since CCW data address is only 32 bit */
 id|irq_ptr-&gt;qdr
 op_assign
 id|kmalloc

@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/cachectl.h&gt;
-multiline_comment|/*&n; * Each address space has 2 4K pages as its page directory, giving 1024&n; * (== PTRS_PER_PGD) 8 byte pointers to pmd tables. Each pmd table is a&n; * pair of 4K pages, giving 1024 (== PTRS_PER_PMD) 8 byte pointers to&n; * page tables. Each page table is a single 4K page, giving 512 (==&n; * PTRS_PER_PTE) 8 byte ptes. Each pgde is initialized to point to&n; * invalid_pmd_table, each pmde is initialized to point to&n; * invalid_pte_table, each pte is initialized to 0. When memory is low,&n; * and a pmd table or a page table allocation fails, empty_bad_pmd_table&n; * and empty_bad_page_table is returned back to higher layer code, so&n; * that the failure is recognized later on. Linux does not seem to&n; * handle these failures very well though. The empty_bad_page_table has&n; * invalid pte entries in it, to force page faults.&n; * Vmalloc handling: vmalloc uses swapper_pg_dir[0] (returned by&n; * pgd_offset_k), which is initalized to point to kpmdtbl. kpmdtbl is&n; * the only single page pmd in the system. kpmdtbl entries point into&n; * kptbl[] array. We reserve 1 &lt;&lt; PGD_ORDER pages to hold the&n; * vmalloc range translations, which the fault handler looks at.&n; */
+multiline_comment|/*&n; * Each address space has 2 4K pages as its page directory, giving 1024&n; * (== PTRS_PER_PGD) 8 byte pointers to pmd tables. Each pmd table is a&n; * pair of 4K pages, giving 1024 (== PTRS_PER_PMD) 8 byte pointers to&n; * page tables. Each page table is a single 4K page, giving 512 (==&n; * PTRS_PER_PTE) 8 byte ptes. Each pgde is initialized to point to&n; * invalid_pmd_table, each pmde is initialized to point to&n; * invalid_pte_table, each pte is initialized to 0. When memory is low,&n; * and a pmd table or a page table allocation fails, empty_bad_pmd_table&n; * and empty_bad_page_table is returned back to higher layer code, so&n; * that the failure is recognized later on. Linux does not seem to&n; * handle these failures very well though. The empty_bad_page_table has&n; * invalid pte entries in it, to force page faults.&n; *&n; * Kernel mappings: kernel mappings are held in the swapper_pg_table.&n; * The layout is identical to userspace except it&squot;s indexed with the&n; * fault address - VMALLOC_START.&n; */
 multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table can map */
 DECL|macro|PMD_SHIFT
 mdefine_line|#define PMD_SHIFT&t;(PAGE_SHIFT + (PAGE_SHIFT - 3))
@@ -27,7 +27,7 @@ macro_line|#ifdef CONFIG_PAGE_SIZE_4KB
 DECL|macro|PGD_ORDER
 mdefine_line|#define PGD_ORDER&t;&t;1
 DECL|macro|PMD_ORDER
-mdefine_line|#define PMD_ORDER&t;&t;1
+mdefine_line|#define PMD_ORDER&t;&t;0
 DECL|macro|PTE_ORDER
 mdefine_line|#define PTE_ORDER&t;&t;0
 macro_line|#endif
@@ -68,7 +68,7 @@ mdefine_line|#define FIRST_USER_PGD_NR&t;0
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START&t;&t;XKSEG
 DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END&t;&bslash;&n;&t;(VMALLOC_START + ((1 &lt;&lt; PGD_ORDER) * PTRS_PER_PTE * PAGE_SIZE))
+mdefine_line|#define VMALLOC_END&t;&bslash;&n;&t;(VMALLOC_START + PTRS_PER_PGD * PTRS_PER_PMD * PTRS_PER_PTE * PAGE_SIZE)
 DECL|macro|pte_ERROR
 mdefine_line|#define pte_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pte %016lx.&bslash;n&quot;, __FILE__, __LINE__, pte_val(e))
 DECL|macro|pmd_ERROR
@@ -478,29 +478,5 @@ DECL|macro|pte_to_pgoff
 mdefine_line|#define pte_to_pgoff(_pte) &bslash;&n;&t;((((_pte).pte &gt;&gt; 3) &amp; 0x1f ) + (((_pte).pte &gt;&gt; 9) &lt;&lt; 6 ))
 DECL|macro|pgoff_to_pte
 mdefine_line|#define pgoff_to_pte(off) &bslash;&n;&t;((pte_t) { (((off) &amp; 0x1f) &lt;&lt; 3) + (((off) &gt;&gt; 6) &lt;&lt; 9) + _PAGE_FILE })
-multiline_comment|/*&n; * Used for the b0rked handling of kernel pagetables on the 64-bit kernel.&n; */
-r_extern
-id|pte_t
-id|kptbl
-(braket
-(paren
-id|PAGE_SIZE
-op_lshift
-id|PGD_ORDER
-)paren
-op_div
-r_sizeof
-(paren
-id|pte_t
-)paren
-)braket
-suffix:semicolon
-r_extern
-id|pmd_t
-id|kpmdtbl
-(braket
-id|PTRS_PER_PMD
-)braket
-suffix:semicolon
 macro_line|#endif /* _ASM_PGTABLE_64_H */
 eof

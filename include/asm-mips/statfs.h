@@ -47,11 +47,11 @@ DECL|member|f_ffree
 r_int
 id|f_ffree
 suffix:semicolon
-multiline_comment|/* Linux specials */
 DECL|member|f_bavail
 r_int
 id|f_bavail
 suffix:semicolon
+multiline_comment|/* Linux specials */
 DECL|member|f_fsid
 id|__kernel_fsid_t
 id|f_fsid
@@ -83,6 +83,15 @@ DECL|member|f_bsize
 id|__u32
 id|f_bsize
 suffix:semicolon
+DECL|member|f_frsize
+id|__u32
+id|f_frsize
+suffix:semicolon
+multiline_comment|/* Fragment size - unsupported */
+DECL|member|__pad
+id|__u32
+id|__pad
+suffix:semicolon
 DECL|member|f_blocks
 id|__u64
 id|f_blocks
@@ -90,10 +99,6 @@ suffix:semicolon
 DECL|member|f_bfree
 id|__u64
 id|f_bfree
-suffix:semicolon
-DECL|member|f_bavail
-id|__u64
-id|f_bavail
 suffix:semicolon
 DECL|member|f_files
 id|__u64
@@ -103,6 +108,10 @@ DECL|member|f_ffree
 id|__u64
 id|f_ffree
 suffix:semicolon
+DECL|member|f_bavail
+id|__u64
+id|f_bavail
+suffix:semicolon
 DECL|member|f_fsid
 id|__kernel_fsid_t
 id|f_fsid
@@ -111,15 +120,11 @@ DECL|member|f_namelen
 id|__u32
 id|f_namelen
 suffix:semicolon
-DECL|member|f_frsize
-id|__u32
-id|f_frsize
-suffix:semicolon
 DECL|member|f_spare
 id|__u32
 id|f_spare
 (braket
-l_int|5
+l_int|6
 )braket
 suffix:semicolon
 )brace
@@ -160,11 +165,11 @@ DECL|member|f_ffree
 r_int
 id|f_ffree
 suffix:semicolon
-multiline_comment|/* Linux specials */
 DECL|member|f_bavail
 r_int
 id|f_bavail
 suffix:semicolon
+multiline_comment|/* Linux specials */
 DECL|member|f_fsid
 id|__kernel_fsid_t
 id|f_fsid
@@ -194,6 +199,15 @@ DECL|member|f_bsize
 id|__u32
 id|f_bsize
 suffix:semicolon
+DECL|member|f_frsize
+id|__u32
+id|f_frsize
+suffix:semicolon
+multiline_comment|/* Fragment size - unsupported */
+DECL|member|__pad
+id|__u32
+id|__pad
+suffix:semicolon
 DECL|member|f_blocks
 id|__u64
 id|f_blocks
@@ -201,10 +215,6 @@ suffix:semicolon
 DECL|member|f_bfree
 id|__u64
 id|f_bfree
-suffix:semicolon
-DECL|member|f_bavail
-id|__u64
-id|f_bavail
 suffix:semicolon
 DECL|member|f_files
 id|__u64
@@ -214,6 +224,10 @@ DECL|member|f_ffree
 id|__u64
 id|f_ffree
 suffix:semicolon
+DECL|member|f_bavail
+id|__u64
+id|f_bavail
+suffix:semicolon
 DECL|member|f_fsid
 id|__kernel_fsid_t
 id|f_fsid
@@ -222,15 +236,11 @@ DECL|member|f_namelen
 id|__u32
 id|f_namelen
 suffix:semicolon
-DECL|member|f_frsize
-id|__u32
-id|f_frsize
-suffix:semicolon
 DECL|member|f_spare
 id|__u32
 id|f_spare
 (braket
-l_int|5
+l_int|6
 )braket
 suffix:semicolon
 )brace

@@ -37,6 +37,13 @@ id|command
 )paren
 (brace
 multiline_comment|/* Set all integrated peripherals to disabled states */
+r_extern
+r_void
+id|board_reset
+(paren
+r_void
+)paren
+suffix:semicolon
 id|u32
 id|prid
 op_assign
@@ -897,44 +904,13 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_MIPS_PB1500) || defined(CONFIG_MIPS_PB1100) || defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_DB1100) || defined(CONFIG_MIPS_DB1500)
-multiline_comment|/* Do a HW reset if the board can do it */
-id|au_writel
-c_func
-(paren
-l_int|0x00000000
-comma
-l_int|0xAE00001C
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_MIPS_PB1550)
-multiline_comment|/* reset entire system */
-id|au_writew
-c_func
-(paren
-id|au_readw
-c_func
-(paren
-l_int|0xAF00001C
-)paren
-op_amp
-op_complement
-(paren
-l_int|1
-op_lshift
-l_int|15
-)paren
-comma
-l_int|0xAF00001C
-)paren
-suffix:semicolon
-id|au_sync
+multiline_comment|/* Give board a chance to do a hardware reset */
+id|board_reset
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* Jump to the beggining in case board_reset() is empty */
 id|__asm__
 id|__volatile__
 c_func

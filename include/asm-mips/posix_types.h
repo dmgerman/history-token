@@ -50,10 +50,12 @@ suffix:semicolon
 DECL|typedef|__kernel_uid_t
 r_typedef
 r_int
+r_int
 id|__kernel_uid_t
 suffix:semicolon
 DECL|typedef|__kernel_gid_t
 r_typedef
+r_int
 r_int
 id|__kernel_gid_t
 suffix:semicolon
@@ -144,10 +146,12 @@ suffix:semicolon
 DECL|typedef|__kernel_uid32_t
 r_typedef
 r_int
+r_int
 id|__kernel_uid32_t
 suffix:semicolon
 DECL|typedef|__kernel_gid32_t
 r_typedef
+r_int
 r_int
 id|__kernel_gid32_t
 suffix:semicolon

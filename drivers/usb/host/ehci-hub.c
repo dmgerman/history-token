@@ -1122,6 +1122,8 @@ op_or_assign
 l_int|0x0001
 suffix:semicolon
 multiline_comment|/* per-port power control */
+macro_line|#if 0
+singleline_comment|// re-enable when we support USB_PORT_FEAT_INDICATOR below.
 r_if
 c_cond
 (paren
@@ -1135,6 +1137,7 @@ op_or_assign
 l_int|0x0080
 suffix:semicolon
 multiline_comment|/* per-port indicators (LEDs) */
+macro_line|#endif
 id|desc-&gt;wHubCharacteristics
 op_assign
 id|cpu_to_le16

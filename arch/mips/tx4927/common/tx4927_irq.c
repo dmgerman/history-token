@@ -21,10 +21,6 @@ macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/tx4927/tx4927.h&gt;
 multiline_comment|/*&n; * DEBUG&n; */
-DECL|macro|TX4927_IRQ_CHECK_CP0
-mdefine_line|#define TX4927_IRQ_CHECK_CP0
-DECL|macro|TX4927_IRQ_CHECK_PIC
-mdefine_line|#define TX4927_IRQ_CHECK_PIC
 DECL|macro|TX4927_IRQ_DEBUG
 macro_line|#undef TX4927_IRQ_DEBUG
 macro_line|#ifdef TX4927_IRQ_DEBUG
@@ -585,35 +581,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef TX4927_IRQ_CHECK_CP0
-(brace
-r_if
-c_cond
-(paren
-id|irq
-template_param
-id|TX4927_IRQ_CP0_END
-)paren
-(brace
-id|TX4927_IRQ_DPRINTK
-c_func
-(paren
-id|TX4927_IRQ_EROR
-comma
-l_string|&quot;bad irq=%d &bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|tx4927_irq_cp0_enable
 c_func
 (paren
@@ -647,35 +614,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef TX4927_IRQ_CHECK_CP0
-(brace
-r_if
-c_cond
-(paren
-id|irq
-template_param
-id|TX4927_IRQ_CP0_END
-)paren
-(brace
-id|TX4927_IRQ_DPRINTK
-c_func
-(paren
-id|TX4927_IRQ_EROR
-comma
-l_string|&quot;bad irq=%d &bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|tx4927_irq_cp0_disable
 c_func
 (paren
@@ -710,35 +648,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef TX4927_IRQ_CHECK_CP0
-(brace
-r_if
-c_cond
-(paren
-id|irq
-template_param
-id|TX4927_IRQ_CP0_END
-)paren
-(brace
-id|TX4927_IRQ_DPRINTK
-c_func
-(paren
-id|TX4927_IRQ_EROR
-comma
-l_string|&quot;bad irq=%d &bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
@@ -799,35 +708,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef TX4927_IRQ_CHECK_CP0
-(brace
-r_if
-c_cond
-(paren
-id|irq
-template_param
-id|TX4927_IRQ_CP0_END
-)paren
-(brace
-id|TX4927_IRQ_DPRINTK
-c_func
-(paren
-id|TX4927_IRQ_EROR
-comma
-l_string|&quot;bad irq=%d &bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
@@ -884,35 +764,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef TX4927_IRQ_CHECK_CP0
-(brace
-r_if
-c_cond
-(paren
-id|irq
-template_param
-id|TX4927_IRQ_CP0_END
-)paren
-(brace
-id|TX4927_IRQ_DPRINTK
-c_func
-(paren
-id|TX4927_IRQ_EROR
-comma
-l_string|&quot;bad irq=%d &bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|tx4927_irq_cp0_disable
 c_func
 (paren
@@ -943,35 +794,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef TX4927_IRQ_CHECK_CP0
-(brace
-r_if
-c_cond
-(paren
-id|irq
-template_param
-id|TX4927_IRQ_CP0_END
-)paren
-(brace
-id|TX4927_IRQ_DPRINTK
-c_func
-(paren
-id|TX4927_IRQ_EROR
-comma
-l_string|&quot;bad irq=%d &bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1529,35 +1351,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef TX4927_IRQ_CHECK_PIC
-(brace
-r_if
-c_cond
-(paren
-id|irq
-template_param
-id|TX4927_IRQ_PIC_END
-)paren
-(brace
-id|TX4927_IRQ_DPRINTK
-c_func
-(paren
-id|TX4927_IRQ_EROR
-comma
-l_string|&quot;bad irq=%d &bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|tx4927_irq_pic_enable
 c_func
 (paren
@@ -1591,35 +1384,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef TX4927_IRQ_CHECK_PIC
-(brace
-r_if
-c_cond
-(paren
-id|irq
-template_param
-id|TX4927_IRQ_PIC_END
-)paren
-(brace
-id|TX4927_IRQ_DPRINTK
-c_func
-(paren
-id|TX4927_IRQ_EROR
-comma
-l_string|&quot;bad irq=%d &bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|tx4927_irq_pic_disable
 c_func
 (paren
@@ -1654,35 +1418,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef TX4927_IRQ_CHECK_PIC
-(brace
-r_if
-c_cond
-(paren
-id|irq
-template_param
-id|TX4927_IRQ_PIC_END
-)paren
-(brace
-id|TX4927_IRQ_DPRINTK
-c_func
-(paren
-id|TX4927_IRQ_EROR
-comma
-l_string|&quot;bad irq=%d &bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1747,35 +1482,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef TX4927_IRQ_CHECK_PIC
-(brace
-r_if
-c_cond
-(paren
-id|irq
-template_param
-id|TX4927_IRQ_PIC_END
-)paren
-(brace
-id|TX4927_IRQ_DPRINTK
-c_func
-(paren
-id|TX4927_IRQ_EROR
-comma
-l_string|&quot;bad irq=%d &bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1836,35 +1542,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef TX4927_IRQ_CHECK_PIC
-(brace
-r_if
-c_cond
-(paren
-id|irq
-template_param
-id|TX4927_IRQ_PIC_END
-)paren
-(brace
-id|TX4927_IRQ_DPRINTK
-c_func
-(paren
-id|TX4927_IRQ_EROR
-comma
-l_string|&quot;bad irq=%d &bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 id|tx4927_irq_pic_disable
 c_func
 (paren
@@ -1895,35 +1572,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef TX4927_IRQ_CHECK_PIC
-(brace
-r_if
-c_cond
-(paren
-id|irq
-template_param
-id|TX4927_IRQ_PIC_END
-)paren
-(brace
-id|TX4927_IRQ_DPRINTK
-c_func
-(paren
-id|TX4927_IRQ_EROR
-comma
-l_string|&quot;bad irq=%d &bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren

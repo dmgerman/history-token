@@ -282,6 +282,60 @@ id|pgdp
 )paren
 (brace
 )brace
+macro_line|#if defined(CONFIG_64BIT_PHYS_ADDR) &amp;&amp; defined(CONFIG_CPU_MIPS32)
+DECL|macro|pte_page
+mdefine_line|#define pte_page(x)&t;&t;pfn_to_page(pte_pfn(x))
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(x)&t;&t;((unsigned long)((x).pte_high &gt;&gt; 6))
+r_static
+r_inline
+id|pte_t
+DECL|function|pfn_pte
+id|pfn_pte
+c_func
+(paren
+r_int
+r_int
+id|pfn
+comma
+id|pgprot_t
+id|prot
+)paren
+(brace
+id|pte_t
+id|pte
+suffix:semicolon
+id|pte.pte_high
+op_assign
+(paren
+id|pfn
+op_lshift
+l_int|6
+)paren
+op_or
+(paren
+id|pgprot_val
+c_func
+(paren
+id|prot
+)paren
+op_amp
+l_int|0x3f
+)paren
+suffix:semicolon
+id|pte.pte_low
+op_assign
+id|pgprot_val
+c_func
+(paren
+id|prot
+)paren
+suffix:semicolon
+r_return
+id|pte
+suffix:semicolon
+)brace
+macro_line|#else
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x)&t;&t;pfn_to_page(pte_pfn(x))
 macro_line|#ifdef CONFIG_CPU_VR41XX
@@ -295,6 +349,7 @@ mdefine_line|#define pte_pfn(x)&t;&t;((unsigned long)((x).pte &gt;&gt; PAGE_SHIF
 DECL|macro|pfn_pte
 mdefine_line|#define pfn_pte(pfn, prot)&t;__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
 macro_line|#endif
+macro_line|#endif /* defined(CONFIG_64BIT_PHYS_ADDR) &amp;&amp; defined(CONFIG_CPU_MIPS32) */
 DECL|macro|__pgd_offset
 mdefine_line|#define __pgd_offset(address)&t;pgd_index(address)
 DECL|macro|__pmd_offset
@@ -374,10 +429,18 @@ mdefine_line|#define __swp_entry(type,offset)&t;&bslash;&n;&t;&t;((swp_entry_t) 
 multiline_comment|/*&n; * Bits 0, 1, 2, 7 and 8 are taken, split up the 27 bits of offset&n; * into this range:&n; */
 DECL|macro|PTE_FILE_MAX_BITS
 mdefine_line|#define PTE_FILE_MAX_BITS&t;27
+macro_line|#if defined(CONFIG_64BIT_PHYS_ADDR) &amp;&amp; defined(CONFIG_CPU_MIPS32)
+multiline_comment|/* fixme */
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(_pte) (((_pte).pte_high &gt;&gt; 6) + ((_pte).pte_high &amp; 0x3f))
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(off) &bslash;&n; &t;((pte_t){(((off) &amp; 0x3f) + ((off) &lt;&lt; 6) + _PAGE_FILE)})
+macro_line|#else
 DECL|macro|pte_to_pgoff
 mdefine_line|#define pte_to_pgoff(_pte) &bslash;&n;&t;((((_pte).pte &gt;&gt; 3) &amp; 0x1f ) + (((_pte).pte &gt;&gt; 9) &lt;&lt; 6 ))
 DECL|macro|pgoff_to_pte
 mdefine_line|#define pgoff_to_pte(off) &bslash;&n;&t;((pte_t) { (((off) &amp; 0x1f) &lt;&lt; 3) + (((off) &gt;&gt; 6) &lt;&lt; 9) + _PAGE_FILE })
+macro_line|#endif
 macro_line|#endif
 DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })

@@ -4,15 +4,17 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/ip32/crime.h&gt;
 macro_line|#include &lt;asm/ip32/mace.h&gt;
-DECL|variable|sgi_crime
-r_void
-op_star
+DECL|variable|crime
+r_struct
 id|sgi_crime
+op_star
+id|crime
 suffix:semicolon
 DECL|variable|mace
 r_struct
@@ -47,14 +49,18 @@ r_int
 r_int
 )paren
 suffix:semicolon
-id|sgi_crime
+id|crime
 op_assign
 id|ioremap
 c_func
 (paren
 id|CRIME_BASE
 comma
-l_int|1
+r_sizeof
+(paren
+r_struct
+id|sgi_crime
+)paren
 )paren
 suffix:semicolon
 id|mace
@@ -73,11 +79,7 @@ id|sgi_mace
 suffix:semicolon
 id|id
 op_assign
-id|crime_read
-c_func
-(paren
-id|CRIME_ID
-)paren
+id|crime-&gt;id
 suffix:semicolon
 id|rev
 op_assign
@@ -145,21 +147,13 @@ l_int|0
 suffix:semicolon
 id|stat
 op_assign
-id|crime_read
-c_func
-(paren
-id|CRIME_MEM_ERROR_STAT
-)paren
+id|crime-&gt;mem_error_stat
 op_amp
 id|CRIME_MEM_ERROR_STAT_MASK
 suffix:semicolon
 id|addr
 op_assign
-id|crime_read
-c_func
-(paren
-id|CRIME_MEM_ERROR_ADDR
-)paren
+id|crime-&gt;mem_error_addr
 op_amp
 id|CRIME_MEM_ERROR_ADDR_MASK
 suffix:semicolon
@@ -198,11 +192,7 @@ r_int
 r_int
 id|ecc_syn
 op_assign
-id|crime_read
-c_func
-(paren
-id|CRIME_MEM_ERROR_ECC_SYN
-)paren
+id|crime-&gt;mem_ecc_syn
 op_amp
 id|CRIME_MEM_ERROR_ECC_SYN_MASK
 suffix:semicolon
@@ -210,11 +200,7 @@ r_int
 r_int
 id|ecc_gen
 op_assign
-id|crime_read
-c_func
-(paren
-id|CRIME_MEM_ERROR_ECC_CHK
-)paren
+id|crime-&gt;mem_ecc_chk
 op_amp
 id|CRIME_MEM_ERROR_ECC_CHK_MASK
 suffix:semicolon
@@ -357,13 +343,9 @@ op_amp
 id|CRIME_MEM_ERROR_MACE_ID
 )paren
 suffix:semicolon
-id|crime_write
-c_func
-(paren
+id|crime-&gt;mem_error_stat
+op_assign
 l_int|0
-comma
-id|CRIME_MEM_ERROR_STAT
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -417,22 +399,15 @@ r_int
 r_int
 id|stat
 op_assign
-id|crime_read
-c_func
-(paren
-id|CRIME_CPU_ERROR_STAT
-)paren
+id|crime-&gt;cpu_error_stat
 op_amp
 id|CRIME_CPU_ERROR_MASK
 suffix:semicolon
-r_uint64
+r_int
+r_int
 id|addr
 op_assign
-id|crime_read
-c_func
-(paren
-id|CRIME_CPU_ERROR_ADDR
-)paren
+id|crime-&gt;cpu_error_addr
 op_amp
 id|CRIME_CPU_ERROR_ADDR_MASK
 suffix:semicolon
@@ -449,13 +424,9 @@ comma
 id|stat
 )paren
 suffix:semicolon
-id|crime_write
-c_func
-(paren
+id|crime-&gt;cpu_error_stat
+op_assign
 l_int|0
-comma
-id|CRIME_CPU_ERROR_STAT
-)paren
 suffix:semicolon
 r_return
 id|IRQ_HANDLED

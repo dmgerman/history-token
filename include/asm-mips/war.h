@@ -53,6 +53,11 @@ macro_line|#if defined(CONFIG_MOMENCO_JAGUAR_ATX) || defined(CONFIG_PMC_YOSEMITE
 DECL|macro|RM9000_CDEX_SMP_WAR
 mdefine_line|#define  RM9000_CDEX_SMP_WAR&t;&t;1
 macro_line|#endif
+multiline_comment|/*&n; * ON the R10000 upto version 2.6 (not sure about 2.7) there is a bug that&n; * may cause ll / sc and lld / scd sequences to execute non-atomically.&n; */
+macro_line|#ifdef CONFIG_SGI_IP27
+DECL|macro|R10000_LLSC_WAR
+mdefine_line|#define R10000_LLSC_WAR 1
+macro_line|#endif
 multiline_comment|/*&n; * Workarounds default to off&n; */
 macro_line|#ifndef R4600_V1_INDEX_ICACHEOP_WAR
 DECL|macro|R4600_V1_INDEX_ICACHEOP_WAR
@@ -93,6 +98,10 @@ macro_line|#endif
 macro_line|#ifndef RM9000_CDEX_SMP_WAR
 DECL|macro|RM9000_CDEX_SMP_WAR
 mdefine_line|#define RM9000_CDEX_SMP_WAR&t;&t;0
+macro_line|#endif
+macro_line|#ifndef R10000_LLSC_WAR
+DECL|macro|R10000_LLSC_WAR
+mdefine_line|#define R10000_LLSC_WAR&t;&t;&t;0
 macro_line|#endif
 macro_line|#endif /* _ASM_WAR_H */
 eof

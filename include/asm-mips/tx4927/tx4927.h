@@ -76,9 +76,9 @@ DECL|macro|TX4927_PCIC_LIMIT
 mdefine_line|#define TX4927_PCIC_LIMIT               0xdfff
 multiline_comment|/* TX4927 Configuration registers (64-bit registers) */
 DECL|macro|TX4927_CONFIG_BASE
-mdefine_line|#define TX4927_CONFIG_BASE                       0xe300
+mdefine_line|#define TX4927_CONFIG_BASE                       0xe000
 DECL|macro|TX4927_CONFIG_CCFG
-mdefine_line|#define TX4927_CONFIG_CCFG                       0xe300
+mdefine_line|#define TX4927_CONFIG_CCFG                       0xe000
 DECL|macro|TX4927_CONFIG_CCFG_RESERVED_42_63
 mdefine_line|#define TX4927_CONFIG_CCFG_RESERVED_42_63                BM_63_42
 DECL|macro|TX4927_CONFIG_CCFG_WDRST
@@ -148,7 +148,7 @@ mdefine_line|#define TX4927_CONFIG_CCFG_ARMODE                        BM_01_01
 DECL|macro|TX4927_CONFIG_CCFG_ACEHOLD
 mdefine_line|#define TX4927_CONFIG_CCFG_ACEHOLD                       BM_00_00
 DECL|macro|TX4927_CONFIG_REVID
-mdefine_line|#define TX4927_CONFIG_REVID                      0xe308 
+mdefine_line|#define TX4927_CONFIG_REVID                      0xe008
 DECL|macro|TX4927_CONFIG_REVID_RESERVED_32_63
 mdefine_line|#define TX4927_CONFIG_REVID_RESERVED_32_63               BM_32_63
 DECL|macro|TX4927_CONFIG_REVID_PCODE
@@ -162,7 +162,7 @@ mdefine_line|#define TX4927_CONFIG_REVID_MJREV                        BM_04_07
 DECL|macro|TX4927_CONFIG_REVID_MINREV
 mdefine_line|#define TX4927_CONFIG_REVID_MINREV                       BM_00_03
 DECL|macro|TX4927_CONFIG_PCFG
-mdefine_line|#define TX4927_CONFIG_PCFG                       0xe310 
+mdefine_line|#define TX4927_CONFIG_PCFG                       0xe010
 DECL|macro|TX4927_CONFIG_PCFG_RESERVED_57_63
 mdefine_line|#define TX4927_CONFIG_PCFG_RESERVED_57_63                BM_57_63
 DECL|macro|TX4927_CONFIG_PCFG_DRVDATA
@@ -294,13 +294,13 @@ mdefine_line|#define TX4927_CONFIG_PCFG_DMASEL0_ACLC0                 BM_01_01
 DECL|macro|TX4927_CONFIG_PCFG_DMASEL0_ACLC2
 mdefine_line|#define TX4927_CONFIG_PCFG_DMASEL0_ACLC2                 BM_00_01
 DECL|macro|TX4927_CONFIG_TOEA
-mdefine_line|#define TX4927_CONFIG_TOEA                       0xe318 
+mdefine_line|#define TX4927_CONFIG_TOEA                       0xe018
 DECL|macro|TX4927_CONFIG_TOEA_RESERVED_36_63
 mdefine_line|#define TX4927_CONFIG_TOEA_RESERVED_36_63                BM_36_63
 DECL|macro|TX4927_CONFIG_TOEA_TOEA
 mdefine_line|#define TX4927_CONFIG_TOEA_TOEA                          BM_00_35
 DECL|macro|TX4927_CONFIG_CLKCTR
-mdefine_line|#define TX4927_CONFIG_CLKCTR                     0xe320 
+mdefine_line|#define TX4927_CONFIG_CLKCTR                     0xe020
 DECL|macro|TX4927_CONFIG_CLKCTR_RESERVED_26_63
 mdefine_line|#define TX4927_CONFIG_CLKCTR_RESERVED_26_63              BM_26_63
 DECL|macro|TX4927_CONFIG_CLKCTR_ACLCKD
@@ -346,7 +346,7 @@ mdefine_line|#define TX4927_CONFIG_CLKCTR_SIO0RST                     BM_01_01
 DECL|macro|TX4927_CONFIG_CLKCTR_SIO1RST
 mdefine_line|#define TX4927_CONFIG_CLKCTR_SIO1RST                     BM_00_00
 DECL|macro|TX4927_CONFIG_GARBC
-mdefine_line|#define TX4927_CONFIG_GARBC                      0xe330 
+mdefine_line|#define TX4927_CONFIG_GARBC                      0xe030
 DECL|macro|TX4927_CONFIG_GARBC_RESERVED_10_63
 mdefine_line|#define TX4927_CONFIG_GARBC_RESERVED_10_63               BM_10_63
 DECL|macro|TX4927_CONFIG_GARBC_SET_09
@@ -386,7 +386,7 @@ mdefine_line|#define TX4927_CONFIG_GARBC_PRIORITY_H3_DMAC             BM_01_01
 DECL|macro|TX4927_CONFIG_GARBC_PRIORITY_H3_BAD_VALUE
 mdefine_line|#define TX4927_CONFIG_GARBC_PRIORITY_H3_BAD_VALUE        BM_00_01
 DECL|macro|TX4927_CONFIG_RAMP
-mdefine_line|#define TX4927_CONFIG_RAMP                       0xe348 
+mdefine_line|#define TX4927_CONFIG_RAMP                       0xe048
 DECL|macro|TX4927_CONFIG_RAMP_RESERVED_20_63
 mdefine_line|#define TX4927_CONFIG_RAMP_RESERVED_20_63                BM_20_63
 DECL|macro|TX4927_CONFIG_RAMP_RAMP
@@ -772,7 +772,7 @@ mdefine_line|#define TX4927_ACLC_ACINTMSTS           0xf714
 DECL|macro|TX4927_ACLC_ACINTEN
 mdefine_line|#define TX4927_ACLC_ACINTEN             0xf718
 DECL|macro|TX4927_ACLC_ACINTDIS
-mdefine_line|#define TX4927_ACLC_ACINTDIS            0xfR71c
+mdefine_line|#define TX4927_ACLC_ACINTDIS            0xf71c
 DECL|macro|TX4927_ACLC_ACSEMAPH
 mdefine_line|#define TX4927_ACLC_ACSEMAPH            0xf720
 DECL|macro|TX4927_ACLC_ACGPIDAT

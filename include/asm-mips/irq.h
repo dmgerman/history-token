@@ -36,36 +36,10 @@ macro_line|#else
 DECL|macro|irq_canonicalize
 mdefine_line|#define irq_canonicalize(irq) (irq)&t;/* Sane hardware, sane code ... */
 macro_line|#endif
-r_extern
-r_void
-id|disable_irq
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|disable_irq_nosync
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|enable_irq
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 r_struct
 id|pt_regs
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
 r_extern
 id|asmlinkage
 r_int
@@ -73,6 +47,7 @@ r_int
 id|do_IRQ
 c_func
 (paren
+r_int
 r_int
 id|irq
 comma
@@ -82,9 +57,14 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+macro_line|#else
+multiline_comment|/*&n; * do_IRQ handles all normal device IRQ&squot;s (the special&n; * SMP cross-CPU interrupts have their own specific&n; * handlers).&n; *&n; * Ideally there should be away to get this into kernel/irq/handle.c to&n; * avoid the overhead of a call for just a tiny function ...&n; */
+DECL|macro|do_IRQ
+mdefine_line|#define do_IRQ(irq, regs)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;irq_enter();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__do_IRQ((irq), (regs));&t;&t;&t;&t;&t;&bslash;&n;&t;irq_exit();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#endif
 r_extern
 r_void
-id|init_generic_irq
+id|arch_init_irq
 c_func
 (paren
 r_void

@@ -2758,6 +2758,10 @@ id|info-&gt;sofar
 op_assign
 l_int|0
 suffix:semicolon
+id|info-&gt;errors
+op_assign
+l_int|0
+suffix:semicolon
 id|lcount
 op_assign
 id|info-&gt;count

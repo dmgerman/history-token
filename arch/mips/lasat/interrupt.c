@@ -463,10 +463,10 @@ id|regs
 suffix:semicolon
 )brace
 )brace
-DECL|function|init_IRQ
+DECL|function|arch_init_irq
 r_void
 id|__init
-id|init_IRQ
+id|arch_init_irq
 c_func
 (paren
 r_void
@@ -474,11 +474,6 @@ r_void
 (brace
 r_int
 id|i
-suffix:semicolon
-id|init_generic_irq
-c_func
-(paren
-)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -559,7 +554,7 @@ suffix:colon
 id|panic
 c_func
 (paren
-l_string|&quot;init_IRQ: mips_machtype incorrect&quot;
+l_string|&quot;arch_init_irq: mips_machtype incorrect&quot;
 )paren
 suffix:semicolon
 )brace

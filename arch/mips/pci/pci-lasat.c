@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000, 2001 Keith M Wesolowski&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000, 2001, 04 Keith M Wesolowski&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/pci_channel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 r_extern
@@ -261,6 +260,22 @@ multiline_comment|/* Illegal */
 r_return
 op_minus
 l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* Do platform specific device initialization at pci_enable_device() time */
+DECL|function|pcibios_plat_dev_init
+r_int
+id|pcibios_plat_dev_init
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof

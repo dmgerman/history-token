@@ -20,6 +20,14 @@ r_struct
 id|rtc_ops
 id|no_rtc_ops
 suffix:semicolon
+DECL|function|board_reset
+r_void
+id|board_reset
+(paren
+r_void
+)paren
+(brace
+)brace
 DECL|function|board_setup
 r_void
 id|__init

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001,2002,2003 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+multiline_comment|/*&n; * Copyright (C) 2001,2002,2003 Broadcom Corporation&n; * Copyright (C) 2004 by Ralf Baechle (ralf@linux-mips.org)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
 multiline_comment|/*&n; * BCM1250-specific PCI support&n; *&n; * This module provides the glue between Linux&squot;s PCI subsystem&n; * and the hardware.  We basically provide glue for accessing&n; * configuration space, and set up the translation for I/O&n; * space accesses.&n; *&n; * To access configuration space, we use ioremap.  In the 32-bit&n; * kernel, this consumes either 4 or 8 page table pages, and 16MB of&n; * kernel mapped memory.  Hopefully neither of these should be a huge&n; * problem.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -7,8 +7,8 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pci_channel.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_defs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_scd.h&gt;
@@ -131,6 +131,22 @@ id|pin
 (brace
 r_return
 id|dev-&gt;irq
+suffix:semicolon
+)brace
+multiline_comment|/* Do platform specific device initialization at pci_enable_device() time */
+DECL|function|pcibios_plat_dev_init
+r_int
+id|pcibios_plat_dev_init
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Some checks before doing config cycles:&n; * In PCI Device Mode, hide everything on bus 0 except the LDT host&n; * bridge.  Otherwise, access is controlled by bridge MasterEn bits.&n; */
@@ -623,12 +639,12 @@ comma
 dot
 id|start
 op_assign
-l_int|0x14000000UL
+l_int|0x40000000UL
 comma
 dot
 id|end
 op_assign
-l_int|0x17ffffffUL
+l_int|0x5fffffffUL
 comma
 dot
 id|flags
@@ -647,17 +663,17 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;SB1250 IO MEM&quot;
+l_string|&quot;SB1250 PCI I/O&quot;
 comma
 dot
 id|start
 op_assign
-l_int|0x14000000UL
+l_int|0x00000000UL
 comma
 dot
 id|end
 op_assign
-l_int|0x17ffffffUL
+l_int|0x01ffffffUL
 comma
 dot
 id|flags
@@ -689,6 +705,7 @@ id|io_resource
 op_assign
 op_amp
 id|sb1250_io_resource
+comma
 )brace
 suffix:semicolon
 DECL|function|sb1250_pcibios_init
@@ -716,12 +733,12 @@ id|pci_probe_only
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* set resource limit to avoid errors */
+multiline_comment|/* Set I/O resource limits.  */
 id|ioport_resource.end
 op_assign
-l_int|0x0000ffff
+l_int|0x01ffffff
 suffix:semicolon
-multiline_comment|/* 32MB reserved by sb1250 */
+multiline_comment|/* 32MB accessible by sb1250 */
 id|iomem_resource.end
 op_assign
 l_int|0xffffffff

@@ -14432,14 +14432,18 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|time_after_eq
+c_func
+(paren
 id|jiffies
-op_ge
+comma
 id|mark
 (braket
 id|last_mark
 )braket
 op_plus
 id|SYNC_MARK_STEP
+)paren
 )paren
 (brace
 multiline_comment|/* step marks */

@@ -325,13 +325,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-id|irq_desc_t
-id|irq_desc
-(braket
-id|NR_IRQS
-)braket
-suffix:semicolon
 r_static
 r_struct
 id|irqaction

@@ -8048,10 +8048,10 @@ comma
 id|KM_USER0
 )paren
 suffix:semicolon
-id|__block_commit_write
+id|generic_commit_write
 c_func
 (paren
-id|inode
+l_int|NULL
 comma
 id|new_page
 comma

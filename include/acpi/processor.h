@@ -26,7 +26,7 @@ id|u32
 id|count
 suffix:semicolon
 DECL|member|state
-r_int
+id|u32
 id|state
 suffix:semicolon
 r_struct
@@ -98,11 +98,11 @@ r_struct
 id|acpi_processor_power
 (brace
 DECL|member|state
-r_int
+id|u32
 id|state
 suffix:semicolon
 DECL|member|default_state
-r_int
+id|u32
 id|default_state
 suffix:semicolon
 DECL|member|bm_activity

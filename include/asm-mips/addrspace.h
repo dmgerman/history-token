@@ -32,17 +32,6 @@ mdefine_line|#define _ACAST32_&t;&t;(_ATYPE_)(_ATYPE32_)&t;/* widen if necessary
 DECL|macro|_ACAST64_
 mdefine_line|#define _ACAST64_&t;&t;(_ATYPE64_)&t;&t;/* do _not_ narrow */
 macro_line|#endif
-multiline_comment|/*&n; * Memory segments (32bit kernel mode addresses)&n; * These are the traditional names used in the 32-bit universe.&n; */
-DECL|macro|KUSEG
-mdefine_line|#define KUSEG&t;&t;&t;0x00000000
-DECL|macro|KSEG0
-mdefine_line|#define KSEG0&t;&t;&t;0x80000000
-DECL|macro|KSEG1
-mdefine_line|#define KSEG1&t;&t;&t;0xa0000000
-DECL|macro|KSEG2
-mdefine_line|#define KSEG2&t;&t;&t;0xc0000000
-DECL|macro|KSEG3
-mdefine_line|#define KSEG3&t;&t;&t;0xe0000000
 multiline_comment|/*&n; * Returns the kernel segment base of a given address&n; */
 DECL|macro|KSEGX
 mdefine_line|#define KSEGX(a)&t;&t;((_ACAST32_ (a)) &amp; 0xe0000000)
@@ -51,23 +40,7 @@ DECL|macro|CPHYSADDR
 mdefine_line|#define CPHYSADDR(a)&t;&t;((_ACAST32_ (a)) &amp; 0x1fffffff)
 DECL|macro|XPHYSADDR
 mdefine_line|#define XPHYSADDR(a)            ((_ACAST64_ (a)) &amp; 0x000000ffffffffff)
-multiline_comment|/*&n; * Map an address to a certain kernel segment&n; */
-DECL|macro|KSEG0ADDR
-mdefine_line|#define KSEG0ADDR(a)&t;&t;(CPHYSADDR(a) | KSEG0)
-DECL|macro|KSEG1ADDR
-mdefine_line|#define KSEG1ADDR(a)&t;&t;(CPHYSADDR(a) | KSEG1)
-DECL|macro|KSEG2ADDR
-mdefine_line|#define KSEG2ADDR(a)&t;&t;(CPHYSADDR(a) | KSEG2)
-DECL|macro|KSEG3ADDR
-mdefine_line|#define KSEG3ADDR(a)&t;&t;(CPHYSADDR(a) | KSEG3)
-DECL|macro|CKSEG0ADDR
-mdefine_line|#define CKSEG0ADDR(a)&t;&t;(CPHYSADDR(a) | CKSEG0)
-DECL|macro|CKSEG1ADDR
-mdefine_line|#define CKSEG1ADDR(a)&t;&t;(CPHYSADDR(a) | CKSEG1)
-DECL|macro|CKSEG2ADDR
-mdefine_line|#define CKSEG2ADDR(a)&t;&t;(CPHYSADDR(a) | CKSEG2)
-DECL|macro|CKSEG3ADDR
-mdefine_line|#define CKSEG3ADDR(a)&t;&t;(CPHYSADDR(a) | CKSEG3)
+macro_line|#ifdef CONFIG_MIPS64
 multiline_comment|/*&n; * Memory segments (64bit kernel mode addresses)&n; * The compatibility segments use the full 64-bit sign extended value.  Note&n; * the R8000 doesn&squot;t have them so don&squot;t reference these in generic MIPS code.&n; */
 DECL|macro|XKUSEG
 mdefine_line|#define XKUSEG&t;&t;&t;0x0000000000000000
@@ -85,6 +58,54 @@ DECL|macro|CKSSEG
 mdefine_line|#define CKSSEG&t;&t;&t;0xffffffffc0000000
 DECL|macro|CKSEG3
 mdefine_line|#define CKSEG3&t;&t;&t;0xffffffffe0000000
+DECL|macro|CKSEG0ADDR
+mdefine_line|#define CKSEG0ADDR(a)&t;&t;(CPHYSADDR(a) | CKSEG0)
+DECL|macro|CKSEG1ADDR
+mdefine_line|#define CKSEG1ADDR(a)&t;&t;(CPHYSADDR(a) | CKSEG1)
+DECL|macro|CKSEG2ADDR
+mdefine_line|#define CKSEG2ADDR(a)&t;&t;(CPHYSADDR(a) | CKSEG2)
+DECL|macro|CKSEG3ADDR
+mdefine_line|#define CKSEG3ADDR(a)&t;&t;(CPHYSADDR(a) | CKSEG3)
+macro_line|#else
+DECL|macro|CKSEG0ADDR
+mdefine_line|#define CKSEG0ADDR(a)&t;&t;(CPHYSADDR(a) | KSEG0)
+DECL|macro|CKSEG1ADDR
+mdefine_line|#define CKSEG1ADDR(a)&t;&t;(CPHYSADDR(a) | KSEG1)
+DECL|macro|CKSEG2ADDR
+mdefine_line|#define CKSEG2ADDR(a)&t;&t;(CPHYSADDR(a) | KSEG2)
+DECL|macro|CKSEG3ADDR
+mdefine_line|#define CKSEG3ADDR(a)&t;&t;(CPHYSADDR(a) | KSEG3)
+multiline_comment|/*&n; * Map an address to a certain kernel segment&n; */
+DECL|macro|KSEG0ADDR
+mdefine_line|#define KSEG0ADDR(a)&t;&t;(CPHYSADDR(a) | KSEG0)
+DECL|macro|KSEG1ADDR
+mdefine_line|#define KSEG1ADDR(a)&t;&t;(CPHYSADDR(a) | KSEG1)
+DECL|macro|KSEG2ADDR
+mdefine_line|#define KSEG2ADDR(a)&t;&t;(CPHYSADDR(a) | KSEG2)
+DECL|macro|KSEG3ADDR
+mdefine_line|#define KSEG3ADDR(a)&t;&t;(CPHYSADDR(a) | KSEG3)
+multiline_comment|/*&n; * Memory segments (32bit kernel mode addresses)&n; * These are the traditional names used in the 32-bit universe.&n; */
+DECL|macro|KUSEG
+mdefine_line|#define KUSEG&t;&t;&t;0x00000000
+DECL|macro|KSEG0
+mdefine_line|#define KSEG0&t;&t;&t;0x80000000
+DECL|macro|KSEG1
+mdefine_line|#define KSEG1&t;&t;&t;0xa0000000
+DECL|macro|KSEG2
+mdefine_line|#define KSEG2&t;&t;&t;0xc0000000
+DECL|macro|KSEG3
+mdefine_line|#define KSEG3&t;&t;&t;0xe0000000
+DECL|macro|CKUSEG
+mdefine_line|#define CKUSEG&t;&t;&t;0x00000000
+DECL|macro|CKSEG0
+mdefine_line|#define CKSEG0&t;&t;&t;0x80000000
+DECL|macro|CKSEG1
+mdefine_line|#define CKSEG1&t;&t;&t;0xa0000000
+DECL|macro|CKSEG2
+mdefine_line|#define CKSEG2&t;&t;&t;0xc0000000
+DECL|macro|CKSEG3
+mdefine_line|#define CKSEG3&t;&t;&t;0xe0000000
+macro_line|#endif
 multiline_comment|/*&n; * Cache modes for XKPHYS address conversion macros&n; */
 DECL|macro|K_CALG_COH_EXCL1_NOL2
 mdefine_line|#define K_CALG_COH_EXCL1_NOL2&t;0

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.33 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.34 $&n; */
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
@@ -1001,6 +1001,41 @@ id|erp
 comma
 l_int|30
 op_star
+id|HZ
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|sense
+(braket
+l_int|25
+)braket
+op_eq
+l_int|0x1E
+)paren
+(brace
+multiline_comment|/* busy */
+id|DEV_MESSAGE
+c_func
+(paren
+id|KERN_INFO
+comma
+id|device
+comma
+l_string|&quot;busy - redriving request later, &quot;
+l_string|&quot;%d retries left&quot;
+comma
+id|erp-&gt;retries
+)paren
+suffix:semicolon
+id|dasd_3990_erp_block_queue
+c_func
+(paren
+id|erp
+comma
 id|HZ
 )paren
 suffix:semicolon
@@ -3789,8 +3824,8 @@ multiline_comment|/* not possible to handle this situation in Linux */
 id|panic
 c_func
 (paren
-l_string|&quot;No way to inform appliction about the possibly &quot;
-l_string|&quot;incorret data&quot;
+l_string|&quot;No way to inform application about the possibly &quot;
+l_string|&quot;incorrect data&quot;
 )paren
 suffix:semicolon
 )brace
@@ -6373,6 +6408,35 @@ comma
 l_string|&quot;%s&quot;
 comma
 l_string|&quot;A State change pending condition exists &quot;
+l_string|&quot;for the subsystem or device&quot;
+)paren
+suffix:semicolon
+id|erp
+op_assign
+id|dasd_3990_erp_action_4
+c_func
+(paren
+id|erp
+comma
+id|sense
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x1E
+suffix:colon
+multiline_comment|/* busy */
+id|DEV_MESSAGE
+c_func
+(paren
+id|KERN_DEBUG
+comma
+id|device
+comma
+l_string|&quot;%s&quot;
+comma
+l_string|&quot;Busy condition exists &quot;
 l_string|&quot;for the subsystem or device&quot;
 )paren
 suffix:semicolon

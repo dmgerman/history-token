@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
 DECL|macro|VERSION_LCS_H
-mdefine_line|#define VERSION_LCS_H &quot;$Revision: 1.18 $&quot;
+mdefine_line|#define VERSION_LCS_H &quot;$Revision: 1.19 $&quot;
 DECL|macro|LCS_DBF_TEXT
 mdefine_line|#define LCS_DBF_TEXT(level, name, text) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_text_event(lcs_dbf_##name, level, text); &bslash;&n;&t;} while (0)
 DECL|macro|LCS_DBF_HEX
@@ -804,6 +804,10 @@ suffix:semicolon
 DECL|member|lan_type
 id|__s8
 id|lan_type
+suffix:semicolon
+DECL|member|pkt_seq
+id|__u32
+id|pkt_seq
 suffix:semicolon
 DECL|member|sequence_no
 id|__u16

@@ -11,14 +11,206 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
-macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/asm.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/sim.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
+DECL|macro|SI_PAD_SIZE32
+mdefine_line|#define SI_PAD_SIZE32   ((SI_MAX_SIZE/sizeof(int)) - 3)
+DECL|union|sigval32
+r_typedef
+r_union
+id|sigval32
+(brace
+DECL|member|sival_int
+r_int
+id|sival_int
+suffix:semicolon
+DECL|member|sival_ptr
+id|s32
+id|sival_ptr
+suffix:semicolon
+DECL|typedef|sigval_t32
+)brace
+id|sigval_t32
+suffix:semicolon
+DECL|struct|siginfo32
+r_typedef
+r_struct
+id|siginfo32
+(brace
+DECL|member|si_signo
+r_int
+id|si_signo
+suffix:semicolon
+DECL|member|si_code
+r_int
+id|si_code
+suffix:semicolon
+DECL|member|si_errno
+r_int
+id|si_errno
+suffix:semicolon
+r_union
+(brace
+DECL|member|_pad
+r_int
+id|_pad
+(braket
+id|SI_PAD_SIZE32
+)braket
+suffix:semicolon
+multiline_comment|/* kill() */
+r_struct
+(brace
+DECL|member|_pid
+id|compat_pid_t
+id|_pid
+suffix:semicolon
+multiline_comment|/* sender&squot;s pid */
+DECL|member|_uid
+id|compat_uid_t
+id|_uid
+suffix:semicolon
+multiline_comment|/* sender&squot;s uid */
+DECL|member|_kill
+)brace
+id|_kill
+suffix:semicolon
+multiline_comment|/* SIGCHLD */
+r_struct
+(brace
+DECL|member|_pid
+id|compat_pid_t
+id|_pid
+suffix:semicolon
+multiline_comment|/* which child */
+DECL|member|_uid
+id|compat_uid_t
+id|_uid
+suffix:semicolon
+multiline_comment|/* sender&squot;s uid */
+DECL|member|_status
+r_int
+id|_status
+suffix:semicolon
+multiline_comment|/* exit code */
+DECL|member|_utime
+id|compat_clock_t
+id|_utime
+suffix:semicolon
+DECL|member|_stime
+id|compat_clock_t
+id|_stime
+suffix:semicolon
+DECL|member|_sigchld
+)brace
+id|_sigchld
+suffix:semicolon
+multiline_comment|/* IRIX SIGCHLD */
+r_struct
+(brace
+DECL|member|_pid
+id|compat_pid_t
+id|_pid
+suffix:semicolon
+multiline_comment|/* which child */
+DECL|member|_utime
+id|compat_clock_t
+id|_utime
+suffix:semicolon
+DECL|member|_status
+r_int
+id|_status
+suffix:semicolon
+multiline_comment|/* exit code */
+DECL|member|_stime
+id|compat_clock_t
+id|_stime
+suffix:semicolon
+DECL|member|_irix_sigchld
+)brace
+id|_irix_sigchld
+suffix:semicolon
+multiline_comment|/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
+r_struct
+(brace
+DECL|member|_addr
+id|s32
+id|_addr
+suffix:semicolon
+multiline_comment|/* faulting insn/memory ref. */
+DECL|member|_sigfault
+)brace
+id|_sigfault
+suffix:semicolon
+multiline_comment|/* SIGPOLL, SIGXFSZ (To do ...)  */
+r_struct
+(brace
+DECL|member|_band
+r_int
+id|_band
+suffix:semicolon
+multiline_comment|/* POLL_IN, POLL_OUT, POLL_MSG */
+DECL|member|_fd
+r_int
+id|_fd
+suffix:semicolon
+DECL|member|_sigpoll
+)brace
+id|_sigpoll
+suffix:semicolon
+multiline_comment|/* POSIX.1b timers */
+r_struct
+(brace
+DECL|member|_timer1
+r_int
+r_int
+id|_timer1
+suffix:semicolon
+DECL|member|_timer2
+r_int
+r_int
+id|_timer2
+suffix:semicolon
+DECL|member|_timer
+)brace
+id|_timer
+suffix:semicolon
+multiline_comment|/* POSIX.1b signals */
+r_struct
+(brace
+DECL|member|_pid
+id|compat_pid_t
+id|_pid
+suffix:semicolon
+multiline_comment|/* sender&squot;s pid */
+DECL|member|_uid
+id|compat_uid_t
+id|_uid
+suffix:semicolon
+multiline_comment|/* sender&squot;s uid */
+DECL|member|_sigval
+id|sigval_t32
+id|_sigval
+suffix:semicolon
+DECL|member|_rt
+)brace
+id|_rt
+suffix:semicolon
+DECL|member|_sifields
+)brace
+id|_sifields
+suffix:semicolon
+DECL|typedef|siginfo_t32
+)brace
+id|siginfo_t32
+suffix:semicolon
 multiline_comment|/*&n; * Including &lt;asm/unistd.h&gt; would give use the 64-bit syscall numbers ...&n; */
 DECL|macro|__NR_O32_sigreturn
 mdefine_line|#define __NR_O32_sigreturn&t;&t;4119
@@ -493,9 +685,11 @@ c_func
 id|sys32_sigsuspend
 )paren
 suffix:semicolon
-DECL|function|_sys32_sigsuspend
-id|static_unused
+id|__attribute_used__
+id|noinline
+r_static
 r_int
+DECL|function|_sys32_sigsuspend
 id|_sys32_sigsuspend
 c_func
 (paren
@@ -633,9 +827,11 @@ c_func
 id|sys32_rt_sigsuspend
 )paren
 suffix:semicolon
-DECL|function|_sys32_rt_sigsuspend
-id|static_unused
+id|__attribute_used__
+id|noinline
+r_static
 r_int
+DECL|function|_sys32_rt_sigsuspend
 id|_sys32_rt_sigsuspend
 c_func
 (paren
@@ -1613,6 +1809,11 @@ op_amp
 id|sc-&gt;sc_used_math
 )paren
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1643,6 +1844,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -2693,6 +2899,11 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/* &n;&t; * Save FPU state to signal context.  Signal handler will &quot;inherit&quot;&n;&t; * current FPU state.&n;&t; */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2721,6 +2932,11 @@ id|save_fp_context32
 c_func
 (paren
 id|sc
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 id|out
@@ -3399,6 +3615,11 @@ id|siginfo_t
 op_star
 id|info
 comma
+r_struct
+id|k_sigaction
+op_star
+id|ka
+comma
 id|sigset_t
 op_star
 id|oldset
@@ -3409,19 +3630,6 @@ op_star
 id|regs
 )paren
 (brace
-r_struct
-id|k_sigaction
-op_star
-id|ka
-op_assign
-op_amp
-id|current-&gt;sighand-&gt;action
-(braket
-id|sig
-op_minus
-l_int|1
-)braket
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -3535,17 +3743,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ka-&gt;sa.sa_flags
-op_amp
-id|SA_ONESHOT
-)paren
-id|ka-&gt;sa.sa_handler
-op_assign
-id|SIG_DFL
-suffix:semicolon
-r_if
-c_cond
-(paren
 op_logical_neg
 (paren
 id|ka-&gt;sa.sa_flags
@@ -3613,6 +3810,10 @@ op_star
 id|regs
 )paren
 (brace
+r_struct
+id|k_sigaction
+id|ka
+suffix:semicolon
 id|siginfo_t
 id|info
 suffix:semicolon
@@ -3670,6 +3871,9 @@ c_func
 op_amp
 id|info
 comma
+op_amp
+id|ka
+comma
 id|regs
 comma
 l_int|NULL
@@ -3690,6 +3894,9 @@ id|signr
 comma
 op_amp
 id|info
+comma
+op_amp
+id|ka
 comma
 id|oldset
 comma

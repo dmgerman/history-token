@@ -196,8 +196,6 @@ id|ASYNC_BOOT_AUTOCONF
 op_or
 id|ASYNC_SKIP_TEST
 op_or
-id|UPF_RESOURCES
-op_or
 id|ASYNC_AUTO_IRQ
 suffix:semicolon
 id|s.iotype

@@ -1694,7 +1694,6 @@ suffix:semicolon
 id|envp
 (braket
 id|i
-op_increment
 )braket
 op_assign
 l_int|NULL

@@ -3,7 +3,7 @@ macro_line|#ifndef _ASM_PCI_BRIDGE_H
 DECL|macro|_ASM_PCI_BRIDGE_H
 mdefine_line|#define _ASM_PCI_BRIDGE_H
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;asm/pci_channel.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/xtalk/xwidget.h&gt;&t;&t;/* generic widget header */
 multiline_comment|/* I/O page size */
 DECL|macro|IOPFNSHIFT
@@ -1714,9 +1714,38 @@ DECL|member|baddr
 id|dma64_addr_t
 id|baddr
 suffix:semicolon
+DECL|member|pci_int
+r_int
+r_int
+id|pci_int
+(braket
+l_int|8
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|BRIDGE_CONTROLLER
 mdefine_line|#define BRIDGE_CONTROLLER(bus) &bslash;&n;&t;((struct bridge_controller *)((bus)-&gt;sysdata))
+r_extern
+r_void
+id|register_bridge_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|request_bridge_irq
+c_func
+(paren
+r_struct
+id|bridge_controller
+op_star
+id|bc
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASM_PCI_BRIDGE_H */
 eof

@@ -143,7 +143,7 @@ c_func
 (paren
 id|ACPI_DB_WARN
 comma
-l_string|&quot;Error getting context for object [%p]&bslash;n&quot;
+l_string|&quot;No context for object [%p]&bslash;n&quot;
 comma
 id|handle
 )paren

@@ -10323,8 +10323,6 @@ suffix:semicolon
 r_int
 r_int
 id|IRQ_Channel
-op_assign
-id|PCI_Device-&gt;irq
 suffix:semicolon
 r_void
 id|__iomem
@@ -11554,6 +11552,10 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     Acquire shared access to the IRQ Channel.&n;  */
+id|IRQ_Channel
+op_assign
+id|PCI_Device-&gt;irq
+suffix:semicolon
 r_if
 c_cond
 (paren

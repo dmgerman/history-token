@@ -3365,20 +3365,6 @@ l_int|0x400
 )paren
 suffix:semicolon
 )brace
-DECL|variable|platform_rename_gsi
-r_int
-(paren
-op_star
-id|platform_rename_gsi
-)paren
-(paren
-r_int
-id|ioapic
-comma
-r_int
-id|gsi
-)paren
-suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                            ACPI-based MP Configuration&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_BOOT
 DECL|function|mp_register_lapic_address
@@ -4421,11 +4407,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|platform_rename_gsi
+id|ioapic_renumber_irq
 )paren
 id|gsi
 op_assign
-id|platform_rename_gsi
+id|ioapic_renumber_irq
 c_func
 (paren
 id|ioapic

@@ -66,12 +66,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|remote_debug
-r_int
-id|remote_debug
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#endif
 DECL|variable|prom_argc
 r_int
@@ -970,7 +964,7 @@ op_increment
 )paren
 suffix:semicolon
 )brace
-id|remote_debug
+id|kgdb_enabled
 op_assign
 l_int|1
 suffix:semicolon

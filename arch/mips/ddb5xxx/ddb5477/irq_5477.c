@@ -289,8 +289,9 @@ l_int|NULL
 multiline_comment|/* no affinity stuff for UP */
 )brace
 suffix:semicolon
-r_void
 DECL|function|vrc5477_irq_init
+r_void
+id|__init
 id|vrc5477_irq_init
 c_func
 (paren
@@ -298,12 +299,6 @@ id|u32
 id|irq_base
 )paren
 (brace
-r_extern
-id|irq_desc_t
-id|irq_desc
-(braket
-)braket
-suffix:semicolon
 id|u32
 id|i
 suffix:semicolon

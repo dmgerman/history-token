@@ -22,41 +22,12 @@ macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/sgi/mc.h&gt;
 macro_line|#include &lt;asm/sgi/hpc3.h&gt;
 macro_line|#include &lt;asm/sgi/ip22.h&gt;
-macro_line|#ifdef CONFIG_KGDB
-r_extern
-r_void
-id|rs_kgdb_hook
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|breakpoint
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|variable|remote_debug
-r_static
-r_int
-id|remote_debug
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 DECL|variable|sgi_gfxaddr
 r_int
 r_int
 id|sgi_gfxaddr
 suffix:semicolon
 multiline_comment|/*&n; * Stop-A is originally a Sun thing that isn&squot;t standard on IP22 so to avoid&n; * accidents it&squot;s disabled by default on IP22.&n; *&n; * FIXME: provide a mechanism to change the value of stop_a_enabled.&n; */
-DECL|variable|serial_console
-r_int
-id|serial_console
-suffix:semicolon
 DECL|variable|stop_a_enabled
 r_int
 id|stop_a_enabled
@@ -128,12 +99,6 @@ r_char
 op_star
 id|ctype
 suffix:semicolon
-macro_line|#ifdef CONFIG_KGDB
-r_char
-op_star
-id|kgdb_ttyd
-suffix:semicolon
-macro_line|#endif
 id|board_be_init
 op_assign
 id|ip22_be_init
@@ -163,13 +128,21 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Set EISA IO port base for Indigo2 */
+multiline_comment|/* Set EISA IO port base for Indigo2&n;&t; * ioremap cannot fail */
 id|set_io_port_base
 c_func
 (paren
-id|KSEG1ADDR
+(paren
+r_int
+r_int
+)paren
+id|ioremap
 c_func
 (paren
+l_int|0x00080000
+comma
+l_int|0x1fffffff
+op_minus
 l_int|0x00080000
 )paren
 )paren
@@ -282,6 +255,9 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_KGDB
+(brace
+r_char
+op_star
 id|kgdb_ttyd
 op_assign
 id|prom_getcmdline
@@ -390,11 +366,12 @@ suffix:colon
 l_int|2
 )paren
 suffix:semicolon
-id|remote_debug
+id|kgdb_enabled
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Breakpoints and stuff are in sgi_irq_setup() */
+)brace
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_VT

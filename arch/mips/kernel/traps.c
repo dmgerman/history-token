@@ -1804,6 +1804,11 @@ r_goto
 id|sig
 suffix:semicolon
 )brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1831,6 +1836,11 @@ suffix:semicolon
 id|ll_task
 op_assign
 id|current
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
 suffix:semicolon
 id|regs-&gt;regs
 (braket
@@ -1969,6 +1979,11 @@ r_goto
 id|sig
 suffix:semicolon
 )brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1988,6 +2003,11 @@ id|reg
 op_assign
 l_int|0
 suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|compute_return_epc
 c_func
 (paren
@@ -1997,6 +2017,11 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2213,6 +2238,11 @@ id|FPU_CSR_UNI_X
 r_int
 id|sig
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; &t; * Unimplemented operation exception.  If we&squot;ve got the full&n;&t;&t; * software emulator on-board, let&squot;s use it...&n;&t;&t; *&n;&t;&t; * Force FPU to dump state into task/thread context.  We&squot;re&n;&t;&t; * moving a lot of data here for what is probably a single&n;&t;&t; * instruction, but the alternative is to pre-decode the FP&n;&t;&t; * register operands before invoking the emulator, which seems&n;&t;&t; * a bit extreme for what should be an infrequent event.&n;&t;&t; */
 id|save_fp
 c_func
@@ -2244,6 +2274,11 @@ id|restore_fp
 c_func
 (paren
 id|current
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* If something went wrong, signal */
@@ -2689,6 +2724,11 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|own_fpu
 c_func
 (paren
@@ -2756,6 +2796,11 @@ id|current
 )paren
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 r_case
@@ -3795,25 +3840,16 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Some firmware leaves the BEV flag set, clear it.  */
-id|clear_c0_status
-c_func
-(paren
-id|ST0_CU1
-op_or
-id|ST0_CU2
-op_or
-id|ST0_CU3
-op_or
-id|ST0_BEV
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_MIPS64
-id|set_c0_status
-c_func
-(paren
+r_int
+r_int
+id|status_set
+op_assign
 id|ST0_CU0
-op_or
+suffix:semicolon
+multiline_comment|/*&n;&t; * Disable coprocessors and select 32-bit or 64-bit addressing&n;&t; * and the 16/32 or 32/32 FPR register model.  Reset the BEV&n;&t; * flag that some firmware may have left set and the TS bit (for&n;&t; * IP27).  Set XX for ISA IV code to work.&n;&t; */
+macro_line|#ifdef CONFIG_MIPS64
+id|status_set
+op_or_assign
 id|ST0_FR
 op_or
 id|ST0_KX
@@ -3821,7 +3857,6 @@ op_or
 id|ST0_SX
 op_or
 id|ST0_UX
-)paren
 suffix:semicolon
 macro_line|#endif
 r_if
@@ -3831,10 +3866,28 @@ id|current_cpu_data.isa_level
 op_eq
 id|MIPS_CPU_ISA_IV
 )paren
-id|set_c0_status
+id|status_set
+op_or_assign
+id|ST0_XX
+suffix:semicolon
+id|change_c0_status
 c_func
 (paren
-id|ST0_XX
+id|ST0_CU
+op_or
+id|ST0_FR
+op_or
+id|ST0_BEV
+op_or
+id|ST0_TS
+op_or
+id|ST0_KX
+op_or
+id|ST0_SX
+op_or
+id|ST0_UX
+comma
+id|status_set
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Some MIPS CPUs have a dedicated interrupt vector which reduces the&n;&t; * interrupt processing overhead.  Use it where available.&n;&t; */
@@ -4231,6 +4284,7 @@ c_cond
 (paren
 id|cpu_has_vce
 )paren
+multiline_comment|/* Special exception: R4[04]00 uses also the divec space. */
 id|memcpy
 c_func
 (paren
@@ -4247,7 +4301,7 @@ comma
 op_amp
 id|except_vec3_r4000
 comma
-l_int|0x80
+l_int|0x100
 )paren
 suffix:semicolon
 r_else

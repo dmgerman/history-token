@@ -1,7 +1,6 @@
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/pci_channel.h&gt;
 macro_line|#include &lt;asm/ip32/ip32_ints.h&gt;
 multiline_comment|/*&n; * O2 has up to 5 PCI devices connected into the MACE bridge.  The device&n; * map looks like this:&n; *&n; * 0  aic7xxx 0&n; * 1  aic7xxx 1&n; * 2  expansion slot&n; * 3  N/C&n; * 4  N/C&n; */
 DECL|macro|SCSI0
@@ -135,6 +134,22 @@ id|slot
 (braket
 id|pin
 )braket
+suffix:semicolon
+)brace
+multiline_comment|/* Do platform specific device initialization at pci_enable_device() time */
+DECL|function|pcibios_plat_dev_init
+r_int
+id|pcibios_plat_dev_init
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof

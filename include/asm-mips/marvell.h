@@ -4,7 +4,6 @@ DECL|macro|__ASM_MIPS_MARVELL_H
 mdefine_line|#define __ASM_MIPS_MARVELL_H
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/pci_channel.h&gt;
 r_extern
 r_int
 r_int
