@@ -546,7 +546,7 @@ c_func
 (paren
 id|page
 comma
-l_int|0
+id|gfp_mask
 )paren
 )paren
 r_goto
