@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acglobal.h - Declarations for global variables&n; *       $Revision: 134 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acglobal.h - Declarations for global variables&n; *       $Revision: 135 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACGLOBAL_H__
 DECL|macro|__ACGLOBAL_H__
@@ -237,7 +237,7 @@ l_int|8
 suffix:semicolon
 r_extern
 r_const
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_gbl_db_sleep_states
 (braket
@@ -254,7 +254,7 @@ id|AML_NUM_OPCODES
 suffix:semicolon
 r_extern
 r_const
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_gbl_region_types
 (braket
@@ -464,7 +464,7 @@ id|optind
 suffix:semicolon
 DECL|variable|optarg
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 op_star
 id|optarg
 suffix:semicolon
@@ -485,7 +485,7 @@ id|acpi_gbl_db_opt_ini_methods
 suffix:semicolon
 DECL|variable|acpi_gbl_db_args
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_gbl_db_args
 (braket
@@ -494,7 +494,7 @@ id|ACPI_DEBUGGER_MAX_ARGS
 suffix:semicolon
 DECL|variable|acpi_gbl_db_line_buf
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 id|acpi_gbl_db_line_buf
 (braket
 l_int|80
@@ -502,7 +502,7 @@ l_int|80
 suffix:semicolon
 DECL|variable|acpi_gbl_db_parsed_buf
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 id|acpi_gbl_db_parsed_buf
 (braket
 l_int|80
@@ -510,7 +510,7 @@ l_int|80
 suffix:semicolon
 DECL|variable|acpi_gbl_db_scope_buf
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 id|acpi_gbl_db_scope_buf
 (braket
 l_int|40
@@ -518,7 +518,7 @@ l_int|40
 suffix:semicolon
 DECL|variable|acpi_gbl_db_debug_filename
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 id|acpi_gbl_db_debug_filename
 (braket
 l_int|40
@@ -531,13 +531,13 @@ id|acpi_gbl_db_output_to_file
 suffix:semicolon
 DECL|variable|acpi_gbl_db_buffer
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_gbl_db_buffer
 suffix:semicolon
 DECL|variable|acpi_gbl_db_filename
 id|ACPI_EXTERN
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_gbl_db_filename
 suffix:semicolon

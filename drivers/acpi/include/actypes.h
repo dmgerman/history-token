@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 242 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 244 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTYPES_H__
 DECL|macro|__ACTYPES_H__
@@ -955,7 +955,7 @@ id|length
 suffix:semicolon
 multiline_comment|/* # of bytes in string, excluding trailing null */
 DECL|member|pointer
-id|NATIVE_CHAR
+r_char
 op_star
 id|pointer
 suffix:semicolon
@@ -1398,7 +1398,7 @@ id|valid
 suffix:semicolon
 multiline_comment|/*  Are the next bits legit? */
 DECL|member|hardware_id
-id|NATIVE_CHAR
+r_char
 id|hardware_id
 (braket
 l_int|9
@@ -1406,7 +1406,7 @@ l_int|9
 suffix:semicolon
 multiline_comment|/*  _HID value if any */
 DECL|member|unique_id
-id|NATIVE_CHAR
+r_char
 id|unique_id
 (braket
 l_int|9
@@ -1860,7 +1860,7 @@ id|u32
 id|string_length
 suffix:semicolon
 DECL|member|string_ptr
-id|NATIVE_CHAR
+r_char
 op_star
 id|string_ptr
 suffix:semicolon
@@ -2230,7 +2230,7 @@ id|u32
 id|source_index
 suffix:semicolon
 DECL|member|source
-id|NATIVE_CHAR
+r_char
 id|source
 (braket
 l_int|4

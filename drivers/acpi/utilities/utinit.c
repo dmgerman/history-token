@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utinit - Common ACPI subsystem initialization&n; *              $Revision: 114 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utinit - Common ACPI subsystem initialization&n; *              $Revision: 115 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -15,7 +15,7 @@ r_void
 DECL|function|acpi_ut_fadt_register_error
 id|acpi_ut_fadt_register_error
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|register_name
 comma
@@ -102,10 +102,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ACPI_VALID_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xpm1a_evt_blk.address
-)paren
 )paren
 (brace
 id|acpi_ut_fadt_register_error
@@ -125,10 +122,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ACPI_VALID_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xpm1a_cnt_blk.address
-)paren
 )paren
 (brace
 id|acpi_ut_fadt_register_error
@@ -148,10 +142,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ACPI_VALID_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xpm_tmr_blk.address
-)paren
 )paren
 (brace
 id|acpi_ut_fadt_register_error
@@ -171,10 +162,7 @@ r_if
 c_cond
 (paren
 (paren
-id|ACPI_VALID_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk.address
-)paren
 op_logical_and
 op_logical_neg
 id|acpi_gbl_FADT-&gt;pm2_cnt_len
@@ -225,10 +213,7 @@ multiline_comment|/* Length of GPE blocks must be a multiple of 2 */
 r_if
 c_cond
 (paren
-id|ACPI_VALID_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xgpe0_blk.address
-)paren
 op_logical_and
 (paren
 id|acpi_gbl_FADT-&gt;gpe0_blk_len
@@ -256,10 +241,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_VALID_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xgpe1_blk.address
-)paren
 op_logical_and
 (paren
 id|acpi_gbl_FADT-&gt;gpe1_blk_len
