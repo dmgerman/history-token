@@ -6351,6 +6351,7 @@ r_else
 r_if
 c_cond
 (paren
+(paren
 id|hw-&gt;original_fc
 op_eq
 id|e1000_fc_none
@@ -6358,6 +6359,9 @@ op_logical_or
 id|hw-&gt;original_fc
 op_eq
 id|e1000_fc_tx_pause
+)paren
+op_logical_or
+id|hw-&gt;fc_strict_ieee
 )paren
 (brace
 id|hw-&gt;fc
@@ -6372,12 +6376,6 @@ l_string|&quot;Flow Control = NONE.&bslash;r&bslash;n&quot;
 suffix:semicolon
 )brace
 r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hw-&gt;fc_strict_ieee
-)paren
 (brace
 id|hw-&gt;fc
 op_assign
