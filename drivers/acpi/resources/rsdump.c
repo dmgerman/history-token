@@ -1057,7 +1057,7 @@ suffix:semicolon
 )brace
 id|acpi_os_printf
 (paren
-l_string|&quot; Type Specific: %s Translation&bslash;n&quot;
+l_string|&quot;  Type Specific: %s Translation&bslash;n&quot;
 comma
 id|ACPI_SPARSE_TRANSLATION
 op_eq
@@ -1085,10 +1085,12 @@ r_default
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Invalid resource type. Exiting.&bslash;n&quot;
+l_string|&quot;0x%2.2X&bslash;n&quot;
+comma
+id|address16_data-&gt;resource_type
 )paren
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 )brace
 id|acpi_os_printf
@@ -1391,7 +1393,7 @@ suffix:semicolon
 )brace
 id|acpi_os_printf
 (paren
-l_string|&quot; Type Specific: %s Translation&bslash;n&quot;
+l_string|&quot;  Type Specific: %s Translation&bslash;n&quot;
 comma
 id|ACPI_SPARSE_TRANSLATION
 op_eq
@@ -1419,10 +1421,12 @@ r_default
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;  Invalid Resource Type..exiting.&bslash;n&quot;
+l_string|&quot;  Resource Type: 0x%2.2X&bslash;n&quot;
+comma
+id|address32_data-&gt;resource_type
 )paren
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 )brace
 id|acpi_os_printf
@@ -1725,7 +1729,7 @@ suffix:semicolon
 )brace
 id|acpi_os_printf
 (paren
-l_string|&quot; Type Specific: %s Translation&bslash;n&quot;
+l_string|&quot;  Type Specific: %s Translation&bslash;n&quot;
 comma
 id|ACPI_SPARSE_TRANSLATION
 op_eq
@@ -1753,10 +1757,12 @@ r_default
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;  Invalid Resource Type..exiting.&bslash;n&quot;
+l_string|&quot;  Resource Type: 0x%2.2X&bslash;n&quot;
+comma
+id|address64_data-&gt;resource_type
 )paren
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 )brace
 id|acpi_os_printf
@@ -1862,6 +1868,16 @@ comma
 id|ACPI_FORMAT_UINT64
 (paren
 id|address64_data-&gt;address_length
+)paren
+)paren
+suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot;  Type Specific Attributes: %8.8X%8.8X&bslash;n&quot;
+comma
+id|ACPI_FORMAT_UINT64
+(paren
+id|address64_data-&gt;type_specific_attributes
 )paren
 )paren
 suffix:semicolon
