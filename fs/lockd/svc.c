@@ -595,6 +595,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Release module */
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
