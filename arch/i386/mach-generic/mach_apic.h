@@ -53,5 +53,9 @@ macro_line|#else
 DECL|macro|TARGET_CPUS
 mdefine_line|#define TARGET_CPUS 0x01
 macro_line|#endif
+DECL|macro|APIC_BROADCAST_ID
+mdefine_line|#define APIC_BROADCAST_ID      0x0F
+DECL|macro|check_apicid_used
+mdefine_line|#define check_apicid_used(bitmap, apicid) (bitmap &amp; (1 &lt;&lt; apicid))
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof
