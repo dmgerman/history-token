@@ -3719,12 +3719,12 @@ suffix:semicolon
 r_int
 id|retries
 op_assign
-l_int|5
+l_int|100
 suffix:semicolon
 id|u8
 id|stat
 suffix:semicolon
-multiline_comment|/*&n;&t; * (ks) Last sector was transfered, wait until drive is ready.&n;&t; * This can take up to 10 usec. We willl wait max 50 us.&n;&t; */
+multiline_comment|/*&n;&t; * Last sector was transfered, wait until drive is ready.&n;&t; * This can take up to 10 usec, but we will wait max 1 ms&n;&t; * (drive_cmd_intr() waits that long).&n;&t; */
 r_while
 c_loop
 (paren
@@ -3751,6 +3751,21 @@ id|udelay
 c_func
 (paren
 l_int|10
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|retries
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: drive still BUSY!&bslash;n&quot;
+comma
+id|drive-&gt;name
 )paren
 suffix:semicolon
 r_return
