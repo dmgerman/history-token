@@ -551,6 +551,7 @@ multiline_comment|/* CPU address space fields */
 DECL|member|rx_ring
 r_struct
 id|depca_rx_desc
+id|__iomem
 op_star
 id|rx_ring
 suffix:semicolon
@@ -558,12 +559,14 @@ multiline_comment|/* Pointer to start of RX descriptor ring */
 DECL|member|tx_ring
 r_struct
 id|depca_tx_desc
+id|__iomem
 op_star
 id|tx_ring
 suffix:semicolon
 multiline_comment|/* Pointer to start of TX descriptor ring */
 DECL|member|rx_buff
 r_void
+id|__iomem
 op_star
 id|rx_buff
 (braket
@@ -573,6 +576,7 @@ suffix:semicolon
 multiline_comment|/* CPU virt address of sh&squot;d memory buffs  */
 DECL|member|tx_buff
 r_void
+id|__iomem
 op_star
 id|tx_buff
 (braket
@@ -582,6 +586,7 @@ suffix:semicolon
 multiline_comment|/* CPU virt address of sh&squot;d memory buffs  */
 DECL|member|sh_mem
 r_void
+id|__iomem
 op_star
 id|sh_mem
 suffix:semicolon
@@ -1701,6 +1706,7 @@ op_assign
 (paren
 r_struct
 id|depca_rx_desc
+id|__iomem
 op_star
 )paren
 (paren
@@ -1730,6 +1736,7 @@ op_assign
 (paren
 r_struct
 id|depca_tx_desc
+id|__iomem
 op_star
 )paren
 (paren
@@ -5944,6 +5951,7 @@ comma
 id|k
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ptr
 suffix:semicolon
@@ -7261,11 +7269,8 @@ l_int|3
 id|printk
 c_func
 (paren
-l_string|&quot;0x%8.8lx &quot;
+l_string|&quot;%p &quot;
 comma
-(paren
-r_int
-)paren
 op_amp
 id|lp-&gt;rx_ring
 (braket
@@ -7280,11 +7285,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;...0x%8.8lx&bslash;n&quot;
+l_string|&quot;...%p&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 op_amp
 id|lp-&gt;rx_ring
 (braket
@@ -7326,11 +7328,8 @@ l_int|3
 id|printk
 c_func
 (paren
-l_string|&quot;0x%8.8lx &quot;
+l_string|&quot;%p &quot;
 comma
-(paren
-r_int
-)paren
 op_amp
 id|lp-&gt;tx_ring
 (braket
@@ -7345,11 +7344,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;...0x%8.8lx&bslash;n&quot;
+l_string|&quot;...%p&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 op_amp
 id|lp-&gt;tx_ring
 (braket
