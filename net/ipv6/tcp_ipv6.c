@@ -2222,7 +2222,7 @@ c_cond
 id|TCP_IPV6_MATCH
 c_func
 (paren
-id|sk
+id|sk2
 comma
 id|saddr
 comma
