@@ -1,6 +1,7 @@
 multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; * Derived (i.e. mostly copied) from arch/i386/kernel/irq.c:&n; *&t;Copyright (C) 1992, 1998 Linus Torvalds, Ingo Molnar&n; */
 macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;linux/kernel.h&quot;
+macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;linux/smp.h&quot;
 macro_line|#include &quot;linux/irq.h&quot;
 macro_line|#include &quot;linux/kernel_stat.h&quot;
@@ -1321,6 +1322,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|request_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_irq
+)paren
+suffix:semicolon
 DECL|function|um_request_irq
 r_int
 id|um_request_irq
@@ -1784,6 +1792,13 @@ r_return
 suffix:semicolon
 )brace
 )brace
+DECL|variable|free_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_irq
+)paren
+suffix:semicolon
 multiline_comment|/* These are initialized by sysctl_init, which is called from init/main.c */
 DECL|variable|root_irq_dir
 r_static
@@ -2727,6 +2742,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_on
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_on
+)paren
+suffix:semicolon
 DECL|function|probe_irq_off
 r_int
 id|probe_irq_off
@@ -2741,6 +2763,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_off
+)paren
+suffix:semicolon
 DECL|function|startup_SIGIO_irq
 r_static
 r_int

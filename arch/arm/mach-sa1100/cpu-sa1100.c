@@ -497,7 +497,7 @@ op_ge
 id|policy-&gt;min
 )paren
 )paren
-id|mew_ppcr
+id|new_ppcr
 op_decrement
 suffix:semicolon
 r_break

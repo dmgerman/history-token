@@ -57,6 +57,13 @@ id|__cpu_logical_map
 id|NR_CPUS
 )braket
 suffix:semicolon
+DECL|variable|cpu_online_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_online_map
+)paren
+suffix:semicolon
 multiline_comment|/* These are defined by the board-specific code. */
 multiline_comment|/*&n; * Cause the function described by call_data to be executed on the passed&n; * cpu.  When the function has finished, increment the finished field of&n; * call_data.&n; */
 r_void

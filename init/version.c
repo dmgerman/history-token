@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/init/version.c&n; *&n; *  Copyright (C) 1992  Theodore Ts&squot;o&n; *&n; *  May be freely distributed as part of Linux.&n; */
 macro_line|#include &lt;linux/compile.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/uts.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -51,6 +52,13 @@ op_assign
 id|UTS_DOMAINNAME
 comma
 )brace
+suffix:semicolon
+DECL|variable|system_utsname
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|system_utsname
+)paren
 suffix:semicolon
 DECL|variable|linux_banner
 r_const

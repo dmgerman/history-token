@@ -98,6 +98,14 @@ id|net_device
 op_star
 id|physoutdev
 suffix:semicolon
+macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
+DECL|member|netoutdev
+r_struct
+id|net_device
+op_star
+id|netoutdev
+suffix:semicolon
+macro_line|#endif
 DECL|member|mask
 r_int
 r_int
@@ -108,7 +116,7 @@ r_int
 r_int
 id|hh
 (braket
-l_int|16
+l_int|32
 op_div
 r_sizeof
 (paren

@@ -493,7 +493,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|lapb_decode
 c_func
 (paren

@@ -39,7 +39,7 @@ DECL|member|sgid_inherit
 id|xfs_sysctl_val_t
 id|sgid_inherit
 suffix:semicolon
-multiline_comment|/* Inherit ISGID bit if process&squot; GID &n;&t;&t;&t;&t;&t; * is not a member of the parent dir&n;&t;&t;&t;&t;&t; * GID */
+multiline_comment|/* Inherit S_ISGID bit if process&squot; GID &n;&t;&t;&t;&t;&t; * is not a member of the parent dir&n;&t;&t;&t;&t;&t; * GID */
 DECL|member|symlink_mode
 id|xfs_sysctl_val_t
 id|symlink_mode

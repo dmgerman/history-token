@@ -1509,6 +1509,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|batch_entropy_store
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|batch_entropy_store
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Flush out the accumulated entropy operations, adding entropy to the passed&n; * store (normally random_state).  If that store has enough entropy, alternate&n; * between randomizing the data of the primary and secondary stores.&n; */
 DECL|function|batch_entropy_process
 r_static
@@ -1996,6 +2003,13 @@ id|scancode
 suffix:semicolon
 )brace
 )brace
+DECL|variable|add_keyboard_randomness
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|add_keyboard_randomness
+)paren
+suffix:semicolon
 DECL|function|add_mouse_randomness
 r_void
 id|add_mouse_randomness
@@ -2015,6 +2029,13 @@ id|mouse_data
 )paren
 suffix:semicolon
 )brace
+DECL|variable|add_mouse_randomness
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|add_mouse_randomness
+)paren
+suffix:semicolon
 DECL|function|add_interrupt_randomness
 r_void
 id|add_interrupt_randomness
@@ -2054,6 +2075,13 @@ id|irq
 )paren
 suffix:semicolon
 )brace
+DECL|variable|add_interrupt_randomness
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|add_interrupt_randomness
+)paren
+suffix:semicolon
 DECL|function|add_disk_randomness
 r_void
 id|add_disk_randomness
@@ -2094,6 +2122,13 @@ id|disk-&gt;first_minor
 )paren
 suffix:semicolon
 )brace
+DECL|variable|add_disk_randomness
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|add_disk_randomness
+)paren
+suffix:semicolon
 multiline_comment|/******************************************************************&n; *&n; * Hash function definition&n; *&n; *******************************************************************/
 multiline_comment|/*&n; * This chunk of code defines a function&n; * void HASH_TRANSFORM(__u32 digest[HASH_BUFFER_SIZE + HASH_EXTRA_SIZE],&n; * &t;&t;__u32 const data[16])&n; * &n; * The function hashes the input data to produce a digest in the first&n; * HASH_BUFFER_SIZE words of the digest[] array, and uses HASH_EXTRA_SIZE&n; * more words for internal purposes.  (This buffer is exported so the&n; * caller can wipe it once rather than this code doing it each call,&n; * and tacking it onto the end of the digest[] array is the quick and&n; * dirty way of doing it.)&n; *&n; * It so happens that MD5 and SHA share most of the initial vector&n; * used to initialize the digest[] array before the first call:&n; * 1) 0x67452301&n; * 2) 0xefcdab89&n; * 3) 0x98badcfe&n; * 4) 0x10325476&n; * 5) 0xc3d2e1f0 (SHA only)&n; * &n; * For /dev/random purposes, the length of the data being hashed is&n; * fixed in length, so appending a bit count in the usual way is not&n; * cryptographically necessary.&n; */
 macro_line|#ifdef USE_SHA
@@ -7531,6 +7566,13 @@ l_string|&quot;random driver initialization&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|variable|get_random_bytes
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_random_bytes
+)paren
+suffix:semicolon
 multiline_comment|/*********************************************************************&n; *&n; * Functions to interface with Linux&n; *&n; *********************************************************************/
 multiline_comment|/*&n; * Initialize the random pool with standard stuff.&n; *&n; * NOTE: This is an OS-dependent function.&n; */
 DECL|function|init_std_data
@@ -9172,6 +9214,13 @@ op_or
 l_int|0x80
 suffix:semicolon
 )brace
+DECL|variable|generate_random_uuid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generate_random_uuid
+)paren
+suffix:semicolon
 multiline_comment|/********************************************************************&n; *&n; * Sysctl interface&n; *&n; ********************************************************************/
 macro_line|#ifdef CONFIG_SYSCTL
 macro_line|#include &lt;linux/sysctl.h&gt;
@@ -12230,6 +12279,13 @@ r_return
 id|seq
 suffix:semicolon
 )brace
+DECL|variable|secure_tcp_sequence_number
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|secure_tcp_sequence_number
+)paren
+suffix:semicolon
 multiline_comment|/*  The code below is shamelessly stolen from secure_tcp_sequence_number().&n; *  All blames to Andrey V. Savochkin &lt;saw@msu.ru&gt;.&n; */
 DECL|function|secure_ip_id
 id|__u32
@@ -12806,46 +12862,4 @@ suffix:semicolon
 multiline_comment|/* Leaving the data behind */
 )brace
 macro_line|#endif
-DECL|variable|add_keyboard_randomness
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|add_keyboard_randomness
-)paren
-suffix:semicolon
-DECL|variable|add_mouse_randomness
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|add_mouse_randomness
-)paren
-suffix:semicolon
-DECL|variable|add_interrupt_randomness
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|add_interrupt_randomness
-)paren
-suffix:semicolon
-DECL|variable|add_disk_randomness
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|add_disk_randomness
-)paren
-suffix:semicolon
-DECL|variable|batch_entropy_store
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|batch_entropy_store
-)paren
-suffix:semicolon
-DECL|variable|generate_random_uuid
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|generate_random_uuid
-)paren
-suffix:semicolon
 eof

@@ -357,6 +357,9 @@ op_assign
 (paren
 r_int
 )paren
+(paren
+r_int
+)paren
 id|class_get_devdata
 c_func
 (paren
@@ -662,6 +665,9 @@ comma
 (paren
 r_void
 op_star
+)paren
+(paren
+r_int
 )paren
 id|intf-&gt;minor
 )paren

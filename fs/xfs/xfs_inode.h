@@ -326,7 +326,7 @@ multiline_comment|/*&n; * Inode hashing and hash bucket locking.&n; */
 DECL|macro|XFS_BUCKETS
 mdefine_line|#define XFS_BUCKETS(mp) (37*(mp)-&gt;m_sb.sb_agcount-1)
 DECL|macro|XFS_IHASH
-mdefine_line|#define XFS_IHASH(mp,ino) ((mp)-&gt;m_ihash + (((uint)ino) % (mp)-&gt;m_ihsize))
+mdefine_line|#define XFS_IHASH(mp,ino) ((mp)-&gt;m_ihash + (((uint)(ino)) % (mp)-&gt;m_ihsize))
 multiline_comment|/*&n; * This is the xfs inode cluster hash.  This hash is used by xfs_iflush to&n; * find inodes that share a cluster and can be flushed to disk at the same&n; * time.&n; */
 DECL|struct|xfs_chashlist
 r_typedef
@@ -870,8 +870,10 @@ DECL|macro|XFS_IQUIESCE
 mdefine_line|#define XFS_IQUIESCE    0x0004  /* we have started quiescing for this inode */
 DECL|macro|XFS_IRECLAIM
 mdefine_line|#define XFS_IRECLAIM    0x0008  /* we have started reclaiming this inode    */
+DECL|macro|XFS_ISTALE
+mdefine_line|#define XFS_ISTALE&t;0x0010&t;/* inode has been staled */
 DECL|macro|XFS_IRECLAIMABLE
-mdefine_line|#define XFS_IRECLAIMABLE 0x0010 /* inode can be reclaimed */
+mdefine_line|#define XFS_IRECLAIMABLE 0x0020 /* inode can be reclaimed */
 multiline_comment|/*&n; * Flags for inode locking.&n; */
 DECL|macro|XFS_IOLOCK_EXCL
 mdefine_line|#define&t;XFS_IOLOCK_EXCL&t;&t;0x001
@@ -979,9 +981,9 @@ mdefine_line|#define BHV_IS_XFS(bdp)&t;&t;(BHV_OPS(bdp) == &amp;xfs_vnodeops)
 multiline_comment|/*&n; * Pick the inode cluster hash bucket&n; * (m_chash is the same size as m_ihash)&n; */
 DECL|macro|XFS_CHASH
 mdefine_line|#define XFS_CHASH(mp,blk) ((mp)-&gt;m_chash + (((uint)blk) % (mp)-&gt;m_chsize))
-multiline_comment|/*&n; * For multiple groups support: if ISGID bit is set in the parent&n; * directory, group of new file is set to that of the parent, and&n; * new subdirectory gets ISGID bit from parent.&n; */
+multiline_comment|/*&n; * For multiple groups support: if S_ISGID bit is set in the parent&n; * directory, group of new file is set to that of the parent, and&n; * new subdirectory gets S_ISGID bit from parent.&n; */
 DECL|macro|XFS_INHERIT_GID
-mdefine_line|#define XFS_INHERIT_GID(pip, vfsp)&t;((pip) != NULL &amp;&amp; &bslash;&n;&t;(((vfsp)-&gt;vfs_flag &amp; VFS_GRPID) || ((pip)-&gt;i_d.di_mode &amp; ISGID)))
+mdefine_line|#define XFS_INHERIT_GID(pip, vfsp)&t;((pip) != NULL &amp;&amp; &bslash;&n;&t;(((vfsp)-&gt;vfs_flag &amp; VFS_GRPID) || ((pip)-&gt;i_d.di_mode &amp; S_ISGID)))
 multiline_comment|/*&n; * xfs_iget.c prototypes.&n; */
 r_void
 id|xfs_ihash_init
@@ -1355,6 +1357,10 @@ id|xfs_trans
 op_star
 comma
 id|xfs_inode_t
+op_star
+comma
+r_struct
+id|xfs_bmap_free
 op_star
 )paren
 suffix:semicolon

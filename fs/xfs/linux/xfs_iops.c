@@ -1481,10 +1481,6 @@ id|uio.uio_iovcnt
 op_assign
 l_int|1
 suffix:semicolon
-id|uio.uio_fmode
-op_assign
-l_int|0
-suffix:semicolon
 id|VOP_READLINK
 c_func
 (paren
@@ -1492,6 +1488,8 @@ id|vp
 comma
 op_amp
 id|uio
+comma
+l_int|0
 comma
 l_int|NULL
 comma
@@ -1657,10 +1655,6 @@ id|uio-&gt;uio_resid
 op_assign
 id|MAXNAMELEN
 suffix:semicolon
-id|uio-&gt;uio_fmode
-op_assign
-l_int|0
-suffix:semicolon
 id|uio-&gt;uio_iovcnt
 op_assign
 l_int|1
@@ -1671,6 +1665,8 @@ c_func
 id|vp
 comma
 id|uio
+comma
+l_int|0
 comma
 l_int|NULL
 comma

@@ -741,6 +741,8 @@ id|dev-&gt;pci
 comma
 op_amp
 id|buf-&gt;vb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1063,9 +1065,9 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------ */
-DECL|function|saa7134_vbi_init
+DECL|function|saa7134_vbi_init1
 r_int
-id|saa7134_vbi_init
+id|saa7134_vbi_init1
 c_func
 (paren
 r_struct

@@ -87,7 +87,7 @@ comma
 id|u32
 op_star
 )paren
-id|open-&gt;op_verf
+id|open-&gt;op_verf.data
 comma
 op_amp
 id|open-&gt;op_truncate
@@ -613,7 +613,7 @@ op_assign
 id|u32
 op_star
 )paren
-id|commit-&gt;co_verf
+id|commit-&gt;co_verf.data
 suffix:semicolon
 op_star
 id|p
@@ -2072,7 +2072,7 @@ op_assign
 id|u32
 op_star
 )paren
-id|write-&gt;wr_verifier
+id|write-&gt;wr_verifier.data
 suffix:semicolon
 op_star
 id|p

@@ -64,9 +64,11 @@ l_string|&quot;%s: couldn&squot;t ioremap 0x%lx-0x%lx&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|addr-&gt;min_address_range
+id|req-&gt;iomap_base
 comma
-id|addr-&gt;max_address_range
+id|req-&gt;iomap_base
+op_plus
+id|size
 )paren
 suffix:semicolon
 r_return
@@ -98,6 +100,12 @@ op_star
 id|io
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|io-&gt;range_length
+)paren
+(brace
 id|req-&gt;port
 op_assign
 id|io-&gt;min_base_address
@@ -105,6 +113,17 @@ suffix:semicolon
 id|req-&gt;io_type
 op_assign
 id|SERIAL_IO_PORT
+suffix:semicolon
+)brace
+r_else
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: zero-length IO port range?&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 r_return
 id|AE_OK

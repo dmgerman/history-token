@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
@@ -16,7 +17,6 @@ macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/nfs2.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
 macro_line|#include &lt;linux/nfs4.h&gt;
-macro_line|#include &lt;linux/nfs_page.h&gt;
 macro_line|#include &lt;linux/nfs_xdr.h&gt;
 multiline_comment|/*&n; * Enable debugging support for nfs client.&n; * Requires RPC_DEBUG.&n; */
 macro_line|#ifdef RPC_DEBUG
@@ -196,23 +196,10 @@ id|nfs_i_wait
 suffix:semicolon
 macro_line|#ifdef CONFIG_NFS_V4
 multiline_comment|/* NFSv4 state */
-DECL|member|ro_owner
+DECL|member|open_states
 r_struct
-id|nfs4_shareowner
-op_star
-id|ro_owner
-suffix:semicolon
-DECL|member|wo_owner
-r_struct
-id|nfs4_shareowner
-op_star
-id|wo_owner
-suffix:semicolon
-DECL|member|rw_owner
-r_struct
-id|nfs4_shareowner
-op_star
-id|rw_owner
+id|list_head
+id|open_states
 suffix:semicolon
 macro_line|#endif /* CONFIG_NFS_V4*/
 DECL|member|vfs_inode
@@ -382,34 +369,6 @@ op_lshift
 id|PAGE_CACHE_SHIFT
 suffix:semicolon
 )brace
-r_static
-r_inline
-DECL|function|req_offset
-id|loff_t
-id|req_offset
-c_func
-(paren
-r_struct
-id|nfs_page
-op_star
-id|req
-)paren
-(brace
-r_return
-(paren
-(paren
-(paren
-id|loff_t
-)paren
-id|req-&gt;wb_index
-)paren
-op_lshift
-id|PAGE_CACHE_SHIFT
-)paren
-op_plus
-id|req-&gt;wb_offset
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * linux/fs/nfs/inode.c&n; */
 r_extern
 r_void
@@ -429,7 +388,7 @@ id|nfs_fhget
 c_func
 (paren
 r_struct
-id|dentry
+id|super_block
 op_star
 comma
 r_struct
@@ -486,6 +445,20 @@ r_int
 comma
 r_struct
 id|nameidata
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs_set_mmcred
+c_func
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|rpc_cred
 op_star
 )paren
 suffix:semicolon
@@ -1426,10 +1399,37 @@ macro_line|#ifdef CONFIG_NFS_V4
 multiline_comment|/*&n; * In a seqid-mutating op, this macro controls which error return&n; * values trigger incrementation of the seqid.&n; *&n; * from rfc 3010:&n; * The client MUST monotonically increment the sequence number for the&n; * CLOSE, LOCK, LOCKU, OPEN, OPEN_CONFIRM, and OPEN_DOWNGRADE&n; * operations.  This is true even in the event that the previous&n; * operation that used the sequence number received an error.  The only&n; * exception to this rule is if the previous operation received one of&n; * the following errors: NFSERR_STALE_CLIENTID, NFSERR_STALE_STATEID,&n; * NFSERR_BAD_STATEID, NFSERR_BAD_SEQID, NFSERR_BADXDR,&n; * NFSERR_RESOURCE, NFSERR_NOFILEHANDLE.&n; *&n; */
 DECL|macro|seqid_mutating_err
 mdefine_line|#define seqid_mutating_err(err)       &bslash;&n;(((err) != NFSERR_STALE_CLIENTID) &amp;&amp;  &bslash;&n; ((err) != NFSERR_STALE_STATEID)  &amp;&amp;  &bslash;&n; ((err) != NFSERR_BAD_STATEID)    &amp;&amp;  &bslash;&n; ((err) != NFSERR_BAD_SEQID)      &amp;&amp;  &bslash;&n; ((err) != NFSERR_BAD_XDR)        &amp;&amp;  &bslash;&n; ((err) != NFSERR_RESOURCE)       &amp;&amp;  &bslash;&n; ((err) != NFSERR_NOFILEHANDLE))
+DECL|enum|nfs4_client_state
+r_enum
+id|nfs4_client_state
+(brace
+DECL|enumerator|NFS4CLNT_OK
+id|NFS4CLNT_OK
+op_assign
+l_int|0
+comma
+DECL|enumerator|NFS4CLNT_NEW
+id|NFS4CLNT_NEW
+comma
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * The nfs4_client identifies our client state to the server.&n; */
 DECL|struct|nfs4_client
 r_struct
 id|nfs4_client
 (brace
+DECL|member|cl_servers
+r_struct
+id|list_head
+id|cl_servers
+suffix:semicolon
+multiline_comment|/* Global list of servers */
+DECL|member|cl_addr
+r_struct
+id|in_addr
+id|cl_addr
+suffix:semicolon
+multiline_comment|/* Server identifier */
 DECL|member|cl_clientid
 id|u64
 id|cl_clientid
@@ -1439,17 +1439,62 @@ DECL|member|cl_confirm
 id|nfs4_verifier
 id|cl_confirm
 suffix:semicolon
+DECL|member|cl_state
+r_enum
+id|nfs4_client_state
+id|cl_state
+suffix:semicolon
 DECL|member|cl_lockowner_id
 id|u32
 id|cl_lockowner_id
 suffix:semicolon
+multiline_comment|/*&n;&t; * The following rwsem ensures exclusive access to the server&n;&t; * while we recover the state following a lease expiration.&n;&t; */
+DECL|member|cl_sem
+r_struct
+id|rw_semaphore
+id|cl_sem
+suffix:semicolon
+DECL|member|cl_state_owners
+r_struct
+id|list_head
+id|cl_state_owners
+suffix:semicolon
+DECL|member|cl_unused
+r_struct
+id|list_head
+id|cl_unused
+suffix:semicolon
+DECL|member|cl_nunused
+r_int
+id|cl_nunused
+suffix:semicolon
+DECL|member|cl_lock
+id|spinlock_t
+id|cl_lock
+suffix:semicolon
+DECL|member|cl_count
+id|atomic_t
+id|cl_count
+suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n;* The -&gt;so_sema is held during all shareowner seqid-mutating operations:&n;* OPEN, OPEN_DOWNGRADE, and CLOSE.&n;* Its purpose is to properly serialize so_seqid, as mandated by&n;* the protocol.&n;*/
-DECL|struct|nfs4_shareowner
+multiline_comment|/*&n; * NFS4 state_owners and lock_owners are simply labels for ordered&n; * sequences of RPC calls. Their sole purpose is to provide once-only&n; * semantics by allowing the server to identify replayed requests.&n; *&n; * The -&gt;so_sema is held during all state_owner seqid-mutating operations:&n; * OPEN, OPEN_DOWNGRADE, and CLOSE. Its purpose is to properly serialize&n; * so_seqid.&n; */
+DECL|struct|nfs4_state_owner
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 (brace
+DECL|member|so_list
+r_struct
+id|list_head
+id|so_list
+suffix:semicolon
+multiline_comment|/* per-clientid list of state_owners */
+DECL|member|so_client
+r_struct
+id|nfs4_client
+op_star
+id|so_client
+suffix:semicolon
 DECL|member|so_id
 id|u32
 id|so_id
@@ -1465,17 +1510,79 @@ id|u32
 id|so_seqid
 suffix:semicolon
 multiline_comment|/* protected by so_sema */
-DECL|member|so_stateid
-id|nfs4_stateid
-id|so_stateid
-suffix:semicolon
-multiline_comment|/* protected by so_sema */
 DECL|member|so_flags
 r_int
 r_int
 id|so_flags
 suffix:semicolon
 multiline_comment|/* protected by so_sema */
+DECL|member|so_count
+id|atomic_t
+id|so_count
+suffix:semicolon
+DECL|member|so_cred
+r_struct
+id|rpc_cred
+op_star
+id|so_cred
+suffix:semicolon
+multiline_comment|/* Associated cred */
+DECL|member|so_states
+r_struct
+id|list_head
+id|so_states
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * struct nfs4_state maintains the client-side state for a given&n; * (state_owner,inode) tuple.&n; *&n; * In order to know when to OPEN_DOWNGRADE or CLOSE the state on the server,&n; * we need to know how many files are open for reading or writing on a&n; * given inode. This information too is stored here.&n; */
+DECL|struct|nfs4_state
+r_struct
+id|nfs4_state
+(brace
+DECL|member|open_states
+r_struct
+id|list_head
+id|open_states
+suffix:semicolon
+multiline_comment|/* List of states for the same state_owner */
+DECL|member|inode_states
+r_struct
+id|list_head
+id|inode_states
+suffix:semicolon
+multiline_comment|/* List of states for the same inode */
+DECL|member|owner
+r_struct
+id|nfs4_state_owner
+op_star
+id|owner
+suffix:semicolon
+multiline_comment|/* Pointer to the open owner */
+DECL|member|inode
+r_struct
+id|inode
+op_star
+id|inode
+suffix:semicolon
+multiline_comment|/* Pointer to the inode */
+DECL|member|pid
+id|pid_t
+id|pid
+suffix:semicolon
+multiline_comment|/* Thread that called OPEN */
+DECL|member|stateid
+id|nfs4_stateid
+id|stateid
+suffix:semicolon
+DECL|member|state
+r_int
+id|state
+suffix:semicolon
+multiline_comment|/* State on the server (R,W, or RW) */
+DECL|member|count
+id|atomic_t
+id|count
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* nfs4proc.c */
@@ -1498,12 +1605,10 @@ c_func
 r_struct
 id|inode
 op_star
-id|inode
 comma
 r_struct
-id|nfs4_shareowner
+id|nfs4_state
 op_star
-id|sp
 )paren
 suffix:semicolon
 multiline_comment|/* nfs4renewd.c */
@@ -1526,7 +1631,9 @@ op_star
 id|nfs4_get_client
 c_func
 (paren
-r_void
+r_struct
+id|in_addr
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -1542,50 +1649,54 @@ id|clp
 suffix:semicolon
 r_extern
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
-id|nfs4_get_shareowner
+id|nfs4_get_state_owner
 c_func
 (paren
 r_struct
-id|inode
+id|nfs_server
 op_star
-id|inode
-)paren
-suffix:semicolon
-r_void
-id|nfs4_put_shareowner
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
 comma
 r_struct
-id|nfs4_shareowner
+id|rpc_cred
 op_star
-id|sp
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|nfs4_set_inode_share
+r_void
+id|nfs4_put_state_owner
+c_func
+(paren
+r_struct
+id|nfs4_state_owner
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|nfs4_state
+op_star
+id|nfs4_get_open_state
 c_func
 (paren
 r_struct
 id|inode
 op_star
-id|inode
 comma
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
-id|sp
-comma
-r_int
-r_int
-id|flags
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs4_put_open_state
+c_func
+(paren
+r_struct
+id|nfs4_state
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -1597,40 +1708,9 @@ id|u32
 id|status
 comma
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|nfs4_test_shareowner
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-r_int
-id|open_flags
-)paren
-suffix:semicolon
-r_struct
-id|nfs4_shareowner
-op_star
-id|nfs4_get_inode_share
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-r_int
-id|open_flags
 )paren
 suffix:semicolon
 r_struct
@@ -1715,8 +1795,10 @@ DECL|macro|create_nfsv4_state
 mdefine_line|#define create_nfsv4_state(server, data)  0
 DECL|macro|destroy_nfsv4_state
 mdefine_line|#define destroy_nfsv4_state(server)       do { } while (0)
-DECL|macro|nfs4_put_shareowner
-mdefine_line|#define nfs4_put_shareowner(inode, owner) do { } while (0)
+DECL|macro|nfs4_put_state_owner
+mdefine_line|#define nfs4_put_state_owner(inode, owner) do { } while (0)
+DECL|macro|nfs4_put_open_state
+mdefine_line|#define nfs4_put_open_state(state) do { } while (0)
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * NFS debug flags&n; */

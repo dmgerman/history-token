@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Directory notifications for Linux.&n; *&n; * Copyright (C) 2000,2001,2002 Stephen Rothwell&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -613,6 +614,13 @@ id|dn_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__inode_dir_notify
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__inode_dir_notify
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This is hopelessly wrong, but unfixable without API changes.  At&n; * least it doesn&squot;t oops the kernel...&n; *&n; * To safely access -&gt;d_parent we need to keep d_move away from it.  Use the&n; * dentry&squot;s d_lock for this.&n; */
 DECL|function|dnotify_parent
 r_void

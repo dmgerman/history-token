@@ -1208,9 +1208,9 @@ DECL|macro|XFS_CALC_MKDIR_LOG_RES
 mdefine_line|#define&t;XFS_CALC_MKDIR_LOG_RES(mp)&t;XFS_CALC_CREATE_LOG_RES(mp)
 DECL|macro|XFS_MKDIR_LOG_RES
 mdefine_line|#define&t;XFS_MKDIR_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_mkdir)
-multiline_comment|/*&n; * In freeing an inode we can modify:&n; *    the inode being freed: inode size&n; *    the super block free inode counter: sector size&n; *    the agi hash list and counters: sector size&n; *    the inode btree entry: block size&n; *    the on disk inode before ours in the agi hash list: inode cluster size&n; */
+multiline_comment|/*&n; * In freeing an inode we can modify:&n; *    the inode being freed: inode size&n; *    the super block free inode counter: sector size&n; *    the agi hash list and counters: sector size&n; *    the inode btree entry: block size&n; *    the on disk inode before ours in the agi hash list: inode cluster size&n; *    the inode btree: max depth * blocksize&n; *    the allocation btrees: 2 trees * (max depth - 1) * block size&n; */
 DECL|macro|XFS_CALC_IFREE_LOG_RES
-mdefine_line|#define&t;XFS_CALC_IFREE_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t; (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t; (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t; XFS_FSB_TO_B((mp), 1) + &bslash;&n;&t; MAX((__uint16_t)XFS_FSB_TO_B((mp), 1), XFS_INODE_CLUSTER_SIZE(mp)) + &bslash;&n;&t; (128 * 5))
+mdefine_line|#define&t;XFS_CALC_IFREE_LOG_RES(mp) &bslash;&n;&t;((mp)-&gt;m_sb.sb_inodesize + &bslash;&n;&t; (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t; (mp)-&gt;m_sb.sb_sectsize + &bslash;&n;&t; XFS_FSB_TO_B((mp), 1) + &bslash;&n;&t; MAX((__uint16_t)XFS_FSB_TO_B((mp), 1), XFS_INODE_CLUSTER_SIZE(mp)) + &bslash;&n;&t; (128 * 5) + &bslash;&n;&t;  (128 * (2 + XFS_IALLOC_BLOCKS(mp) + XFS_IN_MAXLEVELS(mp) + &bslash;&n;&t;   XFS_ALLOCFREE_LOG_COUNT(mp, 1))))
 DECL|macro|XFS_IFREE_LOG_RES
 mdefine_line|#define&t;XFS_IFREE_LOG_RES(mp)&t;((mp)-&gt;m_reservations.tr_ifree)
 multiline_comment|/*&n; * When only changing the inode we log the inode and possibly the superblock&n; * We also add a bit of slop for the transaction stuff.&n; */
@@ -1283,6 +1283,8 @@ DECL|macro|XFS_DEFAULT_PERM_LOG_COUNT
 mdefine_line|#define&t;XFS_DEFAULT_PERM_LOG_COUNT&t;2
 DECL|macro|XFS_ITRUNCATE_LOG_COUNT
 mdefine_line|#define&t;XFS_ITRUNCATE_LOG_COUNT&t;&t;2
+DECL|macro|XFS_INACTIVE_LOG_COUNT
+mdefine_line|#define XFS_INACTIVE_LOG_COUNT&t;&t;2
 DECL|macro|XFS_CREATE_LOG_COUNT
 mdefine_line|#define&t;XFS_CREATE_LOG_COUNT&t;&t;2
 DECL|macro|XFS_MKDIR_LOG_COUNT
@@ -1572,6 +1574,30 @@ op_star
 suffix:semicolon
 r_void
 id|xfs_trans_inode_buf
+c_func
+(paren
+id|xfs_trans_t
+op_star
+comma
+r_struct
+id|xfs_buf
+op_star
+)paren
+suffix:semicolon
+r_void
+id|xfs_trans_inode_buf
+c_func
+(paren
+id|xfs_trans_t
+op_star
+comma
+r_struct
+id|xfs_buf
+op_star
+)paren
+suffix:semicolon
+r_void
+id|xfs_trans_stale_inode_buf
 c_func
 (paren
 id|xfs_trans_t

@@ -166,11 +166,6 @@ op_assign
 id|vlan_skb_recv
 comma
 multiline_comment|/* VLAN receive method */
-dot
-id|data
-op_assign
-id|PKT_CAN_SHARE_SKB
-comma
 )brace
 suffix:semicolon
 multiline_comment|/* End of global variables definitions. */

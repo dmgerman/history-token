@@ -139,6 +139,8 @@ DECL|macro|XFS_BLI_LOGGED
 mdefine_line|#define&t;XFS_BLI_LOGGED&t;&t;0x08
 DECL|macro|XFS_BLI_INODE_ALLOC_BUF
 mdefine_line|#define&t;XFS_BLI_INODE_ALLOC_BUF&t;0x10
+DECL|macro|XFS_BLI_STALE_INODE
+mdefine_line|#define XFS_BLI_STALE_INODE&t;0x20
 macro_line|#ifdef __KERNEL__
 r_struct
 id|xfs_buf

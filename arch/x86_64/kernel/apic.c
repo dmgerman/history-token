@@ -3399,6 +3399,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* dummy parsing: see setup.c */
 id|__setup
 c_func
 (paren

@@ -1,9 +1,10 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *   Portions Copyright (c) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2003&n; *   Portions Copyright (C) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
+macro_line|#include &quot;jfs_superblock.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_metapage.h&quot;
 macro_line|#include &quot;jfs_txnmgr.h&quot;
@@ -944,12 +945,33 @@ id|mp-&gt;flag
 )paren
 )paren
 (brace
-m_assert
+r_if
+c_cond
 (paren
+op_logical_neg
 r_new
 )paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|meta_lock
+)paren
 suffix:semicolon
-multiline_comment|/* It&squot;s okay to reuse a discarded&n;&t;&t;&t;&t;&t; * if we expect it to be empty&n;&t;&t;&t;&t;&t; */
+id|jfs_error
+c_func
+(paren
+id|inode-&gt;i_sb
+comma
+l_string|&quot;__get_metapage: using a &quot;
+l_string|&quot;discarded metapage&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|clear_bit
 c_func
 (paren
@@ -971,13 +993,33 @@ comma
 id|mp
 )paren
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|mp-&gt;logical_size
-op_eq
+op_ne
 id|size
 )paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|meta_lock
+)paren
 suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|inode-&gt;i_sb
+comma
+l_string|&quot;__get_metapage: mp-&gt;logical_size != size&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|lock_metapage
 c_func
 (paren

@@ -12856,6 +12856,9 @@ multiline_comment|/* 0x8 */
 l_string|&quot;ialloc&quot;
 comma
 multiline_comment|/* 0x10 */
+l_string|&quot;inode_stale&quot;
+comma
+multiline_comment|/* 0x20 */
 l_int|0
 )brace
 suffix:semicolon
@@ -24188,6 +24191,9 @@ multiline_comment|/* XFS_IQUIESCE */
 l_string|&quot;reclaim&quot;
 comma
 multiline_comment|/* XFS_IRECLAIM */
+l_string|&quot;stale&quot;
+comma
+multiline_comment|/* XFS_ISTALE */
 l_int|NULL
 )brace
 suffix:semicolon

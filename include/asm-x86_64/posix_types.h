@@ -135,12 +135,14 @@ id|__kernel_fsid_t
 suffix:semicolon
 DECL|typedef|__kernel_old_uid_t
 r_typedef
-id|__kernel_uid_t
+r_int
+r_int
 id|__kernel_old_uid_t
 suffix:semicolon
 DECL|typedef|__kernel_old_gid_t
 r_typedef
-id|__kernel_gid_t
+r_int
+r_int
 id|__kernel_old_gid_t
 suffix:semicolon
 DECL|typedef|__kernel_uid32_t

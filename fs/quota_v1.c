@@ -65,7 +65,12 @@ id|d-&gt;dqb_bsoftlimit
 suffix:semicolon
 id|m-&gt;dqb_curspace
 op_assign
+(paren
+(paren
+id|qsize_t
+)paren
 id|d-&gt;dqb_curblocks
+)paren
 op_lshift
 id|QUOTABLOCK_BITS
 suffix:semicolon

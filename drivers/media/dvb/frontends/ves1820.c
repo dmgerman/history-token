@@ -13,6 +13,35 @@ macro_line|#else
 DECL|macro|dprintk
 mdefine_line|#define dprintk(x...)
 macro_line|#endif
+DECL|macro|MAX_UNITS
+mdefine_line|#define MAX_UNITS 4
+DECL|variable|pwm
+r_static
+r_int
+id|pwm
+(braket
+id|MAX_UNITS
+)braket
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+)brace
+suffix:semicolon
+DECL|variable|verbose
+r_static
+r_int
+id|verbose
+suffix:semicolon
 multiline_comment|/**&n; *  since we need only a few bits to store internal state we don&squot;t allocate&n; *  extra memory but use frontend-&gt;data as bitfield&n; */
 DECL|macro|SET_PWM
 mdefine_line|#define SET_PWM(data,pwm) do { &t;&t;&bslash;&n;&t;(long) data &amp;= ~0xff; &t;&t;&bslash;&n;&t;(long) data |= pwm; &t;&t;&bslash;&n;} while (0)
@@ -351,11 +380,13 @@ id|ret
 op_ne
 l_int|1
 )paren
-id|dprintk
+id|printk
 c_func
 (paren
-l_string|&quot;%s: writereg error &quot;
+l_string|&quot;DVB: VES1820(%d): %s, writereg error &quot;
 l_string|&quot;(reg == 0x%02x, val == 0x%02x, ret == %i)&bslash;n&quot;
+comma
+id|fe-&gt;i2c-&gt;adapter-&gt;num
 comma
 id|__FUNCTION__
 comma
@@ -509,10 +540,12 @@ id|ret
 op_ne
 l_int|2
 )paren
-id|dprintk
+id|printk
 c_func
 (paren
-l_string|&quot;%s: readreg error (ret == %i)&bslash;n&quot;
+l_string|&quot;DVB: VES1820(%d): %s: readreg error (ret == %i)&bslash;n&quot;
+comma
+id|fe-&gt;i2c-&gt;adapter-&gt;num
 comma
 id|__FUNCTION__
 comma
@@ -597,7 +630,9 @@ l_int|1
 id|printk
 c_func
 (paren
-l_string|&quot;%s: i/o error (ret == %i)&bslash;n&quot;
+l_string|&quot;DVB: VES1820(%d): %s: i/o error (ret == %i)&bslash;n&quot;
+comma
+id|i2c-&gt;adapter-&gt;num
 comma
 id|__FUNCTION__
 comma
@@ -696,6 +731,13 @@ id|strstr
 id|fe-&gt;i2c-&gt;adapter-&gt;name
 comma
 l_string|&quot;Technotrend&quot;
+)paren
+op_logical_or
+id|strstr
+(paren
+id|fe-&gt;i2c-&gt;adapter-&gt;name
+comma
+l_string|&quot;TT-Budget&quot;
 )paren
 )paren
 id|ifreq
@@ -1009,7 +1051,9 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;VES1820: init chip&bslash;n&quot;
+l_string|&quot;DVB: VES1820(%d): init chip&bslash;n&quot;
+comma
+id|fe-&gt;i2c-&gt;adapter-&gt;num
 )paren
 suffix:semicolon
 id|ves1820_writereg
@@ -2124,11 +2168,16 @@ comma
 l_int|0x19
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|verbose
+)paren
 id|printk
 (paren
-l_string|&quot;%s: AFC (%d) %dHz&bslash;n&quot;
+l_string|&quot;DVB: VES1820(%d): AFC (%d) %dHz&bslash;n&quot;
 comma
-id|__FILE__
+id|fe-&gt;i2c-&gt;adapter-&gt;num
 comma
 id|afc
 comma
@@ -2352,9 +2401,9 @@ l_int|0
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;%s: setup for tuner spXXXX&bslash;n&quot;
+l_string|&quot;DVB: VES1820(%d): setup for tuner spXXXX&bslash;n&quot;
 comma
-id|__FILE__
+id|i2c-&gt;adapter-&gt;num
 )paren
 suffix:semicolon
 )brace
@@ -2384,9 +2433,9 @@ l_int|1
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;%s: setup for tuner sp5659c&bslash;n&quot;
+l_string|&quot;DVB: VES1820(%d): setup for tuner sp5659c&bslash;n&quot;
 comma
-id|__FILE__
+id|i2c-&gt;adapter-&gt;num
 )paren
 suffix:semicolon
 )brace
@@ -2399,10 +2448,10 @@ l_int|1
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;%s: unknown PLL, &quot;
+l_string|&quot;DVB: VES1820(%d): unknown PLL, &quot;
 l_string|&quot;please report to &lt;linuxdvb@linuxtv.org&gt;!!&bslash;n&quot;
 comma
-id|__FILE__
+id|i2c-&gt;adapter-&gt;num
 )paren
 suffix:semicolon
 )brace
@@ -2492,10 +2541,12 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-id|dprintk
+id|printk
 c_func
 (paren
-l_string|&quot;VES1820: pwm=%02x&bslash;n&quot;
+l_string|&quot;DVB: VES1820(%d): pwm=0x%02x&bslash;n&quot;
+comma
+id|i2c-&gt;adapter-&gt;num
 comma
 id|pwm
 )paren
@@ -2741,6 +2792,50 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|i2c-&gt;adapter-&gt;num
+OL
+id|MAX_UNITS
+)paren
+op_logical_and
+id|pwm
+(braket
+id|i2c-&gt;adapter-&gt;num
+)braket
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;DVB: VES1820(%d): pwm=0x%02x (user specified)&bslash;n&quot;
+comma
+id|i2c-&gt;adapter-&gt;num
+comma
+id|pwm
+(braket
+id|i2c-&gt;adapter-&gt;num
+)braket
+)paren
+suffix:semicolon
+id|SET_PWM
+c_func
+(paren
+id|data
+comma
+id|pwm
+(braket
+id|i2c-&gt;adapter-&gt;num
+)braket
+)paren
+suffix:semicolon
+)brace
+r_else
 id|SET_PWM
 c_func
 (paren
@@ -2824,6 +2919,37 @@ id|init_ves1820
 r_void
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|MAX_UNITS
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|pwm
+(braket
+id|i
+)braket
+template_param
+l_int|255
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_return
 id|dvb_register_i2c_device
 (paren
@@ -2862,6 +2988,44 @@ id|module_exit
 c_func
 (paren
 id|exit_ves1820
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|pwm
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|MAX_UNITS
+)paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|pwm
+comma
+l_string|&quot;override PWM value stored in EEPROM (tuner calibration)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|verbose
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|verbose
+comma
+l_string|&quot;print AFC offset after tuning for debugging the PWM setting&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

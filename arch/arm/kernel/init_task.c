@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/init_task.c&n; */
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -57,6 +58,13 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
+DECL|variable|init_mm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_mm
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Initial thread structure.&n; *&n; * We need to make sure that this is 8192-byte aligned due to the&n; * way process stacks are handled. This is done by making sure&n; * the linker maps this in the .text segment right after head.S,&n; * and making head.S ensure the proper alignment.&n; *&n; * The things we do for performance..&n; */
 DECL|variable|init_thread_union
 r_union
@@ -89,6 +97,13 @@ id|task_struct
 id|init_task
 op_assign
 id|INIT_TASK
+c_func
+(paren
+id|init_task
+)paren
+suffix:semicolon
+DECL|variable|init_task
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|init_task

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2003&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; *      jfs_xtree.c: extent allocation descriptor B+-tree manager&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
@@ -20,8 +20,9 @@ mdefine_line|#define XT_PUTENTRY(XAD, FLAG, OFF, LEN, ADDR)&bslash;&n;{&bslash;&
 DECL|macro|XT_PAGE
 mdefine_line|#define XT_PAGE(IP, MP) BT_PAGE(IP, MP, xtpage_t, i_xtroot)
 multiline_comment|/* get page buffer for specified block address */
+multiline_comment|/* ToDo: Replace this ugly macro with a function */
 DECL|macro|XT_GETPAGE
-mdefine_line|#define XT_GETPAGE(IP, BN, MP, SIZE, P, RC)&bslash;&n;{&bslash;&n;        BT_GETPAGE(IP, BN, MP, xtpage_t, SIZE, P, RC, i_xtroot)&bslash;&n;        if (!(RC))&bslash;&n;        {&bslash;&n;                if ((le16_to_cpu((P)-&gt;header.nextindex) &lt; XTENTRYSTART) ||&bslash;&n;                    (le16_to_cpu((P)-&gt;header.nextindex) &gt; le16_to_cpu((P)-&gt;header.maxentry)) ||&bslash;&n;                    (le16_to_cpu((P)-&gt;header.maxentry) &gt; (((BN)==0)?XTROOTMAXSLOT:PSIZE&gt;&gt;L2XTSLOTSIZE)))&bslash;&n;                {&bslash;&n;                        jfs_err(&quot;XT_GETPAGE: xtree page corrupt&quot;);&bslash;&n;&t;&t;&t;BT_PUTPAGE(MP);&bslash;&n;&t;&t;&t;updateSuper((IP)-&gt;i_sb, FM_DIRTY);&bslash;&n;&t;&t;&t;MP = NULL;&bslash;&n;                        RC = -EIO;&bslash;&n;                }&bslash;&n;        }&bslash;&n;}
+mdefine_line|#define XT_GETPAGE(IP, BN, MP, SIZE, P, RC)&bslash;&n;{&bslash;&n;&t;BT_GETPAGE(IP, BN, MP, xtpage_t, SIZE, P, RC, i_xtroot)&bslash;&n;&t;if (!(RC))&bslash;&n;&t;{&bslash;&n;&t;&t;if ((le16_to_cpu((P)-&gt;header.nextindex) &lt; XTENTRYSTART) ||&bslash;&n;&t;&t;    (le16_to_cpu((P)-&gt;header.nextindex) &gt; le16_to_cpu((P)-&gt;header.maxentry)) ||&bslash;&n;&t;&t;    (le16_to_cpu((P)-&gt;header.maxentry) &gt; (((BN)==0)?XTROOTMAXSLOT:PSIZE&gt;&gt;L2XTSLOTSIZE)))&bslash;&n;&t;&t;{&bslash;&n;&t;&t;&t;jfs_error((IP)-&gt;i_sb, &quot;XT_GETPAGE: xtree page corrupt&quot;);&bslash;&n;&t;&t;&t;BT_PUTPAGE(MP);&bslash;&n;&t;&t;&t;MP = NULL;&bslash;&n;&t;&t;&t;RC = -EIO;&bslash;&n;&t;&t;}&bslash;&n;        }&bslash;&n;}
 multiline_comment|/* for consistency */
 DECL|macro|XT_PUTPAGE
 mdefine_line|#define XT_PUTPAGE(MP) BT_PUTPAGE(MP)
@@ -5094,13 +5095,27 @@ id|XT_INSERT
 r_return
 id|rc
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|cmp
-op_eq
+op_ne
 l_int|0
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;xtExtend: xtSearch did not find extent&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* retrieve search result */
 id|XT_GETSEARCH
 c_func
@@ -5127,7 +5142,8 @@ id|p-&gt;xad
 id|index
 )braket
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 (paren
 id|offsetXAD
@@ -5142,10 +5158,29 @@ c_func
 id|xad
 )paren
 )paren
-op_eq
+op_ne
 id|xoff
 )paren
+(brace
+id|XT_PUTPAGE
+c_func
+(paren
+id|mp
+)paren
 suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;xtExtend: extension is not contiguous&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * acquire a transaction lock on the leaf page;&n;&t; *&n;&t; * action: xad insertion/extension;&n;&t; */
 id|BT_MARK_DIRTY
 c_func
@@ -5718,13 +5753,27 @@ id|XT_INSERT
 r_return
 id|rc
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|cmp
-op_eq
+op_ne
 l_int|0
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;xtTailgate: couldn&squot;t find extent&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* retrieve search result */
 id|XT_GETSEARCH
 c_func
@@ -5751,15 +5800,35 @@ c_func
 id|p-&gt;header.nextindex
 )paren
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|index
-op_eq
+op_ne
 id|nextindex
 op_minus
 l_int|1
 )paren
+(brace
+id|XT_PUTPAGE
+c_func
+(paren
+id|mp
+)paren
 suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;xtTailgate: the entry found is not the last entry&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|BT_MARK_DIRTY
 c_func
 (paren
@@ -6432,7 +6501,6 @@ c_func
 id|nxad
 )paren
 suffix:semicolon
-multiline_comment|/*&n;printf(&quot;xtUpdate: nxflag:0x%x nxoff:0x%lx nxlen:0x%x nxaddr:0x%lx&bslash;n&quot;,&n;        nxad-&gt;flag, (ulong)nxoff, nxlen, (ulong)nxaddr);&n;*/
 r_if
 c_cond
 (paren
@@ -6459,13 +6527,27 @@ id|XT_INSERT
 r_return
 id|rc
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|cmp
-op_eq
+op_ne
 l_int|0
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;xtUpdate: Could not find extent&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* retrieve search result */
 id|XT_GETSEARCH
 c_func
@@ -6568,26 +6650,46 @@ c_func
 id|xad
 )paren
 suffix:semicolon
-multiline_comment|/*&n;printf(&quot;xtUpdate: xflag:0x%x xoff:0x%lx xlen:0x%x xaddr:0x%lx&bslash;n&quot;,&n;        xflag, (ulong)xoff, xlen, (ulong)xaddr);&n;*/
 multiline_comment|/* nXAD must be completely contained within XAD */
-m_assert
+r_if
+c_cond
+(paren
 (paren
 id|xoff
-op_le
+OG
 id|nxoff
 )paren
-suffix:semicolon
-m_assert
+op_logical_or
 (paren
 id|nxoff
 op_plus
 id|nxlen
-op_le
+OG
 id|xoff
 op_plus
 id|xlen
 )paren
+)paren
+(brace
+id|XT_PUTPAGE
+c_func
+(paren
+id|mp
+)paren
 suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;xtUpdate: nXAD in not completely contained within XAD&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|index
 op_assign
 id|index0
@@ -7166,13 +7268,33 @@ id|nxoff
 r_goto
 id|out
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|xoff
-OL
+op_ge
 id|nxoff
 )paren
+(brace
+id|XT_PUTPAGE
+c_func
+(paren
+id|mp
+)paren
 suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;xtUpdate: xoff &gt;= nxoff&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* #endif _JFS_WIP_COALESCE */
 multiline_comment|/*&n;&t; * split XAD into (lXAD, nXAD):&n;&t; *&n;&t; *          |---nXAD---&gt;&n;&t; * --|----------XAD----------|--&n;&t; *   |-lXAD-|&n;&t; */
 id|updateRight
@@ -7210,7 +7332,6 @@ id|p-&gt;header.maxentry
 )paren
 )paren
 (brace
-multiline_comment|/*&n;printf(&quot;xtUpdate.updateRight.split p:0x%p&bslash;n&quot;, p);&n;*/
 id|rootsplit
 op_assign
 id|p-&gt;header.flag
@@ -7708,7 +7829,6 @@ id|p-&gt;header.maxentry
 )paren
 )paren
 (brace
-multiline_comment|/*&n;printf(&quot;xtUpdate: updateRight+Left recompute split pages: p:0x%p&bslash;n&quot;, p);&n;*/
 id|XT_PUTPAGE
 c_func
 (paren
@@ -7741,13 +7861,27 @@ id|XT_INSERT
 r_return
 id|rc
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|cmp
-op_eq
+op_ne
 l_int|0
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;xtUpdate: xtSearch failed&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* retrieve search result */
 id|XT_GETSEARCH
 c_func
@@ -7765,13 +7899,33 @@ comma
 id|index0
 )paren
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|index0
-op_eq
+op_ne
 id|index
 )paren
+(brace
+id|XT_PUTPAGE
+c_func
+(paren
+id|mp
+)paren
 suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;xtUpdate: unexpected value of index&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * split XAD into (nXAD, rXAD)&n;&t; *&n;&t; *          ---nXAD---|&n;&t; * --|----------XAD----------|--&n;&t; *                    |-rXAD-|&n;&t; */
 id|updateLeft
@@ -9480,6 +9634,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * NAME:        xtRelocate()&n; *&n; * FUNCTION:    relocate xtpage or data extent of regular file;&n; *              This function is mainly used by defragfs utility.&n; *&n; * NOTE:        This routine does not have the logic to handle&n; *              uncommitted allocated extent. The caller should call&n; *              txCommit() to commit all the allocation before call&n; *              this routine.&n; */
+r_int
 DECL|function|xtRelocate
 id|xtRelocate
 c_func
@@ -13089,13 +13244,27 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|cmp
-op_eq
+op_ne
 l_int|0
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;xtTruncate_pmap: did not find extent&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|XT_GETSEARCH
 c_func
 (paren

@@ -199,6 +199,10 @@ DECL|macro|BTTV_NEBULA_DIGITV
 mdefine_line|#define BTTV_NEBULA_DIGITV  0x68
 DECL|macro|BTTV_PV143
 mdefine_line|#define BTTV_PV143          0x69
+DECL|macro|BTTV_IVC100
+mdefine_line|#define BTTV_IVC100         0x6e
+DECL|macro|BTTV_IVC120
+mdefine_line|#define BTTV_IVC120         0x6f
 multiline_comment|/* i2c address list */
 DECL|macro|I2C_TSA5522
 mdefine_line|#define I2C_TSA5522        0xc2
@@ -352,6 +356,12 @@ r_int
 id|msp34xx_alt
 suffix:colon
 l_int|1
+suffix:semicolon
+multiline_comment|/* flag: video pci function is unused */
+DECL|member|no_video
+r_int
+r_int
+id|no_video
 suffix:semicolon
 multiline_comment|/* other settings */
 DECL|member|pll

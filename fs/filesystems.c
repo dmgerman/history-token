@@ -215,6 +215,13 @@ r_return
 id|res
 suffix:semicolon
 )brace
+DECL|variable|register_filesystem
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|register_filesystem
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;unregister_filesystem - unregister a file system&n; *&t;@fs: filesystem to unregister&n; *&n; *&t;Remove a file system that was previously successfully registered&n; *&t;with the kernel. An error is returned if the file system is not found.&n; *&t;Zero is returned on a success.&n; *&t;&n; *&t;Once this function has returned the &amp;struct file_system_type structure&n; *&t;may be freed or reused.&n; */
 DECL|function|unregister_filesystem
 r_int
@@ -304,6 +311,13 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+DECL|variable|unregister_filesystem
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unregister_filesystem
+)paren
+suffix:semicolon
 DECL|function|fs_index
 r_static
 r_int
@@ -902,4 +916,11 @@ r_return
 id|fs
 suffix:semicolon
 )brace
+DECL|variable|get_fs_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_fs_type
+)paren
+suffix:semicolon
 eof

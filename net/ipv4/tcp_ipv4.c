@@ -588,9 +588,17 @@ c_func
 id|sk2
 )paren
 op_logical_and
+(paren
+op_logical_neg
+id|sk-&gt;sk_bound_dev_if
+op_logical_or
+op_logical_neg
+id|sk2-&gt;sk_bound_dev_if
+op_logical_or
 id|sk-&gt;sk_bound_dev_if
 op_eq
 id|sk2-&gt;sk_bound_dev_if
+)paren
 )paren
 (brace
 r_if

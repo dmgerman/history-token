@@ -2,6 +2,7 @@ multiline_comment|/* $Id: cache.c,v 1.4 2000/01/25 00:11:38 prumpf Exp $&n; *&n;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
@@ -22,6 +23,13 @@ suffix:semicolon
 DECL|variable|icache_stride
 r_int
 id|icache_stride
+suffix:semicolon
+DECL|variable|dcache_stride
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dcache_stride
+)paren
 suffix:semicolon
 DECL|variable|cache_info
 r_struct
@@ -88,6 +96,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|flush_cache_all_local
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_cache_all_local
+)paren
+suffix:semicolon
 multiline_comment|/* flushes EVERYTHING (tlb &amp; cache) */
 r_void
 DECL|function|flush_all_caches
@@ -108,6 +123,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|flush_all_caches
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_all_caches
+)paren
+suffix:semicolon
 r_void
 DECL|function|update_mmu_cache
 id|update_mmu_cache
@@ -883,4 +905,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
+DECL|variable|__flush_dcache_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__flush_dcache_page
+)paren
+suffix:semicolon
 eof

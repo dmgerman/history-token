@@ -595,7 +595,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* Calculate offset of a buffer object within the shared memory window */
 DECL|macro|BUF_OFFSET
-mdefine_line|#define BUF_OFFSET(X)   ((unsigned int)&amp;(((struct buf_window *)BFM_BASE)-&gt;X))
+mdefine_line|#define BUF_OFFSET(X)   offsetof(struct buf_window, X)
 macro_line|#pragma pack()
 multiline_comment|/*      Device driver private information&n; *      =================================&n; */
 multiline_comment|/*      Per port (line or channel) information&n; */

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/fs/bad_inode.c&n; *&n; *  Copyright (C) 1997, Stephen Tweedie&n; *&n; *  Provide stub functions for unreadable inodes&n; *&n; *  Fabian Frederick : August 2003 - All file operations assigned to EIO&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -311,6 +312,13 @@ op_amp
 id|bad_file_ops
 suffix:semicolon
 )brace
+DECL|variable|make_bad_inode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|make_bad_inode
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This tests whether an inode has been flagged as bad. The test uses&n; * &amp;bad_inode_ops to cover the case of invalidated inodes as well as&n; * those created by make_bad_inode() above.&n; */
 multiline_comment|/**&n; *&t;is_bad_inode - is an inode errored&n; *&t;@inode: inode to test&n; *&n; *&t;Returns true if the inode in question has been marked as bad.&n; */
 DECL|function|is_bad_inode
@@ -333,4 +341,11 @@ id|bad_inode_ops
 )paren
 suffix:semicolon
 )brace
+DECL|variable|is_bad_inode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|is_bad_inode
+)paren
+suffix:semicolon
 eof

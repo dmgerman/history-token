@@ -512,10 +512,10 @@ c_func
 (paren
 id|dp-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Might happen during shutdown.&n;&t; */
@@ -627,10 +627,10 @@ c_func
 (paren
 id|dp-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 r_if
@@ -728,10 +728,10 @@ c_func
 (paren
 id|dp-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 r_if
@@ -977,10 +977,10 @@ c_func
 (paren
 id|dp-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 id|XFS_STATS_INC
@@ -1242,10 +1242,10 @@ c_func
 (paren
 id|dp-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 id|XFS_STATS_INC
@@ -1474,10 +1474,10 @@ c_func
 (paren
 id|dp-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 id|XFS_STATS_INC
@@ -1754,10 +1754,10 @@ c_func
 (paren
 id|dp-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 r_if
@@ -1990,10 +1990,10 @@ c_func
 (paren
 id|dp-&gt;i_d.di_mode
 op_amp
-id|IFMT
+id|S_IFMT
 )paren
 op_eq
-id|IFDIR
+id|S_IFDIR
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fill in the arg structure for this request.&n;&t; */

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;linux/arch/alpha/kernel/smp.c&n; *&n; *      2001-07
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -98,6 +99,13 @@ suffix:semicolon
 DECL|variable|cpu_online_map
 id|cpumask_t
 id|cpu_online_map
+suffix:semicolon
+DECL|variable|cpu_online_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_online_map
+)paren
 suffix:semicolon
 multiline_comment|/* cpus reported in the hwrpb */
 DECL|variable|__initdata

@@ -57,21 +57,10 @@ id|skb
 (brace
 macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 multiline_comment|/* ip_refrag calls ip_fragment, which doesn&squot;t copy the MAC header. */
-r_if
-c_cond
-(paren
-id|skb-&gt;nf_bridge
-)paren
-id|memcpy
+id|nf_bridge_maybe_copy_header
 c_func
 (paren
-id|skb-&gt;data
-op_minus
-l_int|16
-comma
-id|skb-&gt;nf_bridge-&gt;hh
-comma
-l_int|16
+id|skb
 )paren
 suffix:semicolon
 macro_line|#endif

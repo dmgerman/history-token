@@ -2054,6 +2054,8 @@ id|vp
 comma
 l_int|NULL
 comma
+l_int|0
+comma
 id|XFS_IOC_FREEZE
 comma
 l_int|0
@@ -2120,6 +2122,8 @@ id|vp
 )paren
 comma
 l_int|NULL
+comma
+l_int|0
 comma
 id|XFS_IOC_THAW
 comma

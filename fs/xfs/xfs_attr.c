@@ -313,7 +313,7 @@ c_func
 (paren
 id|ip
 comma
-id|IREAD
+id|S_IRUSR
 comma
 id|cred
 )paren
@@ -789,7 +789,7 @@ c_func
 (paren
 id|dp
 comma
-id|IWRITE
+id|S_IWUSR
 comma
 id|cred
 )paren
@@ -1714,7 +1714,7 @@ c_func
 (paren
 id|dp
 comma
-id|IWRITE
+id|S_IWUSR
 comma
 id|cred
 )paren
@@ -2447,7 +2447,7 @@ c_func
 (paren
 id|dp
 comma
-id|IREAD
+id|S_IRUSR
 comma
 id|cred
 )paren

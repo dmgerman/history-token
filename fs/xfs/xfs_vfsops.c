@@ -673,7 +673,7 @@ op_ne
 id|XFSMNT_NOALIGN
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * At this point the superblock has not been read&n;&t;&t; * in, therefore we do not know the block size.&n;&t;&t; * Before, the mount call ends we will convert&n;&t;&t; * these to FSBs.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * At this point the superblock has not been read&n;&t;&t; * in, therefore we do not know the block size.&n;&t;&t; * Before the mount call ends we will convert&n;&t;&t; * these to FSBs.&n;&t;&t; */
 id|mp-&gt;m_dalign
 op_assign
 id|ap-&gt;sunit
@@ -960,6 +960,17 @@ op_assign
 id|ap-&gt;iosizelog
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ap-&gt;flags
+op_amp
+id|XFSMNT_IDELETE
+)paren
+id|mp-&gt;m_flags
+op_or_assign
+id|XFS_MOUNT_IDELETE
+suffix:semicolon
 multiline_comment|/*&n;&t; * no recovery flag requires a read-only mount&n;&t; */
 r_if
 c_cond
@@ -2158,6 +2169,11 @@ id|pincount
 comma
 id|error
 suffix:semicolon
+r_int
+id|count
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2230,6 +2246,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* This loop must run at least twice.&n;&t;&t; * The first instance of the loop will flush&n;&t;&t; * most meta data but that will generate more&n;&t;&t; * meta data (typically directory updates).&n;&t;&t; * Which then must be flushed and logged before&n;&t;&t; * we can write the unmount record.&n;&t;&t; */
 r_do
 (brace
 id|VFS_SYNC
@@ -2255,11 +2272,31 @@ op_amp
 id|pincount
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|0
+op_eq
+id|pincount
+)paren
+(brace
+id|delay
+c_func
+(paren
+l_int|50
+)paren
+suffix:semicolon
+id|count
+op_increment
+suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
 (paren
-id|pincount
+id|count
+OL
+l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Ok now write out an unmount record */
@@ -5156,6 +5193,8 @@ DECL|macro|MNTOPT_OSYNCISOSYNC
 mdefine_line|#define MNTOPT_OSYNCISOSYNC &quot;osyncisosync&quot; /* o_sync is REALLY o_sync */
 DECL|macro|MNTOPT_64BITINODE
 mdefine_line|#define MNTOPT_64BITINODE   &quot;inode64&quot;  /* inodes can be allocated anywhere */
+DECL|macro|MNTOPT_IKEEP
+mdefine_line|#define MNTOPT_IKEEP&t;&quot;ikeep&quot;&t;&t;/* free empty inode clusters */
 r_int
 DECL|function|xfs_parseargs
 id|xfs_parseargs
@@ -5212,6 +5251,11 @@ suffix:semicolon
 r_int
 id|iosize
 suffix:semicolon
+id|args-&gt;flags
+op_or_assign
+id|XFSMNT_IDELETE
+suffix:semicolon
+multiline_comment|/* default to on */
 r_if
 c_cond
 (paren
@@ -5926,6 +5970,26 @@ id|MNTOPT_NOLOGFLUSH
 id|args-&gt;flags
 op_or_assign
 id|XFSMNT_NOLOGFLUSH
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|this_char
+comma
+id|MNTOPT_IKEEP
+)paren
+)paren
+(brace
+id|args-&gt;flags
+op_and_assign
+op_complement
+id|XFSMNT_IDELETE
 suffix:semicolon
 )brace
 r_else

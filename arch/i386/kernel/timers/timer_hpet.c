@@ -55,10 +55,10 @@ id|monotonic_base
 suffix:semicolon
 DECL|variable|monotonic_lock
 r_static
-id|rwlock_t
+id|seqlock_t
 id|monotonic_lock
 op_assign
-id|RW_LOCK_UNLOCKED
+id|SEQLOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* convert from cycles(64bits) =&gt; nanoseconds (64bits)&n; *  basic equation:&n; *&t;&t;ns = cycles / (freq / ns_per_sec)&n; *&t;&t;ns = cycles * (ns_per_sec / freq)&n; *&t;&t;ns = cycles * (10^9 / (cpu_mhz * 10^6))&n; *&t;&t;ns = cycles * (10^3 / cpu_mhz)&n; *&n; *&t;Then we use scaling math (suggested by george@mvista.com) to get:&n; *&t;&t;ns = cycles * (10^3 * SC / cpu_mhz) / SC&n; *&t;&t;ns = cycles * cyc2ns_scale / SC&n; *&n; *&t;And since SC is a constant power of two, we can convert the div&n; *  into a shift.&n; *&t;&t;&t;-johnstul@us.ibm.com &quot;math is hard, lets go shopping!&quot;&n; */
 DECL|variable|cyc2ns_scale
@@ -137,8 +137,15 @@ id|this_offset
 comma
 id|base
 suffix:semicolon
+r_int
+id|seq
+suffix:semicolon
 multiline_comment|/* atomically read monotonic base &amp; last_offset */
-id|read_lock_irq
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin
 c_func
 (paren
 op_amp
@@ -164,11 +171,18 @@ id|base
 op_assign
 id|monotonic_base
 suffix:semicolon
-id|read_unlock_irq
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry
 c_func
 (paren
 op_amp
 id|monotonic_lock
+comma
+id|seq
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Read the Time Stamp Counter */
@@ -259,7 +273,7 @@ r_int
 r_int
 id|offset
 suffix:semicolon
-id|write_lock
+id|write_seqlock
 c_func
 (paren
 op_amp
@@ -369,7 +383,7 @@ op_minus
 id|last_offset
 )paren
 suffix:semicolon
-id|write_unlock
+id|write_sequnlock
 c_func
 (paren
 op_amp

@@ -324,6 +324,13 @@ id|page
 suffix:semicolon
 )brace
 )brace
+DECL|variable|mark_page_accessed
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mark_page_accessed
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * lru_cache_add: add a page to the page lists&n; * @page: the page to add&n; */
 r_static
 id|DEFINE_PER_CPU
@@ -618,6 +625,13 @@ id|page
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__page_cache_release
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__page_cache_release
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Batched page_cache_release().  Decrement the reference count on all the&n; * passed pages.  If it fell to zero then remove the page from the LRU and&n; * free it.&n; *&n; * Avoid taking zone-&gt;lru_lock if possible, but if it is taken, retain it&n; * for the remainder of the operation.&n; *&n; * The locking in this function is against shrink_cache(): we recheck the&n; * page count inside the lock to see whether shrink_cache grabbed the page&n; * via the LRU.  If it did, give up: shrink_cache will free it.&n; */
 DECL|function|release_pages
 r_void
@@ -1128,6 +1142,13 @@ id|pvec
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__pagevec_lru_add
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__pagevec_lru_add
+)paren
+suffix:semicolon
 DECL|function|__pagevec_lru_add_active
 r_void
 id|__pagevec_lru_add_active

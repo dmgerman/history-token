@@ -64,10 +64,10 @@ id|monotonic_base
 suffix:semicolon
 DECL|variable|monotonic_lock
 r_static
-id|rwlock_t
+id|seqlock_t
 id|monotonic_lock
 op_assign
-id|RW_LOCK_UNLOCKED
+id|SEQLOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* helper macro to atomically read both cyclone counter registers */
 DECL|macro|read_cyclone_counter
@@ -103,7 +103,7 @@ id|this_offset
 comma
 id|last_offset
 suffix:semicolon
-id|write_lock
+id|write_seqlock
 c_func
 (paren
 op_amp
@@ -254,7 +254,7 @@ id|last_offset
 op_amp
 id|CYCLONE_TIMER_MASK
 suffix:semicolon
-id|write_unlock
+id|write_sequnlock
 c_func
 (paren
 op_amp
@@ -400,8 +400,15 @@ r_int
 r_int
 id|ret
 suffix:semicolon
+r_int
+id|seq
+suffix:semicolon
 multiline_comment|/* atomically read monotonic base &amp; last_offset */
-id|read_lock_irq
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin
 c_func
 (paren
 op_amp
@@ -427,11 +434,18 @@ id|base
 op_assign
 id|monotonic_base
 suffix:semicolon
-id|read_unlock_irq
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry
 c_func
 (paren
 op_amp
 id|monotonic_lock
+comma
+id|seq
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Read the cyclone counter */

@@ -222,29 +222,30 @@ mdefine_line|#define VWAIT&t;&t;       0x4&t;/* waiting for VINACT/VRECLM to end
 DECL|macro|VMODIFIED
 mdefine_line|#define VMODIFIED&t;       0x8&t;/* XFS inode state possibly differs */
 multiline_comment|/* to the Linux inode state.&t;*/
+multiline_comment|/*&n; * Values for the VOP_RWLOCK and VOP_RWUNLOCK flags parameter.&n; */
 DECL|enum|vrwlock
-DECL|enumerator|VRWLOCK_NONE
-DECL|enumerator|VRWLOCK_READ
 r_typedef
 r_enum
 id|vrwlock
 (brace
+DECL|enumerator|VRWLOCK_NONE
 id|VRWLOCK_NONE
 comma
+DECL|enumerator|VRWLOCK_READ
 id|VRWLOCK_READ
 comma
 DECL|enumerator|VRWLOCK_WRITE
-DECL|enumerator|VRWLOCK_WRITE_DIRECT
 id|VRWLOCK_WRITE
 comma
+DECL|enumerator|VRWLOCK_WRITE_DIRECT
 id|VRWLOCK_WRITE_DIRECT
 comma
 DECL|enumerator|VRWLOCK_TRY_READ
-DECL|enumerator|VRWLOCK_TRY_WRITE
-DECL|typedef|vrwlock_t
 id|VRWLOCK_TRY_READ
 comma
+DECL|enumerator|VRWLOCK_TRY_WRITE
 id|VRWLOCK_TRY_WRITE
+DECL|typedef|vrwlock_t
 )brace
 id|vrwlock_t
 suffix:semicolon
@@ -329,6 +330,8 @@ comma
 id|loff_t
 op_star
 comma
+r_int
+comma
 r_struct
 id|cred
 op_star
@@ -360,6 +363,8 @@ comma
 id|loff_t
 op_star
 comma
+r_int
+comma
 r_struct
 id|cred
 op_star
@@ -382,6 +387,8 @@ op_star
 comma
 id|loff_t
 op_star
+comma
+r_int
 comma
 r_int
 comma
@@ -413,6 +420,8 @@ comma
 r_struct
 id|file
 op_star
+comma
+r_int
 comma
 r_int
 r_int
@@ -717,6 +726,8 @@ comma
 r_struct
 id|uio
 op_star
+comma
+r_int
 comma
 r_struct
 id|cred
@@ -1220,11 +1231,11 @@ multiline_comment|/*&n; * VOP&squot;s.&n; */
 DECL|macro|_VOP_
 mdefine_line|#define _VOP_(op, vp)&t;(*((vnodeops_t *)(vp)-&gt;v_fops)-&gt;op)
 DECL|macro|VOP_READ
-mdefine_line|#define VOP_READ(vp,file,iov,segs,offset,cr,rv)&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_read, vp)((vp)-&gt;v_fbhv,file,iov,segs,offset,cr)
+mdefine_line|#define VOP_READ(vp,file,iov,segs,offset,ioflags,cr,rv)&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_read, vp)((vp)-&gt;v_fbhv,file,iov,segs,offset,ioflags,cr)
 DECL|macro|VOP_WRITE
-mdefine_line|#define VOP_WRITE(vp,file,iov,segs,offset,cr,rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_write, vp)((vp)-&gt;v_fbhv,file,iov,segs,offset,cr)
+mdefine_line|#define VOP_WRITE(vp,file,iov,segs,offset,ioflags,cr,rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_write, vp)((vp)-&gt;v_fbhv,file,iov,segs,offset,ioflags,cr)
 DECL|macro|VOP_SENDFILE
-mdefine_line|#define VOP_SENDFILE(vp,f,off,cnt,act,targ,cr,rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_sendfile, vp)((vp)-&gt;v_fbhv,f,off,cnt,act,targ,cr)
+mdefine_line|#define VOP_SENDFILE(vp,f,off,ioflags,cnt,act,targ,cr,rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_sendfile, vp)((vp)-&gt;v_fbhv,f,off,ioflags,cnt,act,targ,cr)
 DECL|macro|VOP_BMAP
 mdefine_line|#define VOP_BMAP(vp,of,sz,rw,b,n,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_bmap, vp)((vp)-&gt;v_fbhv,of,sz,rw,b,n)
 DECL|macro|VOP_OPEN
@@ -1254,7 +1265,7 @@ mdefine_line|#define&t;VOP_READDIR(vp,uiop,cr,eofp,rv)&t;&t;&t;&t;&t;&bslash;&n;
 DECL|macro|VOP_SYMLINK
 mdefine_line|#define&t;VOP_SYMLINK(dvp,d,vap,tnm,vpp,cr,rv)&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_symlink, dvp) ((dvp)-&gt;v_fbhv,d,vap,tnm,vpp,cr)
 DECL|macro|VOP_READLINK
-mdefine_line|#define&t;VOP_READLINK(vp,uiop,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_readlink, vp)((vp)-&gt;v_fbhv,uiop,cr)
+mdefine_line|#define&t;VOP_READLINK(vp,uiop,fl,cr,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_readlink, vp)((vp)-&gt;v_fbhv,uiop,fl,cr)
 DECL|macro|VOP_FSYNC
 mdefine_line|#define&t;VOP_FSYNC(vp,f,cr,b,e,rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_fsync, vp)((vp)-&gt;v_fbhv,f,cr,b,e)
 DECL|macro|VOP_INACTIVE
@@ -1295,9 +1306,14 @@ multiline_comment|/*&n; * &squot;last&squot; parameter is unused and left in for
 DECL|macro|VOP_FLUSH_PAGES
 mdefine_line|#define VOP_FLUSH_PAGES(vp, first, last, flags, fiopt, rv)&t;&t;&bslash;&n;&t;rv = _VOP_(vop_flush_pages, vp)((vp)-&gt;v_fbhv,first,last,flags,fiopt)
 DECL|macro|VOP_IOCTL
-mdefine_line|#define VOP_IOCTL(vp, inode, filp, cmd, arg, rv)&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_ioctl, vp)((vp)-&gt;v_fbhv,inode,filp,cmd,arg)
+mdefine_line|#define VOP_IOCTL(vp, inode, filp, fl, cmd, arg, rv)&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_ioctl, vp)((vp)-&gt;v_fbhv,inode,filp,fl,cmd,arg)
 DECL|macro|VOP_IFLUSH
 mdefine_line|#define VOP_IFLUSH(vp, flags, rv)&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_iflush, vp)((vp)-&gt;v_fbhv, flags)
+multiline_comment|/*&n; * Flags for read/write calls - same values as IRIX&n; */
+DECL|macro|IO_ISDIRECT
+mdefine_line|#define IO_ISDIRECT&t;0x00004&t;&t;/* bypass page cache */
+DECL|macro|IO_INVIS
+mdefine_line|#define IO_INVIS&t;0x00020&t;&t;/* don&squot;t update inode timestamps */
 multiline_comment|/*&n; * Flags for VOP_IFLUSH call&n; */
 DECL|macro|FLUSH_SYNC
 mdefine_line|#define FLUSH_SYNC&t;&t;1&t;/* wait for flush to complete&t;*/

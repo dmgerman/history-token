@@ -10808,12 +10808,6 @@ r_struct
 id|atm_vcc
 op_star
 id|atmvcc
-comma
-r_int
-id|vpi
-comma
-r_int
-id|vci
 )paren
 (brace
 r_struct
@@ -10830,6 +10824,16 @@ r_int
 id|result
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+id|vci
+op_assign
+id|atmvcc-&gt;vci
+suffix:semicolon
+r_int
+id|vpi
+op_assign
+id|atmvcc-&gt;vpi
 suffix:semicolon
 multiline_comment|/* we don&squot;t support partial open - it&squot;s not really useful anyway */
 r_if
@@ -10900,14 +10904,6 @@ l_int|0
 )paren
 r_goto
 id|out
-suffix:semicolon
-id|atmvcc-&gt;vpi
-op_assign
-id|vpi
-suffix:semicolon
-id|atmvcc-&gt;vci
-op_assign
-id|vci
 suffix:semicolon
 id|set_bit
 c_func

@@ -1290,7 +1290,6 @@ c_func
 id|verify_compat_iovec
 )paren
 suffix:semicolon
-multiline_comment|/* Should really be in linux/kernel/ksyms.c */
 DECL|variable|dump_thread
 id|EXPORT_SYMBOL
 c_func
@@ -1816,6 +1815,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|memchr
+)paren
+suffix:semicolon
+DECL|variable|csum_partial
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial
 )paren
 suffix:semicolon
 DECL|variable|csum_partial_copy_sparc64

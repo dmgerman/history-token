@@ -264,6 +264,13 @@ id|buf
 )paren
 suffix:semicolon
 )brace
+DECL|variable|bdevname
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bdevname
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * NOTE: this cannot be called from interrupt context.&n; *&n; * But in interrupt context you should really have a struct&n; * block_device anyway and use bdevname() above.&n; */
 DECL|function|__bdevname
 r_const
@@ -353,6 +360,13 @@ r_return
 id|buffer
 suffix:semicolon
 )brace
+DECL|variable|__bdevname
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__bdevname
+)paren
+suffix:semicolon
 r_static
 r_struct
 id|parsed_partitions
@@ -1982,6 +1996,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|read_dev_sector
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|read_dev_sector
+)paren
+suffix:semicolon
 DECL|function|del_gendisk
 r_void
 id|del_gendisk

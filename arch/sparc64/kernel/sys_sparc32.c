@@ -46,6 +46,7 @@ macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/ipc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -186,55 +187,6 @@ c_func
 id|gid_t
 )paren
 suffix:semicolon
-multiline_comment|/* For this source file, we want overflow handling. */
-DECL|macro|high2lowuid
-macro_line|#undef high2lowuid
-DECL|macro|high2lowgid
-macro_line|#undef high2lowgid
-DECL|macro|low2highuid
-macro_line|#undef low2highuid
-DECL|macro|low2highgid
-macro_line|#undef low2highgid
-DECL|macro|SET_UID16
-macro_line|#undef SET_UID16
-DECL|macro|SET_GID16
-macro_line|#undef SET_GID16
-DECL|macro|NEW_TO_OLD_UID
-macro_line|#undef NEW_TO_OLD_UID
-DECL|macro|NEW_TO_OLD_GID
-macro_line|#undef NEW_TO_OLD_GID
-DECL|macro|SET_OLDSTAT_UID
-macro_line|#undef SET_OLDSTAT_UID
-DECL|macro|SET_OLDSTAT_GID
-macro_line|#undef SET_OLDSTAT_GID
-DECL|macro|SET_STAT_UID
-macro_line|#undef SET_STAT_UID
-DECL|macro|SET_STAT_GID
-macro_line|#undef SET_STAT_GID
-DECL|macro|high2lowuid
-mdefine_line|#define high2lowuid(uid) ((uid) &gt; 65535) ? (u16)overflowuid : (u16)(uid)
-DECL|macro|high2lowgid
-mdefine_line|#define high2lowgid(gid) ((gid) &gt; 65535) ? (u16)overflowgid : (u16)(gid)
-DECL|macro|low2highuid
-mdefine_line|#define low2highuid(uid) ((uid) == (u16)-1) ? (uid_t)-1 : (uid_t)(uid)
-DECL|macro|low2highgid
-mdefine_line|#define low2highgid(gid) ((gid) == (u16)-1) ? (gid_t)-1 : (gid_t)(gid)
-DECL|macro|SET_UID16
-mdefine_line|#define SET_UID16(var, uid)&t;var = high2lowuid(uid)
-DECL|macro|SET_GID16
-mdefine_line|#define SET_GID16(var, gid)&t;var = high2lowgid(gid)
-DECL|macro|NEW_TO_OLD_UID
-mdefine_line|#define NEW_TO_OLD_UID(uid)&t;high2lowuid(uid)
-DECL|macro|NEW_TO_OLD_GID
-mdefine_line|#define NEW_TO_OLD_GID(gid)&t;high2lowgid(gid)
-DECL|macro|SET_OLDSTAT_UID
-mdefine_line|#define SET_OLDSTAT_UID(stat, uid)&t;(stat).st_uid = high2lowuid(uid)
-DECL|macro|SET_OLDSTAT_GID
-mdefine_line|#define SET_OLDSTAT_GID(stat, gid)&t;(stat).st_gid = high2lowgid(gid)
-DECL|macro|SET_STAT_UID
-mdefine_line|#define SET_STAT_UID(stat, uid)&t;&t;(stat).st_uid = high2lowuid(uid)
-DECL|macro|SET_STAT_GID
-mdefine_line|#define SET_STAT_GID(stat, gid)&t;&t;(stat).st_gid = high2lowgid(gid)
 DECL|function|sys32_chown16
 id|asmlinkage
 r_int

@@ -1,5 +1,6 @@
 macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;linux/errno.h&quot;
+macro_line|#include &quot;linux/module.h&quot;
 r_extern
 r_int
 r_int
@@ -48,6 +49,13 @@ id|sum
 )paren
 suffix:semicolon
 )brace
+DECL|variable|csum_partial
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial
+)paren
+suffix:semicolon
 DECL|function|csum_partial_copy_to
 r_int
 r_int

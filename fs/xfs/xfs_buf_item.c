@@ -404,6 +404,20 @@ op_star
 id|bp
 )paren
 suffix:semicolon
+id|STATIC
+r_void
+id|xfs_buf_do_callbacks
+c_func
+(paren
+id|xfs_buf_t
+op_star
+id|bp
+comma
+id|xfs_log_item_t
+op_star
+id|lip
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This returns the number of log iovecs needed to log the&n; * given buf log item.&n; *&n; * It calculates this as 1 iovec for the buf log format structure&n; * and 1 for each stretch of non-contiguous chunks to be logged.&n; * Contiguous chunks are logged in a single iovec.&n; *&n; * If the XFS_BLI_STALE flag has been set, then log nothing.&n; */
 id|uint
 DECL|function|xfs_buf_item_size
@@ -1274,7 +1288,6 @@ id|bp
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/**&n;&t;&t;ASSERT(bp-&gt;b_pincount == 0);&n;**/
 id|ASSERT
 c_func
 (paren
@@ -1299,6 +1312,47 @@ comma
 id|bp
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If we get called here because of an IO error, we may&n;&t;&t; * or may not have the item on the AIL. xfs_trans_delete_ail()&n;&t;&t; * will take care of that situation.&n;&t;&t; * xfs_trans_delete_ail() drops the AIL lock.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|bip-&gt;bli_flags
+op_amp
+id|XFS_BLI_STALE_INODE
+)paren
+(brace
+id|xfs_buf_do_callbacks
+c_func
+(paren
+id|bp
+comma
+(paren
+id|xfs_log_item_t
+op_star
+)paren
+id|bip
+)paren
+suffix:semicolon
+id|XFS_BUF_FSPRIVATE
+c_func
+(paren
+id|bp
+comma
+r_void
+op_star
+)paren
+op_assign
+l_int|NULL
+suffix:semicolon
+id|XFS_BUF_CLR_IODONE_FUNC
+c_func
+(paren
+id|bp
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|AIL_LOCK
 c_func
 (paren
@@ -1307,7 +1361,6 @@ comma
 id|s
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If we get called here because of an IO error, we may&n;&t;&t; * or may not have the item on the AIL. xfs_trans_delete_ail()&n;&t;&t; * will take care of that situation.&n;&t;&t; * xfs_trans_delete_ail() drops the AIL lock.&n;&t;&t; */
 id|xfs_trans_delete_ail
 c_func
 (paren
@@ -1343,6 +1396,7 @@ op_eq
 l_int|NULL
 )paren
 suffix:semicolon
+)brace
 id|xfs_buf_relse
 c_func
 (paren

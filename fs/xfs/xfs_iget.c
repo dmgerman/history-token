@@ -644,6 +644,11 @@ id|ip
 )paren
 suffix:semicolon
 )brace
+id|ip-&gt;i_flags
+op_and_assign
+op_complement
+id|XFS_ISTALE
+suffix:semicolon
 id|vn_trace_exit
 c_func
 (paren

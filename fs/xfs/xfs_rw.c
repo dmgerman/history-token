@@ -136,25 +136,21 @@ suffix:semicolon
 id|ip-&gt;i_d.di_mode
 op_and_assign
 op_complement
-id|ISUID
+id|S_ISUID
 suffix:semicolon
-multiline_comment|/*&n;&t; * Note that we don&squot;t have to worry about mandatory&n;&t; * file locking being disabled here because we only&n;&t; * clear the ISGID bit if the Group execute bit is&n;&t; * on, but if it was on then mandatory locking wouldn&squot;t&n;&t; * have been enabled.&n;&t; */
+multiline_comment|/*&n;&t; * Note that we don&squot;t have to worry about mandatory&n;&t; * file locking being disabled here because we only&n;&t; * clear the S_ISGID bit if the Group execute bit is&n;&t; * on, but if it was on then mandatory locking wouldn&squot;t&n;&t; * have been enabled.&n;&t; */
 r_if
 c_cond
 (paren
 id|ip-&gt;i_d.di_mode
 op_amp
-(paren
-id|IEXEC
-op_rshift
-l_int|3
-)paren
+id|S_IXGRP
 )paren
 (brace
 id|ip-&gt;i_d.di_mode
 op_and_assign
 op_complement
-id|ISGID
+id|S_ISGID
 suffix:semicolon
 )brace
 id|xfs_trans_log_inode

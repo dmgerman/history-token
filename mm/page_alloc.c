@@ -2906,6 +2906,13 @@ r_return
 id|page
 suffix:semicolon
 )brace
+DECL|variable|__alloc_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__alloc_pages
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Common helper functions.&n; */
 DECL|function|__get_free_pages
 r_int
@@ -2958,6 +2965,13 @@ id|page
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__get_free_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__get_free_pages
+)paren
+suffix:semicolon
 DECL|function|get_zeroed_page
 r_int
 r_int
@@ -3027,6 +3041,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|get_zeroed_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_zeroed_page
+)paren
+suffix:semicolon
 DECL|function|__pagevec_free
 r_void
 id|__pagevec_free
@@ -3123,6 +3144,13 @@ id|order
 suffix:semicolon
 )brace
 )brace
+DECL|variable|__free_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__free_pages
+)paren
+suffix:semicolon
 DECL|function|free_pages
 r_void
 id|free_pages
@@ -3170,6 +3198,13 @@ id|order
 suffix:semicolon
 )brace
 )brace
+DECL|variable|free_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_pages
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Total amount of free (allocatable) RAM:&n; */
 DECL|function|nr_free_pages
 r_int
@@ -3889,6 +3924,13 @@ op_assign
 id|PAGE_SIZE
 suffix:semicolon
 )brace
+DECL|variable|si_meminfo
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|si_meminfo
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA
 DECL|function|si_meminfo_node
 r_void
@@ -5874,6 +5916,13 @@ op_assign
 op_amp
 id|contig_bootmem_data
 )brace
+suffix:semicolon
+DECL|variable|contig_page_data
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|contig_page_data
+)paren
 suffix:semicolon
 DECL|function|free_area_init
 r_void
