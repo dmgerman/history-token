@@ -143,10 +143,15 @@ id|ti
 suffix:semicolon
 )brace
 multiline_comment|/* thread information allocation */
+macro_line|#if CONFIG_DEBUG_STACK_USAGE
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info(task) &bslash;&n;&t;((struct thread_info *) __get_free_pages(GFP_KERNEL,1))
+mdefine_line|#define alloc_thread_info(tsk)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;struct thread_info *ret;&t;&t;&t;&bslash;&n;&t; &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; &t;ret = kmalloc(THREAD_SIZE, GFP_KERNEL);&t;&t;&bslash;&n;&t; &t;if (ret)&t;&t;&t;&t;&t;&bslash;&n;&t; &t;&t;memset(ret, 0, THREAD_SIZE);&t;&t;&bslash;&n;&t; &t;ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; })
+macro_line|#else
+DECL|macro|alloc_thread_info
+mdefine_line|#define alloc_thread_info(tsk) kmalloc(THREAD_SIZE, GFP_KERNEL)
+macro_line|#endif
 DECL|macro|free_thread_info
-mdefine_line|#define free_thread_info(ti) free_pages((unsigned long) (ti), 1)
+mdefine_line|#define free_thread_info(info) kfree(info)
 DECL|macro|get_thread_info
 mdefine_line|#define get_thread_info(ti) get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
