@@ -7493,12 +7493,14 @@ id|usb_driver
 id|se401_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;se401&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|device_table
 comma
 dot
@@ -7506,8 +7508,9 @@ id|probe
 op_assign
 id|se401_probe
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|se401_disconnect
 )brace
 suffix:semicolon
