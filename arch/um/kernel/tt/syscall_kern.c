@@ -625,13 +625,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*  Unlocked, I don&squot;t care if this is a bit off */
-DECL|variable|nsyscalls
-r_int
-id|nsyscalls
-op_assign
-l_int|0
-suffix:semicolon
 r_extern
 id|syscall_handler_t
 op_star
