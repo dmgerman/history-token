@@ -9097,11 +9097,10 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Buffer read/write and support&n; * =============================&n; */
-DECL|function|end_request
+DECL|function|floppy_end_request
 r_static
-r_inline
 r_void
-id|end_request
+id|floppy_end_request
 c_func
 (paren
 r_struct
@@ -9265,7 +9264,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|end_request
+id|floppy_end_request
 c_func
 (paren
 id|req
@@ -9334,7 +9333,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|end_request
+id|floppy_end_request
 c_func
 (paren
 id|req
