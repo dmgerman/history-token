@@ -423,12 +423,11 @@ l_int|0x00
 )brace
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|ae_config
 r_static
 r_struct
 id|aedsp16_info
 id|ae_config
-id|__initdata
 op_assign
 (brace
 id|DEF_AEDSP16_IOB
@@ -3460,7 +3459,6 @@ suffix:semicolon
 DECL|function|uninit_aedsp16_sb
 r_static
 r_void
-id|__init
 id|uninit_aedsp16_sb
 c_func
 (paren
@@ -3585,7 +3583,6 @@ suffix:semicolon
 DECL|function|uninit_aedsp16_mss
 r_static
 r_void
-id|__init
 id|uninit_aedsp16_mss
 c_func
 (paren
@@ -3739,7 +3736,6 @@ suffix:semicolon
 DECL|function|uninit_aedsp16_mpu
 r_static
 r_void
-id|__init
 id|uninit_aedsp16_mpu
 c_func
 (paren
@@ -3961,7 +3957,7 @@ suffix:semicolon
 DECL|function|uninit_aedsp16
 r_static
 r_void
-id|__init
+id|__exit
 id|uninit_aedsp16
 c_func
 (paren
