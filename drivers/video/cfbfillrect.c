@@ -1763,17 +1763,17 @@ id|fb_info
 op_star
 id|p
 comma
+r_const
 r_struct
 id|fb_fillrect
 op_star
 id|rect
 )paren
 (brace
-r_int
-r_int
-id|height
-comma
-id|fg
+id|u32
+id|bpp
+op_assign
+id|p-&gt;var.bits_per_pixel
 suffix:semicolon
 r_int
 r_int
@@ -1787,6 +1787,14 @@ id|vyres
 suffix:semicolon
 r_int
 r_int
+id|height
+comma
+id|width
+comma
+id|fg
+suffix:semicolon
+r_int
+r_int
 op_star
 id|dst
 suffix:semicolon
@@ -1794,11 +1802,6 @@ r_int
 id|dst_idx
 comma
 id|left
-suffix:semicolon
-id|u32
-id|bpp
-op_assign
-id|p-&gt;var.bits_per_pixel
 suffix:semicolon
 multiline_comment|/* We want rotation but lack hardware to do it for us. */
 r_if
@@ -1873,7 +1876,7 @@ id|y2
 suffix:colon
 id|vyres
 suffix:semicolon
-id|rect-&gt;width
+id|width
 op_assign
 id|x2
 op_minus
@@ -2086,7 +2089,7 @@ id|dst_idx
 comma
 id|pat
 comma
-id|rect-&gt;width
+id|width
 op_star
 id|bpp
 )paren
@@ -2222,7 +2225,7 @@ id|left
 comma
 id|right
 comma
-id|rect-&gt;width
+id|width
 op_star
 id|bpp
 )paren

@@ -256,18 +256,6 @@ DECL|macro|REF_FREQ
 mdefine_line|#define REF_FREQ                    24000000
 DECL|macro|TARGET_N_MAX
 mdefine_line|#define TARGET_N_MAX                30
-DECL|macro|FLYBACK
-mdefine_line|#define FLYBACK                     550
-DECL|macro|V_FRONTPORCH
-mdefine_line|#define V_FRONTPORCH                1
-DECL|macro|H_OFFSET
-mdefine_line|#define H_OFFSET                    40
-DECL|macro|H_SCALEFACTOR
-mdefine_line|#define H_SCALEFACTOR               20
-DECL|macro|H_BLANKSCALE
-mdefine_line|#define H_BLANKSCALE                128
-DECL|macro|H_GRADIENT
-mdefine_line|#define H_GRADIENT                   600
 DECL|macro|MAX_PIXELCLOCK
 mdefine_line|#define MAX_PIXELCLOCK              230000000
 DECL|macro|MIN_PIXELCLOCK
