@@ -32,6 +32,10 @@ id|file
 op_star
 id|wb_file
 suffix:semicolon
+DECL|member|wb_lockowner
+id|fl_owner_t
+id|wb_lockowner
+suffix:semicolon
 DECL|member|wb_inode
 r_struct
 id|inode
