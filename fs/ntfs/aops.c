@@ -4216,7 +4216,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_writepage - write a @page to the backing store&n; * @page:&t;page cache page to write out&n; * @wbc:&t;writeback control structure&n; *&n; * This is called from the VM when it wants to have a dirty ntfs page cache&n; * page cleaned.  The VM has already locked the page and marked it clean.&n; *&n; * For non-resident attributes, ntfs_writepage() writes the @page by calling&n; * the ntfs version of the generic block_write_full_page() function,&n; * ntfs_write_block(), which in turn if necessary creates and writes the&n; * buffers associated with the page asynchronously.&n; *&n; * For resident attributes, OTOH, ntfs_writepage() writes the @page by copying&n; * the data to the mft record (which at this stage is most likely in memory).&n; * The mft record is then marked dirty and written out asynchronously via the&n; * vfs inode dirty code path.&n; *&n; * Based on ntfs_readpage() and fs/buffer.c::block_write_full_page().&n; *&n; * Return 0 on success and -errno on error.&n; */
+multiline_comment|/**&n; * ntfs_writepage - write a @page to the backing store&n; * @page:&t;page cache page to write out&n; * @wbc:&t;writeback control structure&n; *&n; * This is called from the VM when it wants to have a dirty ntfs page cache&n; * page cleaned.  The VM has already locked the page and marked it clean.&n; *&n; * For non-resident attributes, ntfs_writepage() writes the @page by calling&n; * the ntfs version of the generic block_write_full_page() function,&n; * ntfs_write_block(), which in turn if necessary creates and writes the&n; * buffers associated with the page asynchronously.&n; *&n; * For resident attributes, OTOH, ntfs_writepage() writes the @page by copying&n; * the data to the mft record (which at this stage is most likely in memory).&n; * The mft record is then marked dirty and written out asynchronously via the&n; * vfs inode dirty code path for the inode the mft record belongs to or via the&n; * vm page dirty code path for the page the mft record is in.&n; *&n; * Based on ntfs_readpage() and fs/buffer.c::block_write_full_page().&n; *&n; * Return 0 on success and -errno on error.&n; */
 DECL|function|ntfs_writepage
 r_static
 r_int
@@ -4305,6 +4305,15 @@ id|PAGE_CACHE_SHIFT
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * The page may have dirty, unmapped buffers.  Make them&n;&t;&t; * freeable here, so the page does not leak.&n;&t;&t; */
+id|block_invalidatepage
+c_func
+(paren
+id|page
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|unlock_page
 c_func
 (paren
