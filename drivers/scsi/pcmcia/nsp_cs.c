@@ -5877,17 +5877,22 @@ c_loop
 (paren
 id|host
 op_assign
-id|scsi_hostlist
+id|scsi_host_get_next
+c_func
+(paren
+l_int|NULL
+)paren
 suffix:semicolon
 id|host
-op_ne
-l_int|NULL
 suffix:semicolon
 id|host
 op_assign
-id|host-&gt;next
+id|scsi_host_get_next
+c_func
+(paren
+id|host
 )paren
-(brace
+)paren
 r_if
 c_cond
 (paren
@@ -6237,12 +6242,9 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* nsp_cs_config */
-DECL|macro|CS_CHECK
 macro_line|#undef CS_CHECK
-DECL|macro|CFG_CHECK
 macro_line|#undef CFG_CHECK
 multiline_comment|/*======================================================================&n;    After a card is removed, nsp_cs_release() will unregister the net&n;    device, and release the PCMCIA configuration.  If the device is&n;    still open, this will be postponed until it is closed.&n;======================================================================*/
-DECL|function|nsp_cs_release
 r_static
 r_void
 id|nsp_cs_release
@@ -6391,7 +6393,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* nsp_cs_release */
 multiline_comment|/*======================================================================&n;&n;    The card status event handler.  Mostly, this schedules other&n;    stuff to run after an event is received.  A CARD_REMOVAL event&n;    also sets some flags to discourage the net drivers from trying&n;    to talk to the card any more.&n;&n;    When a CARD_REMOVAL event is received, we immediately set a flag&n;    to block future accesses to this device.  All the functions that&n;    actually access the device should check this flag to make sure&n;    the card is still present.&n;    &n;======================================================================*/
-DECL|function|nsp_cs_event
 r_static
 r_int
 id|nsp_cs_event
@@ -6641,7 +6642,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* nsp_cs_event */
 multiline_comment|/*======================================================================*&n; *&t;module entry point&n; *====================================================================*/
-DECL|function|nsp_cs_init
 r_static
 r_int
 id|__init
@@ -6729,7 +6729,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|nsp_cs_cleanup
 r_static
 r_void
 id|__exit
@@ -6789,14 +6788,12 @@ id|dev_list
 suffix:semicolon
 )brace
 )brace
-DECL|variable|nsp_cs_init
 id|module_init
 c_func
 (paren
 id|nsp_cs_init
 )paren
 suffix:semicolon
-DECL|variable|nsp_cs_cleanup
 id|module_exit
 c_func
 (paren
