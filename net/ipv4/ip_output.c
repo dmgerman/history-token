@@ -2275,11 +2275,11 @@ macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 multiline_comment|/* for bridged IP traffic encapsulated inside f.e. a vlan header,&n;&t; * we need to make room for the encapsulating header */
 id|ll_rs
 op_assign
-id|LL_RESERVED_SPACE
+id|LL_RESERVED_SPACE_EXTRA
 c_func
 (paren
 id|rt-&gt;u.dst.dev
-op_plus
+comma
 id|nf_bridge_pad
 c_func
 (paren
