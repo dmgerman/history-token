@@ -11,6 +11,9 @@ r_struct
 id|console_font_op
 suffix:semicolon
 r_struct
+id|console_font
+suffix:semicolon
+r_struct
 id|module
 suffix:semicolon
 multiline_comment|/*&n; * this is what the terminal answers to a ESC-Z or csi0c query.&n; */
@@ -257,7 +260,10 @@ id|vc_data
 op_star
 comma
 r_struct
-id|console_font_op
+id|console_font
+op_star
+comma
+r_char
 op_star
 )paren
 suffix:semicolon

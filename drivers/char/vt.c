@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/font.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -14551,6 +14552,34 @@ op_star
 id|op
 )paren
 (brace
+r_struct
+id|console_font
+id|font
+op_assign
+(brace
+dot
+id|width
+op_assign
+id|op-&gt;width
+comma
+dot
+id|height
+op_assign
+id|op-&gt;height
+)brace
+suffix:semicolon
+r_char
+id|name
+(braket
+id|MAX_FONT_NAME
+)braket
+suffix:semicolon
+r_char
+op_star
+id|s
+op_assign
+id|name
+suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
@@ -14569,6 +14598,48 @@ id|KD_TEXT
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|op-&gt;data
+)paren
+id|s
+op_assign
+l_int|NULL
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|strncpy_from_user
+c_func
+(paren
+id|name
+comma
+id|op-&gt;data
+comma
+id|MAX_FONT_NAME
+op_minus
+l_int|1
+)paren
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_else
+id|name
+(braket
+id|MAX_FONT_NAME
+op_minus
+l_int|1
+)braket
+op_assign
+l_int|0
 suffix:semicolon
 id|acquire_console_sem
 c_func
@@ -14594,7 +14665,10 @@ id|currcons
 dot
 id|d
 comma
-id|op
+op_amp
+id|font
+comma
+id|s
 )paren
 suffix:semicolon
 r_else
@@ -14608,6 +14682,22 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rc
+)paren
+(brace
+id|op-&gt;width
+op_assign
+id|font.width
+suffix:semicolon
+id|op-&gt;height
+op_assign
+id|font.height
+suffix:semicolon
+)brace
 r_return
 id|rc
 suffix:semicolon

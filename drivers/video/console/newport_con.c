@@ -91,7 +91,7 @@ r_int
 id|unit
 comma
 r_struct
-id|console_font_op
+id|console_font
 op_star
 id|op
 )paren
@@ -2636,7 +2636,7 @@ r_int
 id|unit
 comma
 r_struct
-id|console_font_op
+id|console_font
 op_star
 id|op
 )paren
@@ -2707,9 +2707,13 @@ op_star
 id|vc
 comma
 r_struct
-id|console_font_op
+id|console_font
 op_star
 id|op
+comma
+r_char
+op_star
+id|name
 )paren
 (brace
 r_return
