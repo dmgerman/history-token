@@ -100,6 +100,31 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
+multiline_comment|/* this is 8kB-aligned so we can get to the thread_info struct&n;   at the base of it from the stack pointer with 1 integer instruction. */
+DECL|variable|init_thread_union
+r_union
+id|thread_union
+id|init_thread_union
+id|__attribute__
+c_func
+(paren
+(paren
+id|__section__
+c_func
+(paren
+l_string|&quot;.data.init_task&quot;
+)paren
+)paren
+)paren
+op_assign
+(brace
+id|INIT_THREAD_INFO
+c_func
+(paren
+id|init_task
+)paren
+)brace
+suffix:semicolon
 multiline_comment|/* initial task structure */
 DECL|variable|init_task
 r_struct
