@@ -1923,7 +1923,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|variable|init_crc32
-id|module_init
+id|fs_initcall
 c_func
 (paren
 id|init_crc32
