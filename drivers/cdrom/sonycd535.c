@@ -6096,7 +6096,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_cdu535_request
 comma
 op_amp
 id|sonycd535_lock

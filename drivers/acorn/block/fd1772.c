@@ -790,6 +790,15 @@ op_star
 id|filp
 )paren
 suffix:semicolon
+r_static
+r_void
+id|do_fd_request
+c_func
+(paren
+id|request_queue_t
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/************************* End of Prototypes **************************/
 DECL|variable|motor_off_timer
 r_static
@@ -4287,6 +4296,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|do_fd_request
+r_static
 r_void
 id|do_fd_request
 c_func
@@ -5623,7 +5633,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_fd_request
 )paren
 suffix:semicolon
 id|config_types

@@ -4850,7 +4850,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_mcdx_request
 comma
 op_amp
 id|mcdx_lock

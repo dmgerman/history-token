@@ -5798,7 +5798,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_sjcd_request
 comma
 op_amp
 id|sjcd_lock
