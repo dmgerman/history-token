@@ -579,7 +579,7 @@ l_int|0xffffffff
 comma
 l_string|&quot;AD1981A&quot;
 comma
-id|patch_ad1881
+id|patch_ad1981a
 comma
 l_int|NULL
 )brace
@@ -591,7 +591,7 @@ l_int|0xffffffff
 comma
 l_string|&quot;AD1981B&quot;
 comma
-id|patch_ad1881
+id|patch_ad1981b
 comma
 l_int|NULL
 )brace
