@@ -25,10 +25,8 @@ suffix:semicolon
 DECL|member|multipaths
 r_struct
 id|multipath_info
+op_star
 id|multipaths
-(braket
-id|MD_SB_DISKS
-)braket
 suffix:semicolon
 DECL|member|raid_disks
 r_int
