@@ -145,7 +145,7 @@ mdefine_line|#define GPTE_DECODE(x) (((x) &amp; 0xfffff000) | (((u64)(x) &amp; 0
 DECL|macro|to_pages
 mdefine_line|#define to_pages(addr,size) &bslash;&n;&t;(round_up(((addr) &amp; ~PAGE_MASK) + (size), PAGE_SIZE) &gt;&gt; PAGE_SHIFT)
 DECL|macro|for_all_nb
-mdefine_line|#define for_all_nb(dev) &bslash;&n;&t;dev = NULL;&t;&bslash;&n;&t;while ((dev = pci_find_device(PCI_VENDOR_ID_AMD, 0x1103, dev))!=NULL)&bslash;&n;&t;     if (dev-&gt;bus-&gt;number == 0 &amp;&amp; &t;&t;&t;&t;     &bslash;&n;&t;&t;    (PCI_SLOT(dev-&gt;devfn) &gt;= 24) &amp;&amp; (PCI_SLOT(dev-&gt;devfn) &lt;= 31))
+mdefine_line|#define for_all_nb(dev) &bslash;&n;&t;dev = NULL;&t;&bslash;&n;&t;while ((dev = pci_get_device(PCI_VENDOR_ID_AMD, 0x1103, dev))!=NULL)&bslash;&n;&t;     if (dev-&gt;bus-&gt;number == 0 &amp;&amp; &t;&t;&t;&t;     &bslash;&n;&t;&t;    (PCI_SLOT(dev-&gt;devfn) &gt;= 24) &amp;&amp; (PCI_SLOT(dev-&gt;devfn) &lt;= 31))
 DECL|variable|northbridges
 r_static
 r_struct
