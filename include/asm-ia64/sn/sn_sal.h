@@ -33,15 +33,16 @@ DECL|macro|SN_SAL_NO_FAULT_ZONE_PHYSICAL
 mdefine_line|#define  SN_SAL_NO_FAULT_ZONE_PHYSICAL&t;&t;   0x02000011
 DECL|macro|SN_SAL_PRINT_ERROR
 mdefine_line|#define  SN_SAL_PRINT_ERROR&t;&t;&t;   0x02000012
-DECL|macro|SN_SAL_GET_SAPIC_INFO
-mdefine_line|#define  SN_SAL_GET_SAPIC_INFO                     0x02009999&t;
-singleline_comment|//ZZZZ fix
 DECL|macro|SN_SAL_SET_ERROR_HANDLING_FEATURES
 mdefine_line|#define  SN_SAL_SET_ERROR_HANDLING_FEATURES&t;   0x0200001a&t;
 singleline_comment|// reentrant
 DECL|macro|SN_SAL_GET_FIT_COMPT
 mdefine_line|#define  SN_SAL_GET_FIT_COMPT&t;&t;&t;   0x0200001b&t;
 singleline_comment|// reentrant
+DECL|macro|SN_SAL_GET_HUB_INFO
+mdefine_line|#define  SN_SAL_GET_HUB_INFO                       0x0200001c
+DECL|macro|SN_SAL_GET_SAPIC_INFO
+mdefine_line|#define  SN_SAL_GET_SAPIC_INFO                     0x0200001d
 DECL|macro|SN_SAL_CONSOLE_PUTC
 mdefine_line|#define  SN_SAL_CONSOLE_PUTC                       0x02000021
 DECL|macro|SN_SAL_CONSOLE_GETC
@@ -2548,7 +2549,7 @@ r_int
 id|rv.status
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Returns the nasid, subnode &amp; slice corresponding to a SAPIC ID&n; */
+multiline_comment|/*&n; * Returns the nasid, subnode &amp; slice corresponding to a SAPIC ID&n; *&n; *  In:&n; *&t;arg0 - SN_SAL_GET_SAPIC_INFO&n; *&t;arg1 - sapicid (lid &gt;&gt; 16) &n; *  Out:&n; *&t;v0 - nasid&n; *&t;v1 - subnode&n; *&t;v2 - slice&n; */
 r_static
 r_inline
 id|u64
@@ -2614,7 +2615,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/***** BEGIN HACK - temp til new proms available ********/
+multiline_comment|/***** BEGIN HACK - temp til old proms no longer supported ********/
 r_if
 c_cond
 (paren
@@ -2719,6 +2720,160 @@ op_assign
 (paren
 r_int
 )paren
+id|ret_stuff.v2
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Returns information about the HUB/SHUB.&n; *  In:&n; *&t;arg0 - SN_SAL_GET_HUB_INFO&n; * &t;arg1 - 0 (other values reserved for future use)&n; *  Out:&n; *&t;v0 - shub type (0=shub1, 1=shub2)&n; *&t;v1 - masid mask (ex., 0x7ff for 11 bit nasid)&n; *&t;v2 - bit position of low nasid bit&n; */
+r_static
+r_inline
+id|u64
+DECL|function|ia64_sn_get_hub_info
+id|ia64_sn_get_hub_info
+c_func
+(paren
+r_int
+id|fc
+comma
+id|u64
+op_star
+id|arg1
+comma
+id|u64
+op_star
+id|arg2
+comma
+id|u64
+op_star
+id|arg3
+)paren
+(brace
+r_struct
+id|ia64_sal_retval
+id|ret_stuff
+suffix:semicolon
+id|ret_stuff.status
+op_assign
+l_int|0
+suffix:semicolon
+id|ret_stuff.v0
+op_assign
+l_int|0
+suffix:semicolon
+id|ret_stuff.v1
+op_assign
+l_int|0
+suffix:semicolon
+id|ret_stuff.v2
+op_assign
+l_int|0
+suffix:semicolon
+id|SAL_CALL_NOLOCK
+c_func
+(paren
+id|ret_stuff
+comma
+id|SN_SAL_GET_HUB_INFO
+comma
+id|fc
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/***** BEGIN HACK - temp til old proms no longer supported ********/
+r_if
+c_cond
+(paren
+id|ret_stuff.status
+op_eq
+id|SALRET_NOT_IMPLEMENTED
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|arg1
+)paren
+op_star
+id|arg1
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|arg2
+)paren
+op_star
+id|arg2
+op_assign
+l_int|0x7ff
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|arg3
+)paren
+op_star
+id|arg3
+op_assign
+l_int|38
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/***** END HACK *******/
+r_if
+c_cond
+(paren
+id|ret_stuff.status
+OL
+l_int|0
+)paren
+r_return
+id|ret_stuff.status
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|arg1
+)paren
+op_star
+id|arg1
+op_assign
+id|ret_stuff.v0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|arg2
+)paren
+op_star
+id|arg2
+op_assign
+id|ret_stuff.v1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|arg3
+)paren
+op_star
+id|arg3
+op_assign
 id|ret_stuff.v2
 suffix:semicolon
 r_return

@@ -48,11 +48,6 @@ dot
 id|source
 op_assign
 id|TIME_SOURCE_MMIO64
-comma
-dot
-id|addr
-op_assign
-id|RTC_COUNTER_ADDR
 )brace
 suffix:semicolon
 DECL|function|sn_timer_init
@@ -67,6 +62,10 @@ r_void
 id|sn2_interpolator.frequency
 op_assign
 id|sn_rtc_cycles_per_second
+suffix:semicolon
+id|sn2_interpolator.addr
+op_assign
+id|RTC_COUNTER_ADDR
 suffix:semicolon
 id|register_time_interpolator
 c_func
