@@ -3,15 +3,16 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
+macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
-macro_line|#include &lt;asm/arch/clocks.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/arch/mux.h&gt;
 macro_line|#include &lt;asm/arch/fpga.h&gt;
-macro_line|#include &lt;asm/arch/serial.h&gt;
 macro_line|#include &quot;common.h&quot;
 DECL|variable|smc91x_resources
 r_static
@@ -38,7 +39,7 @@ id|end
 op_assign
 id|H2P2_DBG_FPGA_ETHR_START
 op_plus
-id|SZ_4K
+l_int|0xf
 comma
 dot
 id|flags
@@ -88,6 +89,215 @@ comma
 l_int|0
 )brace
 suffix:semicolon
+DECL|variable|p2_partitions
+r_static
+r_struct
+id|mtd_partition
+id|p2_partitions
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* bootloader (U-Boot, etc) in first sector */
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;bootloader&quot;
+comma
+dot
+id|offset
+op_assign
+l_int|0
+comma
+dot
+id|size
+op_assign
+id|SZ_128K
+comma
+dot
+id|mask_flags
+op_assign
+id|MTD_WRITEABLE
+comma
+multiline_comment|/* force read-only */
+)brace
+comma
+multiline_comment|/* bootloader params in the next sector */
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;params&quot;
+comma
+dot
+id|offset
+op_assign
+id|MTDPART_OFS_APPEND
+comma
+dot
+id|size
+op_assign
+id|SZ_128K
+comma
+dot
+id|mask_flags
+op_assign
+l_int|0
+comma
+)brace
+comma
+multiline_comment|/* kernel */
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;kernel&quot;
+comma
+dot
+id|offset
+op_assign
+id|MTDPART_OFS_APPEND
+comma
+dot
+id|size
+op_assign
+id|SZ_2M
+comma
+dot
+id|mask_flags
+op_assign
+l_int|0
+)brace
+comma
+multiline_comment|/* rest of flash is a file system */
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;rootfs&quot;
+comma
+dot
+id|offset
+op_assign
+id|MTDPART_OFS_APPEND
+comma
+dot
+id|size
+op_assign
+id|MTDPART_SIZ_FULL
+comma
+dot
+id|mask_flags
+op_assign
+l_int|0
+)brace
+comma
+)brace
+suffix:semicolon
+DECL|variable|p2_flash_data
+r_static
+r_struct
+id|flash_platform_data
+id|p2_flash_data
+op_assign
+(brace
+dot
+id|map_name
+op_assign
+l_string|&quot;cfi_probe&quot;
+comma
+dot
+id|width
+op_assign
+l_int|2
+comma
+dot
+id|parts
+op_assign
+id|p2_partitions
+comma
+dot
+id|nr_parts
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|p2_partitions
+)paren
+comma
+)brace
+suffix:semicolon
+DECL|variable|p2_flash_resource
+r_static
+r_struct
+id|resource
+id|p2_flash_resource
+op_assign
+(brace
+dot
+id|start
+op_assign
+id|OMAP_FLASH_0_START
+comma
+dot
+id|end
+op_assign
+id|OMAP_FLASH_0_START
+op_plus
+id|OMAP_FLASH_0_SIZE
+op_minus
+l_int|1
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_MEM
+comma
+)brace
+suffix:semicolon
+DECL|variable|p2_flash_device
+r_static
+r_struct
+id|platform_device
+id|p2_flash_device
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;omapflash&quot;
+comma
+dot
+id|id
+op_assign
+l_int|0
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|platform_data
+op_assign
+op_amp
+id|p2_flash_data
+comma
+)brace
+comma
+dot
+id|num_resources
+op_assign
+l_int|1
+comma
+dot
+id|resource
+op_assign
+op_amp
+id|p2_flash_resource
+comma
+)brace
+suffix:semicolon
 DECL|variable|smc91x_device
 r_static
 r_struct
@@ -132,6 +342,9 @@ id|devices
 id|__initdata
 op_assign
 (brace
+op_amp
+id|p2_flash_device
+comma
 op_amp
 id|smc91x_device
 comma
