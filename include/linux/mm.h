@@ -336,6 +336,8 @@ DECL|macro|get_page
 mdefine_line|#define get_page(p)&t;&t;atomic_inc(&amp;(p)-&gt;count)
 DECL|macro|put_page
 mdefine_line|#define put_page(p)&t;&t;__free_page(p)
+DECL|macro|__put_page
+mdefine_line|#define __put_page(p)&t;&t;atomic_dec(&amp;(p)-&gt;count)
 DECL|macro|put_page_testzero
 mdefine_line|#define put_page_testzero(p) &t;atomic_dec_and_test(&amp;(p)-&gt;count)
 DECL|macro|page_count

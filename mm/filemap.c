@@ -1949,11 +1949,19 @@ op_amp
 id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
+multiline_comment|/* Anon pages are already on the LRU */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|error
+op_logical_and
+op_logical_neg
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
 )paren
 id|lru_cache_add
 c_func
