@@ -737,6 +737,15 @@ r_void
 suffix:semicolon
 r_extern
 r_int
+id|tx3912fb_setup
+c_func
+(paren
+r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|radeonfb_init
 c_func
 (paren
@@ -1281,7 +1290,7 @@ l_string|&quot;tx3912&quot;
 comma
 id|tx3912fb_init
 comma
-l_int|NULL
+id|tx3912fb_setup
 )brace
 comma
 macro_line|#endif

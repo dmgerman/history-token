@@ -462,6 +462,10 @@ c_cond
 id|n
 )paren
 (brace
+id|end_mask
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -477,10 +481,6 @@ id|j
 op_decrement
 )paren
 (brace
-id|end_mask
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -501,7 +501,7 @@ op_rshift
 id|p-&gt;var.bits_per_pixel
 op_star
 (paren
-id|k
+id|j
 op_minus
 l_int|1
 )paren
@@ -571,12 +571,10 @@ op_rshift
 l_int|3
 )paren
 suffix:semicolon
-singleline_comment|//shift = ((unsigned long) dst1 &amp; (bpl -1));&t;&t;
 id|end_mask
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|//&t;n = n/bpl;
 )brace
 )brace
 eof

@@ -658,9 +658,14 @@ c_cond
 (paren
 id|size
 OG
+(paren
+r_int
+)paren
+(paren
 id|from-&gt;len
 op_minus
 id|fromoff
+)paren
 )paren
 id|size
 op_assign
