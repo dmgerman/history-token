@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irttp.c&n; * Version:       1.2&n; * Description:   Tiny Transport Protocol (TTP) implementation&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Aug 31 20:14:31 1997&n; * Modified at:   Wed Jan  5 11:31:27 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irttp.c&n; * Version:       1.2&n; * Description:   Tiny Transport Protocol (TTP) implementation&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Aug 31 20:14:31 1997&n; * Modified at:   Wed Jan  5 11:31:27 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -894,25 +894,18 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;%s(), frame len=%d&bslash;n&quot;
+l_string|&quot;%s(), frame len=%d, rx_sdu_size=%d, rx_max_sdu_size=%d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|n
-)paren
-suffix:semicolon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|2
-comma
-l_string|&quot;%s(), rx_sdu_size=%d&bslash;n&quot;
-comma
-id|__FUNCTION__
 comma
 id|self-&gt;rx_sdu_size
+comma
+id|self-&gt;rx_max_sdu_size
 )paren
 suffix:semicolon
+multiline_comment|/* Note : irttp_run_rx_queue() calculate self-&gt;rx_sdu_size&n;&t; * by summing the size of all fragments, so we should always&n;&t; * have n == self-&gt;rx_sdu_size, except in cases where we&n;&t; * droped the last fragment (when self-&gt;rx_sdu_size exceed&n;&t; * self-&gt;rx_max_sdu_size), where n &lt; self-&gt;rx_sdu_size.&n;&t; * Jean II */
 id|ASSERT
 c_func
 (paren
@@ -920,8 +913,9 @@ id|n
 op_le
 id|self-&gt;rx_sdu_size
 comma
-r_return
-l_int|NULL
+id|n
+op_assign
+id|self-&gt;rx_sdu_size
 suffix:semicolon
 )paren
 suffix:semicolon
@@ -1944,9 +1938,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|err
 suffix:semicolon
 )brace
 r_if
@@ -1967,9 +1960,8 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|err
 suffix:semicolon
 )brace
 id|irlmp_udata_request
@@ -1985,6 +1977,18 @@ op_increment
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|err
+suffix:colon
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irttp_data_request (handle, skb)&n; *&n; *    Queue frame for transmission. If SAR is enabled, fragement the frame&n; *    and queue the fragments for transmission&n; */
@@ -2007,6 +2011,9 @@ id|skb
 id|__u8
 op_star
 id|frame
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 id|ASSERT
 c_func
@@ -2088,9 +2095,13 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|ENOTCONN
+suffix:semicolon
+r_goto
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *  Check if SAR is disabled, and the frame is larger than what fits&n;&t; *  inside an IrLAP frame&n;&t; */
@@ -2118,9 +2129,13 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EMSGSIZE
+suffix:semicolon
+r_goto
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *  Check if SAR is enabled, and the frame is larger than the&n;&t; *  TxMaxSduSize&n;&t; */
@@ -2154,9 +2169,13 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EMSGSIZE
+suffix:semicolon
+r_goto
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *  Check if transmit queue is full&n;&t; */
@@ -2180,10 +2199,14 @@ c_func
 id|self
 )paren
 suffix:semicolon
-multiline_comment|/* Drop packet. This error code should trigger the caller&n;&t;&t; * to requeue the packet in the client code - Jean II */
-r_return
+multiline_comment|/* Drop packet. This error code should trigger the caller&n;&t;&t; * to resend the data in the client code - Jean II */
+id|ret
+op_assign
 op_minus
 id|ENOBUFS
+suffix:semicolon
+r_goto
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/* Queue frame, or queue frame segments */
@@ -2317,6 +2340,17 @@ id|self
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|err
+suffix:colon
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irttp_run_tx_queue (self)&n; *&n; *    Transmit packets queued for transmission (if possible)&n; *&n; */
@@ -2763,6 +2797,9 @@ id|tsap_cb
 op_star
 id|self
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -2821,12 +2858,18 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
+id|self-&gt;stats.rx_packets
+op_increment
+suffix:semicolon
 multiline_comment|/* Just pass data to layer above */
 r_if
 c_cond
 (paren
 id|self-&gt;notify.udata_indication
 )paren
+(brace
+id|err
+op_assign
 id|self-&gt;notify
 dot
 id|udata_indication
@@ -2839,15 +2882,25 @@ comma
 id|skb
 )paren
 suffix:semicolon
-r_else
+multiline_comment|/* Same comment as in irttp_do_data_indication() */
+r_if
+c_cond
+(paren
+id|err
+op_ne
+op_minus
+id|ENOMEM
+)paren
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Either no handler, or -ENOMEM */
 id|dev_kfree_skb
 c_func
 (paren
 id|skb
 )paren
-suffix:semicolon
-id|self-&gt;stats.rx_packets
-op_increment
 suffix:semicolon
 r_return
 l_int|0
@@ -3337,7 +3390,7 @@ id|userdata
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 suffix:semicolon
 id|__u8
 op_star
@@ -3389,10 +3442,25 @@ c_cond
 (paren
 id|self-&gt;connected
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|userdata
+)paren
+(brace
+id|dev_kfree_skb
+c_func
+(paren
+id|userdata
+)paren
+suffix:semicolon
+)brace
 r_return
 op_minus
 id|EISCONN
 suffix:semicolon
+)brace
 multiline_comment|/* Any userdata supplied? */
 r_if
 c_cond
@@ -3402,7 +3470,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -3414,7 +3482,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 op_minus
@@ -3424,7 +3492,7 @@ multiline_comment|/* Reserve space for MUX_CONTROL and LAP header */
 id|skb_reserve
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|TTP_MAX_HEADER
 )paren
@@ -3432,7 +3500,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|skb
+id|tx_skb
 op_assign
 id|userdata
 suffix:semicolon
@@ -3531,7 +3599,7 @@ c_func
 id|skb_headroom
 c_func
 (paren
-id|skb
+id|tx_skb
 )paren
 op_ge
 (paren
@@ -3552,7 +3620,7 @@ op_assign
 id|skb_push
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|TTP_HEADER
 op_plus
@@ -3624,7 +3692,7 @@ op_assign
 id|skb_push
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|TTP_HEADER
 )paren
@@ -3655,7 +3723,7 @@ id|daddr
 comma
 id|qos
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 )brace
@@ -3997,6 +4065,13 @@ id|skb
 )paren
 suffix:semicolon
 )brace
+r_else
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irttp_connect_indication (handle, skb)&n; *&n; *    Some other device is connecting to this TSAP&n; *&n; */
 DECL|function|irttp_connect_indication
@@ -4316,7 +4391,7 @@ id|userdata
 r_struct
 id|sk_buff
 op_star
-id|skb
+id|tx_skb
 suffix:semicolon
 id|__u8
 op_star
@@ -4375,7 +4450,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|skb
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -4387,7 +4462,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 op_minus
@@ -4397,7 +4472,7 @@ multiline_comment|/* Reserve space for MUX_CONTROL and LAP header */
 id|skb_reserve
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|TTP_MAX_HEADER
 )paren
@@ -4405,7 +4480,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|skb
+id|tx_skb
 op_assign
 id|userdata
 suffix:semicolon
@@ -4416,7 +4491,7 @@ c_func
 id|skb_headroom
 c_func
 (paren
-id|skb
+id|tx_skb
 )paren
 op_ge
 id|TTP_MAX_HEADER
@@ -4495,7 +4570,7 @@ c_func
 id|skb_headroom
 c_func
 (paren
-id|skb
+id|tx_skb
 )paren
 op_ge
 (paren
@@ -4516,7 +4591,7 @@ op_assign
 id|skb_push
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|TTP_HEADER
 op_plus
@@ -4590,7 +4665,7 @@ op_assign
 id|skb_push
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|TTP_HEADER
 )paren
@@ -4612,7 +4687,7 @@ c_func
 (paren
 id|self-&gt;lsap
 comma
-id|skb
+id|tx_skb
 )paren
 suffix:semicolon
 r_return
@@ -4877,11 +4952,6 @@ r_int
 id|priority
 )paren
 (brace
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
@@ -5092,7 +5162,12 @@ op_logical_neg
 id|userdata
 )paren
 (brace
-id|skb
+r_struct
+id|sk_buff
+op_star
+id|tx_skb
+suffix:semicolon
+id|tx_skb
 op_assign
 id|dev_alloc_skb
 c_func
@@ -5104,7 +5179,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|skb
+id|tx_skb
 )paren
 r_return
 op_minus
@@ -5114,14 +5189,14 @@ multiline_comment|/*&n;&t;&t; *  Reserve space for MUX and LAP header&n;&t;&t; *
 id|skb_reserve
 c_func
 (paren
-id|skb
+id|tx_skb
 comma
 id|TTP_MAX_HEADER
 )paren
 suffix:semicolon
 id|userdata
 op_assign
-id|skb
+id|tx_skb
 suffix:semicolon
 )brace
 id|ret
@@ -5287,7 +5362,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irttp_do_data_indication (self, skb)&n; *&n; *    Try to deliver reassebled skb to layer above, and requeue it if that&n; *    for some reason should fail. We mark rx sdu as busy to apply back&n; *    pressure is necessary.&n; */
+multiline_comment|/*&n; * Function irttp_do_data_indication (self, skb)&n; *&n; *    Try to deliver reassembled skb to layer above, and requeue it if that&n; *    for some reason should fail. We mark rx sdu as busy to apply back&n; *    pressure is necessary.&n; */
 DECL|function|irttp_do_data_indication
 r_void
 id|irttp_do_data_indication

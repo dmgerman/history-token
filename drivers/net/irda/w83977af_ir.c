@@ -2145,6 +2145,10 @@ comma
 id|speed
 )paren
 suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
 id|dev_kfree_skb
 c_func
 (paren
@@ -2392,6 +2396,10 @@ id|ICR
 )paren
 suffix:semicolon
 )brace
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
 id|dev_kfree_skb
 c_func
 (paren
