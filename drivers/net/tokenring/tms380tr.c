@@ -30,6 +30,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/trdevice.h&gt;
+macro_line|#include &lt;linux/firmware.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -37,7 +38,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;tms380tr.h&quot;&t;&t;/* Our Stuff */
-macro_line|#include &quot;tms380tr_microcode.h&quot;&t;/* TI microcode for COMMprocessor */
 multiline_comment|/* Use 0 for production, 1 for verification, 2 for debug, and&n; * 3 for very verbose debug.&n; */
 macro_line|#ifndef TMS380TR_DEBUG
 DECL|macro|TMS380TR_DEBUG
@@ -50,6 +50,12 @@ r_int
 id|tms380tr_debug
 op_assign
 id|TMS380TR_DEBUG
+suffix:semicolon
+DECL|variable|tms_device
+r_static
+r_struct
+id|device
+id|tms_device
 suffix:semicolon
 multiline_comment|/* Index to functions, as function prototypes.&n; * Alphabetical by function name.&n; */
 multiline_comment|/* &quot;A&quot; */
@@ -4980,20 +4986,83 @@ r_int
 r_int
 op_star
 id|fw_ptr
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-op_amp
-id|tms380tr_code
 suffix:semicolon
 r_int
 r_int
 id|count
 comma
 id|c
+comma
+id|count2
+suffix:semicolon
+r_const
+r_struct
+id|firmware
+op_star
+id|fw_entry
+op_assign
+l_int|NULL
+suffix:semicolon
+id|strncpy
+c_func
+(paren
+id|tms_device.bus_id
+comma
+id|dev-&gt;name
+comma
+id|BUS_ID_SIZE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|request_firmware
+c_func
+(paren
+op_amp
+id|fw_entry
+comma
+l_string|&quot;tms380tr.bin&quot;
+comma
+op_amp
+id|tms_device
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ALERT
+l_string|&quot;%s: firmware %s is missing, cannot start.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+l_string|&quot;tms380tr.bin&quot;
+)paren
+suffix:semicolon
+r_return
+(paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+id|fw_ptr
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|fw_entry-&gt;data
+suffix:semicolon
+id|count2
+op_assign
+id|fw_entry-&gt;size
+op_div
+l_int|2
 suffix:semicolon
 multiline_comment|/* Hardware adapter reset */
 id|SIFWRITEW
@@ -5105,9 +5174,22 @@ c_func
 l_int|40
 )paren
 suffix:semicolon
+id|count
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Download firmware via DIO interface: */
 r_do
 (brace
+r_if
+c_cond
+(paren
+id|count2
+OL
+l_int|3
+)paren
+r_continue
+suffix:semicolon
 multiline_comment|/* Download first address part */
 id|SIFWRITEW
 c_func
@@ -5121,6 +5203,9 @@ suffix:semicolon
 id|fw_ptr
 op_increment
 suffix:semicolon
+id|count2
+op_decrement
+suffix:semicolon
 multiline_comment|/* Download second address part */
 id|SIFWRITEW
 c_func
@@ -5133,6 +5218,9 @@ id|SIFADD
 suffix:semicolon
 id|fw_ptr
 op_increment
+suffix:semicolon
+id|count2
+op_decrement
 suffix:semicolon
 r_if
 c_cond
@@ -5152,6 +5240,18 @@ id|fw_ptr
 op_increment
 suffix:semicolon
 multiline_comment|/* Download block data */
+id|count2
+op_decrement
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+OG
+id|count2
+)paren
+r_continue
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5175,6 +5275,9 @@ id|SIFINC
 suffix:semicolon
 id|fw_ptr
 op_increment
+suffix:semicolon
+id|count2
+op_decrement
 suffix:semicolon
 )brace
 )brace
@@ -5207,6 +5310,17 @@ comma
 id|SIFACL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fw_entry
+)paren
+id|release_firmware
+c_func
+(paren
+id|fw_entry
+)paren
+suffix:semicolon
 r_return
 (paren
 l_int|1
@@ -5224,6 +5338,17 @@ l_int|0
 (brace
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|fw_entry
+)paren
+id|release_firmware
+c_func
+(paren
+id|fw_entry
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
