@@ -124,9 +124,14 @@ DECL|member|reserved2
 r_char
 id|reserved2
 (braket
-l_int|20
+l_int|16
 )braket
 suffix:semicolon
+DECL|member|n_stats
+id|u32
+id|n_stats
+suffix:semicolon
+multiline_comment|/* number of u64&squot;s from ETHTOOL_GSTATS */
 DECL|member|testinfo_len
 id|u32
 id|testinfo_len
@@ -534,6 +539,30 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* for dumping NIC-specific statistics */
+DECL|struct|ethtool_stats
+r_struct
+id|ethtool_stats
+(brace
+DECL|member|cmd
+id|u32
+id|cmd
+suffix:semicolon
+multiline_comment|/* ETHTOOL_GSTATS */
+DECL|member|n_stats
+id|u32
+id|n_stats
+suffix:semicolon
+multiline_comment|/* number of u64&squot;s being returned */
+DECL|member|data
+id|u64
+id|data
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* CMDs currently supported */
 DECL|macro|ETHTOOL_GSET
 mdefine_line|#define ETHTOOL_GSET&t;&t;0x00000001 /* Get settings. */
@@ -589,6 +618,8 @@ DECL|macro|ETHTOOL_GSTRINGS
 mdefine_line|#define ETHTOOL_GSTRINGS&t;0x0000001b /* get specified string set */
 DECL|macro|ETHTOOL_PHYS_ID
 mdefine_line|#define ETHTOOL_PHYS_ID&t;&t;0x0000001c /* identify the NIC */
+DECL|macro|ETHTOOL_GSTATS
+mdefine_line|#define ETHTOOL_GSTATS&t;&t;0x0000001d /* get NIC-specific statistics */
 multiline_comment|/* compatibility with older code */
 DECL|macro|SPARC_ETH_GSET
 mdefine_line|#define SPARC_ETH_GSET&t;&t;ETHTOOL_GSET
