@@ -2100,8 +2100,6 @@ comma
 op_minus
 l_int|1
 comma
-id|ARCH_CONVERT
-comma
 id|XFS_SB_ALL_BITS
 )paren
 suffix:semicolon

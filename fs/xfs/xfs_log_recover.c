@@ -3072,9 +3072,13 @@ op_assign
 id|BLOCK_LSN
 c_func
 (paren
+id|INT_GET
+c_func
+(paren
 id|rhead-&gt;h_tail_lsn
 comma
 id|ARCH_CONVERT
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Reset log values according to the state of the log when we&n;&t; * crashed.  In the case where head_blk == 0, we bump curr_cycle&n;&t; * one because the next write starts a new cycle rather than&n;&t; * continuing the cycle of the last good log record.  At this&n;&t; * point we have guaranteed that all partial log records have been&n;&t; * accounted for.  Therefore, we know that the last good log record&n;&t; * written was complete and ended exactly on the end boundary&n;&t; * of the physical log.&n;&t; */
@@ -3349,7 +3353,7 @@ id|XLOG_UNMOUNT_TRANS
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Set tail and last sync so that newly written&n;&t;&t;&t; * log records will point recovery to after the&n;&t;&t;&t; * current unmount record.&n;&t;&t;&t; */
-id|ASSIGN_ANY_LSN
+id|ASSIGN_ANY_LSN_HOST
 c_func
 (paren
 id|log-&gt;l_tail_lsn
@@ -3357,11 +3361,9 @@ comma
 id|log-&gt;l_curr_cycle
 comma
 id|after_umount_blk
-comma
-id|ARCH_NOCONVERT
 )paren
 suffix:semicolon
-id|ASSIGN_ANY_LSN
+id|ASSIGN_ANY_LSN_HOST
 c_func
 (paren
 id|log-&gt;l_last_sync_lsn
@@ -3369,8 +3371,6 @@ comma
 id|log-&gt;l_curr_cycle
 comma
 id|after_umount_blk
-comma
-id|ARCH_NOCONVERT
 )paren
 suffix:semicolon
 op_star
@@ -3923,7 +3923,7 @@ suffix:colon
 l_int|1
 )paren
 suffix:semicolon
-id|ASSIGN_ANY_LSN
+id|ASSIGN_ANY_LSN_DISK
 c_func
 (paren
 id|recp-&gt;h_lsn
@@ -3931,11 +3931,9 @@ comma
 id|cycle
 comma
 id|block
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
-id|ASSIGN_ANY_LSN
+id|ASSIGN_ANY_LSN_DISK
 c_func
 (paren
 id|recp-&gt;h_tail_lsn
@@ -3943,8 +3941,6 @@ comma
 id|tail_cycle
 comma
 id|tail_block
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|INT_SET
@@ -4405,8 +4401,6 @@ id|CYCLE_LSN
 c_func
 (paren
 id|tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 suffix:semicolon
 id|tail_block
@@ -4415,8 +4409,6 @@ id|BLOCK_LSN
 c_func
 (paren
 id|tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 suffix:semicolon
 id|head_cycle
@@ -8988,8 +8980,6 @@ id|i_addr
 comma
 op_minus
 l_int|1
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 multiline_comment|/* the rest is in on-disk format */
@@ -12731,12 +12721,10 @@ id|size
 suffix:semicolon
 id|cycle_lsn
 op_assign
-id|CYCLE_LSN_NOCONV
+id|CYCLE_LSN_DISK
 c_func
 (paren
 id|iclog-&gt;ic_header.h_lsn
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|dp
@@ -15079,8 +15067,6 @@ id|sbp
 comma
 l_int|1
 comma
-id|ARCH_CONVERT
-comma
 id|XFS_SB_ALL_BITS
 )paren
 suffix:semicolon
@@ -15740,8 +15726,6 @@ comma
 id|sbp
 comma
 l_int|1
-comma
-id|ARCH_CONVERT
 comma
 id|XFS_SB_ALL_BITS
 )paren

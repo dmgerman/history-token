@@ -613,12 +613,10 @@ l_int|0
 comma
 id|from
 op_assign
-id|XFS_DIR2_LEAF_BESTS_P_ARCH
+id|XFS_DIR2_LEAF_BESTS_P
 c_func
 (paren
 id|ltp
-comma
-id|ARCH_CONVERT
 )paren
 comma
 id|to

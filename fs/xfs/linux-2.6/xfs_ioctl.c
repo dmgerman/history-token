@@ -5397,13 +5397,10 @@ c_func
 (paren
 id|flags
 comma
-id|xfs_dic2xflags
+id|xfs_ip2xflags
 c_func
 (paren
-op_amp
-id|ip-&gt;i_d
-comma
-id|ARCH_NOCONVERT
+id|ip
 )paren
 )paren
 suffix:semicolon

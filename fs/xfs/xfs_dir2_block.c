@@ -363,12 +363,10 @@ id|block
 suffix:semicolon
 id|blp
 op_assign
-id|XFS_DIR2_BLOCK_LEAF_P_ARCH
+id|XFS_DIR2_BLOCK_LEAF_P
 c_func
 (paren
 id|btp
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * No stale entries?  Need space for entry and new leaf.&n;&t; */
@@ -2124,12 +2122,10 @@ op_assign
 r_char
 op_star
 )paren
-id|XFS_DIR2_BLOCK_LEAF_P_ARCH
+id|XFS_DIR2_BLOCK_LEAF_P
 c_func
 (paren
 id|btp
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|p.dbp
@@ -2426,12 +2422,10 @@ id|block
 suffix:semicolon
 id|blp
 op_assign
-id|XFS_DIR2_BLOCK_LEAF_P_ARCH
+id|XFS_DIR2_BLOCK_LEAF_P
 c_func
 (paren
 id|btp
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|xfs_da_log_buf
@@ -2708,12 +2702,10 @@ id|block
 suffix:semicolon
 id|blp
 op_assign
-id|XFS_DIR2_BLOCK_LEAF_P_ARCH
+id|XFS_DIR2_BLOCK_LEAF_P
 c_func
 (paren
 id|btp
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the offset from the leaf entry, to point to the data.&n;&t; */
@@ -2941,12 +2933,10 @@ id|block
 suffix:semicolon
 id|blp
 op_assign
-id|XFS_DIR2_BLOCK_LEAF_P_ARCH
+id|XFS_DIR2_BLOCK_LEAF_P
 c_func
 (paren
 id|btp
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Loop doing a binary search for our hash value.&n;&t; * Find our entry, ENOENT if it&squot;s not there.&n;&t; */
@@ -3382,12 +3372,10 @@ id|block
 suffix:semicolon
 id|blp
 op_assign
-id|XFS_DIR2_BLOCK_LEAF_P_ARCH
+id|XFS_DIR2_BLOCK_LEAF_P
 c_func
 (paren
 id|btp
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Point to the data entry using the leaf entry.&n;&t; */
@@ -3725,12 +3713,10 @@ id|block
 suffix:semicolon
 id|blp
 op_assign
-id|XFS_DIR2_BLOCK_LEAF_P_ARCH
+id|XFS_DIR2_BLOCK_LEAF_P
 c_func
 (paren
 id|btp
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Point to the data entry we need to change.&n;&t; */
@@ -4075,12 +4061,10 @@ id|mp-&gt;m_dirblksize
 (brace
 id|bestsp
 op_assign
-id|XFS_DIR2_LEAF_BESTS_P_ARCH
+id|XFS_DIR2_LEAF_BESTS_P
 c_func
 (paren
 id|ltp
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 r_if
@@ -4423,12 +4407,10 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize the block leaf area.  We compact out stale entries.&n;&t; */
 id|lep
 op_assign
-id|XFS_DIR2_BLOCK_LEAF_P_ARCH
+id|XFS_DIR2_BLOCK_LEAF_P
 c_func
 (paren
 id|btp
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 r_for
@@ -5126,12 +5108,10 @@ id|ARCH_CONVERT
 suffix:semicolon
 id|blp
 op_assign
-id|XFS_DIR2_BLOCK_LEAF_P_ARCH
+id|XFS_DIR2_BLOCK_LEAF_P
 c_func
 (paren
 id|btp
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|endoffset
@@ -5347,15 +5327,13 @@ id|dep-&gt;inumber
 comma
 id|ARCH_CONVERT
 comma
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|sfp
 comma
 op_amp
 id|sfp-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
@@ -5524,12 +5502,10 @@ suffix:semicolon
 r_else
 id|newoffset
 op_assign
-id|XFS_DIR2_SF_GET_OFFSET_ARCH
+id|XFS_DIR2_SF_GET_OFFSET
 c_func
 (paren
 id|sfep
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * There should be a hole here, make one.&n;&t;&t; */
@@ -5583,12 +5559,10 @@ id|INT_SET
 c_func
 (paren
 op_star
-id|XFS_DIR2_DATA_UNUSED_TAG_P_ARCH
+id|XFS_DIR2_DATA_UNUSED_TAG_P
 c_func
 (paren
 id|dup
-comma
-id|ARCH_CONVERT
 )paren
 comma
 id|ARCH_CONVERT
@@ -5676,7 +5650,7 @@ id|dep-&gt;inumber
 comma
 id|ARCH_CONVERT
 comma
-id|XFS_DIR2_SF_GET_INUMBER_ARCH
+id|XFS_DIR2_SF_GET_INUMBER
 c_func
 (paren
 id|sfp
@@ -5686,8 +5660,6 @@ c_func
 (paren
 id|sfep
 )paren
-comma
-id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon

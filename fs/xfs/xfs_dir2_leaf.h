@@ -182,22 +182,19 @@ multiline_comment|/*&n; * Get address of the bests array in the single-leaf bloc
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_LEAF_BESTS_P)
 id|xfs_dir2_data_off_t
 op_star
-id|xfs_dir2_leaf_bests_p_arch
+id|xfs_dir2_leaf_bests_p
 c_func
 (paren
 id|xfs_dir2_leaf_tail_t
 op_star
 id|ltp
-comma
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
-DECL|macro|XFS_DIR2_LEAF_BESTS_P_ARCH
-mdefine_line|#define&t;XFS_DIR2_LEAF_BESTS_P_ARCH(ltp,arch)&t;xfs_dir2_leaf_bests_p_arch(ltp,arch)
+DECL|macro|XFS_DIR2_LEAF_BESTS_P
+mdefine_line|#define&t;XFS_DIR2_LEAF_BESTS_P(ltp)&t;xfs_dir2_leaf_bests_p(ltp)
 macro_line|#else
-DECL|macro|XFS_DIR2_LEAF_BESTS_P_ARCH
-mdefine_line|#define&t;XFS_DIR2_LEAF_BESTS_P_ARCH(ltp,arch)&t;&bslash;&n;&t;((xfs_dir2_data_off_t *)(ltp) - INT_GET((ltp)-&gt;bestcount, arch))
+DECL|macro|XFS_DIR2_LEAF_BESTS_P
+mdefine_line|#define&t;XFS_DIR2_LEAF_BESTS_P(ltp)&t;&bslash;&n;&t;((xfs_dir2_data_off_t *)(ltp) - INT_GET((ltp)-&gt;bestcount, ARCH_CONVERT))
 macro_line|#endif
 multiline_comment|/*&n; * Convert dataptr to byte in file space&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_DATAPTR_TO_BYTE)

@@ -2511,8 +2511,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -2645,8 +2643,6 @@ id|rec.ir_free
 comma
 op_amp
 id|j
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 op_eq
@@ -2774,8 +2770,6 @@ id|trec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -2849,8 +2843,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -3028,8 +3020,6 @@ id|trec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -3106,8 +3096,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -3212,8 +3200,6 @@ id|rec.ir_free
 comma
 op_amp
 id|j
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 op_eq
@@ -3303,8 +3289,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -3428,8 +3412,6 @@ op_amp
 id|rec
 comma
 id|offset
-comma
-id|ARCH_NOCONVERT
 )paren
 suffix:semicolon
 id|rec.ir_freecount
@@ -3563,8 +3545,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -4107,8 +4087,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -4250,8 +4228,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -4312,8 +4288,6 @@ op_amp
 id|rec
 comma
 id|off
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 suffix:semicolon
@@ -4325,8 +4299,6 @@ op_amp
 id|rec
 comma
 id|off
-comma
-id|ARCH_NOCONVERT
 )paren
 suffix:semicolon
 id|rec.ir_freecount
@@ -4693,8 +4665,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -5365,8 +5335,6 @@ id|chunk_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren

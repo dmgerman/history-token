@@ -420,7 +420,7 @@ op_star
 )paren
 id|dp-&gt;i_df.if_u1.if_data
 suffix:semicolon
-id|XFS_DIR_SF_PUT_DIRINO_ARCH
+id|XFS_DIR_SF_PUT_DIRINO
 c_func
 (paren
 op_amp
@@ -428,8 +428,6 @@ id|parent
 comma
 op_amp
 id|hdr-&gt;parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|INT_ZERO
@@ -697,7 +695,7 @@ op_plus
 id|offset
 )paren
 suffix:semicolon
-id|XFS_DIR_SF_PUT_DIRINO_ARCH
+id|XFS_DIR_SF_PUT_DIRINO
 c_func
 (paren
 op_amp
@@ -705,8 +703,6 @@ id|args-&gt;inumber
 comma
 op_amp
 id|sfe-&gt;inumber
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|sfe-&gt;namelen
@@ -1171,7 +1167,7 @@ op_eq
 l_char|&squot;.&squot;
 )paren
 (brace
-id|XFS_DIR_SF_GET_DIRINO_ARCH
+id|XFS_DIR_SF_GET_DIRINO
 c_func
 (paren
 op_amp
@@ -1179,8 +1175,6 @@ id|sf-&gt;hdr.parent
 comma
 op_amp
 id|args-&gt;inumber
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 r_return
@@ -1279,7 +1273,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|XFS_DIR_SF_GET_DIRINO_ARCH
+id|XFS_DIR_SF_GET_DIRINO
 c_func
 (paren
 op_amp
@@ -1287,8 +1281,6 @@ id|sfe-&gt;inumber
 comma
 op_amp
 id|args-&gt;inumber
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 r_return
@@ -1459,7 +1451,7 @@ op_star
 )paren
 id|tmpbuffer
 suffix:semicolon
-id|XFS_DIR_SF_GET_DIRINO_ARCH
+id|XFS_DIR_SF_GET_DIRINO
 c_func
 (paren
 op_amp
@@ -1467,8 +1459,6 @@ id|sf-&gt;hdr.parent
 comma
 op_amp
 id|inumber
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|xfs_idata_realloc
@@ -1709,7 +1699,7 @@ comma
 id|sfe-&gt;namelen
 )paren
 suffix:semicolon
-id|XFS_DIR_SF_GET_DIRINO_ARCH
+id|XFS_DIR_SF_GET_DIRINO
 c_func
 (paren
 op_amp
@@ -1717,8 +1707,6 @@ id|sfe-&gt;inumber
 comma
 op_amp
 id|args.inumber
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|retval
@@ -2026,14 +2014,12 @@ id|xfs_dir_hash_dotdot
 suffix:semicolon
 id|sbp-&gt;ino
 op_assign
-id|XFS_GET_DIR_INO_ARCH
+id|XFS_GET_DIR_INO
 c_func
 (paren
 id|mp
 comma
 id|sf-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|sbp-&gt;name
@@ -2181,14 +2167,12 @@ id|sfe-&gt;namelen
 suffix:semicolon
 id|sbp-&gt;ino
 op_assign
-id|XFS_GET_DIR_INO_ARCH
+id|XFS_GET_DIR_INO
 c_func
 (paren
 id|mp
 comma
 id|sfe-&gt;inumber
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|sbp-&gt;name
@@ -2686,7 +2670,7 @@ l_char|&squot;.&squot;
 )paren
 (brace
 multiline_comment|/* XXX - replace assert? */
-id|XFS_DIR_SF_PUT_DIRINO_ARCH
+id|XFS_DIR_SF_PUT_DIRINO
 c_func
 (paren
 op_amp
@@ -2694,8 +2678,6 @@ id|args-&gt;inumber
 comma
 op_amp
 id|sf-&gt;hdr.parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|xfs_trans_log_inode
@@ -2815,7 +2797,7 @@ id|xfs_ino_t
 )paren
 )paren
 suffix:semicolon
-id|XFS_DIR_SF_PUT_DIRINO_ARCH
+id|XFS_DIR_SF_PUT_DIRINO
 c_func
 (paren
 op_amp
@@ -2823,8 +2805,6 @@ id|args-&gt;inumber
 comma
 op_amp
 id|sfe-&gt;inumber
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|xfs_trans_log_inode
@@ -3110,7 +3090,7 @@ l_char|&squot;.&squot;
 )paren
 )paren
 (brace
-id|XFS_DIR_SF_GET_DIRINO_ARCH
+id|XFS_DIR_SF_GET_DIRINO
 c_func
 (paren
 op_amp
@@ -3118,8 +3098,6 @@ id|namest-&gt;inumber
 comma
 op_amp
 id|parent
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|INT_ZERO
@@ -3319,7 +3297,7 @@ comma
 id|ARCH_CONVERT
 )paren
 suffix:semicolon
-id|XFS_DIR_SF_GET_DIRINO_ARCH
+id|XFS_DIR_SF_GET_DIRINO
 c_func
 (paren
 op_amp
@@ -3327,8 +3305,6 @@ id|namest-&gt;inumber
 comma
 op_amp
 id|args.inumber
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|xfs_dir_shortform_addname
@@ -4902,7 +4878,7 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
-id|XFS_DIR_SF_PUT_DIRINO_ARCH
+id|XFS_DIR_SF_PUT_DIRINO
 c_func
 (paren
 op_amp
@@ -4910,8 +4886,6 @@ id|args-&gt;inumber
 comma
 op_amp
 id|namest-&gt;inumber
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|memcpy
@@ -9220,7 +9194,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|XFS_DIR_SF_GET_DIRINO_ARCH
+id|XFS_DIR_SF_GET_DIRINO
 c_func
 (paren
 op_amp
@@ -9228,8 +9202,6 @@ id|namest-&gt;inumber
 comma
 op_amp
 id|args-&gt;inumber
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 op_star
@@ -11455,14 +11427,12 @@ macro_line|#endif /* BITS_PER_LONG == 32 */
 multiline_comment|/*&n;&t;&t; * Put the current entry into the outgoing buffer.  If we fail&n;&t;&t; * then restore the UIO to the first entry in the current&n;&t;&t; * run of equal-hashval entries (probably one 1 entry long).&n;&t;&t; */
 id|p.ino
 op_assign
-id|XFS_GET_DIR_INO_ARCH
+id|XFS_GET_DIR_INO
 c_func
 (paren
 id|mp
 comma
 id|namest-&gt;inumber
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 macro_line|#if XFS_BIG_INUMS

@@ -872,7 +872,7 @@ OG
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if ARCH_CONVERT == ARCH_NOCONVERT
+macro_line|#if __BYTE_ORDER == __BIG_ENDIAN
 r_if
 c_cond
 (paren
@@ -1352,7 +1352,7 @@ op_eq
 id|ip-&gt;i_d.di_anextents
 )paren
 suffix:semicolon
-macro_line|#if ARCH_CONVERT == ARCH_NOCONVERT
+macro_line|#if __BYTE_ORDER == __BIG_ENDIAN
 multiline_comment|/*&n;&t;&t;&t; * There are not delayed allocation extents&n;&t;&t;&t; * for attributes, so just point at the array.&n;&t;&t;&t; */
 id|vecp-&gt;i_addr
 op_assign

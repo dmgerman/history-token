@@ -42,12 +42,8 @@ mdefine_line|#define INT_SWAP_UNALIGNED_32(from,to) &bslash;&n;    { &bslash;&n;
 DECL|macro|INT_SWAP_UNALIGNED_64
 mdefine_line|#define INT_SWAP_UNALIGNED_64(from,to) &bslash;&n;    { &bslash;&n;&t;INT_SWAP_UNALIGNED_32( ((__u8*)(from)) + 4, ((__u8*)(to))); &bslash;&n;&t;INT_SWAP_UNALIGNED_32( ((__u8*)(from)), ((__u8*)(to)) + 4); &bslash;&n;    }
 multiline_comment|/*&n; * get and set integers from potentially unaligned locations&n; */
-DECL|macro|INT_GET_UNALIGNED_16_LE
-mdefine_line|#define INT_GET_UNALIGNED_16_LE(pointer) &bslash;&n;   ((__u16)((((__u8*)(pointer))[0]&t;) | (((__u8*)(pointer))[1] &lt;&lt; 8 )))
 DECL|macro|INT_GET_UNALIGNED_16_BE
 mdefine_line|#define INT_GET_UNALIGNED_16_BE(pointer) &bslash;&n;   ((__u16)((((__u8*)(pointer))[0] &lt;&lt; 8) | (((__u8*)(pointer))[1])))
-DECL|macro|INT_SET_UNALIGNED_16_LE
-mdefine_line|#define INT_SET_UNALIGNED_16_LE(pointer,value) &bslash;&n;    { &bslash;&n;&t;((__u8*)(pointer))[0] = (((value)     ) &amp; 0xff); &bslash;&n;&t;((__u8*)(pointer))[1] = (((value) &gt;&gt; 8) &amp; 0xff); &bslash;&n;    }
 DECL|macro|INT_SET_UNALIGNED_16_BE
 mdefine_line|#define INT_SET_UNALIGNED_16_BE(pointer,value) &bslash;&n;    { &bslash;&n;&t;((__u8*)(pointer))[0] = (((value) &gt;&gt; 8) &amp; 0xff); &bslash;&n;&t;((__u8*)(pointer))[1] = (((value)     ) &amp; 0xff); &bslash;&n;    }
 DECL|macro|INT_GET_UNALIGNED_32_LE
@@ -60,19 +56,11 @@ DECL|macro|INT_GET_UNALIGNED_64_BE
 mdefine_line|#define INT_GET_UNALIGNED_64_BE(pointer) &bslash;&n;   (((__u64)(INT_GET_UNALIGNED_32_BE(((__u8*)(pointer))&t; )) &lt;&lt; 32  ) &bslash;&n;   |((__u64)(INT_GET_UNALIGNED_32_BE(((__u8*)(pointer))+4))&t;   ))
 multiline_comment|/*&n; * now pick the right ones for our MACHINE ARCHITECTURE&n; */
 macro_line|#if __BYTE_ORDER == __LITTLE_ENDIAN
-DECL|macro|INT_GET_UNALIGNED_16
-mdefine_line|#define INT_GET_UNALIGNED_16(pointer)&t;    INT_GET_UNALIGNED_16_LE(pointer)
-DECL|macro|INT_SET_UNALIGNED_16
-mdefine_line|#define INT_SET_UNALIGNED_16(pointer,value) INT_SET_UNALIGNED_16_LE(pointer,value)
 DECL|macro|INT_GET_UNALIGNED_32
 mdefine_line|#define INT_GET_UNALIGNED_32(pointer)&t;    INT_GET_UNALIGNED_32_LE(pointer)
 DECL|macro|INT_GET_UNALIGNED_64
 mdefine_line|#define INT_GET_UNALIGNED_64(pointer)&t;    INT_GET_UNALIGNED_64_LE(pointer)
 macro_line|#else
-DECL|macro|INT_GET_UNALIGNED_16
-mdefine_line|#define INT_GET_UNALIGNED_16(pointer)&t;    INT_GET_UNALIGNED_16_BE(pointer)
-DECL|macro|INT_SET_UNALIGNED_16
-mdefine_line|#define INT_SET_UNALIGNED_16(pointer,value) INT_SET_UNALIGNED_16_BE(pointer,value)
 DECL|macro|INT_GET_UNALIGNED_32
 mdefine_line|#define INT_GET_UNALIGNED_32(pointer)&t;    INT_GET_UNALIGNED_32_BE(pointer)
 DECL|macro|INT_GET_UNALIGNED_64
@@ -102,10 +90,6 @@ DECL|macro|INT_ISZERO
 mdefine_line|#define INT_ISZERO(reference,arch) &bslash;&n;    ((reference) == 0)
 DECL|macro|INT_ZERO
 mdefine_line|#define INT_ZERO(reference,arch) &bslash;&n;    ((reference) = 0)
-DECL|macro|INT_GET_UNALIGNED_16_ARCH
-mdefine_line|#define INT_GET_UNALIGNED_16_ARCH(pointer,arch) &bslash;&n;    ( ((arch) == ARCH_NOCONVERT) &bslash;&n;&t;? &bslash;&n;&t;    (INT_GET_UNALIGNED_16(pointer)) &bslash;&n;&t;: &bslash;&n;&t;    (INT_GET_UNALIGNED_16_BE(pointer)) &bslash;&n;    )
-DECL|macro|INT_SET_UNALIGNED_16_ARCH
-mdefine_line|#define INT_SET_UNALIGNED_16_ARCH(pointer,value,arch) &bslash;&n;    if ((arch) == ARCH_NOCONVERT) { &bslash;&n;&t;INT_SET_UNALIGNED_16(pointer,value); &bslash;&n;    } else { &bslash;&n;&t;INT_SET_UNALIGNED_16_BE(pointer,value); &bslash;&n;    }
 DECL|macro|DIRINO4_GET_ARCH
 mdefine_line|#define DIRINO4_GET_ARCH(pointer,arch) &bslash;&n;    ( ((arch) == ARCH_NOCONVERT) &bslash;&n;&t;? &bslash;&n;&t;    (INT_GET_UNALIGNED_32(pointer)) &bslash;&n;&t;: &bslash;&n;&t;    (INT_GET_UNALIGNED_32_BE(pointer)) &bslash;&n;    )
 macro_line|#if XFS_BIG_INUMS

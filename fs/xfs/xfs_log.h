@@ -2,25 +2,14 @@ multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Ri
 macro_line|#ifndef&t;__XFS_LOG_H__
 DECL|macro|__XFS_LOG_H__
 mdefine_line|#define __XFS_LOG_H__
-macro_line|#if __BYTE_ORDER == __LITTLE_ENDIAN
-DECL|macro|LSN_FIELD_CYCLE
-mdefine_line|#define LSN_FIELD_CYCLE(arch) (((arch)==ARCH_NOCONVERT)?1:0)
-DECL|macro|LSN_FIELD_BLOCK
-mdefine_line|#define LSN_FIELD_BLOCK(arch) (((arch)==ARCH_NOCONVERT)?0:1)
-macro_line|#else
-DECL|macro|LSN_FIELD_CYCLE
-mdefine_line|#define LSN_FIELD_CYCLE(arch) (0)
-DECL|macro|LSN_FIELD_BLOCK
-mdefine_line|#define LSN_FIELD_BLOCK(arch) (1)
-macro_line|#endif
 multiline_comment|/* get lsn fields */
 DECL|macro|CYCLE_LSN
-mdefine_line|#define CYCLE_LSN(lsn,arch) (INT_GET(((uint *)&amp;(lsn))[LSN_FIELD_CYCLE(arch)], arch))
+mdefine_line|#define CYCLE_LSN(lsn) ((uint)((lsn)&gt;&gt;32))
 DECL|macro|BLOCK_LSN
-mdefine_line|#define BLOCK_LSN(lsn,arch) (INT_GET(((uint *)&amp;(lsn))[LSN_FIELD_BLOCK(arch)], arch))
+mdefine_line|#define BLOCK_LSN(lsn) ((uint)(lsn))
 multiline_comment|/* this is used in a spot where we might otherwise double-endian-flip */
-DECL|macro|CYCLE_LSN_NOCONV
-mdefine_line|#define CYCLE_LSN_NOCONV(lsn,arch) (((uint *)&amp;(lsn))[LSN_FIELD_CYCLE(arch)])
+DECL|macro|CYCLE_LSN_DISK
+mdefine_line|#define CYCLE_LSN_DISK(lsn) (((uint *)&amp;(lsn))[0])
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * By comparing each compnent, we don&squot;t have to worry about extra&n; * endian issues in treating two 32 bit numbers as one 64 bit number&n; */
 r_static
@@ -46,9 +35,6 @@ id|lsn1
 comma
 id|xfs_lsn_t
 id|lsn2
-comma
-id|xfs_arch_t
-id|arch
 )paren
 (brace
 r_if
@@ -58,16 +44,12 @@ id|CYCLE_LSN
 c_func
 (paren
 id|lsn1
-comma
-id|arch
 )paren
 op_ne
 id|CYCLE_LSN
 c_func
 (paren
 id|lsn2
-comma
-id|arch
 )paren
 )paren
 r_return
@@ -76,16 +58,12 @@ id|CYCLE_LSN
 c_func
 (paren
 id|lsn1
-comma
-id|arch
 )paren
 OL
 id|CYCLE_LSN
 c_func
 (paren
 id|lsn2
-comma
-id|arch
 )paren
 )paren
 ques
@@ -102,16 +80,12 @@ id|BLOCK_LSN
 c_func
 (paren
 id|lsn1
-comma
-id|arch
 )paren
 op_ne
 id|BLOCK_LSN
 c_func
 (paren
 id|lsn2
-comma
-id|arch
 )paren
 )paren
 r_return
@@ -120,16 +94,12 @@ id|BLOCK_LSN
 c_func
 (paren
 id|lsn1
-comma
-id|arch
 )paren
 OL
 id|BLOCK_LSN
 c_func
 (paren
 id|lsn2
-comma
-id|arch
 )paren
 )paren
 ques
@@ -143,14 +113,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|XFS_LSN_CMP_ARCH
-mdefine_line|#define&t;XFS_LSN_CMP_ARCH(x,y,arch)&t;_lsn_cmp(x, y, arch)
 DECL|macro|XFS_LSN_CMP
-mdefine_line|#define&t;XFS_LSN_CMP(x,y) XFS_LSN_CMP_ARCH(x,y,ARCH_NOCONVERT)
-DECL|macro|XFS_LSN_DIFF_ARCH
-mdefine_line|#define&t;XFS_LSN_DIFF_ARCH(x,y,arch)&t;_lsn_cmp(x, y, arch)
-DECL|macro|XFS_LSN_DIFF
-mdefine_line|#define&t;XFS_LSN_DIFF(x,y) XFS_LSN_DIFF_ARCH(x,y,ARCH_NOCONVERT)
+mdefine_line|#define&t;XFS_LSN_CMP(x,y) _lsn_cmp(x,y)
 multiline_comment|/*&n; * Macros, structures, prototypes for interface to the log manager.&n; */
 multiline_comment|/*&n; * Flags to xfs_log_mount&n; */
 DECL|macro|XFS_LOG_RECOVER

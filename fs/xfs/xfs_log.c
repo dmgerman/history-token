@@ -685,8 +685,6 @@ id|CYCLE_LSN
 c_func
 (paren
 id|log-&gt;l_tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 comma
@@ -703,8 +701,6 @@ id|BLOCK_LSN
 c_func
 (paren
 id|log-&gt;l_tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 comma
@@ -3190,8 +3186,6 @@ id|BLOCK_LSN
 c_func
 (paren
 id|log-&gt;l_tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 suffix:semicolon
@@ -3201,8 +3195,6 @@ id|CYCLE_LSN
 c_func
 (paren
 id|log-&gt;l_tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 suffix:semicolon
 r_if
@@ -4058,7 +4050,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|ASSIGN_ANY_LSN
+id|ASSIGN_ANY_LSN_HOST
 c_func
 (paren
 id|log-&gt;l_tail_lsn
@@ -4066,8 +4058,6 @@ comma
 l_int|1
 comma
 l_int|0
-comma
-id|ARCH_NOCONVERT
 )paren
 suffix:semicolon
 multiline_comment|/* log-&gt;l_tail_lsn = 0x100000000LL; cycle = 1; current block = 0 */
@@ -4842,8 +4832,6 @@ id|BLOCK_LSN
 c_func
 (paren
 id|tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 op_plus
 id|free_threshold
@@ -4854,8 +4842,6 @@ id|CYCLE_LSN
 c_func
 (paren
 id|tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 suffix:semicolon
 r_if
@@ -4875,7 +4861,7 @@ op_add_assign
 l_int|1
 suffix:semicolon
 )brace
-id|ASSIGN_ANY_LSN
+id|ASSIGN_ANY_LSN_HOST
 c_func
 (paren
 id|threshold_lsn
@@ -4883,22 +4869,18 @@ comma
 id|threshold_cycle
 comma
 id|threshold_block
-comma
-id|ARCH_NOCONVERT
 )paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t pass in an lsn greater than the lsn of the last&n;&t; * log record known to be on disk.&n;&t; */
 r_if
 c_cond
 (paren
-id|XFS_LSN_CMP_ARCH
+id|XFS_LSN_CMP
 c_func
 (paren
 id|threshold_lsn
 comma
 id|log-&gt;l_last_sync_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 OG
 l_int|0
@@ -5252,9 +5234,13 @@ comma
 id|BLOCK_LSN
 c_func
 (paren
+id|INT_GET
+c_func
+(paren
 id|iclog-&gt;ic_header.h_lsn
 comma
 id|ARCH_CONVERT
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -7315,14 +7301,12 @@ id|lowest_lsn
 )paren
 op_logical_or
 (paren
-id|XFS_LSN_CMP_ARCH
+id|XFS_LSN_CMP
 c_func
 (paren
 id|lsn
 comma
 id|lowest_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 OL
 l_int|0
@@ -7546,7 +7530,7 @@ c_cond
 id|lowest_lsn
 op_logical_and
 (paren
-id|XFS_LSN_CMP_ARCH
+id|XFS_LSN_CMP
 c_func
 (paren
 id|lowest_lsn
@@ -7558,8 +7542,6 @@ id|iclog-&gt;ic_header.h_lsn
 comma
 id|ARCH_CONVERT
 )paren
-comma
-id|ARCH_NOCONVERT
 )paren
 OL
 l_int|0
@@ -7598,7 +7580,7 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|XFS_LSN_CMP_ARCH
+id|XFS_LSN_CMP
 c_func
 (paren
 id|log-&gt;l_last_sync_lsn
@@ -7610,8 +7592,6 @@ id|iclog-&gt;ic_header.h_lsn
 comma
 id|ARCH_CONVERT
 )paren
-comma
-id|ARCH_NOCONVERT
 )paren
 op_le
 l_int|0
@@ -8242,8 +8222,6 @@ c_func
 id|head-&gt;h_lsn
 comma
 id|log
-comma
-id|ARCH_CONVERT
 )paren
 suffix:semicolon
 id|ASSERT
@@ -8759,8 +8737,6 @@ id|CYCLE_LSN
 c_func
 (paren
 id|tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 op_ne
 id|log-&gt;l_grant_write_cycle
@@ -8777,8 +8753,6 @@ id|CYCLE_LSN
 c_func
 (paren
 id|tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 suffix:semicolon
@@ -8794,8 +8768,6 @@ id|BLOCK_LSN
 c_func
 (paren
 id|tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -9329,8 +9301,6 @@ id|CYCLE_LSN
 c_func
 (paren
 id|tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 op_ne
 id|log-&gt;l_grant_write_cycle
@@ -9347,8 +9317,6 @@ id|CYCLE_LSN
 c_func
 (paren
 id|tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 suffix:semicolon
@@ -9364,8 +9332,6 @@ id|BLOCK_LSN
 c_func
 (paren
 id|tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -11557,8 +11523,6 @@ id|CYCLE_LSN
 c_func
 (paren
 id|tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 op_eq
 id|log-&gt;l_prev_cycle
@@ -11575,8 +11539,6 @@ id|BLOCK_LSN
 c_func
 (paren
 id|tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 suffix:semicolon
@@ -11613,8 +11575,6 @@ id|CYCLE_LSN
 c_func
 (paren
 id|tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 op_plus
 l_int|1
@@ -11629,8 +11589,6 @@ id|BLOCK_LSN
 c_func
 (paren
 id|tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 op_eq
 id|log-&gt;l_prev_block
@@ -11647,8 +11605,6 @@ id|BLOCK_LSN
 c_func
 (paren
 id|tail_lsn
-comma
-id|ARCH_NOCONVERT
 )paren
 op_minus
 id|log-&gt;l_prev_block
