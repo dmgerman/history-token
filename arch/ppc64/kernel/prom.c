@@ -15802,9 +15802,16 @@ c_cond
 op_logical_neg
 id|ints
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 id|intrcells
 op_assign
 id|prom_n_intr_cells
