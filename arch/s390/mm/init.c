@@ -91,9 +91,13 @@ macro_line|#ifdef __s390x__
 id|asm
 r_volatile
 (paren
-l_string|&quot;sam31&bslash;n&bslash;t&quot;
-l_string|&quot;diag %0,%0,0x10&bslash;n&bslash;t&quot;
-l_string|&quot;sam64&quot;
+l_string|&quot;   sam31&bslash;n&quot;
+l_string|&quot;   diag %0,%0,0x10&bslash;n&quot;
+l_string|&quot;0: sam64&bslash;n&quot;
+l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;   .align 8&bslash;n&quot;
+l_string|&quot;   .quad 0b, 0b&bslash;n&quot;
+l_string|&quot;.previous&bslash;n&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;a&quot;
@@ -106,7 +110,12 @@ macro_line|#else
 id|asm
 r_volatile
 (paren
-l_string|&quot;diag %0,%0,0x10&quot;
+l_string|&quot;   diag %0,%0,0x10&bslash;n&quot;
+l_string|&quot;0:&bslash;n&quot;
+l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
+l_string|&quot;   .align 4&bslash;n&quot;
+l_string|&quot;   .long 0b, 0b&bslash;n&quot;
+l_string|&quot;.previous&bslash;n&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;a&quot;
