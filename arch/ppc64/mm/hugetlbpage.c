@@ -3510,8 +3510,6 @@ id|va
 comma
 id|hash
 comma
-id|secondary
-comma
 id|slot
 suffix:semicolon
 id|BUG_ON
@@ -3577,10 +3575,8 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|secondary
-op_assign
-op_logical_neg
-op_logical_neg
+r_if
+c_cond
 (paren
 id|hugepte_val
 c_func
@@ -3589,12 +3585,6 @@ id|pte
 )paren
 op_amp
 id|_HUGEPAGE_SECONDARY
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|secondary
 )paren
 id|hash
 op_assign
