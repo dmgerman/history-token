@@ -3217,15 +3217,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|elevator_init
-c_func
-(paren
-id|ubd_queue
-comma
-op_amp
-id|elevator_noop
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
