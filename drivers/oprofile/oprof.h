@@ -2,8 +2,6 @@ multiline_comment|/**&n; * @file oprof.h&n; *&n; * @remark Copyright 2002 OProfi
 macro_line|#ifndef OPROF_H
 DECL|macro|OPROF_H
 mdefine_line|#define OPROF_H
-macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/oprofile.h&gt;
 r_int
 id|oprofile_setup
 c_func
@@ -46,6 +44,9 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_struct
+id|oprofile_operations
+suffix:semicolon
 r_extern
 r_int
 r_int
@@ -76,6 +77,12 @@ r_extern
 r_int
 r_int
 id|oprofile_started
+suffix:semicolon
+r_struct
+id|super_block
+suffix:semicolon
+r_struct
+id|dentry
 suffix:semicolon
 r_void
 id|oprofile_create_files

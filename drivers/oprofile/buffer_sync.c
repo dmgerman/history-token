@@ -1,14 +1,14 @@
 multiline_comment|/**&n; * @file buffer_sync.c&n; *&n; * @remark Copyright 2002 OProfile authors&n; * @remark Read the file COPYING&n; *&n; * @author John Levon &lt;levon@movementarian.org&gt;&n; *&n; * This is the core of the buffer management. Each&n; * CPU buffer is processed and entered into the&n; * global event buffer. Such processing is necessary&n; * in several circumstances, mentioned below.&n; *&n; * The processing does the job of converting the&n; * transitory EIP value into a persistent dentry/offset&n; * value that the profiler can record at its leisure.&n; *&n; * See fs/dcookies.c for a description of the dentry/offset&n; * objects.&n; */
-macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/dcookies.h&gt;
-macro_line|#include &lt;linux/notifier.h&gt;
-macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;linux/dcookies.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &quot;oprofile_stats.h&quot;
 macro_line|#include &quot;event_buffer.h&quot;
 macro_line|#include &quot;cpu_buffer.h&quot;
-macro_line|#include &quot;oprofile_stats.h&quot;
+macro_line|#include &quot;buffer_sync.h&quot;
 DECL|macro|DEFAULT_EXPIRE
 mdefine_line|#define DEFAULT_EXPIRE (HZ / 4)
 r_static
