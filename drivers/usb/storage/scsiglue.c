@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * SCSI layer glue code&n; *&n; * $Id: scsiglue.c,v 1.24 2001/11/11 03:33:58 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 1999, 2000 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Developed with the assistance of:&n; *   (c) 2000 David L. Brown, Jr. (usb-storage@davidb.org)&n; *   (c) 2000 Stephen J. Gowdy (SGowdy@lbl.gov)&n; *&n; * Initial work by:&n; *   (c) 1999 Michael Gee (michael@linuxspecific.com)&n; *&n; * This driver is based on the &squot;USB Mass Storage Class&squot; document. This&n; * describes in detail the protocol used to communicate with such&n; * devices.  Clearly, the designers had SCSI and ATAPI commands in&n; * mind when they created this document.  The commands are all very&n; * similar to commands in the SCSI-II and ATAPI specifications.&n; *&n; * It is important to note that in a number of cases this class&n; * exhibits class-specific exemptions from the USB specification.&n; * Notably the usage of NAK, STALL and ACK differs from the norm, in&n; * that they are used to communicate wait, failed and OK on commands.&n; *&n; * Also, for certain devices, the interrupt endpoint is used to convey&n; * status of a command.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * SCSI layer glue code&n; *&n; * $Id: scsiglue.c,v 1.26 2002/04/22 03:39:43 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 1999, 2000 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Developed with the assistance of:&n; *   (c) 2000 David L. Brown, Jr. (usb-storage@davidb.org)&n; *   (c) 2000 Stephen J. Gowdy (SGowdy@lbl.gov)&n; *&n; * Initial work by:&n; *   (c) 1999 Michael Gee (michael@linuxspecific.com)&n; *&n; * This driver is based on the &squot;USB Mass Storage Class&squot; document. This&n; * describes in detail the protocol used to communicate with such&n; * devices.  Clearly, the designers had SCSI and ATAPI commands in&n; * mind when they created this document.  The commands are all very&n; * similar to commands in the SCSI-II and ATAPI specifications.&n; *&n; * It is important to note that in a number of cases this class&n; * exhibits class-specific exemptions from the USB specification.&n; * Notably the usage of NAK, STALL and ACK differs from the norm, in&n; * that they are used to communicate wait, failed and OK on commands.&n; *&n; * Also, for certain devices, the interrupt endpoint is used to convey&n; * status of a command.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &quot;scsiglue.h&quot;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
@@ -410,66 +410,23 @@ c_func
 l_string|&quot;command_abort() called&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* if we&squot;re stuck waiting for an IRQ, simulate it */
 r_if
 c_cond
 (paren
 id|atomic_read
 c_func
 (paren
-id|us-&gt;ip_wanted
-)paren
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- simulating missing IRQ&bslash;n&quot;
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
 op_amp
-(paren
-id|us-&gt;ip_waitq
+id|us-&gt;sm_state
 )paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* if the device has been removed, this worked */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|us-&gt;pusb_dev
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- device removed already&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|SUCCESS
-suffix:semicolon
-)brace
-multiline_comment|/* if we have an urb pending, let&squot;s wake the control thread up */
-r_if
-c_cond
-(paren
-id|us-&gt;current_urb-&gt;status
 op_eq
-op_minus
-id|EINPROGRESS
+id|US_STATE_RUNNING
 )paren
 (brace
-multiline_comment|/* cancel the URB -- this will automatically wake the thread */
-id|usb_unlink_urb
+id|usb_stor_abort_transport
 c_func
 (paren
-id|us-&gt;current_urb
+id|us
 )paren
 suffix:semicolon
 multiline_comment|/* wait for us to be done */
@@ -522,13 +479,56 @@ id|srb-&gt;host-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
+r_int
+id|result
+suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;device_reset() called&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* if the device was removed, then we&squot;re already reset */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
+op_eq
+id|US_STATE_DETACHED
+)paren
 r_return
+id|SUCCESS
+suffix:semicolon
+multiline_comment|/* lock the device pointers */
+id|down
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;dev_semaphore
+)paren
+)paren
+suffix:semicolon
+id|us-&gt;srb
+op_assign
+id|srb
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+comma
+id|US_STATE_RESETTING
+)paren
+suffix:semicolon
+id|result
+op_assign
 id|us
 op_member_access_from_pointer
 id|transport_reset
@@ -537,8 +537,30 @@ c_func
 id|us
 )paren
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+comma
+id|US_STATE_IDLE
+)paren
+suffix:semicolon
+multiline_comment|/* unlock the device pointers */
+id|up
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;dev_semaphore
+)paren
+)paren
+suffix:semicolon
+r_return
+id|result
+suffix:semicolon
 )brace
-multiline_comment|/* This resets the device port, and simulates the device&n; * disconnect/reconnect for all drivers which have claimed other&n; * interfaces. */
+multiline_comment|/* This resets the device port, and simulates the device&n; * disconnect/reconnect for all drivers which have claimed&n; * interfaces, including ourself. */
 DECL|function|bus_reset
 r_static
 r_int
@@ -571,6 +593,13 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
+r_struct
+id|usb_device
+op_star
+id|pusb_dev_save
+op_assign
+id|us-&gt;pusb_dev
+suffix:semicolon
 multiline_comment|/* we use the usb_reset_device() function to handle this for us */
 id|US_DEBUGP
 c_func
@@ -582,8 +611,14 @@ multiline_comment|/* if the device has been removed, this worked */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|us-&gt;pusb_dev
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
+op_eq
+id|US_STATE_DETACHED
 )paren
 (brace
 id|US_DEBUGP
@@ -596,63 +631,27 @@ r_return
 id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/* release the IRQ, if we have one */
-id|down
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;irq_urb_sem
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|us-&gt;irq_urb
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;-- releasing irq URB&bslash;n&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* attempt to reset the port */
 id|result
 op_assign
-id|usb_unlink_urb
+id|usb_reset_device
 c_func
 (paren
-id|us-&gt;irq_urb
+id|pusb_dev_save
 )paren
 suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- usb_unlink_urb() returned %d&bslash;n&quot;
+l_string|&quot;usb_reset_device returns %d&bslash;n&quot;
 comma
 id|result
 )paren
 suffix:semicolon
-)brace
-id|up
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;irq_urb_sem
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* attempt to reset the port */
 r_if
 c_cond
 (paren
-id|usb_reset_device
-c_func
-(paren
-id|us-&gt;pusb_dev
-)paren
+id|result
 OL
 l_int|0
 )paren
@@ -660,6 +659,7 @@ r_return
 id|FAILED
 suffix:semicolon
 multiline_comment|/* FIXME: This needs to lock out driver probing while it&squot;s working&n;&t; * or we can have race conditions */
+multiline_comment|/* Is that still true?  I don&squot;t see how...  AS */
 r_for
 c_loop
 (paren
@@ -669,7 +669,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|us-&gt;pusb_dev-&gt;actconfig-&gt;bNumInterfaces
+id|pusb_dev_save-&gt;actconfig-&gt;bNumInterfaces
 suffix:semicolon
 id|i
 op_increment
@@ -681,7 +681,7 @@ op_star
 id|intf
 op_assign
 op_amp
-id|us-&gt;pusb_dev-&gt;actconfig-&gt;interface
+id|pusb_dev_save-&gt;actconfig-&gt;interface
 (braket
 id|i
 )braket
@@ -706,30 +706,11 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;Examinging driver %s...&quot;
+l_string|&quot;Examining driver %s...&quot;
 comma
 id|intf-&gt;driver-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* skip interfaces which we&squot;ve claimed */
-r_if
-c_cond
-(paren
-id|intf-&gt;driver
-op_eq
-op_amp
-id|usb_storage_driver
-)paren
-(brace
-id|US_DEBUGPX
-c_func
-(paren
-l_string|&quot;skipping ourselves.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 multiline_comment|/* simulate a disconnect and reconnect for all interfaces */
 id|US_DEBUGPX
 c_func
@@ -749,7 +730,7 @@ op_member_access_from_pointer
 id|disconnect
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|pusb_dev_save
 comma
 id|intf-&gt;private_data
 )paren
@@ -759,7 +740,7 @@ op_assign
 id|usb_match_id
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|pusb_dev_save
 comma
 id|intf
 comma
@@ -771,7 +752,7 @@ op_member_access_from_pointer
 id|probe
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|pusb_dev_save
 comma
 id|i
 comma
@@ -783,56 +764,6 @@ c_func
 (paren
 op_amp
 id|intf-&gt;driver-&gt;serialize
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* re-allocate the IRQ URB and submit it to restore connectivity&n;&t; * for CBI devices&n;&t; */
-r_if
-c_cond
-(paren
-id|us-&gt;protocol
-op_eq
-id|US_PR_CBI
-)paren
-(brace
-id|down
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;irq_urb_sem
-)paren
-)paren
-suffix:semicolon
-id|us-&gt;irq_urb-&gt;dev
-op_assign
-id|us-&gt;pusb_dev
-suffix:semicolon
-id|result
-op_assign
-id|usb_submit_urb
-c_func
-(paren
-id|us-&gt;irq_urb
-comma
-id|GFP_NOIO
-)paren
-suffix:semicolon
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;usb_submit_urb() returns %d&bslash;n&quot;
-comma
-id|result
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;irq_urb_sem
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1047,7 +978,16 @@ c_func
 (paren
 l_string|&quot;     Attached: %s&bslash;n&quot;
 comma
-id|us-&gt;pusb_dev
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
+op_eq
+id|US_STATE_DETACHED
+)paren
 ques
 c_cond
 l_string|&quot;Yes&quot;

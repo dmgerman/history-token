@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for SCM Microsystems USB-ATAPI cable&n; *&n; * $Id: shuttle_usbat.c,v 1.15 2001/12/08 23:32:48 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000, 2001 Robert Baruch (autophile@starband.net)&n; *&n; * Many originally ATAPI devices were slightly modified to meet the USB&n; * market by using some kind of translation from ATAPI to USB on the host,&n; * and the peripheral would translate from USB back to ATAPI.&n; *&n; * SCM Microsystems (www.scmmicro.com) makes a device, sold to OEM&squot;s only, &n; * which does the USB-to-ATAPI conversion.  By obtaining the data sheet on&n; * their device under nondisclosure agreement, I have been able to write&n; * this driver for Linux.&n; *&n; * The chip used in the device can also be used for EPP and ISA translation&n; * as well. This driver is only guaranteed to work with the ATAPI&n; * translation.&n; *&n; * The only peripheral that I know of (as of 27 Mar 2001) that uses this&n; * device is the Hewlett-Packard 8200e/8210e/8230e CD-Writer Plus.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* Driver for SCM Microsystems USB-ATAPI cable&n; *&n; * $Id: shuttle_usbat.c,v 1.17 2002/04/22 03:39:43 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000, 2001 Robert Baruch (autophile@starband.net)&n; *&n; * Developed with the assistance of:&n; *   (c) 2002 Alan Stern &lt;stern@rowland.org&gt;&n; *&n; * Many originally ATAPI devices were slightly modified to meet the USB&n; * market by using some kind of translation from ATAPI to USB on the host,&n; * and the peripheral would translate from USB back to ATAPI.&n; *&n; * SCM Microsystems (www.scmmicro.com) makes a device, sold to OEM&squot;s only, &n; * which does the USB-to-ATAPI conversion.  By obtaining the data sheet on&n; * their device under nondisclosure agreement, I have been able to write&n; * this driver for Linux.&n; *&n; * The chip used in the device can also be used for EPP and ISA translation&n; * as well. This driver is only guaranteed to work with the ATAPI&n; * translation.&n; *&n; * The only peripheral that I know of (as of 27 Mar 2001) that uses this&n; * device is the Hewlett-Packard 8200e/8210e/8230e CD-Writer Plus.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;usb.h&quot;
@@ -187,10 +187,10 @@ l_string|&quot;-- Stall on control pipe. Clearing&bslash;n&quot;
 suffix:semicolon
 id|result
 op_assign
-id|usb_clear_halt
+id|usb_stor_clear_halt
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
 id|pipe
 )paren
@@ -198,7 +198,7 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- usb_clear_halt() returns %d&bslash;n&quot;
+l_string|&quot;-- usb_stor_clear_halt() returns %d&bslash;n&quot;
 comma
 id|result
 )paren
@@ -315,10 +315,10 @@ comma
 id|act_len
 )paren
 suffix:semicolon
-id|usb_clear_halt
+id|usb_stor_clear_halt
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
 id|pipe
 )paren
@@ -1733,10 +1733,10 @@ id|i
 op_eq
 l_int|0
 )paren
-id|usb_clear_halt
+id|usb_stor_clear_halt
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
 id|usb_sndbulkpipe
 c_func
@@ -2344,11 +2344,40 @@ op_plus
 l_int|7
 )braket
 suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;handle_read10: GPCMD_READ_CD: len %d&bslash;n&quot;
+comma
+id|len
+)paren
+suffix:semicolon
 id|srb-&gt;transfersize
 op_assign
 id|srb-&gt;request_bufflen
 op_div
 id|len
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|srb-&gt;transfersize
+)paren
+(brace
+id|srb-&gt;transfersize
+op_assign
+l_int|2048
+suffix:semicolon
+multiline_comment|/* A guess */
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;handle_read10: transfersize 0, forcing %d&bslash;n&quot;
+comma
+id|srb-&gt;transfersize
+)paren
 suffix:semicolon
 )brace
 id|len
@@ -2737,7 +2766,7 @@ id|page
 op_plus
 id|sg
 (braket
-id|sg_segment
+id|sg_sgement
 )braket
 dot
 id|offset

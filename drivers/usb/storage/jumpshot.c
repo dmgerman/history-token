@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for Lexar &quot;Jumpshot&quot; Compact Flash reader&n; *&n; * jumpshot driver v0.1:&n; *&n; * First release&n; *&n; * Current development and maintenance by:&n; *   (c) 2000 Jimmie Mayfield (mayfield+usb@sackheads.org)&n; *   many thanks to Robert Baruch for the SanDisk SmartMedia reader driver&n; *   which I used as a template for this driver.&n; *   Some bugfixes and scatter-gather code by Gregory P. Smith &n; *   (greg-usb@electricrain.com)&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* Driver for Lexar &quot;Jumpshot&quot; Compact Flash reader&n; *&n; * $Id: jumpshot.c,v 1.7 2002/02/25 00:40:13 mdharm Exp $&n; *&n; * jumpshot driver v0.1:&n; *&n; * First release&n; *&n; * Current development and maintenance by:&n; *   (c) 2000 Jimmie Mayfield (mayfield+usb@sackheads.org)&n; *&n; *   Many thanks to Robert Baruch for the SanDisk SmartMedia reader driver&n; *   which I used as a template for this driver.&n; *&n; *   Some bugfixes and scatter-gather code by Gregory P. Smith &n; *   (greg-usb@electricrain.com)&n; *&n; *   Fix for media change by Joerg Schneider (js@joergschneider.com)&n; *&n; * Developed with the assistance of:&n; *&n; *   (C) 2002 Alan Stern &lt;stern@rowland.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/*&n;  * This driver attempts to support the Lexar Jumpshot USB CompactFlash &n;  * reader.  Like many other USB CompactFlash readers, the Jumpshot contains&n;  * a USB-to-ATA chip. &n;  *&n;  * This driver supports reading and writing.  If you&squot;re truly paranoid,&n;  * however, you can force the driver into a write-protected state by setting&n;  * the WP enable bits in jumpshot_handle_mode_sense.  Basically this means&n;  * setting mode_param_header[3] = 0x80.  &n;  */
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
@@ -320,10 +320,10 @@ l_string|&quot;jumpshot_send_control:  -- Stall on control pipe. Clearing&bslash
 suffix:semicolon
 id|result
 op_assign
-id|usb_clear_halt
+id|usb_stor_clear_halt
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
 id|pipe
 )paren
@@ -331,7 +331,7 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;jumpshot_send_control:  -- usb_clear_halt() returns %d&bslash;n&quot;
+l_string|&quot;jumpshot_send_control:  -- usb_stor_clear_halt() returns %d&bslash;n&quot;
 comma
 id|result
 )paren
@@ -448,10 +448,10 @@ comma
 id|act_len
 )paren
 suffix:semicolon
-id|usb_clear_halt
+id|usb_stor_clear_halt
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
 id|pipe
 )paren
@@ -3970,6 +3970,67 @@ singleline_comment|// the media out of the device (no locking doors, etc)
 singleline_comment|//
 r_return
 id|USB_STOR_TRANSPORT_GOOD
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|srb-&gt;cmnd
+(braket
+l_int|0
+)braket
+op_eq
+id|START_STOP
+)paren
+(brace
+multiline_comment|/* this is used by sd.c&squot;check_scsidisk_media_change to detect&n;&t;&t;   media change */
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;jumpshot_transport:  START_STOP.&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* the first jumpshot_id_device after a media change returns&n;&t;&t;   an error (determined experimentally) */
+id|rc
+op_assign
+id|jumpshot_id_device
+c_func
+(paren
+id|us
+comma
+id|info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+id|USB_STOR_TRANSPORT_GOOD
+)paren
+(brace
+id|info-&gt;sense_key
+op_assign
+id|NO_SENSE
+suffix:semicolon
+id|srb-&gt;result
+op_assign
+id|SUCCESS
+suffix:semicolon
+)brace
+r_else
+(brace
+id|info-&gt;sense_key
+op_assign
+id|UNIT_ATTENTION
+suffix:semicolon
+id|srb-&gt;result
+op_assign
+id|CHECK_CONDITION
+suffix:semicolon
+)brace
+r_return
+id|rc
 suffix:semicolon
 )brace
 id|US_DEBUGP

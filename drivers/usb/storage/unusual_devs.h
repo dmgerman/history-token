@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * Ununsual Devices File&n; *&n; * $Id: unusual_devs.h,v 1.25 2002/01/13 06:39:17 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Initial work by:&n; *   (c) 2000 Adam J. Richter (adam@yggdrasil.com), Yggdrasil Computing, Inc.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * Ununsual Devices File&n; *&n; * $Id: unusual_devs.h,v 1.32 2002/02/25 02:41:24 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000-2002 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Initial work by:&n; *   (c) 2000 Adam J. Richter (adam@yggdrasil.com), Yggdrasil Computing, Inc.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* IMPORTANT NOTE: This file must be included in another file which does&n; * the following thing for it to work:&n; * The macro UNUSUAL_DEV() must be defined before this file is included&n; */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* If you edit this file, please try to keep it sorted first by VendorID,&n; * then by ProductID.&n; */
@@ -272,6 +272,31 @@ comma
 l_int|NULL
 comma
 l_int|0
+)paren
+comma
+multiline_comment|/* Reported by Peter W&#xfffd;chtler &lt;pwaechtler@loewe-komp.de&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04ce
+comma
+l_int|0x0002
+comma
+l_int|0x0074
+comma
+l_int|0x0074
+comma
+l_string|&quot;ScanLogic&quot;
+comma
+l_string|&quot;SL11R-IDE 0049SQFP-1.2 A002&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
 )paren
 comma
 multiline_comment|/* Most of the following entries were developed with the help of&n; * Shuttle/SCM directly.&n; */
@@ -610,7 +635,7 @@ l_int|0x0422
 comma
 l_string|&quot;Sony&quot;
 comma
-l_string|&quot;DSC-S30/S70/S75/505V/F505&quot;
+l_string|&quot;DSC-S30/S70/S75/505V/F505/F707&quot;
 comma
 id|US_SC_SCSI
 comma
@@ -975,11 +1000,85 @@ comma
 l_int|NULL
 comma
 id|US_FL_MODE_XLATE
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Reported by Carlos Villegas &lt;cav@uniscope.co.jp&gt;&n; * This device needs an INQUIRY of exactly 36-bytes to function.&n; * That is the only reason this entry is needed.&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x05e3
+comma
+l_int|0x0700
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;SIIG&quot;
+comma
+l_string|&quot;CompactFlash Card Reader&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* Reported by Peter Marks &lt;peter.marks@turner.com&gt;&n; * Like the SIIG unit above, this unit needs an INQUIRY to ask for exactly&n; * 36 bytes of data.  No more, no less. That is the only reason this entry&n; * is needed.&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x05e3
+comma
+l_int|0x0702
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;EagleTec&quot;
+comma
+l_string|&quot;External Hard Disk&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x05e3
+comma
+l_int|0x0700
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;Unknown&quot;
+comma
+l_string|&quot;GL641USB based CF Card reader&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+op_or
+id|US_FL_MODE_XLATE
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -1032,6 +1131,31 @@ id|US_FL_START_STOP
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Submitted by kedar@centillium&n; * Needed for START_STOP flag, but that is unconfirmed */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0686
+comma
+l_int|0x4006
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Minolta&quot;
+comma
+l_string|&quot;Dimage S304&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_START_STOP
+)paren
+comma
 multiline_comment|/* Submitted by f.brugmans@hccnet.nl&n; * Needed for START_STOP flag */
 id|UNUSUAL_DEV
 c_func
@@ -1330,8 +1454,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_MODE_XLATE
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 multiline_comment|/*&n;&t; * The following Datafab-based devices may or may not work&n;&t; * using the current driver...the 0xffff is arbitrary since I&n;&t; * don&squot;t know what device versions exist for these guys.&n;&t; *&n;&t; * The 0xa003 and 0xa004 devices in particular I&squot;m curious about.&n;&t; * I&squot;m told they exist but so far nobody has come forward to say that&n;&t; * they work with this driver.  Given the success we&squot;ve had getting&n;&t; * other Datafab-based cards operational with this driver, I&squot;ve decided&n;&t; * to leave these two devices in the list.&n;&t; */
@@ -1357,8 +1479,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_MODE_XLATE
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 id|UNUSUAL_DEV
@@ -1383,8 +1503,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_MODE_XLATE
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 id|UNUSUAL_DEV
@@ -1409,8 +1527,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_MODE_XLATE
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 id|UNUSUAL_DEV
@@ -1435,8 +1551,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_MODE_XLATE
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 id|UNUSUAL_DEV
@@ -1461,8 +1575,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_MODE_XLATE
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 multiline_comment|/* Submitted by Olaf Hering &lt;olh@suse.de&gt; */
@@ -1488,8 +1600,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_MODE_XLATE
-op_or
-id|US_FL_START_STOP
 )paren
 comma
 macro_line|#endif
@@ -1542,6 +1652,30 @@ comma
 id|US_FL_MODE_XLATE
 )paren
 comma
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0a16
+comma
+l_int|0x8888
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;IBM&quot;
+comma
+l_string|&quot;IBM USB Memory Key&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 macro_line|#ifdef CONFIG_USB_STORAGE_ISD200
 id|UNUSUAL_DEV
 c_func
@@ -1568,6 +1702,35 @@ l_int|0
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* EasyDisk support. Submitted by Stanislav Karchebny &lt;berk@madfire.net&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x1065
+comma
+l_int|0x2136
+comma
+l_int|0x0000
+comma
+l_int|0x0001
+comma
+l_string|&quot;Global Channel Solutions&quot;
+comma
+l_string|&quot;EasyDisk EDxxxx&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_MODE_XLATE
+op_or
+id|US_FL_START_STOP
+op_or
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 multiline_comment|/* Submitted by Brian Hall &lt;brihall@bigfoot.com&gt;&n; * Needed for START_STOP flag */
 id|UNUSUAL_DEV
 c_func
@@ -1593,7 +1756,7 @@ comma
 id|US_FL_START_STOP
 )paren
 comma
-multiline_comment|/* Reported by Dan Pilone &lt;pilone@slac.com&gt;&n; * The device needs the flags only.&n; */
+multiline_comment|/* Reported by Dan Pilone &lt;pilone@slac.com&gt;&n; * The device needs the flags only.&n; * Also reported by Brian Hall &lt;brihall@bigfoot.com&gt;, again for flags.&n; * I also suspect this device may have a broken serial number.&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
