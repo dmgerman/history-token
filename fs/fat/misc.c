@@ -167,7 +167,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;FAT bread failed in fat_clusters_flush&bslash;n&quot;
+l_string|&quot;FAT: bread failed in fat_clusters_flush&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
