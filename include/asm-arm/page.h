@@ -98,9 +98,9 @@ id|user
 suffix:semicolon
 macro_line|#endif
 DECL|macro|clear_user_page
-mdefine_line|#define clear_user_page(addr,vaddr)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_disable();&t;&t;&t;&bslash;&n;&t;&t;__cpu_clear_user_page(addr, vaddr);&t;&bslash;&n;&t;&t;preempt_enable();&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define clear_user_page(addr,vaddr,pg)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_disable();&t;&t;&t;&bslash;&n;&t;&t;__cpu_clear_user_page(addr, vaddr);&t;&bslash;&n;&t;&t;preempt_enable();&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|copy_user_page
-mdefine_line|#define copy_user_page(to,from,vaddr)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_disable();&t;&t;&t;&bslash;&n;&t;&t;__cpu_copy_user_page(to, from, vaddr);&t;&bslash;&n;&t;&t;preempt_enable();&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define copy_user_page(to,from,vaddr,pg)&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_disable();&t;&t;&t;&bslash;&n;&t;&t;__cpu_copy_user_page(to, from, vaddr);&t;&bslash;&n;&t;&t;preempt_enable();&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|clear_page
 mdefine_line|#define clear_page(page)&t;memzero((void *)(page), PAGE_SIZE)
 r_extern
