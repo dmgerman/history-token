@@ -604,7 +604,7 @@ c_cond
 (paren
 id|niceval
 OL
-id|p-&gt;nice
+id|p-&gt;__nice
 op_logical_and
 op_logical_neg
 id|capable
@@ -619,9 +619,13 @@ op_minus
 id|EACCES
 suffix:semicolon
 r_else
-id|p-&gt;nice
-op_assign
+id|set_user_nice
+c_func
+(paren
+id|p
+comma
 id|niceval
+)paren
 suffix:semicolon
 )brace
 id|read_unlock
@@ -710,7 +714,7 @@ id|niceval
 op_assign
 l_int|20
 op_minus
-id|p-&gt;nice
+id|p-&gt;__nice
 suffix:semicolon
 r_if
 c_cond

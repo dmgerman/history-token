@@ -1366,7 +1366,8 @@ id|qtd-&gt;buf_dma
 comma
 r_sizeof
 (paren
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 )paren
 comma
 id|PCI_DMA_TODEVICE
@@ -1671,7 +1672,8 @@ id|urb-&gt;setup_packet
 comma
 r_sizeof
 (paren
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 )paren
 comma
 id|PCI_DMA_TODEVICE
@@ -1698,7 +1700,8 @@ id|qtd-&gt;buf_dma
 comma
 r_sizeof
 (paren
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 )paren
 comma
 id|token

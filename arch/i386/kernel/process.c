@@ -202,15 +202,6 @@ r_void
 )paren
 (brace
 multiline_comment|/* endless idle loop with no priority at all */
-id|init_idle
-c_func
-(paren
-)paren
-suffix:semicolon
-id|current-&gt;nice
-op_assign
-l_int|20
-suffix:semicolon
 r_while
 c_loop
 (paren

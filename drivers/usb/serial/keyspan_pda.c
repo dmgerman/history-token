@@ -334,8 +334,6 @@ id|tty-&gt;write_wait
 )paren
 suffix:semicolon
 multiline_comment|/* For 2.2.16 backport -- wake_up_interruptible( &amp;tty-&gt;poll_wait ); */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|keyspan_pda_request_unthrottle
 r_static
@@ -392,8 +390,6 @@ l_int|2
 op_star
 id|HZ
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|keyspan_pda_rx_interrupt
@@ -617,21 +613,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* queue up a wakeup at scheduler time */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|schedule_task
 c_func
 (paren
 op_amp
 id|priv-&gt;wakeup_task
 )paren
-op_eq
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2161,21 +2148,12 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* block writers */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|schedule_task
 c_func
 (paren
 op_amp
 id|priv-&gt;unthrottle_task
 )paren
-op_eq
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 id|rc
@@ -2267,21 +2245,12 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* queue up a wakeup at scheduler time */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|schedule_task
 c_func
 (paren
 op_amp
 id|priv-&gt;wakeup_task
 )paren
-op_eq
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|keyspan_pda_write_room
@@ -2411,8 +2380,6 @@ id|down
 op_amp
 id|port-&gt;sem
 )paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 op_increment
 id|port-&gt;open_count
@@ -2615,8 +2582,6 @@ suffix:colon
 op_decrement
 id|port-&gt;open_count
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|up
 (paren
 op_amp
@@ -2712,8 +2677,6 @@ id|up
 op_amp
 id|port-&gt;sem
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/* download the firmware to a &quot;fake&quot; device (pre-renumeration) */

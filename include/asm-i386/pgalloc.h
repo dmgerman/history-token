@@ -888,6 +888,13 @@ DECL|member|state
 r_int
 id|state
 suffix:semicolon
+DECL|member|__cacheline_padding
+r_char
+id|__cacheline_padding
+(braket
+l_int|24
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

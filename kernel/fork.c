@@ -19,10 +19,6 @@ DECL|variable|nr_threads
 r_int
 id|nr_threads
 suffix:semicolon
-DECL|variable|nr_running
-r_int
-id|nr_running
-suffix:semicolon
 DECL|variable|max_threads
 r_int
 id|max_threads
@@ -46,6 +42,14 @@ id|pidhash
 id|PIDHASH_SZ
 )braket
 suffix:semicolon
+DECL|variable|__cacheline_aligned
+id|rwlock_t
+id|tasklist_lock
+id|__cacheline_aligned
+op_assign
+id|RW_LOCK_UNLOCKED
+suffix:semicolon
+multiline_comment|/* outer */
 DECL|function|add_wait_queue
 r_void
 id|add_wait_queue
@@ -2286,6 +2290,10 @@ id|stack_size
 r_int
 id|retval
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|task_struct
 op_star
@@ -2484,13 +2492,12 @@ c_func
 id|clone_flags
 )paren
 suffix:semicolon
-id|p-&gt;run_list.next
-op_assign
-l_int|NULL
-suffix:semicolon
-id|p-&gt;run_list.prev
-op_assign
-l_int|NULL
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|p-&gt;run_list
+)paren
 suffix:semicolon
 id|p-&gt;p_cptr
 op_assign
@@ -2603,14 +2610,12 @@ macro_line|#ifdef CONFIG_SMP
 r_int
 id|i
 suffix:semicolon
-id|p-&gt;cpus_runnable
+id|p-&gt;cpu
 op_assign
-op_complement
-l_int|0UL
-suffix:semicolon
-id|p-&gt;processor
-op_assign
-id|current-&gt;processor
+id|smp_processor_id
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* ?? should we just memset this ?? */
 r_for
@@ -2650,6 +2655,10 @@ id|p-&gt;sigmask_lock
 suffix:semicolon
 )brace
 macro_line|#endif
+id|p-&gt;array
+op_assign
+l_int|NULL
+suffix:semicolon
 id|p-&gt;lock_depth
 op_assign
 op_minus
@@ -2793,7 +2802,18 @@ id|p-&gt;pdeath_signal
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * &quot;share&quot; dynamic priority between parent and child, thus the&n;&t; * total amount of dynamic priorities in the system doesnt change,&n;&t; * more scheduling fairness. This is only important in the first&n;&t; * timeslice, on the long run the scheduling behaviour is unchanged.&n;&t; */
+multiline_comment|/*&n;&t; * Share the timeslice between parent and child, thus the&n;&t; * total amount of pending timeslices in the system doesnt change,&n;&t; * resulting in more scheduling fairness.&n;&t; */
+id|__save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|__cli
+c_func
+(paren
+)paren
+suffix:semicolon
 id|p-&gt;time_slice
 op_assign
 (paren
@@ -2814,9 +2834,52 @@ c_cond
 op_logical_neg
 id|current-&gt;time_slice
 )paren
-id|current-&gt;need_resched
+(brace
+multiline_comment|/*&n;&t; &t; * This case is rare, it happens when the parent has only&n;&t; &t; * a single jiffy left from its timeslice. Taking the&n;&t;&t; * runqueue lock is not a problem.&n;&t;&t; */
+id|current-&gt;time_slice
 op_assign
 l_int|1
+suffix:semicolon
+id|expire_task
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+)brace
+id|p-&gt;sleep_timestamp
+op_assign
+id|p-&gt;run_timestamp
+op_assign
+id|jiffies
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|p-&gt;sleep_hist
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|p-&gt;sleep_hist
+(braket
+l_int|0
+)braket
+)paren
+op_star
+id|SLEEP_HIST_SIZE
+)paren
+suffix:semicolon
+id|p-&gt;sleep_idx
+op_assign
+l_int|0
+suffix:semicolon
+id|__restore_flags
+c_func
+(paren
+id|flags
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, add it to the run-queues and make it&n;&t; * visible to the rest of the system.&n;&t; *&n;&t; * Let it rip!&n;&t; */
 id|retval
@@ -2947,6 +3010,17 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+DECL|macro|RUN_CHILD_FIRST
+mdefine_line|#define RUN_CHILD_FIRST 1
+macro_line|#if RUN_CHILD_FIRST
+id|wake_up_forked_process
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+multiline_comment|/* do this last */
+macro_line|#else
 id|wake_up_process
 c_func
 (paren
@@ -2954,6 +3028,7 @@ id|p
 )paren
 suffix:semicolon
 multiline_comment|/* do this last */
+macro_line|#endif
 op_increment
 id|total_forks
 suffix:semicolon
@@ -2971,6 +3046,14 @@ op_amp
 id|vfork
 )paren
 suffix:semicolon
+macro_line|#if RUN_CHILD_FIRST
+r_else
+multiline_comment|/*&n;&t;&t; * Let the child process run first, to avoid most of the&n;&t;&t; * COW overhead when the child exec()s afterwards.&n;&t;&t; */
+id|current-&gt;need_resched
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 id|fork_out
 suffix:colon
 r_return

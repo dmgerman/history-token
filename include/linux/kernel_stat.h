@@ -139,17 +139,21 @@ r_int
 r_int
 id|collisions
 suffix:semicolon
-DECL|member|context_swtch
-r_int
-r_int
-id|context_swtch
-suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
 r_struct
 id|kernel_stat
 id|kstat
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|nr_context_switches
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 macro_line|#if !defined(CONFIG_ARCH_S390)
 multiline_comment|/*&n; * Number of interrupts per specific IRQ source, since bootup&n; */

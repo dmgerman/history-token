@@ -816,6 +816,10 @@ id|usb_serial_device_type
 id|digi_acceleport_2_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Digi USB&quot;
@@ -905,6 +909,10 @@ id|usb_serial_device_type
 id|digi_acceleport_4_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Digi USB&quot;
@@ -1128,8 +1136,6 @@ id|priv-&gt;dp_port_lock
 comma
 id|flags
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|digi_wakeup_write
@@ -4634,21 +4640,12 @@ id|port
 suffix:semicolon
 multiline_comment|/* also queue up a wakeup at scheduler time, in case we */
 multiline_comment|/* lost the race in write_chan(). */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|schedule_task
 c_func
 (paren
 op_amp
 id|priv-&gt;dp_wakeup_task
 )paren
-op_eq
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -4964,8 +4961,6 @@ multiline_comment|/* inc module use count before sleeping to wait for closes */
 op_increment
 id|port-&gt;open_count
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* wait for a close in progress to finish */
 r_while
 c_loop
@@ -4999,8 +4994,6 @@ id|current
 (brace
 op_decrement
 id|port-&gt;open_count
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -5259,8 +5252,6 @@ l_int|1
 (brace
 op_decrement
 id|port-&gt;open_count
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -5631,8 +5622,6 @@ l_int|0
 suffix:semicolon
 op_decrement
 id|port-&gt;open_count
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|wake_up_interruptible
 c_func
@@ -6244,8 +6233,6 @@ OG
 l_int|0
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 op_decrement
 id|serial-&gt;port
 (braket

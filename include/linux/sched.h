@@ -82,13 +82,20 @@ DECL|macro|CT_TO_USECS
 mdefine_line|#define CT_TO_USECS(x)&t;(((x) % HZ) * 1000000/HZ)
 r_extern
 r_int
-id|nr_running
-comma
 id|nr_threads
 suffix:semicolon
 r_extern
 r_int
 id|last_pid
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|nr_running
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -131,9 +138,6 @@ DECL|macro|SCHED_FIFO
 mdefine_line|#define SCHED_FIFO&t;&t;1
 DECL|macro|SCHED_RR
 mdefine_line|#define SCHED_RR&t;&t;2
-multiline_comment|/*&n; * This is an additional bit set when we want to&n; * yield the CPU for one re-schedule..&n; */
-DECL|macro|SCHED_YIELD
-mdefine_line|#define SCHED_YIELD&t;&t;0x10
 DECL|struct|sched_param
 r_struct
 id|sched_param
@@ -153,10 +157,6 @@ multiline_comment|/*&n; * This serializes &quot;schedule()&quot; and also protec
 r_extern
 id|rwlock_t
 id|tasklist_lock
-suffix:semicolon
-r_extern
-id|spinlock_t
-id|runqueue_lock
 suffix:semicolon
 r_extern
 id|spinlock_t
@@ -241,6 +241,14 @@ r_struct
 id|task_struct
 op_star
 id|p
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|idle_tick
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 DECL|macro|MAX_SCHEDULE_TIMEOUT
@@ -590,6 +598,18 @@ id|root_user
 suffix:semicolon
 DECL|macro|INIT_USER
 mdefine_line|#define INIT_USER (&amp;root_user)
+DECL|typedef|task_t
+r_typedef
+r_struct
+id|task_struct
+id|task_t
+suffix:semicolon
+DECL|typedef|prio_array_t
+r_typedef
+r_struct
+id|prio_array
+id|prio_array_t
+suffix:semicolon
 DECL|struct|task_struct
 r_struct
 id|task_struct
@@ -637,55 +657,64 @@ r_int
 id|lock_depth
 suffix:semicolon
 multiline_comment|/* Lock depth */
-multiline_comment|/*&n; * offset 32 begins here on 32-bit platforms. We keep&n; * all fields in a single cacheline that are needed for&n; * the goodness() loop in schedule().&n; */
-DECL|member|dyn_prio
+multiline_comment|/*&n;&t; * offset 32 begins here on 32-bit platforms.&n;&t; */
+DECL|member|cpu
 r_int
 r_int
-id|dyn_prio
+id|cpu
 suffix:semicolon
-DECL|member|nice
+DECL|member|prio
 r_int
-id|nice
+id|prio
+suffix:semicolon
+DECL|member|__nice
+r_int
+id|__nice
+suffix:semicolon
+DECL|member|run_list
+id|list_t
+id|run_list
+suffix:semicolon
+DECL|member|array
+id|prio_array_t
+op_star
+id|array
+suffix:semicolon
+DECL|member|time_slice
+r_int
+r_int
+id|time_slice
+suffix:semicolon
+DECL|member|sleep_timestamp
+DECL|member|run_timestamp
+r_int
+r_int
+id|sleep_timestamp
+comma
+id|run_timestamp
+suffix:semicolon
+DECL|macro|SLEEP_HIST_SIZE
+mdefine_line|#define SLEEP_HIST_SIZE 4
+DECL|member|sleep_hist
+r_int
+id|sleep_hist
+(braket
+id|SLEEP_HIST_SIZE
+)braket
+suffix:semicolon
+DECL|member|sleep_idx
+r_int
+id|sleep_idx
 suffix:semicolon
 DECL|member|policy
 r_int
 r_int
 id|policy
 suffix:semicolon
-DECL|member|mm
-r_struct
-id|mm_struct
-op_star
-id|mm
-suffix:semicolon
-DECL|member|processor
-r_int
-id|processor
-suffix:semicolon
-multiline_comment|/*&n;&t; * cpus_runnable is ~0 if the process is not running on any&n;&t; * CPU. It&squot;s (1 &lt;&lt; cpu) if it&squot;s running on a CPU. This mask&n;&t; * is updated under the runqueue lock.&n;&t; *&n;&t; * To determine whether a process might run on a CPU, this&n;&t; * mask is AND-ed with cpus_allowed.&n;&t; */
-DECL|member|cpus_runnable
 DECL|member|cpus_allowed
 r_int
 r_int
-id|cpus_runnable
-comma
 id|cpus_allowed
-suffix:semicolon
-multiline_comment|/*&n;&t; * (only the &squot;next&squot; pointer fits into the cacheline, but&n;&t; * that&squot;s just fine.)&n;&t; */
-DECL|member|run_list
-r_struct
-id|list_head
-id|run_list
-suffix:semicolon
-DECL|member|time_slice
-r_int
-id|time_slice
-suffix:semicolon
-multiline_comment|/* recalculation loop checkpoint */
-DECL|member|rcl_last
-r_int
-r_int
-id|rcl_last
 suffix:semicolon
 DECL|member|next_task
 DECL|member|prev_task
@@ -697,9 +726,13 @@ comma
 op_star
 id|prev_task
 suffix:semicolon
+DECL|member|mm
 DECL|member|active_mm
 r_struct
 id|mm_struct
+op_star
+id|mm
+comma
 op_star
 id|active_mm
 suffix:semicolon
@@ -1164,14 +1197,70 @@ mdefine_line|#define PT_PTRACE_CAP&t;0x00000010&t;/* ptracer can follow suid-exe
 multiline_comment|/*&n; * Limit the stack by to some sane default: root can always&n; * increase this limit if needed..  8MB seems reasonable.&n; */
 DECL|macro|_STK_LIM
 mdefine_line|#define _STK_LIM&t;(8*1024*1024)
-DECL|macro|MAX_DYNPRIO
-mdefine_line|#define MAX_DYNPRIO&t;40
-DECL|macro|DEF_TSLICE
-mdefine_line|#define DEF_TSLICE&t;(6 * HZ / 100)
-DECL|macro|MAX_TSLICE
-mdefine_line|#define MAX_TSLICE&t;(20 * HZ / 100)
-DECL|macro|DEF_NICE
-mdefine_line|#define DEF_NICE&t;(0)
+multiline_comment|/*&n; * RT priorites go from 0 to 99, but internally we max&n; * them out at 128 to make it easier to search the&n; * scheduler bitmap.&n; */
+DECL|macro|MAX_RT_PRIO
+mdefine_line|#define MAX_RT_PRIO&t;128
+multiline_comment|/*&n; * The lower the priority of a process, the more likely it is&n; * to run. Priority of a process goes from 0 to 167. The 0-99&n; * priority range is allocated to RT tasks, the 128-167 range&n; * is for SCHED_OTHER tasks.&n; */
+DECL|macro|MAX_PRIO
+mdefine_line|#define MAX_PRIO&t;(MAX_RT_PRIO+40)
+DECL|macro|DEF_USER_NICE
+mdefine_line|#define DEF_USER_NICE&t;0
+multiline_comment|/*&n; * Scales user-nice values [ -20 ... 0 ... 19 ]&n; * to static priority [ 24 ... 63 (MAX_PRIO-1) ]&n; *&n; * User-nice value of -20 == static priority 24, and&n; * user-nice value 19 == static priority 63. The lower&n; * the priority value, the higher the task&squot;s priority.&n; *&n; * Note that while static priority cannot go below 24,&n; * the priority of a process can go as low as 0.&n; */
+DECL|macro|NICE_TO_PRIO
+mdefine_line|#define NICE_TO_PRIO(n)&t;(MAX_PRIO-1 + (n) - 19)
+DECL|macro|DEF_PRIO
+mdefine_line|#define DEF_PRIO NICE_TO_PRIO(DEF_USER_NICE)
+multiline_comment|/*&n; * Default timeslice is 90 msecs, maximum is 150 msecs.&n; * Minimum timeslice is 20 msecs.&n; */
+DECL|macro|MIN_TIMESLICE
+mdefine_line|#define MIN_TIMESLICE&t;( 20 * HZ / 1000)
+DECL|macro|MAX_TIMESLICE
+mdefine_line|#define MAX_TIMESLICE&t;(150 * HZ / 1000)
+DECL|macro|USER_PRIO
+mdefine_line|#define USER_PRIO(p) ((p)-MAX_RT_PRIO)
+DECL|macro|MAX_USER_PRIO
+mdefine_line|#define MAX_USER_PRIO (USER_PRIO(MAX_PRIO))
+multiline_comment|/*&n; * PRIO_TO_TIMESLICE scales priority values [ 100 ... 139  ]&n; * to initial time slice values [ MAX_TIMESLICE (150 msec) ... 2 ]&n; *&n; * The higher a process&squot;s priority, the bigger timeslices&n; * it gets during one round of execution. But even the lowest&n; * priority process gets MIN_TIMESLICE worth of execution time.&n; */
+DECL|macro|PRIO_TO_TIMESLICE
+mdefine_line|#define PRIO_TO_TIMESLICE(p) &bslash;&n;&t;((( (MAX_USER_PRIO-1-USER_PRIO(p))*(MAX_TIMESLICE-MIN_TIMESLICE) + &bslash;&n;&t;&t;MAX_USER_PRIO-1) / MAX_USER_PRIO) + MIN_TIMESLICE)
+DECL|macro|RT_PRIO_TO_TIMESLICE
+mdefine_line|#define RT_PRIO_TO_TIMESLICE(p) &bslash;&n;&t;((( (MAX_RT_PRIO-(p)-1)*(MAX_TIMESLICE-MIN_TIMESLICE) + &bslash;&n;&t;&t;&t;MAX_RT_PRIO-1) / MAX_RT_PRIO) + MIN_TIMESLICE)
+r_extern
+r_void
+id|set_cpus_allowed
+c_func
+(paren
+id|task_t
+op_star
+id|p
+comma
+r_int
+r_int
+id|new_mask
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|set_user_nice
+c_func
+(paren
+id|task_t
+op_star
+id|p
+comma
+r_int
+id|nice
+)paren
+suffix:semicolon
+id|asmlinkage
+r_int
+id|sys_sched_yield
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|macro|yield
+mdefine_line|#define yield() sys_sched_yield()
 multiline_comment|/*&n; * The default (Linux) execution domain.&n; */
 r_extern
 r_struct
@@ -1180,7 +1269,7 @@ id|default_exec_domain
 suffix:semicolon
 multiline_comment|/*&n; *  INIT_TASK is used to set up the first task table, touch at&n; * your own risk!. Base=0, limit=0x1fffff (=2MB)&n; */
 DECL|macro|INIT_TASK
-mdefine_line|#define INIT_TASK(tsk)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    state:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    flags:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    sigpending:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    addr_limit:&t;&t;KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;    exec_domain:&t;&amp;default_exec_domain,&t;&t;&t;&t;&bslash;&n;    lock_depth:&t;&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    dyn_prio:&t;&t;0,&t;&t;&t;&t;&t;&bslash;&n;    nice:&t;&t;DEF_NICE,&t;&t;&t;&t;&t;&bslash;&n;    policy:&t;&t;SCHED_OTHER,&t;&t;&t;&t;&t;&bslash;&n;    mm:&t;&t;&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;    active_mm:&t;&t;&amp;init_mm,&t;&t;&t;&t;&t;&bslash;&n;    cpus_runnable:&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    cpus_allowed:&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    run_list:&t;&t;{ NULL, NULL },&t;&t;&t;&bslash;&n;    rcl_last:&t;&t;0,&t;&t;&t;&t;&t;&bslash;&n;    time_slice:&t;&t;DEF_TSLICE,&t;&t;&t;&t;&t;&bslash;&n;    next_task:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    prev_task:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    p_opptr:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    p_pptr:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    thread_group:&t;LIST_HEAD_INIT(tsk.thread_group),&t;&t;&bslash;&n;    wait_chldexit:&t;__WAIT_QUEUE_HEAD_INITIALIZER(tsk.wait_chldexit),&bslash;&n;    real_timer:&t;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;function:&t;&t;it_real_fn&t;&t;&t;&t;&bslash;&n;    },&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    cap_effective:&t;CAP_INIT_EFF_SET,&t;&t;&t;&t;&bslash;&n;    cap_inheritable:&t;CAP_INIT_INH_SET,&t;&t;&t;&t;&bslash;&n;    cap_permitted:&t;CAP_FULL_SET,&t;&t;&t;&t;&t;&bslash;&n;    keep_capabilities:&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    rlim:&t;&t;INIT_RLIMITS,&t;&t;&t;&t;&t;&bslash;&n;    user:&t;&t;INIT_USER,&t;&t;&t;&t;&t;&bslash;&n;    comm:&t;&t;&quot;swapper&quot;,&t;&t;&t;&t;&t;&bslash;&n;    thread:&t;&t;INIT_THREAD,&t;&t;&t;&t;&t;&bslash;&n;    fs:&t;&t;&t;&amp;init_fs,&t;&t;&t;&t;&t;&bslash;&n;    files:&t;&t;&amp;init_files,&t;&t;&t;&t;&t;&bslash;&n;    sigmask_lock:&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;    sig:&t;&t;&amp;init_signals,&t;&t;&t;&t;&t;&bslash;&n;    pending:&t;&t;{ NULL, &amp;tsk.pending.head, {{0}}},&t;&t;&bslash;&n;    blocked:&t;&t;{{0}},&t;&t;&t;&t;&t;&t;&bslash;&n;    alloc_lock:&t;&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;    journal_info:&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_TASK(tsk)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    state:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    flags:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    sigpending:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    addr_limit:&t;&t;KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;    exec_domain:&t;&amp;default_exec_domain,&t;&t;&t;&t;&bslash;&n;    lock_depth:&t;&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    __nice:&t;&t;DEF_USER_NICE,&t;&t;&t;&t;&t;&bslash;&n;    policy:&t;&t;SCHED_OTHER,&t;&t;&t;&t;&t;&bslash;&n;    cpus_allowed:&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    mm:&t;&t;&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;    active_mm:&t;&t;&amp;init_mm,&t;&t;&t;&t;&t;&bslash;&n;    run_list:&t;&t;LIST_HEAD_INIT(tsk.run_list),&t;&t;&t;&bslash;&n;    time_slice:&t;&t;PRIO_TO_TIMESLICE(DEF_PRIO),&t;&t;&t;&bslash;&n;    next_task:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    prev_task:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    p_opptr:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    p_pptr:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    thread_group:&t;LIST_HEAD_INIT(tsk.thread_group),&t;&t;&bslash;&n;    wait_chldexit:&t;__WAIT_QUEUE_HEAD_INITIALIZER(tsk.wait_chldexit),&bslash;&n;    real_timer:&t;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;function:&t;&t;it_real_fn&t;&t;&t;&t;&bslash;&n;    },&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    cap_effective:&t;CAP_INIT_EFF_SET,&t;&t;&t;&t;&bslash;&n;    cap_inheritable:&t;CAP_INIT_INH_SET,&t;&t;&t;&t;&bslash;&n;    cap_permitted:&t;CAP_FULL_SET,&t;&t;&t;&t;&t;&bslash;&n;    keep_capabilities:&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    rlim:&t;&t;INIT_RLIMITS,&t;&t;&t;&t;&t;&bslash;&n;    user:&t;&t;INIT_USER,&t;&t;&t;&t;&t;&bslash;&n;    comm:&t;&t;&quot;swapper&quot;,&t;&t;&t;&t;&t;&bslash;&n;    thread:&t;&t;INIT_THREAD,&t;&t;&t;&t;&t;&bslash;&n;    fs:&t;&t;&t;&amp;init_fs,&t;&t;&t;&t;&t;&bslash;&n;    files:&t;&t;&amp;init_files,&t;&t;&t;&t;&t;&bslash;&n;    sigmask_lock:&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;    sig:&t;&t;&amp;init_signals,&t;&t;&t;&t;&t;&bslash;&n;    pending:&t;&t;{ NULL, &amp;tsk.pending.head, {{0}}},&t;&t;&bslash;&n;    blocked:&t;&t;{{0}},&t;&t;&t;&t;&t;&t;&bslash;&n;    alloc_lock:&t;&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;    journal_info:&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#ifndef INIT_TASK_SIZE
 DECL|macro|INIT_TASK_SIZE
 macro_line|# define INIT_TASK_SIZE&t;2048*sizeof(long)
@@ -1392,55 +1481,6 @@ r_return
 id|p
 suffix:semicolon
 )brace
-DECL|macro|task_has_cpu
-mdefine_line|#define task_has_cpu(tsk) ((tsk)-&gt;cpus_runnable != ~0UL)
-DECL|function|task_set_cpu
-r_static
-r_inline
-r_void
-id|task_set_cpu
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-comma
-r_int
-r_int
-id|cpu
-)paren
-(brace
-id|tsk-&gt;processor
-op_assign
-id|cpu
-suffix:semicolon
-id|tsk-&gt;cpus_runnable
-op_assign
-l_int|1UL
-op_lshift
-id|cpu
-suffix:semicolon
-)brace
-DECL|function|task_release_cpu
-r_static
-r_inline
-r_void
-id|task_release_cpu
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
-(brace
-id|tsk-&gt;cpus_runnable
-op_assign
-op_complement
-l_int|0UL
-suffix:semicolon
-)brace
 multiline_comment|/* per-UID process charging. */
 r_extern
 r_struct
@@ -1624,6 +1664,21 @@ id|FASTCALL
 c_func
 (paren
 id|wake_up_process
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|wake_up_forked_process
 c_func
 (paren
 r_struct
@@ -2675,6 +2730,11 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+id|task_t
+op_star
+id|child_reaper
+suffix:semicolon
+r_extern
 r_int
 id|do_execve
 c_func
@@ -2768,6 +2828,26 @@ id|wait
 )paren
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|wait_task_inactive
+c_func
+(paren
+id|task_t
+op_star
+id|p
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|kick_if_running
+c_func
+(paren
+id|task_t
+op_star
+id|p
+)paren
+suffix:semicolon
 DECL|macro|__wait_event
 mdefine_line|#define __wait_event(wq, condition) &t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wait_queue_t __wait;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;init_waitqueue_entry(&amp;__wait, current);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;add_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&t;&bslash;&n;&t;for (;;) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_current_state(TASK_UNINTERRUPTIBLE);&t;&t;&bslash;&n;&t;&t;if (condition)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;schedule();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;state = TASK_RUNNING;&t;&t;&t;&t;&t;&bslash;&n;&t;remove_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|wait_event
@@ -2784,55 +2864,6 @@ DECL|macro|for_each_task
 mdefine_line|#define for_each_task(p) &bslash;&n;&t;for (p = &amp;init_task ; (p = p-&gt;next_task) != &amp;init_task ; )
 DECL|macro|next_thread
 mdefine_line|#define next_thread(p) &bslash;&n;&t;list_entry((p)-&gt;thread_group.next, struct task_struct, thread_group)
-DECL|function|del_from_runqueue
-r_static
-r_inline
-r_void
-id|del_from_runqueue
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|p
-)paren
-(brace
-id|nr_running
-op_decrement
-suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|p-&gt;run_list
-)paren
-suffix:semicolon
-id|p-&gt;run_list.next
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-DECL|function|task_on_runqueue
-r_static
-r_inline
-r_int
-id|task_on_runqueue
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|p
-)paren
-(brace
-r_return
-(paren
-id|p-&gt;run_list.next
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 DECL|function|unhash_process
 r_static
 r_inline
@@ -2846,20 +2877,6 @@ op_star
 id|p
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|task_on_runqueue
-c_func
-(paren
-id|p
-)paren
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|write_lock_irq
 c_func
 (paren

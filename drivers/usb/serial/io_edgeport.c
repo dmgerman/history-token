@@ -2870,8 +2870,6 @@ suffix:semicolon
 op_increment
 id|port-&gt;open_count
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2912,8 +2910,6 @@ l_int|NULL
 id|port-&gt;open_count
 op_assign
 l_int|0
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -3148,8 +3144,6 @@ id|port-&gt;open_count
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -3204,8 +3198,6 @@ suffix:semicolon
 id|port-&gt;open_count
 op_assign
 l_int|0
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -3858,8 +3850,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|dbg
 c_func
 (paren

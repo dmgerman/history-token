@@ -153,7 +153,7 @@ multiline_comment|/*&n;&t; * Niced processes are most likely less important, so 
 r_if
 c_cond
 (paren
-id|p-&gt;nice
+id|p-&gt;__nice
 OG
 l_int|0
 )paren
@@ -345,13 +345,7 @@ id|p-&gt;time_slice
 op_assign
 l_int|2
 op_star
-id|MAX_TSLICE
-suffix:semicolon
-id|p-&gt;dyn_prio
-op_assign
-id|MAX_DYNPRIO
-op_plus
-l_int|1
+id|MAX_TIMESLICE
 suffix:semicolon
 id|p-&gt;flags
 op_or_assign
@@ -472,11 +466,7 @@ id|tasklist_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Make kswapd go out of the way, so &quot;p&quot; has a good chance of&n;&t; * killing itself before someone else gets the chance to ask&n;&t; * for more memory.&n;&t; */
-id|current-&gt;policy
-op_or_assign
-id|SCHED_YIELD
-suffix:semicolon
-id|schedule
+id|yield
 c_func
 (paren
 )paren

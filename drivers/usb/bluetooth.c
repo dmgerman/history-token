@@ -131,7 +131,8 @@ id|NUM_CONTROL_URBS
 )braket
 suffix:semicolon
 DECL|member|dr
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 id|dr
 (braket
 id|NUM_CONTROL_URBS
@@ -714,7 +715,8 @@ id|urb
 op_assign
 l_int|NULL
 suffix:semicolon
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 op_star
 id|dr
 op_assign
@@ -888,15 +890,15 @@ comma
 id|len
 )paren
 suffix:semicolon
-id|dr-&gt;requesttype
+id|dr-&gt;bRequestType
 op_assign
 id|BLUETOOTH_CONTROL_REQUEST_TYPE
 suffix:semicolon
-id|dr-&gt;request
+id|dr-&gt;bRequest
 op_assign
 id|request
 suffix:semicolon
-id|dr-&gt;value
+id|dr-&gt;wValue
 op_assign
 id|cpu_to_le16
 c_func
@@ -907,7 +909,7 @@ id|u16
 id|value
 )paren
 suffix:semicolon
-id|dr-&gt;index
+id|dr-&gt;wIndex
 op_assign
 id|cpu_to_le16
 c_func
@@ -918,7 +920,7 @@ id|u16
 id|bluetooth-&gt;control_out_bInterfaceNum
 )paren
 suffix:semicolon
-id|dr-&gt;length
+id|dr-&gt;wLength
 op_assign
 id|cpu_to_le16
 c_func

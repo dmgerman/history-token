@@ -282,11 +282,7 @@ op_minus
 id|ERESTARTSYS
 )paren
 suffix:semicolon
-id|current-&gt;policy
-op_assign
-id|SCHED_YIELD
-suffix:semicolon
-id|schedule
+id|yield
 c_func
 (paren
 )paren

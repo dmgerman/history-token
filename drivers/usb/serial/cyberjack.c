@@ -184,6 +184,10 @@ id|usb_serial_device_type
 id|cyberjack_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Reiner SCT Cyberjack USB card reader&quot;
@@ -487,8 +491,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -675,8 +677,6 @@ id|up
 op_amp
 id|port-&gt;sem
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|cyberjack_write

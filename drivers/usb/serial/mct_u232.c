@@ -265,6 +265,10 @@ id|usb_serial_device_type
 id|mct_u232_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Magic Control Technology USB-RS232&quot;
@@ -1191,8 +1195,6 @@ suffix:semicolon
 op_increment
 id|port-&gt;open_count
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1449,8 +1451,6 @@ id|up
 op_amp
 id|port-&gt;sem
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/* mct_u232_close */

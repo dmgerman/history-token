@@ -346,7 +346,8 @@ id|acm
 op_assign
 id|urb-&gt;context
 suffix:semicolon
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 op_star
 id|dr
 op_assign
@@ -405,7 +406,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dr-&gt;request
+id|dr-&gt;bRequest
 )paren
 (brace
 r_case
@@ -557,11 +558,11 @@ c_func
 (paren
 l_string|&quot;unknown control event received: request %d index %d len %d data0 %d data1 %d&quot;
 comma
-id|dr-&gt;request
+id|dr-&gt;bRequest
 comma
-id|dr-&gt;index
+id|dr-&gt;wIndex
 comma
-id|dr-&gt;length
+id|dr-&gt;wLength
 comma
 id|data
 (braket

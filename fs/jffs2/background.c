@@ -303,11 +303,13 @@ comma
 id|c-&gt;mtd-&gt;index
 )paren
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 multiline_comment|/* FIXME in the 2.2 backport */
 id|current-&gt;nice
 op_assign
 l_int|10
 suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren

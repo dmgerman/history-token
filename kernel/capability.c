@@ -1,6 +1,13 @@
 multiline_comment|/*&n; * linux/kernel/capability.c&n; *&n; * Copyright (C) 1997  Andrew Main &lt;zefram@fysh.org&gt;&n; * Integrated into 2.1.97+,  Andrew G. Morgan &lt;morgan@transmeta.com&gt;&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|variable|securebits
+r_int
+id|securebits
+op_assign
+id|SECUREBITS_DEFAULT
+suffix:semicolon
+multiline_comment|/* systemwide security settings */
 DECL|variable|cap_bset
 id|kernel_cap_t
 id|cap_bset

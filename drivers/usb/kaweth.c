@@ -142,7 +142,8 @@ r_int
 r_int
 id|pipe
 comma
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 op_star
 id|cmd
 comma
@@ -725,7 +726,8 @@ r_int
 id|timeout
 )paren
 (brace
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 op_star
 id|dr
 suffix:semicolon
@@ -762,7 +764,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 )paren
 comma
 id|in_interrupt
@@ -794,15 +797,15 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|dr-&gt;requesttype
+id|dr-&gt;bRequestType
 op_assign
 id|requesttype
 suffix:semicolon
-id|dr-&gt;request
+id|dr-&gt;bRequest
 op_assign
 id|request
 suffix:semicolon
-id|dr-&gt;value
+id|dr-&gt;wValue
 op_assign
 id|cpu_to_le16p
 c_func
@@ -811,7 +814,7 @@ op_amp
 id|value
 )paren
 suffix:semicolon
-id|dr-&gt;index
+id|dr-&gt;wIndex
 op_assign
 id|cpu_to_le16p
 c_func
@@ -820,7 +823,7 @@ op_amp
 id|index
 )paren
 suffix:semicolon
-id|dr-&gt;length
+id|dr-&gt;wLength
 op_assign
 id|cpu_to_le16p
 c_func
@@ -3669,7 +3672,8 @@ r_int
 r_int
 id|pipe
 comma
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 op_star
 id|cmd
 comma

@@ -3507,8 +3507,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|down
 (paren
 op_amp
@@ -3870,8 +3868,6 @@ id|up
 op_amp
 id|port-&gt;sem
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/* download the firmware to a pre-renumeration device */
@@ -7415,8 +7411,6 @@ l_int|0
 (brace
 op_decrement
 id|port-&gt;open_count
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 id|kfree

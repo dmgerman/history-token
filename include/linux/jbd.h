@@ -760,7 +760,9 @@ id|j_last
 suffix:semicolon
 multiline_comment|/* Device, blocksize and starting block offset for the location&n;&t; * where we store the journal. */
 DECL|member|j_dev
-id|kdev_t
+r_struct
+id|block_device
+op_star
 id|j_dev
 suffix:semicolon
 DECL|member|j_blocksize
@@ -774,7 +776,9 @@ id|j_blk_offset
 suffix:semicolon
 multiline_comment|/* Device which holds the client fs.  For internal journal this&n;&t; * will be equal to j_dev. */
 DECL|member|j_fs_dev
-id|kdev_t
+r_struct
+id|block_device
+op_star
 id|j_fs_dev
 suffix:semicolon
 multiline_comment|/* Total maximum capacity of the journal region on disk. */
@@ -1383,10 +1387,14 @@ op_star
 id|journal_init_dev
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 id|fs_dev
 comma
 r_int

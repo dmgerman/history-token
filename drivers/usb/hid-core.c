@@ -4363,7 +4363,7 @@ id|hid-&gt;out
 id|hid-&gt;outtail
 )braket
 dot
-id|dr.length
+id|dr.wLength
 )paren
 suffix:semicolon
 id|hid-&gt;urbout.transfer_buffer
@@ -4515,7 +4515,7 @@ id|hid-&gt;out
 id|hid-&gt;outhead
 )braket
 dot
-id|dr.value
+id|dr.wValue
 op_assign
 id|cpu_to_le16
 c_func
@@ -4530,7 +4530,7 @@ id|hid-&gt;out
 id|hid-&gt;outhead
 )braket
 dot
-id|dr.length
+id|dr.wLength
 op_assign
 id|cpu_to_le16
 c_func
@@ -5414,7 +5414,7 @@ id|hid-&gt;out
 id|n
 )braket
 dot
-id|dr.requesttype
+id|dr.bRequestType
 op_assign
 id|USB_TYPE_CLASS
 op_or
@@ -5425,7 +5425,7 @@ id|hid-&gt;out
 id|n
 )braket
 dot
-id|dr.request
+id|dr.bRequest
 op_assign
 id|HID_REQ_SET_REPORT
 suffix:semicolon
@@ -5434,7 +5434,7 @@ id|hid-&gt;out
 id|n
 )braket
 dot
-id|dr.index
+id|dr.wIndex
 op_assign
 id|cpu_to_le16
 c_func

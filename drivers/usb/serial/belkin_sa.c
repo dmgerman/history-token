@@ -230,6 +230,10 @@ id|usb_serial_device_type
 id|belkin_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Belkin / Peracom / GoHubs USB Serial Adapter&quot;
@@ -560,8 +564,6 @@ suffix:semicolon
 op_increment
 id|port-&gt;open_count
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -746,8 +748,6 @@ id|up
 op_amp
 id|port-&gt;sem
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/* belkin_sa_close */

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;&t;&t;/* For in_interrupt() */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_MULTIQUAD
 DECL|macro|LOG_BUF_LEN

@@ -294,6 +294,10 @@ id|usb_serial_device_type
 id|pl2303_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;PL-2303&quot;
@@ -1680,8 +1684,6 @@ suffix:semicolon
 op_increment
 id|port-&gt;open_count
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2160,8 +2162,6 @@ id|up
 op_amp
 id|port-&gt;sem
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|set_modem_info

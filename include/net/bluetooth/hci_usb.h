@@ -21,7 +21,8 @@ op_star
 id|udev
 suffix:semicolon
 DECL|member|dev_req
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 id|dev_req
 suffix:semicolon
 DECL|member|ctrl_urb

@@ -1040,12 +1040,6 @@ op_assign
 id|TRUE
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
-id|current-&gt;nice
-op_assign
-op_minus
-l_int|20
-suffix:semicolon
-multiline_comment|/* boost to provide priority timing */
 macro_line|#else
 id|current-&gt;priority
 op_assign

@@ -377,7 +377,7 @@ id|DECLARE_MUTEX
 id|minor_table_mutex
 )paren
 suffix:semicolon
-multiline_comment|/* file operations needed when we register this driver */
+multiline_comment|/*&n; * File operations needed when we register this driver.&n; * This assumes that this driver NEEDS file operations,&n; * of course, which means that the driver is expected&n; * to have a node in the /dev directory. If the USB&n; * device were for a network interface then the driver&n; * would use &quot;struct net_driver&quot; instead, and a serial&n; * device would use &quot;struct tty_driver&quot;. &n; */
 DECL|variable|skel_fops
 r_static
 r_struct
@@ -385,6 +385,7 @@ id|file_operations
 id|skel_fops
 op_assign
 (brace
+multiline_comment|/*&n;&t; * The owner field is part of the module-locking&n;&t; * mechanism. The idea is that the kernel knows&n;&t; * which module to increment the use-counter of&n;&t; * BEFORE it calls the device&squot;s open() function.&n;&t; * This also means that the kernel can decrement&n;&t; * the use-counter again before calling release()&n;&t; * or should the open() function fail.&n;&t; *&n;&t; * Not all device structures have an &quot;owner&quot; field&n;&t; * yet. &quot;struct file_operations&quot; and &quot;struct net_device&quot;&n;&t; * do, while &quot;struct tty_driver&quot; does not. If the struct&n;&t; * has an &quot;owner&quot; field, then initialize it to the value&n;&t; * THIS_MODULE and the kernel will handle all module&n;&t; * locking for you automatically. Otherwise, you must&n;&t; * increment the use-counter in the open() function&n;&t; * and decrement it again in the release() function&n;&t; * yourself.&n;&t; */
 id|owner
 suffix:colon
 id|THIS_MODULE
@@ -652,7 +653,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* increment our usage count for the module */
+multiline_comment|/* Increment our usage count for the module.&n;&t; * This is redundant here, because &quot;struct file_operations&quot;&n;&t; * has an &quot;owner&quot; field. This line is included here soley as&n;&t; * a reference for drivers using lesser structures... ;-)&n;&t; */
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 multiline_comment|/* lock our minor table and get our local data for this minor */
@@ -845,13 +846,13 @@ id|skel_delete
 id|dev
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|up
 (paren
 op_amp
 id|minor_table_mutex
 )paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

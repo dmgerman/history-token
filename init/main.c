@@ -1001,16 +1001,6 @@ id|wait_init_idle
 op_assign
 id|cpu_online_map
 suffix:semicolon
-id|clear_bit
-c_func
-(paren
-id|current-&gt;processor
-comma
-op_amp
-id|wait_init_idle
-)paren
-suffix:semicolon
-multiline_comment|/* Don&squot;t wait on me! */
 id|smp_threads_ready
 op_assign
 l_int|1
@@ -1018,38 +1008,6 @@ suffix:semicolon
 id|smp_commence
 c_func
 (paren
-)paren
-suffix:semicolon
-multiline_comment|/* Wait for the other cpus to set up their idle processes */
-id|printk
-c_func
-(paren
-l_string|&quot;Waiting on wait_init_idle (map = 0x%lx)&bslash;n&quot;
-comma
-id|wait_init_idle
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|wait_init_idle
-)paren
-(brace
-id|cpu_relax
-c_func
-(paren
-)paren
-suffix:semicolon
-id|barrier
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;All processors have done init_idle&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1083,10 +1041,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|current-&gt;need_resched
-op_assign
-l_int|1
+id|init_idle
+c_func
+(paren
+)paren
 suffix:semicolon
+multiline_comment|/* This will also wait for all other CPUs */
 id|cpu_idle
 c_func
 (paren

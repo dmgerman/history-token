@@ -89,12 +89,7 @@ op_amp
 id|tq_disk
 )paren
 suffix:semicolon
-id|current-&gt;policy
-op_or_assign
-id|SCHED_YIELD
-suffix:semicolon
-multiline_comment|/* current-&gt;dyn_prio = 0; */
-id|schedule
+id|yield
 c_func
 (paren
 )paren
@@ -148,7 +143,10 @@ r_int
 r_int
 id|ctx_switches
 op_assign
-id|kstat.context_swtch
+id|nr_context_switches
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|result
@@ -174,7 +172,10 @@ c_func
 (paren
 r_if
 (paren
-id|kstat.context_swtch
+id|nr_context_switches
+c_func
+(paren
+)paren
 op_ne
 id|ctx_switches
 )paren
@@ -431,11 +432,7 @@ id|repeat_counter
 )paren
 suffix:semicolon
 macro_line|#endif
-id|current-&gt;time_slice
-op_assign
-l_int|0
-suffix:semicolon
-id|schedule
+id|yield
 c_func
 (paren
 )paren

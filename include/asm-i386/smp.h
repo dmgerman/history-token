@@ -127,6 +127,14 @@ id|cpu
 suffix:semicolon
 r_extern
 r_void
+id|smp_send_reschedule_all
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|smp_invalidate_rcv
 c_func
 (paren
@@ -238,7 +246,7 @@ suffix:semicolon
 multiline_comment|/* Store per CPU info (like the initial udelay numbers */
 multiline_comment|/*&n; * This function is needed by all SMP systems. It must _always_ be valid&n; * from the initial startup. We map APIC_BASE very early in page_setup(),&n; * so this is correct in the x86 case.&n; */
 DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id() (current-&gt;processor)
+mdefine_line|#define smp_processor_id() (current-&gt;cpu)
 DECL|function|hard_smp_processor_id
 r_static
 id|__inline
@@ -300,9 +308,6 @@ suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF&t;&t;/* No processor magic marker */
-multiline_comment|/*&n; *&t;This magic constant controls our willingness to transfer&n; *&t;a process across CPUs. Such a transfer incurs misses on the L1&n; *&t;cache, and on a P6 or P5 with multiple L2 caches L2 hits. My&n; *&t;gut feeling is this will vary by board in value. For a board&n; *&t;with separate L2 cache it probably depends also on the RSS, and&n; *&t;for a board with shared L2 cache it ought to decay fast as other&n; *&t;processes are run.&n; */
-DECL|macro|PROC_CHANGE_PENALTY
-mdefine_line|#define PROC_CHANGE_PENALTY&t;15&t;&t;/* Schedule penalty */
 macro_line|#endif
 macro_line|#endif
 eof

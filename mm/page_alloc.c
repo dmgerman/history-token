@@ -1826,17 +1826,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Yield for kswapd, and try again */
-id|current-&gt;policy
-op_or_assign
-id|SCHED_YIELD
-suffix:semicolon
-id|__set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
-id|schedule
+id|yield
 c_func
 (paren
 )paren

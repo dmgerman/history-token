@@ -246,7 +246,7 @@ suffix:semicolon
 )brace
 id|bh
 op_assign
-id|getblk
+id|__getblk
 c_func
 (paren
 id|journal-&gt;j_dev
@@ -456,7 +456,7 @@ suffix:semicolon
 )brace
 id|bh
 op_assign
-id|getblk
+id|__getblk
 c_func
 (paren
 id|journal-&gt;j_dev
@@ -1467,7 +1467,7 @@ suffix:semicolon
 multiline_comment|/* Find a buffer for the new&n;&t;&t;&t;&t;&t; * data being restored */
 id|nbh
 op_assign
-id|getblk
+id|__getblk
 c_func
 (paren
 id|journal-&gt;j_fs_dev
@@ -1514,6 +1514,12 @@ r_goto
 id|failed
 suffix:semicolon
 )brace
+id|lock_buffer
+c_func
+(paren
+id|nbh
+)paren
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -1583,6 +1589,12 @@ op_increment
 id|info-&gt;nr_replays
 suffix:semicolon
 multiline_comment|/* ll_rw_block(WRITE, 1, &amp;nbh); */
+id|unlock_buffer
+c_func
+(paren
+id|nbh
+)paren
+suffix:semicolon
 id|brelse
 c_func
 (paren

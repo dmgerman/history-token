@@ -2478,11 +2478,7 @@ id|RPC_TASK_ASYNC
 r_return
 l_int|NULL
 suffix:semicolon
-id|current-&gt;policy
-op_or_assign
-id|SCHED_YIELD
-suffix:semicolon
-id|schedule
+id|yield
 c_func
 (paren
 )paren
@@ -3769,11 +3765,7 @@ c_func
 l_string|&quot;rpciod_killall: waiting for tasks to exit&bslash;n&quot;
 )paren
 suffix:semicolon
-id|current-&gt;policy
-op_or_assign
-id|SCHED_YIELD
-suffix:semicolon
-id|schedule
+id|yield
 c_func
 (paren
 )paren
@@ -4019,11 +4011,7 @@ id|current-&gt;sigpending
 op_assign
 l_int|0
 suffix:semicolon
-id|current-&gt;policy
-op_or_assign
-id|SCHED_YIELD
-suffix:semicolon
-id|schedule
+id|yield
 c_func
 (paren
 )paren

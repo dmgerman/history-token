@@ -1308,11 +1308,7 @@ id|waiter
 )paren
 suffix:semicolon
 multiline_comment|/* Let the blocked process remove waiter from the&n;&t;&t;&t; * block list when it gets scheduled.&n;&t;&t;&t; */
-id|current-&gt;policy
-op_or_assign
-id|SCHED_YIELD
-suffix:semicolon
-id|schedule
+id|yield
 c_func
 (paren
 )paren

@@ -1255,7 +1255,7 @@ DECL|macro|SCANNER_IOCTL_PRODUCT
 mdefine_line|#define SCANNER_IOCTL_PRODUCT _IOR(&squot;U&squot;, 0x21, int)
 multiline_comment|/* send/recv a control message to the scanner */
 DECL|macro|SCANNER_IOCTL_CTRLMSG
-mdefine_line|#define SCANNER_IOCTL_CTRLMSG _IOWR(&squot;U&squot;, 0x22, devrequest )
+mdefine_line|#define SCANNER_IOCTL_CTRLMSG _IOWR(&squot;U&squot;, 0x22, struct usb_ctrlrequest)
 DECL|macro|SCN_MAX_MNR
 mdefine_line|#define SCN_MAX_MNR 16&t;&t;/* We&squot;re allocated 16 minors */
 DECL|macro|SCN_BASE_MNR

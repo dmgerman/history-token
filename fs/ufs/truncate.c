@@ -2234,11 +2234,8 @@ op_amp
 id|tq_disk
 )paren
 suffix:semicolon
-id|current-&gt;policy
-op_or_assign
-id|SCHED_YIELD
-suffix:semicolon
-id|schedule
+id|yield
+c_func
 (paren
 )paren
 suffix:semicolon

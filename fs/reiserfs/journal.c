@@ -428,11 +428,7 @@ op_logical_neg
 id|bn
 )paren
 (brace
-id|current-&gt;policy
-op_or_assign
-id|SCHED_YIELD
-suffix:semicolon
-id|schedule
+id|yield
 c_func
 (paren
 )paren

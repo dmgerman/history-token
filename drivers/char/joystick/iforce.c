@@ -488,7 +488,8 @@ comma
 id|ctrl
 suffix:semicolon
 DECL|member|dr
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 id|dr
 suffix:semicolon
 macro_line|#endif
@@ -1381,7 +1382,7 @@ macro_line|#ifdef IFORCE_USB
 r_case
 id|IFORCE_USB
 suffix:colon
-id|iforce-&gt;dr.request
+id|iforce-&gt;dr.bRequest
 op_assign
 id|packet
 (braket
@@ -4834,7 +4835,7 @@ id|iforce-&gt;usbdev
 op_assign
 id|dev
 suffix:semicolon
-id|iforce-&gt;dr.requesttype
+id|iforce-&gt;dr.bRequestType
 op_assign
 id|USB_TYPE_VENDOR
 op_or
@@ -4842,11 +4843,11 @@ id|USB_DIR_IN
 op_or
 id|USB_RECIP_INTERFACE
 suffix:semicolon
-id|iforce-&gt;dr.index
+id|iforce-&gt;dr.wIndex
 op_assign
 l_int|0
 suffix:semicolon
-id|iforce-&gt;dr.length
+id|iforce-&gt;dr.wLength
 op_assign
 l_int|16
 suffix:semicolon

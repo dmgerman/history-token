@@ -886,6 +886,7 @@ c_func
 l_string|&quot;passed.&bslash;n&quot;
 )paren
 suffix:semicolon
+suffix:semicolon
 )brace
 DECL|function|synchronize_tsc_ap
 r_static
@@ -1077,7 +1078,10 @@ id|APIC_ID
 suffix:semicolon
 id|cpuid
 op_assign
-id|current-&gt;processor
+id|smp_processor_id
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1320,6 +1324,11 @@ c_func
 suffix:semicolon
 multiline_comment|/*&n;&t; * low-memory mappings have been cleared, flush them from&n;&t; * the local TLBs too.&n;&t; */
 id|local_flush_tlb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|init_idle
 c_func
 (paren
 )paren
@@ -2588,17 +2597,10 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-id|idle-&gt;processor
+id|idle-&gt;cpu
 op_assign
 id|cpu
 suffix:semicolon
-id|idle-&gt;cpus_runnable
-op_assign
-l_int|1
-op_lshift
-id|cpu
-suffix:semicolon
-multiline_comment|/* we schedule the first task manually */
 id|map_cpu_to_boot_apicid
 c_func
 (paren
@@ -2615,24 +2617,11 @@ r_int
 )paren
 id|start_secondary
 suffix:semicolon
-id|del_from_runqueue
-c_func
-(paren
-id|idle
-)paren
-suffix:semicolon
 id|unhash_process
 c_func
 (paren
 id|idle
 )paren
-suffix:semicolon
-id|init_tasks
-(braket
-id|cpu
-)braket
-op_assign
-id|idle
 suffix:semicolon
 multiline_comment|/* start_eip had better be page-aligned! */
 id|start_eip
@@ -3446,14 +3435,9 @@ id|global_irq_holder
 op_assign
 l_int|0
 suffix:semicolon
-id|current-&gt;processor
+id|current-&gt;cpu
 op_assign
 l_int|0
-suffix:semicolon
-id|init_idle
-c_func
-(paren
-)paren
 suffix:semicolon
 id|smp_tune_scheduling
 c_func

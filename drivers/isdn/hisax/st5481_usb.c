@@ -107,7 +107,7 @@ op_star
 id|urb-&gt;setup_packet
 )paren
 op_member_access_from_pointer
-id|dr.request
+id|dr.bRequest
 comma
 (paren
 (paren
@@ -118,7 +118,7 @@ op_star
 id|urb-&gt;setup_packet
 )paren
 op_member_access_from_pointer
-id|dr.value
+id|dr.wValue
 comma
 (paren
 (paren
@@ -129,7 +129,7 @@ op_star
 id|urb-&gt;setup_packet
 )paren
 op_member_access_from_pointer
-id|dr.index
+id|dr.wIndex
 )paren
 suffix:semicolon
 singleline_comment|// Prepare the URB
@@ -225,15 +225,15 @@ id|ctrl-&gt;msg_fifo.data
 id|w_index
 )braket
 suffix:semicolon
-id|ctrl_msg-&gt;dr.requesttype
+id|ctrl_msg-&gt;dr.bRequestType
 op_assign
 id|requesttype
 suffix:semicolon
-id|ctrl_msg-&gt;dr.request
+id|ctrl_msg-&gt;dr.bRequest
 op_assign
 id|request
 suffix:semicolon
-id|ctrl_msg-&gt;dr.value
+id|ctrl_msg-&gt;dr.wValue
 op_assign
 id|cpu_to_le16p
 c_func
@@ -242,7 +242,7 @@ op_amp
 id|value
 )paren
 suffix:semicolon
-id|ctrl_msg-&gt;dr.index
+id|ctrl_msg-&gt;dr.wIndex
 op_assign
 id|cpu_to_le16p
 c_func
@@ -251,7 +251,7 @@ op_amp
 id|index
 )paren
 suffix:semicolon
-id|ctrl_msg-&gt;dr.length
+id|ctrl_msg-&gt;dr.wLength
 op_assign
 l_int|0
 suffix:semicolon
@@ -504,7 +504,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ctrl_msg-&gt;dr.request
+id|ctrl_msg-&gt;dr.bRequest
 op_eq
 id|USB_REQ_CLEAR_FEATURE
 )paren
@@ -514,7 +514,7 @@ id|le16_to_cpus
 c_func
 (paren
 op_amp
-id|ctrl_msg-&gt;dr.index
+id|ctrl_msg-&gt;dr.wIndex
 )paren
 suffix:semicolon
 id|usb_endpoint_running
@@ -522,13 +522,13 @@ c_func
 (paren
 id|adapter-&gt;usb_dev
 comma
-id|ctrl_msg-&gt;dr.index
+id|ctrl_msg-&gt;dr.wIndex
 op_amp
 op_complement
 id|USB_DIR_IN
 comma
 (paren
-id|ctrl_msg-&gt;dr.index
+id|ctrl_msg-&gt;dr.wIndex
 op_amp
 id|USB_DIR_IN
 )paren
@@ -542,13 +542,13 @@ c_func
 (paren
 id|adapter-&gt;usb_dev
 comma
-id|ctrl_msg-&gt;dr.index
+id|ctrl_msg-&gt;dr.wIndex
 op_amp
 op_complement
 id|USB_DIR_IN
 comma
 (paren
-id|ctrl_msg-&gt;dr.index
+id|ctrl_msg-&gt;dr.wIndex
 op_amp
 id|USB_DIR_IN
 )paren
@@ -2269,9 +2269,11 @@ op_star
 id|urb
 )paren
 (brace
-id|piso_packet_descriptor_t
+id|iso_packet_descriptor_t
+op_star
 id|pipd
 comma
+op_star
 id|pend
 suffix:semicolon
 r_int

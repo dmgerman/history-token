@@ -279,11 +279,7 @@ id|__FUNCTION__
 l_string|&quot;, retrying.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|current-&gt;policy
-op_or_assign
-id|SCHED_YIELD
-suffix:semicolon
-id|schedule
+id|yield
 c_func
 (paren
 )paren
@@ -833,7 +829,11 @@ suffix:semicolon
 )brace
 id|dev
 op_assign
-id|journal-&gt;j_fs_dev
+id|to_kdev_t
+c_func
+(paren
+id|journal-&gt;j_fs_dev-&gt;bd_dev
+)paren
 suffix:semicolon
 id|bh
 op_assign

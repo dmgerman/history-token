@@ -9449,12 +9449,14 @@ id|pipe
 op_assign
 id|urb-&gt;pipe
 suffix:semicolon
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 op_star
 id|cmd
 op_assign
 (paren
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 op_star
 )paren
 id|urb-&gt;setup_packet
@@ -9550,9 +9552,9 @@ suffix:semicolon
 )brace
 id|bmRType_bReq
 op_assign
-id|cmd-&gt;requesttype
+id|cmd-&gt;bRequestType
 op_or
-id|cmd-&gt;request
+id|cmd-&gt;bRequest
 op_lshift
 l_int|8
 suffix:semicolon
@@ -9561,7 +9563,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
-id|cmd-&gt;value
+id|cmd-&gt;wValue
 )paren
 suffix:semicolon
 id|wIndex
@@ -9569,7 +9571,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
-id|cmd-&gt;index
+id|cmd-&gt;wIndex
 )paren
 suffix:semicolon
 id|wLength
@@ -9577,7 +9579,7 @@ op_assign
 id|le16_to_cpu
 c_func
 (paren
-id|cmd-&gt;length
+id|cmd-&gt;wLength
 )paren
 suffix:semicolon
 id|dbg_rh

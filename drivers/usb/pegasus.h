@@ -252,7 +252,8 @@ comma
 id|intr_urb
 suffix:semicolon
 DECL|member|dr
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 id|dr
 suffix:semicolon
 DECL|member|ctrl_wait

@@ -2997,16 +2997,6 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|kdev_t
-id|rdev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
-multiline_comment|/* this should become bdev */
 r_struct
 id|inode
 op_star
@@ -3050,7 +3040,7 @@ id|BDEV_FS
 id|fsync_no_super
 c_func
 (paren
-id|rdev
+id|bdev
 )paren
 suffix:semicolon
 r_if

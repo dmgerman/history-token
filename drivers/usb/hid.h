@@ -885,7 +885,8 @@ r_struct
 id|hid_control_fifo
 (brace
 DECL|member|dr
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 id|dr
 suffix:semicolon
 DECL|member|buffer

@@ -942,9 +942,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;NMI Watchdog detected LOCKUP on CPU%d, registers:&bslash;n&quot;
+l_string|&quot;NMI Watchdog detected LOCKUP on CPU%d, eip %08lx, registers:&bslash;n&quot;
 comma
 id|cpu
+comma
+id|regs-&gt;eip
 )paren
 suffix:semicolon
 id|show_registers

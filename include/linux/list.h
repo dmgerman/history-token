@@ -20,6 +20,12 @@ id|prev
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|typedef|list_t
+r_typedef
+r_struct
+id|list_head
+id|list_t
+suffix:semicolon
 DECL|macro|LIST_HEAD_INIT
 mdefine_line|#define LIST_HEAD_INIT(name) { &amp;(name), &amp;(name) }
 DECL|macro|LIST_HEAD

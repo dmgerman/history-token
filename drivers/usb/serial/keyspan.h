@@ -1625,6 +1625,10 @@ id|usb_serial_device_type
 id|keyspan_usa18x_pre_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan USA18X - (without firmware)&quot;
@@ -1661,6 +1665,10 @@ id|usb_serial_device_type
 id|keyspan_usa19_pre_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan USA19 - (without firmware)&quot;
@@ -1697,6 +1705,10 @@ id|usb_serial_device_type
 id|keyspan_usa19w_pre_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan USA19W - (without firmware)&quot;
@@ -1733,6 +1745,10 @@ id|usb_serial_device_type
 id|keyspan_usa28_pre_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan USA28 - (without firmware)&quot;
@@ -1769,6 +1785,10 @@ id|usb_serial_device_type
 id|keyspan_usa28x_pre_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan USA28X - (without firmware)&quot;
@@ -1805,6 +1825,10 @@ id|usb_serial_device_type
 id|keyspan_usa28xa_pre_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan USA28XA - (without firmware)&quot;
@@ -1841,6 +1865,10 @@ id|usb_serial_device_type
 id|keyspan_usa28xb_pre_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan USA28XB - (without firmware)&quot;
@@ -1877,6 +1905,10 @@ id|usb_serial_device_type
 id|keyspan_usa49w_pre_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan USA49W - (without firmware)&quot;
@@ -1913,6 +1945,10 @@ id|usb_serial_device_type
 id|keyspan_usa18x_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan USA18X&quot;
@@ -1996,6 +2032,10 @@ id|usb_serial_device_type
 id|keyspan_usa19_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan USA19&quot;
@@ -2079,6 +2119,10 @@ id|usb_serial_device_type
 id|keyspan_usa19w_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan USA19W&quot;
@@ -2162,6 +2206,10 @@ id|usb_serial_device_type
 id|keyspan_usa28_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan USA28&quot;
@@ -2215,6 +2263,10 @@ id|usb_serial_device_type
 id|keyspan_usa28x_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan USA28X/XB&quot;
@@ -2298,6 +2350,10 @@ id|usb_serial_device_type
 id|keyspan_usa28xa_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan USA28XA&quot;
@@ -2381,6 +2437,10 @@ id|usb_serial_device_type
 id|keyspan_usa49w_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan USA49W&quot;

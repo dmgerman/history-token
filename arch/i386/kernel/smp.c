@@ -20,13 +20,14 @@ id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|variable|cpu_tlbstate
+DECL|variable|__cacheline_aligned
 r_struct
 id|tlb_state
 id|cpu_tlbstate
 (braket
 id|NR_CPUS
 )braket
+id|__cacheline_aligned
 op_assign
 (brace
 (braket
@@ -44,6 +45,7 @@ op_amp
 id|init_mm
 comma
 l_int|0
+comma
 )brace
 )brace
 suffix:semicolon
@@ -1176,6 +1178,22 @@ l_int|1
 op_lshift
 id|cpu
 comma
+id|RESCHEDULE_VECTOR
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * this function sends a reschedule IPI to all (other) CPUs.&n; * This should only be used if some &squot;global&squot; task became runnable,&n; * such as a RT task, that must be handled now. The first CPU&n; * that manages to grab the task will run it.&n; */
+DECL|function|smp_send_reschedule_all
+r_void
+id|smp_send_reschedule_all
+c_func
+(paren
+r_void
+)paren
+(brace
+id|send_IPI_allbutself
+c_func
+(paren
 id|RESCHEDULE_VECTOR
 )paren
 suffix:semicolon

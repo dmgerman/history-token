@@ -428,6 +428,10 @@ id|usb_serial_device_type
 id|edgeport_1port_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Edgeport 1 port adapter&quot;
@@ -509,6 +513,10 @@ id|usb_serial_device_type
 id|edgeport_2port_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Edgeport 2 port adapter&quot;
@@ -590,6 +598,10 @@ id|usb_serial_device_type
 id|edgeport_4port_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Edgeport 4 port adapter&quot;
@@ -671,6 +683,10 @@ id|usb_serial_device_type
 id|edgeport_8port_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Edgeport 8 port adapter&quot;

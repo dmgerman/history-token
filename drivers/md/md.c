@@ -11798,15 +11798,6 @@ op_assign
 id|current
 suffix:semicolon
 multiline_comment|/*&n;&t; * md_thread is a &squot;system-thread&squot;, it&squot;s priority should be very&n;&t; * high. We avoid resource deadlocks individually in each&n;&t; * raid personality. (RAID5 does preallocation) We also use RR and&n;&t; * the very same RT priority as kswapd, thus we will never get&n;&t; * into a priority inversion deadlock.&n;&t; *&n;&t; * we definitely have to have equal or higher priority than&n;&t; * bdflush, otherwise bdflush will deadlock if there are too&n;&t; * many dirty RAID5 blocks.&n;&t; */
-id|current-&gt;policy
-op_assign
-id|SCHED_OTHER
-suffix:semicolon
-id|current-&gt;nice
-op_assign
-op_minus
-l_int|20
-suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
@@ -14107,11 +14098,6 @@ comma
 id|sysctl_speed_limit_max
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Resync has low priority.&n;&t; */
-id|current-&gt;nice
-op_assign
-l_int|19
-suffix:semicolon
 id|is_mddev_idle
 c_func
 (paren
@@ -14446,10 +14432,6 @@ OG
 id|sysctl_speed_limit_min
 )paren
 (brace
-id|current-&gt;nice
-op_assign
-l_int|19
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -14484,12 +14466,6 @@ id|repeat
 suffix:semicolon
 )brace
 )brace
-r_else
-id|current-&gt;nice
-op_assign
-op_minus
-l_int|20
-suffix:semicolon
 )brace
 id|printk
 c_func

@@ -4996,7 +4996,7 @@ l_char|&squot;Z&squot;
 suffix:semicolon
 id|psinfo.pr_nice
 op_assign
-id|current-&gt;nice
+id|current-&gt;__nice
 suffix:semicolon
 id|psinfo.pr_flag
 op_assign

@@ -880,7 +880,8 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 op_star
 id|dr
 suffix:semicolon
@@ -892,7 +893,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|devrequest
+r_struct
+id|usb_ctrlrequest
 )paren
 comma
 id|GFP_NOIO
@@ -909,15 +911,15 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 multiline_comment|/* fill in the structure */
-id|dr-&gt;requesttype
+id|dr-&gt;bRequestType
 op_assign
 id|requesttype
 suffix:semicolon
-id|dr-&gt;request
+id|dr-&gt;bRequest
 op_assign
 id|request
 suffix:semicolon
-id|dr-&gt;value
+id|dr-&gt;wValue
 op_assign
 id|cpu_to_le16
 c_func
@@ -925,7 +927,7 @@ c_func
 id|value
 )paren
 suffix:semicolon
-id|dr-&gt;index
+id|dr-&gt;wIndex
 op_assign
 id|cpu_to_le16
 c_func
@@ -933,7 +935,7 @@ c_func
 id|index
 )paren
 suffix:semicolon
-id|dr-&gt;length
+id|dr-&gt;wLength
 op_assign
 id|cpu_to_le16
 c_func

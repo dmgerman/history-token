@@ -264,6 +264,10 @@ id|usb_serial_device_type
 id|whiteheat_fake_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Connect Tech - WhiteHEAT - (prerenumeration)&quot;
@@ -301,6 +305,10 @@ id|usb_serial_device_type
 id|whiteheat_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Connect Tech - WhiteHEAT&quot;
@@ -976,8 +984,6 @@ suffix:semicolon
 op_increment
 id|port-&gt;open_count
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1199,8 +1205,6 @@ suffix:colon
 op_decrement
 id|port-&gt;open_count
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -1312,8 +1316,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|up
 (paren
 op_amp

@@ -141,6 +141,29 @@ DECL|macro|smp_call_function
 mdefine_line|#define smp_call_function(func,info,retry,wait)&t;({ 0; })
 DECL|macro|cpu_online_map
 mdefine_line|#define cpu_online_map&t;&t;&t;&t;1
+DECL|function|smp_send_reschedule
+r_static
+r_inline
+r_void
+id|smp_send_reschedule
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+)brace
+DECL|function|smp_send_reschedule_all
+r_static
+r_inline
+r_void
+id|smp_send_reschedule_all
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 macro_line|#endif
 macro_line|#endif
 eof
