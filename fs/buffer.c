@@ -4672,15 +4672,17 @@ id|create_empty_buffers
 suffix:semicolon
 multiline_comment|/*&n; * We are taking a block for data and we don&squot;t want any output from any&n; * buffer-cache aliases starting from return from that function and&n; * until the moment when something will explicitly mark the buffer&n; * dirty (hopefully that will not happen until we will free that block ;-)&n; * We don&squot;t even need to mark it not-uptodate - nobody can expect&n; * anything from a newly allocated buffer anyway. We used to used&n; * unmap_buffer() for such invalidation, but that was wrong. We definitely&n; * don&squot;t want to mark the alias unmapped, for example - it would confuse&n; * anyone who might pick it with bread() afterwards...&n; *&n; * Also..  Note that bforget() doesn&squot;t lock the buffer.  So there can&n; * be writeout I/O going on against recently-freed buffers.  We don&squot;t&n; * wait on that I/O in bforget() - it&squot;s more efficient to wait on the I/O&n; * only if we really need to.  That happens here.&n; */
 DECL|function|unmap_underlying_metadata
-r_static
 r_void
 id|unmap_underlying_metadata
 c_func
 (paren
 r_struct
-id|buffer_head
+id|block_device
 op_star
-id|bh
+id|bdev
+comma
+id|sector_t
+id|block
 )paren
 (brace
 r_struct
@@ -4693,9 +4695,9 @@ op_assign
 id|__get_hash_table
 c_func
 (paren
-id|bh-&gt;b_bdev
+id|bdev
 comma
-id|bh-&gt;b_blocknr
+id|block
 comma
 l_int|0
 )paren
@@ -5002,7 +5004,9 @@ suffix:semicolon
 id|unmap_underlying_metadata
 c_func
 (paren
-id|bh
+id|bh-&gt;b_bdev
+comma
+id|bh-&gt;b_blocknr
 )paren
 suffix:semicolon
 )brace
@@ -5704,7 +5708,9 @@ suffix:semicolon
 id|unmap_underlying_metadata
 c_func
 (paren
-id|bh
+id|bh-&gt;b_bdev
+comma
+id|bh-&gt;b_blocknr
 )paren
 suffix:semicolon
 r_if
@@ -8190,8 +8196,9 @@ id|bh
 id|unmap_underlying_metadata
 c_func
 (paren
-op_amp
-id|bh
+id|bh.b_bdev
+comma
+id|bh.b_blocknr
 )paren
 suffix:semicolon
 r_if

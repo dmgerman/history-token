@@ -2381,12 +2381,14 @@ id|mapping
 suffix:semicolon
 id|err
 op_assign
-id|generic_writeback_mapping
+id|mpage_writeback_mapping
 c_func
 (paren
 id|mapping
 comma
 id|nr_to_write
+comma
+id|ext2_get_block
 )paren
 suffix:semicolon
 r_if
