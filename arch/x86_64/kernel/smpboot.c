@@ -1943,10 +1943,13 @@ id|init_rsp
 op_assign
 id|idle-&gt;thread.rsp
 suffix:semicolon
+id|per_cpu
+c_func
+(paren
 id|init_tss
-(braket
+comma
 id|cpu
-)braket
+)paren
 dot
 id|rsp0
 op_assign

@@ -997,10 +997,13 @@ op_star
 id|t
 op_assign
 op_amp
+id|per_cpu
+c_func
+(paren
 id|init_tss
-(braket
+comma
 id|cpu
-)braket
+)paren
 suffix:semicolon
 r_int
 r_int

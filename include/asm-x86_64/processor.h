@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mmsegment.h&gt;
+macro_line|#include &lt;asm/percpu.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 DECL|macro|TF_MASK
 mdefine_line|#define TF_MASK&t;&t;0x00000100
@@ -154,19 +155,6 @@ DECL|macro|X86_VENDOR_NUM
 mdefine_line|#define X86_VENDOR_NUM 8
 DECL|macro|X86_VENDOR_UNKNOWN
 mdefine_line|#define X86_VENDOR_UNKNOWN 0xff
-r_extern
-r_struct
-id|cpuinfo_x86
-id|boot_cpu_data
-suffix:semicolon
-r_extern
-r_struct
-id|tss_struct
-id|init_tss
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_struct
@@ -522,6 +510,20 @@ id|packed
 )paren
 )paren
 id|____cacheline_aligned
+suffix:semicolon
+r_extern
+r_struct
+id|cpuinfo_x86
+id|boot_cpu_data
+suffix:semicolon
+id|DECLARE_PER_CPU
+c_func
+(paren
+r_struct
+id|tss_struct
+comma
+id|init_tss
+)paren
 suffix:semicolon
 DECL|macro|ARCH_MIN_TASKALIGN
 mdefine_line|#define ARCH_MIN_TASKALIGN&t;16
