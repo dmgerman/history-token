@@ -394,9 +394,27 @@ id|default_ops
 )brace
 comma
 (brace
+l_int|0x41445361
+comma
+l_string|&quot;Analog Devices AD1886&quot;
+comma
+op_amp
+id|default_ops
+)brace
+comma
+(brace
 l_int|0x41445460
 comma
 l_string|&quot;Analog Devices AD1885&quot;
+comma
+op_amp
+id|default_ops
+)brace
+comma
+(brace
+l_int|0x41445461
+comma
+l_string|&quot;Analog Devices AD1886&quot;
 comma
 op_amp
 id|default_ops
