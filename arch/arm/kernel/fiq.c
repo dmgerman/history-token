@@ -20,7 +20,6 @@ r_int
 r_int
 id|no_fiq_insn
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_32
 DECL|function|unprotect_page_0
 r_static
 r_inline
@@ -59,12 +58,6 @@ id|DOMAIN_CLIENT
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|macro|unprotect_page_0
-mdefine_line|#define unprotect_page_0()
-DECL|macro|protect_page_0
-mdefine_line|#define protect_page_0()
-macro_line|#endif
 multiline_comment|/* Default reacquire function&n; * - we always relinquish FIQ control&n; * - we always reacquire FIQ control&n; */
 DECL|function|fiq_def_op
 r_static
@@ -259,60 +252,6 @@ suffix:semicolon
 id|__asm__
 r_volatile
 (paren
-macro_line|#ifdef CONFIG_CPU_26
-"&quot;"
-id|mov
-op_mod
-l_int|0
-comma
-id|pc
-id|bic
-op_mod
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-macro_line|#0x3
-id|orr
-op_mod
-l_int|1
-comma
-op_mod
-l_int|1
-comma
-op_mod
-l_int|3
-id|teqp
-op_mod
-l_int|1
-comma
-macro_line|#0&t;&t;@ select FIQ mode
-id|mov
-id|r0
-comma
-id|r0
-id|ldmia
-op_mod
-l_int|2
-comma
-(brace
-id|r8
-op_minus
-id|r14
-)brace
-id|teqp
-op_mod
-l_int|0
-comma
-macro_line|#0&t;&t;@ return to SVC mode
-id|mov
-id|r0
-comma
-id|r0
-"&quot;"
-macro_line|#endif
-macro_line|#ifdef CONFIG_CPU_32
 "&quot;"
 id|mrs
 op_mod
@@ -362,7 +301,6 @@ id|r0
 comma
 id|r0
 "&quot;"
-macro_line|#endif
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -427,60 +365,6 @@ suffix:semicolon
 id|__asm__
 r_volatile
 (paren
-macro_line|#ifdef CONFIG_CPU_26
-"&quot;"
-id|mov
-op_mod
-l_int|0
-comma
-id|pc
-id|bic
-op_mod
-l_int|1
-comma
-op_mod
-l_int|0
-comma
-macro_line|#0x3
-id|orr
-op_mod
-l_int|1
-comma
-op_mod
-l_int|1
-comma
-op_mod
-l_int|3
-id|teqp
-op_mod
-l_int|1
-comma
-macro_line|#0&t;&t;@ select FIQ mode
-id|mov
-id|r0
-comma
-id|r0
-id|stmia
-op_mod
-l_int|2
-comma
-(brace
-id|r8
-op_minus
-id|r14
-)brace
-id|teqp
-op_mod
-l_int|0
-comma
-macro_line|#0&t;&t;@ return to SVC mode
-id|mov
-id|r0
-comma
-id|r0
-"&quot;"
-macro_line|#endif
-macro_line|#ifdef CONFIG_CPU_32
 "&quot;"
 id|mrs
 op_mod
@@ -530,7 +414,6 @@ id|r0
 comma
 id|r0
 "&quot;"
-macro_line|#endif
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren

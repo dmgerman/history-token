@@ -766,7 +766,6 @@ comma
 id|err
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_32
 id|__get_user_error
 c_func
 (paren
@@ -778,7 +777,6 @@ comma
 id|err
 )paren
 suffix:semicolon
-macro_line|#endif
 id|err
 op_or_assign
 op_logical_neg
@@ -1360,7 +1358,6 @@ comma
 id|err
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_32
 id|__put_user_error
 c_func
 (paren
@@ -1372,7 +1369,6 @@ comma
 id|err
 )paren
 suffix:semicolon
-macro_line|#endif
 id|__put_user_error
 c_func
 (paren
@@ -1538,7 +1534,6 @@ id|thumb
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_32
 r_int
 r_int
 id|cpsr
@@ -1599,7 +1594,6 @@ op_complement
 id|PSR_T_BIT
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#endif
 r_if
 c_cond
@@ -1708,12 +1702,10 @@ id|regs-&gt;ARM_pc
 op_assign
 id|handler
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_32
 id|regs-&gt;ARM_cpsr
 op_assign
 id|cpsr
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
