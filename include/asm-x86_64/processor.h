@@ -344,7 +344,7 @@ DECL|macro|MCA_bus__is_a_macro
 mdefine_line|#define MCA_bus__is_a_macro
 multiline_comment|/*&n; * User space process size: 512GB - 1GB (default).&n; */
 DECL|macro|TASK_SIZE
-mdefine_line|#define TASK_SIZE&t;(0x0000007fc0000000)
+mdefine_line|#define TASK_SIZE&t;(0x0000007fc0000000UL)
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|IA32_PAGE_OFFSET
 mdefine_line|#define IA32_PAGE_OFFSET ((current-&gt;personality &amp; ADDR_LIMIT_3GB) ? 0xc0000000 : 0xFFFFe000)

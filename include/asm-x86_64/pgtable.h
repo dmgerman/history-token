@@ -319,17 +319,17 @@ DECL|macro|BOOT_KERNEL_L4_PTRS
 mdefine_line|#define BOOT_KERNEL_L4_PTRS 511&t;/* But we will do it in 4rd level */
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START    0xffffff0000000000
+mdefine_line|#define VMALLOC_START    0xffffff0000000000UL
 DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END      0xffffff7fffffffff
+mdefine_line|#define VMALLOC_END      0xffffff7fffffffffUL
 DECL|macro|MODULES_VADDR
-mdefine_line|#define MODULES_VADDR    0xffffffffa0000000
+mdefine_line|#define MODULES_VADDR    0xffffffffa0000000UL
 DECL|macro|MODULES_END
-mdefine_line|#define MODULES_END      0xffffffffafffffff
+mdefine_line|#define MODULES_END      0xffffffffafffffffUL
 DECL|macro|MODULES_LEN
 mdefine_line|#define MODULES_LEN   (MODULES_END - MODULES_VADDR)
 DECL|macro|IOMAP_START
-mdefine_line|#define IOMAP_START      0xfffffe8000000000
+mdefine_line|#define IOMAP_START      0xfffffe8000000000UL
 DECL|macro|_PAGE_BIT_PRESENT
 mdefine_line|#define _PAGE_BIT_PRESENT&t;0
 DECL|macro|_PAGE_BIT_RW

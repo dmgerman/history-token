@@ -16,7 +16,7 @@ multiline_comment|/*&n; * The fs value determines whether argument validity chec
 DECL|macro|MAKE_MM_SEG
 mdefine_line|#define MAKE_MM_SEG(s)&t;((mm_segment_t) { (s) })
 DECL|macro|KERNEL_DS
-mdefine_line|#define KERNEL_DS&t;MAKE_MM_SEG(0xFFFFFFFFFFFFFFFF)
+mdefine_line|#define KERNEL_DS&t;MAKE_MM_SEG(0xFFFFFFFFFFFFFFFFUL)
 DECL|macro|USER_DS
 mdefine_line|#define USER_DS&t;&t;MAKE_MM_SEG(PAGE_OFFSET)
 DECL|macro|get_ds
