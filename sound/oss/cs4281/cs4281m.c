@@ -14505,6 +14505,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_dac.swptr
@@ -14547,6 +14548,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|s-&gt;dma_adc.swptr
@@ -21007,6 +21009,7 @@ singleline_comment|// stop DMA controller
 id|synchronize_irq
 c_func
 (paren
+id|s-&gt;irq
 )paren
 suffix:semicolon
 id|free_irq

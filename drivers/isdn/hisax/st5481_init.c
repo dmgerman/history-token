@@ -97,6 +97,7 @@ r_struct
 id|usb_interface
 op_star
 id|intf
+comma
 r_const
 r_struct
 id|usb_device_id
@@ -409,7 +410,7 @@ id|adapter
 )paren
 suffix:semicolon
 r_return
-id|adapter
+l_int|0
 suffix:semicolon
 id|err_b
 suffix:colon

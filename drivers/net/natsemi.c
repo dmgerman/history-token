@@ -1,22 +1,52 @@
 multiline_comment|/* natsemi.c: A Linux PCI Ethernet driver for the NatSemi DP8381x series. */
-multiline_comment|/*&n;&t;Written/copyright 1999-2001 by Donald Becker.&n;&t;Portions copyright (c) 2001 Sun Microsystems (thockin@sun.com)&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.  License for under other terms may be&n;&t;available.  Contact the original author for details.&n;&n;&t;The original author may be reached as becker@scyld.com, or at&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support information and updates available at&n;&t;http://www.scyld.com/network/netsemi.html&n;&n;&n;&t;Linux kernel modifications:&n;&n;&t;Version 1.0.1:&n;&t;&t;- Spinlock fixes&n;&t;&t;- Bug fixes and better intr performance (Tjeerd)&n;&t;Version 1.0.2:&n;&t;&t;- Now reads correct MAC address from eeprom&n;&t;Version 1.0.3:&n;&t;&t;- Eliminate redundant priv-&gt;tx_full flag&n;&t;&t;- Call netif_start_queue from dev-&gt;tx_timeout&n;&t;&t;- wmb() in start_tx() to flush data&n;&t;&t;- Update Tx locking&n;&t;&t;- Clean up PCI enable (davej)&n;&t;Version 1.0.4:&n;&t;&t;- Merge Donald Becker&squot;s natsemi.c version 1.07&n;&t;Version 1.0.5:&n;&t;&t;- { fill me in }&n;&t;Version 1.0.6:&n;&t;&t;* ethtool support (jgarzik)&n;&t;&t;* Proper initialization of the card (which sometimes&n;&t;&t;fails to occur and leaves the card in a non-functional&n;&t;&t;state). (uzi)&n;&n;&t;&t;* Some documented register settings to optimize some&n;&t;&t;of the 100Mbit autodetection circuitry in rev C cards. (uzi)&n;&n;&t;&t;* Polling of the PHY intr for stuff like link state&n;&t;&t;change and auto- negotiation to finally work properly. (uzi)&n;&n;&t;&t;* One-liner removal of a duplicate declaration of&n;&t;&t;netdev_error(). (uzi)&n;&n;&t;Version 1.0.7: (Manfred Spraul)&n;&t;&t;* pci dma&n;&t;&t;* SMP locking update&n;&t;&t;* full reset added into tx_timeout&n;&t;&t;* correct multicast hash generation (both big and little endian)&n;&t;&t;&t;[copied from a natsemi driver version&n;&t;&t;&t; from Myrio Corporation, Greg Smith]&n;&t;&t;* suspend/resume&n;&n;&t;version 1.0.8 (Tim Hockin &lt;thockin@sun.com&gt;)&n;&t;&t;* ETHTOOL_* support&n;&t;&t;* Wake on lan support (Erik Gilling)&n;&t;&t;* MXDMA fixes for serverworks&n;&t;&t;* EEPROM reload&n;&n;&t;version 1.0.9 (Manfred Spraul)&n;&t;&t;* Main change: fix lack of synchronize&n;&t;&t;netif_close/netif_suspend against a last interrupt&n;&t;&t;or packet.&n;&t;&t;* do not enable superflous interrupts (e.g. the&n;&t;&t;drivers relies on TxDone - TxIntr not needed)&n;&t;&t;* wait that the hardware has really stopped in close&n;&t;&t;and suspend.&n;&t;&t;* workaround for the (at least) gcc-2.95.1 compiler&n;&t;&t;problem. Also simplifies the code a bit.&n;&t;&t;* disable_irq() in tx_timeout - needed to protect&n;&t;&t;against rx interrupts.&n;&t;&t;* stop the nic before switching into silent rx mode&n;&t;&t;for wol (required according to docu).&n;&n;&t;version 1.0.10:&n;&t;&t;* use long for ee_addr (various)&n;&t;&t;* print pointers properly (DaveM)&n;&t;&t;* include asm/irq.h (?)&n;&t;&n;&t;version 1.0.11:&n;&t;&t;* check and reset if PHY errors appear (Adrian Sun)&n;&t;&t;* WoL cleanup (Tim Hockin)&n;&t;&t;* Magic number cleanup (Tim Hockin)&n;&t;&t;* Don&squot;t reload EEPROM on every reset (Tim Hockin)&n;&t;&t;* Save and restore EEPROM state across reset (Tim Hockin)&n;&t;&t;* MDIO Cleanup (Tim Hockin)&n;&t;&t;* Reformat register offsets/bits (jgarzik)&n;&n;&t;version 1.0.12:&n;&t;&t;* ETHTOOL_* further support (Tim Hockin)&n;&n;&t;version 1.0.13:&n;&t;&t;* ETHTOOL_[GS]EEPROM support (Tim Hockin)&n;&n;&t;version 1.0.13:&n;&t;&t;* crc cleanup (Matt Domsch &lt;Matt_Domsch@dell.com&gt;)&n;&n;&t;TODO:&n;&t;* big endian support with CFG:BEM instead of cpu_to_le32&n;&t;* support for an external PHY&n;&t;* flow control&n;*/
+multiline_comment|/*&n;&t;Written/copyright 1999-2001 by Donald Becker.&n;&t;Portions copyright (c) 2001 Sun Microsystems (thockin@sun.com)&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.  License for under other terms may be&n;&t;available.  Contact the original author for details.&n;&n;&t;The original author may be reached as becker@scyld.com, or at&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support information and updates available at&n;&t;http://www.scyld.com/network/netsemi.html&n;&n;&n;&t;Linux kernel modifications:&n;&n;&t;Version 1.0.1:&n;&t;&t;- Spinlock fixes&n;&t;&t;- Bug fixes and better intr performance (Tjeerd)&n;&t;Version 1.0.2:&n;&t;&t;- Now reads correct MAC address from eeprom&n;&t;Version 1.0.3:&n;&t;&t;- Eliminate redundant priv-&gt;tx_full flag&n;&t;&t;- Call netif_start_queue from dev-&gt;tx_timeout&n;&t;&t;- wmb() in start_tx() to flush data&n;&t;&t;- Update Tx locking&n;&t;&t;- Clean up PCI enable (davej)&n;&t;Version 1.0.4:&n;&t;&t;- Merge Donald Becker&squot;s natsemi.c version 1.07&n;&t;Version 1.0.5:&n;&t;&t;- { fill me in }&n;&t;Version 1.0.6:&n;&t;&t;* ethtool support (jgarzik)&n;&t;&t;* Proper initialization of the card (which sometimes&n;&t;&t;fails to occur and leaves the card in a non-functional&n;&t;&t;state). (uzi)&n;&n;&t;&t;* Some documented register settings to optimize some&n;&t;&t;of the 100Mbit autodetection circuitry in rev C cards. (uzi)&n;&n;&t;&t;* Polling of the PHY intr for stuff like link state&n;&t;&t;change and auto- negotiation to finally work properly. (uzi)&n;&n;&t;&t;* One-liner removal of a duplicate declaration of&n;&t;&t;netdev_error(). (uzi)&n;&n;&t;Version 1.0.7: (Manfred Spraul)&n;&t;&t;* pci dma&n;&t;&t;* SMP locking update&n;&t;&t;* full reset added into tx_timeout&n;&t;&t;* correct multicast hash generation (both big and little endian)&n;&t;&t;&t;[copied from a natsemi driver version&n;&t;&t;&t; from Myrio Corporation, Greg Smith]&n;&t;&t;* suspend/resume&n;&n;&t;version 1.0.8 (Tim Hockin &lt;thockin@sun.com&gt;)&n;&t;&t;* ETHTOOL_* support&n;&t;&t;* Wake on lan support (Erik Gilling)&n;&t;&t;* MXDMA fixes for serverworks&n;&t;&t;* EEPROM reload&n;&n;&t;version 1.0.9 (Manfred Spraul)&n;&t;&t;* Main change: fix lack of synchronize&n;&t;&t;netif_close/netif_suspend against a last interrupt&n;&t;&t;or packet.&n;&t;&t;* do not enable superflous interrupts (e.g. the&n;&t;&t;drivers relies on TxDone - TxIntr not needed)&n;&t;&t;* wait that the hardware has really stopped in close&n;&t;&t;and suspend.&n;&t;&t;* workaround for the (at least) gcc-2.95.1 compiler&n;&t;&t;problem. Also simplifies the code a bit.&n;&t;&t;* disable_irq() in tx_timeout - needed to protect&n;&t;&t;against rx interrupts.&n;&t;&t;* stop the nic before switching into silent rx mode&n;&t;&t;for wol (required according to docu).&n;&n;&t;version 1.0.10:&n;&t;&t;* use long for ee_addr (various)&n;&t;&t;* print pointers properly (DaveM)&n;&t;&t;* include asm/irq.h (?)&n;&t;&n;&t;version 1.0.11:&n;&t;&t;* check and reset if PHY errors appear (Adrian Sun)&n;&t;&t;* WoL cleanup (Tim Hockin)&n;&t;&t;* Magic number cleanup (Tim Hockin)&n;&t;&t;* Don&squot;t reload EEPROM on every reset (Tim Hockin)&n;&t;&t;* Save and restore EEPROM state across reset (Tim Hockin)&n;&t;&t;* MDIO Cleanup (Tim Hockin)&n;&t;&t;* Reformat register offsets/bits (jgarzik)&n;&n;&t;version 1.0.12:&n;&t;&t;* ETHTOOL_* further support (Tim Hockin)&n;&n;&t;version 1.0.13:&n;&t;&t;* ETHTOOL_[G]EEPROM support (Tim Hockin)&n;&n;&t;version 1.0.13:&n;&t;&t;* crc cleanup (Matt Domsch &lt;Matt_Domsch@dell.com&gt;)&n;&n;&t;version 1.0.14:&n;&t;&t;* Cleanup some messages and autoneg in ethtool (Tim Hockin)&n;&n;&t;version 1.0.15:&n;&t;&t;* Get rid of cable_magic flag&n;&t;&t;* use new (National provided) solution for cable magic issue&n;&n;&t;version 1.0.16:&n;&t;&t;* call netdev_rx() for RxErrors (Manfred Spraul)&n;&t;&t;* formatting and cleanups&n;&t;&t;* change options and full_duplex arrays to be zero&n;&t;&t;  initialized&n;&t;&t;* enable only the WoL and PHY interrupts in wol mode&n;&n;&t;TODO:&n;&t;* big endian support with CFG:BEM instead of cpu_to_le32&n;&t;* support for an external PHY&n;&t;* flow control&n;*/
+macro_line|#if !defined(__OPTIMIZE__)
+macro_line|#warning  You must compile this file with the correct options!
+macro_line|#warning  See the last lines of the source file.
+macro_line|#error You must compile this driver with &quot;-O&quot;.
+macro_line|#endif
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/rtnetlink.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;&t;/* Processor type for cache alignment. */
+macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;natsemi&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.07+LK1.0.13&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.07+LK1.0.16&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;Nov 12, 2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;Aug 28, 2002&quot;
 multiline_comment|/* Updated to recommendations in pci-skeleton v2.03. */
 multiline_comment|/* Automatically extracted configuration info:&n;probe-func: natsemi_probe&n;config-in: tristate &squot;National Semiconductor DP8381x series PCI Ethernet support&squot; CONFIG_NATSEMI&n;&n;c-help-name: National Semiconductor DP8381x series PCI Ethernet support&n;c-help-symbol: CONFIG_NATSEMI&n;c-help: This driver is for the National Semiconductor DP8381x series,&n;c-help: including the 8381[56] chips.&n;c-help: More specific information and updates are available from &n;c-help: http://www.scyld.com/network/natsemi.html&n;*/
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
+DECL|macro|NATSEMI_DEF_MSG
+mdefine_line|#define NATSEMI_DEF_MSG&t;&t;(NETIF_MSG_DRV&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_LINK&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_WOL&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_RX_ERR&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_TX_ERR)
 DECL|variable|debug
 r_static
 r_int
 id|debug
 op_assign
-l_int|1
+id|NATSEMI_DEF_MSG
 suffix:semicolon
-multiline_comment|/* 1 normal messages, 0 quiet .. 7 verbose. */
 multiline_comment|/* Maximum events (Rx packets, etc.) to handle at each interrupt. */
 DECL|variable|max_interrupt_work
 r_static
@@ -54,32 +84,6 @@ id|options
 (braket
 id|MAX_UNITS
 )braket
-op_assign
-(brace
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-)brace
 suffix:semicolon
 DECL|variable|full_duplex
 r_static
@@ -88,32 +92,6 @@ id|full_duplex
 (braket
 id|MAX_UNITS
 )braket
-op_assign
-(brace
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-)brace
 suffix:semicolon
 multiline_comment|/* Operational parameters that are set at compile time. */
 multiline_comment|/* Keep the ring sizes a power of two for compile efficiency.&n;   The compiler will convert &lt;unsigned&gt;&squot;%&squot;&lt;2^N&gt; into a bit mask.&n;   Making the Tx ring too large decreases the effectiveness of channel&n;   bonding and packet priority.&n;   There are no ill effects from too-large receive rings. */
@@ -122,7 +100,7 @@ mdefine_line|#define TX_RING_SIZE&t;16
 DECL|macro|TX_QUEUE_LEN
 mdefine_line|#define TX_QUEUE_LEN&t;10 /* Limit ring entries actually used, min 4. */
 DECL|macro|RX_RING_SIZE
-mdefine_line|#define RX_RING_SIZE&t;64
+mdefine_line|#define RX_RING_SIZE&t;32
 multiline_comment|/* Operational parameters that usually are not changed. */
 multiline_comment|/* Time in jiffies before concluding the transmitter is hung. */
 DECL|macro|TX_TIMEOUT
@@ -147,35 +125,6 @@ DECL|macro|NATSEMI_EEPROM_SIZE
 mdefine_line|#define NATSEMI_EEPROM_SIZE&t;24 /* 12 16-bit values */
 DECL|macro|PKT_BUF_SZ
 mdefine_line|#define PKT_BUF_SZ&t;&t;1536 /* Size of each temporary Rx buffer. */
-macro_line|#if !defined(__OPTIMIZE__)
-macro_line|#warning  You must compile this file with the correct options!
-macro_line|#warning  See the last lines of the source file.
-macro_line|#error You must compile this driver with &quot;-O&quot;.
-macro_line|#endif
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/ethtool.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/rtnetlink.h&gt;
-macro_line|#include &lt;linux/mii.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;&t;/* Processor type for cache alignment. */
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* These identify the driver base version and may not be removed. */
 DECL|variable|__devinitdata
 r_static
@@ -296,7 +245,7 @@ c_func
 (paren
 id|debug
 comma
-l_string|&quot;DP8381x debug level (0-5)&quot;
+l_string|&quot;DP8381x default debug bitmask&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -619,19 +568,18 @@ l_int|0xF8
 )brace
 suffix:semicolon
 multiline_comment|/* the values for the &squot;magic&squot; registers above (PGSEL=1) */
-macro_line|#ifdef CONFIG_NATSEMI_CABLE_MAGIC
 DECL|macro|PMDCSR_VAL
-mdefine_line|#define PMDCSR_VAL&t;0x1898
-macro_line|#else
-DECL|macro|PMDCSR_VAL
-mdefine_line|#define PMDCSR_VAL&t;0x189C
-macro_line|#endif
+mdefine_line|#define PMDCSR_VAL&t;0x189c&t;/* enable preferred adaptation circuitry */
 DECL|macro|TSTDAT_VAL
 mdefine_line|#define TSTDAT_VAL&t;0x0
 DECL|macro|DSPCFG_VAL
 mdefine_line|#define DSPCFG_VAL&t;0x5040
 DECL|macro|SDCFG_VAL
-mdefine_line|#define SDCFG_VAL&t;0x008c
+mdefine_line|#define SDCFG_VAL&t;0x008c&t;/* set voltage thresholds for Signal Detect */
+DECL|macro|DSPCFG_LOCK
+mdefine_line|#define DSPCFG_LOCK&t;0x20&t;/* coefficient lock bit in DSPCFG */
+DECL|macro|TSTDAT_FIXED
+mdefine_line|#define TSTDAT_FIXED&t;0xe8&t;/* magic number for bad coefficients */
 multiline_comment|/* misc PCI space registers */
 DECL|enum|pci_register_offsets
 r_enum
@@ -698,6 +646,11 @@ DECL|enumerator|CfgPhyRst
 id|CfgPhyRst
 op_assign
 l_int|0x400
+comma
+DECL|enumerator|CfgExtPhy
+id|CfgExtPhy
+op_assign
+l_int|0x1000
 comma
 DECL|enumerator|CfgAnegEnable
 id|CfgAnegEnable
@@ -1565,6 +1518,11 @@ DECL|member|srr
 id|u32
 id|srr
 suffix:semicolon
+multiline_comment|/* expected DSPCFG value */
+DECL|member|dspcfg
+id|u16
+id|dspcfg
+suffix:semicolon
 multiline_comment|/* MII transceiver section. */
 DECL|member|advertising
 id|u16
@@ -1579,6 +1537,10 @@ suffix:semicolon
 DECL|member|lock
 id|spinlock_t
 id|lock
+suffix:semicolon
+DECL|member|msg_enable
+id|u32
+id|msg_enable
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1667,6 +1629,28 @@ suffix:semicolon
 r_static
 r_int
 id|netdev_open
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_static
+r_void
+id|do_cable_magic
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_static
+r_void
+id|undo_cable_magic
 c_func
 (paren
 r_struct
@@ -2444,6 +2428,10 @@ op_amp
 id|np-&gt;lock
 )paren
 suffix:semicolon
+id|np-&gt;msg_enable
+op_assign
+id|debug
+suffix:semicolon
 multiline_comment|/* Reset the chip to erase previous misconfiguration. */
 id|natsemi_reload_eeprom
 c_func
@@ -2485,8 +2473,6 @@ r_if
 c_cond
 (paren
 id|option
-OG
-l_int|0
 )paren
 (brace
 r_if
@@ -2525,8 +2511,13 @@ r_if
 c_cond
 (paren
 id|find_cnt
-template_param
-l_int|0
+OL
+id|MAX_UNITS
+op_logical_and
+id|full_duplex
+(braket
+id|find_cnt
+)braket
 )paren
 id|np-&gt;full_duplex
 op_assign
@@ -2631,11 +2622,21 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_msg_drv
+c_func
+(paren
+id|np
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: %s at 0x%lx, &quot;
+l_string|&quot;%s: %s at %#08lx, &quot;
 comma
 id|dev-&gt;name
 comma
@@ -2668,7 +2669,7 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;%2.2x:&quot;
+l_string|&quot;%02x:&quot;
 comma
 id|dev-&gt;dev_addr
 (braket
@@ -2679,7 +2680,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%2.2x, IRQ %d.&bslash;n&quot;
+l_string|&quot;%02x, IRQ %d.&bslash;n&quot;
 comma
 id|dev-&gt;dev_addr
 (braket
@@ -2689,6 +2690,7 @@ comma
 id|irq
 )paren
 suffix:semicolon
+)brace
 id|np-&gt;advertising
 op_assign
 id|mdio_read
@@ -2717,6 +2719,12 @@ l_int|0xe000
 )paren
 op_ne
 l_int|0xe000
+op_logical_and
+id|netif_msg_probe
+c_func
+(paren
+id|np
+)paren
 )paren
 (brace
 id|u32
@@ -2768,11 +2776,20 @@ l_string|&quot;half&quot;
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|netif_msg_probe
+c_func
+(paren
+id|np
+)paren
+)paren
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Transceiver status 0x%4.4x advertising %4.4x.&bslash;n&quot;
+l_string|&quot;%s: Transceiver status %#04x advertising %#04x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2798,6 +2815,26 @@ c_func
 id|ioaddr
 op_plus
 id|SiliconRev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_msg_hw
+c_func
+(paren
+id|np
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: silicon revision %#04x.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|np-&gt;srr
 )paren
 suffix:semicolon
 r_return
@@ -3226,6 +3263,13 @@ id|sopass
 l_int|3
 )braket
 suffix:semicolon
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
 multiline_comment|/* &n;&t; * Resetting the chip causes some registers to be lost.&n;&t; * Natsemi suggests NOT reloading the EEPROM while live, so instead&n;&t; * we save the state that would have been loaded from EEPROM&n;&t; * on a normal power-up (see the spec EEPROM map).  This assumes &n;&t; * whoever calls this will follow up with init_registers() eventually.&n;&t; */
 multiline_comment|/* CFG */
 id|cfg
@@ -3412,7 +3456,11 @@ id|i
 op_eq
 id|NATSEMI_HW_TIMEOUT
 op_logical_and
-id|debug
+id|netif_msg_hw
+c_func
+(paren
+id|np
+)paren
 )paren
 (brace
 id|printk
@@ -3433,9 +3481,11 @@ r_else
 r_if
 c_cond
 (paren
-id|debug
-OG
-l_int|2
+id|netif_msg_hw
+c_func
+(paren
+id|np
+)paren
 )paren
 (brace
 id|printk
@@ -3625,6 +3675,13 @@ op_star
 id|dev
 )paren
 (brace
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -3685,7 +3742,11 @@ id|i
 op_eq
 id|NATSEMI_HW_TIMEOUT
 op_logical_and
-id|debug
+id|netif_msg_hw
+c_func
+(paren
+id|np
+)paren
 )paren
 (brace
 id|printk
@@ -3706,9 +3767,11 @@ r_else
 r_if
 c_cond
 (paren
-id|debug
-OG
-l_int|2
+id|netif_msg_hw
+c_func
+(paren
+id|np
+)paren
 )paren
 (brace
 id|printk
@@ -3742,6 +3805,13 @@ r_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
+suffix:semicolon
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|i
@@ -3810,7 +3880,11 @@ id|i
 op_eq
 id|NATSEMI_HW_TIMEOUT
 op_logical_and
-id|debug
+id|netif_msg_hw
+c_func
+(paren
+id|np
+)paren
 )paren
 (brace
 id|printk
@@ -3831,9 +3905,11 @@ r_else
 r_if
 c_cond
 (paren
-id|debug
-OG
-l_int|2
+id|netif_msg_hw
+c_func
+(paren
+id|np
+)paren
 )paren
 (brace
 id|printk
@@ -3913,9 +3989,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
-OG
-l_int|1
+id|netif_msg_ifup
+c_func
+(paren
+id|np
+)paren
 )paren
 id|printk
 c_func
@@ -3991,15 +4069,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
-OG
-l_int|2
+id|netif_msg_ifup
+c_func
+(paren
+id|np
+)paren
 )paren
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Done netdev_open(), status: %x.&bslash;n&quot;
+l_string|&quot;%s: Done netdev_open(), status: %#08x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -4052,6 +4132,214 @@ id|np-&gt;timer
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|do_cable_magic
+r_static
+r_void
+id|do_cable_magic
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+multiline_comment|/*&n;&t; * 100 MBit links with short cables can trip an issue with the chip.&n;&t; * The problem manifests as lots of CRC errors and/or flickering&n;&t; * activity LED while idle.  This process is based on instructions&n;&t; * from engineers at National.&n;&t; */
+r_if
+c_cond
+(paren
+id|readl
+c_func
+(paren
+id|dev-&gt;base_addr
+op_plus
+id|ChipConfig
+)paren
+op_amp
+id|CfgSpeed100
+)paren
+(brace
+id|u16
+id|data
+suffix:semicolon
+id|writew
+c_func
+(paren
+l_int|1
+comma
+id|dev-&gt;base_addr
+op_plus
+id|PGSEL
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * coefficient visibility should already be enabled via&n;&t;&t; * DSPCFG | 0x1000&n;&t;&t; */
+id|data
+op_assign
+id|readw
+c_func
+(paren
+id|dev-&gt;base_addr
+op_plus
+id|TSTDAT
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * the value must be negative, and within certain values&n;&t;&t; * (these values all come from National)&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|data
+op_amp
+l_int|0x80
+)paren
+op_logical_or
+(paren
+(paren
+id|data
+op_ge
+l_int|0xd8
+)paren
+op_logical_and
+(paren
+id|data
+op_le
+l_int|0xff
+)paren
+)paren
+)paren
+(brace
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+multiline_comment|/* the bug has been triggered - fix the coefficient */
+id|writew
+c_func
+(paren
+id|TSTDAT_FIXED
+comma
+id|dev-&gt;base_addr
+op_plus
+id|TSTDAT
+)paren
+suffix:semicolon
+multiline_comment|/* lock the value */
+id|data
+op_assign
+id|readw
+c_func
+(paren
+id|dev-&gt;base_addr
+op_plus
+id|DSPCFG
+)paren
+suffix:semicolon
+id|np-&gt;dspcfg
+op_assign
+id|data
+op_or
+id|DSPCFG_LOCK
+suffix:semicolon
+id|writew
+c_func
+(paren
+id|np-&gt;dspcfg
+comma
+id|dev-&gt;base_addr
+op_plus
+id|DSPCFG
+)paren
+suffix:semicolon
+)brace
+id|writew
+c_func
+(paren
+l_int|0
+comma
+id|dev-&gt;base_addr
+op_plus
+id|PGSEL
+)paren
+suffix:semicolon
+)brace
+)brace
+DECL|function|undo_cable_magic
+r_static
+r_void
+id|undo_cable_magic
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|u16
+id|data
+suffix:semicolon
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|writew
+c_func
+(paren
+l_int|1
+comma
+id|dev-&gt;base_addr
+op_plus
+id|PGSEL
+)paren
+suffix:semicolon
+multiline_comment|/* make sure the lock bit is clear */
+id|data
+op_assign
+id|readw
+c_func
+(paren
+id|dev-&gt;base_addr
+op_plus
+id|DSPCFG
+)paren
+suffix:semicolon
+id|np-&gt;dspcfg
+op_assign
+id|data
+op_amp
+op_complement
+id|DSPCFG_LOCK
+suffix:semicolon
+id|writew
+c_func
+(paren
+id|np-&gt;dspcfg
+comma
+id|dev-&gt;base_addr
+op_plus
+id|DSPCFG
+)paren
+suffix:semicolon
+id|writew
+c_func
+(paren
+l_int|0
+comma
+id|dev-&gt;base_addr
+op_plus
+id|PGSEL
+)paren
 suffix:semicolon
 )brace
 DECL|function|check_link
@@ -4116,18 +4404,28 @@ id|dev
 r_if
 c_cond
 (paren
-id|debug
+id|netif_msg_link
+c_func
+(paren
+id|np
+)paren
 )paren
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s: no link. Disabling watchdog.&bslash;n&quot;
+id|KERN_NOTICE
+l_string|&quot;%s: link down.&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
 id|netif_carrier_off
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|undo_cable_magic
 c_func
 (paren
 id|dev
@@ -4151,18 +4449,28 @@ id|dev
 r_if
 c_cond
 (paren
-id|debug
+id|netif_msg_link
+c_func
+(paren
+id|np
+)paren
 )paren
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s: link is back. Enabling watchdog.&bslash;n&quot;
+id|KERN_NOTICE
+l_string|&quot;%s: link up.&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
 id|netif_carrier_on
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|do_cable_magic
 c_func
 (paren
 id|dev
@@ -4202,14 +4510,18 @@ id|RxAcceptTx
 r_if
 c_cond
 (paren
-id|debug
+id|netif_msg_link
+c_func
+(paren
+id|np
+)paren
 )paren
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Setting %s-duplex based on negotiated link&quot;
-l_string|&quot; capability.&bslash;n&quot;
+l_string|&quot;%s: Setting %s-duplex based on negotiated &quot;
+l_string|&quot;link capability.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -4304,25 +4616,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* save the silicon revision for later */
-r_if
-c_cond
-(paren
-id|debug
-OG
-l_int|4
-)paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: found silicon revision %xh.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|np-&gt;srr
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4367,7 +4660,11 @@ id|i
 op_eq
 id|NATSEMI_HW_TIMEOUT
 op_logical_and
-id|debug
+id|netif_msg_link
+c_func
+(paren
+id|np
+)paren
 )paren
 (brace
 id|printk
@@ -4444,6 +4741,10 @@ id|ioaddr
 op_plus
 id|PGSEL
 )paren
+suffix:semicolon
+id|np-&gt;dspcfg
+op_assign
+id|DSPCFG_VAL
 suffix:semicolon
 multiline_comment|/* Enable PHY Specific event based interrupts.  Link state change&n;&t;   and Auto-Negotiation Completion are among the affected.&n;&t;   Read the intr status to clear it (needed for wake events).&n;&t;*/
 id|readw
@@ -4572,13 +4873,19 @@ c_cond
 id|np-&gt;SavedClkRun
 op_amp
 id|PMEStatus
+op_logical_and
+id|netif_msg_wol
+c_func
+(paren
+id|np
+)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: Wake-up event %8.8x&bslash;n&quot;
+l_string|&quot;%s: Wake-up event %#08x&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -4649,7 +4956,7 @@ id|StatsCtrl
 suffix:semicolon
 multiline_comment|/* Clear Stats */
 )brace
-multiline_comment|/* &n; * The frequency on this has been increased because of a nasty little problem.&n; * It seems that a reference set for this chip went out with incorrect info,&n; * and there exist boards that aren&squot;t quite right.  An unexpected voltage drop&n; * can cause the PHY to get itself in a weird state (basically reset..).&n; * NOTE: this only seems to affect revC chips.&n; */
+multiline_comment|/*&n; * Purpose:&n; * check for sudden death of the NIC:&n; *&n; * It seems that a reference set for this chip went out with incorrect info,&n; * and there exist boards that aren&squot;t quite right.  An unexpected voltage drop&n; * can cause the PHY to get itself in a weird state (basically reset..).&n; * NOTE: this only seems to affect revC chips.&n; */
 DECL|function|netdev_timer
 r_static
 r_void
@@ -4698,9 +5005,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
-OG
-l_int|3
+id|netif_msg_timer
+c_func
+(paren
+id|np
+)paren
 )paren
 (brace
 multiline_comment|/* DO NOT read the IntrStatus register, &n;&t;&t; * a read clears any pending interrupts.&n;&t;&t; */
@@ -4714,6 +5023,13 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+)paren
+suffix:semicolon
 multiline_comment|/* check for a nasty random phy-reset - use dspcfg as a flag */
 id|writew
 c_func
@@ -4750,7 +5066,7 @@ c_cond
 (paren
 id|dspcfg
 op_ne
-id|DSPCFG_VAL
+id|np-&gt;dspcfg
 )paren
 (brace
 r_if
@@ -4764,11 +5080,28 @@ id|dev
 )paren
 )paren
 (brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_msg_hw
+c_func
+(paren
+id|np
+)paren
+)paren
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s: possible phy reset: re-initializing&bslash;n&quot;
+id|KERN_NOTICE
+l_string|&quot;%s: possible phy reset: &quot;
+l_string|&quot;re-initializing&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -4813,18 +5146,18 @@ id|next_tick
 op_assign
 id|HZ
 suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-multiline_comment|/* init_registers() calls check_link() for the above case */
-id|spin_lock_irq
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|np-&gt;lock
 )paren
 suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/* init_registers() calls check_link() for the above case */
 id|check_link
 c_func
 (paren
@@ -4873,9 +5206,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
-OG
-l_int|2
+id|netif_msg_pktdata
+c_func
+(paren
+id|np
+)paren
 )paren
 (brace
 r_int
@@ -4909,7 +5244,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot; #%d desc. %8.8x %8.8x %8.8x.&bslash;n&quot;
+l_string|&quot; #%d desc. %#08x %#08x %#08x.&bslash;n&quot;
 comma
 id|i
 comma
@@ -4964,7 +5299,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot; #%d desc. %8.8x %8.8x %8.8x.&bslash;n&quot;
+l_string|&quot; #%d desc. %#08x %#08x %#08x.&bslash;n&quot;
 comma
 id|i
 comma
@@ -5040,11 +5375,20 @@ id|dev
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|netif_msg_tx_err
+c_func
+(paren
+id|np
+)paren
+)paren
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Transmit timed out, status %8.8x,&quot;
+l_string|&quot;%s: Transmit timed out, status %#08x,&quot;
 l_string|&quot; resetting...&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5893,9 +6237,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
-OG
-l_int|4
+id|netif_msg_tx_queued
+c_func
+(paren
+id|np
+)paren
 )paren
 (brace
 id|printk
@@ -5972,40 +6318,22 @@ c_func
 id|DescOwn
 )paren
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|debug
-OG
-l_int|4
-)paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: tx frame #%d is busy.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|np-&gt;dirty_tx
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-id|debug
-OG
-l_int|4
+id|netif_msg_tx_done
+c_func
+(paren
+id|np
+)paren
 )paren
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: tx frame #%d finished with status %8.8xh.&bslash;n&quot;
+l_string|&quot;%s: tx frame #%d finished, status %#08x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -6214,22 +6542,18 @@ r_struct
 id|netdev_private
 op_star
 id|np
+op_assign
+id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|ioaddr
+op_assign
+id|dev-&gt;base_addr
 suffix:semicolon
 r_int
 id|boguscnt
 op_assign
 id|max_interrupt_work
-suffix:semicolon
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
-id|np
-op_assign
-id|dev-&gt;priv
 suffix:semicolon
 r_if
 c_cond
@@ -6260,15 +6584,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
-OG
-l_int|4
+id|netif_msg_intr
+c_func
+(paren
+id|np
+)paren
 )paren
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Interrupt, status %4.4x.&bslash;n&quot;
+l_string|&quot;%s: Interrupt, status %#08x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -6301,12 +6627,14 @@ op_or
 id|IntrRxOverrun
 )paren
 )paren
+(brace
 id|netdev_rx
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6369,12 +6697,21 @@ OL
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|netif_msg_intr
+c_func
+(paren
+id|np
+)paren
+)paren
 id|printk
 c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;%s: Too much work at interrupt, &quot;
-l_string|&quot;status=0x%4.4x.&bslash;n&quot;
+l_string|&quot;status=%#08x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -6394,9 +6731,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
-OG
-l_int|4
+id|netif_msg_intr
+c_func
+(paren
+id|np
+)paren
 )paren
 id|printk
 c_func
@@ -6466,15 +6805,17 @@ multiline_comment|/* e.g. &amp; DescOwn */
 r_if
 c_cond
 (paren
-id|debug
-OG
-l_int|4
+id|netif_msg_rx_status
+c_func
+(paren
+id|np
+)paren
 )paren
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;  In netdev_rx() entry %d status was %8.8x.&bslash;n&quot;
+l_string|&quot;  netdev_rx() entry %d status was %#08x.&bslash;n&quot;
 comma
 id|entry
 comma
@@ -6517,12 +6858,23 @@ op_amp
 id|DescMore
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|netif_msg_rx_err
+c_func
+(paren
+id|np
+)paren
+)paren
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Oversized(?) Ethernet frame spanned &quot;
-l_string|&quot;multiple buffers, entry %#x status %x.&bslash;n&quot;
+l_string|&quot;%s: Oversized(?) Ethernet &quot;
+l_string|&quot;frame spanned multiple &quot;
+l_string|&quot;buffers, entry %#08x &quot;
+l_string|&quot;status %#08x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -6537,23 +6889,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* There was a error. */
-r_if
-c_cond
-(paren
-id|debug
-OG
-l_int|2
-)paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;  netdev_rx() Rx error was %8.8x.&bslash;n&quot;
-comma
-id|desc_status
-)paren
-suffix:semicolon
+multiline_comment|/* There was an error. */
 id|np-&gt;stats.rx_errors
 op_increment
 suffix:semicolon
@@ -6630,7 +6966,7 @@ id|DescSizeMask
 op_minus
 l_int|4
 suffix:semicolon
-multiline_comment|/* Check if the packet is long enough to accept without copying&n;&t;&t;&t;   to a minimally-sized skbuff. */
+multiline_comment|/* Check if the packet is long enough to accept &n;&t;&t;&t; * without copying to a minimally-sized skbuff. */
 r_if
 c_cond
 (paren
@@ -7003,18 +7339,9 @@ op_amp
 id|LinkChange
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;%s: Link changed: Autonegotiation advertising&quot;
-l_string|&quot; %4.4x  partner %4.4x.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-(paren
-r_int
-)paren
+id|u16
+id|adv
+op_assign
 id|mdio_read
 c_func
 (paren
@@ -7024,10 +7351,10 @@ l_int|1
 comma
 id|MII_ADVERTISE
 )paren
-comma
-(paren
-r_int
-)paren
+suffix:semicolon
+id|u16
+id|lpa
+op_assign
 id|mdio_read
 c_func
 (paren
@@ -7037,8 +7364,44 @@ l_int|1
 comma
 id|MII_LPA
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mdio_read
+c_func
+(paren
+id|dev
+comma
+l_int|1
+comma
+id|MII_BMCR
+)paren
+op_amp
+id|BMCR_ANENABLE
+op_logical_and
+id|netif_msg_link
+c_func
+(paren
+id|np
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: Autonegotiation advertising&quot;
+l_string|&quot; %#04x  partner %#04x.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|adv
+comma
+id|lpa
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* read MII int status to clear the flag */
 id|readw
 c_func
@@ -7096,15 +7459,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
-OG
-l_int|2
+id|netif_msg_tx_err
+c_func
+(paren
+id|np
+)paren
 )paren
 id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: increasing Tx threshold, new tx cfg %8.8xh.&bslash;n&quot;
+l_string|&quot;%s: increased Tx threshold, txcfg %#08x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -7128,6 +7493,12 @@ c_cond
 id|intr_status
 op_amp
 id|WOLPkt
+op_logical_and
+id|netif_msg_wol
+c_func
+(paren
+id|np
+)paren
 )paren
 (brace
 r_int
@@ -7145,7 +7516,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: Link wake-up event %8.8x&bslash;n&quot;
+l_string|&quot;%s: Link wake-up event %#08x&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -7164,9 +7535,17 @@ id|RxStatusFIFOOver
 r_if
 c_cond
 (paren
-id|debug
-op_ge
-l_int|2
+id|netif_msg_rx_err
+c_func
+(paren
+id|np
+)paren
+op_logical_and
+id|netif_msg_intr
+c_func
+(paren
+id|np
+)paren
 )paren
 (brace
 id|printk
@@ -7192,17 +7571,11 @@ op_amp
 id|IntrPCIErr
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|debug
-)paren
-(brace
 id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: PCI error %08x&bslash;n&quot;
+l_string|&quot;%s: PCI error %#08x&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -7211,7 +7584,6 @@ op_amp
 id|IntrPCIErr
 )paren
 suffix:semicolon
-)brace
 id|np-&gt;stats.tx_fifo_errors
 op_increment
 suffix:semicolon
@@ -8329,7 +8701,7 @@ id|ETHTOOL_GMSGLVL
 suffix:semicolon
 id|edata.data
 op_assign
-id|debug
+id|np-&gt;msg_enable
 suffix:semicolon
 r_if
 c_cond
@@ -8386,7 +8758,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|debug
+id|np-&gt;msg_enable
 op_assign
 id|edata.data
 suffix:semicolon
@@ -8564,6 +8936,19 @@ id|eeprom
 r_return
 op_minus
 id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|eeprom.offset
+OG
+id|eeprom.offset
+op_plus
+id|eeprom.len
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -9364,9 +9749,33 @@ op_or
 id|SUPPORTED_Autoneg
 op_or
 id|SUPPORTED_TP
+op_or
+id|SUPPORTED_MII
 )paren
 suffix:semicolon
-multiline_comment|/* only supports twisted-pair */
+multiline_comment|/* only supports twisted-pair or MII */
+id|tmp
+op_assign
+id|readl
+c_func
+(paren
+id|dev-&gt;base_addr
+op_plus
+id|ChipConfig
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+op_amp
+id|CfgExtPhy
+)paren
+id|ecmd-&gt;port
+op_assign
+id|PORT_MII
+suffix:semicolon
+r_else
 id|ecmd-&gt;port
 op_assign
 id|PORT_TP
@@ -9376,7 +9785,7 @@ id|ecmd-&gt;transceiver
 op_assign
 id|XCVR_INTERNAL
 suffix:semicolon
-multiline_comment|/* this isn&squot;t fully supported at higher layers */
+multiline_comment|/* not sure what this is for */
 id|ecmd-&gt;phy_address
 op_assign
 id|readw
@@ -9392,6 +9801,8 @@ suffix:semicolon
 id|ecmd-&gt;advertising
 op_assign
 id|ADVERTISED_TP
+op_or
+id|ADVERTISED_MII
 suffix:semicolon
 id|tmp
 op_assign
@@ -9451,12 +9862,14 @@ id|ADVERTISED_100baseT_Full
 suffix:semicolon
 id|tmp
 op_assign
-id|readl
+id|mdio_read
 c_func
 (paren
-id|dev-&gt;base_addr
-op_plus
-id|ChipConfig
+id|dev
+comma
+l_int|1
+comma
+id|MII_BMCR
 )paren
 suffix:semicolon
 r_if
@@ -9464,7 +9877,7 @@ c_cond
 (paren
 id|tmp
 op_amp
-id|CfgAnegEnable
+id|BMCR_ANENABLE
 )paren
 (brace
 id|ecmd-&gt;advertising
@@ -9483,6 +9896,16 @@ op_assign
 id|AUTONEG_DISABLE
 suffix:semicolon
 )brace
+id|tmp
+op_assign
+id|readl
+c_func
+(paren
+id|dev-&gt;base_addr
+op_plus
+id|ChipConfig
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9591,6 +10014,10 @@ c_cond
 id|ecmd-&gt;port
 op_ne
 id|PORT_TP
+op_logical_and
+id|ecmd-&gt;port
+op_ne
+id|PORT_MII
 )paren
 r_return
 op_minus
@@ -9624,83 +10051,6 @@ id|EINVAL
 suffix:semicolon
 multiline_comment|/* ignore phy_address, maxtxpkt, maxrxpkt for now */
 multiline_comment|/* WHEW! now lets bang some bits */
-r_if
-c_cond
-(paren
-id|ecmd-&gt;autoneg
-op_eq
-id|AUTONEG_ENABLE
-)paren
-(brace
-multiline_comment|/* advertise only what has been requested */
-id|tmp
-op_assign
-id|readl
-c_func
-(paren
-id|dev-&gt;base_addr
-op_plus
-id|ChipConfig
-)paren
-suffix:semicolon
-id|tmp
-op_and_assign
-op_complement
-(paren
-id|CfgAneg100
-op_or
-id|CfgAnegFull
-)paren
-suffix:semicolon
-id|tmp
-op_or_assign
-id|CfgAnegEnable
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ecmd-&gt;advertising
-op_amp
-id|ADVERTISED_100baseT_Half
-op_logical_or
-id|ecmd-&gt;advertising
-op_amp
-id|ADVERTISED_100baseT_Full
-)paren
-(brace
-id|tmp
-op_or_assign
-id|CfgAneg100
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ecmd-&gt;advertising
-op_amp
-id|ADVERTISED_10baseT_Full
-op_logical_or
-id|ecmd-&gt;advertising
-op_amp
-id|ADVERTISED_100baseT_Full
-)paren
-(brace
-id|tmp
-op_or_assign
-id|CfgAnegFull
-suffix:semicolon
-)brace
-id|writel
-c_func
-(paren
-id|tmp
-comma
-id|dev-&gt;base_addr
-op_plus
-id|ChipConfig
-)paren
-suffix:semicolon
-multiline_comment|/* turn on autonegotiation, and force a renegotiate */
 id|tmp
 op_assign
 id|mdio_read
@@ -9713,25 +10063,18 @@ comma
 id|MII_BMCR
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ecmd-&gt;autoneg
+op_eq
+id|AUTONEG_ENABLE
+)paren
+(brace
+multiline_comment|/* turn on autonegotiation */
 id|tmp
 op_or_assign
-(paren
 id|BMCR_ANENABLE
-op_or
-id|BMCR_ANRESTART
-)paren
-suffix:semicolon
-id|mdio_write
-c_func
-(paren
-id|dev
-comma
-l_int|1
-comma
-id|MII_BMCR
-comma
-id|tmp
-)paren
 suffix:semicolon
 id|np-&gt;advertising
 op_assign
@@ -9750,18 +10093,6 @@ r_else
 (brace
 multiline_comment|/* turn off auto negotiation, set speed and duplexity */
 id|tmp
-op_assign
-id|mdio_read
-c_func
-(paren
-id|dev
-comma
-l_int|1
-comma
-id|MII_BMCR
-)paren
-suffix:semicolon
-id|tmp
 op_and_assign
 op_complement
 (paren
@@ -9779,12 +10110,10 @@ id|ecmd-&gt;speed
 op_eq
 id|SPEED_100
 )paren
-(brace
 id|tmp
 op_or_assign
 id|BMCR_SPEED100
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -9792,14 +10121,11 @@ id|ecmd-&gt;duplex
 op_eq
 id|DUPLEX_FULL
 )paren
-(brace
 id|tmp
 op_or_assign
 id|BMCR_FULLDPLX
 suffix:semicolon
-)brace
 r_else
-(brace
 id|np-&gt;full_duplex
 op_assign
 l_int|0
@@ -9817,7 +10143,6 @@ comma
 id|tmp
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -10048,7 +10373,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: shoot, we dropped an interrupt (0x%x)&bslash;n&quot;
+l_string|&quot;%s: shoot, we dropped an interrupt (%#08x)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -10328,9 +10653,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
-OG
-l_int|1
+id|netif_msg_wol
+c_func
+(paren
+id|np
+)paren
 )paren
 id|printk
 c_func
@@ -10397,19 +10724,23 @@ multiline_comment|/* enable the WOL interrupt.&n;&t;&t; * Could be used to send 
 id|writel
 c_func
 (paren
-id|readl
-c_func
-(paren
-id|ioaddr
-op_plus
-id|IntrMask
-)paren
-op_or
 id|WOLPkt
+op_or
+id|LinkChange
 comma
 id|ioaddr
 op_plus
 id|IntrMask
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+l_int|1
+comma
+id|ioaddr
+op_plus
+id|IntrEnable
 )paren
 suffix:semicolon
 )brace
@@ -10453,16 +10784,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debug
-OG
-l_int|1
+id|netif_msg_ifdown
+c_func
+(paren
+id|np
 )paren
-(brace
+)paren
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Shutting down ethercard, status was %4.4x.&bslash;n&quot;
+l_string|&quot;%s: Shutting down ethercard, status was %#04x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -10478,6 +10810,15 @@ id|ChipCmd
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_msg_pktdata
+c_func
+(paren
+id|np
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -10495,7 +10836,6 @@ comma
 id|np-&gt;dirty_rx
 )paren
 suffix:semicolon
-)brace
 id|del_timer_sync
 c_func
 (paren

@@ -43,7 +43,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|irlmp-&gt;log_lock
+id|cachelog-&gt;hb_spinlock
 comma
 id|flags
 )paren
@@ -185,13 +185,13 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|irlmp-&gt;log_lock
+id|cachelog-&gt;hb_spinlock
 comma
 id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlmp_add_discovery_log (cachelog, log)&n; *&n; *    Merge a disovery log into the cachlog.&n; *&n; */
+multiline_comment|/*&n; * Function irlmp_add_discovery_log (cachelog, log)&n; *&n; *    Merge a disovery log into the cachelog.&n; *&n; */
 DECL|function|irlmp_add_discovery_log
 r_void
 id|irlmp_add_discovery_log
@@ -220,6 +220,7 @@ l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  If log is missing this means that IrLAP was unable to perform the&n;&t; *  discovery, so restart discovery again with just the half timeout&n;&t; *  of the normal one.&n;&t; */
+multiline_comment|/* Well... It means that there was nobody out there - Jean II */
 r_if
 c_cond
 (paren
@@ -232,6 +233,7 @@ multiline_comment|/* irlmp_start_discovery_timer(irlmp, 150); */
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Locking : we are the only owner of this discovery log, so&n;&t; * no need to lock it.&n;&t; * We just need to lock the global log in irlmp_add_discovery().&n;&t; */
 id|discovery
 op_assign
 (paren
@@ -327,7 +329,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|irlmp-&gt;log_lock
+id|log-&gt;hb_spinlock
 comma
 id|flags
 )paren
@@ -433,7 +435,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|irlmp-&gt;log_lock
+id|log-&gt;hb_spinlock
 comma
 id|flags
 )paren
@@ -608,7 +610,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|irlmp-&gt;log_lock
+id|log-&gt;hb_spinlock
 comma
 id|flags
 )paren
@@ -650,7 +652,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|irlmp-&gt;log_lock
+id|log-&gt;hb_spinlock
 comma
 id|flags
 )paren
@@ -790,7 +792,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|irlmp-&gt;log_lock
+id|log-&gt;hb_spinlock
 comma
 id|flags
 )paren
@@ -836,7 +838,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|irlmp-&gt;log_lock
+id|cachelog-&gt;hb_spinlock
 comma
 id|flags
 )paren
@@ -913,7 +915,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|irlmp-&gt;log_lock
+id|cachelog-&gt;hb_spinlock
 comma
 id|flags
 )paren
@@ -939,7 +941,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|irlmp-&gt;log_lock
+id|cachelog-&gt;hb_spinlock
 comma
 id|flags
 )paren
@@ -985,10 +987,7 @@ id|hashbin_t
 op_star
 id|cachelog
 op_assign
-id|irlmp_get_cachelog
-c_func
-(paren
-)paren
+id|irlmp-&gt;cachelog
 suffix:semicolon
 r_int
 id|len
@@ -1018,7 +1017,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|irlmp-&gt;log_lock
+id|cachelog-&gt;hb_spinlock
 comma
 id|flags
 )paren
@@ -1388,7 +1387,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|irlmp-&gt;log_lock
+id|cachelog-&gt;hb_spinlock
 comma
 id|flags
 )paren

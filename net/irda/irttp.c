@@ -362,7 +362,7 @@ op_assign
 id|hashbin_new
 c_func
 (paren
-id|HB_LOCAL
+id|HB_LOCK
 )paren
 suffix:semicolon
 r_if
@@ -4608,6 +4608,10 @@ id|tsap_cb
 op_star
 r_new
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -4617,6 +4621,17 @@ id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Protect our access to the old tsap instance */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|irttp-&gt;tsaps-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Find the old instance */
 r_if
 c_cond
 (paren
@@ -4644,10 +4659,20 @@ id|__FUNCTION__
 l_string|&quot;(), unable to find TSAP&bslash;n&quot;
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|irttp-&gt;tsaps-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* Allocate a new instance */
 r_new
 op_assign
 id|kmalloc
@@ -4678,6 +4703,15 @@ id|__FUNCTION__
 l_string|&quot;(), unable to kmalloc&bslash;n&quot;
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|irttp-&gt;tsaps-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -4697,6 +4731,17 @@ id|tsap_cb
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* We don&squot;t need the old instance any more */
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|irttp-&gt;tsaps-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Not everything should be copied */
 r_new
 op_member_access_from_pointer
 id|notify.instance
@@ -4715,7 +4760,6 @@ comma
 r_new
 )paren
 suffix:semicolon
-multiline_comment|/* Not everything should be copied */
 id|init_timer
 c_func
 (paren
@@ -4752,6 +4796,7 @@ op_member_access_from_pointer
 id|rx_fragments
 )paren
 suffix:semicolon
+multiline_comment|/* This is locked */
 id|hashbin_insert
 c_func
 (paren
@@ -5679,15 +5724,14 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
-id|save_flags
+multiline_comment|/* Protect our access to the tsap list */
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|irttp-&gt;tsaps-&gt;hb_spinlock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|self
@@ -6013,9 +6057,12 @@ id|irttp-&gt;tsaps
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|irttp-&gt;tsaps-&gt;hb_spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
