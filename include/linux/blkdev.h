@@ -144,6 +144,18 @@ DECL|member|pid
 id|pid_t
 id|pid
 suffix:semicolon
+multiline_comment|/*&n;&t; * For request batching&n;&t; */
+DECL|member|last_waited
+r_int
+r_int
+id|last_waited
+suffix:semicolon
+multiline_comment|/* Time last woken after wait for request */
+DECL|member|nr_batch_requests
+r_int
+id|nr_batch_requests
+suffix:semicolon
+multiline_comment|/* Number of requests left in the batch */
 DECL|member|aic
 r_struct
 id|as_io_context
