@@ -344,9 +344,9 @@ op_assign
 id|ev4_handle_interrupt
 comma
 dot
-id|cpu
+id|cpu_type
 op_assign
-id|OPROFILE_CPU_AXP_EV4
+l_string|&quot;alpha/ev4&quot;
 comma
 dot
 id|num_counters

@@ -358,7 +358,7 @@ comma
 dot
 id|cpu
 op_assign
-id|OPROFILE_CPU_AXP_EV6
+l_string|&quot;alpha/ev6&quot;
 comma
 dot
 id|num_counters

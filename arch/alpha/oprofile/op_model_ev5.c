@@ -789,7 +789,7 @@ comma
 dot
 id|cpu
 op_assign
-id|OPROFILE_CPU_AXP_EV5
+l_string|&quot;alpha/ev5&quot;
 comma
 dot
 id|num_counters
@@ -832,7 +832,7 @@ comma
 dot
 id|cpu
 op_assign
-id|OPROFILE_CPU_AXP_PCA56
+l_string|&quot;alpha/pca56&quot;
 comma
 dot
 id|num_counters

@@ -169,10 +169,10 @@ id|op_counter_config
 op_star
 )paren
 suffix:semicolon
-DECL|member|cpu
-r_enum
-id|oprofile_cpu
-id|cpu
+DECL|member|cpu_type
+r_char
+op_star
+id|cpu_type
 suffix:semicolon
 DECL|member|num_counters
 r_int
