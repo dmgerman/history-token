@@ -463,7 +463,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * speedstep_detect_chipset - detect the Southbridge which contains SpeedStep logic&n; *&n; *   Detects PIIX4, ICH2-M and ICH3-M so far. The pci_dev points to &n; * the LPC bridge / PM module which contains all power-management &n; * functions. Returns the SPEEDSTEP_CHIPSET_-number for the detected&n; * chipset, or zero on failure.&n; */
+multiline_comment|/**&n; * speedstep_detect_chipset - detect the Southbridge which contains SpeedStep logic&n; *&n; *   Detects ICH2-M, ICH3-M and ICH4-M so far. The pci_dev points to &n; * the LPC bridge / PM module which contains all power-management &n; * functions. Returns the SPEEDSTEP_CHIPSET_-number for the detected&n; * chipset, or zero on failure.&n; */
 DECL|function|speedstep_detect_chipset
 r_static
 r_int
