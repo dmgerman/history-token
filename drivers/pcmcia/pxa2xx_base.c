@@ -426,7 +426,7 @@ id|skt
 comma
 r_int
 r_int
-id|lclk
+id|clk
 )paren
 (brace
 r_struct
@@ -454,7 +454,7 @@ id|sock
 comma
 id|timing.mem
 comma
-id|lclk
+id|clk
 )paren
 suffix:semicolon
 id|pxa2xx_pcmcia_set_mcatt
@@ -464,7 +464,7 @@ id|sock
 comma
 id|timing.attr
 comma
-id|lclk
+id|clk
 )paren
 suffix:semicolon
 id|pxa2xx_pcmcia_set_mcio
@@ -474,7 +474,7 @@ id|sock
 comma
 id|timing.io
 comma
-id|lclk
+id|clk
 )paren
 suffix:semicolon
 r_return
@@ -495,9 +495,9 @@ id|skt
 (brace
 r_int
 r_int
-id|lclk
+id|clk
 op_assign
-id|get_lclk_frequency_10khz
+id|get_memclk_frequency_10khz
 c_func
 (paren
 )paren
@@ -508,7 +508,7 @@ c_func
 (paren
 id|skt
 comma
-id|lclk
+id|clk
 )paren
 suffix:semicolon
 )brace
