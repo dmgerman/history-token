@@ -364,4 +364,15 @@ r_int
 id|x
 )paren
 suffix:semicolon
+r_void
+id|mtrr_wrmsr
+c_func
+(paren
+r_int
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
 eof
