@@ -1025,8 +1025,6 @@ l_int|0x8000
 comma
 )brace
 suffix:semicolon
-DECL|macro|MAX_MII_CNT
-mdefine_line|#define MAX_MII_CNT&t;4
 DECL|struct|rhine_private
 r_struct
 id|rhine_private
@@ -1175,21 +1173,6 @@ comma
 id|rx_thresh
 suffix:semicolon
 multiline_comment|/* MII transceiver section. */
-DECL|member|phys
-r_int
-r_char
-id|phys
-(braket
-id|MAX_MII_CNT
-)braket
-suffix:semicolon
-multiline_comment|/* MII device addresses. */
-DECL|member|mii_cnt
-r_int
-r_int
-id|mii_cnt
-suffix:semicolon
-multiline_comment|/* number of MIIs found, but only the first one is used */
 DECL|member|mii_status
 id|u16
 id|mii_status
@@ -1822,7 +1805,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * Loads bytes 0x00-0x05, 0x6E-0x6F, 0x78-0x7B from EEPROM&n; */
+multiline_comment|/*&n; * Loads bytes 0x00-0x05, 0x6E-0x6F, 0x78-0x7B from EEPROM&n; * (plus 0x6C for Rhine I/II)&n; */
 DECL|function|rhine_reload_eeprom
 r_static
 r_void
@@ -2072,13 +2055,8 @@ id|ioaddr
 suffix:semicolon
 r_int
 id|io_size
-suffix:semicolon
-r_int
-id|phy
 comma
-id|phy_idx
-op_assign
-l_int|0
+id|phy_id
 suffix:semicolon
 r_const
 r_char
@@ -2137,6 +2115,10 @@ id|io_size
 op_assign
 l_int|256
 suffix:semicolon
+id|phy_id
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2190,6 +2172,11 @@ id|name
 op_assign
 l_string|&quot;Rhine III&quot;
 suffix:semicolon
+id|phy_id
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Integrated PHY, phy_id fixed to 1 */
 r_if
 c_cond
 (paren
@@ -2648,6 +2635,23 @@ op_plus
 id|ConfigD
 )paren
 suffix:semicolon
+multiline_comment|/* For Rhine I/II, phy_id is loaded from EEPROM */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|phy_id
+)paren
+id|phy_id
+op_assign
+id|readb
+c_func
+(paren
+id|ioaddr
+op_plus
+l_int|0x6C
+)paren
+suffix:semicolon
 id|dev-&gt;irq
 op_assign
 id|pdev-&gt;irq
@@ -2882,32 +2886,6 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|rp-&gt;phys
-(braket
-l_int|0
-)braket
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Standard for this chip. */
-r_for
-c_loop
-(paren
-id|phy
-op_assign
-l_int|1
-suffix:semicolon
-id|phy
-OL
-l_int|32
-op_logical_and
-id|phy_idx
-OL
-id|MAX_MII_CNT
-suffix:semicolon
-id|phy
-op_increment
-)paren
 (brace
 r_int
 id|mii_status
@@ -2917,7 +2895,7 @@ c_func
 (paren
 id|dev
 comma
-id|phy
+id|phy_id
 comma
 l_int|1
 )paren
@@ -2934,14 +2912,6 @@ op_ne
 l_int|0x0000
 )paren
 (brace
-id|rp-&gt;phys
-(braket
-id|phy_idx
-op_increment
-)braket
-op_assign
-id|phy
-suffix:semicolon
 id|rp-&gt;mii_if.advertising
 op_assign
 id|mdio_read
@@ -2949,7 +2919,7 @@ c_func
 (paren
 id|dev
 comma
-id|phy
+id|phy_id
 comma
 l_int|4
 )paren
@@ -2964,7 +2934,7 @@ l_string|&quot;Link %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|phy
+id|phy_id
 comma
 id|mii_status
 comma
@@ -2975,7 +2945,7 @@ c_func
 (paren
 id|dev
 comma
-id|phy
+id|phy_id
 comma
 l_int|5
 )paren
@@ -3002,20 +2972,11 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 )brace
-id|rp-&gt;mii_cnt
-op_assign
-id|phy_idx
-suffix:semicolon
 id|rp-&gt;mii_if.phy_id
 op_assign
-id|rp-&gt;phys
-(braket
-l_int|0
-)braket
+id|phy_id
 suffix:semicolon
 multiline_comment|/* Allow forcing the media type. */
 r_if
@@ -3075,20 +3036,12 @@ l_string|&quot;half&quot;
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rp-&gt;mii_cnt
-)paren
 id|mdio_write
 c_func
 (paren
 id|dev
 comma
-id|rp-&gt;phys
-(braket
-l_int|0
-)braket
+id|phy_id
 comma
 id|MII_BMCR
 comma
@@ -4417,10 +4370,7 @@ c_cond
 (paren
 id|phy_id
 op_eq
-id|rp-&gt;phys
-(braket
-l_int|0
-)braket
+id|rp-&gt;mii_if.phy_id
 )paren
 (brace
 r_switch
@@ -4689,10 +4639,7 @@ c_func
 (paren
 id|dev
 comma
-id|rp-&gt;phys
-(braket
-l_int|0
-)braket
+id|rp-&gt;mii_if.phy_id
 comma
 id|MII_BMSR
 )paren
@@ -4783,10 +4730,7 @@ c_func
 (paren
 id|dev
 comma
-id|rp-&gt;phys
-(braket
-l_int|0
-)braket
+id|rp-&gt;mii_if.phy_id
 comma
 id|MII_LPA
 )paren
@@ -4861,10 +4805,7 @@ l_string|&quot;full&quot;
 suffix:colon
 l_string|&quot;half&quot;
 comma
-id|rp-&gt;phys
-(braket
-l_int|0
-)braket
+id|rp-&gt;mii_if.phy_id
 comma
 id|mii_lpa
 )paren
@@ -4991,10 +4932,7 @@ c_func
 (paren
 id|dev
 comma
-id|rp-&gt;phys
-(braket
-l_int|0
-)braket
+id|rp-&gt;mii_if.phy_id
 comma
 id|MII_BMSR
 )paren
@@ -5111,10 +5049,7 @@ c_func
 (paren
 id|dev
 comma
-id|rp-&gt;phys
-(braket
-l_int|0
-)braket
+id|rp-&gt;mii_if.phy_id
 comma
 id|MII_BMSR
 )paren
@@ -7104,10 +7039,7 @@ c_func
 (paren
 id|dev
 comma
-id|rp-&gt;phys
-(braket
-l_int|0
-)braket
+id|rp-&gt;mii_if.phy_id
 comma
 id|MII_ADVERTISE
 )paren
@@ -7117,10 +7049,7 @@ c_func
 (paren
 id|dev
 comma
-id|rp-&gt;phys
-(braket
-l_int|0
-)braket
+id|rp-&gt;mii_if.phy_id
 comma
 id|MII_LPA
 )paren
