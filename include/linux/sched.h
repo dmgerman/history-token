@@ -2203,6 +2203,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|idle_task_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|set_user_nice
 c_func
 (paren
