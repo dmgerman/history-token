@@ -916,9 +916,9 @@ op_assign
 id|rol32
 c_func
 (paren
-id|input_rotate
-comma
 id|next_w
+comma
+id|input_rotate
 )paren
 suffix:semicolon
 r_if
