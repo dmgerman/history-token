@@ -36,6 +36,11 @@ suffix:semicolon
 r_int
 id|syscall
 suffix:semicolon
+macro_line|#ifdef UML_CONFIG_DEBUG_SYSCALL
+r_int
+id|index
+suffix:semicolon
+macro_line|#endif
 id|syscall
 op_assign
 id|UPT_SYSCALL_NR
@@ -58,6 +63,16 @@ c_func
 id|sc
 )paren
 suffix:semicolon
+macro_line|#ifdef UML_CONFIG_DEBUG_SYSCALL
+id|index
+op_assign
+id|record_syscall_start
+c_func
+(paren
+id|syscall
+)paren
+suffix:semicolon
+macro_line|#endif
 id|syscall_trace
 c_func
 (paren
@@ -99,6 +114,16 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#ifdef UML_CONFIG_DEBUG_SYSCALL
+id|record_syscall_end
+c_func
+(paren
+id|index
+comma
+id|result
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|do_sigtrap
 r_void

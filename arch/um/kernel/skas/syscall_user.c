@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &quot;kern_util.h&quot;
+macro_line|#include &quot;uml-config.h&quot;
 macro_line|#include &quot;syscall_user.h&quot;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;sysdep/sigcontext.h&quot;
@@ -20,6 +21,23 @@ id|regs
 r_int
 id|result
 suffix:semicolon
+macro_line|#if UML_CONFIG_SYSCALL_DEBUG
+r_int
+id|index
+suffix:semicolon
+id|index
+op_assign
+id|record_syscall_start
+c_func
+(paren
+id|UPT_SYSCALL_NR
+c_func
+(paren
+id|regs
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|syscall_trace
 c_func
 (paren
@@ -52,6 +70,16 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#if UML_CONFIG_SYSCALL_DEBUG
+id|record_syscall_end
+c_func
+(paren
+id|index
+comma
+id|result
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof
