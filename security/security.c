@@ -49,21 +49,10 @@ c_cond
 op_logical_neg
 id|ops
 )paren
-(brace
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;Passed a NULL security_operations &quot;
-l_string|&quot;pointer, %s failed.&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|security_fixup_ops
 (paren
 id|ops
@@ -190,8 +179,9 @@ id|ops
 )paren
 (brace
 id|printk
+c_func
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;%s could not verify &quot;
 l_string|&quot;security_operations structure.&bslash;n&quot;
 comma
@@ -211,21 +201,10 @@ op_ne
 op_amp
 id|dummy_security_ops
 )paren
-(brace
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;There is already a security &quot;
-l_string|&quot;framework initialized, %s failed.&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_return
 op_minus
-id|EINVAL
+id|EAGAIN
 suffix:semicolon
-)brace
 id|security_ops
 op_assign
 id|ops
