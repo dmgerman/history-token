@@ -3583,7 +3583,7 @@ id|RTF_GATEWAY
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;RFC 1970 specifies that redirects should only be&n;&t; *&t;accepted if they come from the nexthop to the target.&n;&t; *&t;Due to the way default routers are chosen, this notion&n;&t; *&t;is a bit fuzzy and one might need to check all default&n;&t; *&t;routers.&n;&t; */
+multiline_comment|/*&n;&t; *&t;RFC 2461 specifies that redirects should only be&n;&t; *&t;accepted if they come from the nexthop to the target.&n;&t; *&t;Due to the way default routers are chosen, this notion&n;&t; *&t;is a bit fuzzy and one might need to check all default&n;&t; *&t;routers.&n;&t; */
 r_if
 c_cond
 (paren

@@ -175,7 +175,7 @@ id|snmp6_ipv6_list
 )braket
 op_assign
 (brace
-multiline_comment|/* ipv6 mib according to draft-ietf-ipngwg-ipv6-mib-04 */
+multiline_comment|/* ipv6 mib according to RFC 2465 */
 DECL|macro|SNMP6_GEN
 mdefine_line|#define SNMP6_GEN(x) { .name = #x , .offset = offsetof(struct ipv6_mib, x) }
 id|SNMP6_GEN
@@ -324,7 +324,7 @@ id|snmp6_icmp6_list
 )braket
 op_assign
 (brace
-multiline_comment|/* icmpv6 mib according to draft-ietf-ipngwg-ipv6-icmp-mib-02&n;&n;   Exceptions:  {In|Out}AdminProhibs are removed, because I see&n;                no good reasons to account them separately&n;&t;&t;of another dest.unreachs.&n;&t;&t;OutErrs is zero identically.&n;&t;&t;OutEchos too.&n;&t;&t;OutRouterAdvertisements too.&n;&t;&t;OutGroupMembQueries too.&n; */
+multiline_comment|/* icmpv6 mib according to RFC 2466&n;&n;   Exceptions:  {In|Out}AdminProhibs are removed, because I see&n;                no good reasons to account them separately&n;&t;&t;of another dest.unreachs.&n;&t;&t;OutErrs is zero identically.&n;&t;&t;OutEchos too.&n;&t;&t;OutRouterAdvertisements too.&n;&t;&t;OutGroupMembQueries too.&n; */
 DECL|macro|SNMP6_GEN
 mdefine_line|#define SNMP6_GEN(x) { .name = #x , .offset = offsetof(struct icmpv6_mib, x) }
 id|SNMP6_GEN

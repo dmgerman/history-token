@@ -5180,7 +5180,7 @@ comma
 l_int|8
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * &lt;draft-ietf-ipngwg-temp-addresses-v2-00.txt&gt;:&n;&t; * check if generated address is not inappropriate&n;&t; *&n;&t; *  - Reserved subnet anycast (RFC 2526)&n;&t; *&t;11111101 11....11 1xxxxxxx&n;&t; *  - ISATAP (draft-ietf-ngtrans-isatap-01.txt) 4.3&n;&t; *&t;00-00-5E-FE-xx-xx-xx-xx&n;&t; *  - value 0&n;&t; *  - XXX: already assigned to an address on the device&n;&t; */
+multiline_comment|/*&n;&t; * &lt;draft-ietf-ipngwg-temp-addresses-v2-00.txt&gt;:&n;&t; * check if generated address is not inappropriate&n;&t; *&n;&t; *  - Reserved subnet anycast (RFC 2526)&n;&t; *&t;11111101 11....11 1xxxxxxx&n;&t; *  - ISATAP (draft-ietf-ngtrans-isatap-13.txt) 5.1&n;&t; *&t;00-00-5E-FE-xx-xx-xx-xx&n;&t; *  - value 0&n;&t; *  - XXX: already assigned to an address on the device&n;&t; */
 r_if
 c_cond
 (paren
