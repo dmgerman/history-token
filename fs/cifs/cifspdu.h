@@ -2919,6 +2919,10 @@ suffix:semicolon
 multiline_comment|/* PathInfo/FileInfo infolevels */
 DECL|macro|SMB_INFO_STANDARD
 mdefine_line|#define SMB_INFO_STANDARD                   1
+DECL|macro|SMB_SET_FILE_EA
+mdefine_line|#define SMB_SET_FILE_EA                     2
+DECL|macro|SMB_QUERY_FILE_EA_SIZE
+mdefine_line|#define SMB_QUERY_FILE_EA_SIZE              2
 DECL|macro|SMB_INFO_QUERY_EAS_FROM_LIST
 mdefine_line|#define SMB_INFO_QUERY_EAS_FROM_LIST        3
 DECL|macro|SMB_INFO_QUERY_ALL_EAS

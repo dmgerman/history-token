@@ -5,6 +5,8 @@ macro_line|#include &quot;cifspdu.h&quot;
 macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
+DECL|macro|MAX_EA_VALUE_SIZE
+mdefine_line|#define MAX_EA_VALUE_SIZE 65535
 DECL|macro|CIFS_XATTR_DOS_ATTRIB
 mdefine_line|#define CIFS_XATTR_DOS_ATTRIB &quot;user.DOSATTRIB&quot;
 DECL|macro|CIFS_XATTR_USER_PREFIX
@@ -61,7 +63,7 @@ op_star
 id|ea_value
 comma
 r_int
-id|buf_size
+id|value_size
 comma
 r_int
 id|flags
@@ -202,7 +204,128 @@ suffix:semicolon
 multiline_comment|/* return dos attributes as pseudo xattr */
 multiline_comment|/* return alt name if available as pseudo attr */
 multiline_comment|/* if proc/fs/cifs/streamstoxattr is set then&n;&t;&t;search server for EAs or streams to &n;&t;&t;returns as xattrs */
-multiline_comment|/*&t;rc = CIFSSMBSetEA(xid,pTcon,full_path,ea_name,ea_value,buf_size,&n;&t;&t;&t;&t;cifs_sb-&gt;local_nls);*/
+r_if
+c_cond
+(paren
+id|value_size
+OG
+id|MAX_EA_VALUE_SIZE
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;size of EA value too large&quot;
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|full_path
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|full_path
+)paren
+suffix:semicolon
+)brace
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ea_name
+op_eq
+l_int|NULL
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Null xattr names not supported&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|ea_name
+comma
+id|CIFS_XATTR_USER_PREFIX
+comma
+l_int|5
+)paren
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;illegal xattr namespace %s (only user namespace supported)&quot;
+comma
+id|ea_name
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* BB what if no namespace prefix? */
+multiline_comment|/* Should we just pass them to server, except for &n;&t;&t;  system and perhaps security prefixes? */
+)brace
+r_else
+(brace
+id|ea_name
+op_add_assign
+l_int|5
+suffix:semicolon
+multiline_comment|/* skip past user. prefix */
+id|rc
+op_assign
+id|CIFSSMBSetEA
+c_func
+(paren
+id|xid
+comma
+id|pTcon
+comma
+id|full_path
+comma
+id|ea_name
+comma
+id|ea_value
+comma
+(paren
+id|__u16
+)paren
+id|value_size
+comma
+id|cifs_sb-&gt;local_nls
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -385,7 +508,7 @@ multiline_comment|/* return alt name if available as pseudo attr */
 r_if
 c_cond
 (paren
-id|memcmp
+id|strncmp
 c_func
 (paren
 id|ea_name
