@@ -264,6 +264,7 @@ id|signal
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Both here and in set/get_signal we don&squot;t touch SIGPROF, because we must not&n; * disable profiling; it&squot;s safe because the profiling code does not interact&n; * with the kernel code at all.*/
 DECL|function|change_signals
 r_static
 r_void
@@ -309,15 +310,6 @@ op_amp
 id|mask
 comma
 id|SIGIO
-)paren
-suffix:semicolon
-id|sigaddset
-c_func
-(paren
-op_amp
-id|mask
-comma
-id|SIGPROF
 )paren
 suffix:semicolon
 r_if
