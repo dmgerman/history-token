@@ -462,6 +462,12 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_SLEEP*/
+r_extern
+id|u8
+id|x86_acpiid_to_apicid
+(braket
+)braket
+suffix:semicolon
 macro_line|#endif /*__KERNEL__*/
 macro_line|#endif /*_ASM_ACPI_H*/
 eof

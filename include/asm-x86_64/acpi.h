@@ -412,6 +412,12 @@ DECL|macro|BROKEN_ACPI_Sx
 mdefine_line|#define BROKEN_ACPI_Sx&t;&t;0x0001
 DECL|macro|BROKEN_INIT_AFTER_S1
 mdefine_line|#define BROKEN_INIT_AFTER_S1&t;0x0002
+r_extern
+id|u8
+id|x86_acpiid_to_apicid
+(braket
+)braket
+suffix:semicolon
 macro_line|#endif /*__KERNEL__*/
 macro_line|#endif /*_ASM_ACPI_H*/
 eof
