@@ -63,6 +63,11 @@ id|sk_buff
 op_star
 op_star
 id|pskb
+comma
+r_int
+r_int
+op_star
+id|nhoffp
 )paren
 suffix:semicolon
 DECL|variable|icmpv6_protocol
@@ -76,6 +81,11 @@ dot
 id|handler
 op_assign
 id|icmpv6_rcv
+comma
+dot
+id|flags
+op_assign
+id|INET6_PROTO_FINAL
 comma
 )brace
 suffix:semicolon
@@ -1664,6 +1674,11 @@ id|sk_buff
 op_star
 op_star
 id|pskb
+comma
+r_int
+r_int
+op_star
+id|nhoffp
 )paren
 (brace
 r_struct

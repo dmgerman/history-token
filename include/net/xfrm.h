@@ -3536,6 +3536,11 @@ id|sk_buff
 op_star
 op_star
 id|pskb
+comma
+r_int
+r_int
+op_star
+id|nhoffp
 )paren
 suffix:semicolon
 r_extern
