@@ -3968,7 +3968,7 @@ id|ablock
 )paren
 (brace
 singleline_comment|// TODO: block is above allocated_size, need to
-singleline_comment|// allocate it. Best done in one go to accomodate not
+singleline_comment|// allocate it. Best done in one go to accommodate not
 singleline_comment|// only block but all above blocks up to and including:
 singleline_comment|// ((page-&gt;index &lt;&lt; PAGE_CACHE_SHIFT) + to + blocksize
 singleline_comment|// - 1) &gt;&gt; blobksize_bits. Obviously will need to round

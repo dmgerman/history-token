@@ -4162,7 +4162,7 @@ id|envctrl_dev.minor
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Note above traversal routine post-incremented &squot;i&squot; to accomodate &n;&t; * a next child device, so we decrement before reverse-traversal of&n;&t; * child devices.&n;&t; */
+multiline_comment|/* Note above traversal routine post-incremented &squot;i&squot; to accommodate &n;&t; * a next child device, so we decrement before reverse-traversal of&n;&t; * child devices.&n;&t; */
 id|printk
 c_func
 (paren

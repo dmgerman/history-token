@@ -25513,7 +25513,7 @@ id|queue
 op_sub_assign
 id|fcb-&gt;memory_alloc
 suffix:semicolon
-multiline_comment|/* if all transmit buffer are cleared&n;                 * need to set the tx_buff_curr[] to tx_buff_head[]&n;                 * otherwise, tx buffer will be segregate and cannot&n;                 * accomodate and buffer greater than (curr - head) and&n;                 * (end - curr) since we do not allow wrap around allocation.&n;                 */
+multiline_comment|/* if all transmit buffer are cleared&n;                 * need to set the tx_buff_curr[] to tx_buff_head[]&n;                 * otherwise, tx buffer will be segregate and cannot&n;                 * accommodate and buffer greater than (curr - head) and&n;                 * (end - curr) since we do not allow wrap around allocation.&n;                 */
 r_if
 c_cond
 (paren

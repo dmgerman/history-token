@@ -15475,7 +15475,7 @@ c_cond
 id|info-&gt;tx_holding_count
 )paren
 (brace
-multiline_comment|/* determine if we have enough tx dma buffers&n;&t;&t; * to accomodate the next tx frame&n;&t;&t; */
+multiline_comment|/* determine if we have enough tx dma buffers&n;&t;&t; * to accommodate the next tx frame&n;&t;&t; */
 r_struct
 id|tx_holding_buffer
 op_star

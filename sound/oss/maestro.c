@@ -6401,7 +6401,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* right channel records its split half.&n;&t;&t;&t;&t;*2 accomodates for rampant shifting earlier */
+multiline_comment|/* right channel records its split half.&n;&t;&t;&t;&t;*2 accommodates for rampant shifting earlier */
 id|pa
 op_assign
 id|virt_to_bus
