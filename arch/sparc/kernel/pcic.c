@@ -20,19 +20,6 @@ macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/pcic.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|variable|pcibios_fixups
-r_struct
-id|pci_fixup
-id|pcibios_fixups
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_int|0
-)brace
-)brace
-suffix:semicolon
 r_int
 r_int
 id|pcic_pin_to_irq
