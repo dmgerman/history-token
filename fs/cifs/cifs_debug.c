@@ -359,7 +359,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n%d) Name: %s  Domain: %s Mounts: %d ServerOS: %s  &bslash;n&bslash;tServerNOS: %s&bslash;tCapabilities: 0x%x&bslash;n&bslash;tSMB session status: %d&bslash;tTCP session status: %d&quot;
+l_string|&quot;&bslash;n%d) Name: %s  Domain: %s Mounts: %d ServerOS: %s  &bslash;n&bslash;tServerNOS: %s&bslash;tCapabilities: 0x%x&bslash;n&bslash;tSMB session status: %d&bslash;tTCP status: %d&quot;
 comma
 id|i
 comma
@@ -402,7 +402,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n&bslash;tLocal Users To Same Server: %d SecMode: 0x%x Req Active: %d&quot;
+l_string|&quot;&bslash;n&bslash;tLocal Users To Server: %d SecMode: 0x%x Req Active: %d&quot;
 comma
 id|atomic_read
 c_func
@@ -499,7 +499,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n%d) %s Uses: %d on FS: %s with characteristics: 0x%x Attributes: 0x%x&bslash;nPathComponentMax: %d Status: %d&quot;
+l_string|&quot;&bslash;n%d) %s Uses: %d Type: %s Characteristics: 0x%x Attributes: 0x%x&bslash;nPathComponentMax: %d Status: %d&quot;
 comma
 id|i
 comma
@@ -606,7 +606,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;nTotal SMBs: %d Reads: %d BytesRead %lld Writes: %d BytesWritten %lld&quot;
+l_string|&quot;&bslash;nSMBs: %d Oplock Breaks: %d&quot;
 comma
 id|atomic_read
 c_func
@@ -614,6 +614,27 @@ c_func
 op_amp
 id|tcon-&gt;num_smbs_sent
 )paren
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_oplock_brks
+)paren
+)paren
+suffix:semicolon
+id|buf
+op_add_assign
+id|length
+suffix:semicolon
+id|length
+op_assign
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;&bslash;nReads: %d Bytes %lld&quot;
 comma
 id|atomic_read
 c_func
@@ -629,6 +650,20 @@ r_int
 (paren
 id|tcon-&gt;bytes_read
 )paren
+)paren
+suffix:semicolon
+id|buf
+op_add_assign
+id|length
+suffix:semicolon
+id|length
+op_assign
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;&bslash;nWrites: %d Bytes: %lld&quot;
 comma
 id|atomic_read
 c_func
@@ -643,6 +678,48 @@ r_int
 )paren
 (paren
 id|tcon-&gt;bytes_written
+)paren
+)paren
+suffix:semicolon
+id|buf
+op_add_assign
+id|length
+suffix:semicolon
+id|length
+op_assign
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;&bslash;nOpens: %d Deletes: %d&bslash;nMkdirs: %d Rmdirs: %d&quot;
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_opens
+)paren
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_deletes
+)paren
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_mkdirs
+)paren
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_rmdirs
 )paren
 )paren
 suffix:semicolon

@@ -1646,6 +1646,15 @@ op_eq
 id|buf-&gt;Tid
 )paren
 (brace
+macro_line|#ifdef CONFIG_CIFS_STATS
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_oplock_brks
+)paren
+suffix:semicolon
+macro_line|#endif
 (def_block
 id|list_for_each
 c_func
