@@ -662,6 +662,10 @@ id|buf
 op_add_assign
 id|bytes
 suffix:semicolon
+id|addr
+op_add_assign
+id|bytes
+suffix:semicolon
 )brace
 id|up_read
 c_func

@@ -128,6 +128,10 @@ id|SVWRKS_LE
 comma
 DECL|enumerator|SVWRKS_GENERIC
 id|SVWRKS_GENERIC
+comma
+DECL|enumerator|HP_ZX1
+id|HP_ZX1
+comma
 )brace
 suffix:semicolon
 DECL|struct|_agp_version

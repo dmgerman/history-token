@@ -8510,6 +8510,8 @@ op_lshift
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
+id|totalram_pages
+op_assign
 id|num_physpages
 op_assign
 id|free_all_bootmem
@@ -8727,6 +8729,9 @@ suffix:semicolon
 id|num_physpages
 op_increment
 suffix:semicolon
+id|totalram_pages
+op_increment
+suffix:semicolon
 )brace
 macro_line|#endif
 id|printk
@@ -8912,6 +8917,9 @@ suffix:semicolon
 id|num_physpages
 op_increment
 suffix:semicolon
+id|totalram_pages
+op_increment
+suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
@@ -8994,6 +9002,9 @@ id|p
 )paren
 suffix:semicolon
 id|num_physpages
+op_increment
+suffix:semicolon
+id|totalram_pages
 op_increment
 suffix:semicolon
 )brace

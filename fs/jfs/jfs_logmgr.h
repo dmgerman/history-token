@@ -863,6 +863,16 @@ id|log
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|lmLogWait
+c_func
+(paren
+id|log_t
+op_star
+id|log
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|lmLogClose
 c_func

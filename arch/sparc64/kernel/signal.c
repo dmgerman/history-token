@@ -2780,6 +2780,9 @@ id|__siginfo_fpu_t
 op_star
 id|fpu_save
 suffix:semicolon
+id|mm_segment_t
+id|old_fs
+suffix:semicolon
 id|sigset_t
 id|set
 suffix:semicolon
@@ -3011,6 +3014,19 @@ op_assign
 id|tnpc
 suffix:semicolon
 multiline_comment|/* It is more difficult to avoid calling this function than to&n;&t;   call it and ignore errors.  */
+id|old_fs
+op_assign
+id|get_fs
+c_func
+(paren
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|KERNEL_DS
+)paren
+suffix:semicolon
 id|do_sigaltstack
 c_func
 (paren
@@ -3024,6 +3040,12 @@ r_int
 r_int
 )paren
 id|sf
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|old_fs
 )paren
 suffix:semicolon
 id|sigdelsetmask

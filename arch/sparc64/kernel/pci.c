@@ -665,6 +665,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|function|pcibios_init
+r_static
 r_void
 id|__init
 id|pcibios_init
@@ -728,6 +729,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|pcibios_init
+id|subsys_initcall
+c_func
+(paren
+id|pcibios_init
+)paren
+suffix:semicolon
 DECL|variable|pcibios_fixups
 r_struct
 id|pci_fixup

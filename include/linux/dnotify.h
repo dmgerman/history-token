@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Directory notification for Linux&n; *&n; * Copyright 2000 (C) Stephen Rothwell&n; */
+multiline_comment|/*&n; * Directory notification for Linux&n; *&n; * Copyright (C) 2000,2002 Stephen Rothwell&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 DECL|struct|dnotify_struct
 r_struct
@@ -9,10 +9,6 @@ r_struct
 id|dnotify_struct
 op_star
 id|dn_next
-suffix:semicolon
-DECL|member|dn_magic
-r_int
-id|dn_magic
 suffix:semicolon
 DECL|member|dn_mask
 r_int
@@ -36,8 +32,6 @@ id|dn_owner
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|DNOTIFY_MAGIC
-mdefine_line|#define DNOTIFY_MAGIC&t;0x444E4F54
 r_extern
 r_void
 id|__inode_dir_notify
@@ -49,6 +43,20 @@ op_star
 comma
 r_int
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dnotify_flush
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|filp
+comma
+id|fl_owner_t
+id|id
 )paren
 suffix:semicolon
 r_extern

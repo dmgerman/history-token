@@ -29,10 +29,10 @@ DECL|macro|TI_FLAG_BYTE_WSAVED
 mdefine_line|#define TI_FLAG_BYTE_WSAVED&t;&t;5
 DECL|macro|TI_FLAG_WSAVED_SHIFT
 mdefine_line|#define TI_FLAG_WSAVED_SHIFT&t;&t;16
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
 r_struct
 id|task_struct
 suffix:semicolon

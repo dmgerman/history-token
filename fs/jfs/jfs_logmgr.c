@@ -3931,11 +3931,10 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:&t;lmLogShutdown()&n; *&n; * FUNCTION:&t;log shutdown at last LogClose().&n; *&n; *&t;&t;write log syncpt record.&n; *&t;&t;update super block to set redone flag to 0.&n; *&n; * PARAMETER:&t;log&t;- log inode&n; *&n; * RETURN:&t;0&t;- success&n; *&t;&t;&t;&n; * serialization: single last close thread&n; */
-DECL|function|lmLogShutdown
-r_static
-r_int
-id|lmLogShutdown
+multiline_comment|/*&n; * NAME:&t;lmLogWait()&n; *&n; * FUNCTION:&t;wait for all outstanding log records to be written to disk&n; */
+DECL|function|lmLogWait
+r_void
+id|lmLogWait
 c_func
 (paren
 id|log_t
@@ -3944,29 +3943,7 @@ id|log
 )paren
 (brace
 r_int
-id|rc
-suffix:semicolon
-id|lrd_t
-id|lrd
-suffix:semicolon
-r_int
-id|lsn
-suffix:semicolon
-id|logsuper_t
-op_star
-id|logsuper
-suffix:semicolon
-id|lbuf_t
-op_star
-id|bpsuper
-suffix:semicolon
-id|lbuf_t
-op_star
-id|bp
-suffix:semicolon
-id|logpage_t
-op_star
-id|lp
+id|i
 suffix:semicolon
 id|jFYI
 c_func
@@ -3974,7 +3951,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;lmLogShutdown: log:0x%p&bslash;n&quot;
+l_string|&quot;lmLogWait: log:0x%p&bslash;n&quot;
 comma
 id|log
 )paren
@@ -3995,9 +3972,6 @@ id|log-&gt;synclist
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * If there was very recent activity, we may need to wait&n;&t;&t; * for the lazycommit thread to catch up&n;&t;&t; */
-r_int
-id|i
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4061,6 +4035,62 @@ c_func
 op_amp
 id|log-&gt;synclist
 )paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * NAME:&t;lmLogShutdown()&n; *&n; * FUNCTION:&t;log shutdown at last LogClose().&n; *&n; *&t;&t;write log syncpt record.&n; *&t;&t;update super block to set redone flag to 0.&n; *&n; * PARAMETER:&t;log&t;- log inode&n; *&n; * RETURN:&t;0&t;- success&n; *&t;&t;&t;&n; * serialization: single last close thread&n; */
+DECL|function|lmLogShutdown
+r_static
+r_int
+id|lmLogShutdown
+c_func
+(paren
+id|log_t
+op_star
+id|log
+)paren
+(brace
+r_int
+id|rc
+suffix:semicolon
+id|lrd_t
+id|lrd
+suffix:semicolon
+r_int
+id|lsn
+suffix:semicolon
+id|logsuper_t
+op_star
+id|logsuper
+suffix:semicolon
+id|lbuf_t
+op_star
+id|bpsuper
+suffix:semicolon
+id|lbuf_t
+op_star
+id|bp
+suffix:semicolon
+id|logpage_t
+op_star
+id|lp
+suffix:semicolon
+id|jFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;lmLogShutdown: log:0x%p&bslash;n&quot;
+comma
+id|log
+)paren
+)paren
+suffix:semicolon
+id|lmLogWait
+c_func
+(paren
+id|log
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We need to make sure all of the &quot;written&quot; metapages&n;&t; * actually make it to disk&n;&t; */

@@ -928,7 +928,7 @@ id|buffer
 op_plus
 id|len
 comma
-l_string|&quot;%08x  %08x %08x %08x %08x %08x %08x %08x  %08x %08x %08x&bslash;n&quot;
+l_string|&quot;%08x  %08x %08x %08x %08x %08x %08x %08x  %08x %08x %08x %08x %08x %08x %08x &bslash;n&quot;
 comma
 id|dst_entries
 comma
@@ -1001,6 +1001,34 @@ id|i
 )braket
 dot
 id|out_slow_mc
+comma
+id|rt_cache_stat
+(braket
+id|i
+)braket
+dot
+id|gc_total
+comma
+id|rt_cache_stat
+(braket
+id|i
+)braket
+dot
+id|gc_ignored
+comma
+id|rt_cache_stat
+(braket
+id|i
+)braket
+dot
+id|gc_goal_miss
+comma
+id|rt_cache_stat
+(braket
+id|i
+)braket
+dot
+id|gc_dst_overflow
 )paren
 suffix:semicolon
 )brace
@@ -1833,6 +1861,17 @@ r_int
 id|goal
 suffix:semicolon
 multiline_comment|/*&n;&t; * Garbage collection is pretty expensive,&n;&t; * do not make it too frequently.&n;&t; */
+id|rt_cache_stat
+(braket
+id|smp_processor_id
+c_func
+(paren
+)paren
+)braket
+dot
+id|gc_total
+op_increment
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1851,9 +1890,22 @@ id|ipv4_dst_ops.entries
 OL
 id|ip_rt_max_size
 )paren
+(brace
+id|rt_cache_stat
+(braket
+id|smp_processor_id
+c_func
+(paren
+)paren
+)braket
+dot
+id|gc_ignored
+op_increment
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 multiline_comment|/* Calculate number of entries, which we want to expire now. */
 id|goal
 op_assign
@@ -2154,6 +2206,17 @@ r_goto
 id|work_done
 suffix:semicolon
 multiline_comment|/* Goal is not achieved. We stop process if:&n;&n;&t;&t;   - if expire reduced to zero. Otherwise, expire is halfed.&n;&t;&t;   - if table is not full.&n;&t;&t;   - if we are called from interrupt.&n;&t;&t;   - jiffies check is just fallback/debug loop breaker.&n;&t;&t;     We will not spin here for long time in any case.&n;&t;&t; */
+id|rt_cache_stat
+(braket
+id|smp_processor_id
+c_func
+(paren
+)paren
+)braket
+dot
+id|gc_goal_miss
+op_increment
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2250,6 +2313,17 @@ c_func
 id|KERN_WARNING
 l_string|&quot;dst cache overflow&bslash;n&quot;
 )paren
+suffix:semicolon
+id|rt_cache_stat
+(braket
+id|smp_processor_id
+c_func
+(paren
+)paren
+)braket
+dot
+id|gc_dst_overflow
+op_increment
 suffix:semicolon
 r_return
 l_int|1
