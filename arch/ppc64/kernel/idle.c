@@ -416,4 +416,18 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PPC_ISERIES */
+DECL|function|default_idle
+r_void
+id|default_idle
+c_func
+(paren
+r_void
+)paren
+(brace
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 eof
