@@ -55,6 +55,13 @@ c_func
 id|page
 )paren
 )paren
+op_logical_and
+op_logical_neg
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
 )paren
 id|BUG
 c_func

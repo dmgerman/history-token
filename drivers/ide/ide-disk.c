@@ -1208,7 +1208,7 @@ suffix:semicolon
 id|bio_kunmap_irq
 c_func
 (paren
-id|buffer
+id|buf
 comma
 op_amp
 id|flags

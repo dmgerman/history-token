@@ -76,6 +76,11 @@ id|read_pages
 c_func
 (paren
 r_struct
+id|file
+op_star
+id|file
+comma
+r_struct
 id|address_space
 op_star
 id|mapping
@@ -167,7 +172,7 @@ op_member_access_from_pointer
 id|readpage
 c_func
 (paren
-l_int|NULL
+id|file
 comma
 id|page
 )paren
@@ -380,6 +385,8 @@ multiline_comment|/*&n;&t; * Now start the IO.  We ignore I/O errors - if the pa
 id|read_pages
 c_func
 (paren
+id|file
+comma
 id|mapping
 comma
 op_amp

@@ -1,4 +1,4 @@
-multiline_comment|/**** vi:set ts=8 sts=8 sw=8:************************************************&n; *&n; * linux/drivers/ide/cy82c693.c&t;&t;Version 0.34&t;Dec. 13, 1999&n; *&n; *  Copyright (C) 1998-2000 Andreas S. Krebs (akrebs@altavista.net), Maintainer&n; *  Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;, Integrater&n; *&n; * CYPRESS CY82C693 chipset IDE controller&n; *&n; * The CY82C693 chipset is used on Digital&squot;s PC-Alpha 164SX boards.&n; * Writting the driver was quite simple, since most of the job is&n; * done by the generic pci-ide support.&n; * The hard part was finding the CY82C693&squot;s datasheet on Cypress&squot;s&n; * web page :-(. But Altavista solved this problem :-).&n; *&n; *&n; * Notes:&n; * - I recently got a 16.8G IBM DTTA, so I was able to test it with&n; *   a large and fast disk - the results look great, so I&squot;d say the&n; *   driver is working fine :-)&n; *   hdparm -t reports 8.17 MB/sec at about 6% CPU usage for the DTTA&n; * - this is my first linux driver, so there&squot;s probably a lot  of room&n; *   for optimizations and bug fixing, so feel free to do it.&n; * - use idebus=xx parameter to set PCI bus speed - needed to calc&n; *   timings for PIO modes (default will be 40)&n; * - if using PIO mode it&squot;s a good idea to set the PIO mode and&n; *   32-bit I/O support (if possible), e.g. hdparm -p2 -c1 /dev/hda&n; * - I had some problems with my IBM DHEA with PIO modes &lt; 2&n; *   (lost interrupts) ?????&n; * - first tests with DMA look okay, they seem to work, but there is a&n; *   problem with sound - the BusMaster IDE TimeOut should fixed this&n; *&n; *&n; * History:&n; * AMH@1999-08-24: v0.34 init_cy82c693_chip moved to pci_init_cy82c693&n; * ASK@1999-01-23: v0.33 made a few minor code clean ups&n; *                       removed DMA clock speed setting by default&n; *                       added boot message&n; * ASK@1998-11-01: v0.32 added support to set BusMaster IDE TimeOut&n; *                       added support to set DMA Controller Clock Speed&n; * ASK@1998-10-31: v0.31 fixed problem with setting to high DMA modes on some drive&n; * ASK@1998-10-29: v0.3 added support to set DMA modes&n; * ASK@1998-10-28: v0.2 added support to set PIO modes&n; * ASK@1998-10-27: v0.1 first version - chipset detection&n; *&n; */
+multiline_comment|/**** vi:set ts=8 sts=8 sw=8:************************************************&n; *&n; * linux/drivers/ide/cy82c693.c&t;&t;Version 0.34&t;Dec. 13, 1999&n; *&n; *  Copyright (C) 1998-2000 Andreas S. Krebs (akrebs@altavista.net), Maintainer&n; *  Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;, Integrater&n; *&n; * CYPRESS CY82C693 chipset IDE controller&n; *&n; * The CY82C693 chipset is used on Digital&squot;s PC-Alpha 164SX boards.&n; * Writting the driver was quite simple, since most of the job is&n; * done by the generic pci-ide support.&n; * The hard part was finding the CY82C693&squot;s datasheet on Cypress&squot;s&n; * web page :-(. But Altavista solved this problem :-).&n; *&n; *&n; * Notes:&n; * - I recently got a 16.8G IBM DTTA, so I was able to test it with&n; *   a large and fast disk - the results look great, so I&squot;d say the&n; *   driver is working fine :-)&n; *   hdparm -t reports 8.17 MB/sec at about 6% CPU usage for the DTTA&n; * - this is my first linux driver, so there&squot;s probably a lot  of room&n; *   for optimizations and bug fixing, so feel free to do it.&n; * - I had some problems with my IBM DHEA with PIO modes &lt; 2&n; *   (lost interrupts) ?????&n; *   FIXME: probably because we set wrong timings for 8bit  --bkz&n; * - first tests with DMA look okay, they seem to work, but there is a&n; *   problem with sound - the BusMaster IDE TimeOut should fixed this&n; *&n; *&n; * History:&n; * AMH@1999-08-24: v0.34 init_cy82c693_chip moved to pci_init_cy82c693&n; * ASK@1999-01-23: v0.33 made a few minor code clean ups&n; *                       removed DMA clock speed setting by default&n; *                       added boot message&n; * ASK@1998-11-01: v0.32 added support to set BusMaster IDE TimeOut&n; *                       added support to set DMA Controller Clock Speed&n; * ASK@1998-10-31: v0.31 fixed problem with setting to high DMA modes on some drive&n; * ASK@1998-10-29: v0.3 added support to set DMA modes&n; * ASK@1998-10-28: v0.2 added support to set PIO modes&n; * ASK@1998-10-27: v0.1 first version - chipset detection&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -28,6 +28,8 @@ DECL|macro|CY82_IDE_CMDREG
 mdefine_line|#define CY82_IDE_CMDREG&t;&t;0x04
 DECL|macro|CY82_IDE_ADDRSETUP
 mdefine_line|#define CY82_IDE_ADDRSETUP&t;0x48
+DECL|macro|CYPRESS_TIMINGS
+mdefine_line|#define CYPRESS_TIMINGS&t;&t;0x4C
 DECL|macro|CY82_IDE_MASTER_IOR
 mdefine_line|#define CY82_IDE_MASTER_IOR&t;0x4C
 DECL|macro|CY82_IDE_MASTER_IOW
@@ -60,32 +62,33 @@ DECL|macro|CY82C963_MIN_BUS_SPEED
 mdefine_line|#define CY82C963_MIN_BUS_SPEED&t;25
 DECL|macro|CY82C963_MAX_BUS_SPEED
 mdefine_line|#define CY82C963_MAX_BUS_SPEED&t;33
-multiline_comment|/* the struct for the PIO mode timings */
+multiline_comment|/* the struct for the PIO mode timings (in clocks) */
 DECL|struct|pio_clocks_s
 r_typedef
 r_struct
 id|pio_clocks_s
 (brace
 DECL|member|address_time
-id|byte
+id|u8
 id|address_time
 suffix:semicolon
-multiline_comment|/* Address setup (clocks) */
+multiline_comment|/* Address setup */
+multiline_comment|/* 0xF0=Active/data, 0x0F=Recovery */
 DECL|member|time_16r
-id|byte
+id|u8
 id|time_16r
 suffix:semicolon
-multiline_comment|/* clocks for 16bit IOR (0xF0=Active/data, 0x0F=Recovery) */
+multiline_comment|/* 16bit IOR */
 DECL|member|time_16w
-id|byte
+id|u8
 id|time_16w
 suffix:semicolon
-multiline_comment|/* clocks for 16bit IOW (0xF0=Active/data, 0x0F=Recovery) */
+multiline_comment|/* 16bit IOW */
 DECL|member|time_8
-id|byte
+id|u8
 id|time_8
 suffix:semicolon
-multiline_comment|/* clocks for 8bit (0xF0=Active/data, 0x0F=Recovery) */
+multiline_comment|/* 8bit */
 DECL|typedef|pio_clocks_t
 )brace
 id|pio_clocks_t
@@ -93,8 +96,9 @@ suffix:semicolon
 multiline_comment|/*&n; * calc clocks using bus_speed&n; * returns (rounded up) time in bus clocks for time in ns&n; */
 DECL|function|calc_clk
 r_static
-r_int
+id|u8
 id|calc_clk
+c_func
 (paren
 r_int
 id|time
@@ -143,16 +147,21 @@ op_assign
 l_int|0x0F
 suffix:semicolon
 r_return
+(paren
+id|u8
+)paren
 id|clocks
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * compute the values for the clock registers for PIO&n; * mode and pci_clk [MHz] speed&n; *&n; * NOTE: for mode 0,1 and 2 drives 8-bit IDE command control registers are used&n; *       for mode 3 and 4 drives 8 and 16-bit timings are the same&n; *&n; */
+multiline_comment|/* FIXME: use generic ata-timings library  --bkz */
 DECL|function|compute_clocks
 r_static
 r_void
 id|compute_clocks
+c_func
 (paren
-id|byte
+id|u8
 id|pio
 comma
 id|pio_clocks_t
@@ -180,7 +189,7 @@ op_plus
 id|pio
 )paren
 suffix:semicolon
-multiline_comment|/* we don&squot;t check against CY82C693&squot;s min and max speed,&n;&t; * so you can play with the idebus=xx parameter&n;&t; */
+multiline_comment|/* we don&squot;t check against CY82C693&squot;s min and max speed,&n;&t; * so you can play with the idebus=xx parameter&n;&t; * FIXME: warn about going out of specification  --bkz&n;&t; */
 r_if
 c_cond
 (paren
@@ -192,12 +201,9 @@ id|pio
 op_assign
 id|CY82C693_MAX_PIO
 suffix:semicolon
-multiline_comment|/* let&squot;s calc the address setup time clocks */
+multiline_comment|/* address setup */
 id|p_pclk-&gt;address_time
 op_assign
-(paren
-id|byte
-)paren
 id|calc_clk
 c_func
 (paren
@@ -206,7 +212,7 @@ comma
 id|system_bus_speed
 )paren
 suffix:semicolon
-multiline_comment|/* let&squot;s calc the active and recovery time clocks */
+multiline_comment|/* active */
 id|clk1
 op_assign
 id|calc_clk
@@ -217,21 +223,18 @@ comma
 id|system_bus_speed
 )paren
 suffix:semicolon
-multiline_comment|/* calc recovery timing */
-id|clk2
-op_assign
-id|t-&gt;cycle
-op_minus
-id|t-&gt;active
-op_minus
-id|t-&gt;setup
-suffix:semicolon
+multiline_comment|/* FIXME: check why not t-&gt;cycle - t-&gt;active ?  --bkz */
+multiline_comment|/* recovery */
 id|clk2
 op_assign
 id|calc_clk
 c_func
 (paren
-id|clk2
+id|t-&gt;cycle
+op_minus
+id|t-&gt;active
+op_minus
+id|t-&gt;setup
 comma
 id|system_bus_speed
 )paren
@@ -248,26 +251,16 @@ id|clk2
 suffix:semicolon
 multiline_comment|/* combine active and recovery clocks */
 multiline_comment|/* note: we use the same values for 16bit IOR and IOW&n;         *&t;those are all the same, since I don&squot;t have other&n;&t; *&t;timings than those from ata-timing.h&n;&t; */
-id|p_pclk-&gt;time_16r
-op_assign
-(paren
-id|byte
-)paren
-id|clk1
-suffix:semicolon
 id|p_pclk-&gt;time_16w
 op_assign
-(paren
-id|byte
-)paren
+id|p_pclk-&gt;time_16r
+op_assign
 id|clk1
 suffix:semicolon
+multiline_comment|/* FIXME: ugh...  --bkz */
 multiline_comment|/* what are good values for 8bit ?? */
 id|p_pclk-&gt;time_8
 op_assign
-(paren
-id|byte
-)paren
 id|clk1
 suffix:semicolon
 )brace
@@ -638,6 +631,14 @@ r_int
 r_int
 id|addrCtrl
 suffix:semicolon
+id|u8
+id|ior
+comma
+id|iow
+comma
+id|bit8
+suffix:semicolon
+multiline_comment|/* FIXME: probaly broken  --bkz */
 multiline_comment|/* select primary or secondary channel */
 r_if
 c_cond
@@ -680,8 +681,6 @@ r_return
 suffix:semicolon
 )brace
 )brace
-macro_line|#if CY82C693_DEBUG_LOGS
-multiline_comment|/* for debug let&squot;s show the register values */
 r_if
 c_cond
 (paren
@@ -690,60 +689,37 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * get master drive registers&n;&t;&t; * address setup control register&n;&t;&t; * is 32 bit !!!&n;&t;&t; */
-id|pci_read_config_dword
-c_func
-(paren
-id|dev
-comma
-id|CY82_IDE_ADDRSETUP
-comma
-op_amp
-id|addrCtrl
-)paren
-suffix:semicolon
-id|addrCtrl
-op_and_assign
-l_int|0x0F
-suffix:semicolon
-multiline_comment|/* now let&squot;s get the remaining registers */
-id|pci_read_config_byte
-c_func
-(paren
-id|dev
-comma
+id|ior
+op_assign
 id|CY82_IDE_MASTER_IOR
-comma
-op_amp
-id|pclk.time_16r
-)paren
 suffix:semicolon
-id|pci_read_config_byte
-c_func
-(paren
-id|dev
-comma
+id|iow
+op_assign
 id|CY82_IDE_MASTER_IOW
-comma
-op_amp
-id|pclk.time_16w
-)paren
 suffix:semicolon
-id|pci_read_config_byte
-c_func
-(paren
-id|dev
-comma
+id|bit8
+op_assign
 id|CY82_IDE_MASTER_8BIT
-comma
-op_amp
-id|pclk.time_8
-)paren
 suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * set slave drive registers&n;&t;&t; * address setup control register&n;&t;&t; * is 32 bit !!!&n;&t;&t; */
+id|ior
+op_assign
+id|CY82_IDE_SLAVE_IOR
+suffix:semicolon
+id|iow
+op_assign
+id|CY82_IDE_SLAVE_IOW
+suffix:semicolon
+id|bit8
+op_assign
+id|CY82_IDE_SLAVE_8BIT
+suffix:semicolon
+)brace
+macro_line|#if CY82C693_DEBUG_LOGS
+multiline_comment|/* for debug let&squot;s show the register values */
+multiline_comment|/*&n;&t; * get address setup control register&n;&t; * mine master or slave data&n;&t; */
 id|pci_read_config_dword
 c_func
 (paren
@@ -755,6 +731,19 @@ op_amp
 id|addrCtrl
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|drive-&gt;select.b.unit
+op_eq
+l_int|0
+)paren
+id|addrCtrl
+op_and_assign
+l_int|0x0F
+suffix:semicolon
+r_else
+(brace
 id|addrCtrl
 op_and_assign
 l_int|0xF0
@@ -763,13 +752,14 @@ id|addrCtrl
 op_rshift_assign
 l_int|4
 suffix:semicolon
+)brace
 multiline_comment|/* now let&squot;s get the remaining registers */
 id|pci_read_config_byte
 c_func
 (paren
 id|dev
 comma
-id|CY82_IDE_SLAVE_IOR
+id|ior
 comma
 op_amp
 id|pclk.time_16r
@@ -780,7 +770,7 @@ c_func
 (paren
 id|dev
 comma
-id|CY82_IDE_SLAVE_IOW
+id|iow
 comma
 op_amp
 id|pclk.time_16w
@@ -791,17 +781,18 @@ c_func
 (paren
 id|dev
 comma
-id|CY82_IDE_SLAVE_8BIT
+id|bit8
 comma
 op_amp
 id|pclk.time_8
 )paren
 suffix:semicolon
-)brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s (ch=%d, dev=%d): PIO timing is (addr=0x%X, ior=0x%X, iow=0x%X, 8bit=0x%X)&bslash;n&quot;
+l_string|&quot;%s (ch=%d, dev=%d): PIO timing is (addr=0x%X,&quot;
+l_string|&quot; ior=0x%X, iow=0x%X, 8bit=0x%X)&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
@@ -856,16 +847,7 @@ id|pclk
 )paren
 suffix:semicolon
 multiline_comment|/* let&squot;s calc the values for this PIO mode */
-multiline_comment|/* now let&squot;s write  the clocks registers */
-r_if
-c_cond
-(paren
-id|drive-&gt;select.b.unit
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * set master drive&n;&t;&t; * address setup control register&n;&t;&t; * is 32 bit !!!&n;&t;&t; */
+multiline_comment|/*&n;&t; * set address setup control register&n;&t; */
 id|pci_read_config_dword
 c_func
 (paren
@@ -877,11 +859,19 @@ op_amp
 id|addrCtrl
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|drive-&gt;select.b.unit
+op_eq
+l_int|0
+)paren
+(brace
 id|addrCtrl
 op_and_assign
 (paren
 op_complement
-l_int|0xF
+l_int|0x0F
 )paren
 suffix:semicolon
 id|addrCtrl
@@ -892,66 +882,9 @@ r_int
 )paren
 id|pclk.address_time
 suffix:semicolon
-id|pci_write_config_dword
-c_func
-(paren
-id|dev
-comma
-id|CY82_IDE_ADDRSETUP
-comma
-id|addrCtrl
-)paren
-suffix:semicolon
-multiline_comment|/* now let&squot;s set the remaining registers */
-id|pci_write_config_byte
-c_func
-(paren
-id|dev
-comma
-id|CY82_IDE_MASTER_IOR
-comma
-id|pclk.time_16r
-)paren
-suffix:semicolon
-id|pci_write_config_byte
-c_func
-(paren
-id|dev
-comma
-id|CY82_IDE_MASTER_IOW
-comma
-id|pclk.time_16w
-)paren
-suffix:semicolon
-id|pci_write_config_byte
-c_func
-(paren
-id|dev
-comma
-id|CY82_IDE_MASTER_8BIT
-comma
-id|pclk.time_8
-)paren
-suffix:semicolon
-id|addrCtrl
-op_and_assign
-l_int|0xF
-suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * set slave drive&n;&t;&t; * address setup control register&n;&t;&t; * is 32 bit !!!&n;&t;&t; */
-id|pci_read_config_dword
-c_func
-(paren
-id|dev
-comma
-id|CY82_IDE_ADDRSETUP
-comma
-op_amp
-id|addrCtrl
-)paren
-suffix:semicolon
 id|addrCtrl
 op_and_assign
 (paren
@@ -971,6 +904,7 @@ op_lshift
 l_int|4
 )paren
 suffix:semicolon
+)brace
 id|pci_write_config_dword
 c_func
 (paren
@@ -987,7 +921,7 @@ c_func
 (paren
 id|dev
 comma
-id|CY82_IDE_SLAVE_IOR
+id|ior
 comma
 id|pclk.time_16r
 )paren
@@ -997,7 +931,7 @@ c_func
 (paren
 id|dev
 comma
-id|CY82_IDE_SLAVE_IOW
+id|iow
 comma
 id|pclk.time_16w
 )paren
@@ -1007,25 +941,18 @@ c_func
 (paren
 id|dev
 comma
-id|CY82_IDE_SLAVE_8BIT
+id|bit8
 comma
 id|pclk.time_8
 )paren
 suffix:semicolon
-id|addrCtrl
-op_rshift_assign
-l_int|4
-suffix:semicolon
-id|addrCtrl
-op_and_assign
-l_int|0xF
-suffix:semicolon
-)brace
 macro_line|#if CY82C693_DEBUG_INFO
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s (ch=%d, dev=%d): set PIO timing to (addr=0x%X, ior=0x%X, iow=0x%X, 8bit=0x%X)&bslash;n&quot;
+l_string|&quot;%s (ch=%d, dev=%d): set PIO timing to (addr=0x%X,&quot;
+l_string|&quot; ior=0x%X, iow=0x%X, 8bit=0x%X)&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
@@ -1042,10 +969,8 @@ comma
 id|pclk.time_8
 )paren
 suffix:semicolon
-macro_line|#endif /* CY82C693_DEBUG_INFO */
+macro_line|#endif
 )brace
-multiline_comment|/*&n; * this function is called during init and is used to setup the cy82c693 chip&n; */
-multiline_comment|/*&n; * FIXME! &quot;pci_init_cy82c693&quot; really should replace&n; * the &quot;init_cy82c693_chip&quot;, it is the correct location to tinker/setup&n; * the device prior to INIT.&n; */
 DECL|function|pci_init_cy82c693
 r_static
 r_int
@@ -1061,10 +986,10 @@ id|dev
 )paren
 (brace
 macro_line|#ifdef CY82C693_SETDMA_CLOCK
-id|byte
+id|u8
 id|data
 suffix:semicolon
-macro_line|#endif /* CY82C693_SETDMA_CLOCK */
+macro_line|#endif
 multiline_comment|/* write info about this verion of the driver */
 id|printk
 (paren
@@ -1102,7 +1027,7 @@ comma
 id|data
 )paren
 suffix:semicolon
-macro_line|#endif /* CY82C693_DEBUG_INFO */
+macro_line|#endif
 multiline_comment|/*&n;&t; * for some reason sometimes the DMA controller&n;&t; * speed is set to ATCLK/2 ???? - we fix this here&n;&t; *&n;&t; * note: i don&squot;t know what causes this strange behaviour,&n;&t; *       but even changing the dma speed doesn&squot;t solve it :-(&n;&t; *       the ide performance is still only half the normal speed&n;&t; *&n;&t; *       if anybody knows what goes wrong with my machine, please&n;&t; *       let me know - ASK&n;         */
 id|data
 op_or_assign

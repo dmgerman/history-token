@@ -925,7 +925,7 @@ id|feat
 suffix:semicolon
 id|rq
 op_assign
-id|blk_queue_tag_request
+id|blk_queue_find_tag
 c_func
 (paren
 op_amp

@@ -8343,4 +8343,11 @@ c_func
 id|acpi_processor_exit
 )paren
 suffix:semicolon
+DECL|variable|acpi_processor_set_thermal_limit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_processor_set_thermal_limit
+)paren
+suffix:semicolon
 eof

@@ -2088,23 +2088,6 @@ r_int
 id|byteswap
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|ide_wait_noerr
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-id|byte
-comma
-id|byte
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * This routine is called from the partition-table code in genhd.c&n; * to &quot;convert&quot; a drive to a logical geometry with fewer than 1024 cyls.&n; */
 r_int
 id|ide_xlate_1024

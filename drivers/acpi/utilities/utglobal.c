@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 162 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 163 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
@@ -1177,41 +1177,6 @@ id|event_id
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(ACPI_DEBUG) || defined(ENABLE_DEBUGGER)
-multiline_comment|/*&n; * Strings and procedures used for debug only&n; *&n; */
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_mutex_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a mutex ID into a name string (Debug only)&n; *&n; ****************************************************************************/
-id|NATIVE_CHAR
-op_star
-DECL|function|acpi_ut_get_mutex_name
-id|acpi_ut_get_mutex_name
-(paren
-id|u32
-id|mutex_id
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|mutex_id
-OG
-id|MAX_MTX
-)paren
-(brace
-r_return
-(paren
-l_string|&quot;Invalid Mutex ID&quot;
-)paren
-suffix:semicolon
-)brace
-r_return
-(paren
-id|acpi_gbl_mutex_names
-(braket
-id|mutex_id
-)braket
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_type_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a Type ID into a name string (Debug only)&n; *&n; ****************************************************************************/
 multiline_comment|/*&n; * Elements of Acpi_gbl_Ns_type_names below must match&n; * one-to-one with values of acpi_object_type&n; *&n; * The type ACPI_TYPE_ANY (Untyped) is used as a &quot;don&squot;t care&quot; when searching; when&n; * stored in a table it really means that we have thus far seen no evidence to&n; * indicatewhat type is actually going to be stored for this entry.&n; */
 DECL|variable|acpi_gbl_bad_type
@@ -1421,6 +1386,41 @@ id|ACPI_GET_OBJECT_TYPE
 id|obj_desc
 )paren
 )paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#if defined(ACPI_DEBUG) || defined(ENABLE_DEBUGGER)
+multiline_comment|/*&n; * Strings and procedures used for debug only&n; *&n; */
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_mutex_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a mutex ID into a name string (Debug only)&n; *&n; ****************************************************************************/
+id|NATIVE_CHAR
+op_star
+DECL|function|acpi_ut_get_mutex_name
+id|acpi_ut_get_mutex_name
+(paren
+id|u32
+id|mutex_id
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mutex_id
+OG
+id|MAX_MTX
+)paren
+(brace
+r_return
+(paren
+l_string|&quot;Invalid Mutex ID&quot;
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+id|acpi_gbl_mutex_names
+(braket
+id|mutex_id
+)braket
 )paren
 suffix:semicolon
 )brace
