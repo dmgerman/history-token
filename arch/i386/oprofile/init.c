@@ -1,7 +1,7 @@
 multiline_comment|/**&n; * @file init.c&n; *&n; * @remark Copyright 2002 OProfile authors&n; * @remark Read the file COPYING&n; *&n; * @author John Levon &lt;levon@movementarian.org&gt;&n; */
 macro_line|#include &lt;linux/oprofile.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-multiline_comment|/* We support CPUs that have performance counters like the Pentium Pro&n; * with NMI mode samples. Other x86 CPUs use a simple interrupt keyed&n; * off the timer interrupt, which cannot profile interrupts-disabled&n; * code unlike the NMI-based code.&n; */
+multiline_comment|/* We support CPUs that have performance counters like the Pentium Pro&n; * with the NMI mode driver.&n; */
 r_extern
 r_int
 id|nmi_init
@@ -22,18 +22,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|timer_init
-c_func
-(paren
-r_struct
-id|oprofile_operations
-op_star
-op_star
-id|ops
-)paren
-suffix:semicolon
 DECL|function|oprofile_arch_init
 r_int
 id|__init
@@ -48,26 +36,19 @@ id|ops
 )paren
 (brace
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-r_if
-c_cond
-(paren
-op_logical_neg
+r_return
 id|nmi_init
 c_func
 (paren
 id|ops
 )paren
-)paren
-macro_line|#endif
-id|timer_init
-c_func
-(paren
-id|ops
-)paren
 suffix:semicolon
+macro_line|#else
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|oprofile_arch_exit
 r_void
