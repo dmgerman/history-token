@@ -3008,7 +3008,7 @@ r_if
 c_cond
 (paren
 id|rw
-op_amp
+op_logical_and
 op_logical_neg
 id|bottom_only
 )paren

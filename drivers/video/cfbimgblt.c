@@ -132,15 +132,9 @@ comma
 l_int|0xffffffff
 )brace
 suffix:semicolon
-DECL|macro|FB_WRITEL
-mdefine_line|#define FB_WRITEL fb_writel
-DECL|macro|FB_READL
-mdefine_line|#define FB_READL  fb_readl
 macro_line|#if defined (__BIG_ENDIAN)
 DECL|macro|LEFT_POS
-mdefine_line|#define LEFT_POS(bpp)          (32 - bpp)
-DECL|macro|NEXT_POS
-mdefine_line|#define NEXT_POS(pos, bpp)     ((pos) -= (bpp))
+mdefine_line|#define LEFT_POS(bpp)          (BITS_PER_LONG - bpp)
 DECL|macro|SHIFT_HIGH
 mdefine_line|#define SHIFT_HIGH(val, bits)  ((val) &gt;&gt; (bits))
 DECL|macro|SHIFT_LOW
@@ -148,12 +142,29 @@ mdefine_line|#define SHIFT_LOW(val, bits)   ((val) &lt;&lt; (bits))
 macro_line|#else
 DECL|macro|LEFT_POS
 mdefine_line|#define LEFT_POS(bpp)          (0)
-DECL|macro|NEXT_POS
-mdefine_line|#define NEXT_POS(pos, bpp)     ((pos) += (bpp))
 DECL|macro|SHIFT_HIGH
 mdefine_line|#define SHIFT_HIGH(val, bits)  ((val) &lt;&lt; (bits))
 DECL|macro|SHIFT_LOW
 mdefine_line|#define SHIFT_LOW(val, bits)   ((val) &gt;&gt; (bits))
+macro_line|#endif
+macro_line|#if BITS_PER_LONG == 32
+DECL|macro|FB_WRITEL
+mdefine_line|#define FB_WRITEL&t;fb_writel
+DECL|macro|FB_READL
+mdefine_line|#define FB_READL&t;fb_readl
+DECL|macro|INIT_FASTPATH
+mdefine_line|#define INIT_FASTPATH&t;{}
+DECL|macro|FASTPATH
+mdefine_line|#define FASTPATH&t;fb_writel((end_mask &amp; eorx)^bgx, dst++)
+macro_line|#else
+DECL|macro|FB_WRITEL
+mdefine_line|#define FB_WRITEL&t;fb_writeq
+DECL|macro|FB_READL
+mdefine_line|#define FB_READL&t;fb_readq
+DECL|macro|INIT_FASTPATH
+mdefine_line|#define INIT_FASTPATH&t;unsigned long val = 0, bpl = 0
+DECL|macro|FASTPATH
+mdefine_line|#define FASTPATH {&t;&t;&t;&t;&t;&bslash;&n;&t;val |= SHIFT_HIGH((end_mask &amp; eorx)^bgx, bpl);&t;&bslash;&n;&t;bpl += 32;&t;&t;&t;&t;&t;&bslash;&n;&t;bpl &amp;= BITS_PER_LONG - 1;&t;&t;&t;&bslash;&n;&t;if (!bpl) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;FB_WRITEL(val, dst++);&t;&t;&t;&bslash;&n;&t;&t;val = 0;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#endif
 DECL|function|color_imageblit
 r_static
@@ -162,6 +173,7 @@ r_void
 id|color_imageblit
 c_func
 (paren
+r_const
 r_struct
 id|fb_image
 op_star
@@ -176,15 +188,18 @@ id|u8
 op_star
 id|dst1
 comma
-id|u32
+r_int
+r_int
 id|start_index
 comma
-id|u32
+r_int
+r_int
 id|pitch_index
 )paren
 (brace
 multiline_comment|/* Draw the penguin */
-id|u32
+r_int
+r_int
 op_star
 id|dst
 comma
@@ -208,10 +223,11 @@ id|bpp
 op_assign
 id|p-&gt;var.bits_per_pixel
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|null_bits
 op_assign
-l_int|32
+id|BITS_PER_LONG
 op_minus
 id|bpp
 suffix:semicolon
@@ -229,12 +245,17 @@ id|u8
 op_star
 id|src
 op_assign
+(paren
+id|u8
+op_star
+)paren
 id|image-&gt;data
 suffix:semicolon
 id|dst2
 op_assign
 (paren
-id|u32
+r_int
+r_int
 op_star
 )paren
 id|dst1
@@ -251,22 +272,21 @@ op_decrement
 suffix:semicolon
 )paren
 (brace
-id|n
-op_assign
-id|image-&gt;width
-suffix:semicolon
 id|dst
 op_assign
 (paren
-id|u32
+r_int
+r_int
 op_star
 )paren
 id|dst1
 suffix:semicolon
+id|n
+op_assign
+id|image-&gt;width
+suffix:semicolon
 id|shift
 op_assign
-l_int|0
-suffix:semicolon
 id|val
 op_assign
 l_int|0
@@ -277,7 +297,8 @@ c_cond
 id|start_index
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|start_mask
 op_assign
 op_complement
@@ -286,10 +307,7 @@ id|SHIFT_HIGH
 c_func
 (paren
 op_complement
-(paren
-id|u32
-)paren
-l_int|0
+l_int|0UL
 comma
 id|start_index
 )paren
@@ -393,7 +411,7 @@ c_func
 (paren
 id|color
 comma
-l_int|32
+id|BITS_PER_LONG
 op_minus
 id|shift
 )paren
@@ -406,7 +424,7 @@ suffix:semicolon
 id|shift
 op_and_assign
 (paren
-l_int|32
+id|BITS_PER_LONG
 op_minus
 l_int|1
 )paren
@@ -421,17 +439,15 @@ c_cond
 id|shift
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|end_mask
 op_assign
 id|SHIFT_HIGH
 c_func
 (paren
 op_complement
-(paren
-id|u32
-)paren
-l_int|0
+l_int|0UL
 comma
 id|shift
 )paren
@@ -487,7 +503,8 @@ op_complement
 (paren
 r_sizeof
 (paren
-id|u32
+r_int
+r_int
 )paren
 op_minus
 l_int|1
@@ -499,7 +516,7 @@ id|pitch_index
 suffix:semicolon
 id|start_index
 op_and_assign
-l_int|32
+id|BITS_PER_LONG
 op_minus
 l_int|1
 suffix:semicolon
@@ -513,6 +530,7 @@ r_void
 id|slow_imageblit
 c_func
 (paren
+r_const
 r_struct
 id|fb_image
 op_star
@@ -527,20 +545,25 @@ id|u8
 op_star
 id|dst1
 comma
-id|u32
+r_int
+r_int
 id|fgcolor
 comma
-id|u32
+r_int
+r_int
 id|bgcolor
 comma
-id|u32
+r_int
+r_int
 id|start_index
 comma
-id|u32
+r_int
+r_int
 id|pitch_index
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|shift
 comma
 id|color
@@ -551,7 +574,8 @@ id|bpp
 op_assign
 id|p-&gt;var.bits_per_pixel
 suffix:semicolon
-id|u32
+r_int
+r_int
 op_star
 id|dst
 comma
@@ -564,14 +588,16 @@ id|pitch
 op_assign
 id|p-&gt;fix.line_length
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|null_bits
 op_assign
-l_int|32
+id|BITS_PER_LONG
 op_minus
 id|bpp
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|spitch
 op_assign
 (paren
@@ -582,7 +608,8 @@ l_int|7
 op_div
 l_int|8
 suffix:semicolon
-id|u8
+r_const
+r_char
 op_star
 id|src
 op_assign
@@ -591,7 +618,8 @@ comma
 op_star
 id|s
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|i
 comma
 id|j
@@ -601,7 +629,8 @@ suffix:semicolon
 id|dst2
 op_assign
 (paren
-id|u32
+r_int
+r_int
 op_star
 )paren
 id|dst1
@@ -618,31 +647,32 @@ op_decrement
 suffix:semicolon
 )paren
 (brace
+id|dst
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|dst1
+suffix:semicolon
+id|j
+op_assign
+id|image-&gt;width
+suffix:semicolon
 id|shift
 op_assign
 id|val
 op_assign
 l_int|0
 suffix:semicolon
-id|l
-op_assign
-l_int|8
-suffix:semicolon
-id|j
-op_assign
-id|image-&gt;width
-suffix:semicolon
-id|dst
-op_assign
-(paren
-id|u32
-op_star
-)paren
-id|dst1
-suffix:semicolon
 id|s
 op_assign
 id|src
+suffix:semicolon
+id|l
+op_assign
+l_int|8
 suffix:semicolon
 multiline_comment|/* write leading bits */
 r_if
@@ -651,7 +681,8 @@ c_cond
 id|start_index
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|start_mask
 op_assign
 op_complement
@@ -660,10 +691,7 @@ id|SHIFT_HIGH
 c_func
 (paren
 op_complement
-(paren
-id|u32
-)paren
-l_int|0
+l_int|0UL
 comma
 id|start_index
 )paren
@@ -764,7 +792,7 @@ c_func
 (paren
 id|color
 comma
-l_int|32
+id|BITS_PER_LONG
 op_minus
 id|shift
 )paren
@@ -777,7 +805,7 @@ suffix:semicolon
 id|shift
 op_and_assign
 (paren
-l_int|32
+id|BITS_PER_LONG
 op_minus
 l_int|1
 )paren
@@ -806,17 +834,15 @@ c_cond
 id|shift
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|end_mask
 op_assign
 id|SHIFT_HIGH
 c_func
 (paren
 op_complement
-(paren
-id|u32
-)paren
-l_int|0
+l_int|0UL
 comma
 id|shift
 )paren
@@ -876,7 +902,8 @@ op_complement
 (paren
 r_sizeof
 (paren
-id|u32
+r_int
+r_int
 )paren
 op_minus
 l_int|1
@@ -888,7 +915,7 @@ id|pitch_index
 suffix:semicolon
 id|start_index
 op_and_assign
-l_int|32
+id|BITS_PER_LONG
 op_minus
 l_int|1
 suffix:semicolon
@@ -903,6 +930,7 @@ r_void
 id|fast_imageblit
 c_func
 (paren
+r_const
 r_struct
 id|fb_image
 op_star
@@ -940,7 +968,7 @@ suffix:semicolon
 id|u32
 id|ppw
 op_assign
-l_int|32
+id|BITS_PER_LONG
 op_div
 id|bpp
 comma
@@ -963,6 +991,7 @@ id|eorx
 comma
 id|shift
 suffix:semicolon
+r_const
 r_char
 op_star
 id|s
@@ -972,7 +1001,8 @@ comma
 op_star
 id|src
 suffix:semicolon
-id|u32
+r_int
+r_int
 op_star
 id|dst
 suffix:semicolon
@@ -1091,7 +1121,8 @@ suffix:semicolon
 id|dst
 op_assign
 (paren
-id|u32
+r_int
+r_int
 op_star
 )paren
 id|dst1
@@ -1103,6 +1134,8 @@ suffix:semicolon
 id|src
 op_assign
 id|s
+suffix:semicolon
+id|INIT_FASTPATH
 suffix:semicolon
 r_for
 c_loop
@@ -1134,20 +1167,7 @@ op_amp
 id|bit_mask
 )braket
 suffix:semicolon
-id|FB_WRITEL
-c_func
-(paren
-(paren
-id|end_mask
-op_amp
-id|eorx
-)paren
-op_xor
-id|bgx
-comma
-id|dst
-op_increment
-)paren
+id|FASTPATH
 suffix:semicolon
 r_if
 c_cond
@@ -1185,13 +1205,15 @@ id|fb_info
 op_star
 id|p
 comma
+r_const
 r_struct
 id|fb_image
 op_star
 id|image
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|fgcolor
 comma
 id|bgcolor
@@ -1204,17 +1226,37 @@ id|pitch_index
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|bpl
 op_assign
 r_sizeof
 (paren
-id|u32
+r_int
+r_int
 )paren
 comma
 id|bpp
 op_assign
 id|p-&gt;var.bits_per_pixel
+suffix:semicolon
+id|u32
+id|width
+op_assign
+id|image-&gt;width
+comma
+id|height
+op_assign
+id|image-&gt;height
+suffix:semicolon
+id|u32
+id|dx
+op_assign
+id|image-&gt;dx
+comma
+id|dy
+op_assign
+id|image-&gt;dy
 suffix:semicolon
 r_int
 id|x2
@@ -1263,7 +1305,7 @@ id|image-&gt;dy
 op_plus
 id|image-&gt;height
 suffix:semicolon
-id|image-&gt;dx
+id|dx
 op_assign
 id|image-&gt;dx
 OG
@@ -1274,7 +1316,7 @@ id|image-&gt;dx
 suffix:colon
 l_int|0
 suffix:semicolon
-id|image-&gt;dy
+id|dy
 op_assign
 id|image-&gt;dy
 OG
@@ -1307,22 +1349,22 @@ id|y2
 suffix:colon
 id|vyres
 suffix:semicolon
-id|image-&gt;width
+id|width
 op_assign
 id|x2
 op_minus
-id|image-&gt;dx
+id|dx
 suffix:semicolon
-id|image-&gt;height
+id|height
 op_assign
 id|y2
 op_minus
-id|image-&gt;dy
+id|dy
 suffix:semicolon
 id|bitstart
 op_assign
 (paren
-id|image-&gt;dy
+id|dy
 op_star
 id|p-&gt;fix.line_length
 op_star
@@ -1330,7 +1372,7 @@ l_int|8
 )paren
 op_plus
 (paren
-id|image-&gt;dx
+id|dx
 op_star
 id|bpp
 )paren
@@ -1340,7 +1382,7 @@ op_assign
 id|bitstart
 op_amp
 (paren
-l_int|32
+id|BITS_PER_LONG
 op_minus
 l_int|1
 )paren
@@ -1396,7 +1438,7 @@ c_cond
 (paren
 id|image-&gt;depth
 op_eq
-l_int|1
+l_int|0
 )paren
 (brace
 r_if
@@ -1456,7 +1498,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|32
+id|BITS_PER_LONG
 op_mod
 id|bpp
 op_eq
@@ -1470,10 +1512,10 @@ id|pitch_index
 op_logical_and
 (paren
 (paren
-id|image-&gt;width
+id|width
 op_amp
 (paren
-l_int|32
+id|BITS_PER_LONG
 op_div
 id|bpp
 op_minus
