@@ -31,17 +31,6 @@ r_extern
 r_int
 id|page_cluster
 suffix:semicolon
-multiline_comment|/* The inactive_clean lists are per zone. */
-r_extern
-r_struct
-id|list_head
-id|active_list
-suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|inactive_list
-suffix:semicolon
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
