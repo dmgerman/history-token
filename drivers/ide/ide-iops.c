@@ -81,7 +81,6 @@ id|u32
 id|count
 )paren
 (brace
-r_return
 id|insw
 c_func
 (paren
