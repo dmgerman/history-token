@@ -1534,6 +1534,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|ICE1712_SUBDEVICE_DELTA410
+suffix:colon
+id|ice-&gt;num_total_dacs
+op_assign
+l_int|8
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|ICE1712_SUBDEVICE_DELTA44
 suffix:colon
 r_case
@@ -1572,6 +1581,9 @@ id|ice-&gt;eeprom.subvendor
 (brace
 r_case
 id|ICE1712_SUBDEVICE_AUDIOPHILE
+suffix:colon
+r_case
+id|ICE1712_SUBDEVICE_DELTA410
 suffix:colon
 r_case
 id|ICE1712_SUBDEVICE_DELTA1010LT
@@ -1700,21 +1712,41 @@ id|ice-&gt;eeprom.subvendor
 r_case
 id|ICE1712_SUBDEVICE_AUDIOPHILE
 suffix:colon
+r_case
+id|ICE1712_SUBDEVICE_DELTA410
+suffix:colon
 id|ak-&gt;num_adcs
 op_assign
 id|ak-&gt;num_dacs
 op_assign
 l_int|2
 suffix:semicolon
-id|ak-&gt;is_ak4528
+id|ak-&gt;type
 op_assign
-l_int|1
+id|SND_AK4528
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ice-&gt;eeprom.subvendor
+op_eq
+id|ICE1712_SUBDEVICE_DELTA410
+)paren
+(brace
+id|ak-&gt;num_dacs
+op_assign
+l_int|8
+suffix:semicolon
+id|ak-&gt;type
+op_assign
+id|SND_AK4529
+suffix:semicolon
+)brace
 id|ak-&gt;cif
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* the default level of the CIF pin from AK4524 */
+multiline_comment|/* the default level of the CIF pin from AK4528/4529 */
 id|ak-&gt;data_mask
 op_assign
 id|ICE1712_DELTA_AP_DOUT
@@ -1729,7 +1761,7 @@ id|ak-&gt;cs_addr
 op_assign
 id|ICE1712_DELTA_AP_CS_CODEC
 suffix:semicolon
-multiline_comment|/* select AK4528 codec */
+multiline_comment|/* select AK4528/4529 codec */
 id|ak-&gt;cs_none
 op_assign
 l_int|0
@@ -1763,6 +1795,10 @@ op_assign
 id|ak-&gt;num_dacs
 op_assign
 l_int|8
+suffix:semicolon
+id|ak-&gt;type
+op_assign
+id|SND_AK4524
 suffix:semicolon
 id|ak-&gt;cif
 op_assign
@@ -1823,6 +1859,10 @@ op_assign
 id|ak-&gt;num_dacs
 op_assign
 l_int|4
+suffix:semicolon
+id|ak-&gt;type
+op_assign
+id|SND_AK4524
 suffix:semicolon
 id|ak-&gt;cif
 op_assign
@@ -2157,6 +2197,12 @@ suffix:colon
 r_case
 id|ICE1712_SUBDEVICE_AUDIOPHILE
 suffix:colon
+r_case
+id|ICE1712_SUBDEVICE_DELTA410
+suffix:colon
+r_case
+id|ICE1712_SUBDEVICE_DELTA1010LT
+suffix:colon
 id|err
 op_assign
 id|snd_ice1712_spdif_build_controls
@@ -2236,6 +2282,9 @@ id|ICE1712_SUBDEVICE_DELTA1010LT
 suffix:colon
 r_case
 id|ICE1712_SUBDEVICE_AUDIOPHILE
+suffix:colon
+r_case
+id|ICE1712_SUBDEVICE_DELTA410
 suffix:colon
 r_case
 id|ICE1712_SUBDEVICE_DELTA44
@@ -2335,6 +2384,17 @@ comma
 id|ICE1712_SUBDEVICE_AUDIOPHILE
 comma
 l_string|&quot;M Audio Audiophile 24/96&quot;
+comma
+id|snd_ice1712_delta_init
+comma
+id|snd_ice1712_delta_add_controls
+comma
+)brace
+comma
+(brace
+id|ICE1712_SUBDEVICE_DELTA410
+comma
+l_string|&quot;M Audio Delta 410&quot;
 comma
 id|snd_ice1712_delta_init
 comma

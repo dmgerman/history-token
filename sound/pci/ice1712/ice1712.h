@@ -438,7 +438,7 @@ id|images
 l_int|4
 )braket
 (braket
-l_int|8
+l_int|16
 )braket
 suffix:semicolon
 DECL|member|ipga_gain
@@ -453,14 +453,20 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* */
-DECL|member|is_ak4528
-r_int
-r_int
-id|is_ak4528
-suffix:colon
-l_int|1
+r_enum
+(brace
+DECL|enumerator|SND_AK4524
+DECL|enumerator|SND_AK4528
+DECL|enumerator|SND_AK4529
+id|SND_AK4524
+comma
+id|SND_AK4528
+comma
+id|SND_AK4529
+DECL|member|type
+)brace
+id|type
 suffix:semicolon
-multiline_comment|/* AK4524 or AK4528 */
 DECL|member|cif
 r_int
 r_int

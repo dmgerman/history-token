@@ -5,9 +5,24 @@ multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt
 macro_line|#include &quot;control.h&quot;
 macro_line|#include &quot;pcm.h&quot;
 macro_line|#include &quot;timer.h&quot;
+macro_line|#ifdef CONFIG_SBUS
+DECL|macro|SBUS_SUPPORT
+mdefine_line|#define SBUS_SUPPORT
+macro_line|#include &lt;asm/sbus.h&gt;
+macro_line|#endif
+macro_line|#if defined(CONFIG_PCI) &amp;&amp; defined(CONFIG_SPARC64)
+DECL|macro|EBUS_SUPPORT
+mdefine_line|#define EBUS_SUPPORT
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;asm/ebus.h&gt;
+macro_line|#endif
+macro_line|#if !defined(SBUS_SUPPORT) &amp;&amp; !defined(EBUS_SUPPORT)
+DECL|macro|LEGACY_SUPPORT
+mdefine_line|#define LEGACY_SUPPORT
+macro_line|#endif
 multiline_comment|/* IO ports */
 DECL|macro|CS4231P
-mdefine_line|#define CS4231P(chip, x)&t;((chip)-&gt;port + c_d_c_CS4231##x)
+mdefine_line|#define CS4231P(x)&t;&t;(c_d_c_CS4231##x)
 DECL|macro|c_d_c_CS4231REGSEL
 mdefine_line|#define c_d_c_CS4231REGSEL&t;0
 DECL|macro|c_d_c_CS4231REG
@@ -317,6 +332,7 @@ r_int
 id|port
 suffix:semicolon
 multiline_comment|/* base i/o port */
+macro_line|#ifdef LEGACY_SUPPORT
 DECL|member|res_port
 r_struct
 id|resource
@@ -350,6 +366,7 @@ r_int
 id|dma2
 suffix:semicolon
 multiline_comment|/* record DMA */
+macro_line|#endif
 DECL|member|version
 r_int
 r_int
@@ -380,8 +397,60 @@ r_int
 id|single_dma
 suffix:colon
 l_int|1
-suffix:semicolon
+comma
 multiline_comment|/* forced single DMA mode (GUS 16-bit daughter board) or dma1 == dma2 */
+DECL|member|ebus_flag
+id|ebus_flag
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* SPARC: EBUS present */
+macro_line|#ifdef EBUS_SUPPORT
+DECL|member|eb2c
+r_struct
+id|ebus_dma_info
+id|eb2c
+suffix:semicolon
+DECL|member|eb2p
+r_struct
+id|ebus_dma_info
+id|eb2p
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(SBUS_SUPPORT) || defined(EBUS_SUPPORT)
+r_union
+(brace
+macro_line|#ifdef SBUS_SUPPORT
+DECL|member|sdev
+r_struct
+id|sbus_dev
+op_star
+id|sdev
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef EBUS_SUPPORT
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
+macro_line|#endif
+DECL|member|dev_u
+)brace
+id|dev_u
+suffix:semicolon
+DECL|member|p_periods_sent
+r_int
+r_int
+id|p_periods_sent
+suffix:semicolon
+DECL|member|c_periods_sent
+r_int
+r_int
+id|c_periods_sent
+suffix:semicolon
+macro_line|#endif
 DECL|member|card
 id|snd_card_t
 op_star
@@ -446,6 +515,7 @@ DECL|member|sw_3d_bit
 r_int
 id|sw_3d_bit
 suffix:semicolon
+macro_line|#ifdef LEGACY_SUPPORT
 DECL|member|p_dma_size
 r_int
 r_int
@@ -456,6 +526,7 @@ r_int
 r_int
 id|c_dma_size
 suffix:semicolon
+macro_line|#endif
 DECL|member|reg_lock
 id|spinlock_t
 id|reg_lock
@@ -522,6 +593,25 @@ r_char
 id|cdfr
 )paren
 suffix:semicolon
+DECL|member|trigger
+r_void
+(paren
+op_star
+id|trigger
+)paren
+(paren
+id|cs4231_t
+op_star
+id|chip
+comma
+r_int
+r_int
+id|what
+comma
+r_int
+id|start
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PM
 DECL|member|pm_dev
 r_struct
@@ -559,6 +649,7 @@ r_void
 op_star
 id|dma_private_data
 suffix:semicolon
+macro_line|#ifdef LEGACY_SUPPORT
 DECL|member|claim_dma
 r_int
 (paren
@@ -597,6 +688,7 @@ r_int
 id|dma
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* exported functions */

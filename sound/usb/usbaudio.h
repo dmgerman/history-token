@@ -385,5 +385,16 @@ op_star
 id|quirk
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * retrieve usb_interface descriptor from the host interface&n; * (conditional for compatibility with the older API)&n; */
+macro_line|#ifndef get_iface_desc
+DECL|macro|get_iface_desc
+mdefine_line|#define get_iface_desc(iface)&t;(&amp;iface-&gt;desc)
+DECL|macro|get_endpoint
+mdefine_line|#define get_endpoint(alt,ep)&t;(&amp;(alt)-&gt;endpoint[ep].desc)
+DECL|macro|get_ep_desc
+mdefine_line|#define get_ep_desc(ep)&t;&t;(&amp;(ep)-&gt;desc)
+DECL|macro|get_cfg_desc
+mdefine_line|#define get_cfg_desc(cfg)&t;(&amp;(cfg)-&gt;desc)
+macro_line|#endif
 macro_line|#endif /* __USBAUDIO_H */
 eof
