@@ -1666,8 +1666,12 @@ r_void
 DECL|function|td_fill
 id|td_fill
 (paren
-r_int
-r_int
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+id|u32
 id|info
 comma
 id|dma_addr_t
@@ -1706,6 +1710,9 @@ op_assign
 id|info
 op_amp
 id|TD_ISO
+suffix:semicolon
+r_int
+id|hash
 suffix:semicolon
 singleline_comment|// ASSERT (index &lt; urb_priv-&gt;length);
 multiline_comment|/* aim for only one interrupt per urb.  mostly applies to control&n;&t; * and iso; other urbs rarely need more than one TD per urb.&n;&t; * this way, only final tds (or ones with an error) cause IRQs.&n;&t; * at least immediately; use DI=6 in case any control request is&n;&t; * tempted to die part way through.&n;&t; *&n;&t; * NOTE: could delay interrupts even for the last TD, and get fewer&n;&t; * interrupts ... increasing per-urb latency by sharing interrupts.&n;&t; * Drivers that queue bulk urbs may request that behavior.&n;&t; */
@@ -1868,11 +1875,6 @@ id|cpu_to_le32
 id|td_pt-&gt;td_dma
 )paren
 suffix:semicolon
-multiline_comment|/* HC might read the TD right after we link it ... */
-id|wmb
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* append to queue */
 id|list_add_tail
 (paren
@@ -1881,6 +1883,33 @@ id|td-&gt;td_list
 comma
 op_amp
 id|td-&gt;ed-&gt;td_list
+)paren
+suffix:semicolon
+multiline_comment|/* hash it for later reverse mapping */
+id|hash
+op_assign
+id|TD_HASH_FUNC
+(paren
+id|td-&gt;td_dma
+)paren
+suffix:semicolon
+id|td-&gt;td_hash
+op_assign
+id|ohci-&gt;td_hash
+(braket
+id|hash
+)braket
+suffix:semicolon
+id|ohci-&gt;td_hash
+(braket
+id|hash
+)braket
+op_assign
+id|td
+suffix:semicolon
+multiline_comment|/* HC might read the TD (or cachelines) right away ... */
+id|wmb
+(paren
 )paren
 suffix:semicolon
 id|td-&gt;ed-&gt;hwTailP
@@ -2042,6 +2071,8 @@ l_int|4096
 (brace
 id|td_fill
 (paren
+id|ohci
+comma
 id|info
 comma
 id|data
@@ -2082,6 +2113,8 @@ id|TD_R
 suffix:semicolon
 id|td_fill
 (paren
+id|ohci
+comma
 id|info
 comma
 id|data
@@ -2112,6 +2145,8 @@ id|urb_priv-&gt;length
 (brace
 id|td_fill
 (paren
+id|ohci
+comma
 id|info
 comma
 l_int|0
@@ -2165,6 +2200,8 @@ id|TD_T_DATA0
 suffix:semicolon
 id|td_fill
 (paren
+id|ohci
+comma
 id|info
 comma
 id|urb-&gt;setup_dma
@@ -2205,6 +2242,8 @@ suffix:semicolon
 multiline_comment|/* NOTE:  mishandles transfers &gt;8K, some &gt;4K */
 id|td_fill
 (paren
+id|ohci
+comma
 id|info
 comma
 id|data
@@ -2237,6 +2276,8 @@ id|TD_T_DATA1
 suffix:semicolon
 id|td_fill
 (paren
+id|ohci
+comma
 id|info
 comma
 id|data
@@ -2303,6 +2344,8 @@ l_int|0xffff
 suffix:semicolon
 id|td_fill
 (paren
+id|ohci
+comma
 id|TD_CC
 op_or
 id|TD_ISO
