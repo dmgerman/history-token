@@ -70,6 +70,8 @@ mdefine_line|#define TI_PRE_COUNT&t;0x00000010
 DECL|macro|TI_ADDR_LIMIT
 mdefine_line|#define TI_ADDR_LIMIT&t;0x00000014
 macro_line|#endif
+DECL|macro|PREEMPT_ACTIVE
+mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; */
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|INIT_THREAD_INFO
