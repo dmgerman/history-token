@@ -47,9 +47,7 @@ DECL|macro|THROTTLE_JIFFIES
 mdefine_line|#define THROTTLE_JIFFIES&t;(HZ/8)
 singleline_comment|// for vendor-specific control operations
 DECL|macro|CONTROL_TIMEOUT_MS
-mdefine_line|#define&t;CONTROL_TIMEOUT_MS&t;(500)&t;&t;&t;/* msec */
-DECL|macro|CONTROL_TIMEOUT_JIFFIES
-mdefine_line|#define CONTROL_TIMEOUT_JIFFIES ((CONTROL_TIMEOUT_MS * HZ)/1000)
+mdefine_line|#define&t;CONTROL_TIMEOUT_MS&t;500
 singleline_comment|// between wakeups
 DECL|macro|UNLINK_TIMEOUT_MS
 mdefine_line|#define UNLINK_TIMEOUT_MS&t;3
@@ -1026,7 +1024,7 @@ id|data
 comma
 id|size
 comma
-id|CONTROL_TIMEOUT_JIFFIES
+id|CONTROL_TIMEOUT_MS
 )paren
 suffix:semicolon
 )brace
@@ -1088,7 +1086,7 @@ id|data
 comma
 id|size
 comma
-id|CONTROL_TIMEOUT_JIFFIES
+id|CONTROL_TIMEOUT_MS
 )paren
 suffix:semicolon
 )brace
@@ -6109,7 +6107,7 @@ singleline_comment|// data buffer
 l_int|0
 comma
 singleline_comment|// size
-id|CONTROL_TIMEOUT_JIFFIES
+id|CONTROL_TIMEOUT_MS
 )paren
 suffix:semicolon
 r_return
@@ -7215,7 +7213,7 @@ r_sizeof
 op_star
 id|retval_ptr
 comma
-id|CONTROL_TIMEOUT_JIFFIES
+id|CONTROL_TIMEOUT_MS
 )paren
 suffix:semicolon
 r_if
@@ -7325,7 +7323,7 @@ comma
 l_int|0
 comma
 singleline_comment|// data is in setup packet
-id|CONTROL_TIMEOUT_JIFFIES
+id|CONTROL_TIMEOUT_MS
 )paren
 suffix:semicolon
 )brace
@@ -9094,7 +9092,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|CONTROL_TIMEOUT_JIFFIES
+id|CONTROL_TIMEOUT_MS
 )paren
 suffix:semicolon
 )brace
