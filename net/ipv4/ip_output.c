@@ -594,7 +594,6 @@ id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|ip_finish_output
-id|__inline__
 r_int
 id|ip_finish_output
 c_func
@@ -2670,7 +2669,6 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_void
 DECL|function|skb_fill_page_desc
 id|skb_fill_page_desc

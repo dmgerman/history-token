@@ -1067,7 +1067,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Get rid of any references to a local port held by the&n; * given sock.&n; */
 DECL|function|__tcp_put_port
-id|__inline__
+r_static
 r_void
 id|__tcp_put_port
 c_func
@@ -1190,6 +1190,7 @@ id|head-&gt;lock
 suffix:semicolon
 )brace
 DECL|function|tcp_put_port
+id|__inline__
 r_void
 id|tcp_put_port
 c_func

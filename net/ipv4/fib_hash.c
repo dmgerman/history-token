@@ -356,7 +356,7 @@ id|datum
 suffix:semicolon
 )brace
 DECL|function|fn_key_eq
-r_extern
+r_static
 id|__inline__
 r_int
 id|fn_key_eq
@@ -376,7 +376,7 @@ id|b.datum
 suffix:semicolon
 )brace
 DECL|function|fn_key_leq
-r_extern
+r_static
 id|__inline__
 r_int
 id|fn_key_leq
@@ -3084,7 +3084,7 @@ op_minus
 id|ESRCH
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_int
 DECL|function|fn_flush_list
