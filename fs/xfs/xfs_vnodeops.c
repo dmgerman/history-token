@@ -870,6 +870,20 @@ op_star
 id|__return_address
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|vp-&gt;v_vfsp-&gt;vfs_flag
+op_amp
+id|VFS_RDONLY
+)paren
+r_return
+id|XFS_ERROR
+c_func
+(paren
+id|EROFS
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Cannot set certain attributes.&n;&t; */
 id|mask
 op_assign
