@@ -2358,25 +2358,12 @@ op_assign
 id|dev
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Link the device to both the global PCI device chain and&n;&t;&t; * the per-bus list of devices.&n;&t;&t; */
-id|list_add_tail
-c_func
+multiline_comment|/*&n;&t;&t; * Link the device to both the global PCI device chain and&n;&t;&t; * the per-bus list of devices and call /sbin/hotplug if we&n;&t;&t; * should.&n;&t;&t; */
+id|pci_insert_device
 (paren
-op_amp
-id|dev-&gt;global_list
+id|dev
 comma
-op_amp
-id|pci_devices
-)paren
-suffix:semicolon
-id|list_add_tail
-c_func
-(paren
-op_amp
-id|dev-&gt;bus_list
-comma
-op_amp
-id|bus-&gt;devices
+id|bus
 )paren
 suffix:semicolon
 multiline_comment|/* Fix up broken headers */

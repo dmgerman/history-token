@@ -9,6 +9,12 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|PCI_CFG_SPACE_SIZE
 mdefine_line|#define PCI_CFG_SPACE_SIZE 256
+DECL|variable|proc_initialized
+r_static
+r_int
+id|proc_initialized
+suffix:semicolon
+multiline_comment|/* = 0 */
 r_static
 id|loff_t
 DECL|function|proc_bus_pci_lseek
@@ -1921,6 +1927,16 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|proc_initialized
+)paren
+r_return
+op_minus
+id|EACCES
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 (paren
 id|de
 op_assign
@@ -2120,6 +2136,16 @@ op_star
 id|de
 op_assign
 id|bus-&gt;procdir
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|proc_initialized
+)paren
+r_return
+op_minus
+id|EACCES
 suffix:semicolon
 r_if
 c_cond
@@ -2856,6 +2882,10 @@ id|entry-&gt;proc_fops
 op_assign
 op_amp
 id|proc_bus_pci_dev_operations
+suffix:semicolon
+id|proc_initialized
+op_assign
+l_int|1
 suffix:semicolon
 id|pci_for_each_dev
 c_func
