@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#ifdef CONFIG_SECURITY
 DECL|variable|capability_ops
 r_static
 r_struct
@@ -261,5 +260,4 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_SECURITY */
 eof
