@@ -202,29 +202,16 @@ macro_line|#ifndef min
 DECL|macro|min
 mdefine_line|#define min(x,y) ((x) &lt; (y) ? x : y)
 macro_line|#endif
+DECL|macro|pci_dma_hi32
+mdefine_line|#define pci_dma_hi32(a)         ((a &gt;&gt; 16) &gt;&gt; 16)
 DECL|macro|pci_dma_lo32
 mdefine_line|#define pci_dma_lo32(a)         (a &amp; 0xffffffff)
 macro_line|#if (BITS_PER_LONG &gt; 32) || (defined CONFIG_HIGHMEM64G &amp;&amp; defined IPS_HIGHIO)
 DECL|macro|IPS_ENABLE_DMA64
 mdefine_line|#define IPS_ENABLE_DMA64        (1)
-DECL|macro|pci_dma_hi32
-mdefine_line|#define pci_dma_hi32(a)         (a &gt;&gt; 32)
 macro_line|#else
 DECL|macro|IPS_ENABLE_DMA64
 mdefine_line|#define IPS_ENABLE_DMA64        (0)
-DECL|macro|pci_dma_hi32
-mdefine_line|#define pci_dma_hi32(a)         (0)
-macro_line|#endif
-macro_line|#if defined(__ia64__)
-DECL|macro|IPS_ATOMIC_GFP
-mdefine_line|#define IPS_ATOMIC_GFP&t;(GFP_DMA | GFP_ATOMIC)
-DECL|macro|IPS_INIT_GFP
-mdefine_line|#define IPS_INIT_GFP&t;GFP_DMA
-macro_line|#else
-DECL|macro|IPS_ATOMIC_GFP
-mdefine_line|#define IPS_ATOMIC_GFP    GFP_ATOMIC
-DECL|macro|IPS_INIT_GFP
-mdefine_line|#define IPS_INIT_GFP&t;GFP_KERNEL
 macro_line|#endif
 multiline_comment|/*&n;    * Adapter address map equates&n;    */
 DECL|macro|IPS_REG_HISR
@@ -3436,11 +3423,16 @@ r_uint16
 id|subdevice_id
 suffix:semicolon
 multiline_comment|/* Subsystem device ID        */
-DECL|member|ioctl_order
-r_uint8
-id|ioctl_order
+DECL|member|ioctl_len
+r_int
+id|ioctl_len
 suffix:semicolon
-multiline_comment|/* Number of pages in ioctl   */
+multiline_comment|/* size of ioctl buffer       */
+DECL|member|ioctl_busaddr
+id|dma_addr_t
+id|ioctl_busaddr
+suffix:semicolon
+multiline_comment|/* dma address of ioctl buffer*/
 DECL|member|bios_version
 r_uint8
 id|bios_version
@@ -3494,16 +3486,26 @@ op_star
 id|flash_data
 suffix:semicolon
 multiline_comment|/* Save Area for flash data   */
-DECL|member|flash_order
-id|u8
-id|flash_order
+DECL|member|flash_len
+r_int
+id|flash_len
 suffix:semicolon
-multiline_comment|/* Save Area for flash size order */
+multiline_comment|/* length of flash buffer     */
 DECL|member|flash_datasize
 id|u32
 id|flash_datasize
 suffix:semicolon
 multiline_comment|/* Save Area for flash data size */
+DECL|member|flash_busaddr
+id|dma_addr_t
+id|flash_busaddr
+suffix:semicolon
+multiline_comment|/* dma address of flash buffer*/
+DECL|member|enq_busaddr
+id|dma_addr_t
+id|enq_busaddr
+suffix:semicolon
+multiline_comment|/* dma address of enq struct  */
 DECL|member|requires_esl
 r_uint8
 id|requires_esl
