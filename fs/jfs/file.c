@@ -365,7 +365,7 @@ id|file
 r_return
 id|rc
 suffix:semicolon
-multiline_comment|/*&n;&t; * We attempt to allow only one &quot;active&quot; file open per aggregate&n;&t; * group.  Otherwise, appending to files in parallel can cause&n;&t; * fragmentation within the files.&n;&t; */
+multiline_comment|/*&n;&t; * We attempt to allow only one &quot;active&quot; file open per aggregate&n;&t; * group.  Otherwise, appending to files in parallel can cause&n;&t; * fragmentation within the files.&n;&t; *&n;&t; * If the file is empty, it was probably just created and going&n;&t; * to be written to.  If it has a size, we&squot;ll hold off until the&n;&t; * file is actually grown.&n;&t; */
 r_if
 c_cond
 (paren
@@ -378,6 +378,12 @@ op_logical_and
 id|file-&gt;f_mode
 op_amp
 id|FMODE_WRITE
+op_logical_and
+(paren
+id|inode-&gt;i_size
+op_eq
+l_int|0
+)paren
 )paren
 (brace
 r_struct
