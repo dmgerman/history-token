@@ -754,7 +754,7 @@ l_string|&quot;HSV110&quot;
 comma
 l_int|NULL
 comma
-id|BLIST_SPARSELUN
+id|BLIST_REPORTLUN2
 op_or
 id|BLIST_NOSTARTONADD
 )brace
@@ -993,7 +993,7 @@ l_string|&quot;HSV100&quot;
 comma
 l_int|NULL
 comma
-id|BLIST_SPARSELUN
+id|BLIST_REPORTLUN2
 op_or
 id|BLIST_NOSTARTONADD
 )brace
