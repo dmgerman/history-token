@@ -1239,15 +1239,17 @@ r_int
 id|len
 )paren
 (brace
+r_int
+id|unit
+op_assign
+id|sk-&gt;sk_protocol
+op_minus
+id|NETLINK_TAPBASE
+suffix:semicolon
 r_struct
 id|net_device
 op_star
 id|dev
-op_assign
-id|tap_map
-(braket
-id|sk-&gt;sk_protocol
-)braket
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -1257,7 +1259,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unit
+op_ge
+id|max_taps
+op_logical_or
+(paren
 id|dev
+op_assign
+id|tap_map
+(braket
+id|unit
+)braket
+)paren
 op_eq
 l_int|NULL
 )paren
@@ -1266,7 +1279,9 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;ethertap: bad unit!&bslash;n&quot;
+l_string|&quot;ethertap: bad unit %u!&bslash;n&quot;
+comma
+id|unit
 )paren
 suffix:semicolon
 id|skb_queue_purge
