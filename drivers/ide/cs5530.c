@@ -103,8 +103,8 @@ multiline_comment|/*&n; * After chip reset, the PIO timings are set to 0x0000e13
 DECL|macro|CS5530_BAD_PIO
 mdefine_line|#define CS5530_BAD_PIO(timings) (((timings)&amp;~0x80000000)==0x0000e132)
 DECL|macro|CS5530_BASEREG
-mdefine_line|#define CS5530_BASEREG(hwif)&t;(((hwif)-&gt;dma_base &amp; ~0xf) + ((hwif)-&gt;unit ? 0x30 : 0x20))
-multiline_comment|/*&n; * cs5530_tuneproc() handles selection/setting of PIO modes&n; * for both the chipset and drive.&n; *&n; * The ide_init_cs5530() routine guarantees that all drives&n; * will have valid default PIO timings set up before we get here.&n; */
+mdefine_line|#define CS5530_BASEREG(ch)&t;(((ch)-&gt;dma_base &amp; ~0xf) + ((ch)-&gt;unit ? 0x30 : 0x20))
+multiline_comment|/*&n; * Handle selection/setting of PIO modes for both the chipset and drive.&n; *&n; * The ide_init_cs5530() routine guarantees that all drives will have valid&n; * default PIO timings set up before we get here.&n; */
 DECL|function|cs5530_tuneproc
 r_static
 r_void
@@ -120,23 +120,18 @@ id|u8
 id|pio
 )paren
 (brace
-r_struct
-id|ata_channel
-op_star
-id|hwif
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
 r_int
 r_int
 id|format
-comma
+suffix:semicolon
+r_int
+r_int
 id|basereg
 op_assign
 id|CS5530_BASEREG
 c_func
 (paren
-id|hwif
+id|drive-&gt;channel
 )paren
 suffix:semicolon
 r_if
@@ -225,7 +220,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
-multiline_comment|/*&n; * cs5530_config_dma() handles selection/setting of DMA/UDMA modes&n; * for both the chipset and drive.&n; */
+multiline_comment|/*&n; * Handle selection/setting of DMA/UDMA modes for both the chipset and drive.&n; */
 DECL|function|cs5530_config_dma
 r_static
 r_int
@@ -242,7 +237,8 @@ r_int
 id|udma_ok
 op_assign
 l_int|1
-comma
+suffix:semicolon
+r_int
 id|mode
 op_assign
 l_int|0
@@ -250,7 +246,7 @@ suffix:semicolon
 r_struct
 id|ata_channel
 op_star
-id|hwif
+id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
@@ -265,7 +261,7 @@ op_star
 id|mate
 op_assign
 op_amp
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 id|unit
 op_xor
@@ -304,7 +300,7 @@ c_func
 id|inb
 c_func
 (paren
-id|hwif-&gt;dma_base
+id|ch-&gt;dma_base
 op_plus
 l_int|2
 )paren
@@ -319,7 +315,7 @@ suffix:colon
 l_int|0x20
 )paren
 comma
-id|hwif-&gt;dma_base
+id|ch-&gt;dma_base
 op_plus
 l_int|2
 )paren
@@ -416,7 +412,7 @@ op_amp
 l_int|1
 )paren
 op_logical_and
-id|hwif-&gt;autodma
+id|ch-&gt;autodma
 op_logical_and
 op_logical_neg
 id|udma_black_list
@@ -638,7 +634,7 @@ op_assign
 id|CS5530_BASEREG
 c_func
 (paren
-id|hwif
+id|ch
 )paren
 suffix:semicolon
 id|reg
@@ -730,7 +726,7 @@ c_func
 id|inb
 c_func
 (paren
-id|hwif-&gt;dma_base
+id|ch-&gt;dma_base
 op_plus
 l_int|2
 )paren
@@ -744,7 +740,7 @@ suffix:colon
 l_int|0x20
 )paren
 comma
-id|hwif-&gt;dma_base
+id|ch-&gt;dma_base
 op_plus
 l_int|2
 )paren
@@ -811,7 +807,9 @@ op_star
 id|master_0
 op_assign
 l_int|NULL
-comma
+suffix:semicolon
+r_struct
+id|pci_dev
 op_star
 id|cs5530_0
 op_assign
@@ -988,7 +986,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This gets invoked by the IDE driver once for each channel,&n; * and performs channel-specific pre-initialization before drive probing.&n; */
+multiline_comment|/*&n; * This gets invoked once for each channel, and performs channel-specific&n; * pre-initialization before drive probing.&n; */
 DECL|function|ide_init_cs5530
 r_static
 r_void
@@ -999,36 +997,48 @@ c_func
 r_struct
 id|ata_channel
 op_star
-id|hwif
+id|ch
 )paren
 (brace
 id|u32
 id|basereg
-comma
+suffix:semicolon
+id|u32
 id|d0_timings
 suffix:semicolon
-id|hwif-&gt;serialized
+id|ch-&gt;serialized
 op_assign
 l_int|1
+suffix:semicolon
+multiline_comment|/* We think a 64kB transfer is a 0 byte transfer, so set our&n;&t;   segment size to be one sector smaller than 64kB. */
+id|ch-&gt;max_segment_size
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+op_minus
+l_int|512
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
-id|hwif-&gt;dma_base
+id|ch-&gt;dma_base
 )paren
 (brace
-id|hwif-&gt;highmem
+id|ch-&gt;highmem
 op_assign
 l_int|1
 suffix:semicolon
-id|hwif-&gt;udma_setup
+id|ch-&gt;udma_setup
 op_assign
 id|cs5530_udma_setup
 suffix:semicolon
 )brace
 macro_line|#endif
-id|hwif-&gt;tuneproc
+id|ch-&gt;tuneproc
 op_assign
 op_amp
 id|cs5530_tuneproc
@@ -1038,7 +1048,7 @@ op_assign
 id|CS5530_BASEREG
 c_func
 (paren
-id|hwif
+id|ch
 )paren
 suffix:semicolon
 id|d0_timings
@@ -1088,14 +1098,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|0
 )braket
 dot
 id|autotune
 )paren
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|0
 )braket
@@ -1149,14 +1159,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|1
 )braket
 dot
 id|autotune
 )paren
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 l_int|1
 )braket

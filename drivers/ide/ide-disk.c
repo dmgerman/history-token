@@ -2804,8 +2804,6 @@ id|drive
 (brace
 r_return
 id|drive-&gt;capacity
-op_minus
-id|drive-&gt;sect0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is tightly woven into the driver-&gt;special can not touch.&n; * DON&squot;T do it again until a total personality rewrite is committed.&n; */

@@ -446,10 +446,6 @@ id|u8
 id|pio
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -499,19 +495,6 @@ id|pio
 )braket
 )paren
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 id|current_speeds
 (braket
 id|drive-&gt;name
@@ -532,13 +515,6 @@ id|umc_set_speeds
 id|current_speeds
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 )brace
 DECL|function|init_umc8672
 r_void

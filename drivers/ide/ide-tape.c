@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/atapi.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2776,14 +2777,15 @@ op_amp
 id|pc-&gt;flags
 )paren
 suffix:semicolon
-id|ide_stall_queue
+multiline_comment|/* FIXME: we should use timeouts here */
+id|mdelay
 c_func
 (paren
-id|drive
-comma
 id|HZ
 op_div
 l_int|2
+op_star
+l_int|1000
 )paren
 suffix:semicolon
 r_return
@@ -4292,12 +4294,13 @@ id|tape-&gt;postponed_rq
 op_assign
 id|rq
 suffix:semicolon
-id|ide_stall_queue
+multiline_comment|/* FIXME: we should use timeouts here */
+id|mdelay
 c_func
 (paren
-id|drive
-comma
 id|tape-&gt;dsc_polling_frequency
+op_star
+l_int|1000
 )paren
 suffix:semicolon
 )brace

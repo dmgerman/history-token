@@ -1826,7 +1826,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* This command actually looks suspicious, since I couldn&squot;t&n;&t;&t; * find it in any standard document.&n;&t;&t; */
 id|OUT_BYTE
 c_func
 (paren
@@ -1847,7 +1846,7 @@ suffix:semicolon
 id|OUT_BYTE
 c_func
 (paren
-id|WIN_NOP
+l_int|0x00
 comma
 id|ch-&gt;io_ports
 (braket
@@ -1916,40 +1915,6 @@ r_return
 id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is used by a drive to give excess bandwidth back by sleeping for&n; * timeout jiffies.&n; */
-DECL|function|ide_stall_queue
-r_void
-id|ide_stall_queue
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-comma
-r_int
-r_int
-id|timeout
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|timeout
-OG
-id|WAIT_WORSTCASE
-)paren
-id|timeout
-op_assign
-id|WAIT_WORSTCASE
-suffix:semicolon
-id|drive-&gt;sleep
-op_assign
-id|timeout
-op_plus
-id|jiffies
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Issue a new request.&n; * Caller must have already done spin_lock_irqsave(channel-&gt;lock, ...)&n; */
 DECL|function|do_ide_request
 r_void
@@ -1961,6 +1926,7 @@ op_star
 id|q
 )paren
 (brace
+multiline_comment|/* FIXME: queuedata should contain the device instead.&n;&t; */
 r_struct
 id|ata_channel
 op_star
@@ -1982,11 +1948,6 @@ id|channel-&gt;active
 )paren
 (brace
 r_struct
-id|ata_channel
-op_star
-id|ch
-suffix:semicolon
-r_struct
 id|ata_device
 op_star
 id|drive
@@ -2000,7 +1961,98 @@ suffix:semicolon
 id|ide_startstop_t
 id|ret
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Select the next device which will be serviced.  This selects&n;&t;&t; * only between devices on the same channel, since everything&n;&t;&t; * else will be scheduled on the queue level.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Select the device corresponding to the queue.&n;&t;&t; */
+r_for
+c_loop
+(paren
+id|unit
+op_assign
+l_int|0
+suffix:semicolon
+id|unit
+OL
+id|MAX_DRIVES
+suffix:semicolon
+op_increment
+id|unit
+)paren
+(brace
+r_struct
+id|ata_device
+op_star
+id|tmp
+op_assign
+op_amp
+id|channel-&gt;drives
+(braket
+id|unit
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_amp
+id|tmp-&gt;queue
+op_eq
+id|q
+)paren
+(brace
+id|drive
+op_assign
+id|tmp
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|drive
+)paren
+(brace
+multiline_comment|/* No request pending?! */
+r_if
+c_cond
+(paren
+id|blk_queue_empty
+c_func
+(paren
+op_amp
+id|drive-&gt;queue
+)paren
+)paren
+id|drive
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* Still resorting requests?! */
+r_else
+r_if
+c_cond
+(paren
+id|blk_queue_plugged
+c_func
+(paren
+op_amp
+id|drive-&gt;queue
+)paren
+)paren
+id|drive
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drive
+)paren
+(brace
+multiline_comment|/* We should never get here! */
+multiline_comment|/* Unless someone called us from IRQ context after&n;&t;&t;&t; * finishing the actual request already. (Shrug!)&n;&t;&t;&t; */
+singleline_comment|// printk(KERN_INFO &quot;no device found!&bslash;n&quot;);
 r_for
 c_loop
 (paren
@@ -2035,7 +2087,7 @@ id|tmp-&gt;present
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* There are no requests pending for this device.&n;&t;&t;&t; */
+multiline_comment|/* There are no requests pending for this&n;&t;&t;&t;&t; * device.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2048,50 +2100,13 @@ id|tmp-&gt;queue
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* This device still wants to remain idle.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|tmp-&gt;sleep
-op_logical_and
-id|time_after
-c_func
-(paren
-id|tmp-&gt;sleep
-comma
-id|jiffies
-)paren
-)paren
-r_continue
-suffix:semicolon
-multiline_comment|/* Take this device, if there is no device choosen thus&n;&t;&t;&t; * far or which is more urgent.&n;&t;&t;&t; */
+multiline_comment|/* Take this device, if there is no device&n;&t;&t;&t;&t; * choosen thus far and the queue is ready for&n;&t;&t;&t;&t; * processing.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|drive
-op_logical_or
-(paren
-id|tmp-&gt;sleep
 op_logical_and
-(paren
-op_logical_neg
-id|drive-&gt;sleep
-op_logical_or
-id|time_after
-c_func
-(paren
-id|drive-&gt;sleep
-comma
-id|tmp-&gt;sleep
-)paren
-)paren
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
 op_logical_neg
 id|blk_queue_plugged
 c_func
@@ -2113,140 +2128,7 @@ op_logical_neg
 id|drive
 )paren
 (brace
-r_int
-r_int
-id|sleep
-op_assign
-l_int|0
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|unit
-op_assign
-l_int|0
-suffix:semicolon
-id|unit
-OL
-id|MAX_DRIVES
-suffix:semicolon
-op_increment
-id|unit
-)paren
-(brace
-r_struct
-id|ata_device
-op_star
-id|tmp
-op_assign
-op_amp
-id|channel-&gt;drives
-(braket
-id|unit
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|tmp-&gt;present
-)paren
-r_continue
-suffix:semicolon
-multiline_comment|/* This device is sleeping and waiting to be serviced&n;&t;&t;&t;&t; * earlier than any other device we checked thus far.&n;&t;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|tmp-&gt;sleep
-op_logical_and
-(paren
-op_logical_neg
-id|sleep
-op_logical_or
-id|time_after
-c_func
-(paren
-id|sleep
-comma
-id|tmp-&gt;sleep
-)paren
-)paren
-)paren
-id|sleep
-op_assign
-id|tmp-&gt;sleep
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|sleep
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Take a short snooze, and then wake up again.  Just&n;&t;&t;&t;&t; * in case there are big differences in relative&n;&t;&t;&t;&t; * throughputs.. don&squot;t want to hog the cpu too much.&n;&t;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|time_after
-c_func
-(paren
-id|jiffies
-comma
-id|sleep
-op_minus
-id|WAIT_MIN_SLEEP
-)paren
-)paren
-id|sleep
-op_assign
-id|jiffies
-op_plus
-id|WAIT_MIN_SLEEP
-suffix:semicolon
-macro_line|#if 1
-r_if
-c_cond
-(paren
-id|timer_pending
-c_func
-(paren
-op_amp
-id|channel-&gt;timer
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: timer already active&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-macro_line|#endif
-id|set_bit
-c_func
-(paren
-id|IDE_SLEEP
-comma
-id|channel-&gt;active
-)paren
-suffix:semicolon
-id|mod_timer
-c_func
-(paren
-op_amp
-id|channel-&gt;timer
-comma
-id|sleep
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * We purposely leave us busy while sleeping becouse we&n;&t;&t;&t;&t; * are prepared to handle the IRQ from it.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * FIXME: Make sure sleeping can&squot;t interferre with&n;&t;&t;&t;&t; * operations of other devices on the same channel.&n;&t;&t;&t;&t; */
-)brace
-r_else
-(brace
-multiline_comment|/* FIXME: use queue plugging instead of active to block&n;&t;&t;&t;&t; * upper layers from stomping on us */
-multiline_comment|/* Ugly, but how can we sleep for the lock otherwise?&n;&t;&t;&t;&t; * */
+multiline_comment|/* Ugly, but how can we sleep for the lock otherwise?&n;&t;&t;&t; */
 id|ide_release_lock
 c_func
 (paren
@@ -2263,7 +2145,7 @@ comma
 id|channel-&gt;active
 )paren
 suffix:semicolon
-multiline_comment|/* All requests are done.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * Disable IRQs from the last drive on this channel, to&n;&t;&t;&t;&t; * make sure that it wan&squot;t throw stones at us when we&n;&t;&t;&t;&t; * are not prepared to take them.&n;&t;&t;&t;&t; */
+multiline_comment|/* All requests are done.&n;&t;&t;&t; *&n;&t;&t;&t; * Disable IRQs from the last drive on this channel, to&n;&t;&t;&t; * make sure that it wan&squot;t throw stones at us when we&n;&t;&t;&t; * are not prepared to take them.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2280,16 +2162,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Remember the last drive we where acting on.&n;&t;&t; */
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
-id|ch-&gt;drive
+id|channel-&gt;drive
 op_assign
 id|drive
 suffix:semicolon
@@ -2303,10 +2180,7 @@ id|rq
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sector_t
-id|block
-suffix:semicolon
-multiline_comment|/* Abort early if we can&squot;t queue another command. for non tcq,&n;&t;&t;&t; * ata_can_queue is always 1 since we never get here unless the&n;&t;&t;&t; * drive is idle.&n;&t;&t;&t; */
+multiline_comment|/* Abort early if we can&squot;t queue another command. for&n;&t;&t;&t; * non tcq, ata_can_queue is always 1 since we never&n;&t;&t;&t; * get here unless the drive is idle.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2334,7 +2208,7 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-id|ch-&gt;active
+id|channel-&gt;active
 )paren
 suffix:semicolon
 r_if
@@ -2354,10 +2228,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|drive-&gt;sleep
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2366,7 +2236,7 @@ c_func
 (paren
 id|IDE_DMA
 comma
-id|ch-&gt;active
+id|channel-&gt;active
 )paren
 )paren
 (brace
@@ -2382,7 +2252,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* There&squot;s a small window between where the queue could be&n;&t;&t;&t; * replugged while we are in here when using tcq (in which case&n;&t;&t;&t; * the queue is probably empty anyways...), so check and leave&n;&t;&t;&t; * if appropriate. When not using tcq, this is still a severe&n;&t;&t;&t; * BUG!&n;&t;&t;&t; */
+multiline_comment|/* There&squot;s a small window between where the queue could&n;&t;&t;&t; * be replugged while we are in here when using tcq (in&n;&t;&t;&t; * which case the queue is probably empty anyways...),&n;&t;&t;&t; * so check and leave if appropriate. When not using&n;&t;&t;&t; * tcq, this is still a severe BUG!&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2436,7 +2306,7 @@ c_func
 (paren
 id|IDE_BUSY
 comma
-id|ch-&gt;active
+id|channel-&gt;active
 )paren
 suffix:semicolon
 r_if
@@ -2486,7 +2356,7 @@ suffix:semicolon
 id|spin_unlock
 c_func
 (paren
-id|ch-&gt;lock
+id|channel-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* allow other IRQs while we start this request */
@@ -2507,24 +2377,6 @@ id|REQ_STARTED
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;%s: %s: current=0x%08lx&bslash;n&quot;
-comma
-id|ch-&gt;name
-comma
-id|__FUNCTION__
-comma
-(paren
-r_int
-r_int
-)paren
-id|rq
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* bail early if we&squot;ve exceeded max_failures */
 r_if
 c_cond
@@ -2540,50 +2392,6 @@ id|drive-&gt;max_failures
 r_goto
 id|kill_rq
 suffix:semicolon
-id|block
-op_assign
-id|rq-&gt;sector
-suffix:semicolon
-multiline_comment|/* Strange disk manager remap.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|rq-&gt;flags
-op_amp
-id|REQ_CMD
-)paren
-r_if
-c_cond
-(paren
-id|drive-&gt;type
-op_eq
-id|ATA_DISK
-op_logical_or
-id|drive-&gt;type
-op_eq
-id|ATA_FLOPPY
-)paren
-id|block
-op_add_assign
-id|drive-&gt;sect0
-suffix:semicolon
-multiline_comment|/* Yecch - this will shift the entire interval, possibly killing some&n;&t;&t;&t; * innocent following sector.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|block
-op_eq
-l_int|0
-op_logical_and
-id|drive-&gt;remap_0_to_1
-op_eq
-l_int|1
-)paren
-id|block
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* redirect MBR access to EZ-Drive partn table */
 id|ata_select
 c_func
 (paren
@@ -2669,7 +2477,6 @@ id|drive
 op_member_access_from_pointer
 id|do_request
 )paren
-(brace
 id|ret
 op_assign
 id|ata_ops
@@ -2685,10 +2492,9 @@ id|drive
 comma
 id|rq
 comma
-id|block
+id|rq-&gt;sector
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 id|kill_rq
@@ -2747,7 +2553,7 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-id|ch-&gt;lock
+id|channel-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* continue if command started, so we are busy */
@@ -2760,9 +2566,6 @@ op_ne
 id|ATA_OP_CONTINUES
 )paren
 suffix:semicolon
-multiline_comment|/* make sure the BUSY bit is set */
-multiline_comment|/* FIXME: perhaps there is some place where we miss to set it? */
-singleline_comment|//&t;&t;set_bit(IDE_BUSY, ch-&gt;active);
 )brace
 )brace
 multiline_comment|/*&n; * This is our timeout function for all drive operations.  But note that it can&n; * also be invoked as a result of a &quot;sleep&quot; operation triggered by the&n; * mod_timer() call in do_ide_request.&n; *&n; * FIXME: This should take a drive context instead of a channel.&n; * FIXME: This should not explicitly reenter the request handling engine.&n; */
@@ -4214,13 +4017,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ata_end_request
-)paren
-suffix:semicolon
-DECL|variable|ide_stall_queue
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_stall_queue
 )paren
 suffix:semicolon
 DECL|variable|ide_setup_ports
