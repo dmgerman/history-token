@@ -5730,22 +5730,13 @@ op_or_assign
 id|_PAGE_PCD
 suffix:semicolon
 macro_line|#elif defined(__mips__)
-id|pgprot_val
+id|vma-&gt;vm_page_prot
+op_assign
+id|pgprot_noncached
 c_func
 (paren
 id|vma-&gt;vm_page_prot
 )paren
-op_and_assign
-op_complement
-id|_CACHE_MASK
-suffix:semicolon
-id|pgprot_val
-c_func
-(paren
-id|vma-&gt;vm_page_prot
-)paren
-op_or_assign
-id|_CACHE_UNCACHED
 suffix:semicolon
 macro_line|#elif defined(__hppa__)
 id|pgprot_val
