@@ -345,6 +345,19 @@ op_amp
 id|pcspkr_dev
 )paren
 suffix:semicolon
+multiline_comment|/* turn off the speaker */
+id|pcspkr_event
+c_func
+(paren
+l_int|NULL
+comma
+id|EV_SND
+comma
+id|SND_BELL
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
 DECL|variable|pcspkr_init
 id|module_init
