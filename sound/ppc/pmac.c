@@ -819,10 +819,24 @@ comma
 id|RUN
 )paren
 suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
+)paren
+suffix:semicolon
 id|mdelay
 c_func
 (paren
 l_int|5
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 multiline_comment|/* continuous DMA memory type doesn&squot;t provide the physical address,&n;&t; * so we need to resolve the address here...&n;&t; */
