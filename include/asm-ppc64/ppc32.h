@@ -118,7 +118,6 @@ r_typedef
 r_int
 id|__kernel_loff_t32
 suffix:semicolon
-multiline_comment|/* typedef __kernel_fsid_t        __kernel_fsid_t32; */
 DECL|struct|statfs32
 r_struct
 id|statfs32
@@ -210,7 +209,7 @@ DECL|member|_pad
 r_int
 id|_pad
 (braket
-id|SI_PAD_SIZE
+id|SI_PAD_SIZE32
 )braket
 suffix:semicolon
 multiline_comment|/* kill() */
@@ -222,8 +221,7 @@ id|_pid
 suffix:semicolon
 multiline_comment|/* sender&squot;s pid */
 DECL|member|_uid
-r_int
-r_int
+id|__kernel_uid_t32
 id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
@@ -257,8 +255,7 @@ id|_pid
 suffix:semicolon
 multiline_comment|/* sender&squot;s pid */
 DECL|member|_uid
-r_int
-r_int
+id|__kernel_uid_t32
 id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
@@ -279,8 +276,7 @@ id|_pid
 suffix:semicolon
 multiline_comment|/* which child */
 DECL|member|_uid
-r_int
-r_int
+id|__kernel_uid_t32
 id|_uid
 suffix:semicolon
 multiline_comment|/* sender&squot;s uid */
@@ -305,7 +301,8 @@ multiline_comment|/* SIGILL, SIGFPE, SIGSEGV, SIGBUS, SIGEMT */
 r_struct
 (brace
 DECL|member|_addr
-id|u32
+r_int
+r_int
 id|_addr
 suffix:semicolon
 multiline_comment|/* faulting insn/memory ref. */
@@ -405,7 +402,7 @@ r_int
 r_int
 id|sa_handler
 suffix:semicolon
-multiline_comment|/* Really a pointer, but need to deal &n;&t;&t;&t;&t;&t;     with 32 bits */
+multiline_comment|/* Really a pointer, but need to deal with 32 bits */
 DECL|member|sa_flags
 r_int
 r_int
@@ -700,6 +697,21 @@ id|sigset_t
 id|uc_sigmask
 suffix:semicolon
 multiline_comment|/* mask last for extensibility */
+)brace
+suffix:semicolon
+DECL|struct|ipc_kludge_32
+r_struct
+id|ipc_kludge_32
+(brace
+DECL|member|msgp
+r_int
+r_int
+id|msgp
+suffix:semicolon
+DECL|member|msgtyp
+r_int
+id|msgtyp
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif  /* _PPC64_PPC32_H */

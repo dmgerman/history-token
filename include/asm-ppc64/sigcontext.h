@@ -19,6 +19,10 @@ DECL|member|signal
 r_int
 id|signal
 suffix:semicolon
+DECL|member|_pad0
+r_int
+id|_pad0
+suffix:semicolon
 DECL|member|handler
 r_int
 r_int

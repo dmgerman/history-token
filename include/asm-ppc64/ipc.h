@@ -1,17 +1,19 @@
 macro_line|#ifndef __PPC64_IPC_H__
 DECL|macro|__PPC64_IPC_H__
 mdefine_line|#define __PPC64_IPC_H__
-multiline_comment|/* &n; * These are used to wrap system calls on PowerPC.&n; *&n; * See arch/ppc/kernel/syscalls.c for ugly details..&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/* &n; * These are used to wrap system calls on PowerPC.&n; *&n; * See arch/ppc64/kernel/syscalls.c for ugly details..&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 DECL|struct|ipc_kludge
 r_struct
 id|ipc_kludge
 (brace
 DECL|member|msgp
-id|u32
+r_struct
+id|msgbuf
+op_star
 id|msgp
 suffix:semicolon
 DECL|member|msgtyp
-id|s32
+r_int
 id|msgtyp
 suffix:semicolon
 )brace

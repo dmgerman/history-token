@@ -222,11 +222,9 @@ id|diff
 op_eq
 l_int|0
 )paren
-(brace
 r_return
 id|mid-&gt;fixup
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
