@@ -53,7 +53,7 @@ id|r1bio_t
 op_star
 id|r1_bio
 suffix:semicolon
-multiline_comment|/* allocate a r1bio with room for raid_disks entries in the write_bios array */
+multiline_comment|/* allocate a r1bio with room for raid_disks entries in the bios array */
 id|r1_bio
 op_assign
 id|kmalloc
@@ -501,40 +501,6 @@ id|r1_bio
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|r1_bio-&gt;read_bio
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|r1_bio-&gt;read_bio-&gt;bi_cnt
-)paren
-op_ne
-l_int|1
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-id|bio_put
-c_func
-(paren
-id|r1_bio-&gt;read_bio
-)paren
-suffix:semicolon
-id|r1_bio-&gt;read_bio
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -556,7 +522,7 @@ op_star
 op_star
 id|bio
 op_assign
-id|r1_bio-&gt;write_bios
+id|r1_bio-&gt;bios
 op_plus
 id|i
 suffix:semicolon
@@ -566,29 +532,6 @@ c_cond
 op_star
 id|bio
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-(paren
-op_star
-id|bio
-)paren
-op_member_access_from_pointer
-id|bi_cnt
-)paren
-op_ne
-l_int|1
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|bio_put
 c_func
 (paren
@@ -596,7 +539,6 @@ op_star
 id|bio
 )paren
 suffix:semicolon
-)brace
 op_star
 id|bio
 op_assign
@@ -1199,17 +1141,6 @@ comma
 id|r1_bio
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|r1_bio-&gt;read_bio
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * we have only one bio on the read side&n;&t; */
 r_if
 c_cond
@@ -1362,7 +1293,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|r1_bio-&gt;write_bios
+id|r1_bio-&gt;bios
 (braket
 id|mirror
 )braket
@@ -1408,16 +1339,6 @@ c_func
 id|mirror
 comma
 id|r1_bio
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|r1_bio-&gt;read_bio
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&n;&t; * Let&squot;s see if all mirrored write operations have finished&n;&t; * already.&n;&t; */
@@ -2127,17 +2048,10 @@ comma
 id|GFP_NOIO
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|r1_bio-&gt;read_bio
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-id|r1_bio-&gt;read_bio
+id|r1_bio-&gt;bios
+(braket
+id|r1_bio-&gt;read_disk
+)braket
 op_assign
 id|read_bio
 suffix:semicolon
@@ -2174,7 +2088,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * WRITE:&n;&t; */
-multiline_comment|/* first select target devices under spinlock and&n;&t; * inc refcount on their rdev.  Record them by setting&n;&t; * write_bios[x] to bio&n;&t; */
+multiline_comment|/* first select target devices under spinlock and&n;&t; * inc refcount on their rdev.  Record them by setting&n;&t; * bios[x] to bio&n;&t; */
 id|spin_lock_irq
 c_func
 (paren
@@ -2228,7 +2142,7 @@ dot
 id|rdev-&gt;nr_pending
 )paren
 suffix:semicolon
-id|r1_bio-&gt;write_bios
+id|r1_bio-&gt;bios
 (braket
 id|i
 )braket
@@ -2237,7 +2151,7 @@ id|bio
 suffix:semicolon
 )brace
 r_else
-id|r1_bio-&gt;write_bios
+id|r1_bio-&gt;bios
 (braket
 id|i
 )braket
@@ -2291,7 +2205,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|r1_bio-&gt;write_bios
+id|r1_bio-&gt;bios
 (braket
 id|i
 )braket
@@ -2308,7 +2222,7 @@ comma
 id|GFP_NOIO
 )paren
 suffix:semicolon
-id|r1_bio-&gt;write_bios
+id|r1_bio-&gt;bios
 (braket
 id|i
 )braket
@@ -3167,7 +3081,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|r1_bio-&gt;read_bio
+id|r1_bio-&gt;bios
+(braket
+id|r1_bio-&gt;read_disk
+)braket
 op_ne
 id|bio
 )paren
@@ -3328,7 +3245,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|r1_bio-&gt;write_bios
+id|r1_bio-&gt;bios
 (braket
 id|i
 )braket
@@ -3549,7 +3466,7 @@ id|i
 op_increment
 )paren
 (brace
-id|r1_bio-&gt;write_bios
+id|r1_bio-&gt;bios
 (braket
 id|i
 )braket
@@ -3579,14 +3496,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|conf-&gt;mirrors
-(braket
 id|i
-)braket
-dot
-id|rdev-&gt;bdev
 op_eq
-id|bio-&gt;bi_bdev
+id|r1_bio-&gt;read_disk
 )paren
 multiline_comment|/*&n;&t;&t;&t; * we read from here, no need to write&n;&t;&t;&t; */
 r_continue
@@ -3626,7 +3538,7 @@ dot
 id|rdev-&gt;nr_pending
 )paren
 suffix:semicolon
-id|r1_bio-&gt;write_bios
+id|r1_bio-&gt;bios
 (braket
 id|i
 )braket
@@ -3666,7 +3578,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|r1_bio-&gt;write_bios
+id|r1_bio-&gt;bios
 (braket
 id|i
 )braket
@@ -3683,7 +3595,7 @@ comma
 id|GFP_NOIO
 )paren
 suffix:semicolon
-id|r1_bio-&gt;write_bios
+id|r1_bio-&gt;bios
 (braket
 id|i
 )braket
@@ -4467,17 +4379,10 @@ id|read_bio-&gt;bi_private
 op_assign
 id|r1_bio
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|r1_bio-&gt;read_bio
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-id|r1_bio-&gt;read_bio
+id|r1_bio-&gt;bios
+(braket
+id|r1_bio-&gt;read_disk
+)braket
 op_assign
 id|read_bio
 suffix:semicolon

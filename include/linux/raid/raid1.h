@@ -140,34 +140,22 @@ id|bio
 op_star
 id|master_bio
 suffix:semicolon
-multiline_comment|/*&n;&t; * if the IO is in READ direction, then this bio is used:&n;&t; */
-DECL|member|read_bio
-r_struct
-id|bio
-op_star
-id|read_bio
-suffix:semicolon
+multiline_comment|/*&n;&t; * if the IO is in READ direction, then this is where we read&n;&t; */
 DECL|member|read_disk
 r_int
 id|read_disk
 suffix:semicolon
-DECL|member|next_r1
-id|r1bio_t
-op_star
-id|next_r1
-suffix:semicolon
-multiline_comment|/* next for retry or in free list */
 DECL|member|retry_list
 r_struct
 id|list_head
 id|retry_list
 suffix:semicolon
 multiline_comment|/*&n;&t; * if the IO is in WRITE direction, then multiple bios are used.&n;&t; * We choose the number when they are allocated.&n;&t; */
-DECL|member|write_bios
+DECL|member|bios
 r_struct
 id|bio
 op_star
-id|write_bios
+id|bios
 (braket
 l_int|0
 )braket
