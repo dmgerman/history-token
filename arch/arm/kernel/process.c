@@ -1100,9 +1100,18 @@ id|tsk
 op_assign
 id|current
 suffix:semicolon
-id|tsk-&gt;used_math
-op_assign
+id|memset
+c_func
+(paren
+id|thread-&gt;used_cp
+comma
 l_int|0
+comma
+r_sizeof
+(paren
+id|thread-&gt;used_cp
+)paren
+)paren
 suffix:semicolon
 id|memset
 c_func
@@ -1296,7 +1305,15 @@ suffix:semicolon
 r_int
 id|used_math
 op_assign
-id|current-&gt;used_math
+id|thread-&gt;used_cp
+(braket
+l_int|1
+)braket
+op_or
+id|thread-&gt;used_cp
+(braket
+l_int|2
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -1320,6 +1337,8 @@ id|fp
 suffix:semicolon
 r_return
 id|used_math
+op_ne
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * fill in the user structure for a core dump..&n; */
