@@ -192,7 +192,7 @@ DECL|member|POx_DM_SOURCE
 id|io7_csr
 id|POx_DM_SOURCE
 suffix:semicolon
-multiline_comment|/* ox0200 */
+multiline_comment|/* 0x0200 */
 DECL|member|POx_DM_DEST
 id|io7_csr
 id|POx_DM_DEST
@@ -201,9 +201,9 @@ DECL|member|POx_DM_SIZE
 id|io7_csr
 id|POx_DM_SIZE
 suffix:semicolon
-DECL|member|POx_DM_STATE
+DECL|member|POx_DM_CTRL
 id|io7_csr
-id|POx_DM_STATE
+id|POx_DM_CTRL
 suffix:semicolon
 DECL|member|rsvd2
 id|io7_csr

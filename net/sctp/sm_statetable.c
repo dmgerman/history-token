@@ -190,6 +190,30 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* state_fn_t chunk_event_table[][] */
+DECL|macro|TYPE_SCTP_ASCONF
+mdefine_line|#define TYPE_SCTP_ASCONF { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_ootb, .name = &quot;sctp_sf_ootb&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_do_asconf, .name = &quot;sctp_sf_do_asconf&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;} /* TYPE_SCTP_ASCONF */
+DECL|macro|TYPE_SCTP_ASCONF_ACK
+mdefine_line|#define TYPE_SCTP_ASCONF_ACK { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_ootb, .name = &quot;sctp_sf_ootb&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_do_asconf_ack, .name = &quot;sctp_sf_do_asconf_ack&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;} /* TYPE_SCTP_ASCONF_ACK */
+multiline_comment|/* The primary index for this table is the chunk type.&n; * The secondary index for this table is the state.&n; */
+DECL|variable|addip_chunk_event_table
+r_const
+id|sctp_sm_table_entry_t
+id|addip_chunk_event_table
+(braket
+id|SCTP_NUM_ADDIP_CHUNK_TYPES
+)braket
+(braket
+id|SCTP_STATE_NUM_STATES
+)braket
+op_assign
+(brace
+id|TYPE_SCTP_ASCONF
+comma
+id|TYPE_SCTP_ASCONF_ACK
+comma
+)brace
+suffix:semicolon
+multiline_comment|/*state_fn_t addip_chunk_event_table[][] */
 r_static
 r_const
 id|sctp_sm_table_entry_t
@@ -330,6 +354,8 @@ DECL|macro|TYPE_SCTP_PRIMITIVE_SEND
 mdefine_line|#define TYPE_SCTP_PRIMITIVE_SEND  { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_bug, .name = &quot;sctp_sf_bug&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_error_closed, .name = &quot;sctp_sf_error_closed&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_send, .name = &quot;sctp_sf_do_prm_send&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_send, .name = &quot;sctp_sf_do_prm_send&quot;}, &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_send, .name = &quot;sctp_sf_do_prm_send&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_error_shutdown, .name = &quot;sctp_sf_error_shutdown&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_error_shutdown, .name = &quot;sctp_sf_error_shutdown&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_error_shutdown, .name = &quot;sctp_sf_error_shutdown&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_error_shutdown, .name = &quot;sctp_sf_error_shutdown&quot;}, &bslash;&n;} /* TYPE_SCTP_PRIMITIVE_SEND */
 DECL|macro|TYPE_SCTP_PRIMITIVE_REQUESTHEARTBEAT
 mdefine_line|#define TYPE_SCTP_PRIMITIVE_REQUESTHEARTBEAT  { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_bug, .name = &quot;sctp_sf_bug&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_bug, .name = &quot;sctp_sf_bug&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_requestheartbeat,&t;&t;      &bslash;&n;&t; .name = &quot;sctp_sf_do_prm_requestheartbeat&quot;},          &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_requestheartbeat,&t;&t;      &bslash;&n;&t; .name = &quot;sctp_sf_do_prm_requestheartbeat&quot;},          &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_requestheartbeat,&t;&t;      &bslash;&n;&t; .name = &quot;sctp_sf_do_prm_requestheartbeat&quot;},          &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_requestheartbeat,&t;&t;      &bslash;&n;&t; .name = &quot;sctp_sf_do_prm_requestheartbeat&quot;},          &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_requestheartbeat,&t;&t;      &bslash;&n;&t; .name = &quot;sctp_sf_do_prm_requestheartbeat&quot;},          &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_requestheartbeat,&t;&t;      &bslash;&n;&t; .name = &quot;sctp_sf_do_prm_requestheartbeat&quot;},          &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_requestheartbeat,&t;&t;      &bslash;&n;&t; .name = &quot;sctp_sf_do_prm_requestheartbeat&quot;},          &bslash;&n;} /* TYPE_SCTP_PRIMITIVE_REQUESTHEARTBEAT */
+DECL|macro|TYPE_SCTP_PRIMITIVE_ASCONF
+mdefine_line|#define TYPE_SCTP_PRIMITIVE_ASCONF { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_bug, .name = &quot;sctp_sf_bug&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_error_closed, .name = &quot;sctp_sf_error_closed&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_error_closed, .name = &quot;sctp_sf_error_closed&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_error_closed, .name = &quot;sctp_sf_error_closed&quot;}, &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_asconf, .name = &quot;sctp_sf_do_prm_asconf&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_error_shutdown, .name = &quot;sctp_sf_error_shutdown&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_error_shutdown, .name = &quot;sctp_sf_error_shutdown&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_error_shutdown, .name = &quot;sctp_sf_error_shutdown&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_error_shutdown, .name = &quot;sctp_sf_error_shutdown&quot;}, &bslash;&n;} /* TYPE_SCTP_PRIMITIVE_REQUESTHEARTBEAT */
 multiline_comment|/* The primary index for this table is the primitive type.&n; * The secondary index for this table is the state.&n; */
 DECL|variable|primitive_event_table
 r_const
@@ -352,6 +378,8 @@ comma
 id|TYPE_SCTP_PRIMITIVE_SEND
 comma
 id|TYPE_SCTP_PRIMITIVE_REQUESTHEARTBEAT
+comma
+id|TYPE_SCTP_PRIMITIVE_ASCONF
 comma
 )brace
 suffix:semicolon
@@ -383,6 +411,8 @@ DECL|macro|TYPE_SCTP_EVENT_TIMEOUT_T2_SHUTDOWN
 mdefine_line|#define TYPE_SCTP_EVENT_TIMEOUT_T2_SHUTDOWN { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_bug, .name = &quot;sctp_sf_bug&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_t2_timer_expire, .name = &quot;sctp_sf_t2_timer_expire&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_t2_timer_expire, .name = &quot;sctp_sf_t2_timer_expire&quot;}, &bslash;&n;}
 DECL|macro|TYPE_SCTP_EVENT_TIMEOUT_T3_RTX
 mdefine_line|#define TYPE_SCTP_EVENT_TIMEOUT_T3_RTX { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_bug, .name = &quot;sctp_sf_bug&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_do_6_3_3_rtx, .name = &quot;sctp_sf_do_6_3_3_rtx&quot;}, &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_do_6_3_3_rtx, .name = &quot;sctp_sf_do_6_3_3_rtx&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_do_6_3_3_rtx, .name = &quot;sctp_sf_do_6_3_3_rtx&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_do_6_3_3_rtx, .name = &quot;sctp_sf_do_6_3_3_rtx&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;}
+DECL|macro|TYPE_SCTP_EVENT_TIMEOUT_T4_RTO
+mdefine_line|#define TYPE_SCTP_EVENT_TIMEOUT_T4_RTO { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_bug, .name = &quot;sctp_sf_bug&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_t4_timer_expire, .name = &quot;sctp_sf_t4_timer_expire&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;}
 DECL|macro|TYPE_SCTP_EVENT_TIMEOUT_T5_SHUTDOWN_GUARD
 mdefine_line|#define TYPE_SCTP_EVENT_TIMEOUT_T5_SHUTDOWN_GUARD { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_bug, .name = &quot;sctp_sf_bug&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_t5_timer_expire, .name = &quot;sctp_sf_t5_timer_expire&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_t5_timer_expire, .name = &quot;sctp_sf_t5_timer_expire&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;}
 DECL|macro|TYPE_SCTP_EVENT_TIMEOUT_HEARTBEAT
@@ -412,6 +442,8 @@ comma
 id|TYPE_SCTP_EVENT_TIMEOUT_T2_SHUTDOWN
 comma
 id|TYPE_SCTP_EVENT_TIMEOUT_T3_RTX
+comma
+id|TYPE_SCTP_EVENT_TIMEOUT_T4_RTO
 comma
 id|TYPE_SCTP_EVENT_TIMEOUT_T5_SHUTDOWN_GUARD
 comma
@@ -465,6 +497,31 @@ op_amp
 id|chunk_event_table
 (braket
 id|cid
+)braket
+(braket
+id|state
+)braket
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|cid
+op_ge
+id|SCTP_CID_ADDIP_MIN
+op_logical_and
+id|cid
+op_le
+id|SCTP_CID_ADDIP_MAX
+)paren
+(brace
+r_return
+op_amp
+id|addip_chunk_event_table
+(braket
+id|cid
+op_minus
+id|SCTP_CID_ADDIP_MIN
 )braket
 (braket
 id|state

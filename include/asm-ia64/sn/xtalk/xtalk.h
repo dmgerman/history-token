@@ -8,7 +8,7 @@ multiline_comment|/*&n; * xtalk.h -- platform-independent crosstalk interface&n;
 multiline_comment|/*&n; * User-level device driver visible types&n; */
 DECL|typedef|xwidgetnum_t
 r_typedef
-r_char
+r_int
 id|xwidgetnum_t
 suffix:semicolon
 multiline_comment|/* xtalk widget number  (0..15) */

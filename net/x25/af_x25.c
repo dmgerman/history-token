@@ -1327,12 +1327,15 @@ id|sk-&gt;sk_timer
 suffix:semicolon
 )brace
 r_else
-id|sk_free
+(brace
+multiline_comment|/* drop last reference so sock_put will free */
+id|__sock_put
 c_func
 (paren
 id|sk
 )paren
 suffix:semicolon
+)brace
 id|release_sock
 c_func
 (paren
@@ -2221,7 +2224,8 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-r_break
+r_goto
+id|out
 suffix:semicolon
 r_case
 id|X25_STATE_1

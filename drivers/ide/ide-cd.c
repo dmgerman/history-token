@@ -2073,6 +2073,11 @@ id|rq
 )paren
 )paren
 (brace
+r_int
+id|do_end_request
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Handle errors from READ and WRITE requests. */
 r_if
 c_cond
@@ -2083,13 +2088,9 @@ c_func
 id|rq
 )paren
 )paren
-id|cdrom_end_request
-c_func
-(paren
-id|drive
-comma
-l_int|0
-)paren
+id|do_end_request
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -2113,13 +2114,9 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-id|cdrom_end_request
-c_func
-(paren
-id|drive
-comma
-l_int|0
-)paren
+id|do_end_request
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 r_else
@@ -2146,13 +2143,9 @@ id|rq-&gt;errors
 OG
 id|ERROR_MAX
 )paren
-id|cdrom_end_request
-c_func
-(paren
-id|drive
-comma
-l_int|0
-)paren
+id|do_end_request
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 r_else
@@ -2178,13 +2171,9 @@ comma
 id|stat
 )paren
 suffix:semicolon
-id|cdrom_end_request
-c_func
-(paren
-id|drive
-comma
-l_int|0
-)paren
+id|do_end_request
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 r_else
@@ -2241,13 +2230,9 @@ comma
 id|stat
 )paren
 suffix:semicolon
-id|cdrom_end_request
-c_func
-(paren
-id|drive
-comma
-l_int|0
-)paren
+id|do_end_request
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 r_else
@@ -2263,6 +2248,16 @@ id|ERROR_MAX
 )paren
 (brace
 multiline_comment|/* We&squot;ve racked up too many retries.  Abort. */
+id|do_end_request
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|do_end_request
+)paren
 id|cdrom_end_request
 c_func
 (paren
@@ -2271,7 +2266,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* If we got a CHECK_CONDITION status,&n;&t;&t;   queue a request sense command. */
 r_if
 c_cond
@@ -4480,7 +4474,6 @@ suffix:semicolon
 id|blk_attempt_remerge
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|rq
@@ -6752,7 +6745,6 @@ multiline_comment|/*&n;&t; * for dvd-ram and such media, it&squot;s a really big
 id|blk_attempt_remerge
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|rq
@@ -12232,7 +12224,6 @@ suffix:semicolon
 id|blk_queue_hardsect_size
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|CD_FRAMESIZE
@@ -12241,7 +12232,6 @@ suffix:semicolon
 id|blk_queue_prep_rq
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|ide_cdrom_prep_fn
@@ -12250,7 +12240,6 @@ suffix:semicolon
 id|blk_queue_dma_alignment
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 l_int|3
@@ -12992,8 +12981,7 @@ suffix:semicolon
 )brace
 r_static
 DECL|function|ide_cdrom_capacity
-r_int
-r_int
+id|sector_t
 id|ide_cdrom_capacity
 (paren
 id|ide_drive_t
@@ -13158,7 +13146,6 @@ suffix:semicolon
 id|blk_queue_prep_rq
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 l_int|NULL

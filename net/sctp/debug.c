@@ -378,6 +378,8 @@ l_string|&quot;TIMEOUT_T2_SHUTDOWN&quot;
 comma
 l_string|&quot;TIMEOUT_T3_RTX&quot;
 comma
+l_string|&quot;TIMEOUT_T4_RTO&quot;
+comma
 l_string|&quot;TIMEOUT_T5_SHUTDOWN_GUARD&quot;
 comma
 l_string|&quot;TIMEOUT_HEARTBEAT&quot;

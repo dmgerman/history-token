@@ -12,17 +12,17 @@ macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|EFI_SUCCESS
 mdefine_line|#define EFI_SUCCESS&t;&t;0
 DECL|macro|EFI_LOAD_ERROR
-mdefine_line|#define EFI_LOAD_ERROR          ( 1 | (1UL &lt;&lt; 63))
+mdefine_line|#define EFI_LOAD_ERROR          ( 1 | (1UL &lt;&lt; (BITS_PER_LONG-1)))
 DECL|macro|EFI_INVALID_PARAMETER
-mdefine_line|#define EFI_INVALID_PARAMETER&t;( 2 | (1UL &lt;&lt; 63))
+mdefine_line|#define EFI_INVALID_PARAMETER&t;( 2 | (1UL &lt;&lt; (BITS_PER_LONG-1)))
 DECL|macro|EFI_UNSUPPORTED
-mdefine_line|#define EFI_UNSUPPORTED&t;&t;( 3 | (1UL &lt;&lt; 63))
+mdefine_line|#define EFI_UNSUPPORTED&t;&t;( 3 | (1UL &lt;&lt; (BITS_PER_LONG-1)))
 DECL|macro|EFI_BAD_BUFFER_SIZE
-mdefine_line|#define EFI_BAD_BUFFER_SIZE     ( 4 | (1UL &lt;&lt; 63))
+mdefine_line|#define EFI_BAD_BUFFER_SIZE     ( 4 | (1UL &lt;&lt; (BITS_PER_LONG-1)))
 DECL|macro|EFI_BUFFER_TOO_SMALL
-mdefine_line|#define EFI_BUFFER_TOO_SMALL&t;( 5 | (1UL &lt;&lt; 63))
+mdefine_line|#define EFI_BUFFER_TOO_SMALL&t;( 5 | (1UL &lt;&lt; (BITS_PER_LONG-1)))
 DECL|macro|EFI_NOT_FOUND
-mdefine_line|#define EFI_NOT_FOUND&t;&t;(14 | (1UL &lt;&lt; 63))
+mdefine_line|#define EFI_NOT_FOUND&t;&t;(14 | (1UL &lt;&lt; (BITS_PER_LONG-1)))
 DECL|typedef|efi_status_t
 r_typedef
 r_int
@@ -173,10 +173,12 @@ r_typedef
 r_int
 id|efi_freemem_callback_t
 (paren
-id|u64
+r_int
+r_int
 id|start
 comma
-id|u64
+r_int
+r_int
 id|end
 comma
 r_void
@@ -279,47 +281,58 @@ id|efi_table_hdr_t
 id|hdr
 suffix:semicolon
 DECL|member|get_time
-id|u64
+r_int
+r_int
 id|get_time
 suffix:semicolon
 DECL|member|set_time
-id|u64
+r_int
+r_int
 id|set_time
 suffix:semicolon
 DECL|member|get_wakeup_time
-id|u64
+r_int
+r_int
 id|get_wakeup_time
 suffix:semicolon
 DECL|member|set_wakeup_time
-id|u64
+r_int
+r_int
 id|set_wakeup_time
 suffix:semicolon
 DECL|member|set_virtual_address_map
-id|u64
+r_int
+r_int
 id|set_virtual_address_map
 suffix:semicolon
 DECL|member|convert_pointer
-id|u64
+r_int
+r_int
 id|convert_pointer
 suffix:semicolon
 DECL|member|get_variable
-id|u64
+r_int
+r_int
 id|get_variable
 suffix:semicolon
 DECL|member|get_next_variable
-id|u64
+r_int
+r_int
 id|get_next_variable
 suffix:semicolon
 DECL|member|set_variable
-id|u64
+r_int
+r_int
 id|set_variable
 suffix:semicolon
 DECL|member|get_next_high_mono_count
-id|u64
+r_int
+r_int
 id|get_next_high_mono_count
 suffix:semicolon
 DECL|member|reset_system
-id|u64
+r_int
+r_int
 id|reset_system
 suffix:semicolon
 DECL|typedef|efi_runtime_services_t
@@ -440,7 +453,8 @@ id|efi_guid_t
 op_star
 id|vendor
 comma
-id|u32
+r_int
+r_int
 id|attr
 comma
 r_int
@@ -457,7 +471,7 @@ r_typedef
 id|efi_status_t
 id|efi_get_next_high_mono_count_t
 (paren
-id|u64
+id|u32
 op_star
 id|count
 )paren
@@ -505,7 +519,8 @@ id|efi_guid_t
 id|guid
 suffix:semicolon
 DECL|member|table
-id|u64
+r_int
+r_int
 id|table
 suffix:semicolon
 DECL|typedef|efi_config_table_t
@@ -524,7 +539,8 @@ id|efi_table_hdr_t
 id|hdr
 suffix:semicolon
 DECL|member|fw_vendor
-id|u64
+r_int
+r_int
 id|fw_vendor
 suffix:semicolon
 multiline_comment|/* physical addr of CHAR16 vendor string */
@@ -533,43 +549,53 @@ id|u32
 id|fw_revision
 suffix:semicolon
 DECL|member|con_in_handle
-id|u64
+r_int
+r_int
 id|con_in_handle
 suffix:semicolon
 DECL|member|con_in
-id|u64
+r_int
+r_int
 id|con_in
 suffix:semicolon
 DECL|member|con_out_handle
-id|u64
+r_int
+r_int
 id|con_out_handle
 suffix:semicolon
 DECL|member|con_out
-id|u64
+r_int
+r_int
 id|con_out
 suffix:semicolon
 DECL|member|stderr_handle
-id|u64
+r_int
+r_int
 id|stderr_handle
 suffix:semicolon
 DECL|member|stderr
-id|u64
+r_int
+r_int
 id|stderr
 suffix:semicolon
 DECL|member|runtime
-id|u64
+id|efi_runtime_services_t
+op_star
 id|runtime
 suffix:semicolon
 DECL|member|boottime
-id|u64
+r_int
+r_int
 id|boottime
 suffix:semicolon
 DECL|member|nr_tables
-id|u64
+r_int
+r_int
 id|nr_tables
 suffix:semicolon
 DECL|member|tables
-id|u64
+r_int
+r_int
 id|tables
 suffix:semicolon
 DECL|typedef|efi_system_table_t

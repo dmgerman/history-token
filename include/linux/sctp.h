@@ -1342,8 +1342,60 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME:  Cleanup needs to continue below this line. */
 multiline_comment|/*&n; * ADDIP Section 3.1 New Chunk Types&n; */
+multiline_comment|/* ADDIP&n; * Section 3.1.1 Address Configuration Change Chunk (ASCONF)&n; *&n; * &t;Serial Number: 32 bits (unsigned integer)&n; *&t;This value represents a Serial Number for the ASCONF Chunk. The&n; *&t;valid range of Serial Number is from 0 to 2^32-1.&n; *&t;Serial Numbers wrap back to 0 after reaching 2^32 -1.&n; *&n; *&t;Address Parameter: 8 or 20 bytes (depending on type)&n; *&t;The address is an address of the sender of the ASCONF chunk,&n; *&t;the address MUST be considered part of the association by the&n; *&t;peer endpoint. This field may be used by the receiver of the &n; *&t;ASCONF to help in finding the association. This parameter MUST&n; *&t;be present in every ASCONF message i.e. it is a mandatory TLV&n; *&t;parameter.&n; *&n; *&t;ASCONF Parameter: TLV format&n; *&t;Each Address configuration change is represented by a TLV&n; *&t;parameter as defined in Section 3.2. One or more requests may&n; *&t;be present in an ASCONF Chunk.&n; *&n; * Section 3.1.2 Address Configuration Acknowledgement Chunk (ASCONF-ACK)&n; * &n; *&t;Serial Number: 32 bits (unsigned integer)&n; *&t;This value represents the Serial Number for the received ASCONF&n; *&t;Chunk that is acknowledged by this chunk. This value is copied&n; *&t;from the received ASCONF Chunk. &n; *&n; *&t;ASCONF Parameter Response: TLV format&n; *&t;The ASCONF Parameter Response is used in the ASCONF-ACK to&n; *&t;report status of ASCONF processing.&n; */
+DECL|struct|sctp_addiphdr
+r_typedef
+r_struct
+id|sctp_addiphdr
+(brace
+DECL|member|serial
+id|__u32
+id|serial
+suffix:semicolon
+DECL|member|params
+id|__u8
+id|params
+(braket
+l_int|0
+)braket
+suffix:semicolon
+DECL|typedef|sctp_addiphdr_t
+)brace
+id|sctp_addiphdr_t
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|struct|sctp_addip_chunk
+r_typedef
+r_struct
+id|sctp_addip_chunk
+(brace
+DECL|member|chunk_hdr
+id|sctp_chunkhdr_t
+id|chunk_hdr
+suffix:semicolon
+DECL|member|addip_hdr
+id|sctp_addiphdr_t
+id|addip_hdr
+suffix:semicolon
+DECL|typedef|sctp_addip_chunk_t
+)brace
+id|sctp_addip_chunk_t
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* FIXME:  Cleanup needs to continue below this line. */
 multiline_comment|/* ADDIP Section 3.1.1&n; *&n; * ASCONF-Request Correlation ID: 32 bits (unsigned integer)&n; *&n; * This is an opaque integer assigned by the sender to identify each&n; * request parameter. It is in host byte order and is only meaningful&n; * to the sender. The receiver of the ASCONF Chunk will copy this 32&n; * bit value into the ASCONF Correlation ID field of the&n; * ASCONF-ACK. The sender of the ASCONF can use this same value in the&n; * ASCONF-ACK to find which request the response is for.&n; *&n; * ASCONF Parameter: TLV format&n; *&n; * Each Address configuration change is represented by a TLV parameter&n; * as defined in Section 3.2. One or more requests may be present in&n; * an ASCONF Chunk.&n; */
 r_typedef
 r_struct

@@ -521,10 +521,17 @@ comma
 id|asoc-&gt;ctsn_ack_point
 )paren
 suffix:semicolon
-multiline_comment|/* ADDIP Section 4.1 Asconf Chunk Procedures&n;&t; *&n;&t; * When an endpoint has an ASCONF signaled change to be sent to the&n;&t; * remote endpoint it should do the following:&n;&t; * ...&n;&t; * A2) a serial number should be assigned to the chunk. The serial&n;&t; * number should be a monotonically increasing number. All serial&n;&t; * numbers are defined to be initialized at the start of the&n;&t; * association to the same value as the initial TSN.&n;&t; */
+multiline_comment|/* ADDIP Section 4.1 Asconf Chunk Procedures&n;&t; *&n;&t; * When an endpoint has an ASCONF signaled change to be sent to the&n;&t; * remote endpoint it should do the following:&n;&t; * ...&n;&t; * A2) a serial number should be assigned to the chunk. The serial&n;&t; * number SHOULD be a monotonically increasing number. The serial&n;&t; * numbers SHOULD be initialized at the start of the&n;&t; * association to the same value as the initial TSN.&n;&t; */
 id|asoc-&gt;addip_serial
 op_assign
 id|asoc-&gt;c.initial_tsn
+suffix:semicolon
+id|skb_queue_head_init
+c_func
+(paren
+op_amp
+id|asoc-&gt;addip_chunks
+)paren
 suffix:semicolon
 multiline_comment|/* Make an empty list of remote transport addresses.  */
 id|INIT_LIST_HEAD
@@ -621,13 +628,6 @@ comma
 id|SCTP_TSN_MAP_SIZE
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|skb_queue_head_init
-c_func
-(paren
-op_amp
-id|asoc-&gt;addip_chunks
 )paren
 suffix:semicolon
 id|asoc-&gt;need_ecne

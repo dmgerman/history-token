@@ -423,7 +423,6 @@ id|request_queue_t
 op_star
 id|q
 op_assign
-op_amp
 id|drive-&gt;queue
 suffix:semicolon
 r_struct
@@ -1176,7 +1175,6 @@ op_assign
 id|blk_queue_find_tag
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|tag
@@ -2163,7 +2161,6 @@ suffix:semicolon
 id|blk_queue_max_sectors
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|itb-&gt;max_sectors
@@ -2178,14 +2175,12 @@ op_logical_neg
 id|blk_queue_tagged
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 )paren
 )paren
 id|blk_queue_init_tags
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|IDE_MAX_TAG

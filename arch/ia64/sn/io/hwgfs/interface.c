@@ -6,29 +6,13 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;asm/sn/hwgfs.h&gt;
 r_extern
 r_struct
 id|vfsmount
 op_star
 id|hwgfs_vfsmount
-suffix:semicolon
-multiline_comment|/* TODO: Move this to some .h file or, more likely, use a slightly&n;   different interface from lookup_create. */
-r_extern
-r_struct
-id|dentry
-op_star
-id|lookup_create
-c_func
-(paren
-r_struct
-id|nameidata
-op_star
-id|nd
-comma
-r_int
-id|is_dir
-)paren
 suffix:semicolon
 r_static
 r_int
@@ -147,6 +131,10 @@ id|nd
 comma
 id|is_dir
 )paren
+suffix:semicolon
+id|nd-&gt;flags
+op_or_assign
+id|LOOKUP_PARENT
 suffix:semicolon
 r_if
 c_cond

@@ -138,9 +138,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hose-&gt;first_busno
+id|hose-&gt;bus
 op_eq
-id|bus
+id|pbus
 )paren
 id|bus
 op_assign

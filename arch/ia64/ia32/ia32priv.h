@@ -950,8 +950,6 @@ DECL|macro|IA32_TSS_OFFSET
 mdefine_line|#define IA32_TSS_OFFSET&t;&t;(IA32_PAGE_OFFSET + PAGE_SIZE)
 DECL|macro|IA32_LDT_OFFSET
 mdefine_line|#define IA32_LDT_OFFSET&t;&t;(IA32_PAGE_OFFSET + 2*PAGE_SIZE)
-DECL|macro|USE_ELF_CORE_DUMP
-mdefine_line|#define USE_ELF_CORE_DUMP
 DECL|macro|ELF_EXEC_PAGESIZE
 mdefine_line|#define ELF_EXEC_PAGESIZE&t;IA32_PAGE_SIZE
 multiline_comment|/*&n; * This is the location that an ET_DYN program is loaded if exec&squot;ed.&n; * Typical use of this is to invoke &quot;./ld.so someprog&quot; to test out a&n; * new version of the loader.  We need to make sure that it is out of&n; * the way of the program that it will &quot;exec&quot;, and that there is&n; * sufficient room for the brk.&n; */
@@ -971,50 +969,6 @@ DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(_r, load_addr)&t;ia64_elf32_init(_r)
 DECL|macro|elf_addr_t
 mdefine_line|#define elf_addr_t&t;u32
-multiline_comment|/* ELF register definitions.  This is needed for core dump support.  */
-DECL|macro|ELF_NGREG
-mdefine_line|#define ELF_NGREG&t;128&t;&t;&t;/* XXX fix me */
-DECL|macro|ELF_NFPREG
-mdefine_line|#define ELF_NFPREG&t;128&t;&t;&t;/* XXX fix me */
-DECL|typedef|elf_greg_t
-r_typedef
-r_int
-r_int
-id|elf_greg_t
-suffix:semicolon
-DECL|typedef|elf_gregset_t
-r_typedef
-id|elf_greg_t
-id|elf_gregset_t
-(braket
-id|ELF_NGREG
-)braket
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|w0
-r_int
-r_int
-id|w0
-suffix:semicolon
-DECL|member|w1
-r_int
-r_int
-id|w1
-suffix:semicolon
-DECL|typedef|elf_fpreg_t
-)brace
-id|elf_fpreg_t
-suffix:semicolon
-DECL|typedef|elf_fpregset_t
-r_typedef
-id|elf_fpreg_t
-id|elf_fpregset_t
-(braket
-id|ELF_NFPREG
-)braket
-suffix:semicolon
 multiline_comment|/* This macro yields a bitmask that programs can use to figure out&n;   what instruction set this CPU supports.  */
 DECL|macro|ELF_HWCAP
 mdefine_line|#define ELF_HWCAP&t;0
@@ -1239,6 +1193,121 @@ DECL|macro|ia32f2ia64f
 mdefine_line|#define ia32f2ia64f(dst,src) &bslash;&n;&t;do { &bslash;&n;&t;register double f6 asm (&quot;f6&quot;); &bslash;&n;&t;asm volatile (&quot;ldfe f6=[%2];; stf.spill [%1]=f6&quot; : &quot;=f&quot;(f6): &quot;r&quot;(dst), &quot;r&quot;(src) : &quot;memory&quot;); &bslash;&n;&t;} while(0)
 DECL|macro|ia64f2ia32f
 mdefine_line|#define ia64f2ia32f(dst,src) &bslash;&n;&t;do { &bslash;&n;&t;register double f6 asm (&quot;f6&quot;); &bslash;&n;&t;asm volatile (&quot;ldf.fill f6=[%2];; stfe [%1]=f6&quot; : &quot;=f&quot;(f6): &quot;r&quot;(dst),  &quot;r&quot;(src) : &quot;memory&quot;); &bslash;&n;&t;} while(0)
+DECL|struct|user_regs_struct32
+r_struct
+id|user_regs_struct32
+(brace
+DECL|member|ebx
+DECL|member|ecx
+DECL|member|edx
+DECL|member|esi
+DECL|member|edi
+DECL|member|ebp
+DECL|member|eax
+id|__u32
+id|ebx
+comma
+id|ecx
+comma
+id|edx
+comma
+id|esi
+comma
+id|edi
+comma
+id|ebp
+comma
+id|eax
+suffix:semicolon
+DECL|member|ds
+DECL|member|__ds
+DECL|member|es
+DECL|member|__es
+r_int
+r_int
+id|ds
+comma
+id|__ds
+comma
+id|es
+comma
+id|__es
+suffix:semicolon
+DECL|member|fs
+DECL|member|__fs
+DECL|member|gs
+DECL|member|__gs
+r_int
+r_int
+id|fs
+comma
+id|__fs
+comma
+id|gs
+comma
+id|__gs
+suffix:semicolon
+DECL|member|orig_eax
+DECL|member|eip
+id|__u32
+id|orig_eax
+comma
+id|eip
+suffix:semicolon
+DECL|member|cs
+DECL|member|__cs
+r_int
+r_int
+id|cs
+comma
+id|__cs
+suffix:semicolon
+DECL|member|eflags
+DECL|member|esp
+id|__u32
+id|eflags
+comma
+id|esp
+suffix:semicolon
+DECL|member|ss
+DECL|member|__ss
+r_int
+r_int
+id|ss
+comma
+id|__ss
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* Prototypes for use in elfcore32.h */
+r_int
+id|save_ia32_fpstate
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_struct
+id|ia32_user_i387_struct
+op_star
+id|save
+)paren
+suffix:semicolon
+r_int
+id|save_ia32_fpxstate
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_struct
+id|ia32_user_fxsr_struct
+op_star
+id|save
+)paren
+suffix:semicolon
 macro_line|#endif /* !CONFIG_IA32_SUPPORT */
 macro_line|#endif /* _ASM_IA64_IA32_H */
 eof

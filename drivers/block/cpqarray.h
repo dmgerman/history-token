@@ -297,6 +297,7 @@ suffix:semicolon
 DECL|member|queue
 r_struct
 id|request_queue
+op_star
 id|queue
 suffix:semicolon
 DECL|member|lock

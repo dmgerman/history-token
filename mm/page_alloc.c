@@ -1315,6 +1315,12 @@ op_lshift
 id|PG_mappedtodisk
 )paren
 suffix:semicolon
+id|page
+op_member_access_from_pointer
+r_private
+op_assign
+l_int|0
+suffix:semicolon
 id|set_page_refs
 c_func
 (paren

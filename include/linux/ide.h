@@ -1406,6 +1406,7 @@ suffix:semicolon
 multiline_comment|/* requests specific driver */
 DECL|member|queue
 id|request_queue_t
+op_star
 id|queue
 suffix:semicolon
 multiline_comment|/* request queue */
@@ -1601,6 +1602,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1 if need to do check_media_change */
+DECL|member|attach
+r_int
+id|attach
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* needed for removable devices */
 DECL|member|is_flash
 r_int
 id|is_flash
@@ -4238,8 +4246,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|member|capacity
-r_int
-r_int
+id|sector_t
 (paren
 op_star
 id|capacity
@@ -4701,8 +4708,7 @@ r_int
 suffix:semicolon
 multiline_comment|/*&n; * Return the current idea about the total capacity of this drive.&n; */
 r_extern
-r_int
-r_int
+id|sector_t
 id|current_capacity
 (paren
 id|ide_drive_t
@@ -6625,7 +6631,7 @@ id|index
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|export_ide_init_queue
 c_func
 (paren
@@ -6795,7 +6801,6 @@ r_return
 id|blk_queue_tag_depth
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 )paren
 suffix:semicolon
@@ -6824,7 +6829,6 @@ r_return
 id|blk_queue_tag_queue
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 )paren
 suffix:semicolon

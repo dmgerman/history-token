@@ -2,7 +2,6 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef _ASM_IA64_SN_DMAMAP_H
 DECL|macro|_ASM_IA64_SN_DMAMAP_H
 mdefine_line|#define _ASM_IA64_SN_DMAMAP_H
-macro_line|#include &lt;asm/sn/sv.h&gt;
 macro_line|#ifdef __cplusplus
 r_extern
 l_string|&quot;C&quot;
@@ -178,10 +177,6 @@ suffix:semicolon
 r_extern
 r_int
 id|a32_mapsize
-suffix:semicolon
-r_extern
-id|sv_t
-id|dmamapout
 suffix:semicolon
 macro_line|#ifdef __cplusplus
 )brace

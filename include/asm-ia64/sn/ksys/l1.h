@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/vector.h&gt;
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/sn/sv.h&gt;
 multiline_comment|/* L1 Target Addresses */
 multiline_comment|/*&n; * L1 commands and responses use source/target addresses that are&n; * 32 bits long.  These are broken up into multiple bitfields that&n; * specify the type of the target controller (could actually be L2&n; * L3, not just L1), the rack and bay of the target, and the task&n; * id (L1 functionality is divided into several independent &quot;tasks&quot;&n; * that can each receive command requests and transmit responses)&n; */
 DECL|macro|L1_ADDR_TYPE_L1

@@ -35,12 +35,13 @@ DECL|variable|floppy_queue
 r_static
 r_struct
 id|request_queue
+op_star
 id|floppy_queue
 suffix:semicolon
 DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;floppy_queue)
+mdefine_line|#define QUEUE (floppy_queue)
 DECL|macro|CURRENT
-mdefine_line|#define CURRENT elv_next_request(&amp;floppy_queue)
+mdefine_line|#define CURRENT elv_next_request(floppy_queue)
 multiline_comment|/* Disk types: DD, HD, ED */
 DECL|struct|atari_disk_type
 r_static
@@ -7691,17 +7692,25 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|floppy_queue
+op_assign
 id|blk_init_queue
 c_func
 (paren
-op_amp
-id|floppy_queue
-comma
 id|do_fd_request
 comma
 op_amp
 id|ataflop_lock
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|floppy_queue
+)paren
+r_goto
+id|Enomem
 suffix:semicolon
 r_for
 c_loop
@@ -7800,7 +7809,6 @@ id|i
 dot
 id|disk-&gt;queue
 op_assign
-op_amp
 id|floppy_queue
 suffix:semicolon
 id|set_capacity
@@ -7907,6 +7915,17 @@ id|i
 )braket
 dot
 id|disk
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|floppy_queue
+)paren
+id|blk_cleanup_queue
+c_func
+(paren
+id|floppy_queue
 )paren
 suffix:semicolon
 id|unregister_blkdev
@@ -8181,7 +8200,6 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|floppy_queue
 )paren
 suffix:semicolon

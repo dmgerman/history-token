@@ -23,9 +23,9 @@ multiline_comment|/*############################################################
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR AZTECH_CDROM_MAJOR
 DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;azt_queue)
+mdefine_line|#define QUEUE (azt_queue)
 DECL|macro|CURRENT
-mdefine_line|#define CURRENT elv_next_request(&amp;azt_queue)
+mdefine_line|#define CURRENT elv_next_request(azt_queue)
 DECL|macro|SET_TIMER
 mdefine_line|#define SET_TIMER(func, jifs)   delay_timer.expires = jiffies + (jifs); &bslash;&n;                                delay_timer.function = (void *) (func); &bslash;&n;                                add_timer(&amp;delay_timer);
 DECL|macro|CLEAR_TIMER
@@ -53,6 +53,7 @@ DECL|variable|azt_queue
 r_static
 r_struct
 id|request_queue
+op_star
 id|azt_queue
 suffix:semicolon
 DECL|function|current_valid
@@ -7620,22 +7621,36 @@ r_goto
 id|err_out2
 suffix:semicolon
 )brace
+id|azt_queue
+op_assign
 id|blk_init_queue
 c_func
 (paren
-op_amp
-id|azt_queue
-comma
 id|do_aztcd_request
 comma
 op_amp
 id|aztSpin
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|azt_queue
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|err_out3
+suffix:semicolon
+)brace
 id|blk_queue_hardsect_size
 c_func
 (paren
-op_amp
 id|azt_queue
 comma
 l_int|2048
@@ -7672,7 +7687,6 @@ l_string|&quot;aztcd&quot;
 suffix:semicolon
 id|azt_disk-&gt;queue
 op_assign
-op_amp
 id|azt_queue
 suffix:semicolon
 id|add_disk
@@ -7697,6 +7711,16 @@ c_func
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|err_out3
+suffix:colon
+id|unregister_blkdev
+c_func
+(paren
+id|MAJOR_NR
+comma
+l_string|&quot;aztcd&quot;
+)paren
 suffix:semicolon
 id|err_out2
 suffix:colon
@@ -7801,7 +7825,6 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|azt_queue
 )paren
 suffix:semicolon

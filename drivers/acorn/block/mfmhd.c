@@ -40,6 +40,7 @@ DECL|variable|mfm_queue
 r_static
 r_struct
 id|request_queue
+op_star
 id|mfm_queue
 suffix:semicolon
 DECL|variable|mfm_lock
@@ -52,9 +53,9 @@ suffix:semicolon
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;MFM_ACORN_MAJOR
 DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;mfm_queue)
+mdefine_line|#define QUEUE (mfm_queue)
 DECL|macro|CURRENT
-mdefine_line|#define CURRENT elv_next_request(&amp;mfm_queue)
+mdefine_line|#define CURRENT elv_next_request(mfm_queue)
 multiline_comment|/*&n; * This sort of stuff should be in a header file shared with ide.c, hd.c, xd.c etc&n; */
 macro_line|#ifndef HDIO_GETGEO
 DECL|macro|HDIO_GETGEO
@@ -5052,17 +5053,25 @@ id|hdc63463_irqpollmask
 op_assign
 id|irqmask
 suffix:semicolon
+id|mfm_queue
+op_assign
 id|blk_init_queue
 c_func
 (paren
-op_amp
-id|mfm_queue
-comma
 id|do_mfm_request
 comma
 op_amp
 id|mfm_lock
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mfm_queue
+)paren
+r_goto
+id|out2a
 suffix:semicolon
 id|Busy
 op_assign
@@ -5259,7 +5268,6 @@ id|i
 op_member_access_from_pointer
 id|queue
 op_assign
-op_amp
 id|mfm_queue
 suffix:semicolon
 id|add_disk
@@ -5305,10 +5313,11 @@ suffix:colon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|mfm_queue
 )paren
 suffix:semicolon
+id|out2a
+suffix:colon
 id|unregister_blkdev
 c_func
 (paren
@@ -5410,7 +5419,6 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|mfm_queue
 )paren
 suffix:semicolon

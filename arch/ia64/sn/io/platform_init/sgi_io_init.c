@@ -2,21 +2,13 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
-macro_line|#include &lt;linux/smp.h&gt;
-r_extern
-r_int
-id|init_hcl
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * per_hub_init&n; *&n; * &t;This code is executed once for each Hub chip.&n; */
 r_void
 DECL|function|per_hub_init
@@ -198,52 +190,5 @@ c_func
 id|cnode
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * This routine is responsible for the setup of all the IRIX hwgraph style&n; * stuff that&squot;s been pulled into linux.  It&squot;s called by sn_pci_find_bios which&n; * is called just before the generic Linux PCI layer does its probing (by &n; * platform_pci_fixup aka sn_pci_fixup).&n; *&n; * It is very IMPORTANT that this call is only made by the Master CPU!&n; *&n; */
-r_void
-DECL|function|sgi_master_io_infr_init
-id|sgi_master_io_infr_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_extern
-r_void
-id|irix_io_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|init_hcl
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Sets up the hwgraph compatibility layer with devfs */
-id|irix_io_init
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Do IRIX Compatibility IO Init */
-macro_line|#ifdef&t;CONFIG_KDB
-(brace
-r_extern
-r_void
-id|kdba_io_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|kdba_io_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 eof

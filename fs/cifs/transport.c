@@ -356,9 +356,12 @@ id|AllocOplockQEntry
 c_func
 (paren
 r_struct
-id|file
+id|inode
 op_star
-id|file
+id|pinode
+comma
+id|__u16
+id|fid
 comma
 r_struct
 id|cifsTconInfo
@@ -375,7 +378,7 @@ r_if
 c_cond
 (paren
 (paren
-id|file
+id|pinode
 op_eq
 l_int|NULL
 )paren
@@ -428,13 +431,17 @@ id|temp
 suffix:semicolon
 r_else
 (brace
-id|temp-&gt;file_to_flush
+id|temp-&gt;pinode
 op_assign
-id|file
+id|pinode
 suffix:semicolon
 id|temp-&gt;tcon
 op_assign
 id|tcon
+suffix:semicolon
+id|temp-&gt;netfid
+op_assign
+id|fid
 suffix:semicolon
 id|write_lock
 c_func
@@ -906,10 +913,11 @@ l_int|1
 )paren
 id|timeout
 op_assign
-l_int|60
+l_int|45
 op_star
 id|HZ
 suffix:semicolon
+multiline_comment|/* should be greater than &n;&t;&t;&t;servers oplock break timeout (about 43 seconds) */
 r_else
 id|timeout
 op_assign
@@ -982,6 +990,16 @@ id|midQ-&gt;resp_buf-&gt;smb_buf_length
 suffix:semicolon
 r_else
 (brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;No response buffer&quot;
+)paren
+)paren
+suffix:semicolon
 id|DeleteMidQEntry
 c_func
 (paren
@@ -1248,11 +1266,23 @@ id|out_buf
 suffix:semicolon
 )brace
 r_else
+(brace
 id|rc
 op_assign
 op_minus
 id|EIO
 suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Bad MID state? &quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 id|cifs_no_response_exit
 suffix:colon

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &quot;ia32priv.h&quot;
+macro_line|#include &quot;elfcore32.h&quot;
 DECL|macro|CONFIG_BINFMT_ELF32
 mdefine_line|#define CONFIG_BINFMT_ELF32
 multiline_comment|/* Override some function names */

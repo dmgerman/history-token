@@ -5469,9 +5469,8 @@ r_goto
 id|do_last
 suffix:semicolon
 )brace
-multiline_comment|/* SMP-safe */
+multiline_comment|/**&n; * lookup_create - lookup a dentry, creating it if it doesn&squot;t exist&n; * @nd: nameidata info&n; * @is_dir: directory flag&n; *&n; * Simple function to lookup and return a dentry and create it&n; * if it doesn&squot;t exist.  Is SMP-safe.&n; */
 DECL|function|lookup_create
-r_static
 r_struct
 id|dentry
 op_star

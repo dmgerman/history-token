@@ -199,4 +199,11 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|sn_mmiob
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sn_mmiob
+)paren
+suffix:semicolon
 eof

@@ -65,6 +65,13 @@ r_int
 id|size
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|setup_per_cpu_areas
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#else /* ! SMP */
 DECL|macro|per_cpu
 mdefine_line|#define per_cpu(var, cpu)&t;&t;&t;((void)cpu, per_cpu__##var)
@@ -75,14 +82,6 @@ DECL|macro|EXPORT_PER_CPU_SYMBOL
 mdefine_line|#define EXPORT_PER_CPU_SYMBOL(var)&t;&t;EXPORT_SYMBOL(per_cpu__##var)
 DECL|macro|EXPORT_PER_CPU_SYMBOL_GPL
 mdefine_line|#define EXPORT_PER_CPU_SYMBOL_GPL(var)&t;&t;EXPORT_SYMBOL_GPL(per_cpu__##var)
-multiline_comment|/* ia64-specific part: */
-r_extern
-r_void
-id|setup_per_cpu_areas
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Be extremely careful when taking the address of this variable!  Due to virtual&n; * remapping, it is different from the canonical address returned by __get_cpu_var(var)!&n; * On the positive side, using __ia64_per_cpu_var() instead of __get_cpu_var() is slightly&n; * more efficient.&n; */
 DECL|macro|__ia64_per_cpu_var
 mdefine_line|#define __ia64_per_cpu_var(var)&t;(per_cpu__##var)

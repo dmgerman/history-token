@@ -1272,7 +1272,6 @@ suffix:semicolon
 id|blk_queue_max_sectors
 c_func
 (paren
-op_amp
 id|mddev-&gt;queue
 comma
 id|mddev-&gt;chunk_size
@@ -1283,7 +1282,6 @@ suffix:semicolon
 id|blk_queue_merge_bvec
 c_func
 (paren
-op_amp
 id|mddev-&gt;queue
 comma
 id|raid0_mergeable_bvec

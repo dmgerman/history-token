@@ -2243,71 +2243,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * hwgraph_path_lookup - return the handle for the given path.&n; *&n; */
-r_int
-DECL|function|hwgraph_path_lookup
-id|hwgraph_path_lookup
-c_func
-(paren
-id|vertex_hdl_t
-id|start_vertex_handle
-comma
-r_char
-op_star
-id|lookup_path
-comma
-id|vertex_hdl_t
-op_star
-id|vertex_handle_ptr
-comma
-r_char
-op_star
-op_star
-id|remainder
-)paren
-(brace
-op_star
-id|vertex_handle_ptr
-op_assign
-id|hwgfs_find_handle
-c_func
-(paren
-id|start_vertex_handle
-comma
-multiline_comment|/* start dir */
-id|lookup_path
-comma
-multiline_comment|/* path */
-l_int|0
-comma
-multiline_comment|/* major */
-l_int|0
-comma
-multiline_comment|/* minor */
-l_int|0
-comma
-multiline_comment|/* char | block */
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* traverse symlinks */
-r_if
-c_cond
-(paren
-op_star
-id|vertex_handle_ptr
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-r_else
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * hwgraph_traverse - Find and return the handle starting from de.&n; *&n; */
 id|graph_error_t
 DECL|function|hwgraph_traverse
@@ -2718,13 +2653,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|hwgraph_info_unexport_LBL
-)paren
-suffix:semicolon
-DECL|variable|hwgraph_path_lookup
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|hwgraph_path_lookup
 )paren
 suffix:semicolon
 DECL|variable|hwgraph_traverse

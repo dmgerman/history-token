@@ -155,9 +155,6 @@ id|nasid
 r_int
 id|i
 suffix:semicolon
-id|hubreg_t
-id|idsr
-suffix:semicolon
 multiline_comment|/*&n;     * Make sure spurious write response errors are cleared&n;     * (values are from hub_set_prb())&n;     */
 r_for
 c_loop

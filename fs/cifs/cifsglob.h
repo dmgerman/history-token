@@ -566,6 +566,13 @@ op_star
 id|pfile
 suffix:semicolon
 multiline_comment|/* needed for writepage */
+DECL|member|pInode
+r_struct
+id|inode
+op_star
+id|pInode
+suffix:semicolon
+multiline_comment|/* needed for oplock break */
 DECL|member|endOfSearch
 r_int
 id|endOfSearch
@@ -786,17 +793,21 @@ r_struct
 id|list_head
 id|qhead
 suffix:semicolon
-DECL|member|file_to_flush
+DECL|member|pinode
 r_struct
-id|file
+id|inode
 op_star
-id|file_to_flush
+id|pinode
 suffix:semicolon
 DECL|member|tcon
 r_struct
 id|cifsTconInfo
 op_star
 id|tcon
+suffix:semicolon
+DECL|member|netfid
+id|__u16
+id|netfid
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/dm-ioctl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

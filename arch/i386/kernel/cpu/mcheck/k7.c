@@ -402,7 +402,7 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|i
 OL
