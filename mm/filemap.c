@@ -1300,7 +1300,6 @@ id|page
 op_star
 id|page
 suffix:semicolon
-multiline_comment|/*&n;&t; * We scan the hash list read-only. Addition to and removal from&n;&t; * the hash-list needs a held write-lock.&n;&t; */
 id|spin_lock_irq
 c_func
 (paren
