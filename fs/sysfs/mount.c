@@ -1,4 +1,6 @@
 multiline_comment|/*&n; * mount.c - operations for initializing and mounting sysfs.&n; */
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG 
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -11,6 +13,14 @@ r_struct
 id|vfsmount
 op_star
 id|sysfs_mount
+suffix:semicolon
+DECL|variable|sysfs_sb
+r_struct
+id|super_block
+op_star
+id|sysfs_sb
+op_assign
+l_int|NULL
 suffix:semicolon
 DECL|variable|sysfs_ops
 r_static
@@ -77,33 +87,49 @@ op_assign
 op_amp
 id|sysfs_ops
 suffix:semicolon
+id|sysfs_sb
+op_assign
+id|sb
+suffix:semicolon
 id|inode
 op_assign
-id|sysfs_get_inode
+id|sysfs_new_inode
 c_func
 (paren
-id|sb
-comma
 id|S_IFDIR
 op_or
-l_int|0755
-comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|inode
 )paren
+(brace
+id|inode-&gt;i_op
+op_assign
+op_amp
+id|simple_dir_inode_operations
+suffix:semicolon
+id|inode-&gt;i_fop
+op_assign
+op_amp
+id|simple_dir_operations
+suffix:semicolon
+multiline_comment|/* directory inodes start off with i_nlink == 2 (for &quot;.&quot; entry) */
+id|inode-&gt;i_nlink
+op_increment
+suffix:semicolon
+)brace
+r_else
 (brace
 id|pr_debug
 c_func
 (paren
-l_string|&quot;%s: could not get inode!&bslash;n&quot;
-comma
-id|__FUNCTION__
+l_string|&quot;sysfs: could not get root inode&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
