@@ -52,13 +52,6 @@ op_star
 id|chrp_int_ack_special
 suffix:semicolon
 r_void
-id|chrp_setup_pci_ptrs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
 id|chrp_progress
 c_func
 (paren
@@ -759,10 +752,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
 macro_line|#endif
-id|ppc_md.ppc_machine
-op_assign
-id|naca-&gt;platform
-suffix:semicolon
 id|ppc_md.setup_arch
 op_assign
 id|chrp_setup_arch
@@ -834,10 +823,6 @@ suffix:semicolon
 id|ppc_md.halt
 op_assign
 id|rtas_halt
-suffix:semicolon
-id|ppc_md.time_init
-op_assign
-l_int|NULL
 suffix:semicolon
 id|ppc_md.get_boot_time
 op_assign
