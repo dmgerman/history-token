@@ -5,6 +5,10 @@ mdefine_line|#define __USER_UTIL_H__
 macro_line|#include &quot;sysdep/ptrace.h&quot;
 r_extern
 r_int
+id|mode_tt
+suffix:semicolon
+r_extern
+r_int
 id|grantpt
 c_func
 (paren
