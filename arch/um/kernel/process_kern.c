@@ -1355,12 +1355,14 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP&t;
 id|schedule_tail
 c_func
 (paren
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#endif
 id|enable_timer
 c_func
 (paren
