@@ -332,7 +332,7 @@ l_int|0
 comma
 l_string|&quot;amimouse&quot;
 comma
-l_int|NULL
+id|amimouse_interrupt
 )paren
 )paren
 (brace
@@ -345,7 +345,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;amimouse.c: Can&squot;t allocate irq %d&bslash;n&quot;
 comma
-id|amimouse_irq
+id|IRQ_AMIGA_VERTB
 )paren
 suffix:semicolon
 r_return
@@ -520,6 +520,9 @@ l_string|&quot;input: %s at joy0dat&bslash;n&quot;
 comma
 id|amimouse_name
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|amimouse_exit
