@@ -2743,6 +2743,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __alpha__
 multiline_comment|/*&n; * The Alpha uses getxpid, getxuid, and getxgid instead.  Maybe this&n; * should be moved into arch/i386 instead?&n; */
+multiline_comment|/**&n; * sys_getpid - return the thread group id of the current process&n; *&n; * Note, despite the name, this returns the tgid not the pid.  The tgid and&n; * the pid are identical unless CLONE_THREAD was specified on clone() in&n; * which case the tgid is the same in all threads of the same group.&n; *&n; * This is SMP safe as current-&gt;tgid does not change.&n; */
 DECL|function|sys_getpid
 id|asmlinkage
 r_int
@@ -2752,7 +2753,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* This is SMP safe - current-&gt;pid doesn&squot;t change */
 r_return
 id|current-&gt;tgid
 suffix:semicolon

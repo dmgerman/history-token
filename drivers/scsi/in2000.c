@@ -700,6 +700,7 @@ id|instance
 )paren
 suffix:semicolon
 DECL|function|in2000_queuecommand
+r_static
 r_int
 id|in2000_queuecommand
 (paren
@@ -719,6 +720,11 @@ op_star
 )paren
 (brace
 r_struct
+id|Scsi_Host
+op_star
+id|instance
+suffix:semicolon
+r_struct
 id|IN2000_hostdata
 op_star
 id|hostdata
@@ -731,6 +737,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|instance
+op_assign
+id|cmd-&gt;host
+suffix:semicolon
 id|hostdata
 op_assign
 (paren
@@ -738,7 +748,7 @@ r_struct
 id|IN2000_hostdata
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|instance-&gt;hostdata
 suffix:semicolon
 id|DB
 c_func
@@ -801,7 +811,13 @@ op_assign
 r_char
 op_star
 )paren
-id|cmd-&gt;SCp.buffer-&gt;address
+id|page_address
+c_func
+(paren
+id|cmd-&gt;SCp.buffer-&gt;page
+)paren
+op_plus
+id|cmd-&gt;SCp.buffer-&gt;offset
 suffix:semicolon
 id|cmd-&gt;SCp.this_residual
 op_assign
@@ -842,15 +858,12 @@ op_assign
 id|ILLEGAL_STATUS_BYTE
 suffix:semicolon
 multiline_comment|/* We need to disable interrupts before messing with the input&n; * queue and calling in2000_execute().&n; */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+id|instance-&gt;host_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;    * Add the cmd to the end of &squot;input_Q&squot;. Note that REQUEST_SENSE&n;    * commands are added to the head of the queue so that the desired&n;    * sense data is not lost before REQUEST_SENSE executes.&n;    */
@@ -939,9 +952,11 @@ comma
 id|cmd-&gt;pid
 )paren
 )paren
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|instance-&gt;host_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1988,7 +2003,13 @@ id|cmd-&gt;SCp.buffer-&gt;length
 suffix:semicolon
 id|cmd-&gt;SCp.ptr
 op_assign
-id|cmd-&gt;SCp.buffer-&gt;address
+id|page_address
+c_func
+(paren
+id|cmd-&gt;SCp.buffer-&gt;page
+)paren
+op_plus
+id|cmd-&gt;SCp.buffer-&gt;offset
 suffix:semicolon
 )brace
 multiline_comment|/* Set up hardware registers */
@@ -2359,10 +2380,10 @@ op_star
 id|instance-&gt;hostdata
 suffix:semicolon
 multiline_comment|/* Get the spin_lock and disable further ints, for SMP */
-id|CLISPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|instance
+id|instance-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2695,10 +2716,10 @@ id|IO_LED_OFF
 )paren
 suffix:semicolon
 multiline_comment|/* release the SMP spin_lock and restore irq state */
-id|CLISPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|instance
+id|instance-&gt;host_lock
 comma
 id|flags
 )paren
@@ -2773,10 +2794,10 @@ id|IO_LED_OFF
 )paren
 suffix:semicolon
 multiline_comment|/* release the SMP spin_lock and restore irq state */
-id|CLISPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|instance
+id|instance-&gt;host_lock
 comma
 id|flags
 )paren
@@ -4453,10 +4474,10 @@ op_assign
 id|S_UNCONNECTED
 suffix:semicolon
 multiline_comment|/* release the SMP spin_lock and restore irq state */
-id|CLISPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|instance
+id|instance-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5148,10 +5169,10 @@ l_string|&quot;} &quot;
 )paren
 )paren
 multiline_comment|/* release the SMP spin_lock and restore irq state */
-id|CLISPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|instance
+id|instance-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5163,6 +5184,7 @@ DECL|macro|RESET_CARD_AND_BUS
 mdefine_line|#define RESET_CARD_AND_BUS 1
 DECL|macro|B_FLAG
 mdefine_line|#define B_FLAG 0x80
+multiline_comment|/*&n; *&t;Caller must hold instance lock!&n; */
 DECL|function|reset_hardware
 r_static
 r_int
@@ -5187,10 +5209,6 @@ r_int
 id|qt
 comma
 id|x
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 id|hostdata
 op_assign
@@ -5293,17 +5311,6 @@ id|DEFAULT_SX_OFF
 )paren
 )paren
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|write1_io
 c_func
 (paren
@@ -5332,6 +5339,7 @@ comma
 id|WD_CMD_RESET
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: timeout ?? */
 r_while
 c_loop
 (paren
@@ -5344,6 +5352,10 @@ c_func
 op_amp
 id|ASR_INT
 )paren
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* wait for RESET to complete */
@@ -5358,12 +5370,6 @@ id|WD_SCSI_STATUS
 )paren
 suffix:semicolon
 multiline_comment|/* clear interrupt */
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|write_3393
 c_func
 (paren
@@ -5444,18 +5450,15 @@ r_return
 id|x
 suffix:semicolon
 )brace
-DECL|function|in2000_reset
+DECL|function|in2000_bus_reset
+r_static
 r_int
-id|in2000_reset
+id|in2000_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|cmd
-comma
-r_int
-r_int
-id|reset_flags
 )paren
 (brace
 r_int
@@ -5491,20 +5494,18 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;scsi%d: Reset. &quot;
 comma
 id|instance-&gt;host_no
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+id|instance-&gt;host_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* do scsi-reset here */
@@ -5600,17 +5601,50 @@ id|DID_RESET
 op_lshift
 l_int|16
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|instance-&gt;host_lock
+comma
 id|flags
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|SUCCESS
+suffix:semicolon
+)brace
+DECL|function|in2000_host_reset
+r_static
+r_int
+id|in2000_host_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+(brace
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+DECL|function|in2000_device_reset
+r_static
+r_int
+id|in2000_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|cmd
+)paren
+(brace
+r_return
+id|FAILED
 suffix:semicolon
 )brace
 DECL|function|in2000_abort
+r_static
 r_int
 id|in2000_abort
 (paren
@@ -5649,16 +5683,6 @@ r_int
 r_int
 id|timeout
 suffix:semicolon
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|instance
 op_assign
 id|cmd-&gt;host
@@ -5673,7 +5697,9 @@ op_star
 id|instance-&gt;hostdata
 suffix:semicolon
 id|printk
+c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;scsi%d: Abort-&quot;
 comma
 id|instance-&gt;host_no
@@ -5709,6 +5735,14 @@ id|IO_FIFO_COUNT
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Case 1 : If the command hasn&squot;t been issued yet, we simply remove it&n; *     from the inout_Q.&n; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|instance-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|tmp
 op_assign
 (paren
@@ -5757,6 +5791,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;scsi%d: Abort - removing command %ld from input_Q. &quot;
 comma
 id|instance-&gt;host_no
@@ -5772,14 +5807,16 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|instance-&gt;host_lock
+comma
 id|flags
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_SUCCESS
+id|SUCCESS
 suffix:semicolon
 )brace
 id|prev
@@ -5807,6 +5844,7 @@ id|cmd
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;scsi%d: Aborting connected command %ld - &quot;
 comma
 id|instance-&gt;host_no
@@ -6028,12 +6066,6 @@ id|in2000_execute
 id|instance
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|SCSI_ABORT_SUCCESS
 suffix:semicolon
@@ -6068,20 +6100,25 @@ op_eq
 id|tmp
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|instance-&gt;host_lock
+comma
 id|flags
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Sending ABORT_SNOOZE. &quot;
+id|KERN_DEBUG
+l_string|&quot;scsi%d: unable to abort disconnected command.&bslash;n&quot;
+comma
+id|instance-&gt;host_no
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_SNOOZE
+id|FAILED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Case 4 : If we reached this point, the command was not found in any of&n; *     the queues.&n; *&n; * We probably reached this point because of an unlikely race condition&n; * between the command completing successfully and the abortion code,&n; * so we won&squot;t panic, but we will notify the user in case something really&n; * broke.&n; */
@@ -6090,9 +6127,11 @@ id|in2000_execute
 id|instance
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|instance-&gt;host_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -6106,7 +6145,7 @@ id|instance-&gt;host_no
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_NOT_RUNNING
+id|SUCCESS
 suffix:semicolon
 )brace
 DECL|macro|MAX_IN2000_HOSTS
@@ -6139,6 +6178,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|function|in2000_setup
+r_static
 r_void
 id|__init
 id|in2000_setup
@@ -6515,6 +6555,7 @@ l_int|10
 )brace
 suffix:semicolon
 DECL|function|in2000_detect
+r_static
 r_int
 id|__init
 id|in2000_detect
@@ -7365,6 +7406,15 @@ op_assign
 id|val
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* FIXME: not strictly needed I think but the called code expects&n;         to be locked */
+id|spin_lock_irqsave
+c_func
+(paren
+id|instance-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|x
 op_assign
 id|reset_hardware
@@ -7382,6 +7432,14 @@ c_cond
 id|RESET_CARD
 suffix:colon
 id|RESET_CARD_AND_BUS
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|instance-&gt;host_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|hostdata-&gt;microcode
@@ -7570,6 +7628,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* NOTE: I lifted this function straight out of the old driver,&n; *       and have not tested it. Presumably it does what it&squot;s&n; *       supposed to do...&n; */
 DECL|function|in2000_biosparam
+r_static
 r_int
 id|in2000_biosparam
 c_func
@@ -7771,6 +7830,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|in2000_proc_info
+r_static
 r_int
 id|in2000_proc_info
 c_func
@@ -8177,15 +8237,12 @@ r_return
 id|len
 suffix:semicolon
 )brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+id|instance-&gt;host_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|bp
@@ -8753,9 +8810,11 @@ comma
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|instance-&gt;host_lock
+comma
 id|flags
 )paren
 suffix:semicolon

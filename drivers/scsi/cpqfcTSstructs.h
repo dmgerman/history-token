@@ -4,8 +4,6 @@ DECL|macro|CPQFCTSSTRUCTS_H
 mdefine_line|#define CPQFCTSSTRUCTS_H
 macro_line|#include &lt;linux/timer.h&gt;  
 singleline_comment|// timer declaration in our host data
-macro_line|#include &lt;linux/tqueue.h&gt; 
-singleline_comment|// task queue sched
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;cpqfcTSioctl.h&quot;
 DECL|macro|DbgDelay

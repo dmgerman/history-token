@@ -52,6 +52,11 @@ id|idx
 r_int
 id|i
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -66,7 +71,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|write_lock
+id|_raw_write_lock
 c_func
 (paren
 op_amp
@@ -106,7 +111,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|write_unlock
+id|_raw_write_unlock
 c_func
 (paren
 op_amp
@@ -117,6 +122,11 @@ id|i
 (braket
 id|idx
 )braket
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -193,9 +203,14 @@ id|idx
 r_int
 id|i
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|again
 suffix:colon
-id|spin_lock
+id|_raw_spin_lock
 c_func
 (paren
 op_amp
@@ -235,7 +250,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|spin_unlock
+id|_raw_spin_unlock
 c_func
 (paren
 op_amp

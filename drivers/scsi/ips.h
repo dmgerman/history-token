@@ -1,9 +1,12 @@
 multiline_comment|/*****************************************************************************/
-multiline_comment|/* ips.h -- driver for the IBM ServeRAID controller                          */
+multiline_comment|/* ips.h -- driver for the Adaptec / IBM ServeRAID controller                */
 multiline_comment|/*                                                                           */
 multiline_comment|/* Written By: Keith Mitchell, IBM Corporation                               */
+multiline_comment|/*             Jack Hammer, Adaptec, Inc.                                    */
+multiline_comment|/*             David Jeffery, Adaptec, Inc.                                  */
 multiline_comment|/*                                                                           */
 multiline_comment|/* Copyright (C) 1999 IBM Corporation                                        */
+multiline_comment|/* Copyright (C) 2003 Adaptec, Inc.                                          */
 multiline_comment|/*                                                                           */
 multiline_comment|/* This program is free software; you can redistribute it and/or modify      */
 multiline_comment|/* it under the terms of the GNU General Public License as published by      */
@@ -40,7 +43,7 @@ multiline_comment|/* along with this program; if not, write to the Free Software
 multiline_comment|/* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA */
 multiline_comment|/*                                                                           */
 multiline_comment|/* Bugs/Comments/Suggestions should be mailed to:                            */
-multiline_comment|/*      ipslinux@us.ibm.com                                                  */
+multiline_comment|/*      ipslinux@adaptec.com                                                 */
 multiline_comment|/*                                                                           */
 multiline_comment|/*****************************************************************************/
 macro_line|#ifndef _IPS_H_
@@ -168,35 +171,10 @@ DECL|macro|IPS_USE_I2O_STATUS
 mdefine_line|#define IPS_USE_I2O_STATUS(ha)      (IPS_IS_MORPHEUS(ha))
 DECL|macro|IPS_USE_MEMIO
 mdefine_line|#define IPS_USE_MEMIO(ha)           ((IPS_IS_MORPHEUS(ha) || &bslash;&n;                                         ((IPS_IS_TROMBONE(ha) || IPS_IS_CLARINET(ha)) &amp;&amp; &bslash;&n;                                          (ips_force_memio))) ? 1 : 0)
-macro_line|#ifndef VIRT_TO_BUS
-DECL|macro|VIRT_TO_BUS
-mdefine_line|#define VIRT_TO_BUS(x)           (uint32_t) virt_to_bus((void *) x)
-macro_line|#endif
 macro_line|#ifndef MDELAY
 DECL|macro|MDELAY
 mdefine_line|#define MDELAY mdelay
 macro_line|#endif
-macro_line|#ifndef verify_area_20
-DECL|macro|verify_area_20
-mdefine_line|#define verify_area_20(t,a,sz)   (0) /* success */
-macro_line|#endif
-macro_line|#ifndef DECLARE_MUTEX_LOCKED
-DECL|macro|DECLARE_MUTEX_LOCKED
-mdefine_line|#define DECLARE_MUTEX_LOCKED(sem) struct semaphore sem = MUTEX_LOCKED;
-macro_line|#endif
-multiline_comment|/*&n;    * Lock macros&n;    */
-DECL|macro|IPS_SCB_LOCK
-mdefine_line|#define IPS_SCB_LOCK(cpu_flags)      spin_lock_irqsave(&amp;ha-&gt;scb_lock, cpu_flags)
-DECL|macro|IPS_SCB_UNLOCK
-mdefine_line|#define IPS_SCB_UNLOCK(cpu_flags)    spin_unlock_irqrestore(&amp;ha-&gt;scb_lock, cpu_flags)
-DECL|macro|IPS_QUEUE_LOCK
-mdefine_line|#define IPS_QUEUE_LOCK(queue)        spin_lock_irqsave(&amp;(queue)-&gt;lock, (queue)-&gt;cpu_flags)
-DECL|macro|IPS_QUEUE_UNLOCK
-mdefine_line|#define IPS_QUEUE_UNLOCK(queue)      spin_unlock_irqrestore(&amp;(queue)-&gt;lock, (queue)-&gt;cpu_flags)
-DECL|macro|IPS_HA_LOCK
-mdefine_line|#define IPS_HA_LOCK(cpu_flags)       spin_lock_irqsave(&amp;ha-&gt;ips_lock, cpu_flags)
-DECL|macro|IPS_HA_UNLOCK
-mdefine_line|#define IPS_HA_UNLOCK(cpu_flags)     spin_unlock_irqrestore(&amp;ha-&gt;ips_lock, cpu_flags)
 multiline_comment|/*&n;    * Adapter address map equates&n;    */
 DECL|macro|IPS_REG_HISR
 mdefine_line|#define IPS_REG_HISR                 0x08    /* Host Interrupt Status Reg   */
@@ -2807,15 +2785,6 @@ DECL|member|count
 r_int
 id|count
 suffix:semicolon
-DECL|member|cpu_flags
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
 DECL|typedef|ips_scb_queue_t
 )brace
 id|ips_scb_queue_t
@@ -2840,15 +2809,6 @@ DECL|member|count
 r_int
 id|count
 suffix:semicolon
-DECL|member|cpu_flags
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
 DECL|typedef|ips_wait_queue_t
 )brace
 id|ips_wait_queue_t
@@ -2862,12 +2822,6 @@ DECL|member|scsi_cmd
 id|Scsi_Cmnd
 op_star
 id|scsi_cmd
-suffix:semicolon
-DECL|member|sem
-r_struct
-id|semaphore
-op_star
-id|sem
 suffix:semicolon
 DECL|member|next
 r_struct
@@ -2899,15 +2853,6 @@ suffix:semicolon
 DECL|member|count
 r_int
 id|count
-suffix:semicolon
-DECL|member|cpu_flags
-r_int
-r_int
-id|cpu_flags
-suffix:semicolon
-DECL|member|lock
-id|spinlock_t
-id|lock
 suffix:semicolon
 DECL|typedef|ips_copp_queue_t
 )brace
@@ -3243,12 +3188,6 @@ r_uint32
 id|cmd_in_progress
 suffix:semicolon
 multiline_comment|/* Current command in progress*/
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* HA flags                   */
 DECL|member|waitflag
 r_uint8
 id|waitflag
@@ -3350,30 +3289,6 @@ op_star
 id|pcidev
 suffix:semicolon
 multiline_comment|/* PCI device handle          */
-DECL|member|scb_lock
-id|spinlock_t
-id|scb_lock
-suffix:semicolon
-DECL|member|copp_lock
-id|spinlock_t
-id|copp_lock
-suffix:semicolon
-DECL|member|ips_lock
-id|spinlock_t
-id|ips_lock
-suffix:semicolon
-DECL|member|ioctl_sem
-r_struct
-id|semaphore
-id|ioctl_sem
-suffix:semicolon
-multiline_comment|/* Semaphore for new IOCTL&squot;s  */
-DECL|member|flash_ioctl_sem
-r_struct
-id|semaphore
-id|flash_ioctl_sem
-suffix:semicolon
-multiline_comment|/* Semaphore for Flashing     */
 DECL|member|flash_data
 r_char
 op_star
@@ -3506,12 +3421,6 @@ suffix:semicolon
 DECL|member|callback
 id|ips_scb_callback
 id|callback
-suffix:semicolon
-DECL|member|sem
-r_struct
-id|semaphore
-op_star
-id|sem
 suffix:semicolon
 DECL|member|sg_busaddr
 r_uint32

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/types.h&gt;
 r_static
 r_int
 id|wd7000_set_info
+c_func
 (paren
 r_char
 op_star
@@ -21,6 +22,7 @@ suffix:semicolon
 r_static
 r_int
 id|wd7000_proc_info
+c_func
 (paren
 r_char
 op_star
@@ -47,6 +49,7 @@ suffix:semicolon
 r_static
 r_int
 id|wd7000_detect
+c_func
 (paren
 id|Scsi_Host_Template
 op_star
@@ -55,6 +58,7 @@ suffix:semicolon
 r_static
 r_int
 id|wd7000_command
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -63,6 +67,7 @@ suffix:semicolon
 r_static
 r_int
 id|wd7000_queuecommand
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -81,6 +86,7 @@ suffix:semicolon
 r_static
 r_int
 id|wd7000_abort
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -89,6 +95,7 @@ suffix:semicolon
 r_static
 r_int
 id|wd7000_bus_reset
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -97,6 +104,7 @@ suffix:semicolon
 r_static
 r_int
 id|wd7000_host_reset
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -105,6 +113,7 @@ suffix:semicolon
 r_static
 r_int
 id|wd7000_device_reset
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -113,6 +122,7 @@ suffix:semicolon
 r_static
 r_int
 id|wd7000_biosparam
+c_func
 (paren
 id|Disk
 op_star
