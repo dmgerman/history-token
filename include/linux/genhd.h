@@ -302,13 +302,13 @@ suffix:semicolon
 multiline_comment|/* drivers/block/genhd.c */
 r_extern
 r_void
-id|add_gendisk
+id|add_disk
 c_func
 (paren
 r_struct
 id|gendisk
 op_star
-id|gp
+id|disk
 )paren
 suffix:semicolon
 r_extern
