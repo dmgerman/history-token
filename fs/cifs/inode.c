@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   fs/cifs/inode.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2003&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   fs/cifs/inode.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2005&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
@@ -10,16 +10,6 @@ macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;cifs_fs_sb.h&quot;
-r_extern
-r_int
-id|is_size_safe_to_change
-c_func
-(paren
-r_struct
-id|cifsInodeInfo
-op_star
-)paren
-suffix:semicolon
 r_int
 DECL|function|cifs_get_inode_info_unix
 id|cifs_get_inode_info_unix
@@ -2955,6 +2945,26 @@ multiline_comment|/* if we can not get memory just leave rc as EEXIST */
 r_if
 c_cond
 (paren
+id|rc
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;rename rc %d&quot;
+comma
+id|rc
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* BB removeme BB */
+)brace
+r_if
+c_cond
+(paren
 (paren
 id|rc
 op_eq
@@ -2978,6 +2988,8 @@ suffix:semicolon
 id|__u16
 id|netfid
 suffix:semicolon
+multiline_comment|/* BB FIXME Is Generic Read correct for rename? */
+multiline_comment|/* if renaming directory - we should not say CREATE_NOT_DIR,&n;&t;&t;need to test renaming open directory, also GENERIC_READ&n;&t;&t;might not right be right access to request */
 id|rc
 op_assign
 id|CIFSSMBOpen
@@ -4466,19 +4478,93 @@ op_minus
 id|EOPNOTSUPP
 )paren
 (brace
+r_int
+id|oplock
+op_assign
+id|FALSE
+suffix:semicolon
+id|__u16
+id|netfid
+suffix:semicolon
 id|cFYI
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;OS2 level of SetPathInfo not implemented&quot;
+l_string|&quot;calling SetFileInfo since SetPathInfo for times not supported by this server&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Need to convert time_buf into old format, &n;&t;&t;&t;but probably better to do that inside the function&n;&t;&t;&t;below rather than here */
-multiline_comment|/* Better to return EOPNOTSUPP until function&n;&t;&t;&t;below is ready */
-multiline_comment|/* CIFSSMBSetTimesLegacy(xid, pTcon, full_path,&n;        &t;        FILE_INFO_STANDARD * data, cifs_sb-&gt;local_nls); */
+multiline_comment|/* BB we could scan to see if we already have it open */
+multiline_comment|/* and pass in pid of opener to function */
+id|rc
+op_assign
+id|CIFSSMBOpen
+c_func
+(paren
+id|xid
+comma
+id|pTcon
+comma
+id|full_path
+comma
+id|FILE_OPEN
+comma
+id|FILE_WRITE_ATTRIBUTES
+comma
+id|CREATE_NOT_DIR
+comma
+op_amp
+id|netfid
+comma
+op_amp
+id|oplock
+comma
+l_int|NULL
+comma
+id|cifs_sb-&gt;local_nls
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+l_int|0
+)paren
+(brace
+id|rc
+op_assign
+id|CIFSSMBSetFileTimes
+c_func
+(paren
+id|xid
+comma
+id|pTcon
+comma
+op_amp
+id|time_buf
+comma
+id|netfid
+)paren
+suffix:semicolon
+id|CIFSSMBClose
+c_func
+(paren
+id|xid
+comma
+id|pTcon
+comma
+id|netfid
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* BB For even older servers we could convert time_buf&n;&t;&t;&t;into old DOS style which uses two second granularity */
+multiline_comment|/* rc = CIFSSMBSetTimesLegacy(xid, pTcon, full_path,&n;        &t;        &amp;time_buf, cifs_sb-&gt;local_nls); */
+)brace
 )brace
 )brace
 multiline_comment|/* do not  need local check to inode_check_ok since the server does that */
