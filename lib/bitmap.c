@@ -1376,7 +1376,7 @@ suffix:semicolon
 id|u32
 id|chunk
 suffix:semicolon
-id|bitmap_clear
+id|bitmap_zero
 c_func
 (paren
 id|maskp

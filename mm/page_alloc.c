@@ -5186,7 +5186,7 @@ id|prev_node
 op_assign
 id|local_node
 suffix:semicolon
-id|CLEAR_BITMAP
+id|bitmap_zero
 c_func
 (paren
 id|used_mask
