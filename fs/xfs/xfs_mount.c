@@ -59,23 +59,6 @@ op_star
 id|mp
 )paren
 suffix:semicolon
-r_void
-id|xfs_xlatesb
-c_func
-(paren
-r_void
-op_star
-comma
-id|xfs_sb_t
-op_star
-comma
-r_int
-comma
-id|xfs_arch_t
-comma
-id|__int64_t
-)paren
-suffix:semicolon
 r_static
 r_struct
 (brace
@@ -1634,7 +1617,7 @@ r_return
 id|index
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * xfs_xlatesb&n; *&n; *     data       - on disk version of sb&n; *     sb         - a superblock&n; *     dir        - conversion direction: &lt;0 - convert sb to buf&n; *                                        &gt;0 - convert buf to sb&n; *     arch       - architecture to read/write from/to buf&n; *     fields     - which fields to copy (bitmask)&n; */
+multiline_comment|/*&n; * xfs_xlatesb&n; *&n; *     data       - on disk version of sb&n; *     sb         - a superblock&n; *     dir        - conversion direction: &lt;0 - convert sb to buf&n; *                                        &gt;0 - convert buf to sb&n; *     fields     - which fields to copy (bitmask)&n; */
 r_void
 DECL|function|xfs_xlatesb
 id|xfs_xlatesb
@@ -1650,9 +1633,6 @@ id|sb
 comma
 r_int
 id|dir
-comma
-id|xfs_arch_t
-id|arch
 comma
 id|__int64_t
 id|fields
@@ -1774,10 +1754,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|arch
-op_eq
-id|ARCH_NOCONVERT
-op_logical_or
 id|size
 op_eq
 l_int|1
@@ -1871,7 +1847,7 @@ id|first
 comma
 id|dir
 comma
-id|arch
+id|ARCH_CONVERT
 )paren
 suffix:semicolon
 r_break
@@ -1906,7 +1882,7 @@ id|first
 comma
 id|dir
 comma
-id|arch
+id|ARCH_CONVERT
 )paren
 suffix:semicolon
 r_break
@@ -1941,7 +1917,7 @@ id|first
 comma
 id|dir
 comma
-id|arch
+id|ARCH_CONVERT
 )paren
 suffix:semicolon
 r_break
@@ -2132,8 +2108,6 @@ id|mp-&gt;m_sb
 )paren
 comma
 l_int|1
-comma
-id|ARCH_CONVERT
 comma
 id|XFS_SB_ALL_BITS
 )paren
@@ -5038,8 +5012,6 @@ id|mp-&gt;m_sb
 comma
 op_minus
 l_int|1
-comma
-id|ARCH_CONVERT
 comma
 id|fields
 )paren
