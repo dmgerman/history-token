@@ -6560,7 +6560,7 @@ c_func
 id|pegasus-&gt;rx_skb
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|pegasus-&gt;net
