@@ -117,9 +117,9 @@ DECL|macro|LM83_REG_W_TCRIT
 mdefine_line|#define LM83_REG_W_TCRIT&t;&t;0x5A
 multiline_comment|/*&n; * Conversions and various macros&n; * The LM83 uses signed 8-bit values.&n; */
 DECL|macro|TEMP_FROM_REG
-mdefine_line|#define TEMP_FROM_REG(val)&t;((val &gt; 127 ? val-256 : val) * 1000)
+mdefine_line|#define TEMP_FROM_REG(val)&t;(((val) &gt; 127 ? (val)-0xFF : (val)) * 1000)
 DECL|macro|TEMP_TO_REG
-mdefine_line|#define TEMP_TO_REG(val)&t;((val &lt; 0 ? val+256 : val) / 1000)
+mdefine_line|#define TEMP_TO_REG(val)&t;((val) &lt;= -50000 ? -50 + 0xFF : (val) &gt;= 127000 ? 127 : &bslash;&n;&t;&t;&t;&t; (val) &gt; -500 ? ((val)+500) / 1000 : &bslash;&n;&t;&t;&t;&t; ((val)-500) / 1000 + 0xFF)
 DECL|variable|LM83_REG_R_TEMP
 r_static
 r_const
@@ -427,7 +427,7 @@ id|temp_crit
 )paren
 suffix:semicolon
 DECL|macro|set_temp
-mdefine_line|#define set_temp(suffix, value, reg) &bslash;&n;static ssize_t set_temp_##suffix(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm83_data *data = i2c_get_clientdata(client); &bslash;&n;&t;data-&gt;value = TEMP_TO_REG(simple_strtoul(buf, NULL, 10)); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp(suffix, value, reg) &bslash;&n;static ssize_t set_temp_##suffix(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm83_data *data = i2c_get_clientdata(client); &bslash;&n;&t;data-&gt;value = TEMP_TO_REG(simple_strtol(buf, NULL, 10)); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
 id|set_temp
 c_func
 (paren
@@ -645,7 +645,33 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_crit
+id|temp1_crit
+comma
+id|S_IRUGO
+comma
+id|show_temp_crit
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|temp2_crit
+comma
+id|S_IRUGO
+comma
+id|show_temp_crit
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|temp3_crit
 comma
 id|S_IWUSR
 op_or
@@ -654,6 +680,19 @@ comma
 id|show_temp_crit
 comma
 id|set_temp_crit
+)paren
+suffix:semicolon
+r_static
+id|DEVICE_ATTR
+c_func
+(paren
+id|temp4_crit
+comma
+id|S_IRUGO
+comma
+id|show_temp_crit
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_static
@@ -842,6 +881,18 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Now we do the detection and identification. A negative kind&n;&t; * means that the driver was loaded with no force parameter&n;&t; * (default), so we must both detect and identify the chip&n;&t; * (actually there is only one possible kind of chip for now, LM83).&n;&t; * A zero kind means that the driver was loaded with the force&n;&t; * parameter, the detection step shall be skipped. A positive kind&n;&t; * means that the driver was loaded with the force parameter and a&n;&t; * given kind of chip is requested, so both the detection and the&n;&t; * identification steps are skipped. */
+multiline_comment|/* Default to an LM83 if forced */
+r_if
+c_cond
+(paren
+id|kind
+op_eq
+l_int|0
+)paren
+id|kind
+op_assign
+id|lm83
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1150,7 +1201,37 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_crit
+id|dev_attr_temp1_crit
+)paren
+suffix:semicolon
+id|device_create_file
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+op_amp
+id|dev_attr_temp2_crit
+)paren
+suffix:semicolon
+id|device_create_file
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+op_amp
+id|dev_attr_temp3_crit
+)paren
+suffix:semicolon
+id|device_create_file
+c_func
+(paren
+op_amp
+id|new_client-&gt;dev
+comma
+op_amp
+id|dev_attr_temp4_crit
 )paren
 suffix:semicolon
 id|device_create_file
