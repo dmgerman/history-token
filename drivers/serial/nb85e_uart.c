@@ -1542,9 +1542,16 @@ id|CSIZE
 )paren
 op_or
 (paren
+id|old
+ques
+c_cond
+(paren
 id|old-&gt;c_cflag
 op_amp
 id|CSIZE
+)paren
+suffix:colon
+id|CS8
 )paren
 suffix:semicolon
 id|termios-&gt;c_cflag
