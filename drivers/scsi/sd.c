@@ -2320,11 +2320,7 @@ id|sdp
 comma
 id|cmd
 comma
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_default
@@ -2361,11 +2357,7 @@ id|sdp
 comma
 id|cmd
 comma
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 )brace

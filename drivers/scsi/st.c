@@ -17798,11 +17798,7 @@ id|STp-&gt;device
 comma
 id|cmd_in
 comma
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 id|out

@@ -5432,6 +5432,7 @@ id|sdp-&gt;device
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -5503,6 +5504,7 @@ id|cmd_in
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -5532,6 +5534,7 @@ id|cmd_in
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
