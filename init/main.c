@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 macro_line|#if defined(CONFIG_ARCH_S390)
@@ -1357,6 +1358,11 @@ id|mempages
 )paren
 suffix:semicolon
 id|proc_caches_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|security_scaffolding_startup
 c_func
 (paren
 )paren
