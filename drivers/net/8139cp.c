@@ -3643,9 +3643,11 @@ id|eor
 suffix:semicolon
 id|first_len
 op_assign
-id|skb-&gt;len
-op_minus
-id|skb-&gt;data_len
+id|skb_headlen
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 id|first_mapping
 op_assign
