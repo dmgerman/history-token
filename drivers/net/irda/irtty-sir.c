@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &quot;sir-dev.h&quot;
@@ -179,22 +180,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|set_task_state
-c_func
-(paren
-id|current
-comma
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|msecs_to_jiffies
+id|msleep
 c_func
 (paren
 id|USBSERIAL_TX_DONE_DELAY
-)paren
 )paren
 suffix:semicolon
 )brace

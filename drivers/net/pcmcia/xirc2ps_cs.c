@@ -1093,8 +1093,6 @@ DECL|macro|PutByte
 mdefine_line|#define PutByte(reg,value) outb((value), ioaddr+(reg))
 DECL|macro|PutWord
 mdefine_line|#define PutWord(reg,value) outw((value), ioaddr+(reg))
-DECL|macro|Wait
-mdefine_line|#define Wait(n) do { &bslash;&n;&t;set_current_state(TASK_UNINTERRUPTIBLE); &bslash;&n;&t;schedule_timeout(n); &bslash;&n;} while (0)
 multiline_comment|/*====== Functions used for debugging =================================*/
 macro_line|#if defined(PCMCIA_DEBUG) &amp;&amp; 0 /* reading regs may change system status */
 r_static
@@ -7138,12 +7136,10 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* clear bit 0: power down */
-id|Wait
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|25
+l_int|40
 )paren
 suffix:semicolon
 multiline_comment|/* wait 40 msec */
@@ -7173,12 +7169,10 @@ l_int|4
 )paren
 suffix:semicolon
 multiline_comment|/* set bit 0: power up, bit 2: AIC */
-id|Wait
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|50
+l_int|20
 )paren
 suffix:semicolon
 multiline_comment|/* wait 20 msec */
@@ -7250,12 +7244,10 @@ id|SoftReset
 )paren
 suffix:semicolon
 multiline_comment|/* set */
-id|Wait
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|50
+l_int|20
 )paren
 suffix:semicolon
 multiline_comment|/* wait 20 msec */
@@ -7268,12 +7260,10 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* clear */
-id|Wait
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|25
+l_int|40
 )paren
 suffix:semicolon
 multiline_comment|/* wait 40 msec */
@@ -7300,12 +7290,10 @@ l_int|0x0e
 suffix:semicolon
 )brace
 multiline_comment|/* give the circuits some time to power up */
-id|Wait
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|2
+l_int|500
 )paren
 suffix:semicolon
 multiline_comment|/* about 500ms */
@@ -7418,12 +7406,10 @@ l_int|0x80
 )paren
 suffix:semicolon
 )brace
-id|Wait
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|25
+l_int|40
 )paren
 suffix:semicolon
 multiline_comment|/* wait 40 msec to let it complete */
@@ -7709,12 +7695,10 @@ op_or
 l_int|0x08
 )paren
 suffix:semicolon
-id|Wait
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|50
+l_int|20
 )paren
 suffix:semicolon
 )brace
@@ -7761,12 +7745,10 @@ comma
 l_int|0x80
 )paren
 suffix:semicolon
-id|Wait
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|25
+l_int|40
 )paren
 suffix:semicolon
 multiline_comment|/* wait 40 msec to let it complete */
@@ -8210,12 +8192,10 @@ id|i
 op_increment
 )paren
 (brace
-id|Wait
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 multiline_comment|/* wait 100 msec */

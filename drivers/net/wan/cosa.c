@@ -2389,9 +2389,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t;&t; * Enable interrupt on tx buffer empty (it sure is) &n;&t;&t; * really sure ?&n;&t;&t; * FIXME: When this code is not used as module, we should&n;&t;&t; * probably call udelay() instead of the interruptible sleep.&n;&t;&t; */
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|cosa_putstatus
 c_func
@@ -7492,16 +7494,10 @@ id|SR_RST
 )paren
 suffix:semicolon
 macro_line|#ifdef MODULE
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|2
+l_int|500
 )paren
 suffix:semicolon
 macro_line|#else
@@ -7689,9 +7685,11 @@ id|r
 suffix:semicolon
 )brace
 multiline_comment|/* sleep if not ready to read */
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
