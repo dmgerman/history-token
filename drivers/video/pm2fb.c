@@ -3488,9 +3488,6 @@ id|var-&gt;transp.length
 op_assign
 l_int|8
 suffix:semicolon
-r_case
-l_int|24
-suffix:colon
 id|var-&gt;red.offset
 op_assign
 l_int|16
@@ -3502,6 +3499,42 @@ suffix:semicolon
 id|var-&gt;blue.offset
 op_assign
 l_int|0
+suffix:semicolon
+id|var-&gt;red.length
+op_assign
+id|var-&gt;green.length
+op_assign
+id|var-&gt;blue.length
+op_assign
+l_int|8
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|24
+suffix:colon
+macro_line|#ifdef __BIG_ENDIAN
+id|var-&gt;red.offset
+op_assign
+l_int|0
+suffix:semicolon
+id|var-&gt;blue.offset
+op_assign
+l_int|16
+suffix:semicolon
+macro_line|#else
+id|var-&gt;red.offset
+op_assign
+l_int|16
+suffix:semicolon
+id|var-&gt;blue.offset
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+id|var-&gt;green.offset
+op_assign
+l_int|8
 suffix:semicolon
 id|var-&gt;red.length
 op_assign
@@ -4213,14 +4246,6 @@ id|PM2F_RD_TRUECOLOR
 op_or
 id|PM2F_RD_PIXELFORMAT_RGB888
 suffix:semicolon
-macro_line|#ifdef __BIG_ENDIAN
-multiline_comment|/* Use BGR not RGB */
-id|clrmode
-op_and_assign
-op_complement
-id|PM2F_RD_COLOR_MODE_RGB
-suffix:semicolon
-macro_line|#endif
 id|txtmap
 op_assign
 id|PM2F_TEXTEL_SIZE_24
