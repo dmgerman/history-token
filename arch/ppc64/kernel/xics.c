@@ -2764,7 +2764,7 @@ c_func
 id|first_cpu
 c_func
 (paren
-id|cpumask
+id|tmp
 )paren
 )paren
 suffix:semicolon
