@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2003&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * Various protocol defined structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developerst@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo &lt;xingang.guo@intel.com&gt;&n; *    randall@sctp.chicago.il.us&n; *    kmorneau@cisco.com&n; *    qxie1@email.mot.com&n; *    Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; *    Kevin Gao &lt;kevin.gao@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2004&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * Various protocol defined structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developerst@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo &lt;xingang.guo@intel.com&gt;&n; *    randall@sctp.chicago.il.us&n; *    kmorneau@cisco.com&n; *    qxie1@email.mot.com&n; *    Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; *    Kevin Gao &lt;kevin.gao@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#ifndef __LINUX_SCTP_H__
 DECL|macro|__LINUX_SCTP_H__
 mdefine_line|#define __LINUX_SCTP_H__
@@ -144,6 +144,12 @@ DECL|enumerator|SCTP_CID_SHUTDOWN_COMPLETE
 id|SCTP_CID_SHUTDOWN_COMPLETE
 op_assign
 l_int|14
+comma
+multiline_comment|/* PR-SCTP Sec 3.2 */
+DECL|enumerator|SCTP_CID_FWD_TSN
+id|SCTP_CID_FWD_TSN
+op_assign
+l_int|0xC0
 comma
 multiline_comment|/* Use hex, as defined in ADDIP sec. 3.1 */
 DECL|enumerator|SCTP_CID_ASCONF
@@ -319,6 +325,16 @@ id|__constant_htons
 c_func
 (paren
 l_int|0x8000
+)paren
+comma
+multiline_comment|/* PR-SCTP Sec 3.1 */
+DECL|enumerator|SCTP_PARAM_FWD_TSN_SUPPORT
+id|SCTP_PARAM_FWD_TSN_SUPPORT
+op_assign
+id|__constant_htons
+c_func
+(paren
+l_int|0xc000
 )paren
 comma
 multiline_comment|/* Add-IP Extension. Section 3.2 */
@@ -1349,7 +1365,76 @@ id|packed
 )paren
 id|sctp_cwr_chunk_t
 suffix:semicolon
-multiline_comment|/*&n; * ADDIP Section 3.1 New Chunk Types&n; */
+multiline_comment|/* PR-SCTP&n; * 3.2 Forward Cumulative TSN Chunk Definition (FORWARD TSN)&n; *&n; * Forward Cumulative TSN chunk has the following format:&n; *&n; *        0                   1                   2                   3&n; *        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&n; *      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *      |   Type = 192  |  Flags = 0x00 |        Length = Variable      |&n; *      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *      |                      New Cumulative TSN                       |&n; *      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *      |         Stream-1              |       Stream Sequence-1       |&n; *      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *      &bslash;                                                               /&n; *      /                                                               &bslash;&n; *      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *      |         Stream-N              |       Stream Sequence-N       |&n; *      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *&n; *      Chunk Flags:&n; *&n; *        Set to all zeros on transmit and ignored on receipt.&n; *&n; *      New Cumulative TSN: 32 bit u_int&n; *&n; *       This indicates the new cumulative TSN to the data receiver. Upon&n; *       the reception of this value, the data receiver MUST consider&n; *       any missing TSNs earlier than or equal to this value as received&n; *       and stop reporting them as gaps in any subsequent SACKs.&n; *&n; *      Stream-N: 16 bit u_int&n; *&n; *       This field holds a stream number that was skipped by this&n; *       FWD-TSN.&n; *&n; *      Stream Sequence-N: 16 bit u_int&n; *       This field holds the sequence number associated with the stream&n; *       that was skipped. The stream sequence field holds the largest stream&n; *       sequence number in this stream being skipped.  The receiver of&n; *       the FWD-TSN&squot;s can use the Stream-N and Stream Sequence-N fields&n; *       to enable delivery of any stranded TSN&squot;s that remain on the stream&n; *       re-ordering queues. This field MUST NOT report TSN&squot;s corresponding&n; *       to DATA chunk that are marked as unordered. For ordered DATA&n; *       chunks this field MUST be filled in.&n; */
+DECL|struct|sctp_fwdtsn_skip
+r_struct
+id|sctp_fwdtsn_skip
+(brace
+DECL|member|stream
+id|__u16
+id|stream
+suffix:semicolon
+DECL|member|ssn
+id|__u16
+id|ssn
+suffix:semicolon
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|struct|sctp_fwdtsn_hdr
+r_struct
+id|sctp_fwdtsn_hdr
+(brace
+DECL|member|new_cum_tsn
+id|__u32
+id|new_cum_tsn
+suffix:semicolon
+DECL|member|skip
+r_struct
+id|sctp_fwdtsn_skip
+id|skip
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|struct|sctp_fwdtsn_chunk
+r_struct
+id|sctp_fwdtsn_chunk
+(brace
+DECL|member|chunk_hdr
+r_struct
+id|sctp_chunkhdr
+id|chunk_hdr
+suffix:semicolon
+DECL|member|fwdtsn_hdr
+r_struct
+id|sctp_fwdtsn_hdr
+id|fwdtsn_hdr
+suffix:semicolon
+)brace
+id|__attribute
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* ADDIP&n; * Section 3.1.1 Address Configuration Change Chunk (ASCONF)&n; *&n; * &t;Serial Number: 32 bits (unsigned integer)&n; *&t;This value represents a Serial Number for the ASCONF Chunk. The&n; *&t;valid range of Serial Number is from 0 to 2^32-1.&n; *&t;Serial Numbers wrap back to 0 after reaching 2^32 -1.&n; *&n; *&t;Address Parameter: 8 or 20 bytes (depending on type)&n; *&t;The address is an address of the sender of the ASCONF chunk,&n; *&t;the address MUST be considered part of the association by the&n; *&t;peer endpoint. This field may be used by the receiver of the &n; *&t;ASCONF to help in finding the association. This parameter MUST&n; *&t;be present in every ASCONF message i.e. it is a mandatory TLV&n; *&t;parameter.&n; *&n; *&t;ASCONF Parameter: TLV format&n; *&t;Each Address configuration change is represented by a TLV&n; *&t;parameter as defined in Section 3.2. One or more requests may&n; *&t;be present in an ASCONF Chunk.&n; *&n; * Section 3.1.2 Address Configuration Acknowledgement Chunk (ASCONF-ACK)&n; * &n; *&t;Serial Number: 32 bits (unsigned integer)&n; *&t;This value represents the Serial Number for the received ASCONF&n; *&t;Chunk that is acknowledged by this chunk. This value is copied&n; *&t;from the received ASCONF Chunk. &n; *&n; *&t;ASCONF Parameter Response: TLV format&n; *&t;The ASCONF Parameter Response is used in the ASCONF-ACK to&n; *&t;report status of ASCONF processing.&n; */
 DECL|struct|sctp_addip_param
 r_typedef

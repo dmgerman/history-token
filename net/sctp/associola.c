@@ -500,6 +500,10 @@ id|asoc-&gt;next_tsn
 op_minus
 l_int|1
 suffix:semicolon
+id|asoc-&gt;adv_peer_ack_point
+op_assign
+id|asoc-&gt;ctsn_ack_point
+suffix:semicolon
 id|asoc-&gt;highest_sacked
 op_assign
 id|asoc-&gt;ctsn_ack_point
@@ -589,23 +593,6 @@ id|asoc
 comma
 op_amp
 id|asoc-&gt;outqueue
-)paren
-suffix:semicolon
-id|sctp_outq_set_output_handlers
-c_func
-(paren
-op_amp
-id|asoc-&gt;outqueue
-comma
-id|sctp_packet_init
-comma
-id|sctp_packet_config
-comma
-id|sctp_packet_append_chunk
-comma
-id|sctp_packet_transmit_chunk
-comma
-id|sctp_packet_transmit
 )paren
 suffix:semicolon
 r_if
@@ -1270,9 +1257,8 @@ id|asoc-&gt;pmtu
 )paren
 suffix:semicolon
 multiline_comment|/* The asoc-&gt;peer.port might not be meaningful yet, but&n;&t; * initialize the packet structure anyway.&n;&t; */
-(paren
-id|asoc-&gt;outqueue.init_output
-)paren
+id|sctp_packet_init
+c_func
 (paren
 op_amp
 id|peer-&gt;packet
@@ -2755,6 +2741,12 @@ r_new
 op_member_access_from_pointer
 id|ctsn_ack_point
 suffix:semicolon
+id|asoc-&gt;adv_peer_ack_point
+op_assign
+r_new
+op_member_access_from_pointer
+id|adv_peer_ack_point
+suffix:semicolon
 multiline_comment|/* Reinitialize SSN for both local streams&n;&t;&t; * and peer&squot;s streams.&n;&t;&t; */
 id|sctp_ssnmap_clear
 c_func
@@ -2770,6 +2762,10 @@ op_assign
 id|asoc-&gt;next_tsn
 op_minus
 l_int|1
+suffix:semicolon
+id|asoc-&gt;adv_peer_ack_point
+op_assign
+id|asoc-&gt;ctsn_ack_point
 suffix:semicolon
 r_if
 c_cond
