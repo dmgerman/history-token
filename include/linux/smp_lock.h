@@ -108,7 +108,7 @@ mdefine_line|#define unlock_kernel()&t;&t;&t;&t;do { } while(0)
 DECL|macro|release_kernel_lock
 mdefine_line|#define release_kernel_lock(task)&t;&t;do { } while(0)
 DECL|macro|reacquire_kernel_lock
-mdefine_line|#define reacquire_kernel_lock(task)&t;&t;do { } while(0)
+mdefine_line|#define reacquire_kernel_lock(task)&t;&t;0
 DECL|macro|kernel_locked
 mdefine_line|#define kernel_locked()&t;&t;&t;&t;1
 macro_line|#endif /* CONFIG_LOCK_KERNEL */
