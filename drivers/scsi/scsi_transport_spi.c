@@ -15,7 +15,7 @@ macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &lt;scsi/scsi_transport.h&gt;
 macro_line|#include &lt;scsi/scsi_transport_spi.h&gt;
 DECL|macro|SPI_PRINTK
-mdefine_line|#define SPI_PRINTK(x, l, f, a...)&t;printk(l &quot;scsi(%d:%d:%d:%d): &quot; f, (x)-&gt;host-&gt;host_no, (x)-&gt;channel, (x)-&gt;id, (x)-&gt;lun, ##a)
+mdefine_line|#define SPI_PRINTK(x, l, f, a...)&t;printk(l &quot;scsi(%d:%d:%d:%d): &quot; f, (x)-&gt;host-&gt;host_no, (x)-&gt;channel, (x)-&gt;id, (x)-&gt;lun , ##a)
 r_static
 r_void
 id|transport_class_release
