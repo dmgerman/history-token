@@ -13090,17 +13090,6 @@ id|i
 )paren
 suffix:semicolon
 multiline_comment|/* unhook from SCSI subsystem */
-id|blk_cleanup_queue
-c_func
-(paren
-id|hba
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|queue
-)paren
-suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
@@ -13174,6 +13163,17 @@ id|disk
 )paren
 suffix:semicolon
 )brace
+id|blk_cleanup_queue
+c_func
+(paren
+id|hba
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|queue
+)paren
+suffix:semicolon
 id|pci_free_consistent
 c_func
 (paren
