@@ -1542,6 +1542,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Generic NLM call&n; */
+r_static
 r_int
 DECL|function|nlmclnt_call
 id|nlmclnt_call
@@ -1959,6 +1960,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|nlmclnt_async_call
 id|nlmclnt_async_call
