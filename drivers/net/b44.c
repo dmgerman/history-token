@@ -74,7 +74,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;David S. Miller (davem@redhat.com)&quot;
+l_string|&quot;Florian Schirmer, Pekka Pietikainen, David S. Miller&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
