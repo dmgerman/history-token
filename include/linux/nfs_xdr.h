@@ -1,6 +1,7 @@
 macro_line|#ifndef _LINUX_NFS_XDR_H
 DECL|macro|_LINUX_NFS_XDR_H
 mdefine_line|#define _LINUX_NFS_XDR_H
+macro_line|#include &lt;linux/sunrpc/xprt.h&gt;
 DECL|struct|nfs_fattr
 r_struct
 id|nfs_fattr
@@ -210,9 +211,12 @@ suffix:semicolon
 multiline_comment|/* max name length */
 )brace
 suffix:semicolon
-multiline_comment|/* Arguments to the read call.&n; * Note that NFS_READ_MAXIOV must be &lt;= (MAX_IOVEC-2) from sunrpc/xprt.h&n; */
+multiline_comment|/*&n; * Arguments to the read call.&n; */
 DECL|macro|NFS_READ_MAXIOV
-mdefine_line|#define NFS_READ_MAXIOV 8
+mdefine_line|#define NFS_READ_MAXIOV&t;&t;(9U)
+macro_line|#if (NFS_READ_MAXIOV &gt; (MAX_IOVEC -2))
+macro_line|#error &quot;NFS_READ_MAXIOV is too large&quot;
+macro_line|#endif
 DECL|struct|nfs_readargs
 r_struct
 id|nfs_readargs
@@ -265,9 +269,12 @@ id|eof
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Arguments to the write call.&n; * Note that NFS_WRITE_MAXIOV must be &lt;= (MAX_IOVEC-2) from sunrpc/xprt.h&n; */
+multiline_comment|/*&n; * Arguments to the write call.&n; */
 DECL|macro|NFS_WRITE_MAXIOV
-mdefine_line|#define NFS_WRITE_MAXIOV        8
+mdefine_line|#define NFS_WRITE_MAXIOV&t;(9U)
+macro_line|#if (NFS_WRITE_MAXIOV &gt; (MAX_IOVEC -2))
+macro_line|#error &quot;NFS_WRITE_MAXIOV is too large&quot;
+macro_line|#endif
 DECL|struct|nfs_writeargs
 r_struct
 id|nfs_writeargs

@@ -70,12 +70,18 @@ r_int
 id|wb_timeout
 suffix:semicolon
 multiline_comment|/* when to read/write/commit */
+DECL|member|wb_index
+r_int
+r_int
+id|wb_index
+suffix:semicolon
+multiline_comment|/* Offset within mapping */
 DECL|member|wb_offset
 r_int
 r_int
 id|wb_offset
 comma
-multiline_comment|/* Offset of read/write */
+multiline_comment|/* Offset within page */
 DECL|member|wb_bytes
 id|wb_bytes
 comma
@@ -145,6 +151,17 @@ r_struct
 id|nfs_page
 op_star
 id|req
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nfs_release_list
+c_func
+(paren
+r_struct
+id|list_head
+op_star
+id|list
 )paren
 suffix:semicolon
 r_extern
@@ -241,6 +258,16 @@ c_func
 (paren
 r_struct
 id|nfs_page
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|nfs_wait_for_reads
+c_func
+(paren
+r_struct
+id|list_head
 op_star
 )paren
 suffix:semicolon

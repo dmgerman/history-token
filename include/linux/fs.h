@@ -669,7 +669,7 @@ id|direct_IO
 r_int
 comma
 r_struct
-id|inode
+id|file
 op_star
 comma
 r_const
@@ -5963,9 +5963,9 @@ r_int
 id|rw
 comma
 r_struct
-id|inode
+id|file
 op_star
-id|inode
+id|file
 comma
 r_const
 r_struct

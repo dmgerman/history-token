@@ -2903,7 +2903,7 @@ c_func
 (paren
 id|READ
 comma
-id|inode
+id|filp
 comma
 id|iov
 comma
@@ -5880,7 +5880,7 @@ c_func
 (paren
 id|WRITE
 comma
-id|inode
+id|file
 comma
 id|iov
 comma

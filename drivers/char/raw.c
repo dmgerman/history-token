@@ -912,7 +912,7 @@ c_func
 (paren
 id|rw
 comma
-id|inode
+id|filp
 comma
 id|iov
 comma
