@@ -2249,8 +2249,6 @@ r_struct
 id|tty_struct
 op_star
 id|tty
-op_assign
-id|current-&gt;tty
 suffix:semicolon
 r_struct
 id|task_struct
@@ -2277,6 +2275,10 @@ id|lock_kernel
 c_func
 (paren
 )paren
+suffix:semicolon
+id|tty
+op_assign
+id|current-&gt;tty
 suffix:semicolon
 r_if
 c_cond

@@ -24,6 +24,16 @@ op_star
 id|data
 )paren
 suffix:semicolon
+r_static
+r_void
+id|blk_unplug_timeout
+c_func
+(paren
+r_int
+r_int
+id|data
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * For the allocated request tables&n; */
 DECL|variable|request_cachep
 r_static
@@ -619,6 +629,18 @@ id|blk_unplug_work
 comma
 id|q
 )paren
+suffix:semicolon
+id|q-&gt;unplug_timer.function
+op_assign
+id|blk_unplug_timeout
+suffix:semicolon
+id|q-&gt;unplug_timer.data
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|q
 suffix:semicolon
 multiline_comment|/*&n;&t; * by default assume old behaviour and bounce for any highmem page&n;&t; */
 id|blk_queue_bounce_limit
@@ -4183,18 +4205,6 @@ id|q
 comma
 id|MAX_SEGMENT_SIZE
 )paren
-suffix:semicolon
-id|q-&gt;unplug_timer.function
-op_assign
-id|blk_unplug_timeout
-suffix:semicolon
-id|q-&gt;unplug_timer.data
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|q
 suffix:semicolon
 id|blk_queue_max_hw_segments
 c_func

@@ -340,6 +340,8 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sigcontext.h&gt;
 DECL|macro|__HAVE_ARCH_SIG_BITOPS
 macro_line|#undef __HAVE_ARCH_SIG_BITOPS
+DECL|macro|ptrace_signal_deliver
+mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _M68KNOMMU_SIGNAL_H */
 eof

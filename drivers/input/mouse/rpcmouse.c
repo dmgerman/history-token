@@ -240,6 +240,14 @@ id|rpcmouse_lasty
 op_assign
 id|y
 suffix:semicolon
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
+suffix:semicolon
 id|input_report_rel
 c_func
 (paren

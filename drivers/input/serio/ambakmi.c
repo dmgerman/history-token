@@ -11,12 +11,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware/amba_kmi.h&gt;
-r_extern
-r_struct
-id|pt_regs
-op_star
-id|kbd_pt_regs
-suffix:semicolon
 DECL|macro|KMI_BASE
 mdefine_line|#define KMI_BASE&t;(kmi-&gt;base)
 DECL|struct|amba_kmi_port
@@ -101,10 +95,6 @@ c_func
 id|KMIIR
 )paren
 suffix:semicolon
-id|kbd_pt_regs
-op_assign
-id|regs
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -126,6 +116,8 @@ id|KMIDATA
 )paren
 comma
 l_int|0
+comma
+id|regs
 )paren
 suffix:semicolon
 id|status

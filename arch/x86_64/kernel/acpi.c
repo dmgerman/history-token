@@ -18,6 +18,9 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
+macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/segment.h&gt;
 r_extern
 r_int
 id|acpi_disabled
@@ -74,18 +77,6 @@ id|__va
 c_func
 (paren
 id|phys_addr
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;acpi mapping beyond end_pfn: %lx &gt; %lx&bslash;n&quot;
-comma
-id|phys_addr
-comma
-id|end_pfn
-op_lshift
-id|PAGE_SHIFT
 )paren
 suffix:semicolon
 r_return
@@ -745,9 +736,7 @@ id|__init
 DECL|function|acpi_boot_init
 id|acpi_boot_init
 (paren
-r_char
-op_star
-id|cmdline
+r_void
 )paren
 (brace
 r_int
@@ -766,7 +755,6 @@ op_assign
 id|acpi_table_init
 c_func
 (paren
-id|cmdline
 )paren
 suffix:semicolon
 r_if
@@ -1178,201 +1166,36 @@ suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Low-Level Sleep Support&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_SLEEP
-macro_line|#error not ported to x86-64 yet
-macro_line|#ifdef DEBUG
-macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#endif
+r_extern
+r_void
+id|acpi_prepare_wakeup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_char
+id|acpi_wakeup
+(braket
+)braket
+comma
+id|acpi_wakeup_end
+(braket
+)braket
+comma
+id|s3_prot16
+(braket
+)braket
+suffix:semicolon
 multiline_comment|/* address in low memory of the wakeup routine. */
 DECL|variable|acpi_wakeup_address
 r_int
 r_int
 id|acpi_wakeup_address
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/* new page directory that we will be using */
-DECL|variable|pmd
-r_static
-id|pmd_t
-op_star
-id|pmd
-suffix:semicolon
-multiline_comment|/* saved page directory */
-DECL|variable|saved_pmd
-r_static
-id|pmd_t
-id|saved_pmd
-suffix:semicolon
-multiline_comment|/* page which we&squot;ll use for the new page directory */
-DECL|variable|ptep
-r_static
-id|pte_t
-op_star
-id|ptep
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|FASTCALL
-c_func
-(paren
-id|acpi_copy_wakeup_routine
-c_func
-(paren
-r_int
-r_int
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * acpi_create_identity_pmd&n; *&n; * Create a new, identity mapped pmd.&n; *&n; * Do this by creating new page directory, and marking all the pages as R/W&n; * Then set it as the new Page Middle Directory.&n; * And, of course, flush the TLB so it takes effect.&n; *&n; * We save the address of the old one, for later restoration.&n; */
-DECL|function|acpi_create_identity_pmd
-r_static
-r_void
-id|acpi_create_identity_pmd
-(paren
-r_void
-)paren
-(brace
-id|pgd_t
-op_star
-id|pgd
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-id|ptep
-op_assign
-(paren
-id|pte_t
-op_star
-)paren
-id|__get_free_page
-c_func
-(paren
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-multiline_comment|/* fill page with low mapping */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|PTRS_PER_PTE
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|set_pte
-c_func
-(paren
-id|ptep
-op_plus
-id|i
-comma
-id|mk_pte_phys
-c_func
-(paren
-id|i
-op_lshift
-id|PAGE_SHIFT
-comma
-id|PAGE_SHARED
-)paren
-)paren
-suffix:semicolon
-id|pgd
-op_assign
-id|pgd_offset
-c_func
-(paren
-id|current-&gt;active_mm
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|pmd
-op_assign
-id|pmd_alloc
-c_func
-(paren
-id|current-&gt;mm
-comma
-id|pgd
-comma
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* save the old pmd */
-id|saved_pmd
-op_assign
-op_star
-id|pmd
-suffix:semicolon
-multiline_comment|/* set the new one */
-id|set_pmd
-c_func
-(paren
-id|pmd
-comma
-id|__pmd
-c_func
-(paren
-id|_PAGE_TABLE
-op_plus
-id|__pa
-c_func
-(paren
-id|ptep
-)paren
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* flush the TLB */
-id|local_flush_tlb
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * acpi_restore_pmd&n; *&n; * Restore the old pmd saved by acpi_create_identity_pmd and&n; * free the page that said function alloc&squot;d&n; */
-DECL|function|acpi_restore_pmd
-r_static
-r_void
-id|acpi_restore_pmd
-(paren
-r_void
-)paren
-(brace
-id|set_pmd
-c_func
-(paren
-id|pmd
-comma
-id|saved_pmd
-)paren
-suffix:semicolon
-id|local_flush_tlb
-c_func
-(paren
-)paren
-suffix:semicolon
-id|free_page
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|ptep
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * acpi_save_state_mem - save kernel state&n; *&n; * Create an identity mapped page table and copy the wakeup routine to&n; * low memory.&n; */
+multiline_comment|/**&n; * acpi_save_state_mem - save kernel state&n; */
 DECL|function|acpi_save_state_mem
 r_int
 id|acpi_save_state_mem
@@ -1380,22 +1203,37 @@ id|acpi_save_state_mem
 r_void
 )paren
 (brace
-id|acpi_create_identity_pmd
-c_func
+r_if
+c_cond
 (paren
-)paren
-suffix:semicolon
-id|acpi_copy_wakeup_routine
-c_func
-(paren
+op_logical_neg
 id|acpi_wakeup_address
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|acpi_wakeup_address
+comma
+id|acpi_wakeup
+comma
+id|acpi_wakeup_end
+op_minus
+id|acpi_wakeup
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * acpi_save_state_disk - save kernel state to disk&n; *&n; */
+multiline_comment|/**&n; * acpi_save_state_disk - save kernel state to disk&n; *&n; * Assume preemption/interrupts are already turned off and that we&squot;re running&n; * on the BP (note this doesn&squot;t imply SMP is handled correctly)&n; */
 DECL|function|acpi_save_state_disk
 r_int
 id|acpi_save_state_disk
@@ -1403,8 +1241,61 @@ id|acpi_save_state_disk
 r_void
 )paren
 (brace
+r_int
+r_int
+id|pbase
+op_assign
+id|read_cr3
+c_func
+(paren
+)paren
+op_amp
+id|PAGE_MASK
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pbase
+op_ge
+l_int|0xffffffffUL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ACPI: High page table. Suspend disabled.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|1
+suffix:semicolon
+)brace
+id|set_seg_base
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+id|GDT_ENTRY_KERNELCS16
+comma
+id|s3_prot16
+)paren
+suffix:semicolon
+id|swap_low_mappings
+c_func
+(paren
+)paren
+suffix:semicolon
+id|acpi_prepare_wakeup
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * acpi_restore_state&n; */
@@ -1415,13 +1306,13 @@ id|acpi_restore_state_mem
 r_void
 )paren
 (brace
-id|acpi_restore_pmd
+id|swap_low_mappings
 c_func
 (paren
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * acpi_reserve_bootmem - do _very_ early ACPI initialisation&n; *&n; * We allocate a page in low memory for the wakeup&n; * routine for when we come back from a sleep state. The&n; * runtime allocator allows specification of &lt;16M pages, but not&n; * &lt;1M pages.&n; */
+multiline_comment|/**&n; * acpi_reserve_bootmem - do _very_ early ACPI initialisation&n; *&n; * We allocate a page in 1MB low memory for the real-mode wakeup&n; * routine for when we come back from a sleep state. The&n; * runtime allocator allows specification of &lt;16M pages, but not&n; * &lt;1M pages.&n; */
 DECL|function|acpi_reserve_bootmem
 r_void
 id|__init
@@ -1443,15 +1334,23 @@ c_func
 id|PAGE_SIZE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_wakeup_address
+)paren
+(brace
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;ACPI: have wakeup address 0x%8.8lx&bslash;n&quot;
-comma
-id|acpi_wakeup_address
+id|KERN_ERR
+l_string|&quot;ACPI: Cannot allocate lowmem. S3 disabled.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 )brace
 macro_line|#endif /*CONFIG_ACPI_SLEEP*/
 DECL|function|acpi_pci_link_exit

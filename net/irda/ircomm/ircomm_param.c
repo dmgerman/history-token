@@ -1706,6 +1706,10 @@ id|__u8
 )paren
 id|param-&gt;pv.i
 suffix:semicolon
+id|self-&gt;settings.dce
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -3094,6 +3094,27 @@ id|aper_size_info_8
 op_star
 id|current_size
 suffix:semicolon
+multiline_comment|/* attbase - aperture base */
+multiline_comment|/* the Intel 815 chipset spec. says that bits 29-31 in the&n;&t;* ATTBASE register are reserved -&gt; try not to write them */
+r_if
+c_cond
+(paren
+id|agp_bridge-&gt;gatt_bus_addr
+op_amp
+id|INTEL_815_ATTBASE_MASK
+)paren
+(brace
+id|printk
+(paren
+id|KERN_EMERG
+l_string|&quot;gatt bus addr too high&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|current_size
 op_assign
 id|A_SIZE_8
@@ -3131,21 +3152,6 @@ op_assign
 id|temp
 op_amp
 id|PCI_BASE_ADDRESS_MEM_MASK
-)paren
-suffix:semicolon
-multiline_comment|/* attbase - aperture base */
-multiline_comment|/* the Intel 815 chipset spec. says that bits 29-31 in the&n;&t;* ATTBASE register are reserved -&gt; try not to write them */
-r_if
-c_cond
-(paren
-id|agp_bridge-&gt;gatt_bus_addr
-op_amp
-id|INTEL_815_ATTBASE_MASK
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;gatt bus addr too high&quot;
 )paren
 suffix:semicolon
 id|pci_read_config_dword

@@ -701,6 +701,15 @@ r_goto
 id|resubmit
 suffix:semicolon
 )brace
+id|input_regs
+c_func
+(paren
+op_amp
+id|kbd-&gt;dev
+comma
+id|regs
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren

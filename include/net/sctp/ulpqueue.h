@@ -1,20 +1,15 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; * &n; * These are the definitions needed for the sctp_ulpqueue type.  The &n; * sctp_ulpqueue is the interface between the Upper Layer Protocol, or ULP,&n; * and the core SCTP state machine.  This is the component which handles&n; * reassembly and ordering.  &n; * &n; * The SCTP reference implementation  is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * the SCTP reference implementation  is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to one of the&n; * following email addresses:&n; * &n; * Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; * La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 Nokia, Inc.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * These are the definitions needed for the sctp_ulpq type.  The&n; * sctp_ulpq is the interface between the Upper Layer Protocol, or ULP,&n; * and the core SCTP state machine.  This is the component which handles&n; * reassembly and ordering.&n; *&n; * The SCTP reference implementation  is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * the SCTP reference implementation  is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email addresses:&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *   Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *   La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#ifndef __sctp_ulpqueue_h__
 DECL|macro|__sctp_ulpqueue_h__
 mdefine_line|#define __sctp_ulpqueue_h__
 multiline_comment|/* A structure to carry information to the ULP (e.g. Sockets API) */
-DECL|struct|sctp_ulpqueue
-r_typedef
+DECL|struct|sctp_ulpq
 r_struct
-id|sctp_ulpqueue
+id|sctp_ulpq
 (brace
 DECL|member|malloced
 r_int
 id|malloced
-suffix:semicolon
-DECL|member|lock
-id|spinlock_t
-id|lock
 suffix:semicolon
 DECL|member|asoc
 id|sctp_association_t
@@ -31,67 +26,53 @@ r_struct
 id|sk_buff_head
 id|lobby
 suffix:semicolon
-DECL|member|ssn
-id|__u16
-id|ssn
-(braket
-l_int|0
-)braket
-suffix:semicolon
-DECL|typedef|sctp_ulpqueue_t
 )brace
-id|sctp_ulpqueue_t
 suffix:semicolon
-multiline_comment|/* This macro assists in creation of external storage for variable length&n; * internal buffers.&n; */
-DECL|macro|sctp_ulpqueue_storage_size
-mdefine_line|#define sctp_ulpqueue_storage_size(inbound) (sizeof(__u16) * (inbound))
-id|sctp_ulpqueue_t
+multiline_comment|/* Prototypes. */
+r_struct
+id|sctp_ulpq
 op_star
-id|sctp_ulpqueue_new
+id|sctp_ulpq_new
 c_func
 (paren
 id|sctp_association_t
 op_star
 id|asoc
-comma
-id|__u16
-id|inbound
 comma
 r_int
 id|priority
 )paren
 suffix:semicolon
-id|sctp_ulpqueue_t
+r_struct
+id|sctp_ulpq
 op_star
-id|sctp_ulpqueue_init
+id|sctp_ulpq_init
 c_func
 (paren
-id|sctp_ulpqueue_t
+r_struct
+id|sctp_ulpq
 op_star
-id|ulpq
 comma
 id|sctp_association_t
 op_star
-id|asoc
-comma
-id|__u16
-id|inbound
 )paren
 suffix:semicolon
 r_void
-id|sctp_ulpqueue_free
+id|sctp_ulpq_free
 c_func
 (paren
-id|sctp_ulpqueue_t
+r_struct
+id|sctp_ulpq
 op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Add a new DATA chunk for processing. */
 r_int
-id|sctp_ulpqueue_tail_data
+id|sctp_ulpq_tail_data
 c_func
 (paren
-id|sctp_ulpqueue_t
+r_struct
+id|sctp_ulpq
 op_star
 comma
 id|sctp_chunk_t
@@ -104,15 +85,17 @@ id|priority
 suffix:semicolon
 multiline_comment|/* Add a new event for propogation to the ULP. */
 r_int
-id|sctp_ulpqueue_tail_event
+id|sctp_ulpq_tail_event
 c_func
 (paren
-id|sctp_ulpqueue_t
+r_struct
+id|sctp_ulpq
 op_star
 comma
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
-id|event
+id|ev
 )paren
 suffix:semicolon
 multiline_comment|/* Is the ulpqueue empty. */
@@ -120,15 +103,8 @@ r_int
 id|sctp_ulpqueue_is_empty
 c_func
 (paren
-id|sctp_ulpqueue_t
-op_star
-)paren
-suffix:semicolon
-r_int
-id|sctp_ulpqueue_is_data_empty
-c_func
-(paren
-id|sctp_ulpqueue_t
+r_struct
+id|sctp_ulpq
 op_star
 )paren
 suffix:semicolon

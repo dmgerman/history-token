@@ -3,13 +3,17 @@ macro_line|#ifndef _ASM_THREAD_INFO_H
 DECL|macro|_ASM_THREAD_INFO_H
 mdefine_line|#define _ASM_THREAD_INFO_H
 macro_line|#ifdef __KERNEL__
-macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/pda.h&gt;
-macro_line|#endif
+macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
 multiline_comment|/*&n; * low level task data that entry.S needs immediate access to&n; * - this struct should fit entirely inside of one cache line&n; * - this struct shares the supervisor stack pages&n; */
 macro_line|#ifndef __ASSEMBLY__
+r_struct
+id|task_struct
+suffix:semicolon
+r_struct
+id|exec_domain
+suffix:semicolon
+macro_line|#include &lt;asm/mmsegment.h&gt;
 DECL|struct|thread_info
 r_struct
 id|thread_info
@@ -62,9 +66,6 @@ DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;&t;(init_thread_union.stack)
-multiline_comment|/* how to get the thread information struct from C */
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
 DECL|function|current_thread_info
 r_static
 r_inline
@@ -82,44 +83,7 @@ id|thread_info
 op_star
 id|ti
 suffix:semicolon
-id|ti
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|read_pda
-c_func
-(paren
-id|kernelstack
-)paren
-op_plus
-id|PDA_STACKOFFSET
-op_minus
-id|THREAD_SIZE
-suffix:semicolon
-r_return
-id|ti
-suffix:semicolon
-)brace
-DECL|function|stack_thread_info
-r_static
-r_inline
-r_struct
-id|thread_info
-op_star
-id|stack_thread_info
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|thread_info
-op_star
-id|ti
-suffix:semicolon
-id|__asm__
+id|asm
 c_func
 (paren
 l_string|&quot;andq %%rsp,%0; &quot;
@@ -131,8 +95,7 @@ id|ti
 suffix:colon
 l_string|&quot;0&quot;
 (paren
-op_complement
-l_int|8191UL
+id|CURRENT_MASK
 )paren
 )paren
 suffix:semicolon
@@ -142,9 +105,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* thread information allocation */
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info() ((struct thread_info *) __get_free_pages(GFP_KERNEL,1))
+mdefine_line|#define alloc_thread_info() &bslash;&n;&t;((struct thread_info *) __get_free_pages(GFP_KERNEL,THREAD_ORDER))
 DECL|macro|free_thread_info
-mdefine_line|#define free_thread_info(ti) free_pages((unsigned long) (ti), 1)
+mdefine_line|#define free_thread_info(ti) free_pages((unsigned long) (ti), THREAD_ORDER)
 DECL|macro|get_thread_info
 mdefine_line|#define get_thread_info(ti) get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
@@ -153,7 +116,7 @@ macro_line|#else /* !__ASSEMBLY__ */
 multiline_comment|/* how to get the thread information struct from ASM */
 multiline_comment|/* only works on the process stack. otherwise get it via the PDA. */
 DECL|macro|GET_THREAD_INFO
-mdefine_line|#define GET_THREAD_INFO(reg) &bslash;&n;&t;movq $-8192, reg; &bslash;&n;&t;andq %rsp, reg
+mdefine_line|#define GET_THREAD_INFO(reg) &bslash;&n;&t;movq $CURRENT_MASK, reg; &bslash;&n;&t;andq %rsp, reg
 macro_line|#endif
 multiline_comment|/*&n; * thread information flags&n; * - these are process state flags that various assembly files may need to access&n; * - pending work-to-be-done flags are in LSW&n; * - other flags in MSW&n; * Warning: layout of LSW is hardcoded in entry.S&n; */
 DECL|macro|TIF_SYSCALL_TRACE

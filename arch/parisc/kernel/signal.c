@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/rt_sigframe.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -257,7 +258,7 @@ id|newset
 suffix:semicolon
 macro_line|#ifdef __LP64__
 multiline_comment|/* XXX FIXME -- assumes 32-bit user app! */
-id|sigset_t32
+id|compat_sigset_t
 id|newset32
 suffix:semicolon
 multiline_comment|/* XXX: Don&squot;t preclude handling different sized sigset_t&squot;s.  */
@@ -268,7 +269,7 @@ id|sigsetsize
 op_ne
 r_sizeof
 (paren
-id|sigset_t32
+id|compat_sigset_t
 )paren
 )paren
 r_return
@@ -285,7 +286,7 @@ op_amp
 id|newset32
 comma
 (paren
-id|sigset_t32
+id|compat_sigset_t
 op_star
 )paren
 id|unewset

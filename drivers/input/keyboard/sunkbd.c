@@ -392,6 +392,11 @@ comma
 r_int
 r_int
 id|flags
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -491,6 +496,15 @@ id|SUNKBD_KEY
 )braket
 )paren
 (brace
+id|input_regs
+c_func
+(paren
+op_amp
+id|sunkbd-&gt;dev
+comma
+id|regs
+)paren
+suffix:semicolon
 id|input_report_key
 c_func
 (paren
@@ -1307,7 +1321,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|255
+l_int|127
 suffix:semicolon
 id|i
 op_increment

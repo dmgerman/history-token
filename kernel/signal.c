@@ -77,10 +77,85 @@ DECL|macro|sig_kernel_stop
 mdefine_line|#define sig_kernel_stop(sig) &bslash;&n;&t;&t;(((sig) &lt; SIGRTMIN)  &amp;&amp; T(sig, SIG_KERNEL_STOP_MASK))
 DECL|macro|sig_user_defined
 mdefine_line|#define sig_user_defined(t, signr) &bslash;&n;&t;(((t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler != SIG_DFL) &amp;&amp;&t;&bslash;&n;&t; ((t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler != SIG_IGN))
-DECL|macro|sig_ignored
-mdefine_line|#define sig_ignored(t, signr) &bslash;&n;&t;(!((t)-&gt;ptrace &amp; PT_PTRACED) &amp;&amp; &bslash;&n;&t; (t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler == SIG_IGN)
 DECL|macro|sig_fatal
 mdefine_line|#define sig_fatal(t, signr) &bslash;&n;&t;(!T(signr, SIG_KERNEL_IGNORE_MASK|SIG_KERNEL_STOP_MASK) &amp;&amp; &bslash;&n;&t; (t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler == SIG_DFL)
+DECL|function|sig_ignored
+r_static
+r_inline
+r_int
+id|sig_ignored
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|t
+comma
+r_int
+id|sig
+)paren
+(brace
+r_void
+op_star
+id|handler
+suffix:semicolon
+multiline_comment|/*&n;&t; * Tracers always want to know about signals..&n;&t; */
+r_if
+c_cond
+(paren
+id|t-&gt;ptrace
+op_amp
+id|PT_PTRACED
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t; * Blocked signals are never ignored, since the&n;&t; * signal handler may change by the time it is&n;&t; * unblocked.&n;&t; */
+r_if
+c_cond
+(paren
+id|sigismember
+c_func
+(paren
+op_amp
+id|t-&gt;blocked
+comma
+id|sig
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* Is it explicitly or implicitly ignored? */
+id|handler
+op_assign
+id|t-&gt;sighand-&gt;action
+(braket
+id|sig
+op_minus
+l_int|1
+)braket
+dot
+id|sa.sa_handler
+suffix:semicolon
+r_return
+id|handler
+op_eq
+id|SIG_IGN
+op_logical_or
+(paren
+id|handler
+op_eq
+id|SIG_DFL
+op_logical_and
+id|sig_kernel_ignore
+c_func
+(paren
+id|sig
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Re-calculate pending state from the set of locally pending&n; * signals, globally pending signals, and blocked signals.&n; */
 DECL|function|has_pending_signals
 r_static
@@ -1469,6 +1544,11 @@ r_int
 id|dequeue_signal
 c_func
 (paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
 id|sigset_t
 op_star
 id|mask
@@ -1485,7 +1565,7 @@ id|__dequeue_signal
 c_func
 (paren
 op_amp
-id|current-&gt;pending
+id|tsk-&gt;pending
 comma
 id|mask
 comma
@@ -1504,7 +1584,7 @@ id|__dequeue_signal
 c_func
 (paren
 op_amp
-id|current-&gt;signal-&gt;shared_pending
+id|tsk-&gt;signal-&gt;shared_pending
 comma
 id|mask
 comma
@@ -2041,6 +2121,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|sig_user_defined
+c_func
+(paren
+id|t
+comma
+id|SIGCONT
+)paren
+op_logical_and
 op_logical_neg
 id|sigismember
 c_func
@@ -4948,6 +5036,10 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+comma
+r_void
+op_star
+id|cookie
 )paren
 (brace
 id|sigset_t
@@ -5057,6 +5149,8 @@ op_assign
 id|dequeue_signal
 c_func
 (paren
+id|current
+comma
 id|mask
 comma
 id|info
@@ -5091,6 +5185,14 @@ op_ne
 id|SIGKILL
 )paren
 (brace
+id|ptrace_signal_deliver
+c_func
+(paren
+id|regs
+comma
+id|cookie
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * If there is a group stop in progress,&n;&t;&t;&t; * we must participate in the bookkeeping.&n;&t;&t;&t; */
 r_if
 c_cond
@@ -6544,6 +6646,8 @@ op_assign
 id|dequeue_signal
 c_func
 (paren
+id|current
+comma
 op_amp
 id|these
 comma
@@ -6644,6 +6748,8 @@ op_assign
 id|dequeue_signal
 c_func
 (paren
+id|current
+comma
 op_amp
 id|these
 comma

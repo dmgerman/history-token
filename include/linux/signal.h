@@ -740,6 +740,10 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+comma
+r_void
+op_star
+id|cookie
 )paren
 suffix:semicolon
 macro_line|#endif

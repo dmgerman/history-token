@@ -473,6 +473,11 @@ comma
 r_int
 r_int
 id|flags
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_if
@@ -492,6 +497,8 @@ comma
 id|data
 comma
 id|flags
+comma
+id|regs
 )paren
 suffix:semicolon
 r_else

@@ -379,6 +379,15 @@ id|amikbd_keycode
 id|scancode
 )braket
 suffix:semicolon
+id|input_regs
+c_func
+(paren
+op_amp
+id|amikbd_dev
+comma
+id|fp
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * This file has direct heritage from the SCTP user-level reference &n; * implementation by R. Stewart, et al.  These functions implement the&n; * Adler-32 algorithm as specified by RFC 2960. &n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    Randall Stewart &lt;rstewar1@email.mot.com&gt;&n; *    Ken Morneau     &lt;kmorneau@cisco.com&gt;&n; *    Qiaobing Xie    &lt;qxie1@email.mot.com&gt;&n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2003 International Business Machines, Corp.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * This file has direct heritage from the SCTP user-level reference &n; * implementation by R. Stewart, et al.  These functions implement the&n; * Adler-32 algorithm as specified by RFC 2960. &n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    Randall Stewart &lt;rstewar1@email.mot.com&gt;&n; *    Ken Morneau     &lt;kmorneau@cisco.com&gt;&n; *    Qiaobing Xie    &lt;qxie1@email.mot.com&gt;&n; *    Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 multiline_comment|/* This is an entry point for external calls&n; * Define this function in the header file. This is&n; * direct from rfc1950, ...&n; *&n; * The following C code computes the Adler-32 checksum of a data buffer.&n; * It is written for clarity, not for speed.  The sample code is in the&n; * ANSI C programming language. Non C users may find it easier to read&n; * with these hints:&n; *&n; *    &amp;      Bitwise AND operator.&n; *    &gt;&gt;     Bitwise right shift operator. When applied to an&n; *           unsigned quantity, as here, right shift inserts zero bit(s)&n; *           at the left.&n; *    &lt;&lt;     Bitwise left shift operator. Left shift inserts zero&n; *           bit(s) at the right.&n; *    ++     &quot;n++&quot; increments the variable n.&n; *    %      modulo operator: a % b is the remainder of a divided by b.&n; *&n; * Well, the above is a bit of a lie, I have optimized this a small&n; * tad, but I have commented the original lines below&n; */
 macro_line|#include &lt;linux/types.h&gt; 
 macro_line|#include &lt;net/sctp/sctp.h&gt;
@@ -123,9 +123,9 @@ op_plus
 id|s1
 suffix:semicolon
 )brace
-DECL|function|count_crc
+DECL|function|sctp_start_cksum
 id|__u32
-id|count_crc
+id|sctp_start_cksum
 c_func
 (paren
 id|__u8
@@ -220,6 +220,51 @@ comma
 id|count
 )paren
 suffix:semicolon
+r_return
+id|adler
+suffix:semicolon
+)brace
+DECL|function|sctp_update_cksum
+id|__u32
+id|sctp_update_cksum
+c_func
+(paren
+id|__u8
+op_star
+id|ptr
+comma
+id|__u16
+id|count
+comma
+id|__u32
+id|adler
+)paren
+(brace
+id|adler
+op_assign
+id|update_adler32
+c_func
+(paren
+id|adler
+comma
+id|ptr
+comma
+id|count
+)paren
+suffix:semicolon
+r_return
+id|adler
+suffix:semicolon
+)brace
+DECL|function|sctp_end_cksum
+id|__u32
+id|sctp_end_cksum
+c_func
+(paren
+id|__u32
+id|adler
+)paren
+(brace
 r_return
 id|adler
 suffix:semicolon

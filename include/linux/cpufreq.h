@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/linux/cpufreq.h&n; *&n; *  Copyright (C) 2001 Russell King&n; *            (C) 2002 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *            &n; *&n; * $Id: cpufreq.h,v 1.29 2002/11/11 15:35:47 db Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/include/linux/cpufreq.h&n; *&n; *  Copyright (C) 2001 Russell King&n; *            (C) 2002 - 2003 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *            &n; *&n; * $Id: cpufreq.h,v 1.36 2003/01/20 17:31:48 db Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#ifndef _LINUX_CPUFREQ_H
 DECL|macro|_LINUX_CPUFREQ_H
 mdefine_line|#define _LINUX_CPUFREQ_H
@@ -6,6 +6,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+DECL|macro|CPUFREQ_NAME_LEN
+mdefine_line|#define CPUFREQ_NAME_LEN 16
 multiline_comment|/*********************************************************************&n; *                     CPUFREQ NOTIFIER INTERFACE                    *&n; *********************************************************************/
 r_int
 id|cpufreq_register_notifier
@@ -46,7 +48,12 @@ DECL|macro|CPUFREQ_POLICY_POWERSAVE
 mdefine_line|#define CPUFREQ_POLICY_POWERSAVE        (1)
 DECL|macro|CPUFREQ_POLICY_PERFORMANCE
 mdefine_line|#define CPUFREQ_POLICY_PERFORMANCE      (2)
-multiline_comment|/* Frequency values here are CPU kHz so that hardware which doesn&squot;t run &n; * with some frequencies can complain without having to guess what per &n; * cent / per mille means. &n; * Maximum transition latency is in nanoseconds - if it&squot;s unknown,&n; * CPUFREQ_ETERNAL shall be used.&n; */
+DECL|macro|CPUFREQ_POLICY_GOVERNOR
+mdefine_line|#define CPUFREQ_POLICY_GOVERNOR         (3)
+multiline_comment|/* Frequency values here are CPU kHz so that hardware which doesn&squot;t run &n; * with some frequencies can complain without having to guess what per &n; * cent / per mille means. &n; * Maximum transition latency is in microseconds - if it&squot;s unknown,&n; * CPUFREQ_ETERNAL shall be used.&n; */
+r_struct
+id|cpufreq_governor
+suffix:semicolon
 DECL|macro|CPUFREQ_ETERNAL
 mdefine_line|#define CPUFREQ_ETERNAL (-1)
 DECL|struct|cpufreq_cpuinfo
@@ -98,6 +105,13 @@ r_int
 id|policy
 suffix:semicolon
 multiline_comment|/* see above */
+DECL|member|governor
+r_struct
+id|cpufreq_governor
+op_star
+id|governor
+suffix:semicolon
+multiline_comment|/* see below */
 DECL|member|cpuinfo
 r_struct
 id|cpufreq_cpuinfo
@@ -210,9 +224,132 @@ id|val
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*********************************************************************&n; *                          CPUFREQ GOVERNORS                        *&n; *********************************************************************/
+DECL|macro|CPUFREQ_GOV_START
+mdefine_line|#define CPUFREQ_GOV_START  1
+DECL|macro|CPUFREQ_GOV_STOP
+mdefine_line|#define CPUFREQ_GOV_STOP   2
+DECL|macro|CPUFREQ_GOV_LIMITS
+mdefine_line|#define CPUFREQ_GOV_LIMITS 3
+DECL|struct|cpufreq_governor
+r_struct
+id|cpufreq_governor
+(brace
+DECL|member|name
+r_char
+id|name
+(braket
+id|CPUFREQ_NAME_LEN
+)braket
+suffix:semicolon
+DECL|member|governor
+r_int
+(paren
+op_star
+id|governor
+)paren
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+comma
+r_int
+r_int
+id|event
+)paren
+suffix:semicolon
+DECL|member|governor_list
+r_struct
+id|list_head
+id|governor_list
+suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* pass a target to the cpufreq driver &n; * _l : (cpufreq_driver_sem is not held)&n; */
+r_inline
+r_int
+id|cpufreq_driver_target
+c_func
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+comma
+r_int
+r_int
+id|target_freq
+comma
+r_int
+r_int
+id|relation
+)paren
+suffix:semicolon
+r_inline
+r_int
+id|cpufreq_driver_target_l
+c_func
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+comma
+r_int
+r_int
+id|target_freq
+comma
+r_int
+r_int
+id|relation
+)paren
+suffix:semicolon
+multiline_comment|/* pass an event to the cpufreq governor */
+r_int
+id|cpufreq_governor_l
+c_func
+(paren
+r_int
+r_int
+id|cpu
+comma
+r_int
+r_int
+id|event
+)paren
+suffix:semicolon
+r_int
+id|cpufreq_register_governor
+c_func
+(paren
+r_struct
+id|cpufreq_governor
+op_star
+id|governor
+)paren
+suffix:semicolon
+r_void
+id|cpufreq_unregister_governor
+c_func
+(paren
+r_struct
+id|cpufreq_governor
+op_star
+id|governor
+)paren
+suffix:semicolon
 multiline_comment|/*********************************************************************&n; *                      CPUFREQ DRIVER INTERFACE                     *&n; *********************************************************************/
-DECL|macro|CPUFREQ_NAME_LEN
-mdefine_line|#define CPUFREQ_NAME_LEN 16
+DECL|macro|CPUFREQ_RELATION_L
+mdefine_line|#define CPUFREQ_RELATION_L 0  /* lowest frequency at or above target */
+DECL|macro|CPUFREQ_RELATION_H
+mdefine_line|#define CPUFREQ_RELATION_H 1  /* highest frequency below or at target */
 DECL|struct|cpufreq_driver
 r_struct
 id|cpufreq_driver
@@ -223,19 +360,6 @@ r_int
 (paren
 op_star
 id|verify
-)paren
-(paren
-r_struct
-id|cpufreq_policy
-op_star
-id|policy
-)paren
-suffix:semicolon
-DECL|member|setpolicy
-r_int
-(paren
-op_star
-id|setpolicy
 )paren
 (paren
 r_struct
@@ -256,6 +380,41 @@ id|name
 (braket
 id|CPUFREQ_NAME_LEN
 )braket
+suffix:semicolon
+multiline_comment|/* define one out of two */
+DECL|member|setpolicy
+r_int
+(paren
+op_star
+id|setpolicy
+)paren
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+)paren
+suffix:semicolon
+DECL|member|target
+r_int
+(paren
+op_star
+id|target
+)paren
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+comma
+r_int
+r_int
+id|target_freq
+comma
+r_int
+r_int
+id|relation
+)paren
 suffix:semicolon
 multiline_comment|/* optional, for the moment */
 DECL|member|init
@@ -752,6 +911,34 @@ r_struct
 id|cpufreq_frequency_table
 op_star
 id|table
+comma
+r_int
+r_int
+op_star
+id|index
+)paren
+suffix:semicolon
+r_int
+id|cpufreq_frequency_table_target
+c_func
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+comma
+r_struct
+id|cpufreq_frequency_table
+op_star
+id|table
+comma
+r_int
+r_int
+id|target_freq
+comma
+r_int
+r_int
+id|relation
 comma
 r_int
 r_int

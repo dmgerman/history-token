@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * The base lksctp header.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 International Business Machines, Corp.&n; * Copyright (c) 2001-2003 Intel Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * The base lksctp header.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Daisy Chang           &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *    Ardelle Fan           &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#ifndef __net_sctp_h__
 DECL|macro|__net_sctp_h__
 mdefine_line|#define __net_sctp_h__
@@ -243,7 +243,7 @@ suffix:semicolon
 multiline_comment|/*&n; * sctp_crc32c.c&n; */
 r_extern
 id|__u32
-id|count_crc
+id|sctp_start_cksum
 c_func
 (paren
 id|__u8
@@ -252,6 +252,31 @@ id|ptr
 comma
 id|__u16
 id|count
+)paren
+suffix:semicolon
+r_extern
+id|__u32
+id|sctp_update_cksum
+c_func
+(paren
+id|__u8
+op_star
+id|ptr
+comma
+id|__u16
+id|count
+comma
+id|__u32
+id|cksum
+)paren
+suffix:semicolon
+r_extern
+id|__u32
+id|sctp_end_cksum
+c_func
+(paren
+id|__u32
+id|cksum
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * sctp_input.c&n; */
@@ -349,6 +374,28 @@ id|__sctp_unhash_endpoint
 c_func
 (paren
 id|sctp_endpoint_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+id|sctp_association_t
+op_star
+id|__sctp_lookup_association
+c_func
+(paren
+r_const
+r_union
+id|sctp_addr
+op_star
+comma
+r_const
+r_union
+id|sctp_addr
+op_star
+comma
+r_struct
+id|sctp_transport
+op_star
 op_star
 )paren
 suffix:semicolon
@@ -550,6 +597,10 @@ suffix:semicolon
 r_extern
 id|atomic_t
 id|sctp_dbg_objcnt_addr
+suffix:semicolon
+r_extern
+id|atomic_t
+id|sctp_dbg_objcnt_ssnmap
 suffix:semicolon
 multiline_comment|/* Macros to atomically increment/decrement objcnt counters.  */
 DECL|macro|SCTP_DBG_OBJCNT_INC
@@ -1027,6 +1078,62 @@ suffix:semicolon
 )brace
 r_return
 id|retval
+suffix:semicolon
+)brace
+multiline_comment|/* Generate a random jitter in the range of -50% ~ +50% of input RTO. */
+DECL|function|sctp_jitter
+r_static
+r_inline
+id|__s32
+id|sctp_jitter
+c_func
+(paren
+id|__u32
+id|rto
+)paren
+(brace
+r_static
+id|__u32
+id|sctp_rand
+suffix:semicolon
+id|__s32
+id|ret
+suffix:semicolon
+id|sctp_rand
+op_add_assign
+id|jiffies
+suffix:semicolon
+id|sctp_rand
+op_xor_assign
+(paren
+id|sctp_rand
+op_lshift
+l_int|12
+)paren
+suffix:semicolon
+id|sctp_rand
+op_xor_assign
+(paren
+id|sctp_rand
+op_rshift
+l_int|20
+)paren
+suffix:semicolon
+multiline_comment|/* Choose random number from 0 to rto, then move to -50% ~ +50% &n;&t; * of rto. &n;&t; */
+id|ret
+op_assign
+id|sctp_rand
+op_mod
+id|rto
+op_minus
+(paren
+id|rto
+op_rshift
+l_int|1
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* Walk through a list of TLV parameters.  Don&squot;t trust the&n; * individual parameter lengths and instead depend on&n; * the chunk length to indicate when to stop.  Make sure&n; * there is room for a param header too.&n; */

@@ -33,7 +33,7 @@ id|sigset_t
 op_star
 id|s64
 comma
-id|sigset_t32
+id|compat_sigset_t
 op_star
 id|s32
 )paren
@@ -69,7 +69,7 @@ DECL|function|sigset_64to32
 id|sigset_64to32
 c_func
 (paren
-id|sigset_t32
+id|compat_sigset_t
 op_star
 id|s32
 comma
@@ -113,7 +113,7 @@ DECL|function|put_sigset32
 id|put_sigset32
 c_func
 (paren
-id|sigset_t32
+id|compat_sigset_t
 op_star
 id|up
 comma
@@ -125,7 +125,7 @@ r_int
 id|sz
 )paren
 (brace
-id|sigset_t32
+id|compat_sigset_t
 id|s
 suffix:semicolon
 r_if
@@ -172,7 +172,7 @@ DECL|function|get_sigset32
 id|get_sigset32
 c_func
 (paren
-id|sigset_t32
+id|compat_sigset_t
 op_star
 id|up
 comma
@@ -184,7 +184,7 @@ r_int
 id|sz
 )paren
 (brace
-id|sigset_t32
+id|compat_sigset_t
 id|s
 suffix:semicolon
 r_int
@@ -248,11 +248,11 @@ c_func
 r_int
 id|how
 comma
-id|sigset_t32
+id|compat_sigset_t
 op_star
 id|set
 comma
-id|sigset_t32
+id|compat_sigset_t
 op_star
 id|oset
 comma
@@ -369,7 +369,7 @@ r_int
 id|sys32_rt_sigpending
 c_func
 (paren
-id|sigset_t32
+id|compat_sigset_t
 op_star
 id|uset
 comma

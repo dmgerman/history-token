@@ -3,10 +3,10 @@ multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  
 multiline_comment|/*&n; * DEFINE_AML_GLOBALS is tested in amlcode.h&n; * to determine whether certain global names should be &quot;defined&quot; or only&n; * &quot;declared&quot; in the current compilation.  This enhances maintainability&n; * by enabling a single header file to embody all knowledge of the names&n; * in question.&n; *&n; * Exactly one module of any executable should #define DEFINE_GLOBALS&n; * before #including the header files which use this convention.  The&n; * names in question will be defined and initialized in that module,&n; * and declared as extern in all other modules which #include those&n; * header files.&n; */
 DECL|macro|DEFINE_AML_GLOBALS
 mdefine_line|#define DEFINE_AML_GLOBALS
-macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
-macro_line|#include &quot;amlcode.h&quot;
-macro_line|#include &quot;acevents.h&quot;
+macro_line|#include &lt;acpi/acpi.h&gt;
+macro_line|#include &lt;acpi/acinterp.h&gt;
+macro_line|#include &lt;acpi/amlcode.h&gt;
+macro_line|#include &lt;acpi/acevents.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
 id|ACPI_MODULE_NAME

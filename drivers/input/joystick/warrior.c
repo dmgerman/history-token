@@ -106,6 +106,11 @@ r_struct
 id|warrior
 op_star
 id|warrior
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -130,6 +135,14 @@ op_logical_neg
 id|warrior-&gt;idx
 )paren
 r_return
+suffix:semicolon
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -499,6 +512,11 @@ comma
 r_int
 r_int
 id|flags
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -527,6 +545,8 @@ id|warrior_process_packet
 c_func
 (paren
 id|warrior
+comma
+id|regs
 )paren
 suffix:semicolon
 id|warrior-&gt;idx
@@ -579,6 +599,8 @@ id|warrior_process_packet
 c_func
 (paren
 id|warrior
+comma
+id|regs
 )paren
 suffix:semicolon
 id|warrior-&gt;idx

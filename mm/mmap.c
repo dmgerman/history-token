@@ -3261,6 +3261,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|file
+op_logical_and
 id|is_file_hugepages
 c_func
 (paren

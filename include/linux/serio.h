@@ -3,9 +3,10 @@ DECL|macro|_SERIO_H
 mdefine_line|#define _SERIO_H
 multiline_comment|/*&n; * Copyright (C) 1999-2002 Vojtech Pavlik&n;*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/ioctl.h&gt;
-macro_line|#include &lt;linux/list.h&gt;
 DECL|macro|SPIOCSTYPE
 mdefine_line|#define SPIOCSTYPE&t;_IOW(&squot;q&squot;, 0x01, unsigned long)
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/list.h&gt;
 r_struct
 id|serio
 suffix:semicolon
@@ -161,6 +162,10 @@ r_char
 comma
 r_int
 r_int
+comma
+r_struct
+id|pt_regs
+op_star
 )paren
 suffix:semicolon
 DECL|member|connect
@@ -262,6 +267,11 @@ comma
 r_int
 r_int
 id|flags
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_void
@@ -401,6 +411,7 @@ id|serio
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * bit masks for use in &quot;interrupt&quot; flags (3rd argument)&n; */
 DECL|macro|SERIO_TIMEOUT
 mdefine_line|#define SERIO_TIMEOUT&t;1
@@ -466,6 +477,10 @@ DECL|macro|SERIO_TWIDJOY
 mdefine_line|#define SERIO_TWIDJOY&t;0x24
 DECL|macro|SERIO_HIL
 mdefine_line|#define SERIO_HIL&t;0x25
+DECL|macro|SERIO_SNES232
+mdefine_line|#define SERIO_SNES232&t;0x26
+DECL|macro|SERIO_SEMTECH
+mdefine_line|#define SERIO_SEMTECH&t;0x27
 DECL|macro|SERIO_ID
 mdefine_line|#define SERIO_ID&t;0xff00UL
 DECL|macro|SERIO_EXTRA

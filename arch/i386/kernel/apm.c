@@ -21,7 +21,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
-macro_line|#include &lt;linux/sysrq.h&gt;
 r_extern
 id|spinlock_t
 id|i8253_lock
@@ -1893,55 +1892,6 @@ id|APM_STATE_OFF
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * handle_poweroff&t;-&t;sysrq callback for power down&n; * @key: key pressed (unused)&n; * @pt_regs: register state (unused)&n; * @kbd: keyboard state (unused)&n; * @tty: tty involved (unused)&n; *&n; * When the user hits Sys-Rq o to power down the machine this is the&n; * callback we use.&n; */
-DECL|function|handle_poweroff
-r_static
-r_void
-id|handle_poweroff
-(paren
-r_int
-id|key
-comma
-r_struct
-id|pt_regs
-op_star
-id|pt_regs
-comma
-r_struct
-id|tty_struct
-op_star
-id|tty
-)paren
-(brace
-id|apm_power_off
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|variable|sysrq_poweroff_op
-r_static
-r_struct
-id|sysrq_key_op
-id|sysrq_poweroff_op
-op_assign
-(brace
-dot
-id|handler
-op_assign
-id|handle_poweroff
-comma
-dot
-id|help_msg
-op_assign
-l_string|&quot;Off&quot;
-comma
-dot
-id|action_msg
-op_assign
-l_string|&quot;Power Off&bslash;n&quot;
-)brace
-suffix:semicolon
 macro_line|#ifdef CONFIG_APM_DO_ENABLE
 multiline_comment|/**&n; *&t;apm_enable_power_management - enable BIOS APM power management&n; *&t;@enable: enable yes/no&n; *&n; *&t;Enable or disable the APM BIOS power services. &n; */
 DECL|function|apm_enable_power_management
@@ -5037,13 +4987,6 @@ id|current-&gt;flags
 op_or_assign
 id|PF_IOTHREAD
 suffix:semicolon
-id|sigfillset
-c_func
-(paren
-op_amp
-id|current-&gt;blocked
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* 2002/08/01 - WT&n;&t; * This is to avoid random crashes at boot time during initialization&n;&t; * on SMP systems in case of &quot;apm=power-off&quot; mode. Seen on ASUS A7M266D.&n;&t; * Some bioses don&squot;t like being called from CPU != 0.&n;&t; * Method suggested by Ingo Molnar.&n;&t; */
 r_if
@@ -5518,15 +5461,6 @@ id|power_off
 id|pm_power_off
 op_assign
 id|apm_power_off
-suffix:semicolon
-id|register_sysrq_key
-c_func
-(paren
-l_char|&squot;o&squot;
-comma
-op_amp
-id|sysrq_poweroff_op
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6960,15 +6894,6 @@ c_func
 l_string|&quot;apm&quot;
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-id|unregister_sysrq_key
-c_func
-(paren
-l_char|&squot;o&squot;
-comma
-op_amp
-id|sysrq_poweroff_op
 )paren
 suffix:semicolon
 r_if

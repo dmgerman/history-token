@@ -827,6 +827,10 @@ id|tsk-&gt;thread.i387.fxsave.mxcsr
 op_and_assign
 l_int|0xffbf
 suffix:semicolon
+id|current-&gt;used_math
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 id|convert_fxsr_from_user
 c_func

@@ -78,6 +78,11 @@ r_struct
 id|stinger
 op_star
 id|stinger
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -102,6 +107,14 @@ op_logical_neg
 id|stinger-&gt;idx
 )paren
 r_return
+suffix:semicolon
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
 suffix:semicolon
 id|input_report_key
 c_func
@@ -397,6 +410,11 @@ comma
 r_int
 r_int
 id|flags
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -436,6 +454,8 @@ id|stinger_process_packet
 c_func
 (paren
 id|stinger
+comma
+id|regs
 )paren
 suffix:semicolon
 id|stinger-&gt;idx

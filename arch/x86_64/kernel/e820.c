@@ -11,19 +11,18 @@ macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/bootsetup.h&gt;
 r_extern
-r_int
-r_int
-id|table_start
-comma
-id|table_end
-suffix:semicolon
-r_extern
 r_char
 id|_end
 (braket
 )braket
 suffix:semicolon
-multiline_comment|/* &n; * end_pfn only includes RAM, while end_pfn_map includes all e820 entries.&n; * The direct mapping extends to end_pfn_map, so that we can directly access&n; * ACPI and other tables without having to play with fixmaps.&n; */
+multiline_comment|/* &n; * PFN of last memory page.&n; */
+DECL|variable|end_pfn
+r_int
+r_int
+id|end_pfn
+suffix:semicolon
+multiline_comment|/* &n; * end_pfn only includes RAM, while end_pfn_map includes all e820 entries.&n; * The direct mapping extends to end_pfn_map, so that we can directly access&n; * apertures, ACPI and other tables without having to play with fixmaps.&n; */
 DECL|variable|end_pfn_map
 r_int
 r_int
@@ -85,23 +84,18 @@ c_cond
 (paren
 id|addr
 OL
-l_int|7
-op_star
-id|PAGE_SIZE
+l_int|0x8000
 )paren
 (brace
 op_star
 id|addrp
 op_assign
-l_int|7
-op_star
-id|PAGE_SIZE
+l_int|0x8000
 suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if 0
 multiline_comment|/* direct mapping tables of the kernel */
 r_if
 c_cond
@@ -130,7 +124,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* initrd */
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 r_if
@@ -574,7 +567,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find the highest page frame number we have available&n; */
 DECL|function|e820_end_of_ram
-r_void
+r_int
+r_int
 id|__init
 id|e820_end_of_ram
 c_func
@@ -585,6 +579,8 @@ r_void
 r_int
 id|i
 suffix:semicolon
+r_int
+r_int
 id|end_pfn
 op_assign
 l_int|0
@@ -742,6 +738,9 @@ id|end_pfn_map
 id|end_pfn
 op_assign
 id|end_pfn_map
+suffix:semicolon
+r_return
+id|end_pfn
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Mark e820 reserved areas as busy for the resource manager.&n; */

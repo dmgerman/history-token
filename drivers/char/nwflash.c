@@ -135,8 +135,7 @@ id|ppos
 )paren
 suffix:semicolon
 r_static
-r_int
-r_int
+id|loff_t
 id|flash_llseek
 c_func
 (paren
@@ -145,8 +144,7 @@ id|file
 op_star
 id|file
 comma
-r_int
-r_int
+id|loff_t
 id|offset
 comma
 r_int
@@ -1086,8 +1084,7 @@ suffix:semicolon
 multiline_comment|/*&n; * The memory devices use the full 32/64 bits of the offset, and so we cannot&n; * check against negative addresses: they are ok. The return value is weird,&n; * though, in that case (0).&n; *&n; * also note that seeking relative to the &quot;end of file&quot; isn&squot;t supported:&n; * it has no meaning, so it returns -EINVAL.&n; */
 DECL|function|flash_llseek
 r_static
-r_int
-r_int
+id|loff_t
 id|flash_llseek
 c_func
 (paren
@@ -1096,16 +1093,14 @@ id|file
 op_star
 id|file
 comma
-r_int
-r_int
+id|loff_t
 id|offset
 comma
 r_int
 id|orig
 )paren
 (brace
-r_int
-r_int
+id|loff_t
 id|ret
 suffix:semicolon
 id|lock_kernel

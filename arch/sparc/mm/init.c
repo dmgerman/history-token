@@ -2359,9 +2359,9 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-DECL|function|flush_page_to_ram
+DECL|function|sparc_flush_page_to_ram
 r_void
-id|flush_page_to_ram
+id|sparc_flush_page_to_ram
 c_func
 (paren
 r_struct

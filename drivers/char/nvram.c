@@ -418,10 +418,9 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The are the file operation function for user access to /dev/nvram&n; */
-r_static
-r_int
-r_int
 DECL|function|nvram_llseek
+r_static
+id|loff_t
 id|nvram_llseek
 c_func
 (paren

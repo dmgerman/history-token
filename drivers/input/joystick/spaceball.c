@@ -145,6 +145,11 @@ r_struct
 id|spaceball
 op_star
 id|spaceball
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -173,6 +178,14 @@ OL
 l_int|2
 )paren
 r_return
+suffix:semicolon
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -685,6 +698,11 @@ comma
 r_int
 r_int
 id|flags
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -709,6 +727,8 @@ id|spaceball_process_packet
 c_func
 (paren
 id|spaceball
+comma
+id|regs
 )paren
 suffix:semicolon
 id|spaceball-&gt;idx

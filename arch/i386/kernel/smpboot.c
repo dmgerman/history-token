@@ -350,12 +350,6 @@ r_goto
 id|valid_k7
 suffix:semicolon
 multiline_comment|/* If we get here, it&squot;s not a certified SMP capable AMD system. */
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;WARNING: This combination of AMD processors is not suitable for SMP.&bslash;n&quot;
-)paren
-suffix:semicolon
 id|tainted
 op_or_assign
 id|TAINT_UNSAFE_SMP
@@ -411,11 +405,6 @@ id|NR_CPUS
 suffix:semicolon
 DECL|macro|NR_LOOPS
 mdefine_line|#define NR_LOOPS 5
-r_extern
-r_int
-r_int
-id|fast_gettimeoffset_quotient
-suffix:semicolon
 multiline_comment|/*&n; * accurate 64-bit/32-bit division, expanded to 32-bit divisions and 64-bit&n; * multiplication. Not terribly optimized but we need it at boot time only&n; * anyway.&n; *&n; * result == a / b&n; *&t;== (a1 + a2*(2^32)) / b&n; *&t;== a1/b + a2*(2^32/b)&n; *&t;== a1/b + a2*((2^32-1)/b) + a2/b + (a2*((2^32-1) % b))/b&n; *&t;&t;    ^---- (this multiplication can overflow)&n; */
 DECL|function|div64
 r_static
@@ -568,23 +557,12 @@ c_func
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* convert from kcyc/sec to cyc/usec */
 id|one_usec
 op_assign
-(paren
-(paren
-l_int|1
-op_lshift
-l_int|30
-)paren
+id|cpu_khz
 op_div
-id|fast_gettimeoffset_quotient
-)paren
-op_star
-(paren
-l_int|1
-op_lshift
-l_int|2
-)paren
+l_int|1000
 suffix:semicolon
 id|atomic_set
 c_func
@@ -3764,6 +3742,33 @@ id|KERN_WARNING
 l_string|&quot;WARNING: SMP operation may be unreliable with B stepping processors.&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t taint if we are running SMP kernel on a single non-MP approved Athlon  */
+r_if
+c_cond
+(paren
+id|tainted
+op_amp
+id|TAINT_UNSAFE_SMP
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpucount
+)paren
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;WARNING: This combination of AMD processors is not suitable for SMP.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|tainted
+op_and_assign
+op_complement
+id|TAINT_UNSAFE_SMP
+suffix:semicolon
+)brace
 id|Dprintk
 c_func
 (paren

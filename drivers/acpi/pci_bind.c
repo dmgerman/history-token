@@ -8,8 +8,8 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
-macro_line|#include &quot;acpi_bus.h&quot;
-macro_line|#include &quot;acpi_drivers.h&quot;
+macro_line|#include &lt;acpi/acpi_bus.h&gt;
+macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT&t;&t;ACPI_PCI_COMPONENT
 id|ACPI_MODULE_NAME
@@ -527,7 +527,7 @@ id|ACPI_DEBUG_PRINT
 c_func
 (paren
 (paren
-id|ACPI_DB_WARN
+id|ACPI_DB_INFO
 comma
 l_string|&quot;Device %02x:%02x:%02x.%02x not present in PCI namespace&bslash;n&quot;
 comma

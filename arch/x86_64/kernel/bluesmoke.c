@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/x86_64/kernel/bluesmoke.c - x86-64 Machine Check Exception Reporting&n; */
+multiline_comment|/*&n; * arch/x86_64/kernel/bluesmoke.c - x86-64 Machine Check Exception Reporting&n; * &n;&n;RED-PEN: need to add power management to restore after S3 wakeup. &n;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

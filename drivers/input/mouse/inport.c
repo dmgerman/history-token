@@ -391,6 +391,15 @@ comma
 id|INPORT_DATA_PORT
 )paren
 suffix:semicolon
+id|input_regs
+c_func
+(paren
+op_amp
+id|inport_dev
+comma
+id|regs
+)paren
+suffix:semicolon
 id|outb
 c_func
 (paren

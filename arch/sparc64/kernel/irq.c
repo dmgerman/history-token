@@ -2887,17 +2887,6 @@ id|irq
 )braket
 op_increment
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|irq
-op_eq
-l_int|9
-)paren
-id|kbd_pt_regs
-op_assign
-id|regs
-suffix:semicolon
 multiline_comment|/* Sliiiick... */
 macro_line|#ifndef CONFIG_SMP
 id|bp

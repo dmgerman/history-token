@@ -1821,11 +1821,16 @@ op_assign
 id|IRCOMM_9_WIRE
 suffix:semicolon
 multiline_comment|/* 9 wire as default */
+multiline_comment|/* Jan Kiszka -&gt; add DSR/RI -&gt; Conform to IrCOMM spec */
 id|self-&gt;settings.dce
 op_assign
 id|IRCOMM_CTS
 op_or
 id|IRCOMM_CD
+op_or
+id|IRCOMM_DSR
+op_or
+id|IRCOMM_RI
 suffix:semicolon
 multiline_comment|/* Default line settings */
 id|IRDA_DEBUG

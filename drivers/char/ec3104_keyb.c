@@ -1127,10 +1127,6 @@ id|msr
 comma
 id|lsr
 suffix:semicolon
-id|kbd_pt_regs
-op_assign
-id|regs
-suffix:semicolon
 id|msr
 op_assign
 id|ctrl_inb

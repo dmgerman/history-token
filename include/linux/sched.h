@@ -1676,6 +1676,11 @@ r_int
 id|dequeue_signal
 c_func
 (paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
 id|sigset_t
 op_star
 id|mask

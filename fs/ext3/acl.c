@@ -1107,7 +1107,7 @@ suffix:semicolon
 )brace
 id|error
 op_assign
-id|ext3_xattr_set
+id|ext3_xattr_set_handle
 c_func
 (paren
 id|handle
