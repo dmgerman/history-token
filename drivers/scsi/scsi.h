@@ -789,6 +789,17 @@ r_int
 suffix:semicolon
 r_extern
 r_int
+id|scsi_track_queue_full
+c_func
+(paren
+id|Scsi_Device
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|scsi_slave_attach
 c_func
 (paren
@@ -1455,6 +1466,24 @@ r_int
 id|new_queue_depth
 suffix:semicolon
 multiline_comment|/* How deep of a queue we want */
+DECL|member|last_queue_full_depth
+r_int
+r_int
+id|last_queue_full_depth
+suffix:semicolon
+multiline_comment|/* These two are used by */
+DECL|member|last_queue_full_count
+r_int
+r_int
+id|last_queue_full_count
+suffix:semicolon
+multiline_comment|/* scsi_track_queue_full() */
+DECL|member|last_queue_full_time
+r_int
+r_int
+id|last_queue_full_time
+suffix:semicolon
+multiline_comment|/* don&squot;t let QUEUE_FULLs on the same&n;&t;&t;&t;&t;&t;   jiffie count on our counter, they&n;&t;&t;&t;&t;&t;   could all be from the same event. */
 DECL|member|id
 DECL|member|lun
 DECL|member|channel
