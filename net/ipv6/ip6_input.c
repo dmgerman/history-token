@@ -129,13 +129,10 @@ id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Store incoming device index. When the packet will&n;&t;   be queued, we cannot refer to skb-&gt;dev anymore.&n;&t; */
+id|IP6CB
+c_func
 (paren
-(paren
-r_struct
-id|inet6_skb_parm
-op_star
-)paren
-id|skb-&gt;cb
+id|skb
 )paren
 op_member_access_from_pointer
 id|iif

@@ -1723,7 +1723,7 @@ id|neigh
 comma
 id|daddr
 comma
-id|ip6_output2
+id|ip6_output
 )paren
 suffix:semicolon
 r_if
@@ -2186,7 +2186,7 @@ id|neigh
 comma
 id|daddr
 comma
-id|ip6_output2
+id|ip6_output
 )paren
 suffix:semicolon
 r_if
@@ -2609,7 +2609,7 @@ l_int|NULL
 comma
 id|daddr
 comma
-id|ip6_output2
+id|ip6_output
 )paren
 suffix:semicolon
 r_if

@@ -1075,6 +1075,8 @@ op_amp
 id|REQ_DRIVE_CMD
 op_or
 id|REQ_DRIVE_TASK
+op_or
+id|REQ_DRIVE_TASKFILE
 )paren
 )paren
 (brace
@@ -1272,6 +1274,8 @@ op_amp
 id|REQ_DRIVE_CMD
 op_or
 id|REQ_DRIVE_TASK
+op_or
+id|REQ_DRIVE_TASKFILE
 )paren
 )paren
 (brace

@@ -130,6 +130,8 @@ DECL|macro|TIF_RESTART_SVC
 mdefine_line|#define TIF_RESTART_SVC&t;&t;4&t;/* restart svc with new svc number */
 DECL|macro|TIF_SYSCALL_AUDIT
 mdefine_line|#define TIF_SYSCALL_AUDIT&t;5&t;/* syscall auditing active */
+DECL|macro|TIF_SINGLE_STEP
+mdefine_line|#define TIF_SINGLE_STEP&t;&t;6&t;/* single stepped svc */
 DECL|macro|TIF_USEDFPU
 mdefine_line|#define TIF_USEDFPU&t;&t;16&t;/* FPU was used by this task this quantum (SMP) */
 DECL|macro|TIF_POLLING_NRFLAG
@@ -148,6 +150,8 @@ DECL|macro|_TIF_RESTART_SVC
 mdefine_line|#define _TIF_RESTART_SVC&t;(1&lt;&lt;TIF_RESTART_SVC)
 DECL|macro|_TIF_SYSCALL_AUDIT
 mdefine_line|#define _TIF_SYSCALL_AUDIT&t;(1&lt;&lt;TIF_SYSCALL_AUDIT)
+DECL|macro|_TIF_SINGLE_STEP
+mdefine_line|#define _TIF_SINGLE_STEP&t;(1&lt;&lt;TIF_SINGLE_STEP)
 DECL|macro|_TIF_USEDFPU
 mdefine_line|#define _TIF_USEDFPU&t;&t;(1&lt;&lt;TIF_USEDFPU)
 DECL|macro|_TIF_POLLING_NRFLAG

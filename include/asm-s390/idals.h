@@ -844,6 +844,7 @@ op_star
 id|ib
 comma
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -911,6 +912,7 @@ id|to
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|to
@@ -952,6 +954,7 @@ id|ib
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -1019,6 +1022,7 @@ id|from
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|from

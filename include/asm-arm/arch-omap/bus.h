@@ -165,10 +165,16 @@ mdefine_line|#define OMAP_DRIVER_NAME(_omapdev) ((_omapdev)-&gt;dev.driver-&gt;n
 multiline_comment|/*&n; * Device ID numbers for bus types&n; */
 DECL|macro|OMAP_OCP_DEVID_USB
 mdefine_line|#define OMAP_OCP_DEVID_USB&t;0
+DECL|macro|OMAP_TIPB_DEVID_OHCI
+mdefine_line|#define OMAP_TIPB_DEVID_OHCI&t;0
 DECL|macro|OMAP_TIPB_DEVID_LCD
 mdefine_line|#define OMAP_TIPB_DEVID_LCD&t;1
 DECL|macro|OMAP_TIPB_DEVID_MMC
 mdefine_line|#define OMAP_TIPB_DEVID_MMC&t;2
+DECL|macro|OMAP_TIPB_DEVID_OTG
+mdefine_line|#define OMAP_TIPB_DEVID_OTG&t;3
+DECL|macro|OMAP_TIPB_DEVID_UDC
+mdefine_line|#define OMAP_TIPB_DEVID_UDC&t;4
 multiline_comment|/*&n; * Virtual bus definitions for OMAP&n; */
 DECL|macro|OMAP_NR_BUSES
 mdefine_line|#define OMAP_NR_BUSES&t;2

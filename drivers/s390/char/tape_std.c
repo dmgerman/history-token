@@ -8,6 +8,8 @@ macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
 macro_line|#include &lt;asm/tape390.h&gt;
+DECL|macro|TAPE_DBF_AREA
+mdefine_line|#define TAPE_DBF_AREA&t;tape_core_dbf
 macro_line|#include &quot;tape.h&quot;
 macro_line|#include &quot;tape_std.h&quot;
 DECL|macro|PRINTK_HEADER

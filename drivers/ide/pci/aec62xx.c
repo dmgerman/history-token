@@ -3088,8 +3088,9 @@ DECL|function|init_chipset_aec62xx
 r_static
 r_int
 r_int
-id|__init
+id|__devinit
 id|init_chipset_aec62xx
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -3224,8 +3225,9 @@ suffix:semicolon
 DECL|function|init_hwif_aec62xx
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_hwif_aec62xx
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -3359,8 +3361,9 @@ suffix:semicolon
 DECL|function|init_dma_aec62xx
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_dma_aec62xx
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -3506,8 +3509,9 @@ suffix:semicolon
 DECL|function|init_setup_aec62xx
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_setup_aec62xx
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -3531,8 +3535,9 @@ suffix:semicolon
 DECL|function|init_setup_aec6x80
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_setup_aec6x80
+c_func
 (paren
 r_struct
 id|pci_dev

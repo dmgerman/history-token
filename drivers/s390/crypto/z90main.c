@@ -754,6 +754,7 @@ id|resp_buff_size
 suffix:semicolon
 DECL|member|resp_addr
 r_char
+id|__user
 op_star
 id|resp_addr
 suffix:semicolon
@@ -859,6 +860,7 @@ id|file
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -878,6 +880,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -976,6 +979,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -1262,6 +1266,7 @@ id|file
 (brace
 r_struct
 id|ica_rsa_modexpo_32
+id|__user
 op_star
 id|mex32u
 op_assign
@@ -1277,6 +1282,7 @@ id|mex32k
 suffix:semicolon
 r_struct
 id|ica_rsa_modexpo
+id|__user
 op_star
 id|mex64
 suffix:semicolon
@@ -1567,6 +1573,7 @@ id|file
 (brace
 r_struct
 id|ica_rsa_modexpo_crt_32
+id|__user
 op_star
 id|crt32u
 op_assign
@@ -1582,6 +1589,7 @@ id|crt32k
 suffix:semicolon
 r_struct
 id|ica_rsa_modexpo_crt
+id|__user
 op_star
 id|crt64
 suffix:semicolon
@@ -2947,6 +2955,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2992,6 +3001,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3170,6 +3180,7 @@ id|filp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -4838,6 +4849,7 @@ op_star
 id|we_p
 comma
 r_char
+id|__user
 op_star
 id|buf
 )paren
@@ -6093,6 +6105,7 @@ id|funccode
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 )paren
@@ -6477,6 +6490,7 @@ comma
 (paren
 r_const
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -6583,6 +6597,7 @@ id|we_p
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -7032,6 +7047,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -7072,6 +7088,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -7112,6 +7129,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -7152,6 +7170,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -7192,6 +7211,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -7232,6 +7252,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -7272,6 +7293,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -7312,6 +7334,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -7382,6 +7405,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -7454,6 +7478,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -7531,6 +7556,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -7701,6 +7727,7 @@ c_func
 (paren
 r_struct
 id|ica_z90_status
+id|__user
 op_star
 )paren
 id|arg
@@ -9025,6 +9052,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -9419,6 +9447,7 @@ id|buff
 comma
 r_int
 r_char
+id|__user
 op_star
 op_star
 id|dest_p_p
@@ -10257,6 +10286,7 @@ id|buff
 comma
 r_int
 r_char
+id|__user
 op_star
 id|resp_addr
 )paren
@@ -10722,7 +10752,10 @@ id|psmid
 (braket
 l_int|8
 )braket
-comma
+suffix:semicolon
+r_int
+r_char
+id|__user
 op_star
 id|resp_addr
 suffix:semicolon

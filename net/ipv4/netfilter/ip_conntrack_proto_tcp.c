@@ -759,6 +759,23 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OL
+id|skb-&gt;nh.iph-&gt;ihl
+op_star
+l_int|4
+op_plus
+id|tcph.doff
+op_star
+l_int|4
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 multiline_comment|/* If only reply is a RST, we can consider ourselves not to&n;&t;   have an established connection: this is a fairly common&n;&t;   problem case, so we can delete the conntrack&n;&t;   immediately.  --RR */
 r_if
 c_cond

@@ -5,7 +5,7 @@ mdefine_line|#define _ASMARM_UACCESS_H
 multiline_comment|/*&n; * User space memory access functions&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
-macro_line|#include &lt;asm/arch/memory.h&gt;
+macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/domain.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|VERIFY_READ

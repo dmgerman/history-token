@@ -97,7 +97,8 @@ id|umode_t
 id|mode
 suffix:semicolon
 DECL|member|nlink
-id|nlink_t
+r_int
+r_int
 id|nlink
 suffix:semicolon
 DECL|member|uid

@@ -3,6 +3,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+DECL|macro|TAPE_DBF_AREA
+mdefine_line|#define TAPE_DBF_AREA&t;tape_core_dbf
 macro_line|#include &quot;tape.h&quot;
 DECL|macro|PRINTK_HEADER
 mdefine_line|#define PRINTK_HEADER &quot;TAPE_PROC: &quot;

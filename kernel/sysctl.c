@@ -1500,7 +1500,7 @@ comma
 dot
 id|maxlen
 op_assign
-l_int|256
+id|KMOD_PATH_LEN
 comma
 dot
 id|mode
@@ -1543,7 +1543,7 @@ comma
 dot
 id|maxlen
 op_assign
-l_int|256
+id|KMOD_PATH_LEN
 comma
 dot
 id|mode

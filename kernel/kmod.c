@@ -35,7 +35,7 @@ DECL|variable|modprobe_path
 r_char
 id|modprobe_path
 (braket
-l_int|256
+id|KMOD_PATH_LEN
 )braket
 op_assign
 l_string|&quot;/sbin/modprobe&quot;
@@ -264,7 +264,7 @@ DECL|variable|hotplug_path
 r_char
 id|hotplug_path
 (braket
-l_int|256
+id|KMOD_PATH_LEN
 )braket
 op_assign
 l_string|&quot;/sbin/hotplug&quot;

@@ -513,7 +513,7 @@ id|pm_idle
 op_assign
 id|poll_idle
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
+macro_line|#ifdef CONFIG_X86_SMP
 r_if
 c_cond
 (paren

@@ -2832,7 +2832,7 @@ op_or_assign
 id|PF_DEAD
 suffix:semicolon
 multiline_comment|/*&n;&t; * Clear these here so that update_process_times() won&squot;t try to deliver&n;&t; * itimer, profile or rlimit signals to this task while it is in late exit.&n;&t; */
-id|tsk-&gt;it_virt_incr
+id|tsk-&gt;it_virt_value
 op_assign
 l_int|0
 suffix:semicolon

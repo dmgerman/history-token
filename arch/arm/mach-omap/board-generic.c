@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/arch/clocks.h&gt;
@@ -121,7 +122,7 @@ c_func
 (paren
 id|OMAP_GENERIC
 comma
-l_string|&quot;Generic OMAP-1510/1610&quot;
+l_string|&quot;Generic OMAP-1510/1610/1710&quot;
 )paren
 id|MAINTAINER
 c_func

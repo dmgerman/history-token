@@ -22,14 +22,14 @@ DECL|macro|OMAP_DMA_EXT_NDMA_REQ2
 mdefine_line|#define OMAP_DMA_EXT_NDMA_REQ2&t;&t;6
 DECL|macro|OMAP_DMA_UWIRE_TX
 mdefine_line|#define OMAP_DMA_UWIRE_TX&t;&t;7
-DECL|macro|OMAP_DMA_MCBSP1_DMA_TX
-mdefine_line|#define OMAP_DMA_MCBSP1_DMA_TX&t;&t;8
-DECL|macro|OMAP_DMA_MCBSP1_DMA_RX
-mdefine_line|#define OMAP_DMA_MCBSP1_DMA_RX&t;&t;9
-DECL|macro|OMAP_DMA_MCBSP3_DMA_TX
-mdefine_line|#define OMAP_DMA_MCBSP3_DMA_TX&t;&t;10
-DECL|macro|OMAP_DMA_MCBSP3_DMA_RX
-mdefine_line|#define OMAP_DMA_MCBSP3_DMA_RX&t;&t;11
+DECL|macro|OMAP_DMA_MCBSP1_TX
+mdefine_line|#define OMAP_DMA_MCBSP1_TX&t;&t;8
+DECL|macro|OMAP_DMA_MCBSP1_RX
+mdefine_line|#define OMAP_DMA_MCBSP1_RX&t;&t;9
+DECL|macro|OMAP_DMA_MCBSP3_TX
+mdefine_line|#define OMAP_DMA_MCBSP3_TX&t;&t;10
+DECL|macro|OMAP_DMA_MCBSP3_RX
+mdefine_line|#define OMAP_DMA_MCBSP3_RX&t;&t;11
 DECL|macro|OMAP_DMA_UART1_TX
 mdefine_line|#define OMAP_DMA_UART1_TX&t;&t;12
 DECL|macro|OMAP_DMA_UART1_RX
@@ -122,17 +122,17 @@ mdefine_line|#define OMAP_DMA_MMC2_RX&t;&t;55
 DECL|macro|OMAP_DMA_CRYPTO_DES_OUT
 mdefine_line|#define OMAP_DMA_CRYPTO_DES_OUT&t;&t;56
 DECL|macro|OMAP_DMA_BASE
-mdefine_line|#define OMAP_DMA_BASE&t;&t;&t;0xfffed800
-DECL|macro|OMAP_DMA_GCR_REG
-mdefine_line|#define OMAP_DMA_GCR_REG&t;&t;(OMAP_DMA_BASE + 0x400)
-DECL|macro|OMAP_DMA_GSCR_REG
-mdefine_line|#define OMAP_DMA_GSCR_REG&t;&t;(OMAP_DMA_BASE + 0x404)
-DECL|macro|OMAP_DMA_GRST_REG
-mdefine_line|#define OMAP_DMA_GRST_REG&t;&t;(OMAP_DMA_BASE + 0x408)
-DECL|macro|OMAP_DMA_HW_ID_REG
-mdefine_line|#define OMAP_DMA_HW_ID_REG&t;&t;(OMAP_DMA_BASE + 0x442)
-DECL|macro|OMAP_DMA_PCH2_ID_REG
-mdefine_line|#define OMAP_DMA_PCH2_ID_REG&t;&t;(OMAP_DMA_BASE + 0x444)
+mdefine_line|#define OMAP_DMA_BASE&t;&t;&t;(0xfffed800)
+DECL|macro|OMAP_DMA_GCR
+mdefine_line|#define OMAP_DMA_GCR&t;&t;&t;(OMAP_DMA_BASE + 0x400)
+DECL|macro|OMAP_DMA_GSCR
+mdefine_line|#define OMAP_DMA_GSCR&t;&t;&t;(OMAP_DMA_BASE + 0x404)
+DECL|macro|OMAP_DMA_GRST
+mdefine_line|#define OMAP_DMA_GRST&t;&t;&t;(OMAP_DMA_BASE + 0x408)
+DECL|macro|OMAP_DMA_HW_ID
+mdefine_line|#define OMAP_DMA_HW_ID&t;&t;&t;(OMAP_DMA_BASE + 0x442)
+DECL|macro|OMAP_DMA_PCH2_ID
+mdefine_line|#define OMAP_DMA_PCH2_ID&t;&t;(OMAP_DMA_BASE + 0x444)
 DECL|macro|OMAP_DMA_PCH0_ID
 mdefine_line|#define OMAP_DMA_PCH0_ID&t;&t;(OMAP_DMA_BASE + 0x446)
 DECL|macro|OMAP_DMA_PCH1_ID
@@ -141,115 +141,119 @@ DECL|macro|OMAP_DMA_PCHG_ID
 mdefine_line|#define OMAP_DMA_PCHG_ID&t;&t;(OMAP_DMA_BASE + 0x44a)
 DECL|macro|OMAP_DMA_PCHD_ID
 mdefine_line|#define OMAP_DMA_PCHD_ID&t;&t;(OMAP_DMA_BASE + 0x44c)
-DECL|macro|OMAP_DMA_CAPS_0_U_REG
-mdefine_line|#define OMAP_DMA_CAPS_0_U_REG&t;&t;(OMAP_DMA_BASE + 0x44e)
-DECL|macro|OMAP_DMA_CAPS_0_L_REG
-mdefine_line|#define OMAP_DMA_CAPS_0_L_REG&t;&t;(OMAP_DMA_BASE + 0x450)
-DECL|macro|OMAP_DMA_CAPS_1_U_REG
-mdefine_line|#define OMAP_DMA_CAPS_1_U_REG&t;&t;(OMAP_DMA_BASE + 0x452)
-DECL|macro|OMAP_DMA_CAPS_1_L_REG
-mdefine_line|#define OMAP_DMA_CAPS_1_L_REG&t;&t;(OMAP_DMA_BASE + 0x454)
-DECL|macro|OMAP_DMA_CAPS_2_REG
-mdefine_line|#define OMAP_DMA_CAPS_2_REG&t;&t;(OMAP_DMA_BASE + 0x456)
-DECL|macro|OMAP_DMA_CAPS_3_REG
-mdefine_line|#define OMAP_DMA_CAPS_3_REG&t;&t;(OMAP_DMA_BASE + 0x458)
-DECL|macro|OMAP_DMA_CAPS_4_REG
-mdefine_line|#define OMAP_DMA_CAPS_4_REG&t;&t;(OMAP_DMA_BASE + 0x45a)
-DECL|macro|OMAP_DMA_PCH2_SR_REG
-mdefine_line|#define OMAP_DMA_PCH2_SR_REG&t;&t;(OMAP_DMA_BASE + 0x460)
-DECL|macro|OMAP_DMA_PCH0_SR_REG
-mdefine_line|#define OMAP_DMA_PCH0_SR_REG&t;&t;(OMAP_DMA_BASE + 0x480)
-DECL|macro|OMAP_DMA_PCH1_SR_REG
-mdefine_line|#define OMAP_DMA_PCH1_SR_REG&t;&t;(OMAP_DMA_BASE + 0x482)
-DECL|macro|OMAP_DMA_PCHD_SR_REG
-mdefine_line|#define OMAP_DMA_PCHD_SR_REG&t;&t;(OMAP_DMA_BASE + 0x4c0)
+DECL|macro|OMAP_DMA_CAPS_0_U
+mdefine_line|#define OMAP_DMA_CAPS_0_U&t;&t;(OMAP_DMA_BASE + 0x44e)
+DECL|macro|OMAP_DMA_CAPS_0_L
+mdefine_line|#define OMAP_DMA_CAPS_0_L&t;&t;(OMAP_DMA_BASE + 0x450)
+DECL|macro|OMAP_DMA_CAPS_1_U
+mdefine_line|#define OMAP_DMA_CAPS_1_U&t;&t;(OMAP_DMA_BASE + 0x452)
+DECL|macro|OMAP_DMA_CAPS_1_L
+mdefine_line|#define OMAP_DMA_CAPS_1_L&t;&t;(OMAP_DMA_BASE + 0x454)
+DECL|macro|OMAP_DMA_CAPS_2
+mdefine_line|#define OMAP_DMA_CAPS_2&t;&t;&t;(OMAP_DMA_BASE + 0x456)
+DECL|macro|OMAP_DMA_CAPS_3
+mdefine_line|#define OMAP_DMA_CAPS_3&t;&t;&t;(OMAP_DMA_BASE + 0x458)
+DECL|macro|OMAP_DMA_CAPS_4
+mdefine_line|#define OMAP_DMA_CAPS_4&t;&t;&t;(OMAP_DMA_BASE + 0x45a)
+DECL|macro|OMAP_DMA_PCH2_SR
+mdefine_line|#define OMAP_DMA_PCH2_SR&t;&t;(OMAP_DMA_BASE + 0x460)
+DECL|macro|OMAP_DMA_PCH0_SR
+mdefine_line|#define OMAP_DMA_PCH0_SR&t;&t;(OMAP_DMA_BASE + 0x480)
+DECL|macro|OMAP_DMA_PCH1_SR
+mdefine_line|#define OMAP_DMA_PCH1_SR&t;&t;(OMAP_DMA_BASE + 0x482)
+DECL|macro|OMAP_DMA_PCHD_SR
+mdefine_line|#define OMAP_DMA_PCHD_SR&t;&t;(OMAP_DMA_BASE + 0x4c0)
+DECL|macro|OMAP1510_DMA_LCD_BASE
+mdefine_line|#define OMAP1510_DMA_LCD_BASE&t;&t;(0xfffedb00)
 DECL|macro|OMAP1510_DMA_LCD_CTRL
-mdefine_line|#define OMAP1510_DMA_LCD_CTRL&t;&t;0xfffedb00
+mdefine_line|#define OMAP1510_DMA_LCD_CTRL&t;&t;(OMAP1510_DMA_LCD_BASE + 0x00)
 DECL|macro|OMAP1510_DMA_LCD_TOP_F1_L
-mdefine_line|#define OMAP1510_DMA_LCD_TOP_F1_L&t;0xfffedb02
+mdefine_line|#define OMAP1510_DMA_LCD_TOP_F1_L&t;(OMAP1510_DMA_LCD_BASE + 0x02)
 DECL|macro|OMAP1510_DMA_LCD_TOP_F1_U
-mdefine_line|#define OMAP1510_DMA_LCD_TOP_F1_U&t;0xfffedb04
+mdefine_line|#define OMAP1510_DMA_LCD_TOP_F1_U&t;(OMAP1510_DMA_LCD_BASE + 0x04)
 DECL|macro|OMAP1510_DMA_LCD_BOT_F1_L
-mdefine_line|#define OMAP1510_DMA_LCD_BOT_F1_L&t;0xfffedb06
+mdefine_line|#define OMAP1510_DMA_LCD_BOT_F1_L&t;(OMAP1510_DMA_LCD_BASE + 0x06)
 DECL|macro|OMAP1510_DMA_LCD_BOT_F1_U
-mdefine_line|#define OMAP1510_DMA_LCD_BOT_F1_U&t;0xfffedb08
+mdefine_line|#define OMAP1510_DMA_LCD_BOT_F1_U&t;(OMAP1510_DMA_LCD_BASE + 0x08)
+DECL|macro|OMAP1610_DMA_LCD_BASE
+mdefine_line|#define OMAP1610_DMA_LCD_BASE&t;&t;(0xfffee300)
 DECL|macro|OMAP1610_DMA_LCD_CSDP
-mdefine_line|#define OMAP1610_DMA_LCD_CSDP&t;&t;0xfffee3c0
+mdefine_line|#define OMAP1610_DMA_LCD_CSDP      &t;(OMAP1610_DMA_LCD_BASE + 0xc0)
 DECL|macro|OMAP1610_DMA_LCD_CCR
-mdefine_line|#define OMAP1610_DMA_LCD_CCR&t;&t;0xfffee3c2
+mdefine_line|#define OMAP1610_DMA_LCD_CCR&t;&t;(OMAP1610_DMA_LCD_BASE + 0xc2)
 DECL|macro|OMAP1610_DMA_LCD_CTRL
-mdefine_line|#define OMAP1610_DMA_LCD_CTRL&t;&t;0xfffee3c4
+mdefine_line|#define OMAP1610_DMA_LCD_CTRL&t;&t;(OMAP1610_DMA_LCD_BASE + 0xc4)
 DECL|macro|OMAP1610_DMA_LCD_TOP_B1_L
-mdefine_line|#define OMAP1610_DMA_LCD_TOP_B1_L&t;0xfffee3c8
+mdefine_line|#define OMAP1610_DMA_LCD_TOP_B1_L&t;(OMAP1610_DMA_LCD_BASE + 0xc8)
 DECL|macro|OMAP1610_DMA_LCD_TOP_B1_U
-mdefine_line|#define OMAP1610_DMA_LCD_TOP_B1_U&t;0xfffee3ca
+mdefine_line|#define OMAP1610_DMA_LCD_TOP_B1_U&t;(OMAP1610_DMA_LCD_BASE + 0xca)
 DECL|macro|OMAP1610_DMA_LCD_BOT_B1_L
-mdefine_line|#define OMAP1610_DMA_LCD_BOT_B1_L&t;0xfffee3cc
+mdefine_line|#define OMAP1610_DMA_LCD_BOT_B1_L&t;(OMAP1610_DMA_LCD_BASE + 0xcc)
 DECL|macro|OMAP1610_DMA_LCD_BOT_B1_U
-mdefine_line|#define OMAP1610_DMA_LCD_BOT_B1_U&t;0xfffee3ce
+mdefine_line|#define OMAP1610_DMA_LCD_BOT_B1_U&t;(OMAP1610_DMA_LCD_BASE + 0xce)
 DECL|macro|OMAP1610_DMA_LCD_TOP_B2_L
-mdefine_line|#define OMAP1610_DMA_LCD_TOP_B2_L&t;0xfffee3d0
+mdefine_line|#define OMAP1610_DMA_LCD_TOP_B2_L&t;(OMAP1610_DMA_LCD_BASE + 0xd0)
 DECL|macro|OMAP1610_DMA_LCD_TOP_B2_U
-mdefine_line|#define OMAP1610_DMA_LCD_TOP_B2_U&t;0xfffee3d2
+mdefine_line|#define OMAP1610_DMA_LCD_TOP_B2_U&t;(OMAP1610_DMA_LCD_BASE + 0xd2)
 DECL|macro|OMAP1610_DMA_LCD_BOT_B2_L
-mdefine_line|#define OMAP1610_DMA_LCD_BOT_B2_L&t;0xfffee3d4
+mdefine_line|#define OMAP1610_DMA_LCD_BOT_B2_L&t;(OMAP1610_DMA_LCD_BASE + 0xd4)
 DECL|macro|OMAP1610_DMA_LCD_BOT_B2_U
-mdefine_line|#define OMAP1610_DMA_LCD_BOT_B2_U&t;0xfffee3d6
+mdefine_line|#define OMAP1610_DMA_LCD_BOT_B2_U&t;(OMAP1610_DMA_LCD_BASE + 0xd6)
 DECL|macro|OMAP1610_DMA_LCD_SRC_EI_B1
-mdefine_line|#define OMAP1610_DMA_LCD_SRC_EI_B1&t;0xfffee3d8
+mdefine_line|#define OMAP1610_DMA_LCD_SRC_EI_B1&t;(OMAP1610_DMA_LCD_BASE + 0xd8)
 DECL|macro|OMAP1610_DMA_LCD_SRC_FI_B1_L
-mdefine_line|#define OMAP1610_DMA_LCD_SRC_FI_B1_L&t;0xfffee3da
+mdefine_line|#define OMAP1610_DMA_LCD_SRC_FI_B1_L&t;(OMAP1610_DMA_LCD_BASE + 0xda)
 DECL|macro|OMAP1610_DMA_LCD_SRC_EN_B1
-mdefine_line|#define OMAP1610_DMA_LCD_SRC_EN_B1&t;0xfffee3e0
+mdefine_line|#define OMAP1610_DMA_LCD_SRC_EN_B1&t;(OMAP1610_DMA_LCD_BASE + 0xe0)
 DECL|macro|OMAP1610_DMA_LCD_SRC_FN_B1
-mdefine_line|#define OMAP1610_DMA_LCD_SRC_FN_B1&t;0xfffee3e4
+mdefine_line|#define OMAP1610_DMA_LCD_SRC_FN_B1&t;(OMAP1610_DMA_LCD_BASE + 0xe4)
 DECL|macro|OMAP1610_DMA_LCD_LCH_CTRL
-mdefine_line|#define OMAP1610_DMA_LCD_LCH_CTRL&t;0xfffee3ea
+mdefine_line|#define OMAP1610_DMA_LCD_LCH_CTRL&t;(OMAP1610_DMA_LCD_BASE + 0xea)
 DECL|macro|OMAP1610_DMA_LCD_SRC_FI_B1_U
-mdefine_line|#define OMAP1610_DMA_LCD_SRC_FI_B1_U&t;0xfffee3f4
+mdefine_line|#define OMAP1610_DMA_LCD_SRC_FI_B1_U&t;(OMAP1610_DMA_LCD_BASE + 0xf4)
 multiline_comment|/* Every LCh has its own set of the registers below */
-DECL|macro|OMAP_DMA_CSDP_REG
-mdefine_line|#define OMAP_DMA_CSDP_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x00)
-DECL|macro|OMAP_DMA_CCR_REG
-mdefine_line|#define OMAP_DMA_CCR_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x02)
-DECL|macro|OMAP_DMA_CICR_REG
-mdefine_line|#define OMAP_DMA_CICR_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x04)
-DECL|macro|OMAP_DMA_CSR_REG
-mdefine_line|#define OMAP_DMA_CSR_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x06)
-DECL|macro|OMAP_DMA_CSSA_L_REG
-mdefine_line|#define OMAP_DMA_CSSA_L_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x08)
-DECL|macro|OMAP_DMA_CSSA_U_REG
-mdefine_line|#define OMAP_DMA_CSSA_U_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x0a)
-DECL|macro|OMAP_DMA_CDSA_L_REG
-mdefine_line|#define OMAP_DMA_CDSA_L_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x0c)
-DECL|macro|OMAP_DMA_CDSA_U_REG
-mdefine_line|#define OMAP_DMA_CDSA_U_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x0e)
-DECL|macro|OMAP_DMA_CEN_REG
-mdefine_line|#define OMAP_DMA_CEN_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x10)
-DECL|macro|OMAP_DMA_CFN_REG
-mdefine_line|#define OMAP_DMA_CFN_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x12)
-DECL|macro|OMAP_DMA_CSFI_REG
-mdefine_line|#define OMAP_DMA_CSFI_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x14)
-DECL|macro|OMAP_DMA_CSEI_REG
-mdefine_line|#define OMAP_DMA_CSEI_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x16)
-DECL|macro|OMAP_DMA_CSAC_REG
-mdefine_line|#define OMAP_DMA_CSAC_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x18)
-DECL|macro|OMAP_DMA_CDAC_REG
-mdefine_line|#define OMAP_DMA_CDAC_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x1a)
-DECL|macro|OMAP_DMA_CDEI_REG
-mdefine_line|#define OMAP_DMA_CDEI_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x1c)
-DECL|macro|OMAP_DMA_CDFI_REG
-mdefine_line|#define OMAP_DMA_CDFI_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x1e)
-DECL|macro|OMAP_DMA_COLOR_L_REG
-mdefine_line|#define OMAP_DMA_COLOR_L_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x20)
-DECL|macro|OMAP_DMA_COLOR_U_REG
-mdefine_line|#define OMAP_DMA_COLOR_U_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x22)
-DECL|macro|OMAP_DMA_CCR2_REG
-mdefine_line|#define OMAP_DMA_CCR2_REG(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x24)
-DECL|macro|OMAP_DMA_CLNK_CTRL_REG
-mdefine_line|#define OMAP_DMA_CLNK_CTRL_REG(n)&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x28)
-DECL|macro|OMAP_DMA_LCH_CTRL_REG
-mdefine_line|#define OMAP_DMA_LCH_CTRL_REG(n)&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x2a)
+DECL|macro|OMAP_DMA_CSDP
+mdefine_line|#define OMAP_DMA_CSDP(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x00)
+DECL|macro|OMAP_DMA_CCR
+mdefine_line|#define OMAP_DMA_CCR(n)&t;&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x02)
+DECL|macro|OMAP_DMA_CICR
+mdefine_line|#define OMAP_DMA_CICR(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x04)
+DECL|macro|OMAP_DMA_CSR
+mdefine_line|#define OMAP_DMA_CSR(n)&t;&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x06)
+DECL|macro|OMAP_DMA_CSSA_L
+mdefine_line|#define OMAP_DMA_CSSA_L(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x08)
+DECL|macro|OMAP_DMA_CSSA_U
+mdefine_line|#define OMAP_DMA_CSSA_U(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x0a)
+DECL|macro|OMAP_DMA_CDSA_L
+mdefine_line|#define OMAP_DMA_CDSA_L(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x0c)
+DECL|macro|OMAP_DMA_CDSA_U
+mdefine_line|#define OMAP_DMA_CDSA_U(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x0e)
+DECL|macro|OMAP_DMA_CEN
+mdefine_line|#define OMAP_DMA_CEN(n)&t;&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x10)
+DECL|macro|OMAP_DMA_CFN
+mdefine_line|#define OMAP_DMA_CFN(n)&t;&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x12)
+DECL|macro|OMAP_DMA_CSFI
+mdefine_line|#define OMAP_DMA_CSFI(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x14)
+DECL|macro|OMAP_DMA_CSEI
+mdefine_line|#define OMAP_DMA_CSEI(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x16)
+DECL|macro|OMAP_DMA_CSAC
+mdefine_line|#define OMAP_DMA_CSAC(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x18)
+DECL|macro|OMAP_DMA_CDAC
+mdefine_line|#define OMAP_DMA_CDAC(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x1a)
+DECL|macro|OMAP_DMA_CDEI
+mdefine_line|#define OMAP_DMA_CDEI(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x1c)
+DECL|macro|OMAP_DMA_CDFI
+mdefine_line|#define OMAP_DMA_CDFI(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x1e)
+DECL|macro|OMAP_DMA_COLOR_L
+mdefine_line|#define OMAP_DMA_COLOR_L(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x20)
+DECL|macro|OMAP_DMA_COLOR_U
+mdefine_line|#define OMAP_DMA_COLOR_U(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x22)
+DECL|macro|OMAP_DMA_CCR2
+mdefine_line|#define OMAP_DMA_CCR2(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x24)
+DECL|macro|OMAP_DMA_CLNK_CTRL
+mdefine_line|#define OMAP_DMA_CLNK_CTRL(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x28)
+DECL|macro|OMAP_DMA_LCH_CTRL
+mdefine_line|#define OMAP_DMA_LCH_CTRL(n)&t;&t;(OMAP_DMA_BASE + 0x40 * (n) + 0x2a)
 DECL|macro|OMAP_DMA_TOUT_IRQ
 mdefine_line|#define OMAP_DMA_TOUT_IRQ&t;&t;(1 &lt;&lt; 0)
 DECL|macro|OMAP_DMA_DROP_IRQ
@@ -310,6 +314,15 @@ id|OMAP_LCD_DMA_B2_TOP
 comma
 DECL|enumerator|OMAP_LCD_DMA_B2_BOTTOM
 id|OMAP_LCD_DMA_B2_BOTTOM
+)brace
+suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|OMAP_DMA_DATA_BURST_4
+id|OMAP_DMA_DATA_BURST_4
+comma
+DECL|enumerator|OMAP_DMA_DATA_BURST_8
+id|OMAP_DMA_DATA_BURST_8
 )brace
 suffix:semicolon
 r_extern
@@ -425,6 +438,30 @@ id|sync_mode
 suffix:semicolon
 r_extern
 r_void
+id|omap_set_dma_constant_fill
+c_func
+(paren
+r_int
+id|lch
+comma
+id|u32
+id|color
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|omap_set_dma_transparent_copy
+c_func
+(paren
+r_int
+id|lch
+comma
+id|u32
+id|color
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|omap_set_dma_src_params
 c_func
 (paren
@@ -444,6 +481,45 @@ id|src_start
 suffix:semicolon
 r_extern
 r_void
+id|omap_set_dma_src_index
+c_func
+(paren
+r_int
+id|lch
+comma
+r_int
+id|eidx
+comma
+r_int
+id|fidx
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|omap_set_dma_src_data_pack
+c_func
+(paren
+r_int
+id|lch
+comma
+r_int
+id|enable
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|omap_set_dma_src_burst_mode
+c_func
+(paren
+r_int
+id|lch
+comma
+r_int
+id|burst_mode
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|omap_set_dma_dest_params
 c_func
 (paren
@@ -459,6 +535,45 @@ comma
 r_int
 r_int
 id|dest_start
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|omap_set_dma_dest_index
+c_func
+(paren
+r_int
+id|lch
+comma
+r_int
+id|eidx
+comma
+r_int
+id|fidx
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|omap_set_dma_dest_data_pack
+c_func
+(paren
+r_int
+id|lch
+comma
+r_int
+id|enable
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|omap_set_dma_dest_burst_mode
+c_func
+(paren
+r_int
+id|lch
+comma
+r_int
+id|burst_mode
 )paren
 suffix:semicolon
 r_extern

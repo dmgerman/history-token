@@ -21,7 +21,7 @@ multiline_comment|/* Module and version information */
 DECL|macro|WATCHDOG_VERSION
 mdefine_line|#define WATCHDOG_VERSION &quot;1.00&quot;
 DECL|macro|WATCHDOG_DATE
-mdefine_line|#define WATCHDOG_DATE &quot;13/03/2004&quot;
+mdefine_line|#define WATCHDOG_DATE &quot;12 Jun 2004&quot;
 DECL|macro|WATCHDOG_DRIVER_NAME
 mdefine_line|#define WATCHDOG_DRIVER_NAME &quot;PCI-PC Watchdog&quot;
 DECL|macro|WATCHDOG_NAME
@@ -46,7 +46,7 @@ DECL|macro|WD_PCI_HRBT
 mdefine_line|#define WD_PCI_HRBT             0x02&t;/* Watchdog Heartbeat */
 DECL|macro|WD_PCI_TTRP
 mdefine_line|#define WD_PCI_TTRP             0x04&t;/* Temperature Trip status */
-multiline_comment|/* according to documentation max. time to process a command for the pci&n;   watchdog card is 100 ms, so we give it 150 ms to do it&squot;s job */
+multiline_comment|/* according to documentation max. time to process a command for the pci&n; * watchdog card is 100 ms, so we give it 150 ms to do it&squot;s job */
 DECL|macro|PCI_COMMAND_TIMEOUT
 mdefine_line|#define PCI_COMMAND_TIMEOUT&t;150
 multiline_comment|/* Watchdog&squot;s internal commands */
@@ -1311,6 +1311,10 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|expect_release
+op_assign
+l_int|0
+suffix:semicolon
 id|clear_bit
 c_func
 (paren
@@ -1319,10 +1323,6 @@ comma
 op_amp
 id|is_active
 )paren
-suffix:semicolon
-id|expect_release
-op_assign
-l_int|0
 suffix:semicolon
 r_return
 l_int|0
@@ -2037,14 +2037,18 @@ multiline_comment|/* Check that the heartbeat value is within it&squot;s range ;
 r_if
 c_cond
 (paren
+id|pcipcwd_set_heartbeat
+c_func
+(paren
 id|heartbeat
-template_param
-l_int|0xFFFF
+)paren
 )paren
 (brace
-id|heartbeat
-op_assign
+id|pcipcwd_set_heartbeat
+c_func
+(paren
 id|WATCHDOG_HEARTBEAT
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -2053,17 +2057,10 @@ id|KERN_INFO
 id|PFX
 l_string|&quot;heartbeat value must be 0&lt;heartbeat&lt;65536, using %d&bslash;n&quot;
 comma
-id|heartbeat
+id|WATCHDOG_HEARTBEAT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Calculate the watchdog&squot;s heartbeat */
-id|pcipcwd_set_heartbeat
-c_func
-(paren
-id|heartbeat
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|register_reboot_notifier
@@ -2093,39 +2090,6 @@ id|ret
 suffix:semicolon
 r_goto
 id|err_out_release_region
-suffix:semicolon
-)brace
-id|ret
-op_assign
-id|misc_register
-c_func
-(paren
-op_amp
-id|pcipcwd_miscdev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;cannot register miscdev on minor=%d (err=%d)&bslash;n&quot;
-comma
-id|WATCHDOG_MINOR
-comma
-id|ret
-)paren
-suffix:semicolon
-r_goto
-id|err_out_unregister_reboot
 suffix:semicolon
 )brace
 r_if
@@ -2164,9 +2128,42 @@ id|ret
 )paren
 suffix:semicolon
 r_goto
-id|err_out_misc_deregister
+id|err_out_unregister_reboot
 suffix:semicolon
 )brace
+)brace
+id|ret
+op_assign
+id|misc_register
+c_func
+(paren
+op_amp
+id|pcipcwd_miscdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;cannot register miscdev on minor=%d (err=%d)&bslash;n&quot;
+comma
+id|WATCHDOG_MINOR
+comma
+id|ret
+)paren
+suffix:semicolon
+r_goto
+id|err_out_misc_deregister
+suffix:semicolon
 )brace
 id|printk
 c_func
@@ -2185,11 +2182,16 @@ l_int|0
 suffix:semicolon
 id|err_out_misc_deregister
 suffix:colon
+r_if
+c_cond
+(paren
+id|pcipcwd_private.supports_temp
+)paren
 id|misc_deregister
 c_func
 (paren
 op_amp
-id|pcipcwd_miscdev
+id|pcipcwd_temp_miscdev
 )paren
 suffix:semicolon
 id|err_out_unregister_reboot
@@ -2247,6 +2249,13 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Deregister */
+id|misc_deregister
+c_func
+(paren
+op_amp
+id|pcipcwd_miscdev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2257,13 +2266,6 @@ c_func
 (paren
 op_amp
 id|pcipcwd_temp_miscdev
-)paren
-suffix:semicolon
-id|misc_deregister
-c_func
-(paren
-op_amp
-id|pcipcwd_miscdev
 )paren
 suffix:semicolon
 id|unregister_reboot_notifier

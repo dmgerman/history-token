@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Simple NUMA memory policy for the Linux kernel.&n; *&n
 multiline_comment|/* Notebook:&n;   fix mmap readahead to honour policy and enable policy for any page cache&n;   object&n;   statistics for bigpages&n;   global policy for page cache? currently it uses process policy. Requires&n;   first item above.&n;   handle mremap for shared memory (currently ignored for the policy)&n;   grows down?&n;   make bind policy root only? It can trigger oom much faster and the&n;   kernel is not always grateful with that.&n;   could replace all the switch()es with a mempolicy_ops structure.&n;*/
 macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

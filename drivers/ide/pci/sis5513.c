@@ -16,7 +16,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;ide-timing.h&quot;
-macro_line|#include &quot;sis5513.h&quot;
+DECL|macro|DISPLAY_SIS_TIMINGS
+mdefine_line|#define DISPLAY_SIS_TIMINGS
 multiline_comment|/* registers layout and init values are chipset family dependant */
 DECL|macro|ATA_16
 mdefine_line|#define ATA_16&t;&t;0x01
@@ -5364,6 +5365,66 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|variable|__devinitdata
+r_static
+id|ide_pci_device_t
+id|sis5513_chipset
+id|__devinitdata
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;SIS5513&quot;
+comma
+dot
+id|init_chipset
+op_assign
+id|init_chipset_sis5513
+comma
+dot
+id|init_hwif
+op_assign
+id|init_hwif_sis5513
+comma
+dot
+id|channels
+op_assign
+l_int|2
+comma
+dot
+id|autodma
+op_assign
+id|NOAUTODMA
+comma
+dot
+id|enablebits
+op_assign
+(brace
+(brace
+l_int|0x4a
+comma
+l_int|0x02
+comma
+l_int|0x02
+)brace
+comma
+(brace
+l_int|0x4a
+comma
+l_int|0x04
+comma
+l_int|0x04
+)brace
+)brace
+comma
+dot
+id|bootable
+op_assign
+id|ON_BOARD
+comma
+)brace
+suffix:semicolon
 DECL|function|sis5513_init_one
 r_static
 r_int
@@ -5389,10 +5450,7 @@ c_func
 id|dev
 comma
 op_amp
-id|sis5513_chipsets
-(braket
-id|id-&gt;driver_data
-)braket
+id|sis5513_chipset
 )paren
 suffix:semicolon
 r_return
