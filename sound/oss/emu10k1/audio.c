@@ -2,7 +2,6 @@ multiline_comment|/*&n; ********************************************************
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -4535,8 +4534,9 @@ id|vm_operations_struct
 id|emu10k1_mm_ops
 op_assign
 (brace
+dot
 id|nopage
-suffix:colon
+op_assign
 id|emu10k1_mm_nopage
 comma
 )brace
@@ -6965,40 +6965,49 @@ id|file_operations
 id|emu10k1_audio_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
+op_assign
 id|no_llseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|emu10k1_audio_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|emu10k1_audio_write
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|emu10k1_audio_poll
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|emu10k1_audio_ioctl
 comma
+dot
 id|mmap
-suffix:colon
+op_assign
 id|emu10k1_audio_mmap
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|emu10k1_audio_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|emu10k1_audio_release
 comma
 )brace
