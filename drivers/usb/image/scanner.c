@@ -2001,7 +2001,7 @@ op_star
 id|interface
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|endpoint
 suffix:semicolon
@@ -2221,8 +2221,6 @@ id|interface-&gt;endpoint
 (braket
 l_int|0
 )braket
-dot
-id|desc
 suffix:semicolon
 multiline_comment|/*&n; * Start checking for two bulk endpoints OR two bulk endpoints *and* one&n; * interrupt endpoint. If we have an interrupt endpoint go ahead and&n; * setup the handler. FIXME: This is a future enhancement...&n; */
 id|dbg

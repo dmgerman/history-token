@@ -1149,6 +1149,11 @@ id|jfs_readpages
 c_func
 (paren
 r_struct
+id|file
+op_star
+id|file
+comma
+r_struct
 id|address_space
 op_star
 id|mapping

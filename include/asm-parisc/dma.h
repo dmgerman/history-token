@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: dma.h,v 1.1 2002/07/20 15:52:25 rhirst Exp $&n; * linux/include/asm/dma.h: Defines for using and allocating dma channels.&n; * Written by Hennus Bergman, 1992.&n; * High DMA channel support &amp; info by Hannu Savolainen&n; * and John Boyd, Nov. 1992.&n; * (c) Copyright 2000, Grant Grundler&n; */
+multiline_comment|/* $Id: dma.h,v 1.2 1999/04/27 00:46:18 deller Exp $&n; * linux/include/asm/dma.h: Defines for using and allocating dma channels.&n; * Written by Hennus Bergman, 1992.&n; * High DMA channel support &amp; info by Hannu Savolainen&n; * and John Boyd, Nov. 1992.&n; * (c) Copyright 2000, Grant Grundler&n; */
 macro_line|#ifndef _ASM_DMA_H
 DECL|macro|_ASM_DMA_H
 mdefine_line|#define _ASM_DMA_H
@@ -395,45 +395,8 @@ id|count
 )paren
 (brace
 )brace
-multiline_comment|/* These are in kernel/dma.c: */
-r_extern
-r_int
-id|request_dma
-c_func
-(paren
-r_int
-r_int
-id|dmanr
-comma
-r_const
-r_char
-op_star
-id|device_id
-)paren
-suffix:semicolon
-multiline_comment|/* reserve a DMA channel */
-r_extern
-r_void
-id|free_dma
-c_func
-(paren
-r_int
-r_int
-id|dmanr
-)paren
-suffix:semicolon
-multiline_comment|/* release it again */
-r_extern
-r_int
-id|get_dma_list
-c_func
-(paren
-r_char
-op_star
-id|buf
-)paren
-suffix:semicolon
-multiline_comment|/* proc/dma support  */
+DECL|macro|free_dma
+mdefine_line|#define free_dma(dmanr)
 macro_line|#ifdef CONFIG_PCI
 r_extern
 r_int

@@ -969,7 +969,7 @@ c_func
 (paren
 id|sem
 comma
-l_string|&quot;Entering __rwsem_downgrade&quot;
+l_string|&quot;Entering __downgrade_write&quot;
 )paren
 suffix:semicolon
 id|spin_lock
@@ -1016,7 +1016,7 @@ c_func
 (paren
 id|sem
 comma
-l_string|&quot;Leaving __rwsem_downgrade&quot;
+l_string|&quot;Leaving __downgrade_write&quot;
 )paren
 suffix:semicolon
 )brace

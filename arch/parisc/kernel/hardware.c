@@ -4391,7 +4391,7 @@ l_int|0x00078
 comma
 l_int|0x0
 comma
-l_string|&quot;Anole L2 132 BME BA&quot;
+l_string|&quot;Anole L2 132 VME BA&quot;
 )brace
 comma
 (brace
@@ -9215,7 +9215,7 @@ l_int|0x0007B
 comma
 l_int|0x0
 comma
-l_string|&quot;Raven+ w SE FWSCSU Core Audio&quot;
+l_string|&quot;Raven+ w SE FWSCSI Core Audio&quot;
 )brace
 comma
 (brace
@@ -9227,7 +9227,7 @@ l_int|0x0007B
 comma
 l_int|0x0
 comma
-l_string|&quot;Raven+ w Diff FWSCSU Core Audio&quot;
+l_string|&quot;Raven+ w Diff FWSCSI Core Audio&quot;
 )brace
 comma
 (brace

@@ -23,6 +23,11 @@ macro_line|#else
 DECL|macro|MY_NAME
 mdefine_line|#define MY_NAME&t;THIS_MODULE-&gt;name
 macro_line|#endif
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
 DECL|variable|acpiphp_debug
 r_int
 id|acpiphp_debug
@@ -62,7 +67,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|acpiphp_debug
+id|debug
 comma
 l_string|&quot;i&quot;
 )paren
@@ -70,7 +75,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|acpiphp_debug
+id|debug
 comma
 l_string|&quot;Debugging mode enabled or not&quot;
 )paren
@@ -299,7 +304,7 @@ id|slot
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - slot == NULL&quot;
+l_string|&quot;%s - slot == NULL&bslash;n&quot;
 comma
 id|function
 )paren
@@ -320,7 +325,7 @@ id|SLOT_MAGIC
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - bad magic number for slot&quot;
+l_string|&quot;%s - bad magic number for slot&bslash;n&quot;
 comma
 id|function
 )paren
@@ -340,7 +345,7 @@ id|slot-&gt;hotplug_slot
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - slot-&gt;hotplug_slot == NULL!&quot;
+l_string|&quot;%s - slot-&gt;hotplug_slot == NULL!&bslash;n&quot;
 comma
 id|function
 )paren
@@ -388,7 +393,7 @@ id|hotplug_slot
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - hotplug_slot == NULL&quot;
+l_string|&quot;%s - hotplug_slot == NULL&bslash;n&quot;
 comma
 id|function
 )paren
@@ -412,6 +417,7 @@ r_if
 c_cond
 (paren
 id|slot_paranoia_check
+c_func
 (paren
 id|slot
 comma
@@ -443,6 +449,7 @@ op_star
 id|slot
 op_assign
 id|get_slot
+c_func
 (paren
 id|hotplug_slot
 comma
@@ -466,8 +473,9 @@ op_minus
 id|ENODEV
 suffix:semicolon
 id|dbg
+c_func
 (paren
-l_string|&quot;%s - physical_slot = %s&quot;
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -478,6 +486,7 @@ multiline_comment|/* enable the specified slot */
 id|retval
 op_assign
 id|acpiphp_enable_slot
+c_func
 (paren
 id|slot-&gt;acpi_slot
 )paren
@@ -504,6 +513,7 @@ op_star
 id|slot
 op_assign
 id|get_slot
+c_func
 (paren
 id|hotplug_slot
 comma
@@ -527,8 +537,9 @@ op_minus
 id|ENODEV
 suffix:semicolon
 id|dbg
+c_func
 (paren
-l_string|&quot;%s - physical_slot = %s&quot;
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -539,6 +550,7 @@ multiline_comment|/* disable the specified slot */
 id|retval
 op_assign
 id|acpiphp_disable_slot
+c_func
 (paren
 id|slot-&gt;acpi_slot
 )paren
@@ -568,8 +580,9 @@ op_assign
 l_int|0
 suffix:semicolon
 id|dbg
+c_func
 (paren
-l_string|&quot;%s - physical_slot = %s&quot;
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -630,6 +643,7 @@ op_star
 id|slot
 op_assign
 id|get_slot
+c_func
 (paren
 id|hotplug_slot
 comma
@@ -653,8 +667,9 @@ op_minus
 id|ENODEV
 suffix:semicolon
 id|dbg
+c_func
 (paren
-l_string|&quot;%s - physical_slot = %s&quot;
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -662,8 +677,9 @@ id|hotplug_slot-&gt;name
 )paren
 suffix:semicolon
 id|err
+c_func
 (paren
-l_string|&quot;No hardware tests are defined for this driver&quot;
+l_string|&quot;No hardware tests are defined for this driver&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -697,6 +713,7 @@ op_star
 id|slot
 op_assign
 id|get_slot
+c_func
 (paren
 id|hotplug_slot
 comma
@@ -722,7 +739,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - physical_slot = %s&quot;
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -733,6 +750,7 @@ op_star
 id|value
 op_assign
 id|acpiphp_get_power_status
+c_func
 (paren
 id|slot-&gt;acpi_slot
 )paren
@@ -765,7 +783,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - physical_slot = %s&quot;
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -803,6 +821,7 @@ op_star
 id|slot
 op_assign
 id|get_slot
+c_func
 (paren
 id|hotplug_slot
 comma
@@ -828,7 +847,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - physical_slot = %s&quot;
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -839,6 +858,7 @@ op_star
 id|value
 op_assign
 id|acpiphp_get_latch_status
+c_func
 (paren
 id|slot-&gt;acpi_slot
 )paren
@@ -869,6 +889,7 @@ op_star
 id|slot
 op_assign
 id|get_slot
+c_func
 (paren
 id|hotplug_slot
 comma
@@ -894,7 +915,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - physical_slot = %s&quot;
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -905,6 +926,7 @@ op_star
 id|value
 op_assign
 id|acpiphp_get_adapter_status
+c_func
 (paren
 id|slot-&gt;acpi_slot
 )paren
@@ -936,6 +958,7 @@ op_star
 id|slot
 op_assign
 id|get_slot
+c_func
 (paren
 id|hotplug_slot
 comma
@@ -985,6 +1008,7 @@ op_star
 id|slot
 op_assign
 id|get_slot
+c_func
 (paren
 id|hotplug_slot
 comma
@@ -1075,6 +1099,7 @@ id|slot
 )paren
 (brace
 id|snprintf
+c_func
 (paren
 id|slot-&gt;hotplug_slot-&gt;name
 comma
@@ -1130,6 +1155,7 @@ id|i
 id|slot
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -1167,6 +1193,7 @@ suffix:semicolon
 id|slot-&gt;hotplug_slot
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -1185,6 +1212,7 @@ id|slot-&gt;hotplug_slot
 )paren
 (brace
 id|kfree
+c_func
 (paren
 id|slot
 )paren
@@ -1211,6 +1239,7 @@ suffix:semicolon
 id|slot-&gt;hotplug_slot-&gt;info
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -1229,11 +1258,13 @@ id|slot-&gt;hotplug_slot-&gt;info
 )paren
 (brace
 id|kfree
+c_func
 (paren
 id|slot-&gt;hotplug_slot
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|slot
 )paren
@@ -1260,6 +1291,7 @@ suffix:semicolon
 id|slot-&gt;hotplug_slot-&gt;name
 op_assign
 id|kmalloc
+c_func
 (paren
 id|SLOT_NAME_SIZE
 comma
@@ -1274,16 +1306,19 @@ id|slot-&gt;hotplug_slot-&gt;name
 )paren
 (brace
 id|kfree
+c_func
 (paren
 id|slot-&gt;hotplug_slot-&gt;info
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|slot-&gt;hotplug_slot
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|slot
 )paren
@@ -1315,6 +1350,7 @@ suffix:semicolon
 id|slot-&gt;acpi_slot
 op_assign
 id|get_slot_from_id
+c_func
 (paren
 id|i
 )paren
@@ -1352,6 +1388,7 @@ id|slot-&gt;acpi_slot
 )paren
 suffix:semicolon
 id|make_slot_name
+c_func
 (paren
 id|slot
 )paren
@@ -1359,6 +1396,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|pci_hp_register
+c_func
 (paren
 id|slot-&gt;hotplug_slot
 )paren
@@ -1370,28 +1408,33 @@ id|retval
 )paren
 (brace
 id|err
+c_func
 (paren
-l_string|&quot;pci_hp_register failed with error %d&quot;
+l_string|&quot;pci_hp_register failed with error %d&bslash;n&quot;
 comma
 id|retval
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|slot-&gt;hotplug_slot-&gt;info
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|slot-&gt;hotplug_slot-&gt;name
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|slot-&gt;hotplug_slot
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|slot
 )paren
@@ -1402,6 +1445,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* add slot to our internal list */
 id|list_add
+c_func
 (paren
 op_amp
 id|slot-&gt;slot_list
@@ -1413,7 +1457,7 @@ suffix:semicolon
 id|info
 c_func
 (paren
-l_string|&quot;Slot [%s] registered&quot;
+l_string|&quot;Slot [%s] registered&bslash;n&quot;
 comma
 id|slot-&gt;hotplug_slot-&gt;name
 )paren
@@ -1457,6 +1501,7 @@ id|slot_list
 id|slot
 op_assign
 id|list_entry
+c_func
 (paren
 id|tmp
 comma
@@ -1467,32 +1512,38 @@ id|slot_list
 )paren
 suffix:semicolon
 id|list_del
+c_func
 (paren
 op_amp
 id|slot-&gt;slot_list
 )paren
 suffix:semicolon
 id|pci_hp_deregister
+c_func
 (paren
 id|slot-&gt;hotplug_slot
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|slot-&gt;hotplug_slot-&gt;info
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|slot-&gt;hotplug_slot-&gt;name
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|slot-&gt;hotplug_slot
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|slot
 )paren
@@ -1515,11 +1566,17 @@ r_int
 id|retval
 suffix:semicolon
 id|info
+c_func
 (paren
 id|DRIVER_DESC
 l_string|&quot; version: &quot;
 id|DRIVER_VERSION
+l_string|&quot;&bslash;n&quot;
 )paren
+suffix:semicolon
+id|acpiphp_debug
+op_assign
+id|debug
 suffix:semicolon
 multiline_comment|/* read all the ACPI info from the system */
 id|retval

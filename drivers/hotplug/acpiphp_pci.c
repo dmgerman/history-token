@@ -169,7 +169,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;Device %02x.%02x BAR %d wants %x&quot;
+l_string|&quot;Device %02x.%02x BAR %d wants %x&bslash;n&quot;
 comma
 id|device
 comma
@@ -203,8 +203,9 @@ op_plus
 l_int|1
 suffix:semicolon
 id|dbg
+c_func
 (paren
-l_string|&quot;len in IO %x, BAR %d&quot;
+l_string|&quot;len in IO %x, BAR %d&bslash;n&quot;
 comma
 id|len
 comma
@@ -317,7 +318,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;len in PFMEM %x, BAR %d&quot;
+l_string|&quot;len in PFMEM %x, BAR %d&bslash;n&quot;
 comma
 id|len
 comma
@@ -403,8 +404,9 @@ id|PCI_BASE_ADDRESS_MEM_TYPE_64
 (brace
 multiline_comment|/* takes up another dword */
 id|dbg
+c_func
 (paren
-l_string|&quot;inside the pfmem 64 case, count %d&quot;
+l_string|&quot;inside the pfmem 64 case, count %d&bslash;n&quot;
 comma
 id|count
 )paren
@@ -464,7 +466,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;len in MEM %x, BAR %d&quot;
+l_string|&quot;len in MEM %x, BAR %d&bslash;n&quot;
 comma
 id|len
 comma
@@ -550,8 +552,9 @@ id|PCI_BASE_ADDRESS_MEM_TYPE_64
 (brace
 multiline_comment|/* takes up another dword */
 id|dbg
+c_func
 (paren
-l_string|&quot;inside mem 64 case, reg. mem, count %d&quot;
+l_string|&quot;inside mem 64 case, reg. mem, count %d&bslash;n&quot;
 comma
 id|count
 )paren
@@ -751,7 +754,7 @@ singleline_comment|//pci_announce_device_to_drivers(dev);
 id|info
 c_func
 (paren
-l_string|&quot;Device %s configured&quot;
+l_string|&quot;Device %s configured&bslash;n&quot;
 comma
 id|dev-&gt;slot_name
 )paren
@@ -771,7 +774,7 @@ op_star
 id|dev
 )paren
 (brace
-multiline_comment|/* &n;&t; * dev-&gt;driver will be set if the device is in use by a new-style &n;&t; * driver -- otherwise, check the device&squot;s regions to see if any&n;&t; * driver has claimed them&n;&t; */
+multiline_comment|/*&n;&t; * dev-&gt;driver will be set if the device is in use by a new-style&n;&t; * driver -- otherwise, check the device&squot;s regions to see if any&n;&t; * driver has claimed them&n;&t; */
 r_int
 id|i
 comma
@@ -971,7 +974,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;attempting removal of driver for device %s&quot;
+l_string|&quot;attempting removal of driver for device %s&bslash;n&quot;
 comma
 id|dev-&gt;slot_name
 )paren
@@ -1000,7 +1003,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;driver was properly removed&quot;
+l_string|&quot;driver was properly removed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1063,7 +1066,7 @@ l_int|0
 id|info
 c_func
 (paren
-l_string|&quot;Device %s removed&quot;
+l_string|&quot;Device %s removed&bslash;n&quot;
 comma
 id|dev-&gt;slot_name
 )paren
@@ -1215,7 +1218,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;Device %s&quot;
+l_string|&quot;Device %s&bslash;n&quot;
 comma
 id|dev-&gt;slot_name
 )paren
@@ -1316,7 +1319,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;BAR[%d] %08x - %08x (IO)&quot;
+l_string|&quot;BAR[%d] %08x - %08x (IO)&bslash;n&quot;
 comma
 id|count
 comma
@@ -1413,8 +1416,9 @@ id|PCI_BASE_ADDRESS_MEM_TYPE_64
 (brace
 multiline_comment|/* takes up another dword */
 id|dbg
+c_func
 (paren
-l_string|&quot;prefetch mem 64&quot;
+l_string|&quot;prefetch mem 64&bslash;n&quot;
 )paren
 suffix:semicolon
 id|count
@@ -1425,7 +1429,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;BAR[%d] %08x - %08x (PMEM)&quot;
+l_string|&quot;BAR[%d] %08x - %08x (PMEM)&bslash;n&quot;
 comma
 id|count
 comma
@@ -1507,8 +1511,9 @@ id|PCI_BASE_ADDRESS_MEM_TYPE_64
 (brace
 multiline_comment|/* takes up another dword */
 id|dbg
+c_func
 (paren
-l_string|&quot;mem 64&quot;
+l_string|&quot;mem 64&bslash;n&quot;
 )paren
 suffix:semicolon
 id|count
@@ -1519,7 +1524,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;BAR[%d] %08x - %08x (MEM)&quot;
+l_string|&quot;BAR[%d] %08x - %08x (MEM)&bslash;n&quot;
 comma
 id|count
 comma
@@ -1625,7 +1630,6 @@ op_star
 id|dev
 suffix:semicolon
 id|list_for_each
-c_func
 (paren
 id|l
 comma
@@ -1748,7 +1752,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;Hot-pluggable device %s&quot;
+l_string|&quot;Hot-pluggable device %s&bslash;n&quot;
 comma
 id|dev-&gt;slot_name
 )paren
@@ -1771,6 +1775,7 @@ op_increment
 (brace
 multiline_comment|/* for 6 BARs */
 id|pci_read_config_dword
+c_func
 (paren
 id|dev
 comma
@@ -1793,6 +1798,7 @@ multiline_comment|/* This BAR is not implemented */
 r_continue
 suffix:semicolon
 id|pci_write_config_dword
+c_func
 (paren
 id|dev
 comma
@@ -1805,6 +1811,7 @@ l_int|0xFFFFFFFF
 )paren
 suffix:semicolon
 id|pci_read_config_dword
+c_func
 (paren
 id|dev
 comma
@@ -1846,7 +1853,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;BAR[%d] %08x - %08x (IO)&quot;
+l_string|&quot;BAR[%d] %08x - %08x (IO)&bslash;n&quot;
 comma
 id|count
 comma
@@ -1932,8 +1939,9 @@ id|PCI_BASE_ADDRESS_MEM_TYPE_64
 (brace
 multiline_comment|/* takes up another dword */
 id|dbg
+c_func
 (paren
-l_string|&quot;prefetch mem 64&quot;
+l_string|&quot;prefetch mem 64&bslash;n&quot;
 )paren
 suffix:semicolon
 id|count
@@ -1944,7 +1952,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;BAR[%d] %08x - %08x (PMEM)&quot;
+l_string|&quot;BAR[%d] %08x - %08x (PMEM)&bslash;n&quot;
 comma
 id|count
 comma
@@ -2015,8 +2023,9 @@ id|PCI_BASE_ADDRESS_MEM_TYPE_64
 (brace
 multiline_comment|/* takes up another dword */
 id|dbg
+c_func
 (paren
-l_string|&quot;mem 64&quot;
+l_string|&quot;mem 64&bslash;n&quot;
 )paren
 suffix:semicolon
 id|count
@@ -2027,7 +2036,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;BAR[%d] %08x - %08x (MEM)&quot;
+l_string|&quot;BAR[%d] %08x - %08x (MEM)&bslash;n&quot;
 comma
 id|count
 comma
@@ -2076,6 +2085,7 @@ suffix:semicolon
 )brace
 )brace
 id|pci_write_config_dword
+c_func
 (paren
 id|dev
 comma
@@ -2104,7 +2114,7 @@ suffix:colon
 id|err
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpiphp_free_resource
@@ -2201,7 +2211,6 @@ op_assign
 l_int|1
 suffix:semicolon
 id|list_for_each
-c_func
 (paren
 id|l
 comma

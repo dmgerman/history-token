@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/arch/parisc/hpux/ioctl.c&n; *&n; * implements some necessary HPUX ioctls.&n; */
 multiline_comment|/*&n; * Supported ioctls:&n; *   TCGETA&n; *   TCSETA&n; *   TCSETAW&n; *   TCSETAF&n; *   TCSBRK&n; *   TCXONC&n; *   TCFLSH&n; *   TIOCGWINSZ&n; *   TIOCSWINSZ&n; *   TIOCGPGRP&n; *   TIOCSPGRP&n; */
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/ioctl.h&gt;
@@ -169,21 +170,6 @@ id|arg
 )paren
 suffix:semicolon
 r_break
-suffix:semicolon
-r_default
-suffix:colon
-multiline_comment|/* If my mother ever sees this, I hope she disowns me.&n;&t;&t; * Take this out after NYLWE. */
-id|result
-op_assign
-id|sys_ioctl
-c_func
-(paren
-id|fd
-comma
-id|cmd
-comma
-id|arg
-)paren
 suffix:semicolon
 )brace
 r_return

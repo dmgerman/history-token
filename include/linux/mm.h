@@ -1296,26 +1296,6 @@ c_func
 id|swp_entry_t
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|can_share_swap_page
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|remove_exclusive_swap_page
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* mmap.c */
 r_extern
 r_void

@@ -1006,7 +1006,7 @@ comma
 r_int
 id|page_count
 comma
-r_int
+id|page_buf_flags_t
 id|flags
 )paren
 (brace
@@ -1192,14 +1192,14 @@ id|pb_hash_t
 op_star
 id|hash
 comma
-multiline_comment|/* hash bucket for buffer&t;*/
+multiline_comment|/* hash bucket for buffer */
 id|page_buf_t
 op_star
 id|pb
 )paren
-multiline_comment|/* buffer to deallocate&t;&t;*/
+multiline_comment|/* buffer to deallocate&t;*/
 (brace
-r_int
+id|page_buf_flags_t
 id|pb_flags
 op_assign
 id|pb-&gt;pb_flags
@@ -1942,6 +1942,14 @@ id|pi
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pb-&gt;pb_pages
+(braket
+id|pi
+)braket
+)paren
 id|unlock_page
 c_func
 (paren
@@ -2833,7 +2841,7 @@ comma
 r_int
 id|isize
 comma
-r_int
+id|page_buf_flags_t
 id|flags
 )paren
 (brace
@@ -2896,7 +2904,7 @@ comma
 r_int
 id|isize
 comma
-r_int
+id|page_buf_flags_t
 id|flags
 )paren
 (brace
@@ -3284,7 +3292,7 @@ id|rmem
 op_assign
 l_int|NULL
 suffix:semicolon
-r_int
+id|page_buf_flags_t
 id|flags
 op_assign
 id|_PBF_LOCKABLE
@@ -4293,10 +4301,8 @@ id|page_buf_flags_t
 id|flags
 )paren
 multiline_comment|/* PBF_LOCK, PBF_ASYNC, PBF_READ, */
-multiline_comment|/* PBF_WRITE, PBF_ALLOCATE,&t;  */
-multiline_comment|/* PBF_DELWRI, &t;&t;&t;  */
+multiline_comment|/* PBF_WRITE, PBF_DELWRI,&t;  */
 multiline_comment|/* PBF_SYNC, PBF_DONT_BLOCK&t;  */
-multiline_comment|/* PBF_RELEASE&t;&t;&t;  */
 (brace
 r_int
 id|status
@@ -6064,15 +6070,18 @@ r_struct
 id|timer_list
 id|pb_daemon_timer
 op_assign
-(brace
-dot
-id|function
-op_assign
+id|TIMER_INITIALIZER
+c_func
+(paren
 (paren
 id|timeout_fn
 )paren
 id|pagebuf_daemon_wakeup
-)brace
+comma
+l_int|0
+comma
+l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/*  Set up the thread  */
 id|daemonize

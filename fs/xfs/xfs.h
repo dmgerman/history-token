@@ -74,6 +74,5 @@ macro_line|#include &lt;xfs_trans_priv.h&gt;
 macro_line|#include &lt;xfs_trans_space.h&gt;
 macro_line|#include &lt;xfs_utils.h&gt;
 macro_line|#include &lt;xfs_dmapi.h&gt;
-macro_line|#include &lt;linux/xfs_lrw.h&gt;
 macro_line|#endif&t;/* __XFS_H__ */
 eof

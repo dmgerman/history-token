@@ -4615,7 +4615,11 @@ c_cond
 (paren
 id|skb-&gt;len
 op_le
-id|dst-&gt;pmtu
+id|dst_pmtu
+c_func
+(paren
+id|dst
+)paren
 )paren
 r_return
 id|dst
@@ -4909,7 +4913,12 @@ id|skb-&gt;len
 op_plus
 id|encap
 OG
-id|rt-&gt;u.dst.pmtu
+id|dst_pmtu
+c_func
+(paren
+op_amp
+id|rt-&gt;u.dst
+)paren
 op_logical_and
 (paren
 id|ntohs

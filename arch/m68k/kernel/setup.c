@@ -431,7 +431,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_INPUT_M68K_BEEP
+macro_line|#if defined(CONFIG_INPUT_M68K_BEEP) || defined(CONFIG_INPUT_M68K_BEEP_MODULE)
 DECL|variable|mach_beep
 r_void
 (paren
@@ -2505,23 +2505,6 @@ id|ints
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* for &quot;kbd-reset&quot; cmdline param */
-DECL|function|kbd_reset_setup
-r_void
-id|__init
-id|kbd_reset_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-comma
-r_int
-op_star
-id|ints
-)paren
-(brace
-)brace
 DECL|function|check_bugs
 r_void
 id|check_bugs

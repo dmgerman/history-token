@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * core module and version information&n; */
@@ -638,6 +639,15 @@ suffix:colon
 op_minus
 id|EAGAIN
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|need_resched
+c_func
+(paren
+)paren
+)paren
+(brace
 id|current-&gt;state
 op_assign
 id|TASK_INTERRUPTIBLE
@@ -646,6 +656,14 @@ id|schedule_timeout
 c_func
 (paren
 l_int|1
+)paren
+suffix:semicolon
+)brace
+r_else
+id|udelay
+c_func
+(paren
+l_int|200
 )paren
 suffix:semicolon
 r_if

@@ -1010,6 +1010,16 @@ DECL|variable|intr_test_timer
 r_struct
 id|timer_list
 id|intr_test_timer
+op_assign
+id|TIMER_INITIALIZER
+c_func
+(paren
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|0
+)paren
 suffix:semicolon
 DECL|variable|intr_test_icount
 r_int

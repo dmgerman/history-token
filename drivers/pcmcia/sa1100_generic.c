@@ -980,6 +980,13 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|poll_timer
+)paren
+suffix:semicolon
 id|poll_timer.function
 op_assign
 id|sa1100_pcmcia_poll_event

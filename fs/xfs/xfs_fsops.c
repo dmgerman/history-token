@@ -2687,13 +2687,6 @@ comma
 id|XFS_FREEZE_WRITE
 )paren
 suffix:semicolon
-multiline_comment|/* Flush the refcache */
-id|xfs_refcache_purge_mp
-c_func
-(paren
-id|mp
-)paren
-suffix:semicolon
 multiline_comment|/* Flush delalloc and delwri data */
 id|VFS_SYNC
 c_func

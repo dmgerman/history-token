@@ -693,17 +693,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|mvme147_keyb_init
-r_int
-id|mvme147_keyb_init
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*-------------------  Serial console stuff ------------------------*/
 DECL|function|scc_delay
 r_static

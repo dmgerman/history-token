@@ -1076,7 +1076,7 @@ op_star
 id|d
 op_assign
 op_amp
-id|slc82c105_chipsets
+id|sl82c105_chipsets
 (braket
 id|id-&gt;driver_data
 )braket

@@ -685,7 +685,7 @@ id|pci_map_irq
 suffix:semicolon
 )brace
 r_void
-id|__init
+id|__devinit
 DECL|function|pcibios_fixup_pbus_ranges
 id|pcibios_fixup_pbus_ranges
 c_func

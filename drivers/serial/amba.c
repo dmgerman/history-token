@@ -669,6 +669,8 @@ id|ambauart_stop_tx
 c_func
 (paren
 id|port
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -761,6 +763,8 @@ id|ambauart_stop_tx
 c_func
 (paren
 id|port
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

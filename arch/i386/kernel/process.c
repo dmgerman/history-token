@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/elfcore.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
@@ -1380,6 +1381,78 @@ comma
 op_amp
 id|dump-&gt;i387
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* &n; * Capture the user space registers if the task is not running (in user space)&n; */
+DECL|function|dump_task_regs
+r_int
+id|dump_task_regs
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+id|elf_gregset_t
+op_star
+id|regs
+)paren
+(brace
+r_struct
+id|pt_regs
+id|ptregs
+suffix:semicolon
+id|ptregs
+op_assign
+op_star
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|tsk-&gt;thread_info
+op_plus
+id|THREAD_SIZE
+op_minus
+r_sizeof
+(paren
+id|ptregs
+)paren
+)paren
+suffix:semicolon
+id|ptregs.xcs
+op_and_assign
+l_int|0xffff
+suffix:semicolon
+id|ptregs.xds
+op_and_assign
+l_int|0xffff
+suffix:semicolon
+id|ptregs.xes
+op_and_assign
+l_int|0xffff
+suffix:semicolon
+id|ptregs.xss
+op_and_assign
+l_int|0xffff
+suffix:semicolon
+id|elf_core_copy_regs
+c_func
+(paren
+id|regs
+comma
+op_amp
+id|ptregs
+)paren
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This special macro can be used to load a debugging register&n; */

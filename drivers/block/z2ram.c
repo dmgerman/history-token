@@ -1014,12 +1014,14 @@ op_lshift_assign
 id|Z2RAM_CHUNKSHIFT
 suffix:semicolon
 id|set_capacity
+c_func
 (paren
 id|z2ram_gendisk
 comma
 id|z2ram_size
 op_rshift
 l_int|9
+)paren
 suffix:semicolon
 )brace
 r_return

@@ -4216,6 +4216,10 @@ id|state-&gt;blocksize
 op_assign
 id|state-&gt;mp-&gt;m_sb.sb_blocksize
 suffix:semicolon
+id|state-&gt;node_ents
+op_assign
+id|state-&gt;mp-&gt;m_attr_node_ents
+suffix:semicolon
 multiline_comment|/*&n;&t; * Search to see if name already exists, and get back a pointer&n;&t; * to where it should go.&n;&t; */
 id|error
 op_assign
@@ -4727,6 +4731,10 @@ id|state-&gt;blocksize
 op_assign
 id|state-&gt;mp-&gt;m_sb.sb_blocksize
 suffix:semicolon
+id|state-&gt;node_ents
+op_assign
+id|state-&gt;mp-&gt;m_attr_node_ents
+suffix:semicolon
 id|state-&gt;inleaf
 op_assign
 l_int|0
@@ -5032,6 +5040,10 @@ suffix:semicolon
 id|state-&gt;blocksize
 op_assign
 id|state-&gt;mp-&gt;m_sb.sb_blocksize
+suffix:semicolon
+id|state-&gt;node_ents
+op_assign
+id|state-&gt;mp-&gt;m_attr_node_ents
 suffix:semicolon
 multiline_comment|/*&n;&t; * Search to see if name exists, and get back a pointer to it.&n;&t; */
 id|error
@@ -6005,6 +6017,10 @@ suffix:semicolon
 id|state-&gt;blocksize
 op_assign
 id|state-&gt;mp-&gt;m_sb.sb_blocksize
+suffix:semicolon
+id|state-&gt;node_ents
+op_assign
+id|state-&gt;mp-&gt;m_attr_node_ents
 suffix:semicolon
 multiline_comment|/*&n;&t; * Search to see if name exists, and get back a pointer to it.&n;&t; */
 id|error

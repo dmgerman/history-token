@@ -246,7 +246,7 @@ r_return
 l_int|0L
 suffix:semicolon
 )brace
-DECL|function|sun3x_timer_tick
+macro_line|#if 0
 r_static
 r_void
 id|sun3x_timer_tick
@@ -307,6 +307,7 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|sun3x_sched_init
 r_void
 id|__init

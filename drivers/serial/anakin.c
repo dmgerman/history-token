@@ -150,6 +150,10 @@ op_amp
 id|TXEMPTY
 )paren
 )paren
+id|barrier
+c_func
+(paren
+)paren
 suffix:semicolon
 id|anakin_out
 c_func
@@ -1643,6 +1647,10 @@ op_amp
 id|TXEMPTY
 )paren
 )paren
+id|barrier
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *&t;Send the character out.&n;&t;&t; *&t;If a LF, also do CR...&n;&t;&t; */
 id|anakin_out
@@ -1699,6 +1707,10 @@ op_amp
 id|TXEMPTY
 )paren
 )paren
+id|barrier
+c_func
+(paren
+)paren
 suffix:semicolon
 id|anakin_out
 c_func
@@ -1746,6 +1758,10 @@ l_int|0x10
 op_amp
 id|TXEMPTY
 )paren
+)paren
+id|barrier
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if

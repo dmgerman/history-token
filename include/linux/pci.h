@@ -1681,6 +1681,17 @@ id|from
 )paren
 suffix:semicolon
 r_struct
+id|pci_bus
+op_star
+id|pci_find_bus
+c_func
+(paren
+r_int
+r_char
+id|busnr
+)paren
+suffix:semicolon
+r_struct
 id|pci_dev
 op_star
 id|pci_find_slot
@@ -1695,12 +1706,47 @@ id|devfn
 )paren
 suffix:semicolon
 r_int
+r_char
+id|pci_bus_max_busnr
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+)paren
+suffix:semicolon
+r_int
+r_char
+id|pci_max_busnr
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
 id|pci_find_capability
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
+comma
+r_int
+id|cap
+)paren
+suffix:semicolon
+r_int
+id|pci_bus_find_capability
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+comma
+r_int
+r_int
+id|devfn
 comma
 r_int
 id|cap
@@ -2185,6 +2231,26 @@ id|enable
 )paren
 suffix:semicolon
 multiline_comment|/* Helper functions for low-level code (drivers/pci/setup-[bus,res].c) */
+r_void
+id|pbus_assign_resources
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+)paren
+suffix:semicolon
+r_void
+id|pbus_size_bridges
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+)paren
+suffix:semicolon
 r_int
 id|pci_claim_resource
 c_func
@@ -2409,6 +2475,27 @@ r_int
 id|busnr
 )paren
 suffix:semicolon
+r_int
+id|pci_scan_bridge
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+comma
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|max
+comma
+r_int
+id|pass
+)paren
+suffix:semicolon
 multiline_comment|/* kmem_cache style wrapper around pci_alloc_consistent() */
 r_struct
 id|pci_pool
@@ -2477,6 +2564,14 @@ id|dma_addr_t
 id|addr
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_ISA) || defined(CONFIG_EISA)
+r_extern
+r_struct
+id|pci_dev
+op_star
+id|isa_bridge
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* CONFIG_PCI */
 multiline_comment|/* Include architecture-dependent settings and functions */
 macro_line|#include &lt;asm/pci.h&gt;
@@ -2931,6 +3026,8 @@ suffix:semicolon
 )brace
 DECL|macro|pci_for_each_dev
 mdefine_line|#define pci_for_each_dev(dev) &bslash;&n;&t;for(dev = NULL; 0; )
+DECL|macro|isa_bridge
+mdefine_line|#define&t;isa_bridge&t;((struct pci_dev *)NULL)
 macro_line|#else
 multiline_comment|/*&n; * a helper function which helps ensure correct pci_driver&n; * setup and cleanup for commonly-encountered hotplug/modular cases&n; *&n; * This MUST stay in a header, as it checks for -DMODULE&n; */
 DECL|function|pci_module_init

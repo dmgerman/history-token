@@ -1,5 +1,5 @@
 multiline_comment|/*=======================================================/&n;  Header file for nsp_cs.c&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    Ver.1.0 : Cut unused lines.&n;    Ver 0.1 : Initial version.&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License.&n;&n;=========================================================*/
-multiline_comment|/* $Id: nsp_cs.h,v 1.3 2002/10/10 11:07:52 elca Exp $ */
+multiline_comment|/* $Id: nsp_cs.h,v 1.4 2002/11/05 12:06:29 elca Exp $ */
 macro_line|#ifndef  __nsp_cs__
 DECL|macro|__nsp_cs__
 mdefine_line|#define  __nsp_cs__
@@ -7,8 +7,8 @@ multiline_comment|/* for debugging */
 singleline_comment|//#define PCMCIA_DEBUG 9
 multiline_comment|/*&n;#define static&n;#define inline&n;*/
 multiline_comment|/************************************&n; * Some useful macros...&n; */
-DECL|macro|Number
-mdefine_line|#define Number(arr) ((int) (sizeof(arr) / sizeof(arr[0])))
+DECL|macro|NUMBER
+mdefine_line|#define NUMBER(arr) ((int) (sizeof(arr) / sizeof(arr[0]))) /* from XtNumber() in /usr/X11R6/include/X11/Intrinsic.h */
 DECL|macro|BIT
 mdefine_line|#define BIT(x)      (1L &lt;&lt; (x))
 DECL|macro|MIN
@@ -610,27 +610,6 @@ id|done
 id|Scsi_Cmnd
 op_star
 )paren
-)paren
-suffix:semicolon
-r_static
-r_int
-id|nsp_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|nsp_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 multiline_comment|/*static int nsp_eh_abort(Scsi_Cmnd * SCpnt);*/

@@ -110,24 +110,18 @@ DECL|struct|cpuinfo_parisc
 r_struct
 id|cpuinfo_parisc
 (brace
-DECL|member|region
-r_struct
-id|irq_region
-op_star
-id|region
-suffix:semicolon
 DECL|member|it_value
 r_int
 r_int
 id|it_value
 suffix:semicolon
-multiline_comment|/* Interval Timer value at last timer Intr */
+multiline_comment|/* Interval Timer at last timer Intr */
 DECL|member|it_delta
 r_int
 r_int
 id|it_delta
 suffix:semicolon
-multiline_comment|/* Interval Timer delta (tic_10ms / HZ * 100) */
+multiline_comment|/* Interval delta (tic_10ms / HZ * 100) */
 DECL|member|irq_count
 r_int
 r_int
@@ -378,10 +372,6 @@ op_star
 id|mm
 )paren
 suffix:semicolon
-DECL|macro|copy_segments
-mdefine_line|#define copy_segments(tsk, mm)  do { &bslash;&n;&t;&t;&t;&t;&t;if (tsk-&gt;personality == PER_HPUX)  &bslash;&n;&t;&t;&t;&t;&t;    map_hpux_gateway_page(tsk,mm); &bslash;&n;&t;&t;&t;&t;} while (0)
-DECL|macro|release_segments
-mdefine_line|#define release_segments(mm)&t;do { } while (0)
 DECL|function|get_wchan
 r_static
 r_inline

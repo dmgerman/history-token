@@ -81,6 +81,12 @@ id|list_head
 id|sk_deferred
 suffix:semicolon
 multiline_comment|/* deferred requests that need to&n;&t;&t;&t;&t;&t;&t; * be revisted */
+DECL|member|sk_sem
+r_struct
+id|semaphore
+id|sk_sem
+suffix:semicolon
+multiline_comment|/* to serialize sending data */
 DECL|member|sk_recvfrom
 r_int
 (paren

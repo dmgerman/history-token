@@ -1507,9 +1507,9 @@ op_assign
 id|cia_machine_check
 comma
 dot
-id|max_dma_address
+id|max_isa_dma_address
 op_assign
-id|ALPHA_MAX_DMA_ADDRESS
+id|ALPHA_MAX_ISA_DMA_ADDRESS
 comma
 dot
 id|min_io_address
@@ -1554,7 +1554,7 @@ comma
 dot
 id|kill_arch
 op_assign
-l_int|NULL
+id|cia_kill_arch
 comma
 dot
 id|pci_map_irq

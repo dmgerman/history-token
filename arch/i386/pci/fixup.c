@@ -505,7 +505,7 @@ mdefine_line|#define VIA_8363_KM133_REVISION_ID 0x84
 DECL|function|pci_fixup_via_northbridge_bug
 r_static
 r_void
-id|__init
+id|__devinit
 id|pci_fixup_via_northbridge_bug
 c_func
 (paren
@@ -655,7 +655,7 @@ multiline_comment|/*&n; * For some reasons Intel decided that certain parts of t
 DECL|function|pci_fixup_transparent_bridge
 r_static
 r_void
-id|__init
+id|__devinit
 id|pci_fixup_transparent_bridge
 c_func
 (paren

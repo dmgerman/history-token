@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
+macro_line|#include &lt;asm/arch/badge4.h&gt;
 macro_line|#include &quot;generic.h&quot;
 DECL|function|badge4_sa1111_init
 r_static
@@ -42,6 +43,42 @@ id|BADGE4_IRQ_GPIO_SA1111
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__initdata
+r_static
+r_int
+id|five_v_on
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
+DECL|function|five_v_on_setup
+r_static
+r_int
+id|__init
+id|five_v_on_setup
+c_func
+(paren
+r_char
+op_star
+id|ignore
+)paren
+(brace
+id|five_v_on
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;five_v_on&quot;
+comma
+id|five_v_on_setup
+)paren
+suffix:semicolon
 DECL|function|badge4_init
 r_static
 r_int
@@ -68,38 +105,10 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|ret
-op_assign
-id|badge4_sa1111_init
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: SA-1111 initialization failed (%d)&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|ret
-)paren
-suffix:semicolon
-multiline_comment|/* N.B, according to rmk this is the singular place that GPDR&n;           should be set */
-multiline_comment|/* Video expansion */
+multiline_comment|/* LCD */
 id|GPCR
 op_assign
 (paren
-id|BADGE4_GPIO_INT_VID
-op_or
 id|BADGE4_GPIO_LGP2
 op_or
 id|BADGE4_GPIO_LGP3
@@ -124,10 +133,13 @@ id|BADGE4_GPIO_GPC_VID
 )paren
 suffix:semicolon
 id|GPDR
+op_and_assign
+op_complement
+id|BADGE4_GPIO_INT_VID
+suffix:semicolon
+id|GPDR
 op_or_assign
 (paren
-id|BADGE4_GPIO_INT_VID
-op_or
 id|BADGE4_GPIO_LGP2
 op_or
 id|BADGE4_GPIO_LGP3
@@ -185,7 +197,7 @@ op_or
 id|BADGE4_GPIO_UART_HS2
 )paren
 suffix:semicolon
-multiline_comment|/* drives CPLD muxsel0 input */
+multiline_comment|/* CPLD muxsel0 input for mux/adc chip select */
 id|GPCR
 op_assign
 id|BADGE4_GPIO_MUXSEL0
@@ -194,35 +206,23 @@ id|GPDR
 op_or_assign
 id|BADGE4_GPIO_MUXSEL0
 suffix:semicolon
-multiline_comment|/* test points */
+multiline_comment|/* test points: J5, J6 as inputs, J7 outputs */
+id|GPDR
+op_and_assign
+op_complement
+(paren
+id|BADGE4_GPIO_TESTPT_J5
+op_or
+id|BADGE4_GPIO_TESTPT_J6
+)paren
+suffix:semicolon
 id|GPCR
 op_assign
-(paren
 id|BADGE4_GPIO_TESTPT_J7
-op_or
-id|BADGE4_GPIO_TESTPT_J6
-op_or
-id|BADGE4_GPIO_TESTPT_J5
-)paren
 suffix:semicolon
 id|GPDR
 op_or_assign
-(paren
 id|BADGE4_GPIO_TESTPT_J7
-op_or
-id|BADGE4_GPIO_TESTPT_J6
-op_or
-id|BADGE4_GPIO_TESTPT_J5
-)paren
-suffix:semicolon
-multiline_comment|/* drives CPLD sdram type inputs; this shouldn&squot;t be needed;&n;           bootloader left it this way. */
-id|GPDR
-op_or_assign
-(paren
-id|BADGE4_GPIO_SDTYP0
-op_or
-id|BADGE4_GPIO_SDTYP1
-)paren
 suffix:semicolon
 multiline_comment|/* 5V supply rail. */
 id|GPCR
@@ -234,14 +234,114 @@ id|GPDR
 op_or_assign
 id|BADGE4_GPIO_PCMEN5V
 suffix:semicolon
-multiline_comment|/* drives SA1111 reset pin; this shouldn&squot;t be needed;&n;           bootloader left it this way. */
-id|GPSR
-op_assign
-id|BADGE4_GPIO_SA1111_NRST
+multiline_comment|/* CPLD sdram type inputs; set up by blob */
+singleline_comment|//GPDR |= (BADGE4_GPIO_SDTYP1 | BADGE4_GPIO_SDTYP0);
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+id|__FILE__
+l_string|&quot;: SDRAM CPLD typ1=%d typ0=%d&bslash;n&quot;
+comma
+op_logical_neg
+op_logical_neg
+(paren
+id|GPLR
+op_amp
+id|BADGE4_GPIO_SDTYP1
+)paren
+comma
+op_logical_neg
+op_logical_neg
+(paren
+id|GPLR
+op_amp
+id|BADGE4_GPIO_SDTYP0
+)paren
+)paren
 suffix:semicolon
-id|GPDR
+multiline_comment|/* SA1111 reset pin; set up by blob */
+singleline_comment|//GPSR  = BADGE4_GPIO_SA1111_NRST;
+singleline_comment|//GPDR |= BADGE4_GPIO_SA1111_NRST;
+multiline_comment|/* power management cruft */
+id|PGSR
+op_assign
+l_int|0
+suffix:semicolon
+id|PWER
+op_assign
+l_int|0
+suffix:semicolon
+id|PCFR
+op_assign
+l_int|0
+suffix:semicolon
+id|PSDR
+op_assign
+l_int|0
+suffix:semicolon
+id|PWER
+op_or_assign
+id|PWER_GPIO26
+suffix:semicolon
+multiline_comment|/* wake up on an edge from TESTPT_J5 */
+id|PWER
+op_or_assign
+id|PWER_RTC
+suffix:semicolon
+multiline_comment|/* wake up if rtc fires */
+multiline_comment|/* drive sa1111_nrst during sleep */
+id|PGSR
 op_or_assign
 id|BADGE4_GPIO_SA1111_NRST
+suffix:semicolon
+multiline_comment|/* drive CPLD as is during sleep */
+id|PGSR
+op_or_assign
+(paren
+id|GPLR
+op_amp
+(paren
+id|BADGE4_GPIO_SDTYP0
+op_or
+id|BADGE4_GPIO_SDTYP1
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Now bring up the SA-1111. */
+id|ret
+op_assign
+id|badge4_sa1111_init
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: SA-1111 initialization failed (%d)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|ret
+)paren
+suffix:semicolon
+multiline_comment|/* maybe turn on 5v0 from the start */
+id|badge4_set_5V
+c_func
+(paren
+id|BADGE4_5V_INITIALLY
+comma
+id|five_v_on
+)paren
 suffix:semicolon
 r_return
 l_int|0

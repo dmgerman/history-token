@@ -20,6 +20,8 @@ DECL|macro|PALM_M125_ID
 mdefine_line|#define PALM_M125_ID&t;&t;&t;0x0040
 DECL|macro|PALM_M130_ID
 mdefine_line|#define PALM_M130_ID&t;&t;&t;0x0050
+DECL|macro|PALM_TUNGSTEN_T_ID
+mdefine_line|#define PALM_TUNGSTEN_T_ID&t;&t;0x0060
 DECL|macro|PALM_ZIRE_ID
 mdefine_line|#define PALM_ZIRE_ID&t;&t;&t;0x0070
 DECL|macro|SONY_VENDOR_ID

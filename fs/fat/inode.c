@@ -462,7 +462,7 @@ id|MSDOS_ROOT_INO
 suffix:semicolon
 id|inode-&gt;i_version
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 op_star
 id|res
@@ -4946,7 +4946,7 @@ id|MSDOS_ROOT_INO
 suffix:semicolon
 id|root_inode-&gt;i_version
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|error
 op_assign
