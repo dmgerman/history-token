@@ -220,6 +220,8 @@ DECL|macro|bio_page
 mdefine_line|#define bio_page(bio)&t;&t;bio_iovec((bio))-&gt;bv_page
 DECL|macro|bio_offset
 mdefine_line|#define bio_offset(bio)&t;&t;bio_iovec((bio))-&gt;bv_offset
+DECL|macro|bio_segments
+mdefine_line|#define bio_segments(bio)&t;((bio)-&gt;bi_vcnt - (bio)-&gt;bi_idx)
 DECL|macro|bio_sectors
 mdefine_line|#define bio_sectors(bio)&t;((bio)-&gt;bi_size &gt;&gt; 9)
 DECL|macro|bio_cur_sectors
@@ -474,19 +476,19 @@ id|bio
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
-multiline_comment|/*&n; * remember to add offset! and never ever reenable interrupts between a&n; * bio_kmap_irq and bio_kunmap_irq!!&n; *&n; * This function MUST be inlined - it plays with the CPU interrupt flags.&n; * Hence the `extern inline&squot;.&n; */
-DECL|function|bio_kmap_irq
+multiline_comment|/*&n; * remember to add offset! and never ever reenable interrupts between a&n; * bvec_kmap_irq and bvec_kunmap_irq!!&n; *&n; * This function MUST be inlined - it plays with the CPU interrupt flags.&n; * Hence the `extern inline&squot;.&n; */
+DECL|function|bvec_kmap_irq
 r_extern
 r_inline
 r_char
 op_star
-id|bio_kmap_irq
+id|bvec_kmap_irq
 c_func
 (paren
 r_struct
-id|bio
+id|bio_vec
 op_star
-id|bio
+id|bvec
 comma
 r_int
 r_int
@@ -515,11 +517,7 @@ r_int
 id|kmap_atomic
 c_func
 (paren
-id|bio_page
-c_func
-(paren
-id|bio
-)paren
+id|bvec-&gt;bv_page
 comma
 id|KM_BIO_SRC_IRQ
 )paren
@@ -544,18 +542,14 @@ op_star
 )paren
 id|addr
 op_plus
-id|bio_offset
-c_func
-(paren
-id|bio
-)paren
+id|bvec-&gt;bv_offset
 suffix:semicolon
 )brace
-DECL|function|bio_kunmap_irq
+DECL|function|bvec_kunmap_irq
 r_extern
 r_inline
 r_void
-id|bio_kunmap_irq
+id|bvec_kunmap_irq
 c_func
 (paren
 r_char
@@ -601,10 +595,55 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#else
-DECL|macro|bio_kmap_irq
-mdefine_line|#define bio_kmap_irq(bio, flags)&t;(bio_data(bio))
-DECL|macro|bio_kunmap_irq
-mdefine_line|#define bio_kunmap_irq(buf, flags)&t;do { *(flags) = 0; } while (0)
+DECL|macro|bvec_kmap_irq
+mdefine_line|#define bvec_kmap_irq(bvec, flags)&t;(page_address((bvec)-&gt;bv_page) + (bvec)-&gt;bv_offset)
+DECL|macro|bvec_kunmap_irq
+mdefine_line|#define bvec_kunmap_irq(buf, flags)&t;do { *(flags) = 0; } while (0)
 macro_line|#endif
+DECL|function|__bio_kmap_irq
+r_extern
+r_inline
+r_char
+op_star
+id|__bio_kmap_irq
+c_func
+(paren
+r_struct
+id|bio
+op_star
+id|bio
+comma
+r_int
+r_int
+id|idx
+comma
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+r_return
+id|bvec_kmap_irq
+c_func
+(paren
+id|bio_iovec_idx
+c_func
+(paren
+id|bio
+comma
+id|idx
+)paren
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
+DECL|macro|__bio_kunmap_irq
+mdefine_line|#define __bio_kunmap_irq(buf, flags)&t;bvec_kunmap_irq(buf, flags)
+DECL|macro|bio_kmap_irq
+mdefine_line|#define bio_kmap_irq(bio, flags) &bslash;&n;&t;__bio_kmap_irq((bio), (bio)-&gt;bi_idx, (flags))
+DECL|macro|bio_kunmap_irq
+mdefine_line|#define bio_kunmap_irq(buf,flags)&t;__bio_kunmap_irq(buf, flags)
 macro_line|#endif /* __LINUX_BIO_H */
 eof

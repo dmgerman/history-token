@@ -173,9 +173,9 @@ id|ticks1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * IRQ handler for the timer&n; */
-DECL|function|integrator_timer_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|integrator_timer_interrupt
 id|integrator_timer_interrupt
 c_func
 (paren
@@ -225,6 +225,9 @@ c_func
 (paren
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; */

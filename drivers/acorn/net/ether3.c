@@ -114,7 +114,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ether3_interrupt
 (paren
 r_int
@@ -2417,7 +2417,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|ether3_interrupt
 id|ether3_interrupt
 c_func
@@ -2455,6 +2455,10 @@ suffix:semicolon
 r_int
 r_int
 id|status
+comma
+id|handled
+op_assign
+id|IRQ_NONE
 suffix:semicolon
 macro_line|#if NET_DEBUG &gt; 1
 r_if
@@ -2520,6 +2524,10 @@ comma
 l_int|12
 )paren
 suffix:semicolon
+id|handled
+op_assign
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2547,6 +2555,10 @@ comma
 id|priv
 )paren
 suffix:semicolon
+id|handled
+op_assign
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 macro_line|#if NET_DEBUG &gt; 1
 r_if
@@ -2565,6 +2577,9 @@ l_string|&quot;done&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
+r_return
+id|handled
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * If we have a good packet(s), get it/them out of the buffers.&n; */
 r_static

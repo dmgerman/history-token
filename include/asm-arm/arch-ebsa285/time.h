@@ -164,9 +164,9 @@ r_return
 id|count
 suffix:semicolon
 )brace
-DECL|function|isa_timer_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|isa_timer_interrupt
 id|isa_timer_interrupt
 c_func
 (paren
@@ -212,6 +212,9 @@ c_func
 (paren
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|get_isa_cmos_time
@@ -747,9 +750,9 @@ op_div
 id|LATCH
 suffix:semicolon
 )brace
-DECL|function|timer1_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|timer1_interrupt
 id|timer1_interrupt
 c_func
 (paren
@@ -793,6 +796,9 @@ c_func
 (paren
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set up timer interrupt.&n; */

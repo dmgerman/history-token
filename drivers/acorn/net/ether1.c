@@ -70,7 +70,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ether1_interrupt
 c_func
 (paren
@@ -4312,7 +4312,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|ether1_interrupt
 id|ether1_interrupt
 (paren
@@ -4639,6 +4639,9 @@ id|CTRL_ACK
 comma
 id|REG_CONTROL
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static
