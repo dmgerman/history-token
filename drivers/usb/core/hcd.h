@@ -526,6 +526,7 @@ id|hcd
 )paren
 suffix:semicolon
 multiline_comment|/* memory lifecycle */
+multiline_comment|/* Note: The absence of hcd_free reflects a temporary situation;&n;&t; * in the near future hcd_alloc will disappear as well and all&n;&t; * allocations/deallocations will be handled by usbcore.  For the&n;&t; * moment, drivers are required to return a pointer that the core&n;&t; * can pass to kfree, i.e., the struct usb_hcd must be the _first_&n;&t; * member of a larger driver-specific structure. */
 DECL|member|hcd_alloc
 r_struct
 id|usb_hcd
