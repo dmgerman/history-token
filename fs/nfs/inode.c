@@ -1789,7 +1789,21 @@ r_goto
 id|failure_kill_reqlist
 suffix:semicolon
 )brace
-multiline_comment|/* We&squot;re airborne */
+multiline_comment|/* We&squot;re airborne Set socket buffersize */
+id|rpc_setbufsize
+c_func
+(paren
+id|clnt
+comma
+id|server-&gt;wsize
+op_plus
+l_int|100
+comma
+id|server-&gt;rsize
+op_plus
+l_int|100
+)paren
+suffix:semicolon
 multiline_comment|/* Check whether to start the lockd process */
 r_if
 c_cond

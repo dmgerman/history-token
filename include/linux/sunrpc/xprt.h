@@ -227,6 +227,16 @@ r_int
 id|cwnd
 suffix:semicolon
 multiline_comment|/* congestion window */
+DECL|member|rcvsize
+r_int
+r_int
+id|rcvsize
+comma
+multiline_comment|/* socket receive buffer size */
+DECL|member|sndsize
+id|sndsize
+suffix:semicolon
+multiline_comment|/* socket send buffer size */
 DECL|member|sending
 r_struct
 id|rpc_wait_queue
@@ -507,6 +517,15 @@ op_star
 suffix:semicolon
 r_int
 id|xprt_clear_backlog
+c_func
+(paren
+r_struct
+id|rpc_xprt
+op_star
+)paren
+suffix:semicolon
+r_void
+id|xprt_sock_setbufsize
 c_func
 (paren
 r_struct
