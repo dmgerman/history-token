@@ -204,7 +204,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Initialize the inode cluster hash table for the newly mounted file system.&n; * Its size is based on the ihash table size, with at least a page of entries.&n; */
+multiline_comment|/*&n; * Initialize the inode cluster hash table for the newly mounted file system.&n; * Its size is derived from the ihash table size.&n; */
 r_void
 DECL|function|xfs_chash_init
 id|xfs_chash_init
@@ -225,12 +225,7 @@ c_func
 (paren
 id|uint
 comma
-id|NBPP
-op_div
-r_sizeof
-(paren
-id|xfs_chash_t
-)paren
+l_int|1
 comma
 id|mp-&gt;m_ihsize
 op_div
@@ -243,6 +238,18 @@ id|mp
 op_rshift
 id|mp-&gt;m_sb.sb_inodelog
 )paren
+)paren
+suffix:semicolon
+id|mp-&gt;m_chsize
+op_assign
+id|min_t
+c_func
+(paren
+id|uint
+comma
+id|mp-&gt;m_chsize
+comma
+id|mp-&gt;m_ihsize
 )paren
 suffix:semicolon
 id|mp-&gt;m_chash
