@@ -8,6 +8,7 @@ macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/rwsem-const.h&gt;
 r_struct
 id|rwsem_waiter
 suffix:semicolon
@@ -20,18 +21,6 @@ r_int
 r_int
 id|count
 suffix:semicolon
-DECL|macro|RWSEM_UNLOCKED_VALUE
-mdefine_line|#define RWSEM_UNLOCKED_VALUE&t;&t;0x00000000
-DECL|macro|RWSEM_ACTIVE_BIAS
-mdefine_line|#define RWSEM_ACTIVE_BIAS&t;&t;0x00000001
-DECL|macro|RWSEM_ACTIVE_MASK
-mdefine_line|#define RWSEM_ACTIVE_MASK&t;&t;0x0000ffff
-DECL|macro|RWSEM_WAITING_BIAS
-mdefine_line|#define RWSEM_WAITING_BIAS&t;&t;0xffff0000
-DECL|macro|RWSEM_ACTIVE_READ_BIAS
-mdefine_line|#define RWSEM_ACTIVE_READ_BIAS&t;&t;RWSEM_ACTIVE_BIAS
-DECL|macro|RWSEM_ACTIVE_WRITE_BIAS
-mdefine_line|#define RWSEM_ACTIVE_WRITE_BIAS&t;&t;(RWSEM_WAITING_BIAS + RWSEM_ACTIVE_BIAS)
 DECL|member|wait_lock
 id|spinlock_t
 id|wait_lock
