@@ -1719,11 +1719,10 @@ id|input_handle
 op_star
 id|handle
 suffix:semicolon
-DECL|member|next
+DECL|member|node
 r_struct
-id|input_dev
-op_star
-id|next
+id|list_head
+id|node
 suffix:semicolon
 )brace
 suffix:semicolon
