@@ -1967,9 +1967,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* flag the kernel that there is somebody using this guy */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/*&n;&t; * If the device is in the middle of being closed, then block&n;&t; * until it&squot;s done, and then try again.&n;&t; */
 r_if
 c_cond
@@ -2577,8 +2574,6 @@ id|filp
 )paren
 (brace
 multiline_comment|/* flag that somebody is done with this module */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|restore_flags
 c_func
 (paren
@@ -2633,8 +2628,6 @@ c_func
 (paren
 id|flags
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -2867,8 +2860,6 @@ c_func
 op_amp
 id|info-&gt;close_wait
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|restore_flags
 c_func
@@ -5565,6 +5556,10 @@ suffix:semicolon
 id|pcxe_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
+suffix:semicolon
+id|pcxe_driver.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|pcxe_driver.name
 op_assign

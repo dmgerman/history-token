@@ -2520,21 +2520,12 @@ l_string|&quot;scheduling hangup...&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|schedule_task
 c_func
 (paren
 op_amp
 id|info-&gt;tqueue_hangup
 )paren
-op_eq
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 )brace
@@ -3223,8 +3214,6 @@ c_func
 (paren
 id|tty
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ---------------------------------------------------------------&n; * Low level utility subroutines for the serial driver:  routines to&n; * figure out the appropriate timeout for an interrupt chain, routines&n; * to initialize and startup a serial port, and routines to shutdown a&n; * serial port.  Useful stuff like that.&n; * ---------------------------------------------------------------&n; */
@@ -9328,8 +9317,6 @@ id|info-&gt;close_wait
 suffix:semicolon
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|restore_flags
 c_func
 (paren
@@ -10355,8 +10342,6 @@ id|info-&gt;count
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|info-&gt;count
 op_increment
 suffix:semicolon
@@ -11117,6 +11102,10 @@ suffix:semicolon
 id|esp_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
+suffix:semicolon
+id|esp_driver.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|esp_driver.name
 op_assign

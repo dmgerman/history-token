@@ -1494,6 +1494,10 @@ id|moxaDriver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|moxaDriver.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|moxaDriver.name
 op_assign
 l_string|&quot;ttya&quot;
@@ -2668,8 +2672,6 @@ id|ASYNC_CALLOUT_ACTIVE
 suffix:semicolon
 )brace
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|moxa_open
 r_static
@@ -2719,8 +2721,6 @@ op_eq
 id|MAX_PORTS
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -2821,8 +2821,6 @@ c_func
 op_amp
 id|moxaBuffSem
 )paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|ch
 op_assign
@@ -3019,8 +3017,6 @@ op_eq
 id|MAX_PORTS
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -3071,8 +3067,6 @@ id|filp
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -3143,8 +3137,6 @@ c_cond
 id|ch-&gt;count
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -3322,8 +3314,6 @@ c_func
 op_amp
 id|ch-&gt;close_wait
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|moxa_write
@@ -5124,21 +5114,12 @@ op_amp
 id|ch-&gt;event
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|schedule_work
 c_func
 (paren
 op_amp
 id|ch-&gt;tqueue
 )paren
-op_eq
-l_int|0
-)paren
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 )brace
 )brace

@@ -3993,8 +3993,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/*&n; *&t;Check if this port is in the middle of closing. If so then wait&n; *&t;until it is closed then return error status based on flag settings.&n; *&t;The sleep here does not need interrupt protection since the wakeup&n; *&t;for it is done with the same context.&n; */
 r_if
 c_cond
@@ -4448,8 +4446,6 @@ id|filp
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|restore_flags
 c_func
 (paren
@@ -4487,8 +4483,6 @@ OG
 l_int|1
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|restore_flags
 c_func
 (paren
@@ -4754,8 +4748,6 @@ c_func
 op_amp
 id|portp-&gt;close_wait
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|restore_flags
 c_func
@@ -10228,8 +10220,6 @@ id|portp-&gt;tty
 suffix:semicolon
 )brace
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Hangup this port. This is pretty much like closing the port, only&n; *&t;a little more brutal. No waiting for data to drain. Shutdown the&n; *&t;port and maybe drop signals. This is rather tricky really. We want&n; *&t;to close the port as well.&n; */
@@ -13371,21 +13361,12 @@ op_star
 l_int|NULL
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|schedule_task
 c_func
 (paren
 op_amp
 id|portp-&gt;tqhangup
 )paren
-op_eq
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 )brace
@@ -23205,6 +23186,10 @@ suffix:semicolon
 id|stli_serial.magic
 op_assign
 id|TTY_DRIVER_MAGIC
+suffix:semicolon
+id|stli_serial.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|stli_serial.driver_name
 op_assign

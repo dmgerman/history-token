@@ -2670,6 +2670,10 @@ id|ip2_tty_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|ip2_tty_driver.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|ip2_tty_driver.name
 op_assign
 id|pcTty
@@ -3136,6 +3140,8 @@ id|i
 op_star
 id|ABS_MAX_BOXES
 )paren
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|tty_register_device
@@ -3155,6 +3161,8 @@ id|i
 op_star
 id|ABS_MAX_BOXES
 )paren
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -6061,8 +6069,6 @@ id|tty-&gt;driver_data
 op_assign
 id|pCh
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 macro_line|#ifdef IP2DEBUG_OPEN
 id|printk
 c_func
@@ -6900,8 +6906,6 @@ id|pFile
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|ip2trace
 (paren
 id|CHANN
@@ -6927,8 +6931,6 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* not the last close */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|ip2trace
 (paren
 id|CHANN
@@ -7178,8 +7180,6 @@ l_string|&quot;ip2_close: after wakeups--&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|ip2trace
 (paren
 id|CHANN

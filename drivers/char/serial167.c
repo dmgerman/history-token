@@ -9994,6 +9994,10 @@ id|cy_serial_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|cy_serial_driver.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|cy_serial_driver.name
 op_assign

@@ -2506,21 +2506,12 @@ id|ASYNC_CALLOUT_NOHUP
 )paren
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|schedule_task
 c_func
 (paren
 op_amp
 id|port-&gt;tqueue_hangup
 )paren
-op_eq
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 )brace
@@ -3103,8 +3094,6 @@ id|bp-&gt;flags
 op_or_assign
 id|RC_BOARD_ACTIVE
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3171,8 +3160,6 @@ id|bp-&gt;DTR
 )paren
 suffix:semicolon
 multiline_comment|/* Drop DTR on all ports */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Setting up port characteristics. &n; * Must be called with disabled interrupts&n; */
 DECL|function|rc_change_speed
@@ -8378,8 +8365,6 @@ id|tty
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: module removal race still here */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|rc_hangup
 r_static
@@ -8777,6 +8762,10 @@ suffix:semicolon
 id|riscom_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
+suffix:semicolon
+id|riscom_driver.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|riscom_driver.name
 op_assign
