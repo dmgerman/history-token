@@ -554,6 +554,11 @@ r_void
 id|intel_i810_agp_enable
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 id|u32
 id|mode
 )paren
@@ -1014,6 +1019,8 @@ op_member_access_from_pointer
 id|mask_memory
 c_func
 (paren
+id|agp_bridge
+comma
 id|mem-&gt;memory
 (braket
 id|i
@@ -1555,6 +1562,11 @@ r_int
 id|intel_i810_mask_memory
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 r_int
 r_int
 id|addr
@@ -1567,7 +1579,7 @@ multiline_comment|/* Type checking must be done elsewhere */
 r_return
 id|addr
 op_or
-id|agp_bridge-&gt;driver-&gt;masks
+id|bridge-&gt;driver-&gt;masks
 (braket
 id|type
 )braket
@@ -2088,7 +2100,10 @@ r_int
 id|intel_i830_create_gatt_table
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_int
@@ -2201,7 +2216,10 @@ r_int
 id|intel_i830_free_gatt_table
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_return
@@ -2676,6 +2694,8 @@ op_member_access_from_pointer
 id|mask_memory
 c_func
 (paren
+id|agp_bridge
+comma
 id|mem-&gt;memory
 (braket
 id|i
@@ -3199,6 +3219,8 @@ op_member_access_from_pointer
 id|mask_memory
 c_func
 (paren
+id|agp_bridge
+comma
 id|mem-&gt;memory
 (braket
 id|i
@@ -3430,7 +3452,10 @@ r_int
 id|intel_i915_create_gatt_table
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_int

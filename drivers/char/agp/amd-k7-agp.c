@@ -563,7 +563,10 @@ r_int
 id|amd_create_gatt_table
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_struct
@@ -764,7 +767,10 @@ r_int
 id|amd_free_gatt_table
 c_func
 (paren
-r_void
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
 )paren
 (brace
 r_struct
@@ -1475,6 +1481,8 @@ c_func
 id|agp_generic_mask_memory
 c_func
 (paren
+id|agp_bridge
+comma
 id|mem-&gt;memory
 (braket
 id|i

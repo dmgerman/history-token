@@ -303,6 +303,11 @@ r_void
 id|sis_delayed_enable
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 id|u32
 id|mode
 )paren
@@ -352,7 +357,7 @@ op_assign
 id|agp_collect_device_status
 c_func
 (paren
-id|agp_bridge
+id|bridge
 comma
 id|mode
 comma
@@ -432,7 +437,7 @@ c_cond
 (paren
 id|device-&gt;device
 op_eq
-id|agp_bridge-&gt;dev-&gt;device
+id|bridge-&gt;dev-&gt;device
 )paren
 (brace
 id|printk

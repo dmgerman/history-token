@@ -480,6 +480,8 @@ op_member_access_from_pointer
 id|mask_memory
 c_func
 (paren
+id|bridge
+comma
 id|bridge-&gt;scratch_page_real
 comma
 l_int|0
@@ -528,6 +530,7 @@ op_member_access_from_pointer
 id|create_gatt_table
 c_func
 (paren
+id|bridge
 )paren
 )paren
 (brace
@@ -664,6 +667,7 @@ op_member_access_from_pointer
 id|free_gatt_table
 c_func
 (paren
+id|bridge
 )paren
 suffix:semicolon
 r_if
@@ -722,6 +726,7 @@ op_member_access_from_pointer
 id|free_gatt_table
 c_func
 (paren
+id|bridge
 )paren
 suffix:semicolon
 r_if
