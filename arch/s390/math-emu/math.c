@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/lowcore.h&gt;
 macro_line|#include &quot;sfp-util.h&quot;
 macro_line|#include &lt;math-emu/soft-fp.h&gt;
 macro_line|#include &lt;math-emu/single.h&gt;

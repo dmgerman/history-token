@@ -1825,9 +1825,11 @@ id|quiesce_psw
 suffix:semicolon
 id|quiesce_psw.mask
 op_assign
-id|_DW_PSW_MASK
+id|PSW_BASE_BITS
+op_or
+id|PSW_MASK_WAIT
 suffix:semicolon
-id|queisce_psw.addr
+id|quiesce_psw.addr
 op_assign
 l_int|0xfff
 suffix:semicolon

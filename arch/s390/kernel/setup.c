@@ -27,6 +27,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/cpcmd.h&gt;
+macro_line|#include &lt;asm/lowcore.h&gt;
 multiline_comment|/*&n; * Machine setup..&n; */
 DECL|variable|console_mode
 r_int
@@ -2251,6 +2252,7 @@ id|n
 )paren
 )paren
 (brace
+macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -2277,6 +2279,13 @@ id|n
 op_member_access_from_pointer
 id|cpu_data
 suffix:semicolon
+macro_line|#else
+id|cpuinfo
+op_assign
+op_amp
+id|S390_lowcore.cpu_data
+suffix:semicolon
+macro_line|#endif
 id|seq_printf
 c_func
 (paren

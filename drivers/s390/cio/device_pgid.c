@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/cio.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;asm/lowcore.h&gt;
 macro_line|#include &quot;cio.h&quot;
 macro_line|#include &quot;cio_debug.h&quot;
 macro_line|#include &quot;css.h&quot;
