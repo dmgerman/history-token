@@ -1916,13 +1916,6 @@ op_star
 id|gt_fsstat
 suffix:semicolon
 multiline_comment|/* response */
-DECL|member|gt_pathconf
-r_struct
-id|nfs_pathconf
-op_star
-id|gt_pathconf
-suffix:semicolon
-multiline_comment|/* response */
 )brace
 suffix:semicolon
 DECL|struct|nfs4_getattr_arg
@@ -2140,6 +2133,25 @@ op_star
 id|oc_stateid
 suffix:semicolon
 multiline_comment|/* request */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_pathconf_arg
+r_struct
+id|nfs4_pathconf_arg
+(brace
+DECL|member|fh
+r_const
+r_struct
+id|nfs_fh
+op_star
+id|fh
+suffix:semicolon
+DECL|member|bitmask
+r_const
+id|u32
+op_star
+id|bitmask
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|nfs4_putfh
