@@ -272,6 +272,7 @@ r_struct
 id|Qdisc_ops
 id|bfifo_qdisc_ops
 suffix:semicolon
+r_extern
 r_int
 id|register_qdisc
 c_func
@@ -282,6 +283,7 @@ op_star
 id|qops
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|unregister_qdisc
 c_func
@@ -292,6 +294,7 @@ op_star
 id|qops
 )paren
 suffix:semicolon
+r_extern
 r_struct
 id|Qdisc
 op_star
@@ -307,6 +310,7 @@ id|u32
 id|handle
 )paren
 suffix:semicolon
+r_extern
 r_struct
 id|Qdisc
 op_star
@@ -322,6 +326,7 @@ id|u32
 id|handle
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|dev_init_scheduler
 c_func
@@ -332,6 +337,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|dev_shutdown
 c_func
@@ -342,6 +348,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|dev_activate
 c_func
@@ -352,6 +359,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|dev_deactivate
 c_func
@@ -362,6 +370,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|qdisc_reset
 c_func
@@ -372,6 +381,7 @@ op_star
 id|qdisc
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|qdisc_destroy
 c_func
@@ -382,6 +392,7 @@ op_star
 id|qdisc
 )paren
 suffix:semicolon
+r_extern
 r_struct
 id|Qdisc
 op_star
@@ -399,6 +410,7 @@ op_star
 id|ops
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|qdisc_new_estimator
 c_func
@@ -418,6 +430,7 @@ op_star
 id|opt
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|qdisc_kill_estimator
 c_func
@@ -428,6 +441,7 @@ op_star
 id|stats
 )paren
 suffix:semicolon
+r_extern
 r_struct
 id|qdisc_rate_table
 op_star
@@ -445,6 +459,7 @@ op_star
 id|tab
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|qdisc_put_rtab
 c_func
