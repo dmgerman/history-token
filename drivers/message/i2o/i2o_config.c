@@ -4403,6 +4403,11 @@ c_cond
 id|sg_offset
 )paren
 (brace
+r_struct
+id|sg_simple_element
+op_star
+id|sg
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4423,9 +4428,6 @@ id|cleanup
 suffix:semicolon
 )brace
 singleline_comment|// TODO 64bit fix
-r_struct
-id|sg_simple_element
-op_star
 id|sg
 op_assign
 (paren
