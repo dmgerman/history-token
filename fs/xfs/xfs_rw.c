@@ -224,7 +224,7 @@ c_func
 (paren
 id|CE_NOTE
 comma
-l_string|&quot;xfs_force_shutdown(%s,0x%x) called from line %d of file %s.  Return address = 0x%x&quot;
+l_string|&quot;xfs_force_shutdown(%s,0x%x) called from line %d of file %s.  Return address = 0x%p&quot;
 comma
 id|mp-&gt;m_fsname
 comma

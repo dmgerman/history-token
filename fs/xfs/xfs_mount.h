@@ -171,7 +171,33 @@ DECL|macro|AIL_LOCK
 mdefine_line|#define AIL_LOCK(mp,s)&t;&t;s=mutex_spinlock(&amp;(mp)-&gt;m_ail_lock)
 DECL|macro|AIL_UNLOCK
 mdefine_line|#define AIL_UNLOCK(mp,s)&t;mutex_spinunlock(&amp;(mp)-&gt;m_ail_lock, s)
-multiline_comment|/* Prototypes and functions for I/O core modularization, a vector&n; * of functions is used to indirect from xfs/cxfs independent code&n; * to the xfs/cxfs dependent code.&n; * The vector is placed in the mount structure so that we can&n; * minimize the number of memory indirections involved.&n; */
+multiline_comment|/*&n; * Prototypes and functions for I/O core modularization.&n; */
+r_struct
+id|flid
+suffix:semicolon
+r_struct
+id|buf
+suffix:semicolon
+DECL|typedef|xfs_ioinit_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_ioinit_t
+)paren
+(paren
+r_struct
+id|vfs
+op_star
+comma
+r_struct
+id|xfs_mount_args
+op_star
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
 DECL|typedef|xfs_bmapi_t
 r_typedef
 r_int
@@ -226,6 +252,105 @@ comma
 r_int
 comma
 r_int
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|xfs_iomap_write_direct_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_iomap_write_direct_t
+)paren
+(paren
+r_void
+op_star
+comma
+id|loff_t
+comma
+r_int
+comma
+r_int
+comma
+r_struct
+id|xfs_bmbt_irec
+op_star
+comma
+r_int
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|typedef|xfs_iomap_write_delay_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_iomap_write_delay_t
+)paren
+(paren
+r_void
+op_star
+comma
+id|loff_t
+comma
+r_int
+comma
+r_int
+comma
+r_struct
+id|xfs_bmbt_irec
+op_star
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|xfs_iomap_write_allocate_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_iomap_write_allocate_t
+)paren
+(paren
+r_void
+op_star
+comma
+r_struct
+id|xfs_bmbt_irec
+op_star
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|xfs_iomap_write_unwritten_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_iomap_write_unwritten_t
+)paren
+(paren
+r_void
+op_star
+comma
+id|loff_t
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|typedef|xfs_lck_map_shared_t
+r_typedef
+id|uint
+(paren
+op_star
+id|xfs_lck_map_shared_t
+)paren
+(paren
+r_void
 op_star
 )paren
 suffix:semicolon
@@ -286,20 +411,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-DECL|typedef|xfs_chgtime_t
-r_typedef
-r_void
-(paren
-op_star
-id|xfs_chgtime_t
-)paren
-(paren
-r_void
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 DECL|typedef|xfs_size_t
 r_typedef
 id|xfs_fsize_t
@@ -312,15 +423,16 @@ r_void
 op_star
 )paren
 suffix:semicolon
-DECL|typedef|xfs_lastbyte_t
+DECL|typedef|xfs_iodone_t
 r_typedef
 id|xfs_fsize_t
 (paren
 op_star
-id|xfs_lastbyte_t
+id|xfs_iodone_t
 )paren
 (paren
-r_void
+r_struct
+id|vfs
 op_star
 )paren
 suffix:semicolon
@@ -329,6 +441,10 @@ r_typedef
 r_struct
 id|xfs_ioops
 (brace
+DECL|member|xfs_ioinit
+id|xfs_ioinit_t
+id|xfs_ioinit
+suffix:semicolon
 DECL|member|xfs_bmapi_func
 id|xfs_bmapi_t
 id|xfs_bmapi_func
@@ -337,9 +453,29 @@ DECL|member|xfs_bmap_eof_func
 id|xfs_bmap_eof_t
 id|xfs_bmap_eof_func
 suffix:semicolon
+DECL|member|xfs_iomap_write_direct
+id|xfs_iomap_write_direct_t
+id|xfs_iomap_write_direct
+suffix:semicolon
+DECL|member|xfs_iomap_write_delay
+id|xfs_iomap_write_delay_t
+id|xfs_iomap_write_delay
+suffix:semicolon
+DECL|member|xfs_iomap_write_allocate
+id|xfs_iomap_write_allocate_t
+id|xfs_iomap_write_allocate
+suffix:semicolon
+DECL|member|xfs_iomap_write_unwritten
+id|xfs_iomap_write_unwritten_t
+id|xfs_iomap_write_unwritten
+suffix:semicolon
 DECL|member|xfs_ilock
 id|xfs_lock_t
 id|xfs_ilock
+suffix:semicolon
+DECL|member|xfs_lck_map_shared
+id|xfs_lck_map_shared_t
+id|xfs_lck_map_shared
 suffix:semicolon
 DECL|member|xfs_ilock_demote
 id|xfs_lock_demote_t
@@ -353,36 +489,47 @@ DECL|member|xfs_unlock
 id|xfs_unlk_t
 id|xfs_unlock
 suffix:semicolon
-DECL|member|xfs_chgtime
-id|xfs_chgtime_t
-id|xfs_chgtime
-suffix:semicolon
 DECL|member|xfs_size_func
 id|xfs_size_t
 id|xfs_size_func
 suffix:semicolon
-DECL|member|xfs_lastbyte
-id|xfs_lastbyte_t
-id|xfs_lastbyte
+DECL|member|xfs_iodone
+id|xfs_iodone_t
+id|xfs_iodone
 suffix:semicolon
 DECL|typedef|xfs_ioops_t
 )brace
 id|xfs_ioops_t
 suffix:semicolon
+DECL|macro|XFS_IOINIT
+mdefine_line|#define XFS_IOINIT(vfsp, args, flags) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_ioinit)(vfsp, args, flags)
 DECL|macro|XFS_BMAPI
 mdefine_line|#define XFS_BMAPI(mp, trans,io,bno,len,f,first,tot,mval,nmap,flist)&t;&bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_bmapi_func) &bslash;&n;&t;&t;(trans,(io)-&gt;io_obj,bno,len,f,first,tot,mval,nmap,flist)
 DECL|macro|XFS_BMAP_EOF
 mdefine_line|#define XFS_BMAP_EOF(mp, io, endoff, whichfork, eof) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_bmap_eof_func) &bslash;&n;&t;&t;((io)-&gt;io_obj, endoff, whichfork, eof)
+DECL|macro|XFS_IOMAP_WRITE_DIRECT
+mdefine_line|#define XFS_IOMAP_WRITE_DIRECT(mp, io, offset, count, flags, mval, nmap, found)&bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_iomap_write_direct) &bslash;&n;&t;&t;((io)-&gt;io_obj, offset, count, flags, mval, nmap, found)
+DECL|macro|XFS_IOMAP_WRITE_DELAY
+mdefine_line|#define XFS_IOMAP_WRITE_DELAY(mp, io, offset, count, flags, mval, nmap) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_iomap_write_delay) &bslash;&n;&t;&t;((io)-&gt;io_obj, offset, count, flags, mval, nmap)
+DECL|macro|XFS_IOMAP_WRITE_ALLOCATE
+mdefine_line|#define XFS_IOMAP_WRITE_ALLOCATE(mp, io, mval, nmap) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_iomap_write_allocate) &bslash;&n;&t;&t;((io)-&gt;io_obj, mval, nmap)
+DECL|macro|XFS_IOMAP_WRITE_UNWRITTEN
+mdefine_line|#define XFS_IOMAP_WRITE_UNWRITTEN(mp, io, offset, count) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_iomap_write_unwritten) &bslash;&n;&t;&t;((io)-&gt;io_obj, offset, count)
+DECL|macro|XFS_LCK_MAP_SHARED
+mdefine_line|#define XFS_LCK_MAP_SHARED(mp, io) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_lck_map_shared)((io)-&gt;io_obj)
 DECL|macro|XFS_ILOCK
 mdefine_line|#define XFS_ILOCK(mp, io, mode) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_ilock)((io)-&gt;io_obj, mode)
+DECL|macro|XFS_ILOCK_NOWAIT
+mdefine_line|#define XFS_ILOCK_NOWAIT(mp, io, mode) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_ilock_nowait)((io)-&gt;io_obj, mode)
 DECL|macro|XFS_IUNLOCK
 mdefine_line|#define XFS_IUNLOCK(mp, io, mode) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_unlock)((io)-&gt;io_obj, mode)
 DECL|macro|XFS_ILOCK_DEMOTE
 mdefine_line|#define XFS_ILOCK_DEMOTE(mp, io, mode) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_ilock_demote)((io)-&gt;io_obj, mode)
 DECL|macro|XFS_SIZE
 mdefine_line|#define XFS_SIZE(mp, io) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_size_func)((io)-&gt;io_obj)
-DECL|macro|XFS_LASTBYTE
-mdefine_line|#define XFS_LASTBYTE(mp, io) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_lastbyte)((io)-&gt;io_obj)
+DECL|macro|XFS_IODONE
+mdefine_line|#define XFS_IODONE(vfsp) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_iodone)(vfsp)
+multiline_comment|/*&n; * Prototypes and functions for the XFS realtime subsystem.&n; */
 DECL|struct|xfs_mount
 r_typedef
 r_struct
@@ -990,9 +1137,9 @@ DECL|macro|XFS_FORCED_SHUTDOWN
 mdefine_line|#define XFS_FORCED_SHUTDOWN(mp) ((mp)-&gt;m_flags &amp; XFS_MOUNT_FS_SHUTDOWN)
 multiline_comment|/*&n; * Default minimum read and write sizes.&n; */
 DECL|macro|XFS_READIO_LOG_LARGE
-mdefine_line|#define XFS_READIO_LOG_LARGE&t;12
+mdefine_line|#define XFS_READIO_LOG_LARGE&t;16
 DECL|macro|XFS_WRITEIO_LOG_LARGE
-mdefine_line|#define XFS_WRITEIO_LOG_LARGE&t;12
+mdefine_line|#define XFS_WRITEIO_LOG_LARGE&t;16
 multiline_comment|/*&n; * Default allocation size&n; */
 DECL|macro|XFS_WRITE_IO_LOG
 mdefine_line|#define XFS_WRITE_IO_LOG&t;16

@@ -42,6 +42,10 @@ DECL|enumerator|BH_Async_Write
 id|BH_Async_Write
 comma
 multiline_comment|/* Is under end_buffer_async_write I/O */
+DECL|enumerator|BH_Delay
+id|BH_Delay
+comma
+multiline_comment|/* Buffer is not yet allocated on disk */
 DECL|enumerator|BH_Boundary
 id|BH_Boundary
 comma
@@ -232,6 +236,14 @@ id|async_write
 id|BUFFER_FNS
 c_func
 (paren
+id|Delay
+comma
+id|delay
+)paren
+suffix:semicolon
+id|BUFFER_FNS
+c_func
+(paren
 id|Boundary
 comma
 id|boundary
@@ -262,6 +274,7 @@ id|bh
 )paren
 )paren
 suffix:semicolon
+DECL|variable|init_buffer
 r_void
 id|init_buffer
 c_func
@@ -277,7 +290,6 @@ r_void
 op_star
 )paren
 suffix:semicolon
-DECL|variable|set_bh_page
 r_void
 id|set_bh_page
 c_func
