@@ -507,6 +507,7 @@ c_func
 (paren
 id|bus
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren
