@@ -769,6 +769,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_struct
+id|rusage
+suffix:semicolon
 r_static
 r_inline
 id|pid_t
@@ -803,9 +806,6 @@ r_struct
 id|rusage
 op_star
 )paren
-suffix:semicolon
-r_struct
-id|rusage
 suffix:semicolon
 r_return
 id|sys_wait4
@@ -1216,10 +1216,6 @@ id|out1
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
-comma
-l_string|&quot;out0&quot;
-comma
-l_string|&quot;out1&quot;
 comma
 l_string|&quot;out2&quot;
 comma
