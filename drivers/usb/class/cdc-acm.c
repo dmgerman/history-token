@@ -338,6 +338,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -653,6 +658,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -834,6 +844,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -1532,6 +1547,8 @@ id|acm_read_bulk
 c_func
 (paren
 id|acm-&gt;readurb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

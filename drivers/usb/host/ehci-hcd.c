@@ -510,6 +510,11 @@ r_struct
 id|usb_hcd
 op_star
 id|hcd
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 DECL|function|ehci_watchdog
@@ -551,6 +556,8 @@ id|ehci_irq
 (paren
 op_amp
 id|ehci-&gt;hcd
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* unlink the last qh after it&squot;s idled a while */
@@ -1946,6 +1953,11 @@ r_struct
 id|usb_hcd
 op_star
 id|hcd
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct

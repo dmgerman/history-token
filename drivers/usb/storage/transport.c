@@ -734,6 +734,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -2729,6 +2734,8 @@ id|usb_stor_CBI_irq
 c_func
 (paren
 id|us-&gt;irq_urb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -2759,6 +2766,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct

@@ -797,6 +797,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -1030,6 +1035,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
