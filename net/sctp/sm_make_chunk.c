@@ -1170,11 +1170,7 @@ id|sinfo-&gt;sinfo_stream
 suffix:semicolon
 id|dp.ppid
 op_assign
-id|htonl
-c_func
-(paren
 id|sinfo-&gt;sinfo_ppid
-)paren
 suffix:semicolon
 multiline_comment|/* Set the flags for an unordered send.  */
 r_if
