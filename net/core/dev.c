@@ -9348,16 +9348,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_DIVERT
-r_extern
-r_void
-id|dv_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_NET_DIVERT */
 multiline_comment|/*&n; *       This is called single threaded during boot, so no need&n; *       to take the rtnl semaphore.&n; */
 DECL|function|net_dev_init
 r_static
@@ -9446,13 +9436,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_DIVERT
-id|dv_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_NET_DIVERT */
 multiline_comment|/*&n;&t; *&t;Initialise the packet receive queues.&n;&t; */
 r_for
 c_loop
