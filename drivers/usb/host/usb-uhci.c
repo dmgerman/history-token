@@ -33,7 +33,7 @@ mdefine_line|#define DEBUG_SLAB
 DECL|macro|VERSTR
 mdefine_line|#define VERSTR &quot;$Revision: 1.275 $ time &quot; __TIME__ &quot; &quot; __DATE__
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#include &quot;hcd.h&quot;
+macro_line|#include &quot;../core/hcd.h&quot;
 macro_line|#include &quot;usb-uhci.h&quot;
 macro_line|#include &quot;usb-uhci-debug.h&quot;
 multiline_comment|/*&n; * Version Information&n; */

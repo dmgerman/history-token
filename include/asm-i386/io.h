@@ -219,35 +219,11 @@ DECL|macro|isa_page_to_bus
 mdefine_line|#define isa_page_to_bus page_to_phys
 DECL|macro|isa_bus_to_virt
 mdefine_line|#define isa_bus_to_virt phys_to_virt
-multiline_comment|/*&n; * However PCI ones are not necessarily 1:1 and therefore these interfaces&n; * are forbidden in portable PCI drivers.&n; */
-r_extern
-r_int
-r_int
-id|virt_to_bus_not_defined_use_pci_map
-c_func
-(paren
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
+multiline_comment|/*&n; * However PCI ones are not necessarily 1:1 and therefore these interfaces&n; * are forbidden in portable PCI drivers.&n; *&n; * Allow them on x86 for legacy drivers, though.&n; */
 DECL|macro|virt_to_bus
-mdefine_line|#define virt_to_bus virt_to_bus_not_defined_use_pci_map
-r_extern
-r_int
-r_int
-id|bus_to_virt_not_defined_use_pci_map
-c_func
-(paren
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-suffix:semicolon
+mdefine_line|#define virt_to_bus virt_to_phys
 DECL|macro|bus_to_virt
-mdefine_line|#define bus_to_virt bus_to_virt_not_defined_use_pci_map
+mdefine_line|#define bus_to_virt phys_to_virt
 multiline_comment|/*&n; * readX/writeX() are used to access memory mapped devices. On some&n; * architectures the memory mapped IO stuff needs to be accessed&n; * differently. On the x86 architecture, we just read/write the&n; * memory location directly.&n; */
 DECL|macro|readb
 mdefine_line|#define readb(addr) (*(volatile unsigned char *) __io_virt(addr))
