@@ -4294,6 +4294,17 @@ c_func
 id|p
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;active_mm
+)paren
+id|mmdrop
+c_func
+(paren
+id|p-&gt;active_mm
+)paren
+suffix:semicolon
 id|bad_fork_cleanup_signal
 suffix:colon
 id|exit_signal
