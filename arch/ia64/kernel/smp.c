@@ -28,13 +28,13 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/mca.h&gt;
 multiline_comment|/*&n; * Structure and data for smp_call_function(). This is designed to minimise static memory&n; * requirements. It also looks cleaner.&n; */
-DECL|variable|__cacheline_aligned
 r_static
-id|spinlock_t
-id|call_lock
 id|__cacheline_aligned
-op_assign
-id|SPIN_LOCK_UNLOCKED
+id|DEFINE_SPINLOCK
+c_func
+(paren
+id|call_lock
+)paren
 suffix:semicolon
 DECL|struct|call_data_struct
 r_struct

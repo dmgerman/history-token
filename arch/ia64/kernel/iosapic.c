@@ -29,12 +29,12 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt...)
 macro_line|#endif
-DECL|variable|iosapic_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|iosapic_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* These tables map IA-64 vectors to the IOSAPIC pin that generates this vector. */
 DECL|struct|iosapic_intr_info
