@@ -2329,6 +2329,16 @@ r_sizeof
 id|usb_dev-&gt;descriptor
 )paren
 (brace
+id|usb_dev-&gt;bus-&gt;root_hub
+op_assign
+l_int|NULL
+suffix:semicolon
+id|up
+(paren
+op_amp
+id|usb_bus_list_lock
+)paren
+suffix:semicolon
 id|dev_dbg
 (paren
 id|parent_dev
