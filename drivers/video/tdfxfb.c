@@ -509,22 +509,6 @@ op_star
 id|image
 )paren
 suffix:semicolon
-r_static
-r_int
-id|tdfxfb_cursor
-c_func
-(paren
-r_struct
-id|fb_info
-op_star
-id|info
-comma
-r_struct
-id|fb_cursor
-op_star
-id|cursor
-)paren
-suffix:semicolon
 macro_line|#endif /* CONFIG_FB_3DFX_ACCEL */
 DECL|variable|tdfxfb_ops
 r_static
@@ -584,11 +568,6 @@ id|fb_imageblit
 op_assign
 id|tdfxfb_imageblit
 comma
-dot
-id|fb_cursor
-op_assign
-id|tdfxfb_cursor
-comma
 macro_line|#else
 dot
 id|fb_fillrect
@@ -605,12 +584,12 @@ id|fb_imageblit
 op_assign
 id|cfb_imageblit
 comma
+macro_line|#endif
 dot
 id|fb_cursor
 op_assign
 id|soft_cursor
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * do_xxx: Hardware-specific functions&n; */
@@ -2817,18 +2796,10 @@ id|var-&gt;xres
 op_ne
 id|var-&gt;xres_virtual
 )paren
-(brace
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;virtual x resolution != physical x resolution not supported&bslash;n&quot;
-)paren
+id|var-&gt;xres_virtual
+op_assign
+id|var-&gt;xres
 suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2836,18 +2807,10 @@ id|var-&gt;yres
 OG
 id|var-&gt;yres_virtual
 )paren
-(brace
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;virtual y resolution &lt; physical y resolution not possible&bslash;n&quot;
-)paren
+id|var-&gt;yres_virtual
+op_assign
+id|var-&gt;yres
 suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2976,6 +2939,20 @@ OG
 id|info-&gt;fix.smem_len
 )paren
 (brace
+id|var-&gt;yres_virtual
+op_assign
+id|info-&gt;fix.smem_len
+op_div
+id|lpitch
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|var-&gt;yres_virtual
+OL
+id|var-&gt;yres
+)paren
+(brace
 id|DPRINTK
 c_func
 (paren
@@ -2992,6 +2969,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -5979,6 +5957,8 @@ id|info
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_FB_3DFX_ACCEL */
+macro_line|#ifdef TDFX_HARDWARE_CURSOR
 DECL|function|tdfxfb_cursor
 r_static
 r_int
@@ -6649,7 +6629,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_FB_3DFX_ACCEL */
+macro_line|#endif
 multiline_comment|/**&n; *      tdfxfb_probe - Device Initializiation&n; *&n; *      @pdev:  PCI Device to initialize&n; *      @id:    PCI Device ID&n; *&n; *      Initializes and allocates resources for PCI device @pdev.&n; *&n; */
 DECL|function|tdfxfb_probe
 r_static
@@ -6684,6 +6664,8 @@ r_int
 id|size
 comma
 id|err
+comma
+id|lpitch
 suffix:semicolon
 r_if
 c_cond
@@ -7284,6 +7266,51 @@ id|info-&gt;var
 op_assign
 id|tdfx_var
 suffix:semicolon
+multiline_comment|/* maximize virtual vertical length */
+id|lpitch
+op_assign
+id|info-&gt;var.xres_virtual
+op_star
+(paren
+(paren
+id|info-&gt;var.bits_per_pixel
+op_plus
+l_int|7
+)paren
+op_rshift
+l_int|3
+)paren
+suffix:semicolon
+id|info-&gt;var.yres_virtual
+op_assign
+id|info-&gt;fix.smem_len
+op_div
+id|lpitch
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;var.yres_virtual
+OL
+id|info-&gt;var.yres
+)paren
+r_goto
+id|out_err
+suffix:semicolon
+macro_line|#ifdef CONFIG_FB_3DFX_ACCEL
+multiline_comment|/*&n;&t; * FIXME: Limit var-&gt;yres_virtual to 4096 because of screen artifacts&n;&t; * during scrolling. This is only present if 2D acceleration is&n;&t; * enabled.&n;&t; */
+r_if
+c_cond
+(paren
+id|info-&gt;var.yres_virtual
+OG
+l_int|4096
+)paren
+id|info-&gt;var.yres_virtual
+op_assign
+l_int|4096
+suffix:semicolon
+macro_line|#endif /* CONFIG_FB_3DFX_ACCEL */
 r_if
 c_cond
 (paren
