@@ -13800,7 +13800,7 @@ comma
 id|compat_pid_t
 id|pid
 comma
-id|siginfo_t32
+id|compat_siginfo_t
 id|__user
 op_star
 id|uinfo

@@ -764,10 +764,10 @@ id|sigval_t32
 suffix:semicolon
 DECL|macro|SIGEV_PAD_SIZE32
 mdefine_line|#define SIGEV_PAD_SIZE32 ((SIGEV_MAX_SIZE/sizeof(int)) - 3)
-DECL|struct|siginfo32
+DECL|struct|compat_siginfo
 r_typedef
 r_struct
-id|siginfo32
+id|compat_siginfo
 (brace
 DECL|member|si_signo
 r_int
@@ -951,9 +951,9 @@ DECL|member|_sifields
 )brace
 id|_sifields
 suffix:semicolon
-DECL|typedef|siginfo_t32
+DECL|typedef|compat_siginfo_t
 )brace
-id|siginfo_t32
+id|compat_siginfo_t
 suffix:semicolon
 DECL|struct|sigevent32
 r_typedef
@@ -1527,33 +1527,6 @@ r_struct
 id|ia32_user_fxsr_struct
 id|__user
 op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Prototypes for use in sys_ia32.c */
-r_int
-id|copy_siginfo_to_user32
-(paren
-id|siginfo_t32
-id|__user
-op_star
-id|to
-comma
-id|siginfo_t
-op_star
-id|from
-)paren
-suffix:semicolon
-r_int
-id|copy_siginfo_from_user32
-(paren
-id|siginfo_t
-op_star
-id|to
-comma
-id|siginfo_t32
-id|__user
-op_star
-id|from
 )paren
 suffix:semicolon
 macro_line|#endif /* !CONFIG_IA32_SUPPORT */

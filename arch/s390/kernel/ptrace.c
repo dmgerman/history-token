@@ -2468,7 +2468,7 @@ id|copy_siginfo_to_user32
 c_func
 (paren
 (paren
-id|siginfo_t32
+id|compat_siginfo_t
 id|__user
 op_star
 )paren
@@ -2498,7 +2498,7 @@ c_func
 id|child-&gt;last_siginfo
 comma
 (paren
-id|siginfo_t32
+id|compat_siginfo_t
 id|__user
 op_star
 )paren

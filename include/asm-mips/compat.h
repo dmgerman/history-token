@@ -478,5 +478,9 @@ id|len
 )paren
 suffix:semicolon
 )brace
+macro_line|#if defined (__MIPSEL__)
+DECL|macro|__COMPAT_ENDIAN_SWAP__
+mdefine_line|#define __COMPAT_ENDIAN_SWAP__ &t;1
+macro_line|#endif
 macro_line|#endif /* _ASM_COMPAT_H */
 eof
