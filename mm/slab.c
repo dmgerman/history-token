@@ -120,8 +120,6 @@ mdefine_line|#define cc_entry(cpucache) &bslash;&n;&t;((void **)(((cpucache_t*)(
 DECL|macro|cc_data
 mdefine_line|#define cc_data(cachep) &bslash;&n;&t;((cachep)-&gt;cpudata[smp_processor_id()])
 multiline_comment|/*&n; * kmem_cache_t&n; *&n; * manages a cache.&n; */
-DECL|macro|CACHE_NAMELEN
-mdefine_line|#define CACHE_NAMELEN&t;20&t;/* max name length for a slab cache */
 DECL|struct|kmem_cache_s
 r_struct
 id|kmem_cache_s
@@ -260,11 +258,10 @@ id|failures
 suffix:semicolon
 multiline_comment|/* 3) cache creation/removal */
 DECL|member|name
+r_const
 r_char
+op_star
 id|name
-(braket
-id|CACHE_NAMELEN
-)braket
 suffix:semicolon
 DECL|member|next
 r_struct
@@ -461,6 +458,7 @@ DECL|typedef|cache_sizes_t
 )brace
 id|cache_sizes_t
 suffix:semicolon
+multiline_comment|/* These are the default caches for kmalloc. Custom caches can have other sizes. */
 DECL|variable|cache_sizes
 r_static
 id|cache_sizes_t
@@ -584,6 +582,112 @@ l_int|NULL
 )brace
 )brace
 suffix:semicolon
+multiline_comment|/* Must match cache_sizes above. Out of line to keep cache footprint low. */
+DECL|macro|CN
+mdefine_line|#define CN(x) { x, x &quot; (DMA)&quot; }
+r_static
+r_struct
+(brace
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|name_dma
+r_char
+op_star
+id|name_dma
+suffix:semicolon
+DECL|variable|cache_names
+)brace
+id|cache_names
+(braket
+)braket
+op_assign
+(brace
+macro_line|#if PAGE_SIZE == 4096
+id|CN
+c_func
+(paren
+l_string|&quot;size-32&quot;
+)paren
+comma
+macro_line|#endif
+id|CN
+c_func
+(paren
+l_string|&quot;size-64&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-128&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-256&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-512&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-1024&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-2048&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-4096&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-8192&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-16384&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-32768&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-65536&quot;
+)paren
+comma
+id|CN
+c_func
+(paren
+l_string|&quot;size-131072&quot;
+)paren
+)brace
+suffix:semicolon
+DECL|macro|CN
+macro_line|#undef CN
 multiline_comment|/* internal cache of cache description objs */
 DECL|variable|cache_cache
 r_static
@@ -912,12 +1016,6 @@ id|sizes
 op_assign
 id|cache_sizes
 suffix:semicolon
-r_char
-id|name
-(braket
-l_int|20
-)braket
-suffix:semicolon
 multiline_comment|/*&n;&t; * Fragmentation resistance on low memory - only use bigger&n;&t; * page orders on machines with more than 32MB of memory.&n;&t; */
 r_if
 c_cond
@@ -939,16 +1037,6 @@ suffix:semicolon
 r_do
 (brace
 multiline_comment|/* For performance, all the general caches are L1 aligned.&n;&t;&t; * This should be particularly beneficial on SMP boxes, as it&n;&t;&t; * eliminates &quot;false sharing&quot;.&n;&t;&t; * Note for systems short on memory removing the alignment will&n;&t;&t; * allow tighter packing of the smaller caches. */
-id|sprintf
-c_func
-(paren
-id|name
-comma
-l_string|&quot;size-%Zd&quot;
-comma
-id|sizes-&gt;cs_size
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -959,6 +1047,13 @@ op_assign
 id|kmem_cache_create
 c_func
 (paren
+id|cache_names
+(braket
+id|sizes
+op_minus
+id|cache_sizes
+)braket
+dot
 id|name
 comma
 id|sizes-&gt;cs_size
@@ -1008,22 +1103,19 @@ op_div_assign
 l_int|2
 suffix:semicolon
 )brace
-id|sprintf
-c_func
-(paren
-id|name
-comma
-l_string|&quot;size-%Zd(DMA)&quot;
-comma
-id|sizes-&gt;cs_size
-)paren
-suffix:semicolon
 id|sizes-&gt;cs_dmacachep
 op_assign
 id|kmem_cache_create
 c_func
 (paren
-id|name
+id|cache_names
+(braket
+id|sizes
+op_minus
+id|cache_sizes
+)braket
+dot
+id|name_dma
 comma
 id|sizes-&gt;cs_size
 comma
@@ -1552,7 +1644,7 @@ id|slabp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * kmem_cache_create - Create a cache.&n; * @name: A string which is used in /proc/slabinfo to identify this cache.&n; * @size: The size of objects to be created in this cache.&n; * @offset: The offset to use within the page.&n; * @flags: SLAB flags&n; * @ctor: A constructor for the objects.&n; * @dtor: A destructor for the objects.&n; *&n; * Returns a ptr to the cache on success, NULL on failure.&n; * Cannot be called within a int, but can be interrupted.&n; * The @ctor is run when new pages are allocated by the cache&n; * and the @dtor is run before the pages are handed back.&n; * The flags are&n; *&n; * %SLAB_POISON - Poison the slab with a known test pattern (a5a5a5a5)&n; * to catch references to uninitialised memory.&n; *&n; * %SLAB_RED_ZONE - Insert `Red&squot; zones around the allocated memory to check&n; * for buffer overruns.&n; *&n; * %SLAB_NO_REAP - Don&squot;t automatically reap this cache when we&squot;re under&n; * memory pressure.&n; *&n; * %SLAB_HWCACHE_ALIGN - Align the objects in this cache to a hardware&n; * cacheline.  This can be beneficial if you&squot;re counting cycles as closely&n; * as davem.&n; */
+multiline_comment|/**&n; * kmem_cache_create - Create a cache.&n; * @name: A string which is used in /proc/slabinfo to identify this cache.&n; * @size: The size of objects to be created in this cache.&n; * @offset: The offset to use within the page.&n; * @flags: SLAB flags&n; * @ctor: A constructor for the objects.&n; * @dtor: A destructor for the objects.&n; *&n; * Returns a ptr to the cache on success, NULL on failure.&n; * Cannot be called within a int, but can be interrupted.&n; * The @ctor is run when new pages are allocated by the cache&n; * and the @dtor is run before the pages are handed back.&n; *&n; * @name must be valid until the cache is destroyed. This implies that&n; * the module calling this has to destroy the cache before getting &n; * unloaded.&n; * &n; * The flags are&n; *&n; * %SLAB_POISON - Poison the slab with a known test pattern (a5a5a5a5)&n; * to catch references to uninitialised memory.&n; *&n; * %SLAB_RED_ZONE - Insert `Red&squot; zones around the allocated memory to check&n; * for buffer overruns.&n; *&n; * %SLAB_NO_REAP - Don&squot;t automatically reap this cache when we&squot;re under&n; * memory pressure.&n; *&n; * %SLAB_HWCACHE_ALIGN - Align the objects in this cache to a hardware&n; * cacheline.  This can be beneficial if you&squot;re counting cycles as closely&n; * as davem.&n; */
 id|kmem_cache_t
 op_star
 DECL|function|kmem_cache_create
@@ -1634,20 +1726,6 @@ c_cond
 (paren
 op_logical_neg
 id|name
-)paren
-op_logical_or
-(paren
-(paren
-id|strlen
-c_func
-(paren
-id|name
-)paren
-op_ge
-id|CACHE_NAMELEN
-op_minus
-l_int|1
-)paren
 )paren
 op_logical_or
 id|in_interrupt
@@ -2302,14 +2380,9 @@ id|cachep-&gt;dtor
 op_assign
 id|dtor
 suffix:semicolon
-multiline_comment|/* Copy name over so we don&squot;t have problems with unloaded modules */
-id|strcpy
-c_func
-(paren
 id|cachep-&gt;name
-comma
+op_assign
 id|name
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_if
@@ -2361,7 +2434,33 @@ comma
 id|next
 )paren
 suffix:semicolon
-multiline_comment|/* The name field is constant - no lock needed. */
+r_char
+id|tmp
+suffix:semicolon
+multiline_comment|/* This happens when the module gets unloaded and doesn&squot;t&n;&t;&t;&t;   destroy its slab cache and noone else reuses the vmalloc&n;&t;&t;&t;   area of the module. Print a warning. */
+r_if
+c_cond
+(paren
+id|__get_user
+c_func
+(paren
+id|tmp
+comma
+id|pc-&gt;name
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;SLAB: cache with size %d has lost its name&bslash;n&quot;
+comma
+id|pc-&gt;objsize
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2374,11 +2473,28 @@ comma
 id|name
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;kmem_cache_create: duplicate cache %s&bslash;n&quot;
+comma
+id|name
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|cache_chain_sem
+)paren
+suffix:semicolon
 id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* There is no reason to lock our new cache before we&n;&t; * link it in - no one knows about it yet...&n;&t; */
@@ -6460,6 +6576,11 @@ r_int
 r_int
 id|num_slabs
 suffix:semicolon
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
 id|cachep
 op_assign
 id|list_entry
@@ -6617,6 +6738,30 @@ id|num_slabs
 op_star
 id|cachep-&gt;num
 suffix:semicolon
+id|name
+op_assign
+id|cachep-&gt;name
+suffix:semicolon
+(brace
+r_char
+id|tmp
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|__get_user
+c_func
+(paren
+id|tmp
+comma
+id|name
+)paren
+)paren
+id|name
+op_assign
+l_string|&quot;broken&quot;
+suffix:semicolon
+)brace
 id|len
 op_add_assign
 id|sprintf
@@ -6628,7 +6773,7 @@ id|len
 comma
 l_string|&quot;%-17s %6lu %6lu %6u %4lu %4lu %4u&quot;
 comma
-id|cachep-&gt;name
+id|name
 comma
 id|active_objs
 comma
