@@ -449,6 +449,17 @@ l_int|0x0a10
 )brace
 comma
 multiline_comment|/* iVina FB1600 (=Umax Astra 4500) */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0638
+comma
+l_int|0x0a20
+)paren
+)brace
+comma
+multiline_comment|/* iVina FB1800 (=Umax Astra 4700) */
 multiline_comment|/* Benq: see Acer */
 multiline_comment|/* Brother */
 (brace
@@ -557,6 +568,17 @@ c_func
 (paren
 l_int|0x04a9
 comma
+l_int|0x220a
+)paren
+)brace
+comma
+multiline_comment|/* CanoScan D2400UF */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
 l_int|0x220b
 )paren
 )brace
@@ -595,6 +617,17 @@ l_int|0x220e
 )brace
 comma
 multiline_comment|/* CanoScan N1240U/LIDE 30 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
+l_int|0x220f
+)paren
+)brace
+comma
+multiline_comment|/* CanoScan 8000F */
 (brace
 id|USB_DEVICE
 c_func
@@ -950,6 +983,17 @@ c_func
 (paren
 l_int|0x03f0
 comma
+l_int|0x1205
+)paren
+)brace
+comma
+multiline_comment|/* ScanJet 5550C */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x03f0
+comma
 l_int|0x1305
 )paren
 )brace
@@ -1059,6 +1103,17 @@ l_int|0x0346
 comma
 multiline_comment|/* 6136u - repackaged Primax ? */
 multiline_comment|/* Microtek */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x05da
+comma
+l_int|0x20c9
+)paren
+)brace
+comma
+multiline_comment|/* ScanMaker 6700 */
 (brace
 id|USB_DEVICE
 c_func
@@ -1674,6 +1729,17 @@ comma
 multiline_comment|/* Winscan Pro 2448U */
 multiline_comment|/* Relisis */
 singleline_comment|// { USB_DEVICE(0x0475, 0x0103) },&t;/* Episode - undetected endpoint */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0475
+comma
+l_int|0x0210
+)paren
+)brace
+comma
+multiline_comment|/* Scorpio Ultra 3 */
 multiline_comment|/* Seiko/Epson Corp. */
 (brace
 id|USB_DEVICE
