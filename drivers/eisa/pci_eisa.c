@@ -88,6 +88,10 @@ id|pci_eisa_root.slots
 op_assign
 id|EISA_MAX_SLOTS
 suffix:semicolon
+id|pci_eisa_root.dma_mask
+op_assign
+id|pdev-&gt;dma_mask
+suffix:semicolon
 r_if
 c_cond
 (paren

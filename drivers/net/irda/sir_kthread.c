@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &quot;sir-dev.h&quot;
 multiline_comment|/**************************************************************************&n; *&n; * kIrDAd kernel thread and config state machine&n; *&n; */
@@ -411,14 +412,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|variable|irda_rt_prio
-r_static
-r_int
-id|irda_rt_prio
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* MODULE_PARM? */
 DECL|function|irda_thread
 r_static
 r_int
@@ -444,86 +437,6 @@ c_func
 l_string|&quot;kIrDAd&quot;
 )paren
 suffix:semicolon
-id|set_fs
-c_func
-(paren
-id|KERNEL_DS
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|irda_rt_prio
-OG
-l_int|0
-)paren
-(brace
-macro_line|#if 0&t;&t;/* works but requires EXPORT_SYMBOL(setscheduler) */
-r_struct
-id|sched_param
-id|param
-suffix:semicolon
-id|param.sched_priority
-op_assign
-id|irda_rt_prio
-suffix:semicolon
-id|setscheduler
-c_func
-(paren
-l_int|0
-comma
-id|SCHED_FIFO
-comma
-op_amp
-id|param
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if 0&t;&t;/* doesn&squot;t work - has some tendency to trigger instant reboot!&n;&t;&t; * looks like we would have to deactivate current on the&n;&t;&t; * runqueue - which is only possible inside of kernel/sched.h&n;&t;&t; */
-multiline_comment|/* runqueues are per-cpu and we are current on this cpu. Hence&n;&t;&t; * The tasklist_lock with irq-off protects our runqueue too&n;&t;&t; * and we don&squot;t have to lock it (which would be impossible,&n;&t;&t; * because it is private in kernel/sched.c)&n;&t;&t; */
-id|read_lock_irq
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
-id|current-&gt;rt_priority
-op_assign
-(paren
-id|irda_rt_prio
-OL
-id|MAX_RT_PRIO
-)paren
-ques
-c_cond
-id|irda_rt_prio
-suffix:colon
-id|MAX_RT_PRIO
-op_minus
-l_int|1
-suffix:semicolon
-id|current-&gt;policy
-op_assign
-id|SCHED_FIFO
-suffix:semicolon
-id|current-&gt;prio
-op_assign
-id|MAX_USER_RT_PRIO
-op_minus
-l_int|1
-op_minus
-id|irda_rt_prio
-suffix:semicolon
-id|read_unlock_irq
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 id|irda_rq_queue.thread
 op_assign
 id|current
@@ -598,6 +511,20 @@ id|irda_rq_queue.kick
 comma
 op_amp
 id|wait
+)paren
+suffix:semicolon
+multiline_comment|/* make swsusp happy with our thread */
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
 )paren
 suffix:semicolon
 id|run_irda_queue
@@ -1576,15 +1503,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s - up&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 id|up
 c_func
 (paren
@@ -1652,11 +1570,11 @@ suffix:semicolon
 r_int
 id|xmit_was_down
 suffix:semicolon
-singleline_comment|//&t;IRDA_DEBUG(2, &quot;%s - state=0x%04x / param=%u&bslash;n&quot;, __FUNCTION__, initial_state, param);
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_INFO
+l_int|2
+comma
 l_string|&quot;%s - state=0x%04x / param=%u&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -1710,15 +1628,6 @@ op_amp
 id|fsm-&gt;sem
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s - down&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1732,15 +1641,6 @@ id|ERROR
 c_func
 (paren
 l_string|&quot;%s(), instance staled!&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s - up&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1844,15 +1744,6 @@ id|netif_wake_queue
 c_func
 (paren
 id|dev-&gt;netdev
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s - up&bslash;n&quot;
-comma
-id|__FUNCTION__
 )paren
 suffix:semicolon
 id|up

@@ -2081,7 +2081,7 @@ l_int|1
 suffix:semicolon
 id|sdev-&gt;use_10_for_ms
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 r_if
 c_cond
