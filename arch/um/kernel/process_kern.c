@@ -16,6 +16,7 @@ macro_line|#include &quot;linux/vmalloc.h&quot;
 macro_line|#include &quot;linux/spinlock.h&quot;
 macro_line|#include &quot;linux/proc_fs.h&quot;
 macro_line|#include &quot;linux/ptrace.h&quot;
+macro_line|#include &quot;linux/random.h&quot;
 macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;asm/mman.h&quot;
 macro_line|#include &quot;asm/segment.h&quot;
@@ -2030,6 +2031,38 @@ l_int|1
 suffix:semicolon
 r_return
 l_int|2
+suffix:semicolon
+)brace
+DECL|function|arch_align_stack
+r_int
+r_int
+id|arch_align_stack
+c_func
+(paren
+r_int
+r_int
+id|sp
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|randomize_va_space
+)paren
+id|sp
+op_sub_assign
+id|get_random_int
+c_func
+(paren
+)paren
+op_mod
+l_int|8192
+suffix:semicolon
+r_return
+id|sp
+op_amp
+op_complement
+l_int|0xf
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
