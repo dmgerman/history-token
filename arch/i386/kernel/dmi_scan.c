@@ -24,10 +24,6 @@ c_func
 id|dmi_broken
 )paren
 suffix:semicolon
-DECL|variable|is_sony_vaio_laptop
-r_int
-id|is_sony_vaio_laptop
-suffix:semicolon
 DECL|variable|is_unsafe_smbus
 r_int
 id|is_unsafe_smbus
@@ -1177,46 +1173,6 @@ id|KERN_WARNING
 l_string|&quot;BIOS strings suggest APM bugs, disabling power status reporting.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Check for a Sony Vaio system&n; *&n; * On a Sony system we want to enable the use of the sonypi&n; * driver for Sony-specific goodies like the camera and jogdial.&n; * We also want to avoid using certain functions of the PnP BIOS.&n; */
-DECL|function|sony_vaio_laptop
-r_static
-id|__init
-r_int
-id|sony_vaio_laptop
-c_func
-(paren
-r_struct
-id|dmi_blacklist
-op_star
-id|d
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|is_sony_vaio_laptop
-op_eq
-l_int|0
-)paren
-(brace
-id|is_sony_vaio_laptop
-op_assign
-l_int|1
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s laptop detected.&bslash;n&quot;
-comma
-id|d-&gt;ident
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon

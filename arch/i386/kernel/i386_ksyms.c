@@ -748,17 +748,6 @@ id|atomic_dec_and_lock
 )paren
 suffix:semicolon
 macro_line|#endif
-r_extern
-r_int
-id|is_sony_vaio_laptop
-suffix:semicolon
-DECL|variable|is_sony_vaio_laptop
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|is_sony_vaio_laptop
-)paren
-suffix:semicolon
 DECL|variable|__PAGE_KERNEL
 id|EXPORT_SYMBOL
 c_func
