@@ -1662,29 +1662,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_else
-r_if
-c_cond
-(paren
-id|ch
-op_eq
-l_int|2
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%ld buffermem pages&bslash;n&quot;
-comma
-id|nr_buffermem_pages
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Look for kgdb &squot;stop&squot; character, consult the gdb documentation&n;&t; * for remote target debugging and arch/sparc/kernel/sparc-stub.c&n;&t; * to see how all this works.&n;&t; */
 macro_line|#ifdef CONFIG_REMOTE_DEBUG
