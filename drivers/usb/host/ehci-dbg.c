@@ -408,6 +408,7 @@ id|__unused__
 DECL|function|dbg_qtd
 id|dbg_qtd
 (paren
+r_const
 r_char
 op_star
 id|label
@@ -525,6 +526,7 @@ id|__unused__
 DECL|function|dbg_qh
 id|dbg_qh
 (paren
+r_const
 r_char
 op_star
 id|label

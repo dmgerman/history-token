@@ -47,7 +47,10 @@ id|hcd_name
 op_assign
 l_string|&quot;ehci_hcd&quot;
 suffix:semicolon
-singleline_comment|// #define EHCI_VERBOSE_DEBUG
+DECL|macro|EHCI_VERBOSE_DEBUG
+macro_line|#undef EHCI_VERBOSE_DEBUG
+DECL|macro|EHCI_URB_TRACE
+macro_line|#undef EHCI_URB_TRACE
 singleline_comment|// #define have_split_iso
 macro_line|#ifdef DEBUG
 DECL|macro|EHCI_STATS

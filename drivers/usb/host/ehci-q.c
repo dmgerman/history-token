@@ -582,6 +582,15 @@ id|usb_pipeint
 id|urb-&gt;pipe
 )paren
 op_logical_and
+(paren
+(paren
+id|token
+op_amp
+id|QTD_STS_MMF
+)paren
+op_ne
+l_int|0
+op_logical_or
 id|QTD_CERR
 c_func
 (paren
@@ -589,6 +598,7 @@ id|token
 )paren
 op_eq
 l_int|0
+)paren
 )paren
 (brace
 macro_line|#ifdef DEBUG
@@ -792,6 +802,42 @@ op_amp
 id|urb-&gt;lock
 )paren
 suffix:semicolon
+macro_line|#ifdef EHCI_URB_TRACE
+id|ehci_dbg
+(paren
+id|ehci
+comma
+l_string|&quot;%s %s urb %p ep%d%s status %d len %d/%d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|urb-&gt;dev-&gt;devpath
+comma
+id|urb
+comma
+id|usb_pipeendpoint
+(paren
+id|urb-&gt;pipe
+)paren
+comma
+id|usb_pipein
+(paren
+id|urb-&gt;pipe
+)paren
+ques
+c_cond
+l_string|&quot;in&quot;
+suffix:colon
+l_string|&quot;out&quot;
+comma
+id|urb-&gt;status
+comma
+id|urb-&gt;actual_length
+comma
+id|urb-&gt;transfer_buffer_length
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* complete() can reenter this HCD */
 id|spin_unlock
 (paren
@@ -2349,6 +2395,14 @@ op_assign
 id|urb-&gt;interval
 suffix:semicolon
 )brace
+multiline_comment|/* support for tt scheduling */
+id|qh-&gt;dev
+op_assign
+id|usb_get_dev
+(paren
+id|urb-&gt;dev
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* using TT? */
 r_switch
@@ -2624,10 +2678,6 @@ r_return
 id|qh
 suffix:semicolon
 )brace
-DECL|macro|hb_mult
-macro_line|#undef hb_mult
-DECL|macro|hb_packet
-macro_line|#undef hb_packet
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* move qh (and its qtds) onto async queue; maybe enable queue.  */
 DECL|function|qh_link_async
@@ -3343,30 +3393,34 @@ id|epnum
 op_or_assign
 l_int|0x10
 suffix:semicolon
-id|ehci_vdbg
+macro_line|#ifdef EHCI_URB_TRACE
+id|ehci_dbg
 (paren
 id|ehci
 comma
-l_string|&quot;submit_async urb %p len %d ep%d%s qtd %p [qh %p]&bslash;n&quot;
+l_string|&quot;%s %s urb %p ep%d%s len %d, qtd %p [qh %p]&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|urb-&gt;dev-&gt;devpath
 comma
 id|urb
-comma
-id|urb-&gt;transfer_buffer_length
 comma
 id|epnum
 op_amp
 l_int|0x0f
 comma
+id|usb_pipein
 (paren
-id|epnum
-op_amp
-l_int|0x10
+id|urb-&gt;pipe
 )paren
 ques
 c_cond
 l_string|&quot;in&quot;
 suffix:colon
 l_string|&quot;out&quot;
+comma
+id|urb-&gt;transfer_buffer_length
 comma
 id|qtd
 comma
@@ -3386,6 +3440,7 @@ op_complement
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 id|spin_lock_irqsave
 (paren
 op_amp

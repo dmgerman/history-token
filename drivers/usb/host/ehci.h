@@ -897,6 +897,13 @@ suffix:semicolon
 multiline_comment|/* where polling starts */
 DECL|macro|NO_FRAME
 mdefine_line|#define NO_FRAME ((unsigned short)~0)&t;&t;&t;/* pick new start */
+DECL|member|dev
+r_struct
+id|usb_device
+op_star
+id|dev
+suffix:semicolon
+multiline_comment|/* access to TT */
 )brace
 id|__attribute__
 (paren
