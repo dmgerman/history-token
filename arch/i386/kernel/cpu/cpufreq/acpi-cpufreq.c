@@ -1940,4 +1940,10 @@ c_func
 id|acpi_cpufreq_exit
 )paren
 suffix:semicolon
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;acpi&quot;
+)paren
+suffix:semicolon
 eof
