@@ -65,6 +65,9 @@ suffix:semicolon
 r_struct
 id|usb_device
 suffix:semicolon
+r_struct
+id|usb_driver
+suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Host-side wrappers for standard USB descriptors ... these are parsed&n; * from the data provided by devices.  Parsing turns them from a flat&n; * sequence of descriptors into a hierarchy:&n; *&n; *  - devices have one (usually) or more configs;&n; *  - configs have one (often) or more interfaces;&n; *  - interfaces have one (usually) or more settings;&n; *  - each interface setting has zero or (usually) more endpoints.&n; *&n; * And there might be other descriptors mixed in with those.&n; *&n; * Devices may also have class-specific or vendor-specific descriptors.&n; */
 multiline_comment|/* host-side wrapper for parsed endpoint descriptors */
@@ -144,13 +147,6 @@ r_int
 id|num_altsetting
 suffix:semicolon
 multiline_comment|/* number of alternate settings */
-DECL|member|driver
-r_struct
-id|usb_driver
-op_star
-id|driver
-suffix:semicolon
-multiline_comment|/* driver */
 DECL|member|minor
 r_int
 id|minor
@@ -718,8 +714,11 @@ op_star
 id|priv
 )paren
 suffix:semicolon
-r_extern
+multiline_comment|/**&n; * usb_interface_claimed - returns true iff an interface is claimed&n; * @iface: the interface being checked&n; *&n; * Returns true (nonzero) iff the interface is claimed, else false (zero).&n; * Callers must own the driver model&squot;s usb bus readlock.  So driver&n; * probe() entries don&squot;t need extra locking, but other call contexts&n; * may need to explicitly claim that lock.&n; *&n; */
+DECL|function|usb_interface_claimed
+r_static
 r_int
+r_inline
 id|usb_interface_claimed
 c_func
 (paren
@@ -728,7 +727,15 @@ id|usb_interface
 op_star
 id|iface
 )paren
+(brace
+r_return
+(paren
+id|iface-&gt;dev.driver
+op_ne
+l_int|NULL
+)paren
 suffix:semicolon
+)brace
 r_extern
 r_void
 id|usb_driver_release_interface

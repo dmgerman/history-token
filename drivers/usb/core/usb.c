@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/usb/usb.c&n; *&n; * (C) Copyright Linus Torvalds 1999&n; * (C) Copyright Johannes Erdfelt 1999-2001&n; * (C) Copyright Andreas Gal 1999&n; * (C) Copyright Gregory P. Smith 1999&n; * (C) Copyright Deti Fliegl 1999 (new USB architecture)&n; * (C) Copyright Randy Dunlap 2000&n; * (C) Copyright David Brownell 2000-2001 (kernel hotplug, usb_device_id,&n; &t;more docs, etc)&n; * (C) Copyright Yggdrasil Computing, Inc. 2000&n; *     (usb_device_id matching changes by Adam J. Richter)&n; * (C) Copyright Greg Kroah-Hartman 2002-2003&n; *&n; * NOTE! This is not actually a driver at all, rather this is&n; * just a collection of helper routines that implement the&n; * generic USB things that the real drivers can use..&n; *&n; * Think of this as a &quot;USB library&quot; rather than anything else.&n; * It should be considered a slave, with no callbacks. Callbacks&n; * are evil.&n; */
+multiline_comment|/*&n; * drivers/usb/usb.c&n; *&n; * (C) Copyright Linus Torvalds 1999&n; * (C) Copyright Johannes Erdfelt 1999-2001&n; * (C) Copyright Andreas Gal 1999&n; * (C) Copyright Gregory P. Smith 1999&n; * (C) Copyright Deti Fliegl 1999 (new USB architecture)&n; * (C) Copyright Randy Dunlap 2000&n; * (C) Copyright David Brownell 2000-2004&n; * (C) Copyright Yggdrasil Computing, Inc. 2000&n; *     (usb_device_id matching changes by Adam J. Richter)&n; * (C) Copyright Greg Kroah-Hartman 2002-2003&n; *&n; * NOTE! This is not actually a driver at all, rather this is&n; * just a collection of helper routines that implement the&n; * generic USB things that the real drivers can use..&n; *&n; * Think of this as a &quot;USB library&quot; rather than anything else.&n; * It should be considered a slave, with no callbacks. Callbacks&n; * are evil.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
@@ -216,15 +216,6 @@ id|driver-&gt;probe
 r_return
 id|error
 suffix:semicolon
-multiline_comment|/* driver claim() doesn&squot;t yet affect dev-&gt;driver... */
-r_if
-c_cond
-(paren
-id|intf-&gt;driver
-)paren
-r_return
-id|error
-suffix:semicolon
 id|id
 op_assign
 id|usb_match_id
@@ -259,16 +250,6 @@ id|id
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|error
-)paren
-id|intf-&gt;driver
-op_assign
-id|driver
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -301,7 +282,11 @@ id|usb_driver
 op_star
 id|driver
 op_assign
-id|intf-&gt;driver
+id|to_usb_driver
+c_func
+(paren
+id|intf-&gt;dev.driver
+)paren
 suffix:semicolon
 multiline_comment|/* release all urbs for this interface */
 id|usb_disable_interface
@@ -358,10 +343,6 @@ id|intf
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-id|intf-&gt;driver
-op_assign
-l_int|NULL
 suffix:semicolon
 r_return
 l_int|0
@@ -752,7 +733,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_driver_claim_interface - bind a driver to an interface&n; * @driver: the driver to be bound&n; * @iface: the interface to which it will be bound&n; * @priv: driver data associated with that interface&n; *&n; * This is used by usb device drivers that need to claim more than one&n; * interface on a device when probing (audio and acm are current examples).&n; * No device driver should directly modify internal usb_interface or&n; * usb_device structure members.&n; *&n; * Few drivers should need to use this routine, since the most natural&n; * way to bind to an interface is to return the private data from&n; * the driver&squot;s probe() method.&n; *&n; * Callers must own the driver model&squot;s usb bus writelock.  So driver&n; * probe() entries don&squot;t need extra locking, but other call contexts&n; * may need to explicitly claim that lock.&n; */
+multiline_comment|/**&n; * usb_driver_claim_interface - bind a driver to an interface&n; * @driver: the driver to be bound&n; * @iface: the interface to which it will be bound; must be in the&n; *&t;usb device&squot;s active configuration&n; * @priv: driver data associated with that interface&n; *&n; * This is used by usb device drivers that need to claim more than one&n; * interface on a device when probing (audio and acm are current examples).&n; * No device driver should directly modify internal usb_interface or&n; * usb_device structure members.&n; *&n; * Few drivers should need to use this routine, since the most natural&n; * way to bind to an interface is to return the private data from&n; * the driver&squot;s probe() method.&n; *&n; * Callers must own the driver model&squot;s usb bus writelock.  So driver&n; * probe() entries don&squot;t need extra locking, but other call contexts&n; * may need to explicitly claim that lock.&n; */
 DECL|function|usb_driver_claim_interface
 r_int
 id|usb_driver_claim_interface
@@ -773,32 +754,27 @@ op_star
 id|priv
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|iface
-op_logical_or
-op_logical_neg
-id|driver
-)paren
-r_return
-op_minus
-id|EINVAL
+r_struct
+id|device
+op_star
+id|dev
+op_assign
+op_amp
+id|iface-&gt;dev
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|iface-&gt;driver
+id|dev-&gt;driver
 )paren
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-multiline_comment|/* FIXME should device_bind_driver() */
-id|iface-&gt;driver
+id|dev-&gt;driver
 op_assign
-id|driver
+op_amp
+id|driver-&gt;driver
 suffix:semicolon
 id|usb_set_intfdata
 c_func
@@ -808,41 +784,28 @@ comma
 id|priv
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * usb_interface_claimed - returns true iff an interface is claimed&n; * @iface: the interface being checked&n; *&n; * This should be used by drivers to check other interfaces to see if&n; * they are available or not.  If another driver has claimed the interface,&n; * they may not claim it.  Otherwise it&squot;s OK to claim it using&n; * usb_driver_claim_interface().&n; *&n; * Returns true (nonzero) iff the interface is claimed, else false (zero).&n; */
-DECL|function|usb_interface_claimed
-r_int
-id|usb_interface_claimed
-c_func
-(paren
-r_struct
-id|usb_interface
-op_star
-id|iface
-)paren
-(brace
+multiline_comment|/* if interface was already added, bind now; else let&n;&t; * the future device_add() bind it, bypassing probe()&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|iface
+id|list_empty
+(paren
+op_amp
+id|dev-&gt;bus_list
 )paren
+)paren
+id|device_bind_driver
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-r_return
-(paren
-id|iface-&gt;driver
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/* usb_interface_claimed() */
-multiline_comment|/**&n; * usb_driver_release_interface - unbind a driver from an interface&n; * @driver: the driver to be unbound&n; * @iface: the interface from which it will be unbound&n; *&n; * In addition to unbinding the driver, this re-initializes the interface&n; * by selecting altsetting 0, the default alternate setting.&n; * &n; * This can be used by drivers to release an interface without waiting&n; * for their disconnect() methods to be called.&n; *&n; * When the USB subsystem disconnect()s a driver from some interface,&n; * it automatically invokes this method for that interface.  That&n; * means that even drivers that used usb_driver_claim_interface()&n; * usually won&squot;t need to call this.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; * Callers must own the driver model&squot;s usb bus writelock.  So driver&n; * disconnect() entries don&squot;t need extra locking, but other call contexts&n; * may need to explicitly claim that lock.&n; */
+multiline_comment|/**&n; * usb_driver_release_interface - unbind a driver from an interface&n; * @driver: the driver to be unbound&n; * @iface: the interface from which it will be unbound&n; *&n; * This can be used by drivers to release an interface without waiting&n; * for their disconnect() methods to be called.  In typical cases this&n; * also causes the driver disconnect() method to be called.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; * Callers must own the usb_device serialize semaphore and the driver model&squot;s&n; * usb bus writelock.  So driver disconnect() entries don&squot;t need extra locking,&n; * but other call contexts may need to explicitly claim those locks.&n; */
 DECL|function|usb_driver_release_interface
 r_void
 id|usb_driver_release_interface
@@ -859,57 +822,55 @@ op_star
 id|iface
 )paren
 (brace
+r_struct
+id|device
+op_star
+id|dev
+op_assign
+op_amp
+id|iface-&gt;dev
+suffix:semicolon
 multiline_comment|/* this should never happen, don&squot;t release something that&squot;s not ours */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|iface
+id|dev-&gt;driver
 op_logical_or
-op_logical_neg
-id|iface-&gt;driver
-op_logical_or
-id|iface-&gt;driver
+id|dev-&gt;driver
 op_ne
-id|driver
+op_amp
+id|driver-&gt;driver
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* don&squot;t disconnect from disconnect(), or before dev_add() */
 r_if
 c_cond
 (paren
-id|iface-&gt;dev.driver
+op_logical_neg
+id|list_empty
+(paren
+op_amp
+id|dev-&gt;driver_list
 )paren
-(brace
-multiline_comment|/* FIXME should be the ONLY case here */
+op_logical_and
+op_logical_neg
+id|list_empty
+(paren
+op_amp
+id|dev-&gt;bus_list
+)paren
+)paren
 id|device_release_driver
 c_func
 (paren
-op_amp
-id|iface-&gt;dev
+id|dev
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|usb_set_interface
-c_func
-(paren
-id|interface_to_usbdev
-c_func
-(paren
-id|iface
-)paren
-comma
-id|iface-&gt;altsetting
-(braket
-l_int|0
-)braket
-dot
-id|desc.bInterfaceNumber
-comma
-l_int|0
-)paren
+id|dev-&gt;driver
+op_assign
+l_int|NULL
 suffix:semicolon
 id|usb_set_intfdata
 c_func
@@ -918,10 +879,6 @@ id|iface
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-id|iface-&gt;driver
-op_assign
-l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_match_id - find first usb_device_id matching device or interface&n; * @interface: the interface of interest&n; * @id: array of usb_device_id structures, terminated by zero entry&n; *&n; * usb_match_id searches an array of usb_device_id&squot;s and returns&n; * the first one matching the device or interface, or null.&n; * This is used when binding (or rebinding) a driver to an interface.&n; * Most USB device drivers will use this indirectly, through the usb core,&n; * but some layered driver frameworks use it directly.&n; * These device tables are exported with MODULE_DEVICE_TABLE, through&n; * modutils and &quot;modules.usbmap&quot;, to support the driver loading&n; * functionality of USB hotplugging.&n; *&n; * What Matches:&n; *&n; * The &quot;match_flags&quot; element in a usb_device_id controls which&n; * members are used.  If the corresponding bit is set, the&n; * value in the device_id must match its corresponding member&n; * in the device or interface descriptor, or else the device_id&n; * does not match.&n; *&n; * &quot;driver_info&quot; is normally used only by device drivers,&n; * but you can create a wildcard &quot;matches anything&quot; usb_device_id&n; * as a driver&squot;s &quot;modules.usbmap&quot; entry if you provide an id with&n; * only a nonzero &quot;driver_info&quot; field.  If you do this, the USB device&n; * driver&squot;s probe() routine should use additional intelligence to&n; * decide whether to bind to the specified interface.&n; * &n; * What Makes Good usb_device_id Tables:&n; *&n; * The match algorithm is very simple, so that intelligence in&n; * driver selection must come from smart driver id records.&n; * Unless you have good reasons to use another selection policy,&n; * provide match elements only in related groups, and order match&n; * specifiers from specific to general.  Use the macros provided&n; * for that purpose if you can.&n; *&n; * The most specific match specifiers use device descriptor&n; * data.  These are commonly used with product-specific matches;&n; * the USB_DEVICE macro lets you provide vendor and product IDs,&n; * and you can also match against ranges of product revisions.&n; * These are widely used for devices with application or vendor&n; * specific bDeviceClass values.&n; *&n; * Matches based on device class/subclass/protocol specifications&n; * are slightly more general; use the USB_DEVICE_INFO macro, or&n; * its siblings.  These are used with single-function devices&n; * where bDeviceClass doesn&squot;t specify that each interface has&n; * its own class. &n; *&n; * Matches based on interface class/subclass/protocol are the&n; * most general; they let drivers bind to any interface on a&n; * multiple-function device.  Use the USB_INTERFACE_INFO&n; * macro, or its siblings, to match class-per-interface style &n; * devices (as recorded in bDeviceClass).&n; *  &n; * Within those groups, remember that not all combinations are&n; * meaningful.  For example, don&squot;t give a product version range&n; * without vendor and product IDs; or specify a protocol without&n; * its associated class and subclass.&n; */
@@ -4791,13 +4748,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|usb_driver_claim_interface
-)paren
-suffix:semicolon
-DECL|variable|usb_interface_claimed
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|usb_interface_claimed
 )paren
 suffix:semicolon
 DECL|variable|usb_driver_release_interface

@@ -724,10 +724,10 @@ id|desc-&gt;bInterfaceSubClass
 comma
 id|desc-&gt;bInterfaceProtocol
 comma
-id|iface-&gt;driver
+id|iface-&gt;dev.driver
 ques
 c_cond
-id|iface-&gt;driver-&gt;name
+id|iface-&gt;dev.driver-&gt;name
 suffix:colon
 l_string|&quot;(none)&quot;
 )paren
