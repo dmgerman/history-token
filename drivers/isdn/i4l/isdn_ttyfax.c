@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_ttyfax.c,v 1.7.6.2 2001/09/23 22:24:32 kai Exp $&n; *&n; * Linux ISDN subsystem, tty_fax AT-command emulator (linklevel).&n; *&n; * Copyright 1999    by Armin Schindler (mac@melware.de)&n; * Copyright 1999    by Ralf Spachmann (mel@melware.de)&n; * Copyright 1999    by Cytronics &amp; Melware&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* Linux ISDN subsystem, tty_fax AT-command emulator&n; *&n; * Copyright 1999    by Armin Schindler (mac@melware.de)&n; * Copyright 1999    by Ralf Spachmann (mel@melware.de)&n; * Copyright 1999    by Cytronics &amp; Melware&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 DECL|macro|ISDN_TTY_FAX_STAT_DEBUG
 macro_line|#undef ISDN_TTY_FAX_STAT_DEBUG
 DECL|macro|ISDN_TTY_FAX_CMD_DEBUG

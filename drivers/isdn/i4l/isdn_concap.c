@@ -1,5 +1,5 @@
-multiline_comment|/* $Id: isdn_concap.c,v 1.8.6.1 2001/09/23 22:24:31 kai Exp $&n; * &n; * Linux ISDN subsystem, protocol encapsulation&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
-multiline_comment|/* Stuff to support the concap_proto by isdn4linux. isdn4linux - specific&n; * stuff goes here. Stuff that depends only on the concap protocol goes to&n; * another -- protocol specific -- source file.&n; *&n; */
+multiline_comment|/* Linux ISDN subsystem, protocol encapsulation&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* Stuff to support the concap_proto by isdn4linux. isdn4linux - specific&n; * stuff goes here. Stuff that depends only on the concap protocol goes to&n; * another -- protocol specific -- source file.&n; */
 macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &quot;isdn_x25iface.h&quot;
 macro_line|#include &quot;isdn_net.h&quot;

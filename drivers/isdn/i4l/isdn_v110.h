@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_v110.h,v 1.4.6.1 2001/09/23 22:24:32 kai Exp $&n; *&n; * Linux ISDN subsystem, V.110 related functions (linklevel).&n; *&n; * Copyright by Thomas Pfeiffer (pfeiffer@pds.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* Linux ISDN subsystem, V.110 related functions&n; *&n; * Copyright by Thomas Pfeiffer (pfeiffer@pds.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef ISDN_V110_H
 DECL|macro|ISDN_V110_H
 mdefine_line|#define ISDN_V110_H

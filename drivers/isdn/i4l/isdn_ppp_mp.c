@@ -1,8 +1,17 @@
+multiline_comment|/* Linux ISDN subsystem, PPP CCP support&n; *&n; * Copyright 1994-1998  by Fritz Elfert (fritz@isdn4linux.de)&n; *           1995,96    by Thinking Objects Software GmbH Wuerzburg&n; *           1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *           1999-2002  by Kai Germaschewski &lt;kai@germaschewski.name&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &quot;isdn_ppp_mp.h&quot;
 macro_line|#include &quot;isdn_ppp_ccp.h&quot;
 macro_line|#include &quot;isdn_common.h&quot;
 macro_line|#include &quot;isdn_net.h&quot;
 macro_line|#include &quot;isdn_ppp.h&quot;
+multiline_comment|/* ====================================================================== */
+DECL|macro|MP_END_FRAG
+mdefine_line|#define MP_END_FRAG             0x40
+DECL|macro|MP_BEGIN_FRAG
+mdefine_line|#define MP_BEGIN_FRAG           0x80
+DECL|macro|MP_MAX_QUEUE_LEN
+mdefine_line|#define MP_MAX_QUEUE_LEN&t;16
+multiline_comment|/* ====================================================================== */
 r_int
 DECL|function|ippp_mp_bind
 id|ippp_mp_bind

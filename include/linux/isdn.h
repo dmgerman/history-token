@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn.h,v 1.111.6.9 2001/09/23 22:25:05 kai Exp $&n; *&n; * Main header for the Linux ISDN subsystem (linklevel).&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* Linux ISDN subsystem, main header&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; * Copyright 2000-2002  by Kai Germaschewski (kai@germaschewski.name)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef __ISDN_H__
 DECL|macro|__ISDN_H__
 mdefine_line|#define __ISDN_H__
@@ -1181,12 +1181,6 @@ r_int
 r_int
 id|debug
 suffix:semicolon
-DECL|member|pb
-id|ippp_bundle
-op_star
-id|pb
-suffix:semicolon
-multiline_comment|/* pointer to the common bundle structure&n;   &t;&t;&t;         * with the per-bundle data */
 macro_line|#endif
 macro_line|#ifdef CONFIG_ISDN_X25
 DECL|member|cprot

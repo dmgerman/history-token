@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_ppp.c,v 1.85.6.9 2001/11/06 20:58:28 kai Exp $&n; *&n; * Linux ISDN subsystem, functions for synchronous PPP (linklevel).&n; *&n; * Copyright 1995,96 by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* Linux ISDN subsystem, functions for synchronous PPP (linklevel).&n; *&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *           1999-2002  by Kai Germaschewski &lt;kai@germaschewski.name&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -11,6 +11,9 @@ macro_line|#include &quot;isdn_ppp_ccp.h&quot;
 macro_line|#include &quot;isdn_ppp_vj.h&quot;
 macro_line|#include &quot;isdn_ppp_mp.h&quot;
 macro_line|#include &quot;isdn_net.h&quot;
+multiline_comment|/* ====================================================================== */
+DECL|macro|IPPP_MAX_RQ_LEN
+mdefine_line|#define IPPP_MAX_RQ_LEN 8 /* max #frames queued for ipppd to read */
 r_static
 r_int
 id|isdn_ppp_set_compressor

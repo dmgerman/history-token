@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_tty.c,v 1.94.6.9 2001/11/06 20:58:29 kai Exp $&n; *&n; * Linux ISDN subsystem, tty functions and AT-command emulator (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* Linux ISDN subsystem, tty functions and AT-command emulator&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 DECL|macro|ISDN_TTY_STAT_DEBUG
 macro_line|#undef ISDN_TTY_STAT_DEBUG
 macro_line|#include &lt;linux/config.h&gt;
