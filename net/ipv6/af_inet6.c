@@ -153,6 +153,22 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|if6_proc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|if6_proc_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SYSCTL
 r_extern
@@ -3275,6 +3291,17 @@ id|anycast6_get_info
 r_goto
 id|proc_anycast6_fail
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|if6_proc_init
+c_func
+(paren
+)paren
+)paren
+r_goto
+id|proc_if6_fail
+suffix:semicolon
 macro_line|#endif
 id|ipv6_netdev_notif_init
 c_func
@@ -3342,6 +3369,14 @@ r_return
 l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
+id|proc_if6_fail
+suffix:colon
+id|proc_net_remove
+c_func
+(paren
+l_string|&quot;anycast6&quot;
+)paren
+suffix:semicolon
 id|proc_anycast6_fail
 suffix:colon
 id|ipv6_misc_proc_exit
@@ -3437,6 +3472,11 @@ id|PF_INET6
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
+id|if6_proc_exit
+c_func
+(paren
+)paren
+suffix:semicolon
 id|raw6_proc_exit
 c_func
 (paren
