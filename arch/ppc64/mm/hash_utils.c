@@ -30,6 +30,13 @@ macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 multiline_comment|/*&n; * Note:  pte   --&gt; Linux PTE&n; *        HPTE  --&gt; PowerPC Hashed Page Table Entry&n; *&n; * Execution context:&n; *   htab_initialize is called with the MMU off (of course), but&n; *   the kernel has been copied down to zero so it can directly&n; *   reference global data.  At this point it is very difficult&n; *   to print debug info.&n; *&n; */
+macro_line|#ifdef CONFIG_PMAC_DART
+r_extern
+r_int
+r_int
+id|dart_tablebase
+suffix:semicolon
+macro_line|#endif /* CONFIG_PMAC_DART */
 DECL|variable|htab_data
 id|HTAB
 id|htab_data
@@ -552,6 +559,86 @@ id|i
 dot
 id|size
 suffix:semicolon
+macro_line|#ifdef CONFIG_PMAC_DART
+multiline_comment|/* Do not map the DART space. Fortunately, it will be aligned&n;&t;&t; * in such a way that it will not cross two lmb regions and will&n;&t;&t; * fit within a single 16Mb page.&n;&t;&t; * The DART space is assumed to be a full 16Mb region even if we&n;&t;&t; * only use 2Mb of that space. We will use more of it later for&n;&t;&t; * AGP GART. We have to use a full 16Mb large page.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|dart_tablebase
+op_ne
+l_int|0
+op_logical_and
+id|dart_tablebase
+op_ge
+id|base
+op_logical_and
+id|dart_tablebase
+OL
+(paren
+id|base
+op_plus
+id|size
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|base
+op_ne
+id|dart_tablebase
+)paren
+id|create_pte_mapping
+c_func
+(paren
+id|base
+comma
+id|dart_tablebase
+comma
+id|mode_rw
+comma
+id|use_largepages
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|base
+op_plus
+id|size
+)paren
+OG
+(paren
+id|dart_tablebase
+op_plus
+l_int|16
+op_star
+id|MB
+)paren
+)paren
+id|create_pte_mapping
+c_func
+(paren
+id|dart_tablebase
+op_plus
+l_int|16
+op_star
+id|MB
+comma
+id|base
+op_plus
+id|size
+comma
+id|mode_rw
+comma
+id|use_largepages
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PMAC_DART */
 id|create_pte_mapping
 c_func
 (paren

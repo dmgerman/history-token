@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
+macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &quot;pci.h&quot;
 macro_line|#include &quot;pmac.h&quot;
 DECL|macro|DEBUG
@@ -2870,6 +2871,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PMAC_DART
+id|iommu_setup_pmac
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PMAC_DART */
 )brace
 DECL|function|pmac_fixup_phb_resources
 r_static
