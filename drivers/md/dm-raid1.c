@@ -4872,10 +4872,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|mirror_suspend
+DECL|function|mirror_postsuspend
 r_static
 r_void
-id|mirror_suspend
+id|mirror_postsuspend
 c_func
 (paren
 r_struct
@@ -5244,9 +5244,9 @@ op_assign
 id|mirror_end_io
 comma
 dot
-id|suspend
+id|postsuspend
 op_assign
-id|mirror_suspend
+id|mirror_postsuspend
 comma
 dot
 id|resume
