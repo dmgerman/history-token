@@ -213,7 +213,7 @@ comma
 l_int|0x3bc
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * These are for data access.&n; * Control lines accesses are hidden in set_bits() and get_bits().&n; * The exeption is the probe procedure, which is system-dependent.&n; */
+multiline_comment|/*&n; * These are for data access.&n; * Control lines accesses are hidden in set_bits() and get_bits().&n; * The exception is the probe procedure, which is system-dependent.&n; */
 DECL|macro|bpp_outb_p
 mdefine_line|#define bpp_outb_p(data, base)  outb_p((data), (base))
 DECL|macro|bpp_inb
