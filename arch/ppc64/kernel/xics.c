@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -1974,6 +1975,7 @@ id|XICS_IPI
 op_assign
 id|XICS_IPI
 suffix:semicolon
+multiline_comment|/* IPIs are marked SA_INTERRUPT as they must run with irqs disabled */
 id|request_irq
 c_func
 (paren
@@ -1983,7 +1985,7 @@ id|XICS_IRQ_OFFSET
 comma
 id|xics_ipi_action
 comma
-l_int|0
+id|SA_INTERRUPT
 comma
 l_string|&quot;IPI&quot;
 comma
