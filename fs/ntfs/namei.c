@@ -554,8 +554,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|ctx
+)paren
 )paren
 (brace
 id|err
@@ -576,10 +580,8 @@ suffix:semicolon
 id|u32
 id|val_len
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -599,6 +601,15 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
 )paren
 (brace
 id|ntfs_error
@@ -611,6 +622,14 @@ l_string|&quot;namespace counterpart to DOS &quot;
 l_string|&quot;file name. Run chkdsk.&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
 id|err
 op_assign
 op_minus
@@ -1189,6 +1208,9 @@ r_int
 r_int
 id|parent_ino
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
@@ -1262,13 +1284,8 @@ suffix:semicolon
 )brace
 id|try_next
 suffix:colon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-op_logical_neg
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -1288,6 +1305,14 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
 )paren
 )paren
 (brace
@@ -1303,13 +1328,21 @@ c_func
 id|ni
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
 id|ntfs_error
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Inode 0x%lx does not have a file name &quot;
-l_string|&quot;attribute. Run chkdsk.&quot;
+l_string|&quot;Inode 0x%lx does not have a &quot;
+l_string|&quot;file name attribute.  Run chkdsk.&quot;
 comma
 id|vi-&gt;i_ino
 )paren
@@ -1318,8 +1351,7 @@ r_return
 id|ERR_PTR
 c_func
 (paren
-op_minus
-id|ENOENT
+id|err
 )paren
 suffix:semicolon
 )brace

@@ -241,10 +241,8 @@ id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Find the index root attribute in the mft record. */
-r_if
-c_cond
-(paren
-op_logical_neg
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -264,6 +262,24 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
 )paren
 (brace
 id|ntfs_error
@@ -271,8 +287,8 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Index root attribute missing in directory &quot;
-l_string|&quot;inode 0x%lx.&quot;
+l_string|&quot;Index root attribute missing in &quot;
+l_string|&quot;directory inode 0x%lx.&quot;
 comma
 id|dir_ni-&gt;mft_no
 )paren
@@ -282,6 +298,7 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 r_goto
 id|err_out
 suffix:semicolon
@@ -2235,10 +2252,8 @@ id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Find the index root attribute in the mft record. */
-r_if
-c_cond
-(paren
-op_logical_neg
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -2258,6 +2273,24 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
 )paren
 (brace
 id|ntfs_error
@@ -2265,8 +2298,8 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Index root attribute missing in directory &quot;
-l_string|&quot;inode 0x%lx.&quot;
+l_string|&quot;Index root attribute missing in &quot;
+l_string|&quot;directory inode 0x%lx.&quot;
 comma
 id|dir_ni-&gt;mft_no
 )paren
@@ -2276,6 +2309,7 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 r_goto
 id|err_out
 suffix:semicolon
@@ -4263,13 +4297,8 @@ id|s64
 id|fpos
 suffix:semicolon
 multiline_comment|/* Find the index root attribute in the mft record. */
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-op_logical_neg
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -4289,6 +4318,14 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
 )paren
 )paren
 (brace

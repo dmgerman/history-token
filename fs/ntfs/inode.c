@@ -1277,7 +1277,7 @@ r_return
 id|ni
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_is_extended_system_file - check if a file is in the $Extend directory&n; * @ctx:&t;initialized attribute search context&n; *&n; * Search all file name attributes in the inode described by the attribute&n; * search context @ctx and check if any of the names are in the $Extend system&n; * directory.&n; *&n; * Return values:&n; *&t;   1: file is in $Extend directory&n; *&t;   0: file is not in $Extend directory&n; *&t;-EIO: file is corrupt&n; */
+multiline_comment|/**&n; * ntfs_is_extended_system_file - check if a file is in the $Extend directory&n; * @ctx:&t;initialized attribute search context&n; *&n; * Search all file name attributes in the inode described by the attribute&n; * search context @ctx and check if any of the names are in the $Extend system&n; * directory.&n; *&n; * Return values:&n; *&t;   1: file is in $Extend directory&n; *&t;   0: file is not in $Extend directory&n; *    -errno: failed to determine if the file is in the $Extend directory&n; */
 DECL|function|ntfs_is_extended_system_file
 r_static
 r_int
@@ -1291,6 +1291,8 @@ id|ctx
 (brace
 r_int
 id|nr_links
+comma
+id|err
 suffix:semicolon
 multiline_comment|/* Restart search. */
 id|ntfs_attr_reinit_search_ctx
@@ -1312,6 +1314,10 @@ multiline_comment|/* Loop through all hard links. */
 r_while
 c_loop
 (paren
+op_logical_neg
+(paren
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -1330,6 +1336,7 @@ comma
 l_int|0
 comma
 id|ctx
+)paren
 )paren
 )paren
 (brace
@@ -1532,7 +1539,26 @@ multiline_comment|/* YES, it&squot;s an extended system file. */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
+id|err
+op_ne
+op_minus
+id|ENOENT
+)paren
+)paren
+r_return
+id|err
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
 id|nr_links
+)paren
 )paren
 (brace
 id|ntfs_error
@@ -1803,10 +1829,8 @@ op_or_assign
 id|S_IFREG
 suffix:semicolon
 multiline_comment|/*&n;&t; * Find the standard information attribute in the mft record. At this&n;&t; * stage we haven&squot;t setup the attribute list stuff yet, so this could&n;&t; * in fact fail if the standard information is in an extent record, but&n;&t; * I don&squot;t think this actually ever happens.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -1826,18 +1850,37 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * TODO: We should be performing a hot fix here (if the recover&n;&t;&t; * mount option is set) by creating a new attribute.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * TODO: We should be performing a hot fix here (if the&n;&t;&t;&t; * recover mount option is set) by creating a new&n;&t;&t;&t; * attribute.&n;&t;&t;&t; */
 id|ntfs_error
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;$STANDARD_INFORMATION attribute is &quot;
-l_string|&quot;missing.&quot;
+l_string|&quot;$STANDARD_INFORMATION attribute &quot;
+l_string|&quot;is missing.&quot;
 )paren
 suffix:semicolon
+)brace
 r_goto
 id|unm_err_out
 suffix:semicolon
@@ -1899,9 +1942,8 @@ c_func
 id|ctx
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -1921,7 +1963,42 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+op_ne
+op_minus
+id|ENOENT
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Failed to lookup attribute list &quot;
+l_string|&quot;attribute. You should run chkdsk.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|unm_err_out
+suffix:semicolon
+)brace
+)brace
+r_else
+multiline_comment|/* if (!err) */
 (brace
 r_if
 c_cond
@@ -2266,10 +2343,8 @@ c_func
 id|ctx
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -2289,19 +2364,39 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
 )paren
 (brace
-singleline_comment|// FIXME: File is corrupt! Hot-fix with empty index
-singleline_comment|// root attribute if recovery option is set.
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
+(brace
+singleline_comment|// FIXME: File is corrupt! Hot-fix with empty
+singleline_comment|// index root attribute if recovery option is
+singleline_comment|// set.
 id|ntfs_error
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;$INDEX_ROOT attribute is &quot;
-l_string|&quot;missing.&quot;
+l_string|&quot;$INDEX_ROOT attribute &quot;
+l_string|&quot;is missing.&quot;
 )paren
 suffix:semicolon
+)brace
 r_goto
 id|unm_err_out
 suffix:semicolon
@@ -2746,10 +2841,8 @@ c_func
 id|ctx
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -2769,16 +2862,45 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
 id|ntfs_error
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;$INDEX_ALLOCATION attribute &quot;
-l_string|&quot;is not present but $INDEX_ROOT &quot;
-l_string|&quot;indicated it is.&quot;
+l_string|&quot;$INDEX_ALLOCATION &quot;
+l_string|&quot;attribute is not present but &quot;
+l_string|&quot;$INDEX_ROOT indicated it &quot;
+l_string|&quot;is.&quot;
+)paren
+suffix:semicolon
+r_else
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Failed to lookup &quot;
+l_string|&quot;$INDEX_ALLOCATION &quot;
+l_string|&quot;attribute.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3132,10 +3254,8 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Find first extent of the unnamed data attribute. */
-r_if
-c_cond
-(paren
-op_logical_neg
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -3155,6 +3275,15 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
 )paren
 (brace
 id|vi-&gt;i_size
@@ -3163,8 +3292,30 @@ id|ni-&gt;initialized_size
 op_assign
 id|ni-&gt;allocated_size
 op_assign
-l_int|0LL
+l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_ne
+op_minus
+id|ENOENT
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Failed to lookup $DATA &quot;
+l_string|&quot;attribute.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|unm_err_out
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t;&t; * FILE_Secure does not have an unnamed $DATA&n;&t;&t;&t; * attribute, so we special case it here.&n;&t;&t;&t; */
 r_if
 c_cond
@@ -3837,10 +3988,8 @@ id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Find the attribute. */
-r_if
-c_cond
-(paren
-op_logical_neg
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -3859,6 +4008,15 @@ comma
 l_int|0
 comma
 id|ctx
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
 )paren
 )paren
 r_goto
@@ -4673,10 +4831,8 @@ id|unm_err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Find the index root attribute. */
-r_if
-c_cond
-(paren
-op_logical_neg
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -4696,14 +4852,32 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
 id|ntfs_error
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;$INDEX_ROOT attribute is missing.&quot;
+l_string|&quot;$INDEX_ROOT attribute is &quot;
+l_string|&quot;missing.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -5088,10 +5262,8 @@ c_func
 id|ctx
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -5111,15 +5283,43 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
 id|ntfs_error
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;$INDEX_ALLOCATION attribute is not &quot;
-l_string|&quot;present but $INDEX_ROOT indicated it is.&quot;
+l_string|&quot;$INDEX_ALLOCATION attribute is &quot;
+l_string|&quot;not present but $INDEX_ROOT &quot;
+l_string|&quot;indicated it is.&quot;
+)paren
+suffix:semicolon
+r_else
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Failed to lookup &quot;
+l_string|&quot;$INDEX_ALLOCATION attribute.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -5893,9 +6093,8 @@ id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/* Find the attribute list attribute if present. */
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -5915,7 +6114,42 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+op_ne
+op_minus
+id|ENOENT
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Failed to lookup attribute list &quot;
+l_string|&quot;attribute. You should run chkdsk.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|put_err_out
+suffix:semicolon
+)brace
+)brace
+r_else
+multiline_comment|/* if (!err) */
 (brace
 id|ATTR_LIST_ENTRY
 op_star
@@ -6453,6 +6687,10 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+op_logical_neg
+(paren
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -6471,6 +6709,7 @@ comma
 l_int|0
 comma
 id|ctx
+)paren
 )paren
 )paren
 (brace
@@ -6815,6 +7054,28 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|err
+op_ne
+op_minus
+id|ENOENT
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Failed to lookup $MFT/$DATA attribute extent. &quot;
+l_string|&quot;$MFT is corrupt. Run chkdsk.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|put_err_out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 op_logical_neg
 id|attr
 )paren
@@ -6849,9 +7110,9 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Failed to load the complete runlist &quot;
-l_string|&quot;for $MFT/$DATA. Driver bug or &quot;
-l_string|&quot;corrupt $MFT. Run chkdsk.&quot;
+l_string|&quot;Failed to load the complete runlist for &quot;
+l_string|&quot;$MFT/$DATA. Driver bug or corrupt $MFT. &quot;
+l_string|&quot;Run chkdsk.&quot;
 )paren
 suffix:semicolon
 id|ntfs_debug
@@ -8091,13 +8352,8 @@ r_goto
 id|unm_err_out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-op_logical_neg
+id|err
+op_assign
 id|ntfs_attr_lookup
 c_func
 (paren
@@ -8117,6 +8373,14 @@ l_int|0
 comma
 id|ctx
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
 )paren
 )paren
 (brace
@@ -8125,11 +8389,6 @@ c_func
 (paren
 id|ctx
 )paren
-suffix:semicolon
-id|err
-op_assign
-op_minus
-id|ENOENT
 suffix:semicolon
 r_goto
 id|unm_err_out
