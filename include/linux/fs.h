@@ -788,6 +788,34 @@ id|spinlock_t
 id|tree_lock
 suffix:semicolon
 multiline_comment|/* and spinlock protecting it */
+DECL|member|i_mmap_writable
+r_int
+r_int
+id|i_mmap_writable
+suffix:semicolon
+multiline_comment|/* count VM_SHARED mappings */
+DECL|member|i_mmap
+r_struct
+id|prio_tree_root
+id|i_mmap
+suffix:semicolon
+multiline_comment|/* tree of private mappings */
+DECL|member|i_mmap_nonlinear
+r_struct
+id|list_head
+id|i_mmap_nonlinear
+suffix:semicolon
+multiline_comment|/*list VM_NONLINEAR mappings */
+DECL|member|i_mmap_lock
+id|spinlock_t
+id|i_mmap_lock
+suffix:semicolon
+multiline_comment|/* protect tree, count, list */
+DECL|member|truncate_count
+id|atomic_t
+id|truncate_count
+suffix:semicolon
+multiline_comment|/* Cover race condition with truncate */
 DECL|member|nrpages
 r_int
 r_int
@@ -806,34 +834,6 @@ op_star
 id|a_ops
 suffix:semicolon
 multiline_comment|/* methods */
-DECL|member|i_mmap
-r_struct
-id|prio_tree_root
-id|i_mmap
-suffix:semicolon
-multiline_comment|/* tree of private mappings */
-DECL|member|i_mmap_writable
-r_int
-r_int
-id|i_mmap_writable
-suffix:semicolon
-multiline_comment|/* count VM_SHARED mappings */
-DECL|member|i_mmap_nonlinear
-r_struct
-id|list_head
-id|i_mmap_nonlinear
-suffix:semicolon
-multiline_comment|/*list VM_NONLINEAR mappings */
-DECL|member|i_mmap_lock
-id|spinlock_t
-id|i_mmap_lock
-suffix:semicolon
-multiline_comment|/* protect tree, count, list */
-DECL|member|truncate_count
-id|atomic_t
-id|truncate_count
-suffix:semicolon
-multiline_comment|/* Cover race condition with truncate */
 DECL|member|flags
 r_int
 r_int
@@ -1137,6 +1137,11 @@ r_int
 r_int
 id|i_bytes
 suffix:semicolon
+DECL|member|i_sock
+r_int
+r_char
+id|i_sock
+suffix:semicolon
 DECL|member|i_lock
 id|spinlock_t
 id|i_lock
@@ -1227,6 +1232,10 @@ DECL|member|i_cindex
 r_int
 id|i_cindex
 suffix:semicolon
+DECL|member|i_generation
+id|__u32
+id|i_generation
+suffix:semicolon
 DECL|member|i_dnotify_mask
 r_int
 r_int
@@ -1256,11 +1265,6 @@ r_int
 r_int
 id|i_flags
 suffix:semicolon
-DECL|member|i_sock
-r_int
-r_char
-id|i_sock
-suffix:semicolon
 DECL|member|i_writecount
 id|atomic_t
 id|i_writecount
@@ -1269,10 +1273,6 @@ DECL|member|i_security
 r_void
 op_star
 id|i_security
-suffix:semicolon
-DECL|member|i_generation
-id|__u32
-id|i_generation
 suffix:semicolon
 r_union
 (brace
