@@ -21429,10 +21429,12 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;&amp;flushsm: 0x%p  tic_cnt: %d&t; tic_tcnt: %d  &bslash;n&quot;
+l_string|&quot;&amp;flushsm: 0x%p  flushcnt: %d tic_cnt: %d&t; tic_tcnt: %d  &bslash;n&quot;
 comma
 op_amp
 id|log-&gt;l_flushsema
+comma
+id|log-&gt;l_flushcnt
 comma
 id|log-&gt;l_ticket_cnt
 comma
