@@ -944,7 +944,7 @@ l_int|1
 suffix:semicolon
 id|ah-&gt;nexthdr
 op_assign
-id|IPPROTO_IP
+id|IPPROTO_IPIP
 suffix:semicolon
 )brace
 r_else
