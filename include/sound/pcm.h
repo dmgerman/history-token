@@ -4080,8 +4080,6 @@ id|substream
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  Memory&n; */
-DECL|macro|snd_pcm_dma_flags
-mdefine_line|#define snd_pcm_dma_flags(x) ((void *)(unsigned long)(x))
 r_int
 id|snd_pcm_lib_preallocate_free
 c_func
@@ -4111,7 +4109,8 @@ comma
 r_int
 id|type
 comma
-r_void
+r_struct
+id|device
 op_star
 id|data
 comma

@@ -9254,11 +9254,15 @@ id|korg1212-&gt;dma_dev
 suffix:semicolon
 id|korg1212-&gt;dma_dev.type
 op_assign
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 suffix:semicolon
-id|korg1212-&gt;dma_dev.dev.pci
+id|korg1212-&gt;dma_dev.dev
 op_assign
+id|snd_dma_pci_data
+c_func
+(paren
 id|korg1212-&gt;pci
+)paren
 suffix:semicolon
 r_if
 c_cond

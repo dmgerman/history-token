@@ -6864,9 +6864,13 @@ c_func
 (paren
 id|pcm
 comma
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 comma
+id|snd_dma_pci_data
+c_func
+(paren
 id|chip-&gt;pci
+)paren
 comma
 id|rec-&gt;prealloc_size
 comma
@@ -12643,11 +12647,15 @@ id|chip-&gt;dma_dev
 suffix:semicolon
 id|chip-&gt;dma_dev.type
 op_assign
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 suffix:semicolon
-id|chip-&gt;dma_dev.dev.pci
+id|chip-&gt;dma_dev.dev
 op_assign
+id|snd_dma_pci_data
+c_func
+(paren
 id|pci
+)paren
 suffix:semicolon
 multiline_comment|/* allocate buffer descriptor lists */
 multiline_comment|/* the start of each lists must be aligned to 8 bytes */

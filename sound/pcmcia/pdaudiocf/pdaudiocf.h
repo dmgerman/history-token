@@ -3,6 +3,7 @@ macro_line|#ifndef __PDAUDIOCF_H
 DECL|macro|__PDAUDIOCF_H
 mdefine_line|#define __PDAUDIOCF_H
 macro_line|#include &lt;sound/pcm.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;

@@ -5786,7 +5786,7 @@ id|rme32-&gt;spdif_pcm
 comma
 id|SNDRV_DMA_TYPE_CONTINUOUS
 comma
-id|snd_pcm_dma_flags
+id|snd_dma_continuous_data
 c_func
 (paren
 id|GFP_KERNEL
@@ -5902,7 +5902,7 @@ id|rme32-&gt;adat_pcm
 comma
 id|SNDRV_DMA_TYPE_CONTINUOUS
 comma
-id|snd_pcm_dma_flags
+id|snd_dma_continuous_data
 c_func
 (paren
 id|GFP_KERNEL

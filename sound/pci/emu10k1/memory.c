@@ -1134,17 +1134,6 @@ suffix:semicolon
 id|snd_assert
 c_func
 (paren
-id|substream-&gt;dma_device.type
-op_eq
-id|SNDRV_DMA_TYPE_PCI_SG
-comma
-r_return
-l_int|NULL
-)paren
-suffix:semicolon
-id|snd_assert
-c_func
-(paren
 id|runtime-&gt;dma_bytes
 OG
 l_int|0
