@@ -37,7 +37,8 @@ r_int
 id|load_cyc2x
 c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 comma
@@ -55,7 +56,8 @@ r_void
 id|cycx_bootcfg
 c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 )paren
@@ -277,7 +279,8 @@ r_int
 id|cycx_setup
 c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 comma
@@ -477,7 +480,8 @@ r_int
 id|cycx_down
 c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 )paren
@@ -509,7 +513,8 @@ r_void
 id|cycx_inten
 c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 )paren
@@ -536,7 +541,8 @@ r_void
 id|cycx_intr
 c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 )paren
@@ -621,7 +627,8 @@ r_int
 id|cycx_peek
 c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 comma
@@ -688,7 +695,8 @@ r_int
 id|cycx_poke
 c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 comma
@@ -1459,7 +1467,8 @@ r_int
 id|load_cyc2x
 c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 comma
@@ -1999,7 +2008,8 @@ r_void
 id|cycx_bootcfg
 c_func
 (paren
-id|cycxhw_t
+r_struct
+id|cycx_hw
 op_star
 id|hw
 )paren

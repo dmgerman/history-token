@@ -20,10 +20,9 @@ DECL|macro|X25_CHAN_MTU
 mdefine_line|#define X25_CHAN_MTU&t;2048&t;/* unfragmented logical channel MTU */
 multiline_comment|/* Data Structures */
 multiline_comment|/* This is an extension of the &squot;struct net_device&squot; we create for each network&n;   interface to keep the rest of X.25 channel-specific data. */
-DECL|struct|x25_channel
-r_typedef
+DECL|struct|cycx_x25_channel
 r_struct
-id|x25_channel
+id|cycx_x25_channel
 (brace
 multiline_comment|/* This member must be first. */
 DECL|member|slave
@@ -119,9 +118,7 @@ id|net_device_stats
 id|ifstats
 suffix:semicolon
 multiline_comment|/* interface statistics */
-DECL|typedef|x25_channel_t
 )brace
-id|x25_channel_t
 suffix:semicolon
 multiline_comment|/* Function Prototypes */
 multiline_comment|/* WAN link driver entry points. These are called by the WAN router module. */
@@ -449,7 +446,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 )paren
@@ -1301,7 +1299,8 @@ id|wandev
 op_member_access_from_pointer
 r_private
 suffix:semicolon
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 suffix:semicolon
@@ -1343,10 +1342,6 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/* allocate and initialize private data */
-r_if
-c_cond
-(paren
-(paren
 id|chan
 op_assign
 id|kmalloc
@@ -1354,14 +1349,18 @@ c_func
 (paren
 r_sizeof
 (paren
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 )paren
 comma
 id|GFP_KERNEL
 )paren
-)paren
-op_eq
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chan
 )paren
 r_return
 op_minus
@@ -1376,7 +1375,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|x25_channel_t
+op_star
+id|chan
 )paren
 )paren
 suffix:semicolon
@@ -1717,7 +1717,8 @@ c_cond
 id|dev-&gt;priv
 )paren
 (brace
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 op_assign
@@ -1784,7 +1785,8 @@ op_star
 id|dev
 )paren
 (brace
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 op_assign
@@ -1982,7 +1984,8 @@ op_star
 id|dev
 )paren
 (brace
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 op_assign
@@ -2090,7 +2093,8 @@ op_star
 id|dev
 )paren
 (brace
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 op_assign
@@ -2386,7 +2390,8 @@ op_star
 id|dev
 )paren
 (brace
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 op_assign
@@ -2768,7 +2773,8 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 suffix:semicolon
@@ -3137,7 +3143,8 @@ id|dev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 suffix:semicolon
@@ -3384,7 +3391,8 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 suffix:semicolon
@@ -3710,7 +3718,8 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 op_assign
@@ -4938,7 +4947,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 )paren
@@ -5216,7 +5226,8 @@ id|cycx_device
 op_star
 id|card
 comma
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 )paren
@@ -5586,7 +5597,8 @@ id|dev
 op_assign
 id|wandev-&gt;dev
 suffix:semicolon
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 suffix:semicolon
@@ -5599,7 +5611,8 @@ id|dev
 id|chan
 op_assign
 (paren
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 )paren
 id|dev-&gt;priv
@@ -5648,7 +5661,8 @@ id|dev
 op_assign
 id|wandev-&gt;dev
 suffix:semicolon
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 suffix:semicolon
@@ -5661,7 +5675,8 @@ id|dev
 id|chan
 op_assign
 (paren
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 )paren
 id|dev-&gt;priv
@@ -5702,7 +5717,8 @@ op_star
 id|dev
 )paren
 (brace
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 op_assign
@@ -5801,7 +5817,8 @@ op_star
 id|dev
 )paren
 (brace
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 op_assign
@@ -5870,7 +5887,8 @@ op_star
 )paren
 id|d
 suffix:semicolon
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 op_assign
@@ -5918,7 +5936,8 @@ id|u8
 id|state
 )paren
 (brace
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 op_assign
@@ -6145,7 +6164,8 @@ op_star
 id|skb
 )paren
 (brace
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 op_assign
@@ -6587,7 +6607,8 @@ op_star
 id|dev
 )paren
 (brace
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 op_assign
@@ -6952,7 +6973,8 @@ c_loop
 id|dev
 )paren
 (brace
-id|x25_channel_t
+r_struct
+id|cycx_x25_channel
 op_star
 id|chan
 op_assign
