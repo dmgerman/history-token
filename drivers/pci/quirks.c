@@ -3112,6 +3112,10 @@ id|dev-&gt;subsystem_device
 )paren
 (brace
 r_case
+l_int|0x184b
+suffix:colon
+multiline_comment|/* W1N notebook */
+r_case
 l_int|0x186a
 suffix:colon
 multiline_comment|/* M6Ne notebook */
