@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+r_extern
 r_struct
 id|vfsmount
 op_star
@@ -34,6 +35,7 @@ op_star
 id|data
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|do_remount_sb
 c_func
@@ -51,6 +53,7 @@ op_star
 id|data
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|__init
 id|init_rootfs
@@ -79,14 +82,6 @@ r_static
 id|kmem_cache_t
 op_star
 id|mnt_cache
-suffix:semicolon
-r_extern
-r_void
-id|init_rootfs
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 DECL|function|hash
 r_static

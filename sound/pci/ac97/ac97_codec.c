@@ -1419,7 +1419,6 @@ c_func
 (paren
 id|reg
 comma
-op_amp
 id|ac97-&gt;reg_accessed
 )paren
 suffix:semicolon
@@ -14195,7 +14194,6 @@ c_func
 (paren
 id|i
 comma
-op_amp
 id|ac97-&gt;reg_accessed
 )paren
 )paren

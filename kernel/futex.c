@@ -1604,10 +1604,6 @@ id|kill_sb
 suffix:colon
 id|kill_anon_super
 comma
-id|fs_flags
-suffix:colon
-id|FS_NOMOUNT
-comma
 )brace
 suffix:semicolon
 DECL|function|init
