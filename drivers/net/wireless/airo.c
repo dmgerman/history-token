@@ -5624,7 +5624,7 @@ r_if
 c_cond
 (paren
 (paren
-id|u32
+id|s32
 )paren
 id|seq
 OL
