@@ -143,6 +143,19 @@ op_eq
 l_int|0
 )paren
 (brace
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;pmc[%d]=0x%lx has active pmc13.ta cleared, clearing ibr&bslash;n&quot;
+comma
+id|cnum
+comma
+op_star
+id|val
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* don&squot;t mix debug with perfmon */
 r_if
 c_cond
@@ -213,6 +226,19 @@ op_eq
 l_int|0
 )paren
 (brace
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;pmc[%d]=0x%lx has active pmc11.pt cleared, clearing dbr&bslash;n&quot;
+comma
+id|cnum
+comma
+op_star
+id|val
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* don&squot;t mix debug with perfmon */
 r_if
 c_cond
