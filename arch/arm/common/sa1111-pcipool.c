@@ -106,12 +106,16 @@ op_star
 id|pool
 )paren
 (brace
-r_const
 r_struct
 id|pci_dev
 op_star
 id|pdev
 op_assign
+(paren
+r_struct
+id|pci_dev
+op_star
+)paren
 id|pool-&gt;dev
 suffix:semicolon
 r_if

@@ -59,7 +59,7 @@ mdefine_line|#define CR_IT&t;(1 &lt;&lt; 18)
 DECL|macro|CR_ST
 mdefine_line|#define CR_ST&t;(1 &lt;&lt; 19)
 DECL|macro|CR_FI
-mdefine_line|#define CR_FI&t;(1 &lt;&lt; 21)
+mdefine_line|#define CR_FI&t;(1 &lt;&lt; 21)&t;/* Fast interrupt (lower latency mode)&t;*/
 DECL|macro|CR_U
 mdefine_line|#define CR_U&t;(1 &lt;&lt; 22)&t;/* Unaligned access operation&t;&t;*/
 DECL|macro|CR_XP

@@ -2184,6 +2184,8 @@ c_func
 id|drive-&gt;queue
 comma
 id|IDE_MAX_TAG
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * check auto-poll support&n;&t; */

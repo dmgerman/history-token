@@ -3574,6 +3574,7 @@ id|proc_modules_operations
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_PROC_KCORE
 id|proc_root_kcore
 op_assign
 id|create_proc_entry
@@ -3609,6 +3610,7 @@ op_plus
 id|PAGE_SIZE
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren

@@ -14,12 +14,15 @@ macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/hardware/amba.h&gt;
 macro_line|#include &lt;asm/hardware/amba_kmi.h&gt;
+macro_line|#include &lt;asm/arch/lm.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 multiline_comment|/* &n; * All IO addresses are mapped onto VA 0xFFFx.xxxx, where x.xxxx&n; * is the (PA &gt;&gt; 12).&n; *&n; * Setup a VA for the Integrator interrupt controller (for header #0,&n; * just for now).&n; */
 DECL|macro|VA_IC_BASE
 mdefine_line|#define VA_IC_BASE&t;IO_ADDRESS(INTEGRATOR_IC_BASE) 
+DECL|macro|VA_SC_BASE
+mdefine_line|#define VA_SC_BASE&t;IO_ADDRESS(INTEGRATOR_SC_BASE)
 DECL|macro|VA_CMIC_BASE
 mdefine_line|#define VA_CMIC_BASE&t;IO_ADDRESS(INTEGRATOR_HDR_BASE) + INTEGRATOR_HDR_IC_OFFSET
 multiline_comment|/*&n; * Logical      Physical&n; * e8000000&t;40000000&t;PCI memory&t;&t;PHYS_PCI_MEM_BASE&t;(max 512M)&n; * ec000000&t;61000000&t;PCI config space&t;PHYS_PCI_CONFIG_BASE&t;(max 16M)&n; * ed000000&t;62000000&t;PCI V3 regs&t;&t;PHYS_PCI_V3_BASE&t;(max 64k)&n; * ee000000&t;60000000&t;PCI IO&t;&t;&t;PHYS_PCI_IO_BASE&t;(max 16M)&n; * ef000000&t;&t;&t;Cache flush&n; * f1000000&t;10000000&t;Core module registers&n; * f1100000&t;11000000&t;System controller registers&n; * f1200000&t;12000000&t;EBI registers&n; * f1300000&t;13000000&t;Counter/Timer&n; * f1400000&t;14000000&t;Interrupt controller&n; * f1500000&t;15000000&t;RTC&n; * f1600000&t;16000000&t;UART 0&n; * f1700000&t;17000000&t;UART 1&n; * f1a00000&t;1a000000&t;Debug LEDs&n; * f1b00000&t;1b000000&t;GPIO&n; */
@@ -238,7 +241,7 @@ id|integrator_io_desc
 suffix:semicolon
 )brace
 DECL|macro|ALLPCI
-mdefine_line|#define ALLPCI ( (1 &lt;&lt; IRQ_PCIINT0) | (1 &lt;&lt; IRQ_PCIINT1) | (1 &lt;&lt; IRQ_PCIINT2) | (1 &lt;&lt; IRQ_PCIINT3) ) 
+mdefine_line|#define ALLPCI ( (1 &lt;&lt; IRQ_PCIINT0) | (1 &lt;&lt; IRQ_PCIINT1) | (1 &lt;&lt; IRQ_PCIINT2) | (1 &lt;&lt; IRQ_PCIINT3) )
 DECL|function|sc_mask_irq
 r_static
 r_void
@@ -562,6 +565,10 @@ r_void
 )paren
 (brace
 r_int
+r_int
+id|sc_dec
+suffix:semicolon
+r_int
 id|i
 suffix:semicolon
 r_for
@@ -600,6 +607,124 @@ id|d
 comma
 op_amp
 id|iomem_resource
+)paren
+suffix:semicolon
+)brace
+id|sc_dec
+op_assign
+id|readl
+c_func
+(paren
+id|VA_SC_BASE
+op_plus
+id|INTEGRATOR_SC_DEC_OFFSET
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|4
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_struct
+id|lm_device
+op_star
+id|lmdev
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|sc_dec
+op_amp
+(paren
+l_int|16
+op_lshift
+id|i
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
+id|lmdev
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|lm_device
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|lmdev
+)paren
+r_continue
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|lmdev
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|lm_device
+)paren
+)paren
+suffix:semicolon
+id|lmdev-&gt;resource.start
+op_assign
+l_int|0xc0000000
+op_plus
+l_int|0x10000000
+op_star
+id|i
+suffix:semicolon
+id|lmdev-&gt;resource.end
+op_assign
+id|lmdev-&gt;resource.start
+op_plus
+l_int|0x0fffffff
+suffix:semicolon
+id|lmdev-&gt;resource.flags
+op_assign
+id|IORESOURCE_MEM
+suffix:semicolon
+id|lmdev-&gt;irq
+op_assign
+id|IRQ_EXPINT0
+op_plus
+id|i
+suffix:semicolon
+id|lmdev-&gt;id
+op_assign
+id|i
+suffix:semicolon
+id|lm_device_register
+c_func
+(paren
+id|lmdev
 )paren
 suffix:semicolon
 )brace

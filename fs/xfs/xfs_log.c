@@ -1404,7 +1404,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_log_force
+id|xs_log_force
 )paren
 suffix:semicolon
 r_if
@@ -1775,7 +1775,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_try_logspace
+id|xs_try_logspace
 )paren
 suffix:semicolon
 r_if
@@ -5221,7 +5221,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_log_writes
+id|xs_log_writes
 )paren
 suffix:semicolon
 id|ASSERT
@@ -5453,7 +5453,7 @@ suffix:semicolon
 id|XFS_STATS_ADD
 c_func
 (paren
-id|xfsstats.xs_log_blocks
+id|xs_log_blocks
 comma
 id|BTOBB
 c_func
@@ -8378,7 +8378,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_log_noiclogs
+id|xs_log_noiclogs
 )paren
 suffix:semicolon
 multiline_comment|/* Ensure that log writes happen */
@@ -8731,7 +8731,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_sleep_logspace
+id|xs_sleep_logspace
 )paren
 suffix:semicolon
 id|sv_wait
@@ -8854,7 +8854,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_sleep_logspace
+id|xs_sleep_logspace
 )paren
 suffix:semicolon
 id|sv_wait
@@ -9304,7 +9304,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_sleep_logspace
+id|xs_sleep_logspace
 )paren
 suffix:semicolon
 id|sv_wait
@@ -9434,7 +9434,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_sleep_logspace
+id|xs_sleep_logspace
 )paren
 suffix:semicolon
 id|sv_wait
@@ -10643,7 +10643,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_log_force_sleep
+id|xs_log_force_sleep
 )paren
 suffix:semicolon
 id|sv_wait
@@ -10847,7 +10847,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_log_force_sleep
+id|xs_log_force_sleep
 )paren
 suffix:semicolon
 id|sv_wait
@@ -10973,7 +10973,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_log_force_sleep
+id|xs_log_force_sleep
 )paren
 suffix:semicolon
 id|sv_wait
@@ -11173,7 +11173,7 @@ c_func
 (paren
 id|NBPP
 comma
-l_int|0
+id|KM_SLEEP
 )paren
 suffix:semicolon
 id|s
@@ -12327,7 +12327,7 @@ r_else
 (brace
 id|idx
 op_assign
-id|BTOBB
+id|BTOBBT
 c_func
 (paren
 (paren
@@ -12345,7 +12345,7 @@ r_if
 c_cond
 (paren
 id|idx
-OG
+op_ge
 (paren
 id|XLOG_HEADER_CYCLE_SIZE
 op_div
@@ -12481,7 +12481,7 @@ r_else
 (brace
 id|idx
 op_assign
-id|BTOBB
+id|BTOBBT
 c_func
 (paren
 (paren
@@ -12500,7 +12500,7 @@ r_if
 c_cond
 (paren
 id|idx
-OG
+op_ge
 (paren
 id|XLOG_HEADER_CYCLE_SIZE
 op_div

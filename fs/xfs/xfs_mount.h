@@ -235,13 +235,13 @@ id|xfs_send_namesp_t
 id|dm_eventtype_t
 comma
 r_struct
-id|bhv_desc
+id|vnode
 op_star
 comma
 id|dm_right_t
 comma
 r_struct
-id|bhv_desc
+id|vnode
 op_star
 comma
 id|dm_right_t
@@ -1452,7 +1452,7 @@ id|__uint64_t
 id|m_resblks_avail
 suffix:semicolon
 multiline_comment|/* available reserved blocks */
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 DECL|member|m_inoadd
 id|xfs_ino_t
 id|m_inoadd
@@ -1591,10 +1591,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Flags for m_flags.&n; */
 DECL|macro|XFS_MOUNT_WSYNC
 mdefine_line|#define&t;XFS_MOUNT_WSYNC&t;&t;0x00000001&t;/* for nfs - all metadata ops&n;&t;&t;&t;&t;&t;&t;   must be synchronous except&n;&t;&t;&t;&t;&t;&t;   for space allocations */
-macro_line|#if XFS_BIG_FILESYSTEMS
 DECL|macro|XFS_MOUNT_INO64
 mdefine_line|#define&t;XFS_MOUNT_INO64&t;&t;0x00000002
-macro_line|#endif
 multiline_comment|/* 0x00000004&t;-- currently unused */
 multiline_comment|/* 0x00000008&t;-- currently unused */
 DECL|macro|XFS_MOUNT_FS_SHUTDOWN
@@ -1616,12 +1614,14 @@ mdefine_line|#define XFS_MOUNT_DFLT_IOSIZE&t;0x00001000&t;/* set default i/o siz
 DECL|macro|XFS_MOUNT_OSYNCISOSYNC
 mdefine_line|#define XFS_MOUNT_OSYNCISOSYNC&t;0x00002000&t;/* o_sync is REALLY o_sync */
 multiline_comment|/* osyncisdsync is now default*/
-DECL|macro|XFS_MOUNT_NOUUID
-mdefine_line|#define XFS_MOUNT_NOUUID&t;0x00004000&t;/* ignore uuid during mount */
 DECL|macro|XFS_MOUNT_32BITINODES
-mdefine_line|#define XFS_MOUNT_32BITINODES&t;0x00008000&t;/* do not create inodes above&n;&t;&t;&t;&t;&t;&t; * 32 bits in size */
+mdefine_line|#define XFS_MOUNT_32BITINODES&t;0x00004000&t;/* do not create inodes above&n;&t;&t;&t;&t;&t;&t; * 32 bits in size */
+DECL|macro|XFS_MOUNT_32BITINOOPT
+mdefine_line|#define XFS_MOUNT_32BITINOOPT&t;0x00008000&t;/* saved mount option state */
+DECL|macro|XFS_MOUNT_NOUUID
+mdefine_line|#define XFS_MOUNT_NOUUID&t;0x00010000&t;/* ignore uuid during mount */
 DECL|macro|XFS_MOUNT_NOLOGFLUSH
-mdefine_line|#define XFS_MOUNT_NOLOGFLUSH&t;0x00010000
+mdefine_line|#define XFS_MOUNT_NOLOGFLUSH&t;0x00020000
 multiline_comment|/*&n; * Default minimum read and write sizes.&n; */
 DECL|macro|XFS_READIO_LOG_LARGE
 mdefine_line|#define XFS_READIO_LOG_LARGE&t;16
