@@ -138,6 +138,21 @@ op_or
 id|IPS_SRC_NAT
 )paren
 comma
+multiline_comment|/* Connection needs TCP sequence adjusted. */
+DECL|enumerator|IPS_SEQ_ADJUST_BIT
+id|IPS_SEQ_ADJUST_BIT
+op_assign
+l_int|6
+comma
+DECL|enumerator|IPS_SEQ_ADJUST
+id|IPS_SEQ_ADJUST
+op_assign
+(paren
+l_int|1
+op_lshift
+id|IPS_SEQ_ADJUST_BIT
+)paren
+comma
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__

@@ -679,6 +679,23 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rep_len
+op_ne
+id|match_len
+)paren
+(brace
+id|set_bit
+c_func
+(paren
+id|IPS_SEQ_ADJUST_BIT
+comma
+op_amp
+id|ct-&gt;status
+)paren
+suffix:semicolon
 id|adjust_tcp_sequence
 c_func
 (paren
@@ -703,7 +720,7 @@ comma
 id|ctinfo
 )paren
 suffix:semicolon
-multiline_comment|/* Tell connection tracking about seq change, to expand window */
+multiline_comment|/* Tell TCP window tracking about seq change */
 id|ip_conntrack_tcp_update
 c_func
 (paren
@@ -719,6 +736,7 @@ id|ctinfo
 )paren
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|1
 suffix:semicolon
@@ -1508,25 +1526,6 @@ id|ct-&gt;nat.info.seq
 op_logical_neg
 id|dir
 )braket
-suffix:semicolon
-multiline_comment|/* No adjustments to make?  Very common case. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|this_way-&gt;offset_before
-op_logical_and
-op_logical_neg
-id|this_way-&gt;offset_after
-op_logical_and
-op_logical_neg
-id|other_way-&gt;offset_before
-op_logical_and
-op_logical_neg
-id|other_way-&gt;offset_after
-)paren
-r_return
-l_int|1
 suffix:semicolon
 r_if
 c_cond
