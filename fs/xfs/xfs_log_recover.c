@@ -11002,14 +11002,6 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|ip-&gt;i_d.di_mode
-op_ne
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/* setup for the next pass */
 id|agino
 op_assign
@@ -11032,7 +11024,23 @@ id|ip-&gt;i_d.di_dmevmask
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * Drop our reference to the&n;&t;&t;&t;&t;&t; * inode.  If there are no&n;&t;&t;&t;&t;&t; * other references, this will&n;&t;&t;&t;&t;&t; * send the inode to&n;&t;&t;&t;&t;&t; * xfs_inactive() which will&n;&t;&t;&t;&t;&t; * truncate the file and free&n;&t;&t;&t;&t;&t; * the inode.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * If this is a new inode, handle&n;&t;&t;&t;&t;&t; * it specially.  Otherwise,&n;&t;&t;&t;&t;&t; * just drop our reference to the&n;&t;&t;&t;&t;&t; * inode.  If there are no&n;&t;&t;&t;&t;&t; * other references, this will&n;&t;&t;&t;&t;&t; * send the inode to&n;&t;&t;&t;&t;&t; * xfs_inactive() which will&n;&t;&t;&t;&t;&t; * truncate the file and free&n;&t;&t;&t;&t;&t; * the inode.&n;&t;&t;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|ip-&gt;i_d.di_mode
+op_eq
+l_int|0
+)paren
+id|xfs_iput_new
+c_func
+(paren
+id|ip
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_else
 id|VN_RELE
 c_func
 (paren
