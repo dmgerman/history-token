@@ -31,17 +31,6 @@ r_int
 id|vrows
 suffix:semicolon
 multiline_comment|/* number of virtual rows */
-DECL|member|cursor_x
-r_int
-r_int
-id|cursor_x
-suffix:semicolon
-multiline_comment|/* current cursor position */
-DECL|member|cursor_y
-r_int
-r_int
-id|cursor_y
-suffix:semicolon
 DECL|member|fontname
 r_char
 id|fontname
@@ -70,14 +59,6 @@ r_int
 id|yscroll
 suffix:semicolon
 multiline_comment|/* Hardware scrolling */
-DECL|member|fgshift
-DECL|member|bgshift
-r_int
-r_char
-id|fgshift
-comma
-id|bgshift
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* drivers/video/console/fbcon.c */
@@ -103,22 +84,22 @@ suffix:semicolon
 multiline_comment|/*&n;     *  Attribute Decoding&n;     */
 multiline_comment|/* Color */
 DECL|macro|attr_fgcol
-mdefine_line|#define attr_fgcol(p,s)    &bslash;&n;&t;(((s) &gt;&gt; ((p)-&gt;fgshift)) &amp; 0x0f)
+mdefine_line|#define attr_fgcol(fgshift,s)    &bslash;&n;&t;(((s) &gt;&gt; (fgshift)) &amp; 0x0f)
 DECL|macro|attr_bgcol
-mdefine_line|#define attr_bgcol(p,s)    &bslash;&n;&t;(((s) &gt;&gt; ((p)-&gt;bgshift)) &amp; 0x0f)
+mdefine_line|#define attr_bgcol(bgshift,s)    &bslash;&n;&t;(((s) &gt;&gt; (bgshift)) &amp; 0x0f)
 DECL|macro|attr_bgcol_ec
-mdefine_line|#define&t;attr_bgcol_ec(p,conp) &bslash;&n;&t;((conp) ? (((conp)-&gt;vc_video_erase_char &gt;&gt; ((p)-&gt;bgshift)) &amp; 0x0f) : 0)
+mdefine_line|#define&t;attr_bgcol_ec(bgshift,vc) &bslash;&n;&t;((vc) ? (((vc)-&gt;vc_video_erase_char &gt;&gt; (bgshift)) &amp; 0x0f) : 0)
 DECL|macro|attr_fgcol_ec
-mdefine_line|#define attr_fgcol_ec(p,vc) &bslash;&n;&t;((vc) ? (((vc)-&gt;vc_video_erase_char &gt;&gt; ((p)-&gt;fgshift)) &amp; 0x0f) : 0)
+mdefine_line|#define attr_fgcol_ec(fgshift,vc) &bslash;&n;&t;((vc) ? (((vc)-&gt;vc_video_erase_char &gt;&gt; (fgshift)) &amp; 0x0f) : 0)
 multiline_comment|/* Monochrome */
 DECL|macro|attr_bold
-mdefine_line|#define attr_bold(p,s) &bslash;&n;&t;((s) &amp; 0x200)
+mdefine_line|#define attr_bold(s) &bslash;&n;&t;((s) &amp; 0x200)
 DECL|macro|attr_reverse
-mdefine_line|#define attr_reverse(p,s) &bslash;&n;&t;(((s) &amp; 0x800) ^ ((p)-&gt;inverse ? 0x800 : 0))
+mdefine_line|#define attr_reverse(s, inverse) &bslash;&n;&t;(((s) &amp; 0x800) ^ (inverse ? 0x800 : 0))
 DECL|macro|attr_underline
-mdefine_line|#define attr_underline(p,s) &bslash;&n;&t;((s) &amp; 0x400)
+mdefine_line|#define attr_underline(s) &bslash;&n;&t;((s) &amp; 0x400)
 DECL|macro|attr_blink
-mdefine_line|#define attr_blink(p,s) &bslash;&n;&t;((s) &amp; 0x8000)
+mdefine_line|#define attr_blink(s) &bslash;&n;&t;((s) &amp; 0x8000)
 multiline_comment|/*&n;     *  Scroll Method&n;     */
 multiline_comment|/* Internal flags */
 DECL|macro|__SCROLL_YPAN
