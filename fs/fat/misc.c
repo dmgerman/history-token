@@ -1786,13 +1786,6 @@ op_star
 id|i_pos
 )paren
 (brace
-r_struct
-id|super_block
-op_star
-id|sb
-op_assign
-id|dir-&gt;i_sb
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1813,37 +1806,6 @@ op_ge
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_star
-id|pos
-op_ge
-id|FAT_MAX_DIR_SIZE
-)paren
-(brace
-id|fat_fs_panic
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;Directory %llu: &quot;
-l_string|&quot;exceeded the maximum size of directory&quot;
-comma
-id|MSDOS_I
-c_func
-(paren
-id|dir
-)paren
-op_member_access_from_pointer
-id|i_pos
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 multiline_comment|/* free entry or long name entry or volume label */
 r_if
 c_cond
