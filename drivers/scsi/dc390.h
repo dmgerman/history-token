@@ -27,16 +27,6 @@ macro_line|# define USE_NEW_EH
 macro_line|#endif
 r_static
 r_int
-id|DC390_detect
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-id|psht
-)paren
-suffix:semicolon
-r_static
-r_int
 id|DC390_queue_command
 c_func
 (paren

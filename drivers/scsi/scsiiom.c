@@ -3807,6 +3807,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* read and eval received messages */
+r_static
 r_void
 DECL|function|dc390_MsgIn_0
 id|dc390_MsgIn_0
@@ -4458,6 +4459,7 @@ id|READ_DIRECTION
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|dc390_CommandPhase
 id|dc390_CommandPhase
@@ -4669,6 +4671,7 @@ id|INITIATOR_CMD_CMPLTE
 suffix:semicolon
 singleline_comment|//DC390_write8 (DMA_Cmd, DMA_IDLE_CMD);
 )brace
+r_static
 r_void
 DECL|function|dc390_MsgOutPhase
 id|dc390_MsgOutPhase
@@ -5127,6 +5130,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|dc390_Disconnect
 id|dc390_Disconnect
@@ -5482,6 +5486,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|dc390_Reselect
 id|dc390_Reselect
@@ -6260,6 +6265,7 @@ id|ptr
 suffix:semicolon
 )brace
 suffix:semicolon
+r_static
 r_void
 DECL|function|dc390_SRBdone
 id|dc390_SRBdone
@@ -6281,8 +6287,6 @@ comma
 id|status
 comma
 id|i
-comma
-id|DCB_removed
 suffix:semicolon
 id|PSCSICMD
 id|pcmd
@@ -6306,10 +6310,6 @@ c_func
 (paren
 id|pSRB
 )paren
-suffix:semicolon
-id|DCB_removed
-op_assign
-l_int|0
 suffix:semicolon
 id|status
 op_assign
@@ -7464,18 +7464,6 @@ id|DID_ERROR
 )paren
 (brace
 multiline_comment|/* device not present: remove */
-singleline_comment|//dc390_Going_remove (pDCB, pSRB);
-id|dc390_remove_dev
-(paren
-id|pACB
-comma
-id|pDCB
-)paren
-suffix:semicolon
-id|DCB_removed
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7538,13 +7526,9 @@ op_assign
 id|END_SCAN
 suffix:semicolon
 )brace
-multiline_comment|/* pACB-&gt;DeviceCnt++; */
-multiline_comment|/* Dev is added on INQUIRY */
 )brace
 )brace
 )brace
-singleline_comment|//if( pSRB-&gt;pcmd-&gt;cmnd[0] == INQUIRY &amp;&amp; 
-singleline_comment|//  (host_byte(pcmd-&gt;result) == DID_OK || status_byte(pcmd-&gt;result) &amp; CHECK_CONDITION) )
 r_if
 c_cond
 (paren
@@ -7582,29 +7566,9 @@ id|ptr-&gt;DevType
 op_amp
 id|SCSI_DEVTYPE
 )paren
-op_eq
+op_ne
 id|TYPE_NODEV
-op_logical_and
-op_logical_neg
-id|DCB_removed
 )paren
-(brace
-singleline_comment|//printk (&quot;DC390: Type = nodev! (%02i-%i)&bslash;n&quot;, pcmd-&gt;target, pcmd-&gt;lun);
-multiline_comment|/* device not present: remove */
-singleline_comment|//dc390_Going_remove (pDCB, pSRB);
-id|dc390_remove_dev
-(paren
-id|pACB
-comma
-id|pDCB
-)paren
-suffix:semicolon
-id|DCB_removed
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_else
 (brace
 multiline_comment|/* device found: add */
 id|dc390_add_dev
@@ -7651,19 +7615,12 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-suffix:semicolon
 id|pcmd-&gt;resid
 op_assign
 id|pcmd-&gt;request_bufflen
 op_minus
 id|pSRB-&gt;TotalXferredLen
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|DCB_removed
-)paren
 id|dc390_Going_remove
 (paren
 id|pDCB
@@ -7705,6 +7662,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Remove all SRBs from Going list and inform midlevel */
+r_static
 r_void
 DECL|function|dc390_DoingSRB_Done
 id|dc390_DoingSRB_Done
