@@ -1837,9 +1837,6 @@ id|fb_info
 op_star
 id|info
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1913,11 +1910,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|info
+id|size
 op_assign
-id|kmalloc
-c_func
-(paren
 r_sizeof
 (paren
 r_struct
@@ -1936,6 +1930,13 @@ id|u32
 )paren
 op_star
 l_int|17
+suffix:semicolon
+id|info
+op_assign
+id|kmalloc
+c_func
+(paren
+id|size
 comma
 id|GFP_ATOMIC
 )paren
@@ -1966,11 +1967,7 @@ id|info
 comma
 l_int|0
 comma
-r_sizeof
-(paren
-op_star
-id|info
-)paren
+id|size
 )paren
 suffix:semicolon
 id|fix
@@ -2291,7 +2288,7 @@ l_int|0xcc0
 suffix:semicolon
 id|par-&gt;cmap_data
 op_assign
-id|info-&gt;cmap_adr
+id|par-&gt;cmap_adr
 op_plus
 l_int|1
 suffix:semicolon
@@ -2721,7 +2718,7 @@ comma
 id|GET_FB_IDX
 c_func
 (paren
-id|info-&gt;info.node
+id|info-&gt;node
 )paren
 comma
 id|full_name

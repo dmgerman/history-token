@@ -365,6 +365,12 @@ id|open
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PMAC_PBOOK
+DECL|member|next
+r_struct
+id|fb_info
+op_star
+id|next
+suffix:semicolon
 DECL|member|save_framebuffer
 r_int
 r_char
@@ -1140,25 +1146,21 @@ id|rect
 suffix:semicolon
 multiline_comment|/*&n;     *  Text console acceleration&n;     */
 r_extern
-r_const
 r_struct
 id|display_switch
 id|fbcon_aty8
 suffix:semicolon
 r_extern
-r_const
 r_struct
 id|display_switch
 id|fbcon_aty16
 suffix:semicolon
 r_extern
-r_const
 r_struct
 id|display_switch
 id|fbcon_aty24
 suffix:semicolon
 r_extern
-r_const
 r_struct
 id|display_switch
 id|fbcon_aty32
