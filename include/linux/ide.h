@@ -36,10 +36,6 @@ macro_line|#ifndef OK_TO_RESET_CONTROLLER&t;&t;/* 1 needed for good error recove
 DECL|macro|OK_TO_RESET_CONTROLLER
 mdefine_line|#define OK_TO_RESET_CONTROLLER&t;1&t;/* 0 for use with AH2372A/B interface */
 macro_line|#endif
-macro_line|#ifndef FANCY_STATUS_DUMPS&t;&t;/* 1 for human-readable drive errors */
-DECL|macro|FANCY_STATUS_DUMPS
-mdefine_line|#define FANCY_STATUS_DUMPS&t;1&t;/* 0 to reduce kernel size */
-macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_CMD640
 macro_line|#if 0&t;/* change to 1 when debugging cmd640 problems */
 r_void

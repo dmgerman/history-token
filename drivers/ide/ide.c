@@ -821,7 +821,6 @@ comma
 id|stat
 )paren
 suffix:semicolon
-macro_line|#if FANCY_STATUS_DUMPS
 id|printk
 c_func
 (paren
@@ -943,7 +942,6 @@ c_func
 l_string|&quot;}&quot;
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* FANCY_STATUS_DUMPS */
 id|printk
 c_func
 (paren
@@ -988,7 +986,6 @@ comma
 id|err
 )paren
 suffix:semicolon
-macro_line|#if FANCY_STATUS_DUMPS
 r_if
 c_cond
 (paren
@@ -1372,7 +1369,6 @@ id|rq-&gt;sector
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif&t;/* FANCY_STATUS_DUMPS */
 id|printk
 c_func
 (paren

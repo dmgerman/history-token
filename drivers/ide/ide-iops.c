@@ -5095,7 +5095,6 @@ r_else
 id|drive-&gt;failures
 op_increment
 suffix:semicolon
-macro_line|#if FANCY_STATUS_DUMPS
 id|printk
 c_func
 (paren
@@ -5195,14 +5194,6 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-l_string|&quot;failed&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* FANCY_STATUS_DUMPS */
 )brace
 )brace
 id|hwgroup-&gt;poll_timeout
