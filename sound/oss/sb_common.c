@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * sound/sb_common.c&n; *&n; * Common routines for Sound Blaster compatible cards.&n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; *&n; * Daniel J. Rodriksson: Modified sbintr to handle 8 and 16 bit interrupts&n; *                       for full duplex support ( only sb16 by now )&n; * Rolf Fokkens:&t; Added (BETA?) support for ES1887 chips.&n; * (fokkensr@vertis.nl)&t; Which means: You can adjust the recording levels.&n; *&n; * 2000/01/18 - separated sb_card and sb_common -&n; * Jeff Garzik &lt;jgarzik@pobox.com&gt;&n; *&n; * 2000/09/18 - got rid of attach_uart401&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * 2001/01/26 - replaced CLI/STI with spinlocks&n; * Chris Rankin &lt;rankinc@zipworld.com.au&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;

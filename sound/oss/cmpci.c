@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -13,15 +14,15 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;dm.h&quot;
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|macro|OSS_DOCUMENTED_MIXER_SEMANTICS
@@ -7769,24 +7770,29 @@ id|file_operations
 id|cm_mixer_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
+op_assign
 id|no_llseek
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|cm_ioctl_mixdev
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|cm_open_mixdev
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|cm_release_mixdev
 comma
 )brace
@@ -12793,40 +12799,49 @@ id|file_operations
 id|cm_audio_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
+op_assign
 id|no_llseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|cm_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|cm_write
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|cm_poll
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|cm_ioctl
 comma
+dot
 id|mmap
-suffix:colon
+op_assign
 id|cm_mmap
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|cm_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|cm_release
 comma
 )brace
@@ -14429,32 +14444,39 @@ id|file_operations
 id|cm_midi_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
+op_assign
 id|no_llseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|cm_midi_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|cm_midi_write
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|cm_midi_poll
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|cm_midi_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|cm_midi_release
 comma
 )brace
@@ -15675,24 +15697,29 @@ id|file_operations
 id|cm_dmfm_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
+op_assign
 id|no_llseek
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|cm_dmfm_ioctl
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|cm_dmfm_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|cm_dmfm_release
 comma
 )brace
