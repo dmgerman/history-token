@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * $Id: saa7134-core.c,v 1.15 2004/11/07 14:44:59 kraxel Exp $&n; *&n; * device driver for philips saa7134 based TV cards&n; * driver core&n; *&n; * (c) 2001-03 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1378,6 +1379,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* ----------------------------------------------------------- */
 multiline_comment|/* delayed request_module                                      */
+macro_line|#ifdef CONFIG_MODULES
 DECL|variable|need_empress
 r_static
 r_int
@@ -1536,6 +1538,10 @@ r_break
 suffix:semicolon
 )brace
 )brace
+macro_line|#else
+DECL|macro|request_module_depend
+mdefine_line|#define request_module_depend(name,flag)
+macro_line|#endif /* CONFIG_MODULES */
 multiline_comment|/* ------------------------------------------------------------------ */
 multiline_comment|/* nr of (saa7134-)pages for the given buffer size */
 DECL|function|saa7134_buffer_pages
