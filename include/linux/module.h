@@ -67,6 +67,31 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* Archs provide a method of finding the correct exception table. */
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|search_extable
+c_func
+(paren
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|first
+comma
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|last
+comma
+r_int
+r_int
+id|value
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE
 multiline_comment|/* For replacement modutils, use an alias not a pointer. */
 DECL|macro|MODULE_GENERIC_TABLE
@@ -121,6 +146,19 @@ op_star
 id|syms
 suffix:semicolon
 )brace
+suffix:semicolon
+multiline_comment|/* Given an address, look for it in the exception tables */
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|search_exception_tables
+c_func
+(paren
+r_int
+r_int
+id|add
+)paren
 suffix:semicolon
 DECL|struct|exception_table
 r_struct
@@ -621,6 +659,19 @@ op_star
 id|modname
 )paren
 suffix:semicolon
+multiline_comment|/* For extable.c to search modules&squot; exception tables. */
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|search_module_extables
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 macro_line|#else /* !CONFIG_MODULES... */
 DECL|macro|EXPORT_SYMBOL
 mdefine_line|#define EXPORT_SYMBOL(sym)
@@ -628,6 +679,26 @@ DECL|macro|EXPORT_SYMBOL_GPL
 mdefine_line|#define EXPORT_SYMBOL_GPL(sym)
 DECL|macro|EXPORT_SYMBOL_NOVERS
 mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym)
+multiline_comment|/* Given an address, look for it in the exception tables. */
+r_static
+r_inline
+r_const
+r_struct
+id|exception_table_entry
+op_star
+DECL|function|search_module_extables
+id|search_module_extables
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/* Get/put a kernel symbol (calls should be symmetric) */
 DECL|macro|symbol_get
 mdefine_line|#define symbol_get(x) (&amp;(x))
@@ -755,16 +826,6 @@ macro_line|#endif
 suffix:semicolon
 macro_line|#endif /* KBUILD_MODNAME */
 macro_line|#endif /* MODULE */
-multiline_comment|/* For archs to search exception tables */
-r_extern
-r_struct
-id|list_head
-id|extables
-suffix:semicolon
-r_extern
-id|spinlock_t
-id|modlist_lock
-suffix:semicolon
 DECL|macro|symbol_request
 mdefine_line|#define symbol_request(x) try_then_request_module(symbol_get(x), &quot;symbol:&quot; #x)
 multiline_comment|/* BELOW HERE ALL THESE ARE OBSOLETE AND WILL VANISH */

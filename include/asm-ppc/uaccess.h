@@ -84,17 +84,6 @@ id|fixup
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Returns 0 if exception not found and fixup otherwise.  */
-r_extern
-r_int
-r_int
-id|search_exception_table
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|sort_exception_table

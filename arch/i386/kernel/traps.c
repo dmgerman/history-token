@@ -1458,8 +1458,10 @@ suffix:semicolon
 id|kernel_trap
 suffix:colon
 (brace
-r_int
-r_int
+r_const
+r_struct
+id|exception_table_entry
+op_star
 id|fixup
 suffix:semicolon
 macro_line|#ifdef CONFIG_PNPBIOS
@@ -1528,7 +1530,7 @@ suffix:semicolon
 macro_line|#endif&t;
 id|fixup
 op_assign
-id|search_exception_table
+id|search_exception_tables
 c_func
 (paren
 id|regs-&gt;eip
@@ -1541,7 +1543,7 @@ id|fixup
 )paren
 id|regs-&gt;eip
 op_assign
-id|fixup
+id|fixup-&gt;fixup
 suffix:semicolon
 r_else
 id|die
@@ -1821,13 +1823,15 @@ suffix:semicolon
 id|gp_in_kernel
 suffix:colon
 (brace
-r_int
-r_int
+r_const
+r_struct
+id|exception_table_entry
+op_star
 id|fixup
 suffix:semicolon
 id|fixup
 op_assign
-id|search_exception_table
+id|search_exception_tables
 c_func
 (paren
 id|regs-&gt;eip
@@ -1841,7 +1845,7 @@ id|fixup
 (brace
 id|regs-&gt;eip
 op_assign
-id|fixup
+id|fixup-&gt;fixup
 suffix:semicolon
 r_return
 suffix:semicolon

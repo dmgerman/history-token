@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;&t;&t;/* For unblank_screen() */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -459,8 +460,10 @@ r_int
 r_int
 id|page
 suffix:semicolon
-r_int
-r_int
+r_const
+r_struct
+id|exception_table_entry
+op_star
 id|fixup
 suffix:semicolon
 r_int
@@ -930,19 +933,19 @@ c_cond
 (paren
 id|fixup
 op_assign
-id|search_exception_table
+id|search_exception_tables
 c_func
 (paren
 id|regs-&gt;eip
 )paren
 )paren
 op_ne
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|regs-&gt;eip
 op_assign
-id|fixup
+id|fixup-&gt;fixup
 suffix:semicolon
 r_return
 suffix:semicolon
