@@ -686,7 +686,6 @@ id|us-&gt;pusb_dev-&gt;actconfig-&gt;interface
 id|i
 )braket
 suffix:semicolon
-r_const
 r_struct
 id|usb_device_id
 op_star

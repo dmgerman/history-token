@@ -7853,6 +7853,11 @@ c_func
 id|inode-&gt;i_sb
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|prevent_flush_page_lock
 c_func
 (paren
@@ -7942,6 +7947,11 @@ c_func
 id|page
 comma
 id|inode
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
