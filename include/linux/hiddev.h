@@ -252,6 +252,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* hiddev_usage_ref_multi is used for sending multiple bytes to a control.&n; * It really manifests itself as setting the value of consecutive usages */
+DECL|macro|HID_MAX_MULTI_USAGES
+mdefine_line|#define HID_MAX_MULTI_USAGES 1024
 DECL|struct|hiddev_usage_ref_multi
 r_struct
 id|hiddev_usage_ref_multi
@@ -269,7 +271,7 @@ DECL|member|values
 id|__s32
 id|values
 (braket
-id|HID_MAX_USAGES
+id|HID_MAX_MULTI_USAGES
 )braket
 suffix:semicolon
 )brace
@@ -333,6 +335,18 @@ multiline_comment|/* To traverse the input report descriptor info for a HID devi
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * In-kernel definitions.&n; */
 macro_line|#ifdef CONFIG_USB_HIDDEV
+r_struct
+id|hid_device
+suffix:semicolon
+r_struct
+id|hid_usage
+suffix:semicolon
+r_struct
+id|hid_field
+suffix:semicolon
+r_struct
+id|hid_report
+suffix:semicolon
 r_int
 id|hiddev_connect
 c_func
