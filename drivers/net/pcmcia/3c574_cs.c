@@ -5089,6 +5089,10 @@ op_assign
 id|jiffies
 op_plus
 l_int|2
+op_star
+id|HZ
+op_div
+l_int|100
 suffix:semicolon
 id|add_timer
 c_func
