@@ -3791,10 +3791,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; * The below optimisation is buggy.  A sleeping thread that is&n;&t;&t; * woken up checks if it got a message and if so, copies it to&n;&t;&t; * userspace and just returns without taking any locks.&n;&t;&t; * But this return to user space can be faster than the message&n;&t;&t; * send, and if the receiver immediately exits the&n;&t;&t; * wake_up_process performed by the sender will oops.&n;&t;&t; */
+macro_line|#if 0
 id|msg
 op_assign
 (paren
@@ -3819,6 +3817,7 @@ r_goto
 id|out_success
 suffix:semicolon
 )brace
+macro_line|#endif
 id|msq
 op_assign
 id|msg_lock
