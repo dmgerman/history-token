@@ -5849,8 +5849,6 @@ c_func
 l_string|&quot;before DEC-hung&quot;
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|local_irq_restore
 c_func
 (paren
@@ -5938,8 +5936,6 @@ c_func
 (paren
 l_string|&quot;before DEC-2&quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|local_irq_restore
 c_func
@@ -6135,8 +6131,6 @@ c_func
 op_amp
 id|info-&gt;close_wait
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|local_irq_restore
 c_func
@@ -7239,8 +7233,6 @@ r_int
 r_int
 id|page
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|line
 op_assign
 id|tty-&gt;index
@@ -7261,8 +7253,6 @@ id|NR_PORTS
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -7285,8 +7275,6 @@ c_cond
 id|retval
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -8211,6 +8199,10 @@ suffix:semicolon
 id|serial_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
+suffix:semicolon
+id|serial_driver.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|serial_driver.driver_name
 op_assign

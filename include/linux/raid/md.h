@@ -35,9 +35,11 @@ DECL|macro|MD_MINOR_VERSION
 mdefine_line|#define MD_MINOR_VERSION                90
 DECL|macro|MD_PATCHLEVEL_VERSION
 mdefine_line|#define MD_PATCHLEVEL_VERSION           0
+multiline_comment|/*&n; * XXX(hch): This function is broken.  Someone who understands the md&n; * code needs to go through all callers, check whether bdev could&n; * be NULL and replace it with direct calls to bdevmame.&n; *&n; * This would also fix the returns buffer on stack issue nicely :)&n; */
 DECL|function|bdev_partition_name
-r_extern
+r_static
 r_inline
+r_const
 r_char
 op_star
 id|bdev_partition_name
@@ -48,16 +50,34 @@ op_star
 id|bdev
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bdev
+)paren
 r_return
-id|partition_name
+id|__bdevname
+c_func
+(paren
+l_int|0
+comma
+id|b
+)paren
+suffix:semicolon
+r_return
+id|bdevname
 c_func
 (paren
 id|bdev
-ques
-c_cond
-id|bdev-&gt;bd_dev
-suffix:colon
-l_int|0
+comma
+id|b
 )paren
 suffix:semicolon
 )brace

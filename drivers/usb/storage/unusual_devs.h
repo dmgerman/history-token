@@ -202,6 +202,56 @@ comma
 id|US_FL_START_STOP
 )paren
 comma
+multiline_comment|/* Patch submitted by Philipp Friedrich &lt;philipp@void.at&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0482
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Kyocera&quot;
+comma
+l_string|&quot;Finecam S3x&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_CB
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* Patch submitted by Philipp Friedrich &lt;philipp@void.at&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0482
+comma
+l_int|0x0101
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Kyocera&quot;
+comma
+l_string|&quot;Finecam S4&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_CB
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 multiline_comment|/* Reported by Paul Stewart &lt;stewart@wetlogic.net&gt;&n; * This entry is needed because the device reports Sub=ff */
 id|UNUSUAL_DEV
 c_func
@@ -695,31 +745,6 @@ l_int|NULL
 comma
 id|US_FL_FIX_INQUIRY
 op_or
-id|US_FL_START_STOP
-)paren
-comma
-multiline_comment|/* Submitted by Lars Gemeinhardt &lt;linux-usb@gemeinhardt.info&gt;&n; * Needed for START_STOP flag */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0547
-comma
-l_int|0x2810
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;Mello&quot;
-comma
-l_string|&quot;MP3 Player&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
 id|US_FL_START_STOP
 )paren
 comma
@@ -2009,6 +2034,56 @@ op_or
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* This Pentax still camera is not conformant&n; * to the USB storage specification: -&n; * - It does not like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * Tested on Rev. 10.00 (0x1000)&n; * Submitted by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0a17
+comma
+l_int|0x0004
+comma
+l_int|0x1000
+comma
+l_int|0x1000
+comma
+l_string|&quot;Pentax&quot;
+comma
+l_string|&quot;Optio 2/3/400&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_CBI
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* Submitted by Per Winkvist &lt;per.winkvist@uk.com&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0a17
+comma
+l_int|0x006
+comma
+l_int|0x1000
+comma
+l_int|0x9009
+comma
+l_string|&quot;Pentax&quot;
+comma
+l_string|&quot;Optio S&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_CBI
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 multiline_comment|/* Submitted by Brian Hall &lt;brihall@pcisys.net&gt;&n; * Needed for START_STOP flag */
 id|UNUSUAL_DEV
 c_func
@@ -2111,4 +2186,31 @@ id|US_FL_SINGLE_LUN
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Aiptek PocketCAM 3Mega&n; * Nicolas DUPEUX &lt;nicolas@dupeux.net&gt; &n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x08ca
+comma
+l_int|0x2011
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;AIPTEK&quot;
+comma
+l_string|&quot;PocketCAM 3Mega&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_MODE_XLATE
+op_or
+id|US_FL_START_STOP
+)paren
+comma
 eof

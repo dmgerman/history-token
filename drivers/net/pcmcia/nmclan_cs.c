@@ -655,7 +655,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|mace_interrupt
 c_func
 (paren
@@ -3473,7 +3473,7 @@ multiline_comment|/* mace_start_xmit */
 multiline_comment|/* ----------------------------------------------------------------------------&n;mace_interrupt&n;&t;The interrupt handler.&n;---------------------------------------------------------------------------- */
 DECL|function|mace_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|mace_interrupt
 c_func
 (paren
@@ -3540,6 +3540,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -3589,6 +3590,7 @@ id|MACE_IMR
 suffix:semicolon
 multiline_comment|/* WARNING: MACE_IR has been read! */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -3612,8 +3614,8 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-r_goto
-id|exception
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_do
@@ -4003,9 +4005,8 @@ id|IntrCnt
 )paren
 )paren
 suffix:semicolon
-id|exception
-suffix:colon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* mace_interrupt */

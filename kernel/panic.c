@@ -290,9 +290,7 @@ c_loop
 suffix:semicolon
 suffix:semicolon
 )paren
-(brace
-id|CHECK_EMERGENCY_SYNC
-)brace
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;print_tainted - return a string to represent the kernel taint state.&n; *&n; *  &squot;P&squot; - Proprietary module has been loaded.&n; *  &squot;F&squot; - Module has been forcibly loaded.&n; *  &squot;S&squot; - SMP with CPUs not designed for SMP.&n; *&n; *&t;The string is overwritten by the next call to print_taint().&n; */
 DECL|function|print_tainted

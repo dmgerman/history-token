@@ -4508,7 +4508,7 @@ r_return
 op_minus
 id|EACCES
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode
@@ -5794,7 +5794,7 @@ id|PAGE_CACHE_SHIFT
 op_plus
 id|offset
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode

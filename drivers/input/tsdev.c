@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
+macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
@@ -1373,14 +1374,28 @@ id|minor
 op_assign
 id|tsdev
 suffix:semicolon
-id|input_register_minor
+id|devfs_mk_cdev
 c_func
 (paren
+id|MKDEV
+c_func
+(paren
+id|INPUT_MAJOR
+comma
+id|TSDEV_MINOR_BASE
+op_plus
+id|minor
+)paren
+comma
+id|S_IFCHR
+op_or
+id|S_IRUGO
+op_or
+id|S_IWUSR
+comma
 l_string|&quot;input/ts%d&quot;
 comma
 id|minor
-comma
-id|TSDEV_MINOR_BASE
 )paren
 suffix:semicolon
 r_return

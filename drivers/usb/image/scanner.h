@@ -2080,17 +2080,8 @@ mdefine_line|#define SCANNER_IOCTL_CTRLMSG _IOWR(&squot;U&squot;, 0x22, struct u
 multiline_comment|/* USB bInterfaceClass used by Hewlett-Packard ScanJet 3300c and Genius HR6&n;   USB - Vivid III */
 DECL|macro|SCN_CLASS_SCANJET
 mdefine_line|#define SCN_CLASS_SCANJET 16
-macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
-DECL|macro|SCN_MAX_MNR
-mdefine_line|#define SCN_MAX_MNR 256
-DECL|macro|SCN_BASE_MNR
-mdefine_line|#define SCN_BASE_MNR 0
-macro_line|#else
-DECL|macro|SCN_MAX_MNR
-mdefine_line|#define SCN_MAX_MNR 16&t;&t;/* We&squot;re allocated 16 minors */
 DECL|macro|SCN_BASE_MNR
 mdefine_line|#define SCN_BASE_MNR 48&t;&t;/* USB Scanners start at minor 48 */
-macro_line|#endif
 r_static
 id|DECLARE_MUTEX
 (paren

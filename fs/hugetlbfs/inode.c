@@ -166,7 +166,7 @@ op_amp
 id|inode-&gt;i_sem
 )paren
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode

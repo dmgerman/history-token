@@ -1340,7 +1340,15 @@ id|min_frame_size
 r_if
 c_cond
 (paren
-id|skb-&gt;truesize
+(paren
+id|skb-&gt;len
+op_plus
+id|skb_tailroom
+c_func
+(paren
+id|skb
+)paren
+)paren
 OL
 id|min_frame_size
 )paren

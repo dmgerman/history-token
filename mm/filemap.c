@@ -2231,7 +2231,7 @@ c_func
 id|cached_page
 )paren
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode
@@ -2657,7 +2657,7 @@ op_plus
 id|retval
 suffix:semicolon
 )brace
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|filp-&gt;f_dentry-&gt;d_inode
@@ -4508,7 +4508,7 @@ r_return
 op_minus
 id|ENOEXEC
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode

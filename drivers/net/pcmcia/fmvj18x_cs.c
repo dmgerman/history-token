@@ -247,7 +247,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|fjn_interrupt
 c_func
 (paren
@@ -3521,7 +3521,7 @@ suffix:semicolon
 multiline_comment|/*====================================================================*/
 DECL|function|fjn_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|fjn_interrupt
 c_func
 (paren
@@ -3580,6 +3580,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|ioaddr
@@ -3802,6 +3803,9 @@ id|ioaddr
 op_plus
 id|RX_INTR
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* fjn_interrupt */

@@ -2301,6 +2301,10 @@ suffix:semicolon
 r_int
 id|do_retry
 suffix:semicolon
+r_struct
+id|reclaim_state
+id|reclaim_state
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2654,6 +2658,15 @@ id|current-&gt;flags
 op_or_assign
 id|PF_MEMALLOC
 suffix:semicolon
+id|reclaim_state.reclaimed_slab
+op_assign
+l_int|0
+suffix:semicolon
+id|current-&gt;reclaim_state
+op_assign
+op_amp
+id|reclaim_state
+suffix:semicolon
 id|try_to_free_pages
 c_func
 (paren
@@ -2663,6 +2676,10 @@ id|gfp_mask
 comma
 id|order
 )paren
+suffix:semicolon
+id|current-&gt;reclaim_state
+op_assign
+l_int|NULL
 suffix:semicolon
 id|current-&gt;flags
 op_and_assign

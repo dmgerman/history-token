@@ -13,7 +13,7 @@ r_struct
 id|timer_opts
 id|timer_tsc
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_SUMMIT
+macro_line|#ifdef CONFIG_X86_CYCLONE_TIMER
 r_extern
 r_struct
 id|timer_opts
@@ -31,7 +31,7 @@ id|timers
 )braket
 op_assign
 (brace
-macro_line|#ifdef CONFIG_X86_SUMMIT
+macro_line|#ifdef CONFIG_X86_CYCLONE_TIMER
 op_amp
 id|timer_cyclone
 comma

@@ -29,13 +29,8 @@ comma
 op_star
 id|pbulk_transfer_t
 suffix:semicolon
-macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
-DECL|macro|DABUSB_MINOR
-mdefine_line|#define DABUSB_MINOR 0
-macro_line|#else
 DECL|macro|DABUSB_MINOR
 mdefine_line|#define DABUSB_MINOR 240&t;&t;/* some unassigned USB minor */
-macro_line|#endif
 DECL|macro|DABUSB_VERSION
 mdefine_line|#define DABUSB_VERSION 0x1000
 DECL|macro|IOCTL_DAB_BULK

@@ -378,8 +378,8 @@ op_star
 op_star
 id|pages
 suffix:semicolon
-r_if
-c_cond
+id|WARN_ON
+c_func
 (paren
 op_logical_neg
 id|pte_none
@@ -388,12 +388,6 @@ c_func
 op_star
 id|pte
 )paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;alloc_area_pte: page already exists&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if

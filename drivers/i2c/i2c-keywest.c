@@ -689,7 +689,7 @@ suffix:semicolon
 macro_line|#ifndef POLLED_MODE
 multiline_comment|/* Interrupt handler */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|keywest_irq
 id|keywest_irq
 c_func
@@ -773,6 +773,9 @@ c_func
 op_amp
 id|iface-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

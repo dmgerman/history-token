@@ -727,8 +727,6 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* After analyzing control flow, I think a2232_shutdown_port&n;&t;&t;is actually the last call from the system when at application&n;&t;&t;level someone issues a &quot;echo Hello &gt;&gt;/dev/ttyY0&quot;.&n;&t;&t;Therefore I think the MOD_DEC_USE_COUNT should be here and&n;&t;&t;not in &quot;a2232_close()&quot;. See the comment in &quot;sx.c&quot;, too.&n;&t;&t;If you run into problems, compile this driver into the&n;&t;&t;kernel instead of compiling it as a module. */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|a2232_set_real_termios
 r_static
@@ -1293,7 +1291,6 @@ id|ptr
 )paren
 suffix:semicolon
 multiline_comment|/* see the comment in a2232_shutdown_port above. */
-multiline_comment|/* MOD_DEC_USE_COUNT; */
 )brace
 DECL|function|a2232_hungup
 r_static
@@ -1484,17 +1481,6 @@ id|port-&gt;gs.flags
 op_or_assign
 id|GS_ACTIVE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;gs.count
-op_eq
-l_int|1
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
 id|retval
 op_assign
 id|gs_block_til_ready
@@ -1511,8 +1497,6 @@ c_cond
 id|retval
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|port-&gt;gs.count
 op_decrement
 suffix:semicolon
@@ -2565,6 +2549,10 @@ suffix:semicolon
 id|a2232_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
+suffix:semicolon
+id|a2232_driver.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|a2232_driver.driver_name
 op_assign

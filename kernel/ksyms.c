@@ -3058,13 +3058,6 @@ c_func
 id|kill_fasync
 )paren
 suffix:semicolon
-DECL|variable|partition_name
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|partition_name
-)paren
-suffix:semicolon
 multiline_comment|/* binfmt_aout */
 DECL|variable|get_write_access
 id|EXPORT_SYMBOL

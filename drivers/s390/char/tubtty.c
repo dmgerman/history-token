@@ -510,12 +510,10 @@ id|td-&gt;flags
 op_assign
 id|TTY_DRIVER_RESET_TERMIOS
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
 id|td-&gt;flags
 op_or_assign
 id|TTY_DRIVER_NO_DEVFS
 suffix:semicolon
-macro_line|#endif
 id|td-&gt;refcount
 op_assign
 op_amp

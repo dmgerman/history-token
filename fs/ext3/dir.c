@@ -966,7 +966,7 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode
@@ -2016,7 +2016,7 @@ id|info-&gt;last_pos
 op_assign
 id|filp-&gt;f_pos
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode

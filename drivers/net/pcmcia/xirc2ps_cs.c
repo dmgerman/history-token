@@ -687,7 +687,7 @@ op_star
 suffix:semicolon
 multiline_comment|/****************&n; * You&squot;ll also need to prototype all the functions that will actually&n; * be used to talk to your device.  See &squot;pcmem_cs&squot; for a good example&n; * of a fully self-sufficient driver; the other drivers rely more or&n; * less on other parts of the kernel.&n; */
 r_static
-r_void
+id|irqreturn_t
 id|xirc2ps_interrupt
 c_func
 (paren
@@ -5149,7 +5149,7 @@ multiline_comment|/* xirc2ps_event */
 multiline_comment|/*====================================================================*/
 multiline_comment|/****************&n; * This is the Interrupt service route.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|xirc2ps_interrupt
 id|xirc2ps_interrupt
 c_func
@@ -5207,6 +5207,10 @@ r_int
 id|rsr
 comma
 id|pktlen
+comma
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 id|ulong
 id|start_ticks
@@ -5225,6 +5229,7 @@ id|dev
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|ioaddr
 op_assign
@@ -5303,6 +5308,10 @@ id|dev-&gt;name
 comma
 id|irq
 )paren
+suffix:semicolon
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 r_goto
 id|leave
@@ -6247,6 +6256,13 @@ id|EnableIntr
 suffix:semicolon
 multiline_comment|/* re-enable interrupts */
 multiline_comment|/* Instead of dropping packets during a receive, we could&n;     * force an interrupt with this command:&n;     *&t;  PutByte(XIRCREG_CR, EnableIntr|ForceIntr);&n;     */
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* xirc2ps_interrupt */
 multiline_comment|/*====================================================================*/

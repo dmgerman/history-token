@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &quot;rio500_usb.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
@@ -22,13 +21,8 @@ DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Cesar Miquel &lt;miquel@df.uba.ar&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Rio 500 driver&quot;
-macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
-DECL|macro|RIO_MINOR
-mdefine_line|#define RIO_MINOR&t;0
-macro_line|#else
 DECL|macro|RIO_MINOR
 mdefine_line|#define RIO_MINOR&t;64
-macro_line|#endif
 multiline_comment|/* stall/wait timeout for rio */
 DECL|macro|NAK_TIMEOUT
 mdefine_line|#define NAK_TIMEOUT (HZ)
@@ -64,11 +58,6 @@ r_int
 id|present
 suffix:semicolon
 multiline_comment|/* Device is present on the bus */
-DECL|member|minor
-r_int
-id|minor
-suffix:semicolon
-multiline_comment|/* minor number assigned to us */
 DECL|member|obuf
 DECL|member|ibuf
 r_char
@@ -1746,6 +1735,44 @@ id|close_rio
 comma
 )brace
 suffix:semicolon
+DECL|variable|usb_rio_class
+r_static
+r_struct
+id|usb_class_driver
+id|usb_rio_class
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;usb/rio500%d&quot;
+comma
+dot
+id|fops
+op_assign
+op_amp
+id|usb_rio_fops
+comma
+dot
+id|mode
+op_assign
+id|S_IFCHR
+op_or
+id|S_IRUSR
+op_or
+id|S_IWUSR
+op_or
+id|S_IRGRP
+op_or
+id|S_IWGRP
+comma
+dot
+id|minor_base
+op_assign
+id|RIO_MINOR
+comma
+)brace
+suffix:semicolon
 DECL|function|probe_rio
 r_static
 r_int
@@ -1799,15 +1826,10 @@ op_assign
 id|usb_register_dev
 c_func
 (paren
-op_amp
-id|usb_rio_fops
-comma
-id|RIO_MINOR
-comma
-l_int|1
+id|intf
 comma
 op_amp
-id|rio-&gt;minor
+id|usb_rio_class
 )paren
 suffix:semicolon
 r_if
@@ -1862,6 +1884,15 @@ c_func
 l_string|&quot;probe_rio: Not enough memory for the output buffer&quot;
 )paren
 suffix:semicolon
+id|usb_deregister_dev
+c_func
+(paren
+id|intf
+comma
+op_amp
+id|usb_rio_class
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -1902,6 +1933,15 @@ c_func
 l_string|&quot;probe_rio: Not enough memory for the input buffer&quot;
 )paren
 suffix:semicolon
+id|usb_deregister_dev
+c_func
+(paren
+id|intf
+comma
+op_amp
+id|usb_rio_class
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1919,35 +1959,6 @@ c_func
 l_string|&quot;probe_rio: ibuf address:%p&quot;
 comma
 id|rio-&gt;ibuf
-)paren
-suffix:semicolon
-id|devfs_register
-c_func
-(paren
-l_int|NULL
-comma
-l_string|&quot;usb/rio500&quot;
-comma
-id|DEVFS_FL_DEFAULT
-comma
-id|USB_MAJOR
-comma
-id|RIO_MINOR
-comma
-id|S_IFCHR
-op_or
-id|S_IRUSR
-op_or
-id|S_IWUSR
-op_or
-id|S_IRGRP
-op_or
-id|S_IWGRP
-comma
-op_amp
-id|usb_rio_fops
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|init_MUTEX
@@ -2005,18 +2016,13 @@ c_cond
 id|rio
 )paren
 (brace
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;usb/rio500&quot;
-)paren
-suffix:semicolon
 id|usb_deregister_dev
 c_func
 (paren
-l_int|1
+id|intf
 comma
-id|rio-&gt;minor
+op_amp
+id|usb_rio_class
 )paren
 suffix:semicolon
 id|down

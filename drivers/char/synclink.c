@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/char/synclink.c&n; *&n; * $Id: synclink.c,v 4.6 2003/04/21 17:46:54 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink ISA and PCI&n; * high speed multiprotocol serial adapters.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * Derived from serial.c written by Theodore Ts&squot;o and Linus Torvalds&n; *&n; * Original release 01/11/99&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * This driver is primarily intended for use in synchronous&n; * HDLC mode. Asynchronous mode is also provided.&n; *&n; * When operating in synchronous mode, each call to mgsl_write()&n; * contains exactly one complete HDLC frame. Calling mgsl_put_char&n; * will start assembling an HDLC frame that will not be sent until&n; * mgsl_flush_chars or mgsl_write is called.&n; * &n; * Synchronous receive data is reported as complete frames. To accomplish&n; * this, the TTY flip buffer is bypassed (too small to hold largest&n; * frame and may fragment frames) and the line discipline&n; * receive entry point is called directly.&n; *&n; * This driver has been tested with a slightly modified ppp.c driver&n; * for synchronous PPP.&n; *&n; * 2000/02/16&n; * Added interface for syncppp.c driver (an alternate synchronous PPP&n; * implementation that also supports Cisco HDLC). Each device instance&n; * registers as a tty device AND a network device (if dosyncppp option&n; * is set for the device). The functionality is determined by which&n; * device interface is opened.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
+multiline_comment|/*&n; * linux/drivers/char/synclink.c&n; *&n; * $Id: synclink.c,v 4.9 2003/05/06 21:18:51 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink ISA and PCI&n; * high speed multiprotocol serial adapters.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * Derived from serial.c written by Theodore Ts&squot;o and Linus Torvalds&n; *&n; * Original release 01/11/99&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * This driver is primarily intended for use in synchronous&n; * HDLC mode. Asynchronous mode is also provided.&n; *&n; * When operating in synchronous mode, each call to mgsl_write()&n; * contains exactly one complete HDLC frame. Calling mgsl_put_char&n; * will start assembling an HDLC frame that will not be sent until&n; * mgsl_flush_chars or mgsl_write is called.&n; * &n; * Synchronous receive data is reported as complete frames. To accomplish&n; * this, the TTY flip buffer is bypassed (too small to hold largest&n; * frame and may fragment frames) and the line discipline&n; * receive entry point is called directly.&n; *&n; * This driver has been tested with a slightly modified ppp.c driver&n; * for synchronous PPP.&n; *&n; * 2000/02/16&n; * Added interface for syncppp.c driver (an alternate synchronous PPP&n; * implementation that also supports Cisco HDLC). Each device instance&n; * registers as a tty device AND a network device (if dosyncppp option&n; * is set for the device). The functionality is determined by which&n; * device interface is opened.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
 DECL|macro|VERSION
 mdefine_line|#define VERSION(ver,rel,seq) (((ver)&lt;&lt;16) | ((rel)&lt;&lt;8) | (seq))
 macro_line|#if defined(__i386__)
@@ -268,6 +268,10 @@ multiline_comment|/* count of opens */
 DECL|member|line
 r_int
 id|line
+suffix:semicolon
+DECL|member|hw_version
+r_int
+id|hw_version
 suffix:semicolon
 DECL|member|close_delay
 r_int
@@ -2796,7 +2800,7 @@ r_char
 op_star
 id|driver_version
 op_assign
-l_string|&quot;$Revision: 4.6 $&quot;
+l_string|&quot;$Revision: 4.9 $&quot;
 suffix:semicolon
 r_static
 r_int
@@ -2838,6 +2842,17 @@ op_assign
 id|PCI_VENDOR_ID_MICROGATE
 comma
 id|PCI_DEVICE_ID_MICROGATE_USC
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_MICROGATE
+comma
+l_int|0x0210
 comma
 id|PCI_ANY_ID
 comma
@@ -15440,15 +15455,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* restart transmit timer */
-id|del_timer
+id|mod_timer
 c_func
 (paren
 op_amp
 id|info-&gt;tx_timer
-)paren
-suffix:semicolon
-id|info-&gt;tx_timer.expires
-op_assign
+comma
 id|jiffies
 op_plus
 id|jiffies_from_ms
@@ -15456,12 +15468,6 @@ c_func
 (paren
 l_int|5000
 )paren
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|info-&gt;tx_timer
 )paren
 suffix:semicolon
 id|ret
@@ -16352,7 +16358,11 @@ id|MGSL_BUS_TYPE_PCI
 id|printk
 c_func
 (paren
-l_string|&quot;SyncLink device %s added:PCI bus IO=%04X IRQ=%d Mem=%08X LCR=%08X MaxFrameSize=%u&bslash;n&quot;
+l_string|&quot;SyncLink PCI v%d %s: IO=%04X IRQ=%d Mem=%08X,%08X MaxFrameSize=%u&bslash;n&quot;
+comma
+id|info-&gt;hw_version
+op_plus
+l_int|1
 comma
 id|info-&gt;device_name
 comma
@@ -16373,7 +16383,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;SyncLink device %s added:ISA bus IO=%04X IRQ=%d DMA=%d MaxFrameSize=%u&bslash;n&quot;
+l_string|&quot;SyncLink ISA %s: IO=%04X IRQ=%d DMA=%d MaxFrameSize=%u&bslash;n&quot;
 comma
 id|info-&gt;device_name
 comma
@@ -18767,9 +18777,16 @@ id|info-&gt;io_base
 )paren
 suffix:semicolon
 multiline_comment|/* set Master Bus Enable (DCAR) */
+r_if
+c_cond
+(paren
+id|info-&gt;bus_type
+op_eq
+id|MGSL_BUS_TYPE_ISA
+)paren
+(brace
 multiline_comment|/* Enable DMAEN (Port 7, Bit 14) */
 multiline_comment|/* This connects the DMA request signal to the ISA bus */
-multiline_comment|/* on the ISA adapter. This has no effect for the PCI adapter */
 id|usc_OutReg
 c_func
 (paren
@@ -18798,6 +18815,7 @@ id|BIT14
 )paren
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* DMA Control Register (DCR)&n;&t; *&n;&t; * &lt;15..14&gt;&t;10&t;Priority mode = Alternating Tx/Rx&n;&t; *&t;&t;01&t;Rx has priority&n;&t; *&t;&t;00&t;Tx has priority&n;&t; *&n;&t; * &lt;13&gt;&t;&t;1&t;Enable Priority Preempt per DCR&lt;15..14&gt;&n;&t; *&t;&t;&t;(WARNING DCR&lt;11..10&gt; must be 00 when this is 1)&n;&t; *&t;&t;0&t;Choose activate channel per DCR&lt;11..10&gt;&n;&t; *&n;&t; * &lt;12&gt;&t;&t;0&t;Little Endian for Array/List&n;&t; * &lt;11..10&gt;&t;00&t;Both Channels can use each bus grant&n;&t; * &lt;9..6&gt;&t;0000&t;reserved&n;&t; * &lt;5&gt;&t;&t;0&t;7 CLK - Minimum Bus Re-request Interval&n;&t; * &lt;4&gt;&t;&t;0&t;1 = drive D/C and S/D pins&n;&t; * &lt;3&gt;&t;&t;1&t;1 = Add one wait state to all DMA cycles.&n;&t; * &lt;2&gt;&t;&t;0&t;1 = Strobe /UAS on every transfer.&n;&t; * &lt;1..0&gt;&t;11&t;Addr incrementing only affects LS24 bits&n;&t; *&n;&t; *&t;0110 0000 0000 1011 = 0x600b&n;&t; */
 r_if
 c_cond
@@ -21641,9 +21659,16 @@ c_func
 id|info
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;bus_type
+op_eq
+id|MGSL_BUS_TYPE_ISA
+)paren
+(brace
 multiline_comment|/* Enable INTEN (Port 6, Bit12) */
 multiline_comment|/* This connects the IRQ request signal to the ISA bus */
-multiline_comment|/* on the ISA adapter. This has no effect for the PCI adapter */
 id|usc_OutReg
 c_func
 (paren
@@ -21672,6 +21697,7 @@ id|BIT12
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* end of usc_set_async_mode() */
 multiline_comment|/* usc_loopback_frame()&n; *&n; *&t;Loop back a small (2 byte) dummy SDLC frame.&n; *&t;Interrupts and DMA are NOT used. The purpose of this is to&n; *&t;clear any &squot;stale&squot; status info left over from running in&t;async mode.&n; *&n; *&t;The 16C32 shows the strange behaviour of marking the 1st&n; *&t;received SDLC frame with a CRC error even when there is no&n; *&t;CRC error. To get around this a small dummy from of 2 bytes&n; *&t;is looped back when switching from async to sync mode.&n; *&n; * Arguments:&t;&t;info&t;&t;pointer to device instance data&n; * Return Value:&t;None&n; */
@@ -21898,9 +21924,16 @@ c_func
 id|info
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;bus_type
+op_eq
+id|MGSL_BUS_TYPE_ISA
+)paren
+(brace
 multiline_comment|/* Enable INTEN (Port 6, Bit12) */
 multiline_comment|/* This connects the IRQ request signal to the ISA bus */
-multiline_comment|/* on the ISA adapter. This has no effect for the PCI adapter */
 id|usc_OutReg
 c_func
 (paren
@@ -21929,6 +21962,7 @@ id|BIT12
 )paren
 )paren
 suffix:semicolon
+)brace
 id|usc_enable_aux_clock
 c_func
 (paren
@@ -27827,11 +27861,36 @@ id|info-&gt;irq_flags
 op_assign
 id|SA_SHIRQ
 suffix:semicolon
-multiline_comment|/* Store the PCI9050 misc control register value because a flaw&n;&t; * in the PCI9050 prevents LCR registers from being read if &n;&t; * BIOS assigns an LCR base address with bit 7 set.&n;&t; *  &n;&t; * Only the misc control register is accessed for which only &n;&t; * write access is needed, so set an initial value and change &n;&t; * bits to the device instance data as we write the value&n;&t; * to the actual misc control register.&n;&t; */
+r_if
+c_cond
+(paren
+id|dev-&gt;device
+op_eq
+l_int|0x0210
+)paren
+(brace
+multiline_comment|/* Version 1 PCI9030 based universal PCI adapter */
+id|info-&gt;misc_ctrl_value
+op_assign
+l_int|0x007c4080
+suffix:semicolon
+id|info-&gt;hw_version
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Version 0 PCI9050 based 5V PCI adapter&n;&t;&t; * A PCI9050 bug prevents reading LCR registers if &n;&t;&t; * LCR base address bit 7 is set. Maintain shadow&n;&t;&t; * value so we can write to LCR misc control reg.&n;&t;&t; */
 id|info-&gt;misc_ctrl_value
 op_assign
 l_int|0x087e4546
 suffix:semicolon
+id|info-&gt;hw_version
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|mgsl_add_device
 c_func
 (paren

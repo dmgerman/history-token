@@ -1200,12 +1200,6 @@ suffix:semicolon
 id|ptiglusb_t
 id|s
 suffix:semicolon
-r_char
-id|name
-(braket
-l_int|32
-)braket
-suffix:semicolon
 id|dbg
 (paren
 l_string|&quot;probing vendor id 0x%x, device id 0x%x&quot;
@@ -1359,42 +1353,16 @@ id|dbg
 l_string|&quot;bound to interface&quot;
 )paren
 suffix:semicolon
-id|sprintf
-(paren
-id|name
-comma
-l_string|&quot;ticables/usb/%d&quot;
-comma
-id|s-&gt;minor
-)paren
-suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;registering to devfs : major = %d, minor = %d, node = %s&quot;
-comma
-id|TIUSB_MAJOR
-comma
-(paren
-id|TIUSB_MINOR
-op_plus
-id|s-&gt;minor
-)paren
-comma
-id|name
-)paren
-suffix:semicolon
-id|devfs_register
+id|devfs_mk_cdev
 c_func
 (paren
-l_int|NULL
-comma
-id|name
-comma
-id|DEVFS_FL_DEFAULT
-comma
+id|MKDEV
+c_func
+(paren
 id|TIUSB_MAJOR
 comma
 id|TIUSB_MINOR
+)paren
 op_plus
 id|s-&gt;minor
 comma
@@ -1404,10 +1372,9 @@ id|S_IRUGO
 op_or
 id|S_IWUGO
 comma
-op_amp
-id|tiglusb_fops
+l_string|&quot;ticables/usb/%d&quot;
 comma
-l_int|NULL
+id|s-&gt;minor
 )paren
 suffix:semicolon
 multiline_comment|/* Display firmware version */
@@ -1446,12 +1413,6 @@ op_star
 id|intf
 )paren
 (brace
-r_char
-id|name
-(braket
-l_int|32
-)braket
-suffix:semicolon
 id|ptiglusb_t
 id|s
 op_assign
@@ -1523,9 +1484,8 @@ op_assign
 l_int|0
 suffix:semicolon
 id|devfs_remove
+c_func
 (paren
-id|name
-comma
 l_string|&quot;ticables/usb/%d&quot;
 comma
 id|s-&gt;minor

@@ -3035,21 +3035,12 @@ id|ASYNC_CALLOUT_NOHUP
 )paren
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|schedule_task
 c_func
 (paren
 op_amp
 id|port-&gt;hangup_tq
 )paren
-op_eq
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 )brace
@@ -4185,8 +4176,6 @@ macro_line|#endif&t;
 id|bp-&gt;status
 op_or_assign
 id|BOARD_ACTIVE
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -5325,8 +5314,6 @@ id|port
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|isicom_shutdown_port
 r_static
@@ -7989,8 +7976,6 @@ id|tty
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: module removal race here - AKPM */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|isicom_hangup
 r_static
@@ -8379,6 +8364,10 @@ suffix:semicolon
 id|isicom_normal.magic
 op_assign
 id|TTY_DRIVER_MAGIC
+suffix:semicolon
+id|isicom_normal.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|isicom_normal.name
 op_assign
