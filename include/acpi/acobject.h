@@ -288,6 +288,12 @@ id|acpi_object_device
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 id|ACPI_COMMON_NOTIFY_INFO
+DECL|member|gpe_block
+r_struct
+id|acpi_gpe_block_info
+op_star
+id|gpe_block
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|acpi_object_power_resource

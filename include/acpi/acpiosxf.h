@@ -170,6 +170,45 @@ id|u32
 id|units
 )paren
 suffix:semicolon
+id|acpi_status
+id|acpi_os_create_lock
+(paren
+id|acpi_handle
+op_star
+id|out_handle
+)paren
+suffix:semicolon
+r_void
+id|acpi_os_delete_lock
+(paren
+id|acpi_handle
+id|handle
+)paren
+suffix:semicolon
+r_void
+id|acpi_os_acquire_lock
+(paren
+id|acpi_handle
+id|handle
+comma
+id|u32
+id|flags
+)paren
+suffix:semicolon
+r_void
+id|acpi_os_release_lock
+(paren
+id|acpi_handle
+id|handle
+comma
+id|u32
+id|flags
+)paren
+suffix:semicolon
+DECL|macro|ACPI_NOT_ISR
+mdefine_line|#define ACPI_NOT_ISR        1
+DECL|macro|ACPI_ISR
+mdefine_line|#define ACPI_ISR            0
 multiline_comment|/*&n; * Memory allocation and mapping&n; */
 r_void
 op_star
