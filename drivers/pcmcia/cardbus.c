@@ -903,6 +903,12 @@ id|hdr
 op_amp
 l_int|0x7f
 suffix:semicolon
+id|pci_setup_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|dev-&gt;dev.parent
 op_assign
 id|bus-&gt;dev
@@ -928,12 +934,6 @@ c_func
 (paren
 op_amp
 id|dev-&gt;dev
-)paren
-suffix:semicolon
-id|pci_setup_device
-c_func
-(paren
-id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: Do we need to enable the expansion ROM? */

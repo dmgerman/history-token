@@ -5677,7 +5677,7 @@ id|oldlen
 op_assign
 id|cd.buflen
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;dprintk(&quot;nfsd: f_op-&gt;readdir(%x/%ld @ %d) buflen = %d (%d)&bslash;n&quot;,&n;&t;&t;&t;file.f_inode-&gt;i_dev, file.f_inode-&gt;i_ino,&n;&t;&t;&t;(int) file.f_pos, (int) oldlen, (int) cd.buflen);&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;dprintk(&quot;nfsd: f_op-&gt;readdir(%s/%ld @ %d) buflen = %d (%d)&bslash;n&quot;,&n;&t;&t;&t;file.f_inode-&gt;i_sb-&gt;s_id, file.f_inode-&gt;i_ino,&n;&t;&t;&t;(int) file.f_pos, (int) oldlen, (int) cd.buflen);&n;&t;&t; */
 id|err
 op_assign
 id|file.f_op

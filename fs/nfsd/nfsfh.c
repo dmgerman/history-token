@@ -1679,19 +1679,9 @@ multiline_comment|/* It&squot;s a directory, or we are required to confirm the f
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfs_fh: need to look harder for %02x:%02x/%d&bslash;n&quot;
+l_string|&quot;nfs_fh: need to look harder for %s/%d&bslash;n&quot;
 comma
-id|major
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
-comma
-id|minor
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|datap
 (braket
