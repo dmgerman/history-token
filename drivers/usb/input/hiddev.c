@@ -2815,6 +2815,10 @@ id|HIDIOCSUSAGES
 )paren
 op_logical_and
 (paren
+id|uref_multi-&gt;num_values
+op_ge
+id|HID_MAX_MULTI_USAGES
+op_logical_or
 id|uref-&gt;usage_index
 op_plus
 id|uref_multi-&gt;num_values
