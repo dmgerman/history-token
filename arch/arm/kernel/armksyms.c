@@ -165,11 +165,18 @@ id|__backtrace
 )paren
 suffix:semicolon
 multiline_comment|/* platform dependent support */
-DECL|variable|udelay
+DECL|variable|__udelay
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|udelay
+id|__udelay
+)paren
+suffix:semicolon
+DECL|variable|__const_udelay
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__const_udelay
 )paren
 suffix:semicolon
 multiline_comment|/* networking */
