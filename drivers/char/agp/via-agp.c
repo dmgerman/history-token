@@ -1595,7 +1595,7 @@ id|pci_dev
 op_star
 id|pdev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -1608,7 +1608,7 @@ id|pci_set_power_state
 (paren
 id|pdev
 comma
-l_int|3
+id|PCI_D3hot
 )paren
 suffix:semicolon
 r_return
@@ -1642,7 +1642,7 @@ id|pci_set_power_state
 (paren
 id|pdev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 id|pci_restore_state
