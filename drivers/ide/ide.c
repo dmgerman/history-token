@@ -2516,10 +2516,12 @@ id|hwif
 comma
 op_star
 id|g
-comma
-op_star
+suffix:semicolon
+r_static
+id|ide_hwif_t
 id|tmp_hwif
 suffix:semicolon
+multiline_comment|/* protected by ide_cfg_sem */
 id|ide_hwgroup_t
 op_star
 id|hwgroup
@@ -2541,41 +2543,6 @@ op_ge
 id|MAX_HWIFS
 )paren
 suffix:semicolon
-id|tmp_hwif
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-op_star
-id|tmp_hwif
-)paren
-comma
-id|GFP_KERNEL
-op_or
-id|__GFP_NOFAIL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|tmp_hwif
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: unable to allocate memory&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|BUG_ON
 c_func
 (paren
@@ -3218,7 +3185,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* copy original settings */
-op_star
 id|tmp_hwif
 op_assign
 op_star
@@ -3246,6 +3212,7 @@ c_func
 (paren
 id|hwif
 comma
+op_amp
 id|tmp_hwif
 )paren
 suffix:semicolon
@@ -3263,12 +3230,6 @@ c_func
 (paren
 op_amp
 id|ide_cfg_sem
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|tmp_hwif
 )paren
 suffix:semicolon
 )brace
