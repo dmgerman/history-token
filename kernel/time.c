@@ -68,7 +68,7 @@ r_int
 id|sys_stime
 c_func
 (paren
-r_int
+id|time_t
 op_star
 id|tptr
 )paren
@@ -388,8 +388,12 @@ id|tz
 )paren
 (brace
 r_struct
+id|timeval
+id|user_tv
+suffix:semicolon
+r_struct
 id|timespec
-id|new_tv
+id|new_ts
 suffix:semicolon
 r_struct
 id|timezone
@@ -408,7 +412,7 @@ id|copy_from_user
 c_func
 (paren
 op_amp
-id|new_tv
+id|user_tv
 comma
 id|tv
 comma
@@ -423,8 +427,14 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|new_tv.tv_nsec
-op_mul_assign
+id|new_ts.tv_sec
+op_assign
+id|user_tv.tv_sec
+suffix:semicolon
+id|new_ts.tv_nsec
+op_assign
+id|user_tv.tv_usec
+op_star
 id|NSEC_PER_USEC
 suffix:semicolon
 )brace
@@ -465,7 +475,7 @@ id|tv
 ques
 c_cond
 op_amp
-id|new_tv
+id|new_ts
 suffix:colon
 l_int|NULL
 comma
