@@ -11,9 +11,11 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/dma-mapping.h&gt;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
 macro_line|#ifdef DEBUG
@@ -4111,6 +4113,21 @@ id|intf
 comma
 id|kaweth
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dma_supported
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+l_int|0xffffffffffffffffULL
+)paren
+)paren
+id|kaweth-&gt;net-&gt;features
+op_or_assign
+id|NETIF_F_HIGHDMA
 suffix:semicolon
 r_if
 c_cond
