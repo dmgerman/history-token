@@ -2655,7 +2655,7 @@ multiline_comment|/* claim the slot */
 id|strncpy
 c_func
 (paren
-id|device-&gt;name
+id|mdev-&gt;name
 comma
 id|el3_mca_adapter_names
 (braket
@@ -2664,7 +2664,7 @@ id|mdev-&gt;index
 comma
 r_sizeof
 (paren
-id|device-&gt;name
+id|mdev-&gt;name
 )paren
 )paren
 suffix:semicolon
