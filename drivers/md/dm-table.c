@@ -168,7 +168,7 @@ suffix:semicolon
 DECL|macro|__HIGH
 mdefine_line|#define __HIGH(l, r) if (*(l) &lt; (r)) *(l) = (r)
 DECL|macro|__LOW
-mdefine_line|#define __LOW(l, r) if (*(l) &gt; (r)) *(l) = (r)
+mdefine_line|#define __LOW(l, r) if (*(l) == 0 || *(l) &gt; (r)) *(l) = (r)
 multiline_comment|/*&n; * Combine two io_restrictions, always taking the lower value.&n; */
 DECL|function|combine_restrictions_low
 r_static
