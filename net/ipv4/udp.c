@@ -3069,7 +3069,7 @@ id|out
 suffix:semicolon
 )brace
 DECL|function|udp_sendpage
-id|ssize_t
+r_int
 id|udp_sendpage
 c_func
 (paren
