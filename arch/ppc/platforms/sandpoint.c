@@ -810,6 +810,45 @@ DECL|macro|SANDPOINT_87308_SELECT_DEV
 mdefine_line|#define SANDPOINT_87308_SELECT_DEV(dev_num) {&t;&t;&t;&t;&bslash;&n;&t;SANDPOINT_87308_CFG_OUTB(0x07, (dev_num));&t;&t;&t;&bslash;&n;}
 DECL|macro|SANDPOINT_87308_DEV_ENABLE
 mdefine_line|#define&t;SANDPOINT_87308_DEV_ENABLE(dev_num) {&t;&t;&t;&t;&bslash;&n;&t;SANDPOINT_87308_SELECT_DEV(dev_num);&t;&t;&t;&t;&bslash;&n;&t;SANDPOINT_87308_CFG_OUTB(0x30, 0x01);&t;&t;&t;&t;&bslash;&n;}
+multiline_comment|/*&n; * Fix IDE interrupts.&n; */
+r_static
+r_int
+id|__init
+DECL|function|sandpoint_fix_winbond_83553
+id|sandpoint_fix_winbond_83553
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Make all 8259 interrupt level sensitive */
+id|outb
+c_func
+(paren
+l_int|0xf8
+comma
+l_int|0x4d0
+)paren
+suffix:semicolon
+id|outb
+c_func
+(paren
+l_int|0xde
+comma
+l_int|0x4d1
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|sandpoint_fix_winbond_83553
+id|arch_initcall
+c_func
+(paren
+id|sandpoint_fix_winbond_83553
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Initialize the ISA devices on the Nat&squot;l PC87308VUL SuperIO chip.&n; */
 r_static
 r_int
@@ -961,45 +1000,6 @@ id|arch_initcall
 c_func
 (paren
 id|sandpoint_setup_natl_87308
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Fix IDE interrupts.&n; */
-r_static
-r_int
-id|__init
-DECL|function|sandpoint_fix_winbond_83553
-id|sandpoint_fix_winbond_83553
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* Make all 8259 interrupt level sensitive */
-id|outb
-c_func
-(paren
-l_int|0xf8
-comma
-l_int|0x4d0
-)paren
-suffix:semicolon
-id|outb
-c_func
-(paren
-l_int|0xde
-comma
-l_int|0x4d1
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|sandpoint_fix_winbond_83553
-id|arch_initcall
-c_func
-(paren
-id|sandpoint_fix_winbond_83553
 )paren
 suffix:semicolon
 r_static
