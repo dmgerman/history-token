@@ -708,6 +708,15 @@ DECL|member|recovery_cp
 id|sector_t
 id|recovery_cp
 suffix:semicolon
+DECL|member|safemode
+r_int
+id|safemode
+suffix:semicolon
+multiline_comment|/* if set, update &quot;clean&quot; superblock&n;&t;&t;&t;&t;&t;&t;&t; * when no writes pending.&n;&t;&t;&t;&t;&t;&t;&t; */
+DECL|member|writes_pending
+id|atomic_t
+id|writes_pending
+suffix:semicolon
 DECL|member|queue
 id|request_queue_t
 id|queue
