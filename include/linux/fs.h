@@ -920,6 +920,12 @@ r_struct
 id|list_head
 id|bd_list
 suffix:semicolon
+DECL|member|bd_inode_backing_dev_info
+r_struct
+id|backing_dev_info
+op_star
+id|bd_inode_backing_dev_info
+suffix:semicolon
 multiline_comment|/*&n;&t; * Private data.  You must have bd_claim&squot;ed the block_device&n;&t; * to use this.  NOTE:  bd_claim allows an owner to claim&n;&t; * the same device multiple times, the owner must take special&n;&t; * care to not mess up bd_private for that case.&n;&t; */
 DECL|member|bd_private
 r_int
@@ -2667,6 +2673,8 @@ comma
 r_const
 r_char
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern

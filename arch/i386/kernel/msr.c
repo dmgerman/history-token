@@ -510,7 +510,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#else /* ! CONFIG_SMP */
+macro_line|#else&t;&t;&t;&t;/* ! CONFIG_SMP */
 DECL|function|do_wrmsr
 r_static
 r_inline
@@ -577,7 +577,7 @@ id|edx
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* ! CONFIG_SMP */
+macro_line|#endif&t;&t;&t;&t;/* ! CONFIG_SMP */
 DECL|function|msr_seek
 r_static
 id|loff_t
@@ -970,6 +970,7 @@ id|file
 )paren
 (brace
 r_int
+r_int
 id|cpu
 op_assign
 id|iminor
@@ -994,6 +995,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|cpu
+op_ge
+id|NR_CPUS
+op_logical_or
 op_logical_neg
 id|cpu_online
 c_func

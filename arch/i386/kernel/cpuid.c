@@ -481,6 +481,7 @@ id|file
 )paren
 (brace
 r_int
+r_int
 id|cpu
 op_assign
 id|iminor
@@ -505,6 +506,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|cpu
+op_ge
+id|NR_CPUS
+op_logical_or
 op_logical_neg
 id|cpu_online
 c_func

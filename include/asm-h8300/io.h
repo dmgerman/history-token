@@ -14,7 +14,6 @@ macro_line|#endif
 multiline_comment|/*&n; * These are for ISA/PCI shared memory _only_ and should never be used&n; * on any other type of memory, including Zorro memory. They are meant to&n; * access the bus in the bus byte order which is little-endian!.&n; *&n; * readX/writeX() are used to access memory mapped devices. On some&n; * architectures the memory mapped IO stuff needs to be accessed&n; * differently. On the m68k architecture, we just read/write the&n; * memory location directly.&n; */
 multiline_comment|/* ++roman: The assignments to temp. vars avoid that gcc sometimes generates&n; * two accesses to memory, which may be undesireable for some devices.&n; */
 multiline_comment|/*&n; * swap functions are sometimes needed to interface little-endian hardware&n; */
-multiline_comment|/*&n; * CHANGES&n; * &n; * 020325   Added some #define&squot;s for the COBRA5272 board&n; *          (hede)&n; */
 DECL|function|_swapw
 r_static
 r_inline
@@ -29,20 +28,37 @@ r_int
 id|v
 )paren
 (brace
+r_int
+r_int
+id|r
+comma
+id|t
+suffix:semicolon
+id|__asm__
+c_func
+(paren
+l_string|&quot;mov.b %w2,%x1&bslash;n&bslash;t&quot;
+l_string|&quot;mov.b %x2,%w1&bslash;n&bslash;t&quot;
+l_string|&quot;mov.w %1,%0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|r
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|t
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|v
+)paren
+)paren
+suffix:semicolon
 r_return
-(paren
-(paren
-id|v
-op_lshift
-l_int|8
-)paren
-op_or
-(paren
-id|v
-op_rshift
-l_int|8
-)paren
-)paren
+id|r
 suffix:semicolon
 )brace
 DECL|function|_swapl
@@ -59,40 +75,40 @@ r_int
 id|v
 )paren
 (brace
+r_int
+r_int
+id|r
+comma
+id|t
+suffix:semicolon
+id|__asm__
+c_func
+(paren
+l_string|&quot;mov.b %w2,%x1&bslash;n&bslash;t&quot;
+l_string|&quot;mov.b %x2,%w1&bslash;n&bslash;t&quot;
+l_string|&quot;mov.w %f1,%e0&bslash;n&bslash;t&quot;
+l_string|&quot;mov.w %e2,%f1&bslash;n&bslash;t&quot;
+l_string|&quot;mov.b %w1,%x0&bslash;n&bslash;t&quot;
+l_string|&quot;mov.b %x1,%w0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|r
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|t
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|v
+)paren
+)paren
+suffix:semicolon
 r_return
-(paren
-(paren
-id|v
-op_lshift
-l_int|24
-)paren
-op_or
-(paren
-(paren
-id|v
-op_amp
-l_int|0xff00
-)paren
-op_lshift
-l_int|8
-)paren
-op_or
-(paren
-(paren
-id|v
-op_amp
-l_int|0xff0000
-)paren
-op_rshift
-l_int|8
-)paren
-op_or
-(paren
-id|v
-op_rshift
-l_int|24
-)paren
-)paren
+id|r
 suffix:semicolon
 )brace
 DECL|macro|readb
@@ -328,9 +344,13 @@ op_decrement
 op_star
 id|ap
 op_assign
+id|_swapw
+c_func
+(paren
 op_star
 id|bp
 op_increment
+)paren
 suffix:semicolon
 )brace
 DECL|function|io_outsl
@@ -388,9 +408,13 @@ op_decrement
 op_star
 id|ap
 op_assign
+id|_swapl
+c_func
+(paren
 op_star
 id|bp
 op_increment
+)paren
 suffix:semicolon
 )brace
 DECL|function|io_insb
@@ -559,8 +583,12 @@ op_star
 id|bp
 op_increment
 op_assign
+id|_swapw
+c_func
+(paren
 op_star
 id|ap
+)paren
 suffix:semicolon
 )brace
 DECL|function|io_insl
@@ -618,8 +646,12 @@ op_star
 id|bp
 op_increment
 op_assign
+id|_swapl
+c_func
+(paren
 op_star
 id|ap
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;make the short names macros so specific devices&n; *&t;can override them as required&n; */

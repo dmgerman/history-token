@@ -42,13 +42,6 @@ r_int
 r_char
 id|slabid_t
 suffix:semicolon
-DECL|typedef|clusterid_t
-r_typedef
-r_int
-r_char
-id|clusterid_t
-suffix:semicolon
-multiline_comment|/* Clusterid of the cell */
 DECL|typedef|iopaddr_t
 r_typedef
 r_int
@@ -60,12 +53,6 @@ r_typedef
 r_int
 r_int
 id|paddr_t
-suffix:semicolon
-DECL|typedef|pfn_t
-r_typedef
-r_int
-r_int
-id|pfn_t
 suffix:semicolon
 DECL|typedef|cnodeid_t
 r_typedef

@@ -500,7 +500,6 @@ op_lshift
 l_int|12
 )paren
 suffix:semicolon
-macro_line|#ifndef __ia64__
 DECL|variable|loops_per_jiffy
 id|EXPORT_SYMBOL
 c_func
@@ -508,7 +507,6 @@ c_func
 id|loops_per_jiffy
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* This is the number of bits of precision for the loops_per_jiffy.  Each&n;   bit takes on average 1.5/HZ seconds.  This (like the original) is a little&n;   better than 1% */
 DECL|macro|LPS_PREC
 mdefine_line|#define LPS_PREC 8
@@ -1216,11 +1214,6 @@ r_int
 r_int
 id|i
 suffix:semicolon
-r_int
-id|j
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* FIXME: This should be done in userspace --RR */
 id|for_each_present_cpu
 c_func
@@ -1250,25 +1243,26 @@ c_func
 id|i
 )paren
 )paren
-(brace
 id|cpu_up
 c_func
 (paren
 id|i
 )paren
 suffix:semicolon
-id|j
-op_increment
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Any cleanup work */
 id|printk
 c_func
 (paren
-l_string|&quot;Brought up %u CPUs&bslash;n&quot;
+l_string|&quot;Brought up %ld CPUs&bslash;n&quot;
 comma
-id|j
+(paren
+r_int
+)paren
+id|num_online_cpus
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|smp_cpus_done

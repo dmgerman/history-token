@@ -593,5 +593,5 @@ op_star
 id|num
 )paren
 suffix:semicolon
-macro_line|#endif /* _LINUX_MODULE_PARAM_TYPES_H */
+macro_line|#endif /* _LINUX_MODULE_PARAMS_H */
 eof

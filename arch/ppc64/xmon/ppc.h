@@ -1,4 +1,4 @@
-multiline_comment|/* ppc.h -- Header file for PowerPC opcode table&n;   Copyright 1994 Free Software Foundation, Inc.&n;   Written by Ian Lance Taylor, Cygnus Support&n;&n;This file is part of GDB, GAS, and the GNU binutils.&n;&n;GDB, GAS, and the GNU binutils are free software; you can redistribute&n;them and/or modify them under the terms of the GNU General Public&n;License as published by the Free Software Foundation; either version&n;1, or (at your option) any later version.&n;&n;GDB, GAS, and the GNU binutils are distributed in the hope that they&n;will be useful, but WITHOUT ANY WARRANTY; without even the implied&n;warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n;the GNU General Public License for more details.&n;&n;You should have received a copy of the GNU General Public License&n;along with this file; see the file COPYING.  If not, write to the Free&n;Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
+multiline_comment|/* ppc.h -- Header file for PowerPC opcode table&n;   Copyright 1994, 1995, 1999, 2000, 2001, 2002, 2003&n;   Free Software Foundation, Inc.&n;   Written by Ian Lance Taylor, Cygnus Support&n;&n;This file is part of GDB, GAS, and the GNU binutils.&n;&n;GDB, GAS, and the GNU binutils are free software; you can redistribute&n;them and/or modify them under the terms of the GNU General Public&n;License as published by the Free Software Foundation; either version&n;1, or (at your option) any later version.&n;&n;GDB, GAS, and the GNU binutils are distributed in the hope that they&n;will be useful, but WITHOUT ANY WARRANTY; without even the implied&n;warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n;the GNU General Public License for more details.&n;&n;You should have received a copy of the GNU General Public License&n;along with this file; see the file COPYING.  If not, write to the Free&n;Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 macro_line|#ifndef PPC_H
 DECL|macro|PPC_H
 mdefine_line|#define PPC_H
@@ -60,22 +60,76 @@ suffix:semicolon
 multiline_comment|/* Values defined for the flags field of a struct powerpc_opcode.  */
 multiline_comment|/* Opcode is defined for the PowerPC architecture.  */
 DECL|macro|PPC_OPCODE_PPC
-mdefine_line|#define PPC_OPCODE_PPC (01)
+mdefine_line|#define PPC_OPCODE_PPC&t;&t;&t; 1
 multiline_comment|/* Opcode is defined for the POWER (RS/6000) architecture.  */
 DECL|macro|PPC_OPCODE_POWER
-mdefine_line|#define PPC_OPCODE_POWER (02)
+mdefine_line|#define PPC_OPCODE_POWER&t;&t; 2
 multiline_comment|/* Opcode is defined for the POWER2 (Rios 2) architecture.  */
 DECL|macro|PPC_OPCODE_POWER2
-mdefine_line|#define PPC_OPCODE_POWER2 (04)
+mdefine_line|#define PPC_OPCODE_POWER2&t;&t; 4
 multiline_comment|/* Opcode is only defined on 32 bit architectures.  */
 DECL|macro|PPC_OPCODE_32
-mdefine_line|#define PPC_OPCODE_32 (010)
+mdefine_line|#define PPC_OPCODE_32&t;&t;&t; 8
 multiline_comment|/* Opcode is only defined on 64 bit architectures.  */
 DECL|macro|PPC_OPCODE_64
-mdefine_line|#define PPC_OPCODE_64 (020)
+mdefine_line|#define PPC_OPCODE_64&t;&t;      0x10
 multiline_comment|/* Opcode is supported by the Motorola PowerPC 601 processor.  The 601&n;   is assumed to support all PowerPC (PPC_OPCODE_PPC) instructions,&n;   but it also supports many additional POWER instructions.  */
 DECL|macro|PPC_OPCODE_601
-mdefine_line|#define PPC_OPCODE_601 (040)
+mdefine_line|#define PPC_OPCODE_601&t;&t;      0x20
+multiline_comment|/* Opcode is supported in both the Power and PowerPC architectures&n;   (ie, compiler&squot;s -mcpu=common or assembler&squot;s -mcom).  */
+DECL|macro|PPC_OPCODE_COMMON
+mdefine_line|#define PPC_OPCODE_COMMON&t;      0x40
+multiline_comment|/* Opcode is supported for any Power or PowerPC platform (this is&n;   for the assembler&squot;s -many option, and it eliminates duplicates).  */
+DECL|macro|PPC_OPCODE_ANY
+mdefine_line|#define PPC_OPCODE_ANY&t;&t;      0x80
+multiline_comment|/* Opcode is supported as part of the 64-bit bridge.  */
+DECL|macro|PPC_OPCODE_64_BRIDGE
+mdefine_line|#define PPC_OPCODE_64_BRIDGE&t;     0x100
+multiline_comment|/* Opcode is supported by Altivec Vector Unit */
+DECL|macro|PPC_OPCODE_ALTIVEC
+mdefine_line|#define PPC_OPCODE_ALTIVEC&t;     0x200
+multiline_comment|/* Opcode is supported by PowerPC 403 processor.  */
+DECL|macro|PPC_OPCODE_403
+mdefine_line|#define PPC_OPCODE_403&t;&t;     0x400
+multiline_comment|/* Opcode is supported by PowerPC BookE processor.  */
+DECL|macro|PPC_OPCODE_BOOKE
+mdefine_line|#define PPC_OPCODE_BOOKE&t;     0x800
+multiline_comment|/* Opcode is only supported by 64-bit PowerPC BookE processor.  */
+DECL|macro|PPC_OPCODE_BOOKE64
+mdefine_line|#define PPC_OPCODE_BOOKE64&t;    0x1000
+multiline_comment|/* Opcode is supported by PowerPC 440 processor.  */
+DECL|macro|PPC_OPCODE_440
+mdefine_line|#define PPC_OPCODE_440&t;&t;    0x2000
+multiline_comment|/* Opcode is only supported by Power4 architecture.  */
+DECL|macro|PPC_OPCODE_POWER4
+mdefine_line|#define PPC_OPCODE_POWER4&t;    0x4000
+multiline_comment|/* Opcode isn&squot;t supported by Power4 architecture.  */
+DECL|macro|PPC_OPCODE_NOPOWER4
+mdefine_line|#define PPC_OPCODE_NOPOWER4&t;    0x8000
+multiline_comment|/* Opcode is only supported by POWERPC Classic architecture.  */
+DECL|macro|PPC_OPCODE_CLASSIC
+mdefine_line|#define PPC_OPCODE_CLASSIC&t;   0x10000
+multiline_comment|/* Opcode is only supported by e500x2 Core.  */
+DECL|macro|PPC_OPCODE_SPE
+mdefine_line|#define PPC_OPCODE_SPE&t;&t;   0x20000
+multiline_comment|/* Opcode is supported by e500x2 Integer select APU.  */
+DECL|macro|PPC_OPCODE_ISEL
+mdefine_line|#define PPC_OPCODE_ISEL&t;&t;   0x40000
+multiline_comment|/* Opcode is an e500 SPE floating point instruction.  */
+DECL|macro|PPC_OPCODE_EFS
+mdefine_line|#define PPC_OPCODE_EFS&t;&t;   0x80000
+multiline_comment|/* Opcode is supported by branch locking APU.  */
+DECL|macro|PPC_OPCODE_BRLOCK
+mdefine_line|#define PPC_OPCODE_BRLOCK&t;  0x100000
+multiline_comment|/* Opcode is supported by performance monitor APU.  */
+DECL|macro|PPC_OPCODE_PMR
+mdefine_line|#define PPC_OPCODE_PMR&t;&t;  0x200000
+multiline_comment|/* Opcode is supported by cache locking APU.  */
+DECL|macro|PPC_OPCODE_CACHELCK
+mdefine_line|#define PPC_OPCODE_CACHELCK&t;  0x400000
+multiline_comment|/* Opcode is supported by machine check APU.  */
+DECL|macro|PPC_OPCODE_RFMCI
+mdefine_line|#define PPC_OPCODE_RFMCI&t;  0x800000
 multiline_comment|/* A macro to extract the major opcode from an instruction.  */
 DECL|macro|PPC_OP
 mdefine_line|#define PPC_OP(i) (((i) &gt;&gt; 26) &amp; 0x3f)
@@ -103,8 +157,6 @@ r_int
 op_star
 id|insert
 )paren
-id|PARAMS
-(paren
 (paren
 r_int
 r_int
@@ -113,12 +165,14 @@ comma
 r_int
 id|op
 comma
+r_int
+id|dialect
+comma
 r_const
 r_char
 op_star
 op_star
 id|errmsg
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Extraction function.  This is used by the disassembler.  To&n;     extract this operand type from an instruction, check this field.&n;&n;     If it is NULL, compute&n;         op = ((i) &gt;&gt; o-&gt;shift) &amp; ((1 &lt;&lt; o-&gt;bits) - 1);&n;&t; if ((o-&gt;flags &amp; PPC_OPERAND_SIGNED) != 0&n;&t;     &amp;&amp; (op &amp; (1 &lt;&lt; (o-&gt;bits - 1))) != 0)&n;&t;   op -= 1 &lt;&lt; o-&gt;bits;&n;     (i is the instruction, o is a pointer to this structure, and op&n;     is the result; this assumes twos complement arithmetic).&n;&n;     If this field is not NULL, then simply call it with the&n;     instruction value.  It will return the value of the operand.  If&n;     the INVALID argument is not NULL, *INVALID will be set to&n;     non-zero if this operand type can not actually be extracted from&n;     this operand (i.e., the instruction does not match).  If the&n;     operand is valid, *INVALID will not be changed.  */
@@ -128,17 +182,17 @@ r_int
 op_star
 id|extract
 )paren
-id|PARAMS
-(paren
 (paren
 r_int
 r_int
 id|instruction
 comma
 r_int
+id|dialect
+comma
+r_int
 op_star
 id|invalid
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* One bit syntax flags.  */
@@ -195,6 +249,15 @@ mdefine_line|#define PPC_OPERAND_NEXT (02000)
 multiline_comment|/* This operand should be regarded as a negative number for the&n;   purposes of overflow checking (i.e., the normal most negative&n;   number is disallowed and one more than the normal most positive&n;   number is allowed).  This flag will only be set for a signed&n;   operand.  */
 DECL|macro|PPC_OPERAND_NEGATIVE
 mdefine_line|#define PPC_OPERAND_NEGATIVE (04000)
+multiline_comment|/* This operand names a vector unit register.  The disassembler&n;   prints these with a leading &squot;v&squot;.  */
+DECL|macro|PPC_OPERAND_VR
+mdefine_line|#define PPC_OPERAND_VR (010000)
+multiline_comment|/* This operand is for the DS field in a DS form instruction.  */
+DECL|macro|PPC_OPERAND_DS
+mdefine_line|#define PPC_OPERAND_DS (020000)
+multiline_comment|/* This operand is for the DQ field in a DQ form instruction.  */
+DECL|macro|PPC_OPERAND_DQ
+mdefine_line|#define PPC_OPERAND_DQ (040000)
 "&f;"
 multiline_comment|/* The POWER and PowerPC assemblers use a few macros.  We keep them&n;   with the operands table for simplicity.  The macro table is an&n;   array of struct powerpc_macro.  */
 DECL|struct|powerpc_macro

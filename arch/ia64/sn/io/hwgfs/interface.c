@@ -853,6 +853,8 @@ comma
 id|dentry
 comma
 id|link
+comma
+id|S_IALLUGO
 )paren
 suffix:semicolon
 id|dentry-&gt;d_fsdata

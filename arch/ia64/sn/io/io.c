@@ -1823,7 +1823,7 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|NASID_TO_COMPACT_NODEID
+id|nasid_to_cnodeid
 c_func
 (paren
 id|nasid

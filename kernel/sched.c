@@ -12444,7 +12444,8 @@ c_func
 (paren
 )paren
 op_logical_or
-id|cpu_is_offline
+op_logical_neg
+id|cpu_online
 c_func
 (paren
 id|cpu

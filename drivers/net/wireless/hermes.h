@@ -1110,7 +1110,6 @@ id|off
 op_lshift
 id|hw-&gt;reg_spacing
 suffix:semicolon
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1206,7 +1205,6 @@ op_assign
 id|off
 op_lshift
 id|hw-&gt;reg_spacing
-suffix:semicolon
 suffix:semicolon
 r_if
 c_cond
