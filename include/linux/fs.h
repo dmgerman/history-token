@@ -995,6 +995,12 @@ DECL|member|bd_holders
 r_int
 id|bd_holders
 suffix:semicolon
+DECL|member|bd_contains
+r_struct
+id|block_device
+op_star
+id|bd_contains
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|inode
