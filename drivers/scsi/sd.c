@@ -1405,6 +1405,14 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|SCpnt-&gt;request_bufflen
+op_assign
+id|SCpnt-&gt;bufflen
+op_assign
+id|this_count
+op_star
+id|sdp-&gt;sector_size
+suffix:semicolon
 multiline_comment|/*&n;&t; * We shouldn&squot;t disconnect in the middle of a sector, so with a dumb&n;&t; * host adapter, it&squot;s safe to assume that we can at least transfer&n;&t; * this many bytes between each connect / disconnect.&n;&t; */
 id|SCpnt-&gt;transfersize
 op_assign
@@ -5574,12 +5582,6 @@ r_struct
 id|scsi_disk
 op_star
 id|sdkp
-op_assign
-id|dev_get_drvdata
-c_func
-(paren
-id|dev
-)paren
 suffix:semicolon
 r_struct
 id|scsi_request
@@ -5591,6 +5593,23 @@ id|retries
 comma
 id|res
 suffix:semicolon
+id|sdkp
+op_assign
+id|dev_get_drvdata
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sdkp
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* this can happen */
 r_if
 c_cond
 (paren
