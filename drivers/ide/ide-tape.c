@@ -18104,6 +18104,10 @@ id|g
 op_assign
 id|drive-&gt;disk
 suffix:semicolon
+id|drive-&gt;dsc_overlap
+op_assign
+l_int|0
+suffix:semicolon
 id|drive-&gt;driver_data
 op_assign
 l_int|NULL

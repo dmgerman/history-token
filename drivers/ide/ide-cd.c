@@ -12756,6 +12756,25 @@ comma
 id|CD_FRAMESIZE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|drive-&gt;autotune
+op_eq
+id|IDE_TUNE_DEFAULT
+op_logical_or
+id|drive-&gt;autotune
+op_eq
+id|IDE_TUNE_AUTO
+)paren
+id|drive-&gt;dsc_overlap
+op_assign
+(paren
+id|drive-&gt;next
+op_ne
+id|drive
+)paren
+suffix:semicolon
 macro_line|#if 0
 id|drive-&gt;dsc_overlap
 op_assign
@@ -13047,6 +13066,10 @@ id|__FUNCTION__
 comma
 id|drive-&gt;name
 )paren
+suffix:semicolon
+id|drive-&gt;dsc_overlap
+op_assign
+l_int|0
 suffix:semicolon
 id|drive-&gt;driver_data
 op_assign

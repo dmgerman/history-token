@@ -8018,34 +8018,6 @@ id|drives_lock
 )paren
 suffix:semicolon
 singleline_comment|//&t;printk(KERN_INFO &quot;%s: attached %s driver.&bslash;n&quot;, drive-&gt;name, driver-&gt;name);
-r_if
-c_cond
-(paren
-(paren
-id|drive-&gt;autotune
-op_eq
-id|IDE_TUNE_DEFAULT
-)paren
-op_logical_or
-(paren
-id|drive-&gt;autotune
-op_eq
-id|IDE_TUNE_AUTO
-)paren
-)paren
-(brace
-multiline_comment|/* DMA timings and setup moved to ide-probe.c */
-id|drive-&gt;dsc_overlap
-op_assign
-(paren
-id|drive-&gt;next
-op_ne
-id|drive
-op_logical_and
-id|driver-&gt;supports_dsc_overlap
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_PROC_FS
 r_if
 c_cond
