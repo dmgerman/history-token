@@ -72,6 +72,7 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
+multiline_comment|/* protects critical sections from port&squot;s interrupt handler */
 DECL|member|write
 r_int
 (paren
@@ -127,7 +128,7 @@ id|serio_driver
 op_star
 id|drv
 suffix:semicolon
-multiline_comment|/* Accessed from interrupt, writes must be protected by serio_lock */
+multiline_comment|/* accessed from interrupt, must be protected by serio-&gt;lock */
 DECL|member|dev
 r_struct
 id|device
@@ -483,6 +484,49 @@ id|cleanup
 c_func
 (paren
 id|serio
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Use the following fucntions to protect critical sections in&n; * driver code from port&squot;s interrupt handler&n; */
+DECL|function|serio_pause_rx
+r_static
+id|__inline__
+r_void
+id|serio_pause_rx
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|serio
+)paren
+(brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|serio-&gt;lock
+)paren
+suffix:semicolon
+)brace
+DECL|function|serio_continue_rx
+r_static
+id|__inline__
+r_void
+id|serio_continue_rx
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|serio
+)paren
+(brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|serio-&gt;lock
 )paren
 suffix:semicolon
 )brace
