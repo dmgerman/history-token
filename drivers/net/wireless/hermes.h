@@ -155,8 +155,6 @@ DECL|macro|HERMES_CMD_ALLOC
 mdefine_line|#define&t;&t;HERMES_CMD_ALLOC&t;&t;(0x000A)
 DECL|macro|HERMES_CMD_TX
 mdefine_line|#define&t;&t;HERMES_CMD_TX&t;&t;&t;(0x000B)
-DECL|macro|HERMES_CMD_CLRPRST
-mdefine_line|#define&t;&t;HERMES_CMD_CLRPRST&t;&t;(0x0012)
 multiline_comment|/*--- Regulate Commands ------------------------------*/
 DECL|macro|HERMES_CMD_NOTIFY
 mdefine_line|#define&t;&t;HERMES_CMD_NOTIFY&t;&t;(0x0010)
@@ -167,13 +165,44 @@ DECL|macro|HERMES_CMD_ACCESS
 mdefine_line|#define&t;&t;HERMES_CMD_ACCESS&t;&t;(0x0021)
 DECL|macro|HERMES_CMD_DOWNLD
 mdefine_line|#define&t;&t;HERMES_CMD_DOWNLD&t;&t;(0x0022)
+multiline_comment|/*--- Serial I/O Commands ----------------------------*/
+DECL|macro|HERMES_CMD_READMIF
+mdefine_line|#define&t;&t;HERMES_CMD_READMIF&t;&t;(0x0030)
+DECL|macro|HERMES_CMD_WRITEMIF
+mdefine_line|#define&t;&t;HERMES_CMD_WRITEMIF&t;&t;(0x0031)
 multiline_comment|/*--- Debugging Commands -----------------------------*/
-DECL|macro|HERMES_CMD_MONITOR
-mdefine_line|#define &t;HERMES_CMD_MONITOR&t;&t;(0x0038)
-DECL|macro|HERMES_MONITOR_ENABLE
-mdefine_line|#define&t;&t;HERMES_MONITOR_ENABLE&t;&t;(0x000b)
-DECL|macro|HERMES_MONITOR_DISABLE
-mdefine_line|#define&t;&t;HERMES_MONITOR_DISABLE&t;&t;(0x000f)
+DECL|macro|HERMES_CMD_TEST
+mdefine_line|#define &t;HERMES_CMD_TEST&t;&t;&t;(0x0038)
+multiline_comment|/* Test command arguments */
+DECL|macro|HERMES_TEST_SET_CHANNEL
+mdefine_line|#define&t;&t;HERMES_TEST_SET_CHANNEL&t;&t;0x0800
+DECL|macro|HERMES_TEST_MONITOR
+mdefine_line|#define&t;&t;HERMES_TEST_MONITOR&t;&t;0x0b00
+DECL|macro|HERMES_TEST_STOP
+mdefine_line|#define&t;&t;HERMES_TEST_STOP&t;&t;0x0f00
+multiline_comment|/* Authentication algorithms */
+DECL|macro|HERMES_AUTH_OPEN
+mdefine_line|#define&t;&t;HERMES_AUTH_OPEN&t;&t;1
+DECL|macro|HERMES_AUTH_SHARED_KEY
+mdefine_line|#define&t;&t;HERMES_AUTH_SHARED_KEY&t;&t;2
+multiline_comment|/* WEP settings */
+DECL|macro|HERMES_WEP_PRIVACY_INVOKED
+mdefine_line|#define&t;&t;HERMES_WEP_PRIVACY_INVOKED&t;0x0001
+DECL|macro|HERMES_WEP_EXCL_UNENCRYPTED
+mdefine_line|#define&t;&t;HERMES_WEP_EXCL_UNENCRYPTED&t;0x0002
+DECL|macro|HERMES_WEP_HOST_ENCRYPT
+mdefine_line|#define&t;&t;HERMES_WEP_HOST_ENCRYPT&t;&t;0x0010
+DECL|macro|HERMES_WEP_HOST_DECRYPT
+mdefine_line|#define&t;&t;HERMES_WEP_HOST_DECRYPT&t;&t;0x0080
+multiline_comment|/* Symbol hostscan options */
+DECL|macro|HERMES_HOSTSCAN_SYMBOL_5SEC
+mdefine_line|#define&t;&t;HERMES_HOSTSCAN_SYMBOL_5SEC&t;0x0001
+DECL|macro|HERMES_HOSTSCAN_SYMBOL_ONCE
+mdefine_line|#define&t;&t;HERMES_HOSTSCAN_SYMBOL_ONCE&t;0x0002
+DECL|macro|HERMES_HOSTSCAN_SYMBOL_PASSIVE
+mdefine_line|#define&t;&t;HERMES_HOSTSCAN_SYMBOL_PASSIVE&t;0x0040
+DECL|macro|HERMES_HOSTSCAN_SYMBOL_BCAST
+mdefine_line|#define&t;&t;HERMES_HOSTSCAN_SYMBOL_BCAST&t;0x0080
 multiline_comment|/*&n; * Frame structures and constants&n; */
 DECL|macro|HERMES_DESCRIPTOR_OFFSET
 mdefine_line|#define HERMES_DESCRIPTOR_OFFSET&t;0
@@ -262,8 +291,16 @@ DECL|macro|HERMES_INQ_TALLIES
 mdefine_line|#define HERMES_INQ_TALLIES&t;&t;(0xF100)
 DECL|macro|HERMES_INQ_SCAN
 mdefine_line|#define HERMES_INQ_SCAN&t;&t;&t;(0xF101)
+DECL|macro|HERMES_INQ_CHANNELINFO
+mdefine_line|#define HERMES_INQ_CHANNELINFO&t;&t;(0xF102)
+DECL|macro|HERMES_INQ_HOSTSCAN
+mdefine_line|#define HERMES_INQ_HOSTSCAN&t;&t;(0xF103)
+DECL|macro|HERMES_INQ_HOSTSCAN_SYMBOL
+mdefine_line|#define HERMES_INQ_HOSTSCAN_SYMBOL&t;(0xF104)
 DECL|macro|HERMES_INQ_LINKSTATUS
 mdefine_line|#define HERMES_INQ_LINKSTATUS&t;&t;(0xF200)
+DECL|macro|HERMES_INQ_SEC_STAT_AGERE
+mdefine_line|#define HERMES_INQ_SEC_STAT_AGERE&t;(0xF202)
 DECL|struct|hermes_tallies_frame
 r_struct
 id|hermes_tallies_frame
@@ -371,9 +408,9 @@ id|packed
 suffix:semicolon
 multiline_comment|/* Grabbed from wlan-ng - Thanks Mark... - Jean II&n; * This is the result of a scan inquiry command */
 multiline_comment|/* Structure describing info about an Access Point */
-DECL|struct|hermes_scan_apinfo
+DECL|struct|prism2_scan_apinfo
 r_struct
-id|hermes_scan_apinfo
+id|prism2_scan_apinfo
 (brace
 DECL|member|channel
 id|u16
@@ -402,12 +439,17 @@ DECL|member|beacon_interv
 id|u16
 id|beacon_interv
 suffix:semicolon
-multiline_comment|/* Beacon interval ? */
+multiline_comment|/* Beacon interval */
 DECL|member|capabilities
 id|u16
 id|capabilities
 suffix:semicolon
-multiline_comment|/* Capabilities ? */
+multiline_comment|/* Capabilities */
+DECL|member|essid_len
+id|u16
+id|essid_len
+suffix:semicolon
+multiline_comment|/* ESSID length */
 DECL|member|essid
 id|u8
 id|essid
@@ -428,7 +470,12 @@ DECL|member|proberesp_rate
 id|u16
 id|proberesp_rate
 suffix:semicolon
-multiline_comment|/* ???? */
+multiline_comment|/* Data rate of the response frame */
+DECL|member|atim
+id|u16
+id|atim
+suffix:semicolon
+multiline_comment|/* ATIM window time, Kus (hostscan only) */
 )brace
 id|__attribute__
 (paren
@@ -437,30 +484,58 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Container */
-DECL|struct|hermes_scan_frame
+multiline_comment|/* Same stuff for the Lucent/Agere card.&n; * Thanks to h1kari &lt;h1kari AT dachb0den.com&gt; - Jean II */
+DECL|struct|agere_scan_apinfo
 r_struct
-id|hermes_scan_frame
+id|agere_scan_apinfo
 (brace
-DECL|member|rsvd
+DECL|member|channel
 id|u16
-id|rsvd
+id|channel
 suffix:semicolon
-multiline_comment|/* ??? */
-DECL|member|scanreason
+multiline_comment|/* Channel where the AP sits */
+DECL|member|noise
 id|u16
-id|scanreason
+id|noise
 suffix:semicolon
-multiline_comment|/* ??? */
-DECL|member|aps
-r_struct
-id|hermes_scan_apinfo
-id|aps
+multiline_comment|/* Noise level */
+DECL|member|level
+id|u16
+id|level
+suffix:semicolon
+multiline_comment|/* Signal level */
+DECL|member|bssid
+id|u8
+id|bssid
 (braket
-l_int|35
+id|ETH_ALEN
 )braket
 suffix:semicolon
-multiline_comment|/* Scan result */
+multiline_comment|/* MAC address of the Access Point */
+DECL|member|beacon_interv
+id|u16
+id|beacon_interv
+suffix:semicolon
+multiline_comment|/* Beacon interval */
+DECL|member|capabilities
+id|u16
+id|capabilities
+suffix:semicolon
+multiline_comment|/* Capabilities */
+multiline_comment|/* bits: 0-ess, 1-ibss, 4-privacy [wep] */
+DECL|member|essid_len
+id|u16
+id|essid_len
+suffix:semicolon
+multiline_comment|/* ESSID length */
+DECL|member|essid
+id|u8
+id|essid
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* ESSID of the network */
 )brace
 id|__attribute__
 (paren
@@ -468,6 +543,121 @@ id|__attribute__
 id|packed
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* Moustafa: Scan structure for Symbol cards */
+DECL|struct|symbol_scan_apinfo
+r_struct
+id|symbol_scan_apinfo
+(brace
+DECL|member|channel
+id|u8
+id|channel
+suffix:semicolon
+multiline_comment|/* Channel where the AP sits */
+DECL|member|unknown1
+id|u8
+id|unknown1
+suffix:semicolon
+multiline_comment|/* 8 in 2.9x and 3.9x f/w, 0 otherwise */
+DECL|member|noise
+id|u16
+id|noise
+suffix:semicolon
+multiline_comment|/* Noise level */
+DECL|member|level
+id|u16
+id|level
+suffix:semicolon
+multiline_comment|/* Signal level */
+DECL|member|bssid
+id|u8
+id|bssid
+(braket
+id|ETH_ALEN
+)braket
+suffix:semicolon
+multiline_comment|/* MAC address of the Access Point */
+DECL|member|beacon_interv
+id|u16
+id|beacon_interv
+suffix:semicolon
+multiline_comment|/* Beacon interval */
+DECL|member|capabilities
+id|u16
+id|capabilities
+suffix:semicolon
+multiline_comment|/* Capabilities */
+multiline_comment|/* bits: 0-ess, 1-ibss, 4-privacy [wep] */
+DECL|member|essid_len
+id|u16
+id|essid_len
+suffix:semicolon
+multiline_comment|/* ESSID length */
+DECL|member|essid
+id|u8
+id|essid
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* ESSID of the network */
+DECL|member|rates
+id|u16
+id|rates
+(braket
+l_int|5
+)braket
+suffix:semicolon
+multiline_comment|/* Bit rate supported */
+DECL|member|basic_rates
+id|u16
+id|basic_rates
+suffix:semicolon
+multiline_comment|/* Basic rates bitmask */
+DECL|member|unknown2
+id|u8
+id|unknown2
+(braket
+l_int|6
+)braket
+suffix:semicolon
+multiline_comment|/* Always FF:FF:FF:FF:00:00 */
+DECL|member|unknown3
+id|u8
+id|unknown3
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* Always 0, appeared in f/w 3.91-68 */
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|union|hermes_scan_info
+r_union
+id|hermes_scan_info
+(brace
+DECL|member|a
+r_struct
+id|agere_scan_apinfo
+id|a
+suffix:semicolon
+DECL|member|p
+r_struct
+id|prism2_scan_apinfo
+id|p
+suffix:semicolon
+DECL|member|s
+r_struct
+id|symbol_scan_apinfo
+id|s
+suffix:semicolon
+)brace
 suffix:semicolon
 DECL|macro|HERMES_LINKSTATUS_NOT_CONNECTED
 mdefine_line|#define HERMES_LINKSTATUS_NOT_CONNECTED   (0x0000)  
