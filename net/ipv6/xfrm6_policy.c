@@ -791,6 +791,12 @@ op_sub_assign
 id|x-&gt;u.dst.xfrm-&gt;props.trailer_len
 suffix:semicolon
 )brace
+id|xfrm_init_pmtu
+c_func
+(paren
+id|dst
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

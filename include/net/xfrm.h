@@ -2016,6 +2016,14 @@ id|dst_entry
 op_star
 id|route
 suffix:semicolon
+DECL|member|route_mtu_cached
+id|u32
+id|route_mtu_cached
+suffix:semicolon
+DECL|member|child_mtu_cached
+id|u32
+id|child_mtu_cached
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Decapsulation state, used by the input to store data during&n; * decapsulation procedure, to be used later (during the policy&n; * check&n; */
@@ -4194,6 +4202,17 @@ id|fl
 comma
 r_int
 id|family
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfrm_init_pmtu
+c_func
+(paren
+r_struct
+id|dst_entry
+op_star
+id|dst
 )paren
 suffix:semicolon
 r_extern
