@@ -890,27 +890,17 @@ comma
 id|ct
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each_safe
+c_func
 (paren
 id|exp_entry
-op_assign
-id|ct-&gt;sibling_list.next
-suffix:semicolon
-id|exp_entry
-op_ne
+comma
+id|next
+comma
 op_amp
 id|ct-&gt;sibling_list
-suffix:semicolon
-id|exp_entry
-op_assign
-id|next
 )paren
 (brace
-id|next
-op_assign
-id|exp_entry-&gt;next
-suffix:semicolon
 id|exp
 op_assign
 id|list_entry
@@ -1131,8 +1121,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ct-&gt;master
-op_logical_and
 id|master_ct
 c_func
 (paren
@@ -2782,16 +2770,6 @@ op_amp
 id|conntrack-&gt;sibling_list
 )paren
 suffix:semicolon
-multiline_comment|/* Mark clearly that it&squot;s not in the hash table. */
-id|conntrack-&gt;tuplehash
-(braket
-id|IP_CT_DIR_ORIGINAL
-)braket
-dot
-id|list.next
-op_assign
-l_int|NULL
-suffix:semicolon
 id|WRITE_LOCK
 c_func
 (paren
@@ -4439,7 +4417,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* Zero out the new structure, then fill out it with the data */
 id|DEBUGP
 c_func
 (paren
@@ -4448,38 +4425,6 @@ comma
 r_new
 comma
 id|related_to
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-r_new
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|expect
-)paren
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-r_new
-op_member_access_from_pointer
-id|list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-r_new
-op_member_access_from_pointer
-id|expected_list
 )paren
 suffix:semicolon
 id|memcpy
@@ -4508,14 +4453,15 @@ id|sibling
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* increase usage count. This sucks. The memset above overwrites&n;&t; * old usage count [if still present] and we increase to one.  Only&n;&t; * works because everything is done under ip_conntrack_lock() */
-id|atomic_inc
+id|atomic_set
 c_func
 (paren
 op_amp
 r_new
 op_member_access_from_pointer
 id|use
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* add to expected list for this connection */
@@ -6503,6 +6449,7 @@ suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
 id|err_free_ct_cachep
 suffix:colon
 id|kmem_cache_destroy
@@ -6511,6 +6458,7 @@ c_func
 id|ip_conntrack_cachep
 )paren
 suffix:semicolon
+macro_line|#endif /*CONFIG_SYSCTL*/
 id|err_free_hash
 suffix:colon
 id|vfree
