@@ -1285,11 +1285,6 @@ id|stats2_ptr
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#if defined(CONFIG_X86) || defined(CONFIG_PPC)
-multiline_comment|/* Intel has null pci_unmap_single, no reasons to remember mapping. */
-DECL|macro|DUMMY_PCI_UNMAP
-mdefine_line|#define DUMMY_PCI_UNMAP
-macro_line|#endif
 DECL|struct|ring_info
 r_struct
 id|ring_info
@@ -1300,15 +1295,13 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-macro_line|#ifndef DUMMY_PCI_UNMAP
 DECL|member|mapping
 id|dma_addr_t
 id|mapping
 suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
-multiline_comment|/* Funny... As soon as we add maplen on alpha, it starts to work&n; * much slower. Hmm... is it because struct does not fit to one cacheline?&n; * So, split tx_ring_info.&n; */
+multiline_comment|/*&n; * Funny... As soon as we add maplen on alpha, it starts to work&n; * much slower. Hmm... is it because struct does not fit to one cacheline?&n; * So, split tx_ring_info.&n; */
 DECL|struct|tx_ring_info
 r_struct
 id|tx_ring_info
@@ -1319,7 +1312,6 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-macro_line|#ifndef DUMMY_PCI_UNMAP
 DECL|member|mapping
 id|dma_addr_t
 id|mapping
@@ -1328,7 +1320,6 @@ DECL|member|maplen
 r_int
 id|maplen
 suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * struct ace_skb holding the rings of skb&squot;s. This is an awful lot of&n; * pointers, but I don&squot;t see any other smart mode to do this in an&n; * efficient manner ;-(&n; */

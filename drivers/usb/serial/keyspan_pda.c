@@ -2689,6 +2689,12 @@ op_le
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|serial-&gt;dev
+)paren
+(brace
 multiline_comment|/* the normal serial device seems to always shut off DTR and RTS now */
 r_if
 c_cond
@@ -2716,6 +2722,7 @@ id|usb_unlink_urb
 id|port-&gt;interrupt_in_urb
 )paren
 suffix:semicolon
+)brace
 id|port-&gt;active
 op_assign
 l_int|0

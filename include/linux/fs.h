@@ -163,6 +163,8 @@ DECL|macro|MS_BIND
 mdefine_line|#define MS_BIND&t;&t;4096
 DECL|macro|MS_REC
 mdefine_line|#define MS_REC&t;&t;16384
+DECL|macro|MS_VERBOSE
+mdefine_line|#define MS_VERBOSE&t;32768
 DECL|macro|MS_NOUSER
 mdefine_line|#define MS_NOUSER&t;(1&lt;&lt;31)
 multiline_comment|/*&n; * Superblock flags that can be altered by MS_REMOUNT&n; */

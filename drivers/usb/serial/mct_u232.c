@@ -1668,7 +1668,13 @@ op_le
 l_int|0
 )paren
 (brace
-multiline_comment|/* shutdown our bulk reads and writes */
+r_if
+c_cond
+(paren
+id|port-&gt;serial-&gt;dev
+)paren
+(brace
+multiline_comment|/* shutdown our urbs */
 id|usb_unlink_urb
 (paren
 id|port-&gt;write_urb
@@ -1679,12 +1685,12 @@ id|usb_unlink_urb
 id|port-&gt;read_urb
 )paren
 suffix:semicolon
-multiline_comment|/* wgg - do I need this? I think so. */
 id|usb_unlink_urb
 (paren
 id|port-&gt;interrupt_in_urb
 )paren
 suffix:semicolon
+)brace
 id|port-&gt;active
 op_assign
 l_int|0

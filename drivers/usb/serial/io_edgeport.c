@@ -3652,6 +3652,12 @@ op_le
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|serial-&gt;dev
+)paren
+(brace
 singleline_comment|// block until tx is empty
 id|block_until_tx_empty
 c_func
@@ -3745,6 +3751,19 @@ c_cond
 id|edge_port-&gt;write_urb
 )paren
 (brace
+id|usb_unlink_urb
+(paren
+id|edge_port-&gt;write_urb
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|edge_port-&gt;write_urb
+)paren
+(brace
 multiline_comment|/* if this urb had a transfer buffer already (old transfer) free it */
 r_if
 c_cond
@@ -3761,11 +3780,6 @@ id|edge_port-&gt;write_urb-&gt;transfer_buffer
 )paren
 suffix:semicolon
 )brace
-id|usb_unlink_urb
-(paren
-id|edge_port-&gt;write_urb
-)paren
-suffix:semicolon
 id|usb_free_urb
 (paren
 id|edge_port-&gt;write_urb

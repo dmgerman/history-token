@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB IR Dongle driver&n; *&n; *&t;Copyright (C) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * This driver allows a USB IrDA device to be used as a &quot;dumb&quot; serial device.&n; * This can be useful if you do not have access to a full IrDA stack on the&n; * other side of the connection.  If you do have an IrDA stack on both devices,&n; * please use the usb-irda driver, as it contains the proper error checking and&n; * other goodness of a full IrDA stack.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * 2001_Oct_07&t;greg kh&n; *&t;initial version released.&n; */
+multiline_comment|/*&n; * USB IR Dongle driver&n; *&n; *&t;Copyright (C) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * This driver allows a USB IrDA device to be used as a &quot;dumb&quot; serial device.&n; * This can be useful if you do not have access to a full IrDA stack on the&n; * other side of the connection.  If you do have an IrDA stack on both devices,&n; * please use the usb-irda driver, as it contains the proper error checking and&n; * other goodness of a full IrDA stack.&n; *&n; * Portions of this driver were taken from drivers/net/irda/irda-usb.c, which&n; * was written by Roman Weissgaerber &lt;weissg@vienna.at&gt;, Dag Brattli&n; * &lt;dag@brattli.net&gt;, and Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n;&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * 2001_Oct_07&t;greg kh&n; *&t;initial version released.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -337,7 +337,6 @@ multiline_comment|/*------------------------------------------------------------
 multiline_comment|/*&n; * Function irda_usb_find_class_desc(dev, ifnum)&n; *&n; *    Returns instance of IrDA class descriptor, or NULL if not found&n; *&n; * The class descriptor is some extra info that IrDA USB devices will&n; * offer to us, describing their IrDA characteristics. We will use that in&n; * irda_usb_init_qos()&n; */
 DECL|function|irda_usb_find_class_desc
 r_static
-r_inline
 r_struct
 id|irda_class_desc
 op_star
@@ -891,12 +890,19 @@ op_le
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|serial-&gt;dev
+)paren
+(brace
 multiline_comment|/* shutdown our bulk read */
 id|usb_unlink_urb
 (paren
 id|port-&gt;read_urb
 )paren
 suffix:semicolon
+)brace
 id|port-&gt;active
 op_assign
 l_int|0

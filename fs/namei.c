@@ -939,7 +939,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Yes, this really increments the link_count by 5, and&n; * decrements it by 4. Together with checking against 40,&n; * this limits recursive symlink follows to 8, while&n; * limiting consecutive symlinks to 40.&n; *&n; * Without that kind of total limit, nasty chains of consecutive&n; * symlinks can cause almost arbitrarily long lookups. &n; */
+multiline_comment|/*&n; * This limits recursive symlink follows to 8, while&n; * limiting consecutive symlinks to 40.&n; *&n; * Without that kind of total limit, nasty chains of consecutive&n; * symlinks can cause almost arbitrarily long lookups. &n; */
 DECL|function|do_follow_link
 r_static
 r_inline
@@ -966,6 +966,16 @@ c_cond
 (paren
 id|current-&gt;link_count
 op_ge
+l_int|5
+)paren
+r_goto
+id|loop
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;total_link_count
+op_ge
 l_int|40
 )paren
 r_goto
@@ -988,8 +998,10 @@ c_func
 suffix:semicolon
 )brace
 id|current-&gt;link_count
-op_add_assign
-l_int|5
+op_increment
+suffix:semicolon
+id|current-&gt;total_link_count
+op_increment
 suffix:semicolon
 id|UPDATE_ATIME
 c_func
@@ -1010,8 +1022,7 @@ id|nd
 )paren
 suffix:semicolon
 id|current-&gt;link_count
-op_sub_assign
-l_int|4
+op_decrement
 suffix:semicolon
 r_return
 id|err
@@ -2389,7 +2400,7 @@ op_star
 id|nd
 )paren
 (brace
-id|current-&gt;link_count
+id|current-&gt;total_link_count
 op_assign
 l_int|0
 suffix:semicolon

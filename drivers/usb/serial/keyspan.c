@@ -3697,10 +3697,7 @@ r_struct
 id|usb_serial
 op_star
 id|serial
-op_assign
-id|port-&gt;serial
 suffix:semicolon
-multiline_comment|/* FIXME should so sanity check */
 r_struct
 id|keyspan_serial_private
 op_star
@@ -3710,6 +3707,23 @@ r_struct
 id|keyspan_port_private
 op_star
 id|p_priv
+suffix:semicolon
+id|serial
+op_assign
+id|get_usb_serial
+(paren
+id|port
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|serial
+)paren
+r_return
 suffix:semicolon
 id|dbg
 c_func
@@ -3751,6 +3765,11 @@ id|p_priv-&gt;dtr_state
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|serial-&gt;dev
+)paren
 id|keyspan_send_setup
 c_func
 (paren
@@ -3787,6 +3806,12 @@ r_if
 c_cond
 (paren
 id|port-&gt;active
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|serial-&gt;dev
 )paren
 (brace
 multiline_comment|/* Stop reading/writing urbs */
@@ -3836,7 +3861,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Now done in shutdown &n;&t;&t;&t;if (atomic_dec_return(&amp;s_priv-&gt;active_count) &lt;= 0) {&n;&t;&t;&t;&t;stop_urb(s_priv-&gt;instat_urb);&n;&t;&t;&t;&t;stop_urb(s_priv-&gt;glocont_urb);&n;&t;&t;&t;} */
+)brace
 )brace
 id|port-&gt;active
 op_assign

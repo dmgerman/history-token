@@ -5406,6 +5406,12 @@ id|tty
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|port-&gt;serial-&gt;dev
+)paren
+(brace
 multiline_comment|/* wait for transmit idle */
 r_if
 c_cond
@@ -5637,6 +5643,7 @@ id|usb_unlink_urb
 id|port-&gt;write_urb
 )paren
 suffix:semicolon
+)brace
 id|tty-&gt;closing
 op_assign
 l_int|0

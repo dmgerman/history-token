@@ -1021,18 +1021,6 @@ DECL|macro|ATTRIB_NORET
 macro_line|# define ATTRIB_NORET  __attribute__((noreturn))
 DECL|macro|NORET_AND
 macro_line|# define NORET_AND     noreturn,
-multiline_comment|/* acl.c */
-r_extern
-r_int
-id|ext2_permission
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* balloc.c */
 r_extern
 r_int

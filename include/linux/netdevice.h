@@ -2350,6 +2350,104 @@ id|dev
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * Network interface message level settings&n; */
+DECL|macro|HAVE_NETIF_MSG
+mdefine_line|#define HAVE_NETIF_MSG 1
+r_enum
+(brace
+DECL|enumerator|NETIF_MSG_DRV
+id|NETIF_MSG_DRV
+op_assign
+l_int|0x0001
+comma
+DECL|enumerator|NETIF_MSG_PROBE
+id|NETIF_MSG_PROBE
+op_assign
+l_int|0x0002
+comma
+DECL|enumerator|NETIF_MSG_LINK
+id|NETIF_MSG_LINK
+op_assign
+l_int|0x0004
+comma
+DECL|enumerator|NETIF_MSG_TIMER
+id|NETIF_MSG_TIMER
+op_assign
+l_int|0x0008
+comma
+DECL|enumerator|NETIF_MSG_IFDOWN
+id|NETIF_MSG_IFDOWN
+op_assign
+l_int|0x0010
+comma
+DECL|enumerator|NETIF_MSG_IFUP
+id|NETIF_MSG_IFUP
+op_assign
+l_int|0x0020
+comma
+DECL|enumerator|NETIF_MSG_RX_ERR
+id|NETIF_MSG_RX_ERR
+op_assign
+l_int|0x0040
+comma
+DECL|enumerator|NETIF_MSG_TX_ERR
+id|NETIF_MSG_TX_ERR
+op_assign
+l_int|0x0080
+comma
+DECL|enumerator|NETIF_MSG_TX_QUEUED
+id|NETIF_MSG_TX_QUEUED
+op_assign
+l_int|0x0100
+comma
+DECL|enumerator|NETIF_MSG_INTR
+id|NETIF_MSG_INTR
+op_assign
+l_int|0x0200
+comma
+DECL|enumerator|NETIF_MSG_TX_DONE
+id|NETIF_MSG_TX_DONE
+op_assign
+l_int|0x0400
+comma
+DECL|enumerator|NETIF_MSG_RX_STATUS
+id|NETIF_MSG_RX_STATUS
+op_assign
+l_int|0x0800
+comma
+DECL|enumerator|NETIF_MSG_PKTDATA
+id|NETIF_MSG_PKTDATA
+op_assign
+l_int|0x1000
+comma
+)brace
+suffix:semicolon
+DECL|macro|netif_msg_drv
+mdefine_line|#define netif_msg_drv(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_DRV)
+DECL|macro|netif_msg_probe
+mdefine_line|#define netif_msg_probe(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_PROBE)
+DECL|macro|netif_msg_link
+mdefine_line|#define netif_msg_link(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_LINK)
+DECL|macro|netif_msg_timer
+mdefine_line|#define netif_msg_timer(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_TIMER)
+DECL|macro|netif_msg_ifdown
+mdefine_line|#define netif_msg_ifdown(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_IFDOWN)
+DECL|macro|netif_msg_ifup
+mdefine_line|#define netif_msg_ifup(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_IFUP)
+DECL|macro|netif_msg_rx_err
+mdefine_line|#define netif_msg_rx_err(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_RX_ERR)
+DECL|macro|netif_msg_tx_err
+mdefine_line|#define netif_msg_tx_err(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_TX_ERR)
+DECL|macro|netif_msg_tx_queued
+mdefine_line|#define netif_msg_tx_queued(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_TX_QUEUED)
+DECL|macro|netif_msg_intr
+mdefine_line|#define netif_msg_intr(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_INTR)
+DECL|macro|netif_msg_tx_done
+mdefine_line|#define netif_msg_tx_done(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_TX_DONE)
+DECL|macro|netif_msg_rx_status
+mdefine_line|#define netif_msg_rx_status(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_RX_STATUS)
+DECL|macro|netif_msg_pktdata
+mdefine_line|#define netif_msg_pktdata(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_PKTDATA)
 multiline_comment|/* These functions live elsewhere (drivers/net/net_init.c, but related) */
 r_extern
 r_void

@@ -1065,6 +1065,21 @@ op_assign
 id|IEEE1284_PH_REV_IDLE
 suffix:semicolon
 )brace
+r_else
+(brace
+id|DPRINTK
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: ECP direction: failed to reverse&bslash;n&quot;
+comma
+id|port-&gt;name
+)paren
+suffix:semicolon
+id|port-&gt;ieee1284.phase
+op_assign
+id|IEEE1284_PH_DIR_UNKNOWN
+suffix:semicolon
+)brace
 r_return
 id|retval
 suffix:semicolon
@@ -1133,6 +1148,21 @@ suffix:semicolon
 id|port-&gt;ieee1284.phase
 op_assign
 id|IEEE1284_PH_FWD_IDLE
+suffix:semicolon
+)brace
+r_else
+(brace
+id|DPRINTK
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: ECP direction: failed to switch forward&bslash;n&quot;
+comma
+id|port-&gt;name
+)paren
+suffix:semicolon
+id|port-&gt;ieee1284.phase
+op_assign
+id|IEEE1284_PH_DIR_UNKNOWN
 suffix:semicolon
 )brace
 r_return

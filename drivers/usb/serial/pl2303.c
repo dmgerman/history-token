@@ -1990,6 +1990,11 @@ id|filp
 )paren
 (brace
 r_struct
+id|usb_serial
+op_star
+id|serial
+suffix:semicolon
+r_struct
 id|pl2303_private
 op_star
 id|priv
@@ -2010,6 +2015,23 @@ id|port
 comma
 id|__FUNCTION__
 )paren
+)paren
+r_return
+suffix:semicolon
+id|serial
+op_assign
+id|get_usb_serial
+(paren
+id|port
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|serial
 )paren
 r_return
 suffix:semicolon
@@ -2036,6 +2058,12 @@ c_cond
 id|port-&gt;open_count
 op_le
 l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|serial-&gt;dev
 )paren
 (brace
 id|c_cflag
@@ -2091,7 +2119,8 @@ id|result
 id|dbg
 (paren
 id|__FUNCTION__
-l_string|&quot; - usb_unlink_urb (write_urb) failed with reason: %d&quot;
+l_string|&quot; - usb_unlink_urb &quot;
+l_string|&quot;(write_urb) failed with reason: %d&quot;
 comma
 id|result
 )paren
@@ -2111,7 +2140,8 @@ id|result
 id|dbg
 (paren
 id|__FUNCTION__
-l_string|&quot; - usb_unlink_urb (read_urb) failed with reason: %d&quot;
+l_string|&quot; - usb_unlink_urb &quot;
+l_string|&quot;(read_urb) failed with reason: %d&quot;
 comma
 id|result
 )paren
@@ -2131,11 +2161,13 @@ id|result
 id|dbg
 (paren
 id|__FUNCTION__
-l_string|&quot; - usb_unlink_urb (interrupt_in_urb) failed with reason: %d&quot;
+l_string|&quot; - usb_unlink_urb &quot;
+l_string|&quot;(interrupt_in_urb) failed with reason: %d&quot;
 comma
 id|result
 )paren
 suffix:semicolon
+)brace
 id|port-&gt;active
 op_assign
 l_int|0

@@ -6944,16 +6944,10 @@ comma
 id|urb
 )paren
 suffix:semicolon
-id|uhci_destroy_urb_priv
+id|uhci_call_completion
 c_func
 (paren
 id|urb
-)paren
-suffix:semicolon
-id|usb_dec_dev_use
-c_func
-(paren
-id|urb-&gt;dev
 )paren
 suffix:semicolon
 r_return

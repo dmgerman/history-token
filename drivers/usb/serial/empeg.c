@@ -601,12 +601,19 @@ op_le
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|serial-&gt;dev
+)paren
+(brace
 multiline_comment|/* shutdown our bulk read */
 id|usb_unlink_urb
 (paren
 id|port-&gt;read_urb
 )paren
 suffix:semicolon
+)brace
 id|port-&gt;active
 op_assign
 l_int|0

@@ -262,7 +262,7 @@ mdefine_line|#define SONIC_IMR_DEFAULT&t;(SONIC_INT_BR | &bslash;&n;&t;&t;&t;&t;
 DECL|macro|SONIC_END_OF_LINKS
 mdefine_line|#define&t;SONIC_END_OF_LINKS&t;0x0001
 macro_line|#ifdef CONFIG_MACSONIC
-multiline_comment|/* Big endian like structures on Mac&n; * (680x0)&n; */
+multiline_comment|/*&n; * Big endian like structures on 680x0 Macs&n; */
 r_typedef
 r_struct
 (brace
@@ -314,7 +314,7 @@ id|u16
 id|rx_pktlen
 suffix:semicolon
 multiline_comment|/* length of the packet incl. CRC */
-multiline_comment|/*&n;   * Pointers to the location in the receive buffer area (RBA)&n;   * where the packet resides. A packet is always received into&n;   * a contiguous piece of memory.&n;   */
+multiline_comment|/*&n;&t; * Pointers to the location in the receive buffer area (RBA)&n;&t; * where the packet resides. A packet is always received into&n;&t; * a contiguous piece of memory.&n;&t; */
 id|SREGS_PAD
 c_func
 (paren
@@ -357,7 +357,7 @@ id|u16
 id|link
 suffix:semicolon
 multiline_comment|/* link to next RDD (end if EOL bit set) */
-multiline_comment|/*&n;   * Owner of this descriptor, 0= driver, 1=sonic&n;   */
+multiline_comment|/*&n;&t; * Owner of this descriptor, 0= driver, 1=sonic&n;&t; */
 id|SREGS_PAD
 c_func
 (paren
@@ -544,7 +544,7 @@ DECL|typedef|sonic_cda_t
 )brace
 id|sonic_cda_t
 suffix:semicolon
-macro_line|#else /* original declarations, little endian 32 bit */
+macro_line|#else&t;&t;&t;&t;/* original declarations, little endian 32 bit */
 multiline_comment|/*&n; * structure definitions&n; */
 r_typedef
 r_struct
@@ -597,7 +597,7 @@ c_func
 id|pad1
 )paren
 suffix:semicolon
-multiline_comment|/*&n;   * Pointers to the location in the receive buffer area (RBA)&n;   * where the packet resides. A packet is always received into&n;   * a contiguous piece of memory.&n;   */
+multiline_comment|/*&n;&t; * Pointers to the location in the receive buffer area (RBA)&n;&t; * where the packet resides. A packet is always received into&n;&t; * a contiguous piece of memory.&n;&t; */
 DECL|member|rx_pktptr_l
 id|u16
 id|rx_pktptr_l
@@ -640,7 +640,7 @@ c_func
 id|pad5
 )paren
 suffix:semicolon
-multiline_comment|/*&n;   * Owner of this descriptor, 0= driver, 1=sonic&n;   */
+multiline_comment|/*&n;&t; * Owner of this descriptor, 0= driver, 1=sonic&n;&t; */
 DECL|member|in_use
 id|u16
 id|in_use
@@ -827,25 +827,25 @@ DECL|typedef|sonic_cda_t
 )brace
 id|sonic_cda_t
 suffix:semicolon
-macro_line|#endif&t;/* endianness */ 
+macro_line|#endif&t;&t;&t;&t;/* endianness */
 multiline_comment|/*&n; * Some tunables for the buffer areas. Power of 2 is required&n; * the current driver uses one receive buffer for each descriptor.&n; *&n; * MSch: use more buffer space for the slow m68k Macs!&n; */
 macro_line|#ifdef CONFIG_MACSONIC
 DECL|macro|SONIC_NUM_RRS
-mdefine_line|#define SONIC_NUM_RRS    32             /* number of receive resources */
+mdefine_line|#define SONIC_NUM_RRS    32&t;/* number of receive resources */
 DECL|macro|SONIC_NUM_RDS
-mdefine_line|#define SONIC_NUM_RDS    SONIC_NUM_RRS  /* number of receive descriptors */
+mdefine_line|#define SONIC_NUM_RDS    SONIC_NUM_RRS&t;/* number of receive descriptors */
 DECL|macro|SONIC_NUM_TDS
-mdefine_line|#define SONIC_NUM_TDS    32      /* number of transmit descriptors */
+mdefine_line|#define SONIC_NUM_TDS    32&t;/* number of transmit descriptors */
 macro_line|#else
 DECL|macro|SONIC_NUM_RRS
-mdefine_line|#define SONIC_NUM_RRS    16             /* number of receive resources */
+mdefine_line|#define SONIC_NUM_RRS    16&t;/* number of receive resources */
 DECL|macro|SONIC_NUM_RDS
-mdefine_line|#define SONIC_NUM_RDS    SONIC_NUM_RRS  /* number of receive descriptors */
+mdefine_line|#define SONIC_NUM_RDS    SONIC_NUM_RRS&t;/* number of receive descriptors */
 DECL|macro|SONIC_NUM_TDS
-mdefine_line|#define SONIC_NUM_TDS    16      /* number of transmit descriptors */
+mdefine_line|#define SONIC_NUM_TDS    16&t;/* number of transmit descriptors */
 macro_line|#endif
 DECL|macro|SONIC_RBSIZE
-mdefine_line|#define SONIC_RBSIZE   1520      /* size of one resource buffer */
+mdefine_line|#define SONIC_RBSIZE   1520&t;/* size of one resource buffer */
 DECL|macro|SONIC_RDS_MASK
 mdefine_line|#define SONIC_RDS_MASK   (SONIC_NUM_RDS-1)
 DECL|macro|SONIC_TDS_MASK
@@ -973,6 +973,8 @@ id|stats
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|TX_TIMEOUT
+mdefine_line|#define TX_TIMEOUT 6
 multiline_comment|/* Index to functions, as function prototypes. */
 r_static
 r_int
@@ -1068,6 +1070,17 @@ suffix:semicolon
 r_static
 r_int
 id|sonic_init
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_static
+r_void
+id|sonic_tx_timeout
 c_func
 (paren
 r_struct

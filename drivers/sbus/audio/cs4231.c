@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: cs4231.c,v 1.46 2001/05/21 01:25:22 davem Exp $&n; * drivers/sbus/audio/cs4231.c&n; *&n; * Copyright 1996, 1997, 1998, 1999 Derrick J Brashear (shadow@andrew.cmu.edu)&n; * The 4231/ebus support was written by David Miller, who didn&squot;t bother&n; * crediting himself here, so I will.&n; *&n; * Based on the AMD7930 driver:&n; * Copyright 1996 Thomas K. Dyas (tdyas@noc.rutgers.edu)&n; *&n; * This is the lowlevel driver for the CS4231 audio chip found on some&n; * sun4m and sun4u machines.&n; * &n; * This was culled from the Crystal docs on the 4231a, and the addendum they&n; * faxed me on the 4231.&n; * The APC DMA controller support unfortunately is not documented. Thanks, Sun.&n; */
+multiline_comment|/* $Id: cs4231.c,v 1.47 2001/10/08 22:19:50 davem Exp $&n; * drivers/sbus/audio/cs4231.c&n; *&n; * Copyright 1996, 1997, 1998, 1999 Derrick J Brashear (shadow@andrew.cmu.edu)&n; * The 4231/ebus support was written by David Miller, who didn&squot;t bother&n; * crediting himself here, so I will.&n; *&n; * Based on the AMD7930 driver:&n; * Copyright 1996 Thomas K. Dyas (tdyas@noc.rutgers.edu)&n; *&n; * This is the lowlevel driver for the CS4231 audio chip found on some&n; * sun4m and sun4u machines.&n; * &n; * This was culled from the Crystal docs on the 4231a, and the addendum they&n; * faxed me on the 4231.&n; * The APC DMA controller support unfortunately is not documented. Thanks, Sun.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -10920,6 +10920,12 @@ id|module_exit
 c_func
 (paren
 id|cs4231_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */

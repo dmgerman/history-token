@@ -17,6 +17,10 @@ DECL|typedef|swp_entry_t
 )brace
 id|swp_entry_t
 suffix:semicolon
+r_extern
+id|atomic_t
+id|shmem_nrpages
+suffix:semicolon
 DECL|struct|shmem_inode_info
 r_struct
 id|shmem_inode_info
@@ -25,10 +29,15 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-DECL|member|max_index
+DECL|member|sem
+r_struct
+id|semaphore
+id|sem
+suffix:semicolon
+DECL|member|next_index
 r_int
 r_int
-id|max_index
+id|next_index
 suffix:semicolon
 DECL|member|i_direct
 id|swp_entry_t
@@ -39,12 +48,12 @@ id|SHMEM_NR_DIRECT
 suffix:semicolon
 multiline_comment|/* for the first blocks */
 DECL|member|i_indirect
-id|swp_entry_t
+r_void
 op_star
 op_star
 id|i_indirect
 suffix:semicolon
-multiline_comment|/* doubly indirect blocks */
+multiline_comment|/* indirect blocks */
 DECL|member|swapped
 r_int
 r_int
@@ -59,6 +68,12 @@ DECL|member|list
 r_struct
 id|list_head
 id|list
+suffix:semicolon
+DECL|member|inode
+r_struct
+id|inode
+op_star
+id|inode
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -96,5 +111,7 @@ id|stat_lock
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|SHMEM_I
+mdefine_line|#define SHMEM_I(inode)  (&amp;inode-&gt;u.shmem_i)
 macro_line|#endif
 eof

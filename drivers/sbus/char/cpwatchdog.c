@@ -374,6 +374,12 @@ id|MODULE_DESCRIPTION
 l_string|&quot;Hardware watchdog driver for Sun Microsystems CP1400/1500&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE
 (paren
 l_string|&quot;watchdog&quot;

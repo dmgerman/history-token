@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: riowatchdog.c,v 1.2 2001/03/26 23:47:18 davem Exp $&n; * riowatchdog.c - driver for hw watchdog inside Super I/O of RIO&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: riowatchdog.c,v 1.3 2001/10/08 22:19:51 davem Exp $&n; * riowatchdog.c - driver for hw watchdog inside Super I/O of RIO&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -29,6 +29,12 @@ id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;watchdog&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|RIOWD_NAME

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * acenic.c: Linux driver for the Alteon AceNIC Gigabit Ethernet card&n; *           and other Tigon based cards.&n; *&n; * Copyright 1998-2001 by Jes Sorensen, &lt;jes@linuxcare.com&gt;.&n; *&n; * Thanks to Alteon and 3Com for providing hardware and documentation&n; * enabling me to write this driver.&n; *&n; * A mailing list for discussing the use of this driver has been&n; * setup, please subscribe to the lists if you have any questions&n; * about the driver. Send mail to linux-acenic-help@sunsite.auc.dk to&n; * see how to subscribe.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Additional credits:&n; *   Pete Wyckoff &lt;wyckoff@ca.sandia.gov&gt;: Initial Linux/Alpha and trace&n; *       dump support. The trace dump support has not been&n; *       integrated yet however.&n; *   Troy Benjegerdes: Big Endian (PPC) patches.&n; *   Nate Stahl: Better out of memory handling and stats support.&n; *   Aman Singla: Nasty race between interrupt handler and tx code dealing&n; *                with &squot;testing the tx_ret_csm and setting tx_full&squot;&n; *   David S. Miller &lt;davem@redhat.com&gt;: conversion to new PCI dma mapping&n; *                                       infrastructure and Sparc support&n; *   Pierrick Pinasseau (CERN): For lending me an Ultra 5 to test the&n; *                              driver under Linux/Sparc64&n; *   Matt Domsch &lt;Matt_Domsch@dell.com&gt;: Detect Alteon 1000baseT cards&n; *   Chip Salzenberg &lt;chip@valinux.com&gt;: Fix race condition between tx&n; *                                       handler and close() cleanup.&n; *   Ken Aaker &lt;kdaaker@rchland.vnet.ibm.com&gt;: Correct check for whether&n; *                                       memory mapped IO is enabled to&n; *                                       make the driver work on RS/6000.&n; *   Takayoshi Kouchi &lt;kouchi@hpc.bs1.fc.nec.co.jp&gt;: Identifying problem&n; *                                       where the driver would disable&n; *                                       bus master mode if it had to disable&n; *                                       write and invalidate.&n; *   Stephen Hack &lt;stephen_hack@hp.com&gt;: Fixed ace_set_mac_addr for little&n; *                                       endian systems.&n; *   Val Henson &lt;vhenson@esscom.com&gt;:    Reset Jumbo skb producer and&n; *                                       rx producer index when&n; *                                       flushing the Jumbo ring.&n; *   Hans Grobler &lt;grobh@sun.ac.za&gt;:     Memory leak fixes in the&n; *                                       driver init path.&n; */
+multiline_comment|/*&n; * acenic.c: Linux driver for the Alteon AceNIC Gigabit Ethernet card&n; *           and other Tigon based cards.&n; *&n; * Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;.&n; *&n; * Thanks to Alteon and 3Com for providing hardware and documentation&n; * enabling me to write this driver.&n; *&n; * A mailing list for discussing the use of this driver has been&n; * setup, please subscribe to the lists if you have any questions&n; * about the driver. Send mail to linux-acenic-help@sunsite.auc.dk to&n; * see how to subscribe.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Additional credits:&n; *   Pete Wyckoff &lt;wyckoff@ca.sandia.gov&gt;: Initial Linux/Alpha and trace&n; *       dump support. The trace dump support has not been&n; *       integrated yet however.&n; *   Troy Benjegerdes: Big Endian (PPC) patches.&n; *   Nate Stahl: Better out of memory handling and stats support.&n; *   Aman Singla: Nasty race between interrupt handler and tx code dealing&n; *                with &squot;testing the tx_ret_csm and setting tx_full&squot;&n; *   David S. Miller &lt;davem@redhat.com&gt;: conversion to new PCI dma mapping&n; *                                       infrastructure and Sparc support&n; *   Pierrick Pinasseau (CERN): For lending me an Ultra 5 to test the&n; *                              driver under Linux/Sparc64&n; *   Matt Domsch &lt;Matt_Domsch@dell.com&gt;: Detect Alteon 1000baseT cards&n; *   Chip Salzenberg &lt;chip@valinux.com&gt;: Fix race condition between tx&n; *                                       handler and close() cleanup.&n; *   Ken Aaker &lt;kdaaker@rchland.vnet.ibm.com&gt;: Correct check for whether&n; *                                       memory mapped IO is enabled to&n; *                                       make the driver work on RS/6000.&n; *   Takayoshi Kouchi &lt;kouchi@hpc.bs1.fc.nec.co.jp&gt;: Identifying problem&n; *                                       where the driver would disable&n; *                                       bus master mode if it had to disable&n; *                                       write and invalidate.&n; *   Stephen Hack &lt;stephen_hack@hp.com&gt;: Fixed ace_set_mac_addr for little&n; *                                       endian systems.&n; *   Val Henson &lt;vhenson@esscom.com&gt;:    Reset Jumbo skb producer and&n; *                                       rx producer index when&n; *                                       flushing the Jumbo ring.&n; *   Hans Grobler &lt;grobh@sun.ac.za&gt;:     Memory leak fixes in the&n; *                                       driver init path.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -215,6 +215,10 @@ id|acenic_pci_tbl
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifndef MODULE_LICENSE
+DECL|macro|MODULE_LICENSE
+mdefine_line|#define MODULE_LICENSE(a)
+macro_line|#endif
 macro_line|#ifndef wmb
 DECL|macro|wmb
 mdefine_line|#define wmb()&t;mb()
@@ -231,7 +235,7 @@ macro_line|#ifndef SMP_CACHE_BYTES
 DECL|macro|SMP_CACHE_BYTES
 mdefine_line|#define SMP_CACHE_BYTES&t;L1_CACHE_BYTES
 macro_line|#endif
-macro_line|#if (BITS_PER_LONG == 64)
+macro_line|#if (BITS_PER_LONG == 64) || defined(CONFIG_HIGHMEM)
 DECL|macro|ACE_64BIT_PTR
 mdefine_line|#define ACE_64BIT_PTR&t;1
 macro_line|#endif
@@ -493,6 +497,16 @@ macro_line|#else
 DECL|macro|ACE_PROBE_ARG
 mdefine_line|#define ACE_PROBE_ARG&t;&t;&t;&t;struct net_device *dev
 macro_line|#endif
+macro_line|#ifndef min_t
+DECL|macro|min_t
+mdefine_line|#define min_t(type,a,b)&t;(((a)&lt;(b))?(a):(b))
+macro_line|#endif
+macro_line|#ifndef ARCH_HAS_PREFETCHW
+macro_line|#ifndef prefetchw
+DECL|macro|prefetchw
+mdefine_line|#define prefetchw(x)&t;&t;&t;&t;{do{} while(0);}
+macro_line|#endif
+macro_line|#endif
 DECL|macro|ACE_MAX_MOD_PARMS
 mdefine_line|#define ACE_MAX_MOD_PARMS&t;8
 DECL|macro|BOARD_IDX_STATIC
@@ -671,7 +685,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;acenic.c: v0.81 04/20/2001  Jes Sorensen, linux-acenic@SunSITE.dk&bslash;n&quot;
+l_string|&quot;acenic.c: v0.83 09/30/2001  Jes Sorensen, linux-acenic@SunSITE.dk&bslash;n&quot;
 l_string|&quot;                            http://home.cern.ch/~jes/gige/acenic.html&bslash;n&quot;
 suffix:semicolon
 DECL|variable|root_dev
@@ -1558,16 +1572,16 @@ c_func
 l_string|&quot;Jes Sorensen &lt;jes@trained-monkey.org&gt;&quot;
 )paren
 suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;AceNIC/3C985/GA620 Gigabit Ethernet driver&quot;
-)paren
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;AceNIC/3C985/GA620 Gigabit Ethernet driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -1652,6 +1666,54 @@ c_func
 l_int|8
 )paren
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|link
+comma
+l_string|&quot;Acenic/3C985/NetGear link state&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|trace
+comma
+l_string|&quot;Acenic/3C985/NetGear firmware trace level&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|tx_coal_tick
+comma
+l_string|&quot;AceNIC/3C985/GA620 max clock ticks to wait from first tx descriptor arrives&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_tx_desc
+comma
+l_string|&quot;AceNIC/3C985/GA620 max number of transmit descriptors to wait&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|rx_coal_tick
+comma
+l_string|&quot;AceNIC/3C985/GA620 max clock ticks to wait from first rx descriptor arrives&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_rx_desc
+comma
+l_string|&quot;AceNIC/3C985/GA620 max number of receive descriptors to wait&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1789,7 +1851,6 @@ c_cond
 id|skb
 )paren
 (brace
-macro_line|#ifndef DUMMY_PCI_UNMAP
 id|dma_addr_t
 id|mapping
 suffix:semicolon
@@ -1820,7 +1881,6 @@ comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ap-&gt;rx_std_ring
 (braket
 id|i
@@ -1888,7 +1948,6 @@ c_cond
 id|skb
 )paren
 (brace
-macro_line|#ifndef DUMMY_PCI_UNMAP
 id|dma_addr_t
 id|mapping
 suffix:semicolon
@@ -1919,7 +1978,6 @@ comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ap-&gt;rx_mini_ring
 (braket
 id|i
@@ -1980,7 +2038,6 @@ c_cond
 id|skb
 )paren
 (brace
-macro_line|#ifndef DUMMY_PCI_UNMAP
 id|dma_addr_t
 id|mapping
 suffix:semicolon
@@ -2011,7 +2068,6 @@ comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ap-&gt;rx_jumbo_ring
 (braket
 id|i
@@ -5993,6 +6049,13 @@ id|regs
 op_assign
 id|ap-&gt;regs
 suffix:semicolon
+id|prefetchw
+c_func
+(paren
+op_amp
+id|ap-&gt;cur_rx_bufs
+)paren
+suffix:semicolon
 id|idx
 op_assign
 id|ap-&gt;rx_std_skbprd
@@ -6083,7 +6146,6 @@ id|skb
 op_assign
 id|skb
 suffix:semicolon
-macro_line|#ifndef DUMMY_PCI_UNMAP
 id|ap-&gt;skb-&gt;rx_std_skbuff
 (braket
 id|idx
@@ -6093,7 +6155,6 @@ id|mapping
 op_assign
 id|mapping
 suffix:semicolon
-macro_line|#endif
 id|rd
 op_assign
 op_amp
@@ -6265,6 +6326,13 @@ id|regs
 op_assign
 id|ap-&gt;regs
 suffix:semicolon
+id|prefetchw
+c_func
+(paren
+op_amp
+id|ap-&gt;cur_mini_bufs
+)paren
+suffix:semicolon
 id|idx
 op_assign
 id|ap-&gt;rx_mini_skbprd
@@ -6355,7 +6423,6 @@ id|skb
 op_assign
 id|skb
 suffix:semicolon
-macro_line|#ifndef DUMMY_PCI_UNMAP
 id|ap-&gt;skb-&gt;rx_mini_skbuff
 (braket
 id|idx
@@ -6365,7 +6432,6 @@ id|mapping
 op_assign
 id|mapping
 suffix:semicolon
-macro_line|#endif
 id|rd
 op_assign
 op_amp
@@ -6585,7 +6651,6 @@ id|skb
 op_assign
 id|skb
 suffix:semicolon
-macro_line|#ifndef DUMMY_PCI_UNMAP
 id|ap-&gt;skb-&gt;rx_jumbo_skbuff
 (braket
 id|idx
@@ -6595,7 +6660,6 @@ id|mapping
 op_assign
 id|mapping
 suffix:semicolon
-macro_line|#endif
 id|rd
 op_assign
 op_amp
@@ -7261,6 +7325,20 @@ id|idx
 op_assign
 id|rxretcsm
 suffix:semicolon
+id|prefetchw
+c_func
+(paren
+op_amp
+id|ap-&gt;cur_rx_bufs
+)paren
+suffix:semicolon
+id|prefetchw
+c_func
+(paren
+op_amp
+id|ap-&gt;cur_mini_bufs
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -7465,7 +7543,6 @@ id|rip-&gt;skb
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifndef DUMMY_PCI_UNMAP
 id|pci_unmap_single
 c_func
 (paren
@@ -7478,7 +7555,6 @@ comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-macro_line|#endif
 id|skb_put
 c_func
 (paren
@@ -7487,13 +7563,6 @@ comma
 id|retdesc-&gt;size
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* unncessary */
-id|rxdesc-&gt;size
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;&t; * Fly baby, fly!&n;&t;&t; */
 id|csum
 op_assign
@@ -7678,11 +7747,9 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-macro_line|#ifndef DUMMY_PCI_UNMAP
 id|dma_addr_t
 id|mapping
 suffix:semicolon
-macro_line|#endif
 r_struct
 id|tx_ring_info
 op_star
@@ -7698,7 +7765,6 @@ id|skb
 op_assign
 id|info-&gt;skb
 suffix:semicolon
-macro_line|#ifndef DUMMY_PCI_UNMAP
 id|mapping
 op_assign
 id|info-&gt;mapping
@@ -7726,7 +7792,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8630,11 +8695,9 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-macro_line|#ifndef DUMMY_PCI_UNMAP
 id|dma_addr_t
 id|mapping
 suffix:semicolon
-macro_line|#endif
 r_struct
 id|tx_ring_info
 op_star
@@ -8650,7 +8713,6 @@ id|skb
 op_assign
 id|info-&gt;skb
 suffix:semicolon
-macro_line|#ifndef DUMMY_PCI_UNMAP
 id|mapping
 op_assign
 id|info-&gt;mapping
@@ -8694,7 +8756,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8755,9 +8816,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Following below should be (in more clean form!) in arch/ARCH/kernel/pci_*.&n; * For now, let it stay here.&n; */
 macro_line|#if defined(CONFIG_HIGHMEM) &amp;&amp; MAX_SKB_FRAGS
-macro_line|#ifndef DUMMY_PCI_UNMAP
-macro_line|#error Sorry, cannot DMA from high memory on this architecture.
-macro_line|#endif
 macro_line|#if defined(CONFIG_X86)
 DECL|macro|DMAADDR_OFFSET
 mdefine_line|#define DMAADDR_OFFSET&t;0
@@ -8945,7 +9003,6 @@ id|info-&gt;skb
 op_assign
 id|tail
 suffix:semicolon
-macro_line|#ifndef DUMMY_PCI_UNMAP
 id|info-&gt;mapping
 op_assign
 id|addr
@@ -8954,7 +9011,6 @@ id|info-&gt;maplen
 op_assign
 id|skb-&gt;len
 suffix:semicolon
-macro_line|#endif
 r_return
 id|addr
 suffix:semicolon
@@ -9402,7 +9458,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifndef DUMMY_PCI_UNMAP
 id|info-&gt;mapping
 op_assign
 id|phys
@@ -9411,7 +9466,6 @@ id|info-&gt;maplen
 op_assign
 id|frag-&gt;size
 suffix:semicolon
-macro_line|#endif
 id|ace_load_tx_bd
 c_func
 (paren

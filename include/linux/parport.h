@@ -936,6 +936,10 @@ id|IEEE1284_PH_ECP_FWD_TO_REV
 comma
 DECL|enumerator|IEEE1284_PH_ECP_REV_TO_FWD
 id|IEEE1284_PH_ECP_REV_TO_FWD
+comma
+DECL|enumerator|IEEE1284_PH_ECP_DIR_UNKNOWN
+id|IEEE1284_PH_ECP_DIR_UNKNOWN
+comma
 )brace
 suffix:semicolon
 DECL|struct|ieee1284_info

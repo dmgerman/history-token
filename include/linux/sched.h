@@ -969,8 +969,11 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* file system info */
 DECL|member|link_count
+DECL|member|total_link_count
 r_int
 id|link_count
+comma
+id|total_link_count
 suffix:semicolon
 DECL|member|tty
 r_struct

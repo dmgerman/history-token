@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: display7seg.c,v 1.4 2000/11/08 05:08:23 davem Exp $&n; *&n; * display7seg - Driver implementation for the 7-segment display&n; * present on Sun Microsystems CP1400 and CP1500&n; *&n; * Copyright (c) 2000 Eric Brower (ebrower@usa.net)&n; *&n; */
+multiline_comment|/* $Id: display7seg.c,v 1.5 2001/10/08 22:19:51 davem Exp $&n; *&n; * display7seg - Driver implementation for the 7-segment display&n; * present on Sun Microsystems CP1400 and CP1500&n; *&n; * Copyright (c) 2000 Eric Brower (ebrower@usa.net)&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -52,6 +52,12 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 (paren
 l_string|&quot;7-Segment Display driver for Sun Microsystems CP1400/1500&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE

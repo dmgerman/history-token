@@ -26,7 +26,7 @@ c_func
 l_string|&quot;sonic_open: initializing sonic driver.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * We don&squot;t need to deal with auto-irq stuff since we&n;     * hardwire the sonic interrupt.&n;     */
+multiline_comment|/*&n;&t; * We don&squot;t need to deal with auto-irq stuff since we&n;&t; * hardwire the sonic interrupt.&n;&t; */
 multiline_comment|/*&n; * XXX Horrible work around:  We install sonic_interrupt as fast interrupt.&n; * This means that during execution of the handler interrupt are disabled&n; * covering another bug otherwise corrupting data.  This doesn&squot;t mean&n; * this glue works ok under all situations.&n; */
 singleline_comment|//    if (sonic_request_irq(dev-&gt;irq, &amp;sonic_interrupt, 0, &quot;sonic&quot;, dev)) {
 r_if
@@ -49,6 +49,7 @@ id|dev
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;&bslash;n%s: unable to get IRQ %d .&bslash;n&quot;
 comma
@@ -62,24 +63,18 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * Initialize the SONIC&n;     */
+multiline_comment|/*&n;&t; * Initialize the SONIC&n;&t; */
 id|sonic_init
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-id|dev-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;interrupt
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;start
-op_assign
-l_int|1
+id|netif_start_queue
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -99,9 +94,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Close the SONIC device&n; */
+DECL|function|sonic_close
 r_static
 r_int
-DECL|function|sonic_close
 id|sonic_close
 c_func
 (paren
@@ -125,19 +120,18 @@ OG
 l_int|2
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot;sonic_close&bslash;n&quot;
 )paren
 suffix:semicolon
-id|dev-&gt;tbusy
-op_assign
-l_int|1
+id|netif_stop_queue
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
-id|dev-&gt;start
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/*&n;     * stop the SONIC, disable interrupts&n;     */
+multiline_comment|/*&n;&t; * stop the SONIC, disable interrupts&n;&t; */
 id|SONIC_WRITE
 c_func
 (paren
@@ -173,6 +167,59 @@ suffix:semicolon
 multiline_comment|/* release the IRQ */
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|sonic_tx_timeout
+r_static
+r_void
+id|sonic_tx_timeout
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|sonic_local
+op_star
+id|lp
+op_assign
+(paren
+r_struct
+id|sonic_local
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s: transmit timed out.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+multiline_comment|/* Try to restart the adaptor. */
+id|sonic_init
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|lp-&gt;stats.tx_errors
+op_increment
+suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
+id|netif_wake_queue
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * transmit packet&n; */
@@ -220,6 +267,12 @@ id|entry
 comma
 id|length
 suffix:semicolon
+id|netif_stop_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -237,68 +290,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;tbusy
-)paren
-(brace
-r_int
-id|tickssofar
-op_assign
-id|jiffies
-op_minus
-id|dev-&gt;trans_start
-suffix:semicolon
-multiline_comment|/* If we get here, some higher level has decided we are broken.&n;&t; There should really be a &quot;kick me&quot; function call instead. */
-r_if
-c_cond
-(paren
-id|sonic_debug
-OG
-l_int|1
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;sonic_send_packet: called with dev-&gt;tbusy = 1 !&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tickssofar
-OL
-l_int|5
-)paren
-r_return
-l_int|1
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%s: transmit timed out.&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-multiline_comment|/* Try to restart the adaptor. */
-id|sonic_init
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|dev-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;trans_start
-op_assign
-id|jiffies
-suffix:semicolon
-)brace
-multiline_comment|/* &n;     * Block a timer-based transmit from overlapping.  This could better be&n;     * done with atomic_swap(1, dev-&gt;tbusy), but set_bit() works as well.&n;     */
+multiline_comment|/* &n;&t; * Block a timer-based transmit from overlapping.  This could better be&n;&t; * done with atomic_swap(1, dev-&gt;tbusy), but set_bit() works as well.&n;&t; */
 r_if
 c_cond
 (paren
@@ -330,7 +322,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * Map the packet data into the logical DMA address space&n;     */
+multiline_comment|/*&n;&t; * Map the packet data into the logical DMA address space&n;&t; */
 r_if
 c_cond
 (paren
@@ -368,9 +360,11 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|dev-&gt;tbusy
-op_assign
-l_int|0
+id|netif_start_queue
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_return
 l_int|1
@@ -414,7 +408,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Setup the transmit descriptor and issue the transmit command.&n;     */
+multiline_comment|/*&n;&t; * Setup the transmit descriptor and issue the transmit command.&n;&t; */
 id|lp-&gt;tda
 (braket
 id|entry
@@ -517,9 +511,11 @@ id|lp-&gt;dirty_tx
 op_plus
 id|SONIC_NUM_TDS
 )paren
-id|dev-&gt;tbusy
-op_assign
-l_int|0
+id|netif_start_queue
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_else
 id|lp-&gt;tx_full
@@ -530,11 +526,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-"&f;"
 multiline_comment|/*&n; * The typical workload of the driver:&n; * Handle the network interface interrupts.&n; */
+DECL|function|sonic_interrupt
 r_static
 r_void
-DECL|function|sonic_interrupt
 id|sonic_interrupt
 c_func
 (paren
@@ -586,6 +581,7 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;sonic_interrupt: irq %d for unknown device.&bslash;n&quot;
 comma
@@ -595,10 +591,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|dev-&gt;interrupt
-op_assign
-l_int|1
-suffix:semicolon
 id|lp
 op_assign
 (paren
@@ -853,8 +845,6 @@ c_cond
 (paren
 id|lp-&gt;tx_full
 op_logical_and
-id|dev-&gt;tbusy
-op_logical_and
 id|dirty_tx
 op_plus
 id|SONIC_NUM_TDS
@@ -869,14 +859,10 @@ id|lp-&gt;tx_full
 op_assign
 l_int|0
 suffix:semicolon
-id|dev-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-id|mark_bh
+id|netif_wake_queue
 c_func
 (paren
-id|NET_BH
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -885,7 +871,7 @@ op_assign
 id|dirty_tx
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * check error conditions&n;     */
+multiline_comment|/*&n;&t; * check error conditions&n;&t; */
 r_if
 c_cond
 (paren
@@ -895,6 +881,7 @@ id|SONIC_INT_RFO
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;%s: receive fifo underrun&bslash;n&quot;
 comma
@@ -914,6 +901,7 @@ id|SONIC_INT_RDE
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;%s: receive descriptors exhausted&bslash;n&quot;
 comma
@@ -933,6 +921,7 @@ id|SONIC_INT_RBE
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;%s: receive buffer exhausted&bslash;n&quot;
 comma
@@ -952,6 +941,7 @@ id|SONIC_INT_RBAE
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;%s: receive buffer area exhausted&bslash;n&quot;
 comma
@@ -1007,7 +997,7 @@ id|SONIC_INT_TXER
 id|lp-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;     * clear interrupt bits and return&n;     */
+multiline_comment|/*&n;&t; * clear interrupt bits and return&n;&t; */
 id|SONIC_WRITE
 c_func
 (paren
@@ -1016,17 +1006,11 @@ comma
 id|status
 )paren
 suffix:semicolon
-id|dev-&gt;interrupt
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * We have a good packet(s), get it/them out of the buffers.&n; */
+DECL|function|sonic_rx
 r_static
 r_void
-DECL|function|sonic_rx
 id|sonic_rx
 c_func
 (paren
@@ -1102,6 +1086,7 @@ OG
 l_int|3
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot;status %x, cur_rx %d, cur_rra %x&bslash;n&quot;
 comma
@@ -1194,7 +1179,6 @@ l_int|NULL
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;%s: Memory squeeze, dropping packet.&bslash;n&quot;
 comma
@@ -1323,7 +1307,7 @@ op_amp
 id|SONIC_RCR_LPKT
 )paren
 (brace
-multiline_comment|/*&n;&t;     * this was the last packet out of the current receice buffer&n;&t;     * give the buffer back to the SONIC&n;&t;     */
+multiline_comment|/*&n;&t;&t;&t; * this was the last packet out of the current receice buffer&n;&t;&t;&t; * give the buffer back to the SONIC&n;&t;&t;&t; */
 id|lp-&gt;cur_rra
 op_add_assign
 r_sizeof
@@ -1375,16 +1359,14 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * If any worth-while packets have been received, dev_rint()&n;     * has done a mark_bh(NET_BH) for us and will work on them&n;     * when we get to the bottom-half routine.&n;     */
-r_return
-suffix:semicolon
+multiline_comment|/*&n;&t; * If any worth-while packets have been received, dev_rint()&n;&t; * has done a mark_bh(NET_BH) for us and will work on them&n;&t; * when we get to the bottom-half routine.&n;&t; */
 )brace
 multiline_comment|/*&n; * Get the current statistics.&n; * This may be called with the device open or closed.&n; */
+DECL|function|sonic_get_stats
 r_static
 r_struct
 id|net_device_stats
 op_star
-DECL|function|sonic_get_stats
 id|sonic_get_stats
 c_func
 (paren
@@ -1467,9 +1449,9 @@ id|lp-&gt;stats
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set or clear the multicast filter for this adaptor.&n; */
+DECL|function|sonic_multicast_list
 r_static
 r_void
-DECL|function|sonic_multicast_list
 id|sonic_multicast_list
 c_func
 (paren
@@ -1782,7 +1764,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;     * put the Sonic into software-reset mode and&n;     * disable all interrupts&n;     */
+multiline_comment|/*&n;&t; * put the Sonic into software-reset mode and&n;&t; * disable all interrupts&n;&t; */
 id|SONIC_WRITE
 c_func
 (paren
@@ -1807,7 +1789,7 @@ comma
 id|SONIC_CR_RST
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * clear software reset flag, disable receiver, clear and&n;     * enable interrupts, then completely initialize the SONIC&n;     */
+multiline_comment|/*&n;&t; * clear software reset flag, disable receiver, clear and&n;&t; * enable interrupts, then completely initialize the SONIC&n;&t; */
 id|SONIC_WRITE
 c_func
 (paren
@@ -1824,7 +1806,7 @@ comma
 id|SONIC_CR_RXDIS
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * initialize the receive resource area&n;     */
+multiline_comment|/*&n;&t; * initialize the receive resource area&n;&t; */
 r_if
 c_cond
 (paren
@@ -1833,6 +1815,7 @@ OG
 l_int|2
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot;sonic_init: initialize receive resource area&bslash;n&quot;
 )paren
@@ -2070,7 +2053,7 @@ id|SONIC_CMD
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Initialize the receive descriptors so that they&n;     * become a circular linked list, ie. let the last&n;     * descriptor point to the first again.&n;     */
+multiline_comment|/*&n;&t; * Initialize the receive descriptors so that they&n;&t; * become a circular linked list, ie. let the last&n;&t; * descriptor point to the first again.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2079,6 +2062,7 @@ OG
 l_int|2
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot;sonic_init: initialize receive descriptors&bslash;n&quot;
 )paren
@@ -2209,7 +2193,7 @@ op_amp
 l_int|0xffff
 )paren
 suffix:semicolon
-multiline_comment|/* &n;     * initialize transmit descriptors&n;     */
+multiline_comment|/* &n;&t; * initialize transmit descriptors&n;&t; */
 r_if
 c_cond
 (paren
@@ -2218,6 +2202,7 @@ OG
 l_int|2
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot;sonic_init: initialize transmit descriptors&bslash;n&quot;
 )paren
@@ -2341,7 +2326,7 @@ id|lp-&gt;dirty_tx
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;     * put our own address to CAM desc[0]&n;     */
+multiline_comment|/*&n;&t; * put our own address to CAM desc[0]&n;&t; */
 id|lp-&gt;cda.cam_desc
 (braket
 l_int|0
@@ -2426,7 +2411,7 @@ id|cam_entry_pointer
 op_assign
 id|i
 suffix:semicolon
-multiline_comment|/*&n;     * initialize CAM registers&n;     */
+multiline_comment|/*&n;&t; * initialize CAM registers&n;&t; */
 id|SONIC_WRITE
 c_func
 (paren
@@ -2445,7 +2430,7 @@ comma
 l_int|16
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * load the CAM&n;     */
+multiline_comment|/*&n;&t; * load the CAM&n;&t; */
 id|SONIC_WRITE
 c_func
 (paren
@@ -2508,7 +2493,7 @@ id|SONIC_ISR
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * enable receiver, disable loopback&n;     * and enable all interrupts&n;     */
+multiline_comment|/*&n;&t; * enable receiver, disable loopback&n;&t; * and enable all interrupts&n;&t; */
 id|SONIC_WRITE
 c_func
 (paren
@@ -2609,6 +2594,4 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-"&f;"
-multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;mipsel-linux-gcc -D__KERNEL__ -D__mips64 -I/usr/src/linux/net/inet -Wall -Wstrict-prototypes -O2 -mcpu=r4000 -c sonic.c&quot;&n; *  version-control: t&n; *  kept-new-versions: 5&n; *  tab-width: 4&n; * End:&n; */
 eof

@@ -1141,6 +1141,12 @@ l_int|0
 r_if
 c_cond
 (paren
+id|serial-&gt;dev
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|c_cflag
 op_amp
 id|HUPCL
@@ -1261,6 +1267,7 @@ id|usb_unlink_urb
 id|port-&gt;read_urb
 )paren
 suffix:semicolon
+)brace
 id|port-&gt;active
 op_assign
 l_int|0

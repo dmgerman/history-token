@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: dmy.c,v 1.9 2001/05/22 23:16:10 davem Exp $&n; * drivers/sbus/audio/dummy.c&n; *&n; * Copyright 1998 Derrick J Brashear (shadow@andrew.cmu.edu)&n; *&n; * This is a dummy lowlevel driver. Consider it a distant cousin of &n; * /proc/audio; It pretends to be a piece of audio hardware, and writes&n; * to a file instead. (or will shortly)&n; */
+multiline_comment|/* $Id: dmy.c,v 1.10 2001/10/08 22:19:50 davem Exp $&n; * drivers/sbus/audio/dummy.c&n; *&n; * Copyright 1998 Derrick J Brashear (shadow@andrew.cmu.edu)&n; *&n; * This is a dummy lowlevel driver. Consider it a distant cousin of &n; * /proc/audio; It pretends to be a piece of audio hardware, and writes&n; * to a file instead. (or will shortly)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -3426,6 +3426,12 @@ id|module_exit
 c_func
 (paren
 id|dummy_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */

@@ -32,7 +32,7 @@ macro_line|#  define INT_DELIVERY_MODE 1     /* logical delivery broadcast to al
 macro_line|# endif
 macro_line|#else
 DECL|macro|INT_DELIVERY_MODE
-macro_line|# define INT_DELIVERY_MODE 0     /* physical delivery on LOCAL quad */
+macro_line|# define INT_DELIVERY_MODE 1     /* logical delivery */
 DECL|macro|TARGET_CPUS
 macro_line|# define TARGET_CPUS 0x01
 macro_line|#endif

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sab82532.c,v 1.63 2001/06/29 21:23:44 davem Exp $&n; * sab82532.c: ASYNC Driver for the SIEMENS SAB82532 DUSCC.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Rewrote buffer handling to use CIRC(Circular Buffer) macros.&n; *   Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&n; *&n; */
+multiline_comment|/* $Id: sab82532.c,v 1.64 2001/10/08 22:19:51 davem Exp $&n; * sab82532.c: ASYNC Driver for the SIEMENS SAB82532 DUSCC.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Rewrote buffer handling to use CIRC(Circular Buffer) macros.&n; *   Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -9837,7 +9837,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.63 $&quot;
+l_string|&quot;$Revision: 1.64 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -10852,6 +10852,12 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module

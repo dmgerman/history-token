@@ -656,6 +656,12 @@ op_le
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|port-&gt;serial-&gt;dev
+)paren
+(brace
 multiline_comment|/* shutdown any bulk reads that might be going on */
 id|usb_unlink_urb
 (paren
@@ -672,6 +678,7 @@ id|usb_unlink_urb
 id|port-&gt;interrupt_in_urb
 )paren
 suffix:semicolon
+)brace
 id|port-&gt;active
 op_assign
 l_int|0
