@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * PPC64 (POWER4) Huge TLB Page Support for Kernel.&n; *&n; * Copyright (C) 2003 David Gibson, IBM Corporation.&n; *&n; * Based on the IA-32 version:&n; * Copyright (C) 2002, Rohit Seth &lt;rohit.seth@intel.com&gt;&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

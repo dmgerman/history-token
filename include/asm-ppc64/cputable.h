@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  include/asm-ppc64/cputable.h&n; *&n; *  Copyright (C)
 macro_line|#ifndef __ASM_PPC_CPUTABLE_H
 DECL|macro|__ASM_PPC_CPUTABLE_H
 mdefine_line|#define __ASM_PPC_CPUTABLE_H
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Exposed to userland CPU features - Must match ppc32 definitions */
 DECL|macro|PPC_FEATURE_32
 mdefine_line|#define PPC_FEATURE_32&t;&t;&t;0x80000000

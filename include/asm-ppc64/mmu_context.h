@@ -1,6 +1,7 @@
 macro_line|#ifndef __PPC64_MMU_CONTEXT_H
 DECL|macro|__PPC64_MMU_CONTEXT_H
 mdefine_line|#define __PPC64_MMU_CONTEXT_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;&t;
 macro_line|#include &lt;linux/kernel.h&gt;&t;
 macro_line|#include &lt;linux/mm.h&gt;&t;

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * PowerPC64 LPAR Configuration Information Driver&n; *&n; * Dave Engebretsen engebret@us.ibm.com&n; *    Copyright (c) 2003 Dave Engebretsen&n; * Will Schmidt willschm@us.ibm.com&n; *    SPLPAR updates, Copyright (c) 2003 Will Schmidt IBM Corporation.&n; * Nathan Lynch nathanl@austin.ibm.com&n; *    Added lparcfg_write, Copyright (C) 2004 Nathan Lynch IBM Corporation.&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; * This driver creates a proc file at /proc/ppc64/lparcfg which contains&n; * keyword - value pairs that specify the configuration of the partition.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * PowerPC memory management structures&n; *&n; * Dave En
 macro_line|#ifndef _PPC64_MMU_H_
 DECL|macro|_PPC64_MMU_H_
 mdefine_line|#define _PPC64_MMU_H_
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Default &quot;unsigned long&quot; context */
