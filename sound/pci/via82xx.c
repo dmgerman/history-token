@@ -9734,6 +9734,24 @@ multiline_comment|/* ECS L7VMM2 */
 dot
 id|vendor
 op_assign
+l_int|0x1025
+comma
+dot
+id|device
+op_assign
+l_int|0x0033
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_NO_VRA
+)brace
+comma
+multiline_comment|/* Acer Inspire 1353LM */
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x1043
 comma
 dot
