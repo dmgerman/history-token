@@ -7908,9 +7908,13 @@ op_star
 id|extra
 )paren
 (brace
-multiline_comment|/*&n;&t; * FIXME: trigger scanning, for now we just get the results of the&n;&t; * normal scanning already done&n;&t; */
+multiline_comment|/*&n;&t; * FIXME: trigger scanning with a reset, yes, I&squot;m lazy&n;&t; */
 r_return
-l_int|0
+id|wl3501_reset
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 )brace
 DECL|function|wl3501_get_scan
