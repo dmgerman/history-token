@@ -1009,6 +1009,43 @@ id|delay
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * Support ACPI 3.0 AML Timer operand&n; * Returns 64-bit free-running, monotonically increasing timer&n; * with 100ns granularity&n; */
+id|u64
+DECL|function|acpi_os_get_timer
+id|acpi_os_get_timer
+(paren
+r_void
+)paren
+(brace
+r_static
+id|u64
+id|t
+suffix:semicolon
+macro_line|#ifdef&t;CONFIG_HPET
+multiline_comment|/* TBD: use HPET if available */
+macro_line|#endif
+macro_line|#ifdef&t;CONFIG_X86_PM_TIMER
+multiline_comment|/* TBD: default to PM timer if HPET was not available */
+macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|t
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PREFIX
+l_string|&quot;acpi_os_get_timer() TBD&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_increment
+id|t
+suffix:semicolon
+)brace
 id|acpi_status
 DECL|function|acpi_os_read_port
 id|acpi_os_read_port
