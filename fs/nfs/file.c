@@ -448,6 +448,20 @@ op_star
 id|filp
 )paren
 (brace
+multiline_comment|/* Ensure that dirty pages are flushed out with the right creds */
+r_if
+c_cond
+(paren
+id|filp-&gt;f_mode
+op_amp
+id|FMODE_WRITE
+)paren
+id|filemap_fdatawrite
+c_func
+(paren
+id|filp-&gt;f_mapping
+)paren
+suffix:semicolon
 r_return
 id|NFS_PROTO
 c_func
