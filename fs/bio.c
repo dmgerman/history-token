@@ -1219,10 +1219,10 @@ op_amp
 id|WRITE
 )paren
 op_logical_and
-id|is_read_only
+id|bdev_read_only
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 )paren
 (brace

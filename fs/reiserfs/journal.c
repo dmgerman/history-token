@@ -8576,10 +8576,10 @@ c_cond
 (paren
 id|continue_replay
 op_logical_and
-id|is_read_only
+id|bdev_read_only
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb-&gt;s_bdev
 )paren
 )paren
 (brace
@@ -9117,10 +9117,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|is_read_only
+id|bdev_read_only
 c_func
 (paren
-id|p_s_sb-&gt;s_dev
+id|p_s_sb-&gt;s_bdev
 )paren
 op_logical_and
 id|_update_journal_header_block

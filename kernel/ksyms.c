@@ -1791,6 +1791,13 @@ c_func
 id|is_read_only
 )paren
 suffix:semicolon
+DECL|variable|bdev_read_only
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bdev_read_only
+)paren
+suffix:semicolon
 DECL|variable|set_device_ro
 id|EXPORT_SYMBOL
 c_func

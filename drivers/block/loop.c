@@ -2801,14 +2801,10 @@ id|IS_RDONLY
 id|inode
 )paren
 op_logical_or
-id|is_read_only
+id|bdev_read_only
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|lo_device-&gt;bd_dev
-)paren
+id|lo_device
 )paren
 op_logical_or
 op_logical_neg

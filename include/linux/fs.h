@@ -5641,6 +5641,16 @@ id|kdev_t
 suffix:semicolon
 r_extern
 r_int
+id|bdev_read_only
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|set_blocksize
 c_func
 (paren
