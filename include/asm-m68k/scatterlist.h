@@ -5,6 +5,7 @@ DECL|struct|scatterlist
 r_struct
 id|scatterlist
 (brace
+multiline_comment|/* These two are only valid if ADDRESS member of this&n;&t; * struct is NULL.&n;&t; */
 DECL|member|page
 r_struct
 id|page
@@ -22,36 +23,10 @@ r_int
 id|length
 suffix:semicolon
 DECL|member|dvma_address
-r_int
-r_int
+id|__u32
 id|dvma_address
 suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|mmu_sglist
-r_struct
-id|mmu_sglist
-(brace
-DECL|member|addr
-r_char
-op_star
-id|addr
-suffix:semicolon
-DECL|member|__dont_touch
-r_char
-op_star
-id|__dont_touch
-suffix:semicolon
-DECL|member|len
-r_int
-r_int
-id|len
-suffix:semicolon
-DECL|member|dvma_addr
-r_int
-r_int
-id|dvma_addr
-suffix:semicolon
+multiline_comment|/* A place to hang host-specific addresses at. */
 )brace
 suffix:semicolon
 multiline_comment|/* This is bogus and should go away. */
