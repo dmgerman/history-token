@@ -473,7 +473,7 @@ suffix:semicolon
 multiline_comment|/* typedefs */
 DECL|typedef|ata_qc_cb_t
 r_typedef
-r_void
+r_int
 (paren
 op_star
 id|ata_qc_cb_t
@@ -484,9 +484,8 @@ id|ata_queued_cmd
 op_star
 id|qc
 comma
-r_int
-r_int
-id|flags
+id|u8
+id|drv_stat
 )paren
 suffix:semicolon
 DECL|struct|ata_ioports
@@ -782,9 +781,9 @@ id|scatterlist
 op_star
 id|sg
 suffix:semicolon
-DECL|member|callback
+DECL|member|complete_fn
 id|ata_qc_cb_t
-id|callback
+id|complete_fn
 suffix:semicolon
 DECL|member|waiting
 r_struct
