@@ -1468,6 +1468,13 @@ c_func
 id|read_cache_page
 )paren
 suffix:semicolon
+DECL|variable|mark_page_accessed
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mark_page_accessed
+)paren
+suffix:semicolon
 DECL|variable|vfs_readlink
 id|EXPORT_SYMBOL
 c_func
