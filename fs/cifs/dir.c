@@ -975,6 +975,10 @@ id|pCifsFile-&gt;pInode
 op_assign
 id|newinode
 suffix:semicolon
+id|pCifsFile-&gt;invalidHandle
+op_assign
+id|FALSE
+suffix:semicolon
 multiline_comment|/* pCifsFile-&gt;pfile = file; */
 multiline_comment|/* put in at open time */
 id|write_lock
