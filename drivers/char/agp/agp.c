@@ -5963,7 +5963,8 @@ id|NOT_SUPPORTED
 id|printk
 (paren
 id|KERN_DEBUG
-l_string|&quot;Oops, don&squot;t init a 2nd agpgart device.&bslash;n&quot;
+id|PFX
+l_string|&quot;Oops, don&squot;t init more than one agpgart device.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
