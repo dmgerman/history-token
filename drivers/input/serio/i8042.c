@@ -186,6 +186,42 @@ comma
 l_string|&quot;Pretend that controller can only read data from keyboard&quot;
 )paren
 suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;i8042_noaux&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;i8042_nomux&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;i8042_unlock&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;i8042_reset&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;i8042_direct&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;i8042_dumbkbd&quot;
+)paren
+suffix:semicolon
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#include &quot;i8042.h&quot;

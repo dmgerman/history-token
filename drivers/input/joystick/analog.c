@@ -77,6 +77,12 @@ comma
 l_string|&quot;Describes analog joysticks type/capabilities&quot;
 )paren
 suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;js=&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Times, feature definitions.&n; */
 DECL|macro|ANALOG_RUDDER
 mdefine_line|#define ANALOG_RUDDER&t;&t;0x00004

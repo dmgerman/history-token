@@ -116,6 +116,24 @@ comma
 l_string|&quot;Use software keyboard repeat&quot;
 )paren
 suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;atkbd_set=&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;atkbd_reset&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;atkbd_softrepeat=&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Scancode to keycode tables. These are just the default setting, and&n; * are loadable via an userland utility.&n; */
 macro_line|#if defined(__hppa__)
 macro_line|#include &quot;hpps2atkbd.h&quot;

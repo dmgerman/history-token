@@ -161,6 +161,24 @@ comma
 l_string|&quot;Describes third attached device (&lt;parport#&gt;,&lt;type&gt;)&quot;
 )paren
 suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;db9=&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;db9_2=&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;db9_3=&quot;
+)paren
+suffix:semicolon
 DECL|macro|DB9_MULTI_STICK
 mdefine_line|#define DB9_MULTI_STICK&t;&t;0x01
 DECL|macro|DB9_MULTI2_STICK

@@ -185,6 +185,24 @@ comma
 l_string|&quot;Describers third set of devices&quot;
 )paren
 suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;gc=&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;gc_2=&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;gc_3=&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* see also gs_psx_delay parameter in PSX support section */
 DECL|macro|GC_SNES
 mdefine_line|#define GC_SNES&t;&t;1
@@ -848,6 +866,12 @@ c_func
 id|psx_delay
 comma
 l_string|&quot;Delay when accessing Sony PSX controller (usecs)&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;gc_psx_delay=&quot;
 )paren
 suffix:semicolon
 DECL|variable|gc_psx_abs

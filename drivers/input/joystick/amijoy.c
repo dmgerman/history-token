@@ -71,6 +71,12 @@ comma
 l_string|&quot;Map of attached joysticks in form of &lt;a&gt;,&lt;b&gt; (default is 0,1)&quot;
 )paren
 suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;amijoy=&quot;
+)paren
+suffix:semicolon
 DECL|variable|amijoy_used
 r_static
 r_int

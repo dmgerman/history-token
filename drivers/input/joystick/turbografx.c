@@ -196,6 +196,24 @@ comma
 l_string|&quot;Describes third set of devices&quot;
 )paren
 suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;tgfx=&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;tgfx_2=&quot;
+)paren
+suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;tgfx_3=&quot;
+)paren
+suffix:semicolon
 DECL|macro|TGFX_REFRESH_TIME
 mdefine_line|#define TGFX_REFRESH_TIME&t;HZ/100&t;/* 10 ms */
 DECL|macro|TGFX_TRIGGER
