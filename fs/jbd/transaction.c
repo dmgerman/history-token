@@ -5403,6 +5403,12 @@ comma
 l_string|&quot;on committing transaction&quot;
 )paren
 suffix:semicolon
+id|set_buffer_freed
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
