@@ -1,20 +1,11 @@
 macro_line|#include &lt;linux/raid/md.h&gt;
 macro_line|#include &quot;do_mounts.h&quot;
 multiline_comment|/*&n; * When md (and any require personalities) are compiled into the kernel&n; * (not a module), arrays can be assembles are boot time using with AUTODETECT&n; * where specially marked partitions are registered with md_autodetect_dev(),&n; * and with MD_BOOT where devices to be collected are given on the boot line&n; * with md=.....&n; * The code for that is here.&n; */
-r_struct
-(brace
-DECL|member|set
+DECL|variable|raid_noautodetect
+r_static
 r_int
-id|set
-suffix:semicolon
-DECL|member|noautodetect
-r_int
-id|noautodetect
-suffix:semicolon
-DECL|variable|__initdata
-)brace
-id|raid_setup_args
 id|__initdata
+id|raid_noautodetect
 suffix:semicolon
 r_static
 r_struct
@@ -548,6 +539,8 @@ l_string|&quot;/dev/&quot;
 comma
 l_int|5
 )paren
+op_eq
+l_int|0
 )paren
 id|devname
 op_add_assign
@@ -1106,7 +1099,7 @@ comma
 id|wlen
 )paren
 )paren
-id|raid_setup_args.noautodetect
+id|raid_noautodetect
 op_assign
 l_int|1
 suffix:semicolon
@@ -1117,10 +1110,6 @@ op_plus
 l_int|1
 suffix:semicolon
 )brace
-id|raid_setup_args.set
-op_assign
-l_int|1
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -1169,7 +1158,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|raid_setup_args.noautodetect
+id|raid_noautodetect
 )paren
 id|printk
 c_func
