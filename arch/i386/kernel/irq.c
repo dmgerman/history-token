@@ -3362,7 +3362,6 @@ id|NR_IRQS
 )braket
 suffix:semicolon
 DECL|variable|irq_affinity
-r_static
 r_int
 r_int
 id|irq_affinity

@@ -35,6 +35,11 @@ op_star
 id|__ksoftirqd_task
 suffix:semicolon
 multiline_comment|/* waitqueue is too large */
+DECL|member|idle_timestamp
+r_int
+r_int
+id|idle_timestamp
+suffix:semicolon
 DECL|member|__nmi_count
 r_int
 r_int
