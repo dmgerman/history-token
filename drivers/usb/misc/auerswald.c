@@ -5043,7 +5043,13 @@ op_assign
 id|ccp
 suffix:semicolon
 r_return
-l_int|0
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|file
+)paren
 suffix:semicolon
 multiline_comment|/* Error exit */
 id|ofail

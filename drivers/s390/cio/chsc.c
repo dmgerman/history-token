@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.114 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.115 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -3656,13 +3656,6 @@ id|channel_path
 )paren
 )paren
 suffix:semicolon
-id|chps
-(braket
-id|chpid
-)braket
-op_assign
-id|chp
-suffix:semicolon
 multiline_comment|/* fill in status, etc. */
 id|chp-&gt;id
 op_assign
@@ -3731,8 +3724,8 @@ comma
 id|chpid
 )paren
 suffix:semicolon
-r_return
-id|ret
+r_goto
+id|out_free
 suffix:semicolon
 )brace
 id|ret
@@ -3752,11 +3745,35 @@ c_cond
 (paren
 id|ret
 )paren
+(brace
 id|device_unregister
 c_func
 (paren
 op_amp
 id|chp-&gt;dev
+)paren
+suffix:semicolon
+r_goto
+id|out_free
+suffix:semicolon
+)brace
+r_else
+id|chps
+(braket
+id|chpid
+)braket
+op_assign
+id|chp
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+id|out_free
+suffix:colon
+id|kfree
+c_func
+(paren
+id|chp
 )paren
 suffix:semicolon
 r_return

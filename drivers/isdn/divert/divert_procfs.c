@@ -391,7 +391,8 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|file-&gt;f_pos
+op_star
+id|off
 op_add_assign
 id|len
 suffix:semicolon
@@ -587,8 +588,12 @@ id|flags
 suffix:semicolon
 multiline_comment|/*  start_divert(); */
 r_return
+id|nonseekable_open
+c_func
 (paren
-l_int|0
+id|ino
+comma
+id|filep
 )paren
 suffix:semicolon
 )brace

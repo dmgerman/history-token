@@ -181,6 +181,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 suffix:semicolon
 r_int
@@ -207,6 +211,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 suffix:semicolon
 multiline_comment|/* these functions are called to form the content of /proc/fs/coda/... files */

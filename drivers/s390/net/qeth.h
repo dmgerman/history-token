@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/ccwgroup.h&gt;
 macro_line|#include &quot;qeth_mpc.h&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.111 $&quot;
+mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.113 $&quot;
 macro_line|#ifdef CONFIG_QETH_IPV6
 DECL|macro|QETH_VERSION_IPV6
 mdefine_line|#define QETH_VERSION_IPV6 &t;&quot;:IPv6&quot;
@@ -210,6 +210,8 @@ DECL|macro|SENSE_RESETTING_EVENT_BYTE
 mdefine_line|#define SENSE_RESETTING_EVENT_BYTE 1
 DECL|macro|SENSE_RESETTING_EVENT_FLAG
 mdefine_line|#define SENSE_RESETTING_EVENT_FLAG 0x80
+DECL|macro|atomic_swap
+mdefine_line|#define atomic_swap(a,b) xchg((int *)a.counter, b)
 multiline_comment|/*&n; * Common IO related definitions&n; */
 r_extern
 r_struct
@@ -847,6 +849,21 @@ suffix:semicolon
 r_struct
 id|qeth_card
 suffix:semicolon
+DECL|enum|qeth_out_q_states
+r_enum
+id|qeth_out_q_states
+(brace
+DECL|enumerator|QETH_OUT_Q_UNLOCKED
+id|QETH_OUT_Q_UNLOCKED
+comma
+DECL|enumerator|QETH_OUT_Q_LOCKED
+id|QETH_OUT_Q_LOCKED
+comma
+DECL|enumerator|QETH_OUT_Q_LOCKED_FLUSH
+id|QETH_OUT_Q_LOCKED_FLUSH
+comma
+)brace
+suffix:semicolon
 DECL|struct|qeth_qdio_out_q
 r_struct
 id|qeth_qdio_out_q
@@ -877,9 +894,9 @@ id|qeth_card
 op_star
 id|card
 suffix:semicolon
-DECL|member|lock
-id|spinlock_t
-id|lock
+DECL|member|state
+id|atomic_t
+id|state
 suffix:semicolon
 DECL|member|do_pack
 r_volatile

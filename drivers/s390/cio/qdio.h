@@ -2,15 +2,14 @@ macro_line|#ifndef _CIO_QDIO_H
 DECL|macro|_CIO_QDIO_H
 mdefine_line|#define _CIO_QDIO_H
 DECL|macro|VERSION_CIO_QDIO_H
-mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.24 $&quot;
-singleline_comment|//#define QDIO_DBF_LIKE_HELL
-macro_line|#ifdef QDIO_DBF_LIKE_HELL
+mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.26 $&quot;
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 DECL|macro|QDIO_VERBOSE_LEVEL
 mdefine_line|#define QDIO_VERBOSE_LEVEL 9
-macro_line|#else /* QDIO_DBF_LIKE_HELL */
+macro_line|#else /* CONFIG_QDIO_DEBUG */
 DECL|macro|QDIO_VERBOSE_LEVEL
 mdefine_line|#define QDIO_VERBOSE_LEVEL 5
-macro_line|#endif /* QDIO_DBF_LIKE_HELL */
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 DECL|macro|QDIO_USE_PROCESSING_STATE
 mdefine_line|#define QDIO_USE_PROCESSING_STATE
 macro_line|#ifdef CONFIG_QDIO_PERF_STATS
@@ -114,7 +113,7 @@ DECL|macro|QDIO_DBF_HEX1
 mdefine_line|#define QDIO_DBF_HEX1(ex,name,addr,len) QDIO_DBF_HEX(ex,name,1,addr,len)
 DECL|macro|QDIO_DBF_HEX2
 mdefine_line|#define QDIO_DBF_HEX2(ex,name,addr,len) QDIO_DBF_HEX(ex,name,2,addr,len)
-macro_line|#ifdef QDIO_DBF_LIKE_HELL
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 DECL|macro|QDIO_DBF_HEX3
 mdefine_line|#define QDIO_DBF_HEX3(ex,name,addr,len) QDIO_DBF_HEX(ex,name,3,addr,len)
 DECL|macro|QDIO_DBF_HEX4
@@ -123,7 +122,7 @@ DECL|macro|QDIO_DBF_HEX5
 mdefine_line|#define QDIO_DBF_HEX5(ex,name,addr,len) QDIO_DBF_HEX(ex,name,5,addr,len)
 DECL|macro|QDIO_DBF_HEX6
 mdefine_line|#define QDIO_DBF_HEX6(ex,name,addr,len) QDIO_DBF_HEX(ex,name,6,addr,len)
-macro_line|#else /* QDIO_DBF_LIKE_HELL */
+macro_line|#else /* CONFIG_QDIO_DEBUG */
 DECL|macro|QDIO_DBF_HEX3
 mdefine_line|#define QDIO_DBF_HEX3(ex,name,addr,len) do {} while (0)
 DECL|macro|QDIO_DBF_HEX4
@@ -132,14 +131,14 @@ DECL|macro|QDIO_DBF_HEX5
 mdefine_line|#define QDIO_DBF_HEX5(ex,name,addr,len) do {} while (0)
 DECL|macro|QDIO_DBF_HEX6
 mdefine_line|#define QDIO_DBF_HEX6(ex,name,addr,len) do {} while (0)
-macro_line|#endif /* QDIO_DBF_LIKE_HELL */
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 DECL|macro|QDIO_DBF_TEXT0
 mdefine_line|#define QDIO_DBF_TEXT0(ex,name,text) QDIO_DBF_TEXT(ex,name,0,text)
 DECL|macro|QDIO_DBF_TEXT1
 mdefine_line|#define QDIO_DBF_TEXT1(ex,name,text) QDIO_DBF_TEXT(ex,name,1,text)
 DECL|macro|QDIO_DBF_TEXT2
 mdefine_line|#define QDIO_DBF_TEXT2(ex,name,text) QDIO_DBF_TEXT(ex,name,2,text)
-macro_line|#ifdef QDIO_DBF_LIKE_HELL
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 DECL|macro|QDIO_DBF_TEXT3
 mdefine_line|#define QDIO_DBF_TEXT3(ex,name,text) QDIO_DBF_TEXT(ex,name,3,text)
 DECL|macro|QDIO_DBF_TEXT4
@@ -148,7 +147,7 @@ DECL|macro|QDIO_DBF_TEXT5
 mdefine_line|#define QDIO_DBF_TEXT5(ex,name,text) QDIO_DBF_TEXT(ex,name,5,text)
 DECL|macro|QDIO_DBF_TEXT6
 mdefine_line|#define QDIO_DBF_TEXT6(ex,name,text) QDIO_DBF_TEXT(ex,name,6,text)
-macro_line|#else /* QDIO_DBF_LIKE_HELL */
+macro_line|#else /* CONFIG_QDIO_DEBUG */
 DECL|macro|QDIO_DBF_TEXT3
 mdefine_line|#define QDIO_DBF_TEXT3(ex,name,text) do {} while (0)
 DECL|macro|QDIO_DBF_TEXT4
@@ -157,7 +156,7 @@ DECL|macro|QDIO_DBF_TEXT5
 mdefine_line|#define QDIO_DBF_TEXT5(ex,name,text) do {} while (0)
 DECL|macro|QDIO_DBF_TEXT6
 mdefine_line|#define QDIO_DBF_TEXT6(ex,name,text) do {} while (0)
-macro_line|#endif /* QDIO_DBF_LIKE_HELL */
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 DECL|macro|QDIO_DBF_SETUP_NAME
 mdefine_line|#define QDIO_DBF_SETUP_NAME &quot;qdio_setup&quot;
 DECL|macro|QDIO_DBF_SETUP_LEN
@@ -166,13 +165,13 @@ DECL|macro|QDIO_DBF_SETUP_INDEX
 mdefine_line|#define QDIO_DBF_SETUP_INDEX 2
 DECL|macro|QDIO_DBF_SETUP_NR_AREAS
 mdefine_line|#define QDIO_DBF_SETUP_NR_AREAS 1
-macro_line|#ifdef QDIO_DBF_LIKE_HELL
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 DECL|macro|QDIO_DBF_SETUP_LEVEL
 mdefine_line|#define QDIO_DBF_SETUP_LEVEL 6
-macro_line|#else /* QDIO_DBF_LIKE_HELL */
+macro_line|#else /* CONFIG_QDIO_DEBUG */
 DECL|macro|QDIO_DBF_SETUP_LEVEL
 mdefine_line|#define QDIO_DBF_SETUP_LEVEL 2
-macro_line|#endif /* QDIO_DBF_LIKE_HELL */
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 DECL|macro|QDIO_DBF_SBAL_NAME
 mdefine_line|#define QDIO_DBF_SBAL_NAME &quot;qdio_labs&quot; /* sbal */
 DECL|macro|QDIO_DBF_SBAL_LEN
@@ -181,30 +180,30 @@ DECL|macro|QDIO_DBF_SBAL_INDEX
 mdefine_line|#define QDIO_DBF_SBAL_INDEX 2
 DECL|macro|QDIO_DBF_SBAL_NR_AREAS
 mdefine_line|#define QDIO_DBF_SBAL_NR_AREAS 2
-macro_line|#ifdef QDIO_DBF_LIKE_HELL
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 DECL|macro|QDIO_DBF_SBAL_LEVEL
 mdefine_line|#define QDIO_DBF_SBAL_LEVEL 6
-macro_line|#else /* QDIO_DBF_LIKE_HELL */
+macro_line|#else /* CONFIG_QDIO_DEBUG */
 DECL|macro|QDIO_DBF_SBAL_LEVEL
 mdefine_line|#define QDIO_DBF_SBAL_LEVEL 2
-macro_line|#endif /* QDIO_DBF_LIKE_HELL */
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 DECL|macro|QDIO_DBF_TRACE_NAME
 mdefine_line|#define QDIO_DBF_TRACE_NAME &quot;qdio_trace&quot;
 DECL|macro|QDIO_DBF_TRACE_LEN
 mdefine_line|#define QDIO_DBF_TRACE_LEN 8
 DECL|macro|QDIO_DBF_TRACE_NR_AREAS
 mdefine_line|#define QDIO_DBF_TRACE_NR_AREAS 2
-macro_line|#ifdef QDIO_DBF_LIKE_HELL
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 DECL|macro|QDIO_DBF_TRACE_INDEX
 mdefine_line|#define QDIO_DBF_TRACE_INDEX 4
 DECL|macro|QDIO_DBF_TRACE_LEVEL
 mdefine_line|#define QDIO_DBF_TRACE_LEVEL 4 /* -------- could be even more verbose here */
-macro_line|#else /* QDIO_DBF_LIKE_HELL */
+macro_line|#else /* CONFIG_QDIO_DEBUG */
 DECL|macro|QDIO_DBF_TRACE_INDEX
 mdefine_line|#define QDIO_DBF_TRACE_INDEX 2
 DECL|macro|QDIO_DBF_TRACE_LEVEL
 mdefine_line|#define QDIO_DBF_TRACE_LEVEL 2
-macro_line|#endif /* QDIO_DBF_LIKE_HELL */
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 DECL|macro|QDIO_DBF_SENSE_NAME
 mdefine_line|#define QDIO_DBF_SENSE_NAME &quot;qdio_sense&quot;
 DECL|macro|QDIO_DBF_SENSE_LEN
@@ -213,14 +212,14 @@ DECL|macro|QDIO_DBF_SENSE_INDEX
 mdefine_line|#define QDIO_DBF_SENSE_INDEX 1
 DECL|macro|QDIO_DBF_SENSE_NR_AREAS
 mdefine_line|#define QDIO_DBF_SENSE_NR_AREAS 1
-macro_line|#ifdef QDIO_DBF_LIKE_HELL
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 DECL|macro|QDIO_DBF_SENSE_LEVEL
 mdefine_line|#define QDIO_DBF_SENSE_LEVEL 6
-macro_line|#else /* QDIO_DBF_LIKE_HELL */
+macro_line|#else /* CONFIG_QDIO_DEBUG */
 DECL|macro|QDIO_DBF_SENSE_LEVEL
 mdefine_line|#define QDIO_DBF_SENSE_LEVEL 2
-macro_line|#endif /* QDIO_DBF_LIKE_HELL */
-macro_line|#ifdef QDIO_DBF_LIKE_HELL
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 DECL|macro|QDIO_TRACE_QTYPE
 mdefine_line|#define QDIO_TRACE_QTYPE QDIO_ZFCP_QFMT
 DECL|macro|QDIO_DBF_SLSB_OUT_NAME
@@ -243,7 +242,7 @@ DECL|macro|QDIO_DBF_SLSB_IN_NR_AREAS
 mdefine_line|#define QDIO_DBF_SLSB_IN_NR_AREAS 1
 DECL|macro|QDIO_DBF_SLSB_IN_LEVEL
 mdefine_line|#define QDIO_DBF_SLSB_IN_LEVEL 6
-macro_line|#endif /* QDIO_DBF_LIKE_HELL */
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 DECL|macro|QDIO_PRINTK_HEADER
 mdefine_line|#define QDIO_PRINTK_HEADER QDIO_NAME &quot;: &quot;
 macro_line|#if QDIO_VERBOSE_LEVEL&gt;8
@@ -887,13 +886,13 @@ macro_line|#else /* CONFIG_ARCH_S390X */
 DECL|macro|QDIO_GET_ADDR
 mdefine_line|#define QDIO_GET_ADDR(x) ((__u32)(long)x)
 macro_line|#endif /* CONFIG_ARCH_S390X */
-macro_line|#ifdef QDIO_DBF_LIKE_HELL 
+macro_line|#ifdef CONFIG_QDIO_DEBUG
 DECL|macro|set_slsb
 mdefine_line|#define set_slsb(x,y) &bslash;&n;  if(q-&gt;queue_type==QDIO_TRACE_QTYPE) { &bslash;&n;        if(q-&gt;is_input_q) { &bslash;&n;            QDIO_DBF_HEX2(0,slsb_in,&amp;q-&gt;slsb,QDIO_MAX_BUFFERS_PER_Q); &bslash;&n;        } else { &bslash;&n;            QDIO_DBF_HEX2(0,slsb_out,&amp;q-&gt;slsb,QDIO_MAX_BUFFERS_PER_Q); &bslash;&n;        } &bslash;&n;  } &bslash;&n;  qdio_set_slsb(x,y); &bslash;&n;  if(q-&gt;queue_type==QDIO_TRACE_QTYPE) { &bslash;&n;        if(q-&gt;is_input_q) { &bslash;&n;            QDIO_DBF_HEX2(0,slsb_in,&amp;q-&gt;slsb,QDIO_MAX_BUFFERS_PER_Q); &bslash;&n;        } else { &bslash;&n;            QDIO_DBF_HEX2(0,slsb_out,&amp;q-&gt;slsb,QDIO_MAX_BUFFERS_PER_Q); &bslash;&n;        } &bslash;&n;  }
-macro_line|#else /* QDIO_DBF_LIKE_HELL */
+macro_line|#else /* CONFIG_QDIO_DEBUG */
 DECL|macro|set_slsb
 mdefine_line|#define set_slsb(x,y) qdio_set_slsb(x,y)
-macro_line|#endif /* QDIO_DBF_LIKE_HELL */
+macro_line|#endif /* CONFIG_QDIO_DEBUG */
 DECL|struct|qdio_q
 r_struct
 id|qdio_q

@@ -936,19 +936,6 @@ op_star
 id|ppos
 )paren
 (brace
-multiline_comment|/*  Can&squot;t seek (pwrite) on this device  */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1317,7 +1304,13 @@ c_func
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|file
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;wdtpci_release:&n; *&t;@inode: inode to board&n; *&t;@file: file handle to board&n; *&n; *&t;The watchdog has a configurable API. There is a religious dispute&n; *&t;between people who want their watchdog to be able to shut down and&n; *&t;those who want to be sure if the watchdog manager dies the machine&n; *&t;reboots. In the former case we disable the counters, in the latter&n; *&t;case you have to open it again very soon.&n; */
@@ -1412,19 +1405,6 @@ id|ptr
 r_int
 id|temperature
 suffix:semicolon
-multiline_comment|/*  Can&squot;t seek (pread) on this device  */
-r_if
-c_cond
-(paren
-id|ptr
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1479,7 +1459,13 @@ id|file
 )paren
 (brace
 r_return
-l_int|0
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|file
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;wdtpci_temp_release:&n; *&t;@inode: inode to board&n; *&t;@file: file handle to board&n; *&n; *&t;The temperature device has been closed.&n; */

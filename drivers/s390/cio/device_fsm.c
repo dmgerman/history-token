@@ -989,6 +989,14 @@ id|notify
 )paren
 (brace
 multiline_comment|/* Get device online again. */
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|state
+op_assign
+id|DEV_STATE_OFFLINE
+suffix:semicolon
 id|ccw_device_online
 c_func
 (paren

@@ -8603,6 +8603,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_if
@@ -8623,6 +8627,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 )paren
 suffix:semicolon
 r_if

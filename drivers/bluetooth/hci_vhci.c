@@ -1169,7 +1169,13 @@ op_assign
 id|hci_vhci
 suffix:semicolon
 r_return
-l_int|0
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|file
+)paren
 suffix:semicolon
 )brace
 DECL|function|hci_vhci_chr_close

@@ -965,6 +965,14 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|file
+)paren
+suffix:semicolon
 id|subminor
 op_assign
 id|iminor

@@ -1270,6 +1270,7 @@ id|args
 )paren
 (brace
 r_int
+r_int
 id|len
 suffix:semicolon
 r_int
@@ -1431,6 +1432,7 @@ op_star
 id|args
 )paren
 (brace
+r_int
 r_int
 id|len
 suffix:semicolon
