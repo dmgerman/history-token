@@ -6422,6 +6422,11 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
+id|sunsu_serial_console_init
+c_func
+(paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -7129,11 +7134,6 @@ id|ENODEV
 suffix:semicolon
 multiline_comment|/*&n;&t; * Console must be initiated after the generic initialization.&n;&t; */
 id|sunsu_serial_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|sunsu_serial_console_init
 c_func
 (paren
 )paren

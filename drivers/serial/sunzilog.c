@@ -7578,6 +7578,11 @@ op_eq
 l_int|0
 )paren
 (brace
+id|sunzilog_console_init
+c_func
+(paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -7759,11 +7764,6 @@ c_func
 )paren
 suffix:semicolon
 id|sunzilog_ports_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|sunzilog_console_init
 c_func
 (paren
 )paren
