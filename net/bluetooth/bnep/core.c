@@ -1,4 +1,4 @@
-multiline_comment|/* &n;   BNEP implementation for Linux Bluetooth stack (BlueZ).&n;   Copyright (C) 2001-2002 Inventel Systemes&n;   Written 2001-2002 by&n;&t;Cl&#xfffd;ment Moreau &lt;clement.moreau@inventel.fr&gt;&n;&t;David Libault  &lt;david.libault@inventel.fr&gt;&n;&n;   Copyright (C) 2002 Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
+multiline_comment|/* &n;   BNEP implementation for Linux Bluetooth stack (BlueZ).&n;   Copyright (C) 2001-2002 Inventel Systemes&n;   Written 2001-2002 by&n;&t;Cl&#xfffd;ment Moreau &lt;clement.moreau@inventel.fr&gt;&n;&t;David Libault  &lt;david.libault@inventel.fr&gt;&n;&n;   Copyright (C) 2002 Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
 multiline_comment|/*&n; * $Id: core.c,v 1.20 2002/08/04 21:23:58 maxk Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -2905,11 +2905,11 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|bnep_init_module
+DECL|function|bnep_init
 r_static
 r_int
 id|__init
-id|bnep_init_module
+id|bnep_init
 c_func
 (paren
 r_void
@@ -2981,11 +2981,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|bnep_cleanup_module
+DECL|function|bnep_exit
 r_static
 r_void
 id|__exit
-id|bnep_cleanup_module
+id|bnep_exit
 c_func
 (paren
 r_void
@@ -2997,18 +2997,24 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|bnep_init_module
+DECL|variable|bnep_init
 id|module_init
 c_func
 (paren
-id|bnep_init_module
+id|bnep_init
 )paren
 suffix:semicolon
-DECL|variable|bnep_cleanup_module
+DECL|variable|bnep_exit
 id|module_exit
 c_func
 (paren
-id|bnep_cleanup_module
+id|bnep_exit
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David Libault &lt;david.libault@inventel.fr&gt;, Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -3018,10 +3024,11 @@ l_string|&quot;Bluetooth BNEP ver &quot;
 id|VERSION
 )paren
 suffix:semicolon
-id|MODULE_AUTHOR
+DECL|variable|VERSION
+id|MODULE_VERSION
 c_func
 (paren
-l_string|&quot;David Libault &lt;david.libault@inventel.fr&gt;, Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&quot;
+id|VERSION
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

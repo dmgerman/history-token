@@ -2341,6 +2341,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|l2cap_sock_listen
+r_static
 r_int
 id|l2cap_sock_listen
 c_func
@@ -2450,6 +2451,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|l2cap_sock_accept
+r_static
 r_int
 id|l2cap_sock_accept
 c_func
@@ -4950,6 +4952,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Copy frame to all raw sockets on that connection */
 DECL|function|l2cap_raw_recv
+r_static
 r_void
 id|l2cap_raw_recv
 c_func
@@ -10326,6 +10329,7 @@ id|l2cap_recv_acldata
 )brace
 suffix:semicolon
 DECL|function|l2cap_init
+r_static
 r_int
 id|__init
 id|l2cap_init
@@ -10412,10 +10416,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|l2cap_cleanup
+DECL|function|l2cap_exit
+r_static
 r_void
 id|__exit
-id|l2cap_cleanup
+id|l2cap_exit
 c_func
 (paren
 r_void
@@ -10485,11 +10490,11 @@ c_func
 id|l2cap_init
 )paren
 suffix:semicolon
-DECL|variable|l2cap_cleanup
+DECL|variable|l2cap_exit
 id|module_exit
 c_func
 (paren
-id|l2cap_cleanup
+id|l2cap_exit
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -10502,6 +10507,13 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Bluetooth L2CAP ver &quot;
+id|VERSION
+)paren
+suffix:semicolon
+DECL|variable|VERSION
+id|MODULE_VERSION
+c_func
+(paren
 id|VERSION
 )paren
 suffix:semicolon
