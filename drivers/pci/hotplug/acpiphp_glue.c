@@ -4514,6 +4514,13 @@ id|bridge
 )paren
 suffix:semicolon
 )brace
+id|acpi_pci_unregister_driver
+c_func
+(paren
+op_amp
+id|acpi_pci_hp_driver
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * acpiphp_get_num_slots - count number of slots in a system&n; */
 DECL|function|acpiphp_get_num_slots
