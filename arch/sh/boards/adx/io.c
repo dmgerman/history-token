@@ -1,21 +1,9 @@
-multiline_comment|/* $Id: io_generic.c,v 1.1.1.1.4.2.2.1 2003/01/10 17:26:56 lethal Exp $&n; *&n; * linux/arch/sh/kernel/io_generic.c&n; *&n; * Copyright (C) 2000  Niibe Yutaka&n; *&n; * Generic I/O routine. These can be used where a machine specific version&n; * is not required.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; */
+multiline_comment|/* &n; * linux/arch/sh/kernel/io_adx.c&n; *&n; * Copyright (C) 2001 A&amp;D Co., Ltd.&n; *&n; * I/O routine and setup routines for A&amp;D ADX Board&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#if defined(CONFIG_CPU_SH3)
-multiline_comment|/* I&squot;m not sure SH7709 has this kind of bug */
-DECL|macro|SH3_PCMCIA_BUG_WORKAROUND
-mdefine_line|#define SH3_PCMCIA_BUG_WORKAROUND 1
-DECL|macro|DUMMY_READ_AREA6
-mdefine_line|#define DUMMY_READ_AREA6&t;  0xba000000
-macro_line|#endif
 DECL|macro|PORT2ADDR
-mdefine_line|#define PORT2ADDR(x) (sh_mv.mv_isa_port2addr(x))
-DECL|variable|generic_io_base
-r_int
-r_int
-id|generic_io_base
-suffix:semicolon
+mdefine_line|#define PORT2ADDR(x) (adx_isa_port2addr(x))
 DECL|function|delay
 r_static
 r_inline
@@ -33,10 +21,10 @@ l_int|0xa0000000
 )paren
 suffix:semicolon
 )brace
-DECL|function|generic_inb
+DECL|function|adx_inb
 r_int
 r_char
-id|generic_inb
+id|adx_inb
 c_func
 (paren
 r_int
@@ -59,10 +47,10 @@ id|port
 )paren
 suffix:semicolon
 )brace
-DECL|function|generic_inw
+DECL|function|adx_inw
 r_int
 r_int
-id|generic_inw
+id|adx_inw
 c_func
 (paren
 r_int
@@ -85,10 +73,10 @@ id|port
 )paren
 suffix:semicolon
 )brace
-DECL|function|generic_inl
+DECL|function|adx_inl
 r_int
 r_int
-id|generic_inl
+id|adx_inl
 c_func
 (paren
 r_int
@@ -111,10 +99,10 @@ id|port
 )paren
 suffix:semicolon
 )brace
-DECL|function|generic_inb_p
+DECL|function|adx_inb_p
 r_int
 r_char
-id|generic_inb_p
+id|adx_inb_p
 c_func
 (paren
 r_int
@@ -148,10 +136,10 @@ r_return
 id|v
 suffix:semicolon
 )brace
-DECL|function|generic_inw_p
+DECL|function|adx_inw_p
 r_int
 r_int
-id|generic_inw_p
+id|adx_inw_p
 c_func
 (paren
 r_int
@@ -185,10 +173,10 @@ r_return
 id|v
 suffix:semicolon
 )brace
-DECL|function|generic_inl_p
+DECL|function|adx_inl_p
 r_int
 r_int
-id|generic_inl_p
+id|adx_inl_p
 c_func
 (paren
 r_int
@@ -222,9 +210,9 @@ r_return
 id|v
 suffix:semicolon
 )brace
-DECL|function|generic_insb
+DECL|function|adx_insb
 r_void
-id|generic_insb
+id|adx_insb
 c_func
 (paren
 r_int
@@ -266,9 +254,9 @@ id|port
 suffix:semicolon
 )brace
 )brace
-DECL|function|generic_insw
+DECL|function|adx_insw
 r_void
-id|generic_insw
+id|adx_insw
 c_func
 (paren
 r_int
@@ -309,17 +297,10 @@ id|port
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef SH3_PCMCIA_BUG_WORKAROUND
-id|ctrl_inb
-(paren
-id|DUMMY_READ_AREA6
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
-DECL|function|generic_insl
+DECL|function|adx_insl
 r_void
-id|generic_insl
+id|adx_insl
 c_func
 (paren
 r_int
@@ -360,17 +341,10 @@ id|port
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef SH3_PCMCIA_BUG_WORKAROUND
-id|ctrl_inb
-(paren
-id|DUMMY_READ_AREA6
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
-DECL|function|generic_outb
+DECL|function|adx_outb
 r_void
-id|generic_outb
+id|adx_outb
 c_func
 (paren
 r_int
@@ -398,9 +372,9 @@ op_assign
 id|b
 suffix:semicolon
 )brace
-DECL|function|generic_outw
+DECL|function|adx_outw
 r_void
-id|generic_outw
+id|adx_outw
 c_func
 (paren
 r_int
@@ -428,9 +402,9 @@ op_assign
 id|b
 suffix:semicolon
 )brace
-DECL|function|generic_outl
+DECL|function|adx_outl
 r_void
-id|generic_outl
+id|adx_outl
 c_func
 (paren
 r_int
@@ -458,9 +432,9 @@ op_assign
 id|b
 suffix:semicolon
 )brace
-DECL|function|generic_outb_p
+DECL|function|adx_outb_p
 r_void
-id|generic_outb_p
+id|adx_outb_p
 c_func
 (paren
 r_int
@@ -493,9 +467,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|generic_outw_p
+DECL|function|adx_outw_p
 r_void
-id|generic_outw_p
+id|adx_outw_p
 c_func
 (paren
 r_int
@@ -528,9 +502,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|generic_outl_p
+DECL|function|adx_outl_p
 r_void
-id|generic_outl_p
+id|adx_outl_p
 c_func
 (paren
 r_int
@@ -563,9 +537,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|generic_outsb
+DECL|function|adx_outsb
 r_void
-id|generic_outsb
+id|adx_outsb
 c_func
 (paren
 r_int
@@ -609,9 +583,9 @@ id|port
 suffix:semicolon
 )brace
 )brace
-DECL|function|generic_outsw
+DECL|function|adx_outsw
 r_void
-id|generic_outsw
+id|adx_outsw
 c_func
 (paren
 r_int
@@ -654,17 +628,10 @@ id|port
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef SH3_PCMCIA_BUG_WORKAROUND
-id|ctrl_inb
-(paren
-id|DUMMY_READ_AREA6
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
-DECL|function|generic_outsl
+DECL|function|adx_outsl
 r_void
-id|generic_outsl
+id|adx_outsl
 c_func
 (paren
 r_int
@@ -707,18 +674,11 @@ id|port
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef SH3_PCMCIA_BUG_WORKAROUND
-id|ctrl_inb
-(paren
-id|DUMMY_READ_AREA6
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
-DECL|function|generic_readb
+DECL|function|adx_readb
 r_int
 r_char
-id|generic_readb
+id|adx_readb
 c_func
 (paren
 r_int
@@ -737,10 +697,10 @@ op_star
 id|addr
 suffix:semicolon
 )brace
-DECL|function|generic_readw
+DECL|function|adx_readw
 r_int
 r_int
-id|generic_readw
+id|adx_readw
 c_func
 (paren
 r_int
@@ -759,10 +719,10 @@ op_star
 id|addr
 suffix:semicolon
 )brace
-DECL|function|generic_readl
+DECL|function|adx_readl
 r_int
 r_int
-id|generic_readl
+id|adx_readl
 c_func
 (paren
 r_int
@@ -781,9 +741,9 @@ op_star
 id|addr
 suffix:semicolon
 )brace
-DECL|function|generic_writeb
+DECL|function|adx_writeb
 r_void
-id|generic_writeb
+id|adx_writeb
 c_func
 (paren
 r_int
@@ -807,9 +767,9 @@ op_assign
 id|b
 suffix:semicolon
 )brace
-DECL|function|generic_writew
+DECL|function|adx_writew
 r_void
-id|generic_writew
+id|adx_writew
 c_func
 (paren
 r_int
@@ -833,9 +793,9 @@ op_assign
 id|b
 suffix:semicolon
 )brace
-DECL|function|generic_writel
+DECL|function|adx_writel
 r_void
-id|generic_writel
+id|adx_writel
 c_func
 (paren
 r_int
@@ -859,10 +819,10 @@ op_assign
 id|b
 suffix:semicolon
 )brace
-DECL|function|generic_ioremap
+DECL|function|adx_ioremap
 r_void
 op_star
-id|generic_ioremap
+id|adx_ioremap
 c_func
 (paren
 r_int
@@ -886,16 +846,15 @@ id|offset
 )paren
 suffix:semicolon
 )brace
-DECL|variable|generic_ioremap
+DECL|variable|adx_ioremap
 id|EXPORT_SYMBOL
-c_func
 (paren
-id|generic_ioremap
+id|adx_ioremap
 )paren
 suffix:semicolon
-DECL|function|generic_iounmap
+DECL|function|adx_iounmap
 r_void
-id|generic_iounmap
+id|adx_iounmap
 c_func
 (paren
 r_void
@@ -904,17 +863,24 @@ id|addr
 )paren
 (brace
 )brace
-DECL|variable|generic_iounmap
+DECL|variable|adx_iounmap
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|generic_iounmap
+id|adx_iounmap
 )paren
 suffix:semicolon
-DECL|function|generic_isa_port2addr
+macro_line|#ifdef CONFIG_IDE
+macro_line|#include &lt;linux/vmalloc.h&gt;
+r_extern
+r_void
+op_star
+id|cf_io_base
+suffix:semicolon
+DECL|function|adx_isa_port2addr
 r_int
 r_int
-id|generic_isa_port2addr
+id|adx_isa_port2addr
 c_func
 (paren
 r_int
@@ -922,10 +888,71 @@ r_int
 id|offset
 )paren
 (brace
+multiline_comment|/* CompactFlash (IDE) */
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|offset
+op_ge
+l_int|0x1f0
+)paren
+op_logical_and
+(paren
+id|offset
+op_le
+l_int|0x1f7
+)paren
+)paren
+op_logical_or
+(paren
+id|offset
+op_eq
+l_int|0x3f6
+)paren
+)paren
+(brace
+r_return
+(paren
+r_int
+r_int
+)paren
+id|cf_io_base
+op_plus
+id|offset
+suffix:semicolon
+)brace
+multiline_comment|/* eth0 */
+r_if
+c_cond
+(paren
+(paren
+id|offset
+op_ge
+l_int|0x300
+)paren
+op_logical_and
+(paren
+id|offset
+op_le
+l_int|0x30f
+)paren
+)paren
+(brace
+r_return
+l_int|0xa5000000
+op_plus
+id|offset
+suffix:semicolon
+multiline_comment|/* COMM BOARD (AREA1) */
+)brace
 r_return
 id|offset
 op_plus
-id|generic_io_base
+l_int|0xb0000000
 suffix:semicolon
+multiline_comment|/* IOBUS (AREA 4)*/
 )brace
+macro_line|#endif
 eof
