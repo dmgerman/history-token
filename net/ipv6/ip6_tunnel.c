@@ -4331,6 +4331,7 @@ id|INET6_PROTO_FINAL
 suffix:semicolon
 multiline_comment|/**&n; * ip6_tunnel_init - register protocol and reserve needed resources&n; *&n; * Return: 0 on success&n; **/
 DECL|function|ip6_tunnel_init
+r_static
 r_int
 id|__init
 id|ip6_tunnel_init
@@ -4452,7 +4453,9 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * ip6_tunnel_cleanup - free resources and unregister protocol&n; **/
 DECL|function|ip6_tunnel_cleanup
+r_static
 r_void
+id|__exit
 id|ip6_tunnel_cleanup
 c_func
 (paren
@@ -4475,7 +4478,6 @@ id|IPPROTO_IPV6
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|ip6_tunnel_init
 id|module_init
 c_func
@@ -4490,5 +4492,4 @@ c_func
 id|ip6_tunnel_cleanup
 )paren
 suffix:semicolon
-macro_line|#endif
 eof

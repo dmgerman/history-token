@@ -5479,6 +5479,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; *&t;And now the modules code and kernel interface.&n; */
 DECL|function|ipgre_init
+r_static
 r_int
 id|__init
 id|ipgre_init
@@ -5641,7 +5642,6 @@ id|ipgre_fb_tunnel_dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|ipgre_init
 id|module_init
 c_func
@@ -5649,7 +5649,6 @@ c_func
 id|ipgre_init
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|ipgre_fini
 id|module_exit
 c_func

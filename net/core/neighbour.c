@@ -5091,6 +5091,18 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tbl-&gt;kmem_cachep
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;cannot create neighbour cache&quot;
+)paren
+suffix:semicolon
 id|tbl-&gt;lock
 op_assign
 id|RW_LOCK_UNLOCKED

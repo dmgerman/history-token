@@ -3652,6 +3652,7 @@ id|KERN_INFO
 l_string|&quot;IPv4 over IPv4 tunneling driver&bslash;n&quot;
 suffix:semicolon
 DECL|function|ipip_init
+r_static
 r_int
 id|__init
 id|ipip_init
@@ -3806,7 +3807,6 @@ id|ipip_fb_tunnel_dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|ipip_init
 id|module_init
 c_func
@@ -3814,7 +3814,6 @@ c_func
 id|ipip_init
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|ipip_fini
 id|module_exit
 c_func
