@@ -12,13 +12,13 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/efi.h&gt;
 macro_line|#include &lt;asm/mca.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
