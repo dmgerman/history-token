@@ -138,6 +138,14 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* raw card CID */
+DECL|member|raw_csd
+id|u32
+id|raw_csd
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* raw card CSD */
 DECL|member|cid
 r_struct
 id|mmc_cid
