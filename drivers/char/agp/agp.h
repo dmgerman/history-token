@@ -418,14 +418,12 @@ op_star
 id|masks
 suffix:semicolon
 DECL|member|gatt_table
-r_int
-r_int
+id|u32
 op_star
 id|gatt_table
 suffix:semicolon
 DECL|member|gatt_table_real
-r_int
-r_int
+id|u32
 op_star
 id|gatt_table_real
 suffix:semicolon

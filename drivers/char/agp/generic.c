@@ -1809,8 +1809,7 @@ suffix:semicolon
 id|agp_bridge.gatt_table_real
 op_assign
 (paren
-r_int
-r_int
+id|u32
 op_star
 )paren
 id|table
@@ -1916,6 +1915,7 @@ c_func
 id|agp_bridge.gatt_table_real
 )paren
 suffix:semicolon
+multiline_comment|/* AK: bogus, should encode addresses &gt; 4GB */
 r_for
 c_loop
 (paren
@@ -2312,6 +2312,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+multiline_comment|/* AK: could wrap */
 r_if
 c_cond
 (paren
@@ -2464,6 +2465,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+multiline_comment|/* AK: bogus, should encode addresses &gt; 4GB */
 r_for
 c_loop
 (paren
