@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#ifdef CONFIG_EISA
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/eisa.h&gt;
@@ -688,7 +689,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;CPU:    %d&bslash;nEIP:    %04x:[&lt;%08lx&gt;]    %s&bslash;nEFLAGS: %08lx&bslash;n&quot;
+l_string|&quot;CPU:    %d&bslash;nEIP:    %04x:[&lt;%08lx&gt;]    %s&bslash;nEFLAGS: %08lx&quot;
+l_string|&quot;   (%s) &bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -707,6 +709,8 @@ c_func
 )paren
 comma
 id|regs-&gt;eflags
+comma
+id|UTS_RELEASE
 )paren
 suffix:semicolon
 id|print_symbol
