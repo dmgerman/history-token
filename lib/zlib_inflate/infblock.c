@@ -14,7 +14,7 @@ DECL|macro|bits
 mdefine_line|#define bits word.what.Bits
 multiline_comment|/* Table for deflate from PKZIP&squot;s appnote.txt. */
 DECL|variable|border
-id|local
+r_static
 r_const
 id|uInt
 id|border

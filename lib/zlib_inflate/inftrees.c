@@ -21,7 +21,7 @@ DECL|macro|exop
 mdefine_line|#define exop word.what.Exop
 DECL|macro|bits
 mdefine_line|#define bits word.what.Bits
-id|local
+r_static
 r_int
 id|huft_build
 (paren
@@ -69,7 +69,7 @@ suffix:semicolon
 multiline_comment|/* space for values */
 multiline_comment|/* Tables for deflate from PKZIP&squot;s appnote.txt. */
 DECL|variable|cplens
-id|local
+r_static
 r_const
 id|uInt
 id|cplens
@@ -144,7 +144,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* see note #13 above about 258 */
 DECL|variable|cplext
-id|local
+r_static
 r_const
 id|uInt
 id|cplext
@@ -219,7 +219,7 @@ l_int|112
 suffix:semicolon
 multiline_comment|/* 112==invalid */
 DECL|variable|cpdist
-id|local
+r_static
 r_const
 id|uInt
 id|cpdist
@@ -291,7 +291,7 @@ l_int|24577
 )brace
 suffix:semicolon
 DECL|variable|cpdext
-id|local
+r_static
 r_const
 id|uInt
 id|cpdext
@@ -367,7 +367,7 @@ multiline_comment|/* If BMAX needs to be larger than 16, then h and x[] should b
 DECL|macro|BMAX
 mdefine_line|#define BMAX 15         /* maximum bit length of any code */
 DECL|function|huft_build
-id|local
+r_static
 r_int
 id|huft_build
 c_func

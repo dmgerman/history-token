@@ -8,11 +8,6 @@ macro_line|#include &lt;linux/zlib.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#ifndef local
-DECL|macro|local
-macro_line|#  define local static
-macro_line|#endif
-multiline_comment|/* compile with -Dlocal if your debugger can&squot;t find static symbols */
 DECL|typedef|uch
 r_typedef
 r_int

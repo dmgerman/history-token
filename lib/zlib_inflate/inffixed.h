@@ -1,21 +1,21 @@
 multiline_comment|/* inffixed.h -- table for decoding fixed codes&n; * Generated automatically by the maketree.c program&n; */
 multiline_comment|/* WARNING: this file should *not* be used by applications. It is&n;   part of the implementation of the compression library and is&n;   subject to change. Applications should only use zlib.h.&n; */
 DECL|variable|fixed_bl
-id|local
+r_static
 id|uInt
 id|fixed_bl
 op_assign
 l_int|9
 suffix:semicolon
 DECL|variable|fixed_bd
-id|local
+r_static
 id|uInt
 id|fixed_bd
 op_assign
 l_int|5
 suffix:semicolon
 DECL|variable|fixed_tl
-id|local
+r_static
 id|inflate_huft
 id|fixed_tl
 (braket
@@ -6168,7 +6168,7 @@ l_int|255
 )brace
 suffix:semicolon
 DECL|variable|fixed_td
-id|local
+r_static
 id|inflate_huft
 id|fixed_td
 (braket
