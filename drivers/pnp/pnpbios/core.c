@@ -1673,14 +1673,29 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* register with the pnp layer */
+r_if
+c_cond
+(paren
 id|pnp_register_protocol
 c_func
 (paren
 op_amp
 id|pnpbios_protocol
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: Unable to register driver.  Aborting.&bslash;n&quot;
+)paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* start the proc interface */
 id|ret
 op_assign
@@ -1694,10 +1709,13 @@ c_cond
 (paren
 id|ret
 )paren
-r_return
-id|ret
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: Failed to create proc interface.&bslash;n&quot;
+)paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* scan for pnpbios devices */
 id|build_devlist
 c_func
