@@ -5085,16 +5085,10 @@ op_minus
 id|EIO
 suffix:semicolon
 multiline_comment|/* Wait for it to initialize */
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-l_int|1
-op_plus
 l_int|150
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 r_for
@@ -5175,16 +5169,10 @@ op_minus
 id|EIO
 suffix:semicolon
 multiline_comment|/* Wait for it to initialize */
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-l_int|1
-op_plus
 l_int|150
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* Dummy read to sync I2C */
@@ -22392,16 +22380,10 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* Wait for it to initialize */
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-l_int|1
-op_plus
 l_int|150
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 id|i
