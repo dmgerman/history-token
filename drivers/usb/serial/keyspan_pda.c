@@ -318,39 +318,12 @@ id|port-&gt;write_wait
 )paren
 suffix:semicolon
 multiline_comment|/* wake up line discipline */
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(brace
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
+id|tty_wakeup
+c_func
 (paren
 id|tty
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* wake up other tty processes */
-id|wake_up_interruptible
-c_func
-(paren
-op_amp
-id|tty-&gt;write_wait
-)paren
-suffix:semicolon
-multiline_comment|/* For 2.2.16 backport -- wake_up_interruptible( &amp;tty-&gt;poll_wait ); */
 )brace
 DECL|function|keyspan_pda_request_unthrottle
 r_static

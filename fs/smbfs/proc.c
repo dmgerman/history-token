@@ -9314,6 +9314,11 @@ op_star
 id|p
 )paren
 (brace
+id|u64
+id|size
+comma
+id|disk_bytes
+suffix:semicolon
 multiline_comment|/* FIXME: verify nls support. all is sent as utf8? */
 id|fattr-&gt;f_unix
 op_assign
@@ -9334,7 +9339,7 @@ multiline_comment|/* 68 L devminor */
 multiline_comment|/* 76 L unique ID (inode) */
 multiline_comment|/* 84 L permissions */
 multiline_comment|/* 92 L link count */
-id|fattr-&gt;f_size
+id|size
 op_assign
 id|LVAL
 c_func
@@ -9344,7 +9349,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|fattr-&gt;f_blocks
+id|disk_bytes
 op_assign
 id|LVAL
 c_func
@@ -9353,6 +9358,33 @@ id|p
 comma
 l_int|8
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Some samba versions round up on-disk byte usage&n;&t; * to 1MB boundaries, making it useless. When seeing&n;&t; * that, use the size instead.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|disk_bytes
+op_amp
+l_int|0xfffff
+)paren
+)paren
+id|disk_bytes
+op_assign
+id|size
+op_plus
+l_int|511
+suffix:semicolon
+id|fattr-&gt;f_size
+op_assign
+id|size
+suffix:semicolon
+id|fattr-&gt;f_blocks
+op_assign
+id|disk_bytes
+op_rshift
+l_int|9
 suffix:semicolon
 id|fattr-&gt;f_ctime
 op_assign

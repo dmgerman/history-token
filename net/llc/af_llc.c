@@ -2465,10 +2465,6 @@ comma
 id|newsk
 )paren
 suffix:semicolon
-id|newsk-&gt;sk_pair
-op_assign
-l_int|NULL
-suffix:semicolon
 id|newsk-&gt;sk_zapped
 op_assign
 l_int|0

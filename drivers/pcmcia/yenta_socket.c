@@ -5511,6 +5511,16 @@ c_func
 (paren
 id|PCI_VENDOR_ID_TI
 comma
+id|PCI_DEVICE_ID_TI_4520
+comma
+id|TI12XX
+)paren
+comma
+id|CB_ID
+c_func
+(paren
+id|PCI_VENDOR_ID_TI
+comma
 id|PCI_DEVICE_ID_TI_1250
 comma
 id|TI1250

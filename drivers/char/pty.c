@@ -214,33 +214,10 @@ id|o_tty
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|o_tty-&gt;flags
-op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|o_tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|o_tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|o_tty
-)paren
-suffix:semicolon
-id|wake_up_interruptible
+id|tty_wakeup
 c_func
 (paren
-op_amp
-id|o_tty-&gt;write_wait
+id|o_tty
 )paren
 suffix:semicolon
 id|set_bit
@@ -253,7 +230,7 @@ id|tty-&gt;flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * WSH 05/24/97: modified to &n; *   (1) use space in tty-&gt;flip instead of a shared temp buffer&n; *&t; The flip buffers aren&squot;t being used for a pty, so there&squot;s lots&n; *&t; of space available.  The buffer is protected by a per-pty&n; *&t; semaphore that should almost never come under contention.&n; *   (2) avoid redundant copying for cases where count &gt;&gt; receive_room&n; * N.B. Calls from user space may now return an error code instead of&n; * a count.&n; */
+multiline_comment|/*&n; * WSH 05/24/97: modified to &n; *   (1) use space in tty-&gt;flip instead of a shared temp buffer&n; *&t; The flip buffers aren&squot;t being used for a pty, so there&squot;s lots&n; *&t; of space available.  The buffer is protected by a per-pty&n; *&t; semaphore that should almost never come under contention.&n; *   (2) avoid redundant copying for cases where count &gt;&gt; receive_room&n; * N.B. Calls from user space may now return an error code instead of&n; * a count.&n; *&n; * FIXME: Our pty_write method is called with our ldisc lock held but&n; * not our partners. We can&squot;t just take the other one blindly without&n; * risking deadlocks.  There is also the small matter of TTY_DONT_FLIP&n; */
 DECL|function|pty_write
 r_static
 r_int

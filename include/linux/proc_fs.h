@@ -247,6 +247,12 @@ r_extern
 r_struct
 id|proc_dir_entry
 op_star
+id|proc_net_stat
+suffix:semicolon
+r_extern
+r_struct
+id|proc_dir_entry
+op_star
 id|proc_bus
 suffix:semicolon
 r_extern

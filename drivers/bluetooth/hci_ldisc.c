@@ -547,14 +547,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Flush any pending characters in the driver and discipline. */
-r_if
-c_cond
-(paren
-id|tty-&gt;ldisc.flush_buffer
-)paren
-id|tty-&gt;ldisc
-dot
-id|flush_buffer
+id|tty_ldisc_flush
 c_func
 (paren
 id|tty
@@ -911,7 +904,8 @@ op_amp
 id|hu-&gt;rx_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Flush any pending characters in the driver and line discipline */
+multiline_comment|/* Flush any pending characters in the driver and line discipline. */
+multiline_comment|/* FIXME: why is this needed. Note don&squot;t use ldisc_ref here as the&n;&t;   open path is before the ldisc is referencable */
 r_if
 c_cond
 (paren

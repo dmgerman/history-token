@@ -3,10 +3,10 @@ macro_line|#include &quot;hardware.h&quot;
 multiline_comment|/*&n; * The following code assumes the serial port has already been&n; * initialized by the bootloader.  We search for the first enabled&n; * port in the most probable order.  If you didn&squot;t setup a port in&n; * your bootloader then nothing will appear (which might be desired).&n; */
 DECL|macro|UART
 mdefine_line|#define UART(x)&t;&t;(*(volatile unsigned long *)(serial_port + (x)))
-DECL|function|puts
+DECL|function|putstr
 r_static
 r_void
-id|puts
+id|putstr
 c_func
 (paren
 r_const

@@ -14,6 +14,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;soc_common.h&quot;
+multiline_comment|/* FIXME: platform dependent resource declaration has to move out of this file */
+macro_line|#ifdef CONFIG_ARCH_PXA
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
+macro_line|#endif
 macro_line|#ifdef DEBUG
 DECL|variable|pc_debug
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/**&n; * ldm - Support for Windows Logical Disk Manager (Dynamic Disks)&n; *&n; * Copyright (C) 2001,2002 Richard Russon &lt;ldm@flatcap.org&gt;&n; * Copyright (C) 2001      Anton Altaparmakov &lt;aia21@cantab.net&gt;&n; * Copyright (C) 2001,2002 Jakob Kemi &lt;jakob.kemi@telia.com&gt;&n; *&n; * Documentation is available at http://linux-ntfs.sf.net/ldm&n; *&n; * This program is free software; you can redistribute it and/or modify it under&n; * the terms of the GNU General Public License as published by the Free Software&n; * Foundation; either version 2 of the License, or (at your option) any later&n; * version.&n; *&n; * This program is distributed in the hope that it will be useful, but WITHOUT&n; * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS&n; * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License along with&n; * this program (in the main directory of the source in the file COPYING); if&n; * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,&n; * Boston, MA  02111-1307  USA&n; */
+multiline_comment|/**&n; * ldm - Support for Windows Logical Disk Manager (Dynamic Disks)&n; *&n; * Copyright (C) 2001,2002 Richard Russon &lt;ldm@flatcap.org&gt;&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (C) 2001,2002 Jakob Kemi &lt;jakob.kemi@telia.com&gt;&n; *&n; * Documentation is available at http://linux-ntfs.sf.net/ldm&n; *&n; * This program is free software; you can redistribute it and/or modify it under&n; * the terms of the GNU General Public License as published by the Free Software&n; * Foundation; either version 2 of the License, or (at your option) any later&n; * version.&n; *&n; * This program is distributed in the hope that it will be useful, but WITHOUT&n; * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS&n; * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License along with&n; * this program (in the main directory of the source in the file COPYING); if&n; * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,&n; * Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
@@ -2127,7 +2127,7 @@ comma
 id|vm-&gt;vblk_offset
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: How should we handle this situation? */
+multiline_comment|/*&n;&t; * The last_vblkd_seq can be before the end of the vmdb, just make sure&n;&t; * it is not out of bounds.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2136,18 +2136,24 @@ id|vm-&gt;vblk_size
 op_star
 id|vm-&gt;last_vblk_seq
 )paren
-op_ne
+OG
 (paren
 id|toc-&gt;bitmap1_size
 op_lshift
 l_int|9
 )paren
 )paren
-id|ldm_info
+(brace
+id|ldm_crit
 (paren
-l_string|&quot;VMDB and TOCBLOCK don&squot;t agree on the database size.&quot;
+l_string|&quot;VMDB exceeds allowed size specified by TOCBLOCK.  &quot;
+l_string|&quot;Database is corrupt.  Aborting.&quot;
 )paren
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|result
 op_assign
 id|TRUE

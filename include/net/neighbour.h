@@ -1,7 +1,7 @@
 macro_line|#ifndef _NET_NEIGHBOUR_H
 DECL|macro|_NET_NEIGHBOUR_H
 mdefine_line|#define _NET_NEIGHBOUR_H
-multiline_comment|/*&n; *&t;Generic neighbour manipulation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; */
+multiline_comment|/*&n; *&t;Generic neighbour manipulation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; * &t;Changes:&n; *&n; *&t;Harald Welte:&t;&t;&lt;laforge@gnumonks.org&gt;&n; *&t;&t;- Add neighbour cache statistics like rtstat&n; */
 multiline_comment|/* The following flags &amp; states are exported to user space,&n;   so that they should be moved to include/linux/ directory.&n; */
 multiline_comment|/*&n; *&t;Neighbor Cache Entry Flags&n; */
 DECL|macro|NTF_PROXY
@@ -34,6 +34,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 DECL|macro|NUD_IN_TIMER
@@ -163,23 +164,65 @@ r_int
 r_int
 id|allocs
 suffix:semicolon
+multiline_comment|/* number of allocated neighs */
+DECL|member|destroys
+r_int
+r_int
+id|destroys
+suffix:semicolon
+multiline_comment|/* number of destroyed neighs */
+DECL|member|hash_grows
+r_int
+r_int
+id|hash_grows
+suffix:semicolon
+multiline_comment|/* number of hash resizes */
 DECL|member|res_failed
 r_int
 r_int
 id|res_failed
 suffix:semicolon
+multiline_comment|/* nomber of failed resolutions */
+DECL|member|lookups
+r_int
+r_int
+id|lookups
+suffix:semicolon
+multiline_comment|/* number of lookups */
+DECL|member|hits
+r_int
+r_int
+id|hits
+suffix:semicolon
+multiline_comment|/* number of hits (among lookups) */
 DECL|member|rcv_probes_mcast
 r_int
 r_int
 id|rcv_probes_mcast
 suffix:semicolon
+multiline_comment|/* number of received mcast ipv6 */
 DECL|member|rcv_probes_ucast
 r_int
 r_int
 id|rcv_probes_ucast
 suffix:semicolon
+multiline_comment|/* number of received ucast ipv6 */
+DECL|member|periodic_gc_runs
+r_int
+r_int
+id|periodic_gc_runs
+suffix:semicolon
+multiline_comment|/* number of periodic GC runs */
+DECL|member|forced_gc_runs
+r_int
+r_int
+id|forced_gc_runs
+suffix:semicolon
+multiline_comment|/* number of forced GC runs */
 )brace
 suffix:semicolon
+DECL|macro|NEIGH_CACHE_STAT_INC
+mdefine_line|#define NEIGH_CACHE_STAT_INC(tbl, field)&t;&t;&t;&t;&bslash;&n;&t;&t;(per_cpu_ptr((tbl)-&gt;stats, smp_processor_id())-&gt;field++)
 DECL|struct|neighbour
 r_struct
 id|neighbour
@@ -451,10 +494,6 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|NEIGH_HASHMASK
-mdefine_line|#define NEIGH_HASHMASK&t;&t;0x1F
-DECL|macro|PNEIGH_HASHMASK
-mdefine_line|#define PNEIGH_HASHMASK&t;&t;0xF
 multiline_comment|/*&n; *&t;neighbour table manipulation&n; */
 DECL|struct|neigh_table
 r_struct
@@ -619,30 +658,45 @@ suffix:semicolon
 DECL|member|stats
 r_struct
 id|neigh_statistics
+op_star
 id|stats
 suffix:semicolon
 DECL|member|hash_buckets
 r_struct
 id|neighbour
 op_star
+op_star
 id|hash_buckets
-(braket
-id|NEIGH_HASHMASK
-op_plus
-l_int|1
-)braket
+suffix:semicolon
+DECL|member|hash_mask
+r_int
+r_int
+id|hash_mask
+suffix:semicolon
+DECL|member|hash_rnd
+id|__u32
+id|hash_rnd
+suffix:semicolon
+DECL|member|hash_chain_gc
+r_int
+r_int
+id|hash_chain_gc
 suffix:semicolon
 DECL|member|phash_buckets
 r_struct
 id|pneigh_entry
 op_star
+op_star
 id|phash_buckets
-(braket
-id|PNEIGH_HASHMASK
-op_plus
-l_int|1
-)braket
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|member|pde
+r_struct
+id|proc_dir_entry
+op_star
+id|pde
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* flags for neigh_update() */
@@ -699,6 +753,24 @@ r_struct
 id|net_device
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|neighbour
+op_star
+id|neigh_lookup_nodev
+c_func
+(paren
+r_struct
+id|neigh_table
+op_star
+id|tbl
+comma
+r_const
+r_void
+op_star
+id|pkey
 )paren
 suffix:semicolon
 r_extern
@@ -1059,6 +1131,181 @@ r_struct
 id|neighbour
 op_star
 id|n
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|neigh_for_each
+c_func
+(paren
+r_struct
+id|neigh_table
+op_star
+id|tbl
+comma
+r_void
+(paren
+op_star
+id|cb
+)paren
+(paren
+r_struct
+id|neighbour
+op_star
+comma
+r_void
+op_star
+)paren
+comma
+r_void
+op_star
+id|cookie
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__neigh_for_each_release
+c_func
+(paren
+r_struct
+id|neigh_table
+op_star
+id|tbl
+comma
+r_int
+(paren
+op_star
+id|cb
+)paren
+(paren
+r_struct
+id|neighbour
+op_star
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pneigh_for_each
+c_func
+(paren
+r_struct
+id|neigh_table
+op_star
+id|tbl
+comma
+r_void
+(paren
+op_star
+id|cb
+)paren
+(paren
+r_struct
+id|pneigh_entry
+op_star
+)paren
+)paren
+suffix:semicolon
+DECL|struct|neigh_seq_state
+r_struct
+id|neigh_seq_state
+(brace
+DECL|member|tbl
+r_struct
+id|neigh_table
+op_star
+id|tbl
+suffix:semicolon
+DECL|member|neigh_sub_iter
+r_void
+op_star
+(paren
+op_star
+id|neigh_sub_iter
+)paren
+(paren
+r_struct
+id|neigh_seq_state
+op_star
+id|state
+comma
+r_struct
+id|neighbour
+op_star
+id|n
+comma
+id|loff_t
+op_star
+id|pos
+)paren
+suffix:semicolon
+DECL|member|bucket
+r_int
+r_int
+id|bucket
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+DECL|macro|NEIGH_SEQ_NEIGH_ONLY
+mdefine_line|#define NEIGH_SEQ_NEIGH_ONLY&t;0x00000001
+DECL|macro|NEIGH_SEQ_IS_PNEIGH
+mdefine_line|#define NEIGH_SEQ_IS_PNEIGH&t;0x00000002
+DECL|macro|NEIGH_SEQ_SKIP_NOARP
+mdefine_line|#define NEIGH_SEQ_SKIP_NOARP&t;0x00000004
+)brace
+suffix:semicolon
+r_extern
+r_void
+op_star
+id|neigh_seq_start
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+comma
+id|loff_t
+op_star
+comma
+r_struct
+id|neigh_table
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+op_star
+id|neigh_seq_next
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+comma
+r_void
+op_star
+comma
+id|loff_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|neigh_seq_stop
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+comma
+r_void
+op_star
 )paren
 suffix:semicolon
 r_extern

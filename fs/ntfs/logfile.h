@@ -92,7 +92,6 @@ mdefine_line|#define LOGFILE_NO_CLIENT&t;const_cpu_to_le16(0xffff)
 DECL|macro|LOGFILE_NO_CLIENT_CPU
 mdefine_line|#define LOGFILE_NO_CLIENT_CPU&t;0xffff
 multiline_comment|/*&n; * These are the so far known RESTART_AREA_* flags (16-bit) which contain&n; * information about the log file in which they are present.&n; */
-r_typedef
 r_enum
 (brace
 DECL|enumerator|RESTART_VOLUME_IS_CLEAN
@@ -104,12 +103,12 @@ c_func
 l_int|0x0002
 )paren
 comma
-DECL|enumerator|REST_AREA_SPACE_FILLER
-id|REST_AREA_SPACE_FILLER
+DECL|enumerator|RESTART_SPACE_FILLER
+id|RESTART_SPACE_FILLER
 op_assign
 l_int|0xffff
-multiline_comment|/* Just to make flags 16-bit. */
-DECL|typedef|RESTART_AREA_FLAGS
+comma
+multiline_comment|/* gcc: Force enum bit width to 16. */
 )brace
 id|__attribute__
 (paren
@@ -117,6 +116,10 @@ id|__attribute__
 id|__packed__
 )paren
 )paren
+suffix:semicolon
+DECL|typedef|RESTART_AREA_FLAGS
+r_typedef
+id|le16
 id|RESTART_AREA_FLAGS
 suffix:semicolon
 multiline_comment|/*&n; * Log file restart area record.  The offset of this record is found by adding&n; * the offset of the RESTART_PAGE_HEADER to the restart_area_offset value found&n; * in it.  See notes at restart_area_offset above.&n; */

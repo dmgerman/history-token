@@ -1028,11 +1028,7 @@ id|ucs
 id|o
 )braket
 op_assign
-id|cpu_to_le16
-c_func
-(paren
 l_int|0
-)paren
 suffix:semicolon
 op_star
 id|outs

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Alpha IO and memory functions.. Just expand the inlines in the header&n; * files..&n; */
+multiline_comment|/*&n; * Alpha IO and memory functions.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

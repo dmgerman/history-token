@@ -1178,6 +1178,17 @@ comma
 id|old
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+r_new
+)paren
+r_new
+op_member_access_from_pointer
+id|parent
+op_assign
+id|classid
+suffix:semicolon
 id|cops
 op_member_access_from_pointer
 id|put
@@ -3618,7 +3629,7 @@ id|skb
 comma
 id|q
 comma
-l_int|0
+id|q-&gt;parent
 comma
 id|NETLINK_CB
 c_func

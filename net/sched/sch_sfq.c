@@ -1518,12 +1518,6 @@ c_func
 op_amp
 l_int|0x1F
 suffix:semicolon
-id|q-&gt;perturb_timer.expires
-op_assign
-id|jiffies
-op_plus
-id|q-&gt;perturb_period
-suffix:semicolon
 r_if
 c_cond
 (paren
