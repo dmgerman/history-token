@@ -50,11 +50,11 @@ r_int
 id|address
 )paren
 suffix:semicolon
-DECL|function|tlb_remove_tlb_entry
+DECL|function|__tlb_remove_tlb_entry
 r_static
 r_inline
 r_void
-id|tlb_remove_tlb_entry
+id|__tlb_remove_tlb_entry
 c_func
 (paren
 id|mmu_gather_t
@@ -109,8 +109,8 @@ DECL|macro|tlb_start_vma
 mdefine_line|#define tlb_start_vma(tlb, vma)&t;&t;do { } while (0)
 DECL|macro|tlb_end_vma
 mdefine_line|#define tlb_end_vma(tlb, vma)&t;&t;do { } while (0)
-DECL|macro|tlb_remove_tlb_entry
-mdefine_line|#define tlb_remove_tlb_entry(tlb, pte, address) do { } while (0)
+DECL|macro|__tlb_remove_tlb_entry
+mdefine_line|#define __tlb_remove_tlb_entry(tlb, pte, address) do { } while (0)
 DECL|macro|tlb_flush
 mdefine_line|#define tlb_flush(tlb)&t;&t;&t;flush_tlb_mm((tlb)-&gt;mm)
 multiline_comment|/* Get the generic bits... */
