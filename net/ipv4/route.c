@@ -276,6 +276,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|variable|ipv4_dst_ops
+r_static
 r_struct
 id|dst_ops
 id|ipv4_dst_ops
@@ -6527,6 +6528,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;NOTE. We drop all the packets that has local source&n; *&t;addresses, because every properly looped back packet&n; *&t;must have correct destination already attached by output routine.&n; *&n; *&t;Such approach solves two big problems:&n; *&t;1. Not simplex devices are handled properly.&n; *&t;2. IP spoofing attempts are filtered with 100% of guarantee.&n; */
 DECL|function|ip_route_input_slow
+r_static
 r_int
 id|ip_route_input_slow
 c_func
@@ -8227,6 +8229,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Major route resolver routine.&n; */
 DECL|function|ip_route_output_slow
+r_static
 r_int
 id|ip_route_output_slow
 c_func
