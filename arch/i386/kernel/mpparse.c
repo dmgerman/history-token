@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
-macro_line|#include &quot;mach_apic.h&quot;
+macro_line|#include &lt;mach_apic.h&gt;
 multiline_comment|/* Have we found an MP table */
 DECL|variable|smp_found_config
 r_int

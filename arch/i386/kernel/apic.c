@@ -16,7 +16,7 @@ macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
-macro_line|#include &quot;mach_apic.h&quot;
+macro_line|#include &lt;mach_apic.h&gt;
 DECL|function|apic_intr_init
 r_void
 id|__init
