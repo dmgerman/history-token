@@ -342,12 +342,6 @@ op_assign
 l_string|&quot;raw&quot;
 comma
 dot
-id|table
-op_assign
-op_amp
-id|initial_table.repl
-comma
-dot
 id|valid_hooks
 op_assign
 id|RAW_VALID_HOOKS
@@ -501,6 +495,9 @@ c_func
 (paren
 op_amp
 id|packet_raw
+comma
+op_amp
+id|initial_table.repl
 )paren
 suffix:semicolon
 r_if

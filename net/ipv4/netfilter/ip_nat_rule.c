@@ -48,9 +48,10 @@ r_struct
 id|ipt_error
 id|term
 suffix:semicolon
-DECL|variable|nat_initial_table
+DECL|variable|__initdata
 )brace
 id|nat_initial_table
+id|__initdata
 op_assign
 (brace
 (brace
@@ -529,12 +530,6 @@ dot
 id|name
 op_assign
 l_string|&quot;nat&quot;
-comma
-dot
-id|table
-op_assign
-op_amp
-id|nat_initial_table.repl
 comma
 dot
 id|valid_hooks
@@ -1341,6 +1336,9 @@ c_func
 (paren
 op_amp
 id|nat_table
+comma
+op_amp
+id|nat_initial_table.repl
 )paren
 suffix:semicolon
 r_if
