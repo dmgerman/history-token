@@ -4183,7 +4183,7 @@ id|cmdline_p
 )paren
 suffix:semicolon
 macro_line|#endif&t;
-macro_line|#ifdef CONFIG_ACPI
+macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/*&n;&t; * Parse the ACPI tables for possible boot-time SMP configuration.&n;&t; */
 (paren
 r_void
