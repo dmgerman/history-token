@@ -720,6 +720,7 @@ id|fore200e
 comma
 r_volatile
 id|u32
+id|__iomem
 op_star
 id|addr
 comma
@@ -1072,16 +1073,9 @@ id|ok
 suffix:semicolon
 id|fore200e-&gt;cp_monitor
 op_assign
-(paren
-r_struct
-id|cp_monitor
-op_star
-)paren
-(paren
 id|fore200e-&gt;virt_base
 op_plus
 id|FORE200E_CP_MONITOR_OFFSET
-)paren
 suffix:semicolon
 id|fore200e-&gt;bus
 op_member_access_from_pointer
@@ -1382,6 +1376,7 @@ c_func
 (paren
 r_volatile
 id|u32
+id|__iomem
 op_star
 id|addr
 )paren
@@ -1410,6 +1405,7 @@ id|val
 comma
 r_volatile
 id|u32
+id|__iomem
 op_star
 id|addr
 )paren
@@ -1945,39 +1941,21 @@ suffix:semicolon
 multiline_comment|/* gain access to the PCA specific registers  */
 id|fore200e-&gt;regs.pca.hcr
 op_assign
-(paren
-id|u32
-op_star
-)paren
-(paren
 id|fore200e-&gt;virt_base
 op_plus
 id|PCA200E_HCR_OFFSET
-)paren
 suffix:semicolon
 id|fore200e-&gt;regs.pca.imr
 op_assign
-(paren
-id|u32
-op_star
-)paren
-(paren
 id|fore200e-&gt;virt_base
 op_plus
 id|PCA200E_IMR_OFFSET
-)paren
 suffix:semicolon
 id|fore200e-&gt;regs.pca.psr
 op_assign
-(paren
-id|u32
-op_star
-)paren
-(paren
 id|fore200e-&gt;virt_base
 op_plus
 id|PCA200E_PSR_OFFSET
-)paren
 suffix:semicolon
 id|fore200e-&gt;state
 op_assign
@@ -2420,6 +2398,7 @@ id|opcode
 comma
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 op_amp
@@ -2576,6 +2555,7 @@ c_func
 (paren
 r_volatile
 id|u32
+id|__iomem
 op_star
 id|addr
 )paren
@@ -2599,6 +2579,7 @@ id|val
 comma
 r_volatile
 id|u32
+id|__iomem
 op_star
 id|addr
 )paren
@@ -3121,10 +3102,6 @@ suffix:semicolon
 multiline_comment|/* gain access to the SBA specific registers  */
 id|fore200e-&gt;regs.sba.hcr
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -3143,10 +3120,6 @@ l_string|&quot;SBA HCR&quot;
 suffix:semicolon
 id|fore200e-&gt;regs.sba.bsr
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -3165,10 +3138,6 @@ l_string|&quot;SBA BSR&quot;
 suffix:semicolon
 id|fore200e-&gt;regs.sba.isr
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -3187,10 +3156,6 @@ l_string|&quot;SBA ISR&quot;
 suffix:semicolon
 id|fore200e-&gt;virt_base
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -3305,9 +3270,6 @@ id|fore200e
 id|sbus_iounmap
 c_func
 (paren
-(paren
-id|ulong
-)paren
 id|fore200e-&gt;regs.sba.hcr
 comma
 id|SBA200E_HCR_LENGTH
@@ -3316,9 +3278,6 @@ suffix:semicolon
 id|sbus_iounmap
 c_func
 (paren
-(paren
-id|ulong
-)paren
 id|fore200e-&gt;regs.sba.bsr
 comma
 id|SBA200E_BSR_LENGTH
@@ -3327,9 +3286,6 @@ suffix:semicolon
 id|sbus_iounmap
 c_func
 (paren
-(paren
-id|ulong
-)paren
 id|fore200e-&gt;regs.sba.isr
 comma
 id|SBA200E_ISR_LENGTH
@@ -3338,9 +3294,6 @@ suffix:semicolon
 id|sbus_iounmap
 c_func
 (paren
-(paren
-id|ulong
-)paren
 id|fore200e-&gt;virt_base
 comma
 id|SBA200E_RAM_LENGTH
@@ -5799,6 +5752,7 @@ id|vpvc
 comma
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 op_amp
@@ -5820,6 +5774,7 @@ id|activ_opcode
 comma
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 op_amp
@@ -5844,6 +5799,7 @@ id|vpvc
 comma
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 op_amp
@@ -5865,6 +5821,7 @@ id|deactiv_opcode
 comma
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 op_amp
@@ -7599,6 +7556,7 @@ id|tpd_haddr
 comma
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 op_amp
@@ -7762,6 +7720,7 @@ id|opcode
 comma
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 op_amp
@@ -8246,6 +8205,7 @@ id|opcode
 comma
 (paren
 id|u32
+id|__iomem
 op_star
 )paren
 op_amp
@@ -9614,6 +9574,7 @@ id|bsq
 suffix:semicolon
 r_struct
 id|cp_bsq_entry
+id|__iomem
 op_star
 id|cp_entry
 suffix:semicolon
@@ -9750,12 +9711,6 @@ suffix:semicolon
 multiline_comment|/* get the base address of the cp resident buffer supply queue entries */
 id|cp_entry
 op_assign
-(paren
-r_struct
-id|cp_bsq_entry
-op_star
-)paren
-(paren
 id|fore200e-&gt;virt_base
 op_plus
 id|fore200e-&gt;bus
@@ -9771,7 +9726,6 @@ id|scheme
 (braket
 id|magn
 )braket
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* fill the host resident and cp resident buffer supply queue entries */
@@ -9926,6 +9880,7 @@ id|fore200e-&gt;host_rxq
 suffix:semicolon
 r_struct
 id|cp_rxq_entry
+id|__iomem
 op_star
 id|cp_entry
 suffix:semicolon
@@ -10020,12 +9975,6 @@ suffix:semicolon
 multiline_comment|/* get the base address of the cp resident rx queue entries */
 id|cp_entry
 op_assign
-(paren
-r_struct
-id|cp_rxq_entry
-op_star
-)paren
-(paren
 id|fore200e-&gt;virt_base
 op_plus
 id|fore200e-&gt;bus
@@ -10035,7 +9984,6 @@ c_func
 (paren
 op_amp
 id|fore200e-&gt;cp_queues-&gt;cp_rxq
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* fill the host resident and cp resident rx entries */
@@ -10218,6 +10166,7 @@ id|fore200e-&gt;host_txq
 suffix:semicolon
 r_struct
 id|cp_txq_entry
+id|__iomem
 op_star
 id|cp_entry
 suffix:semicolon
@@ -10312,12 +10261,6 @@ suffix:semicolon
 multiline_comment|/* get the base address of the cp resident tx queue entries */
 id|cp_entry
 op_assign
-(paren
-r_struct
-id|cp_txq_entry
-op_star
-)paren
-(paren
 id|fore200e-&gt;virt_base
 op_plus
 id|fore200e-&gt;bus
@@ -10327,7 +10270,6 @@ c_func
 (paren
 op_amp
 id|fore200e-&gt;cp_queues-&gt;cp_txq
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* fill the host resident and cp resident tx entries */
@@ -10490,6 +10432,7 @@ id|fore200e-&gt;host_cmdq
 suffix:semicolon
 r_struct
 id|cp_cmdq_entry
+id|__iomem
 op_star
 id|cp_entry
 suffix:semicolon
@@ -10540,12 +10483,6 @@ suffix:semicolon
 multiline_comment|/* get the base address of the cp resident cmd queue entries */
 id|cp_entry
 op_assign
-(paren
-r_struct
-id|cp_cmdq_entry
-op_star
-)paren
-(paren
 id|fore200e-&gt;virt_base
 op_plus
 id|fore200e-&gt;bus
@@ -10555,7 +10492,6 @@ c_func
 (paren
 op_amp
 id|fore200e-&gt;cp_queues-&gt;cp_cmdq
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* fill the host resident and cp resident cmd entries */
@@ -10686,6 +10622,7 @@ id|supply_blksize
 (brace
 r_struct
 id|bs_spec
+id|__iomem
 op_star
 id|bs_spec
 op_assign
@@ -10764,6 +10701,7 @@ id|fore200e
 (brace
 r_struct
 id|cp_queues
+id|__iomem
 op_star
 id|cpq
 suffix:semicolon
@@ -10802,16 +10740,9 @@ id|cpq
 op_assign
 id|fore200e-&gt;cp_queues
 op_assign
-(paren
-r_struct
-id|cp_queues
-op_star
-)paren
-(paren
 id|fore200e-&gt;virt_base
 op_plus
 id|FORE200E_CP_QUEUES_OFFSET
-)paren
 suffix:semicolon
 multiline_comment|/* enable cp to host interrupts */
 id|fore200e-&gt;bus
@@ -11049,6 +10980,7 @@ id|c
 (brace
 r_struct
 id|cp_monitor
+id|__iomem
 op_star
 id|monitor
 op_assign
@@ -11098,6 +11030,7 @@ id|fore200e
 (brace
 r_struct
 id|cp_monitor
+id|__iomem
 op_star
 id|monitor
 op_assign
@@ -11427,6 +11360,7 @@ op_star
 id|fw_data
 suffix:semicolon
 id|u32
+id|__iomem
 op_star
 id|load_addr
 op_assign
@@ -12195,10 +12129,6 @@ op_star
 )paren
 id|fore200e-&gt;phys_base
 comma
-(paren
-r_void
-op_star
-)paren
 id|fore200e-&gt;virt_base
 comma
 id|fore200e-&gt;esi
@@ -12607,6 +12537,7 @@ op_decrement
 (brace
 r_struct
 id|cp_monitor
+id|__iomem
 op_star
 id|cp_monitor
 op_assign
