@@ -103,13 +103,29 @@ id|wait_queue_head_t
 id|gcwait
 suffix:semicolon
 multiline_comment|/* group commit event list:&n;&t;&t;&t;&t;&t; * ready transactions wait on this&n;&t;&t;&t;&t;&t; * event for group commit completion.&n;&t;&t;&t;&t;&t; */
+r_union
+(brace
 DECL|member|ip
 r_struct
 id|inode
 op_star
 id|ip
 suffix:semicolon
-multiline_comment|/* inode being created or deleted */
+multiline_comment|/* inode being deleted */
+DECL|member|ixpxd
+id|pxd_t
+id|ixpxd
+suffix:semicolon
+multiline_comment|/* pxd of inode extent for created inode */
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
+DECL|member|ino
+id|u32
+id|ino
+suffix:semicolon
+multiline_comment|/* inode number being created */
 )brace
 suffix:semicolon
 r_extern

@@ -2286,6 +2286,10 @@ op_minus
 id|old_blocks
 )paren
 suffix:semicolon
+id|inode-&gt;i_ctime
+op_assign
+id|CURRENT_TIME
+suffix:semicolon
 id|rc
 op_assign
 id|txCommit
