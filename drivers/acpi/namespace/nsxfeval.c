@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsxfeval - Public interfaces to the ACPI subsystem&n; *                         ACPI Object evaluation interfaces&n; *              $Revision: 3 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsxfeval - Public interfaces to the ACPI subsystem&n; *                         ACPI Object evaluation interfaces&n; *              $Revision: 4 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -1197,7 +1197,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_attach_data&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_attach_data&n; *&n; * PARAMETERS:  Obj_handle          - Namespace node&n; *              Handler             - Handler for this attachment&n; *              Data                - Pointer to data to be attached&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Attach arbitrary data and handler to a namespace node.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_attach_data
 id|acpi_attach_data
@@ -1312,7 +1312,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_detach_data&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_detach_data&n; *&n; * PARAMETERS:  Obj_handle          - Namespace node handle&n; *              Handler             - Handler used in call to Acpi_attach_data&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove data that was previously attached to a node.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_detach_data
 id|acpi_detach_data
@@ -1418,7 +1418,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_data&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_data&n; *&n; * PARAMETERS:  Obj_handle          - Namespace node&n; *              Handler             - Handler used in call to Attach_data&n; *              Data                - Where the data is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve data that was previously attached to a namespace node.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_data
 id|acpi_get_data
