@@ -363,7 +363,7 @@ op_star
 id|urb
 suffix:semicolon
 multiline_comment|/* for interrupt polling pipe */
-multiline_comment|/* buffer for urb ... 1 bit each for hub and children, rounded up */
+multiline_comment|/* buffer for urb ... with extra space in case of babble */
 DECL|member|buffer
 r_char
 (paren
@@ -371,14 +371,6 @@ op_star
 id|buffer
 )paren
 (braket
-(paren
-id|USB_MAXCHILDREN
-op_plus
-l_int|1
-op_plus
-l_int|7
-)paren
-op_div
 l_int|8
 )braket
 suffix:semicolon
