@@ -1831,6 +1831,11 @@ op_assign
 id|ohci_hub_resume
 comma
 macro_line|#endif
+dot
+id|start_port_reset
+op_assign
+id|ohci_start_port_reset
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
