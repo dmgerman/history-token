@@ -1302,7 +1302,7 @@ id|i
 op_decrement
 )paren
 (brace
-id|PageClearSlab
+id|ClearPageSlab
 c_func
 (paren
 id|page
@@ -3869,7 +3869,7 @@ comma
 id|slabp
 )paren
 suffix:semicolon
-id|PageSetSlab
+id|SetPageSlab
 c_func
 (paren
 id|page

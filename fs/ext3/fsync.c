@@ -56,14 +56,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|ret
-op_or_assign
-id|fsync_inode_data_buffers
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
 id|ext3_force_commit
 c_func
 (paren

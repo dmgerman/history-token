@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *&t;fs/libfs.c&n; *&t;Library for filesystems writers.&n; */
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|function|simple_statfs
 r_int
 id|simple_statfs
@@ -114,6 +115,11 @@ op_star
 id|dentry
 op_assign
 id|filp-&gt;f_dentry
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|i
 op_assign
@@ -246,6 +252,11 @@ op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -370,6 +381,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -197,9 +197,15 @@ comma
 id|cached
 )paren
 suffix:semicolon
-id|show_buffers
+id|printk
 c_func
 (paren
+l_string|&quot;%ld buffermem pages&bslash;n&quot;
+comma
+id|nr_buffermem_pages
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 )brace

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_static
 r_int
@@ -1205,6 +1206,11 @@ id|inode
 op_assign
 id|filp-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|tmpname
 op_assign
 (paren
@@ -1266,6 +1272,11 @@ r_int
 r_int
 )paren
 id|tmpname
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

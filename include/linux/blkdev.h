@@ -438,10 +438,11 @@ id|prep_rq_fn
 op_star
 id|prep_rq_fn
 suffix:semicolon
-multiline_comment|/*&n;&t; * The VM-level readahead tunable for this device.  In&n;&t; * units of 512-byte sectors.&n;&t; */
-DECL|member|ra_sectors
+multiline_comment|/*&n;&t; * The VM-level readahead tunable for this device.  In&n;&t; * units of PAGE_CACHE_SIZE pages.&n;&t; */
+DECL|member|ra_pages
 r_int
-id|ra_sectors
+r_int
+id|ra_pages
 suffix:semicolon
 multiline_comment|/*&n;&t; * The queue owner gets to use this for whatever they like.&n;&t; * ll_rw_blk doesn&squot;t touch it.&n;&t; */
 DECL|member|queuedata
@@ -1034,27 +1035,13 @@ id|pfn
 suffix:semicolon
 r_extern
 r_int
-id|blk_set_readahead
+r_int
+op_star
+id|blk_get_ra_pages
 c_func
 (paren
-r_struct
-id|block_device
-op_star
-id|bdev
-comma
-r_int
-id|sectors
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|blk_get_readahead
-c_func
-(paren
-r_struct
-id|block_device
-op_star
-id|bdev
+id|kdev_t
+id|kdev
 )paren
 suffix:semicolon
 r_extern

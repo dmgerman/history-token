@@ -4125,7 +4125,7 @@ id|pg
 )paren
 suffix:semicolon
 multiline_comment|/* XXX: Does the page get freed automatically? */
-multiline_comment|/* AAA: Judging by the unmount getting stuck in __wait_on_page, nope. */
+multiline_comment|/* AAA: Judging by the unmount getting stuck in __wait_on_page_locked, nope. */
 id|page_cache_release
 c_func
 (paren

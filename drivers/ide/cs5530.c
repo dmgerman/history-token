@@ -578,20 +578,18 @@ comma
 id|timings
 suffix:semicolon
 multiline_comment|/*&n;&t; * Default to DMA-off in case we run into trouble here.&n;&t; */
-(paren
-r_void
-)paren
 id|hwif
 op_member_access_from_pointer
-id|dmaproc
+id|udma
 c_func
 (paren
 id|ide_dma_off_quietly
 comma
 id|drive
+comma
+l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* turn off DMA while we fiddle */
 id|outb
 c_func
 (paren
@@ -647,12 +645,14 @@ op_logical_and
 op_logical_neg
 id|hwif
 op_member_access_from_pointer
-id|dmaproc
+id|udma
 c_func
 (paren
 id|ide_dma_bad_drive
 comma
 id|mate
+comma
+l_int|NULL
 )paren
 )paren
 (brace
@@ -719,12 +719,14 @@ op_logical_and
 op_logical_neg
 id|hwif
 op_member_access_from_pointer
-id|dmaproc
+id|udma
 c_func
 (paren
 id|ide_dma_bad_drive
 comma
 id|drive
+comma
+l_int|NULL
 )paren
 )paren
 (brace
@@ -1056,12 +1058,14 @@ multiline_comment|/*&n;&t; * Finally, turn DMA on in software, and exit.&n;&t; *
 r_return
 id|hwif
 op_member_access_from_pointer
-id|dmaproc
+id|udma
 c_func
 (paren
 id|ide_dma_on
 comma
 id|drive
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* success */
@@ -1070,13 +1074,20 @@ multiline_comment|/*&n; * This is a CS5530-specific wrapper for the standard ide
 DECL|function|cs5530_dmaproc
 r_int
 id|cs5530_dmaproc
+c_func
 (paren
 id|ide_dma_action_t
 id|func
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
 )paren
 (brace
 r_switch
@@ -1108,6 +1119,8 @@ c_func
 id|func
 comma
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 )brace
@@ -1399,9 +1412,8 @@ comma
 id|d0_timings
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
-id|hwif-&gt;dmaproc
+id|hwif-&gt;udma
 op_assign
-op_amp
 id|cs5530_dmaproc
 suffix:semicolon
 id|hwif-&gt;highmem

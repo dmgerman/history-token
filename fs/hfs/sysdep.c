@@ -142,12 +142,10 @@ c_cond
 id|tmp
 )paren
 (brace
-id|mark_buffer_uptodate
+id|set_buffer_uptodate
 c_func
 (paren
 id|tmp
-comma
-l_int|1
 )paren
 suffix:semicolon
 )brace

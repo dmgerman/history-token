@@ -2,6 +2,7 @@ multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp.,
 multiline_comment|/*&n; *&t;jfs_dtree.c: directory B+-tree manager&n; *&n; * B+-tree with variable length key directory:&n; *&n; * each directory page is structured as an array of 32-byte&n; * directory entry slots initialized as a freelist&n; * to avoid search/compaction of free space at insertion.&n; * when an entry is inserted, a number of slots are allocated&n; * from the freelist as required to store variable length data&n; * of the entry; when the entry is deleted, slots of the entry&n; * are returned to freelist.&n; *&n; * leaf entry stores full name as key and file serial number&n; * (aka inode number) as data.&n; * internal/router entry stores sufffix compressed name&n; * as key and simple extent descriptor as data.&n; *&n; * each directory page maintains a sorted entry index table&n; * which stores the start slot index of sorted entries&n; * to allow binary search on the table.&n; *&n; * directory starts as a root/leaf page in on-disk inode&n; * inline data area.&n; * when it becomes full, it starts a leaf of a external extent&n; * of length of 1 block. each time the first leaf becomes full,&n; * it is extended rather than split (its size is doubled),&n; * until its length becoms 4 KBytes, from then the extent is split&n; * with new 4 Kbyte extent when it becomes full&n; * to reduce external fragmentation of small directories.&n; *&n; * blah, blah, blah, for linear scan of directory in pieces by&n; * readdir().&n; *&n; *&n; *&t;case-insensitive directory file system&n; *&n; * names are stored in case-sensitive way in leaf entry.&n; * but stored, searched and compared in case-insensitive (uppercase) order&n; * (i.e., both search key and entry key are folded for search/compare):&n; * (note that case-sensitive order is BROKEN in storage, e.g.,&n; *  sensitive: Ad, aB, aC, aD -&gt; insensitive: aB, aC, aD, Ad&n; *&n; *  entries which folds to the same key makes up a equivalent class&n; *  whose members are stored as contiguous cluster (may cross page boundary)&n; *  but whose order is arbitrary and acts as duplicate, e.g.,&n; *  abc, Abc, aBc, abC)&n; *&n; * once match is found at leaf, requires scan forward/backward&n; * either for, in case-insensitive search, duplicate&n; * or for, in case-sensitive search, for exact match&n; *&n; * router entry must be created/stored in case-insensitive way&n; * in internal entry:&n; * (right most key of left page and left most key of right page&n; * are folded, and its suffix compression is propagated as router&n; * key in parent)&n; * (e.g., if split occurs &lt;abc&gt; and &lt;aBd&gt;, &lt;ABD&gt; trather than &lt;aB&gt;&n; * should be made the router key for the split)&n; *&n; * case-insensitive search:&n; *&n; * &t;fold search key;&n; *&n; *&t;case-insensitive search of B-tree:&n; *&t;for internal entry, router key is already folded;&n; *&t;for leaf entry, fold the entry key before comparison.&n; *&n; *&t;if (leaf entry case-insensitive match found)&n; *&t;&t;if (next entry satisfies case-insensitive match)&n; *&t;&t;&t;return EDUPLICATE;&n; *&t;&t;if (prev entry satisfies case-insensitive match)&n; *&t;&t;&t;return EDUPLICATE;&n; *&t;&t;return match;&n; *&t;else&n; *&t;&t;return no match;&n; *&n; * &t;serialization:&n; * target directory inode lock is being held on entry/exit&n; * of all main directory service routines.&n; *&n; *&t;log based recovery:&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_superblock.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
@@ -10229,6 +10230,11 @@ id|DIREND
 r_return
 l_int|0
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10280,6 +10286,11 @@ id|filp-&gt;f_pos
 op_assign
 id|DIREND
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -10308,6 +10319,11 @@ id|rc
 id|filp-&gt;f_pos
 op_assign
 id|DIREND
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 id|rc
@@ -10351,6 +10367,11 @@ id|filp-&gt;f_pos
 op_assign
 id|DIREND
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -10375,6 +10396,11 @@ l_int|1
 id|filp-&gt;f_pos
 op_assign
 id|DIREND
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -10423,6 +10449,11 @@ id|filp-&gt;f_pos
 op_assign
 id|DIREND
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -10455,6 +10486,11 @@ id|filp-&gt;f_pos
 op_assign
 op_minus
 l_int|1
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -10495,9 +10531,16 @@ comma
 id|DT_DIR
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t;&t;&t; * parent &quot;..&quot;&n;&t;&t;&t; */
 id|filp-&gt;f_pos
@@ -10526,9 +10569,16 @@ comma
 id|DT_DIR
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t;&t; * Find first entry of left-most leaf&n;&t;&t;&t; */
 r_if
 c_cond
@@ -10543,6 +10593,11 @@ id|ip
 id|filp-&gt;f_pos
 op_assign
 id|DIREND
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -10564,10 +10619,17 @@ id|btstack
 )paren
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|rc
 suffix:semicolon
+)brace
 id|DT_GETSEARCH
 c_func
 (paren
@@ -10621,9 +10683,16 @@ comma
 id|DT_DIR
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 id|dtoffset-&gt;index
 op_assign
 l_int|1
@@ -10669,9 +10738,16 @@ comma
 id|DT_DIR
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -10708,6 +10784,11 @@ id|ip
 id|filp-&gt;f_pos
 op_assign
 id|DIREND
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -10749,6 +10830,11 @@ id|filp-&gt;f_pos
 op_assign
 id|DIREND
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -10782,6 +10868,11 @@ l_int|0
 id|filp-&gt;f_pos
 op_assign
 id|DIREND
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -10834,6 +10925,11 @@ suffix:semicolon
 id|filp-&gt;f_pos
 op_assign
 id|DIREND
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -11163,6 +11259,11 @@ c_func
 id|d_name
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|rc
@@ -11201,6 +11302,11 @@ id|DT_PUTPAGE
 c_func
 (paren
 id|mp
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

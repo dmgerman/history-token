@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|NFSDBG_FACILITY
 mdefine_line|#define NFSDBG_FACILITY&t;&t;NFSDBG_PROC
 multiline_comment|/* A wrapper to handle the EJUKEBOX error message */
@@ -2746,6 +2747,11 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|arg.buffer
 op_assign
 id|entry
@@ -2858,6 +2864,11 @@ c_func
 l_string|&quot;NFS reply readdir: %d&bslash;n&quot;
 comma
 id|status
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

@@ -1417,17 +1417,17 @@ macro_line|#endif
 multiline_comment|/* --- */
 macro_line|#ifdef CONFIG_SND_VERBOSE_PRINTK
 DECL|macro|snd_printk
-mdefine_line|#define snd_printk(args...) &bslash;&n;&t;snd_verbose_printk(__FILE__, __LINE__, ##args)
+mdefine_line|#define snd_printk(fmt, args...) &bslash;&n;&t;snd_verbose_printk(__FILE__, __LINE__, fmt ,##args)
 macro_line|#else
 DECL|macro|snd_printk
-mdefine_line|#define snd_printk(args...) &bslash;&n;&t;printk(##args)
+mdefine_line|#define snd_printk(fmt, args...) &bslash;&n;&t;printk(fmt ,##args)
 macro_line|#endif
 macro_line|#ifdef CONFIG_SND_DEBUG
 DECL|macro|__ASTRING__
 mdefine_line|#define __ASTRING__(x) #x
 macro_line|#ifdef CONFIG_SND_VERBOSE_PRINTK
 DECL|macro|snd_printd
-mdefine_line|#define snd_printd(args...) &bslash;&n;&t;snd_verbose_printd(__FILE__, __LINE__, ##args)
+mdefine_line|#define snd_printd(fmt, args...) &bslash;&n;&t;snd_verbose_printd(__FILE__, __LINE__, fmt ,##args)
 macro_line|#endif
 DECL|macro|snd_assert
 mdefine_line|#define snd_assert(expr, args...) do {&bslash;&n;&t;if (!(expr)) {&bslash;&n;&t;&t;snd_printk(&quot;BUG? (%s) (called from %p)&bslash;n&quot;, __ASTRING__(expr), __builtin_return_address(0));&bslash;&n;&t;&t;args;&bslash;&n;&t;}&bslash;&n;} while (0)
@@ -1435,18 +1435,18 @@ DECL|macro|snd_runtime_check
 mdefine_line|#define snd_runtime_check(expr, args...) do {&bslash;&n;&t;if (!(expr)) {&bslash;&n;&t;&t;snd_printk(&quot;ERROR (%s) (called from %p)&bslash;n&quot;, __ASTRING__(expr), __builtin_return_address(0));&bslash;&n;&t;&t;args;&bslash;&n;&t;}&bslash;&n;} while (0)
 macro_line|#else /* !CONFIG_SND_DEBUG */
 DECL|macro|snd_printd
-mdefine_line|#define snd_printd(args...)&t;/* nothing */
+mdefine_line|#define snd_printd(fmt, args...)&t;/* nothing */
 DECL|macro|snd_assert
-mdefine_line|#define snd_assert(args...)&t;/* nothing */
+mdefine_line|#define snd_assert(expr, args...)&t;/* nothing */
 DECL|macro|snd_runtime_check
 mdefine_line|#define snd_runtime_check(expr, args...) do { if (!(expr)) { args; } } while (0)
 macro_line|#endif /* CONFIG_SND_DEBUG */
 macro_line|#ifdef CONFIG_SND_DEBUG_DETECT
 DECL|macro|snd_printdd
-mdefine_line|#define snd_printdd(args...) snd_printk(format, ##args)
+mdefine_line|#define snd_printdd(format, args...) snd_printk(format, ##args)
 macro_line|#else
 DECL|macro|snd_printdd
-mdefine_line|#define snd_printdd(args...) /* nothing */
+mdefine_line|#define snd_printdd(format, args...) /* nothing */
 macro_line|#endif
 DECL|macro|snd_BUG
 mdefine_line|#define snd_BUG() snd_assert(0, )

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;udf_i.h&quot;
 macro_line|#include &quot;udf_sb.h&quot;
 multiline_comment|/* Prototypes for file operations */
@@ -95,6 +96,11 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -124,9 +130,16 @@ id|DT_DIR
 OL
 l_int|0
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 id|filp-&gt;f_pos
 op_increment
 suffix:semicolon
@@ -149,6 +162,11 @@ id|UPDATE_ATIME
 c_func
 (paren
 id|dir
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

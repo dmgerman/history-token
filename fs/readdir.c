@@ -73,11 +73,6 @@ id|inode
 )paren
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|res
 op_assign
 id|file-&gt;f_op
@@ -90,11 +85,6 @@ comma
 id|buf
 comma
 id|filler
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace

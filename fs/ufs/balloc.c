@@ -1247,7 +1247,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|macro|NULLIFY_FRAGMENTS
-mdefine_line|#define NULLIFY_FRAGMENTS &bslash;&n;&t;for (i = oldcount; i &lt; newcount; i++) { &bslash;&n;&t;&t;bh = sb_getblk(sb, result + i); &bslash;&n;&t;&t;memset (bh-&gt;b_data, 0, sb-&gt;s_blocksize); &bslash;&n;&t;&t;mark_buffer_uptodate(bh, 1); &bslash;&n;&t;&t;mark_buffer_dirty (bh); &bslash;&n;&t;&t;if (IS_SYNC(inode)) { &bslash;&n;&t;&t;&t;ll_rw_block (WRITE, 1, &amp;bh); &bslash;&n;&t;&t;&t;wait_on_buffer (bh); &bslash;&n;&t;&t;} &bslash;&n;&t;&t;brelse (bh); &bslash;&n;&t;}
+mdefine_line|#define NULLIFY_FRAGMENTS &bslash;&n;&t;for (i = oldcount; i &lt; newcount; i++) { &bslash;&n;&t;&t;bh = sb_getblk(sb, result + i); &bslash;&n;&t;&t;memset (bh-&gt;b_data, 0, sb-&gt;s_blocksize); &bslash;&n;&t;&t;set_buffer_uptodate(bh); &bslash;&n;&t;&t;mark_buffer_dirty (bh); &bslash;&n;&t;&t;if (IS_SYNC(inode)) { &bslash;&n;&t;&t;&t;ll_rw_block (WRITE, 1, &amp;bh); &bslash;&n;&t;&t;&t;wait_on_buffer (bh); &bslash;&n;&t;&t;} &bslash;&n;&t;&t;brelse (bh); &bslash;&n;&t;}
 DECL|function|ufs_new_fragments
 r_int
 id|ufs_new_fragments
@@ -1919,7 +1919,8 @@ c_cond
 id|bh
 )paren
 (brace
-id|mark_buffer_clean
+id|clear_buffer_dirty
+c_func
 (paren
 id|bh
 )paren
