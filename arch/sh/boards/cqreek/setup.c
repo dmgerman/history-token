@@ -1,0 +1,233 @@
+multiline_comment|/* $Id: setup.c,v 1.1.2.5 2002/03/02 21:57:07 lethal Exp $&n; *&n; * arch/sh/kernel/setup_cqreek.c&n; *&n; * Copyright (C) 2000  Niibe Yutaka&n; *&n; * CqREEK IDE/ISA Bridge Support.&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;asm/cqreek/cqreek.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/io_generic.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/rtc.h&gt;
+DECL|function|get_system_type
+r_const
+r_char
+op_star
+id|get_system_type
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_string|&quot;CqREEK&quot;
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Initialize the board&n; */
+DECL|function|platform_setup
+r_void
+id|__init
+id|platform_setup
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/* udelay is not available at setup time yet... */
+DECL|macro|DELAY
+mdefine_line|#define DELAY() do {for (i=0; i&lt;10000; i++) ctrl_inw(0xa0000000);} while(0)
+r_if
+c_cond
+(paren
+(paren
+id|inw
+(paren
+id|BRIDGE_FEATURE
+)paren
+op_amp
+l_int|1
+)paren
+)paren
+(brace
+multiline_comment|/* We have IDE interface */
+id|outw_p
+c_func
+(paren
+l_int|0
+comma
+id|BRIDGE_IDE_INTR_LVL
+)paren
+suffix:semicolon
+id|outw_p
+c_func
+(paren
+l_int|0
+comma
+id|BRIDGE_IDE_INTR_MASK
+)paren
+suffix:semicolon
+id|outw_p
+c_func
+(paren
+l_int|0
+comma
+id|BRIDGE_IDE_CTRL
+)paren
+suffix:semicolon
+id|DELAY
+c_func
+(paren
+)paren
+suffix:semicolon
+id|outw_p
+c_func
+(paren
+l_int|0x8000
+comma
+id|BRIDGE_IDE_CTRL
+)paren
+suffix:semicolon
+id|DELAY
+c_func
+(paren
+)paren
+suffix:semicolon
+id|outw_p
+c_func
+(paren
+l_int|0xffff
+comma
+id|BRIDGE_IDE_INTR_STAT
+)paren
+suffix:semicolon
+multiline_comment|/* Clear interrupt status */
+id|outw_p
+c_func
+(paren
+l_int|0x0f
+op_minus
+l_int|14
+comma
+id|BRIDGE_IDE_INTR_LVL
+)paren
+suffix:semicolon
+multiline_comment|/* Use 14 IPR */
+id|outw_p
+c_func
+(paren
+l_int|1
+comma
+id|BRIDGE_IDE_INTR_MASK
+)paren
+suffix:semicolon
+multiline_comment|/* Enable interrupt */
+id|cqreek_has_ide
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|inw
+(paren
+id|BRIDGE_FEATURE
+)paren
+op_amp
+l_int|2
+)paren
+)paren
+(brace
+multiline_comment|/* We have ISA interface */
+id|outw_p
+c_func
+(paren
+l_int|0
+comma
+id|BRIDGE_ISA_INTR_LVL
+)paren
+suffix:semicolon
+id|outw_p
+c_func
+(paren
+l_int|0
+comma
+id|BRIDGE_ISA_INTR_MASK
+)paren
+suffix:semicolon
+id|outw_p
+c_func
+(paren
+l_int|0
+comma
+id|BRIDGE_ISA_CTRL
+)paren
+suffix:semicolon
+id|DELAY
+c_func
+(paren
+)paren
+suffix:semicolon
+id|outw_p
+c_func
+(paren
+l_int|0x8000
+comma
+id|BRIDGE_ISA_CTRL
+)paren
+suffix:semicolon
+id|DELAY
+c_func
+(paren
+)paren
+suffix:semicolon
+id|outw_p
+c_func
+(paren
+l_int|0xffff
+comma
+id|BRIDGE_ISA_INTR_STAT
+)paren
+suffix:semicolon
+multiline_comment|/* Clear interrupt status */
+id|outw_p
+c_func
+(paren
+l_int|0x0f
+op_minus
+l_int|10
+comma
+id|BRIDGE_ISA_INTR_LVL
+)paren
+suffix:semicolon
+multiline_comment|/* Use 10 IPR */
+id|outw_p
+c_func
+(paren
+l_int|0xfff8
+comma
+id|BRIDGE_ISA_INTR_MASK
+)paren
+suffix:semicolon
+multiline_comment|/* Enable interrupt */
+id|cqreek_has_isa
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;CqREEK Setup (IDE=%d, ISA=%d)...done&bslash;n&quot;
+comma
+id|cqreek_has_ide
+comma
+id|cqreek_has_isa
+)paren
+suffix:semicolon
+)brace
+eof

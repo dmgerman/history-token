@@ -2834,7 +2834,7 @@ id|inet-&gt;num
 op_eq
 id|num
 op_logical_and
-id|sk-&gt;sk_family
+id|s-&gt;sk_family
 op_eq
 id|PF_INET6
 )paren

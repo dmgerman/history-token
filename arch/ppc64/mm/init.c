@@ -37,6 +37,7 @@ macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/eeh.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmzone.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/iSeries_dma.h&gt;
@@ -2149,7 +2150,8 @@ id|kcore_vmem
 suffix:semicolon
 DECL|function|setup_kcore
 r_static
-r_void
+r_int
+id|__init
 id|setup_kcore
 c_func
 (paren
@@ -2282,7 +2284,17 @@ op_minus
 id|VMALLOC_START
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|setup_kcore
+id|module_init
+c_func
+(paren
+id|setup_kcore
+)paren
+suffix:semicolon
 r_void
 id|initialize_paca_hardware_interrupt_stack
 c_func
@@ -2683,11 +2695,6 @@ id|mem_init_done
 op_assign
 l_int|1
 suffix:semicolon
-id|setup_kcore
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* set the last page of each hardware interrupt stack to be protected */
 id|initialize_paca_hardware_interrupt_stack
 c_func
@@ -3002,9 +3009,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_has_noexecute
-c_func
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_NOEXECUTE
 )paren
 )paren
 (brace

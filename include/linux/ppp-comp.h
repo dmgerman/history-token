@@ -366,7 +366,7 @@ mdefine_line|#define CI_DEFLATE_DRAFT&t;24&t;/* value used in original draft RFC
 DECL|macro|CILEN_DEFLATE
 mdefine_line|#define CILEN_DEFLATE&t;&t;4&t;/* length of its config option */
 DECL|macro|DEFLATE_MIN_SIZE
-mdefine_line|#define DEFLATE_MIN_SIZE&t;8
+mdefine_line|#define DEFLATE_MIN_SIZE&t;9
 DECL|macro|DEFLATE_MAX_SIZE
 mdefine_line|#define DEFLATE_MAX_SIZE&t;15
 DECL|macro|DEFLATE_METHOD_VAL

@@ -90,7 +90,6 @@ id|skb-&gt;dev
 suffix:semicolon
 id|skb-&gt;dev
 op_assign
-op_amp
 id|br-&gt;dev
 suffix:semicolon
 id|NF_HOOK
@@ -195,7 +194,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|br-&gt;dev.flags
+id|br-&gt;dev-&gt;flags
 op_amp
 id|IFF_PROMISC
 )paren
@@ -543,7 +542,7 @@ op_logical_neg
 id|memcmp
 c_func
 (paren
-id|p-&gt;br-&gt;dev.dev_addr
+id|p-&gt;br-&gt;dev-&gt;dev_addr
 comma
 id|dest
 comma

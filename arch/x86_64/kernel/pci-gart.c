@@ -592,7 +592,7 @@ l_int|1
 r_goto
 id|error
 suffix:semicolon
-multiline_comment|/* Fill in the GATT, allocating pages as needed. */
+multiline_comment|/* Fill in the GATT */
 r_for
 c_loop
 (paren
@@ -621,26 +621,6 @@ op_plus
 id|i
 op_star
 id|PAGE_SIZE
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|i
-OG
-l_int|0
-)paren
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|virt_to_page
-c_func
-(paren
-id|mem
-)paren
-op_member_access_from_pointer
-id|count
-)paren
 suffix:semicolon
 id|phys_mem
 op_assign
@@ -776,6 +756,9 @@ id|size
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 id|iommu_page
 op_assign
 (paren
@@ -800,10 +783,6 @@ id|iommu_page
 )braket
 )paren
 )paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_IOMMU_DEBUG
-r_int
-id|i
 suffix:semicolon
 r_for
 c_loop
@@ -852,7 +831,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 id|free_iommu
 c_func
 (paren
@@ -1393,26 +1371,6 @@ c_func
 id|phys_mem
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IOMMU_DEBUG
-multiline_comment|/* paranoia check */
-id|BUG_ON
-c_func
-(paren
-id|GPTE_DECODE
-c_func
-(paren
-id|iommu_gatt_base
-(braket
-id|iommu_page
-op_plus
-id|i
-)braket
-)paren
-op_ne
-id|phys_mem
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_IOMMU_LEAK
 multiline_comment|/* XXX need eventually caller of pci_map_sg */
 r_if
@@ -1536,7 +1494,6 @@ id|PAGE_SIZE
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
-macro_line|#ifdef CONFIG_IOMMU_DEBUG
 r_int
 id|i
 suffix:semicolon
@@ -1581,7 +1538,6 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#endif
 id|free_iommu
 c_func
 (paren

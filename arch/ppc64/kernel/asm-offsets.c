@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 DECL|macro|DEFINE
 mdefine_line|#define DEFINE(sym, val) &bslash;&n;&t;asm volatile(&quot;&bslash;n-&gt;&quot; #sym &quot; %0 &quot; #val : : &quot;i&quot; (val))
 DECL|macro|BLANK
@@ -1401,6 +1402,75 @@ c_func
 id|CLONE_UNTRACED
 comma
 id|CLONE_UNTRACED
+)paren
+suffix:semicolon
+multiline_comment|/* About the CPU features table */
+id|DEFINE
+c_func
+(paren
+id|CPU_SPEC_ENTRY_SIZE
+comma
+r_sizeof
+(paren
+r_struct
+id|cpu_spec
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|CPU_SPEC_PVR_MASK
+comma
+m_offsetof
+(paren
+r_struct
+id|cpu_spec
+comma
+id|pvr_mask
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|CPU_SPEC_PVR_VALUE
+comma
+m_offsetof
+(paren
+r_struct
+id|cpu_spec
+comma
+id|pvr_value
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|CPU_SPEC_FEATURES
+comma
+m_offsetof
+(paren
+r_struct
+id|cpu_spec
+comma
+id|cpu_features
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|CPU_SPEC_SETUP
+comma
+m_offsetof
+(paren
+r_struct
+id|cpu_spec
+comma
+id|cpu_setup
+)paren
 )paren
 suffix:semicolon
 r_return

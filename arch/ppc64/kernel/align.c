@@ -5,6 +5,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 r_void
 id|disable_kernel_fp
 c_func
@@ -1023,15 +1024,12 @@ id|dsisr
 op_assign
 id|regs-&gt;dsisr
 suffix:semicolon
-multiline_comment|/* Power4 doesn&squot;t set DSISR for an alignment interrupt */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|cpu_alignexc_sets_dsisr
-c_func
-(paren
-)paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_NODSISRALIGN
 )paren
 (brace
 r_int
@@ -1062,7 +1060,14 @@ op_assign
 id|make_dsisr
 c_func
 (paren
-id|real_instr
+op_star
+(paren
+(paren
+r_int
+op_star
+)paren
+id|regs-&gt;nip
+)paren
 )paren
 suffix:semicolon
 )brace

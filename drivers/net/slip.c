@@ -5359,10 +5359,6 @@ id|timeout
 )paren
 )paren
 suffix:semicolon
-id|busy
-op_assign
-l_int|0
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5416,15 +5412,10 @@ comma
 id|slc-&gt;dev.name
 )paren
 suffix:semicolon
-multiline_comment|/* Pin module forever */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-id|busy
-op_increment
-suffix:semicolon
-r_continue
-suffix:semicolon
+multiline_comment|/* Intentionally leak the control block. */
 )brace
+r_else
+(brace
 id|sl_free_bufs
 c_func
 (paren
@@ -5438,6 +5429,7 @@ c_func
 id|slc
 )paren
 suffix:semicolon
+)brace
 id|slip_ctrls
 (braket
 id|i
@@ -5447,13 +5439,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|busy
-)paren
-(brace
 id|kfree
 c_func
 (paren
@@ -5464,7 +5449,6 @@ id|slip_ctrls
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond

@@ -265,8 +265,6 @@ id|flow_cache_flush
 c_func
 (paren
 r_void
-op_star
-id|object
 )paren
 suffix:semicolon
 r_extern

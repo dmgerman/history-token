@@ -591,7 +591,7 @@ mdefine_line|#define max_t(type,x,y) &bslash;&n;&t;({ type __x = (x); type __y =
 multiline_comment|/**&n; * container_of - cast a member of a structure out to the containing structure&n; *&n; * @ptr:&t;the pointer to the member.&n; * @type:&t;the type of the container struct this is embedded in.&n; * @member:&t;the name of the member within the struct.&n; *&n; */
 DECL|macro|container_of
 mdefine_line|#define container_of(ptr, type, member) ({&t;&t;&t;&bslash;&n;        const typeof( ((type *)0)-&gt;member ) *__mptr = (ptr);&t;&bslash;&n;        (type *)( (char *)__mptr - offsetof(type,member) );})
-multiline_comment|/*&n; * Check at compile time that something is of a particular type.&n; * Always evaluates to 1 so you may use it easily in conparisons.&n; */
+multiline_comment|/*&n; * Check at compile time that something is of a particular type.&n; * Always evaluates to 1 so you may use it easily in comparisons.&n; */
 DECL|macro|typecheck
 mdefine_line|#define typecheck(type,x) &bslash;&n;({&t;type __dummy; &bslash;&n;&t;typeof(x) __dummy2; &bslash;&n;&t;(void)(&amp;__dummy == &amp;__dummy2); &bslash;&n;&t;1; &bslash;&n;})
 macro_line|#endif /* __KERNEL__ */
