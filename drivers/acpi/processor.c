@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * acpi_processor.c - ACPI Processor Driver ($Revision: 66 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *  TBD:&n; *&t;1. Make # power/performance states dynamic.&n; *&t;2. Support duty_cycle values that span bit 4.&n; *&t;3. Optimize by having scheduler determine business instead of&n; *&t;   having us try to calculate it here.&n; *&t;4. Need C1 timing -- must modify kernel (IRQ handler) to get this.&n; */
+multiline_comment|/*&n; * acpi_processor.c - ACPI Processor Driver ($Revision: 69 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *  TBD:&n; *&t;1. Make # power/performance states dynamic.&n; *&t;2. Support duty_cycle values that span bit 4.&n; *&t;3. Optimize by having scheduler determine business instead of&n; *&t;   having us try to calculate it here.&n; *&t;4. Need C1 timing -- must modify kernel (IRQ handler) to get this.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1690,7 +1690,7 @@ id|pr-&gt;power.default_state
 op_assign
 id|ACPI_STATE_C1
 suffix:semicolon
-multiline_comment|/*&n;&t; * C1/C2&n;&t; * -----&n;&t; * Set the default C1 promotion and C2 demotion policies, where we&n;&t; * promote from C1 to C2 after several (10) successive C1 transitions,&n;&t; * as we cannot (currently) measure the time spent in C1. Demote from&n;&t; * C2 to C1 after experiencing several (4) &squot;shorts&squot; (time spent in C2&n;&t; * is less than the C2 transtion latency).&n;&t; */
+multiline_comment|/*&n;&t; * C1/C2&n;&t; * -----&n;&t; * Set the default C1 promotion and C2 demotion policies, where we&n;&t; * promote from C1 to C2 after several (10) successive C1 transitions,&n;&t; * as we cannot (currently) measure the time spent in C1. Demote from&n;&t; * C2 to C1 anytime we experience a &squot;short&squot; (time spent in C2 is less&n;&t; * than the C2 transtion latency).  Note the simplifying assumption &n;&t; * that the &squot;cost&squot; of a transition is amortized when we sleep for at&n;&t; * least as long as the transition&squot;s latency (thus the total transition&n;&t; * time is two times the latency).&n;&t; *&n;&t; * TBD: Measure C1 sleep times by instrumenting the core IRQ handler.&n;&t; * TBD: Demote to default C-State after long periods of activity.&n;&t; * TBD: Investigate policy&squot;s use of CPU utilization -vs- sleep duration.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1741,7 +1741,7 @@ id|ACPI_STATE_C2
 dot
 id|demotion.threshold.count
 op_assign
-l_int|4
+l_int|1
 suffix:semicolon
 id|pr-&gt;power.states
 (braket
@@ -2686,7 +2686,7 @@ id|pr-&gt;performance.status_register
 suffix:semicolon
 id|end
 suffix:colon
-id|kfree
+id|acpi_os_free
 c_func
 (paren
 id|buffer.pointer
@@ -3049,7 +3049,7 @@ suffix:semicolon
 )brace
 id|end
 suffix:colon
-id|kfree
+id|acpi_os_free
 c_func
 (paren
 id|buffer.pointer
@@ -7340,8 +7340,6 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* FIXME: What should this be? -- RR */
 r_if
 c_cond
 (paren
@@ -7354,12 +7352,8 @@ l_int|1
 )paren
 id|errata.smp
 op_assign
-id|num_online_cpus
-c_func
-(paren
-)paren
+id|TRUE
 suffix:semicolon
-macro_line|#endif
 id|acpi_processor_errata
 c_func
 (paren
