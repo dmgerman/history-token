@@ -101,6 +101,14 @@ id|logdata
 id|RTAS_ERROR_LOG_MAX
 )braket
 suffix:semicolon
+r_static
+r_int
+id|get_eventscan_parms
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* To see this info, grep RTAS /var/log/messages and each entry&n; * will be collected together with obvious begin/end.&n; * There will be a unique identifier on the begin and end lines.&n; * This will persist across reboots.&n; *&n; * format of error logs returned from RTAS:&n; * bytes&t;(size)&t;: contents&n; * --------------------------------------------------------&n; * 0-7&t;&t;(8)&t;: rtas_error_log&n; * 8-47&t;&t;(40)&t;: extended info&n; * 48-51&t;(4)&t;: vendor id&n; * 52-1023 (vendor specific) : location code and debug data&n; */
 DECL|function|printk_log_rtas
 r_static
@@ -354,6 +362,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|rtas_error_log_max
+op_eq
+l_int|0
+)paren
+(brace
+id|get_eventscan_parms
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|len
 OG
 id|rtas_error_log_max
@@ -497,6 +519,28 @@ comma
 id|err_type
 )paren
 suffix:semicolon
+multiline_comment|/* rtas errors can occur during boot, and we do want to capture&n;&t; * those somewhere, even if nvram isn&squot;t ready (why not?), and even&n;&t; * if rtasd isn&squot;t ready. Put them into the boot log, at least.  */
+r_if
+c_cond
+(paren
+(paren
+id|err_type
+op_amp
+id|ERR_TYPE_MASK
+)paren
+op_eq
+id|ERR_TYPE_RTAS_LOG
+)paren
+(brace
+id|printk_log_rtas
+c_func
+(paren
+id|buf
+comma
+id|len
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Check to see if we need to or have stopped logging */
 r_if
 c_cond
