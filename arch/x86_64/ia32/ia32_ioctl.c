@@ -1,28 +1,10 @@
 multiline_comment|/* $Id: ia32_ioctl.c,v 1.25 2002/10/11 07:17:06 ak Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 2001,2002  Andi Kleen, SuSE Labs &n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
 DECL|macro|INCLUDES
 mdefine_line|#define INCLUDES
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &quot;compat_ioctl.c&quot;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
-r_extern
-id|asmlinkage
-r_int
-id|sys_ioctl
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
 DECL|macro|CODE
 mdefine_line|#define CODE
 macro_line|#include &quot;compat_ioctl.c&quot;

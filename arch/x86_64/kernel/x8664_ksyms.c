@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/apm_bios.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -804,40 +805,6 @@ id|__memcpy
 )paren
 suffix:semicolon
 multiline_comment|/* syscall export needed for misdesigned sound drivers. */
-r_extern
-id|ssize_t
-id|sys_read
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_char
-op_star
-id|buf
-comma
-r_int
-id|count
-)paren
-suffix:semicolon
-r_extern
-id|off_t
-id|sys_lseek
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-id|off_t
-id|offset
-comma
-r_int
-r_int
-id|origin
-)paren
-suffix:semicolon
 DECL|variable|sys_read
 id|EXPORT_SYMBOL
 c_func

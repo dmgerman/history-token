@@ -2713,18 +2713,6 @@ multiline_comment|/* fake target utsname information */
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 r_extern
-id|asmlinkage
-r_int
-id|sys_sysctl
-c_func
-(paren
-r_struct
-id|__sysctl_args
-id|__user
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|sysctl_init
 c_func

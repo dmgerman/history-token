@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/ipc.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -686,18 +687,6 @@ r_return
 id|addr
 suffix:semicolon
 )brace
-r_extern
-id|asmlinkage
-r_int
-r_int
-id|sys_brk
-c_func
-(paren
-r_int
-r_int
-id|brk
-)paren
-suffix:semicolon
 DECL|function|sparc_brk
 id|asmlinkage
 r_int
@@ -1290,19 +1279,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_extern
-id|asmlinkage
-r_int
-id|sys_newuname
-c_func
-(paren
-r_struct
-id|new_utsname
-id|__user
-op_star
-id|name
-)paren
-suffix:semicolon
 DECL|function|sparc64_newuname
 id|asmlinkage
 r_int
@@ -1359,16 +1335,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_extern
-id|asmlinkage
-r_int
-id|sys_personality
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 DECL|function|sparc64_personality
 id|asmlinkage
 r_int
@@ -2874,15 +2840,18 @@ comma
 r_const
 r_struct
 id|sigaction
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|sigaction
+id|__user
 op_star
 id|oact
 comma
 r_void
+id|__user
 op_star
 id|restorer
 comma

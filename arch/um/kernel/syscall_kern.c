@@ -7,6 +7,7 @@ macro_line|#include &quot;linux/utsname.h&quot;
 macro_line|#include &quot;linux/msg.h&quot;
 macro_line|#include &quot;linux/shm.h&quot;
 macro_line|#include &quot;linux/sys.h&quot;
+macro_line|#include &quot;linux/syscalls.h&quot;
 macro_line|#include &quot;linux/unistd.h&quot;
 macro_line|#include &quot;linux/slab.h&quot;
 macro_line|#include &quot;linux/utime.h&quot;

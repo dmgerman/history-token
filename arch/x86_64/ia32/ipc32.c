@@ -2,6 +2,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt; 
 macro_line|#include &lt;linux/file.h&gt; 
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/msg.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

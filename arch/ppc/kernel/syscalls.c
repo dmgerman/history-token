@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/msg.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/sys.h&gt;
 macro_line|#include &lt;linux/ipc.h&gt;
@@ -858,27 +859,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|sys_select
-c_func
-(paren
-r_int
-comma
-id|fd_set
-op_star
-comma
-id|fd_set
-op_star
-comma
-id|fd_set
-op_star
-comma
-r_struct
-id|timeval
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Due to some executables calling the wrong select we sometimes&n; * get wrong args.  This determines how the args are being passed&n; * (a single ptr to them all args passed) then calls&n; * sys_select() with the appropriate args. -- Cort&n; */
 r_int
 DECL|function|ppc_select

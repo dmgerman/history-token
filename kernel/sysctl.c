@@ -8882,7 +8882,6 @@ suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_SYSCTL */
 DECL|function|sys_sysctl
-r_extern
 id|asmlinkage
 r_int
 id|sys_sysctl

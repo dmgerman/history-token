@@ -112,14 +112,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|sys_ni_syscall
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|config_acpi_tables
 c_func
 (paren

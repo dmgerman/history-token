@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/divert.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#ifdef CONFIG_NET_RADIO

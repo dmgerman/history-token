@@ -22,20 +22,13 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;power.h&quot;
-r_extern
-r_int
-id|sys_sync
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|software_suspend_enabled
 r_int
 r_char
