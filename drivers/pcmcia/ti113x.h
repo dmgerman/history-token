@@ -360,16 +360,12 @@ c_func
 (paren
 id|socket
 comma
-l_int|0x84
+id|TI1250_MULTIMEDIA_CTL
 )paren
 suffix:semicolon
 id|reg
 op_or_assign
-(paren
-l_int|1
-op_lshift
-l_int|7
-)paren
+id|TI1250_MMC_ZVOUTEN
 suffix:semicolon
 multiline_comment|/* ZV bus enable */
 r_if
@@ -459,7 +455,7 @@ c_func
 (paren
 id|socket
 comma
-l_int|0x84
+id|TI1250_MULTIMEDIA_CTL
 comma
 id|reg
 )paren
