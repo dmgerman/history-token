@@ -2530,13 +2530,6 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*printk(&quot;HPFS: truncating file before delete.&bslash;n&quot;);*/
-id|down
-c_func
-(paren
-op_amp
-id|inode-&gt;i_sem
-)paren
-suffix:semicolon
 id|newattrs.ia_size
 op_assign
 l_int|0
@@ -2556,13 +2549,6 @@ id|dentry
 comma
 op_amp
 id|newattrs
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|inode-&gt;i_sem
 )paren
 suffix:semicolon
 id|put_write_access
