@@ -9556,6 +9556,8 @@ c_cond
 (paren
 id|isapnp
 op_logical_and
+id|pcard
+op_logical_and
 (paren
 id|hw
 op_assign
@@ -10892,6 +10894,15 @@ OL
 l_int|0
 )paren
 (brace
+macro_line|#ifdef CONFIG_PNP
+id|pnp_unregister_card_driver
+c_func
+(paren
+op_amp
+id|opti9xx_pnpc_driver
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef MODULE
 macro_line|#ifdef OPTi93X
 id|printk
