@@ -2248,7 +2248,7 @@ id|urb-&gt;lock
 suffix:semicolon
 id|req
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ep-&gt;nextpid
 op_assign
@@ -4881,6 +4881,10 @@ l_int|0x0010
 suffix:semicolon
 id|desc-&gt;wHubCharacteristics
 op_assign
+(paren
+id|__force
+id|__u16
+)paren
 id|cpu_to_le16
 c_func
 (paren
