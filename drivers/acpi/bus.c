@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &quot;acpi_bus.h&quot;
 macro_line|#include &quot;acpi_drivers.h&quot;
 macro_line|#include &quot;include/acinterp.h&quot;&t;/* for acpi_ex_eisa_id_to_string() */
@@ -39,6 +40,16 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 DECL|macro|PREFIX
 mdefine_line|#define&t;PREFIX&t;&t;&t;&quot;ACPI: &quot;
+r_extern
+r_void
+id|eisa_set_level_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|acpi_disabled
@@ -6496,6 +6507,31 @@ r_goto
 id|error1
 suffix:semicolon
 )brace
+multiline_comment|/* Ensure the SCI is set to level-triggered, active-low */
+r_if
+c_cond
+(paren
+id|acpi_ioapic
+)paren
+id|mp_override_legacy_irq
+c_func
+(paren
+id|acpi_fadt.sci_int
+comma
+l_int|3
+comma
+l_int|3
+comma
+id|acpi_fadt.sci_int
+)paren
+suffix:semicolon
+r_else
+id|eisa_set_level_irq
+c_func
+(paren
+id|acpi_fadt.sci_int
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|acpi_enable_subsystem
