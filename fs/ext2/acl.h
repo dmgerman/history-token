@@ -284,11 +284,6 @@ op_star
 id|dir
 )paren
 (brace
-id|inode-&gt;i_mode
-op_and_assign
-op_complement
-id|current-&gt;fs-&gt;umask
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
