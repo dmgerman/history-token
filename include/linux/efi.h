@@ -1021,9 +1021,9 @@ id|tc
 )paren
 suffix:semicolon
 r_extern
-r_int
-r_int
 r_inline
+r_int
+r_int
 id|__init
 id|efi_get_time
 c_func
@@ -1032,8 +1032,8 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
 r_inline
+r_int
 id|__init
 id|efi_set_rtc_mmss
 c_func

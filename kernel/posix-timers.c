@@ -1623,8 +1623,8 @@ id|timr
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Get the time remaining on a POSIX.1b interval timer.  This function&n; * is ALWAYS called with spin_lock_irq on the timer, thus it must not&n; * mess with irq.&n; *&n; * We have a couple of messes to clean up here.  First there is the case&n; * of a timer that has a requeue pending.  These timers should appear to&n; * be in the timer list with an expiry as if we were to requeue them&n; * now.&n; *&n; * The second issue is the SIGEV_NONE timer which may be active but is&n; * not really ever put in the timer list (to save system resources).&n; * This timer may be expired, and if so, we will do it here.  Otherwise&n; * it is the same as a requeue pending timer WRT to what we should&n; * report.&n; */
-r_void
 r_inline
+r_void
 DECL|function|do_timer_gettime
 id|do_timer_gettime
 c_func
