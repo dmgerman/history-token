@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
