@@ -1485,6 +1485,7 @@ id|mm
 )paren
 (brace
 r_int
+r_int
 id|len
 op_assign
 id|mm-&gt;env_end
@@ -1550,6 +1551,7 @@ id|res
 op_assign
 l_int|0
 suffix:semicolon
+r_int
 r_int
 id|len
 suffix:semicolon
