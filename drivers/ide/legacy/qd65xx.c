@@ -1268,8 +1268,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * qd_unsetup:&n; *&n; * called to unsetup an ata channel : back to default values, unlinks tuning&n; */
 DECL|function|qd_unsetup
+r_static
 r_void
-id|__init
+id|__exit
 id|qd_unsetup
 (paren
 r_int
@@ -1887,6 +1888,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|function|qd65xx_mod_init
+r_static
 r_int
 id|__init
 id|qd65xx_mod_init
@@ -1947,8 +1949,9 @@ id|qd65xx_mod_init
 )paren
 suffix:semicolon
 DECL|function|qd65xx_mod_exit
+r_static
 r_void
-id|__init
+id|__exit
 id|qd65xx_mod_exit
 c_func
 (paren

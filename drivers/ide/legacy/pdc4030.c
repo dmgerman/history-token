@@ -1153,8 +1153,9 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|release_pdc4030
+r_static
 r_void
-id|__init
+id|__exit
 id|release_pdc4030
 c_func
 (paren
@@ -1345,6 +1346,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|function|pdc4030_mod_init
+r_static
 r_int
 id|__init
 id|pdc4030_mod_init
@@ -1389,8 +1391,9 @@ id|pdc4030_mod_init
 )paren
 suffix:semicolon
 DECL|function|pdc4030_mod_exit
+r_static
 r_void
-id|__init
+id|__exit
 id|pdc4030_mod_exit
 c_func
 (paren

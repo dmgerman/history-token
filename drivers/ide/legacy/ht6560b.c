@@ -1007,6 +1007,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|ht6560b_mod_init
+r_static
 r_int
 id|__init
 id|ht6560b_mod_init
@@ -1357,8 +1358,9 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|function|ht6560b_mod_exit
+r_static
 r_void
-id|__init
+id|__exit
 id|ht6560b_mod_exit
 c_func
 (paren
