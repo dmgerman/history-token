@@ -2372,6 +2372,7 @@ op_star
 id|budget
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
 r_static
 r_void
 id|rtl8139_poll_controller
@@ -2383,6 +2384,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 id|irqreturn_t
 id|rtl8139_interrupt
