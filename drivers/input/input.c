@@ -3497,7 +3497,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PROC_FS
 id|remove_proc_entry
 c_func
 (paren
@@ -3522,7 +3521,6 @@ comma
 id|proc_bus
 )paren
 suffix:semicolon
-macro_line|#endif
 id|devfs_remove
 c_func
 (paren
