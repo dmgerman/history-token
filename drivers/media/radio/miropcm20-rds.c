@@ -44,12 +44,13 @@ c_cond
 (paren
 id|rds_users
 )paren
-(brace
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
+id|rds_users
+op_increment
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -68,6 +69,9 @@ op_eq
 l_int|0
 )paren
 (brace
+id|rds_users
+op_decrement
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -80,11 +84,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|rds_users
-op_increment
-suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -114,8 +113,6 @@ id|text_buffer
 suffix:semicolon
 id|rds_users
 op_decrement
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -343,6 +340,10 @@ id|file_operations
 id|rds_f_ops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|read
 suffix:colon
 id|rds_f_read

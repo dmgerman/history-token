@@ -312,8 +312,6 @@ comma
 id|retval
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -368,8 +366,6 @@ l_string|&quot;mwavedd::mwave_close, exit retval %x&bslash;n&quot;
 comma
 id|retval
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|retval

@@ -103,8 +103,6 @@ id|data
 r_int
 id|len
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|len
 op_assign
 id|sprintf
@@ -116,8 +114,6 @@ l_string|&quot;jiffies = %ld&bslash;n&quot;
 comma
 id|jiffies
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|len
@@ -168,8 +164,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
+multiline_comment|/* DON&squot;T DO THAT - buffer overruns are bad */
 id|len
 op_assign
 id|sprintf
@@ -183,8 +178,6 @@ id|fb_data-&gt;name
 comma
 id|fb_data-&gt;value
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|len
@@ -230,8 +223,6 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -264,8 +255,6 @@ id|len
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EFAULT
@@ -277,8 +266,6 @@ id|len
 )braket
 op_assign
 l_char|&squot;&bslash;0&squot;
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|len

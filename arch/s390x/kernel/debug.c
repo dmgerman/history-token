@@ -567,6 +567,11 @@ id|debug_file_ops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|read
 op_assign
 id|debug_output
@@ -2012,8 +2017,6 @@ l_string|&quot;debug_open&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -2232,15 +2235,6 @@ op_amp
 id|debug_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_ne
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -2300,8 +2294,6 @@ c_func
 (paren
 id|file-&gt;private_data
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
