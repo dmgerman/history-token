@@ -315,6 +315,9 @@ DECL|macro|TRACE_ENTER
 mdefine_line|#define TRACE_ENTER(devname) DEBUG(2, &quot;%s: -&gt; %s()&bslash;n&quot;, devname, __FUNCTION__);
 DECL|macro|TRACE_EXIT
 mdefine_line|#define TRACE_EXIT(devname)  DEBUG(2, &quot;%s: &lt;- %s()&bslash;n&quot;, devname, __FUNCTION__);
+multiline_comment|/********************************************************************/
+multiline_comment|/* Exported prototypes                                              */
+multiline_comment|/********************************************************************/
 r_extern
 r_struct
 id|net_device

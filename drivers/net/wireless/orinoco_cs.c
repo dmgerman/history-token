@@ -532,9 +532,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* orinoco_cs_attach */
 multiline_comment|/*&n; * This deletes a driver &quot;instance&quot;.  The device is de-registered with&n; * Card Services.  If it has been released, all local data structures&n; * are freed.  Otherwise, the structures will be freed when the device&n; * is released.&n; */
+DECL|function|orinoco_cs_detach
 r_static
 r_void
-DECL|function|orinoco_cs_detach
 id|orinoco_cs_detach
 c_func
 (paren
@@ -680,7 +680,7 @@ suffix:semicolon
 multiline_comment|/* orinoco_cs_detach */
 multiline_comment|/*&n; * orinoco_cs_config() is scheduled to run after a CARD_INSERTION&n; * event is received, to configure the PCMCIA socket, and to make the&n; * device available to the system.&n; */
 DECL|macro|CS_CHECK
-mdefine_line|#define CS_CHECK(fn, ret) &bslash;&n;do { last_fn = (fn); if ((last_ret = (ret)) != 0) goto cs_failed; } while (0)
+mdefine_line|#define CS_CHECK(fn, ret) do { &bslash;&n;&t;&t;last_fn = (fn); if ((last_ret = (ret)) != 0) goto cs_failed; &bslash;&n;&t;} while (0)
 r_static
 r_void
 DECL|function|orinoco_cs_config
@@ -1349,8 +1349,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;GetNextTuple().  No matching CIS configuration, &quot;
-l_string|&quot;maybe you need the ignore_cis_vcc=1 parameter.&bslash;n&quot;
+l_string|&quot;GetNextTuple().  No matching &quot;
+l_string|&quot;CIS configuration, maybe you need the &quot;
+l_string|&quot;ignore_cis_vcc=1 parameter.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto

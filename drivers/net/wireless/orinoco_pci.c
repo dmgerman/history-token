@@ -396,7 +396,7 @@ id|pci_iorange
 r_goto
 id|fail
 suffix:semicolon
-multiline_comment|/* Usual setup of structures */
+multiline_comment|/* Allocate network device */
 id|dev
 op_assign
 id|alloc_orinocodev
@@ -618,7 +618,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* succeeded */
 id|fail
 suffix:colon
 r_if
@@ -1045,6 +1044,7 @@ id|orinoco_pci_pci_id_table
 )braket
 op_assign
 (brace
+multiline_comment|/* Intersil Prism 3 */
 (brace
 l_int|0x1260
 comma
@@ -1056,6 +1056,7 @@ id|PCI_ANY_ID
 comma
 )brace
 comma
+multiline_comment|/* Intersil Prism 2.5 */
 (brace
 l_int|0x1260
 comma

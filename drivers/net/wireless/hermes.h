@@ -141,7 +141,7 @@ mdefine_line|#define&t;&t;HERMES_EV_TX&t;&t;&t;(0x0002)
 DECL|macro|HERMES_EV_RX
 mdefine_line|#define&t;&t;HERMES_EV_RX&t;&t;&t;(0x0001)
 multiline_comment|/*&n; * Command codes&n; */
-multiline_comment|/*--- Controller Commands --------------------------*/
+multiline_comment|/*--- Controller Commands ----------------------------*/
 DECL|macro|HERMES_CMD_INIT
 mdefine_line|#define&t;&t;HERMES_CMD_INIT&t;&t;&t;(0x0000)
 DECL|macro|HERMES_CMD_ENABLE
@@ -150,19 +150,19 @@ DECL|macro|HERMES_CMD_DISABLE
 mdefine_line|#define&t;&t;HERMES_CMD_DISABLE&t;&t;(0x0002)
 DECL|macro|HERMES_CMD_DIAG
 mdefine_line|#define&t;&t;HERMES_CMD_DIAG&t;&t;&t;(0x0003)
-multiline_comment|/*--- Buffer Mgmt Commands --------------------------*/
+multiline_comment|/*--- Buffer Mgmt Commands ---------------------------*/
 DECL|macro|HERMES_CMD_ALLOC
 mdefine_line|#define&t;&t;HERMES_CMD_ALLOC&t;&t;(0x000A)
 DECL|macro|HERMES_CMD_TX
 mdefine_line|#define&t;&t;HERMES_CMD_TX&t;&t;&t;(0x000B)
 DECL|macro|HERMES_CMD_CLRPRST
 mdefine_line|#define&t;&t;HERMES_CMD_CLRPRST&t;&t;(0x0012)
-multiline_comment|/*--- Regulate Commands --------------------------*/
+multiline_comment|/*--- Regulate Commands ------------------------------*/
 DECL|macro|HERMES_CMD_NOTIFY
 mdefine_line|#define&t;&t;HERMES_CMD_NOTIFY&t;&t;(0x0010)
 DECL|macro|HERMES_CMD_INQUIRE
 mdefine_line|#define&t;&t;HERMES_CMD_INQUIRE&t;&t;(0x0011)
-multiline_comment|/*--- Configure Commands --------------------------*/
+multiline_comment|/*--- Configure Commands -----------------------------*/
 DECL|macro|HERMES_CMD_ACCESS
 mdefine_line|#define&t;&t;HERMES_CMD_ACCESS&t;&t;(0x0021)
 DECL|macro|HERMES_CMD_DOWNLD

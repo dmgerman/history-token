@@ -32,7 +32,7 @@ op_assign
 l_string|&quot;orinoco_tmd&quot;
 suffix:semicolon
 DECL|macro|COR_VALUE
-mdefine_line|#define COR_VALUE     (COR_LEVEL_REQ | COR_FUNC_ENA | COR_FUNC_ENA) /* Enable PC card with level triggered irqs and irq requests */
+mdefine_line|#define COR_VALUE&t;(COR_LEVEL_REQ | COR_FUNC_ENA | COR_FUNC_ENA) /* Enable PC card with interrupt in level trigger */
 DECL|function|orinoco_tmd_init_one
 r_static
 r_int
@@ -230,6 +230,7 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
+multiline_comment|/* Allocate network device */
 id|dev
 op_assign
 id|alloc_orinocodev
@@ -287,7 +288,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Detected Orinoco/Prism2 TMD device at %s irq:%d, io addr:0x%lx&bslash;n&quot;
+l_string|&quot;Detected Orinoco/Prism2 TMD device &quot;
+l_string|&quot;at %s irq:%d, io addr:0x%lx&bslash;n&quot;
 comma
 id|pci_name
 c_func
@@ -386,7 +388,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* succeeded */
 id|fail
 suffix:colon
 id|printk
