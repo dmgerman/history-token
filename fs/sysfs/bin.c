@@ -964,6 +964,9 @@ comma
 id|attr-&gt;attr.name
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|sysfs_create_bin_file
 id|EXPORT_SYMBOL
