@@ -859,19 +859,8 @@ macro_line|#elif HZ &gt;= 768
 DECL|macro|PSCHED_JSCALE
 mdefine_line|#define PSCHED_JSCALE 10
 macro_line|#endif
-macro_line|#if BITS_PER_LONG &lt;= 32
-DECL|macro|PSCHED_WATCHER
-mdefine_line|#define PSCHED_WATCHER unsigned long
-r_extern
-id|PSCHED_WATCHER
-id|psched_time_mark
-suffix:semicolon
 DECL|macro|PSCHED_GET_TIME
-mdefine_line|#define PSCHED_GET_TIME(stamp) ((stamp) = psched_time_base + (((unsigned long)(jiffies-psched_time_mark))&lt;&lt;PSCHED_JSCALE))
-macro_line|#else
-DECL|macro|PSCHED_GET_TIME
-mdefine_line|#define PSCHED_GET_TIME(stamp) ((stamp) = (jiffies&lt;&lt;PSCHED_JSCALE))
-macro_line|#endif
+mdefine_line|#define PSCHED_GET_TIME(stamp) ((stamp) = (get_jiffies_64()&lt;&lt;PSCHED_JSCALE))
 DECL|macro|PSCHED_US2JIFFIE
 mdefine_line|#define PSCHED_US2JIFFIE(delay) (((delay)+(1&lt;&lt;PSCHED_JSCALE)-1)&gt;&gt;PSCHED_JSCALE)
 DECL|macro|PSCHED_JIFFIE2US
