@@ -424,15 +424,4 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_void
-DECL|function|serial_close
-id|serial_close
-c_func
-(paren
-r_int
-r_int
-id|com_port
-)paren
-(brace
-)brace
 eof
