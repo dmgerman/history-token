@@ -1228,6 +1228,11 @@ id|serio-&gt;port_data
 op_assign
 id|ps2port
 suffix:semicolon
+id|serio-&gt;dev.parent
+op_assign
+op_amp
+id|dev-&gt;dev
+suffix:semicolon
 id|list_add_tail
 c_func
 (paren

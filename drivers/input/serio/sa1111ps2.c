@@ -1085,6 +1085,11 @@ id|serio-&gt;port_data
 op_assign
 id|ps2if
 suffix:semicolon
+id|serio-&gt;dev.parent
+op_assign
+op_amp
+id|dev-&gt;dev
+suffix:semicolon
 id|ps2if-&gt;io
 op_assign
 id|serio

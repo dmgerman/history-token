@@ -593,6 +593,11 @@ id|io-&gt;port_data
 op_assign
 id|kmi
 suffix:semicolon
+id|io-&gt;dev.parent
+op_assign
+op_amp
+id|dev-&gt;dev
+suffix:semicolon
 id|kmi-&gt;io
 op_assign
 id|io
