@@ -1917,6 +1917,8 @@ id|shrinker
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * On a two-level or three-level page table, this ends up being trivial. Thus&n; * the inlining and the symmetry break with pte_alloc_map() that does all&n; * of this out-of-line.&n; */
+multiline_comment|/*&n; * The following ifdef needed to get the 4level-fixup.h header to work.&n; * Remove it when 4level-fixup.h has been removed.&n; */
+macro_line|#ifndef __ARCH_HAS_4LEVEL_HACK 
 DECL|function|pud_alloc
 r_static
 r_inline
@@ -2023,6 +2025,7 @@ id|address
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_extern
 r_void
 id|free_area_init

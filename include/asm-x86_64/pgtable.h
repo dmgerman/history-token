@@ -1,6 +1,7 @@
 macro_line|#ifndef _X86_64_PGTABLE_H
 DECL|macro|_X86_64_PGTABLE_H
 mdefine_line|#define _X86_64_PGTABLE_H
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the x86-64 page table tree.&n; * &n; * x86-64 has a 4 level table setup. Generic linux MM only supports&n; * three levels. The fourth level is currently a single static page that&n; * is shared by everybody and just contains a pointer to the current&n; * three level page setup on the beginning and some kernel mappings at &n; * the end. For more details see Documentation/x86_64/mm.txt&n; */
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;

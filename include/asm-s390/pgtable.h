@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  include/asm-s390/pgtable.h&n; *&n; *  S390 version&n;
 macro_line|#ifndef _ASM_S390_PGTABLE_H
 DECL|macro|_ASM_S390_PGTABLE_H
 mdefine_line|#define _ASM_S390_PGTABLE_H
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 multiline_comment|/*&n; * The Linux memory management assumes a three-level page table setup. For&n; * s390 31 bit we &quot;fold&quot; the mid level into the top-level page table, so&n; * that we physically have the same two-level page table as the s390 mmu&n; * expects in 31 bit mode. For s390 64 bit we use three of the five levels&n; * the hardware provides (region first and region second tables are not&n; * used).&n; *&n; * The &quot;pgd_xxx()&quot; functions are trivial for a folded two-level&n; * setup: the pgd is never bad, and a pmd always exists (as it&squot;s folded&n; * into the pgd entry)&n; *&n; * This file contains the functions and defines necessary to modify and use&n; * the S390 page table tree.&n; */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/bug.h&gt;

@@ -1,6 +1,7 @@
 macro_line|#ifndef _ALPHA_PGTABLE_H
 DECL|macro|_ALPHA_PGTABLE_H
 mdefine_line|#define _ALPHA_PGTABLE_H
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the Alpha page table tree.&n; *&n; * This hopefully works with any standard Alpha page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;

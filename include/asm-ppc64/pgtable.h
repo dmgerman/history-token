@@ -1,6 +1,7 @@
 macro_line|#ifndef _PPC64_PGTABLE_H
 DECL|macro|_PPC64_PGTABLE_H
 mdefine_line|#define _PPC64_PGTABLE_H
+macro_line|#include &lt;asm-generic/4level-fixup.h&gt;
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the ppc64 hashed page table.&n; */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
