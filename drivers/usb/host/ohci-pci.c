@@ -136,11 +136,6 @@ comma
 l_string|&quot;WARNING: OPTi workarounds unavailable&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* OPTi sometimes acts wierd during init */
-id|ohci-&gt;flags
-op_assign
-id|OHCI_QUIRK_INITRESET
-suffix:semicolon
 )brace
 multiline_comment|/* Check for NSC87560. We have to look at the bridge (fn1) to&n;&t;&t; * identify the USB (fn2). This quirk might apply to more or&n;&t;&t; * even all NSC stuff.&n;&t;&t; */
 r_else
@@ -200,29 +195,6 @@ l_string|&quot;Using NSC SuperIO setup&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* SiS sometimes acts wierd during init */
-r_else
-r_if
-c_cond
-(paren
-id|pdev-&gt;vendor
-op_eq
-id|PCI_VENDOR_ID_SI
-)paren
-(brace
-id|ohci-&gt;flags
-op_assign
-id|OHCI_QUIRK_INITRESET
-suffix:semicolon
-id|ohci_info
-c_func
-(paren
-id|ohci
-comma
-l_string|&quot;SiS init quirk&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/* NOTE: there may have already been a first reset, to&n;&t; * keep bios/smm irqs from making trouble&n;&t; */

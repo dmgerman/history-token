@@ -1615,6 +1615,8 @@ op_amp
 id|ohci-&gt;lock
 )paren
 suffix:semicolon
+id|retry
+suffix:colon
 multiline_comment|/* HC Reset requires max 10 us delay */
 id|writel
 (paren
@@ -1678,7 +1680,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* now we&squot;re in the SUSPEND state ... must go OPERATIONAL&n;&t; * within 2msec else HC enters RESUME&n;&t; *&n;&t; * ... but some hardware won&squot;t init fmInterval &quot;by the book&quot;&n;&t; * (SiS, OPTi ...), so reset again instead.  SiS doesn&squot;t need&n;&t; * this if we write fmInterval after we&squot;re OPERATIONAL.&n;&t; */
+multiline_comment|/* now we&squot;re in the SUSPEND state ... must go OPERATIONAL&n;&t; * within 2msec else HC enters RESUME&n;&t; *&n;&t; * ... but some hardware won&squot;t init fmInterval &quot;by the book&quot;&n;&t; * (SiS, OPTi ...), so reset again instead.  SiS doesn&squot;t need&n;&t; * this if we write fmInterval after we&squot;re OPERATIONAL.&n;&t; * Unclear about ALi, ServerWorks, and others ... this could&n;&t; * easily be a longstanding bug in chip init on Linux.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1772,6 +1774,32 @@ id|ohci-&gt;regs-&gt;periodicstart
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|ohci-&gt;flags
+op_amp
+id|OHCI_QUIRK_INITRESET
+)paren
+)paren
+(brace
+id|ohci-&gt;flags
+op_or_assign
+id|OHCI_QUIRK_INITRESET
+suffix:semicolon
+id|ohci_dbg
+(paren
+id|ohci
+comma
+l_string|&quot;enabling initreset quirk&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|retry
+suffix:semicolon
+)brace
 id|spin_unlock_irq
 (paren
 op_amp
