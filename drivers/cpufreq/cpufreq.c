@@ -2163,9 +2163,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|cpufreq_driver-&gt;flags
 op_amp
 id|CPUFREQ_CONST_LOOPS
+)paren
 )paren
 (brace
 r_int
