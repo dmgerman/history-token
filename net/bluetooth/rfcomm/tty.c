@@ -2199,6 +2199,7 @@ suffix:semicolon
 id|dev-&gt;modem_status
 op_assign
 (paren
+(paren
 id|v24_sig
 op_amp
 id|RFCOMM_V24_RTC
@@ -2212,7 +2213,9 @@ id|TIOCM_DTR
 )paren
 suffix:colon
 l_int|0
+)paren
 op_or
+(paren
 (paren
 id|v24_sig
 op_amp
@@ -2227,7 +2230,9 @@ id|TIOCM_CTS
 )paren
 suffix:colon
 l_int|0
+)paren
 op_or
+(paren
 (paren
 id|v24_sig
 op_amp
@@ -2238,7 +2243,9 @@ c_cond
 id|TIOCM_RI
 suffix:colon
 l_int|0
+)paren
 op_or
+(paren
 (paren
 id|v24_sig
 op_amp
@@ -2249,6 +2256,7 @@ c_cond
 id|TIOCM_CD
 suffix:colon
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* ---- TTY functions ---- */
