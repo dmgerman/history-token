@@ -3727,7 +3727,7 @@ c_func
 id|adapter
 )paren
 suffix:semicolon
-id|isac_setup
+id|hisax_isac_setup
 c_func
 (paren
 op_amp
