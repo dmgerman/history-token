@@ -23,13 +23,13 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0
-comma
 l_int|3
 comma
 l_int|30
 op_star
 id|HZ
+comma
+l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Global system credential structure.&n; */
