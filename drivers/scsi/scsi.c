@@ -1297,7 +1297,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SDpnt-&gt;queue_depth
+id|SDpnt-&gt;current_queue_depth
 OG
 id|SDpnt-&gt;new_queue_depth
 )paren
@@ -1364,7 +1364,7 @@ op_star
 id|SCpnt
 )paren
 suffix:semicolon
-id|SDpnt-&gt;queue_depth
+id|SDpnt-&gt;current_queue_depth
 op_decrement
 suffix:semicolon
 )brace
@@ -1372,7 +1372,7 @@ r_else
 r_if
 c_cond
 (paren
-id|SDpnt-&gt;queue_depth
+id|SDpnt-&gt;current_queue_depth
 OL
 id|SDpnt-&gt;new_queue_depth
 )paren
@@ -1381,7 +1381,7 @@ id|alloc_cmd
 op_assign
 l_int|1
 suffix:semicolon
-id|SDpnt-&gt;queue_depth
+id|SDpnt-&gt;current_queue_depth
 op_increment
 suffix:semicolon
 )brace
@@ -1564,7 +1564,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|SDpnt-&gt;queue_depth
+id|SDpnt-&gt;current_queue_depth
 op_decrement
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -3898,7 +3898,7 @@ id|SCpnt
 )paren
 suffix:semicolon
 )brace
-id|SDpnt-&gt;queue_depth
+id|SDpnt-&gt;current_queue_depth
 op_assign
 l_int|0
 suffix:semicolon
@@ -3938,7 +3938,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SDpnt-&gt;queue_depth
+id|SDpnt-&gt;current_queue_depth
 op_ne
 l_int|0
 )paren
@@ -4123,7 +4123,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|SDpnt-&gt;queue_depth
+id|SDpnt-&gt;current_queue_depth
 op_increment
 suffix:semicolon
 id|SCpnt-&gt;next
@@ -4144,7 +4144,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function:&t;scsi_adjust_queue_depth()&n; *&n; * Purpose:&t;Allow low level drivers to tell us to change the queue depth&n; * &t;&t;on a specific SCSI device&n; *&n; * Arguments:&t;SDpnt&t;- SCSI Device in question&n; * &t;&t;tagged&t;- Do we use tagged queueing (non-0) or do we treat&n; * &t;&t;&t;  this device as an untagged device (0)&n; * &t;&t;tags&t;- Number of tags allowed if tagged queueing enabled,&n; * &t;&t;&t;  or number of commands the low level driver can&n; * &t;&t;&t;  queue up in non-tagged mode (as per cmd_per_lun).&n; *&n; * Returns:&t;Nothing&n; *&n; * Lock Status:&t;None held on entry&n; *&n; * Notes:&t;Low level drivers may call this at any time and we will do&n; * &t;&t;the right thing depending on whether or not the device is&n; * &t;&t;currently active and whether or not it even has the&n; * &t;&t;command blocks built yet.&n; *&n; * &t;&t;If cmdblocks != 0 then we are a live device.  We just set the&n; * &t;&t;new_queue_depth variable and when the scsi completion handler&n; * &t;&t;notices that queue_depth != new_queue_depth it will work to&n; *&t;&t;rectify the situation.  If new_queue_depth is less than current&n; *&t;&t;queue_depth, then it will free the completed command instead of&n; *&t;&t;putting it back on the free list and dec queue_depth.  Otherwise&n; *&t;&t;it will try to allocate a new command block for the device and&n; *&t;&t;put it on the free list along with the command that is being&n; *&t;&t;completed.  Obviously, if the device isn&squot;t doing anything then&n; *&t;&t;neither is this code, so it will bring the devices queue depth&n; *&t;&t;back into line when the device is actually being used.  This&n; *&t;&t;keeps us from needing to fire off a kernel thread or some such&n; *&t;&t;nonsense (this routine can be called from interrupt code, so&n; *&t;&t;handling allocations here would be tricky and risky, making&n; *&t;&t;a kernel thread a much safer way to go if we wanted to handle&n; *&t;&t;the work immediately instead of letting it get done a little&n; *&t;&t;at a time in the completion handler).&n; */
+multiline_comment|/*&n; * Function:&t;scsi_adjust_queue_depth()&n; *&n; * Purpose:&t;Allow low level drivers to tell us to change the queue depth&n; * &t;&t;on a specific SCSI device&n; *&n; * Arguments:&t;SDpnt&t;- SCSI Device in question&n; * &t;&t;tagged&t;- Do we use tagged queueing (non-0) or do we treat&n; * &t;&t;&t;  this device as an untagged device (0)&n; * &t;&t;tags&t;- Number of tags allowed if tagged queueing enabled,&n; * &t;&t;&t;  or number of commands the low level driver can&n; * &t;&t;&t;  queue up in non-tagged mode (as per cmd_per_lun).&n; *&n; * Returns:&t;Nothing&n; *&n; * Lock Status:&t;None held on entry&n; *&n; * Notes:&t;Low level drivers may call this at any time and we will do&n; * &t;&t;the right thing depending on whether or not the device is&n; * &t;&t;currently active and whether or not it even has the&n; * &t;&t;command blocks built yet.&n; *&n; * &t;&t;If cmdblocks != 0 then we are a live device.  We just set the&n; * &t;&t;new_queue_depth variable and when the scsi completion handler&n; * &t;&t;notices that current_queue_depth != new_queue_depth it will&n; * &t;&t;work to rectify the situation.  If new_queue_depth is less than&n; * &t;&t;current_queue_depth, then it will free the completed command&n; * &t;&t;instead of putting it back on the free list and dec&n; * &t;&t;current_queue_depth.  Otherwise&t;it will try to allocate a new&n; * &t;&t;command block for the device and put it on the free list along&n; * &t;&t;with the command that is being&n; *&t;&t;completed.  Obviously, if the device isn&squot;t doing anything then&n; *&t;&t;neither is this code, so it will bring the devices queue depth&n; *&t;&t;back into line when the device is actually being used.  This&n; *&t;&t;keeps us from needing to fire off a kernel thread or some such&n; *&t;&t;nonsense (this routine can be called from interrupt code, so&n; *&t;&t;handling allocations here would be tricky and risky, making&n; *&t;&t;a kernel thread a much safer way to go if we wanted to handle&n; *&t;&t;the work immediately instead of letting it get done a little&n; *&t;&t;at a time in the completion handler).&n; */
 DECL|function|scsi_adjust_queue_depth
 r_void
 id|scsi_adjust_queue_depth
@@ -4262,21 +4262,9 @@ id|SDpnt-&gt;simple_tags
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|SDpnt-&gt;host-&gt;cmd_per_lun
-)paren
-(brace
 id|SDpnt-&gt;new_queue_depth
 op_assign
-id|SDpnt-&gt;host-&gt;cmd_per_lun
-suffix:semicolon
-)brace
-r_else
-id|SDpnt-&gt;new_queue_depth
-op_assign
-l_int|1
+id|tags
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -4293,7 +4281,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SDpnt-&gt;queue_depth
+id|SDpnt-&gt;current_queue_depth
 op_eq
 l_int|0
 )paren
@@ -6367,7 +6355,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SDpnt-&gt;queue_depth
+id|SDpnt-&gt;current_queue_depth
 op_eq
 l_int|0
 )paren
@@ -7424,7 +7412,7 @@ c_cond
 (paren
 id|SDpnt-&gt;attached
 op_logical_and
-id|SDpnt-&gt;queue_depth
+id|SDpnt-&gt;current_queue_depth
 op_eq
 l_int|0
 )paren
@@ -7442,7 +7430,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SDpnt-&gt;queue_depth
+id|SDpnt-&gt;current_queue_depth
 op_eq
 l_int|0
 )paren
@@ -8989,7 +8977,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|SDpnt-&gt;queue_depth
+id|SDpnt-&gt;current_queue_depth
 op_eq
 l_int|0
 )paren

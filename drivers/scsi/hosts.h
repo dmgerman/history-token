@@ -315,22 +315,6 @@ r_int
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Used to set the queue depth for a specific device.&n;     *&n;     * Once the slave_attach() function is in full use, this will go away.&n;     */
-DECL|member|select_queue_depths
-r_void
-(paren
-op_star
-id|select_queue_depths
-)paren
-(paren
-r_struct
-id|Scsi_Host
-op_star
-comma
-id|Scsi_Device
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n;     * This determines if we will use a non-interrupt driven&n;     * or an interrupt driven scheme,  It is set to the maximum number&n;     * of simultaneous commands a given host adapter will accept.&n;     */
 DECL|member|can_queue
 r_int
@@ -436,6 +420,16 @@ DECL|member|host_queue
 id|Scsi_Device
 op_star
 id|host_queue
+suffix:semicolon
+DECL|member|all_scsi_hosts
+r_struct
+id|list_head
+id|all_scsi_hosts
+suffix:semicolon
+DECL|member|my_devices
+r_struct
+id|list_head
+id|my_devices
 suffix:semicolon
 DECL|member|default_lock
 id|spinlock_t
@@ -668,21 +662,6 @@ DECL|member|max_host_blocked
 r_int
 r_int
 id|max_host_blocked
-suffix:semicolon
-DECL|member|select_queue_depths
-r_void
-(paren
-op_star
-id|select_queue_depths
-)paren
-(paren
-r_struct
-id|Scsi_Host
-op_star
-comma
-id|Scsi_Device
-op_star
-)paren
 suffix:semicolon
 multiline_comment|/*&n;     * For SCSI hosts which are PCI devices, set pci_dev so that&n;     * we can do BIOS EDD 3.0 mappings&n;     */
 DECL|member|pci_dev

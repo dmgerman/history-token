@@ -4541,42 +4541,23 @@ DECL|macro|device_queue_depth
 mdefine_line|#define device_queue_depth(np, t, l)&t;(sym_driver_setup.max_tag)
 macro_line|#endif&t;/* SYM_LINUX_BOOT_COMMAND_LINE_SUPPORT */
 multiline_comment|/*&n; * Linux entry point for device queue sizing.&n; */
-r_static
-r_void
-DECL|function|sym53c8xx_select_queue_depths
-id|sym53c8xx_select_queue_depths
+r_int
+DECL|function|sym53c8xx_slave_attach
+id|sym53c8xx_slave_attach
 c_func
 (paren
+id|Scsi_Device
+op_star
+id|device
+)paren
+(brace
 r_struct
 id|Scsi_Host
 op_star
 id|host
-comma
-r_struct
-id|scsi_device
-op_star
-id|devlist
-)paren
-(brace
-r_struct
-id|scsi_device
-op_star
-id|device
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|device
 op_assign
-id|devlist
+id|device-&gt;host
 suffix:semicolon
-id|device
-suffix:semicolon
-id|device
-op_assign
-id|device-&gt;next
-)paren
-(brace
 id|hcb_p
 id|np
 suffix:semicolon
@@ -4588,15 +4569,8 @@ id|lp
 suffix:semicolon
 r_int
 id|reqtags
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|device-&gt;host
-op_ne
-id|host
-)paren
-r_continue
+comma
+id|depth_to_use
 suffix:semicolon
 id|np
 op_assign
@@ -4619,7 +4593,7 @@ id|np-&gt;target
 id|device-&gt;id
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *  Get user settings for transfer parameters.&n;&t;&t; */
+multiline_comment|/*&n;&t; *  Get user settings for transfer parameters.&n;&t; */
 id|tp-&gt;inq_byte7_valid
 op_assign
 (paren
@@ -4636,7 +4610,7 @@ comma
 id|tp
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *  Allocate the LCB if not yet.&n;&t;&t; *  If it fail, we may well be in the sh*t. :)&n;&t;&t; */
+multiline_comment|/*&n;&t; *  Allocate the LCB if not yet.&n;&t; *  If it fail, we may well be in the sh*t. :)&n;&t; */
 id|lp
 op_assign
 id|sym_alloc_lcb
@@ -4655,20 +4629,16 @@ c_cond
 op_logical_neg
 id|lp
 )paren
-(brace
-id|device-&gt;queue_depth
-op_assign
-l_int|1
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t; *  Get user flags.&n;&t;&t; */
+multiline_comment|/*&n;&t; *  Get user flags.&n;&t; */
 id|lp-&gt;curr_flags
 op_assign
 id|lp-&gt;user_flags
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *  Select queue depth from driver setup.&n;&t;&t; *  Donnot use more than configured by user.&n;&t;&t; *  Use at least 2.&n;&t;&t; *  Donnot use more than our maximum.&n;&t;&t; */
+multiline_comment|/*&n;&t; *  Select queue depth from driver setup.&n;&t; *  Donnot use more than configured by user.&n;&t; *  Use at least 2.&n;&t; *  Donnot use more than our maximum.&n;&t; */
 id|reqtags
 op_assign
 id|device_queue_depth
@@ -4714,29 +4684,50 @@ id|reqtags
 op_assign
 id|SYM_CONF_MAX_TAG
 suffix:semicolon
-id|device-&gt;queue_depth
+id|depth_to_use
 op_assign
+(paren
 id|reqtags
 ques
 c_cond
 id|reqtags
 suffix:colon
 l_int|2
+)paren
 suffix:semicolon
 macro_line|#else
-id|device-&gt;queue_depth
+id|depth_to_use
 op_assign
+(paren
 id|reqtags
 ques
 c_cond
 id|SYM_CONF_MAX_TAG
 suffix:colon
 l_int|2
+)paren
 suffix:semicolon
 macro_line|#endif
+id|scsi_adjust_queue_depth
+c_func
+(paren
+id|device
+comma
+(paren
+id|device-&gt;tagged_supported
+ques
+c_cond
+id|MSG_SIMPLE_TAG
+suffix:colon
+l_int|0
+)paren
+comma
+id|depth_to_use
+)paren
+suffix:semicolon
 id|lp-&gt;s.scdev_depth
 op_assign
-id|device-&gt;queue_depth
+id|depth_to_use
 suffix:semicolon
 id|sym_tune_dev_queuing
 c_func
@@ -4750,7 +4741,9 @@ comma
 id|reqtags
 )paren
 suffix:semicolon
-)brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Linux entry point for info() function&n; */
 DECL|function|sym53c8xx_info
@@ -7702,10 +7695,6 @@ op_assign
 l_int|16
 suffix:semicolon
 macro_line|#endif
-id|instance-&gt;select_queue_depths
-op_assign
-id|sym53c8xx_select_queue_depths
-suffix:semicolon
 id|instance-&gt;highmem_io
 op_assign
 l_int|1

@@ -224,7 +224,15 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+r_int
+id|pluto_slave_attach
+c_func
+(paren
+id|Scsi_Device
+op_star
+)paren
+suffix:semicolon
 DECL|macro|PLUTO
-mdefine_line|#define PLUTO {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;name:&t;&t;&t;&quot;Sparc Storage Array 100/200&quot;,&t;&bslash;&n;&t;detect:&t;&t;&t;pluto_detect,&t;&t;&t;&bslash;&n;&t;release:&t;&t;pluto_release,&t;&t;&t;&bslash;&n;&t;info:&t;&t;&t;pluto_info,&t;&t;&t;&bslash;&n;&t;queuecommand:&t;&t;fcp_scsi_queuecommand,&t;&t;&bslash;&n;&t;can_queue:&t;&t;PLUTO_CAN_QUEUE,&t;&t;&bslash;&n;&t;this_id:&t;&t;-1,&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize:&t;&t;1,&t;&t;&t;&t;&bslash;&n;&t;cmd_per_lun:&t;&t;1,&t;&t;&t;&t;&bslash;&n;&t;use_clustering:&t;&t;ENABLE_CLUSTERING,&t;&t;&bslash;&n;&t;abort:&t;&t;&t;fcp_old_abort,&t;&t;&t;&bslash;&n;&t;eh_abort_handler:&t;fcp_scsi_abort,&t;&t;&t;&bslash;&n;&t;eh_device_reset_handler:fcp_scsi_dev_reset,&t;&t;&bslash;&n;&t;eh_bus_reset_handler:&t;fcp_scsi_bus_reset,&t;&t;&bslash;&n;&t;eh_host_reset_handler:&t;fcp_scsi_host_reset,&t;&t;&bslash;&n;}&t;
+mdefine_line|#define PLUTO {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;name:&t;&t;&t;&quot;Sparc Storage Array 100/200&quot;,&t;&bslash;&n;&t;detect:&t;&t;&t;pluto_detect,&t;&t;&t;&bslash;&n;&t;release:&t;&t;pluto_release,&t;&t;&t;&bslash;&n;&t;info:&t;&t;&t;pluto_info,&t;&t;&t;&bslash;&n;&t;queuecommand:&t;&t;fcp_scsi_queuecommand,&t;&t;&bslash;&n;&t;slave_attach:&t;&t;pluto_slave_attach,&t;&t;&bslash;&n;&t;can_queue:&t;&t;PLUTO_CAN_QUEUE,&t;&t;&bslash;&n;&t;this_id:&t;&t;-1,&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize:&t;&t;1,&t;&t;&t;&t;&bslash;&n;&t;cmd_per_lun:&t;&t;1,&t;&t;&t;&t;&bslash;&n;&t;use_clustering:&t;&t;ENABLE_CLUSTERING,&t;&t;&bslash;&n;&t;abort:&t;&t;&t;fcp_old_abort,&t;&t;&t;&bslash;&n;&t;eh_abort_handler:&t;fcp_scsi_abort,&t;&t;&t;&bslash;&n;&t;eh_device_reset_handler:fcp_scsi_dev_reset,&t;&t;&bslash;&n;&t;eh_bus_reset_handler:&t;fcp_scsi_bus_reset,&t;&t;&bslash;&n;&t;eh_host_reset_handler:&t;fcp_scsi_host_reset,&t;&t;&bslash;&n;}&t;
 macro_line|#endif /* !(_PLUTO_H) */
 eof
