@@ -22,7 +22,7 @@ macro_line|#include &lt;video/mach64.h&gt;
 macro_line|#include &quot;atyfb.h&quot;
 macro_line|#ifdef __powerpc__
 macro_line|#include &lt;asm/prom.h&gt;
-macro_line|#include &lt;video/macmodes.h&gt;
+macro_line|#include &quot;../macmodes.h&quot;
 macro_line|#endif
 macro_line|#ifdef __sparc__
 macro_line|#include &lt;asm/pbm.h&gt;
@@ -34,9 +34,6 @@ macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_BOOTX_TEXT
 macro_line|#include &lt;asm/btext.h&gt;
-macro_line|#endif
-macro_line|#ifdef CONFIG_NVRAM
-macro_line|#include &lt;linux/nvram.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 macro_line|#include &lt;asm/backlight.h&gt;
@@ -667,24 +664,6 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PPC
-macro_line|#ifdef CONFIG_NVRAM_NOT_DEFINED
-DECL|variable|__initdata
-r_static
-r_int
-id|default_vmode
-id|__initdata
-op_assign
-id|VMODE_NVRAM
-suffix:semicolon
-DECL|variable|__initdata
-r_static
-r_int
-id|default_cmode
-id|__initdata
-op_assign
-id|CMODE_NVRAM
-suffix:semicolon
-macro_line|#else
 DECL|variable|__initdata
 r_static
 r_int
@@ -701,7 +680,6 @@ id|__initdata
 op_assign
 id|CMODE_CHOOSE
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_ATARI
 DECL|variable|__initdata
@@ -4900,6 +4878,18 @@ op_assign
 id|var.yres
 suffix:semicolon
 )brace
+id|fb_set_var
+c_func
+(paren
+op_amp
+id|var
+comma
+op_minus
+l_int|1
+comma
+id|info
+)paren
+suffix:semicolon
 )brace
 )brace
 )brace
@@ -6225,14 +6215,14 @@ id|enter
 )paren
 (brace
 r_struct
-id|fb_info
-op_star
-id|info
-suffix:semicolon
-r_struct
 id|atyfb_par
 op_star
 id|par
+suffix:semicolon
+r_struct
+id|fb_info
+op_star
+id|info
 suffix:semicolon
 r_int
 id|i
@@ -7103,13 +7093,6 @@ r_struct
 id|atyfb_par
 op_star
 id|par
-op_assign
-(paren
-r_struct
-id|atyfb_par
-op_star
-)paren
-id|info-&gt;fb.par
 suffix:semicolon
 r_int
 id|result
@@ -7134,21 +7117,21 @@ op_assign
 id|par-&gt;next
 )paren
 (brace
-r_struct
-id|fb_fix_screeninfo
-id|fix
-suffix:semicolon
 r_int
 id|nb
 suffix:semicolon
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;fb.par
+suffix:semicolon
 id|nb
 op_assign
-id|fb_display
-(braket
-id|fg_console
-)braket
-dot
-id|var.yres
+id|info-&gt;var.yres
 op_star
 id|info-&gt;fix.line_length
 suffix:semicolon
@@ -7221,7 +7204,7 @@ multiline_comment|/* Stop accel engine (stop bus mastering) */
 r_if
 c_cond
 (paren
-id|par-&gt;accel_flags
+id|info-&gt;accel_flags
 op_amp
 id|FB_ACCELF_TEXT
 )paren
@@ -9085,40 +9068,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef CONFIG_NVRAM
-r_if
-c_cond
-(paren
-id|default_vmode
-op_eq
-id|VMODE_NVRAM
-)paren
-(brace
-id|default_vmode
-op_assign
-id|nvram_read_byte
-c_func
-(paren
-id|NV_VMODE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|default_vmode
-op_le
-l_int|0
-op_logical_or
-id|default_vmode
-OG
-id|VMODE_MAX
-)paren
-id|default_vmode
-op_assign
-id|VMODE_CHOOSE
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9213,23 +9162,6 @@ id|default_vmode
 op_assign
 id|VMODE_640_480_60
 suffix:semicolon
-macro_line|#ifdef CONFIG_NVRAM
-r_if
-c_cond
-(paren
-id|default_cmode
-op_eq
-id|CMODE_NVRAM
-)paren
-id|default_cmode
-op_assign
-id|nvram_read_byte
-c_func
-(paren
-id|NV_CMODE
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

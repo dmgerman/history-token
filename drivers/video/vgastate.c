@@ -660,6 +660,8 @@ op_increment
 )paren
 id|saved-&gt;vga_text
 (braket
+l_int|8192
+op_plus
 id|i
 )braket
 op_assign
@@ -1193,9 +1195,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|4
-op_star
-l_int|8192
+id|state-&gt;memsize
 suffix:semicolon
 id|i
 op_increment
@@ -1368,15 +1368,13 @@ id|vga_w
 c_func
 (paren
 id|fbbase
-op_plus
-l_int|2
-op_star
-l_int|8192
 comma
 id|i
 comma
 id|saved-&gt;vga_text
 (braket
+l_int|8192
+op_plus
 id|i
 )braket
 )paren
