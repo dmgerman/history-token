@@ -168,7 +168,11 @@ id|timer.expires
 op_assign
 id|jiffies
 op_plus
+id|msecs_to_jiffies
+c_func
+(paren
 id|timeout
+)paren
 suffix:semicolon
 id|timer.data
 op_assign
@@ -376,11 +380,7 @@ c_func
 (paren
 id|urb
 comma
-id|msecs_to_jiffies
-c_func
-(paren
 id|timeout
-)paren
 comma
 op_amp
 id|length
@@ -623,11 +623,7 @@ c_func
 (paren
 id|urb
 comma
-id|msecs_to_jiffies
-c_func
-(paren
 id|timeout
-)paren
 comma
 id|actual_length
 )paren
