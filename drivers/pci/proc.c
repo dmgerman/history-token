@@ -1,9 +1,7 @@
 multiline_comment|/*&n; *&t;$Id: proc.c,v 1.13 1998/05/12 07:36:07 mj Exp $&n; *&n; *&t;Procfs interface for the PCI bus.&n; *&n; *&t;Copyright (c) 1997--1999 Martin Mares &lt;mj@ucw.cz&gt;&n; */
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2931,4 +2929,34 @@ c_func
 id|pci_proc_init
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG
+DECL|variable|pci_proc_attach_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_proc_attach_device
+)paren
+suffix:semicolon
+DECL|variable|pci_proc_detach_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_proc_detach_device
+)paren
+suffix:semicolon
+DECL|variable|pci_proc_attach_bus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_proc_attach_bus
+)paren
+suffix:semicolon
+DECL|variable|pci_proc_detach_bus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_proc_detach_bus
+)paren
+suffix:semicolon
+macro_line|#endif
 eof
