@@ -357,16 +357,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|req-&gt;wb_wait
-)paren
-)paren
 id|wake_up_all
 c_func
 (paren
