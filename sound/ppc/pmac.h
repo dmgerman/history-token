@@ -411,6 +411,12 @@ id|snd_kcontrol_t
 op_star
 id|speaker_sw_ctl
 suffix:semicolon
+DECL|member|drc_sw_ctl
+id|snd_kcontrol_t
+op_star
+id|drc_sw_ctl
+suffix:semicolon
+multiline_comment|/* only used for tumbler -ReneR */
 DECL|member|hp_detect_ctl
 id|snd_kcontrol_t
 op_star
