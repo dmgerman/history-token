@@ -7334,10 +7334,11 @@ suffix:semicolon
 id|SET_NETDEV_DEV
 c_func
 (paren
+op_amp
 id|dev-&gt;net_dev
 comma
 op_amp
-id|pcid-&gt;dev
+id|pci_dev-&gt;dev
 )paren
 suffix:semicolon
 id|dev-&gt;net_dev.priv
