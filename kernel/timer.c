@@ -3404,7 +3404,6 @@ r_return
 id|current-&gt;pid
 suffix:semicolon
 )brace
-macro_line|#ifndef FOLD_NANO_SLEEP_INTO_CLOCK_NANO_SLEEP
 DECL|function|nanosleep_restart
 r_static
 r_int
@@ -3716,8 +3715,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#endif 
-singleline_comment|// ! FOLD_NANO_SLEEP_INTO_CLOCK_NANO_SLEEP
 multiline_comment|/*&n; * sys_sysinfo - fill in sysinfo struct&n; */
 DECL|function|sys_sysinfo
 id|asmlinkage
