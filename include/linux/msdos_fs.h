@@ -1401,6 +1401,17 @@ op_star
 id|res
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|fat_sync_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
 r_int
 id|fat_fill_super
 c_func

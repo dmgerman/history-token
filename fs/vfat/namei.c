@@ -3271,6 +3271,13 @@ id|de
 )paren
 (brace
 r_struct
+id|super_block
+op_star
+id|sb
+op_assign
+id|dir-&gt;i_sb
+suffix:semicolon
+r_struct
 id|msdos_dir_slot
 op_star
 id|dir_slots
@@ -3495,6 +3502,20 @@ op_star
 id|bh
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_SYNCHRONOUS
+)paren
+id|sync_dirty_buffer
+c_func
+(paren
+op_star
+id|bh
+)paren
+suffix:semicolon
 )brace
 id|res
 op_assign
@@ -3577,6 +3598,20 @@ op_member_access_from_pointer
 id|date
 suffix:semicolon
 id|mark_buffer_dirty
+c_func
+(paren
+op_star
+id|bh
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_SYNCHRONOUS
+)paren
+id|sync_dirty_buffer
 c_func
 (paren
 op_star
@@ -4165,6 +4200,9 @@ id|res
 op_assign
 l_int|0
 suffix:semicolon
+id|inode-&gt;i_version
+op_increment
+suffix:semicolon
 id|inode-&gt;i_mtime
 op_assign
 id|inode-&gt;i_atime
@@ -4179,8 +4217,20 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|inode-&gt;i_version
-op_increment
+r_if
+c_cond
+(paren
+id|IS_SYNC
+c_func
+(paren
+id|inode
+)paren
+)paren
+id|fat_sync_inode
+c_func
+(paren
+id|inode
+)paren
 suffix:semicolon
 id|dir-&gt;i_version
 op_increment
@@ -4235,6 +4285,13 @@ op_star
 id|de
 )paren
 (brace
+r_struct
+id|super_block
+op_star
+id|sb
+op_assign
+id|dir-&gt;i_sb
+suffix:semicolon
 id|loff_t
 id|offset
 comma
@@ -4243,7 +4300,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* remove the shortname */
 id|dir-&gt;i_mtime
 op_assign
 id|dir-&gt;i_atime
@@ -4259,6 +4315,7 @@ c_func
 id|dir
 )paren
 suffix:semicolon
+multiline_comment|/* remove the shortname */
 id|de-&gt;name
 (braket
 l_int|0
@@ -4267,6 +4324,19 @@ op_assign
 id|DELETED_FLAG
 suffix:semicolon
 id|mark_buffer_dirty
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_SYNCHRONOUS
+)paren
+id|sync_dirty_buffer
 c_func
 (paren
 id|bh
@@ -4333,6 +4403,19 @@ op_assign
 id|ATTR_NONE
 suffix:semicolon
 id|mark_buffer_dirty
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_SYNCHRONOUS
+)paren
+id|sync_dirty_buffer
 c_func
 (paren
 id|bh
@@ -4466,7 +4549,7 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-multiline_comment|/* releases bh */
+multiline_comment|/* releases bh and syncs it if necessary */
 id|vfat_remove_entry
 c_func
 (paren
@@ -4594,7 +4677,7 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-multiline_comment|/* releases bh */
+multiline_comment|/* releases bh and syncs it if necessary */
 id|vfat_remove_entry
 c_func
 (paren
@@ -4837,7 +4920,7 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-multiline_comment|/* releases bh */
+multiline_comment|/* releases bh ands syncs if necessary */
 id|vfat_remove_entry
 c_func
 (paren
@@ -5260,6 +5343,19 @@ l_int|16
 )paren
 suffix:semicolon
 id|mark_buffer_dirty
+c_func
+(paren
+id|dotdot_bh
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|new_dir-&gt;i_sb-&gt;s_flags
+op_amp
+id|MS_SYNCHRONOUS
+)paren
+id|sync_dirty_buffer
 c_func
 (paren
 id|dotdot_bh

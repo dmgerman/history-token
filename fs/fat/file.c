@@ -82,6 +82,9 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+singleline_comment|//&t;&t;check the locking rules
+singleline_comment|//&t;&t;if (IS_SYNC(inode))
+singleline_comment|//&t;&t;&t;fat_sync_inode(inode);
 )brace
 r_return
 id|retval
@@ -1314,6 +1317,21 @@ op_assign
 id|CURRENT_TIME_SEC
 suffix:semicolon
 id|mark_inode_dirty
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_SYNC
+c_func
+(paren
+id|inode
+)paren
+)paren
+id|fat_sync_inode
 c_func
 (paren
 id|inode
