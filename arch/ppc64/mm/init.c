@@ -184,7 +184,8 @@ id|__max_memory
 suffix:semicolon
 multiline_comment|/* This is declared as we are using the more or less generic &n; * include/asm-ppc64/tlb.h file -- tgall&n; */
 DECL|variable|mmu_gathers
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 id|mmu_gathers
 (braket
 id|NR_CPUS

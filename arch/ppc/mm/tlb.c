@@ -69,7 +69,8 @@ r_void
 id|tlb_flush
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 )paren

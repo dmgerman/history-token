@@ -16,11 +16,10 @@ mdefine_line|#define FREE_PTE_NR&t;1
 DECL|macro|tlb_fast_mode
 mdefine_line|#define tlb_fast_mode(tlb) 1
 macro_line|#endif
-multiline_comment|/* mmu_gather_t is an opaque type used by the mm code for passing around any&n; * data needed by arch specific code for tlb_remove_page.  This structure can&n; * be per-CPU or per-MM as the page table lock is held for the duration of TLB&n; * shootdown.&n; */
-DECL|struct|free_pte_ctx
-r_typedef
+multiline_comment|/* struct mmu_gather is an opaque type used by the mm code for passing around&n; * any data needed by arch specific code for tlb_remove_page.  This structure&n; * can be per-CPU or per-MM as the page table lock is held for the duration of&n; * TLB shootdown.&n; */
+DECL|struct|mmu_gather
 r_struct
-id|free_pte_ctx
+id|mmu_gather
 (brace
 DECL|member|mm
 r_struct
@@ -60,24 +59,24 @@ id|pages
 id|FREE_PTE_NR
 )braket
 suffix:semicolon
-DECL|typedef|mmu_gather_t
 )brace
-id|mmu_gather_t
 suffix:semicolon
 multiline_comment|/* Users of the generic TLB shootdown code must declare this storage space. */
 r_extern
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 id|mmu_gathers
 (braket
 id|NR_CPUS
 )braket
 suffix:semicolon
-multiline_comment|/* tlb_gather_mmu&n; *&t;Return a pointer to an initialized mmu_gather_t.&n; */
-DECL|function|tlb_gather_mmu
+multiline_comment|/* tlb_gather_mmu&n; *&t;Return a pointer to an initialized struct mmu_gather.&n; */
 r_static
 r_inline
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
+DECL|function|tlb_gather_mmu
 id|tlb_gather_mmu
 c_func
 (paren
@@ -91,7 +90,8 @@ r_int
 id|full_mm_flush
 )paren
 (brace
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 op_assign
@@ -136,14 +136,15 @@ r_return
 id|tlb
 suffix:semicolon
 )brace
-DECL|function|tlb_flush_mmu
 r_static
 r_inline
 r_void
+DECL|function|tlb_flush_mmu
 id|tlb_flush_mmu
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma
@@ -200,14 +201,15 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* tlb_finish_mmu&n; *&t;Called at the end of the shootdown operation to free up any resources&n; *&t;that were required.  The page table lock is still held at this point.&n; */
-DECL|function|tlb_finish_mmu
 r_static
 r_inline
 r_void
+DECL|function|tlb_finish_mmu
 id|tlb_finish_mmu
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma
@@ -271,7 +273,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* void tlb_remove_page(mmu_gather_t *tlb, pte_t *ptep, unsigned long addr)&n; *&t;Must perform the equivalent to __free_pte(pte_get_and_clear(ptep)), while&n; *&t;handling the additional races in SMP caused by other CPUs caching valid&n; *&t;mappings in their TLBs.&n; */
+multiline_comment|/* void tlb_remove_page(struct mmu_gather *tlb, pte_t *ptep, unsigned long addr)&n; *&t;Must perform the equivalent to __free_pte(pte_get_and_clear(ptep)), while&n; *&t;handling the additional races in SMP caused by other CPUs caching valid&n; *&t;mappings in their TLBs.&n; */
 DECL|function|tlb_remove_page
 r_static
 r_inline
@@ -279,7 +281,8 @@ r_void
 id|tlb_remove_page
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma

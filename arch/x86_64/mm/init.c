@@ -38,7 +38,8 @@ comma
 id|end_pfn
 suffix:semicolon
 DECL|variable|mmu_gathers
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 id|mmu_gathers
 (braket
 id|NR_CPUS

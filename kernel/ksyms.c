@@ -2589,6 +2589,22 @@ id|__might_sleep
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PREEMPT)
+DECL|variable|__preempt_spin_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__preempt_spin_lock
+)paren
+suffix:semicolon
+DECL|variable|__preempt_write_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__preempt_write_lock
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#if !defined(__ia64__)
 DECL|variable|loops_per_jiffy
 id|EXPORT_SYMBOL

@@ -510,11 +510,11 @@ op_amp
 id|inode-&gt;i_data.page_lock
 )paren
 suffix:semicolon
-id|spin_lock_init
+id|init_MUTEX
 c_func
 (paren
 op_amp
-id|inode-&gt;i_data.i_shared_lock
+id|inode-&gt;i_data.i_shared_sem
 )paren
 suffix:semicolon
 id|INIT_LIST_HEAD

@@ -18,8 +18,9 @@ macro_line|# define FREE_PTE_NR&t;&t;0
 DECL|macro|tlb_fast_mode
 macro_line|# define tlb_fast_mode(tlb)&t;(1)
 macro_line|#endif
-r_typedef
+DECL|struct|mmu_gather
 r_struct
+id|mmu_gather
 (brace
 DECL|member|mm
 r_struct
@@ -70,13 +71,12 @@ id|pages
 id|FREE_PTE_NR
 )braket
 suffix:semicolon
-DECL|typedef|mmu_gather_t
 )brace
-id|mmu_gather_t
 suffix:semicolon
 multiline_comment|/* Users of the generic TLB shootdown code must declare this storage space. */
 r_extern
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 id|mmu_gathers
 (braket
 id|NR_CPUS
@@ -88,8 +88,10 @@ r_inline
 r_void
 DECL|function|ia64_tlb_flush_mmu
 id|ia64_tlb_flush_mmu
+c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma
@@ -271,10 +273,11 @@ id|i
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Return a pointer to an initialized mmu_gather_t.&n; */
+multiline_comment|/*&n; * Return a pointer to an initialized struct mmu_gather.&n; */
 r_static
 r_inline
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 DECL|function|tlb_gather_mmu
 id|tlb_gather_mmu
@@ -289,7 +292,8 @@ r_int
 id|full_mm_flush
 )paren
 (brace
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 op_assign
@@ -348,7 +352,8 @@ r_void
 DECL|function|tlb_finish_mmu
 id|tlb_finish_mmu
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma
@@ -422,7 +427,8 @@ r_void
 DECL|function|tlb_remove_page
 id|tlb_remove_page
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma
@@ -487,8 +493,10 @@ r_inline
 r_void
 DECL|function|__tlb_remove_tlb_entry
 id|__tlb_remove_tlb_entry
+c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma

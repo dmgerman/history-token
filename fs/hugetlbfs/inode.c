@@ -1329,11 +1329,11 @@ id|inode-&gt;i_size
 op_assign
 id|offset
 suffix:semicolon
-id|spin_lock
+id|down
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_lock
+id|mapping-&gt;i_shared_sem
 )paren
 suffix:semicolon
 r_if
@@ -1398,11 +1398,11 @@ id|pgoff
 suffix:semicolon
 id|out_unlock
 suffix:colon
-id|spin_unlock
+id|up
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_lock
+id|mapping-&gt;i_shared_sem
 )paren
 suffix:semicolon
 id|truncate_hugepages

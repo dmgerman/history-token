@@ -89,7 +89,8 @@ id|physmem_size
 suffix:semicolon
 multiline_comment|/* Not changed by UML */
 DECL|variable|mmu_gathers
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 id|mmu_gathers
 (braket
 id|NR_CPUS
