@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
+macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|macro|DEB
 mdefine_line|#define DEB(x)
@@ -556,7 +557,7 @@ id|CAP_F_TIMER
 multiline_comment|/* MD_1845_SSCAPE */
 )brace
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 DECL|variable|isapnp
 r_static
 r_int
@@ -13774,7 +13775,7 @@ l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* More special magic for SoundPro chips */
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 id|MODULE_PARM
 c_func
 (paren
@@ -13825,7 +13826,7 @@ l_string|&quot;When set to 1, will reverse ISAPnP search order&quot;
 suffix:semicolon
 DECL|variable|ad1848_dev
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 id|ad1848_dev
 op_assign
@@ -14250,7 +14251,7 @@ suffix:semicolon
 DECL|function|activate_dev
 r_static
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 id|activate_dev
 c_func
@@ -14264,7 +14265,7 @@ op_star
 id|resname
 comma
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 id|dev
 )paren
@@ -14289,9 +14290,7 @@ c_cond
 (paren
 id|err
 op_assign
-id|dev
-op_member_access_from_pointer
-id|activate
+id|pnp_activate_dev
 c_func
 (paren
 id|dev
@@ -14314,9 +14313,7 @@ comma
 id|err
 )paren
 suffix:semicolon
-id|dev
-op_member_access_from_pointer
-id|deactivate
+id|pnp_disable_dev
 c_func
 (paren
 id|dev
@@ -14326,6 +14323,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|audio_activated
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 id|dev
 suffix:semicolon
@@ -14333,13 +14334,13 @@ suffix:semicolon
 DECL|function|ad1848_init_generic
 r_static
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 id|ad1848_init_generic
 c_func
 (paren
 r_struct
-id|pci_bus
+id|pnp_card
 op_star
 id|bus
 comma
@@ -14359,7 +14360,7 @@ c_cond
 (paren
 id|ad1848_dev
 op_assign
-id|isapnp_find_dev
+id|pnp_find_dev
 c_func
 (paren
 id|bus
@@ -14383,56 +14384,6 @@ l_int|NULL
 )paren
 )paren
 (brace
-r_int
-id|ret
-suffix:semicolon
-id|ret
-op_assign
-id|ad1848_dev
-op_member_access_from_pointer
-id|prepare
-c_func
-(paren
-id|ad1848_dev
-)paren
-suffix:semicolon
-multiline_comment|/* If device is active, assume configured with /proc/isapnp&n;&t;&t; * and use anyway. Some other way to check this? */
-r_if
-c_cond
-(paren
-id|ret
-op_logical_and
-id|ret
-op_ne
-op_minus
-id|EBUSY
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ad1848: ISAPnP found device that could not be autoconfigured.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ret
-op_eq
-op_minus
-id|EBUSY
-)paren
-(brace
-id|audio_activated
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -14456,6 +14407,13 @@ id|ad1848_dev
 )paren
 )paren
 (brace
+id|get_device
+c_func
+(paren
+op_amp
+id|ad1848_dev-&gt;dev
+)paren
+suffix:semicolon
 id|hw_config-&gt;io_base
 op_assign
 id|ad1848_dev-&gt;resource
@@ -14569,7 +14527,7 @@ op_star
 id|hw_config
 comma
 r_struct
-id|pci_bus
+id|pnp_card
 op_star
 id|bus
 comma
@@ -14766,7 +14724,7 @@ l_int|0
 (brace
 r_static
 r_struct
-id|pci_bus
+id|pnp_card
 op_star
 id|bus
 op_assign
@@ -14778,7 +14736,7 @@ c_loop
 (paren
 id|bus
 op_assign
-id|isapnp_find_card
+id|pnp_find_card
 c_func
 (paren
 id|ad1848_isapnp_list
@@ -14858,7 +14816,7 @@ id|KERN_INFO
 l_string|&quot;ad1848/cs4248 codec driver Copyright (C) by Hannu Savolainen 1993-1996&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 r_if
 c_cond
 (paren
@@ -15012,24 +14970,31 @@ id|cfg
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __ISAPNP__
-r_if
-c_cond
-(paren
-id|audio_activated
-)paren
+macro_line|#ifdef CONFIG_PNP
 r_if
 c_cond
 (paren
 id|ad1848_dev
 )paren
 (brace
-id|ad1848_dev
-op_member_access_from_pointer
-id|deactivate
+r_if
+c_cond
+(paren
+id|audio_activated
+)paren
+(brace
+id|pnp_disable_dev
 c_func
 (paren
 id|ad1848_dev
+)paren
+suffix:semicolon
+)brace
+id|put_device
+c_func
+(paren
+op_amp
+id|ad1848_dev-&gt;dev
 )paren
 suffix:semicolon
 )brace

@@ -1,8 +1,8 @@
-multiline_comment|/*&n; * sound/opl3sa2.c&n; *&n; * A low level driver for Yamaha OPL3-SA2 and SA3 cards.&n; * NOTE: All traces of the name OPL3-SAx have now (December 2000) been&n; *       removed from the driver code, as an email exchange with Yamaha&n; *       provided the information that the YMF-719 is indeed just a&n; *       re-badged 715.&n; *&n; * Copyright 1998-2001 Scott Murray &lt;scott@spiteful.org&gt;&n; *&n; * Originally based on the CS4232 driver (in cs4232.c) by Hannu Savolainen&n; * and others.  Now incorporates code/ideas from pss.c, also by Hannu&n; * Savolainen.  Both of those files are distributed with the following&n; * license:&n; *&n; * &quot;Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; *  OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; *  Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; *  for more info.&quot;&n; *&n; * As such, in accordance with the above license, this file, opl3sa2.c, is&n; * distributed under the GNU GENERAL PUBLIC LICENSE (GPL) Version 2 (June 1991).&n; * See the &quot;COPYING&quot; file distributed with this software for more information.&n; *&n; * Change History&n; * --------------&n; * Scott Murray            Original driver (Jun 14, 1998)&n; * Paul J.Y. Lahaie        Changed probing / attach code order&n; * Scott Murray            Added mixer support (Dec 03, 1998)&n; * Scott Murray            Changed detection code to be more forgiving,&n; *                         added force option as last resort,&n; *                         fixed ioctl return values. (Dec 30, 1998)&n; * Scott Murray            Simpler detection code should work all the time now&n; *                         (with thanks to Ben Hutchings for the heuristic),&n; *                         removed now unnecessary force option. (Jan 5, 1999)&n; * Christoph Hellwig&t;   Adapted to module_init/module_exit (Mar 4, 2000)&n; * Scott Murray            Reworked SA2 versus SA3 mixer code, updated chipset&n; *                         version detection code (again!). (Dec 5, 2000)&n; * Scott Murray            Adjusted master volume mixer scaling. (Dec 6, 2000)&n; * Scott Murray            Based on a patch by Joel Yliluoma (aka Bisqwit),&n; *                         integrated wide mixer and adjusted mic, bass, treble&n; *                         scaling. (Dec 6, 2000)&n; * Scott Murray            Based on a patch by Peter Englmaier, integrated&n; *                         ymode and loopback options. (Dec 6, 2000)&n; * Scott Murray            Inspired by a patch by Peter Englmaier, and based on&n; *                         what ALSA does, added initialization code for the&n; *                         default DMA and IRQ settings. (Dec 6, 2000)&n; * Scott Murray            Added some more checks to the card detection code,&n; *                         based on what ALSA does. (Dec 12, 2000)&n; * Scott Murray            Inspired by similar patches from John Fremlin,&n; *                         Jim Radford, Mike Rolig, and Ingmar Steen, added 2.4&n; *                         ISA PnP API support, mainly based on bits from&n; *                         sb_card.c and awe_wave.c. (Dec 12, 2000)&n; * Scott Murray            Some small cleanups to the init code output.&n; *                         (Jan 7, 2001)&n; * Zwane Mwaikambo&t;   Added PM support. (Dec 4 2001)&n; *&n; */
+multiline_comment|/*&n; * sound/opl3sa2.c&n; *&n; * A low level driver for Yamaha OPL3-SA2 and SA3 cards.&n; * NOTE: All traces of the name OPL3-SAx have now (December 2000) been&n; *       removed from the driver code, as an email exchange with Yamaha&n; *       provided the information that the YMF-719 is indeed just a&n; *       re-badged 715.&n; *&n; * Copyright 1998-2001 Scott Murray &lt;scott@spiteful.org&gt;&n; *&n; * Originally based on the CS4232 driver (in cs4232.c) by Hannu Savolainen&n; * and others.  Now incorporates code/ideas from pss.c, also by Hannu&n; * Savolainen.  Both of those files are distributed with the following&n; * license:&n; *&n; * &quot;Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; *  OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; *  Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; *  for more info.&quot;&n; *&n; * As such, in accordance with the above license, this file, opl3sa2.c, is&n; * distributed under the GNU GENERAL PUBLIC LICENSE (GPL) Version 2 (June 1991).&n; * See the &quot;COPYING&quot; file distributed with this software for more information.&n; *&n; * Change History&n; * --------------&n; * Scott Murray            Original driver (Jun 14, 1998)&n; * Paul J.Y. Lahaie        Changed probing / attach code order&n; * Scott Murray            Added mixer support (Dec 03, 1998)&n; * Scott Murray            Changed detection code to be more forgiving,&n; *                         added force option as last resort,&n; *                         fixed ioctl return values. (Dec 30, 1998)&n; * Scott Murray            Simpler detection code should work all the time now&n; *                         (with thanks to Ben Hutchings for the heuristic),&n; *                         removed now unnecessary force option. (Jan 5, 1999)&n; * Christoph Hellwig&t;   Adapted to module_init/module_exit (Mar 4, 2000)&n; * Scott Murray            Reworked SA2 versus SA3 mixer code, updated chipset&n; *                         version detection code (again!). (Dec 5, 2000)&n; * Scott Murray            Adjusted master volume mixer scaling. (Dec 6, 2000)&n; * Scott Murray            Based on a patch by Joel Yliluoma (aka Bisqwit),&n; *                         integrated wide mixer and adjusted mic, bass, treble&n; *                         scaling. (Dec 6, 2000)&n; * Scott Murray            Based on a patch by Peter Englmaier, integrated&n; *                         ymode and loopback options. (Dec 6, 2000)&n; * Scott Murray            Inspired by a patch by Peter Englmaier, and based on&n; *                         what ALSA does, added initialization code for the&n; *                         default DMA and IRQ settings. (Dec 6, 2000)&n; * Scott Murray            Added some more checks to the card detection code,&n; *                         based on what ALSA does. (Dec 12, 2000)&n; * Scott Murray            Inspired by similar patches from John Fremlin,&n; *                         Jim Radford, Mike Rolig, and Ingmar Steen, added 2.4&n; *                         ISA PnP API support, mainly based on bits from&n; *                         sb_card.c and awe_wave.c. (Dec 12, 2000)&n; * Scott Murray            Some small cleanups to the init code output.&n; *                         (Jan 7, 2001)&n; * Zwane Mwaikambo&t;   Added PM support. (Dec 4 2001)&n; *&n; * Adam Belay              Converted driver to new PnP Layer (Oct 12, 2002)&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
@@ -64,7 +64,7 @@ DECL|macro|CHIPSET_OPL3SA2
 mdefine_line|#define CHIPSET_OPL3SA2 0
 DECL|macro|CHIPSET_OPL3SA3
 mdefine_line|#define CHIPSET_OPL3SA3 1
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 DECL|macro|OPL3SA2_CARDS_MAX
 mdefine_line|#define OPL3SA2_CARDS_MAX 4
 macro_line|#else
@@ -318,7 +318,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 multiline_comment|/* PnP specific parameters */
 DECL|variable|isapnp
 r_static
@@ -339,7 +339,7 @@ suffix:semicolon
 multiline_comment|/* PnP devices */
 DECL|variable|opl3sa2_dev
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 id|opl3sa2_dev
 (braket
@@ -517,7 +517,7 @@ comma
 l_string|&quot;Set A/D input source. Useful for echo cancellation (0 = Mic Rch (default), 1 = Mono output loopback)&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 id|MODULE_PARM
 c_func
 (paren
@@ -3347,171 +3347,75 @@ id|card
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef __ISAPNP__
-DECL|variable|__initdata
+macro_line|#ifdef CONFIG_PNP
+DECL|variable|pnp_opl3sa2_list
 r_struct
-id|isapnp_device_id
-id|isapnp_opl3sa2_list
+id|pnp_id
+id|pnp_opl3sa2_list
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace
-id|ISAPNP_ANY_ID
+dot
+id|id
+op_assign
+l_string|&quot;YMH0021&quot;
 comma
-id|ISAPNP_ANY_ID
-comma
-id|ISAPNP_VENDOR
-c_func
-(paren
-l_char|&squot;Y&squot;
-comma
-l_char|&squot;M&squot;
-comma
-l_char|&squot;H&squot;
-)paren
-comma
-id|ISAPNP_FUNCTION
-c_func
-(paren
-l_int|0x0021
-)paren
-comma
+dot
+id|driver_data
+op_assign
 l_int|0
 )brace
 comma
 (brace
-l_int|0
+dot
+id|id
+op_assign
+l_string|&quot;&quot;
 )brace
 )brace
 suffix:semicolon
-id|MODULE_DEVICE_TABLE
-c_func
-(paren
-id|isapnp
-comma
-id|isapnp_opl3sa2_list
-)paren
-suffix:semicolon
-DECL|function|opl3sa2_isapnp_probe
+multiline_comment|/*MODULE_DEVICE_TABLE(isapnp, isapnp_opl3sa2_list);*/
+DECL|function|opl3sa2_pnp_probe
 r_static
 r_int
-id|__init
-id|opl3sa2_isapnp_probe
+id|opl3sa2_pnp_probe
 c_func
 (paren
 r_struct
-id|address_info
+id|pnp_dev
 op_star
-id|hw_cfg
+id|dev
 comma
+r_const
 r_struct
-id|address_info
+id|pnp_id
 op_star
-id|mss_cfg
+id|card_id
 comma
+r_const
 r_struct
-id|address_info
+id|pnp_id
 op_star
-id|mpu_cfg
-comma
+id|dev_id
+)paren
+(brace
 r_int
 id|card
-)paren
-(brace
-r_static
-r_struct
-id|pci_dev
-op_star
-id|dev
-suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
-multiline_comment|/* Find and configure device */
-id|dev
 op_assign
-id|isapnp_find_dev
-c_func
-(paren
-l_int|NULL
-comma
-id|ISAPNP_VENDOR
-c_func
-(paren
-l_char|&squot;Y&squot;
-comma
-l_char|&squot;M&squot;
-comma
-l_char|&squot;H&squot;
-)paren
-comma
-id|ISAPNP_FUNCTION
-c_func
-(paren
-l_int|0x0021
-)paren
-comma
-id|dev
-)paren
+id|opl3sa2_cards_num
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev
+id|opl3sa2_cards_num
 op_eq
-l_int|NULL
+id|OPL3SA2_CARDS_MAX
 )paren
-(brace
 r_return
-op_minus
-id|ENODEV
+l_int|0
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * If device is active, assume configured with /proc/isapnp&n;&t; * and use anyway. Any other way to check this?&n;&t; */
-id|ret
-op_assign
-id|dev
-op_member_access_from_pointer
-id|prepare
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_logical_and
-id|ret
-op_ne
-op_minus
-id|EBUSY
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;opl3sa2: ISA PnP found device that could not be autoconfigured.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ret
-op_eq
-op_minus
-id|EBUSY
-)paren
-(brace
 id|opl3sa2_activated
 (braket
 id|card
@@ -3519,56 +3423,13 @@ id|card
 op_assign
 l_int|1
 suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|dev
-op_member_access_from_pointer
-id|activate
-c_func
-(paren
-id|dev
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;opl3sa2: ISA PnP activate failed&bslash;n&quot;
-)paren
-suffix:semicolon
-id|opl3sa2_activated
+multiline_comment|/* Our own config: */
+id|cfg
 (braket
 id|card
 )braket
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;opl3sa2: Activated ISA PnP card %d (active=%d)&bslash;n&quot;
-comma
-id|card
-comma
-id|dev-&gt;active
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Our own config: */
-id|hw_cfg-&gt;io_base
+dot
+id|io_base
 op_assign
 id|dev-&gt;resource
 (braket
@@ -3577,7 +3438,12 @@ l_int|4
 dot
 id|start
 suffix:semicolon
-id|hw_cfg-&gt;irq
+id|cfg
+(braket
+id|card
+)braket
+dot
+id|irq
 op_assign
 id|dev-&gt;irq_resource
 (braket
@@ -3586,7 +3452,12 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|hw_cfg-&gt;dma
+id|cfg
+(braket
+id|card
+)braket
+dot
+id|dma
 op_assign
 id|dev-&gt;dma_resource
 (braket
@@ -3595,7 +3466,12 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|hw_cfg-&gt;dma2
+id|cfg
+(braket
+id|card
+)braket
+dot
+id|dma2
 op_assign
 id|dev-&gt;dma_resource
 (braket
@@ -3605,7 +3481,12 @@ dot
 id|start
 suffix:semicolon
 multiline_comment|/* The MSS config: */
-id|mss_cfg-&gt;io_base
+id|cfg_mss
+(braket
+id|card
+)braket
+dot
+id|io_base
 op_assign
 id|dev-&gt;resource
 (braket
@@ -3614,7 +3495,12 @@ l_int|1
 dot
 id|start
 suffix:semicolon
-id|mss_cfg-&gt;irq
+id|cfg_mss
+(braket
+id|card
+)braket
+dot
+id|irq
 op_assign
 id|dev-&gt;irq_resource
 (braket
@@ -3623,7 +3509,12 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|mss_cfg-&gt;dma
+id|cfg_mss
+(braket
+id|card
+)braket
+dot
+id|dma
 op_assign
 id|dev-&gt;dma_resource
 (braket
@@ -3632,7 +3523,12 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|mss_cfg-&gt;dma2
+id|cfg_mss
+(braket
+id|card
+)braket
+dot
+id|dma2
 op_assign
 id|dev-&gt;dma_resource
 (braket
@@ -3641,12 +3537,22 @@ l_int|1
 dot
 id|start
 suffix:semicolon
-id|mss_cfg-&gt;card_subtype
+id|cfg_mss
+(braket
+id|card
+)braket
+dot
+id|card_subtype
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* No IRQ or DMA setup */
-id|mpu_cfg-&gt;io_base
+id|cfg_mpu
+(braket
+id|card
+)braket
+dot
+id|io_base
 op_assign
 id|dev-&gt;resource
 (braket
@@ -3655,7 +3561,12 @@ l_int|3
 dot
 id|start
 suffix:semicolon
-id|mpu_cfg-&gt;irq
+id|cfg_mpu
+(braket
+id|card
+)braket
+dot
+id|irq
 op_assign
 id|dev-&gt;irq_resource
 (braket
@@ -3664,17 +3575,32 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|mpu_cfg-&gt;dma
+id|cfg_mpu
+(braket
+id|card
+)braket
+dot
+id|dma
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|mpu_cfg-&gt;dma2
+id|cfg_mpu
+(braket
+id|card
+)braket
+dot
+id|dma2
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|mpu_cfg-&gt;always_detect
+id|cfg_mpu
+(braket
+id|card
+)braket
+dot
+id|always_detect
 op_assign
 l_int|1
 suffix:semicolon
@@ -3683,19 +3609,31 @@ multiline_comment|/* Call me paranoid: */
 id|opl3sa2_clear_slots
 c_func
 (paren
-id|hw_cfg
+op_amp
+id|cfg
+(braket
+id|card
+)braket
 )paren
 suffix:semicolon
 id|opl3sa2_clear_slots
 c_func
 (paren
-id|mss_cfg
+op_amp
+id|cfg_mss
+(braket
+id|card
+)braket
 )paren
 suffix:semicolon
 id|opl3sa2_clear_slots
 c_func
 (paren
-id|mpu_cfg
+op_amp
+id|cfg_mpu
+(braket
+id|card
+)braket
 )paren
 suffix:semicolon
 id|opl3sa2_dev
@@ -3705,11 +3643,43 @@ id|card
 op_assign
 id|dev
 suffix:semicolon
+id|opl3sa2_cards_num
+op_increment
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* __ISAPNP__ */
+DECL|variable|opl3sa2_driver
+r_static
+r_struct
+id|pnp_driver
+id|opl3sa2_driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;opl3sa2&quot;
+comma
+dot
+id|card_id_table
+op_assign
+l_int|NULL
+comma
+dot
+id|id_table
+op_assign
+id|pnp_opl3sa2_list
+comma
+dot
+id|probe
+op_assign
+id|opl3sa2_pnp_probe
+comma
+)brace
+suffix:semicolon
+macro_line|#endif /* CONFIG_PNP */
 multiline_comment|/* End of component functions */
 multiline_comment|/* Power Management support functions */
 DECL|function|opl3sa2_suspend
@@ -4044,58 +4014,20 @@ id|OPL3SA2_CARDS_MAX
 suffix:colon
 l_int|1
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|card
-op_assign
-l_int|0
-suffix:semicolon
-id|card
-OL
-id|max
-suffix:semicolon
-id|card
-op_increment
-comma
-id|opl3sa2_cards_num
-op_increment
-)paren
-(brace
-macro_line|#ifdef __ISAPNP__
-multiline_comment|/*&n;&t;&t; * Please remember that even with __ISAPNP__ defined one&n;&t;&t; * should still be able to disable PNP support for this &n;&t;&t; * single driver!&n;&t;&t; */
+macro_line|#ifdef CONFIG_PNP
 r_if
 c_cond
 (paren
 id|isapnp
-op_logical_and
-id|opl3sa2_isapnp_probe
+)paren
+(brace
+id|pnp_register_driver
 c_func
 (paren
 op_amp
-id|cfg
-(braket
-id|card
-)braket
-comma
-op_amp
-id|cfg_mss
-(braket
-id|card
-)braket
-comma
-op_amp
-id|cfg_mpu
-(braket
-id|card
-)braket
-comma
-id|card
+id|opl3sa2_driver
 )paren
-OL
-l_int|0
-)paren
-(brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4110,35 +4042,32 @@ id|KERN_INFO
 l_string|&quot;opl3sa2: No PnP cards found&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|io
-op_eq
-op_minus
-l_int|1
-)paren
-(brace
-r_break
-suffix:semicolon
-)brace
 id|isapnp
 op_assign
 l_int|0
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;opl3sa2: Search for a card at 0x%d.&bslash;n&quot;
-comma
-id|io
-)paren
+)brace
+id|max
+op_assign
+id|opl3sa2_cards_num
 suffix:semicolon
-multiline_comment|/* Fall through */
 )brace
 macro_line|#endif
+r_for
+c_loop
+(paren
+id|card
+op_assign
+l_int|0
+suffix:semicolon
+id|card
+OL
+id|max
+suffix:semicolon
+id|card
+op_increment
+)paren
+(brace
 multiline_comment|/* If a user wants an I/O then assume they meant it */
 r_if
 c_cond
@@ -4186,6 +4115,9 @@ suffix:semicolon
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+id|opl3sa2_cards_num
+op_increment
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t;&t; * Our own config:&n;&t;&t;&t; * (NOTE: IRQ and DMA aren&squot;t used, so they&squot;re set to&n;&t;&t;&t; *  give pretty output from conf_printf. :)&n;&t;&t;&t; */
@@ -4726,52 +4658,14 @@ comma
 id|card
 )paren
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
-r_if
-c_cond
-(paren
-id|opl3sa2_activated
-(braket
-id|card
-)braket
-op_logical_and
-id|opl3sa2_dev
-(braket
-id|card
-)braket
-)paren
-(brace
-id|opl3sa2_dev
-(braket
-id|card
-)braket
-op_member_access_from_pointer
-id|deactivate
+macro_line|#ifdef CONFIG_PNP
+id|pnp_unregister_driver
 c_func
 (paren
-id|opl3sa2_dev
-(braket
-id|card
-)braket
+op_amp
+id|opl3sa2_driver
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;opl3sa2: Deactivated ISA PnP card %d (active=%d)&bslash;n&quot;
-comma
-id|card
-comma
-id|opl3sa2_dev
-(braket
-id|card
-)braket
-op_member_access_from_pointer
-id|active
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif
 )brace
 )brace
@@ -4803,7 +4697,7 @@ id|str
 )paren
 (brace
 multiline_comment|/* io, irq, dma, dma2,... */
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 r_int
 id|ints
 (braket
@@ -4890,7 +4784,7 @@ id|ints
 l_int|8
 )braket
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 id|isapnp
 op_assign
 id|ints
