@@ -55,8 +55,6 @@ DECL|macro|HW_TESTLOOP
 mdefine_line|#define HW_TESTLOOP&t;0x0070
 DECL|macro|CARD_RESET
 mdefine_line|#define CARD_RESET&t;0x00F0
-DECL|macro|CARD_INIT
-mdefine_line|#define CARD_INIT&t;0x00F2
 DECL|macro|CARD_RELEASE
 mdefine_line|#define CARD_RELEASE&t;0x00F3
 DECL|macro|CARD_TEST
@@ -3185,6 +3183,25 @@ suffix:semicolon
 r_struct
 id|IsdnCardState
 suffix:semicolon
+multiline_comment|/* Methods provided by driver for a specific card */
+DECL|struct|card_ops
+r_struct
+id|card_ops
+(brace
+DECL|member|init
+r_void
+(paren
+op_star
+id|init
+)paren
+(paren
+r_struct
+id|IsdnCardState
+op_star
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* Card specific drivers provide methods to access the&n; * chips to the chip drivers */
 DECL|struct|bc_hw_ops
 r_struct
@@ -3420,6 +3437,12 @@ suffix:semicolon
 DECL|member|lock
 id|spinlock_t
 id|lock
+suffix:semicolon
+DECL|member|card_ops
+r_struct
+id|card_ops
+op_star
+id|card_ops
 suffix:semicolon
 DECL|member|protocol
 r_int
