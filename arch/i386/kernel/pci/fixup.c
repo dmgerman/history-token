@@ -30,6 +30,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;PCI: Searching for i450NX host bridges on %s&bslash;n&quot;
 comma
 id|d-&gt;slot_name
@@ -178,6 +179,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;PCI: i440KX/GX host bridge %s: secondary bus %02x&bslash;n&quot;
 comma
 id|d-&gt;slot_name
@@ -221,6 +223,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;PCI: Fixing base address flags for device %s&bslash;n&quot;
 comma
 id|d-&gt;slot_name
@@ -249,6 +252,48 @@ dot
 id|flags
 op_or_assign
 id|PCI_BASE_ADDRESS_SPACE_IO
+suffix:semicolon
+)brace
+)brace
+DECL|function|pci_fixup_ncr53c810
+r_static
+r_void
+id|__devinit
+id|pci_fixup_ncr53c810
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|d
+)paren
+(brace
+multiline_comment|/*&n;&t; * NCR 53C810 returns class code 0 (at least on some systems).&n;&t; * Fix class to be PCI_CLASS_STORAGE_SCSI&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|d
+op_member_access_from_pointer
+r_class
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;PCI: fixing NCR 53C810 class code for %s&bslash;n&quot;
+comma
+id|d-&gt;slot_name
+)paren
+suffix:semicolon
+id|d
+op_member_access_from_pointer
+r_class
+op_assign
+id|PCI_CLASS_STORAGE_SCSI
+op_lshift
+l_int|8
 suffix:semicolon
 )brace
 )brace
@@ -509,6 +554,7 @@ l_int|0xe0
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Disabling broken memory write queue: [%02x] %02x-&gt;%02x&bslash;n&quot;
 comma
 id|where
@@ -663,6 +709,16 @@ comma
 id|PCI_DEVICE_ID_VIA_8367_0
 comma
 id|pci_fixup_via_northbridge_bug
+)brace
+comma
+(brace
+id|PCI_FIXUP_HEADER
+comma
+id|PCI_VENDOR_ID_NCR
+comma
+id|PCI_DEVICE_ID_NCR_53C810
+comma
+id|pci_fixup_ncr53c810
 )brace
 comma
 (brace
