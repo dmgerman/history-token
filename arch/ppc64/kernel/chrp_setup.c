@@ -397,9 +397,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_PPC_ISERIES
 multiline_comment|/* Find and initialize PCI host bridges */
 multiline_comment|/* iSeries needs to be done much later. */
-macro_line|#ifndef CONFIG_PPC_ISERIES
+id|eeh_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|find_and_init_phbs
 c_func
 (paren
