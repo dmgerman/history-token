@@ -1,4 +1,4 @@
-multiline_comment|/* 3c574.c: A PCMCIA ethernet driver for the 3com 3c574 &quot;RoadRunner&quot;.&n;&n;&t;Written 1993-1998 by&n;&t;Donald Becker, becker@scyld.com, (driver core) and&n;&t;David Hinds, dahinds@users.sourceforge.net (from his PC card code).&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver derives from Donald Becker&squot;s 3c509 core, which has the&n;&t;following copyright:&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;*/
+multiline_comment|/* 3c574.c: A PCMCIA ethernet driver for the 3com 3c574 &quot;RoadRunner&quot;.&n;&n;&t;Written 1993-1998 by&n;&t;Donald Becker, becker@scyld.com, (driver core) and&n;&t;David Hinds, dahinds@users.sourceforge.net (from his PC card code).&n;&t;Locking fixes (C) Copyright 2003 Red Hat Inc&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver derives from Donald Becker&squot;s 3c509 core, which has the&n;&t;following copyright:&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&t;&n;&n;*/
 multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This device driver is designed for the 3Com 3c574 PC card Fast Ethernet&n;Adapter.&n;&n;II. Board-specific settings&n;&n;None -- PC cards are autoconfigured.&n;&n;III. Driver operation&n;&n;The 3c574 uses a Boomerang-style interface, without the bus-master capability.&n;See the Boomerang driver and documentation for most details.&n;&n;IV. Notes and chip documentation.&n;&n;Two added registers are used to enhance PIO performance, RunnerRdCtrl and&n;RunnerWrCtrl.  These are 11 bit down-counters that are preloaded with the&n;count of word (16 bits) reads or writes the driver is about to do to the Rx&n;or Tx FIFO.  The chip is then able to hide the internal-PCI-bus to PC-card&n;translation latency by buffering the I/O operations with an 8 word FIFO.&n;Note: No other chip accesses are permitted when this buffer is used.&n;&n;A second enhancement is that both attribute and common memory space&n;0x0800-0x0fff can translated to the PIO FIFO.  Thus memory operations (faster&n;with *some* PCcard bridges) may be used instead of I/O operations.&n;This is enabled by setting the 0x10 bit in the PCMCIA LAN COR.&n;&n;Some slow PC card bridges work better if they never see a WAIT signal.&n;This is configured by setting the 0x20 bit in the PCMCIA LAN COR.&n;Only do this after testing that it is reliable and improves performance.&n;&n;The upper five bits of RunnerRdCtrl are used to window into PCcard&n;configuration space registers.  Window 0 is the regular Boomerang/Odie&n;register set, 1-5 are various PC card control registers, and 16-31 are&n;the (reversed!) CIS table.&n;&n;A final note: writing the InternalConfig register in window 3 with an&n;invalid ramWidth is Very Bad.&n;&n;V. References&n;&n;http://www.scyld.com/expert/NWay.html&n;http://www.national.com/pf/DP/DP83840.html&n;&n;Thanks to Terry Murphy of 3Com for providing development information for&n;earlier 3Com products.&n;&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -123,7 +123,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;3c574_cs.c 1.65 2001/10/13 00:08:50 Donald Becker/David Hinds, becker@scyld.com.&bslash;n&quot;
+l_string|&quot;3c574_cs.c 1.65ac1 2003/04/07 Donald Becker/David Hinds, becker@scyld.com.&bslash;n&quot;
 suffix:semicolon
 macro_line|#else
 DECL|macro|DEBUG
@@ -649,10 +649,10 @@ r_char
 id|phys
 suffix:semicolon
 multiline_comment|/* MII device address */
-r_int
-r_int
 DECL|member|autoselect
 DECL|member|default_media
+r_int
+r_int
 id|autoselect
 suffix:colon
 l_int|1
@@ -669,17 +669,25 @@ id|timer_list
 id|media
 suffix:semicolon
 DECL|member|media_status
-id|u_short
+r_int
+r_int
 id|media_status
 suffix:semicolon
 DECL|member|fast_poll
-id|u_short
+r_int
+r_int
 id|fast_poll
 suffix:semicolon
 DECL|member|last_irq
-id|u_long
+r_int
+r_int
 id|last_irq
 suffix:semicolon
+DECL|member|window_lock
+id|spinlock_t
+id|window_lock
+suffix:semicolon
+multiline_comment|/* Guards the Window selection */
 )brace
 suffix:semicolon
 multiline_comment|/* Set iff a MII transceiver on any interface requires mdio preamble.&n;   This only set with the original DP83840 on older 3c905 boards, so the extra&n;   code size of a per-interface flag is not worthwhile. */
@@ -706,7 +714,8 @@ r_void
 id|tc574_release
 c_func
 (paren
-id|u_long
+r_int
+r_int
 id|arg
 )paren
 suffix:semicolon
@@ -772,7 +781,8 @@ id|value
 )paren
 suffix:semicolon
 r_static
-id|u_short
+r_int
+r_int
 id|read_eeprom
 c_func
 (paren
@@ -813,7 +823,8 @@ r_void
 id|media_check
 c_func
 (paren
-id|u_long
+r_int
+r_int
 id|arg
 )paren
 suffix:semicolon
@@ -1209,7 +1220,8 @@ suffix:semicolon
 id|link-&gt;release.data
 op_assign
 (paren
-id|u_long
+r_int
+r_int
 )paren
 id|link
 suffix:semicolon
@@ -1514,7 +1526,7 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -1533,7 +1545,8 @@ id|tc574_release
 c_func
 (paren
 (paren
-id|u_long
+r_int
+r_int
 )paren
 id|link
 )paren
@@ -1633,7 +1646,8 @@ suffix:semicolon
 id|cisparse_t
 id|parse
 suffix:semicolon
-id|u_short
+r_int
+r_int
 id|buf
 (braket
 l_int|32
@@ -2531,7 +2545,8 @@ id|tc574_release
 c_func
 (paren
 (paren
-id|u_long
+r_int
+r_int
 )paren
 id|link
 )paren
@@ -2547,7 +2562,8 @@ r_void
 id|tc574_release
 c_func
 (paren
-id|u_long
+r_int
+r_int
 id|arg
 )paren
 (brace
@@ -3036,7 +3052,8 @@ suffix:semicolon
 multiline_comment|/* Read a word from the EEPROM using the regular EEPROM access register.&n;   Assume that we are in register window zero.&n; */
 DECL|function|read_eeprom
 r_static
-id|u_short
+r_int
+r_int
 id|read_eeprom
 c_func
 (paren
@@ -3541,6 +3558,10 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|tc574_wait_for_completion
 c_func
 (paren
@@ -3549,6 +3570,15 @@ comma
 id|TotalReset
 op_or
 l_int|0x10
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|lp-&gt;window_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Clear any transactions in progress. */
@@ -3700,6 +3730,21 @@ op_plus
 id|Wn3_Options
 )paren
 suffix:semicolon
+id|EL3WINDOW
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|lp-&gt;window_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|tc574_wait_for_completion
 c_func
 (paren
@@ -3720,6 +3765,21 @@ id|mdelay
 c_func
 (paren
 l_int|1
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|lp-&gt;window_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|EL3WINDOW
+c_func
+(paren
+l_int|3
 )paren
 suffix:semicolon
 id|outw
@@ -3820,6 +3880,21 @@ op_plus
 id|Wn4_NetDiag
 )paren
 suffix:semicolon
+id|EL3WINDOW
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|lp-&gt;window_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* .. re-sync MII and re-fill what NWay is advertising. */
 id|mdio_sync
 c_func
@@ -3877,17 +3952,29 @@ id|i
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Switch to register set 1 for normal use, just for TxFree. */
-id|EL3WINDOW
+id|spin_lock_irqsave
 c_func
 (paren
-l_int|1
+op_amp
+id|lp-&gt;window_lock
+comma
+id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* Switch to register set 1 for normal use, just for TxFree. */
 id|set_rx_mode
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|lp-&gt;window_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|outw
@@ -4026,8 +4113,6 @@ suffix:semicolon
 id|link-&gt;open
 op_increment
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|netif_start_queue
 c_func
 (paren
@@ -4048,7 +4133,8 @@ suffix:semicolon
 id|lp-&gt;media.data
 op_assign
 (paren
-id|u_long
+r_int
+r_int
 )paren
 id|lp
 suffix:semicolon
@@ -4320,6 +4406,22 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+r_struct
+id|el3_private
+op_star
+id|lp
+op_assign
+(paren
+r_struct
+id|el3_private
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|DEBUG
 c_func
 (paren
@@ -4342,6 +4444,15 @@ id|ioaddr
 op_plus
 id|EL3_STATUS
 )paren
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|lp-&gt;window_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|outw
@@ -4436,6 +4547,13 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;window_lock
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4517,6 +4635,13 @@ id|ioaddr
 op_plus
 id|EL3_STATUS
 )paren
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|lp-&gt;window_lock
 )paren
 suffix:semicolon
 r_while
@@ -4897,6 +5022,13 @@ id|EL3_STATUS
 )paren
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;window_lock
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -4907,7 +5039,8 @@ r_void
 id|media_check
 c_func
 (paren
-id|u_long
+r_int
+r_int
 id|arg
 )paren
 (brace
@@ -4936,10 +5069,12 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|u_long
+r_int
+r_int
 id|flags
 suffix:semicolon
-id|u_short
+r_int
+r_int
 multiline_comment|/* cable, */
 id|media
 comma
@@ -4958,7 +5093,7 @@ id|dev
 r_goto
 id|reschedule
 suffix:semicolon
-multiline_comment|/* Check for pending interrupt with expired latency timer: with&n;       this, we can limp along even if the interrupt is blocked */
+multiline_comment|/* Check for pending interrupt with expired latency timer: with&n;&t;   this, we can limp along even if the interrupt is blocked */
 r_if
 c_cond
 (paren
@@ -5042,15 +5177,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;window_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|EL3WINDOW
@@ -5087,12 +5220,6 @@ id|EL3WINDOW
 c_func
 (paren
 l_int|1
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -5312,6 +5439,15 @@ op_assign
 id|media
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|lp-&gt;window_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|reschedule
 suffix:colon
 id|lp-&gt;media.expires
@@ -5404,6 +5540,10 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|u8
 id|rx
 comma
@@ -5436,6 +5576,15 @@ l_int|0xffff
 )paren
 multiline_comment|/* No card. */
 r_return
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|lp-&gt;window_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 multiline_comment|/* Unlike the 3c509 we need not turn off stats updates while reading. */
 multiline_comment|/* Switch to the stats window, and read everything. */
@@ -5615,6 +5764,15 @@ id|EL3WINDOW
 c_func
 (paren
 l_int|1
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|lp-&gt;window_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -6166,15 +6324,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;window_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|saved_window
@@ -6226,9 +6382,12 @@ c_func
 id|saved_window
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;window_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -6264,15 +6423,13 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;window_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|saved_window
@@ -6324,9 +6481,12 @@ c_func
 id|saved_window
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;window_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -6535,7 +6695,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -6561,8 +6721,6 @@ id|HZ
 op_div
 l_int|20
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
