@@ -8666,10 +8666,17 @@ id|pr-&gt;id
 op_eq
 l_int|0
 )paren
+(brace
 id|pm_idle
 op_assign
 id|pm_idle_save
 suffix:semicolon
+id|synchronize_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 id|status
 op_assign
 id|acpi_remove_notify_handler
