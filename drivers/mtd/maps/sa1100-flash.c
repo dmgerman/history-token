@@ -586,7 +586,7 @@ DECL|macro|assabet_partitions
 mdefine_line|#define assabet_partitions&t;assabet5_partitions
 macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_BADGE4
-multiline_comment|/*&n; * 1 x Intel 28F320C3BA100 Advanced+ Boot Block Flash (32 Mi bit)&n; *   Eight 4 KiW Parameter Bottom Blocks (64 KiB)&n; *   Sixty-three 32 KiW Main Blocks (4032 Ki b)&n; */
+multiline_comment|/*&n; * 1 x Intel 28F320C3 Advanced+ Boot Block Flash (32 Mi bit)&n; *   Eight 4 KiW Parameter Bottom Blocks (64 KiB)&n; *   Sixty-three 32 KiW Main Blocks (4032 Ki b)&n; *&n; * &lt;or&gt;&n; *&n; * 1 x Intel 28F640C3 Advanced+ Boot Block Flash (64 Mi bit)&n; *   Eight 4 KiW Parameter Bottom Blocks (64 KiB)&n; *   One-hundred-twenty-seven 32 KiW Main Blocks (8128 Ki b)&n; */
 DECL|variable|badge4_partitions
 r_static
 r_struct
@@ -628,23 +628,6 @@ dot
 id|size
 op_assign
 l_int|0x00006000
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;kernel&quot;
-comma
-dot
-id|offset
-op_assign
-id|MTDPART_OFS_APPEND
-comma
-dot
-id|size
-op_assign
-l_int|0x00100000
 )brace
 comma
 (brace
@@ -4467,7 +4450,7 @@ l_int|0
 dot
 id|size
 op_assign
-id|SZ_4M
+id|SZ_64M
 suffix:semicolon
 id|nr
 op_assign
