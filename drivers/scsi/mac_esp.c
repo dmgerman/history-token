@@ -32,7 +32,6 @@ mdefine_line|#define mac_turnon_irq(x)&t;mac_enable_irq(x)
 DECL|macro|mac_turnoff_irq
 mdefine_line|#define mac_turnoff_irq(x)&t;mac_disable_irq(x)
 r_extern
-r_inline
 r_void
 id|esp_handle
 c_func
