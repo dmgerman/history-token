@@ -7,6 +7,19 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/fpumacro.h&gt;
+macro_line|#include &lt;asm/cpudata.h&gt;
+id|DEFINE_PER_CPU
+c_func
+(paren
+id|cpuinfo_sparc
+comma
+id|__cpu_data
+)paren
+op_assign
+(brace
+l_int|0
+)brace
+suffix:semicolon
 DECL|struct|cpu_iu_info
 r_struct
 id|cpu_iu_info
@@ -222,27 +235,15 @@ DECL|variable|sparc_cpu_type
 r_char
 op_star
 id|sparc_cpu_type
-(braket
-id|NR_CPUS
-)braket
 op_assign
-(brace
 l_string|&quot;cpu-oops&quot;
-comma
-)brace
 suffix:semicolon
 DECL|variable|sparc_fpu_type
 r_char
 op_star
 id|sparc_fpu_type
-(braket
-id|NR_CPUS
-)braket
 op_assign
-(brace
 l_string|&quot;fpu-oops&quot;
-comma
-)brace
 suffix:semicolon
 DECL|variable|fsr_storage
 r_int
@@ -272,15 +273,6 @@ id|fprs
 suffix:semicolon
 r_int
 id|i
-comma
-id|cpuid
-suffix:semicolon
-id|cpuid
-op_assign
-id|hard_smp_processor_id
-c_func
-(paren
-)paren
 suffix:semicolon
 id|fprs
 op_assign
@@ -398,9 +390,6 @@ id|impl
 )paren
 (brace
 id|sparc_cpu_type
-(braket
-id|cpuid
-)braket
 op_assign
 id|linux_sparc_chips
 (braket
@@ -457,9 +446,6 @@ id|impl
 suffix:semicolon
 )brace
 id|sparc_cpu_type
-(braket
-id|cpuid
-)braket
 op_assign
 l_string|&quot;Unknown CPU&quot;
 suffix:semicolon
@@ -515,9 +501,6 @@ id|fpu_vers
 )paren
 (brace
 id|sparc_fpu_type
-(braket
-id|cpuid
-)braket
 op_assign
 id|linux_sparc_fpu
 (braket
@@ -552,9 +535,6 @@ id|fpu_vers
 )paren
 suffix:semicolon
 id|sparc_fpu_type
-(braket
-id|cpuid
-)braket
 op_assign
 l_string|&quot;Unknown FPU&quot;
 suffix:semicolon
