@@ -8655,12 +8655,10 @@ c_func
 l_string|&quot;ipv6_route&quot;
 )paren
 suffix:semicolon
-id|remove_proc_entry
+id|proc_net_remove
 c_func
 (paren
 l_string|&quot;rt6_stats&quot;
-comma
-id|proc_net
 )paren
 suffix:semicolon
 macro_line|#endif

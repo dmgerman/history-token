@@ -4951,12 +4951,10 @@ c_func
 r_void
 )paren
 (brace
-id|remove_proc_entry
+id|proc_net_remove
 c_func
 (paren
 l_string|&quot;raw6&quot;
-comma
-id|proc_net
 )paren
 suffix:semicolon
 )brace
