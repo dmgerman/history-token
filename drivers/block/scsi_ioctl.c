@@ -566,12 +566,6 @@ comma
 id|safe_for_write
 c_func
 (paren
-id|WRITE_BUFFER
-)paren
-comma
-id|safe_for_write
-c_func
-(paren
 id|WRITE_LONG
 )paren
 comma
