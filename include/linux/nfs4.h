@@ -271,6 +271,11 @@ id|OP_RELEASE_LOCKOWNER
 op_assign
 l_int|39
 comma
+DECL|enumerator|OP_ILLEGAL
+id|OP_ILLEGAL
+op_assign
+l_int|10044
+comma
 )brace
 suffix:semicolon
 DECL|enum|nfsstat4
