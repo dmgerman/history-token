@@ -3054,6 +3054,11 @@ suffix:semicolon
 r_int
 id|bytes_returned
 suffix:semicolon
+r_int
+id|timeout
+op_assign
+l_int|0
+suffix:semicolon
 id|cFYI
 c_func
 (paren
@@ -3100,6 +3105,21 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|lockType
+op_eq
+id|LOCKING_ANDX_OPLOCK_RELEASE
+)paren
+(brace
+id|timeout
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* no response expected */
 id|pSMB-&gt;NumberOfLocks
 op_assign
 id|cpu_to_le32
@@ -3214,7 +3234,7 @@ comma
 op_amp
 id|bytes_returned
 comma
-l_int|0
+id|timeout
 )paren
 suffix:semicolon
 r_if
