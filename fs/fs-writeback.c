@@ -209,6 +209,13 @@ id|inode_lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__mark_inode_dirty
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__mark_inode_dirty
+)paren
+suffix:semicolon
 DECL|function|write_inode
 r_static
 r_void
@@ -1583,6 +1590,13 @@ id|inode
 )paren
 suffix:semicolon
 )brace
+DECL|variable|write_inode_now
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|write_inode_now
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * generic_osync_inode - flush all dirty data for a given inode to disk&n; * @inode: inode to write&n; * @what:  what to write and wait upon&n; *&n; * This can be called by file_write functions for files which have the&n; * O_SYNC flag set, to flush dirty writes to disk.&n; *&n; * @what is a bitmask, specifying which part of the inode&squot;s data should be&n; * written and waited upon:&n; *&n; *    OSYNC_DATA:     i_mapping&squot;s dirty data&n; *    OSYNC_METADATA: the buffers at i_mapping-&gt;private_list&n; *    OSYNC_INODE:    the inode itself&n; */
 DECL|function|generic_osync_inode
 r_int
@@ -1758,6 +1772,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|generic_osync_inode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_osync_inode
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * writeback_acquire: attempt to get exclusive writeback access to a device&n; * @bdi: the device&squot;s backing_dev_info structure&n; *&n; * It is a waste of resources to have more than one pdflush thread blocked on&n; * a single request queue.  Exclusion at the request_queue level is obtained&n; * via a flag in the request_queue&squot;s backing_dev_info.state.&n; *&n; * Non-request_queue-backed address_spaces will share default_backing_dev_info,&n; * unless they implement their own.  Which is somewhat inefficient, as this&n; * may prevent concurrent writeback against multiple devices.&n; */
 DECL|function|writeback_acquire
 r_int

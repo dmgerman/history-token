@@ -53,6 +53,13 @@ comma
 multiline_comment|/* default_console_loglevel */
 )brace
 suffix:semicolon
+DECL|variable|console_printk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|console_printk
+)paren
+suffix:semicolon
 DECL|variable|oops_in_progress
 r_int
 id|oops_in_progress

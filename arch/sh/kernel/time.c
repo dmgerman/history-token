@@ -1,6 +1,7 @@
 multiline_comment|/* $Id: time.c,v 1.12 2003/06/28 15:35:28 lethal Exp $&n; *&n; *  linux/arch/sh/kernel/time.c&n; *&n; *  Copyright (C) 1999  Tetsuya Okada &amp; Niibe Yutaka&n; *  Copyright (C) 2000  Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *  Copyright (C) 2002, 2003  Paul Mundt&n; *  Copyright (C) 2002  M. R. Brown  &lt;mrbrown@linux-sh.org&gt;&n; *&n; *  Some code taken from i386 version.&n; *    Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
@@ -79,6 +80,13 @@ id|u64
 id|jiffies_64
 op_assign
 id|INITIAL_JIFFIES
+suffix:semicolon
+DECL|variable|jiffies_64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|jiffies_64
+)paren
 suffix:semicolon
 multiline_comment|/* XXX: Can we initialize this in a routine somewhere?  Dreamcast doesn&squot;t want&n; * these routines anywhere... */
 macro_line|#ifdef CONFIG_SH_RTC
@@ -591,6 +599,13 @@ op_assign
 id|usec
 suffix:semicolon
 )brace
+DECL|variable|do_gettimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_gettimeofday
+)paren
+suffix:semicolon
 DECL|function|do_settimeofday
 r_int
 id|do_settimeofday
@@ -737,6 +752,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|do_settimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_settimeofday
+)paren
+suffix:semicolon
 multiline_comment|/* last time the RTC clock got updated */
 DECL|variable|last_rtc_update
 r_static

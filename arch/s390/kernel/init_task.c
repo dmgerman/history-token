@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  arch/s390/kernel/init_task.c&n; *&n; *  S390 version&n; *&n; *  Derived from &quot;arch/i386/kernel/init_task.c&quot;&n; */
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init_task.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -55,6 +56,13 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
+DECL|variable|init_mm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_mm
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Initial thread structure.&n; *&n; * We need to make sure that this is 8192-byte aligned due to the&n; * way process stacks are handled. This is done by having a special&n; * &quot;init_task&quot; linker map entry..&n; */
 DECL|variable|init_thread_union
 r_union
@@ -87,6 +95,13 @@ id|task_struct
 id|init_task
 op_assign
 id|INIT_TASK
+c_func
+(paren
+id|init_task
+)paren
+suffix:semicolon
+DECL|variable|init_task
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|init_task

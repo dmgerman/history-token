@@ -1,3 +1,4 @@
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/platform.h&gt;
@@ -48,6 +49,13 @@ id|PIIX4_RESET_PORT
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_restart
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_restart
+)paren
+suffix:semicolon
 DECL|function|machine_power_off
 r_void
 id|machine_power_off
@@ -129,6 +137,13 @@ l_int|0xCFC
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_power_off
+)paren
+suffix:semicolon
 DECL|function|machine_halt
 r_void
 id|machine_halt
@@ -138,4 +153,11 @@ r_void
 )paren
 (brace
 )brace
+DECL|variable|machine_halt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_halt
+)paren
+suffix:semicolon
 eof

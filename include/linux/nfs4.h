@@ -54,21 +54,33 @@ DECL|macro|NFS4_ACE_SYSTEM_AUDIT_ACE_TYPE
 mdefine_line|#define NFS4_ACE_SYSTEM_AUDIT_ACE_TYPE   2
 DECL|macro|NFS4_ACE_SYSTEM_ALARM_ACE_TYPE
 mdefine_line|#define NFS4_ACE_SYSTEM_ALARM_ACE_TYPE   3
+DECL|member|data
 DECL|typedef|nfs4_verifier
 r_typedef
+r_struct
+(brace
 r_char
-id|nfs4_verifier
+id|data
 (braket
 id|NFS4_VERIFIER_SIZE
 )braket
 suffix:semicolon
+)brace
+id|nfs4_verifier
+suffix:semicolon
+DECL|member|data
 DECL|typedef|nfs4_stateid
 r_typedef
+r_struct
+(brace
 r_char
-id|nfs4_stateid
+id|data
 (braket
 l_int|16
 )braket
+suffix:semicolon
+)brace
+id|nfs4_stateid
 suffix:semicolon
 DECL|enum|nfs_opnum4
 r_enum

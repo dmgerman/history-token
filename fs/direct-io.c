@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * fs/direct-io.c&n; *&n; * Copyright (C) 2002, Linus Torvalds.&n; *&n; * O_DIRECT&n; *&n; * 04Jul2002&t;akpm@zip.com.au&n; *&t;&t;Initial version&n; * 11Sep2002&t;janetinc@us.ibm.com&n; * &t;&t;added readv/writev support.&n; * 29Oct2002&t;akpm@zip.com.au&n; *&t;&t;rewrote bio_add_page() support.&n; * 30Oct2002&t;pbadari@us.ibm.com&n; *&t;&t;added support for non-aligned IO.&n; * 06Nov2002&t;pbadari@us.ibm.com&n; *&t;&t;added asynchronous IO support.&n; * 21Jul2003&t;nathans@sgi.com&n; *&t;&t;added IO completion notifier.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -3519,4 +3520,11 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|blockdev_direct_IO
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|blockdev_direct_IO
+)paren
+suffix:semicolon
 eof

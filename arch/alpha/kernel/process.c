@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/arch/alpha/kernel/process.c&n; *&n; *  Copyrigh
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -435,6 +436,13 @@ id|restart_cmd
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_restart
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_restart
+)paren
+suffix:semicolon
 r_void
 DECL|function|machine_halt
 id|machine_halt
@@ -452,6 +460,13 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_halt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_halt
+)paren
+suffix:semicolon
 r_void
 DECL|function|machine_power_off
 id|machine_power_off
@@ -469,6 +484,13 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_power_off
+)paren
+suffix:semicolon
 multiline_comment|/* Used by sysrq-p, among others.  I don&squot;t believe r9-r15 are ever&n;   saved in the context it&squot;s used.  */
 r_void
 DECL|function|show_regs

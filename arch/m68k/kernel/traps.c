@@ -4275,6 +4275,13 @@ id|stack
 )paren
 suffix:semicolon
 )brace
+DECL|variable|dump_stack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dump_stack
+)paren
+suffix:semicolon
 DECL|function|bad_super_trap
 r_void
 id|bad_super_trap

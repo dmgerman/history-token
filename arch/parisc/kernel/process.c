@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -45,6 +46,13 @@ id|hlt_counter
 op_increment
 suffix:semicolon
 )brace
+DECL|variable|disable_hlt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|disable_hlt
+)paren
+suffix:semicolon
 DECL|function|enable_hlt
 r_void
 id|enable_hlt
@@ -57,6 +65,13 @@ id|hlt_counter
 op_decrement
 suffix:semicolon
 )brace
+DECL|variable|enable_hlt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|enable_hlt
+)paren
+suffix:semicolon
 DECL|function|default_idle
 r_void
 id|default_idle
@@ -179,6 +194,13 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_restart
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_restart
+)paren
+suffix:semicolon
 DECL|function|machine_halt
 r_void
 id|machine_halt
@@ -189,6 +211,13 @@ r_void
 (brace
 multiline_comment|/*&n;&t;** The LED/ChassisCodes are updated by the led_halt()&n;&t;** function, called by the reboot notifier chain.&n;&t;*/
 )brace
+DECL|variable|machine_halt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_halt
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This routine is called from sys_reboot to actually turn off the&n; * machine &n; */
 DECL|function|machine_power_off
 r_void
@@ -235,6 +264,13 @@ l_string|&quot;Please power this system off now.&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_power_off
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Create a kernel thread&n; */
 r_extern
 id|pid_t

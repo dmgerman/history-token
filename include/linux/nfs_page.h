@@ -3,7 +3,7 @@ macro_line|#ifndef _LINUX_NFS_PAGE_H
 DECL|macro|_LINUX_NFS_PAGE_H
 mdefine_line|#define _LINUX_NFS_PAGE_H
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
@@ -43,6 +43,12 @@ r_struct
 id|rpc_cred
 op_star
 id|wb_cred
+suffix:semicolon
+DECL|member|wb_state
+r_struct
+id|nfs4_state
+op_star
+id|wb_state
 suffix:semicolon
 DECL|member|wb_page
 r_struct
@@ -103,7 +109,7 @@ id|nfs_create_request
 c_func
 (paren
 r_struct
-id|rpc_cred
+id|file
 op_star
 comma
 r_struct
@@ -470,6 +476,34 @@ id|nfs_page
 comma
 id|wb_list
 )paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+DECL|function|req_offset
+id|loff_t
+id|req_offset
+c_func
+(paren
+r_struct
+id|nfs_page
+op_star
+id|req
+)paren
+(brace
+r_return
+(paren
+(paren
+(paren
+id|loff_t
+)paren
+id|req-&gt;wb_index
+)paren
+op_lshift
+id|PAGE_CACHE_SHIFT
+)paren
+op_plus
+id|req-&gt;wb_offset
 suffix:semicolon
 )brace
 macro_line|#endif /* _LINUX_NFS_PAGE_H */

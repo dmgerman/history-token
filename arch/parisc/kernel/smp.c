@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -79,6 +80,13 @@ suffix:semicolon
 multiline_comment|/* Bitmap of online CPUs */
 DECL|macro|IS_LOGGED_IN
 mdefine_line|#define IS_LOGGED_IN(cpunum) (cpu_isset(cpunum, cpu_online_map))
+DECL|variable|cpu_online_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_online_map
+)paren
+suffix:semicolon
 DECL|variable|smp_num_cpus
 r_int
 id|smp_num_cpus
@@ -108,6 +116,13 @@ multiline_comment|/* Command line */
 DECL|variable|cpu_present_mask
 id|cpumask_t
 id|cpu_present_mask
+suffix:semicolon
+DECL|variable|cpu_present_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_present_mask
+)paren
 suffix:semicolon
 DECL|struct|smp_call_struct
 r_struct

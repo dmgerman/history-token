@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/arch/h8300/platform/h8300h/ints.c&n; *&n; * Yoshinori Sato &lt;ysato@users.sourceforge.jp&gt;&n; *&n; * Based on linux/arch/$(ARCH)/platform/$(PLATFORM)/ints.c&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; *&n; * Copyright 1996 Roman Zippel&n; * Copyright 1999 D. Jeff Dionne &lt;jeff@rt-control.com&gt;&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -686,6 +687,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|request_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_irq
+)paren
+suffix:semicolon
 DECL|function|free_irq
 r_void
 id|free_irq
@@ -812,6 +820,13 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+DECL|variable|free_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_irq
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Do we need these probe functions on the m68k?&n; */
 DECL|function|probe_irq_on
 r_int
@@ -825,6 +840,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_on
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_on
+)paren
+suffix:semicolon
 DECL|function|probe_irq_off
 r_int
 id|probe_irq_off
@@ -838,6 +860,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_off
+)paren
+suffix:semicolon
 DECL|function|enable_irq
 r_void
 id|enable_irq

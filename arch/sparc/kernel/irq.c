@@ -1,5 +1,6 @@
 multiline_comment|/*  $Id: irq.c,v 1.114 2001/12/11 04:55:51 davem Exp $&n; *  arch/sparc/kernel/irq.c:  Interrupt request handling routines. On the&n; *                            Sparc the IRQ&squot;s are basically &squot;cast in stone&squot;&n; *                            and you are supposed to probe the prom&squot;s device&n; *                            node trees to find out who&squot;s got which IRQ.&n; *&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1995 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *  Copyright (C) 1995,2002 Pete A. Zaitcev (zaitcev@yahoo.com)&n; *  Copyright (C) 1996 Dave Redman (djhr@tadpole.co.uk)&n; *  Copyright (C) 1998-2000 Anton Blanchard (anton@samba.org)&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -695,6 +696,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|free_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_irq
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Who has the global irq brlock */
 DECL|variable|global_irq_holder
@@ -2479,6 +2487,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|request_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|request_irq
+)paren
+suffix:semicolon
 multiline_comment|/* We really don&squot;t need these at all on the Sparc.  We only have&n; * stubs here because they are exported to modules.&n; */
 DECL|function|probe_irq_on
 r_int
@@ -2493,6 +2508,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_on
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_on
+)paren
+suffix:semicolon
 DECL|function|probe_irq_off
 r_int
 id|probe_irq_off
@@ -2507,6 +2529,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|probe_irq_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_off
+)paren
+suffix:semicolon
 multiline_comment|/* djhr&n; * This could probably be made indirect too and assigned in the CPU&n; * bits of the code. That would be much nicer I think and would also&n; * fit in with the idea of being able to tune your kernel for your machine&n; * by removing unrequired machine and device support.&n; *&n; */
 DECL|function|init_IRQ
 r_void
