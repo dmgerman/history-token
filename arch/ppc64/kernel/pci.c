@@ -2316,6 +2316,15 @@ op_plus
 l_int|4
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|size
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
 r_switch
 c_cond
 (paren
