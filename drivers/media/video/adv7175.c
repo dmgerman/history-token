@@ -589,6 +589,20 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+id|client
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|client
+)paren
+)paren
+suffix:semicolon
 id|client_template.adapter
 op_assign
 id|adap
@@ -718,12 +732,14 @@ op_assign
 id|unknown_name
 suffix:semicolon
 )brace
-id|strcpy
+id|strncpy
 c_func
 (paren
-id|client-&gt;name
+id|client-&gt;dev.name
 comma
 id|dname
+comma
+id|DEVICE_NAME_SIZE
 )paren
 suffix:semicolon
 id|init_MUTEX
@@ -736,6 +752,14 @@ suffix:semicolon
 id|encoder-&gt;client
 op_assign
 id|client
+suffix:semicolon
+id|i2c_set_clientdata
+c_func
+(paren
+id|client
+comma
+id|encoder
+)paren
 suffix:semicolon
 id|encoder-&gt;addr
 op_assign
@@ -795,7 +819,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s_attach: init error %d&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 comma
 id|rv
 )paren
@@ -848,7 +872,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s_attach: %s rev. %d at 0x%02x&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 comma
 id|dname
 comma
@@ -913,10 +937,10 @@ c_func
 id|client
 )paren
 suffix:semicolon
-id|kfree
+id|i2c_get_clientdata
 c_func
 (paren
-id|client-&gt;data
+id|client
 )paren
 suffix:semicolon
 id|kfree
@@ -954,7 +978,11 @@ id|adv7175
 op_star
 id|encoder
 op_assign
-id|client-&gt;data
+id|i2c_get_clientdata
+c_func
+(paren
+id|client
+)paren
 suffix:semicolon
 r_int
 id|i
@@ -1256,7 +1284,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: illegal norm: %d&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 comma
 id|iarg
 )paren
@@ -1514,7 +1542,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s: illegal input: %d&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 comma
 id|iarg
 )paren
@@ -1741,15 +1769,22 @@ id|client_template
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;adv7175_client&quot;
-comma
-dot
 id|driver
 op_assign
 op_amp
 id|i2c_driver_adv7175
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;adv7175_client&quot;
+comma
+)brace
+comma
 )brace
 suffix:semicolon
 DECL|function|adv717x_init

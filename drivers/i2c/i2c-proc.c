@@ -1,5 +1,6 @@
 multiline_comment|/*&n;    i2c-proc.c - Part of lm_sensors, Linux kernel modules for hardware&n;                monitoring&n;    Copyright (c) 1998 - 2001 Frodo Looijaard &lt;frodol@dds.nl&gt; and&n;    Mark D. Studebaker &lt;mdsxyz123@yahoo.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;    This driver puts entries in /proc/sys/dev/sensors for each I2C device&n;*/
+multiline_comment|/* #define DEBUG 1 */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -2861,9 +2862,7 @@ id|j
 op_logical_or
 (paren
 (paren
-id|this_force
-op_member_access_from_pointer
-id|force
+id|this_force-&gt;force
 (braket
 id|j
 )braket
@@ -2888,18 +2887,19 @@ l_int|1
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-proc.o: found force parameter for adapter %d, addr %04x&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found force parameter for adapter %d, addr %04x&bslash;n&quot;
 comma
 id|adapter_id
 comma
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2915,9 +2915,7 @@ id|addr
 comma
 l_int|0
 comma
-id|this_force
-op_member_access_from_pointer
-id|kind
+id|this_force-&gt;kind
 )paren
 )paren
 )paren
@@ -2978,9 +2976,7 @@ id|i
 op_logical_or
 (paren
 (paren
-id|address_data
-op_member_access_from_pointer
-id|ignore
+id|address_data-&gt;ignore
 (braket
 id|i
 )braket
@@ -3005,19 +3001,19 @@ l_int|1
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-proc.o: found ignore parameter for adapter %d, &quot;
-l_string|&quot;addr %04x&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found ignore parameter for adapter %d, addr %04x&bslash;n&quot;
 comma
 id|adapter_id
 comma
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif
 id|found
 op_assign
 l_int|1
@@ -3101,19 +3097,19 @@ l_int|2
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-proc.o: found ignore_range parameter for adapter %d, &quot;
-l_string|&quot;addr %04x&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found ignore_range parameter for adapter %d, addr %04x&bslash;n&quot;
 comma
 id|adapter_id
 comma
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif
 id|found
 op_assign
 l_int|1
@@ -3169,19 +3165,19 @@ id|i
 )braket
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-proc.o: found normal isa entry for adapter %d, &quot;
-l_string|&quot;addr %04x&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found normal isa entry for adapter %d, addr %04x&bslash;n&quot;
 comma
 id|adapter_id
 comma
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif
 id|found
 op_assign
 l_int|1
@@ -3256,19 +3252,19 @@ l_int|0
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-proc.o: found normal isa_range entry for adapter %d, &quot;
-l_string|&quot;addr %04x&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found normal isa_range entry for adapter %d, addr %04x&quot;
 comma
 id|adapter_id
 comma
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif
 id|found
 op_assign
 l_int|1
@@ -3317,19 +3313,19 @@ id|found
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-proc.o: found normal i2c entry for adapter %d, &quot;
-l_string|&quot;addr %02x&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found normal i2c entry for adapter %d, addr %02x&quot;
 comma
 id|adapter_id
 comma
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_for
@@ -3380,19 +3376,19 @@ l_int|1
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-proc.o: found normal i2c_range entry for adapter %d, &quot;
-l_string|&quot;addr %04x&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found normal i2c_range entry for adapter %d, addr %04x&bslash;n&quot;
 comma
 id|adapter_id
 comma
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif
 id|found
 op_assign
 l_int|1
@@ -3466,19 +3462,19 @@ l_int|1
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-proc.o: found probe parameter for adapter %d, &quot;
-l_string|&quot;addr %04x&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found probe parameter for adapter %d, addr %04x&bslash;n&quot;
 comma
 id|adapter_id
 comma
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif
 id|found
 op_assign
 l_int|1
@@ -3564,19 +3560,19 @@ id|found
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-proc.o: found probe_range parameter for adapter %d, &quot;
-l_string|&quot;addr %04x&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found probe_range parameter for adapter %d, addr %04x&bslash;n&quot;
 comma
 id|adapter_id
 comma
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_if

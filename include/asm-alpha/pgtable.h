@@ -73,6 +73,8 @@ DECL|macro|_PAGE_DIRTY
 mdefine_line|#define _PAGE_DIRTY&t;0x20000
 DECL|macro|_PAGE_ACCESSED
 mdefine_line|#define _PAGE_ACCESSED&t;0x40000
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE&t;0x80000&t;/* pagecache or swap? */
 multiline_comment|/*&n; * NOTE! The &quot;accessed&quot; bit isn&squot;t necessarily exact:  it can be kept exactly&n; * by software (use the KRE/URE/KWE/UWE bits appropriately), but I&squot;ll fake it.&n; * Under Linux/AXP, the &quot;accessed&quot; bit just means &quot;read&quot;, and I&squot;ll just use&n; * the KRE/URE bits to watch for it. That way we don&squot;t need to overload the&n; * KWE/UWE bits with both handling dirty and accessed.&n; *&n; * Note that the kernel uses the accessed bit just to check whether to page&n; * out a page or not, so it doesn&squot;t have to be exact anyway.&n; */
 DECL|macro|__DIRTY_BITS
 mdefine_line|#define __DIRTY_BITS&t;(_PAGE_DIRTY | _PAGE_KWE | _PAGE_UWE)
@@ -808,6 +810,27 @@ op_amp
 id|_PAGE_ACCESSED
 suffix:semicolon
 )brace
+DECL|function|pte_file
+r_extern
+r_inline
+r_int
+id|pte_file
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_FILE
+suffix:semicolon
+)brace
 DECL|function|pte_wrprotect
 r_extern
 r_inline
@@ -1227,15 +1250,21 @@ id|pte
 suffix:semicolon
 )brace
 DECL|macro|__swp_type
-mdefine_line|#define __swp_type(x)&t;&t;&t;(((x).val &gt;&gt; 32) &amp; 0xff)
+mdefine_line|#define __swp_type(x)&t;&t;(((x).val &gt;&gt; 32) &amp; 0xff)
 DECL|macro|__swp_offset
-mdefine_line|#define __swp_offset(x)&t;&t;&t;((x).val &gt;&gt; 40)
+mdefine_line|#define __swp_offset(x)&t;&t;((x).val &gt;&gt; 40)
 DECL|macro|__swp_entry
-mdefine_line|#define __swp_entry(type, offset)&t;((swp_entry_t) { pte_val(mk_swap_pte((type),(offset))) })
+mdefine_line|#define __swp_entry(type, off)&t;((swp_entry_t) { pte_val(mk_swap_pte((type), (off))) })
 DECL|macro|__pte_to_swp_entry
-mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
+mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|__swp_entry_to_pte
-mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
+mdefine_line|#define __swp_entry_to_pte(x)&t;((pte_t) { (x).val })
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(pte)&t;(pte_val(pte) &gt;&gt; 32)
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(off)&t;((pte_t) { ((off) &lt;&lt; 32) | _PAGE_FILE })
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS&t;32
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)

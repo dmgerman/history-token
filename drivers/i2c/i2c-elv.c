@@ -428,11 +428,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|name
-op_assign
-l_string|&quot;ELV Parallel port adaptor&quot;
-comma
-dot
 id|id
 op_assign
 id|I2C_HW_B_ELV
@@ -442,6 +437,17 @@ id|algo_data
 op_assign
 op_amp
 id|bit_elv_data
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;ELV Parallel port adaptor&quot;
+comma
+)brace
 comma
 )brace
 suffix:semicolon
@@ -527,13 +533,18 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|bit_elv_ops.data
-op_assign
+id|i2c_set_adapdata
+c_func
+(paren
+op_amp
+id|bit_elv_ops
+comma
 (paren
 r_void
 op_star
 )paren
 id|base
+)paren
 suffix:semicolon
 r_if
 c_cond

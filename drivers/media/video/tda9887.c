@@ -1421,9 +1421,14 @@ id|t-&gt;client
 op_assign
 id|client_template
 suffix:semicolon
-id|t-&gt;client.data
-op_assign
+id|i2c_set_clientdata
+c_func
+(paren
+op_amp
+id|t-&gt;client
+comma
 id|t
+)paren
 suffix:semicolon
 id|t-&gt;pinnacle_id
 op_assign
@@ -1482,7 +1487,7 @@ c_func
 (paren
 l_string|&quot;tda9887: probing %s i2c adapter [id=0x%x]&bslash;n&quot;
 comma
-id|adap-&gt;name
+id|adap-&gt;dev.name
 comma
 id|adap-&gt;id
 )paren
@@ -1509,7 +1514,7 @@ c_func
 (paren
 l_string|&quot;tda9887: ignoring %s i2c adapter [id=0x%x]&bslash;n&quot;
 comma
-id|adap-&gt;name
+id|adap-&gt;dev.name
 comma
 id|adap-&gt;id
 )paren
@@ -1541,12 +1546,11 @@ id|tda9887
 op_star
 id|t
 op_assign
+id|i2c_get_clientdata
+c_func
 (paren
-r_struct
-id|tda9887
-op_star
+id|client
 )paren
-id|client-&gt;data
 suffix:semicolon
 id|i2c_detach_client
 c_func
@@ -1591,12 +1595,11 @@ id|tda9887
 op_star
 id|t
 op_assign
+id|i2c_get_clientdata
+c_func
 (paren
-r_struct
-id|tda9887
-op_star
+id|client
 )paren
-id|client-&gt;data
 suffix:semicolon
 r_switch
 c_cond
@@ -1763,11 +1766,6 @@ id|client_template
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;tda9887&quot;
-comma
-dot
 id|flags
 op_assign
 id|I2C_CLIENT_ALLOW_USE
@@ -1777,6 +1775,17 @@ id|driver
 op_assign
 op_amp
 id|driver
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;tda9887&quot;
+comma
+)brace
 comma
 )brace
 suffix:semicolon

@@ -4,6 +4,8 @@ multiline_comment|/*   Copyright (C) 1995-99 Simon G. Vogl&n;&n;    This program
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt;.&n;   All SMBus-related things are written by Frodo Looijaard &lt;frodol@dds.nl&gt;&n;   SMBus 2.0 support by Mark Studebaker &lt;mdsxyz123@yahoo.com&gt;                */
 multiline_comment|/* $Id: i2c-core.c,v 1.95 2003/01/22 05:25:08 kmalkki Exp $ */
+multiline_comment|/* #define DEBUG 1 */
+multiline_comment|/* needed to pick up the dev_dbg() calls */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -111,6 +113,36 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|i2c_generic_driver
+r_static
+r_struct
+id|device_driver
+id|i2c_generic_driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;i2c&quot;
+comma
+dot
+id|bus
+op_assign
+op_amp
+id|i2c_bus_type
+comma
+dot
+id|probe
+op_assign
+id|i2c_device_probe
+comma
+dot
+id|remove
+op_assign
+id|i2c_device_remove
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* ---------------------------------------------------&n; * registering functions &n; * --------------------------------------------------- &n; */
 multiline_comment|/* -----&n; * i2c_add_adapter is called from within the algorithm layer,&n; * when a new hw adapter registers. A new device is register to be&n; * available for clients.&n; */
 DECL|function|i2c_add_adapter
@@ -174,13 +206,13 @@ op_eq
 id|i
 )paren
 (brace
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot; i2c-core.o: register_adapter(%s) - enlarge I2C_ADAP_MAX.&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
 comma
-id|adap-&gt;name
+l_string|&quot;register_adapter - enlarge I2C_ADAP_MAX.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|res
@@ -254,13 +286,10 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|adap-&gt;dev.name
-comma
-l_string|&quot;i2c controller&quot;
-)paren
+id|adap-&gt;dev.driver
+op_assign
+op_amp
+id|i2c_generic_driver
 suffix:semicolon
 id|device_register
 c_func
@@ -331,13 +360,13 @@ suffix:semicolon
 id|DEB
 c_func
 (paren
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: adapter %s registered as adapter %d.&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
 comma
-id|adap-&gt;name
+l_string|&quot;registered as adapter %d.&bslash;n&quot;
 comma
 id|i
 )paren
@@ -418,13 +447,13 @@ op_eq
 id|i
 )paren
 (brace
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;i2c-core.o: unregister_adapter adap [%s] not found.&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
 comma
-id|adap-&gt;name
+l_string|&quot;unregister_adapter adap not found.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|res
@@ -489,15 +518,15 @@ id|adap
 )paren
 )paren
 (brace
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;i2c-core.o: can&squot;t detach adapter %s &quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;can&squot;t detach adapter&quot;
 l_string|&quot;while detaching driver %s: driver not &quot;
 l_string|&quot;detached!&quot;
-comma
-id|adap-&gt;name
 comma
 id|drivers
 (braket
@@ -562,15 +591,15 @@ id|client
 )paren
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-core.o: adapter %s not &quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;adapter not &quot;
 l_string|&quot;unregistered, because client at &quot;
 l_string|&quot;address %02x can&squot;t be detached. &quot;
-comma
-id|adap-&gt;name
 comma
 id|client-&gt;addr
 )paren
@@ -605,13 +634,13 @@ suffix:semicolon
 id|DEB
 c_func
 (paren
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: adapter unregistered: %s&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
 comma
-id|adap-&gt;name
+l_string|&quot;adapter unregistered&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -967,13 +996,13 @@ suffix:semicolon
 id|DEB2
 c_func
 (paren
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: examining adapter %s:&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
 comma
-id|adap-&gt;name
+l_string|&quot;examining adapter&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1002,18 +1031,18 @@ id|adap
 )paren
 )paren
 (brace
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;i2c-core.o: while unregistering &quot;
-l_string|&quot;dummy driver %s, adapter %s could &quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;while unregistering &quot;
+l_string|&quot;dummy driver %s, adapter could &quot;
 l_string|&quot;not be detached properly; driver &quot;
 l_string|&quot;not unloaded!&quot;
 comma
 id|driver-&gt;name
-comma
-id|adap-&gt;name
 )paren
 suffix:semicolon
 r_goto
@@ -1070,7 +1099,7 @@ id|KERN_DEBUG
 l_string|&quot;i2c-core.o: &quot;
 l_string|&quot;detaching client %s:&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 )paren
 )paren
 suffix:semicolon
@@ -1090,23 +1119,23 @@ id|client
 )paren
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-core.o: while &quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;while &quot;
 l_string|&quot;unregistering driver &quot;
 l_string|&quot;`%s&squot;, the client at &quot;
 l_string|&quot;address %02x of &quot;
-l_string|&quot;adapter `%s&squot; could not &quot;
+l_string|&quot;adapter could not &quot;
 l_string|&quot;be detached; driver &quot;
 l_string|&quot;not unloaded!&quot;
 comma
 id|driver-&gt;name
 comma
 id|client-&gt;addr
-comma
-id|adap-&gt;name
 )paren
 suffix:semicolon
 r_goto
@@ -1330,7 +1359,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot; i2c-core.o: attach_client(%s) - enlarge I2C_CLIENT_MAX.&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 )paren
 suffix:semicolon
 id|out_unlock_list
@@ -1380,16 +1409,16 @@ id|client
 )paren
 )paren
 (brace
-id|printk
+id|dev_warn
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: warning: client_register seems &quot;
-l_string|&quot;to have failed for client %02x at adapter %s&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;warning: client_register &quot;
+l_string|&quot;seems to have failed for client %02x&bslash;n&quot;
 comma
 id|client-&gt;addr
-comma
-id|adapter-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -1397,16 +1426,16 @@ suffix:semicolon
 id|DEB
 c_func
 (paren
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: client [%s] registered to adapter [%s] &quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;client [%s] registered to adapter &quot;
 l_string|&quot;(pos. %d).&bslash;n&quot;
 comma
-id|client-&gt;name
-comma
-id|adapter-&gt;name
+id|client-&gt;dev.name
 comma
 id|i
 )paren
@@ -1422,6 +1451,55 @@ id|I2C_CLIENT_ALLOW_USE
 id|client-&gt;usage_count
 op_assign
 l_int|0
+suffix:semicolon
+id|client-&gt;dev.parent
+op_assign
+op_amp
+id|client-&gt;adapter-&gt;dev
+suffix:semicolon
+id|client-&gt;dev.driver
+op_assign
+op_amp
+id|client-&gt;driver-&gt;driver
+suffix:semicolon
+id|client-&gt;dev.bus
+op_assign
+op_amp
+id|i2c_bus_type
+suffix:semicolon
+id|snprintf
+c_func
+(paren
+op_amp
+id|client-&gt;dev.bus_id
+(braket
+l_int|0
+)braket
+comma
+r_sizeof
+(paren
+id|client-&gt;dev.bus_id
+)paren
+comma
+l_string|&quot;i2c_dev_%d&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;registering %s&bslash;n&quot;
+comma
+id|client-&gt;dev.bus_id
+)paren
+suffix:semicolon
+id|device_register
+c_func
+(paren
+op_amp
+id|client-&gt;dev
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -1500,7 +1578,7 @@ id|KERN_ERR
 l_string|&quot;i2c-core.o: client_unregister [%s] failed, &quot;
 l_string|&quot;client not detached&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 )paren
 suffix:semicolon
 r_goto
@@ -1559,7 +1637,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot; i2c-core.o: unregister_client [%s] not found&bslash;n&quot;
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 )paren
 suffix:semicolon
 id|res
@@ -1569,6 +1647,13 @@ id|ENODEV
 suffix:semicolon
 id|out_unlock
 suffix:colon
+id|device_unregister
+c_func
+(paren
+op_amp
+id|client-&gt;dev
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -2087,7 +2172,7 @@ l_string|&quot;%02x&bslash;t%-32s&bslash;t%-32s&bslash;n&quot;
 comma
 id|client-&gt;addr
 comma
-id|client-&gt;name
+id|client-&gt;dev.name
 comma
 id|client-&gt;driver-&gt;name
 )paren
@@ -2309,7 +2394,7 @@ id|s
 comma
 l_string|&quot;&bslash;t%-32s&bslash;t%-32s&bslash;n&quot;
 comma
-id|adapter-&gt;name
+id|adapter-&gt;dev.name
 comma
 id|adapter-&gt;algo-&gt;name
 )paren
@@ -2704,7 +2789,7 @@ id|i2c_bus_type
 suffix:semicolon
 )brace
 DECL|variable|i2c_init
-id|module_init
+id|subsys_initcall
 c_func
 (paren
 id|i2c_init
@@ -2750,13 +2835,13 @@ id|adap-&gt;algo-&gt;master_xfer
 id|DEB2
 c_func
 (paren
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: master_xfer: %s with %d msgs.&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
 comma
-id|adap-&gt;name
+l_string|&quot;master_xfer: with %d msgs.&bslash;n&quot;
 comma
 id|num
 )paren
@@ -2796,13 +2881,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-core.o: I2C adapter %04x: I2C level transfers not supported&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
 comma
-id|adap-&gt;id
+l_string|&quot;I2C level transfers not supported&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2876,15 +2961,15 @@ suffix:semicolon
 id|DEB2
 c_func
 (paren
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: master_send: writing %d bytes on %s.&bslash;n&quot;
+op_amp
+id|client-&gt;adapter-&gt;dev
+comma
+l_string|&quot;master_send: writing %d bytes.&bslash;n&quot;
 comma
 id|count
-comma
-id|client-&gt;adapter-&gt;name
 )paren
 )paren
 suffix:semicolon
@@ -3011,15 +3096,15 @@ suffix:semicolon
 id|DEB2
 c_func
 (paren
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: master_recv: reading %d bytes on %s.&bslash;n&quot;
+op_amp
+id|client-&gt;adapter-&gt;dev
+comma
+l_string|&quot;master_recv: reading %d bytes.&bslash;n&quot;
 comma
 id|count
-comma
-id|client-&gt;adapter-&gt;name
 )paren
 )paren
 suffix:semicolon
