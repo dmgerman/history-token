@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Routines for driver control interface&n; *  Copyright
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;

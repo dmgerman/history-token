@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu10k1.h&gt;
+macro_line|#include &lt;sound/pcm_sgbuf.h&gt;
 DECL|macro|chip_t
 mdefine_line|#define chip_t emu10k1_t
 DECL|function|snd_emu10k1_pcm_interrupt
@@ -2022,7 +2023,7 @@ c_cond
 (paren
 id|err
 op_assign
-id|snd_pcm_lib_malloc_pages
+id|snd_pcm_sgbuf_alloc
 c_func
 (paren
 id|substream
@@ -2075,9 +2076,12 @@ c_func
 (paren
 id|emu
 comma
-id|runtime-&gt;dma_addr
-comma
-id|runtime-&gt;dma_bytes
+(paren
+r_struct
+id|snd_sg_buf
+op_star
+)paren
+id|substream-&gt;dma_private
 )paren
 suffix:semicolon
 r_if
@@ -2285,7 +2289,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|snd_pcm_lib_free_pages
+id|snd_pcm_sgbuf_free
 c_func
 (paren
 id|substream
@@ -4367,6 +4371,36 @@ c_cond
 (paren
 id|err
 op_assign
+id|snd_pcm_sgbuf_init
+c_func
+(paren
+id|substream
+comma
+id|emu-&gt;pci
+comma
+l_int|32
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|snd_magic_kfree
+c_func
+(paren
+id|epcm
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
 id|snd_pcm_hw_constraint_integer
 c_func
 (paren
@@ -4586,6 +4620,12 @@ suffix:semicolon
 id|mix-&gt;epcm
 op_assign
 l_int|NULL
+suffix:semicolon
+id|snd_pcm_sgbuf_delete
+c_func
+(paren
+id|substream
+)paren
 suffix:semicolon
 id|snd_emu10k1_pcm_mixer_notify
 c_func
@@ -5254,6 +5294,18 @@ id|pointer
 suffix:colon
 id|snd_emu10k1_playback_pointer
 comma
+id|copy
+suffix:colon
+id|snd_pcm_sgbuf_ops_copy_playback
+comma
+id|silence
+suffix:colon
+id|snd_pcm_sgbuf_ops_silence
+comma
+id|page
+suffix:colon
+id|snd_pcm_sgbuf_ops_page
+comma
 )brace
 suffix:semicolon
 DECL|variable|snd_emu10k1_capture_ops
@@ -5324,12 +5376,6 @@ suffix:semicolon
 id|emu-&gt;pcm
 op_assign
 l_int|NULL
-suffix:semicolon
-id|snd_pcm_lib_preallocate_free_for_all
-c_func
-(paren
-id|pcm
-)paren
 suffix:semicolon
 )brace
 DECL|function|snd_emu10k1_pcm
@@ -5446,22 +5492,6 @@ suffix:semicolon
 id|emu-&gt;pcm
 op_assign
 id|pcm
-suffix:semicolon
-id|snd_pcm_lib_preallocate_pci_pages_for_all
-c_func
-(paren
-id|emu-&gt;pci
-comma
-id|pcm
-comma
-l_int|64
-op_star
-l_int|1024
-comma
-l_int|128
-op_star
-l_int|1024
-)paren
 suffix:semicolon
 r_if
 c_cond

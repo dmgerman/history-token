@@ -129,6 +129,8 @@ DECL|macro|snd_pcm_oss_file_t_magic
 mdefine_line|#define snd_pcm_oss_file_t_magic&t;&t;0xa15a0105
 DECL|macro|snd_mixer_oss_t_magic
 mdefine_line|#define snd_mixer_oss_t_magic&t;&t;&t;0xa15a0106
+DECL|macro|snd_pcm_sgbuf_t_magic
+mdefine_line|#define snd_pcm_sgbuf_t_magic&t;&t;&t;0xa15a0107
 DECL|macro|snd_info_private_data_t_magic
 mdefine_line|#define snd_info_private_data_t_magic&t;&t;0xa15a0201
 DECL|macro|snd_ctl_file_t_magic

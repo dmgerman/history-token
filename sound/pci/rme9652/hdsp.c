@@ -3155,28 +3155,13 @@ op_le
 l_int|0
 )paren
 (brace
-id|printk
-(paren
-l_string|&quot;removing timer because there is nothing to do&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|del_timer
 c_func
 (paren
 op_amp
 id|hmidi-&gt;timer
 )paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;not removed&bslash;n&quot;
-)paren
 suffix:semicolon
-)brace
 )brace
 )brace
 id|spin_unlock_irqrestore
@@ -3599,11 +3584,6 @@ l_int|1
 op_plus
 id|jiffies
 suffix:semicolon
-id|printk
-(paren
-l_string|&quot;add timer from output trigger&bslash;n&quot;
-)paren
-suffix:semicolon
 id|add_timer
 c_func
 (paren
@@ -3629,27 +3609,12 @@ op_le
 l_int|0
 )paren
 (brace
-id|printk
-(paren
-l_string|&quot;remove timer in trigger off&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|del_timer
 (paren
 op_amp
 id|hmidi-&gt;timer
 )paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;not removed&bslash;n&quot;
-)paren
 suffix:semicolon
-)brace
 )brace
 )brace
 id|spin_unlock_irqrestore
@@ -11418,7 +11383,7 @@ c_cond
 (paren
 id|r-&gt;max
 OL
-l_int|88200
+l_int|64000
 )paren
 (brace
 id|snd_interval_t
@@ -11515,7 +11480,7 @@ op_assign
 (brace
 id|min
 suffix:colon
-l_int|44100
+l_int|32000
 comma
 id|max
 suffix:colon
@@ -11553,7 +11518,7 @@ op_assign
 (brace
 id|min
 suffix:colon
-l_int|88200
+l_int|64000
 comma
 id|max
 suffix:colon
