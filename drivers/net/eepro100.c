@@ -7,7 +7,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;eepro100.c:v1.09j-t 9/29/99 Donald Becker http://cesdis.gsfc.nasa.gov/linux/drivers/eepro100.html&bslash;n&quot;
+l_string|&quot;eepro100.c:v1.09j-t 9/29/99 Donald Becker http://www.scyld.com/network/eepro100.html&bslash;n&quot;
 l_string|&quot;eepro100.c: $Revision: 1.36 $ 2000/11/17 Modified by Andrey V. Savochkin &lt;saw@saw.sw.com.sg&gt; and others&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* A few user-configurable values that apply to all boards.&n;   First set is undocumented and spelled per Intel recommendations. */
@@ -9589,10 +9589,6 @@ r_case
 id|SIOCGMIIPHY
 suffix:colon
 multiline_comment|/* Get address of MII PHY in use. */
-r_case
-id|SIOCDEVPRIVATE
-suffix:colon
-multiline_comment|/* for binary compat, remove in 2.5 */
 id|data-&gt;phy_id
 op_assign
 id|phy
@@ -9601,12 +9597,6 @@ r_case
 id|SIOCGMIIREG
 suffix:colon
 multiline_comment|/* Read MII PHY register. */
-r_case
-id|SIOCDEVPRIVATE
-op_plus
-l_int|1
-suffix:colon
-multiline_comment|/* for binary compat, remove in 2.5 */
 multiline_comment|/* FIXME: these operations need to be serialized with MDIO&n;&t;&t;   access from the timeout handler.&n;&t;&t;   They are currently serialized only with MDIO access from the&n;&t;&t;   timer routine.  2000/05/09 SAW */
 id|saved_acpi
 op_assign
@@ -9671,12 +9661,6 @@ r_case
 id|SIOCSMIIREG
 suffix:colon
 multiline_comment|/* Write MII PHY register. */
-r_case
-id|SIOCDEVPRIVATE
-op_plus
-l_int|2
-suffix:colon
-multiline_comment|/* for binary compat, remove in 2.5 */
 r_if
 c_cond
 (paren
