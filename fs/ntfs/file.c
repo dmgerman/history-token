@@ -70,6 +70,14 @@ op_assign
 id|generic_file_read
 comma
 multiline_comment|/* Read from file. */
+macro_line|#ifdef NTFS_RW
+dot
+id|write
+op_assign
+id|generic_file_write
+comma
+multiline_comment|/* Write to a file. */
+macro_line|#endif
 dot
 id|mmap
 op_assign
@@ -96,6 +104,18 @@ id|inode_operations
 id|ntfs_file_inode_ops
 op_assign
 (brace
+macro_line|#ifdef NTFS_RW
+dot
+id|truncate
+op_assign
+id|ntfs_truncate
+comma
+dot
+id|setattr
+op_assign
+id|ntfs_setattr
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|ntfs_empty_file_ops

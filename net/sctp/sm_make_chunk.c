@@ -4764,7 +4764,7 @@ c_func
 (paren
 id|param.p-&gt;length
 )paren
-op_assign
+op_minus
 r_sizeof
 (paren
 id|sctp_paramhdr_t

@@ -259,6 +259,14 @@ op_star
 id|ignored
 )paren
 suffix:semicolon
+r_static
+r_void
+id|__init
+id|con_init_devfs
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|variable|printable
 r_static
 r_int
@@ -12014,6 +12022,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|con_init_devfs
+c_func
+(paren
+)paren
+suffix:semicolon
 id|vcs_init
 c_func
 (paren
@@ -12476,6 +12489,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* We can&squot;t register the console with devfs during con_init(), because it&n; * is called before kmalloc() works.  This function is called later to&n; * do the registration.&n; */
 DECL|function|con_init_devfs
+r_static
 r_void
 id|__init
 id|con_init_devfs

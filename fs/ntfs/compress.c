@@ -2006,7 +2006,7 @@ c_func
 id|tbh
 )paren
 suffix:semicolon
-multiline_comment|/*      &n;&t;&t; * We need an optimization barrier here, otherwise we start&n;&t;&t; * hitting the below fixup code when accessing a loopback&n;&t;&t; * mounted ntfs partition. This indicates either there is a&n;&t;&t; * race condition in the loop driver or, more likely, gcc&n;&t;&t; * overoptimises the code without the barrier and it doesn&squot;t &n;&t;&t; * do the Right Thing(TM).&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We need an optimization barrier here, otherwise we start&n;&t;&t; * hitting the below fixup code when accessing a loopback&n;&t;&t; * mounted ntfs partition. This indicates either there is a&n;&t;&t; * race condition in the loop driver or, more likely, gcc&n;&t;&t; * overoptimises the code without the barrier and it doesn&squot;t&n;&t;&t; * do the Right Thing(TM).&n;&t;&t; */
 id|barrier
 c_func
 (paren
