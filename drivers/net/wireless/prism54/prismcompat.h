@@ -15,6 +15,10 @@ macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#if !defined(CONFIG_FW_LOADER) &amp;&amp; !defined(CONFIG_FW_LOADER_MODULE)
 macro_line|#error Firmware Loading is not configured in the kernel !
 macro_line|#endif
+macro_line|#ifndef __iomem
+DECL|macro|__iomem
+mdefine_line|#define __iomem
+macro_line|#endif
 DECL|macro|prism54_synchronize_irq
 mdefine_line|#define prism54_synchronize_irq(irq) synchronize_irq(irq)
 DECL|macro|PRISM_FW_PDEV
