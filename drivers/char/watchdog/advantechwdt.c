@@ -412,7 +412,7 @@ op_star
 id|file
 )paren
 (brace
-r_switch
+r_if
 c_cond
 (paren
 id|minor
@@ -420,11 +420,10 @@ c_func
 (paren
 id|inode-&gt;i_rdev
 )paren
+op_assign
+id|WATCHDOG_MINOR
 )paren
 (brace
-r_case
-id|WATCHDOG_MINOR
-suffix:colon
 id|spin_lock
 c_func
 (paren
@@ -455,11 +454,9 @@ c_cond
 (paren
 id|nowayout
 )paren
-(brace
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t;&t; *&t;Activate &n;&t;&t;&t; */
+multiline_comment|/* Activate */
 id|advwdt_is_open
 op_assign
 l_int|1
@@ -479,8 +476,9 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-r_default
-suffix:colon
+)brace
+r_else
+(brace
 r_return
 op_minus
 id|ENODEV
@@ -529,14 +527,12 @@ c_cond
 op_logical_neg
 id|nowayout
 )paren
-(brace
 id|inb_p
 c_func
 (paren
 id|WDT_STOP
 )paren
 suffix:semicolon
-)brace
 id|advwdt_is_open
 op_assign
 l_int|0
@@ -585,7 +581,6 @@ id|code
 op_eq
 id|SYS_HALT
 )paren
-(brace
 multiline_comment|/* Turn the WDT off */
 id|inb_p
 c_func
@@ -593,7 +588,6 @@ c_func
 id|WDT_STOP
 )paren
 suffix:semicolon
-)brace
 r_return
 id|NOTIFY_DONE
 suffix:semicolon
@@ -645,10 +639,19 @@ id|miscdevice
 id|advwdt_miscdev
 op_assign
 (brace
+dot
+id|minor
+op_assign
 id|WATCHDOG_MINOR
 comma
+dot
+id|name
+op_assign
 l_string|&quot;watchdog&quot;
 comma
+dot
+id|fops
+op_assign
 op_amp
 id|advwdt_fops
 )brace
@@ -661,10 +664,19 @@ id|notifier_block
 id|advwdt_notifier
 op_assign
 (brace
+dot
+id|self
+op_assign
 id|advwdt_notify_sys
 comma
+dot
+id|next
+op_assign
 l_int|NULL
 comma
+dot
+id|priority
+op_assign
 l_int|0
 )brace
 suffix:semicolon
@@ -883,5 +895,4 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* end of advantechwdt.c */
 eof
