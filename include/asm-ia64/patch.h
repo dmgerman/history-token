@@ -73,9 +73,7 @@ r_extern
 r_void
 id|ia64_patch_gate
 (paren
-id|Elf64_Ehdr
-op_star
-id|ehdr
+r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* _ASM_IA64_PATCH_H */
