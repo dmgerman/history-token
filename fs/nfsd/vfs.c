@@ -3555,6 +3555,8 @@ comma
 id|dchild
 comma
 id|iap-&gt;ia_mode
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_break
@@ -4143,6 +4145,8 @@ comma
 id|dchild
 comma
 id|iap-&gt;ia_mode
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

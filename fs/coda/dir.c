@@ -33,6 +33,11 @@ r_new
 comma
 r_int
 id|mode
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 suffix:semicolon
 r_static
@@ -892,6 +897,11 @@ id|de
 comma
 r_int
 id|mode
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_int

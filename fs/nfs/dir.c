@@ -101,6 +101,10 @@ id|dentry
 op_star
 comma
 r_int
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -3340,6 +3344,11 @@ id|dentry
 comma
 r_int
 id|mode
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_struct

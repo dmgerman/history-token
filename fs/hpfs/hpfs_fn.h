@@ -2014,6 +2014,10 @@ id|dentry
 op_star
 comma
 r_int
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 r_int

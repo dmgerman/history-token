@@ -4401,6 +4401,11 @@ id|dentry
 comma
 r_int
 id|mode
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_int
@@ -4482,6 +4487,8 @@ comma
 id|dentry
 comma
 id|mode
+comma
+id|nd
 )paren
 suffix:semicolon
 r_if
@@ -5096,6 +5103,8 @@ comma
 id|dentry
 comma
 id|mode
+comma
+id|nd
 )paren
 suffix:semicolon
 id|up
@@ -5921,6 +5930,9 @@ comma
 id|dentry
 comma
 id|mode
+comma
+op_amp
+id|nd
 )paren
 suffix:semicolon
 r_break

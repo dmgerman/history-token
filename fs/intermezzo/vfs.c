@@ -2305,6 +2305,8 @@ comma
 id|dentry
 comma
 id|mode
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
