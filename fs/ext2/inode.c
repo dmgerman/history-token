@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
 macro_line|#include &quot;ext2.h&quot;
@@ -5429,6 +5430,7 @@ suffix:semicolon
 DECL|function|ext2_write_inode
 r_void
 id|ext2_write_inode
+c_func
 (paren
 r_struct
 id|inode
@@ -5440,6 +5442,7 @@ id|wait
 )paren
 (brace
 id|ext2_update_inode
+c_func
 (paren
 id|inode
 comma
@@ -5450,6 +5453,7 @@ suffix:semicolon
 DECL|function|ext2_sync_inode
 r_int
 id|ext2_sync_inode
+c_func
 (paren
 r_struct
 id|inode
@@ -5457,12 +5461,32 @@ op_star
 id|inode
 )paren
 (brace
+r_struct
+id|writeback_control
+id|wbc
+op_assign
+(brace
+dot
+id|sync_mode
+op_assign
+id|WB_SYNC_ALL
+comma
+dot
+id|nr_to_write
+op_assign
+l_int|0
+comma
+multiline_comment|/* sys_fsync did this */
+)brace
+suffix:semicolon
 r_return
-id|ext2_update_inode
+id|sync_inode
+c_func
 (paren
 id|inode
 comma
-l_int|1
+op_amp
+id|wbc
 )paren
 suffix:semicolon
 )brace
