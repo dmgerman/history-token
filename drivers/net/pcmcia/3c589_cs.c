@@ -564,7 +564,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|el3_interrupt
 c_func
 (paren
@@ -3829,7 +3829,7 @@ suffix:semicolon
 multiline_comment|/* The EL3 interrupt handler. */
 DECL|function|el3_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|el3_interrupt
 c_func
 (paren
@@ -3870,6 +3870,10 @@ r_int
 id|i
 op_assign
 l_int|0
+comma
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -3882,6 +3886,7 @@ id|dev
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|ioaddr
 op_assign
@@ -3939,14 +3944,6 @@ id|StatsFull
 r_if
 c_cond
 (paren
-op_logical_neg
-id|netif_device_present
-c_func
-(paren
-id|dev
-)paren
-op_logical_or
-(paren
 (paren
 id|status
 op_amp
@@ -3954,7 +3951,6 @@ l_int|0xe000
 )paren
 op_ne
 l_int|0x2000
-)paren
 )paren
 (brace
 id|DEBUG
@@ -3966,6 +3962,10 @@ l_string|&quot;%s: interrupt from dead card&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
+suffix:semicolon
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -4293,6 +4293,11 @@ id|EL3_STATUS
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 DECL|function|media_check
