@@ -2,7 +2,6 @@ multiline_comment|/*&n;    amd756.c - Part of lm_sensors, Linux kernel modules f
 multiline_comment|/*&n;    2002-04-08: Added nForce support. (Csaba Halasz)&n;    2002-10-03: Fixed nForce PnP I/O port. (Michael Steil)&n;    2002-12-28: Rewritten into something that resembles a Linux driver (hch)&n;*/
 multiline_comment|/*&n;   Supports AMD756, AMD766, AMD768 and nVidia nForce&n;   Note: we assume there can only be one device, with one SMBus interface.&n;*/
 multiline_comment|/* #define DEBUG 1 */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
