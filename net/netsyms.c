@@ -2772,13 +2772,6 @@ c_func
 id|register_gifconf
 )paren
 suffix:semicolon
-DECL|variable|net_call_rx_atomic
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|net_call_rx_atomic
-)paren
-suffix:semicolon
 DECL|variable|softnet_data
 id|EXPORT_SYMBOL
 c_func
