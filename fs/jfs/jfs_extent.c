@@ -1,5 +1,6 @@
-multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2003&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2004&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_superblock.h&quot;
 macro_line|#include &quot;jfs_dmap.h&quot;
@@ -309,6 +310,50 @@ id|rc
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Allocate blocks to quota. */
+r_if
+c_cond
+(paren
+id|DQUOT_ALLOC_BLOCK
+c_func
+(paren
+id|ip
+comma
+id|nxlen
+)paren
+)paren
+(brace
+id|dbFree
+c_func
+(paren
+id|ip
+comma
+id|nxaddr
+comma
+(paren
+id|s64
+)paren
+id|nxlen
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|JFS_IP
+c_func
+(paren
+id|ip
+)paren
+op_member_access_from_pointer
+id|commit_sem
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EDQUOT
+suffix:semicolon
+)brace
 multiline_comment|/* determine the value of the extent flag */
 id|xflag
 op_assign
@@ -394,6 +439,14 @@ comma
 id|nxlen
 )paren
 suffix:semicolon
+id|DQUOT_FREE_BLOCK
+c_func
+(paren
+id|ip
+comma
+id|nxlen
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -413,17 +466,6 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* update the number of blocks allocated to the file */
-id|ip-&gt;i_blocks
-op_add_assign
-id|LBLK2PBLK
-c_func
-(paren
-id|ip-&gt;i_sb
-comma
-id|nxlen
-)paren
-suffix:semicolon
 multiline_comment|/* set the results of the extent allocation */
 id|XADaddress
 c_func
@@ -685,6 +727,50 @@ id|nxaddr
 r_goto
 m_exit
 suffix:semicolon
+multiline_comment|/* Allocat blocks to quota. */
+r_if
+c_cond
+(paren
+id|DQUOT_ALLOC_BLOCK
+c_func
+(paren
+id|ip
+comma
+id|nxlen
+)paren
+)paren
+(brace
+id|dbFree
+c_func
+(paren
+id|ip
+comma
+id|nxaddr
+comma
+(paren
+id|s64
+)paren
+id|nxlen
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|JFS_IP
+c_func
+(paren
+id|ip
+)paren
+op_member_access_from_pointer
+id|commit_sem
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EDQUOT
+suffix:semicolon
+)brace
 id|delta
 op_assign
 id|nxlen
@@ -802,6 +888,14 @@ comma
 id|delta
 )paren
 suffix:semicolon
+id|DQUOT_FREE_BLOCK
+c_func
+(paren
+id|ip
+comma
+id|nxlen
+)paren
+suffix:semicolon
 r_goto
 m_exit
 suffix:semicolon
@@ -843,6 +937,14 @@ c_func
 id|ip
 comma
 id|nxaddr
+comma
+id|nxlen
+)paren
+suffix:semicolon
+id|DQUOT_FREE_BLOCK
+c_func
+(paren
+id|ip
 comma
 id|nxlen
 )paren
@@ -920,17 +1022,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* update the inode with the number of blocks allocated */
-id|ip-&gt;i_blocks
-op_add_assign
-id|LBLK2PBLK
-c_func
-(paren
-id|sb
-comma
-id|delta
-)paren
-suffix:semicolon
 multiline_comment|/* set the return results */
 id|XADaddress
 c_func

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2004&n; *   Portions Copyright (C) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_superblock.h&quot;
 macro_line|#include &quot;jfs_inode.h&quot;
@@ -379,14 +380,6 @@ id|btstack
 )paren
 )paren
 (brace
-id|jfs_err
-c_func
-(paren
-l_string|&quot;jfs_create: dtInsert returned %d&quot;
-comma
-id|rc
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -395,6 +388,13 @@ op_eq
 op_minus
 id|EIO
 )paren
+(brace
+id|jfs_err
+c_func
+(paren
+l_string|&quot;jfs_create: dtInsert returned -EIO&quot;
+)paren
+suffix:semicolon
 id|txAbort
 c_func
 (paren
@@ -404,6 +404,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Marks Filesystem dirty */
+)brace
 r_else
 id|txAbort
 c_func
@@ -870,14 +871,6 @@ id|btstack
 )paren
 )paren
 (brace
-id|jfs_err
-c_func
-(paren
-l_string|&quot;jfs_mkdir: dtInsert returned %d&quot;
-comma
-id|rc
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -886,6 +879,13 @@ op_eq
 op_minus
 id|EIO
 )paren
+(brace
+id|jfs_err
+c_func
+(paren
+l_string|&quot;jfs_mkdir: dtInsert returned -EIO&quot;
+)paren
+suffix:semicolon
 id|txAbort
 c_func
 (paren
@@ -895,6 +895,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Marks Filesystem dirty */
+)brace
 r_else
 id|txAbort
 c_func
@@ -1144,6 +1145,13 @@ comma
 id|dip
 comma
 id|dentry-&gt;d_name.name
+)paren
+suffix:semicolon
+multiline_comment|/* Init inode for quota operations. */
+id|DQUOT_INIT
+c_func
+(paren
+id|ip
 )paren
 suffix:semicolon
 multiline_comment|/* directory must be empty to be removed */
@@ -1642,6 +1650,13 @@ comma
 id|dip
 comma
 id|dentry-&gt;d_name.name
+)paren
+suffix:semicolon
+multiline_comment|/* Init inode for quota operations. */
+id|DQUOT_INIT
+c_func
+(paren
+id|ip
 )paren
 suffix:semicolon
 r_if
@@ -3004,9 +3019,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|rc
 )paren
+(brace
+id|ip-&gt;i_nlink
+op_decrement
+suffix:semicolon
+id|iput
+c_func
+(paren
+id|ip
+)paren
+suffix:semicolon
+)brace
+r_else
 id|d_instantiate
 c_func
 (paren
@@ -3553,14 +3579,16 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|dbFree
+id|xtTruncate
 c_func
 (paren
+id|tid
+comma
 id|ip
 comma
-id|extent
+l_int|0
 comma
-id|xlen
+id|COMMIT_PWMAP
 )paren
 suffix:semicolon
 id|rc
@@ -3615,16 +3643,6 @@ op_member_access_from_pointer
 id|nbperpage
 suffix:semicolon
 )brace
-id|ip-&gt;i_blocks
-op_assign
-id|LBLK2PBLK
-c_func
-(paren
-id|sb
-comma
-id|xlen
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * create entry for symbolic link in parent directory&n;&t; */
 id|rc
@@ -3689,14 +3707,16 @@ c_cond
 (paren
 id|xlen
 )paren
-id|dbFree
+id|xtTruncate
 c_func
 (paren
+id|tid
+comma
 id|ip
 comma
-id|extent
+l_int|0
 comma
-id|xlen
+id|COMMIT_PWMAP
 )paren
 suffix:semicolon
 id|txAbort
@@ -4205,12 +4225,21 @@ c_cond
 (paren
 id|new_ip
 )paren
+(brace
 id|IWRITE_LOCK
 c_func
 (paren
 id|new_ip
 )paren
 suffix:semicolon
+multiline_comment|/* Init inode for quota operations. */
+id|DQUOT_INIT
+c_func
+(paren
+id|new_ip
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * The real work starts here&n;&t; */
 id|tid
 op_assign
@@ -4594,12 +4623,18 @@ c_cond
 id|rc
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+op_minus
+id|EIO
+)paren
 id|jfs_err
 c_func
 (paren
-l_string|&quot;jfs_rename: dtInsert failed w/rc = %d&quot;
-comma
-id|rc
+l_string|&quot;jfs_rename: dtInsert returned -EIO&quot;
 )paren
 suffix:semicolon
 r_goto
