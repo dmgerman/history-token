@@ -2054,6 +2054,15 @@ r_int
 id|count
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|steal_locks
+c_func
+(paren
+id|fl_owner_t
+id|from
+)paren
+suffix:semicolon
 DECL|struct|fasync_struct
 r_struct
 id|fasync_struct
