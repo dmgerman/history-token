@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Driver for USB Scanners (linux-2.4.18)&n; *&n; * Copyright (C) 1999, 2000, 2001, 2002 David E. Nelson&n; *&n; * Brian Beattie &lt;beattie@beattie-home.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * 05/21/02 Currently maintained by Brian Beattie &lt;beattie@beattie-home.net&gt;&n; *&n; *&n; */
+multiline_comment|/*&n; * Driver for USB Scanners (linux-2.5.52)&n; *&n; * Copyright (C) 1999, 2000, 2001, 2002 David E. Nelson&n; *&n; * Brian Beattie &lt;beattie@beattie-home.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of the&n; * License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * 05/21/02 Currently maintained by Brian Beattie &lt;beattie@beattie-home.net&gt;&n; *&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -14,7 +14,7 @@ singleline_comment|// #define DEBUG
 multiline_comment|/* Enable this to support the older ioctl interfaces scanners that&n; * a PV8630 Scanner-On-Chip.  The prefered method is the&n; * SCANNER_IOCTL_CTRLMSG ioctl.&n; */
 singleline_comment|// #define PV8630 
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;0.4.6&quot;
+mdefine_line|#define DRIVER_VERSION &quot;0.4.9&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Scanner Driver&quot;
 macro_line|#include &lt;linux/usb.h&gt;
@@ -117,7 +117,7 @@ id|scanner_device_ids
 )braket
 op_assign
 (brace
-multiline_comment|/* Acer */
+multiline_comment|/* Acer (now Benq) */
 (brace
 id|USB_DEVICE
 c_func
@@ -128,7 +128,7 @@ l_int|0x2060
 )paren
 )brace
 comma
-multiline_comment|/* Prisa Acerscan 620U &amp; 640U (!)*/
+multiline_comment|/* 620U &amp; 640U (!)*/
 (brace
 id|USB_DEVICE
 c_func
@@ -139,7 +139,7 @@ l_int|0x2040
 )paren
 )brace
 comma
-multiline_comment|/* Prisa AcerScan 620U (!) */
+multiline_comment|/* 620U (!) */
 (brace
 id|USB_DEVICE
 c_func
@@ -150,7 +150,7 @@ l_int|0x20c0
 )paren
 )brace
 comma
-multiline_comment|/* Prisa AcerScan 1240UT */
+multiline_comment|/* 1240UT, 1240U */
 (brace
 id|USB_DEVICE
 c_func
@@ -161,7 +161,7 @@ l_int|0x2022
 )paren
 )brace
 comma
-multiline_comment|/* Vuego Scan Brisa 340U */
+multiline_comment|/* 340U */
 (brace
 id|USB_DEVICE
 c_func
@@ -183,7 +183,7 @@ l_int|0x1a2a
 )paren
 )brace
 comma
-multiline_comment|/* Unknown - Oliver Schwartz */
+multiline_comment|/* Another 620U */
 (brace
 id|USB_DEVICE
 c_func
@@ -194,7 +194,7 @@ l_int|0x207e
 )paren
 )brace
 comma
-multiline_comment|/* Prisa 640BU */
+multiline_comment|/* 640BU */
 (brace
 id|USB_DEVICE
 c_func
@@ -202,17 +202,6 @@ c_func
 l_int|0x04a5
 comma
 l_int|0x20be
-)paren
-)brace
-comma
-multiline_comment|/* Unknown - Oliver Schwartz */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x04a5
-comma
-l_int|0x20c0
 )paren
 )brace
 comma
@@ -238,7 +227,7 @@ l_int|0x20b0
 )paren
 )brace
 comma
-multiline_comment|/* Unknown - Oliver Schwartz */
+multiline_comment|/* Benq 4300 */
 (brace
 id|USB_DEVICE
 c_func
@@ -249,7 +238,18 @@ l_int|0x20fe
 )paren
 )brace
 comma
-multiline_comment|/* Unknown - Oliver Schwartz */
+multiline_comment|/* Benq 5300 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a5
+comma
+l_int|0x20fc
+)paren
+)brace
+comma
+multiline_comment|/* Benq 5000 */
 multiline_comment|/* Agfa */
 (brace
 id|USB_DEVICE
@@ -339,7 +339,74 @@ l_int|0x208d
 )brace
 comma
 multiline_comment|/* Snapscan e40 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x06bd
+comma
+l_int|0x2093
+)paren
+)brace
+comma
+multiline_comment|/* SnapScan e10*/
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x06bd
+comma
+l_int|0x20ff
+)paren
+)brace
+comma
+multiline_comment|/* SnapScan e42*/
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x06bd
+comma
+l_int|0x208f
+)paren
+)brace
+comma
+multiline_comment|/* SnapScan e50*/
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x06bd
+comma
+l_int|0x20fd
+)paren
+)brace
+comma
+multiline_comment|/* SnapScan e52*/
+multiline_comment|/* Benq: see Acer */
 multiline_comment|/* Canon */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
+l_int|0x2201
+)paren
+)brace
+comma
+multiline_comment|/* FB320U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
+l_int|0x2205
+)paren
+)brace
+comma
+multiline_comment|/* FB1210U */
 (brace
 id|USB_DEVICE
 c_func
@@ -406,6 +473,39 @@ l_int|0x220b
 )brace
 comma
 multiline_comment|/* D646U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
+l_int|0x220d
+)paren
+)brace
+comma
+multiline_comment|/* CanoScan N670U/N676U/LIDE 20 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
+l_int|0x220e
+)paren
+)brace
+comma
+multiline_comment|/* CanoScan N1240U/LIDE 30 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04a9
+comma
+l_int|0x3042
+)paren
+)brace
+comma
+multiline_comment|/* FS4000US */
 multiline_comment|/* Colorado -- See Primax/Colorado below */
 multiline_comment|/* Epson -- See Seiko/Epson below */
 multiline_comment|/* Genius */
@@ -441,7 +541,7 @@ l_int|0x2008
 )paren
 )brace
 comma
-multiline_comment|/* Unknown */
+multiline_comment|/* ColorPage-HR6 V2 */
 (brace
 id|USB_DEVICE
 c_func
@@ -452,7 +552,18 @@ l_int|0x2009
 )paren
 )brace
 comma
-multiline_comment|/* Unknown */
+multiline_comment|/* ColorPage-HR6A */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0458
+comma
+l_int|0x2011
+)paren
+)brace
+comma
+multiline_comment|/* ColorPage-Vivid3x */
 (brace
 id|USB_DEVICE
 c_func
@@ -463,7 +574,7 @@ l_int|0x2013
 )paren
 )brace
 comma
-multiline_comment|/* Unknown */
+multiline_comment|/* ColorPage-HR7 */
 (brace
 id|USB_DEVICE
 c_func
@@ -474,7 +585,7 @@ l_int|0x2015
 )paren
 )brace
 comma
-multiline_comment|/* Unknown  */
+multiline_comment|/* ColorPage-HR7LE */
 (brace
 id|USB_DEVICE
 c_func
@@ -485,8 +596,30 @@ l_int|0x2016
 )paren
 )brace
 comma
-multiline_comment|/* Unknown  */
+multiline_comment|/* ColorPage-HR6X */
 multiline_comment|/* Hewlett Packard */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x03f0
+comma
+l_int|0x0505
+)paren
+)brace
+comma
+multiline_comment|/* ScanJet 2100C */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x03f0
+comma
+l_int|0x0901
+)paren
+)brace
+comma
+multiline_comment|/* 2300C */
 (brace
 id|USB_DEVICE
 c_func
@@ -621,6 +754,18 @@ l_int|0x0268
 )brace
 comma
 multiline_comment|/* 1200U */
+multiline_comment|/* Lexmark */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x043d
+comma
+l_int|0x002d
+)paren
+)brace
+comma
+multiline_comment|/* X70/X73 */
 multiline_comment|/* Lifetec */
 (brace
 id|USB_DEVICE
@@ -655,6 +800,18 @@ singleline_comment|//&t;{ USB_DEVICE(0x05da, 0x80a3) },&t;/* ScanMaker V6USL #2 
 singleline_comment|//&t;{ USB_DEVICE(0x05da, 0x80ac) },&t;/* ScanMaker V6UL - SpicyU */
 multiline_comment|/* Minolta */
 singleline_comment|//&t;{ USB_DEVICE(0x0638,0x026a) }, /* Minolta Dimage Scan Dual II */
+singleline_comment|//&t;{ USB_DEVICE(0x0686, 0x4004) }, /* Scan Elite II (need interrupt ep) */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0686
+comma
+l_int|0x400d
+)paren
+)brace
+comma
+multiline_comment|/* Scan Dual III */
 multiline_comment|/* Mustek */
 (brace
 id|USB_DEVICE
@@ -666,7 +823,7 @@ l_int|0x0001
 )paren
 )brace
 comma
-multiline_comment|/* 1200 CU */
+multiline_comment|/* ScanExpress 1200 CU */
 (brace
 id|USB_DEVICE
 c_func
@@ -688,7 +845,7 @@ l_int|0x0002
 )paren
 )brace
 comma
-multiline_comment|/* 600 CU */
+multiline_comment|/* ScanExpress 600 CU */
 (brace
 id|USB_DEVICE
 c_func
@@ -699,7 +856,7 @@ l_int|0x0873
 )paren
 )brace
 comma
-multiline_comment|/* 600 USB */
+multiline_comment|/* ScanExpress 600 USB */
 (brace
 id|USB_DEVICE
 c_func
@@ -710,7 +867,7 @@ l_int|0x0003
 )paren
 )brace
 comma
-multiline_comment|/* 1200 USB */
+multiline_comment|/* ScanExpress 1200 USB */
 (brace
 id|USB_DEVICE
 c_func
@@ -721,7 +878,29 @@ l_int|0x0006
 )paren
 )brace
 comma
-multiline_comment|/* 1200 UB */
+multiline_comment|/* ScanExpress 1200 UB */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x055f
+comma
+l_int|0x0007
+)paren
+)brace
+comma
+multiline_comment|/* ScanExpress 1200 USB Plus */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x055f
+comma
+l_int|0x0210
+)paren
+)brace
+comma
+multiline_comment|/* ScanExpress A3 USB */
 (brace
 id|USB_DEVICE
 c_func
@@ -743,12 +922,12 @@ l_int|0x0008
 )paren
 )brace
 comma
-multiline_comment|/* 1200 CU Plus */
+multiline_comment|/* ScanExpress 1200 CU Plus */
 (brace
 id|USB_DEVICE
 c_func
 (paren
-l_int|0x0ff5
+l_int|0x055f
 comma
 l_int|0x0010
 )paren
@@ -776,7 +955,85 @@ l_int|0x4002
 )paren
 )brace
 comma
-multiline_comment|/* 1200 CU and 1200 UB Plus */
+multiline_comment|/* BearPaw 1200 CU and ScanExpress 1200 UB Plus */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x055f
+comma
+l_int|0x0219
+)paren
+)brace
+comma
+multiline_comment|/* BearPaw 2400 TA Plus */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x055f
+comma
+l_int|0x021c
+)paren
+)brace
+comma
+multiline_comment|/* BearPaw 1200 CU Plus */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x055f
+comma
+l_int|0x021d
+)paren
+)brace
+comma
+multiline_comment|/* Bearpaw 2400 CU Plus */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x055f
+comma
+l_int|0x021e
+)paren
+)brace
+comma
+multiline_comment|/* BearPaw 1200 TA/CS */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x055f
+comma
+l_int|0x0400
+)paren
+)brace
+comma
+multiline_comment|/* BearPaw 2400 TA PRO */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x055f
+comma
+l_int|0x1000
+)paren
+)brace
+comma
+multiline_comment|/* BearPaw 4800 TA PRO */
+multiline_comment|/* Nikon */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04b0
+comma
+l_int|0x4000
+)paren
+)brace
+comma
+multiline_comment|/* Coolscan LS 40 ED */
 multiline_comment|/* Plustek */
 (brace
 id|USB_DEVICE
@@ -788,7 +1045,7 @@ l_int|0x0017
 )paren
 )brace
 comma
-multiline_comment|/* OpticPro UT12 */
+multiline_comment|/* OpticPro UT12/UT16/UT24 */
 (brace
 id|USB_DEVICE
 c_func
@@ -799,7 +1056,29 @@ l_int|0x0011
 )paren
 )brace
 comma
-multiline_comment|/* OpticPro UT24 */
+multiline_comment|/* OpticPro U24 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0010
+)paren
+)brace
+comma
+multiline_comment|/* OpticPro U12 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0015
+)paren
+)brace
+comma
+multiline_comment|/* OpticPro U24 */
 (brace
 id|USB_DEVICE
 c_func
@@ -829,17 +1108,6 @@ c_func
 l_int|0x07b3
 comma
 l_int|0x000F
-)paren
-)brace
-comma
-multiline_comment|/* Unknown */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x07b3
-comma
-l_int|0x0010
 )paren
 )brace
 comma
@@ -883,17 +1151,6 @@ c_func
 (paren
 l_int|0x07b3
 comma
-l_int|0x0015
-)paren
-)brace
-comma
-multiline_comment|/* Unknown */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x07b3
-comma
 l_int|0x0016
 )paren
 )brace
@@ -910,6 +1167,17 @@ l_int|0x0012
 )brace
 comma
 multiline_comment|/* Unknown */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x07b3
+comma
+l_int|0x0401
+)paren
+)brace
+comma
+multiline_comment|/* OpticPro 1248U */
 multiline_comment|/* Primax/Colorado */
 (brace
 id|USB_DEVICE
@@ -1053,6 +1321,17 @@ c_func
 (paren
 l_int|0x04b8
 comma
+l_int|0x0102
+)paren
+)brace
+comma
+multiline_comment|/* GT-2200 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04b8
+comma
 l_int|0x0103
 )paren
 )brace
@@ -1075,6 +1354,17 @@ c_func
 (paren
 l_int|0x04b8
 comma
+l_int|0x0105
+)paren
+)brace
+comma
+multiline_comment|/* StylusScan 2000 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04b8
+comma
 l_int|0x0106
 )paren
 )brace
@@ -1091,6 +1381,17 @@ l_int|0x0107
 )brace
 comma
 multiline_comment|/* Expression 1600 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04b8
+comma
+l_int|0x0109
+)paren
+)brace
+comma
+multiline_comment|/* Expression 1640XL */
 (brace
 id|USB_DEVICE
 c_func
@@ -1139,13 +1440,13 @@ multiline_comment|/* Expression 1680 */
 id|USB_DEVICE
 c_func
 (paren
-l_int|0x04a9
+l_int|0x04b8
 comma
-l_int|0x2204
+l_int|0x010f
 )paren
 )brace
 comma
-multiline_comment|/* FB630U */
+multiline_comment|/* Perfection 1250U */
 (brace
 id|USB_DEVICE
 c_func
@@ -1196,11 +1497,44 @@ c_func
 (paren
 l_int|0x04b8
 comma
+l_int|0x011c
+)paren
+)brace
+comma
+multiline_comment|/* Perfection 3200 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04b8
+comma
+l_int|0x011d
+)paren
+)brace
+comma
+multiline_comment|/* Perfection 1260 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04b8
+comma
 l_int|0x011e
 )paren
 )brace
 comma
 multiline_comment|/* Perfection 1660 Photo */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04b8
+comma
+l_int|0x0802
+)paren
+)brace
+comma
+multiline_comment|/* Stylus CX3200 */
 multiline_comment|/* Umax */
 (brace
 id|USB_DEVICE
@@ -1230,11 +1564,33 @@ c_func
 (paren
 l_int|0x1606
 comma
+l_int|0x0060
+)paren
+)brace
+comma
+multiline_comment|/* Astra 3400U/3450U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x1606
+comma
 l_int|0x0130
 )paren
 )brace
 comma
 multiline_comment|/* Astra 2100U */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x1606
+comma
+l_int|0x0160
+)paren
+)brace
+comma
+multiline_comment|/* Astra 5400U */
 (brace
 id|USB_DEVICE
 c_func

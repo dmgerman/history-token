@@ -106,28 +106,23 @@ suffix:semicolon
 DECL|macro|IBMCAM_T
 mdefine_line|#define&t;IBMCAM_T(uvd)&t;((ibmcam_t *)((uvd)-&gt;user_data))
 DECL|variable|cams
+r_static
 r_struct
 id|usbvideo
 op_star
 id|cams
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|flags
 r_static
 r_int
 id|flags
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/* FLAGS_DISPLAY_HINTS | FLAGS_OVERLAY_STATS; */
+multiline_comment|/* = FLAGS_DISPLAY_HINTS | FLAGS_OVERLAY_STATS; */
 DECL|variable|min_canvasWidth
 r_static
 r_const
