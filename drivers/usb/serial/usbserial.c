@@ -769,7 +769,9 @@ id|transfer_buffer
 comma
 id|length
 comma
-l_int|300
+l_int|3
+op_star
+id|HZ
 )paren
 suffix:semicolon
 id|kfree
