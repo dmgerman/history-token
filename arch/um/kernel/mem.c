@@ -102,7 +102,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|macro|NREGIONS
-mdefine_line|#define NREGIONS (phys_region_index(0xffffffff) - phys_region_index(0x0))
+mdefine_line|#define NREGIONS (phys_region_index(0xffffffff) - phys_region_index(0x0) + 1)
 DECL|variable|regions
 r_struct
 id|mem_region
