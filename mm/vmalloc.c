@@ -747,11 +747,6 @@ c_func
 id|address
 )paren
 suffix:semicolon
-id|flush_cache_all
-c_func
-(paren
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -852,11 +847,6 @@ c_func
 (paren
 op_amp
 id|init_mm.page_table_lock
-)paren
-suffix:semicolon
-id|flush_tlb_all
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return

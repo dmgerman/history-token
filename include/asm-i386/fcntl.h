@@ -29,7 +29,7 @@ mdefine_line|#define O_SYNC&t;&t; 010000
 DECL|macro|FASYNC
 mdefine_line|#define FASYNC&t;&t; 020000&t;/* fcntl, for BSD compatibility */
 DECL|macro|O_DIRECT
-mdefine_line|#define O_DIRECT&t; 040000&t;/* direct disk access hint - currently ignored */
+mdefine_line|#define O_DIRECT&t; 040000&t;/* direct disk access hint */
 DECL|macro|O_LARGEFILE
 mdefine_line|#define O_LARGEFILE&t;0100000
 DECL|macro|O_DIRECTORY

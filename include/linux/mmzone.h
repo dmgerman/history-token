@@ -53,16 +53,6 @@ r_int
 r_int
 id|free_pages
 suffix:semicolon
-DECL|member|inactive_clean_pages
-r_int
-r_int
-id|inactive_clean_pages
-suffix:semicolon
-DECL|member|inactive_dirty_pages
-r_int
-r_int
-id|inactive_dirty_pages
-suffix:semicolon
 DECL|member|pages_min
 DECL|member|pages_low
 DECL|member|pages_high
@@ -74,12 +64,11 @@ id|pages_low
 comma
 id|pages_high
 suffix:semicolon
-multiline_comment|/*&n;&t; * free areas of different sizes&n;&t; */
-DECL|member|inactive_clean_list
-r_struct
-id|list_head
-id|inactive_clean_list
+DECL|member|need_balance
+r_int
+id|need_balance
 suffix:semicolon
+multiline_comment|/*&n;&t; * free areas of different sizes&n;&t; */
 DECL|member|free_area
 id|free_area_t
 id|free_area
@@ -181,6 +170,10 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
+DECL|member|nr_zones
+r_int
+id|nr_zones
+suffix:semicolon
 DECL|member|node_mem_map
 r_struct
 id|page
@@ -238,7 +231,7 @@ op_star
 id|pgdat_list
 suffix:semicolon
 DECL|macro|memclass
-mdefine_line|#define memclass(pgzone, tzone)&t;(((pgzone)-&gt;zone_pgdat == (tzone)-&gt;zone_pgdat) &bslash;&n;&t;&t;&t;&amp;&amp; ((pgzone) &lt;= (tzone)))
+mdefine_line|#define memclass(pgzone, classzone)&t;(((pgzone)-&gt;zone_pgdat == (classzone)-&gt;zone_pgdat) &bslash;&n;&t;&t;&t;&amp;&amp; ((pgzone) &lt;= (classzone)))
 multiline_comment|/*&n; * The following two are not meant for general usage. They are here as&n; * prototypes for the discontig memory code.&n; */
 r_struct
 id|page

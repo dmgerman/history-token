@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;asm/poll.h&gt;
 macro_line|#include &lt;asm/siginfo.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -749,7 +750,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|macro|SETFL_MASK
-mdefine_line|#define SETFL_MASK (O_APPEND | O_NONBLOCK | O_NDELAY | FASYNC)
+mdefine_line|#define SETFL_MASK (O_APPEND | O_NONBLOCK | O_NDELAY | FASYNC | O_DIRECT)
 DECL|function|setfl
 r_static
 r_int
@@ -852,6 +853,61 @@ r_return
 id|error
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|arg
+op_amp
+id|O_DIRECT
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * alloc_kiovec() can sleep and we are only serialized by&n;&t;&t; * the big kernel lock here, so abuse the i_sem to serialize&n;&t;&t; * this case too. We of course wouldn&squot;t need to go deep down&n;&t;&t; * to the inode layer, we could stay at the file layer, but&n;&t;&t; * we don&squot;t want to pay for the memory of a semaphore in each&n;&t;&t; * file structure too and we use the inode semaphore that we just&n;&t;&t; * pay for anyways.&n;&t;&t; */
+id|error
+op_assign
+l_int|0
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sem
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|filp-&gt;f_iobuf
+)paren
+id|error
+op_assign
+id|alloc_kiovec
+c_func
+(paren
+l_int|1
+comma
+op_amp
+id|filp-&gt;f_iobuf
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sem
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+OL
+l_int|0
+)paren
+r_return
+id|error
+suffix:semicolon
 )brace
 multiline_comment|/* required for strict SunOS emulation */
 r_if

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/prefetch.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 r_extern
@@ -497,7 +498,7 @@ l_int|NULL
 suffix:semicolon
 id|max_prio
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -709,7 +710,7 @@ comma
 id|this_cpu
 )paren
 OG
-l_int|1
+l_int|0
 )paren
 id|tsk-&gt;need_resched
 op_assign
@@ -1312,6 +1313,13 @@ r_int
 id|this_cpu
 comma
 id|c
+suffix:semicolon
+id|spin_lock_prefetch
+c_func
+(paren
+op_amp
+id|runqueue_lock
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3709,7 +3717,7 @@ c_func
 l_string|&quot; (NOTLB)&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_X86) || defined(CONFIG_SPARC64) || defined(CONFIG_ARM)
+macro_line|#if defined(CONFIG_X86) || defined(CONFIG_SPARC64) || defined(CONFIG_ARM) || defined(CONFIG_ALPHA)
 multiline_comment|/* This is very useful, but only works on ARM, x86 and sparc64 right now */
 (brace
 r_extern
@@ -3923,12 +3931,20 @@ c_func
 (paren
 id|p
 )paren
+(brace
+multiline_comment|/*&n;&t;&t; * reset the NMI-timeout, listing all files on a slow&n;&t;&t; * console might take alot of time:&n;&t;&t; */
+id|touch_nmi_watchdog
+c_func
+(paren
+)paren
+suffix:semicolon
 id|show_task
 c_func
 (paren
 id|p
 )paren
 suffix:semicolon
+)brace
 id|read_unlock
 c_func
 (paren

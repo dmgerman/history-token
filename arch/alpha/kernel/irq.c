@@ -61,6 +61,7 @@ id|irq
 )paren
 suffix:semicolon
 DECL|variable|irq_err_count
+r_volatile
 r_int
 r_int
 id|irq_err_count

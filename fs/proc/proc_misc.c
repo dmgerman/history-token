@@ -629,7 +629,7 @@ multiline_comment|/*&n; * display in kilobytes.&n; */
 DECL|macro|K
 mdefine_line|#define K(x) ((x) &lt;&lt; (PAGE_SHIFT - 10))
 DECL|macro|B
-mdefine_line|#define B(x) ((x) &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define B(x) ((unsigned long long)(x) &lt;&lt; PAGE_SHIFT)
 id|si_meminfo
 c_func
 (paren
@@ -652,8 +652,8 @@ c_func
 id|page
 comma
 l_string|&quot;        total:    used:    free:  shared: buffers:  cached:&bslash;n&quot;
-l_string|&quot;Mem:  %8lu %8lu %8lu %8lu %8lu %8u&bslash;n&quot;
-l_string|&quot;Swap: %8lu %8lu %8lu&bslash;n&quot;
+l_string|&quot;Mem:  %8Lu %8Lu %8Lu %8Lu %8Lu %8Lu&bslash;n&quot;
+l_string|&quot;Swap: %8Lu %8Lu %8Lu&bslash;n&quot;
 comma
 id|B
 c_func
@@ -736,9 +736,7 @@ l_string|&quot;Buffers:      %8lu kB&bslash;n&quot;
 l_string|&quot;Cached:       %8lu kB&bslash;n&quot;
 l_string|&quot;SwapCached:   %8lu kB&bslash;n&quot;
 l_string|&quot;Active:       %8u kB&bslash;n&quot;
-l_string|&quot;Inact_dirty:  %8u kB&bslash;n&quot;
-l_string|&quot;Inact_clean:  %8u kB&bslash;n&quot;
-l_string|&quot;Inact_target: %8lu kB&bslash;n&quot;
+l_string|&quot;Inactive:     %8u kB&bslash;n&quot;
 l_string|&quot;HighTotal:    %8lu kB&bslash;n&quot;
 l_string|&quot;HighFree:     %8lu kB&bslash;n&quot;
 l_string|&quot;LowTotal:     %8lu kB&bslash;n&quot;
@@ -798,22 +796,7 @@ comma
 id|K
 c_func
 (paren
-id|nr_inactive_dirty_pages
-)paren
-comma
-id|K
-c_func
-(paren
-id|nr_inactive_clean_pages
-c_func
-(paren
-)paren
-)paren
-comma
-id|K
-c_func
-(paren
-id|inactive_target
+id|nr_inactive_pages
 )paren
 comma
 id|K

@@ -287,6 +287,8 @@ DECL|macro|LO_FLAGS_DO_BMAP
 mdefine_line|#define LO_FLAGS_DO_BMAP&t;1
 DECL|macro|LO_FLAGS_READ_ONLY
 mdefine_line|#define LO_FLAGS_READ_ONLY&t;2
+DECL|macro|LO_FLAGS_BH_REMAP
+mdefine_line|#define LO_FLAGS_BH_REMAP&t;4
 multiline_comment|/* &n; * Note that this structure gets the wrong offsets when directly used&n; * from a glibc program, because glibc has a 32bit dev_t.&n; * Prevent people from shooting in their own foot.  &n; */
 macro_line|#if __GLIBC__ &gt;= 2 &amp;&amp; !defined(dev_t)
 macro_line|#error &quot;Wrong dev_t in loop.h&quot;

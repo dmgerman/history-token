@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/drivers/char/console.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
-multiline_comment|/*&n; * Hopefully this will be a rather complete VT102 implementation.&n; *&n; * Beeping thanks to John T Kohl.&n; *&n; * Virtual Consoles, Screen Blanking, Screen Dumping, Color, Graphics&n; *   Chars, and VT100 enhancements by Peter MacDonald.&n; *&n; * Copy and paste function by Andrew Haylett,&n; *   some enhancements by Alessandro Rubini.&n; *&n; * Code to check for different video-cards mostly by Galen Hunt,&n; * &lt;g-hunt@ee.utah.edu&gt;&n; *&n; * Rudimentary ISO 10646/Unicode/UTF-8 character set support by&n; * Markus Kuhn, &lt;mskuhn@immd4.informatik.uni-erlangen.de&gt;.&n; *&n; * Dynamic allocation of consoles, aeb@cwi.nl, May 1994&n; * Resizing of consoles, aeb, 940926&n; *&n; * Code for xterm like mouse click reporting by Peter Orbaek 20-Jul-94&n; * &lt;poe@daimi.aau.dk&gt;&n; *&n; * User-defined bell sound, new setterm control sequences and printk&n; * redirection by Martin Mares &lt;mj@k332.feld.cvut.cz&gt; 19-Nov-95&n; *&n; * APM screenblank bug fixed Takashi Manabe &lt;manabe@roy.dsl.tutics.tut.jp&gt;&n; *&n; * Merge with the abstract console driver by Geert Uytterhoeven&n; * &lt;geert@linux-m68k.org&gt;, Jan 1997.&n; *&n; *   Original m68k console driver modifications by&n; *&n; *     - Arno Griffioen &lt;arno@usn.nl&gt;&n; *     - David Carter &lt;carter@cs.bris.ac.uk&gt;&n; * &n; *   Note that the abstract console driver allows all consoles to be of&n; *   potentially different sizes, so the following variables depend on the&n; *   current console (currcons):&n; *&n; *     - video_num_columns&n; *     - video_num_lines&n; *     - video_size_row&n; *     - can_do_color&n; *&n; *   The abstract console driver provides a generic interface for a text&n; *   console. It supports VGA text mode, frame buffer based graphical consoles&n; *   and special graphics processors that are only accessible through some&n; *   registers (e.g. a TMS340x0 GSP).&n; *&n; *   The interface to the hardware is specified using a special structure&n; *   (struct consw) which contains function pointers to console operations&n; *   (see &lt;linux/console.h&gt; for more information).&n; *&n; * Support for changeable cursor shape&n; * by Pavel Machek &lt;pavel@atrey.karlin.mff.cuni.cz&gt;, August 1997&n; *&n; * Ported to i386 and con_scrolldelta fixed&n; * by Emmanuel Marty &lt;core@ggi-project.org&gt;, April 1998&n; *&n; * Resurrected character buffers in videoram plus lots of other trickery&n; * by Martin Mares &lt;mj@atrey.karlin.mff.cuni.cz&gt;, July 1998&n; *&n; * Removed old-style timers, introduced console_timer, made timer&n; * deletion SMP-safe.  17Jun00, Andrew Morton &lt;andrewm@uow.edu.au&gt;&n; */
+multiline_comment|/*&n; * Hopefully this will be a rather complete VT102 implementation.&n; *&n; * Beeping thanks to John T Kohl.&n; *&n; * Virtual Consoles, Screen Blanking, Screen Dumping, Color, Graphics&n; *   Chars, and VT100 enhancements by Peter MacDonald.&n; *&n; * Copy and paste function by Andrew Haylett,&n; *   some enhancements by Alessandro Rubini.&n; *&n; * Code to check for different video-cards mostly by Galen Hunt,&n; * &lt;g-hunt@ee.utah.edu&gt;&n; *&n; * Rudimentary ISO 10646/Unicode/UTF-8 character set support by&n; * Markus Kuhn, &lt;mskuhn@immd4.informatik.uni-erlangen.de&gt;.&n; *&n; * Dynamic allocation of consoles, aeb@cwi.nl, May 1994&n; * Resizing of consoles, aeb, 940926&n; *&n; * Code for xterm like mouse click reporting by Peter Orbaek 20-Jul-94&n; * &lt;poe@daimi.aau.dk&gt;&n; *&n; * User-defined bell sound, new setterm control sequences and printk&n; * redirection by Martin Mares &lt;mj@k332.feld.cvut.cz&gt; 19-Nov-95&n; *&n; * APM screenblank bug fixed Takashi Manabe &lt;manabe@roy.dsl.tutics.tut.jp&gt;&n; *&n; * Merge with the abstract console driver by Geert Uytterhoeven&n; * &lt;geert@linux-m68k.org&gt;, Jan 1997.&n; *&n; *   Original m68k console driver modifications by&n; *&n; *     - Arno Griffioen &lt;arno@usn.nl&gt;&n; *     - David Carter &lt;carter@cs.bris.ac.uk&gt;&n; * &n; *   Note that the abstract console driver allows all consoles to be of&n; *   potentially different sizes, so the following variables depend on the&n; *   current console (currcons):&n; *&n; *     - video_num_columns&n; *     - video_num_lines&n; *     - video_size_row&n; *     - can_do_color&n; *&n; *   The abstract console driver provides a generic interface for a text&n; *   console. It supports VGA text mode, frame buffer based graphical consoles&n; *   and special graphics processors that are only accessible through some&n; *   registers (e.g. a TMS340x0 GSP).&n; *&n; *   The interface to the hardware is specified using a special structure&n; *   (struct consw) which contains function pointers to console operations&n; *   (see &lt;linux/console.h&gt; for more information).&n; *&n; * Support for changeable cursor shape&n; * by Pavel Machek &lt;pavel@atrey.karlin.mff.cuni.cz&gt;, August 1997&n; *&n; * Ported to i386 and con_scrolldelta fixed&n; * by Emmanuel Marty &lt;core@ggi-project.org&gt;, April 1998&n; *&n; * Resurrected character buffers in videoram plus lots of other trickery&n; * by Martin Mares &lt;mj@atrey.karlin.mff.cuni.cz&gt;, July 1998&n; *&n; * Removed old-style timers, introduced console_timer, made timer&n; * deletion SMP-safe.  17Jun00, Andrew Morton &lt;andrewm@uow.edu.au&gt;&n; *&n; * Removed console_lock, enabled interrupts across all console operations&n; * 13 March 2001, Andrew Morton&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -245,6 +245,16 @@ r_int
 id|dummy
 )paren
 suffix:semicolon
+r_static
+r_void
+id|console_callback
+c_func
+(paren
+r_void
+op_star
+id|ignored
+)paren
+suffix:semicolon
 DECL|variable|printable
 r_static
 r_int
@@ -281,6 +291,19 @@ r_static
 r_int
 id|vesa_off_interval
 suffix:semicolon
+DECL|variable|console_callback_tq
+r_static
+r_struct
+id|tq_struct
+id|console_callback_tq
+op_assign
+(brace
+id|routine
+suffix:colon
+id|console_callback
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * fg_console is the current virtual console,&n; * last_console is the last used one,&n; * want_console is the console we want to switch to,&n; * kmsg_redirect is the console for kernel messages,&n; */
 DECL|variable|fg_console
 r_int
@@ -309,15 +332,8 @@ id|vc_data
 op_star
 id|master_display_fg
 suffix:semicolon
-multiline_comment|/*&n; * Unfortunately, we need to delay tty echo when we&squot;re currently writing to the&n; * console since the code is (and always was) not re-entrant, so we insert&n; * all filp requests to con_task_queue instead of tq_timer and run it from&n; * the console_tasklet.  The console_tasklet is protected by the IRQ&n; * protected console_lock.&n; */
-DECL|variable|con_task_queue
-id|DECLARE_TASK_QUEUE
-c_func
-(paren
-id|con_task_queue
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * For the same reason, we defer scrollback to the console tasklet.&n; */
+multiline_comment|/*&n; * Unfortunately, we need to delay tty echo when we&squot;re currently writing to the&n; * console since the code is (and always was) not re-entrant, so we schedule&n; * all flip requests to process context with schedule-task() and run it from&n; * console_callback().&n; */
+multiline_comment|/*&n; * For the same reason, we defer scrollback to the console callback.&n; */
 DECL|variable|scrollback_delta
 r_static
 r_int
@@ -477,11 +493,25 @@ id|scrollback_delta
 op_add_assign
 id|lines
 suffix:semicolon
-id|tasklet_schedule
+id|schedule_console_callback
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|schedule_console_callback
+r_void
+id|schedule_console_callback
+c_func
+(paren
+r_void
+)paren
+(brace
+id|schedule_task
 c_func
 (paren
 op_amp
-id|console_tasklet
+id|console_callback_tq
 )paren
 suffix:semicolon
 )brace
@@ -3839,6 +3869,11 @@ r_int
 id|currcons
 )paren
 (brace
+id|acquire_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3901,6 +3936,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|release_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;VT102 emulator&n; */
 DECL|macro|set_kbd
@@ -5085,6 +5125,7 @@ op_assign
 id|def_color
 suffix:semicolon
 )brace
+multiline_comment|/* console_sem is held */
 DECL|function|csi_m
 r_static
 r_void
@@ -5666,6 +5707,7 @@ r_return
 id|report_mouse
 suffix:semicolon
 )brace
+multiline_comment|/* console_sem is held */
 DECL|function|set_mode
 r_static
 r_void
@@ -5951,6 +5993,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* console_sem is held */
 DECL|function|setterm_command
 r_static
 r_void
@@ -6271,68 +6314,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-DECL|function|insert_line
-r_static
-r_void
-id|insert_line
-c_func
-(paren
-r_int
-id|currcons
-comma
-r_int
-r_int
-id|nr
-)paren
-(brace
-id|scrdown
-c_func
-(paren
-id|currcons
-comma
-id|y
-comma
-id|bottom
-comma
-id|nr
-)paren
-suffix:semicolon
-id|need_wrap
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|delete_line
-r_static
-r_void
-id|delete_line
-c_func
-(paren
-r_int
-id|currcons
-comma
-r_int
-r_int
-id|nr
-)paren
-(brace
-id|scrup
-c_func
-(paren
-id|currcons
-comma
-id|y
-comma
-id|bottom
-comma
-id|nr
-)paren
-suffix:semicolon
-id|need_wrap
-op_assign
-l_int|0
-suffix:semicolon
-)brace
+multiline_comment|/* console_sem is held */
 DECL|function|csi_at
 r_static
 r_void
@@ -6382,6 +6364,7 @@ id|nr
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* console_sem is held */
 DECL|function|csi_L
 r_static
 r_void
@@ -6422,15 +6405,24 @@ id|nr
 op_assign
 l_int|1
 suffix:semicolon
-id|insert_line
+id|scrdown
 c_func
 (paren
 id|currcons
 comma
+id|y
+comma
+id|bottom
+comma
 id|nr
 )paren
 suffix:semicolon
+id|need_wrap
+op_assign
+l_int|0
+suffix:semicolon
 )brace
+multiline_comment|/* console_sem is held */
 DECL|function|csi_P
 r_static
 r_void
@@ -6480,6 +6472,7 @@ id|nr
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* console_sem is held */
 DECL|function|csi_M
 r_static
 r_void
@@ -6520,15 +6513,24 @@ id|nr
 op_assign
 l_int|1
 suffix:semicolon
-id|delete_line
+id|scrup
 c_func
 (paren
 id|currcons
 comma
+id|y
+comma
+id|bottom
+comma
 id|nr
 )paren
 suffix:semicolon
+id|need_wrap
+op_assign
+l_int|0
+suffix:semicolon
 )brace
+multiline_comment|/* console_sem is held (except via vc_init-&gt;reset_terminal */
 DECL|function|save_cur
 r_static
 r_void
@@ -6580,6 +6582,7 @@ op_assign
 id|G1_charset
 suffix:semicolon
 )brace
+multiline_comment|/* console_sem is held */
 DECL|function|restore_cur
 r_static
 r_void
@@ -6700,6 +6703,7 @@ DECL|enumerator|ESpalette
 id|ESpalette
 )brace
 suffix:semicolon
+multiline_comment|/* console_sem is held (except via vc_init()) */
 DECL|function|reset_terminal
 r_static
 r_void
@@ -6952,6 +6956,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* console_sem is held */
 DECL|function|do_con_trol
 r_static
 r_void
@@ -8977,6 +8982,7 @@ c_func
 id|con_buf_sem
 )paren
 suffix:semicolon
+multiline_comment|/* acquires console_sem */
 DECL|function|do_con_write
 r_static
 r_int
@@ -9065,6 +9071,17 @@ suffix:semicolon
 r_int
 id|orig_count
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+r_return
+id|count
+suffix:semicolon
 id|currcons
 op_assign
 id|vt-&gt;vc_num
@@ -9147,6 +9164,11 @@ id|count
 op_assign
 id|CON_BUF_SIZE
 suffix:semicolon
+id|console_conditional_schedule
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9176,11 +9198,9 @@ id|con_buf
 suffix:semicolon
 )brace
 multiline_comment|/* At this point &squot;buf&squot; is guarenteed to be a kernel buffer&n;&t; * and therefore no access to userspace (and therefore sleeping)&n;&t; * will be needed.  The con_buf_sem serializes all tty based&n;&t; * console rendering and vcs write/read operations.  We hold&n;&t; * the console spinlock during the entire write.&n;&t; */
-id|spin_lock_irq
+id|acquire_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
 )paren
 suffix:semicolon
 id|himask
@@ -9772,11 +9792,14 @@ id|c
 suffix:semicolon
 )brace
 id|FLUSH
-id|spin_unlock_irq
+id|console_conditional_schedule
 c_func
 (paren
-op_amp
-id|console_lock
+)paren
+suffix:semicolon
+id|release_console_sem
+c_func
+(paren
 )paren
 suffix:semicolon
 id|out
@@ -9835,31 +9858,21 @@ suffix:semicolon
 DECL|macro|FLUSH
 macro_line|#undef FLUSH
 )brace
-multiline_comment|/*&n; * This is the console switching tasklet.&n; *&n; * Doing console switching in a tasklet allows&n; * us to do the switches asynchronously (needed when we want&n; * to switch due to a keyboard interrupt).  Synchronization&n; * with other console code and prevention of re-entrancy is&n; * ensured with console_lock.&n; */
-DECL|function|console_softint
+multiline_comment|/*&n; * This is the console switching callback.&n; *&n; * Doing console switching in a process context allows&n; * us to do the switches asynchronously (needed when we want&n; * to switch due to a keyboard interrupt).  Synchronization&n; * with other console code and prevention of re-entrancy is&n; * ensured with console_sem.&n; */
+DECL|function|console_callback
 r_static
 r_void
-id|console_softint
+id|console_callback
 c_func
 (paren
-r_int
-r_int
+r_void
+op_star
 id|ignored
 )paren
 (brace
-multiline_comment|/* Runs the task queue outside of the console lock.  These&n;&t; * callbacks can come back into the console code and thus&n;&t; * will perform their own locking.&n;&t; */
-id|run_task_queue
+id|acquire_console_sem
 c_func
 (paren
-op_amp
-id|con_task_queue
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|console_lock
 )paren
 suffix:semicolon
 r_if
@@ -9964,16 +9977,33 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|spin_unlock_irq
+id|release_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
+)paren
+suffix:semicolon
+)brace
+DECL|function|set_console
+r_void
+id|set_console
+c_func
+(paren
+r_int
+id|nr
+)paren
+(brace
+id|want_console
+op_assign
+id|nr
+suffix:semicolon
+id|schedule_console_callback
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_VT_CONSOLE
-multiline_comment|/*&n; *&t;Console on virtual terminal&n; *&n; * The console_lock must be held when we get here.&n; */
+multiline_comment|/*&n; *&t;Console on virtual terminal&n; *&n; * The console must be locked when we get here.&n; */
 DECL|function|vt_console_print
 r_void
 id|vt_console_print
@@ -10381,6 +10411,17 @@ c_func
 id|currcons
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|oops_in_progress
+)paren
+id|poke_blanked_console
+c_func
+(paren
+)paren
+suffix:semicolon
 id|quit
 suffix:colon
 id|clear_bit
@@ -10461,6 +10502,7 @@ comma
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; *&t;Handling of Linux-specific VC ioctls&n; */
+multiline_comment|/*&n; * Generally a bit racy with respect to console_sem().&n; *&n; * There are some functions which don&squot;t need it.&n; *&n; * There are some functions which can sleep for arbitrary periods (paste_selection)&n; * but we don&squot;t need the lock there anyway.&n; *&n; * set_selection has locking, and definitely needs it&n; */
 DECL|function|tioclinux
 r_int
 id|tioclinux
@@ -10481,6 +10523,9 @@ id|type
 comma
 id|data
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10500,9 +10545,10 @@ op_ne
 id|tty
 op_logical_and
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 )paren
 r_return
@@ -10528,6 +10574,10 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -10537,7 +10587,13 @@ id|type
 r_case
 l_int|2
 suffix:colon
-r_return
+id|acquire_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|set_selection
 c_func
 (paren
@@ -10548,15 +10604,25 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|release_console_sem
+c_func
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 l_int|3
 suffix:colon
-r_return
+id|ret
+op_assign
 id|paste_selection
 c_func
 (paren
 id|tty
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_int|4
@@ -10566,18 +10632,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_break
 suffix:semicolon
 r_case
 l_int|5
 suffix:colon
-r_return
+id|ret
+op_assign
 id|sel_loadlut
 c_func
 (paren
 id|arg
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_int|6
@@ -10587,7 +10655,8 @@ id|data
 op_assign
 id|shift_state
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|__put_user
 c_func
 (paren
@@ -10599,6 +10668,8 @@ op_star
 )paren
 id|arg
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_int|7
@@ -10610,7 +10681,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|__put_user
 c_func
 (paren
@@ -10623,6 +10695,8 @@ op_star
 id|arg
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 l_int|10
 suffix:colon
@@ -10632,8 +10706,8 @@ c_func
 id|arg
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_break
+suffix:semicolon
 suffix:semicolon
 r_case
 l_int|11
@@ -10643,15 +10717,21 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|EPERM
 suffix:semicolon
+)brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -10669,28 +10749,41 @@ op_plus
 l_int|1
 )paren
 )paren
-r_return
+id|ret
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
+r_else
 id|kmsg_redirect
 op_assign
 id|data
 suffix:semicolon
-r_return
-l_int|0
+)brace
+r_break
 suffix:semicolon
 r_case
 l_int|12
 suffix:colon
 multiline_comment|/* get fg_console */
-r_return
+id|ret
+op_assign
 id|fg_console
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ret
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 r_return
-op_minus
-id|EINVAL
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;/dev/ttyN handling&n; */
@@ -10767,6 +10860,17 @@ r_char
 id|ch
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* n_r3964 calls put_char() from interrupt context */
 id|pm_access
 c_func
 (paren
@@ -11015,10 +11119,6 @@ op_star
 id|tty
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|vt_struct
 op_star
@@ -11031,19 +11131,26 @@ op_star
 )paren
 id|tty-&gt;driver_data
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+multiline_comment|/* from flush_to_ldisc */
+r_return
+suffix:semicolon
 id|pm_access
 c_func
 (paren
 id|pm_con
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|acquire_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|set_cursor
@@ -11052,13 +11159,9 @@ c_func
 id|vt-&gt;vc_num
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|release_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -11392,16 +11495,6 @@ DECL|variable|console_refcount
 r_static
 r_int
 id|console_refcount
-suffix:semicolon
-id|DECLARE_TASKLET_DISABLED
-c_func
-(paren
-id|console_tasklet
-comma
-id|console_softint
-comma
-l_int|0
-)paren
 suffix:semicolon
 DECL|function|con_init
 r_void
@@ -11809,20 +11902,6 @@ id|vt_console_driver
 )paren
 suffix:semicolon
 macro_line|#endif
-id|tasklet_enable
-c_func
-(paren
-op_amp
-id|console_tasklet
-)paren
-suffix:semicolon
-id|tasklet_schedule
-c_func
-(paren
-op_amp
-id|console_tasklet
-)paren
-suffix:semicolon
 )brace
 macro_line|#ifndef VT_SINGLE_DRIVER
 DECL|function|clear_buffer_attributes
@@ -12314,6 +12393,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This is called by a timer handler&n; */
 DECL|function|vesa_powerdown
 r_static
 r_void
@@ -12381,6 +12461,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * This is a timer handler&n; */
 DECL|function|vesa_powerdown_screen
 r_static
 r_void
@@ -12396,7 +12477,6 @@ id|console_timer.function
 op_assign
 id|unblank_screen_t
 suffix:semicolon
-multiline_comment|/* I don&squot;t have a clue why this is necessary */
 id|vesa_powerdown
 c_func
 (paren
@@ -12655,6 +12735,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This is a timer handler&n; */
 DECL|function|unblank_screen_t
 r_static
 r_void
@@ -12672,6 +12753,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Called by timer as well as from vt_console_driver&n; */
 DECL|function|unblank_screen
 r_void
 id|unblank_screen
@@ -12805,6 +12887,7 @@ id|fg_console
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This is both a user-level callable and a timer handler&n; */
 DECL|function|blank_screen
 r_static
 r_void
@@ -12840,7 +12923,6 @@ op_amp
 id|console_timer
 )paren
 suffix:semicolon
-multiline_comment|/* Can&squot;t use _sync here: called from tasklet */
 r_if
 c_cond
 (paren
@@ -13622,11 +13704,9 @@ op_assign
 id|temp
 suffix:semicolon
 )brace
-id|spin_lock_irq
+id|acquire_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
 )paren
 suffix:semicolon
 id|rc
@@ -13646,11 +13726,9 @@ comma
 id|op
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|release_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
 )paren
 suffix:semicolon
 id|op-&gt;data

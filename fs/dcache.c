@@ -1643,7 +1643,7 @@ suffix:semicolon
 id|count
 op_assign
 id|dentry_stat.nr_unused
-op_rshift
+op_div
 id|priority
 suffix:semicolon
 id|prune_dcache

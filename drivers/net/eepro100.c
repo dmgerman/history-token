@@ -770,15 +770,20 @@ comma
 multiline_comment|/* Use &quot;Flexible mode&quot; for CmdTx command. */
 )brace
 suffix:semicolon
-multiline_comment|/* Clear CmdSuspend (1&lt;&lt;30) avoiding interference with the card access to the&n;   status bits.  Previous driver versions used separate 16 bit fields for&n;   commands and statuses.  --SAW&n;   FIXME: it may not work on non-IA32 architectures.&n; */
-macro_line|#if defined(__LITTLE_ENDIAN)
+multiline_comment|/* Clear CmdSuspend (1&lt;&lt;30) avoiding interference with the card access to the&n;   status bits.  Previous driver versions used separate 16 bit fields for&n;   commands and statuses.  --SAW&n; */
+macro_line|#if defined(__alpha__)
 DECL|macro|clear_suspend
-mdefine_line|#define clear_suspend(cmd)  ((__u16 *)&amp;(cmd)-&gt;cmd_status)[1] &amp;= ~0x4000
-macro_line|#elif defined(__BIG_ENDIAN)
-DECL|macro|clear_suspend
-mdefine_line|#define clear_suspend(cmd)  ((__u16 *)&amp;(cmd)-&gt;cmd_status)[1] &amp;= ~0x0040
+macro_line|# define clear_suspend(cmd)  clear_bit(30, &amp;(cmd)-&gt;cmd_status);
 macro_line|#else
-macro_line|#error Unsupported byteorder
+macro_line|# if defined(__LITTLE_ENDIAN)
+DECL|macro|clear_suspend
+macro_line|#  define clear_suspend(cmd)  ((__u16 *)&amp;(cmd)-&gt;cmd_status)[1] &amp;= ~0x4000
+macro_line|# elif defined(__BIG_ENDIAN)
+DECL|macro|clear_suspend
+macro_line|#  define clear_suspend(cmd)  ((__u16 *)&amp;(cmd)-&gt;cmd_status)[1] &amp;= ~0x0040
+macro_line|# else
+macro_line|#  error Unsupported byteorder
+macro_line|# endif
 macro_line|#endif
 DECL|enum|SCBCmdBits
 r_enum

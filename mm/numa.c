@@ -97,6 +97,7 @@ r_int
 id|nid
 comma
 r_int
+r_int
 id|gfp_mask
 comma
 r_int
@@ -351,6 +352,7 @@ id|pg_data_t
 op_star
 id|pgdat
 comma
+r_int
 r_int
 id|gfp_mask
 comma

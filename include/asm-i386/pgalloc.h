@@ -656,11 +656,18 @@ id|pte
 suffix:semicolon
 )brace
 DECL|macro|pte_free
-mdefine_line|#define pte_free(pte)&t;&t;pte_free_slow(pte)
+mdefine_line|#define pte_free(pte)&t;&t;pte_free_fast(pte)
+macro_line|#ifdef CONFIG_X86_PAE
+DECL|macro|pgd_alloc
+mdefine_line|#define pgd_alloc(mm)&t;&t;get_pgd_slow()
 DECL|macro|pgd_free
 mdefine_line|#define pgd_free(pgd)&t;&t;free_pgd_slow(pgd)
+macro_line|#else
 DECL|macro|pgd_alloc
 mdefine_line|#define pgd_alloc(mm)&t;&t;get_pgd_fast()
+DECL|macro|pgd_free
+mdefine_line|#define pgd_free(pgd)&t;&t;free_pgd_fast(pgd)
+macro_line|#endif
 multiline_comment|/*&n; * allocating and freeing a pmd is trivial: the 1-entry pmd is&n; * inside the pgd, so has no extra memory associated with it.&n; * (In the PAE case we free the pmds as part of the pgd.)&n; */
 DECL|macro|pmd_alloc_one_fast
 mdefine_line|#define pmd_alloc_one_fast(mm, addr)&t;({ BUG(); ((pmd_t *)1); })

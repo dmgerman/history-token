@@ -35,6 +35,8 @@ DECL|macro|O_NOFOLLOW
 mdefine_line|#define O_NOFOLLOW&t;0x20000&t;/* don&squot;t follow links */
 DECL|macro|O_LARGEFILE
 mdefine_line|#define O_LARGEFILE&t;0x40000
+DECL|macro|O_DIRECT
+mdefine_line|#define O_DIRECT        0x100000 /* direct disk access hint */
 DECL|macro|F_DUPFD
 mdefine_line|#define F_DUPFD&t;&t;0&t;/* dup */
 DECL|macro|F_GETFD

@@ -181,8 +181,6 @@ suffix:semicolon
 multiline_comment|/* floating point state */
 )brace
 suffix:semicolon
-DECL|macro|INIT_MMAP
-mdefine_line|#define INIT_MMAP { &amp;init_mm, 0, 0x40000000, NULL, __pgprot(_PAGE_PRESENT|_PAGE_ACCESSED), VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL }
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;sizeof(init_stack) + (unsigned long) init_stack, 0, &bslash;&n;&t;PS_S, __KERNEL_DS, &bslash;&n;}
 multiline_comment|/*&n; * Do necessary setup to start up a newly executed thread.&n; */

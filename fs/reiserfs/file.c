@@ -234,8 +234,6 @@ id|th
 suffix:semicolon
 r_int
 id|n_err
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|windex
@@ -267,6 +265,14 @@ suffix:semicolon
 id|n_err
 op_assign
 id|fsync_inode_buffers
+c_func
+(paren
+id|p_s_inode
+)paren
+suffix:semicolon
+id|n_err
+op_or_assign
+id|fsync_inode_data_buffers
 c_func
 (paren
 id|p_s_inode

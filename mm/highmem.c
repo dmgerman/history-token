@@ -633,7 +633,7 @@ c_func
 (paren
 id|p_from
 comma
-id|KM_BOUNCE_WRITE
+id|KM_USER0
 )paren
 suffix:semicolon
 id|memcpy
@@ -657,7 +657,7 @@ c_func
 (paren
 id|vfrom
 comma
-id|KM_BOUNCE_WRITE
+id|KM_USER0
 )paren
 suffix:semicolon
 )brace

@@ -10,7 +10,7 @@ mdefine_line|#define SWAP_FLAG_PRIO_MASK&t;0x7fff
 DECL|macro|SWAP_FLAG_PRIO_SHIFT
 mdefine_line|#define SWAP_FLAG_PRIO_SHIFT&t;0
 DECL|macro|MAX_SWAPFILES
-mdefine_line|#define MAX_SWAPFILES 8
+mdefine_line|#define MAX_SWAPFILES 32
 multiline_comment|/*&n; * Magic header for a swap area. The first part of the union is&n; * what the swap magic looks like for the old (limited to 128MB)&n; * swap area format, the second part of the union adds - in the&n; * old reserved area - some extra information. Note that the first&n; * kilobyte is reserved for boot loader or disk label stuff...&n; *&n; * Having the magic at the end of the PAGE_SIZE makes detecting swap&n; * areas somewhat tricky on machines that support multiple page sizes.&n; * For 2.5 we&squot;ll probably want to move the magic to just beyond the&n; * bootbits...&n; */
 DECL|union|swap_header
 r_union
@@ -196,15 +196,6 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|nr_inactive_clean_pages
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
 id|nr_free_buffer_pages
 c_func
 (paren
@@ -217,7 +208,7 @@ id|nr_active_pages
 suffix:semicolon
 r_extern
 r_int
-id|nr_inactive_dirty_pages
+id|nr_inactive_pages
 suffix:semicolon
 r_extern
 id|atomic_t
@@ -265,51 +256,10 @@ id|zone_t
 suffix:semicolon
 multiline_comment|/* linux/mm/swap.c */
 r_extern
-r_int
-id|memory_pressure
-suffix:semicolon
-r_extern
 r_void
-id|deactivate_page
+id|FASTCALL
 c_func
 (paren
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|deactivate_page_nolock
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|activate_page
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|activate_page_nolock
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|lru_cache_add
 c_func
 (paren
@@ -317,9 +267,13 @@ r_struct
 id|page
 op_star
 )paren
+)paren
 suffix:semicolon
 r_extern
 r_void
+id|FASTCALL
+c_func
+(paren
 id|__lru_cache_del
 c_func
 (paren
@@ -327,9 +281,13 @@ r_struct
 id|page
 op_star
 )paren
+)paren
 suffix:semicolon
 r_extern
 r_void
+id|FASTCALL
+c_func
+(paren
 id|lru_cache_del
 c_func
 (paren
@@ -337,13 +295,62 @@ r_struct
 id|page
 op_star
 )paren
+)paren
 suffix:semicolon
 r_extern
 r_void
-id|recalculate_vm_stats
+id|FASTCALL
 c_func
 (paren
+id|deactivate_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
+)paren
+suffix:semicolon
+r_extern
 r_void
+id|FASTCALL
+c_func
+(paren
+id|deactivate_page_nolock
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|activate_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|activate_page_nolock
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
 )paren
 suffix:semicolon
 r_extern
@@ -356,66 +363,26 @@ r_void
 suffix:semicolon
 multiline_comment|/* linux/mm/vmscan.c */
 r_extern
-r_struct
-id|page
-op_star
-id|reclaim_page
-c_func
-(paren
-id|zone_t
-op_star
-)paren
-suffix:semicolon
-r_extern
 id|wait_queue_head_t
 id|kswapd_wait
 suffix:semicolon
 r_extern
-id|wait_queue_head_t
-id|kreclaimd_wait
-suffix:semicolon
-r_extern
 r_int
-id|page_launder
+id|FASTCALL
 c_func
 (paren
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|free_shortage
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|inactive_shortage
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|wakeup_kswapd
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|try_to_free_pages
 c_func
 (paren
+id|zone_t
+op_star
+comma
 r_int
 r_int
-id|gfp_mask
+comma
+r_int
+r_int
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* linux/mm/page_io.c */
@@ -497,14 +464,6 @@ id|swp_entry_t
 suffix:semicolon
 multiline_comment|/* linux/mm/oom_kill.c */
 r_extern
-r_int
-id|out_of_memory
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|oom_kill
 c_func
@@ -558,14 +517,6 @@ id|page
 )paren
 suffix:semicolon
 multiline_comment|/* linux/mm/swapfile.c */
-r_extern
-r_int
-id|vm_swap_full
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_int
 r_int
@@ -741,49 +692,17 @@ r_extern
 id|spinlock_t
 id|pagemap_lru_lock
 suffix:semicolon
-r_extern
-r_void
-id|FASTCALL
-c_func
-(paren
-id|mark_page_accessed
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Page aging defines.&n; * Since we do exponential decay of the page age, we&n; * can chose a fairly large maximum.&n; */
-DECL|macro|PAGE_AGE_START
-mdefine_line|#define PAGE_AGE_START 2
-DECL|macro|PAGE_AGE_ADV
-mdefine_line|#define PAGE_AGE_ADV 3
-DECL|macro|PAGE_AGE_MAX
-mdefine_line|#define PAGE_AGE_MAX 64
 multiline_comment|/*&n; * List add/del helper macros. These must be called&n; * with the pagemap_lru_lock held!&n; */
-DECL|macro|DEBUG_ADD_PAGE
-mdefine_line|#define DEBUG_ADD_PAGE &bslash;&n;&t;if (PageActive(page) || PageInactiveDirty(page) || &bslash;&n;&t;&t;&t;&t;&t;PageInactiveClean(page)) BUG();
-DECL|macro|ZERO_PAGE_BUG
-mdefine_line|#define ZERO_PAGE_BUG &bslash;&n;&t;if (page_count(page) == 0) BUG();
+DECL|macro|DEBUG_LRU_PAGE
+mdefine_line|#define DEBUG_LRU_PAGE(page)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (PageActive(page))&t;&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;&t;if (PageInactive(page))&t;&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;&t;if (page_count(page) == 0)&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|add_page_to_active_list
-mdefine_line|#define add_page_to_active_list(page) { &bslash;&n;&t;DEBUG_ADD_PAGE &bslash;&n;&t;ZERO_PAGE_BUG &bslash;&n;&t;page-&gt;age = 0; &bslash;&n;&t;ClearPageReferenced(page); &bslash;&n;&t;SetPageActive(page); &bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;active_list); &bslash;&n;&t;nr_active_pages++; &bslash;&n;}
-DECL|macro|add_page_to_inactive_dirty_list
-mdefine_line|#define add_page_to_inactive_dirty_list(page) { &bslash;&n;&t;DEBUG_ADD_PAGE &bslash;&n;&t;ZERO_PAGE_BUG &bslash;&n;&t;SetPageInactiveDirty(page); &bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;inactive_dirty_list); &bslash;&n;&t;nr_inactive_dirty_pages++; &bslash;&n;&t;page-&gt;zone-&gt;inactive_dirty_pages++; &bslash;&n;}
-DECL|macro|add_page_to_inactive_clean_list
-mdefine_line|#define add_page_to_inactive_clean_list(page) { &bslash;&n;&t;DEBUG_ADD_PAGE &bslash;&n;&t;ZERO_PAGE_BUG &bslash;&n;&t;SetPageInactiveClean(page); &bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;page-&gt;zone-&gt;inactive_clean_list); &bslash;&n;&t;page-&gt;zone-&gt;inactive_clean_pages++; &bslash;&n;}
+mdefine_line|#define add_page_to_active_list(page)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DEBUG_LRU_PAGE(page);&t;&t;&t;&bslash;&n;&t;SetPageActive(page);&t;&t;&t;&bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;active_list);&t;&bslash;&n;&t;nr_active_pages++;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|add_page_to_inactive_list
+mdefine_line|#define add_page_to_inactive_list(page)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DEBUG_LRU_PAGE(page);&t;&t;&t;&bslash;&n;&t;SetPageInactive(page);&t;&t;&bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;inactive_list);&t;&bslash;&n;&t;nr_inactive_pages++;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|del_page_from_active_list
-mdefine_line|#define del_page_from_active_list(page) { &bslash;&n;&t;list_del(&amp;(page)-&gt;lru); &bslash;&n;&t;ClearPageActive(page); &bslash;&n;&t;nr_active_pages--; &bslash;&n;&t;DEBUG_ADD_PAGE &bslash;&n;&t;ZERO_PAGE_BUG &bslash;&n;}
-DECL|macro|del_page_from_inactive_dirty_list
-mdefine_line|#define del_page_from_inactive_dirty_list(page) { &bslash;&n;&t;list_del(&amp;(page)-&gt;lru); &bslash;&n;&t;ClearPageInactiveDirty(page); &bslash;&n;&t;nr_inactive_dirty_pages--; &bslash;&n;&t;page-&gt;zone-&gt;inactive_dirty_pages--; &bslash;&n;&t;DEBUG_ADD_PAGE &bslash;&n;&t;ZERO_PAGE_BUG &bslash;&n;}
-DECL|macro|del_page_from_inactive_clean_list
-mdefine_line|#define del_page_from_inactive_clean_list(page) { &bslash;&n;&t;list_del(&amp;(page)-&gt;lru); &bslash;&n;&t;ClearPageInactiveClean(page); &bslash;&n;&t;page-&gt;zone-&gt;inactive_clean_pages--; &bslash;&n;&t;DEBUG_ADD_PAGE &bslash;&n;&t;ZERO_PAGE_BUG &bslash;&n;}
-multiline_comment|/*&n; * In mm/swap.c::recalculate_vm_stats(), we substract&n; * inactive_target from memory_pressure every second.&n; * This means that memory_pressure is smoothed over&n; * 64 (1 &lt;&lt; INACTIVE_SHIFT) seconds.&n; */
-DECL|macro|INACTIVE_SHIFT
-mdefine_line|#define INACTIVE_SHIFT 6
-DECL|macro|inactive_target
-mdefine_line|#define inactive_target min_t(unsigned long, &bslash;&n;&t;&t;&t;    (memory_pressure &gt;&gt; INACTIVE_SHIFT), &bslash;&n;&t;&t;&t;    (num_physpages / 4))
+mdefine_line|#define del_page_from_active_list(page)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;list_del(&amp;(page)-&gt;lru);&t;&t;&t;&bslash;&n;&t;ClearPageActive(page);&t;&t;&t;&bslash;&n;&t;nr_active_pages--;&t;&t;&t;&bslash;&n;&t;DEBUG_LRU_PAGE(page);&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|del_page_from_inactive_list
+mdefine_line|#define del_page_from_inactive_list(page)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;list_del(&amp;(page)-&gt;lru);&t;&t;&t;&bslash;&n;&t;ClearPageInactive(page);&t;&t;&bslash;&n;&t;nr_inactive_pages--;&t;&t;&t;&bslash;&n;&t;DEBUG_LRU_PAGE(page);&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * Ugly ugly ugly HACK to make sure the inactive lists&n; * don&squot;t fill up with unfreeable ramdisk pages. We really&n; * want to fix the ramdisk driver to mark its pages as&n; * unfreeable instead of using dirty buffer magic, but the&n; * next code-change time is when 2.5 is forked...&n; */
 macro_line|#ifndef _LINUX_KDEV_T_H
 macro_line|#include &lt;linux/kdev_t.h&gt;
@@ -791,8 +710,6 @@ macro_line|#endif
 macro_line|#ifndef _LINUX_MAJOR_H
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#endif
-DECL|macro|page_ramdisk
-mdefine_line|#define page_ramdisk(page) &bslash;&n;&t;(page-&gt;buffers &amp;&amp; (MAJOR(page-&gt;buffers-&gt;b_dev) == RAMDISK_MAJOR))
 r_extern
 id|spinlock_t
 id|swaplock

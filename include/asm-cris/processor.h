@@ -58,14 +58,6 @@ mdefine_line|#define user_regs(task) (((struct pt_regs *)((unsigned long)(task) 
 multiline_comment|/*&n; * Dito but for the currently running task&n; */
 DECL|macro|current_regs
 mdefine_line|#define current_regs() user_regs(current)
-multiline_comment|/* INIT_MMAP is the kernels map of memory, between KSEG_C and KSEG_D */
-macro_line|#ifdef CONFIG_CRIS_LOW_MAP
-DECL|macro|INIT_MMAP
-mdefine_line|#define INIT_MMAP { &amp;init_mm, KSEG_6, KSEG_7, NULL, PAGE_SHARED, &bslash;&n;&t;&t;&t;     VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL }
-macro_line|#else
-DECL|macro|INIT_MMAP
-mdefine_line|#define INIT_MMAP { &amp;init_mm, KSEG_C, KSEG_D, NULL, PAGE_SHARED, &bslash;&n;&t;&t;&t;     VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL }
-macro_line|#endif
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  { &bslash;&n;   0, 0, 0x20 }  /* ccr = int enable, nothing else */
 r_extern

@@ -951,6 +951,11 @@ op_assign
 op_amp
 id|def_blk_fops
 suffix:semicolon
+id|inode-&gt;i_mapping-&gt;a_ops
+op_assign
+op_amp
+id|def_blk_aops
+suffix:semicolon
 id|inode-&gt;i_rdev
 op_assign
 id|to_kdev_t

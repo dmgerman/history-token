@@ -49,7 +49,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/lvm.h&gt;
 macro_line|#include &quot;lvm-snap.h&quot;
 DECL|macro|LVM_CORRECT_READ_AHEAD
-mdefine_line|#define&t;LVM_CORRECT_READ_AHEAD( a) &bslash;&n;   if      ( a &lt; LVM_MIN_READ_AHEAD || &bslash;&n;             a &gt; LVM_MAX_READ_AHEAD) a = LVM_MAX_READ_AHEAD;
+mdefine_line|#define&t;LVM_CORRECT_READ_AHEAD(a)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((a) &lt; LVM_MIN_READ_AHEAD ||&t;&t;&bslash;&n;&t;    (a) &gt; LVM_MAX_READ_AHEAD)&t;&t;&bslash;&n;&t;&t;(a) = LVM_DEFAULT_READ_AHEAD;&t;&bslash;&n;&t;read_ahead[MAJOR_NR] = (a);&t;&t;&bslash;&n;} while(0)
 macro_line|#ifndef WRITEA
 DECL|macro|WRITEA
 macro_line|#  define WRITEA WRITE
@@ -3025,6 +3025,13 @@ op_assign
 r_int
 )paren
 id|arg
+suffix:semicolon
+id|read_ahead
+(braket
+id|MAJOR_NR
+)braket
+op_assign
+id|lv_ptr-&gt;lv_read_ahead
 suffix:semicolon
 r_break
 suffix:semicolon

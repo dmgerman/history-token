@@ -3056,10 +3056,6 @@ c_cond
 id|ipv6_devconf.forwarding
 op_eq
 l_int|0
-op_logical_and
-id|opt-&gt;srcrt
-op_eq
-l_int|0
 )paren
 r_goto
 id|error

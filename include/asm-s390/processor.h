@@ -209,8 +209,6 @@ r_struct
 id|thread_struct
 id|thread_struct
 suffix:semicolon
-DECL|macro|INIT_MMAP
-mdefine_line|#define INIT_MMAP &bslash;&n;{ &amp;init_mm, 0, 0, NULL, PAGE_SHARED, &bslash;&n;VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL }
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD { (struct pt_regs *) 0,                       &bslash;&n;                    { 0,{{0},{0},{0},{0},{0},{0},{0},{0},{0},{0}, &bslash;&n;&t;&t;&t;    {0},{0},{0},{0},{0},{0}}},            &bslash;&n;                     0, 0,                                        &bslash;&n;                    sizeof(init_stack) + (__u32) &amp;init_stack,     &bslash;&n;              (__pa((__u32) &amp;swapper_pg_dir[0]) + _SEGMENT_TABLE),&bslash;&n;                     0,0,0,                                       &bslash;&n;                     (mm_segment_t) { 0,1},                       &bslash;&n;                     (per_struct) {{{{0,}}},0,0,0,0,{{0,}}},      &bslash;&n;                     0, 0                                         &bslash;&n;}
 multiline_comment|/* need to define ... */

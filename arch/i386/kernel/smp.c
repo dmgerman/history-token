@@ -1056,6 +1056,11 @@ op_assign
 op_amp
 id|data
 suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Send a message to all other CPUs and wait for them to respond */
 id|send_IPI_allbutself
 c_func
@@ -1278,6 +1283,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Notify initiating CPU that I&squot;ve grabbed the data and am&n;&t; * about to execute the function&n;&t; */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|atomic_inc
 c_func
 (paren
@@ -1299,6 +1309,12 @@ c_cond
 (paren
 id|wait
 )paren
+(brace
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|atomic_inc
 c_func
 (paren
@@ -1306,5 +1322,6 @@ op_amp
 id|call_data-&gt;finished
 )paren
 suffix:semicolon
+)brace
 )brace
 eof

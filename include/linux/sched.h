@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;linux/rbtree.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -361,9 +362,6 @@ mdefine_line|#define INIT_FILES &bslash;&n;{ &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;
 multiline_comment|/* Maximum number of active map areas.. This is a random (large) number */
 DECL|macro|MAX_MAP_COUNT
 mdefine_line|#define MAX_MAP_COUNT&t;(65536)
-multiline_comment|/* Number of map areas at which the AVL tree is activated. This is arbitrary. */
-DECL|macro|AVL_MIN_MAP_COUNT
-mdefine_line|#define AVL_MIN_MAP_COUNT&t;32
 DECL|struct|mm_struct
 r_struct
 id|mm_struct
@@ -375,13 +373,10 @@ op_star
 id|mmap
 suffix:semicolon
 multiline_comment|/* list of VMAs */
-DECL|member|mmap_avl
-r_struct
-id|vm_area_struct
-op_star
-id|mmap_avl
+DECL|member|mm_rb
+id|rb_root_t
+id|mm_rb
 suffix:semicolon
-multiline_comment|/* tree of VMAs */
 DECL|member|mmap_cache
 r_struct
 id|vm_area_struct
@@ -508,7 +503,7 @@ r_int
 id|mmlist_nr
 suffix:semicolon
 DECL|macro|INIT_MM
-mdefine_line|#define INIT_MM(name) &bslash;&n;{&t;&t;&t; &t;&t;&t;&t;&bslash;&n;&t;mmap:&t;&t;&amp;init_mmap, &t;&t;&t;&bslash;&n;&t;mmap_avl:&t;NULL, &t;&t;&t;&t;&bslash;&n;&t;mmap_cache:&t;NULL, &t;&t;&t;&t;&bslash;&n;&t;pgd:&t;&t;swapper_pg_dir, &t;&t;&bslash;&n;&t;mm_users:&t;ATOMIC_INIT(2), &t;&t;&bslash;&n;&t;mm_count:&t;ATOMIC_INIT(1), &t;&t;&bslash;&n;&t;map_count:&t;1, &t;&t;&t;&t;&bslash;&n;&t;mmap_sem:&t;__RWSEM_INITIALIZER(name.mmap_sem), &bslash;&n;&t;page_table_lock: SPIN_LOCK_UNLOCKED, &t;&t;&bslash;&n;&t;mmlist:&t;&t;LIST_HEAD_INIT(name.mmlist),&t;&bslash;&n;}
+mdefine_line|#define INIT_MM(name) &bslash;&n;{&t;&t;&t; &t;&t;&t;&t;&bslash;&n;&t;mm_rb:&t;&t;RB_ROOT,&t;&t;&t;&bslash;&n;&t;pgd:&t;&t;swapper_pg_dir, &t;&t;&bslash;&n;&t;mm_users:&t;ATOMIC_INIT(2), &t;&t;&bslash;&n;&t;mm_count:&t;ATOMIC_INIT(1), &t;&t;&bslash;&n;&t;mmap_sem:&t;__RWSEM_INITIALIZER(name.mmap_sem), &bslash;&n;&t;page_table_lock: SPIN_LOCK_UNLOCKED, &t;&t;&bslash;&n;&t;mmlist:&t;&t;LIST_HEAD_INIT(name.mmlist),&t;&bslash;&n;}
 DECL|struct|signal_struct
 r_struct
 id|signal_struct
@@ -685,6 +680,19 @@ r_struct
 id|mm_struct
 op_star
 id|active_mm
+suffix:semicolon
+DECL|member|local_pages
+r_struct
+id|list_head
+id|local_pages
+suffix:semicolon
+DECL|member|allocation_order
+DECL|member|nr_local_pages
+r_int
+r_int
+id|allocation_order
+comma
+id|nr_local_pages
 suffix:semicolon
 multiline_comment|/* task state */
 DECL|member|binfmt
@@ -1096,6 +1104,8 @@ DECL|macro|PF_SIGNALED
 mdefine_line|#define PF_SIGNALED&t;0x00000400&t;/* killed by a signal */
 DECL|macro|PF_MEMALLOC
 mdefine_line|#define PF_MEMALLOC&t;0x00000800&t;/* Allocating memory */
+DECL|macro|PF_FREE_PAGES
+mdefine_line|#define PF_FREE_PAGES&t;0x00002000&t;/* per process page freeing */
 DECL|macro|PF_USEDFPU
 mdefine_line|#define PF_USEDFPU&t;0x00100000&t;/* task used FPU this quantum (SMP) */
 multiline_comment|/*&n; * Ptrace flags&n; */

@@ -17,14 +17,6 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* it&squot;s really int */
-r_extern
-r_void
-id|unblank_console
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|panic_timeout
 r_int
 id|panic_timeout
@@ -71,7 +63,7 @@ comma
 id|panic_setup
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;panic - halt the system&n; *&t;@fmt: The text string to print&n; *&n; *&t;Display a message, then unblank the console and perform&n; *&t;cleanups. Functions in the panic notifier list are called&n; *&t;after the filesystem cache is flushed (when possible).&n; *&n; *&t;This function never returns.&n; */
+multiline_comment|/**&n; *&t;panic - halt the system&n; *&t;@fmt: The text string to print&n; *&n; *&t;Display a message, then perform cleanups. Functions in the panic&n; *&t;notifier list are called after the filesystem cache is flushed (when possible).&n; *&n; *&t;This function never returns.&n; */
 DECL|function|panic
 id|NORET_TYPE
 r_void
@@ -114,6 +106,12 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+id|bust_spinlocks
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 id|va_start
 c_func
 (paren
@@ -182,9 +180,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|unblank_console
+id|bust_spinlocks
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP

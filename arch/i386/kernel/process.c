@@ -1117,6 +1117,16 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+l_string|&quot;Pid: %d, comm: %20s&bslash;n&quot;
+comma
+id|current-&gt;pid
+comma
+id|current-&gt;comm
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
 l_string|&quot;EIP: %04x:[&lt;%08lx&gt;] CPU: %d&quot;
 comma
 l_int|0xffff

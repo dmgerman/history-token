@@ -177,6 +177,20 @@ id|NR_IRQS
 )braket
 suffix:semicolon
 macro_line|#include &lt;asm/hw_irq.h&gt; /* the arch dependent stuff */
+multiline_comment|/**&n; * touch_nmi_watchdog - restart NMI watchdog timeout.&n; * &n; * If the architecture supports the NMI watchdog, touch_nmi_watchdog()&n; * may be used to reset the timeout - for code which intentionally&n; * disables interrupts for a long time. This call is stateless.&n; */
+macro_line|#ifdef ARCH_HAS_NMI_WATCHDOG
+r_extern
+r_void
+id|touch_nmi_watchdog
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|touch_nmi_watchdog
+macro_line|# define touch_nmi_watchdog() do { } while(0)
+macro_line|#endif
 r_extern
 r_int
 id|handle_IRQ_event

@@ -65,6 +65,14 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|err
+op_or_assign
+id|fsync_inode_data_buffers
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

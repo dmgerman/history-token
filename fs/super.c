@@ -9378,6 +9378,11 @@ op_logical_neg
 id|blivet
 )paren
 (brace
+r_int
+id|ioctl_err
+suffix:semicolon
+id|ioctl_err
+op_assign
 id|ioctl_by_bdev
 c_func
 (paren
@@ -9386,6 +9391,19 @@ comma
 id|BLKFLSBUF
 comma
 l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ioctl_err
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;failed to release ramdisk %d...&quot;
+comma
+id|ioctl_err
 )paren
 suffix:semicolon
 id|printk

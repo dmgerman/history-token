@@ -229,8 +229,6 @@ suffix:semicolon
 multiline_comment|/* Thread struct flags. */
 DECL|macro|PARISC_KERNEL_DEATH
 mdefine_line|#define PARISC_KERNEL_DEATH&t;(1UL &lt;&lt; 31)&t;/* see die_if_kernel()... */
-DECL|macro|INIT_MMAP
-mdefine_line|#define INIT_MMAP { &amp;init_mm, 0, 0, NULL, PAGE_SHARED, &bslash;&n;&t;&t;    VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL }
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD { {&t;&t;&t;&bslash;&n;&t;{ 0, 0, 0, 0, 0, 0, 0, 0,&t;&bslash;&n;&t;  0, 0, 0, 0, 0, 0, 0, 0,&t;&bslash;&n;&t;  0, 0, 0, 0, 0, 0, 0, 0,&t;&bslash;&n;&t;  0, 0, 0, 0, 0, 0, 0, 0 },&t;&bslash;&n;&t;{ 0, 0, 0, 0, 0, 0, 0, 0,&t;&bslash;&n;&t;  0, 0, 0, 0, 0, 0, 0, 0,&t;&bslash;&n;&t;  0, 0, 0, 0, 0, 0, 0, 0,&t;&bslash;&n;&t;  0, 0, 0, 0, 0, 0, 0, 0 },&t;&bslash;&n;&t;{ 0, 0, 0, 0, 0, 0, 0, 0 },&t;&bslash;&n;&t;{ 0, 0}, { 0, 0}, 0, 0, 0, 0&t;&bslash;&n;&t;}, __pa((unsigned long) swapper_pg_dir) }
 multiline_comment|/*&n; * Return saved PC of a blocked thread.  This is used by ps mostly.&n; */

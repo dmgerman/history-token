@@ -151,7 +151,7 @@ mdefine_line|#define __PAGE_OFFSET&t;&t;(0xC0000000)
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Tell the user there is some problem. Beep too, so we can&n; * see^H^H^Hhear bugs in early bootup as well!&n; */
 DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;&t;__asm__ __volatile__(&quot;.byte 0x0f,0x0b&quot;); &bslash;&n;} while (0)
+mdefine_line|#define BUG() do {&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&quot;.byte 0x0f,0x0b&quot;);&t;&bslash;&n;} while (0)
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;&t;BUG(); &bslash;&n;} while (0)
 multiline_comment|/* Pure 2^n version of get_order */

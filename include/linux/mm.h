@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
+macro_line|#include &lt;linux/rbtree.h&gt;
 r_extern
 r_int
 r_int
@@ -37,7 +38,7 @@ suffix:semicolon
 r_extern
 r_struct
 id|list_head
-id|inactive_dirty_list
+id|inactive_list
 suffix:semicolon
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -85,22 +86,9 @@ r_int
 id|vm_flags
 suffix:semicolon
 multiline_comment|/* Flags, listed below. */
-multiline_comment|/* AVL tree of VM areas per task, sorted by address */
-DECL|member|vm_avl_height
-r_int
-id|vm_avl_height
-suffix:semicolon
-DECL|member|vm_avl_left
-r_struct
-id|vm_area_struct
-op_star
-id|vm_avl_left
-suffix:semicolon
-DECL|member|vm_avl_right
-r_struct
-id|vm_area_struct
-op_star
-id|vm_avl_right
+DECL|member|vm_rb
+id|rb_node_t
+id|vm_rb
 suffix:semicolon
 multiline_comment|/*&n;&t; * For areas with an address space and backing store,&n;&t; * one of the address_space-&gt;i_mmap{,shared} lists,&n;&t; * for shm areas, the list of attaches, otherwise unused.&n;&t; */
 DECL|member|vm_next_share
@@ -317,12 +305,6 @@ id|list_head
 id|lru
 suffix:semicolon
 multiline_comment|/* Pageout list, eg. active_list;&n;&t;&t;&t;&t;&t;   protected by pagemap_lru_lock !! */
-DECL|member|age
-r_int
-r_int
-id|age
-suffix:semicolon
-multiline_comment|/* Page aging counter. */
 DECL|member|wait
 id|wait_queue_head_t
 id|wait
@@ -386,25 +368,22 @@ DECL|macro|PG_decr_after
 mdefine_line|#define PG_decr_after&t;&t; 5
 DECL|macro|PG_active
 mdefine_line|#define PG_active&t;&t; 6
-DECL|macro|PG_inactive_dirty
-mdefine_line|#define PG_inactive_dirty&t; 7
+DECL|macro|PG_inactive
+mdefine_line|#define PG_inactive&t;&t; 7
 DECL|macro|PG_slab
 mdefine_line|#define PG_slab&t;&t;&t; 8
 DECL|macro|PG_swap_cache
 mdefine_line|#define PG_swap_cache&t;&t; 9
 DECL|macro|PG_skip
 mdefine_line|#define PG_skip&t;&t;&t;10
-DECL|macro|PG_inactive_clean
-mdefine_line|#define PG_inactive_clean&t;11
 DECL|macro|PG_highmem
-mdefine_line|#define PG_highmem&t;&t;12
+mdefine_line|#define PG_highmem&t;&t;11
 DECL|macro|PG_checked
-mdefine_line|#define PG_checked&t;&t;13&t;/* kill me in 2.5.&lt;early&gt;. */
-multiline_comment|/* bits 21-29 unused */
+mdefine_line|#define PG_checked&t;&t;12&t;/* kill me in 2.5.&lt;early&gt;. */
 DECL|macro|PG_arch_1
-mdefine_line|#define PG_arch_1&t;&t;30
+mdefine_line|#define PG_arch_1&t;&t;13
 DECL|macro|PG_reserved
-mdefine_line|#define PG_reserved&t;&t;31
+mdefine_line|#define PG_reserved&t;&t;14
 multiline_comment|/* Make it prettier to test the above... */
 DECL|macro|Page_Uptodate
 mdefine_line|#define Page_Uptodate(page)&t;test_bit(PG_uptodate, &amp;(page)-&gt;flags)
@@ -518,18 +497,20 @@ DECL|macro|SetPageActive
 mdefine_line|#define SetPageActive(page)&t;set_bit(PG_active, &amp;(page)-&gt;flags)
 DECL|macro|ClearPageActive
 mdefine_line|#define ClearPageActive(page)&t;clear_bit(PG_active, &amp;(page)-&gt;flags)
-DECL|macro|PageInactiveDirty
-mdefine_line|#define PageInactiveDirty(page)&t;test_bit(PG_inactive_dirty, &amp;(page)-&gt;flags)
-DECL|macro|SetPageInactiveDirty
-mdefine_line|#define SetPageInactiveDirty(page)&t;set_bit(PG_inactive_dirty, &amp;(page)-&gt;flags)
-DECL|macro|ClearPageInactiveDirty
-mdefine_line|#define ClearPageInactiveDirty(page)&t;clear_bit(PG_inactive_dirty, &amp;(page)-&gt;flags)
-DECL|macro|PageInactiveClean
-mdefine_line|#define PageInactiveClean(page)&t;test_bit(PG_inactive_clean, &amp;(page)-&gt;flags)
-DECL|macro|SetPageInactiveClean
-mdefine_line|#define SetPageInactiveClean(page)&t;set_bit(PG_inactive_clean, &amp;(page)-&gt;flags)
-DECL|macro|ClearPageInactiveClean
-mdefine_line|#define ClearPageInactiveClean(page)&t;clear_bit(PG_inactive_clean, &amp;(page)-&gt;flags)
+DECL|macro|TestandSetPageActive
+mdefine_line|#define TestandSetPageActive(page)&t;test_and_set_bit(PG_active, &amp;(page)-&gt;flags)
+DECL|macro|TestandClearPageActive
+mdefine_line|#define TestandClearPageActive(page)&t;test_and_clear_bit(PG_active, &amp;(page)-&gt;flags)
+DECL|macro|PageInactive
+mdefine_line|#define PageInactive(page)&t;test_bit(PG_inactive, &amp;(page)-&gt;flags)
+DECL|macro|SetPageInactive
+mdefine_line|#define SetPageInactive(page)&t;set_bit(PG_inactive, &amp;(page)-&gt;flags)
+DECL|macro|ClearPageInactive
+mdefine_line|#define ClearPageInactive(page)&t;clear_bit(PG_inactive, &amp;(page)-&gt;flags)
+DECL|macro|TestandSetPageInactive
+mdefine_line|#define TestandSetPageInactive(page)&t;test_and_set_bit(PG_inactive, &amp;(page)-&gt;flags)
+DECL|macro|TestandClearPageInactive
+mdefine_line|#define TestandClearPageInactive(page)&t;test_and_clear_bit(PG_inactive, &amp;(page)-&gt;flags)
 macro_line|#ifdef CONFIG_HIGHMEM
 DECL|macro|PageHighMem
 mdefine_line|#define PageHighMem(page)&t;&t;test_bit(PG_highmem, &amp;(page)-&gt;flags)
@@ -608,6 +589,7 @@ r_int
 id|nid
 comma
 r_int
+r_int
 id|gfp_mask
 comma
 r_int
@@ -624,6 +606,7 @@ op_star
 id|alloc_pages
 c_func
 (paren
+r_int
 r_int
 id|gfp_mask
 comma
@@ -665,6 +648,7 @@ id|__get_free_pages
 c_func
 (paren
 r_int
+r_int
 id|gfp_mask
 comma
 r_int
@@ -682,6 +666,7 @@ c_func
 id|get_zeroed_page
 c_func
 (paren
+r_int
 r_int
 id|gfp_mask
 )paren
@@ -1109,8 +1094,7 @@ id|address
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pgd_present
+id|pgd_none
 c_func
 (paren
 op_star
@@ -1231,6 +1215,33 @@ c_func
 id|swp_entry_t
 )paren
 suffix:semicolon
+DECL|function|is_page_cache_freeable
+r_static
+r_inline
+r_int
+id|is_page_cache_freeable
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_return
+id|page_count
+c_func
+(paren
+id|page
+)paren
+op_minus
+op_logical_neg
+op_logical_neg
+id|page-&gt;buffers
+op_eq
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Work out if there are any other processes sharing this&n; * swap cache page. Never mind the buffers.&n; */
 DECL|function|exclusive_swap_page
 r_static
@@ -1357,7 +1368,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|build_mmap_avl
+id|build_mmap_rb
 c_func
 (paren
 r_struct
@@ -1554,6 +1565,90 @@ r_int
 r_int
 )paren
 suffix:semicolon
+DECL|function|__vma_unlink
+r_static
+r_inline
+r_void
+id|__vma_unlink
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|prev
+)paren
+(brace
+id|prev-&gt;vm_next
+op_assign
+id|vma-&gt;vm_next
+suffix:semicolon
+id|rb_erase
+c_func
+(paren
+op_amp
+id|vma-&gt;vm_rb
+comma
+op_amp
+id|mm-&gt;mm_rb
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mm-&gt;mmap_cache
+op_eq
+id|vma
+)paren
+id|mm-&gt;mmap_cache
+op_assign
+id|prev
+suffix:semicolon
+)brace
+DECL|function|can_vma_merge
+r_static
+r_inline
+r_int
+id|can_vma_merge
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|vm_flags
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|vma-&gt;vm_file
+op_logical_and
+id|vma-&gt;vm_flags
+op_eq
+id|vm_flags
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_else
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_struct
 id|zone_t
 suffix:semicolon
@@ -1687,6 +1782,7 @@ r_int
 r_int
 id|grow
 suffix:semicolon
+multiline_comment|/*&n;&t; * vma-&gt;vm_start/vm_end cannot change under us because the caller is required&n;&t; * to hold the mmap_sem in write mode. We need to get the spinlock only&n;&t; * before relocating the vma range ourself.&n;&t; */
 id|address
 op_and_assign
 id|PAGE_MASK

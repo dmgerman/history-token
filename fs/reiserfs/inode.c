@@ -7854,13 +7854,6 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|get_bh
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
-multiline_comment|/* async end_io handler puts this */
 id|set_buffer_async_io
 c_func
 (paren

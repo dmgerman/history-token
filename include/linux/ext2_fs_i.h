@@ -66,6 +66,10 @@ DECL|member|i_prealloc_count
 id|__u32
 id|i_prealloc_count
 suffix:semicolon
+DECL|member|i_dir_start_lookup
+id|__u32
+id|i_dir_start_lookup
+suffix:semicolon
 DECL|member|i_new_inode
 r_int
 id|i_new_inode

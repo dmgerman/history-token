@@ -382,6 +382,8 @@ r_goto
 id|bad_area
 suffix:semicolon
 )brace
+id|survive
+suffix:colon
 multiline_comment|/*&n;&t; * If for any reason at all we couldn&squot;t handle the fault,&n;&t; * make sure we exit gracefully rather than endlessly redo&n;&t; * the fault.&n;&t; */
 id|fault
 op_assign
@@ -556,6 +558,34 @@ suffix:semicolon
 multiline_comment|/*&n; * We ran out of memory, or some other thing happened to us that made&n; * us unable to handle the page fault gracefully.&n; */
 id|out_of_memory
 suffix:colon
+r_if
+c_cond
+(paren
+id|current-&gt;pid
+op_eq
+l_int|1
+)paren
+(brace
+id|current-&gt;policy
+op_or_assign
+id|SCHED_YIELD
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
+r_goto
+id|survive
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren

@@ -1035,6 +1035,13 @@ c_func
 id|generic_file_write
 )paren
 suffix:semicolon
+DECL|variable|generic_direct_IO
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_direct_IO
+)paren
+suffix:semicolon
 DECL|variable|generic_file_mmap
 id|EXPORT_SYMBOL
 c_func
@@ -1514,20 +1521,6 @@ id|tty_std_termios
 )paren
 suffix:semicolon
 multiline_comment|/* block device driver support */
-DECL|variable|block_read
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|block_read
-)paren
-suffix:semicolon
-DECL|variable|block_write
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|block_write
-)paren
-suffix:semicolon
 DECL|variable|blksize_size
 id|EXPORT_SYMBOL
 c_func
@@ -1716,20 +1709,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|do_SAK
-)paren
-suffix:semicolon
-DECL|variable|console_print
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|console_print
-)paren
-suffix:semicolon
-DECL|variable|console_loglevel
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|console_loglevel
 )paren
 suffix:semicolon
 multiline_comment|/* filesystem registration */
@@ -2356,13 +2335,6 @@ c_func
 id|panic
 )paren
 suffix:semicolon
-DECL|variable|printk
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|printk
-)paren
-suffix:semicolon
 DECL|variable|sprintf
 id|EXPORT_SYMBOL
 c_func
@@ -2609,6 +2581,13 @@ c_func
 id|fsync_inode_buffers
 )paren
 suffix:semicolon
+DECL|variable|fsync_inode_data_buffers
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fsync_inode_data_buffers
+)paren
+suffix:semicolon
 DECL|variable|clear_inode
 id|EXPORT_SYMBOL
 c_func
@@ -2766,21 +2745,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|get_write_access
-)paren
-suffix:semicolon
-multiline_comment|/* dynamic registering of consoles */
-DECL|variable|register_console
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|register_console
-)paren
-suffix:semicolon
-DECL|variable|unregister_console
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|unregister_console
 )paren
 suffix:semicolon
 multiline_comment|/* time */

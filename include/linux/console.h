@@ -479,10 +479,6 @@ DECL|macro|CON_CONSDEV
 mdefine_line|#define CON_CONSDEV&t;(2) /* Last on the command line */
 DECL|macro|CON_ENABLED
 mdefine_line|#define CON_ENABLED&t;(4)
-r_extern
-id|spinlock_t
-id|console_lock
-suffix:semicolon
 DECL|struct|console
 r_struct
 id|console
@@ -624,6 +620,30 @@ r_struct
 id|console
 op_star
 id|console_drivers
+suffix:semicolon
+r_extern
+r_void
+id|acquire_console_sem
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|release_console_sem
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|console_conditional_schedule
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 multiline_comment|/* VESA Blanking Levels */
 DECL|macro|VESA_NO_BLANKING

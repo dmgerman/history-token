@@ -122,8 +122,6 @@ suffix:semicolon
 )brace
 r_extern
 id|spinlock_t
-id|console_lock
-comma
 id|timerlist_lock
 suffix:semicolon
 multiline_comment|/*&n; * Unlock any spinlocks which will prevent us from getting the&n; * message out (timerlist_lock is acquired through the&n; * console unblank code)&n; */
@@ -664,6 +662,12 @@ id|do_exit
 c_func
 (paren
 id|SIGKILL
+)paren
+suffix:semicolon
+id|bust_spinlocks
+c_func
+(paren
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * We ran out of memory, or some other thing happened to us that made&n; * us unable to handle the page fault gracefully.&n; */

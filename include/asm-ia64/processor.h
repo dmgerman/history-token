@@ -888,8 +888,6 @@ suffix:semicolon
 multiline_comment|/* saved/loaded on demand */
 )brace
 suffix:semicolon
-DECL|macro|INIT_MMAP
-mdefine_line|#define INIT_MMAP {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&amp;init_mm, PAGE_OFFSET, PAGE_OFFSET + 0x10000000, NULL, PAGE_SHARED,&t;&bslash;&n;        VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD {&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;/* ksp */&t;&bslash;&n;&t;0,&t;&t;&t;&t;/* flags */&t;&bslash;&n;&t;DEFAULT_MAP_BASE,&t;&t;/* map_base */&t;&bslash;&n;&t;DEFAULT_TASK_SIZE,&t;&t;/* task_size */&t;&bslash;&n;&t;0,&t;&t;&t;&t;/* siginfo */&t;&bslash;&n;&t;INIT_THREAD_IA32&t;&t;&t;&t;&bslash;&n;&t;INIT_THREAD_PM&t;&t;&t;&t;&t;&bslash;&n;&t;{0, },&t;&t;&t;&t;/* dbr */&t;&bslash;&n;&t;{0, },&t;&t;&t;&t;/* ibr */&t;&bslash;&n;&t;{{{{0}}}, }&t;&t;&t;/* fph */&t;&bslash;&n;}
 DECL|macro|start_thread
@@ -2921,6 +2919,68 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|macro|ARCH_HAS_PREFETCH
+mdefine_line|#define ARCH_HAS_PREFETCH
+DECL|macro|ARCH_HAS_PREFETCHW
+mdefine_line|#define ARCH_HAS_PREFETCHW
+DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
+mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
+DECL|macro|PREFETCH_STRIDE
+mdefine_line|#define PREFETCH_STRIDE 256
+DECL|function|prefetch
+r_extern
+r_inline
+r_void
+id|prefetch
+c_func
+(paren
+r_const
+r_void
+op_star
+id|x
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;lfetch [%0]&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|x
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|prefetchw
+r_extern
+r_inline
+r_void
+id|prefetchw
+c_func
+(paren
+r_const
+r_void
+op_star
+id|x
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;lfetch.excl [%0]&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|x
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|macro|spin_lock_prefetch
+mdefine_line|#define spin_lock_prefetch(x)   prefetchw(x)
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_PROCESSOR_H */
 eof

@@ -280,11 +280,9 @@ id|con_buf_sem
 )paren
 suffix:semicolon
 multiline_comment|/* Select the proper current console and verify&n;&t; * sanity of the situation under the console lock.&n;&t; */
-id|spin_lock_irq
+id|acquire_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
 )paren
 suffix:semicolon
 id|attr
@@ -797,12 +795,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* Finally, temporarily drop the console lock and push&n;&t;&t; * all the data to userspace from our temporary buffer.&n;&t;&t; */
-id|spin_unlock_irq
+multiline_comment|/* Finally, release the console semaphore while we push&n;&t;&t; * all the data to userspace from our temporary buffer.&n;&t;&t; *&n;&t;&t; * AKPM: Even though it&squot;s a semaphore, we should drop it because&n;&t;&t; * the pagefault handling code may want to call printk().&n;&t;&t; */
+id|release_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
 )paren
 suffix:semicolon
 id|ret
@@ -817,11 +813,9 @@ comma
 id|orig_count
 )paren
 suffix:semicolon
-id|spin_lock_irq
+id|acquire_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
 )paren
 suffix:semicolon
 r_if
@@ -879,11 +873,9 @@ id|read
 suffix:semicolon
 id|unlock_out
 suffix:colon
-id|spin_unlock_irq
+id|release_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
 )paren
 suffix:semicolon
 id|up
@@ -984,11 +976,9 @@ id|con_buf_sem
 )paren
 suffix:semicolon
 multiline_comment|/* Select the proper current console and verify&n;&t; * sanity of the situation under the console lock.&n;&t; */
-id|spin_lock_irq
+id|acquire_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
 )paren
 suffix:semicolon
 id|attr
@@ -1123,11 +1113,9 @@ op_assign
 id|CON_BUF_SIZE
 suffix:semicolon
 multiline_comment|/* Temporarily drop the console lock so that we can read&n;&t;&t; * in the write data from userspace safely.&n;&t;&t; */
-id|spin_unlock_irq
+id|release_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
 )paren
 suffix:semicolon
 id|ret
@@ -1142,11 +1130,9 @@ comma
 id|this_round
 )paren
 suffix:semicolon
-id|spin_lock_irq
+id|acquire_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
 )paren
 suffix:semicolon
 r_if
@@ -1769,11 +1755,9 @@ id|written
 suffix:semicolon
 id|unlock_out
 suffix:colon
-id|spin_unlock_irq
+id|release_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
 )paren
 suffix:semicolon
 id|up

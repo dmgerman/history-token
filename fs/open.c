@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|special_file
 mdefine_line|#define special_file(m) (S_ISCHR(m)||S_ISBLK(m)||S_ISFIFO(m)||S_ISSOCK(m))
@@ -2840,6 +2841,43 @@ op_amp
 id|inode-&gt;i_sb-&gt;s_files
 )paren
 suffix:semicolon
+multiline_comment|/* preallocate kiobuf for O_DIRECT */
+id|f-&gt;f_iobuf
+op_assign
+l_int|NULL
+suffix:semicolon
+id|f-&gt;f_iobuf_lock
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|f-&gt;f_flags
+op_amp
+id|O_DIRECT
+)paren
+(brace
+id|error
+op_assign
+id|alloc_kiovec
+c_func
+(paren
+l_int|1
+comma
+op_amp
+id|f-&gt;f_iobuf
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_goto
+id|cleanup_all
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2887,6 +2925,20 @@ id|f
 suffix:semicolon
 id|cleanup_all
 suffix:colon
+r_if
+c_cond
+(paren
+id|f-&gt;f_iobuf
+)paren
+id|free_kiovec
+c_func
+(paren
+l_int|1
+comma
+op_amp
+id|f-&gt;f_iobuf
+)paren
+suffix:semicolon
 id|fops_put
 c_func
 (paren

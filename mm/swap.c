@@ -9,31 +9,10 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt; /* for copy_to/from_user */
 macro_line|#include &lt;asm/pgtable.h&gt;
-multiline_comment|/*&n; * We identify three levels of free memory.  We never let free mem&n; * fall below the freepages.min except for atomic allocations.  We&n; * start background swapping if we fall below freepages.high free&n; * pages, and we begin intensive swapping below freepages.low.&n; *&n; * Actual initialization is done in mm/page_alloc.c&n; */
-DECL|variable|freepages
-id|freepages_t
-id|freepages
-op_assign
-(brace
-l_int|0
-comma
-multiline_comment|/* freepages.min */
-l_int|0
-comma
-multiline_comment|/* freepages.low */
-l_int|0
-multiline_comment|/* freepages.high */
-)brace
-suffix:semicolon
 multiline_comment|/* How many pages do we try to swap or page in/out together? */
 DECL|variable|page_cluster
 r_int
 id|page_cluster
-suffix:semicolon
-multiline_comment|/*&n; * This variable contains the amount of page steals the system&n; * is doing, averaged over a minute. We use this to determine how&n; * many inactive pages we should have.&n; *&n; * In reclaim_page and __alloc_pages: memory_pressure++&n; * In __free_pages_ok: memory_pressure--&n; * In recalculate_vm_stats the value is decayed (once a second)&n; */
-DECL|variable|memory_pressure
-r_int
-id|memory_pressure
 suffix:semicolon
 multiline_comment|/* We track the number of pages currently being asynchronously swapped&n;   out, so that we don&squot;t try to swap TOO many pages out at once */
 DECL|variable|nr_async_pages
@@ -45,36 +24,6 @@ c_func
 (paren
 l_int|0
 )paren
-suffix:semicolon
-DECL|variable|buffer_mem
-id|buffer_mem_t
-id|buffer_mem
-op_assign
-(brace
-l_int|2
-comma
-multiline_comment|/* minimum percent buffer */
-l_int|10
-comma
-multiline_comment|/* borrow percent buffer */
-l_int|60
-multiline_comment|/* maximum percent buffer */
-)brace
-suffix:semicolon
-DECL|variable|page_cache
-id|buffer_mem_t
-id|page_cache
-op_assign
-(brace
-l_int|2
-comma
-multiline_comment|/* minimum percent page cache */
-l_int|15
-comma
-multiline_comment|/* borrow percent page cache */
-l_int|75
-multiline_comment|/* maximum */
-)brace
 suffix:semicolon
 DECL|variable|pager_daemon
 id|pager_daemon_t
@@ -104,49 +53,10 @@ op_star
 id|page
 )paren
 (brace
-multiline_comment|/*&n;&t; * One for the cache, one for the extra reference the&n;&t; * caller has and (maybe) one for the buffers.&n;&t; *&n;&t; * This isn&squot;t perfect, but works for just about everything.&n;&t; * Besides, as long as we don&squot;t move unfreeable pages to the&n;&t; * inactive_clean list it doesn&squot;t need to be perfect...&n;&t; */
-r_int
-id|maxcount
-op_assign
-(paren
-id|page-&gt;buffers
-ques
-c_cond
-l_int|3
-suffix:colon
-l_int|2
-)paren
-suffix:semicolon
-id|page-&gt;age
-op_assign
-l_int|0
-suffix:semicolon
-id|ClearPageReferenced
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Don&squot;t touch it if it&squot;s not on the active list.&n;&t; * (some pages aren&squot;t on any list at all)&n;&t; */
 r_if
 c_cond
 (paren
 id|PageActive
-c_func
-(paren
-id|page
-)paren
-op_logical_and
-id|page_count
-c_func
-(paren
-id|page
-)paren
-op_le
-id|maxcount
-op_logical_and
-op_logical_neg
-id|page_ramdisk
 c_func
 (paren
 id|page
@@ -159,7 +69,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|add_page_to_inactive_dirty_list
+id|add_page_to_inactive_list
 c_func
 (paren
 id|page
@@ -214,14 +124,14 @@ id|page
 r_if
 c_cond
 (paren
-id|PageInactiveDirty
+id|PageInactive
 c_func
 (paren
 id|page
 )paren
 )paren
 (brace
-id|del_page_from_inactive_dirty_list
+id|del_page_from_inactive_list
 c_func
 (paren
 id|page
@@ -234,46 +144,6 @@ id|page
 )paren
 suffix:semicolon
 )brace
-r_else
-r_if
-c_cond
-(paren
-id|PageInactiveClean
-c_func
-(paren
-id|page
-)paren
-)paren
-(brace
-id|del_page_from_inactive_clean_list
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|add_page_to_active_list
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t; * The page was not on any list, so we take care&n;&t;&t; * not to do anything.&n;&t;&t; */
-)brace
-multiline_comment|/* Make sure the page gets a fair chance at staying active. */
-r_if
-c_cond
-(paren
-id|page-&gt;age
-OL
-id|PAGE_AGE_START
-)paren
-id|page-&gt;age
-op_assign
-id|PAGE_AGE_START
-suffix:semicolon
 )brace
 DECL|function|activate_page
 r_void
@@ -319,13 +189,6 @@ op_star
 id|page
 )paren
 (brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|pagemap_lru_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -341,15 +204,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|add_page_to_inactive_dirty_list
+id|spin_lock
+c_func
+(paren
+op_amp
+id|pagemap_lru_lock
+)paren
+suffix:semicolon
+id|add_page_to_inactive_list
 c_func
 (paren
 id|page
 )paren
-suffix:semicolon
-id|page-&gt;age
-op_assign
-l_int|0
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -392,14 +258,14 @@ r_else
 r_if
 c_cond
 (paren
-id|PageInactiveDirty
+id|PageInactive
 c_func
 (paren
 id|page
 )paren
 )paren
 (brace
-id|del_page_from_inactive_dirty_list
+id|del_page_from_inactive_list
 c_func
 (paren
 id|page
@@ -407,33 +273,18 @@ id|page
 suffix:semicolon
 )brace
 r_else
-r_if
-c_cond
-(paren
-id|PageInactiveClean
-c_func
-(paren
-id|page
-)paren
-)paren
-(brace
-id|del_page_from_inactive_clean_list
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
 id|printk
 c_func
 (paren
 l_string|&quot;VM: __lru_cache_del, found unknown page ?!&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
-id|DEBUG_ADD_PAGE
+id|DEBUG_LRU_PAGE
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * lru_cache_del: remove a page from the page lists&n; * @page: the page to remove&n; */
 DECL|function|lru_cache_del
@@ -480,25 +331,6 @@ c_func
 (paren
 op_amp
 id|pagemap_lru_lock
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * recalculate_vm_stats - recalculate VM statistics&n; *&n; * This function should be called once a second to recalculate&n; * some useful statistics the VM subsystem uses to determine&n; * its behaviour.&n; */
-DECL|function|recalculate_vm_stats
-r_void
-id|recalculate_vm_stats
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/*&n;&t; * Substract one second worth of memory_pressure from&n;&t; * memory_pressure.&n;&t; */
-id|memory_pressure
-op_sub_assign
-(paren
-id|memory_pressure
-op_rshift
-id|INACTIVE_SHIFT
 )paren
 suffix:semicolon
 )brace

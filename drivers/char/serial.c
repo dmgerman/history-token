@@ -6561,6 +6561,7 @@ op_or_assign
 id|UART_LSR_OE
 suffix:semicolon
 )brace
+macro_line|#if 0 /* breaks serial console during boot stage */
 multiline_comment|/*&n;&t; * !!! ignore all characters if CREAD is not set&n;&t; */
 r_if
 c_cond
@@ -6577,6 +6578,7 @@ id|info-&gt;ignore_status_mask
 op_or_assign
 id|UART_LSR_DR
 suffix:semicolon
+macro_line|#endif
 id|save_flags
 c_func
 (paren
@@ -25745,7 +25747,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *&t;Print a string to the serial port trying not to disturb&n; *&t;any possible real use of the port...&n; *&n; *&t;The console_lock must be held when we get here.&n; */
+multiline_comment|/*&n; *&t;Print a string to the serial port trying not to disturb&n; *&t;any possible real use of the port...&n; *&n; *&t;The console must be locked when we get here.&n; */
 DECL|function|serial_console_write
 r_static
 r_void

@@ -737,17 +737,6 @@ c_func
 id|pm_kbd
 )paren
 suffix:semicolon
-id|do_poke_blanked_console
-op_assign
-l_int|1
-suffix:semicolon
-id|tasklet_schedule
-c_func
-(paren
-op_amp
-id|console_tasklet
-)paren
-suffix:semicolon
 id|add_keyboard_randomness
 c_func
 (paren
@@ -779,7 +768,7 @@ id|tty-&gt;driver_data
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * We touch the tty structure via the the ttytab array&n;&t;&t; * without knowing whether or not tty is open, which&n;&t;&t; * is inherently dangerous.  We currently rely on that&n;&t;&t; * fact that console_open sets tty-&gt;driver_data when&n;&t;&t; * it opens it, and clears it when it closes it.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We touch the tty structure via the ttytab array&n;&t;&t; * without knowing whether or not tty is open, which&n;&t;&t; * is inherently dangerous.  We currently rely on that&n;&t;&t; * fact that console_open sets tty-&gt;driver_data when&n;&t;&t; * it opens it, and clears it when it closes it.&n;&t;&t; */
 id|tty
 op_assign
 l_int|NULL
@@ -831,7 +820,8 @@ comma
 id|raw_mode
 )paren
 )paren
-r_return
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/*&n;&t; * At this point the variable `keycode&squot; contains the keycode.&n;&t; * Note: the keycode must not be 0 (++Geert: on m68k 0 is valid).&n;&t; * We keep track of the up/down status of the key, and&n;&t; * return the keycode if in MEDIUMRAW mode.&n;&t; */
 r_if
@@ -892,7 +882,8 @@ op_assign
 op_logical_neg
 id|up_flag
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_else
@@ -924,7 +915,8 @@ comma
 id|tty
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 )brace
@@ -1071,7 +1063,8 @@ id|type
 )paren
 )paren
 )paren
-r_return
+r_goto
+id|out
 suffix:semicolon
 r_if
 c_cond
@@ -1231,6 +1224,17 @@ suffix:semicolon
 macro_line|#endif
 )brace
 )brace
+id|out
+suffix:colon
+id|do_poke_blanked_console
+op_assign
+l_int|1
+suffix:semicolon
+id|schedule_console_callback
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|put_queue
 r_void

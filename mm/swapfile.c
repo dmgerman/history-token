@@ -90,33 +90,6 @@ id|swap_info
 id|MAX_SWAPFILES
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * When swap space gets filled up, we will set this flag.&n; * This will make do_swap_page(), in the page fault path,&n; * free swap entries on swapin so we&squot;ll reclaim swap space&n; * in order to be able to swap something out.&n; *&n; * At the moment we start reclaiming when swap usage goes&n; * over 80% of swap space.&n; *&n; * XXX: Random numbers, fixme.&n; */
-DECL|macro|SWAP_FULL_PCT
-mdefine_line|#define SWAP_FULL_PCT 80
-DECL|function|vm_swap_full
-r_int
-id|vm_swap_full
-(paren
-r_void
-)paren
-(brace
-r_int
-id|swap_used
-op_assign
-id|total_swap_pages
-op_minus
-id|nr_swap_pages
-suffix:semicolon
-r_return
-id|swap_used
-op_star
-l_int|100
-OG
-id|total_swap_pages
-op_star
-id|SWAP_FULL_PCT
-suffix:semicolon
-)brace
 DECL|macro|SWAPFILE_CLUSTER
 mdefine_line|#define SWAPFILE_CLUSTER 256
 DECL|function|scan_swap_map
@@ -1804,12 +1777,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|SetPageDirty
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|UnlockPage
 c_func
 (paren
@@ -2019,6 +1986,12 @@ op_assign
 id|new_start_mm
 suffix:semicolon
 )brace
+id|ClearPageDirty
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|page_cache_release
 c_func
 (paren

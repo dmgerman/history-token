@@ -195,11 +195,15 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
+id|FASTCALL
+c_func
+(paren
 id|kmem_cache_reap
 c_func
 (paren
 r_int
+)paren
 )paren
 suffix:semicolon
 r_extern

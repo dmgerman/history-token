@@ -3509,6 +3509,12 @@ c_func
 (paren
 id|drive
 )paren
+op_logical_and
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
 op_member_access_from_pointer
 id|rq
 )paren

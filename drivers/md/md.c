@@ -6553,12 +6553,6 @@ id|pnum
 op_ne
 id|RAID1
 )paren
-op_logical_and
-(paren
-id|pnum
-op_ne
-id|LINEAR
-)paren
 )paren
 (brace
 r_if
@@ -6665,7 +6659,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;RAID level %d does not need chunksize! Continuing anyway.&bslash;n&quot;
+l_string|&quot;md: RAID level %d does not need chunksize! Continuing anyway.&bslash;n&quot;
 comma
 id|mddev-&gt;sb-&gt;level
 )paren
@@ -6734,7 +6728,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;md.c: personality %d is not loaded!&bslash;n&quot;
+l_string|&quot;md: personality %d is not loaded!&bslash;n&quot;
 comma
 id|pnum
 )paren
@@ -7101,7 +7095,7 @@ r_else
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;md.c: md%d has no personality assigned.&bslash;n&quot;
+l_string|&quot;md: md%d has no personality assigned.&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -9075,7 +9069,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;trying to generate %s error in md%d ... &bslash;n&quot;
+l_string|&quot;md: trying to generate %s error in md%d ... &bslash;n&quot;
 comma
 id|partition_name
 c_func
@@ -9186,7 +9180,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;okay, generating error!&bslash;n&quot;
+l_string|&quot;md: okay, generating error!&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|//&t;q-&gt;oneshot_error = 1; // disabled for now
@@ -12347,8 +12341,6 @@ suffix:semicolon
 id|max_blocks
 op_assign
 id|mddev-&gt;sb-&gt;size
-op_lshift
-l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Should not happen.&n;&t; */
 r_if

@@ -7,11 +7,6 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 r_extern
-r_int
-r_int
-id|log_size
-suffix:semicolon
-r_extern
 id|wait_queue_head_t
 id|log_wait
 suffix:semicolon
@@ -160,7 +155,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|log_size
+id|do_syslog
+c_func
+(paren
+l_int|9
+comma
+l_int|0
+comma
+l_int|0
+)paren
 )paren
 r_return
 id|POLLIN

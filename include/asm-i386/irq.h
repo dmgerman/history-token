@@ -60,5 +60,9 @@ r_int
 r_int
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+DECL|macro|ARCH_HAS_NMI_WATCHDOG
+mdefine_line|#define ARCH_HAS_NMI_WATCHDOG&t;&t;/* See include/linux/irq.h */
+macro_line|#endif
 macro_line|#endif /* _ASM_IRQ_H */
 eof

@@ -71,13 +71,14 @@ r_int
 id|cpu_callout_map
 suffix:semicolon
 multiline_comment|/* Per CPU bogomips and other parameters */
-DECL|variable|cpu_data
+DECL|variable|__cacheline_aligned
 r_struct
 id|cpuinfo_x86
 id|cpu_data
 (braket
 id|NR_CPUS
 )braket
+id|__cacheline_aligned
 suffix:semicolon
 multiline_comment|/* Set when the idlers are all forked */
 DECL|variable|smp_threads_ready

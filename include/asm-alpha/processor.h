@@ -116,8 +116,6 @@ id|bpt_nsaved
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|INIT_MMAP
-mdefine_line|#define INIT_MMAP { &amp;init_mm, PAGE_OFFSET,  PAGE_OFFSET+0x10000000, &bslash;&n;&t;NULL, PAGE_SHARED, VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL }
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;0, 0, 0, &bslash;&n;&t;0, 0, 0, &bslash;&n;&t;0, 0, 0, &bslash;&n;&t;0, &bslash;&n;&t;KERNEL_DS &bslash;&n;}
 DECL|macro|THREAD_SIZE
@@ -308,5 +306,101 @@ DECL|macro|init_task
 mdefine_line|#define init_task&t;(init_task_union.task)
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;(init_task_union.stack)
+DECL|macro|ARCH_HAS_PREFETCH
+mdefine_line|#define ARCH_HAS_PREFETCH
+DECL|macro|ARCH_HAS_PREFETCHW
+mdefine_line|#define ARCH_HAS_PREFETCHW
+DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
+mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
+DECL|function|prefetch
+r_extern
+r_inline
+r_void
+id|prefetch
+c_func
+(paren
+r_const
+r_void
+op_star
+id|ptr
+)paren
+(brace
+id|__asm__
+(paren
+l_string|&quot;ldl $31,%0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;m&quot;
+(paren
+op_star
+(paren
+r_char
+op_star
+)paren
+id|ptr
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|prefetchw
+r_extern
+r_inline
+r_void
+id|prefetchw
+c_func
+(paren
+r_const
+r_void
+op_star
+id|ptr
+)paren
+(brace
+id|__asm__
+(paren
+l_string|&quot;ldl $31,%0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;m&quot;
+(paren
+op_star
+(paren
+r_char
+op_star
+)paren
+id|ptr
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|spin_lock_prefetch
+r_extern
+r_inline
+r_void
+id|spin_lock_prefetch
+c_func
+(paren
+r_const
+r_void
+op_star
+id|ptr
+)paren
+(brace
+id|__asm__
+(paren
+l_string|&quot;ldl $31,%0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;m&quot;
+(paren
+op_star
+(paren
+r_char
+op_star
+)paren
+id|ptr
+)paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* __ASM_ALPHA_PROCESSOR_H */
 eof

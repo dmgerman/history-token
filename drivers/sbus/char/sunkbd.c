@@ -2068,11 +2068,9 @@ id|do_poke_blanked_console
 op_assign
 l_int|1
 suffix:semicolon
-id|tasklet_schedule
+id|schedule_console_callback
 c_func
 (paren
-op_amp
-id|console_tasklet
 )paren
 suffix:semicolon
 id|add_keyboard_randomness

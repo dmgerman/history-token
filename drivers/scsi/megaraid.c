@@ -8782,11 +8782,13 @@ id|host
 r_goto
 id|err_unmap
 suffix:semicolon
+macro_line|#if 0
 multiline_comment|/*&n;&t;&t; * Comment the following initialization if you know &squot;max_sectors&squot; is&n;&t;&t; * not defined for this kernel.&n;&t;&t; * This field was introduced in Linus&squot;s kernel 2.4.7pre3 and it&n;&t;&t; * greatly increases the IO performance - AM&n;&t;&t; */
 id|host-&gt;max_sectors
 op_assign
 l_int|1024
 suffix:semicolon
+macro_line|#endif
 id|scsi_set_pci_device
 c_func
 (paren

@@ -45,14 +45,6 @@ id|STACK_MAGIC
 comma
 )brace
 suffix:semicolon
-DECL|variable|init_mmap
-r_static
-r_struct
-id|vm_area_struct
-id|init_mmap
-op_assign
-id|INIT_MMAP
-suffix:semicolon
 DECL|variable|init_fs
 r_static
 r_struct
@@ -624,11 +616,32 @@ id|regs
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;nps: %04lx pc: [&lt;%016lx&gt;]&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Pid: %d, comm: %20s&bslash;n&quot;
+comma
+id|current-&gt;pid
+comma
+id|current-&gt;comm
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;ps: %04lx pc: [&lt;%016lx&gt;] CPU %d&bslash;n&quot;
 comma
 id|regs-&gt;ps
 comma
 id|regs-&gt;pc
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|printk

@@ -60,14 +60,6 @@ id|last_task_used_altivec
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|init_mmap
-r_static
-r_struct
-id|vm_area_struct
-id|init_mmap
-op_assign
-id|INIT_MMAP
-suffix:semicolon
 DECL|variable|init_fs
 r_static
 r_struct

@@ -3099,25 +3099,7 @@ suffix:semicolon
 multiline_comment|/* Determine correct block size for this device. */
 id|correct_size
 op_assign
-id|BLOCK_SIZE
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|blksize_size
-(braket
-id|major
-)braket
-)paren
-(brace
-id|i
-op_assign
-id|blksize_size
-(braket
-id|major
-)braket
-(braket
-id|MINOR
+id|get_hardsect_size
 c_func
 (paren
 id|bhs
@@ -3127,18 +3109,7 @@ l_int|0
 op_member_access_from_pointer
 id|b_dev
 )paren
-)braket
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|i
-)paren
-id|correct_size
-op_assign
-id|i
-suffix:semicolon
-)brace
 multiline_comment|/* Verify requested block sizes. */
 r_for
 c_loop

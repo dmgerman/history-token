@@ -34,6 +34,11 @@ DECL|macro|BLOCK_SIZE_BITS
 mdefine_line|#define BLOCK_SIZE_BITS 10
 DECL|macro|BLOCK_SIZE
 mdefine_line|#define BLOCK_SIZE (1&lt;&lt;BLOCK_SIZE_BITS)
+multiline_comment|/* buffer header fixed size for the blkdev I/O through pagecache */
+DECL|macro|BUFFERED_BLOCKSIZE_BITS
+mdefine_line|#define BUFFERED_BLOCKSIZE_BITS 10
+DECL|macro|BUFFERED_BLOCKSIZE
+mdefine_line|#define BUFFERED_BLOCKSIZE (1 &lt;&lt; BUFFERED_BLOCKSIZE_BITS)
 multiline_comment|/* And dynamically-tunable limits and defaults: */
 DECL|struct|files_stat_struct
 r_struct
@@ -323,10 +328,14 @@ DECL|enumerator|BH_New
 id|BH_New
 comma
 multiline_comment|/* 1 if the buffer is new and not yet written out */
-DECL|enumerator|BH_Protected
-id|BH_Protected
+DECL|enumerator|BH_Async
+id|BH_Async
 comma
-multiline_comment|/* 1 if the buffer is protected */
+multiline_comment|/* 1 if the buffer is under end_buffer_io_async I/O */
+DECL|enumerator|BH_Wait_IO
+id|BH_Wait_IO
+comma
+multiline_comment|/* 1 if we should throttle on this buffer */
 DECL|enumerator|BH_PrivateStart
 id|BH_PrivateStart
 comma
@@ -532,8 +541,8 @@ DECL|macro|buffer_mapped
 mdefine_line|#define buffer_mapped(bh)&t;__buffer_state(bh,Mapped)
 DECL|macro|buffer_new
 mdefine_line|#define buffer_new(bh)&t;&t;__buffer_state(bh,New)
-DECL|macro|buffer_protected
-mdefine_line|#define buffer_protected(bh)&t;__buffer_state(bh,Protected)
+DECL|macro|buffer_async
+mdefine_line|#define buffer_async(bh)&t;__buffer_state(bh,Async)
 DECL|macro|bh_offset
 mdefine_line|#define bh_offset(bh)&t;&t;((unsigned long)(bh)-&gt;b_data &amp; ~PAGE_MASK)
 r_extern
@@ -675,6 +684,9 @@ suffix:semicolon
 r_struct
 id|address_space
 suffix:semicolon
+r_struct
+id|kiobuf
+suffix:semicolon
 DECL|struct|address_space_operations
 r_struct
 id|address_space_operations
@@ -770,6 +782,31 @@ id|bmap
 r_struct
 id|address_space
 op_star
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|macro|KERNEL_HAS_O_DIRECT
+mdefine_line|#define KERNEL_HAS_O_DIRECT /* this is for modules out of the kernel */
+DECL|member|direct_IO
+r_int
+(paren
+op_star
+id|direct_IO
+)paren
+(paren
+r_int
+comma
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|kiobuf
+op_star
+comma
+r_int
+r_int
 comma
 r_int
 )paren
@@ -885,15 +922,24 @@ DECL|member|bd_count
 id|atomic_t
 id|bd_count
 suffix:semicolon
-multiline_comment|/*&t;struct address_space&t;bd_data; */
+DECL|member|bd_inode
+r_struct
+id|inode
+op_star
+id|bd_inode
+suffix:semicolon
 DECL|member|bd_dev
 id|dev_t
 id|bd_dev
 suffix:semicolon
 multiline_comment|/* not a kdev_t - it&squot;s a search key */
 DECL|member|bd_openers
-id|atomic_t
+r_int
 id|bd_openers
+suffix:semicolon
+DECL|member|bd_cache_openers
+r_int
+id|bd_cache_openers
 suffix:semicolon
 DECL|member|bd_op
 r_const
@@ -933,6 +979,11 @@ DECL|member|i_dirty_buffers
 r_struct
 id|list_head
 id|i_dirty_buffers
+suffix:semicolon
+DECL|member|i_dirty_data_buffers
+r_struct
+id|list_head
+id|i_dirty_data_buffers
 suffix:semicolon
 DECL|member|i_ino
 r_int
@@ -1047,6 +1098,10 @@ DECL|member|i_data
 r_struct
 id|address_space
 id|i_data
+suffix:semicolon
+DECL|member|i_mapping_overload
+r_int
+id|i_mapping_overload
 suffix:semicolon
 DECL|member|i_dquot
 r_struct
@@ -1377,6 +1432,17 @@ DECL|member|private_data
 r_void
 op_star
 id|private_data
+suffix:semicolon
+multiline_comment|/* preallocated helper kiobuf to speedup O_DIRECT */
+DECL|member|f_iobuf
+r_struct
+id|kiobuf
+op_star
+id|f_iobuf
+suffix:semicolon
+DECL|member|f_iobuf_lock
+r_int
+id|f_iobuf_lock
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -4182,9 +4248,28 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|blkdev_close
+c_func
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|file
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|file_operations
 id|def_blk_fops
+suffix:semicolon
+r_extern
+r_struct
+id|address_space_operations
+id|def_blk_aops
 suffix:semicolon
 r_extern
 r_struct
@@ -4452,10 +4537,8 @@ DECL|macro|BUF_LOCKED
 mdefine_line|#define BUF_LOCKED&t;1&t;/* Buffers scheduled for write */
 DECL|macro|BUF_DIRTY
 mdefine_line|#define BUF_DIRTY&t;2&t;/* Dirty buffers, not yet scheduled for write */
-DECL|macro|BUF_PROTECTED
-mdefine_line|#define BUF_PROTECTED&t;3&t;/* Ramdisk persistent storage */
 DECL|macro|NR_LIST
-mdefine_line|#define NR_LIST&t;&t;4
+mdefine_line|#define NR_LIST&t;&t;3
 DECL|function|get_bh
 r_static
 r_inline
@@ -4600,13 +4683,12 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-DECL|macro|atomic_set_buffer_protected
-mdefine_line|#define atomic_set_buffer_protected(bh) test_and_set_bit(BH_Protected, &amp;(bh)-&gt;b_state)
-DECL|function|__mark_buffer_protected
-r_static
-r_inline
+r_extern
 r_void
-id|__mark_buffer_protected
+id|FASTCALL
+c_func
+(paren
+id|__mark_dirty
 c_func
 (paren
 r_struct
@@ -4614,44 +4696,8 @@ id|buffer_head
 op_star
 id|bh
 )paren
-(brace
-id|refile_buffer
-c_func
-(paren
-id|bh
 )paren
 suffix:semicolon
-)brace
-DECL|function|mark_buffer_protected
-r_static
-r_inline
-r_void
-id|mark_buffer_protected
-c_func
-(paren
-r_struct
-id|buffer_head
-op_star
-id|bh
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|atomic_set_buffer_protected
-c_func
-(paren
-id|bh
-)paren
-)paren
-id|__mark_buffer_protected
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
-)brace
 r_extern
 r_void
 id|FASTCALL
@@ -4682,8 +4728,67 @@ id|bh
 )paren
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|buffer_insert_inode_data_queue
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+comma
+r_struct
+id|inode
+op_star
+)paren
+)paren
+suffix:semicolon
 DECL|macro|atomic_set_buffer_dirty
 mdefine_line|#define atomic_set_buffer_dirty(bh) test_and_set_bit(BH_Dirty, &amp;(bh)-&gt;b_state)
+DECL|function|mark_buffer_async
+r_static
+r_inline
+r_void
+id|mark_buffer_async
+c_func
+(paren
+r_struct
+id|buffer_head
+op_star
+id|bh
+comma
+r_int
+id|on
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|on
+)paren
+id|set_bit
+c_func
+(paren
+id|BH_Async
+comma
+op_amp
+id|bh-&gt;b_state
+)paren
+suffix:semicolon
+r_else
+id|clear_bit
+c_func
+(paren
+id|BH_Async
+comma
+op_amp
+id|bh-&gt;b_state
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * If an error happens during the make_request, this function&n; * has to be recalled. It marks the buffer as clean and not&n; * uptodate, and it notifys the upper layer about the end&n; * of the I/O.&n; */
 DECL|function|buffer_IO_error
 r_static
@@ -4811,6 +4916,16 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|invalidate_inode_pages2
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|invalidate_inode_buffers
 c_func
 (paren
@@ -4820,9 +4935,11 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|invalidate_buffers
-mdefine_line|#define invalidate_buffers(dev)&t;__invalidate_buffers((dev), 0)
+mdefine_line|#define invalidate_buffers(dev)&t;__invalidate_buffers((dev), 0, 0)
 DECL|macro|destroy_buffers
-mdefine_line|#define destroy_buffers(dev)&t;__invalidate_buffers((dev), 1)
+mdefine_line|#define destroy_buffers(dev)&t;__invalidate_buffers((dev), 1, 0)
+DECL|macro|update_buffers
+mdefine_line|#define update_buffers(dev)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__invalidate_buffers((dev), 0, 1);&t;&bslash;&n;&t;__invalidate_buffers((dev), 0, 2);&t;&bslash;&n;} while (0)
 r_extern
 r_void
 id|__invalidate_buffers
@@ -4830,6 +4947,8 @@ c_func
 (paren
 id|kdev_t
 id|dev
+comma
+r_int
 comma
 r_int
 )paren
@@ -4858,6 +4977,16 @@ c_func
 r_struct
 id|inode
 op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sync_buffers
+c_func
+(paren
+id|kdev_t
 comma
 r_int
 )paren
@@ -4908,6 +5037,26 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|osync_inode_buffers
+c_func
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|osync_inode_data_buffers
+c_func
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|fsync_inode_buffers
 c_func
 (paren
@@ -4918,7 +5067,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|osync_inode_buffers
+id|fsync_inode_data_buffers
 c_func
 (paren
 r_struct
@@ -5907,7 +6056,7 @@ suffix:semicolon
 multiline_comment|/* Generic buffer handling for block filesystems.. */
 r_extern
 r_int
-id|block_flushpage
+id|discard_bh_page
 c_func
 (paren
 r_struct
@@ -5916,8 +6065,14 @@ op_star
 comma
 r_int
 r_int
+comma
+r_int
 )paren
 suffix:semicolon
+DECL|macro|block_flushpage
+mdefine_line|#define block_flushpage(page, offset) discard_bh_page(page, offset, 1)
+DECL|macro|block_invalidate_page
+mdefine_line|#define block_invalidate_page(page) discard_bh_page(page, 0, 0)
 r_extern
 r_int
 id|block_symlink
@@ -6051,6 +6206,45 @@ id|loff_t
 comma
 id|get_block_t
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|generic_direct_IO
+c_func
+(paren
+r_int
+comma
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|kiobuf
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+comma
+id|get_block_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|create_empty_buffers
+c_func
+(paren
+r_struct
+id|page
+op_star
+comma
+id|kdev_t
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -6602,6 +6796,12 @@ comma
 r_int
 )paren
 suffix:semicolon
+DECL|macro|OSYNC_METADATA
+mdefine_line|#define OSYNC_METADATA (1&lt;&lt;0)
+DECL|macro|OSYNC_DATA
+mdefine_line|#define OSYNC_DATA (1&lt;&lt;1)
+DECL|macro|OSYNC_INODE
+mdefine_line|#define OSYNC_INODE (1&lt;&lt;2)
 r_extern
 r_int
 id|inode_change_ok

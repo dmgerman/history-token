@@ -3454,7 +3454,7 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Runs from irqs or BH&squot;s, no need to wake BH */
-id|__cpu_raise_softirq
+id|cpu_raise_softirq
 c_func
 (paren
 id|this_cpu
@@ -4689,7 +4689,7 @@ id|time_squeeze
 op_increment
 suffix:semicolon
 multiline_comment|/* This already runs in BH context, no need to wake up BH&squot;s */
-id|__cpu_raise_softirq
+id|cpu_raise_softirq
 c_func
 (paren
 id|this_cpu

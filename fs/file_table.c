@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/iobuf.h&gt;
 multiline_comment|/* sysctl tunables... */
 DECL|variable|files_stat
 r_struct
@@ -385,6 +386,20 @@ id|locks_remove_flock
 c_func
 (paren
 id|file
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|file-&gt;f_iobuf
+)paren
+id|free_kiovec
+c_func
+(paren
+l_int|1
+comma
+op_amp
+id|file-&gt;f_iobuf
 )paren
 suffix:semicolon
 r_if

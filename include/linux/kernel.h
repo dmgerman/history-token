@@ -464,6 +464,20 @@ op_assign
 l_int|15
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|bust_spinlocks
+c_func
+(paren
+r_int
+id|yes
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|oops_in_progress
+suffix:semicolon
+multiline_comment|/* If set, an oops, panic(), BUG() or die() is in progress */
 macro_line|#if DEBUG
 DECL|macro|pr_debug
 mdefine_line|#define pr_debug(fmt,arg...) &bslash;&n;&t;printk(KERN_DEBUG fmt,##arg)

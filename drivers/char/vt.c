@@ -3533,11 +3533,9 @@ r_return
 id|i
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * When we actually do the console switch,&n;&t;&t;&t;&t; * make sure we are atomic with respect to&n;&t;&t;&t;&t; * other console switches..&n;&t;&t;&t;&t; */
-id|spin_lock_irq
+id|acquire_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
 )paren
 suffix:semicolon
 id|complete_change_console
@@ -3546,11 +3544,9 @@ c_func
 id|newvt
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|release_console_sem
 c_func
 (paren
-op_amp
-id|console_lock
 )paren
 suffix:semicolon
 )brace
@@ -5087,7 +5083,18 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+multiline_comment|/* Via keyboard.c:SAK() - akpm */
 id|reset_palette
+c_func
 (paren
 id|new_console
 )paren

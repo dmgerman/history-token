@@ -146,8 +146,6 @@ suffix:semicolon
 id|EXTRA_THREAD_STRUCT
 )brace
 suffix:semicolon
-DECL|macro|INIT_MMAP
-mdefine_line|#define INIT_MMAP {&t;&t;&t;&t;&t;&bslash;&n;&t;vm_mm:&t;&t;&amp;init_mm,&t;&t;&t;&bslash;&n;&t;vm_page_prot:&t;PAGE_SHARED,&t;&t;&t;&bslash;&n;&t;vm_flags:&t;VM_READ | VM_WRITE | VM_EXEC,&t;&bslash;&n;&t;vm_avl_height:&t;1,&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&bslash;&n;&t;refcount:&t;ATOMIC_INIT(1),&t;&t;&t;&bslash;&n;&t;EXTRA_THREAD_STRUCT_INIT&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; */

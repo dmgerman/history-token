@@ -4701,13 +4701,6 @@ op_logical_neg
 (paren
 id|flags
 op_amp
-id|MSG_PEEK
-)paren
-op_logical_and
-op_logical_neg
-(paren
-id|flags
-op_amp
 id|MSG_TRUNC
 )paren
 )paren

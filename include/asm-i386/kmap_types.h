@@ -8,9 +8,6 @@ id|km_type
 DECL|enumerator|KM_BOUNCE_READ
 id|KM_BOUNCE_READ
 comma
-DECL|enumerator|KM_BOUNCE_WRITE
-id|KM_BOUNCE_WRITE
-comma
 DECL|enumerator|KM_SKB_DATA
 id|KM_SKB_DATA
 comma

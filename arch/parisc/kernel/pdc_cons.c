@@ -533,21 +533,11 @@ op_decrement
 id|pdc_console_initialized
 suffix:semicolon
 macro_line|#ifdef CONFIG_VT_CONSOLE
-(brace
-multiline_comment|/* fixme (needed?): Wait for console-tasklet to finish !*/
-r_extern
-r_struct
-id|tasklet_struct
-id|console_tasklet
-suffix:semicolon
-id|tasklet_schedule
+id|schedule_console_callback
 c_func
 (paren
-op_amp
-id|console_tasklet
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 id|unregister_console
 c_func

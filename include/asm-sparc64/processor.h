@@ -204,8 +204,6 @@ DECL|macro|FAULT_CODE_ITLB
 mdefine_line|#define FAULT_CODE_ITLB&t;&t;0x04&t;/* Miss happened in I-TLB&t;&t;*/
 DECL|macro|FAULT_CODE_WINFIXUP
 mdefine_line|#define FAULT_CODE_WINFIXUP&t;0x08&t;/* Miss happened during spill/fill&t;*/
-DECL|macro|INIT_MMAP
-mdefine_line|#define INIT_MMAP { &amp;init_mm, 0xfffff80000000000, 0xfffff80001000000, &bslash;&n;&t;&t;    NULL, PAGE_SHARED , VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL }
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&bslash;&n;/* ksp, wstate, cwp, flags, current_ds, */ &t;&t;&bslash;&n;   0,   0,      0,   0,     KERNEL_DS,&t;&t;&t;&bslash;&n;/* w_saved, fpdepth, fault_code, use_blkcommit, */&t;&bslash;&n;   0,       0,       0,          0,&t;&t;&t;&bslash;&n;/* fault_address, fpsaved, __pad2, kregs, */&t;&t;&bslash;&n;   0,             { 0 },   0,      0,&t;&t;&t;&bslash;&n;/* utraps, gsr,   xfsr, */&t;&t;&t;&t;&bslash;&n;   0,&t;   { 0 }, { 0 },&t;&t;&t;&t;&bslash;&n;/* reg_window */&t;&t;&t;&t;&t;&bslash;&n;   { { { 0, }, { 0, } }, }, &t;&t;&t;&t;&bslash;&n;/* rwbuf_stkptrs */&t;&t;&t;&t;&t;&bslash;&n;   { 0, 0, 0, 0, 0, 0, 0, },&t;&t;&t;&t;&bslash;&n;/* user_cntd0, user_cndd1, kernel_cntd0, kernel_cntd0, pcr_reg */ &bslash;&n;   0,          0,          0,&t;&t; 0,            0, &bslash;&n;}
 macro_line|#ifndef __ASSEMBLY__

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/vt_kern.h&gt;&t;&t;/* For unblank_screen() */
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -31,6 +32,10 @@ op_star
 comma
 r_int
 )paren
+suffix:semicolon
+r_extern
+r_int
+id|console_loglevel
 suffix:semicolon
 multiline_comment|/*&n; * Ugly, ugly, but the goto&squot;s result in better assembly..&n; */
 DECL|function|__verify_write
@@ -141,9 +146,12 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-r_if
-c_cond
-(paren
+id|survive
+suffix:colon
+(brace
+r_int
+id|fault
+op_assign
 id|handle_mm_fault
 c_func
 (paren
@@ -155,12 +163,27 @@ id|start
 comma
 l_int|1
 )paren
-op_le
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|fault
 )paren
 r_goto
 id|bad_area
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fault
+OL
+l_int|0
+)paren
+r_goto
+id|out_of_memory
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -256,11 +279,35 @@ suffix:colon
 r_return
 l_int|0
 suffix:semicolon
+id|out_of_memory
+suffix:colon
+r_if
+c_cond
+(paren
+id|current-&gt;pid
+op_eq
+l_int|1
+)paren
+(brace
+id|current-&gt;policy
+op_or_assign
+id|SCHED_YIELD
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+r_goto
+id|survive
+suffix:semicolon
+)brace
+r_goto
+id|bad_area
+suffix:semicolon
 )brace
 r_extern
 id|spinlock_t
-id|console_lock
-comma
 id|timerlist_lock
 suffix:semicolon
 multiline_comment|/*&n; * Unlock any spinlocks which will prevent us from getting the&n; * message out (timerlist_lock is acquired through the&n; * console unblank code)&n; */
@@ -269,16 +316,10 @@ r_void
 id|bust_spinlocks
 c_func
 (paren
-r_void
+r_int
+id|yes
 )paren
 (brace
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|console_lock
-)paren
-suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
@@ -286,7 +327,91 @@ op_amp
 id|timerlist_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|yes
+)paren
+(brace
+id|oops_in_progress
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+id|global_irq_lock
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Many serial drivers do __global_cli() */
+macro_line|#endif
 )brace
+r_else
+(brace
+r_int
+id|loglevel_save
+op_assign
+id|console_loglevel
+suffix:semicolon
+id|unblank_screen
+c_func
+(paren
+)paren
+suffix:semicolon
+id|oops_in_progress
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * OK, the message is on the console.  Now we call printk()&n;&t;&t; * without oops_in_progress set so that printk will give klogd&n;&t;&t; * a poke.  Hold onto your hats...&n;&t;&t; */
+id|console_loglevel
+op_assign
+l_int|15
+suffix:semicolon
+multiline_comment|/* NMI oopser may have shut the console up */
+id|printk
+c_func
+(paren
+l_string|&quot; &quot;
+)paren
+suffix:semicolon
+id|console_loglevel
+op_assign
+id|loglevel_save
+suffix:semicolon
+)brace
+)brace
+macro_line|#if 0
+multiline_comment|/*&n; * Verbose bug reporting: call do_BUG(__FILE__, __LINE__) in page.h:BUG() to enable this&n; */
+r_void
+id|do_BUG
+c_func
+(paren
+r_const
+r_char
+op_star
+id|file
+comma
+r_int
+id|line
+)paren
+(brace
+id|bust_spinlocks
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;kernel BUG at %s:%d!&bslash;n&quot;
+comma
+id|file
+comma
+id|line
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 id|asmlinkage
 r_void
 id|do_invalid_op
@@ -603,6 +728,8 @@ r_goto
 id|bad_area
 suffix:semicolon
 )brace
+id|survive
+suffix:colon
 multiline_comment|/*&n;&t; * If for any reason at all we couldn&squot;t handle the fault,&n;&t; * make sure we exit gracefully rather than endlessly redo&n;&t; * the fault.&n;&t; */
 r_switch
 c_cond
@@ -825,6 +952,7 @@ multiline_comment|/*&n; * Oops. The kernel tried to access some bad page. We&squ
 id|bust_spinlocks
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -967,6 +1095,12 @@ comma
 id|error_code
 )paren
 suffix:semicolon
+id|bust_spinlocks
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 id|do_exit
 c_func
 (paren
@@ -983,6 +1117,34 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tsk-&gt;pid
+op_eq
+l_int|1
+)paren
+(brace
+id|tsk-&gt;policy
+op_or_assign
+id|SCHED_YIELD
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
+r_goto
+id|survive
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren

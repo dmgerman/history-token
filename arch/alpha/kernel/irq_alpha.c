@@ -18,11 +18,6 @@ id|NR_IRQS
 )braket
 suffix:semicolon
 macro_line|#endif
-r_extern
-r_int
-r_int
-id|irq_err_count
-suffix:semicolon
 multiline_comment|/* Hack minimum IPL during interrupt processing for broken hardware.  */
 macro_line|#ifdef CONFIG_ALPHA_BROKEN_IRQ_MASK
 DECL|variable|__min_ipl

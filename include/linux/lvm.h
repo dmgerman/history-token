@@ -172,9 +172,11 @@ mdefine_line|#define&t;LVM_MAX_SIZE            ( 1024LU * 1024 / SECTOR_SIZE * 1
 DECL|macro|LVM_MAX_MIRRORS
 mdefine_line|#define&t;LVM_MAX_MIRRORS    &t;2&t;/* future use */
 DECL|macro|LVM_MIN_READ_AHEAD
-mdefine_line|#define&t;LVM_MIN_READ_AHEAD&t;2&t;/* minimum read ahead sectors */
+mdefine_line|#define&t;LVM_MIN_READ_AHEAD&t;0&t;/* minimum read ahead sectors */
+DECL|macro|LVM_DEFAULT_READ_AHEAD
+mdefine_line|#define&t;LVM_DEFAULT_READ_AHEAD&t;1024&t;/* default read ahead sectors for 512k scsi segments */
 DECL|macro|LVM_MAX_READ_AHEAD
-mdefine_line|#define&t;LVM_MAX_READ_AHEAD&t;120&t;/* maximum read ahead sectors */
+mdefine_line|#define&t;LVM_MAX_READ_AHEAD&t;10000&t;/* maximum read ahead sectors */
 DECL|macro|LVM_MAX_LV_IO_TIMEOUT
 mdefine_line|#define&t;LVM_MAX_LV_IO_TIMEOUT&t;60&t;/* seconds I/O timeout (future use) */
 DECL|macro|LVM_PARTITION

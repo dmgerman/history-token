@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_LIST_H
 DECL|macro|_LINUX_LIST_H
 mdefine_line|#define _LINUX_LIST_H
 macro_line|#if defined(__KERNEL__) || defined(_LVM_H_INCLUDE)
+macro_line|#include &lt;linux/prefetch.h&gt;
 multiline_comment|/*&n; * Simple doubly linked list implementation.&n; *&n; * Some of the internal functions (&quot;__xxx&quot;) are useful when&n; * manipulating whole lists rather than single entries, as&n; * sometimes we already know the next/prev entries and we can&n; * generate better code by using them directly rather than&n; * using the generic single-entry routines.&n; */
 DECL|struct|list_head
 r_struct
@@ -180,6 +181,12 @@ comma
 id|entry-&gt;next
 )paren
 suffix:semicolon
+id|entry-&gt;next
+op_assign
+id|entry-&gt;prev
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * list_del_init - deletes entry from list and reinitialize it.&n; * @entry: the element to delete from the list.&n; */
 DECL|function|list_del_init
@@ -301,7 +308,7 @@ DECL|macro|list_entry
 mdefine_line|#define list_entry(ptr, type, member) &bslash;&n;&t;((type *)((char *)(ptr)-(unsigned long)(&amp;((type *)0)-&gt;member)))
 multiline_comment|/**&n; * list_for_each&t;-&t;iterate over a list&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
 DECL|macro|list_for_each
-mdefine_line|#define list_for_each(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next; pos != (head); pos = pos-&gt;next)
+mdefine_line|#define list_for_each(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next, prefetch(pos-&gt;next); pos != (head); &bslash;&n;        &t;pos = pos-&gt;next, prefetch(pos-&gt;next))
 macro_line|#endif /* __KERNEL__ || _LVM_H_INCLUDE */
 macro_line|#endif
 eof

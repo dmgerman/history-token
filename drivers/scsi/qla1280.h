@@ -279,13 +279,6 @@ mdefine_line|#define MAX_EQ          (MAX_BUSES * MAX_TARGETS * MAX_LUNS)
 multiline_comment|/* Number of segments 1 - 65535 */
 DECL|macro|SG_SEGMENTS
 mdefine_line|#define SG_SEGMENTS     32             /* Cmd entry + 6 continuations */
-DECL|typedef|timer_t
-r_typedef
-r_struct
-id|timer_list
-id|timer_t
-suffix:semicolon
-multiline_comment|/* timer */
 multiline_comment|/*&n; * SCSI Request Block structure&n; */
 DECL|struct|srb
 r_typedef

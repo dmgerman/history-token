@@ -342,6 +342,13 @@ id|page_dir
 op_assign
 id|mm-&gt;pgd
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
 id|page_dir
 op_add_assign
 id|first
@@ -363,6 +370,13 @@ c_loop
 (paren
 op_decrement
 id|nr
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 multiline_comment|/* keep the page table cache within bounds */
@@ -972,17 +986,13 @@ multiline_comment|/* &n;&t;&t; * free_page() used to be able to clear swap cache
 r_if
 c_cond
 (paren
-id|page-&gt;mapping
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|pte_dirty
 c_func
 (paren
 id|pte
 )paren
+op_logical_and
+id|page-&gt;mapping
 )paren
 id|set_page_dirty
 c_func
@@ -990,22 +1000,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pte_young
-c_func
-(paren
-id|pte
-)paren
-)paren
-id|mark_page_accessed
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
 id|free_page_and_swap_cache
 c_func
 (paren
@@ -3856,6 +3850,19 @@ c_func
 id|old_page
 )paren
 suffix:semicolon
+macro_line|#if 1
+r_if
+c_cond
+(paren
+id|can_reuse
+)paren
+id|delete_from_swap_cache_nolock
+c_func
+(paren
+id|old_page
+)paren
+suffix:semicolon
+macro_line|#endif
 id|UnlockPage
 c_func
 (paren
@@ -4676,6 +4683,11 @@ suffix:semicolon
 id|pte_t
 id|pte
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|1
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -4754,6 +4766,11 @@ suffix:colon
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Had to read the page from swap area: Major fault */
+id|ret
+op_assign
+l_int|2
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Freeze the &quot;shared&quot;ness of the page, ie page_count + swap_count.&n;&t; * Must lock page before transferring our swap count to already&n;&t; * obtained page count.&n;&t; */
 id|lock_page
@@ -4830,6 +4847,7 @@ id|page
 )paren
 )paren
 (brace
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -4847,15 +4865,7 @@ id|pte
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|vm_swap_full
-c_func
-(paren
-)paren
-)paren
-(brace
+macro_line|#else
 id|delete_from_swap_cache_nolock
 c_func
 (paren
@@ -4864,13 +4874,17 @@ id|page
 suffix:semicolon
 id|pte
 op_assign
+id|pte_mkwrite
+c_func
+(paren
 id|pte_mkdirty
 c_func
 (paren
 id|pte
 )paren
+)paren
 suffix:semicolon
-)brace
+macro_line|#endif
 )brace
 id|UnlockPage
 c_func
@@ -4912,9 +4926,8 @@ id|pte
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|ret
 suffix:semicolon
-multiline_comment|/* Minor fault */
 )brace
 multiline_comment|/*&n; * We are called with the MM semaphore and page_table_lock&n; * spinlock held to protect against concurrent faults in&n; * multithreaded programs. &n; */
 DECL|function|do_anonymous_page
@@ -5714,7 +5727,8 @@ multiline_comment|/*&n;&t;&t; * Because we dropped the lock, we should re-check 
 r_if
 c_cond
 (paren
-id|pgd_present
+op_logical_neg
+id|pgd_none
 c_func
 (paren
 op_star
@@ -5779,8 +5793,7 @@ id|address
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pmd_present
+id|pmd_none
 c_func
 (paren
 op_star
@@ -5847,7 +5860,8 @@ multiline_comment|/*&n;&t;&t;&t; * Because we dropped the lock, we should re-che
 r_if
 c_cond
 (paren
-id|pmd_present
+op_logical_neg
+id|pmd_none
 c_func
 (paren
 op_star

@@ -21,14 +21,6 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 multiline_comment|/*&n; * Initial task structure. Make this a per-architecture thing,&n; * because different architectures tend to have different&n; * alignment requirements and potentially different initial&n; * setup.&n; */
-DECL|variable|init_mmap
-r_static
-r_struct
-id|vm_area_struct
-id|init_mmap
-op_assign
-id|INIT_MMAP
-suffix:semicolon
 DECL|variable|init_fs
 r_static
 r_struct

@@ -1479,13 +1479,6 @@ c_func
 id|console_drivers
 )paren
 suffix:semicolon
-DECL|variable|console_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|console_lock
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_XMON
 DECL|variable|xmon
 id|EXPORT_SYMBOL
