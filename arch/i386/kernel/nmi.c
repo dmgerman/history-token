@@ -100,10 +100,6 @@ mdefine_line|#define P4_CCCR_ENABLE&t;&t;(1&lt;&lt;12)
 multiline_comment|/* Set up IQ_COUNTER0 to behave like a clock, by having IQ_CCCR0 filter&n;   CRU_ESCR0 (with any non-null event selector) through a complemented&n;   max threshold. [IA32-Vol3, Section 14.9.9] */
 DECL|macro|MSR_P4_IQ_COUNTER0
 mdefine_line|#define MSR_P4_IQ_COUNTER0&t;0x30C
-DECL|macro|MSR_P4_IQ_CCCR0
-mdefine_line|#define MSR_P4_IQ_CCCR0&t;&t;0x36C
-DECL|macro|MSR_P4_CRU_ESCR0
-mdefine_line|#define MSR_P4_CRU_ESCR0&t;0x3B8
 DECL|macro|P4_NMI_CRU_ESCR0
 mdefine_line|#define P4_NMI_CRU_ESCR0&t;(P4_ESCR_EVENT_SELECT(0x3F)|P4_ESCR_OS|P4_ESCR_USR)
 DECL|macro|P4_NMI_IQ_CCCR0

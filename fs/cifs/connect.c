@@ -270,6 +270,13 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
+l_string|&quot;cifsd&quot;
+)paren
+suffix:semicolon
+id|allow_signal
+c_func
+(paren
+id|SIGKILL
 )paren
 suffix:semicolon
 id|server-&gt;tsk

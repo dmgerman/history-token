@@ -6086,7 +6086,7 @@ r_if
 c_cond
 (paren
 id|scsi_id
-OG
+op_ge
 id|MAX_ID
 )paren
 (brace
@@ -6496,7 +6496,7 @@ r_if
 c_cond
 (paren
 id|scsi_id
-OG
+op_ge
 id|MAX_ID
 )paren
 (brace

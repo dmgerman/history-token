@@ -5850,7 +5850,7 @@ r_if
 c_cond
 (paren
 id|arg
-OG
+op_ge
 id|SX_NBOARDS
 )paren
 r_return

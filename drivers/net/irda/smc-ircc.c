@@ -2142,7 +2142,7 @@ r_if
 c_cond
 (paren
 id|dev_count
-OG
+op_ge
 id|DIM
 c_func
 (paren

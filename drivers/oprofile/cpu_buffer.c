@@ -169,6 +169,11 @@ id|b-&gt;last_task
 op_assign
 l_int|0
 suffix:semicolon
+id|b-&gt;last_is_kernel
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|b-&gt;sample_received
 op_assign
 l_int|0
@@ -217,7 +222,7 @@ id|NR_CPUS
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Note we can&squot;t use a semaphore here as this is supposed to&n; * be safe from any context. Instead we trylock the CPU&squot;s int_lock.&n; * int_lock is taken by the processing code in sync_cpu_buffers()&n; * so we avoid disturbing that.&n; */
+multiline_comment|/* Note we can&squot;t use a semaphore here as this is supposed to&n; * be safe from any context. Instead we trylock the CPU&squot;s int_lock.&n; * int_lock is taken by the processing code in sync_cpu_buffers()&n; * so we avoid disturbing that.&n; *&n; * is_kernel is needed because on some architectures you cannot&n; * tell if you are in kernel or user space simply by looking at&n; * eip. We tag this in the buffer by generating kernel enter/exit&n; * events whenever is_kernel changes&n; */
 DECL|function|oprofile_add_sample
 r_void
 id|oprofile_add_sample
@@ -226,6 +231,10 @@ c_func
 r_int
 r_int
 id|eip
+comma
+r_int
+r_int
+id|is_kernel
 comma
 r_int
 r_int
@@ -250,6 +259,12 @@ r_struct
 id|task_struct
 op_star
 id|task
+suffix:semicolon
+id|is_kernel
+op_assign
+op_logical_neg
+op_logical_neg
+id|is_kernel
 suffix:semicolon
 id|cpu_buf-&gt;sample_received
 op_increment
@@ -293,6 +308,42 @@ id|task
 op_assign
 id|current
 suffix:semicolon
+multiline_comment|/* notice a switch from user-&gt;kernel or vice versa */
+r_if
+c_cond
+(paren
+id|cpu_buf-&gt;last_is_kernel
+op_ne
+id|is_kernel
+)paren
+(brace
+id|cpu_buf-&gt;last_is_kernel
+op_assign
+id|is_kernel
+suffix:semicolon
+id|cpu_buf-&gt;buffer
+(braket
+id|cpu_buf-&gt;pos
+)braket
+dot
+id|eip
+op_assign
+op_complement
+l_int|0UL
+suffix:semicolon
+id|cpu_buf-&gt;buffer
+(braket
+id|cpu_buf-&gt;pos
+)braket
+dot
+id|event
+op_assign
+id|is_kernel
+suffix:semicolon
+id|cpu_buf-&gt;pos
+op_increment
+suffix:semicolon
+)brace
 multiline_comment|/* notice a task switch */
 r_if
 c_cond
@@ -390,6 +441,33 @@ c_func
 op_amp
 id|cpu_buf-&gt;int_lock
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* resets the cpu buffer to a sane state - should be called with &n; * cpu_buf-&gt;int_lock held&n; */
+DECL|function|cpu_buffer_reset
+r_void
+id|cpu_buffer_reset
+c_func
+(paren
+r_struct
+id|oprofile_cpu_buffer
+op_star
+id|cpu_buf
+)paren
+(brace
+id|cpu_buf-&gt;pos
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* reset these to invalid values; the next sample&n;&t; * collected will populate the buffer with proper&n;&t; * values to initialize the buffer&n;&t; */
+id|cpu_buf-&gt;last_is_kernel
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|cpu_buf-&gt;last_task
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 eof

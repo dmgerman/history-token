@@ -6522,7 +6522,11 @@ r_if
 c_cond
 (paren
 id|hwcfg.irq
-template_param
+OL
+l_int|0
+op_logical_or
+id|hwcfg.irq
+op_ge
 id|NR_IRQS
 )paren
 r_return

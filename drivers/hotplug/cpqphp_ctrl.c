@@ -6142,14 +6142,6 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
-)paren
-suffix:semicolon
-singleline_comment|//  New name
-id|strcpy
-c_func
-(paren
-id|current-&gt;comm
-comma
 l_string|&quot;phpd_event&quot;
 )paren
 suffix:semicolon

@@ -5094,7 +5094,7 @@ r_if
 c_cond
 (paren
 id|board
-OG
+op_ge
 id|RC_NBOARD
 op_logical_or
 op_logical_neg
