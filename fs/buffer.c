@@ -2038,14 +2038,7 @@ c_func
 id|lock
 )paren
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|bh-&gt;b_assoc_buffers
-)paren
-suffix:semicolon
-id|list_add
+id|list_move_tail
 c_func
 (paren
 op_amp
