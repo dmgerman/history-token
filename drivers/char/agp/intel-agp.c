@@ -373,7 +373,7 @@ op_or
 id|I810_PGETBL_ENABLED
 )paren
 suffix:semicolon
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren
@@ -565,18 +565,18 @@ op_logical_neg
 id|PGE_EMPTY
 c_func
 (paren
+id|agp_bridge
+comma
 id|agp_bridge-&gt;gatt_table
 (braket
 id|j
 )braket
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -607,7 +607,7 @@ id|AGP_DCACHE_MEMORY
 )paren
 (brace
 multiline_comment|/* special insert */
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren
@@ -656,7 +656,7 @@ id|I810_PTE_VALID
 )paren
 suffix:semicolon
 )brace
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren
@@ -700,7 +700,7 @@ suffix:semicolon
 )brace
 id|insert
 suffix:colon
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren
@@ -755,7 +755,7 @@ id|mem-&gt;type
 )paren
 suffix:semicolon
 )brace
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren
@@ -828,7 +828,7 @@ id|agp_bridge-&gt;scratch_page
 )paren
 suffix:semicolon
 )brace
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren
@@ -1632,7 +1632,7 @@ id|I810_PGETBL_CTL
 op_amp
 l_int|0xfffff000
 suffix:semicolon
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren
@@ -1892,7 +1892,7 @@ op_or
 id|I810_PGETBL_ENABLED
 )paren
 suffix:semicolon
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren
@@ -2079,7 +2079,7 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren
@@ -2132,7 +2132,7 @@ id|mem-&gt;type
 )paren
 )paren
 suffix:semicolon
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren
@@ -2169,7 +2169,8 @@ id|type
 r_int
 id|i
 suffix:semicolon
-id|CACHE_FLUSH
+id|global_cache_flush
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2227,7 +2228,7 @@ comma
 id|agp_bridge-&gt;scratch_page
 )paren
 suffix:semicolon
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren

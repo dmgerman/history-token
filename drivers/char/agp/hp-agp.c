@@ -1261,7 +1261,7 @@ op_eq
 id|FALSE
 )paren
 (brace
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren

@@ -680,6 +680,8 @@ op_logical_neg
 id|PGE_EMPTY
 c_func
 (paren
+id|agp_bridge
+comma
 id|agp_bridge-&gt;gatt_table
 (braket
 id|nvidia_private.pg_offset
@@ -701,7 +703,7 @@ op_eq
 id|FALSE
 )paren
 (brace
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren

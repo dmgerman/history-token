@@ -496,8 +496,6 @@ DECL|macro|MB
 mdefine_line|#define MB(x)&t;(KB (KB (x)))
 DECL|macro|GB
 mdefine_line|#define GB(x)&t;(MB (KB (x)))
-DECL|macro|CACHE_FLUSH
-mdefine_line|#define CACHE_FLUSH&t;agp_bridge-&gt;cache_flush
 DECL|macro|A_SIZE_8
 mdefine_line|#define A_SIZE_8(x)&t;((struct aper_size_info_8 *) x)
 DECL|macro|A_SIZE_16
@@ -509,19 +507,15 @@ mdefine_line|#define A_SIZE_LVL2(x)&t;((struct aper_size_info_lvl2 *) x)
 DECL|macro|A_SIZE_FIX
 mdefine_line|#define A_SIZE_FIX(x)&t;((struct aper_size_info_fixed *) x)
 DECL|macro|A_IDX8
-mdefine_line|#define A_IDX8()&t;(A_SIZE_8(agp_bridge-&gt;aperture_sizes) + i)
+mdefine_line|#define A_IDX8(bridge)&t;(A_SIZE_8((bridge)-&gt;aperture_sizes) + i)
 DECL|macro|A_IDX16
-mdefine_line|#define A_IDX16()&t;(A_SIZE_16(agp_bridge-&gt;aperture_sizes) + i)
+mdefine_line|#define A_IDX16(bridge)&t;(A_SIZE_16((bridge)-&gt;aperture_sizes) + i)
 DECL|macro|A_IDX32
-mdefine_line|#define A_IDX32()&t;(A_SIZE_32(agp_bridge-&gt;aperture_sizes) + i)
-DECL|macro|A_IDXLVL2
-mdefine_line|#define A_IDXLVL2()&t;(A_SIZE_LVL2(agp_bridge-&gt;aperture_sizes) + i)
-DECL|macro|A_IDXFIX
-mdefine_line|#define A_IDXFIX()&t;(A_SIZE_FIX(agp_bridge-&gt;aperture_sizes) + i)
+mdefine_line|#define A_IDX32(bridge)&t;(A_SIZE_32((bridge)-&gt;aperture_sizes) + i)
 DECL|macro|MAXKEY
 mdefine_line|#define MAXKEY&t;&t;(4096 * 32)
 DECL|macro|PGE_EMPTY
-mdefine_line|#define PGE_EMPTY(p)&t;(!(p) || (p) == (unsigned long) agp_bridge-&gt;scratch_page)
+mdefine_line|#define PGE_EMPTY(b, p)&t;(!(p) || (p) == (unsigned long) (b)-&gt;scratch_page)
 multiline_comment|/* intel register */
 DECL|macro|INTEL_APBASE
 mdefine_line|#define INTEL_APBASE&t;0x10

@@ -1063,6 +1063,8 @@ op_logical_neg
 id|PGE_EMPTY
 c_func
 (paren
+id|agp_bridge
+comma
 id|RD_GATT
 c_func
 (paren

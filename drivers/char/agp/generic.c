@@ -998,7 +998,9 @@ op_eq
 id|FALSE
 )paren
 (brace
-id|CACHE_FLUSH
+id|agp_bridge
+op_member_access_from_pointer
+id|cache_flush
 c_func
 (paren
 )paren
@@ -1980,6 +1982,7 @@ op_assign
 id|A_IDX8
 c_func
 (paren
+id|agp_bridge
 )paren
 suffix:semicolon
 r_break
@@ -1992,6 +1995,7 @@ op_assign
 id|A_IDX16
 c_func
 (paren
+id|agp_bridge
 )paren
 suffix:semicolon
 r_break
@@ -2004,11 +2008,12 @@ op_assign
 id|A_IDX32
 c_func
 (paren
+id|agp_bridge
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* This case will never really &n;&t;&t;&t;&t;&t; * happen. &n;&t;&t;&t;&t;&t; */
+multiline_comment|/* This case will never really happen. */
 r_case
 id|FIXED_APER_SIZE
 suffix:colon
@@ -2183,7 +2188,9 @@ op_star
 )paren
 id|table
 suffix:semicolon
-id|CACHE_FLUSH
+id|agp_bridge
+op_member_access_from_pointer
+id|cache_flush
 c_func
 (paren
 )paren
@@ -2210,7 +2217,9 @@ id|page_order
 )paren
 )paren
 suffix:semicolon
-id|CACHE_FLUSH
+id|agp_bridge
+op_member_access_from_pointer
+id|cache_flush
 c_func
 (paren
 )paren
@@ -2742,6 +2751,8 @@ op_logical_neg
 id|PGE_EMPTY
 c_func
 (paren
+id|agp_bridge
+comma
 id|agp_bridge-&gt;gatt_table
 (braket
 id|j
@@ -2766,7 +2777,9 @@ op_eq
 id|FALSE
 )paren
 (brace
-id|CACHE_FLUSH
+id|agp_bridge
+op_member_access_from_pointer
+id|cache_flush
 c_func
 (paren
 )paren

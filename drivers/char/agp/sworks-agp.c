@@ -127,7 +127,7 @@ id|page_map-&gt;real
 )paren
 )paren
 suffix:semicolon
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren
@@ -183,7 +183,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren
@@ -1528,6 +1528,8 @@ op_logical_neg
 id|PGE_EMPTY
 c_func
 (paren
+id|agp_bridge
+comma
 id|cur_gatt
 (braket
 id|GET_GATT_OFF
@@ -1556,7 +1558,7 @@ op_eq
 id|FALSE
 )paren
 (brace
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren
@@ -1687,7 +1689,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|CACHE_FLUSH
+id|global_cache_flush
 c_func
 (paren
 )paren
