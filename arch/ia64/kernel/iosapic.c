@@ -2610,6 +2610,19 @@ OL
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|find_iosapic
+c_func
+(paren
+id|gsi
+)paren
+OL
+l_int|0
+)paren
+r_continue
+suffix:semicolon
 multiline_comment|/* allocate a vector for this interrupt line */
 r_if
 c_cond
