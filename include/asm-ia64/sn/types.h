@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_TYPES_H
 DECL|macro|_ASM_IA64_SN_TYPES_H
 mdefine_line|#define _ASM_IA64_SN_TYPES_H
+macro_line|#include &lt;linux/types.h&gt;
 DECL|typedef|cpuid_t
 r_typedef
 r_int
@@ -41,6 +42,11 @@ r_typedef
 r_int
 r_char
 id|slabid_t
+suffix:semicolon
+DECL|typedef|nic_t
+r_typedef
+id|u64
+id|nic_t
 suffix:semicolon
 DECL|typedef|iopaddr_t
 r_typedef

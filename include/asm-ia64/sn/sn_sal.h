@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
+macro_line|#include &lt;asm/sn/geo.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 singleline_comment|// SGI Specific Calls
 DECL|macro|SN_SAL_POD_MODE
