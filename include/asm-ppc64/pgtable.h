@@ -136,6 +136,10 @@ DECL|macro|PAGE_KERNEL_CI
 mdefine_line|#define PAGE_KERNEL_CI&t;__pgprot(_PAGE_PRESENT | _PAGE_ACCESSED | &bslash;&n;&t;&t;&t;       _PAGE_WRENABLE | _PAGE_NO_CACHE | _PAGE_GUARDED)
 DECL|macro|PAGE_KERNEL_EXEC
 mdefine_line|#define PAGE_KERNEL_EXEC __pgprot(_PAGE_BASE | _PAGE_WRENABLE | _PAGE_EXEC)
+DECL|macro|PAGE_AGP
+mdefine_line|#define PAGE_AGP&t;__pgprot(_PAGE_BASE | _PAGE_WRENABLE | _PAGE_NO_CACHE)
+DECL|macro|HAVE_PAGE_AGP
+mdefine_line|#define HAVE_PAGE_AGP
 multiline_comment|/*&n; * This bit in a hardware PTE indicates that the page is *not* executable.&n; */
 DECL|macro|HW_NO_EXEC
 mdefine_line|#define HW_NO_EXEC&t;_PAGE_EXEC
