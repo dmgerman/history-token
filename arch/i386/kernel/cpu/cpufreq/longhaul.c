@@ -546,7 +546,7 @@ c_func
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t; * Longhaul v3. (Ezra-T [C5M], Nehemiag [C5N])&n;&t; * This can also do voltage scaling, but see above.&n;&t; * Ezra-T was alleged to do FSB scaling too, but it never worked in practice.&n;&t; */
+multiline_comment|/*&n;&t; * Longhaul v3. (Ezra-T [C5M], Nehemiah [C5N])&n;&t; * This can also do voltage scaling, but see above.&n;&t; * Ezra-T was alleged to do FSB scaling too, but it never worked in practice.&n;&t; */
 r_case
 l_int|3
 suffix:colon
