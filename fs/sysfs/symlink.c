@@ -500,6 +500,12 @@ c_func
 id|d
 )paren
 suffix:semicolon
+id|dput
+c_func
+(paren
+id|d
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren

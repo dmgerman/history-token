@@ -756,6 +756,12 @@ op_amp
 id|bin_fops
 suffix:semicolon
 )brace
+id|dput
+c_func
+(paren
+id|dentry
+)paren
+suffix:semicolon
 )brace
 r_else
 id|error

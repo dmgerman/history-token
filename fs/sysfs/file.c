@@ -1243,13 +1243,6 @@ op_star
 id|attr
 suffix:semicolon
 r_else
-(brace
-id|dput
-c_func
-(paren
-id|dentry
-)paren
-suffix:semicolon
 id|dentry
 op_assign
 id|ERR_PTR
@@ -1258,7 +1251,12 @@ c_func
 id|error
 )paren
 suffix:semicolon
-)brace
+id|dput
+c_func
+(paren
+id|dentry
+)paren
+suffix:semicolon
 )brace
 r_else
 id|error
