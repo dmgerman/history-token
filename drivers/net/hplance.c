@@ -1,7 +1,6 @@
 multiline_comment|/* hplance.c  : the  Linux/hp300/lance ethernet driver&n; *&n; * Copyright (C) 05/1998 Peter Maydell &lt;pmaydell@chiark.greenend.org.uk&gt;&n; * Based on the Sun Lance driver and the NetBSD HP Lance driver&n; * Uses the generic 7990.c LANCE code.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -10,9 +9,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
 multiline_comment|/* Used for the temporal inet entries and routing */
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
@@ -20,6 +16,9 @@ macro_line|#include &lt;linux/dio.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &quot;hplance.h&quot;
 multiline_comment|/* We have 16834 bytes of RAM for the init block and buffers. This places&n; * an upper limit on the number of buffers we can use. NetBSD uses 8 Rx&n; * buffers and 2 Tx buffers.&n; */
 DECL|macro|LANCE_LOG_TX_BUFFERS

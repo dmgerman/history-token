@@ -1,7 +1,7 @@
 multiline_comment|/* sbni.c:  Granch SBNI12 leased line adapters driver for linux&n; *&n; *&t;Written 2001 by Denis I.Timofeev (timofeev@granch.ru)&n; *&n; *&t;Previous versions were written by Yaroslav Polyakov,&n; *&t;Alexey Zverev and Max Khon.&n; *&n; *&t;Driver supports SBNI12-02,-04,-05,-10,-11 cards, single and&n; *&t;double-channel, PCI and ISA modifications.&n; *&t;More info and useful utilities to work with SBNI12 cards you can find&n; *&t;at http://www.granch.com (English) or http://www.granch.ru (Russian)&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU General Public License.&n; *&n; *&n; *  5.0.1&t;Jun 22 2001&n; *&t;  - Fixed bug in probe&n; *  5.0.0&t;Jun 06 2001&n; *&t;  - Driver was completely redesigned by Denis I.Timofeev,&n; *&t;  - now PCI/Dual, ISA/Dual (with single interrupt line) models are&n; *&t;  - supported&n; *  3.3.0&t;Thu Feb 24 21:30:28 NOVT 2000 &n; *        - PCI cards support&n; *  3.2.0&t;Mon Dec 13 22:26:53 NOVT 1999&n; * &t;  - Completely rebuilt all the packet storage system&n; * &t;  -    to work in Ethernet-like style.&n; *  3.1.1&t;just fixed some bugs (5 aug 1999)&n; *  3.1.0&t;added balancing feature&t;(26 apr 1999)&n; *  3.0.1&t;just fixed some bugs (14 apr 1999).&n; *  3.0.0&t;Initial Revision, Yaroslav Polyakov (24 Feb 1999)&n; *        - added pre-calculation for CRC, fixed bug with &quot;len-2&quot; frames, &n; *        - removed outbound fragmentation (MTU=1000), written CRC-calculation &n; *        - on asm, added work with hard_headers and now we have our own cache &n; *        - for them, optionally supported word-interchange on some chipsets,&n; * &n; *&t;Known problem: this driver wasn&squot;t tested on multiprocessor machine.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -9,19 +9,18 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;net/arp.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;sbni.h&quot;
 multiline_comment|/* device private data */
 DECL|struct|net_local

@@ -2,7 +2,6 @@ multiline_comment|/* sis900.c: A SiS 900/7016 PCI Fast Ethernet driver for Linux
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * sonic.c&n; *&n; * (C) 1996,1998 by Thomas Bogendoerfer (tsbogend@alpha.franken.de)&n; * &n; * This driver is based on work from Andreas Busse, but most of&n; * the code is rewritten.&n; * &n; * (C) 1995 by Andreas Busse (andy@waldorf-gmbh.de)&n; *&n; * A driver for the onboard Sonic ethernet controller on Mips Jazz&n; * systems (Acer Pica-61, Mips Magnum 4000, Olivetti M700 and&n; * perhaps others, too)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -10,6 +9,10 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -18,10 +21,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/jazz.h&gt;
 macro_line|#include &lt;asm/jazzdma.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
 DECL|macro|SREGS_PAD
 mdefine_line|#define SREGS_PAD(n)    u16 n;
 macro_line|#include &quot;sonic.h&quot;

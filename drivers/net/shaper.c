@@ -2,7 +2,6 @@ multiline_comment|/*&n; *&t;&t;&t;Simple traffic shaper for Linux NET3.&n; *&n; 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -13,9 +12,9 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/if_shaper.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
-macro_line|#include &lt;linux/if_shaper.h&gt;
 DECL|struct|shaper_cb
 r_struct
 id|shaper_cb

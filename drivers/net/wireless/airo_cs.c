@@ -6,20 +6,19 @@ macro_line|#endif
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n;   All the PCMCIA modules use PCMCIA_DEBUG to control debugging.  If&n;   you do not define PCMCIA_DEBUG at all, all the debug code will be&n;   left out.  If you compile with PCMCIA_DEBUG=0, the debug code will&n;   be present but disabled -- but it can then be enabled for specific&n;   modules at load time with a &squot;pc_debug=#&squot; option to insmod.&n;*/
 macro_line|#ifdef PCMCIA_DEBUG
 DECL|variable|pc_debug

@@ -133,7 +133,6 @@ mdefine_line|#define PKT_BUF_SZ      1536&t;/* Size of each temporary Rx buffer.
 multiline_comment|/* Include files, designed to support most kernel versions 2.0.0 and later. */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

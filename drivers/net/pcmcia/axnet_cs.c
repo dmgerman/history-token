@@ -2,7 +2,6 @@ multiline_comment|/*============================================================
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -10,10 +9,6 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &quot;../8390.h&quot;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -23,6 +18,10 @@ macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/ciscode.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|AXNET_CMD
 mdefine_line|#define AXNET_CMD&t;0x00
 DECL|macro|AXNET_DATAPORT

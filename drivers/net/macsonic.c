@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * macsonic.c&n; *&n; * (C) 1998 Alan Cox&n; *&n; * Debugging Andreas Ehliar, Michael Schmitz&n; *&n; * Based on code&n; * (C) 1996 by Thomas Bogendoerfer (tsbogend@bigbug.franken.de)&n; * &n; * This driver is based on work from Andreas Busse, but most of&n; * the code is rewritten.&n; * &n; * (C) 1995 by Andreas Busse (andy@waldorf-gmbh.de)&n; *&n; * A driver for the Mac onboard Sonic ethernet chip.&n; *&n; * 98/12/21 MSch: judged from tests on Q800, it&squot;s basically working, &n; *&t;&t;  but eating up both receive and transmit resources&n; *&t;&t;  and duplicating packets. Needs more testing.&n; *&n; * 99/01/03 MSch: upgraded to version 0.92 of the core driver, fixed.&n; * &n; * 00/10/31 sammy@oh.verio.com: Updated driver for 2.4 kernels, fixed problems&n; *          on centris.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
@@ -12,6 +11,11 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/nubus.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -23,11 +27,6 @@ macro_line|#include &lt;asm/macintosh.h&gt;
 macro_line|#include &lt;asm/macints.h&gt;
 macro_line|#include &lt;asm/mac_via.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 DECL|macro|SREGS_PAD
 mdefine_line|#define SREGS_PAD(n)    u16 n;
 macro_line|#include &quot;sonic.h&quot;
