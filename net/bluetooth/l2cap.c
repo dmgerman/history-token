@@ -4482,6 +4482,17 @@ comma
 id|ident
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|s
+)paren
+id|bh_lock_sock
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
 id|read_unlock
 c_func
 (paren
