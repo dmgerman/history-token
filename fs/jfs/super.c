@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/parser.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
@@ -56,6 +57,33 @@ r_struct
 id|file_system_type
 id|jfs_fs_type
 suffix:semicolon
+DECL|macro|MAX_COMMIT_THREADS
+mdefine_line|#define MAX_COMMIT_THREADS 64
+DECL|variable|commit_threads
+r_static
+r_int
+id|commit_threads
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|commit_threads
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|commit_threads
+comma
+l_string|&quot;Number of commit threads&quot;
+)paren
+suffix:semicolon
 DECL|variable|jfs_stop_threads
 r_int
 id|jfs_stop_threads
@@ -69,6 +97,9 @@ DECL|variable|jfsCommitThread
 r_static
 id|pid_t
 id|jfsCommitThread
+(braket
+id|MAX_COMMIT_THREADS
+)braket
 suffix:semicolon
 DECL|variable|jfsSyncThread
 r_static
@@ -89,12 +120,14 @@ id|jfsloglevel
 op_assign
 id|JFS_LOGLEVEL_WARN
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|jfsloglevel
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2547,6 +2580,9 @@ r_void
 )paren
 (brace
 r_int
+id|i
+suffix:semicolon
+r_int
 id|rc
 suffix:semicolon
 id|jfs_inode_cachep
@@ -2675,7 +2711,51 @@ id|jfsIOwait
 )paren
 suffix:semicolon
 multiline_comment|/* Wait until thread starts */
+r_if
+c_cond
+(paren
+id|commit_threads
+OL
+l_int|1
+)paren
+id|commit_threads
+op_assign
+id|num_online_cpus
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|commit_threads
+OG
+id|MAX_COMMIT_THREADS
+)paren
+id|commit_threads
+op_assign
+id|MAX_COMMIT_THREADS
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|commit_threads
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 id|jfsCommitThread
+(braket
+id|i
+)braket
 op_assign
 id|kernel_thread
 c_func
@@ -2691,6 +2771,9 @@ r_if
 c_cond
 (paren
 id|jfsCommitThread
+(braket
+id|i
+)braket
 OL
 l_int|0
 )paren
@@ -2701,12 +2784,20 @@ c_func
 l_string|&quot;init_jfs_fs: fork failed w/rc = %d&quot;
 comma
 id|jfsCommitThread
+(braket
+id|i
+)braket
 )paren
 suffix:semicolon
+id|commit_threads
+op_assign
+id|i
+suffix:semicolon
 r_goto
-id|kill_iotask
+id|kill_committask
 suffix:semicolon
 )brace
+multiline_comment|/* Wait until thread starts */
 id|wait_for_completion
 c_func
 (paren
@@ -2714,7 +2805,7 @@ op_amp
 id|jfsIOwait
 )paren
 suffix:semicolon
-multiline_comment|/* Wait until thread starts */
+)brace
 id|jfsSyncThread
 op_assign
 id|kernel_thread
@@ -2776,26 +2867,33 @@ id|jfs_stop_threads
 op_assign
 l_int|1
 suffix:semicolon
-id|wake_up
+id|wake_up_all
 c_func
 (paren
 op_amp
 id|jfs_commit_thread_wait
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|commit_threads
+suffix:semicolon
+id|i
+op_increment
+)paren
 id|wait_for_completion
 c_func
 (paren
 op_amp
 id|jfsIOwait
 )paren
-suffix:semicolon
-multiline_comment|/* Wait for thread exit */
-id|kill_iotask
-suffix:colon
-id|jfs_stop_threads
-op_assign
-l_int|1
 suffix:semicolon
 id|wake_up
 c_func
@@ -2848,6 +2946,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 id|jfs_info
 c_func
 (paren
@@ -2883,13 +2984,27 @@ id|jfsIOwait
 )paren
 suffix:semicolon
 multiline_comment|/* Wait until IO thread exits */
-id|wake_up
+id|wake_up_all
 c_func
 (paren
 op_amp
 id|jfs_commit_thread_wait
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|commit_threads
+suffix:semicolon
+id|i
+op_increment
+)paren
 id|wait_for_completion
 c_func
 (paren
@@ -2897,7 +3012,6 @@ op_amp
 id|jfsIOwait
 )paren
 suffix:semicolon
-multiline_comment|/* Wait until Commit thread exits */
 id|wake_up
 c_func
 (paren
