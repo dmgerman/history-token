@@ -504,15 +504,7 @@ OL
 l_int|2
 )paren
 (brace
-id|paca
-(braket
-id|i
-)braket
-dot
-id|active
-op_assign
-l_int|1
-suffix:semicolon
+multiline_comment|/*paca[i].active = 1;*/
 op_increment
 id|np
 suffix:semicolon
@@ -634,7 +626,6 @@ id|smp_ops-&gt;setup_cpu
 op_assign
 id|smp_iSeries_setup_cpu
 suffix:semicolon
-macro_line|#warning fix for iseries
 id|systemcfg-&gt;processorCount
 op_assign
 id|smp_iSeries_numProcs
@@ -2655,6 +2646,7 @@ id|yielded
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -2670,6 +2662,7 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|local_irq_enable
 c_func
 (paren

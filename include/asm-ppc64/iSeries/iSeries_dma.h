@@ -3,9 +3,7 @@ macro_line|#ifndef _ISERIES_DMA_H
 DECL|macro|_ISERIES_DMA_H
 mdefine_line|#define _ISERIES_DMA_H
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#ifndef __LINUX_SPINLOCK_H
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#endif
 singleline_comment|// NUM_TCE_LEVELS defines the largest contiguous block
 singleline_comment|// of dma (tce) space we can get.  NUM_TCE_LEVELS = 10 
 singleline_comment|// allows up to 2**9 pages (512 * 4096) = 2 MB
@@ -254,6 +252,5 @@ r_int
 id|busNumber
 )paren
 suffix:semicolon
-macro_line|#endif 
-singleline_comment|// _ISERIES_DMA_H
+macro_line|#endif /* _ISERIES_DMA_H */
 eof

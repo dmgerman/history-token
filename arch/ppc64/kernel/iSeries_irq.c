@@ -37,33 +37,92 @@ macro_line|#include &lt;asm/iSeries/HvCallPci.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallXm.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_irq.h&gt;
 macro_line|#include &lt;asm/iSeries/XmPciLpEvent.h&gt;
+r_static
+r_int
+r_int
+id|iSeries_startup_IRQ
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_static
+r_void
+id|iSeries_shutdown_IRQ
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_static
+r_void
+id|iSeries_enable_IRQ
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_static
+r_void
+id|iSeries_disable_IRQ
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_static
+r_void
+id|iSeries_end_IRQ
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
 DECL|variable|iSeries_IRQ_handler
+r_static
 id|hw_irq_controller
 id|iSeries_IRQ_handler
 op_assign
 (brace
+dot
+r_typename
+op_assign
 l_string|&quot;iSeries irq controller&quot;
 comma
+dot
+id|startup
+op_assign
 id|iSeries_startup_IRQ
 comma
-multiline_comment|/* startup */
+dot
+id|shutdown
+op_assign
 id|iSeries_shutdown_IRQ
 comma
-multiline_comment|/* shutdown */
+dot
+id|enable
+op_assign
 id|iSeries_enable_IRQ
 comma
-multiline_comment|/* enable */
+dot
+id|disable
+op_assign
 id|iSeries_disable_IRQ
 comma
-multiline_comment|/* disable */
-l_int|NULL
-comma
-multiline_comment|/* ack  */
+dot
+id|end
+op_assign
 id|iSeries_end_IRQ
-comma
-multiline_comment|/* end  */
-l_int|NULL
-multiline_comment|/* set_affinity */
 )brace
 suffix:semicolon
 DECL|struct|iSeries_irqEntry
@@ -111,6 +170,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|iSeries_irqMap
+r_static
 r_struct
 id|iSeries_irqAnchor
 id|iSeries_irqMap
@@ -118,6 +178,8 @@ id|iSeries_irqMap
 id|NR_IRQS
 )braket
 suffix:semicolon
+macro_line|#if 0
+r_static
 r_void
 id|iSeries_init_irqMap
 c_func
@@ -126,7 +188,24 @@ r_int
 id|irq
 )paren
 suffix:semicolon
-multiline_comment|/*  This is called by init_IRQ.  set in ppc_md.init_IRQ by iSeries_setup.c */
+macro_line|#endif
+DECL|function|iSeries_init_irq_desc
+r_void
+id|iSeries_init_irq_desc
+c_func
+(paren
+id|irq_desc_t
+op_star
+id|desc
+)paren
+(brace
+id|desc-&gt;handler
+op_assign
+op_amp
+id|iSeries_IRQ_handler
+suffix:semicolon
+)brace
+multiline_comment|/* This is called by init_IRQ.  set in ppc_md.init_IRQ by iSeries_setup.c */
 DECL|function|iSeries_init_IRQ
 r_void
 id|__init
@@ -136,8 +215,13 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#if 0
 r_int
 id|i
+suffix:semicolon
+id|irq_desc_t
+op_star
+id|desc
 suffix:semicolon
 r_for
 c_loop
@@ -154,40 +238,28 @@ id|i
 op_increment
 )paren
 (brace
-id|irq_desc
-(braket
+id|desc
+op_assign
+id|get_irq_desc
+c_func
+(paren
 id|i
-)braket
-dot
-id|handler
+)paren
+suffix:semicolon
+id|desc-&gt;handler
 op_assign
 op_amp
 id|iSeries_IRQ_handler
 suffix:semicolon
-id|irq_desc
-(braket
-id|i
-)braket
-dot
-id|status
+id|desc-&gt;status
 op_assign
 l_int|0
 suffix:semicolon
-id|irq_desc
-(braket
-id|i
-)braket
-dot
-id|status
+id|desc-&gt;status
 op_or_assign
 id|IRQ_DISABLED
 suffix:semicolon
-id|irq_desc
-(braket
-id|i
-)braket
-dot
-id|depth
+id|desc-&gt;depth
 op_assign
 l_int|1
 suffix:semicolon
@@ -198,6 +270,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Register PCI event handler and open an event path */
 id|PPCDBG
 c_func
@@ -215,8 +288,9 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**********************************************************************&n; *  Called by iSeries_init_IRQ &n; * Prevent IRQs 0 and 255 from being used.  IRQ 0 appears in&n; * uninitialized devices.  IRQ 255 appears in the PCI interrupt&n; * line register if a PCI error occurs,&n; *********************************************************************/
-DECL|function|iSeries_init_irqMap
+macro_line|#if 0
+multiline_comment|/*&n; *  Called by iSeries_init_IRQ &n; * Prevent IRQs 0 and 255 from being used.  IRQ 0 appears in&n; * uninitialized devices.  IRQ 255 appears in the PCI interrupt&n; * line register if a PCI error occurs,&n; */
+r_static
 r_void
 id|__init
 id|iSeries_init_irqMap
@@ -234,13 +308,17 @@ dot
 id|valid
 op_assign
 (paren
+(paren
 id|irq
 op_eq
 l_int|0
+)paren
 op_logical_or
+(paren
 id|irq
 op_eq
 l_int|255
+)paren
 )paren
 ques
 c_cond
@@ -267,8 +345,8 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* This is called out of iSeries_scan_slot to allocate an IRQ for an EADS slot */
-multiline_comment|/* It calculates the irq value for the slot.                                   */
+macro_line|#endif
+multiline_comment|/*&n; * This is called out of iSeries_scan_slot to allocate an IRQ for an EADS slot&n; * It calculates the irq value for the slot.&n; */
 DECL|function|iSeries_allocate_IRQ
 r_int
 id|__init
@@ -301,9 +379,7 @@ id|deviceId
 op_amp
 l_int|0x0F
 suffix:semicolon
-r_int
-id|irq
-op_assign
+r_return
 (paren
 (paren
 (paren
@@ -336,11 +412,8 @@ l_int|253
 op_plus
 l_int|2
 suffix:semicolon
-r_return
-id|irq
-suffix:semicolon
 )brace
-multiline_comment|/* This is called out of iSeries_scan_slot to assign the EADS slot to its IRQ number */
+multiline_comment|/*&n; * This is called out of iSeries_scan_slot to assign the EADS slot&n; * to its IRQ number&n; */
 DECL|function|iSeries_assign_IRQ
 r_int
 id|__init
@@ -389,23 +462,35 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|irq_desc_t
+op_star
+id|desc
+op_assign
+id|get_irq_desc
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
 r_if
 c_cond
+(paren
 (paren
 id|irq
 OL
 l_int|0
+)paren
 op_logical_or
+(paren
 id|irq
 op_ge
 id|NR_IRQS
 )paren
-(brace
+)paren
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 id|newEntry
 op_assign
 id|kmalloc
@@ -427,12 +512,10 @@ id|newEntry
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|newEntry-&gt;dsa
 op_assign
 id|dsa
@@ -441,17 +524,12 @@ id|newEntry-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/********************************************************************&n;&t;* Probably not necessary to lock the irq since allocation is only &n;&t;* done during buswalk, but it should not hurt anything except a &n;&t;* little performance to be smp safe.&n;&t;*******************************************************************/
+multiline_comment|/*&n;&t; * Probably not necessary to lock the irq since allocation is only &n;&t; * done during buswalk, but it should not hurt anything except a &n;&t; * little performance to be smp safe.&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|irq_desc
-(braket
-id|irq
-)braket
-dot
-id|lock
+id|desc-&gt;lock
 comma
 id|flags
 )paren
@@ -520,7 +598,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;PCI: Something is wrong with the iSeries_irqMap. &bslash;n&quot;
+l_string|&quot;PCI: Something is wrong with the iSeries_irqMap.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -539,12 +617,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|irq_desc
-(braket
-id|irq
-)braket
-dot
-id|lock
+id|desc-&gt;lock
 comma
 id|flags
 )paren
@@ -555,6 +628,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This is called by iSeries_activate_IRQs */
 DECL|function|iSeries_startup_IRQ
+r_static
 r_int
 r_int
 id|iSeries_startup_IRQ
@@ -687,7 +761,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* This is called out of iSeries_fixup to activate interrupt&n; * generation for usable slots                              */
+multiline_comment|/*&n; * This is called out of iSeries_fixup to activate interrupt&n; * generation for usable slots&n; */
 DECL|function|iSeries_activate_IRQs
 r_void
 id|__init
@@ -718,26 +792,36 @@ id|irq
 op_increment
 )paren
 (brace
+id|irq_desc_t
+op_star
+id|desc
+op_assign
+id|get_irq_desc
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|desc
+op_logical_and
+id|desc-&gt;handler
+op_logical_and
+id|desc-&gt;handler-&gt;startup
+)paren
+(brace
 id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|irq_desc
-(braket
-id|irq
-)braket
-dot
-id|lock
+id|desc-&gt;lock
 comma
 id|flags
 )paren
 suffix:semicolon
-id|irq_desc
-(braket
-id|irq
-)braket
-dot
-id|handler
+id|desc-&gt;handler
 op_member_access_from_pointer
 id|startup
 c_func
@@ -749,20 +833,17 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|irq_desc
-(braket
-id|irq
-)braket
-dot
-id|lock
+id|desc-&gt;lock
 comma
 id|flags
 )paren
 suffix:semicolon
 )brace
 )brace
+)brace
 multiline_comment|/*  this is not called anywhere currently */
 DECL|function|iSeries_shutdown_IRQ
+r_static
 r_void
 id|iSeries_shutdown_IRQ
 c_func
@@ -874,8 +955,9 @@ id|mask
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/***********************************************************&n; * This will be called by device drivers (via disable_IRQ)&n; * to disable INTA in the bridge interrupt status register.&n; ***********************************************************/
+multiline_comment|/*&n; * This will be called by device drivers (via disable_IRQ)&n; * to disable INTA in the bridge interrupt status register.&n; */
 DECL|function|iSeries_disable_IRQ
+r_static
 r_void
 id|iSeries_disable_IRQ
 c_func
@@ -980,8 +1062,9 @@ id|irq
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/***********************************************************&n; * This will be called by device drivers (via enable_IRQ)&n; * to enable INTA in the bridge interrupt status register.&n; ***********************************************************/
+multiline_comment|/*&n; * This will be called by device drivers (via enable_IRQ)&n; * to enable INTA in the bridge interrupt status register.&n; */
 DECL|function|iSeries_enable_IRQ
+r_static
 r_void
 id|iSeries_enable_IRQ
 c_func
@@ -1086,8 +1169,9 @@ id|irq
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Need to define this so ppc_irq_dispatch_handler will NOT call&n;   enable_IRQ at the end of interrupt handling.  However, this&n;   does nothing because there is not enough information provided&n;   to do the EOI HvCall.  This is done by XmPciLpEvent.c */
+multiline_comment|/*&n; * Need to define this so ppc_irq_dispatch_handler will NOT call&n; * enable_IRQ at the end of interrupt handling.  However, this does&n; * nothing because there is not enough information provided to do&n; * the EOI HvCall.  This is done by XmPciLpEvent.c&n; */
 DECL|function|iSeries_end_IRQ
+r_static
 r_void
 id|iSeries_end_IRQ
 c_func

@@ -564,8 +564,8 @@ op_star
 id|data
 )paren
 suffix:semicolon
-DECL|function|proc_ppc64_init
-r_void
+macro_line|#if 0
+r_int
 id|proc_ppc64_init
 c_func
 (paren
@@ -1070,6 +1070,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Find the requested &squot;file&squot; given a proc token.&n; *&n; * Inputs: void * data: proc token&n; * Output: int        : (0, ..., +N) = CPU number.&n; *                      -1           = System.&n; */
 DECL|function|proc_ppc64_pmc_find_file
 r_int

@@ -718,32 +718,25 @@ id|flush_dcache_page
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifdef CONFIG_PPC_ISERIES
-DECL|variable|__no_use_restore_flags
+DECL|variable|local_get_flags
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__no_use_restore_flags
+id|local_get_flags
 )paren
 suffix:semicolon
-DECL|variable|__no_use_save_flags
+DECL|variable|local_irq_disable
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__no_use_save_flags
+id|local_irq_disable
 )paren
 suffix:semicolon
-DECL|variable|__no_use_sti
+DECL|variable|local_irq_restore
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__no_use_sti
-)paren
-suffix:semicolon
-DECL|variable|__no_use_cli
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__no_use_cli
+id|local_irq_restore
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -755,6 +748,7 @@ c_func
 id|ppc_md
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PSERIES
 DECL|variable|find_devices
 id|EXPORT_SYMBOL
 c_func
@@ -811,6 +805,7 @@ c_func
 id|get_property
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|memcpy
 id|EXPORT_SYMBOL_NOVERS
 c_func

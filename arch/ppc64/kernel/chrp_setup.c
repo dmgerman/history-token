@@ -45,13 +45,6 @@ macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
-r_extern
-r_volatile
-r_int
-r_char
-op_star
-id|chrp_int_ack_special
-suffix:semicolon
 r_void
 id|chrp_progress
 c_func

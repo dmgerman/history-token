@@ -84,6 +84,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_static
 r_inline
 r_void
@@ -573,6 +574,7 @@ DECL|macro|KB
 macro_line|#undef KB
 DECL|macro|MB
 macro_line|#undef MB
+macro_line|#endif
 multiline_comment|/*&n; * find_linux_pte returns the address of a linux pte for a given &n; * effective address and directory.  If not found, it returns zero.&n; */
 DECL|function|find_linux_pte
 id|pte_t

@@ -1,3 +1,5 @@
+DECL|macro|PCIFR
+mdefine_line|#define PCIFR(...)
 multiline_comment|/************************************************************************/
 multiline_comment|/* File iSeries_pci_reset.c created by Allan Trautman on Mar 21 2001.   */
 multiline_comment|/************************************************************************/

@@ -1,3 +1,5 @@
+DECL|macro|PCIFR
+mdefine_line|#define PCIFR(...)
 multiline_comment|/************************************************************************/
 multiline_comment|/* This module supports the iSeries I/O Address translation mapping     */
 multiline_comment|/* Copyright (C) 20yy  &lt;Allan H Trautman&gt; &lt;IBM Corp&gt;                    */

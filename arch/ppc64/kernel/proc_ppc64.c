@@ -103,6 +103,7 @@ op_assign
 id|page_map_mmap
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* routines for /proc/ppc64/ofdt */
 r_static
 id|ssize_t
@@ -227,6 +228,7 @@ op_assign
 id|ofdt_write
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|function|proc_ppc64_init
 r_int
 id|__init
@@ -407,6 +409,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* Placeholder for rtas interfaces. */
 r_if
 c_cond
@@ -446,6 +449,7 @@ c_func
 id|proc_ppc64.root
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -796,6 +800,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* create /proc/ppc64/ofdt write-only by root */
 DECL|function|proc_ppc64_create_ofdt
 r_static
@@ -1840,6 +1845,7 @@ id|prop
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif&t;/* defined(CONFIG_PPC_PSERIES) */
 DECL|variable|proc_ppc64_init
 id|fs_initcall
 c_func

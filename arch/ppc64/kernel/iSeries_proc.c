@@ -12,15 +12,11 @@ r_struct
 id|proc_dir_entry
 op_star
 id|iSeries_proc_root
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|iSeries_proc_initializationDone
 r_static
 r_int
 id|iSeries_proc_initializationDone
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|iSeries_proc_lock
 r_static
@@ -192,6 +188,12 @@ id|reg
 op_assign
 l_int|NULL
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;iSeries_proc: Creating /proc/iSeries&bslash;n&quot;
+)paren
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -199,12 +201,6 @@ op_amp
 id|iSeries_proc_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;iSeries_proc: Creating /proc/iSeries&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iSeries_proc_root
@@ -223,7 +219,8 @@ c_cond
 op_logical_neg
 id|iSeries_proc_root
 )paren
-r_return
+r_goto
+id|out
 suffix:semicolon
 id|MYQUEUEDEQ
 c_func
@@ -266,6 +263,8 @@ id|iSeries_proc_initializationDone
 op_assign
 l_int|1
 suffix:semicolon
+id|out
+suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren

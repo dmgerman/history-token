@@ -1,8 +1,8 @@
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#ifndef _ISERIES_IO_H
 DECL|macro|_ISERIES_IO_H
 mdefine_line|#define _ISERIES_IO_H
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/************************************************************************/
 multiline_comment|/* File iSeries_io.h created by Allan Trautman on Thu Dec 28 2000.      */
@@ -152,6 +152,6 @@ r_int
 id|n
 )paren
 suffix:semicolon
-macro_line|#endif /*  _ISERIES_IO_H         */
-macro_line|#endif /*  CONFIG_PPC_ISERIES  */
+macro_line|#endif /* CONFIG_PPC_ISERIES */
+macro_line|#endif /* _ISERIES_IO_H */
 eof

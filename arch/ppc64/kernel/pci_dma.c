@@ -21,6 +21,7 @@ macro_line|#include &quot;pci.h&quot;
 multiline_comment|/* #define DEBUG_TCE 1   */
 multiline_comment|/* #define MONITOR_TCE 1 */
 multiline_comment|/* Turn on to sanity check TCE generation. */
+macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* Initialize so this guy does not end up in the BSS section.&n; * Only used to pass OF initialization data set in prom.c into the main &n; * kernel code -- data ultimately copied into tceTables[].&n; */
 r_extern
 r_struct
@@ -29,6 +30,7 @@ id|of_tce_table
 (braket
 )braket
 suffix:semicolon
+macro_line|#endif
 r_extern
 r_struct
 id|pci_controller
@@ -206,6 +208,7 @@ id|order
 )paren
 suffix:semicolon
 multiline_comment|/* allocates a range of tces and sets them to the pages  */
+r_static
 r_inline
 id|dma_addr_t
 id|get_tces
@@ -710,6 +713,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* &n; * Build a TceTable structure.  This contains a multi-level bit map which&n; * is used to manage allocation of the tce space.&n; */
 DECL|function|build_tce_table
+r_static
 r_struct
 id|TceTable
 op_star
@@ -2153,6 +2157,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|get_tces
+r_static
 r_inline
 id|dma_addr_t
 id|get_tces
@@ -2414,6 +2419,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|tce_free
+r_static
 r_void
 id|tce_free
 c_func
@@ -3030,6 +3036,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 DECL|function|create_tce_tables_for_busesLP
 r_void
 id|create_tce_tables_for_busesLP
@@ -3140,6 +3147,7 @@ id|bus-&gt;children
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 DECL|function|create_tce_tables
 r_void
 id|create_tce_tables
@@ -3163,6 +3171,7 @@ comma
 op_star
 id|mydn
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -3180,6 +3189,7 @@ id|pci_root_buses
 suffix:semicolon
 )brace
 r_else
+macro_line|#endif
 (brace
 id|create_tce_tables_for_buses
 c_func
@@ -3763,6 +3773,7 @@ op_star
 id|newTceTable
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 id|phandle
 id|node
 suffix:semicolon
@@ -4098,6 +4109,7 @@ id|i
 op_increment
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * getTceTableParmsPSeriesLP&n; *&n; * Function: On pSeries LPAR systems, return TCE table info, given a pci bus.&n; *&n; * ToDo: properly interpret the ibm,dma-window property.  The definition is:&n; *&t;logical-bus-number&t;(1 word)&n; *&t;phys-address&t;&t;(#address-cells words)&n; *&t;size&t;&t;&t;(#cell-size words)&n; *&n; * Currently we hard code these sizes (more or less).&n; */
 DECL|function|getTceTableParmsPSeriesLP
@@ -4122,6 +4134,7 @@ op_star
 id|newTceTable
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 id|u32
 op_star
 id|dma_window
@@ -4287,6 +4300,7 @@ comma
 id|newTceTable-&gt;size
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* Allocates a contiguous real buffer and creates TCEs over it.&n; * Returns the virtual address of the buffer and sets dma_handle&n; * to the dma address (tce) of the first page.&n; */
 DECL|function|pci_alloc_consistent

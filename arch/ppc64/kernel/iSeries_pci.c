@@ -1,3 +1,5 @@
+DECL|macro|PCIFR
+mdefine_line|#define PCIFR(...)
 multiline_comment|/*&n; * iSeries_pci.c&n; *&n; * Copyright (C) 2001 Allan Trautman, IBM Corporation&n; *&n; * iSeries specific routines for PCI.&n; * &n; * Based on code from pci.c and iSeries_pci.c 32bit&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt; 
@@ -75,39 +77,6 @@ id|tceTables
 l_int|256
 )braket
 suffix:semicolon
-multiline_comment|/*******************************************************************&n; * Counters and control flags. &n; *******************************************************************/
-r_extern
-r_int
-id|Pci_Io_Read_Count
-suffix:semicolon
-r_extern
-r_int
-id|Pci_Io_Write_Count
-suffix:semicolon
-r_extern
-r_int
-id|Pci_Cfg_Read_Count
-suffix:semicolon
-r_extern
-r_int
-id|Pci_Cfg_Write_Count
-suffix:semicolon
-r_extern
-r_int
-id|Pci_Error_Count
-suffix:semicolon
-r_extern
-r_int
-id|Pci_Retry_Max
-suffix:semicolon
-r_extern
-r_int
-id|Pci_Error_Flag
-suffix:semicolon
-r_extern
-r_int
-id|Pci_Trace_Flag
-suffix:semicolon
 r_extern
 r_void
 id|iSeries_MmIoTest
@@ -116,23 +85,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*******************************************************************&n; * Forward declares of prototypes. &n; *******************************************************************/
+multiline_comment|/*&n; * Forward declares of prototypes. &n; */
+r_static
 r_struct
 id|iSeries_Device_Node
 op_star
 id|find_Device_Node
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|PciDev
-)paren
-suffix:semicolon
-r_struct
-id|iSeries_Device_Node
-op_star
-id|get_Device_Node
 c_func
 (paren
 r_struct
@@ -149,26 +107,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_struct
-id|pci_controller
-op_star
-id|alloc_phb
-c_func
-(paren
-r_struct
-id|device_node
-op_star
-id|dev
-comma
-r_char
-op_star
-id|model
-comma
-r_int
-r_int
-id|addr_size_words
-)paren
-suffix:semicolon
+r_static
 r_void
 id|iSeries_Scan_PHBs_Slots
 c_func
@@ -179,6 +118,7 @@ op_star
 id|Phb
 )paren
 suffix:semicolon
+r_static
 r_void
 id|iSeries_Scan_EADs_Bridge
 c_func
@@ -193,6 +133,7 @@ r_int
 id|IdSel
 )paren
 suffix:semicolon
+r_static
 r_int
 id|iSeries_Scan_Bridge_Slot
 c_func
@@ -206,16 +147,6 @@ op_star
 id|Info
 )paren
 suffix:semicolon
-r_void
-id|list_device_nodes
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_struct
-id|pci_dev
-suffix:semicolon
 DECL|variable|iSeries_Global_Device_List
 id|LIST_HEAD
 c_func
@@ -224,46 +155,35 @@ id|iSeries_Global_Device_List
 )paren
 suffix:semicolon
 DECL|variable|DeviceCount
+r_static
 r_int
 id|DeviceCount
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Counters and control flags. */
 DECL|variable|Pci_Io_Read_Count
 r_static
 r_int
 id|Pci_Io_Read_Count
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|Pci_Io_Write_Count
 r_static
 r_int
 id|Pci_Io_Write_Count
-op_assign
-l_int|0
 suffix:semicolon
-DECL|variable|Pci_Cfg_Read_Count
+macro_line|#if 0
 r_static
 r_int
 id|Pci_Cfg_Read_Count
-op_assign
-l_int|0
 suffix:semicolon
-DECL|variable|Pci_Cfg_Write_Count
 r_static
 r_int
 id|Pci_Cfg_Write_Count
-op_assign
-l_int|0
 suffix:semicolon
+macro_line|#endif
 DECL|variable|Pci_Error_Count
 r_static
 r_int
 id|Pci_Error_Count
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|Pci_Retry_Max
 r_static
@@ -285,11 +205,10 @@ DECL|variable|Pci_Trace_Flag
 r_static
 r_int
 id|Pci_Trace_Flag
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/**********************************************************************************&n; * Log Error infor in Flight Recorder to system Console.&n; * Filter out the device not there errors.&n; * PCI: EADs Connect Failed 0x18.58.10 Rc: 0x00xx&n; * PCI: Read Vendor Failed 0x18.58.10 Rc: 0x00xx&n; * PCI: Connect Bus Unit Failed 0x18.58.10 Rc: 0x00xx&n; **********************************************************************************/
+multiline_comment|/*&n; * Log Error infor in Flight Recorder to system Console.&n; * Filter out the device not there errors.&n; * PCI: EADs Connect Failed 0x18.58.10 Rc: 0x00xx&n; * PCI: Read Vendor Failed 0x18.58.10 Rc: 0x00xx&n; * PCI: Connect Bus Unit Failed 0x18.58.10 Rc: 0x00xx&n; */
 DECL|function|pci_Log_Error
+r_static
 r_void
 id|pci_Log_Error
 c_func
@@ -359,8 +278,8 @@ id|ErrorString
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**********************************************************************************&n; * Dump the iSeries Temp Device Node &n; *&lt;4&gt;buswalk [swapper : - DeviceNode: 0xC000000000634300&n; *&lt;4&gt;00. Device Node   = 0xC000000000634300&n; *&lt;4&gt;    - PciDev      = 0x0000000000000000&n; *&lt;4&gt;    - tDevice     = 0x  17:01.00  0x1022 00&n; *&lt;4&gt;  4. Device Node = 0xC000000000634480&n; *&lt;4&gt;     - PciDev    = 0x0000000000000000&n; *&lt;4&gt;     - Device    = 0x  18:38.16 Irq:0xA7 Vendor:0x1014  Flags:0x00&n; *&lt;4&gt;     - Devfn     = 0xB0: 22.18&n; **********************************************************************************/
-DECL|function|dumpDevice_Node
+macro_line|#if 0
+multiline_comment|/*&n; * Dump the iSeries Temp Device Node &n; * &lt;4&gt;buswalk [swapper : - DeviceNode: 0xC000000000634300&n; * &lt;4&gt;00. Device Node   = 0xC000000000634300&n; * &lt;4&gt;    - PciDev      = 0x0000000000000000&n; * &lt;4&gt;    - tDevice     = 0x  17:01.00  0x1022 00&n; * &lt;4&gt;  4. Device Node = 0xC000000000634480&n; * &lt;4&gt;     - PciDev    = 0x0000000000000000&n; * &lt;4&gt;     - Device    = 0x  18:38.16 Irq:0xA7 Vendor:0x1014  Flags:0x00&n; * &lt;4&gt;     - Devfn     = 0xB0: 22.18&n; */
 r_void
 id|dumpDevice_Node
 c_func
@@ -460,8 +379,8 @@ id|DevNode-&gt;CardLocation
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**********************************************************************************&n; * Walk down the device node chain &n; **********************************************************************************/
-DECL|function|list_device_nodes
+multiline_comment|/*&n; * Walk down the device node chain &n; */
+r_static
 r_void
 id|list_device_nodes
 c_func
@@ -502,8 +421,10 @@ id|Device_Node_Ptr-&gt;next
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/***********************************************************************&n; * build_device_node(u16 Bus, int SubBus, u8 DevFn)&n; *&n; ***********************************************************************/
+macro_line|#endif
+multiline_comment|/*&n; * build_device_node(u16 Bus, int SubBus, u8 DevFn)&n; */
 DECL|function|build_device_node
+r_static
 r_struct
 id|iSeries_Device_Node
 op_star
@@ -565,11 +486,9 @@ id|DeviceNode
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -594,7 +513,7 @@ op_amp
 id|iSeries_Global_Device_List
 )paren
 suffix:semicolon
-multiline_comment|/*DeviceNode-&gt;DsaAddr      = ((u64)Bus&lt;&lt;48)+((u64)SubBus&lt;&lt;40)+((u64)0x10&lt;&lt;32); */
+multiline_comment|/* DeviceNode-&gt;DsaAddr =&n;&t;&t;((u64)Bus &lt;&lt; 48) + ((u64)SubBus &lt;&lt; 40) + ((u64)0x10 &lt;&lt; 32); */
 id|ISERIES_BUS
 c_func
 (paren
@@ -671,8 +590,9 @@ r_return
 id|DeviceNode
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n;* &n;* Allocate pci_controller(phb) initialized common variables. &n;* &n;*****************************************************************************/
+multiline_comment|/*&n; * Allocate pci_controller(phb) initialized common variables.&n; */
 DECL|function|pci_alloc_pci_controllerX
+r_static
 r_struct
 id|pci_controller
 op_star
@@ -719,11 +639,9 @@ id|hose
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -749,7 +667,6 @@ id|model
 OL
 l_int|8
 )paren
-(brace
 id|strcpy
 c_func
 (paren
@@ -758,7 +675,6 @@ comma
 id|model
 )paren
 suffix:semicolon
-)brace
 r_else
 id|memcpy
 c_func
@@ -795,7 +711,7 @@ r_return
 id|hose
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * unsigned int __init find_and_init_phbs(void)&n; *&n; * Description:&n; *   This function checks for all possible system PCI host bridges that connect&n; *   PCI buses.  The system hypervisor is queried as to the guest partition&n; *   ownership status.  A pci_controller is build for any bus which is partially&n; *   owned or fully owned by this guest partition.&n; ****************************************************************************/
+multiline_comment|/*&n; * unsigned int __init find_and_init_phbs(void)&n; *&n; * Description:&n; *   This function checks for all possible system PCI host bridges that connect&n; *   PCI buses.  The system hypervisor is queried as to the guest partition&n; *   ownership status.  A pci_controller is build for any bus which is partially&n; *   owned or fully owned by this guest partition.&n; */
 DECL|function|find_and_init_phbs
 r_int
 r_int
@@ -929,9 +845,7 @@ comma
 id|BusNumber
 )paren
 suffix:semicolon
-multiline_comment|/***************************************************/
-multiline_comment|/* Find and connect the devices.                   */
-multiline_comment|/***************************************************/
+multiline_comment|/* Find and connect the devices. */
 id|iSeries_Scan_PHBs_Slots
 c_func
 (paren
@@ -939,8 +853,7 @@ id|phb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Check for Unexpected Return code, a clue that something */
-multiline_comment|/* has gone wrong.                                         */
+multiline_comment|/*&n;&t;&t; * Check for Unexpected Return code, a clue that something&n;&t;&t; * has gone wrong.&n;&t;&t; */
 r_else
 r_if
 c_cond
@@ -949,7 +862,6 @@ id|RtnCode
 op_ne
 l_int|0x0301
 )paren
-(brace
 id|PCIFR
 c_func
 (paren
@@ -961,12 +873,11 @@ id|RtnCode
 )paren
 suffix:semicolon
 )brace
-)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*********************************************************************** &n; * iSeries_pcibios_init&n; *  &n; * Chance to initialize and structures or variable before PCI Bus walk.&n; *  &n; *&lt;4&gt;buswalk [swapper : iSeries_pcibios_init Entry.&n; *&lt;4&gt;buswalk [swapper : IoMmTable Initialized 0xC00000000034BD30&n; *&lt;4&gt;buswalk [swapper : find_and_init_phbs Entry&n; *&lt;4&gt;buswalk [swapper : Create iSeries pci_controller:(0xC00000001F5C7000), Bus 0x0017&n; *&lt;4&gt;buswalk [swapper : Connect EADs: 0x17.00.12 = 0x00&n; *&lt;4&gt;buswalk [swapper : iSeries_assign_IRQ   0x0017.00.12 = 0x0091&n; *&lt;4&gt;buswalk [swapper : - allocate and assign IRQ 0x17.00.12 = 0x91&n; *&lt;4&gt;buswalk [swapper : - FoundDevice: 0x17.28.10 = 0x12AE&n; *&lt;4&gt;buswalk [swapper : - build_device_node 0x17.28.12&n; *&lt;4&gt;buswalk [swapper : iSeries_pcibios_init Exit.&n; ***********************************************************************/
+multiline_comment|/*&n; * iSeries_pcibios_init&n; *  &n; * Chance to initialize and structures or variable before PCI Bus walk.&n; *  &n; * &lt;4&gt;buswalk [swapper : iSeries_pcibios_init Entry.&n; * &lt;4&gt;buswalk [swapper : IoMmTable Initialized 0xC00000000034BD30&n; * &lt;4&gt;buswalk [swapper : find_and_init_phbs Entry&n; * &lt;4&gt;buswalk [swapper : Create iSeries pci_controller:(0xC00000001F5C7000), Bus 0x0017&n; * &lt;4&gt;buswalk [swapper : Connect EADs: 0x17.00.12 = 0x00&n; * &lt;4&gt;buswalk [swapper : iSeries_assign_IRQ   0x0017.00.12 = 0x0091&n; * &lt;4&gt;buswalk [swapper : - allocate and assign IRQ 0x17.00.12 = 0x91&n; * &lt;4&gt;buswalk [swapper : - FoundDevice: 0x17.28.10 = 0x12AE&n; * &lt;4&gt;buswalk [swapper : - build_device_node 0x17.28.12&n; * &lt;4&gt;buswalk [swapper : iSeries_pcibios_init Exit.&n; */
 DECL|function|iSeries_pcibios_init
 r_void
 id|iSeries_pcibios_init
@@ -993,10 +904,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pci_assign_all_busses
-op_assign
-l_int|0
-suffix:semicolon
+multiline_comment|/* pci_assign_all_busses = 0;&t;&t;SFRXXX*/
 id|PPCDBG
 c_func
 (paren
@@ -1006,7 +914,7 @@ l_string|&quot;iSeries_pcibios_init Exit.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/***********************************************************************&n; * pcibios_final_fixup(void)  &n; ***********************************************************************/
+multiline_comment|/*&n; * pcibios_final_fixup(void)  &n; */
 DECL|function|pcibios_final_fixup
 r_void
 id|__init
@@ -1047,9 +955,7 @@ comma
 l_string|&quot;iSeries_pcibios_fixup Entry.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/******************************************************/
 multiline_comment|/* Fix up at the device node and pci_dev relationship */
-multiline_comment|/******************************************************/
 id|mf_displaySrc
 c_func
 (paren
@@ -1160,7 +1066,6 @@ id|DeviceNode
 suffix:semicolon
 )brace
 r_else
-(brace
 id|printk
 c_func
 (paren
@@ -1173,7 +1078,6 @@ r_int
 id|PciDev
 )paren
 suffix:semicolon
-)brace
 )brace
 id|iSeries_IoMmTable_Status
 c_func
@@ -1214,7 +1118,6 @@ id|PciBus-&gt;number
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/***********************************************************************&n; * pcibios_fixup_resources(struct pci_dev *dev) &n; *&t;&n; ***********************************************************************/
 DECL|function|pcibios_fixup_resources
 r_void
 id|pcibios_fixup_resources
@@ -1231,14 +1134,15 @@ c_func
 (paren
 id|PPCDBG_BUSWALK
 comma
-l_string|&quot;pcibios_fixup_resources PciDev %p&bslash;n&quot;
+l_string|&quot;fixup_resources PciDev %p&bslash;n&quot;
 comma
 id|PciDev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/********************************************************************************&n;* Loop through each node function to find usable EADs bridges.  &n;*********************************************************************************/
+multiline_comment|/*&n; * Loop through each node function to find usable EADs bridges.  &n; */
 DECL|function|iSeries_Scan_PHBs_Slots
+r_static
 r_void
 id|iSeries_Scan_PHBs_Slots
 c_func
@@ -1259,7 +1163,7 @@ id|Bus
 op_assign
 id|Phb-&gt;local_number
 suffix:semicolon
-multiline_comment|/* System Bus        */
+multiline_comment|/* System Bus */
 id|HvSubBusNumber
 id|SubBus
 op_assign
@@ -1307,11 +1211,9 @@ id|DevInfo
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
-multiline_comment|/********************************************************************************&n;&t; * Probe for EADs Bridges      &n;&t; ********************************************************************************/
+multiline_comment|/*&n;&t; * Probe for EADs Bridges      &n;&t; */
 r_for
 c_loop
 (paren
@@ -1366,7 +1268,6 @@ id|DevInfo-&gt;deviceType
 op_eq
 id|HvCallPci_NodeDevice
 )paren
-(brace
 id|iSeries_Scan_EADs_Bridge
 c_func
 (paren
@@ -1377,7 +1278,6 @@ comma
 id|IdSel
 )paren
 suffix:semicolon
-)brace
 r_else
 id|printk
 c_func
@@ -1411,8 +1311,8 @@ id|DevInfo
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/********************************************************************************&n;* &n;*********************************************************************************/
 DECL|function|iSeries_Scan_EADs_Bridge
+r_static
 r_void
 id|iSeries_Scan_EADs_Bridge
 c_func
@@ -1467,11 +1367,9 @@ id|BridgeInfo
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
-multiline_comment|/*********************************************************************&n;&t; * Note: hvSubBus and irq is always be 0 at this level!&n;&t; *********************************************************************/
+multiline_comment|/* Note: hvSubBus and irq is always be 0 at this level! */
 r_for
 c_loop
 (paren
@@ -1649,7 +1547,6 @@ id|HvRc
 op_ne
 l_int|0x000B
 )paren
-(brace
 id|pci_Log_Error
 c_func
 (paren
@@ -1665,7 +1562,6 @@ id|HvRc
 )paren
 suffix:semicolon
 )brace
-)brace
 id|kfree
 c_func
 (paren
@@ -1673,8 +1569,9 @@ id|BridgeInfo
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/********************************************************************************&n;* &n;* This assumes that the node slot is always on the primary bus!&n;*&n;*********************************************************************************/
+multiline_comment|/*&n; * This assumes that the node slot is always on the primary bus!&n; */
 DECL|function|iSeries_Scan_Bridge_Slot
+r_static
 r_int
 id|iSeries_Scan_Bridge_Slot
 c_func
@@ -1758,9 +1655,7 @@ id|FirstSlotId
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/**********************************************************/
-multiline_comment|/* iSeries_allocate_IRQ.: 0x18.00.12(0xA3)                */
-multiline_comment|/**********************************************************/
+multiline_comment|/* iSeries_allocate_IRQ.: 0x18.00.12(0xA3) */
 id|Irq
 op_assign
 id|iSeries_allocate_IRQ
@@ -1801,7 +1696,7 @@ comma
 id|Irq
 )paren
 suffix:semicolon
-multiline_comment|/****************************************************************************&n;&t; * Connect all functions of any device found.  &n;&t; ****************************************************************************/
+multiline_comment|/*&n;&t; * Connect all functions of any device found.  &n;&t; */
 r_for
 c_loop
 (paren
@@ -1889,9 +1784,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/**********************************************************/
-multiline_comment|/* FoundDevice: 0x18.28.10 = 0x12AE                       */
-multiline_comment|/**********************************************************/
+multiline_comment|/* FoundDevice: 0x18.28.10 = 0x12AE */
 id|PPCDBG
 c_func
 (paren
@@ -1931,7 +1824,6 @@ id|HvRc
 op_ne
 l_int|0
 )paren
-(brace
 id|pci_Log_Error
 c_func
 (paren
@@ -1946,7 +1838,6 @@ comma
 id|HvRc
 )paren
 suffix:semicolon
-)brace
 op_increment
 id|DeviceCount
 suffix:semicolon
@@ -1994,7 +1885,7 @@ comma
 id|DeviceNode-&gt;Vendor
 )paren
 suffix:semicolon
-multiline_comment|/***********************************************************&n;&t;&t;&t;&t;&t; * On the first device/function, assign irq to slot&n;&t;&t;&t;&t;&t; ***********************************************************/
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * On the first device/function,&n;&t;&t;&t;&t;&t; * assign irq to slot&n;&t;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2007,7 +1898,7 @@ id|FirstSlotId
 op_assign
 id|AgentId
 suffix:semicolon
-singleline_comment|// AHT iSeries_assign_IRQ(Irq, Bus, SubBus, AgentId);
+multiline_comment|/* AHT iSeries_assign_IRQ(Irq,&n;&t;&t;&t;&t;&t;&t;&t;Bus, SubBus, AgentId); */
 )brace
 )brace
 r_else
@@ -2049,10 +1940,7 @@ r_return
 id|HvRc
 suffix:semicolon
 )brace
-multiline_comment|/************************************************************************/
-multiline_comment|/* I/0 Memory copy MUST use mmio commands on iSeries                    */
-multiline_comment|/* To do; For performance, include the hv call directly                 */
-multiline_comment|/************************************************************************/
+multiline_comment|/*&n; * I/0 Memory copy MUST use mmio commands on iSeries&n; * To do; For performance, include the hv call directly&n; */
 DECL|function|iSeries_memset_io
 r_void
 op_star
@@ -2249,8 +2137,9 @@ r_return
 id|dest
 suffix:semicolon
 )brace
-multiline_comment|/**********************************************************************************&n; * Look down the chain to find the matching Device Device&n; **********************************************************************************/
+multiline_comment|/*&n; * Look down the chain to find the matching Device Device&n; */
 DECL|function|find_Device_Node
+r_static
 r_struct
 id|iSeries_Device_Node
 op_star
@@ -2304,6 +2193,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|Bus
 op_eq
 id|ISERIES_BUS
@@ -2311,16 +2201,17 @@ c_func
 (paren
 id|DevNode
 )paren
+)paren
 op_logical_and
+(paren
 id|DevFn
 op_eq
 id|DevNode-&gt;DevFn
 )paren
-(brace
+)paren
 r_return
 id|DevNode
 suffix:semicolon
-)brace
 id|Device_Node_Ptr
 op_assign
 id|Device_Node_Ptr-&gt;next
@@ -2330,12 +2221,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************/
-multiline_comment|/* Returns the device node for the passed pci_dev                 */
-multiline_comment|/* Sanity Check Node PciDev to passed pci_dev                     */
-multiline_comment|/* If none is found, returns a NULL which the client must handle. */
-multiline_comment|/******************************************************************/
-DECL|function|get_Device_Node
+macro_line|#if 0
+multiline_comment|/*&n; * Returns the device node for the passed pci_dev&n; * Sanity Check Node PciDev to passed pci_dev&n; * If none is found, returns a NULL which the client must handle.&n; */
+r_static
 r_struct
 id|iSeries_Device_Node
 op_star
@@ -2369,7 +2257,6 @@ id|Node
 op_eq
 l_int|NULL
 )paren
-(brace
 id|Node
 op_assign
 id|find_Device_Node
@@ -2378,7 +2265,6 @@ c_func
 id|PciDev
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -2387,7 +2273,6 @@ id|Node-&gt;PciDev
 op_ne
 id|PciDev
 )paren
-(brace
 id|Node
 op_assign
 id|find_Device_Node
@@ -2396,14 +2281,14 @@ c_func
 id|PciDev
 )paren
 suffix:semicolon
-)brace
 r_return
 id|Node
 suffix:semicolon
 )brace
-multiline_comment|/**********************************************************************************&n; *&n; * Read PCI Config Space Code &n; *&n; **********************************************************************************/
-multiline_comment|/** BYTE  *************************************************************************/
-DECL|function|iSeries_Node_read_config_byte
+macro_line|#endif
+multiline_comment|/*&n; * Read PCI Config Space Code &n; */
+macro_line|#if 0
+multiline_comment|/** BYTE  ********************************************************************/
 r_int
 id|iSeries_Node_read_config_byte
 c_func
@@ -2541,285 +2426,6 @@ r_return
 id|DevNode-&gt;ReturnCode
 suffix:semicolon
 )brace
-multiline_comment|/** WORD  *************************************************************************/
-DECL|function|iSeries_Node_read_config_word
-r_int
-id|iSeries_Node_read_config_word
-c_func
-(paren
-r_struct
-id|iSeries_Device_Node
-op_star
-id|DevNode
-comma
-r_int
-id|Offset
-comma
-id|u16
-op_star
-id|ReadValue
-)paren
-(brace
-id|u16
-id|ReadData
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|DevNode
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-l_int|0x301
-suffix:semicolon
-)brace
-op_increment
-id|Pci_Cfg_Read_Count
-suffix:semicolon
-id|DevNode-&gt;ReturnCode
-op_assign
-id|HvCallPci_configLoad16
-c_func
-(paren
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|ISERIES_SUBBUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-l_int|0x10
-comma
-id|Offset
-comma
-op_amp
-id|ReadData
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|Pci_Trace_Flag
-op_eq
-l_int|1
-)paren
-(brace
-id|PCIFR
-c_func
-(paren
-l_string|&quot;RCW: 0x%04X.%02X 0x%04X = 0x%04X&quot;
-comma
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|DevNode-&gt;DevFn
-comma
-id|Offset
-comma
-id|ReadData
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|DevNode-&gt;ReturnCode
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;PCI: RCW: 0x%04X.%02X  Error: 0x%04X&bslash;n&quot;
-comma
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|DevNode-&gt;DevFn
-comma
-id|DevNode-&gt;ReturnCode
-)paren
-suffix:semicolon
-id|PCIFR
-c_func
-(paren
-l_string|&quot;RCW: 0x%04X.%02X  Error: 0x%04X&quot;
-comma
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|DevNode-&gt;DevFn
-comma
-id|DevNode-&gt;ReturnCode
-)paren
-suffix:semicolon
-)brace
-op_star
-id|ReadValue
-op_assign
-id|ReadData
-suffix:semicolon
-r_return
-id|DevNode-&gt;ReturnCode
-suffix:semicolon
-)brace
-multiline_comment|/** DWORD *************************************************************************/
-DECL|function|iSeries_Node_read_config_dword
-r_int
-id|iSeries_Node_read_config_dword
-c_func
-(paren
-r_struct
-id|iSeries_Device_Node
-op_star
-id|DevNode
-comma
-r_int
-id|Offset
-comma
-id|u32
-op_star
-id|ReadValue
-)paren
-(brace
-id|u32
-id|ReadData
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|DevNode
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-l_int|0x301
-suffix:semicolon
-)brace
-op_increment
-id|Pci_Cfg_Read_Count
-suffix:semicolon
-id|DevNode-&gt;ReturnCode
-op_assign
-id|HvCallPci_configLoad32
-c_func
-(paren
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|ISERIES_SUBBUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-l_int|0x10
-comma
-id|Offset
-comma
-op_amp
-id|ReadData
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|Pci_Trace_Flag
-op_eq
-l_int|1
-)paren
-(brace
-id|PCIFR
-c_func
-(paren
-l_string|&quot;RCL: 0x%04X.%02X 0x%04X = 0x%08X&quot;
-comma
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|DevNode-&gt;DevFn
-comma
-id|Offset
-comma
-id|ReadData
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|DevNode-&gt;ReturnCode
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;PCI: RCL: 0x%04X.%02X  Error: 0x%04X&bslash;n&quot;
-comma
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|DevNode-&gt;DevFn
-comma
-id|DevNode-&gt;ReturnCode
-)paren
-suffix:semicolon
-id|PCIFR
-c_func
-(paren
-l_string|&quot;RCL: 0x%04X.%02X  Error: 0x%04X&quot;
-comma
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|DevNode-&gt;DevFn
-comma
-id|DevNode-&gt;ReturnCode
-)paren
-suffix:semicolon
-)brace
-op_star
-id|ReadValue
-op_assign
-id|ReadData
-suffix:semicolon
-r_return
-id|DevNode-&gt;ReturnCode
-suffix:semicolon
-)brace
-DECL|function|iSeries_pci_read_config_byte
 r_int
 id|iSeries_pci_read_config_byte
 c_func
@@ -2872,118 +2478,40 @@ id|ReadValue
 )paren
 suffix:semicolon
 )brace
-DECL|function|iSeries_pci_read_config_word
+macro_line|#endif
+DECL|function|iSeries_pci_read_config
+r_static
 r_int
-id|iSeries_pci_read_config_word
+id|iSeries_pci_read_config
 c_func
 (paren
 r_struct
-id|pci_dev
+id|pci_bus
 op_star
-id|PciDev
+id|bus
 comma
 r_int
-id|Offset
-comma
-id|u16
-op_star
-id|ReadValue
-)paren
-(brace
-r_struct
-id|iSeries_Device_Node
-op_star
-id|DevNode
-op_assign
-id|get_Device_Node
-c_func
-(paren
-id|PciDev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|DevNode
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-l_int|0x0301
-suffix:semicolon
-)brace
-r_return
-id|iSeries_Node_read_config_word
-c_func
-(paren
-id|DevNode
-comma
-id|Offset
-comma
-id|ReadValue
-)paren
-suffix:semicolon
-)brace
-DECL|function|iSeries_pci_read_config_dword
 r_int
-id|iSeries_pci_read_config_dword
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|PciDev
+id|devfn
 comma
 r_int
-id|Offset
+id|offset
+comma
+r_int
+id|size
 comma
 id|u32
 op_star
-id|ReadValue
-)paren
-(brace
-r_struct
-id|iSeries_Device_Node
-op_star
-id|DevNode
-op_assign
-id|get_Device_Node
-c_func
-(paren
-id|PciDev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|DevNode
-op_eq
-l_int|NULL
+id|val
 )paren
 (brace
 r_return
-l_int|0x0301
+id|PCIBIOS_DEVICE_NOT_FOUND
 suffix:semicolon
 )brace
-r_return
-id|iSeries_Node_read_config_dword
-c_func
-(paren
-id|DevNode
-comma
-id|Offset
-comma
-id|ReadValue
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**********************************************************************************/
-multiline_comment|/*                                                                                */
-multiline_comment|/* Write PCI Config Space                                                         */
-multiline_comment|/*                                                                                */
-multiline_comment|/** BYTE  *************************************************************************/
-DECL|function|iSeries_Node_write_config_byte
+multiline_comment|/*&n; * Write PCI Config Space&n; */
+macro_line|#if 0
+multiline_comment|/** BYTE  ********************************************************************/
 r_int
 id|iSeries_Node_write_config_byte
 c_func
@@ -3099,241 +2627,6 @@ r_return
 id|DevNode-&gt;ReturnCode
 suffix:semicolon
 )brace
-multiline_comment|/** WORD  *************************************************************************/
-DECL|function|iSeries_Node_write_config_word
-r_int
-id|iSeries_Node_write_config_word
-c_func
-(paren
-r_struct
-id|iSeries_Device_Node
-op_star
-id|DevNode
-comma
-r_int
-id|Offset
-comma
-id|u16
-id|WriteData
-)paren
-(brace
-op_increment
-id|Pci_Cfg_Write_Count
-suffix:semicolon
-id|DevNode-&gt;ReturnCode
-op_assign
-id|HvCallPci_configStore16
-c_func
-(paren
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|ISERIES_SUBBUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-l_int|0x10
-comma
-id|Offset
-comma
-id|WriteData
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|Pci_Trace_Flag
-op_eq
-l_int|1
-)paren
-(brace
-id|PCIFR
-c_func
-(paren
-l_string|&quot;WCW: 0x%04X.%02X 0x%04X = 0x%04X&quot;
-comma
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|DevNode-&gt;DevFn
-comma
-id|Offset
-comma
-id|WriteData
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|DevNode-&gt;ReturnCode
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;PCI: WCW: 0x%04X.%02X  Error: 0x%04X&bslash;n&quot;
-comma
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|DevNode-&gt;DevFn
-comma
-id|DevNode-&gt;ReturnCode
-)paren
-suffix:semicolon
-id|PCIFR
-c_func
-(paren
-l_string|&quot;WCW: 0x%04X.%02X  Error: 0x%04X&quot;
-comma
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|DevNode-&gt;DevFn
-comma
-id|DevNode-&gt;ReturnCode
-)paren
-suffix:semicolon
-)brace
-r_return
-id|DevNode-&gt;ReturnCode
-suffix:semicolon
-)brace
-multiline_comment|/** DWORD *************************************************************************/
-DECL|function|iSeries_Node_write_config_dword
-r_int
-id|iSeries_Node_write_config_dword
-c_func
-(paren
-r_struct
-id|iSeries_Device_Node
-op_star
-id|DevNode
-comma
-r_int
-id|Offset
-comma
-id|u32
-id|WriteData
-)paren
-(brace
-op_increment
-id|Pci_Cfg_Write_Count
-suffix:semicolon
-id|DevNode-&gt;ReturnCode
-op_assign
-id|HvCallPci_configStore32
-c_func
-(paren
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|ISERIES_SUBBUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-l_int|0x10
-comma
-id|Offset
-comma
-id|WriteData
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|Pci_Trace_Flag
-op_eq
-l_int|1
-)paren
-(brace
-id|PCIFR
-c_func
-(paren
-l_string|&quot;WCL: 0x%04X.%02X 0x%04X = 0x%08X&quot;
-comma
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|DevNode-&gt;DevFn
-comma
-id|Offset
-comma
-id|WriteData
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|DevNode-&gt;ReturnCode
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;PCI: WCL: 0x%04X.%02X  Error: 0x%04X&bslash;n&quot;
-comma
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|DevNode-&gt;DevFn
-comma
-id|DevNode-&gt;ReturnCode
-)paren
-suffix:semicolon
-id|PCIFR
-c_func
-(paren
-l_string|&quot;WCL: 0x%04X.%02X  Error: 0x%04X&quot;
-comma
-id|ISERIES_BUS
-c_func
-(paren
-id|DevNode
-)paren
-comma
-id|DevNode-&gt;DevFn
-comma
-id|DevNode-&gt;ReturnCode
-)paren
-suffix:semicolon
-)brace
-r_return
-id|DevNode-&gt;ReturnCode
-suffix:semicolon
-)brace
-DECL|function|iSeries_pci_write_config_byte
 r_int
 id|iSeries_pci_write_config_byte
 c_func
@@ -3385,133 +2678,54 @@ id|WriteValue
 )paren
 suffix:semicolon
 )brace
-DECL|function|iSeries_pci_write_config_word
+macro_line|#endif
+DECL|function|iSeries_pci_write_config
+r_static
 r_int
-id|iSeries_pci_write_config_word
+id|iSeries_pci_write_config
 c_func
 (paren
 r_struct
-id|pci_dev
+id|pci_bus
 op_star
-id|PciDev
+id|bus
 comma
 r_int
-id|Offset
-comma
-id|u16
-id|WriteValue
-)paren
-(brace
-r_struct
-id|iSeries_Device_Node
-op_star
-id|DevNode
-op_assign
-id|get_Device_Node
-c_func
-(paren
-id|PciDev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|DevNode
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-l_int|0x0301
-suffix:semicolon
-)brace
-r_return
-id|iSeries_Node_write_config_word
-c_func
-(paren
-id|DevNode
-comma
-id|Offset
-comma
-id|WriteValue
-)paren
-suffix:semicolon
-)brace
-DECL|function|iSeries_pci_write_config_dword
 r_int
-id|iSeries_pci_write_config_dword
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|PciDev
+id|devfn
 comma
 r_int
-id|Offset
+id|offset
+comma
+r_int
+id|size
 comma
 id|u32
-id|WriteValue
-)paren
-(brace
-r_struct
-id|iSeries_Device_Node
-op_star
-id|DevNode
-op_assign
-id|get_Device_Node
-c_func
-(paren
-id|PciDev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|DevNode
-op_eq
-l_int|NULL
+id|val
 )paren
 (brace
 r_return
-l_int|0x0301
+id|PCIBIOS_DEVICE_NOT_FOUND
 suffix:semicolon
 )brace
-r_return
-id|iSeries_Node_write_config_dword
-c_func
-(paren
-id|DevNode
-comma
-id|Offset
-comma
-id|WriteValue
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/************************************************************************/
-multiline_comment|/* Branch Table                                                         */
-multiline_comment|/************************************************************************/
 DECL|variable|iSeries_pci_ops
 r_struct
 id|pci_ops
 id|iSeries_pci_ops
 op_assign
 (brace
-id|iSeries_pci_read_config_byte
+dot
+id|read
+op_assign
+id|iSeries_pci_read_config
 comma
-id|iSeries_pci_read_config_word
-comma
-id|iSeries_pci_read_config_dword
-comma
-id|iSeries_pci_write_config_byte
-comma
-id|iSeries_pci_write_config_word
-comma
-id|iSeries_pci_write_config_dword
+dot
+id|write
+op_assign
+id|iSeries_pci_write_config
 )brace
 suffix:semicolon
-multiline_comment|/************************************************************************&n; * Check Return Code&n; * -&gt; On Failure, print and log information.&n; *    Increment Retry Count, if exceeds max, panic partition.&n; * -&gt; If in retry, print and log success &n; ************************************************************************&n; * PCI: Device 23.90 ReadL I/O Error( 0): 0x1234&n; * PCI: Device 23.90 ReadL Retry( 1)&n; * PCI: Device 23.90 ReadL Retry Successful(1)&n; ************************************************************************/
+multiline_comment|/*&n; * Check Return Code&n; * -&gt; On Failure, print and log information.&n; *    Increment Retry Count, if exceeds max, panic partition.&n; * -&gt; If in retry, print and log success &n; *&n; * PCI: Device 23.90 ReadL I/O Error( 0): 0x1234&n; * PCI: Device 23.90 ReadL Retry( 1)&n; * PCI: Device 23.90 ReadL Retry Successful(1)&n; */
 DECL|function|CheckReturnCode
 r_int
 id|CheckReturnCode
@@ -3590,20 +2804,21 @@ r_int
 id|RtnCode
 )paren
 suffix:semicolon
-multiline_comment|/*******************************************************/
-multiline_comment|/* Bump the retry and check for retry count exceeded.  */
-multiline_comment|/* If, Exceeded, panic the system.                     */
-multiline_comment|/*******************************************************/
+multiline_comment|/*&n;&t;&t; * Bump the retry and check for retry count exceeded.&n;&t;&t; * If, Exceeded, panic the system.&n;&t;&t; */
 r_if
 c_cond
+(paren
 (paren
 id|DevNode-&gt;IoRetry
 OG
 id|Pci_Retry_Max
+)paren
 op_logical_and
+(paren
 id|Pci_Error_Flag
 OG
 l_int|0
+)paren
 )paren
 (brace
 id|mf_displaySrc
@@ -3619,7 +2834,8 @@ suffix:semicolon
 id|panic
 c_func
 (paren
-l_string|&quot;PCI: Hardware I/O Error, SRC B6000103, Automatic Reboot Disabled.&bslash;n&quot;
+l_string|&quot;PCI: Hardware I/O Error, SRC B6000103, &quot;
+l_string|&quot;Automatic Reboot Disabled.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3629,8 +2845,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Retry Try */
 )brace
-multiline_comment|/********************************************************************&n;&t;* If retry was in progress, log success and rest retry count        *&n;&t;*********************************************************************/
-r_else
+multiline_comment|/* If retry was in progress, log success and rest retry count */
 r_if
 c_cond
 (paren
@@ -3661,19 +2876,12 @@ id|DevNode-&gt;IoRetry
 op_assign
 l_int|0
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/************************************************************************/
-multiline_comment|/* Translate the I/O Address into a device node, bar, and bar offset.   */
-multiline_comment|/* Note: Make sure the passed variable end up on the stack to avoid     */
-multiline_comment|/* the exposure of being device global.                                 */
-multiline_comment|/************************************************************************/
+multiline_comment|/*&n; * Translate the I/O Address into a device node, bar, and bar offset.&n; * Note: Make sure the passed variable end up on the stack to avoid&n; * the exposure of being device global.&n; */
 DECL|function|xlateIoMmAddress
 r_static
 r_inline
@@ -3762,27 +2970,17 @@ id|iSeries_IoMmTable_Entry_Size
 suffix:semicolon
 )brace
 r_else
-(brace
 id|panic
 c_func
 (paren
 l_string|&quot;PCI: Invalid PCI IoAddress detected!&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_return
 id|DevNode
 suffix:semicolon
 )brace
-multiline_comment|/************************************************************************/
-multiline_comment|/* Read MM I/O Instructions for the iSeries                             */
-multiline_comment|/* On MM I/O error, all ones are returned and iSeries_pci_IoError is cal*/
-multiline_comment|/* else, data is returned in big Endian format.                         */
-multiline_comment|/************************************************************************/
-multiline_comment|/* iSeries_Read_Byte = Read Byte  ( 8 bit)                              */
-multiline_comment|/* iSeries_Read_Word = Read Word  (16 bit)                              */
-multiline_comment|/* iSeries_Read_Long = Read Long  (32 bit)                              */
-multiline_comment|/************************************************************************/
+multiline_comment|/*&n; * Read MM I/O Instructions for the iSeries&n; * On MM I/O error, all ones are returned and iSeries_pci_IoError is cal&n; * else, data is returned in big Endian format.&n; *&n; * iSeries_Read_Byte = Read Byte  ( 8 bit)&n; * iSeries_Read_Word = Read Word  (16 bit)&n; * iSeries_Read_Long = Read Long  (32 bit)&n; */
 DECL|function|iSeries_Read_Byte
 id|u8
 id|iSeries_Read_Byte
@@ -3865,7 +3063,6 @@ id|Pci_Trace_Flag
 op_eq
 l_int|1
 )paren
-(brace
 id|PCIFR
 c_func
 (paren
@@ -3879,7 +3076,6 @@ id|u8
 id|Return.value
 )paren
 suffix:semicolon
-)brace
 r_return
 (paren
 id|u8
@@ -3969,7 +3165,6 @@ id|Pci_Trace_Flag
 op_eq
 l_int|1
 )paren
-(brace
 id|PCIFR
 c_func
 (paren
@@ -3987,7 +3182,6 @@ id|Return.value
 )paren
 )paren
 suffix:semicolon
-)brace
 r_return
 id|swab16
 c_func
@@ -4081,7 +3275,6 @@ id|Pci_Trace_Flag
 op_eq
 l_int|1
 )paren
-(brace
 id|PCIFR
 c_func
 (paren
@@ -4099,7 +3292,6 @@ id|Return.value
 )paren
 )paren
 suffix:semicolon
-)brace
 r_return
 id|swab32
 c_func
@@ -4111,13 +3303,7 @@ id|Return.value
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/************************************************************************/
-multiline_comment|/* Write MM I/O Instructions for the iSeries                            */
-multiline_comment|/************************************************************************/
-multiline_comment|/* iSeries_Write_Byte = Write Byte (8 bit)                              */
-multiline_comment|/* iSeries_Write_Word = Write Word(16 bit)                              */
-multiline_comment|/* iSeries_Write_Long = Write Long(32 bit)                              */
-multiline_comment|/************************************************************************/
+multiline_comment|/*&n; * Write MM I/O Instructions for the iSeries&n; *&n; * iSeries_Write_Byte = Write Byte (8 bit)&n; * iSeries_Write_Word = Write Word(16 bit)&n; * iSeries_Write_Long = Write Long(32 bit)&n; */
 DECL|function|iSeries_Write_Byte
 r_void
 id|iSeries_Write_Byte
@@ -4204,7 +3390,6 @@ id|Pci_Trace_Flag
 op_eq
 l_int|1
 )paren
-(brace
 id|PCIFR
 c_func
 (paren
@@ -4215,7 +3400,6 @@ comma
 id|Data
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|iSeries_Write_Word
 r_void
@@ -4307,7 +3491,6 @@ id|Pci_Trace_Flag
 op_eq
 l_int|1
 )paren
-(brace
 id|PCIFR
 c_func
 (paren
@@ -4318,7 +3501,6 @@ comma
 id|Data
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|iSeries_Write_Long
 r_void
@@ -4410,7 +3592,6 @@ id|Pci_Trace_Flag
 op_eq
 l_int|1
 )paren
-(brace
 id|PCIFR
 c_func
 (paren
@@ -4422,5 +3603,16 @@ id|Data
 )paren
 suffix:semicolon
 )brace
+DECL|function|pcibios_name_device
+r_void
+id|pcibios_name_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
 )brace
 eof

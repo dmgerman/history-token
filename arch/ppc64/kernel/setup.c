@@ -525,6 +525,7 @@ r_break
 suffix:semicolon
 macro_line|#endif
 )brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -659,6 +660,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -772,7 +774,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
+macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PPC_PSERIES)
 r_if
 c_cond
 (paren
@@ -1082,6 +1084,7 @@ comma
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/*&n;&t; * Assume here that all clock rates are the same in a&n;&t; * smp system.  -- Cort&n;&t; */
 r_if
 c_cond
@@ -1158,6 +1161,7 @@ id|cpu_node
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1338,15 +1342,6 @@ r_int
 id|r7
 )paren
 (brace
-r_struct
-id|device_node
-op_star
-id|chosen
-suffix:semicolon
-r_char
-op_star
-id|p
-suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 r_if
 c_cond
@@ -1425,6 +1420,13 @@ id|cmd_line
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_CMDLINE */
+macro_line|#ifdef CONFIG_PPC_PSERIES
+(brace
+r_struct
+id|device_node
+op_star
+id|chosen
+suffix:semicolon
 id|chosen
 op_assign
 id|of_find_node_by_name
@@ -1443,6 +1445,10 @@ op_ne
 l_int|NULL
 )paren
 (brace
+r_char
+op_star
+id|p
+suffix:semicolon
 id|p
 op_assign
 id|get_property
@@ -1489,6 +1495,8 @@ id|chosen
 )paren
 suffix:semicolon
 )brace
+)brace
+macro_line|#endif
 multiline_comment|/* Look for mem= option on command line */
 r_if
 c_cond
@@ -1631,72 +1639,7 @@ id|maxmem
 suffix:semicolon
 )brace
 )brace
-DECL|function|bi_tag2str
-r_char
-op_star
-id|bi_tag2str
-c_func
-(paren
-r_int
-r_int
-id|tag
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|tag
-)paren
-(brace
-r_case
-id|BI_FIRST
-suffix:colon
-r_return
-l_string|&quot;BI_FIRST&quot;
-suffix:semicolon
-r_case
-id|BI_LAST
-suffix:colon
-r_return
-l_string|&quot;BI_LAST&quot;
-suffix:semicolon
-r_case
-id|BI_CMD_LINE
-suffix:colon
-r_return
-l_string|&quot;BI_CMD_LINE&quot;
-suffix:semicolon
-r_case
-id|BI_BOOTLOADER_ID
-suffix:colon
-r_return
-l_string|&quot;BI_BOOTLOADER_ID&quot;
-suffix:semicolon
-r_case
-id|BI_INITRD
-suffix:colon
-r_return
-l_string|&quot;BI_INITRD&quot;
-suffix:semicolon
-r_case
-id|BI_SYSMAP
-suffix:colon
-r_return
-l_string|&quot;BI_SYSMAP&quot;
-suffix:semicolon
-r_case
-id|BI_MACHTYPE
-suffix:colon
-r_return
-l_string|&quot;BI_MACHTYPE&quot;
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_string|&quot;BI_UNKNOWN&quot;
-suffix:semicolon
-)brace
-)brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 DECL|function|parse_bootinfo
 r_int
 id|parse_bootinfo
@@ -1849,6 +1792,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|ppc_init
 r_int
 id|__init

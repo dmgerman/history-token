@@ -31,27 +31,20 @@ singleline_comment|//&t;This file contains the &quot;hypervisor call&quot; inter
 singleline_comment|//&t;drive the hypervisor from SLIC.
 singleline_comment|//
 singleline_comment|//============================================================================
+macro_line|#ifndef _HVCALLPCI_H
+DECL|macro|_HVCALLPCI_H
+mdefine_line|#define _HVCALLPCI_H
 singleline_comment|//-------------------------------------------------------------------
 singleline_comment|// Forward declarations 
 singleline_comment|//-------------------------------------------------------------------
 singleline_comment|//-------------------------------------------------------------------
 singleline_comment|// Standard Includes
 singleline_comment|//-------------------------------------------------------------------
-macro_line|#ifndef  _HVCALLSC_H
-macro_line|#include &quot;HvCallSc.h&quot;
-macro_line|#endif
-macro_line|#ifndef  _HVTYPES_H
+macro_line|#include &lt;asm/iSeries/HvCallSc.h&gt;
 macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
-macro_line|#endif
-singleline_comment|//-------------------------------------------------------------------
-singleline_comment|// Other Includes
-singleline_comment|//-------------------------------------------------------------------
 singleline_comment|//-----------------------------------------------------------------------------
 singleline_comment|// Constants
 singleline_comment|//-----------------------------------------------------------------------------
-macro_line|#ifndef _HVCALLPCI_H
-DECL|macro|_HVCALLPCI_H
-mdefine_line|#define _HVCALLPCI_H
 DECL|struct|HvCallPci_DsaAddr
 r_struct
 id|HvCallPci_DsaAddr
@@ -2388,6 +2381,5 @@ id|xRetSize
 suffix:semicolon
 )brace
 singleline_comment|//============================================================================
-macro_line|#endif 
-singleline_comment|// _HVCALLPCI_H
+macro_line|#endif /* _HVCALLPCI_H */
 eof
