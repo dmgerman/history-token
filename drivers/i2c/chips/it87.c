@@ -2345,13 +2345,7 @@ l_int|2
 )paren
 op_ne
 id|i
-)paren
-r_goto
-id|ERROR1
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_or
 id|inb_p
 c_func
 (paren
@@ -2361,13 +2355,7 @@ l_int|3
 )paren
 op_ne
 id|i
-)paren
-r_goto
-id|ERROR1
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_or
 id|inb_p
 c_func
 (paren
@@ -2378,9 +2366,16 @@ l_int|7
 op_ne
 id|i
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|ERROR1
 suffix:semicolon
+)brace
 DECL|macro|REALLY_SLOW_IO
 macro_line|#undef REALLY_SLOW_IO
 multiline_comment|/* Let&squot;s just hope nothing breaks here */
@@ -2442,8 +2437,13 @@ op_plus
 l_int|5
 )paren
 suffix:semicolon
-r_return
-l_int|0
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|ERROR1
 suffix:semicolon
 )brace
 )brace
@@ -2547,6 +2547,7 @@ l_int|0
 r_if
 c_cond
 (paren
+(paren
 id|it87_read_value
 c_func
 (paren
@@ -2557,16 +2558,11 @@ id|IT87_REG_CONFIG
 op_amp
 l_int|0x80
 )paren
-r_goto
-id|ERROR1
-suffix:semicolon
-r_if
-c_cond
+op_logical_or
 (paren
 op_logical_neg
 id|is_isa
 op_logical_and
-(paren
 id|it87_read_value
 c_func
 (paren
@@ -2578,9 +2574,16 @@ op_ne
 id|address
 )paren
 )paren
-r_goto
-id|ERROR1
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
 suffix:semicolon
+r_goto
+id|ERROR2
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Determine the chip type. */
 r_if
@@ -2641,8 +2644,13 @@ comma
 id|address
 )paren
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
-id|ERROR1
+id|ERROR2
 suffix:semicolon
 )brace
 )brace
@@ -2705,7 +2713,7 @@ id|new_client
 )paren
 )paren
 r_goto
-id|ERROR1
+id|ERROR2
 suffix:semicolon
 multiline_comment|/* Initialize the IT87 chip */
 id|it87_init_client
@@ -3190,7 +3198,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|ERROR1
+id|ERROR2
 suffix:colon
 id|kfree
 c_func
@@ -3198,6 +3206,8 @@ c_func
 id|data
 )paren
 suffix:semicolon
+id|ERROR1
+suffix:colon
 r_if
 c_cond
 (paren
