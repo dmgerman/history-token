@@ -1,5 +1,5 @@
-multiline_comment|/* &n; * lib/reed_solomon/encode_rs.c&n; *&n; * Overview:&n; *   Generic Reed Solomon encoder / decoder library&n; *   &n; * Copyright 2002, Phil Karn, KA9Q&n; * May be used under the terms of the GNU General Public License (GPL)&n; *&n; * Adaption to the kernel by Thomas Gleixner (tglx@linutronix.de)&n; *&n; * $Id: encode_rs.c,v 1.3 2004/10/05 22:07:53 gleixner Exp $&n; *&n; */
-multiline_comment|/* Generic data witdh independend code which is included by the &n; * wrappers.&n; * int encode_rsX (struct rs_control *rs, uintX_t *data, int len, uintY_t *par)&n; */
+multiline_comment|/* &n; * lib/reed_solomon/encode_rs.c&n; *&n; * Overview:&n; *   Generic Reed Solomon encoder / decoder library&n; *   &n; * Copyright 2002, Phil Karn, KA9Q&n; * May be used under the terms of the GNU General Public License (GPL)&n; *&n; * Adaption to the kernel by Thomas Gleixner (tglx@linutronix.de)&n; *&n; * $Id: encode_rs.c,v 1.4 2004/10/22 15:41:47 gleixner Exp $&n; *&n; */
+multiline_comment|/* Generic data width independent code which is included by the &n; * wrappers.&n; * int encode_rsX (struct rs_control *rs, uintX_t *data, int len, uintY_t *par)&n; */
 (brace
 r_int
 id|i
