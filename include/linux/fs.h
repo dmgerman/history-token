@@ -14,19 +14,19 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
-macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/radix-tree.h&gt;
-macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-r_struct
-id|poll_table_struct
-suffix:semicolon
 r_struct
 id|iovec
 suffix:semicolon
 r_struct
 id|nameidata
+suffix:semicolon
+r_struct
+id|pipe_inode_info
+suffix:semicolon
+r_struct
+id|poll_table_struct
 suffix:semicolon
 r_struct
 id|vm_area_struct
@@ -375,8 +375,6 @@ r_int
 id|create
 )paren
 suffix:semicolon
-macro_line|#include &lt;linux/pipe_fs_i.h&gt;
-multiline_comment|/* #include &lt;linux/umsdos_fs_i.h&gt; */
 multiline_comment|/*&n; * Attribute flags.  These should be or-ed together to figure out what&n; * has been changed!&n; */
 DECL|macro|ATTR_MODE
 mdefine_line|#define ATTR_MODE&t;1
@@ -1151,8 +1149,6 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* will die */
 macro_line|#include &lt;linux/coda_fs_i.h&gt;
-macro_line|#include &lt;linux/ext3_fs_i.h&gt;
-macro_line|#include &lt;linux/efs_fs_i.h&gt;
 DECL|struct|fown_struct
 r_struct
 id|fown_struct

@@ -4,6 +4,7 @@ DECL|macro|_NCP_FS_SB
 mdefine_line|#define _NCP_FS_SB
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ncp_mount.h&gt;
+macro_line|#include &lt;linux/net.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/workqueue.h&gt;
 DECL|macro|NCP_DEFAULT_OPTIONS
