@@ -5449,7 +5449,7 @@ c_cond
 (paren
 id|p-&gt;depth
 op_ne
-l_int|2
+l_int|16
 )paren
 r_return
 op_minus
@@ -7586,7 +7586,7 @@ id|meye.proc_list
 suffix:semicolon
 id|meye.picture.depth
 op_assign
-l_int|2
+l_int|16
 suffix:semicolon
 id|meye.picture.palette
 op_assign
