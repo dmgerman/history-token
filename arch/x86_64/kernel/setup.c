@@ -3664,10 +3664,16 @@ c_func
 (paren
 l_int|0x00000000
 comma
+(paren
+r_int
+r_int
+op_star
+)paren
 op_amp
 id|c-&gt;cpuid_level
 comma
 (paren
+r_int
 r_int
 op_star
 )paren
@@ -3679,6 +3685,7 @@ l_int|0
 comma
 (paren
 r_int
+r_int
 op_star
 )paren
 op_amp
@@ -3688,6 +3695,7 @@ l_int|8
 )braket
 comma
 (paren
+r_int
 r_int
 op_star
 )paren

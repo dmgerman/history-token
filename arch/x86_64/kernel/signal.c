@@ -549,6 +549,7 @@ id|sigset_t
 id|set
 suffix:semicolon
 r_int
+r_int
 id|eax
 suffix:semicolon
 id|frame
