@@ -6400,8 +6400,9 @@ DECL|variable|ntfs_attr_ctx_cache_name
 r_static
 r_const
 r_char
-op_star
 id|ntfs_attr_ctx_cache_name
+(braket
+)braket
 op_assign
 l_string|&quot;ntfs_attr_ctx_cache&quot;
 suffix:semicolon
@@ -6409,8 +6410,9 @@ DECL|variable|ntfs_name_cache_name
 r_static
 r_const
 r_char
-op_star
 id|ntfs_name_cache_name
+(braket
+)braket
 op_assign
 l_string|&quot;ntfs_name_cache&quot;
 suffix:semicolon
@@ -6418,8 +6420,9 @@ DECL|variable|ntfs_inode_cache_name
 r_static
 r_const
 r_char
-op_star
 id|ntfs_inode_cache_name
+(braket
+)braket
 op_assign
 l_string|&quot;ntfs_inode_cache&quot;
 suffix:semicolon
@@ -6427,8 +6430,9 @@ DECL|variable|ntfs_big_inode_cache_name
 r_static
 r_const
 r_char
-op_star
 id|ntfs_big_inode_cache_name
+(braket
+)braket
 op_assign
 l_string|&quot;ntfs_big_inode_cache&quot;
 suffix:semicolon

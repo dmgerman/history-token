@@ -2471,8 +2471,9 @@ DECL|variable|proc_info_root_name
 r_static
 r_const
 r_char
-op_star
 id|proc_info_root_name
+(braket
+)braket
 op_assign
 l_string|&quot;fs/reiserfs&quot;
 suffix:semicolon
