@@ -348,7 +348,7 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * The i8042_wait_read() and i8042_wait_write functions wait for the i8042 to&n; * be ready for reading values from it / writing values to it.&n; */
+multiline_comment|/*&n; * The i8042_wait_read() and i8042_wait_write functions wait for the i8042 to&n; * be ready for reading values from it / writing values to it.&n; * Called always with i8042_lock held.&n; */
 DECL|function|i8042_wait_read
 r_static
 r_int
@@ -2468,6 +2468,10 @@ c_func
 r_void
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/*&n; * Test the i8042. We need to know if it thinks it&squot;s working correctly&n; * before doing anything else.&n; */
 id|i8042_flush
 c_func
@@ -2575,6 +2579,15 @@ op_complement
 id|I8042_CTR_KBDINT
 suffix:semicolon
 multiline_comment|/*&n; * Handle keylock.&n; */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|i8042_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2605,6 +2618,15 @@ l_string|&quot;i8042.c: Warning: Keylock active.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|i8042_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * If the chip is configured into nontranslated mode by the BIOS, don&squot;t&n; * bother enabling translating and be happy.&n; */
 r_if
 c_cond

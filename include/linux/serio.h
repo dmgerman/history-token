@@ -107,6 +107,7 @@ id|serio_dev
 op_star
 id|dev
 suffix:semicolon
+multiline_comment|/* Accessed from interrupt, writes must be protected by serio_lock */
 DECL|member|node
 r_struct
 id|list_head
