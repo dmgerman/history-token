@@ -948,9 +948,13 @@ id|i
 op_increment
 )paren
 (brace
-r_char
+r_int
 id|c
 op_assign
+(paren
+r_int
+r_char
+)paren
 id|name
 (braket
 id|i
