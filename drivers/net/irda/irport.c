@@ -1499,7 +1499,7 @@ suffix:semicolon
 multiline_comment|/* Try again later */
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|20
@@ -1581,7 +1581,7 @@ suffix:semicolon
 multiline_comment|/* Give dongle 1 sec to finish */
 id|ret
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|1000

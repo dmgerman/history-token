@@ -513,6 +513,7 @@ r_int
 id|flag
 )paren
 (brace
+macro_line|#ifndef CONFIG_HOTPLUG_CPU
 r_if
 c_cond
 (paren
@@ -528,6 +529,18 @@ id|smp_int_redirect
 op_or_assign
 id|flag
 suffix:semicolon
+macro_line|#else
+multiline_comment|/*&n;&t; * For CPU Hotplug we dont want to do any chipset supported&n;&t; * interrupt redirection. The reason is this would require that&n;&t; * All interrupts be stopped and hard bind the irq to a cpu.&n;&t; * Later when the interrupt is fired we need to set the redir hint&n;&t; * on again in the vector. This is combersome for something that the&n;&t; * user mode irq balancer will solve anyways.&n;&t; */
+id|no_int_routing
+op_assign
+l_int|1
+suffix:semicolon
+id|smp_int_redirect
+op_and_assign
+op_complement
+id|flag
+suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#else
 DECL|macro|set_smp_redirect

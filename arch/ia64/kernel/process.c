@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__&t;/* see &lt;asm/unistd.h&gt; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -9,6 +10,7 @@ macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -17,12 +19,16 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unwind.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
@@ -856,6 +862,112 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+multiline_comment|/* We don&squot;t actually take CPU down, just spin without interrupts. */
+DECL|function|play_dead
+r_static
+r_inline
+r_void
+id|play_dead
+c_func
+(paren
+r_void
+)paren
+(brace
+r_extern
+r_void
+id|ia64_cpu_local_tick
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Ack it */
+id|__get_cpu_var
+c_func
+(paren
+id|cpu_state
+)paren
+op_assign
+id|CPU_DEAD
+suffix:semicolon
+multiline_comment|/* We shouldn&squot;t have to disable interrupts while dead, but&n;&t; * some interrupts just don&squot;t seem to go away, and this makes&n;&t; * it &quot;work&quot; for testing purposes. */
+id|max_xtp
+c_func
+(paren
+)paren
+suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Death loop */
+r_while
+c_loop
+(paren
+id|__get_cpu_var
+c_func
+(paren
+id|cpu_state
+)paren
+op_ne
+id|CPU_UP_PREPARE
+)paren
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Enable timer interrupts from now on&n;&t; * Not required if we put processor in SAL_BOOT_RENDEZ mode.&n;&t; */
+id|local_flush_tlb_all
+c_func
+(paren
+)paren
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+id|cpu_online_map
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ia64_cpu_local_tick
+(paren
+)paren
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|function|play_dead
+r_static
+r_inline
+r_void
+id|play_dead
+c_func
+(paren
+r_void
+)paren
+(brace
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_HOTPLUG_CPU */
 r_void
 id|__attribute__
 c_func
@@ -984,6 +1096,23 @@ c_func
 )paren
 suffix:semicolon
 id|check_pgt_cache
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpu_is_offline
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+)paren
+id|play_dead
 c_func
 (paren
 )paren

@@ -8,26 +8,26 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
-multiline_comment|/*&n; * Memory barrier.&n; * The sync instruction guarantees that all memory accesses initiated&n; * by this processor have been performed (with respect to all other&n; * mechanisms that access memory).  The eieio instruction is a barrier&n; * providing an ordering (separately) for (a) cacheable stores and (b)&n; * loads and stores to non-cacheable memory (e.g. I/O devices).&n; *&n; * mb() prevents loads and stores being reordered across this point.&n; * rmb() prevents loads being reordered across this point.&n; * wmb() prevents stores being reordered across this point.&n; * read_barrier_depends() prevents data-dependent loads being reordered&n; *&t;across this point (nop on PPC).&n; *&n; * We can use the eieio instruction for wmb, but since it doesn&squot;t&n; * give any ordering guarantees about loads, we have to use the&n; * stronger but slower sync instruction for mb and rmb.&n; */
+multiline_comment|/*&n; * Memory barrier.&n; * The sync instruction guarantees that all memory accesses initiated&n; * by this processor have been performed (with respect to all other&n; * mechanisms that access memory).  The eieio instruction is a barrier&n; * providing an ordering (separately) for (a) cacheable stores and (b)&n; * loads and stores to non-cacheable memory (e.g. I/O devices).&n; *&n; * mb() prevents loads and stores being reordered across this point.&n; * rmb() prevents loads being reordered across this point.&n; * wmb() prevents stores being reordered across this point.&n; * read_barrier_depends() prevents data-dependent loads being reordered&n; *&t;across this point (nop on PPC).&n; *&n; * We have to use the sync instructions for mb(), since lwsync doesn&squot;t&n; * order loads with respect to previous stores.  Lwsync is fine for&n; * rmb(), though.&n; * For wmb(), we use sync since wmb is used in drivers to order&n; * stores to system memory with respect to writes to the device.&n; * However, smp_wmb() can be a lighter-weight eieio barrier on&n; * SMP since it is only used to order updates to system memory.&n; */
 DECL|macro|mb
 mdefine_line|#define mb()   __asm__ __volatile__ (&quot;sync&quot; : : : &quot;memory&quot;)
 DECL|macro|rmb
 mdefine_line|#define rmb()  __asm__ __volatile__ (&quot;lwsync&quot; : : : &quot;memory&quot;)
 DECL|macro|wmb
-mdefine_line|#define wmb()  __asm__ __volatile__ (&quot;eieio&quot; : : : &quot;memory&quot;)
+mdefine_line|#define wmb()  __asm__ __volatile__ (&quot;sync&quot; : : : &quot;memory&quot;)
 DECL|macro|read_barrier_depends
 mdefine_line|#define read_barrier_depends()  do { } while(0)
 DECL|macro|set_mb
-mdefine_line|#define set_mb(var, value)&t;do { var = value; mb(); } while (0)
+mdefine_line|#define set_mb(var, value)&t;do { var = value; smp_mb(); } while (0)
 DECL|macro|set_wmb
-mdefine_line|#define set_wmb(var, value)&t;do { var = value; wmb(); } while (0)
+mdefine_line|#define set_wmb(var, value)&t;do { var = value; smp_wmb(); } while (0)
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|smp_mb
 mdefine_line|#define smp_mb()&t;mb()
 DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;rmb()
 DECL|macro|smp_wmb
-mdefine_line|#define smp_wmb()&t;wmb()
+mdefine_line|#define smp_wmb()&t;__asm__ __volatile__ (&quot;eieio&quot; : : : &quot;memory&quot;)
 DECL|macro|smp_read_barrier_depends
 mdefine_line|#define smp_read_barrier_depends()  read_barrier_depends()
 macro_line|#else

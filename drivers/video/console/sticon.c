@@ -1610,6 +1610,11 @@ id|sti_con
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|con_startup
 op_assign
 id|sticon_startup
@@ -1763,6 +1768,7 @@ id|KERN_INFO
 l_string|&quot;sticon: Initializing STI text console.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
 id|take_over_console
 c_func
 (paren

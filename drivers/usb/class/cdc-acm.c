@@ -2300,6 +2300,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * USB probe and disconnect routines.&n; */
+DECL|macro|CHECK_XFERTYPE
+mdefine_line|#define CHECK_XFERTYPE(descr, xfer_type) (((descr)-&gt;bmAttributes &amp; USB_ENDPOINT_XFERTYPE_MASK) == xfer_type)
 DECL|function|acm_probe
 r_static
 r_int
@@ -2400,7 +2402,7 @@ id|ifcom
 op_assign
 id|intf-&gt;cur_altsetting
 suffix:semicolon
-multiline_comment|/* ACM doesn&squot;t guarantee the data interface is&n;&t;&t;&t; * adjacent to the control interface, or that if one&n;&t;&t;&t; * is there it&squot;s not for call management ... so find&n;&t;&t;&t; * it&n;&t;&t;&t; */
+multiline_comment|/* ACM doesn&squot;t guarantee the data interface is&n;&t; * adjacent to the control interface, or that if one&n;&t; * is there it&squot;s not for call management ... so find&n;&t; * it&n;&t; */
 r_for
 c_loop
 (paren
@@ -2437,7 +2439,7 @@ c_cond
 (paren
 id|ifdata-&gt;desc.bInterfaceClass
 op_eq
-l_int|10
+id|USB_CLASS_CDC_DATA
 op_logical_and
 id|ifdata-&gt;desc.bNumEndpoints
 op_eq
@@ -2480,66 +2482,73 @@ c_cond
 (paren
 id|epctrl-&gt;bEndpointAddress
 op_amp
-l_int|0x80
+id|USB_DIR_IN
 )paren
 op_ne
-l_int|0x80
+id|USB_DIR_IN
 op_logical_or
+op_logical_neg
+id|CHECK_XFERTYPE
+c_func
 (paren
-id|epctrl-&gt;bmAttributes
-op_amp
-l_int|3
+id|epctrl
+comma
+id|USB_ENDPOINT_XFER_INT
 )paren
-op_ne
-l_int|3
 op_logical_or
+op_logical_neg
+id|CHECK_XFERTYPE
+c_func
 (paren
-id|epread-&gt;bmAttributes
-op_amp
-l_int|3
+id|epread
+comma
+id|USB_ENDPOINT_XFER_BULK
 )paren
-op_ne
-l_int|2
 op_logical_or
+op_logical_neg
+id|CHECK_XFERTYPE
+c_func
 (paren
-id|epwrite-&gt;bmAttributes
-op_amp
-l_int|3
+id|epwrite
+comma
+id|USB_ENDPOINT_XFER_BULK
 )paren
-op_ne
-l_int|2
 op_logical_or
 (paren
 (paren
 id|epread-&gt;bEndpointAddress
 op_amp
-l_int|0x80
+id|USB_DIR_IN
 )paren
 op_xor
 (paren
 id|epwrite-&gt;bEndpointAddress
 op_amp
-l_int|0x80
+id|USB_DIR_IN
 )paren
 )paren
 op_ne
-l_int|0x80
+id|USB_DIR_IN
 )paren
+(brace
+multiline_comment|/* not suitable */
 r_goto
 id|next_interface
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 (paren
 id|epread-&gt;bEndpointAddress
 op_amp
-l_int|0x80
+id|USB_DIR_IN
 )paren
 op_ne
-l_int|0x80
+id|USB_DIR_IN
 )paren
 (brace
+multiline_comment|/* descriptors are swapped */
 id|epread
 op_assign
 op_amp
@@ -2561,9 +2570,12 @@ dot
 id|desc
 suffix:semicolon
 )brace
-id|dbg
+id|dev_dbg
 c_func
 (paren
+op_amp
+id|intf-&gt;dev
+comma
 l_string|&quot;found data interface at %d&bslash;n&quot;
 comma
 id|j
@@ -2594,12 +2606,13 @@ op_logical_neg
 id|ifdata
 )paren
 (brace
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;interface not found (%p)&bslash;n&quot;
+op_amp
+id|intf-&gt;dev
 comma
-id|ifdata
+l_string|&quot;data interface not found&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2668,10 +2681,13 @@ id|GFP_KERNEL
 )paren
 )paren
 (brace
-id|err
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+op_amp
+id|intf-&gt;dev
+comma
+l_string|&quot;out of memory (acm kmalloc)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2765,10 +2781,13 @@ id|GFP_KERNEL
 )paren
 )paren
 (brace
-id|err
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+op_amp
+id|intf-&gt;dev
+comma
+l_string|&quot;out of memory (buf kmalloc)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -2799,10 +2818,13 @@ op_logical_neg
 id|acm-&gt;ctrlurb
 )paren
 (brace
-id|err
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+op_amp
+id|intf-&gt;dev
+comma
+l_string|&quot;out of memory (ctrlurb kmalloc)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -2839,10 +2861,13 @@ op_logical_neg
 id|acm-&gt;readurb
 )paren
 (brace
-id|err
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+op_amp
+id|intf-&gt;dev
+comma
+l_string|&quot;out of memory (readurb kmalloc)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|usb_free_urb
@@ -2885,10 +2910,13 @@ op_logical_neg
 id|acm-&gt;writeurb
 )paren
 (brace
-id|err
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+op_amp
+id|intf-&gt;dev
+comma
+l_string|&quot;out of memory (writeurb kmalloc)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|usb_free_urb
@@ -3006,46 +3034,6 @@ id|acm-&gt;writeurb-&gt;transfer_flags
 op_or_assign
 id|URB_NO_FSBR
 suffix:semicolon
-id|dev_info
-c_func
-(paren
-op_amp
-id|intf-&gt;dev
-comma
-l_string|&quot;ttyACM%d: USB ACM device&quot;
-comma
-id|minor
-)paren
-suffix:semicolon
-id|acm_set_control
-c_func
-(paren
-id|acm
-comma
-id|acm-&gt;ctrlout
-)paren
-suffix:semicolon
-id|acm-&gt;line.speed
-op_assign
-id|cpu_to_le32
-c_func
-(paren
-l_int|9600
-)paren
-suffix:semicolon
-id|acm-&gt;line.databits
-op_assign
-l_int|8
-suffix:semicolon
-id|acm_set_line
-c_func
-(paren
-id|acm
-comma
-op_amp
-id|acm-&gt;line
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3118,6 +3106,46 @@ op_amp
 id|intf-&gt;dev
 )paren
 suffix:semicolon
+id|dev_info
+c_func
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+l_string|&quot;ttyACM%d: USB ACM device&bslash;n&quot;
+comma
+id|minor
+)paren
+suffix:semicolon
+id|acm_set_control
+c_func
+(paren
+id|acm
+comma
+id|acm-&gt;ctrlout
+)paren
+suffix:semicolon
+id|acm-&gt;line.speed
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+l_int|9600
+)paren
+suffix:semicolon
+id|acm-&gt;line.databits
+op_assign
+l_int|8
+suffix:semicolon
+id|acm_set_line
+c_func
+(paren
+id|acm
+comma
+op_amp
+id|acm-&gt;line
+)paren
+suffix:semicolon
 id|acm_table
 (braket
 id|minor
@@ -3136,6 +3164,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|CHECK_XFERTYPE
+macro_line|#undef CHECK_XFERTYPE
 DECL|function|acm_disconnect
 r_static
 r_void

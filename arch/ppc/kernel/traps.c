@@ -23,32 +23,6 @@ macro_line|#include &lt;asm/xmon.h&gt;
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 macro_line|#include &lt;asm/backlight.h&gt;
 macro_line|#endif
-r_extern
-r_int
-id|fix_alignment
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|bad_page_fault
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-id|sig
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_XMON
 DECL|variable|debugger
 r_void
@@ -763,7 +737,7 @@ id|regs
 )paren
 r_return
 suffix:semicolon
-macro_line|#ifdef CONFIG_4xx
+macro_line|#if defined(CONFIG_4xx) &amp;&amp; !defined(CONFIG_440A)
 r_if
 c_cond
 (paren
@@ -803,6 +777,171 @@ c_func
 l_string|&quot; machine check in kernel mode.&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#elif defined(CONFIG_440A)
+id|printk
+c_func
+(paren
+l_string|&quot;Machine check in kernel mode.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reason
+op_amp
+id|ESR_IMCP
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Instruction Synchronous Machine Check exception&bslash;n&quot;
+)paren
+suffix:semicolon
+id|mtspr
+c_func
+(paren
+id|SPRN_ESR
+comma
+id|reason
+op_amp
+op_complement
+id|ESR_IMCP
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|u32
+id|mcsr
+op_assign
+id|mfspr
+c_func
+(paren
+id|SPRN_MCSR
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mcsr
+op_amp
+id|MCSR_IB
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Instruction Read PLB Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mcsr
+op_amp
+id|MCSR_DRB
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Data Read PLB Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mcsr
+op_amp
+id|MCSR_DWB
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Data Write PLB Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mcsr
+op_amp
+id|MCSR_TLBP
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;TLB Parity Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mcsr
+op_amp
+id|MCSR_ICP
+)paren
+(brace
+id|flush_instruction_cache
+c_func
+(paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;I-Cache Parity Error&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|mcsr
+op_amp
+id|MCSR_DCSP
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;D-Cache Search Parity Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mcsr
+op_amp
+id|MCSR_DCFP
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;D-Cache Flush Parity Error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mcsr
+op_amp
+id|MCSR_IMPE
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Machine Check exception is imprecise&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Clear MCSR */
+id|mtspr
+c_func
+(paren
+id|SPRN_MCSR
+comma
+id|mcsr
+)paren
+suffix:semicolon
+)brace
 macro_line|#else /* !CONFIG_4xx */
 id|printk
 c_func

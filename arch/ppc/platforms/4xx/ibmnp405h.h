@@ -4,7 +4,6 @@ macro_line|#ifndef __ASM_IBMNP405H_H__
 DECL|macro|__ASM_IBMNP405H_H__
 mdefine_line|#define __ASM_IBMNP405H_H__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/ibm_ocp.h&gt;
 multiline_comment|/* ibm405.h at bottom of this file */
 DECL|macro|PPC405_PCI_CONFIG_ADDR
 mdefine_line|#define PPC405_PCI_CONFIG_ADDR&t;0xeec00000
@@ -45,10 +44,6 @@ DECL|macro|PPC4xx_ONB_IO_ADDR
 mdefine_line|#define PPC4xx_ONB_IO_ADDR&t;((uint)0xef600000)
 DECL|macro|PPC4xx_ONB_IO_SIZE
 mdefine_line|#define PPC4xx_ONB_IO_SIZE&t;((uint)4*1024)
-DECL|macro|OPB_BASE_START
-mdefine_line|#define OPB_BASE_START&t;0x40000000
-DECL|macro|EBIU_BASE_START
-mdefine_line|#define EBIU_BASE_START&t;0xF0100000
 multiline_comment|/* serial port defines */
 DECL|macro|RS_TABLE_SIZE
 mdefine_line|#define RS_TABLE_SIZE&t;4
@@ -62,46 +57,10 @@ DECL|macro|UART0_IO_BASE
 mdefine_line|#define UART0_IO_BASE&t;0xEF600300
 DECL|macro|UART1_IO_BASE
 mdefine_line|#define UART1_IO_BASE&t;0xEF600400
-DECL|macro|IIC0_BASE
-mdefine_line|#define IIC0_BASE&t;0xEF600500
 DECL|macro|OPB0_BASE
 mdefine_line|#define OPB0_BASE&t;0xEF600600
-DECL|macro|GPIO0_BASE
-mdefine_line|#define GPIO0_BASE&t;0xEF600700
 DECL|macro|EMAC0_BASE
 mdefine_line|#define EMAC0_BASE&t;0xEF600800
-DECL|macro|EMAC1_BASE
-mdefine_line|#define EMAC1_BASE&t;0xEF600900
-DECL|macro|EMAC2_BASE
-mdefine_line|#define EMAC2_BASE&t;0xEF600a00
-DECL|macro|EMAC3_BASE
-mdefine_line|#define EMAC3_BASE&t;0xEF600b00
-DECL|macro|ZMII0_BASE
-mdefine_line|#define ZMII0_BASE&t;0xEF600C10
-DECL|macro|BL_MAC_WOL
-mdefine_line|#define BL_MAC_WOL&t;41 &t;/* WOL */
-DECL|macro|BL_MAL_SERR
-mdefine_line|#define BL_MAL_SERR&t;45&t;/* MAL SERR */
-DECL|macro|BL_MAL_TXDE
-mdefine_line|#define BL_MAL_TXDE&t;46&t;/* MAL TXDE */
-DECL|macro|BL_MAL_RXDE
-mdefine_line|#define BL_MAL_RXDE&t;47&t;/* MAL RXDE */
-DECL|macro|BL_MAL_TXEOB
-mdefine_line|#define BL_MAL_TXEOB&t;17&t;/* MAL TX EOB */
-DECL|macro|BL_MAL_RXEOB
-mdefine_line|#define BL_MAL_RXEOB&t;18&t;/* MAL RX EOB */
-DECL|macro|BL_MAC_ETH0
-mdefine_line|#define BL_MAC_ETH0&t;37&t;/* MAC */
-DECL|macro|BL_MAC_ETH1
-mdefine_line|#define BL_MAC_ETH1&t;38&t;/* MAC */
-DECL|macro|BL_MAC_ETH2
-mdefine_line|#define BL_MAC_ETH2&t;39&t;/* MAC */
-DECL|macro|BL_MAC_ETH3
-mdefine_line|#define BL_MAC_ETH3&t;40&t;/* MAC */
-DECL|macro|EMAC_NUMS
-mdefine_line|#define EMAC_NUMS&t;4
-DECL|macro|IIC0_IRQ
-mdefine_line|#define IIC0_IRQ&t;2
 DECL|macro|BD_EMAC_ADDR
 mdefine_line|#define BD_EMAC_ADDR(e,i) bi_enetaddr[e][i]
 DECL|macro|STD_UART_OP

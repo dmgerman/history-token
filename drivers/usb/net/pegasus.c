@@ -6603,6 +6603,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|pegasus_init
+r_static
 r_int
 id|__init
 id|pegasus_init
@@ -6629,6 +6630,7 @@ id|pegasus_driver
 suffix:semicolon
 )brace
 DECL|function|pegasus_exit
+r_static
 r_void
 id|__exit
 id|pegasus_exit

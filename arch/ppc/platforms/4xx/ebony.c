@@ -26,6 +26,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
@@ -497,11 +498,6 @@ m_abort
 (paren
 r_void
 )paren
-suffix:semicolon
-multiline_comment|/* Global Variables */
-DECL|variable|__res
-id|bd_t
-id|__res
 suffix:semicolon
 r_static
 r_void
@@ -1194,8 +1190,18 @@ op_star
 id|vpd_base
 suffix:semicolon
 r_struct
-id|ibm440gp_clocks
+id|ibm44x_clocks
 id|clocks
+suffix:semicolon
+r_struct
+id|ocp_def
+op_star
+id|def
+suffix:semicolon
+r_struct
+id|ocp_func_emac_data
+op_star
+id|emacdata
 suffix:semicolon
 macro_line|#if !defined(CONFIG_BDI_SWITCH)
 multiline_comment|/*&n;&t; * The Abatron BDI JTAG debugger does not tolerate others&n;&t; * mucking with the debug registers.&n;&t; */
@@ -1212,7 +1218,7 @@ id|DBCR0_IDM
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Retrieve MAC addresses */
+multiline_comment|/* Set mac_addr for each EMAC */
 id|vpd_base
 op_assign
 id|ioremap64
@@ -1223,13 +1229,26 @@ comma
 id|EBONY_VPD_SIZE
 )paren
 suffix:semicolon
+id|def
+op_assign
+id|ocp_get_one_device
+c_func
+(paren
+id|OCP_VENDOR_IBM
+comma
+id|OCP_FUNC_EMAC
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|emacdata
+op_assign
+id|def-&gt;additions
+suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|__res.bi_enetaddr
-(braket
-l_int|0
-)braket
+id|emacdata-&gt;mac_addr
 comma
 id|EBONY_NA0_ADDR
 c_func
@@ -1240,13 +1259,26 @@ comma
 l_int|6
 )paren
 suffix:semicolon
+id|def
+op_assign
+id|ocp_get_one_device
+c_func
+(paren
+id|OCP_VENDOR_IBM
+comma
+id|OCP_FUNC_EMAC
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|emacdata
+op_assign
+id|def-&gt;additions
+suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|__res.bi_enetaddr
-(braket
-l_int|1
-)braket
+id|emacdata-&gt;mac_addr
 comma
 id|EBONY_NA1_ADDR
 c_func
@@ -1255,6 +1287,12 @@ id|vpd_base
 )paren
 comma
 l_int|6
+)paren
+suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|vpd_base
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Determine various clocks.&n;&t; * To be completely correct we should get SysClk&n;&t; * from FPGA, because it can be changed by on-board switches&n;&t; * --ebs&n;&t; */
@@ -1271,22 +1309,9 @@ op_star
 l_int|1843200
 )paren
 suffix:semicolon
-id|__res.bi_opb_busfreq
+id|ocp_sys_info.opb_bus_freq
 op_assign
 id|clocks.opb
-suffix:semicolon
-multiline_comment|/* Use IIC in standard (100 kHz) mode */
-id|__res.bi_iic_fast
-(braket
-l_int|0
-)braket
-op_assign
-id|__res.bi_iic_fast
-(braket
-l_int|1
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Setup TODC access */
 id|TODC_INIT

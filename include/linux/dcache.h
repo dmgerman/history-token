@@ -17,11 +17,16 @@ suffix:semicolon
 multiline_comment|/*&n; * linux/include/linux/dcache.h&n; *&n; * Dirent cache data structures&n; *&n; * (C) Copyright 1997 Thomas Schoebel-Theuer,&n; * with heavy changes by Linus Torvalds&n; */
 DECL|macro|IS_ROOT
 mdefine_line|#define IS_ROOT(x) ((x) == (x)-&gt;d_parent)
-multiline_comment|/*&n; * &quot;quick string&quot; -- eases parameter passing, but more importantly&n; * saves &quot;metadata&quot; about the string (ie length and the hash).&n; */
+multiline_comment|/*&n; * &quot;quick string&quot; -- eases parameter passing, but more importantly&n; * saves &quot;metadata&quot; about the string (ie length and the hash).&n; *&n; * hash comes first so it snuggles against d_parent and d_bucket in the&n; * dentry.&n; */
 DECL|struct|qstr
 r_struct
 id|qstr
 (brace
+DECL|member|hash
+r_int
+r_int
+id|hash
+suffix:semicolon
 DECL|member|name
 r_const
 r_int
@@ -33,18 +38,6 @@ DECL|member|len
 r_int
 r_int
 id|len
-suffix:semicolon
-DECL|member|hash
-r_int
-r_int
-id|hash
-suffix:semicolon
-DECL|member|name_str
-r_char
-id|name_str
-(braket
-l_int|0
-)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -203,11 +196,10 @@ id|hash
 )paren
 suffix:semicolon
 )brace
-DECL|macro|DNAME_INLINE_LEN_MIN
-mdefine_line|#define DNAME_INLINE_LEN_MIN 24
 r_struct
 id|dcookie_struct
 suffix:semicolon
+multiline_comment|/*&n; * On x86, dentries are a multiple of 16 bytes, with 16-byte alignment.&n; */
 DECL|struct|dentry
 r_struct
 id|dentry
@@ -216,24 +208,44 @@ DECL|member|d_count
 id|atomic_t
 id|d_count
 suffix:semicolon
+DECL|member|d_flags
+r_int
+r_int
+id|d_flags
+suffix:semicolon
+multiline_comment|/* protected by d_lock */
 DECL|member|d_lock
 id|spinlock_t
 id|d_lock
 suffix:semicolon
 multiline_comment|/* per dentry lock */
-DECL|member|d_vfs_flags
-r_int
-r_int
-id|d_vfs_flags
-suffix:semicolon
-multiline_comment|/* moved here to be on same cacheline */
 DECL|member|d_inode
 r_struct
 id|inode
 op_star
 id|d_inode
 suffix:semicolon
-multiline_comment|/* Where the name belongs to - NULL is negative */
+multiline_comment|/* Where the name belongs to - NULL is&n;&t;&t;&t;&t;&t; * negative */
+multiline_comment|/*&n;&t; * The next three fields are touched by __d_lookup.  Place them here&n;&t; * so they all fit in a 16-byte range, with 16-byte alignment.&n;&t; */
+DECL|member|d_parent
+r_struct
+id|dentry
+op_star
+id|d_parent
+suffix:semicolon
+multiline_comment|/* parent directory */
+DECL|member|d_bucket
+r_struct
+id|hlist_head
+op_star
+id|d_bucket
+suffix:semicolon
+multiline_comment|/* lookup hash bucket */
+DECL|member|d_name
+r_struct
+id|qstr
+id|d_name
+suffix:semicolon
 DECL|member|d_lru
 r_struct
 id|list_head
@@ -277,11 +289,6 @@ op_star
 id|d_sb
 suffix:semicolon
 multiline_comment|/* The root of the dentry tree */
-DECL|member|d_flags
-r_int
-r_int
-id|d_flags
-suffix:semicolon
 DECL|member|d_mounted
 r_int
 id|d_mounted
@@ -304,57 +311,23 @@ op_star
 id|d_cookie
 suffix:semicolon
 multiline_comment|/* cookie, if any */
-DECL|member|d_move_count
-r_int
-r_int
-id|d_move_count
-suffix:semicolon
-multiline_comment|/* to indicated moved dentry while lockless lookup */
-DECL|member|d_qstr
-r_struct
-id|qstr
-op_star
-id|d_qstr
-suffix:semicolon
-multiline_comment|/* quick str ptr used in lockless lookup and concurrent d_move */
-DECL|member|d_parent
-r_struct
-id|dentry
-op_star
-id|d_parent
-suffix:semicolon
-multiline_comment|/* parent directory */
-DECL|member|d_name
-r_struct
-id|qstr
-id|d_name
-suffix:semicolon
 DECL|member|d_hash
 r_struct
 id|hlist_node
 id|d_hash
 suffix:semicolon
 multiline_comment|/* lookup hash list */
-DECL|member|d_bucket
-r_struct
-id|hlist_head
-op_star
-id|d_bucket
-suffix:semicolon
-multiline_comment|/* lookup hash bucket */
 DECL|member|d_iname
 r_int
 r_char
 id|d_iname
 (braket
-id|DNAME_INLINE_LEN_MIN
+l_int|0
 )braket
 suffix:semicolon
 multiline_comment|/* small names */
 )brace
 suffix:semicolon
-DECL|macro|DNAME_INLINE_LEN
-mdefine_line|#define DNAME_INLINE_LEN&t;(sizeof(struct dentry)-offsetof(struct dentry,d_iname))
 DECL|struct|dentry_operations
 r_struct
 id|dentry_operations
@@ -454,7 +427,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* the dentry parameter passed to d_hash and d_compare is the parent&n; * directory of the entries to be compared. It is used in case these&n; * functions need any directory specific information for determining&n; * equivalency classes.  Using the dentry itself might not work, as it&n; * might be a negative dentry which has no information associated with&n; * it */
-multiline_comment|/*&n;locking rules:&n;&t;&t;big lock&t;dcache_lock&t;may block&n;d_revalidate:&t;no&t;&t;no&t;&t;yes&n;d_hash&t;&t;no&t;&t;no&t;&t;yes&n;d_compare:&t;no&t;&t;yes&t;&t;no&n;d_delete:&t;no&t;&t;yes&t;&t;no&n;d_release:&t;no&t;&t;no&t;&t;yes&n;d_iput:&t;&t;no&t;&t;no&t;&t;yes&n; */
+multiline_comment|/*&n;locking rules:&n;&t;&t;big lock&t;dcache_lock&t;d_lock   may block&n;d_revalidate:&t;no&t;&t;no&t;&t;no       yes&n;d_hash&t;&t;no&t;&t;no&t;&t;no       yes&n;d_compare:&t;no&t;&t;yes&t;&t;yes      no&n;d_delete:&t;no&t;&t;yes&t;&t;no       no&n;d_release:&t;no&t;&t;no&t;&t;no       yes&n;d_iput:&t;&t;no&t;&t;no&t;&t;no       yes&n; */
 multiline_comment|/* d_flags entries */
 DECL|macro|DCACHE_AUTOFS_PENDING
 mdefine_line|#define DCACHE_AUTOFS_PENDING 0x0001    /* autofs: &quot;under construction&quot; */
@@ -490,13 +463,13 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|dentry-&gt;d_vfs_flags
+id|dentry-&gt;d_flags
 op_amp
 id|DCACHE_UNHASHED
 )paren
 )paren
 (brace
-id|dentry-&gt;d_vfs_flags
+id|dentry-&gt;d_flags
 op_or_assign
 id|DCACHE_UNHASHED
 suffix:semicolon
@@ -553,13 +526,13 @@ c_func
 r_struct
 id|dentry
 op_star
-id|d
+id|dentry
 )paren
 (brace
 r_return
-id|d-&gt;d_name.name
+id|dentry-&gt;d_name.name
 op_ne
-id|d-&gt;d_iname
+id|dentry-&gt;d_iname
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * These are the low-level FS interfaces to the dcache..&n; */
@@ -933,7 +906,7 @@ id|dentry
 (brace
 r_return
 (paren
-id|dentry-&gt;d_vfs_flags
+id|dentry-&gt;d_flags
 op_amp
 id|DCACHE_UNHASHED
 )paren

@@ -10,11 +10,11 @@ DECL|macro|PPC44x_EMAC0_MR0
 mdefine_line|#define PPC44x_EMAC0_MR0&t;0xE0000800
 multiline_comment|/* Location of MAC addresses in firmware */
 DECL|macro|OCOTEA_MAC_BASE
-mdefine_line|#define OCOTEA_MAC_BASE&t;&t;(OCOTEA_SMALL_FLASH_HIGH+0xc0500)
+mdefine_line|#define OCOTEA_MAC_BASE&t;&t;(OCOTEA_SMALL_FLASH_HIGH+0xb0500)
 DECL|macro|OCOTEA_MAC_SIZE
 mdefine_line|#define OCOTEA_MAC_SIZE&t;&t;0x200
-DECL|macro|OCOTEA_MAC1_OFFSET
-mdefine_line|#define OCOTEA_MAC1_OFFSET&t;0x100
+DECL|macro|OCOTEA_MAC_OFFSET
+mdefine_line|#define OCOTEA_MAC_OFFSET&t;0x100
 multiline_comment|/* Default clock rate */
 DECL|macro|OCOTEA_SYSCLK
 mdefine_line|#define OCOTEA_SYSCLK&t;&t;25000000
@@ -24,8 +24,8 @@ mdefine_line|#define OCOTEA_RTC_ADDR&t;&t;0x0000000148000000ULL
 DECL|macro|OCOTEA_RTC_SIZE
 mdefine_line|#define OCOTEA_RTC_SIZE&t;&t;0x2000
 multiline_comment|/* Flash */
-DECL|macro|OCOTEA_FPGA_ADDR
-mdefine_line|#define OCOTEA_FPGA_ADDR&t;&t;0x0000000148300000ULL
+DECL|macro|OCOTEA_FPGA_REG_0
+mdefine_line|#define OCOTEA_FPGA_REG_0&t;&t;0x0000000148300000ULL
 DECL|macro|OCOTEA_BOOT_LARGE_FLASH
 mdefine_line|#define OCOTEA_BOOT_LARGE_FLASH(x)&t;(x &amp; 0x40)
 DECL|macro|OCOTEA_SMALL_FLASH_LOW
@@ -40,6 +40,9 @@ DECL|macro|OCOTEA_LARGE_FLASH_HIGH
 mdefine_line|#define OCOTEA_LARGE_FLASH_HIGH&t;&t;0x00000001ffc00000ULL
 DECL|macro|OCOTEA_LARGE_FLASH_SIZE
 mdefine_line|#define OCOTEA_LARGE_FLASH_SIZE&t;&t;0x400000
+multiline_comment|/* FPGA_REG_3 (Ethernet Groups) */
+DECL|macro|OCOTEA_FPGA_REG_3
+mdefine_line|#define OCOTEA_FPGA_REG_3&t;&t;0x0000000148300003ULL
 multiline_comment|/*&n; * Serial port defines&n; */
 DECL|macro|RS_TABLE_SIZE
 mdefine_line|#define RS_TABLE_SIZE&t;2
@@ -51,7 +54,7 @@ mdefine_line|#define UART1_IO_BASE&t;(u8 *) 0xE0000300
 DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD&t;11059200/16
 DECL|macro|STD_UART_OP
-mdefine_line|#define STD_UART_OP(num)&t;&t;&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0, UART##num##_IRQ,&t;&t;&t;&bslash;&n;&t;&t;(ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST),&t;&bslash;&n;&t;&t;iomem_base: UART##num##_IO_BASE,&t;&t;&bslash;&n;&t;&t;io_type: SERIAL_IO_MEM},
+mdefine_line|#define STD_UART_OP(num)&t;&t;&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0, UART##num##_INT,&t;&t;&t;&bslash;&n;&t;&t;(ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST),&t;&bslash;&n;&t;&t;iomem_base: UART##num##_IO_BASE,&t;&t;&bslash;&n;&t;&t;io_type: SERIAL_IO_MEM},
 DECL|macro|SERIAL_PORT_DFNS
 mdefine_line|#define SERIAL_PORT_DFNS&t;&bslash;&n;&t;STD_UART_OP(0)&t;&t;&bslash;&n;&t;STD_UART_OP(1)
 multiline_comment|/* PCI support */

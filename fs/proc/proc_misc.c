@@ -1694,7 +1694,7 @@ id|wall_to_monotonic.tv_nsec
 op_decrement
 id|jif
 suffix:semicolon
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|i
@@ -1886,7 +1886,7 @@ id|softirq
 )paren
 )paren
 suffix:semicolon
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|i

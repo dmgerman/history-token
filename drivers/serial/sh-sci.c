@@ -3929,6 +3929,16 @@ id|sci_ports
 id|port-&gt;line
 )braket
 suffix:semicolon
+macro_line|#if defined(__H8300S__)
+id|h8300_sci_enable
+c_func
+(paren
+id|port
+comma
+id|sci_enable
+)paren
+suffix:semicolon
+macro_line|#endif
 id|sci_request_irq
 c_func
 (paren
@@ -3951,16 +3961,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#if defined(__H8300S__)
-id|h8300_sci_enable
-c_func
-(paren
-id|port
-comma
-id|sci_enable
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -5911,6 +5911,9 @@ id|flow
 op_assign
 l_char|&squot;n&squot;
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5953,6 +5956,16 @@ op_assign
 id|CONFIG_CPU_CLOCK
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(__H8300S__)
+id|h8300_sci_enable
+c_func
+(paren
+id|port
+comma
+id|sci_enable
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5976,7 +5989,8 @@ op_amp
 id|flow
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|uart_set_options
 c_func
 (paren
@@ -5992,6 +6006,25 @@ id|bits
 comma
 id|flow
 )paren
+suffix:semicolon
+macro_line|#if defined(__H8300H__) || defined(__H8300S__)
+multiline_comment|/* disable rx interrupt */
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
+id|sci_stop_rx
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|variable|serial_console

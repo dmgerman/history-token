@@ -87,6 +87,16 @@ id|debug
 op_assign
 id|G_SERIAL_DEBUG
 suffix:semicolon
+macro_line|#else
+DECL|variable|debug
+r_static
+r_int
+id|debug
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+macro_line|#if G_SERIAL_DEBUG
 DECL|macro|gs_debug
 mdefine_line|#define gs_debug(format, arg...) &bslash;&n;&t;do { if (debug) printk(KERN_DEBUG format, ## arg); } while(0)
 DECL|macro|gs_debug_level

@@ -4648,30 +4648,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* further sanity checks */
-r_if
-c_cond
-(paren
-id|port_paranoia_check
-c_func
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-op_logical_or
-id|serial_paranoia_check
-c_func
-(paren
-id|serial
-comma
-id|__FUNCTION__
-)paren
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* try to send any buffered data on this port, if it is open */
 id|spin_lock
 c_func
@@ -6382,14 +6358,6 @@ id|port-&gt;serial
 op_eq
 l_int|NULL
 op_logical_or
-id|serial_paranoia_check
-c_func
-(paren
-id|port-&gt;serial
-comma
-id|__FUNCTION__
-)paren
-op_logical_or
 (paren
 id|serial_priv
 op_assign
@@ -6627,24 +6595,6 @@ id|flag
 comma
 id|throttled
 suffix:semicolon
-multiline_comment|/* sanity check */
-r_if
-c_cond
-(paren
-id|port_paranoia_check
-c_func
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-)paren
-(brace
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* do not process callbacks on closed ports */
 multiline_comment|/* but do continue the read chain */
 r_if
@@ -7152,14 +7102,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|port_paranoia_check
-c_func
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-op_logical_or
 (paren
 id|priv
 op_assign
@@ -7172,12 +7114,10 @@ id|port
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

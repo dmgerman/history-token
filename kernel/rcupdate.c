@@ -272,7 +272,7 @@ suffix:semicolon
 multiline_comment|/* Can&squot;t change, since spin lock held. */
 id|active
 op_assign
-id|idle_cpu_mask
+id|nohz_cpu_mask
 suffix:semicolon
 id|cpus_complement
 c_func

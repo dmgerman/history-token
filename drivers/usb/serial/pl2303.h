@@ -47,4 +47,8 @@ DECL|macro|SITECOM_VENDOR_ID
 mdefine_line|#define SITECOM_VENDOR_ID&t;0x6189
 DECL|macro|SITECOM_PRODUCT_ID
 mdefine_line|#define SITECOM_PRODUCT_ID&t;0x2068
+DECL|macro|ALCATEL_VENDOR_ID
+mdefine_line|#define ALCATEL_VENDOR_ID&t;0x11f7
+DECL|macro|ALCATEL_PRODUCT_ID
+mdefine_line|#define ALCATEL_PRODUCT_ID&t;0x02df
 eof

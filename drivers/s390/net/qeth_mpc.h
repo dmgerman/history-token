@@ -4,7 +4,13 @@ DECL|macro|__QETH_MPC_H__
 mdefine_line|#define __QETH_MPC_H__
 macro_line|#include &lt;asm/qeth.h&gt;
 DECL|macro|VERSION_QETH_MPC_H
-mdefine_line|#define VERSION_QETH_MPC_H &quot;$Revision: 1.27 $&quot;
+mdefine_line|#define VERSION_QETH_MPC_H &quot;$Revision: 1.34 $&quot;
+r_extern
+r_const
+r_char
+op_star
+id|VERSION_QETH_MPC_C
+suffix:semicolon
 DECL|macro|IPA_PDU_HEADER_SIZE
 mdefine_line|#define IPA_PDU_HEADER_SIZE&t;0x40
 DECL|macro|QETH_IPA_PDU_LEN_TOTAL
@@ -36,6 +42,8 @@ DECL|macro|OSA_ADDR_LEN
 mdefine_line|#define OSA_ADDR_LEN&t;&t;6
 DECL|macro|QETH_TIMEOUT
 mdefine_line|#define QETH_TIMEOUT &t;&t;(10 * HZ)
+DECL|macro|QETH_IPA_TIMEOUT
+mdefine_line|#define QETH_IPA_TIMEOUT &t;(45 * HZ)
 DECL|macro|QETH_IDX_COMMAND_SEQNO
 mdefine_line|#define QETH_IDX_COMMAND_SEQNO &t;-1
 DECL|macro|SR_INFO_LEN
@@ -860,6 +868,59 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|struct|qeth_arp_query_data
+r_struct
+id|qeth_arp_query_data
+(brace
+DECL|member|request_bits
+id|__u16
+id|request_bits
+suffix:semicolon
+DECL|member|reply_bits
+id|__u16
+id|reply_bits
+suffix:semicolon
+DECL|member|no_entries
+id|__u32
+id|no_entries
+suffix:semicolon
+DECL|member|data
+r_char
+id|data
+suffix:semicolon
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* used as parameter for arp_query reply */
+DECL|struct|qeth_arp_query_info
+r_struct
+id|qeth_arp_query_info
+(brace
+DECL|member|udata_len
+id|__u32
+id|udata_len
+suffix:semicolon
+DECL|member|udata_offset
+id|__u32
+id|udata_offset
+suffix:semicolon
+DECL|member|no_entries
+id|__u32
+id|no_entries
+suffix:semicolon
+DECL|member|udata
+r_char
+op_star
+id|udata
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* SETASSPARMS IPA Command: */
 DECL|struct|qeth_ipacmd_setassparms
 r_struct
@@ -880,6 +941,11 @@ DECL|member|add_arp_entry
 r_struct
 id|qeth_arp_cache_entry
 id|add_arp_entry
+suffix:semicolon
+DECL|member|query_arp
+r_struct
+id|qeth_arp_query_data
+id|query_arp
 suffix:semicolon
 DECL|member|ip
 id|__u8
@@ -981,9 +1047,9 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-DECL|struct|qeth_ipacmd_setadpparms
+DECL|struct|qeth_ipacmd_setadpparms_hdr
 r_struct
-id|qeth_ipacmd_setadpparms
+id|qeth_ipacmd_setadpparms_hdr
 (brace
 DECL|member|supp_hw_cmds
 id|__u32
@@ -1009,17 +1075,34 @@ DECL|member|return_code
 id|__u16
 id|return_code
 suffix:semicolon
-DECL|member|frames_used_total
+DECL|member|used_total
 id|__u8
-id|frames_used_total
+id|used_total
 suffix:semicolon
-DECL|member|frame_seq_no
+DECL|member|seq_no
 id|__u8
-id|frame_seq_no
+id|seq_no
 suffix:semicolon
 DECL|member|reserved3
 id|__u32
 id|reserved3
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|struct|qeth_ipacmd_setadpparms
+r_struct
+id|qeth_ipacmd_setadpparms
+(brace
+DECL|member|hdr
+r_struct
+id|qeth_ipacmd_setadpparms_hdr
+id|hdr
 suffix:semicolon
 r_union
 (brace
@@ -1232,104 +1315,18 @@ l_int|0x0008
 comma
 )brace
 suffix:semicolon
-DECL|macro|QETH_QARP_DATA_SIZE
-mdefine_line|#define QETH_QARP_DATA_SIZE 3968
-DECL|struct|qeth_arp_query_data
-r_struct
-id|qeth_arp_query_data
-(brace
-DECL|member|request_bits
-id|__u16
-id|request_bits
-suffix:semicolon
-DECL|member|reply_bits
-id|__u16
-id|reply_bits
-suffix:semicolon
-DECL|member|no_entries
-id|__u32
-id|no_entries
-suffix:semicolon
-DECL|member|data
-r_char
-id|data
-(braket
-id|QETH_QARP_DATA_SIZE
-)braket
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* used as parameter for arp_query reply */
-DECL|struct|qeth_arp_query_info
-r_struct
-id|qeth_arp_query_info
-(brace
-DECL|member|udata_len
-id|__u32
-id|udata_len
-suffix:semicolon
-DECL|member|udata_offset
-id|__u32
-id|udata_offset
-suffix:semicolon
-DECL|member|no_entries
-id|__u32
-id|no_entries
-suffix:semicolon
-DECL|member|udata
-r_char
-op_star
-id|udata
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|IPA_ARP_CMD_LEN
-mdefine_line|#define IPA_ARP_CMD_LEN (IPA_PDU_HEADER_SIZE+sizeof(struct qeth_ipa_arp_cmd))
-DECL|macro|QETH_ARP_CMD_BASE_LEN
-mdefine_line|#define QETH_ARP_CMD_BASE_LEN (sizeof(struct qeth_ipacmd_hdr) + &bslash;&n;&t;&t;&t;       sizeof(struct qeth_ipacmd_setassparms_hdr))
+DECL|macro|QETH_SETASS_BASE_LEN
+mdefine_line|#define QETH_SETASS_BASE_LEN (sizeof(struct qeth_ipacmd_hdr) + &bslash;&n;&t;&t;&t;       sizeof(struct qeth_ipacmd_setassparms_hdr))
 DECL|macro|QETH_IPA_ARP_DATA_POS
-mdefine_line|#define QETH_IPA_ARP_DATA_POS(buffer) (buffer + IPA_PDU_HEADER_SIZE + &bslash;&n;&t;&t;&t;&t;       QETH_ARP_CMD_BASE_LEN)
-DECL|struct|qeth_ipa_arp_cmd
-r_struct
-id|qeth_ipa_arp_cmd
-(brace
-DECL|member|ihdr
-r_struct
-id|qeth_ipacmd_hdr
-id|ihdr
-suffix:semicolon
-DECL|member|shdr
-r_struct
-id|qeth_ipacmd_setassparms_hdr
-id|shdr
-suffix:semicolon
-r_union
-(brace
-DECL|member|query_arp
-r_struct
-id|qeth_arp_query_data
-id|query_arp
-suffix:semicolon
-DECL|member|data
-)brace
-id|data
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
+mdefine_line|#define QETH_IPA_ARP_DATA_POS(buffer) (buffer + IPA_PDU_HEADER_SIZE + &bslash;&n;&t;&t;&t;&t;       QETH_SETASS_BASE_LEN)
+DECL|macro|QETH_SETADP_BASE_LEN
+mdefine_line|#define QETH_SETADP_BASE_LEN (sizeof(struct qeth_ipacmd_hdr) + &bslash;&n;&t;&t;&t;      sizeof(struct qeth_ipacmd_setadpparms_hdr))
+DECL|macro|QETH_SNMP_SETADP_CMDLENGTH
+mdefine_line|#define QETH_SNMP_SETADP_CMDLENGTH 16
+DECL|macro|QETH_ARP_DATA_SIZE
+mdefine_line|#define QETH_ARP_DATA_SIZE 3968
+DECL|macro|QETH_ARP_CMD_LEN
+mdefine_line|#define QETH_ARP_CMD_LEN (QETH_ARP_DATA_SIZE + 8)
 multiline_comment|/* Helper functions */
 DECL|macro|IS_IPA_REPLY
 mdefine_line|#define IS_IPA_REPLY(cmd) (cmd-&gt;hdr.initiator == IPA_CMD_INITIATOR_HOST)

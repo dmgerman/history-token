@@ -175,6 +175,31 @@ l_int|0
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Patch submitted by Alessandro Fracchetti &lt;al.fracchetti@tin.it&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0482
+comma
+l_int|0x0105
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Kyocera&quot;
+comma
+l_string|&quot;Finecam L3&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 multiline_comment|/* Patch submitted by Philipp Friedrich &lt;philipp@void.at&gt; */
 id|UNUSUAL_DEV
 c_func
@@ -923,6 +948,33 @@ op_or
 id|US_FL_MODE_XLATE
 )paren
 comma
+multiline_comment|/* Submitted by Rajesh Kumble Nayak &lt;nayak@obs-nice.fr&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x054c
+comma
+l_int|0x002e
+comma
+l_int|0x0500
+comma
+l_int|0x0500
+comma
+l_string|&quot;Sony&quot;
+comma
+l_string|&quot;Handycam HC-85&quot;
+comma
+id|US_SC_UFI
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
+op_or
+id|US_FL_MODE_XLATE
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -1003,6 +1055,31 @@ c_func
 l_int|0x054c
 comma
 l_int|0x006d
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;Sony&quot;
+comma
+l_string|&quot;PEG Mass Storage&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* Submitted by Mike Alborn &lt;malborn@deandra.homeip.net&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x054c
+comma
+l_int|0x016a
 comma
 l_int|0x0000
 comma
@@ -1419,55 +1496,6 @@ id|US_FL_SINGLE_LUN
 )paren
 comma
 macro_line|#endif
-multiline_comment|/* Following three Minolta cameras reported by Martin Pool&n; * &lt;mbp@sourcefrog.net&gt;.  Originally discovered by Kedar Petankar,&n; * Matthew Geier, Mikael Lofj&quot;ard, Marcel de Boer.&n; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0686
-comma
-l_int|0x4006
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;Minolta&quot;
-comma
-l_string|&quot;DiMAGE 7&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-comma
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0686
-comma
-l_int|0x400f
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;Minolta&quot;
-comma
-l_string|&quot;DiMAGE 7Hi&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-comma
 multiline_comment|/* Submitted by Benny Sjostrand &lt;benny@hostmobility.com&gt; */
 id|UNUSUAL_DEV
 c_func
@@ -2039,6 +2067,8 @@ id|US_PR_CB
 comma
 l_int|NULL
 comma
+id|US_FL_NEED_OVERRIDE
+op_or
 id|US_FL_FIX_INQUIRY
 )paren
 comma
@@ -2231,9 +2261,9 @@ l_string|&quot;IBM&quot;
 comma
 l_string|&quot;IBM USB Memory Key&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma

@@ -99,6 +99,9 @@ DECL|macro|atomic_inc_return
 mdefine_line|#define atomic_inc_return(v) __atomic_add(1, v)
 DECL|macro|atomic64_inc_return
 mdefine_line|#define atomic64_inc_return(v) __atomic64_add(1, v)
+multiline_comment|/*&n; * atomic_inc_and_test - increment and test&n; * @v: pointer of type atomic_t&n; *&n; * Atomically increments @v by 1&n; * and returns true if the result is zero, or false for all&n; * other cases.&n; */
+DECL|macro|atomic_inc_and_test
+mdefine_line|#define atomic_inc_and_test(v) (atomic_inc_return(v) == 0)
 DECL|macro|atomic_sub_and_test
 mdefine_line|#define atomic_sub_and_test(i, v) (__atomic_sub(i, v) == 0)
 DECL|macro|atomic64_sub_and_test
@@ -115,6 +118,10 @@ DECL|macro|atomic_dec
 mdefine_line|#define atomic_dec(v) ((void)__atomic_sub(1, v))
 DECL|macro|atomic64_dec
 mdefine_line|#define atomic64_dec(v) ((void)__atomic64_sub(1, v))
+DECL|macro|atomic_add_negative
+mdefine_line|#define atomic_add_negative(i, v) (__atomic_add(i, v) &lt; 0)
+DECL|macro|atomic64_add_negative
+mdefine_line|#define atomic64_add_negative(i, v) (__atomic64_add(i, v) &lt; 0)
 multiline_comment|/* Atomic operations are already serializing */
 DECL|macro|smp_mb__before_atomic_dec
 mdefine_line|#define smp_mb__before_atomic_dec()&t;barrier()

@@ -1505,7 +1505,7 @@ c_func
 op_amp
 id|fsm-&gt;rq
 comma
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|delay

@@ -3477,6 +3477,8 @@ c_func
 id|rp
 comma
 id|relval
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if

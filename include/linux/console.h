@@ -10,6 +10,9 @@ suffix:semicolon
 r_struct
 id|console_font_op
 suffix:semicolon
+r_struct
+id|module
+suffix:semicolon
 multiline_comment|/*&n; * this is what the terminal answers to a ESC-Z or csi0c query.&n; */
 DECL|macro|VT100ID
 mdefine_line|#define VT100ID &quot;&bslash;033[?1;2c&quot;
@@ -19,6 +22,12 @@ DECL|struct|consw
 r_struct
 id|consw
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|con_startup
 r_const
 r_char
@@ -412,7 +421,7 @@ id|consw
 id|prom_con
 suffix:semicolon
 multiline_comment|/* SPARC PROM console */
-r_void
+r_int
 id|take_over_console
 c_func
 (paren

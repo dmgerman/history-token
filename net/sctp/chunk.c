@@ -531,7 +531,7 @@ id|msg-&gt;expires_at
 op_assign
 id|jiffies
 op_plus
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|sinfo-&gt;sinfo_timetolive

@@ -1290,7 +1290,16 @@ op_star
 )paren
 id|loc
 op_assign
+(paren
 id|val
+op_plus
+(paren
+id|Elf_Addr
+)paren
+id|me-&gt;module_core
+op_minus
+id|loc
+)paren
 op_rshift
 l_int|1
 suffix:semicolon

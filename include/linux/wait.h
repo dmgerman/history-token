@@ -40,9 +40,12 @@ id|mode
 comma
 r_int
 id|sync
+comma
+r_void
+op_star
+id|key
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|default_wake_function
 c_func
@@ -56,6 +59,10 @@ id|mode
 comma
 r_int
 id|sync
+comma
+r_void
+op_star
+id|key
 )paren
 suffix:semicolon
 DECL|struct|__wait_queue
@@ -357,7 +364,6 @@ id|old-&gt;task_list
 )paren
 suffix:semicolon
 )brace
-r_extern
 r_void
 id|FASTCALL
 c_func
@@ -375,6 +381,10 @@ id|mode
 comma
 r_int
 id|nr
+comma
+r_void
+op_star
+id|key
 )paren
 )paren
 suffix:semicolon
@@ -418,19 +428,19 @@ id|nr
 )paren
 suffix:semicolon
 DECL|macro|wake_up
-mdefine_line|#define wake_up(x)&t;&t;&t;__wake_up((x),TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, 1)
+mdefine_line|#define wake_up(x)&t;&t;&t;__wake_up(x, TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, 1, NULL)
 DECL|macro|wake_up_nr
-mdefine_line|#define wake_up_nr(x, nr)&t;&t;__wake_up((x),TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, nr)
+mdefine_line|#define wake_up_nr(x, nr)&t;&t;__wake_up(x, TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, nr, NULL)
 DECL|macro|wake_up_all
-mdefine_line|#define wake_up_all(x)&t;&t;&t;__wake_up((x),TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, 0)
+mdefine_line|#define wake_up_all(x)&t;&t;&t;__wake_up(x, TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, 0, NULL)
 DECL|macro|wake_up_all_sync
 mdefine_line|#define wake_up_all_sync(x)&t;&t;&t;__wake_up_sync((x),TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, 0)
 DECL|macro|wake_up_interruptible
-mdefine_line|#define wake_up_interruptible(x)&t;__wake_up((x),TASK_INTERRUPTIBLE, 1)
+mdefine_line|#define wake_up_interruptible(x)&t;__wake_up(x, TASK_INTERRUPTIBLE, 1, NULL)
 DECL|macro|wake_up_interruptible_nr
-mdefine_line|#define wake_up_interruptible_nr(x, nr)&t;__wake_up((x),TASK_INTERRUPTIBLE, nr)
+mdefine_line|#define wake_up_interruptible_nr(x, nr)&t;__wake_up(x, TASK_INTERRUPTIBLE, nr, NULL)
 DECL|macro|wake_up_interruptible_all
-mdefine_line|#define wake_up_interruptible_all(x)&t;__wake_up((x),TASK_INTERRUPTIBLE, 0)
+mdefine_line|#define wake_up_interruptible_all(x)&t;__wake_up(x, TASK_INTERRUPTIBLE, 0, NULL)
 DECL|macro|wake_up_locked
 mdefine_line|#define&t;wake_up_locked(x)&t;&t;__wake_up_locked((x), TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE)
 DECL|macro|wake_up_interruptible_sync
@@ -639,6 +649,10 @@ id|mode
 comma
 r_int
 id|sync
+comma
+r_void
+op_star
+id|key
 )paren
 suffix:semicolon
 DECL|macro|DEFINE_WAIT

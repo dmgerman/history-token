@@ -457,7 +457,7 @@ id|page
 r_return
 id|pte_chain
 suffix:semicolon
-id|rmap_lock
+id|page_map_lock
 c_func
 (paren
 id|page
@@ -639,7 +639,7 @@ op_decrement
 suffix:semicolon
 id|out
 suffix:colon
-id|rmap_unlock
+id|page_map_unlock
 c_func
 (paren
 id|page
@@ -702,7 +702,7 @@ id|page
 )paren
 r_return
 suffix:semicolon
-id|rmap_lock
+id|page_map_lock
 c_func
 (paren
 id|page
@@ -957,7 +957,7 @@ suffix:semicolon
 )brace
 id|out_unlock
 suffix:colon
-id|rmap_unlock
+id|page_map_unlock
 c_func
 (paren
 id|page

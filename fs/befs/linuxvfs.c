@@ -1544,12 +1544,12 @@ id|befs_ino-&gt;i_inode_num.len
 suffix:semicolon
 id|bh
 op_assign
-id|befs_bread_iaddr
+id|befs_bread
 c_func
 (paren
 id|sb
 comma
-id|befs_ino-&gt;i_inode_num
+id|inode-&gt;i_ino
 )paren
 suffix:semicolon
 r_if
@@ -1755,7 +1755,7 @@ id|inode-&gt;i_mode
 op_logical_and
 op_logical_neg
 (paren
-id|inode-&gt;i_flags
+id|befs_ino-&gt;i_flags
 op_amp
 id|BEFS_LONG_SYMLINK
 )paren
@@ -3694,6 +3694,35 @@ id|BEFS_OK
 r_goto
 id|unaquire_priv_sbp
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|befs_sb-&gt;num_blocks
+OG
+op_complement
+(paren
+(paren
+id|sector_t
+)paren
+l_int|0
+)paren
+)paren
+(brace
+id|befs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;blocks count: %Lu &quot;
+l_string|&quot;is larger than the host can use&quot;
+comma
+id|befs_sb-&gt;num_blocks
+)paren
+suffix:semicolon
+r_goto
+id|unaquire_priv_sbp
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * set up enough so that it can read an inode&n;&t; * Fill in kernel superblock fields from private sb&n;&t; */
 id|sb-&gt;s_magic
 op_assign

@@ -23,8 +23,6 @@ id|clock_division_ratio
 op_assign
 id|WTCSR_CKS_4096
 suffix:semicolon
-DECL|macro|msecs_to_jiffies
-mdefine_line|#define msecs_to_jiffies(msecs)&t;(jiffies + (HZ * msecs + 9999) / 10000)
 DECL|macro|next_ping_period
 mdefine_line|#define next_ping_period(cks)&t;msecs_to_jiffies(cks - 4)
 DECL|variable|shwdt_is_open

@@ -4986,7 +4986,7 @@ id|desc
 (brace
 id|desc-&gt;addr
 op_assign
-l_int|0x0badbadbadbadbad
+l_int|0x0badbadbadbadbadull
 suffix:semicolon
 id|desc-&gt;status
 op_and_assign

@@ -3628,6 +3628,11 @@ id|newport_con
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|con_startup
 op_assign
 id|newport_startup
@@ -3719,6 +3724,7 @@ c_func
 r_void
 )paren
 (brace
+r_return
 id|take_over_console
 c_func
 (paren
@@ -3733,9 +3739,6 @@ l_int|1
 comma
 l_int|1
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|newport_console_exit

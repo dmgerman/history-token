@@ -1982,7 +1982,7 @@ c_func
 (paren
 id|self
 comma
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -2708,7 +2708,7 @@ c_func
 (paren
 id|self
 comma
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|20
@@ -4799,7 +4799,7 @@ c_func
 (paren
 id|self
 comma
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|300

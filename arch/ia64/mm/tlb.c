@@ -663,7 +663,7 @@ id|flush_tlb_range
 )paren
 suffix:semicolon
 r_void
-id|__init
+id|__devinit
 DECL|function|ia64_tlb_init
 id|ia64_tlb_init
 (paren

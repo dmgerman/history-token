@@ -121,14 +121,18 @@ DECL|macro|TASK_SIZE
 macro_line|# define TASK_SIZE&t;&t;(0x80000000UL)
 DECL|macro|TASK_UNMAPPED_BASE
 macro_line|# define TASK_UNMAPPED_BASE&t;(TASK_SIZE / 2)
+DECL|macro|DEFAULT_TASK_SIZE
+macro_line|# define DEFAULT_TASK_SIZE&t;(0x80000000UL)
 macro_line|#else /* __s390x__ */
 DECL|macro|TASK_SIZE
-macro_line|# define TASK_SIZE&t;&t;(0x40000000000UL)
-DECL|macro|TASK31_SIZE
-macro_line|# define TASK31_SIZE&t;&t;(0x80000000UL)
+macro_line|# define TASK_SIZE&t;&t;(test_thread_flag(TIF_31BIT) ? &bslash;&n;&t;&t;&t;&t;&t;(0x80000000UL) : (0x40000000000UL))
 DECL|macro|TASK_UNMAPPED_BASE
-macro_line|# define TASK_UNMAPPED_BASE&t;(test_thread_flag(TIF_31BIT) ? &bslash;&n;&t;&t;&t;&t;&t;(TASK31_SIZE / 2) : (TASK_SIZE / 2))
+macro_line|# define TASK_UNMAPPED_BASE&t;(TASK_SIZE / 2)
+DECL|macro|DEFAULT_TASK_SIZE
+macro_line|# define DEFAULT_TASK_SIZE&t;(0x40000000000UL)
 macro_line|#endif /* __s390x__ */
+DECL|macro|MM_VM_SIZE
+mdefine_line|#define MM_VM_SIZE(mm)&t;&t;DEFAULT_TASK_SIZE
 r_typedef
 r_struct
 (brace

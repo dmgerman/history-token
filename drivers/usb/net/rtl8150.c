@@ -363,6 +363,7 @@ id|rtl8150
 id|rtl8150_t
 suffix:semicolon
 DECL|variable|multicast_filter_limit
+r_static
 r_int
 r_int
 id|multicast_filter_limit
@@ -2225,6 +2226,7 @@ id|dev-&gt;netdev
 suffix:semicolon
 )brace
 DECL|function|intr_callback
+r_static
 r_void
 id|intr_callback
 c_func
@@ -4557,6 +4559,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|usb_rtl8150_init
+r_static
 r_int
 id|__init
 id|usb_rtl8150_init
@@ -4583,6 +4586,7 @@ id|rtl8150_driver
 suffix:semicolon
 )brace
 DECL|function|usb_rtl8150_exit
+r_static
 r_void
 id|__exit
 id|usb_rtl8150_exit

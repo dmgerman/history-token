@@ -3170,6 +3170,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|variable|wacom_features
+r_static
 r_struct
 id|wacom_features
 id|wacom_features
@@ -3632,6 +3633,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|wacom_ids
+r_static
 r_struct
 id|usb_device_id
 id|wacom_ids

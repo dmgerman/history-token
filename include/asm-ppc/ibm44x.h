@@ -4,44 +4,6 @@ macro_line|#ifndef __ASM_IBM44x_H__
 DECL|macro|__ASM_IBM44x_H__
 mdefine_line|#define __ASM_IBM44x_H__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/*&n; * Data structure defining board information maintained by the boot&n; * ROM on IBM&squot;s &quot;Ebony&quot; evaluation board. An effort has been made to&n; * keep the field names consistent with the 8xx &squot;bd_t&squot; board info&n; * structures.&n; *&n; * Ebony firmware stores MAC addresses in the F/W VPD area. The&n; * firmware must store the other dynamic values in NVRAM like on&n; * the previous 40x systems so they  should be accessible if we&n; * really want them.&n; */
-DECL|struct|board_info
-r_typedef
-r_struct
-id|board_info
-(brace
-DECL|member|bi_enetaddr
-r_int
-r_char
-id|bi_enetaddr
-(braket
-l_int|2
-)braket
-(braket
-l_int|6
-)braket
-suffix:semicolon
-multiline_comment|/* EMAC addresses */
-DECL|member|bi_opb_busfreq
-r_int
-r_int
-id|bi_opb_busfreq
-suffix:semicolon
-multiline_comment|/* OPB clock in Hz */
-DECL|member|bi_iic_fast
-r_int
-id|bi_iic_fast
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* Use fast i2c mode */
-DECL|typedef|bd_t
-)brace
-id|bd_t
-suffix:semicolon
-macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#ifndef NR_BOARD_IRQS
 DECL|macro|NR_BOARD_IRQS
 mdefine_line|#define NR_BOARD_IRQS 0
@@ -89,6 +51,32 @@ DECL|macro|SPRN_CPC0_GPIO
 mdefine_line|#define SPRN_CPC0_GPIO&t;&t;0xe5/BEARLRL
 multiline_comment|/*&n; * DCRN definitions&n; */
 macro_line|#ifdef CONFIG_440GX
+multiline_comment|/* CPRs */
+DECL|macro|DCRN_CPR_CONFIG_ADDR
+mdefine_line|#define DCRN_CPR_CONFIG_ADDR&t;0xc
+DECL|macro|DCRN_CPR_CONFIG_DATA
+mdefine_line|#define DCRN_CPR_CONFIG_DATA&t;0xd
+DECL|macro|DCRN_CPR_CLKUPD
+mdefine_line|#define DCRN_CPR_CLKUPD&t;&t;0x0020
+DECL|macro|DCRN_CPR_PLLC
+mdefine_line|#define DCRN_CPR_PLLC&t;&t;0x0040
+DECL|macro|DCRN_CPR_PLLD
+mdefine_line|#define DCRN_CPR_PLLD&t;&t;0x0060
+DECL|macro|DCRN_CPR_PRIMAD
+mdefine_line|#define DCRN_CPR_PRIMAD&t;&t;0x0080
+DECL|macro|DCRN_CPR_PRIMBD
+mdefine_line|#define DCRN_CPR_PRIMBD&t;&t;0x00a0
+DECL|macro|DCRN_CPR_OPBD
+mdefine_line|#define DCRN_CPR_OPBD&t;&t;0x00c0
+DECL|macro|DCRN_CPR_PERD
+mdefine_line|#define DCRN_CPR_PERD&t;&t;0x00e0
+DECL|macro|DCRN_CPR_MALD
+mdefine_line|#define DCRN_CPR_MALD&t;&t;0x0100
+multiline_comment|/* CPRs read/write helper macros */
+DECL|macro|CPR_READ
+mdefine_line|#define CPR_READ(offset) ({&bslash;&n;&t;mtdcr(DCRN_CPR_CONFIG_ADDR, offset); &bslash;&n;&t;mfdcr(DCRN_CPR_CONFIG_DATA);})
+DECL|macro|CPR_WRITE
+mdefine_line|#define CPR_WRITE(offset, data) ({&bslash;&n;&t;mtdcr(DCRN_CPR_CONFIG_ADDR, offset); &bslash;&n;&t;mtdcr(DCRN_CPR_CONFIG_DATA, data);})
 multiline_comment|/* SDRs */
 DECL|macro|DCRN_SDR_CONFIG_ADDR
 mdefine_line|#define DCRN_SDR_CONFIG_ADDR &t;0xe
@@ -98,6 +86,12 @@ DECL|macro|DCRN_SDR_PFC0
 mdefine_line|#define DCRN_SDR_PFC0&t;&t;0x4100
 DECL|macro|DCRN_SDR_PFC1
 mdefine_line|#define DCRN_SDR_PFC1&t;&t;0x4101
+DECL|macro|DCRN_SDR_PFC1_EPS
+mdefine_line|#define DCRN_SDR_PFC1_EPS&t;0x1c000000
+DECL|macro|DCRN_SDR_PFC1_EPS_SHIFT
+mdefine_line|#define DCRN_SDR_PFC1_EPS_SHIFT&t;26
+DECL|macro|DCRN_SDR_PFC1_RMII
+mdefine_line|#define DCRN_SDR_PFC1_RMII&t;0x02000000
 DECL|macro|DCRN_SDR_MFR
 mdefine_line|#define DCRN_SDR_MFR&t;&t;0x4300
 DECL|macro|DCRN_SDR_MFR_TAH0
@@ -148,6 +142,10 @@ DECL|macro|DCRN_SDR_MFR_E3RXFL
 mdefine_line|#define DCRN_SDR_MFR_E3RXFL&t;0x00000002
 DECL|macro|DCRN_SDR_MFR_E3RXFH
 mdefine_line|#define DCRN_SDR_MFR_E3RXFH&t;0x00000001
+DECL|macro|DCRN_SDR_UART0
+mdefine_line|#define DCRN_SDR_UART0&t;&t;0x0120
+DECL|macro|DCRN_SDR_UART1
+mdefine_line|#define DCRN_SDR_UART1&t;&t;0x0121
 multiline_comment|/* SDR read/write helper macros */
 DECL|macro|SDR_READ
 mdefine_line|#define SDR_READ(offset) ({&bslash;&n;&t;mtdcr(DCRN_SDR_CONFIG_ADDR, offset); &bslash;&n;&t;mfdcr(DCRN_SDR_CONFIG_DATA);})
@@ -174,10 +172,18 @@ DECL|macro|DCRN_UIC0_BASE
 mdefine_line|#define DCRN_UIC0_BASE&t;0xc0
 DECL|macro|DCRN_UIC1_BASE
 mdefine_line|#define DCRN_UIC1_BASE&t;0xd0
+DECL|macro|DCRN_UIC2_BASE
+mdefine_line|#define DCRN_UIC2_BASE&t;0x210
+DECL|macro|DCRN_UICB_BASE
+mdefine_line|#define DCRN_UICB_BASE&t;0x200
 DECL|macro|UIC0
 mdefine_line|#define UIC0&t;&t;DCRN_UIC0_BASE
 DECL|macro|UIC1
 mdefine_line|#define UIC1&t;&t;DCRN_UIC1_BASE
+DECL|macro|UIC2
+mdefine_line|#define UIC2&t;&t;DCRN_UIC2_BASE
+DECL|macro|UICB
+mdefine_line|#define UICB&t;&t;DCRN_UICB_BASE
 DECL|macro|DCRN_UIC_SR
 mdefine_line|#define DCRN_UIC_SR(base)       (base + 0x0)
 DECL|macro|DCRN_UIC_ER
@@ -195,9 +201,15 @@ mdefine_line|#define DCRN_UIC_VR(base)       (base + 0x7)
 DECL|macro|DCRN_UIC_VCR
 mdefine_line|#define DCRN_UIC_VCR(base)      (base + 0x8)
 DECL|macro|UIC0_UIC1NC
-mdefine_line|#define UIC0_UIC1NC      30&t;/* UIC1 non-critical interrupt */
+mdefine_line|#define UIC0_UIC1NC&t;&t;30&t;/* UIC1 non-critical interrupt */
 DECL|macro|UIC0_UIC1CR
-mdefine_line|#define UIC0_UIC1CR      31&t;/* UIC1 critical interrupt */
+mdefine_line|#define UIC0_UIC1CR      &t;31&t;/* UIC1 critical interrupt */
+DECL|macro|UICB_UIC0NC
+mdefine_line|#define UICB_UIC0NC&t;&t;0x40000000
+DECL|macro|UICB_UIC1NC
+mdefine_line|#define UICB_UIC1NC&t;&t;0x10000000
+DECL|macro|UICB_UIC2NC
+mdefine_line|#define UICB_UIC2NC&t;&t;0x04000000
 multiline_comment|/* 440GP MAL DCRs */
 DECL|macro|DCRN_MALCR
 mdefine_line|#define DCRN_MALCR(base)&t;&t;(base + 0x0)&t;/* Configuration */
@@ -504,6 +516,148 @@ DECL|macro|PPC44x_MEM_SIZE_256M
 mdefine_line|#define PPC44x_MEM_SIZE_256M&t;&t;0x10000000
 DECL|macro|PPC44x_MEM_SIZE_512M
 mdefine_line|#define PPC44x_MEM_SIZE_512M&t;&t;0x20000000
+macro_line|#ifdef CONFIG_440GX
+multiline_comment|/* Internal SRAM Controller */
+DECL|macro|DCRN_SRAM0_SB0CR
+mdefine_line|#define DCRN_SRAM0_SB0CR&t;0x020
+DECL|macro|DCRN_SRAM0_SB1CR
+mdefine_line|#define DCRN_SRAM0_SB1CR&t;0x021
+DECL|macro|DCRN_SRAM0_SB2CR
+mdefine_line|#define DCRN_SRAM0_SB2CR&t;0x022
+DECL|macro|DCRN_SRAM0_SB3CR
+mdefine_line|#define DCRN_SRAM0_SB3CR&t;0x023
+DECL|macro|SRAM_SBCR_BAS0
+mdefine_line|#define  SRAM_SBCR_BAS0&t;&t;0x80000000
+DECL|macro|SRAM_SBCR_BAS1
+mdefine_line|#define  SRAM_SBCR_BAS1&t;&t;0x80010000
+DECL|macro|SRAM_SBCR_BAS2
+mdefine_line|#define  SRAM_SBCR_BAS2&t;&t;0x80020000
+DECL|macro|SRAM_SBCR_BAS3
+mdefine_line|#define  SRAM_SBCR_BAS3&t;&t;0x80030000
+DECL|macro|SRAM_SBCR_BU_MASK
+mdefine_line|#define  SRAM_SBCR_BU_MASK&t;0x00000180
+DECL|macro|SRAM_SBCR_BS_64KB
+mdefine_line|#define  SRAM_SBCR_BS_64KB&t;0x00000800
+DECL|macro|SRAM_SBCR_BU_RO
+mdefine_line|#define  SRAM_SBCR_BU_RO&t;0x00000080
+DECL|macro|SRAM_SBCR_BU_RW
+mdefine_line|#define  SRAM_SBCR_BU_RW&t;0x00000180
+DECL|macro|DCRN_SRAM0_BEAR
+mdefine_line|#define DCRN_SRAM0_BEAR&t;&t;0x024
+DECL|macro|DCRN_SRAM0_BESR0
+mdefine_line|#define DCRN_SRAM0_BESR0&t;0x025
+DECL|macro|DCRN_SRAM0_BESR1
+mdefine_line|#define DCRN_SRAM0_BESR1&t;0x026
+DECL|macro|DCRN_SRAM0_PMEG
+mdefine_line|#define DCRN_SRAM0_PMEG&t;&t;0x027
+DECL|macro|DCRN_SRAM0_CID
+mdefine_line|#define DCRN_SRAM0_CID&t;&t;0x028
+DECL|macro|DCRN_SRAM0_REVID
+mdefine_line|#define DCRN_SRAM0_REVID&t;0x029
+DECL|macro|DCRN_SRAM0_DPC
+mdefine_line|#define DCRN_SRAM0_DPC&t;&t;0x02a
+DECL|macro|SRAM_DPC_ENABLE
+mdefine_line|#define  SRAM_DPC_ENABLE&t;0x80000000
+multiline_comment|/* L2 Cache Controller */
+DECL|macro|DCRN_L2C0_CFG
+mdefine_line|#define DCRN_L2C0_CFG&t;&t;0x030
+DECL|macro|L2C_CFG_L2M
+mdefine_line|#define  L2C_CFG_L2M&t;&t;0x80000000
+DECL|macro|L2C_CFG_ICU
+mdefine_line|#define  L2C_CFG_ICU&t;&t;0x40000000
+DECL|macro|L2C_CFG_DCU
+mdefine_line|#define  L2C_CFG_DCU&t;&t;0x20000000
+DECL|macro|L2C_CFG_DCW_MASK
+mdefine_line|#define  L2C_CFG_DCW_MASK&t;0x1e000000
+DECL|macro|L2C_CFG_TPC
+mdefine_line|#define  L2C_CFG_TPC&t;&t;0x01000000
+DECL|macro|L2C_CFG_CPC
+mdefine_line|#define  L2C_CFG_CPC&t;&t;0x00800000
+DECL|macro|L2C_CFG_FRAN
+mdefine_line|#define  L2C_CFG_FRAN&t;&t;0x00200000
+DECL|macro|L2C_CFG_SS_MASK
+mdefine_line|#define  L2C_CFG_SS_MASK&t;0x00180000
+DECL|macro|L2C_CFG_SS_256
+mdefine_line|#define  L2C_CFG_SS_256&t;&t;0x00000000
+DECL|macro|L2C_CFG_CPIM
+mdefine_line|#define  L2C_CFG_CPIM&t;&t;0x00040000
+DECL|macro|L2C_CFG_TPIM
+mdefine_line|#define  L2C_CFG_TPIM&t;&t;0x00020000
+DECL|macro|L2C_CFG_LIM
+mdefine_line|#define  L2C_CFG_LIM&t;&t;0x00010000
+DECL|macro|L2C_CFG_PMUX_MASK
+mdefine_line|#define  L2C_CFG_PMUX_MASK&t;0x00007000
+DECL|macro|L2C_CFG_PMUX_SNP
+mdefine_line|#define  L2C_CFG_PMUX_SNP&t;0x00000000
+DECL|macro|L2C_CFG_PMUX_IF
+mdefine_line|#define  L2C_CFG_PMUX_IF&t;0x00001000
+DECL|macro|L2C_CFG_PMUX_DF
+mdefine_line|#define  L2C_CFG_PMUX_DF&t;0x00002000
+DECL|macro|L2C_CFG_PMUX_DS
+mdefine_line|#define  L2C_CFG_PMUX_DS&t;0x00003000
+DECL|macro|L2C_CFG_PMIM
+mdefine_line|#define  L2C_CFG_PMIM&t;&t;0x00000800
+DECL|macro|L2C_CFG_TPEI
+mdefine_line|#define  L2C_CFG_TPEI&t;&t;0x00000400
+DECL|macro|L2C_CFG_CPEI
+mdefine_line|#define  L2C_CFG_CPEI&t;&t;0x00000200
+DECL|macro|L2C_CFG_NAM
+mdefine_line|#define  L2C_CFG_NAM&t;&t;0x00000100
+DECL|macro|L2C_CFG_SMCM
+mdefine_line|#define  L2C_CFG_SMCM&t;&t;0x00000080
+DECL|macro|L2C_CFG_NBRM
+mdefine_line|#define  L2C_CFG_NBRM&t;&t;0x00000040
+DECL|macro|DCRN_L2C0_CMD
+mdefine_line|#define DCRN_L2C0_CMD&t;&t;0x031
+DECL|macro|L2C_CMD_CLR
+mdefine_line|#define  L2C_CMD_CLR&t;&t;0x80000000
+DECL|macro|L2C_CMD_DIAG
+mdefine_line|#define  L2C_CMD_DIAG&t;&t;0x40000000
+DECL|macro|L2C_CMD_INV
+mdefine_line|#define  L2C_CMD_INV&t;&t;0x20000000
+DECL|macro|L2C_CMD_CCP
+mdefine_line|#define  L2C_CMD_CCP&t;&t;0x10000000
+DECL|macro|L2C_CMD_CTE
+mdefine_line|#define  L2C_CMD_CTE&t;&t;0x08000000
+DECL|macro|L2C_CMD_STRC
+mdefine_line|#define  L2C_CMD_STRC&t;&t;0x04000000
+DECL|macro|L2C_CMD_STPC
+mdefine_line|#define  L2C_CMD_STPC&t;&t;0x02000000
+DECL|macro|L2C_CMD_RPMC
+mdefine_line|#define  L2C_CMD_RPMC&t;&t;0x01000000
+DECL|macro|L2C_CMD_HCC
+mdefine_line|#define  L2C_CMD_HCC&t;&t;0x00800000
+DECL|macro|DCRN_L2C0_ADDR
+mdefine_line|#define DCRN_L2C0_ADDR&t;&t;0x032
+DECL|macro|DCRN_L2C0_DATA
+mdefine_line|#define DCRN_L2C0_DATA&t;&t;0x033
+DECL|macro|DCRN_L2C0_SR
+mdefine_line|#define DCRN_L2C0_SR&t;&t;0x034
+DECL|macro|L2C_SR_CC
+mdefine_line|#define  L2C_SR_CC&t;&t;0x80000000
+DECL|macro|L2C_SR_CPE
+mdefine_line|#define  L2C_SR_CPE&t;&t;0x40000000
+DECL|macro|L2C_SR_TPE
+mdefine_line|#define  L2C_SR_TPE&t;&t;0x20000000
+DECL|macro|L2C_SR_LRU
+mdefine_line|#define  L2C_SR_LRU&t;&t;0x10000000
+DECL|macro|L2C_SR_PCS
+mdefine_line|#define  L2C_SR_PCS&t;&t;0x08000000
+DECL|macro|DCRN_L2C0_REVID
+mdefine_line|#define DCRN_L2C0_REVID&t;&t;0x035
+DECL|macro|DCRN_L2C0_SNP0
+mdefine_line|#define DCRN_L2C0_SNP0&t;&t;0x036
+DECL|macro|DCRN_L2C0_SNP1
+mdefine_line|#define DCRN_L2C0_SNP1&t;&t;0x037
+DECL|macro|L2C_SNP_BA_MASK
+mdefine_line|#define  L2C_SNP_BA_MASK&t;0xffff0000
+DECL|macro|L2C_SNP_SSR_MASK
+mdefine_line|#define  L2C_SNP_SSR_MASK&t;0x0000f000
+DECL|macro|L2C_SNP_SSR_32G
+mdefine_line|#define  L2C_SNP_SSR_32G&t;0x0000f000
+DECL|macro|L2C_SNP_ESR
+mdefine_line|#define  L2C_SNP_ESR&t;&t;0x00000800
+macro_line|#endif /* CONFIG_440GX */
 multiline_comment|/*&n; * PCI-X definitions&n; */
 DECL|macro|PCIX0_REG_BASE
 mdefine_line|#define PCIX0_REG_BASE&t;&t;0x20ec80000ULL
@@ -685,8 +839,13 @@ DECL|macro|IIC_CLOCK
 mdefine_line|#define IIC_CLOCK&t;&t;50
 DECL|macro|NR_UICS
 macro_line|#undef NR_UICS
+macro_line|#ifdef CONFIG_440GX
+DECL|macro|NR_UICS
+mdefine_line|#define NR_UICS 3
+macro_line|#else
 DECL|macro|NR_UICS
 mdefine_line|#define NR_UICS 2
+macro_line|#endif
 DECL|macro|UIC_CASCADE_MASK
 mdefine_line|#define UIC_CASCADE_MASK&t;0x0003&t;&t;/* bits 30 &amp; 31 */
 DECL|macro|BD_EMAC_ADDR

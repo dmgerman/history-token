@@ -2605,9 +2605,23 @@ suffix:semicolon
 multiline_comment|/* the dirent, if it exists, now points to a different vnode */
 id|not_found
 suffix:colon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_lock
+)paren
+suffix:semicolon
 id|dentry-&gt;d_flags
 op_or_assign
 id|DCACHE_NFSFS_RENAMED
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_lock
+)paren
 suffix:semicolon
 id|out_bad
 suffix:colon

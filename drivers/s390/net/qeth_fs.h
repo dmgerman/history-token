@@ -2,6 +2,20 @@ multiline_comment|/*&n; * linux/drivers/s390/net/qeth_fs.h&n; *&n; * Linux on zS
 macro_line|#ifndef __QETH_FS_H__
 DECL|macro|__QETH_FS_H__
 mdefine_line|#define __QETH_FS_H__
+DECL|macro|VERSION_QETH_FS_H
+mdefine_line|#define VERSION_QETH_FS_H &quot;$Revision: 1.8 $&quot;
+r_extern
+r_const
+r_char
+op_star
+id|VERSION_QETH_PROC_C
+suffix:semicolon
+r_extern
+r_const
+r_char
+op_star
+id|VERSION_QETH_SYS_C
+suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 r_extern
 r_int

@@ -60,6 +60,8 @@ DECL|macro|US_FL_SINGLE_LUN
 mdefine_line|#define US_FL_SINGLE_LUN      0x00000001 /* allow access to only LUN 0&t;    */
 DECL|macro|US_FL_MODE_XLATE
 mdefine_line|#define US_FL_MODE_XLATE      0          /* [no longer used]                */
+DECL|macro|US_FL_NEED_OVERRIDE
+mdefine_line|#define US_FL_NEED_OVERRIDE   0x00000004 /* unusual_devs entry is necessary */
 DECL|macro|US_FL_IGNORE_SER
 mdefine_line|#define US_FL_IGNORE_SER      0&t;&t; /* [no longer used]&t;&t;    */
 DECL|macro|US_FL_SCM_MULT_TARG
@@ -77,8 +79,10 @@ DECL|macro|US_FLIDX_ABORTING
 mdefine_line|#define US_FLIDX_ABORTING&t;20  /* 0x00100000  abort is in progress   */
 DECL|macro|US_FLIDX_DISCONNECTING
 mdefine_line|#define US_FLIDX_DISCONNECTING&t;21  /* 0x00200000  disconnect in progress */
-DECL|macro|DONT_SUBMIT
-mdefine_line|#define DONT_SUBMIT&t;((1UL &lt;&lt; US_FLIDX_ABORTING) | &bslash;&n;&t;&t;&t; (1UL &lt;&lt; US_FLIDX_DISCONNECTING))
+DECL|macro|ABORTING_OR_DISCONNECTING
+mdefine_line|#define ABORTING_OR_DISCONNECTING&t;((1UL &lt;&lt; US_FLIDX_ABORTING) | &bslash;&n;&t;&t;&t;&t;&t; (1UL &lt;&lt; US_FLIDX_DISCONNECTING))
+DECL|macro|US_FLIDX_RESETTING
+mdefine_line|#define US_FLIDX_RESETTING&t;22  /* 0x00400000  device reset in progress */
 multiline_comment|/* processing state machine states */
 DECL|macro|US_STATE_IDLE
 mdefine_line|#define US_STATE_IDLE&t;&t;1

@@ -6,16 +6,10 @@ macro_line|#include &quot;befs_fs_types.h&quot;
 multiline_comment|/* used in debug.c */
 DECL|macro|BEFS_VERSION
 mdefine_line|#define BEFS_VERSION &quot;0.9.3&quot;
-multiline_comment|/* Sector_t makes this sillyness obsolete */
 DECL|typedef|befs_blocknr_t
 r_typedef
 id|u64
 id|befs_blocknr_t
-suffix:semicolon
-DECL|typedef|vfs_blocknr_t
-r_typedef
-id|u32
-id|vfs_blocknr_t
 suffix:semicolon
 multiline_comment|/*&n; * BeFS in memory structures&n; */
 DECL|struct|befs_mount_options

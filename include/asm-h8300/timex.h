@@ -2,13 +2,8 @@ multiline_comment|/*&n; * linux/include/asm-h8300/timex.h&n; *&n; * H8/300 archi
 macro_line|#ifndef _ASM_H8300_TIMEX_H
 DECL|macro|_ASM_H8300_TIMEX_H
 mdefine_line|#define _ASM_H8300_TIMEX_H
-DECL|macro|H8300_TIMER_DEFINE
-mdefine_line|#define H8300_TIMER_DEFINE
-macro_line|#include &lt;asm/machine-depend.h&gt;
-DECL|macro|H8300_TIMER_DEFINE
-macro_line|#undef  H8300_TIMER_DEFINE
 DECL|macro|CLOCK_TICK_RATE
-mdefine_line|#define CLOCK_TICK_RATE H8300_TIMER_FREQ
+mdefine_line|#define CLOCK_TICK_RATE CONFIG_CPU_CLOCK*1000/8192 /* Timer input freq. */
 DECL|macro|CLOCK_TICK_FACTOR
 mdefine_line|#define CLOCK_TICK_FACTOR&t;20&t;/* Factor of both 1000000 and CLOCK_TICK_RATE */
 DECL|macro|FINETUNE

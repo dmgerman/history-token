@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.139 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.141 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -3051,7 +3051,7 @@ id|device
 comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;device busy, retry later&quot;
+l_string|&quot;start_IO: device busy, retry later&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3069,8 +3069,10 @@ id|device
 comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;request timeout - terminated&quot;
+l_string|&quot;start_IO: request timeout, retry later&quot;
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 op_minus
@@ -3080,18 +3082,16 @@ r_case
 op_minus
 id|EIO
 suffix:colon
-id|cqr-&gt;status
-op_assign
-id|DASD_CQR_FAILED
-suffix:semicolon
-id|cqr-&gt;stopclk
-op_assign
-id|cqr-&gt;startclk
-suffix:semicolon
-id|dasd_schedule_bh
+id|DBF_DEV_EVENT
 c_func
 (paren
+id|DBF_ERR
+comma
 id|device
+comma
+l_string|&quot;%s&quot;
+comma
+l_string|&quot;start_IO: device gone, retry&quot;
 )paren
 suffix:semicolon
 r_break
@@ -4159,14 +4159,17 @@ op_assign
 id|next-&gt;expires
 suffix:semicolon
 r_else
-id|MESSAGE
+id|DEV_MESSAGE
 c_func
 (paren
-id|KERN_WARNING
+id|KERN_DEBUG
+comma
+id|device
 comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;Interrupt fastpath failed!&quot;
+l_string|&quot;Interrupt fastpath &quot;
+l_string|&quot;failed!&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4216,10 +4219,12 @@ id|irb
 )paren
 suffix:semicolon
 r_else
-id|MESSAGE
+id|DEV_MESSAGE
 c_func
 (paren
 id|KERN_ERR
+comma
+id|device
 comma
 l_string|&quot;%s&quot;
 comma

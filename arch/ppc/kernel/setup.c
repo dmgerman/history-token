@@ -33,6 +33,7 @@ macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/xmon.h&gt;
+macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#if defined CONFIG_KGDB
 macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#endif
@@ -2815,6 +2816,29 @@ comma
 l_int|0x3eab
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_OCP
+multiline_comment|/* Initialize OCP device list */
+id|ocp_early_init
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ppc_md.progress
+)paren
+id|ppc_md
+dot
+id|progress
+c_func
+(paren
+l_string|&quot;ocp: exit&quot;
+comma
+l_int|0x3eab
+)paren
+suffix:semicolon
+macro_line|#endif
 id|ppc_md
 dot
 id|setup_arch

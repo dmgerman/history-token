@@ -3,22 +3,20 @@ macro_line|#ifndef __ASM_S390_IOCTL_H__
 DECL|macro|__ASM_S390_IOCTL_H__
 mdefine_line|#define __ASM_S390_IOCTL_H__
 macro_line|#include &lt;linux/ioctl.h&gt;
-DECL|macro|QETH_IOCTL_LETTER
-mdefine_line|#define QETH_IOCTL_LETTER &squot;Q&squot;
 DECL|macro|SIOC_QETH_ARP_SET_NO_ENTRIES
-mdefine_line|#define SIOC_QETH_ARP_SET_NO_ENTRIES&t;_IOWR(QETH_IOCTL_LETTER, 1, int)
+mdefine_line|#define SIOC_QETH_ARP_SET_NO_ENTRIES    (SIOCDEVPRIVATE)
 DECL|macro|SIOC_QETH_ARP_QUERY_INFO
-mdefine_line|#define SIOC_QETH_ARP_QUERY_INFO&t;_IOWR(QETH_IOCTL_LETTER, 2, int)
+mdefine_line|#define SIOC_QETH_ARP_QUERY_INFO        (SIOCDEVPRIVATE + 1)
 DECL|macro|SIOC_QETH_ARP_ADD_ENTRY
-mdefine_line|#define SIOC_QETH_ARP_ADD_ENTRY&t;&t;_IOWR(QETH_IOCTL_LETTER, 3, int)
+mdefine_line|#define SIOC_QETH_ARP_ADD_ENTRY         (SIOCDEVPRIVATE + 2)
 DECL|macro|SIOC_QETH_ARP_REMOVE_ENTRY
-mdefine_line|#define SIOC_QETH_ARP_REMOVE_ENTRY&t;_IOWR(QETH_IOCTL_LETTER, 4, int)
+mdefine_line|#define SIOC_QETH_ARP_REMOVE_ENTRY      (SIOCDEVPRIVATE + 3)
 DECL|macro|SIOC_QETH_ARP_FLUSH_CACHE
-mdefine_line|#define SIOC_QETH_ARP_FLUSH_CACHE&t;_IOWR(QETH_IOCTL_LETTER, 5, int)
+mdefine_line|#define SIOC_QETH_ARP_FLUSH_CACHE       (SIOCDEVPRIVATE + 4)
 DECL|macro|SIOC_QETH_ADP_SET_SNMP_CONTROL
-mdefine_line|#define SIOC_QETH_ADP_SET_SNMP_CONTROL&t;_IOWR(QETH_IOCTL_LETTER, 6, int)
+mdefine_line|#define SIOC_QETH_ADP_SET_SNMP_CONTROL  (SIOCDEVPRIVATE + 5)
 DECL|macro|SIOC_QETH_GET_CARD_TYPE
-mdefine_line|#define SIOC_QETH_GET_CARD_TYPE&t;&t;_IOWR(QETH_IOCTL_LETTER, 7, int)
+mdefine_line|#define SIOC_QETH_GET_CARD_TYPE         (SIOCDEVPRIVATE + 6)
 DECL|struct|qeth_arp_cache_entry
 r_struct
 id|qeth_arp_cache_entry

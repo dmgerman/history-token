@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -10,10 +11,12 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
@@ -31,6 +34,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 DECL|macro|SMP_DEBUG
 mdefine_line|#define SMP_DEBUG 0
@@ -73,7 +77,7 @@ DECL|macro|DEBUG_ITC_SYNC
 mdefine_line|#define DEBUG_ITC_SYNC&t;0
 r_extern
 r_void
-id|__init
+id|__devinit
 id|calibrate_delay
 (paren
 r_void
@@ -96,7 +100,16 @@ id|task_t
 op_star
 id|task_for_booting_cpu
 suffix:semicolon
-multiline_comment|/* Bitmask of currently online CPUs */
+multiline_comment|/*&n; * State for each CPU&n; */
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_int
+comma
+id|cpu_state
+)paren
+suffix:semicolon
+multiline_comment|/* Bitmasks of currently online, and possible CPUs */
 DECL|variable|cpu_online_map
 id|cpumask_t
 id|cpu_online_map
@@ -108,15 +121,15 @@ c_func
 id|cpu_online_map
 )paren
 suffix:semicolon
-DECL|variable|phys_cpu_present_map
+DECL|variable|cpu_possible_map
 id|cpumask_t
-id|phys_cpu_present_map
+id|cpu_possible_map
 suffix:semicolon
-DECL|variable|phys_cpu_present_map
+DECL|variable|cpu_possible_map
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|phys_cpu_present_map
+id|cpu_possible_map
 )paren
 suffix:semicolon
 multiline_comment|/* which logical CPU number maps to which CPU (physical APIC ID) */
@@ -181,6 +194,11 @@ id|str
 id|no_int_routing
 op_assign
 l_int|1
+suffix:semicolon
+id|printk
+(paren
+l_string|&quot;no_int_routing on&bslash;n&quot;
+)paren
 suffix:semicolon
 r_return
 l_int|1
@@ -828,7 +846,7 @@ multiline_comment|/*&n; * Ideally sets up per-cpu profiling hooks.  Doesn&squot;
 r_static
 r_inline
 r_void
-id|__init
+id|__devinit
 DECL|function|smp_setup_percpu_timer
 id|smp_setup_percpu_timer
 (paren
@@ -838,7 +856,7 @@ r_void
 )brace
 r_static
 r_void
-id|__init
+id|__devinit
 DECL|function|smp_callin
 id|smp_callin
 (paren
@@ -885,12 +903,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cpu_test_and_set
+id|cpu_online
 c_func
 (paren
 id|cpuid
-comma
-id|cpu_online_map
 )paren
 )paren
 (brace
@@ -911,6 +927,24 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|lock_ipi_calllock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+id|cpuid
+comma
+id|cpu_online_map
+)paren
+suffix:semicolon
+id|unlock_ipi_calllock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|smp_setup_percpu_timer
 c_func
 (paren
@@ -1017,7 +1051,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Activate a secondary processor.  head.S calls this.&n; */
 r_int
-id|__init
+id|__devinit
 DECL|function|start_secondary
 id|start_secondary
 (paren
@@ -1070,7 +1104,7 @@ r_static
 r_struct
 id|task_struct
 op_star
-id|__init
+id|__devinit
 DECL|function|fork_by_hand
 id|fork_by_hand
 (paren
@@ -1098,9 +1132,58 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+DECL|struct|create_idle
+r_struct
+id|create_idle
+(brace
+DECL|member|idle
+r_struct
+id|task_struct
+op_star
+id|idle
+suffix:semicolon
+DECL|member|done
+r_struct
+id|completion
+id|done
+suffix:semicolon
+)brace
+suffix:semicolon
+r_void
+DECL|function|do_fork_idle
+id|do_fork_idle
+c_func
+(paren
+r_void
+op_star
+id|_c_idle
+)paren
+(brace
+r_struct
+id|create_idle
+op_star
+id|c_idle
+op_assign
+id|_c_idle
+suffix:semicolon
+id|c_idle-&gt;idle
+op_assign
+id|fork_by_hand
+c_func
+(paren
+)paren
+suffix:semicolon
+id|complete
+c_func
+(paren
+op_amp
+id|c_idle-&gt;done
+)paren
+suffix:semicolon
+)brace
 r_static
 r_int
-id|__init
+id|__devinit
 DECL|function|do_boot_cpu
 id|do_boot_cpu
 (paren
@@ -1111,29 +1194,78 @@ r_int
 id|cpu
 )paren
 (brace
-r_struct
-id|task_struct
-op_star
-id|idle
-suffix:semicolon
 r_int
 id|timeout
 suffix:semicolon
+r_struct
+id|create_idle
+id|c_idle
+suffix:semicolon
+id|DECLARE_WORK
+c_func
+(paren
+id|work
+comma
+id|do_fork_idle
+comma
+op_amp
+id|c_idle
+)paren
+suffix:semicolon
+id|init_completion
+c_func
+(paren
+op_amp
+id|c_idle.done
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * We can&squot;t use kernel_thread since we must avoid to reschedule the child.&n;&t; */
-id|idle
-op_assign
-id|fork_by_hand
+r_if
+c_cond
+(paren
+op_logical_neg
+id|keventd_up
 c_func
 (paren
 )paren
+op_logical_or
+id|current_is_keventd
+c_func
+(paren
+)paren
+)paren
+id|work
+dot
+id|func
+c_func
+(paren
+id|work.data
+)paren
 suffix:semicolon
+r_else
+(brace
+id|schedule_work
+c_func
+(paren
+op_amp
+id|work
+)paren
+suffix:semicolon
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|c_idle.done
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|IS_ERR
 c_func
 (paren
-id|idle
+id|c_idle.idle
 )paren
 )paren
 id|panic
@@ -1147,14 +1279,14 @@ suffix:semicolon
 id|wake_up_forked_process
 c_func
 (paren
-id|idle
+id|c_idle.idle
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We remove it from the pidhash and the runqueue&n;&t; * once we got the process:&n;&t; */
 id|init_idle
 c_func
 (paren
-id|idle
+id|c_idle.idle
 comma
 id|cpu
 )paren
@@ -1162,12 +1294,12 @@ suffix:semicolon
 id|unhash_process
 c_func
 (paren
-id|idle
+id|c_idle.idle
 )paren
 suffix:semicolon
 id|task_for_booting_cpu
 op_assign
-id|idle
+id|c_idle.idle
 suffix:semicolon
 id|Dprintk
 c_func
@@ -1404,6 +1536,7 @@ suffix:semicolon
 id|cpu
 op_increment
 )paren
+(brace
 id|ia64_cpu_to_sapicid
 (braket
 id|cpu
@@ -1412,6 +1545,17 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+id|cpu_set
+c_func
+(paren
+id|cpu
+comma
+id|cpu_possible_map
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 id|ia64_cpu_to_sapicid
 (braket
 l_int|0
@@ -1422,7 +1566,7 @@ suffix:semicolon
 id|cpus_clear
 c_func
 (paren
-id|phys_cpu_present_map
+id|cpu_present_map
 )paren
 suffix:semicolon
 id|cpu_set
@@ -1430,7 +1574,15 @@ c_func
 (paren
 l_int|0
 comma
-id|phys_cpu_present_map
+id|cpu_present_map
+)paren
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+l_int|0
+comma
+id|cpu_possible_map
 )paren
 suffix:semicolon
 r_for
@@ -1473,7 +1625,15 @@ c_func
 (paren
 id|cpu
 comma
-id|phys_cpu_present_map
+id|cpu_present_map
+)paren
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+id|cpu
+comma
+id|cpu_possible_map
 )paren
 suffix:semicolon
 id|ia64_cpu_to_sapicid
@@ -1753,7 +1913,13 @@ suffix:semicolon
 id|cpus_clear
 c_func
 (paren
-id|phys_cpu_present_map
+id|cpu_present_map
+)paren
+suffix:semicolon
+id|cpus_clear
+c_func
+(paren
+id|cpu_possible_map
 )paren
 suffix:semicolon
 id|cpu_set
@@ -1769,7 +1935,15 @@ c_func
 (paren
 l_int|0
 comma
-id|phys_cpu_present_map
+id|cpu_present_map
+)paren
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+l_int|0
+comma
+id|cpu_possible_map
 )paren
 suffix:semicolon
 r_return
@@ -1808,6 +1982,233 @@ id|cpu_callin_map
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+r_extern
+r_void
+id|fixup_irqs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* must be called with cpucontrol mutex held */
+DECL|function|cpu_enable
+r_static
+r_int
+id|__devinit
+id|cpu_enable
+c_func
+(paren
+r_int
+r_int
+id|cpu
+)paren
+(brace
+id|per_cpu
+c_func
+(paren
+id|cpu_state
+comma
+id|cpu
+)paren
+op_assign
+id|CPU_UP_PREPARE
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+id|cpu_online
+c_func
+(paren
+id|cpu
+)paren
+)paren
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|__cpu_disable
+r_int
+id|__cpu_disable
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * dont permit boot processor for now&n;&t; */
+r_if
+c_cond
+(paren
+id|cpu
+op_eq
+l_int|0
+)paren
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+id|fixup_irqs
+c_func
+(paren
+)paren
+suffix:semicolon
+id|local_flush_tlb_all
+c_func
+(paren
+)paren
+suffix:semicolon
+id|printk
+(paren
+l_string|&quot;Disabled cpu %u&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|__cpu_die
+r_void
+id|__cpu_die
+c_func
+(paren
+r_int
+r_int
+id|cpu
+)paren
+(brace
+r_int
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|100
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+multiline_comment|/* They ack this in play_dead by setting CPU_DEAD */
+r_if
+c_cond
+(paren
+id|per_cpu
+c_func
+(paren
+id|cpu_state
+comma
+id|cpu
+)paren
+op_eq
+id|CPU_DEAD
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * TBD: Enable this when physical removal&n;&t;&t;&t; * or when we put the processor is put in&n;&t;&t;&t; * SAL_BOOT_RENDEZ mode&n;&t;&t;&t; * cpu_clear(cpu, cpu_callin_map);&n;&t;&t;&t; */
+r_return
+suffix:semicolon
+)brace
+id|current-&gt;state
+op_assign
+id|TASK_UNINTERRUPTIBLE
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+op_div
+l_int|10
+)paren
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;CPU %u didn&squot;t die...&bslash;n&quot;
+comma
+id|cpu
+)paren
+suffix:semicolon
+)brace
+macro_line|#else /* !CONFIG_HOTPLUG_CPU */
+DECL|function|cpu_enable
+r_static
+r_int
+id|__devinit
+id|cpu_enable
+c_func
+(paren
+r_int
+r_int
+id|cpu
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|__cpu_disable
+r_int
+id|__cpu_disable
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+DECL|function|__cpu_die
+r_void
+id|__cpu_die
+c_func
+(paren
+r_int
+r_int
+id|cpu
+)paren
+(brace
+multiline_comment|/* We said &quot;no&quot; in __cpu_disable */
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_HOTPLUG_CPU */
 r_void
 DECL|function|smp_cpus_done
 id|smp_cpus_done
@@ -1931,6 +2332,51 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+multiline_comment|/*&n;&t; * Already booted.. just enable and get outa idle lool&n;&t; */
+r_if
+c_cond
+(paren
+id|cpu_isset
+c_func
+(paren
+id|cpu
+comma
+id|cpu_callin_map
+)paren
+)paren
+(brace
+id|cpu_enable
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+id|cpu_isset
+c_func
+(paren
+id|cpu
+comma
+id|cpu_online_map
+)paren
+)paren
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Processor goes to start_secondary(), sets online flag */
 id|ret
 op_assign

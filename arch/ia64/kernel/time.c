@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/arch/ia64/kernel/time.c&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&t;David Mosberger &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; * Copyright (C) 1999-2000 VA Linux Systems&n; * Copyright (C) 1999-2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -662,6 +663,27 @@ r_int
 r_int
 id|new_itm
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|cpu_is_offline
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+)paren
+)paren
+(brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
+)brace
 id|platform_timer_interrupt
 c_func
 (paren
@@ -940,7 +962,7 @@ id|local_cpu_data-&gt;itm_next
 suffix:semicolon
 )brace
 r_void
-id|__init
+id|__devinit
 DECL|function|ia64_init_itm
 id|ia64_init_itm
 (paren

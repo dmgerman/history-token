@@ -53,10 +53,6 @@ DECL|macro|PPC4xx_ONB_IO_VADDR
 mdefine_line|#define PPC4xx_ONB_IO_VADDR&t;PPC4xx_ONB_IO_PADDR
 DECL|macro|PPC4xx_ONB_IO_SIZE
 mdefine_line|#define PPC4xx_ONB_IO_SIZE&t;((uint)4*1024)
-DECL|macro|OPB_BASE_START
-mdefine_line|#define OPB_BASE_START&t;0x40000000
-DECL|macro|EBIU_BASE_START
-mdefine_line|#define EBIU_BASE_START&t;0xF0100000
 multiline_comment|/* serial port defines */
 DECL|macro|RS_TABLE_SIZE
 mdefine_line|#define RS_TABLE_SIZE&t;2
@@ -70,32 +66,8 @@ DECL|macro|UART0_IO_BASE
 mdefine_line|#define UART0_IO_BASE&t;0xEF600300
 DECL|macro|UART1_IO_BASE
 mdefine_line|#define UART1_IO_BASE&t;0xEF600400
-DECL|macro|IIC0_BASE
-mdefine_line|#define IIC0_BASE&t;0xEF600500
-DECL|macro|OPB0_BASE
-mdefine_line|#define OPB0_BASE&t;0xEF600600
-DECL|macro|GPIO0_BASE
-mdefine_line|#define GPIO0_BASE&t;0xEF600700
 DECL|macro|EMAC0_BASE
 mdefine_line|#define EMAC0_BASE&t;0xEF600800
-DECL|macro|BL_MAC_WOL
-mdefine_line|#define BL_MAC_WOL&t;9&t;/* WOL */
-DECL|macro|BL_MAL_SERR
-mdefine_line|#define BL_MAL_SERR&t;10&t;/* MAL SERR */
-DECL|macro|BL_MAL_TXDE
-mdefine_line|#define BL_MAL_TXDE&t;13&t;/* MAL TXDE */
-DECL|macro|BL_MAL_RXDE
-mdefine_line|#define BL_MAL_RXDE&t;14&t;/* MAL RXDE */
-DECL|macro|BL_MAL_TXEOB
-mdefine_line|#define BL_MAL_TXEOB&t;11&t;/* MAL TX EOB */
-DECL|macro|BL_MAL_RXEOB
-mdefine_line|#define BL_MAL_RXEOB&t;12&t;/* MAL RX EOB */
-DECL|macro|BL_MAC_ETH0
-mdefine_line|#define BL_MAC_ETH0&t;15&t;/* MAC */
-DECL|macro|IIC_OWN
-mdefine_line|#define IIC_OWN&t;&t;0x55
-DECL|macro|IIC_CLOCK
-mdefine_line|#define IIC_CLOCK&t;50
 DECL|macro|BD_EMAC_ADDR
 mdefine_line|#define BD_EMAC_ADDR(e,i) bi_enetaddr[i]
 DECL|macro|STD_UART_OP

@@ -3028,7 +3028,7 @@ c_func
 (paren
 id|timeout
 comma
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|200

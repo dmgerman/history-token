@@ -2231,7 +2231,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_XILINX_ML300 */
 macro_line|#ifdef CONFIG_IBM_OPENBIOS
 multiline_comment|/* This could possibly work for all treeboot roms.&n;*/
-macro_line|#if defined(CONFIG_ASH) || defined(CONFIG_BEECH)
+macro_line|#if defined(CONFIG_ASH) || defined(CONFIG_BEECH) || defined(CONFIG_BUBINGA)
 DECL|macro|BOARD_INFO_VECTOR
 mdefine_line|#define BOARD_INFO_VECTOR       0xFFF80B50 /* openbios 1.19 moved this vector down  - armin */
 macro_line|#else
@@ -2402,6 +2402,11 @@ multiline_comment|/* wait for the reset */
 id|out_be32
 c_func
 (paren
+(paren
+r_volatile
+id|u32
+op_star
+)paren
 id|EMAC0_BASE
 comma
 l_int|0x20000000

@@ -144,6 +144,7 @@ op_star
 id|intf
 )paren
 suffix:semicolon
+r_static
 r_int
 id|kaweth_internal_control_msg
 c_func
@@ -4910,6 +4911,7 @@ suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------*/
 singleline_comment|// returns status (negative) or length (positive)
 DECL|function|kaweth_internal_control_msg
+r_static
 r_int
 id|kaweth_internal_control_msg
 c_func
@@ -5029,6 +5031,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************&n; *     kaweth_init&n; ****************************************************************/
 DECL|function|kaweth_init
+r_static
 r_int
 id|__init
 id|kaweth_init
@@ -5054,6 +5057,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************&n; *     kaweth_exit&n; ****************************************************************/
 DECL|function|kaweth_exit
+r_static
 r_void
 id|__exit
 id|kaweth_exit

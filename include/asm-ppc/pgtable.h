@@ -1488,6 +1488,26 @@ id|pte_t
 op_star
 id|pte_addr_t
 suffix:semicolon
+r_extern
+r_int
+id|get_pteptr
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
+id|pte_t
+op_star
+op_star
+id|ptep
+)paren
+suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
 mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG

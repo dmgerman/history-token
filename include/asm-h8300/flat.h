@@ -14,7 +14,7 @@ multiline_comment|/*&n; * on the H8 a couple of the relocations have an instruct
 DECL|macro|flat_get_relocate_addr
 mdefine_line|#define&t;flat_get_relocate_addr(rel)&t;&t;(rel)
 DECL|macro|flat_get_addr_from_rp
-mdefine_line|#define flat_get_addr_from_rp(rp, relval)       (get_unaligned(rp) &amp; 0x0ffffff)
+mdefine_line|#define flat_get_addr_from_rp(rp, relval, flags) &bslash;&n;        (get_unaligned(rp) &amp; ((flags &amp; FLAT_FLAG_GOTPIC) ? 0xffffffff: 0x00ffffff))
 DECL|macro|flat_put_addr_at_rp
 mdefine_line|#define flat_put_addr_at_rp(rp, addr, rel) &bslash;&n;&t;put_unaligned (((*(char *)(rp)) &lt;&lt; 24) | ((addr) &amp; 0x00ffffff), rp)
 macro_line|#endif /* __H8300_FLAT_H__ */

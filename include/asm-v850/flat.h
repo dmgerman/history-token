@@ -56,6 +56,10 @@ comma
 r_int
 r_int
 id|relval
+comma
+r_int
+r_int
+id|flags
 )paren
 (brace
 r_int

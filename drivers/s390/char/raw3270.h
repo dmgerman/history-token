@@ -106,20 +106,6 @@ DECL|macro|TW_PLUSALARM
 mdefine_line|#define TW_PLUSALARM&t;0x04&t;&t;/* Add this bit for alarm */
 DECL|macro|RAW3270_MAXDEVS
 mdefine_line|#define RAW3270_MAXDEVS&t;256
-r_int
-id|raw3270_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|raw3270_exit
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* For TUBGETMOD and TUBSETMOD. Should include. */
 DECL|struct|raw3270_iocb
 r_struct
@@ -649,6 +635,39 @@ c_func
 r_struct
 id|raw3270
 op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Notifier for device addition/removal */
+r_int
+id|raw3270_register_notifier
+c_func
+(paren
+r_void
+(paren
+op_star
+id|notifier
+)paren
+(paren
+r_int
+comma
+r_int
+)paren
+)paren
+suffix:semicolon
+r_void
+id|raw3270_unregister_notifier
+c_func
+(paren
+r_void
+(paren
+op_star
+id|notifier
+)paren
+(paren
+r_int
+comma
+r_int
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Little memory allocator for string objects. &n; */

@@ -371,7 +371,5 @@ DECL|macro|pte_free_tlb
 mdefine_line|#define pte_free_tlb(tlb, ptep)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;tlb-&gt;need_flush = 1;&t;&t;&t;&t;&bslash;&n;&t;&t;__pte_free_tlb(tlb, ptep);&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|pmd_free_tlb
 mdefine_line|#define pmd_free_tlb(tlb, pmdp)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;tlb-&gt;need_flush = 1;&t;&t;&t;&t;&bslash;&n;&t;&t;__pmd_free_tlb(tlb, pmdp);&t;&t;&t;&bslash;&n;&t;} while (0)
-DECL|macro|tlb_migrate_prepare
-mdefine_line|#define tlb_migrate_prepare(mm) do { } while(0)
 macro_line|#endif /* _ASM_GENERIC__TLB_H */
 eof

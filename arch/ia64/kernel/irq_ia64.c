@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/ia64/kernel/irq.c&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; *  6/10/99: Updated to bring in sync with x86 version to facilitate&n; *&t;     support for SMP and different interrupt controllers.&n; *&n; * 09/15/00 Goutham Rao &lt;goutham.rao@intel.com&gt; Implemented pci_irq_to_vector&n; *                      PCI to vector allocation routine.&n; */
+multiline_comment|/*&n; * linux/arch/ia64/kernel/irq.c&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; *  6/10/99: Updated to bring in sync with x86 version to facilitate&n; *&t;     support for SMP and different interrupt controllers.&n; *&n; * 09/15/00 Goutham Rao &lt;goutham.rao@intel.com&gt; Implemented pci_irq_to_vector&n; *                      PCI to vector allocation routine.&n; * 04/14/2004 Ashok Raj &lt;ashok.raj@intel.com&gt;&n; *&t;&t;&t;&t;&t;&t;Added CPU Hotplug handling for IPF.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
@@ -196,6 +196,13 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|IS_RESCHEDULE
+macro_line|#&t;define IS_RESCHEDULE(vec)&t;(vec == IA64_IPI_RESCHEDULE)
+macro_line|#else
+DECL|macro|IS_RESCHEDULE
+macro_line|#&t;define IS_RESCHEDULE(vec)&t;(0)
+macro_line|#endif
 multiline_comment|/*&n; * That&squot;s where the IVT branches when we get an external&n; * interrupt. This branches to the correct hardware IRQ handler via&n; * function ptr.&n; */
 r_void
 DECL|function|ia64_handle_irq
@@ -214,12 +221,6 @@ r_int
 r_int
 id|saved_tpr
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|IS_RESCHEDULE
-macro_line|#&t;define IS_RESCHEDULE(vec)&t;(vec == IA64_IPI_RESCHEDULE)
-macro_line|#else
-macro_line|#&t;define IS_RESCHEDULE(vec)&t;(0)
-macro_line|#endif
 macro_line|#if IRQ_DEBUG
 (brace
 r_int
@@ -408,6 +409,148 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+multiline_comment|/*&n; * This function emulates a interrupt processing when a cpu is about to be&n; * brought down.&n; */
+DECL|function|ia64_process_pending_intr
+r_void
+id|ia64_process_pending_intr
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ia64_vector
+id|vector
+suffix:semicolon
+r_int
+r_int
+id|saved_tpr
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|vectors_in_migration
+(braket
+id|NR_IRQS
+)braket
+suffix:semicolon
+id|vector
+op_assign
+id|ia64_get_ivr
+c_func
+(paren
+)paren
+suffix:semicolon
+id|irq_enter
+c_func
+(paren
+)paren
+suffix:semicolon
+id|saved_tpr
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_CR_TPR
+)paren
+suffix:semicolon
+id|ia64_srlz_d
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;  * Perform normal interrupt style processing&n;&t;  */
+r_while
+c_loop
+(paren
+id|vector
+op_ne
+id|IA64_SPURIOUS_INT_VECTOR
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|IS_RESCHEDULE
+c_func
+(paren
+id|vector
+)paren
+)paren
+(brace
+id|ia64_setreg
+c_func
+(paren
+id|_IA64_REG_CR_TPR
+comma
+id|vector
+)paren
+suffix:semicolon
+id|ia64_srlz_d
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Now try calling normal ia64_handle_irq as it would have got called&n;&t;&t;&t; * from a real intr handler. Try passing null for pt_regs, hopefully&n;&t;&t;&t; * it will work. I hope it works!.&n;&t;&t;&t; * Probably could shared code.&n;&t;&t;&t; */
+id|vectors_in_migration
+(braket
+id|local_vector_to_irq
+c_func
+(paren
+id|vector
+)paren
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|do_IRQ
+c_func
+(paren
+id|local_vector_to_irq
+c_func
+(paren
+id|vector
+)paren
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Disable interrupts and send EOI&n;&t;&t;&t; */
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ia64_setreg
+c_func
+(paren
+id|_IA64_REG_CR_TPR
+comma
+id|saved_tpr
+)paren
+suffix:semicolon
+)brace
+id|ia64_eoi
+c_func
+(paren
+)paren
+suffix:semicolon
+id|vector
+op_assign
+id|ia64_get_ivr
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|irq_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 r_extern
 id|irqreturn_t

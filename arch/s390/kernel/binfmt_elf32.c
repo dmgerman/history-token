@@ -19,12 +19,6 @@ DECL|macro|NUM_FPRS
 mdefine_line|#define NUM_FPRS      16
 DECL|macro|NUM_ACRS
 mdefine_line|#define NUM_ACRS      16    
-DECL|macro|TASK31_SIZE
-mdefine_line|#define TASK31_SIZE&t;&t;(0x80000000UL)
-DECL|macro|TASK_SIZE
-macro_line|#undef TASK_SIZE
-DECL|macro|TASK_SIZE
-mdefine_line|#define TASK_SIZE TASK31_SIZE
 multiline_comment|/* For SVR4/S390 the function pointer to be registered with `atexit` is&n;   passed in R14. */
 DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(_r, load_addr) &bslash;&n;&t;do { &bslash;&n;&t;&t;_r-&gt;gprs[14] = 0; &bslash;&n;&t;} while(0)
@@ -34,7 +28,7 @@ DECL|macro|ELF_EXEC_PAGESIZE
 mdefine_line|#define ELF_EXEC_PAGESIZE       4096
 multiline_comment|/* This is the location that an ET_DYN program is loaded if exec&squot;ed.  Typical&n;   use of this is to invoke &quot;./ld.so someprog&quot; to test out a new version of&n;   the loader.  We need to make sure that it is out of the way of the program&n;   that it will &quot;exec&quot;, and that there is sufficient room for the brk.  */
 DECL|macro|ELF_ET_DYN_BASE
-mdefine_line|#define ELF_ET_DYN_BASE         (TASK31_SIZE / 3 * 2)
+mdefine_line|#define ELF_ET_DYN_BASE         (TASK_SIZE / 3 * 2)
 multiline_comment|/* Wow, the &quot;main&quot; arch needs arch dependent functions too.. :) */
 multiline_comment|/* regs is struct pt_regs, pr_reg is elf_gregset_t (which is&n;   now struct_user_regs, they are different) */
 DECL|macro|ELF_CORE_COPY_REGS
@@ -350,8 +344,6 @@ DECL|macro|start_thread
 mdefine_line|#define start_thread                    start_thread31 
 DECL|macro|setup_arg_pages
 mdefine_line|#define setup_arg_pages(bprm, exec)     setup_arg_pages32(bprm, exec)
-DECL|macro|elf_map
-mdefine_line|#define elf_map&t;&t;&t;&t;elf_map32
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -410,97 +402,4 @@ id|HZ
 suffix:semicolon
 )brace
 macro_line|#include &quot;../../../fs/binfmt_elf.c&quot;
-r_static
-r_int
-r_int
-DECL|function|elf_map32
-id|elf_map32
-(paren
-r_struct
-id|file
-op_star
-id|filep
-comma
-r_int
-r_int
-id|addr
-comma
-r_struct
-id|elf_phdr
-op_star
-id|eppnt
-comma
-r_int
-id|prot
-comma
-r_int
-id|type
-)paren
-(brace
-r_int
-r_int
-id|map_addr
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|addr
-)paren
-id|addr
-op_assign
-id|TASK_UNMAPPED_BASE
-suffix:semicolon
-id|down_write
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;mmap_sem
-)paren
-suffix:semicolon
-id|map_addr
-op_assign
-id|do_mmap
-c_func
-(paren
-id|filep
-comma
-id|ELF_PAGESTART
-c_func
-(paren
-id|addr
-)paren
-comma
-id|eppnt-&gt;p_filesz
-op_plus
-id|ELF_PAGEOFFSET
-c_func
-(paren
-id|eppnt-&gt;p_vaddr
-)paren
-comma
-id|prot
-comma
-id|type
-comma
-id|eppnt-&gt;p_offset
-op_minus
-id|ELF_PAGEOFFSET
-c_func
-(paren
-id|eppnt-&gt;p_vaddr
-)paren
-)paren
-suffix:semicolon
-id|up_write
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;mmap_sem
-)paren
-suffix:semicolon
-r_return
-id|map_addr
-suffix:semicolon
-)brace
 eof

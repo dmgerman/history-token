@@ -569,7 +569,7 @@ id|flags.recog_done
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check if cu type and device type still match. If&n;&t; * not, it is certainly another device and we have to&n;&t; * de- and re-register.&n;&t; */
+multiline_comment|/*&n;&t; * Check if cu type and device type still match. If&n;&t; * not, it is certainly another device and we have to&n;&t; * de- and re-register. Also check here for non-matching devno.&n;&t; */
 r_if
 c_cond
 (paren
@@ -604,6 +604,14 @@ op_member_access_from_pointer
 r_private
 op_member_access_from_pointer
 id|senseid.dev_model
+op_logical_or
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|devno
+op_ne
+id|sch-&gt;schib.pmcw.dev
 )paren
 (brace
 id|PREPARE_WORK
@@ -622,8 +630,7 @@ comma
 r_void
 op_star
 )paren
-op_amp
-id|cdev-&gt;dev
+id|cdev
 )paren
 suffix:semicolon
 id|queue_work
@@ -1217,8 +1224,7 @@ c_func
 r_void
 op_star
 )paren
-op_amp
-id|cdev-&gt;dev
+id|cdev
 )paren
 suffix:semicolon
 r_else
@@ -1980,6 +1986,19 @@ c_cond
 id|err
 )paren
 (brace
+r_case
+op_minus
+id|EOPNOTSUPP
+suffix:colon
+multiline_comment|/* path grouping not supported, just set online. */
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|options.pgroup
+op_assign
+l_int|0
+suffix:semicolon
 r_case
 l_int|0
 suffix:colon

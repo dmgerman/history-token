@@ -319,6 +319,8 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|macro|atomic_add_negative
+mdefine_line|#define atomic_add_negative(a, v)&t;(atomic_add_return((a), (v)) &lt; 0)
 DECL|function|atomic64_add_return
 r_static
 id|__inline__
@@ -529,6 +531,8 @@ DECL|macro|atomic_sub_and_test
 mdefine_line|#define atomic_sub_and_test(i,v) (atomic_sub_return((i), (v)) == 0)
 DECL|macro|atomic64_sub_and_test
 mdefine_line|#define atomic64_sub_and_test(i,v) (atomic64_sub_return((i), (v)) == 0)
+DECL|macro|atomic_inc_and_test
+mdefine_line|#define atomic_inc_and_test(v) (atomic_add_return(1, (v)) == 0)
 DECL|macro|atomic_dec_and_test
 mdefine_line|#define atomic_dec_and_test(v) (atomic_sub_return(1, (v)) == 0)
 DECL|macro|atomic64_dec_and_test

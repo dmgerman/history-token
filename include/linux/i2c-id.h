@@ -319,8 +319,8 @@ DECL|macro|I2C_HW_B_GUIDE
 mdefine_line|#define I2C_HW_B_GUIDE  0x15    /* Guide bit-basher&t;&t;&t;*/
 DECL|macro|I2C_HW_B_IXP2000
 mdefine_line|#define I2C_HW_B_IXP2000 0x16&t;/* GPIO on IXP2000 systems              */
-DECL|macro|I2C_HW_B_IXP425
-mdefine_line|#define I2C_HW_B_IXP425 0x17&t;/* GPIO on IXP425 systems&t;&t;*/
+DECL|macro|I2C_HW_B_IXP4XX
+mdefine_line|#define I2C_HW_B_IXP4XX 0x17&t;/* GPIO on IXP4XX systems&t;&t;*/
 DECL|macro|I2C_HW_B_S3VIA
 mdefine_line|#define I2C_HW_B_S3VIA&t;0x18&t;/* S3Via ProSavage adapter&t;&t;*/
 DECL|macro|I2C_HW_B_ZR36067

@@ -714,13 +714,9 @@ op_or
 id|VM_WRITE
 op_or
 id|VM_SHARED
+op_or
+id|VM_HUGETLB
 )paren
-)paren
-op_logical_and
-id|VM_MAYACCT
-c_func
-(paren
-id|vma
 )paren
 )paren
 (brace

@@ -3960,7 +3960,7 @@ id|sinit-&gt;sinit_max_init_timeo
 (brace
 id|asoc-&gt;max_init_timeo
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|sinit-&gt;sinit_max_init_timeo
@@ -5413,7 +5413,7 @@ l_int|1
 suffix:semicolon
 id|trans-&gt;hb_interval
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|params.spp_hbinterval
@@ -5988,7 +5988,7 @@ l_int|0
 )paren
 id|asoc-&gt;rto_initial
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|rtoinfo.srto_initial
@@ -6003,7 +6003,7 @@ l_int|0
 )paren
 id|asoc-&gt;rto_max
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|rtoinfo.srto_max
@@ -6018,7 +6018,7 @@ l_int|0
 )paren
 id|asoc-&gt;rto_min
 op_assign
-id|MSECS_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|rtoinfo.srto_min
@@ -7959,7 +7959,7 @@ id|sctp_max_retrans_init
 suffix:semicolon
 id|sp-&gt;initmsg.sinit_max_init_timeo
 op_assign
-id|JIFFIES_TO_MSECS
+id|jiffies_to_msecs
 c_func
 (paren
 id|sctp_rto_max
@@ -7968,7 +7968,7 @@ suffix:semicolon
 multiline_comment|/* Initialize default RTO related parameters.  These parameters can&n;&t; * be modified for with the SCTP_RTOINFO socket option.&n;&t; */
 id|sp-&gt;rtoinfo.srto_initial
 op_assign
-id|JIFFIES_TO_MSECS
+id|jiffies_to_msecs
 c_func
 (paren
 id|sctp_rto_initial
@@ -7976,7 +7976,7 @@ id|sctp_rto_initial
 suffix:semicolon
 id|sp-&gt;rtoinfo.srto_max
 op_assign
-id|JIFFIES_TO_MSECS
+id|jiffies_to_msecs
 c_func
 (paren
 id|sctp_rto_max
@@ -7984,7 +7984,7 @@ id|sctp_rto_max
 suffix:semicolon
 id|sp-&gt;rtoinfo.srto_min
 op_assign
-id|JIFFIES_TO_MSECS
+id|jiffies_to_msecs
 c_func
 (paren
 id|sctp_rto_min
@@ -8009,7 +8009,7 @@ l_int|0
 suffix:semicolon
 id|sp-&gt;assocparams.sasoc_cookie_life
 op_assign
-id|JIFFIES_TO_MSECS
+id|jiffies_to_msecs
 c_func
 (paren
 id|sctp_valid_cookie_life
@@ -8034,7 +8034,7 @@ suffix:semicolon
 multiline_comment|/* Default Peer Address Parameters.  These defaults can&n;&t; * be modified via SCTP_PEER_ADDR_PARAMS&n;&t; */
 id|sp-&gt;paddrparam.spp_hbinterval
 op_assign
-id|JIFFIES_TO_MSECS
+id|jiffies_to_msecs
 c_func
 (paren
 id|sctp_hb_interval
@@ -8504,7 +8504,7 @@ id|transport-&gt;srtt
 suffix:semicolon
 id|status.sstat_primary.spinfo_rto
 op_assign
-id|JIFFIES_TO_MSECS
+id|jiffies_to_msecs
 c_func
 (paren
 id|transport-&gt;rto
@@ -8711,7 +8711,7 @@ id|transport-&gt;srtt
 suffix:semicolon
 id|pinfo.spinfo_rto
 op_assign
-id|JIFFIES_TO_MSECS
+id|jiffies_to_msecs
 c_func
 (paren
 id|transport-&gt;rto
@@ -9432,7 +9432,7 @@ suffix:semicolon
 r_else
 id|params.spp_hbinterval
 op_assign
-id|JIFFIES_TO_MSECS
+id|jiffies_to_msecs
 c_func
 (paren
 id|trans-&gt;hb_interval
@@ -10987,7 +10987,7 @@ id|asoc
 (brace
 id|rtoinfo.srto_initial
 op_assign
-id|JIFFIES_TO_MSECS
+id|jiffies_to_msecs
 c_func
 (paren
 id|asoc-&gt;rto_initial
@@ -10995,7 +10995,7 @@ id|asoc-&gt;rto_initial
 suffix:semicolon
 id|rtoinfo.srto_max
 op_assign
-id|JIFFIES_TO_MSECS
+id|jiffies_to_msecs
 c_func
 (paren
 id|asoc-&gt;rto_max
@@ -11003,7 +11003,7 @@ id|asoc-&gt;rto_max
 suffix:semicolon
 id|rtoinfo.srto_min
 op_assign
-id|JIFFIES_TO_MSECS
+id|jiffies_to_msecs
 c_func
 (paren
 id|asoc-&gt;rto_min

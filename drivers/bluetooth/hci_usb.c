@@ -1429,7 +1429,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|urb-&gt;count
+id|urb-&gt;kref.refcount
 )paren
 OG
 l_int|1

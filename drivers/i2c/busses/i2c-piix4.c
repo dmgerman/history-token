@@ -3,7 +3,6 @@ multiline_comment|/*&n;   Supports:&n;&t;Intel PIIX4, 440MX&n;&t;Serverworks OSB
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
@@ -1687,7 +1686,7 @@ comma
 dot
 r_class
 op_assign
-id|I2C_ADAP_CLASS_SMBUS
+id|I2C_CLASS_HWMON
 comma
 dot
 id|algo

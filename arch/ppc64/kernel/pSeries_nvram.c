@@ -24,7 +24,6 @@ DECL|variable|nvram_fetch
 DECL|variable|nvram_store
 r_static
 r_int
-r_int
 id|nvram_fetch
 comma
 id|nvram_store

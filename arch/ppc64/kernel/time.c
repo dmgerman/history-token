@@ -37,9 +37,10 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-DECL|variable|jiffies_64
+DECL|variable|__cacheline_aligned_in_smp
 id|u64
 id|jiffies_64
+id|__cacheline_aligned_in_smp
 op_assign
 id|INITIAL_JIFFIES
 suffix:semicolon
@@ -675,12 +676,11 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * For iSeries shared processors, we have to let the hypervisor&n; * set the hardware decrementer.  We set a virtual decrementer&n; * in the ItLpPaca and call the hypervisor if the virtual&n; * decrementer is less than the current value in the hardware&n; * decrementer. (almost always the new decrementer value will&n; * be greater than the current hardware decementer so the hypervisor&n; * call will not be needed)&n; */
-DECL|variable|tb_last_stamp
+DECL|variable|__cacheline_aligned_in_smp
 r_int
 r_int
 id|tb_last_stamp
-op_assign
-l_int|0
+id|__cacheline_aligned_in_smp
 suffix:semicolon
 multiline_comment|/*&n; * timer_interrupt - gets called when the decrementer overflows,&n; * with interrupts disabled.&n; */
 DECL|function|timer_interrupt

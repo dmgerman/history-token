@@ -89,6 +89,17 @@ r_int
 id|physaddr
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|flush_dcache_icache_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
 macro_line|#endif /* _PPC_CACHEFLUSH_H */
 macro_line|#endif /* __KERNEL__ */
 eof

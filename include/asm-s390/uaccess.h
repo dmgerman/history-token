@@ -98,7 +98,7 @@ DECL|macro|__uaccess_clobber
 mdefine_line|#define __uaccess_clobber &quot;cc&quot;
 macro_line|#endif /* __s390x__ */
 multiline_comment|/*&n; * These are the main single-value transfer routines.  They automatically&n; * use the right size if we just have the right pointer type.&n; */
-macro_line|#if __GNUC__ &gt; 2
+macro_line|#if __GNUC__ &gt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt; 2)
 DECL|macro|__put_user_asm
 mdefine_line|#define __put_user_asm(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;err = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: mvcs  0(%1,%2),%3,%0&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;+&amp;d&quot; (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;d&quot; (sizeof(*(ptr))), &quot;a&quot; (ptr), &quot;Q&quot; (x),&t;&bslash;&n;&t;&t;  &quot;K&quot; (-EFAULT)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: __uaccess_clobber );&t;&t;&t;&t;&bslash;&n;})
 macro_line|#else
@@ -117,7 +117,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#if __GNUC__ &gt; 2
+macro_line|#if __GNUC__ &gt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt; 2)
 DECL|macro|__get_user_asm
 mdefine_line|#define __get_user_asm(x, ptr, err) &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;err = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile (&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;0: mvcp  %O1(%2,%R1),0(%3),%0&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;1:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__uaccess_fixup&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;+&amp;d&quot; (err), &quot;=Q&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;d&quot; (sizeof(*(ptr))), &quot;a&quot; (ptr),&t;&t;&bslash;&n;&t;&t;  &quot;K&quot; (-EFAULT)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: __uaccess_clobber );&t;&t;&t;&t;&bslash;&n;})
 macro_line|#else

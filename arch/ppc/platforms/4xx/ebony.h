@@ -68,10 +68,6 @@ DECL|macro|UART1_IO_BASE
 mdefine_line|#define UART1_IO_BASE&t;(u8 *) 0xE0000300
 DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD&t;33000000/3/16
-DECL|macro|UART0_INT
-mdefine_line|#define UART0_INT&t;0
-DECL|macro|UART1_INT
-mdefine_line|#define UART1_INT&t;1
 DECL|macro|STD_UART_OP
 mdefine_line|#define STD_UART_OP(num)&t;&t;&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0, UART##num##_INT,&t;&t;&t;&bslash;&n;&t;&t;(ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST),&t;&bslash;&n;&t;&t;iomem_base: UART##num##_IO_BASE,&t;&t;&bslash;&n;&t;&t;io_type: SERIAL_IO_MEM},
 DECL|macro|SERIAL_PORT_DFNS

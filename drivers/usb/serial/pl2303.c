@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Prolific PL2303 USB to serial adaptor driver&n; *&n; * Copyright (C) 2001-2003 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (C) 2003 IBM Corp.&n; *&n; * Original driver for 2.2.x by anonymous&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 2002_Mar_26 gkh&n; *&t;allowed driver to work properly if there is no tty assigned to a port&n; *&t;(this happens for serial console devices.)&n; *&n; * 2001_Oct_06 gkh&n; *&t;Added RTS and DTR line control.  Thanks to joe@bndlg.de for parts of it.&n; *&n; * 2001_Sep_19 gkh&n; *&t;Added break support.&n; *&n; * 2001_Aug_30 gkh&n; *&t;fixed oops in write_bulk_callback.&n; *&n; * 2001_Aug_28 gkh&n; *&t;reworked buffer logic to be like other usb-serial drivers.  Hopefully&n; *&t;removing some reported problems.&n; *&n; * 2001_Jun_06 gkh&n; *&t;finished porting to 2.4 format.&n; * &n; */
+multiline_comment|/*&n; * Prolific PL2303 USB to serial adaptor driver&n; *&n; * Copyright (C) 2001-2004 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (C) 2003 IBM Corp.&n; *&n; * Original driver for 2.2.x by anonymous&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 2002_Mar_26 gkh&n; *&t;allowed driver to work properly if there is no tty assigned to a port&n; *&t;(this happens for serial console devices.)&n; *&n; * 2001_Oct_06 gkh&n; *&t;Added RTS and DTR line control.  Thanks to joe@bndlg.de for parts of it.&n; *&n; * 2001_Sep_19 gkh&n; *&t;Added break support.&n; *&n; * 2001_Aug_30 gkh&n; *&t;fixed oops in write_bulk_callback.&n; *&n; * 2001_Aug_28 gkh&n; *&t;reworked buffer logic to be like other usb-serial drivers.  Hopefully&n; *&t;removing some reported problems.&n; *&n; * 2001_Jun_06 gkh&n; *&t;finished porting to 2.4 format.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
@@ -170,6 +171,16 @@ c_func
 id|SITECOM_VENDOR_ID
 comma
 id|SITECOM_PRODUCT_ID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|ALCATEL_VENDOR_ID
+comma
+id|ALCATEL_PRODUCT_ID
 )paren
 )brace
 comma
@@ -1990,20 +2001,6 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|port_paranoia_check
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -2291,11 +2288,6 @@ id|filp
 )paren
 (brace
 r_struct
-id|usb_serial
-op_star
-id|serial
-suffix:semicolon
-r_struct
 id|pl2303_private
 op_star
 id|priv
@@ -2310,35 +2302,6 @@ id|c_cflag
 suffix:semicolon
 r_int
 id|result
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port_paranoia_check
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-)paren
-r_return
-suffix:semicolon
-id|serial
-op_assign
-id|get_usb_serial
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|serial
-)paren
-r_return
 suffix:semicolon
 id|dbg
 c_func
@@ -3253,18 +3216,6 @@ op_star
 id|urb-&gt;context
 suffix:semicolon
 r_struct
-id|usb_serial
-op_star
-id|serial
-op_assign
-id|get_usb_serial
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_struct
 id|pl2303_private
 op_star
 id|priv
@@ -3353,16 +3304,6 @@ id|urb-&gt;status
 suffix:semicolon
 r_goto
 m_exit
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|serial
-)paren
-(brace
-r_return
 suffix:semicolon
 )brace
 id|usb_serial_debug_data
@@ -3483,18 +3424,6 @@ op_star
 id|urb-&gt;context
 suffix:semicolon
 r_struct
-id|usb_serial
-op_star
-id|serial
-op_assign
-id|get_usb_serial
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_struct
 id|pl2303_private
 op_star
 id|priv
@@ -3533,18 +3462,6 @@ suffix:semicolon
 r_char
 id|tty_flag
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|port_paranoia_check
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-)paren
-r_return
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -3555,24 +3472,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|serial
-)paren
-(brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - bad serial pointer, exiting&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3631,7 +3530,7 @@ l_int|0
 suffix:semicolon
 id|urb-&gt;dev
 op_assign
-id|serial-&gt;dev
+id|port-&gt;serial-&gt;dev
 suffix:semicolon
 id|result
 op_assign
@@ -3859,7 +3758,7 @@ id|port-&gt;open_count
 (brace
 id|urb-&gt;dev
 op_assign
-id|serial-&gt;dev
+id|port-&gt;serial-&gt;dev
 suffix:semicolon
 id|result
 op_assign
@@ -3924,18 +3823,6 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|port_paranoia_check
-(paren
-id|port
-comma
-id|__FUNCTION__
-)paren
-)paren
-r_return
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -3953,20 +3840,6 @@ id|urb-&gt;status
 )paren
 (brace
 multiline_comment|/* error in the urb, so we have to resubmit it */
-r_if
-c_cond
-(paren
-id|serial_paranoia_check
-(paren
-id|port-&gt;serial
-comma
-id|__FUNCTION__
-)paren
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
 id|dbg
 c_func
 (paren
@@ -4152,12 +4025,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

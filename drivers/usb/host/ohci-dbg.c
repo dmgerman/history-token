@@ -3104,13 +3104,39 @@ comma
 op_amp
 id|size
 comma
+l_string|&quot;bus %s, device %s&bslash;n&quot;
 l_string|&quot;%s version &quot;
 id|DRIVER_VERSION
 l_string|&quot;&bslash;n&quot;
 comma
+id|hcd-&gt;self.controller-&gt;bus-&gt;name
+comma
+id|hcd-&gt;self.controller-&gt;bus_id
+comma
 id|hcd_name
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bus-&gt;controller-&gt;power.power_state
+)paren
+(brace
+id|size
+op_sub_assign
+id|scnprintf
+(paren
+id|next
+comma
+id|size
+comma
+l_string|&quot;SUSPENDED (no register access)&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
 id|ohci_dump_status
 c_func
 (paren
@@ -3321,6 +3347,8 @@ op_amp
 id|size
 )paren
 suffix:semicolon
+id|done
+suffix:colon
 id|spin_unlock_irqrestore
 (paren
 op_amp

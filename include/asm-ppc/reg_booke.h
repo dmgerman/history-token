@@ -97,6 +97,32 @@ DECL|macro|SPRN_IVOR14
 mdefine_line|#define SPRN_IVOR14&t;0x19E&t;/* Interrupt Vector Offset Register 14 */
 DECL|macro|SPRN_IVOR15
 mdefine_line|#define SPRN_IVOR15&t;0x19F&t;/* Interrupt Vector Offset Register 15 */
+DECL|macro|SPRN_MCSRR0
+mdefine_line|#define SPRN_MCSRR0&t;0x23A&t;/* Machine Check Save and Restore Register 0 */
+DECL|macro|SPRN_MCSRR1
+mdefine_line|#define SPRN_MCSRR1&t;0x23B&t;/* Machine Check Save and Restore Register 1 */
+DECL|macro|SPRN_MCSR
+mdefine_line|#define SPRN_MCSR&t;0x23C&t;/* Machine Check Status Register */
+macro_line|#ifdef CONFIG_440A
+DECL|macro|MCSR_MCS
+mdefine_line|#define  MCSR_MCS&t;0x80000000 /* Machine Check Summary */
+DECL|macro|MCSR_IB
+mdefine_line|#define  MCSR_IB&t;0x40000000 /* Instruction PLB Error */
+DECL|macro|MCSR_DRB
+mdefine_line|#define  MCSR_DRB&t;0x20000000 /* Data Read PLB Error */
+DECL|macro|MCSR_DWB
+mdefine_line|#define  MCSR_DWB&t;0x10000000 /* Data Write PLB Error */
+DECL|macro|MCSR_TLBP
+mdefine_line|#define  MCSR_TLBP&t;0x08000000 /* TLB Parity Error */
+DECL|macro|MCSR_ICP
+mdefine_line|#define  MCSR_ICP&t;0x04000000 /* I-Cache Parity Error */
+DECL|macro|MCSR_DCSP
+mdefine_line|#define  MCSR_DCSP&t;0x02000000 /* D-Cache Search Parity Error */
+DECL|macro|MCSR_DCFP
+mdefine_line|#define  MCSR_DCFP&t;0x01000000 /* D-Cache Flush Parity Error */
+DECL|macro|MCSR_IMPE
+mdefine_line|#define  MCSR_IMPE&t;0x00800000 /* Imprecise Machine Check Exception */
+macro_line|#endif
 DECL|macro|SPRN_ZPR
 mdefine_line|#define SPRN_ZPR&t;0x3B0&t;/* Zone Protection Register (40x) */
 DECL|macro|SPRN_MMUCR
@@ -191,6 +217,8 @@ multiline_comment|/*&n; * DBSR bits which have conflicting definitions on true B
 macro_line|#ifdef CONFIG_BOOKE
 DECL|macro|DBSR_IC
 mdefine_line|#define DBSR_IC&t;&t;0x08000000&t;/* Instruction Completion */
+DECL|macro|DBSR_BT
+mdefine_line|#define DBSR_BT&t;&t;0x04000000&t;/* Branch Taken */
 DECL|macro|DBSR_TIE
 mdefine_line|#define DBSR_TIE&t;0x01000000&t;/* Trap Instruction Event */
 macro_line|#endif
@@ -370,6 +398,10 @@ mdefine_line|#define CSRR0&t;SPRN_SRR2&t;/* Logically and functionally equivalen
 DECL|macro|CSRR1
 mdefine_line|#define CSRR1&t;SPRN_SRR3&t;/* Logically and functionally equivalent. */
 macro_line|#endif
+DECL|macro|MCSRR0
+mdefine_line|#define MCSRR0&t;SPRN_MCSRR0&t;/* Machine Check Save and Restore Register 0 */
+DECL|macro|MCSRR1
+mdefine_line|#define MCSRR1&t;SPRN_MCSRR1&t;/* Machine Check Save and Restore Register 1 */
 DECL|macro|DCMP
 mdefine_line|#define DCMP&t;SPRN_DCMP&t;/* Data TLB Compare Register */
 DECL|macro|SPRG4R

@@ -44,11 +44,7 @@ suffix:semicolon
 r_extern
 r_char
 id|no_int_routing
-id|__initdata
-suffix:semicolon
-r_extern
-id|cpumask_t
-id|phys_cpu_present_map
+id|__devinitdata
 suffix:semicolon
 r_extern
 id|cpumask_t
@@ -78,8 +74,6 @@ r_int
 r_int
 id|ap_wakeup_vector
 suffix:semicolon
-DECL|macro|cpu_possible_map
-mdefine_line|#define cpu_possible_map phys_cpu_present_map
 multiline_comment|/*&n; * Function to map hard smp processor id to logical id.  Slow, so don&squot;t use this in&n; * performance-critical code.&n; */
 r_static
 r_inline
@@ -292,6 +286,19 @@ id|cpu
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|cpu_die
+(paren
+r_void
+)paren
+id|__attribute__
+(paren
+(paren
+id|noreturn
+)paren
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|__cpu_up
 (paren
@@ -362,6 +369,22 @@ id|smp_send_reschedule
 (paren
 r_int
 id|cpu
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|lock_ipi_calllock
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|unlock_ipi_calllock
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */

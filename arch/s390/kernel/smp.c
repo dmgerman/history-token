@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/sigp.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -2479,6 +2480,86 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_struct
+id|cpu
+comma
+id|cpu_devices
+)paren
+suffix:semicolon
+DECL|function|topology_init
+r_static
+r_int
+id|__init
+id|topology_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|cpu
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|for_each_cpu
+c_func
+(paren
+id|cpu
+)paren
+(brace
+id|ret
+op_assign
+id|register_cpu
+c_func
+(paren
+op_amp
+id|per_cpu
+c_func
+(paren
+id|cpu_devices
+comma
+id|cpu
+)paren
+comma
+id|cpu
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;topology_init: register_cpu %d &quot;
+l_string|&quot;failed (%d)&bslash;n&quot;
+comma
+id|cpu
+comma
+id|ret
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|topology_init
+id|subsys_initcall
+c_func
+(paren
+id|topology_init
+)paren
+suffix:semicolon
 DECL|variable|cpu_possible_map
 id|EXPORT_SYMBOL
 c_func

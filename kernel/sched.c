@@ -7,9 +7,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
-macro_line|#include &lt;linux
-singleline_comment|//pagemap.h&gt;
-macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
@@ -52,14 +49,6 @@ DECL|macro|NS_TO_JIFFIES
 mdefine_line|#define NS_TO_JIFFIES(TIME)&t;((TIME) / (1000000000 / HZ))
 DECL|macro|JIFFIES_TO_NS
 mdefine_line|#define JIFFIES_TO_NS(TIME)&t;((TIME) * (1000000000 / HZ))
-macro_line|#ifndef JIFFIES_TO_MSEC
-DECL|macro|JIFFIES_TO_MSEC
-macro_line|# define JIFFIES_TO_MSEC(x) ((x) * 1000 / HZ)
-macro_line|#endif
-macro_line|#ifndef MSEC_TO_JIFFIES
-DECL|macro|MSEC_TO_JIFFIES
-macro_line|# define MSEC_TO_JIFFIES(x) ((x) * HZ / 1000)
-macro_line|#endif
 multiline_comment|/*&n; * These are the &squot;tuning knobs&squot; of the scheduler:&n; *&n; * Minimum timeslice is 10 msecs, default timeslice is 100 msecs,&n; * maximum timeslice is 200 msecs. Timeslices get refilled after&n; * they expire.&n; */
 DECL|macro|MIN_TIMESLICE
 mdefine_line|#define MIN_TIMESLICE&t;&t;( 10 * HZ / 1000)
@@ -2980,7 +2969,7 @@ id|sum
 op_assign
 l_int|0
 suffix:semicolon
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|i
@@ -3018,7 +3007,7 @@ id|sum
 op_assign
 l_int|0
 suffix:semicolon
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|i
@@ -3054,7 +3043,7 @@ id|sum
 op_assign
 l_int|0
 suffix:semicolon
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|i
@@ -3791,13 +3780,6 @@ c_func
 (paren
 op_amp
 id|req.done
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * we want a new context here. This eliminates TLB&n;&t;&t; * flushes on the cpus where the process executed prior to&n;&t;&t; * the migration.&n;&t;&t; */
-id|tlb_migrate_prepare
-c_func
-(paren
-id|current-&gt;mm
 )paren
 suffix:semicolon
 r_return
@@ -5882,7 +5864,7 @@ suffix:semicolon
 multiline_comment|/* scale ms to jiffies */
 id|interval
 op_assign
-id|MSEC_TO_JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|interval
@@ -7591,6 +7573,10 @@ id|mode
 comma
 r_int
 id|sync
+comma
+r_void
+op_star
+id|key
 )paren
 (brace
 id|task_t
@@ -7638,6 +7624,10 @@ id|nr_exclusive
 comma
 r_int
 id|sync
+comma
+r_void
+op_star
+id|key
 )paren
 (brace
 r_struct
@@ -7695,6 +7685,8 @@ comma
 id|mode
 comma
 id|sync
+comma
+id|key
 )paren
 op_logical_and
 (paren
@@ -7728,6 +7720,10 @@ id|mode
 comma
 r_int
 id|nr_exclusive
+comma
+r_void
+op_star
+id|key
 )paren
 (brace
 r_int
@@ -7753,6 +7749,8 @@ comma
 id|nr_exclusive
 comma
 l_int|0
+comma
+id|key
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -7798,6 +7796,8 @@ comma
 l_int|1
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -7874,6 +7874,8 @@ comma
 id|nr_exclusive
 comma
 id|sync
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -7935,6 +7937,8 @@ comma
 l_int|1
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -7998,6 +8002,8 @@ comma
 l_int|0
 comma
 l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -9865,6 +9871,11 @@ op_amp
 id|rq-&gt;lock
 )paren
 suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|preempt_enable_no_resched
 c_func
 (paren
@@ -10822,7 +10833,7 @@ suffix:semicolon
 )brace
 DECL|function|init_idle
 r_void
-id|__init
+id|__devinit
 id|init_idle
 c_func
 (paren
@@ -10946,10 +10957,10 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * In a system that switches off the HZ timer idle_cpu_mask&n; * indicates which cpus entered this state. This is used&n; * in the rcu update to wait only for active cpus. For system&n; * which do not switch off the HZ timer idle_cpu_mask should&n; * always be CPU_MASK_NONE.&n; */
-DECL|variable|idle_cpu_mask
+multiline_comment|/*&n; * In a system that switches off the HZ timer nohz_cpu_mask&n; * indicates which cpus entered this state. This is used&n; * in the rcu update to wait only for active cpus. For system&n; * which do not switch off the HZ timer nohz_cpu_mask should&n; * always be CPU_MASK_NONE.&n; */
+DECL|variable|nohz_cpu_mask
 id|cpumask_t
-id|idle_cpu_mask
+id|nohz_cpu_mask
 op_assign
 id|CPU_MASK_NONE
 suffix:semicolon

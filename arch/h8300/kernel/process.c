@@ -54,7 +54,7 @@ c_func
 )paren
 )paren
 (brace
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -65,7 +65,7 @@ c_func
 l_string|&quot;sleep&quot;
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -247,13 +247,7 @@ id|regs
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;PC: %08lx  Status: %02x&bslash;n&quot;
+l_string|&quot;&bslash;nPC: %08lx  Status: %02x&quot;
 comma
 id|regs-&gt;pc
 comma
@@ -263,7 +257,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ORIG_ER0: %08lx ER0: %08lx ER1: %08lx&bslash;n&quot;
+l_string|&quot;&bslash;nORIG_ER0: %08lx ER0: %08lx ER1: %08lx&quot;
 comma
 id|regs-&gt;orig_er0
 comma
@@ -275,7 +269,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ER2: %08lx ER3: %08lx ER4: %08lx ER5: %08lx&bslash;n&quot;
+l_string|&quot;&bslash;nER2: %08lx ER3: %08lx ER4: %08lx ER5: %08lx&quot;
 comma
 id|regs-&gt;er2
 comma
@@ -289,7 +283,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ER6&squot; %08lx &quot;
+l_string|&quot;&bslash;nER6&squot; %08lx &quot;
 comma
 id|regs-&gt;er6
 )paren

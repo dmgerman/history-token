@@ -3,7 +3,6 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_ASH_H__
 DECL|macro|__ASM_ASH_H__
 mdefine_line|#define __ASM_ASH_H__
-macro_line|#include &lt;asm/ibm_ocp.h&gt;
 macro_line|#include &lt;platforms/4xx/ibmnp405h.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Data structure defining board information maintained by the boot&n; * ROM on IBM&squot;s &quot;Ash&quot; evaluation board. An effort has been made to&n; * keep the field names consistent with the 8xx &squot;bd_t&squot; board info&n; * structures.&n; */
