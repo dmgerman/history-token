@@ -511,16 +511,6 @@ id|PAGE_MASK
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; *  Used to retrieve the host structure when the &n; *  driver is called from the proc FS.&n; */
-DECL|variable|first_host
-r_static
-r_struct
-id|Scsi_Host
-op_star
-id|first_host
-op_assign
-l_int|NULL
-suffix:semicolon
 DECL|macro|scsi_data_direction
 mdefine_line|#define scsi_data_direction(cmd)&t;(cmd-&gt;sc_data_direction)
 multiline_comment|/*&n; *  Driver host data structure.&n; */
@@ -7364,17 +7354,6 @@ id|sym_timer
 (paren
 id|np
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; *  Done.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|first_host
-)paren
-id|first_host
-op_assign
-id|instance
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Fill Linux host instance structure&n;&t; *  and return success.&n;&t; */
 id|instance-&gt;max_channel
