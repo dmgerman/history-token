@@ -547,6 +547,8 @@ DECL|macro|strcpy
 macro_line|#undef strcpy 
 DECL|macro|strcat
 macro_line|#undef strcat
+DECL|macro|memcmp
+macro_line|#undef memcmp
 r_extern
 r_void
 op_star
@@ -686,6 +688,25 @@ r_char
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|memcmp
+c_func
+(paren
+r_const
+r_void
+op_star
+id|cs
+comma
+r_const
+r_void
+op_star
+id|ct
+comma
+r_int
+id|count
+)paren
+suffix:semicolon
 DECL|variable|memset
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -796,6 +817,13 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|__memcpy
+)paren
+suffix:semicolon
+DECL|variable|memcmp
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|memcmp
 )paren
 suffix:semicolon
 multiline_comment|/* syscall export needed for misdesigned sound drivers. */
