@@ -384,9 +384,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|parse_rock_ridge_inode_internal
+r_static
 r_int
-(def_block
+DECL|function|parse_rock_ridge_inode_internal
 id|parse_rock_ridge_inode_internal
 c_func
 (paren
@@ -470,7 +470,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-suffix:semicolon
 id|repeat
 suffix:colon
 (brace
@@ -1460,7 +1459,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-)def_block
 DECL|function|get_symlink_chunk
 r_static
 r_char
@@ -1836,12 +1834,10 @@ l_int|14
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_return
 id|result
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/* readpage() for symlinks: reads symlink contents into the page and either&n;   makes it uptodate and returns 0 or returns error (-EIO) */
 DECL|function|rock_ridge_symlink_readpage
 r_static
