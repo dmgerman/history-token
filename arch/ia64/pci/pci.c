@@ -2291,6 +2291,27 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * ia64_pci_get_legacy_mem - generic legacy mem routine&n; * @bus: bus to get legacy memory base address for&n; *&n; * Find the base of legacy memory for @bus.  This is typically the first&n; * megabyte of bus address space for @bus or is simply 0 on platforms whose&n; * chipsets support legacy I/O and memory routing.  Returns the base address&n; * or an error pointer if an error occurred.&n; *&n; * This is the ia64 generic version of this routine.  Other platforms&n; * are free to override it with a machine vector.&n; */
+DECL|function|ia64_pci_get_legacy_mem
+r_char
+op_star
+id|ia64_pci_get_legacy_mem
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+)paren
+(brace
+r_return
+(paren
+r_char
+op_star
+)paren
+id|__IA64_UNCACHED_OFFSET
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * pci_mmap_legacy_page_range - map legacy memory space to userland&n; * @bus: bus whose legacy space we&squot;re mapping&n; * @vma: vma passed in by mmap&n; *&n; * Map legacy memory space for this device back to userspace using a machine&n; * vector to get the base address.&n; */
 r_int
 DECL|function|pci_mmap_legacy_page_range
@@ -2389,27 +2410,6 @@ id|EAGAIN
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * ia64_pci_get_legacy_mem - generic legacy mem routine&n; * @bus: bus to get legacy memory base address for&n; *&n; * Find the base of legacy memory for @bus.  This is typically the first&n; * megabyte of bus address space for @bus or is simply 0 on platforms whose&n; * chipsets support legacy I/O and memory routing.  Returns the base address&n; * or an error pointer if an error occurred.&n; *&n; * This is the ia64 generic version of this routine.  Other platforms&n; * are free to override it with a machine vector.&n; */
-DECL|function|ia64_pci_get_legacy_mem
-r_char
-op_star
-id|ia64_pci_get_legacy_mem
-c_func
-(paren
-r_struct
-id|pci_bus
-op_star
-id|bus
-)paren
-(brace
-r_return
-(paren
-r_char
-op_star
-)paren
-id|__IA64_UNCACHED_OFFSET
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ia64_pci_legacy_read - read from legacy I/O space&n; * @bus: bus to read&n; * @port: legacy port value&n; * @val: caller allocated storage for returned value&n; * @size: number of bytes to read&n; *&n; * Simply reads @size bytes from @port and puts the result in @val.&n; *&n; * Again, this (and the write routine) are generic versions that can be&n; * overridden by the platform.  This is necessary on platforms that don&squot;t&n; * support legacy I/O routing or that hard fail on legacy I/O timeouts.&n; */
