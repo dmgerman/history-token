@@ -126,16 +126,19 @@ id|irqaction
 id|anakin_irq
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Anakin IRQ&quot;
 comma
+dot
 id|handler
-suffix:colon
+op_assign
 id|anakin_interrupt
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|SA_INTERRUPT
 )brace
 suffix:semicolon

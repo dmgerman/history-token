@@ -248,8 +248,9 @@ id|adsbitsy_port_fns
 id|__initdata
 op_assign
 (brace
+dot
 id|open
-suffix:colon
+op_assign
 id|adsbitsy_uart_open
 comma
 )brace

@@ -171,8 +171,9 @@ id|simpad_port_fns
 id|__initdata
 op_assign
 (brace
+dot
 id|pm
-suffix:colon
+op_assign
 id|simpad_uart_pm
 comma
 )brace

@@ -209,7 +209,7 @@ multiline_comment|/*&n; * Figure out the MAX IRQ number.&n; *&n; * If we have an
 macro_line|#ifdef CONFIG_SA1111
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;(S1_BVD1_STSCHG + 1)
-macro_line|#elif defined(CONFIG_SA1100_GRAPHICSCLIENT) || &bslash;&n;      defined(CONFIG_SA1100_GRAPHICSMASTER)
+macro_line|#elif defined(CONFIG_SA1100_GRAPHICSCLIENT) || &bslash;&n;      defined(CONFIG_SA1100_GRAPHICSMASTER) || &bslash;&n;      defined(CONFIG_SA1100_H3800)
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;(IRQ_BOARD_END)
 macro_line|#else
@@ -228,4 +228,41 @@ DECL|macro|IRQ_SYSTEM3_SA1111
 mdefine_line|#define IRQ_SYSTEM3_SA1111&t;(IRQ_BOARD_START + 0)
 DECL|macro|IRQ_SYSTEM3_SMC9196
 mdefine_line|#define IRQ_SYSTEM3_SMC9196&t;(IRQ_BOARD_START + 1)
+multiline_comment|/* H3800-specific IRQs (CONFIG_SA1100_H3800) */
+DECL|macro|H3800_KPIO_IRQ_START
+mdefine_line|#define H3800_KPIO_IRQ_START    (IRQ_BOARD_START)
+DECL|macro|IRQ_H3800_KEY
+mdefine_line|#define IRQ_H3800_KEY           (IRQ_BOARD_START + 0)
+DECL|macro|IRQ_H3800_SPI
+mdefine_line|#define IRQ_H3800_SPI           (IRQ_BOARD_START + 1)
+DECL|macro|IRQ_H3800_OWM
+mdefine_line|#define IRQ_H3800_OWM           (IRQ_BOARD_START + 2)
+DECL|macro|IRQ_H3800_ADC
+mdefine_line|#define IRQ_H3800_ADC           (IRQ_BOARD_START + 3)
+DECL|macro|IRQ_H3800_UART_0
+mdefine_line|#define IRQ_H3800_UART_0        (IRQ_BOARD_START + 4)
+DECL|macro|IRQ_H3800_UART_1
+mdefine_line|#define IRQ_H3800_UART_1        (IRQ_BOARD_START + 5)
+DECL|macro|IRQ_H3800_TIMER_0
+mdefine_line|#define IRQ_H3800_TIMER_0       (IRQ_BOARD_START + 6)
+DECL|macro|IRQ_H3800_TIMER_1
+mdefine_line|#define IRQ_H3800_TIMER_1       (IRQ_BOARD_START + 7)
+DECL|macro|IRQ_H3800_TIMER_2
+mdefine_line|#define IRQ_H3800_TIMER_2       (IRQ_BOARD_START + 8)
+DECL|macro|H3800_KPIO_IRQ_COUNT
+mdefine_line|#define H3800_KPIO_IRQ_COUNT    9
+DECL|macro|H3800_GPIO_IRQ_START
+mdefine_line|#define H3800_GPIO_IRQ_START    (IRQ_BOARD_START + 9)
+DECL|macro|IRQ_H3800_PEN
+mdefine_line|#define IRQ_H3800_PEN           (IRQ_BOARD_START + 9)
+DECL|macro|IRQ_H3800_SD_DETECT
+mdefine_line|#define IRQ_H3800_SD_DETECT     (IRQ_BOARD_START + 10)
+DECL|macro|IRQ_H3800_EAR_IN
+mdefine_line|#define IRQ_H3800_EAR_IN        (IRQ_BOARD_START + 11)
+DECL|macro|IRQ_H3800_USB_DETECT
+mdefine_line|#define IRQ_H3800_USB_DETECT    (IRQ_BOARD_START + 12)
+DECL|macro|IRQ_H3800_SD_CON_SLT
+mdefine_line|#define IRQ_H3800_SD_CON_SLT    (IRQ_BOARD_START + 13)
+DECL|macro|H3800_GPIO_IRQ_COUNT
+mdefine_line|#define H3800_GPIO_IRQ_COUNT    5
 eof

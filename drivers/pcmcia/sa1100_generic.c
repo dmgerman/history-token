@@ -235,7 +235,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;%s(): FAST%u %lx  BSM%u %lx  BSA%u %lx  BSIO%u %lx&bslash;n&quot;
+l_string|&quot;%s(): FAST%u %X  BSM%u %X  BSA%u %X  BSIO%u %X&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3755,6 +3755,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|sa1100_register_pcmcia
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sa1100_register_pcmcia
+)paren
+suffix:semicolon
 multiline_comment|/* sa1100_unregister_pcmcia()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^^&n; *&n; * Unregister a previously registered pcmcia driver&n; */
 DECL|function|sa1100_unregister_pcmcia
 r_void
@@ -3881,6 +3888,13 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|sa1100_unregister_pcmcia
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sa1100_unregister_pcmcia
+)paren
+suffix:semicolon
 multiline_comment|/* sa1100_pcmcia_init()&n; * ^^^^^^^^^^^^^^^^^^^^&n; *&n; * This routine performs a basic sanity check to ensure that this&n; * kernel has been built with the appropriate board-specific low-level&n; * PCMCIA support, performs low-level PCMCIA initialization, registers&n; * this socket driver with Card Services, and then spawns the daemon&n; * thread which is the real workhorse of the socket driver.&n; *&n; * Returns: 0 on success, -1 on error&n; */
 DECL|function|sa1100_pcmcia_init
 r_static
