@@ -3626,6 +3626,10 @@ l_string|&quot;nfsd: no export %x/%lx for %s&bslash;n&quot;
 comma
 id|nxp-&gt;ex_dev
 comma
+(paren
+r_int
+r_int
+)paren
 id|nxp-&gt;ex_ino
 comma
 id|nxp-&gt;ex_client
