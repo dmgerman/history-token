@@ -4578,14 +4578,6 @@ id|ret
 r_return
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_ge
-l_int|0
-)paren
-(brace
 id|aio_complete
 c_func
 (paren
@@ -4599,7 +4591,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|out_put_req
 suffix:colon
 id|aio_put_req
