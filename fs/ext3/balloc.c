@@ -5409,6 +5409,19 @@ l_int|1
 r_return
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|group
+op_amp
+l_int|1
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_return
 (paren
 id|test_root
@@ -5416,7 +5429,7 @@ c_func
 (paren
 id|group
 comma
-l_int|3
+l_int|7
 )paren
 op_logical_or
 id|test_root
@@ -5432,7 +5445,7 @@ c_func
 (paren
 id|group
 comma
-l_int|7
+l_int|3
 )paren
 )paren
 suffix:semicolon
