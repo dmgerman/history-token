@@ -6,6 +6,7 @@ macro_line|#include &lt;time.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;errno.h&gt;
+macro_line|#include &lt;string.h&gt;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;user.h&quot;

@@ -136,6 +136,7 @@ r_struct
 id|address_space_operations
 id|hostfs_link_aops
 suffix:semicolon
+macro_line|#ifndef MODULE
 DECL|function|hostfs_args
 r_static
 r_int
@@ -293,6 +294,7 @@ l_string|&quot;    The only flag currently supported is &squot;append&squot;, wh
 l_string|&quot;    files opened by hostfs will be opened in append mode.&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|function|dentry_name
 r_static
 r_char
