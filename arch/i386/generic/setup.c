@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *&t;Machine specific setup for generic&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
@@ -125,4 +126,23 @@ id|irq0
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MCA
+DECL|function|mca_nmi_hook
+r_void
+id|__init
+id|mca_nmi_hook
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* If I recall correctly, there&squot;s a whole bunch of other things that&n;&t; * we can do to check for NMI problems, but that&squot;s all I know about&n;&t; * at the moment.&n;&t; */
+id|printk
+c_func
+(paren
+l_string|&quot;NMI generated from unknown source!&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 eof

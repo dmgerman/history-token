@@ -1184,11 +1184,9 @@ r_return
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* If I recall correctly, there&squot;s a whole bunch of other things that&n;&t; * we can do to check for NMI problems, but that&squot;s all I know about&n;&t; * at the moment.&n;&t; */
-id|printk
+id|mca_nmi_hook
 c_func
 (paren
-l_string|&quot;NMI generated from unknown source!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
