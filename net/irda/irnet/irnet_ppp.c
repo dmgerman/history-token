@@ -1886,16 +1886,16 @@ comma
 l_string|&quot;Channel still registered - deregistering !&bslash;n&quot;
 )paren
 suffix:semicolon
+id|ap-&gt;ppp_open
+op_assign
+l_int|0
+suffix:semicolon
 id|ppp_unregister_channel
 c_func
 (paren
 op_amp
 id|ap-&gt;chan
 )paren
-suffix:semicolon
-id|ap-&gt;ppp_open
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 id|kfree
@@ -2417,6 +2417,10 @@ c_cond
 id|ap-&gt;ppp_open
 )paren
 (brace
+id|ap-&gt;ppp_open
+op_assign
+l_int|0
+suffix:semicolon
 id|ppp_unregister_channel
 c_func
 (paren
@@ -2433,10 +2437,6 @@ id|FS_ERROR
 comma
 l_string|&quot;Channel not registered !&bslash;n&quot;
 )paren
-suffix:semicolon
-id|ap-&gt;ppp_open
-op_assign
-l_int|0
 suffix:semicolon
 id|err
 op_assign

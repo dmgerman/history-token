@@ -3118,6 +3118,14 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* Check if client has already closed the TSAP and gone away */
+r_if
+c_cond
+(paren
+id|self-&gt;close_pend
+)paren
+r_return
+suffix:semicolon
 multiline_comment|/*&n;&t; *  Inform service user if he has requested it&n;&t; */
 r_if
 c_cond
@@ -5445,7 +5453,7 @@ id|skb
 r_int
 id|err
 suffix:semicolon
-multiline_comment|/* Check if client has already tried to close the TSAP */
+multiline_comment|/* Check if client has already closed the TSAP and gone away */
 r_if
 c_cond
 (paren
