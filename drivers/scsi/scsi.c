@@ -1901,12 +1901,6 @@ op_ne
 l_int|0
 )paren
 (brace
-id|scsi_delete_timer
-c_func
-(paren
-id|SCpnt
-)paren
-suffix:semicolon
 id|scsi_mlqueue_insert
 c_func
 (paren
