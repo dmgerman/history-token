@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: diva.c,v 1.21 2004/03/21 17:30:25 armin Exp $ */
+multiline_comment|/* $Id: diva.c,v 1.21.4.1 2004/05/08 14:33:43 armin Exp $ */
 DECL|macro|CARDTYPE_H_WANT_DATA
 mdefine_line|#define CARDTYPE_H_WANT_DATA            1
 DECL|macro|CARDTYPE_H_WANT_IDI_DATA
@@ -484,11 +484,11 @@ c_cond
 (paren
 id|what
 op_logical_and
-op_logical_neg
-id|list_empty
-c_func
 (paren
-id|what
+id|what-&gt;next
+op_ne
+op_amp
+id|adapter_queue
 )paren
 )paren
 id|a
