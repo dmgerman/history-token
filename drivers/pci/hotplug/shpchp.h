@@ -4,6 +4,7 @@ DECL|macro|_SHPCHP_H
 mdefine_line|#define _SHPCHP_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/io.h&gt;&t;&t;
 macro_line|#include &quot;pci_hotplug.h&quot;
@@ -1667,12 +1668,6 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1681,33 +1676,23 @@ id|shpchp_poll_mode
 )paren
 (brace
 multiline_comment|/* Sleep for up to 1 second */
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-l_int|1
-op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
 multiline_comment|/* Sleep for up to 2 seconds */
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-l_int|2
-op_star
-id|HZ
+l_int|2000
 )paren
 suffix:semicolon
 )brace
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
