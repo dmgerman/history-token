@@ -922,7 +922,7 @@ id|UPF_SPD_CUST
 )paren
 id|quot
 op_assign
-id|info-&gt;state-&gt;custom_divisor
+id|port-&gt;custom_divisor
 suffix:semicolon
 r_else
 id|quot
@@ -2287,7 +2287,7 @@ id|state-&gt;closing_wait
 suffix:semicolon
 id|tmp.custom_divisor
 op_assign
-id|state-&gt;custom_divisor
+id|port-&gt;custom_divisor
 suffix:semicolon
 id|tmp.hub6
 op_assign
@@ -2490,7 +2490,7 @@ id|port-&gt;flags
 suffix:semicolon
 id|old_custom_divisor
 op_assign
-id|state-&gt;custom_divisor
+id|port-&gt;custom_divisor
 suffix:semicolon
 r_if
 c_cond
@@ -2576,7 +2576,7 @@ id|UPF_USR_MASK
 )paren
 )paren
 suffix:semicolon
-id|state-&gt;custom_divisor
+id|port-&gt;custom_divisor
 op_assign
 id|new_serial.custom_divisor
 suffix:semicolon
@@ -2860,7 +2860,7 @@ id|new_serial.flags
 op_amp
 id|UPF_FLAGS
 suffix:semicolon
-id|state-&gt;custom_divisor
+id|port-&gt;custom_divisor
 op_assign
 id|new_serial.custom_divisor
 suffix:semicolon
@@ -2936,7 +2936,7 @@ id|UPF_SPD_MASK
 op_logical_or
 id|old_custom_divisor
 op_ne
-id|state-&gt;custom_divisor
+id|port-&gt;custom_divisor
 )paren
 id|uart_change_speed
 c_func
