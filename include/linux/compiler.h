@@ -1,6 +1,14 @@
 macro_line|#ifndef __LINUX_COMPILER_H
 DECL|macro|__LINUX_COMPILER_H
 mdefine_line|#define __LINUX_COMPILER_H
+macro_line|#if (__GNUC__ &gt; 3) || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt;= 1)
+DECL|macro|inline
+mdefine_line|#define inline&t;&t;__inline__ __attribute__((always_inline))
+DECL|macro|__inline__
+mdefine_line|#define __inline__&t;__inline__ __attribute__((always_inline))
+DECL|macro|__inline
+mdefine_line|#define __inline&t;__inline__ __attribute__((always_inline))
+macro_line|#endif
 multiline_comment|/* Somewhere in the middle of the GCC 2.96 development cycle, we implemented&n;   a mechanism by which the user can annotate likely branch directions and&n;   expect the blocks to be reordered appropriately.  Define __builtin_expect&n;   to nothing for earlier compilers.  */
 macro_line|#if __GNUC__ == 2 &amp;&amp; __GNUC_MINOR__ &lt; 96
 DECL|macro|__builtin_expect
