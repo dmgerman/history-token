@@ -83,7 +83,7 @@ c_loop
 (paren
 id|wandev
 op_assign
-id|router_devlist
+id|wanrouter_router_devlist
 suffix:semicolon
 id|l
 op_decrement
@@ -145,7 +145,7 @@ l_int|1
 )paren
 ques
 c_cond
-id|router_devlist
+id|wanrouter_router_devlist
 suffix:colon
 id|wandev-&gt;next
 suffix:semicolon
