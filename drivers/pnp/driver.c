@@ -451,7 +451,8 @@ l_int|0
 )paren
 (brace
 r_return
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 r_if
