@@ -307,7 +307,7 @@ op_assign
 id|LIST_POISON2
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * list_del_rcu - deletes entry from list without re-initialization&n; * @entry: the element to delete from the list.&n; * Note: list_empty on entry does not return true after this, &n; * the entry is in an undefined state. It is useful for RCU based&n; * lockfree traversal.&n; */
+multiline_comment|/**&n; * list_del_rcu - deletes entry from list without re-initialization&n; * @entry: the element to delete from the list.&n; *&n; * Note: list_empty on entry does not return true after this, &n; * the entry is in an undefined state. It is useful for RCU based&n; * lockfree traversal.&n; *&n; * In particular, it means that we can not poison the forward &n; * pointers that may still be used for walking the list.&n; */
 DECL|function|list_del_rcu
 r_static
 r_inline
@@ -328,10 +328,6 @@ id|entry-&gt;prev
 comma
 id|entry-&gt;next
 )paren
-suffix:semicolon
-id|entry-&gt;next
-op_assign
-id|LIST_POISON1
 suffix:semicolon
 id|entry-&gt;prev
 op_assign
@@ -782,8 +778,31 @@ op_assign
 id|LIST_POISON2
 suffix:semicolon
 )brace
-DECL|macro|hlist_del_rcu
-mdefine_line|#define hlist_del_rcu hlist_del  /* list_del_rcu is identical too? */
+multiline_comment|/**&n; * hlist_del_rcu - deletes entry from hash list without re-initialization&n; * @entry: the element to delete from the hash list.&n; *&n; * Note: list_unhashed() on entry does not return true after this, &n; * the entry is in an undefined state. It is useful for RCU based&n; * lockfree traversal.&n; *&n; * In particular, it means that we can not poison the forward&n; * pointers that may still be used for walking the hash list.&n; */
+DECL|function|hlist_del_rcu
+r_static
+r_inline
+r_void
+id|hlist_del_rcu
+c_func
+(paren
+r_struct
+id|hlist_node
+op_star
+id|n
+)paren
+(brace
+id|__hlist_del
+c_func
+(paren
+id|n
+)paren
+suffix:semicolon
+id|n-&gt;pprev
+op_assign
+id|LIST_POISON2
+suffix:semicolon
+)brace
 DECL|function|hlist_del_init
 r_static
 id|__inline__
