@@ -1651,6 +1651,21 @@ id|next
 op_assign
 id|tmp-&gt;next
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_lru
+)paren
+)paren
+(brace
+id|dentry_stat.nr_unused
+op_decrement
+suffix:semicolon
 id|list_del_init
 c_func
 (paren
@@ -1658,7 +1673,8 @@ op_amp
 id|dentry-&gt;d_lru
 )paren
 suffix:semicolon
-multiline_comment|/* don&squot;t add non zero d_count dentries &n;&t;&t; * back to d_lru list&n;&t;&t; */
+)brace
+multiline_comment|/* &n;&t;&t; * move only zero ref count dentries to the end &n;&t;&t; * of the unused list for prune_dcache&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1679,6 +1695,9 @@ id|dentry-&gt;d_lru
 comma
 id|dentry_unused.prev
 )paren
+suffix:semicolon
+id|dentry_stat.nr_unused
+op_increment
 suffix:semicolon
 id|found
 op_increment
@@ -1862,6 +1881,21 @@ comma
 id|d_hash
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|this-&gt;d_lru
+)paren
+)paren
+(brace
+id|dentry_stat.nr_unused
+op_decrement
+suffix:semicolon
 id|list_del
 c_func
 (paren
@@ -1869,7 +1903,8 @@ op_amp
 id|this-&gt;d_lru
 )paren
 suffix:semicolon
-multiline_comment|/* don&squot;t add non zero d_count dentries &n;&t;&t;&t; * back to d_lru list&n;&t;&t;&t; */
+)brace
+multiline_comment|/* &n;&t;&t;&t; * move only zero ref count dentries to the end &n;&t;&t;&t; * of the unused list for prune_dcache&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1891,6 +1926,9 @@ comma
 op_amp
 id|dentry_unused
 )paren
+suffix:semicolon
+id|dentry_stat.nr_unused
+op_increment
 suffix:semicolon
 id|found
 op_increment
