@@ -482,10 +482,12 @@ id|csum_partial_copy_nocheck
 c_func
 (paren
 r_const
+r_int
 r_char
 op_star
 id|src
 comma
+r_int
 r_char
 op_star
 id|dst
@@ -539,10 +541,12 @@ r_int
 id|csum_partial_copy_from_user
 (paren
 r_const
+r_int
 r_char
 op_star
 id|src
 comma
+r_int
 r_char
 op_star
 id|dst

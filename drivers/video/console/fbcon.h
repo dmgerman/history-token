@@ -394,5 +394,11 @@ op_star
 id|ops
 )paren
 suffix:semicolon
+r_extern
+r_const
+r_struct
+id|consw
+id|fb_con
+suffix:semicolon
 macro_line|#endif /* _VIDEO_FBCON_H */
 eof

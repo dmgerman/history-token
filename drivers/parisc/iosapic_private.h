@@ -152,10 +152,10 @@ id|txn_addr
 suffix:semicolon
 multiline_comment|/* IA64: id_eid  PA: partial HPA */
 DECL|member|txn_data
-id|ulong
+id|u32
 id|txn_data
 suffix:semicolon
-multiline_comment|/* IA64: vector  PA: EIR bit */
+multiline_comment|/* CPU interrupt bit */
 DECL|member|status
 id|u8
 id|status
@@ -166,14 +166,6 @@ id|u8
 id|irqline
 suffix:semicolon
 multiline_comment|/* INTINn(IRQ) */
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|32
-)braket
-suffix:semicolon
-multiline_comment|/* user visible identity */
 )brace
 suffix:semicolon
 DECL|struct|iosapic_info
@@ -186,27 +178,27 @@ id|iosapic_info
 op_star
 id|isi_next
 suffix:semicolon
-multiline_comment|/* list of I/O SAPIC          */
+multiline_comment|/* list of I/O SAPIC */
+DECL|member|addr
+r_void
+id|__iomem
+op_star
+id|addr
+suffix:semicolon
+multiline_comment|/* remapped address */
 DECL|member|isi_hpa
 r_int
 r_int
 id|isi_hpa
 suffix:semicolon
 multiline_comment|/* physical base address */
-DECL|member|isi_region
-r_struct
-id|irq_region
-op_star
-id|isi_region
-suffix:semicolon
-multiline_comment|/* each I/O SAPIC is one region */
 DECL|member|isi_vector
 r_struct
 id|vector_info
 op_star
 id|isi_vector
 suffix:semicolon
-multiline_comment|/* IRdT (IRQ line) array  */
+multiline_comment|/* IRdT (IRQ line) array */
 DECL|member|isi_num_vectors
 r_int
 id|isi_num_vectors
@@ -216,22 +208,13 @@ DECL|member|isi_status
 r_int
 id|isi_status
 suffix:semicolon
-multiline_comment|/* status/flags               */
+multiline_comment|/* status/flags */
 DECL|member|isi_version
 r_int
 r_int
 id|isi_version
 suffix:semicolon
 multiline_comment|/* DEBUG: data fr version reg */
-multiline_comment|/* round up to next cacheline */
-DECL|member|isi_name
-r_char
-id|isi_name
-(braket
-l_int|20
-)braket
-suffix:semicolon
-multiline_comment|/* identify region for users */
 )brace
 suffix:semicolon
 macro_line|#ifdef __IA64__

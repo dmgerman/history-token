@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &quot;w1.h&quot;
 macro_line|#include &quot;w1_io.h&quot;
 macro_line|#include &quot;w1_log.h&quot;
@@ -2846,14 +2845,7 @@ comma
 id|timeout
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-id|refrigerator
+id|try_to_freeze
 c_func
 (paren
 id|PF_FREEZE
@@ -3177,14 +3169,7 @@ comma
 id|timeout
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-id|refrigerator
+id|try_to_freeze
 c_func
 (paren
 id|PF_FREEZE

@@ -1230,8 +1230,13 @@ id|dev_addr
 id|printk
 c_func
 (paren
-l_string|&quot;hwdev DMA mask = 0x%016lx, dev_addr = 0x%016lx&bslash;n&quot;
+l_string|&quot;hwdev DMA mask = 0x%016Lx, dev_addr = 0x%016lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 op_star
 id|hwdev-&gt;dma_mask
 comma

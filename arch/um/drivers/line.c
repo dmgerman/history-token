@@ -2894,10 +2894,6 @@ id|tty
 op_assign
 id|winch-&gt;tty
 suffix:semicolon
-id|line
-op_assign
-id|tty-&gt;driver_data
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2906,6 +2902,10 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|line
+op_assign
+id|tty-&gt;driver_data
+suffix:semicolon
 id|chan_window_size
 c_func
 (paren

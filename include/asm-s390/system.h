@@ -274,8 +274,6 @@ suffix:semicolon
 DECL|macro|finish_arch_switch
 mdefine_line|#define finish_arch_switch(rq, prev) do {&t;&t;&t;&t;     &bslash;&n;&t;set_fs(current-&gt;thread.mm_segment);&t;&t;&t;&t;     &bslash;&n;&t;spin_unlock(&amp;(rq)-&gt;lock);&t;&t;&t;&t;&t;     &bslash;&n;&t;account_system_vtime(prev);&t;&t;&t;&t;&t;     &bslash;&n;&t;local_irq_enable();&t;&t;&t;&t;&t;&t;     &bslash;&n;} while (0)
 macro_line|#else
-DECL|macro|account_system_vtime
-mdefine_line|#define account_system_vtime(prev)
 DECL|macro|finish_arch_switch
 mdefine_line|#define finish_arch_switch(rq, prev) do {&t;&t;&t;&t;     &bslash;&n;&t;set_fs(current-&gt;thread.mm_segment);&t;&t;&t;&t;     &bslash;&n;&t;spin_unlock_irq(&amp;(rq)-&gt;lock);&t;&t;&t;&t;&t;     &bslash;&n;} while (0)
 macro_line|#endif

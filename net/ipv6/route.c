@@ -753,12 +753,13 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;pointer to the last default router chosen. BH is disabled locally.&n; */
 DECL|variable|rt6_dflt_pointer
+r_static
 r_struct
 id|rt6_info
 op_star
 id|rt6_dflt_pointer
 suffix:semicolon
-DECL|variable|rt6_dflt_lock
+r_static
 id|DEFINE_SPINLOCK
 c_func
 (paren

@@ -127,7 +127,6 @@ id|cpufreq_governor_sem
 )paren
 suffix:semicolon
 DECL|function|cpufreq_cpu_get
-r_static
 r_struct
 id|cpufreq_policy
 op_star
@@ -258,8 +257,14 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|cpufreq_cpu_get
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|cpufreq_cpu_get
+)paren
+suffix:semicolon
 DECL|function|cpufreq_cpu_put
-r_static
 r_void
 id|cpufreq_cpu_put
 c_func
@@ -284,6 +289,13 @@ id|cpufreq_driver-&gt;owner
 )paren
 suffix:semicolon
 )brace
+DECL|variable|cpufreq_cpu_put
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|cpufreq_cpu_put
+)paren
+suffix:semicolon
 multiline_comment|/*********************************************************************&n; *                     UNIFIED DEBUG HELPERS                         *&n; *********************************************************************/
 macro_line|#ifdef CONFIG_CPU_FREQ_DEBUG
 multiline_comment|/* what part(s) of the CPUfreq subsystem are debugged? */
@@ -1044,6 +1056,7 @@ suffix:semicolon
 multiline_comment|/*********************************************************************&n; *                          SYSFS INTERFACE                          *&n; *********************************************************************/
 multiline_comment|/**&n; * cpufreq_parse_governor - parse a governor string&n; */
 DECL|function|cpufreq_parse_governor
+r_static
 r_int
 id|cpufreq_parse_governor
 (paren
@@ -3063,6 +3076,13 @@ id|flags
 )paren
 suffix:semicolon
 macro_line|#endif
+id|down
+c_func
+(paren
+op_amp
+id|data-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3074,6 +3094,17 @@ c_func
 id|data
 comma
 id|CPUFREQ_GOV_STOP
+)paren
+suffix:semicolon
+id|cpufreq_driver-&gt;target
+op_assign
+l_int|NULL
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|data-&gt;lock
 )paren
 suffix:semicolon
 id|kobject_unregister
@@ -3481,6 +3512,43 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|cpufreq_driver-&gt;resume
+)paren
+(brace
+id|ret
+op_assign
+id|cpufreq_driver
+op_member_access_from_pointer
+id|resume
+c_func
+(paren
+id|cpu_policy
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;cpufreq: resume failed in -&gt;resume step on CPU %u&bslash;n&quot;
+comma
+id|cpu_policy-&gt;cpu
+)paren
+suffix:semicolon
+id|cpufreq_cpu_put
+c_func
+(paren
+id|cpu_policy
+)paren
+suffix:semicolon
+r_return
+(paren
+id|ret
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 op_logical_neg
 (paren
 id|cpufreq_driver-&gt;flags
@@ -3875,6 +3943,8 @@ c_func
 (paren
 id|policy-&gt;cpu
 )paren
+op_logical_and
+id|cpufreq_driver-&gt;target
 )paren
 id|retval
 op_assign

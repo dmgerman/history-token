@@ -1715,6 +1715,7 @@ c_cond
 id|op
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t;&t; * This is called when entering user mode; after&n;&t;&t;&t;&t; * this, we start intercepting syscalls.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * In fact, a process is started in kernel mode,&n;&t;&t;&t;&t; * so with is_tracing() == 0 (and that is reset&n;&t;&t;&t;&t; * when executing syscalls, since UML kernel has&n;&t;&t;&t;&t; * the right to do syscalls);&n;&t;&t;&t;&t; */
 r_case
 id|OP_TRACE_ON
 suffix:colon
@@ -1864,6 +1865,7 @@ id|tracing
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* local_using_sysemu has been already set&n;&t;&t;&t;&t; * below, since if we are here, is_tracing() on&n;&t;&t;&t;&t; * the traced task was 1, i.e. the process had&n;&t;&t;&t;&t; * already run through one iteration of the&n;&t;&t;&t;&t; * loop which executed a OP_TRACE_ON request.*/
 id|do_syscall
 c_func
 (paren

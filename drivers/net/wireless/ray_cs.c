@@ -725,15 +725,6 @@ suffix:semicolon
 multiline_comment|/* void start_net(ray_dev_t *local); */
 multiline_comment|/*===========================================================================*/
 multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
-multiline_comment|/* Bit map of interrupts to choose from */
-multiline_comment|/* This means pick from 15, 14, 12, 11, 10, 9, 7, 5, 4, and 3 */
-DECL|variable|irq_mask
-r_static
-id|u_long
-id|irq_mask
-op_assign
-l_int|0xdeb8
-suffix:semicolon
 multiline_comment|/* ADHOC=0, Infrastructure=1 */
 DECL|variable|net_type
 r_static
@@ -847,16 +838,6 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-id|module_param
-c_func
-(paren
-id|irq_mask
-comma
-id|ulong
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|module_param
@@ -1591,13 +1572,7 @@ id|IRQ_HANDLE_PRESENT
 suffix:semicolon
 id|link-&gt;irq.IRQInfo1
 op_assign
-id|IRQ_INFO2_VALID
-op_or
 id|IRQ_LEVEL_ID
-suffix:semicolon
-id|link-&gt;irq.IRQInfo2
-op_assign
-id|irq_mask
 suffix:semicolon
 id|link-&gt;irq.Handler
 op_assign

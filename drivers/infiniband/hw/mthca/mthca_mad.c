@@ -680,8 +680,15 @@ comma
 id|u8
 id|port_num
 comma
-id|u16
-id|slid
+r_struct
+id|ib_wc
+op_star
+id|in_wc
+comma
+r_struct
+id|ib_grh
+op_star
+id|in_grh
 comma
 r_struct
 id|ib_mad
@@ -699,6 +706,16 @@ id|err
 suffix:semicolon
 id|u8
 id|status
+suffix:semicolon
+id|u16
+id|slid
+op_assign
+id|in_wc
+ques
+c_cond
+id|in_wc-&gt;slid
+suffix:colon
+id|IB_LID_PERMISSIVE
 suffix:semicolon
 multiline_comment|/* Forward locally generated traps to the SM */
 r_if

@@ -1029,9 +1029,6 @@ id|fp
 (brace
 r_int
 id|rc
-op_assign
-op_minus
-id|EINVAL
 suffix:semicolon
 r_struct
 id|ebitmap_node
@@ -1141,7 +1138,7 @@ id|e-&gt;highbit
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|bad
 suffix:semicolon
 )brace
 r_if
@@ -1492,6 +1489,17 @@ id|n
 suffix:semicolon
 id|bad
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rc
+)paren
+id|rc
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 id|ebitmap_destroy
 c_func
 (paren

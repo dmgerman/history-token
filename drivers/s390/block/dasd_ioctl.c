@@ -1003,7 +1003,7 @@ comma
 id|fdata-&gt;intensity
 )paren
 suffix:semicolon
-multiline_comment|/* Since dasdfmt keeps the device open after it was disabled,&n;&t; * there still exists an inode for this device. We must update i_blkbits,&n;&t; * otherwise we might get errors when enabling the device later.&n;&t; */
+multiline_comment|/* Since dasdfmt keeps the device open after it was disabled,&n;&t; * there still exists an inode for this device.&n;&t; * We must update i_blkbits, otherwise we might get errors when&n;&t; * enabling the device later.&n;&t; */
 r_if
 c_cond
 (paren
