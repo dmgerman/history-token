@@ -527,7 +527,7 @@ id|u_long
 suffix:semicolon
 multiline_comment|/* Prototypes for interrpt time functions **********************************/
 r_static
-r_void
+id|irqreturn_t
 id|ray_interrupt
 (paren
 r_int
@@ -9740,7 +9740,7 @@ multiline_comment|/* end set_multicast_list */
 multiline_comment|/*=============================================================================&n; * All routines below here are run at interrupt time.&n;=============================================================================*/
 DECL|function|ray_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|ray_interrupt
 c_func
 (paren
@@ -9808,6 +9808,7 @@ l_int|NULL
 )paren
 multiline_comment|/* Note that we want interrupts with dev-&gt;start == 0 */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|DEBUG
 c_func
@@ -9859,6 +9860,7 @@ l_string|&quot;ray_cs interrupt from device not present or suspended.&bslash;n&q
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|rcsindex
@@ -9910,6 +9912,7 @@ id|local
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -10698,6 +10701,9 @@ c_func
 (paren
 id|local
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* ray_interrupt */
