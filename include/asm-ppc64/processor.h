@@ -977,6 +977,16 @@ mdefine_line|#define mfasr()&t;&t;({unsigned long rval; &bslash;&n;&t;&t;&t;asm 
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_int
+r_int
+op_star
+id|_get_SP
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|have_of
 suffix:semicolon
 r_struct
