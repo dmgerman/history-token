@@ -1,4 +1,4 @@
-multiline_comment|/* (C) 1999-2002 Nemosoft Unv. (webcam@smcc.demon.nl)&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
+multiline_comment|/* (C) 1999-2003 Nemosoft Unv. (webcam@smcc.demon.nl)&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 macro_line|#ifndef PWC_H
 DECL|macro|PWC_H
 mdefine_line|#define PWC_H
@@ -56,9 +56,9 @@ multiline_comment|/* Version block */
 DECL|macro|PWC_MAJOR
 mdefine_line|#define PWC_MAJOR&t;8
 DECL|macro|PWC_MINOR
-mdefine_line|#define PWC_MINOR&t;10
+mdefine_line|#define PWC_MINOR&t;11
 DECL|macro|PWC_VERSION
-mdefine_line|#define PWC_VERSION &t;&quot;8.10&quot;
+mdefine_line|#define PWC_VERSION &t;&quot;8.11&quot;
 DECL|macro|PWC_NAME
 mdefine_line|#define PWC_NAME &t;&quot;pwc&quot;
 multiline_comment|/* Turn certain features on/off */
@@ -84,7 +84,7 @@ DECL|macro|PWC_FRAME_SIZE
 mdefine_line|#define PWC_FRAME_SIZE &t;&t;(460800 + TOUCAM_HEADER_SIZE + TOUCAM_TRAILER_SIZE)
 multiline_comment|/* Absolute maximum number of buffers available for mmap() */
 DECL|macro|MAX_IMAGES
-mdefine_line|#define MAX_IMAGES &t;&t;4
+mdefine_line|#define MAX_IMAGES &t;&t;10
 DECL|struct|pwc_coord
 r_struct
 id|pwc_coord
@@ -166,6 +166,11 @@ DECL|struct|pwc_device
 r_struct
 id|pwc_device
 (brace
+DECL|member|vdev
+r_struct
+id|video_device
+id|vdev
+suffix:semicolon
 macro_line|#ifdef PWC_MAGIC
 DECL|member|magic
 r_int
@@ -189,11 +194,11 @@ r_int
 id|release
 suffix:semicolon
 multiline_comment|/* release number */
-DECL|member|unplugged
+DECL|member|error_status
 r_int
-id|unplugged
+id|error_status
 suffix:semicolon
-multiline_comment|/* set when the plug is pulled */
+multiline_comment|/* set when something goes wrong with the cam (unplugged, USB errors) */
 DECL|member|usb_init
 r_int
 id|usb_init
@@ -205,12 +210,6 @@ r_int
 id|vopen
 suffix:semicolon
 multiline_comment|/* flag */
-DECL|member|vdev
-r_struct
-id|video_device
-op_star
-id|vdev
-suffix:semicolon
 DECL|member|vendpoint
 r_int
 id|vendpoint
@@ -234,11 +233,6 @@ comma
 id|vsize
 suffix:semicolon
 multiline_comment|/* frames-per-second &amp; size (see PSZ_*) */
-DECL|member|vpalette
-r_int
-id|vpalette
-suffix:semicolon
-multiline_comment|/* YUV */
 DECL|member|vframe_count
 r_int
 id|vframe_count
@@ -264,6 +258,11 @@ r_int
 id|vlast_packet_size
 suffix:semicolon
 multiline_comment|/* for frame synchronisation */
+DECL|member|visoc_errors
+r_int
+id|visoc_errors
+suffix:semicolon
+multiline_comment|/* number of contiguous ISOC errors */
 DECL|member|vcompression
 r_int
 id|vcompression
@@ -289,7 +288,7 @@ r_char
 id|vmirror
 suffix:semicolon
 multiline_comment|/* for ToUCaM series */
-multiline_comment|/* The image acquisition requires 3 to 4 steps:&n;      1. data is gathered in short packets from the USB controller&n;      2. data is synchronized and packed into a frame buffer&n;      3a. in case data is compressed, decompress it directly into image buffer&n;      3b. in case data is uncompressed, copy into image buffer with viewport&n;      4. data is transferred to the user process&n;&n;      Note that MAX_ISO_BUFS != MAX_FRAMES != MAX_IMAGES.... &n;      We have in effect a back-to-back-double-buffer system.&n;    */
+multiline_comment|/* The image acquisition requires 3 to 4 steps:&n;      1. data is gathered in short packets from the USB controller&n;      2. data is synchronized and packed into a frame buffer&n;      3a. in case data is compressed, decompress it directly into image buffer&n;      3b. in case data is uncompressed, copy into image buffer with viewport&n;      4. data is transferred to the user process&n;&n;      Note that MAX_ISO_BUFS != MAX_FRAMES != MAX_IMAGES....&n;      We have in effect a back-to-back-double-buffer system.&n;    */
 multiline_comment|/* 1: isoc */
 DECL|member|sbuf
 r_struct
@@ -384,7 +383,7 @@ id|decompress_data
 suffix:semicolon
 multiline_comment|/* private data for decompression engine */
 multiline_comment|/* 4: image */
-multiline_comment|/* We have an &squot;image&squot; and a &squot;view&squot;, where &squot;image&squot; is the fixed-size image&n;      as delivered by the camera, and &squot;view&squot; is the size requested by the&n;      program. The camera image is centered in this viewport, laced with &n;      a gray or black border. view_min &lt;= image &lt;= view &lt;= view_max;&n;    */
+multiline_comment|/* We have an &squot;image&squot; and a &squot;view&squot;, where &squot;image&squot; is the fixed-size image&n;      as delivered by the camera, and &squot;view&squot; is the size requested by the&n;      program. The camera image is centered in this viewport, laced with&n;      a gray or black border. view_min &lt;= image &lt;= view &lt;= view_max;&n;    */
 DECL|member|image_mask
 r_int
 id|image_mask
@@ -469,11 +468,6 @@ id|wait_queue_head_t
 id|frameq
 suffix:semicolon
 multiline_comment|/* When waiting for a frame to finish... */
-DECL|member|remove_ok
-id|wait_queue_head_t
-id|remove_ok
-suffix:semicolon
-multiline_comment|/* When we got hot unplugged, we have to avoid a few race conditions */
 macro_line|#if PWC_INT_PIPE
 DECL|member|usb_int_handler
 r_void
@@ -481,7 +475,7 @@ op_star
 id|usb_int_handler
 suffix:semicolon
 multiline_comment|/* for the interrupt endpoint */
-macro_line|#endif   
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* Enumeration of image sizes */

@@ -1,4 +1,4 @@
-multiline_comment|/* Linux driver for Philips webcam &n;   USB and Video4Linux interface part.&n;   (C) 1999-2002 Nemosoft Unv.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;*/
+multiline_comment|/* Linux driver for Philips webcam &n;   USB and Video4Linux interface part.&n;   (C) 1999-2003 Nemosoft Unv.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;*/
 multiline_comment|/*  &n;   This code forms the interface between the USB layers and the Philips&n;   specific stuff. Some adanved stuff of the driver falls under an&n;   NDA, signed between me and Philips B.V., Eindhoven, the Netherlands, and&n;   is thus not distributed in source form. The binary pwcx.o module &n;   contains the code that falls under the NDA.&n;   &n;   In case you&squot;re wondering: &squot;pwc&squot; stands for &quot;Philips WebCam&quot;, but &n;   I really didn&squot;t want to type &squot;philips_web_cam&squot; every time (I&squot;m lazy as&n;   any Linux kernel hacker, but I don&squot;t like uncomprehensible abbreviations&n;   without explanation).&n;   &n;   Oh yes, convention: to disctinguish between all the various pointers to&n;   device-structures, I use these names for the pointer variables:&n;   udev: struct usb_device *&n;   vdev: struct video_device *&n;   pdev: struct pwc_devive *&n;*/
 multiline_comment|/* Contributors:&n;   - Alvarado: adding whitebalance code&n;   - Alistar Moire: QuickCam 3000 Pro device/product ID&n;   - Tony Hoyle: Creative Labs Webcam 5 device/product ID&n;   - Mark Burazin: solving hang in VIDIOCSYNC when camera gets unplugged&n;   - Jk Fang: SOTEC Afina Eye ID&n;   - Xavier Roche: QuickCam Pro 4000 ID&n;   - Jens Knudsen: QuickCam Zoom ID&n;   - J. Debert: QuickCam for Notebooks ID&n;*/
 macro_line|#include &lt;linux/errno.h&gt;
@@ -118,6 +118,17 @@ comma
 id|USB_DEVICE
 c_func
 (paren
+l_int|0x0471
+comma
+l_int|0x0313
+)paren
+)brace
+comma
+multiline_comment|/* the &squot;new&squot; 720K */
+(brace
+id|USB_DEVICE
+c_func
+(paren
 l_int|0x069A
 comma
 l_int|0x0001
@@ -131,7 +142,7 @@ c_func
 (paren
 l_int|0x046D
 comma
-l_int|0x08b0
+l_int|0x08B0
 )paren
 )brace
 comma
@@ -142,7 +153,7 @@ c_func
 (paren
 l_int|0x046D
 comma
-l_int|0x08b1
+l_int|0x08B1
 )paren
 )brace
 comma
@@ -153,7 +164,7 @@ c_func
 (paren
 l_int|0x046D
 comma
-l_int|0x08b2
+l_int|0x08B2
 )paren
 )brace
 comma
@@ -164,11 +175,66 @@ c_func
 (paren
 l_int|0x046D
 comma
-l_int|0x08b3
+l_int|0x08B3
 )paren
 )brace
 comma
 multiline_comment|/* Logitech QuickCam Zoom */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x046D
+comma
+l_int|0x08B4
+)paren
+)brace
+comma
+multiline_comment|/* Logitech (reserved) */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x046D
+comma
+l_int|0x08B5
+)paren
+)brace
+comma
+multiline_comment|/* Logitech (reserved) */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x046D
+comma
+l_int|0x08B6
+)paren
+)brace
+comma
+multiline_comment|/* Logitech (reserved) */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x046D
+comma
+l_int|0x08B7
+)paren
+)brace
+comma
+multiline_comment|/* Logitech (reserved) */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x046D
+comma
+l_int|0x08B8
+)paren
+)brace
+comma
+multiline_comment|/* Logitech (reserved) */
 (brace
 id|USB_DEVICE
 c_func
@@ -201,6 +267,17 @@ l_int|0x400C
 )brace
 comma
 multiline_comment|/* Creative Webcam 5 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x041E
+comma
+l_int|0x4011
+)paren
+)brace
+comma
+multiline_comment|/* Creative Webcam Pro Ex */
 (brace
 id|USB_DEVICE
 c_func
@@ -311,7 +388,9 @@ multiline_comment|/* disconnect() */
 )brace
 suffix:semicolon
 DECL|macro|MAX_DEV_HINTS
-mdefine_line|#define MAX_DEV_HINTS 10
+mdefine_line|#define MAX_DEV_HINTS&t;20
+DECL|macro|MAX_ISOC_ERRORS
+mdefine_line|#define MAX_ISOC_ERRORS&t;20
 DECL|variable|default_size
 r_static
 r_int
@@ -326,14 +405,6 @@ id|default_fps
 op_assign
 l_int|10
 suffix:semicolon
-DECL|variable|default_palette
-r_static
-r_int
-id|default_palette
-op_assign
-id|VIDEO_PALETTE_YUV420P
-suffix:semicolon
-multiline_comment|/* This format is understood by most tools */
 DECL|variable|default_fbufs
 r_static
 r_int
@@ -418,21 +489,6 @@ id|device_hint
 id|MAX_DEV_HINTS
 )braket
 suffix:semicolon
-DECL|variable|mem_lock
-r_static
-r_struct
-id|semaphore
-id|mem_lock
-suffix:semicolon
-DECL|variable|mem_leak
-r_static
-r_void
-op_star
-id|mem_leak
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* For delayed kfree()s. See below */
 multiline_comment|/***/
 r_static
 r_int
@@ -1628,7 +1684,7 @@ l_string|&quot;Leaving free_buffers().&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* The frame &amp; image buffer mess. &n;&n;   Yes, this is a mess. Well, it used to be simple, but alas...  In this&n;   module, 3 buffers schemes are used to get the data from the USB bus to&n;   the user program. The first scheme involves the ISO buffers (called thus&n;   since they transport ISO data from the USB controller), and not really&n;   interesting. Suffices to say the data from this buffer is quickly &n;   gathered in an interrupt handler (pwc_isoc_handler) and placed into the &n;   frame buffer.&n;   &n;   The frame buffer is the second scheme, and is the central element here.&n;   It collects the data from a single frame from the camera (hence, the&n;   name). Frames are delimited by the USB camera with a short USB packet,&n;   so that&squot;s easy to detect. The frame buffers form a list that is filled&n;   by the camera+USB controller and drained by the user process through &n;   either read() or mmap().&n;   &n;   The image buffer is the third scheme, in which frames are decompressed&n;   and possibly converted into planar format. For mmap() there is more than&n;   one image buffer available.&n;&n;   The frame buffers provide the image buffering, in case the user process&n;   is a bit slow. This introduces lag and some undesired side-effects.&n;   The problem arises when the frame buffer is full. I used to drop the last &n;   frame, which makes the data in the queue stale very quickly. But dropping &n;   the frame at the head of the queue proved to be a litte bit more difficult.&n;   I tried a circular linked scheme, but this introduced more problems than&n;   it solved.&n;&n;   Because filling and draining are completely asynchronous processes, this&n;   requires some fiddling with pointers and mutexes.&n;   &n;   Eventually, I came up with a system with 2 lists: an &squot;empty&squot; frame list&n;   and a &squot;full&squot; frame list:&n;     * Initially, all frame buffers but one are on the &squot;empty&squot; list; the one&n;       remaining buffer is our initial fill frame.&n;     * If a frame is needed for filling, we take it from the &squot;empty&squot; list, &n;       unless that list is empty, in which case we take the buffer at the &n;       head of the &squot;full&squot; list.&n;     * When our fill buffer has been filled, it is appended to the &squot;full&squot; &n;       list.&n;     * If a frame is needed by read() or mmap(), it is taken from the head of &n;       the &squot;full&squot; list, handled, and then appended to the &squot;empty&squot; list. If no&n;       buffer is present on the &squot;full&squot; list, we wait.&n;   The advantage is that the buffer that is currently being decompressed/&n;   converted, is on neither list, and thus not in our way (any other scheme &n;   I tried had the problem of old data lingering in the queue).&n;&n;   Whatever strategy you choose, it always remains a tradeoff: with more&n;   frame buffers the chances of a missed frame are reduced. On the other&n;   hand, on slower machines it introduces lag because the queue will &n;   always be full.&n; */
+multiline_comment|/* The frame &amp; image buffer mess. &n;&n;   Yes, this is a mess. Well, it used to be simple, but alas...  In this&n;   module, 3 buffers schemes are used to get the data from the USB bus to&n;   the user program. The first scheme involves the ISO buffers (called thus&n;   since they transport ISO data from the USB controller), and not really&n;   interesting. Suffices to say the data from this buffer is quickly &n;   gathered in an interrupt handler (pwc_isoc_handler) and placed into the&n;   frame buffer.&n;&n;   The frame buffer is the second scheme, and is the central element here.&n;   It collects the data from a single frame from the camera (hence, the&n;   name). Frames are delimited by the USB camera with a short USB packet,&n;   so that&squot;s easy to detect. The frame buffers form a list that is filled&n;   by the camera+USB controller and drained by the user process through&n;   either read() or mmap().&n;&n;   The image buffer is the third scheme, in which frames are decompressed&n;   and converted into planar format. For mmap() there is more than&n;   one image buffer available.&n;&n;   The frame buffers provide the image buffering. In case the user process&n;   is a bit slow, this introduces lag and some undesired side-effects.&n;   The problem arises when the frame buffer is full. I used to drop the last&n;   frame, which makes the data in the queue stale very quickly. But dropping&n;   the frame at the head of the queue proved to be a litte bit more difficult.&n;   I tried a circular linked scheme, but this introduced more problems than&n;   it solved.&n;&n;   Because filling and draining are completely asynchronous processes, this&n;   requires some fiddling with pointers and mutexes.&n;&n;   Eventually, I came up with a system with 2 lists: an &squot;empty&squot; frame list&n;   and a &squot;full&squot; frame list:&n;     * Initially, all frame buffers but one are on the &squot;empty&squot; list; the one&n;       remaining buffer is our initial fill frame.&n;     * If a frame is needed for filling, we try to take it from the &squot;empty&squot; &n;       list, unless that list is empty, in which case we take the buffer at &n;       the head of the &squot;full&squot; list.&n;     * When our fill buffer has been filled, it is appended to the &squot;full&squot;&n;       list.&n;     * If a frame is needed by read() or mmap(), it is taken from the head of&n;       the &squot;full&squot; list, handled, and then appended to the &squot;empty&squot; list. If no&n;       buffer is present on the &squot;full&squot; list, we wait.&n;   The advantage is that the buffer that is currently being decompressed/&n;   converted, is on neither list, and thus not in our way (any other scheme&n;   I tried had the problem of old data lingering in the queue).&n;&n;   Whatever strategy you choose, it always remains a tradeoff: with more&n;   frame buffers the chances of a missed frame are reduced. On the other&n;   hand, on slower machines it introduces lag because the queue will&n;   always be full.&n; */
 multiline_comment|/**&n;  &bslash;brief Find next frame buffer to fill. Take from empty or full list, whichever comes first.&n; */
 DECL|function|pwc_next_fill_frame
 r_static
@@ -1722,7 +1778,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Hmm. Take it from the full list */
-macro_line|#if PWC_DEBUG&t;&t;
+macro_line|#if PWC_DEBUG
 multiline_comment|/* sanity check */
 r_if
 c_cond
@@ -1800,7 +1856,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n;  &bslash;brief Reset all buffers, pointers and lists, except for the image_used[] buffer. &n;  &n;  If the image_used[] buffer is cleared too, mmap()/VIDIOCSYNC will run into trouble.&n; */
+multiline_comment|/**&n;  &bslash;brief Reset all buffers, pointers and lists, except for the image_used[] buffer.&n;  &n;  If the image_used[] buffer is cleared too, mmap()/VIDIOCSYNC will run into trouble.&n; */
 DECL|function|pwc_reset_buffers
 r_static
 r_void
@@ -2108,7 +2164,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n;  &bslash;brief Advance pointers of image buffer (after each user request) &n;*/
+multiline_comment|/**&n;  &bslash;brief Advance pointers of image buffer (after each user request)&n;*/
 DECL|function|pwc_next_image
 r_static
 r_inline
@@ -2138,65 +2194,6 @@ l_int|1
 )paren
 op_mod
 id|default_mbufs
-suffix:semicolon
-)brace
-multiline_comment|/* 2002-10-11: YUV420P is the only palette remaining. */
-DECL|function|pwc_set_palette
-r_static
-r_int
-id|pwc_set_palette
-c_func
-(paren
-r_struct
-id|pwc_device
-op_star
-id|pdev
-comma
-r_int
-id|pal
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pal
-op_eq
-id|VIDEO_PALETTE_YUV420P
-macro_line|#if PWC_DEBUG
-op_logical_or
-id|pal
-op_eq
-id|VIDEO_PALETTE_RAW
-macro_line|#endif
-)paren
-(brace
-id|pdev-&gt;vpalette
-op_assign
-id|pal
-suffix:semicolon
-id|pwc_set_image_buffer_size
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-id|Trace
-c_func
-(paren
-id|TRACE_READ
-comma
-l_string|&quot;Palette %d not supported.&bslash;n&quot;
-comma
-id|pal
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* This gets called for the Isochronous pipe (video). This is done in&n; * interrupt time, so it has to be fast, not crash, and not stall. Neat.&n; */
@@ -2241,9 +2238,17 @@ r_int
 r_char
 op_star
 id|fillptr
+op_assign
+l_int|0
 comma
 op_star
 id|iso_buf
+op_assign
+l_int|0
+suffix:semicolon
+id|awake
+op_assign
+l_int|0
 suffix:semicolon
 id|pdev
 op_assign
@@ -2271,7 +2276,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef PWC_MAGIC&t;
+macro_line|#ifdef PWC_MAGIC
 r_if
 c_cond
 (paren
@@ -2340,6 +2345,7 @@ op_ne
 l_int|0
 )paren
 (brace
+r_const
 r_char
 op_star
 id|errmsg
@@ -2400,7 +2406,7 @@ id|EILSEQ
 suffix:colon
 id|errmsg
 op_assign
-l_string|&quot;CRC/Timeout&quot;
+l_string|&quot;CRC/Timeout (could be anything)&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2427,8 +2433,42 @@ comma
 id|errmsg
 )paren
 suffix:semicolon
-r_return
+multiline_comment|/* Give up after a number of contiguous errors on the USB bus. &n;&t;&t;   Appearantly something is wrong so we simulate an unplug event.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_increment
+id|pdev-&gt;visoc_errors
+OG
+id|MAX_ISOC_ERRORS
+)paren
+(brace
+id|Info
+c_func
+(paren
+l_string|&quot;Too many ISOC errors, bailing out.&bslash;n&quot;
+)paren
 suffix:semicolon
+id|pdev-&gt;error_status
+op_assign
+id|EIO
+suffix:semicolon
+id|awake
+op_assign
+l_int|1
+suffix:semicolon
+id|wake_up_interruptible
+c_func
+(paren
+op_amp
+id|pdev-&gt;frameq
+)paren
+suffix:semicolon
+)brace
+r_goto
+id|handler_end
+suffix:semicolon
+singleline_comment|// ugly, but practical
 )brace
 id|fbuf
 op_assign
@@ -2448,27 +2488,29 @@ c_func
 l_string|&quot;pwc_isoc_handler without valid fill frame.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|wake_up_interruptible
-c_func
-(paren
-op_amp
-id|pdev-&gt;frameq
-)paren
+id|awake
+op_assign
+l_int|1
 suffix:semicolon
-r_return
+r_goto
+id|handler_end
 suffix:semicolon
 )brace
+r_else
+(brace
 id|fillptr
 op_assign
 id|fbuf-&gt;data
 op_plus
 id|fbuf-&gt;filled
 suffix:semicolon
-id|awake
+)brace
+multiline_comment|/* Reset ISOC error counter. We did get here, after all. */
+id|pdev-&gt;visoc_errors
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* vsync: 0 = don&squot;t copy data&n;&t;          1 = sync-hunt&n;&t;          2 = synched &n;&t; */
+multiline_comment|/* vsync: 0 = don&squot;t copy data&n;&t;          1 = sync-hunt&n;&t;          2 = synched&n;&t; */
 multiline_comment|/* Compact data */
 r_for
 c_loop
@@ -2608,7 +2650,7 @@ OL
 id|pdev-&gt;vlast_packet_size
 )paren
 (brace
-multiline_comment|/* Shorter packet... We probably have the end of an image-frame; &n;&t;&t;&t;&t;   wake up read() process and let select()/poll() do something.&n;&t;&t;&t;&t;   Decompression is done in user time over there. &n;&t;&t;&t;&t; */
+multiline_comment|/* Shorter packet... We probably have the end of an image-frame; &n;&t;&t;&t;&t;   wake up read() process and let select()/poll() do something.&n;&t;&t;&t;&t;   Decompression is done in user time over there.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2947,8 +2989,10 @@ id|fst
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;
+macro_line|#endif
 )brace
+id|handler_end
+suffix:colon
 r_if
 c_cond
 (paren
@@ -3628,12 +3672,15 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Stop camera, but only if we are sure the camera is still there */
+multiline_comment|/* Stop camera, but only if we are sure the camera is still there (unplug&n;&t;   is signalled by EPIPE) &n;&t; */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pdev-&gt;unplugged
+id|pdev-&gt;error_status
+op_logical_and
+id|pdev-&gt;error_status
+op_ne
+id|EPIPE
 )paren
 (brace
 id|Trace
@@ -3785,114 +3832,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|set_mem_leak
-r_static
-r_inline
-r_void
-id|set_mem_leak
-c_func
-(paren
-r_void
-op_star
-id|ptr
-)paren
-(brace
-id|down
-c_func
-(paren
-op_amp
-id|mem_lock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mem_leak
-op_ne
-l_int|NULL
-)paren
-id|Err
-c_func
-(paren
-l_string|&quot;Memleak: overwriting mem_leak pointer!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|Trace
-c_func
-(paren
-id|TRACE_MEMORY
-comma
-l_string|&quot;Setting mem_leak to 0x%p.&bslash;n&quot;
-comma
-id|ptr
-)paren
-suffix:semicolon
-id|mem_leak
-op_assign
-id|ptr
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|mem_lock
-)paren
-suffix:semicolon
-)brace
-DECL|function|free_mem_leak
-r_static
-r_inline
-r_void
-id|free_mem_leak
-c_func
-(paren
-r_void
-)paren
-(brace
-id|down
-c_func
-(paren
-op_amp
-id|mem_lock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mem_leak
-op_ne
-l_int|NULL
-)paren
-(brace
-id|Trace
-c_func
-(paren
-id|TRACE_MEMORY
-comma
-l_string|&quot;Freeing mem_leak ptr 0x%p.&bslash;n&quot;
-comma
-id|mem_leak
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|mem_leak
-)paren
-suffix:semicolon
-id|mem_leak
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-id|up
-c_func
-(paren
-op_amp
-id|mem_lock
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/***************************************************************************/
 multiline_comment|/* Video4Linux functions */
 DECL|function|pwc_video_open
@@ -4005,7 +3944,7 @@ op_amp
 id|TRACE_OPEN
 )paren
 (brace
-multiline_comment|/* Query CMOS sensor type */
+multiline_comment|/* Query sensor type */
 r_const
 r_char
 op_star
@@ -4146,7 +4085,7 @@ c_func
 (paren
 l_string|&quot;This %s camera is equipped with a %s (%d).&bslash;n&quot;
 comma
-id|pdev-&gt;vdev-&gt;name
+id|pdev-&gt;vdev.name
 comma
 id|sensor_type
 comma
@@ -4307,11 +4246,15 @@ id|pdev-&gt;vframes_error
 op_assign
 l_int|0
 suffix:semicolon
-id|pdev-&gt;vpalette
+id|pdev-&gt;visoc_errors
 op_assign
-id|default_palette
+l_int|0
 suffix:semicolon
-macro_line|#if PWC_DEBUG&t;
+id|pdev-&gt;error_status
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#if PWC_DEBUG
 id|pdev-&gt;sequence
 op_assign
 l_int|0
@@ -4322,35 +4265,7 @@ id|pdev-&gt;vsnapshot
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pdev-&gt;type
-op_eq
-l_int|730
-op_logical_or
-id|pdev-&gt;type
-op_eq
-l_int|740
-op_logical_or
-id|pdev-&gt;type
-op_eq
-l_int|750
-)paren
-id|pdev-&gt;vsize
-op_assign
-id|PSZ_QSIF
-suffix:semicolon
-r_else
-id|pdev-&gt;vsize
-op_assign
-id|PSZ_QCIF
-suffix:semicolon
-id|pdev-&gt;vframes
-op_assign
-l_int|10
-suffix:semicolon
-multiline_comment|/* Start iso pipe for video; first try user-supplied size/fps, if&n;&t;   that fails try QCIF/10 or QSIF/10 (a reasonable default), &n;&t;   then give up &n;&t; */
+multiline_comment|/* Start iso pipe for video; first try the last used video size&n;&t;   (or the default one); if that fails try QCIF/10 or QSIF/10;&n;&t;   it that fails too, give up.&n;&t; */
 id|i
 op_assign
 id|pwc_set_video_mode
@@ -4360,19 +4275,19 @@ id|pdev
 comma
 id|pwc_image_sizes
 (braket
-id|default_size
+id|pdev-&gt;vsize
 )braket
 dot
 id|x
 comma
 id|pwc_image_sizes
 (braket
-id|default_size
+id|pdev-&gt;vsize
 )braket
 dot
 id|y
 comma
-id|default_fps
+id|pdev-&gt;vframes
 comma
 id|pdev-&gt;vcompression
 comma
@@ -4652,18 +4567,51 @@ comma
 id|pdev-&gt;vframes_error
 )paren
 suffix:semicolon
-multiline_comment|/* Free isoc URBs, stop camera */
+r_if
+c_cond
+(paren
+id|pdev-&gt;decompressor
+op_ne
+l_int|NULL
+)paren
+(brace
+id|pdev-&gt;decompressor
+op_member_access_from_pointer
+m_exit
+(paren
+)paren
+suffix:semicolon
+id|pdev-&gt;decompressor
+op_member_access_from_pointer
+id|unlock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|pdev-&gt;decompressor
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 id|pwc_isoc_cleanup
 c_func
 (paren
 id|pdev
 )paren
 suffix:semicolon
+id|pwc_free_buffers
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+multiline_comment|/* Turn off LEDS and power down camera, but only when not unplugged */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pdev-&gt;unplugged
+id|pdev-&gt;error_status
+op_ne
+id|EPIPE
 )paren
 (brace
 multiline_comment|/* Turn LEDs off */
@@ -4688,7 +4636,6 @@ c_func
 l_string|&quot;Failed to set LED on/off time.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Power down camera to save energy */
 r_if
 c_cond
 (paren
@@ -4726,51 +4673,6 @@ id|pdev-&gt;vopen
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pdev-&gt;decompressor
-op_ne
-l_int|NULL
-)paren
-(brace
-id|pdev-&gt;decompressor
-op_member_access_from_pointer
-m_exit
-(paren
-)paren
-suffix:semicolon
-id|pdev-&gt;decompressor
-op_member_access_from_pointer
-id|unlock
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-id|pwc_free_buffers
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
-multiline_comment|/* wake up _disconnect() routine */
-r_if
-c_cond
-(paren
-id|pdev-&gt;unplugged
-)paren
-id|wake_up
-c_func
-(paren
-op_amp
-id|pdev-&gt;remove_ok
-)paren
-suffix:semicolon
-id|file-&gt;private_data
-op_assign
-l_int|NULL
-suffix:semicolon
 id|Trace
 c_func
 (paren
@@ -4783,7 +4685,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;FIXME: what about two parallel reads ????&n; *      ANSWER: Not supported. You can&squot;t open the device more than once,&n;                despite what the V4L1 interface says. First, I don&squot;t see &n;                the need, second there&squot;s no mechanism of alerting the &n;                2nd/3rd/... process of events like changing image size.&n;                And I don&squot;t see the point of blocking that for the &n;                2nd/3rd/... process.&n;                In multi-threaded environments reading parallel from any&n;                device is tricky anyhow.&n; */
+multiline_comment|/*&n; *&t;FIXME: what about two parallel reads ????&n; *      ANSWER: Not supported. You can&squot;t open the device more than once,&n;                despite what the V4L1 interface says. First, I don&squot;t see&n;                the need, second there&squot;s no mechanism of alerting the&n;                2nd/3rd/... process of events like changing image size.&n;                And I don&squot;t see the point of blocking that for the&n;                2nd/3rd/... process.&n;                In multi-threaded environments reading parallel from any&n;                device is tricky anyhow.&n; */
 DECL|function|pwc_video_read
 r_static
 r_int
@@ -4877,21 +4779,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pdev-&gt;unplugged
+id|pdev-&gt;error_status
 )paren
-(brace
-id|Info
-c_func
-(paren
-l_string|&quot;pwc_video_read: Device got unplugged (1).&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
-id|EPIPE
+id|pdev-&gt;error_status
 suffix:semicolon
-multiline_comment|/* unplugged device! */
-)brace
+multiline_comment|/* Something happened, report what. */
 multiline_comment|/* In case we&squot;re doing partial reads, we don&squot;t have to wait for a frame */
 r_if
 c_cond
@@ -4920,6 +4814,34 @@ op_eq
 l_int|NULL
 )paren
 (brace
+multiline_comment|/* Check for unplugged/etc. here */
+r_if
+c_cond
+(paren
+id|pdev-&gt;error_status
+)paren
+(brace
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|pdev-&gt;frameq
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|pdev-&gt;error_status
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5006,7 +4928,7 @@ c_func
 id|TASK_RUNNING
 )paren
 suffix:semicolon
-multiline_comment|/* Decompress [, convert] and release frame */
+multiline_comment|/* Decompress and release frame */
 r_if
 c_cond
 (paren
@@ -5164,19 +5086,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pdev-&gt;unplugged
+id|pdev-&gt;error_status
 )paren
-(brace
-id|Info
-c_func
-(paren
-l_string|&quot;pwc_video_poll: Device got unplugged.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 id|POLLERR
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5524,7 +5438,7 @@ l_int|24
 suffix:semicolon
 id|p-&gt;palette
 op_assign
-id|pdev-&gt;vpalette
+id|VIDEO_PALETTE_YUV420P
 suffix:semicolon
 id|p-&gt;hue
 op_assign
@@ -5553,22 +5467,9 @@ id|p-&gt;palette
 op_logical_and
 id|p-&gt;palette
 op_ne
-id|pdev-&gt;vpalette
+id|VIDEO_PALETTE_YUV420P
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|pwc_set_palette
-c_func
-(paren
-id|pdev
-comma
-id|p-&gt;palette
-)paren
-OL
-l_int|0
-)paren
 r_return
 op_minus
 id|EINVAL
@@ -5902,20 +5803,7 @@ id|vm-&gt;format
 op_logical_and
 id|vm-&gt;format
 op_ne
-id|pdev-&gt;vpalette
-)paren
-r_if
-c_cond
-(paren
-id|pwc_set_palette
-c_func
-(paren
-id|pdev
-comma
-id|vm-&gt;format
-)paren
-OL
-l_int|0
+id|VIDEO_PALETTE_YUV420P
 )paren
 r_return
 op_minus
@@ -6005,7 +5893,7 @@ id|vm-&gt;frame
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Okay, we&squot;re done here. In the SYNC call we wait until a &n;&t;&t;&t;   frame comes available, then expand image into the given &n;&t;&t;&t;   buffer.&n;&t;&t;&t;   In contrast to the CPiA cam the Philips cams deliver a &n;&t;&t;&t;   constant stream, almost like a grabber card. Also,&n;&t;&t;&t;   we have separate buffers for the rawdata and the image,&n;&t;&t;&t;   meaning we can nearly always expand into the requested buffer.&n;&t;&t;&t; */
+multiline_comment|/* Okay, we&squot;re done here. In the SYNC call we wait until a &n;&t;&t;&t;   frame comes available, then expand image into the given &n;&t;&t;&t;   buffer.&n;&t;&t;&t;   In contrast to the CPiA cam the Philips cams deliver a&n;&t;&t;&t;   constant stream, almost like a grabber card. Also,&n;&t;&t;&t;   we have separate buffers for the rawdata and the image,&n;&t;&t;&t;   meaning we can nearly always expand into the requested buffer.&n;&t;&t;&t; */
 id|Trace
 c_func
 (paren
@@ -6076,7 +5964,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* Add ourselves to the frame wait-queue.&n;&t;&t;&t;   &n;&t;&t;&t;   FIXME: needs auditing for safety.&n;&t;&t;&t;   QUSTION: In what respect? I think that using the&n;&t;&t;&t;            frameq is safe now.&n;&t;&t;&t; */
+multiline_comment|/* Add ourselves to the frame wait-queue.&n;&t;&t;&t;   &n;&t;&t;&t;   FIXME: needs auditing for safety.&n;&t;&t;&t;   QUESTION: In what respect? I think that using the&n;&t;&t;&t;             frameq is safe now.&n;&t;&t;&t; */
 id|add_wait_queue
 c_func
 (paren
@@ -6098,7 +5986,7 @@ l_int|NULL
 r_if
 c_cond
 (paren
-id|pdev-&gt;unplugged
+id|pdev-&gt;error_status
 )paren
 (brace
 id|remove_wait_queue
@@ -6119,7 +6007,7 @@ id|TASK_RUNNING
 suffix:semicolon
 r_return
 op_minus
-id|ENODEV
+id|pdev-&gt;error_status
 suffix:semicolon
 )brace
 r_if
@@ -6153,15 +6041,15 @@ op_minus
 id|ERESTARTSYS
 suffix:semicolon
 )brace
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
 id|set_current_state
 c_func
 (paren
 id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -6302,7 +6190,7 @@ id|arg
 suffix:semicolon
 id|vu-&gt;video
 op_assign
-id|pdev-&gt;vdev-&gt;minor
+id|pdev-&gt;vdev.minor
 op_amp
 l_int|0x3F
 suffix:semicolon
@@ -6570,11 +6458,6 @@ id|pdev
 op_assign
 l_int|NULL
 suffix:semicolon
-r_struct
-id|video_device
-op_star
-id|vdev
-suffix:semicolon
 r_int
 id|vendor_id
 comma
@@ -6602,11 +6485,6 @@ l_int|30
 comma
 op_star
 id|name
-suffix:semicolon
-id|free_mem_leak
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/* Check if we can handle this device */
 id|Trace
@@ -6828,6 +6706,25 @@ l_int|750
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+l_int|0x0313
+suffix:colon
+id|Info
+c_func
+(paren
+l_string|&quot;Philips PCVC720K/40 (ToUCam XS) USB webcam detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Philips 720K/40 webcam&quot;
+suffix:semicolon
+id|type_id
+op_assign
+l_int|720
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 r_return
@@ -6912,8 +6809,9 @@ l_string|&quot;Logitech QuickCam Pro 3000&quot;
 suffix:semicolon
 id|type_id
 op_assign
-l_int|730
+l_int|740
 suffix:semicolon
+multiline_comment|/* CCD sensor */
 r_break
 suffix:semicolon
 r_case
@@ -6933,7 +6831,7 @@ id|type_id
 op_assign
 l_int|740
 suffix:semicolon
-multiline_comment|/* ?? unknown sensor */
+multiline_comment|/* CCD sensor */
 r_break
 suffix:semicolon
 r_case
@@ -6973,7 +6871,39 @@ id|type_id
 op_assign
 l_int|740
 suffix:semicolon
-multiline_comment|/* ?? unknown sensor */
+multiline_comment|/* CCD sensor */
+r_break
+suffix:semicolon
+r_case
+l_int|0x08b4
+suffix:colon
+r_case
+l_int|0x08b5
+suffix:colon
+r_case
+l_int|0x08b6
+suffix:colon
+r_case
+l_int|0x08b7
+suffix:colon
+r_case
+l_int|0x08b8
+suffix:colon
+id|Info
+c_func
+(paren
+l_string|&quot;Logitech QuickCam detected (reserved ID).&bslash;n&quot;
+)paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Logitech QuickCam (res.)&quot;
+suffix:semicolon
+id|type_id
+op_assign
+l_int|730
+suffix:semicolon
+multiline_comment|/* Assuming CMOS */
 r_break
 suffix:semicolon
 r_default
@@ -7081,6 +7011,25 @@ suffix:semicolon
 id|type_id
 op_assign
 l_int|730
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x4011
+suffix:colon
+id|Info
+c_func
+(paren
+l_string|&quot;Creative Labs Webcam Pro Ex detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Creative Labs Webcam Pro Ex&quot;
+suffix:semicolon
+id|type_id
+op_assign
+l_int|740
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -7312,6 +7261,14 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
+id|pdev-&gt;vsize
+op_assign
+id|default_size
+suffix:semicolon
+id|pdev-&gt;vframes
+op_assign
+id|default_fps
+suffix:semicolon
 id|init_MUTEX
 c_func
 (paren
@@ -7334,55 +7291,15 @@ op_amp
 id|pdev-&gt;frameq
 )paren
 suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|pdev-&gt;remove_ok
-)paren
-suffix:semicolon
 id|pdev-&gt;vcompression
 op_assign
 id|pwc_preferred_compression
 suffix:semicolon
-multiline_comment|/* Now hook it up to the video subsystem */
-id|vdev
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|video_device
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|vdev
-op_eq
-l_int|NULL
-)paren
-(brace
-id|Err
-c_func
-(paren
-l_string|&quot;Oops, could not allocate memory for video_device.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 id|memcpy
 c_func
 (paren
-id|vdev
+op_amp
+id|pdev-&gt;vdev
 comma
 op_amp
 id|pwc_template
@@ -7396,20 +7313,16 @@ suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|vdev-&gt;name
+id|pdev-&gt;vdev.name
 comma
 id|name
 )paren
 suffix:semicolon
-id|vdev-&gt;owner
+id|pdev-&gt;vdev.owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-id|pdev-&gt;vdev
-op_assign
-id|vdev
-suffix:semicolon
-id|vdev-&gt;priv
+id|pdev-&gt;vdev.priv
 op_assign
 id|pdev
 suffix:semicolon
@@ -7546,7 +7459,8 @@ op_assign
 id|video_register_device
 c_func
 (paren
-id|vdev
+op_amp
+id|pdev-&gt;vdev
 comma
 id|VFL_TYPE_GRABBER
 comma
@@ -7569,6 +7483,13 @@ comma
 id|i
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+multiline_comment|/* Oops, no memory leaks please */
 r_return
 op_minus
 id|EIO
@@ -7576,22 +7497,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|Trace
-c_func
-(paren
-id|TRACE_PROBE
-comma
-l_string|&quot;Registered video struct at 0x%p.&bslash;n&quot;
-comma
-id|vdev
-)paren
-suffix:semicolon
 id|Info
 c_func
 (paren
 l_string|&quot;Registered as /dev/video%d.&bslash;n&quot;
 comma
-id|vdev-&gt;minor
+id|pdev-&gt;vdev.minor
 op_amp
 l_int|0x3F
 )paren
@@ -7656,20 +7567,7 @@ suffix:semicolon
 r_int
 id|hint
 suffix:semicolon
-id|DECLARE_WAITQUEUE
-c_func
-(paren
-id|wait
-comma
-id|current
-)paren
-suffix:semicolon
 id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|free_mem_leak
 c_func
 (paren
 )paren
@@ -7768,32 +7666,7 @@ id|disconnect_out
 suffix:semicolon
 )brace
 macro_line|#endif&t;
-id|pdev-&gt;unplugged
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pdev-&gt;vdev
-op_ne
-l_int|NULL
-)paren
-(brace
-id|Trace
-c_func
-(paren
-id|TRACE_PROBE
-comma
-l_string|&quot;Unregistering video device.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|video_unregister_device
-c_func
-(paren
-id|pdev-&gt;vdev
-)paren
-suffix:semicolon
+multiline_comment|/* We got unplugged; this is signalled by an EPIPE error code */
 r_if
 c_cond
 (paren
@@ -7803,98 +7676,56 @@ id|pdev-&gt;vopen
 id|Info
 c_func
 (paren
-l_string|&quot;Disconnected while device/video is open!&bslash;n&quot;
+l_string|&quot;Disconnected while webcam is in use!&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Wake up any processes that might be waiting for&n;&t;&t;&t;   a frame, let them return an error condition&n;&t;&t;&t; */
-id|wake_up
+id|pdev-&gt;error_status
+op_assign
+id|EPIPE
+suffix:semicolon
+)brace
+multiline_comment|/* Alert waiting processes */
+id|wake_up_interruptible
 c_func
 (paren
 op_amp
 id|pdev-&gt;frameq
 )paren
 suffix:semicolon
-multiline_comment|/* Wait until we get a &squot;go&squot; from _close(). This used&n;&t;&t;&t;   to have a gigantic race condition, since we kfree()&n;&t;&t;&t;   stuff here, but we have to wait until close() &n;&t;&t;&t;   is finished. &n;&t;&t;&t; */
-id|Trace
-c_func
+multiline_comment|/* Wait until device is closed */
+r_while
+c_loop
 (paren
-id|TRACE_PROBE
-comma
-l_string|&quot;Sleeping on remove_ok.&bslash;n&quot;
+id|pdev-&gt;vopen
 )paren
-suffix:semicolon
-id|add_wait_queue
-c_func
-(paren
-op_amp
-id|pdev-&gt;remove_ok
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-multiline_comment|/* ... wait ... */
 id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
-id|remove_wait_queue
-c_func
-(paren
-op_amp
-id|pdev-&gt;remove_ok
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
+multiline_comment|/* Device is now closed, so we can safely unregister it */
 id|Trace
 c_func
 (paren
 id|TRACE_PROBE
 comma
-l_string|&quot;Done sleeping.&bslash;n&quot;
+l_string|&quot;Unregistering video device in disconnect().&bslash;n&quot;
 )paren
 suffix:semicolon
-id|set_mem_leak
+id|video_unregister_device
 c_func
 (paren
+op_amp
 id|pdev-&gt;vdev
 )paren
 suffix:semicolon
-id|pdev-&gt;vdev
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* Normal disconnect; remove from available devices */
+multiline_comment|/* Free memory (don&squot;t set pdev to 0 just yet) */
 id|kfree
 c_func
 (paren
-id|pdev-&gt;vdev
+id|pdev
 )paren
 suffix:semicolon
-id|pdev-&gt;vdev
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-)brace
 id|disconnect_out
 suffix:colon
 multiline_comment|/* search device_hint[] table if we occupy a slot, by any chance */
@@ -7933,19 +7764,9 @@ id|pdev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|pdev-&gt;udev
-op_assign
-l_int|NULL
-suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|pdev
 )paren
 suffix:semicolon
 )brace
@@ -8079,7 +7900,7 @@ r_char
 op_star
 id|dev_hint
 (braket
-l_int|10
+id|MAX_DEV_HINTS
 )braket
 op_assign
 (brace
@@ -8218,7 +8039,7 @@ c_func
 (paren
 id|dev_hint
 comma
-l_string|&quot;0-10s&quot;
+l_string|&quot;0-20s&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8970,13 +8791,6 @@ suffix:semicolon
 multiline_comment|/* not filled */
 )brace
 multiline_comment|/* ..for MAX_DEV_HINTS */
-id|init_MUTEX
-c_func
-(paren
-op_amp
-id|mem_lock
-)paren
-suffix:semicolon
 id|Trace
 c_func
 (paren
@@ -9007,11 +8821,6 @@ c_func
 r_void
 )paren
 (brace
-id|free_mem_leak
-c_func
-(paren
-)paren
-suffix:semicolon
 id|Trace
 c_func
 (paren
