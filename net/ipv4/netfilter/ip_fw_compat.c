@@ -95,6 +95,7 @@ c_func
 r_struct
 id|sk_buff
 op_star
+op_star
 id|pskb
 )paren
 suffix:semicolon
@@ -782,7 +783,6 @@ id|nfct
 id|check_for_masq_error
 c_func
 (paren
-op_star
 id|pskb
 )paren
 suffix:semicolon
