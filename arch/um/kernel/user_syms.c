@@ -10,7 +10,7 @@ macro_line|#include &lt;sys/vfs.h&gt;
 macro_line|#include &lt;sys/ioctl.h&gt;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;mem_user.h&quot;
-multiline_comment|/* XXX All the __CONFIG_* stuff is broken because this file can&squot;t include&n; * config.h&n; */
+macro_line|#include &quot;uml-config.h&quot;
 multiline_comment|/* Had to steal this from linux/module.h because that file can&squot;t be included&n; * since this includes various user-level headers.&n; */
 DECL|struct|module_symbol
 r_struct

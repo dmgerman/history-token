@@ -654,7 +654,7 @@ c_func
 r_int
 id|sig
 comma
-r_struct
+r_union
 id|uml_pt_regs
 op_star
 id|regs

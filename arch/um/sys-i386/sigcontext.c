@@ -68,7 +68,7 @@ op_star
 id|to
 )paren
 op_plus
-id|signal_frame_sc.arch.fpstate_size
+id|signal_frame_sc.common.arch.fpstate_size
 suffix:semicolon
 id|memcpy
 c_func

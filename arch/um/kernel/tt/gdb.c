@@ -258,6 +258,10 @@ r_int
 comma
 r_void
 op_star
+comma
+r_char
+op_star
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -284,6 +288,9 @@ id|stack
 (braket
 id|UM_KERN_PAGE_SIZE
 )braket
+comma
+op_star
+id|dummy
 suffix:semicolon
 id|opts.tramp_stack
 op_assign
@@ -318,6 +325,9 @@ comma
 l_int|1
 comma
 id|xterm_data
+comma
+op_amp
+id|dummy
 )paren
 suffix:semicolon
 r_return
