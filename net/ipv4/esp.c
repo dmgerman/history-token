@@ -2720,6 +2720,11 @@ op_assign
 l_string|&quot;ESP4&quot;
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|proto
 op_assign
 id|IPPROTO_ESP

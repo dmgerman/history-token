@@ -1611,6 +1611,11 @@ op_assign
 l_string|&quot;AH4&quot;
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|proto
 op_assign
 id|IPPROTO_AH
@@ -1670,13 +1675,6 @@ c_func
 r_void
 )paren
 (brace
-id|SET_MODULE_OWNER
-c_func
-(paren
-op_amp
-id|ah_type
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
