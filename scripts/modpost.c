@@ -817,7 +817,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mmap
+id|map
 op_eq
 id|MAP_FAILED
 )paren
