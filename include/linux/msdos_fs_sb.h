@@ -227,7 +227,7 @@ DECL|member|prev_free
 r_int
 id|prev_free
 suffix:semicolon
-multiline_comment|/* previously returned free cluster number */
+multiline_comment|/* previously allocated cluster number */
 DECL|member|free_clusters
 r_int
 id|free_clusters

@@ -298,6 +298,9 @@ r_if
 c_cond
 (paren
 id|sbi-&gt;prev_free
+op_ne
+op_minus
+l_int|1
 )paren
 id|fsinfo-&gt;next_cluster
 op_assign

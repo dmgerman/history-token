@@ -4188,7 +4188,8 @@ suffix:semicolon
 multiline_comment|/* Don&squot;t know yet */
 id|sbi-&gt;prev_free
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 r_if
 c_cond
