@@ -418,13 +418,21 @@ DECL|member|addr
 id|u8
 id|addr
 suffix:semicolon
-DECL|member|mtu
-id|uint
-id|mtu
+DECL|member|priority
+id|u8
+id|priority
 suffix:semicolon
 DECL|member|v24_sig
 id|u8
 id|v24_sig
+suffix:semicolon
+DECL|member|mscex
+id|u8
+id|mscex
+suffix:semicolon
+DECL|member|mtu
+id|uint
+id|mtu
 suffix:semicolon
 DECL|member|credits
 id|uint
@@ -515,6 +523,13 @@ DECL|macro|RFCOMM_SCHED_TIMEO
 mdefine_line|#define RFCOMM_SCHED_TIMEO  3
 DECL|macro|RFCOMM_SCHED_WAKEUP
 mdefine_line|#define RFCOMM_SCHED_WAKEUP 31
+multiline_comment|/* MSC exchange flags */
+DECL|macro|RFCOMM_MSCEX_TX
+mdefine_line|#define RFCOMM_MSCEX_TX     1
+DECL|macro|RFCOMM_MSCEX_RX
+mdefine_line|#define RFCOMM_MSCEX_RX     2
+DECL|macro|RFCOMM_MSCEX_OK
+mdefine_line|#define RFCOMM_MSCEX_OK     (RFCOMM_MSCEX_TX + RFCOMM_MSCEX_RX)
 r_extern
 r_struct
 id|task_struct
