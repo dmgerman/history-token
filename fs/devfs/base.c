@@ -4115,7 +4115,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;devfs_mk_dir - Create a directory in the devfs namespace.&n; *&t;&t;new name is relative to the root of the devfs.&n; *&t;@fmt: The name of the entry.&n; *&n; *&t;Use of this function is optional. The devfs_register() function&n; *&t;will automatically create intermediate directories as needed. This function&n; *&t;is provided for efficiency reasons, as it provides a handle to a directory.&n; *&t;On failure %NULL is returned.&n; */
 DECL|function|devfs_mk_dir
-id|devfs_handle_t
+r_int
 id|devfs_mk_dir
 c_func
 (paren
@@ -4154,6 +4154,8 @@ id|va_list
 id|args
 suffix:semicolon
 r_int
+id|error
+comma
 id|n
 suffix:semicolon
 id|va_start
@@ -4202,7 +4204,8 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|de
@@ -4234,16 +4237,12 @@ id|buf
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
-id|de-&gt;info
+id|error
 op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|_devfs_append_entry
 c_func
 (paren
@@ -4254,6 +4253,11 @@ comma
 op_amp
 id|old
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 (brace
 id|PRINTK
@@ -4278,22 +4282,6 @@ r_goto
 id|out_put
 suffix:semicolon
 )brace
-id|DPRINTK
-c_func
-(paren
-id|DEBUG_REGISTER
-comma
-l_string|&quot;(%s): de: %p dir: %p &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
-comma
-id|buf
-comma
-id|de
-comma
-id|dir
-comma
-id|dir-&gt;name
-)paren
-suffix:semicolon
 id|devfsd_notify
 c_func
 (paren
@@ -4311,7 +4299,7 @@ id|dir
 )paren
 suffix:semicolon
 r_return
-id|de
+id|error
 suffix:semicolon
 )brace
 DECL|function|devfs_remove

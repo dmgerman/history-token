@@ -8431,38 +8431,22 @@ comma
 l_string|&quot;debug area created&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-r_if
-c_cond
-(paren
-op_logical_neg
+id|rc
+op_assign
 id|devfs_mk_dir
 c_func
 (paren
 l_string|&quot;dasd&quot;
 )paren
-)paren
-(brace
-id|DBF_EVENT
-c_func
+suffix:semicolon
+r_if
+c_cond
 (paren
-id|DBF_ALERT
-comma
-l_string|&quot;%s&quot;
-comma
-l_string|&quot;no devfs&quot;
-)paren
-suffix:semicolon
 id|rc
-op_assign
-op_minus
-id|ENOSYS
-suffix:semicolon
+)paren
 r_goto
 id|failed
 suffix:semicolon
-)brace
-macro_line|#endif
 id|rc
 op_assign
 id|dasd_devmap_init
