@@ -3545,6 +3545,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
+id|u32
+id|xfrm_get_acqseq
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_void
 id|xfrm_alloc_spi
 c_func
