@@ -789,6 +789,7 @@ id|sn_irq_info
 op_assign
 id|sn_irq_info-&gt;irq_next
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 id|set_irq_affinity_info
 c_func
 (paren
@@ -803,6 +804,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
