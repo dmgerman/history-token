@@ -1604,6 +1604,7 @@ r_int
 r_int
 id|insn
 comma
+id|__user
 op_star
 id|ip
 suffix:semicolon
@@ -1612,6 +1613,7 @@ op_assign
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|regs-&gt;pc

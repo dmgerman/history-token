@@ -1150,6 +1150,8 @@ c_func
 id|node
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 id|child-&gt;next
@@ -1642,6 +1644,8 @@ c_func
 id|nd
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 id|dev-&gt;next

@@ -320,53 +320,13 @@ op_star
 id|tp
 )paren
 (brace
-macro_line|#ifdef __hppa__
-r_int
-r_char
-op_star
-id|ee_data
-op_assign
-id|tp-&gt;eeprom
-suffix:semicolon
+macro_line|#ifdef CONFIG_GSC
 r_if
 c_cond
 (paren
-id|ee_data
-(braket
-l_int|0
-)braket
-op_eq
-l_int|0x3c
-op_logical_and
-id|ee_data
-(braket
-l_int|1
-)braket
-op_eq
-l_int|0x10
-op_logical_and
-(paren
-id|ee_data
-(braket
-l_int|2
-)braket
-op_eq
-l_int|0x63
-op_logical_or
-id|ee_data
-(braket
-l_int|2
-)braket
-op_eq
-l_int|0x61
-)paren
-op_logical_and
-id|ee_data
-(braket
-l_int|3
-)braket
-op_eq
-l_int|0x10
+id|tp-&gt;flags
+op_amp
+id|NEEDS_FAKE_MEDIA_TABLE
 )paren
 (brace
 r_static
@@ -1666,17 +1626,17 @@ multiline_comment|/*  EEPROM_Ctrl bits. */
 DECL|macro|EE_SHIFT_CLK
 mdefine_line|#define EE_SHIFT_CLK&t;0x02&t;/* EEPROM shift clock. */
 DECL|macro|EE_CS
-mdefine_line|#define EE_CS&t;&t;&t;0x01&t;/* EEPROM chip select. */
+mdefine_line|#define EE_CS&t;&t;0x01&t;/* EEPROM chip select. */
 DECL|macro|EE_DATA_WRITE
 mdefine_line|#define EE_DATA_WRITE&t;0x04&t;/* Data from the Tulip to EEPROM. */
 DECL|macro|EE_WRITE_0
-mdefine_line|#define EE_WRITE_0&t;&t;0x01
+mdefine_line|#define EE_WRITE_0&t;0x01
 DECL|macro|EE_WRITE_1
-mdefine_line|#define EE_WRITE_1&t;&t;0x05
+mdefine_line|#define EE_WRITE_1&t;0x05
 DECL|macro|EE_DATA_READ
 mdefine_line|#define EE_DATA_READ&t;0x08&t;/* Data from the EEPROM chip. */
 DECL|macro|EE_ENB
-mdefine_line|#define EE_ENB&t;&t;&t;(0x4800 | EE_CS)
+mdefine_line|#define EE_ENB&t;&t;(0x4800 | EE_CS)
 multiline_comment|/* Delay between EEPROM clock transitions.&n;   Even at 33Mhz current PCI implementations don&squot;t overrun the EEPROM clock.&n;   We add a bus turn-around to insure that this remains true. */
 DECL|macro|eeprom_delay
 mdefine_line|#define eeprom_delay()&t;inl(ee_addr)
@@ -1690,8 +1650,10 @@ id|__devinit
 id|tulip_read_eeprom
 c_func
 (paren
-r_int
-id|ioaddr
+r_struct
+id|net_device
+op_star
+id|dev
 comma
 r_int
 id|location
@@ -1708,10 +1670,17 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|tulip_private
+op_star
+id|tp
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
 r_int
 id|ee_addr
 op_assign
-id|ioaddr
+id|tp-&gt;base_addr
 op_plus
 id|CSR9
 suffix:semicolon
@@ -1934,6 +1903,19 @@ id|ee_addr
 )paren
 suffix:semicolon
 r_return
+(paren
+id|tp-&gt;flags
+op_amp
+id|HAS_SWAPPED_SEEPROM
+)paren
+ques
+c_cond
+id|swab16
+c_func
+(paren
+id|retval
+)paren
+suffix:colon
 id|retval
 suffix:semicolon
 )brace

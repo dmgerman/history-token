@@ -132,11 +132,14 @@ l_int|7
 )braket
 suffix:semicolon
 DECL|member|user_cntd0
-DECL|member|user_cntd1
 id|__u64
+id|__user
 op_star
 id|user_cntd0
-comma
+suffix:semicolon
+DECL|member|user_cntd1
+id|__u64
+id|__user
 op_star
 id|user_cntd1
 suffix:semicolon

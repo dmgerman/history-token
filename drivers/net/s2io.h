@@ -2108,7 +2108,7 @@ id|pre
 suffix:semicolon
 r_static
 r_void
-id|__exit
+id|__devexit
 id|s2io_rem_nic
 c_func
 (paren

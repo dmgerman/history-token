@@ -542,16 +542,15 @@ comma
 r_void
 id|__user
 op_star
+id|__user
 op_star
 )paren
 id|ptr
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|err
 op_assign
 id|sys_semctl
@@ -713,6 +712,7 @@ comma
 (paren
 r_struct
 id|msgbuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -892,7 +892,6 @@ id|second
 comma
 (paren
 id|ulong
-id|__user
 op_star
 )paren
 id|third

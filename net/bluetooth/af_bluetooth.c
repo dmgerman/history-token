@@ -1,7 +1,5 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; *  Bluetooth address family and sockets.&n; *&n; * $Id: af_bluetooth.c,v 1.3 2002/04/17 17:37:15 maxk Exp $&n; */
-DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;2.4&quot;
+multiline_comment|/* Bluetooth address family and sockets. */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -24,17 +22,26 @@ macro_line|#ifndef CONFIG_BT_SOCK_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
-mdefine_line|#define BT_DBG( A... )
+mdefine_line|#define BT_DBG(D...)
 macro_line|#endif
+DECL|macro|VERSION
+mdefine_line|#define VERSION &quot;2.5&quot;
 DECL|variable|proc_bt
 r_struct
 id|proc_dir_entry
 op_star
 id|proc_bt
 suffix:semicolon
+DECL|variable|proc_bt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|proc_bt
+)paren
+suffix:semicolon
 multiline_comment|/* Bluetooth sockets */
 DECL|macro|BT_MAX_PROTO
-mdefine_line|#define BT_MAX_PROTO&t;6
+mdefine_line|#define BT_MAX_PROTO&t;7
 DECL|variable|bt_proto
 r_static
 r_struct
@@ -99,6 +106,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|bt_sock_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bt_sock_register
+)paren
+suffix:semicolon
 DECL|function|bt_sock_unregister
 r_int
 id|bt_sock_unregister
@@ -143,6 +157,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|bt_sock_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bt_sock_unregister
+)paren
+suffix:semicolon
 DECL|function|bt_sock_create
 r_static
 r_int
@@ -394,6 +415,13 @@ r_return
 id|sk
 suffix:semicolon
 )brace
+DECL|variable|bt_sock_alloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bt_sock_alloc
+)paren
+suffix:semicolon
 DECL|function|bt_sock_link
 r_void
 id|bt_sock_link
@@ -434,6 +462,13 @@ id|l-&gt;lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|bt_sock_link
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bt_sock_link
+)paren
+suffix:semicolon
 DECL|function|bt_sock_unlink
 r_void
 id|bt_sock_unlink
@@ -471,6 +506,13 @@ id|l-&gt;lock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|bt_sock_unlink
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bt_sock_unlink
+)paren
+suffix:semicolon
 DECL|function|bt_accept_enqueue
 r_void
 id|bt_accept_enqueue
@@ -539,6 +581,13 @@ id|parent-&gt;sk_ack_backlog
 op_increment
 suffix:semicolon
 )brace
+DECL|variable|bt_accept_enqueue
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bt_accept_enqueue
+)paren
+suffix:semicolon
 DECL|function|bt_accept_unlink
 r_static
 r_void
@@ -754,6 +803,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|bt_accept_dequeue
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bt_accept_dequeue
+)paren
+suffix:semicolon
 DECL|function|bt_sock_recvmsg
 r_int
 id|bt_sock_recvmsg
@@ -926,6 +982,13 @@ suffix:colon
 id|copied
 suffix:semicolon
 )brace
+DECL|variable|bt_sock_recvmsg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bt_sock_recvmsg
+)paren
+suffix:semicolon
 DECL|function|bt_accept_poll
 r_static
 r_inline
@@ -1184,6 +1247,13 @@ r_return
 id|mask
 suffix:semicolon
 )brace
+DECL|variable|bt_sock_poll
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bt_sock_poll
+)paren
+suffix:semicolon
 DECL|function|bt_sock_wait_state
 r_int
 id|bt_sock_wait_state
@@ -1339,6 +1409,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|bt_sock_wait_state
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bt_sock_wait_state
+)paren
+suffix:semicolon
 DECL|variable|bt_sock_family_ops
 r_static
 r_struct

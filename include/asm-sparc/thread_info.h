@@ -6,6 +6,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/btfixup.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/*&n; * Low level task data.&n; *&n; * If you change this, change the TI_* offsets below to match.&n; */
 DECL|macro|NSWINS
 mdefine_line|#define NSWINS 8

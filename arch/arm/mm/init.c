@@ -839,6 +839,16 @@ dot
 id|bootmap_pages
 suffix:semicolon
 )brace
+id|high_memory
+op_assign
+id|__va
+c_func
+(paren
+id|memend_pfn
+op_lshift
+id|PAGE_SHIFT
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * This doesn&squot;t seem to be used by the Linux memory&n;&t; * manager any more.  If we can get rid of it, we&n;&t; * also get rid of some of the stuff above as well.&n;&t; */
 id|max_low_pfn
 op_assign
@@ -859,12 +869,6 @@ c_func
 (paren
 id|PHYS_OFFSET
 )paren
-suffix:semicolon
-id|mi-&gt;end
-op_assign
-id|memend_pfn
-op_lshift
-id|PAGE_SHIFT
 suffix:semicolon
 r_return
 id|bootmem_pages
@@ -1941,18 +1945,6 @@ id|__init_end
 op_minus
 op_amp
 id|__init_begin
-suffix:semicolon
-id|high_memory
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|__va
-c_func
-(paren
-id|meminfo.end
-)paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 id|max_mapnr

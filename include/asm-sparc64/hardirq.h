@@ -54,10 +54,6 @@ DECL|macro|SOFTIRQ_OFFSET
 mdefine_line|#define SOFTIRQ_OFFSET&t;(1UL &lt;&lt; SOFTIRQ_SHIFT)
 DECL|macro|HARDIRQ_OFFSET
 mdefine_line|#define HARDIRQ_OFFSET&t;(1UL &lt;&lt; HARDIRQ_SHIFT)
-multiline_comment|/*&n; * The hardirq mask has to be large enough to have&n; * space for potentially all IRQ sources in the system&n; * nesting on a single CPU:&n; */
-macro_line|#if (1 &lt;&lt; HARDIRQ_BITS) &lt; NR_IRQS
-macro_line|# error HARDIRQ_BITS is too low!
-macro_line|#endif
 multiline_comment|/*&n; * Are we doing bottom half or hardware interrupt processing?&n; * Are we in a softirq context? Interrupt context?&n; */
 DECL|macro|in_irq
 mdefine_line|#define in_irq()&t;&t;(hardirq_count())

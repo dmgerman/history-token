@@ -8,6 +8,7 @@ DECL|macro|SPIOCSTYPE
 mdefine_line|#define SPIOCSTYPE&t;_IOW(&squot;q&squot;, 0x01, unsigned long)
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|struct|serio
 r_struct
 id|serio
@@ -61,6 +62,10 @@ DECL|member|event
 r_int
 r_int
 id|event
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
 DECL|member|write
 r_int

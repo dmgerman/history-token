@@ -1256,8 +1256,7 @@ id|udev-&gt;state
 )paren
 )paren
 r_return
-op_minus
-id|ENODEV
+l_int|0
 suffix:semicolon
 id|poll_wait
 c_func

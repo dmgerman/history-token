@@ -1150,7 +1150,7 @@ comma
 (paren
 id|tte
 op_amp
-l_int|0x07FC000000000000
+l_int|0x07FC000000000000UL
 )paren
 op_rshift
 l_int|50

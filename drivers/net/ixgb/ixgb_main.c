@@ -6451,8 +6451,7 @@ suffix:semicolon
 id|IXGB_WRITE_REG
 c_func
 (paren
-op_amp
-id|adapter-&gt;hw
+id|hw
 comma
 id|IMC
 comma

@@ -1,3 +1,4 @@
+multiline_comment|/* Bluetooth HCI driver model support. */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -7,7 +8,7 @@ macro_line|#ifndef CONFIG_BT_HCI_CORE_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
-mdefine_line|#define BT_DBG( A... )
+mdefine_line|#define BT_DBG(D...)
 macro_line|#endif
 DECL|function|show_name
 r_static

@@ -976,6 +976,7 @@ id|p
 suffix:semicolon
 r_int
 r_int
+id|__user
 op_star
 id|lp
 suffix:semicolon
@@ -1051,6 +1052,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|regs-&gt;nip
@@ -1064,14 +1066,7 @@ op_assign
 id|make_dsisr
 c_func
 (paren
-op_star
-(paren
-(paren
-r_int
-op_star
-)paren
-id|regs-&gt;nip
-)paren
+id|real_instr
 )paren
 suffix:semicolon
 )brace
@@ -1690,6 +1685,7 @@ op_assign
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|p

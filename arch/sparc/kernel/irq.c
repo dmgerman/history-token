@@ -637,7 +637,6 @@ r_void
 op_star
 )paren
 suffix:semicolon
-r_return
 id|sun4d_free_irq
 c_func
 (paren
@@ -645,6 +644,8 @@ id|irq
 comma
 id|dev_id
 )paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 id|cpu_irq

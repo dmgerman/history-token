@@ -447,6 +447,7 @@ id|current-&gt;thread.vrsave
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 op_amp
@@ -825,6 +826,7 @@ id|current-&gt;thread.vrsave
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 op_amp
@@ -1286,6 +1288,7 @@ id|tmp
 comma
 (paren
 id|u8
+id|__user
 op_star
 )paren
 id|new_ctx
@@ -1298,6 +1301,7 @@ id|tmp
 comma
 (paren
 id|u8
+id|__user
 op_star
 )paren
 (paren
@@ -1577,6 +1581,7 @@ id|regs
 (brace
 multiline_comment|/* Handler is *really* a pointer to the function descriptor for&n;&t; * the signal routine.  The first entry in the function&n;&t; * descriptor is the entry address of signal and the second&n;&t; * entry is the TOC value we need to use.&n;&t; */
 id|func_descr_t
+id|__user
 op_star
 id|funct_desc_ptr
 suffix:semicolon
@@ -1812,6 +1817,7 @@ id|funct_desc_ptr
 op_assign
 (paren
 id|func_descr_t
+id|__user
 op_star
 )paren
 id|ka-&gt;sa.sa_handler
@@ -1837,6 +1843,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|newsp
@@ -1919,6 +1926,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1938,6 +1946,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp

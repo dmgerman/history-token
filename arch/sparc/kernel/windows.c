@@ -217,6 +217,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|sp
@@ -234,10 +235,8 @@ id|reg_window
 )paren
 )paren
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 id|shift_window_buffer
 c_func
 (paren
@@ -392,6 +391,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|sp
@@ -409,14 +409,12 @@ id|reg_window
 )paren
 )paren
 )paren
-(brace
 id|do_exit
 c_func
 (paren
 id|SIGILL
 )paren
 suffix:semicolon
-)brace
 )brace
 id|tp-&gt;w_saved
 op_assign

@@ -53,10 +53,6 @@ id|mi-&gt;nr_banks
 op_assign
 l_int|1
 suffix:semicolon
-id|mi-&gt;end
-op_assign
-l_int|0xc0FFFFFF
-suffix:semicolon
 id|mi-&gt;bank
 (braket
 l_int|0

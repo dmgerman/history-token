@@ -30,41 +30,41 @@ DECL|macro|SCHIZO_STRBUF_CTRL_ENAB
 mdefine_line|#define SCHIZO_STRBUF_CTRL_ENAB    0x0000000000000001UL /* Streaming Buffer Enable */
 multiline_comment|/* IOMMU control register. */
 DECL|macro|SCHIZO_IOMMU_CTRL_RESV
-mdefine_line|#define SCHIZO_IOMMU_CTRL_RESV     0xfffffffff9000000 /* Reserved                      */
+mdefine_line|#define SCHIZO_IOMMU_CTRL_RESV     0xfffffffff9000000UL /* Reserved                      */
 DECL|macro|SCHIZO_IOMMU_CTRL_XLTESTAT
-mdefine_line|#define SCHIZO_IOMMU_CTRL_XLTESTAT 0x0000000006000000 /* Translation Error Status      */
+mdefine_line|#define SCHIZO_IOMMU_CTRL_XLTESTAT 0x0000000006000000UL /* Translation Error Status      */
 DECL|macro|SCHIZO_IOMMU_CTRL_XLTEERR
-mdefine_line|#define SCHIZO_IOMMU_CTRL_XLTEERR  0x0000000001000000 /* Translation Error encountered */
+mdefine_line|#define SCHIZO_IOMMU_CTRL_XLTEERR  0x0000000001000000UL /* Translation Error encountered */
 DECL|macro|SCHIZO_IOMMU_CTRL_LCKEN
-mdefine_line|#define SCHIZO_IOMMU_CTRL_LCKEN    0x0000000000800000 /* Enable translation locking    */
+mdefine_line|#define SCHIZO_IOMMU_CTRL_LCKEN    0x0000000000800000UL /* Enable translation locking    */
 DECL|macro|SCHIZO_IOMMU_CTRL_LCKPTR
-mdefine_line|#define SCHIZO_IOMMU_CTRL_LCKPTR   0x0000000000780000 /* Translation lock pointer      */
+mdefine_line|#define SCHIZO_IOMMU_CTRL_LCKPTR   0x0000000000780000UL /* Translation lock pointer      */
 DECL|macro|SCHIZO_IOMMU_CTRL_TSBSZ
-mdefine_line|#define SCHIZO_IOMMU_CTRL_TSBSZ    0x0000000000070000 /* TSB Size                      */
+mdefine_line|#define SCHIZO_IOMMU_CTRL_TSBSZ    0x0000000000070000UL /* TSB Size                      */
 DECL|macro|SCHIZO_IOMMU_TSBSZ_1K
-mdefine_line|#define SCHIZO_IOMMU_TSBSZ_1K      0x0000000000000000 /* TSB Table 1024 8-byte entries */
+mdefine_line|#define SCHIZO_IOMMU_TSBSZ_1K      0x0000000000000000UL /* TSB Table 1024 8-byte entries */
 DECL|macro|SCHIZO_IOMMU_TSBSZ_2K
-mdefine_line|#define SCHIZO_IOMMU_TSBSZ_2K      0x0000000000010000 /* TSB Table 2048 8-byte entries */
+mdefine_line|#define SCHIZO_IOMMU_TSBSZ_2K      0x0000000000010000UL /* TSB Table 2048 8-byte entries */
 DECL|macro|SCHIZO_IOMMU_TSBSZ_4K
-mdefine_line|#define SCHIZO_IOMMU_TSBSZ_4K      0x0000000000020000 /* TSB Table 4096 8-byte entries */
+mdefine_line|#define SCHIZO_IOMMU_TSBSZ_4K      0x0000000000020000UL /* TSB Table 4096 8-byte entries */
 DECL|macro|SCHIZO_IOMMU_TSBSZ_8K
-mdefine_line|#define SCHIZO_IOMMU_TSBSZ_8K      0x0000000000030000 /* TSB Table 8192 8-byte entries */
+mdefine_line|#define SCHIZO_IOMMU_TSBSZ_8K      0x0000000000030000UL /* TSB Table 8192 8-byte entries */
 DECL|macro|SCHIZO_IOMMU_TSBSZ_16K
-mdefine_line|#define SCHIZO_IOMMU_TSBSZ_16K     0x0000000000040000 /* TSB Table 16k 8-byte entries  */
+mdefine_line|#define SCHIZO_IOMMU_TSBSZ_16K     0x0000000000040000UL /* TSB Table 16k 8-byte entries  */
 DECL|macro|SCHIZO_IOMMU_TSBSZ_32K
-mdefine_line|#define SCHIZO_IOMMU_TSBSZ_32K     0x0000000000050000 /* TSB Table 32k 8-byte entries  */
+mdefine_line|#define SCHIZO_IOMMU_TSBSZ_32K     0x0000000000050000UL /* TSB Table 32k 8-byte entries  */
 DECL|macro|SCHIZO_IOMMU_TSBSZ_64K
-mdefine_line|#define SCHIZO_IOMMU_TSBSZ_64K     0x0000000000060000 /* TSB Table 64k 8-byte entries  */
+mdefine_line|#define SCHIZO_IOMMU_TSBSZ_64K     0x0000000000060000UL /* TSB Table 64k 8-byte entries  */
 DECL|macro|SCHIZO_IOMMU_TSBSZ_128K
-mdefine_line|#define SCHIZO_IOMMU_TSBSZ_128K    0x0000000000070000 /* TSB Table 128k 8-byte entries */
+mdefine_line|#define SCHIZO_IOMMU_TSBSZ_128K    0x0000000000070000UL /* TSB Table 128k 8-byte entries */
 DECL|macro|SCHIZO_IOMMU_CTRL_RESV2
-mdefine_line|#define SCHIZO_IOMMU_CTRL_RESV2    0x000000000000fff8 /* Reserved                      */
+mdefine_line|#define SCHIZO_IOMMU_CTRL_RESV2    0x000000000000fff8UL /* Reserved                      */
 DECL|macro|SCHIZO_IOMMU_CTRL_TBWSZ
-mdefine_line|#define SCHIZO_IOMMU_CTRL_TBWSZ    0x0000000000000004 /* Assumed page size, 0=8k 1=64k */
+mdefine_line|#define SCHIZO_IOMMU_CTRL_TBWSZ    0x0000000000000004UL /* Assumed page size, 0=8k 1=64k */
 DECL|macro|SCHIZO_IOMMU_CTRL_DENAB
-mdefine_line|#define SCHIZO_IOMMU_CTRL_DENAB    0x0000000000000002 /* Diagnostic mode enable        */
+mdefine_line|#define SCHIZO_IOMMU_CTRL_DENAB    0x0000000000000002UL /* Diagnostic mode enable        */
 DECL|macro|SCHIZO_IOMMU_CTRL_ENAB
-mdefine_line|#define SCHIZO_IOMMU_CTRL_ENAB     0x0000000000000001 /* IOMMU Enable                  */
+mdefine_line|#define SCHIZO_IOMMU_CTRL_ENAB     0x0000000000000001UL /* IOMMU Enable                  */
 multiline_comment|/* Schizo config space address format is nearly identical to&n; * that of PSYCHO:&n; *&n; *  32             24 23 16 15    11 10       8 7   2  1 0&n; * ---------------------------------------------------------&n; * |0 0 0 0 0 0 0 0 0| bus | device | function | reg | 0 0 |&n; * ---------------------------------------------------------&n; */
 DECL|macro|SCHIZO_CONFIG_BASE
 mdefine_line|#define SCHIZO_CONFIG_BASE(PBM)&t;((PBM)-&gt;config_space)
@@ -4181,11 +4181,11 @@ multiline_comment|/* Nearly identical to PSYCHO equivalents... */
 DECL|macro|SCHIZO_ECC_CTRL
 mdefine_line|#define SCHIZO_ECC_CTRL&t;&t;0x10020UL
 DECL|macro|SCHIZO_ECCCTRL_EE
-mdefine_line|#define  SCHIZO_ECCCTRL_EE&t; 0x8000000000000000 /* Enable ECC Checking */
+mdefine_line|#define  SCHIZO_ECCCTRL_EE&t; 0x8000000000000000UL /* Enable ECC Checking */
 DECL|macro|SCHIZO_ECCCTRL_UE
-mdefine_line|#define  SCHIZO_ECCCTRL_UE&t; 0x4000000000000000 /* Enable UE Interrupts */
+mdefine_line|#define  SCHIZO_ECCCTRL_UE&t; 0x4000000000000000UL /* Enable UE Interrupts */
 DECL|macro|SCHIZO_ECCCTRL_CE
-mdefine_line|#define  SCHIZO_ECCCTRL_CE&t; 0x2000000000000000 /* Enable CE INterrupts */
+mdefine_line|#define  SCHIZO_ECCCTRL_CE&t; 0x2000000000000000UL /* Enable CE INterrupts */
 DECL|macro|SCHIZO_SAFARI_ERRCTRL
 mdefine_line|#define SCHIZO_SAFARI_ERRCTRL&t;0x10008UL
 DECL|macro|SCHIZO_SAFERRCTRL_EN

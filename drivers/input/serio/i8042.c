@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  i8042 keyboard and mouse controller driver for Linux&n; *&n; *  Copyright (c) 1999-2002 Vojtech Pavlik&n; */
+multiline_comment|/*&n; *  i8042 keyboard and mouse controller driver for Linux&n; *&n; *  Copyright (c) 1999-2004 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -185,6 +185,12 @@ id|dumbkbd
 comma
 l_string|&quot;Pretend that controller can only read data from keyboard&quot;
 )paren
+suffix:semicolon
+DECL|variable|i8042_noloop
+r_static
+r_int
+r_int
+id|i8042_noloop
 suffix:semicolon
 id|__obsolete_setup
 c_func
@@ -575,6 +581,19 @@ comma
 id|i
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i8042_noloop
+op_logical_and
+id|command
+op_eq
+id|I8042_CMD_AUX_LOOP
+)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -3407,6 +3426,26 @@ id|i8042_kbd_port.write
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef __i386__
+r_if
+c_cond
+(paren
+id|i8042_dmi_noloop
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;i8042.c: AUX LoopBack command disabled by DMI.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|i8042_noloop
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren

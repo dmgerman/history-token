@@ -141,7 +141,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|fetch_reg
-mdefine_line|#define fetch_reg(reg, regs) ({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct reg_window *win;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register unsigned long ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(reg)) ret = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;else if((reg) &lt; 16) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = regs-&gt;u_regs[(reg)];&t;&t;&t;&t;&t;&bslash;&n;&t;} else {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/* Ho hum, the slightly complicated case. */&t;&t;&t;&bslash;&n;&t;&t;win = (struct reg_window *)regs-&gt;u_regs[UREG_FP];&t;&t;&bslash;&n;&t;&t;if (get_user (ret, &amp;win-&gt;locals[(reg) - 16])) return -1;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ret;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define fetch_reg(reg, regs) ({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct reg_window __user *win;&t;&t;&t;&t;&t;&bslash;&n;&t;register unsigned long ret;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(reg)) ret = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;else if ((reg) &lt; 16) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = regs-&gt;u_regs[(reg)];&t;&t;&t;&t;&bslash;&n;&t;} else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/* Ho hum, the slightly complicated case. */&t;&t;&bslash;&n;&t;&t;win = (struct reg_window __user *)regs-&gt;u_regs[UREG_FP];&bslash;&n;&t;&t;if (get_user (ret, &amp;win-&gt;locals[(reg) - 16])) return -1;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ret;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 r_static
 r_inline
 r_int
@@ -165,6 +165,7 @@ id|regs
 (brace
 r_struct
 id|reg_window
+id|__user
 op_star
 id|win
 suffix:semicolon
@@ -204,6 +205,7 @@ op_assign
 (paren
 r_struct
 id|reg_window
+id|__user
 op_star
 )paren
 id|regs-&gt;u_regs
@@ -252,7 +254,7 @@ r_int
 id|psr
 )paren
 suffix:semicolon
-multiline_comment|/* Should return 0 if mul/div emulation succeeded and SIGILL should not be issued */
+multiline_comment|/* Should return 0 if mul/div emulation succeeded and SIGILL should&n; * not be issued.&n; */
 DECL|function|do_user_muldiv
 r_int
 id|do_user_muldiv
@@ -304,6 +306,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|pc

@@ -125,6 +125,19 @@ suffix:semicolon
 multiline_comment|/* The PCI address space does equal the physical memory&n; * address space.  The networking and block device layers use&n; * this boolean for bounce buffer decisions.&n; */
 DECL|macro|PCI_DMA_BUS_IS_PHYS
 mdefine_line|#define PCI_DMA_BUS_IS_PHYS     (1)
+multiline_comment|/* pci_unmap_{page,single} is a nop so... */
+DECL|macro|DECLARE_PCI_UNMAP_ADDR
+mdefine_line|#define DECLARE_PCI_UNMAP_ADDR(ADDR_NAME)
+DECL|macro|DECLARE_PCI_UNMAP_LEN
+mdefine_line|#define DECLARE_PCI_UNMAP_LEN(LEN_NAME)
+DECL|macro|pci_unmap_addr
+mdefine_line|#define pci_unmap_addr(PTR, ADDR_NAME)&t;&t;(0)
+DECL|macro|pci_unmap_addr_set
+mdefine_line|#define pci_unmap_addr_set(PTR, ADDR_NAME, VAL)&t;do { } while (0)
+DECL|macro|pci_unmap_len
+mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;(0)
+DECL|macro|pci_unmap_len_set
+mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;do { } while (0)
 multiline_comment|/*&n; * At present there are very few 32-bit PPC machines that can have&n; * memory above the 4GB point, and we don&squot;t support that.&n; */
 DECL|macro|pci_dac_dma_supported
 mdefine_line|#define pci_dac_dma_supported(pci_dev, mask)&t;(0)

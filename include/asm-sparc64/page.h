@@ -3,16 +3,11 @@ macro_line|#ifndef _SPARC64_PAGE_H
 DECL|macro|_SPARC64_PAGE_H
 mdefine_line|#define _SPARC64_PAGE_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/const.h&gt;
 DECL|macro|PAGE_SHIFT
 mdefine_line|#define PAGE_SHIFT   13
-macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/* I have my suspicions... -DaveM */
 DECL|macro|PAGE_SIZE
-mdefine_line|#define PAGE_SIZE    (1UL &lt;&lt; PAGE_SHIFT)
-macro_line|#else
-DECL|macro|PAGE_SIZE
-mdefine_line|#define PAGE_SIZE    (1 &lt;&lt; PAGE_SHIFT)
-macro_line|#endif
+mdefine_line|#define PAGE_SIZE    (_AC(1,UL) &lt;&lt; PAGE_SHIFT)
 DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK    (~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
@@ -280,21 +275,21 @@ mdefine_line|#define HPAGE_SHIFT&t;&t;16
 macro_line|#endif
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
 DECL|macro|HPAGE_SIZE
-mdefine_line|#define HPAGE_SIZE&t;&t;((1UL) &lt;&lt; HPAGE_SHIFT)
+mdefine_line|#define HPAGE_SIZE&t;&t;(_AC(1,UL) &lt;&lt; HPAGE_SHIFT)
 DECL|macro|HPAGE_MASK
 mdefine_line|#define HPAGE_MASK&t;&t;(~(HPAGE_SIZE - 1UL))
 DECL|macro|HUGETLB_PAGE_ORDER
 mdefine_line|#define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
 macro_line|#endif
 DECL|macro|TASK_UNMAPPED_BASE
-mdefine_line|#define TASK_UNMAPPED_BASE&t;(test_thread_flag(TIF_32BIT) ? &bslash;&n;&t;&t;&t;&t; (0x0000000070000000UL) : (PAGE_OFFSET))
+mdefine_line|#define TASK_UNMAPPED_BASE&t;(test_thread_flag(TIF_32BIT) ? &bslash;&n;&t;&t;&t;&t; (_AC(0x0000000070000000,UL)) : (PAGE_OFFSET))
 macro_line|#endif /* !(__ASSEMBLY__) */
 multiline_comment|/* to align the pointer to the (next) page boundary */
 DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
 multiline_comment|/* We used to stick this into a hard-coded global register (%g4)&n; * but that does not make sense anymore.&n; */
 DECL|macro|PAGE_OFFSET
-mdefine_line|#define PAGE_OFFSET&t;&t;0xFFFFF80000000000
+mdefine_line|#define PAGE_OFFSET&t;&t;_AC(0xFFFFF80000000000,UL)
 DECL|macro|__pa
 mdefine_line|#define __pa(x)&t;&t;&t;((unsigned long)(x) - PAGE_OFFSET)
 DECL|macro|__va

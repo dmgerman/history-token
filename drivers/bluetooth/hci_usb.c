@@ -1,7 +1,5 @@
 multiline_comment|/* &n;   HCI USB driver for Linux Bluetooth protocol stack (BlueZ)&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   Copyright (C) 2003 Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * Bluetooth HCI USB driver.&n; * Based on original USB Bluetooth driver for Linux kernel&n; *    Copyright (c) 2000 Greg Kroah-Hartman        &lt;greg@kroah.com&gt;&n; *    Copyright (c) 2000 Mark Douglas Corner       &lt;mcorner@umich.edu&gt;&n; *&n; * $Id: hci_usb.c,v 1.8 2002/07/18 17:23:09 maxk Exp $    &n; */
-DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;2.5&quot;
+multiline_comment|/*&n; * Bluetooth HCI USB driver.&n; * Based on original USB Bluetooth driver for Linux kernel&n; *    Copyright (c) 2000 Greg Kroah-Hartman        &lt;greg@kroah.com&gt;&n; *    Copyright (c) 2000 Mark Douglas Corner       &lt;mcorner@umich.edu&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -22,11 +20,11 @@ macro_line|#ifndef CONFIG_BT_HCIUSB_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
-mdefine_line|#define BT_DBG( A... )
+mdefine_line|#define BT_DBG(D...)
 DECL|macro|BT_DMP
 macro_line|#undef  BT_DMP
 DECL|macro|BT_DMP
-mdefine_line|#define BT_DMP( A... )
+mdefine_line|#define BT_DMP(D...)
 macro_line|#endif
 macro_line|#ifndef CONFIG_BT_HCIUSB_ZERO_PACKET
 DECL|macro|URB_ZERO_PACKET
@@ -34,6 +32,8 @@ macro_line|#undef  URB_ZERO_PACKET
 DECL|macro|URB_ZERO_PACKET
 mdefine_line|#define URB_ZERO_PACKET 0
 macro_line|#endif
+DECL|macro|VERSION
+mdefine_line|#define VERSION &quot;2.6&quot;
 DECL|variable|hci_usb_driver
 r_static
 r_struct
@@ -173,6 +173,22 @@ dot
 id|driver_info
 op_assign
 id|HCI_DIGIANSWER
+)brace
+comma
+multiline_comment|/* RTX Telecom based adapter with buggy SCO support */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0400
+comma
+l_int|0x0807
+)paren
+comma
+dot
+id|driver_info
+op_assign
+id|HCI_BROKEN_ISOC
 )brace
 comma
 (brace
@@ -4004,6 +4020,16 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|id-&gt;driver_info
+op_amp
+id|HCI_BROKEN_ISOC
+)paren
+)paren
 id|isoc_iface
 op_assign
 id|usb_ifnum_to_if

@@ -611,7 +611,11 @@ id|s2io_init_nic
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|s2io_rem_nic
+)paren
 comma
 )brace
 suffix:semicolon
@@ -17303,7 +17307,7 @@ multiline_comment|/*&n;*  Input Argument/s: &n;*   pdev - structure containing t
 DECL|function|s2io_rem_nic
 r_static
 r_void
-id|__exit
+id|__devexit
 id|s2io_rem_nic
 c_func
 (paren

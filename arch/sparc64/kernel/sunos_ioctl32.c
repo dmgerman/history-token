@@ -318,9 +318,11 @@ c_func
 )paren
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|p
-comma
+suffix:semicolon
+r_int
 id|ntty
 op_assign
 id|N_TTY
@@ -332,6 +334,7 @@ id|p
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|A
@@ -1361,6 +1364,7 @@ id|oldval
 comma
 id|newval
 comma
+id|__user
 op_star
 id|ptr
 suffix:semicolon
@@ -1372,6 +1376,7 @@ id|ptr
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|A
@@ -1480,6 +1485,7 @@ id|oldval
 comma
 id|newval
 comma
+id|__user
 op_star
 id|ptr
 suffix:semicolon
@@ -1491,6 +1497,7 @@ id|ptr
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|A

@@ -7083,6 +7083,18 @@ id|chip_idx
 op_assign
 id|ent-&gt;driver_data
 suffix:semicolon
+r_const
+r_char
+op_star
+id|chip_name
+op_assign
+id|tulip_tbl
+(braket
+id|chip_idx
+)braket
+dot
+id|chip_name
+suffix:semicolon
 r_int
 r_int
 id|eeprom_missing
@@ -7766,6 +7778,56 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_GSC
+r_if
+c_cond
+(paren
+id|pdev-&gt;subsystem_vendor
+op_eq
+id|PCI_VENDOR_ID_HP
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|pdev-&gt;subsystem_device
+)paren
+(brace
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+r_case
+l_int|0x1061
+suffix:colon
+r_case
+l_int|0x1062
+suffix:colon
+r_case
+l_int|0x1063
+suffix:colon
+r_case
+l_int|0x1098
+suffix:colon
+r_case
+l_int|0x1099
+suffix:colon
+r_case
+l_int|0x10EE
+suffix:colon
+id|tp-&gt;flags
+op_or_assign
+id|HAS_SWAPPED_SEEPROM
+op_or
+id|NEEDS_FAKE_MEDIA_TABLE
+suffix:semicolon
+id|chip_name
+op_assign
+l_string|&quot;GSC DS21140 Tulip&quot;
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 multiline_comment|/* Clear the missed-packet counter. */
 id|inl
 c_func
@@ -7967,7 +8029,7 @@ op_assign
 id|tulip_read_eeprom
 c_func
 (paren
-id|ioaddr
+id|dev
 comma
 l_int|0xff
 comma
@@ -7994,37 +8056,48 @@ r_sizeof
 (paren
 id|tp-&gt;eeprom
 )paren
-op_div
-l_int|2
 suffix:semicolon
 id|i
-op_increment
+op_add_assign
+l_int|2
 )paren
-(paren
-(paren
+(brace
 id|u16
-op_star
+id|data
+op_assign
+id|tulip_read_eeprom
+c_func
+(paren
+id|dev
+comma
+id|i
+op_div
+l_int|2
+comma
+id|ee_addr_size
 )paren
+suffix:semicolon
 id|ee_data
-)paren
 (braket
 id|i
 )braket
 op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|tulip_read_eeprom
-c_func
-(paren
-id|ioaddr
-comma
-id|i
-comma
-id|ee_addr_size
-)paren
-)paren
+id|data
+op_amp
+l_int|0xff
 suffix:semicolon
+id|ee_data
+(braket
+id|i
+op_plus
+l_int|1
+)braket
+op_assign
+id|data
+op_rshift
+l_int|8
+suffix:semicolon
+)brace
 multiline_comment|/* DEC now has a specification (see Notes) but early board makers&n;&t;&t;   just put the address in the first EEPROM locations. */
 multiline_comment|/* This does  memcmp(ee_data, ee_data+16, 8) */
 r_for
@@ -8241,8 +8314,8 @@ id|HAS_MEDIA_TABLE
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef __hppa__
-multiline_comment|/* 3x5 HSC (J3514A) has a broken srom */
+macro_line|#ifdef CONFIG_GSC
+multiline_comment|/* Check to see if we have a broken srom */
 r_if
 c_cond
 (paren
@@ -8296,7 +8369,7 @@ l_int|3
 op_assign
 l_int|0x10
 suffix:semicolon
-multiline_comment|/* srom need to be byte-swaped and shifted up 1 word.  &n;&t;&t;&t; * This shift needs to happen at the end of the MAC&n;&t;&t;&t; * first because of the 2 byte overlap.&n;&t;&t;&t; */
+multiline_comment|/* HSC-PCI boards need to be byte-swaped and shifted&n;&t;&t;&t; * up 1 word.  This shift needs to happen at the end&n;&t;&t;&t; * of the MAC first because of the 2 byte overlap.&n;&t;&t;&t; */
 r_for
 c_loop
 (paren
@@ -8989,11 +9062,6 @@ l_string|&quot;%s: %s rev %d at %#3lx,&quot;
 comma
 id|dev-&gt;name
 comma
-id|tulip_tbl
-(braket
-id|chip_idx
-)braket
-dot
 id|chip_name
 comma
 id|chip_rev

@@ -330,7 +330,7 @@ multiline_comment|/* PCI 64-bit addressing works for all slots on all controller
 DECL|macro|PCI64_REQUIRED_MASK
 mdefine_line|#define PCI64_REQUIRED_MASK&t;(~(dma64_addr_t)0)
 DECL|macro|PCI64_ADDR_BASE
-mdefine_line|#define PCI64_ADDR_BASE&t;&t;0xfffc000000000000
+mdefine_line|#define PCI64_ADDR_BASE&t;&t;0xfffc000000000000UL
 multiline_comment|/* Usage of the pci_dac_foo interfaces is only valid if this&n; * test passes.&n; */
 DECL|macro|pci_dac_dma_supported
 mdefine_line|#define pci_dac_dma_supported(pci_dev, mask) &bslash;&n;&t;((((mask) &amp; PCI64_REQUIRED_MASK) == PCI64_REQUIRED_MASK) ? 1 : 0)
