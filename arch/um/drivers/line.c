@@ -1598,6 +1598,8 @@ comma
 id|n
 comma
 id|num
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_return

@@ -1060,11 +1060,15 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ubd_setup : index %d out of range &quot;
-l_string|&quot;(%d devices)&bslash;n&quot;
+l_string|&quot;(%d devices, from 0 to %d)&bslash;n&quot;
 comma
 id|n
 comma
 id|MAX_DEV
+comma
+id|MAX_DEV
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_return
