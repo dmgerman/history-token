@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.37 2003/01/17 16:04:44 dwmw2 Exp $ */
+multiline_comment|/* $Id: jffs2_fs_sb.h,v 1.45 2003/10/08 11:46:27 dwmw2 Exp $ */
 macro_line|#ifndef _JFFS2_FS_SB
 DECL|macro|_JFFS2_FS_SB
 mdefine_line|#define _JFFS2_FS_SB
@@ -14,6 +14,9 @@ DECL|macro|JFFS2_SB_FLAG_RO
 mdefine_line|#define JFFS2_SB_FLAG_RO 1
 DECL|macro|JFFS2_SB_FLAG_MOUNTING
 mdefine_line|#define JFFS2_SB_FLAG_MOUNTING 2
+r_struct
+id|jffs2_inodirty
+suffix:semicolon
 multiline_comment|/* A struct for the overall file system control.  Pointers to&n;   jffs2_sb_info structs are named `c&squot; in the source code.  &n;   Nee jffs_control&n;*/
 DECL|struct|jffs2_sb_info
 r_struct
@@ -111,6 +114,36 @@ suffix:semicolon
 DECL|member|nr_erasing_blocks
 r_uint32
 id|nr_erasing_blocks
+suffix:semicolon
+multiline_comment|/* Number of free blocks there must be before we... */
+DECL|member|resv_blocks_write
+r_uint8
+id|resv_blocks_write
+suffix:semicolon
+multiline_comment|/* ... allow a normal filesystem write */
+DECL|member|resv_blocks_deletion
+r_uint8
+id|resv_blocks_deletion
+suffix:semicolon
+multiline_comment|/* ... allow a normal filesystem deletion */
+DECL|member|resv_blocks_gctrigger
+r_uint8
+id|resv_blocks_gctrigger
+suffix:semicolon
+multiline_comment|/* ... wake up the GC thread */
+DECL|member|resv_blocks_gcbad
+r_uint8
+id|resv_blocks_gcbad
+suffix:semicolon
+multiline_comment|/* ... pick a block from the bad_list to GC */
+DECL|member|resv_blocks_gcmerge
+r_uint8
+id|resv_blocks_gcmerge
+suffix:semicolon
+multiline_comment|/* ... merge pages when garbage collecting */
+DECL|member|nospc_dirty_size
+r_uint32
+id|nospc_dirty_size
 suffix:semicolon
 DECL|member|nr_blocks
 r_uint32
@@ -234,6 +267,7 @@ r_struct
 id|semaphore
 id|erase_free_sem
 suffix:semicolon
+macro_line|#ifdef CONFIG_JFFS2_FS_NAND
 multiline_comment|/* Write-behind buffer for NAND flash */
 DECL|member|wbuf
 r_int
@@ -253,18 +287,32 @@ DECL|member|wbuf_pagesize
 r_uint32
 id|wbuf_pagesize
 suffix:semicolon
-DECL|member|wbuf_task
+DECL|member|wbuf_inodes
 r_struct
-id|work_struct
-id|wbuf_task
+id|jffs2_inodirty
+op_star
+id|wbuf_inodes
 suffix:semicolon
-multiline_comment|/* task for timed wbuf flush */
-DECL|member|wbuf_timer
+multiline_comment|/* Information about out-of-band area usage... */
+DECL|member|oobinfo
 r_struct
-id|timer_list
-id|wbuf_timer
+id|nand_oobinfo
+op_star
+id|oobinfo
 suffix:semicolon
-multiline_comment|/* timer for flushing wbuf */
+DECL|member|badblock_pos
+r_uint32
+id|badblock_pos
+suffix:semicolon
+DECL|member|fsdata_pos
+r_uint32
+id|fsdata_pos
+suffix:semicolon
+DECL|member|fsdata_len
+r_uint32
+id|fsdata_len
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* OS-private pointer for getting back to master superblock info */
 DECL|member|os_priv
 r_void

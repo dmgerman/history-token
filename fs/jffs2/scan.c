@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: scan.c,v 1.100 2003/06/05 14:42:24 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: scan.c,v 1.104 2003/10/11 14:52:48 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -106,6 +106,53 @@ DECL|macro|BLK_STATE_ALLDIRTY
 mdefine_line|#define BLK_STATE_ALLDIRTY&t;4
 DECL|macro|BLK_STATE_BADBLOCK
 mdefine_line|#define BLK_STATE_BADBLOCK&t;5
+DECL|function|min_free
+r_static
+r_inline
+r_int
+id|min_free
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+(brace
+r_uint32
+id|min
+op_assign
+l_int|2
+op_star
+r_sizeof
+(paren
+r_struct
+id|jffs2_raw_inode
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_JFFS2_FS_NAND
+r_if
+c_cond
+(paren
+op_logical_neg
+id|jffs2_can_mark_obsolete
+c_func
+(paren
+id|c
+)paren
+op_logical_and
+id|min
+OL
+id|c-&gt;wbuf_pagesize
+)paren
+r_return
+id|c-&gt;wbuf_pagesize
+suffix:semicolon
+macro_line|#endif
+r_return
+id|min
+suffix:semicolon
+)brace
 DECL|function|jffs2_scan_medium
 r_int
 id|jffs2_scan_medium
@@ -350,8 +397,8 @@ id|ret
 OL
 l_int|0
 )paren
-r_return
-id|ret
+r_goto
+id|out
 suffix:semicolon
 id|ACCT_PARANOIA_CHECK
 c_func
@@ -472,24 +519,10 @@ c_cond
 (paren
 id|jeb-&gt;free_size
 OG
-l_int|2
-op_star
-r_sizeof
-(paren
-r_struct
-id|jffs2_raw_inode
-)paren
-op_logical_and
-(paren
-id|jffs2_can_mark_obsolete
+id|min_free
 c_func
 (paren
 id|c
-)paren
-op_logical_or
-id|jeb-&gt;free_size
-OG
-id|c-&gt;wbuf_pagesize
 )paren
 op_logical_and
 (paren
@@ -760,6 +793,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_JFFS2_FS_NAND
 r_if
 c_cond
 (paren
@@ -825,6 +859,7 @@ op_sub_assign
 id|skip
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -872,9 +907,13 @@ comma
 id|c-&gt;nr_blocks
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|jffs2_erase_pending_trigger
@@ -884,6 +923,12 @@ id|c
 )paren
 suffix:semicolon
 )brace
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+id|out
+suffix:colon
 r_if
 c_cond
 (paren
@@ -913,7 +958,7 @@ id|c-&gt;mtd-&gt;size
 suffix:semicolon
 macro_line|#endif
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|function|jffs2_fill_scan_buf
@@ -3457,6 +3502,12 @@ c_func
 id|ri-&gt;totlen
 )paren
 )paren
+)paren
+suffix:semicolon
+id|jffs2_free_raw_node_ref
+c_func
+(paren
+id|raw
 )paren
 suffix:semicolon
 r_return

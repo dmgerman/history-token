@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: background.c,v 1.38 2003/05/26 09:50:38 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: background.c,v 1.44 2003/10/08 13:29:55 dwmw2 Exp $&n; *&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -202,29 +202,6 @@ op_star
 id|c
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|c-&gt;mtd-&gt;type
-op_eq
-id|MTD_NANDFLASH
-)paren
-(brace
-multiline_comment|/* stop a eventually scheduled wbuf flush timer */
-id|del_timer_sync
-c_func
-(paren
-op_amp
-id|c-&gt;wbuf_timer
-)paren
-suffix:semicolon
-multiline_comment|/* make sure, that a scheduled wbuf flush task is completed */
-id|flush_scheduled_work
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 id|spin_lock
 c_func
 (paren
@@ -510,6 +487,8 @@ l_string|&quot;jffs2_garbage_collect_thread(): SIGKILL received.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+id|die
+suffix:colon
 id|spin_lock
 c_func
 (paren
@@ -625,12 +604,30 @@ l_string|&quot;jffs2_garbage_collect_thread(): pass&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|jffs2_garbage_collect_pass
 c_func
 (paren
 id|c
 )paren
+op_eq
+op_minus
+id|ENOSPC
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;No space for garbage collection. Aborting GC thread&bslash;n&quot;
+)paren
 suffix:semicolon
+r_goto
+id|die
+suffix:semicolon
+)brace
 )brace
 )brace
 DECL|function|thread_should_wake
@@ -696,12 +693,12 @@ id|c-&gt;nr_free_blocks
 op_plus
 id|c-&gt;nr_erasing_blocks
 OL
-id|JFFS2_RESERVED_BLOCKS_GCTRIGGER
+id|c-&gt;resv_blocks_gctrigger
 op_logical_and
 (paren
 id|dirty
 OG
-id|c-&gt;sector_size
+id|c-&gt;nospc_dirty_size
 )paren
 )paren
 id|ret
