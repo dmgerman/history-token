@@ -3706,6 +3706,10 @@ id|total_reclaimed
 op_add_assign
 id|sc.nr_reclaimed
 suffix:semicolon
+id|total_scanned
+op_add_assign
+id|sc.nr_scanned
+suffix:semicolon
 r_if
 c_cond
 (paren
