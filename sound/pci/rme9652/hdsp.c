@@ -11005,7 +11005,7 @@ id|ucontrol-&gt;value.enumerated.item
 l_int|0
 )braket
 op_assign
-id|hdsp_pref_sync_ref
+id|hdsp_autosync_ref
 c_func
 (paren
 id|hdsp
