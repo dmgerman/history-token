@@ -66,6 +66,8 @@ DECL|macro|SK_QUED
 mdefine_line|#define&t;SK_QUED&t;&t;5&t;&t;&t;/* on serv-&gt;sk_sockets */
 DECL|macro|SK_DEAD
 mdefine_line|#define&t;SK_DEAD&t;&t;6&t;&t;&t;/* socket closed */
+DECL|macro|SK_CHNGBUF
+mdefine_line|#define&t;SK_CHNGBUF&t;7&t;&t;&t;/* need to change snd/rcv buffer sizes */
 DECL|member|sk_reserved
 r_int
 id|sk_reserved
