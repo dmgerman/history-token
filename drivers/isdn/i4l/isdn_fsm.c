@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &quot;isdn_fsm.h&quot;
+macro_line|#include &lt;linux/isdn/fsm.h&gt;
 r_int
 DECL|function|fsm_new
 id|fsm_new

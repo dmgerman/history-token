@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &quot;isdn_common.h&quot;
 macro_line|#include &quot;isdn_net.h&quot;
 macro_line|#include &quot;isdn_ppp.h&quot;
-macro_line|#include &quot;isdn_fsm.h&quot;
 DECL|macro|ISDN_NET_TX_TIMEOUT
 mdefine_line|#define ISDN_NET_TX_TIMEOUT (20*HZ) 
 multiline_comment|/* All of this configuration code is globally serialized */

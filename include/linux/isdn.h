@@ -3,8 +3,7 @@ macro_line|#ifndef __ISDN_H__
 DECL|macro|__ISDN_H__
 mdefine_line|#define __ISDN_H__
 macro_line|#include &lt;linux/ioctl.h&gt;
-singleline_comment|// FIXME!!!
-macro_line|#include &lt;../drivers/isdn/i4l/isdn_fsm.h&gt;
+macro_line|#include &lt;linux/isdn/fsm.h&gt;
 macro_line|#ifdef CONFIG_COBALT_MICRO_SERVER
 multiline_comment|/* Save memory */
 DECL|macro|ISDN_MAX_DRIVERS
