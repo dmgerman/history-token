@@ -107,6 +107,11 @@ id|MTHCA_QP_CONTEXT_SIZE
 op_assign
 l_int|0x200
 comma
+DECL|enumerator|MTHCA_RDB_ENTRY_SIZE
+id|MTHCA_RDB_ENTRY_SIZE
+op_assign
+l_int|0x20
+comma
 DECL|enumerator|MTHCA_AV_SIZE
 id|MTHCA_AV_SIZE
 op_assign
@@ -271,10 +276,6 @@ suffix:semicolon
 DECL|member|reserved_mrws
 r_int
 id|reserved_mrws
-suffix:semicolon
-DECL|member|num_rdbs
-r_int
-id|num_rdbs
 suffix:semicolon
 DECL|member|reserved_uars
 r_int
@@ -459,6 +460,14 @@ DECL|member|alloc
 r_struct
 id|mthca_alloc
 id|alloc
+suffix:semicolon
+DECL|member|rdb_base
+id|u32
+id|rdb_base
+suffix:semicolon
+DECL|member|rdb_shift
+r_int
+id|rdb_shift
 suffix:semicolon
 DECL|member|sqp_start
 r_int
