@@ -473,11 +473,6 @@ id|kdev_t
 id|dev
 suffix:semicolon
 multiline_comment|/* Device number */
-DECL|member|old_dev
-id|kdev_t
-id|old_dev
-suffix:semicolon
-multiline_comment|/*  &quot;&quot; when it was last imported */
 DECL|member|size
 r_int
 r_int

@@ -2694,18 +2694,12 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: rdev %s: O:%s, SZ:%08ld F:%d DN:%d &quot;
+l_string|&quot;md: rdev %s, SZ:%08ld F:%d DN:%d &quot;
 comma
 id|partition_name
 c_func
 (paren
 id|rdev-&gt;dev
-)paren
-comma
-id|partition_name
-c_func
-(paren
-id|rdev-&gt;old_dev
 )paren
 comma
 id|rdev-&gt;size
@@ -4095,28 +4089,6 @@ r_goto
 id|abort_free
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|rdev-&gt;sb-&gt;level
-op_ne
-id|LEVEL_MULTIPATH
-)paren
-id|rdev-&gt;old_dev
-op_assign
-id|mk_kdev
-c_func
-(paren
-id|rdev-&gt;sb-&gt;this_disk.major
-comma
-id|rdev-&gt;sb-&gt;this_disk.minor
-)paren
-suffix:semicolon
-r_else
-id|rdev-&gt;old_dev
-op_assign
-id|NODEV
-suffix:semicolon
 )brace
 id|INIT_LIST_HEAD
 c_func
@@ -7726,10 +7698,6 @@ id|rdev
 )paren
 suffix:semicolon
 )brace
-id|rdev-&gt;old_dev
-op_assign
-id|dev
-suffix:semicolon
 id|rdev-&gt;desc_nr
 op_assign
 id|info-&gt;number
@@ -8393,10 +8361,6 @@ id|mddev
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The rest should better be atomic, we can have disk failures&n;&t; * noticed in interrupt contexts ...&n;&t; */
-id|rdev-&gt;old_dev
-op_assign
-id|dev
-suffix:semicolon
 id|rdev-&gt;size
 op_assign
 id|size
