@@ -423,7 +423,7 @@ r_int
 id|write_acked
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * CHARACTER DEVICE DISPATCHING&n; *&n; * All ieee1394 character device drivers share the same major number&n; * (major 171).  The 256 minor numbers are allocated to the various&n; * task-specific interfaces (raw1394, video1394, dv1394, etc) in&n; * blocks of 16.&n; *&n; * The core ieee1394.o modules handles the initial open() for all&n; * character devices on major 171; it then dispatches to the&n; * appropriate task-specific driver.&n; *&n; * Minor device number block allocations:&n; *&n; * Block 0  (  0- 15)  raw1394&n; * Block 1  ( 16- 31)  video1394&n; * Block 2  ( 32- 47)  dv1394&n; *&n; * Blocks 3-14 free for future allocation&n; *&n; * Block 15 (240-255)  reserved for drivers under development, etc.&n; */
+multiline_comment|/*&n; * CHARACTER DEVICE DISPATCHING&n; *&n; * All ieee1394 character device drivers share the same major number&n; * (major 171).  The 256 minor numbers are allocated to the various&n; * task-specific interfaces (raw1394, video1394, dv1394, etc) in&n; * blocks of 16.&n; *&n; * The core ieee1394.o module allocates the device number region&n; * 171:0-255, the various drivers must then cdev_add() their cdev&n; * objects to handle their respective sub-regions.&n; *&n; * Minor device number block allocations:&n; *&n; * Block 0  (  0- 15)  raw1394&n; * Block 1  ( 16- 31)  video1394&n; * Block 2  ( 32- 47)  dv1394&n; *&n; * Blocks 3-14 free for future allocation&n; *&n; * Block 15 (240-255)  reserved for drivers under development, etc.&n; */
 DECL|macro|IEEE1394_MAJOR
 mdefine_line|#define IEEE1394_MAJOR               171
 DECL|macro|IEEE1394_MINOR_BLOCK_RAW1394
@@ -436,6 +436,18 @@ DECL|macro|IEEE1394_MINOR_BLOCK_AMDTP
 mdefine_line|#define IEEE1394_MINOR_BLOCK_AMDTP         3
 DECL|macro|IEEE1394_MINOR_BLOCK_EXPERIMENTAL
 mdefine_line|#define IEEE1394_MINOR_BLOCK_EXPERIMENTAL 15
+DECL|macro|IEEE1394_CORE_DEV
+mdefine_line|#define IEEE1394_CORE_DEV&t;&t;MKDEV(IEEE1394_MAJOR, 0)
+DECL|macro|IEEE1394_RAW1394_DEV
+mdefine_line|#define IEEE1394_RAW1394_DEV&t;&t;MKDEV(IEEE1394_MAJOR, IEEE1394_MINOR_BLOCK_RAW1394 * 16)
+DECL|macro|IEEE1394_VIDEO1394_DEV
+mdefine_line|#define IEEE1394_VIDEO1394_DEV&t;&t;MKDEV(IEEE1394_MAJOR, IEEE1394_MINOR_BLOCK_VIDEO1394 * 16)
+DECL|macro|IEEE1394_DV1394_DEV
+mdefine_line|#define IEEE1394_DV1394_DEV&t;&t;MKDEV(IEEE1394_MAJOR, IEEE1394_MINOR_BLOCK_DV1394 * 16)
+DECL|macro|IEEE1394_AMDTP_DEV
+mdefine_line|#define IEEE1394_AMDTP_DEV&t;&t;MKDEV(IEEE1394_MAJOR, IEEE1394_MINOR_BLOCK_AMDTP * 16)
+DECL|macro|IEEE1394_EXPERIMENTAL_DEV
+mdefine_line|#define IEEE1394_EXPERIMENTAL_DEV&t;MKDEV(IEEE1394_MAJOR, IEEE1394_MINOR_BLOCK_EXPERIMENTAL * 16)
 multiline_comment|/* return the index (within a minor number block) of a file */
 DECL|function|ieee1394_file_to_instance
 r_static
@@ -451,53 +463,10 @@ op_star
 id|file
 )paren
 (brace
-r_int
-r_char
-id|minor
-op_assign
-id|iminor
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode
-)paren
-suffix:semicolon
-multiline_comment|/* return lower 4 bits */
 r_return
-id|minor
-op_amp
-l_int|0xF
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_cindex
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Task-specific drivers should call ieee1394_register_chardev() to&n; * request a block of 16 minor numbers.&n; *&n; * Returns 0 if the request was successful, -EBUSY if the block was&n; * already taken.&n; */
-r_int
-id|ieee1394_register_chardev
-c_func
-(paren
-r_int
-id|blocknum
-comma
-multiline_comment|/* 0-15 */
-r_struct
-id|module
-op_star
-id|module
-comma
-multiline_comment|/* THIS_MODULE */
-r_struct
-id|file_operations
-op_star
-id|file_ops
-)paren
-suffix:semicolon
-multiline_comment|/* release a block of minor numbers */
-r_void
-id|ieee1394_unregister_chardev
-c_func
-(paren
-r_int
-id|blocknum
-)paren
-suffix:semicolon
 multiline_comment|/* Our sysfs bus entry */
 r_extern
 r_struct
