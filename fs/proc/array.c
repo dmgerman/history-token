@@ -325,6 +325,13 @@ id|p-&gt;real_parent-&gt;pid
 suffix:colon
 l_int|0
 comma
+id|p-&gt;pid
+op_logical_and
+id|p-&gt;ptrace
+ques
+c_cond
+id|p-&gt;parent-&gt;pid
+suffix:colon
 l_int|0
 comma
 id|p-&gt;uid

@@ -43,7 +43,7 @@ r_int
 r_int
 id|lock
 suffix:semicolon
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#if CONFIG_DEBUG_SPINLOCK
 DECL|member|magic
 r_int
 id|magic
