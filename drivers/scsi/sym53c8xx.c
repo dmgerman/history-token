@@ -42231,9 +42231,9 @@ r_return
 id|DEF_DEPTH
 suffix:semicolon
 )brace
-DECL|function|sym53c8xx_slave_attach
+DECL|function|sym53c8xx_slave_configure
 r_int
-id|sym53c8xx_slave_attach
+id|sym53c8xx_slave_configure
 c_func
 (paren
 id|Scsi_Device

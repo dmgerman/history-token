@@ -3002,11 +3002,13 @@ comma
 id|out_fd
 suffix:semicolon
 r_int
-id|nblocks
-comma
+r_int
 id|rd_blocks
 comma
 id|devblocks
+suffix:semicolon
+r_int
+id|nblocks
 comma
 id|i
 suffix:semicolon

@@ -830,10 +830,10 @@ op_assign
 id|MAX_CMD_PER_LUN
 suffix:semicolon
 macro_line|#endif
-DECL|function|u14_34f_slave_attach
+DECL|function|u14_34f_slave_configure
 r_static
 r_int
-id|u14_34f_slave_attach
+id|u14_34f_slave_configure
 c_func
 (paren
 id|Scsi_Device

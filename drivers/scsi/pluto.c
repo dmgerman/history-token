@@ -208,9 +208,9 @@ id|fc_sem
 )paren
 suffix:semicolon
 )brace
-DECL|function|pluto_slave_attach
+DECL|function|pluto_slave_configure
 r_int
-id|pluto_slave_attach
+id|pluto_slave_configure
 c_func
 (paren
 id|Scsi_Device

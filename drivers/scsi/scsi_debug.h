@@ -2,7 +2,7 @@ macro_line|#ifndef _SCSI_DEBUG_H
 macro_line|#include &lt;linux/types.h&gt;
 r_static
 r_int
-id|scsi_debug_slave_attach
+id|scsi_debug_slave_configure
 c_func
 (paren
 r_struct
@@ -12,7 +12,7 @@ op_star
 suffix:semicolon
 r_static
 r_void
-id|scsi_debug_slave_detach
+id|scsi_debug_slave_destroy
 c_func
 (paren
 r_struct
@@ -176,14 +176,14 @@ op_assign
 id|scsi_debug_info
 comma
 dot
-id|slave_attach
+id|slave_configure
 op_assign
-id|scsi_debug_slave_attach
+id|scsi_debug_slave_configure
 comma
 dot
-id|slave_detach
+id|slave_destroy
 op_assign
-id|scsi_debug_slave_detach
+id|scsi_debug_slave_destroy
 comma
 dot
 id|ioctl

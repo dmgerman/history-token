@@ -128,7 +128,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|ips_slave_attach
+id|ips_slave_configure
 c_func
 (paren
 id|Scsi_Device
@@ -668,7 +668,7 @@ DECL|macro|IPS
 mdefine_line|#define IPS {                            &bslash;&n;    module : NULL,                        &bslash;&n;    proc_info : NULL,                     &bslash;&n;    name : NULL,                          &bslash;&n;    detect : ips_detect,                  &bslash;&n;    release : ips_release,                &bslash;&n;    info : ips_info,                      &bslash;&n;    command : NULL,                       &bslash;&n;    queuecommand : ips_queue,             &bslash;&n;    eh_strategy_handler : NULL,           &bslash;&n;    eh_abort_handler : ips_eh_abort,      &bslash;&n;    eh_device_reset_handler : NULL,       &bslash;&n;    eh_bus_reset_handler : NULL,          &bslash;&n;    eh_host_reset_handler : ips_eh_reset, &bslash;&n;    abort : NULL,                         &bslash;&n;    reset : NULL,                         &bslash;&n;    slave_attach : NULL,                  &bslash;&n;    bios_param : ips_biosparam,           &bslash;&n;    can_queue : 0,                        &bslash;&n;    this_id: -1,                          &bslash;&n;    sg_tablesize : IPS_MAX_SG,            &bslash;&n;    cmd_per_lun: 3,                       &bslash;&n;    present : 0,                          &bslash;&n;    unchecked_isa_dma : 0,                &bslash;&n;    use_clustering : ENABLE_CLUSTERING,   &bslash;&n;    use_new_eh_code : 1                   &bslash;&n;}
 macro_line|#else
 DECL|macro|IPS
-mdefine_line|#define IPS {                            &bslash;&n;    detect : ips_detect,                  &bslash;&n;    release : ips_release,                &bslash;&n;    info : ips_info,                      &bslash;&n;    queuecommand : ips_queue,             &bslash;&n;    eh_abort_handler : ips_eh_abort,      &bslash;&n;    eh_host_reset_handler : ips_eh_reset, &bslash;&n;    slave_attach : ips_slave_attach,      &bslash;&n;    bios_param : ips_biosparam,           &bslash;&n;    can_queue : 0,                        &bslash;&n;    this_id: -1,                          &bslash;&n;    sg_tablesize : IPS_MAX_SG,            &bslash;&n;    cmd_per_lun: 3,                       &bslash;&n;    present : 0,                          &bslash;&n;    unchecked_isa_dma : 0,                &bslash;&n;    use_clustering : ENABLE_CLUSTERING,   &bslash;&n;    highmem_io : 1                        &bslash;&n;}
+mdefine_line|#define IPS {                            &bslash;&n;    detect : ips_detect,                  &bslash;&n;    release : ips_release,                &bslash;&n;    info : ips_info,                      &bslash;&n;    queuecommand : ips_queue,             &bslash;&n;    eh_abort_handler : ips_eh_abort,      &bslash;&n;    eh_host_reset_handler : ips_eh_reset, &bslash;&n;    slave_configure : ips_slave_configure,&bslash;&n;    bios_param : ips_biosparam,           &bslash;&n;    can_queue : 0,                        &bslash;&n;    this_id: -1,                          &bslash;&n;    sg_tablesize : IPS_MAX_SG,            &bslash;&n;    cmd_per_lun: 3,                       &bslash;&n;    present : 0,                          &bslash;&n;    unchecked_isa_dma : 0,                &bslash;&n;    use_clustering : ENABLE_CLUSTERING,   &bslash;&n;    highmem_io : 1                        &bslash;&n;}
 macro_line|#endif
 multiline_comment|/*&n; * IBM PCI Raid Command Formats&n; */
 r_typedef

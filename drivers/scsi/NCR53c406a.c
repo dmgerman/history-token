@@ -36,7 +36,6 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;NCR53c406a.h&quot;
 multiline_comment|/* ============================================================= */
 DECL|macro|WATCHDOG
 mdefine_line|#define WATCHDOG 5000000

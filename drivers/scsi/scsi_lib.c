@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &quot;scsi.h&quot;
@@ -91,6 +92,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function:    scsi_init_cmd_errh()&n; *&n; * Purpose:     Initialize SCpnt fields related to error handling.&n; *&n; * Arguments:   SCpnt   - command that is ready to be queued.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       This function has the job of initializing a number of&n; *              fields related to error handling.   Typically this will&n; *              be called once for each command, as required.&n; */
 DECL|function|scsi_init_cmd_errh
+r_static
 r_int
 id|scsi_init_cmd_errh
 c_func
@@ -423,18 +425,15 @@ op_eq
 l_int|0
 )paren
 (brace
-r_for
-c_loop
+id|list_for_each_entry
+c_func
 (paren
 id|SDpnt
-op_assign
-id|SHpnt-&gt;host_queue
-suffix:semicolon
-id|SDpnt
-suffix:semicolon
-id|SDpnt
-op_assign
-id|SDpnt-&gt;next
+comma
+op_amp
+id|SHpnt-&gt;my_devices
+comma
+id|siblings
 )paren
 (brace
 r_if
@@ -490,18 +489,15 @@ c_cond
 id|SHpnt-&gt;some_device_starved
 )paren
 (brace
-r_for
-c_loop
+id|list_for_each_entry
+c_func
 (paren
 id|SDpnt
-op_assign
-id|SHpnt-&gt;host_queue
-suffix:semicolon
-id|SDpnt
-suffix:semicolon
-id|SDpnt
-op_assign
-id|SDpnt-&gt;next
+comma
+op_amp
+id|SHpnt-&gt;my_devices
+comma
+id|siblings
 )paren
 (brace
 r_if
@@ -581,11 +577,11 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function:    scsi_end_request()&n; *&n; * Purpose:     Post-processing of completed commands called from interrupt&n; *              handler or a bottom-half handler.&n; *&n; * Arguments:   SCpnt    - command that is complete.&n; *              uptodate - 1 if I/O indicates success, 0 for I/O error.&n; *              sectors  - number of sectors we want to mark.&n; *&t;&t;requeue  - indicates whether we should requeue leftovers.&n; *&t;&t;frequeue - indicates that if we release the command block&n; *&t;&t;&t;   that the queue request function should be called.&n; *&n; * Lock status: Assumed that lock is not held upon entry.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       This is called for block device requests in order to&n; *              mark some number of sectors as complete.&n; * &n; *&t;&t;We are guaranteeing that the request queue will be goosed&n; *&t;&t;at some point during this call.&n; */
-DECL|function|__scsi_end_request
+DECL|function|scsi_end_request
 r_static
 id|Scsi_Cmnd
 op_star
-id|__scsi_end_request
+id|scsi_end_request
 c_func
 (paren
 id|Scsi_Cmnd
@@ -600,9 +596,6 @@ id|sectors
 comma
 r_int
 id|requeue
-comma
-r_int
-id|frequeue
 )paren
 (brace
 id|request_queue_t
@@ -720,11 +713,6 @@ c_func
 id|SCpnt
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|frequeue
-)paren
 id|scsi_queue_next_request
 c_func
 (paren
@@ -735,40 +723,6 @@ l_int|NULL
 suffix:semicolon
 r_return
 l_int|NULL
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Function:    scsi_end_request()&n; *&n; * Purpose:     Post-processing of completed commands called from interrupt&n; *              handler or a bottom-half handler.&n; *&n; * Arguments:   SCpnt    - command that is complete.&n; *              uptodate - 1 if I/O indicates success, 0 for I/O error.&n; *              sectors  - number of sectors we want to mark.&n; *&n; * Lock status: Assumed that lock is not held upon entry.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       This is called for block device requests in order to&n; *              mark some number of sectors as complete.&n; * &n; *&t;&t;We are guaranteeing that the request queue will be goosed&n; *&t;&t;at some point during this call.&n; */
-DECL|function|scsi_end_request
-id|Scsi_Cmnd
-op_star
-id|scsi_end_request
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-comma
-r_int
-id|uptodate
-comma
-r_int
-id|sectors
-)paren
-(brace
-r_return
-id|__scsi_end_request
-c_func
-(paren
-id|SCpnt
-comma
-id|uptodate
-comma
-id|sectors
-comma
-l_int|1
-comma
-l_int|1
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function:    scsi_release_buffers()&n; *&n; * Purpose:     Completion processing for block device I/O requests.&n; *&n; * Arguments:   SCpnt   - command that we are bailing.&n; *&n; * Lock status: Assumed that no lock is held upon entry.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       In the event that an upper level driver rejects a&n; *&t;&t;command, we must release resources allocated during&n; *&t;&t;the __init_io() function.  Primarily this would involve&n; *&t;&t;the scatter-gather table, and potentially any bounce&n; *&t;&t;buffers.&n; */
@@ -860,6 +814,44 @@ suffix:semicolon
 id|SCpnt-&gt;request_bufflen
 op_assign
 l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Function:    scsi_get_request_dev()&n; *&n; * Purpose:     Find the upper-level driver that is responsible for this&n; *              request&n; *&n; * Arguments:   request   - I/O request we are preparing to queue.&n; *&n; * Lock status: No locks assumed to be held, but as it happens the&n; *              q-&gt;queue_lock is held when this is called.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       The requests in the request queue may have originated&n; *              from any block device driver.  We need to find out which&n; *              one so that we can later form the appropriate command.&n; */
+DECL|function|scsi_get_request_dev
+r_static
+r_struct
+id|Scsi_Device_Template
+op_star
+id|scsi_get_request_dev
+c_func
+(paren
+r_struct
+id|request
+op_star
+id|req
+)paren
+(brace
+r_struct
+id|gendisk
+op_star
+id|p
+op_assign
+id|req-&gt;rq_disk
+suffix:semicolon
+r_return
+id|p
+ques
+c_cond
+op_star
+(paren
+r_struct
+id|Scsi_Device_Template
+op_star
+op_star
+)paren
+id|p-&gt;private_data
+suffix:colon
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function:    scsi_io_completion()&n; *&n; * Purpose:     Completion processing for block device I/O requests.&n; *&n; * Arguments:   SCpnt   - command that is finished.&n; *&n; * Lock status: Assumed that no lock is held upon entry.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       This function is matched in terms of capabilities to&n; *              the function that created the scatter-gather list.&n; *              In other words, if there are no bounce buffers&n; *              (the normal case for most drivers), we don&squot;t need&n; *              the logic to deal with cleaning up afterwards.&n; */
@@ -1101,7 +1093,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If multiple sectors are requested in one buffer, then&n;&t;&t; * they will have been finished off by the first command.&n;&t;&t; * If not, then we have a multi-buffer command.&n;&t;&t; *&n;&t;&t; * If block_sectors != 0, it means we had a medium error&n;&t;&t; * of some sort, and that we want to mark some number of&n;&t;&t; * sectors as not uptodate.  Thus we want to inhibit&n;&t;&t; * requeueing right here - we will requeue down below&n;&t;&t; * when we handle the bad sectors.&n;&t;&t; */
 id|SCpnt
 op_assign
-id|__scsi_end_request
+id|scsi_end_request
 c_func
 (paren
 id|SCpnt
@@ -1113,8 +1105,6 @@ comma
 id|result
 op_eq
 l_int|0
-comma
-l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If the command completed without error, then either finish off the&n;&t;&t; * rest of the command, or start a new one.&n;&t;&t; */
@@ -1255,6 +1245,8 @@ comma
 l_int|0
 comma
 id|this_count
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -1325,6 +1317,8 @@ comma
 l_int|0
 comma
 id|this_count
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -1359,6 +1353,8 @@ comma
 l_int|0
 comma
 id|this_count
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -1418,6 +1414,8 @@ comma
 l_int|0
 comma
 id|block_sectors
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -1527,48 +1525,13 @@ comma
 l_int|0
 comma
 id|req-&gt;current_nr_sectors
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/*&n; * Function:    scsi_get_request_dev()&n; *&n; * Purpose:     Find the upper-level driver that is responsible for this&n; *              request&n; *&n; * Arguments:   request   - I/O request we are preparing to queue.&n; *&n; * Lock status: No locks assumed to be held, but as it happens the&n; *              q-&gt;queue_lock is held when this is called.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       The requests in the request queue may have originated&n; *              from any block device driver.  We need to find out which&n; *              one so that we can later form the appropriate command.&n; */
-DECL|function|scsi_get_request_dev
-r_struct
-id|Scsi_Device_Template
-op_star
-id|scsi_get_request_dev
-c_func
-(paren
-r_struct
-id|request
-op_star
-id|req
-)paren
-(brace
-r_struct
-id|gendisk
-op_star
-id|p
-op_assign
-id|req-&gt;rq_disk
-suffix:semicolon
-r_return
-id|p
-ques
-c_cond
-op_star
-(paren
-r_struct
-id|Scsi_Device_Template
-op_star
-op_star
-)paren
-id|p-&gt;private_data
-suffix:colon
-l_int|NULL
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function:    scsi_init_io()&n; *&n; * Purpose:     SCSI I/O initialize function.&n; *&n; * Arguments:   SCpnt   - Command descriptor we wish to initialize&n; *&n; * Returns:     0 on success&n; *&t;&t;BLKPREP_DEFER if the failure is retryable&n; *&t;&t;BLKPREP_KILL if the failure is fatal&n; */
 DECL|function|scsi_init_io
@@ -1804,6 +1767,8 @@ comma
 l_int|0
 comma
 id|req-&gt;nr_sectors
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|BUG_ON
@@ -1914,9 +1879,7 @@ c_func
 (paren
 id|SRpnt-&gt;sr_device
 comma
-id|FALSE
-comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1976,9 +1939,7 @@ c_func
 (paren
 id|SDpnt
 comma
-id|FALSE
-comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -2525,18 +2486,15 @@ op_assign
 id|FALSE
 suffix:semicolon
 multiline_comment|/* Now that we are unblocked, try to start the queues. */
-r_for
-c_loop
+id|list_for_each_entry
+c_func
 (paren
 id|SDloop
-op_assign
-id|SHpnt-&gt;host_queue
-suffix:semicolon
-id|SDloop
-suffix:semicolon
-id|SDloop
-op_assign
-id|SDloop-&gt;next
+comma
+op_amp
+id|SHpnt-&gt;my_devices
+comma
+id|siblings
 )paren
 id|scsi_queue_next_request
 c_func
@@ -2567,18 +2525,15 @@ id|Scsi_Device
 op_star
 id|SDloop
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each_entry
+c_func
 (paren
 id|SDloop
-op_assign
-id|SHpnt-&gt;host_queue
-suffix:semicolon
-id|SDloop
-suffix:semicolon
-id|SDloop
-op_assign
-id|SDloop-&gt;next
+comma
+op_amp
+id|SHpnt-&gt;my_devices
+comma
+id|siblings
 )paren
 (brace
 r_if

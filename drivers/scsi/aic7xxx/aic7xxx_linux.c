@@ -479,7 +479,7 @@ id|ahc
 suffix:semicolon
 r_static
 r_int
-id|ahc_linux_slave_attach
+id|ahc_linux_slave_configure
 c_func
 (paren
 id|Scsi_Device
@@ -4975,8 +4975,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Sets the queue depth for each SCSI device hanging&n; * off the input host adapter.&n; */
 r_static
 r_int
-DECL|function|ahc_linux_slave_attach
-id|ahc_linux_slave_attach
+DECL|function|ahc_linux_slave_configure
+id|ahc_linux_slave_configure
 c_func
 (paren
 id|Scsi_Device

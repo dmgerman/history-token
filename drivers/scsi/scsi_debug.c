@@ -5236,10 +5236,10 @@ id|iflags
 )paren
 suffix:semicolon
 )brace
-DECL|function|scsi_debug_slave_attach
+DECL|function|scsi_debug_slave_configure
 r_static
 r_int
-id|scsi_debug_slave_attach
+id|scsi_debug_slave_configure
 c_func
 (paren
 r_struct
@@ -5267,7 +5267,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi_debug: slave_attach &lt;%u %u %u %u&gt;&bslash;n&quot;
+l_string|&quot;scsi_debug: slave_configure &lt;%u %u %u %u&gt;&bslash;n&quot;
 comma
 id|sdp-&gt;host-&gt;host_no
 comma
@@ -5367,10 +5367,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|scsi_debug_slave_detach
+DECL|function|scsi_debug_slave_destroy
 r_static
 r_void
-id|scsi_debug_slave_detach
+id|scsi_debug_slave_destroy
 c_func
 (paren
 r_struct
@@ -5402,7 +5402,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi_debug: slave_detach &lt;%u %u %u %u&gt;&bslash;n&quot;
+l_string|&quot;scsi_debug: slave_destroy &lt;%u %u %u %u&gt;&bslash;n&quot;
 comma
 id|sdp-&gt;host-&gt;host_no
 comma
