@@ -272,9 +272,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;nPid: %d, comm: %20s&bslash;n&quot;
+l_string|&quot;&bslash;nPid: %d, CPU %d, comm: %20s&bslash;n&quot;
 comma
 id|current-&gt;pid
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
 comma
 id|current-&gt;comm
 )paren

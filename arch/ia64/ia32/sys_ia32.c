@@ -10148,6 +10148,15 @@ c_cond
 id|third
 )paren
 (brace
+r_default
+suffix:colon
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|IPC_INFO
 suffix:colon
