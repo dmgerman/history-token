@@ -564,6 +564,7 @@ l_string|&quot;PROM version too old&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PCI
 macro_line|#ifdef CONFIG_IA64_SGI_SN2
 (brace
 r_extern
@@ -624,6 +625,7 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#endif /* CONFIG_PCI */
 id|status
 op_assign
 id|ia64_sal_freq_base
@@ -1030,6 +1032,7 @@ id|nodepdaindr
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n;&t; * Set up IO related platform-dependent nodepda fields.&n;&t; * The following routine actually sets up the hubinfo struct&n;&t; * in nodepda.&n;&t; */
 r_for
 c_loop
@@ -1068,6 +1071,7 @@ id|cnode
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 multiline_comment|/**&n; * sn_cpu_init - initialize per-cpu data areas&n; * @cpuid: cpuid of the caller&n; *&n; * Called during cpu initialization on each cpu as it starts.&n; * Currently, initializes the per-cpu data area for SNIA.&n; * Also sets up a few fields in the nodepda.  Also known as&n; * platform_cpu_init() by the ia64 machvec code.&n; */
 r_void

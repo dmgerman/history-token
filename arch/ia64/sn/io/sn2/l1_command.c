@@ -446,6 +446,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n; * iobrick_module_get_nasid() returns a module_id which has the brick&n; * type encoded in bits 15-12, but this is not the true brick type...&n; * The module_id returned by iobrick_module_get_nasid() is modified&n; * to make a PEBRICKs &amp; PXBRICKs look like a PBRICK.  So this routine&n; * iobrick_type_get_nasid() returns the true unmodified brick type.&n; */
 r_int
 DECL|function|iobrick_type_get_nasid
@@ -565,6 +566,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* unknown brick */
 )brace
+macro_line|#endif
 DECL|function|iobrick_module_get_nasid
 r_int
 id|iobrick_module_get_nasid
