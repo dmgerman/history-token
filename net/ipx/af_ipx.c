@@ -7779,20 +7779,6 @@ id|sk-&gt;zapped
 op_assign
 l_int|0
 suffix:semicolon
-id|SOCK_DEBUG
-c_func
-(paren
-id|sk
-comma
-l_string|&quot;IPX: bound socket 0x%04X.&bslash;n&quot;
-comma
-id|ntohs
-c_func
-(paren
-id|addr-&gt;sipx_port
-)paren
-)paren
-suffix:semicolon
 id|rc
 op_assign
 l_int|0
