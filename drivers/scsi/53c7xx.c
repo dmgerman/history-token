@@ -4162,6 +4162,10 @@ comma
 id|virt_to_bus
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 op_amp
 id|hostdata-&gt;saved2_dsa
 )paren
@@ -4178,6 +4182,10 @@ comma
 id|virt_to_bus
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 op_amp
 id|hostdata-&gt;emulated_intfly
 )paren
