@@ -45,7 +45,7 @@ l_string|&quot;HFC PCI ISDN driver&quot;
 )paren
 suffix:semicolon
 DECL|macro|ID
-mdefine_line|#define ID(ven, dev, name)                     &bslash;&n;        { vendor:      PCI_VENDOR_ID_##ven,    &bslash;&n;&t;  device:      PCI_DEVICE_ID_##dev,    &bslash;&n;&t;  subvendor:   PCI_ANY_ID,             &bslash;&n;&t;  subdevice:   PCI_ANY_ID,             &bslash;&n;&t;  class:       0,                      &bslash;&n;          class_mask:  0,                      &bslash;&n;&t;  driver_data: (unsigned long) name }
+mdefine_line|#define ID(ven, dev, name)                     &bslash;&n;        { .vendor      = PCI_VENDOR_ID_##ven,    &bslash;&n;&t;  .device      = PCI_DEVICE_ID_##dev,    &bslash;&n;&t;  .subvendor   = PCI_ANY_ID,             &bslash;&n;&t;  .subdevice   = PCI_ANY_ID,             &bslash;&n;&t;  .class       = 0,                      &bslash;&n;          .class_mask  = 0,                      &bslash;&n;&t;  driver_data: (unsigned long) name }
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -6552,20 +6552,24 @@ id|pci_driver
 id|hfcpci_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;hfcpci&quot;
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|hfcpci_probe
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|hfcpci_remove
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|hfcpci_ids
 comma
 )brace

@@ -298,10 +298,12 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-id|__free_page
+id|__free_pages_ok
 c_func
 (paren
 id|page
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

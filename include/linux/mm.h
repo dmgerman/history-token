@@ -357,7 +357,25 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|put_page
-mdefine_line|#define put_page(p)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (put_page_testzero(p))&t;&t;&bslash;&n;&t;&t;&t;__page_cache_release(p);&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define put_page(p)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!PageReserved(p) &amp;&amp; put_page_testzero(p))&t;&t;&bslash;&n;&t;&t;&t;__page_cache_release(p);&t;&t;&t;&bslash;&n;&t;} while (0)
+r_void
+id|FASTCALL
+c_func
+(paren
+id|__free_pages_ok
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|order
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Multiple processes may &quot;see&quot; the same page. E.g. for untouched&n; * mappings of /dev/null, all processes see the same page full of&n; * zeroes, and text pages of executables and shared libraries have&n; * only one copy in memory, at most, normally.&n; *&n; * For the non-reserved pages, page-&gt;count denotes a reference count.&n; *   page-&gt;count == 0 means the page is free.&n; *   page-&gt;count == 1 means the page is used for exactly one purpose&n; *   (e.g. a private data page of one process).&n; *&n; * A page may be used for kmalloc() or anyone else who does a&n; * __get_free_page(). In this case the page-&gt;count is at least 1, and&n; * all other fields are unused but should be 0 or NULL. The&n; * management of this page is the responsibility of the one who uses&n; * it.&n; *&n; * The other pages (we may call them &quot;process pages&quot;) are completely&n; * managed by the Linux memory manager: I/O, buffers, swapping etc.&n; * The following discussion applies only to them.&n; *&n; * A page may belong to an inode&squot;s memory mapping. In this case,&n; * page-&gt;mapping is the pointer to the inode, and page-&gt;index is the&n; * file offset of the page, in units of PAGE_CACHE_SIZE.&n; *&n; * A page contains an opaque `private&squot; member, which belongs to the&n; * page&squot;s address_space.  Usually, this is the address of a circular&n; * list of the page&squot;s disk buffers.&n; *&n; * For pages belonging to inodes, the page-&gt;count is the number of&n; * attaches, plus 1 if `private&squot; contains something, plus one for&n; * the page cache itself.&n; *&n; * All pages belonging to an inode are in these doubly linked lists:&n; * mapping-&gt;clean_pages, mapping-&gt;dirty_pages and mapping-&gt;locked_pages;&n; * using the page-&gt;list list_head. These fields are also used for&n; * freelist managemet (when page-&gt;count==0).&n; *&n; * There is also a per-mapping radix tree mapping index to the page&n; * in memory if present. The tree is rooted at mapping-&gt;root.  &n; *&n; * All process pages can do I/O:&n; * - inode pages may need to be read from disk,&n; * - inode pages which have been modified and are MAP_SHARED may need&n; *   to be written to disk,&n; * - private pages which have been modified may need to be swapped out&n; *   to swap space and (later) to be read back into memory.&n; */
 multiline_comment|/*&n; * FIXME: take this include out, include page-flags.h in&n; * files which need it (119 of them)&n; */
 macro_line|#include &lt;linux/page-flags.h&gt;

@@ -373,11 +373,11 @@ suffix:semicolon
 DECL|macro|L1_EVENT_COUNT
 mdefine_line|#define L1_EVENT_COUNT (EV_TIMER3 + 1)
 DECL|macro|ERR
-mdefine_line|#define ERR(format, arg...) &bslash;&n;printk(KERN_ERR __FILE__ &quot;: &quot; __FUNCTION__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
+mdefine_line|#define ERR(format, arg...) &bslash;&n;printk(KERN_ERR __FILE__ &quot;: %s: &quot; format &quot;&bslash;n&quot; , __FUNCTION__ , ## arg)
 DECL|macro|WARN
-mdefine_line|#define WARN(format, arg...) &bslash;&n;printk(KERN_WARNING __FILE__ &quot;: &quot; __FUNCTION__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
+mdefine_line|#define WARN(format, arg...) &bslash;&n;printk(KERN_WARNING __FILE__ &quot;: %s: &quot; format &quot;&bslash;n&quot; , __FUNCTION__ , ## arg)
 DECL|macro|INFO
-mdefine_line|#define INFO(format, arg...) &bslash;&n;printk(KERN_INFO __FILE__ &quot;: &quot; __FUNCTION__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg)
+mdefine_line|#define INFO(format, arg...) &bslash;&n;printk(KERN_INFO __FILE__ &quot;: %s: &quot; format &quot;&bslash;n&quot; , __FUNCTION__ , ## arg)
 macro_line|#include &quot;st5481_hdlc.h&quot;
 macro_line|#include &quot;fsm.h&quot;
 macro_line|#include &quot;hisax_if.h&quot;

@@ -5,7 +5,7 @@ mdefine_line|#define __HISAX_DEBUG_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_HISAX_DEBUG
 DECL|macro|DBG
-mdefine_line|#define DBG(level, format, arg...) do { &bslash;&n;if (level &amp; __debug_variable) &bslash;&n;printk(KERN_DEBUG __FUNCTION__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg); &bslash;&n;} while (0)
+mdefine_line|#define DBG(level, format, arg...) do { &bslash;&n;if (level &amp; __debug_variable) &bslash;&n;printk(KERN_DEBUG &quot;%s: &quot; format &quot;&bslash;n&quot; , __FUNCTION__ , ## arg); &bslash;&n;} while (0)
 DECL|macro|DBG_PACKET
 mdefine_line|#define DBG_PACKET(level,data,count) &bslash;&n;  if (level &amp; __debug_variable) dump_packet(__FUNCTION__,data,count)
 DECL|macro|DBG_SKB
