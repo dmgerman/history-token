@@ -12,6 +12,7 @@ mdefine_line|#define __TSS(n) (((n)&lt;&lt;2) + __FIRST_TSS_ENTRY)
 DECL|macro|__LDT
 mdefine_line|#define __LDT(n) (((n)&lt;&lt;2) + __FIRST_LDT_ENTRY)
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;asm/mmu.h&gt;
 DECL|struct|desc_struct
 r_struct
 id|desc_struct
