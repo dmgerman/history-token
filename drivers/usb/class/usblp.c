@@ -967,7 +967,6 @@ id|status
 op_amp
 id|LP_PERRORP
 )paren
-(brace
 id|newerr
 op_assign
 l_int|3
@@ -995,7 +994,6 @@ id|newerr
 op_assign
 l_int|2
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
