@@ -4348,6 +4348,8 @@ r_return
 id|r
 suffix:semicolon
 )brace
+macro_line|#if 0
+multiline_comment|/* broken because some code assumes that multiple calls&n;&t;   to pci_alloc_consistent return data in the same 4GB segment. &n;&t;   This cannot work on machines with enough memory. */
 r_if
 c_cond
 (paren
@@ -4381,6 +4383,7 @@ l_string|&quot;: Not using 64 bit consistent mask&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|ioc
 op_assign
 id|kmalloc
