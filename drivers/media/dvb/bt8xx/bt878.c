@@ -1859,7 +1859,7 @@ id|btand
 c_func
 (paren
 op_complement
-l_int|13
+l_int|0x13
 comma
 id|BT878_AGPIO_DMA_CTL
 )paren
@@ -2051,11 +2051,7 @@ comma
 dot
 id|remove
 op_assign
-id|__devexit_p
-c_func
-(paren
 id|bt878_remove
-)paren
 comma
 )brace
 suffix:semicolon

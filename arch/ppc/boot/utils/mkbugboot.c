@@ -299,10 +299,12 @@ id|header_block
 l_int|0
 )braket
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 id|header_block
+comma
+l_int|0
 comma
 id|HEADER_SIZE
 )paren

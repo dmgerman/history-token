@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Frontend driver for mobile DVB-T demodulator DiBcom 3000-MB&n; * DiBcom (http://www.dibcom.fr/)&n; *&n; * Copyright (C) 2004 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; * based on GPL code from DibCom, which has&n; *&n; * Copyright (C) 2004 Amaury Demol for DiBcom (ademol@dibcom.fr)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; * Acknowledgements&n; *&n; *  Amaury Demol (ademol@dibcom.fr) from DiBcom for providing specs and driver&n; *  sources, on which this driver (and the dvb-dibusb) are based.&n; *&n; * see Documentation/dvb/README.dibusb for more information&n; *&n; */
+multiline_comment|/*&n; * Frontend driver for mobile DVB-T demodulator DiBcom 3000-MB&n; * DiBcom (http://www.dibcom.fr/)&n; *&n; * Copyright (C) 2004 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; * based on GPL code from DibCom, which has&n; *&n; * Copyright (C) 2004 Amaury Demol for DiBcom (ademol@dibcom.fr)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; * Acknowledgements&n; *&n; *  Amaury Demol (ademol@dibcom.fr) from DiBcom for providing specs and driver&n; *  sources, on which this driver (and the dvb-dibusb) are based.&n; *&n; * &n; * &n; * see Documentation/dvb/README.dibusb for more information&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -10,8 +10,8 @@ macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dib3000mb.h&quot;
 multiline_comment|/* debug */
 macro_line|#ifdef CONFIG_DVB_DIBCOM_DEBUG
-DECL|macro|dprintk_new
-mdefine_line|#define dprintk_new(level,args...) &bslash;&n;&t;do { if ((debug &amp; level)) { printk(args); } } while (0)
+DECL|macro|dprintk
+mdefine_line|#define dprintk(level,args...) &bslash;&n;&t;do { if ((debug &amp; level)) { printk(args); } } while (0)
 DECL|variable|debug
 r_static
 r_int
@@ -32,19 +32,23 @@ c_func
 (paren
 id|debug
 comma
-l_string|&quot;set debugging level (1=info,2=xfer,4=alotmore (|-able)).&quot;
+l_string|&quot;set debugging level (1=info,2=xfer,4=alotmore,8=setfe,16=getfe (|-able)).&quot;
 )paren
 suffix:semicolon
 macro_line|#else
-DECL|macro|dprintk_new
-mdefine_line|#define dprintk_new(args...)
+DECL|macro|dprintk
+mdefine_line|#define dprintk(args...) do { } while (0);
 macro_line|#endif
 DECL|macro|deb_info
-mdefine_line|#define deb_info(args...) dprintk_new(0x01,args)
+mdefine_line|#define deb_info(args...) dprintk(0x01,args)
 DECL|macro|deb_xfer
-mdefine_line|#define deb_xfer(args...) dprintk_new(0x02,args)
+mdefine_line|#define deb_xfer(args...) dprintk(0x02,args)
 DECL|macro|deb_alot
-mdefine_line|#define deb_alot(args...) dprintk_new(0x04,args)
+mdefine_line|#define deb_alot(args...) dprintk(0x04,args)
+DECL|macro|deb_setf
+mdefine_line|#define deb_setf(args...) dprintk(0x08,args)
+DECL|macro|deb_getf
+mdefine_line|#define deb_getf(args...) dprintk(0x10,args)
 multiline_comment|/* Version information */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;0.1&quot;
@@ -88,7 +92,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;DiBcom 3000-MB DVB-T frontend&quot;
+l_string|&quot;DiBcom 3000-MB DVB-T&quot;
 comma
 dot
 id|type
@@ -135,9 +139,9 @@ id|FE_CAN_QAM_64
 op_or
 id|FE_CAN_QAM_AUTO
 op_or
-id|FE_CAN_TRANSMISSION_MODE_AUTO
-op_or
 id|FE_CAN_GUARD_INTERVAL_AUTO
+op_or
+id|FE_CAN_TRANSMISSION_MODE_AUTO
 op_or
 id|FE_CAN_HIERARCHY_AUTO
 comma
@@ -624,8 +628,7 @@ id|DIB3000MB_REG_TPS_LOCK
 )paren
 )paren
 r_return
-op_minus
-id|EINVAL
+l_int|0
 suffix:semicolon
 id|dds_val
 op_assign
@@ -765,7 +768,7 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;inversion %d %d, %d&bslash;n&quot;
@@ -794,7 +797,7 @@ id|DIB3000MB_REG_TPS_QAM
 r_case
 id|DIB3000MB_QAM_QPSK
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;QPSK &quot;
@@ -809,7 +812,7 @@ suffix:semicolon
 r_case
 id|DIB3000MB_QAM_QAM16
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;QAM16 &quot;
@@ -824,7 +827,7 @@ suffix:semicolon
 r_case
 id|DIB3000MB_QAM_QAM64
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;QAM64 &quot;
@@ -849,7 +852,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;TPS: %d&bslash;n&quot;
@@ -867,7 +870,7 @@ id|DIB3000MB_REG_TPS_HRCH
 )paren
 )paren
 (brace
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;HRCH ON&bslash;n&quot;
@@ -907,7 +910,7 @@ id|DIB3000MB_REG_TPS_VIT_ALPHA
 r_case
 id|DIB3000MB_VIT_ALPHA_OFF
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;HIERARCHY_NONE &quot;
@@ -922,7 +925,7 @@ suffix:semicolon
 r_case
 id|DIB3000MB_VIT_ALPHA_1
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;HIERARCHY_1 &quot;
@@ -937,7 +940,7 @@ suffix:semicolon
 r_case
 id|DIB3000MB_VIT_ALPHA_2
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;HIERARCHY_2 &quot;
@@ -952,7 +955,7 @@ suffix:semicolon
 r_case
 id|DIB3000MB_VIT_ALPHA_4
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;HIERARCHY_4 &quot;
@@ -975,7 +978,7 @@ id|tps_val
 )paren
 suffix:semicolon
 )brace
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;TPS: %d&bslash;n&quot;
@@ -986,7 +989,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;HRCH OFF&bslash;n&quot;
@@ -1023,7 +1026,7 @@ id|tps_val
 r_case
 id|DIB3000MB_FEC_1_2
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;FEC_1_2 &quot;
@@ -1039,7 +1042,7 @@ suffix:semicolon
 r_case
 id|DIB3000MB_FEC_2_3
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;FEC_2_3 &quot;
@@ -1055,7 +1058,7 @@ suffix:semicolon
 r_case
 id|DIB3000MB_FEC_3_4
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;FEC_3_4 &quot;
@@ -1071,7 +1074,7 @@ suffix:semicolon
 r_case
 id|DIB3000MB_FEC_5_6
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;FEC_5_6 &quot;
@@ -1087,7 +1090,7 @@ suffix:semicolon
 r_case
 id|DIB3000MB_FEC_7_8
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;FEC_7_8 &quot;
@@ -1113,7 +1116,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;TPS: %d&bslash;n&quot;
@@ -1138,7 +1141,7 @@ id|DIB3000MB_REG_TPS_GUARD_TIME
 r_case
 id|DIB3000MB_GUARD_TIME_1_32
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;GUARD_INTERVAL_1_32 &quot;
@@ -1153,7 +1156,7 @@ suffix:semicolon
 r_case
 id|DIB3000MB_GUARD_TIME_1_16
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;GUARD_INTERVAL_1_16 &quot;
@@ -1168,7 +1171,7 @@ suffix:semicolon
 r_case
 id|DIB3000MB_GUARD_TIME_1_8
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;GUARD_INTERVAL_1_8 &quot;
@@ -1183,7 +1186,7 @@ suffix:semicolon
 r_case
 id|DIB3000MB_GUARD_TIME_1_4
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;GUARD_INTERVAL_1_4 &quot;
@@ -1208,7 +1211,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;TPS: %d&bslash;n&quot;
@@ -1233,7 +1236,7 @@ id|DIB3000MB_REG_TPS_FFT
 r_case
 id|DIB3000MB_FFT_2K
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;TRANSMISSION_MODE_2K &quot;
@@ -1248,7 +1251,7 @@ suffix:semicolon
 r_case
 id|DIB3000MB_FFT_8K
 suffix:colon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;TRANSMISSION_MODE_8K &quot;
@@ -1271,7 +1274,7 @@ id|tps_val
 )paren
 suffix:semicolon
 )brace
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;TPS: %d&bslash;n&quot;
@@ -1364,7 +1367,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|deb_info
+id|deb_setf
 c_func
 (paren
 l_string|&quot;reading tuning data from frontend succeeded.&bslash;n&quot;
@@ -1387,7 +1390,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|deb_info
+id|deb_setf
 c_func
 (paren
 l_string|&quot;reading tuning data failed -&gt; tuning failed.&bslash;n&quot;
@@ -1400,7 +1403,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|deb_info
+id|deb_setf
 c_func
 (paren
 l_string|&quot;AS IRQ was pending, but LOCK2 was not &amp; 0x01.&bslash;n&quot;
@@ -1420,7 +1423,7 @@ op_amp
 l_int|0x01
 )paren
 (brace
-id|deb_info
+id|deb_setf
 c_func
 (paren
 l_string|&quot;Autosearch failed.&bslash;n&quot;
@@ -1465,6 +1468,8 @@ id|fep-&gt;u.ofdm
 suffix:semicolon
 id|fe_code_rate_t
 id|fe_cr
+op_assign
+id|FEC_NONE
 suffix:semicolon
 r_int
 id|search_state
@@ -1516,6 +1521,12 @@ id|DIB3000MB_TUNER_ADDR_DEFAULT
 )paren
 )paren
 suffix:semicolon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;bandwidth: &quot;
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1525,9 +1536,12 @@ id|ofdm-&gt;bandwidth
 r_case
 id|BANDWIDTH_8_MHZ
 suffix:colon
-r_case
-id|BANDWIDTH_AUTO
-suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;8 MHz&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr_foreach
 c_func
 (paren
@@ -1552,6 +1566,12 @@ suffix:semicolon
 r_case
 id|BANDWIDTH_7_MHZ
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;7 MHz&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr_foreach
 c_func
 (paren
@@ -1576,6 +1596,12 @@ suffix:semicolon
 r_case
 id|BANDWIDTH_6_MHZ
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;6 MHz&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr_foreach
 c_func
 (paren
@@ -1597,6 +1623,13 @@ id|dib3000mb_bandwidth_6mhz
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|BANDWIDTH_AUTO
+suffix:colon
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
 r_default
 suffix:colon
 id|err
@@ -1609,8 +1642,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 )brace
 id|wr
@@ -1619,6 +1650,12 @@ c_func
 id|DIB3000MB_REG_LOCK1_MASK
 comma
 id|DIB3000MB_LOCK1_SEARCH_4
+)paren
+suffix:semicolon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;transmission mode: &quot;
 )paren
 suffix:semicolon
 r_switch
@@ -1630,6 +1667,12 @@ id|ofdm-&gt;transmission_mode
 r_case
 id|TRANSMISSION_MODE_2K
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;2k&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1643,6 +1686,12 @@ suffix:semicolon
 r_case
 id|TRANSMISSION_MODE_8K
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;8k&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1656,6 +1705,12 @@ suffix:semicolon
 r_case
 id|TRANSMISSION_MODE_AUTO
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;auto&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1673,6 +1728,12 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|deb_setf
+c_func
+(paren
+l_string|&quot;guard: &quot;
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1682,6 +1743,12 @@ id|ofdm-&gt;guard_interval
 r_case
 id|GUARD_INTERVAL_1_32
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;1_32&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1695,6 +1762,12 @@ suffix:semicolon
 r_case
 id|GUARD_INTERVAL_1_16
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;1_16&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1708,6 +1781,12 @@ suffix:semicolon
 r_case
 id|GUARD_INTERVAL_1_8
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;1_8&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1721,6 +1800,12 @@ suffix:semicolon
 r_case
 id|GUARD_INTERVAL_1_4
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;1_4&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1734,6 +1819,12 @@ suffix:semicolon
 r_case
 id|GUARD_INTERVAL_AUTO
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;auto&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1751,6 +1842,12 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|deb_setf
+c_func
+(paren
+l_string|&quot;invsersion: &quot;
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1758,8 +1855,25 @@ id|fep-&gt;inversion
 )paren
 (brace
 r_case
+id|INVERSION_AUTO
+suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;auto&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|INVERSION_OFF
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;on&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1771,11 +1885,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|INVERSION_AUTO
-suffix:colon
-r_case
 id|INVERSION_ON
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;on&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1793,6 +1910,12 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|deb_setf
+c_func
+(paren
+l_string|&quot;constellation: &quot;
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1802,6 +1925,12 @@ id|ofdm-&gt;constellation
 r_case
 id|QPSK
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;qpsk&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1815,6 +1944,12 @@ suffix:semicolon
 r_case
 id|QAM_16
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;qam16&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1828,6 +1963,12 @@ suffix:semicolon
 r_case
 id|QAM_64
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;qam64&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1850,6 +1991,12 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|deb_setf
+c_func
+(paren
+l_string|&quot;hierachy: &quot;
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1859,9 +2006,22 @@ id|ofdm-&gt;hierarchy_information
 r_case
 id|HIERARCHY_NONE
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;none &quot;
+)paren
+suffix:semicolon
+multiline_comment|/* fall through alpha is 1, even when HIERARCHY is NONE */
 r_case
 id|HIERARCHY_1
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;alpha=1&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1875,6 +2035,12 @@ suffix:semicolon
 r_case
 id|HIERARCHY_2
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;alpha=2&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1888,6 +2054,12 @@ suffix:semicolon
 r_case
 id|HIERARCHY_4
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;alpha=4&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1901,6 +2073,12 @@ suffix:semicolon
 r_case
 id|HIERARCHY_AUTO
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;alpha=auto&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1918,6 +2096,12 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|deb_setf
+c_func
+(paren
+l_string|&quot;hierarchy: &quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1926,6 +2110,12 @@ op_eq
 id|HIERARCHY_NONE
 )paren
 (brace
+id|deb_setf
+c_func
+(paren
+l_string|&quot;none&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1948,7 +2138,20 @@ id|ofdm-&gt;code_rate_HP
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|ofdm-&gt;hierarchy_information
+op_ne
+id|HIERARCHY_AUTO
+)paren
 (brace
+id|deb_setf
+c_func
+(paren
+l_string|&quot;on&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1970,6 +2173,12 @@ op_assign
 id|ofdm-&gt;code_rate_LP
 suffix:semicolon
 )brace
+id|deb_setf
+c_func
+(paren
+l_string|&quot;fec: &quot;
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1979,6 +2188,12 @@ id|fe_cr
 r_case
 id|FEC_1_2
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;1_2&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -1992,6 +2207,12 @@ suffix:semicolon
 r_case
 id|FEC_2_3
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;2_3&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -2005,6 +2226,12 @@ suffix:semicolon
 r_case
 id|FEC_3_4
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;3_4&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -2018,6 +2245,12 @@ suffix:semicolon
 r_case
 id|FEC_5_6
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;5_6&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -2031,6 +2264,12 @@ suffix:semicolon
 r_case
 id|FEC_7_8
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;7_8&bslash;n&quot;
+)paren
+suffix:semicolon
 id|wr
 c_func
 (paren
@@ -2044,9 +2283,21 @@ suffix:semicolon
 r_case
 id|FEC_NONE
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;none &quot;
+)paren
+suffix:semicolon
 r_case
 id|FEC_AUTO
 suffix:colon
+id|deb_setf
+c_func
+(paren
+l_string|&quot;auto&bslash;n&quot;
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -2075,7 +2326,7 @@ op_eq
 id|INVERSION_AUTO
 )braket
 suffix:semicolon
-id|deb_info
+id|deb_setf
 c_func
 (paren
 l_string|&quot;seq? %d&bslash;n&quot;
@@ -2254,7 +2505,7 @@ op_eq
 id|INVERSION_AUTO
 )paren
 (brace
-id|deb_info
+id|deb_setf
 c_func
 (paren
 l_string|&quot;autosearch enabled.&bslash;n&quot;
@@ -2298,6 +2549,14 @@ id|state
 )paren
 OL
 l_int|0
+)paren
+suffix:semicolon
+id|deb_info
+c_func
+(paren
+l_string|&quot;search_state after autosearch %d&bslash;n&quot;
+comma
+id|search_state
 )paren
 suffix:semicolon
 r_return
@@ -2802,72 +3061,65 @@ id|stat
 op_assign
 l_int|0
 suffix:semicolon
-op_star
-id|stat
-op_or_assign
+r_if
+c_cond
+(paren
 id|rd
 c_func
 (paren
 id|DIB3000MB_REG_AGC_LOCK
 )paren
-ques
-c_cond
-id|FE_HAS_SIGNAL
-suffix:colon
-l_int|0
-suffix:semicolon
+)paren
 op_star
 id|stat
 op_or_assign
+id|FE_HAS_SIGNAL
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|rd
 c_func
 (paren
 id|DIB3000MB_REG_CARRIER_LOCK
 )paren
-ques
-c_cond
-id|FE_HAS_CARRIER
-suffix:colon
-l_int|0
-suffix:semicolon
+)paren
 op_star
 id|stat
 op_or_assign
+id|FE_HAS_CARRIER
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|rd
 c_func
 (paren
 id|DIB3000MB_REG_VIT_LCK
 )paren
-ques
-c_cond
-id|FE_HAS_VITERBI
-suffix:colon
-l_int|0
-suffix:semicolon
+)paren
 op_star
 id|stat
 op_or_assign
+id|FE_HAS_VITERBI
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|rd
 c_func
 (paren
 id|DIB3000MB_REG_TS_SYNC_LOCK
 )paren
-ques
-c_cond
-id|FE_HAS_SYNC
-suffix:colon
-l_int|0
-suffix:semicolon
+)paren
 op_star
 id|stat
 op_or_assign
-op_star
-id|stat
-ques
-c_cond
+(paren
+id|FE_HAS_SYNC
+op_or
 id|FE_HAS_LOCK
-suffix:colon
-l_int|0
+)paren
 suffix:semicolon
 id|deb_info
 c_func
@@ -2876,6 +3128,42 @@ l_string|&quot;actual status is %2x&bslash;n&quot;
 comma
 op_star
 id|stat
+)paren
+suffix:semicolon
+id|deb_getf
+c_func
+(paren
+l_string|&quot;tps %x %x %x %x %x&bslash;n&quot;
+comma
+id|rd
+c_func
+(paren
+id|DIB3000MB_REG_TPS_1
+)paren
+comma
+id|rd
+c_func
+(paren
+id|DIB3000MB_REG_TPS_2
+)paren
+comma
+id|rd
+c_func
+(paren
+id|DIB3000MB_REG_TPS_3
+)paren
+comma
+id|rd
+c_func
+(paren
+id|DIB3000MB_REG_TPS_4
+)paren
+comma
+id|rd
+c_func
+(paren
+id|DIB3000MB_REG_TPS_5
+)paren
 )paren
 suffix:semicolon
 id|deb_info
@@ -2964,7 +3252,6 @@ id|ber
 op_assign
 (paren
 (paren
-(paren
 id|rd
 c_func
 (paren
@@ -2973,9 +3260,6 @@ id|DIB3000MB_REG_BER_MSB
 op_lshift
 l_int|16
 )paren
-op_amp
-l_int|0x1f
-)paren
 op_or
 id|rd
 c_func
@@ -2983,17 +3267,22 @@ c_func
 id|DIB3000MB_REG_BER_LSB
 )paren
 )paren
-op_div
-l_int|100000000
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|dib3000mb_signal_strength
+multiline_comment|/*&n; * Amaury:&n; * signal strength is measured with dBm (power compared to mW)&n; * the standard range is -90dBm(low power) to -10 dBm (strong power),&n; * but the calibration is done for -100 dBm to 0dBm&n; */
+DECL|macro|DIB3000MB_AGC_REF_dBm
+mdefine_line|#define DIB3000MB_AGC_REF_dBm&t;&t;-14
+DECL|macro|DIB3000MB_GAIN_SLOPE_dBm
+mdefine_line|#define DIB3000MB_GAIN_SLOPE_dBm&t;100
+DECL|macro|DIB3000MB_GAIN_DELTA_dBm
+mdefine_line|#define DIB3000MB_GAIN_DELTA_dBm&t;-2
+DECL|function|dib3000mb_read_signal_strength
 r_static
 r_int
-id|dib3000mb_signal_strength
+id|dib3000mb_read_signal_strength
 c_func
 (paren
 r_struct
@@ -3006,7 +3295,123 @@ op_star
 id|strength
 )paren
 (brace
-singleline_comment|//&t;*stength = DIB3000MB_REG_SIGNAL_POWER
+multiline_comment|/* TODO log10 &n;&t;u16 sigpow = rd(DIB3000MB_REG_SIGNAL_POWER), &n;&t;&t;n_agc_power = rd(DIB3000MB_REG_AGC_POWER),&n;&t;&t;rf_power = rd(DIB3000MB_REG_RF_POWER);&n;&t;double rf_power_dBm, ad_power_dBm, minar_power_dBm;&n;&t;&n;&t;if (n_agc_power == 0 )&n;&t;&t;n_agc_power = 1 ;&n;&n;&t;ad_power_dBm    = 10 * log10 ( (float)n_agc_power / (float)(1&lt;&lt;16) );&n;&t;minor_power_dBm = ad_power_dBm - DIB3000MB_AGC_REF_dBm;&n;&t;rf_power_dBm = (-DIB3000MB_GAIN_SLOPE_dBm * (float)rf_power / (float)(1&lt;&lt;16) + &n;&t;&t;&t;DIB3000MB_GAIN_DELTA_dBm) + minor_power_dBm;&n;&t;// relative rf_power &n;&t;*strength = (u16) ((rf_power_dBm + 100) / 100 * 0xffff);&n;*/
+op_star
+id|strength
+op_assign
+id|rd
+c_func
+(paren
+id|DIB3000MB_REG_SIGNAL_POWER
+)paren
+op_star
+l_int|0xffff
+op_div
+l_int|0x170
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Amaury: &n; * snr is the signal quality measured in dB.&n; * snr = 10*log10(signal power / noise power)&n; * the best quality is near 35dB (cable transmission &amp; good modulator)&n; * the minimum without errors depend of transmission parameters&n; * some indicative values are given in en300744 Annex A&n; * ex : 16QAM 2/3 (Gaussian)  = 11.1 dB&n; *&n; * If SNR is above 20dB, BER should be always 0.&n; * choose 0dB as the minimum&n; */
+DECL|function|dib3000mb_read_snr
+r_static
+r_int
+id|dib3000mb_read_snr
+c_func
+(paren
+r_struct
+id|dib3000mb_state
+op_star
+id|state
+comma
+id|u16
+op_star
+id|snr
+)paren
+(brace
+r_int
+id|sigpow
+op_assign
+id|rd
+c_func
+(paren
+id|DIB3000MB_REG_SIGNAL_POWER
+)paren
+suffix:semicolon
+r_int
+id|icipow
+op_assign
+(paren
+(paren
+id|rd
+c_func
+(paren
+id|DIB3000MB_REG_NOISE_POWER_MSB
+)paren
+op_amp
+l_int|0xff
+)paren
+op_lshift
+l_int|16
+)paren
+op_or
+id|rd
+c_func
+(paren
+id|DIB3000MB_REG_NOISE_POWER_LSB
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;float snr_dBm=0;&n;&n;&t;if (sigpow &gt; 0 &amp;&amp; icipow &gt; 0)&n;&t;&t;snr_dBm = 10.0 * log10( (float) (sigpow&lt;&lt;8) / (float)icipow )  ;&n;&t;else if (sigpow &gt; 0)&n;&t;&t;snr_dBm = 35;&n;&t;&n;&t;*snr = (u16) ((snr_dBm / 35) * 0xffff);&n;*/
+op_star
+id|snr
+op_assign
+(paren
+id|sigpow
+op_lshift
+l_int|8
+)paren
+op_div
+(paren
+id|icipow
+OG
+l_int|0
+ques
+c_cond
+id|icipow
+suffix:colon
+l_int|1
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|dib3000mb_read_unc_blocks
+r_static
+r_int
+id|dib3000mb_read_unc_blocks
+c_func
+(paren
+r_struct
+id|dib3000mb_state
+op_star
+id|state
+comma
+id|u32
+op_star
+id|unc
+)paren
+(brace
+op_star
+id|unc
+op_assign
+id|rd
+c_func
+(paren
+id|DIB3000MB_REG_UNC
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3030,6 +3435,41 @@ id|DIB3000MB_REG_POWER_CONTROL
 comma
 id|DIB3000MB_POWER_DOWN
 )paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|dib3000mb_fe_get_tune_settings
+r_static
+r_int
+id|dib3000mb_fe_get_tune_settings
+c_func
+(paren
+r_struct
+id|dib3000mb_state
+op_star
+id|state
+comma
+r_struct
+id|dvb_frontend_tune_settings
+op_star
+id|tune
+)paren
+(brace
+id|tune-&gt;min_delay_ms
+op_assign
+l_int|800
+suffix:semicolon
+id|tune-&gt;step_size
+op_assign
+l_int|166667
+suffix:semicolon
+id|tune-&gt;max_drift
+op_assign
+l_int|166667
+op_star
+l_int|2
 suffix:semicolon
 r_return
 l_int|0
@@ -3061,11 +3501,6 @@ id|state
 op_assign
 id|fe-&gt;data
 suffix:semicolon
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -3096,6 +3531,9 @@ id|dvb_frontend_info
 )paren
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -3107,8 +3545,7 @@ c_func
 l_string|&quot;FE_READ_STATUS&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 id|dib3000mb_read_status
 c_func
 (paren
@@ -3132,8 +3569,7 @@ c_func
 l_string|&quot;FE_READ_BER&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 id|dib3000mb_read_ber
 c_func
 (paren
@@ -3157,9 +3593,8 @@ c_func
 l_string|&quot;FE_READ_SIG_STRENGTH&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ret
-op_assign
-id|dib3000mb_signal_strength
+r_return
+id|dib3000mb_read_signal_strength
 c_func
 (paren
 id|state
@@ -3182,6 +3617,19 @@ c_func
 l_string|&quot;FE_READ_SNR&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+id|dib3000mb_read_snr
+c_func
+(paren
+id|state
+comma
+(paren
+id|u16
+op_star
+)paren
+id|arg
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -3191,6 +3639,19 @@ id|deb_info
 c_func
 (paren
 l_string|&quot;FE_READ_UNCORRECTED_BLOCKS&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|dib3000mb_read_unc_blocks
+c_func
+(paren
+id|state
+comma
+(paren
+id|u32
+op_star
+)paren
+id|arg
 )paren
 suffix:semicolon
 r_break
@@ -3204,8 +3665,7 @@ c_func
 l_string|&quot;FE_SET_FRONTEND&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 id|dib3000mb_set_frontend
 c_func
 (paren
@@ -3232,8 +3692,7 @@ c_func
 l_string|&quot;FE_GET_FRONTEND&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 id|dib3000mb_get_frontend
 c_func
 (paren
@@ -3258,8 +3717,7 @@ c_func
 l_string|&quot;FE_SLEEP&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 id|dib3000mb_sleep
 c_func
 (paren
@@ -3277,14 +3735,38 @@ c_func
 l_string|&quot;FE_INIT&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 id|dib3000mb_fe_init
 c_func
 (paren
 id|state
 comma
 l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|FE_GET_TUNE_SETTINGS
+suffix:colon
+id|deb_info
+c_func
+(paren
+l_string|&quot;GET_TUNE_SETTINGS&quot;
+)paren
+suffix:semicolon
+r_return
+id|dib3000mb_fe_get_tune_settings
+c_func
+(paren
+id|state
+comma
+(paren
+r_struct
+id|dvb_frontend_tune_settings
+op_star
+)paren
+id|arg
 )paren
 suffix:semicolon
 r_break
@@ -3297,8 +3779,7 @@ id|FE_SET_VOLTAGE
 suffix:colon
 r_default
 suffix:colon
-id|ret
-op_assign
+r_return
 op_minus
 id|EOPNOTSUPP
 suffix:semicolon
@@ -3445,6 +3926,23 @@ comma
 id|DIB3000MB_REG_MANUFACTOR_ID
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|state-&gt;manufactor_id
+op_ne
+l_int|0x01b3
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|probe_err
+suffix:semicolon
+)brace
 id|state-&gt;device_id
 op_assign
 id|dib3000mb_read_reg
@@ -3458,14 +3956,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|state-&gt;manufactor_id
-op_eq
-l_int|0x01b3
-op_logical_and
 id|state-&gt;device_id
-op_eq
+op_ne
 l_int|0x3000
 )paren
+(brace
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|probe_err
+suffix:semicolon
+)brace
 id|info
 c_func
 (paren
@@ -3476,23 +3980,6 @@ comma
 id|state-&gt;device_id
 )paren
 suffix:semicolon
-r_else
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;did not found a DiBCom 3000-MB.&quot;
-)paren
-suffix:semicolon
-id|ret
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|probe_err
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

@@ -707,6 +707,8 @@ DECL|macro|PLATFORM_LPAR
 mdefine_line|#define PLATFORM_LPAR         0x0001
 DECL|macro|PLATFORM_POWERMAC
 mdefine_line|#define PLATFORM_POWERMAC     0x0400
+DECL|macro|PLATFORM_MAPLE
+mdefine_line|#define PLATFORM_MAPLE        0x0500
 multiline_comment|/* Compatibility with drivers coming from PPC32 world */
 DECL|macro|_machine
 mdefine_line|#define _machine&t;(systemcfg-&gt;platform)

@@ -949,13 +949,6 @@ id|IDE_CONTROL_REG
 )paren
 suffix:semicolon
 )brace
-DECL|variable|SELECT_INTERRUPT
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|SELECT_INTERRUPT
-)paren
-suffix:semicolon
 DECL|function|SELECT_MASK
 r_void
 id|SELECT_MASK
@@ -994,13 +987,6 @@ id|mask
 )paren
 suffix:semicolon
 )brace
-DECL|variable|SELECT_MASK
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|SELECT_MASK
-)paren
-suffix:semicolon
 DECL|function|QUIRK_LIST
 r_void
 id|QUIRK_LIST
@@ -1036,13 +1022,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-DECL|variable|QUIRK_LIST
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|QUIRK_LIST
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Some localbus EIDE interfaces require a special access sequence&n; * when using 32-bit I/O instructions to transfer data.  We call this&n; * the &quot;vlb_sync&quot; sequence, which consists of three successive reads&n; * of the sector count register location, with interrupts disabled&n; * to ensure that the reads all happen together.&n; */
 DECL|function|ata_vlb_sync
 r_void
@@ -1103,13 +1082,6 @@ id|port
 )paren
 suffix:semicolon
 )brace
-DECL|variable|ata_vlb_sync
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ata_vlb_sync
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * This is used for most PIO data transfers *from* the IDE interface&n; */
 DECL|function|ata_input_data
 r_void
@@ -1225,13 +1197,6 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-DECL|variable|ata_input_data
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ata_input_data
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * This is used for most PIO data transfers *to* the IDE interface&n; */
 DECL|function|ata_output_data
 r_void
@@ -1347,13 +1312,6 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-DECL|variable|ata_output_data
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ata_output_data
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * The following routines are mainly used by the ATAPI drivers.&n; *&n; * These routines will round up any request for an odd number of bytes,&n; * so if an odd bytecount is specified, be sure that there&squot;s at least one&n; * extra byte allocated for the buffer.&n; */
 DECL|function|atapi_input_bytes
 r_void

@@ -348,15 +348,13 @@ c_func
 r_struct
 id|sk_buff
 op_star
-op_star
-id|pskb
+id|skb
 )paren
 (brace
 id|kfree_skb
 c_func
 (paren
-op_star
-id|pskb
+id|skb
 )paren
 suffix:semicolon
 r_return

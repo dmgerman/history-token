@@ -485,6 +485,7 @@ c_cond
 id|skb_checksum_help
 c_func
 (paren
+op_star
 id|pskb
 comma
 id|inward

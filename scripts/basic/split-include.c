@@ -305,6 +305,7 @@ id|fp_config
 )paren
 (brace
 r_const
+r_int
 r_char
 op_star
 id|str_config

@@ -2568,6 +2568,14 @@ r_int
 id|phys_addr
 )paren
 (brace
+r_int
+r_int
+id|isu_first
+op_assign
+id|isu_num
+op_star
+id|mpic-&gt;isu_size
+suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -2595,7 +2603,7 @@ r_if
 c_cond
 (paren
 (paren
-id|isu_num
+id|isu_first
 op_plus
 id|mpic-&gt;isu_size
 )paren
@@ -2604,7 +2612,7 @@ id|mpic-&gt;num_sources
 )paren
 id|mpic-&gt;num_sources
 op_assign
-id|isu_num
+id|isu_first
 op_plus
 id|mpic-&gt;isu_size
 suffix:semicolon

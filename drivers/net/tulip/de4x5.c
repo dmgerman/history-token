@@ -23276,8 +23276,9 @@ suffix:semicolon
 id|i
 op_assign
 (paren
-op_increment
 id|i
+op_plus
+l_int|1
 )paren
 op_mod
 id|DE4X5_MAX_MII

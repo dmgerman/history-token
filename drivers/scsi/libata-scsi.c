@@ -257,7 +257,7 @@ suffix:colon
 id|rc
 op_assign
 op_minus
-id|EOPNOTSUPP
+id|ENOTTY
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2856,6 +2856,10 @@ r_struct
 id|scsi_cmnd
 op_star
 id|cmd
+comma
+id|u8
+op_star
+id|buf
 )paren
 (brace
 r_if
@@ -2881,7 +2885,9 @@ suffix:semicolon
 id|kunmap_atomic
 c_func
 (paren
-id|sg-&gt;page
+id|buf
+op_minus
+id|sg-&gt;offset
 comma
 id|KM_USER0
 )paren
@@ -2975,6 +2981,8 @@ id|ata_scsi_rbuf_put
 c_func
 (paren
 id|cmd
+comma
+id|rbuf
 )paren
 suffix:semicolon
 r_if
@@ -4705,6 +4713,8 @@ id|ata_scsi_rbuf_put
 c_func
 (paren
 id|cmd
+comma
+id|buf
 )paren
 suffix:semicolon
 )brace

@@ -1532,7 +1532,7 @@ suffix:semicolon
 id|err
 op_assign
 op_minus
-id|EINVAL
+id|EAFNOSUPPORT
 suffix:semicolon
 r_if
 c_cond

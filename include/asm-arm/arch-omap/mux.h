@@ -6,9 +6,7 @@ DECL|macro|PU_PD_SEL_NA
 mdefine_line|#define PU_PD_SEL_NA&t;&t;0&t;/* No pu_pd reg available */
 DECL|macro|PULL_DWN_CTRL_NA
 mdefine_line|#define PULL_DWN_CTRL_NA&t;0&t;/* No pull-down control needed */
-DECL|macro|DEBUG_MUX
-mdefine_line|#define DEBUG_MUX
-macro_line|#ifdef DEBUG_MUX
+macro_line|#ifdef&t;CONFIG_OMAP_MUX_DEBUG
 DECL|macro|MUX_REG
 mdefine_line|#define MUX_REG(reg, mode_offset, mode) .mux_reg_name = &quot;FUNC_MUX_CTRL_&quot;#reg, &bslash;&n;&t;&t;&t;&t;&t;.mux_reg = FUNC_MUX_CTRL_##reg, &bslash;&n;&t;&t;&t;&t;&t;.mask_offset = mode_offset, &bslash;&n;&t;&t;&t;&t;&t;.mask = mode,
 DECL|macro|PULL_REG
@@ -22,8 +20,7 @@ DECL|macro|PULL_REG
 mdefine_line|#define PULL_REG(reg, bit, status)&t;.pull_reg = PULL_DWN_CTRL_##reg, &bslash;&n;&t;&t;&t;&t;&t;.pull_bit = bit, &bslash;&n;&t;&t;&t;&t;&t;.pull_val = status,
 DECL|macro|PU_PD_REG
 mdefine_line|#define PU_PD_REG(reg, status)&t;&t;.pu_pd_reg = PU_PD_SEL_##reg, &bslash;&n;&t;&t;&t;&t;&t;.pu_pd_val = status,
-macro_line|#endif 
-singleline_comment|// DEBUG_MUX
+macro_line|#endif /* CONFIG_OMAP_MUX_DEBUG */
 DECL|macro|MUX_CFG
 mdefine_line|#define MUX_CFG(desc, mux_reg, mode_offset, mode,&t;&bslash;&n;&t;&t;pull_reg, pull_bit, pull_status,&t;&bslash;&n;&t;&t;pu_pd_reg, pu_pd_status, debug_status)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.name =&t; desc,&t;&t;&t;&t;&t;&bslash;&n;&t;.debug = debug_status,&t;&t;&t;&t;&bslash;&n;&t;MUX_REG(mux_reg, mode_offset, mode)&t;&t;&bslash;&n;&t;PULL_REG(pull_reg, pull_bit, pull_status)&t;&bslash;&n;&t;PU_PD_REG(pu_pd_reg, pu_pd_status)&t;&t;&bslash;&n;},
 DECL|macro|PULL_DISABLED
@@ -168,6 +165,9 @@ DECL|enumerator|UART3_BCLK
 id|UART3_BCLK
 comma
 multiline_comment|/* 12MHz clock out */
+DECL|enumerator|Y15_1610_UART3_RTS
+id|Y15_1610_UART3_RTS
+comma
 multiline_comment|/* PWT &amp; PWL */
 DECL|enumerator|PWT
 id|PWT
@@ -260,9 +260,19 @@ comma
 DECL|enumerator|M14_1510_GPIO2
 id|M14_1510_GPIO2
 comma
+multiline_comment|/* OMAP1610 GPIO */
+DECL|enumerator|Y15_1610_GPIO17
+id|Y15_1610_GPIO17
+comma
 multiline_comment|/* OMAP-1710 GPIO */
 DECL|enumerator|R18_1710_GPIO0
 id|R18_1710_GPIO0
+comma
+DECL|enumerator|V2_1710_GPIO10
+id|V2_1710_GPIO10
+comma
+DECL|enumerator|N21_1710_GPIO14
+id|N21_1710_GPIO14
 comma
 DECL|enumerator|W15_1710_GPIO40
 id|W15_1710_GPIO40
@@ -425,6 +435,13 @@ comma
 DECL|enumerator|N15_1610_UWIRE_CS1
 id|N15_1610_UWIRE_CS1
 comma
+multiline_comment|/* OMAP-1610 Flash */
+DECL|enumerator|L3_1610_FLASH_CS2B_OE
+id|L3_1610_FLASH_CS2B_OE
+comma
+DECL|enumerator|M8_1610_FLASH_CS2B_WE
+id|M8_1610_FLASH_CS2B_WE
+comma
 multiline_comment|/* First MMC */
 DECL|enumerator|MMC_CMD
 id|MMC_CMD
@@ -562,9 +579,10 @@ id|reg_cfg_t
 suffix:semicolon
 macro_line|#if defined(__MUX_C__) &amp;&amp; defined(CONFIG_OMAP_MUX)
 multiline_comment|/*&n; * Table of various FUNC_MUX and PULL_DWN combinations for each device.&n; * See also reg_cfg_t above for the lookup table.&n; */
-DECL|variable|reg_cfg_table
 r_static
 id|reg_cfg_set
+id|__initdata_or_module
+DECL|variable|reg_cfg_table
 id|reg_cfg_table
 (braket
 )braket
@@ -836,6 +854,29 @@ comma
 l_int|0
 comma
 l_int|0
+comma
+l_int|2
+comma
+l_int|6
+comma
+l_int|0
+comma
+id|NA
+comma
+l_int|0
+comma
+l_int|0
+)paren
+id|MUX_CFG
+c_func
+(paren
+l_string|&quot;Y15_1610_UART3_RTS&quot;
+comma
+id|A
+comma
+l_int|0
+comma
+l_int|1
 comma
 l_int|2
 comma
@@ -1521,6 +1562,30 @@ l_int|0
 comma
 l_int|1
 )paren
+multiline_comment|/* OMAP1610 GPIO */
+id|MUX_CFG
+c_func
+(paren
+l_string|&quot;Y15_1610_GPIO17&quot;
+comma
+id|A
+comma
+l_int|0
+comma
+l_int|7
+comma
+l_int|2
+comma
+l_int|6
+comma
+l_int|0
+comma
+id|NA
+comma
+l_int|0
+comma
+l_int|1
+)paren
 multiline_comment|/* OMAP-1710 GPIO */
 id|MUX_CFG
 c_func
@@ -1536,6 +1601,52 @@ comma
 l_int|1
 comma
 l_int|11
+comma
+l_int|1
+comma
+l_int|1
+comma
+l_int|1
+comma
+l_int|1
+)paren
+id|MUX_CFG
+c_func
+(paren
+l_string|&quot;V2_1710_GPIO10&quot;
+comma
+id|F
+comma
+l_int|27
+comma
+l_int|1
+comma
+l_int|4
+comma
+l_int|3
+comma
+l_int|1
+comma
+l_int|4
+comma
+l_int|1
+comma
+l_int|1
+)paren
+id|MUX_CFG
+c_func
+(paren
+l_string|&quot;N21_1710_GPIO14&quot;
+comma
+l_int|6
+comma
+l_int|9
+comma
+l_int|0
+comma
+l_int|1
+comma
+l_int|1
 comma
 l_int|1
 comma
@@ -2726,6 +2837,53 @@ l_int|0
 comma
 l_int|1
 )paren
+multiline_comment|/* OMAP-1610 Flash */
+id|MUX_CFG
+c_func
+(paren
+l_string|&quot;L3_1610_FLASH_CS2B_OE&quot;
+comma
+l_int|10
+comma
+l_int|6
+comma
+l_int|1
+comma
+id|NA
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|NA
+comma
+l_int|0
+comma
+l_int|1
+)paren
+id|MUX_CFG
+c_func
+(paren
+l_string|&quot;M8_1610_FLASH_CS2B_WE&quot;
+comma
+l_int|10
+comma
+l_int|3
+comma
+l_int|1
+comma
+id|NA
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|NA
+comma
+l_int|0
+comma
+l_int|1
+)paren
 multiline_comment|/* First MMC interface, same on 1510, 1610 and 1710 */
 id|MUX_CFG
 c_func
@@ -3679,6 +3837,8 @@ l_int|0
 )brace
 suffix:semicolon
 macro_line|#endif&t;/* __MUX_C__ */
+macro_line|#ifdef&t;CONFIG_OMAP_MUX
+multiline_comment|/* setup pin muxing in Linux */
 r_extern
 r_int
 id|omap_cfg_reg
@@ -3688,5 +3848,23 @@ id|reg_cfg_t
 id|reg_cfg
 )paren
 suffix:semicolon
+macro_line|#else
+multiline_comment|/* boot loader does it all (no warnings from CONFIG_OMAP_MUX_WARNINGS) */
+DECL|function|omap_cfg_reg
+r_static
+r_inline
+r_int
+id|omap_cfg_reg
+c_func
+(paren
+id|reg_cfg_t
+id|reg_cfg
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#endif
 eof

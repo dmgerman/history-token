@@ -31,7 +31,6 @@ macro_line|#include &quot;av7110_av.h&quot;
 macro_line|#include &quot;av7110_ca.h&quot;
 macro_line|#include &quot;av7110_ipack.h&quot;
 DECL|variable|av7110_debug
-r_static
 r_int
 id|av7110_debug
 suffix:semicolon
@@ -289,7 +288,7 @@ l_int|1
 (brace
 id|printk
 (paren
-l_string|&quot;av7110(%d): Crystal audio DAC detected&bslash;n&quot;
+l_string|&quot;dvb-ttpci: Crystal audio DAC @ card %d detected&bslash;n&quot;
 comma
 id|av7110-&gt;dvb_adapter-&gt;num
 )paren
@@ -375,7 +374,7 @@ l_int|0x110a
 id|printk
 c_func
 (paren
-l_string|&quot;av7110(%d): DVB-C w/o analog module detected&bslash;n&quot;
+l_string|&quot;dvb-ttpci: DVB-C w/o analog module @ card %d detected&bslash;n&quot;
 comma
 id|av7110-&gt;dvb_adapter-&gt;num
 )paren
@@ -394,7 +393,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;av7110(%d): adac type set to %d&bslash;n&quot;
+l_string|&quot;dvb-ttpci: adac type set to %d @ card %d&bslash;n&quot;
 comma
 id|av7110-&gt;dvb_adapter-&gt;num
 comma
@@ -492,14 +491,14 @@ op_star
 id|av7110
 )paren
 (brace
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|av7110_bootarm
@@ -547,14 +546,14 @@ op_star
 id|av7110
 )paren
 (brace
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|av7110-&gt;arm_errors
@@ -597,14 +596,14 @@ suffix:semicolon
 r_int
 id|timeout
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|lock_kernel
@@ -724,7 +723,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;av7110%d: ARM crashed!&bslash;n&quot;
+l_string|&quot;dvb-ttpci: ARM crashed @ card %d&bslash;n&quot;
 comma
 id|av7110-&gt;dvb_adapter-&gt;num
 )paren
@@ -820,14 +819,14 @@ id|av7110
 op_star
 id|last
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -897,14 +896,14 @@ id|u32
 )paren
 )paren
 (brace
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|4
+comma
 l_string|&quot;registering %p&bslash;n&quot;
 comma
 id|func
-)paren
 )paren
 suffix:semicolon
 id|irc_handler
@@ -927,14 +926,14 @@ id|u32
 )paren
 )paren
 (brace
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|4
+comma
 l_string|&quot;unregistering %p&bslash;n&quot;
 comma
 id|func
-)paren
 )paren
 suffix:semicolon
 id|irc_handler
@@ -995,14 +994,14 @@ id|u32
 id|ircom
 )paren
 (brace
-id|DEB_S
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: ircommand = %08x&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;ircommand = %08x&bslash;n&quot;
 comma
 id|ircom
-)paren
 )paren
 suffix:semicolon
 id|irtask.data
@@ -1058,16 +1057,6 @@ op_star
 id|av7110
 )paren
 (brace
-id|DEB_INT
-c_func
-(paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
-comma
-id|av7110
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1367,7 +1356,7 @@ l_int|8
 op_amp
 l_int|0x1f
 suffix:semicolon
-singleline_comment|//&t;DEB_EE((&quot;av7110: %p&bslash;n&quot;,av7110));
+singleline_comment|//&t;dprintk(4, &quot;%p&bslash;n&quot;,av7110);
 id|print_time
 c_func
 (paren
@@ -2141,7 +2130,6 @@ suffix:semicolon
 r_int
 id|len
 suffix:semicolon
-singleline_comment|//printk(&quot;GPIO0 irq&bslash;n&quot;);        
 r_if
 c_cond
 (paren
@@ -2153,7 +2141,7 @@ l_int|1
 id|printk
 c_func
 (paren
-l_string|&quot;GPIO0 irq oops @ %ld, psr:0x%08x, ssr:0x%08x&bslash;n&quot;
+l_string|&quot;dvb-ttpci: GPIO0 irq oops @ %ld, psr:0x%08x, ssr:0x%08x&bslash;n&quot;
 comma
 id|jiffies
 comma
@@ -2291,14 +2279,14 @@ op_amp
 op_complement
 l_int|3
 suffix:semicolon
-singleline_comment|//        DEB_D((&quot;GPIO0 irq %d %d&bslash;n&quot;, av7110-&gt;debitype, av7110-&gt;debilen));
+singleline_comment|//&t;dprintk(8, &quot;GPIO0 irq %d %d&bslash;n&quot;, av7110-&gt;debitype, av7110-&gt;debilen);
 id|print_time
 c_func
 (paren
 l_string|&quot;gpio&quot;
 )paren
 suffix:semicolon
-singleline_comment|//       DEB_D((&quot;GPIO0 irq %02x&bslash;n&quot;, av7110-&gt;debitype&amp;0xff));        
+singleline_comment|//&t;dprintk(8, &quot;GPIO0 irq %02x&bslash;n&quot;, av7110-&gt;debitype&amp;0xff);
 r_switch
 c_cond
 (paren
@@ -2392,10 +2380,11 @@ id|h_ar
 op_amp
 l_int|0xfff
 suffix:semicolon
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
+l_int|8
+comma
 l_string|&quot;GPIO0 irq: DATA_MPEG_VIDEO_EVENT: w/h/ar = %u/%u/%u&bslash;n&quot;
 comma
 id|av7110-&gt;video_size.w
@@ -2403,7 +2392,6 @@ comma
 id|av7110-&gt;video_size.h
 comma
 id|av7110-&gt;video_size.aspect_ratio
-)paren
 )paren
 suffix:semicolon
 id|event.type
@@ -2962,14 +2950,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
+l_int|8
+comma
 l_string|&quot;GPIO0 PES_PLAY len=%04x&bslash;n&quot;
 comma
 id|len
-)paren
 )paren
 suffix:semicolon
 id|iwdebi
@@ -3495,7 +3483,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;gpioirq unknown type=%d len=%d&bslash;n&quot;
+l_string|&quot;dvb-ttpci: gpioirq unknown type=%d len=%d&bslash;n&quot;
 comma
 id|av7110-&gt;debitype
 comma
@@ -3574,14 +3562,14 @@ op_star
 )paren
 id|dvbdev-&gt;priv
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -3722,14 +3710,14 @@ id|u16
 id|pcrpid
 )paren
 (brace
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -3847,14 +3835,14 @@ id|u16
 id|pcrpid
 )paren
 (brace
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -4034,14 +4022,14 @@ id|mode
 op_assign
 l_int|0xb96a
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -4210,9 +4198,11 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;StartHWFilter error&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4277,14 +4267,14 @@ suffix:semicolon
 id|u16
 id|handle
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|handle
@@ -4299,24 +4289,16 @@ OG
 l_int|32
 )paren
 (brace
-id|DEB_S
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;dvb: StopHWFilter tried to stop invalid filter %d.&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;StopHWFilter tried to stop invalid filter %d, filter type = %d&bslash;n&quot;
 comma
 id|handle
-)paren
-)paren
-suffix:semicolon
-id|DEB_S
-c_func
-(paren
-(paren
-l_string|&quot;dvb: filter type = %d&bslash;n&quot;
 comma
 id|dvbdmxfilter-&gt;type
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -4378,9 +4360,11 @@ c_cond
 (paren
 id|ret
 )paren
-id|printk
+id|dprintk
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;StopHWFilter error&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4395,11 +4379,12 @@ op_ne
 id|handle
 )paren
 (brace
-id|DEB_S
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;dvb: filter %d shutdown error :%d&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;filter %d shutdown error :%d&bslash;n&quot;
 comma
 id|handle
 comma
@@ -4407,7 +4392,6 @@ id|answ
 (braket
 l_int|1
 )braket
-)paren
 )paren
 suffix:semicolon
 id|ret
@@ -4465,14 +4449,14 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|npids
@@ -4778,14 +4762,14 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -4998,14 +4982,14 @@ op_star
 )paren
 id|demux-&gt;priv
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -5295,14 +5279,14 @@ op_star
 )paren
 id|demux-&gt;priv
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -5506,14 +5490,14 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|mode
@@ -5677,14 +5661,14 @@ op_star
 )paren
 id|dvbdemux-&gt;priv
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -5735,11 +5719,12 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: fwstc = %04hx %04hx %04hx %04hx&bslash;n&quot;
+l_int|2
+comma
+l_string|&quot;fwstc = %04hx %04hx %04hx %04hx&bslash;n&quot;
 comma
 id|fwstc
 (braket
@@ -5760,7 +5745,6 @@ id|fwstc
 (braket
 l_int|3
 )braket
-)paren
 )paren
 suffix:semicolon
 op_star
@@ -5817,11 +5801,12 @@ id|base
 op_assign
 l_int|1
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: stc = %lu&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;stc = %lu&bslash;n&quot;
 comma
 (paren
 r_int
@@ -5829,7 +5814,6 @@ r_int
 )paren
 op_star
 id|stc
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -5864,14 +5848,14 @@ id|av7110
 op_assign
 id|fe-&gt;before_after_data
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_switch
@@ -6008,14 +5992,14 @@ id|av7110
 op_assign
 id|data
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 id|av7110-&gt;fe_synced
@@ -6161,14 +6145,14 @@ op_assign
 op_amp
 id|av7110-&gt;demux
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -6443,14 +6427,14 @@ op_assign
 op_amp
 id|av7110-&gt;demux
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -7215,12 +7199,12 @@ op_eq
 id|av7110-&gt;bin_fw
 )paren
 (brace
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
+l_int|1
+comma
 l_string|&quot;out of memory&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|release_firmware
@@ -7433,14 +7417,14 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|4
+comma
 l_string|&quot;dev: %p&bslash;n&quot;
 comma
 id|dev
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* prepare the av7110 device struct */
@@ -7464,11 +7448,12 @@ id|GFP_KERNEL
 )paren
 )paren
 (brace
-id|printk
+id|dprintk
+c_func
 (paren
-l_string|&quot;%s: out of memory!&bslash;n&quot;
+l_int|1
 comma
-id|__FUNCTION__
+l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7476,16 +7461,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
-comma
-id|av7110
-)paren
-)paren
-suffix:semicolon
 id|memset
 c_func
 (paren
@@ -7959,7 +7934,7 @@ l_int|0x2501
 )paren
 id|printk
 (paren
-l_string|&quot;av7110: Warning, firmware version 0x%04x is too old. &quot;
+l_string|&quot;dvb-ttpci: Warning, firmware version 0x%04x is too old. &quot;
 l_string|&quot;System might be unstable!&bslash;n&quot;
 comma
 id|FW_VERSION
@@ -7992,8 +7967,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;av7110(%d): faile to start arm_mon kernel thread&bslash;n&quot;
+l_string|&quot;dvb-ttpci: failed to start arm_mon kernel thread @ card %d&bslash;n&quot;
 comma
 id|av7110-&gt;dvb_adapter-&gt;num
 )paren
@@ -8044,7 +8018,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;av7110: found av7110-%d.&bslash;n&quot;
+l_string|&quot;dvb-ttpci: found av7110-%d.&bslash;n&quot;
 comma
 id|av7110_num
 )paren
@@ -8185,14 +8159,14 @@ op_star
 )paren
 id|saa-&gt;ext_priv
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -8368,7 +8342,6 @@ op_star
 )paren
 id|dev-&gt;ext_priv
 suffix:semicolon
-singleline_comment|//&t;DEB_INT((&quot;dev: %p, av7110: %p&bslash;n&quot;,dev,av7110));
 r_if
 c_cond
 (paren

@@ -297,6 +297,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Creates table for an individual device node */
+multiline_comment|/* XXX: This isn&squot;t generic, please name it accordingly or add&n; * some ppc_md. hooks for iommu implementations to do what they&n; * need to do. --BenH.&n; */
 r_extern
 r_void
 id|iommu_devnode_init
@@ -309,6 +310,7 @@ id|dn
 )paren
 suffix:semicolon
 multiline_comment|/* Frees table for an individual device node */
+multiline_comment|/* XXX: This isn&squot;t generic, please name it accordingly or add&n; * some ppc_md. hooks for iommu implementations to do what they&n; * need to do. --BenH.&n; */
 r_extern
 r_void
 id|iommu_free_table

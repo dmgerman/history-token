@@ -1070,6 +1070,46 @@ id|__initdata
 op_assign
 id|CMODE_CHOOSE
 suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|vmode
+comma
+id|default_vmode
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|vmode
+comma
+l_string|&quot;int: video mode for mac&quot;
+)paren
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|cmode
+comma
+id|default_cmode
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|cmode
+comma
+l_string|&quot;int: color mode for mac&quot;
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_ATARI
 DECL|variable|__initdata
@@ -18155,44 +18195,6 @@ comma
 l_string|&quot;int: override accelerated engine clock&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC
-id|module_param
-c_func
-(paren
-id|vmode
-comma
-r_int
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|vmode
-comma
-l_string|&quot;int: video mode for mac&quot;
-)paren
-suffix:semicolon
-id|module_param
-c_func
-(paren
-id|cmode
-comma
-r_int
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|cmode
-comma
-l_string|&quot;int: color mode for mac&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|module_param
 c_func
 (paren

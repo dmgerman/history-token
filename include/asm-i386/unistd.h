@@ -569,8 +569,7 @@ DECL|macro|__NR_sys_kexec_load
 mdefine_line|#define __NR_sys_kexec_load&t;283
 DECL|macro|__NR_waitid
 mdefine_line|#define __NR_waitid&t;&t;284
-DECL|macro|__NR_sys_setaltroot
-mdefine_line|#define __NR_sys_setaltroot&t;285
+multiline_comment|/* #define __NR_sys_setaltroot&t;285 */
 DECL|macro|__NR_add_key
 mdefine_line|#define __NR_add_key&t;&t;286
 DECL|macro|__NR_request_key
