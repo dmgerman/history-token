@@ -6692,6 +6692,8 @@ r_struct
 id|file_operations
 id|generic_ro_fops
 suffix:semicolon
+DECL|macro|special_file
+mdefine_line|#define special_file(m) (S_ISCHR(m)||S_ISBLK(m)||S_ISFIFO(m)||S_ISSOCK(m))
 r_extern
 r_int
 id|vfs_readlink
