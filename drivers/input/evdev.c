@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 DECL|struct|evdev
 r_struct
 id|evdev
@@ -2904,6 +2905,26 @@ id|evdev_ids
 comma
 )brace
 suffix:semicolon
+DECL|variable|evdev_intf
+r_static
+r_struct
+id|device_interface
+id|evdev_intf
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;event&quot;
+comma
+dot
+id|devclass
+op_assign
+op_amp
+id|input_devclass
+comma
+)brace
+suffix:semicolon
 DECL|function|evdev_init
 r_static
 r_int
@@ -2914,6 +2935,13 @@ c_func
 r_void
 )paren
 (brace
+id|interface_register
+c_func
+(paren
+op_amp
+id|evdev_intf
+)paren
+suffix:semicolon
 id|input_register_handler
 c_func
 (paren
@@ -2940,6 +2968,13 @@ c_func
 (paren
 op_amp
 id|evdev_handler
+)paren
+suffix:semicolon
+id|interface_register
+c_func
+(paren
+op_amp
+id|evdev_intf
 )paren
 suffix:semicolon
 )brace

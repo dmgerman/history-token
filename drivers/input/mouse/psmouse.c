@@ -111,6 +111,11 @@ r_int
 r_char
 id|type
 suffix:semicolon
+DECL|member|model
+r_int
+r_char
+id|model
+suffix:semicolon
 DECL|member|last
 r_int
 r_int
@@ -1418,6 +1423,10 @@ id|psmouse-&gt;name
 op_assign
 l_string|&quot;Mouse&quot;
 suffix:semicolon
+id|psmouse-&gt;model
+op_assign
+l_int|2
+suffix:semicolon
 multiline_comment|/*&n; * Try Genius NetMouse magic init.&n; */
 id|param
 (braket
@@ -1704,8 +1713,15 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-r_int
-id|devicetype
+id|psmouse-&gt;vendor
+op_assign
+l_string|&quot;Logitech&quot;
+suffix:semicolon
+id|psmouse-&gt;name
+op_assign
+l_string|&quot;Mouse&quot;
+suffix:semicolon
+id|psmouse-&gt;model
 op_assign
 (paren
 (paren
@@ -1732,14 +1748,6 @@ l_int|3
 op_amp
 l_int|0x78
 )paren
-suffix:semicolon
-id|psmouse-&gt;vendor
-op_assign
-l_string|&quot;Logitech&quot;
-suffix:semicolon
-id|psmouse-&gt;name
-op_assign
-l_string|&quot;Mouse&quot;
 suffix:semicolon
 r_if
 c_cond
@@ -1807,7 +1815,7 @@ id|logitech_ps2pp
 id|i
 )braket
 op_eq
-id|devicetype
+id|psmouse-&gt;model
 )paren
 id|psmouse-&gt;type
 op_assign
@@ -1849,7 +1857,7 @@ id|logitech_4btn
 id|i
 )braket
 op_eq
-id|devicetype
+id|psmouse-&gt;model
 )paren
 id|set_bit
 c_func
@@ -1885,7 +1893,7 @@ id|logitech_wheel
 id|i
 )braket
 op_eq
-id|devicetype
+id|psmouse-&gt;model
 )paren
 id|set_bit
 c_func
@@ -1899,7 +1907,7 @@ multiline_comment|/*&n; * Do Logitech PS2++ / PS2T++ magic init.&n; */
 r_if
 c_cond
 (paren
-id|devicetype
+id|psmouse-&gt;model
 op_eq
 l_int|97
 )paren
@@ -2856,7 +2864,7 @@ id|psmouse-&gt;type
 suffix:semicolon
 id|psmouse-&gt;dev.id.product
 op_assign
-l_int|0x0002
+id|psmouse-&gt;model
 suffix:semicolon
 id|psmouse-&gt;dev.id.version
 op_assign

@@ -335,15 +335,50 @@ c_func
 (paren
 op_amp
 id|hw
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-macro_line|#if (defined CONFIG_APUS || defined CONFIG_BLK_DEV_MPC8xx_IDE )
-DECL|macro|ATA_ARCH_ACK_INTR
-mdefine_line|#define ATA_ARCH_ACK_INTR
+macro_line|#if !defined(ide_request_irq)
+DECL|macro|ide_request_irq
+mdefine_line|#define ide_request_irq(irq,hand,flg,dev,id)&t;request_irq((irq),(hand),(flg),(dev),(id))
 macro_line|#endif
+macro_line|#if !defined(ide_free_irq)
+DECL|macro|ide_free_irq
+mdefine_line|#define ide_free_irq(irq,dev_id)&t;&t;free_irq((irq), (dev_id))
+macro_line|#endif
+DECL|macro|ide_check_region
+mdefine_line|#define ide_check_region(from,extent)&t;&t;check_region((from), (extent))
+DECL|macro|ide_request_region
+mdefine_line|#define ide_request_region(from,extent,name)&t;request_region((from), (extent), (name))
+DECL|macro|ide_release_region
+mdefine_line|#define ide_release_region(from,extent)&t;&t;release_region((from), (extent))
+r_extern
+r_void
+id|ide_fix_driveid
+c_func
+(paren
+r_struct
+id|hd_driveid
+op_star
+id|id
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * The following are not needed for the non-m68k ports&n; * unless direct IDE on 8xx&n; */
+macro_line|#if (defined CONFIG_APUS || defined CONFIG_BLK_DEV_MPC8xx_IDE )
+DECL|macro|ide_ack_intr
+mdefine_line|#define ide_ack_intr(hwif) (hwif-&gt;hw.ack_intr ? hwif-&gt;hw.ack_intr(hwif) : 1)
+macro_line|#else
+DECL|macro|ide_ack_intr
+mdefine_line|#define ide_ack_intr(hwif)&t;&t;(1)
+macro_line|#endif
+DECL|macro|ide_release_lock
+mdefine_line|#define ide_release_lock(lock)&t;&t;do {} while (0)
+DECL|macro|ide_get_lock
+mdefine_line|#define ide_get_lock(lock, hdlr, data)&t;do {} while (0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASMPPC_IDE_H */
 eof

@@ -961,26 +961,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_VT
-multiline_comment|/*&n; * Dummy mksound function that does nothing.&n; * The real one is in the dmasound driver.&n; */
-r_static
-r_void
-id|__pmac
-DECL|function|pmac_mksound
-id|pmac_mksound
-c_func
-(paren
-r_int
-r_int
-id|hz
-comma
-r_int
-r_int
-id|ticks
-)paren
-(brace
-)brace
-macro_line|#endif /* CONFIG_VT */
 DECL|variable|sysctrl_regs
 r_static
 r_volatile
@@ -1338,12 +1318,6 @@ id|conswitchp
 op_assign
 op_amp
 id|dummy_con
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_VT
-id|kd_mksound
-op_assign
-id|pmac_mksound
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
