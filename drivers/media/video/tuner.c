@@ -5311,11 +5311,6 @@ id|client_template
 op_assign
 (brace
 dot
-id|dev.name
-op_assign
-l_string|&quot;(tuner unset)&quot;
-comma
-dot
 id|flags
 op_assign
 id|I2C_CLIENT_ALLOW_USE
@@ -5325,6 +5320,17 @@ id|driver
 op_assign
 op_amp
 id|driver
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;(tuner unset)&quot;
+comma
+)brace
 comma
 )brace
 suffix:semicolon
