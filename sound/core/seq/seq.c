@@ -13,6 +13,34 @@ macro_line|#include &quot;seq_timer.h&quot;
 macro_line|#include &quot;seq_system.h&quot;
 macro_line|#include &quot;seq_info.h&quot;
 macro_line|#include &lt;sound/seq_device.h&gt;
+macro_line|#if defined(CONFIG_SND_SEQ_DUMMY_MODULE)
+DECL|variable|seq_client_load
+r_int
+id|seq_client_load
+(braket
+l_int|64
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+)braket
+op_assign
+id|SNDRV_SEQ_CLIENT_DUMMY
+comma
+(braket
+l_int|1
+dot
+dot
+dot
+l_int|63
+)braket
+op_assign
+op_minus
+l_int|1
+)brace
+suffix:semicolon
+macro_line|#else
 DECL|variable|seq_client_load
 r_int
 id|seq_client_load
@@ -33,6 +61,7 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|variable|seq_default_timer_class
 r_int
 id|seq_default_timer_class
