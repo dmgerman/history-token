@@ -541,9 +541,19 @@ r_union
 id|sctp_addr
 id|peer_addr
 suffix:semicolon
+multiline_comment|/* IG Section 2.35.3 &n;&t; * Include the source port of the INIT-ACK&n;&t; */
+DECL|member|my_port
+id|__u16
+id|my_port
+suffix:semicolon
 DECL|member|prsctp_capable
 id|__u8
 id|prsctp_capable
+suffix:semicolon
+multiline_comment|/* Padding for future use */
+DECL|member|padding
+id|__u8
+id|padding
 suffix:semicolon
 DECL|member|adaption_ind
 id|__u32

@@ -386,6 +386,10 @@ id|asoc-&gt;c.peer_ttag
 op_assign
 l_int|0
 suffix:semicolon
+id|asoc-&gt;c.my_port
+op_assign
+id|ep-&gt;base.bind_addr.port
+suffix:semicolon
 id|asoc-&gt;c.initial_tsn
 op_assign
 id|sctp_generate_tsn

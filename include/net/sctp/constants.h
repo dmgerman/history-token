@@ -287,6 +287,9 @@ comma
 DECL|enumerator|SCTP_IERROR_BAD_STREAM
 id|SCTP_IERROR_BAD_STREAM
 comma
+DECL|enumerator|SCTP_IERROR_BAD_PORTS
+id|SCTP_IERROR_BAD_PORTS
+comma
 DECL|typedef|sctp_ierror_t
 )brace
 id|sctp_ierror_t
