@@ -5,9 +5,7 @@ macro_line|#include &lt;linux/kbd_ll.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -39,32 +37,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_SERIAL_CONSOLE)
-r_extern
-r_void
-id|console_setup
-c_func
-(paren
-r_char
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif
-r_extern
-r_struct
-id|ide_ops
-id|std_ide_ops
-suffix:semicolon
-r_extern
-r_struct
-id|kbd_ops
-id|std_kbd_ops
-suffix:semicolon
-r_extern
-r_struct
-id|rtc_ops
-id|ddb_rtc_ops
-suffix:semicolon
 DECL|variable|back_to_prom
 r_static
 r_void
@@ -339,10 +311,11 @@ id|DDB_PCI_MEM_BASE
 )paren
 suffix:semicolon
 )brace
-DECL|function|ddb_setup
+DECL|function|ddb5074_setup
+r_static
 r_void
 id|__init
-id|ddb_setup
+id|ddb5074_setup
 c_func
 (paren
 r_void
@@ -386,18 +359,6 @@ id|_machine_power_off
 op_assign
 id|ddb_machine_power_off
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-id|ide_ops
-op_assign
-op_amp
-id|std_ide_ops
-suffix:semicolon
-macro_line|#endif
-id|rtc_ops
-op_assign
-op_amp
-id|ddb_rtc_ops
-suffix:semicolon
 id|ddb_out32
 c_func
 (paren
@@ -430,19 +391,19 @@ comma
 l_int|0x10
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FB
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Reboot on panic */
 id|panic_timeout
 op_assign
 l_int|180
 suffix:semicolon
 )brace
+DECL|variable|ddb5074_setup
+id|early_initcall
+c_func
+(paren
+id|ddb5074_setup
+)paren
+suffix:semicolon
 DECL|macro|USE_NILE4_SERIAL
 mdefine_line|#define USE_NILE4_SERIAL&t;0
 macro_line|#if USE_NILE4_SERIAL

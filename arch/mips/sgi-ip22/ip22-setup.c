@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * ip22-setup.c: SGI specific setup, including init of the feature struct.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997, 1998 Ralf Baechle (ralf@gnu.org)&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/ds1286.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
@@ -12,7 +13,6 @@ macro_line|#include &lt;asm/bcache.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
-macro_line|#include &lt;asm/ds1286.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/gdb-stub.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -46,22 +46,6 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_IP22_SERIAL_CONSOLE) || defined(CONFIG_ARC_CONSOLE)
-r_extern
-r_void
-id|console_setup
-c_func
-(paren
-r_char
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif
-r_extern
-r_struct
-id|rtc_ops
-id|ip22_rtc_ops
-suffix:semicolon
 DECL|variable|sgi_gfxaddr
 r_int
 r_int
@@ -123,7 +107,8 @@ r_void
 id|__init
 suffix:semicolon
 DECL|function|ip22_setup
-r_void
+r_static
+r_int
 id|__init
 id|ip22_setup
 c_func
@@ -170,10 +155,12 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Set the IO space to some sane value */
+multiline_comment|/* Set EISA IO port base for Indigo2 */
 id|set_io_port_base
+c_func
 (paren
 id|KSEG1ADDR
+c_func
 (paren
 l_int|0x00080000
 )paren
@@ -199,10 +186,41 @@ op_eq
 l_char|&squot;d&squot;
 )paren
 (brace
-macro_line|#ifdef CONFIG_IP22_SERIAL_CONSOLE
+r_static
+r_char
+id|options
+(braket
+l_int|8
+)braket
+suffix:semicolon
+r_char
+op_star
+id|baud
+op_assign
+id|ArcGetEnvironmentVariable
+c_func
+(paren
+l_string|&quot;dbaud&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|baud
+)paren
+id|strcpy
+c_func
+(paren
+id|options
+comma
+id|baud
+)paren
+suffix:semicolon
+id|add_preferred_console
+c_func
+(paren
+l_string|&quot;ttyS&quot;
+comma
 op_star
 (paren
 id|ctype
@@ -211,23 +229,21 @@ l_int|1
 )paren
 op_eq
 l_char|&squot;2&squot;
-)paren
-id|console_setup
-c_func
-(paren
-l_string|&quot;ttyS1&quot;
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+comma
+id|baud
+ques
+c_cond
+id|options
+suffix:colon
+l_int|NULL
 )paren
 suffix:semicolon
-r_else
-id|console_setup
-c_func
-(paren
-l_string|&quot;ttyS0&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#ifdef CONFIG_ARC_CONSOLE
 r_else
 r_if
 c_cond
@@ -246,14 +262,17 @@ id|prom_flags
 op_or_assign
 id|PROM_FLAG_USE_AS_CONSOLE
 suffix:semicolon
-id|console_setup
+id|add_preferred_console
 c_func
 (paren
 l_string|&quot;arc&quot;
+comma
+l_int|0
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_KGDB
 id|kgdb_ttyd
 op_assign
@@ -371,11 +390,6 @@ multiline_comment|/* Breakpoints and stuff are in sgi_irq_setup() */
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_VT
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
 macro_line|#ifdef CONFIG_SGI_NEWPORT_CONSOLE
 r_if
 c_cond
@@ -388,12 +402,12 @@ op_eq
 l_char|&squot;g&squot;
 )paren
 (brace
-r_int
-r_int
+id|ULONG
 op_star
 id|gfxinfo
 suffix:semicolon
-r_int
+id|ULONG
+op_star
 (paren
 op_star
 id|__vec
@@ -406,10 +420,17 @@ op_assign
 r_void
 op_star
 )paren
-op_star
 (paren
 r_int
+)paren
 op_star
+(paren
+(paren
+id|_PULONG
+op_star
+)paren
+(paren
+r_int
 )paren
 (paren
 (paren
@@ -420,14 +441,10 @@ id|pvector
 op_plus
 l_int|0x20
 )paren
+)paren
 suffix:semicolon
 id|gfxinfo
 op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
 id|__vec
 c_func
 (paren
@@ -481,68 +498,19 @@ op_assign
 op_amp
 id|newport_con
 suffix:semicolon
-id|screen_info
-op_assign
+)brace
+)brace
+macro_line|#endif
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|ip22_setup
+id|early_initcall
+c_func
 (paren
-r_struct
-id|screen_info
+id|ip22_setup
 )paren
-(brace
-dot
-id|orig_x
-op_assign
-l_int|0
-comma
-dot
-id|orig_y
-op_assign
-l_int|0
-comma
-dot
-id|orig_video_page
-op_assign
-l_int|0
-comma
-dot
-id|orig_video_mode
-op_assign
-l_int|0
-comma
-dot
-id|orig_video_cols
-op_assign
-l_int|160
-comma
-dot
-id|orig_video_ega_bx
-op_assign
-l_int|0
-comma
-dot
-id|orig_video_lines
-op_assign
-l_int|64
-comma
-dot
-id|orig_video_isVGA
-op_assign
-l_int|0
-comma
-dot
-id|orig_video_points
-op_assign
-l_int|16
-comma
-)brace
 suffix:semicolon
-)brace
-)brace
-macro_line|#endif
-macro_line|#endif
-id|rtc_ops
-op_assign
-op_amp
-id|ip22_rtc_ops
-suffix:semicolon
-)brace
 eof

@@ -13,14 +13,7 @@ id|_prom_argv
 suffix:semicolon
 multiline_comment|/*&n; * YAMON (32-bit PROM) pass arguments and environment as 32-bit pointer.&n; * This macro take care of sign extension.&n; */
 DECL|macro|prom_argv
-mdefine_line|#define prom_argv(index) ((char *)(((int *)(int)_prom_argv)[(index)]))
-DECL|variable|arcs_cmdline
-r_char
-id|arcs_cmdline
-(braket
-id|CL_SIZE
-)braket
-suffix:semicolon
+mdefine_line|#define prom_argv(index) ((char *)(long)_prom_argv[(index)])
 DECL|function|prom_getcmdline
 r_char
 op_star

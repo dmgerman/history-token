@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_PCI_BRIDGE_H
 DECL|macro|_ASM_PCI_BRIDGE_H
 mdefine_line|#define _ASM_PCI_BRIDGE_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/pci_channel.h&gt;
 macro_line|#include &lt;asm/xtalk/xwidget.h&gt;&t;&t;/* generic widget header */
 multiline_comment|/* I/O page size */
 DECL|macro|IOPFNSHIFT
@@ -1045,9 +1046,13 @@ multiline_comment|/* ===========================================================
 multiline_comment|/* Widget part number of bridge */
 DECL|macro|BRIDGE_WIDGET_PART_NUM
 mdefine_line|#define BRIDGE_WIDGET_PART_NUM&t;&t;0xc002
+DECL|macro|XBRIDGE_WIDGET_PART_NUM
+mdefine_line|#define XBRIDGE_WIDGET_PART_NUM&t;&t;0xd002
 multiline_comment|/* Manufacturer of bridge */
 DECL|macro|BRIDGE_WIDGET_MFGR_NUM
 mdefine_line|#define BRIDGE_WIDGET_MFGR_NUM&t;&t;0x036
+DECL|macro|XBRIDGE_WIDGET_MFGR_NUM
+mdefine_line|#define XBRIDGE_WIDGET_MFGR_NUM&t;&t;0x024
 multiline_comment|/* Revision numbers for known Bridge revisions */
 DECL|macro|BRIDGE_REV_A
 mdefine_line|#define BRIDGE_REV_A&t;&t;&t;0x1
@@ -1667,28 +1672,51 @@ DECL|macro|mkate
 mdefine_line|#define mkate(xaddr, xid, attr) ((xaddr) &amp; 0x0000fffffffff000ULL) | &bslash;&n;&t;&t;&t;&t;((xid)&lt;&lt;ATE_TIDSHIFT) | &bslash;&n;&t;&t;&t;&t;(attr)
 DECL|macro|BRIDGE_INTERNAL_ATES
 mdefine_line|#define BRIDGE_INTERNAL_ATES&t;128
-multiline_comment|/*&n; * Linux pci bus mappings to sn physical id&squot;s&n; */
-r_extern
-r_int
-r_char
-id|bus_to_wid
-(braket
-)braket
+DECL|struct|bridge_controller
+r_struct
+id|bridge_controller
+(brace
+DECL|member|pc
+r_struct
+id|pci_controller
+id|pc
 suffix:semicolon
-multiline_comment|/* widget id for linux pci bus */
-r_extern
-r_int
-r_char
-id|bus_to_nid
-(braket
-)braket
+DECL|member|mem
+r_struct
+id|resource
+id|mem
 suffix:semicolon
-multiline_comment|/* nasid for linux pci bus */
-r_extern
-r_int
-r_char
-id|num_bridges
+DECL|member|io
+r_struct
+id|resource
+id|io
 suffix:semicolon
-multiline_comment|/* number of bridges in the system */
+DECL|member|base
+id|bridge_t
+op_star
+id|base
+suffix:semicolon
+DECL|member|nasid
+id|nasid_t
+id|nasid
+suffix:semicolon
+DECL|member|widget_id
+r_int
+r_int
+id|widget_id
+suffix:semicolon
+DECL|member|irq_cpu
+r_int
+r_int
+id|irq_cpu
+suffix:semicolon
+DECL|member|baddr
+id|dma64_addr_t
+id|baddr
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|BRIDGE_CONTROLLER
+mdefine_line|#define BRIDGE_CONTROLLER(bus) &bslash;&n;&t;((struct bridge_controller *)((bus)-&gt;sysdata))
 macro_line|#endif /* _ASM_PCI_BRIDGE_H */
 eof

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 Ross Biro&n; * Copyright (C) Linus Torvalds&n; * Copyright (C) 1994, 95, 96, 97, 98, 2000 Ralf Baechle&n; * Copyright (C) 1996 David S. Miller&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999 MIPS Technologies, Inc.&n; * Copyright (C) 2000 Ulf Carlsson&n; *&n; * At this time Linux/MIPS64 only supports syscall tracing, even for 32-bit&n; * binaries.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

@@ -5,11 +5,8 @@ macro_line|#include &lt;linux/kbd_ll.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/bcache.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -42,16 +39,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-r_extern
-r_struct
-id|ide_ops
-id|std_ide_ops
-suffix:semicolon
-r_extern
-r_struct
-id|kbd_ops
-id|std_kbd_ops
-suffix:semicolon
 DECL|variable|back_to_prom
 r_static
 r_void
@@ -216,7 +203,7 @@ r_void
 )paren
 (brace
 macro_line|#if defined(USE_CPU_COUNTER_TIMER)
-id|mips_counter_frequency
+id|mips_hpt_frequency
 op_assign
 id|CPU_COUNTER_FREQUENCY
 suffix:semicolon
@@ -333,11 +320,6 @@ r_struct
 id|resource
 id|dma1
 suffix:semicolon
-DECL|member|pic1
-r_struct
-id|resource
-id|pic1
-suffix:semicolon
 DECL|member|timer
 r_struct
 id|resource
@@ -352,11 +334,6 @@ DECL|member|dma_page_reg
 r_struct
 id|resource
 id|dma_page_reg
-suffix:semicolon
-DECL|member|pic2
-r_struct
-id|resource
-id|pic2
 suffix:semicolon
 DECL|member|dma2
 r_struct
@@ -374,16 +351,6 @@ comma
 l_int|0x00
 comma
 l_int|0x1f
-comma
-id|IORESOURCE_BUSY
-)brace
-comma
-(brace
-l_string|&quot;pic1&quot;
-comma
-l_int|0x20
-comma
-l_int|0x3f
 comma
 id|IORESOURCE_BUSY
 )brace
@@ -414,16 +381,6 @@ comma
 l_int|0x80
 comma
 l_int|0x8f
-comma
-id|IORESOURCE_BUSY
-)brace
-comma
-(brace
-l_string|&quot;pic2&quot;
-comma
-l_int|0xa0
-comma
-l_int|0xbf
 comma
 id|IORESOURCE_BUSY
 )brace
@@ -493,10 +450,11 @@ id|irq_setup
 r_void
 )paren
 suffix:semicolon
+DECL|function|ddb5476_setup
+r_static
 r_void
 id|__init
-DECL|function|ddb_setup
-id|ddb_setup
+id|ddb5476_setup
 c_func
 (paren
 r_void
@@ -561,16 +519,6 @@ op_amp
 id|ioport_resource
 comma
 op_amp
-id|ddb5476_ioport.pic1
-)paren
-op_logical_or
-id|request_resource
-c_func
-(paren
-op_amp
-id|ioport_resource
-comma
-op_amp
 id|ddb5476_ioport.timer
 )paren
 op_logical_or
@@ -592,16 +540,6 @@ id|ioport_resource
 comma
 op_amp
 id|ddb5476_ioport.dma_page_reg
-)paren
-op_logical_or
-id|request_resource
-c_func
-(paren
-op_amp
-id|ioport_resource
-comma
-op_amp
-id|ddb5476_ioport.pic2
 )paren
 op_logical_or
 id|request_resource
@@ -638,13 +576,6 @@ suffix:semicolon
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-id|ide_ops
-op_assign
-op_amp
-id|std_ide_ops
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Reboot on panic */
 id|panic_timeout
 op_assign
@@ -652,13 +583,6 @@ l_int|180
 suffix:semicolon
 multiline_comment|/* [jsun] we need to set BAR0 so that SDRAM 0 appears at 0x0 in PCI */
 multiline_comment|/* *(long*)0xbfa00218 = 0x8; */
-macro_line|#ifdef CONFIG_FB
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* board initialization stuff */
 id|ddb5476_board_init
 c_func
@@ -666,6 +590,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ddb5476_setup
+id|early_initcall
+c_func
+(paren
+id|ddb5476_setup
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * We don&squot;t trust bios.  We essentially does hardware re-initialization&n; * as complete as possible, as far as we know we can safely do.&n; */
 DECL|function|ddb5476_board_init
 r_static

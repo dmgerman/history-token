@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001,2002 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+multiline_comment|/*&n; * Copyright (C) 2001,2002,2003 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
 multiline_comment|/*&n; * BCM1250-specific PCI support&n; *&n; * This module provides the glue between Linux&squot;s PCI subsystem&n; * and the hardware.  We basically provide glue for accessing&n; * configuration space, and set up the translation for I/O&n; * space accesses.&n; *&n; * To access configuration space, we use ioremap.  In the 32-bit&n; * kernel, this consumes either 4 or 8 page table pages, and 16MB of&n; * kernel mapped memory.  Hopefully neither of these should be a huge&n; * problem.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -7,10 +7,12 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/pci_channel.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_defs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_scd.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/sibyte/board.h&gt;
 multiline_comment|/*&n; * Macros for calculating offsets into config space given a device&n; * structure or dev/fun/reg&n; */
 DECL|macro|CFGOFFSET
 mdefine_line|#define CFGOFFSET(bus,devfn,where) (((bus)&lt;&lt;16) + ((devfn)&lt;&lt;8) + (where))
@@ -551,6 +553,11 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
+r_else
+id|data
+op_assign
+id|val
+suffix:semicolon
 id|WRITECFG32
 c_func
 (paren
@@ -580,14 +587,106 @@ op_assign
 id|sb1250_pcibios_write
 )brace
 suffix:semicolon
-DECL|function|pcibios_init
-r_void
+DECL|variable|sb1250_mem_resource
+r_static
+r_struct
+id|resource
+id|sb1250_mem_resource
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;SB1250 PCI MEM&quot;
+comma
+dot
+id|start
+op_assign
+l_int|0x14000000UL
+comma
+dot
+id|end
+op_assign
+l_int|0x17ffffffUL
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_MEM
+comma
+)brace
+suffix:semicolon
+DECL|variable|sb1250_io_resource
+r_static
+r_struct
+id|resource
+id|sb1250_io_resource
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;SB1250 IO MEM&quot;
+comma
+dot
+id|start
+op_assign
+l_int|0x14000000UL
+comma
+dot
+id|end
+op_assign
+l_int|0x17ffffffUL
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_IO
+comma
+)brace
+suffix:semicolon
+DECL|variable|sb1250_controller
+r_struct
+id|pci_controller
+id|sb1250_controller
+op_assign
+(brace
+dot
+id|pci_ops
+op_assign
+op_amp
+id|sb1250_pci_ops
+comma
+dot
+id|mem_resource
+op_assign
+op_amp
+id|sb1250_mem_resource
+comma
+dot
+id|io_resource
+op_assign
+op_amp
+id|sb1250_io_resource
+)brace
+suffix:semicolon
+r_int
 id|__init
 id|pcibios_init
 c_func
 (paren
 r_void
 )paren
+id|xxx
+id|This
+id|needs
+id|to
+id|be
+id|called
+id|somehow
+dot
+dot
+dot
 (brace
 r_uint32
 id|cmdreg
@@ -619,7 +718,7 @@ r_volatile
 r_uint64
 op_star
 )paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_SCD_SYSTEM_CFG
@@ -688,6 +787,7 @@ id|cfg_space
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|sb1250_bus_status
@@ -785,22 +885,11 @@ l_int|1024
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* Probe for PCI hardware */
-id|printk
+id|register_pci_controller
 c_func
 (paren
-l_string|&quot;PCI: Probing PCI hardware on host bus 0.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|pci_scan_bus
-c_func
-(paren
-l_int|0
-comma
 op_amp
-id|sb1250_pci_ops
-comma
-l_int|NULL
+id|sb1250_controller
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_VGA_CONSOLE
@@ -820,65 +909,8 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
-)brace
-DECL|function|pcibios_enable_device
-r_int
-id|pcibios_enable_device
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-r_int
-id|mask
-)paren
-(brace
-multiline_comment|/* Not needed, since we enable all devices at startup.  */
 r_return
 l_int|0
-suffix:semicolon
-)brace
-DECL|function|pcibios_align_resource
-r_void
-id|pcibios_align_resource
-c_func
-(paren
-r_void
-op_star
-id|data
-comma
-r_struct
-id|resource
-op_star
-id|res
-comma
-r_int
-r_int
-id|size
-comma
-r_int
-r_int
-id|align
-)paren
-(brace
-)brace
-DECL|function|pcibios_setup
-r_char
-op_star
-id|__init
-id|pcibios_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-multiline_comment|/* Nothing to do for now.  */
-r_return
-id|str
 suffix:semicolon
 )brace
 DECL|variable|pcibios_fixups
@@ -894,37 +926,4 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *  Called after each bus is probed, but before its children&n; *  are examined.&n; */
-DECL|function|pcibios_fixup_bus
-r_void
-id|__devinit
-id|pcibios_fixup_bus
-c_func
-(paren
-r_struct
-id|pci_bus
-op_star
-id|b
-)paren
-(brace
-id|pci_read_bridge_bases
-c_func
-(paren
-id|b
-)paren
-suffix:semicolon
-)brace
-DECL|function|pcibios_assign_all_busses
-r_int
-r_int
-id|pcibios_assign_all_busses
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
 eof

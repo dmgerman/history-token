@@ -381,6 +381,10 @@ comma
 id|__pgd
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|kpmdtbl
 )paren
 )paren

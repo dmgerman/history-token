@@ -215,6 +215,54 @@ DECL|macro|elf_caddr_t
 mdefine_line|#define elf_caddr_t&t;u32
 DECL|macro|init_elf_binfmt
 mdefine_line|#define init_elf_binfmt init_elf32_binfmt
+DECL|macro|jiffies_to_timeval
+mdefine_line|#define jiffies_to_timeval jiffies_to_compat_timeval
+r_static
+id|__inline__
+r_void
+DECL|function|jiffies_to_compat_timeval
+id|jiffies_to_compat_timeval
+c_func
+(paren
+r_int
+r_int
+id|jiffies
+comma
+r_struct
+id|compat_timeval
+op_star
+id|value
+)paren
+(brace
+multiline_comment|/*&n;&t; * Convert jiffies to nanoseconds and seperate with&n;&t; * one divide.&n;&t; */
+id|u64
+id|nsec
+op_assign
+(paren
+id|u64
+)paren
+id|jiffies
+op_star
+id|TICK_NSEC
+suffix:semicolon
+id|value-&gt;tv_sec
+op_assign
+id|div_long_long_rem
+c_func
+(paren
+id|nsec
+comma
+id|NSEC_PER_SEC
+comma
+op_amp
+id|value-&gt;tv_usec
+)paren
+suffix:semicolon
+id|value-&gt;tv_usec
+op_div_assign
+id|NSEC_PER_USEC
+suffix:semicolon
+)brace
 DECL|macro|ELF_CORE_COPY_REGS
 macro_line|#undef ELF_CORE_COPY_REGS
 DECL|macro|ELF_CORE_COPY_REGS

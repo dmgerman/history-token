@@ -5,26 +5,6 @@ mdefine_line|#define _ASM_SN_SN0_ADDRS_H
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * SN0 (on a T5) Address map&n; *&n; * This file contains a set of definitions and macros which are used&n; * to reference into the major address spaces (CAC, HSPEC, IO, MSPEC,&n; * and UNCAC) used by the SN0 architecture.  It also contains addresses&n; * for &quot;major&quot; statically locatable PROM/Kernel data structures, such as&n; * the partition table, the configuration data structure, etc.&n; * We make an implicit assumption that the processor using this file&n; * follows the R10K&squot;s provisions for specifying uncached attributes;&n; * should this change, the base registers may very well become processor-&n; * dependent.&n; *&n; * For more information on the address spaces, see the &quot;Local Resources&quot;&n; * chapter of the Hub specification.&n; *&n; * NOTE: This header file is included both by C and by assembler source&n; *&t; files.  Please bracket any language-dependent definitions&n; *&t; appropriately.&n; */
 multiline_comment|/*&n; * Some of the macros here need to be casted to appropriate types when used&n; * from C.  They definitely must not be casted from assembly language so we&n; * use some new ANSI preprocessor stuff to paste these on where needed.&n; */
-DECL|macro|CAC_BASE
-mdefine_line|#define CAC_BASE&t;&t;0xa800000000000000
-DECL|macro|HSPEC_BASE
-mdefine_line|#define HSPEC_BASE&t;&t;0x9000000000000000
-DECL|macro|IO_BASE
-mdefine_line|#define IO_BASE&t;&t;&t;0x9200000000000000
-DECL|macro|MSPEC_BASE
-mdefine_line|#define MSPEC_BASE&t;&t;0x9400000000000000
-DECL|macro|UNCAC_BASE
-mdefine_line|#define UNCAC_BASE&t;&t;0x9600000000000000
-DECL|macro|TO_PHYS
-mdefine_line|#define TO_PHYS(x)&t;&t;(&t;      ((x) &amp; TO_PHYS_MASK))
-DECL|macro|TO_CAC
-mdefine_line|#define TO_CAC(x)&t;&t;(CAC_BASE   | ((x) &amp; TO_PHYS_MASK))
-DECL|macro|TO_UNCAC
-mdefine_line|#define TO_UNCAC(x)&t;&t;(UNCAC_BASE | ((x) &amp; TO_PHYS_MASK))
-DECL|macro|TO_MSPEC
-mdefine_line|#define TO_MSPEC(x)&t;&t;(MSPEC_BASE | ((x) &amp; TO_PHYS_MASK))
-DECL|macro|TO_HSPEC
-mdefine_line|#define TO_HSPEC(x)&t;&t;(HSPEC_BASE | ((x) &amp; TO_PHYS_MASK))
 multiline_comment|/*&n; * The following couple of definitions will eventually need to be variables,&n; * since the amount of address space assigned to each node depends on&n; * whether the system is running in N-mode (more nodes with less memory)&n; * or M-mode (fewer nodes with more memory).  We expect that it will&n; * be a while before we need to make this decision dynamically, though,&n; * so for now we just use defines bracketed by an ifdef.&n; */
 macro_line|#ifdef CONFIG_SGI_SN0_N_MODE
 DECL|macro|NODE_SIZE_BITS
@@ -151,7 +131,7 @@ mdefine_line|#define IP27PROM_DECOMP_SIZE&t;0xfff00
 DECL|macro|IP27PROM_BASE
 mdefine_line|#define IP27PROM_BASE&t;&t;PHYS_TO_K0(0x01a00000)
 DECL|macro|IP27PROM_BASE_MAPPED
-mdefine_line|#define IP27PROM_BASE_MAPPED&t;(K2BASE | 0x1fc00000)
+mdefine_line|#define IP27PROM_BASE_MAPPED&t;(UNCAC_BASE | 0x1fc00000)
 DECL|macro|IP27PROM_SIZE_MAX
 mdefine_line|#define IP27PROM_SIZE_MAX&t;0x100000
 DECL|macro|IP27PROM_PCFG
@@ -203,7 +183,7 @@ mdefine_line|#define IO6PROM_BASE&t;&t;PHYS_TO_K0(0x01c00000)
 DECL|macro|IO6PROM_SIZE
 mdefine_line|#define IO6PROM_SIZE&t;&t;0x400000
 DECL|macro|IO6PROM_BASE_MAPPED
-mdefine_line|#define&t;IO6PROM_BASE_MAPPED&t;(K2BASE | 0x11c00000)
+mdefine_line|#define&t;IO6PROM_BASE_MAPPED&t;(UNCAC_BASE | 0x11c00000)
 DECL|macro|IO6DPROM_BASE
 mdefine_line|#define IO6DPROM_BASE&t;&t;PHYS_TO_K0(0x01c00000)
 DECL|macro|IO6DPROM_SIZE

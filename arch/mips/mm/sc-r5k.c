@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/r4kcache.h&gt;
 multiline_comment|/* Secondary cache size in bytes, if present.  */
 DECL|variable|scache_size
 r_static
@@ -21,8 +22,6 @@ DECL|macro|SC_LINE
 mdefine_line|#define SC_LINE 32
 DECL|macro|SC_PAGE
 mdefine_line|#define SC_PAGE (128*SC_LINE)
-DECL|macro|cache_op
-mdefine_line|#define cache_op(base,op)                   &bslash;&n;__asm__ __volatile__(&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;.set noreorder;                 &bslash;&n;&t;&t;.set mips3;                     &bslash;&n;&t;&t;cache %1, (%0);                 &bslash;&n;&t;&t;.set mips0;                     &bslash;&n;&t;&t;.set reorder&quot;                   &bslash;&n;&t;&t;:                               &bslash;&n;&t;&t;: &quot;r&quot; (base),                   &bslash;&n;&t;&t;  &quot;i&quot; (op));
 DECL|function|blast_r5000_scache
 r_static
 r_inline
@@ -37,13 +36,13 @@ r_int
 r_int
 id|start
 op_assign
-id|KSEG0
+id|INDEX_BASE
 suffix:semicolon
 r_int
 r_int
 id|end
 op_assign
-id|KSEG0
+id|start
 op_plus
 id|scache_size
 suffix:semicolon
@@ -58,9 +57,9 @@ id|end
 id|cache_op
 c_func
 (paren
-id|start
-comma
 id|R5K_Page_Invalidate_S
+comma
+id|start
 )paren
 suffix:semicolon
 id|start
@@ -146,9 +145,9 @@ id|end
 id|cache_op
 c_func
 (paren
-id|a
-comma
 id|R5K_Page_Invalidate_S
+comma
+id|a
 )paren
 suffix:semicolon
 id|a
@@ -176,11 +175,9 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|change_c0_config
+id|set_c0_config
 c_func
 (paren
-id|R5K_CONF_SE
-comma
 id|R5K_CONF_SE
 )paren
 suffix:semicolon
@@ -220,12 +217,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|change_c0_config
+id|clear_c0_config
 c_func
 (paren
 id|R5K_CONF_SE
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|local_irq_restore

@@ -1,5 +1,6 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Time operations for IP22 machines. Original code may come from&n; * Ralf Baechle or David S. Miller (sorry guys, i&squot;m really not sure)&n; *&n; * Copyright (C) 2001 by Ladislav Michl&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Time operations for IP22 machines. Original code may come from&n; * Ralf Baechle or David S. Miller (sorry guys, i&squot;m really not sure)&n; *&n; * Copyright (C) 2001 by Ladislav Michl&n; * Copyright (C) 2003 Ralf Baechle (ralf@linux-mips.org)&n; */
 macro_line|#include &lt;linux/bcd.h&gt;
+macro_line|#include &lt;linux/ds1286.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -10,7 +11,6 @@ macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &lt;asm/ds1286.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/sgi/ioc.h&gt;
 macro_line|#include &lt;asm/sgi/hpc3.h&gt;
@@ -98,7 +98,7 @@ id|hpc3c0-&gt;rtcregs
 id|RTC_HOURS
 )braket
 op_amp
-l_int|0x1f
+l_int|0x3f
 )paren
 suffix:semicolon
 id|day
@@ -438,7 +438,7 @@ id|SGINT_TCWORD_MSWST
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return the difference, this is how far the r4k counter increments&n;&t; * for every 1/HZ seconds. We round off the nearest 1 MHz of master&n;&t; * clock (= 1000000 / HZ / 2).&n;&t; */
-singleline_comment|//return (ct1 - ct0 + (500000/HZ/2)) / (500000/HZ) * (500000/HZ);
+multiline_comment|/*return (ct1 - ct0 + (500000/HZ/2)) / (500000/HZ) * (500000/HZ);*/
 r_return
 (paren
 id|ct1
@@ -684,7 +684,7 @@ id|HZ
 )paren
 )paren
 suffix:semicolon
-id|mips_counter_frequency
+id|mips_hpt_frequency
 op_assign
 id|r4k_tick
 op_star

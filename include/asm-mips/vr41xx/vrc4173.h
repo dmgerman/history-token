@@ -80,6 +80,30 @@ mdefine_line|#define vrc4173_insw(port,addr,count)&t;insw(vrc4173_io_offset+(por
 DECL|macro|vrc4173_insl
 mdefine_line|#define vrc4173_insl(port,addr,count)&t;insl(vrc4173_io_offset+(port),(addr),(count))
 multiline_comment|/*&n; * Clock Mask Unit&n; */
+DECL|macro|VRC4173_PIU_CLOCK
+mdefine_line|#define VRC4173_PIU_CLOCK&t;&t;0x0001
+DECL|macro|VRC4173_KIU_CLOCK
+mdefine_line|#define VRC4173_KIU_CLOCK&t;&t;0x0002
+DECL|macro|VRC4173_AIU_CLOCK
+mdefine_line|#define VRC4173_AIU_CLOCK&t;&t;0x0004
+DECL|macro|VRC4173_PS2CH1_CLOCK
+mdefine_line|#define VRC4173_PS2CH1_CLOCK&t;&t;0x0008
+DECL|macro|VRC4173_PS2CH2_CLOCK
+mdefine_line|#define VRC4173_PS2CH2_CLOCK&t;&t;0x0010
+DECL|macro|VRC4173_USBU_PCI_CLOCK
+mdefine_line|#define VRC4173_USBU_PCI_CLOCK&t;&t;0x0020
+DECL|macro|VRC4173_CARDU1_PCI_CLOCK
+mdefine_line|#define VRC4173_CARDU1_PCI_CLOCK&t;0x0040
+DECL|macro|VRC4173_CARDU2_PCI_CLOCK
+mdefine_line|#define VRC4173_CARDU2_PCI_CLOCK&t;0x0080
+DECL|macro|VRC4173_AC97U_PCI_CLOCK
+mdefine_line|#define VRC4173_AC97U_PCI_CLOCK&t;&t;0x0100
+DECL|macro|VRC4173_USBU_48MHz_CLOCK
+mdefine_line|#define VRC4173_USBU_48MHz_CLOCK&t;0x0400
+DECL|macro|VRC4173_EXT_48MHz_CLOCK
+mdefine_line|#define VRC4173_EXT_48MHz_CLOCK&t;&t;0x0800
+DECL|macro|VRC4173_48MHz_CLOCK
+mdefine_line|#define VRC4173_48MHz_CLOCK&t;&t;0x1000
 r_extern
 r_void
 id|vrc4173_clock_supply

@@ -1,6 +1,6 @@
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/au1000.h&gt;
+macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
 macro_line|#ifdef CONFIG_KGDB
 multiline_comment|/*&n; * FIXME the user should be able to select the&n; * uart to be used for debugging.&n; */
 DECL|macro|DEBUG_BASE

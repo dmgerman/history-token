@@ -3,42 +3,16 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
-macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/gt64120.h&gt;
-macro_line|#include &lt;asm/galileo-boards/ev96100.h&gt;
 macro_line|#include &lt;asm/galileo-boards/ev96100int.h&gt;
-macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_PROM_CONSOLE)
-r_extern
-r_void
-id|console_setup
-c_func
-(paren
-r_char
-op_star
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
-DECL|variable|serial_console
-r_char
-id|serial_console
-(braket
-l_int|20
-)braket
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_char
 op_star
@@ -57,16 +31,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|rtc_ops
-id|no_rtc_ops
-suffix:semicolon
-r_extern
-r_struct
-id|resource
-id|ioport_resource
-suffix:semicolon
 DECL|variable|mac_0_1
 r_int
 r_char
@@ -76,6 +40,7 @@ l_int|12
 )braket
 suffix:semicolon
 DECL|function|ev96100_setup
+r_static
 r_void
 id|__init
 id|ev96100_setup
@@ -131,23 +96,19 @@ id|config
 op_amp
 l_int|0x8
 )paren
-(brace
 id|printk
 c_func
 (paren
 l_string|&quot;Secondary cache is enabled&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|printk
 c_func
 (paren
 l_string|&quot;Secondary cache is disabled&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -159,23 +120,19 @@ op_lshift
 l_int|27
 )paren
 )paren
-(brace
 id|printk
 c_func
 (paren
 l_string|&quot;User-mode cache ops enabled&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|printk
 c_func
 (paren
 l_string|&quot;User-mode cache ops disabled&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -198,229 +155,19 @@ op_lshift
 l_int|28
 )paren
 )paren
-(brace
 id|printk
 c_func
 (paren
 l_string|&quot;burst mode Scache RAMS&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|printk
 c_func
 (paren
 l_string|&quot;pipelined Scache RAMS&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|info
-op_amp
-(paren
-l_int|0x3
-op_lshift
-l_int|26
-)paren
-)paren
-op_rshift
-l_int|26
-op_eq
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;67 percent drive strength&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-(paren
-id|info
-op_amp
-(paren
-l_int|0x3
-op_lshift
-l_int|26
-)paren
-)paren
-op_rshift
-l_int|26
-op_eq
-l_int|1
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;50 percent drive strength&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-(paren
-id|info
-op_amp
-(paren
-l_int|0x3
-op_lshift
-l_int|26
-)paren
-)paren
-op_rshift
-l_int|26
-op_eq
-l_int|2
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;100 percent drive strength&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-(paren
-id|info
-op_amp
-(paren
-l_int|0x3
-op_lshift
-l_int|26
-)paren
-)paren
-op_rshift
-l_int|26
-op_eq
-l_int|3
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;83 percent drive strength&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|info
-op_amp
-(paren
-l_int|0x3
-op_lshift
-l_int|23
-)paren
-)paren
-op_rshift
-l_int|23
-op_eq
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Write Protocol: R4000 compatible&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-(paren
-id|info
-op_amp
-(paren
-l_int|0x3
-op_lshift
-l_int|23
-)paren
-)paren
-op_rshift
-l_int|23
-op_eq
-l_int|1
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Write Protocol: Reserved&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-(paren
-id|info
-op_amp
-(paren
-l_int|0x3
-op_lshift
-l_int|23
-)paren
-)paren
-op_rshift
-l_int|23
-op_eq
-l_int|2
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Write Protocol: Pipelined&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-(paren
-id|info
-op_amp
-(paren
-l_int|0x3
-op_lshift
-l_int|23
-)paren
-)paren
-op_rshift
-l_int|23
-op_eq
-l_int|3
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Write Protocol: Write re-issue&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -428,14 +175,12 @@ id|info
 op_amp
 l_int|0x1
 )paren
-(brace
 id|printk
 c_func
 (paren
 l_string|&quot;Atomic Enable is set&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 id|argptr
 op_assign
 id|prom_getcmdline
@@ -475,11 +220,6 @@ l_string|&quot; console=ttyS0,115200&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-id|rtc_ops
-op_assign
-op_amp
-id|no_rtc_ops
-suffix:semicolon
 id|mips_reboot_setup
 c_func
 (paren
@@ -504,10 +244,16 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 id|ROOT_DEV
 op_assign
-id|Root_RAM0
+id|MKDEV
+c_func
+(paren
+id|RAMDISK_MAJOR
+comma
+l_int|0
+)paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * setup gt controller master bit so we can do config cycles&n;&t; */
+multiline_comment|/*&n;&t; * Setup GT controller master bit so we can do config cycles&n;&t; */
 multiline_comment|/* Clear cause register bits */
 id|GT_WRITE
 c_func
@@ -561,20 +307,10 @@ l_int|2
 suffix:semicolon
 id|tmp
 op_assign
-id|le32_to_cpu
+id|GT_READ
 c_func
 (paren
-op_star
-(paren
-r_volatile
-id|u32
-op_star
-)paren
-(paren
-id|MIPS_GT_BASE
-op_plus
 id|GT_PCI0_CFGDATA_OFS
-)paren
 )paren
 suffix:semicolon
 id|tmp
@@ -625,21 +361,11 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
-op_star
-(paren
-r_volatile
-id|u32
-op_star
-)paren
-(paren
-id|MIPS_GT_BASE
-op_plus
-id|GT_PCI0_CFGDATA_OFS
-)paren
-op_assign
-id|cpu_to_le32
+id|GT_WRITE
 c_func
 (paren
+id|GT_PCI0_CFGDATA_OFS
+comma
 id|tmp
 )paren
 suffix:semicolon
@@ -682,23 +408,20 @@ l_int|2
 suffix:semicolon
 id|tmp
 op_assign
-id|le32_to_cpu
+id|GT_READ
 c_func
 (paren
-op_star
-(paren
-r_volatile
-id|u32
-op_star
-)paren
-(paren
-id|MIPS_GT_BASE
-op_plus
 id|GT_PCI0_CFGDATA_OFS
-)paren
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ev96100_setup
+id|early_initcall
+c_func
+(paren
+id|ev96100_setup
+)paren
+suffix:semicolon
 DECL|function|get_gt_devid
 r_int
 r_int
@@ -750,32 +473,16 @@ l_int|4
 suffix:semicolon
 id|gt_devid
 op_assign
-id|le32_to_cpu
+id|GT_READ
 c_func
 (paren
-op_star
-(paren
-r_volatile
-id|u32
-op_star
-)paren
-(paren
-id|MIPS_GT_BASE
-op_plus
 id|GT_PCI0_CFGDATA_OFS
-)paren
 )paren
 suffix:semicolon
 r_return
-(paren
-r_int
-r_int
-)paren
-(paren
 id|gt_devid
 op_rshift
 l_int|16
-)paren
 suffix:semicolon
 )brace
 eof

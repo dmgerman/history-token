@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Author: MontaVista Software, Inc.&n; *         source@
 macro_line|#ifndef __ASM_TX4927_TOSHIBA_RBTX4927_H
 DECL|macro|__ASM_TX4927_TOSHIBA_RBTX4927_H
 mdefine_line|#define __ASM_TX4927_TOSHIBA_RBTX4927_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/tx4927/tx4927.h&gt;
 macro_line|#include &lt;asm/tx4927/tx4927_mips.h&gt;
 macro_line|#ifdef CONFIG_PCI

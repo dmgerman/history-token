@@ -45,7 +45,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# spin_lock&bslash;n&quot;
+l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# _raw_spin_lock&bslash;n&quot;
 l_string|&quot;1:&bslash;tll&bslash;t%1, %2&bslash;n&bslash;t&quot;
 l_string|&quot;bnez&bslash;t%1, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; li&bslash;t%1, 1&bslash;n&bslash;t&quot;
@@ -89,7 +89,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# spin_unlock&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# _raw_spin_unlock&bslash;n&bslash;t&quot;
 l_string|&quot;sync&bslash;n&bslash;t&quot;
 l_string|&quot;sw&bslash;t$0, %0&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&quot;
@@ -131,7 +131,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# spin_trylock&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# _raw_spin_trylock&bslash;n&bslash;t&quot;
 l_string|&quot;1:&bslash;tll&bslash;t%0, %3&bslash;n&bslash;t&quot;
 l_string|&quot;ori&bslash;t%2, %0, 1&bslash;n&bslash;t&quot;
 l_string|&quot;sc&bslash;t%2, %1&bslash;n&bslash;t&quot;
@@ -208,7 +208,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# read_lock&bslash;n&quot;
+l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# _raw_read_lock&bslash;n&quot;
 l_string|&quot;1:&bslash;tll&bslash;t%1, %2&bslash;n&bslash;t&quot;
 l_string|&quot;bltz&bslash;t%1, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; addu&bslash;t%1, 1&bslash;n&bslash;t&quot;
@@ -257,7 +257,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# read_unlock&bslash;n&quot;
+l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# _raw_read_unlock&bslash;n&quot;
 l_string|&quot;1:&bslash;tll&bslash;t%1, %2&bslash;n&bslash;t&quot;
 l_string|&quot;sub&bslash;t%1, 1&bslash;n&bslash;t&quot;
 l_string|&quot;sc&bslash;t%1, %0&bslash;n&bslash;t&quot;
@@ -304,7 +304,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# write_lock&bslash;n&quot;
+l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# _raw_write_lock&bslash;n&quot;
 l_string|&quot;1:&bslash;tll&bslash;t%1, %2&bslash;n&bslash;t&quot;
 l_string|&quot;bnez&bslash;t%1, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; lui&bslash;t%1, 0x8000&bslash;n&bslash;t&quot;
@@ -348,7 +348,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# write_unlock&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# _raw_write_unlock&bslash;n&bslash;t&quot;
 l_string|&quot;sync&bslash;n&bslash;t&quot;
 l_string|&quot;sw&bslash;t$0, %0&bslash;n&bslash;t&quot;
 l_string|&quot;.set&bslash;treorder&quot;

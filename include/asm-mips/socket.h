@@ -78,7 +78,7 @@ mdefine_line|#define SO_TIMESTAMP&t;&t;29
 DECL|macro|SCM_TIMESTAMP
 mdefine_line|#define SCM_TIMESTAMP&t;&t;SO_TIMESTAMP
 DECL|macro|SO_PEERSEC
-mdefine_line|#define SO_PEERSEC             30
+mdefine_line|#define SO_PEERSEC&t;&t;30
 multiline_comment|/* Nast libc5 fixup - bletch */
 macro_line|#if defined(__KERNEL__)
 multiline_comment|/* Socket types. */

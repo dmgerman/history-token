@@ -3,12 +3,11 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;asm/addrspace.h&gt;
-macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;asm/galileo-boards/ev96100.h&gt;
+macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/gt64120.h&gt;
 multiline_comment|/* Environment variable */
 r_typedef
 r_struct
@@ -42,13 +41,6 @@ op_star
 op_star
 id|prom_envp
 suffix:semicolon
-DECL|variable|arcs_cmdline
-r_char
-id|arcs_cmdline
-(braket
-id|CL_SIZE
-)braket
-suffix:semicolon
 DECL|variable|init_debug
 r_int
 id|init_debug
@@ -76,12 +68,18 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|prom_free_prom_memory
-r_void
+r_int
+r_int
+id|__init
 id|prom_free_prom_memory
+c_func
 (paren
 r_void
 )paren
 (brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|prom_init_cmdline
 r_void
@@ -527,22 +525,7 @@ id|__init
 id|prom_init
 c_func
 (paren
-r_int
-id|argc
-comma
-r_char
-op_star
-op_star
-id|argv
-comma
-r_char
-op_star
-op_star
-id|envp
-comma
-r_int
-op_star
-id|prom_vec
+r_void
 )paren
 (brace
 r_volatile
@@ -559,15 +542,25 @@ l_int|8
 suffix:semicolon
 id|prom_argc
 op_assign
-id|argc
+id|fw_arg0
 suffix:semicolon
 id|prom_argv
 op_assign
-id|argv
+(paren
+r_char
+op_star
+op_star
+)paren
+id|fw_arg1
 suffix:semicolon
 id|prom_envp
 op_assign
-id|envp
+(paren
+r_char
+op_star
+op_star
+)paren
+id|fw_arg2
 suffix:semicolon
 id|mips_machgroup
 op_assign

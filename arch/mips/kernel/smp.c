@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; * Copyright (C) 2000, 2001 Kanoj Sarcar&n; * Copyright (C) 2000, 2001 Ralf Baechle&n; * Copyright (C) 2000, 2001 Silicon Graphics, Inc.&n; * Copyright (C) 2000, 2001 Broadcom Corporation&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; * Copyright (C) 2000, 2001 Kanoj Sarcar&n; * Copyright (C) 2000, 2001 Ralf Baechle&n; * Copyright (C) 2000, 2001 Silicon Graphics, Inc.&n; * Copyright (C) 2000, 2001, 2003 Broadcom Corporation&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -17,27 +18,17 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-DECL|variable|smp_threads_ready
-r_int
-id|smp_threads_ready
-suffix:semicolon
-multiline_comment|/* Not used */
-singleline_comment|// static atomic_t cpus_booted = ATOMIC_INIT(0);
-DECL|variable|cpus_booted
-id|atomic_t
-id|cpus_booted
-op_assign
-id|ATOMIC_INIT
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
 DECL|variable|phys_cpu_present_map
 id|cpumask_t
 id|phys_cpu_present_map
 suffix:semicolon
-multiline_comment|/* Bitmask of physically CPUs */
+multiline_comment|/* Bitmask of available CPUs */
+DECL|variable|cpu_callin_map
+r_volatile
+id|cpumask_t
+id|cpu_callin_map
+suffix:semicolon
+multiline_comment|/* Bitmask of started secondaries */
 DECL|variable|cpu_online_map
 id|cpumask_t
 id|cpu_online_map
@@ -50,6 +41,7 @@ id|__cpu_number_map
 id|NR_CPUS
 )braket
 suffix:semicolon
+multiline_comment|/* Map physical to logical */
 DECL|variable|__cpu_logical_map
 r_int
 id|__cpu_logical_map
@@ -57,57 +49,12 @@ id|__cpu_logical_map
 id|NR_CPUS
 )braket
 suffix:semicolon
+multiline_comment|/* Map logical to physical */
 DECL|variable|cpu_online_map
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|cpu_online_map
-)paren
-suffix:semicolon
-multiline_comment|/* These are defined by the board-specific code. */
-multiline_comment|/*&n; * Cause the function described by call_data to be executed on the passed&n; * cpu.  When the function has finished, increment the finished field of&n; * call_data.&n; */
-r_void
-id|core_send_ipi
-c_func
-(paren
-r_int
-id|cpu
-comma
-r_int
-r_int
-id|action
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Clear all undefined state in the cpu, set up sp and gp to the passed&n; * values, and kick the cpu into smp_bootstrap();&n; */
-r_void
-id|prom_boot_secondary
-c_func
-(paren
-r_int
-id|cpu
-comma
-r_int
-r_int
-id|sp
-comma
-r_int
-r_int
-id|gp
-)paren
-suffix:semicolon
-multiline_comment|/*&n; *  After we&squot;ve done initial boot, this function is called to allow the&n; *  board code to clean up state, if needed&n; */
-r_void
-id|prom_init_secondary
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|prom_smp_finish
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 DECL|variable|cacheflush_time
@@ -120,6 +67,7 @@ r_int
 id|cache_decay_ticks
 suffix:semicolon
 DECL|function|smp_tune_scheduling
+r_static
 r_void
 id|smp_tune_scheduling
 (paren
@@ -265,31 +213,16 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
-DECL|function|smp_callin
+r_extern
 r_void
 id|__init
-id|smp_callin
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#if 0
 id|calibrate_delay
 c_func
 (paren
+r_void
 )paren
 suffix:semicolon
-id|smp_store_cpu_info
-c_func
-(paren
-id|cpuid
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-macro_line|#ifndef CONFIG_SGI_IP27
-multiline_comment|/*&n; * Hook for doing final board-specific setup after the generic smp setup&n; * is done&n; */
+multiline_comment|/*&n; * First C code run on the secondary CPUs after being started up by&n; * the master.&n; */
 DECL|function|start_secondary
 id|asmlinkage
 r_void
@@ -313,7 +246,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|prom_init_secondary
+id|cpu_report
 c_func
 (paren
 )paren
@@ -323,13 +256,16 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|prom_init_secondary
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * XXX parity protection should be folded in here when it&squot;s converted&n;&t; * to an option instead of something based on .cputype&n;&t; */
-id|pgd_current
-(braket
-id|cpu
-)braket
-op_assign
-id|init_mm.pgd
+id|calibrate_delay
+c_func
+(paren
+)paren
 suffix:semicolon
 id|cpu_data
 (braket
@@ -345,50 +281,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Slave cpu booted successfully&bslash;n&quot;
-)paren
-suffix:semicolon
 id|cpu_set
 c_func
 (paren
 id|cpu
 comma
-id|cpu_online_map
-)paren
-suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|cpus_booted
+id|cpu_callin_map
 )paren
 suffix:semicolon
 id|cpu_idle
 c_func
 (paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_SGI_IP27 */
-multiline_comment|/*&n; * this function sends a &squot;reschedule&squot; IPI to another CPU.&n; * it goes straight through and wastes no time serializing&n; * anything. Worst case is that we lose a reschedule ...&n; */
-DECL|function|smp_send_reschedule
-r_void
-id|smp_send_reschedule
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-id|core_send_ipi
-c_func
-(paren
-id|cpu
-comma
-id|SMP_RESCHEDULE_YOURSELF
 )paren
 suffix:semicolon
 )brace
@@ -511,6 +414,11 @@ op_assign
 op_amp
 id|data
 suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Send a message to all other CPUs and wait for them to respond */
 r_for
 c_loop
@@ -532,7 +440,7 @@ c_cond
 id|cpu_online
 c_func
 (paren
-id|cpu
+id|i
 )paren
 op_logical_and
 id|i
@@ -740,6 +648,307 @@ l_int|1
 comma
 l_int|0
 )paren
+suffix:semicolon
+)brace
+DECL|function|smp_cpus_done
+r_void
+id|__init
+id|smp_cpus_done
+c_func
+(paren
+r_int
+r_int
+id|max_cpus
+)paren
+(brace
+id|prom_cpus_done
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* called from main before smp_init() */
+DECL|function|smp_prepare_cpus
+r_void
+id|__init
+id|smp_prepare_cpus
+c_func
+(paren
+r_int
+r_int
+id|max_cpus
+)paren
+(brace
+id|cpu_data
+(braket
+l_int|0
+)braket
+dot
+id|udelay_val
+op_assign
+id|loops_per_jiffy
+suffix:semicolon
+id|init_new_context
+c_func
+(paren
+id|current
+comma
+op_amp
+id|init_mm
+)paren
+suffix:semicolon
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|cpu
+op_assign
+l_int|0
+suffix:semicolon
+id|smp_tune_scheduling
+c_func
+(paren
+)paren
+suffix:semicolon
+id|prom_build_cpu_map
+c_func
+(paren
+)paren
+suffix:semicolon
+id|prom_prepare_cpus
+c_func
+(paren
+id|max_cpus
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* preload SMP state for boot cpu */
+DECL|function|smp_prepare_boot_cpu
+r_void
+id|__devinit
+id|smp_prepare_boot_cpu
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/*&n;&t; * This assumes that bootup is always handled by the processor&n;&t; * with the logic and physical number 0.&n;&t; */
+id|__cpu_number_map
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|__cpu_logical_map
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+l_int|0
+comma
+id|phys_cpu_present_map
+)paren
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+l_int|0
+comma
+id|cpu_online_map
+)paren
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+l_int|0
+comma
+id|cpu_callin_map
+)paren
+suffix:semicolon
+)brace
+DECL|function|fork_by_hand
+r_static
+r_struct
+id|task_struct
+op_star
+id|__init
+id|fork_by_hand
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|pt_regs
+id|regs
+suffix:semicolon
+multiline_comment|/*&n;&t; * don&squot;t care about the eip and regs settings since&n;&t; * we&squot;ll never reschedule the forked task.&n;&t; */
+r_return
+id|copy_process
+c_func
+(paren
+id|CLONE_VM
+op_or
+id|CLONE_IDLETASK
+comma
+l_int|0
+comma
+op_amp
+id|regs
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Startup the CPU with this logical number&n; */
+DECL|function|do_boot_cpu
+r_static
+r_int
+id|__init
+id|do_boot_cpu
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+r_struct
+id|task_struct
+op_star
+id|idle
+suffix:semicolon
+multiline_comment|/*&n;&t; * The following code is purely to make sure&n;&t; * Linux can schedule processes on this slave.&n;&t; */
+id|idle
+op_assign
+id|fork_by_hand
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|idle
+)paren
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;failed fork for CPU %d&bslash;n&quot;
+comma
+id|cpu
+)paren
+suffix:semicolon
+id|wake_up_forked_process
+c_func
+(paren
+id|idle
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * We remove it from the pidhash and the runqueue once we&squot;ve&n;&t; * got the process:&n;&t; */
+id|init_idle
+c_func
+(paren
+id|idle
+comma
+id|cpu
+)paren
+suffix:semicolon
+id|unhash_process
+c_func
+(paren
+id|idle
+)paren
+suffix:semicolon
+id|prom_boot_secondary
+c_func
+(paren
+id|cpu
+comma
+id|idle
+)paren
+suffix:semicolon
+multiline_comment|/* XXXKW timeout */
+r_while
+c_loop
+(paren
+op_logical_neg
+id|cpu_isset
+c_func
+(paren
+id|cpu
+comma
+id|cpu_callin_map
+)paren
+)paren
+id|udelay
+c_func
+(paren
+l_int|100
+)paren
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+id|cpu
+comma
+id|cpu_online_map
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Called once for each &quot;cpu_possible(cpu)&quot;.  Needs to spin up the cpu&n; * and keep control until &quot;cpu_online(cpu)&quot; is set.  Note: cpu is&n; * physical, not logical.&n; */
+DECL|function|__cpu_up
+r_int
+id|__devinit
+id|__cpu_up
+c_func
+(paren
+r_int
+r_int
+id|cpu
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+multiline_comment|/* Processor goes to start_secondary(), sets online flag */
+id|ret
+op_assign
+id|do_boot_cpu
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+r_return
+id|ret
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Not really SMP stuff ... */

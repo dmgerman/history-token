@@ -178,6 +178,7 @@ id|sc_cause
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
 DECL|struct|sigcontext32
 r_struct
 id|sigcontext32
@@ -260,6 +261,7 @@ suffix:semicolon
 multiline_comment|/* kernel&squot;s sigset_t */
 )brace
 suffix:semicolon
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _MIPS_SIM == _MIPS_SIM_ABI64 || _MIPS_SIM == _MIPS_SIM_NABI32 */
 macro_line|#endif /* _ASM_SIGCONTEXT_H */
 eof

@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_ADDRSPACE_H
 DECL|macro|_ASM_ADDRSPACE_H
 mdefine_line|#define _ASM_ADDRSPACE_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;spaces.h&gt;
 multiline_comment|/*&n; *  Configure language&n; */
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|_ATYPE_
@@ -42,7 +43,6 @@ DECL|macro|KSEG2
 mdefine_line|#define KSEG2&t;&t;&t;0xc0000000
 DECL|macro|KSEG3
 mdefine_line|#define KSEG3&t;&t;&t;0xe0000000
-singleline_comment|//#define K0BASE&t;&t;&t;KSEG0
 multiline_comment|/*&n; * Returns the kernel segment base of a given address&n; */
 DECL|macro|KSEGX
 mdefine_line|#define KSEGX(a)&t;&t;((_ACAST32_ (a)) &amp; 0xe0000000)
@@ -165,23 +165,14 @@ DECL|macro|KUBASE
 mdefine_line|#define KUBASE&t;&t;&t;0
 DECL|macro|KUSIZE_32
 mdefine_line|#define KUSIZE_32&t;&t;0x0000000080000000&t;/* KUSIZE&n;&t;&t;&t;&t;&t;&t;&t;   for a 32 bit proc */
-singleline_comment|//#define K0BASE&t;&t;&t;0xa800000000000000
 DECL|macro|K0BASE_EXL_WR
-mdefine_line|#define K0BASE_EXL_WR&t;&t;K0BASE&t;&t;&t;/* exclusive on write */
+mdefine_line|#define K0BASE_EXL_WR&t;&t;0xa800000000000000&t;/* exclusive on write */
 DECL|macro|K0BASE_NONCOH
 mdefine_line|#define K0BASE_NONCOH&t;&t;0x9800000000000000&t;/* noncoherent */
 DECL|macro|K0BASE_EXL
 mdefine_line|#define K0BASE_EXL&t;&t;0xa000000000000000&t;/* exclusive */
-macro_line|#ifdef CONFIG_SGI_IP27
-DECL|macro|K1BASE
-mdefine_line|#define K1BASE&t;&t;&t;0x9600000000000000&t;/* uncached attr 3,&n;&t;&t;&t;&t;&t;&t;&t;   uncac */
-macro_line|#else
-DECL|macro|K1BASE
-mdefine_line|#define K1BASE&t;&t;&t;0x9000000000000000
-macro_line|#endif
-DECL|macro|K2BASE
-mdefine_line|#define K2BASE&t;&t;&t;0xc000000000000000
-macro_line|#if !defined (CONFIG_CPU_R8000)
+macro_line|#ifndef CONFIG_CPU_R8000
+multiline_comment|/*&n; * The R8000 doesn&squot;t have the 32-bit compat spaces so we don&squot;t define them&n; * in order to catch bugs in the source code.&n; */
 DECL|macro|COMPAT_K1BASE32
 mdefine_line|#define COMPAT_K1BASE32&t;&t;0xffffffffa0000000
 DECL|macro|PHYS_TO_COMPATK1
@@ -190,6 +181,6 @@ macro_line|#endif
 DECL|macro|KDM_TO_PHYS
 mdefine_line|#define KDM_TO_PHYS(x)&t;&t;(_ACAST64_ (x) &amp; TO_PHYS_MASK)
 DECL|macro|PHYS_TO_K0
-mdefine_line|#define PHYS_TO_K0(x)&t;&t;(_ACAST64_ (x) | K0BASE)
+mdefine_line|#define PHYS_TO_K0(x)&t;&t;(_ACAST64_ (x) | CAC_BASE)
 macro_line|#endif /* _ASM_ADDRSPACE_H */
 eof

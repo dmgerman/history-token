@@ -223,13 +223,6 @@ suffix:semicolon
 r_int
 id|sigsetsize
 suffix:semicolon
-id|save_static
-c_func
-(paren
-op_amp
-id|regs
-)paren
-suffix:semicolon
 multiline_comment|/* XXX Don&squot;t preclude handling different sized sigset_t&squot;s.  */
 id|sigsetsize
 op_assign
@@ -720,6 +713,16 @@ r_int
 id|err
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* Always make any pending restarted system calls return -EINTR */
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
 suffix:semicolon
 id|err
 op_or_assign
@@ -2512,15 +2515,6 @@ l_int|0
 r_case
 id|ERESTART_RESTARTBLOCK
 suffix:colon
-id|current_thread_info
-c_func
-(paren
-)paren
-op_member_access_from_pointer
-id|restart_block.fn
-op_assign
-id|do_no_restart_syscall
-suffix:semicolon
 r_case
 id|ERESTARTNOHAND
 suffix:colon
@@ -2593,12 +2587,14 @@ id|ka-&gt;sa.sa_flags
 op_amp
 id|SA_SIGINFO
 )paren
+(brace
 macro_line|#else
 r_if
 c_cond
 (paren
 l_int|1
 )paren
+(brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_MIPS32_N32
 r_if
@@ -2641,6 +2637,8 @@ comma
 id|info
 )paren
 suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_TRAD_SIGNALS
 r_else
 id|setup_frame
 c_func
@@ -2654,6 +2652,7 @@ comma
 id|oldset
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2911,6 +2910,16 @@ l_int|2
 )braket
 op_assign
 id|__NR_restart_syscall
+suffix:semicolon
+id|regs-&gt;regs
+(braket
+l_int|7
+)braket
+op_assign
+id|regs-&gt;regs
+(braket
+l_int|26
+)braket
 suffix:semicolon
 id|regs-&gt;cp0_epc
 op_sub_assign

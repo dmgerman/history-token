@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1997, 1998, 1999 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) 2000 Kanoj Sarcar (kanoj@sgi.com)&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -7,6 +8,30 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+r_extern
+r_void
+id|except_vec0_generic
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|except_vec0_r4000
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|except_vec1_generic
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|except_vec1_r10k
@@ -1148,10 +1173,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|andes_tlb_init
+DECL|function|tlb_init
 r_void
 id|__init
-id|andes_tlb_init
+id|tlb_init
 c_func
 (paren
 r_void
@@ -1183,6 +1208,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Did I tell you that ARC SUCKS?  */
+macro_line|#ifdef CONFIG_MIPS32
 id|memcpy
 c_func
 (paren
@@ -1190,14 +1216,94 @@ c_func
 r_void
 op_star
 )paren
-id|KSEG1
+id|KSEG0
+comma
+op_amp
+id|except_vec0_r4000
+comma
+l_int|0x80
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+id|KSEG0
 op_plus
 l_int|0x080
+)paren
+comma
+op_amp
+id|except_vec1_generic
+comma
+l_int|0x80
+)paren
+suffix:semicolon
+id|flush_icache_range
+c_func
+(paren
+id|KSEG0
+comma
+id|KSEG0
+op_plus
+l_int|0x100
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+id|memcpy
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+id|CKSEG0
+op_plus
+l_int|0x000
+)paren
+comma
+op_amp
+id|except_vec0_generic
+comma
+l_int|0x80
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+id|CKSEG0
+op_plus
+l_int|0x080
+)paren
 comma
 id|except_vec1_r10k
 comma
 l_int|0x80
 )paren
 suffix:semicolon
+id|flush_icache_range
+c_func
+(paren
+id|CKSEG0
+op_plus
+l_int|0x80
+comma
+id|CKSEG0
+op_plus
+l_int|0x100
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 eof

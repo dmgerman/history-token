@@ -12,6 +12,9 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
+multiline_comment|/*&n; * For ARC firmware memory functions the unit of meassuring memory is always&n; * a 4k page of memory&n; */
+DECL|macro|ARC_PAGE_SHIFT
+mdefine_line|#define ARC_PAGE_SHIFT&t;12
 DECL|function|ArcGetMemoryDescriptor
 r_struct
 id|linux_mdesc
@@ -373,13 +376,13 @@ id|base
 op_assign
 id|p-&gt;base
 op_lshift
-id|PAGE_SHIFT
+id|ARC_PAGE_SHIFT
 suffix:semicolon
 id|size
 op_assign
 id|p-&gt;pages
 op_lshift
-id|PAGE_SHIFT
+id|ARC_PAGE_SHIFT
 suffix:semicolon
 id|type
 op_assign
@@ -402,9 +405,11 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|prom_free_prom_memory
-r_void
+r_int
+r_int
 id|__init
 id|prom_free_prom_memory
+c_func
 (paren
 r_void
 )paren
@@ -421,6 +426,16 @@ id|addr
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|prom_flags
+op_amp
+id|PROM_FLAG_DONT_FREE_TEMP
+)paren
+r_return
+l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -544,6 +559,9 @@ id|freed
 op_rshift
 l_int|10
 )paren
+suffix:semicolon
+r_return
+id|freed
 suffix:semicolon
 )brace
 eof

@@ -127,7 +127,7 @@ id|EXTIO_MC_BUSERR
 id|printk
 c_func
 (paren
-id|KERN_ALERT
+id|KERN_ERR
 l_string|&quot;MC Bus Error&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -141,7 +141,7 @@ id|EXTIO_HPC3_BUSERR
 id|printk
 c_func
 (paren
-id|KERN_ALERT
+id|KERN_ERR
 l_string|&quot;HPC3 Bus Error 0x%x:&lt;id=0x%x,%s,lane=0x%x&gt;&bslash;n&quot;
 comma
 id|hpc3_berr_stat
@@ -180,7 +180,7 @@ id|EXTIO_EISA_BUSERR
 id|printk
 c_func
 (paren
-id|KERN_ALERT
+id|KERN_ERR
 l_string|&quot;EISA Bus Error&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -194,7 +194,7 @@ id|CPU_ERRMASK
 id|printk
 c_func
 (paren
-id|KERN_ALERT
+id|KERN_ERR
 l_string|&quot;CPU error 0x%x&lt;%s%s%s%s%s%s&gt; @ 0x%08x&bslash;n&quot;
 comma
 id|cpu_err_stat
@@ -266,7 +266,7 @@ id|GIO_ERRMASK
 id|printk
 c_func
 (paren
-id|KERN_ALERT
+id|KERN_ERR
 l_string|&quot;GIO error 0x%x:&lt;%s%s%s%s%s%s%s%s&gt; @ 0x08%x&bslash;n&quot;
 comma
 id|gio_err_stat
@@ -362,6 +362,18 @@ op_star
 id|regs
 )paren
 (brace
+r_const
+r_int
+id|field
+op_assign
+l_int|2
+op_star
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
 id|save_and_clear_buserr
 c_func
 (paren
@@ -372,12 +384,28 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|panic
+id|printk
 c_func
 (paren
-l_string|&quot;Bus error, epc == %08lx, ra == %08lx&quot;
+id|KERN_ALERT
+l_string|&quot;%s bus error, epc == %0*lx, ra == %0*lx&bslash;n&quot;
+comma
+(paren
+id|regs-&gt;cp0_cause
+op_amp
+l_int|4
+)paren
+ques
+c_cond
+l_string|&quot;Data&quot;
+suffix:colon
+l_string|&quot;Instruction&quot;
+comma
+id|field
 comma
 id|regs-&gt;cp0_epc
+comma
+id|field
 comma
 id|regs-&gt;regs
 (braket
@@ -385,8 +413,26 @@ l_int|31
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* Assume it would be too dangerous to continue ... */
+id|die_if_kernel
+c_func
+(paren
+l_string|&quot;Oops&quot;
+comma
+id|regs
+)paren
+suffix:semicolon
+id|force_sig
+c_func
+(paren
+id|SIGBUS
+comma
+id|current
+)paren
+suffix:semicolon
 )brace
 DECL|function|ip22_be_handler
+r_static
 r_int
 id|ip22_be_handler
 c_func

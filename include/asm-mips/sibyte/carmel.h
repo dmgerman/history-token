@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (C) 2002 Broadcom Corporation&n; *&n; * This
 macro_line|#ifndef __ASM_SIBYTE_CARMEL_H
 DECL|macro|__ASM_SIBYTE_CARMEL_H
 mdefine_line|#define __ASM_SIBYTE_CARMEL_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_int.h&gt;
 DECL|macro|SIBYTE_BOARD_NAME

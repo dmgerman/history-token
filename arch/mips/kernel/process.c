@@ -1,5 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999, 2000 by Ralf Baechle and others.&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -877,7 +879,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|frame_info_init
-r_void
+r_static
+r_int
 id|__init
 id|frame_info_init
 c_func
@@ -937,7 +940,17 @@ comma
 id|wait_for_completion
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|frame_info_init
+id|arch_initcall
+c_func
+(paren
+id|frame_info_init
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; */
 DECL|function|thread_saved_pc
 r_int
@@ -1320,4 +1333,11 @@ r_return
 id|pc
 suffix:semicolon
 )brace
+DECL|variable|get_wchan
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_wchan
+)paren
+suffix:semicolon
 eof

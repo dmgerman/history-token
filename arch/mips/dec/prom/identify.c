@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * identify.c: machine identification code.&n; *&n; * Copyright (C) 1998 Harald Koerfgen and Paul M. Antoine&n; * Copyright (C) 2002, 2003  Maciej W. Rozycki&n; */
+multiline_comment|/*&n; * identify.c: machine identification code.&n; *&n; * Copyright (C) 1998 Harald Koerfgen and Paul M. Antoine&n; * Copyright (C) 2002, 2003, 2004  Maciej W. Rozycki&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
@@ -150,6 +151,19 @@ id|system
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Setup essential system-specific memory addresses.  We need them&n; * early.  Semantically the functions belong to prom/init.c, but they&n; * are compact enough we want them inlined. --macro&n; */
+DECL|variable|dec_rtc_base
+r_volatile
+id|u8
+op_star
+id|dec_rtc_base
+suffix:semicolon
+DECL|variable|dec_rtc_base
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dec_rtc_base
+)paren
+suffix:semicolon
 DECL|function|prom_init_kn01
 r_static
 r_inline
@@ -354,10 +368,11 @@ op_eq
 l_int|0
 )paren
 (brace
-id|prom_printf
+id|printk
 c_func
 (paren
-l_string|&quot;Zero sysid returned from PROMs! Assuming PMAX-like machine.&bslash;n&quot;
+l_string|&quot;Zero sysid returned from PROM! &quot;
+l_string|&quot;Assuming a PMAX-like machine.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dec_sysid
@@ -567,7 +582,7 @@ id|mips_machtype
 op_eq
 id|MACH_DSUNKNOWN
 )paren
-id|prom_printf
+id|printk
 c_func
 (paren
 l_string|&quot;This is an %s, id is %x&bslash;n&quot;
@@ -581,7 +596,7 @@ id|dec_systype
 )paren
 suffix:semicolon
 r_else
-id|prom_printf
+id|printk
 c_func
 (paren
 l_string|&quot;This is a %s&bslash;n&quot;

@@ -6,13 +6,13 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ds17287rtc.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
-macro_line|#include &lt;asm/sgialib.h&gt;
-macro_line|#include &lt;asm/addrspace.h&gt;
-macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/wbflush.h&gt;
+macro_line|#include &lt;asm/ip32/mace.h&gt;
+macro_line|#include &lt;asm/ip32/crime.h&gt;
 macro_line|#include &lt;asm/ip32/ip32_ints.h&gt;
 DECL|macro|POWERDOWN_TIMEOUT
 mdefine_line|#define POWERDOWN_TIMEOUT&t;120
@@ -33,17 +33,13 @@ id|blink_timer
 comma
 id|debounce_timer
 suffix:semicolon
-DECL|variable|shuting_down
 DECL|variable|has_paniced
+DECL|variable|shuting_down
 r_static
 r_int
-id|shuting_down
-op_assign
-l_int|0
-comma
 id|has_paniced
-op_assign
-l_int|0
+comma
+id|shuting_down
 suffix:semicolon
 r_static
 r_void
@@ -103,19 +99,18 @@ op_star
 id|cmd
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|shuting_down
-)paren
-id|ip32_machine_power_off
+id|crime_write
 c_func
 (paren
+id|CRIME_CONTROL_HARD_RESET
+comma
+id|CRIME_CONTROL
 )paren
 suffix:semicolon
-id|ArcReboot
-c_func
+r_while
+c_loop
 (paren
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -129,17 +124,7 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|shuting_down
-)paren
 id|ip32_machine_power_off
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ArcEnterInteractiveMode
 c_func
 (paren
 )paren
@@ -275,15 +260,7 @@ c_loop
 (paren
 l_int|1
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;Power off!&bslash;n&quot;
-)paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|power_timeout
 r_static
@@ -313,25 +290,24 @@ r_int
 id|data
 )paren
 (brace
-id|u64
-id|mc_led
+r_int
+r_int
+id|led
 op_assign
-id|mace_read_64
+id|mace_perif_ctrl_read
 c_func
 (paren
-id|MACEISA_FLASH_NIC_REG
+id|misc
 )paren
-suffix:semicolon
-id|mc_led
-op_xor_assign
+op_xor
 id|MACEISA_LED_RED
 suffix:semicolon
-id|mace_write_64
+id|mace_perif_ctrl_write
 c_func
 (paren
-id|MACEISA_FLASH_NIC_REG
+id|led
 comma
-id|mc_led
+id|misc
 )paren
 suffix:semicolon
 id|mod_timer
@@ -469,9 +445,10 @@ c_cond
 (paren
 id|has_paniced
 )paren
-id|ArcReboot
+id|ip32_machine_restart
 c_func
 (paren
+l_int|NULL
 )paren
 suffix:semicolon
 id|enable_irq
@@ -682,8 +659,9 @@ op_star
 id|ptr
 )paren
 (brace
-id|u64
-id|mc_led
+r_int
+r_int
+id|led
 suffix:semicolon
 r_if
 c_cond
@@ -698,24 +676,22 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* turn off the green LED */
-id|mc_led
+id|led
 op_assign
-id|mace_read_64
+id|mace_perif_ctrl_read
 c_func
 (paren
-id|MACEISA_FLASH_NIC_REG
+id|misc
 )paren
-suffix:semicolon
-id|mc_led
-op_or_assign
+op_or
 id|MACEISA_LED_GREEN
 suffix:semicolon
-id|mace_write_64
+id|mace_perif_ctrl_write
 c_func
 (paren
-id|MACEISA_FLASH_NIC_REG
+id|led
 comma
-id|mc_led
+id|misc
 )paren
 suffix:semicolon
 id|blink_timer.data
@@ -756,13 +732,32 @@ c_func
 r_void
 )paren
 (brace
-id|u64
-id|mc_led
+multiline_comment|/* turn on the green led only */
+r_int
+r_int
+id|led
 op_assign
-id|mace_read_64
+id|mace_perif_ctrl_read
 c_func
 (paren
-id|MACEISA_FLASH_NIC_REG
+id|misc
+)paren
+suffix:semicolon
+id|led
+op_or_assign
+id|MACEISA_LED_RED
+suffix:semicolon
+id|led
+op_and_assign
+op_complement
+id|MACEISA_LED_GREEN
+suffix:semicolon
+id|mace_perif_ctrl_write
+c_func
+(paren
+id|led
+comma
+id|misc
 )paren
 suffix:semicolon
 id|_machine_restart
@@ -810,24 +805,6 @@ id|panic_notifier_list
 comma
 op_amp
 id|panic_block
-)paren
-suffix:semicolon
-multiline_comment|/* turn on the green led only */
-id|mc_led
-op_or_assign
-id|MACEISA_LED_RED
-suffix:semicolon
-id|mc_led
-op_and_assign
-op_complement
-id|MACEISA_LED_GREEN
-suffix:semicolon
-id|mace_write_64
-c_func
-(paren
-id|MACEISA_FLASH_NIC_REG
-comma
-id|mc_led
 )paren
 suffix:semicolon
 r_return

@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/vr41xx/vr41xx.h&gt;
 multiline_comment|/*&n; * Board specific address mapping&n; */
 DECL|macro|VR41XX_ISA_MEM_BASE
-mdefine_line|#define VR41XX_ISA_MEM_BASE&t;&t;0x100000000
+mdefine_line|#define VR41XX_ISA_MEM_BASE&t;&t;0x10000000
 DECL|macro|VR41XX_ISA_MEM_SIZE
 mdefine_line|#define VR41XX_ISA_MEM_SIZE&t;&t;0x04000000
 multiline_comment|/* VR41XX_ISA_IO_BASE includes offset from real base. */

@@ -5,9 +5,11 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;asm/au1000.h&gt;
-macro_line|#include &lt;asm/au1000_dma.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
+macro_line|#include &lt;asm/mach-au1x00/au1000_dma.h&gt;
+macro_line|#if defined(CONFIG_SOC_AU1000) || defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1100)
 multiline_comment|/*&n; * A note on resource allocation:&n; *&n; * All drivers needing DMA channels, should allocate and release them&n; * through the public routines `request_dma()&squot; and `free_dma()&squot;.&n; *&n; * In order to avoid problems, all processes should allocate resources in&n; * the same sequence and release them in the reverse order.&n; *&n; * So, when allocating DMAs and IRQs, first allocate the DMA, then the IRQ.&n; * When releasing them, first release the IRQ, then release the DMA. The&n; * main reason for this order is that, if you are requesting the DMA buffer&n; * done interrupt, you won&squot;t know the irq number until the DMA channel is&n; * returned from request_dma.&n; */
 DECL|variable|au1000_dma_spin_lock
 id|spinlock_t
@@ -547,7 +549,7 @@ r_char
 op_star
 id|dev_str
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|irqhandler
@@ -826,4 +828,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif 
+singleline_comment|// AU1000 AU1500 AU1100
 eof

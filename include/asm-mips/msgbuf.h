@@ -1,7 +1,8 @@
 macro_line|#ifndef _ASM_MSGBUF_H
 DECL|macro|_ASM_MSGBUF_H
 mdefine_line|#define _ASM_MSGBUF_H
-multiline_comment|/*&n; * The msqid64_ds structure for alpha architecture.&n; * Note extra padding because this structure is passed back and forth&n; * between kernel and user space.&n; *&n; * Pad space is left for:&n; * - 2 miscellaneous 64-bit values&n; */
+macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; * The msqid64_ds structure for the MIPS architecture.&n; * Note extra padding because this structure is passed back and forth&n; * between kernel and user space.&n; *&n; * Pad space is left for:&n; * - extension of time_t to 64-bit on 32-bitsystem to solve the y2038 problem&n; * - 2 miscellaneous unsigned long values&n; */
 DECL|struct|msqid64_ds
 r_struct
 id|msqid64_ds
@@ -11,36 +12,63 @@ r_struct
 id|ipc64_perm
 id|msg_perm
 suffix:semicolon
-DECL|member|msg_stime
-id|__kernel_time_t
-id|msg_stime
-suffix:semicolon
-multiline_comment|/* last msgsnd time */
+macro_line|#if defined(CONFIG_MIPS32) &amp;&amp; !defined(CONFIG_CPU_LITTLE_ENDIAN)
 DECL|member|__unused1
 r_int
 r_int
 id|__unused1
 suffix:semicolon
-DECL|member|msg_rtime
+macro_line|#endif
+DECL|member|msg_stime
 id|__kernel_time_t
-id|msg_rtime
+id|msg_stime
 suffix:semicolon
-multiline_comment|/* last msgrcv time */
+multiline_comment|/* last msgsnd time */
+macro_line|#if defined(CONFIG_MIPS32) &amp;&amp; defined(CONFIG_CPU_LITTLE_ENDIAN)
+DECL|member|__unused1
+r_int
+r_int
+id|__unused1
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_MIPS32) &amp;&amp; !defined(CONFIG_CPU_LITTLE_ENDIAN)
 DECL|member|__unused2
 r_int
 r_int
 id|__unused2
 suffix:semicolon
-DECL|member|msg_ctime
+macro_line|#endif
+DECL|member|msg_rtime
 id|__kernel_time_t
-id|msg_ctime
+id|msg_rtime
 suffix:semicolon
-multiline_comment|/* last change time */
+multiline_comment|/* last msgrcv time */
+macro_line|#if defined(CONFIG_MIPS32) &amp;&amp; defined(CONFIG_CPU_LITTLE_ENDIAN)
+DECL|member|__unused2
+r_int
+r_int
+id|__unused2
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_MIPS32) &amp;&amp; !defined(CONFIG_CPU_LITTLE_ENDIAN)
 DECL|member|__unused3
 r_int
 r_int
 id|__unused3
 suffix:semicolon
+macro_line|#endif
+DECL|member|msg_ctime
+id|__kernel_time_t
+id|msg_ctime
+suffix:semicolon
+multiline_comment|/* last change time */
+macro_line|#if defined(CONFIG_MIPS32) &amp;&amp; defined(CONFIG_CPU_LITTLE_ENDIAN)
+DECL|member|__unused3
+r_int
+r_int
+id|__unused3
+suffix:semicolon
+macro_line|#endif
 DECL|member|msg_cbytes
 r_int
 r_int

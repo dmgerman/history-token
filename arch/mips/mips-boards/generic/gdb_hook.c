@@ -1,5 +1,7 @@
 multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * This is the interface to the remote debugger stub.&n; */
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
@@ -106,12 +108,15 @@ id|offset
 suffix:semicolon
 )brace
 DECL|function|rs_kgdb_hook
-r_void
+r_int
 id|rs_kgdb_hook
 c_func
 (paren
 r_int
 id|tty_no
+comma
+r_int
+id|speed
 )paren
 (brace
 r_int
@@ -248,13 +253,23 @@ comma
 id|kdb_port_info.MCR
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * and set the speed of the serial port&n;&t; * (currently hardwired to 9600 8N1&n;&t; */
-multiline_comment|/* baud rate is fixed to 9600 (is this sufficient?)*/
+multiline_comment|/*&n;&t; * and set the speed of the serial port&n;&t; */
+r_if
+c_cond
+(paren
+id|speed
+op_eq
+l_int|0
+)paren
+id|speed
+op_assign
+l_int|9600
+suffix:semicolon
 id|t
 op_assign
 id|kdb_port_info.state-&gt;baud_base
 op_div
-l_int|9600
+id|speed
 suffix:semicolon
 multiline_comment|/* set DLAB */
 id|serial_out
@@ -309,6 +324,9 @@ id|UART_LCR
 comma
 id|UART_LCR_WLEN8
 )paren
+suffix:semicolon
+r_return
+id|speed
 suffix:semicolon
 )brace
 DECL|function|putDebugChar
@@ -447,237 +465,4 @@ id|UART_RX
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_MIPS_ATLAS
-macro_line|#include &lt;asm/mips-boards/atlas.h&gt;
-macro_line|#include &lt;asm/mips-boards/saa9730_uart.h&gt;
-DECL|macro|INB
-mdefine_line|#define INB(a)     inb((unsigned long)a)
-DECL|macro|OUTB
-mdefine_line|#define OUTB(x,a)  outb(x,(unsigned long)a)
-multiline_comment|/*&n; * This is the interface to the remote debugger stub&n; * if the Philips part is used for the debug port,&n; * called from the platform setup code.&n; *&n; * PCI init will not have been done yet, we make a&n; * universal assumption about the way the bootloader (YAMON)&n; * have located and set up the chip.&n; */
-DECL|variable|kgdb_uart
-r_static
-id|t_uart_saa9730_regmap
-op_star
-id|kgdb_uart
-op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-id|ATLAS_SAA9730_REG
-op_plus
-id|SAA9730_UART_REGS_ADDR
-)paren
-suffix:semicolon
-DECL|variable|saa9730_kgdb_active
-r_static
-r_int
-id|saa9730_kgdb_active
-op_assign
-l_int|0
-suffix:semicolon
-DECL|function|saa9730_kgdb_hook
-r_void
-id|saa9730_kgdb_hook
-c_func
-(paren
-r_void
-)paren
-(brace
-r_volatile
-r_int
-r_char
-id|t
-suffix:semicolon
-multiline_comment|/*&n;         * Clear all interrupts&n;         */
-id|t
-op_assign
-id|INB
-c_func
-(paren
-op_amp
-id|kgdb_uart-&gt;Lsr
-)paren
-suffix:semicolon
-id|t
-op_add_assign
-id|INB
-c_func
-(paren
-op_amp
-id|kgdb_uart-&gt;Msr
-)paren
-suffix:semicolon
-id|t
-op_add_assign
-id|INB
-c_func
-(paren
-op_amp
-id|kgdb_uart-&gt;Thr_Rbr
-)paren
-suffix:semicolon
-id|t
-op_add_assign
-id|INB
-c_func
-(paren
-op_amp
-id|kgdb_uart-&gt;Iir_Fcr
-)paren
-suffix:semicolon
-multiline_comment|/*&n;         * Now, initialize the UART&n;         */
-multiline_comment|/* 8 data bits, one stop bit, no parity */
-id|OUTB
-c_func
-(paren
-id|SAA9730_LCR_DATA8
-comma
-op_amp
-id|kgdb_uart-&gt;Lcr
-)paren
-suffix:semicolon
-multiline_comment|/* baud rate is fixed to 9600 (is this sufficient?)*/
-id|OUTB
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|kgdb_uart-&gt;BaudDivMsb
-)paren
-suffix:semicolon
-multiline_comment|/* HACK - Assumes standard crystal */
-id|OUTB
-c_func
-(paren
-l_int|23
-comma
-op_amp
-id|kgdb_uart-&gt;BaudDivLsb
-)paren
-suffix:semicolon
-multiline_comment|/* HACK - known for MIPS Atlas */
-multiline_comment|/* Set RTS/DTR active */
-id|OUTB
-c_func
-(paren
-id|SAA9730_MCR_DTR
-op_or
-id|SAA9730_MCR_RTS
-comma
-op_amp
-id|kgdb_uart-&gt;Mcr
-)paren
-suffix:semicolon
-id|saa9730_kgdb_active
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-DECL|function|saa9730_putDebugChar
-r_int
-id|saa9730_putDebugChar
-c_func
-(paren
-r_char
-id|c
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|saa9730_kgdb_active
-)paren
-(brace
-multiline_comment|/* need to init device first */
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|INB
-c_func
-(paren
-op_amp
-id|kgdb_uart-&gt;Lsr
-)paren
-op_amp
-id|SAA9730_LSR_THRE
-)paren
-)paren
-suffix:semicolon
-id|OUTB
-c_func
-(paren
-id|c
-comma
-op_amp
-id|kgdb_uart-&gt;Thr_Rbr
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-DECL|function|saa9730_getDebugChar
-r_char
-id|saa9730_getDebugChar
-c_func
-(paren
-r_void
-)paren
-(brace
-r_char
-id|c
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|saa9730_kgdb_active
-)paren
-(brace
-multiline_comment|/* need to init device first */
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|INB
-c_func
-(paren
-op_amp
-id|kgdb_uart-&gt;Lsr
-)paren
-op_amp
-id|SAA9730_LSR_DR
-)paren
-)paren
-suffix:semicolon
-id|c
-op_assign
-id|INB
-c_func
-(paren
-op_amp
-id|kgdb_uart-&gt;Thr_Rbr
-)paren
-suffix:semicolon
-r_return
-id|c
-suffix:semicolon
-)brace
-macro_line|#endif
 eof

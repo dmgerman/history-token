@@ -6,13 +6,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
-DECL|variable|arcs_cmdline
-r_char
-id|arcs_cmdline
-(braket
-id|CL_SIZE
-)braket
-suffix:semicolon
 DECL|function|get_system_type
 r_const
 r_char
@@ -34,24 +27,12 @@ id|__init
 id|prom_init
 c_func
 (paren
+r_void
 )paren
 (brace
-id|strcpy
-c_func
-(paren
-id|arcs_cmdline
-comma
-l_string|&quot;ip=bootp &quot;
-)paren
-suffix:semicolon
-id|strcat
-c_func
-(paren
-id|arcs_cmdline
-comma
-l_string|&quot;ether=46,0x03fe0300,eth0 &quot;
-)paren
-suffix:semicolon
+singleline_comment|// cmdline is now set in default config
+singleline_comment|// strcpy(arcs_cmdline, &quot;ip=bootp &quot;);
+singleline_comment|// strcat(arcs_cmdline, &quot;ether=46,0x03fe0300,eth0 &quot;);
 singleline_comment|// strcpy(arcs_cmdline, &quot;ether=0,0x0300,eth0 &quot;
 singleline_comment|// strcat(arcs_cmdline, &quot;video=vr4181fb:xres:240,yres:320,bpp:8 &quot;);
 id|mips_machgroup
@@ -77,7 +58,8 @@ id|BOOT_MEM_RAM
 suffix:semicolon
 )brace
 DECL|function|prom_free_prom_memory
-r_void
+r_int
+r_int
 id|__init
 id|prom_free_prom_memory
 c_func
@@ -85,21 +67,8 @@ c_func
 r_void
 )paren
 (brace
-)brace
-DECL|function|prom_fixup_mem_map
-r_void
-id|__init
-id|prom_fixup_mem_map
-c_func
-(paren
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-(brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof

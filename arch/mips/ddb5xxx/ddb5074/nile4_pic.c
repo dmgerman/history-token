@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  arch/mips/ddb5476/nile4.c --&n; *  &t;low-level PIC code for NEC Vrc-5476 (Nile 4)&n; *&n; *  Copyright (C) 2000 Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *                     Sony Software Development Center Europe (SDCE), Brussels&n; *&n; *  Copyright 2001 MontaVista Software Inc.&n; *  Author: jsun@mvista.com or jsun@junsun.net&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

@@ -2,24 +2,13 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_TYPES_H
 DECL|macro|_ASM_TYPES_H
 mdefine_line|#define _ASM_TYPES_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#ifdef CONFIG_MIPS32
 DECL|typedef|umode_t
 r_typedef
 r_int
 r_int
 id|umode_t
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_MIPS64
-DECL|typedef|umode_t
-r_typedef
-r_int
-r_int
-id|umode_t
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * __xx is ok: it doesn&squot;t pollute the POSIX namespace. Use these in the&n; * header files exported to user space&n; */
 DECL|typedef|__s8
 r_typedef
@@ -94,6 +83,7 @@ macro_line|#ifdef __KERNEL__
 DECL|macro|BITS_PER_LONG
 mdefine_line|#define BITS_PER_LONG _MIPS_SZLONG
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/config.h&gt;
 DECL|typedef|s8
 r_typedef
 id|__signed

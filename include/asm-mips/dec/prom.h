@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;include/asm-mips/dec/prom.h&n; *&n; *&t;DECstation P
 macro_line|#ifndef _ASM_DEC_PROM_H
 DECL|macro|_ASM_DEC_PROM_H
 mdefine_line|#define _ASM_DEC_PROM_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 multiline_comment|/*&n; * PMAX/3MAX PROM entry points for DS2100/3100&squot;s and DS5000/2xx&squot;s.&n; * Many of these will work for MIPSen as well!&n; */
@@ -499,6 +500,22 @@ id|s32
 op_star
 comma
 id|u32
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|register_prom_console
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|unregister_prom_console
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* _ASM_DEC_PROM_H */

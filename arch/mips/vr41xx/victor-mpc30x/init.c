@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * FILE NAME&n; *&t;arch/mips/vr41xx/victor-mpc30x/init.c&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;Initialisation code for the Victor MP-C303/304.&n; *&n; * Copyright 2002 Yoichi Yuasa&n; *                yuasa@hh.iij4u.or.jp&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2 of the License, or (at your&n; *  option) any later version.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -7,13 +6,6 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/vr41xx/vr41xx.h&gt;
-DECL|variable|arcs_cmdline
-r_char
-id|arcs_cmdline
-(braket
-id|CL_SIZE
-)braket
-suffix:semicolon
 DECL|function|get_system_type
 r_const
 r_char
@@ -34,23 +26,26 @@ id|__init
 id|prom_init
 c_func
 (paren
+r_void
+)paren
+(brace
 r_int
 id|argc
-comma
+op_assign
+id|fw_arg0
+suffix:semicolon
 r_char
 op_star
 op_star
 id|argv
-comma
-r_int
-r_int
-id|magic
-comma
-r_int
+op_assign
+(paren
+r_char
 op_star
-id|prom_vec
+op_star
 )paren
-(brace
+id|fw_arg1
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -123,12 +118,17 @@ id|BOOT_MEM_RAM
 suffix:semicolon
 )brace
 DECL|function|prom_free_prom_memory
-r_void
+r_int
+r_int
 id|__init
 id|prom_free_prom_memory
+c_func
 (paren
 r_void
 )paren
 (brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof

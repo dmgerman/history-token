@@ -9,24 +9,16 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/mips-boards/generic.h&gt;
 macro_line|#include &lt;asm/mips-boards/malta.h&gt;
 macro_line|#include &lt;asm/mips-boards/maltaint.h&gt;
 macro_line|#include &lt;asm/mips-boards/piix4.h&gt;
-macro_line|#include &lt;asm/mips-boards/msc01_pci.h&gt;
 macro_line|#include &lt;asm/gt64120.h&gt;
+macro_line|#include &lt;asm/mips-boards/generic.h&gt;
+macro_line|#include &lt;asm/mips-boards/msc01_pci.h&gt;
 r_extern
 id|asmlinkage
 r_void
 id|mipsIRQ
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|mips_pcibios_iack
 c_func
 (paren
 r_void
@@ -61,6 +53,148 @@ id|mips_irq_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+DECL|function|mips_pcibios_iack
+r_static
+r_inline
+r_int
+id|mips_pcibios_iack
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|irq
+suffix:semicolon
+id|u32
+id|dummy
+suffix:semicolon
+multiline_comment|/*&n;&t; * Determine highest priority pending interrupt by performing&n;&t; * a PCI Interrupt Acknowledge cycle.&n;&t; */
+r_switch
+c_cond
+(paren
+id|mips_revision_corid
+)paren
+(brace
+r_case
+id|MIPS_REVISION_CORID_CORE_MSC
+suffix:colon
+r_case
+id|MIPS_REVISION_CORID_CORE_FPGA2
+suffix:colon
+r_case
+id|MIPS_REVISION_CORID_CORE_EMUL_MSC
+suffix:colon
+id|MSC_READ
+c_func
+(paren
+id|MSC01_PCI_IACK
+comma
+id|irq
+)paren
+suffix:semicolon
+id|irq
+op_and_assign
+l_int|0xff
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MIPS_REVISION_CORID_QED_RM5261
+suffix:colon
+r_case
+id|MIPS_REVISION_CORID_CORE_LV
+suffix:colon
+r_case
+id|MIPS_REVISION_CORID_CORE_FPGA
+suffix:colon
+r_case
+id|MIPS_REVISION_CORID_CORE_FPGAR2
+suffix:colon
+id|irq
+op_assign
+id|GT_READ
+c_func
+(paren
+id|GT_PCI0_IACK_OFS
+)paren
+suffix:semicolon
+id|irq
+op_and_assign
+l_int|0xff
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|MIPS_REVISION_CORID_BONITO64
+suffix:colon
+r_case
+id|MIPS_REVISION_CORID_CORE_20K
+suffix:colon
+r_case
+id|MIPS_REVISION_CORID_CORE_EMUL_BON
+suffix:colon
+multiline_comment|/* The following will generate a PCI IACK cycle on the&n;&t;&t; * Bonito controller. It&squot;s a little bit kludgy, but it&n;&t;&t; * was the easiest way to implement it in hardware at&n;&t;&t; * the given time.&n;&t;&t; */
+id|BONITO_PCIMAP_CFG
+op_assign
+l_int|0x20000
+suffix:semicolon
+multiline_comment|/* Flush Bonito register block */
+id|dummy
+op_assign
+id|BONITO_PCIMAP_CFG
+suffix:semicolon
+id|iob
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* sync */
+id|irq
+op_assign
+op_star
+(paren
+r_volatile
+id|u32
+op_star
+)paren
+(paren
+id|_pcictrl_bonito_pcicfg
+)paren
+suffix:semicolon
+id|iob
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* sync */
+id|irq
+op_and_assign
+l_int|0xff
+suffix:semicolon
+id|BONITO_PCIMAP_CFG
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Unknown Core card, don&squot;t know the system controller.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_return
+id|irq
+suffix:semicolon
+)brace
 DECL|function|get_int
 r_static
 r_inline
@@ -264,6 +398,12 @@ id|mips_revision_corid
 r_case
 id|MIPS_REVISION_CORID_CORE_MSC
 suffix:colon
+r_case
+id|MIPS_REVISION_CORID_CORE_FPGA2
+suffix:colon
+r_case
+id|MIPS_REVISION_CORID_CORE_EMUL_MSC
+suffix:colon
 r_break
 suffix:semicolon
 r_case
@@ -275,12 +415,15 @@ suffix:colon
 r_case
 id|MIPS_REVISION_CORID_CORE_FPGA
 suffix:colon
+r_case
+id|MIPS_REVISION_CORID_CORE_FPGAR2
+suffix:colon
+id|data
+op_assign
 id|GT_READ
 c_func
 (paren
 id|GT_INTRCAUSE_OFS
-comma
-id|data
 )paren
 suffix:semicolon
 id|printk
@@ -291,26 +434,26 @@ comma
 id|data
 )paren
 suffix:semicolon
+id|data
+op_assign
 id|GT_READ
 c_func
 (paren
 l_int|0x70
-comma
-id|data
 )paren
 suffix:semicolon
+id|datahi
+op_assign
 id|GT_READ
 c_func
 (paren
 l_int|0x78
-comma
-id|datahi
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;GT_CPU_ERR_ADDR = %0x2%08x&bslash;n&quot;
+l_string|&quot;GT_CPU_ERR_ADDR = %02x%08x&bslash;n&quot;
 comma
 id|datahi
 comma
@@ -324,6 +467,9 @@ id|MIPS_REVISION_CORID_BONITO64
 suffix:colon
 r_case
 id|MIPS_REVISION_CORID_CORE_20K
+suffix:colon
+r_case
+id|MIPS_REVISION_CORID_CORE_EMUL_BON
 suffix:colon
 id|data
 op_assign

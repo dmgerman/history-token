@@ -1,20 +1,18 @@
 multiline_comment|/*&n; * FILE NAME&n; *&t;arch/mips/vr41xx/common/bcu.c&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;Bus Control Unit routines for the NEC VR4100 series.&n; *&n; * Author: Yoichi Yuasa&n; *         yyuasa@mvista.com or source@mvista.com&n; *&n; * Copyright 2002 MontaVista Software Inc.&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2 of the License, or (at your&n; *  option) any later version.&n; *&n; *  THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&n; *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,&n; *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS&n; *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND&n; *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n; *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n; *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-multiline_comment|/*&n; * Changes:&n; *  MontaVista Software Inc. &lt;yyuasa@mvista.com&gt; or &lt;source@mvista.com&gt;&n; *  - Added support for NEC VR4111 and VR4121.&n; *&n; *  Paul Mundt &lt;lethal@chaoticdreams.org&gt;&n; *  - Calculate mips_counter_frequency properly on VR4131.&n; *&n; *  MontaVista Software Inc. &lt;yyuasa@mvista.com&gt; or &lt;source@mvista.com&gt;&n; *  - New creation, NEC VR4122 and VR4131 are supported.&n; */
+multiline_comment|/*&n; * Changes:&n; *  MontaVista Software Inc. &lt;yyuasa@mvista.com&gt; or &lt;source@mvista.com&gt;&n; *  - New creation, NEC VR4122 and VR4131 are supported.&n; *  - Added support for NEC VR4111 and VR4121.&n; *&n; *  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *  - Added support for NEC VR4133.&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &lt;asm/vr41xx/vr41xx.h&gt;
-DECL|macro|VR4111_CLKSPEEDREG
-mdefine_line|#define VR4111_CLKSPEEDREG&t;KSEG1ADDR(0x0b000014)
-DECL|macro|VR4122_CLKSPEEDREG
-mdefine_line|#define VR4122_CLKSPEEDREG&t;KSEG1ADDR(0x0f000014)
-DECL|macro|VR4131_CLKSPEEDREG
-mdefine_line|#define VR4131_CLKSPEEDREG&t;VR4122_CLKSPEEDREG
+DECL|macro|CLKSPEEDREG_TYPE1
+mdefine_line|#define CLKSPEEDREG_TYPE1&t;KSEG1ADDR(0x0b000014)
+DECL|macro|CLKSPEEDREG_TYPE2
+mdefine_line|#define CLKSPEEDREG_TYPE2&t;KSEG1ADDR(0x0f000014)
 DECL|macro|CLKSP
 mdefine_line|#define CLKSP(x)&t;&t;((x) &amp; 0x001f)
+DECL|macro|CLKSP_VR4133
+mdefine_line|#define CLKSP_VR4133(x)&t;((x) &amp; 0x0007)
 DECL|macro|DIV2B
 mdefine_line|#define DIV2B&t;&t;&t;0x8000
 DECL|macro|DIV3B
@@ -30,16 +28,47 @@ mdefine_line|#define TDIVMODE(x)&t;&t;(2 &lt;&lt; (((x) &amp; 0x1000) &gt;&gt; 1
 DECL|macro|VTDIVMODE
 mdefine_line|#define VTDIVMODE(x)&t;&t;(((x) &amp; 0x0700) &gt;&gt; 8)
 DECL|variable|vr41xx_vtclock
+r_static
 r_int
 r_int
 id|vr41xx_vtclock
-op_assign
-l_int|0
 suffix:semicolon
+DECL|variable|vr41xx_tclock
+r_static
+r_int
+r_int
+id|vr41xx_tclock
+suffix:semicolon
+DECL|function|vr41xx_get_vtclock_frequency
+r_int
+r_int
+id|vr41xx_get_vtclock_frequency
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|vr41xx_vtclock
+suffix:semicolon
+)brace
+DECL|function|vr41xx_get_tclock_frequency
+r_int
+r_int
+id|vr41xx_get_tclock_frequency
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|vr41xx_tclock
+suffix:semicolon
+)brace
 DECL|function|read_clkspeed
 r_static
 r_inline
-id|u16
+r_uint16
 id|read_clkspeed
 c_func
 (paren
@@ -62,27 +91,23 @@ r_return
 id|readw
 c_func
 (paren
-id|VR4111_CLKSPEEDREG
+id|CLKSPEEDREG_TYPE1
 )paren
 suffix:semicolon
 r_case
 id|CPU_VR4122
 suffix:colon
-r_return
-id|readw
-c_func
-(paren
-id|VR4122_CLKSPEEDREG
-)paren
-suffix:semicolon
 r_case
 id|CPU_VR4131
+suffix:colon
+r_case
+id|CPU_VR4133
 suffix:colon
 r_return
 id|readw
 c_func
 (paren
-id|VR4131_CLKSPEEDREG
+id|CLKSPEEDREG_TYPE2
 )paren
 suffix:semicolon
 r_default
@@ -109,7 +134,7 @@ r_int
 id|calculate_pclock
 c_func
 (paren
-id|u16
+r_uint16
 id|clkspeed
 )paren
 (brace
@@ -137,6 +162,14 @@ l_int|18432000
 op_star
 l_int|64
 suffix:semicolon
+id|pclock
+op_div_assign
+id|CLKSP
+c_func
+(paren
+id|clkspeed
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -147,6 +180,14 @@ op_assign
 l_int|18432000
 op_star
 l_int|98
+suffix:semicolon
+id|pclock
+op_div_assign
+id|CLKSP
+c_func
+(paren
+id|clkspeed
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -159,6 +200,86 @@ l_int|18432000
 op_star
 l_int|108
 suffix:semicolon
+id|pclock
+op_div_assign
+id|CLKSP
+c_func
+(paren
+id|clkspeed
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|CPU_VR4133
+suffix:colon
+r_switch
+c_cond
+(paren
+id|CLKSP_VR4133
+c_func
+(paren
+id|clkspeed
+)paren
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+id|pclock
+op_assign
+l_int|133000000
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+id|pclock
+op_assign
+l_int|149000000
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|pclock
+op_assign
+l_int|165900000
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|3
+suffix:colon
+id|pclock
+op_assign
+l_int|199100000
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+id|pclock
+op_assign
+l_int|265900000
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Unknown PClock speed for NEC VR4133&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_default
@@ -173,14 +294,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|pclock
-op_div_assign
-id|CLKSP
-c_func
-(paren
-id|clkspeed
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -202,7 +315,7 @@ r_int
 id|calculate_vtclock
 c_func
 (paren
-id|u16
+r_uint16
 id|clkspeed
 comma
 r_int
@@ -210,6 +323,12 @@ r_int
 id|pclock
 )paren
 (brace
+r_int
+r_int
+id|vtclock
+op_assign
+l_int|0
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -225,7 +344,7 @@ suffix:semicolon
 r_case
 id|CPU_VR4121
 suffix:colon
-id|vr41xx_vtclock
+id|vtclock
 op_assign
 id|pclock
 suffix:semicolon
@@ -241,7 +360,7 @@ id|clkspeed
 op_eq
 l_int|9
 )paren
-id|vr41xx_vtclock
+id|vtclock
 op_assign
 id|pclock
 op_star
@@ -260,13 +379,13 @@ id|clkspeed
 op_eq
 l_int|10
 )paren
-id|vr41xx_vtclock
+id|vtclock
 op_assign
 id|pclock
 op_star
 l_int|4
 suffix:semicolon
-id|vr41xx_vtclock
+id|vtclock
 op_div_assign
 id|DIVVT
 c_func
@@ -280,7 +399,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;VTClock: %ldHz&bslash;n&quot;
 comma
-id|vr41xx_vtclock
+id|vtclock
 )paren
 suffix:semicolon
 r_break
@@ -300,7 +419,7 @@ op_eq
 l_int|7
 )paren
 (brace
-id|vr41xx_vtclock
+id|vtclock
 op_assign
 id|pclock
 op_div
@@ -320,7 +439,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|vr41xx_vtclock
+id|vtclock
 op_assign
 id|pclock
 op_div
@@ -328,7 +447,7 @@ l_int|2
 suffix:semicolon
 )brace
 r_else
-id|vr41xx_vtclock
+id|vtclock
 op_assign
 id|pclock
 op_div
@@ -344,7 +463,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;VTClock: %ldHz&bslash;n&quot;
 comma
-id|vr41xx_vtclock
+id|vtclock
 )paren
 suffix:semicolon
 r_break
@@ -352,7 +471,10 @@ suffix:semicolon
 r_case
 id|CPU_VR4131
 suffix:colon
-id|vr41xx_vtclock
+r_case
+id|CPU_VR4133
+suffix:colon
+id|vtclock
 op_assign
 id|pclock
 op_div
@@ -368,7 +490,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;VTClock: %ldHz&bslash;n&quot;
 comma
-id|vr41xx_vtclock
+id|vtclock
 )paren
 suffix:semicolon
 r_break
@@ -386,7 +508,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
-id|vr41xx_vtclock
+id|vtclock
 suffix:semicolon
 )brace
 DECL|function|calculate_tclock
@@ -397,7 +519,7 @@ r_int
 id|calculate_tclock
 c_func
 (paren
-id|u16
+r_uint16
 id|clkspeed
 comma
 r_int
@@ -497,6 +619,9 @@ suffix:colon
 r_case
 id|CPU_VR4131
 suffix:colon
+r_case
+id|CPU_VR4133
+suffix:colon
 id|tclock
 op_assign
 id|vtclock
@@ -534,48 +659,6 @@ r_return
 id|tclock
 suffix:semicolon
 )brace
-DECL|function|calculate_mips_counter_frequency
-r_static
-r_inline
-r_int
-r_int
-id|calculate_mips_counter_frequency
-c_func
-(paren
-r_int
-r_int
-id|tclock
-)paren
-(brace
-multiline_comment|/*&n;&t; * VR4131 Revision 2.0 and 2.1 use a value of (tclock / 2).&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|current_cpu_data.processor_id
-op_eq
-id|PRID_VR4131_REV2_0
-)paren
-op_logical_or
-(paren
-id|current_cpu_data.processor_id
-op_eq
-id|PRID_VR4131_REV2_1
-)paren
-)paren
-id|tclock
-op_div_assign
-l_int|2
-suffix:semicolon
-r_else
-id|tclock
-op_div_assign
-l_int|4
-suffix:semicolon
-r_return
-id|tclock
-suffix:semicolon
-)brace
 DECL|function|vr41xx_bcu_init
 r_void
 id|__init
@@ -588,12 +671,8 @@ r_void
 r_int
 r_int
 id|pclock
-comma
-id|vtclock
-comma
-id|tclock
 suffix:semicolon
-id|u16
+r_uint16
 id|clkspeed
 suffix:semicolon
 id|clkspeed
@@ -611,7 +690,7 @@ c_func
 id|clkspeed
 )paren
 suffix:semicolon
-id|vtclock
+id|vr41xx_vtclock
 op_assign
 id|calculate_vtclock
 c_func
@@ -621,7 +700,7 @@ comma
 id|pclock
 )paren
 suffix:semicolon
-id|tclock
+id|vr41xx_tclock
 op_assign
 id|calculate_tclock
 c_func
@@ -630,15 +709,7 @@ id|clkspeed
 comma
 id|pclock
 comma
-id|vtclock
-)paren
-suffix:semicolon
-id|mips_counter_frequency
-op_assign
-id|calculate_mips_counter_frequency
-c_func
-(paren
-id|tclock
+id|vr41xx_vtclock
 )paren
 suffix:semicolon
 )brace

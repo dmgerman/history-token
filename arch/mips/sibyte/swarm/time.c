@@ -76,7 +76,7 @@ mdefine_line|#define X1241REG_SR&t;0x3F&t;&t;/* Status register */
 DECL|macro|X1241_CCR_ADDRESS
 mdefine_line|#define X1241_CCR_ADDRESS&t;0x6F
 DECL|macro|SMB_CSR
-mdefine_line|#define SMB_CSR(reg) (KSEG1 | A_SMB_REGISTER(1, reg))
+mdefine_line|#define SMB_CSR(reg) (IOADDR(A_SMB_REGISTER(1, reg)))
 DECL|function|xicor_read
 r_static
 r_int
