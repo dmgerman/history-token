@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -744,7 +745,6 @@ l_int|600
 suffix:semicolon
 multiline_comment|/* do it again in 60 s */
 )brace
-macro_line|#ifdef CONFIG_MCA
 r_if
 c_cond
 (paren
@@ -773,7 +773,6 @@ l_int|0x61
 suffix:semicolon
 multiline_comment|/* reset the IRQ */
 )brace
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * This is the same as the above, except we _also_ save the current&n; * Time Stamp Counter value at the time of the timer interrupt, so that&n; * we later on can estimate the time of day more exactly.&n; */
 DECL|function|timer_interrupt

@@ -245,10 +245,6 @@ DECL|macro|current_cpu_data
 mdefine_line|#define current_cpu_data cpu_data[smp_processor_id()]
 DECL|macro|CPU_HVERSION
 mdefine_line|#define CPU_HVERSION ((boot_cpu_data.hversion &gt;&gt; 4) &amp; 0x0FFF)
-DECL|macro|MCA_bus
-mdefine_line|#define MCA_bus 0
-DECL|macro|MCA_bus__is_a_macro
-mdefine_line|#define MCA_bus__is_a_macro /* for versions in ksyms.c */
 r_typedef
 r_struct
 (brace

@@ -41,10 +41,5 @@ mdefine_line|#define MCA_ENABLED&t;0x01&t;/* POS 2, set if adapter enabled */
 multiline_comment|/* Max number of adapters, including both slots and various integrated&n; * things.&n; */
 DECL|macro|MCA_NUMADAPTERS
 mdefine_line|#define MCA_NUMADAPTERS (MCA_MAX_SLOT_NR+3)
-multiline_comment|/* lock to protect access to the MCA registers */
-r_extern
-id|spinlock_t
-id|mca_lock
-suffix:semicolon
 macro_line|#endif
 eof

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/mca.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -164,10 +165,6 @@ id|acpi_interrupt_flags
 id|acpi_sci_flags
 suffix:semicolon
 macro_line|#endif
-DECL|variable|MCA_bus
-r_int
-id|MCA_bus
-suffix:semicolon
 multiline_comment|/* for MCA, but anyone else can use it if they want */
 DECL|variable|machine_id
 r_int
@@ -5493,6 +5490,35 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MCA
+DECL|function|set_mca_bus
+r_static
+r_void
+id|set_mca_bus
+c_func
+(paren
+r_int
+id|x
+)paren
+(brace
+id|MCA_bus
+op_assign
+id|x
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|function|set_mca_bus
+r_static
+r_void
+id|set_mca_bus
+c_func
+(paren
+r_int
+id|x
+)paren
+(brace
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * Determine if we were loaded by an EFI loader.  If so, then we have also been&n; * passed the efi memmap, systab, etc., so we should use these data structures&n; * for initialization.  Note, the efi init code path is determined by the&n; * global efi_enabled. This allows the same kernel image to be used on existing&n; * systems (with a traditional BIOS) as well as on EFI systems.&n; */
 DECL|function|setup_arch
 r_void
@@ -5593,14 +5619,16 @@ op_ne
 l_int|0
 )paren
 (brace
-id|MCA_bus
-op_assign
+id|set_mca_bus
+c_func
+(paren
 id|SYS_DESC_TABLE.table
 (braket
 l_int|3
 )braket
 op_amp
 l_int|0x2
+)paren
 suffix:semicolon
 id|machine_id
 op_assign
