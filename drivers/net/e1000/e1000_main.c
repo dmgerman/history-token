@@ -12124,6 +12124,12 @@ suffix:semicolon
 multiline_comment|/* 4 == D3 cold */
 )brace
 )brace
+id|pci_disable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 id|state
 op_assign
 (paren
@@ -12182,6 +12188,12 @@ id|netdev-&gt;priv
 suffix:semicolon
 r_uint32
 id|manc
+suffix:semicolon
+id|pci_enable_device
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 id|pci_set_power_state
 c_func
