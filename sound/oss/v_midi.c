@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * sound/v_midi.c&n; *&n; * The low level driver for the Sound Blaster DS chips.&n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1996&n; *&n; * USS/Lite for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; * ??&n; *&n; * Changes&n; *&t;Alan Cox&t;&t;Modularisation, changed memory allocations&n; *&t;Christoph Hellwig&t;Adapted to module_init/module_exit&n; *&n; * Status&n; *&t;Untested&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;v_midi.h&quot;
 DECL|variable|v_devc
@@ -114,14 +115,13 @@ op_minus
 id|ENXIO
 )paren
 suffix:semicolon
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -130,8 +130,12 @@ c_cond
 id|devc-&gt;opened
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -146,8 +150,12 @@ id|devc-&gt;opened
 op_assign
 l_int|1
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -209,13 +217,13 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
 )paren
 suffix:semicolon
 id|devc-&gt;intr_active
@@ -230,8 +238,12 @@ id|devc-&gt;opened
 op_assign
 l_int|0
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
+c_func
 (paren
+op_amp
+id|devc-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -790,6 +802,18 @@ id|midi_input_intr
 op_assign
 l_int|NULL
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|v_devc
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|lock
+)paren
+suffix:semicolon
 id|midi_devs
 (braket
 id|midi1
@@ -943,6 +967,18 @@ op_member_access_from_pointer
 id|midi_input_intr
 op_assign
 l_int|NULL
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|v_devc
+(braket
+l_int|1
+)braket
+op_member_access_from_pointer
+id|lock
+)paren
 suffix:semicolon
 id|midi_devs
 (braket
