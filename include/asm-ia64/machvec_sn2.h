@@ -15,10 +15,6 @@ id|ia64_mv_irq_init_t
 id|sn_irq_init
 suffix:semicolon
 r_extern
-id|ia64_mv_map_nr_t
-id|sn2_map_nr
-suffix:semicolon
-r_extern
 id|ia64_mv_send_ipi_t
 id|sn2_send_IPI
 suffix:semicolon
@@ -37,10 +33,6 @@ suffix:semicolon
 r_extern
 id|ia64_mv_local_vector_to_irq
 id|sn_local_vector_to_irq
-suffix:semicolon
-r_extern
-id|ia64_mv_pci_fixup_t
-id|sn_pci_fixup
 suffix:semicolon
 r_extern
 id|ia64_mv_inb_t
@@ -119,14 +111,10 @@ DECL|macro|platform_cpu_init
 mdefine_line|#define platform_cpu_init&t;&t;sn_cpu_init
 DECL|macro|platform_irq_init
 mdefine_line|#define platform_irq_init&t;&t;sn_irq_init
-DECL|macro|platform_map_nr
-mdefine_line|#define platform_map_nr&t;&t;&t;sn2_map_nr
 DECL|macro|platform_send_ipi
 mdefine_line|#define platform_send_ipi&t;&t;sn2_send_IPI
 DECL|macro|platform_global_tlb_purge
 mdefine_line|#define platform_global_tlb_purge       sn2_global_tlb_purge
-DECL|macro|platform_pci_fixup
-mdefine_line|#define platform_pci_fixup&t;&t;sn_pci_fixup
 DECL|macro|platform_inb
 mdefine_line|#define platform_inb&t;&t;&t;sn_inb
 DECL|macro|platform_inw
