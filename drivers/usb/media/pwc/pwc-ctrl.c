@@ -184,9 +184,9 @@ macro_line|#include &quot;pwc-nala.h&quot;
 suffix:semicolon
 multiline_comment|/****************************************************************************/
 DECL|macro|SendControlMsg
-mdefine_line|#define SendControlMsg(request, value, buflen) &bslash;&n;&t;usb_control_msg(pdev-&gt;udev, usb_sndctrlpipe(pdev-&gt;udev, 0), &bslash;&n;&t;&t;request, &bslash;&n;&t;&t;USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE, &bslash;&n;&t;&t;value, &bslash;&n;&t;&t;pdev-&gt;vcinterface, &bslash;&n;&t;&t;&amp;buf, buflen, HZ / 2)
+mdefine_line|#define SendControlMsg(request, value, buflen) &bslash;&n;&t;usb_control_msg(pdev-&gt;udev, usb_sndctrlpipe(pdev-&gt;udev, 0), &bslash;&n;&t;&t;request, &bslash;&n;&t;&t;USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE, &bslash;&n;&t;&t;value, &bslash;&n;&t;&t;pdev-&gt;vcinterface, &bslash;&n;&t;&t;&amp;buf, buflen, 500)
 DECL|macro|RecvControlMsg
-mdefine_line|#define RecvControlMsg(request, value, buflen) &bslash;&n;&t;usb_control_msg(pdev-&gt;udev, usb_rcvctrlpipe(pdev-&gt;udev, 0), &bslash;&n;&t;&t;request, &bslash;&n;&t;&t;USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE, &bslash;&n;&t;&t;value, &bslash;&n;&t;&t;pdev-&gt;vcinterface, &bslash;&n;&t;&t;&amp;buf, buflen, HZ / 2)
+mdefine_line|#define RecvControlMsg(request, value, buflen) &bslash;&n;&t;usb_control_msg(pdev-&gt;udev, usb_rcvctrlpipe(pdev-&gt;udev, 0), &bslash;&n;&t;&t;request, &bslash;&n;&t;&t;USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE, &bslash;&n;&t;&t;value, &bslash;&n;&t;&t;pdev-&gt;vcinterface, &bslash;&n;&t;&t;&amp;buf, buflen, 500)
 macro_line|#if PWC_DEBUG
 DECL|function|pwc_hexdump
 r_void
@@ -380,7 +380,7 @@ id|buf
 comma
 id|buflen
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 )brace
