@@ -1289,6 +1289,11 @@ id|ind_ubh
 )paren
 )paren
 (brace
+id|ubh_wait_on_buffer
+(paren
+id|ind_ubh
+)paren
+suffix:semicolon
 id|ubh_ll_rw_block
 (paren
 id|WRITE
@@ -1672,6 +1677,11 @@ id|dind_bh
 )paren
 )paren
 (brace
+id|ubh_wait_on_buffer
+(paren
+id|dind_bh
+)paren
+suffix:semicolon
 id|ubh_ll_rw_block
 (paren
 id|WRITE
@@ -2063,6 +2073,11 @@ id|tind_bh
 )paren
 )paren
 (brace
+id|ubh_wait_on_buffer
+(paren
+id|tind_bh
+)paren
+suffix:semicolon
 id|ubh_ll_rw_block
 (paren
 id|WRITE

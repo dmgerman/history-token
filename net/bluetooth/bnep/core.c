@@ -2136,6 +2136,9 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
+l_string|&quot;kbnepd %s&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
 id|set_user_nice
@@ -2150,29 +2153,6 @@ suffix:semicolon
 id|current-&gt;flags
 op_or_assign
 id|PF_IOTHREAD
-suffix:semicolon
-id|sigfillset
-c_func
-(paren
-op_amp
-id|current-&gt;blocked
-)paren
-suffix:semicolon
-id|flush_signals
-c_func
-(paren
-id|current
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|current-&gt;comm
-comma
-l_string|&quot;kbnepd %s&quot;
-comma
-id|dev-&gt;name
-)paren
 suffix:semicolon
 id|set_fs
 c_func

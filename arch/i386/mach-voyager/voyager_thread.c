@@ -391,6 +391,7 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
+id|THREAD_NAME
 )paren
 suffix:semicolon
 id|set_timeout
@@ -402,14 +403,6 @@ c_func
 (paren
 op_amp
 id|wakeup_timer
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|current-&gt;comm
-comma
-id|THREAD_NAME
 )paren
 suffix:semicolon
 id|sigfillset

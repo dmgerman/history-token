@@ -349,7 +349,7 @@ c_cond
 id|p-&gt;dev
 op_eq
 id|dev
-op_logical_or
+op_logical_and
 id|p-&gt;range
 op_eq
 id|range
