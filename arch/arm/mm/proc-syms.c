@@ -76,11 +76,11 @@ c_func
 id|cpu_set_pgd
 )paren
 suffix:semicolon
-DECL|variable|cpu_set_pmd
+DECL|variable|cpu_flush_pmd
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|cpu_set_pmd
+id|cpu_flush_pmd
 )paren
 suffix:semicolon
 DECL|variable|cpu_set_pte
