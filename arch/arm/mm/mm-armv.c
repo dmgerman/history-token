@@ -974,7 +974,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Create a SECTION PGD between VIRT and PHYS in domain&n; * DOMAIN with protection PROT&n; */
+multiline_comment|/*&n; * Create a SECTION PGD between VIRT and PHYS in domain&n; * DOMAIN with protection PROT.  This operates on half-&n; * pgdir entry increments.&n; */
 r_static
 r_inline
 r_void
@@ -2150,6 +2150,7 @@ op_sub_assign
 id|PAGE_SIZE
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * A section mapping covers half a &quot;pgdir&quot; entry.&n;&t; */
 r_while
 c_loop
 (paren
@@ -2337,6 +2338,28 @@ id|__pmd
 c_func
 (paren
 id|pmdval
+)paren
+)paren
+suffix:semicolon
+id|set_pmd
+c_func
+(paren
+id|pmd
+op_plus
+l_int|1
+comma
+id|__pmd
+c_func
+(paren
+id|pmdval
+op_plus
+l_int|1
+op_lshift
+(paren
+id|PGDIR_SHIFT
+op_minus
+l_int|1
+)paren
 )paren
 )paren
 suffix:semicolon
