@@ -20358,7 +20358,7 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|foo
+id|psr
 op_amp
 (paren
 id|IA64_PSR_I
