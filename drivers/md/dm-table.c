@@ -897,12 +897,6 @@ r_int
 r_int
 id|i
 suffix:semicolon
-id|DMWARN
-c_func
-(paren
-l_string|&quot;destroying table&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* destroying the table counts as an event */
 id|dm_table_event
 c_func

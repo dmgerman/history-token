@@ -2190,14 +2190,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|DMWARN
-c_func
-(paren
-l_string|&quot;allocating minor %d.&quot;
-comma
-id|minor
-)paren
-suffix:semicolon
 id|memset
 c_func
 (paren
@@ -2653,12 +2645,6 @@ id|md-&gt;holders
 )paren
 )paren
 (brace
-id|DMWARN
-c_func
-(paren
-l_string|&quot;destroying md&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
