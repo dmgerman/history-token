@@ -260,7 +260,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;SYM_LINUX_DYNAMIC_DMA_MAPPING
 DECL|function|__sym_calloc_dma
 r_void
 op_star
@@ -406,7 +405,6 @@ r_return
 id|b
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* SYM_LINUX_DYNAMIC_DMA_MAPPING */
 multiline_comment|/*&n; *  Map/unmap a PCI memory window.&n; */
 macro_line|#ifndef SYM_OPT_NO_BUS_MEMORY_MAPPING
 DECL|function|pci_map_mem
@@ -525,19 +523,11 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Some type that fit DMA addresses as seen from BUS.&n; */
-macro_line|#ifndef SYM_LINUX_DYNAMIC_DMA_MAPPING
-DECL|typedef|bus_addr_t
-r_typedef
-id|u_long
-id|bus_addr_t
-suffix:semicolon
-macro_line|#else
 DECL|typedef|bus_addr_t
 r_typedef
 id|dma_addr_t
 id|bus_addr_t
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; *  Used by the eh thread to wait for command completion.&n; *  It is allocated on the eh thread stack.&n; */
 DECL|struct|sym_eh_wait
 r_struct
@@ -586,7 +576,6 @@ id|SYM_QUEHEAD
 id|link_cmdq
 suffix:semicolon
 multiline_comment|/* Must stay at offset ZERO */
-macro_line|#ifdef SYM_LINUX_DYNAMIC_DMA_MAPPING
 DECL|member|data_mapping
 id|bus_addr_t
 id|data_mapping
@@ -595,7 +584,6 @@ DECL|member|data_mapped
 id|u_char
 id|data_mapped
 suffix:semicolon
-macro_line|#endif
 DECL|member|eh_wait
 r_struct
 id|sym_eh_wait
@@ -618,21 +606,6 @@ mdefine_line|#define SYM_SCMD_PTR(ucmd) sym_que_entry(ucmd, struct scsi_cmnd, SC
 DECL|macro|SYM_SOFTC_PTR
 mdefine_line|#define SYM_SOFTC_PTR(cmd) (((struct host_data *)cmd-&gt;device-&gt;host-&gt;hostdata)-&gt;ncb)
 multiline_comment|/*&n; *  Deal with DMA mapping/unmapping.&n; */
-macro_line|#ifndef SYM_LINUX_DYNAMIC_DMA_MAPPING
-multiline_comment|/* Linux versions prior to pci bus iommu kernel interface */
-DECL|macro|__unmap_scsi_data
-mdefine_line|#define __unmap_scsi_data(pdev, cmd)&t;do {; } while (0)
-DECL|macro|__map_scsi_single_data
-mdefine_line|#define __map_scsi_single_data(pdev, cmd) (__vtobus(pdev,(cmd)-&gt;request_buffer))
-DECL|macro|__map_scsi_sg_data
-mdefine_line|#define __map_scsi_sg_data(pdev, cmd)&t;((cmd)-&gt;use_sg)
-DECL|macro|__sync_scsi_data
-mdefine_line|#define __sync_scsi_data(pdev, cmd)&t;do {; } while (0)
-DECL|macro|bus_sg_dma_address
-mdefine_line|#define bus_sg_dma_address(sc)&t;&t;vtobus((sc)-&gt;address)
-DECL|macro|bus_sg_dma_len
-mdefine_line|#define bus_sg_dma_len(sc)&t;&t;((sc)-&gt;length)
-macro_line|#else /* Linux version with pci bus iommu kernel interface */
 DECL|macro|bus_unmap_sg
 mdefine_line|#define&t;bus_unmap_sg(pdev, sgptr, sgcnt, dir)&t;&t;&bslash;&n;&t;pci_unmap_sg(pdev, sgptr, sgcnt, dir)
 DECL|macro|bus_unmap_single
@@ -969,7 +942,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif&t;/* SYM_LINUX_DYNAMIC_DMA_MAPPING */
 DECL|macro|unmap_scsi_data
 mdefine_line|#define unmap_scsi_data(np, cmd)&t;&bslash;&n;&t;&t;__unmap_scsi_data(np-&gt;s.device, cmd)
 DECL|macro|map_scsi_single_data
@@ -6577,7 +6549,6 @@ l_string|&quot;HCB&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Ask/tell the system about DMA addressing.&n; */
-macro_line|#ifdef SYM_LINUX_DYNAMIC_DMA_MAPPING
 DECL|function|sym_setup_bus_dma_mask
 r_static
 r_int
@@ -6689,7 +6660,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* SYM_LINUX_DYNAMIC_DMA_MAPPING */
 multiline_comment|/*&n; *  Host attach and initialisations.&n; *&n; *  Allocate host data and ncb structure.&n; *  Request IO region and remap MMIO region.&n; *  Do chip initialization.&n; *  If all is OK, install interrupt handling and&n; *  start the timer daemon.&n; */
 r_static
 r_int
@@ -6841,7 +6811,6 @@ op_star
 id|instance-&gt;hostdata
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Allocate immediately the host control block, &n;&t; *  since we are only expecting to succeed. :)&n;&t; *  We keep track in the HCB of all the resources that &n;&t; *  are to be released on error.&n;&t; */
-macro_line|#ifdef&t;SYM_LINUX_DYNAMIC_DMA_MAPPING
 id|np
 op_assign
 id|__sym_calloc_dma
@@ -6878,31 +6847,6 @@ r_else
 r_goto
 id|attach_failed
 suffix:semicolon
-macro_line|#else
-id|np
-op_assign
-id|sym_calloc_dma
-c_func
-(paren
-r_sizeof
-(paren
-op_star
-id|np
-)paren
-comma
-l_string|&quot;HCB&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|np
-)paren
-r_goto
-id|attach_failed
-suffix:semicolon
-macro_line|#endif
 id|host_data-&gt;ncb
 op_assign
 id|np
@@ -7007,7 +6951,6 @@ id|np-&gt;s.unit
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Ask/tell the system about DMA addressing.&n;&t; */
-macro_line|#ifdef SYM_LINUX_DYNAMIC_DMA_MAPPING
 r_if
 c_cond
 (paren
@@ -7020,7 +6963,6 @@ id|np
 r_goto
 id|attach_failed
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; *  Try to map the controller chip to&n;&t; *  virtual and physical memory.&n;&t; */
 id|np-&gt;mmio_ba
 op_assign
