@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 DECL|variable|system_bus
 r_static
 r_struct
