@@ -3820,6 +3820,9 @@ id|retval
 r_return
 id|retval
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|kernel_termios_to_user_termios
 c_func
 (paren
@@ -3833,6 +3836,10 @@ comma
 op_amp
 id|priv-&gt;termios
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
@@ -3882,6 +3889,9 @@ id|retval
 r_return
 id|retval
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|user_termios_to_kernel_termios
 c_func
 (paren
@@ -3895,6 +3905,10 @@ op_star
 )paren
 id|arg
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|klsi_105_set_termios
 c_func
