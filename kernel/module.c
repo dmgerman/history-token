@@ -10359,6 +10359,51 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* Don&squot;t grab lock, we&squot;re oopsing. */
+DECL|function|print_modules
+r_void
+id|print_modules
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|module
+op_star
+id|mod
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Modules linked in:&quot;
+)paren
+suffix:semicolon
+id|list_for_each_entry
+c_func
+(paren
+id|mod
+comma
+op_amp
+id|modules
+comma
+id|list
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; %s&quot;
+comma
+id|mod-&gt;name
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_MODVERSIONS
 multiline_comment|/* Generate the signature for struct module here, too, for modversions. */
 DECL|function|struct_module

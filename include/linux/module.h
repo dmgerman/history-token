@@ -19,8 +19,6 @@ macro_line|#include &lt;asm/module.h&gt;
 multiline_comment|/* Not Yet Implemented */
 DECL|macro|MODULE_SUPPORTED_DEVICE
 mdefine_line|#define MODULE_SUPPORTED_DEVICE(name)
-DECL|macro|print_modules
-mdefine_line|#define print_modules()
 multiline_comment|/* v850 toolchain uses a `_&squot; prefix for all user symbols */
 macro_line|#ifndef MODULE_SYMBOL_PREFIX
 DECL|macro|MODULE_SYMBOL_PREFIX
@@ -984,6 +982,14 @@ op_star
 id|nb
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|print_modules
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#else /* !CONFIG_MODULES... */
 DECL|macro|EXPORT_SYMBOL
 mdefine_line|#define EXPORT_SYMBOL(sym)
@@ -1231,6 +1237,17 @@ suffix:semicolon
 )brace
 DECL|macro|module_put_and_exit
 mdefine_line|#define module_put_and_exit(code) do_exit(code)
+DECL|function|print_modules
+r_static
+r_inline
+r_void
+id|print_modules
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 macro_line|#endif /* CONFIG_MODULES */
 DECL|macro|symbol_request
 mdefine_line|#define symbol_request(x) try_then_request_module(symbol_get(x), &quot;symbol:&quot; #x)
