@@ -1231,7 +1231,7 @@ l_string|&quot;&quot;
 comma
 l_string|&quot;USB TO IDE&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
 id|US_PR_DEVICE
 comma
