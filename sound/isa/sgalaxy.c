@@ -45,10 +45,10 @@ c_func
 l_string|&quot;{{Aztech Systems,Sound Galaxy}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -56,11 +56,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -79,10 +79,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE
 suffix:semicolon
 multiline_comment|/* Enable this card */
-DECL|variable|snd_sbport
+DECL|variable|sbport
 r_static
 r_int
-id|snd_sbport
+id|sbport
 (braket
 id|SNDRV_CARDS
 )braket
@@ -90,10 +90,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* 0x220,0x240 */
-DECL|variable|snd_wssport
+DECL|variable|wssport
 r_static
 r_int
-id|snd_wssport
+id|wssport
 (braket
 id|SNDRV_CARDS
 )braket
@@ -101,10 +101,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* 0x530,0xe80,0xf40,0x604 */
-DECL|variable|snd_irq
+DECL|variable|irq
 r_static
 r_int
-id|snd_irq
+id|irq
 (braket
 id|SNDRV_CARDS
 )braket
@@ -112,10 +112,10 @@ op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
 multiline_comment|/* 7,9,10,11 */
-DECL|variable|snd_dma1
+DECL|variable|dma1
 r_static
 r_int
-id|snd_dma1
+id|dma1
 (braket
 id|SNDRV_CARDS
 )braket
@@ -126,7 +126,7 @@ multiline_comment|/* 0,1,3 */
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -140,7 +140,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for Sound Galaxy soundcard.&quot;
 )paren
@@ -148,7 +148,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -156,7 +156,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -170,7 +170,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for Sound Galaxy soundcard.&quot;
 )paren
@@ -178,7 +178,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -186,7 +186,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_sbport
+id|sbport
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -200,7 +200,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_sbport
+id|sbport
 comma
 l_string|&quot;Port # for Sound Galaxy SB driver.&quot;
 )paren
@@ -208,7 +208,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_sbport
+id|sbport
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0x220},{0x240}},dialog:list&quot;
@@ -217,7 +217,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_wssport
+id|wssport
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -231,7 +231,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_wssport
+id|wssport
 comma
 l_string|&quot;Port # for Sound Galaxy WSS driver.&quot;
 )paren
@@ -239,7 +239,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_wssport
+id|wssport
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0x530},{0xe80},{0xf40},{0x604}},dialog:list&quot;
@@ -248,7 +248,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -262,7 +262,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;IRQ # for Sound Galaxy driver.&quot;
 )paren
@@ -270,7 +270,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{7},{9},{10},{11}},dialog:list&quot;
@@ -279,7 +279,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -293,7 +293,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 l_string|&quot;DMA1 # for Sound Galaxy driver.&quot;
 )paren
@@ -301,7 +301,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 id|SNDRV_DMA8_DESC
 )paren
@@ -835,7 +835,7 @@ multiline_comment|/* switch to WSS mode */
 id|snd_sgalaxy_sbdsp_reset
 c_func
 (paren
-id|snd_sbport
+id|sbport
 (braket
 id|dev
 )braket
@@ -844,7 +844,7 @@ suffix:semicolon
 id|snd_sgalaxy_sbdsp_command
 c_func
 (paren
-id|snd_sbport
+id|sbport
 (braket
 id|dev
 )braket
@@ -855,7 +855,7 @@ suffix:semicolon
 id|snd_sgalaxy_sbdsp_command
 c_func
 (paren
-id|snd_sbport
+id|sbport
 (braket
 id|dev
 )braket
@@ -873,7 +873,7 @@ r_return
 id|snd_sgalaxy_setup_wss
 c_func
 (paren
-id|snd_wssport
+id|wssport
 (braket
 id|dev
 )braket
@@ -1265,9 +1265,9 @@ suffix:semicolon
 r_int
 id|err
 comma
-id|irq
+id|xirq
 comma
-id|dma1
+id|xdma1
 suffix:semicolon
 id|snd_card_t
 op_star
@@ -1280,7 +1280,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_sbport
+id|sbport
 (braket
 id|dev
 )braket
@@ -1302,7 +1302,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_wssport
+id|wssport
 (braket
 id|dev
 )braket
@@ -1326,12 +1326,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -1352,9 +1352,9 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|irq
+id|xirq
 op_assign
-id|snd_irq
+id|irq
 (braket
 id|dev
 )braket
@@ -1362,7 +1362,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|irq
+id|xirq
 op_eq
 id|SNDRV_AUTO_IRQ
 )paren
@@ -1371,7 +1371,7 @@ r_if
 c_cond
 (paren
 (paren
-id|irq
+id|xirq
 op_assign
 id|snd_legacy_find_free_irq
 c_func
@@ -1401,9 +1401,9 @@ id|EBUSY
 suffix:semicolon
 )brace
 )brace
-id|dma1
+id|xdma1
 op_assign
-id|snd_dma1
+id|dma1
 (braket
 id|dev
 )braket
@@ -1411,7 +1411,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dma1
+id|xdma1
 op_eq
 id|SNDRV_AUTO_DMA
 )paren
@@ -1420,7 +1420,7 @@ r_if
 c_cond
 (paren
 (paren
-id|dma1
+id|xdma1
 op_assign
 id|snd_legacy_find_free_dma
 c_func
@@ -1461,9 +1461,9 @@ c_func
 (paren
 id|dev
 comma
-id|irq
+id|xirq
 comma
-id|dma1
+id|xdma1
 )paren
 )paren
 OL
@@ -1491,16 +1491,16 @@ c_func
 (paren
 id|card
 comma
-id|snd_wssport
+id|wssport
 (braket
 id|dev
 )braket
 op_plus
 l_int|4
 comma
-id|irq
+id|xirq
 comma
-id|dma1
+id|xdma1
 comma
 id|AD1848_HW_DETECT
 comma
@@ -1641,14 +1641,14 @@ id|card-&gt;longname
 comma
 l_string|&quot;Sound Galaxy at 0x%lx, irq %d, dma %d&quot;
 comma
-id|snd_wssport
+id|wssport
 (braket
 id|dev
 )braket
 comma
-id|irq
+id|xirq
 comma
-id|dma1
+id|xdma1
 )paren
 suffix:semicolon
 r_if
@@ -1813,7 +1813,7 @@ c_func
 id|alsa_card_sgalaxy_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-sgalaxy=snd_enable,snd_index,snd_id,&n;&t;&t;&t;  snd_sbport,snd_wssport,&n;&t;&t;&t;  snd_irq,snd_dma1 */
+multiline_comment|/* format is: snd-sgalaxy=snd_enable,index,id,&n;&t;&t;&t;  sbport,wssport,&n;&t;&t;&t;  irq,dma1 */
 DECL|function|alsa_card_sgalaxy_setup
 r_static
 r_int
@@ -1869,7 +1869,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -1884,7 +1884,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -1903,7 +1903,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_sbport
+id|sbport
 (braket
 id|nr_dev
 )braket
@@ -1922,7 +1922,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_wssport
+id|wssport
 (braket
 id|nr_dev
 )braket
@@ -1941,7 +1941,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_irq
+id|irq
 (braket
 id|nr_dev
 )braket
@@ -1960,7 +1960,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_dma1
+id|dma1
 (braket
 id|nr_dev
 )braket

@@ -45,10 +45,10 @@ c_func
 l_string|&quot;{{Gravis,UltraSound Classic}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -56,11 +56,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -68,10 +68,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -79,10 +79,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE
 suffix:semicolon
 multiline_comment|/* Enable this card */
-DECL|variable|snd_port
+DECL|variable|port
 r_static
 r_int
-id|snd_port
+id|port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -90,10 +90,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* 0x220,0x230,0x240,0x250,0x260 */
-DECL|variable|snd_irq
+DECL|variable|irq
 r_static
 r_int
-id|snd_irq
+id|irq
 (braket
 id|SNDRV_CARDS
 )braket
@@ -101,10 +101,10 @@ op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
 multiline_comment|/* 3,5,9,11,12,15 */
-DECL|variable|snd_dma1
+DECL|variable|dma1
 r_static
 r_int
-id|snd_dma1
+id|dma1
 (braket
 id|SNDRV_CARDS
 )braket
@@ -112,10 +112,10 @@ op_assign
 id|SNDRV_DEFAULT_DMA
 suffix:semicolon
 multiline_comment|/* 1,3,5,6,7 */
-DECL|variable|snd_dma2
+DECL|variable|dma2
 r_static
 r_int
-id|snd_dma2
+id|dma2
 (braket
 id|SNDRV_CARDS
 )braket
@@ -123,10 +123,10 @@ op_assign
 id|SNDRV_DEFAULT_DMA
 suffix:semicolon
 multiline_comment|/* 1,3,5,6,7 */
-DECL|variable|snd_joystick_dac
+DECL|variable|joystick_dac
 r_static
 r_int
-id|snd_joystick_dac
+id|joystick_dac
 (braket
 id|SNDRV_CARDS
 )braket
@@ -148,10 +148,10 @@ l_int|29
 )brace
 suffix:semicolon
 multiline_comment|/* 0 to 31, (0.59V-4.52V or 0.389V-2.98V) */
-DECL|variable|snd_channels
+DECL|variable|channels
 r_static
 r_int
-id|snd_channels
+id|channels
 (braket
 id|SNDRV_CARDS
 )braket
@@ -172,10 +172,10 @@ op_assign
 l_int|24
 )brace
 suffix:semicolon
-DECL|variable|snd_pcm_channels
+DECL|variable|pcm_channels
 r_static
 r_int
-id|snd_pcm_channels
+id|pcm_channels
 (braket
 id|SNDRV_CARDS
 )braket
@@ -199,7 +199,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -213,7 +213,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for GUS Classic soundcard.&quot;
 )paren
@@ -221,7 +221,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -229,7 +229,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -243,7 +243,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for GUS Classic soundcard.&quot;
 )paren
@@ -251,7 +251,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -259,7 +259,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -273,7 +273,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable GUS Classic soundcard.&quot;
 )paren
@@ -281,7 +281,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -289,7 +289,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -303,7 +303,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;Port # for GUS Classic driver.&quot;
 )paren
@@ -311,7 +311,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_port
+id|port
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0x220,0x260,0x10}},dialog:list&quot;
@@ -320,7 +320,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -334,7 +334,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;IRQ # for GUS Classic driver.&quot;
 )paren
@@ -342,7 +342,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{3},{5},{9},{11},{12},{15}},dialog:list&quot;
@@ -351,7 +351,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -365,7 +365,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 l_string|&quot;DMA1 # for GUS Classic driver.&quot;
 )paren
@@ -373,7 +373,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{1},{3},{5},{6},{7}},dialog:list&quot;
@@ -382,7 +382,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_dma2
+id|dma2
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -396,7 +396,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_dma2
+id|dma2
 comma
 l_string|&quot;DMA2 # for GUS Classic driver.&quot;
 )paren
@@ -404,7 +404,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_dma2
+id|dma2
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{1},{3},{5},{6},{7}},dialog:list&quot;
@@ -413,7 +413,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_joystick_dac
+id|joystick_dac
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -427,7 +427,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_joystick_dac
+id|joystick_dac
 comma
 l_string|&quot;Joystick DAC level 0.59V-4.52V or 0.389V-2.98V for GUS Classic driver.&quot;
 )paren
@@ -435,7 +435,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_joystick_dac
+id|joystick_dac
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0,31}}&quot;
@@ -444,7 +444,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_channels
+id|channels
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -458,7 +458,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_channels
+id|channels
 comma
 l_string|&quot;GF1 channels for GUS Classic driver.&quot;
 )paren
@@ -466,7 +466,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_channels
+id|channels
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{14,32}}&quot;
@@ -475,7 +475,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_pcm_channels
+id|pcm_channels
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -489,7 +489,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_pcm_channels
+id|pcm_channels
 comma
 l_string|&quot;Reserved PCM channels for GUS Classic driver.&quot;
 )paren
@@ -497,7 +497,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_pcm_channels
+id|pcm_channels
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{2,16}}&quot;
@@ -727,7 +727,7 @@ l_int|0
 suffix:semicolon
 id|gus-&gt;joystick_dac
 op_assign
-id|snd_joystick_dac
+id|joystick_dac
 (braket
 id|dev
 )braket
@@ -793,11 +793,11 @@ l_int|1
 )brace
 suffix:semicolon
 r_int
-id|irq
+id|xirq
 comma
-id|dma1
+id|xdma1
 comma
-id|dma2
+id|xdma2
 suffix:semicolon
 id|snd_card_t
 op_star
@@ -822,12 +822,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -860,23 +860,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_pcm_channels
+id|pcm_channels
 (braket
 id|dev
 )braket
 OL
 l_int|2
 )paren
-id|snd_pcm_channels
+id|pcm_channels
 (braket
 id|dev
 )braket
 op_assign
 l_int|2
 suffix:semicolon
-id|irq
+id|xirq
 op_assign
-id|snd_irq
+id|irq
 (braket
 id|dev
 )braket
@@ -884,7 +884,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|irq
+id|xirq
 op_eq
 id|SNDRV_AUTO_IRQ
 )paren
@@ -893,7 +893,7 @@ r_if
 c_cond
 (paren
 (paren
-id|irq
+id|xirq
 op_assign
 id|snd_legacy_find_free_irq
 c_func
@@ -923,9 +923,9 @@ id|EBUSY
 suffix:semicolon
 )brace
 )brace
-id|dma1
+id|xdma1
 op_assign
-id|snd_dma1
+id|dma1
 (braket
 id|dev
 )braket
@@ -933,7 +933,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dma1
+id|xdma1
 op_eq
 id|SNDRV_AUTO_DMA
 )paren
@@ -942,7 +942,7 @@ r_if
 c_cond
 (paren
 (paren
-id|dma1
+id|xdma1
 op_assign
 id|snd_legacy_find_free_dma
 c_func
@@ -972,9 +972,9 @@ id|EBUSY
 suffix:semicolon
 )brace
 )brace
-id|dma2
+id|xdma2
 op_assign
-id|snd_dma2
+id|dma2
 (braket
 id|dev
 )braket
@@ -982,7 +982,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dma2
+id|xdma2
 op_eq
 id|SNDRV_AUTO_DMA
 )paren
@@ -991,7 +991,7 @@ r_if
 c_cond
 (paren
 (paren
-id|dma2
+id|xdma2
 op_assign
 id|snd_legacy_find_free_dma
 c_func
@@ -1032,25 +1032,25 @@ c_func
 (paren
 id|card
 comma
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
 comma
-id|irq
+id|xirq
 comma
-id|dma1
+id|xdma1
 comma
-id|dma2
+id|xdma2
 comma
 l_int|0
 comma
-id|snd_channels
+id|channels
 (braket
 id|dev
 )braket
 comma
-id|snd_pcm_channels
+id|pcm_channels
 (braket
 id|dev
 )braket
@@ -1273,9 +1273,9 @@ l_string|&quot; at 0x%lx, irq %d, dma %d&quot;
 comma
 id|gus-&gt;gf1.port
 comma
-id|irq
+id|xirq
 comma
-id|dma1
+id|xdma1
 )paren
 suffix:semicolon
 r_if
@@ -1298,7 +1298,7 @@ id|card-&gt;longname
 comma
 l_string|&quot;&amp;%d&quot;
 comma
-id|dma2
+id|xdma2
 )paren
 suffix:semicolon
 r_if
@@ -1347,7 +1347,7 @@ c_func
 (paren
 r_int
 r_int
-id|port
+id|xport
 )paren
 (brace
 r_static
@@ -1373,12 +1373,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
 op_logical_or
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -1387,12 +1387,12 @@ id|SNDRV_AUTO_PORT
 )paren
 r_continue
 suffix:semicolon
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
 op_assign
-id|port
+id|xport
 suffix:semicolon
 id|res
 op_assign
@@ -1409,7 +1409,7 @@ id|res
 OL
 l_int|0
 )paren
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -1475,7 +1475,7 @@ id|dev
 OL
 id|SNDRV_CARDS
 op_logical_and
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -1487,7 +1487,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -1594,7 +1594,7 @@ c_func
 id|alsa_card_gusclassic_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-gusclassic=snd_enable,snd_index,snd_id,&n;&t;&t;&t;     snd_port,snd_irq,&n;&t;&t;&t;     snd_dma1,snd_dma2,&n;&t;&t;&t;     snd_joystick_dac,&n;&t;&t;&t;     snd_channels,snd_pcm_channels */
+multiline_comment|/* format is: snd-gusclassic=enable,index,id,&n;&t;&t;&t;     port,irq,&n;&t;&t;&t;     dma1,dma2,&n;&t;&t;&t;     joystick_dac,&n;&t;&t;&t;     channels,pcm_channels */
 DECL|function|alsa_card_gusclassic_setup
 r_static
 r_int
@@ -1635,7 +1635,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -1650,7 +1650,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -1665,7 +1665,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -1684,7 +1684,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_port
+id|port
 (braket
 id|nr_dev
 )braket
@@ -1699,7 +1699,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_irq
+id|irq
 (braket
 id|nr_dev
 )braket
@@ -1714,7 +1714,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_dma1
+id|dma1
 (braket
 id|nr_dev
 )braket
@@ -1729,7 +1729,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_dma2
+id|dma2
 (braket
 id|nr_dev
 )braket
@@ -1744,7 +1744,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_joystick_dac
+id|joystick_dac
 (braket
 id|nr_dev
 )braket
@@ -1759,7 +1759,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_channels
+id|channels
 (braket
 id|nr_dev
 )braket
@@ -1774,7 +1774,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_pcm_channels
+id|pcm_channels
 (braket
 id|nr_dev
 )braket

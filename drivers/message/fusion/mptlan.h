@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,41)
 macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#else

@@ -73,13 +73,6 @@ c_func
 id|fcp_scsi_queuecommand
 )paren
 suffix:semicolon
-DECL|variable|fcp_old_abort
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|fcp_old_abort
-)paren
-suffix:semicolon
 DECL|variable|fcp_scsi_abort
 id|EXPORT_SYMBOL
 c_func

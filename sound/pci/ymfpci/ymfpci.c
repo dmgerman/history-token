@@ -45,10 +45,10 @@ l_string|&quot;{Yamaha,YMF744},&quot;
 l_string|&quot;{Yamaha,YMF754}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -56,11 +56,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -68,10 +68,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -79,10 +79,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE_PNP
 suffix:semicolon
 multiline_comment|/* Enable this card */
-DECL|variable|snd_fm_port
+DECL|variable|fm_port
 r_static
 r_int
-id|snd_fm_port
+id|fm_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -104,10 +104,10 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|snd_mpu_port
+DECL|variable|mpu_port
 r_static
 r_int
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -129,10 +129,10 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|snd_rear_switch
+DECL|variable|rear_switch
 r_static
 r_int
-id|snd_rear_switch
+id|rear_switch
 (braket
 id|SNDRV_CARDS
 )braket
@@ -140,7 +140,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -154,7 +154,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for the Yamaha DS-XG PCI soundcard.&quot;
 )paren
@@ -162,7 +162,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -170,7 +170,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -184,7 +184,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for the Yamaha DS-XG PCI soundcard.&quot;
 )paren
@@ -192,7 +192,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -200,7 +200,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -214,7 +214,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable Yamaha DS-XG soundcard.&quot;
 )paren
@@ -222,7 +222,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -230,7 +230,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -244,7 +244,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 l_string|&quot;MPU-401 Port.&quot;
 )paren
@@ -252,7 +252,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 id|SNDRV_ENABLED
 )paren
@@ -260,7 +260,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_fm_port
+id|fm_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -274,7 +274,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_fm_port
+id|fm_port
 comma
 l_string|&quot;FM OPL-3 Port.&quot;
 )paren
@@ -282,7 +282,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_fm_port
+id|fm_port
 comma
 id|SNDRV_ENABLED
 )paren
@@ -290,7 +290,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_rear_switch
+id|rear_switch
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -304,7 +304,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_rear_switch
+id|rear_switch
 comma
 l_string|&quot;Enable shared rear/line-in switch&quot;
 )paren
@@ -312,7 +312,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_rear_switch
+id|rear_switch
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,&quot;
@@ -467,7 +467,7 @@ r_const
 r_struct
 id|pci_device_id
 op_star
-id|id
+id|pci_id
 )paren
 (brace
 r_static
@@ -515,7 +515,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -534,12 +534,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -563,7 +563,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|id-&gt;device
+id|pci_id-&gt;device
 )paren
 (brace
 r_case
@@ -641,7 +641,7 @@ multiline_comment|/* SMOD = 01 */
 r_if
 c_cond
 (paren
-id|id-&gt;device
+id|pci_id-&gt;device
 op_ge
 l_int|0x0010
 )paren
@@ -650,14 +650,14 @@ multiline_comment|/* YMF 744/754 */
 r_if
 c_cond
 (paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
 OL
 l_int|0
 )paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -677,7 +677,7 @@ c_cond
 id|check_region
 c_func
 (paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -685,7 +685,7 @@ comma
 l_int|4
 )paren
 )paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -696,7 +696,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -715,7 +715,7 @@ id|pci
 comma
 id|PCIR_DSXG_FMBASE
 comma
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -725,14 +725,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
 OL
 l_int|0
 )paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -754,7 +754,7 @@ c_cond
 id|check_region
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -762,7 +762,7 @@ comma
 l_int|2
 )paren
 )paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -773,7 +773,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -792,13 +792,13 @@ id|pci
 comma
 id|PCIR_DSXG_MPU401BASE
 comma
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
 )paren
 suffix:semicolon
-singleline_comment|//snd_printd(&quot;MPU401 supported on 0x%lx&bslash;n&quot;, snd_mpu_port[dev]);
+singleline_comment|//snd_printd(&quot;MPU401 supported on 0x%lx&bslash;n&quot;, mpu_port[dev]);
 )brace
 )brace
 r_else
@@ -806,7 +806,7 @@ r_else
 r_switch
 c_cond
 (paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -850,7 +850,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -864,7 +864,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -874,7 +874,7 @@ op_logical_and
 id|check_region
 c_func
 (paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -895,7 +895,7 @@ op_and_assign
 op_complement
 l_int|3
 suffix:semicolon
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -907,7 +907,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -959,7 +959,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -973,7 +973,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -983,7 +983,7 @@ op_logical_and
 id|check_region
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -994,7 +994,7 @@ op_eq
 l_int|0
 )paren
 (brace
-singleline_comment|//snd_printd(&quot;MPU401 supported on 0x%lx&bslash;n&quot;, snd_mpu_port[dev]);
+singleline_comment|//snd_printd(&quot;MPU401 supported on 0x%lx&bslash;n&quot;, mpu_port[dev]);
 id|legacy_ctrl
 op_or_assign
 l_int|8
@@ -1011,7 +1011,7 @@ op_lshift
 l_int|4
 )paren
 suffix:semicolon
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -1024,7 +1024,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -1239,7 +1239,7 @@ c_func
 (paren
 id|chip
 comma
-id|snd_rear_switch
+id|rear_switch
 (braket
 id|dev
 )braket
@@ -1262,7 +1262,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -1285,7 +1285,7 @@ l_int|0
 comma
 id|MPU401_HW_YMFPCI
 comma
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -1310,13 +1310,13 @@ c_func
 id|KERN_WARNING
 l_string|&quot;ymfpci: cannot initialize MPU401 at 0x%lx, skipping...&bslash;n&quot;
 comma
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
 )paren
 suffix:semicolon
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -1331,7 +1331,7 @@ singleline_comment|// pci_write_config_word(pci, PCIR_DSXG_LEGACY, legacy_ctrl);
 r_if
 c_cond
 (paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -1350,12 +1350,12 @@ c_func
 (paren
 id|card
 comma
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
 comma
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -1380,13 +1380,13 @@ c_func
 id|KERN_WARNING
 l_string|&quot;ymfpci: cannot initialize FM OPL3 at 0x%lx, skipping...&bslash;n&quot;
 comma
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
 )paren
 suffix:semicolon
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -1884,7 +1884,7 @@ c_func
 id|alsa_card_ymfpci_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-ymfpci=snd_enable,snd_index,snd_id,&n;&t;&t;&t; snd_fm_port,snd_mpu_port */
+multiline_comment|/* format is: snd-ymfpci=enable,index,id,&n;&t;&t;&t; fm_port,mpu_port */
 DECL|function|alsa_card_ymfpci_setup
 r_static
 r_int
@@ -1925,7 +1925,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -1940,7 +1940,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -1955,7 +1955,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -1974,7 +1974,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_fm_port
+id|fm_port
 (braket
 id|nr_dev
 )braket
@@ -1993,7 +1993,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|nr_dev
 )braket

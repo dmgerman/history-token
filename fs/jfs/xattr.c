@@ -746,7 +746,11 @@ c_func
 (paren
 id|ea
 comma
+id|le32_to_cpu
+c_func
+(paren
 id|ealist-&gt;size
+)paren
 )paren
 suffix:semicolon
 id|DXDlength
@@ -876,6 +880,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|le32_to_cpu
+c_func
+(paren
 (paren
 (paren
 r_struct
@@ -887,6 +894,7 @@ id|ji-&gt;i_inline_ea
 )paren
 op_member_access_from_pointer
 id|size
+)paren
 op_ne
 id|ea_size
 )paren

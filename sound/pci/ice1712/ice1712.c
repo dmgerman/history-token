@@ -56,10 +56,10 @@ l_string|&quot;{ICEnsemble,Generic ICE1712},&quot;
 l_string|&quot;{ICEnsemble,Generic Envy24}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -67,11 +67,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -79,10 +79,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -90,10 +90,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE_PNP
 suffix:semicolon
 multiline_comment|/* Enable this card */
-DECL|variable|snd_omni
+DECL|variable|omni
 r_static
 r_int
-id|snd_omni
+id|omni
 (braket
 id|SNDRV_CARDS
 )braket
@@ -118,7 +118,7 @@ multiline_comment|/* Delta44 &amp; 66 Omni I/O support */
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -132,7 +132,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for ICE1712 soundcard.&quot;
 )paren
@@ -140,7 +140,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -148,7 +148,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -162,7 +162,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for ICE1712 soundcard.&quot;
 )paren
@@ -170,7 +170,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -178,7 +178,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -192,7 +192,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable ICE1712 soundcard.&quot;
 )paren
@@ -200,7 +200,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -208,7 +208,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_omni
+id|omni
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -222,7 +222,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_omni
+id|omni
 comma
 l_string|&quot;Enable Midiman M-Audio Delta Omni I/O support.&quot;
 )paren
@@ -230,7 +230,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_omni
+id|omni
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,&quot;
@@ -13283,7 +13283,7 @@ r_const
 r_struct
 id|pci_device_id
 op_star
-id|id
+id|pci_id
 )paren
 (brace
 r_static
@@ -13329,7 +13329,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -13348,12 +13348,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -13403,7 +13403,7 @@ id|card
 comma
 id|pci
 comma
-id|snd_omni
+id|omni
 (braket
 id|dev
 )braket
@@ -14029,7 +14029,7 @@ c_func
 id|alsa_card_ice1712_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-ice1712=snd_enable,snd_index,snd_id */
+multiline_comment|/* format is: snd-ice1712=enable,index,id */
 DECL|function|alsa_card_ice1712_setup
 r_static
 r_int
@@ -14070,7 +14070,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -14085,7 +14085,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -14100,7 +14100,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket

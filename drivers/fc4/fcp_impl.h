@@ -558,14 +558,6 @@ op_star
 )paren
 suffix:semicolon
 r_int
-id|fcp_old_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_int
 id|fcp_scsi_abort
 c_func
 (paren

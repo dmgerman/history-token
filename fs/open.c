@@ -2776,9 +2776,14 @@ r_goto
 id|cleanup_file
 suffix:semicolon
 )brace
-id|f-&gt;f_ra.ra_pages
-op_assign
-id|inode-&gt;i_mapping-&gt;backing_dev_info-&gt;ra_pages
+id|file_ra_state_init
+c_func
+(paren
+op_amp
+id|f-&gt;f_ra
+comma
+id|inode-&gt;i_mapping
+)paren
 suffix:semicolon
 id|f-&gt;f_dentry
 op_assign

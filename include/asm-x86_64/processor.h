@@ -599,7 +599,7 @@ mdefine_line|#define TASK_UNMAPPED_32 0x40000000
 DECL|macro|TASK_UNMAPPED_64
 mdefine_line|#define TASK_UNMAPPED_64 (TASK_SIZE/3) 
 DECL|macro|TASK_UNMAPPED_BASE
-mdefine_line|#define TASK_UNMAPPED_BASE&t;&bslash;&n;&t;(test_thread_flags(TIF_IA32) ? TASK_UNMAPPED_32 : TASK_UNMAPPED_64)  
+mdefine_line|#define TASK_UNMAPPED_BASE&t;&bslash;&n;&t;(test_thread_flag(TIF_IA32) ? TASK_UNMAPPED_32 : TASK_UNMAPPED_64)  
 multiline_comment|/*&n; * Size of io_bitmap in longwords: 32 is ports 0-0x3ff.&n; */
 DECL|macro|IO_BITMAP_SIZE
 mdefine_line|#define IO_BITMAP_SIZE&t;32

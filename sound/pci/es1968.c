@@ -48,10 +48,10 @@ l_string|&quot;{ESS,Maestro 1},&quot;
 l_string|&quot;{TerraTec,DMX}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -59,11 +59,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 1-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -71,10 +71,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -82,10 +82,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE_PNP
 suffix:semicolon
 multiline_comment|/* Enable this card */
-DECL|variable|snd_total_bufsize
+DECL|variable|total_bufsize
 r_static
 r_int
-id|snd_total_bufsize
+id|total_bufsize
 (braket
 id|SNDRV_CARDS
 )braket
@@ -106,10 +106,10 @@ op_assign
 l_int|1024
 )brace
 suffix:semicolon
-DECL|variable|snd_pcm_substreams_p
+DECL|variable|pcm_substreams_p
 r_static
 r_int
-id|snd_pcm_substreams_p
+id|pcm_substreams_p
 (braket
 id|SNDRV_CARDS
 )braket
@@ -130,10 +130,10 @@ op_assign
 l_int|4
 )brace
 suffix:semicolon
-DECL|variable|snd_pcm_substreams_c
+DECL|variable|pcm_substreams_c
 r_static
 r_int
-id|snd_pcm_substreams_c
+id|pcm_substreams_c
 (braket
 id|SNDRV_CARDS
 )braket
@@ -154,10 +154,10 @@ op_assign
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|snd_clock
+DECL|variable|clock
 r_static
 r_int
-id|snd_clock
+id|clock
 (braket
 id|SNDRV_CARDS
 )braket
@@ -181,7 +181,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -195,7 +195,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for &quot;
 id|CARD_NAME
@@ -205,7 +205,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -213,7 +213,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -227,7 +227,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for &quot;
 id|CARD_NAME
@@ -237,7 +237,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -245,7 +245,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -259,7 +259,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable &quot;
 id|CARD_NAME
@@ -269,7 +269,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -277,7 +277,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_total_bufsize
+id|total_bufsize
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -291,7 +291,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_total_bufsize
+id|total_bufsize
 comma
 l_string|&quot;Total buffer size in kB.&quot;
 )paren
@@ -299,7 +299,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_total_bufsize
+id|total_bufsize
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{1,4096}},skill:advanced&quot;
@@ -308,7 +308,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_pcm_substreams_p
+id|pcm_substreams_p
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -322,7 +322,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_pcm_substreams_p
+id|pcm_substreams_p
 comma
 l_string|&quot;PCM Playback substreams for &quot;
 id|CARD_NAME
@@ -332,7 +332,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_pcm_substreams_p
+id|pcm_substreams_p
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{1,8}}&quot;
@@ -341,7 +341,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_pcm_substreams_c
+id|pcm_substreams_c
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -355,7 +355,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_pcm_substreams_c
+id|pcm_substreams_c
 comma
 l_string|&quot;PCM Capture substreams for &quot;
 id|CARD_NAME
@@ -365,7 +365,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_pcm_substreams_c
+id|pcm_substreams_c
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0,8}}&quot;
@@ -374,7 +374,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_clock
+id|clock
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -388,7 +388,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_clock
+id|clock
 comma
 l_string|&quot;Clock on &quot;
 id|CARD_NAME
@@ -398,7 +398,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_clock
+id|clock
 comma
 id|SNDRV_ENABLED
 )paren
@@ -11787,7 +11787,7 @@ r_const
 r_struct
 id|pci_device_id
 op_star
-id|id
+id|pci_id
 )paren
 (brace
 r_static
@@ -11822,7 +11822,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -11841,12 +11841,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -11869,14 +11869,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_total_bufsize
+id|total_bufsize
 (braket
 id|dev
 )braket
 OL
 l_int|128
 )paren
-id|snd_total_bufsize
+id|total_bufsize
 (braket
 id|dev
 )braket
@@ -11886,14 +11886,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_total_bufsize
+id|total_bufsize
 (braket
 id|dev
 )braket
 OG
 l_int|4096
 )paren
-id|snd_total_bufsize
+id|total_bufsize
 (braket
 id|dev
 )braket
@@ -11913,7 +11913,7 @@ id|card
 comma
 id|pci
 comma
-id|snd_total_bufsize
+id|total_bufsize
 (braket
 id|dev
 )braket
@@ -11921,12 +11921,12 @@ op_star
 l_int|1024
 comma
 multiline_comment|/* in bytes */
-id|snd_pcm_substreams_p
+id|pcm_substreams_p
 (braket
 id|dev
 )braket
 comma
-id|snd_pcm_substreams_c
+id|pcm_substreams_c
 (braket
 id|dev
 )braket
@@ -12175,7 +12175,7 @@ suffix:semicolon
 )brace
 id|chip-&gt;clock
 op_assign
-id|snd_clock
+id|clock
 (braket
 id|dev
 )braket
@@ -12498,7 +12498,7 @@ c_func
 id|alsa_card_es1968_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-es1968=snd_enable,snd_index,snd_id,&n;&t;&t;&t; snd_total_bufsize,&n;&t;&t;&t; snd_pcm_substreams_p,&n;&t;&t;&t; snd_pcm_substreams_c,&n;&t;&t;&t; snd_clock&n;*/
+multiline_comment|/* format is: snd-es1968=enable,index,id,&n;&t;&t;&t; total_bufsize,&n;&t;&t;&t; pcm_substreams_p,&n;&t;&t;&t; pcm_substreams_c,&n;&t;&t;&t; clock&n;*/
 DECL|function|alsa_card_es1968_setup
 r_static
 r_int
@@ -12539,7 +12539,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -12554,7 +12554,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -12569,7 +12569,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -12584,7 +12584,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_total_bufsize
+id|total_bufsize
 (braket
 id|nr_dev
 )braket
@@ -12599,7 +12599,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_pcm_substreams_p
+id|pcm_substreams_p
 (braket
 id|nr_dev
 )braket
@@ -12614,7 +12614,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_pcm_substreams_c
+id|pcm_substreams_c
 (braket
 id|nr_dev
 )braket
@@ -12629,7 +12629,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_clock
+id|clock
 (braket
 id|nr_dev
 )braket

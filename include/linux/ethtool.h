@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ethtool.h: Defines for Linux ethtool.&n; *&n; * Copyright (C) 1998 David S. Miller (davem@redhat.com)&n; * Copyright 2001 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n; * Portions Copyright 2001 Sun Microsystems (thockin@sun.com)&n; * Portions Copyright 2002 Intel (eli.kupermann@intel.com,&n; *                                christopher.leech@intel.com,&n; *                                scott.feldman@intel.com)&n; */
+multiline_comment|/*&n; * ethtool.h: Defines for Linux ethtool.&n; *&n; * Copyright (C) 1998 David S. Miller (davem@redhat.com)&n; * Copyright 2001 Jeff Garzik &lt;jgarzik@pobox.com&gt;&n; * Portions Copyright 2001 Sun Microsystems (thockin@sun.com)&n; * Portions Copyright 2002 Intel (eli.kupermann@intel.com,&n; *                                christopher.leech@intel.com,&n; *                                scott.feldman@intel.com)&n; */
 macro_line|#ifndef _LINUX_ETHTOOL_H
 DECL|macro|_LINUX_ETHTOOL_H
 mdefine_line|#define _LINUX_ETHTOOL_H

@@ -1306,7 +1306,7 @@ op_minus
 id|fb-&gt;y_margin
 )paren
 op_star
-id|p-&gt;line_length
+id|p-&gt;fb_info-&gt;fix.line_length
 op_plus
 (paren
 id|x_margin
@@ -1347,7 +1347,7 @@ op_star
 id|fix
 op_assign
 op_amp
-id|fb-&gt;fix
+id|fb-&gt;info.fix
 suffix:semicolon
 r_struct
 id|display
@@ -1448,7 +1448,7 @@ suffix:semicolon
 )brace
 id|fix-&gt;line_length
 op_assign
-id|fb-&gt;var.xres_virtual
+id|fb-&gt;info.var.xres_virtual
 suffix:semicolon
 id|fix-&gt;accel
 op_assign

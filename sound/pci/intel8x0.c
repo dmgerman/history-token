@@ -58,10 +58,10 @@ DECL|macro|SUPPORT_JOYSTICK
 mdefine_line|#define SUPPORT_JOYSTICK 1
 DECL|macro|SUPPORT_MIDI
 mdefine_line|#define SUPPORT_MIDI 1
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -69,11 +69,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -81,10 +81,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -92,10 +92,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE_PNP
 suffix:semicolon
 multiline_comment|/* Enable this card */
-DECL|variable|snd_ac97_clock
+DECL|variable|ac97_clock
 r_static
 r_int
-id|snd_ac97_clock
+id|ac97_clock
 (braket
 id|SNDRV_CARDS
 )braket
@@ -117,10 +117,10 @@ l_int|0
 )brace
 suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
-DECL|variable|snd_joystick_port
+DECL|variable|joystick_port
 r_static
 r_int
-id|snd_joystick_port
+id|joystick_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -140,10 +140,10 @@ multiline_comment|/* disabled */
 macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef SUPPORT_MIDI
-DECL|variable|snd_mpu_port
+DECL|variable|mpu_port
 r_static
 r_int
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -153,7 +153,7 @@ macro_line|#endif
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -167,7 +167,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for Intel i8x0 soundcard.&quot;
 )paren
@@ -175,7 +175,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -183,7 +183,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -197,7 +197,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for Intel i8x0 soundcard.&quot;
 )paren
@@ -205,7 +205,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -213,7 +213,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -227,7 +227,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable Intel i8x0 soundcard.&quot;
 )paren
@@ -235,7 +235,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -243,7 +243,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_ac97_clock
+id|ac97_clock
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -257,7 +257,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_ac97_clock
+id|ac97_clock
 comma
 l_string|&quot;AC&squot;97 codec clock (0 = auto-detect).&quot;
 )paren
@@ -265,7 +265,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_ac97_clock
+id|ac97_clock
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,default:0&quot;
@@ -275,7 +275,7 @@ macro_line|#ifdef SUPPORT_JOYSTICK
 id|MODULE_PARM
 c_func
 (paren
-id|snd_joystick_port
+id|joystick_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -289,7 +289,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_joystick_port
+id|joystick_port
 comma
 l_string|&quot;Joystick port address for Intel i8x0 soundcard. (0 = disabled)&quot;
 )paren
@@ -297,7 +297,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_joystick_port
+id|joystick_port
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0},{0x200}},dialog:list&quot;
@@ -308,7 +308,7 @@ macro_line|#ifdef SUPPORT_MIDI
 id|MODULE_PARM
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -322,7 +322,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 l_string|&quot;MPU401 port # for Intel i8x0 driver.&quot;
 )paren
@@ -330,7 +330,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0},{0x330},{0x300}},dialog:list&quot;
@@ -426,7 +426,7 @@ l_int|0x20
 )paren
 suffix:semicolon
 multiline_comment|/* Mic in */
-multiline_comment|/* ICH4 busmater blocks */
+multiline_comment|/* ICH4 busmaster blocks */
 id|DEFINE_REGSET
 c_func
 (paren
@@ -11952,7 +11952,7 @@ r_const
 r_struct
 id|pci_device_id
 op_star
-id|id
+id|pci_id
 )paren
 (brace
 r_static
@@ -11994,7 +11994,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -12013,12 +12013,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -12101,7 +12101,7 @@ id|card
 comma
 id|pci
 comma
-id|id-&gt;driver_data
+id|pci_id-&gt;driver_data
 comma
 op_amp
 id|chip
@@ -12132,7 +12132,7 @@ c_func
 (paren
 id|chip
 comma
-id|snd_ac97_clock
+id|ac97_clock
 (braket
 id|dev
 )braket
@@ -12453,14 +12453,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
 op_eq
 l_int|0x300
 op_logical_or
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -12483,7 +12483,7 @@ l_int|0
 comma
 id|MPU401_HW_INTEL8X0
 comma
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -12509,13 +12509,13 @@ c_func
 id|KERN_ERR
 l_string|&quot;intel8x0: no UART401 device at 0x%x, skipping.&bslash;n&quot;
 comma
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
 )paren
 suffix:semicolon
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -12525,7 +12525,7 @@ suffix:semicolon
 )brace
 )brace
 r_else
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -12550,7 +12550,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_ac97_clock
+id|ac97_clock
 (braket
 id|dev
 )braket
@@ -12733,7 +12733,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -12750,14 +12750,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_joystick_port
+id|joystick_port
 (braket
 id|dev
 )braket
 OG
 l_int|0
 op_logical_or
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -12782,7 +12782,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_joystick_port
+id|joystick_port
 (braket
 id|dev
 )braket
@@ -12796,14 +12796,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
 op_eq
 l_int|0x300
 op_logical_or
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -12829,14 +12829,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
 op_eq
 l_int|0x300
 op_logical_or
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -12861,7 +12861,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
@@ -13133,7 +13133,7 @@ c_func
 id|alsa_card_intel8x0_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-intel8x0=snd_enable,snd_index,snd_id,snd_ac97_clock */
+multiline_comment|/* format is: snd-intel8x0=enable,index,id,ac97_clock */
 DECL|function|alsa_card_intel8x0_setup
 r_static
 r_int
@@ -13174,7 +13174,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -13189,7 +13189,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -13204,7 +13204,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -13219,7 +13219,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_ac97_clock
+id|ac97_clock
 (braket
 id|nr_dev
 )braket

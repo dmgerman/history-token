@@ -13,10 +13,10 @@ macro_line|#include &lt;sound/asoundef.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -24,11 +24,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -36,10 +36,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -47,10 +47,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE_PNP
 suffix:semicolon
 multiline_comment|/* Enable this card */
-DECL|variable|snd_precise_ptr
+DECL|variable|precise_ptr
 r_static
 r_int
-id|snd_precise_ptr
+id|precise_ptr
 (braket
 id|SNDRV_CARDS
 )braket
@@ -75,7 +75,7 @@ multiline_comment|/* Enable precise pointer */
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -89,7 +89,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for RME Digi9652 (Hammerfall) soundcard.&quot;
 )paren
@@ -97,7 +97,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -105,7 +105,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -119,7 +119,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for RME Digi9652 (Hammerfall) soundcard.&quot;
 )paren
@@ -127,7 +127,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -135,7 +135,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -149,7 +149,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable/disable specific RME96{52,36} soundcards.&quot;
 )paren
@@ -157,7 +157,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -165,7 +165,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_precise_ptr
+id|precise_ptr
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -179,7 +179,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_precise_ptr
+id|precise_ptr
 comma
 l_string|&quot;Enable precise pointer (doesn&squot;t work reliably).&quot;
 )paren
@@ -187,7 +187,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_precise_ptr
+id|precise_ptr
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,&quot;
@@ -11647,7 +11647,7 @@ r_const
 r_struct
 id|pci_device_id
 op_star
-id|id
+id|pci_id
 )paren
 (brace
 r_static
@@ -11680,7 +11680,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -11699,12 +11699,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -11760,7 +11760,7 @@ id|card
 comma
 id|rme9652
 comma
-id|snd_precise_ptr
+id|precise_ptr
 (braket
 id|dev
 )braket
@@ -11978,7 +11978,7 @@ c_func
 id|alsa_card_hammerfall_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-rme9652=snd_enable,snd_index,snd_id */
+multiline_comment|/* format is: snd-rme9652=enable,index,id */
 DECL|function|alsa_card_rme9652_setup
 r_static
 r_int
@@ -12019,7 +12019,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -12034,7 +12034,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -12049,7 +12049,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket

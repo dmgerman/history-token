@@ -39,6 +39,12 @@ comma
 DECL|enumerator|KM_IRQ1
 id|KM_IRQ1
 comma
+DECL|enumerator|KM_CRYPTO_USER
+id|KM_CRYPTO_USER
+comma
+DECL|enumerator|KM_CRYPTO_SOFTIRQ
+id|KM_CRYPTO_SOFTIRQ
+comma
 DECL|enumerator|KM_TYPE_NR
 id|KM_TYPE_NR
 )brace
