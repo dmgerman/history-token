@@ -15,7 +15,7 @@ multiline_comment|/*&n; * Must define these before including other files, inline
 DECL|macro|LOCK_SECTION_NAME
 mdefine_line|#define LOCK_SECTION_NAME                       &bslash;&n;        &quot;.text.lock.&quot; __stringify(KBUILD_BASENAME)
 DECL|macro|LOCK_SECTION_START
-mdefine_line|#define LOCK_SECTION_START(extra)               &bslash;&n;        &quot;.subsection 1&bslash;n&bslash;t&quot;                     &bslash;&n;        extra                                   &bslash;&n;        &quot;.ifndef &quot; LOCK_SECTION_NAME &quot;&bslash;n&bslash;t&quot;     &bslash;&n;        LOCK_SECTION_NAME &quot;:&bslash;n&bslash;t&quot;               &bslash;&n;        &quot;.endif&bslash;n&bslash;t&quot;
+mdefine_line|#define LOCK_SECTION_START(extra)               &bslash;&n;        &quot;.subsection 1&bslash;n&bslash;t&quot;                     &bslash;&n;        extra                                   &bslash;&n;        &quot;.ifndef &quot; LOCK_SECTION_NAME &quot;&bslash;n&bslash;t&quot;     &bslash;&n;        LOCK_SECTION_NAME &quot;:&bslash;n&bslash;t&quot;               &bslash;&n;        &quot;.endif&bslash;n&quot;
 DECL|macro|LOCK_SECTION_END
 mdefine_line|#define LOCK_SECTION_END                        &bslash;&n;        &quot;.previous&bslash;n&bslash;t&quot;
 DECL|macro|__lockfunc
