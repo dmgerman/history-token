@@ -970,7 +970,7 @@ id|sk-&gt;sk_timer.expires
 op_assign
 id|jiffies
 op_plus
-l_int|10
+l_int|2
 op_star
 id|HZ
 suffix:semicolon
