@@ -589,7 +589,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_joystic_dac
+id|joystick_dac
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0,31}}&quot;

@@ -1654,7 +1654,7 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;unable to register hardware dependant device %i:%i&bslash;n&quot;
+l_string|&quot;unable to register hardware dependent device %i:%i&bslash;n&quot;
 comma
 id|hwdep-&gt;card-&gt;number
 comma
