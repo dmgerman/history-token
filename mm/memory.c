@@ -2028,7 +2028,8 @@ op_star
 id|src_pgd
 )paren
 )paren
-r_continue
+r_goto
+id|next_pgd
 suffix:semicolon
 r_if
 c_cond
@@ -2054,7 +2055,8 @@ c_func
 id|src_pgd
 )paren
 suffix:semicolon
-r_continue
+r_goto
+id|next_pgd
 suffix:semicolon
 )brace
 id|err
@@ -2084,6 +2086,8 @@ id|err
 )paren
 r_break
 suffix:semicolon
+id|next_pgd
+suffix:colon
 id|src_pgd
 op_increment
 suffix:semicolon
