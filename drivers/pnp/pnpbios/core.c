@@ -3436,7 +3436,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* PnP Layer support */
 DECL|variable|pnpbios_protocol
-r_static
 r_struct
 id|pnp_protocol
 id|pnpbios_protocol

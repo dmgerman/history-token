@@ -18315,9 +18315,9 @@ l_string|&quot;ac97 quirk for %s (%04x:%04x)&bslash;n&quot;
 comma
 id|quirk-&gt;name
 comma
-id|vendor
+id|ac97-&gt;subsystem_vendor
 comma
-id|device
+id|ac97-&gt;subsystem_device
 )paren
 suffix:semicolon
 r_switch

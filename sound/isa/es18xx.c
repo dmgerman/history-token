@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pnp.h&gt;
+macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -10302,12 +10303,13 @@ c_func
 (paren
 l_string|&quot;pnp: port=0x%lx&bslash;n&quot;
 comma
-id|acard-&gt;devc-&gt;resource
-(braket
+id|pnp_port_start
+c_func
+(paren
+id|acard-&gt;devc
+comma
 l_int|0
-)braket
-dot
-id|start
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* PnP initialization */
