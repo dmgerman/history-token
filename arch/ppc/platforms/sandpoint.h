@@ -31,10 +31,10 @@ DECL|macro|UART_CLK
 mdefine_line|#define UART_CLK&t;&t;&t;1843200
 macro_line|#ifdef CONFIG_SERIAL_DETECT_IRQ
 DECL|macro|STD_COM_FLAGS
-mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF|ASYNC_SKIP_TEST|ASYNC_AUTO_IRQ)
+mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF|ASYNC_AUTO_IRQ)
 macro_line|#else
 DECL|macro|STD_COM_FLAGS
-mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF|ASYNC_SKIP_TEST)
+mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF)
 macro_line|#endif
 DECL|macro|STD_SERIAL_PORT_DFNS
 mdefine_line|#define STD_SERIAL_PORT_DFNS &bslash;&n;        { 0, BASE_BAUD, SANDPOINT_SERIAL_0, 4, STD_COM_FLAGS, /* ttyS0 */ &bslash;&n;&t;&t;iomem_base: (u8 *)SANDPOINT_SERIAL_0,&t;&t;&t;  &bslash;&n;&t;&t;io_type: SERIAL_IO_MEM },&t;&t;&t;&t;  &bslash;&n;        { 0, BASE_BAUD, SANDPOINT_SERIAL_1, 3, STD_COM_FLAGS, /* ttyS1 */ &bslash;&n;&t;&t;iomem_base: (u8 *)SANDPOINT_SERIAL_1,&t;&t;&t;  &bslash;&n;&t;&t;io_type: SERIAL_IO_MEM },

@@ -197,8 +197,8 @@ id|bp
 suffix:semicolon
 r_int
 r_int
-DECL|function|decompress_kernel
-id|decompress_kernel
+DECL|function|load_kernel
+id|load_kernel
 c_func
 (paren
 r_int

@@ -405,7 +405,7 @@ id|smc_uart_t
 suffix:semicolon
 multiline_comment|/* SMC uart mode register (Internal memory map).&n;*/
 DECL|macro|SMCMR_REN
-mdefine_line|#define&t;SMCMR_REN&t;((ushort)0x0001)
+mdefine_line|#define SMCMR_REN&t;((ushort)0x0001)
 DECL|macro|SMCMR_TEN
 mdefine_line|#define SMCMR_TEN&t;((ushort)0x0002)
 DECL|macro|SMCMR_DM
@@ -433,14 +433,18 @@ mdefine_line|#define SMCR_CLEN_MASK&t;((ushort)0x7800)&t;/* Character length */
 DECL|macro|smcr_mk_clen
 mdefine_line|#define smcr_mk_clen(C)&t;(((C) &lt;&lt; 11) &amp; SMCR_CLEN_MASK)
 multiline_comment|/* SMC Event and Mask register.&n;*/
+DECL|macro|SMCM_BRKE
+mdefine_line|#define SMCM_BRKE       ((unsigned char)0x40)   /* When in UART Mode */
+DECL|macro|SMCM_BRK
+mdefine_line|#define SMCM_BRK        ((unsigned char)0x10)   /* When in UART Mode */
 DECL|macro|SMCM_TXE
-mdefine_line|#define&t;SMCM_TXE&t;((unsigned char)0x10)
+mdefine_line|#define SMCM_TXE&t;((unsigned char)0x10)
 DECL|macro|SMCM_BSY
-mdefine_line|#define&t;SMCM_BSY&t;((unsigned char)0x04)
+mdefine_line|#define SMCM_BSY&t;((unsigned char)0x04)
 DECL|macro|SMCM_TX
-mdefine_line|#define&t;SMCM_TX&t;&t;((unsigned char)0x02)
+mdefine_line|#define SMCM_TX&t;&t;((unsigned char)0x02)
 DECL|macro|SMCM_RX
-mdefine_line|#define&t;SMCM_RX&t;&t;((unsigned char)0x01)
+mdefine_line|#define SMCM_RX&t;&t;((unsigned char)0x01)
 multiline_comment|/* Baud rate generators.&n;*/
 DECL|macro|CPM_BRG_RST
 mdefine_line|#define CPM_BRG_RST&t;&t;((uint)0x00020000)
@@ -619,13 +623,13 @@ DECL|macro|SCC_TODR_TOD
 mdefine_line|#define SCC_TODR_TOD&t;&t;((ushort)0x8000)
 multiline_comment|/* SCC Event and Mask register.&n;*/
 DECL|macro|SCCM_TXE
-mdefine_line|#define&t;SCCM_TXE&t;((unsigned char)0x10)
+mdefine_line|#define SCCM_TXE&t;((unsigned char)0x10)
 DECL|macro|SCCM_BSY
-mdefine_line|#define&t;SCCM_BSY&t;((unsigned char)0x04)
+mdefine_line|#define SCCM_BSY&t;((unsigned char)0x04)
 DECL|macro|SCCM_TX
-mdefine_line|#define&t;SCCM_TX&t;&t;((unsigned char)0x02)
+mdefine_line|#define SCCM_TX&t;&t;((unsigned char)0x02)
 DECL|macro|SCCM_RX
-mdefine_line|#define&t;SCCM_RX&t;&t;((unsigned char)0x01)
+mdefine_line|#define SCCM_RX&t;&t;((unsigned char)0x01)
 DECL|struct|scc_param
 r_typedef
 r_struct

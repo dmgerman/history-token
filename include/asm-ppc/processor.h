@@ -1218,6 +1218,8 @@ DECL|macro|EISA_bus
 mdefine_line|#define EISA_bus 0
 DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0
+DECL|macro|MCA_bus__is_a_macro
+mdefine_line|#define MCA_bus__is_a_macro
 multiline_comment|/* Lazy FPU handling on uni-processor */
 r_extern
 r_struct
