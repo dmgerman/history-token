@@ -1316,6 +1316,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* One reference from device.  We must do this before&n;&t;&t; * we invoke __ipv6_regen_rndid().&n;&t;&t; */
+id|in6_dev_hold
+c_func
+(paren
+id|ndev
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_IPV6_PRIVACY
 id|get_random_bytes
 c_func
@@ -1413,13 +1420,6 @@ suffix:semicolon
 id|dev-&gt;ip6_ptr
 op_assign
 id|ndev
-suffix:semicolon
-multiline_comment|/* One reference from device */
-id|in6_dev_hold
-c_func
-(paren
-id|ndev
-)paren
 suffix:semicolon
 id|write_unlock_bh
 c_func
