@@ -77,6 +77,8 @@ DECL|macro|US_FL_BULK32
 mdefine_line|#define US_FL_BULK32          0x00000200 /* Uses 32-byte CBW length         */
 DECL|macro|US_FL_NOT_LOCKABLE
 mdefine_line|#define US_FL_NOT_LOCKABLE    0x00000400 /* PREVENT/ALLOW not supported     */
+DECL|macro|US_FL_GO_SLOW
+mdefine_line|#define US_FL_GO_SLOW         0x00000800 /* Need delay after Command phase  */
 multiline_comment|/* Dynamic flag definitions: used in set_bit() etc. */
 DECL|macro|US_FLIDX_URB_ACTIVE
 mdefine_line|#define US_FLIDX_URB_ACTIVE&t;18  /* 0x00040000  current_urb is in use  */

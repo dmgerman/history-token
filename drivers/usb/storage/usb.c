@@ -1554,6 +1554,19 @@ id|us-&gt;flags
 op_assign
 id|unusual_dev-&gt;flags
 suffix:semicolon
+multiline_comment|/*&n;&t; * This flag is only needed when we&squot;re in high-speed, so let&squot;s&n;&t; * disable it if we&squot;re in full-speed&n;&t; */
+r_if
+c_cond
+(paren
+id|dev-&gt;speed
+op_ne
+id|USB_SPEED_HIGH
+)paren
+id|us-&gt;flags
+op_and_assign
+op_complement
+id|US_FL_GO_SLOW
+suffix:semicolon
 multiline_comment|/* Log a message if a non-generic unusual_dev entry contains an&n;&t; * unnecessary subclass or protocol override.  This may stimulate&n;&t; * reports from users that will help us remove unneeded entries&n;&t; * from the unusual_devs.h table.&n;&t; */
 r_if
 c_cond

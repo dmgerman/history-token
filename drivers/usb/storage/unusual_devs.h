@@ -1621,6 +1621,55 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* The following two entries are for a Genesys USB to IDE&n; * converter chip, but it changes its ProductId depending&n; * on whether or not a disk or an optical device is enclosed&n; * They were originally reported by Alexander Oltu&n; * &lt;alexander@all-2.com&gt; and Peter Marks &lt;peter.marks@turner.com&gt;&n; * respectively.&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x05e3
+comma
+l_int|0x0701
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Genesys Logic&quot;
+comma
+l_string|&quot;USB to IDE Optical&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_GO_SLOW
+)paren
+comma
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x05e3
+comma
+l_int|0x0702
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Genesys Logic&quot;
+comma
+l_string|&quot;USB to IDE Disk&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_GO_SLOW
+)paren
+comma
 multiline_comment|/* Reported by Hanno Boeck &lt;hanno@gmx.de&gt;&n; * Taken from the Lycoris Kernel */
 id|UNUSUAL_DEV
 c_func
@@ -1721,21 +1770,21 @@ comma
 id|US_FL_FIX_CAPACITY
 )paren
 comma
-multiline_comment|/* Reported by Alex Butcher &lt;alex.butcher@assursys.co.uk&gt; */
+multiline_comment|/* Reported by Richard -=[]=- &lt;micro_flyer@hotmail.com&gt; */
 id|UNUSUAL_DEV
 c_func
 (paren
 l_int|0x067b
 comma
-l_int|0x3507
+l_int|0x2507
 comma
-l_int|0x0001
+l_int|0x0100
 comma
-l_int|0x0001
+l_int|0x0100
 comma
 l_string|&quot;Prolific Technology Inc.&quot;
 comma
-l_string|&quot;ATAPI-6 Bridge Controller&quot;
+l_string|&quot;Mass Storage Device&quot;
 comma
 id|US_SC_DEVICE
 comma
@@ -1744,6 +1793,8 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_CAPACITY
+op_or
+id|US_FL_GO_SLOW
 )paren
 comma
 multiline_comment|/* Reported by Alex Butcher &lt;alex.butcher@assursys.co.uk&gt; */
@@ -1769,6 +1820,8 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_CAPACITY
+op_or
+id|US_FL_GO_SLOW
 )paren
 comma
 multiline_comment|/* Submitted by Benny Sjostrand &lt;benny@hostmobility.com&gt; */
@@ -2899,6 +2952,31 @@ comma
 l_int|NULL
 comma
 id|US_FL_IGNORE_RESIDUE
+)paren
+comma
+multiline_comment|/* Reported by Radovan Garabik &lt;garabik@kassiopeia.juls.savba.sk&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x2735
+comma
+l_int|0x100b
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;MPIO&quot;
+comma
+l_string|&quot;HS200&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_GO_SLOW
 )paren
 comma
 macro_line|#ifdef CONFIG_USB_STORAGE_SDDR55

@@ -3071,17 +3071,17 @@ id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 multiline_comment|/* DATA STAGE */
 multiline_comment|/* send/receive data payload, if there is any */
-multiline_comment|/* Genesys Logic interface chips need a 100us delay between the&n;&t; * command phase and the data phase.  Some devices need a little&n;&t; * more than that, probably because of clock rate inaccuracies. */
+multiline_comment|/* Some USB-IDE converter chips need a 100us delay between the&n;&t; * command phase and the data phase.  Some devices need a little&n;&t; * more than that, probably because of clock rate inaccuracies. */
 r_if
 c_cond
 (paren
-id|le16_to_cpu
+id|unlikely
 c_func
 (paren
-id|us-&gt;pusb_dev-&gt;descriptor.idVendor
+id|us-&gt;flags
+op_amp
+id|US_FL_GO_SLOW
 )paren
-op_eq
-id|USB_VENDOR_ID_GENESYS
 )paren
 id|udelay
 c_func
