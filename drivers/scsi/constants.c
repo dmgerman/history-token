@@ -232,7 +232,7 @@ l_string|&quot;Read header&quot;
 comma
 l_string|&quot;Play audio (10)&quot;
 comma
-id|unknown
+l_string|&quot;Get configuration&quot;
 comma
 l_string|&quot;Play audio msf&quot;
 comma
@@ -241,7 +241,7 @@ comma
 multiline_comment|/* 49-4f */
 l_string|&quot;Play track relative (10)&quot;
 comma
-id|unknown
+l_string|&quot;Get event status notification&quot;
 comma
 l_string|&quot;Pause/resume&quot;
 comma
@@ -249,42 +249,44 @@ l_string|&quot;Log Select&quot;
 comma
 l_string|&quot;Log Sense&quot;
 comma
-id|unknown
+l_string|&quot;Stop play/scan&quot;
 comma
 id|unknown
 comma
 multiline_comment|/* 50-55 */
-id|unknown
+l_string|&quot;Xdwrite&quot;
 comma
-id|unknown
+l_string|&quot;Xpwrite, Read disk info&quot;
 comma
-id|unknown
+l_string|&quot;Xdread, Read track info&quot;
 comma
-id|unknown
+l_string|&quot;Reserve track&quot;
 comma
-id|unknown
+l_string|&quot;Send OPC onfo&quot;
 comma
 l_string|&quot;Mode Select (10)&quot;
 comma
 multiline_comment|/* 56-5b */
-id|unknown
+l_string|&quot;Reserve (10)&quot;
 comma
-id|unknown
+l_string|&quot;Release (10)&quot;
 comma
-id|unknown
+l_string|&quot;Repair track&quot;
 comma
-id|unknown
+l_string|&quot;Read master cue&quot;
 comma
 l_string|&quot;Mode Sense (10)&quot;
 comma
-id|unknown
+l_string|&quot;Close track/session&quot;
 comma
 multiline_comment|/* 5c-5f */
-id|unknown
+l_string|&quot;Read buffer capacity&quot;
 comma
-id|unknown
+l_string|&quot;Send cue sheet&quot;
 comma
-id|unknown
+l_string|&quot;Persistent reserve in&quot;
+comma
+l_string|&quot;Persistent reserve out&quot;
 comma
 )brace
 suffix:semicolon
@@ -300,48 +302,48 @@ id|group_4_commands
 op_assign
 (brace
 multiline_comment|/* 80-84 */
-id|unknown
+l_string|&quot;Xdwrite (16)&quot;
 comma
-id|unknown
+l_string|&quot;Rebuild (16)&quot;
 comma
-id|unknown
+l_string|&quot;Regenerate (16)&quot;
 comma
-id|unknown
+l_string|&quot;Extended copy&quot;
 comma
-id|unknown
+l_string|&quot;Receive copy results&quot;
 comma
 multiline_comment|/* 85-89 */
 l_string|&quot;Memory Export In (16)&quot;
 comma
-id|unknown
+l_string|&quot;Access control in&quot;
 comma
-id|unknown
+l_string|&quot;Access control out&quot;
 comma
-id|unknown
+l_string|&quot;Read (16)&quot;
 comma
 l_string|&quot;Memory Export Out (16)&quot;
 comma
 multiline_comment|/* 8a-8f */
-id|unknown
+l_string|&quot;Write (16)&quot;
 comma
 id|unknown
 comma
-id|unknown
+l_string|&quot;Read attributes&quot;
 comma
-id|unknown
+l_string|&quot;Write attributes&quot;
 comma
-id|unknown
+l_string|&quot;Write and verify (16)&quot;
 comma
-id|unknown
+l_string|&quot;Verify (16)&quot;
 comma
 multiline_comment|/* 90-94 */
-id|unknown
+l_string|&quot;Pre-fetch (16)&quot;
 comma
-id|unknown
+l_string|&quot;Synchronize cache (16)&quot;
 comma
-id|unknown
+l_string|&quot;Lock/unlock cache (16)&quot;
 comma
-id|unknown
+l_string|&quot;Write same (16)&quot;
 comma
 id|unknown
 comma
@@ -365,9 +367,9 @@ id|unknown
 comma
 id|unknown
 comma
-id|unknown
+l_string|&quot;Service action in&quot;
 comma
-id|unknown
+l_string|&quot;Service action out&quot;
 comma
 )brace
 suffix:semicolon
@@ -383,22 +385,22 @@ id|group_5_commands
 op_assign
 (brace
 multiline_comment|/* a0-a5 */
-id|unknown
+l_string|&quot;Report luns&quot;
 comma
-id|unknown
+l_string|&quot;Blank&quot;
 comma
-id|unknown
+l_string|&quot;Send event&quot;
 comma
-id|unknown
+l_string|&quot;Maintenance (in)&quot;
 comma
-id|unknown
+l_string|&quot;Maintenance (out)&quot;
 comma
 l_string|&quot;Move medium/play audio(12)&quot;
 comma
 multiline_comment|/* a6-a9 */
 l_string|&quot;Exchange medium&quot;
 comma
-id|unknown
+l_string|&quot;Move medium attached&quot;
 comma
 l_string|&quot;Read(12)&quot;
 comma
@@ -409,9 +411,9 @@ l_string|&quot;Write(12)&quot;
 comma
 id|unknown
 comma
-l_string|&quot;Erase(12)&quot;
+l_string|&quot;Erase(12), Get Performance&quot;
 comma
-id|unknown
+l_string|&quot;Read DVD structure&quot;
 comma
 l_string|&quot;Write and verify(12)&quot;
 comma
@@ -427,32 +429,33 @@ l_string|&quot;Search data low(12)&quot;
 comma
 l_string|&quot;Set limits(12)&quot;
 comma
-id|unknown
+l_string|&quot;Read element status attached&quot;
 comma
 multiline_comment|/* b5-b6 */
 l_string|&quot;Request volume element address&quot;
 comma
-l_string|&quot;Send volume tag&quot;
+l_string|&quot;Send volume tag, set streaming&quot;
 comma
 multiline_comment|/* b7-b9 */
 l_string|&quot;Read defect data(12)&quot;
 comma
 l_string|&quot;Read element status&quot;
 comma
-id|unknown
+l_string|&quot;Read CD msf&quot;
 comma
-multiline_comment|/* ba-bf */
-id|unknown
+multiline_comment|/* ba-bc */
+l_string|&quot;Redundancy group (in), Scan&quot;
 comma
-id|unknown
+l_string|&quot;Redundancy group (out), Set cd-rom speed&quot;
 comma
-id|unknown
+l_string|&quot;Spare (in), Play cd&quot;
 comma
-id|unknown
+multiline_comment|/* bd-bf */
+l_string|&quot;Spare (out), Mechanism status&quot;
 comma
-id|unknown
+l_string|&quot;Volume set (in), Read cd&quot;
 comma
-id|unknown
+l_string|&quot;Volume set (out), Send DVD structure&quot;
 comma
 )brace
 suffix:semicolon

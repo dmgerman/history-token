@@ -354,6 +354,20 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* first try 10-byte mode sense/select */
+DECL|member|skip_ms_page_8
+r_int
+id|skip_ms_page_8
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* do not use MODE SENSE page 0x08 */
+DECL|member|skip_ms_page_3f
+r_int
+id|skip_ms_page_3f
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* do not use MODE SENSE page 0x3f */
 DECL|member|no_start_on_add
 r_int
 id|no_start_on_add

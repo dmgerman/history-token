@@ -208,6 +208,11 @@ r_int
 id|scsi_get_device_flags
 c_func
 (paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
+comma
 r_int
 r_char
 op_star
