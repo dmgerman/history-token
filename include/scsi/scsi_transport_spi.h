@@ -631,5 +631,14 @@ id|scsi_device
 op_star
 )paren
 suffix:semicolon
+r_void
+id|spi_display_xfer_agreement
+c_func
+(paren
+r_struct
+id|scsi_target
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif /* SCSI_TRANSPORT_SPI_H */
 eof
