@@ -36,8 +36,7 @@ DECL|macro|IUCV_DBF_TEXT
 mdefine_line|#define IUCV_DBF_TEXT(name,level,text) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_text_event(iucv_dbf_##name,level,text); &bslash;&n;&t;} while (0)
 DECL|macro|IUCV_DBF_HEX
 mdefine_line|#define IUCV_DBF_HEX(name,level,addr,len) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_event(iucv_dbf_##name,level,(void*)(addr),len); &bslash;&n;&t;} while (0)
-r_extern
-id|DEFINE_PER_CPU
+id|DECLARE_PER_CPU
 c_func
 (paren
 r_char
