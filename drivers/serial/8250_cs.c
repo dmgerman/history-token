@@ -1797,7 +1797,7 @@ c_func
 (paren
 id|handle
 comma
-id|GetConfiguration
+id|GetConfigurationInfo
 comma
 id|i
 )paren
