@@ -10,8 +10,6 @@ macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
-DECL|macro|AH_HLEN_NOICV
-mdefine_line|#define AH_HLEN_NOICV&t;12
 multiline_comment|/* XXX no ipv6 ah specific */
 DECL|macro|NIP6
 mdefine_line|#define NIP6(addr) &bslash;&n;&t;ntohs((addr).s6_addr16[0]),&bslash;&n;&t;ntohs((addr).s6_addr16[1]),&bslash;&n;&t;ntohs((addr).s6_addr16[2]),&bslash;&n;&t;ntohs((addr).s6_addr16[3]),&bslash;&n;&t;ntohs((addr).s6_addr16[4]),&bslash;&n;&t;ntohs((addr).s6_addr16[5]),&bslash;&n;&t;ntohs((addr).s6_addr16[6]),&bslash;&n;&t;ntohs((addr).s6_addr16[7])
@@ -423,9 +421,13 @@ op_assign
 id|XFRM_ALIGN8
 c_func
 (paren
-id|ahp-&gt;icv_trunc_len
+r_sizeof
+(paren
+r_struct
+id|ipv6_auth_hdr
+)paren
 op_plus
-id|AH_HLEN_NOICV
+id|ahp-&gt;icv_trunc_len
 )paren
 op_rshift
 l_int|2
@@ -716,9 +718,13 @@ op_ne
 id|XFRM_ALIGN8
 c_func
 (paren
-id|ahp-&gt;icv_full_len
+r_sizeof
+(paren
+r_struct
+id|ipv6_auth_hdr
+)paren
 op_plus
-id|AH_HLEN_NOICV
+id|ahp-&gt;icv_full_len
 )paren
 op_logical_and
 id|ah_hlen
@@ -726,9 +732,13 @@ op_ne
 id|XFRM_ALIGN8
 c_func
 (paren
-id|ahp-&gt;icv_trunc_len
+r_sizeof
+(paren
+r_struct
+id|ipv6_auth_hdr
+)paren
 op_plus
-id|AH_HLEN_NOICV
+id|ahp-&gt;icv_trunc_len
 )paren
 )paren
 r_goto
@@ -1315,9 +1325,13 @@ op_assign
 id|XFRM_ALIGN8
 c_func
 (paren
-id|ahp-&gt;icv_trunc_len
+r_sizeof
+(paren
+r_struct
+id|ipv6_auth_hdr
+)paren
 op_plus
-id|AH_HLEN_NOICV
+id|ahp-&gt;icv_trunc_len
 )paren
 suffix:semicolon
 r_if
