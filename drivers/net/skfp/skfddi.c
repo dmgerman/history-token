@@ -846,7 +846,8 @@ op_star
 id|smc
 suffix:semicolon
 multiline_comment|/* board pointer */
-id|u32
+r_int
+r_int
 id|port
 comma
 id|len
@@ -958,7 +959,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;skfp: Invalid PCI region size: %d&bslash;n&quot;
+l_string|&quot;skfp: Invalid PCI region size: %lu&bslash;n&quot;
 comma
 id|len
 )paren
