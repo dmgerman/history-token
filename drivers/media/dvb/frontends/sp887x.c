@@ -2,7 +2,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &quot;dvb_frontend.h&quot;
-macro_line|#include &quot;dvb_compat.h&quot;
+macro_line|#include &quot;dvb_functions.h&quot;
 macro_line|#if 0
 mdefine_line|#define dprintk(x...) printk(x)
 macro_line|#else
