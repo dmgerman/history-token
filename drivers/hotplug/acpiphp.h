@@ -2,7 +2,7 @@ multiline_comment|/*&n; * ACPI PCI Hot Plug Controller Driver&n; *&n; * Copyrigh
 macro_line|#ifndef _ACPIPHP_H
 DECL|macro|_ACPIPHP_H
 mdefine_line|#define _ACPIPHP_H
-macro_line|#include &quot;include/acpi.h&quot;
+macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &quot;pci_hotplug.h&quot;
 macro_line|#include &quot;acpi_bus.h&quot;
 DECL|macro|dbg
