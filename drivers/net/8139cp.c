@@ -21,10 +21,17 @@ macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
+DECL|macro|CP_VLAN_TAG_USED
+mdefine_line|#define CP_VLAN_TAG_USED 1
+DECL|macro|CP_VLAN_TX_TAG
+mdefine_line|#define CP_VLAN_TX_TAG(tx_desc,vlan_tag_value) &bslash;&n;&t;do { (tx_desc)-&gt;opts2 = (vlan_tag_value); } while (0)
+macro_line|#else
 DECL|macro|CP_VLAN_TAG_USED
 mdefine_line|#define CP_VLAN_TAG_USED 0
 DECL|macro|CP_VLAN_TX_TAG
 mdefine_line|#define CP_VLAN_TX_TAG(tx_desc,vlan_tag_value) &bslash;&n;&t;do { (tx_desc)-&gt;opts2 = 0; } while (0)
+macro_line|#endif
 multiline_comment|/* These identify the driver base version and may not be removed. */
 DECL|variable|__devinitdata
 r_static
@@ -2832,7 +2839,11 @@ c_func
 id|cp
 )paren
 OG
+(paren
+id|MAX_SKB_FRAGS
+op_plus
 l_int|1
+)paren
 )paren
 )paren
 id|netif_wake_queue
@@ -2885,6 +2896,7 @@ op_amp
 id|cp-&gt;lock
 )paren
 suffix:semicolon
+multiline_comment|/* This is a hard error, log it. */
 r_if
 c_cond
 (paren
@@ -2918,6 +2930,16 @@ c_func
 (paren
 op_amp
 id|cp-&gt;lock
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;%s: BUG! Tx Ring full when queue awake!&bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -3529,24 +3551,12 @@ c_func
 (paren
 id|cp
 )paren
-OL
-l_int|0
-)paren
-id|BUG
-c_func
+op_le
 (paren
+id|MAX_SKB_FRAGS
+op_plus
+l_int|1
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|TX_BUFFS_AVAIL
-c_func
-(paren
-id|cp
-)paren
-op_eq
-l_int|0
 )paren
 id|netif_stop_queue
 c_func
@@ -3577,6 +3587,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Set or clear the multicast filter for this adaptor.&n;   This routine is not state sensitive and need not be SMP locked. */
 DECL|function|__cp_set_rx_mode
 r_static
 r_void
@@ -5200,6 +5211,10 @@ id|dev
 )paren
 )paren
 (brace
+id|dev-&gt;mtu
+op_assign
+id|new_mtu
+suffix:semicolon
 id|cp_set_rxbufsize
 c_func
 (paren
@@ -5230,6 +5245,10 @@ c_func
 (paren
 id|cp
 )paren
+suffix:semicolon
+id|dev-&gt;mtu
+op_assign
+id|new_mtu
 suffix:semicolon
 id|cp_set_rxbufsize
 c_func
@@ -5887,7 +5906,7 @@ suffix:semicolon
 macro_line|#if CP_VLAN_TAG_USED
 DECL|function|cp_vlan_rx_register
 r_static
-r_int
+r_void
 id|cp_vlan_rx_register
 c_func
 (paren
@@ -5940,9 +5959,6 @@ c_func
 op_amp
 id|cp-&gt;lock
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|cp_vlan_rx_kill_vid
