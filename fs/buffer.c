@@ -344,7 +344,7 @@ c_func
 id|bh
 )paren
 )paren
-id|schedule
+id|io_schedule
 c_func
 (paren
 )paren
