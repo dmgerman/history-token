@@ -906,16 +906,10 @@ r_void
 id|do_undefinstr
 c_func
 (paren
-r_int
-id|address
-comma
 r_struct
 id|pt_regs
 op_star
 id|regs
-comma
-r_int
-id|mode
 )paren
 (brace
 r_int
@@ -1016,7 +1010,7 @@ l_string|&quot;Oops - undefined instruction&quot;
 comma
 id|regs
 comma
-id|mode
+l_int|0
 )paren
 suffix:semicolon
 )brace
