@@ -9744,6 +9744,18 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Represents all cpu&squot;s present in the system&n; * In systems capable of hotplug, this map could dynamically grow&n; * as new cpu&squot;s are detected in the system via any platform specific&n; * method, such as ACPI for e.g.&n; */
+DECL|variable|cpu_present_map
+id|cpumask_t
+id|cpu_present_map
+suffix:semicolon
+DECL|variable|cpu_present_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_present_map
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * sys_sched_getaffinity - get the cpu affinity of a process&n; * @pid: pid of the process&n; * @len: length in bytes of the bitmask pointed to by user_mask_ptr&n; * @user_mask_ptr: user-space pointer to hold the current cpu mask&n; */
 DECL|function|sys_sched_getaffinity
 id|asmlinkage
