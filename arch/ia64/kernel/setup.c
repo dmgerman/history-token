@@ -1207,7 +1207,19 @@ suffix:semicolon
 macro_line|# endif
 )brace
 macro_line|#endif
-multiline_comment|/* enable IA-64 Machine Check Abort Handling */
+multiline_comment|/* enable IA-64 Machine Check Abort Handling unless disabled */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strstr
+c_func
+(paren
+id|saved_command_line
+comma
+l_string|&quot;nomca&quot;
+)paren
+)paren
 id|ia64_mca_init
 c_func
 (paren
