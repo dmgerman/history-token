@@ -29,9 +29,9 @@ multiline_comment|/*&n; * SA1111 register definitions.&n; */
 DECL|macro|__CCREG
 mdefine_line|#define __CCREG(x)&t;__REGP(SA1111_VBASE + (x))
 DECL|macro|sa1111_writel
-mdefine_line|#define sa1111_writel(val,addr)&t;({ *(volatile unsigned int *)(addr) = (val); })
+mdefine_line|#define sa1111_writel(val,addr)&t;__raw_writel(val, addr)
 DECL|macro|sa1111_readl
-mdefine_line|#define sa1111_readl(addr)&t;(*(volatile unsigned int *)(addr))
+mdefine_line|#define sa1111_readl(addr)&t;__raw_readl(addr)
 multiline_comment|/*&n; * System Bus Interface (SBI)&n; *&n; * Registers&n; *    SKCR&t;Control Register&n; *    SMCR&t;Shared Memory Controller Register&n; *    SKID&t;ID Register&n; */
 DECL|macro|SA1111_SKCR
 mdefine_line|#define SA1111_SKCR&t;0x0000
@@ -689,6 +689,7 @@ id|res
 suffix:semicolon
 DECL|member|mapbase
 r_void
+id|__iomem
 op_star
 id|mapbase
 suffix:semicolon

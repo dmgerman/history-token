@@ -55,6 +55,7 @@ id|lock
 suffix:semicolon
 DECL|member|base
 r_void
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -314,12 +315,19 @@ id|stat1
 comma
 id|i
 suffix:semicolon
+r_void
+id|__iomem
+op_star
+id|base
+op_assign
+id|desc-&gt;data
+suffix:semicolon
 id|stat0
 op_assign
 id|sa1111_readl
 c_func
 (paren
-id|desc-&gt;data
+id|base
 op_plus
 id|SA1111_INTSTATCLR0
 )paren
@@ -329,7 +337,7 @@ op_assign
 id|sa1111_readl
 c_func
 (paren
-id|desc-&gt;data
+id|base
 op_plus
 id|SA1111_INTSTATCLR1
 )paren
@@ -339,7 +347,7 @@ c_func
 (paren
 id|stat0
 comma
-id|desc-&gt;data
+id|base
 op_plus
 id|SA1111_INTSTATCLR0
 )paren
@@ -357,7 +365,7 @@ c_func
 (paren
 id|stat1
 comma
-id|desc-&gt;data
+id|base
 op_plus
 id|SA1111_INTSTATCLR1
 )paren
@@ -497,6 +505,7 @@ id|irq
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|mapbase
 op_assign
@@ -552,6 +561,7 @@ id|irq
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|mapbase
 op_assign
@@ -617,6 +627,7 @@ id|irq
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mapbase
 op_assign
@@ -751,6 +762,7 @@ id|irq
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mapbase
 op_assign
@@ -876,6 +888,7 @@ id|irq
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mapbase
 op_assign
@@ -979,6 +992,7 @@ id|irq
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|mapbase
 op_assign
@@ -1034,6 +1048,7 @@ id|irq
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|mapbase
 op_assign
@@ -1099,6 +1114,7 @@ id|irq
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mapbase
 op_assign
@@ -1233,6 +1249,7 @@ id|irq
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mapbase
 op_assign
@@ -1358,6 +1375,7 @@ id|irq
 )paren
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mapbase
 op_assign
@@ -1462,6 +1480,7 @@ id|sachip
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|irqbase
 op_assign
@@ -2736,6 +2755,7 @@ op_star
 id|n
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|irqbase
 op_assign
@@ -3030,7 +3050,8 @@ r_int
 r_int
 id|val
 suffix:semicolon
-r_char
+r_void
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -3326,7 +3347,8 @@ id|flags
 comma
 id|id
 suffix:semicolon
-r_char
+r_void
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -4260,6 +4282,7 @@ r_int
 id|val
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|gpio
 op_assign
@@ -4435,6 +4458,7 @@ r_int
 id|val
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|gpio
 op_assign
@@ -4554,6 +4578,7 @@ r_int
 id|val
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|gpio
 op_assign
