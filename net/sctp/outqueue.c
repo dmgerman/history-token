@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * These functions implement the outqueue class.   The outqueue handles&n; * bundling and queueing of outgoing SCTP chunks.  &n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt; &n; *    Perry Melange         &lt;pmelange@null.cc.uic.edu&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang &t;    &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *&t;&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions implement the outqueue class.   The outqueue handles&n; * bundling and queueing of outgoing SCTP chunks.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Perry Melange         &lt;pmelange@null.cc.uic.edu&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang &t;    &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt; /* For struct list_head */
 macro_line|#include &lt;linux/socket.h&gt;
@@ -426,7 +426,7 @@ id|chunk-&gt;chunk_hdr-&gt;type
 )paren
 (brace
 multiline_comment|/* Is it OK to queue data chunks?  */
-multiline_comment|/* From 9. Termination of Association&n;&t;&t; * &n;&t;&t; * When either endpoint performs a shutdown, the&n;&t;&t; * association on each peer will stop accepting new&n;&t;&t; * data from its user and only deliver data in queue&n;&t;&t; * at the time of sending or receiving the SHUTDOWN&n;&t;&t; * chunk.&n;&t;&t; */
+multiline_comment|/* From 9. Termination of Association&n;&t;&t; *&n;&t;&t; * When either endpoint performs a shutdown, the&n;&t;&t; * association on each peer will stop accepting new&n;&t;&t; * data from its user and only deliver data in queue&n;&t;&t; * at the time of sending or receiving the SHUTDOWN&n;&t;&t; * chunk.&n;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -760,7 +760,7 @@ id|transport-&gt;partial_bytes_acked
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Mark all the eligible packets on a transport for retransmission and force &n; * one packet out.&n; */
+multiline_comment|/* Mark all the eligible packets on a transport for retransmission and force&n; * one packet out.&n; */
 DECL|function|sctp_retransmit
 r_void
 id|sctp_retransmit
@@ -1734,7 +1734,7 @@ id|frag
 r_goto
 id|err
 suffix:semicolon
-multiline_comment|/* Add the middle fragment to the first fragment&squot;s &n;&t;&t; * frag_list.&n;&t;&t; */
+multiline_comment|/* Add the middle fragment to the first fragment&squot;s&n;&t;&t; * frag_list.&n;&t;&t; */
 id|list_add_tail
 c_func
 (paren
@@ -2425,6 +2425,21 @@ id|packet-&gt;has_cookie_echo
 r_goto
 id|sctp_flush_out
 suffix:semicolon
+multiline_comment|/* Don&squot;t send new data if there is still data&n;&t;&t;&t; * waiting to retransmit.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|q-&gt;retransmit
+)paren
+)paren
+r_goto
+id|sctp_flush_out
+suffix:semicolon
 )brace
 multiline_comment|/* Finally, transmit new packets.  */
 id|start_timer
@@ -2672,7 +2687,7 @@ multiline_comment|/* We could not append this chunk, so put&n;&t;&t;&t;&t; * the
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;sctp_flush_outqueue: could&quot;
+l_string|&quot;sctp_flush_outqueue: could &quot;
 l_string|&quot;not transmit TSN: 0x%x, status: %d&bslash;n&quot;
 comma
 id|ntohl
@@ -3756,7 +3771,7 @@ c_cond
 id|transport
 )paren
 (brace
-multiline_comment|/* If this chunk is being used for RTT&n;&t;&t;&t;&t; * measurement, calculate the RTT and update&n;&t;&t;&t;&t; * the RTO using this value.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * 6.3.1 C5) Karn&squot;s algorithm: RTT measurements&n;&t;&t;&t;&t; * MUST NOT be made using packets that were&n;&t;&t;&t;&t; * retransmitted (and thus for which it is&n;&t;&t;&t;&t; * ambiguous whether the reply was for the &n;&t;&t;&t;&t; * first instance of the packet or a later &n;&t;&t;&t;&t; * instance).&n;&t;&t;&t;&t; */
+multiline_comment|/* If this chunk is being used for RTT&n;&t;&t;&t;&t; * measurement, calculate the RTT and update&n;&t;&t;&t;&t; * the RTO using this value.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * 6.3.1 C5) Karn&squot;s algorithm: RTT measurements&n;&t;&t;&t;&t; * MUST NOT be made using packets that were&n;&t;&t;&t;&t; * retransmitted (and thus for which it is&n;&t;&t;&t;&t; * ambiguous whether the reply was for the&n;&t;&t;&t;&t; * first instance of the packet or a later&n;&t;&t;&t;&t; * instance).&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3842,7 +3857,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* RFC2960 7.2.4, sctpimpguide-05 2.8.2&n;&t;&t;&t;&t; * M2) Each time a SACK arrives reporting&n;&t;&t;&t;&t; * &squot;Stray DATA chunk(s)&squot; record the highest TSN&n;&t;&t;&t;&t; * reported as newly acknowledged, call this&n;&t;&t;&t;&t; * value &squot;HighestTSNinSack&squot;. A newly&n;&t;&t;&t;&t; * acknowledged DATA chunk is one not &n;&t;&t;&t;&t; * previously acknowledged in a SACK.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * When the SCTP sender of data receives a SACK&n;&t;&t;&t;&t; * chunk that acknowledges, for the first time,&n;&t;&t;&t;&t; * the receipt of a DATA chunk, all the still&n;&t;&t;&t;&t; * unacknowledged DATA chunks whose TSN is &n;&t;&t;&t;&t; * older than that newly acknowledged DATA &n;&t;&t;&t;&t; * chunk, are qualified as &squot;Stray DATA chunks&squot;.&n;&t;&t;&t;&t; */
+multiline_comment|/* RFC2960 7.2.4, sctpimpguide-05 2.8.2&n;&t;&t;&t;&t; * M2) Each time a SACK arrives reporting&n;&t;&t;&t;&t; * &squot;Stray DATA chunk(s)&squot; record the highest TSN&n;&t;&t;&t;&t; * reported as newly acknowledged, call this&n;&t;&t;&t;&t; * value &squot;HighestTSNinSack&squot;. A newly&n;&t;&t;&t;&t; * acknowledged DATA chunk is one not&n;&t;&t;&t;&t; * previously acknowledged in a SACK.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * When the SCTP sender of data receives a SACK&n;&t;&t;&t;&t; * chunk that acknowledges, for the first time,&n;&t;&t;&t;&t; * the receipt of a DATA chunk, all the still&n;&t;&t;&t;&t; * unacknowledged DATA chunks whose TSN is&n;&t;&t;&t;&t; * older than that newly acknowledged DATA&n;&t;&t;&t;&t; * chunk, are qualified as &squot;Stray DATA chunks&squot;.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4019,7 +4034,7 @@ c_func
 id|tchunk
 )paren
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.3.2 Retransmission Timer Rules&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * R4) Whenever a SACK is received missing a &n;&t;&t;&t;&t; * TSN that was previously acknowledged via a &n;&t;&t;&t;&t; * Gap Ack Block, start T3-rtx for the &n;&t;&t;&t;&t; * destination address to which the DATA &n;&t;&t;&t;&t; * chunk was originally&n;&t;&t;&t;&t; * transmitted if it is not already running.&n;&t;&t;&t;&t; */
+multiline_comment|/* RFC 2960 6.3.2 Retransmission Timer Rules&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * R4) Whenever a SACK is received missing a&n;&t;&t;&t;&t; * TSN that was previously acknowledged via a&n;&t;&t;&t;&t; * Gap Ack Block, start T3-rtx for the&n;&t;&t;&t;&t; * destination address to which the DATA&n;&t;&t;&t;&t; * chunk was originally&n;&t;&t;&t;&t; * transmitted if it is not already running.&n;&t;&t;&t;&t; */
 id|restart_timer
 op_assign
 l_int|1
