@@ -198,8 +198,8 @@ id|cfg_addr
 suffix:semicolon
 DECL|member|cfg_data
 r_volatile
-r_int
-r_char
+r_void
+id|__iomem
 op_star
 id|cfg_data
 suffix:semicolon
