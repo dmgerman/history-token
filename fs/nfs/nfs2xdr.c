@@ -43,8 +43,6 @@ DECL|macro|NFS_info_sz
 mdefine_line|#define NFS_info_sz&t;&t;5
 DECL|macro|NFS_entry_sz
 mdefine_line|#define NFS_entry_sz&t;&t;NFS_filename_sz+3
-DECL|macro|NFS_enc_void_sz
-mdefine_line|#define NFS_enc_void_sz&t;&t;0
 DECL|macro|NFS_diropargs_sz
 mdefine_line|#define NFS_diropargs_sz&t;NFS_fhandle_sz+NFS_filename_sz
 DECL|macro|NFS_sattrargs_sz
@@ -65,8 +63,6 @@ DECL|macro|NFS_symlinkargs_sz
 mdefine_line|#define NFS_symlinkargs_sz&t;NFS_diropargs_sz+NFS_path_sz+NFS_sattr_sz
 DECL|macro|NFS_readdirargs_sz
 mdefine_line|#define NFS_readdirargs_sz&t;NFS_fhandle_sz+2
-DECL|macro|NFS_dec_void_sz
-mdefine_line|#define NFS_dec_void_sz&t;&t;0
 DECL|macro|NFS_attrstat_sz
 mdefine_line|#define NFS_attrstat_sz&t;&t;1+NFS_fattr_sz
 DECL|macro|NFS_diropres_sz
@@ -620,41 +616,6 @@ suffix:semicolon
 DECL|macro|SATTR
 macro_line|#undef SATTR
 multiline_comment|/*&n; * NFS encode functions&n; */
-multiline_comment|/*&n; * Encode void argument&n; */
-r_static
-r_int
-DECL|function|nfs_xdr_enc_void
-id|nfs_xdr_enc_void
-c_func
-(paren
-r_struct
-id|rpc_rqst
-op_star
-id|req
-comma
-id|u32
-op_star
-id|p
-comma
-r_void
-op_star
-id|dummy
-)paren
-(brace
-id|req-&gt;rq_slen
-op_assign
-id|xdr_adjust_iovec
-c_func
-(paren
-id|req-&gt;rq_svec
-comma
-id|p
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Encode file handle argument&n; * GETATTR, READLINK, STATFS&n; */
 r_static
 r_int
@@ -2195,31 +2156,6 @@ id|p
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * NFS XDR decode functions&n; */
-multiline_comment|/*&n; * Decode void reply&n; */
-r_static
-r_int
-DECL|function|nfs_xdr_dec_void
-id|nfs_xdr_dec_void
-c_func
-(paren
-r_struct
-id|rpc_rqst
-op_star
-id|req
-comma
-id|u32
-op_star
-id|p
-comma
-r_void
-op_star
-id|dummy
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Decode simple status reply&n; */
 r_static
 r_int

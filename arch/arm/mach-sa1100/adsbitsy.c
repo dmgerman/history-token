@@ -1,8 +1,6 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/adsbitsy.c&n; *&n; * Author: Woojung Huh&n; *&n; * Pieces specific to the ADS Bitsy&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;

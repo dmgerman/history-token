@@ -84,6 +84,14 @@ r_int
 suffix:semicolon
 r_extern
 r_void
+id|extable_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|mca_init
 c_func
 (paren
@@ -1338,6 +1346,11 @@ id|command_line
 )paren
 suffix:semicolon
 id|trap_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|extable_init
 c_func
 (paren
 )paren

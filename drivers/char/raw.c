@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/raw.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
+macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|struct|raw_device_data
 r_struct

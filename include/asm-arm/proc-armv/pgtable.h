@@ -105,13 +105,13 @@ mdefine_line|#define L_PTE_DIRTY&t;&t;(1 &lt;&lt; 7)
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/proc/domain.h&gt;
 DECL|macro|_PAGE_USER_TABLE
-mdefine_line|#define _PAGE_USER_TABLE&t;(PMD_TYPE_TABLE | PMD_DOMAIN(DOMAIN_USER))
+mdefine_line|#define _PAGE_USER_TABLE&t;(PMD_TYPE_TABLE | PMD_BIT4 | PMD_DOMAIN(DOMAIN_USER))
 DECL|macro|_PAGE_KERNEL_TABLE
-mdefine_line|#define _PAGE_KERNEL_TABLE&t;(PMD_TYPE_TABLE | PMD_DOMAIN(DOMAIN_KERNEL))
+mdefine_line|#define _PAGE_KERNEL_TABLE&t;(PMD_TYPE_TABLE | PMD_BIT4 | PMD_DOMAIN(DOMAIN_KERNEL))
 DECL|macro|pmd_bad
 mdefine_line|#define pmd_bad(pmd)&t;&t;(pmd_val(pmd) &amp; 2)
 DECL|macro|set_pmd
-mdefine_line|#define set_pmd(pmdp,pmd)&t;cpu_set_pmd(pmdp, pmd)
+mdefine_line|#define set_pmd(pmdp,pmd)&t;do { *pmdp = pmd; cpu_flush_pmd(pmdp); } while (0)
 DECL|function|pmd_clear
 r_static
 r_inline
@@ -124,10 +124,10 @@ op_star
 id|pmdp
 )paren
 (brace
-id|set_pmd
-c_func
-(paren
 id|pmdp
+(braket
+l_int|0
+)braket
 comma
 id|__pmd
 c_func
@@ -136,18 +136,22 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|set_pmd
-c_func
-(paren
 id|pmdp
-op_plus
+(braket
 l_int|1
+)braket
 comma
 id|__pmd
 c_func
 (paren
 l_int|0
 )paren
+)paren
+suffix:semicolon
+id|cpu_flush_pmd
+c_func
+(paren
+id|pmdp
 )paren
 suffix:semicolon
 )brace

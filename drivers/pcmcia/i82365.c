@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -63,7 +64,7 @@ mdefine_line|#define DEBUG(n, args...) do { } while (0)
 macro_line|#endif
 r_static
 r_void
-id|irq_count
+id|i365_count_irq
 c_func
 (paren
 r_int
@@ -98,13 +99,13 @@ c_func
 (paren
 id|irq
 comma
-id|irq_count
+id|i365_count_irq
 comma
 id|flags
 comma
 l_string|&quot;x&quot;
 comma
-id|irq_count
+id|i365_count_irq
 )paren
 op_ne
 l_int|0
@@ -118,7 +119,7 @@ c_func
 (paren
 id|irq
 comma
-id|irq_count
+id|i365_count_irq
 )paren
 suffix:semicolon
 r_return
@@ -2416,10 +2417,10 @@ r_static
 id|u_short
 id|irq_sock
 suffix:semicolon
-DECL|function|irq_count
+DECL|function|i365_count_irq
 r_static
 r_void
-id|irq_count
+id|i365_count_irq
 c_func
 (paren
 r_int
@@ -2489,13 +2490,13 @@ c_func
 (paren
 id|irq
 comma
-id|irq_count
+id|i365_count_irq
 comma
 l_int|0
 comma
 l_string|&quot;scan&quot;
 comma
-id|irq_count
+id|i365_count_irq
 )paren
 op_ne
 l_int|0
@@ -2536,7 +2537,7 @@ c_func
 (paren
 id|irq
 comma
-id|irq_count
+id|i365_count_irq
 )paren
 suffix:semicolon
 id|DEBUG
@@ -2589,7 +2590,7 @@ c_func
 (paren
 id|irq
 comma
-id|irq_count
+id|i365_count_irq
 )paren
 suffix:semicolon
 multiline_comment|/* mask all interrupts */
