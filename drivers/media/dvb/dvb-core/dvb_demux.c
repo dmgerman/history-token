@@ -307,7 +307,7 @@ id|crc
 suffix:semicolon
 id|crc
 op_assign
-id|crc32_le
+id|crc32_be
 c_func
 (paren
 op_complement
@@ -398,7 +398,7 @@ r_return
 (paren
 id|f-&gt;feed.sec.crc_val
 op_assign
-id|crc32_le
+id|crc32_be
 (paren
 id|f-&gt;feed.sec.crc_val
 comma

@@ -14,9 +14,9 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dvb_functions.h&quot;
-macro_line|#ifndef CONFIG_TDA1004X_MC_LOCATION
-DECL|macro|CONFIG_TDA1004X_MC_LOCATION
-mdefine_line|#define CONFIG_TDA1004X_MC_LOCATION &quot;/etc/dvb/tda1004x.mc&quot;
+macro_line|#ifndef DVB_TDA1004X_FIRMWARE_FILE
+DECL|macro|DVB_TDA1004X_FIRMWARE_FILE
+mdefine_line|#define DVB_TDA1004X_FIRMWARE_FILE &quot;/etc/dvb/tda1004x.mc&quot;
 macro_line|#endif
 DECL|variable|tda1004x_debug
 r_static
@@ -31,7 +31,7 @@ r_char
 op_star
 id|tda1004x_firmware
 op_assign
-id|CONFIG_TDA1004X_MC_LOCATION
+id|DVB_TDA1004X_FIRMWARE_FILE
 suffix:semicolon
 DECL|macro|TDA10045H_ADDRESS
 mdefine_line|#define TDA10045H_ADDRESS        0x08
