@@ -368,15 +368,13 @@ l_int|0x80
 )braket
 suffix:semicolon
 multiline_comment|/* register cache */
-DECL|member|reg_accessed
-r_int
-r_int
+id|bitmap_member
+c_func
+(paren
 id|reg_accessed
-(braket
+comma
 l_int|0x80
-op_div
-id|BITS_PER_LONG
-)braket
+)paren
 suffix:semicolon
 multiline_comment|/* bit flags */
 r_union
