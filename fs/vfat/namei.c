@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 DECL|macro|DEBUG_LEVEL
 mdefine_line|#define DEBUG_LEVEL 0
 macro_line|#if (DEBUG_LEVEL &gt;= 1)
@@ -209,6 +210,11 @@ op_star
 id|nd
 )paren
 (brace
+r_int
+id|ret
+op_assign
+l_int|1
+suffix:semicolon
 id|PRINTK1
 c_func
 (paren
@@ -229,31 +235,47 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|nd
+op_logical_and
+op_logical_neg
+(paren
+id|nd-&gt;flags
+op_amp
+id|LOOKUP_CONTINUE
+)paren
+op_logical_and
+(paren
+id|nd-&gt;flags
+op_amp
+id|LOOKUP_CREATE
+)paren
+)paren
+multiline_comment|/*&n;&t;&t; * negative dentry is dropped, in order to make sure&n;&t;&t; * to use the name which a user desires if this is&n;&t;&t; * create path.&n;&t;&t; */
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
 id|dentry-&gt;d_time
-op_eq
+op_ne
 id|dentry-&gt;d_parent-&gt;d_inode-&gt;i_version
 )paren
-(brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|dcache_lock
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|dcache_lock
-)paren
-suffix:semicolon
-r_return
+id|ret
+op_assign
 l_int|0
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dcache_lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 r_static
