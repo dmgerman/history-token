@@ -180,7 +180,10 @@ suffix:semicolon
 DECL|typedef|efi_freemem_callback_t
 r_typedef
 r_int
+(paren
+op_star
 id|efi_freemem_callback_t
+)paren
 (paren
 r_int
 r_int
