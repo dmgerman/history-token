@@ -318,7 +318,7 @@ suffix:semicolon
 DECL|macro|prepare_to_switch
 mdefine_line|#define prepare_to_switch()&t;do { } while(0)
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next) _switch_to((prev),(next))
+mdefine_line|#define switch_to(prev,next,last) _switch_to((prev),(next))
 r_extern
 r_void
 id|_switch_to
@@ -333,6 +333,14 @@ id|task_struct
 op_star
 )paren
 suffix:semicolon
+DECL|macro|prepare_arch_schedule
+mdefine_line|#define prepare_arch_schedule(prev)&t;&t;do { } while(0)
+DECL|macro|finish_arch_schedule
+mdefine_line|#define finish_arch_schedule(prev)&t;&t;do { } while(0)
+DECL|macro|prepare_arch_switch
+mdefine_line|#define prepare_arch_switch(rq)&t;&t;&t;do { } while(0)
+DECL|macro|finish_arch_switch
+mdefine_line|#define finish_arch_switch(rq)&t;&t;&t;spin_unlock_irq(&amp;(rq)-&gt;lock)
 r_struct
 id|thread_struct
 suffix:semicolon
