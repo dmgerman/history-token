@@ -3463,21 +3463,10 @@ c_func
 r_void
 )paren
 (brace
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME: Do we need this? --RR */
 id|setup_APIC_timer
 c_func
 (paren
 id|calibration_result
-)paren
-suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
