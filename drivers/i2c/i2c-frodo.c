@@ -278,8 +278,6 @@ id|frodo_ops
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|i2c_frodo_exit
 r_static
 r_void
@@ -306,14 +304,10 @@ id|MODULE_DESCRIPTION
 l_string|&quot;I2C-Bus adapter routines for Frodo&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE_LICENSE
 id|MODULE_LICENSE
 (paren
 l_string|&quot;GPL&quot;
 )paren
-suffix:semicolon
-macro_line|#endif&t;/* #ifdef MODULE_LICENSE */
-id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 DECL|variable|i2c_frodo_init
 id|module_init
