@@ -5288,6 +5288,10 @@ id|gendisk
 op_star
 id|disk
 suffix:semicolon
+r_char
+op_star
+id|major_name
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5697,7 +5701,7 @@ id|gendisk
 )paren
 )paren
 suffix:semicolon
-id|disk-&gt;major_name
+id|major_name
 op_assign
 id|kmalloc
 c_func
@@ -5711,7 +5715,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|disk-&gt;major_name
+id|major_name
 )paren
 (brace
 id|kfree
@@ -5744,7 +5748,7 @@ suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|disk-&gt;major_name
+id|major_name
 comma
 l_string|&quot;md%d&quot;
 comma
@@ -5754,6 +5758,10 @@ c_func
 id|mddev
 )paren
 )paren
+suffix:semicolon
+id|disk-&gt;major_name
+op_assign
+id|major_name
 suffix:semicolon
 id|disk-&gt;part
 op_assign
