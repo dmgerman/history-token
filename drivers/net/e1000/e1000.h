@@ -71,7 +71,10 @@ DECL|macro|E1000_RXBUFFER_16384
 mdefine_line|#define E1000_RXBUFFER_16384 16384
 multiline_comment|/* How many Tx Descriptors do we need to call netif_wake_queue ? */
 DECL|macro|E1000_TX_QUEUE_WAKE
-mdefine_line|#define E1000_TX_QUEUE_WAKE 16
+mdefine_line|#define E1000_TX_QUEUE_WAKE&t;16
+multiline_comment|/* How many Rx Buffers do we bundle into one write to the hardware ? */
+DECL|macro|E1000_RX_BUFFER_WRITE
+mdefine_line|#define E1000_RX_BUFFER_WRITE&t;16
 DECL|macro|E1000_JUMBO_PBA
 mdefine_line|#define E1000_JUMBO_PBA      0x00000028
 DECL|macro|E1000_DEFAULT_PBA
@@ -226,10 +229,6 @@ DECL|member|irq_sem
 id|atomic_t
 id|irq_sem
 suffix:semicolon
-DECL|member|rx_csum
-id|boolean_t
-id|rx_csum
-suffix:semicolon
 multiline_comment|/* TX */
 DECL|member|tx_ring
 r_struct
@@ -270,6 +269,10 @@ suffix:semicolon
 DECL|member|rx_int_delay
 r_uint32
 id|rx_int_delay
+suffix:semicolon
+DECL|member|rx_csum
+id|boolean_t
+id|rx_csum
 suffix:semicolon
 multiline_comment|/* OS defined structs */
 DECL|member|netdev
