@@ -891,6 +891,12 @@ r_int
 r_int
 id|nr_reclaimed
 suffix:semicolon
+DECL|member|nr_mapped
+r_int
+r_int
+id|nr_mapped
+suffix:semicolon
+multiline_comment|/* From page_state */
 multiline_comment|/* Ask shrink_caches, or shrink_zone to scan at this priority */
 DECL|member|priority
 r_int
@@ -902,11 +908,6 @@ DECL|member|gfp_mask
 r_int
 r_int
 id|gfp_mask
-suffix:semicolon
-DECL|member|ps
-r_struct
-id|page_state
-id|ps
 suffix:semicolon
 DECL|member|may_writepage
 r_int
@@ -2293,7 +2294,7 @@ multiline_comment|/*&n;&t; * The point of this algorithm is to decide when to st
 id|mapped_ratio
 op_assign
 (paren
-id|sc-&gt;ps.nr_mapped
+id|sc-&gt;nr_mapped
 op_star
 l_int|100
 )paren
@@ -3205,11 +3206,12 @@ id|priority
 op_decrement
 )paren
 (brace
-id|get_page_state
+id|sc.nr_mapped
+op_assign
+id|read_page_state
 c_func
 (paren
-op_amp
-id|sc.ps
+id|nr_mapped
 )paren
 suffix:semicolon
 id|sc.nr_scanned
@@ -3444,11 +3446,12 @@ id|sc.may_writepage
 op_assign
 l_int|0
 suffix:semicolon
-id|get_page_state
+id|sc.nr_mapped
+op_assign
+id|read_page_state
 c_func
 (paren
-op_amp
-id|sc.ps
+id|nr_mapped
 )paren
 suffix:semicolon
 id|inc_page_state
