@@ -1252,6 +1252,19 @@ l_string|&quot;Pro 266&quot;
 comma
 )brace
 comma
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_XN266
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;Apollo Pro266&quot;
+comma
+)brace
+comma
 multiline_comment|/* VT8361 */
 (brace
 dot
