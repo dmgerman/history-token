@@ -1005,9 +1005,6 @@ op_star
 id|xdr
 )paren
 (brace
-id|mm_segment_t
-id|oldfs
-suffix:semicolon
 r_struct
 id|svc_sock
 op_star
@@ -1021,10 +1018,6 @@ op_star
 id|sock
 op_assign
 id|svsk-&gt;sk_sock
-suffix:semicolon
-r_struct
-id|msghdr
-id|msg
 suffix:semicolon
 r_int
 id|slen
@@ -1069,6 +1062,27 @@ id|slen
 op_assign
 id|xdr-&gt;len
 suffix:semicolon
+multiline_comment|/* Grab svsk-&gt;sk_sem to serialize outgoing data. */
+id|down
+c_func
+(paren
+op_amp
+id|svsk-&gt;sk_sem
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rqstp-&gt;rq_prot
+op_eq
+id|IPPROTO_UDP
+)paren
+(brace
+multiline_comment|/* set the destination */
+r_struct
+id|msghdr
+id|msg
+suffix:semicolon
 id|msg.msg_name
 op_assign
 op_amp
@@ -1101,30 +1115,9 @@ id|msg.msg_flags
 op_assign
 id|MSG_MORE
 suffix:semicolon
-multiline_comment|/* Grab svsk-&gt;sk_sem to serialize outgoing data. */
-id|down
-c_func
+r_if
+c_cond
 (paren
-op_amp
-id|svsk-&gt;sk_sem
-)paren
-suffix:semicolon
-multiline_comment|/* set the destination */
-id|oldfs
-op_assign
-id|get_fs
-c_func
-(paren
-)paren
-suffix:semicolon
-id|set_fs
-c_func
-(paren
-id|KERNEL_DS
-)paren
-suffix:semicolon
-id|len
-op_assign
 id|sock_sendmsg
 c_func
 (paren
@@ -1135,23 +1128,13 @@ id|msg
 comma
 l_int|0
 )paren
-suffix:semicolon
-id|set_fs
-c_func
-(paren
-id|oldfs
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
 OL
 l_int|0
 )paren
 r_goto
 id|out
 suffix:semicolon
+)brace
 multiline_comment|/* send head */
 r_if
 c_cond
