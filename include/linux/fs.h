@@ -1674,6 +1674,10 @@ r_struct
 id|file_ra_state
 id|f_ra
 suffix:semicolon
+DECL|member|f_maxcount
+r_int
+id|f_maxcount
+suffix:semicolon
 DECL|member|f_version
 r_int
 r_int
