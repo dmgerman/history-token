@@ -825,18 +825,18 @@ r_struct
 id|list_head
 id|slaves
 suffix:semicolon
-multiline_comment|/* list of all bundled channels     */
+multiline_comment|/* list of all bundled channels    &n;&t;&t;&t;&t;&t;  protected by serializing config&n;&t;&t;&t;&t;&t;  ioctls / no change allowed when&n;&t;&t;&t;&t;&t;  interface is running             */
 DECL|member|online
 r_struct
 id|list_head
 id|online
 suffix:semicolon
-multiline_comment|/* list of all bundled channels, &n;&t;&t;&t;&t;&t;  which are currently online       */
-DECL|member|online_lock
+multiline_comment|/* circular list of all bundled&n;&t;&t;&t;&t;&t;  channels, which are currently&n;&t;&t;&t;&t;&t;  online                           &n;&t;&t;&t;&t;&t;  protected by xmit_lock           */
+DECL|member|xmit_lock
 id|spinlock_t
-id|online_lock
+id|xmit_lock
 suffix:semicolon
-multiline_comment|/* lock to protect online list      */
+multiline_comment|/* used to protect the xmit path of &n;&t;&t;&t;&t;&t;  a net_device, including all&n;&t;&t;&t;&t;&t;  associated channels&squot;s frame_cnt  */
 DECL|member|running_devs
 r_struct
 id|list_head
@@ -1033,13 +1033,6 @@ r_int
 id|ppp_slot
 suffix:semicolon
 multiline_comment|/* PPPD device slot number          */
-DECL|member|xmit_lock
-id|spinlock_t
-id|xmit_lock
-suffix:semicolon
-multiline_comment|/* used to protect the xmit path of */
-multiline_comment|/* a particular channel (including  */
-multiline_comment|/* the frame_cnt                    */
 DECL|member|super_tx_queue
 r_struct
 id|sk_buff_head
@@ -1048,7 +1041,7 @@ suffix:semicolon
 multiline_comment|/* List of supervisory frames to  */
 multiline_comment|/* be transmitted asap              */
 DECL|member|frame_cnt
-id|atomic_t
+r_int
 id|frame_cnt
 suffix:semicolon
 multiline_comment|/* number of frames currently       */
