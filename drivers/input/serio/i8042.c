@@ -254,7 +254,7 @@ id|i8042_debug
 comma
 r_bool
 comma
-l_int|600
+l_int|0600
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
