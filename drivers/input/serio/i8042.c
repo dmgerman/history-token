@@ -9,9 +9,6 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#include &quot;i8042.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -95,6 +92,9 @@ r_static
 r_int
 id|i8042_dumbkbd
 suffix:semicolon
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
+macro_line|#include &quot;i8042.h&quot;
 DECL|variable|i8042_lock
 id|spinlock_t
 id|i8042_lock
@@ -1304,11 +1304,6 @@ id|i8042_kbd_values
 op_assign
 (brace
 dot
-id|irq
-op_assign
-id|I8042_KBD_IRQ
-comma
-dot
 id|irqen
 op_assign
 id|I8042_CTR_KBDINT
@@ -1383,11 +1378,6 @@ id|i8042_values
 id|i8042_aux_values
 op_assign
 (brace
-dot
-id|irq
-op_assign
-id|I8042_AUX_IRQ
-comma
 dot
 id|irqen
 op_assign
@@ -3285,6 +3275,14 @@ c_func
 r_return
 op_minus
 id|EBUSY
+suffix:semicolon
+id|i8042_aux_values.irq
+op_assign
+id|I8042_AUX_IRQ
+suffix:semicolon
+id|i8042_kbd_values.irq
+op_assign
+id|I8042_KBD_IRQ
 suffix:semicolon
 r_if
 c_cond
