@@ -122,6 +122,13 @@ r_union
 r_struct
 (brace
 multiline_comment|/* It is a directory or $MFT. */
+DECL|member|bmp_ino
+r_struct
+id|inode
+op_star
+id|bmp_ino
+suffix:semicolon
+multiline_comment|/* Attribute inode for the&n;&t;&t;&t;&t;&t;&t;   directory index $BITMAP. */
 DECL|member|index_block_size
 id|u32
 id|index_block_size
@@ -132,26 +139,6 @@ id|u32
 id|index_vcn_size
 suffix:semicolon
 multiline_comment|/* Size of a vcn in this&n;&t;&t;&t;&t;&t;&t;   directory index. */
-DECL|member|bmp_size
-id|s64
-id|bmp_size
-suffix:semicolon
-multiline_comment|/* Size of the $I30 bitmap. */
-DECL|member|bmp_initialized_size
-id|s64
-id|bmp_initialized_size
-suffix:semicolon
-multiline_comment|/* Copy from $I30 bitmap. */
-DECL|member|bmp_allocated_size
-id|s64
-id|bmp_allocated_size
-suffix:semicolon
-multiline_comment|/* Copy from $I30 bitmap. */
-DECL|member|bmp_rl
-id|run_list
-id|bmp_rl
-suffix:semicolon
-multiline_comment|/* Run list for the $I30 bitmap&n;&t;&t;&t;&t;&t;&t;   if it is non-resident. */
 DECL|member|index_block_size_bits
 id|u8
 id|index_block_size_bits
@@ -294,10 +281,6 @@ DECL|enumerator|NI_Sparse
 id|NI_Sparse
 comma
 multiline_comment|/* 1: Unnamed data attr is sparse (f).&n;&t;&t;&t;&t;   1: Create sparse files by default (d).&n;&t;&t;&t;&t;   1: Attribute is sparse (a). */
-DECL|enumerator|NI_BmpNonResident
-id|NI_BmpNonResident
-comma
-multiline_comment|/* 1: $I30 bitmap attr is non resident (d). */
 DECL|typedef|ntfs_inode_state_bits
 )brace
 id|ntfs_inode_state_bits
@@ -356,11 +339,6 @@ id|NINO_FNS
 c_func
 (paren
 id|Sparse
-)paren
-id|NINO_FNS
-c_func
-(paren
-id|BmpNonResident
 )paren
 multiline_comment|/*&n; * The full structure containing a ntfs_inode and a vfs struct inode. Used for&n; * all real and fake inodes but not for extent inodes which lack the vfs struct&n; * inode.&n; */
 r_typedef
@@ -553,6 +531,17 @@ suffix:semicolon
 r_extern
 r_void
 id|ntfs_dirty_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|vi
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ntfs_put_inode
 c_func
 (paren
 r_struct

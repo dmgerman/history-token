@@ -5178,10 +5178,11 @@ id|ntfs_dirty_inode
 comma
 multiline_comment|/* VFS: Called from&n;&t;&t;&t;&t;&t;&t;   __mark_inode_dirty(). */
 singleline_comment|//write_inode:&t;NULL,&t;&t;/* VFS: Write dirty inode to disk. */
-singleline_comment|//put_inode:&t;NULL,&t;&t;/* VFS: Called whenever the reference
-singleline_comment|//&t;&t;&t;&t;   count (i_count) of the inode is
-singleline_comment|//&t;&t;&t;&t;   going to be decreased but before the
-singleline_comment|//&t;&t;&t;&t;   actual decrease. */
+id|put_inode
+suffix:colon
+id|ntfs_put_inode
+comma
+multiline_comment|/* VFS: Called just before the inode&n;&t;&t;&t;&t;&t;   reference count is decreased. */
 singleline_comment|//delete_inode:&t;NULL,&t;&t;/* VFS: Delete inode from disk. Called
 singleline_comment|//&t;&t;&t;&t;   when i_count becomes 0 and i_nlink is
 singleline_comment|//&t;&t;&t;&t;   also 0. */
