@@ -6010,6 +6010,10 @@ c_cond
 id|up-&gt;capabilities
 op_amp
 id|UART_USE_FIFO
+op_logical_and
+id|up-&gt;port.fifosize
+OG
+l_int|1
 )paren
 (brace
 r_if
