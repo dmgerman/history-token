@@ -2,6 +2,7 @@ multiline_comment|/**&n; * @file op_model_ppro.h&n; * pentium pro / P6 model-spe
 macro_line|#include &lt;linux/oprofile.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
+macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &quot;op_x86_model.h&quot;
 macro_line|#include &quot;op_counter.h&quot;
 DECL|macro|NUM_COUNTERS
@@ -453,6 +454,22 @@ id|i
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Only P6 based Pentium M need to re-unmask the apic vector but it&n;&t; * doesn&squot;t hurt other P6 variant */
+id|apic_write
+c_func
+(paren
+id|APIC_LVTPC
+comma
+id|apic_read
+c_func
+(paren
+id|APIC_LVTPC
+)paren
+op_amp
+op_complement
+id|APIC_LVT_MASKED
+)paren
+suffix:semicolon
 multiline_comment|/* We can&squot;t work out if we really handled an interrupt. We&n;&t; * might have caught a *second* counter just after overflowing&n;&t; * the interrupt for this counter then arrives&n;&t; * and we don&squot;t find a counter that&squot;s overflowed, so we&n;&t; * would return 0 and get dazed + confused. Instead we always&n;&t; * assume we found an overflow. This sucks.&n;&t; */
 r_return
 l_int|1
