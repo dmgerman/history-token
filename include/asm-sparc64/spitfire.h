@@ -37,6 +37,10 @@ DECL|macro|PHYS_WATCHPOINT
 mdefine_line|#define PHYS_WATCHPOINT&t;&t;0x0000000000000040
 DECL|macro|SPITFIRE_HIGHEST_LOCKED_TLBENT
 mdefine_line|#define SPITFIRE_HIGHEST_LOCKED_TLBENT&t;(64 - 1)
+DECL|macro|CHEETAH_HIGHEST_LOCKED_TLBENT
+mdefine_line|#define CHEETAH_HIGHEST_LOCKED_TLBENT&t;(16 - 1)
+DECL|macro|L1DCACHE_SIZE
+mdefine_line|#define L1DCACHE_SIZE&t;&t;0x4000
 macro_line|#ifndef __ASSEMBLY__
 DECL|enum|ultra_tlb_layout
 r_enum
@@ -64,10 +68,6 @@ r_enum
 id|ultra_tlb_layout
 id|tlb_type
 suffix:semicolon
-DECL|macro|CHEETAH_HIGHEST_LOCKED_TLBENT
-mdefine_line|#define CHEETAH_HIGHEST_LOCKED_TLBENT&t;(16 - 1)
-DECL|macro|L1DCACHE_SIZE
-mdefine_line|#define L1DCACHE_SIZE&t;&t;0x4000
 DECL|macro|sparc64_highest_locked_tlbent
 mdefine_line|#define sparc64_highest_locked_tlbent()&t;&bslash;&n;&t;(tlb_type == spitfire ? &bslash;&n;&t; SPITFIRE_HIGHEST_LOCKED_TLBENT : &bslash;&n;&t; CHEETAH_HIGHEST_LOCKED_TLBENT)
 DECL|function|spitfire_get_isfsr
