@@ -141,16 +141,6 @@ l_int|8
 )paren
 comma
 multiline_comment|/* force updates to disk                   */
-DECL|enumerator|PBF_MAPPABLE
-id|PBF_MAPPABLE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|9
-)paren
-comma
-multiline_comment|/* use directly-addressable pages          */
 DECL|enumerator|PBF_STALE
 id|PBF_STALE
 op_assign
@@ -1356,13 +1346,13 @@ mdefine_line|#define XFS_BUF_SET_VTYPE(bp, type)
 DECL|macro|XFS_BUF_SET_REF
 mdefine_line|#define XFS_BUF_SET_REF(bp, ref)
 DECL|macro|xfs_buf_read
-mdefine_line|#define xfs_buf_read(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), &bslash;&n;&t;&t;&t;PBF_LOCK | PBF_READ | PBF_MAPPED | PBF_MAPPABLE)
+mdefine_line|#define xfs_buf_read(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), &bslash;&n;&t;&t;&t;PBF_LOCK | PBF_READ | PBF_MAPPED)
 DECL|macro|xfs_buf_get
-mdefine_line|#define xfs_buf_get(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), &bslash;&n;&t;&t;&t;PBF_LOCK | PBF_MAPPED | PBF_MAPPABLE)
+mdefine_line|#define xfs_buf_get(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), &bslash;&n;&t;&t;&t;PBF_LOCK | PBF_MAPPED)
 DECL|macro|xfs_buf_read_flags
-mdefine_line|#define xfs_buf_read_flags(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), &bslash;&n;&t;&t;&t;PBF_READ | PBF_MAPPABLE | flags)
+mdefine_line|#define xfs_buf_read_flags(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), PBF_READ | (flags))
 DECL|macro|xfs_buf_get_flags
-mdefine_line|#define xfs_buf_get_flags(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), &bslash;&n;&t;&t;&t;PBF_MAPPABLE | flags)
+mdefine_line|#define xfs_buf_get_flags(target, blkno, len, flags) &bslash;&n;&t;&t;pagebuf_get((target), (blkno), (len), (flags))
 DECL|function|xfs_bawrite
 r_static
 r_inline
