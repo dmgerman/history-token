@@ -1934,9 +1934,9 @@ id|err
 suffix:semicolon
 )brace
 )brace
-DECL|function|singlestepping
+DECL|function|singlestepping_tt
 r_int
-id|singlestepping
+id|singlestepping_tt
 c_func
 (paren
 r_void
