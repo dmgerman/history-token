@@ -4314,23 +4314,9 @@ id|acpi_fadt.sci_int
 op_eq
 id|entry-&gt;bus_irq
 )paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * See the note at the end of ACPI 2.0b section&n;&t;&t;&t;&t; * 5.2.10.8 for what this is about.&n;&t;&t;&t;&t; */
-id|flags
-op_assign
-id|entry-&gt;flags
+r_goto
+id|found
 suffix:semicolon
-id|acpi_fadt.sci_int
-op_assign
-id|entry-&gt;global_irq
-suffix:semicolon
-id|irq
-op_assign
-id|entry-&gt;global_irq
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|entry
 op_assign
 (paren
@@ -4350,6 +4336,24 @@ id|entry-&gt;header.length
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n;&t; * Although the ACPI spec says that the SCI should be level/low&n;&t; * don&squot;t reprogram it unless there is an explicit MADT OVR entry&n;&t; * instructing us to do so -- otherwise we break Tyan boards which&n;&t; * have the SCI wired edge/high but no MADT OVR.&n;&t; */
+r_return
+suffix:semicolon
+id|found
+suffix:colon
+multiline_comment|/*&n;&t; * See the note at the end of ACPI 2.0b section&n;&t; * 5.2.10.8 for what this is about.&n;&t; */
+id|flags
+op_assign
+id|entry-&gt;flags
+suffix:semicolon
+id|acpi_fadt.sci_int
+op_assign
+id|entry-&gt;global_irq
+suffix:semicolon
+id|irq
+op_assign
+id|entry-&gt;global_irq
+suffix:semicolon
 id|ioapic
 op_assign
 id|mp_find_ioapic
@@ -4369,30 +4373,6 @@ id|ioapic
 dot
 id|irq_start
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|flags.polarity
-op_eq
-l_int|0
-)paren
-id|flags.polarity
-op_assign
-l_int|0x3
-suffix:semicolon
-multiline_comment|/* Active low */
-r_if
-c_cond
-(paren
-id|flags.trigger
-op_eq
-l_int|0
-)paren
-id|flags.trigger
-op_assign
-l_int|0x3
-suffix:semicolon
-multiline_comment|/* Level-triggered */
 id|io_apic_set_pci_routing
 c_func
 (paren
