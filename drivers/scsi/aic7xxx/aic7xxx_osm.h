@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * Copyright (c) 1994 John Aycock&n; *   The University of Calgary Department of Computer Science.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7xxx_linux.h#72 $&n; *&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7xxx_linux.h#72 $&n; *&n; */
+multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * Copyright (c) 1994 John Aycock&n; *   The University of Calgary Department of Computer Science.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7xxx_osm.h#90 $&n; *&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic7xxx_osm.h#90 $&n; *&n; */
 macro_line|#ifndef _AIC7XXX_LINUX_H_
 DECL|macro|_AIC7XXX_LINUX_H_
 mdefine_line|#define _AIC7XXX_LINUX_H_
@@ -7,9 +7,12 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#ifndef AHC_MODVERSION_FILE
+DECL|macro|__NO_VERSION__
+mdefine_line|#define __NO_VERSION__
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#ifndef KERNEL_VERSION
@@ -17,7 +20,11 @@ DECL|macro|KERNEL_VERSION
 mdefine_line|#define KERNEL_VERSION(x,y,z) (((x)&lt;&lt;16)+((y)&lt;&lt;8)+(z))
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
+macro_line|#include &lt;linux/interrupt.h&gt; /* For tasklet support. */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#else
+macro_line|#include &lt;linux/malloc.h&gt;
 macro_line|#endif
 multiline_comment|/* Core SCSI definitions */
 macro_line|#include &quot;../scsi.h&quot;
@@ -30,6 +37,20 @@ macro_line|#endif
 macro_line|#include &quot;cam.h&quot;
 macro_line|#include &quot;queue.h&quot;
 macro_line|#include &quot;scsi_message.h&quot;
+multiline_comment|/*********************************** Debugging ********************************/
+macro_line|#ifdef CONFIG_AIC7XXX_DEBUG_ENABLE
+macro_line|#ifdef CONFIG_AIC7XXX_DEBUG_MASK
+DECL|macro|AHC_DEBUG
+mdefine_line|#define AHC_DEBUG 1
+DECL|macro|AHC_DEBUG_OPTS
+mdefine_line|#define AHC_DEBUG_OPTS CONFIG_AIC7XXX_DEBUG_MASK
+macro_line|#else
+multiline_comment|/*&n; * Compile in debugging code, but do not enable any printfs.&n; */
+DECL|macro|AHC_DEBUG
+mdefine_line|#define AHC_DEBUG 1
+macro_line|#endif
+multiline_comment|/* No debugging code. */
+macro_line|#endif
 multiline_comment|/************************* Forward Declarations *******************************/
 r_struct
 id|ahc_softc
@@ -94,6 +115,10 @@ multiline_comment|/************************* Configuration Data ****************
 r_extern
 r_int
 id|aic7xxx_no_probe
+suffix:semicolon
+r_extern
+r_int
+id|aic7xxx_allow_memio
 suffix:semicolon
 r_extern
 r_int
@@ -489,6 +514,14 @@ DECL|member|error_code
 r_uint8
 id|error_code
 suffix:semicolon
+DECL|macro|SSD_ERRCODE
+mdefine_line|#define&t;SSD_ERRCODE&t;&t;&t;0x7F
+DECL|macro|SSD_CURRENT_ERROR
+mdefine_line|#define&t;&t;SSD_CURRENT_ERROR&t;0x70
+DECL|macro|SSD_DEFERRED_ERROR
+mdefine_line|#define&t;&t;SSD_DEFERRED_ERROR&t;0x71
+DECL|macro|SSD_ERRCODE_VALID
+mdefine_line|#define&t;SSD_ERRCODE_VALID&t;&t;0x80
 DECL|member|segment
 r_uint8
 id|segment
@@ -497,6 +530,46 @@ DECL|member|flags
 r_uint8
 id|flags
 suffix:semicolon
+DECL|macro|SSD_KEY
+mdefine_line|#define&t;SSD_KEY&t;&t;&t;&t;0x0F
+DECL|macro|SSD_KEY_NO_SENSE
+mdefine_line|#define&t;&t;SSD_KEY_NO_SENSE&t;0x00
+DECL|macro|SSD_KEY_RECOVERED_ERROR
+mdefine_line|#define&t;&t;SSD_KEY_RECOVERED_ERROR&t;0x01
+DECL|macro|SSD_KEY_NOT_READY
+mdefine_line|#define&t;&t;SSD_KEY_NOT_READY&t;0x02
+DECL|macro|SSD_KEY_MEDIUM_ERROR
+mdefine_line|#define&t;&t;SSD_KEY_MEDIUM_ERROR&t;0x03
+DECL|macro|SSD_KEY_HARDWARE_ERROR
+mdefine_line|#define&t;&t;SSD_KEY_HARDWARE_ERROR&t;0x04
+DECL|macro|SSD_KEY_ILLEGAL_REQUEST
+mdefine_line|#define&t;&t;SSD_KEY_ILLEGAL_REQUEST&t;0x05
+DECL|macro|SSD_KEY_UNIT_ATTENTION
+mdefine_line|#define&t;&t;SSD_KEY_UNIT_ATTENTION&t;0x06
+DECL|macro|SSD_KEY_DATA_PROTECT
+mdefine_line|#define&t;&t;SSD_KEY_DATA_PROTECT&t;0x07
+DECL|macro|SSD_KEY_BLANK_CHECK
+mdefine_line|#define&t;&t;SSD_KEY_BLANK_CHECK&t;0x08
+DECL|macro|SSD_KEY_Vendor_Specific
+mdefine_line|#define&t;&t;SSD_KEY_Vendor_Specific&t;0x09
+DECL|macro|SSD_KEY_COPY_ABORTED
+mdefine_line|#define&t;&t;SSD_KEY_COPY_ABORTED&t;0x0a
+DECL|macro|SSD_KEY_ABORTED_COMMAND
+mdefine_line|#define&t;&t;SSD_KEY_ABORTED_COMMAND&t;0x0b
+DECL|macro|SSD_KEY_EQUAL
+mdefine_line|#define&t;&t;SSD_KEY_EQUAL&t;&t;0x0c
+DECL|macro|SSD_KEY_VOLUME_OVERFLOW
+mdefine_line|#define&t;&t;SSD_KEY_VOLUME_OVERFLOW&t;0x0d
+DECL|macro|SSD_KEY_MISCOMPARE
+mdefine_line|#define&t;&t;SSD_KEY_MISCOMPARE&t;0x0e
+DECL|macro|SSD_KEY_RESERVED
+mdefine_line|#define&t;&t;SSD_KEY_RESERVED&t;0x0f
+DECL|macro|SSD_ILI
+mdefine_line|#define&t;SSD_ILI&t;&t;0x20
+DECL|macro|SSD_EOM
+mdefine_line|#define&t;SSD_EOM&t;&t;0x40
+DECL|macro|SSD_FILEMARK
+mdefine_line|#define&t;SSD_FILEMARK&t;0x80
 DECL|member|info
 r_uint8
 id|info
@@ -534,6 +607,16 @@ id|sense_key_spec
 l_int|3
 )braket
 suffix:semicolon
+DECL|macro|SSD_SCS_VALID
+mdefine_line|#define&t;SSD_SCS_VALID&t;&t;0x80
+DECL|macro|SSD_FIELDPTR_CMD
+mdefine_line|#define&t;SSD_FIELDPTR_CMD&t;0x40
+DECL|macro|SSD_BITPTR_VALID
+mdefine_line|#define&t;SSD_BITPTR_VALID&t;0x08
+DECL|macro|SSD_BITPTR_VALUE
+mdefine_line|#define&t;SSD_BITPTR_VALUE&t;0x07
+DECL|macro|SSD_MIN_SIZE
+mdefine_line|#define&t;SSD_MIN_SIZE&t;18
 DECL|member|extra_bytes
 r_uint8
 id|extra_bytes
@@ -797,8 +880,15 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/********************************** Includes **********************************/
 multiline_comment|/* Host template and function declarations referenced by the template. */
-macro_line|#include &quot;aic7xxx_linux_host.h&quot;
+macro_line|#include &quot;aic7xxx_host.h&quot;
 multiline_comment|/* Core driver definitions */
+macro_line|#if CONFIG_AIC7XXX_REG_PRETTY_PRINT
+DECL|macro|AIC_DEBUG_REGISTERS
+mdefine_line|#define AIC_DEBUG_REGISTERS 1
+macro_line|#else
+DECL|macro|AIC_DEBUG_REGISTERS
+mdefine_line|#define AIC_DEBUG_REGISTERS 0
+macro_line|#endif
 macro_line|#include &quot;aic7xxx.h&quot;
 multiline_comment|/* SMP support */
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,17)
@@ -807,7 +897,7 @@ macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#endif
 DECL|macro|AIC7XXX_DRIVER_VERSION
-mdefine_line|#define AIC7XXX_DRIVER_VERSION  &quot;6.2.4&quot;
+mdefine_line|#define AIC7XXX_DRIVER_VERSION  &quot;6.2.10&quot;
 multiline_comment|/**************************** Front End Queues ********************************/
 multiline_comment|/*&n; * Data structure used to cast the Linux struct scsi_cmnd to something&n; * that allows us to use the queue macros.  The linux structure has&n; * plenty of space to hold the links fields as required by the queue&n; * macros, but the queue macors require them to have the correct type.&n; */
 DECL|struct|ahc_cmd_internal
@@ -996,6 +1086,12 @@ DECL|member|flags
 id|ahc_dev_flags
 id|flags
 suffix:semicolon
+multiline_comment|/*&n;&t; * Per device timer.&n;&t; */
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
 multiline_comment|/*&n;&t; * The high limit for the tags variable.&n;&t; */
 DECL|member|maxtags
 id|u_int
@@ -1062,6 +1158,12 @@ r_struct
 id|ahc_transinfo
 id|last_tinfo
 suffix:semicolon
+DECL|member|ahc
+r_struct
+id|ahc_softc
+op_star
+id|ahc
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/********************* Definitions Required by the Core ***********************/
@@ -1078,6 +1180,10 @@ r_struct
 id|ahc_linux_device
 op_star
 id|dev
+suffix:semicolon
+DECL|member|buf_busaddr
+id|bus_addr_t
+id|buf_busaddr
 suffix:semicolon
 DECL|member|xfer_len
 r_uint32
@@ -1128,6 +1234,19 @@ r_struct
 id|ahc_completeq
 id|completeq
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
+DECL|member|spin_lock
+id|spinlock_t
+id|spin_lock
+suffix:semicolon
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
+DECL|member|runq_tasklet
+r_struct
+id|tasklet_struct
+id|runq_tasklet
+suffix:semicolon
+macro_line|#endif
 DECL|member|qfrozen
 id|u_int
 id|qfrozen
@@ -1149,6 +1268,8 @@ op_star
 id|host
 suffix:semicolon
 multiline_comment|/* pointer to scsi host */
+DECL|macro|AHC_LINUX_NOIRQ
+mdefine_line|#define AHC_LINUX_NOIRQ&t;((uint32_t)~0)
 DECL|member|irq
 r_uint32
 id|irq
@@ -1660,6 +1781,39 @@ op_star
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* Lock acquisition and release of the above lock in midlayer entry points. */
+r_static
+id|__inline
+r_void
+id|ahc_midlayer_entrypoint_lock
+c_func
+(paren
+r_struct
+id|ahc_softc
+op_star
+comma
+r_int
+r_int
+op_star
+id|flags
+)paren
+suffix:semicolon
+r_static
+id|__inline
+r_void
+id|ahc_midlayer_entrypoint_unlock
+c_func
+(paren
+r_struct
+id|ahc_softc
+op_star
+comma
+r_int
+r_int
+op_star
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Lock held during command compeletion to the upper layer */
 r_static
 id|__inline
@@ -1704,6 +1858,44 @@ op_star
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* Lock held during ahc_list manipulation and ahc softc frees */
+r_extern
+id|spinlock_t
+id|ahc_list_spinlock
+suffix:semicolon
+r_static
+id|__inline
+r_void
+id|ahc_list_lockinit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_static
+id|__inline
+r_void
+id|ahc_list_lock
+c_func
+(paren
+r_int
+r_int
+op_star
+id|flags
+)paren
+suffix:semicolon
+r_static
+id|__inline
+r_void
+id|ahc_list_unlock
+c_func
+(paren
+r_int
+r_int
+op_star
+id|flags
+)paren
+suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 r_static
 id|__inline
@@ -1721,7 +1913,8 @@ id|ahc
 id|spin_lock_init
 c_func
 (paren
-id|ahc-&gt;platform_data-&gt;host-&gt;host_lock
+op_amp
+id|ahc-&gt;platform_data-&gt;spin_lock
 )paren
 suffix:semicolon
 )brace
@@ -1751,7 +1944,8 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-id|ahc-&gt;platform_data-&gt;host-&gt;host_lock
+op_amp
+id|ahc-&gt;platform_data-&gt;spin_lock
 comma
 op_star
 id|flags
@@ -1779,12 +1973,73 @@ id|flags
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|ahc-&gt;platform_data-&gt;host-&gt;host_lock
+op_amp
+id|ahc-&gt;platform_data-&gt;spin_lock
 comma
 op_star
 id|flags
 )paren
 suffix:semicolon
+)brace
+r_static
+id|__inline
+r_void
+DECL|function|ahc_midlayer_entrypoint_lock
+id|ahc_midlayer_entrypoint_lock
+c_func
+(paren
+r_struct
+id|ahc_softc
+op_star
+id|ahc
+comma
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+multiline_comment|/*&n;&t; * In 2.5.X, the midlayer takes our lock just before&n;&t; * calling us, so avoid locking again.&n;&t; */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+id|ahc_lock
+c_func
+(paren
+id|ahc
+comma
+id|flags
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+r_static
+id|__inline
+r_void
+DECL|function|ahc_midlayer_entrypoint_unlock
+id|ahc_midlayer_entrypoint_unlock
+c_func
+(paren
+r_struct
+id|ahc_softc
+op_star
+id|ahc
+comma
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+multiline_comment|/*&n;&t; * In 2.5.X, the midlayer takes our lock just before&n;&t; * calling us and unlocks when we return, so let it do the unlock.&n;&t; */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+id|ahc_unlock
+c_func
+(paren
+id|ahc
+comma
+id|flags
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_static
 id|__inline
@@ -1799,7 +2054,7 @@ op_star
 id|ahc
 )paren
 (brace
-multiline_comment|/* We don&squot;t own the iorequest lock, so we don&squot;t initialize it. */
+multiline_comment|/*&n;&t; * In 2.5.X, our own lock is held during completions.&n;&t; * In previous versions, the io_request_lock is used.&n;&t; * In either case, we can&squot;t initialize this lock again.&n;&t; */
 )brace
 r_static
 id|__inline
@@ -1819,13 +2074,7 @@ op_star
 id|flags
 )paren
 (brace
-r_struct
-id|Scsi_Host
-op_star
-id|host
-op_assign
-id|ahc-&gt;platform_data-&gt;host
-suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 op_star
 id|flags
 op_assign
@@ -1834,12 +2083,14 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-id|host-&gt;host_lock
+op_amp
+id|io_request_lock
 comma
 op_star
 id|flags
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_static
 id|__inline
@@ -1859,24 +2110,93 @@ op_star
 id|flags
 )paren
 (brace
-r_struct
-id|Scsi_Host
-op_star
-id|host
-op_assign
-id|ahc-&gt;platform_data-&gt;host
-suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|host-&gt;host_lock
+op_amp
+id|io_request_lock
+comma
+op_star
+id|flags
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+r_static
+id|__inline
+r_void
+DECL|function|ahc_list_lockinit
+id|ahc_list_lockinit
+c_func
+(paren
+)paren
+(brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|ahc_list_spinlock
+)paren
+suffix:semicolon
+)brace
+r_static
+id|__inline
+r_void
+DECL|function|ahc_list_lock
+id|ahc_list_lock
+c_func
+(paren
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+op_star
+id|flags
+op_assign
+l_int|0
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ahc_list_spinlock
 comma
 op_star
 id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,0) */
+r_static
+id|__inline
+r_void
+DECL|function|ahc_list_unlock
+id|ahc_list_unlock
+c_func
+(paren
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ahc_list_spinlock
+comma
+op_star
+id|flags
+)paren
+suffix:semicolon
+)brace
+macro_line|#else /* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,93) */
+r_static
+id|__inline
+r_void
 DECL|function|ahc_lockinit
 id|ahc_lockinit
 c_func
@@ -1950,6 +2270,9 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+r_static
+id|__inline
+r_void
 DECL|function|ahc_done_lockinit
 id|ahc_done_lockinit
 c_func
@@ -1999,6 +2322,68 @@ op_star
 id|flags
 )paren
 (brace
+)brace
+r_static
+id|__inline
+r_void
+DECL|function|ahc_list_lockinit
+id|ahc_list_lockinit
+c_func
+(paren
+)paren
+(brace
+)brace
+r_static
+id|__inline
+r_void
+DECL|function|ahc_list_lock
+id|ahc_list_lock
+c_func
+(paren
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+op_star
+id|flags
+op_assign
+l_int|0
+suffix:semicolon
+id|save_flags
+c_func
+(paren
+op_star
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_static
+id|__inline
+r_void
+DECL|function|ahc_list_unlock
+id|ahc_list_unlock
+c_func
+(paren
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+id|restore_flags
+c_func
+(paren
+op_star
+id|flags
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif /* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,0) */
 multiline_comment|/******************************* PCI Definitions ******************************/
@@ -2105,6 +2490,9 @@ r_struct
 id|ahc_softc
 op_star
 id|ahc
+comma
+id|u_int
+id|port
 )paren
 suffix:semicolon
 r_int
@@ -2517,6 +2905,14 @@ DECL|macro|pci_map_single
 mdefine_line|#define pci_map_single(pdev, buffer, bufflen, direction) &bslash;&n;&t;(VIRT_TO_BUS(buffer))
 DECL|macro|pci_unmap_single
 mdefine_line|#define pci_unmap_single(pdev, buffer, buflen, direction)
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,3)
+DECL|macro|ahc_pci_set_dma_mask
+mdefine_line|#define ahc_pci_set_dma_mask pci_set_dma_mask
+macro_line|#else
+multiline_comment|/*&n; * Always &quot;return&quot; 0 for success.&n; */
+DECL|macro|ahc_pci_set_dma_mask
+mdefine_line|#define ahc_pci_set_dma_mask(dev_softc, mask)  &t;&t;&t;&bslash;&n;&t;(((dev_softc)-&gt;dma_mask = mask) &amp;&amp; 0)
 macro_line|#endif
 multiline_comment|/*********************** Transaction Access Wrappers **************************/
 r_static

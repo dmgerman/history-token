@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Adaptec AIC79xx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic79xx_osm.c#53 $&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 1997-1999 Doug Ledford&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Adaptec AIC79xx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic79xx_osm.c#56 $&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 1997-1999 Doug Ledford&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 multiline_comment|/*&n; * This is the only file where module.h should&n; * embed module global version info.&n; */
 DECL|macro|AHD_MODVERSION_FILE
 mdefine_line|#define AHD_MODVERSION_FILE
@@ -6700,6 +6700,63 @@ op_ne
 l_int|0
 )paren
 (brace
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
+r_int
+id|msg_bytes
+suffix:semicolon
+r_uint8
+id|tag_msgs
+(braket
+l_int|2
+)braket
+suffix:semicolon
+id|msg_bytes
+op_assign
+id|scsi_populate_tag_msg
+c_func
+(paren
+id|cmd
+comma
+id|tag_msgs
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|msg_bytes
+op_logical_and
+id|tag_msgs
+(braket
+l_int|0
+)braket
+op_ne
+id|MSG_SIMPLE_TASK
+)paren
+(brace
+id|hscb-&gt;control
+op_or_assign
+id|tag_msgs
+(braket
+l_int|0
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tag_msgs
+(braket
+l_int|0
+)braket
+op_eq
+id|MSG_ORDERED_TASK
+)paren
+id|dev-&gt;commands_since_idle_or_otag
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -10696,7 +10753,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * In all versions of Linux, we have to work around&n;&t;&t; * a major flaw in how the mid-layer is locked down&n;&t;&t; * if we are to sleep succesffully in our error handler&n;&t;&t; * while allowing our interrupt handler to run.  Since&n;&t;&t; * the midlayer acquires either the io_request_lock or&n;&t;&t; * our lock prior to calling us, we must use the&n;&t;&t; * spin_unlock_irq() method for unlocking our lock.&n;&t;&t; * This will force interrupts to be enabled on the&n;&t;&t; * current CPU.  Since the EH thread should not have&n;&t;&t; * been running with CPU interrupts disabled other than&n;&t;&t; * by acquiring either the io_request_lock or our own&n;&t;&t; * lock, this *should* be safe.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * In all versions of Linux, we have to work around&n;&t;&t; * a major flaw in how the mid-layer is locked down&n;&t;&t; * if we are to sleep successfully in our error handler&n;&t;&t; * while allowing our interrupt handler to run.  Since&n;&t;&t; * the midlayer acquires either the io_request_lock or&n;&t;&t; * our lock prior to calling us, we must use the&n;&t;&t; * spin_unlock_irq() method for unlocking our lock.&n;&t;&t; * This will force interrupts to be enabled on the&n;&t;&t; * current CPU.  Since the EH thread should not have&n;&t;&t; * been running with CPU interrupts disabled other than&n;&t;&t; * by acquiring either the io_request_lock or our own&n;&t;&t; * lock, this *should* be safe.&n;&t;&t; */
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 id|spin_unlock_irq
 c_func
