@@ -148,18 +148,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * acpi_save_state_disk - save kernel state to disk&n; *&n; */
-DECL|function|acpi_save_state_disk
-r_int
-id|acpi_save_state_disk
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * acpi_restore_state&n; */
 DECL|function|acpi_restore_state_mem
 r_void

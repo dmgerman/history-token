@@ -224,13 +224,5 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|acpi_save_state_disk
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif
 eof
