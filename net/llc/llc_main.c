@@ -604,7 +604,7 @@ id|init_timer
 c_func
 (paren
 op_amp
-id|llc-&gt;ack_timer
+id|llc-&gt;ack_timer.timer
 )paren
 suffix:semicolon
 id|llc-&gt;ack_timer.expire
@@ -627,7 +627,7 @@ id|init_timer
 c_func
 (paren
 op_amp
-id|llc-&gt;pf_cycle_timer
+id|llc-&gt;pf_cycle_timer.timer
 )paren
 suffix:semicolon
 id|llc-&gt;pf_cycle_timer.expire
@@ -650,7 +650,7 @@ id|init_timer
 c_func
 (paren
 op_amp
-id|llc-&gt;rej_sent_timer
+id|llc-&gt;rej_sent_timer.timer
 )paren
 suffix:semicolon
 id|llc-&gt;rej_sent_timer.expire
@@ -673,7 +673,7 @@ id|init_timer
 c_func
 (paren
 op_amp
-id|llc-&gt;busy_state_timer
+id|llc-&gt;busy_state_timer.timer
 )paren
 suffix:semicolon
 id|llc-&gt;busy_state_timer.expire
