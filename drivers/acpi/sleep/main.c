@@ -366,7 +366,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_CRIT
+id|KERN_DEBUG
 l_string|&quot;Back to C!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -425,6 +425,11 @@ id|acpi_gbl_FACS-&gt;S4bios_f
 r_return
 id|AE_ERROR
 suffix:semicolon
+id|pm_prepare_console
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * TBD: S1 can be done without device_suspend.  Make a CONFIG_XX&n;&t; * to handle however when S1 failed without device_suspend.&n;&t; */
 r_if
 c_cond
@@ -435,15 +440,13 @@ c_func
 )paren
 )paren
 (brace
-id|thaw_processes
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
+id|status
+op_assign
 id|AE_ERROR
 suffix:semicolon
-multiline_comment|/* device_suspend needs processes to be stopped */
+r_goto
+id|Done
+suffix:semicolon
 )brace
 multiline_comment|/* do we have a wakeup address for S2 and S3? */
 multiline_comment|/* Here, we support only S4BIOS, those we set the wakeup address */
@@ -559,7 +562,14 @@ id|acpi_physical_address
 l_int|0
 )paren
 suffix:semicolon
+id|Done
+suffix:colon
 id|thaw_processes
+c_func
+(paren
+)paren
+suffix:semicolon
+id|pm_restore_console
 c_func
 (paren
 )paren

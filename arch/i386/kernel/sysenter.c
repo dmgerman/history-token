@@ -98,14 +98,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Enabling SEP on CPU %d&bslash;n&quot;
-comma
-id|cpu
-)paren
-suffix:semicolon
 id|put_cpu
 c_func
 (paren
