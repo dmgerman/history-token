@@ -1360,8 +1360,8 @@ DECL|macro|RADEON_PARAM_LAST_DISPATCH
 mdefine_line|#define RADEON_PARAM_LAST_DISPATCH         3
 DECL|macro|RADEON_PARAM_LAST_CLEAR
 mdefine_line|#define RADEON_PARAM_LAST_CLEAR            4
-DECL|macro|RADEON_PARAM_IRQ_ACTIVE
-mdefine_line|#define RADEON_PARAM_IRQ_ACTIVE            5
+DECL|macro|RADEON_PARAM_IRQ_NR
+mdefine_line|#define RADEON_PARAM_IRQ_NR                5
 DECL|macro|RADEON_PARAM_AGP_BASE
 mdefine_line|#define RADEON_PARAM_AGP_BASE              6 /* card offset of agp base */
 DECL|struct|drm_radeon_getparam

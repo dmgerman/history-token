@@ -383,7 +383,7 @@ suffix:semicolon
 id|DRM_FREE
 c_func
 (paren
-id|p
+id|q
 )paren
 suffix:semicolon
 )brace
