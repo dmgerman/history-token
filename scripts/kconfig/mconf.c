@@ -22,10 +22,149 @@ id|menu_backtitle
 l_int|128
 )braket
 suffix:semicolon
-DECL|variable|menu_instructions
+DECL|variable|mconf_readme
 r_static
 r_const
 r_char
+id|mconf_readme
+(braket
+)braket
+op_assign
+l_string|&quot;Overview&bslash;n&quot;
+l_string|&quot;--------&bslash;n&quot;
+l_string|&quot;Some kernel features may be built directly into the kernel.&bslash;n&quot;
+l_string|&quot;Some may be made into loadable runtime modules.  Some features&bslash;n&quot;
+l_string|&quot;may be completely removed altogether.  There are also certain&bslash;n&quot;
+l_string|&quot;kernel parameters which are not really features, but must be&bslash;n&quot;
+l_string|&quot;entered in as decimal or hexadecimal numbers or possibly text.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;Menu items beginning with [*], &lt;M&gt; or [ ] represent features&bslash;n&quot;
+l_string|&quot;configured to be built in, modularized or removed respectively.&bslash;n&quot;
+l_string|&quot;Pointed brackets &lt;&gt; represent module capable features.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;To change any of these features, highlight it with the cursor&bslash;n&quot;
+l_string|&quot;keys and press &lt;Y&gt; to build it in, &lt;M&gt; to make it a module or&bslash;n&quot;
+l_string|&quot;&lt;N&gt; to removed it.  You may also press the &lt;Space Bar&gt; to cycle&bslash;n&quot;
+l_string|&quot;through the available options (ie. Y-&gt;N-&gt;M-&gt;Y).&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;Some additional keyboard hints:&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;Menus&bslash;n&quot;
+l_string|&quot;----------&bslash;n&quot;
+l_string|&quot;o  Use the Up/Down arrow keys (cursor keys) to highlight the item&bslash;n&quot;
+l_string|&quot;   you wish to change or submenu wish to select and press &lt;Enter&gt;.&bslash;n&quot;
+l_string|&quot;   Submenus are designated by &bslash;&quot;---&gt;&bslash;&quot;.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;   Shortcut: Press the option&squot;s highlighted letter (hotkey).&bslash;n&quot;
+l_string|&quot;             Pressing a hotkey more than once will sequence&bslash;n&quot;
+l_string|&quot;             through all visible items which use that hotkey.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;   You may also use the &lt;PAGE UP&gt; and &lt;PAGE DOWN&gt; keys to scroll&bslash;n&quot;
+l_string|&quot;   unseen options into view.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;o  To exit a menu use the cursor keys to highlight the &lt;Exit&gt; button&bslash;n&quot;
+l_string|&quot;   and press &lt;ENTER&gt;.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;   Shortcut: Press &lt;ESC&gt;&lt;ESC&gt; or &lt;E&gt; or &lt;X&gt; if there is no hotkey&bslash;n&quot;
+l_string|&quot;             using those letters.  You may press a single &lt;ESC&gt;, but&bslash;n&quot;
+l_string|&quot;             there is a delayed response which you may find annoying.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;   Also, the &lt;TAB&gt; and cursor keys will cycle between &lt;Select&gt;,&bslash;n&quot;
+l_string|&quot;   &lt;Exit&gt; and &lt;Help&gt;&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;o  To get help with an item, use the cursor keys to highlight &lt;Help&gt;&bslash;n&quot;
+l_string|&quot;   and Press &lt;ENTER&gt;.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;   Shortcut: Press &lt;H&gt; or &lt;?&gt;.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;Radiolists  (Choice lists)&bslash;n&quot;
+l_string|&quot;-----------&bslash;n&quot;
+l_string|&quot;o  Use the cursor keys to select the option you wish to set and press&bslash;n&quot;
+l_string|&quot;   &lt;S&gt; or the &lt;SPACE BAR&gt;.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;   Shortcut: Press the first letter of the option you wish to set then&bslash;n&quot;
+l_string|&quot;             press &lt;S&gt; or &lt;SPACE BAR&gt;.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;o  To see available help for the item, use the cursor keys to highlight&bslash;n&quot;
+l_string|&quot;   &lt;Help&gt; and Press &lt;ENTER&gt;.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;   Shortcut: Press &lt;H&gt; or &lt;?&gt;.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;   Also, the &lt;TAB&gt; and cursor keys will cycle between &lt;Select&gt; and&bslash;n&quot;
+l_string|&quot;   &lt;Help&gt;&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;Data Entry&bslash;n&quot;
+l_string|&quot;-----------&bslash;n&quot;
+l_string|&quot;o  Enter the requested information and press &lt;ENTER&gt;&bslash;n&quot;
+l_string|&quot;   If you are entering hexadecimal values, it is not necessary to&bslash;n&quot;
+l_string|&quot;   add the &squot;0x&squot; prefix to the entry.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;o  For help, use the &lt;TAB&gt; or cursor keys to highlight the help option&bslash;n&quot;
+l_string|&quot;   and press &lt;ENTER&gt;.  You can try &lt;TAB&gt;&lt;H&gt; as well.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;Text Box    (Help Window)&bslash;n&quot;
+l_string|&quot;--------&bslash;n&quot;
+l_string|&quot;o  Use the cursor keys to scroll up/down/left/right.  The VI editor&bslash;n&quot;
+l_string|&quot;   keys h,j,k,l function here as do &lt;SPACE BAR&gt; and &lt;B&gt; for those&bslash;n&quot;
+l_string|&quot;   who are familiar with less and lynx.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;o  Press &lt;E&gt;, &lt;X&gt;, &lt;Enter&gt; or &lt;Esc&gt;&lt;Esc&gt; to exit.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;Alternate Configuration Files&bslash;n&quot;
+l_string|&quot;-----------------------------&bslash;n&quot;
+l_string|&quot;Menuconfig supports the use of alternate configuration files for&bslash;n&quot;
+l_string|&quot;those who, for various reasons, find it necessary to switch&bslash;n&quot;
+l_string|&quot;between different kernel configurations.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;At the end of the main menu you will find two options.  One is&bslash;n&quot;
+l_string|&quot;for saving the current configuration to a file of your choosing.&bslash;n&quot;
+l_string|&quot;The other option is for loading a previously saved alternate&bslash;n&quot;
+l_string|&quot;configuration.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;Even if you don&squot;t use alternate configuration files, but you&bslash;n&quot;
+l_string|&quot;find during a Menuconfig session that you have completely messed&bslash;n&quot;
+l_string|&quot;up your settings, you may use the &bslash;&quot;Load Alternate...&bslash;&quot; option to&bslash;n&quot;
+l_string|&quot;restore your previously saved settings from &bslash;&quot;.config&bslash;&quot; without&bslash;n&quot;
+l_string|&quot;restarting Menuconfig.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;Other information&bslash;n&quot;
+l_string|&quot;-----------------&bslash;n&quot;
+l_string|&quot;If you use Menuconfig in an XTERM window make sure you have your&bslash;n&quot;
+l_string|&quot;$TERM variable set to point to a xterm definition which supports color.&bslash;n&quot;
+l_string|&quot;Otherwise, Menuconfig will look rather bad.  Menuconfig will not&bslash;n&quot;
+l_string|&quot;display correctly in a RXVT window because rxvt displays only one&bslash;n&quot;
+l_string|&quot;intensity of color, bright.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;Menuconfig will display larger menus on screens or xterms which are&bslash;n&quot;
+l_string|&quot;set to display more than the standard 25 row by 80 column geometry.&bslash;n&quot;
+l_string|&quot;In order for this to work, the &bslash;&quot;stty size&bslash;&quot; command must be able to&bslash;n&quot;
+l_string|&quot;display the screen&squot;s current row and column geometry.  I STRONGLY&bslash;n&quot;
+l_string|&quot;RECOMMEND that you make sure you do NOT have the shell variables&bslash;n&quot;
+l_string|&quot;LINES and COLUMNS exported into your environment.  Some distributions&bslash;n&quot;
+l_string|&quot;export those variables via /etc/profile.  Some ncurses programs can&bslash;n&quot;
+l_string|&quot;become confused when those variables (LINES &amp; COLUMNS) don&squot;t reflect&bslash;n&quot;
+l_string|&quot;the true screen size.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;Optional personality available&bslash;n&quot;
+l_string|&quot;------------------------------&bslash;n&quot;
+l_string|&quot;If you prefer to have all of the kernel options listed in a single&bslash;n&quot;
+l_string|&quot;menu, rather than the default multimenu hierarchy, run the menuconfig&bslash;n&quot;
+l_string|&quot;with MENUCONFIG_MODE environment variable set to single_menu. Example:&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;make MENUCONFIG_MODE=single_menu menuconfig&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;&lt;Enter&gt; will then unroll the appropriate category, or enfold it if it&bslash;n&quot;
+l_string|&quot;is already unrolled.&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+l_string|&quot;Note that this mode can eventually be a little more CPU expensive&bslash;n&quot;
+l_string|&quot;(especially with a larger number of unrolled categories) than the&bslash;n&quot;
+l_string|&quot;default mode.&bslash;n&quot;
+comma
+DECL|variable|menu_instructions
 id|menu_instructions
 (braket
 )braket
@@ -372,14 +511,6 @@ r_struct
 id|menu
 op_star
 id|menu
-)paren
-suffix:semicolon
-r_static
-r_void
-id|show_readme
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 r_static
@@ -3267,9 +3398,12 @@ id|submenu
 )paren
 suffix:semicolon
 r_else
-id|show_readme
+id|show_helptext
 c_func
 (paren
+l_string|&quot;README&quot;
+comma
+id|mconf_readme
 )paren
 suffix:semicolon
 r_break
@@ -3628,28 +3762,6 @@ c_func
 (paren
 op_amp
 id|help
-)paren
-suffix:semicolon
-)brace
-DECL|function|show_readme
-r_static
-r_void
-id|show_readme
-c_func
-(paren
-r_void
-)paren
-(brace
-id|show_file
-c_func
-(paren
-l_string|&quot;scripts/README.Menuconfig&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
