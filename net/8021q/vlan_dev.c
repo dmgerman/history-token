@@ -299,12 +299,10 @@ id|vid
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Ok, we will find the correct VLAN device, strip the header,&n;&t; * and then go on as usual.&n;&t; */
-multiline_comment|/* We have 12 bits of vlan ID.&n;&t; *&n;&t; * We must not drop the vlan_group_lock until we hold a&n;&t; * reference to the device (netif_rx does that) or we&n;&t; * fail.&n;&t; */
-id|spin_lock_bh
+multiline_comment|/* We have 12 bits of vlan ID.&n;&t; *&n;&t; * We must not drop allow preempt until we hold a&n;&t; * reference to the device (netif_rx does that) or we&n;&t; * fail.&n;&t; */
+id|rcu_read_lock
 c_func
 (paren
-op_amp
-id|vlan_group_lock
 )paren
 suffix:semicolon
 id|skb-&gt;dev
@@ -324,11 +322,9 @@ op_logical_neg
 id|skb-&gt;dev
 )paren
 (brace
-id|spin_unlock_bh
+id|rcu_read_unlock
 c_func
 (paren
-op_amp
-id|vlan_group_lock
 )paren
 suffix:semicolon
 macro_line|#ifdef VLAN_DEBUG
@@ -409,11 +405,9 @@ op_member_access_from_pointer
 id|real_dev
 )paren
 (brace
-id|spin_unlock_bh
+id|rcu_read_unlock
 c_func
 (paren
-op_amp
-id|vlan_group_lock
 )paren
 suffix:semicolon
 macro_line|#ifdef VLAN_DEBUG
@@ -604,11 +598,9 @@ id|stats-&gt;rx_errors
 op_increment
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|rcu_read_lock
 c_func
 (paren
-op_amp
-id|vlan_group_lock
 )paren
 suffix:semicolon
 r_return
@@ -673,11 +665,9 @@ id|stats-&gt;rx_errors
 op_increment
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|rcu_read_unlock
 c_func
 (paren
-op_amp
-id|vlan_group_lock
 )paren
 suffix:semicolon
 r_return
@@ -724,11 +714,9 @@ id|stats-&gt;rx_errors
 op_increment
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|rcu_read_unlock
 c_func
 (paren
-op_amp
-id|vlan_group_lock
 )paren
 suffix:semicolon
 r_return
