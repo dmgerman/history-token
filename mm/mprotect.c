@@ -882,13 +882,7 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|mm-&gt;page_table_lock
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * vm_flags and vm_page_prot are protected by the mmap_sem&n;&t; * held in write mode.&n;&t; */
 id|vma-&gt;vm_flags
 op_assign
 id|newflags
@@ -896,13 +890,6 @@ suffix:semicolon
 id|vma-&gt;vm_page_prot
 op_assign
 id|newprot
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|mm-&gt;page_table_lock
-)paren
 suffix:semicolon
 id|success
 suffix:colon

@@ -99,13 +99,7 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|mm-&gt;page_table_lock
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * vm_flags is protected by the mmap_sem held in write mode.&n;&t; */
 id|VM_ClearReadHint
 c_func
 (paren
@@ -141,13 +135,6 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|mm-&gt;page_table_lock
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
