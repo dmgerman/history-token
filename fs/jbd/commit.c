@@ -1286,6 +1286,10 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * start_this_handle() uses t_outstanding_credits to determine&n;&t;&t; * the free space in the log, but this counter is changed&n;&t;&t; * by journal_next_log_block() also.&n;&t;&t; */
+id|commit_transaction-&gt;t_outstanding_credits
+op_decrement
+suffix:semicolon
 multiline_comment|/* Bump b_count to prevent truncate from stumbling over&n;                   the shadowed buffer!  @@@ This can go if we ever get&n;                   rid of the BJ_IO/BJ_Shadow pairing of buffers. */
 id|atomic_inc
 c_func
