@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci.h,v 1.5 2002/01/19 00:24:01 dbrownell Exp $&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci.h,v 1.6 2002/03/22 16:04:54 dbrownell Exp $&n; */
 multiline_comment|/*&n; * OHCI Endpoint Descriptor (ED) ... holds TD queue&n; * See OHCI spec, section 4.2&n; */
 DECL|struct|ed
 r_struct
