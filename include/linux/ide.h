@@ -61,8 +61,6 @@ mdefine_line|#define ERROR_RECAL&t;1&t;/* Recalibrate every 2nd retry */
 multiline_comment|/*&n; * state flags&n; */
 DECL|macro|DMA_PIO_RETRY
 mdefine_line|#define DMA_PIO_RETRY&t;1&t;/* retrying in PIO */
-DECL|macro|HWIF
-mdefine_line|#define HWIF(drive)&t;&t;((drive)-&gt;channel)
 DECL|macro|HWGROUP
 mdefine_line|#define HWGROUP(drive)&t;&t;(drive-&gt;channel-&gt;hwgroup)
 multiline_comment|/*&n; * Definitions for accessing IDE controller registers&n; */
@@ -342,7 +340,7 @@ macro_line|# define IN_BYTE(p)&t;&t;(u8)inb(p)
 DECL|macro|IN_WORD
 macro_line|# define IN_WORD(p)&t;&t;(u16)inw(p)
 macro_line|#endif
-multiline_comment|/*&n; * Now for the data we need to maintain per-drive:  ide_drive_t&n; */
+multiline_comment|/*&n; * Device types - the nomenclature is analogous to SCSI code.&n; */
 DECL|macro|ATA_DISK
 mdefine_line|#define ATA_DISK        0x20
 DECL|macro|ATA_TAPE
@@ -360,7 +358,7 @@ mdefine_line|#define ATA_NO_LUN      0x7f
 r_struct
 id|ide_settings_s
 suffix:semicolon
-multiline_comment|/* structure describing an ATA/ATAPI device */
+multiline_comment|/*&n; * ATA/ATAPI device structure :&n; */
 r_typedef
 DECL|struct|ata_device
 r_struct
@@ -887,13 +885,6 @@ r_int
 id|unit
 suffix:semicolon
 multiline_comment|/* channel number */
-DECL|member|next
-r_struct
-id|ata_channel
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* for linked-list in ide_hwgroup_t */
 DECL|member|hwgroup
 r_struct
 id|hwgroup_s
@@ -1437,18 +1428,12 @@ id|flags
 suffix:semicolon
 multiline_comment|/* BUSY, SLEEPING */
 DECL|member|drive
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 suffix:semicolon
 multiline_comment|/* current drive */
-DECL|member|hwif
-r_struct
-id|ata_channel
-op_star
-id|hwif
-suffix:semicolon
-multiline_comment|/* ptr to current hwif in linked-list */
 DECL|member|rq
 r_struct
 id|request
