@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;linux/arch/i386/kernel/ioport.c&n; *&n; * This contains the io-permission bitmap code - written by obz, with changes&n; * by Linus.&n; */
+multiline_comment|/*&n; *&t;linux/arch/x86_64/kernel/ioport.c&n; *&n; * This contains the io-permission bitmap code - written by obz, with changes&n; * by Linus.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* Set EXTENT bits starting at BASE in BITMAP to value TURN_ON. */
 DECL|function|set_bitmap
 r_static
@@ -32,6 +33,7 @@ id|new_value
 )paren
 (brace
 r_int
+r_int
 id|mask
 suffix:semicolon
 r_int
@@ -43,8 +45,12 @@ id|bitmap
 op_plus
 (paren
 id|base
-op_rshift
-l_int|6
+op_div
+r_sizeof
+(paren
+r_int
+r_int
+)paren
 )paren
 suffix:semicolon
 r_int
@@ -74,7 +80,7 @@ id|mask
 op_assign
 (paren
 op_complement
-l_int|0
+l_int|0UL
 op_lshift
 id|low_index
 )paren
@@ -91,7 +97,7 @@ op_and_assign
 op_complement
 (paren
 op_complement
-l_int|0
+l_int|0UL
 op_lshift
 id|length
 )paren
@@ -117,7 +123,7 @@ id|mask
 suffix:semicolon
 id|length
 op_sub_assign
-l_int|32
+l_int|64
 suffix:semicolon
 )brace
 id|mask
@@ -127,9 +133,9 @@ id|new_value
 ques
 c_cond
 op_complement
-l_int|0
+l_int|0UL
 suffix:colon
-l_int|0
+l_int|0UL
 )paren
 suffix:semicolon
 r_while
@@ -164,7 +170,7 @@ op_assign
 op_complement
 (paren
 op_complement
-l_int|0
+l_int|0UL
 op_lshift
 id|length
 )paren
@@ -478,6 +484,32 @@ l_int|12
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|eat_key
+r_void
+id|eat_key
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|inb
+c_func
+(paren
+l_int|0x60
+)paren
+op_amp
+l_int|1
+)paren
+id|inb
+c_func
+(paren
+l_int|0x64
+)paren
 suffix:semicolon
 )brace
 eof

@@ -523,6 +523,9 @@ id|raddr
 ques
 c_cond
 suffix:colon
+(paren
+r_int
+)paren
 id|raddr
 suffix:semicolon
 )brace

@@ -193,12 +193,9 @@ id|adapter-&gt;usb_dev
 op_assign
 id|dev
 suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-op_amp
-id|adapter-&gt;hisax_d_if
-)paren
+id|adapter-&gt;hisax_d_if.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|adapter-&gt;hisax_d_if.ifc.priv
 op_assign

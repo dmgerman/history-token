@@ -1437,7 +1437,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ep
+id|_ep
 op_logical_or
 op_logical_neg
 id|_req
@@ -1546,7 +1546,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ep
+id|_ep
 op_logical_or
 (paren
 op_logical_neg
@@ -1950,39 +1950,16 @@ l_int|1
 op_lshift
 id|DATA_OUT_PING_TOKEN_INTERRUPT
 )paren
+multiline_comment|/* high speed did bulk NYET; fifo isn&squot;t filling */
+op_logical_and
+id|ep-&gt;dev-&gt;gadget.speed
+op_eq
+id|USB_SPEED_FULL
 )paren
 (brace
 r_int
 id|usec
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ep-&gt;dev-&gt;gadget.speed
-op_eq
-id|USB_SPEED_HIGH
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ep-&gt;ep.maxpacket
-op_le
-l_int|512
-)paren
-id|usec
-op_assign
-l_int|10
-suffix:semicolon
-multiline_comment|/* 512 byte bulk */
-r_else
-id|usec
-op_assign
-l_int|21
-suffix:semicolon
-multiline_comment|/* 1024 byte interrupt */
-)brace
-r_else
 id|usec
 op_assign
 l_int|50
@@ -2145,34 +2122,29 @@ OG
 id|tmp
 )paren
 (brace
-r_int
-id|over
-op_assign
-id|tmp
-op_mod
-id|ep-&gt;ep.maxpacket
-suffix:semicolon
-multiline_comment|/* FIXME handle this consistently between PIO and DMA */
+multiline_comment|/* as with DMA, data overflow gets flushed */
 r_if
 c_cond
 (paren
-id|over
+(paren
+id|tmp
+op_mod
+id|ep-&gt;ep.maxpacket
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|ERROR
 (paren
 id|ep-&gt;dev
 comma
-l_string|&quot;%s out fifo %d bytes, over %d extra %d&bslash;n&quot;
+l_string|&quot;%s out fifo %d bytes, expected %d&bslash;n&quot;
 comma
 id|ep-&gt;ep.name
 comma
 id|count
 comma
-id|over
-comma
-id|count
-op_minus
 id|tmp
 )paren
 suffix:semicolon
@@ -2181,9 +2153,9 @@ op_assign
 op_minus
 id|EOVERFLOW
 suffix:semicolon
-id|tmp
-op_sub_assign
-id|over
+id|cleanup
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 id|count
@@ -2423,7 +2395,7 @@ id|dmacount
 op_assign
 id|req-&gt;req.length
 suffix:semicolon
-multiline_comment|/* don&squot;t let DMA continue after a short OUT packet,&n;&t; * so overruns can&squot;t affect the next transfer.&n;&t; */
+multiline_comment|/* don&squot;t let DMA continue after a short OUT packet,&n;&t; * so overruns can&squot;t affect the next transfer.&n;&t; * in case of overruns on max-size packets, we can&squot;t&n;&t; * stop the fifo from filling but we can flush it.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2438,17 +2410,6 @@ id|DMA_DIRECTION
 )paren
 suffix:semicolon
 r_else
-r_if
-c_cond
-(paren
-(paren
-id|dmacount
-op_mod
-id|ep-&gt;ep.maxpacket
-)paren
-op_ne
-l_int|0
-)paren
 id|dmacount
 op_or_assign
 (paren
@@ -3434,9 +3395,34 @@ id|_req-&gt;length
 op_eq
 l_int|0
 )paren
+(brace
+id|allow_status
+(paren
+id|ep
+)paren
+suffix:semicolon
+id|done
+(paren
+id|ep
+comma
+id|req
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|VDEBUG
+(paren
+id|dev
+comma
+l_string|&quot;%s status ack&bslash;n&quot;
+comma
+id|ep-&gt;ep.name
+)paren
+suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
+)brace
 multiline_comment|/* PIO ... stuff the fifo, or unblock it.  */
 r_if
 c_cond
@@ -3622,9 +3608,6 @@ c_cond
 (paren
 id|req
 )paren
-(brace
-id|done
-suffix:colon
 id|list_add_tail
 (paren
 op_amp
@@ -3634,7 +3617,8 @@ op_amp
 id|ep-&gt;queue
 )paren
 suffix:semicolon
-)brace
+id|done
+suffix:colon
 id|spin_unlock_irqrestore
 (paren
 op_amp
@@ -3775,7 +3759,7 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* SHORT_PACKET_TRANSFERRED_INTERRUPT handles &quot;usb-short&quot;&n;&t;&t; * packets, including overruns, even when the transfer was&n;&t;&t; * exactly the length requested (dmacount now zero).&n;&t;&t; */
+multiline_comment|/* SHORT_PACKET_TRANSFERRED_INTERRUPT handles &quot;usb-short&quot;&n;&t;&t; * packets, including overruns, even when the transfer was&n;&t;&t; * exactly the length requested (dmacount now zero).&n;&t;&t; * FIXME there&squot;s an overrun case here too, where we expect&n;&t;&t; * a short packet but receive a max length one (won&squot;t NAK).&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4641,6 +4625,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ep-&gt;desc
+multiline_comment|/* not ep0 */
+op_logical_and
 (paren
 id|ep-&gt;desc-&gt;bmAttributes
 op_amp
@@ -6981,7 +6968,7 @@ id|writel
 (paren
 l_int|1
 op_lshift
-id|SET_EP_HIDE_STATUS_PHASE
+id|CLEAR_EP_HIDE_STATUS_PHASE
 )paren
 op_or
 (paren
@@ -7708,16 +7695,22 @@ c_cond
 (paren
 id|ep-&gt;dev-&gt;protocol_stall
 )paren
+(brace
+id|ep-&gt;stopped
+op_assign
+l_int|1
+suffix:semicolon
 id|set_halt
 (paren
 id|ep
 )paren
 suffix:semicolon
+)brace
 id|mode
 op_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* reply to extra IN tokens with a zlp */
+multiline_comment|/* reply to extra IN data tokens with a zlp */
 )brace
 r_else
 r_if
@@ -7738,6 +7731,10 @@ c_cond
 id|ep-&gt;dev-&gt;protocol_stall
 )paren
 (brace
+id|ep-&gt;stopped
+op_assign
+l_int|1
+suffix:semicolon
 id|set_halt
 (paren
 id|ep
@@ -7754,6 +7751,8 @@ c_cond
 (paren
 op_logical_neg
 id|req
+op_logical_and
+id|ep-&gt;stopped
 )paren
 id|write_fifo
 (paren
@@ -7784,11 +7783,17 @@ c_cond
 (paren
 id|ep-&gt;dev-&gt;protocol_stall
 )paren
+(brace
+id|ep-&gt;stopped
+op_assign
+l_int|1
+suffix:semicolon
 id|set_halt
 (paren
 id|ep
 )paren
 suffix:semicolon
+)brace
 id|mode
 op_assign
 l_int|2
@@ -8225,6 +8230,7 @@ op_eq
 l_int|0
 )paren
 (brace
+multiline_comment|/* FIXME need mechanism (request flag?) so control OUT&n;&t;&t;&t; * can decide to stall ep0 after that done() returns,&n;&t;&t;&t; * from non-irq context&n;&t;&t;&t; */
 id|allow_status
 (paren
 id|ep
@@ -8884,6 +8890,7 @@ suffix:semicolon
 id|u16
 id|status
 suffix:semicolon
+multiline_comment|/* hw handles device and interface status */
 r_if
 c_cond
 (paren
@@ -8990,6 +8997,17 @@ id|allow_status
 id|ep
 )paren
 suffix:semicolon
+id|VDEBUG
+(paren
+id|dev
+comma
+l_string|&quot;%s stat %02x&bslash;n&quot;
+comma
+id|ep-&gt;ep.name
+comma
+id|status
+)paren
+suffix:semicolon
 r_goto
 id|next_endpoints
 suffix:semicolon
@@ -9005,6 +9023,7 @@ id|net2280_ep
 op_star
 id|e
 suffix:semicolon
+multiline_comment|/* hw handles device features */
 r_if
 c_cond
 (paren
@@ -9054,6 +9073,23 @@ id|clear_halt
 id|e
 )paren
 suffix:semicolon
+id|allow_status
+(paren
+id|ep
+)paren
+suffix:semicolon
+id|VDEBUG
+(paren
+id|dev
+comma
+l_string|&quot;%s clear halt&bslash;n&quot;
+comma
+id|ep-&gt;ep.name
+)paren
+suffix:semicolon
+r_goto
+id|next_endpoints
+suffix:semicolon
 )brace
 r_break
 suffix:semicolon
@@ -9066,6 +9102,7 @@ id|net2280_ep
 op_star
 id|e
 suffix:semicolon
+multiline_comment|/* hw handles device features */
 r_if
 c_cond
 (paren
@@ -9114,6 +9151,23 @@ id|set_halt
 (paren
 id|e
 )paren
+suffix:semicolon
+id|allow_status
+(paren
+id|ep
+)paren
+suffix:semicolon
+id|VDEBUG
+(paren
+id|dev
+comma
+l_string|&quot;%s set halt&bslash;n&quot;
+comma
+id|ep-&gt;ep.name
+)paren
+suffix:semicolon
+r_goto
+id|next_endpoints
 suffix:semicolon
 )brace
 r_break
@@ -9196,64 +9250,8 @@ id|dev-&gt;protocol_stall
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* when there&squot;s no data, queueing a response is optional */
 )brace
-r_else
-r_if
-c_cond
-(paren
-id|list_empty
-(paren
-op_amp
-id|ep-&gt;queue
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|u.r.wLength
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/* done() not possible/requested */
-id|allow_status
-(paren
-id|ep
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|DEBUG
-(paren
-id|dev
-comma
-l_string|&quot;req %02x.%02x v%04x &quot;
-l_string|&quot;gadget error, len %d, stat %d&bslash;n&quot;
-comma
-id|u.r.bRequestType
-comma
-id|u.r.bRequest
-comma
-id|le16_to_cpu
-(paren
-id|u.r.wValue
-)paren
-comma
-id|u.r.wLength
-comma
-id|tmp
-)paren
-suffix:semicolon
-id|dev-&gt;protocol_stall
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* some in/out token irq should follow; maybe stall then. */
+multiline_comment|/* some in/out token irq should follow; maybe stall then.&n;&t;&t; * driver must queue a request (even zlp) or halt ep0&n;&t;&t; * before the host times out.&n;&t;&t; */
 )brace
 id|next_endpoints
 suffix:colon

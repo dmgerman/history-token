@@ -517,11 +517,9 @@ id|ctrl-&gt;ctr_read_proc
 op_assign
 id|diva_ctl_read_proc
 suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|ctrl
-)paren
+id|ctrl-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * module init&n; */

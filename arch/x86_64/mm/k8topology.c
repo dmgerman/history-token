@@ -432,19 +432,8 @@ id|limit
 op_le
 id|base
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Node %d beyond memory map&bslash;n&quot;
-comma
-id|nodeid
-)paren
-suffix:semicolon
 r_continue
 suffix:semicolon
-)brace
 id|base
 op_rshift_assign
 l_int|16

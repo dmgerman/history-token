@@ -3483,12 +3483,9 @@ r_goto
 id|outf_cs
 suffix:semicolon
 )brace
-id|SET_MODULE_OWNER
-c_func
-(paren
-op_amp
-id|cs-&gt;iif
-)paren
+id|cs-&gt;iif.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|strcpy
 c_func
