@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;&t;/* for is_atomic */
@@ -17,12 +16,6 @@ macro_line|#include &lt;asm/iSeries/HvCallCfg.h&gt;
 macro_line|#include &lt;asm/iSeries/mf.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
 macro_line|#include &lt;asm/iSeries/vio.h&gt;
-r_extern
-r_struct
-id|device
-op_star
-id|iSeries_vio_dev
-suffix:semicolon
 multiline_comment|/* Status of the path to each other partition in the system.&n; * This is overkill, since we will only ever establish connections&n; * to our hosting partition and the primary partition on the system.&n; * But this allows for other support in the future.&n; */
 DECL|struct|viopathStatus
 r_static
