@@ -5380,21 +5380,6 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;%s: File length %lld bytes.&bslash;n&quot;
-comma
-id|name
-comma
-(paren
-r_int
-r_int
-)paren
-id|filp-&gt;f_pos
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|ST_DEB_MSG
 l_string|&quot;%s: Async write waits %d, finished %d.&bslash;n&quot;
 comma
 id|name
@@ -7106,10 +7091,6 @@ id|count
 op_sub_assign
 id|do_count
 suffix:semicolon
-id|filp-&gt;f_pos
-op_add_assign
-id|do_count
-suffix:semicolon
 id|b_point
 op_add_assign
 id|do_count
@@ -7402,10 +7383,6 @@ id|undone
 op_mul_assign
 id|STp-&gt;block_size
 suffix:semicolon
-id|filp-&gt;f_pos
-op_sub_assign
-id|undone
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7615,10 +7592,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|filp-&gt;f_pos
-op_sub_assign
-id|do_count
-suffix:semicolon
 id|count
 op_add_assign
 id|do_count
@@ -9209,10 +9182,6 @@ id|out
 suffix:semicolon
 )brace
 )brace
-id|filp-&gt;f_pos
-op_add_assign
-id|transfer
-suffix:semicolon
 id|buf
 op_add_assign
 id|transfer
