@@ -1176,8 +1176,6 @@ suffix:semicolon
 id|dst-&gt;rss
 op_increment
 suffix:semicolon
-id|cont_copy_pte_range
-suffix:colon
 id|set_pte
 c_func
 (paren
