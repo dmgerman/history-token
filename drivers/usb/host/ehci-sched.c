@@ -591,7 +591,7 @@ id|ehci-&gt;hcd.state
 op_assign
 id|USB_STATE_RUNNING
 suffix:semicolon
-multiline_comment|/* make sure tasklet scans these */
+multiline_comment|/* make sure ehci_work scans these */
 id|ehci-&gt;next_uframe
 op_assign
 id|readl
