@@ -16,6 +16,7 @@ DECL|macro|HAVE_HWFP
 mdefine_line|#define HAVE_HWFP 1
 macro_line|#endif
 DECL|variable|mxcsr_feature_mask
+r_static
 r_int
 r_int
 id|mxcsr_feature_mask
@@ -665,7 +666,7 @@ id|tsk-&gt;thread.i387.fsave.swd
 suffix:semicolon
 )brace
 )brace
-DECL|function|get_fpu_twd
+macro_line|#if 0
 r_int
 r_int
 id|get_fpu_twd
@@ -698,6 +699,7 @@ id|tsk-&gt;thread.i387.fsave.twd
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif  /*  0  */
 DECL|function|get_fpu_mxcsr
 r_int
 r_int
@@ -727,7 +729,7 @@ l_int|0x1f80
 suffix:semicolon
 )brace
 )brace
-DECL|function|set_fpu_cwd
+macro_line|#if 0
 r_void
 id|set_fpu_cwd
 c_func
@@ -768,7 +770,6 @@ l_int|0xffff0000u
 suffix:semicolon
 )brace
 )brace
-DECL|function|set_fpu_swd
 r_void
 id|set_fpu_swd
 c_func
@@ -809,7 +810,6 @@ l_int|0xffff0000u
 suffix:semicolon
 )brace
 )brace
-DECL|function|set_fpu_twd
 r_void
 id|set_fpu_twd
 c_func
@@ -854,6 +854,7 @@ l_int|0xffff0000u
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif  /*  0  */
 multiline_comment|/*&n; * FXSR floating point environment conversions.&n; */
 DECL|function|convert_fxsr_to_user
 r_static
