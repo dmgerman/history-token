@@ -9451,7 +9451,12 @@ op_plus
 id|XDR_LEN
 c_func
 (paren
+id|ld-&gt;ld_sop
+ques
+c_cond
 id|ld-&gt;ld_sop-&gt;so_owner.len
+suffix:colon
+l_int|0
 )paren
 )paren
 suffix:semicolon
@@ -9473,6 +9478,12 @@ c_func
 id|ld-&gt;ld_type
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ld-&gt;ld_sop
+)paren
+(brace
 id|WRITEMEM
 c_func
 (paren
@@ -9496,6 +9507,28 @@ comma
 id|ld-&gt;ld_sop-&gt;so_owner.len
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* non - nfsv4 lock in conflict, no clientid nor owner */
+id|WRITE64
+c_func
+(paren
+(paren
+id|u64
+)paren
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* clientid */
+id|WRITE32
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* length of owner name */
+)brace
 id|ADJUST_ARGS
 c_func
 (paren
