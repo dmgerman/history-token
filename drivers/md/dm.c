@@ -1267,6 +1267,12 @@ op_minus
 id|EIO
 )paren
 suffix:semicolon
+id|bio_put
+c_func
+(paren
+id|clone
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|struct|clone_info
