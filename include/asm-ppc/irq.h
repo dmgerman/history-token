@@ -193,7 +193,7 @@ suffix:semicolon
 )brace
 DECL|macro|NR_IRQS
 mdefine_line|#define&t;NR_IRQS&t;(NR_IPIC_INTS)
-macro_line|#elif defined(CONFIG_CPM2) &amp;&amp; defined(CONFIG_85xx)
+macro_line|#elif defined(CONFIG_85xx)
 multiline_comment|/* Now include the board configuration specific associations.&n;*/
 macro_line|#include &lt;asm/mpc85xx.h&gt;
 multiline_comment|/* The MPC8560 openpic has  32 internal interrupts and 12 external&n; * interrupts.&n; *&n; * We are &quot;flattening&quot; the interrupt vectors of the cascaded CPM&n; * so that we can uniquely identify any interrupt source with a&n; * single integer.&n; */
@@ -203,7 +203,7 @@ DECL|macro|NR_EPIC_INTS
 mdefine_line|#define NR_EPIC_INTS&t;44
 macro_line|#ifndef NR_8259_INTS
 DECL|macro|NR_8259_INTS
-mdefine_line|#define NR_8259_INTS 0
+mdefine_line|#define NR_8259_INTS&t;0
 macro_line|#endif
 DECL|macro|NUM_8259_INTERRUPTS
 mdefine_line|#define NUM_8259_INTERRUPTS NR_8259_INTS
@@ -213,7 +213,95 @@ mdefine_line|#define CPM_IRQ_OFFSET&t;0
 macro_line|#endif
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;(NR_EPIC_INTS + NR_CPM_INTS + NR_8259_INTS)
-multiline_comment|/* These values must be zero-based and map 1:1 with the EPIC configuration.&n; * They are used throughout the 8560 I/O subsystem to generate&n; * interrupt masks, flags, and other control patterns.  This is why the&n; * current kernel assumption of the 8259 as the base controller is such&n; * a pain in the butt.&n; */
+multiline_comment|/* Internal IRQs on MPC85xx OpenPIC */
+macro_line|#ifndef MPC85xx_OPENPIC_IRQ_OFFSET
+macro_line|#ifdef CONFIG_CPM2
+DECL|macro|MPC85xx_OPENPIC_IRQ_OFFSET
+mdefine_line|#define MPC85xx_OPENPIC_IRQ_OFFSET&t;(CPM_IRQ_OFFSET + NR_CPM_INTS)
+macro_line|#else
+DECL|macro|MPC85xx_OPENPIC_IRQ_OFFSET
+mdefine_line|#define MPC85xx_OPENPIC_IRQ_OFFSET&t;0
+macro_line|#endif
+macro_line|#endif
+multiline_comment|/* Not all of these exist on all MPC85xx implementations */
+DECL|macro|MPC85xx_IRQ_L2CACHE
+mdefine_line|#define MPC85xx_IRQ_L2CACHE&t;( 0 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_ECM
+mdefine_line|#define MPC85xx_IRQ_ECM&t;&t;( 1 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_DDR
+mdefine_line|#define MPC85xx_IRQ_DDR&t;&t;( 2 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_LBIU
+mdefine_line|#define MPC85xx_IRQ_LBIU&t;( 3 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_DMA0
+mdefine_line|#define MPC85xx_IRQ_DMA0&t;( 4 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_DMA1
+mdefine_line|#define MPC85xx_IRQ_DMA1&t;( 5 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_DMA2
+mdefine_line|#define MPC85xx_IRQ_DMA2&t;( 6 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_DMA3
+mdefine_line|#define MPC85xx_IRQ_DMA3&t;( 7 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_PCI1
+mdefine_line|#define MPC85xx_IRQ_PCI1&t;( 8 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_PCI2
+mdefine_line|#define MPC85xx_IRQ_PCI2&t;( 9 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_RIO_ERROR
+mdefine_line|#define MPC85xx_IRQ_RIO_ERROR&t;( 9 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_RIO_BELL
+mdefine_line|#define MPC85xx_IRQ_RIO_BELL&t;(10 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_RIO_TX
+mdefine_line|#define MPC85xx_IRQ_RIO_TX&t;(11 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_RIO_RX
+mdefine_line|#define MPC85xx_IRQ_RIO_RX&t;(12 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_TSEC1_TX
+mdefine_line|#define MPC85xx_IRQ_TSEC1_TX&t;(13 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_TSEC1_RX
+mdefine_line|#define MPC85xx_IRQ_TSEC1_RX&t;(14 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_TSEC1_ERROR
+mdefine_line|#define MPC85xx_IRQ_TSEC1_ERROR&t;(18 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_TSEC2_TX
+mdefine_line|#define MPC85xx_IRQ_TSEC2_TX&t;(19 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_TSEC2_RX
+mdefine_line|#define MPC85xx_IRQ_TSEC2_RX&t;(20 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_TSEC2_ERROR
+mdefine_line|#define MPC85xx_IRQ_TSEC2_ERROR&t;(24 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_FEC
+mdefine_line|#define MPC85xx_IRQ_FEC&t;&t;(25 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_DUART
+mdefine_line|#define MPC85xx_IRQ_DUART&t;(26 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_IIC1
+mdefine_line|#define MPC85xx_IRQ_IIC1&t;(27 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_PERFMON
+mdefine_line|#define MPC85xx_IRQ_PERFMON&t;(28 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_SEC2
+mdefine_line|#define MPC85xx_IRQ_SEC2&t;(29 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_CPM
+mdefine_line|#define MPC85xx_IRQ_CPM&t;&t;(30 + MPC85xx_OPENPIC_IRQ_OFFSET)
+multiline_comment|/* The 12 external interrupt lines */
+DECL|macro|MPC85xx_IRQ_EXT0
+mdefine_line|#define MPC85xx_IRQ_EXT0        (32 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_EXT1
+mdefine_line|#define MPC85xx_IRQ_EXT1        (33 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_EXT2
+mdefine_line|#define MPC85xx_IRQ_EXT2        (34 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_EXT3
+mdefine_line|#define MPC85xx_IRQ_EXT3        (35 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_EXT4
+mdefine_line|#define MPC85xx_IRQ_EXT4        (36 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_EXT5
+mdefine_line|#define MPC85xx_IRQ_EXT5        (37 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_EXT6
+mdefine_line|#define MPC85xx_IRQ_EXT6        (38 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_EXT7
+mdefine_line|#define MPC85xx_IRQ_EXT7        (39 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_EXT8
+mdefine_line|#define MPC85xx_IRQ_EXT8        (40 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_EXT9
+mdefine_line|#define MPC85xx_IRQ_EXT9        (41 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_EXT10
+mdefine_line|#define MPC85xx_IRQ_EXT10       (42 + MPC85xx_OPENPIC_IRQ_OFFSET)
+DECL|macro|MPC85xx_IRQ_EXT11
+mdefine_line|#define MPC85xx_IRQ_EXT11       (43 + MPC85xx_OPENPIC_IRQ_OFFSET)
+multiline_comment|/* CPM related interrupts */
 DECL|macro|SIU_INT_ERROR
 mdefine_line|#define&t;SIU_INT_ERROR&t;&t;((uint)0x00+CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_I2C
@@ -310,106 +398,110 @@ DECL|macro|NUM_8259_INTERRUPTS
 mdefine_line|#define NUM_8259_INTERRUPTS&t;16
 macro_line|#else /* CONFIG_8260 */
 multiline_comment|/* The 8260 has an internal interrupt controller with a maximum of&n; * 64 IRQs.  We will use NR_IRQs from above since it is large enough.&n; * Don&squot;t be confused by the 8260 documentation where they list an&n; * &quot;interrupt number&quot; and &quot;interrupt vector&quot;.  We are only interested&n; * in the interrupt vector.  There are &quot;reserved&quot; holes where the&n; * vector number increases, but the interrupt number in the table does not.&n; * (Document errata updates have fixed this...make sure you have up to&n; * date processor documentation -- Dan).&n; */
-DECL|macro|NR_SIU_INTS
-mdefine_line|#define NR_SIU_INTS&t;64
+macro_line|#ifndef CPM_IRQ_OFFSET
+DECL|macro|CPM_IRQ_OFFSET
+mdefine_line|#define CPM_IRQ_OFFSET&t;0
+macro_line|#endif
+DECL|macro|NR_CPM_INTS
+mdefine_line|#define NR_CPM_INTS&t;64
 DECL|macro|SIU_INT_ERROR
-mdefine_line|#define&t;SIU_INT_ERROR&t;&t;((uint)0x00)
+mdefine_line|#define&t;SIU_INT_ERROR&t;&t;((uint)0x00 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_I2C
-mdefine_line|#define&t;SIU_INT_I2C&t;&t;((uint)0x01)
+mdefine_line|#define&t;SIU_INT_I2C&t;&t;((uint)0x01 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_SPI
-mdefine_line|#define&t;SIU_INT_SPI&t;&t;((uint)0x02)
+mdefine_line|#define&t;SIU_INT_SPI&t;&t;((uint)0x02 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_RISC
-mdefine_line|#define&t;SIU_INT_RISC&t;&t;((uint)0x03)
+mdefine_line|#define&t;SIU_INT_RISC&t;&t;((uint)0x03 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_SMC1
-mdefine_line|#define&t;SIU_INT_SMC1&t;&t;((uint)0x04)
+mdefine_line|#define&t;SIU_INT_SMC1&t;&t;((uint)0x04 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_SMC2
-mdefine_line|#define&t;SIU_INT_SMC2&t;&t;((uint)0x05)
+mdefine_line|#define&t;SIU_INT_SMC2&t;&t;((uint)0x05 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_IDMA1
-mdefine_line|#define&t;SIU_INT_IDMA1&t;&t;((uint)0x06)
+mdefine_line|#define&t;SIU_INT_IDMA1&t;&t;((uint)0x06 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_IDMA2
-mdefine_line|#define&t;SIU_INT_IDMA2&t;&t;((uint)0x07)
+mdefine_line|#define&t;SIU_INT_IDMA2&t;&t;((uint)0x07 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_IDMA3
-mdefine_line|#define&t;SIU_INT_IDMA3&t;&t;((uint)0x08)
+mdefine_line|#define&t;SIU_INT_IDMA3&t;&t;((uint)0x08 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_IDMA4
-mdefine_line|#define&t;SIU_INT_IDMA4&t;&t;((uint)0x09)
+mdefine_line|#define&t;SIU_INT_IDMA4&t;&t;((uint)0x09 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_SDMA
-mdefine_line|#define&t;SIU_INT_SDMA&t;&t;((uint)0x0a)
+mdefine_line|#define&t;SIU_INT_SDMA&t;&t;((uint)0x0a + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_TIMER1
-mdefine_line|#define&t;SIU_INT_TIMER1&t;&t;((uint)0x0c)
+mdefine_line|#define&t;SIU_INT_TIMER1&t;&t;((uint)0x0c + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_TIMER2
-mdefine_line|#define&t;SIU_INT_TIMER2&t;&t;((uint)0x0d)
+mdefine_line|#define&t;SIU_INT_TIMER2&t;&t;((uint)0x0d + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_TIMER3
-mdefine_line|#define&t;SIU_INT_TIMER3&t;&t;((uint)0x0e)
+mdefine_line|#define&t;SIU_INT_TIMER3&t;&t;((uint)0x0e + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_TIMER4
-mdefine_line|#define&t;SIU_INT_TIMER4&t;&t;((uint)0x0f)
+mdefine_line|#define&t;SIU_INT_TIMER4&t;&t;((uint)0x0f + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_TMCNT
-mdefine_line|#define&t;SIU_INT_TMCNT&t;&t;((uint)0x10)
+mdefine_line|#define&t;SIU_INT_TMCNT&t;&t;((uint)0x10 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PIT
-mdefine_line|#define&t;SIU_INT_PIT&t;&t;((uint)0x11)
+mdefine_line|#define&t;SIU_INT_PIT&t;&t;((uint)0x11 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_IRQ1
-mdefine_line|#define&t;SIU_INT_IRQ1&t;&t;((uint)0x13)
+mdefine_line|#define&t;SIU_INT_IRQ1&t;&t;((uint)0x13 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_IRQ2
-mdefine_line|#define&t;SIU_INT_IRQ2&t;&t;((uint)0x14)
+mdefine_line|#define&t;SIU_INT_IRQ2&t;&t;((uint)0x14 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_IRQ3
-mdefine_line|#define&t;SIU_INT_IRQ3&t;&t;((uint)0x15)
+mdefine_line|#define&t;SIU_INT_IRQ3&t;&t;((uint)0x15 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_IRQ4
-mdefine_line|#define&t;SIU_INT_IRQ4&t;&t;((uint)0x16)
+mdefine_line|#define&t;SIU_INT_IRQ4&t;&t;((uint)0x16 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_IRQ5
-mdefine_line|#define&t;SIU_INT_IRQ5&t;&t;((uint)0x17)
+mdefine_line|#define&t;SIU_INT_IRQ5&t;&t;((uint)0x17 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_IRQ6
-mdefine_line|#define&t;SIU_INT_IRQ6&t;&t;((uint)0x18)
+mdefine_line|#define&t;SIU_INT_IRQ6&t;&t;((uint)0x18 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_IRQ7
-mdefine_line|#define&t;SIU_INT_IRQ7&t;&t;((uint)0x19)
+mdefine_line|#define&t;SIU_INT_IRQ7&t;&t;((uint)0x19 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_FCC1
-mdefine_line|#define&t;SIU_INT_FCC1&t;&t;((uint)0x20)
+mdefine_line|#define&t;SIU_INT_FCC1&t;&t;((uint)0x20 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_FCC2
-mdefine_line|#define&t;SIU_INT_FCC2&t;&t;((uint)0x21)
+mdefine_line|#define&t;SIU_INT_FCC2&t;&t;((uint)0x21 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_FCC3
-mdefine_line|#define&t;SIU_INT_FCC3&t;&t;((uint)0x22)
+mdefine_line|#define&t;SIU_INT_FCC3&t;&t;((uint)0x22 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_MCC1
-mdefine_line|#define&t;SIU_INT_MCC1&t;&t;((uint)0x24)
+mdefine_line|#define&t;SIU_INT_MCC1&t;&t;((uint)0x24 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_MCC2
-mdefine_line|#define&t;SIU_INT_MCC2&t;&t;((uint)0x25)
+mdefine_line|#define&t;SIU_INT_MCC2&t;&t;((uint)0x25 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_SCC1
-mdefine_line|#define&t;SIU_INT_SCC1&t;&t;((uint)0x28)
+mdefine_line|#define&t;SIU_INT_SCC1&t;&t;((uint)0x28 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_SCC2
-mdefine_line|#define&t;SIU_INT_SCC2&t;&t;((uint)0x29)
+mdefine_line|#define&t;SIU_INT_SCC2&t;&t;((uint)0x29 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_SCC3
-mdefine_line|#define&t;SIU_INT_SCC3&t;&t;((uint)0x2a)
+mdefine_line|#define&t;SIU_INT_SCC3&t;&t;((uint)0x2a + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_SCC4
-mdefine_line|#define&t;SIU_INT_SCC4&t;&t;((uint)0x2b)
+mdefine_line|#define&t;SIU_INT_SCC4&t;&t;((uint)0x2b + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC15
-mdefine_line|#define&t;SIU_INT_PC15&t;&t;((uint)0x30)
+mdefine_line|#define&t;SIU_INT_PC15&t;&t;((uint)0x30 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC14
-mdefine_line|#define&t;SIU_INT_PC14&t;&t;((uint)0x31)
+mdefine_line|#define&t;SIU_INT_PC14&t;&t;((uint)0x31 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC13
-mdefine_line|#define&t;SIU_INT_PC13&t;&t;((uint)0x32)
+mdefine_line|#define&t;SIU_INT_PC13&t;&t;((uint)0x32 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC12
-mdefine_line|#define&t;SIU_INT_PC12&t;&t;((uint)0x33)
+mdefine_line|#define&t;SIU_INT_PC12&t;&t;((uint)0x33 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC11
-mdefine_line|#define&t;SIU_INT_PC11&t;&t;((uint)0x34)
+mdefine_line|#define&t;SIU_INT_PC11&t;&t;((uint)0x34 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC10
-mdefine_line|#define&t;SIU_INT_PC10&t;&t;((uint)0x35)
+mdefine_line|#define&t;SIU_INT_PC10&t;&t;((uint)0x35 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC9
-mdefine_line|#define&t;SIU_INT_PC9&t;&t;((uint)0x36)
+mdefine_line|#define&t;SIU_INT_PC9&t;&t;((uint)0x36 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC8
-mdefine_line|#define&t;SIU_INT_PC8&t;&t;((uint)0x37)
+mdefine_line|#define&t;SIU_INT_PC8&t;&t;((uint)0x37 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC7
-mdefine_line|#define&t;SIU_INT_PC7&t;&t;((uint)0x38)
+mdefine_line|#define&t;SIU_INT_PC7&t;&t;((uint)0x38 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC6
-mdefine_line|#define&t;SIU_INT_PC6&t;&t;((uint)0x39)
+mdefine_line|#define&t;SIU_INT_PC6&t;&t;((uint)0x39 + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC5
-mdefine_line|#define&t;SIU_INT_PC5&t;&t;((uint)0x3a)
+mdefine_line|#define&t;SIU_INT_PC5&t;&t;((uint)0x3a + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC4
-mdefine_line|#define&t;SIU_INT_PC4&t;&t;((uint)0x3b)
+mdefine_line|#define&t;SIU_INT_PC4&t;&t;((uint)0x3b + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC3
-mdefine_line|#define&t;SIU_INT_PC3&t;&t;((uint)0x3c)
+mdefine_line|#define&t;SIU_INT_PC3&t;&t;((uint)0x3c + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC2
-mdefine_line|#define&t;SIU_INT_PC2&t;&t;((uint)0x3d)
+mdefine_line|#define&t;SIU_INT_PC2&t;&t;((uint)0x3d + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC1
-mdefine_line|#define&t;SIU_INT_PC1&t;&t;((uint)0x3e)
+mdefine_line|#define&t;SIU_INT_PC1&t;&t;((uint)0x3e + CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_PC0
-mdefine_line|#define&t;SIU_INT_PC0&t;&t;((uint)0x3f)
+mdefine_line|#define&t;SIU_INT_PC0&t;&t;((uint)0x3f + CPM_IRQ_OFFSET)
 macro_line|#endif /* CONFIG_8260 */
 multiline_comment|/*&n; * This gets called from serial.c, which is now used on&n; * powermacs as well as prep/chrp boxes.&n; * Prep and chrp both have cascaded 8259 PICs.&n; */
 DECL|function|irq_canonicalize

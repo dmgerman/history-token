@@ -194,6 +194,15 @@ r_int
 suffix:semicolon
 r_extern
 r_void
+id|__init
+id|lmb_enforce_memory_limit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|lmb_dump_all
 c_func
 (paren

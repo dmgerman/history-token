@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * linux/drivers/video/nvidia/nv_accel.c - nVidia Hardware Acceleration&n; *&n; * Copyright 2004 Antonino Daplas &lt;adaplas@pol.net&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; *&n; */
+multiline_comment|/***************************************************************************&bslash;&n;|*                                                                           *|&n;|*       Copyright 1993-2003 NVIDIA, Corporation.  All rights reserved.      *|&n;|*                                                                           *|&n;|*     NOTICE TO USER:   The source code  is copyrighted under  U.S. and     *|&n;|*     international laws.  Users and possessors of this source code are     *|&n;|*     hereby granted a nonexclusive,  royalty-free copyright license to     *|&n;|*     use this code in individual and commercial software.                  *|&n;|*                                                                           *|&n;|*     Any use of this source code must include,  in the user documenta-     *|&n;|*     tion and  internal comments to the code,  notices to the end user     *|&n;|*     as follows:                                                           *|&n;|*                                                                           *|&n;|*       Copyright 1993-2003 NVIDIA, Corporation.  All rights reserved.      *|&n;|*                                                                           *|&n;|*     NVIDIA, CORPORATION MAKES NO REPRESENTATION ABOUT THE SUITABILITY     *|&n;|*     OF  THIS SOURCE  CODE  FOR ANY PURPOSE.  IT IS  PROVIDED  &quot;AS IS&quot;     *|&n;|*     WITHOUT EXPRESS OR IMPLIED WARRANTY OF ANY KIND.  NVIDIA, CORPOR-     *|&n;|*     ATION DISCLAIMS ALL WARRANTIES  WITH REGARD  TO THIS SOURCE CODE,     *|&n;|*     INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY, NONINFRINGE-     *|&n;|*     MENT,  AND FITNESS  FOR A PARTICULAR PURPOSE.   IN NO EVENT SHALL     *|&n;|*     NVIDIA, CORPORATION  BE LIABLE FOR ANY SPECIAL,  INDIRECT,  INCI-     *|&n;|*     DENTAL, OR CONSEQUENTIAL DAMAGES,  OR ANY DAMAGES  WHATSOEVER RE-     *|&n;|*     SULTING FROM LOSS OF USE,  DATA OR PROFITS,  WHETHER IN AN ACTION     *|&n;|*     OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,  ARISING OUT OF     *|&n;|*     OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOURCE CODE.     *|&n;|*                                                                           *|&n;|*     U.S. Government  End  Users.   This source code  is a &quot;commercial     *|&n;|*     item,&quot;  as that  term is  defined at  48 C.F.R. 2.101 (OCT 1995),     *|&n;|*     consisting  of &quot;commercial  computer  software&quot;  and  &quot;commercial     *|&n;|*     computer  software  documentation,&quot;  as such  terms  are  used in     *|&n;|*     48 C.F.R. 12.212 (SEPT 1995)  and is provided to the U.S. Govern-     *|&n;|*     ment only as  a commercial end item.   Consistent with  48 C.F.R.     *|&n;|*     12.212 and  48 C.F.R. 227.7202-1 through  227.7202-4 (JUNE 1995),     *|&n;|*     all U.S. Government End Users  acquire the source code  with only     *|&n;|*     those rights set forth herein.                                        *|&n;|*                                                                           *|&n; &bslash;***************************************************************************/
+multiline_comment|/*&n; * GPL Licensing Note - According to Mark Vojkovich, author of the Xorg/&n; * XFree86 &squot;nv&squot; driver, this source code is provided under MIT-style licensing&n; * where the source code is provided &quot;as is&quot; without warranty of any kind.&n; * The only usage restriction is for the copyright notices to be retained&n; * whenever code is used.&n; *&n; * Antonino Daplas &lt;adaplas@pol.net&gt; 2005-03-11&n; */
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &quot;nv_type.h&quot;
 macro_line|#include &quot;nv_proto.h&quot;
@@ -2147,8 +2148,6 @@ comma
 id|tmp
 suffix:semicolon
 r_int
-id|i
-comma
 id|j
 comma
 id|k
@@ -2168,7 +2167,11 @@ l_int|31
 suffix:semicolon
 id|dsize
 op_assign
+(paren
 id|width
+op_star
+id|image-&gt;height
+)paren
 op_rshift
 l_int|5
 suffix:semicolon
@@ -2342,16 +2345,73 @@ l_int|0xffff
 )paren
 )paren
 suffix:semicolon
+r_while
+c_loop
+(paren
+id|dsize
+op_ge
+id|RECT_EXPAND_TWO_COLOR_DATA_MAX_DWORDS
+)paren
+(brace
+id|NVDmaStart
+c_func
+(paren
+id|par
+comma
+id|RECT_EXPAND_TWO_COLOR_DATA
+c_func
+(paren
+l_int|0
+)paren
+comma
+id|RECT_EXPAND_TWO_COLOR_DATA_MAX_DWORDS
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
-id|i
+id|j
 op_assign
-id|image-&gt;height
+id|RECT_EXPAND_TWO_COLOR_DATA_MAX_DWORDS
 suffix:semicolon
-id|i
+id|j
 op_decrement
 suffix:semicolon
+)paren
+(brace
+id|tmp
+op_assign
+id|data
+(braket
+id|k
+op_increment
+)braket
+suffix:semicolon
+id|reverse_order
+c_func
+(paren
+op_amp
+id|tmp
+)paren
+suffix:semicolon
+id|NVDmaNext
+c_func
+(paren
+id|par
+comma
+id|tmp
+)paren
+suffix:semicolon
+)brace
+id|dsize
+op_sub_assign
+id|RECT_EXPAND_TWO_COLOR_DATA_MAX_DWORDS
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|dsize
 )paren
 (brace
 id|NVDmaStart

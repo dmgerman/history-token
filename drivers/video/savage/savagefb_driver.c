@@ -9078,8 +9078,6 @@ op_or
 id|FBINFO_HWACCEL_YPAN
 op_or
 id|FBINFO_HWACCEL_XPAN
-op_or
-id|FBINFO_MISC_MODESWITCHLATE
 suffix:semicolon
 id|info-&gt;pseudo_palette
 op_assign

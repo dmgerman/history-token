@@ -1883,7 +1883,6 @@ op_amp
 id|udbg_console
 )paren
 suffix:semicolon
-macro_line|#endif /* !CONFIG_PPC_ISERIES */
 multiline_comment|/* Save unparsed command line copy for /proc/cmdline */
 id|strlcpy
 c_func
@@ -1900,6 +1899,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif /* !CONFIG_PPC_ISERIES */
 macro_line|#if defined(CONFIG_SMP) &amp;&amp; !defined(CONFIG_PPC_ISERIES)
 multiline_comment|/*&n;&t; * iSeries has already initialized the cpu maps at this point.&n;&t; */
 id|setup_cpu_maps
@@ -2569,11 +2569,25 @@ id|show_cpuinfo
 comma
 )brace
 suffix:semicolon
-macro_line|#if 0 /* XXX not currently used */
+multiline_comment|/*&n; * These three variables are used to save values passed to us by prom_init()&n; * via the device tree. The TCE variables are needed because with a memory_limit&n; * in force we may need to explicitly map the TCE are at the top of RAM.&n; */
+DECL|variable|memory_limit
 r_int
 r_int
 id|memory_limit
 suffix:semicolon
+DECL|variable|tce_alloc_start
+r_int
+r_int
+id|tce_alloc_start
+suffix:semicolon
+DECL|variable|tce_alloc_end
+r_int
+r_int
+id|tce_alloc_end
+suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_ISERIES
+multiline_comment|/*&n; * On iSeries we just parse the mem=X option from the command line.&n; * On pSeries it&squot;s a bit more complicated, see prom_init_mem()&n; */
+DECL|function|early_parsemem
 r_static
 r_int
 id|__init
@@ -2596,6 +2610,9 @@ l_int|0
 suffix:semicolon
 id|memory_limit
 op_assign
+id|ALIGN
+c_func
+(paren
 id|memparse
 c_func
 (paren
@@ -2603,6 +2620,9 @@ id|p
 comma
 op_amp
 id|p
+)paren
+comma
+id|PAGE_SIZE
 )paren
 suffix:semicolon
 r_return
@@ -2617,7 +2637,7 @@ comma
 id|early_parsemem
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* CONFIG_PPC_ISERIES */
 macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 DECL|function|set_preferred_console
 r_static

@@ -6,6 +6,7 @@ macro_line|#ifdef CONFIG_SECCOMP
 DECL|macro|NR_SECCOMP_MODES
 mdefine_line|#define NR_SECCOMP_MODES 1
 macro_line|#include &lt;linux/thread_info.h&gt;
+macro_line|#include &lt;asm/seccomp.h&gt;
 DECL|member|mode
 DECL|typedef|seccomp_t
 r_typedef

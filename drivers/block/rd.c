@@ -992,11 +992,14 @@ l_int|0
 comma
 multiline_comment|/* No readahead */
 dot
-id|memory_backed
+id|capabilities
 op_assign
-l_int|1
+id|BDI_CAP_NO_ACCT_DIRTY
+op_or
+id|BDI_CAP_NO_WRITEBACK
+op_or
+id|BDI_CAP_MAP_COPY
 comma
-multiline_comment|/* Does not contribute to dirty memory */
 dot
 id|unplug_io_fn
 op_assign
@@ -1019,9 +1022,9 @@ l_int|0
 comma
 multiline_comment|/* No readahead */
 dot
-id|memory_backed
+id|capabilities
 op_assign
-l_int|0
+id|BDI_CAP_MAP_COPY
 comma
 multiline_comment|/* Does contribute to dirty memory */
 dot

@@ -10,6 +10,8 @@ macro_line|#if defined(CONFIG_83xx)
 macro_line|#include &lt;asm/mpc83xx.h&gt;
 macro_line|#elif defined(CONFIG_85xx)
 macro_line|#include &lt;asm/mpc85xx.h&gt;
+macro_line|#elif defined(CONFIG_PPC_MPC52xx)
+macro_line|#include &lt;asm/mpc52xx.h&gt;
 macro_line|#else
 macro_line|#error &quot;need definition of ppc_sys_devices&quot;
 macro_line|#endif

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 r_extern
 r_char

@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/vt_buffer.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+DECL|macro|FBCON_FLAGS_INIT
+mdefine_line|#define FBCON_FLAGS_INIT 1
 multiline_comment|/*&n;    *    This is the interface between the low-level console driver and the&n;    *    low-level frame buffer device&n;    */
 DECL|struct|display
 r_struct
@@ -79,6 +81,10 @@ suffix:semicolon
 DECL|member|accel_flags
 id|u32
 id|accel_flags
+suffix:semicolon
+DECL|member|rotate
+id|u32
+id|rotate
 suffix:semicolon
 DECL|member|red
 r_struct
@@ -301,6 +307,14 @@ DECL|member|blank_state
 r_int
 id|blank_state
 suffix:semicolon
+DECL|member|graphics
+r_int
+id|graphics
+suffix:semicolon
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
 DECL|member|cursor_data
 r_char
 op_star
@@ -350,14 +364,6 @@ DECL|macro|SCROLL_REDRAW
 mdefine_line|#define SCROLL_REDRAW&t;   0x004
 DECL|macro|SCROLL_PAN_REDRAW
 mdefine_line|#define SCROLL_PAN_REDRAW  0x005
-r_extern
-r_int
-id|fb_console_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_FB_TILEBLITTING
 r_extern
 r_void
@@ -396,12 +402,6 @@ id|fbcon_ops
 op_star
 id|ops
 )paren
-suffix:semicolon
-r_extern
-r_const
-r_struct
-id|consw
-id|fb_con
 suffix:semicolon
 macro_line|#endif /* _VIDEO_FBCON_H */
 eof

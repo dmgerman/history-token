@@ -3696,7 +3696,7 @@ id|inode
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;iput&t;- put an inode &n; *&t;@inode: inode to put&n; *&n; *&t;Puts an inode, dropping its usage count. If the inode use count hits&n; *&t;zero the inode is also then freed and may be destroyed.&n; */
+multiline_comment|/**&n; *&t;iput&t;- put an inode &n; *&t;@inode: inode to put&n; *&n; *&t;Puts an inode, dropping its usage count. If the inode use count hits&n; *&t;zero, the inode is then freed and may also be destroyed.&n; *&n; *&t;Consequently, iput() can sleep.&n; */
 DECL|function|iput
 r_void
 id|iput
@@ -3721,16 +3721,12 @@ id|op
 op_assign
 id|inode-&gt;i_sb-&gt;s_op
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|inode-&gt;i_state
 op_eq
 id|I_CLEAR
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if

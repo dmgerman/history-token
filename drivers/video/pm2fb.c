@@ -3988,7 +3988,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|info-&gt;var.activate
+op_amp
+id|FB_ACTIVATE_MASK
+)paren
 op_eq
 id|FB_ACTIVATE_NOW
 )paren
@@ -6105,7 +6109,7 @@ id|option
 suffix:semicolon
 macro_line|#endif
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp

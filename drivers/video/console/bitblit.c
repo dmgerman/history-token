@@ -1058,10 +1058,15 @@ op_sub_assign
 id|cnt
 suffix:semicolon
 )brace
+multiline_comment|/* buf is always NULL except when in monochrome mode, so in this case&n;&t;   it&squot;s a gain to check buf against NULL even though kfree() handles&n;&t;   NULL pointers just fine */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|buf
+)paren
 )paren
 id|kfree
 c_func
@@ -1474,11 +1479,6 @@ id|dst
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ops-&gt;cursor_data
-)paren
 id|kfree
 c_func
 (paren
@@ -1678,11 +1678,6 @@ id|mask
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ops-&gt;cursor_state.mask
-)paren
 id|kfree
 c_func
 (paren

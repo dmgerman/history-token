@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-ppc/mpc52xx.h&n; * &n; * Prototypes, etc. for the Freescale MPC52xx embedded cpu chips&n; * May need to be cleaned as the port goes on ...&n; *&n; *&n; * Maintainer : Sylvain Munaut &lt;tnt@246tNt.com&gt;&n; *&n; * Originally written by Dale Farnsworth &lt;dfarnsworth@mvista.com&gt; &n; * for the 2.4 kernel.&n; *&n; * Copyright (C) 2004 Sylvain Munaut &lt;tnt@246tNt.com&gt;&n; * Copyright (C) 2003 MontaVista, Software, Inc.&n; *&n; * This file is licensed under the terms of the GNU General Public License&n; * version 2. This program is licensed &quot;as is&quot; without any warranty of any&n; * kind, whether express or implied.&n; */
+multiline_comment|/*&n; * include/asm-ppc/mpc52xx.h&n; * &n; * Prototypes, etc. for the Freescale MPC52xx embedded cpu chips&n; * May need to be cleaned as the port goes on ...&n; *&n; *&n; * Maintainer : Sylvain Munaut &lt;tnt@246tNt.com&gt;&n; *&n; * Originally written by Dale Farnsworth &lt;dfarnsworth@mvista.com&gt; &n; * for the 2.4 kernel.&n; *&n; * Copyright (C) 2004-2005 Sylvain Munaut &lt;tnt@246tNt.com&gt;&n; * Copyright (C) 2003 MontaVista, Software, Inc.&n; *&n; * This file is licensed under the terms of the GNU General Public License&n; * version 2. This program is licensed &quot;as is&quot; without any warranty of any&n; * kind, whether express or implied.&n; */
 macro_line|#ifndef __ASM_MPC52xx_H__
 DECL|macro|__ASM_MPC52xx_H__
 mdefine_line|#define __ASM_MPC52xx_H__
@@ -8,83 +8,129 @@ macro_line|#include &lt;asm/types.h&gt;
 r_struct
 id|pt_regs
 suffix:semicolon
-r_struct
-id|ocp_def
-suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
+multiline_comment|/* ======================================================================== */
+multiline_comment|/* PPC Sys devices definition                                               */
+multiline_comment|/* ======================================================================== */
+DECL|enum|ppc_sys_devices
+r_enum
+id|ppc_sys_devices
+(brace
+DECL|enumerator|MPC52xx_MSCAN1
+id|MPC52xx_MSCAN1
+comma
+DECL|enumerator|MPC52xx_MSCAN2
+id|MPC52xx_MSCAN2
+comma
+DECL|enumerator|MPC52xx_SPI
+id|MPC52xx_SPI
+comma
+DECL|enumerator|MPC52xx_USB
+id|MPC52xx_USB
+comma
+DECL|enumerator|MPC52xx_BDLC
+id|MPC52xx_BDLC
+comma
+DECL|enumerator|MPC52xx_PSC1
+id|MPC52xx_PSC1
+comma
+DECL|enumerator|MPC52xx_PSC2
+id|MPC52xx_PSC2
+comma
+DECL|enumerator|MPC52xx_PSC3
+id|MPC52xx_PSC3
+comma
+DECL|enumerator|MPC52xx_PSC4
+id|MPC52xx_PSC4
+comma
+DECL|enumerator|MPC52xx_PSC5
+id|MPC52xx_PSC5
+comma
+DECL|enumerator|MPC52xx_PSC6
+id|MPC52xx_PSC6
+comma
+DECL|enumerator|MPC52xx_FEC
+id|MPC52xx_FEC
+comma
+DECL|enumerator|MPC52xx_ATA
+id|MPC52xx_ATA
+comma
+DECL|enumerator|MPC52xx_I2C1
+id|MPC52xx_I2C1
+comma
+DECL|enumerator|MPC52xx_I2C2
+id|MPC52xx_I2C2
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* ======================================================================== */
 multiline_comment|/* Main registers/struct addresses                                          */
 multiline_comment|/* ======================================================================== */
-multiline_comment|/* Theses are PHYSICAL addresses !                                          */
-multiline_comment|/* TODO : There should be no static mapping, but it&squot;s not yet the case, so  */
-multiline_comment|/*        we require a 1:1 mapping                                          */
+multiline_comment|/* MBAR position */
 DECL|macro|MPC52xx_MBAR
 mdefine_line|#define MPC52xx_MBAR&t;&t;0xf0000000&t;/* Phys address */
-DECL|macro|MPC52xx_MBAR_SIZE
-mdefine_line|#define MPC52xx_MBAR_SIZE&t;0x00010000
 DECL|macro|MPC52xx_MBAR_VIRT
 mdefine_line|#define MPC52xx_MBAR_VIRT&t;0xf0000000&t;/* Virt address */
-DECL|macro|MPC52xx_MMAP_CTL
-mdefine_line|#define MPC52xx_MMAP_CTL&t;(MPC52xx_MBAR + 0x0000)
-DECL|macro|MPC52xx_SDRAM
-mdefine_line|#define MPC52xx_SDRAM&t;&t;(MPC52xx_MBAR + 0x0100)
-DECL|macro|MPC52xx_CDM
-mdefine_line|#define MPC52xx_CDM&t;&t;(MPC52xx_MBAR + 0x0200)
-DECL|macro|MPC52xx_SFTRST
-mdefine_line|#define MPC52xx_SFTRST&t;&t;(MPC52xx_MBAR + 0x0220)
-DECL|macro|MPC52xx_SFTRST_BIT
-mdefine_line|#define MPC52xx_SFTRST_BIT&t;0x01000000
-DECL|macro|MPC52xx_INTR
-mdefine_line|#define MPC52xx_INTR&t;&t;(MPC52xx_MBAR + 0x0500)
-DECL|macro|MPC52xx_GPTx
-mdefine_line|#define MPC52xx_GPTx(x)&t;&t;(MPC52xx_MBAR + 0x0600 + ((x)&lt;&lt;4))
-DECL|macro|MPC52xx_RTC
-mdefine_line|#define MPC52xx_RTC&t;&t;(MPC52xx_MBAR + 0x0800)
-DECL|macro|MPC52xx_MSCAN1
-mdefine_line|#define MPC52xx_MSCAN1&t;&t;(MPC52xx_MBAR + 0x0900)
-DECL|macro|MPC52xx_MSCAN2
-mdefine_line|#define MPC52xx_MSCAN2&t;&t;(MPC52xx_MBAR + 0x0980)
-DECL|macro|MPC52xx_GPIO
-mdefine_line|#define MPC52xx_GPIO&t;&t;(MPC52xx_MBAR + 0x0b00)
-DECL|macro|MPC52xx_GPIO_WKUP
-mdefine_line|#define MPC52xx_GPIO_WKUP&t;(MPC52xx_MBAR + 0x0c00)
-DECL|macro|MPC52xx_PCI
-mdefine_line|#define MPC52xx_PCI&t;&t;(MPC52xx_MBAR + 0x0d00)
-DECL|macro|MPC52xx_USB_OHCI
-mdefine_line|#define MPC52xx_USB_OHCI&t;(MPC52xx_MBAR + 0x1000)
-DECL|macro|MPC52xx_SDMA
-mdefine_line|#define MPC52xx_SDMA&t;&t;(MPC52xx_MBAR + 0x1200)
-DECL|macro|MPC52xx_XLB
-mdefine_line|#define MPC52xx_XLB&t;&t;(MPC52xx_MBAR + 0x1f00)
-DECL|macro|MPC52xx_PSCx
-mdefine_line|#define MPC52xx_PSCx(x)&t;&t;(MPC52xx_MBAR + 0x2000 + ((x)&lt;&lt;9))
-DECL|macro|MPC52xx_PSC1
-mdefine_line|#define MPC52xx_PSC1&t;&t;(MPC52xx_MBAR + 0x2000)
-DECL|macro|MPC52xx_PSC2
-mdefine_line|#define MPC52xx_PSC2&t;&t;(MPC52xx_MBAR + 0x2200)
-DECL|macro|MPC52xx_PSC3
-mdefine_line|#define MPC52xx_PSC3&t;&t;(MPC52xx_MBAR + 0x2400)
-DECL|macro|MPC52xx_PSC4
-mdefine_line|#define MPC52xx_PSC4&t;&t;(MPC52xx_MBAR + 0x2600)
-DECL|macro|MPC52xx_PSC5
-mdefine_line|#define MPC52xx_PSC5&t;&t;(MPC52xx_MBAR + 0x2800)
-DECL|macro|MPC52xx_PSC6
-mdefine_line|#define MPC52xx_PSC6&t;&t;(MPC52xx_MBAR + 0x2C00)
-DECL|macro|MPC52xx_FEC
-mdefine_line|#define MPC52xx_FEC&t;&t;(MPC52xx_MBAR + 0x3000)
-DECL|macro|MPC52xx_ATA
-mdefine_line|#define MPC52xx_ATA&t;&t;(MPC52xx_MBAR + 0x3a00)
-DECL|macro|MPC52xx_I2C1
-mdefine_line|#define MPC52xx_I2C1&t;&t;(MPC52xx_MBAR + 0x3d00)
-DECL|macro|MPC52xx_I2C_MICR
-mdefine_line|#define MPC52xx_I2C_MICR&t;(MPC52xx_MBAR + 0x3d20)
-DECL|macro|MPC52xx_I2C2
-mdefine_line|#define MPC52xx_I2C2&t;&t;(MPC52xx_MBAR + 0x3d40)
+DECL|macro|MPC52xx_MBAR_SIZE
+mdefine_line|#define MPC52xx_MBAR_SIZE&t;0x00010000
+DECL|macro|MPC52xx_PA
+mdefine_line|#define MPC52xx_PA(x)&t;&t;((phys_addr_t)(MPC52xx_MBAR + (x)))
+DECL|macro|MPC52xx_VA
+mdefine_line|#define MPC52xx_VA(x)&t;&t;((void __iomem *)(MPC52xx_MBAR_VIRT + (x)))
+multiline_comment|/* Registers zone offset/size  */
+DECL|macro|MPC52xx_MMAP_CTL_OFFSET
+mdefine_line|#define MPC52xx_MMAP_CTL_OFFSET&t;&t;0x0000
+DECL|macro|MPC52xx_MMAP_CTL_SIZE
+mdefine_line|#define MPC52xx_MMAP_CTL_SIZE&t;&t;0x068
+DECL|macro|MPC52xx_SDRAM_OFFSET
+mdefine_line|#define MPC52xx_SDRAM_OFFSET&t;&t;0x0100
+DECL|macro|MPC52xx_SDRAM_SIZE
+mdefine_line|#define MPC52xx_SDRAM_SIZE&t;&t;0x010
+DECL|macro|MPC52xx_CDM_OFFSET
+mdefine_line|#define MPC52xx_CDM_OFFSET&t;&t;0x0200
+DECL|macro|MPC52xx_CDM_SIZE
+mdefine_line|#define MPC52xx_CDM_SIZE&t;&t;0x038
+DECL|macro|MPC52xx_INTR_OFFSET
+mdefine_line|#define MPC52xx_INTR_OFFSET&t;&t;0x0500
+DECL|macro|MPC52xx_INTR_SIZE
+mdefine_line|#define MPC52xx_INTR_SIZE&t;&t;0x04c
+DECL|macro|MPC52xx_GPTx_OFFSET
+mdefine_line|#define MPC52xx_GPTx_OFFSET(x)&t;&t;(0x0600 + ((x)&lt;&lt;4))
+DECL|macro|MPC52xx_GPT_SIZE
+mdefine_line|#define MPC52xx_GPT_SIZE&t;&t;0x010
+DECL|macro|MPC52xx_RTC_OFFSET
+mdefine_line|#define MPC52xx_RTC_OFFSET&t;&t;0x0800
+DECL|macro|MPC52xx_RTC_SIZE
+mdefine_line|#define MPC52xx_RTC_SIZE&t;&t;0x024
+DECL|macro|MPC52xx_GPIO_OFFSET
+mdefine_line|#define MPC52xx_GPIO_OFFSET&t;&t;0x0b00
+DECL|macro|MPC52xx_GPIO_SIZE
+mdefine_line|#define MPC52xx_GPIO_SIZE&t;&t;0x040
+DECL|macro|MPC52xx_GPIO_WKUP_OFFSET
+mdefine_line|#define MPC52xx_GPIO_WKUP_OFFSET&t;0x0c00
+DECL|macro|MPC52xx_GPIO_WKUP_SIZE
+mdefine_line|#define MPC52xx_GPIO_WKUP_SIZE&t;&t;0x028
+DECL|macro|MPC52xx_PCI_OFFSET
+mdefine_line|#define MPC52xx_PCI_OFFSET&t;&t;0x0d00
+DECL|macro|MPC52xx_PCI_SIZE
+mdefine_line|#define MPC52xx_PCI_SIZE&t;&t;0x100
+DECL|macro|MPC52xx_SDMA_OFFSET
+mdefine_line|#define MPC52xx_SDMA_OFFSET&t;&t;0x1200
+DECL|macro|MPC52xx_SDMA_SIZE
+mdefine_line|#define MPC52xx_SDMA_SIZE&t;&t;0x100
+DECL|macro|MPC52xx_XLB_OFFSET
+mdefine_line|#define MPC52xx_XLB_OFFSET&t;&t;0x1f00
+DECL|macro|MPC52xx_XLB_SIZE
+mdefine_line|#define MPC52xx_XLB_SIZE&t;&t;0x100
+DECL|macro|MPC52xx_PSCx_OFFSET
+mdefine_line|#define MPC52xx_PSCx_OFFSET(x)&t;&t;(((x)!=6)?(0x1e00+((x)&lt;&lt;9)):0x2c00)
+DECL|macro|MPC52xx_PSC_SIZE
+mdefine_line|#define MPC52xx_PSC_SIZE&t;&t;0x0a0
 multiline_comment|/* SRAM used for SDMA */
-DECL|macro|MPC52xx_SRAM
-mdefine_line|#define MPC52xx_SRAM&t;&t;(MPC52xx_MBAR + 0x8000)
+DECL|macro|MPC52xx_SRAM_OFFSET
+mdefine_line|#define MPC52xx_SRAM_OFFSET&t;&t;0x8000
 DECL|macro|MPC52xx_SRAM_SIZE
-mdefine_line|#define MPC52xx_SRAM_SIZE&t;(16*1024)
+mdefine_line|#define MPC52xx_SRAM_SIZE&t;&t;0x4000
 multiline_comment|/* ======================================================================== */
 multiline_comment|/* IRQ mapping                                                              */
 multiline_comment|/* ======================================================================== */
@@ -155,16 +201,18 @@ DECL|macro|MPC52xx_I2C1_IRQ
 mdefine_line|#define MPC52xx_I2C1_IRQ&t;&t;(MPC52xx_PERP_IRQ_BASE + 15)
 DECL|macro|MPC52xx_I2C2_IRQ
 mdefine_line|#define MPC52xx_I2C2_IRQ&t;&t;(MPC52xx_PERP_IRQ_BASE + 16)
-DECL|macro|MPC52xx_CAN1_IRQ
-mdefine_line|#define MPC52xx_CAN1_IRQ&t;&t;(MPC52xx_PERP_IRQ_BASE + 17)
-DECL|macro|MPC52xx_CAN2_IRQ
-mdefine_line|#define MPC52xx_CAN2_IRQ&t;&t;(MPC52xx_PERP_IRQ_BASE + 18)
+DECL|macro|MPC52xx_MSCAN1_IRQ
+mdefine_line|#define MPC52xx_MSCAN1_IRQ&t;&t;(MPC52xx_PERP_IRQ_BASE + 17)
+DECL|macro|MPC52xx_MSCAN2_IRQ
+mdefine_line|#define MPC52xx_MSCAN2_IRQ&t;&t;(MPC52xx_PERP_IRQ_BASE + 18)
 DECL|macro|MPC52xx_IR_RX_IRQ
 mdefine_line|#define MPC52xx_IR_RX_IRQ&t;&t;(MPC52xx_PERP_IRQ_BASE + 19)
 DECL|macro|MPC52xx_IR_TX_IRQ
 mdefine_line|#define MPC52xx_IR_TX_IRQ&t;&t;(MPC52xx_PERP_IRQ_BASE + 20)
 DECL|macro|MPC52xx_XLB_ARB_IRQ
 mdefine_line|#define MPC52xx_XLB_ARB_IRQ&t;&t;(MPC52xx_PERP_IRQ_BASE + 21)
+DECL|macro|MPC52xx_BDLC_IRQ
+mdefine_line|#define MPC52xx_BDLC_IRQ&t;&t;(MPC52xx_PERP_IRQ_BASE + 22)
 multiline_comment|/* ======================================================================== */
 multiline_comment|/* Structures mapping of some unit register set                             */
 multiline_comment|/* ======================================================================== */
@@ -291,7 +339,7 @@ DECL|member|cs7_stop
 id|u32
 id|cs7_stop
 suffix:semicolon
-multiline_comment|/* MMAP_CTRL + 0x60 */
+multiline_comment|/* MMAP_CTRL + 0x64 */
 )brace
 suffix:semicolon
 multiline_comment|/* SDRAM control */
@@ -468,7 +516,7 @@ id|ipr
 l_int|32
 )braket
 suffix:semicolon
-multiline_comment|/* SDMA + 0x3c .. 5b */
+multiline_comment|/* SDMA + 0x3c .. 0x5b */
 DECL|member|cReqSelect
 id|u32
 id|cReqSelect
@@ -1267,24 +1315,50 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|mpc52xx_add_board_devices
-c_func
-(paren
-r_struct
-id|ocp_def
-id|board_ocp
-(braket
-)braket
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|mpc52xx_find_bridges
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* Matching of PSC function */
+DECL|struct|mpc52xx_psc_func
+r_struct
+id|mpc52xx_psc_func
+(brace
+DECL|member|id
+r_int
+id|id
+suffix:semicolon
+DECL|member|func
+r_char
+op_star
+id|func
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_int
+id|mpc52xx_match_psc_function
+c_func
+(paren
+r_int
+id|psc_idx
+comma
+r_const
+r_char
+op_star
+id|func
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|mpc52xx_psc_func
+id|mpc52xx_psc_functions
+(braket
+)braket
+suffix:semicolon
+multiline_comment|/* This array is to be defined in platform file */
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* ========================================================================= */
 multiline_comment|/* Platform configuration                                                    */

@@ -41,11 +41,12 @@ id|swap_backing_dev_info
 op_assign
 (brace
 dot
-id|memory_backed
+id|capabilities
 op_assign
-l_int|1
+id|BDI_CAP_NO_ACCT_DIRTY
+op_or
+id|BDI_CAP_NO_WRITEBACK
 comma
-multiline_comment|/* Does not contribute to dirty memory */
 dot
 id|unplug_io_fn
 op_assign

@@ -896,7 +896,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bdi-&gt;memory_backed
+op_logical_neg
+id|bdi_cap_writeback_dirty
+c_func
+(paren
+id|bdi
+)paren
 )paren
 (brace
 id|list_move
@@ -1775,7 +1780,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|inode-&gt;i_mapping-&gt;backing_dev_info-&gt;memory_backed
+op_logical_neg
+id|mapping_cap_writeback_dirty
+c_func
+(paren
+id|inode-&gt;i_mapping
+)paren
 )paren
 r_return
 l_int|0

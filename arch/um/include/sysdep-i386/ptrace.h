@@ -4,14 +4,19 @@ DECL|macro|__SYSDEP_I386_PTRACE_H
 mdefine_line|#define __SYSDEP_I386_PTRACE_H
 macro_line|#include &quot;uml-config.h&quot;
 macro_line|#include &quot;user_constants.h&quot;
-macro_line|#ifdef UML_CONFIG_MODE_TT
-macro_line|#include &quot;sysdep/sc.h&quot;
-macro_line|#endif
-macro_line|#ifdef UML_CONFIG_MODE_SKAS
 DECL|macro|MAX_REG_NR
 mdefine_line|#define MAX_REG_NR (UM_FRAME_SIZE / sizeof(unsigned long))
 DECL|macro|MAX_REG_OFFSET
 mdefine_line|#define MAX_REG_OFFSET (UM_FRAME_SIZE)
+r_extern
+r_void
+id|update_debugregs
+c_func
+(paren
+r_int
+id|seq
+)paren
+suffix:semicolon
 multiline_comment|/* syscall emulation path in ptrace */
 macro_line|#ifndef PTRACE_SYSEMU
 DECL|macro|PTRACE_SYSEMU
@@ -36,16 +41,11 @@ r_extern
 r_int
 id|sysemu_supported
 suffix:semicolon
+macro_line|#ifdef UML_CONFIG_MODE_TT
+macro_line|#include &quot;sysdep/sc.h&quot;
+macro_line|#endif
+macro_line|#ifdef UML_CONFIG_MODE_SKAS
 macro_line|#include &quot;skas_ptregs.h&quot;
-r_extern
-r_void
-id|update_debugregs
-c_func
-(paren
-r_int
-id|seq
-)paren
-suffix:semicolon
 DECL|macro|REGS_IP
 mdefine_line|#define REGS_IP(r) ((r)[HOST_IP])
 DECL|macro|REGS_SP

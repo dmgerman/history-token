@@ -14153,6 +14153,12 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|data
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -14184,6 +14190,7 @@ c_func
 id|data
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|variable|parport_pc_pci_driver
 r_static

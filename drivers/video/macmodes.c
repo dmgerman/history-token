@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;macmodes.h&quot;
 multiline_comment|/*&n;     *  MacOS video mode definitions&n;     *&n;     *  Order IS important! If you change these, don&squot;t forget to update&n;     *  mac_modes[] below!&n;     */
 DECL|macro|DEFAULT_MODEDB_INDEX
@@ -1325,6 +1326,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|mac_vmode_to_var
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mac_vmode_to_var
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;mac_var_to_vmode - convert var structure to MacOS vmode/cmode pair&n; *&t;@var: frame buffer video mode structure&n; *&t;@vmode: MacOS video mode&n; *&t;@cmode: MacOS color mode&n; *&n; *&t;Converts a frame buffer video mode structure to a MacOS&n; *&t;vmode/cmode pair.&n; *&n; *&t;Returns negative errno on error, or zero for success.&n; *&n; */
 DECL|function|mac_var_to_vmode
 r_int
@@ -1485,6 +1493,13 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+DECL|variable|mac_var_to_vmode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mac_var_to_vmode
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;mac_map_monitor_sense - Convert monitor sense to vmode&n; *&t;@sense: Macintosh monitor sense number&n; *&n; *&t;Converts a Macintosh monitor sense number to a MacOS&n; *&t;vmode number.&n; *&n; *&t;Returns MacOS vmode video mode number.&n; *&n; */
 DECL|function|mac_map_monitor_sense
 r_int
@@ -1529,6 +1544,13 @@ r_return
 id|map-&gt;vmode
 suffix:semicolon
 )brace
+DECL|variable|mac_map_monitor_sense
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mac_map_monitor_sense
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;mac_find_mode - find a video mode&n; *&t;@var: frame buffer user defined part of display&n; *&t;@info: frame buffer info structure&n; *&t;@mode_option: video mode name (see mac_modedb[])&n; *&t;@default_bpp: default color depth in bits per pixel&n; *&n; *&t;Finds a suitable video mode.  Tries to set mode specified&n; *&t;by @mode_option.  If the name of the wanted mode begins with&n; *&t;&squot;mac&squot;, the Mac video mode database will be used, otherwise it&n; *&t;will fall back to the standard video mode database.&n; *&n; *&t;Note: Function marked as __init and can only be used during&n; *&t;system boot.&n; *&n; *&t;Returns error code from fb_find_mode (see fb_find_mode&n; *&t;function).&n; *&n; */
 DECL|function|mac_find_mode
 r_int
@@ -1633,4 +1655,11 @@ id|default_bpp
 )paren
 suffix:semicolon
 )brace
+DECL|variable|mac_find_mode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mac_find_mode
+)paren
+suffix:semicolon
 eof

@@ -11,15 +11,18 @@ macro_line|#include &lt;linux/nfs4.h&gt;
 macro_line|#include &lt;linux/nfs4_acl.h&gt;
 multiline_comment|/* mode bit translations: */
 DECL|macro|NFS4_READ_MODE
-mdefine_line|#define NFS4_READ_MODE (NFS4_ACE_READ_DATA | NFS4_ACE_READ_NAMED_ATTRS)
+mdefine_line|#define NFS4_READ_MODE (NFS4_ACE_READ_DATA)
 DECL|macro|NFS4_WRITE_MODE
-mdefine_line|#define NFS4_WRITE_MODE (NFS4_ACE_WRITE_DATA | NFS4_ACE_WRITE_NAMED_ATTRS | NFS4_ACE_APPEND_DATA)
+mdefine_line|#define NFS4_WRITE_MODE (NFS4_ACE_WRITE_DATA | NFS4_ACE_APPEND_DATA)
 DECL|macro|NFS4_EXECUTE_MODE
 mdefine_line|#define NFS4_EXECUTE_MODE NFS4_ACE_EXECUTE
 DECL|macro|NFS4_ANYONE_MODE
 mdefine_line|#define NFS4_ANYONE_MODE (NFS4_ACE_READ_ATTRIBUTES | NFS4_ACE_READ_ACL | NFS4_ACE_SYNCHRONIZE)
 DECL|macro|NFS4_OWNER_MODE
 mdefine_line|#define NFS4_OWNER_MODE (NFS4_ACE_WRITE_ATTRIBUTES | NFS4_ACE_WRITE_ACL)
+multiline_comment|/* We don&squot;t support these bits; insist they be neither allowed nor denied */
+DECL|macro|NFS4_MASK_UNSUPP
+mdefine_line|#define NFS4_MASK_UNSUPP (NFS4_ACE_DELETE | NFS4_ACE_WRITE_OWNER &bslash;&n;&t;&t;| NFS4_ACE_READ_NAMED_ATTRS | NFS4_ACE_WRITE_NAMED_ATTRS)
 multiline_comment|/* flags used to simulate posix default ACLs */
 DECL|macro|NFS4_INHERITANCE_FLAGS
 mdefine_line|#define NFS4_INHERITANCE_FLAGS (NFS4_ACE_FILE_INHERIT_ACE &bslash;&n;&t;&t;| NFS4_ACE_DIRECTORY_INHERIT_ACE | NFS4_ACE_INHERIT_ONLY_ACE)
@@ -133,7 +136,7 @@ op_complement
 id|allow_mask
 op_amp
 op_complement
-id|NFS4_ACE_DELETE
+id|NFS4_MASK_UNSUPP
 suffix:semicolon
 r_if
 c_cond
@@ -154,6 +157,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/* XXX: modify functions to return NFS errors; they&squot;re only ever&n; * used by nfs code, after all.... */
 r_static
 r_int
 DECL|function|mode_from_nfs4
@@ -4608,121 +4612,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* 0 = granted, -EACCES = denied; mask is an nfsv4 mask, not mode bits */
-r_int
-DECL|function|nfs4_acl_permission
-id|nfs4_acl_permission
-c_func
-(paren
-r_struct
-id|nfs4_acl
-op_star
-id|acl
-comma
-id|uid_t
-id|owner
-comma
-id|gid_t
-id|group
-comma
-id|uid_t
-id|who
-comma
-id|u32
-id|mask
-)paren
-(brace
-r_struct
-id|nfs4_ace
-op_star
-id|ace
-suffix:semicolon
-id|u32
-id|allowed
-op_assign
-l_int|0
-suffix:semicolon
-id|list_for_each_entry
-c_func
-(paren
-id|ace
-comma
-op_amp
-id|acl-&gt;ace_head
-comma
-id|l_ace
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|match_who
-c_func
-(paren
-id|ace
-comma
-id|group
-comma
-id|owner
-comma
-id|who
-)paren
-)paren
-r_continue
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|ace-&gt;type
-)paren
-(brace
-r_case
-id|NFS4_ACE_ACCESS_ALLOWED_ACE_TYPE
-suffix:colon
-id|allowed
-op_or_assign
-id|ace-&gt;access_mask
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|allowed
-op_amp
-id|mask
-)paren
-op_eq
-id|mask
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|NFS4_ACE_ACCESS_DENIED_ACE_TYPE
-suffix:colon
-r_if
-c_cond
-(paren
-id|ace-&gt;access_mask
-op_amp
-id|mask
-)paren
-r_return
-op_minus
-id|EACCES
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_return
-op_minus
-id|EACCES
-suffix:semicolon
-)brace
 DECL|variable|nfs4_acl_new
 id|EXPORT_SYMBOL
 c_func
@@ -4756,13 +4645,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|nfs4_acl_write_who
-)paren
-suffix:semicolon
-DECL|variable|nfs4_acl_permission
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|nfs4_acl_permission
 )paren
 suffix:semicolon
 eof

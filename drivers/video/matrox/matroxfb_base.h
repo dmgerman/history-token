@@ -349,7 +349,7 @@ op_ge
 l_int|4
 )paren
 (brace
-id|writel
+id|fb_writel
 c_func
 (paren
 id|get_unaligned
@@ -388,7 +388,7 @@ op_ge
 l_int|4
 )paren
 (brace
-id|writel
+id|fb_writel
 c_func
 (paren
 op_star

@@ -32298,19 +32298,12 @@ c_func
 id|ivideo-&gt;mmio_vbase
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ivideo-&gt;bios_abase
-)paren
-(brace
 id|vfree
 c_func
 (paren
 id|ivideo-&gt;bios_abase
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Release mem regions */
 id|release_mem_region
 c_func
@@ -32479,7 +32472,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp

@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/ipc.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
 multiline_comment|/*&n; * sys_pipe() is the normal C calling standard for creating&n; * a pipe. It&squot;s not the way Unix traditionally does this, though.&n; */
 DECL|function|sys_pipe

@@ -2393,7 +2393,7 @@ l_int|5
 )braket
 op_assign
 id|ptr-&gt;dri
-op_star
+op_amp
 l_int|0xff
 suffix:semicolon
 r_return
