@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/proc-armo/pgtable.h&n; *&n; *  Copyright (C) 1995-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  18-Oct-1997&t;RMK&t;Now two-level (32x32)&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/proc-armo/pgtable.h&n; *&n; *  Copyright (C) 1995-2002 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  18-Oct-1997&t;RMK&t;Now two-level (32x32)&n; */
 macro_line|#ifndef __ASM_PROC_PGTABLE_H
 DECL|macro|__ASM_PROC_PGTABLE_H
 mdefine_line|#define __ASM_PROC_PGTABLE_H
@@ -22,6 +22,8 @@ DECL|macro|pmd_bad
 mdefine_line|#define pmd_bad(pmd)&t;&t;((pmd_val(pmd) &amp; 0xfc000002))
 DECL|macro|set_pmd
 mdefine_line|#define set_pmd(pmdp,pmd)&t;((*(pmdp)) = (pmd))
+DECL|macro|pmd_clear
+mdefine_line|#define pmd_clear(pmdp)&t;&t;set_pmd(pmdp, __pmd(0))
 DECL|function|__mk_pmd
 r_static
 r_inline
@@ -96,6 +98,16 @@ id|_PAGE_TABLE
 )paren
 suffix:semicolon
 )brace
+DECL|macro|pte_offset_kernel
+mdefine_line|#define pte_offset_kernel(dir,addr)&t;(pmd_page_kernel(*(dir)) + __pte_index(addr))
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map(dir,addr)&t;(pmd_page_kernel(*(dir)) + __pte_index(addr))
+DECL|macro|pte_offset_map_nested
+mdefine_line|#define pte_offset_map_nested(dir,addr)&t;(pmd_page_kernel(*(dir)) + __pte_index(addr))
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte)&t;&t;&t;do { } while (0)
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte)&t;&t;do { } while (0)
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval)&t;((*(pteptr)) = (pteval))
 DECL|macro|_PAGE_PRESENT
@@ -369,10 +381,16 @@ r_return
 id|pte
 suffix:semicolon
 )brace
-DECL|macro|pte_alloc_kernel
-mdefine_line|#define pte_alloc_kernel        pte_alloc
 multiline_comment|/*&n; * We don&squot;t store cache state bits in the page table here.&n; */
 DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;(prot)
+r_extern
+r_void
+id|pgtable_cache_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* __ASM_PROC_PGTABLE_H */
 eof

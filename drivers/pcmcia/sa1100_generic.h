@@ -235,6 +235,27 @@ r_int
 id|sock
 )paren
 suffix:semicolon
+multiline_comment|/*&n;   * Calculate MECR timing clock wait states&n;   */
+DECL|member|socket_get_timing
+r_int
+(paren
+op_star
+id|socket_get_timing
+)paren
+(paren
+r_int
+r_int
+id|sock
+comma
+r_int
+r_int
+id|cpu_speed
+comma
+r_int
+r_int
+id|cmd_time
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

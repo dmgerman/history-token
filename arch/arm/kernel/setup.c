@@ -198,6 +198,13 @@ id|cpu_tlb_fns
 id|cpu_tlb
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef MULTI_USER
+DECL|variable|cpu_user
+r_struct
+id|cpu_user_fns
+id|cpu_user
+suffix:semicolon
+macro_line|#endif
 DECL|variable|aux_device_present
 r_int
 r_char
@@ -846,6 +853,13 @@ id|cpu_tlb
 op_assign
 op_star
 id|list-&gt;tlb
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef MULTI_USER
+id|cpu_user
+op_assign
+op_star
+id|list-&gt;user
 suffix:semicolon
 macro_line|#endif
 id|printk
