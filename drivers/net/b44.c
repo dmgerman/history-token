@@ -1,6 +1,7 @@
 multiline_comment|/* b44.c: Broadcom 4400 device driver.&n; *&n; * Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; * Fixed by Pekka Pietikainen (pp@ee.oulu.fi)&n; *&n; * Distribute under GPL.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
@@ -20,9 +21,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;b44&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;0.94&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;0.95&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;May 4, 2004&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;Aug 3, 2004&quot;
 DECL|macro|B44_DEF_MSG_ENABLE
 mdefine_line|#define B44_DEF_MSG_ENABLE&t;  &bslash;&n;&t;(NETIF_MSG_DRV&t;&t;| &bslash;&n;&t; NETIF_MSG_PROBE&t;| &bslash;&n;&t; NETIF_MSG_LINK&t;&t;| &bslash;&n;&t; NETIF_MSG_TIMER&t;| &bslash;&n;&t; NETIF_MSG_IFDOWN&t;| &bslash;&n;&t; NETIF_MSG_IFUP&t;&t;| &bslash;&n;&t; NETIF_MSG_RX_ERR&t;| &bslash;&n;&t; NETIF_MSG_TX_ERR)
 multiline_comment|/* length of time before we decide the hardware is borked,&n; * and dev-&gt;tx_timeout() should be called to fix the problem&n; */
@@ -45,6 +46,8 @@ DECL|macro|B44_DEF_TX_RING_PENDING
 mdefine_line|#define B44_DEF_TX_RING_PENDING&t;&t;(B44_TX_RING_SIZE - 1)
 DECL|macro|B44_TX_RING_BYTES
 mdefine_line|#define B44_TX_RING_BYTES&t;(sizeof(struct dma_desc) * &bslash;&n;&t;&t;&t;&t; B44_TX_RING_SIZE)
+DECL|macro|B44_DMA_MASK
+mdefine_line|#define B44_DMA_MASK 0x3fffffff
 DECL|macro|TX_RING_GAP
 mdefine_line|#define TX_RING_GAP(BP)&t;&bslash;&n;&t;(B44_TX_RING_SIZE - (BP)-&gt;tx_pending)
 DECL|macro|TX_BUFFS_AVAIL
@@ -53,6 +56,8 @@ DECL|macro|NEXT_TX
 mdefine_line|#define NEXT_TX(N)&t;&t;(((N) + 1) &amp; (B44_TX_RING_SIZE - 1))
 DECL|macro|RX_PKT_BUF_SZ
 mdefine_line|#define RX_PKT_BUF_SZ&t;&t;(1536 + bp-&gt;rx_offset + 64)
+DECL|macro|TX_PKT_BUF_SZ
+mdefine_line|#define TX_PKT_BUF_SZ&t;&t;(B44_MAX_MTU + ETH_HLEN + 8)
 multiline_comment|/* minimum number of free TX descriptors required to wake up TX process */
 DECL|macro|B44_TX_WAKEUP_THRESH
 mdefine_line|#define B44_TX_WAKEUP_THRESH&t;&t;(B44_TX_RING_SIZE / 4)
@@ -74,7 +79,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;David S. Miller (davem@redhat.com)&quot;
+l_string|&quot;Florian Schirmer, Pekka Pietikainen, David S. Miller&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -89,12 +94,23 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+DECL|variable|b44_debug
+r_static
+r_int
+id|b44_debug
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* -1 == use B44_DEF_MSG_ENABLE as value */
+id|module_param
 c_func
 (paren
 id|b44_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -105,15 +121,6 @@ comma
 l_string|&quot;B44 bitmapped debugging message enable value&quot;
 )paren
 suffix:semicolon
-DECL|variable|b44_debug
-r_static
-r_int
-id|b44_debug
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/* -1 == use B44_DEF_MSG_ENABLE as value */
 DECL|variable|b44_pci_tbl
 r_static
 r_struct
@@ -214,6 +221,34 @@ id|b44
 op_star
 )paren
 suffix:semicolon
+r_static
+r_int
+id|b44_poll
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+op_star
+id|budget
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+r_static
+r_void
+id|b44_poll_controller
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|br32
 r_static
 r_inline
@@ -410,102 +445,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Sonics SiliconBackplane support routines.  ROFL, you should see all the&n; * buzz words used on this company&squot;s website :-)&n; *&n; * All of these routines must be invoked with bp-&gt;lock held and&n; * interrupts disabled.&n; */
-DECL|macro|SBID_SDRAM
-mdefine_line|#define SBID_SDRAM&t;&t;0
-DECL|macro|SBID_PCI_MEM
-mdefine_line|#define SBID_PCI_MEM&t;&t;1
-DECL|macro|SBID_PCI_CFG
-mdefine_line|#define SBID_PCI_CFG&t;&t;2
-DECL|macro|SBID_PCI_DMA
-mdefine_line|#define SBID_PCI_DMA&t;&t;3
-DECL|macro|SBID_SDRAM_SWAPPED
-mdefine_line|#define&t;SBID_SDRAM_SWAPPED&t;4
-DECL|macro|SBID_ENUM
-mdefine_line|#define SBID_ENUM&t;&t;5
-DECL|macro|SBID_REG_SDRAM
-mdefine_line|#define SBID_REG_SDRAM&t;&t;6
-DECL|macro|SBID_REG_ILINE20
-mdefine_line|#define SBID_REG_ILINE20&t;7
-DECL|macro|SBID_REG_EMAC
-mdefine_line|#define SBID_REG_EMAC&t;&t;8
-DECL|macro|SBID_REG_CODEC
-mdefine_line|#define SBID_REG_CODEC&t;&t;9
-DECL|macro|SBID_REG_USB
-mdefine_line|#define SBID_REG_USB&t;&t;10
-DECL|macro|SBID_REG_PCI
-mdefine_line|#define SBID_REG_PCI&t;&t;11
-DECL|macro|SBID_REG_MIPS
-mdefine_line|#define SBID_REG_MIPS&t;&t;12
-DECL|macro|SBID_REG_EXTIF
-mdefine_line|#define SBID_REG_EXTIF&t;&t;13
-DECL|macro|SBID_EXTIF
-mdefine_line|#define&t;SBID_EXTIF&t;&t;14
-DECL|macro|SBID_EJTAG
-mdefine_line|#define&t;SBID_EJTAG&t;&t;15
-DECL|macro|SBID_MAX
-mdefine_line|#define&t;SBID_MAX&t;&t;16
-DECL|function|ssb_get_addr
-r_static
-id|u32
-id|ssb_get_addr
-c_func
-(paren
-r_struct
-id|b44
-op_star
-id|bp
-comma
-id|u32
-id|id
-comma
-id|u32
-id|instance
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|id
-)paren
-(brace
-r_case
-id|SBID_PCI_DMA
-suffix:colon
-r_return
-l_int|0x40000000
-suffix:semicolon
-r_case
-id|SBID_ENUM
-suffix:colon
-r_return
-l_int|0x18000000
-suffix:semicolon
-r_case
-id|SBID_REG_EMAC
-suffix:colon
-r_return
-l_int|0x18000000
-suffix:semicolon
-r_case
-id|SBID_REG_CODEC
-suffix:colon
-r_return
-l_int|0x18001000
-suffix:semicolon
-r_case
-id|SBID_REG_PCI
-suffix:colon
-r_return
-l_int|0x18002000
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-suffix:semicolon
-)brace
+DECL|macro|SB_PCI_DMA
+mdefine_line|#define SB_PCI_DMA             0x40000000      /* Client Mode PCI memory access space (1 GB) */
+DECL|macro|BCM4400_PCI_CORE_ADDR
+mdefine_line|#define BCM4400_PCI_CORE_ADDR  0x18002000      /* Address of PCI core on BCM4400 cards */
 DECL|function|ssb_get_core_rev
 r_static
 id|u32
@@ -572,15 +515,7 @@ id|bp-&gt;pdev
 comma
 id|SSB_BAR0_WIN
 comma
-id|ssb_get_addr
-c_func
-(paren
-id|bp
-comma
-id|SBID_REG_PCI
-comma
-l_int|0
-)paren
+id|BCM4400_PCI_CORE_ADDR
 )paren
 suffix:semicolon
 id|pci_rev
@@ -3065,9 +3000,70 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|skb-&gt;dev
+id|mapping
 op_assign
-id|bp-&gt;dev
+id|pci_map_single
+c_func
+(paren
+id|bp-&gt;pdev
+comma
+id|skb-&gt;data
+comma
+id|RX_PKT_BUF_SZ
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
+multiline_comment|/* Hardware bug work-around, the chip is unable to do PCI DMA&n;&t;   to/from anything above 1GB :-( */
+r_if
+c_cond
+(paren
+id|mapping
+op_plus
+id|RX_PKT_BUF_SZ
+OG
+id|B44_DMA_MASK
+)paren
+(brace
+multiline_comment|/* Sigh... */
+id|pci_unmap_single
+c_func
+(paren
+id|bp-&gt;pdev
+comma
+id|mapping
+comma
+id|RX_PKT_BUF_SZ
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
+id|dev_kfree_skb_any
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|skb
+op_assign
+id|__dev_alloc_skb
+c_func
+(paren
+id|RX_PKT_BUF_SZ
+comma
+id|GFP_DMA
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|mapping
 op_assign
@@ -3082,6 +3078,44 @@ id|RX_PKT_BUF_SZ
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mapping
+op_plus
+id|RX_PKT_BUF_SZ
+OG
+id|B44_DMA_MASK
+)paren
+(brace
+id|pci_unmap_single
+c_func
+(paren
+id|bp-&gt;pdev
+comma
+id|mapping
+comma
+id|RX_PKT_BUF_SZ
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
+id|dev_kfree_skb_any
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+)brace
+id|skb-&gt;dev
+op_assign
+id|bp-&gt;dev
 suffix:semicolon
 id|skb_reserve
 c_func
@@ -4414,6 +4448,62 @@ comma
 id|PCI_DMA_TODEVICE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mapping
+op_plus
+id|len
+OG
+id|B44_DMA_MASK
+)paren
+(brace
+multiline_comment|/* Chip can&squot;t handle DMA to/from &gt;1GB, use bounce buffer */
+id|pci_unmap_single
+c_func
+(paren
+id|bp-&gt;pdev
+comma
+id|mapping
+comma
+id|len
+comma
+id|PCI_DMA_TODEVICE
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|bp-&gt;tx_bufs
+op_plus
+id|entry
+op_star
+id|TX_PKT_BUF_SZ
+comma
+id|skb-&gt;data
+comma
+id|skb-&gt;len
+)paren
+suffix:semicolon
+id|mapping
+op_assign
+id|pci_map_single
+c_func
+(paren
+id|bp-&gt;pdev
+comma
+id|bp-&gt;tx_bufs
+op_plus
+id|entry
+op_star
+id|TX_PKT_BUF_SZ
+comma
+id|len
+comma
+id|PCI_DMA_TODEVICE
+)paren
+suffix:semicolon
+)brace
 id|bp-&gt;tx_buffers
 (braket
 id|entry
@@ -5020,6 +5110,31 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|bp-&gt;tx_bufs
+)paren
+(brace
+id|pci_free_consistent
+c_func
+(paren
+id|bp-&gt;pdev
+comma
+id|B44_TX_RING_SIZE
+op_star
+id|TX_PKT_BUF_SZ
+comma
+id|bp-&gt;tx_bufs
+comma
+id|bp-&gt;tx_bufs_dma
+)paren
+suffix:semicolon
+id|bp-&gt;tx_bufs
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Must not be invoked with interrupt sources disabled and&n; * the hardware shutdown down.  Can sleep.&n; */
 DECL|function|b44_alloc_consistent
@@ -5109,6 +5224,44 @@ id|memset
 c_func
 (paren
 id|bp-&gt;tx_buffers
+comma
+l_int|0
+comma
+id|size
+)paren
+suffix:semicolon
+id|size
+op_assign
+id|B44_TX_RING_SIZE
+op_star
+id|TX_PKT_BUF_SZ
+suffix:semicolon
+id|bp-&gt;tx_bufs
+op_assign
+id|pci_alloc_consistent
+c_func
+(paren
+id|bp-&gt;pdev
+comma
+id|size
+comma
+op_amp
+id|bp-&gt;tx_bufs_dma
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bp-&gt;tx_bufs
+)paren
+r_goto
+id|out_err
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|bp-&gt;tx_bufs
 comma
 l_int|0
 comma
@@ -6126,6 +6279,44 @@ id|val16
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+multiline_comment|/*&n; * Polling receive - used by netconsole and other diagnostic tools&n; * to allow network i/o with interrupts disabled.&n; */
+DECL|function|b44_poll_controller
+r_static
+r_void
+id|b44_poll_controller
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|disable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|b44_interrupt
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|b44_close
 r_static
 r_int
@@ -6349,10 +6540,13 @@ id|nstat-&gt;tx_aborted_errors
 op_assign
 id|hwstat-&gt;tx_underruns
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* Carrier lost counter seems to be broken for some devices */
 id|nstat-&gt;tx_carrier_errors
 op_assign
 id|hwstat-&gt;tx_carrier_lost
 suffix:semicolon
+macro_line|#endif
 r_return
 id|nstat
 suffix:semicolon
@@ -7965,19 +8159,6 @@ l_int|90
 op_amp
 l_int|0x1f
 suffix:semicolon
-id|bp-&gt;mdc_port
-op_assign
-(paren
-id|eeprom
-(braket
-l_int|90
-)braket
-op_rshift
-l_int|14
-)paren
-op_amp
-l_int|0x1
-suffix:semicolon
 multiline_comment|/* With this, plus the rx_header prepended to the data by the&n;&t; * hardware, we&squot;ll land the ethernet header on a 2-byte boundary.&n;&t; */
 id|bp-&gt;rx_offset
 op_assign
@@ -7997,15 +8178,7 @@ id|bp
 suffix:semicolon
 id|bp-&gt;dma_offset
 op_assign
-id|ssb_get_addr
-c_func
-(paren
-id|bp
-comma
-id|SBID_PCI_DMA
-comma
-l_int|0
-)paren
+id|SB_PCI_DMA
 suffix:semicolon
 multiline_comment|/* XXX - really required? &n;&t;   bp-&gt;flags |= B44_FLAG_BUGGY_TXPTR;&n;         */
 id|out
@@ -8184,7 +8357,39 @@ comma
 (paren
 id|u64
 )paren
-l_int|0xffffffff
+id|B44_DMA_MASK
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;No usable DMA configuration, &quot;
+l_string|&quot;aborting.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|err_out_free_res
+suffix:semicolon
+)brace
+id|err
+op_assign
+id|pci_set_consistent_dma_mask
+c_func
+(paren
+id|pdev
+comma
+(paren
+id|u64
+)paren
+id|B44_DMA_MASK
 )paren
 suffix:semicolon
 r_if
@@ -8415,6 +8620,12 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|B44_TX_TIMEOUT
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+id|b44_poll_controller
+suffix:semicolon
+macro_line|#endif
 id|dev-&gt;change_mtu
 op_assign
 id|b44_change_mtu
@@ -8744,7 +8955,11 @@ id|b44
 op_star
 id|bp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -8836,7 +9051,11 @@ id|b44
 op_star
 id|bp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|pci_restore_state
 c_func

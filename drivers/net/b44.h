@@ -444,36 +444,7 @@ DECL|macro|B44_RX_PAUSE
 mdefine_line|#define B44_RX_PAUSE&t;0x05D4UL /* MIB RX Pause Packets */
 DECL|macro|B44_RX_NPAUSE
 mdefine_line|#define B44_RX_NPAUSE&t;0x05D8UL /* MIB RX Non-Pause Packets */
-DECL|macro|B44_SBIPSFLAG
-mdefine_line|#define B44_SBIPSFLAG&t;0x0F08UL /* SB Initiator Port OCP Slave Flag */
-DECL|macro|SBIPSFLAG_IMASK1
-mdefine_line|#define  SBIPSFLAG_IMASK1&t;0x0000003f /* Which sbflags --&gt; mips interrupt 1 */
-DECL|macro|SBIPSFLAG_ISHIFT1
-mdefine_line|#define  SBIPSFLAG_ISHIFT1&t;0
-DECL|macro|SBIPSFLAG_IMASK2
-mdefine_line|#define  SBIPSFLAG_IMASK2&t;0x00003f00 /* Which sbflags --&gt; mips interrupt 2 */
-DECL|macro|SBIPSFLAG_ISHIFT2
-mdefine_line|#define  SBIPSFLAG_ISHIFT2&t;8
-DECL|macro|SBIPSFLAG_IMASK3
-mdefine_line|#define  SBIPSFLAG_IMASK3&t;0x003f0000 /* Which sbflags --&gt; mips interrupt 3 */
-DECL|macro|SBIPSFLAG_ISHIFT3
-mdefine_line|#define  SBIPSFLAG_ISHIFT3&t;16
-DECL|macro|SBIPSFLAG_IMASK4
-mdefine_line|#define  SBIPSFLAG_IMASK4&t;0x3f000000 /* Which sbflags --&gt; mips interrupt 4 */
-DECL|macro|SBIPSFLAG_ISHIFT4
-mdefine_line|#define  SBIPSFLAG_ISHIFT4&t;24
-DECL|macro|B44_SBTPSFLAG
-mdefine_line|#define B44_SBTPSFLAG&t;0x0F18UL /* SB Target Port OCP Slave Flag */
-DECL|macro|SBTPS_NUM0_MASK
-mdefine_line|#define  SBTPS_NUM0_MASK&t;0x0000003f
-DECL|macro|SBTPS_F0EN0
-mdefine_line|#define  SBTPS_F0EN0&t;&t;0x00000040
-DECL|macro|B44_SBADMATCH3
-mdefine_line|#define B44_SBADMATCH3&t;0x0F60UL /* SB Address Match 3 */
-DECL|macro|B44_SBADMATCH2
-mdefine_line|#define B44_SBADMATCH2&t;0x0F68UL /* SB Address Match 2 */
-DECL|macro|B44_SBADMATCH1
-mdefine_line|#define B44_SBADMATCH1&t;0x0F70UL /* SB Address Match 1 */
+multiline_comment|/* Silicon backplane register definitions */
 DECL|macro|B44_SBIMSTATE
 mdefine_line|#define B44_SBIMSTATE&t;0x0F90UL /* SB Initiator Agent State */
 DECL|macro|SBIMSTATE_PC
@@ -536,166 +507,6 @@ DECL|macro|SBTMSHIGH_BISTF
 mdefine_line|#define  SBTMSHIGH_BISTF&t;0x40000000 /* BIST Failed */
 DECL|macro|SBTMSHIGH_BISTD
 mdefine_line|#define  SBTMSHIGH_BISTD&t;0x80000000 /* BIST Done */
-DECL|macro|B44_SBBWA0
-mdefine_line|#define B44_SBBWA0&t;0x0FA0UL /* SB Bandwidth Allocation Table 0 */
-DECL|macro|SBBWA0_TAB0_MASK
-mdefine_line|#define  SBBWA0_TAB0_MASK&t;0x0000ffff /* Lookup Table 0 */
-DECL|macro|SBBWA0_TAB0_SHIFT
-mdefine_line|#define  SBBWA0_TAB0_SHIFT&t;0
-DECL|macro|SBBWA0_TAB1_MASK
-mdefine_line|#define  SBBWA0_TAB1_MASK&t;0xffff0000 /* Lookup Table 0 */
-DECL|macro|SBBWA0_TAB1_SHIFT
-mdefine_line|#define  SBBWA0_TAB1_SHIFT&t;16
-DECL|macro|B44_SBIMCFGLOW
-mdefine_line|#define B44_SBIMCFGLOW&t;0x0FA8UL /* SB Initiator Configuration Low */
-DECL|macro|SBIMCFGLOW_STO_MASK
-mdefine_line|#define  SBIMCFGLOW_STO_MASK&t;0x00000003 /* Service Timeout */
-DECL|macro|SBIMCFGLOW_RTO_MASK
-mdefine_line|#define  SBIMCFGLOW_RTO_MASK&t;0x00000030 /* Request Timeout */
-DECL|macro|SBIMCFGLOW_RTO_SHIFT
-mdefine_line|#define  SBIMCFGLOW_RTO_SHIFT&t;4
-DECL|macro|SBIMCFGLOW_CID_MASK
-mdefine_line|#define  SBIMCFGLOW_CID_MASK&t;0x00ff0000 /* Connection ID */
-DECL|macro|SBIMCFGLOW_CID_SHIFT
-mdefine_line|#define  SBIMCFGLOW_CID_SHIFT&t;16
-DECL|macro|B44_SBIMCFGHIGH
-mdefine_line|#define B44_SBIMCFGHIGH&t;0x0FACUL /* SB Initiator Configuration High */
-DECL|macro|SBIMCFGHIGH_IEM_MASK
-mdefine_line|#define  SBIMCFGHIGH_IEM_MASK&t;0x0000000c /* Inband Error Mode */
-DECL|macro|SBIMCFGHIGH_TEM_MASK
-mdefine_line|#define  SBIMCFGHIGH_TEM_MASK&t;0x00000030 /* Timeout Error Mode */
-DECL|macro|SBIMCFGHIGH_TEM_SHIFT
-mdefine_line|#define  SBIMCFGHIGH_TEM_SHIFT&t;4
-DECL|macro|SBIMCFGHIGH_BEM_MASK
-mdefine_line|#define  SBIMCFGHIGH_BEM_MASK&t;0x000000c0 /* Bus Error Mode */
-DECL|macro|SBIMCFGHIGH_BEM_SHIFT
-mdefine_line|#define  SBIMCFGHIGH_BEM_SHIFT&t;6
-DECL|macro|B44_SBADMATCH0
-mdefine_line|#define B44_SBADMATCH0&t;0x0FB0UL /* SB Address Match 0 */
-DECL|macro|SBADMATCH0_TYPE_MASK
-mdefine_line|#define  SBADMATCH0_TYPE_MASK&t;0x00000003 /* Address Type */
-DECL|macro|SBADMATCH0_AD64
-mdefine_line|#define  SBADMATCH0_AD64&t;0x00000004 /* Reserved */
-DECL|macro|SBADMATCH0_AI0_MASK
-mdefine_line|#define  SBADMATCH0_AI0_MASK&t;0x000000f8 /* Type0 Size */
-DECL|macro|SBADMATCH0_AI0_SHIFT
-mdefine_line|#define  SBADMATCH0_AI0_SHIFT&t;3
-DECL|macro|SBADMATCH0_AI1_MASK
-mdefine_line|#define  SBADMATCH0_AI1_MASK&t;0x000001f8 /* Type1 Size */
-DECL|macro|SBADMATCH0_AI1_SHIFT
-mdefine_line|#define  SBADMATCH0_AI1_SHIFT&t;3
-DECL|macro|SBADMATCH0_AI2_MASK
-mdefine_line|#define  SBADMATCH0_AI2_MASK&t;0x000001f8 /* Type2 Size */
-DECL|macro|SBADMATCH0_AI2_SHIFT
-mdefine_line|#define  SBADMATCH0_AI2_SHIFT&t;3
-DECL|macro|SBADMATCH0_ADEN
-mdefine_line|#define  SBADMATCH0_ADEN&t;0x00000400 /* Enable */
-DECL|macro|SBADMATCH0_ADNEG
-mdefine_line|#define  SBADMATCH0_ADNEG&t;0x00000800 /* Negative Decode */
-DECL|macro|SBADMATCH0_BS0_MASK
-mdefine_line|#define  SBADMATCH0_BS0_MASK&t;0xffffff00 /* Type0 Base Address */
-DECL|macro|SBADMATCH0_BS0_SHIFT
-mdefine_line|#define  SBADMATCH0_BS0_SHIFT&t;8
-DECL|macro|SBADMATCH0_BS1_MASK
-mdefine_line|#define  SBADMATCH0_BS1_MASK&t;0xfffff000 /* Type1 Base Address */
-DECL|macro|SBADMATCH0_BS1_SHIFT
-mdefine_line|#define  SBADMATCH0_BS1_SHIFT&t;12
-DECL|macro|SBADMATCH0_BS2_MASK
-mdefine_line|#define  SBADMATCH0_BS2_MASK&t;0xffff0000 /* Type2 Base Address */
-DECL|macro|SBADMATCH0_BS2_SHIFT
-mdefine_line|#define  SBADMATCH0_BS2_SHIFT&t;16
-DECL|macro|B44_SBTMCFGLOW
-mdefine_line|#define B44_SBTMCFGLOW&t;0x0FB8UL /* SB Target Configuration Low */
-DECL|macro|SBTMCFGLOW_CD_MASK
-mdefine_line|#define  SBTMCFGLOW_CD_MASK&t;0x000000ff /* Clock Divide Mask */
-DECL|macro|SBTMCFGLOW_CO_MASK
-mdefine_line|#define  SBTMCFGLOW_CO_MASK&t;0x0000f800 /* Clock Offset Mask */
-DECL|macro|SBTMCFGLOW_CO_SHIFT
-mdefine_line|#define  SBTMCFGLOW_CO_SHIFT&t;11
-DECL|macro|SBTMCFGLOW_IF_MASK
-mdefine_line|#define  SBTMCFGLOW_IF_MASK&t;0x00fc0000 /* Interrupt Flags Mask */
-DECL|macro|SBTMCFGLOW_IF_SHIFT
-mdefine_line|#define  SBTMCFGLOW_IF_SHIFT&t;18
-DECL|macro|SBTMCFGLOW_IM_MASK
-mdefine_line|#define  SBTMCFGLOW_IM_MASK&t;0x03000000 /* Interrupt Mode Mask */
-DECL|macro|SBTMCFGLOW_IM_SHIFT
-mdefine_line|#define  SBTMCFGLOW_IM_SHIFT&t;24
-DECL|macro|B44_SBTMCFGHIGH
-mdefine_line|#define B44_SBTMCFGHIGH&t;0x0FBCUL /* SB Target Configuration High */
-DECL|macro|SBTMCFGHIGH_BM_MASK
-mdefine_line|#define  SBTMCFGHIGH_BM_MASK&t;0x00000003 /* Busy Mode */
-DECL|macro|SBTMCFGHIGH_RM_MASK
-mdefine_line|#define  SBTMCFGHIGH_RM_MASK&t;0x0000000C /* Retry Mode */
-DECL|macro|SBTMCFGHIGH_RM_SHIFT
-mdefine_line|#define  SBTMCFGHIGH_RM_SHIFT&t;2
-DECL|macro|SBTMCFGHIGH_SM_MASK
-mdefine_line|#define  SBTMCFGHIGH_SM_MASK&t;0x00000030 /* Stop Mode */
-DECL|macro|SBTMCFGHIGH_SM_SHIFT
-mdefine_line|#define  SBTMCFGHIGH_SM_SHIFT&t;4
-DECL|macro|SBTMCFGHIGH_EM_MASK
-mdefine_line|#define  SBTMCFGHIGH_EM_MASK&t;0x00000300 /* Error Mode */
-DECL|macro|SBTMCFGHIGH_EM_SHIFT
-mdefine_line|#define  SBTMCFGHIGH_EM_SHIFT&t;8
-DECL|macro|SBTMCFGHIGH_IM_MASK
-mdefine_line|#define  SBTMCFGHIGH_IM_MASK&t;0x00000c00 /* Interrupt Mode */
-DECL|macro|SBTMCFGHIGH_IM_SHIFT
-mdefine_line|#define  SBTMCFGHIGH_IM_SHIFT&t;10
-DECL|macro|B44_SBBCFG
-mdefine_line|#define B44_SBBCFG&t;0x0FC0UL /* SB Broadcast Configuration */
-DECL|macro|SBBCFG_LAT_MASK
-mdefine_line|#define  SBBCFG_LAT_MASK&t;0x00000003 /* SB Latency */
-DECL|macro|SBBCFG_MAX0_MASK
-mdefine_line|#define  SBBCFG_MAX0_MASK&t;0x000f0000 /* MAX Counter 0 */
-DECL|macro|SBBCFG_MAX0_SHIFT
-mdefine_line|#define  SBBCFG_MAX0_SHIFT&t;16
-DECL|macro|SBBCFG_MAX1_MASK
-mdefine_line|#define  SBBCFG_MAX1_MASK&t;0x00f00000 /* MAX Counter 1 */
-DECL|macro|SBBCFG_MAX1_SHIFT
-mdefine_line|#define  SBBCFG_MAX1_SHIFT&t;20
-DECL|macro|B44_SBBSTATE
-mdefine_line|#define B44_SBBSTATE&t;0x0FC8UL /* SB Broadcast State */
-DECL|macro|SBBSTATE_SRD
-mdefine_line|#define  SBBSTATE_SRD&t;&t;0x00000001 /* ST Reg Disable */
-DECL|macro|SBBSTATE_HRD
-mdefine_line|#define  SBBSTATE_HRD&t;&t;0x00000002 /* Hold Reg Disable */
-DECL|macro|B44_SBACTCNFG
-mdefine_line|#define B44_SBACTCNFG&t;0x0FD8UL /* SB Activate Configuration */
-DECL|macro|B44_SBFLAGST
-mdefine_line|#define B44_SBFLAGST&t;0x0FE8UL /* SB Current SBFLAGS */
-DECL|macro|B44_SBIDLOW
-mdefine_line|#define B44_SBIDLOW&t;0x0FF8UL /* SB Identification Low */
-DECL|macro|SBIDLOW_CS_MASK
-mdefine_line|#define  SBIDLOW_CS_MASK&t;0x00000003 /* Config Space Mask */
-DECL|macro|SBIDLOW_AR_MASK
-mdefine_line|#define  SBIDLOW_AR_MASK&t;0x00000038 /* Num Address Ranges Supported */
-DECL|macro|SBIDLOW_AR_SHIFT
-mdefine_line|#define  SBIDLOW_AR_SHIFT&t;3
-DECL|macro|SBIDLOW_SYNCH
-mdefine_line|#define  SBIDLOW_SYNCH&t;&t;0x00000040 /* Sync */
-DECL|macro|SBIDLOW_INIT
-mdefine_line|#define  SBIDLOW_INIT&t;&t;0x00000080 /* Initiator */
-DECL|macro|SBIDLOW_MINLAT_MASK
-mdefine_line|#define  SBIDLOW_MINLAT_MASK&t;0x00000f00 /* Minimum Backplane Latency */
-DECL|macro|SBIDLOW_MINLAT_SHIFT
-mdefine_line|#define  SBIDLOW_MINLAT_SHIFT&t;8
-DECL|macro|SBIDLOW_MAXLAT_MASK
-mdefine_line|#define  SBIDLOW_MAXLAT_MASK&t;0x0000f000 /* Maximum Backplane Latency */
-DECL|macro|SBIDLOW_MAXLAT_SHIFT
-mdefine_line|#define  SBIDLOW_MAXLAT_SHIFT&t;12
-DECL|macro|SBIDLOW_FIRST
-mdefine_line|#define  SBIDLOW_FIRST&t;&t;0x00010000 /* This Initiator is First */
-DECL|macro|SBIDLOW_CW_MASK
-mdefine_line|#define  SBIDLOW_CW_MASK&t;0x000c0000 /* Cycle Counter Width */
-DECL|macro|SBIDLOW_CW_SHIFT
-mdefine_line|#define  SBIDLOW_CW_SHIFT&t;18
-DECL|macro|SBIDLOW_TP_MASK
-mdefine_line|#define  SBIDLOW_TP_MASK&t;0x00f00000 /* Target Ports */
-DECL|macro|SBIDLOW_TP_SHIFT
-mdefine_line|#define  SBIDLOW_TP_SHIFT&t;20
-DECL|macro|SBIDLOW_IP_MASK
-mdefine_line|#define  SBIDLOW_IP_MASK&t;0x0f000000 /* Initiator Ports */
-DECL|macro|SBIDLOW_IP_SHIFT
-mdefine_line|#define  SBIDLOW_IP_SHIFT&t;24
 DECL|macro|B44_SBIDHIGH
 mdefine_line|#define B44_SBIDHIGH&t;0x0FFCUL /* SB Identification High */
 DECL|macro|SBIDHIGH_RC_MASK
@@ -708,24 +519,6 @@ DECL|macro|SBIDHIGH_VC_MASK
 mdefine_line|#define  SBIDHIGH_VC_MASK&t;0xffff0000 /* Vendor Code */
 DECL|macro|SBIDHIGH_VC_SHIFT
 mdefine_line|#define  SBIDHIGH_VC_SHIFT&t;16
-DECL|macro|CORE_CODE_ILINE20
-mdefine_line|#define  CORE_CODE_ILINE20&t;0x801
-DECL|macro|CORE_CODE_SDRAM
-mdefine_line|#define  CORE_CODE_SDRAM&t;0x803
-DECL|macro|CORE_CODE_PCI
-mdefine_line|#define  CORE_CODE_PCI&t;&t;0x804
-DECL|macro|CORE_CODE_MIPS
-mdefine_line|#define  CORE_CODE_MIPS&t;&t;0x805
-DECL|macro|CORE_CODE_ENET
-mdefine_line|#define  CORE_CODE_ENET&t;&t;0x806
-DECL|macro|CORE_CODE_CODEC
-mdefine_line|#define  CORE_CODE_CODEC&t;0x807
-DECL|macro|CORE_CODE_USB
-mdefine_line|#define  CORE_CODE_USB&t;&t;0x808
-DECL|macro|CORE_CODE_ILINE100
-mdefine_line|#define  CORE_CODE_ILINE100&t;0x80a
-DECL|macro|CORE_CODE_EXTIF
-mdefine_line|#define  CORE_CODE_EXTIF&t;0x811
 multiline_comment|/* SSB PCI config space registers.  */
 DECL|macro|SSB_BAR0_WIN
 mdefine_line|#define&t;SSB_BAR0_WIN&t;&t;0x80
@@ -735,7 +528,7 @@ DECL|macro|SSB_SPROM_CONTROL
 mdefine_line|#define&t;SSB_SPROM_CONTROL&t;0x88
 DECL|macro|SSB_BAR1_CONTROL
 mdefine_line|#define&t;SSB_BAR1_CONTROL&t;0x8c
-multiline_comment|/* SSB core and hsot control registers.  */
+multiline_comment|/* SSB core and host control registers.  */
 DECL|macro|SSB_CONTROL
 mdefine_line|#define SSB_CONTROL&t;&t;0x0000UL
 DECL|macro|SSB_ARBCONTROL
@@ -1126,6 +919,12 @@ id|ring_info
 op_star
 id|tx_buffers
 suffix:semicolon
+DECL|member|tx_bufs
+r_int
+r_char
+op_star
+id|tx_bufs
+suffix:semicolon
 DECL|member|dma_offset
 id|u32
 id|dma_offset
@@ -1205,10 +1004,13 @@ id|dev
 suffix:semicolon
 DECL|member|rx_ring_dma
 DECL|member|tx_ring_dma
+DECL|member|tx_bufs_dma
 id|dma_addr_t
 id|rx_ring_dma
 comma
 id|tx_ring_dma
+comma
+id|tx_bufs_dma
 suffix:semicolon
 DECL|member|rx_pending
 id|u32
@@ -1221,10 +1023,6 @@ suffix:semicolon
 DECL|member|phy_addr
 id|u8
 id|phy_addr
-suffix:semicolon
-DECL|member|mdc_port
-id|u8
-id|mdc_port
 suffix:semicolon
 DECL|member|core_unit
 id|u8

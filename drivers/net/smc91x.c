@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * smc91x.c&n; * This is a driver for SMSC&squot;s 91C9x/91C1xx single-chip Ethernet devices.&n; *&n; * Copyright (C) 1996 by Erik Stahlman&n; * Copyright (C) 2001 Standard Microsystems Corporation&n; *&t;Developed by Simple Network Magic Corporation&n; * Copyright (C) 2003 Monta Vista Software, Inc.&n; *&t;Unified SMC91x driver by Nicolas Pitre&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Arguments:&n; * &t;io&t;= for the base address&n; *&t;irq&t;= for the IRQ&n; *&t;nowait&t;= 0 for normal wait states, 1 eliminates additional wait states&n; *&n; * original author:&n; * &t;Erik Stahlman &lt;erik@vt.edu&gt;&n; *&n; * hardware multicast code:&n; *    Peter Cammaert &lt;pc@denkart.be&gt;&n; *&n; * contributors:&n; * &t;Daris A Nevil &lt;dnevil@snmc.com&gt;&n; *      Nicolas Pitre &lt;nico@cam.org&gt;&n; *&t;Russell King &lt;rmk@arm.linux.org.uk&gt;&n; *&n; * History:&n; *   08/20/00  Arnaldo Melo       fix kfree(skb) in smc_hardware_send_packet&n; *   12/15/00  Christian Jullien  fix &quot;Warning: kfree_skb on hard IRQ&quot;&n; *   03/16/01  Daris A Nevil      modified smc9194.c for use with LAN91C111&n; *   08/22/01  Scott Anderson     merge changes from smc9194 to smc91111&n; *   08/21/01  Pramod B Bhardwaj  added support for RevB of LAN91C111&n; *   12/20/01  Jeff Sutherland    initial port to Xscale PXA with DMA support&n; *   04/07/03  Nicolas Pitre      unified SMC91x driver, killed irq races,&n; *                                more bus abstraction, big cleanup, etc.&n; *   29/09/03  Russell King       - add driver model support&n; *                                - ethtool support&n; *                                - convert to use generic MII interface&n; *                                - add link up/down notification&n; *                                - don&squot;t try to handle full negotiation in&n; *                                  smc_phy_configure&n; *                                - clean up (and fix stack overrun) in PHY&n; *                                  MII read/write functions&n; *   09/15/04  Hayato Fujiwara    - Add m32r support.&n; *                                - Modify for SMP kernel; Change spin-locked&n; *                                  regions.&n; */
+multiline_comment|/*&n; * smc91x.c&n; * This is a driver for SMSC&squot;s 91C9x/91C1xx single-chip Ethernet devices.&n; *&n; * Copyright (C) 1996 by Erik Stahlman&n; * Copyright (C) 2001 Standard Microsystems Corporation&n; *&t;Developed by Simple Network Magic Corporation&n; * Copyright (C) 2003 Monta Vista Software, Inc.&n; *&t;Unified SMC91x driver by Nicolas Pitre&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Arguments:&n; * &t;io&t;= for the base address&n; *&t;irq&t;= for the IRQ&n; *&t;nowait&t;= 0 for normal wait states, 1 eliminates additional wait states&n; *&n; * original author:&n; * &t;Erik Stahlman &lt;erik@vt.edu&gt;&n; *&n; * hardware multicast code:&n; *    Peter Cammaert &lt;pc@denkart.be&gt;&n; *&n; * contributors:&n; * &t;Daris A Nevil &lt;dnevil@snmc.com&gt;&n; *      Nicolas Pitre &lt;nico@cam.org&gt;&n; *&t;Russell King &lt;rmk@arm.linux.org.uk&gt;&n; *&n; * History:&n; *   08/20/00  Arnaldo Melo       fix kfree(skb) in smc_hardware_send_packet&n; *   12/15/00  Christian Jullien  fix &quot;Warning: kfree_skb on hard IRQ&quot;&n; *   03/16/01  Daris A Nevil      modified smc9194.c for use with LAN91C111&n; *   08/22/01  Scott Anderson     merge changes from smc9194 to smc91111&n; *   08/21/01  Pramod B Bhardwaj  added support for RevB of LAN91C111&n; *   12/20/01  Jeff Sutherland    initial port to Xscale PXA with DMA support&n; *   04/07/03  Nicolas Pitre      unified SMC91x driver, killed irq races,&n; *                                more bus abstraction, big cleanup, etc.&n; *   29/09/03  Russell King       - add driver model support&n; *                                - ethtool support&n; *                                - convert to use generic MII interface&n; *                                - add link up/down notification&n; *                                - don&squot;t try to handle full negotiation in&n; *                                  smc_phy_configure&n; *                                - clean up (and fix stack overrun) in PHY&n; *                                  MII read/write functions&n; *   22/09/04  Nicolas Pitre      big update (see commit log for details)&n; */
 DECL|variable|version
 r_static
 r_const
@@ -7,7 +7,7 @@ id|version
 (braket
 )braket
 op_assign
-l_string|&quot;smc91x.c: v1.0, mar 07 2003 by Nicolas Pitre &lt;nico@cam.org&gt;&bslash;n&quot;
+l_string|&quot;smc91x.c: v1.1, sep 22 2004 by Nicolas Pitre &lt;nico@cam.org&gt;&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* Debugging level */
 macro_line|#ifndef SMC_DEBUG
@@ -21,7 +21,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
@@ -29,6 +29,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -224,11 +225,16 @@ r_struct
 id|smc_local
 (brace
 multiline_comment|/*&n;&t; * If I have to wait until memory is available to send a&n;&t; * packet, I will store the skbuff here, until I get the&n;&t; * desired memory.  Then, I&squot;ll send it out and free it.&n;&t; */
-DECL|member|saved_skb
+DECL|member|pending_tx_skb
 r_struct
 id|sk_buff
 op_star
-id|saved_skb
+id|pending_tx_skb
+suffix:semicolon
+DECL|member|tx_task
+r_struct
+id|tasklet_struct
+id|tx_task
 suffix:semicolon
 multiline_comment|/*&n;&t; * these are things that the kernel wants me to keep, so users&n;&t; * can find out semi-useless statistics of how well the card is&n;&t; * performing&n;&t; */
 DECL|member|stats
@@ -277,6 +283,11 @@ r_struct
 id|mii_if_info
 id|mii
 suffix:semicolon
+DECL|member|phy_configure
+r_struct
+id|work_struct
+id|phy_configure
+suffix:semicolon
 DECL|member|lock
 id|spinlock_t
 id|lock
@@ -292,7 +303,7 @@ macro_line|#endif
 suffix:semicolon
 macro_line|#if SMC_DEBUG &gt; 0
 DECL|macro|DBG
-mdefine_line|#define DBG(n, args...)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (SMC_DEBUG &gt;= (n))&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_DEBUG args);&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define DBG(n, args...)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (SMC_DEBUG &gt;= (n))&t;&t;&t;&bslash;&n;&t;&t;&t;printk(args);&t;&bslash;&n;&t;} while (0)
 DECL|macro|PRINTK
 mdefine_line|#define PRINTK(args...)   printk(args)
 macro_line|#else
@@ -463,10 +474,10 @@ mdefine_line|#define PRINT_PKT(x...)  do { } while(0)
 macro_line|#endif
 multiline_comment|/* this enables an interrupt in the interrupt mask register */
 DECL|macro|SMC_ENABLE_INT
-mdefine_line|#define SMC_ENABLE_INT(x) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned char mask;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;mask = SMC_GET_INT_MASK();&t;&t;&t;&t;&t;&bslash;&n;&t;mask |= (x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SMC_SET_INT_MASK(mask);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define SMC_ENABLE_INT(x) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned char mask;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irq(&amp;lp-&gt;lock);&t;&t;&t;&t;&t;&bslash;&n;&t;mask = SMC_GET_INT_MASK();&t;&t;&t;&t;&t;&bslash;&n;&t;mask |= (x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SMC_SET_INT_MASK(mask);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irq(&amp;lp-&gt;lock);&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* this disables an interrupt from the interrupt mask register */
 DECL|macro|SMC_DISABLE_INT
-mdefine_line|#define SMC_DISABLE_INT(x) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned char mask;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;mask = SMC_GET_INT_MASK();&t;&t;&t;&t;&t;&bslash;&n;&t;mask &amp;= ~(x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SMC_SET_INT_MASK(mask);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define SMC_DISABLE_INT(x) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned char mask;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irq(&amp;lp-&gt;lock);&t;&t;&t;&t;&t;&bslash;&n;&t;mask = SMC_GET_INT_MASK();&t;&t;&t;&t;&t;&bslash;&n;&t;mask &amp;= ~(x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SMC_SET_INT_MASK(mask);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irq(&amp;lp-&gt;lock);&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * Wait while MMU is busy.  This is usually in the order of a few nanosecs&n; * if at all, but let&squot;s avoid deadlocking the system if the hardware&n; * decides to go south.&n; */
 DECL|macro|SMC_WAIT_MMU_BUSY
 mdefine_line|#define SMC_WAIT_MMU_BUSY() do {&t;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(SMC_GET_MMU_CMD() &amp; MC_BUSY)) {&t;&t;&t;&bslash;&n;&t;&t;unsigned long timeout = jiffies + 2;&t;&t;&t;&bslash;&n;&t;&t;while (SMC_GET_MMU_CMD() &amp; MC_BUSY) {&t;&t;&t;&bslash;&n;&t;&t;&t;if (time_after(jiffies, timeout)) {&t;&t;&bslash;&n;&t;&t;&t;&t;printk(&quot;%s: timeout %s line %d&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;&t;&t;dev-&gt;name, __FILE__, __LINE__);&t;&bslash;&n;&t;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;cpu_relax();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
@@ -489,6 +500,17 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+r_struct
+id|smc_local
+op_star
+id|lp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_int
 r_int
 id|ctl
@@ -505,6 +527,33 @@ comma
 id|dev-&gt;name
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+multiline_comment|/* Disable all interrupts */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|2
+)paren
+suffix:semicolon
+id|SMC_SET_INT_MASK
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * This resets the registers mostly to defaults, but doesn&squot;t&n;&t; * affect EEPROM.  That seems unnecessary&n;&t; */
@@ -595,38 +644,37 @@ op_or
 id|CTL_LE_ENABLE
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the control register to automatically release successfully&n;&t; * transmitted packets, to make the best use out of our limited&n;&t; * memory&n;&t; */
-macro_line|#if ! THROTTLE_TX_PKTS
+r_if
+c_cond
+(paren
+op_logical_neg
+id|THROTTLE_TX_PKTS
+)paren
+(brace
 id|ctl
 op_or_assign
 id|CTL_AUTO_RELEASE
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
 id|ctl
 op_and_assign
 op_complement
 id|CTL_AUTO_RELEASE
 suffix:semicolon
-macro_line|#endif
 id|SMC_SET_CTL
 c_func
 (paren
 id|ctl
 )paren
 suffix:semicolon
-multiline_comment|/* Disable all interrupts */
+multiline_comment|/* Reset the MMU */
 id|SMC_SELECT_BANK
 c_func
 (paren
 l_int|2
 )paren
 suffix:semicolon
-id|SMC_SET_INT_MASK
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* Reset the MMU */
 id|SMC_SET_MMU_CMD
 c_func
 (paren
@@ -638,6 +686,31 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* clear anything saved */
+r_if
+c_cond
+(paren
+id|lp-&gt;pending_tx_skb
+op_ne
+l_int|NULL
+)paren
+(brace
+id|dev_kfree_skb
+(paren
+id|lp-&gt;pending_tx_skb
+)paren
+suffix:semicolon
+id|lp-&gt;pending_tx_skb
+op_assign
+l_int|NULL
+suffix:semicolon
+id|lp-&gt;stats.tx_errors
+op_increment
+suffix:semicolon
+id|lp-&gt;stats.tx_aborted_errors
+op_increment
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Enable Interrupts, Receive, and Transmit&n; */
 DECL|function|smc_enable
@@ -703,6 +776,18 @@ c_func
 id|lp-&gt;rcr_cur_mode
 )paren
 suffix:semicolon
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|SMC_SET_MAC_ADDR
+c_func
+(paren
+id|dev-&gt;dev_addr
+)paren
+suffix:semicolon
 multiline_comment|/* now, enable interrupts */
 id|mask
 op_assign
@@ -739,6 +824,7 @@ c_func
 id|mask
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * From this point the register bank must _NOT_ be switched away&n;&t; * to something else than bank 2 without proper locking against&n;&t; * races with any tasklet or interrupt handlers until smc_shutdown()&n;&t; * or smc_reset() is called.&n;&t; */
 )brace
 multiline_comment|/*&n; * this puts the device in an inactive state&n; */
 DECL|function|smc_shutdown
@@ -747,11 +833,29 @@ r_void
 id|smc_shutdown
 c_func
 (paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
 r_int
 r_int
 id|ioaddr
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+r_struct
+id|smc_local
+op_star
+id|lp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
 )paren
-(brace
+suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -765,6 +869,13 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* no more interrupts for me */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 id|SMC_SELECT_BANK
 c_func
 (paren
@@ -775,6 +886,13 @@ id|SMC_SET_INT_MASK
 c_func
 (paren
 l_int|0
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* and tell the card to stay away from that nasty outside world */
@@ -954,6 +1072,17 @@ id|RS_ERRORS
 )paren
 )paren
 (brace
+id|SMC_WAIT_MMU_BUSY
+c_func
+(paren
+)paren
+suffix:semicolon
+id|SMC_SET_MMU_CMD
+c_func
+(paren
+id|MC_RELEASE
+)paren
+suffix:semicolon
 id|lp-&gt;stats.rx_errors
 op_increment
 suffix:semicolon
@@ -1019,7 +1148,7 @@ id|RS_MULTICAST
 id|lp-&gt;stats.multicast
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Actual payload is packet_len - 4 (or 3 if odd byte).&n;&t;&t; * We want skb_reserve(2) and the final ctrl word&n;&t;&t; * (2 bytes, possibly containing the payload odd byte).&n;&t;&t; * Ence packet_len - 4 + 2 + 2.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Actual payload is packet_len - 6 (or 5 if odd byte).&n;&t;&t; * We want skb_reserve(2) and the final ctrl word&n;&t;&t; * (2 bytes, possibly containing the payload odd byte).&n;&t;&t; * Furthermore, we add 2 bytes to allow rounding up to&n;&t;&t; * multiple of 4 bytes on 32 bit buses.&n;&t;&t; * Ence packet_len - 6 + 2 + 2 + 2.&n;&t;&t; */
 id|skb
 op_assign
 id|dev_alloc_skb
@@ -1049,11 +1178,21 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+id|SMC_WAIT_MMU_BUSY
+c_func
+(paren
+)paren
+suffix:semicolon
+id|SMC_SET_MMU_CMD
+c_func
+(paren
+id|MC_RELEASE
+)paren
+suffix:semicolon
 id|lp-&gt;stats.rx_dropped
 op_increment
 suffix:semicolon
-r_goto
-id|done
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Align IP header to 32 bits */
@@ -1077,7 +1216,7 @@ id|status
 op_or_assign
 id|RS_ODDFRAME
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If odd length: packet_len - 3,&n;&t;&t; * otherwise packet_len - 4.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If odd length: packet_len - 5,&n;&t;&t; * otherwise packet_len - 6.&n;&t;&t; * With the trailing ctrl byte it&squot;s packet_len - 4.&n;&t;&t; */
 id|data_len
 op_assign
 id|packet_len
@@ -1090,9 +1229,9 @@ id|RS_ODDFRAME
 )paren
 ques
 c_cond
-l_int|3
+l_int|5
 suffix:colon
-l_int|4
+l_int|6
 )paren
 suffix:semicolon
 id|data
@@ -1112,7 +1251,18 @@ id|data
 comma
 id|packet_len
 op_minus
-l_int|2
+l_int|4
+)paren
+suffix:semicolon
+id|SMC_WAIT_MMU_BUSY
+c_func
+(paren
+)paren
+suffix:semicolon
+id|SMC_SET_MMU_CMD
+c_func
+(paren
+id|MC_RELEASE
 )paren
 suffix:semicolon
 id|PRINT_PKT
@@ -1122,7 +1272,7 @@ id|data
 comma
 id|packet_len
 op_minus
-l_int|2
+l_int|4
 )paren
 suffix:semicolon
 id|dev-&gt;last_rx
@@ -1157,33 +1307,47 @@ op_add_assign
 id|data_len
 suffix:semicolon
 )brace
-id|done
-suffix:colon
-id|SMC_WAIT_MMU_BUSY
-c_func
-(paren
-)paren
-suffix:semicolon
-id|SMC_SET_MMU_CMD
-c_func
-(paren
-id|MC_RELEASE
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is called to actually send a packet to the chip.&n; * Returns non-zero when successful.&n; */
-DECL|function|smc_hardware_send_packet
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/*&n; * On SMP we have the following problem:&n; *&n; * &t;A = smc_hardware_send_pkt()&n; * &t;B = smc_hard_start_xmit()&n; * &t;C = smc_interrupt()&n; *&n; * A and B can never be executed simultaneously.  However, at least on UP,&n; * it is possible (and even desirable) for C to interrupt execution of&n; * A or B in order to have better RX reliability and avoid overruns.&n; * C, just like A and B, must have exclusive access to the chip and&n; * each of them must lock against any other concurrent access.&n; * Unfortunately this is not possible to have C suspend execution of A or&n; * B taking place on another CPU. On UP this is no an issue since A and B&n; * are run from softirq context and C from hard IRQ context, and there is&n; * no other CPU where concurrent access can happen.&n; * If ever there is a way to force at least B and C to always be executed&n; * on the same CPU then we could use read/write locks to protect against&n; * any other concurrent access and C would always interrupt B. But life&n; * isn&squot;t that easy in a SMP world...&n; */
+DECL|macro|smc_special_trylock
+mdefine_line|#define smc_special_trylock(lock)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;local_irq_disable();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__ret = spin_trylock(lock);&t;&t;&t;&t;&t;&bslash;&n;&t;if (!__ret)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;local_irq_enable();&t;&t;&t;&t;&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|smc_special_lock
+mdefine_line|#define smc_special_lock(lock)&t;&t;spin_lock_irq(lock)
+DECL|macro|smc_special_unlock
+mdefine_line|#define smc_special_unlock(lock)&t;spin_unlock_irq(lock)
+macro_line|#else
+DECL|macro|smc_special_trylock
+mdefine_line|#define smc_special_trylock(lock)&t;(1)
+DECL|macro|smc_special_lock
+mdefine_line|#define smc_special_lock(lock)&t;&t;do { } while (0)
+DECL|macro|smc_special_unlock
+mdefine_line|#define smc_special_unlock(lock)&t;do { } while (0)
+macro_line|#endif
+multiline_comment|/*&n; * This is called to actually send a packet to the chip.&n; */
+DECL|function|smc_hardware_send_pkt
 r_static
 r_void
-id|smc_hardware_send_packet
+id|smc_hardware_send_pkt
 c_func
 (paren
+r_int
+r_int
+id|data
+)paren
+(brace
 r_struct
 id|net_device
 op_star
 id|dev
+op_assign
+(paren
+r_struct
+id|net_device
+op_star
 )paren
-(brace
+id|data
+suffix:semicolon
 r_struct
 id|smc_local
 op_star
@@ -1205,8 +1369,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-op_assign
-id|lp-&gt;saved_skb
 suffix:semicolon
 r_int
 r_int
@@ -1230,6 +1392,42 @@ id|dev-&gt;name
 comma
 id|__FUNCTION__
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|smc_special_trylock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+)paren
+(brace
+id|netif_stop_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|tasklet_schedule
+c_func
+(paren
+op_amp
+id|lp-&gt;tx_task
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|skb
+op_assign
+id|lp-&gt;pending_tx_skb
+suffix:semicolon
+id|lp-&gt;pending_tx_skb
+op_assign
+l_int|NULL
 suffix:semicolon
 id|packet_no
 op_assign
@@ -1258,23 +1456,21 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|lp-&gt;saved_skb
-op_assign
-l_int|NULL
-suffix:semicolon
 id|lp-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
 id|lp-&gt;stats.tx_fifo_errors
 op_increment
 suffix:semicolon
-id|dev_kfree_skb_any
+id|smc_special_unlock
 c_func
 (paren
-id|skb
+op_amp
+id|lp-&gt;lock
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|done
 suffix:semicolon
 )brace
 multiline_comment|/* point to the beginning of the packet */
@@ -1378,7 +1574,29 @@ comma
 id|DATA_REG
 )paren
 suffix:semicolon
-multiline_comment|/* and let the chipset deal with it */
+multiline_comment|/*&n;&t; * If THROTTLE_TX_PKTS is set, we look at the TX_EMPTY flag&n;&t; * before queueing this packet for TX, and if it&squot;s clear then&n;&t; * we stop the queue here.  This will have the effect of&n;&t; * having at most 2 packets queued for TX in the chip&squot;s memory&n;&t; * at all time. If THROTTLE_TX_PKTS is not set then the queue&n;&t; * is stopped only when memory allocation (MC_ALLOC) does not&n;&t; * succeed right away.&n;&t; */
+r_if
+c_cond
+(paren
+id|THROTTLE_TX_PKTS
+op_logical_and
+op_logical_neg
+(paren
+id|SMC_GET_INT
+c_func
+(paren
+)paren
+op_amp
+id|IM_TX_EMPTY_INT
+)paren
+)paren
+id|netif_stop_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* queue the packet for TX */
 id|SMC_SET_MMU_CMD
 c_func
 (paren
@@ -1391,19 +1609,16 @@ c_func
 id|IM_TX_EMPTY_INT
 )paren
 suffix:semicolon
+id|smc_special_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 id|dev-&gt;trans_start
 op_assign
 id|jiffies
-suffix:semicolon
-id|dev_kfree_skb_any
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-id|lp-&gt;saved_skb
-op_assign
-l_int|NULL
 suffix:semicolon
 id|lp-&gt;stats.tx_packets
 op_increment
@@ -1411,6 +1626,34 @@ suffix:semicolon
 id|lp-&gt;stats.tx_bytes
 op_add_assign
 id|len
+suffix:semicolon
+id|SMC_ENABLE_INT
+c_func
+(paren
+id|IM_TX_INT
+op_or
+id|IM_TX_EMPTY_INT
+)paren
+suffix:semicolon
+id|done
+suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|THROTTLE_TX_PKTS
+)paren
+id|netif_wake_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Since I am not sure if I will have enough room in the chip&squot;s ram&n; * to store the packet, I call this routine which either sends it&n; * now, or set the card to generates an interrupt when ready&n; * for the packet.&n; */
@@ -1455,12 +1698,6 @@ comma
 id|poll_count
 comma
 id|status
-comma
-id|saved_bank
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 id|DBG
 c_func
@@ -1474,24 +1711,15 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|lp-&gt;saved_skb
+id|lp-&gt;pending_tx_skb
 op_ne
 l_int|NULL
 )paren
 suffix:semicolon
-id|lp-&gt;saved_skb
+id|lp-&gt;pending_tx_skb
 op_assign
 id|skb
 suffix:semicolon
@@ -1535,7 +1763,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|lp-&gt;saved_skb
+id|lp-&gt;pending_tx_skb
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1551,33 +1779,18 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
+id|smc_special_lock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 multiline_comment|/* now, try to allocate the memory */
-id|saved_bank
-op_assign
-id|SMC_CURRENT_BANK
-c_func
-(paren
-)paren
-suffix:semicolon
-id|SMC_SELECT_BANK
-c_func
-(paren
-l_int|2
-)paren
-suffix:semicolon
 id|SMC_SET_MMU_CMD
 c_func
 (paren
@@ -1625,6 +1838,13 @@ op_decrement
 id|poll_count
 )paren
 suffix:semicolon
+id|smc_special_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1658,45 +1878,18 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Allocation succeeded: push packet to the chip&squot;s own memory&n;&t;&t; * immediately.&n;&t;&t; *&n;&t;&t; * If THROTTLE_TX_PKTS is selected that means we don&squot;t want&n;&t;&t; * more than a single TX packet taking up space in the chip&squot;s&n;&t;&t; * internal memory at all time, in which case we stop the&n;&t;&t; * queue right here until we&squot;re notified of TX completion.&n;&t;&t; *&n;&t;&t; * Otherwise we&squot;re quite happy to feed more TX packets right&n;&t;&t; * away for better TX throughput, in which case the queue is&n;&t;&t; * left active.&n;&t;&t; */
-macro_line|#if THROTTLE_TX_PKTS
-id|netif_stop_queue
+multiline_comment|/*&n;&t;&t; * Allocation succeeded: push packet to the chip&squot;s own memory&n;&t;&t; * immediately.&n;&t;&t; */
+id|smc_hardware_send_pkt
 c_func
 (paren
-id|dev
+(paren
+r_int
+r_int
 )paren
-suffix:semicolon
-macro_line|#endif
-id|smc_hardware_send_packet
-c_func
-(paren
 id|dev
-)paren
-suffix:semicolon
-id|SMC_ENABLE_INT
-c_func
-(paren
-id|IM_TX_INT
-op_or
-id|IM_TX_EMPTY_INT
 )paren
 suffix:semicolon
 )brace
-id|SMC_SELECT_BANK
-c_func
-(paren
-id|saved_bank
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2210,16 +2403,6 @@ suffix:semicolon
 r_int
 r_int
 id|phydata
-comma
-id|old_bank
-suffix:semicolon
-multiline_comment|/* Save the current bank, and select bank 3 */
-id|old_bank
-op_assign
-id|SMC_CURRENT_BANK
-c_func
-(paren
-)paren
 suffix:semicolon
 id|SMC_SELECT_BANK
 c_func
@@ -2287,13 +2470,6 @@ id|MII_MDO
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* And select original bank */
-id|SMC_SELECT_BANK
-c_func
-(paren
-id|old_bank
-)paren
-suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -2308,6 +2484,12 @@ comma
 id|phyreg
 comma
 id|phydata
+)paren
+suffix:semicolon
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|2
 )paren
 suffix:semicolon
 r_return
@@ -2341,18 +2523,6 @@ r_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
-suffix:semicolon
-r_int
-r_int
-id|old_bank
-suffix:semicolon
-multiline_comment|/* Save the current bank, and select bank 3 */
-id|old_bank
-op_assign
-id|SMC_CURRENT_BANK
-c_func
-(paren
-)paren
 suffix:semicolon
 id|SMC_SELECT_BANK
 c_func
@@ -2417,13 +2587,6 @@ id|MII_MDO
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* And select original bank */
-id|SMC_SELECT_BANK
-c_func
-(paren
-id|old_bank
-)paren
-suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -2438,6 +2601,12 @@ comma
 id|phyreg
 comma
 id|phydata
+)paren
+suffix:semicolon
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|2
 )paren
 suffix:semicolon
 )brace
@@ -2718,10 +2887,22 @@ id|bmcr
 )paren
 suffix:semicolon
 multiline_comment|/* Re-Configure the Receive/Phy Control register */
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 id|SMC_SET_RPC
 c_func
 (paren
 id|lp-&gt;rpc_cur_mode
+)paren
+suffix:semicolon
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|2
 )paren
 suffix:semicolon
 r_return
@@ -2854,27 +3035,9 @@ r_int
 id|phy
 )paren
 (brace
-r_struct
-id|smc_local
-op_star
-id|lp
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_int
 r_int
 id|bmcr
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-)paren
 suffix:semicolon
 id|bmcr
 op_assign
@@ -2900,13 +3063,6 @@ comma
 id|bmcr
 op_or
 id|BMCR_PDOWN
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -2962,10 +3118,6 @@ id|init
 )paren
 )paren
 (brace
-r_int
-r_int
-id|old_bank
-suffix:semicolon
 multiline_comment|/* duplex state has changed */
 r_if
 c_cond
@@ -2986,13 +3138,6 @@ op_complement
 id|TCR_SWFDUP
 suffix:semicolon
 )brace
-id|old_bank
-op_assign
-id|SMC_CURRENT_BANK
-c_func
-(paren
-)paren
-suffix:semicolon
 id|SMC_SELECT_BANK
 c_func
 (paren
@@ -3005,12 +3150,6 @@ c_func
 id|lp-&gt;tcr_cur_mode
 )paren
 suffix:semicolon
-id|SMC_SELECT_BANK
-c_func
-(paren
-id|old_bank
-)paren
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Configures the specified PHY through the MII management interface&n; * using Autonegotiation.&n; * Calls smc_phy_fixed() if the user has requested a certain config.&n; * If RPC ANEG bit is set, the media selection is dependent purely on&n; * the selection by the MII (either in the MII BMCR reg or the result&n; * of autonegotiation.)  If the RPC ANEG bit is cleared, the selection&n; * is controlled by the RPC SPEED and RPC DPLX bits.&n; */
@@ -3020,12 +3159,18 @@ r_void
 id|smc_phy_configure
 c_func
 (paren
+r_void
+op_star
+id|data
+)paren
+(brace
 r_struct
 id|net_device
 op_star
 id|dev
-)paren
-(brace
+op_assign
+id|data
+suffix:semicolon
 r_struct
 id|smc_local
 op_star
@@ -3524,21 +3669,6 @@ r_int
 id|old_carrier
 comma
 id|new_carrier
-comma
-id|old_bank
-suffix:semicolon
-id|old_bank
-op_assign
-id|SMC_CURRENT_BANK
-c_func
-(paren
-)paren
-suffix:semicolon
-id|SMC_SELECT_BANK
-c_func
-(paren
-l_int|0
-)paren
 suffix:semicolon
 id|old_carrier
 op_assign
@@ -3552,6 +3682,12 @@ c_cond
 l_int|1
 suffix:colon
 l_int|0
+suffix:semicolon
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 id|new_carrier
 op_assign
@@ -3569,6 +3705,12 @@ c_cond
 l_int|1
 suffix:colon
 l_int|0
+suffix:semicolon
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|2
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3631,12 +3773,6 @@ l_string|&quot;down&quot;
 )paren
 suffix:semicolon
 )brace
-id|SMC_SELECT_BANK
-c_func
-(paren
-id|old_bank
-)paren
-suffix:semicolon
 )brace
 DECL|function|smc_eph_interrupt
 r_static
@@ -3658,8 +3794,6 @@ id|dev-&gt;base_addr
 suffix:semicolon
 r_int
 r_int
-id|old_bank
-comma
 id|ctl
 suffix:semicolon
 id|smc_10bt_check_media
@@ -3668,13 +3802,6 @@ c_func
 id|dev
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|old_bank
-op_assign
-id|SMC_CURRENT_BANK
-c_func
-(paren
 )paren
 suffix:semicolon
 id|SMC_SELECT_BANK
@@ -3708,7 +3835,7 @@ suffix:semicolon
 id|SMC_SELECT_BANK
 c_func
 (paren
-id|old_bank
+l_int|2
 )paren
 suffix:semicolon
 )brace
@@ -3766,8 +3893,6 @@ comma
 id|card_stats
 suffix:semicolon
 r_int
-id|saved_bank
-comma
 id|saved_pointer
 suffix:semicolon
 id|DBG
@@ -3787,19 +3912,6 @@ c_func
 (paren
 op_amp
 id|lp-&gt;lock
-)paren
-suffix:semicolon
-id|saved_bank
-op_assign
-id|SMC_CURRENT_BANK
-c_func
-(paren
-)paren
-suffix:semicolon
-id|SMC_SELECT_BANK
-c_func
-(paren
-l_int|2
 )paren
 suffix:semicolon
 id|saved_pointer
@@ -3841,7 +3953,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;%s: IRQ 0x%02x MASK 0x%02x MEM 0x%04x FIFO 0x%04x&bslash;n&quot;
+l_string|&quot;%s: INT 0x%02x MASK 0x%02x MEM 0x%04x FIFO 0x%04x&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -3952,14 +4064,17 @@ c_func
 id|IM_TX_INT
 )paren
 suffix:semicolon
-macro_line|#if THROTTLE_TX_PKTS
+r_if
+c_cond
+(paren
+id|THROTTLE_TX_PKTS
+)paren
 id|netif_wake_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 r_if
@@ -3980,18 +4095,11 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|smc_hardware_send_packet
+id|tasklet_hi_schedule
 c_func
 (paren
-id|dev
-)paren
-suffix:semicolon
-id|mask
-op_or_assign
-(paren
-id|IM_TX_INT
-op_or
-id|IM_TX_EMPTY_INT
+op_amp
+id|lp-&gt;tx_task
 )paren
 suffix:semicolon
 id|mask
@@ -3999,14 +4107,6 @@ op_and_assign
 op_complement
 id|IM_ALLOC_INT
 suffix:semicolon
-macro_line|#if ! THROTTLE_TX_PKTS
-id|netif_wake_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 r_if
@@ -4174,22 +4274,23 @@ id|timeout
 )paren
 suffix:semicolon
 multiline_comment|/* restore register states */
-id|SMC_SET_INT_MASK
-c_func
-(paren
-id|mask
-)paren
-suffix:semicolon
 id|SMC_SET_PTR
 c_func
 (paren
 id|saved_pointer
 )paren
 suffix:semicolon
-id|SMC_SELECT_BANK
+id|SMC_SET_INT_MASK
 c_func
 (paren
-id|saved_bank
+id|mask
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
 )paren
 suffix:semicolon
 id|DBG
@@ -4204,13 +4305,6 @@ comma
 l_int|8
 op_minus
 id|timeout
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We return IRQ_HANDLED unconditionally here even if there was&n;&t; * nothing to do.  There is a possibility that a packet might&n;&t; * get enqueued into the chip right after TX_EMPTY_INT is raised&n;&t; * but just before the CPU acknowledges the IRQ.&n;&t; * Better take an unneeded IRQ in some occasions than complexifying&n;&t; * the code for all cases.&n;&t; */
@@ -4244,16 +4338,18 @@ id|dev
 suffix:semicolon
 r_int
 r_int
-id|flags
+id|ioaddr
+op_assign
+id|dev-&gt;base_addr
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
+r_int
+id|status
 comma
-id|flags
-)paren
+id|mask
+comma
+id|meminfo
+comma
+id|fifo
 suffix:semicolon
 id|DBG
 c_func
@@ -4265,6 +4361,76 @@ comma
 id|dev-&gt;name
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|SMC_GET_INT
+c_func
+(paren
+)paren
+suffix:semicolon
+id|mask
+op_assign
+id|SMC_GET_INT_MASK
+c_func
+(paren
+)paren
+suffix:semicolon
+id|fifo
+op_assign
+id|SMC_GET_FIFO
+c_func
+(paren
+)paren
+suffix:semicolon
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|meminfo
+op_assign
+id|SMC_GET_MIR
+c_func
+(paren
+)paren
+suffix:semicolon
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|2
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
+id|PRINTK
+c_func
+(paren
+l_string|&quot;%s: INT 0x%02x MASK 0x%02x MEM 0x%04x FIFO 0x%04x&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|status
+comma
+id|mask
+comma
+id|meminfo
+comma
+id|fifo
 )paren
 suffix:semicolon
 id|smc_reset
@@ -4279,8 +4445,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/*&n;&t; * Reconfiguring the PHY doesn&squot;t seem like a bad idea here, but&n;&t; * it introduced a problem.  Now that this is a timeout routine,&n;&t; * we are getting called from within an interrupt context.&n;&t; * smc_phy_configure() calls msleep() which calls&n;&t; * schedule_timeout() which calls schedule().  When schedule()&n;&t; * is called from an interrupt context, it prints out&n;&t; * &quot;Scheduling in interrupt&quot; and then calls BUG().  This is&n;&t; * obviously not desirable.  This was worked around by removing&n;&t; * the call to smc_phy_configure() here because it didn&squot;t seem&n;&t; * absolutely necessary.  Ultimately, if msleep() is&n;&t; * supposed to be usable from an interrupt context (which it&n;&t; * looks like it thinks it should handle), it should be fixed.&n;&t; */
+multiline_comment|/*&n;&t; * Reconfiguring the PHY doesn&squot;t seem like a bad idea here, but&n;&t; * smc_phy_configure() calls msleep() which calls schedule_timeout()&n;&t; * which calls schedule().  Ence we use a work queue.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4288,51 +4453,17 @@ id|lp-&gt;phy_type
 op_ne
 l_int|0
 )paren
-id|smc_phy_configure
+id|schedule_work
 c_func
 (paren
-id|dev
+op_amp
+id|lp-&gt;phy_configure
 )paren
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/* clear anything saved */
-r_if
-c_cond
-(paren
-id|lp-&gt;saved_skb
-op_ne
-l_int|NULL
-)paren
-(brace
-id|dev_kfree_skb
-(paren
-id|lp-&gt;saved_skb
-)paren
-suffix:semicolon
-id|lp-&gt;saved_skb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|lp-&gt;stats.tx_errors
-op_increment
-suffix:semicolon
-id|lp-&gt;stats.tx_aborted_errors
-op_increment
-suffix:semicolon
-)brace
 multiline_comment|/* We can accept TX packets again */
 id|dev-&gt;trans_start
 op_assign
 id|jiffies
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 id|netif_wake_queue
 c_func
@@ -4341,28 +4472,35 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *    This sets the internal hardware table to filter out unwanted multicast&n; *    packets before they take up memory.&n; *&n; *    The SMC chip uses a hash table where the high 6 bits of the CRC of&n; *    address are the offset into the table.  If that bit is 1, then the&n; *    multicast packet is accepted.  Otherwise, it&squot;s dropped silently.&n; *&n; *    To use the 6 bits as an offset into the table, the high 3 bits are the&n; *    number of the 8 bit register, while the low 3 bits are the bit within&n; *    that register.&n; *&n; *    This routine is based very heavily on the one provided by Peter Cammaert.&n; */
+multiline_comment|/*&n; * This routine will, depending on the values passed to it,&n; * either make it accept multicast packets, go into&n; * promiscuous mode (for TCPDUMP and cousins) or accept&n; * a select set of multicast packets&n; */
+DECL|function|smc_set_multicast_list
 r_static
 r_void
-DECL|function|smc_setmulticast
-id|smc_setmulticast
+id|smc_set_multicast_list
 c_func
 (paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|smc_local
+op_star
+id|lp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_int
 r_int
 id|ioaddr
-comma
-r_int
-id|count
-comma
-r_struct
-id|dev_mc_list
-op_star
-id|addrs
-)paren
-(brace
-r_int
-id|i
+op_assign
+id|dev-&gt;base_addr
 suffix:semicolon
 r_int
 r_char
@@ -4371,6 +4509,87 @@ id|multicast_table
 l_int|8
 )braket
 suffix:semicolon
+r_int
+id|update_multicast
+op_assign
+l_int|0
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;%s: %s&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;flags
+op_amp
+id|IFF_PROMISC
+)paren
+(brace
+id|DBG
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;%s: RCR_PRMS&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|lp-&gt;rcr_cur_mode
+op_or_assign
+id|RCR_PRMS
+suffix:semicolon
+)brace
+multiline_comment|/* BUG?  I never disable promiscuous mode if multicasting was turned on.&n;   Now, I turn off promiscuous mode, but I don&squot;t do anything to multicasting&n;   when promiscuous mode is turned on.&n;*/
+multiline_comment|/*&n;&t; * Here, I am setting this to accept all multicast packets.&n;&t; * I don&squot;t need to zero the multicast table, because the flag is&n;&t; * checked before the table is&n;&t; */
+r_else
+r_if
+c_cond
+(paren
+id|dev-&gt;flags
+op_amp
+id|IFF_ALLMULTI
+op_logical_or
+id|dev-&gt;mc_count
+OG
+l_int|16
+)paren
+(brace
+id|DBG
+c_func
+(paren
+l_int|2
+comma
+l_string|&quot;%s: RCR_ALMUL&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|lp-&gt;rcr_cur_mode
+op_or_assign
+id|RCR_ALMUL
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * This sets the internal hardware table to filter out unwanted&n;&t; * multicast packets before they take up memory.&n;&t; *&n;&t; * The SMC chip uses a hash table where the high 6 bits of the CRC of&n;&t; * address are the offset into the table.  If that bit is 1, then the&n;&t; * multicast packet is accepted.  Otherwise, it&squot;s dropped silently.&n;&t; *&n;&t; * To use the 6 bits as an offset into the table, the high 3 bits are&n;&t; * the number of the 8 bit register, while the low 3 bits are the bit&n;&t; * within that register.&n;&t; */
+r_else
+r_if
+c_cond
+(paren
+id|dev-&gt;mc_count
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
 r_struct
 id|dev_mc_list
 op_star
@@ -4378,6 +4597,7 @@ id|cur_addr
 suffix:semicolon
 multiline_comment|/* table for flipping the order of 3 bits */
 r_static
+r_const
 r_int
 r_char
 id|invert3
@@ -4418,7 +4638,7 @@ id|multicast_table
 suffix:semicolon
 id|cur_addr
 op_assign
-id|addrs
+id|dev-&gt;mc_list
 suffix:semicolon
 r_for
 c_loop
@@ -4429,7 +4649,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|count
+id|dev-&gt;mc_count
 suffix:semicolon
 id|i
 op_increment
@@ -4451,7 +4671,7 @@ id|cur_addr
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* make sure this is a multicast address - shouldn&squot;t this&n;&t;&t;   be a given if we have it here ? */
+multiline_comment|/* make sure this is a multicast address -&n;&t;&t;   &t;   shouldn&squot;t this be a given if we have it here ? */
 r_if
 c_cond
 (paren
@@ -4508,142 +4728,6 @@ l_int|7
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* now, the table can be loaded into the chipset */
-id|SMC_SELECT_BANK
-c_func
-(paren
-l_int|3
-)paren
-suffix:semicolon
-id|SMC_SET_MCAST
-c_func
-(paren
-id|multicast_table
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * This routine will, depending on the values passed to it,&n; * either make it accept multicast packets, go into&n; * promiscuous mode (for TCPDUMP and cousins) or accept&n; * a select set of multicast packets&n; */
-DECL|function|smc_set_multicast_list
-r_static
-r_void
-id|smc_set_multicast_list
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_struct
-id|smc_local
-op_star
-id|lp
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_int
-r_int
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
-id|DBG
-c_func
-(paren
-l_int|2
-comma
-l_string|&quot;%s: %s&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|SMC_SELECT_BANK
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;flags
-op_amp
-id|IFF_PROMISC
-)paren
-(brace
-id|DBG
-c_func
-(paren
-l_int|2
-comma
-l_string|&quot;%s: RCR_PRMS&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|lp-&gt;rcr_cur_mode
-op_or_assign
-id|RCR_PRMS
-suffix:semicolon
-id|SMC_SET_RCR
-c_func
-(paren
-id|lp-&gt;rcr_cur_mode
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* BUG?  I never disable promiscuous mode if multicasting was turned on.&n;   Now, I turn off promiscuous mode, but I don&squot;t do anything to multicasting&n;   when promiscuous mode is turned on.&n;*/
-multiline_comment|/*&n;&t; * Here, I am setting this to accept all multicast packets.&n;&t; * I don&squot;t need to zero the multicast table, because the flag is&n;&t; * checked before the table is&n;&t; */
-r_else
-r_if
-c_cond
-(paren
-id|dev-&gt;flags
-op_amp
-id|IFF_ALLMULTI
-op_logical_or
-id|dev-&gt;mc_count
-OG
-l_int|16
-)paren
-(brace
-id|lp-&gt;rcr_cur_mode
-op_or_assign
-id|RCR_ALMUL
-suffix:semicolon
-id|SMC_SET_RCR
-c_func
-(paren
-id|lp-&gt;rcr_cur_mode
-)paren
-suffix:semicolon
-id|DBG
-c_func
-(paren
-l_int|2
-comma
-l_string|&quot;%s: RCR_ALMUL&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * We just get all multicast packets even if we only want them&n;&t; * from one source.  This will be changed at some future point.&n;&t; */
-r_else
-r_if
-c_cond
-(paren
-id|dev-&gt;mc_count
-)paren
-(brace
-multiline_comment|/* support hardware multicasting */
 multiline_comment|/* be sure I get rid of flags I might have set */
 id|lp-&gt;rcr_cur_mode
 op_and_assign
@@ -4654,22 +4738,10 @@ op_or
 id|RCR_ALMUL
 )paren
 suffix:semicolon
-id|SMC_SET_RCR
-c_func
-(paren
-id|lp-&gt;rcr_cur_mode
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * NOTE: this has to set the bank, so make sure it is the&n;&t;&t; * last thing called.  The bank is set to zero at the top&n;&t;&t; */
-id|smc_setmulticast
-c_func
-(paren
-id|ioaddr
-comma
-id|dev-&gt;mc_count
-comma
-id|dev-&gt;mc_list
-)paren
+multiline_comment|/* now, the table can be loaded into the chipset */
+id|update_multicast
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 r_else
@@ -4693,25 +4765,76 @@ op_or
 id|RCR_ALMUL
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * since I&squot;m disabling all multicast entirely, I need to&n;&t;&t; * clear the multicast list&n;&t;&t; */
+id|memset
+c_func
+(paren
+id|multicast_table
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|multicast_table
+)paren
+)paren
+suffix:semicolon
+id|update_multicast
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 id|SMC_SET_RCR
 c_func
 (paren
 id|lp-&gt;rcr_cur_mode
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * since I&squot;m disabling all multicast entirely, I need to&n;&t;&t; * clear the multicast list&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|update_multicast
+)paren
+(brace
 id|SMC_SELECT_BANK
 c_func
 (paren
 l_int|3
 )paren
 suffix:semicolon
-id|SMC_CLEAR_MCAST
+id|SMC_SET_MCAST
 c_func
 (paren
+id|multicast_table
 )paren
 suffix:semicolon
 )brace
+id|SMC_SELECT_BANK
+c_func
+(paren
+l_int|2
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Open and Initialize the board&n; *&n; * Set up everything, reset the card, etc..&n; */
 r_static
@@ -4737,12 +4860,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
-r_int
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -4767,12 +4884,12 @@ id|dev-&gt;dev_addr
 )paren
 )paren
 (brace
-id|DBG
+id|PRINTK
 c_func
 (paren
-l_int|2
+l_string|&quot;%s: no valid ethernet hw addr&bslash;n&quot;
 comma
-l_string|&quot;smc_open: no valid ethernet hw addr&bslash;n&quot;
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -4780,11 +4897,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/* clear out all the junk that was put here before... */
-id|lp-&gt;saved_skb
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/* Setup the default Register Modes */
 id|lp-&gt;tcr_cur_mode
 op_assign
@@ -4823,19 +4935,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|SMC_SELECT_BANK
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|SMC_SET_MAC_ADDR
-c_func
-(paren
-id|dev-&gt;dev_addr
-)paren
-suffix:semicolon
-multiline_comment|/* Configure the PHY */
+multiline_comment|/* Configure the PHY, initialize the link state */
 r_if
 c_cond
 (paren
@@ -4874,7 +4974,6 @@ id|lp-&gt;lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * make sure to initialize the link state with netif_carrier_off()&n;&t; * somewhere, too --jgarzik&n;&t; *&n;&t; * smc_phy_configure() and smc_10bt_check_media() does that. --rmk&n;&t; */
 id|netif_start_queue
 c_func
 (paren
@@ -4937,7 +5036,7 @@ multiline_comment|/* clear everything */
 id|smc_shutdown
 c_func
 (paren
-id|dev-&gt;base_addr
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -4947,6 +5046,12 @@ id|lp-&gt;phy_type
 op_ne
 l_int|0
 )paren
+(brace
+id|flush_scheduled_work
+c_func
+(paren
+)paren
+suffix:semicolon
 id|smc_phy_powerdown
 c_func
 (paren
@@ -4955,6 +5060,24 @@ comma
 id|lp-&gt;mii.phy_id
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|lp-&gt;pending_tx_skb
+)paren
+(brace
+id|dev_kfree_skb
+c_func
+(paren
+id|lp-&gt;pending_tx_skb
+)paren
+suffix:semicolon
+id|lp-&gt;pending_tx_skb
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -5938,6 +6061,13 @@ id|revision_register
 op_amp
 l_int|0xff
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 multiline_comment|/* Get the MAC address */
 id|SMC_SELECT_BANK
 c_func
@@ -6082,11 +6212,30 @@ op_assign
 op_amp
 id|smc_ethtool_ops
 suffix:semicolon
-id|spin_lock_init
+id|tasklet_init
 c_func
 (paren
 op_amp
-id|lp-&gt;lock
+id|lp-&gt;tx_task
+comma
+id|smc_hardware_send_pkt
+comma
+(paren
+r_int
+r_int
+)paren
+id|dev
+)paren
+suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|lp-&gt;phy_configure
+comma
+id|smc_phy_configure
+comma
+id|dev
 )paren
 suffix:semicolon
 id|lp-&gt;mii.phy_id_mask
@@ -6195,7 +6344,6 @@ id|retval
 r_goto
 id|err_out
 suffix:semicolon
-macro_line|#if !defined(__m32r__)
 id|set_irq_type
 c_func
 (paren
@@ -6204,7 +6352,6 @@ comma
 id|IRQT_RISING
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef SMC_USE_PXA_DMA
 (brace
 r_int
@@ -7242,7 +7389,7 @@ suffix:semicolon
 id|smc_shutdown
 c_func
 (paren
-id|ndev-&gt;base_addr
+id|ndev
 )paren
 suffix:semicolon
 )brace
@@ -7309,12 +7456,6 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-r_int
-r_int
-id|ioaddr
-op_assign
-id|ndev-&gt;base_addr
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7353,18 +7494,6 @@ id|smc_enable
 c_func
 (paren
 id|ndev
-)paren
-suffix:semicolon
-id|SMC_SELECT_BANK
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|SMC_SET_MAC_ADDR
-c_func
-(paren
-id|ndev-&gt;dev_addr
 )paren
 suffix:semicolon
 r_if

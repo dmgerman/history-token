@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * forcedeth: Ethernet driver for NVIDIA nForce media access controllers.&n; *&n; * Note: This driver is a cleanroom reimplementation based on reverse&n; *      engineered documentation written by Carl-Daniel Hailfinger&n; *      and Andrew de Quincey. It&squot;s neither supported nor endorsed&n; *      by NVIDIA Corp. Use at your own risk.&n; *&n; * NVIDIA, nForce and other NVIDIA marks are trademarks or registered&n; * trademarks of NVIDIA Corporation in the United States and other&n; * countries.&n; *&n; * Copyright (C) 2003,4 Manfred Spraul&n; * Copyright (C) 2004 Andrew de Quincey (wol support)&n; * Copyright (C) 2004 Carl-Daniel Hailfinger (invalid MAC handling, insane&n; *&t;&t;IRQ rate fixes, bigendian fixes, cleanups, verification)&n; * Copyright (c) 2004 NVIDIA Corporation&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; * &t;0.01: 05 Oct 2003: First release that compiles without warnings.&n; * &t;0.02: 05 Oct 2003: Fix bug for nv_drain_tx: do not try to free NULL skbs.&n; * &t;&t;&t;   Check all PCI BARs for the register window.&n; * &t;&t;&t;   udelay added to mii_rw.&n; * &t;0.03: 06 Oct 2003: Initialize dev-&gt;irq.&n; * &t;0.04: 07 Oct 2003: Initialize np-&gt;lock, reduce handled irqs, add printks.&n; * &t;0.05: 09 Oct 2003: printk removed again, irq status print tx_timeout.&n; * &t;0.06: 10 Oct 2003: MAC Address read updated, pff flag generation updated,&n; * &t;&t;&t;   irq mask updated&n; * &t;0.07: 14 Oct 2003: Further irq mask updates.&n; * &t;0.08: 20 Oct 2003: rx_desc.Length initialization added, nv_alloc_rx refill&n; * &t;&t;&t;   added into irq handler, NULL check for drain_ring.&n; * &t;0.09: 20 Oct 2003: Basic link speed irq implementation. Only handle the&n; * &t;&t;&t;   requested interrupt sources.&n; * &t;0.10: 20 Oct 2003: First cleanup for release.&n; * &t;0.11: 21 Oct 2003: hexdump for tx added, rx buffer sizes increased.&n; * &t;&t;&t;   MAC Address init fix, set_multicast cleanup.&n; * &t;0.12: 23 Oct 2003: Cleanups for release.&n; * &t;0.13: 25 Oct 2003: Limit for concurrent tx packets increased to 10.&n; * &t;&t;&t;   Set link speed correctly. start rx before starting&n; * &t;&t;&t;   tx (nv_start_rx sets the link speed).&n; * &t;0.14: 25 Oct 2003: Nic dependant irq mask.&n; * &t;0.15: 08 Nov 2003: fix smp deadlock with set_multicast_list during&n; * &t;&t;&t;   open.&n; * &t;0.16: 15 Nov 2003: include file cleanup for ppc64, rx buffer size&n; * &t;&t;&t;   increased to 1628 bytes.&n; * &t;0.17: 16 Nov 2003: undo rx buffer size increase. Substract 1 from&n; * &t;&t;&t;   the tx length.&n; * &t;0.18: 17 Nov 2003: fix oops due to late initialization of dev_stats&n; * &t;0.19: 29 Nov 2003: Handle RxNoBuf, detect &amp; handle invalid mac&n; * &t;&t;&t;   addresses, really stop rx if already running&n; * &t;&t;&t;   in nv_start_rx, clean up a bit.&n; * &t;0.20: 07 Dec 2003: alloc fixes&n; * &t;0.21: 12 Jan 2004: additional alloc fix, nic polling fix.&n; *&t;0.22: 19 Jan 2004: reprogram timer to a sane rate, avoid lockup&n; *&t;&t;&t;   on close.&n; *&t;0.23: 26 Jan 2004: various small cleanups&n; *&t;0.24: 27 Feb 2004: make driver even less anonymous in backtraces&n; *&t;0.25: 09 Mar 2004: wol support&n; *&t;0.26: 03 Jun 2004: netdriver specific annotation, sparse-related fixes&n; *&t;0.27: 19 Jun 2004: Gigabit support, new descriptor rings,&n; *&t;&t;&t;   added CK804/MCP04 device IDs, code fixes&n; *&t;&t;&t;   for registers, link status and other minor fixes.&n; *&t;0.28: 21 Jun 2004: Big cleanup, making driver mostly endian safe&n; *&t;0.29: 31 Aug 2004: Add backup timer for link change notification.&n; *&n; * Known bugs:&n; * We suspect that on some hardware no TX done interrupts are generated.&n; * This means recovery from netif_stop_queue only happens if the hw timer&n; * interrupt fires (100 times/second, configurable with NVREG_POLL_DEFAULT)&n; * and the timer is active in the IRQMask, or if a rx packet arrives by chance.&n; * If your hardware reliably generates tx done interrupts, then you can remove&n; * DEV_NEED_TIMERIRQ from the driver_data flags.&n; * DEV_NEED_TIMERIRQ will not harm you on sane hardware, only generating a few&n; * superfluous timer interrupts from the nic.&n; */
+multiline_comment|/*&n; * forcedeth: Ethernet driver for NVIDIA nForce media access controllers.&n; *&n; * Note: This driver is a cleanroom reimplementation based on reverse&n; *      engineered documentation written by Carl-Daniel Hailfinger&n; *      and Andrew de Quincey. It&squot;s neither supported nor endorsed&n; *      by NVIDIA Corp. Use at your own risk.&n; *&n; * NVIDIA, nForce and other NVIDIA marks are trademarks or registered&n; * trademarks of NVIDIA Corporation in the United States and other&n; * countries.&n; *&n; * Copyright (C) 2003,4 Manfred Spraul&n; * Copyright (C) 2004 Andrew de Quincey (wol support)&n; * Copyright (C) 2004 Carl-Daniel Hailfinger (invalid MAC handling, insane&n; *&t;&t;IRQ rate fixes, bigendian fixes, cleanups, verification)&n; * Copyright (c) 2004 NVIDIA Corporation&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; * &t;0.01: 05 Oct 2003: First release that compiles without warnings.&n; * &t;0.02: 05 Oct 2003: Fix bug for nv_drain_tx: do not try to free NULL skbs.&n; * &t;&t;&t;   Check all PCI BARs for the register window.&n; * &t;&t;&t;   udelay added to mii_rw.&n; * &t;0.03: 06 Oct 2003: Initialize dev-&gt;irq.&n; * &t;0.04: 07 Oct 2003: Initialize np-&gt;lock, reduce handled irqs, add printks.&n; * &t;0.05: 09 Oct 2003: printk removed again, irq status print tx_timeout.&n; * &t;0.06: 10 Oct 2003: MAC Address read updated, pff flag generation updated,&n; * &t;&t;&t;   irq mask updated&n; * &t;0.07: 14 Oct 2003: Further irq mask updates.&n; * &t;0.08: 20 Oct 2003: rx_desc.Length initialization added, nv_alloc_rx refill&n; * &t;&t;&t;   added into irq handler, NULL check for drain_ring.&n; * &t;0.09: 20 Oct 2003: Basic link speed irq implementation. Only handle the&n; * &t;&t;&t;   requested interrupt sources.&n; * &t;0.10: 20 Oct 2003: First cleanup for release.&n; * &t;0.11: 21 Oct 2003: hexdump for tx added, rx buffer sizes increased.&n; * &t;&t;&t;   MAC Address init fix, set_multicast cleanup.&n; * &t;0.12: 23 Oct 2003: Cleanups for release.&n; * &t;0.13: 25 Oct 2003: Limit for concurrent tx packets increased to 10.&n; * &t;&t;&t;   Set link speed correctly. start rx before starting&n; * &t;&t;&t;   tx (nv_start_rx sets the link speed).&n; * &t;0.14: 25 Oct 2003: Nic dependant irq mask.&n; * &t;0.15: 08 Nov 2003: fix smp deadlock with set_multicast_list during&n; * &t;&t;&t;   open.&n; * &t;0.16: 15 Nov 2003: include file cleanup for ppc64, rx buffer size&n; * &t;&t;&t;   increased to 1628 bytes.&n; * &t;0.17: 16 Nov 2003: undo rx buffer size increase. Substract 1 from&n; * &t;&t;&t;   the tx length.&n; * &t;0.18: 17 Nov 2003: fix oops due to late initialization of dev_stats&n; * &t;0.19: 29 Nov 2003: Handle RxNoBuf, detect &amp; handle invalid mac&n; * &t;&t;&t;   addresses, really stop rx if already running&n; * &t;&t;&t;   in nv_start_rx, clean up a bit.&n; * &t;0.20: 07 Dec 2003: alloc fixes&n; * &t;0.21: 12 Jan 2004: additional alloc fix, nic polling fix.&n; *&t;0.22: 19 Jan 2004: reprogram timer to a sane rate, avoid lockup&n; *&t;&t;&t;   on close.&n; *&t;0.23: 26 Jan 2004: various small cleanups&n; *&t;0.24: 27 Feb 2004: make driver even less anonymous in backtraces&n; *&t;0.25: 09 Mar 2004: wol support&n; *&t;0.26: 03 Jun 2004: netdriver specific annotation, sparse-related fixes&n; *&t;0.27: 19 Jun 2004: Gigabit support, new descriptor rings,&n; *&t;&t;&t;   added CK804/MCP04 device IDs, code fixes&n; *&t;&t;&t;   for registers, link status and other minor fixes.&n; *&t;0.28: 21 Jun 2004: Big cleanup, making driver mostly endian safe&n; *&t;0.29: 31 Aug 2004: Add backup timer for link change notification.&n; *&t;0.30: 25 Sep 2004: rx checksum support for nf 250 Gb. Add rx reset&n; *&t;&t;&t;   into nv_close, otherwise reenabling for wol can&n; *&t;&t;&t;   cause DMA to kfree&squot;d memory.&n; *&n; * Known bugs:&n; * We suspect that on some hardware no TX done interrupts are generated.&n; * This means recovery from netif_stop_queue only happens if the hw timer&n; * interrupt fires (100 times/second, configurable with NVREG_POLL_DEFAULT)&n; * and the timer is active in the IRQMask, or if a rx packet arrives by chance.&n; * If your hardware reliably generates tx done interrupts, then you can remove&n; * DEV_NEED_TIMERIRQ from the driver_data flags.&n; * DEV_NEED_TIMERIRQ will not harm you on sane hardware, only generating a few&n; * superfluous timer interrupts from the nic.&n; */
 DECL|macro|FORCEDETH_VERSION
-mdefine_line|#define FORCEDETH_VERSION&t;&t;&quot;0.29&quot;
+mdefine_line|#define FORCEDETH_VERSION&t;&t;&quot;0.30&quot;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&t;&quot;forcedeth&quot;
 macro_line|#include &lt;linux/module.h&gt;
@@ -280,6 +280,8 @@ DECL|macro|NVREG_TXRXCTL_IDLE
 mdefine_line|#define NVREG_TXRXCTL_IDLE&t;0x0008
 DECL|macro|NVREG_TXRXCTL_RESET
 mdefine_line|#define NVREG_TXRXCTL_RESET&t;0x0010
+DECL|macro|NVREG_TXRXCTL_RXCHECK
+mdefine_line|#define NVREG_TXRXCTL_RXCHECK&t;0x0400
 DECL|enumerator|NvRegMIIStatus
 id|NvRegMIIStatus
 op_assign
@@ -493,6 +495,14 @@ DECL|macro|NV_RX_ERROR
 mdefine_line|#define NV_RX_ERROR&t;&t;(1&lt;&lt;30)
 DECL|macro|NV_RX_AVAIL
 mdefine_line|#define NV_RX_AVAIL&t;&t;(1&lt;&lt;31)
+DECL|macro|NV_RX2_CHECKSUMMASK
+mdefine_line|#define NV_RX2_CHECKSUMMASK&t;(0x1C000000)
+DECL|macro|NV_RX2_CHECKSUMOK1
+mdefine_line|#define NV_RX2_CHECKSUMOK1&t;(0x10000000)
+DECL|macro|NV_RX2_CHECKSUMOK2
+mdefine_line|#define NV_RX2_CHECKSUMOK2&t;(0x14000000)
+DECL|macro|NV_RX2_CHECKSUMOK3
+mdefine_line|#define NV_RX2_CHECKSUMOK3&t;(0x18000000)
 DECL|macro|NV_RX2_DESCRIPTORVALID
 mdefine_line|#define NV_RX2_DESCRIPTORVALID&t;(1&lt;&lt;29)
 DECL|macro|NV_RX2_SUBSTRACT1
@@ -576,10 +586,11 @@ DECL|macro|POLL_WAIT
 mdefine_line|#define POLL_WAIT&t;(1+HZ/100)
 DECL|macro|LINK_TIMEOUT
 mdefine_line|#define LINK_TIMEOUT&t;(3*HZ)
+multiline_comment|/* &n; * desc_ver values:&n; * This field has two purposes:&n; * - Newer nics uses a different ring layout. The layout is selected by&n; *   comparing np-&gt;desc_ver with DESC_VER_xy.&n; * - It contains bits that are forced on when writing to NvRegTxRxControl.&n; */
 DECL|macro|DESC_VER_1
 mdefine_line|#define DESC_VER_1&t;0x0
 DECL|macro|DESC_VER_2
-mdefine_line|#define DESC_VER_2&t;0x02100
+mdefine_line|#define DESC_VER_2&t;(0x02100|NVREG_TXRXCTL_RXCHECK)
 multiline_comment|/* PHY defines */
 DECL|macro|PHY_OUI_MARVELL
 mdefine_line|#define PHY_OUI_MARVELL&t;0x5043
@@ -4313,6 +4324,57 @@ id|next_pkt
 suffix:semicolon
 )brace
 )brace
+id|Flags
+op_and_assign
+id|NV_RX2_CHECKSUMMASK
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|Flags
+op_eq
+id|NV_RX2_CHECKSUMOK1
+op_logical_or
+id|Flags
+op_eq
+id|NV_RX2_CHECKSUMOK2
+op_logical_or
+id|Flags
+op_eq
+id|NV_RX2_CHECKSUMOK3
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: hw checksum hit!.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|np-&gt;rx_skbuff
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|ip_summed
+op_assign
+id|CHECKSUM_UNNECESSARY
+suffix:semicolon
+)brace
+r_else
+(brace
+id|dprintk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: hwchecksum miss!.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* got a valid packet - forward it to the network core */
 id|skb
@@ -7260,6 +7322,13 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|nv_txrx_reset
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* disable interrupts on the nic or we will lock up */
 id|base
 op_assign
 id|get_hwbase
@@ -7268,7 +7337,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* disable interrupts on the nic or we will lock up */
 id|writel
 c_func
 (paren

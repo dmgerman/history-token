@@ -244,6 +244,13 @@ id|iw_spy_data
 id|spy_data
 suffix:semicolon
 multiline_comment|/* iwspy support */
+macro_line|#if WIRELESS_EXT &gt; 16
+DECL|member|wireless_data
+r_struct
+id|iw_public_data
+id|wireless_data
+suffix:semicolon
+macro_line|#endif /* WIRELESS_EXT &gt; 16 */
 DECL|member|monitor_type
 r_int
 id|monitor_type

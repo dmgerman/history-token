@@ -8048,7 +8048,7 @@ op_add_assign
 l_int|2
 suffix:semicolon
 )brace
-id|memcpy_fromio
+id|memcpy
 c_func
 (paren
 id|skb_put
