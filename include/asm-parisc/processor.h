@@ -210,6 +210,11 @@ id|parisc_device
 op_star
 id|dev
 suffix:semicolon
+DECL|member|loops_per_jiffy
+r_int
+r_int
+id|loops_per_jiffy
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

@@ -201,10 +201,6 @@ r_void
 op_star
 id|info
 suffix:semicolon
-DECL|member|cap
-id|socket_cap_t
-id|cap
-suffix:semicolon
 DECL|member|event_lock
 id|spinlock_t
 id|event_lock

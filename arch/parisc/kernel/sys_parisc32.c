@@ -20,10 +20,7 @@ macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
-macro_line|#include &lt;linux/smb_fs.h&gt;
-macro_line|#include &lt;linux/smb_mount.h&gt;
 macro_line|#include &lt;linux/ncp_fs.h&gt;
-macro_line|#include &lt;linux/quota.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/cache.h&gt;
@@ -32,11 +29,6 @@ macro_line|#include &lt;linux/nfsd/syscall.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/filter.h&gt;&t;&t;&t;/* for setsockopt() */
-macro_line|#include &lt;linux/icmpv6.h&gt;&t;&t;&t;/* for setsockopt() */
-macro_line|#include &lt;linux/netfilter_ipv4/ip_queue.h&gt;&t;/* for setsockopt() */
-macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;&t;/* for setsockopt() */
-macro_line|#include &lt;linux/netfilter_ipv6/ip6_tables.h&gt;&t;/* for setsockopt() */
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
@@ -49,8 +41,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &quot;sys32.h&quot;
-DECL|macro|A
-mdefine_line|#define A(__x) ((unsigned long)(__x))
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
@@ -60,55 +50,6 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x)
 macro_line|#endif
-multiline_comment|/* For this source file, we want overflow handling. */
-DECL|macro|high2lowuid
-macro_line|#undef high2lowuid
-DECL|macro|high2lowgid
-macro_line|#undef high2lowgid
-DECL|macro|low2highuid
-macro_line|#undef low2highuid
-DECL|macro|low2highgid
-macro_line|#undef low2highgid
-DECL|macro|SET_UID16
-macro_line|#undef SET_UID16
-DECL|macro|SET_GID16
-macro_line|#undef SET_GID16
-DECL|macro|NEW_TO_OLD_UID
-macro_line|#undef NEW_TO_OLD_UID
-DECL|macro|NEW_TO_OLD_GID
-macro_line|#undef NEW_TO_OLD_GID
-DECL|macro|SET_OLDSTAT_UID
-macro_line|#undef SET_OLDSTAT_UID
-DECL|macro|SET_OLDSTAT_GID
-macro_line|#undef SET_OLDSTAT_GID
-DECL|macro|SET_STAT_UID
-macro_line|#undef SET_STAT_UID
-DECL|macro|SET_STAT_GID
-macro_line|#undef SET_STAT_GID
-DECL|macro|high2lowuid
-mdefine_line|#define high2lowuid(uid) ((uid) &gt; 65535) ? (u16)overflowuid : (u16)(uid)
-DECL|macro|high2lowgid
-mdefine_line|#define high2lowgid(gid) ((gid) &gt; 65535) ? (u16)overflowgid : (u16)(gid)
-DECL|macro|low2highuid
-mdefine_line|#define low2highuid(uid) ((uid) == (u16)-1) ? (uid_t)-1 : (uid_t)(uid)
-DECL|macro|low2highgid
-mdefine_line|#define low2highgid(gid) ((gid) == (u16)-1) ? (gid_t)-1 : (gid_t)(gid)
-DECL|macro|SET_UID16
-mdefine_line|#define SET_UID16(var, uid)&t;var = high2lowuid(uid)
-DECL|macro|SET_GID16
-mdefine_line|#define SET_GID16(var, gid)&t;var = high2lowgid(gid)
-DECL|macro|NEW_TO_OLD_UID
-mdefine_line|#define NEW_TO_OLD_UID(uid)&t;high2lowuid(uid)
-DECL|macro|NEW_TO_OLD_GID
-mdefine_line|#define NEW_TO_OLD_GID(gid)&t;high2lowgid(gid)
-DECL|macro|SET_OLDSTAT_UID
-mdefine_line|#define SET_OLDSTAT_UID(stat, uid)&t;(stat).st_uid = high2lowuid(uid)
-DECL|macro|SET_OLDSTAT_GID
-mdefine_line|#define SET_OLDSTAT_GID(stat, gid)&t;(stat).st_gid = high2lowgid(gid)
-DECL|macro|SET_STAT_UID
-mdefine_line|#define SET_STAT_UID(stat, uid)&t;&t;(stat).st_uid = high2lowuid(uid)
-DECL|macro|SET_STAT_GID
-mdefine_line|#define SET_STAT_GID(stat, gid)&t;&t;(stat).st_gid = high2lowgid(gid)
 multiline_comment|/*&n; * count32() counts the number of arguments/envelopes. It is basically&n; *           a copy of count() from fs/exec.c, except that it works&n; *           with 32 bit argv and envp pointers.&n; */
 DECL|function|count32
 r_static
@@ -265,7 +206,7 @@ c_func
 r_char
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|str
@@ -471,7 +412,7 @@ comma
 r_char
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|str
@@ -3653,11 +3594,7 @@ id|len
 suffix:semicolon
 id|ivp-&gt;iov_base
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|buf
@@ -5751,345 +5688,6 @@ suffix:semicolon
 )brace
 r_return
 id|ret
-suffix:semicolon
-)brace
-macro_line|#include &lt;linux/quota.h&gt;
-DECL|struct|dqblk32
-r_struct
-id|dqblk32
-(brace
-DECL|member|dqb_bhardlimit
-id|__u32
-id|dqb_bhardlimit
-suffix:semicolon
-DECL|member|dqb_bsoftlimit
-id|__u32
-id|dqb_bsoftlimit
-suffix:semicolon
-DECL|member|dqb_curblocks
-id|__u32
-id|dqb_curblocks
-suffix:semicolon
-DECL|member|dqb_ihardlimit
-id|__u32
-id|dqb_ihardlimit
-suffix:semicolon
-DECL|member|dqb_isoftlimit
-id|__u32
-id|dqb_isoftlimit
-suffix:semicolon
-DECL|member|dqb_curinodes
-id|__u32
-id|dqb_curinodes
-suffix:semicolon
-DECL|member|dqb_btime
-id|compat_time_t
-id|dqb_btime
-suffix:semicolon
-DECL|member|dqb_itime
-id|compat_time_t
-id|dqb_itime
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|function|sys32_quotactl
-id|asmlinkage
-r_int
-id|sys32_quotactl
-c_func
-(paren
-r_int
-id|cmd
-comma
-r_const
-r_char
-op_star
-id|special
-comma
-r_int
-id|id
-comma
-r_int
-r_int
-id|addr
-)paren
-(brace
-macro_line|#if 0
-r_extern
-r_int
-id|sys_quotactl
-c_func
-(paren
-r_int
-id|cmd
-comma
-r_const
-r_char
-op_star
-id|special
-comma
-r_int
-id|id
-comma
-id|caddr_t
-id|addr
-)paren
-suffix:semicolon
-r_int
-id|cmds
-op_assign
-id|cmd
-op_rshift
-id|SUBCMDSHIFT
-suffix:semicolon
-r_int
-id|err
-suffix:semicolon
-r_struct
-id|dqblk
-id|d
-suffix:semicolon
-r_char
-op_star
-id|spec
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|cmds
-)paren
-(brace
-r_case
-id|Q_GETQUOTA
-suffix:colon
-r_break
-suffix:semicolon
-r_case
-id|Q_SETQUOTA
-suffix:colon
-r_case
-id|Q_SETUSE
-suffix:colon
-r_case
-id|Q_SETQLIM
-suffix:colon
-r_if
-c_cond
-(paren
-id|copy_from_user
-(paren
-op_amp
-id|d
-comma
-(paren
-r_struct
-id|dqblk32
-op_star
-)paren
-id|addr
-comma
-r_sizeof
-(paren
-r_struct
-id|dqblk32
-)paren
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-id|d.dqb_itime
-op_assign
-(paren
-(paren
-r_struct
-id|dqblk32
-op_star
-)paren
-op_amp
-id|d
-)paren
-op_member_access_from_pointer
-id|dqb_itime
-suffix:semicolon
-id|d.dqb_btime
-op_assign
-(paren
-(paren
-r_struct
-id|dqblk32
-op_star
-)paren
-op_amp
-id|d
-)paren
-op_member_access_from_pointer
-id|dqb_btime
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-id|sys_quotactl
-c_func
-(paren
-id|cmd
-comma
-id|special
-comma
-id|id
-comma
-(paren
-id|caddr_t
-)paren
-id|addr
-)paren
-suffix:semicolon
-)brace
-id|spec
-op_assign
-id|getname
-(paren
-id|special
-)paren
-suffix:semicolon
-id|err
-op_assign
-id|PTR_ERR
-c_func
-(paren
-id|spec
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_ERR
-c_func
-(paren
-id|spec
-)paren
-)paren
-r_return
-id|err
-suffix:semicolon
-id|KERNEL_SYSCALL
-c_func
-(paren
-id|err
-comma
-id|sys_quotactl
-comma
-id|cmd
-comma
-(paren
-r_const
-r_char
-op_star
-)paren
-id|spec
-comma
-id|id
-comma
-(paren
-id|caddr_t
-)paren
-op_amp
-id|d
-)paren
-suffix:semicolon
-id|putname
-(paren
-id|spec
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cmds
-op_eq
-id|Q_GETQUOTA
-)paren
-(brace
-id|__kernel_time_t
-id|b
-op_assign
-id|d.dqb_btime
-comma
-id|i
-op_assign
-id|d.dqb_itime
-suffix:semicolon
-(paren
-(paren
-r_struct
-id|dqblk32
-op_star
-)paren
-op_amp
-id|d
-)paren
-op_member_access_from_pointer
-id|dqb_itime
-op_assign
-id|i
-suffix:semicolon
-(paren
-(paren
-r_struct
-id|dqblk32
-op_star
-)paren
-op_amp
-id|d
-)paren
-op_member_access_from_pointer
-id|dqb_btime
-op_assign
-id|b
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|copy_to_user
-(paren
-(paren
-r_struct
-id|dqblk32
-op_star
-)paren
-id|addr
-comma
-op_amp
-id|d
-comma
-r_sizeof
-(paren
-r_struct
-id|dqblk32
-)paren
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-r_return
-id|err
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* TODO */
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 )brace
 r_extern

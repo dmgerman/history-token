@@ -126,7 +126,7 @@ id|irq
 )paren
 suffix:semicolon
 multiline_comment|/* dev needs this irq */
-r_void
+id|irqreturn_t
 id|busdev_barked
 c_func
 (paren

@@ -405,7 +405,7 @@ op_assign
 id|pci_find_slot
 c_func
 (paren
-id|s-&gt;cap.cb_dev-&gt;subordinate-&gt;number
+id|s-&gt;cb_dev-&gt;subordinate-&gt;number
 comma
 l_int|0
 )paren
@@ -676,7 +676,7 @@ id|pci_bus
 op_star
 id|bus
 op_assign
-id|s-&gt;cap.cb_dev-&gt;subordinate
+id|s-&gt;cb_dev-&gt;subordinate
 suffix:semicolon
 r_struct
 id|pci_dev
@@ -777,7 +777,7 @@ c_func
 (paren
 id|bus
 comma
-id|s-&gt;cap.pci_irq
+id|s-&gt;pci_irq
 )paren
 suffix:semicolon
 id|pci_enable_bridges
@@ -794,7 +794,7 @@ id|bus
 suffix:semicolon
 id|s-&gt;irq.AssignedIRQ
 op_assign
-id|s-&gt;cap.pci_irq
+id|s-&gt;pci_irq
 suffix:semicolon
 r_return
 id|CS_SUCCESS
@@ -816,7 +816,7 @@ id|pci_dev
 op_star
 id|bridge
 op_assign
-id|s-&gt;cap.cb_dev
+id|s-&gt;cb_dev
 suffix:semicolon
 id|cb_release_cis_mem
 c_func

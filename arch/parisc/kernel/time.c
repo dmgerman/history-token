@@ -176,7 +176,7 @@ id|pc
 suffix:semicolon
 )brace
 DECL|function|timer_interrupt
-r_void
+id|irqreturn_t
 id|timer_interrupt
 c_func
 (paren
@@ -368,6 +368,9 @@ c_func
 op_amp
 id|power_tasklet
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*** converted from ia64 ***/

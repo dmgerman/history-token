@@ -1290,8 +1290,12 @@ r_extern
 r_struct
 id|kernel_param
 id|__start___param
+(braket
+)braket
 comma
 id|__stop___param
+(braket
+)braket
 suffix:semicolon
 multiline_comment|/*&n; * Interrupts are still disabled. Do necessary setups, then&n; * enable them&n; */
 id|lock_kernel
@@ -1353,13 +1357,10 @@ l_string|&quot;Booting kernel&quot;
 comma
 id|command_line
 comma
-op_amp
 id|__start___param
 comma
-op_amp
 id|__stop___param
 op_minus
-op_amp
 id|__start___param
 comma
 op_amp

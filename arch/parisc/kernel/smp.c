@@ -285,7 +285,7 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#endif
 )brace
-r_void
+id|irqreturn_t
 DECL|function|ipi_interrupt
 id|ipi_interrupt
 c_func
@@ -671,6 +671,7 @@ multiline_comment|/* Switch */
 multiline_comment|/* while (ops) */
 )brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static
@@ -1571,7 +1572,7 @@ id|regs
 suffix:semicolon
 multiline_comment|/*&n;&t; * don&squot;t care about the regs settings since&n;&t; * we&squot;ll never reschedule the forked task.&n;&t; */
 r_return
-id|do_fork
+id|copy_process
 c_func
 (paren
 id|CLONE_VM
@@ -1595,6 +1596,7 @@ multiline_comment|/*&n; * Bring one cpu online.&n; */
 DECL|function|smp_boot_one_cpu
 r_static
 r_int
+id|__init
 id|smp_boot_one_cpu
 c_func
 (paren
@@ -1614,19 +1616,21 @@ r_int
 id|timeout
 suffix:semicolon
 multiline_comment|/* &n;&t; * Create an idle task for this CPU.  Note the address wed* give &n;&t; * to kernel_thread is irrelevant -- it&squot;s going to start&n;&t; * where OS_BOOT_RENDEVZ vector in SAL says to start.  But&n;&t; * this gets all the other task-y sort of data structures set&n;&t; * up like we wish.   We need to pull the just created idle task &n;&t; * off the run queue and stuff it into the init_tasks[] array.  &n;&t; * Sheesh . . .&n;&t; */
-r_if
-c_cond
-(paren
-(paren
 id|idle
 op_assign
 id|fork_by_hand
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|idle
 )paren
-op_eq
-l_int|0
 )paren
 id|panic
 c_func
@@ -1634,6 +1638,12 @@ c_func
 l_string|&quot;SMP: fork failed for CPU:%d&quot;
 comma
 id|cpuid
+)paren
+suffix:semicolon
+id|wake_up_forked_process
+c_func
+(paren
+id|idle
 )paren
 suffix:semicolon
 id|init_idle
@@ -1822,6 +1832,11 @@ r_int
 r_int
 id|bogosum
 op_assign
+id|cpu_data
+(braket
+l_int|0
+)braket
+dot
 id|loops_per_jiffy
 suffix:semicolon
 multiline_comment|/* Count Monarch */
@@ -1989,6 +2004,11 @@ r_continue
 suffix:semicolon
 id|bogosum
 op_add_assign
+id|cpu_data
+(braket
+id|i
+)braket
+dot
 id|loops_per_jiffy
 suffix:semicolon
 id|cpu_count
