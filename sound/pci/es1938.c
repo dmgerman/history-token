@@ -18,8 +18,6 @@ macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#endif
 DECL|macro|chip_t
 mdefine_line|#define chip_t es1938_t
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

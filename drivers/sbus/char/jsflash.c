@@ -1981,8 +1981,6 @@ id|jsfd_ioctl
 comma
 )brace
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|jsflash_init
 r_int
 id|jsflash_init

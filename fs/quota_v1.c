@@ -1241,8 +1241,6 @@ id|v1_quota_format
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|init_v1_quota_format
 id|module_init
 c_func

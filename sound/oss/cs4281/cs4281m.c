@@ -28,8 +28,6 @@ macro_line|#include &quot;cs4281pm.h&quot;
 r_struct
 id|cs4281_state
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 r_static
 r_void
 id|stop_dac

@@ -761,8 +761,6 @@ c_func
 id|rtc_exit
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/*&n; *&t;Info exported via &quot;/proc/driver/rtc&quot;.&n; */
 DECL|function|rtc_proc_output
 r_static

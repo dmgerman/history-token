@@ -10,8 +10,6 @@ macro_line|#include &quot;awacs.h&quot;
 macro_line|#include &quot;burgundy.h&quot;
 DECL|macro|CHIP_NAME
 mdefine_line|#define CHIP_NAME &quot;PMac&quot;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren

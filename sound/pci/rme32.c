@@ -47,8 +47,6 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE_PNP
 suffix:semicolon
 multiline_comment|/* Enable this card */
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren

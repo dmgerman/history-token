@@ -7,8 +7,6 @@ macro_line|#include &quot;seq_clientmgr.h&quot;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/asoundef.h&gt;
 multiline_comment|/*&n;&n;  Sequencer MIDI-through client&n;&n;  This gives a simple midi-through client.  All the normal input events&n;  are redirected to output port immediately.&n;  The routing can be done via aconnect program in alsa-utils.&n;&n;  Each client has a static client number 62 (= SNDRV_SEQ_CLIENT_DUMMY).&n;  If you want to auto-load this module, you may add the following alias&n;  in your /etc/conf.modules file.&n;&n;&t;alias snd-seq-client-62  snd-seq-dummy&n;&n;  The module is loaded on demand for client 62, or /proc/asound/seq/&n;  is accessed.  If you don&squot;t need this module to be loaded, alias&n;  snd-seq-client-62 as &quot;off&quot;.  This will help modprobe.&n;&n;  The number of ports to be created can be specified via the module&n;  paramter &quot;ports&quot;.  For example, to create four ports, add the&n;  following option in /etc/modules.conf:&n;&n;&t;option snd-seq-dummy ports=4&n;&n;  The modle option &quot;duplex=1&quot; enables duplex operation to the port.&n;  In duplex mode, a pair of ports are created instead of single port,&n;  and events are tunneled between pair-ports.  For example, input to&n;  port A is sent to output port of another port B and vice versa.&n;  In duplex mode, each port has DUPLEX capability.&n;&n; */
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

@@ -3435,8 +3435,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|module_init
 c_func
 (paren

@@ -13322,8 +13322,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|init_cciss_module
 r_static
 r_int

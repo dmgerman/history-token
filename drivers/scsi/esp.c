@@ -17919,6 +17919,4 @@ op_assign
 id|SCSI_SPARC_ESP
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 eof

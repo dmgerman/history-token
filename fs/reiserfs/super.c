@@ -6083,8 +6083,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 singleline_comment|//
 singleline_comment|// this is exactly what 2.3.99-pre9&squot;s init_ext2_fs is
 singleline_comment|//

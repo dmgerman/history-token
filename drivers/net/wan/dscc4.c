@@ -98,8 +98,6 @@ comma
 l_string|&quot;If present, on-board quartz frequency (Hz)&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/* Structures */
 DECL|struct|thingie
 r_struct

@@ -574,8 +574,6 @@ op_amp
 id|rtc_fops
 )brace
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|function|rtc_sun_init
 r_static
 r_int

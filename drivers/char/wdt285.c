@@ -510,8 +510,6 @@ id|watchdog_miscdev
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

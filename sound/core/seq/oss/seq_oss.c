@@ -7,8 +7,6 @@ macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &quot;seq_oss_device.h&quot;
 macro_line|#include &quot;seq_oss_synth.h&quot;
 multiline_comment|/*&n; * module option&n; */
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

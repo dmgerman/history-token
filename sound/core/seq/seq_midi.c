@@ -11,8 +11,6 @@ macro_line|#include &lt;sound/seq_kernel.h&gt;
 macro_line|#include &lt;sound/seq_device.h&gt;
 macro_line|#include &lt;sound/seq_midi_event.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

@@ -5871,8 +5871,6 @@ id|nfs_fs_type
 )paren
 suffix:semicolon
 )brace
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/* Not quite true; I just maintain it */
 id|MODULE_AUTHOR
 c_func

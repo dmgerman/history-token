@@ -16,8 +16,6 @@ macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/sb.h&gt;
 DECL|macro|chip_t
 mdefine_line|#define chip_t sb_t
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren

@@ -1509,8 +1509,6 @@ comma
 l_string|&quot;video4linux device number to use&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|gemtek_pci_init_module
 id|module_init
 c_func
