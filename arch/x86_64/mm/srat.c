@@ -11,7 +11,7 @@ c_func
 (paren
 id|nodes_parsed
 comma
-id|MAXNODE
+id|MAX_NUMNODES
 )paren
 id|__initdata
 suffix:semicolon
@@ -21,7 +21,7 @@ r_struct
 id|node
 id|nodes
 (braket
-id|MAXNODE
+id|MAX_NUMNODES
 )braket
 id|__initdata
 suffix:semicolon
@@ -73,7 +73,7 @@ c_cond
 (paren
 id|numnodes
 OG
-id|MAXNODE
+id|MAX_NUMNODES
 )paren
 r_return
 op_minus
@@ -792,7 +792,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAXNODE
+id|MAX_NUMNODES
 suffix:semicolon
 id|i
 op_increment
