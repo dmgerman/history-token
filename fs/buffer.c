@@ -3903,6 +3903,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|buffer_dirty
+c_func
+(paren
+id|bh
+)paren
+op_logical_and
+op_logical_neg
 id|test_set_buffer_dirty
 c_func
 (paren
