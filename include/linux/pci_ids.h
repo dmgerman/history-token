@@ -2108,6 +2108,9 @@ DECL|macro|PCI_DEVICE_ID_TTI_HPT371
 mdefine_line|#define PCI_DEVICE_ID_TTI_HPT371&t;0x0007
 DECL|macro|PCI_DEVICE_ID_TTI_HPT374
 mdefine_line|#define PCI_DEVICE_ID_TTI_HPT374&t;0x0008
+DECL|macro|PCI_DEVICE_ID_TTI_HPT372N
+mdefine_line|#define PCI_DEVICE_ID_TTI_HPT372N&t;0x0009&t;
+singleline_comment|// apparently a 372N variant?
 DECL|macro|PCI_VENDOR_ID_VIA
 mdefine_line|#define PCI_VENDOR_ID_VIA&t;&t;0x1106
 DECL|macro|PCI_DEVICE_ID_VIA_8763_0
