@@ -80,9 +80,12 @@ DECL|member|vbl_cnt
 r_int
 id|vbl_cnt
 suffix:semicolon
-DECL|member|last_move_delay
+DECL|member|last_slice_moves
+DECL|member|prev_slice_moves
 r_int
-id|last_move_delay
+id|last_slice_moves
+comma
+id|prev_slice_moves
 suffix:semicolon
 DECL|member|blink_rate
 r_int
