@@ -64,10 +64,10 @@ id|dirty_background_ratio
 op_assign
 l_int|10
 suffix:semicolon
-multiline_comment|/*&n; * The generator of dirty data starts async writeback at this percentage&n; */
-DECL|variable|dirty_async_ratio
+multiline_comment|/*&n; * The generator of dirty data starts writeback at this percentage&n; */
+DECL|variable|vm_dirty_ratio
 r_int
-id|dirty_async_ratio
+id|vm_dirty_ratio
 op_assign
 l_int|40
 suffix:semicolon
@@ -100,7 +100,7 @@ r_int
 id|_min_pages
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * balance_dirty_pages() must be called by processes which are generating dirty&n; * data.  It looks at the number of dirty pages in the machine and will force&n; * the caller to perform writeback if the system is over `async_thresh&squot;.&n; * If we&squot;re over `background_thresh&squot; then pdflush is woken to perform some&n; * writeout.&n; */
+multiline_comment|/*&n; * balance_dirty_pages() must be called by processes which are generating dirty&n; * data.  It looks at the number of dirty pages in the machine and will force&n; * the caller to perform writeback if the system is over `vm_dirty_ratio&squot;.&n; * If we&squot;re over `background_thresh&squot; then pdflush is woken to perform some&n; * writeout.&n; */
 DECL|function|balance_dirty_pages
 r_void
 id|balance_dirty_pages
@@ -120,7 +120,7 @@ r_int
 id|background_thresh
 suffix:semicolon
 r_int
-id|async_thresh
+id|dirty_thresh
 suffix:semicolon
 r_struct
 id|backing_dev_info
@@ -139,10 +139,10 @@ id|total_pages
 op_div
 l_int|100
 suffix:semicolon
-id|async_thresh
+id|dirty_thresh
 op_assign
 (paren
-id|dirty_async_ratio
+id|vm_dirty_ratio
 op_star
 id|total_pages
 )paren
@@ -163,7 +163,7 @@ id|ps.nr_dirty
 op_plus
 id|ps.nr_writeback
 OG
-id|async_thresh
+id|dirty_thresh
 )paren
 (brace
 r_struct
@@ -226,7 +226,7 @@ id|ps.nr_dirty
 op_plus
 id|ps.nr_writeback
 op_le
-id|async_thresh
+id|dirty_thresh
 )paren
 r_break
 suffix:semicolon
@@ -966,11 +966,11 @@ id|dirty_background_ratio
 op_div_assign
 l_int|100
 suffix:semicolon
-id|dirty_async_ratio
+id|vm_dirty_ratio
 op_mul_assign
 id|correction
 suffix:semicolon
-id|dirty_async_ratio
+id|vm_dirty_ratio
 op_div_assign
 l_int|100
 suffix:semicolon

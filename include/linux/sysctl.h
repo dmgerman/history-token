@@ -486,12 +486,12 @@ op_assign
 l_int|11
 comma
 multiline_comment|/* dirty_background_ratio */
-DECL|enumerator|VM_DIRTY_ASYNC
-id|VM_DIRTY_ASYNC
+DECL|enumerator|VM_DIRTY_RATIO
+id|VM_DIRTY_RATIO
 op_assign
 l_int|12
 comma
-multiline_comment|/* dirty_async_ratio */
+multiline_comment|/* dirty_ratio */
 DECL|enumerator|VM_DIRTY_WB_CS
 id|VM_DIRTY_WB_CS
 op_assign
