@@ -925,11 +925,16 @@ DECL|member|s_default_mount_opts
 id|__u32
 id|s_default_mount_opts
 suffix:semicolon
+DECL|member|s_first_meta_bg
+id|__u32
+id|s_first_meta_bg
+suffix:semicolon
+multiline_comment|/* First metablock block group */
 DECL|member|s_reserved
 id|__u32
 id|s_reserved
 (braket
-l_int|191
+l_int|190
 )braket
 suffix:semicolon
 multiline_comment|/* Padding to the end of the block */
@@ -1057,8 +1062,12 @@ DECL|macro|EXT3_FEATURE_INCOMPAT_RECOVER
 mdefine_line|#define EXT3_FEATURE_INCOMPAT_RECOVER&t;&t;0x0004 /* Needs recovery */
 DECL|macro|EXT3_FEATURE_INCOMPAT_JOURNAL_DEV
 mdefine_line|#define EXT3_FEATURE_INCOMPAT_JOURNAL_DEV&t;0x0008 /* Journal device */
+DECL|macro|EXT3_FEATURE_INCOMPAT_META_BG
+mdefine_line|#define EXT3_FEATURE_INCOMPAT_META_BG&t;&t;0x0010
 DECL|macro|EXT3_FEATURE_COMPAT_SUPP
 mdefine_line|#define EXT3_FEATURE_COMPAT_SUPP&t;0
+DECL|macro|EXT2_FEATURE_INCOMPAT_SUPP
+mdefine_line|#define EXT2_FEATURE_INCOMPAT_SUPP&t;(EXT2_FEATURE_INCOMPAT_FILETYPE| &bslash;&n;&t;&t;&t;&t;&t; EXT2_FEATURE_INCOMPAT_META_BG)
 DECL|macro|EXT3_FEATURE_INCOMPAT_SUPP
 mdefine_line|#define EXT3_FEATURE_INCOMPAT_SUPP&t;(EXT3_FEATURE_INCOMPAT_FILETYPE| &bslash;&n;&t;&t;&t;&t;&t; EXT3_FEATURE_INCOMPAT_RECOVER)
 DECL|macro|EXT3_FEATURE_RO_COMPAT_SUPP
