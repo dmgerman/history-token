@@ -261,8 +261,6 @@ op_amp
 id|protocol-&gt;dev
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * pnp_init_device - pnp protocols should call this before adding a PnP device&n; * @dev: pointer to dev to init&n; *&n; *  for now it only inits dev-&gt;ids, more later?&n; */
 DECL|function|pnp_init_device
@@ -333,8 +331,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * pnp_add_device - adds a pnp device to the pnp layer&n; * @dev: pointer to dev to add&n; *&n; *  adds to driver model, name database, fixups, interface, etc.&n; */
 DECL|function|pnp_add_device
@@ -358,7 +354,7 @@ c_cond
 (paren
 op_logical_neg
 id|dev
-op_logical_and
+op_logical_or
 op_logical_neg
 id|dev-&gt;protocol
 )paren
@@ -549,8 +545,6 @@ c_func
 op_amp
 id|pnp_lock
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|pnp_init

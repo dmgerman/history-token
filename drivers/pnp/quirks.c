@@ -622,7 +622,5 @@ id|i
 op_increment
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 eof

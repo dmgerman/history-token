@@ -113,8 +113,6 @@ op_amp
 l_int|0x0f
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|pnp_find_card
 r_struct

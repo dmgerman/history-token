@@ -748,8 +748,6 @@ id|drv
 (brace
 r_int
 id|count
-op_assign
-l_int|0
 suffix:semicolon
 id|pnp_dbg
 c_func
@@ -925,8 +923,6 @@ id|pnp_id
 suffix:semicolon
 )brace
 )def_block
-r_return
-suffix:semicolon
 )brace
 DECL|variable|pnp_register_driver
 id|EXPORT_SYMBOL
