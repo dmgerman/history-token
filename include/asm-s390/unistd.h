@@ -15,6 +15,8 @@ DECL|macro|__NR_open
 mdefine_line|#define __NR_open                 5
 DECL|macro|__NR_close
 mdefine_line|#define __NR_close                6
+DECL|macro|__NR_restart_syscall
+mdefine_line|#define __NR_restart_syscall&t;  7
 DECL|macro|__NR_creat
 mdefine_line|#define __NR_creat                8
 DECL|macro|__NR_link
