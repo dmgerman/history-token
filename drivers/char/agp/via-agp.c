@@ -1402,7 +1402,19 @@ comma
 )brace
 comma
 multiline_comment|/* VT8601 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_8601_0,&t;// 0x0601&n;&t;&t;.chipset_name&t;= &quot;PLE133 ProMedia&quot;,&n;&t;},*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_8601_0
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;PLE133 ProMedia&quot;
+comma
+)brace
+comma
 multiline_comment|/* VT82C693A / VT28C694T */
 (brace
 dot
