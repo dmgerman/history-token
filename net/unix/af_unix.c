@@ -8379,17 +8379,6 @@ r_void
 (brace
 )brace
 macro_line|#endif
-DECL|variable|__initdata
-r_static
-r_char
-id|banner
-(braket
-)braket
-id|__initdata
-op_assign
-id|KERN_INFO
-l_string|&quot;NET4: Unix domain sockets 1.0/SMP for Linux NET4.0.&bslash;n&quot;
-suffix:semicolon
 DECL|function|af_unix_init
 r_static
 r_int
@@ -8404,12 +8393,6 @@ r_struct
 id|sk_buff
 op_star
 id|dummy_skb
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|banner
-)paren
 suffix:semicolon
 r_if
 c_cond

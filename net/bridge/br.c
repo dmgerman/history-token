@@ -38,13 +38,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;NET4: Ethernet Bridge 008 for NET4.0&bslash;n&quot;
-)paren
-suffix:semicolon
 macro_line|#if defined(CONFIG_INET) &amp;&amp; defined(CONFIG_NETFILTER)
 r_if
 c_cond
