@@ -901,7 +901,7 @@ c_loop
 (paren
 suffix:semicolon
 id|iter-&gt;pos
-op_le
+op_ne
 id|pos
 suffix:semicolon
 id|iter-&gt;pos
