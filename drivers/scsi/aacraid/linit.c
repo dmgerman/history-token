@@ -489,40 +489,6 @@ multiline_comment|/* AAR-2410SA PCI SATA 4ch (Jaguar II)*/
 (brace
 l_int|0x9005
 comma
-l_int|0x0250
-comma
-l_int|0x1014
-comma
-l_int|0x0279
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|21
-)brace
-comma
-multiline_comment|/* (Marco)*/
-(brace
-l_int|0x9005
-comma
-l_int|0x0250
-comma
-l_int|0x1014
-comma
-l_int|0x028c
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|22
-)brace
-comma
-multiline_comment|/* (Sebring)*/
-(brace
-l_int|0x9005
-comma
 l_int|0x0285
 comma
 l_int|0x1028
@@ -533,7 +499,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|23
+l_int|21
 )brace
 comma
 multiline_comment|/* Perc 320/DC*/
@@ -550,7 +516,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|24
+l_int|22
 )brace
 comma
 multiline_comment|/* Adaptec 5400S (Mustang)*/
@@ -567,7 +533,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|25
+l_int|23
 )brace
 comma
 multiline_comment|/* Adaptec 5400S (Mustang)*/
@@ -584,7 +550,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|26
+l_int|24
 )brace
 comma
 multiline_comment|/* Dell PERC2 &quot;Quad Channel&quot; */
@@ -601,10 +567,112 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|27
+l_int|25
 )brace
 comma
 multiline_comment|/* HP NetRAID-4M */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x1028
+comma
+l_int|0x0291
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|26
+)brace
+comma
+multiline_comment|/* CERC SATA RAID 2 PCI SATA 6ch (DellCorsair) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x0292
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|27
+)brace
+comma
+multiline_comment|/* AAR-2810SA PCI SATA 8ch (Corsair-8) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x0293
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|28
+)brace
+comma
+multiline_comment|/* AAR-21610SA PCI SATA 16ch (Corsair-16) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x0294
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|29
+)brace
+comma
+multiline_comment|/* ESD SO-DIMM PCI-X SATA ZCR (Prowler) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x0E11
+comma
+l_int|0x0295
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|30
+)brace
+comma
+multiline_comment|/* SATA 6Ch (Bearcat) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0286
+comma
+l_int|0x9005
+comma
+l_int|0x028c
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|31
+)brace
+comma
+multiline_comment|/* ASR-2230S + ASR-2230SLP PCI-X (Lancer) */
 (brace
 l_int|0
 comma
@@ -937,32 +1005,6 @@ multiline_comment|/* AAR-2410SA PCI SATA 4ch (Jaguar II)*/
 (brace
 id|aac_rx_init
 comma
-l_string|&quot;aacraid&quot;
-comma
-l_string|&quot;ADAPTEC &quot;
-comma
-l_string|&quot;Adaptec         &quot;
-comma
-l_int|2
-)brace
-comma
-multiline_comment|/* (Marco)*/
-(brace
-id|aac_rx_init
-comma
-l_string|&quot;aacraid&quot;
-comma
-l_string|&quot;ADAPTEC &quot;
-comma
-l_string|&quot;Adaptec         &quot;
-comma
-l_int|2
-)brace
-comma
-multiline_comment|/* (Sebring)*/
-(brace
-id|aac_rx_init
-comma
 l_string|&quot;percraid&quot;
 comma
 l_string|&quot;DELL    &quot;
@@ -1027,7 +1069,86 @@ l_string|&quot;NetRAID         &quot;
 comma
 l_int|4
 )brace
+comma
 multiline_comment|/* HP NetRAID-4M */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;DELL    &quot;
+comma
+l_string|&quot;CERC SR2        &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* CERC SATA RAID 2 PCI SATA 6ch (DellCorsair) */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;AAR-2810SA SATA &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* AAR-2810SA PCI SATA 8ch (Corsair-8) */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;AAR-21610SA SATA&quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* AAR-21610SA PCI SATA 16ch (Corsair-16) */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;SO-DIMM SATA ZCR&quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* ESD SO-DIMM PCI-X SATA ZCR (Prowler) */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;SATA 6Channel   &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* SATA 6Ch (Bearcat) */
+(brace
+id|aac_rkt_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;ASR-2230S PCI-X &quot;
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* ASR-2230S + ASR-2230SLP PCI-X (Lancer) */
 )brace
 suffix:semicolon
 multiline_comment|/**&n; *&t;aac_queuecommand&t;-&t;queue a SCSI command&n; *&t;@cmd:&t;&t;SCSI command to queue&n; *&t;@done:&t;&t;Function to call on command completion&n; *&n; *&t;Queues a command for execution by the associated Host Adapter.&n; *&n; *&t;TODO: unify with aac_scsi_cmd().&n; */

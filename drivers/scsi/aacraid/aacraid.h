@@ -1762,6 +1762,45 @@ DECL|macro|rx_writeb
 mdefine_line|#define rx_writeb(AEP, CSR, value)&t;writeb(value, &amp;((AEP)-&gt;regs.rx-&gt;CSR))
 DECL|macro|rx_writel
 mdefine_line|#define rx_writel(AEP, CSR, value)&t;writel(value, &amp;((AEP)-&gt;regs.rx-&gt;CSR))
+multiline_comment|/*&n; *&t;Rkt Message Unit Registers (same as Rx, except a larger reserve region)&n; */
+DECL|macro|rkt_mu_registers
+mdefine_line|#define rkt_mu_registers rx_mu_registers
+DECL|macro|rkt_inbound
+mdefine_line|#define rkt_inbound rx_inbound
+DECL|struct|rkt_registers
+r_struct
+id|rkt_registers
+(brace
+DECL|member|MUnit
+r_struct
+id|rkt_mu_registers
+id|MUnit
+suffix:semicolon
+multiline_comment|/* 1300h - 1334h */
+DECL|member|reserved1
+id|u32
+id|reserved1
+(braket
+l_int|1010
+)braket
+suffix:semicolon
+multiline_comment|/* 1338h - 22fch */
+DECL|member|IndexRegs
+r_struct
+id|rkt_inbound
+id|IndexRegs
+suffix:semicolon
+multiline_comment|/* 2300h - */
+)brace
+suffix:semicolon
+DECL|macro|rkt_readb
+mdefine_line|#define rkt_readb(AEP, CSR)&t;&t;readb(&amp;((AEP)-&gt;regs.rkt-&gt;CSR))
+DECL|macro|rkt_readl
+mdefine_line|#define rkt_readl(AEP, CSR)&t;&t;readl(&amp;((AEP)-&gt;regs.rkt-&gt;CSR))
+DECL|macro|rkt_writeb
+mdefine_line|#define rkt_writeb(AEP, CSR, value)&t;writeb(value, &amp;((AEP)-&gt;regs.rkt-&gt;CSR))
+DECL|macro|rkt_writel
+mdefine_line|#define rkt_writel(AEP, CSR, value)&t;writel(value, &amp;((AEP)-&gt;regs.rkt-&gt;CSR))
 r_struct
 id|fib
 suffix:semicolon
@@ -2269,10 +2308,21 @@ id|rx_registers
 op_star
 id|rx
 suffix:semicolon
+DECL|member|rkt
+r_struct
+id|rkt_registers
+op_star
+id|rkt
+suffix:semicolon
 DECL|member|regs
 )brace
 id|regs
 suffix:semicolon
+DECL|member|OIMR
+id|u32
+id|OIMR
+suffix:semicolon
+multiline_comment|/* Mask Register Cache */
 multiline_comment|/*&n;&t; *&t;The following is the number of the individual adapter&n;&t; */
 DECL|member|devnum
 id|u32
@@ -3655,6 +3705,20 @@ id|arg
 suffix:semicolon
 r_int
 id|aac_rx_init
+c_func
+(paren
+r_struct
+id|aac_dev
+op_star
+id|dev
+comma
+r_int
+r_int
+id|devNumber
+)paren
+suffix:semicolon
+r_int
+id|aac_rkt_init
 c_func
 (paren
 r_struct
