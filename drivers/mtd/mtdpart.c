@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Simple MTD partitioning layer&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: mtdpart.c,v 1.46 2004/07/12 13:28:07 dwmw2 Exp $&n; *&n; * &t;02-21-2002&t;Thomas Gleixner &lt;gleixner@autronix.de&gt;&n; *&t;&t;&t;added support for read_oob, write_oob&n; */
+multiline_comment|/*&n; * Simple MTD partitioning layer&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: mtdpart.c,v 1.50 2004/08/10 16:18:34 dwmw2 Exp $&n; *&n; * &t;02-21-2002&t;Thomas Gleixner &lt;gleixner@autronix.de&gt;&n; *&t;&t;&t;added support for read_oob, write_oob&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1398,6 +1398,40 @@ comma
 id|instr
 )paren
 suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|function|mtd_erase_callback
+r_void
+id|mtd_erase_callback
+c_func
+(paren
+r_struct
+id|erase_info
+op_star
+id|instr
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|instr-&gt;mtd-&gt;erase
+op_eq
+id|part_erase
+)paren
+(brace
+r_struct
+id|mtd_part
+op_star
+id|part
+op_assign
+id|PART
+c_func
+(paren
+id|instr-&gt;mtd
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1409,10 +1443,32 @@ id|instr-&gt;fail_addr
 op_sub_assign
 id|part-&gt;offset
 suffix:semicolon
-r_return
-id|ret
+id|instr-&gt;addr
+op_sub_assign
+id|part-&gt;offset
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|instr-&gt;callback
+)paren
+id|instr
+op_member_access_from_pointer
+id|callback
+c_func
+(paren
+id|instr
+)paren
+suffix:semicolon
+)brace
+DECL|variable|mtd_erase_callback
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|mtd_erase_callback
+)paren
+suffix:semicolon
 DECL|function|part_lock
 r_static
 r_int

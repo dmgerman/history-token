@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * $Id: redboot.c,v 1.13 2004/04/01 10:17:40 gthomas Exp $&n; *&n; * Parse RedBoot-style Flash Image System (FIS) tables and&n; * produce a Linux partition array to match.&n; */
+multiline_comment|/*&n; * $Id: redboot.c,v 1.15 2004/08/10 07:55:16 dwmw2 Exp $&n; *&n; * Parse RedBoot-style Flash Image System (FIS) tables and&n; * produce a Linux partition array to match.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
 DECL|struct|fis_image_desc
@@ -202,12 +203,10 @@ suffix:semicolon
 macro_line|#endif
 id|buf
 op_assign
-id|kmalloc
+id|vmalloc
 c_func
 (paren
 id|master-&gt;erasesize
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -947,7 +946,7 @@ id|old
 )paren
 suffix:semicolon
 )brace
-id|kfree
+id|vfree
 c_func
 (paren
 id|buf
