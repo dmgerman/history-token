@@ -1133,17 +1133,6 @@ comma
 id|NCCI
 )paren
 suffix:semicolon
-r_else
-id|ctrl
-op_member_access_from_pointer
-id|appl_released
-c_func
-(paren
-id|ctrl
-comma
-id|ApplId
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
