@@ -19,6 +19,7 @@ macro_line|#include &quot;amp.h&quot;
 macro_line|#include &quot;revo.h&quot;
 macro_line|#include &quot;aureon.h&quot;
 macro_line|#include &quot;vt1720_mobo.h&quot;
+macro_line|#include &quot;pontis.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -45,6 +46,7 @@ id|REVO_DEVICE_DESC
 id|AMP_AUDIO2000_DEVICE_DESC
 id|AUREON_DEVICE_DESC
 id|VT1720_MOBO_DEVICE_DESC
+id|PONTIS_DEVICE_DESC
 l_string|&quot;{VIA,VT1720},&quot;
 l_string|&quot;{VIA,VT1724},&quot;
 l_string|&quot;{ICEnsemble,Generic ICE1724},&quot;
@@ -9567,6 +9569,8 @@ comma
 id|snd_vt1724_aureon_cards
 comma
 id|snd_vt1720_mobo_cards
+comma
+id|snd_vt1720_pontis_cards
 comma
 l_int|0
 comma
