@@ -1621,7 +1621,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;pae_support
+id|dev-&gt;dac_support
 op_eq
 l_int|1
 )paren

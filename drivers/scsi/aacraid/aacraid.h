@@ -30,16 +30,7 @@ DECL|macro|aac_phys_to_logical
 mdefine_line|#define aac_phys_to_logical(x)  (x+1)
 DECL|macro|aac_logical_to_phys
 mdefine_line|#define aac_logical_to_phys(x)  (x?x-1:0)
-DECL|macro|AAC_DETAILED_STATUS_INFO
-mdefine_line|#define AAC_DETAILED_STATUS_INFO
-r_extern
-r_int
-id|nondasd
-suffix:semicolon
-r_extern
-r_int
-id|paemode
-suffix:semicolon
+multiline_comment|/* #define AAC_DETAILED_STATUS_INFO */
 DECL|struct|diskparm
 r_struct
 id|diskparm
@@ -2127,9 +2118,9 @@ DECL|member|nondasd_support
 id|u8
 id|nondasd_support
 suffix:semicolon
-DECL|member|pae_support
+DECL|member|dac_support
 id|u8
-id|pae_support
+id|dac_support
 suffix:semicolon
 )brace
 suffix:semicolon
