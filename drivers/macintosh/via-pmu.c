@@ -31,7 +31,6 @@ macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
-macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT

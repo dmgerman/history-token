@@ -1313,10 +1313,6 @@ r_char
 op_star
 id|command_line
 suffix:semicolon
-r_int
-r_int
-id|mempages
-suffix:semicolon
 r_extern
 r_char
 id|saved_command_line
@@ -1529,14 +1525,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|mempages
-op_assign
-id|num_physpages
-suffix:semicolon
 id|fork_init
 c_func
 (paren
-id|mempages
+id|num_physpages
 )paren
 suffix:semicolon
 id|proc_caches_init
@@ -1557,7 +1549,7 @@ suffix:semicolon
 id|vfs_caches_init
 c_func
 (paren
-id|mempages
+id|num_physpages
 )paren
 suffix:semicolon
 id|radix_tree_init

@@ -376,7 +376,7 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-multiline_comment|/* Fill the the data we need */
+multiline_comment|/* Fill the data we need */
 id|intc2_data
 (braket
 id|offset

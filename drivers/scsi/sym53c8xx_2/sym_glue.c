@@ -9711,7 +9711,7 @@ comma
 id|PCI_ID_LSI53C1010_2
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *  Detect all 53c8xx hosts and then attach them.&n; *&n; *  If we are using NVRAM, once all hosts are detected, we need to &n; *  check any NVRAM for boot order in case detect and boot order &n; *  differ and attach them using the order in the NVRAM.&n; *&n; *  If no NVRAM is found or data appears invalid attach boards in &n; *  the the order they are detected.&n; */
+multiline_comment|/*&n; *  Detect all 53c8xx hosts and then attach them.&n; *&n; *  If we are using NVRAM, once all hosts are detected, we need to &n; *  check any NVRAM for boot order in case detect and boot order &n; *  differ and attach them using the order in the NVRAM.&n; *&n; *  If no NVRAM is found or data appears invalid attach boards in &n; *  the order they are detected.&n; */
 DECL|function|sym53c8xx_detect
 r_int
 id|__init

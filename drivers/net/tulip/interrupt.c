@@ -1013,7 +1013,7 @@ id|RX_RING_SIZE
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_NET_HW_FLOWCONTROL
-multiline_comment|/* We use this simplistic scheme for IM. It&squot;s proven by&n;           real life installations. We can have IM enabled&n;           continuesly but this would cause unnecessary latency.&n;           Unfortunely we can&squot;t use all the NET_RX_* feedback here.&n;           This would turn on IM for devices that is not contributing&n;           to backlog congestion with unnecessary latency.&n;&n;           We monitor the the device RX-ring and have:&n;&n;           HW Interrupt Mitigation either ON or OFF.&n;&n;           ON:  More then 1 pkt received (per intr.) OR we are dropping&n;           OFF: Only 1 pkt received&n;&n;           Note. We only use min and max (0, 15) settings from mit_table */
+multiline_comment|/* We use this simplistic scheme for IM. It&squot;s proven by&n;           real life installations. We can have IM enabled&n;           continuesly but this would cause unnecessary latency.&n;           Unfortunely we can&squot;t use all the NET_RX_* feedback here.&n;           This would turn on IM for devices that is not contributing&n;           to backlog congestion with unnecessary latency.&n;&n;           We monitor the device RX-ring and have:&n;&n;           HW Interrupt Mitigation either ON or OFF.&n;&n;           ON:  More then 1 pkt received (per intr.) OR we are dropping&n;           OFF: Only 1 pkt received&n;&n;           Note. We only use min and max (0, 15) settings from mit_table */
 r_if
 c_cond
 (paren

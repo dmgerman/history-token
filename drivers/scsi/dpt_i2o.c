@@ -189,18 +189,6 @@ id|hba_count
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Debug flags to be put into the HBA flags field when initialized
-singleline_comment|// Make sure to enable DEBUG_PRINT for these flags to work
-DECL|variable|DebugFlags
-r_static
-r_int
-r_int
-id|DebugFlags
-op_assign
-id|HBA_FLAGS_DBG_SCAN_B
-op_or
-id|HBA_FLAGS_DBG_FLAGS_MASK
-suffix:semicolon
 DECL|variable|adpt_fops
 r_static
 r_struct
