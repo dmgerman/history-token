@@ -184,7 +184,7 @@ mdefine_line|#define VM_DONTEXPAND&t;0x00040000&t;/* Cannot expand with mremap()
 DECL|macro|VM_RESERVED
 mdefine_line|#define VM_RESERVED&t;0x00080000&t;/* Don&squot;t unmap it from swap_out */
 DECL|macro|VM_STACK_FLAGS
-mdefine_line|#define VM_STACK_FLAGS&t;0x00000177
+mdefine_line|#define VM_STACK_FLAGS&t;(0x00000100 | VM_DATA_DEFAULT_FLAGS)
 DECL|macro|VM_READHINTMASK
 mdefine_line|#define VM_READHINTMASK&t;&t;&t;(VM_SEQ_READ | VM_RAND_READ)
 DECL|macro|VM_ClearReadHint
