@@ -4048,16 +4048,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * this condition is far too common, to bother&n;&t;&t;&t; * users about it&n;&t;&t;&t; */
-macro_line|#if 0
-id|printk
-c_func
-(paren
-l_string|&quot;%s: disabled DSC seek overlap&bslash;n&quot;
-comma
-id|drive-&gt;name
-)paren
-suffix:semicolon
-macro_line|#endif
+multiline_comment|/* printk(&quot;%s: disabled DSC seek overlap&bslash;n&quot;, drive-&gt;name);*/
 id|drive-&gt;dsc_overlap
 op_assign
 l_int|0
@@ -11594,6 +11585,7 @@ id|cap.buffer_size
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -11614,6 +11606,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 id|printk
 c_func
 (paren
@@ -13123,19 +13116,11 @@ id|busy
 op_assign
 l_int|0
 comma
-macro_line|#ifdef CONFIG_IDEDMA_ONLYDISK
-dot
-id|supports_dma
-op_assign
-l_int|0
-comma
-macro_line|#else
 dot
 id|supports_dma
 op_assign
 l_int|1
 comma
-macro_line|#endif
 dot
 id|supports_dsc_overlap
 op_assign
