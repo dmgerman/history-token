@@ -1162,6 +1162,40 @@ id|board_ahci
 comma
 multiline_comment|/* ICH7M */
 (brace
+id|PCI_VENDOR_ID_INTEL
+comma
+l_int|0x27c2
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|board_ahci
+)brace
+comma
+multiline_comment|/* ICH7R */
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+l_int|0x27c3
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|board_ahci
+)brace
+comma
+multiline_comment|/* ICH7R */
+(brace
 )brace
 multiline_comment|/* terminate list */
 )brace
