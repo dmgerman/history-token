@@ -247,7 +247,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 multiline_comment|/* Object repository - defined in irias_object.c */
-id|objects
+id|irias_objects
 op_assign
 id|hashbin_new
 c_func
@@ -259,13 +259,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|objects
+id|irias_objects
 )paren
 (brace
 id|WARNING
 c_func
 (paren
-l_string|&quot;%s: Can&squot;t allocate objects hashbin!&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t allocate irias_objects hashbin!&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -450,7 +450,7 @@ suffix:semicolon
 id|hashbin_delete
 c_func
 (paren
-id|objects
+id|irias_objects
 comma
 (paren
 id|FREE_FUNC
@@ -3883,7 +3883,7 @@ suffix:semicolon
 id|ASSERT
 c_func
 (paren
-id|objects
+id|irias_objects
 op_ne
 l_int|NULL
 comma
@@ -3912,12 +3912,12 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|objects-&gt;hb_spinlock
+id|irias_objects-&gt;hb_spinlock
 comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* List all objects */
+multiline_comment|/* List all irias_objects */
 id|obj
 op_assign
 (paren
@@ -3928,7 +3928,7 @@ op_star
 id|hashbin_get_first
 c_func
 (paren
-id|objects
+id|irias_objects
 )paren
 suffix:semicolon
 r_while
@@ -4204,7 +4204,7 @@ op_star
 id|hashbin_get_next
 c_func
 (paren
-id|objects
+id|irias_objects
 )paren
 suffix:semicolon
 )brace
@@ -4212,7 +4212,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|objects-&gt;hb_spinlock
+id|irias_objects-&gt;hb_spinlock
 comma
 id|flags
 )paren

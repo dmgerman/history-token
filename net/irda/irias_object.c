@@ -3,12 +3,10 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irias_object.h&gt;
-DECL|variable|objects
+DECL|variable|irias_objects
 id|hashbin_t
 op_star
-id|objects
-op_assign
-l_int|NULL
+id|irias_objects
 suffix:semicolon
 multiline_comment|/*&n; *  Used when a missing value needs to be returned&n; */
 DECL|variable|missing
@@ -32,6 +30,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Function strndup (str, max)&n; *&n; *    My own kernel version of strndup!&n; *&n; * Faster, check boundary... Jean II&n; */
 DECL|function|strndup
+r_static
 r_char
 op_star
 id|strndup
@@ -435,7 +434,7 @@ op_assign
 id|hashbin_remove_this
 c_func
 (paren
-id|objects
+id|irias_objects
 comma
 (paren
 id|irda_queue_t
@@ -624,7 +623,7 @@ suffix:semicolon
 id|hashbin_insert
 c_func
 (paren
-id|objects
+id|irias_objects
 comma
 (paren
 id|irda_queue_t
@@ -668,7 +667,7 @@ r_return
 id|hashbin_lock_find
 c_func
 (paren
-id|objects
+id|irias_objects
 comma
 l_int|0
 comma
@@ -888,7 +887,7 @@ op_assign
 id|hashbin_lock_find
 c_func
 (paren
-id|objects
+id|irias_objects
 comma
 l_int|0
 comma
