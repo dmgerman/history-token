@@ -623,7 +623,7 @@ id|char_list
 suffix:semicolon
 multiline_comment|/**&n; *&t;devfs_alloc_devnum - Allocate a device number.&n; *&t;@type: The type (DEVFS_SPECIAL_CHR or DEVFS_SPECIAL_BLK).&n; *&n; *&t;Returns the allocated device number, else NODEV if none are available.&n; *&t;This routine is thread safe and may block.&n; */
 DECL|function|devfs_alloc_devnum
-id|kdev_t
+id|dev_t
 id|devfs_alloc_devnum
 (paren
 r_char
@@ -686,7 +686,7 @@ c_cond
 id|list-&gt;none_free
 )paren
 r_return
-id|NODEV
+l_int|0
 suffix:semicolon
 multiline_comment|/*  Fast test  */
 id|down
@@ -706,7 +706,7 @@ id|semaphore
 )paren
 suffix:semicolon
 r_return
-id|NODEV
+l_int|0
 suffix:semicolon
 )brace
 r_for
@@ -756,7 +756,8 @@ id|semaphore
 )paren
 suffix:semicolon
 r_return
-id|mk_kdev
+id|MKDEV
+c_func
 (paren
 id|entry-&gt;major
 comma
@@ -794,7 +795,7 @@ id|semaphore
 )paren
 suffix:semicolon
 r_return
-id|NODEV
+l_int|0
 suffix:semicolon
 )brace
 id|memset
@@ -838,7 +839,7 @@ id|entry
 )paren
 suffix:semicolon
 r_return
-id|NODEV
+l_int|0
 suffix:semicolon
 )brace
 id|__set_bit
@@ -874,7 +875,8 @@ id|semaphore
 )paren
 suffix:semicolon
 r_return
-id|mk_kdev
+id|MKDEV
+c_func
 (paren
 id|entry-&gt;major
 comma
@@ -898,7 +900,7 @@ id|devfs_dealloc_devnum
 r_char
 id|type
 comma
-id|kdev_t
+id|dev_t
 id|devnum
 )paren
 (brace
@@ -925,10 +927,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|kdev_none
-(paren
+op_logical_neg
 id|devnum
-)paren
 )paren
 r_return
 suffix:semicolon
@@ -966,14 +966,14 @@ suffix:semicolon
 )brace
 id|major
 op_assign
-id|major
+id|MAJOR
 (paren
 id|devnum
 )paren
 suffix:semicolon
 id|minor
 op_assign
-id|minor
+id|MINOR
 (paren
 id|devnum
 )paren
@@ -1046,7 +1046,11 @@ l_string|&quot;(): device %s was already free&bslash;n&quot;
 comma
 id|kdevname
 (paren
+id|to_kdev_t
+c_func
+(paren
 id|devnum
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1064,7 +1068,11 @@ l_string|&quot;(): major for %s not previously allocated&bslash;n&quot;
 comma
 id|kdevname
 (paren
+id|to_kdev_t
+c_func
+(paren
 id|devnum
+)paren
 )paren
 )paren
 suffix:semicolon

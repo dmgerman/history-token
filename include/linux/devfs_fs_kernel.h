@@ -398,7 +398,7 @@ id|major
 )paren
 suffix:semicolon
 r_extern
-id|kdev_t
+id|dev_t
 id|devfs_alloc_devnum
 (paren
 r_char
@@ -412,7 +412,7 @@ id|devfs_dealloc_devnum
 r_char
 id|type
 comma
-id|kdev_t
+id|dev_t
 id|devnum
 )paren
 suffix:semicolon
@@ -898,7 +898,7 @@ suffix:semicolon
 DECL|function|devfs_alloc_devnum
 r_static
 r_inline
-id|kdev_t
+id|dev_t
 id|devfs_alloc_devnum
 (paren
 r_char
@@ -906,7 +906,7 @@ id|type
 )paren
 (brace
 r_return
-id|NODEV
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|devfs_dealloc_devnum
@@ -918,7 +918,7 @@ id|devfs_dealloc_devnum
 r_char
 id|type
 comma
-id|kdev_t
+id|dev_t
 id|devnum
 )paren
 (brace
