@@ -76,6 +76,7 @@ macro_line|#if 1
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s(%d): default irq handler vec=%d [0x%x]&bslash;n&quot;
 comma
 id|__FILE__
@@ -263,6 +264,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;new_irq_node: out of nodes&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -324,6 +326,7 @@ id|NR_IRQS
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: Incorrect IRQ %d from %s&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -370,6 +373,7 @@ id|IRQ_FLG_LOCK
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: IRQ %d from %s is not replaceable&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -400,6 +404,7 @@ id|IRQ_FLG_REPLACE
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: %s can&squot;t replace IRQ %d from %s&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -538,6 +543,7 @@ id|NR_IRQS
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: Incorrect IRQ %d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -563,6 +569,7 @@ id|dev_id
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: Removing probably wrong IRQ %d from %s&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -741,6 +748,7 @@ id|IRQ7
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: Incorrect IRQ %d from %s&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -788,6 +796,7 @@ id|IRQ_FLG_LOCK
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: IRQ %d from %s is not replaceable&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -821,6 +830,7 @@ id|IRQ_FLG_REPLACE
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: %s can&squot;t replace IRQ %d from %s&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -909,6 +919,7 @@ id|IRQ7
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: Incorrect IRQ %d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -934,6 +945,7 @@ id|dev_id
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: Removing probably wrong IRQ %d from %s&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -1160,6 +1172,8 @@ id|NR_IRQS
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|irq_list
 (braket
 id|i
@@ -1169,8 +1183,8 @@ id|flags
 op_amp
 id|IRQ_FLG_STD
 )paren
-r_continue
-suffix:semicolon
+)paren
+(brace
 id|seq_printf
 c_func
 (paren
@@ -1243,6 +1257,7 @@ dot
 id|devname
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
