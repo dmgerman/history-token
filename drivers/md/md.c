@@ -12020,8 +12020,16 @@ id|mddev-&gt;curr_resync
 op_eq
 l_int|1
 )paren
+(brace
+id|mddev_put
+c_func
+(paren
+id|mddev2
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 )brace
 )brace
 r_while
