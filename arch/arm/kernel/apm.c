@@ -1309,7 +1309,8 @@ l_int|0xff
 suffix:semicolon
 id|info.battery_life
 op_assign
-l_int|255
+op_minus
+l_int|1
 suffix:semicolon
 id|info.time
 op_assign

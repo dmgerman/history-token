@@ -50,7 +50,6 @@ id|battery_flag
 suffix:semicolon
 DECL|member|battery_life
 r_int
-r_char
 id|battery_life
 suffix:semicolon
 DECL|member|time
