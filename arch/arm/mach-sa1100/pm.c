@@ -34,10 +34,7 @@ id|SLEEP_SAVE_SP
 op_assign
 l_int|0
 comma
-DECL|enumerator|SLEEP_SAVE_OSCR
 DECL|enumerator|SLEEP_SAVE_OIER
-id|SLEEP_SAVE_OSCR
-comma
 id|SLEEP_SAVE_OIER
 comma
 DECL|enumerator|SLEEP_SAVE_OSMR0
@@ -123,12 +120,6 @@ op_assign
 id|GPLR
 suffix:semicolon
 multiline_comment|/* save vital registers */
-id|SAVE
-c_func
-(paren
-id|OSCR
-)paren
-suffix:semicolon
 id|SAVE
 c_func
 (paren
@@ -329,14 +320,15 @@ suffix:semicolon
 id|RESTORE
 c_func
 (paren
-id|OSCR
-)paren
-suffix:semicolon
-id|RESTORE
-c_func
-(paren
 id|OIER
 )paren
+suffix:semicolon
+multiline_comment|/* OSMR0 is the system timer: make sure OSCR is sufficiently behind */
+id|OSCR
+op_assign
+id|OSMR0
+op_minus
+id|LATCH
 suffix:semicolon
 multiline_comment|/* restore current time */
 id|xtime.tv_sec
