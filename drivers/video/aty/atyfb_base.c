@@ -847,6 +847,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_FB_ATY_GX
 DECL|variable|__initdata
 r_static
 r_char
@@ -867,6 +868,8 @@ id|__initdata
 op_assign
 l_string|&quot;mach64CX (ATI888CX00)&quot;
 suffix:semicolon
+macro_line|#endif /* CONFIG_FB_ATY_GX */
+macro_line|#ifdef CONFIG_FB_ATY_CT
 DECL|variable|__initdata
 r_static
 r_char
@@ -1087,6 +1090,7 @@ id|__initdata
 op_assign
 l_string|&quot;3D RAGE Mobility (AGP)&quot;
 suffix:semicolon
+macro_line|#endif /* CONFIG_FB_ATY_CT */
 r_static
 r_struct
 (brace
@@ -1940,6 +1944,7 @@ id|__initdata
 op_assign
 l_string|&quot;DRAM&quot;
 suffix:semicolon
+macro_line|#ifdef CONFIG_FB_ATY_GX
 DECL|variable|__initdata
 r_static
 r_char
@@ -1950,6 +1955,8 @@ id|__initdata
 op_assign
 l_string|&quot;VRAM&quot;
 suffix:semicolon
+macro_line|#endif /* CONFIG_FB_ATY_GX */
+macro_line|#ifdef CONFIG_FB_ATY_CT
 DECL|variable|__initdata
 r_static
 r_char
@@ -2000,6 +2007,7 @@ id|__initdata
 op_assign
 l_string|&quot;OFF&quot;
 suffix:semicolon
+macro_line|#endif /* CONFIG_FB_ATY_CT */
 DECL|variable|__initdata
 r_static
 r_char
@@ -12278,6 +12286,10 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; *  Map the video memory (physical address given) to somewhere in the&n;&t;&t; *  kernel address space.&n;&t;&t; */
 id|info-&gt;screen_base
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|ioremap
 c_func
 (paren
@@ -12299,6 +12311,10 @@ suffix:semicolon
 multiline_comment|/* Fake! */
 id|par-&gt;ati_regbase
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|ioremap
 c_func
 (paren
@@ -13369,6 +13385,46 @@ l_int|3
 suffix:colon
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_ATARI
+id|out_8
+c_func
+(paren
+op_amp
+id|par-&gt;aty_cmap_regs-&gt;windex
+comma
+id|regno
+op_lshift
+id|scale
+)paren
+suffix:semicolon
+id|out_8
+c_func
+(paren
+op_amp
+id|par-&gt;aty_cmap_regs-&gt;lut
+comma
+id|red
+)paren
+suffix:semicolon
+id|out_8
+c_func
+(paren
+op_amp
+id|par-&gt;aty_cmap_regs-&gt;lut
+comma
+id|green
+)paren
+suffix:semicolon
+id|out_8
+c_func
+(paren
+op_amp
+id|par-&gt;aty_cmap_regs-&gt;lut
+comma
+id|blue
+)paren
+suffix:semicolon
+macro_line|#else
 id|writeb
 c_func
 (paren
@@ -13407,6 +13463,7 @@ op_amp
 id|par-&gt;aty_cmap_regs-&gt;lut
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

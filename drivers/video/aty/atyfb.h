@@ -455,12 +455,10 @@ id|regindex
 op_sub_assign
 l_int|0x800
 suffix:semicolon
-macro_line|#if defined(__mc68000__)
+macro_line|#ifdef CONFIG_ATARI
 r_return
-id|le32_to_cpu
+id|in_le32
 c_func
-(paren
-op_star
 (paren
 (paren
 r_volatile
@@ -471,7 +469,6 @@ op_star
 id|par-&gt;ati_regbase
 op_plus
 id|regindex
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -519,8 +516,9 @@ id|regindex
 op_sub_assign
 l_int|0x800
 suffix:semicolon
-macro_line|#if defined(__mc68000__)
-op_star
+macro_line|#ifdef CONFIG_ATARI
+id|out_le32
+c_func
 (paren
 (paren
 r_volatile
@@ -532,12 +530,6 @@ id|par-&gt;ati_regbase
 op_plus
 id|regindex
 )paren
-)paren
-op_assign
-id|cpu_to_le32
-c_func
-(paren
-id|val
 )paren
 suffix:semicolon
 macro_line|#else
@@ -582,6 +574,17 @@ id|regindex
 op_sub_assign
 l_int|0x800
 suffix:semicolon
+macro_line|#ifdef CONFIG_ATARI
+r_return
+id|in_8
+c_func
+(paren
+id|par-&gt;ati_regbase
+op_plus
+id|regindex
+)paren
+suffix:semicolon
+macro_line|#else
 r_return
 id|readb
 c_func
@@ -591,6 +594,7 @@ op_plus
 id|regindex
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|aty_st_8
 r_static
@@ -624,6 +628,18 @@ id|regindex
 op_sub_assign
 l_int|0x800
 suffix:semicolon
+macro_line|#ifdef CONFIG_ATARI
+id|out_8
+c_func
+(paren
+id|par-&gt;ati_regbase
+op_plus
+id|regindex
+comma
+id|val
+)paren
+suffix:semicolon
+macro_line|#else
 id|writeb
 c_func
 (paren
@@ -634,6 +650,7 @@ op_plus
 id|regindex
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|aty_ld_pll
 r_static

@@ -688,7 +688,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* tell clut which address to fill */
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|regno
@@ -703,7 +703,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* send one color channel at a time */
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|red
@@ -717,7 +717,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|green
@@ -731,7 +731,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|blue
@@ -823,7 +823,7 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* Stab in the dark trying to reset the CLUT pointer */
-id|writel
+id|nubus_writel
 c_func
 (paren
 l_int|0
@@ -853,7 +853,7 @@ id|i
 op_increment
 )paren
 (brace
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|palette
@@ -874,7 +874,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|palette
@@ -895,7 +895,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|palette
@@ -918,7 +918,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|red
@@ -932,7 +932,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|green
@@ -946,7 +946,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|blue
@@ -1065,7 +1065,7 @@ op_rshift
 id|info-&gt;var.vits_per_pixel
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_regno
@@ -1080,7 +1080,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* send one color channel at a time */
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_red
@@ -1094,7 +1094,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_green
@@ -1108,7 +1108,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_blue
@@ -1220,7 +1220,7 @@ id|info-&gt;var.bits_per_pixel
 )paren
 suffix:semicolon
 multiline_comment|/* reset clut? (VideoToolbox sez &quot;not necessary&quot;) */
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 l_int|0xFF
@@ -1235,7 +1235,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* tell clut which address to use. */
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_regno
@@ -1250,7 +1250,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* send one color channel at a time. */
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_red
@@ -1264,7 +1264,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_green
@@ -1278,7 +1278,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_blue
@@ -1381,7 +1381,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* the nop&squot;s are there to order writes. */
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_regno
@@ -1395,7 +1395,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_red
@@ -1409,7 +1409,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_green
@@ -1423,7 +1423,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_blue
@@ -1547,7 +1547,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_regno
@@ -1561,7 +1561,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_red
@@ -1575,7 +1575,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_green
@@ -1589,7 +1589,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_blue
@@ -1690,7 +1690,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|regno
@@ -1704,7 +1704,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_red
@@ -1718,7 +1718,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_green
@@ -1732,7 +1732,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|_blue
@@ -1823,7 +1823,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the register address&n;&t; */
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|regno
@@ -1902,7 +1902,7 @@ macro_line|#endif
 multiline_comment|/*&n;&t; * Grab a status word and do some checking;&n;&t; * Then finally write the clut!&n;&t; */
 id|clut_status
 op_assign
-id|readb
+id|nubus_readb
 c_func
 (paren
 op_amp
@@ -1934,7 +1934,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 l_int|0x00
@@ -1948,7 +1948,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 l_int|0x00
@@ -1964,7 +1964,7 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|red
@@ -1978,7 +1978,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|green
@@ -1992,7 +1992,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|blue
@@ -2006,7 +2006,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 l_int|0x00
@@ -2029,7 +2029,7 @@ id|junk
 suffix:semicolon
 id|junk
 op_assign
-id|readb
+id|nubus_readb
 c_func
 (paren
 op_amp
@@ -2043,7 +2043,7 @@ c_func
 suffix:semicolon
 id|junk
 op_assign
-id|readb
+id|nubus_readb
 c_func
 (paren
 op_amp
@@ -2057,7 +2057,7 @@ c_func
 suffix:semicolon
 id|junk
 op_assign
-id|readb
+id|nubus_readb
 c_func
 (paren
 op_amp
@@ -2071,7 +2071,7 @@ c_func
 suffix:semicolon
 id|junk
 op_assign
-id|readb
+id|nubus_readb
 c_func
 (paren
 op_amp
@@ -2095,7 +2095,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 l_int|0x00
@@ -2109,7 +2109,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 l_int|0x00
@@ -2124,7 +2124,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|red
@@ -2138,7 +2138,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|green
@@ -2152,7 +2152,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|blue
@@ -2166,7 +2166,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writeb
+id|nubus_writeb
 c_func
 (paren
 id|junk
@@ -2824,10 +2824,6 @@ suffix:semicolon
 multiline_comment|/* Note: physical address (since 2.1.127) */
 id|macfb_fix.smem_start
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|mac_bi_data.videoaddr
 suffix:semicolon
 multiline_comment|/* This is actually redundant with the initial mappings.&n;&t;   However, there are some non-obvious aspects to the way&n;&t;   those mappings are set up, so this is in fact the safest&n;&t;   way to ensure that this driver will work on every possible&n;&t;   Mac */
@@ -2844,7 +2840,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;macfb: framebuffer at 0x%p, mapped to 0x%p, size %dk&bslash;n&quot;
+l_string|&quot;macfb: framebuffer at 0x%08lx, mapped to 0x%p, size %dk&bslash;n&quot;
 comma
 id|macfb_fix.smem_start
 comma
