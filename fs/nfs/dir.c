@@ -500,7 +500,7 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -523,7 +523,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -829,7 +829,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page

@@ -944,7 +944,7 @@ suffix:semicolon
 )brace
 )brace
 r_else
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page

@@ -465,7 +465,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -482,7 +482,7 @@ comma
 id|page-&gt;index
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -630,7 +630,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1047,7 +1047,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1712,7 +1712,7 @@ id|i
 op_increment
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|item-&gt;pages
@@ -1992,7 +1992,7 @@ id|i
 op_decrement
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|new_pages
@@ -2687,7 +2687,7 @@ id|pagecnt
 )braket
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|pages
@@ -3000,7 +3000,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -3650,7 +3650,7 @@ op_increment
 op_assign
 id|page
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -4414,7 +4414,7 @@ c_cond
 id|erase_page
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|erase_page

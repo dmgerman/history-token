@@ -286,7 +286,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -948,7 +948,7 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1347,7 +1347,7 @@ id|ni
 suffix:semicolon
 id|unl_err_out
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1633,7 +1633,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2212,7 +2212,7 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2673,7 +2673,7 @@ id|page
 suffix:semicolon
 )brace
 )brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -3350,7 +3350,7 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page

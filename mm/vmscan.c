@@ -16,6 +16,37 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * The &quot;priority&quot; of VM scanning is how much of the queues we&n; * will scan in one go. A value of 6 for DEF_PRIORITY implies&n; * that we&squot;ll scan 1/64th of the queues (&quot;queue_length &gt;&gt; 6&quot;)&n; * during a normal aging round.&n; */
 DECL|macro|DEF_PRIORITY
 mdefine_line|#define DEF_PRIORITY (6)
+DECL|function|is_page_cache_freeable
+r_static
+r_inline
+r_int
+id|is_page_cache_freeable
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_return
+id|page_count
+c_func
+(paren
+id|page
+)paren
+op_minus
+op_logical_neg
+op_logical_neg
+id|PagePrivate
+c_func
+(paren
+id|page
+)paren
+op_eq
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * On the swap_out path, the radix-tree node allocations are performing&n; * GFP_ATOMIC allocations under PF_MEMALLOC.  They can completely&n; * exhaust the page allocator.  This is bad; some pages should be left&n; * available for the I/O system to start sending the swapcache contents&n; * to disk.&n; *&n; * So PF_MEMALLOC is dropped here.  This causes the slab allocations to fail&n; * earlier, so radix-tree nodes will then be allocated from the mempool&n; * reserves.&n; */
 r_static
 r_inline
@@ -170,7 +201,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|TryLockPage
+id|TestSetPageLocked
 c_func
 (paren
 id|page
@@ -259,7 +290,7 @@ suffix:colon
 id|mm-&gt;rss
 op_decrement
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -425,7 +456,7 @@ comma
 id|pte
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1638,7 +1669,7 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|TryLockPage
+id|TestSetPageLocked
 c_func
 (paren
 id|page
@@ -1902,7 +1933,7 @@ op_amp
 id|pagemap_lru_lock
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1953,7 +1984,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* failed to drop the buffers so stop here */
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2010,7 +2041,7 @@ id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
 )brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2069,7 +2100,7 @@ op_amp
 id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2143,7 +2174,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2242,7 +2273,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|PageTestandClearReferenced
+id|TestClearPageReferenced
 c_func
 (paren
 id|page

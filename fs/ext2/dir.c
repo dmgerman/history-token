@@ -708,7 +708,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -2074,7 +2074,7 @@ comma
 id|to
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2613,7 +2613,7 @@ suffix:semicolon
 multiline_comment|/* OFFSET_CACHE */
 id|out_unlock
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2879,7 +2879,7 @@ comma
 id|to
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -3131,7 +3131,7 @@ id|chunk_size
 suffix:semicolon
 id|fail
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page

@@ -1026,7 +1026,7 @@ c_func
 suffix:semicolon
 id|out
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page

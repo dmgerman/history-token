@@ -1021,7 +1021,7 @@ id|GET_BLOCK_NO_HOLE
 )paren
 op_logical_and
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|bh_result-&gt;b_page
@@ -1123,7 +1123,7 @@ id|GET_BLOCK_NO_HOLE
 )paren
 op_logical_and
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|bh_result-&gt;b_page
@@ -1213,7 +1213,7 @@ multiline_comment|/*&n;&t;** grab_tail_page can trigger calls to reiserfs_get_bl
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|bh_result-&gt;b_page
@@ -1870,7 +1870,7 @@ op_ne
 id|hole_page
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|tail_page
@@ -7306,7 +7306,7 @@ id|error
 suffix:semicolon
 id|unlock
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -7615,7 +7615,7 @@ id|bh
 suffix:semicolon
 )brace
 )brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -8655,7 +8655,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -8696,7 +8696,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page

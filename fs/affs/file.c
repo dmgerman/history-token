@@ -3586,7 +3586,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -3659,7 +3659,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -4999,7 +4999,7 @@ comma
 id|size
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page

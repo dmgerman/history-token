@@ -714,7 +714,7 @@ id|pos
 op_add_assign
 id|size
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -739,7 +739,7 @@ l_int|0
 suffix:semicolon
 id|unlock
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page

@@ -1891,7 +1891,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2726,7 +2726,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -2984,7 +2984,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -3125,7 +3125,7 @@ id|page
 r_return
 l_int|0
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -4168,7 +4168,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -4586,7 +4586,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -4930,7 +4930,7 @@ id|to
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -5017,7 +5017,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -5116,7 +5116,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -5571,7 +5571,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -5826,7 +5826,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -6155,7 +6155,7 @@ id|offset
 )paren
 suffix:semicolon
 )brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -6302,7 +6302,7 @@ op_ne
 id|pgpos
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|new_page
@@ -6423,7 +6423,7 @@ c_func
 id|new_page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|new_page
@@ -6616,7 +6616,7 @@ c_func
 id|new_page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|new_page
@@ -7076,7 +7076,7 @@ multiline_comment|/* Ok, it&squot;s mapped. Make sure it&squot;s up-to-date */
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -7178,7 +7178,7 @@ l_int|0
 suffix:semicolon
 id|unlock
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -7279,7 +7279,7 @@ op_logical_neg
 id|offset
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -8416,7 +8416,7 @@ l_int|0
 suffix:semicolon
 id|fail_map
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -8466,7 +8466,7 @@ id|bh
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -8630,7 +8630,7 @@ c_cond
 op_logical_neg
 id|was_uptodate
 op_logical_and
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page

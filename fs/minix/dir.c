@@ -307,7 +307,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -1498,7 +1498,7 @@ id|to
 )paren
 suffix:semicolon
 )brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1702,7 +1702,7 @@ id|sbi-&gt;s_dirsize
 suffix:semicolon
 id|fail
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2072,7 +2072,7 @@ id|to
 )paren
 suffix:semicolon
 )brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page

@@ -401,7 +401,7 @@ c_func
 id|unbh
 )paren
 op_logical_or
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|unbh-&gt;b_page

@@ -3216,7 +3216,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/* Don&squot;t LockPage(page), should be locked already */
+multiline_comment|/* Don&squot;t SetPageLocked(page), should be locked already */
 id|buf
 op_assign
 id|page_address
@@ -3454,7 +3454,7 @@ comma
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -6732,7 +6732,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page

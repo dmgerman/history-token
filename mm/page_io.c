@@ -301,7 +301,7 @@ comma
 id|page
 )paren
 )paren
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -398,7 +398,7 @@ comma
 id|page
 )paren
 )paren
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page

@@ -508,7 +508,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -670,7 +670,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page2
@@ -1245,7 +1245,7 @@ comma
 id|PAGE_CACHE_SIZE
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page2
@@ -1348,7 +1348,7 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1396,7 +1396,7 @@ id|ret
 suffix:semicolon
 id|out_unlock3
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page2
@@ -1424,7 +1424,7 @@ id|page
 suffix:semicolon
 id|out_unlock
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1706,7 +1706,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -1931,7 +1931,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|next_page

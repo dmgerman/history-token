@@ -286,7 +286,7 @@ multiline_comment|/* ..or locked */
 r_if
 c_cond
 (paren
-id|TryLockPage
+id|TestSetPageLocked
 c_func
 (paren
 id|page
@@ -341,7 +341,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -357,7 +357,7 @@ r_continue
 suffix:semicolon
 id|unlock
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -661,7 +661,7 @@ id|page
 suffix:semicolon
 id|failed
 op_assign
-id|TryLockPage
+id|TestSetPageLocked
 c_func
 (paren
 id|page
@@ -753,7 +753,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1169,7 +1169,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|TryLockPage
+id|TestSetPageLocked
 c_func
 (paren
 id|page
@@ -1193,7 +1193,7 @@ comma
 id|head
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1538,7 +1538,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1788,7 +1788,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2567,7 +2567,7 @@ id|wait
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Unlock the page and wake up sleepers in ___wait_on_page.&n; */
+multiline_comment|/*&n; * Unlock the page and wake up sleepers in ___wait_on_page.&n; *&n; * The first mb is necessary to safely close the critical section opened by the&n; * TryLockPage(), the second mb is necessary to enforce ordering between&n; * the clear_bit and the read of the waitqueue (to avoid SMP races with a&n; * parallel wait_on_page).&n; */
 DECL|function|unlock_page
 r_void
 id|unlock_page
@@ -2731,7 +2731,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|TryLockPage
+id|TestSetPageLocked
 c_func
 (paren
 id|page
@@ -2802,7 +2802,7 @@ id|page
 r_if
 c_cond
 (paren
-id|TryLockPage
+id|TestSetPageLocked
 c_func
 (paren
 id|page
@@ -2925,7 +2925,7 @@ c_cond
 (paren
 id|page
 op_logical_and
-id|TryLockPage
+id|TestSetPageLocked
 c_func
 (paren
 id|page
@@ -2999,7 +2999,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|TryLockPage
+id|TestSetPageLocked
 c_func
 (paren
 id|page
@@ -3039,7 +3039,7 @@ op_ne
 id|offset
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -3354,7 +3354,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|TryLockPage
+id|TestSetPageLocked
 c_func
 (paren
 id|page
@@ -3380,7 +3380,7 @@ id|index
 )paren
 (brace
 multiline_comment|/* Someone reallocated this page under us. */
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -3741,7 +3741,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -3837,7 +3837,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -3861,7 +3861,7 @@ op_logical_neg
 id|page-&gt;mapping
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -3880,14 +3880,14 @@ multiline_comment|/* Did somebody else fill it already? */
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
 )paren
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -3922,7 +3922,7 @@ id|error
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -3940,7 +3940,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -6023,7 +6023,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -6105,7 +6105,7 @@ op_logical_neg
 id|page-&gt;mapping
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -6125,14 +6125,14 @@ multiline_comment|/* Did somebody else get it up-to-date? */
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
 )paren
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -6166,7 +6166,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -6191,7 +6191,7 @@ op_logical_neg
 id|page-&gt;mapping
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -6211,14 +6211,14 @@ multiline_comment|/* Somebody else successfully read it in? */
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
 )paren
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -6258,7 +6258,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -7855,7 +7855,7 @@ r_return
 id|page
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Read into the page cache. If a page already exists,&n; * and Page_Uptodate() is not set, try to fill the page.&n; */
+multiline_comment|/*&n; * Read into the page cache. If a page already exists,&n; * and PageUptodate() is not set, try to fill the page.&n; */
 DECL|function|read_cache_page
 r_struct
 id|page
@@ -7936,7 +7936,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -7958,7 +7958,7 @@ op_logical_neg
 id|page-&gt;mapping
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -7977,14 +7977,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
 )paren
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -8981,7 +8981,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -9112,7 +9112,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page

@@ -2150,7 +2150,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2323,7 +2323,7 @@ c_func
 id|mp
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|mp-&gt;page
@@ -2385,7 +2385,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|mp-&gt;page
@@ -2637,7 +2637,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2725,7 +2725,7 @@ c_func
 id|mp-&gt;page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|mp-&gt;page

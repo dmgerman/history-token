@@ -30,7 +30,7 @@ id|page
 )paren
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -901,7 +901,7 @@ id|page
 )paren
 op_logical_and
 op_logical_neg
-id|TryLockPage
+id|TestSetPageLocked
 c_func
 (paren
 id|page
@@ -914,7 +914,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page

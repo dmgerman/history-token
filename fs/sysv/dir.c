@@ -256,7 +256,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -1213,7 +1213,7 @@ id|dir
 suffix:semicolon
 id|out_unlock
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1351,7 +1351,7 @@ comma
 id|to
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1549,7 +1549,7 @@ id|SYSV_DIRSIZE
 suffix:semicolon
 id|fail
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1900,7 +1900,7 @@ comma
 id|to
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page

@@ -3752,7 +3752,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|__SetPageReserved
+id|SetPageReserved
 c_func
 (paren
 id|page
