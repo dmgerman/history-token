@@ -2522,6 +2522,12 @@ r_sizeof
 id|info
 )paren
 )paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 suffix:semicolon
 r_case
 id|SNDCTL_DSP_GETISPACE
@@ -2577,6 +2583,12 @@ r_sizeof
 id|info
 )paren
 )paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 suffix:semicolon
 r_case
 id|SNDCTL_DSP_SYNC
