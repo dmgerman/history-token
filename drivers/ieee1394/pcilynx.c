@@ -4559,7 +4559,7 @@ l_int|3
 suffix:semicolon
 id|count
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|count
@@ -4634,7 +4634,7 @@ id|control
 op_assign
 id|PCL_CMD_LBUS_TO_PCI
 op_or
-id|MIN
+id|min
 c_func
 (paren
 id|count
@@ -4677,7 +4677,7 @@ id|i
 dot
 id|control
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|count

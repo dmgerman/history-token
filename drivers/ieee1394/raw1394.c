@@ -119,7 +119,6 @@ id|u64
 id|addr
 comma
 r_int
-r_int
 id|length
 comma
 id|u16
@@ -148,7 +147,6 @@ comma
 id|u64
 id|addr
 comma
-r_int
 r_int
 id|length
 comma
@@ -1135,7 +1133,6 @@ op_star
 id|data
 comma
 r_int
-r_int
 id|length
 )paren
 (brace
@@ -1400,7 +1397,7 @@ id|fi-&gt;iso_buffer
 suffix:semicolon
 id|req-&gt;req.length
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|length
@@ -1491,7 +1488,6 @@ id|u8
 op_star
 id|data
 comma
-r_int
 r_int
 id|length
 )paren
@@ -2322,11 +2318,15 @@ id|RAW1394_ERROR_NONE
 suffix:semicolon
 id|req-&gt;req.length
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|req-&gt;req.length
 comma
+(paren
+id|u32
+)paren
+(paren
 r_sizeof
 (paren
 r_struct
@@ -2334,6 +2334,7 @@ id|raw1394_khost_list
 )paren
 op_star
 id|req-&gt;req.misc
+)paren
 )paren
 suffix:semicolon
 id|req-&gt;free_data
@@ -3899,7 +3900,6 @@ id|u64
 id|addr
 comma
 r_int
-r_int
 id|length
 comma
 id|u16
@@ -4756,7 +4756,6 @@ comma
 id|u64
 id|addr
 comma
-r_int
 r_int
 id|length
 comma
@@ -11080,6 +11079,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|fi-&gt;host
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -11192,6 +11201,16 @@ id|uaddr
 r_struct
 id|raw1394_iso_status
 id|stat
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|fi-&gt;host
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond

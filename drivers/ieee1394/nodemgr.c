@@ -92,7 +92,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Basically what we do here is start off retrieving the bus_info block.&n; * From there will fill in some info about the node, verify it is of IEEE&n; * 1394 type, and that the crc checks out ok. After that we start off with&n; * the root directory, and subdirectories. To do this, we retrieve the&n; * quadlet header for a directory, find out the length, and retrieve the&n; * complete directory entry (be it a leaf or a directory). We then process&n; * it and add the info to our structure for that particular node.&n; *&n; * We verify CRC&squot;s along the way for each directory/block/leaf. The entire&n; * node structure is generic, and simply stores the information in a way&n; * that&squot;s easy to parse by the protocol interface.&n; */
-multiline_comment|/* &n; * The nodemgr relies heavily on the Drive Model for device callbacks and&n; * driver/device mappings. The old nodemgr used to handle all this itself,&n; * but now we are much simpler because of the LDM.&n; */
+multiline_comment|/* &n; * The nodemgr relies heavily on the Driver Model for device callbacks and&n; * driver/device mappings. The old nodemgr used to handle all this itself,&n; * but now we are much simpler because of the LDM.&n; */
 r_static
 id|DECLARE_MUTEX
 c_func

@@ -10362,6 +10362,10 @@ id|bprm.filename
 op_assign
 id|filename
 suffix:semicolon
+id|bprm.interp
+op_assign
+id|filename
+suffix:semicolon
 id|bprm.sh_bang
 op_assign
 l_int|0

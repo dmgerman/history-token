@@ -47,7 +47,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1010 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1020 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 DECL|struct|fragment_info
 r_struct
@@ -189,9 +189,9 @@ l_int|2048
 comma
 l_int|4096
 comma
-l_int|8192
+l_int|4096
 comma
-l_int|16384
+l_int|4096
 )brace
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -4602,7 +4602,6 @@ id|u64
 id|addr
 comma
 r_int
-r_int
 id|len
 comma
 id|u16
@@ -5542,12 +5541,6 @@ id|hpsb_get_tlabel
 c_func
 (paren
 id|p
-comma
-op_logical_neg
-id|in_interrupt
-c_func
-(paren
-)paren
 )paren
 )paren
 (brace
@@ -7011,7 +7004,7 @@ id|strcpy
 (paren
 id|info.version
 comma
-l_string|&quot;$Rev: 1010 $&quot;
+l_string|&quot;$Rev: 1020 $&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME XXX provide sane businfo */
