@@ -563,6 +563,25 @@ id|priority
 )paren
 suffix:semicolon
 r_extern
+r_struct
+id|sk_buff
+op_star
+id|alloc_skb_from_cache
+c_func
+(paren
+id|kmem_cache_t
+op_star
+id|cp
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+id|priority
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|kfree_skbmem
 c_func
@@ -2722,6 +2741,7 @@ id|skb
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;__dev_alloc_skb - allocate an skbuff for sending&n; *&t;@length: length to allocate&n; *&t;@gfp_mask: get_free_pages mask, passed to alloc_skb&n; *&n; *&t;Allocate a new &amp;sk_buff and assign it a usage count of one. The&n; *&t;buffer has unspecified headroom built in. Users should allocate&n; *&t;the headroom they think they need without accounting for the&n; *&t;built in space. The built in space is used for optimisations.&n; *&n; *&t;%NULL is returned in there is no free memory.&n; */
+macro_line|#ifndef CONFIG_HAVE_ARCH_DEV_ALLOC_SKB
 DECL|function|__dev_alloc_skb
 r_static
 r_inline
@@ -2775,6 +2795,23 @@ r_return
 id|skb
 suffix:semicolon
 )brace
+macro_line|#else
+r_extern
+r_struct
+id|sk_buff
+op_star
+id|__dev_alloc_skb
+c_func
+(paren
+r_int
+r_int
+id|length
+comma
+r_int
+id|gfp_mask
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/**&n; *&t;dev_alloc_skb - allocate an skbuff for sending&n; *&t;@length: length to allocate&n; *&n; *&t;Allocate a new &amp;sk_buff and assign it a usage count of one. The&n; *&t;buffer has unspecified headroom built in. Users should allocate&n; *&t;the headroom they think they need without accounting for the&n; *&t;built in space. The built in space is used for optimisations.&n; *&n; *&t;%NULL is returned in there is no free memory. Although this function&n; *&t;allocates memory it can be called from an interrupt.&n; */
 DECL|function|dev_alloc_skb
 r_static

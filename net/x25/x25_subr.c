@@ -1,23 +1,9 @@
 multiline_comment|/*&n; *&t;X.25 Packet Layer release 002&n; *&n; *&t;This is ALPHA test software. This code may break your machine,&n; *&t;randomly fail to work with new releases, misbehave and/or generally&n; *&t;screw up. It might even work.&n; *&n; *&t;This code REQUIRES 2.1.15 or higher&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;X.25 001&t;Jonathan Naylor&t;  Started coding.&n; *&t;X.25 002&t;Jonathan Naylor&t;  Centralised disconnection processing.&n; *&t;mar/20/00&t;Daniela Squassoni Disabling/enabling of facilities&n; *&t;&t;&t;&t;&t;  negotiation.&n; *&t;jun/24/01&t;Arnaldo C. Melo&t;  use skb_queue_purge, cleanups&n; */
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/socket.h&gt;
-macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/sockios.h&gt;
-macro_line|#include &lt;linux/net.h&gt;
-macro_line|#include &lt;linux/inet.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;net/x25.h&gt;
 multiline_comment|/*&n; *&t;This routine purges all of the queues of frames.&n; */
 DECL|function|x25_clear_queues
@@ -1562,5 +1548,73 @@ id|sk
 )paren
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/*&n; * Compare 2 calluserdata structures, used to find correct listening sockets&n; * when call user data is used.&n; */
+DECL|function|x25_check_calluserdata
+r_int
+id|x25_check_calluserdata
+c_func
+(paren
+r_struct
+id|x25_calluserdata
+op_star
+id|ours
+comma
+r_struct
+id|x25_calluserdata
+op_star
+id|theirs
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ours-&gt;cudlength
+op_ne
+id|theirs-&gt;cudlength
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ours-&gt;cudlength
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ours-&gt;cuddata
+(braket
+id|i
+)braket
+op_ne
+id|theirs-&gt;cuddata
+(braket
+id|i
+)braket
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_return
+l_int|1
+suffix:semicolon
 )brace
 eof

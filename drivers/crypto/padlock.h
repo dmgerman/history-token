@@ -1,0 +1,80 @@
+multiline_comment|/*&n; * Driver for VIA PadLock&n; *&n; * Copyright (c) 2004 Michal Ludvig &lt;michal@logix.cz&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option) &n; * any later version.&n; *&n; */
+macro_line|#ifndef _CRYPTO_PADLOCK_H
+DECL|macro|_CRYPTO_PADLOCK_H
+mdefine_line|#define _CRYPTO_PADLOCK_H
+multiline_comment|/* Control word. */
+DECL|union|cword
+r_union
+id|cword
+(brace
+DECL|member|cword
+r_uint32
+id|cword
+(braket
+l_int|4
+)braket
+suffix:semicolon
+r_struct
+(brace
+DECL|member|rounds
+r_int
+id|rounds
+suffix:colon
+l_int|4
+suffix:semicolon
+DECL|member|algo
+r_int
+id|algo
+suffix:colon
+l_int|3
+suffix:semicolon
+DECL|member|keygen
+r_int
+id|keygen
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|interm
+r_int
+id|interm
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|encdec
+r_int
+id|encdec
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|ksize
+r_int
+id|ksize
+suffix:colon
+l_int|2
+suffix:semicolon
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|PFX
+mdefine_line|#define PFX&t;&quot;padlock: &quot;
+macro_line|#ifdef CONFIG_CRYPTO_DEV_PADLOCK_AES
+r_int
+id|padlock_init_aes
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|padlock_fini_aes
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif&t;/* _CRYPTO_PADLOCK_H */
+eof

@@ -4188,9 +4188,6 @@ id|kern
 )paren
 (brace
 r_int
-id|i
-suffix:semicolon
-r_int
 id|err
 suffix:semicolon
 r_struct
@@ -4333,7 +4330,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|i
+id|err
 op_assign
 op_minus
 id|EAFNOSUPPORT
@@ -4364,7 +4361,7 @@ id|KERN_WARNING
 l_string|&quot;socket: no more sockets&bslash;n&quot;
 )paren
 suffix:semicolon
-id|i
+id|err
 op_assign
 op_minus
 id|ENFILE
@@ -4379,7 +4376,7 @@ op_assign
 id|type
 suffix:semicolon
 multiline_comment|/*&n;&t; * We will call the -&gt;create function, that possibly is in a loadable&n;&t; * module, so we have to bump that loadable module refcnt first.&n;&t; */
-id|i
+id|err
 op_assign
 op_minus
 id|EAFNOSUPPORT
@@ -4406,7 +4403,7 @@ r_if
 c_cond
 (paren
 (paren
-id|i
+id|err
 op_assign
 id|net_families
 (braket
@@ -4486,7 +4483,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
-id|i
+id|err
 suffix:semicolon
 id|out_module_put
 suffix:colon
