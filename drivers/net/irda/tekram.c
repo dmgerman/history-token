@@ -457,8 +457,9 @@ suffix:colon
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), resetting dongle timed out!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), resetting dongle timed out!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -559,8 +560,9 @@ suffix:colon
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), unknown state %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown state %d&bslash;n&quot;
 comma
 id|task-&gt;state
 )paren
@@ -789,8 +791,9 @@ suffix:colon
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), unknown state %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown state %d&bslash;n&quot;
 comma
 id|task-&gt;state
 )paren

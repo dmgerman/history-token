@@ -646,8 +646,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Probing for %s ...&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Probing for %s ...&bslash;n&quot;
 comma
 id|chip-&gt;name
 )paren
@@ -744,8 +745,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s() no chip at 0x%03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() no chip at 0x%03x&bslash;n&quot;
 comma
 id|cfg_base
 )paren
@@ -789,8 +791,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s() Found %s chip, revision=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() Found %s chip, revision=%d&bslash;n&quot;
 comma
 id|chip-&gt;name
 comma
@@ -865,8 +868,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), Wrong chip id=0x%02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Wrong chip id=0x%02x&bslash;n&quot;
 comma
 id|id
 )paren
@@ -975,8 +979,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|MESSAGE
@@ -1041,9 +1046,10 @@ l_int|NULL
 id|ERROR
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;(), can&squot;t allocate memory for &quot;
+l_string|&quot;%s(), can&squot;t allocate memory for &quot;
 l_string|&quot;control block!&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -1132,8 +1138,9 @@ id|ret
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), can&squot;t get iobase of 0x%03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), can&squot;t get iobase of 0x%03x&bslash;n&quot;
 comma
 id|self-&gt;io.fir_base
 )paren
@@ -1368,8 +1375,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), dev_alloc() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), dev_alloc() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1441,8 +1449,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), register_netdev() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), register_netdev() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1563,8 +1572,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1614,8 +1624,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), Releasing Region %03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Releasing Region %03x&bslash;n&quot;
 comma
 id|self-&gt;io.fir_base
 )paren
@@ -1793,8 +1804,9 @@ suffix:colon
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), invalid base_address&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), invalid base_address&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1873,8 +1885,9 @@ suffix:colon
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), invalid irq&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), invalid irq&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1948,8 +1961,9 @@ suffix:colon
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), invalid dma&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), invalid dma&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2074,8 +2088,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), probing fir_base=0x%03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), probing fir_base=0x%03x&bslash;n&quot;
 comma
 id|info-&gt;fir_base
 )paren
@@ -2186,8 +2201,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), probing irq=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), probing irq=%d&bslash;n&quot;
 comma
 id|info-&gt;irq
 )paren
@@ -2248,8 +2264,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), probing dma=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), probing dma=%d&bslash;n&quot;
 comma
 id|info-&gt;dma
 )paren
@@ -2781,8 +2798,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s() Driver %s Found chip version %02x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() Driver %s Found chip version %02x&bslash;n&quot;
 comma
 id|driver_name
 comma
@@ -3167,8 +3185,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s not defined by irda yet&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s not defined by irda yet&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3191,8 +3210,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s not defined by irda yet&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s not defined by irda yet&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3217,8 +3237,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s not defined by irda yet&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s not defined by irda yet&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3237,8 +3258,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s not defined by irda yet&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s not defined by irda yet&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3257,8 +3279,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s is not for IrDA mode&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s is not for IrDA mode&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3277,8 +3300,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3318,8 +3342,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s not defined by irda yet&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s not defined by irda yet&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3376,8 +3401,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3412,8 +3438,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), invalid dongle_id %#x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), invalid dongle_id %#x&quot;
 comma
 id|dongle_id
 )paren
@@ -3503,8 +3530,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s not defined by irda yet&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s not defined by irda yet&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3527,8 +3555,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s not defined by irda yet&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s not defined by irda yet&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3553,8 +3582,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s not defined by irda yet&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s not defined by irda yet&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3573,8 +3603,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s not defined by irda yet&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s not defined by irda yet&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3593,8 +3624,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s is not for IrDA mode&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s is not for IrDA mode&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -3613,8 +3645,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s&bslash;n&quot;
 comma
 id|dongle_types
 (braket
@@ -6056,9 +6089,10 @@ l_int|NULL
 id|WARNING
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;(), memory squeeze, &quot;
+l_string|&quot;%s(), memory squeeze, &quot;
 l_string|&quot;dropping frame.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|self-&gt;stats.rx_dropped

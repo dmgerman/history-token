@@ -486,8 +486,9 @@ l_int|NULL
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), can&squot;t unregister line discipline (err = %d)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), can&squot;t unregister line discipline (err = %d)&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -893,8 +894,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), dev_alloc() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), dev_alloc() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -966,8 +968,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), register_netdev() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), register_netdev() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1702,8 +1705,9 @@ suffix:colon
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), changing speed of dongle timed out!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), changing speed of dongle timed out!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -1744,8 +1748,9 @@ suffix:colon
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), unknown state %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown state %d&bslash;n&quot;
 comma
 id|task-&gt;state
 )paren

@@ -932,8 +932,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), dev_alloc() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), dev_alloc() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1005,8 +1006,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), register_netdevice() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), register_netdevice() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3637,8 +3639,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
+l_string|&quot;%s(), memory squeeze, dropping frame.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), memory squeeze, dropping frame.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Restore set register */

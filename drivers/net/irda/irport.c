@@ -425,8 +425,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -504,8 +505,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Allocate new instance of the driver&n;&t; */
@@ -533,9 +535,10 @@ id|self
 id|ERROR
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;(), can&squot;t allocate memory for &quot;
+l_string|&quot;%s(), can&squot;t allocate memory for &quot;
 l_string|&quot;control block!&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -621,8 +624,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), can&squot;t get iobase of 0x%03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), can&squot;t get iobase of 0x%03x&bslash;n&quot;
 comma
 id|self-&gt;io.sir_base
 )paren
@@ -813,8 +817,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), dev_alloc() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), dev_alloc() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -912,8 +917,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), register_netdev() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), register_netdev() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1002,8 +1008,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), Releasing Region %03x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Releasing Region %03x&bslash;n&quot;
 comma
 id|self-&gt;io.sir_base
 )paren
@@ -1182,8 +1189,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), iobase=%#x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), iobase=%#x&bslash;n&quot;
 comma
 id|iobase
 )paren
@@ -1420,8 +1428,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), &lt;%ld&gt;&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), &lt;%ld&gt;&bslash;n&quot;
 comma
 id|jiffies
 )paren
@@ -1610,8 +1619,9 @@ suffix:colon
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), changing speed of dongle timed out!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), changing speed of dongle timed out!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -1650,8 +1660,9 @@ suffix:colon
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), unknown state %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unknown state %d&bslash;n&quot;
 comma
 id|task-&gt;state
 )paren
@@ -1733,8 +1744,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|iobase
@@ -1945,8 +1957,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), failed, fifo not empty!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), failed, fifo not empty!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2016,8 +2029,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|self
@@ -2208,8 +2222,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2469,8 +2484,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), breaking!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), breaking!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2551,8 +2567,9 @@ id|dev
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s() irq %d for unknown device.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() irq %d for unknown device.&bslash;n&quot;
 comma
 id|irq
 )paren
@@ -2614,8 +2631,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s(), iir=%02x, lsr=%02x, iobase=%#x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), iir=%02x, lsr=%02x, iobase=%#x&bslash;n&quot;
 comma
 id|iir
 comma
@@ -2638,8 +2656,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), RLSI&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), RLSI&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2682,8 +2701,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unhandled IIR=%#x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unhandled IIR=%#x&bslash;n&quot;
 comma
 id|iir
 )paren
@@ -2782,8 +2802,9 @@ c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -2839,8 +2860,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), unable to allocate irq=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unable to allocate irq=%d&bslash;n&quot;
 comma
 id|self-&gt;io.irq
 )paren
@@ -2942,8 +2964,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3088,8 +3111,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), waiting!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), waiting!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|current-&gt;state
@@ -3291,8 +3315,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(), failed, fifo not empty!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), failed, fifo not empty!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3417,8 +3442,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s(), %s, (cmd=0x%X)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), %s, (cmd=0x%X)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma

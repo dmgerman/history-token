@@ -4115,8 +4115,9 @@ l_int|2050
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), bogus len=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), bogus len=%d&bslash;n&quot;
 comma
 id|len
 )paren
@@ -4157,8 +4158,9 @@ id|skb
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), memory squeeze, dropping frame.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), memory squeeze, dropping frame.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4655,8 +4657,9 @@ suffix:semicolon
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), unable to allocate DMA=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unable to allocate DMA=%d&bslash;n&quot;
 comma
 id|self-&gt;io-&gt;dma
 )paren
@@ -4703,8 +4706,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ASSERT
