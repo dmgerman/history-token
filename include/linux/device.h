@@ -588,10 +588,24 @@ r_int
 id|count
 )paren
 suffix:semicolon
+DECL|member|exists
+r_int
+(paren
+op_star
+id|exists
+)paren
+(paren
+r_struct
+id|device_driver
+op_star
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|DRIVER_ATTR
-mdefine_line|#define DRIVER_ATTR(_name,_mode,_show,_store)&t;&bslash;&n;struct driver_attribute driver_attr_##_name = { &t;&t;&bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&bslash;&n;};
+mdefine_line|#define DRIVER_ATTR(_name,_mode,_show,_store)&t;&bslash;&n;struct driver_attribute driver_attr_##_name = { &t;&t;&bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&bslash;&n;&t;.exists&t;= NULL,&t;&t;&t;&t;        &bslash;&n;};
+DECL|macro|DRIVER_ATTR_EXISTS
+mdefine_line|#define DRIVER_ATTR_EXISTS(_name,_mode,_show,_store,_exists)&t;&bslash;&n;struct driver_attribute driver_attr_##_name = { &t;&t;&bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&bslash;&n;&t;.exists&t;= _exists,&t;&t;&t;&t;&bslash;&n;};
 r_extern
 r_int
 id|driver_create_file

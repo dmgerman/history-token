@@ -523,6 +523,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/pci-dynids.h&gt;
 multiline_comment|/* File state for mmap()s on /proc/bus/pci/X/Y */
 DECL|enum|pci_mmap_state
 r_enum
@@ -1104,6 +1105,11 @@ DECL|member|driver
 r_struct
 id|device_driver
 id|driver
+suffix:semicolon
+DECL|member|dynids
+r_struct
+id|pci_dynamic_id_kobj
+id|dynids
 suffix:semicolon
 )brace
 suffix:semicolon
