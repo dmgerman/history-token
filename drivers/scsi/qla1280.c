@@ -934,6 +934,76 @@ comma
 r_uint32
 )paren
 suffix:semicolon
+multiline_comment|/* convert scsi data direction to request_t control flags&n; */
+r_static
+r_inline
+r_uint16
+DECL|function|qla1280_data_direction
+id|qla1280_data_direction
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+id|cmnd
+)paren
+(brace
+r_uint16
+id|flags
+op_assign
+l_int|0
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cmnd-&gt;sc_data_direction
+)paren
+(brace
+r_case
+id|SCSI_DATA_NONE
+suffix:colon
+id|flags
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SCSI_DATA_READ
+suffix:colon
+id|flags
+op_assign
+id|BIT_5
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SCSI_DATA_WRITE
+suffix:colon
+id|flags
+op_assign
+id|BIT_6
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SCSI_DATA_UNKNOWN
+suffix:colon
+r_default
+suffix:colon
+id|flags
+op_assign
+id|BIT_5
+op_or
+id|BIT_6
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_return
+id|flags
+suffix:semicolon
+)brace
 macro_line|#if QL1280_LUN_SUPPORT
 r_static
 r_void
@@ -14496,58 +14566,21 @@ id|cmd
 )paren
 suffix:semicolon
 multiline_comment|/* dprintk(1, &quot;Build packet for command[0]=0x%x&bslash;n&quot;,pkt-&gt;scsi_cdb[0]); */
-multiline_comment|/*&n;&t;&t;&t; * Load data segments.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|seg_cnt
-)paren
-(brace
-multiline_comment|/* If data transfer. */
 multiline_comment|/* Set transfer direction. */
-r_if
-c_cond
-(paren
-(paren
-id|cmd-&gt;data_cmnd
-(braket
-l_int|0
-)braket
-op_eq
-id|WRITE_6
-)paren
-)paren
-id|pkt-&gt;control_flags
-op_or_assign
-id|cpu_to_le16
-c_func
-(paren
-id|BIT_6
-)paren
-suffix:semicolon
-r_else
-id|pkt-&gt;control_flags
-op_or_assign
-id|cpu_to_le16
-c_func
-(paren
-id|BIT_5
-op_or
-id|BIT_6
-)paren
-suffix:semicolon
 id|sp-&gt;dir
 op_assign
-id|le16_to_cpu
+id|qla1280_data_direction
 c_func
 (paren
-id|pkt-&gt;control_flags
+id|cmd
 )paren
-op_amp
+suffix:semicolon
+id|pkt-&gt;control_flags
+op_or_assign
+id|cpu_to_le16
+c_func
 (paren
-id|BIT_5
-op_or
-id|BIT_6
+id|sp-&gt;dir
 )paren
 suffix:semicolon
 multiline_comment|/* Set total data segment count. */
@@ -14559,6 +14592,14 @@ c_func
 id|seg_cnt
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Load data segments.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|seg_cnt
+)paren
+(brace
+multiline_comment|/* If data transfer. */
 multiline_comment|/* Setup packet address segment pointer. */
 id|dword_ptr
 op_assign
@@ -15829,59 +15870,21 @@ id|cmd
 )paren
 suffix:semicolon
 multiline_comment|/*dprintk(1, &quot;Build packet for command[0]=0x%x&bslash;n&quot;,pkt-&gt;scsi_cdb[0]); */
-multiline_comment|/*&n;&t;&t;&t; * Load data segments.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|seg_cnt
-)paren
-(brace
-multiline_comment|/* Set transfer direction (READ and WRITE) */
-multiline_comment|/* Linux doesn&squot;t tell us                   */
-multiline_comment|/*&n;&t;&t;&t;&t; * For block devices, cmd-&gt;request-&gt;cmd has the operation&n;&t;&t;&t;&t; * For character devices, this isn&squot;t always set properly, so&n;&t;&t;&t;&t; * we need to check data_cmnd[0].  This catches the conditions&n;&t;&t;&t;&t; * for st.c, but not sg. Generic commands are pass down to us.&n;&t;&t;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|cmd-&gt;data_cmnd
-(braket
-l_int|0
-)braket
-op_eq
-id|WRITE_6
-)paren
-)paren
-id|pkt-&gt;control_flags
-op_or_assign
-id|cpu_to_le16
-c_func
-(paren
-id|BIT_6
-)paren
-suffix:semicolon
-r_else
-id|pkt-&gt;control_flags
-op_or_assign
-id|cpu_to_le16
-c_func
-(paren
-id|BIT_5
-op_or
-id|BIT_6
-)paren
-suffix:semicolon
+multiline_comment|/* Set transfer direction. */
 id|sp-&gt;dir
 op_assign
-id|le16_to_cpu
+id|qla1280_data_direction
 c_func
 (paren
-id|pkt-&gt;control_flags
+id|cmd
 )paren
-op_amp
+suffix:semicolon
+id|pkt-&gt;control_flags
+op_or_assign
+id|cpu_to_le16
+c_func
 (paren
-id|BIT_5
-op_or
-id|BIT_6
+id|sp-&gt;dir
 )paren
 suffix:semicolon
 multiline_comment|/* Set total data segment count. */
@@ -15893,6 +15896,13 @@ c_func
 id|seg_cnt
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Load data segments.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|seg_cnt
+)paren
+(brace
 multiline_comment|/* Setup packet address segment pointer. */
 id|dword_ptr
 op_assign
