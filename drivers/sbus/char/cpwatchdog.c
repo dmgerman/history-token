@@ -1881,7 +1881,7 @@ op_amp
 id|WD_S_RUNNING
 )paren
 (brace
-id|wd_readb
+id|wd_readw
 c_func
 (paren
 op_amp
