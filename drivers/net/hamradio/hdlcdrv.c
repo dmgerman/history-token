@@ -23,7 +23,7 @@ multiline_comment|/* make genksyms happy */
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
-macro_line|#include &lt;linux/crc16.h&gt;
+macro_line|#include &lt;linux/crc-ccitt.h&gt;
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/*&n; * The name of the card. Is used for messages and in the requests for&n; * io regions, irqs and dma channels&n; */
 DECL|variable|ax25_bcast
@@ -143,7 +143,7 @@ r_int
 r_int
 id|crc
 op_assign
-id|crc16
+id|crc_ccitt
 c_func
 (paren
 l_int|0xffff
@@ -190,7 +190,7 @@ id|cnt
 (brace
 r_return
 (paren
-id|crc16
+id|crc_ccitt
 c_func
 (paren
 l_int|0xffff

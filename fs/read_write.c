@@ -401,11 +401,9 @@ c_func
 id|default_llseek
 )paren
 suffix:semicolon
-DECL|function|llseek
-r_static
-r_inline
+DECL|function|vfs_llseek
 id|loff_t
-id|llseek
+id|vfs_llseek
 c_func
 (paren
 r_struct
@@ -462,6 +460,13 @@ id|origin
 )paren
 suffix:semicolon
 )brace
+DECL|variable|vfs_llseek
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vfs_llseek
+)paren
+suffix:semicolon
 DECL|function|sys_lseek
 id|asmlinkage
 id|off_t
@@ -532,7 +537,7 @@ l_int|2
 id|loff_t
 id|res
 op_assign
-id|llseek
+id|vfs_llseek
 c_func
 (paren
 id|file
@@ -669,7 +674,7 @@ id|out_putf
 suffix:semicolon
 id|offset
 op_assign
-id|llseek
+id|vfs_llseek
 c_func
 (paren
 id|file

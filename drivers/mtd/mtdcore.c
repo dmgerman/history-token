@@ -691,7 +691,7 @@ id|mtd
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -852,7 +852,7 @@ op_star
 id|mtd
 comma
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -1563,7 +1563,7 @@ l_string|&quot;mtd&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 )paren
@@ -1650,7 +1650,7 @@ c_func
 (paren
 l_string|&quot;mtd&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#else

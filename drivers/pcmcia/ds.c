@@ -4047,7 +4047,7 @@ suffix:semicolon
 r_case
 id|DS_EJECT_CARD
 suffix:colon
-id|ret
+id|err
 op_assign
 id|pcmcia_eject_card
 c_func
@@ -4060,7 +4060,7 @@ suffix:semicolon
 r_case
 id|DS_INSERT_CARD
 suffix:colon
-id|ret
+id|err
 op_assign
 id|pcmcia_insert_card
 c_func

@@ -1,18 +1,18 @@
-macro_line|#ifndef _LINUX_CRC16_H
-DECL|macro|_LINUX_CRC16_H
-mdefine_line|#define _LINUX_CRC16_H
+macro_line|#ifndef _LINUX_CRC_CCITT_H
+DECL|macro|_LINUX_CRC_CCITT_H
+mdefine_line|#define _LINUX_CRC_CCITT_H
 macro_line|#include &lt;linux/types.h&gt;
 r_extern
 id|u16
 r_const
-id|crc16_table
+id|crc_ccitt_table
 (braket
 l_int|256
 )braket
 suffix:semicolon
 r_extern
 id|u16
-id|crc16
+id|crc_ccitt
 c_func
 (paren
 id|u16
@@ -27,11 +27,11 @@ r_int
 id|len
 )paren
 suffix:semicolon
-DECL|function|crc16_byte
+DECL|function|crc_ccitt_byte
 r_static
 r_inline
 id|u16
-id|crc16_byte
+id|crc_ccitt_byte
 c_func
 (paren
 id|u16
@@ -49,7 +49,7 @@ op_rshift
 l_int|8
 )paren
 op_xor
-id|crc16_table
+id|crc_ccitt_table
 (braket
 (paren
 id|crc
@@ -61,5 +61,5 @@ l_int|0xff
 )braket
 suffix:semicolon
 )brace
-macro_line|#endif /* _LINUX_CRC16_H */
+macro_line|#endif /* _LINUX_CRC_CCITT_H */
 eof

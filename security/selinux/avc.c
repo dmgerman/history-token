@@ -329,7 +329,7 @@ op_star
 op_star
 id|common_pts
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|u32
 id|common_base
@@ -2980,7 +2980,7 @@ id|tsid
 comma
 id|tclass
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3288,7 +3288,7 @@ id|perms
 comma
 id|seqno
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -3376,7 +3376,7 @@ id|perms
 comma
 id|seqno
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -3508,7 +3508,7 @@ id|avc_cache.slots
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|avc_cache.lru_hint
@@ -3584,7 +3584,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3678,7 +3678,7 @@ id|perms
 comma
 id|seqno
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_else
@@ -3698,7 +3698,7 @@ id|perms
 comma
 id|seqno
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -3748,7 +3748,7 @@ id|perms
 comma
 id|seqno
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_else
@@ -3768,7 +3768,7 @@ id|perms
 comma
 id|seqno
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -3918,7 +3918,7 @@ id|AVC_ENTRY_DISCARDS
 suffix:semicolon
 id|ae
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

@@ -202,6 +202,9 @@ mdefine_line|#define jffs2_wbuf_dirty(c) (!!(c)-&gt;wbuf_len)
 r_struct
 id|kstatfs
 suffix:semicolon
+r_struct
+id|kvec
+suffix:semicolon
 multiline_comment|/* wbuf.c */
 r_int
 id|jffs2_flash_writev
@@ -214,7 +217,7 @@ id|c
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -676,7 +679,7 @@ id|c
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
