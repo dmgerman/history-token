@@ -4673,7 +4673,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|pci_dma_sync_sg
+id|pci_dma_sync_sg_for_cpu
 c_func
 (paren
 id|adapter-&gt;pdev
@@ -7373,7 +7373,7 @@ op_eq
 id|PCI_DMA_FROMDEVICE
 )paren
 (brace
-id|pci_dma_sync_sg
+id|pci_dma_sync_sg_for_cpu
 c_func
 (paren
 id|adapter-&gt;pdev

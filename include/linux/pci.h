@@ -2909,8 +2909,6 @@ macro_line|#include &lt;asm/pci.h&gt;
 multiline_comment|/* Backwards compat, remove in 2.7.x */
 DECL|macro|pci_dma_sync_single
 mdefine_line|#define pci_dma_sync_single&t;pci_dma_sync_single_for_cpu
-DECL|macro|pci_dma_sync_sg
-mdefine_line|#define pci_dma_sync_sg&t;&t;pci_dma_sync_sg_for_cpu
 multiline_comment|/*&n; *  If the system does not have PCI, clearly these return errors.  Define&n; *  these as simple inline functions to avoid hair in drivers.&n; */
 macro_line|#ifndef CONFIG_PCI
 DECL|macro|_PCI_NOP
