@@ -2,30 +2,7 @@ multiline_comment|/*&n; * Device driver for the SYMBIOS/LSILOGIC 53C8XX and 53C1
 macro_line|#ifndef SYM53C8XX_H
 DECL|macro|SYM53C8XX_H
 mdefine_line|#define SYM53C8XX_H
-macro_line|#if !defined(LINUX_VERSION_CODE)
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/*&n; *  Compatibility with ncr53c8xx and sym53c8xx configuration options.&n; */
-macro_line|#ifndef&t;CONFIG_SCSI_SYM53C8XX_IOMAPPED
-macro_line|#ifdef&t;CONFIG_SCSI_NCR53C8XX_IOMAPPED
-DECL|macro|CONFIG_SCSI_SYM53C8XX_IOMAPPED
-mdefine_line|#define&t;CONFIG_SCSI_SYM53C8XX_IOMAPPED&t;&t;CONFIG_SCSI_NCR53C8XX_IOMAPPED
-macro_line|#endif
-macro_line|#endif
-macro_line|#ifndef&t;CONFIG_SCSI_SYM53C8XX_DEFAULT_TAGS
-macro_line|#ifdef&t;CONFIG_SCSI_NCR53C8XX_DEFAULT_TAGS
-DECL|macro|CONFIG_SCSI_SYM53C8XX_DEFAULT_TAGS
-mdefine_line|#define&t;CONFIG_SCSI_SYM53C8XX_DEFAULT_TAGS&t;CONFIG_SCSI_NCR53C8XX_DEFAULT_TAGS
-macro_line|#endif
-macro_line|#endif
-macro_line|#ifndef&t;CONFIG_SCSI_SYM53C8XX_MAX_TAGS
-macro_line|#ifdef&t;CONFIG_SCSI_NCR53C8XX_MAX_TAGS
-DECL|macro|CONFIG_SCSI_SYM53C8XX_MAX_TAGS
-mdefine_line|#define&t;CONFIG_SCSI_SYM53C8XX_MAX_TAGS&t;&t;CONFIG_SCSI_NCR53C8XX_MAX_TAGS
-macro_line|#endif
-macro_line|#endif
-multiline_comment|/*&n; *  Translate kernel configuration parameters&n; *  into corresponding driver parameters.&n; */
 multiline_comment|/*&n; *  Use normal IO if configured.&n; *  Normal IO forced for alpha.&n; *  Forced to MMIO for sparc.&n; */
 macro_line|#if defined(__alpha__)
 DECL|macro|SYM_CONF_IOMAPPED
@@ -41,10 +18,8 @@ DECL|macro|SYM_CONF_IOMAPPED
 mdefine_line|#define&t;SYM_CONF_IOMAPPED
 macro_line|#endif
 multiline_comment|/*&n; *  DMA addressing mode.&n; *&n; *  0 : 32 bit addressing for all chips.&n; *  1 : 40 bit addressing when supported by chip.&n; *  2 : 64 bit addressing when supported by chip,&n; *      limited to 16 segments of 4 GB -&gt; 64 GB max.&n; */
-macro_line|#ifdef&t;CONFIG_SCSI_SYM53C8XX_DMA_ADDRESSING_MODE
 DECL|macro|SYM_CONF_DMA_ADDRESSING_MODE
 mdefine_line|#define&t;SYM_CONF_DMA_ADDRESSING_MODE CONFIG_SCSI_SYM53C8XX_DMA_ADDRESSING_MODE
-macro_line|#endif
 multiline_comment|/*&n; *  NCR PQS/PDS special device support.&n; */
 macro_line|#if 1
 DECL|macro|SYM_CONF_PQS_PDS_SUPPORT
@@ -105,40 +80,17 @@ macro_line|#else
 DECL|macro|SYM_CONF_MAX_TAG_ORDER
 mdefine_line|#define SYM_CONF_MAX_TAG_ORDER&t;(8)
 macro_line|#endif
-multiline_comment|/*&n; *  Sync transfer frequency at startup.&n; *  Allow up to ULTRA-160. The driver will scale the value &n; *  according to controller capabilities.&n; */
-DECL|macro|CONFIG_SCSI_SYM53C8XX_DEFAULT_SYNC
-mdefine_line|#define&t;CONFIG_SCSI_SYM53C8XX_DEFAULT_SYNC (9)
 multiline_comment|/*&n; *  Max number of SG entries.&n; */
 DECL|macro|SYM_CONF_MAX_SG
 mdefine_line|#define SYM_CONF_MAX_SG&t;&t;(96)
-multiline_comment|/*&n; *  Max number of LUNs per target.&n; */
-macro_line|#if 1 /* defined CONFIG_SCSI_MULTI_LUN */
-DECL|macro|CONFIG_SCSI_SYM53C8XX_MAX_LUN
-mdefine_line|#define&t;CONFIG_SCSI_SYM53C8XX_MAX_LUN&t;(16)
-macro_line|#else
-DECL|macro|CONFIG_SCSI_SYM53C8XX_MAX_LUN
-mdefine_line|#define&t;CONFIG_SCSI_SYM53C8XX_MAX_LUN&t;(1)
-macro_line|#endif
 multiline_comment|/*&n; *  Driver setup structure.&n; *&n; *  This structure is initialized from linux config options.&n; *  It can be overridden at boot-up by the boot command line.&n; */
 DECL|struct|sym_driver_setup
 r_struct
 id|sym_driver_setup
 (brace
-DECL|member|pci_parity
-id|u_char
-id|pci_parity
-suffix:semicolon
-DECL|member|scsi_parity
-id|u_char
-id|scsi_parity
-suffix:semicolon
 DECL|member|max_tag
 id|u_short
 id|max_tag
-suffix:semicolon
-DECL|member|min_sync
-id|u_char
-id|min_sync
 suffix:semicolon
 DECL|member|burst_order
 id|u_char
@@ -147,10 +99,6 @@ suffix:semicolon
 DECL|member|scsi_led
 id|u_char
 id|scsi_led
-suffix:semicolon
-DECL|member|max_wide
-id|u_char
-id|max_wide
 suffix:semicolon
 DECL|member|scsi_diff
 id|u_char
@@ -167,18 +115,6 @@ suffix:semicolon
 DECL|member|host_id
 id|u_char
 id|host_id
-suffix:semicolon
-DECL|member|max_offs
-id|u_char
-id|max_offs
-suffix:semicolon
-DECL|member|max_lun
-id|u_char
-id|max_lun
-suffix:semicolon
-DECL|member|pci_fix_up
-id|u_char
-id|pci_fix_up
 suffix:semicolon
 DECL|member|reverse_probe
 id|u_char
@@ -216,20 +152,12 @@ l_int|100
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|SYM_SETUP_PCI_PARITY
-mdefine_line|#define SYM_SETUP_PCI_PARITY&t;&t;sym_driver_setup.pci_parity
-DECL|macro|SYM_SETUP_SCSI_PARITY
-mdefine_line|#define SYM_SETUP_SCSI_PARITY&t;&t;sym_driver_setup.scsi_parity
 DECL|macro|SYM_SETUP_MAX_TAG
 mdefine_line|#define SYM_SETUP_MAX_TAG&t;&t;sym_driver_setup.max_tag
-DECL|macro|SYM_SETUP_MIN_SYNC
-mdefine_line|#define SYM_SETUP_MIN_SYNC&t;&t;sym_driver_setup.min_sync
 DECL|macro|SYM_SETUP_BURST_ORDER
 mdefine_line|#define SYM_SETUP_BURST_ORDER&t;&t;sym_driver_setup.burst_order
 DECL|macro|SYM_SETUP_SCSI_LED
 mdefine_line|#define SYM_SETUP_SCSI_LED&t;&t;sym_driver_setup.scsi_led
-DECL|macro|SYM_SETUP_MAX_WIDE
-mdefine_line|#define SYM_SETUP_MAX_WIDE&t;&t;sym_driver_setup.max_wide
 DECL|macro|SYM_SETUP_SCSI_DIFF
 mdefine_line|#define SYM_SETUP_SCSI_DIFF&t;&t;sym_driver_setup.scsi_diff
 DECL|macro|SYM_SETUP_IRQ_MODE
@@ -238,18 +166,17 @@ DECL|macro|SYM_SETUP_SCSI_BUS_CHECK
 mdefine_line|#define SYM_SETUP_SCSI_BUS_CHECK&t;sym_driver_setup.scsi_bus_check
 DECL|macro|SYM_SETUP_HOST_ID
 mdefine_line|#define SYM_SETUP_HOST_ID&t;&t;sym_driver_setup.host_id
-DECL|macro|SYM_SETUP_MAX_OFFS
-mdefine_line|#define SYM_SETUP_MAX_OFFS&t;&t;sym_driver_setup.max_offs
-DECL|macro|SYM_SETUP_MAX_LUN
-mdefine_line|#define SYM_SETUP_MAX_LUN&t;&t;sym_driver_setup.max_lun
-DECL|macro|SYM_SETUP_PCI_FIX_UP
-mdefine_line|#define SYM_SETUP_PCI_FIX_UP&t;&t;sym_driver_setup.pci_fix_up
+multiline_comment|/* Always enable parity. */
+DECL|macro|SYM_SETUP_PCI_PARITY
+mdefine_line|#define SYM_SETUP_PCI_PARITY&t;&t;1
+DECL|macro|SYM_SETUP_SCSI_PARITY
+mdefine_line|#define SYM_SETUP_SCSI_PARITY&t;&t;1
 multiline_comment|/*&n; *  Initial setup.&n; *&n; *  Can be overriden at startup by a command line.&n; */
 DECL|macro|SYM_LINUX_DRIVER_SETUP
-mdefine_line|#define SYM_LINUX_DRIVER_SETUP&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;1,&t;/* pci_parity */&t;&t;&bslash;&n;&t;1,&t;/* scsi_parity */&t;&t;&bslash;&n;&t;CONFIG_SCSI_SYM53C8XX_DEFAULT_TAGS,&t;&bslash;&n;&t;CONFIG_SCSI_SYM53C8XX_DEFAULT_SYNC,&t;&bslash;&n;&t;7,&t;/* burst_order */&t;&t;&bslash;&n;&t;1,&t;/* scsi_led */&t;&t;&t;&bslash;&n;&t;1,&t;/* max_wide */&t;&t;&t;&bslash;&n;&t;1,&t;/* scsi_diff */&t;&t;&t;&bslash;&n;&t;0,&t;/* irq_mode */&t;&t;&t;&bslash;&n;&t;1,&t;/* scsi_bus_check */&t;&t;&bslash;&n;&t;7,&t;/* host_id */&t;&t;&t;&bslash;&n;&t;62,&t;/* max_offs */&t;&t;&t;&bslash;&n;&t;CONFIG_SCSI_SYM53C8XX_MAX_LUN,&t;&t;&bslash;&n;&t;3,&t;/* pci_fix_up */&t;&t;&bslash;&n;&t;0,&t;/* reverse_probe */&t;&t;&bslash;&n;&t;0,&t;/* verbose */&t;&t;&t;&bslash;&n;&t;0,&t;/* debug */&t;&t;&t;&bslash;&n;&t;3,&t;/* settle_delay */&t;&t;&bslash;&n;&t;1,&t;/* use_nvram */&t;&t;&t;&bslash;&n;}
+mdefine_line|#define SYM_LINUX_DRIVER_SETUP&t;{&t;&t;&t;&t;&bslash;&n;&t;.max_tag&t;= CONFIG_SCSI_SYM53C8XX_DEFAULT_TAGS,&t;&bslash;&n;&t;.burst_order&t;= 7,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_led&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_diff&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;&t;.irq_mode&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_bus_check&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;&t;.host_id&t;= 7,&t;&t;&t;&t;&t;&bslash;&n;&t;.reverse_probe&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.verbose&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.debug&t;&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.settle_delay&t;= 3,&t;&t;&t;&t;&t;&bslash;&n;&t;.use_nvram&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; *  Boot fail safe setup.&n; *&n; *  Override initial setup from boot command line:&n; *    sym53c8xx=safe:y&n; */
 DECL|macro|SYM_LINUX_DRIVER_SAFE_SETUP
-mdefine_line|#define SYM_LINUX_DRIVER_SAFE_SETUP&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;/* pci_parity */&t;&t;&bslash;&n;&t;0,&t;/* scsi_parity */&t;&t;&bslash;&n;&t;0,&t;/* max_tag */&t;&t;&t;&bslash;&n;&t;50,&t;/* min_sync */&t;&t;&t;&bslash;&n;&t;0,&t;/* burst_order */&t;&t;&bslash;&n;&t;0,&t;/* scsi_led */&t;&t;&t;&bslash;&n;&t;1,&t;/* max_wide */&t;&t;&t;&bslash;&n;&t;1,&t;/* scsi_diff */&t;&t;&t;&bslash;&n;&t;0,&t;/* irq_mode */&t;&t;&t;&bslash;&n;&t;2,&t;/* scsi_bus_check */&t;&t;&bslash;&n;&t;7,&t;/* host_id */&t;&t;&t;&bslash;&n;&t;15,&t;/* max_offs */&t;&t;&t;&bslash;&n;&t;1,&t;/* max_lun */&t;&t;&t;&bslash;&n;&t;0,&t;/* pci_fix_up */&t;&t;&bslash;&n;&t;0,&t;/* reverse_probe */&t;&t;&bslash;&n;&t;2,&t;/* verbose */&t;&t;&t;&bslash;&n;&t;0,&t;/* debug */&t;&t;&t;&bslash;&n;&t;10,&t;/* settle_delay */&t;&t;&bslash;&n;&t;1,&t;/* use_nvram */&t;&t;&t;&bslash;&n;}
+mdefine_line|#define SYM_LINUX_DRIVER_SAFE_SETUP {&t;&t;&t;&t;&bslash;&n;&t;.max_tag&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.burst_order&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_led&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_diff&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;&t;.irq_mode&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.scsi_bus_check&t;= 2,&t;&t;&t;&t;&t;&bslash;&n;&t;.host_id&t;= 7,&t;&t;&t;&t;&t;&bslash;&n;&t;.reverse_probe&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.verbose&t;= 2,&t;&t;&t;&t;&t;&bslash;&n;&t;.debug&t;&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.settle_delay&t;= 10,&t;&t;&t;&t;&t;&bslash;&n;&t;.use_nvram&t;= 1,&t;&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; *  This structure is initialized from linux config options.&n; *  It can be overridden at boot-up by the boot command line.&n; */
 macro_line|#ifdef SYM_GLUE_C
 r_struct

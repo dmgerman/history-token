@@ -1,7 +1,12 @@
 multiline_comment|/*&n; * Device driver for the SYMBIOS/LSILOGIC 53C8XX and 53C1010 family &n; * of PCI-SCSI IO processors.&n; *&n; * Copyright (C) 1999-2001  Gerard Roudier &lt;groudier@free.fr&gt;&n; *&n; * This driver is derived from the Linux sym53c8xx driver.&n; * Copyright (C) 1998-2000  Gerard Roudier&n; *&n; * The sym53c8xx driver is derived from the ncr53c8xx driver that had been &n; * a port of the FreeBSD ncr driver to Linux-1.2.13.&n; *&n; * The original ncr driver has been written for 386bsd and FreeBSD by&n; *         Wolfgang Stanglmeier        &lt;wolf@cologne.de&gt;&n; *         Stefan Esser                &lt;se@mi.Uni-Koeln.de&gt;&n; * Copyright (C) 1994  Wolfgang Stanglmeier&n; *&n; * Other major contributions:&n; *&n; * NVRAM detection and reading.&n; * Copyright (C) 1997 Richard Waltham &lt;dormouse@farsrobt.demon.co.uk&gt;&n; *&n; *-----------------------------------------------------------------------------&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions and the following disclaimer.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Where this Software is combined with software released under the terms of &n; * the GNU Public License (&quot;GPL&quot;) and the terms of the GPL would require the &n; * combined work to also be released under the terms of the GPL, the terms&n; * and conditions of this License will apply in addition to those of the&n; * GPL with the exception of any terms or conditions of this License that&n; * conflict with, or are expressly prohibited by, the GPL.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHORS AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
 DECL|macro|SYM_GLUE_C
 mdefine_line|#define SYM_GLUE_C
+macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &quot;sym_glue.h&quot;
 DECL|macro|NAME53C
 mdefine_line|#define NAME53C&t;&t;&quot;sym53c&quot;
@@ -108,23 +113,6 @@ suffix:semicolon
 DECL|macro|PCI_BAR_OFFSET
 macro_line|#undef PCI_BAR_OFFSET
 )brace
-DECL|macro|SYM_INIT_LOCK_HCB
-mdefine_line|#define SYM_INIT_LOCK_HCB(np)&t;&t;spin_lock_init((np)-&gt;s.host-&gt;host_lock);
-DECL|macro|SYM_LOCK_HCB
-mdefine_line|#define&t;SYM_LOCK_HCB(np, flags)&t;&t;&bslash;&n;&t;&t;&t;spin_lock_irqsave((np)-&gt;s.host-&gt;host_lock, flags)
-DECL|macro|SYM_UNLOCK_HCB
-mdefine_line|#define&t;SYM_UNLOCK_HCB(np, flags)&t;&bslash;&n;&t;&t;&t;spin_unlock_irqrestore((np)-&gt;s.host-&gt;host_lock, flags)
-multiline_comment|/*&n; *  These simple macros limit expression involving &n; *  kernel time values (jiffies) to some that have &n; *  chance not to be too much incorrect. :-)&n; */
-DECL|macro|ktime_get
-mdefine_line|#define ktime_get(o)&t;&t;(jiffies + (u_long) o)
-DECL|macro|ktime_exp
-mdefine_line|#define ktime_exp(b)&t;&t;((long)(jiffies) - (long)(b) &gt;= 0)
-DECL|macro|ktime_dif
-mdefine_line|#define ktime_dif(a, b)&t;&t;((long)(a) - (long)(b))
-DECL|macro|ktime_add
-mdefine_line|#define ktime_add(a, o)&t;&t;((a) + (u_long)(o))
-DECL|macro|ktime_sub
-mdefine_line|#define ktime_sub(a, o)&t;&t;((a) - (u_long)(o))
 multiline_comment|/* This lock protects only the memory allocation/free.  */
 DECL|variable|sym53c8xx_lock
 id|spinlock_t
@@ -147,7 +135,8 @@ op_star
 id|name
 )paren
 (brace
-id|u_long
+r_int
+r_int
 id|flags
 suffix:semicolon
 r_void
@@ -203,7 +192,8 @@ op_star
 id|name
 )paren
 (brace
-id|u_long
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|spin_lock_irqsave
@@ -252,7 +242,8 @@ op_star
 id|name
 )paren
 (brace
-id|u_long
+r_int
+r_int
 id|flags
 suffix:semicolon
 r_void
@@ -313,7 +304,8 @@ op_star
 id|name
 )paren
 (brace
-id|u_long
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|spin_lock_irqsave
@@ -360,7 +352,8 @@ op_star
 id|m
 )paren
 (brace
-id|u_long
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|m_addr_t
@@ -398,128 +391,18 @@ r_return
 id|b
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Map/unmap a PCI memory window.&n; */
-macro_line|#ifndef SYM_OPT_NO_BUS_MEMORY_MAPPING
-DECL|function|pci_map_mem
-r_static
-id|u_long
-id|__devinit
-id|pci_map_mem
-c_func
-(paren
-id|u_long
-id|base
-comma
-id|u_long
-id|size
-)paren
-(brace
-id|u_long
-id|page_base
-op_assign
-(paren
-(paren
-id|u_long
-)paren
-id|base
-)paren
-op_amp
-id|PAGE_MASK
-suffix:semicolon
-id|u_long
-id|page_offs
-op_assign
-(paren
-(paren
-id|u_long
-)paren
-id|base
-)paren
-op_minus
-id|page_base
-suffix:semicolon
-id|u_long
-id|page_remapped
-op_assign
-(paren
-id|u_long
-)paren
-id|ioremap
-c_func
-(paren
-id|page_base
-comma
-id|page_offs
-op_plus
-id|size
-)paren
-suffix:semicolon
-r_return
-id|page_remapped
-ques
-c_cond
-(paren
-id|page_remapped
-op_plus
-id|page_offs
-)paren
-suffix:colon
-l_int|0UL
-suffix:semicolon
-)brace
-DECL|function|pci_unmap_mem
-r_static
-r_void
-id|__devinit
-id|pci_unmap_mem
-c_func
-(paren
-id|u_long
-id|vaddr
-comma
-id|u_long
-id|size
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|vaddr
-)paren
-id|iounmap
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-(paren
-id|vaddr
-op_amp
-id|PAGE_MASK
-)paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-DECL|macro|scsi_data_direction
-mdefine_line|#define scsi_data_direction(cmd)&t;(cmd-&gt;sc_data_direction)
 multiline_comment|/*&n; *  Driver host data structure.&n; */
 DECL|struct|host_data
 r_struct
 id|host_data
 (brace
 DECL|member|ncb
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|ncb
 suffix:semicolon
 )brace
-suffix:semicolon
-multiline_comment|/*&n; * Some type that fit DMA addresses as seen from BUS.&n; */
-DECL|typedef|bus_addr_t
-r_typedef
-id|dma_addr_t
-id|bus_addr_t
 suffix:semicolon
 multiline_comment|/*&n; *  Used by the eh thread to wait for command completion.&n; *  It is allocated on the eh thread stack.&n; */
 DECL|struct|sym_eh_wait
@@ -570,7 +453,7 @@ id|link_cmdq
 suffix:semicolon
 multiline_comment|/* Must stay at offset ZERO */
 DECL|member|data_mapping
-id|bus_addr_t
+id|dma_addr_t
 id|data_mapping
 suffix:semicolon
 DECL|member|data_mapped
@@ -585,15 +468,8 @@ id|eh_wait
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|typedef|ucmd_p
-r_typedef
-r_struct
-id|sym_ucmd
-op_star
-id|ucmd_p
-suffix:semicolon
 DECL|macro|SYM_UCMD_PTR
-mdefine_line|#define SYM_UCMD_PTR(cmd)  ((ucmd_p)(&amp;(cmd)-&gt;SCp))
+mdefine_line|#define SYM_UCMD_PTR(cmd)  ((struct sym_ucmd *)(&amp;(cmd)-&gt;SCp))
 DECL|macro|SYM_SCMD_PTR
 mdefine_line|#define SYM_SCMD_PTR(ucmd) sym_que_entry(ucmd, struct scsi_cmnd, SCp)
 DECL|macro|SYM_SOFTC_PTR
@@ -707,7 +583,7 @@ suffix:semicolon
 )brace
 DECL|function|__map_scsi_single_data
 r_static
-id|bus_addr_t
+id|dma_addr_t
 id|__map_scsi_single_data
 c_func
 (paren
@@ -722,7 +598,7 @@ op_star
 id|cmd
 )paren
 (brace
-id|bus_addr_t
+id|dma_addr_t
 id|mapping
 suffix:semicolon
 r_int
@@ -949,7 +825,9 @@ r_void
 id|sym_xpt_done
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_struct
@@ -993,7 +871,9 @@ r_void
 id|sym_xpt_done2
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_struct
@@ -1026,8 +906,11 @@ multiline_comment|/*&n; *  Print something that identifies the IO.&n; */
 DECL|function|sym_print_addr
 r_void
 id|sym_print_addr
+c_func
 (paren
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|cp
 )paren
 (brace
@@ -1070,7 +953,9 @@ r_void
 id|sym_xpt_async_bus_reset
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 )paren
 (brace
@@ -1088,13 +973,11 @@ id|np
 suffix:semicolon
 id|np-&gt;s.settle_time
 op_assign
-id|ktime_get
-c_func
-(paren
+id|jiffies
+op_plus
 id|sym_driver_setup.settle_delay
 op_star
 id|HZ
-)paren
 suffix:semicolon
 id|np-&gt;s.settle_time_valid
 op_assign
@@ -1128,7 +1011,9 @@ r_void
 id|sym_xpt_async_sent_bdr
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_int
@@ -1156,7 +1041,9 @@ r_void
 id|sym_xpt_async_nego_wide
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_int
@@ -1258,10 +1145,14 @@ r_void
 id|sym_set_cam_result_error
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|cp
 comma
 r_int
@@ -1368,14 +1259,14 @@ id|csio-&gt;sense_buffer
 )paren
 )paren
 suffix:semicolon
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|cp-&gt;sns_bbuf
-comma
 id|csio-&gt;sense_buffer
 comma
-id|MIN
+id|cp-&gt;sns_bbuf
+comma
+id|min
 c_func
 (paren
 r_sizeof
@@ -1383,6 +1274,9 @@ r_sizeof
 id|csio-&gt;sense_buffer
 )paren
 comma
+(paren
+r_int
+)paren
 id|SYM_SNS_BBUF_LEN
 )paren
 )paren
@@ -1450,10 +1344,12 @@ suffix:semicolon
 macro_line|#endif
 )brace
 r_else
+(brace
 id|cam_status
 op_assign
 id|DID_ERROR
 suffix:semicolon
+)brace
 )brace
 r_else
 r_if
@@ -1560,7 +1456,9 @@ r_void
 id|sym_sniff_inquiry
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_struct
@@ -1650,10 +1548,14 @@ r_int
 id|sym_scatter_no_sglist
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|cp
 comma
 r_struct
@@ -1688,7 +1590,7 @@ c_cond
 id|cmd-&gt;request_bufflen
 )paren
 (brace
-id|bus_addr_t
+id|dma_addr_t
 id|baddr
 op_assign
 id|map_scsi_single_data
@@ -1723,17 +1625,21 @@ l_int|1
 suffix:semicolon
 )brace
 r_else
+(brace
 id|segment
 op_assign
 op_minus
 l_int|2
 suffix:semicolon
 )brace
+)brace
 r_else
+(brace
 id|segment
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 r_return
 id|segment
 suffix:semicolon
@@ -1744,10 +1650,14 @@ r_int
 id|sym_scatter
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|cp
 comma
 r_struct
@@ -1871,7 +1781,7 @@ id|segment
 op_increment
 )paren
 (brace
-id|bus_addr_t
+id|dma_addr_t
 id|baddr
 op_assign
 id|bus_sg_dma_address
@@ -1921,11 +1831,13 @@ suffix:semicolon
 )brace
 )brace
 r_else
+(brace
 id|segment
 op_assign
 op_minus
 l_int|2
 suffix:semicolon
+)brace
 r_return
 id|segment
 suffix:semicolon
@@ -1937,7 +1849,9 @@ r_int
 id|sym_queue_command
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_struct
@@ -1947,13 +1861,19 @@ id|ccb
 )paren
 (brace
 multiline_comment|/*&t;struct scsi_device        *device    = ccb-&gt;device; */
-id|tcb_p
+r_struct
+id|sym_tcb
+op_star
 id|tp
 suffix:semicolon
-id|lcb_p
+r_struct
+id|sym_lcb
+op_star
 id|lp
 suffix:semicolon
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|cp
 suffix:semicolon
 r_int
@@ -2111,9 +2031,6 @@ r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/* Means resource shortage */
-(paren
-r_void
-)paren
 id|sym_queue_scsiio
 c_func
 (paren
@@ -2136,7 +2053,9 @@ id|__inline
 id|sym_setup_cdb
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_struct
@@ -2144,7 +2063,9 @@ id|scsi_cmnd
 op_star
 id|ccb
 comma
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|cp
 )paren
 (brace
@@ -2179,12 +2100,12 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|ccb-&gt;cmnd
-comma
 id|cp-&gt;cdb_buf
+comma
+id|ccb-&gt;cmnd
 comma
 id|ccb-&gt;cmd_len
 )paren
@@ -2231,7 +2152,9 @@ r_int
 id|sym_setup_data_and_start
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_struct
@@ -2239,14 +2162,18 @@ id|scsi_cmnd
 op_star
 id|csio
 comma
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|cp
 )paren
 (brace
 r_int
 id|dir
 suffix:semicolon
-id|tcb_p
+r_struct
+id|sym_tcb
+op_star
 id|tp
 op_assign
 op_amp
@@ -2255,7 +2182,9 @@ id|np-&gt;target
 id|cp-&gt;target
 )braket
 suffix:semicolon
-id|lcb_p
+r_struct
+id|sym_lcb
+op_star
 id|lp
 op_assign
 id|sym_lp
@@ -2288,11 +2217,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *  No direction means no data.&n;&t; */
 id|dir
 op_assign
-id|scsi_data_direction
-c_func
-(paren
-id|csio
-)paren
+id|csio-&gt;sc_data_direction
 suffix:semicolon
 r_if
 c_cond
@@ -2305,6 +2230,7 @@ id|SCSI_DATA_NONE
 id|cp-&gt;segments
 op_assign
 id|sym_scatter
+c_func
 (paren
 id|np
 comma
@@ -2468,46 +2394,27 @@ DECL|function|sym_timer
 r_static
 r_void
 id|sym_timer
+c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 )paren
 (brace
-id|u_long
+r_int
+r_int
 id|thistime
 op_assign
-id|ktime_get
-c_func
-(paren
-l_int|0
-)paren
+id|jiffies
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Restart the timer.&n;&t; */
-macro_line|#ifdef SYM_CONF_PCIQ_BROKEN_INTR
 id|np-&gt;s.timer.expires
 op_assign
-id|ktime_get
-c_func
-(paren
-(paren
-id|HZ
+id|thistime
 op_plus
-l_int|99
-)paren
-op_div
-l_int|100
-)paren
-suffix:semicolon
-macro_line|#else
-id|np-&gt;s.timer.expires
-op_assign
-id|ktime_get
-c_func
-(paren
 id|SYM_CONF_TIMER_INTERVAL
-)paren
 suffix:semicolon
-macro_line|#endif
 id|add_timer
 c_func
 (paren
@@ -2525,15 +2432,13 @@ id|np-&gt;s.settle_time_valid
 r_if
 c_cond
 (paren
-id|ktime_dif
+id|time_before_eq
 c_func
 (paren
 id|np-&gt;s.settle_time
 comma
 id|thistime
 )paren
-op_le
-l_int|0
 )paren
 (brace
 r_if
@@ -2590,58 +2495,6 @@ id|np
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef SYM_CONF_PCIQ_BROKEN_INTR
-r_if
-c_cond
-(paren
-id|INB
-c_func
-(paren
-id|nc_istat
-)paren
-op_amp
-(paren
-id|INTF
-op_or
-id|SIP
-op_or
-id|DIP
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;**&t;Process pending interrupts.&n;&t;&t;*/
-r_if
-c_cond
-(paren
-id|DEBUG_FLAGS
-op_amp
-id|DEBUG_TINY
-)paren
-id|printk
-(paren
-l_string|&quot;{&quot;
-)paren
-suffix:semicolon
-id|sym_interrupt
-c_func
-(paren
-id|np
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|DEBUG_FLAGS
-op_amp
-id|DEBUG_TINY
-)paren
-id|printk
-(paren
-l_string|&quot;}&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* SYM_CONF_PCIQ_BROKEN_INTR */
 )brace
 multiline_comment|/*&n; *  PCI BUS error handler.&n; */
 DECL|function|sym_log_bus_error
@@ -2649,7 +2502,9 @@ r_void
 id|sym_log_bus_error
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 )paren
 (brace
@@ -2710,7 +2565,9 @@ r_void
 id|sym_requeue_awaiting_cmds
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 )paren
 (brace
@@ -2719,7 +2576,9 @@ id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon
-id|ucmd_p
+r_struct
+id|sym_ucmd
+op_star
 id|ucp
 op_assign
 id|SYM_UCMD_PTR
@@ -2751,7 +2610,9 @@ c_loop
 id|ucp
 op_assign
 (paren
-id|ucmd_p
+r_struct
+id|sym_ucmd
+op_star
 )paren
 id|sym_remque_head
 c_func
@@ -2818,10 +2679,12 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; *  Linux entry point of the queuecommand() function&n; */
+multiline_comment|/*&n; * queuecommand method.  Entered with the host adapter lock held and&n; * interrupts disabled.&n; */
 DECL|function|sym53c8xx_queue_command
+r_static
 r_int
 id|sym53c8xx_queue_command
+c_func
 (paren
 r_struct
 id|scsi_cmnd
@@ -2840,7 +2703,9 @@ op_star
 )paren
 )paren
 (brace
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 op_assign
 id|SYM_SOFTC_PTR
@@ -2849,7 +2714,9 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-id|ucmd_p
+r_struct
+id|sym_ucmd
+op_star
 id|ucp
 op_assign
 id|SYM_UCMD_PTR
@@ -2863,11 +2730,6 @@ id|sts
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if 0
-id|u_long
-id|flags
-suffix:semicolon
-macro_line|#endif
 id|cmd-&gt;scsi_done
 op_assign
 id|done
@@ -2890,16 +2752,6 @@ id|ucp
 )paren
 )paren
 suffix:semicolon
-macro_line|#if 0
-id|SYM_LOCK_HCB
-c_func
-(paren
-id|np
-comma
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; *  Shorten our settle_time if needed for &n;&t; *  this command not to time out.&n;&t; */
 r_if
 c_cond
@@ -2909,39 +2761,30 @@ op_logical_and
 id|cmd-&gt;timeout_per_command
 )paren
 (brace
-id|u_long
+r_int
+r_int
 id|tlimit
 op_assign
-id|ktime_get
-c_func
-(paren
+id|jiffies
+op_plus
 id|cmd-&gt;timeout_per_command
-)paren
 suffix:semicolon
 id|tlimit
-op_assign
-id|ktime_sub
-c_func
-(paren
-id|tlimit
-comma
+op_sub_assign
 id|SYM_CONF_TIMER_INTERVAL
 op_star
 l_int|2
-)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ktime_dif
+id|time_after
 c_func
 (paren
 id|np-&gt;s.settle_time
 comma
 id|tlimit
 )paren
-OG
-l_int|0
 )paren
 (brace
 id|np-&gt;s.settle_time
@@ -3024,16 +2867,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-macro_line|#if 0
-id|SYM_UNLOCK_HCB
-c_func
-(paren
-id|np
-comma
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3062,11 +2895,15 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 op_assign
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 )paren
 id|dev_id
 suffix:semicolon
@@ -3082,10 +2919,10 @@ id|printf_debug
 l_string|&quot;[&quot;
 )paren
 suffix:semicolon
-id|SYM_LOCK_HCB
+id|spin_lock_irqsave
 c_func
 (paren
-id|np
+id|np-&gt;s.host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -3117,10 +2954,10 @@ c_func
 id|np
 )paren
 suffix:semicolon
-id|SYM_UNLOCK_HCB
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|np
+id|np-&gt;s.host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -3153,11 +2990,15 @@ r_int
 id|npref
 )paren
 (brace
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 op_assign
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 )paren
 id|npref
 suffix:semicolon
@@ -3165,10 +3006,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|SYM_LOCK_HCB
+id|spin_lock_irqsave
 c_func
 (paren
-id|np
+id|np-&gt;s.host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -3199,10 +3040,10 @@ c_func
 id|np
 )paren
 suffix:semicolon
-id|SYM_UNLOCK_HCB
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|np
+id|np-&gt;s.host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -3389,7 +3230,9 @@ op_star
 id|cmd
 )paren
 (brace
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 op_assign
 id|SYM_SOFTC_PTR
@@ -3428,10 +3271,6 @@ id|devname
 (braket
 l_int|20
 )braket
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 id|sprintf
 c_func
@@ -3515,7 +3354,9 @@ comma
 id|qp
 )paren
 (brace
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|cp
 op_assign
 id|sym_que_entry
@@ -3787,16 +3628,10 @@ op_amp
 id|ep-&gt;timer
 )paren
 suffix:semicolon
-id|local_save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-id|cmd-&gt;device-&gt;host-&gt;host_lock
+id|np-&gt;s.host-&gt;host_lock
 )paren
 suffix:semicolon
 id|down
@@ -3806,16 +3641,10 @@ op_amp
 id|ep-&gt;sem
 )paren
 suffix:semicolon
-id|local_irq_restore
+id|spin_lock_irq
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-id|cmd-&gt;device-&gt;host-&gt;host_lock
+id|np-&gt;s.host-&gt;host_lock
 )paren
 suffix:semicolon
 r_if
@@ -3867,6 +3696,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Error handlers called from the eh thread (one thread per HBA).&n; */
 DECL|function|sym53c8xx_eh_abort_handler
+r_static
 r_int
 id|sym53c8xx_eh_abort_handler
 c_func
@@ -3890,6 +3720,7 @@ id|cmd
 suffix:semicolon
 )brace
 DECL|function|sym53c8xx_eh_device_reset_handler
+r_static
 r_int
 id|sym53c8xx_eh_device_reset_handler
 c_func
@@ -3913,6 +3744,7 @@ id|cmd
 suffix:semicolon
 )brace
 DECL|function|sym53c8xx_eh_bus_reset_handler
+r_static
 r_int
 id|sym53c8xx_eh_bus_reset_handler
 c_func
@@ -3936,6 +3768,7 @@ id|cmd
 suffix:semicolon
 )brace
 DECL|function|sym53c8xx_eh_host_reset_handler
+r_static
 r_int
 id|sym53c8xx_eh_host_reset_handler
 c_func
@@ -3959,13 +3792,15 @@ id|cmd
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Tune device queuing depth, according to various limits.&n; */
+DECL|function|sym_tune_dev_queuing
 r_static
 r_void
-DECL|function|sym_tune_dev_queuing
 id|sym_tune_dev_queuing
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_int
@@ -3978,7 +3813,9 @@ id|u_short
 id|reqtags
 )paren
 (brace
-id|tcb_p
+r_struct
+id|sym_tcb
+op_star
 id|tp
 op_assign
 op_amp
@@ -3987,7 +3824,9 @@ id|np-&gt;target
 id|target
 )braket
 suffix:semicolon
-id|lcb_p
+r_struct
+id|sym_lcb
+op_star
 id|lp
 op_assign
 id|sym_lp
@@ -4097,7 +3936,9 @@ r_int
 id|device_queue_depth
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_int
@@ -4311,8 +4152,9 @@ DECL|macro|device_queue_depth
 mdefine_line|#define device_queue_depth(np, t, l)&t;(sym_driver_setup.max_tag)
 macro_line|#endif&t;/* SYM_LINUX_BOOT_COMMAND_LINE_SUPPORT */
 multiline_comment|/*&n; * Linux entry point for device queue sizing.&n; */
-r_int
 DECL|function|sym53c8xx_slave_configure
+r_static
+r_int
 id|sym53c8xx_slave_configure
 c_func
 (paren
@@ -4329,13 +4171,19 @@ id|host
 op_assign
 id|device-&gt;host
 suffix:semicolon
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 suffix:semicolon
-id|tcb_p
+r_struct
+id|sym_tcb
+op_star
 id|tp
 suffix:semicolon
-id|lcb_p
+r_struct
+id|sym_lcb
+op_star
 id|lp
 suffix:semicolon
 r_int
@@ -4518,6 +4366,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Linux entry point for info() function&n; */
 DECL|function|sym53c8xx_info
+r_static
 r_const
 r_char
 op_star
@@ -4582,7 +4431,9 @@ r_static
 r_void
 id|sym_exec_user_command
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_struct
@@ -4591,7 +4442,9 @@ op_star
 id|uc
 )paren
 (brace
-id|tcb_p
+r_struct
+id|sym_tcb
+op_star
 id|tp
 suffix:semicolon
 r_int
@@ -4856,7 +4709,9 @@ id|l
 op_increment
 )paren
 (brace
-id|lcb_p
+r_struct
+id|sym_lcb
+op_star
 id|lp
 op_assign
 id|sym_lp
@@ -4909,12 +4764,8 @@ r_break
 suffix:semicolon
 )brace
 )brace
-DECL|macro|is_digit
-mdefine_line|#define is_digit(c)&t;((c) &gt;= &squot;0&squot; &amp;&amp; (c) &lt;= &squot;9&squot;)
 DECL|macro|digit_to_bin
 mdefine_line|#define digit_to_bin(c)&t;((c) - &squot;0&squot;)
-DECL|macro|is_space
-mdefine_line|#define is_space(c)&t;((c) == &squot; &squot; || (c) == &squot;&bslash;t&squot;)
 DECL|function|skip_spaces
 r_static
 r_int
@@ -4953,7 +4804,7 @@ id|ptr
 op_increment
 )paren
 op_logical_and
-id|is_space
+id|isspace
 c_func
 (paren
 id|c
@@ -5020,7 +4871,7 @@ id|ptr
 op_increment
 )paren
 op_logical_and
-id|is_digit
+id|isdigit
 c_func
 (paren
 id|c
@@ -5131,7 +4982,9 @@ r_int
 id|sym_user_command
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_char
@@ -5925,10 +5778,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|SYM_LOCK_HCB
+id|spin_lock_irqsave
 c_func
 (paren
-id|np
+id|np-&gt;s.host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -5940,10 +5793,10 @@ comma
 id|uc
 )paren
 suffix:semicolon
-id|SYM_UNLOCK_HCB
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|np
+id|np-&gt;s.host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -6160,7 +6013,9 @@ r_int
 id|sym_host_info
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_char
@@ -6347,7 +6202,9 @@ id|host_data
 op_star
 id|host_data
 suffix:semicolon
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 op_assign
 l_int|0
@@ -6452,7 +6309,9 @@ r_void
 id|sym_free_resources
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 )paren
 (brace
@@ -6470,44 +6329,29 @@ comma
 id|np
 )paren
 suffix:semicolon
+macro_line|#ifndef SYM_CONF_IOMAPPED
 r_if
 c_cond
 (paren
-id|np-&gt;s.io_port
+id|np-&gt;s.mmio_va
 )paren
-id|release_region
+id|iounmap
 c_func
 (paren
-id|np-&gt;s.io_port
-comma
-id|np-&gt;s.io_ws
+id|np-&gt;s.mmio_va
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifndef SYM_OPT_NO_BUS_MEMORY_MAPPING
 r_if
 c_cond
 (paren
-id|np-&gt;s.mmio_va
-)paren
-id|pci_unmap_mem
-c_func
-(paren
-id|np-&gt;s.mmio_va
-comma
-id|np-&gt;s.io_ws
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|np-&gt;s.ram_va
 )paren
-id|pci_unmap_mem
+id|iounmap
 c_func
 (paren
 id|np-&gt;s.ram_va
-comma
-id|np-&gt;ram_ws
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -6540,7 +6384,9 @@ r_int
 id|sym_setup_bus_dma_mask
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 )paren
 (brace
@@ -6645,7 +6491,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Host attach and initialisations.&n; *&n; *  Allocate host data and ncb structure.&n; *  Request IO region and remap MMIO region.&n; *  Do chip initialization.&n; *  If all is OK, install interrupt handling and&n; *  start the timer daemon.&n; */
+multiline_comment|/*&n; *  Host attach and initialisations.&n; *&n; *  Allocate host data and ncb structure.&n; *  Remap MMIO region.&n; *  Do chip initialization.&n; *  If all is OK, install interrupt handling and&n; *  start the timer daemon.&n; */
 r_static
 r_int
 id|__devinit
@@ -6660,6 +6506,7 @@ comma
 r_int
 id|unit
 comma
+r_struct
 id|sym_device
 op_star
 id|dev
@@ -6670,23 +6517,25 @@ id|host_data
 op_star
 id|host_data
 suffix:semicolon
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|Scsi_Host
 op_star
 id|instance
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
-id|u_long
+r_int
+r_int
 id|flags
-op_assign
-l_int|0
 suffix:semicolon
+r_struct
 id|sym_nvram
 op_star
 id|nvram
@@ -6755,11 +6604,6 @@ r_goto
 id|attach_failed
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Allocate host_data structure&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
 id|instance
 op_assign
 id|scsi_host_alloc
@@ -6773,7 +6617,12 @@ op_star
 id|host_data
 )paren
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|instance
 )paren
 r_goto
 id|attach_failed
@@ -6807,9 +6656,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|np
 )paren
-(brace
+r_goto
+id|attach_failed
+suffix:semicolon
 id|np-&gt;s.device
 op_assign
 id|dev-&gt;pdev
@@ -6819,11 +6671,6 @@ op_assign
 id|dev-&gt;pdev
 suffix:semicolon
 multiline_comment|/* Result in 1 DMA pool per HBA */
-)brace
-r_else
-r_goto
-id|attach_failed
-suffix:semicolon
 id|host_data-&gt;ncb
 op_assign
 id|np
@@ -6837,12 +6684,6 @@ c_func
 (paren
 id|dev-&gt;pdev
 comma
-id|np
-)paren
-suffix:semicolon
-id|SYM_INIT_LOCK_HCB
-c_func
-(paren
 id|np
 )paren
 suffix:semicolon
@@ -6956,7 +6797,7 @@ suffix:semicolon
 macro_line|#ifndef SYM_CONF_IOMAPPED
 id|np-&gt;s.mmio_va
 op_assign
-id|pci_map_mem
+id|ioremap
 c_func
 (paren
 id|dev-&gt;s.base_c
@@ -7008,28 +6849,10 @@ id|np
 )paren
 suffix:semicolon
 macro_line|#endif /* !defined SYM_CONF_IOMAPPED */
-multiline_comment|/*&n;&t; *  Try to map the controller chip into iospace.&n;&t; */
-r_if
-c_cond
-(paren
-id|dev-&gt;s.io_port
-)paren
-(brace
-id|request_region
-c_func
-(paren
-id|dev-&gt;s.io_port
-comma
-id|np-&gt;s.io_ws
-comma
-id|NAME53C8XX
-)paren
-suffix:semicolon
 id|np-&gt;s.io_port
 op_assign
 id|dev-&gt;s.io_port
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; *  Map on-chip RAM if present and supported.&n;&t; */
 r_if
 c_cond
@@ -7077,7 +6900,7 @@ suffix:semicolon
 macro_line|#ifndef SYM_OPT_NO_BUS_MEMORY_MAPPING
 id|np-&gt;s.ram_va
 op_assign
-id|pci_map_mem
+id|ioremap
 c_func
 (paren
 id|dev-&gt;s.base_2_c
@@ -7169,10 +6992,10 @@ op_assign
 id|dev-&gt;s.irq
 suffix:semicolon
 multiline_comment|/*&n;&t; *  After SCSI devices have been opened, we cannot&n;&t; *  reset the bus safely, so we do it here.&n;&t; */
-id|SYM_LOCK_HCB
+id|spin_lock_irqsave
 c_func
 (paren
-id|np
+id|instance-&gt;host_lock
 comma
 id|flags
 )paren
@@ -7188,32 +7011,9 @@ comma
 l_int|0
 )paren
 )paren
-(brace
-id|printf_err
-c_func
-(paren
-l_string|&quot;%s: FATAL ERROR: CHECK SCSI BUS - CABLES, &quot;
-l_string|&quot;TERMINATION, DEVICE POWER etc.!&bslash;n&quot;
-comma
-id|sym_name
-c_func
-(paren
-id|np
-)paren
-)paren
-suffix:semicolon
-id|SYM_UNLOCK_HCB
-c_func
-(paren
-id|np
-comma
-id|flags
-)paren
-suffix:semicolon
 r_goto
-id|attach_failed
+id|reset_failed
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; *  Initialize some queue headers.&n;&t; */
 id|sym_que_init
 c_func
@@ -7338,10 +7138,10 @@ id|instance-&gt;max_cmd_len
 op_assign
 l_int|16
 suffix:semicolon
-id|SYM_UNLOCK_HCB
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|np
+id|instance-&gt;host_lock
 comma
 id|flags
 )paren
@@ -7365,6 +7165,29 @@ id|instance
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|reset_failed
+suffix:colon
+id|printf_err
+c_func
+(paren
+l_string|&quot;%s: FATAL ERROR: CHECK SCSI BUS - CABLES, &quot;
+l_string|&quot;TERMINATION, DEVICE POWER etc.!&bslash;n&quot;
+comma
+id|sym_name
+c_func
+(paren
+id|np
+)paren
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|instance-&gt;host_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|attach_failed
 suffix:colon
@@ -7421,23 +7244,17 @@ id|__devinit
 id|sym_get_nvram
 c_func
 (paren
+r_struct
 id|sym_device
 op_star
 id|devp
 comma
+r_struct
 id|sym_nvram
 op_star
 id|nvp
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|nvp
-)paren
-r_return
-suffix:semicolon
 id|devp-&gt;nvram
 op_assign
 id|nvp
@@ -7451,21 +7268,10 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Get access to chip IO registers&n;&t; */
-macro_line|#ifdef SYM_CONF_IOMAPPED
-id|request_region
-c_func
-(paren
-id|devp-&gt;s.io_port
-comma
-l_int|128
-comma
-id|NAME53C8XX
-)paren
-suffix:semicolon
-macro_line|#else
+macro_line|#ifndef SYM_CONF_IOMAPPED
 id|devp-&gt;s.mmio_va
 op_assign
-id|pci_map_mem
+id|ioremap
 c_func
 (paren
 id|devp-&gt;s.base_c
@@ -7482,10 +7288,6 @@ id|devp-&gt;s.mmio_va
 r_return
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; *  Try to read SYMBIOS|TEKRAM nvram.&n;&t; */
-(paren
-r_void
-)paren
 id|sym_read_nvram
 c_func
 (paren
@@ -7495,28 +7297,34 @@ id|nvp
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Release access to chip IO registers&n;&t; */
-macro_line|#ifdef SYM_CONF_IOMAPPED
-id|release_region
+macro_line|#ifndef SYM_CONF_IOMAPPED
+id|iounmap
 c_func
 (paren
-id|devp-&gt;s.io_port
-comma
-l_int|128
-)paren
-suffix:semicolon
-macro_line|#else
-id|pci_unmap_mem
-c_func
-(paren
-(paren
-id|u_long
-)paren
 id|devp-&gt;s.mmio_va
-comma
-l_int|128ul
 )paren
 suffix:semicolon
 macro_line|#endif
+)brace
+macro_line|#else
+DECL|function|sym_get_nvram
+r_static
+r_inline
+r_void
+id|sym_get_nvram
+c_func
+(paren
+r_struct
+id|sym_device
+op_star
+id|devp
+comma
+r_struct
+id|sym_nvram
+op_star
+id|nvp
+)paren
+(brace
 )brace
 macro_line|#endif&t;/* SYM_CONF_NVRAM_SUPPORT */
 multiline_comment|/*&n; *  Driver setup from the boot command line&n; */
@@ -7548,46 +7356,34 @@ l_string|&quot;s&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|macro|OPT_PCI_PARITY
-mdefine_line|#define OPT_PCI_PARITY&t;&t;1
-DECL|macro|OPT_SCSI_PARITY
-mdefine_line|#define&t;OPT_SCSI_PARITY&t;&t;2
 DECL|macro|OPT_MAX_TAG
-mdefine_line|#define OPT_MAX_TAG&t;&t;3
-DECL|macro|OPT_MIN_SYNC
-mdefine_line|#define OPT_MIN_SYNC&t;&t;4
+mdefine_line|#define OPT_MAX_TAG&t;&t;1
 DECL|macro|OPT_BURST_ORDER
-mdefine_line|#define OPT_BURST_ORDER&t;&t;5
+mdefine_line|#define OPT_BURST_ORDER&t;&t;2
 DECL|macro|OPT_SCSI_LED
-mdefine_line|#define OPT_SCSI_LED&t;&t;6
-DECL|macro|OPT_MAX_WIDE
-mdefine_line|#define OPT_MAX_WIDE&t;&t;7
+mdefine_line|#define OPT_SCSI_LED&t;&t;3
 DECL|macro|OPT_SCSI_DIFF
-mdefine_line|#define OPT_SCSI_DIFF&t;&t;8
+mdefine_line|#define OPT_SCSI_DIFF&t;&t;4
 DECL|macro|OPT_IRQ_MODE
-mdefine_line|#define OPT_IRQ_MODE&t;&t;9
+mdefine_line|#define OPT_IRQ_MODE&t;&t;5
 DECL|macro|OPT_SCSI_BUS_CHECK
-mdefine_line|#define OPT_SCSI_BUS_CHECK&t;10
+mdefine_line|#define OPT_SCSI_BUS_CHECK&t;6
 DECL|macro|OPT_HOST_ID
-mdefine_line|#define&t;OPT_HOST_ID&t;&t;11
-DECL|macro|OPT_MAX_OFFS
-mdefine_line|#define OPT_MAX_OFFS&t;&t;12
-DECL|macro|OPT_MAX_LUN
-mdefine_line|#define OPT_MAX_LUN&t;&t;13
+mdefine_line|#define&t;OPT_HOST_ID&t;&t;7
 DECL|macro|OPT_REVERSE_PROBE
-mdefine_line|#define OPT_REVERSE_PROBE&t;14
+mdefine_line|#define OPT_REVERSE_PROBE&t;8
 DECL|macro|OPT_VERBOSE
-mdefine_line|#define OPT_VERBOSE&t;&t;15
+mdefine_line|#define OPT_VERBOSE&t;&t;9
 DECL|macro|OPT_DEBUG
-mdefine_line|#define OPT_DEBUG&t;&t;16
+mdefine_line|#define OPT_DEBUG&t;&t;10
 DECL|macro|OPT_SETTLE_DELAY
-mdefine_line|#define OPT_SETTLE_DELAY&t;17
+mdefine_line|#define OPT_SETTLE_DELAY&t;11
 DECL|macro|OPT_USE_NVRAM
-mdefine_line|#define OPT_USE_NVRAM&t;&t;18
+mdefine_line|#define OPT_USE_NVRAM&t;&t;12
 DECL|macro|OPT_EXCLUDE
-mdefine_line|#define OPT_EXCLUDE&t;&t;19
+mdefine_line|#define OPT_EXCLUDE&t;&t;13
 DECL|macro|OPT_SAFE_SETUP
-mdefine_line|#define OPT_SAFE_SETUP&t;&t;20
+mdefine_line|#define OPT_SAFE_SETUP&t;&t;14
 DECL|variable|__initdata
 r_static
 r_char
@@ -7596,19 +7392,13 @@ id|setup_token
 )braket
 id|__initdata
 op_assign
-l_string|&quot;mpar:&quot;
-l_string|&quot;spar:&quot;
 l_string|&quot;tags:&quot;
-l_string|&quot;sync:&quot;
 l_string|&quot;burst:&quot;
 l_string|&quot;led:&quot;
-l_string|&quot;wide:&quot;
 l_string|&quot;diff:&quot;
 l_string|&quot;irqm:&quot;
 l_string|&quot;buschk:&quot;
 l_string|&quot;hostid:&quot;
-l_string|&quot;offset:&quot;
-l_string|&quot;luns:&quot;
 l_string|&quot;revprob:&quot;
 l_string|&quot;verb:&quot;
 l_string|&quot;debug:&quot;
@@ -7949,27 +7739,6 @@ mdefine_line|#define __SIMPLE_OPTION(NAME, name) &bslash;&n;&t;&t;case OPT_ ## N
 id|__SIMPLE_OPTION
 c_func
 (paren
-id|PCI_PARITY
-comma
-id|pci_parity
-)paren
-id|__SIMPLE_OPTION
-c_func
-(paren
-id|SCSI_PARITY
-comma
-id|scsi_parity
-)paren
-id|__SIMPLE_OPTION
-c_func
-(paren
-id|MIN_SYNC
-comma
-id|min_sync
-)paren
-id|__SIMPLE_OPTION
-c_func
-(paren
 id|BURST_ORDER
 comma
 id|burst_order
@@ -7980,13 +7749,6 @@ c_func
 id|SCSI_LED
 comma
 id|scsi_led
-)paren
-id|__SIMPLE_OPTION
-c_func
-(paren
-id|MAX_WIDE
-comma
-id|max_wide
 )paren
 id|__SIMPLE_OPTION
 c_func
@@ -8015,20 +7777,6 @@ c_func
 id|HOST_ID
 comma
 id|host_id
-)paren
-id|__SIMPLE_OPTION
-c_func
-(paren
-id|MAX_OFFS
-comma
-id|max_offs
-)paren
-id|__SIMPLE_OPTION
-c_func
-(paren
-id|MAX_LUN
-comma
-id|max_lun
 )paren
 id|__SIMPLE_OPTION
 c_func
@@ -8140,23 +7888,16 @@ id|pci_dev
 op_star
 id|pdev
 comma
+r_struct
 id|sym_device
 op_star
 id|device
 )paren
 (brace
-id|u_short
-id|vendor_id
-comma
-id|device_id
-comma
-id|status_reg
-suffix:semicolon
-id|u_char
-id|revision
-suffix:semicolon
-id|u_int
-id|irq
+r_struct
+id|sym_pci_chip
+op_star
+id|chip
 suffix:semicolon
 id|u_long
 id|base
@@ -8173,10 +7914,13 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_struct
-id|sym_pci_chip
-op_star
-id|chip
+id|u_short
+id|device_id
+comma
+id|status_reg
+suffix:semicolon
+id|u_char
+id|revision
 suffix:semicolon
 multiline_comment|/* Choose some short name for this device */
 id|sprintf
@@ -8201,18 +7945,9 @@ id|pdev-&gt;devfn
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Read needed minimal info from the PCI config space.&n;&t; */
-id|vendor_id
-op_assign
-id|pdev-&gt;vendor
-suffix:semicolon
 id|device_id
 op_assign
 id|pdev-&gt;device
-suffix:semicolon
-id|irq
-op_assign
-id|pdev-&gt;irq
 suffix:semicolon
 id|io_port
 op_assign
@@ -8284,7 +8019,7 @@ op_amp
 id|revision
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  If user excluded this chip, donnot initialize it.&n;&t; */
+multiline_comment|/*&n;&t; *  If user excluded this chip, do not initialize it.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8322,42 +8057,6 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; *  Leave here if another driver attached the chip.&n;&t; */
-r_if
-c_cond
-(paren
-id|io_port
-op_logical_and
-id|check_region
-(paren
-id|io_port
-comma
-l_int|128
-)paren
-)paren
-(brace
-id|printf_info
-c_func
-(paren
-l_string|&quot;%s: IO region 0x%lx[0..127] is in use&bslash;n&quot;
-comma
-id|sym_name
-c_func
-(paren
-id|device
-)paren
-comma
-(paren
-r_int
-)paren
-id|io_port
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; *  Check if the chip is supported.&n;&t; */
 id|chip
 op_assign
@@ -8393,7 +8092,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  Check if the chip has been assigned resources we need.&n;&t; */
+multiline_comment|/*&n;&t; *  Check if the chip has been assigned resources we need.&n;&t; *  XXX: can this still happen with Linux 2.6&squot;s PCI layer?&n;&t; */
 macro_line|#ifdef SYM_CONF_IOMAPPED
 r_if
 c_cond
@@ -8459,7 +8158,8 @@ id|ram_size
 comma
 id|ram_val
 suffix:semicolon
-id|u_long
+r_void
+op_star
 id|ram_ptr
 suffix:semicolon
 r_if
@@ -8480,7 +8180,7 @@ l_int|4096
 suffix:semicolon
 id|ram_ptr
 op_assign
-id|pci_map_mem
+id|ioremap
 c_func
 (paren
 id|base_2_c
@@ -8506,12 +8206,10 @@ op_minus
 l_int|16
 )paren
 suffix:semicolon
-id|pci_unmap_mem
+id|iounmap
 c_func
 (paren
 id|ram_ptr
-comma
-id|ram_size
 )paren
 suffix:semicolon
 r_if
@@ -8544,13 +8242,13 @@ suffix:semicolon
 )brace
 macro_line|#endif /* i386 and PCI MEMORY accessible */
 multiline_comment|/*&n;&t; *  Copy the chip description to our device structure, &n;&t; *  so we can make it match the actual device and options.&n;&t; */
-id|bcopy
+id|memcpy
 c_func
 (paren
-id|chip
-comma
 op_amp
 id|device-&gt;chip
+comma
+id|chip
 comma
 r_sizeof
 (paren
@@ -8561,25 +8259,6 @@ suffix:semicolon
 id|device-&gt;chip.revision_id
 op_assign
 id|revision
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pci_enable_device
-c_func
-(paren
-id|pdev
-)paren
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-id|pci_set_master
-c_func
-(paren
-id|pdev
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Some features are required to be enabled in order to &n;&t; *  work around some chip problems. :) ;)&n;&t; *  (ITEM 12 of a DEL about the 896 I haven&squot;t yet).&n;&t; *  We must ensure the chip will use WRITE AND INVALIDATE.&n;&t; *  The revision number limit is for now arbitrary.&n;&t; */
 r_if
@@ -8603,6 +8282,7 @@ id|FE_CLSE
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* If the chip can do Memory Write Invalidate, enable it */
 r_if
 c_cond
 (paren
@@ -8725,11 +8405,7 @@ id|io_port
 suffix:semicolon
 id|device-&gt;s.irq
 op_assign
-id|irq
-suffix:semicolon
-id|device-&gt;attach_done
-op_assign
-l_int|0
+id|pdev-&gt;irq
 suffix:semicolon
 r_return
 l_int|0
@@ -8739,10 +8415,13 @@ multiline_comment|/*&n; *  Linux release module stuff.&n; *&n; *  Called before 
 DECL|function|sym_detach
 r_static
 r_int
+id|__devexit
 id|sym_detach
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 )paren
 (brace
@@ -9152,9 +8831,11 @@ op_star
 id|ent
 )paren
 (brace
+r_struct
 id|sym_device
 id|sym_dev
 suffix:semicolon
+r_struct
 id|sym_nvram
 id|nvram
 suffix:semicolon
@@ -9186,6 +8867,39 @@ id|nvram
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_enable_device
+c_func
+(paren
+id|pdev
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|pci_set_master
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_request_regions
+c_func
+(paren
+id|pdev
+comma
+id|NAME53C8XX
+)paren
+)paren
+r_goto
+id|disable
+suffix:semicolon
 id|sym_dev.host_id
 op_assign
 id|SYM_SETUP_HOST_ID
@@ -9202,20 +8916,9 @@ op_amp
 id|sym_dev
 )paren
 )paren
-r_return
-op_minus
-id|ENODEV
+r_goto
+id|free
 suffix:semicolon
-id|sym_dev.nvram
-op_assign
-op_amp
-id|nvram
-suffix:semicolon
-id|nvram.type
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#if SYM_CONF_NVRAM_SUPPORT
 id|sym_get_nvram
 c_func
 (paren
@@ -9226,7 +8929,6 @@ op_amp
 id|nvram
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9242,15 +8944,34 @@ op_amp
 id|sym_dev
 )paren
 )paren
-r_return
-op_minus
-id|ENODEV
+r_goto
+id|free
 suffix:semicolon
 id|attach_count
 op_increment
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|free
+suffix:colon
+id|pci_release_regions
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|disable
+suffix:colon
+id|pci_disable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|sym2_remove
@@ -9274,6 +8995,18 @@ c_func
 (paren
 id|pdev
 )paren
+)paren
+suffix:semicolon
+id|pci_release_regions
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pdev
 )paren
 suffix:semicolon
 id|attach_count
