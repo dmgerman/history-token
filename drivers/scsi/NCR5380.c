@@ -8312,7 +8312,11 @@ r_else
 r_if
 c_cond
 (paren
+id|status_byte
+c_func
+(paren
 id|cmd-&gt;SCp.Status
+)paren
 op_ne
 id|GOOD
 )paren
@@ -8344,7 +8348,11 @@ id|REQUEST_SENSE
 )paren
 op_logical_and
 (paren
+id|status_byte
+c_func
+(paren
 id|cmd-&gt;SCp.Status
+)paren
 op_eq
 id|CHECK_CONDITION
 )paren
