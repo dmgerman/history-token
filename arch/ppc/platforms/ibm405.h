@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ibm405.h&n; *&n; *&t;This was derived from the ppc4xx.h and contains&n; *&t;common 405 offsets&n; *&n; *      Armin Kuster akuster@pacbell.net&n; *      Jan, 2002&n; *&n; *&n; * Copyright 2002 MontaVista Softare Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR   IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,  INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *&t;Version 1.0 (02/01/17) - A. Kuster&n; *&t;Initial version&t; - moved 405  specific out of the other core.h&squot;s&n; */
+multiline_comment|/*&n; * ibm405.h&n; *&n; *&t;This was derived from the ppc4xx.h and contains&n; *&t;common 405 offsets&n; *&n; *      Armin Kuster akuster@pacbell.net&n; *      Jan, 2002&n; *&n; *&n; * Copyright 2002 MontaVista Softare Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR   IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,  INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *&t;Version 1.0 (02/01/17) - A. Kuster&n; *&t;Initial version&t; - moved 405  specific out of the other core.h&squot;s&n; *&n; *&t;Version 1.0 (02/08/02) - A. Kuster&n; *&t;removed DCRN_UIC1_BASE to NP405L &amp; H&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_IBM405_H__
 DECL|macro|__ASM_IBM405_H__
@@ -34,8 +34,6 @@ mdefine_line|#define DCRN_CHCR0&t;(DCRN_CHCR_BASE + 0x0)&t;/* Chip Control Regis
 DECL|macro|DCRN_CHCR1
 mdefine_line|#define DCRN_CHCR1&t;(DCRN_CHCR_BASE + 0x1)&t;/* Chip Control Register 2 */
 macro_line|#endif
-DECL|macro|CHR1_CETE
-mdefine_line|#define CHR1_CETE&t;0x00800000&t;/* CPU external timer enable */
 DECL|macro|CHR1_PCIPW
 mdefine_line|#define CHR1_PCIPW&t;0x00008000&t;/* PCI Int enable/Peripheral Write enable */
 macro_line|#ifdef DCRN_CHPSR_BASE
@@ -254,40 +252,63 @@ DECL|macro|IOCR_SCS
 mdefine_line|#define IOCR_SCS&t;0x00000002
 DECL|macro|IOCR_SPC
 mdefine_line|#define IOCR_SPC&t;0x00000001
-macro_line|#ifdef DCRN_MAL_BASE
 DECL|macro|DCRN_MALCR
-mdefine_line|#define DCRN_MALCR&t;&t;(DCRN_MAL_BASE + 0x0)&t;/* MAL Configuration */
+mdefine_line|#define DCRN_MALCR(base)&t;(base + 0x0)&t;/* MAL Configuration */
 DECL|macro|DCRN_MALDBR
-mdefine_line|#define DCRN_MALDBR&t;&t;(DCRN_MAL_BASE + 0x3)&t;/* Debug Register */
+mdefine_line|#define DCRN_MALDBR(base)&t;((base) + 0x3)&t;/* Debug Register */
 DECL|macro|DCRN_MALESR
-mdefine_line|#define DCRN_MALESR&t;&t;(DCRN_MAL_BASE + 0x1)&t;/* Error Status */
+mdefine_line|#define DCRN_MALESR(base)&t;((base) + 0x1)&t;/* Error Status */
 DECL|macro|DCRN_MALIER
-mdefine_line|#define DCRN_MALIER&t;&t;(DCRN_MAL_BASE + 0x2)&t;/* Interrupt Enable */
+mdefine_line|#define DCRN_MALIER(base)&t;((base) + 0x2)&t;/* Interrupt Enable */
 DECL|macro|DCRN_MALTXCARR
-mdefine_line|#define DCRN_MALTXCARR&t;&t;(DCRN_MAL_BASE + 0x5)&t;/* TX Channed Active Reset Register */
+mdefine_line|#define DCRN_MALTXCARR(base)&t;((base) + 0x5)&t;/* TX Channed Active Reset Register */
 DECL|macro|DCRN_MALTXCASR
-mdefine_line|#define DCRN_MALTXCASR&t;&t;(DCRN_MAL_BASE + 0x4)&t;/* TX Channel Active Set Register */
+mdefine_line|#define DCRN_MALTXCASR(base)&t;((base) + 0x4)&t;/* TX Channel Active Set Register */
 DECL|macro|DCRN_MALTXDEIR
-mdefine_line|#define DCRN_MALTXDEIR&t;&t;(DCRN_MAL_BASE + 0x7)&t;/* Tx Descriptor Error Interrupt */
+mdefine_line|#define DCRN_MALTXDEIR(base)&t;((base) + 0x7)&t;/* Tx Descriptor Error Interrupt */
 DECL|macro|DCRN_MALTXEOBISR
-mdefine_line|#define DCRN_MALTXEOBISR&t;(DCRN_MAL_BASE + 0x6)&t;/* Tx End of Buffer Interrupt Status */
+mdefine_line|#define DCRN_MALTXEOBISR(base)&t;((base) + 0x6)&t;/* Tx End of Buffer Interrupt Status */
 DECL|macro|DCRN_MALRXCARR
-mdefine_line|#define DCRN_MALRXCARR&t;&t;(DCRN_MAL_BASE + 0x11)&t;/* RX Channed Active Reset Register */
+mdefine_line|#define DCRN_MALRXCARR(base)&t;((base) + 0x11)&t;/* RX Channed Active Reset Register */
 DECL|macro|DCRN_MALRXCASR
-mdefine_line|#define DCRN_MALRXCASR&t;&t;(DCRN_MAL_BASE + 0x10)&t;/* RX Channel Active Set Register */
+mdefine_line|#define DCRN_MALRXCASR(base)&t;((base) + 0x10)&t;/* RX Channel Active Set Register */
 DECL|macro|DCRN_MALRXDEIR
-mdefine_line|#define DCRN_MALRXDEIR&t;&t;(DCRN_MAL_BASE + 0x13)&t;/* Rx Descriptor Error Interrupt */
+mdefine_line|#define DCRN_MALRXDEIR(base)&t;((base) + 0x13)&t;/* Rx Descriptor Error Interrupt */
 DECL|macro|DCRN_MALRXEOBISR
-mdefine_line|#define DCRN_MALRXEOBISR&t;(DCRN_MAL_BASE + 0x12)&t;/* Rx End of Buffer Interrupt Status */
+mdefine_line|#define DCRN_MALRXEOBISR(base)&t;((base) + 0x12)&t;/* Rx End of Buffer Interrupt Status */
 DECL|macro|DCRN_MALRXCTP0R
-mdefine_line|#define DCRN_MALRXCTP0R&t;&t;(DCRN_MAL_BASE + 0x40)&t;/* Channel Rx 0 Channel Table Pointer */
+mdefine_line|#define DCRN_MALRXCTP0R(base)&t;((base) + 0x40)&t;/* Channel Rx 0 Channel Table Pointer */
+DECL|macro|DCRN_MALRXCTP1R
+mdefine_line|#define DCRN_MALRXCTP1R(base)&t;((base) + 0x41)&t;/* Channel Rx 1 Channel Table Pointer */
 DECL|macro|DCRN_MALTXCTP0R
-mdefine_line|#define DCRN_MALTXCTP0R&t;&t;(DCRN_MAL_BASE + 0x20)&t;/* Channel Tx 0 Channel Table Pointer */
+mdefine_line|#define DCRN_MALTXCTP0R(base)&t;((base) + 0x20)&t;/* Channel Tx 0 Channel Table Pointer */
 DECL|macro|DCRN_MALTXCTP1R
-mdefine_line|#define DCRN_MALTXCTP1R&t;&t;(DCRN_MAL_BASE + 0x21)&t;/* Channel Tx 1 Channel Table Pointer */
+mdefine_line|#define DCRN_MALTXCTP1R(base)&t;((base) + 0x21)&t;/* Channel Tx 1 Channel Table Pointer */
+DECL|macro|DCRN_MALTXCTP2R
+mdefine_line|#define DCRN_MALTXCTP2R(base)&t;((base) + 0x22)&t;/* Channel Tx 2 Channel Table Pointer */
+DECL|macro|DCRN_MALTXCTP3R
+mdefine_line|#define DCRN_MALTXCTP3R(base)&t;((base) + 0x23)&t;/* Channel Tx 3 Channel Table Pointer */
 DECL|macro|DCRN_MALRCBS0
-mdefine_line|#define DCRN_MALRCBS0&t;&t;(DCRN_MAL_BASE + 0x60)&t;/* Channel Rx 0 Channel Buffer Size */
-macro_line|#endif
+mdefine_line|#define DCRN_MALRCBS0(base)&t;((base) + 0x60)&t;/* Channel Rx 0 Channel Buffer Size */
+DECL|macro|DCRN_MALRCBS1
+mdefine_line|#define DCRN_MALRCBS1(base)&t;((base) + 0x61)&t;/* Channel Rx 1 Channel Buffer Size */
+multiline_comment|/* EMAC DCRN&squot;s */
+DECL|macro|DCRN_MALRXCTP2R
+mdefine_line|#define DCRN_MALRXCTP2R(base)&t;((base) + 0x42)&t;/* Channel Rx 2 Channel Table Pointer */
+DECL|macro|DCRN_MALRXCTP3R
+mdefine_line|#define DCRN_MALRXCTP3R(base)&t;((base) + 0x43)&t;/* Channel Rx 3 Channel Table Pointer */
+DECL|macro|DCRN_MALTXCTP4R
+mdefine_line|#define DCRN_MALTXCTP4R(base)&t;((base) + 0x24)&t;/* Channel Tx 4 Channel Table Pointer */
+DECL|macro|DCRN_MALTXCTP5R
+mdefine_line|#define DCRN_MALTXCTP5R(base)&t;((base) + 0x25)&t;/* Channel Tx 5 Channel Table Pointer */
+DECL|macro|DCRN_MALTXCTP6R
+mdefine_line|#define DCRN_MALTXCTP6R(base)&t;((base) + 0x26)&t;/* Channel Tx 6 Channel Table Pointer */
+DECL|macro|DCRN_MALTXCTP7R
+mdefine_line|#define DCRN_MALTXCTP7R(base)&t;((base) + 0x27)&t;/* Channel Tx 7 Channel Table Pointer */
+DECL|macro|DCRN_MALRCBS2
+mdefine_line|#define DCRN_MALRCBS2(base)&t;((base) + 0x62)&t;/* Channel Rx 2 Channel Buffer Size */
+DECL|macro|DCRN_MALRCBS3
+mdefine_line|#define DCRN_MALRCBS3(base)&t;((base) + 0x63)&t;/* Channel Rx 3 Channel Buffer Size */
 multiline_comment|/* DCRN_MALCR */
 DECL|macro|MALCR_MMSR
 mdefine_line|#define MALCR_MMSR&t;&t;0x80000000&t;/* MAL Software reset */
@@ -394,44 +415,22 @@ mdefine_line|#define DCRN_POB0_BEAR&t;(DCRN_POB0_BASE + 0x2)
 DECL|macro|DCRN_POB0_BESR1
 mdefine_line|#define DCRN_POB0_BESR1&t;(DCRN_POB0_BASE + 0x4)
 macro_line|#endif
-macro_line|#ifdef DCRN_UIC0_BASE
-DECL|macro|DCRN_UIC0_SR
-mdefine_line|#define DCRN_UIC0_SR&t;(DCRN_UIC0_BASE + 0x0)
-DECL|macro|DCRN_UIC0_ER
-mdefine_line|#define DCRN_UIC0_ER&t;(DCRN_UIC0_BASE + 0x2)
-DECL|macro|DCRN_UIC0_CR
-mdefine_line|#define DCRN_UIC0_CR&t;(DCRN_UIC0_BASE + 0x3)
-DECL|macro|DCRN_UIC0_PR
-mdefine_line|#define DCRN_UIC0_PR&t;(DCRN_UIC0_BASE + 0x4)
-DECL|macro|DCRN_UIC0_TR
-mdefine_line|#define DCRN_UIC0_TR&t;(DCRN_UIC0_BASE + 0x5)
-DECL|macro|DCRN_UIC0_MSR
-mdefine_line|#define DCRN_UIC0_MSR&t;(DCRN_UIC0_BASE + 0x6)
-DECL|macro|DCRN_UIC0_VR
-mdefine_line|#define DCRN_UIC0_VR&t;(DCRN_UIC0_BASE + 0x7)
-DECL|macro|DCRN_UIC0_VCR
-mdefine_line|#define DCRN_UIC0_VCR&t;(DCRN_UIC0_BASE + 0x8)
-macro_line|#endif
-macro_line|#ifdef DCRN_UIC1_BASE
-DECL|macro|DCRN_UIC1_SR
-mdefine_line|#define DCRN_UIC1_SR&t;(DCRN_UIC1_BASE + 0x0)
-DECL|macro|DCRN_UIC1_SRS
-mdefine_line|#define DCRN_UIC1_SRS&t;(DCRN_UIC1_BASE + 0x1)
-DECL|macro|DCRN_UIC1_ER
-mdefine_line|#define DCRN_UIC1_ER&t;(DCRN_UIC1_BASE + 0x2)
-DECL|macro|DCRN_UIC1_CR
-mdefine_line|#define DCRN_UIC1_CR&t;(DCRN_UIC1_BASE + 0x3)
-DECL|macro|DCRN_UIC1_PR
-mdefine_line|#define DCRN_UIC1_PR&t;(DCRN_UIC1_BASE + 0x4)
-DECL|macro|DCRN_UIC1_TR
-mdefine_line|#define DCRN_UIC1_TR&t;(DCRN_UIC1_BASE + 0x5)
-DECL|macro|DCRN_UIC1_MSR
-mdefine_line|#define DCRN_UIC1_MSR&t;(DCRN_UIC1_BASE + 0x6)
-DECL|macro|DCRN_UIC1_VR
-mdefine_line|#define DCRN_UIC1_VR&t;(DCRN_UIC1_BASE + 0x7)
-DECL|macro|DCRN_UIC1_VCR
-mdefine_line|#define DCRN_UIC1_VCR&t;(DCRN_UIC1_BASE + 0x8)
-macro_line|#endif
+DECL|macro|DCRN_UIC_SR
+mdefine_line|#define DCRN_UIC_SR(base)&t;(base + 0x0)
+DECL|macro|DCRN_UIC_ER
+mdefine_line|#define DCRN_UIC_ER(base)&t;(base + 0x2)
+DECL|macro|DCRN_UIC_CR
+mdefine_line|#define DCRN_UIC_CR(base)&t;(base + 0x3)
+DECL|macro|DCRN_UIC_PR
+mdefine_line|#define DCRN_UIC_PR(base)&t;(base + 0x4)
+DECL|macro|DCRN_UIC_TR
+mdefine_line|#define DCRN_UIC_TR(base)&t;(base + 0x5)
+DECL|macro|DCRN_UIC_MSR
+mdefine_line|#define DCRN_UIC_MSR(base)&t;(base + 0x6)
+DECL|macro|DCRN_UIC_VR
+mdefine_line|#define DCRN_UIC_VR(base)&t;(base + 0x7)
+DECL|macro|DCRN_UIC_VCR
+mdefine_line|#define DCRN_UIC_VCR(base)&t;(base + 0x8)
 macro_line|#ifdef DCRN_SDRAM0_BASE
 DECL|macro|DCRN_SDRAM0_CFGADDR
 mdefine_line|#define DCRN_SDRAM0_CFGADDR&t;(DCRN_SDRAM0_BASE + 0x0)&t;/* Memory Controller Address */

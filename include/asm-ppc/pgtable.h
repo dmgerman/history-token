@@ -88,9 +88,9 @@ mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END&t;ioremap_bot
 multiline_comment|/*&n; * Bits in a linux-style PTE.  These match the bits in the&n; * (hardware-defined) PowerPC PTE as closely as possible.&n; */
-macro_line|#if defined(CONFIG_4xx)
-multiline_comment|/* There are several potential gotchas here.  The 4xx hardware TLBLO&n;   field looks like this:&n;&n;   0  1  2  3  4  ... 18 19 20 21 22 23 24 25 26 27 28 29 30 31&n;   RPN.....................  0  0 EX WR ZSEL.......  W  I  M  G&n;&n;   Where possible we make the Linux PTE bits match up with this&n;&n;   - bits 20 and 21 must be cleared, because we use 4k pages (4xx can&n;     support down to 1k pages), this is done in the TLBMiss exception&n;     handler.&n;   - We use only zones 0 (for kernel pages) and 1 (for user pages)&n;     of the 16 available.  Bit 24-26 of the TLB are cleared in the TLB&n;     miss handler.  Bit 27 is PAGE_USER, thus selecting the correct&n;     zone.&n;   - PRESENT *must* be in the bottom two bits because swap cache&n;     entries use the top 30 bits.  Because 4xx doesn&squot;t support SMP&n;     anyway, M is irrelevant so we borrow it for PAGE_PRESENT.  Bit 30&n;     is cleared in the TLB miss handler before the TLB entry is loaded.&n;   - All other bits of the PTE are loaded into TLBLO without&n;     modification, leaving us only the bits 20, 21, 24, 25, 26, 30 for&n;     software PTE bits.  We actually use use bits 21, 24, 25, 26, and&n;     30 respectively for the software bits: ACCESSED, DIRTY, RW, EXEC,&n;     PRESENT.&n;*/
-multiline_comment|/* Definitions for 4xx embedded chips. */
+macro_line|#if defined(CONFIG_40x)
+multiline_comment|/* There are several potential gotchas here.  The 40x hardware TLBLO&n;   field looks like this:&n;&n;   0  1  2  3  4  ... 18 19 20 21 22 23 24 25 26 27 28 29 30 31&n;   RPN.....................  0  0 EX WR ZSEL.......  W  I  M  G&n;&n;   Where possible we make the Linux PTE bits match up with this&n;&n;   - bits 20 and 21 must be cleared, because we use 4k pages (40x can&n;     support down to 1k pages), this is done in the TLBMiss exception&n;     handler.&n;   - We use only zones 0 (for kernel pages) and 1 (for user pages)&n;     of the 16 available.  Bit 24-26 of the TLB are cleared in the TLB&n;     miss handler.  Bit 27 is PAGE_USER, thus selecting the correct&n;     zone.&n;   - PRESENT *must* be in the bottom two bits because swap cache&n;     entries use the top 30 bits.  Because 40x doesn&squot;t support SMP&n;     anyway, M is irrelevant so we borrow it for PAGE_PRESENT.  Bit 30&n;     is cleared in the TLB miss handler before the TLB entry is loaded.&n;   - All other bits of the PTE are loaded into TLBLO without&n;     modification, leaving us only the bits 20, 21, 24, 25, 26, 30 for&n;     software PTE bits.  We actually use use bits 21, 24, 25, 26, and&n;     30 respectively for the software bits: ACCESSED, DIRTY, RW, EXEC,&n;     PRESENT.&n;*/
+multiline_comment|/* Definitions for 40x embedded chips. */
 DECL|macro|_PAGE_GUARDED
 mdefine_line|#define&t;_PAGE_GUARDED&t;0x001&t;/* G: page is guarded from prefetch */
 DECL|macro|_PAGE_PRESENT
@@ -1088,7 +1088,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|macro|__pte_offset
-mdefine_line|#define __pte_offset(address)&t;&t;&bslash;&n;&t;((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
+mdefine_line|#define __pte_offset(address)&t;&t;&bslash;&n;&t;(((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
 DECL|macro|pte_offset_kernel
 mdefine_line|#define pte_offset_kernel(dir, addr)&t;&bslash;&n;&t;((pte_t *) pmd_page_kernel(*(dir)) + __pte_offset(addr))
 DECL|macro|pte_offset_map
