@@ -2,6 +2,7 @@ multiline_comment|/*&n; * bitmap.h - Defines for NTFS kernel bitmap handling.  P
 macro_line|#ifndef _LINUX_NTFS_BITMAP_H
 DECL|macro|_LINUX_NTFS_BITMAP_H
 mdefine_line|#define _LINUX_NTFS_BITMAP_H
+macro_line|#ifdef NTFS_RW
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;types.h&quot;
 r_extern
@@ -205,5 +206,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* NTFS_RW */
 macro_line|#endif /* defined _LINUX_NTFS_BITMAP_H */
 eof
