@@ -2720,6 +2720,9 @@ suffix:semicolon
 r_case
 id|ICMPV6_MGM_REDUCTION
 suffix:colon
+r_case
+id|ICMPV6_MLD2_REPORT
+suffix:colon
 r_break
 suffix:semicolon
 r_default

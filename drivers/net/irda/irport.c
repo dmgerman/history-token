@@ -17,7 +17,7 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
-macro_line|#include &lt;net/irda/irport.h&gt;
+macro_line|#include &quot;irport.h&quot;
 DECL|macro|IO_EXTENT
 mdefine_line|#define IO_EXTENT 8
 multiline_comment|/* &n; * Currently you&squot;ll need to set these values using insmod like this:&n; * insmod irport io=0x3e8 irq=11&n; */

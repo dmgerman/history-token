@@ -1433,6 +1433,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|opt
+op_logical_or
 id|rtattr_parse
 c_func
 (paren

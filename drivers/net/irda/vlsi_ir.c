@@ -46,7 +46,7 @@ macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
 macro_line|#include &lt;net/irda/crc.h&gt;
-macro_line|#include &lt;net/irda/vlsi_ir.h&gt;
+macro_line|#include &quot;vlsi_ir.h&quot;
 multiline_comment|/********************************************************/
 DECL|variable|drivername
 r_static

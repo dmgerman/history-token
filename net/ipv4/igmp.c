@@ -10504,7 +10504,16 @@ ques
 c_cond
 l_string|&quot;V1&quot;
 suffix:colon
+id|IGMP_V2_SEEN
+c_func
+(paren
+id|state-&gt;in_dev
+)paren
+ques
+c_cond
 l_string|&quot;V2&quot;
+suffix:colon
+l_string|&quot;V3&quot;
 suffix:semicolon
 macro_line|#else
 id|querier
@@ -10550,6 +10559,9 @@ id|im-&gt;users
 comma
 id|im-&gt;tm_running
 comma
+id|im-&gt;tm_running
+ques
+c_cond
 id|jiffies_to_clock_t
 c_func
 (paren
@@ -10557,6 +10569,8 @@ id|im-&gt;timer.expires
 op_minus
 id|jiffies
 )paren
+suffix:colon
+l_int|0
 comma
 id|im-&gt;reporter
 )paren

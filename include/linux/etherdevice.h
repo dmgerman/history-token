@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_ETHERDEVICE_H
 DECL|macro|_LINUX_ETHERDEVICE_H
 mdefine_line|#define _LINUX_ETHERDEVICE_H
 macro_line|#include &lt;linux/if_ether.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
 macro_line|#ifdef __KERNEL__
 r_extern
 r_int
@@ -138,6 +139,7 @@ id|sk_buff
 op_star
 id|dest
 comma
+r_const
 r_int
 r_char
 op_star
@@ -168,6 +170,7 @@ r_int
 id|is_valid_ether_addr
 c_func
 (paren
+r_const
 id|u8
 op_star
 id|addr
@@ -206,6 +209,43 @@ comma
 l_int|6
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/**&n; * random_ether_addr - Generate software assigned random Ethernet address&n; * @addr: Pointer to a six-byte array containing the Ethernet address&n; *&n; * Generate a random Ethernet address (MAC) that is not multicast&n; * and has the local assigned bit set.&n; */
+DECL|function|random_ether_addr
+r_static
+r_inline
+r_void
+id|random_ether_addr
+c_func
+(paren
+id|u8
+op_star
+id|addr
+)paren
+(brace
+id|get_random_bytes
+(paren
+id|addr
+comma
+id|ETH_ALEN
+)paren
+suffix:semicolon
+id|addr
+(braket
+l_int|0
+)braket
+op_and_assign
+l_int|0xfe
+suffix:semicolon
+multiline_comment|/* clear multicast bit */
+id|addr
+(braket
+l_int|0
+)braket
+op_or_assign
+l_int|0x02
+suffix:semicolon
+multiline_comment|/* set local assignment bit (IEEE802) */
 )brace
 macro_line|#endif
 macro_line|#endif&t;/* _LINUX_ETHERDEVICE_H */

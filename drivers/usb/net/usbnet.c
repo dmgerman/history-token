@@ -12417,30 +12417,12 @@ id|cdc_state
 )paren
 suffix:semicolon
 macro_line|#endif
-id|get_random_bytes
+id|random_ether_addr
+c_func
 (paren
-id|node_id
-comma
-r_sizeof
 id|node_id
 )paren
 suffix:semicolon
-id|node_id
-(braket
-l_int|0
-)braket
-op_and_assign
-l_int|0xfe
-suffix:semicolon
-singleline_comment|// clear multicast bit
-id|node_id
-(braket
-l_int|0
-)braket
-op_or_assign
-l_int|0x02
-suffix:semicolon
-singleline_comment|// set local assignment bit (IEEE802)
 r_return
 id|usb_register
 c_func

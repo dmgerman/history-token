@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2003&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 Intel Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This file includes part of the implementation of the add-IP extension,&n; * based on &lt;draft-ietf-tsvwg-addip-sctp-02.txt&gt; June 29, 2001,&n; * for the SCTP kernel reference Implementation.&n; *&n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement the state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    C. Robin              &lt;chris@hundredacre.ac.uk&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *    Kevin Gao             &lt;kevin.gao@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2004&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 Intel Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This file includes part of the implementation of the add-IP extension,&n; * based on &lt;draft-ietf-tsvwg-addip-sctp-02.txt&gt; June 29, 2001,&n; * for the SCTP kernel reference Implementation.&n; *&n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement the state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    C. Robin              &lt;chris@hundredacre.ac.uk&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *    Kevin Gao             &lt;kevin.gao@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
@@ -5736,6 +5736,9 @@ op_logical_neg
 id|asoc-&gt;temp
 )paren
 (brace
+id|sctp_assoc_t
+id|assoc_id
+suffix:semicolon
 id|asoc-&gt;ssnmap
 op_assign
 id|sctp_ssnmap_new
@@ -5755,7 +5758,82 @@ op_logical_neg
 id|asoc-&gt;ssnmap
 )paren
 r_goto
-id|nomem_ssnmap
+id|clean_up
+suffix:semicolon
+r_do
+(brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|idr_pre_get
+c_func
+(paren
+op_amp
+id|sctp_assocs_id
+comma
+id|gfp
+)paren
+)paren
+)paren
+r_goto
+id|clean_up
+suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|sctp_assocs_id_lock
+)paren
+suffix:semicolon
+id|assoc_id
+op_assign
+(paren
+id|sctp_assoc_t
+)paren
+id|idr_get_new
+c_func
+(paren
+op_amp
+id|sctp_assocs_id
+comma
+(paren
+r_void
+op_star
+)paren
+id|asoc
+)paren
+suffix:semicolon
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|sctp_assocs_id_lock
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|unlikely
+c_func
+(paren
+(paren
+r_int
+)paren
+id|assoc_id
+op_eq
+op_minus
+l_int|1
+)paren
+)paren
+suffix:semicolon
+id|asoc-&gt;assoc_id
+op_assign
+id|assoc_id
 suffix:semicolon
 )brace
 multiline_comment|/* ADDIP Section 4.1 ASCONF Chunk Procedures&n;&t; *&n;&t; * When an endpoint has an ASCONF signaled change to be sent to the&n;&t; * remote endpoint it should do the following:&n;&t; * ...&n;&t; * A2) A serial number should be assigned to the Chunk. The serial&n;&t; * number should be a monotonically increasing number. All serial&n;&t; * numbers are defined to be initialized at the start of the&n;&t; * association to the same value as the Initial TSN.&n;&t; */
@@ -5768,8 +5846,6 @@ suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
-id|nomem_ssnmap
-suffix:colon
 id|clean_up
 suffix:colon
 multiline_comment|/* Release the transport structures. */
