@@ -28,6 +28,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|tty_chan_init
+r_static
 r_void
 op_star
 id|tty_chan_init
@@ -124,6 +125,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|tty_open
+r_static
 r_int
 id|tty_open
 c_func
@@ -254,6 +256,7 @@ id|fd
 suffix:semicolon
 )brace
 DECL|function|tty_console_write
+r_static
 r_int
 id|tty_console_write
 c_func

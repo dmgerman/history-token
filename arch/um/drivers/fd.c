@@ -37,6 +37,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|fd_init
+r_static
 r_void
 op_star
 id|fd_init
@@ -182,6 +183,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|fd_open
+r_static
 r_int
 id|fd_open
 c_func
@@ -291,6 +293,7 @@ id|data-&gt;fd
 suffix:semicolon
 )brace
 DECL|function|fd_close
+r_static
 r_void
 id|fd_close
 c_func
@@ -366,6 +369,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|fd_console_write
+r_static
 r_int
 id|fd_console_write
 c_func
