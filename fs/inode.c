@@ -4665,13 +4665,15 @@ id|ihash_entries
 comma
 l_int|14
 comma
-l_int|0
+id|HASH_EARLY
 comma
 op_amp
 id|i_hash_shift
 comma
 op_amp
 id|i_hash_mask
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_for

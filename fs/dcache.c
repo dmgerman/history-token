@@ -5201,13 +5201,15 @@ id|dhash_entries
 comma
 l_int|13
 comma
-l_int|0
+id|HASH_EARLY
 comma
 op_amp
 id|d_hash_shift
 comma
 op_amp
 id|d_hash_mask
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_for
