@@ -1341,13 +1341,6 @@ id|c-&gt;x86_capability
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Init Machine Check Exception if available. */
-id|mcheck_init
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
 multiline_comment|/* If the model name is still unset, do table lookup. */
 r_if
 c_cond
@@ -1488,6 +1481,13 @@ id|boot_cpu_data.x86_capability
 (braket
 l_int|3
 )braket
+)paren
+suffix:semicolon
+multiline_comment|/* Init Machine Check Exception if available. */
+id|mcheck_init
+c_func
+(paren
+id|c
 )paren
 suffix:semicolon
 )brace
