@@ -16,7 +16,6 @@ r_int
 id|pc_debug
 suffix:semicolon
 DECL|variable|init_wds
-r_static
 r_const
 r_int
 id|init_wds

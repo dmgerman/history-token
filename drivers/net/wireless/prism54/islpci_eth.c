@@ -263,11 +263,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|curr_frag
 op_minus
 id|priv-&gt;free_data_tx
 op_ge
 id|ISL38XX_CB_TX_QSIZE
+)paren
 )paren
 (brace
 id|printk
@@ -315,6 +319,9 @@ multiline_comment|/* Check alignment and WDS frame formatting. The start of the 
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 (paren
 (paren
 r_int
@@ -325,6 +332,7 @@ l_int|0x03
 )paren
 op_or
 id|init_wds
+)paren
 )paren
 (brace
 multiline_comment|/* get the number of bytes to add and re-allign */
@@ -675,9 +683,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|pci_map_address
 op_eq
 l_int|0
+)paren
 )paren
 (brace
 id|printk
@@ -1545,9 +1557,13 @@ multiline_comment|/* take care of monitor mode and spy monitoring. */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|priv-&gt;iw_mode
 op_eq
 id|IW_MODE_MONITOR
+)paren
 )paren
 id|discard
 op_assign
@@ -1565,6 +1581,9 @@ r_else
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|skb-&gt;data
 (braket
 l_int|2
@@ -1573,6 +1592,7 @@ id|ETH_ALEN
 )braket
 op_eq
 l_int|0
+)paren
 )paren
 (brace
 multiline_comment|/* The packet has a rx_annex. Read it for spy monitoring, Then&n;&t;&t;&t; * remove it, while keeping the 2 leading MAC addr.&n;&t;&t;&t; */
@@ -1717,7 +1737,11 @@ macro_line|#endif
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|discard
+)paren
 )paren
 (brace
 id|dev_kfree_skb
@@ -1767,9 +1791,6 @@ id|ISL38XX_CB_RX_QSIZE
 )paren
 (brace
 multiline_comment|/* allocate an sk_buff for received data frames storage&n;&t;&t; * include any required allignment operations */
-r_if
-c_cond
-(paren
 id|skb
 op_assign
 id|dev_alloc_skb
@@ -1779,10 +1800,17 @@ id|MAX_FRAGMENT_SIZE_RX
 op_plus
 l_int|2
 )paren
-comma
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
 id|skb
 op_eq
 l_int|NULL
+)paren
 )paren
 (brace
 multiline_comment|/* error allocating an sk_buff structure elements */
@@ -1858,6 +1886,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|priv-&gt;pci_map_rx_address
 (braket
 id|index
@@ -1867,6 +1898,7 @@ op_eq
 id|dma_addr_t
 )paren
 l_int|NULL
+)paren
 )paren
 (brace
 multiline_comment|/* error mapping the buffer to device accessable memory address */
