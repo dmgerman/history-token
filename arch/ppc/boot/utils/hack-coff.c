@@ -1,7 +1,9 @@
 multiline_comment|/*&n; * hack-coff.c - hack the header of an xcoff file to fill in&n; * a few fields needed by the Open Firmware xcoff loader on&n; * Power Macs but not initialized by objcopy.&n; *&n; * Copyright (C) Paul Mackerras 1997.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;stdio.h&gt;
+macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;fcntl.h&gt;
+macro_line|#include &lt;string.h&gt;
 macro_line|#include &quot;rs6000.h&quot;
 DECL|macro|AOUT_MAGIC
 mdefine_line|#define AOUT_MAGIC&t;0x010b
