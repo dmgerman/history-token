@@ -54,6 +54,13 @@ r_int
 r_int
 id|mmu_cr4_features
 suffix:semicolon
+DECL|variable|__initdata
+r_int
+id|acpi_disabled
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|MCA_bus
 r_int
 id|MCA_bus
@@ -2103,11 +2110,11 @@ id|who
 suffix:semicolon
 )brace
 multiline_comment|/* setup_memory_region */
-DECL|function|parse_mem_cmdline
+DECL|function|parse_cmdline_early
 r_static
 r_void
 id|__init
-id|parse_mem_cmdline
+id|parse_cmdline_early
 (paren
 r_char
 op_star
@@ -2333,6 +2340,29 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/* &quot;acpi=off&quot; disables both ACPI table parsing and interpreter init */
+r_if
+c_cond
+(paren
+id|c
+op_eq
+l_char|&squot; &squot;
+op_logical_and
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;acpi=off&quot;
+comma
+l_int|8
+)paren
+)paren
+id|acpi_disabled
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * highmem=size forces highmem to be exactly &squot;size&squot; bytes.&n;&t;&t; * This works even on boxes that have no highmem otherwise.&n;&t;&t; * This also works to reduce highmem size on bigger boxes.&n;&t;&t; */
 r_if
 c_cond
@@ -2667,7 +2697,7 @@ id|_edata
 op_minus
 l_int|1
 suffix:semicolon
-id|parse_mem_cmdline
+id|parse_cmdline_early
 c_func
 (paren
 id|cmdline_p
@@ -3390,6 +3420,12 @@ c_func
 suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/*&n;&t; * Parse the ACPI tables for possible boot-time SMP configuration.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_disabled
+)paren
 id|acpi_boot_init
 c_func
 (paren

@@ -39,14 +39,13 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 DECL|macro|PREFIX
 mdefine_line|#define&t;PREFIX&t;&t;&t;&quot;ACPI: &quot;
+r_extern
+r_int
+id|acpi_disabled
+suffix:semicolon
 DECL|variable|acpi_fadt
 id|FADT_DESCRIPTOR
 id|acpi_fadt
-suffix:semicolon
-DECL|variable|acpi_disabled
-r_static
-id|u8
-id|acpi_disabled
 suffix:semicolon
 DECL|variable|acpi_root
 r_struct
