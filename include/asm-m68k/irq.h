@@ -2,6 +2,7 @@ macro_line|#ifndef _M68K_IRQ_H_
 DECL|macro|_M68K_IRQ_H_
 mdefine_line|#define _M68K_IRQ_H_
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 multiline_comment|/*&n; * # of m68k interrupts&n; */
 DECL|macro|SYS_IRQS
 mdefine_line|#define SYS_IRQS 8
@@ -84,7 +85,7 @@ c_func
 r_int
 r_int
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 )paren
@@ -142,7 +143,7 @@ r_struct
 id|irq_node
 (brace
 DECL|member|handler
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -191,7 +192,7 @@ r_struct
 id|irq_handler
 (brace
 DECL|member|handler
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
