@@ -151,7 +151,26 @@ mdefine_line|#define USE_ELF_CORE_DUMP
 DECL|macro|ELF_EXEC_PAGESIZE
 mdefine_line|#define ELF_EXEC_PAGESIZE&t;4096
 DECL|macro|ELF_CORE_COPY_REGS
-mdefine_line|#define ELF_CORE_COPY_REGS(gregs, regs) &bslash;&n;&t;memcpy(gregs, regs, &bslash;&n;&t;       sizeof(struct pt_regs) &lt; sizeof(elf_gregset_t)? &bslash;&n;&t;       sizeof(struct pt_regs): sizeof(elf_gregset_t));
+mdefine_line|#define ELF_CORE_COPY_REGS(gregs, regs)&t;&t;&t;&t;&bslash;&n;&t;memcpy((gregs), (regs), sizeof(struct pt_regs));&t;&bslash;&n;&t;memset((char *)(gregs) + sizeof(struct pt_regs), 0,&t;&bslash;&n;&t;       sizeof(elf_gregset_t) - sizeof(struct pt_regs));
+DECL|macro|ELF_CORE_COPY_TASK_REGS
+mdefine_line|#define ELF_CORE_COPY_TASK_REGS(t, elfregs)&t;&t;&t;&bslash;&n;&t;((t)-&gt;thread.regs?&t;&t;&t;&t;&t;&bslash;&n;&t; ({ ELF_CORE_COPY_REGS((elfregs), (t)-&gt;thread.regs); 1; }): 0)
+r_extern
+r_int
+id|dump_task_fpu
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|t
+comma
+id|elf_fpregset_t
+op_star
+id|fpu
+)paren
+suffix:semicolon
+DECL|macro|ELF_CORE_COPY_FPREGS
+mdefine_line|#define ELF_CORE_COPY_FPREGS(t, fpu)&t;dump_task_fpu((t), (fpu))
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this cpu supports.  This could be done in userspace,&n;   but it&squot;s not easy, and we&squot;ve already done it here.  */
 DECL|macro|ELF_HWCAP
 mdefine_line|#define ELF_HWCAP&t;(cur_cpu_spec[0]-&gt;cpu_user_features)
