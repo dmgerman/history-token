@@ -35,21 +35,23 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-multiline_comment|/* The idle threads do not count..&n; * Protected by write_lock_irq(&amp;tasklist_lock)&n; */
-DECL|variable|nr_threads
-r_int
-id|nr_threads
-suffix:semicolon
-DECL|variable|max_threads
-r_int
-id|max_threads
-suffix:semicolon
+multiline_comment|/*&n; * Protected counters by write_lock_irq(&amp;tasklist_lock)&n; */
 DECL|variable|total_forks
 r_int
 r_int
 id|total_forks
 suffix:semicolon
 multiline_comment|/* Handle normal Linux uptimes. */
+DECL|variable|nr_threads
+r_int
+id|nr_threads
+suffix:semicolon
+multiline_comment|/* The idle threads do not count.. */
+DECL|variable|max_threads
+r_int
+id|max_threads
+suffix:semicolon
+multiline_comment|/* tunable limit on nr_threads */
 id|DEFINE_PER_CPU
 c_func
 (paren
@@ -4099,6 +4101,9 @@ suffix:semicolon
 id|nr_threads
 op_increment
 suffix:semicolon
+id|total_forks
+op_increment
+suffix:semicolon
 id|write_unlock_irq
 c_func
 (paren
@@ -4676,9 +4681,6 @@ r_else
 id|p-&gt;state
 op_assign
 id|TASK_STOPPED
-suffix:semicolon
-op_increment
-id|total_forks
 suffix:semicolon
 r_if
 c_cond

@@ -99,6 +99,11 @@ DECL|macro|CT_TO_USECS
 mdefine_line|#define CT_TO_USECS(x)&t;(((x) % HZ) * 1000000/HZ)
 r_extern
 r_int
+r_int
+id|total_forks
+suffix:semicolon
+r_extern
+r_int
 id|nr_threads
 suffix:semicolon
 r_extern

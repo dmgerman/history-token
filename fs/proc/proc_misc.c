@@ -1486,11 +1486,6 @@ id|v
 r_int
 id|i
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|total_forks
-suffix:semicolon
 r_int
 r_int
 id|jif
