@@ -143,6 +143,7 @@ DECL|member|func
 )brace
 id|func
 suffix:semicolon
+macro_line|#if CONFIG_XFREE86_VERSION &lt; XFREE86_VERSION(4,1,0,0)
 DECL|member|ring_map_idx
 r_int
 id|ring_map_idx
@@ -151,6 +152,18 @@ DECL|member|buffer_map_idx
 r_int
 id|buffer_map_idx
 suffix:semicolon
+macro_line|#else
+DECL|member|mmio_offset
+r_int
+r_int
+id|mmio_offset
+suffix:semicolon
+DECL|member|buffers_offset
+r_int
+r_int
+id|buffers_offset
+suffix:semicolon
+macro_line|#endif
 DECL|member|sarea_priv_offset
 r_int
 id|sarea_priv_offset

@@ -1,7 +1,11 @@
-multiline_comment|/* r128_drv.h -- Private header for r128 driver -*- linux-c -*-&n; * Created: Mon Dec 13 09:51:11 1999 by faith@precisioninsight.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *   Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *   Kevin E. Martin &lt;martin@valinux.com&gt;&n; *   Gareth Hughes &lt;gareth@valinux.com&gt;&n; *&n; */
+multiline_comment|/* r128_drv.h -- Private header for r128 driver -*- linux-c -*-&n; * Created: Mon Dec 13 09:51:11 1999 by faith@precisioninsight.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Kevin E. Martin &lt;martin@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; *    Michel D&#xfffd;nzer &lt;daenzerm@student.ethz.ch&gt;&n; */
 macro_line|#ifndef __R128_DRV_H__
 DECL|macro|__R128_DRV_H__
 mdefine_line|#define __R128_DRV_H__
+DECL|macro|GET_RING_HEAD
+mdefine_line|#define GET_RING_HEAD( ring )&t;&t;le32_to_cpu( *(ring)-&gt;head )
+DECL|macro|SET_RING_HEAD
+mdefine_line|#define SET_RING_HEAD( ring, val )&t;*(ring)-&gt;head = cpu_to_le32( val )
 DECL|struct|drm_r128_freelist
 r_typedef
 r_struct
@@ -74,6 +78,10 @@ DECL|member|space
 r_int
 id|space
 suffix:semicolon
+DECL|member|high_mark
+r_int
+id|high_mark
+suffix:semicolon
 DECL|typedef|drm_r128_ring_buffer_t
 )brace
 id|drm_r128_ring_buffer_t
@@ -100,10 +108,6 @@ DECL|member|cce_fifo_size
 r_int
 id|cce_fifo_size
 suffix:semicolon
-DECL|member|cce_secure
-r_int
-id|cce_secure
-suffix:semicolon
 DECL|member|cce_running
 r_int
 id|cce_running
@@ -126,14 +130,39 @@ DECL|member|is_pci
 r_int
 id|is_pci
 suffix:semicolon
+DECL|member|phys_pci_gart
+r_int
+r_int
+id|phys_pci_gart
+suffix:semicolon
+DECL|member|cce_buffers_offset
+r_int
+r_int
+id|cce_buffers_offset
+suffix:semicolon
 DECL|member|idle_count
 id|atomic_t
 id|idle_count
 suffix:semicolon
-DECL|member|fb_bpp
+DECL|member|page_flipping
 r_int
+id|page_flipping
+suffix:semicolon
+DECL|member|current_page
 r_int
-id|fb_bpp
+id|current_page
+suffix:semicolon
+DECL|member|crtc_offset
+id|u32
+id|crtc_offset
+suffix:semicolon
+DECL|member|crtc_offset_cntl
+id|u32
+id|crtc_offset_cntl
+suffix:semicolon
+DECL|member|color_fmt
+id|u32
+id|color_fmt
 suffix:semicolon
 DECL|member|front_offset
 r_int
@@ -155,10 +184,9 @@ r_int
 r_int
 id|back_pitch
 suffix:semicolon
-DECL|member|depth_bpp
-r_int
-r_int
-id|depth_bpp
+DECL|member|depth_fmt
+id|u32
+id|depth_fmt
 suffix:semicolon
 DECL|member|depth_offset
 r_int
@@ -259,135 +287,6 @@ suffix:semicolon
 DECL|typedef|drm_r128_buf_priv_t
 )brace
 id|drm_r128_buf_priv_t
-suffix:semicolon
-multiline_comment|/* r128_drv.c */
-r_extern
-r_int
-id|r128_version
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|r128_open
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|r128_release
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|r128_ioctl
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|r128_lock
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|r128_unlock
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
 suffix:semicolon
 multiline_comment|/* r128_cce.c */
 r_extern
@@ -536,7 +435,7 @@ id|arg
 suffix:semicolon
 r_extern
 r_int
-id|r128_cce_packet
+id|r128_fullscreen
 c_func
 (paren
 r_struct
@@ -616,14 +515,75 @@ r_int
 id|n
 )paren
 suffix:semicolon
-r_extern
+r_static
+r_inline
 r_void
+DECL|function|r128_update_ring_snapshot
 id|r128_update_ring_snapshot
+c_func
+(paren
+id|drm_r128_ring_buffer_t
+op_star
+id|ring
+)paren
+(brace
+id|ring-&gt;space
+op_assign
+(paren
+id|GET_RING_HEAD
+c_func
+(paren
+id|ring
+)paren
+op_minus
+id|ring-&gt;tail
+)paren
+op_star
+r_sizeof
+(paren
+id|u32
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ring-&gt;space
+op_le
+l_int|0
+)paren
+id|ring-&gt;space
+op_add_assign
+id|ring-&gt;size
+suffix:semicolon
+)brace
+r_extern
+r_int
+id|r128_do_cce_idle
 c_func
 (paren
 id|drm_r128_private_t
 op_star
 id|dev_priv
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|r128_do_cleanup_cce
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|r128_do_cleanup_pageflip
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* r128_state.c */
@@ -795,10 +755,9 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-multiline_comment|/* r128_bufs.c */
 r_extern
 r_int
-id|r128_addbufs
+id|r128_cce_indirect
 c_func
 (paren
 r_struct
@@ -818,228 +777,6 @@ comma
 r_int
 r_int
 id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|r128_mapbufs
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-multiline_comment|/* r128_context.c */
-r_extern
-r_int
-id|r128_resctx
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|r128_addctx
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|r128_modctx
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|r128_getctx
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|r128_switchctx
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|r128_newctx
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|r128_rmctx
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|r128_context_switch
-c_func
-(paren
-id|drm_device_t
-op_star
-id|dev
-comma
-r_int
-id|old
-comma
-r_int
-r_new
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|r128_context_switch_complete
-c_func
-(paren
-id|drm_device_t
-op_star
-id|dev
-comma
-r_int
-r_new
 )paren
 suffix:semicolon
 multiline_comment|/* Register definitions, register access macros and drmAddMap constants&n; * for Rage 128 kernel driver.&n; */
@@ -1101,6 +838,12 @@ DECL|macro|R128_PLL_WR_EN
 macro_line|#&t;define R128_PLL_WR_EN&t;&t;&t;(1 &lt;&lt; 7)
 DECL|macro|R128_CONSTANT_COLOR_C
 mdefine_line|#define R128_CONSTANT_COLOR_C&t;&t;0x1d34
+DECL|macro|R128_CRTC_OFFSET
+mdefine_line|#define R128_CRTC_OFFSET&t;&t;0x0224
+DECL|macro|R128_CRTC_OFFSET_CNTL
+mdefine_line|#define R128_CRTC_OFFSET_CNTL&t;&t;0x0228
+DECL|macro|R128_CRTC_OFFSET_FLIP_CNTL
+macro_line|#&t;define R128_CRTC_OFFSET_FLIP_CNTL&t;(1 &lt;&lt; 16)
 DECL|macro|R128_DP_GUI_MASTER_CNTL
 mdefine_line|#define R128_DP_GUI_MASTER_CNTL&t;&t;0x146c
 DECL|macro|R128_GMC_SRC_PITCH_OFFSET_CNTL
@@ -1183,6 +926,8 @@ DECL|macro|R128_PC_FLUSH_ALL
 macro_line|#&t;define R128_PC_FLUSH_ALL&t;&t;0x00ff
 DECL|macro|R128_PC_BUSY
 macro_line|#&t;define R128_PC_BUSY&t;&t;&t;(1 &lt;&lt; 31)
+DECL|macro|R128_PCI_GART_PAGE
+mdefine_line|#define R128_PCI_GART_PAGE&t;&t;0x017c
 DECL|macro|R128_PRIM_TEX_CNTL_C
 mdefine_line|#define R128_PRIM_TEX_CNTL_C&t;&t;0x1cb0
 DECL|macro|R128_SCALE_3D_CNTL
@@ -1199,6 +944,10 @@ DECL|macro|R128_TEX_CNTL_C
 mdefine_line|#define R128_TEX_CNTL_C&t;&t;&t;0x1c9c
 DECL|macro|R128_TEX_CACHE_FLUSH
 macro_line|#&t;define R128_TEX_CACHE_FLUSH&t;&t;(1 &lt;&lt; 23)
+DECL|macro|R128_WAIT_UNTIL
+mdefine_line|#define R128_WAIT_UNTIL&t;&t;&t;0x1720
+DECL|macro|R128_EVENT_CRTC_OFFSET
+macro_line|#&t;define R128_EVENT_CRTC_OFFSET&t;&t;(1 &lt;&lt; 0)
 DECL|macro|R128_WINDOW_XY_OFFSET
 mdefine_line|#define R128_WINDOW_XY_OFFSET&t;&t;0x1bcc
 multiline_comment|/* CCE registers&n; */
@@ -1357,29 +1106,105 @@ mdefine_line|#define R128_WATERMARK_N&t;&t;8
 DECL|macro|R128_WATERMARK_K
 mdefine_line|#define R128_WATERMARK_K&t;&t;128
 DECL|macro|R128_MAX_USEC_TIMEOUT
-mdefine_line|#define R128_MAX_USEC_TIMEOUT&t;100000&t;/* 100 ms */
+mdefine_line|#define R128_MAX_USEC_TIMEOUT&t;&t;100000&t;/* 100 ms */
 DECL|macro|R128_LAST_FRAME_REG
 mdefine_line|#define R128_LAST_FRAME_REG&t;&t;R128_GUI_SCRATCH_REG0
 DECL|macro|R128_LAST_DISPATCH_REG
 mdefine_line|#define R128_LAST_DISPATCH_REG&t;&t;R128_GUI_SCRATCH_REG1
 DECL|macro|R128_MAX_VB_AGE
-mdefine_line|#define R128_MAX_VB_AGE&t;&t;&t;0xffffffff
+mdefine_line|#define R128_MAX_VB_AGE&t;&t;&t;0x7fffffff
 DECL|macro|R128_MAX_VB_VERTS
 mdefine_line|#define R128_MAX_VB_VERTS&t;&t;(0xffff)
+DECL|macro|R128_RING_HIGH_MARK
+mdefine_line|#define R128_RING_HIGH_MARK&t;&t;128
+DECL|macro|R128_PERFORMANCE_BOXES
+mdefine_line|#define R128_PERFORMANCE_BOXES&t;&t;0
 DECL|macro|R128_BASE
 mdefine_line|#define R128_BASE(reg)&t;&t;((unsigned long)(dev_priv-&gt;mmio-&gt;handle))
 DECL|macro|R128_ADDR
-mdefine_line|#define R128_ADDR(reg)&t;&t;(R128_BASE(reg) + reg)
+mdefine_line|#define R128_ADDR(reg)&t;&t;(R128_BASE( reg ) + reg)
+DECL|macro|R128_DEREF
+mdefine_line|#define R128_DEREF(reg)&t;&t;*(volatile u32 *)R128_ADDR( reg )
+macro_line|#ifdef __alpha__
 DECL|macro|R128_READ
-mdefine_line|#define R128_READ(reg)&t;&t;readl(R128_ADDR(reg))
+mdefine_line|#define R128_READ(reg)&t;&t;(_R128_READ((u32 *)R128_ADDR(reg)))
+DECL|function|_R128_READ
+r_static
+r_inline
+id|u32
+id|_R128_READ
+c_func
+(paren
+id|u32
+op_star
+id|addr
+)paren
+(brace
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_star
+(paren
+r_volatile
+id|u32
+op_star
+)paren
+id|addr
+suffix:semicolon
+)brace
 DECL|macro|R128_WRITE
-mdefine_line|#define R128_WRITE(reg,val)&t;writel(val,R128_ADDR(reg))
+mdefine_line|#define R128_WRITE(reg,val)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wmb();&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;R128_DEREF(reg) = val;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|R128_READ
+mdefine_line|#define R128_READ(reg)&t;&t;le32_to_cpu( R128_DEREF( reg ) )
+DECL|macro|R128_WRITE
+mdefine_line|#define R128_WRITE(reg,val)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;R128_DEREF( reg ) = cpu_to_le32( val );&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#endif
+DECL|macro|R128_DEREF8
+mdefine_line|#define R128_DEREF8(reg)&t;*(volatile u8 *)R128_ADDR( reg )
+macro_line|#ifdef __alpha__
 DECL|macro|R128_READ8
-mdefine_line|#define R128_READ8(reg)&t;&t;readb(R128_ADDR(reg))
+mdefine_line|#define R128_READ8(reg)&t;&t;_R128_READ8((u8 *)R128_ADDR(reg))
+DECL|function|_R128_READ8
+r_static
+r_inline
+id|u8
+id|_R128_READ8
+c_func
+(paren
+id|u8
+op_star
+id|addr
+)paren
+(brace
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_star
+(paren
+r_volatile
+id|u8
+op_star
+)paren
+id|addr
+suffix:semicolon
+)brace
 DECL|macro|R128_WRITE8
-mdefine_line|#define R128_WRITE8(reg,val)&t;writeb(val,R128_ADDR(reg))
+mdefine_line|#define R128_WRITE8(reg,val)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wmb();&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;R128_DEREF8(reg) = val;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|R128_READ8
+mdefine_line|#define R128_READ8(reg)&t;&t;R128_DEREF8( reg )
+DECL|macro|R128_WRITE8
+mdefine_line|#define R128_WRITE8(reg,val)&t;do { R128_DEREF8( reg ) = val; } while (0)
+macro_line|#endif
 DECL|macro|R128_WRITE_PLL
-mdefine_line|#define R128_WRITE_PLL(addr,val)                                              &bslash;&n;do {                                                                          &bslash;&n;&t;R128_WRITE8(R128_CLOCK_CNTL_INDEX, ((addr) &amp; 0x1f) | R128_PLL_WR_EN); &bslash;&n;&t;R128_WRITE(R128_CLOCK_CNTL_DATA, (val));                              &bslash;&n;} while (0)
+mdefine_line|#define R128_WRITE_PLL(addr,val)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;R128_WRITE8(R128_CLOCK_CNTL_INDEX,&t;&t;&t;&t;&bslash;&n;&t;&t;    ((addr) &amp; 0x1f) | R128_PLL_WR_EN);&t;&t;&t;&bslash;&n;&t;R128_WRITE(R128_CLOCK_CNTL_DATA, (val));&t;&t;&t;&bslash;&n;} while (0)
 r_extern
 r_int
 id|R128_READ_PLL
@@ -1393,14 +1218,6 @@ r_int
 id|addr
 )paren
 suffix:semicolon
-DECL|macro|R128CCE0
-mdefine_line|#define R128CCE0(p,r,n)   ((p) | ((n) &lt;&lt; 16) | ((r) &gt;&gt; 2))
-DECL|macro|R128CCE1
-mdefine_line|#define R128CCE1(p,r1,r2) ((p) | (((r2) &gt;&gt; 2) &lt;&lt; 11) | ((r1) &gt;&gt; 2))
-DECL|macro|R128CCE2
-mdefine_line|#define R128CCE2(p)       ((p))
-DECL|macro|R128CCE3
-mdefine_line|#define R128CCE3(p,n)     ((p) | ((n) &lt;&lt; 16))
 DECL|macro|CCE_PACKET0
 mdefine_line|#define CCE_PACKET0( reg, n )&t;&t;(R128_CCE_PACKET0 |&t;&t;&bslash;&n;&t;&t;&t;&t;&t; ((n) &lt;&lt; 16) | ((reg) &gt;&gt; 2))
 DECL|macro|CCE_PACKET1
@@ -1409,19 +1226,30 @@ DECL|macro|CCE_PACKET2
 mdefine_line|#define CCE_PACKET2()&t;&t;&t;(R128_CCE_PACKET2)
 DECL|macro|CCE_PACKET3
 mdefine_line|#define CCE_PACKET3( pkt, n )&t;&t;(R128_CCE_PACKET3 |&t;&t;&bslash;&n;&t;&t;&t;&t;&t; (pkt) | ((n) &lt;&lt; 16))
+multiline_comment|/* ================================================================&n; * Misc helper macros&n; */
+DECL|macro|LOCK_TEST_WITH_RETURN
+mdefine_line|#define LOCK_TEST_WITH_RETURN( dev )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( !_DRM_LOCK_IS_HELD( dev-&gt;lock.hw_lock-&gt;lock ) ||&t;&t;&bslash;&n;&t;     dev-&gt;lock.pid != current-&gt;pid ) {&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;%s called without lock held&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   __FUNCTION__ );&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|RING_SPACE_TEST_WITH_RETURN
+mdefine_line|#define RING_SPACE_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;drm_r128_ring_buffer_t *ring = &amp;dev_priv-&gt;ring; int i;&t;&t;&bslash;&n;&t;if ( ring-&gt;space &lt; ring-&gt;high_mark ) {&t;&t;&t;&t;&bslash;&n;&t;&t;for ( i = 0 ; i &lt; dev_priv-&gt;usec_timeout ; i++ ) {&t;&bslash;&n;&t;&t;&t;r128_update_ring_snapshot( ring );&t;&t;&bslash;&n;&t;&t;&t;if ( ring-&gt;space &gt;= ring-&gt;high_mark )&t;&t;&bslash;&n;&t;&t;&t;&t;goto __ring_space_done;&t;&t;&t;&bslash;&n;&t;&t;&t;udelay( 1 );&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;ring space check failed!&bslash;n&quot; );&t;&t;&bslash;&n;&t;&t;return -EBUSY;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; __ring_space_done:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|VB_AGE_TEST_WITH_RETURN
+mdefine_line|#define VB_AGE_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;drm_r128_sarea_t *sarea_priv = dev_priv-&gt;sarea_priv;&t;&t;&bslash;&n;&t;if ( sarea_priv-&gt;last_dispatch &gt;= R128_MAX_VB_AGE ) {&t;&t;&bslash;&n;&t;&t;int __ret = r128_do_cce_idle( dev_priv );&t;&t;&bslash;&n;&t;&t;if ( __ret &lt; 0 ) return __ret;&t;&t;&t;&t;&bslash;&n;&t;&t;sarea_priv-&gt;last_dispatch = 0;&t;&t;&t;&t;&bslash;&n;&t;&t;r128_freelist_reset( dev );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|macro|R128_WAIT_UNTIL_PAGE_FLIPPED
+mdefine_line|#define R128_WAIT_UNTIL_PAGE_FLIPPED() do {&t;&t;&t;&t;&bslash;&n;&t;OUT_RING( CCE_PACKET0( R128_WAIT_UNTIL, 0 ) );&t;&t;&t;&bslash;&n;&t;OUT_RING( R128_EVENT_CRTC_OFFSET );&t;&t;&t;&t;&bslash;&n;} while (0)
+multiline_comment|/* ================================================================&n; * Ring control&n; */
 DECL|macro|r128_flush_write_combine
-mdefine_line|#define r128_flush_write_combine()&t;&t;mb()
+mdefine_line|#define r128_flush_write_combine()&t;mb()
 DECL|macro|R128_VERBOSE
 mdefine_line|#define R128_VERBOSE&t;0
 DECL|macro|RING_LOCALS
-mdefine_line|#define RING_LOCALS&t;int write; unsigned int tail_mask; volatile u32 *ring;
+mdefine_line|#define RING_LOCALS&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int write; unsigned int tail_mask; volatile u32 *ring;
 DECL|macro|BEGIN_RING
-mdefine_line|#define BEGIN_RING( n ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( R128_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;BEGIN_RING( %d ) in %s&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;&t;   n, __FUNCTION__ );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( dev_priv-&gt;ring.space &lt; n * sizeof(u32) ) {&t;&t;&t;&bslash;&n;&t;&t;r128_wait_ring( dev_priv, n * sizeof(u32) );&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;dev_priv-&gt;ring.space -= n * sizeof(u32);&t;&t;&t;&bslash;&n;&t;ring = dev_priv-&gt;ring.start;&t;&t;&t;&t;&t;&bslash;&n;&t;write = dev_priv-&gt;ring.tail;&t;&t;&t;&t;&t;&bslash;&n;&t;tail_mask = dev_priv-&gt;ring.tail_mask;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define BEGIN_RING( n ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( R128_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;BEGIN_RING( %d ) in %s&bslash;n&quot;,&t;&t;&t;&bslash;&n;&t;&t;&t;   (n), __FUNCTION__ );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( dev_priv-&gt;ring.space &lt;= (n) * sizeof(u32) ) {&t;&t;&bslash;&n;&t;&t;r128_wait_ring( dev_priv, (n) * sizeof(u32) );&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;dev_priv-&gt;ring.space -= (n) * sizeof(u32);&t;&t;&t;&bslash;&n;&t;ring = dev_priv-&gt;ring.start;&t;&t;&t;&t;&t;&bslash;&n;&t;write = dev_priv-&gt;ring.tail;&t;&t;&t;&t;&t;&bslash;&n;&t;tail_mask = dev_priv-&gt;ring.tail_mask;&t;&t;&t;&t;&bslash;&n;} while (0)
+multiline_comment|/* You can set this to zero if you want.  If the card locks up, you&squot;ll&n; * need to keep this set.  It works around a bug in early revs of the&n; * Rage 128 chipset, where the CCE would read 32 dwords past the end of&n; * the ring buffer before wrapping around.&n; */
+DECL|macro|R128_BROKEN_CCE
+mdefine_line|#define R128_BROKEN_CCE&t;1
 DECL|macro|ADVANCE_RING
-mdefine_line|#define ADVANCE_RING() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( R128_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;ADVANCE_RING() tail=0x%06x wr=0x%06x&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;  write, dev_priv-&gt;ring.tail );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( write &lt; 32 ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;memcpy( dev_priv-&gt;ring.end,&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dev_priv-&gt;ring.start,&t;&t;&t;&t;&bslash;&n;&t;&t;&t;write * sizeof(u32) );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;r128_flush_write_combine();&t;&t;&t;&t;&t;&bslash;&n;&t;dev_priv-&gt;ring.tail = write;&t;&t;&t;&t;&t;&bslash;&n;&t;R128_WRITE( R128_PM4_BUFFER_DL_WPTR, write );&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define ADVANCE_RING() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( R128_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;ADVANCE_RING() wr=0x%06x tail=0x%06x&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;  write, dev_priv-&gt;ring.tail );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( R128_BROKEN_CCE &amp;&amp; write &lt; 32 ) {&t;&t;&t;&t;&bslash;&n;&t;&t;memcpy( dev_priv-&gt;ring.end,&t;&t;&t;&t;&bslash;&n;&t;&t;&t;dev_priv-&gt;ring.start,&t;&t;&t;&t;&bslash;&n;&t;&t;&t;write * sizeof(u32) );&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;r128_flush_write_combine();&t;&t;&t;&t;&t;&bslash;&n;&t;dev_priv-&gt;ring.tail = write;&t;&t;&t;&t;&t;&bslash;&n;&t;R128_WRITE( R128_PM4_BUFFER_DL_WPTR, write );&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|OUT_RING
-mdefine_line|#define OUT_RING( x ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( R128_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;   OUT_RING( 0x%08x ) at 0x%x&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   (unsigned int)(x), write );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ring[write++] = x;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write &amp;= tail_mask;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|R128_PERFORMANCE_BOXES
-mdefine_line|#define R128_PERFORMANCE_BOXES&t;0
+mdefine_line|#define OUT_RING( x ) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( R128_VERBOSE ) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_INFO( &quot;   OUT_RING( 0x%08x ) at 0x%x&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   (unsigned int)(x), write );&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ring[write++] = cpu_to_le32( x );&t;&t;&t;&t;&bslash;&n;&t;write &amp;= tail_mask;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* __R128_DRV_H__ */
 eof

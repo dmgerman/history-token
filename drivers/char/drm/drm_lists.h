@@ -1,11 +1,15 @@
-multiline_comment|/* lists.c -- Buffer list handling routines -*- linux-c -*-&n; * Created: Mon Apr 19 20:54:22 1999 by faith@precisioninsight.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; * &n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; * &n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; * &n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *&n; */
+multiline_comment|/* drm_lists.h -- Buffer list handling routines -*- linux-c -*-&n; * Created: Mon Apr 19 20:54:22 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;drmP.h&quot;
-DECL|function|drm_waitlist_create
+macro_line|#if __HAVE_DMA_WAITLIST
+DECL|function|waitlist_create
 r_int
-id|drm_waitlist_create
+id|DRM
 c_func
+(paren
+id|waitlist_create
+)paren
 (paren
 id|drm_waitlist_t
 op_star
@@ -24,14 +28,13 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|bl-&gt;count
-op_assign
-id|count
-suffix:semicolon
 id|bl-&gt;bufs
 op_assign
-id|drm_alloc
+id|DRM
 c_func
+(paren
+id|alloc
+)paren
 (paren
 (paren
 id|bl-&gt;count
@@ -47,6 +50,22 @@ id|bl-&gt;bufs
 comma
 id|DRM_MEM_BUFLISTS
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bl-&gt;bufs
+)paren
+(brace
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|bl-&gt;count
+op_assign
+id|count
 suffix:semicolon
 id|bl-&gt;rp
 op_assign
@@ -78,10 +97,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|drm_waitlist_destroy
+DECL|function|waitlist_destroy
 r_int
-id|drm_waitlist_destroy
+id|DRM
 c_func
+(paren
+id|waitlist_destroy
+)paren
 (paren
 id|drm_waitlist_t
 op_star
@@ -104,8 +126,11 @@ c_cond
 (paren
 id|bl-&gt;bufs
 )paren
-id|drm_free
+id|DRM
 c_func
+(paren
+id|free
+)paren
 (paren
 id|bl-&gt;bufs
 comma
@@ -148,10 +173,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|drm_waitlist_put
+DECL|function|waitlist_put
 r_int
-id|drm_waitlist_put
+id|DRM
 c_func
+(paren
+id|waitlist_put
+)paren
 (paren
 id|drm_waitlist_t
 op_star
@@ -199,7 +227,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#if DRM_DMA_HISTOGRAM
+macro_line|#if __HAVE_DMA_HISTOGRAM
 id|buf-&gt;time_queued
 op_assign
 id|get_cycles
@@ -251,11 +279,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|drm_waitlist_get
+DECL|function|waitlist_get
 id|drm_buf_t
 op_star
-id|drm_waitlist_get
+id|DRM
 c_func
+(paren
+id|waitlist_get
+)paren
 (paren
 id|drm_waitlist_t
 op_star
@@ -330,10 +361,15 @@ r_return
 id|buf
 suffix:semicolon
 )brace
-DECL|function|drm_freelist_create
+macro_line|#endif /* __HAVE_DMA_WAITLIST */
+macro_line|#if __HAVE_DMA_FREELIST
+DECL|function|freelist_create
 r_int
-id|drm_freelist_create
+id|DRM
 c_func
+(paren
+id|freelist_create
+)paren
 (paren
 id|drm_freelist_t
 op_star
@@ -391,10 +427,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|drm_freelist_destroy
+DECL|function|freelist_destroy
 r_int
-id|drm_freelist_destroy
+id|DRM
 c_func
+(paren
+id|freelist_destroy
+)paren
 (paren
 id|drm_freelist_t
 op_star
@@ -418,10 +457,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|drm_freelist_put
+DECL|function|freelist_put
 r_int
-id|drm_freelist_put
+id|DRM
 c_func
+(paren
+id|freelist_put
+)paren
 (paren
 id|drm_device_t
 op_star
@@ -495,7 +537,7 @@ id|bl
 r_return
 l_int|1
 suffix:semicolon
-macro_line|#if DRM_DMA_HISTOGRAM
+macro_line|#if __HAVE_DMA_HISTOGRAM
 id|buf-&gt;time_freed
 op_assign
 id|get_cycles
@@ -503,8 +545,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|drm_histogram_compute
+id|DRM
 c_func
+(paren
+id|histogram_compute
+)paren
 (paren
 id|dev
 comma
@@ -621,12 +666,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|drm_freelist_try
+DECL|function|freelist_try
 r_static
 id|drm_buf_t
 op_star
-id|drm_freelist_try
+id|DRM
 c_func
+(paren
+id|freelist_try
+)paren
 (paren
 id|drm_freelist_t
 op_star
@@ -729,11 +777,14 @@ r_return
 id|buf
 suffix:semicolon
 )brace
-DECL|function|drm_freelist_get
+DECL|function|freelist_get
 id|drm_buf_t
 op_star
-id|drm_freelist_get
+id|DRM
 c_func
+(paren
+id|freelist_get
+)paren
 (paren
 id|drm_freelist_t
 op_star
@@ -844,8 +895,11 @@ op_logical_and
 (paren
 id|buf
 op_assign
-id|drm_freelist_try
+id|DRM
 c_func
+(paren
+id|freelist_try
+)paren
 (paren
 id|bl
 )paren
@@ -890,11 +944,15 @@ id|buf
 suffix:semicolon
 )brace
 r_return
-id|drm_freelist_try
+id|DRM
 c_func
+(paren
+id|freelist_try
+)paren
 (paren
 id|bl
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* __HAVE_DMA_FREELIST */
 eof

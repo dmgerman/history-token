@@ -1,19 +1,38 @@
-multiline_comment|/* init.c -- Setup/Cleanup for DRM -*- linux-c -*-&n; * Created: Mon Jan  4 08:58:31 1999 by faith@precisioninsight.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; * &n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; * &n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; * &n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *&n; */
+multiline_comment|/* drm_init.h -- Setup/Cleanup for DRM -*- linux-c -*-&n; * Created: Mon Jan  4 08:58:31 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;drmP.h&quot;
-DECL|variable|drm_flags
+macro_line|#if 0
 r_int
-id|drm_flags
+id|DRM
+c_func
+(paren
+id|flags
+)paren
+op_assign
+id|DRM_FLAG_DEBUG
+suffix:semicolon
+macro_line|#else
+DECL|variable|flags
+r_int
+id|DRM
+c_func
+(paren
+id|flags
+)paren
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* drm_parse_option parses a single option.  See description for&n;   drm_parse_options for details. */
-DECL|function|drm_parse_option
+macro_line|#endif
+multiline_comment|/* drm_parse_option parses a single option.  See description for&n; * drm_parse_options for details.&n; */
+DECL|function|parse_option
 r_static
 r_void
-id|drm_parse_option
+id|DRM
 c_func
+(paren
+id|parse_option
+)paren
 (paren
 r_char
 op_star
@@ -104,7 +123,11 @@ l_string|&quot;noctx&quot;
 )paren
 )paren
 (brace
-id|drm_flags
+id|DRM
+c_func
+(paren
+id|flags
+)paren
 op_or_assign
 id|DRM_FLAG_NOCTX
 suffix:semicolon
@@ -130,7 +153,11 @@ l_string|&quot;debug&quot;
 )paren
 )paren
 (brace
-id|drm_flags
+id|DRM
+c_func
+(paren
+id|flags
+)paren
 op_or_assign
 id|DRM_FLAG_DEBUG
 suffix:semicolon
@@ -154,11 +181,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* drm_parse_options parse the insmod &quot;drm=&quot; options, or the command-line&n; * options passed to the kernel via LILO.  The grammar of the format is as&n; * follows:&n; *&n; * drm&t;&t;::= &squot;drm=&squot; option_list&n; * option_list&t;::= option [ &squot;;&squot; option_list ]&n; * option&t;::= &squot;device:&squot; major&n; *&t;&t;|   &squot;debug&squot; &n; *&t;&t;|   &squot;noctx&squot;&n; * major&t;::= INTEGER&n; *&n; * Note that &squot;s&squot; contains option_list without the &squot;drm=&squot; part.&n; *&n; * device=major,minor specifies the device number used for /dev/drm&n; *&t;  if major == 0 then the misc device is used&n; *&t;  if major == 0 and minor == 0 then dynamic misc allocation is used&n; * debug=on specifies that debugging messages will be printk&squot;d&n; * debug=trace specifies that each function call will be logged via printk&n; * debug=off turns off all debugging options&n; *&n; */
-DECL|function|drm_parse_options
+multiline_comment|/* drm_parse_options parse the insmod &quot;drm_opts=&quot; options, or the command-line&n; * options passed to the kernel via LILO.  The grammar of the format is as&n; * follows:&n; *&n; * drm&t;&t;::= &squot;drm_opts=&squot; option_list&n; * option_list&t;::= option [ &squot;;&squot; option_list ]&n; * option&t;::= &squot;device:&squot; major&n; *&t;&t;|   &squot;debug&squot;&n; *&t;&t;|   &squot;noctx&squot;&n; * major&t;::= INTEGER&n; *&n; * Note that &squot;s&squot; contains option_list without the &squot;drm_opts=&squot; part.&n; *&n; * device=major,minor specifies the device number used for /dev/drm&n; *&t;  if major == 0 then the misc device is used&n; *&t;  if major == 0 and minor == 0 then dynamic misc allocation is used&n; * debug=on specifies that debugging messages will be printk&squot;d&n; * debug=trace specifies that each function call will be logged via printk&n; * debug=off turns off all debugging options&n; *&n; */
+DECL|function|parse_options
 r_void
-id|drm_parse_options
+id|DRM
 c_func
+(paren
+id|parse_options
+)paren
 (paren
 r_char
 op_star
@@ -261,8 +291,11 @@ op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 multiline_comment|/* terminate */
-id|drm_parse_option
+id|DRM
 c_func
+(paren
+id|parse_option
+)paren
 (paren
 id|h
 )paren
@@ -270,11 +303,14 @@ suffix:semicolon
 multiline_comment|/* parse */
 )brace
 )brace
-multiline_comment|/* drm_cpu_valid returns non-zero if the DRI will run on this CPU, and 0&n; * otherwise. */
-DECL|function|drm_cpu_valid
+multiline_comment|/* drm_cpu_valid returns non-zero if the DRI will run on this CPU, and 0&n; * otherwise.&n; */
+DECL|function|cpu_valid
 r_int
-id|drm_cpu_valid
+id|DRM
 c_func
+(paren
+id|cpu_valid
+)paren
 (paren
 r_void
 )paren
@@ -293,11 +329,6 @@ suffix:semicolon
 multiline_comment|/* No cmpxchg on a 386 */
 macro_line|#endif
 macro_line|#if defined(__sparc__) &amp;&amp; !defined(__sparc_v9__)
-r_if
-c_cond
-(paren
-l_int|1
-)paren
 r_return
 l_int|0
 suffix:semicolon

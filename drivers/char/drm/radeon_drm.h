@@ -1,4 +1,4 @@
-multiline_comment|/* radeon_drm.h -- Public header for the radeon driver -*- linux-c -*-&n; *&n; * Copyright 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Fremont, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Kevin E. Martin &lt;martin@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; *&n; */
+multiline_comment|/* radeon_drm.h -- Public header for the radeon driver -*- linux-c -*-&n; *&n; * Copyright 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Fremont, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Kevin E. Martin &lt;martin@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
 macro_line|#ifndef __RADEON_DRM_H__
 DECL|macro|__RADEON_DRM_H__
 mdefine_line|#define __RADEON_DRM_H__
@@ -64,7 +64,7 @@ DECL|macro|RADEON_TRIANGLE_STRIP
 mdefine_line|#define RADEON_TRIANGLE_STRIP&t;&t;0x6
 multiline_comment|/* Vertex/indirect buffer size&n; */
 DECL|macro|RADEON_BUFFER_SIZE
-mdefine_line|#define RADEON_BUFFER_SIZE&t;&t;16384
+mdefine_line|#define RADEON_BUFFER_SIZE&t;&t;65536
 multiline_comment|/* Byte offsets for indirect buffer data&n; */
 DECL|macro|RADEON_INDEX_PRIM_OFFSET
 mdefine_line|#define RADEON_INDEX_PRIM_OFFSET&t;20
@@ -563,6 +563,7 @@ id|func
 suffix:semicolon
 DECL|member|sarea_priv_offset
 r_int
+r_int
 id|sarea_priv_offset
 suffix:semicolon
 DECL|member|is_pci
@@ -704,40 +705,10 @@ DECL|macro|CLEAR_Y2
 mdefine_line|#define CLEAR_Y2&t;3
 DECL|macro|CLEAR_DEPTH
 mdefine_line|#define CLEAR_DEPTH&t;4
-DECL|struct|drm_radeon_clear
+DECL|union|drm_radeon_clear_rect
 r_typedef
-r_struct
-id|drm_radeon_clear
-(brace
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-DECL|member|x
-DECL|member|y
-DECL|member|w
-DECL|member|h
-r_int
-id|x
-comma
-id|y
-comma
-id|w
-comma
-id|h
-suffix:semicolon
-DECL|member|clear_color
-r_int
-r_int
-id|clear_color
-suffix:semicolon
-DECL|member|clear_depth
-r_int
-r_int
-id|clear_depth
-suffix:semicolon
 r_union
+id|drm_radeon_clear_rect
 (brace
 DECL|member|f
 r_float
@@ -754,9 +725,44 @@ id|ui
 l_int|5
 )braket
 suffix:semicolon
-DECL|member|rect
+DECL|typedef|drm_radeon_clear_rect_t
 )brace
-id|rect
+id|drm_radeon_clear_rect_t
+suffix:semicolon
+DECL|struct|drm_radeon_clear
+r_typedef
+r_struct
+id|drm_radeon_clear
+(brace
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+DECL|member|clear_color
+r_int
+r_int
+id|clear_color
+suffix:semicolon
+DECL|member|clear_depth
+r_int
+r_int
+id|clear_depth
+suffix:semicolon
+DECL|member|color_mask
+r_int
+r_int
+id|color_mask
+suffix:semicolon
+DECL|member|depth_mask
+r_int
+r_int
+id|depth_mask
+suffix:semicolon
+DECL|member|depth_boxes
+id|drm_radeon_clear_rect_t
+op_star
+id|depth_boxes
 suffix:semicolon
 DECL|typedef|drm_radeon_clear_t
 )brace
@@ -820,27 +826,11 @@ DECL|typedef|drm_radeon_indices_t
 )brace
 id|drm_radeon_indices_t
 suffix:semicolon
-DECL|struct|drm_radeon_blit
+DECL|struct|drm_radeon_tex_image
 r_typedef
 r_struct
-id|drm_radeon_blit
+id|drm_radeon_tex_image
 (brace
-DECL|member|idx
-r_int
-id|idx
-suffix:semicolon
-DECL|member|pitch
-r_int
-id|pitch
-suffix:semicolon
-DECL|member|offset
-r_int
-id|offset
-suffix:semicolon
-DECL|member|format
-r_int
-id|format
-suffix:semicolon
 DECL|member|x
 DECL|member|y
 r_int
@@ -849,6 +839,7 @@ id|x
 comma
 id|y
 suffix:semicolon
+multiline_comment|/* Blit coordinates */
 DECL|member|width
 DECL|member|height
 r_int
@@ -857,9 +848,50 @@ id|width
 comma
 id|height
 suffix:semicolon
-DECL|typedef|drm_radeon_blit_t
+DECL|member|data
+r_const
+r_void
+op_star
+id|data
+suffix:semicolon
+DECL|typedef|drm_radeon_tex_image_t
 )brace
-id|drm_radeon_blit_t
+id|drm_radeon_tex_image_t
+suffix:semicolon
+DECL|struct|drm_radeon_texture
+r_typedef
+r_struct
+id|drm_radeon_texture
+(brace
+DECL|member|offset
+r_int
+id|offset
+suffix:semicolon
+DECL|member|pitch
+r_int
+id|pitch
+suffix:semicolon
+DECL|member|format
+r_int
+id|format
+suffix:semicolon
+DECL|member|width
+r_int
+id|width
+suffix:semicolon
+multiline_comment|/* Texture image coordinates */
+DECL|member|height
+r_int
+id|height
+suffix:semicolon
+DECL|member|image
+id|drm_radeon_tex_image_t
+op_star
+id|image
+suffix:semicolon
+DECL|typedef|drm_radeon_texture_t
+)brace
+id|drm_radeon_texture_t
 suffix:semicolon
 DECL|struct|drm_radeon_stipple
 r_typedef

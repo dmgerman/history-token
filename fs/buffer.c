@@ -944,6 +944,12 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|__refile_buffer
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 )brace
 id|spin_unlock
 c_func
@@ -4443,12 +4449,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|wakeup_bdflush
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * And if we&squot;re _really_ out of balance, wait for&n;&t; * some of the dirty/locked buffers ourselves.&n;&t; * This will throttle heavy writers.&n;&t; */
+multiline_comment|/*&n;&t; * And if we&squot;re _really_ out of balance, wait for&n;&t; * some of the dirty/locked buffers ourselves and&n;&t; * start bdflush.&n;&t; * This will throttle heavy writers.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4456,12 +4457,19 @@ id|state
 OG
 l_int|0
 )paren
+(brace
 id|wait_for_some_buffers
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+id|wakeup_bdflush
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|__mark_dirty
 r_static

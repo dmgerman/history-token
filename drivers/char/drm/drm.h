@@ -1,9 +1,9 @@
-multiline_comment|/* drm.h -- Header for Direct Rendering Manager -*- linux-c -*-&n; * Created: Mon Jan  4 10:05:05 1999 by faith@precisioninsight.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *&n; * Acknowledgements:&n; * Dec 1999, Richard Henderson &lt;rth@twiddle.net&gt;, move to generic cmpxchg.&n; *&n; */
+multiline_comment|/* drm.h -- Header for Direct Rendering Manager -*- linux-c -*-&n; * Created: Mon Jan  4 10:05:05 1999 by faith@precisioninsight.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *&n; * Acknowledgements:&n; * Dec 1999, Richard Henderson &lt;rth@twiddle.net&gt;, move to generic cmpxchg.&n; *&n; */
 macro_line|#ifndef _DRM_H_
 DECL|macro|_DRM_H_
 mdefine_line|#define _DRM_H_
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined(__linux__)
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ioctl.h&gt;&t;&t;/* For _IO* macros */
 DECL|macro|DRM_IOCTL_NR
 mdefine_line|#define DRM_IOCTL_NR(n)&t;     _IOC_NR(n)
@@ -12,6 +12,13 @@ macro_line|#include &lt;sys/ioccom.h&gt;
 DECL|macro|DRM_IOCTL_NR
 mdefine_line|#define DRM_IOCTL_NR(n)&t;     ((n) &amp; 0xff)
 macro_line|#endif
+DECL|macro|XFREE86_VERSION
+mdefine_line|#define XFREE86_VERSION(major,minor,patch,snap) &bslash;&n;&t;&t;((major &lt;&lt; 16) | (minor &lt;&lt; 8) | patch)
+macro_line|#ifndef CONFIG_XFREE86_VERSION
+DECL|macro|CONFIG_XFREE86_VERSION
+mdefine_line|#define CONFIG_XFREE86_VERSION XFREE86_VERSION(4,1,0,0)
+macro_line|#endif
+macro_line|#if CONFIG_XFREE86_VERSION &lt; XFREE86_VERSION(4,1,0,0)
 DECL|macro|DRM_PROC_DEVICES
 mdefine_line|#define DRM_PROC_DEVICES &quot;/proc/devices&quot;
 DECL|macro|DRM_PROC_MISC
@@ -26,6 +33,13 @@ DECL|macro|DRM_DEV_UID
 mdefine_line|#define DRM_DEV_UID&t; 0
 DECL|macro|DRM_DEV_GID
 mdefine_line|#define DRM_DEV_GID&t; 0
+macro_line|#endif
+macro_line|#if CONFIG_XFREE86_VERSION &gt;= XFREE86_VERSION(4,1,0,0)
+DECL|macro|DRM_MAJOR
+mdefine_line|#define DRM_MAJOR       226
+DECL|macro|DRM_MAX_MINOR
+mdefine_line|#define DRM_MAX_MINOR   15
+macro_line|#endif
 DECL|macro|DRM_NAME
 mdefine_line|#define DRM_NAME&t;&quot;drm&quot;&t;  /* Name in kernel, /dev, and /proc&t;    */
 DECL|macro|DRM_MIN_ORDER
@@ -97,6 +111,40 @@ suffix:semicolon
 DECL|typedef|drm_clip_rect_t
 )brace
 id|drm_clip_rect_t
+suffix:semicolon
+DECL|struct|drm_tex_region
+r_typedef
+r_struct
+id|drm_tex_region
+(brace
+DECL|member|next
+r_int
+r_char
+id|next
+suffix:semicolon
+DECL|member|prev
+r_int
+r_char
+id|prev
+suffix:semicolon
+DECL|member|in_use
+r_int
+r_char
+id|in_use
+suffix:semicolon
+DECL|member|padding
+r_int
+r_char
+id|padding
+suffix:semicolon
+DECL|member|age
+r_int
+r_int
+id|age
+suffix:semicolon
+DECL|typedef|drm_tex_region_t
+)brace
+id|drm_tex_region_t
 suffix:semicolon
 multiline_comment|/* Seperate include files for the i810/mga/r128 specific structures */
 macro_line|#include &quot;mga_drm.h&quot;
@@ -272,7 +320,13 @@ DECL|enumerator|_DRM_AGP
 id|_DRM_AGP
 op_assign
 l_int|3
+comma
 multiline_comment|/* AGP/GART                               */
+DECL|enumerator|_DRM_SCATTER_GATHER
+id|_DRM_SCATTER_GATHER
+op_assign
+l_int|4
+multiline_comment|/* Scatter/gather memory for PCI DMA      */
 DECL|typedef|drm_map_type_t
 )brace
 id|drm_map_type_t
@@ -315,10 +369,37 @@ DECL|enumerator|_DRM_CONTAINS_LOCK
 id|_DRM_CONTAINS_LOCK
 op_assign
 l_int|0x20
+comma
 multiline_comment|/* SHM page that contains lock&t;    */
+DECL|enumerator|_DRM_REMOVABLE
+id|_DRM_REMOVABLE
+op_assign
+l_int|0x40
+multiline_comment|/* Removable mapping&t;&t;    */
 DECL|typedef|drm_map_flags_t
 )brace
 id|drm_map_flags_t
+suffix:semicolon
+DECL|struct|drm_ctx_priv_map
+r_typedef
+r_struct
+id|drm_ctx_priv_map
+(brace
+DECL|member|ctx_id
+r_int
+r_int
+id|ctx_id
+suffix:semicolon
+multiline_comment|/* Context requesting private mapping */
+DECL|member|handle
+r_void
+op_star
+id|handle
+suffix:semicolon
+multiline_comment|/* Handle of map */
+DECL|typedef|drm_ctx_priv_map_t
+)brace
+id|drm_ctx_priv_map_t
 suffix:semicolon
 DECL|struct|drm_map
 r_typedef
@@ -363,6 +444,142 @@ multiline_comment|/* Private data&t;&t;&t;    */
 DECL|typedef|drm_map_t
 )brace
 id|drm_map_t
+suffix:semicolon
+DECL|struct|drm_client
+r_typedef
+r_struct
+id|drm_client
+(brace
+DECL|member|idx
+r_int
+id|idx
+suffix:semicolon
+multiline_comment|/* Which client desired?                    */
+DECL|member|auth
+r_int
+id|auth
+suffix:semicolon
+multiline_comment|/* Is client authenticated?                 */
+DECL|member|pid
+r_int
+r_int
+id|pid
+suffix:semicolon
+multiline_comment|/* Process id                               */
+DECL|member|uid
+r_int
+r_int
+id|uid
+suffix:semicolon
+multiline_comment|/* User id                                  */
+DECL|member|magic
+r_int
+r_int
+id|magic
+suffix:semicolon
+multiline_comment|/* Magic                                    */
+DECL|member|iocs
+r_int
+r_int
+id|iocs
+suffix:semicolon
+multiline_comment|/* Ioctl count                              */
+DECL|typedef|drm_client_t
+)brace
+id|drm_client_t
+suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|_DRM_STAT_LOCK
+id|_DRM_STAT_LOCK
+comma
+DECL|enumerator|_DRM_STAT_OPENS
+id|_DRM_STAT_OPENS
+comma
+DECL|enumerator|_DRM_STAT_CLOSES
+id|_DRM_STAT_CLOSES
+comma
+DECL|enumerator|_DRM_STAT_IOCTLS
+id|_DRM_STAT_IOCTLS
+comma
+DECL|enumerator|_DRM_STAT_LOCKS
+id|_DRM_STAT_LOCKS
+comma
+DECL|enumerator|_DRM_STAT_UNLOCKS
+id|_DRM_STAT_UNLOCKS
+comma
+DECL|enumerator|_DRM_STAT_VALUE
+id|_DRM_STAT_VALUE
+comma
+multiline_comment|/* Generic value                      */
+DECL|enumerator|_DRM_STAT_BYTE
+id|_DRM_STAT_BYTE
+comma
+multiline_comment|/* Generic byte counter (1024bytes/K) */
+DECL|enumerator|_DRM_STAT_COUNT
+id|_DRM_STAT_COUNT
+comma
+multiline_comment|/* Generic non-byte counter (1000/k)  */
+DECL|enumerator|_DRM_STAT_IRQ
+id|_DRM_STAT_IRQ
+comma
+multiline_comment|/* IRQ */
+DECL|enumerator|_DRM_STAT_PRIMARY
+id|_DRM_STAT_PRIMARY
+comma
+multiline_comment|/* Primary DMA bytes */
+DECL|enumerator|_DRM_STAT_SECONDARY
+id|_DRM_STAT_SECONDARY
+comma
+multiline_comment|/* Secondary DMA bytes */
+DECL|enumerator|_DRM_STAT_DMA
+id|_DRM_STAT_DMA
+comma
+multiline_comment|/* DMA */
+DECL|enumerator|_DRM_STAT_SPECIAL
+id|_DRM_STAT_SPECIAL
+comma
+multiline_comment|/* Special DMA (e.g., priority or polled) */
+DECL|enumerator|_DRM_STAT_MISSED
+id|_DRM_STAT_MISSED
+multiline_comment|/* Missed DMA opportunity */
+multiline_comment|/* Add to the *END* of the list */
+DECL|typedef|drm_stat_type_t
+)brace
+id|drm_stat_type_t
+suffix:semicolon
+DECL|struct|drm_stats
+r_typedef
+r_struct
+id|drm_stats
+(brace
+DECL|member|count
+r_int
+r_int
+id|count
+suffix:semicolon
+r_struct
+(brace
+DECL|member|value
+r_int
+r_int
+id|value
+suffix:semicolon
+DECL|member|type
+id|drm_stat_type_t
+id|type
+suffix:semicolon
+DECL|member|data
+)brace
+id|data
+(braket
+l_int|15
+)braket
+suffix:semicolon
+DECL|typedef|drm_stats_t
+)brace
+id|drm_stats_t
 suffix:semicolon
 DECL|enum|drm_lock_flags
 r_typedef
@@ -510,7 +727,13 @@ DECL|enumerator|_DRM_AGP_BUFFER
 id|_DRM_AGP_BUFFER
 op_assign
 l_int|0x02
+comma
 multiline_comment|/* Buffer is in agp space            */
+DECL|enumerator|_DRM_SG_BUFFER
+id|_DRM_SG_BUFFER
+op_assign
+l_int|0x04
+multiline_comment|/* Scatter/gather memory buffer      */
 DECL|member|flags
 )brace
 id|flags
@@ -909,6 +1132,27 @@ DECL|typedef|drm_agp_info_t
 )brace
 id|drm_agp_info_t
 suffix:semicolon
+DECL|struct|drm_scatter_gather
+r_typedef
+r_struct
+id|drm_scatter_gather
+(brace
+DECL|member|size
+r_int
+r_int
+id|size
+suffix:semicolon
+multiline_comment|/* In bytes -- will round to page boundary */
+DECL|member|handle
+r_int
+r_int
+id|handle
+suffix:semicolon
+multiline_comment|/* Used for mapping / unmapping */
+DECL|typedef|drm_scatter_gather_t
+)brace
+id|drm_scatter_gather_t
+suffix:semicolon
 DECL|macro|DRM_IOCTL_BASE
 mdefine_line|#define DRM_IOCTL_BASE&t;&t;&t;&squot;d&squot;
 DECL|macro|DRM_IO
@@ -927,6 +1171,12 @@ DECL|macro|DRM_IOCTL_GET_MAGIC
 mdefine_line|#define DRM_IOCTL_GET_MAGIC&t;&t;DRM_IOR( 0x02, drm_auth_t)
 DECL|macro|DRM_IOCTL_IRQ_BUSID
 mdefine_line|#define DRM_IOCTL_IRQ_BUSID&t;&t;DRM_IOWR(0x03, drm_irq_busid_t)
+DECL|macro|DRM_IOCTL_GET_MAP
+mdefine_line|#define DRM_IOCTL_GET_MAP               DRM_IOWR(0x04, drm_map_t)
+DECL|macro|DRM_IOCTL_GET_CLIENT
+mdefine_line|#define DRM_IOCTL_GET_CLIENT            DRM_IOWR(0x05, drm_client_t)
+DECL|macro|DRM_IOCTL_GET_STATS
+mdefine_line|#define DRM_IOCTL_GET_STATS             DRM_IOR( 0x06, drm_stats_t)
 DECL|macro|DRM_IOCTL_SET_UNIQUE
 mdefine_line|#define DRM_IOCTL_SET_UNIQUE&t;&t;DRM_IOW( 0x10, drm_unique_t)
 DECL|macro|DRM_IOCTL_AUTH_MAGIC
@@ -949,6 +1199,12 @@ DECL|macro|DRM_IOCTL_MAP_BUFS
 mdefine_line|#define DRM_IOCTL_MAP_BUFS&t;&t;DRM_IOWR(0x19, drm_buf_map_t)
 DECL|macro|DRM_IOCTL_FREE_BUFS
 mdefine_line|#define DRM_IOCTL_FREE_BUFS&t;&t;DRM_IOW( 0x1a, drm_buf_free_t)
+DECL|macro|DRM_IOCTL_RM_MAP
+mdefine_line|#define DRM_IOCTL_RM_MAP&t;&t;DRM_IOW( 0x1b, drm_map_t)
+DECL|macro|DRM_IOCTL_SET_SAREA_CTX
+mdefine_line|#define DRM_IOCTL_SET_SAREA_CTX&t;&t;DRM_IOW( 0x1c, drm_ctx_priv_map_t)
+DECL|macro|DRM_IOCTL_GET_SAREA_CTX
+mdefine_line|#define DRM_IOCTL_GET_SAREA_CTX &t;DRM_IOWR(0x1d, drm_ctx_priv_map_t)
 DECL|macro|DRM_IOCTL_ADD_CTX
 mdefine_line|#define DRM_IOCTL_ADD_CTX&t;&t;DRM_IOWR(0x20, drm_ctx_t)
 DECL|macro|DRM_IOCTL_RM_CTX
@@ -991,24 +1247,30 @@ DECL|macro|DRM_IOCTL_AGP_BIND
 mdefine_line|#define DRM_IOCTL_AGP_BIND&t;&t;DRM_IOW( 0x36, drm_agp_binding_t)
 DECL|macro|DRM_IOCTL_AGP_UNBIND
 mdefine_line|#define DRM_IOCTL_AGP_UNBIND&t;&t;DRM_IOW( 0x37, drm_agp_binding_t)
-multiline_comment|/* Mga specific ioctls */
+DECL|macro|DRM_IOCTL_SG_ALLOC
+mdefine_line|#define DRM_IOCTL_SG_ALLOC&t;&t;DRM_IOW( 0x38, drm_scatter_gather_t)
+DECL|macro|DRM_IOCTL_SG_FREE
+mdefine_line|#define DRM_IOCTL_SG_FREE&t;&t;DRM_IOW( 0x39, drm_scatter_gather_t)
+multiline_comment|/* MGA specific ioctls */
 DECL|macro|DRM_IOCTL_MGA_INIT
 mdefine_line|#define DRM_IOCTL_MGA_INIT&t;&t;DRM_IOW( 0x40, drm_mga_init_t)
-DECL|macro|DRM_IOCTL_MGA_SWAP
-mdefine_line|#define DRM_IOCTL_MGA_SWAP&t;&t;DRM_IOW( 0x41, drm_mga_swap_t)
-DECL|macro|DRM_IOCTL_MGA_CLEAR
-mdefine_line|#define DRM_IOCTL_MGA_CLEAR&t;&t;DRM_IOW( 0x42, drm_mga_clear_t)
-DECL|macro|DRM_IOCTL_MGA_ILOAD
-mdefine_line|#define DRM_IOCTL_MGA_ILOAD&t;&t;DRM_IOW( 0x43, drm_mga_iload_t)
-DECL|macro|DRM_IOCTL_MGA_VERTEX
-mdefine_line|#define DRM_IOCTL_MGA_VERTEX&t;&t;DRM_IOW( 0x44, drm_mga_vertex_t)
 DECL|macro|DRM_IOCTL_MGA_FLUSH
-mdefine_line|#define DRM_IOCTL_MGA_FLUSH&t;&t;DRM_IOW( 0x45, drm_lock_t )
+mdefine_line|#define DRM_IOCTL_MGA_FLUSH&t;&t;DRM_IOW( 0x41, drm_lock_t)
+DECL|macro|DRM_IOCTL_MGA_RESET
+mdefine_line|#define DRM_IOCTL_MGA_RESET&t;&t;DRM_IO(  0x42)
+DECL|macro|DRM_IOCTL_MGA_SWAP
+mdefine_line|#define DRM_IOCTL_MGA_SWAP&t;&t;DRM_IO(  0x43)
+DECL|macro|DRM_IOCTL_MGA_CLEAR
+mdefine_line|#define DRM_IOCTL_MGA_CLEAR&t;&t;DRM_IOW( 0x44, drm_mga_clear_t)
+DECL|macro|DRM_IOCTL_MGA_VERTEX
+mdefine_line|#define DRM_IOCTL_MGA_VERTEX&t;&t;DRM_IOW( 0x45, drm_mga_vertex_t)
 DECL|macro|DRM_IOCTL_MGA_INDICES
 mdefine_line|#define DRM_IOCTL_MGA_INDICES&t;&t;DRM_IOW( 0x46, drm_mga_indices_t)
+DECL|macro|DRM_IOCTL_MGA_ILOAD
+mdefine_line|#define DRM_IOCTL_MGA_ILOAD&t;&t;DRM_IOW( 0x47, drm_mga_iload_t)
 DECL|macro|DRM_IOCTL_MGA_BLIT
-mdefine_line|#define DRM_IOCTL_MGA_BLIT&t;&t;DRM_IOW( 0x47, drm_mga_blit_t)
-multiline_comment|/* I810 specific ioctls */
+mdefine_line|#define DRM_IOCTL_MGA_BLIT&t;&t;DRM_IOW( 0x48, drm_mga_blit_t)
+multiline_comment|/* i810 specific ioctls */
 DECL|macro|DRM_IOCTL_I810_INIT
 mdefine_line|#define DRM_IOCTL_I810_INIT&t;&t;DRM_IOW( 0x40, drm_i810_init_t)
 DECL|macro|DRM_IOCTL_I810_VERTEX
@@ -1054,8 +1316,10 @@ DECL|macro|DRM_IOCTL_R128_DEPTH
 mdefine_line|#define DRM_IOCTL_R128_DEPTH&t;&t;DRM_IOW( 0x4c, drm_r128_depth_t)
 DECL|macro|DRM_IOCTL_R128_STIPPLE
 mdefine_line|#define DRM_IOCTL_R128_STIPPLE&t;&t;DRM_IOW( 0x4d, drm_r128_stipple_t)
-DECL|macro|DRM_IOCTL_R128_PACKET
-mdefine_line|#define DRM_IOCTL_R128_PACKET&t;&t;DRM_IOWR(0x4e, drm_r128_packet_t)
+DECL|macro|DRM_IOCTL_R128_INDIRECT
+mdefine_line|#define DRM_IOCTL_R128_INDIRECT&t;&t;DRM_IOWR(0x4f, drm_r128_indirect_t)
+DECL|macro|DRM_IOCTL_R128_FULLSCREEN
+mdefine_line|#define DRM_IOCTL_R128_FULLSCREEN&t;DRM_IOW( 0x50, drm_r128_fullscreen_t)
 multiline_comment|/* Radeon specific ioctls */
 DECL|macro|DRM_IOCTL_RADEON_CP_INIT
 mdefine_line|#define DRM_IOCTL_RADEON_CP_INIT&t;DRM_IOW( 0x40, drm_radeon_init_t)
@@ -1079,12 +1343,12 @@ DECL|macro|DRM_IOCTL_RADEON_VERTEX
 mdefine_line|#define DRM_IOCTL_RADEON_VERTEX&t;&t;DRM_IOW( 0x49, drm_radeon_vertex_t)
 DECL|macro|DRM_IOCTL_RADEON_INDICES
 mdefine_line|#define DRM_IOCTL_RADEON_INDICES&t;DRM_IOW( 0x4a, drm_radeon_indices_t)
-DECL|macro|DRM_IOCTL_RADEON_BLIT
-mdefine_line|#define DRM_IOCTL_RADEON_BLIT&t;&t;DRM_IOW( 0x4b, drm_radeon_blit_t)
 DECL|macro|DRM_IOCTL_RADEON_STIPPLE
 mdefine_line|#define DRM_IOCTL_RADEON_STIPPLE&t;DRM_IOW( 0x4c, drm_radeon_stipple_t)
 DECL|macro|DRM_IOCTL_RADEON_INDIRECT
 mdefine_line|#define DRM_IOCTL_RADEON_INDIRECT&t;DRM_IOWR(0x4d, drm_radeon_indirect_t)
+DECL|macro|DRM_IOCTL_RADEON_TEXTURE
+mdefine_line|#define DRM_IOCTL_RADEON_TEXTURE&t;DRM_IOWR(0x4e, drm_radeon_texture_t)
 macro_line|#ifdef CONFIG_DRM_SIS
 multiline_comment|/* SiS specific ioctls */
 DECL|macro|SIS_IOCTL_FB_ALLOC

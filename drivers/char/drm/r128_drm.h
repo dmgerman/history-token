@@ -1,7 +1,7 @@
-multiline_comment|/* r128_drm.h -- Public header for the r128 driver -*- linux-c -*-&n; * Created: Wed Apr  5 19:24:19 2000 by kevin@precisioninsight.com&n; *&n; * Copyright 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Kevin E. Martin &lt;martin@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; *&n; */
-macro_line|#ifndef _R128_DRM_H_
-DECL|macro|_R128_DRM_H_
-mdefine_line|#define _R128_DRM_H_
+multiline_comment|/* r128_drm.h -- Public header for the r128 driver -*- linux-c -*-&n; * Created: Wed Apr  5 19:24:19 2000 by kevin@precisioninsight.com&n; *&n; * Copyright 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All rights reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * PRECISION INSIGHT AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER&n; * DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; *    Kevin E. Martin &lt;martin@valinux.com&gt;&n; */
+macro_line|#ifndef __R128_DRM_H__
+DECL|macro|__R128_DRM_H__
+mdefine_line|#define __R128_DRM_H__
 multiline_comment|/* WARNING: If you change any of these defines, make sure to change the&n; * defines in the X server file (r128_sarea.h)&n; */
 macro_line|#ifndef __R128_SAREA_DEFINES__
 DECL|macro|__R128_SAREA_DEFINES__
@@ -51,21 +51,13 @@ mdefine_line|#define R128_TRIANGLE_FAN&t;&t;0x5
 DECL|macro|R128_TRIANGLE_STRIP
 mdefine_line|#define R128_TRIANGLE_STRIP&t;&t;0x6
 multiline_comment|/* Vertex/indirect buffer size&n; */
-macro_line|#if 1
 DECL|macro|R128_BUFFER_SIZE
 mdefine_line|#define R128_BUFFER_SIZE&t;&t;16384
-macro_line|#else
-DECL|macro|R128_BUFFER_SIZE
-mdefine_line|#define R128_BUFFER_SIZE&t;&t;(128 * 1024)
-macro_line|#endif
 multiline_comment|/* Byte offsets for indirect buffer data&n; */
 DECL|macro|R128_INDEX_PRIM_OFFSET
 mdefine_line|#define R128_INDEX_PRIM_OFFSET&t;&t;20
 DECL|macro|R128_HOSTDATA_BLIT_OFFSET
 mdefine_line|#define R128_HOSTDATA_BLIT_OFFSET&t;32
-multiline_comment|/* 2048x2048 @ 32bpp texture requires this many indirect buffers&n; */
-DECL|macro|R128_MAX_BLIT_BUFFERS
-mdefine_line|#define R128_MAX_BLIT_BUFFERS&t;&t;((2048 * 2048 * 4) / R128_BUFFER_SIZE)
 multiline_comment|/* Keep these small for testing.&n; */
 DECL|macro|R128_NR_SAREA_CLIPRECTS
 mdefine_line|#define R128_NR_SAREA_CLIPRECTS&t;&t;12
@@ -82,8 +74,10 @@ DECL|macro|R128_LOG_TEX_GRANULARITY
 mdefine_line|#define R128_LOG_TEX_GRANULARITY&t;16
 DECL|macro|R128_NR_CONTEXT_REGS
 mdefine_line|#define R128_NR_CONTEXT_REGS&t;&t;12
-DECL|macro|R128_TEX_MAXLEVELS
-mdefine_line|#define R128_TEX_MAXLEVELS&t;&t;11
+DECL|macro|R128_MAX_TEXTURE_LEVELS
+mdefine_line|#define R128_MAX_TEXTURE_LEVELS&t;&t;11
+DECL|macro|R128_MAX_TEXTURE_UNITS
+mdefine_line|#define R128_MAX_TEXTURE_UNITS&t;&t;2
 macro_line|#endif /* __R128_SAREA_DEFINES__ */
 r_typedef
 r_struct
@@ -203,7 +197,7 @@ DECL|typedef|drm_r128_context_regs_t
 )brace
 id|drm_r128_context_regs_t
 suffix:semicolon
-multiline_comment|/* Setup registers for each texture unit */
+multiline_comment|/* Setup registers for each texture unit&n; */
 r_typedef
 r_struct
 (brace
@@ -227,7 +221,7 @@ r_int
 r_int
 id|tex_offset
 (braket
-id|R128_TEX_MAXLEVELS
+id|R128_MAX_TEXTURE_LEVELS
 )braket
 suffix:semicolon
 DECL|member|tex_border_color
@@ -238,32 +232,6 @@ suffix:semicolon
 DECL|typedef|drm_r128_texture_regs_t
 )brace
 id|drm_r128_texture_regs_t
-suffix:semicolon
-DECL|struct|drm_tex_region
-r_typedef
-r_struct
-id|drm_tex_region
-(brace
-DECL|member|next
-DECL|member|prev
-r_int
-r_char
-id|next
-comma
-id|prev
-suffix:semicolon
-DECL|member|in_use
-r_int
-r_char
-id|in_use
-suffix:semicolon
-DECL|member|age
-r_int
-id|age
-suffix:semicolon
-DECL|typedef|drm_tex_region_t
-)brace
-id|drm_tex_region_t
 suffix:semicolon
 DECL|struct|drm_r128_sarea
 r_typedef
@@ -279,7 +247,7 @@ DECL|member|tex_state
 id|drm_r128_texture_regs_t
 id|tex_state
 (braket
-id|R128_NR_TEX_HEAPS
+id|R128_MAX_TEXTURE_UNITS
 )braket
 suffix:semicolon
 DECL|member|dirty
@@ -369,10 +337,18 @@ DECL|member|func
 )brace
 id|func
 suffix:semicolon
+macro_line|#if CONFIG_XFREE86_VERSION &lt; XFREE86_VERSION(4,1,0,0)
 DECL|member|sarea_priv_offset
 r_int
 id|sarea_priv_offset
 suffix:semicolon
+macro_line|#else
+DECL|member|sarea_priv_offset
+r_int
+r_int
+id|sarea_priv_offset
+suffix:semicolon
+macro_line|#endif
 DECL|member|is_pci
 r_int
 id|is_pci
@@ -432,6 +408,7 @@ r_int
 r_int
 id|span_offset
 suffix:semicolon
+macro_line|#if CONFIG_XFREE86_VERSION &lt; XFREE86_VERSION(4,1,0,0)
 DECL|member|fb_offset
 r_int
 r_int
@@ -462,6 +439,38 @@ r_int
 r_int
 id|agp_textures_offset
 suffix:semicolon
+macro_line|#else
+DECL|member|fb_offset
+r_int
+r_int
+id|fb_offset
+suffix:semicolon
+DECL|member|mmio_offset
+r_int
+r_int
+id|mmio_offset
+suffix:semicolon
+DECL|member|ring_offset
+r_int
+r_int
+id|ring_offset
+suffix:semicolon
+DECL|member|ring_rptr_offset
+r_int
+r_int
+id|ring_rptr_offset
+suffix:semicolon
+DECL|member|buffers_offset
+r_int
+r_int
+id|buffers_offset
+suffix:semicolon
+DECL|member|agp_textures_offset
+r_int
+r_int
+id|agp_textures_offset
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|drm_r128_init_t
 )brace
 id|drm_r128_init_t
@@ -493,6 +502,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+macro_line|#if CONFIG_XFREE86_VERSION &lt; XFREE86_VERSION(4,1,0,0)
 DECL|member|x
 DECL|member|y
 DECL|member|w
@@ -506,6 +516,7 @@ id|w
 comma
 id|h
 suffix:semicolon
+macro_line|#endif
 DECL|member|clear_color
 r_int
 r_int
@@ -516,6 +527,18 @@ r_int
 r_int
 id|clear_depth
 suffix:semicolon
+macro_line|#if CONFIG_XFREE86_VERSION &gt;= XFREE86_VERSION(4,1,0,0)
+DECL|member|color_mask
+r_int
+r_int
+id|color_mask
+suffix:semicolon
+DECL|member|depth_mask
+r_int
+r_int
+id|depth_mask
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|drm_r128_clear_t
 )brace
 id|drm_r128_clear_t
@@ -694,28 +717,54 @@ DECL|typedef|drm_r128_stipple_t
 )brace
 id|drm_r128_stipple_t
 suffix:semicolon
-DECL|struct|drm_r128_packet
+DECL|struct|drm_r128_indirect
 r_typedef
 r_struct
-id|drm_r128_packet
+id|drm_r128_indirect
 (brace
-DECL|member|buffer
+DECL|member|idx
 r_int
-r_int
-op_star
-id|buffer
+id|idx
 suffix:semicolon
-DECL|member|count
+DECL|member|start
 r_int
-id|count
+id|start
 suffix:semicolon
-DECL|member|flags
+DECL|member|end
 r_int
-id|flags
+id|end
 suffix:semicolon
-DECL|typedef|drm_r128_packet_t
+DECL|member|discard
+r_int
+id|discard
+suffix:semicolon
+DECL|typedef|drm_r128_indirect_t
 )brace
-id|drm_r128_packet_t
+id|drm_r128_indirect_t
+suffix:semicolon
+DECL|struct|drm_r128_fullscreen
+r_typedef
+r_struct
+id|drm_r128_fullscreen
+(brace
+r_enum
+(brace
+DECL|enumerator|R128_INIT_FULLSCREEN
+id|R128_INIT_FULLSCREEN
+op_assign
+l_int|0x01
+comma
+DECL|enumerator|R128_CLEANUP_FULLSCREEN
+id|R128_CLEANUP_FULLSCREEN
+op_assign
+l_int|0x02
+DECL|member|func
+)brace
+id|func
+suffix:semicolon
+DECL|typedef|drm_r128_fullscreen_t
+)brace
+id|drm_r128_fullscreen_t
 suffix:semicolon
 macro_line|#endif
 eof
