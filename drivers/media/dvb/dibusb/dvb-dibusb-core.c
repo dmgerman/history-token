@@ -99,10 +99,12 @@ DECL|macro|USB_VID_EMPIA
 mdefine_line|#define USB_VID_EMPIA&t;&t;&t;&t;&t;&t;0xeb1a
 DECL|macro|USB_VID_GRANDTEC
 mdefine_line|#define USB_VID_GRANDTEC&t;&t;&t;&t;&t;0x5032
-DECL|macro|USB_VID_HYPER_PALTEK
-mdefine_line|#define USB_VID_HYPER_PALTEK&t;&t;&t;&t;0x1025
 DECL|macro|USB_VID_HANFTEK
 mdefine_line|#define USB_VID_HANFTEK&t;&t;&t;&t;&t;&t;0x15f4
+DECL|macro|USB_VID_HAUPPAUGE
+mdefine_line|#define USB_VID_HAUPPAUGE&t;&t;&t;&t;&t;0x2040
+DECL|macro|USB_VID_HYPER_PALTEK
+mdefine_line|#define USB_VID_HYPER_PALTEK&t;&t;&t;&t;0x1025
 DECL|macro|USB_VID_IMC_NETWORKS
 mdefine_line|#define USB_VID_IMC_NETWORKS&t;&t;&t;&t;0x13d3
 DECL|macro|USB_VID_TWINHAN
@@ -172,6 +174,10 @@ DECL|macro|USB_PID_YAKUMO_DTT200U_COLD
 mdefine_line|#define USB_PID_YAKUMO_DTT200U_COLD&t;&t;&t;0x0201
 DECL|macro|USB_PID_YAKUMO_DTT200U_WARM
 mdefine_line|#define USB_PID_YAKUMO_DTT200U_WARM&t;&t;&t;0x0301
+DECL|macro|USB_PID_WINTV_NOVA_T_USB2_COLD
+mdefine_line|#define USB_PID_WINTV_NOVA_T_USB2_COLD&t;&t;0x9300
+DECL|macro|USB_PID_WINTV_NOVA_T_USB2_WARM
+mdefine_line|#define USB_PID_WINTV_NOVA_T_USB2_WARM&t;&t;0x9301
 multiline_comment|/* USB Driver stuff&n; * table of devices that this driver is working with&n; *&n; * ATTENTION: Never ever change the order of this table, the particular &n; * devices depend on this order &n; *&n; * Each entry is used as a reference in the device_struct. Currently this is &n; * the only non-redundant way of assigning USB ids to actual devices I&squot;m aware &n; * of, because there is only one place in the code where the assignment of &n; * vendor and product id is done, here.&n; */
 DECL|variable|dib_table
 r_static
@@ -513,10 +519,32 @@ id|USB_PID_HANFTEK_UMT_010_WARM
 )paren
 )brace
 comma
+multiline_comment|/* 30 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|USB_VID_HAUPPAUGE
+comma
+id|USB_PID_WINTV_NOVA_T_USB2_COLD
+)paren
+)brace
+comma
+multiline_comment|/* 31 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|USB_VID_HAUPPAUGE
+comma
+id|USB_PID_WINTV_NOVA_T_USB2_WARM
+)paren
+)brace
+comma
 multiline_comment|/* &n; * activate the following define when you have one of the devices and want to &n; * build it from build-2.6 in dvb-kernel&n; */
 singleline_comment|// #define CONFIG_DVB_DIBUSB_MISDESIGNED_DEVICES 
 macro_line|#ifdef CONFIG_DVB_DIBUSB_MISDESIGNED_DEVICES
-multiline_comment|/* 30 */
+multiline_comment|/* 32 */
 (brace
 id|USB_DEVICE
 c_func
@@ -527,7 +555,7 @@ id|USB_PID_ULTIMA_TVBOX_ANCHOR_COLD
 )paren
 )brace
 comma
-multiline_comment|/* 31 */
+multiline_comment|/* 33 */
 (brace
 id|USB_DEVICE
 c_func
@@ -538,7 +566,7 @@ id|USB_PID_ULTIMA_TVBOX_USB2_FX_COLD
 )paren
 )brace
 comma
-multiline_comment|/* 32 */
+multiline_comment|/* 34 */
 (brace
 id|USB_DEVICE
 c_func
@@ -549,7 +577,7 @@ id|USB_PID_ULTIMA_TVBOX_USB2_FX_WARM
 )paren
 )brace
 comma
-multiline_comment|/* 33 */
+multiline_comment|/* 35 */
 (brace
 id|USB_DEVICE
 c_func
@@ -1260,6 +1288,37 @@ comma
 )brace
 comma
 (brace
+l_string|&quot;Hauppauge WinTV NOVA-T USB2&quot;
+comma
+op_amp
+id|dibusb_device_classes
+(braket
+id|DIBUSB2_0
+)braket
+comma
+(brace
+op_amp
+id|dib_table
+(braket
+l_int|30
+)braket
+comma
+l_int|NULL
+)brace
+comma
+(brace
+op_amp
+id|dib_table
+(braket
+l_int|31
+)braket
+comma
+l_int|NULL
+)brace
+comma
+)brace
+comma
+(brace
 l_string|&quot;AVermedia/Yakumo/Hama/Typhoon DVB-T USB2.0&quot;
 comma
 op_amp
@@ -1329,7 +1388,7 @@ comma
 op_amp
 id|dib_table
 (braket
-l_int|30
+l_int|32
 )braket
 comma
 l_int|NULL
@@ -1354,7 +1413,7 @@ comma
 op_amp
 id|dib_table
 (braket
-l_int|31
+l_int|33
 )braket
 comma
 l_int|NULL
@@ -1364,7 +1423,7 @@ comma
 op_amp
 id|dib_table
 (braket
-l_int|32
+l_int|34
 )braket
 comma
 l_int|NULL
@@ -1386,7 +1445,7 @@ comma
 op_amp
 id|dib_table
 (braket
-l_int|33
+l_int|35
 )braket
 comma
 l_int|NULL
