@@ -4928,6 +4928,16 @@ id|page_table
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, we need to copy. Oh, well..&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PageReserved
+c_func
+(paren
+id|old_page
+)paren
+)paren
 id|page_cache_get
 c_func
 (paren
