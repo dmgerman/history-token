@@ -213,8 +213,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if 0
 multiline_comment|/*&n; * sort_by_max_size - sort nodes by their length, largest first&n; */
-DECL|function|sort_by_max_size
 r_static
 r_int
 id|sort_by_max_size
@@ -404,6 +404,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/**&n; * get_io_resource - get resource for I/O ports&n; *&n; * this function sorts the resource list by size and then&n; * returns the first node of &quot;size&quot; length that is not in the&n; * ISA aliasing window.  If it finds a node larger than &quot;size&quot;&n; * it will split it up.&n; *&n; * size must be a power of two.&n; *&n; * difference from get_resource is handling of ISA aliasing space.&n; *&n; */
 DECL|function|acpiphp_get_io_resource
 r_struct
@@ -702,8 +703,9 @@ r_return
 id|node
 suffix:semicolon
 )brace
+macro_line|#if 0
 multiline_comment|/**&n; * get_max_resource - get the largest resource&n; *&n; * Gets the largest node that is at least &quot;size&quot; big from the&n; * list pointed to by head.  It aligns the node on top and bottom&n; * to &quot;size&quot; alignment before returning it.&n; */
-DECL|function|acpiphp_get_max_resource
+r_static
 r_struct
 id|pci_resource
 op_star
@@ -1023,6 +1025,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/**&n; * get_resource - get resource (mem, pfmem)&n; *&n; * this function sorts the resource list by size and then&n; * returns the first node of &quot;size&quot; length.  If it finds a node&n; * larger than &quot;size&quot; it will split it up.&n; *&n; * size must be a power of two.&n; *&n; */
 DECL|function|acpiphp_get_resource
 r_struct

@@ -113,6 +113,7 @@ DECL|function|long_delay
 r_static
 r_void
 id|long_delay
+c_func
 (paren
 r_int
 id|delay
@@ -134,6 +135,7 @@ id|delay_sem
 )paren
 suffix:semicolon
 id|init_waitqueue_head
+c_func
 (paren
 op_amp
 id|delay_wait
@@ -178,13 +180,14 @@ id|TASK_RUNNING
 )paren
 suffix:semicolon
 id|up
+c_func
 (paren
 op_amp
 id|delay_sem
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//FIXME: The following line needs to be somewhere else...
+multiline_comment|/* FIXME: The following line needs to be somewhere else... */
 DECL|macro|WRONG_BUS_FREQUENCY
 mdefine_line|#define WRONG_BUS_FREQUENCY 0x07
 DECL|function|handle_switch_change
@@ -232,7 +235,7 @@ id|change
 r_return
 l_int|0
 suffix:semicolon
-singleline_comment|// Switch Change
+multiline_comment|/* Switch Change */
 id|dbg
 c_func
 (paren
@@ -266,9 +269,7 @@ id|hp_slot
 )paren
 )paren
 (brace
-singleline_comment|//*********************************
-singleline_comment|// this one changed.
-singleline_comment|//*********************************
+multiline_comment|/**********************************&n;&t;&t;&t; * this one changed.&n;&t;&t;&t; **********************************/
 id|func
 op_assign
 id|cpqhp_slot_find
@@ -285,8 +286,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|//this is the structure that tells the worker thread
-singleline_comment|//what to do
+multiline_comment|/* this is the structure that tells the worker thread&n;&t;&t;&t; *what to do */
 id|taskInfo
 op_assign
 op_amp
@@ -356,9 +356,7 @@ id|hp_slot
 )paren
 )paren
 (brace
-singleline_comment|//*********************************
-singleline_comment|// Switch opened
-singleline_comment|//*********************************
+multiline_comment|/**********************************&n;&t;&t;&t;&t; * Switch opened&n;&t;&t;&t;&t; **********************************/
 id|func-&gt;switch_save
 op_assign
 l_int|0
@@ -370,9 +368,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|//*********************************
-singleline_comment|// Switch closed
-singleline_comment|//*********************************
+multiline_comment|/**********************************&n;&t;&t;&t;&t; * Switch closed&n;&t;&t;&t;&t; **********************************/
 id|func-&gt;switch_save
 op_assign
 l_int|0x10
@@ -388,12 +384,14 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * cpqhp_find_slot&n; */
+multiline_comment|/**&n; * cpqhp_find_slot: find the struct slot of given device&n; * @ctrl: scan lots of this controller&n; * @device: the device id to find&n; */
 DECL|function|cpqhp_find_slot
+r_static
 r_struct
 id|slot
 op_star
 id|cpqhp_find_slot
+c_func
 (paren
 r_struct
 id|controller
@@ -407,17 +405,6 @@ id|device
 r_struct
 id|slot
 op_star
-id|slot
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ctrl
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
 id|slot
 op_assign
 id|ctrl-&gt;slot
@@ -496,9 +483,7 @@ id|change
 r_return
 l_int|0
 suffix:semicolon
-singleline_comment|//*********************************
-singleline_comment|// Presence Change
-singleline_comment|//*********************************
+multiline_comment|/**********************************&n;&t; * Presence Change&n;&t; **********************************/
 id|dbg
 c_func
 (paren
@@ -540,9 +525,7 @@ id|hp_slot
 )paren
 )paren
 (brace
-singleline_comment|//*********************************
-singleline_comment|// this one changed.
-singleline_comment|//*********************************
+multiline_comment|/**********************************&n;&t;&t;&t; * this one changed.&n;&t;&t;&t; **********************************/
 id|func
 op_assign
 id|cpqhp_slot_find
@@ -617,8 +600,7 @@ id|p_slot
 r_return
 l_int|0
 suffix:semicolon
-singleline_comment|// If the switch closed, must be a button
-singleline_comment|// If not in button mode, nevermind
+multiline_comment|/* If the switch closed, must be a button&n;&t;&t;&t; * If not in button mode, nevermind */
 r_if
 c_cond
 (paren
@@ -669,9 +651,7 @@ op_ne
 id|func-&gt;presence_save
 )paren
 (brace
-singleline_comment|//*********************************
-singleline_comment|// button Pressed (doesn&squot;t do anything)
-singleline_comment|//*********************************
+multiline_comment|/**************************************&n;&t;&t;&t;&t;&t; * button Pressed (doesn&squot;t do anything)&n;&t;&t;&t;&t;&t; **************************************/
 id|dbg
 c_func
 (paren
@@ -687,9 +667,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|//*********************************
-singleline_comment|// button Released - TAKE ACTION!!!!
-singleline_comment|//*********************************
+multiline_comment|/**********************************&n;&t;&t;&t;&t;&t; * button Released - TAKE ACTION!!!!&n;&t;&t;&t;&t;&t; **********************************/
 id|dbg
 c_func
 (paren
@@ -702,7 +680,7 @@ id|taskInfo-&gt;event_type
 op_assign
 id|INT_BUTTON_RELEASE
 suffix:semicolon
-singleline_comment|// Cancel if we are still blinking
+multiline_comment|/* Cancel if we are still blinking */
 r_if
 c_cond
 (paren
@@ -749,7 +727,7 @@ id|POWEROFF_STATE
 )paren
 )paren
 (brace
-singleline_comment|//info(msg_button_ignore, p_slot-&gt;number);
+multiline_comment|/* info(msg_button_ignore, p_slot-&gt;number); */
 id|taskInfo-&gt;event_type
 op_assign
 id|INT_BUTTON_IGNORE
@@ -767,8 +745,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// Switch is open, assume a presence change
-singleline_comment|// Save the presence state
+multiline_comment|/* Switch is open, assume a presence change&n;&t;&t;&t;&t; * Save the presence state */
 id|temp_word
 op_assign
 id|ctrl-&gt;ctrl_int_comp
@@ -829,9 +806,7 @@ id|hp_slot
 )paren
 )paren
 (brace
-singleline_comment|//*********************************
-singleline_comment|// Present
-singleline_comment|//*********************************
+multiline_comment|/* Present */
 id|taskInfo-&gt;event_type
 op_assign
 id|INT_PRESENCE_ON
@@ -839,9 +814,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|//*********************************
-singleline_comment|// Not Present
-singleline_comment|//*********************************
+multiline_comment|/* Not Present */
 id|taskInfo-&gt;event_type
 op_assign
 id|INT_PRESENCE_OFF
@@ -896,9 +869,7 @@ id|change
 r_return
 l_int|0
 suffix:semicolon
-singleline_comment|//*********************************
-singleline_comment|// power fault
-singleline_comment|//*********************************
+multiline_comment|/**********************************&n;&t; * power fault&n;&t; **********************************/
 id|info
 c_func
 (paren
@@ -932,9 +903,7 @@ id|hp_slot
 )paren
 )paren
 (brace
-singleline_comment|//*********************************
-singleline_comment|// this one changed.
-singleline_comment|//*********************************
+multiline_comment|/**********************************&n;&t;&t;&t; * this one changed.&n;&t;&t;&t; **********************************/
 id|func
 op_assign
 id|cpqhp_slot_find
@@ -990,9 +959,7 @@ id|hp_slot
 )paren
 )paren
 (brace
-singleline_comment|//*********************************
-singleline_comment|// power fault Cleared
-singleline_comment|//*********************************
+multiline_comment|/**********************************&n;&t;&t;&t;&t; * power fault Cleared&n;&t;&t;&t;&t; **********************************/
 id|func-&gt;status
 op_assign
 l_int|0x00
@@ -1004,9 +971,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|//*********************************
-singleline_comment|// power fault
-singleline_comment|//*********************************
+multiline_comment|/**********************************&n;&t;&t;&t;&t; * power fault&n;&t;&t;&t;&t; **********************************/
 id|taskInfo-&gt;event_type
 op_assign
 id|INT_POWER_FAULT
@@ -1038,19 +1003,14 @@ id|set_SOGO
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// this is a fatal condition, we want to crash the
-singleline_comment|// machine to protect from data corruption
-singleline_comment|// simulated_NMI shouldn&squot;t ever return
-singleline_comment|//FIXME
-singleline_comment|//simulated_NMI(hp_slot, ctrl);
-singleline_comment|//The following code causes a software crash just in
-singleline_comment|//case simulated_NMI did return
-singleline_comment|//FIXME
-singleline_comment|//panic(msg_power_fault);
+multiline_comment|/* this is a fatal condition, we want&n;&t;&t;&t;&t;&t; * to crash the machine to protect from&n;&t;&t;&t;&t;&t; * data corruption. simulated_NMI&n;&t;&t;&t;&t;&t; * shouldn&squot;t ever return */
+multiline_comment|/* FIXME&n;&t;&t;&t;&t;&t;simulated_NMI(hp_slot, ctrl); */
+multiline_comment|/* The following code causes a software&n;&t;&t;&t;&t;&t; * crash just in case simulated_NMI did&n;&t;&t;&t;&t;&t; * return */
+multiline_comment|/*FIXME&n;&t;&t;&t;&t;&t;panic(msg_power_fault); */
 )brace
 r_else
 (brace
-singleline_comment|// set power fault status for this board
+multiline_comment|/* set power fault status for this board */
 id|func-&gt;status
 op_assign
 l_int|0xFF
@@ -1071,7 +1031,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * sort_by_size&n; *&n; * Sorts nodes on the list by their length.&n; * Smallest first.&n; *&n; */
+multiline_comment|/**&n; * sort_by_size: sort nodes on the list by their length, smallest first.&n; * @head: list to sort&n; *&n; */
 DECL|function|sort_by_size
 r_static
 r_int
@@ -1138,7 +1098,7 @@ id|out_of_order
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Special case for swapping list head
+multiline_comment|/* Special case for swapping list head */
 r_if
 c_cond
 (paren
@@ -1257,12 +1217,12 @@ id|current_res-&gt;next
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// End of out_of_order loop
+multiline_comment|/* End of out_of_order loop */
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * sort_by_max_size&n; *&n; * Sorts nodes on the list by their length.&n; * Largest first.&n; *&n; */
+multiline_comment|/**&n; * sort_by_max_size: sort nodes on the list by their length, largest first.&n; * @head: list to sort&n; *&n; */
 DECL|function|sort_by_max_size
 r_static
 r_int
@@ -1329,7 +1289,7 @@ id|out_of_order
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Special case for swapping list head
+multiline_comment|/* Special case for swapping list head */
 r_if
 c_cond
 (paren
@@ -1448,18 +1408,19 @@ id|current_res-&gt;next
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// End of out_of_order loop
+multiline_comment|/* End of out_of_order loop */
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * do_pre_bridge_resource_split&n; *&n; *&t;Returns zero or one node of resources that aren&squot;t in use&n; *&n; */
+multiline_comment|/**&n; * do_pre_bridge_resource_split: find node of resources that are unused&n; *&n; */
 DECL|function|do_pre_bridge_resource_split
 r_static
 r_struct
 id|pci_resource
 op_star
 id|do_pre_bridge_resource_split
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -1580,8 +1541,7 @@ id|length
 r_return
 l_int|NULL
 suffix:semicolon
-singleline_comment|// If we got here, there the bridge requires some of the resource, but
-singleline_comment|// we may be able to split some off of the front
+multiline_comment|/* If we got here, there the bridge requires some of the resource, but&n;&t; * we may be able to split some off of the front */
 id|node
 op_assign
 op_star
@@ -1599,22 +1559,16 @@ l_int|1
 )paren
 )paren
 (brace
-singleline_comment|// this one isn&squot;t an aligned length, so we&squot;ll make a new entry
-singleline_comment|// and split it up.
+multiline_comment|/* this one isn&squot;t an aligned length, so we&squot;ll make a new entry&n;&t;&t; * and split it up. */
 id|split_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|pci_resource
+op_star
+id|split_node
 )paren
 comma
 id|GFP_KERNEL
@@ -1661,7 +1615,7 @@ id|node-&gt;base
 op_add_assign
 id|split_node-&gt;length
 suffix:semicolon
-singleline_comment|// Put it in the list
+multiline_comment|/* Put it in the list */
 op_star
 id|head
 op_assign
@@ -1679,12 +1633,10 @@ id|node-&gt;length
 OL
 id|alignment
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
-singleline_comment|// Now unlink it
+multiline_comment|/* Now unlink it */
 r_if
 c_cond
 (paren
@@ -1698,10 +1650,6 @@ op_star
 id|head
 op_assign
 id|node-&gt;next
-suffix:semicolon
-id|node-&gt;next
-op_assign
-l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -1726,22 +1674,23 @@ id|prevnode-&gt;next
 op_assign
 id|node-&gt;next
 suffix:semicolon
+)brace
 id|node-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 r_return
 id|node
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * do_bridge_resource_split&n; *&n; *&t;Returns zero or one node of resources that aren&squot;t in use&n; *&n; */
+multiline_comment|/**&n; * do_bridge_resource_split: find one node of resources that aren&squot;t in use&n; *&n; */
 DECL|function|do_bridge_resource_split
 r_static
 r_struct
 id|pci_resource
 op_star
 id|do_bridge_resource_split
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -1770,18 +1719,6 @@ id|rc
 suffix:semicolon
 id|u32
 id|temp_dword
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-op_star
-id|head
-)paren
-)paren
-r_return
-l_int|NULL
 suffix:semicolon
 id|rc
 op_assign
@@ -1832,17 +1769,9 @@ id|node-&gt;length
 OL
 id|alignment
 )paren
-(brace
-id|kfree
-c_func
-(paren
-id|node
-)paren
+r_goto
+id|error
 suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1855,7 +1784,7 @@ l_int|1
 )paren
 )paren
 (brace
-singleline_comment|// Short circuit if adjusted size is too small
+multiline_comment|/* Short circuit if adjusted size is too small */
 id|temp_dword
 op_assign
 (paren
@@ -1885,17 +1814,9 @@ id|node-&gt;base
 OL
 id|alignment
 )paren
-(brace
-id|kfree
-c_func
-(paren
-id|node
-)paren
+r_goto
+id|error
 suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 id|node-&gt;length
 op_sub_assign
 (paren
@@ -1920,8 +1841,15 @@ op_minus
 l_int|1
 )paren
 )paren
-(brace
-singleline_comment|// There&squot;s stuff in use after this node
+multiline_comment|/* There&squot;s stuff in use after this node */
+r_goto
+id|error
+suffix:semicolon
+r_return
+id|node
+suffix:semicolon
+id|error
+suffix:colon
 id|kfree
 c_func
 (paren
@@ -1932,17 +1860,14 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-r_return
-id|node
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * get_io_resource&n; *&n; * this function sorts the resource list by size and then&n; * returns the first node of &quot;size&quot; length that is not in the&n; * ISA aliasing window.  If it finds a node larger than &quot;size&quot;&n; * it will split it up.&n; *&n; * size must be a power of two.&n; */
+multiline_comment|/**&n; * get_io_resource: find first node of given size not in ISA aliasing window.&n; * @head: list to search&n; * @size: size of node to find, must be a power of two.&n; *&n; * Description: this function sorts the resource list by size and then returns&n; * returns the first node of &quot;size&quot; length that is not in the ISA aliasing&n; * window.  If it finds a node larger than &quot;size&quot; it will split it up.&n; *&n; */
 DECL|function|get_io_resource
 r_static
 r_struct
 id|pci_resource
 op_star
 id|get_io_resource
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -2044,8 +1969,7 @@ l_int|1
 )paren
 )paren
 (brace
-singleline_comment|// this one isn&squot;t base aligned properly
-singleline_comment|// so we&squot;ll make a new entry and split it up
+multiline_comment|/* this one isn&squot;t base aligned properly&n;&t;&t;&t; * so we&squot;ll make a new entry and split it up */
 id|temp_dword
 op_assign
 (paren
@@ -2060,7 +1984,7 @@ l_int|1
 op_plus
 l_int|1
 suffix:semicolon
-singleline_comment|// Short circuit if adjusted size is too small
+multiline_comment|/* Short circuit if adjusted size is too small */
 r_if
 c_cond
 (paren
@@ -2080,18 +2004,13 @@ r_continue
 suffix:semicolon
 id|split_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|pci_resource
+op_star
+id|split_node
 )paren
 comma
 id|GFP_KERNEL
@@ -2124,7 +2043,7 @@ id|node-&gt;length
 op_sub_assign
 id|split_node-&gt;length
 suffix:semicolon
-singleline_comment|// Put it in the list
+multiline_comment|/* Put it in the list */
 id|split_node-&gt;next
 op_assign
 id|node-&gt;next
@@ -2134,8 +2053,8 @@ op_assign
 id|split_node
 suffix:semicolon
 )brace
-singleline_comment|// End of non-aligned base
-singleline_comment|// Don&squot;t need to check if too small since we already did
+multiline_comment|/* End of non-aligned base */
+multiline_comment|/* Don&squot;t need to check if too small since we already did */
 r_if
 c_cond
 (paren
@@ -2144,22 +2063,16 @@ OG
 id|size
 )paren
 (brace
-singleline_comment|// this one is longer than we need
-singleline_comment|// so we&squot;ll make a new entry and split it up
+multiline_comment|/* this one is longer than we need&n;&t;&t;&t; * so we&squot;ll make a new entry and split it up */
 id|split_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|pci_resource
+op_star
+id|split_node
 )paren
 comma
 id|GFP_KERNEL
@@ -2190,7 +2103,7 @@ id|node-&gt;length
 op_assign
 id|size
 suffix:semicolon
-singleline_comment|// Put it in the list
+multiline_comment|/* Put it in the list */
 id|split_node-&gt;next
 op_assign
 id|node-&gt;next
@@ -2200,8 +2113,8 @@ op_assign
 id|split_node
 suffix:semicolon
 )brace
-singleline_comment|// End of too big on top end
-singleline_comment|// For IO make sure it&squot;s not in the ISA aliasing space
+multiline_comment|/* End of too big on top end */
+multiline_comment|/* For IO make sure it&squot;s not in the ISA aliasing space */
 r_if
 c_cond
 (paren
@@ -2211,8 +2124,7 @@ l_int|0x300L
 )paren
 r_continue
 suffix:semicolon
-singleline_comment|// If we got here, then it is the right size
-singleline_comment|// Now take it out of the list
+multiline_comment|/* If we got here, then it is the right size&n;&t;&t; * Now take it out of the list and break */
 r_if
 c_cond
 (paren
@@ -2255,7 +2167,6 @@ id|node-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|// Stop looping
 r_break
 suffix:semicolon
 )brace
@@ -2263,13 +2174,14 @@ r_return
 id|node
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * get_max_resource&n; *&n; * Gets the largest node that is at least &quot;size&quot; big from the&n; * list pointed to by head.  It aligns the node on top and bottom&n; * to &quot;size&quot; alignment before returning it.&n; */
+multiline_comment|/**&n; * get_max_resource: get largest node which has at least the given size.&n; * @head: the list to search the node in&n; * @size: the minimum size of the node to find&n; *&n; * Description: Gets the largest node that is at least &quot;size&quot; big from the&n; * list pointed to by head.  It aligns the node on top and bottom&n; * to &quot;size&quot; alignment before returning it.&n; */
 DECL|function|get_max_resource
 r_static
 r_struct
 id|pci_resource
 op_star
 id|get_max_resource
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -2298,18 +2210,6 @@ id|split_node
 suffix:semicolon
 id|u32
 id|temp_dword
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-op_star
-id|head
-)paren
-)paren
-r_return
-l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -2350,8 +2250,7 @@ op_assign
 id|max-&gt;next
 )paren
 (brace
-singleline_comment|// If not big enough we could probably just bail, 
-singleline_comment|// instead we&squot;ll continue to the next.
+multiline_comment|/* If not big enough we could probably just bail, &n;&t;&t; * instead we&squot;ll continue to the next. */
 r_if
 c_cond
 (paren
@@ -2373,8 +2272,7 @@ l_int|1
 )paren
 )paren
 (brace
-singleline_comment|// this one isn&squot;t base aligned properly
-singleline_comment|// so we&squot;ll make a new entry and split it up
+multiline_comment|/* this one isn&squot;t base aligned properly&n;&t;&t;&t; * so we&squot;ll make a new entry and split it up */
 id|temp_dword
 op_assign
 (paren
@@ -2389,7 +2287,7 @@ l_int|1
 op_plus
 l_int|1
 suffix:semicolon
-singleline_comment|// Short circuit if adjusted size is too small
+multiline_comment|/* Short circuit if adjusted size is too small */
 r_if
 c_cond
 (paren
@@ -2409,18 +2307,13 @@ r_continue
 suffix:semicolon
 id|split_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|pci_resource
+op_star
+id|split_node
 )paren
 comma
 id|GFP_KERNEL
@@ -2453,7 +2346,6 @@ id|max-&gt;length
 op_sub_assign
 id|split_node-&gt;length
 suffix:semicolon
-singleline_comment|// Put it next in the list
 id|split_node-&gt;next
 op_assign
 id|max-&gt;next
@@ -2479,22 +2371,16 @@ l_int|1
 )paren
 )paren
 (brace
-singleline_comment|// this one isn&squot;t end aligned properly at the top
-singleline_comment|// so we&squot;ll make a new entry and split it up
+multiline_comment|/* this one isn&squot;t end aligned properly at the top&n;&t;&t;&t; * so we&squot;ll make a new entry and split it up */
 id|split_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|pci_resource
+op_star
+id|split_node
 )paren
 comma
 id|GFP_KERNEL
@@ -2542,7 +2428,6 @@ id|max-&gt;length
 op_sub_assign
 id|split_node-&gt;length
 suffix:semicolon
-singleline_comment|// Put it in the list
 id|split_node-&gt;next
 op_assign
 id|max-&gt;next
@@ -2552,7 +2437,7 @@ op_assign
 id|split_node
 suffix:semicolon
 )brace
-singleline_comment|// Make sure it didn&squot;t shrink too much when we aligned it
+multiline_comment|/* Make sure it didn&squot;t shrink too much when we aligned it */
 r_if
 c_cond
 (paren
@@ -2562,14 +2447,9 @@ id|size
 )paren
 r_continue
 suffix:semicolon
-singleline_comment|// Now take it out of the list
+multiline_comment|/* Now take it out of the list */
 id|temp
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 op_star
 id|head
 suffix:semicolon
@@ -2613,22 +2493,21 @@ id|max-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_return
 id|max
 suffix:semicolon
 )brace
-singleline_comment|// If we get here, we couldn&squot;t find one
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * get_resource&n; *&n; * this function sorts the resource list by size and then&n; * returns the first node of &quot;size&quot; length.  If it finds a node&n; * larger than &quot;size&quot; it will split it up.&n; *&n; * size must be a power of two.&n; */
+multiline_comment|/**&n; * get_resource: find resource of given size and split up larger ones.&n; * @head: the list to search for resources&n; * @size: the size limit to use&n; *&n; * Description: This function sorts the resource list by size and then&n; * returns the first node of &quot;size&quot; length.  If it finds a node&n; * larger than &quot;size&quot; it will split it up.&n; *&n; * size must be a power of two.&n; */
 DECL|function|get_resource
 r_static
 r_struct
 id|pci_resource
 op_star
 id|get_resource
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -2657,18 +2536,6 @@ id|split_node
 suffix:semicolon
 id|u32
 id|temp_dword
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-op_star
-id|head
-)paren
-)paren
-r_return
-l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -2754,8 +2621,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-singleline_comment|// this one isn&squot;t base aligned properly
-singleline_comment|// so we&squot;ll make a new entry and split it up
+multiline_comment|/* this one isn&squot;t base aligned properly&n;&t;&t;&t; * so we&squot;ll make a new entry and split it up */
 id|temp_dword
 op_assign
 (paren
@@ -2770,7 +2636,7 @@ l_int|1
 op_plus
 l_int|1
 suffix:semicolon
-singleline_comment|// Short circuit if adjusted size is too small
+multiline_comment|/* Short circuit if adjusted size is too small */
 r_if
 c_cond
 (paren
@@ -2790,18 +2656,13 @@ r_continue
 suffix:semicolon
 id|split_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|pci_resource
+op_star
+id|split_node
 )paren
 comma
 id|GFP_KERNEL
@@ -2834,7 +2695,6 @@ id|node-&gt;length
 op_sub_assign
 id|split_node-&gt;length
 suffix:semicolon
-singleline_comment|// Put it in the list
 id|split_node-&gt;next
 op_assign
 id|node-&gt;next
@@ -2844,8 +2704,8 @@ op_assign
 id|split_node
 suffix:semicolon
 )brace
-singleline_comment|// End of non-aligned base
-singleline_comment|// Don&squot;t need to check if too small since we already did
+multiline_comment|/* End of non-aligned base */
+multiline_comment|/* Don&squot;t need to check if too small since we already did */
 r_if
 c_cond
 (paren
@@ -2862,22 +2722,16 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-singleline_comment|// this one is longer than we need
-singleline_comment|// so we&squot;ll make a new entry and split it up
+multiline_comment|/* this one is longer than we need&n;&t;&t;&t; * so we&squot;ll make a new entry and split it up */
 id|split_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|pci_resource
+op_star
+id|split_node
 )paren
 comma
 id|GFP_KERNEL
@@ -2908,7 +2762,7 @@ id|node-&gt;length
 op_assign
 id|size
 suffix:semicolon
-singleline_comment|// Put it in the list
+multiline_comment|/* Put it in the list */
 id|split_node-&gt;next
 op_assign
 id|node-&gt;next
@@ -2918,7 +2772,7 @@ op_assign
 id|split_node
 suffix:semicolon
 )brace
-singleline_comment|// End of too big on top end
+multiline_comment|/* End of too big on top end */
 id|dbg
 c_func
 (paren
@@ -2927,8 +2781,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-singleline_comment|// If we got here, then it is the right size
-singleline_comment|// Now take it out of the list
+multiline_comment|/* If we got here, then it is the right size&n;&t;&t; * Now take it out of the list */
 r_if
 c_cond
 (paren
@@ -2971,7 +2824,6 @@ id|node-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|// Stop looping
 r_break
 suffix:semicolon
 )brace
@@ -2979,7 +2831,7 @@ r_return
 id|node
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * cpqhp_resource_sort_and_combine&n; *&n; * Sorts all of the nodes in the list in ascending order by&n; * their base addresses.  Also does garbage collection by&n; * combining adjacent nodes.&n; *&n; * returns 0 if success&n; */
+multiline_comment|/**&n; * cpqhp_resource_sort_and_combine: sort nodes by base addresses and clean up.&n; * @head: the list to sort and clean up&n; *&n; * Description: Sorts all of the nodes in the list in ascending order by&n; * their base addresses.  Also does garbage collection by&n; * combining adjacent nodes.&n; *&n; * returns 0 if success&n; */
 DECL|function|cpqhp_resource_sort_and_combine
 r_int
 id|cpqhp_resource_sort_and_combine
@@ -3096,7 +2948,7 @@ id|out_of_order
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Special case for swapping list head
+multiline_comment|/* Special case for swapping list head */
 r_if
 c_cond
 (paren
@@ -3219,7 +3071,7 @@ id|node1-&gt;next
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// End of out_of_order loop
+multiline_comment|/* End of out_of_order loop */
 id|node1
 op_assign
 op_star
@@ -3245,7 +3097,7 @@ op_eq
 id|node1-&gt;next-&gt;base
 )paren
 (brace
-singleline_comment|// Combine
+multiline_comment|/* Combine */
 id|dbg
 c_func
 (paren
@@ -3333,9 +3185,7 @@ op_plus
 id|MISC
 )paren
 suffix:semicolon
-singleline_comment|//*********************************
-singleline_comment|// Check to see if it was our interrupt
-singleline_comment|//*********************************
+multiline_comment|/***************************************&n;&t; * Check to see if it was our interrupt&n;&t; ***************************************/
 r_if
 c_cond
 (paren
@@ -3359,10 +3209,8 @@ op_amp
 l_int|0x0004
 )paren
 (brace
-singleline_comment|//*********************************
-singleline_comment|// Serial Output interrupt Pending
-singleline_comment|//*********************************
-singleline_comment|// Clear the interrupt
+multiline_comment|/**********************************&n;&t;&t; * Serial Output interrupt Pending&n;&t;&t; **********************************/
+multiline_comment|/* Clear the interrupt */
 id|misc
 op_or_assign
 l_int|0x0004
@@ -3377,7 +3225,7 @@ op_plus
 id|MISC
 )paren
 suffix:semicolon
-singleline_comment|// Read to clear posted writes
+multiline_comment|/* Read to clear posted writes */
 id|misc
 op_assign
 id|readw
@@ -3411,7 +3259,7 @@ op_amp
 l_int|0x0008
 )paren
 (brace
-singleline_comment|// General-interrupt-input interrupt Pending
+multiline_comment|/* General-interrupt-input interrupt Pending */
 id|Diff
 op_assign
 id|readl
@@ -3434,7 +3282,7 @@ op_plus
 id|INT_INPUT_CLEAR
 )paren
 suffix:semicolon
-singleline_comment|// Clear the interrupt
+multiline_comment|/* Clear the interrupt */
 id|writel
 c_func
 (paren
@@ -3445,7 +3293,7 @@ op_plus
 id|INT_INPUT_CLEAR
 )paren
 suffix:semicolon
-singleline_comment|// Read it back to clear any posted writes
+multiline_comment|/* Read it back to clear any posted writes */
 id|temp_dword
 op_assign
 id|readl
@@ -3462,8 +3310,7 @@ c_cond
 op_logical_neg
 id|Diff
 )paren
-(brace
-singleline_comment|// Clear all interrupts
+multiline_comment|/* Clear all interrupts */
 id|writel
 c_func
 (paren
@@ -3474,7 +3321,6 @@ op_plus
 id|INT_INPUT_CLEAR
 )paren
 suffix:semicolon
-)brace
 id|schedule_flag
 op_add_assign
 id|handle_switch_change
@@ -3634,18 +3480,13 @@ id|next
 suffix:semicolon
 id|new_slot
 op_assign
-(paren
-r_struct
-id|pci_func
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|pci_func
+op_star
+id|new_slot
 )paren
 comma
 id|GFP_KERNEL
@@ -3659,8 +3500,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-singleline_comment|// I&squot;m not dead yet!
-singleline_comment|// You will be.
+multiline_comment|/* I&squot;m not dead yet!&n;&t;&t; * You will be. */
 r_return
 id|new_slot
 suffix:semicolon
@@ -3735,7 +3575,7 @@ r_return
 id|new_slot
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * slot_remove - Removes a node from the linked list of slots.&n; * @old_slot: slot to remove&n; *&n; * Returns 0 if successful, !0 otherwise.&n; */
+multiline_comment|/**&n; * slot_remove - Removes a node from the linked list of slots.&n; * @old_slot: slot to remove&n; *&n; * Returns 0 if successful, !0 otherwise.&n; */
 DECL|function|slot_remove
 r_static
 r_int
@@ -3893,16 +3733,6 @@ id|pci_func
 op_star
 id|next
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|bridge
-op_eq
-l_int|NULL
-)paren
-r_return
-l_int|1
-suffix:semicolon
 id|secondaryBus
 op_assign
 (paren
@@ -3985,11 +3815,9 @@ id|next
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4005,14 +3833,8 @@ id|bridge-&gt;bus
 op_assign
 id|bridge-&gt;next
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|bridge
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_while
@@ -4030,24 +3852,26 @@ op_ne
 l_int|NULL
 )paren
 )paren
-(brace
 id|next
 op_assign
 id|next-&gt;next
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|next-&gt;next
-op_eq
+op_ne
 id|bridge
 )paren
-(brace
+r_return
+l_int|2
+suffix:semicolon
 id|next-&gt;next
 op_assign
 id|bridge-&gt;next
 suffix:semicolon
+id|out
+suffix:colon
 id|kfree
 c_func
 (paren
@@ -4056,11 +3880,6 @@ id|bridge
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-)brace
-r_else
-r_return
-l_int|2
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * cpqhp_slot_find - Looks for a node by bus, and device, multiple functions accessed&n; * @bus: bus to find&n; * @device: device to find&n; * @index: is 0 for first function found, 1 for the second...&n; *&n; * Returns pointer to the node if successful, %NULL otherwise.&n; */
@@ -4172,8 +3991,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-singleline_comment|// DJZ: I don&squot;t think is_bridge will work as is.
-singleline_comment|//FIXME
+multiline_comment|/* DJZ: I don&squot;t think is_bridge will work as is.&n; * FIXME */
 DECL|function|is_bridge
 r_static
 r_int
@@ -4186,7 +4004,7 @@ op_star
 id|func
 )paren
 (brace
-singleline_comment|// Check the header type
+multiline_comment|/* Check the header type */
 r_if
 c_cond
 (paren
@@ -4209,6 +4027,521 @@ r_return
 l_int|1
 suffix:semicolon
 r_else
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * set_controller_speed - set the frequency and/or mode of a specific&n; * controller segment.&n; *&n; * @ctrl: controller to change frequency/mode for.&n; * @adapter_speed: the speed of the adapter we want to match.&n; * @hp_slot: the slot number where the adapter is installed.&n; *&n; * Returns 0 if we successfully change frequency and/or mode to match the&n; * adapter speed.&n; * &n; */
+DECL|function|set_controller_speed
+r_static
+id|u8
+id|set_controller_speed
+c_func
+(paren
+r_struct
+id|controller
+op_star
+id|ctrl
+comma
+id|u8
+id|adapter_speed
+comma
+id|u8
+id|hp_slot
+)paren
+(brace
+r_struct
+id|slot
+op_star
+id|slot
+suffix:semicolon
+id|u8
+id|reg
+suffix:semicolon
+id|u8
+id|slot_power
+op_assign
+id|readb
+c_func
+(paren
+id|ctrl-&gt;hpc_reg
+op_plus
+id|SLOT_POWER
+)paren
+suffix:semicolon
+id|u16
+id|reg16
+suffix:semicolon
+id|u32
+id|leds
+op_assign
+id|readl
+c_func
+(paren
+id|ctrl-&gt;hpc_reg
+op_plus
+id|LED_CONTROL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctrl-&gt;speed
+op_eq
+id|adapter_speed
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* We don&squot;t allow freq/mode changes if we find another adapter running&n;&t; * in another slot on this controller */
+r_for
+c_loop
+(paren
+id|slot
+op_assign
+id|ctrl-&gt;slot
+suffix:semicolon
+id|slot
+suffix:semicolon
+id|slot
+op_assign
+id|slot-&gt;next
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|slot-&gt;device
+op_eq
+(paren
+id|hp_slot
+op_plus
+id|ctrl-&gt;slot_device_offset
+)paren
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|slot-&gt;hotplug_slot
+op_logical_and
+op_logical_neg
+id|slot-&gt;hotplug_slot-&gt;info
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|slot-&gt;hotplug_slot-&gt;info-&gt;adapter_status
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* If another adapter is running on the same segment but at a&n;&t;&t; * lower speed/mode, we allow the new adapter to function at&n;&t;&t; * this rate if supported */
+r_if
+c_cond
+(paren
+id|ctrl-&gt;speed
+OL
+id|adapter_speed
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* If the controller doesn&squot;t support freq/mode changes and the&n;&t; * controller is running at a higher mode, we bail */
+r_if
+c_cond
+(paren
+(paren
+id|ctrl-&gt;speed
+OG
+id|adapter_speed
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|ctrl-&gt;pcix_speed_capability
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* But we allow the adapter to run at a lower rate if possible */
+r_if
+c_cond
+(paren
+(paren
+id|ctrl-&gt;speed
+OL
+id|adapter_speed
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|ctrl-&gt;pcix_speed_capability
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* We try to set the max speed supported by both the adapter and&n;&t; * controller */
+r_if
+c_cond
+(paren
+id|ctrl-&gt;speed_capability
+OL
+id|adapter_speed
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ctrl-&gt;speed
+op_eq
+id|ctrl-&gt;speed_capability
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|adapter_speed
+op_assign
+id|ctrl-&gt;speed_capability
+suffix:semicolon
+)brace
+id|writel
+c_func
+(paren
+l_int|0x0L
+comma
+id|ctrl-&gt;hpc_reg
+op_plus
+id|LED_CONTROL
+)paren
+suffix:semicolon
+id|writeb
+c_func
+(paren
+l_int|0x00
+comma
+id|ctrl-&gt;hpc_reg
+op_plus
+id|SLOT_ENABLE
+)paren
+suffix:semicolon
+id|set_SOGO
+c_func
+(paren
+id|ctrl
+)paren
+suffix:semicolon
+id|wait_for_ctrl_irq
+c_func
+(paren
+id|ctrl
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|adapter_speed
+op_ne
+id|PCI_SPEED_133MHz_PCIX
+)paren
+id|reg
+op_assign
+l_int|0xF5
+suffix:semicolon
+r_else
+id|reg
+op_assign
+l_int|0xF4
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|ctrl-&gt;pci_dev
+comma
+l_int|0x41
+comma
+id|reg
+)paren
+suffix:semicolon
+id|reg16
+op_assign
+id|readw
+c_func
+(paren
+id|ctrl-&gt;hpc_reg
+op_plus
+id|NEXT_CURR_FREQ
+)paren
+suffix:semicolon
+id|reg16
+op_and_assign
+op_complement
+l_int|0x000F
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|adapter_speed
+)paren
+(brace
+r_case
+(paren
+id|PCI_SPEED_133MHz_PCIX
+)paren
+suffix:colon
+id|reg
+op_assign
+l_int|0x75
+suffix:semicolon
+id|reg16
+op_or_assign
+l_int|0xB
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+(paren
+id|PCI_SPEED_100MHz_PCIX
+)paren
+suffix:colon
+id|reg
+op_assign
+l_int|0x74
+suffix:semicolon
+id|reg16
+op_or_assign
+l_int|0xA
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+(paren
+id|PCI_SPEED_66MHz_PCIX
+)paren
+suffix:colon
+id|reg
+op_assign
+l_int|0x73
+suffix:semicolon
+id|reg16
+op_or_assign
+l_int|0x9
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+(paren
+id|PCI_SPEED_66MHz
+)paren
+suffix:colon
+id|reg
+op_assign
+l_int|0x73
+suffix:semicolon
+id|reg16
+op_or_assign
+l_int|0x1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* 33MHz PCI 2.2 */
+id|reg
+op_assign
+l_int|0x71
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|reg16
+op_or_assign
+l_int|0xB
+op_lshift
+l_int|12
+suffix:semicolon
+id|writew
+c_func
+(paren
+id|reg16
+comma
+id|ctrl-&gt;hpc_reg
+op_plus
+id|NEXT_CURR_FREQ
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|5
+)paren
+suffix:semicolon
+multiline_comment|/* Reenable interrupts */
+id|writel
+c_func
+(paren
+l_int|0
+comma
+id|ctrl-&gt;hpc_reg
+op_plus
+id|INT_MASK
+)paren
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|ctrl-&gt;pci_dev
+comma
+l_int|0x41
+comma
+id|reg
+)paren
+suffix:semicolon
+multiline_comment|/* Restart state machine */
+id|reg
+op_assign
+op_complement
+l_int|0xF
+suffix:semicolon
+id|pci_read_config_byte
+c_func
+(paren
+id|ctrl-&gt;pci_dev
+comma
+l_int|0x43
+comma
+op_amp
+id|reg
+)paren
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|ctrl-&gt;pci_dev
+comma
+l_int|0x43
+comma
+id|reg
+)paren
+suffix:semicolon
+multiline_comment|/* Only if mode change...*/
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|ctrl-&gt;speed
+op_eq
+id|PCI_SPEED_66MHz
+)paren
+op_logical_and
+(paren
+id|adapter_speed
+op_eq
+id|PCI_SPEED_66MHz_PCIX
+)paren
+)paren
+op_logical_or
+(paren
+(paren
+id|ctrl-&gt;speed
+op_eq
+id|PCI_SPEED_66MHz_PCIX
+)paren
+op_logical_and
+(paren
+id|adapter_speed
+op_eq
+id|PCI_SPEED_66MHz
+)paren
+)paren
+)paren
+id|set_SOGO
+c_func
+(paren
+id|ctrl
+)paren
+suffix:semicolon
+id|wait_for_ctrl_irq
+c_func
+(paren
+id|ctrl
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|1100
+)paren
+suffix:semicolon
+multiline_comment|/* Restore LED/Slot state */
+id|writel
+c_func
+(paren
+id|leds
+comma
+id|ctrl-&gt;hpc_reg
+op_plus
+id|LED_CONTROL
+)paren
+suffix:semicolon
+id|writeb
+c_func
+(paren
+id|slot_power
+comma
+id|ctrl-&gt;hpc_reg
+op_plus
+id|SLOT_ENABLE
+)paren
+suffix:semicolon
+id|set_SOGO
+c_func
+(paren
+id|ctrl
+)paren
+suffix:semicolon
+id|wait_for_ctrl_irq
+c_func
+(paren
+id|ctrl
+)paren
+suffix:semicolon
+id|ctrl-&gt;speed
+op_assign
+id|adapter_speed
+suffix:semicolon
+id|slot
+op_assign
+id|cpqhp_find_slot
+c_func
+(paren
+id|ctrl
+comma
+id|hp_slot
+op_plus
+id|ctrl-&gt;slot_device_offset
+)paren
+suffix:semicolon
+id|info
+c_func
+(paren
+l_string|&quot;Successfully changed frequency/mode for adapter in slot %d&bslash;n&quot;
+comma
+id|slot-&gt;number
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4278,9 +4611,7 @@ id|hp_slot
 )paren
 )paren
 (brace
-singleline_comment|//*********************************
-singleline_comment|// The switch is open.
-singleline_comment|//*********************************
+multiline_comment|/**********************************&n;&t;&t; * The switch is open.&n;&t;&t; **********************************/
 id|rc
 op_assign
 id|INTERLOCK_OPEN
@@ -4298,9 +4629,7 @@ id|hp_slot
 )paren
 )paren
 (brace
-singleline_comment|//*********************************
-singleline_comment|// The board is already on
-singleline_comment|//*********************************
+multiline_comment|/**********************************&n;&t;&t; * The board is already on&n;&t;&t; **********************************/
 id|rc
 op_assign
 id|CARD_FUNCTIONING
@@ -4308,7 +4637,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// Wait for exclusive access to hardware
 id|down
 c_func
 (paren
@@ -4316,7 +4644,7 @@ op_amp
 id|ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
-singleline_comment|// turn on board without attaching to the bus
+multiline_comment|/* turn on board without attaching to the bus */
 id|enable_slot_power
 (paren
 id|ctrl
@@ -4330,14 +4658,13 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Change bits in slot power register to force another shift out
-singleline_comment|// NOTE: this is to work around the timer bug
+multiline_comment|/* Change bits in slot power register to force another shift out&n;&t;&t; * NOTE: this is to work around the timer bug */
 id|temp_byte
 op_assign
 id|readb
@@ -4374,7 +4701,7 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
@@ -4414,7 +4741,7 @@ id|rc
 op_assign
 id|WRONG_BUS_FREQUENCY
 suffix:semicolon
-singleline_comment|// turn off board without attaching to the bus
+multiline_comment|/* turn off board without attaching to the bus */
 id|disable_slot_power
 (paren
 id|ctrl
@@ -4428,13 +4755,12 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Done with exclusive hardware access
 id|up
 c_func
 (paren
@@ -4450,7 +4776,6 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-singleline_comment|// Wait for exclusive access to hardware
 id|down
 c_func
 (paren
@@ -4485,13 +4810,12 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Done with exclusive hardware access
 id|up
 c_func
 (paren
@@ -4499,7 +4823,7 @@ op_amp
 id|ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
-singleline_comment|// Wait for ~1 second because of hot plug spec
+multiline_comment|/* Wait for ~1 second because of hot plug spec */
 id|long_delay
 c_func
 (paren
@@ -4508,7 +4832,7 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
-singleline_comment|// Check for a power fault
+multiline_comment|/* Check for a power fault */
 r_if
 c_cond
 (paren
@@ -4517,7 +4841,7 @@ op_eq
 l_int|0xFF
 )paren
 (brace
-singleline_comment|// power fault occurred, but it was benign
+multiline_comment|/* power fault occurred, but it was benign */
 id|rc
 op_assign
 id|POWER_FAILURE
@@ -4545,7 +4869,7 @@ op_logical_neg
 id|rc
 )paren
 (brace
-singleline_comment|// It must be the same board
+multiline_comment|/* It must be the same board */
 id|rc
 op_assign
 id|cpqhp_configure_board
@@ -4564,11 +4888,7 @@ op_logical_or
 id|src
 )paren
 (brace
-singleline_comment|// If configuration fails, turn it off
-singleline_comment|// Get slot won&squot;t work for devices behind bridges, but
-singleline_comment|// in this case it will always be called for the &quot;base&quot;
-singleline_comment|// bus/dev/func of an adapter.
-singleline_comment|// Wait for exclusive access to hardware
+multiline_comment|/* If configuration fails, turn it off&n;&t;&t;&t;&t; * Get slot won&squot;t work for devices behind&n;&t;&t;&t;&t; * bridges, but in this case it will always be&n;&t;&t;&t;&t; * called for the &quot;base&quot; bus/dev/func of an&n;&t;&t;&t;&t; * adapter. */
 id|down
 c_func
 (paren
@@ -4603,13 +4923,12 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Done with exclusive hardware access
 id|up
 c_func
 (paren
@@ -4687,11 +5006,7 @@ c_cond
 id|rc
 )paren
 (brace
-singleline_comment|// If configuration fails, turn it off
-singleline_comment|// Get slot won&squot;t work for devices behind bridges, but
-singleline_comment|// in this case it will always be called for the &quot;base&quot;
-singleline_comment|// bus/dev/func of an adapter.
-singleline_comment|// Wait for exclusive access to hardware
+multiline_comment|/* If configuration fails, turn it off&n;&t;&t;&t;&t; * Get slot won&squot;t work for devices behind&n;&t;&t;&t;&t; * bridges, but in this case it will always be&n;&t;&t;&t;&t; * called for the &quot;base&quot; bus/dev/func of an&n;&t;&t;&t;&t; * adapter. */
 id|down
 c_func
 (paren
@@ -4726,13 +5041,12 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Done with exclusive hardware access
 id|up
 c_func
 (paren
@@ -4744,8 +5058,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-singleline_comment|// Done configuring so turn LED on full time
-singleline_comment|// Wait for exclusive access to hardware
+multiline_comment|/* Done configuring so turn LED on full time */
 id|down
 c_func
 (paren
@@ -4766,13 +5079,12 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Done with exclusive hardware access
 id|up
 c_func
 (paren
@@ -4787,11 +5099,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// Something is wrong
-singleline_comment|// Get slot won&squot;t work for devices behind bridges, but
-singleline_comment|// in this case it will always be called for the &quot;base&quot;
-singleline_comment|// bus/dev/func of an adapter.
-singleline_comment|// Wait for exclusive access to hardware
+multiline_comment|/* Something is wrong&n;&n;&t;&t;&t; * Get slot won&squot;t work for devices behind bridges, but&n;&t;&t;&t; * in this case it will always be called for the &quot;base&quot;&n;&t;&t;&t; * bus/dev/func of an adapter. */
 id|down
 c_func
 (paren
@@ -4826,13 +5134,12 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Done with exclusive hardware access
 id|up
 c_func
 (paren
@@ -4922,7 +5229,6 @@ comma
 id|hp_slot
 )paren
 suffix:semicolon
-singleline_comment|// Wait for exclusive access to hardware
 id|down
 c_func
 (paren
@@ -4930,8 +5236,9 @@ op_amp
 id|ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
-singleline_comment|// turn on board without attaching to the bus
+multiline_comment|/* turn on board without attaching to the bus */
 id|enable_slot_power
+c_func
 (paren
 id|ctrl
 comma
@@ -4944,14 +5251,13 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Change bits in slot power register to force another shift out
-singleline_comment|// NOTE: this is to work around the timer bug
+multiline_comment|/* Change bits in slot power register to force another shift out&n;&t; * NOTE: this is to work around the timer bug */
 id|temp_byte
 op_assign
 id|readb
@@ -4988,7 +5294,7 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
@@ -5028,7 +5334,7 @@ id|rc
 op_assign
 id|WRONG_BUS_FREQUENCY
 suffix:semicolon
-singleline_comment|// turn off board without attaching to the bus
+multiline_comment|/* turn off board without attaching to the bus */
 id|disable_slot_power
 (paren
 id|ctrl
@@ -5042,13 +5348,13 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
+c_func
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Done with exclusive hardware access
 id|up
 c_func
 (paren
@@ -5076,8 +5382,7 @@ op_plus
 id|ctrl-&gt;slot_device_offset
 )paren
 suffix:semicolon
-singleline_comment|// turn on board and blink green LED
-singleline_comment|// Wait for exclusive access to hardware
+multiline_comment|/* turn on board and blink green LED */
 id|dbg
 c_func
 (paren
@@ -5160,7 +5465,7 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|dbg
 c_func
 (paren
@@ -5182,7 +5487,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-singleline_comment|// Done with exclusive hardware access
 id|dbg
 c_func
 (paren
@@ -5206,7 +5510,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-singleline_comment|// Wait for ~1 second because of hot plug spec
+multiline_comment|/* Wait for ~1 second because of hot plug spec */
 id|dbg
 c_func
 (paren
@@ -5241,7 +5545,7 @@ comma
 id|func-&gt;status
 )paren
 suffix:semicolon
-singleline_comment|// Check for a power fault
+multiline_comment|/* Check for a power fault */
 r_if
 c_cond
 (paren
@@ -5250,7 +5554,7 @@ op_eq
 l_int|0xFF
 )paren
 (brace
-singleline_comment|// power fault occurred, but it was benign
+multiline_comment|/* power fault occurred, but it was benign */
 id|temp_register
 op_assign
 l_int|0xFFFFFFFF
@@ -5276,7 +5580,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// Get vendor/device ID u32
+multiline_comment|/* Get vendor/device ID u32 */
 id|ctrl-&gt;pci_bus-&gt;number
 op_assign
 id|func-&gt;bus
@@ -5329,7 +5633,7 @@ op_ne
 l_int|0
 )paren
 (brace
-singleline_comment|// Something&squot;s wrong here
+multiline_comment|/* Something&squot;s wrong here */
 id|temp_register
 op_assign
 l_int|0xFFFFFFFF
@@ -5345,13 +5649,13 @@ id|temp_register
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// Preset return code.  It will be changed later if things go okay.
+multiline_comment|/* Preset return code.  It will be changed later if things go okay. */
 id|rc
 op_assign
 id|NO_ADAPTER_PRESENT
 suffix:semicolon
 )brace
-singleline_comment|// All F&squot;s is an empty slot or an invalid board
+multiline_comment|/* All F&squot;s is an empty slot or an invalid board */
 r_if
 c_cond
 (paren
@@ -5360,7 +5664,7 @@ op_ne
 l_int|0xFFFFFFFF
 )paren
 (brace
-singleline_comment|// Check for a board in the slot
+multiline_comment|/* Check for a board in the slot */
 id|res_lists.io_head
 op_assign
 id|ctrl-&gt;io_head
@@ -5462,7 +5766,6 @@ c_cond
 id|rc
 )paren
 (brace
-singleline_comment|// Wait for exclusive access to hardware
 id|down
 c_func
 (paren
@@ -5497,13 +5800,12 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Done with exclusive hardware access
 id|up
 c_func
 (paren
@@ -5538,7 +5840,7 @@ id|func-&gt;is_a_board
 op_assign
 l_int|0x01
 suffix:semicolon
-singleline_comment|//next, we will instantiate the linux pci_dev structures (with appropriate driver notification, if already present)
+multiline_comment|/* next, we will instantiate the linux pci_dev structures (with&n;&t;&t; * appropriate driver notification, if already present) */
 id|dbg
 c_func
 (paren
@@ -5591,7 +5893,6 @@ c_loop
 id|new_slot
 )paren
 suffix:semicolon
-singleline_comment|// Wait for exclusive access to hardware
 id|down
 c_func
 (paren
@@ -5612,13 +5913,12 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Done with exclusive hardware access
 id|up
 c_func
 (paren
@@ -5629,7 +5929,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// Wait for exclusive access to hardware
 id|down
 c_func
 (paren
@@ -5664,13 +5963,12 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Done with exclusive hardware access
 id|up
 c_func
 (paren
@@ -5739,16 +6037,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|func
-op_eq
-l_int|NULL
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|cpqhp_unconfigure_device
 c_func
 (paren
@@ -5778,8 +6066,7 @@ comma
 id|hp_slot
 )paren
 suffix:semicolon
-singleline_comment|// When we get here, it is safe to change base Address Registers.
-singleline_comment|// We will attempt to save the base Address Register Lengths
+multiline_comment|/* When we get here, it is safe to change base address registers.&n;&t; * We will attempt to save the base address register lengths */
 r_if
 c_cond
 (paren
@@ -5815,9 +6102,7 @@ op_logical_neg
 id|func-&gt;io_head
 )paren
 (brace
-singleline_comment|// Here we check to see if we&squot;ve saved any of the board&squot;s
-singleline_comment|// resources already.  If so, we&squot;ll skip the attempt to
-singleline_comment|// determine what&squot;s being used.
+multiline_comment|/* Here we check to see if we&squot;ve saved any of the board&squot;s&n;&t;&t; * resources already.  If so, we&squot;ll skip the attempt to&n;&t;&t; * determine what&squot;s being used. */
 id|index
 op_assign
 l_int|0
@@ -5891,7 +6176,7 @@ id|func
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// Change status to shutdown
+multiline_comment|/* Change status to shutdown */
 r_if
 c_cond
 (paren
@@ -5905,7 +6190,6 @@ id|func-&gt;configured
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Wait for exclusive access to hardware
 id|down
 c_func
 (paren
@@ -5933,7 +6217,7 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// turn off SERR for slot
+multiline_comment|/* turn off SERR for slot */
 id|temp_byte
 op_assign
 id|readb
@@ -5963,13 +6247,12 @@ op_plus
 id|SLOT_SERR
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Done with exclusive hardware access
 id|up
 c_func
 (paren
@@ -6106,7 +6389,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// Setup slot structure with entry for empty slot
+multiline_comment|/* Setup slot structure with entry for empty slot */
 id|func
 op_assign
 id|cpqhp_slot_create
@@ -6122,12 +6405,9 @@ id|func
 op_eq
 l_int|NULL
 )paren
-(brace
-singleline_comment|// Out of memory
 r_return
 l_int|1
 suffix:semicolon
-)brace
 id|func-&gt;bus
 op_assign
 id|ctrl-&gt;bus
@@ -6165,6 +6445,7 @@ DECL|function|pushbutton_helper_thread
 r_static
 r_void
 id|pushbutton_helper_thread
+c_func
 (paren
 r_int
 r_int
@@ -6183,7 +6464,7 @@ id|event_semaphore
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// this is the main worker thread
+multiline_comment|/* this is the main worker thread */
 DECL|function|event_thread
 r_static
 r_int
@@ -6302,6 +6583,7 @@ suffix:semicolon
 DECL|function|cpqhp_event_start_thread
 r_int
 id|cpqhp_event_start_thread
+c_func
 (paren
 r_void
 )paren
@@ -6380,6 +6662,7 @@ suffix:semicolon
 DECL|function|cpqhp_event_stop_thread
 r_void
 id|cpqhp_event_stop_thread
+c_func
 (paren
 r_void
 )paren
@@ -6419,6 +6702,7 @@ DECL|function|update_slot_info
 r_static
 r_int
 id|update_slot_info
+c_func
 (paren
 r_struct
 id|controller
@@ -6442,11 +6726,12 @@ suffix:semicolon
 id|info
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|hotplug_slot_info
+op_star
+id|info
 )paren
 comma
 id|GFP_KERNEL
@@ -6581,7 +6866,7 @@ id|loop
 op_increment
 )paren
 (brace
-singleline_comment|//dbg(&quot;loop %d&bslash;n&quot;, loop);
+multiline_comment|/* dbg(&quot;loop %d&bslash;n&quot;, loop); */
 r_if
 c_cond
 (paren
@@ -6707,7 +6992,6 @@ op_amp
 id|p_slot-&gt;task_event
 )paren
 suffix:semicolon
-singleline_comment|// Wait for exclusive access to hardware
 id|down
 c_func
 (paren
@@ -6723,8 +7007,7 @@ op_eq
 id|BLINKINGOFF_STATE
 )paren
 (brace
-singleline_comment|// slot is on
-singleline_comment|// turn on green LED
+multiline_comment|/* slot is on */
 id|dbg
 c_func
 (paren
@@ -6748,8 +7031,7 @@ op_eq
 id|BLINKINGON_STATE
 )paren
 (brace
-singleline_comment|// slot is off
-singleline_comment|// turn off green LED
+multiline_comment|/* slot is off */
 id|dbg
 c_func
 (paren
@@ -6789,13 +7071,12 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Done with exclusive hardware access
 id|up
 c_func
 (paren
@@ -6804,7 +7085,7 @@ id|ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// ***********button Released (No action on press...)
+multiline_comment|/*** button Released (No action on press...) */
 r_else
 r_if
 c_cond
@@ -6836,7 +7117,6 @@ id|hp_slot
 )paren
 )paren
 (brace
-singleline_comment|// slot is on
 id|dbg
 c_func
 (paren
@@ -6858,7 +7138,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// slot is off
 id|dbg
 c_func
 (paren
@@ -6878,7 +7157,6 @@ id|p_slot-&gt;number
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// Wait for exclusive access to hardware
 id|down
 c_func
 (paren
@@ -6912,13 +7190,12 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Done with exclusive hardware access
 id|up
 c_func
 (paren
@@ -6941,7 +7218,7 @@ id|p_slot-&gt;ctrl
 op_assign
 id|ctrl
 suffix:semicolon
-singleline_comment|//&t;&t;&t;&t;&t;p_slot-&gt;physical_slot = physical_slot;
+multiline_comment|/*&t;&t;&t;&t;&t;p_slot-&gt;physical_slot = physical_slot; */
 id|p_slot-&gt;task_event.expires
 op_assign
 id|jiffies
@@ -6950,7 +7227,7 @@ l_int|5
 op_star
 id|HZ
 suffix:semicolon
-singleline_comment|// 5 second delay
+multiline_comment|/* 5 second delay */
 id|p_slot-&gt;task_event.function
 op_assign
 id|pushbutton_helper_thread
@@ -6978,7 +7255,7 @@ id|p_slot-&gt;task_event
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// ***********POWER FAULT
+multiline_comment|/***********POWER FAULT */
 r_else
 r_if
 c_cond
@@ -7032,7 +7309,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// End of FOR loop
+multiline_comment|/* End of FOR loop */
 )brace
 r_return
 suffix:semicolon
@@ -7041,6 +7318,7 @@ multiline_comment|/**&n; * cpqhp_pushbutton_thread&n; *&n; * Scheduled procedure
 DECL|function|cpqhp_pushbutton_thread
 r_void
 id|cpqhp_pushbutton_thread
+c_func
 (paren
 r_int
 r_int
@@ -7098,6 +7376,7 @@ r_if
 c_cond
 (paren
 id|is_slot_enabled
+c_func
 (paren
 id|ctrl
 comma
@@ -7109,7 +7388,7 @@ id|p_slot-&gt;state
 op_assign
 id|POWEROFF_STATE
 suffix:semicolon
-singleline_comment|// power Down board
+multiline_comment|/* power Down board */
 id|func
 op_assign
 id|cpqhp_slot_find
@@ -7196,7 +7475,7 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
@@ -7215,7 +7494,7 @@ id|p_slot-&gt;state
 op_assign
 id|POWERON_STATE
 suffix:semicolon
-singleline_comment|// slot is off
+multiline_comment|/* slot is off */
 id|func
 op_assign
 id|cpqhp_slot_find
@@ -7283,6 +7562,7 @@ l_int|0
 )paren
 (brace
 id|amber_LED_on
+c_func
 (paren
 id|ctrl
 comma
@@ -7290,6 +7570,7 @@ id|hp_slot
 )paren
 suffix:semicolon
 id|green_LED_off
+c_func
 (paren
 id|ctrl
 comma
@@ -7302,7 +7583,7 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
@@ -7321,6 +7602,7 @@ suffix:semicolon
 DECL|function|cpqhp_process_SI
 r_int
 id|cpqhp_process_SI
+c_func
 (paren
 r_struct
 id|controller
@@ -7357,15 +7639,6 @@ id|physical_slot
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ctrl
-)paren
-r_return
-l_int|1
-suffix:semicolon
 id|tempdword
 op_assign
 l_int|0
@@ -7395,13 +7668,11 @@ c_cond
 (paren
 id|p_slot
 )paren
-(brace
 id|physical_slot
 op_assign
 id|p_slot-&gt;number
 suffix:semicolon
-)brace
-singleline_comment|// Check to see if the interlock is closed
+multiline_comment|/* Check to see if the interlock is closed */
 id|tempdword
 op_assign
 id|readl
@@ -7447,7 +7718,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// add board
+multiline_comment|/* add board */
 id|slot_remove
 c_func
 (paren
@@ -7469,11 +7740,9 @@ id|func
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 id|func-&gt;bus
 op_assign
 id|ctrl-&gt;bus
@@ -7494,7 +7763,7 @@ id|func-&gt;is_a_board
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// We have to save the presence info for these slots
+multiline_comment|/* We have to save the presence info for these slots */
 id|temp_word
 op_assign
 id|ctrl-&gt;ctrl_int_comp
@@ -7589,7 +7858,7 @@ c_func
 id|func
 )paren
 suffix:semicolon
-singleline_comment|// Setup slot structure with entry for empty slot
+multiline_comment|/* Setup slot structure with entry for empty slot */
 id|func
 op_assign
 id|cpqhp_slot_create
@@ -7605,12 +7874,9 @@ id|func
 op_eq
 l_int|NULL
 )paren
-(brace
-singleline_comment|// Out of memory
 r_return
 l_int|1
 suffix:semicolon
-)brace
 id|func-&gt;bus
 op_assign
 id|ctrl-&gt;bus
@@ -7631,7 +7897,7 @@ id|func-&gt;is_a_board
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// We have to save the presence info for these slots
+multiline_comment|/* We have to save the presence info for these slots */
 id|temp_word
 op_assign
 id|ctrl-&gt;ctrl_int_comp
@@ -7725,6 +7991,7 @@ suffix:semicolon
 DECL|function|cpqhp_process_SS
 r_int
 id|cpqhp_process_SS
+c_func
 (paren
 r_struct
 id|controller
@@ -7818,7 +8085,7 @@ op_assign
 id|p_slot-&gt;number
 suffix:semicolon
 )brace
-singleline_comment|// Make sure there are no video controllers here
+multiline_comment|/* Make sure there are no video controllers here */
 r_while
 c_loop
 (paren
@@ -7842,7 +8109,7 @@ comma
 id|func-&gt;function
 )paren
 suffix:semicolon
-singleline_comment|// Check the Class Code
+multiline_comment|/* Check the Class Code */
 id|rc
 op_assign
 id|pci_bus_read_config_byte
@@ -7881,7 +8148,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// See if it&squot;s a bridge
+multiline_comment|/* See if it&squot;s a bridge */
 id|rc
 op_assign
 id|pci_bus_read_config_byte
@@ -7904,7 +8171,7 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-singleline_comment|// If it&squot;s a bridge, check the VGA Enable bit
+multiline_comment|/* If it&squot;s a bridge, check the VGA Enable bit */
 r_if
 c_cond
 (paren
@@ -7939,7 +8206,7 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-singleline_comment|// If the VGA Enable bit is set, remove isn&squot;t supported
+multiline_comment|/* If the VGA Enable bit is set, remove isn&squot;t&n;&t;&t;&t;&t; * supported */
 r_if
 c_cond
 (paren
@@ -7994,7 +8261,7 @@ op_logical_neg
 id|rc
 )paren
 (brace
-singleline_comment|//FIXME: Replace flag should be passed into process_SS
+multiline_comment|/* FIXME: Replace flag should be passed into process_SS */
 id|replace_flag
 op_assign
 op_logical_neg
@@ -8045,7 +8312,111 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * hardware_test - runs hardware tests&n; *&n; * For hot plug ctrl folks to play with.&n; * test_num is the number entered in the GUI&n; *&n; */
+multiline_comment|/**&n; * switch_leds: switch the leds, go from one site to the other.&n; * @ctrl: controller to use&n; * @num_of_slots: number of slots to use&n; * @direction: 1 to start from the left side, 0 to start right.&n; */
+DECL|function|switch_leds
+r_static
+r_void
+id|switch_leds
+c_func
+(paren
+r_struct
+id|controller
+op_star
+id|ctrl
+comma
+r_const
+r_int
+id|num_of_slots
+comma
+id|u32
+op_star
+id|work_LED
+comma
+r_const
+r_int
+id|direction
+)paren
+(brace
+r_int
+id|loop
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|loop
+op_assign
+l_int|0
+suffix:semicolon
+id|loop
+OL
+id|num_of_slots
+suffix:semicolon
+id|loop
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|direction
+)paren
+op_star
+id|work_LED
+op_assign
+op_star
+id|work_LED
+op_rshift
+l_int|1
+suffix:semicolon
+r_else
+op_star
+id|work_LED
+op_assign
+op_star
+id|work_LED
+op_lshift
+l_int|1
+suffix:semicolon
+id|writel
+c_func
+(paren
+op_star
+id|work_LED
+comma
+id|ctrl-&gt;hpc_reg
+op_plus
+id|LED_CONTROL
+)paren
+suffix:semicolon
+id|set_SOGO
+c_func
+(paren
+id|ctrl
+)paren
+suffix:semicolon
+multiline_comment|/* Wait for SOGO interrupt */
+id|wait_for_ctrl_irq
+c_func
+(paren
+id|ctrl
+)paren
+suffix:semicolon
+multiline_comment|/* Get ready for next iteration */
+id|long_delay
+c_func
+(paren
+(paren
+l_int|2
+op_star
+id|HZ
+)paren
+op_div
+l_int|10
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/**&n; * hardware_test - runs hardware tests&n; *&n; * For hot plug ctrl folks to play with.&n; * test_num is the number written to the &quot;test&quot; file in sysfs&n; *&n; */
 DECL|function|cpqhp_hardware_test
 r_int
 id|cpqhp_hardware_test
@@ -8093,8 +8464,9 @@ id|test_num
 r_case
 l_int|1
 suffix:colon
-singleline_comment|// Do stuff here!
-singleline_comment|// Do that funky LED thing
+multiline_comment|/* Do stuff here! */
+multiline_comment|/* Do that funky LED thing */
+multiline_comment|/* so we can restore them later */
 id|save_LED
 op_assign
 id|readl
@@ -8105,249 +8477,62 @@ op_plus
 id|LED_CONTROL
 )paren
 suffix:semicolon
-singleline_comment|// so we can restore them later
 id|work_LED
 op_assign
 l_int|0x01010101
 suffix:semicolon
-id|writel
+id|switch_leds
 c_func
 (paren
-id|work_LED
+id|ctrl
 comma
-id|ctrl-&gt;hpc_reg
-op_plus
-id|LED_CONTROL
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|loop
-op_assign
-l_int|0
-suffix:semicolon
-id|loop
-OL
 id|num_of_slots
-suffix:semicolon
-id|loop
-op_increment
-)paren
-(brace
-id|set_SOGO
-c_func
-(paren
-id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Wait for SOGO interrupt
-id|wait_for_ctrl_irq
-(paren
-id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Get ready for next iteration
-id|work_LED
-op_assign
-id|work_LED
-op_lshift
-l_int|1
-suffix:semicolon
-id|writel
-c_func
-(paren
+comma
+op_amp
 id|work_LED
 comma
-id|ctrl-&gt;hpc_reg
-op_plus
-id|LED_CONTROL
-)paren
-suffix:semicolon
-id|long_delay
-c_func
-(paren
-(paren
-l_int|2
-op_star
-id|HZ
-)paren
-op_div
-l_int|10
-)paren
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|loop
-op_assign
 l_int|0
-suffix:semicolon
-id|loop
-OL
-id|num_of_slots
-suffix:semicolon
-id|loop
-op_increment
 )paren
-(brace
-id|work_LED
-op_assign
-id|work_LED
-op_rshift
-l_int|1
 suffix:semicolon
-id|writel
+id|switch_leds
 c_func
 (paren
+id|ctrl
+comma
+id|num_of_slots
+comma
+op_amp
 id|work_LED
 comma
-id|ctrl-&gt;hpc_reg
-op_plus
-id|LED_CONTROL
+l_int|1
 )paren
 suffix:semicolon
-id|set_SOGO
+id|switch_leds
 c_func
 (paren
 id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Wait for SOGO interrupt
-id|wait_for_ctrl_irq
-(paren
-id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Get ready for next iteration
-id|long_delay
-c_func
-(paren
-(paren
-l_int|2
-op_star
-id|HZ
-)paren
-op_div
-l_int|10
-)paren
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|loop
-op_assign
+comma
+id|num_of_slots
+comma
+op_amp
+id|work_LED
+comma
 l_int|0
-suffix:semicolon
-id|loop
-OL
-id|num_of_slots
-suffix:semicolon
-id|loop
-op_increment
 )paren
-(brace
-id|work_LED
-op_assign
-id|work_LED
-op_lshift
-l_int|1
 suffix:semicolon
-id|writel
+id|switch_leds
 c_func
 (paren
+id|ctrl
+comma
+id|num_of_slots
+comma
+op_amp
 id|work_LED
 comma
-id|ctrl-&gt;hpc_reg
-op_plus
-id|LED_CONTROL
-)paren
-suffix:semicolon
-id|set_SOGO
-c_func
-(paren
-id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Wait for SOGO interrupt
-id|wait_for_ctrl_irq
-(paren
-id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Get ready for next iteration
-id|long_delay
-c_func
-(paren
-(paren
-l_int|2
-op_star
-id|HZ
-)paren
-op_div
-l_int|10
-)paren
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|loop
-op_assign
-l_int|0
-suffix:semicolon
-id|loop
-OL
-id|num_of_slots
-suffix:semicolon
-id|loop
-op_increment
-)paren
-(brace
-id|work_LED
-op_assign
-id|work_LED
-op_rshift
 l_int|1
-suffix:semicolon
-id|writel
-c_func
-(paren
-id|work_LED
-comma
-id|ctrl-&gt;hpc_reg
-op_plus
-id|LED_CONTROL
 )paren
 suffix:semicolon
-id|set_SOGO
-c_func
-(paren
-id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Wait for SOGO interrupt
-id|wait_for_ctrl_irq
-(paren
-id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Get ready for next iteration
-id|long_delay
-c_func
-(paren
-(paren
-l_int|2
-op_star
-id|HZ
-)paren
-op_div
-l_int|10
-)paren
-suffix:semicolon
-)brace
 id|work_LED
 op_assign
 l_int|0x01010000
@@ -8362,120 +8547,32 @@ op_plus
 id|LED_CONTROL
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|switch_leds
+c_func
 (paren
-id|loop
-op_assign
-l_int|0
-suffix:semicolon
-id|loop
-OL
+id|ctrl
+comma
 id|num_of_slots
-suffix:semicolon
-id|loop
-op_increment
-)paren
-(brace
-id|set_SOGO
-c_func
-(paren
-id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Wait for SOGO interrupt
-id|wait_for_ctrl_irq
-(paren
-id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Get ready for next iteration
-id|work_LED
-op_assign
-id|work_LED
-op_lshift
-l_int|1
-suffix:semicolon
-id|writel
-c_func
-(paren
+comma
+op_amp
 id|work_LED
 comma
-id|ctrl-&gt;hpc_reg
-op_plus
-id|LED_CONTROL
-)paren
-suffix:semicolon
-id|long_delay
-c_func
-(paren
-(paren
-l_int|2
-op_star
-id|HZ
-)paren
-op_div
-l_int|10
-)paren
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|loop
-op_assign
 l_int|0
-suffix:semicolon
-id|loop
-OL
-id|num_of_slots
-suffix:semicolon
-id|loop
-op_increment
 )paren
-(brace
-id|work_LED
-op_assign
-id|work_LED
-op_rshift
-l_int|1
 suffix:semicolon
-id|writel
+id|switch_leds
 c_func
 (paren
+id|ctrl
+comma
+id|num_of_slots
+comma
+op_amp
 id|work_LED
 comma
-id|ctrl-&gt;hpc_reg
-op_plus
-id|LED_CONTROL
+l_int|1
 )paren
 suffix:semicolon
-id|set_SOGO
-c_func
-(paren
-id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Wait for SOGO interrupt
-id|wait_for_ctrl_irq
-(paren
-id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Get ready for next iteration
-id|long_delay
-c_func
-(paren
-(paren
-l_int|2
-op_star
-id|HZ
-)paren
-op_div
-l_int|10
-)paren
-suffix:semicolon
-)brace
 id|work_LED
 op_assign
 l_int|0x00000101
@@ -8490,120 +8587,32 @@ op_plus
 id|LED_CONTROL
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|loop
-op_assign
-l_int|0
-suffix:semicolon
-id|loop
-OL
-id|num_of_slots
-suffix:semicolon
-id|loop
-op_increment
-)paren
-(brace
-id|work_LED
-op_assign
-id|work_LED
-op_lshift
-l_int|1
-suffix:semicolon
-id|writel
+id|switch_leds
 c_func
 (paren
+id|ctrl
+comma
+id|num_of_slots
+comma
+op_amp
 id|work_LED
 comma
-id|ctrl-&gt;hpc_reg
-op_plus
-id|LED_CONTROL
-)paren
-suffix:semicolon
-id|set_SOGO
-c_func
-(paren
-id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Wait for SOGO interrupt
-id|wait_for_ctrl_irq
-(paren
-id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Get ready for next iteration
-id|long_delay
-c_func
-(paren
-(paren
-l_int|2
-op_star
-id|HZ
-)paren
-op_div
-l_int|10
-)paren
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|loop
-op_assign
 l_int|0
-suffix:semicolon
-id|loop
-OL
-id|num_of_slots
-suffix:semicolon
-id|loop
-op_increment
 )paren
-(brace
-id|work_LED
-op_assign
-id|work_LED
-op_rshift
-l_int|1
 suffix:semicolon
-id|writel
+id|switch_leds
 c_func
 (paren
+id|ctrl
+comma
+id|num_of_slots
+comma
+op_amp
 id|work_LED
 comma
-id|ctrl-&gt;hpc_reg
-op_plus
-id|LED_CONTROL
+l_int|1
 )paren
 suffix:semicolon
-id|set_SOGO
-c_func
-(paren
-id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Wait for SOGO interrupt
-id|wait_for_ctrl_irq
-(paren
-id|ctrl
-)paren
-suffix:semicolon
-singleline_comment|// Get ready for next iteration
-id|long_delay
-c_func
-(paren
-(paren
-l_int|2
-op_star
-id|HZ
-)paren
-op_div
-l_int|10
-)paren
-suffix:semicolon
-)brace
 id|work_LED
 op_assign
 l_int|0x01010000
@@ -8639,13 +8648,13 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOGO interrupt
+multiline_comment|/* Wait for SOGO interrupt */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Get ready for next iteration
+multiline_comment|/* Get ready for next iteration */
 id|long_delay
 c_func
 (paren
@@ -8680,13 +8689,13 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOGO interrupt
+multiline_comment|/* Wait for SOGO interrupt */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Get ready for next iteration
+multiline_comment|/* Get ready for next iteration */
 id|long_delay
 c_func
 (paren
@@ -8732,7 +8741,9 @@ id|LED_CONTROL
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* put it back the way it was */
 id|writel
+c_func
 (paren
 id|save_LED
 comma
@@ -8741,14 +8752,13 @@ op_plus
 id|LED_CONTROL
 )paren
 suffix:semicolon
-singleline_comment|// put it back the way it was
 id|set_SOGO
 c_func
 (paren
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|// Wait for SOBS to be unset
+multiline_comment|/* Wait for SOBS to be unset */
 id|wait_for_ctrl_irq
 (paren
 id|ctrl
@@ -8759,13 +8769,13 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-singleline_comment|// Do other stuff here!
+multiline_comment|/* Do other stuff here! */
 r_break
 suffix:semicolon
 r_case
 l_int|3
 suffix:colon
-singleline_comment|// and more...
+multiline_comment|/* and more... */
 r_break
 suffix:semicolon
 )brace
@@ -8778,6 +8788,7 @@ DECL|function|configure_new_device
 r_static
 id|u32
 id|configure_new_device
+c_func
 (paren
 r_struct
 id|controller
@@ -8833,7 +8844,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-singleline_comment|// Check for Multi-function device
+multiline_comment|/* Check for Multi-function device */
 id|ctrl-&gt;pci_bus-&gt;number
 op_assign
 id|func-&gt;bus
@@ -8885,7 +8896,7 @@ id|temp_byte
 op_amp
 l_int|0x80
 )paren
-singleline_comment|// Multi-function device
+multiline_comment|/* Multi-function device */
 id|max_functions
 op_assign
 l_int|8
@@ -8977,8 +8988,7 @@ id|stop_it
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|//  The following loop skips to the next present function
-singleline_comment|//  and creates a board structure
+multiline_comment|/* The following loop skips to the next present function&n;&t;&t; * and creates a board structure */
 r_while
 c_loop
 (paren
@@ -9020,15 +9030,15 @@ op_eq
 l_int|0xFFFFFFFF
 )paren
 (brace
-singleline_comment|// There&squot;s nothing there. 
+multiline_comment|/* There&squot;s nothing there. */
 id|function
 op_increment
 suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// There&squot;s something there
-singleline_comment|// Setup slot structure.
+multiline_comment|/* There&squot;s something there */
+multiline_comment|/* Setup slot structure. */
 id|new_slot
 op_assign
 id|cpqhp_slot_create
@@ -9044,12 +9054,9 @@ id|new_slot
 op_eq
 l_int|NULL
 )paren
-(brace
-singleline_comment|// Out of memory
 r_return
 l_int|1
 suffix:semicolon
-)brace
 id|new_slot-&gt;bus
 op_assign
 id|func-&gt;bus
@@ -9100,6 +9107,7 @@ DECL|function|configure_new_function
 r_static
 r_int
 id|configure_new_function
+c_func
 (paren
 r_struct
 id|controller
@@ -9238,10 +9246,11 @@ comma
 id|func-&gt;function
 )paren
 suffix:semicolon
-singleline_comment|// Check for Bridge
+multiline_comment|/* Check for Bridge */
 id|rc
 op_assign
 id|pci_bus_read_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9273,8 +9282,8 @@ op_eq
 id|PCI_HEADER_TYPE_BRIDGE
 )paren
 (brace
-singleline_comment|// PCI-PCI Bridge
-singleline_comment|// set Primary bus
+multiline_comment|/* PCI-PCI Bridge */
+multiline_comment|/* set Primary bus */
 id|dbg
 c_func
 (paren
@@ -9286,6 +9295,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9304,7 +9314,7 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-singleline_comment|// find range of busses to use
+multiline_comment|/* find range of busses to use */
 id|dbg
 c_func
 (paren
@@ -9317,12 +9327,14 @@ id|get_max_resource
 c_func
 (paren
 op_amp
+(paren
 id|resources-&gt;bus_head
+)paren
 comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// If we don&squot;t have any busses to allocate, we can&squot;t continue
+multiline_comment|/* If we don&squot;t have any busses to allocate, we can&squot;t continue */
 r_if
 c_cond
 (paren
@@ -9333,7 +9345,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-singleline_comment|// set Secondary bus
+multiline_comment|/* set Secondary bus */
 id|temp_byte
 op_assign
 id|bus_node-&gt;base
@@ -9349,6 +9361,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9367,7 +9380,7 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-singleline_comment|// set subordinate bus
+multiline_comment|/* set subordinate bus */
 id|temp_byte
 op_assign
 id|bus_node-&gt;base
@@ -9391,6 +9404,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9409,7 +9423,7 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-singleline_comment|// set subordinate Latency Timer and base Latency Timer
+multiline_comment|/* set subordinate Latency Timer and base Latency Timer */
 id|temp_byte
 op_assign
 l_int|0x40
@@ -9417,6 +9431,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9438,6 +9453,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9456,7 +9472,7 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-singleline_comment|// set Cache Line size
+multiline_comment|/* set Cache Line size */
 id|temp_byte
 op_assign
 l_int|0x08
@@ -9464,6 +9480,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9482,7 +9499,7 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-singleline_comment|// Setup the IO, memory, and prefetchable windows
+multiline_comment|/* Setup the IO, memory, and prefetchable windows */
 id|io_node
 op_assign
 id|get_max_resource
@@ -9612,7 +9629,7 @@ comma
 id|p_mem_node-&gt;next
 )paren
 suffix:semicolon
-singleline_comment|// set up the IRQ info
+multiline_comment|/* set up the IRQ info */
 r_if
 c_cond
 (paren
@@ -9708,8 +9725,7 @@ op_assign
 id|resources-&gt;irqs-&gt;valid_INT
 suffix:semicolon
 )brace
-singleline_comment|// set up resource lists that are now aligned on top and bottom
-singleline_comment|// for anything behind the bridge.
+multiline_comment|/* set up resource lists that are now aligned on top and bottom&n;&t;&t; * for anything behind the bridge. */
 id|temp_resources.bus_head
 op_assign
 id|bus_node
@@ -9731,22 +9747,16 @@ op_assign
 op_amp
 id|irqs
 suffix:semicolon
-singleline_comment|// Make copies of the nodes we are going to pass down so that
-singleline_comment|// if there is a problem,we can just use these to free resources
+multiline_comment|/* Make copies of the nodes we are going to pass down so that&n;&t;&t; * if there is a problem,we can just use these to free resources */
 id|hold_bus_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|pci_resource
+op_star
+id|hold_bus_node
 )paren
 comma
 id|GFP_KERNEL
@@ -9754,18 +9764,13 @@ id|GFP_KERNEL
 suffix:semicolon
 id|hold_IO_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|pci_resource
+op_star
+id|hold_IO_node
 )paren
 comma
 id|GFP_KERNEL
@@ -9773,18 +9778,13 @@ id|GFP_KERNEL
 suffix:semicolon
 id|hold_mem_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|pci_resource
+op_star
+id|hold_mem_node
 )paren
 comma
 id|GFP_KERNEL
@@ -9792,18 +9792,13 @@ id|GFP_KERNEL
 suffix:semicolon
 id|hold_p_mem_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|pci_resource
+op_star
+id|hold_p_mem_node
 )paren
 comma
 id|GFP_KERNEL
@@ -9825,44 +9820,24 @@ op_logical_neg
 id|hold_p_mem_node
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|hold_bus_node
-)paren
 id|kfree
 c_func
 (paren
 id|hold_bus_node
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hold_IO_node
-)paren
 id|kfree
 c_func
 (paren
 id|hold_IO_node
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hold_mem_node
-)paren
 id|kfree
 c_func
 (paren
 id|hold_mem_node
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hold_p_mem_node
-)paren
 id|kfree
 c_func
 (paren
@@ -9899,8 +9874,7 @@ id|bus_node-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|// If we have IO resources copy them and fill in the bridge&squot;s
-singleline_comment|// IO range registers
+multiline_comment|/* If we have IO resources copy them and fill in the bridge&squot;s&n;&t;&t; * IO range registers */
 r_if
 c_cond
 (paren
@@ -9925,7 +9899,7 @@ id|io_node-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|// set IO base and Limit registers
+multiline_comment|/* set IO base and Limit registers */
 id|temp_byte
 op_assign
 id|io_node-&gt;base
@@ -9935,6 +9909,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9960,6 +9935,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9984,9 +9960,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-singleline_comment|// If we have memory resources copy them and fill in the bridge&squot;s
-singleline_comment|// memory range registers.  Otherwise, fill in the range
-singleline_comment|// registers with values that disable them.
+multiline_comment|/* If we have memory resources copy them and fill in the&n;&t;&t; * bridge&squot;s memory range registers.  Otherwise, fill in the&n;&t;&t; * range registers with values that disable them. */
 r_if
 c_cond
 (paren
@@ -10011,7 +9985,7 @@ id|mem_node-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|// set Mem base and Limit registers
+multiline_comment|/* set Mem base and Limit registers */
 id|temp_word
 op_assign
 id|mem_node-&gt;base
@@ -10021,6 +9995,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10046,6 +10021,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10066,6 +10042,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10083,6 +10060,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10104,9 +10082,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-singleline_comment|// If we have prefetchable memory resources copy them and 
-singleline_comment|// fill in the bridge&squot;s memory range registers.  Otherwise,
-singleline_comment|// fill in the range registers with values that disable them.
+multiline_comment|/* If we have prefetchable memory resources copy them and &n;&t;&t; * fill in the bridge&squot;s memory range registers.  Otherwise,&n;&t;&t; * fill in the range registers with values that disable them. */
 r_if
 c_cond
 (paren
@@ -10131,7 +10107,7 @@ id|p_mem_node-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|// set Pre Mem base and Limit registers
+multiline_comment|/* set Pre Mem base and Limit registers */
 id|temp_word
 op_assign
 id|p_mem_node-&gt;base
@@ -10224,7 +10200,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-singleline_comment|// Adjust this to compensate for extra adjustment in first loop
+multiline_comment|/* Adjust this to compensate for extra adjustment in first loop */
 id|irqs.barber_pole
 op_decrement
 suffix:semicolon
@@ -10232,7 +10208,7 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Here we actually find the devices and configure them
+multiline_comment|/* Here we actually find the devices and configure them */
 r_for
 c_loop
 (paren
@@ -10301,8 +10277,8 @@ op_ne
 l_int|0xFFFFFFFF
 )paren
 (brace
-singleline_comment|//  device Present
-singleline_comment|// Setup slot structure.
+multiline_comment|/*  device present */
+multiline_comment|/* Setup slot structure. */
 id|new_slot
 op_assign
 id|cpqhp_slot_create
@@ -10319,7 +10295,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-singleline_comment|// Out of memory
 id|rc
 op_assign
 op_minus
@@ -10372,71 +10347,18 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// End of IF (device in slot?)
+multiline_comment|/* End of IF (device in slot?) */
 )brace
-singleline_comment|// End of FOR loop
+multiline_comment|/* End of FOR loop */
 r_if
 c_cond
 (paren
 id|rc
 )paren
-(brace
-id|cpqhp_destroy_resource_list
-c_func
-(paren
-op_amp
-id|temp_resources
-)paren
+r_goto
+id|free_and_out
 suffix:semicolon
-id|return_resource
-c_func
-(paren
-op_amp
-(paren
-id|resources-&gt;bus_head
-)paren
-comma
-id|hold_bus_node
-)paren
-suffix:semicolon
-id|return_resource
-c_func
-(paren
-op_amp
-(paren
-id|resources-&gt;io_head
-)paren
-comma
-id|hold_IO_node
-)paren
-suffix:semicolon
-id|return_resource
-c_func
-(paren
-op_amp
-(paren
-id|resources-&gt;mem_head
-)paren
-comma
-id|hold_mem_node
-)paren
-suffix:semicolon
-id|return_resource
-c_func
-(paren
-op_amp
-(paren
-id|resources-&gt;p_mem_head
-)paren
-comma
-id|hold_p_mem_node
-)paren
-suffix:semicolon
-r_return
-id|rc
-suffix:semicolon
-)brace
-singleline_comment|// save the interrupt routing information
+multiline_comment|/* save the interrupt routing information */
 r_if
 c_cond
 (paren
@@ -10496,7 +10418,7 @@ op_logical_neg
 id|behind_bridge
 )paren
 (brace
-singleline_comment|// We need to hook up the interrupts here
+multiline_comment|/* We need to hook up the interrupts here */
 r_for
 c_loop
 (paren
@@ -10548,75 +10470,14 @@ c_cond
 (paren
 id|rc
 )paren
-(brace
-id|cpqhp_destroy_resource_list
-(paren
-op_amp
-id|temp_resources
-)paren
-suffix:semicolon
-id|return_resource
-c_func
-(paren
-op_amp
-(paren
-id|resources
-op_member_access_from_pointer
-id|bus_head
-)paren
-comma
-id|hold_bus_node
-)paren
-suffix:semicolon
-id|return_resource
-c_func
-(paren
-op_amp
-(paren
-id|resources
-op_member_access_from_pointer
-id|io_head
-)paren
-comma
-id|hold_IO_node
-)paren
-suffix:semicolon
-id|return_resource
-c_func
-(paren
-op_amp
-(paren
-id|resources
-op_member_access_from_pointer
-id|mem_head
-)paren
-comma
-id|hold_mem_node
-)paren
-suffix:semicolon
-id|return_resource
-c_func
-(paren
-op_amp
-(paren
-id|resources
-op_member_access_from_pointer
-id|p_mem_head
-)paren
-comma
-id|hold_p_mem_node
-)paren
-suffix:semicolon
-r_return
-id|rc
+r_goto
+id|free_and_out
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* end of for loop */
 )brace
-singleline_comment|// end of for loop
-)brace
-singleline_comment|// Return unused bus resources
-singleline_comment|// First use the temporary node to store information for the board
+multiline_comment|/* Return unused bus resources&n;&t;&t; * First use the temporary node to store information for&n;&t;&t; * the board */
 r_if
 c_cond
 (paren
@@ -10647,7 +10508,7 @@ id|temp_resources.bus_head-&gt;base
 op_minus
 l_int|1
 suffix:semicolon
-singleline_comment|// set subordinate bus
+multiline_comment|/* set subordinate bus */
 id|rc
 op_assign
 id|pci_bus_write_config_byte
@@ -10695,8 +10556,7 @@ id|temp_resources.bus_head
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// If we have IO space available and there is some left,
-singleline_comment|// return the unused portion
+multiline_comment|/* If we have IO space available and there is some left,&n;&t;&t; * return the unused portion */
 r_if
 c_cond
 (paren
@@ -10721,7 +10581,7 @@ comma
 l_int|0x1000
 )paren
 suffix:semicolon
-singleline_comment|// Check if we were able to split something off
+multiline_comment|/* Check if we were able to split something off */
 r_if
 c_cond
 (paren
@@ -10780,21 +10640,21 @@ comma
 l_int|0x1000
 )paren
 suffix:semicolon
-singleline_comment|// Check if we were able to split something off
+multiline_comment|/* Check if we were able to split something off */
 r_if
 c_cond
 (paren
 id|io_node
 )paren
 (brace
-singleline_comment|// First use the temporary node to store information for the board
+multiline_comment|/* First use the temporary node to store&n;&t;&t;&t;&t; * information for the board */
 id|hold_IO_node-&gt;length
 op_assign
 id|io_node-&gt;base
 op_minus
 id|hold_IO_node-&gt;base
 suffix:semicolon
-singleline_comment|// If we used any, add it to the board&squot;s list
+multiline_comment|/* If we used any, add it to the board&squot;s list */
 r_if
 c_cond
 (paren
@@ -10846,7 +10706,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// it doesn&squot;t need any IO
+multiline_comment|/* it doesn&squot;t need any IO */
 id|temp_word
 op_assign
 l_int|0x0000
@@ -10885,7 +10745,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// it used most of the range
+multiline_comment|/* it used most of the range */
 id|hold_IO_node-&gt;next
 op_assign
 id|func-&gt;io_head
@@ -10903,7 +10763,7 @@ c_cond
 id|hold_IO_node
 )paren
 (brace
-singleline_comment|// it used the whole range
+multiline_comment|/* it used the whole range */
 id|hold_IO_node-&gt;next
 op_assign
 id|func-&gt;io_head
@@ -10913,8 +10773,7 @@ op_assign
 id|hold_IO_node
 suffix:semicolon
 )brace
-singleline_comment|// If we have memory space available and there is some left,
-singleline_comment|// return the unused portion
+multiline_comment|/* If we have memory space available and there is some left,&n;&t;&t; * return the unused portion */
 r_if
 c_cond
 (paren
@@ -10941,7 +10800,7 @@ comma
 l_int|0x100000
 )paren
 suffix:semicolon
-singleline_comment|// Check if we were able to split something off
+multiline_comment|/* Check if we were able to split something off */
 r_if
 c_cond
 (paren
@@ -11000,14 +10859,14 @@ comma
 l_int|0x100000
 )paren
 suffix:semicolon
-singleline_comment|// Check if we were able to split something off
+multiline_comment|/* Check if we were able to split something off */
 r_if
 c_cond
 (paren
 id|mem_node
 )paren
 (brace
-singleline_comment|// First use the temporary node to store information for the board
+multiline_comment|/* First use the temporary node to store&n;&t;&t;&t;&t; * information for the board */
 id|hold_mem_node-&gt;length
 op_assign
 id|mem_node-&gt;base
@@ -11028,7 +10887,7 @@ id|func-&gt;mem_head
 op_assign
 id|hold_mem_node
 suffix:semicolon
-singleline_comment|// configure end address
+multiline_comment|/* configure end address */
 id|temp_word
 op_assign
 (paren
@@ -11052,7 +10911,7 @@ comma
 id|temp_word
 )paren
 suffix:semicolon
-singleline_comment|// Return unused resources to the pool
+multiline_comment|/* Return unused resources to the pool */
 id|return_resource
 c_func
 (paren
@@ -11067,7 +10926,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// it doesn&squot;t need any Mem
+multiline_comment|/* it doesn&squot;t need any Mem */
 id|temp_word
 op_assign
 l_int|0x0000
@@ -11106,7 +10965,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// it used most of the range
+multiline_comment|/* it used most of the range */
 id|hold_mem_node-&gt;next
 op_assign
 id|func-&gt;mem_head
@@ -11124,7 +10983,7 @@ c_cond
 id|hold_mem_node
 )paren
 (brace
-singleline_comment|// it used the whole range
+multiline_comment|/* it used the whole range */
 id|hold_mem_node-&gt;next
 op_assign
 id|func-&gt;mem_head
@@ -11134,8 +10993,7 @@ op_assign
 id|hold_mem_node
 suffix:semicolon
 )brace
-singleline_comment|// If we have prefetchable memory space available and there is some 
-singleline_comment|// left at the end, return the unused portion
+multiline_comment|/* If we have prefetchable memory space available and there&n;&t;&t; * is some left at the end, return the unused portion */
 r_if
 c_cond
 (paren
@@ -11160,7 +11018,7 @@ comma
 l_int|0x100000
 )paren
 suffix:semicolon
-singleline_comment|// Check if we were able to split something off
+multiline_comment|/* Check if we were able to split something off */
 r_if
 c_cond
 (paren
@@ -11219,21 +11077,21 @@ comma
 l_int|0x100000
 )paren
 suffix:semicolon
-singleline_comment|// Check if we were able to split something off
+multiline_comment|/* Check if we were able to split something off */
 r_if
 c_cond
 (paren
 id|p_mem_node
 )paren
 (brace
-singleline_comment|// First use the temporary node to store information for the board
+multiline_comment|/* First use the temporary node to store&n;&t;&t;&t;&t; * information for the board */
 id|hold_p_mem_node-&gt;length
 op_assign
 id|p_mem_node-&gt;base
 op_minus
 id|hold_p_mem_node-&gt;base
 suffix:semicolon
-singleline_comment|// If we used any, add it to the board&squot;s list
+multiline_comment|/* If we used any, add it to the board&squot;s list */
 r_if
 c_cond
 (paren
@@ -11285,7 +11143,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// it doesn&squot;t need any PMem
+multiline_comment|/* it doesn&squot;t need any PMem */
 id|temp_word
 op_assign
 l_int|0x0000
@@ -11324,7 +11182,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// it used the most of the range
+multiline_comment|/* it used the most of the range */
 id|hold_p_mem_node-&gt;next
 op_assign
 id|func-&gt;p_mem_head
@@ -11342,7 +11200,7 @@ c_cond
 id|hold_p_mem_node
 )paren
 (brace
-singleline_comment|// it used the whole range
+multiline_comment|/* it used the whole range */
 id|hold_p_mem_node-&gt;next
 op_assign
 id|func-&gt;p_mem_head
@@ -11352,15 +11210,13 @@ op_assign
 id|hold_p_mem_node
 suffix:semicolon
 )brace
-singleline_comment|// We should be configuring an IRQ and the bridge&squot;s base address
-singleline_comment|// registers if it needs them.  Although we have never seen such
-singleline_comment|// a device
-singleline_comment|// enable card
+multiline_comment|/* We should be configuring an IRQ and the bridge&squot;s base address&n;&t;&t; * registers if it needs them.  Although we have never seen such&n;&t;&t; * a device */
+multiline_comment|/* enable card */
 id|command
 op_assign
 l_int|0x0157
 suffix:semicolon
-singleline_comment|// = PCI_COMMAND_IO | PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER |  PCI_COMMAND_INVALIDATE | PCI_COMMAND_PARITY | PCI_COMMAND_SERR
+multiline_comment|/* = PCI_COMMAND_IO |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_MEMORY |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_MASTER |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_INVALIDATE |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_PARITY |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_SERR */
 id|rc
 op_assign
 id|pci_bus_write_config_word
@@ -11374,12 +11230,12 @@ comma
 id|command
 )paren
 suffix:semicolon
-singleline_comment|// set Bridge Control Register
+multiline_comment|/* set Bridge Control Register */
 id|command
 op_assign
 l_int|0x07
 suffix:semicolon
-singleline_comment|// = PCI_BRIDGE_CTL_PARITY | PCI_BRIDGE_CTL_SERR | PCI_BRIDGE_CTL_NO_ISA
+multiline_comment|/* = PCI_BRIDGE_CTL_PARITY |&n;&t;&t;&t;&t;&t; *   PCI_BRIDGE_CTL_SERR |&n;&t;&t;&t;&t;&t; *   PCI_BRIDGE_CTL_NO_ISA */
 id|rc
 op_assign
 id|pci_bus_write_config_word
@@ -11407,7 +11263,7 @@ op_eq
 id|PCI_HEADER_TYPE_NORMAL
 )paren
 (brace
-singleline_comment|// Standard device
+multiline_comment|/* Standard device */
 id|rc
 op_assign
 id|pci_bus_read_config_byte
@@ -11430,12 +11286,12 @@ op_eq
 id|PCI_BASE_CLASS_DISPLAY
 )paren
 (brace
-singleline_comment|// Display (video) adapter (not supported)
+multiline_comment|/* Display (video) adapter (not supported) */
 r_return
 id|DEVICE_TYPE_NOT_SUPPORTED
 suffix:semicolon
 )brace
-singleline_comment|// Figure out IO and memory needs
+multiline_comment|/* Figure out IO and memory needs */
 r_for
 c_loop
 (paren
@@ -11509,7 +11365,7 @@ c_cond
 id|temp_register
 )paren
 (brace
-singleline_comment|// If this register is implemented
+multiline_comment|/* If this register is implemented */
 r_if
 c_cond
 (paren
@@ -11522,8 +11378,8 @@ op_eq
 l_int|0x01
 )paren
 (brace
-singleline_comment|// Map IO
-singleline_comment|// set base = amount of IO space
+multiline_comment|/* Map IO */
+multiline_comment|/* set base = amount of IO space */
 id|base
 op_assign
 id|temp_register
@@ -11580,7 +11436,7 @@ comma
 id|func-&gt;io_head
 )paren
 suffix:semicolon
-singleline_comment|// allocate the resource to the board
+multiline_comment|/* allocate the resource to the board */
 r_if
 c_cond
 (paren
@@ -11619,7 +11475,7 @@ op_eq
 l_int|0x08
 )paren
 (brace
-singleline_comment|// Map prefetchable memory
+multiline_comment|/* Map prefetchable memory */
 id|base
 op_assign
 id|temp_register
@@ -11654,7 +11510,7 @@ comma
 id|base
 )paren
 suffix:semicolon
-singleline_comment|// allocate the resource to the board
+multiline_comment|/* allocate the resource to the board */
 r_if
 c_cond
 (paren
@@ -11693,7 +11549,7 @@ op_eq
 l_int|0x00
 )paren
 (brace
-singleline_comment|// Map memory
+multiline_comment|/* Map memory */
 id|base
 op_assign
 id|temp_register
@@ -11728,7 +11584,7 @@ comma
 id|base
 )paren
 suffix:semicolon
-singleline_comment|// allocate the resource to the board
+multiline_comment|/* allocate the resource to the board */
 r_if
 c_cond
 (paren
@@ -11767,7 +11623,7 @@ op_eq
 l_int|0x04
 )paren
 (brace
-singleline_comment|// Map memory
+multiline_comment|/* Map memory */
 id|base
 op_assign
 id|temp_register
@@ -11802,7 +11658,7 @@ comma
 id|base
 )paren
 suffix:semicolon
-singleline_comment|// allocate the resource to the board
+multiline_comment|/* allocate the resource to the board */
 r_if
 c_cond
 (paren
@@ -11841,14 +11697,14 @@ op_eq
 l_int|0x06
 )paren
 (brace
-singleline_comment|// Those bits are reserved, we can&squot;t handle this
+multiline_comment|/* Those bits are reserved, we can&squot;t handle this */
 r_return
 l_int|1
 suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// Requesting space below 1M
+multiline_comment|/* Requesting space below 1M */
 r_return
 id|NOT_ENOUGH_RESOURCES
 suffix:semicolon
@@ -11856,6 +11712,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_dword
+c_func
 (paren
 id|pci_bus
 comma
@@ -11866,7 +11723,7 @@ comma
 id|base
 )paren
 suffix:semicolon
-singleline_comment|// Check for 64-bit base
+multiline_comment|/* Check for 64-bit base */
 r_if
 c_cond
 (paren
@@ -11883,8 +11740,8 @@ id|cloop
 op_add_assign
 l_int|4
 suffix:semicolon
-singleline_comment|// Upper 32 bits of address always zero on today&squot;s systems
-singleline_comment|// FIXME this is probably not true on Alpha and ia64???
+multiline_comment|/* Upper 32 bits of address always zero&n;&t;&t;&t;&t;&t; * on today&squot;s systems */
+multiline_comment|/* FIXME this is probably not true on&n;&t;&t;&t;&t;&t; * Alpha and ia64??? */
 id|base
 op_assign
 l_int|0
@@ -11892,6 +11749,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_dword
+c_func
 (paren
 id|pci_bus
 comma
@@ -11905,14 +11763,14 @@ suffix:semicolon
 )brace
 )brace
 )brace
-singleline_comment|// End of base register loop
+multiline_comment|/* End of base register loop */
 r_if
 c_cond
 (paren
 id|cpqhp_legacy_mode
 )paren
 (brace
-singleline_comment|// Figure out which interrupt pin this function uses
+multiline_comment|/* Figure out which interrupt pin this function uses */
 id|rc
 op_assign
 id|pci_bus_read_config_byte
@@ -11927,9 +11785,7 @@ op_amp
 id|temp_byte
 )paren
 suffix:semicolon
-singleline_comment|// If this function needs an interrupt and we are behind a bridge
-singleline_comment|// and the pin is tied to something that&squot;s alread mapped,
-singleline_comment|// set this one the same
+multiline_comment|/* If this function needs an interrupt and we are behind&n;&t;&t;&t; * a bridge and the pin is tied to something that&squot;s&n;&t;&t;&t; * alread mapped, set this one the same */
 r_if
 c_cond
 (paren
@@ -11958,7 +11814,7 @@ l_int|0x03
 )paren
 )paren
 (brace
-singleline_comment|// We have to share with something already set up
+multiline_comment|/* We have to share with something already set up */
 id|IRQ
 op_assign
 id|resources-&gt;irqs-&gt;interrupt
@@ -11977,7 +11833,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// Program IRQ based on card type
+multiline_comment|/* Program IRQ based on card type */
 id|rc
 op_assign
 id|pci_bus_read_config_byte
@@ -12013,7 +11869,7 @@ id|cpqhp_nic_irq
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// IRQ Line
+multiline_comment|/* IRQ Line */
 id|rc
 op_assign
 id|pci_bus_write_config_byte
@@ -12062,7 +11918,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|//TBD - this code may also belong in the other clause of this If statement
+multiline_comment|/* TBD - this code may also belong in the other clause&n;&t;&t;&t; * of this If statement */
 id|resources-&gt;irqs-&gt;interrupt
 (braket
 (paren
@@ -12093,7 +11949,7 @@ op_amp
 l_int|0x03
 suffix:semicolon
 )brace
-singleline_comment|// Latency Timer
+multiline_comment|/* Latency Timer */
 id|temp_byte
 op_assign
 l_int|0x40
@@ -12101,6 +11957,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -12111,7 +11968,7 @@ comma
 id|temp_byte
 )paren
 suffix:semicolon
-singleline_comment|// Cache Line size
+multiline_comment|/* Cache Line size */
 id|temp_byte
 op_assign
 l_int|0x08
@@ -12119,6 +11976,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -12129,7 +11987,7 @@ comma
 id|temp_byte
 )paren
 suffix:semicolon
-singleline_comment|// disable ROM base Address
+multiline_comment|/* disable ROM base Address */
 id|temp_dword
 op_assign
 l_int|0x00L
@@ -12137,6 +11995,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -12147,12 +12006,12 @@ comma
 id|temp_dword
 )paren
 suffix:semicolon
-singleline_comment|// enable card
+multiline_comment|/* enable card */
 id|temp_word
 op_assign
 l_int|0x0157
 suffix:semicolon
-singleline_comment|// = PCI_COMMAND_IO | PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER |  PCI_COMMAND_INVALIDATE | PCI_COMMAND_PARITY | PCI_COMMAND_SERR
+multiline_comment|/* = PCI_COMMAND_IO |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_MEMORY |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_MASTER |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_INVALIDATE |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_PARITY |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_SERR */
 id|rc
 op_assign
 id|pci_bus_write_config_word
@@ -12167,10 +12026,10 @@ id|temp_word
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// End of Not-A-Bridge else
 r_else
 (brace
-singleline_comment|// It&squot;s some strange type of PCI adapter (Cardbus?)
+multiline_comment|/* End of Not-A-Bridge else */
+multiline_comment|/* It&squot;s some strange type of PCI adapter (Cardbus?) */
 r_return
 id|DEVICE_TYPE_NOT_SUPPORTED
 suffix:semicolon
@@ -12181,6 +12040,69 @@ l_int|1
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|free_and_out
+suffix:colon
+id|cpqhp_destroy_resource_list
+(paren
+op_amp
+id|temp_resources
+)paren
+suffix:semicolon
+id|return_resource
+c_func
+(paren
+op_amp
+(paren
+id|resources
+op_member_access_from_pointer
+id|bus_head
+)paren
+comma
+id|hold_bus_node
+)paren
+suffix:semicolon
+id|return_resource
+c_func
+(paren
+op_amp
+(paren
+id|resources
+op_member_access_from_pointer
+id|io_head
+)paren
+comma
+id|hold_IO_node
+)paren
+suffix:semicolon
+id|return_resource
+c_func
+(paren
+op_amp
+(paren
+id|resources
+op_member_access_from_pointer
+id|mem_head
+)paren
+comma
+id|hold_mem_node
+)paren
+suffix:semicolon
+id|return_resource
+c_func
+(paren
+op_amp
+(paren
+id|resources
+op_member_access_from_pointer
+id|p_mem_head
+)paren
+comma
+id|hold_p_mem_node
+)paren
+suffix:semicolon
+r_return
+id|rc
 suffix:semicolon
 )brace
 eof

@@ -46,8 +46,6 @@ DECL|macro|info
 mdefine_line|#define info(format, arg...) printk(KERN_INFO &quot;%s: &quot; format, MY_NAME , ## arg)
 DECL|macro|warn
 mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;%s: &quot; format, MY_NAME , ## arg)
-DECL|macro|SLOT_MAGIC
-mdefine_line|#define SLOT_MAGIC&t;0x67267322
 multiline_comment|/* slot types */
 DECL|macro|VIO_DEV
 mdefine_line|#define VIO_DEV&t;1
@@ -67,10 +65,6 @@ DECL|struct|slot
 r_struct
 id|slot
 (brace
-DECL|member|magic
-id|u32
-id|magic
-suffix:semicolon
 DECL|member|state
 r_int
 id|state
