@@ -472,6 +472,16 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|rtas_os_term
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|rtas_get_sensor
 c_func

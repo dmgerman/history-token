@@ -852,6 +852,10 @@ id|ppc_md.halt
 op_assign
 id|rtas_halt
 suffix:semicolon
+id|ppc_md.panic
+op_assign
+id|rtas_os_term
+suffix:semicolon
 id|ppc_md.get_boot_time
 op_assign
 id|pSeries_get_boot_time
