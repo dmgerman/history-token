@@ -787,6 +787,24 @@ id|wq-&gt;cpu_wq
 op_plus
 id|cpu
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cwq-&gt;thread
+op_eq
+id|current
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Probably keventd trying to flush its own queue.&n;&t;&t;&t; * So simply run it by hand rather than deadlocking.&n;&t;&t;&t; */
+id|run_workqueue
+c_func
+(paren
+id|cwq
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 id|spin_lock_irq
 c_func
 (paren
