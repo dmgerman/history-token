@@ -4078,6 +4078,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|variable|es7000_plat
+r_int
+id|es7000_plat
+suffix:semicolon
 DECL|function|mp_config_acpi_legacy_irqs
 r_void
 id|__init
