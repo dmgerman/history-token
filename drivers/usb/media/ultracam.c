@@ -3702,32 +3702,16 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* Is it an IBM camera? */
-r_if
-c_cond
-(paren
-(paren
-id|dev-&gt;descriptor.idVendor
-op_ne
-id|ULTRACAM_VENDOR_ID
-)paren
-op_logical_or
-(paren
-id|dev-&gt;descriptor.idProduct
-op_ne
-id|ULTRACAM_PRODUCT_ID
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 id|info
 c_func
 (paren
 l_string|&quot;IBM Ultra camera found (rev. 0x%04x)&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.bcdDevice
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Validate found interface: must have one ISO endpoint */

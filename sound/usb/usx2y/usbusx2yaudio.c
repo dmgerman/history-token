@@ -4917,6 +4917,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|usX2Y
 c_func
 (paren
@@ -4924,6 +4927,7 @@ id|card
 )paren
 op_member_access_from_pointer
 id|chip.dev-&gt;descriptor.idProduct
+)paren
 op_eq
 id|USB_ID_US428
 )paren
@@ -4952,6 +4956,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|usX2Y
 c_func
 (paren
@@ -4959,6 +4966,7 @@ id|card
 )paren
 op_member_access_from_pointer
 id|chip.dev-&gt;descriptor.idProduct
+)paren
 op_ne
 id|USB_ID_US122
 )paren

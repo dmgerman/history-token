@@ -2313,12 +2313,15 @@ multiline_comment|/* and sometimes [9.2.6.6] speed dependent descriptors */
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.bcdUSB
+)paren
 op_eq
 l_int|0x0200
 )paren
 (brace
-multiline_comment|/* pre-swapped */
 r_struct
 id|usb_qualifier_descriptor
 op_star
@@ -7625,7 +7628,11 @@ c_cond
 op_logical_neg
 id|vendor
 op_logical_or
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idVendor
+)paren
 op_ne
 (paren
 id|u16
@@ -7641,7 +7648,11 @@ c_cond
 (paren
 id|product
 op_logical_and
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idProduct
+)paren
 op_ne
 (paren
 id|u16
@@ -7656,9 +7667,17 @@ id|dbg
 (paren
 l_string|&quot;matched module params, vend=0x%04x prod=0x%04x&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idVendor
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idProduct
+)paren
 )paren
 suffix:semicolon
 )brace

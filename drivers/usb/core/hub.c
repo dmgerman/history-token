@@ -9415,7 +9415,11 @@ multiline_comment|/* check for devices running slower than they could */
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.bcdUSB
+)paren
 op_ge
 l_int|0x0200
 op_logical_and

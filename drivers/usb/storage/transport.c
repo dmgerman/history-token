@@ -3075,7 +3075,11 @@ multiline_comment|/* Genesys Logic interface chips need a 100us delay between th
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|us-&gt;pusb_dev-&gt;descriptor.idVendor
+)paren
 op_eq
 id|USB_VENDOR_ID_GENESYS
 )paren

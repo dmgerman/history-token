@@ -12178,7 +12178,11 @@ op_increment
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idVendor
+)paren
 op_eq
 id|sn9c102_id_table
 (braket
@@ -12187,7 +12191,11 @@ id|i
 dot
 id|idVendor
 op_logical_and
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idProduct
+)paren
 op_eq
 id|sn9c102_id_table
 (braket

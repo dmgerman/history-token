@@ -7038,22 +7038,18 @@ id|dbg
 (paren
 l_string|&quot;probe: vendor id 0x%x, device id 0x%x&quot;
 comma
-id|usbdev-&gt;descriptor.idVendor
-comma
-id|usbdev-&gt;descriptor.idProduct
-)paren
-suffix:semicolon
-multiline_comment|/* See if the device offered us matches that we can accept */
-r_if
-c_cond
+id|le16_to_cpu
+c_func
 (paren
 id|usbdev-&gt;descriptor.idVendor
-op_ne
-id|ID_AUERSWALD
 )paren
-r_return
-op_minus
-id|ENODEV
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|usbdev-&gt;descriptor.idProduct
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* we use only the first -and only- interface */
 r_if
@@ -7182,7 +7178,11 @@ suffix:semicolon
 multiline_comment|/* Get the usb version of the device */
 id|cp-&gt;version
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|cp-&gt;usbdev-&gt;descriptor.bcdDevice
+)paren
 suffix:semicolon
 id|dbg
 (paren

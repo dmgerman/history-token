@@ -2957,28 +2957,6 @@ l_string|&quot;udev is NULL.&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* See if the device offered us matches what we can accept */
-r_if
-c_cond
-(paren
-(paren
-id|udev-&gt;descriptor.idVendor
-op_ne
-id|LEGO_USB_TOWER_VENDOR_ID
-)paren
-op_logical_or
-(paren
-id|udev-&gt;descriptor.idProduct
-op_ne
-id|LEGO_USB_TOWER_PRODUCT_ID
-)paren
-)paren
-(brace
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 multiline_comment|/* allocate memory for our device state and intialize it */
 id|dev
 op_assign

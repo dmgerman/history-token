@@ -127,7 +127,7 @@ l_int|0x00
 comma
 l_int|0x02
 comma
-multiline_comment|/*  __u16 bcdUSB; v2.0 */
+multiline_comment|/*  __le16 bcdUSB; v2.0 */
 l_int|0x09
 comma
 multiline_comment|/*  __u8  bDeviceClass; HUB_CLASSCODE */
@@ -144,17 +144,17 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-multiline_comment|/*  __u16 idVendor; */
+multiline_comment|/*  __le16 idVendor; */
 l_int|0x00
 comma
 l_int|0x00
 comma
-multiline_comment|/*  __u16 idProduct; */
+multiline_comment|/*  __le16 idProduct; */
 id|KERNEL_VER
 comma
 id|KERNEL_REL
 comma
-multiline_comment|/*  __u16 bcdDevice */
+multiline_comment|/*  __le16 bcdDevice */
 l_int|0x03
 comma
 multiline_comment|/*  __u8  iManufacturer; */
@@ -190,7 +190,7 @@ l_int|0x10
 comma
 l_int|0x01
 comma
-multiline_comment|/*  __u16 bcdUSB; v1.1 */
+multiline_comment|/*  __le16 bcdUSB; v1.1 */
 l_int|0x09
 comma
 multiline_comment|/*  __u8  bDeviceClass; HUB_CLASSCODE */
@@ -207,17 +207,17 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-multiline_comment|/*  __u16 idVendor; */
+multiline_comment|/*  __le16 idVendor; */
 l_int|0x00
 comma
 l_int|0x00
 comma
-multiline_comment|/*  __u16 idProduct; */
+multiline_comment|/*  __le16 idProduct; */
 id|KERNEL_VER
 comma
 id|KERNEL_REL
 comma
-multiline_comment|/*  __u16 bcdDevice */
+multiline_comment|/*  __le16 bcdDevice */
 l_int|0x03
 comma
 multiline_comment|/*  __u8  iManufacturer; */

@@ -141,7 +141,7 @@ comma
 multiline_comment|/*  __u8  bDescriptorType; Device */
 l_int|0x00
 comma
-multiline_comment|/*  __u16 bcdUSB; v1.0 */
+multiline_comment|/*  __le16 bcdUSB; v1.0 */
 l_int|0x01
 comma
 l_int|0x09
@@ -158,17 +158,17 @@ comma
 multiline_comment|/*  __u8  bMaxPacketSize0; 8 Bytes */
 l_int|0x00
 comma
-multiline_comment|/*  __u16 idVendor; */
+multiline_comment|/*  __le16 idVendor; */
 l_int|0x00
 comma
 l_int|0x00
 comma
-multiline_comment|/*  __u16 idProduct; */
+multiline_comment|/*  __le16 idProduct; */
 l_int|0x00
 comma
 l_int|0x00
 comma
-multiline_comment|/*  __u16 bcdDevice; */
+multiline_comment|/*  __le16 bcdDevice; */
 l_int|0x00
 comma
 l_int|0x00

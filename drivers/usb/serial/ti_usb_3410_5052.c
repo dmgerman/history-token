@@ -1808,7 +1808,11 @@ l_string|&quot;%s - product 0x%4X, num configurations %d, configuration value %d
 comma
 id|__FUNCTION__
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idProduct
+)paren
 comma
 id|dev-&gt;descriptor.bNumConfigurations
 comma

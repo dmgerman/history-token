@@ -176,7 +176,7 @@ id|__u8
 id|bDescriptorType
 suffix:semicolon
 DECL|member|bcdUSB
-id|__u16
+id|__le16
 id|bcdUSB
 suffix:semicolon
 DECL|member|bDeviceClass
@@ -196,15 +196,15 @@ id|__u8
 id|bMaxPacketSize0
 suffix:semicolon
 DECL|member|idVendor
-id|__u16
+id|__le16
 id|idVendor
 suffix:semicolon
 DECL|member|idProduct
-id|__u16
+id|__le16
 id|idProduct
 suffix:semicolon
 DECL|member|bcdDevice
-id|__u16
+id|__le16
 id|bcdDevice
 suffix:semicolon
 DECL|member|iManufacturer
@@ -484,7 +484,7 @@ id|__u8
 id|bDescriptorType
 suffix:semicolon
 DECL|member|bcdUSB
-id|__u16
+id|__le16
 id|bcdUSB
 suffix:semicolon
 DECL|member|bDeviceClass

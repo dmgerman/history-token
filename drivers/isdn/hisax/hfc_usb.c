@@ -6025,7 +6025,11 @@ op_increment
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idVendor
+)paren
 op_eq
 id|vdata
 (braket
@@ -6034,7 +6038,11 @@ id|i
 dot
 id|vendor
 op_logical_and
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idProduct
+)paren
 op_eq
 id|vdata
 (braket
@@ -6043,12 +6051,10 @@ id|i
 dot
 id|prod_id
 )paren
-(brace
 id|vend_idx
 op_assign
 id|i
 suffix:semicolon
-)brace
 )brace
 macro_line|#ifdef VERBOSE_USB_DEBUG&t;
 id|printk
