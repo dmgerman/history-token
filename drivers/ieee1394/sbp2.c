@@ -5259,6 +5259,13 @@ id|management_agent_addr
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|kv-&gt;key.type
+op_eq
+id|CSR1212_KV_TYPE_IMMEDIATE
+)paren
 id|scsi_id-&gt;sbp2_device_type_and_lun
 op_assign
 id|kv-&gt;value.immediate
