@@ -3358,21 +3358,13 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
-r_int
-r_int
-id|size
-op_assign
+id|totalpages
+op_add_assign
 id|zones_size
 (braket
 id|i
 )braket
 suffix:semicolon
-id|totalpages
-op_add_assign
-id|size
-suffix:semicolon
-)brace
 id|realtotalpages
 op_assign
 id|totalpages
@@ -3582,11 +3574,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;zone(%lu): %lu pages.&bslash;n&quot;
+l_string|&quot;  %s zone: %lu pages&bslash;n&quot;
 comma
+id|zone_names
+(braket
 id|j
+)braket
 comma
-id|size
+id|realsize
 )paren
 suffix:semicolon
 id|zone-&gt;size

@@ -28,6 +28,9 @@ DECL|macro|DEBUG_NODIRECT
 mdefine_line|#define DEBUG_NODIRECT 0
 DECL|macro|DEBUG_FORCEDAC
 mdefine_line|#define DEBUG_FORCEDAC 0
+multiline_comment|/* Most Alphas support 32-bit ISA DMA. Exceptions are XL, Ruffian,&n;   Nautilus, Sable, and Alcor (see asm-alpha/dma.h for details). */
+DECL|macro|ISA_DMA_MASK
+mdefine_line|#define ISA_DMA_MASK&t;(MAX_DMA_ADDRESS - IDENT_ADDR - 1)
 r_static
 r_inline
 r_int
@@ -442,6 +445,7 @@ r_return
 id|p
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|iommu_arena_alloc
 id|iommu_arena_alloc
@@ -454,6 +458,10 @@ id|arena
 comma
 r_int
 id|n
+comma
+r_int
+r_int
+id|align
 )paren
 (brace
 r_int
@@ -488,7 +496,13 @@ id|arena-&gt;ptes
 suffix:semicolon
 id|mask
 op_assign
+id|max
+c_func
+(paren
+id|align
+comma
 id|arena-&gt;align_entry
+)paren
 op_minus
 l_int|1
 suffix:semicolon
@@ -667,7 +681,7 @@ ques
 c_cond
 id|pdev-&gt;dma_mask
 suffix:colon
-l_int|0x00ffffff
+id|ISA_DMA_MASK
 suffix:semicolon
 r_struct
 id|pci_iommu_arena
@@ -874,6 +888,7 @@ op_plus
 id|size
 )paren
 suffix:semicolon
+multiline_comment|/* Force allocation to 64KB boundary for all ISA devices. */
 id|dma_ofs
 op_assign
 id|iommu_arena_alloc
@@ -882,6 +897,13 @@ c_func
 id|arena
 comma
 id|npages
+comma
+id|pdev
+ques
+c_cond
+l_int|8
+suffix:colon
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -2012,6 +2034,8 @@ c_func
 id|arena
 comma
 id|npages
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -2444,7 +2468,7 @@ ques
 c_cond
 id|pdev-&gt;dma_mask
 suffix:colon
-l_int|0x00ffffff
+id|ISA_DMA_MASK
 suffix:semicolon
 id|arena
 op_assign
@@ -2706,7 +2730,7 @@ ques
 c_cond
 id|pdev-&gt;dma_mask
 suffix:colon
-l_int|0x00ffffff
+id|ISA_DMA_MASK
 suffix:semicolon
 id|arena
 op_assign

@@ -1120,13 +1120,6 @@ op_star
 id|id
 suffix:semicolon
 multiline_comment|/* drive model identification info */
-DECL|member|part
-r_struct
-id|hd_struct
-op_star
-id|part
-suffix:semicolon
-multiline_comment|/* drive partition table */
 DECL|member|name
 r_char
 id|name
@@ -1246,6 +1239,12 @@ DECL|member|list
 r_struct
 id|list_head
 id|list
+suffix:semicolon
+DECL|member|disk
+r_struct
+id|gendisk
+op_star
+id|disk
 suffix:semicolon
 DECL|typedef|ide_drive_t
 )brace
@@ -1897,16 +1896,6 @@ id|MAX_DRIVES
 )braket
 suffix:semicolon
 multiline_comment|/* drive info */
-DECL|member|gd
-r_struct
-id|gendisk
-op_star
-id|gd
-(braket
-id|MAX_DRIVES
-)braket
-suffix:semicolon
-multiline_comment|/* gendisk structure */
 DECL|member|addressing
 r_int
 id|addressing

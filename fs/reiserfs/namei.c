@@ -2922,6 +2922,19 @@ id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
 suffix:semicolon
+macro_line|#ifdef DISPLACE_NEW_PACKING_LOCALITIES
+multiline_comment|/* set flag that new packing locality created and new blocks for the content     * of that directory are not displaced yet */
+id|REISERFS_I
+c_func
+(paren
+id|dir
+)paren
+op_member_access_from_pointer
+id|new_packing_locality
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 id|mode
 op_assign
 id|S_IFDIR

@@ -70,9 +70,9 @@ suffix:semicolon
 DECL|macro|kunmap
 mdefine_line|#define kunmap(page) do { (void) (page); } while (0)
 DECL|macro|kmap_atomic
-mdefine_line|#define kmap_atomic(page,idx)&t;&t;kmap(page)
+mdefine_line|#define kmap_atomic(page, idx)&t;&t;page_address(page)
 DECL|macro|kunmap_atomic
-mdefine_line|#define kunmap_atomic(page,idx)&t;&t;kunmap(page)
+mdefine_line|#define kunmap_atomic(addr, idx)&t;do { } while (0)
 macro_line|#endif /* CONFIG_HIGHMEM */
 multiline_comment|/* when CONFIG_HIGHMEM is not set these will be plain clear/copy_page */
 DECL|function|clear_user_highpage

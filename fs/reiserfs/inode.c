@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
@@ -544,94 +545,6 @@ id|head
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* we need to allocate a block for new unformatted node.  Try to figure out&n;   what point in bitmap reiserfs_new_blocknrs should start from. */
-DECL|function|find_tag
-r_static
-id|b_blocknr_t
-id|find_tag
-(paren
-r_struct
-id|buffer_head
-op_star
-id|bh
-comma
-r_struct
-id|item_head
-op_star
-id|ih
-comma
-id|__u32
-op_star
-id|item
-comma
-r_int
-id|pos_in_item
-)paren
-(brace
-id|__u32
-id|block
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|is_indirect_le_ih
-(paren
-id|ih
-)paren
-)paren
-multiline_comment|/* something more complicated could be here */
-r_return
-id|bh-&gt;b_blocknr
-suffix:semicolon
-multiline_comment|/* for indirect item: go to left and look for the first non-hole entry in&n;&t;  the indirect item */
-r_if
-c_cond
-(paren
-id|pos_in_item
-op_eq
-id|I_UNFM_NUM
-(paren
-id|ih
-)paren
-)paren
-id|pos_in_item
-op_decrement
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|pos_in_item
-op_ge
-l_int|0
-)paren
-(brace
-id|block
-op_assign
-id|get_block_num
-c_func
-(paren
-id|item
-comma
-id|pos_in_item
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|block
-)paren
-r_return
-id|block
-suffix:semicolon
-id|pos_in_item
-op_decrement
-suffix:semicolon
-)brace
-r_return
-id|bh-&gt;b_blocknr
-suffix:semicolon
 )brace
 multiline_comment|/* reiserfs_get_block does not need to allocate a block only if it has been&n;   done already or non-hole position has been found in the indirect item */
 DECL|function|allocation_needed
@@ -1901,6 +1814,9 @@ id|reiserfs_transaction_handle
 op_star
 id|th
 comma
+r_int
+id|block
+comma
 r_struct
 id|inode
 op_star
@@ -1910,9 +1826,10 @@ id|b_blocknr_t
 op_star
 id|allocated_block_nr
 comma
-r_int
-r_int
-id|tag
+r_struct
+id|path
+op_star
+id|path
 comma
 r_int
 id|flags
@@ -1940,7 +1857,9 @@ id|inode
 comma
 id|allocated_block_nr
 comma
-id|tag
+id|path
+comma
+id|block
 )paren
 suffix:semicolon
 )brace
@@ -1952,7 +1871,9 @@ id|th
 comma
 id|allocated_block_nr
 comma
-id|tag
+id|path
+comma
+id|block
 )paren
 suffix:semicolon
 )brace
@@ -1981,10 +1902,6 @@ r_int
 id|repeat
 comma
 id|retval
-suffix:semicolon
-r_int
-r_int
-id|tag
 suffix:semicolon
 id|b_blocknr_t
 id|allocated_block_nr
@@ -2337,19 +2254,6 @@ id|pos_in_item
 )paren
 (brace
 multiline_comment|/* we have to allocate block for the unformatted node */
-id|tag
-op_assign
-id|find_tag
-(paren
-id|bh
-comma
-id|ih
-comma
-id|item
-comma
-id|pos_in_item
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2397,12 +2301,15 @@ c_func
 op_amp
 id|th
 comma
+id|block
+comma
 id|inode
 comma
 op_amp
 id|allocated_block_nr
 comma
-id|tag
+op_amp
+id|path
 comma
 id|create
 )paren
@@ -2436,12 +2343,14 @@ c_func
 op_amp
 id|th
 comma
+id|block
+comma
 id|inode
 comma
 op_amp
 id|allocated_block_nr
 comma
-id|tag
+l_int|NULL
 comma
 id|create
 )paren
@@ -3090,7 +2999,7 @@ comma
 id|unbh
 )paren
 suffix:semicolon
-multiline_comment|/* mark it dirty now to prevent commit_write from adding&n;&t;    ** this buffer to the inode&squot;s dirty buffer list&n;&t;    */
+multiline_comment|/* mark it dirty now to prevent commit_write from adding&n;&t;     ** this buffer to the inode&squot;s dirty buffer list&n;&t;     */
 multiline_comment|/*&n;&t;&t; * AKPM: changed __mark_buffer_dirty to mark_buffer_dirty().&n;&t;&t; * It&squot;s still atomic, but it sets the page dirty too,&n;&t;&t; * which makes it eligible for writeback at any time by the&n;&t;&t; * VM (which was also the case with __mark_buffer_dirty())&n;&t;&t; */
 id|mark_buffer_dirty
 c_func
@@ -3766,7 +3675,7 @@ id|_ROUND_UP
 (paren
 id|blocks
 comma
-id|inode-&gt;i_blksize
+id|inode-&gt;i_sb-&gt;s_blocksize
 op_rshift
 l_int|9
 )paren
@@ -6885,6 +6794,23 @@ id|STAT_DATA_V2
 )paren
 suffix:semicolon
 multiline_comment|/* insert the stat data into the tree */
+macro_line|#ifdef DISPLACE_NEW_PACKING_LOCALITIES
+r_if
+c_cond
+(paren
+id|REISERFS_I
+c_func
+(paren
+id|dir
+)paren
+op_member_access_from_pointer
+id|new_packing_locality
+)paren
+id|th-&gt;displace_new_blocks
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 id|retval
 op_assign
 id|reiserfs_insert_item
@@ -6931,6 +6857,24 @@ r_goto
 id|out_bad_inode
 suffix:semicolon
 )brace
+macro_line|#ifdef DISPLACE_NEW_PACKING_LOCALITIES
+r_if
+c_cond
+(paren
+op_logical_neg
+id|th-&gt;displace_new_blocks
+)paren
+id|REISERFS_I
+c_func
+(paren
+id|dir
+)paren
+op_member_access_from_pointer
+id|new_packing_locality
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7279,13 +7223,6 @@ id|error
 r_goto
 id|unlock
 suffix:semicolon
-id|kunmap
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-multiline_comment|/* mapped by block_prepare_write */
 id|head
 op_assign
 id|page_buffers
@@ -7556,7 +7493,7 @@ c_cond
 (paren
 id|update_timestamps
 )paren
-multiline_comment|/* we are doing real truncate: if the system crashes before the last&n;              transaction of truncating gets committed - on reboot the file&n;              either appears truncated properly or not truncated at all */
+multiline_comment|/* we are doing real truncate: if the system crashes before the last&n;&t;       transaction of truncating gets committed - on reboot the file&n;&t;       either appears truncated properly or not truncated at all */
 id|add_save_link
 (paren
 op_amp
@@ -7636,24 +7573,30 @@ c_cond
 id|length
 )paren
 (brace
+r_char
+op_star
+id|kaddr
+suffix:semicolon
 id|length
 op_assign
 id|blocksize
 op_minus
 id|length
 suffix:semicolon
-id|memset
-c_func
-(paren
-(paren
-r_char
-op_star
-)paren
-id|kmap
+id|kaddr
+op_assign
+id|kmap_atomic
 c_func
 (paren
 id|page
+comma
+id|KM_USER0
 )paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|kaddr
 op_plus
 id|offset
 comma
@@ -7668,10 +7611,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|kunmap
+id|kunmap_atomic
 c_func
 (paren
-id|page
+id|kaddr
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 r_if
@@ -8473,7 +8418,6 @@ c_func
 id|page
 )paren
 )paren
-(brace
 id|block_prepare_write
 c_func
 (paren
@@ -8486,13 +8430,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|kunmap
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* last page in the file, zero out any contents past the&n;    ** last byte in the file&n;    */
 r_if
 c_cond
@@ -8502,6 +8439,10 @@ op_ge
 id|end_index
 )paren
 (brace
+r_char
+op_star
+id|kaddr
+suffix:semicolon
 id|last_offset
 op_assign
 id|inode-&gt;i_size
@@ -8535,18 +8476,20 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
-id|memset
-c_func
-(paren
-(paren
-r_char
-op_star
-)paren
-id|kmap
+id|kaddr
+op_assign
+id|kmap_atomic
 c_func
 (paren
 id|page
+comma
+id|KM_USER0
 )paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|kaddr
 op_plus
 id|last_offset
 comma
@@ -8563,10 +8506,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|kunmap
+id|kunmap_atomic
 c_func
 (paren
-id|page
+id|kaddr
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 )brace

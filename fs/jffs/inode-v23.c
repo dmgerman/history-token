@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -3253,14 +3254,6 @@ id|page
 )paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t SetPageLocked(page), should be locked already */
-id|buf
-op_assign
-id|page_address
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|ClearPageUptodate
 c_func
 (paren
@@ -3303,6 +3296,20 @@ op_assign
 id|page-&gt;index
 op_lshift
 id|PAGE_CACHE_SHIFT
+suffix:semicolon
+id|kmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|buf
+op_assign
+id|page_address
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3396,6 +3403,18 @@ id|read_len
 )paren
 suffix:semicolon
 )brace
+id|flush_dcache_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|kunmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|D3
 c_func
 (paren
@@ -3435,13 +3454,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-id|flush_dcache_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|put_page
+id|page_cache_release
 c_func
 (paren
 id|page

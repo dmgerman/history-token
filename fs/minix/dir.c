@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/fs/minix/dir.c&n; *&n; *  Copyright (C) 1991, 1992 Linus Torvalds&n; *&n; *  minix directory handling functions&n; */
 macro_line|#include &quot;minix.h&quot;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|typedef|minix_dirent
 r_typedef
@@ -1415,10 +1416,6 @@ r_char
 op_star
 id|kaddr
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|page_address
 c_func
 (paren
@@ -1584,7 +1581,7 @@ id|de
 suffix:semicolon
 r_char
 op_star
-id|base
+id|kaddr
 suffix:semicolon
 r_int
 id|err
@@ -1633,22 +1630,20 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
-id|base
+id|kaddr
 op_assign
-(paren
-r_char
-op_star
-)paren
-id|page_address
+id|kmap_atomic
 c_func
 (paren
 id|page
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 id|memset
 c_func
 (paren
-id|base
+id|kaddr
 comma
 l_int|0
 comma
@@ -1662,7 +1657,7 @@ r_struct
 id|minix_dir_entry
 op_star
 )paren
-id|base
+id|kaddr
 suffix:semicolon
 id|de-&gt;inode
 op_assign
@@ -1696,6 +1691,14 @@ c_func
 id|de-&gt;name
 comma
 l_string|&quot;..&quot;
+)paren
+suffix:semicolon
+id|kunmap_atomic
+c_func
+(paren
+id|kaddr
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 id|err

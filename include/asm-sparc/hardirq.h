@@ -129,6 +129,13 @@ mdefine_line|#define local_irq_count(cpu)&t;(__brlock_array[cpu][BR_GLOBALIRQ_LO
 DECL|macro|irq_exit
 mdefine_line|#define irq_exit()&t;&t;br_read_unlock(BR_GLOBALIRQ_LOCK)
 macro_line|#endif
+macro_line|#if CONFIG_PREEMPT
+DECL|macro|in_atomic
+macro_line|# define in_atomic()&t;(preempt_count() != kernel_locked())
+macro_line|#else
+DECL|macro|in_atomic
+macro_line|# define in_atomic()&t;(preempt_count() != 0)
+macro_line|#endif
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|synchronize_irq
 mdefine_line|#define synchronize_irq()&t;barrier()
