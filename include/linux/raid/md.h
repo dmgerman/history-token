@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
+macro_line|#include &lt;linux/bio.h&gt;
 multiline_comment|/*&n; * &squot;md_p.h&squot; holds the &squot;physical&squot; layout of RAID devices&n; * &squot;md_u.h&squot; holds the user &lt;=&gt; kernel API&n; *&n; * &squot;md_k.h&squot; holds kernel internal definitions&n; */
 macro_line|#include &lt;linux/raid/md_p.h&gt;
 macro_line|#include &lt;linux/raid/md_u.h&gt;

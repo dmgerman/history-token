@@ -2,7 +2,6 @@ macro_line|#ifndef _MULTIPATH_H
 DECL|macro|_MULTIPATH_H
 mdefine_line|#define _MULTIPATH_H
 macro_line|#include &lt;linux/raid/md.h&gt;
-macro_line|#include &lt;linux/bio.h&gt;
 DECL|struct|multipath_info
 r_struct
 id|multipath_info
