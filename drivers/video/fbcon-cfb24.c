@@ -32,7 +32,7 @@ ques
 c_cond
 id|info-&gt;fix.line_length
 suffix:colon
-id|p-&gt;var.xres_virtual
+id|info-&gt;var.xres_virtual
 op_star
 l_int|3
 suffix:semicolon
@@ -2279,6 +2279,13 @@ r_int
 id|bottom_only
 )paren
 (brace
+r_struct
+id|fb_info
+op_star
+id|info
+op_assign
+id|p-&gt;fb_info
+suffix:semicolon
 r_int
 id|bytes
 op_assign
@@ -2345,7 +2352,7 @@ op_logical_and
 (paren
 id|right_width
 op_assign
-id|p-&gt;var.xres
+id|info-&gt;var.xres
 op_minus
 id|right_start
 )paren
@@ -2353,7 +2360,7 @@ id|right_start
 id|rectfill
 c_func
 (paren
-id|p-&gt;fb_info-&gt;screen_base
+id|info-&gt;screen_base
 op_plus
 id|right_start
 op_star
@@ -2361,7 +2368,7 @@ l_int|3
 comma
 id|right_width
 comma
-id|p-&gt;var.yres_virtual
+id|info-&gt;var.yres_virtual
 comma
 id|bgx
 comma
@@ -2374,7 +2381,7 @@ c_cond
 (paren
 id|bottom_width
 op_assign
-id|p-&gt;var.yres
+id|info-&gt;var.yres
 op_minus
 id|bottom_start
 )paren
@@ -2382,10 +2389,10 @@ id|bottom_start
 id|rectfill
 c_func
 (paren
-id|p-&gt;fb_info-&gt;screen_base
+id|info-&gt;screen_base
 op_plus
 (paren
-id|p-&gt;var.yoffset
+id|info-&gt;var.yoffset
 op_plus
 id|bottom_start
 )paren

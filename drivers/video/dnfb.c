@@ -14,7 +14,6 @@ macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/apollohw.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 multiline_comment|/* apollo video HW definitions */
 multiline_comment|/*&n; * Control Registers.   IOBASE + $x&n; *&n; * Note: these are the Memory/IO BASE definitions for a mono card set to the&n; * alternate address&n; *&n; * Control 3A and 3B serve identical functions except that 3A&n; * deals with control 1 and 3b deals with Color LUT reg.&n; */
 DECL|macro|AP_IOBASE
@@ -135,12 +134,6 @@ r_struct
 id|fb_info
 id|fb_info
 suffix:semicolon
-DECL|variable|disp
-r_static
-r_struct
-id|display
-id|disp
-suffix:semicolon
 multiline_comment|/* frame buffer operations */
 r_static
 r_int
@@ -188,16 +181,6 @@ dot
 id|fb_set_var
 op_assign
 id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
 comma
 dot
 id|fb_blank
@@ -879,25 +862,12 @@ comma
 id|dnfb_fix.id
 )paren
 suffix:semicolon
-id|fb_info.changevar
-op_assign
-l_int|NULL
-suffix:semicolon
 id|fb_info.fontname
 (braket
 l_int|0
 )braket
 op_assign
 l_int|0
-suffix:semicolon
-id|fb_info.disp
-op_assign
-op_amp
-id|disp
-suffix:semicolon
-id|fb_info.switch_con
-op_assign
-id|gen_switch
 suffix:semicolon
 id|fb_info.updatevar
 op_assign
@@ -925,6 +895,14 @@ id|fb_info.var
 op_assign
 id|dnfb_var
 suffix:semicolon
+id|fb_info.screen_base
+op_assign
+(paren
+id|u_char
+op_star
+)paren
+id|fb_info.fix.smem_start
+suffix:semicolon
 id|fb_alloc_cmap
 c_func
 (paren
@@ -935,24 +913,6 @@ l_int|2
 comma
 l_int|0
 )paren
-suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-op_amp
-id|fb_info
-)paren
-suffix:semicolon
-id|fb_info.screen_base
-op_assign
-(paren
-id|u_char
-op_star
-)paren
-id|fb_info.fix.smem_start
 suffix:semicolon
 id|err
 op_assign

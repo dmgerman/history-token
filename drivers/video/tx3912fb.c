@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -30,12 +29,6 @@ id|cfb8
 (braket
 l_int|16
 )braket
-suffix:semicolon
-DECL|variable|disp
-r_static
-r_struct
-id|display
-id|disp
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -294,16 +287,6 @@ dot
 id|fb_set_var
 op_assign
 id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
 comma
 dot
 id|fb_setcolreg
@@ -1096,10 +1079,6 @@ comma
 id|tx3912fb_fix.id
 )paren
 suffix:semicolon
-id|fb_info.changevar
-op_assign
-l_int|NULL
-suffix:semicolon
 id|fb_info.node
 op_assign
 id|NODEV
@@ -1125,15 +1104,6 @@ suffix:semicolon
 id|fb_info.pseudo_palette
 op_assign
 id|pseudo_palette
-suffix:semicolon
-id|fb_info.disp
-op_assign
-op_amp
-id|disp
-suffix:semicolon
-id|fb_info.switch_con
-op_assign
-id|gen_switch
 suffix:semicolon
 id|fb_info.updatevar
 op_assign
@@ -1173,16 +1143,6 @@ comma
 id|size
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-op_amp
-id|disp
 )paren
 suffix:semicolon
 r_if

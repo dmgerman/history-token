@@ -18,8 +18,6 @@ macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &quot;../fbcon-accel.h&quot;
 macro_line|#include &lt;video/mach64.h&gt;
 macro_line|#include &quot;atyfb.h&quot;
 macro_line|#ifdef __powerpc__
@@ -604,16 +602,6 @@ dot
 id|fb_set_par
 op_assign
 id|atyfb_set_par
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
 comma
 dot
 id|fb_setcolreg
@@ -9129,10 +9117,6 @@ comma
 id|info-&gt;fix.smem_len
 )paren
 suffix:semicolon
-id|disp
-op_assign
-id|info-&gt;disp
-suffix:semicolon
 id|strcpy
 c_func
 (paren
@@ -9150,10 +9134,6 @@ op_assign
 op_amp
 id|atyfb_ops
 suffix:semicolon
-id|info-&gt;disp
-op_assign
-id|disp
-suffix:semicolon
 id|info-&gt;pseudo_palette
 op_assign
 id|pseudo_palette
@@ -9170,14 +9150,6 @@ id|info-&gt;fontname
 comma
 id|fontname
 )paren
-suffix:semicolon
-id|info-&gt;changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|info-&gt;switch_con
-op_assign
-id|gen_switch
 suffix:semicolon
 id|info-&gt;updatevar
 op_assign
@@ -9969,7 +9941,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|display
+id|atyfb_par
 )paren
 comma
 id|GFP_ATOMIC
@@ -10008,22 +9980,21 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|display
+id|atyfb_par
 )paren
 )paren
 suffix:semicolon
 id|default_par
 op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
 (paren
 r_struct
 id|atyfb_par
+op_star
 )paren
-comma
-id|GFP_ATOMIC
+(paren
+id|info
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 r_if

@@ -20,7 +20,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/macintosh.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machw.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 multiline_comment|/* Common DAC base address for the LC, RBV, Valkyrie, and IIvx */
 DECL|macro|DAC_BASE
 mdefine_line|#define DAC_BASE 0x50f24000
@@ -655,12 +654,6 @@ op_assign
 id|FB_ACCEL_NONE
 comma
 )brace
-suffix:semicolon
-DECL|variable|disp
-r_static
-r_struct
-id|display
-id|disp
 suffix:semicolon
 DECL|variable|fb_info
 r_static
@@ -2630,16 +2623,6 @@ op_assign
 id|gen_set_var
 comma
 dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
-comma
-dot
 id|fb_setcolreg
 op_assign
 id|macfb_setcolreg
@@ -3841,10 +3824,6 @@ comma
 id|macfb_fix.id
 )paren
 suffix:semicolon
-id|fb_info.changevar
-op_assign
-l_int|NULL
-suffix:semicolon
 id|fb_info.node
 op_assign
 id|NODEV
@@ -3867,15 +3846,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|fb_info.disp
-op_assign
-op_amp
-id|disp
-suffix:semicolon
-id|fb_info.switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
 id|fb_info.updatevar
 op_assign
 id|gen_update_var
@@ -3897,16 +3867,6 @@ comma
 id|video_cmap_len
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-op_amp
-id|fb_info
 )paren
 suffix:semicolon
 r_if

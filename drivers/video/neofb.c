@@ -19,7 +19,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_MTRR
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#endif
-macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;video/neomagic.h&gt;
 DECL|macro|NEOFB_VERSION
 mdefine_line|#define NEOFB_VERSION &quot;0.3.3&quot;
@@ -5435,16 +5434,6 @@ op_assign
 id|gen_set_var
 comma
 dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
-comma
-dot
 id|fb_setcolreg
 op_assign
 id|neofb_setcolreg
@@ -6897,16 +6886,10 @@ id|fb_info
 op_plus
 r_sizeof
 (paren
-r_struct
-id|display
-)paren
-op_plus
-r_sizeof
-(paren
 id|u32
 )paren
 op_star
-l_int|16
+l_int|17
 comma
 id|GFP_KERNEL
 )paren
@@ -6935,9 +6918,10 @@ id|fb_info
 op_plus
 r_sizeof
 (paren
-r_struct
-id|display
+id|u32
 )paren
+op_star
+l_int|17
 )paren
 suffix:semicolon
 id|par
@@ -7191,14 +7175,6 @@ op_assign
 op_amp
 id|neofb_ops
 suffix:semicolon
-id|info-&gt;changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|info-&gt;switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
 id|info-&gt;updatevar
 op_assign
 id|gen_update_var
@@ -7211,19 +7187,6 @@ id|info-&gt;par
 op_assign
 id|par
 suffix:semicolon
-id|info-&gt;disp
-op_assign
-(paren
-r_struct
-id|display
-op_star
-)paren
-(paren
-id|info
-op_plus
-l_int|1
-)paren
-suffix:semicolon
 id|info-&gt;pseudo_palette
 op_assign
 (paren
@@ -7231,7 +7194,7 @@ r_void
 op_star
 )paren
 (paren
-id|info-&gt;disp
+id|info
 op_plus
 l_int|1
 )paren

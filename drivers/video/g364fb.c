@@ -91,12 +91,6 @@ DECL|macro|MON_ID_REG
 mdefine_line|#define MON_ID_REG &t;0xe4100000&t;/* unused */
 DECL|macro|RESET_REG
 mdefine_line|#define RESET_REG &t;0xe4180000&t;/* Write only */
-DECL|variable|disp
-r_static
-r_struct
-id|display
-id|disp
-suffix:semicolon
 DECL|variable|fb_info
 r_static
 r_struct
@@ -319,16 +313,6 @@ dot
 id|fb_set_var
 op_assign
 id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
 comma
 dot
 id|fb_setcolreg
@@ -936,11 +920,6 @@ id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-id|fb_info.disp
-op_assign
-op_amp
-id|disp
-suffix:semicolon
 id|fb_info.currcon
 op_assign
 op_minus
@@ -952,14 +931,6 @@ l_int|0
 )braket
 op_assign
 l_char|&squot;&bslash;0&squot;
-suffix:semicolon
-id|fb_info.changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|fb_info.switch_con
-op_assign
-id|gen_switch
 suffix:semicolon
 id|fb_info.updatevar
 op_assign
@@ -974,16 +945,6 @@ comma
 l_int|255
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-op_amp
-id|fb_info
 )paren
 suffix:semicolon
 r_if

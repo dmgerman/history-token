@@ -8,13 +8,10 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 DECL|macro|dac_reg
 mdefine_line|#define dac_reg&t;(0x3c8)
 DECL|macro|dac_val
@@ -96,12 +93,6 @@ op_assign
 id|FB_ACCEL_NONE
 comma
 )brace
-suffix:semicolon
-DECL|variable|disp
-r_static
-r_struct
-id|display
-id|disp
 suffix:semicolon
 DECL|variable|fb_info
 r_static
@@ -742,16 +733,6 @@ dot
 id|fb_set_var
 op_assign
 id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
 comma
 dot
 id|fb_setcolreg
@@ -1639,10 +1620,6 @@ comma
 id|vesafb_fix.id
 )paren
 suffix:semicolon
-id|fb_info.changevar
-op_assign
-l_int|NULL
-suffix:semicolon
 id|fb_info.node
 op_assign
 id|NODEV
@@ -1665,15 +1642,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|fb_info.disp
-op_assign
-op_amp
-id|disp
-suffix:semicolon
-id|fb_info.switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
 id|fb_info.updatevar
 op_assign
 id|gen_update_var
@@ -1695,16 +1663,6 @@ comma
 id|video_cmap_len
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-op_amp
-id|fb_info
 )paren
 suffix:semicolon
 r_if

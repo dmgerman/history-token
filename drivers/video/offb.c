@@ -19,7 +19,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#ifdef CONFIG_BOOTX_TEXT
 macro_line|#include &lt;asm/bootx.h&gt;
 macro_line|#endif
-macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;video/macmodes.h&gt;
 multiline_comment|/* Supported palette hacks */
 r_enum
@@ -211,16 +210,6 @@ dot
 id|fb_set_var
 op_assign
 id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
 comma
 dot
 id|fb_setcolreg
@@ -1920,12 +1909,6 @@ id|fb_info
 op_plus
 r_sizeof
 (paren
-r_struct
-id|display
-)paren
-op_plus
-r_sizeof
-(paren
 id|u32
 )paren
 op_star
@@ -2607,19 +2590,6 @@ id|info-&gt;par
 op_assign
 id|par
 suffix:semicolon
-id|info-&gt;disp
-op_assign
-(paren
-r_struct
-id|display
-op_star
-)paren
-(paren
-id|info
-op_plus
-l_int|1
-)paren
-suffix:semicolon
 id|info-&gt;pseudo_palette
 op_assign
 (paren
@@ -2627,7 +2597,7 @@ r_void
 op_star
 )paren
 (paren
-id|info-&gt;disp
+id|info
 op_plus
 l_int|1
 )paren
@@ -2643,14 +2613,6 @@ l_int|0
 )braket
 op_assign
 l_char|&squot;&bslash;0&squot;
-suffix:semicolon
-id|info-&gt;changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|info-&gt;switch_con
-op_assign
-id|gen_switch
 suffix:semicolon
 id|info-&gt;updatevar
 op_assign
@@ -2669,15 +2631,6 @@ comma
 l_int|256
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-id|info
 )paren
 suffix:semicolon
 r_if
