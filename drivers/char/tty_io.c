@@ -329,15 +329,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|rs285_console_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sa1100_rs_console_init
+id|uart_console_init
 c_func
 (paren
 r_void
@@ -9357,15 +9349,8 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_21285_CONSOLE
-id|rs285_console_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_SA1100_CONSOLE
-id|sa1100_rs_console_init
+macro_line|#ifdef CONFIG_SERIAL_CORE_CONSOLE
+id|uart_console_init
 c_func
 (paren
 )paren
@@ -9373,13 +9358,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARC_CONSOLE
 id|arc_console_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_AMBA_CONSOLE
-id|ambauart_console_init
 c_func
 (paren
 )paren
