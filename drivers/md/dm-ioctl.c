@@ -1453,6 +1453,8 @@ c_func
 (paren
 id|hc-&gt;name
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 id|needed
 op_add_assign
