@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/linux_logo.h&gt;
 macro_line|#ifdef CONFIG_M68K
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#endif
-macro_line|#if defined(CONFIG_MIPS) || defined(CONFIG_MIPS64)
+macro_line|#ifdef CONFIG_MIPS
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#endif
 r_extern
