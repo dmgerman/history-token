@@ -11227,6 +11227,23 @@ id|par-&gt;bus_type
 op_assign
 id|PCI
 suffix:semicolon
+macro_line|#ifdef CONFIG_FB_ATY_XL_INIT
+r_if
+c_cond
+(paren
+id|IS_XL
+c_func
+(paren
+id|par-&gt;pci_id
+)paren
+)paren
+id|atyfb_xl_init
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+macro_line|#endif
 id|par-&gt;ram_type
 op_assign
 (paren
