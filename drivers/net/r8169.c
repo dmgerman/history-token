@@ -531,8 +531,8 @@ id|RxFIFOOver
 op_assign
 l_int|0x40
 comma
-DECL|enumerator|RxUnderrun
-id|RxUnderrun
+DECL|enumerator|LinkChg
+id|LinkChg
 op_assign
 l_int|0x20
 comma
@@ -1210,7 +1210,7 @@ r_const
 id|u16
 id|rtl8169_intr_mask
 op_assign
-id|RxUnderrun
+id|LinkChg
 op_or
 id|RxOverflow
 op_or
@@ -1232,7 +1232,7 @@ id|rtl8169_napi_event
 op_assign
 id|RxOK
 op_or
-id|RxUnderrun
+id|LinkChg
 op_or
 id|RxOverflow
 op_or
@@ -6895,7 +6895,7 @@ id|handled
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;if (status &amp; RxUnderrun)&n;&t;&t;&t;link_changed = RTL_R16 (CSCR) &amp; CSCR_LinkChangeBit;&n;*/
+multiline_comment|/*&n;&t;&t;if (status &amp; LinkChg)&n;&t;&t;&t;link_changed = RTL_R16 (CSCR) &amp; CSCR_LinkChangeBit;&n;*/
 id|status
 op_and_assign
 id|tp-&gt;intr_mask
@@ -6995,7 +6995,7 @@ op_amp
 (paren
 id|RxOK
 op_or
-id|RxUnderrun
+id|LinkChg
 op_or
 id|RxOverflow
 op_or
