@@ -100,7 +100,7 @@ id|p
 )paren
 suffix:semicolon
 DECL|macro|KSTK_EIP
-mdefine_line|#define KSTK_EIP(tsk)   &bslash;&n;    ({                  &bslash;&n;        unsigned long eip = 0;   &bslash;&n;        unsigned long regs = (unsigned long)user_regs(tsk); &bslash;&n;        if (regs &gt; PAGE_SIZE &amp;&amp; &bslash;&n;            VALID_PAGE(virt_to_page(regs))) &bslash;&n;              eip = ((struct pt_regs *)regs)-&gt;irp; &bslash;&n;        eip; })
+mdefine_line|#define KSTK_EIP(tsk)   &bslash;&n;    ({                  &bslash;&n;        unsigned long eip = 0;   &bslash;&n;        unsigned long regs = (unsigned long)user_regs(tsk); &bslash;&n;        if (regs &gt; PAGE_SIZE &amp;&amp; &bslash;&n;            virt_addr_valid(regs)) &bslash;&n;              eip = ((struct pt_regs *)regs)-&gt;irp; &bslash;&n;        eip; })
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)   ((tsk) == current ? rdusp() : (tsk)-&gt;thread.usp)
 DECL|macro|copy_segments
