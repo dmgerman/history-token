@@ -3101,10 +3101,6 @@ op_assign
 id|old_hwif.irq
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDECS */
-id|hwif-&gt;initializing
-op_assign
-id|old_hwif.initializing
-suffix:semicolon
 id|hwif-&gt;dma_base
 op_assign
 id|old_hwif.dma_base
