@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.c,v 1.88 2004/11/16 20:36:11 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.c,v 1.89 2004/11/28 12:20:35 dedekind Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -1015,24 +1015,6 @@ r_goto
 id|free_out
 suffix:semicolon
 )brace
-id|memset
-c_func
-(paren
-id|fd
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|jffs2_full_dirent
-)paren
-op_plus
-id|node.d.nsize
-op_plus
-l_int|1
-)paren
-suffix:semicolon
 id|fd-&gt;raw
 op_assign
 id|ref
@@ -1242,6 +1224,13 @@ suffix:semicolon
 id|fd-&gt;next
 op_assign
 l_int|NULL
+suffix:semicolon
+id|fd-&gt;name
+(braket
+id|node.d.nsize
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 multiline_comment|/* Wheee. We now have a complete jffs2_full_dirent structure, with&n;&t;&t;&t;&t;   the name in it and everything. Link it into the list &n;&t;&t;&t;&t;*/
 id|D1
