@@ -262,51 +262,5 @@ DECL|macro|IBM_TTY3270_MAJOR
 mdefine_line|#define IBM_TTY3270_MAJOR&t;227
 DECL|macro|IBM_FS3270_MAJOR
 mdefine_line|#define IBM_FS3270_MAJOR&t;228
-multiline_comment|/*&n; * Tests for SCSI devices.&n; */
-DECL|macro|SCSI_DISK_MAJOR
-mdefine_line|#define SCSI_DISK_MAJOR(M) ((M) == SCSI_DISK0_MAJOR || &bslash;&n;  ((M) &gt;= SCSI_DISK1_MAJOR &amp;&amp; (M) &lt;= SCSI_DISK7_MAJOR) || &bslash;&n;  ((M) &gt;= SCSI_DISK8_MAJOR &amp;&amp; (M) &lt;= SCSI_DISK15_MAJOR))
-DECL|macro|SCSI_BLK_MAJOR
-mdefine_line|#define SCSI_BLK_MAJOR(M) &bslash;&n;  (SCSI_DISK_MAJOR(M)&t;&bslash;&n;   || (M) == SCSI_CDROM_MAJOR)
-DECL|function|scsi_blk_major
-r_static
-id|__inline__
-r_int
-id|scsi_blk_major
-c_func
-(paren
-r_int
-id|m
-)paren
-(brace
-r_return
-id|SCSI_BLK_MAJOR
-c_func
-(paren
-id|m
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Tests for IDE devices&n; */
-DECL|macro|IDE_DISK_MAJOR
-mdefine_line|#define IDE_DISK_MAJOR(M)&t;((M) == IDE0_MAJOR || (M) == IDE1_MAJOR || &bslash;&n;&t;&t;&t;&t;(M) == IDE2_MAJOR || (M) == IDE3_MAJOR || &bslash;&n;&t;&t;&t;&t;(M) == IDE4_MAJOR || (M) == IDE5_MAJOR || &bslash;&n;&t;&t;&t;&t;(M) == IDE6_MAJOR || (M) == IDE7_MAJOR || &bslash;&n;&t;&t;&t;&t;(M) == IDE8_MAJOR || (M) == IDE9_MAJOR)
-DECL|function|ide_blk_major
-r_static
-id|__inline__
-r_int
-id|ide_blk_major
-c_func
-(paren
-r_int
-id|m
-)paren
-(brace
-r_return
-id|IDE_DISK_MAJOR
-c_func
-(paren
-id|m
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif
 eof
