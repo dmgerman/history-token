@@ -5364,7 +5364,7 @@ id|u32
 )paren
 id|t
 suffix:semicolon
-macro_line|#ifdef __LP64__
+macro_line|#if BITS_PER_LONG==64
 macro_line|#error &quot;Not 64bit clean&quot;
 macro_line|#endif&t;&t;&t;&t;
 id|head_list-&gt;buffer

@@ -800,7 +800,8 @@ id|buffer1
 )paren
 comma
 (paren
-id|u64
+r_int
+r_int
 )paren
 id|tp-&gt;rx_buffers
 (braket
