@@ -618,8 +618,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|mp
 op_assign
 id|kmalloc
@@ -641,8 +639,6 @@ op_logical_neg
 id|mp
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -876,8 +872,6 @@ c_func
 (paren
 id|mp
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|capiminor_find
@@ -5903,6 +5897,10 @@ id|drv-&gt;magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|drv-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|drv-&gt;driver_name
 op_assign
 l_string|&quot;capi_nc&quot;
@@ -6762,8 +6760,6 @@ r_char
 op_star
 id|compileinfo
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6878,8 +6874,6 @@ comma
 id|capi_major
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -6938,8 +6932,6 @@ comma
 l_string|&quot;capi20&quot;
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -6981,8 +6973,6 @@ id|capi_major
 comma
 id|compileinfo
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
