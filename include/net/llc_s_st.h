@@ -7,8 +7,8 @@ DECL|macro|LLC_SAP_STATE_INACTIVE
 mdefine_line|#define LLC_SAP_STATE_INACTIVE&t;1
 DECL|macro|LLC_SAP_STATE_ACTIVE
 mdefine_line|#define LLC_SAP_STATE_ACTIVE&t;2
-DECL|macro|LLC_NBR_SAP_STATES
-mdefine_line|#define LLC_NBR_SAP_STATES&t;2       /* size of state table */
+DECL|macro|LLC_NR_SAP_STATES
+mdefine_line|#define LLC_NR_SAP_STATES&t;2       /* size of state table */
 multiline_comment|/* structures and types */
 multiline_comment|/* SAP state table structure */
 DECL|struct|llc_sap_state_trans
@@ -53,7 +53,7 @@ r_struct
 id|llc_sap_state
 id|llc_sap_state_table
 (braket
-id|LLC_NBR_SAP_STATES
+id|LLC_NR_SAP_STATES
 )braket
 suffix:semicolon
 macro_line|#endif /* LLC_S_ST_H */

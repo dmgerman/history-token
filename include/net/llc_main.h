@@ -18,21 +18,13 @@ DECL|macro|LLC_REJ_TIME
 mdefine_line|#define LLC_REJ_TIME&t;&t; 3
 DECL|macro|LLC_BUSY_TIME
 mdefine_line|#define LLC_BUSY_TIME&t;&t; 3
-DECL|macro|LLC_SENDACK_TIME
-mdefine_line|#define LLC_SENDACK_TIME&t;50
 DECL|macro|LLC_DEST_INVALID
 mdefine_line|#define LLC_DEST_INVALID&t; 0&t;/* Invalid LLC PDU type */
 DECL|macro|LLC_DEST_SAP
 mdefine_line|#define LLC_DEST_SAP&t;&t; 1&t;/* Type 1 goes here */
 DECL|macro|LLC_DEST_CONN
 mdefine_line|#define LLC_DEST_CONN&t;&t; 2&t;/* Type 2 goes here */
-multiline_comment|/* LLC Layer global default parameters */
-DECL|macro|LLC_GLOBAL_DEFAULT_MAX_NBR_SAPS
-mdefine_line|#define LLC_GLOBAL_DEFAULT_MAX_NBR_SAPS&t;&t;4
-DECL|macro|LLC_GLOBAL_DEFAULT_MAX_NBR_CONNS
-mdefine_line|#define LLC_GLOBAL_DEFAULT_MAX_NBR_CONNS&t;64
-multiline_comment|/* LLC station component (SAP and connection resource manager) */
-multiline_comment|/* Station component; one per adapter */
+multiline_comment|/**&n; * struct llc_station - LLC station component&n; *&n; * SAP and connection resource manager, one per adapter.&n; *&n; * @state - state of station&n; * @xid_r_count - XID response PDU counter&n; * @ack_tmr_running - 1 or 0&n; * @mac_sa - MAC source address&n; * @sap_list - list of related SAPs&n; * @ev_q - events entering state mach.&n; * @mac_pdu_q - PDUs ready to send to MAC&n; */
 DECL|struct|llc_station
 r_struct
 id|llc_station
@@ -41,12 +33,10 @@ DECL|member|state
 id|u8
 id|state
 suffix:semicolon
-multiline_comment|/* state of station */
 DECL|member|xid_r_count
 id|u8
 id|xid_r_count
 suffix:semicolon
-multiline_comment|/* XID response PDU counter */
 DECL|member|ack_timer
 r_struct
 id|timer_list
@@ -56,7 +46,6 @@ DECL|member|ack_tmr_running
 id|u8
 id|ack_tmr_running
 suffix:semicolon
-multiline_comment|/* 1 or 0 */
 DECL|member|retry_count
 id|u8
 id|retry_count
@@ -72,7 +61,6 @@ id|mac_sa
 l_int|6
 )braket
 suffix:semicolon
-multiline_comment|/* MAC source address */
 r_struct
 (brace
 DECL|member|lock
@@ -88,29 +76,26 @@ DECL|member|sap_list
 )brace
 id|sap_list
 suffix:semicolon
-multiline_comment|/* list of related SAPs */
 r_struct
 (brace
+DECL|member|list
+r_struct
+id|sk_buff_head
+id|list
+suffix:semicolon
 DECL|member|lock
 id|spinlock_t
 id|lock
-suffix:semicolon
-DECL|member|list
-r_struct
-id|list_head
-id|list
 suffix:semicolon
 DECL|member|ev_q
 )brace
 id|ev_q
 suffix:semicolon
-multiline_comment|/* events entering state mach. */
 DECL|member|mac_pdu_q
 r_struct
 id|sk_buff_head
 id|mac_pdu_q
 suffix:semicolon
-multiline_comment|/* PDUs ready to send to MAC */
 )brace
 suffix:semicolon
 r_struct
@@ -170,19 +155,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|llc_station_state_ev
-op_star
-id|llc_station_alloc_ev
-c_func
-(paren
-r_struct
-id|llc_station
-op_star
-id|station
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|llc_station_send_ev
 c_func
@@ -193,9 +165,9 @@ op_star
 id|station
 comma
 r_struct
-id|llc_station_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_extern
