@@ -10,16 +10,17 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;t128.h&quot;
 DECL|macro|AUTOPROBE_IRQ
 mdefine_line|#define AUTOPROBE_IRQ
 macro_line|#include &quot;NCR5380.h&quot;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
 DECL|struct|override
 r_static
 r_struct
@@ -130,7 +131,6 @@ DECL|macro|NO_BASES
 mdefine_line|#define NO_BASES (sizeof (bases) / sizeof (struct base))
 DECL|struct|signature
 r_static
-r_const
 r_struct
 id|signature
 (brace
