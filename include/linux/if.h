@@ -274,7 +274,7 @@ id|IFNAMSIZ
 )braket
 suffix:semicolon
 DECL|member|ifru_data
-r_char
+r_void
 id|__user
 op_star
 id|ifru_data

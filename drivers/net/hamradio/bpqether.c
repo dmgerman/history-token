@@ -1060,14 +1060,10 @@ id|cmd
 (brace
 r_struct
 id|bpq_ethaddr
+id|__user
 op_star
 id|ethaddr
 op_assign
-(paren
-r_struct
-id|bpq_ethaddr
-op_star
-)paren
 id|ifr-&gt;ifr_data
 suffix:semicolon
 r_struct
