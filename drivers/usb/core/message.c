@@ -106,7 +106,7 @@ suffix:colon
 l_string|&quot;out&quot;
 )paren
 suffix:semicolon
-id|usb_kill_urb
+id|usb_unlink_urb
 c_func
 (paren
 id|urb
@@ -849,7 +849,7 @@ id|found
 (brace
 id|status
 op_assign
-id|usb_kill_urb
+id|usb_unlink_urb
 (paren
 id|io-&gt;urbs
 (braket
@@ -1694,7 +1694,7 @@ r_continue
 suffix:semicolon
 id|retval
 op_assign
-id|usb_kill_urb
+id|usb_unlink_urb
 (paren
 id|io-&gt;urbs
 (braket
