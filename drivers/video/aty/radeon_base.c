@@ -7725,6 +7725,10 @@ id|info-&gt;fix.mmio_len
 op_assign
 id|RADEON_REGSIZE
 suffix:semicolon
+id|info-&gt;fix.accel
+op_assign
+id|FB_ACCEL_ATI_RADEON
+suffix:semicolon
 id|fb_alloc_cmap
 c_func
 (paren
