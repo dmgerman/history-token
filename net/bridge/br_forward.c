@@ -31,10 +31,6 @@ id|skb-&gt;dev
 op_eq
 id|p-&gt;dev
 op_logical_or
-id|skb-&gt;len
-OG
-id|p-&gt;dev-&gt;mtu
-op_logical_or
 id|p-&gt;state
 op_ne
 id|BR_STATE_FORWARDING
@@ -57,8 +53,23 @@ op_star
 id|skb
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OG
+id|skb-&gt;dev-&gt;mtu
+)paren
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_else
+(brace
 macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
-multiline_comment|/* ip_refrag calls ip_fragment, which doesn&squot;t copy the MAC header. */
+multiline_comment|/* ip_refrag calls ip_fragment, doesn&squot;t copy the MAC header. */
 id|nf_bridge_maybe_copy_header
 c_func
 (paren
@@ -80,6 +91,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

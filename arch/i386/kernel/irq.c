@@ -3787,6 +3787,7 @@ id|i
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_4KSTACKS
+multiline_comment|/*&n; * These should really be __section__(&quot;.bss.page_aligned&quot;) as well, but&n; * gcc&squot;s 3.0 and earlier don&squot;t handle that correctly.&n; */
 DECL|variable|softirq_stack
 r_static
 r_char
@@ -3804,12 +3805,6 @@ id|__aligned__
 c_func
 (paren
 id|THREAD_SIZE
-)paren
-comma
-id|__section__
-c_func
-(paren
-l_string|&quot;.bss.page_aligned&quot;
 )paren
 )paren
 )paren
@@ -3831,12 +3826,6 @@ id|__aligned__
 c_func
 (paren
 id|THREAD_SIZE
-)paren
-comma
-id|__section__
-c_func
-(paren
-l_string|&quot;.bss.page_aligned&quot;
 )paren
 )paren
 )paren

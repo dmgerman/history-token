@@ -13480,7 +13480,11 @@ id|priv-&gt;wep_is_on
 (brace
 id|auth.alg
 op_assign
+id|cpu_to_le16
+c_func
+(paren
 id|C80211_MGMT_AAN_SHAREDKEY
+)paren
 suffix:semicolon
 multiline_comment|/* no WEP for authentication frames with TrSeqNo 1 */
 r_if
@@ -13503,7 +13507,11 @@ r_else
 (brace
 id|auth.alg
 op_assign
+id|cpu_to_le16
+c_func
+(paren
 id|C80211_MGMT_AAN_OPENSYSTEM
+)paren
 suffix:semicolon
 )brace
 id|auth.status

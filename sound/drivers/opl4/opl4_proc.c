@@ -159,7 +159,12 @@ op_star
 id|_buf
 comma
 r_int
+r_int
 id|count
+comma
+r_int
+r_int
+id|pos
 )paren
 (brace
 id|opl4_t
@@ -192,7 +197,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|file-&gt;f_pos
+id|pos
 op_plus
 id|size
 OG
@@ -202,7 +207,7 @@ id|size
 op_assign
 id|entry-&gt;size
 op_minus
-id|file-&gt;f_pos
+id|pos
 suffix:semicolon
 r_if
 c_cond
@@ -237,7 +242,7 @@ id|opl4
 comma
 id|buf
 comma
-id|file-&gt;f_pos
+id|pos
 comma
 id|size
 )paren
@@ -273,10 +278,6 @@ c_func
 id|buf
 )paren
 suffix:semicolon
-id|file-&gt;f_pos
-op_add_assign
-id|size
-suffix:semicolon
 r_return
 id|size
 suffix:semicolon
@@ -311,7 +312,12 @@ op_star
 id|_buf
 comma
 r_int
+r_int
 id|count
+comma
+r_int
+r_int
+id|pos
 )paren
 (brace
 id|opl4_t
@@ -344,7 +350,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|file-&gt;f_pos
+id|pos
 op_plus
 id|size
 OG
@@ -354,7 +360,7 @@ id|size
 op_assign
 id|entry-&gt;size
 op_minus
-id|file-&gt;f_pos
+id|pos
 suffix:semicolon
 r_if
 c_cond
@@ -414,7 +420,7 @@ id|opl4
 comma
 id|buf
 comma
-id|file-&gt;f_pos
+id|pos
 comma
 id|size
 )paren
@@ -424,10 +430,6 @@ c_func
 (paren
 id|buf
 )paren
-suffix:semicolon
-id|file-&gt;f_pos
-op_add_assign
-id|size
 suffix:semicolon
 r_return
 id|size

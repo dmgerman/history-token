@@ -1576,7 +1576,8 @@ comma
 id|ACPI_MTX_LOCK
 )paren
 suffix:semicolon
-id|file-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 id|count
 suffix:semicolon

@@ -2,6 +2,7 @@ multiline_comment|/* &n; * video.h&n; *&n; * Copyright (C) 2000 Marcus Metzler &
 macro_line|#ifndef _DVBVIDEO_H_
 DECL|macro|_DVBVIDEO_H_
 mdefine_line|#define _DVBVIDEO_H_
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#else
