@@ -220,12 +220,8 @@ DECL|macro|TEMP_LIMIT_FROM_REG
 mdefine_line|#define TEMP_LIMIT_FROM_REG(val)&t;(((val)&gt;0x80?(val)-0x100:(val))*1000)
 DECL|macro|TEMP_LIMIT_TO_REG
 mdefine_line|#define TEMP_LIMIT_TO_REG(val)&t;&t;SENSORS_LIMIT((val)&lt;0?&bslash;&n;&t;&t;&t;&t;&t;((val)-500)/1000:((val)+500)/1000,0,255)
-DECL|macro|ALARMS_FROM_REG
-mdefine_line|#define ALARMS_FROM_REG(val)&t;&t;(val)
 DECL|macro|DIV_FROM_REG
 mdefine_line|#define DIV_FROM_REG(val)&t;&t;(1 &lt;&lt; (val))
-DECL|macro|DIV_TO_REG
-mdefine_line|#define DIV_TO_REG(val)&t;&t;&t;((val)==8?3:(val)==4?2:(val)==1?0:1)
 multiline_comment|/*&n; * Client data (each client gets its own)&n; */
 DECL|struct|lm80_data
 r_struct
@@ -1165,17 +1161,79 @@ comma
 l_int|10
 )paren
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|val
+)paren
+(brace
+r_case
+l_int|1
+suffix:colon
 id|data-&gt;fan_div
 (braket
 id|nr
 )braket
 op_assign
-id|DIV_TO_REG
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|data-&gt;fan_div
+(braket
+id|nr
+)braket
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+id|data-&gt;fan_div
+(braket
+id|nr
+)braket
+op_assign
+l_int|2
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|8
+suffix:colon
+id|data-&gt;fan_div
+(braket
+id|nr
+)braket
+op_assign
+l_int|3
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|dev_err
 c_func
 (paren
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;fan_div value %ld not &quot;
+l_string|&quot;supported. Choose one of 1, 2, 4 or 8!&bslash;n&quot;
+comma
 id|val
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|reg
 op_assign
 (paren
@@ -1440,13 +1498,9 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%d&bslash;n&quot;
+l_string|&quot;%u&bslash;n&quot;
 comma
-id|ALARMS_FROM_REG
-c_func
-(paren
 id|data-&gt;alarms
-)paren
 )paren
 suffix:semicolon
 )brace
