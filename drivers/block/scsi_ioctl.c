@@ -1824,7 +1824,7 @@ id|__GFP_WAIT
 )paren
 suffix:semicolon
 id|rq-&gt;flags
-op_assign
+op_or_assign
 id|REQ_BLOCK_PC
 suffix:semicolon
 id|rq-&gt;data
