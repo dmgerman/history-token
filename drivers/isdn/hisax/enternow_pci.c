@@ -18,13 +18,6 @@ id|enternow_pci_rev
 op_assign
 l_string|&quot;$Revision: 1.1.2.1 $&quot;
 suffix:semicolon
-DECL|variable|enternow_pci_lock
-r_static
-id|spinlock_t
-id|enternow_pci_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/* *************************** I/O-Interface functions ************************************* */
 multiline_comment|/* cs-&gt;readisac, macro rByteAMD */
 id|BYTE
@@ -717,27 +710,13 @@ id|sval
 comma
 id|ir
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cs
-)paren
-(brace
-id|printk
+id|spin_lock
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;enter:now PCI: Spurious interrupt!&bslash;n&quot;
+op_amp
+id|cs-&gt;lock
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|sval
 op_assign
 id|InByte
@@ -782,15 +761,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* DMA-Interrupt: B-channel-stuff */
 multiline_comment|/* set bits in sval to indicate which page is free */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|enternow_pci_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* set bits in sval to indicate which page is free */
 r_if
 c_cond
@@ -863,45 +833,11 @@ id|sval
 op_ne
 id|cs-&gt;hw.njet.last_is0
 )paren
+(brace
 multiline_comment|/* we have a DMA interrupt */
-(brace
-r_if
-c_cond
-(paren
-id|test_and_set_bit
-c_func
-(paren
-id|FLG_LOCK_ATOMIC
-comma
-op_amp
-id|cs-&gt;HW_Flags
-)paren
-)paren
-(brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|enternow_pci_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|cs-&gt;hw.njet.irqstat0
 op_assign
 id|sval
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|enternow_pci_lock
-comma
-id|flags
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -947,24 +883,12 @@ c_func
 id|cs
 )paren
 suffix:semicolon
-id|test_and_clear_bit
-c_func
-(paren
-id|FLG_LOCK_ATOMIC
-comma
-op_amp
-id|cs-&gt;HW_Flags
-)paren
-suffix:semicolon
 )brace
-r_else
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|enternow_pci_lock
-comma
-id|flags
+id|cs-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -1007,10 +931,6 @@ id|tmp
 l_int|64
 )braket
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 macro_line|#if CONFIG_PCI
 macro_line|#ifdef __BIG_ENDIAN
 macro_line|#error &quot;not running on big endian machines now&quot;
@@ -1045,15 +965,6 @@ id|ISDN_CTYPE_ENTERNOW
 )paren
 r_return
 l_int|0
-suffix:semicolon
-id|test_and_clear_bit
-c_func
-(paren
-id|FLG_LOCK_ATOMIC
-comma
-op_amp
-id|cs-&gt;HW_Flags
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -1225,17 +1136,6 @@ op_plus
 l_int|0xC0
 suffix:semicolon
 singleline_comment|// Fenster zum AMD
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Reset an */
 id|cs-&gt;hw.njet.ctrl_reg
 op_assign
@@ -1305,12 +1205,6 @@ l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* Timeout 10ms */
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|cs-&gt;hw.njet.auxd
 op_assign
 l_int|0x00

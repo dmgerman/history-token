@@ -259,23 +259,6 @@ id|cs-&gt;hw.njet.last_is0
 )paren
 multiline_comment|/* we have a DMA interrupt */
 (brace
-r_if
-c_cond
-(paren
-id|test_and_set_bit
-c_func
-(paren
-id|FLG_LOCK_ATOMIC
-comma
-op_amp
-id|cs-&gt;HW_Flags
-)paren
-)paren
-(brace
-r_goto
-id|unlock
-suffix:semicolon
-)brace
 id|cs-&gt;hw.njet.irqstat0
 op_assign
 id|sval
@@ -325,19 +308,8 @@ id|cs
 )paren
 suffix:semicolon
 multiline_comment|/* end new code 13/07/00 GE */
-id|test_and_clear_bit
-c_func
-(paren
-id|FLG_LOCK_ATOMIC
-comma
-op_amp
-id|cs-&gt;HW_Flags
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&t;if (!testcnt--) {&n;&t;&t;cs-&gt;hw.njet.dmactrl = 0;&n;&t;&t;byteout(cs-&gt;hw.njet.base + NETJET_DMACTRL,&n;&t;&t;&t;cs-&gt;hw.njet.dmactrl);&n;&t;&t;byteout(cs-&gt;hw.njet.base + NETJET_IRQMASK0, 0);&n;&t;}&n;*/
-id|unlock
-suffix:colon
 id|spin_unlock
 c_func
 (paren
@@ -614,15 +586,6 @@ id|ISDN_CTYPE_NETJET_S
 )paren
 r_return
 l_int|0
-suffix:semicolon
-id|test_and_clear_bit
-c_func
-(paren
-id|FLG_LOCK_ATOMIC
-comma
-op_amp
-id|cs-&gt;HW_Flags
-)paren
 suffix:semicolon
 macro_line|#if CONFIG_PCI
 r_for

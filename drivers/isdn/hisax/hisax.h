@@ -3244,8 +3244,6 @@ DECL|macro|FLG_L1_DBUSY
 mdefine_line|#define FLG_L1_DBUSY&t;&t;5
 DECL|macro|FLG_DBUSY_TIMER
 mdefine_line|#define FLG_DBUSY_TIMER &t;6
-DECL|macro|FLG_LOCK_ATOMIC
-mdefine_line|#define FLG_LOCK_ATOMIC &t;7
 DECL|macro|FLG_ARCOFI_TIMER
 mdefine_line|#define FLG_ARCOFI_TIMER&t;8
 DECL|macro|FLG_ARCOFI_ERROR
