@@ -2440,11 +2440,13 @@ multiline_comment|/* Any change of skb-&gt;len requires recalculation of tso&n;&
 r_if
 c_cond
 (paren
-id|tcp_skb_mss
+id|tcp_skb_pcount
 c_func
 (paren
 id|skb
 )paren
+OG
+l_int|1
 )paren
 id|tcp_set_skb_tso_segs
 c_func
