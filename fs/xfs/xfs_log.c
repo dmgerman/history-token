@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * High level interface routines for log manager&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_macros.h&quot;
@@ -3358,6 +3358,10 @@ id|xlog_in_core_t
 op_star
 id|iclog
 suffix:semicolon
+id|xlog_t
+op_star
+id|l
+suffix:semicolon
 r_int
 id|aborted
 suffix:semicolon
@@ -3407,9 +3411,18 @@ id|aborted
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * Some versions of cpp barf on the recursive definition of&n;&t; * ic_log -&gt; hic_fields.ic_log and expand ic_log twice when&n;&t; * it is passed through two macros.  Workaround broken cpp.&n;&t; */
+id|l
+op_assign
+id|iclog-&gt;ic_log
+suffix:semicolon
 multiline_comment|/*&n;&t; * Race to shutdown the filesystem if we see an error.&n;&t; */
 r_if
 c_cond
+(paren
+id|XFS_TEST_ERROR
+c_func
+(paren
 (paren
 id|XFS_BUF_GETERROR
 c_func
@@ -3417,19 +3430,21 @@ c_func
 id|bp
 )paren
 )paren
+comma
+id|l-&gt;l_mp
+comma
+id|XFS_ERRTAG_IODONE_IOERR
+comma
+id|XFS_RANDOM_IODONE_IOERR
+)paren
+)paren
 (brace
-multiline_comment|/* Some versions of cpp barf on the recursive definition of&n;&t;&t; * ic_log -&gt; hic_fields.ic_log and expand ic_log twice when&n;&t;&t; * it is passed through two macros.  Workaround for broken cpp&n;&t;&t; */
-r_struct
-id|log
-op_star
-id|l
-suffix:semicolon
 id|xfs_ioerror_alert
 c_func
 (paren
 l_string|&quot;xlog_iodone&quot;
 comma
-id|iclog-&gt;ic_log-&gt;l_mp
+id|l-&gt;l_mp
 comma
 id|bp
 comma
@@ -3445,10 +3460,6 @@ c_func
 (paren
 id|bp
 )paren
-suffix:semicolon
-id|l
-op_assign
-id|iclog-&gt;ic_log
 suffix:semicolon
 id|xfs_force_shutdown
 c_func
