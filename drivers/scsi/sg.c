@@ -8695,7 +8695,7 @@ op_amp
 id|dev_attr_kdev
 )paren
 suffix:semicolon
-id|put_device
+id|device_unregister
 c_func
 (paren
 op_amp
