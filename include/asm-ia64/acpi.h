@@ -234,14 +234,6 @@ id|trigger
 )paren
 suffix:semicolon
 r_int
-id|acpi_irq_to_vector
-(paren
-id|u32
-id|irq
-)paren
-suffix:semicolon
-multiline_comment|/* deprecated in favor of acpi_gsi_to_irq */
-r_int
 id|acpi_gsi_to_irq
 (paren
 id|u32

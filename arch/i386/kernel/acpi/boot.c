@@ -1155,45 +1155,6 @@ l_string|&quot; Trigger.&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ACPI_BUS */
-macro_line|#ifdef CONFIG_X86_IO_APIC
-multiline_comment|/* deprecated in favor of acpi_gsi_to_irq */
-DECL|function|acpi_irq_to_vector
-r_int
-id|acpi_irq_to_vector
-c_func
-(paren
-id|u32
-id|irq
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|use_pci_vector
-c_func
-(paren
-)paren
-op_logical_and
-op_logical_neg
-id|platform_legacy_irq
-c_func
-(paren
-id|irq
-)paren
-)paren
-id|irq
-op_assign
-id|IO_APIC_VECTOR
-c_func
-(paren
-id|irq
-)paren
-suffix:semicolon
-r_return
-id|irq
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|acpi_gsi_to_irq
 r_int
 id|acpi_gsi_to_irq

@@ -271,16 +271,6 @@ id|skip_ioapic_setup
 suffix:semicolon
 r_extern
 r_int
-id|acpi_irq_to_vector
-c_func
-(paren
-id|u32
-id|irq
-)paren
-suffix:semicolon
-multiline_comment|/* deprecated in favor of acpi_gsi_to_irq */
-r_extern
-r_int
 id|acpi_skip_timer_override
 suffix:semicolon
 DECL|function|disable_ioapic_setup
