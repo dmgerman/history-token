@@ -2154,6 +2154,13 @@ op_amp
 id|jfs_ip-&gt;commit_sem
 )paren
 suffix:semicolon
+id|init_rwsem
+c_func
+(paren
+op_amp
+id|jfs_ip-&gt;xattr_sem
+)paren
+suffix:semicolon
 id|jfs_ip-&gt;atlhead
 op_assign
 l_int|0
