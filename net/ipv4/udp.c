@@ -2054,7 +2054,7 @@ id|AF_UNSPEC
 )paren
 r_return
 op_minus
-id|EINVAL
+id|EAFNOSUPPORT
 suffix:semicolon
 )brace
 id|daddr

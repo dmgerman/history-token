@@ -3308,7 +3308,7 @@ id|sk
 suffix:semicolon
 r_return
 op_minus
-id|EINVAL
+id|EAFNOSUPPORT
 suffix:semicolon
 )brace
 id|dst
