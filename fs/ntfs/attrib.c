@@ -1,4 +1,4 @@
-multiline_comment|/**&n; * attrib.c - NTFS attribute operations. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/**&n; * attrib.c - NTFS attribute operations. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;dir.h&quot;
@@ -2534,8 +2534,8 @@ id|marker_vcn
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Old marker = 0x%Lx, replacing with &quot;
-l_string|&quot;LCN_ENOENT.&bslash;n&quot;
+l_string|&quot;Old marker = 0x%llx, replacing &quot;
+l_string|&quot;with LCN_ENOENT.&bslash;n&quot;
 comma
 (paren
 r_int
@@ -3614,16 +3614,18 @@ id|max_cluster
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;More extents to follow; deltaxcn = 0x%Lx, &quot;
-l_string|&quot;max_cluster = 0x%Lx&quot;
+l_string|&quot;More extents to follow; deltaxcn = 0x%llx, &quot;
+l_string|&quot;max_cluster = 0x%llx&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
 id|deltaxcn
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -3687,15 +3689,17 @@ c_func
 id|vol-&gt;sb
 comma
 l_string|&quot;Corrupt attribute. deltaxcn = &quot;
-l_string|&quot;0x%Lx, max_cluster = 0x%Lx&quot;
+l_string|&quot;0x%llx, max_cluster = 0x%llx&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
 id|deltaxcn
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -3851,7 +3855,7 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * map_run_list - map (a part of) a run list of an ntfs inode&n; * @ni:&t;&t;ntfs inode for which to map (part of) a run list &n; * @vcn:&t;map run list part containing this vcn&n; *&n; * Map the part of a run list containing the @vcn of an the ntfs inode @ni.&n; *&n; * Return 0 on success and -errno on error.&n; */
+multiline_comment|/**&n; * map_run_list - map (a part of) a run list of an ntfs inode&n; * @ni:&t;&t;ntfs inode for which to map (part of) a run list&n; * @vcn:&t;map run list part containing this vcn&n; *&n; * Map the part of a run list containing the @vcn of an the ntfs inode @ni.&n; *&n; * Return 0 on success and -errno on error.&n; */
 DECL|function|map_run_list
 r_int
 id|map_run_list
@@ -3885,9 +3889,10 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Mapping run list part containing vcn 0x%Lx.&quot;
+l_string|&quot;Mapping run list part containing vcn 0x%llx.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -4517,7 +4522,7 @@ id|type
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * If @name is present, compare the two names. If @name is&n;&t;&t; * missing, assume we want an unnamed attribute.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If @name is present, compare the two names. If @name is&n;&t;&t; * missing, assume we want an unnamed attribute.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4992,15 +4997,17 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Reading vcn = 0x%Lx, lcn = 0x%Lx.&quot;
+l_string|&quot;Reading vcn = 0x%llx, lcn = 0x%llx.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
 id|rl-&gt;vcn
 comma
 (paren
+r_int
 r_int
 r_int
 )paren

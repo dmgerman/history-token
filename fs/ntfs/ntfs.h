@@ -121,10 +121,14 @@ r_struct
 id|inode_operations
 id|ntfs_empty_inode_ops
 suffix:semicolon
-multiline_comment|/* Generic macro to convert pointers to values for comparison purposes. */
+multiline_comment|/* Generic macros to convert pointers to values and vice versa. */
 macro_line|#ifndef p2n
 DECL|macro|p2n
 mdefine_line|#define p2n(p)          ((ptrdiff_t)((ptrdiff_t*)(p)))
+macro_line|#endif
+macro_line|#ifndef n2p
+DECL|macro|n2p
+mdefine_line|#define n2p(p)          ((ptrdiff_t*)((ptrdiff_t)(p)))
 macro_line|#endif
 multiline_comment|/**&n; * NTFS_SB - return the ntfs volume given a vfs super block&n; * @sb:&t;&t;VFS super block&n; *&n; * NTFS_SB() returns the ntfs volume associated with the VFS super block @sb.&n; */
 DECL|function|NTFS_SB

@@ -2878,8 +2878,8 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Index bitmap too small (0x%Lx) &quot;
-l_string|&quot;for index allocation (0x%Lx).&quot;
+l_string|&quot;Index bitmap too small (0x%llx) &quot;
+l_string|&quot;for index allocation (0x%llx).&quot;
 comma
 id|bvi-&gt;i_size
 op_lshift
@@ -5663,15 +5663,17 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;highest_vcn = 0x%Lx, last_vcn - 1 = 0x%Lx&quot;
+l_string|&quot;highest_vcn = 0x%llx, last_vcn - 1 = 0x%llx&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
 id|highest_vcn
 comma
 (paren
+r_int
 r_int
 r_int
 )paren

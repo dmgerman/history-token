@@ -196,6 +196,13 @@ r_int
 id|mftmirr_size
 suffix:semicolon
 multiline_comment|/* Size of mft mirror in mft records. */
+DECL|member|logfile_ino
+r_struct
+id|inode
+op_star
+id|logfile_ino
+suffix:semicolon
+multiline_comment|/* The VFS inode of $LogFile. */
 macro_line|#endif /* NTFS_RW */
 DECL|member|lcnbmp_ino
 r_struct

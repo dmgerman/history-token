@@ -1,4 +1,4 @@
-multiline_comment|/**&n; * dir.c - NTFS kernel directory operations. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/**&n; * dir.c - NTFS kernel directory operations. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;dir.h&quot;
@@ -1075,12 +1075,13 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Actual VCN (0x%Lx) of index buffer is &quot;
-l_string|&quot;different from expected VCN (0x%Lx). &quot;
+l_string|&quot;Actual VCN (0x%llx) of index buffer is &quot;
+l_string|&quot;different from expected VCN (0x%llx). &quot;
 l_string|&quot;Directory inode 0x%lx is corrupt or driver &quot;
 l_string|&quot;bug.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -1091,6 +1092,7 @@ id|ia-&gt;index_block_vcn
 )paren
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -1127,12 +1129,13 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Index buffer (VCN 0x%Lx) of directory inode &quot;
+l_string|&quot;Index buffer (VCN 0x%llx) of directory inode &quot;
 l_string|&quot;0x%lx has a size (%u) differing from the &quot;
 l_string|&quot;directory specified size (%u). Directory &quot;
 l_string|&quot;inode is corrupt or driver bug.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -1185,12 +1188,13 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Index buffer (VCN 0x%Lx) of directory inode &quot;
+l_string|&quot;Index buffer (VCN 0x%llx) of directory inode &quot;
 l_string|&quot;0x%lx crosses page boundary. Impossible! &quot;
 l_string|&quot;Cannot access! This is probably a bug in the &quot;
 l_string|&quot;driver.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -1242,10 +1246,11 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Size of index buffer (VCN 0x%Lx) of directory &quot;
+l_string|&quot;Size of index buffer (VCN 0x%llx) of directory &quot;
 l_string|&quot;inode 0x%lx exceeds maximum size.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -2751,12 +2756,13 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Actual VCN (0x%Lx) of index buffer is &quot;
-l_string|&quot;different from expected VCN (0x%Lx). &quot;
+l_string|&quot;Actual VCN (0x%llx) of index buffer is &quot;
+l_string|&quot;different from expected VCN (0x%llx). &quot;
 l_string|&quot;Directory inode 0x%lx is corrupt or driver &quot;
 l_string|&quot;bug.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -2767,6 +2773,7 @@ id|ia-&gt;index_block_vcn
 )paren
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -2803,12 +2810,13 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Index buffer (VCN 0x%Lx) of directory inode &quot;
+l_string|&quot;Index buffer (VCN 0x%llx) of directory inode &quot;
 l_string|&quot;0x%lx has a size (%u) differing from the &quot;
 l_string|&quot;directory specified size (%u). Directory &quot;
 l_string|&quot;inode is corrupt or driver bug.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -2861,12 +2869,13 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Index buffer (VCN 0x%Lx) of directory inode &quot;
+l_string|&quot;Index buffer (VCN 0x%llx) of directory inode &quot;
 l_string|&quot;0x%lx crosses page boundary. Impossible! &quot;
 l_string|&quot;Cannot access! This is probably a bug in the &quot;
 l_string|&quot;driver.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -2918,10 +2927,11 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Size of index buffer (VCN 0x%Lx) of directory &quot;
+l_string|&quot;Size of index buffer (VCN 0x%llx) of directory &quot;
 l_string|&quot;inode 0x%lx exceeds maximum size.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -3672,7 +3682,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Calling filldir for %s with len %i, fpos 0x%Lx, inode &quot;
+l_string|&quot;Calling filldir for %s with len %i, fpos 0x%llx, inode &quot;
 l_string|&quot;0x%lx, DT_%s.&quot;
 comma
 id|name
@@ -3862,7 +3872,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Entering for inode 0x%lx, fpos 0x%Lx.&quot;
+l_string|&quot;Entering for inode 0x%lx, fpos 0x%llx.&quot;
 comma
 id|vdir-&gt;i_ino
 comma
@@ -4600,9 +4610,10 @@ suffix:colon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Reading bitmap with page index 0x%Lx, bit ofs 0x%Lx&quot;
+l_string|&quot;Reading bitmap with page index 0x%llx, bit ofs 0x%llx&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -4615,6 +4626,7 @@ id|PAGE_CACHE_SHIFT
 )paren
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -4801,9 +4813,10 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Handling index buffer 0x%Lx.&quot;
+l_string|&quot;Handling index buffer 0x%llx.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -5011,12 +5024,13 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Actual VCN (0x%Lx) of index buffer is &quot;
-l_string|&quot;different from expected VCN (0x%Lx). &quot;
+l_string|&quot;Actual VCN (0x%llx) of index buffer is &quot;
+l_string|&quot;different from expected VCN (0x%llx). &quot;
 l_string|&quot;Directory inode 0x%lx is corrupt or driver &quot;
 l_string|&quot;bug. &quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -5027,6 +5041,7 @@ id|ia-&gt;index_block_vcn
 )paren
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -5064,12 +5079,13 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Index buffer (VCN 0x%Lx) of directory inode &quot;
+l_string|&quot;Index buffer (VCN 0x%llx) of directory inode &quot;
 l_string|&quot;0x%lx has a size (%u) differing from the &quot;
 l_string|&quot;directory specified size (%u). Directory &quot;
 l_string|&quot;inode is corrupt or driver bug.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -5123,12 +5139,13 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Index buffer (VCN 0x%Lx) of directory inode &quot;
+l_string|&quot;Index buffer (VCN 0x%llx) of directory inode &quot;
 l_string|&quot;0x%lx crosses page boundary. Impossible! &quot;
 l_string|&quot;Cannot access! This is probably a bug in the &quot;
 l_string|&quot;driver.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -5195,10 +5212,11 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Size of index buffer (VCN 0x%Lx) of directory &quot;
+l_string|&quot;Size of index buffer (VCN 0x%llx) of directory &quot;
 l_string|&quot;inode 0x%lx exceeds maximum size.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -5265,9 +5283,10 @@ id|ie-&gt;length
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;In index allocation, offset 0x%Lx.&quot;
+l_string|&quot;In index allocation, offset 0x%llx.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -5453,7 +5472,7 @@ id|rc
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;EOD, fpos 0x%Lx, returning 0.&quot;
+l_string|&quot;EOD, fpos 0x%llx, returning 0.&quot;
 comma
 id|fpos
 )paren
@@ -5462,7 +5481,7 @@ r_else
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;filldir returned %i, fpos 0x%Lx, returning 0.&quot;
+l_string|&quot;filldir returned %i, fpos 0x%llx, returning 0.&quot;
 comma
 id|rc
 comma

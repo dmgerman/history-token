@@ -1901,15 +1901,17 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Reading vcn = 0x%Lx, lcn = 0x%Lx.&quot;
+l_string|&quot;Reading vcn = 0x%llx, lcn = 0x%llx.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
 id|vcn
 comma
 (paren
+r_int
 r_int
 r_int
 )paren

@@ -187,7 +187,7 @@ c_func
 (paren
 id|ni-&gt;vol-&gt;sb
 comma
-l_string|&quot;Buffer I/O error, logical block %Lu.&quot;
+l_string|&quot;Buffer I/O error, logical block %llu.&quot;
 comma
 (paren
 r_int
@@ -426,7 +426,7 @@ c_func
 id|ni-&gt;vol-&gt;sb
 comma
 l_string|&quot;post_read_mst_fixup() failed, &quot;
-l_string|&quot;corrupt %s record 0x%Lx. Run chkdsk.&quot;
+l_string|&quot;corrupt %s record 0x%llx. Run chkdsk.&quot;
 comma
 id|ni-&gt;mft_no
 ques
@@ -436,6 +436,7 @@ suffix:colon
 l_string|&quot;mft&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -1056,16 +1057,18 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;vcn_to_lcn(vcn = 0x%Lx) failed &quot;
-l_string|&quot;with error code 0x%Lx%s.&quot;
+l_string|&quot;vcn_to_lcn(vcn = 0x%llx) failed &quot;
+l_string|&quot;with error code 0x%llx%s.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
 id|vcn
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -2388,16 +2391,18 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;vcn_to_lcn(vcn = 0x%Lx) failed &quot;
-l_string|&quot;with error code 0x%Lx%s.&quot;
+l_string|&quot;vcn_to_lcn(vcn = 0x%llx) failed &quot;
+l_string|&quot;with error code 0x%llx%s.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
 id|vcn
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -3350,7 +3355,7 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;BUG()! i_size (0x%Lx) doesn&squot;t match &quot;
+l_string|&quot;BUG()! i_size (0x%llx) doesn&squot;t match &quot;
 l_string|&quot;attr_len (0x%x). Aborting write.&quot;
 comma
 id|vi-&gt;i_size
@@ -3384,9 +3389,14 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;BUG()! attr_pos (0x%Lx) &gt; attr_len (0x%x)&quot;
-l_string|&quot;. Aborting write.&quot;
+l_string|&quot;BUG()! attr_pos (0x%llx) &gt; attr_len &quot;
+l_string|&quot;(0x%x). Aborting write.&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|attr_pos
 comma
 id|attr_len
@@ -4280,17 +4290,19 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;vcn_to_lcn(vcn = 0x%Lx) &quot;
+l_string|&quot;vcn_to_lcn(vcn = 0x%llx) &quot;
 l_string|&quot;failed with error code &quot;
-l_string|&quot;0x%Lx%s.&quot;
+l_string|&quot;0x%llx%s.&quot;
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
 id|vcn
 comma
 (paren
+r_int
 r_int
 r_int
 )paren
@@ -4300,7 +4312,8 @@ comma
 id|is_retry
 ques
 c_cond
-l_string|&quot; even after retrying&quot;
+l_string|&quot; even after &quot;
+l_string|&quot;retrying&quot;
 suffix:colon
 l_string|&quot;&quot;
 )paren
@@ -5729,7 +5742,7 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;BUG()! i_size (0x%Lx) doesn&squot;t match &quot;
+l_string|&quot;BUG()! i_size (0x%llx) doesn&squot;t match &quot;
 l_string|&quot;attr_len (0x%x). Aborting write.&quot;
 comma
 id|vi-&gt;i_size
@@ -5763,9 +5776,14 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;BUG()! attr_pos (0x%Lx) &gt; attr_len (0x%x)&quot;
-l_string|&quot;. Aborting write.&quot;
+l_string|&quot;BUG()! attr_pos (0x%llx) &gt; attr_len &quot;
+l_string|&quot;(0x%x). Aborting write.&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|attr_pos
 comma
 id|attr_len

@@ -2497,7 +2497,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;vol-&gt;nr_clusters = 0x%Lx&quot;
+l_string|&quot;vol-&gt;nr_clusters = 0x%llx&quot;
 comma
 (paren
 r_int
@@ -2540,10 +2540,15 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;Volume size (%LuTiB) is too large &quot;
-l_string|&quot;for this architecture. Maximim &quot;
+l_string|&quot;Volume size (%lluTiB) is too &quot;
+l_string|&quot;large for this architecture. Maximum &quot;
 l_string|&quot;supported is 2TiB. Sorry.&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|ll
 op_rshift
 (paren
@@ -2593,7 +2598,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;vol-&gt;mft_lcn = 0x%Lx&quot;
+l_string|&quot;vol-&gt;mft_lcn = 0x%llx&quot;
 comma
 (paren
 r_int
@@ -2638,7 +2643,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;vol-&gt;mftmirr_lcn = 0x%Lx&quot;
+l_string|&quot;vol-&gt;mftmirr_lcn = 0x%llx&quot;
 comma
 (paren
 r_int
@@ -2691,7 +2696,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;vol-&gt;serial_no = 0x%Lx&quot;
+l_string|&quot;vol-&gt;serial_no = 0x%llx&quot;
 comma
 (paren
 r_int
@@ -2796,7 +2801,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;vol-&gt;mft_zone_start = 0x%Lx&quot;
+l_string|&quot;vol-&gt;mft_zone_start = 0x%llx&quot;
 comma
 (paren
 r_int
@@ -2808,7 +2813,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;vol-&gt;mft_zone_end = 0x%Lx&quot;
+l_string|&quot;vol-&gt;mft_zone_end = 0x%llx&quot;
 comma
 (paren
 r_int
@@ -3815,7 +3820,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Read %Lu bytes from $UpCase (expected %u bytes).&quot;
+l_string|&quot;Read %lu bytes from $UpCase (expected %u bytes).&quot;
 comma
 id|ino-&gt;i_size
 comma
@@ -4642,6 +4647,8 @@ id|vol-&gt;minor_ver
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the inode for the logfile and empty it if this is a read-write&n;&t; * mount.&n;&t; */
+singleline_comment|// TODO: vol-&gt;logfile_ino = ;
+singleline_comment|// TODO: Cleanup for error case at end of function.
 id|tmp_ino
 op_assign
 id|ntfs_iget
@@ -5120,25 +5127,6 @@ op_amp
 id|vol-&gt;lcnbmp_lock
 )paren
 suffix:semicolon
-macro_line|#ifdef NTFS_RW
-r_if
-c_cond
-(paren
-id|vol-&gt;mftmirr_ino
-)paren
-(brace
-id|iput
-c_func
-(paren
-id|vol-&gt;mftmirr_ino
-)paren
-suffix:semicolon
-id|vol-&gt;mftmirr_ino
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-macro_line|#endif /* NTFS_RW */
 id|down_write
 c_func
 (paren
@@ -5163,6 +5151,42 @@ op_amp
 id|vol-&gt;mftbmp_lock
 )paren
 suffix:semicolon
+macro_line|#ifdef NTFS_RW
+r_if
+c_cond
+(paren
+id|vol-&gt;logfile_ino
+)paren
+(brace
+id|iput
+c_func
+(paren
+id|vol-&gt;logfile_ino
+)paren
+suffix:semicolon
+id|vol-&gt;logfile_ino
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|vol-&gt;mftmirr_ino
+)paren
+(brace
+id|iput
+c_func
+(paren
+id|vol-&gt;mftmirr_ino
+)paren
+suffix:semicolon
+id|vol-&gt;mftmirr_ino
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+macro_line|#endif /* NTFS_RW */
 id|iput
 c_func
 (paren
@@ -6145,6 +6169,7 @@ singleline_comment|//&t;&t;&t;&t;&t;   Called when i_count becomes
 singleline_comment|//&t;&t;&t;&t;&t;   0 and i_nlink is also 0. */
 singleline_comment|//.write_super&t;= NULL,&t;&t;&t;/* Flush dirty super block to
 singleline_comment|//&t;&t;&t;&t;&t;   disk. */
+singleline_comment|//.sync_fs&t;= NULL,&t;&t;&t;/* ? */
 singleline_comment|//.write_super_lockfs&t;= NULL,&t;&t;/* ? */
 singleline_comment|//.unlockfs&t;= NULL,&t;&t;&t;/* ? */
 macro_line|#endif /* NTFS_RW */
@@ -6385,6 +6410,14 @@ id|vol-&gt;mftbmp_lock
 suffix:semicolon
 macro_line|#ifdef NTFS_RW
 id|vol-&gt;mftmirr_ino
+op_assign
+l_int|NULL
+suffix:semicolon
+id|vol-&gt;mftmirr_size
+op_assign
+l_int|0
+suffix:semicolon
+id|vol-&gt;logfile_ino
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -6630,7 +6663,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Now load the metadata required for the page cache and our address&n;&t; * space operations to function. We do this by setting up a specialised&n;&t; * read_inode method and then just calling the normal iget() to obtain&n;&t; * the inode for $MFT which is sufficient to allow our normal inode&n;&t; * operations and associated address space operations to function.&n;&t; */
 multiline_comment|/*&n;&t; * Poison vol-&gt;mft_ino so we know whether iget() called into our&n;&t; * ntfs_read_inode_mount() method.&n;&t; */
 DECL|macro|OGIN
-mdefine_line|#define OGIN&t;((struct inode*)le32_to_cpu(0x4e49474f))&t;/* OGIN */
+mdefine_line|#define OGIN&t;((struct inode*)n2p(le32_to_cpu(0x4e49474f)))&t;/* OGIN */
 id|vol-&gt;mft_ino
 op_assign
 id|OGIN
