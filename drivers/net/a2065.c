@@ -941,6 +941,9 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* XXX shut up gcc warnings */
 macro_line|#ifdef TEST_HITS
+r_int
+id|i
+suffix:semicolon
 id|printk
 (paren
 l_string|&quot;[&quot;
