@@ -2010,6 +2010,12 @@ DECL|member|u
 )brace
 id|u
 suffix:semicolon
+DECL|member|route
+r_struct
+id|dst_entry
+op_star
+id|route
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Decapsulation state, used by the input to store data during&n; * decapsulation procedure, to be used later (during the policy&n; * check&n; */
