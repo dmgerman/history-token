@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/futex.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/audit.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -121,7 +122,6 @@ id|task_struct_cachep
 suffix:semicolon
 macro_line|#endif
 DECL|function|free_task
-r_static
 r_void
 id|free_task
 c_func
@@ -145,6 +145,13 @@ id|tsk
 )paren
 suffix:semicolon
 )brace
+DECL|variable|free_task
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_task
+)paren
+suffix:semicolon
 DECL|function|__put_task_struct
 r_void
 id|__put_task_struct
@@ -223,6 +230,16 @@ c_func
 id|tsk-&gt;group_info
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|profile_handoff_task
+c_func
+(paren
+id|tsk
+)paren
+)paren
 id|free_task
 c_func
 (paren

@@ -6573,24 +6573,6 @@ id|end
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Something will probably happen, so notify. */
-r_if
-c_cond
-(paren
-id|mpnt-&gt;vm_file
-op_logical_and
-(paren
-id|mpnt-&gt;vm_flags
-op_amp
-id|VM_EXEC
-)paren
-)paren
-id|profile_exec_unmap
-c_func
-(paren
-id|mm
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * If we need to split any vma, do it now to save pain later.&n;&t; *&n;&t; * Note: mremap&squot;s move_vma VM_ACCOUNT handling assumes a partially&n;&t; * unmapped vm_area_struct will remain in use: so lower split_vma&n;&t; * places tmp vma above, and higher split_vma places tmp vma below.&n;&t; */
 r_if
 c_cond
@@ -6758,6 +6740,12 @@ op_star
 id|mm
 op_assign
 id|current-&gt;mm
+suffix:semicolon
+id|profile_munmap
+c_func
+(paren
+id|addr
+)paren
 suffix:semicolon
 id|down_write
 c_func
@@ -7237,12 +7225,6 @@ r_int
 id|nr_accounted
 op_assign
 l_int|0
-suffix:semicolon
-id|profile_exit_mmap
-c_func
-(paren
-id|mm
-)paren
 suffix:semicolon
 id|lru_add_drain
 c_func

@@ -4,11 +4,12 @@ DECL|macro|OPROFILE_CPU_BUFFER_H
 mdefine_line|#define OPROFILE_CPU_BUFFER_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 r_struct
 id|task_struct
 suffix:semicolon
-multiline_comment|/* allocate a sample buffer for each CPU */
 r_int
 id|alloc_cpu_buffers
 c_func
@@ -18,6 +19,20 @@ r_void
 suffix:semicolon
 r_void
 id|free_cpu_buffers
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|start_cpu_timers
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|end_cpu_timers
 c_func
 (paren
 r_void
@@ -87,10 +102,19 @@ r_int
 r_int
 id|sample_lost_overflow
 suffix:semicolon
-DECL|member|sample_lost_task_exit
+DECL|member|cpu
 r_int
-r_int
-id|sample_lost_task_exit
+id|cpu
+suffix:semicolon
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
+DECL|member|work
+r_struct
+id|work_struct
+id|work
 suffix:semicolon
 DECL|variable|____cacheline_aligned
 )brace

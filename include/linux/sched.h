@@ -1709,6 +1709,17 @@ suffix:semicolon
 )brace
 r_extern
 r_void
+id|free_task
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|__put_task_struct
 c_func
 (paren

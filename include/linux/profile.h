@@ -65,14 +65,11 @@ DECL|enum|profile_type
 r_enum
 id|profile_type
 (brace
-DECL|enumerator|EXIT_TASK
-id|EXIT_TASK
+DECL|enumerator|PROFILE_TASK_EXIT
+id|PROFILE_TASK_EXIT
 comma
-DECL|enumerator|EXIT_MMAP
-id|EXIT_MMAP
-comma
-DECL|enumerator|EXEC_UNMAP
-id|EXEC_UNMAP
+DECL|enumerator|PROFILE_MUNMAP
+id|PROFILE_MUNMAP
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROFILING
@@ -87,7 +84,7 @@ id|mm_struct
 suffix:semicolon
 multiline_comment|/* task is in do_exit() */
 r_void
-id|profile_exit_task
+id|profile_task_exit
 c_func
 (paren
 r_struct
@@ -96,26 +93,45 @@ op_star
 id|task
 )paren
 suffix:semicolon
-multiline_comment|/* change of vma mappings */
-r_void
-id|profile_exec_unmap
+multiline_comment|/* task is dead, free task struct ? Returns 1 if&n; * the task was taken, 0 if the task should be freed.&n; */
+r_int
+id|profile_handoff_task
 c_func
 (paren
 r_struct
-id|mm_struct
+id|task_struct
 op_star
-id|mm
+id|task
 )paren
 suffix:semicolon
-multiline_comment|/* exit of all vmas for a task */
+multiline_comment|/* sys_munmap */
 r_void
-id|profile_exit_mmap
+id|profile_munmap
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
+r_int
+id|task_handoff_register
 c_func
 (paren
 r_struct
-id|mm_struct
+id|notifier_block
 op_star
-id|mm
+id|n
+)paren
+suffix:semicolon
+r_int
+id|task_handoff_unregister
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|n
 )paren
 suffix:semicolon
 r_int
@@ -179,6 +195,42 @@ id|regs
 )paren
 suffix:semicolon
 macro_line|#else
+DECL|function|task_handoff_register
+r_static
+r_inline
+r_int
+id|task_handoff_register
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|n
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+DECL|function|task_handoff_unregister
+r_static
+r_inline
+r_int
+id|task_handoff_unregister
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|n
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
 DECL|function|profile_event_register
 r_static
 r_inline
@@ -223,12 +275,12 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 )brace
-DECL|macro|profile_exit_task
-mdefine_line|#define profile_exit_task(a) do { } while (0)
-DECL|macro|profile_exec_unmap
-mdefine_line|#define profile_exec_unmap(a) do { } while (0)
-DECL|macro|profile_exit_mmap
-mdefine_line|#define profile_exit_mmap(a) do { } while (0)
+DECL|macro|profile_task_exit
+mdefine_line|#define profile_task_exit(a) do { } while (0)
+DECL|macro|profile_handoff_task
+mdefine_line|#define profile_handoff_task(a) (0)
+DECL|macro|profile_munmap
+mdefine_line|#define profile_munmap(a) do { } while (0)
 DECL|function|register_profile_notifier
 r_static
 r_inline

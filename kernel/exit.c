@@ -3027,6 +3027,12 @@ id|tsk
 op_assign
 id|current
 suffix:semicolon
+id|profile_task_exit
+c_func
+(paren
+id|tsk
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3125,12 +3131,6 @@ id|preempt_count
 c_func
 (paren
 )paren
-)paren
-suffix:semicolon
-id|profile_exit_task
-c_func
-(paren
-id|tsk
 )paren
 suffix:semicolon
 r_if
