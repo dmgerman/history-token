@@ -323,7 +323,7 @@ id|proto-&gt;rto_min
 suffix:semicolon
 id|asoc-&gt;overall_error_threshold
 op_assign
-l_int|0
+id|asoc-&gt;max_retrans
 suffix:semicolon
 id|asoc-&gt;overall_error_count
 op_assign
@@ -1224,19 +1224,6 @@ suffix:semicolon
 id|peer-&gt;error_threshold
 op_assign
 id|peer-&gt;max_retrans
-suffix:semicolon
-multiline_comment|/* Update the overall error threshold value of the association&n;&t; * taking the new peer&squot;s error threshold into account.&n;&t; */
-id|asoc-&gt;overall_error_threshold
-op_assign
-id|min
-c_func
-(paren
-id|asoc-&gt;overall_error_threshold
-op_plus
-id|peer-&gt;error_threshold
-comma
-id|asoc-&gt;max_retrans
-)paren
 suffix:semicolon
 multiline_comment|/* By default, enable heartbeat for peer address. */
 id|peer-&gt;hb_allowed
