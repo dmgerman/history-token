@@ -20,6 +20,16 @@ id|proc_dir_entry
 op_star
 id|proc_net_sctp
 suffix:semicolon
+DECL|variable|sctp_statistics
+r_struct
+id|sctp_mib
+id|sctp_statistics
+(braket
+id|NR_CPUS
+op_star
+l_int|2
+)braket
+suffix:semicolon
 multiline_comment|/* This is the global socket data structure used for responding to&n; * the Out-of-the-blue (OOTB) packets.  A control sock will be created&n; * for this socket at the initialization time.&n; */
 DECL|variable|sctp_ctl_socket
 r_static
