@@ -499,7 +499,7 @@ op_assign
 id|tsk-&gt;mm
 suffix:semicolon
 multiline_comment|/* Not an IO address, so reenable interrupts */
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren

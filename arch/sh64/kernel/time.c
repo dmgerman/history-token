@@ -1382,7 +1382,7 @@ id|__asm__
 l_string|&quot;r3&quot;
 )paren
 suffix:semicolon
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -1456,7 +1456,7 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
