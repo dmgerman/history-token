@@ -4802,7 +4802,7 @@ comma
 r_int
 id|port1
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 suffix:semicolon
@@ -4815,7 +4815,7 @@ id|udev
 comma
 id|udev-&gt;bus-&gt;otg_port
 comma
-id|PM_SUSPEND_MEM
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 r_if
@@ -5788,7 +5788,7 @@ comma
 r_int
 id|port1
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -6082,7 +6082,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_suspend_device - suspend a usb device&n; * @udev: device that&squot;s no longer in active use&n; * @state: PM_SUSPEND_MEM to suspend&n; * Context: must be able to sleep; device not locked&n; *&n; * Suspends a USB device that isn&squot;t in active use, conserving power.&n; * Devices may wake out of a suspend, if anything important happens,&n; * using the remote wakeup mechanism.  They may also be taken out of&n; * suspend by the host, using usb_resume_device().  It&squot;s also routine&n; * to disconnect devices while they are suspended.&n; *&n; * Suspending OTG devices may trigger HNP, if that&squot;s been enabled&n; * between a pair of dual-role devices.  That will change roles, such&n; * as from A-Host to A-Peripheral or from B-Host back to B-Peripheral.&n; *&n; * Returns 0 on success, else negative errno.&n; */
+multiline_comment|/**&n; * usb_suspend_device - suspend a usb device&n; * @udev: device that&squot;s no longer in active use&n; * @state: PMSG_SUSPEND to suspend&n; * Context: must be able to sleep; device not locked&n; *&n; * Suspends a USB device that isn&squot;t in active use, conserving power.&n; * Devices may wake out of a suspend, if anything important happens,&n; * using the remote wakeup mechanism.  They may also be taken out of&n; * suspend by the host, using usb_resume_device().  It&squot;s also routine&n; * to disconnect devices while they are suspended.&n; *&n; * Suspending OTG devices may trigger HNP, if that&squot;s been enabled&n; * between a pair of dual-role devices.  That will change roles, such&n; * as from A-Host to A-Peripheral or from B-Host back to B-Peripheral.&n; *&n; * Returns 0 on success, else negative errno.&n; */
 DECL|function|usb_suspend_device
 r_int
 id|usb_suspend_device
@@ -6187,7 +6187,7 @@ id|USB_STATE_ADDRESS
 suffix:semicolon
 id|udev-&gt;dev.power.power_state
 op_assign
-id|PM_SUSPEND_ON
+id|PMSG_ON
 suffix:semicolon
 multiline_comment|/* 10.5.4.5 says be sure devices in the tree are still there.&n; &t; * For now let&squot;s assume the device didn&squot;t go crazy on resume,&n;&t; * and device drivers will know about any resume quirks.&n;&t; */
 id|status
@@ -6926,7 +6926,7 @@ id|usb_interface
 op_star
 id|intf
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -7281,7 +7281,7 @@ suffix:semicolon
 )brace
 id|intf-&gt;dev.power.power_state
 op_assign
-id|PM_SUSPEND_ON
+id|PMSG_ON
 suffix:semicolon
 id|hub_activate
 c_func
