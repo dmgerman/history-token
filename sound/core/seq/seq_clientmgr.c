@@ -1736,6 +1736,10 @@ id|cell-&gt;event
 comma
 id|count
 comma
+(paren
+r_char
+op_star
+)paren
 id|buf
 comma
 l_int|0
@@ -4129,7 +4133,7 @@ multiline_comment|/* increment data length */
 )brace
 r_else
 (brace
-macro_line|#if defined(CONFIG_SND_BIT32_EMUL) || defined(CONFIG_SND_BIT32_EMUL_MODULE)
+macro_line|#ifdef CONFIG_COMPAT
 r_if
 c_cond
 (paren
@@ -10058,6 +10062,11 @@ id|client
 comma
 id|cmd
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|arg
 )paren
 suffix:semicolon

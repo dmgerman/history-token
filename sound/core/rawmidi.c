@@ -4566,6 +4566,11 @@ c_cond
 id|copy_to_user
 c_func
 (paren
+(paren
+r_char
+id|__user
+op_star
+)paren
 id|buf
 op_plus
 id|result
@@ -4933,6 +4938,11 @@ c_func
 (paren
 id|substream
 comma
+(paren
+r_int
+r_char
+op_star
+)paren
 id|buf
 comma
 id|count
@@ -5641,6 +5651,11 @@ id|runtime-&gt;buffer
 op_plus
 id|runtime-&gt;appl_ptr
 comma
+(paren
+r_char
+id|__user
+op_star
+)paren
 id|buf
 comma
 id|count1
@@ -6034,6 +6049,11 @@ c_func
 (paren
 id|substream
 comma
+(paren
+r_int
+r_char
+op_star
+)paren
 id|buf
 comma
 id|count
