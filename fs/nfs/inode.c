@@ -253,9 +253,17 @@ comma
 op_amp
 id|nfs_version2
 comma
-macro_line|#ifdef CONFIG_NFS_V3
+macro_line|#if defined(CONFIG_NFS_V3)
 op_amp
 id|nfs_version3
+comma
+macro_line|#elif defined(CONFIG_NFS_V4)
+l_int|NULL
+comma
+macro_line|#endif
+macro_line|#if defined(CONFIG_NFS_V4)
+op_amp
+id|nfs_version4
 comma
 macro_line|#endif
 )brace

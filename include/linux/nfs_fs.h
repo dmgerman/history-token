@@ -1536,6 +1536,59 @@ mdefine_line|#define nfs_wait_event(clnt, wq, condition)&t;&t;&t;&t;&bslash;&n;(
 DECL|macro|NFS_JUKEBOX_RETRY_TIME
 mdefine_line|#define NFS_JUKEBOX_RETRY_TIME (5 * HZ)
 macro_line|#ifdef CONFIG_NFS_V4
+DECL|struct|nfs4_client
+r_struct
+id|nfs4_client
+(brace
+DECL|member|cl_count
+id|atomic_t
+id|cl_count
+suffix:semicolon
+multiline_comment|/* refcount */
+DECL|member|cl_clientid
+id|u64
+id|cl_clientid
+suffix:semicolon
+multiline_comment|/* constant */
+DECL|member|cl_confirm
+id|nfs4_verifier
+id|cl_confirm
+suffix:semicolon
+multiline_comment|/*&n;         * Starts a list of lockowners, linked through lo_list.&n;&t; */
+DECL|member|cl_lockowners
+r_struct
+id|list_head
+id|cl_lockowners
+suffix:semicolon
+multiline_comment|/* protected by state_spinlock */
+)brace
+suffix:semicolon
+multiline_comment|/* nfs4proc.c */
+r_extern
+r_int
+id|nfs4_proc_renew
+c_func
+(paren
+r_struct
+id|nfs_server
+op_star
+id|server
+)paren
+suffix:semicolon
+multiline_comment|/* nfs4renewd.c */
+r_extern
+r_int
+id|nfs4_init_renewd
+c_func
+(paren
+r_struct
+id|nfs_server
+op_star
+id|server
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_NFS_V4 */
+macro_line|#ifdef CONFIG_NFS_V4
 r_extern
 r_struct
 id|nfs4_client
