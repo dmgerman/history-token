@@ -96,11 +96,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-DECL|variable|neigh_glbl_allocs
-r_static
-r_int
-id|neigh_glbl_allocs
-suffix:semicolon
 DECL|variable|neigh_tables
 r_static
 r_struct
@@ -945,9 +940,6 @@ id|tbl
 comma
 id|allocs
 )paren
-suffix:semicolon
-id|neigh_glbl_allocs
-op_increment
 suffix:semicolon
 id|n-&gt;tbl
 op_assign
@@ -2687,9 +2679,6 @@ l_string|&quot;neigh %p is destroyed.&bslash;n&quot;
 comma
 id|neigh
 )paren
-suffix:semicolon
-id|neigh_glbl_allocs
-op_decrement
 suffix:semicolon
 id|atomic_dec
 c_func
