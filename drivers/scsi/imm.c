@@ -118,7 +118,7 @@ DECL|typedef|imm_struct
 id|imm_struct
 suffix:semicolon
 DECL|macro|IMM_EMPTY
-mdefine_line|#define IMM_EMPTY &bslash;&n;&t;.base&t;&t;= -1,&t;&t;&bslash;&n;&t;.mode&t;&t;= IMM_AUTODETECT,&t;&bslash;&n;&t;.host&t;&t;= -1,&t;&t;&bslash;&n;}
+mdefine_line|#define IMM_EMPTY &bslash;&n;{&t;.base&t;&t;= -1,&t;&t;&bslash;&n;&t;.mode&t;&t;= IMM_AUTODETECT,&t;&bslash;&n;&t;.host&t;&t;= -1,&t;&t;&bslash;&n;}
 macro_line|#include &quot;imm.h&quot;
 DECL|macro|NO_HOSTS
 mdefine_line|#define NO_HOSTS 4
