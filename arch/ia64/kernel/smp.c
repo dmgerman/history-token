@@ -629,7 +629,7 @@ r_void
 op_star
 )paren
 )paren
-id|__flush_tlb_all
+id|local_flush_tlb_all
 comma
 l_int|0
 comma
@@ -638,7 +638,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|__flush_tlb_all
+id|local_flush_tlb_all
 c_func
 (paren
 )paren

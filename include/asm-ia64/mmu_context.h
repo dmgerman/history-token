@@ -97,7 +97,7 @@ r_void
 (brace
 r_extern
 r_void
-id|__flush_tlb_all
+id|local_flush_tlb_all
 (paren
 r_void
 )paren
@@ -116,7 +116,7 @@ id|ia64_need_tlb_flush
 )paren
 )paren
 (brace
-id|__flush_tlb_all
+id|local_flush_tlb_all
 c_func
 (paren
 )paren

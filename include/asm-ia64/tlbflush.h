@@ -10,7 +10,7 @@ multiline_comment|/*&n; * Now for some TLB flushing routines.  This is the kind 
 multiline_comment|/*&n; * Flush everything (kernel mapping may also have changed due to&n; * vmalloc/vfree).&n; */
 r_extern
 r_void
-id|__flush_tlb_all
+id|local_flush_tlb_all
 (paren
 r_void
 )paren
@@ -27,7 +27,7 @@ DECL|macro|flush_tlb_all
 macro_line|# define flush_tlb_all()&t;smp_flush_tlb_all()
 macro_line|#else
 DECL|macro|flush_tlb_all
-macro_line|# define flush_tlb_all()&t;__flush_tlb_all()
+macro_line|# define flush_tlb_all()&t;local_flush_tlb_all()
 macro_line|#endif
 multiline_comment|/*&n; * Flush a specified user mapping&n; */
 r_static
