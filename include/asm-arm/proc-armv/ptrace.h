@@ -38,6 +38,8 @@ DECL|macro|PSR_I_BIT
 mdefine_line|#define PSR_I_BIT&t;0x00000080
 DECL|macro|PSR_J_BIT
 mdefine_line|#define PSR_J_BIT&t;0x01000000
+DECL|macro|PSR_Q_BIT
+mdefine_line|#define PSR_Q_BIT&t;0x08000000
 DECL|macro|PSR_V_BIT
 mdefine_line|#define PSR_V_BIT&t;0x10000000
 DECL|macro|PSR_C_BIT
@@ -48,6 +50,15 @@ DECL|macro|PSR_N_BIT
 mdefine_line|#define PSR_N_BIT&t;0x80000000
 DECL|macro|PCMASK
 mdefine_line|#define PCMASK&t;&t;0
+multiline_comment|/*&n; * Groups of PSR bits&n; */
+DECL|macro|PSR_f
+mdefine_line|#define PSR_f&t;&t;0xff000000&t;/* Flags&t;&t;*/
+DECL|macro|PSR_s
+mdefine_line|#define PSR_s&t;&t;0x00ff0000&t;/* Status&t;&t;*/
+DECL|macro|PSR_x
+mdefine_line|#define PSR_x&t;&t;0x0000ff00&t;/* Extension&t;&t;*/
+DECL|macro|PSR_c
+mdefine_line|#define PSR_c&t;&t;0x000000ff&t;/* Control&t;&t;*/
 multiline_comment|/*&n; * CR1 bits&n; */
 DECL|macro|CR1_M
 mdefine_line|#define CR1_M&t;&t;0x00000001&t;/* MMU&t;&t;&t;*/

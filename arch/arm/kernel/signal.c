@@ -1532,6 +1532,9 @@ r_int
 id|cpsr
 op_assign
 id|regs-&gt;ARM_cpsr
+op_amp
+op_complement
+id|PSR_f
 suffix:semicolon
 multiline_comment|/*&n;&t; * Maybe we need to deliver a 32-bit signal to a 26-bit task.&n;&t; */
 r_if
