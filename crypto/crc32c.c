@@ -139,6 +139,7 @@ op_star
 id|data
 comma
 r_int
+r_int
 id|length
 )paren
 (brace
@@ -161,6 +162,9 @@ id|mctx-&gt;crc
 comma
 id|data
 comma
+(paren
+r_int
+)paren
 id|length
 )paren
 suffix:semicolon

@@ -2035,12 +2035,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|do_basic_setup
+multiline_comment|/*&n;&t; * Do this before initcalls, because some drivers want to access&n;&t; * firmware files.&n;&t; */
+id|populate_rootfs
 c_func
 (paren
 )paren
 suffix:semicolon
-id|populate_rootfs
+id|do_basic_setup
 c_func
 (paren
 )paren

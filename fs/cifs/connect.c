@@ -4700,7 +4700,7 @@ l_int|NULL
 (brace
 id|rc
 op_assign
-id|sock_create
+id|sock_create_kern
 c_func
 (paren
 id|PF_INET
@@ -5202,7 +5202,7 @@ l_int|NULL
 (brace
 id|rc
 op_assign
-id|sock_create
+id|sock_create_kern
 c_func
 (paren
 id|PF_INET6

@@ -3643,13 +3643,7 @@ op_assign
 id|__u8
 op_star
 )paren
-id|cookie
-op_plus
-r_sizeof
-(paren
-r_struct
-id|sctp_cookie
-)paren
+id|cookie-&gt;peer_init
 op_plus
 id|var_size2
 suffix:semicolon

@@ -3315,22 +3315,19 @@ id|NUD_REACHABLE
 suffix:semicolon
 r_int
 id|override
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* If several different ARP replies follows back-to-back,&n;&t;&t;   use the FIRST one. It is possible, if several proxy&n;&t;&t;   agents are active. Taking the first reply prevents&n;&t;&t;   arp trashing and chooses the fastest router.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|jiffies
-op_minus
-id|n-&gt;updated
-op_ge
-id|n-&gt;parms-&gt;locktime
-)paren
 id|override
 op_assign
-l_int|1
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|n-&gt;updated
+op_plus
+id|n-&gt;parms-&gt;locktime
+)paren
 suffix:semicolon
 multiline_comment|/* Broadcast replies and request packets&n;&t;&t;   do not assert neighbour reachability.&n;&t;&t; */
 r_if

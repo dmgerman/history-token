@@ -313,7 +313,7 @@ suffix:semicolon
 multiline_comment|/* create a UDP socket to be my actual transport endpoint */
 id|ret
 op_assign
-id|sock_create
+id|sock_create_kern
 c_func
 (paren
 id|PF_INET
