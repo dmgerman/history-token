@@ -3206,19 +3206,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|drive-&gt;keep_settings
-op_logical_and
-op_logical_neg
-id|drive-&gt;using_dma
-)paren
-id|drive-&gt;mult_req
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|drive-&gt;mult_req
 op_ne
 id|drive-&gt;mult_count
@@ -5978,7 +5965,8 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 )brace
-id|drive-&gt;no_io_32bit
+multiline_comment|/* FIXME: Nowadays there are many chipsets out there which *require* 32&n;&t; * bit IO. Those will most propably not work properly with drives not&n;&t; * supporting this. But right now we don&squot;t do anything about this. We&n;&t; * dont&squot; even *warn* the user!&n;&t; */
+id|drive-&gt;channel-&gt;no_io_32bit
 op_assign
 id|id-&gt;dword_io
 ques

@@ -1483,6 +1483,34 @@ r_else
 r_if
 c_cond
 (paren
+id|sense_key
+op_eq
+id|MEDIUM_ERROR
+)paren
+(brace
+multiline_comment|/* No point in re-trying a zillion times on a bad&n;&t;&t;&t; * sector.  The error is not correctable at all.&n;&t;&t;&t; */
+id|ide_dump_status
+(paren
+id|drive
+comma
+l_string|&quot;media error (bad sector)&quot;
+comma
+id|stat
+)paren
+suffix:semicolon
+id|cdrom_end_request
+c_func
+(paren
+id|drive
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
 (paren
 id|err
 op_amp

@@ -565,8 +565,6 @@ DECL|macro|HDIO_GET_QDMA
 mdefine_line|#define HDIO_GET_QDMA&t;&t;0x0305&t;/* get use-qdma flag */
 DECL|macro|HDIO_OBSOLETE_IDENTITY
 mdefine_line|#define HDIO_OBSOLETE_IDENTITY&t;0x0307&t;/* OBSOLETE, DO NOT USE: returns 142 bytes */
-DECL|macro|HDIO_GET_KEEPSETTINGS
-mdefine_line|#define HDIO_GET_KEEPSETTINGS&t;0x0308&t;/* get keep-settings-on-reset flag */
 DECL|macro|HDIO_GET_32BIT
 mdefine_line|#define HDIO_GET_32BIT&t;&t;0x0309&t;/* get current io_32bit setting */
 DECL|macro|HDIO_GET_NOWERR
@@ -598,8 +596,6 @@ DECL|macro|HDIO_SET_MULTCOUNT
 mdefine_line|#define HDIO_SET_MULTCOUNT&t;0x0321&t;/* change IDE blockmode */
 DECL|macro|HDIO_SET_UNMASKINTR
 mdefine_line|#define HDIO_SET_UNMASKINTR&t;0x0322&t;/* permit other irqs during I/O */
-DECL|macro|HDIO_SET_KEEPSETTINGS
-mdefine_line|#define HDIO_SET_KEEPSETTINGS&t;0x0323&t;/* keep ioctl settings on reset */
 DECL|macro|HDIO_SET_32BIT
 mdefine_line|#define HDIO_SET_32BIT&t;&t;0x0324&t;/* change io_32bit flags */
 DECL|macro|HDIO_SET_NOWERR

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/radix-tree.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 multiline_comment|/*&n; * Radix tree node definition.&n; */
 DECL|macro|RADIX_TREE_MAP_SHIFT
 mdefine_line|#define RADIX_TREE_MAP_SHIFT  7
