@@ -103,12 +103,14 @@ id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 DECL|variable|ide_scan_direction
 r_static
 r_int
 id|ide_scan_direction
 suffix:semicolon
 multiline_comment|/* THIS was formerly 2.2.x pci=reverse */
+macro_line|#endif
 macro_line|#ifdef CONFIG_IDEDMA_AUTO
 DECL|variable|noautodma
 r_int
