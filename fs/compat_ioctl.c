@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -1838,6 +1839,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NET
 DECL|function|do_siocgstamp
 r_static
 r_int
@@ -2088,7 +2090,6 @@ id|ifcbuf
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET
 DECL|function|dev_ifname32
 r_static
 r_int
@@ -2214,7 +2215,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|dev_ifconf
 r_static
 r_int
@@ -4135,6 +4135,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|struct|hd_geometry32
 r_struct
 id|hd_geometry32
@@ -10010,9 +10011,10 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-DECL|function|ret_einval
 r_static
+id|__attribute_used__
 r_int
+DECL|function|ret_einval
 id|ret_einval
 c_func
 (paren
@@ -16993,7 +16995,6 @@ id|SIOCGIFNAME
 comma
 id|dev_ifname32
 )paren
-macro_line|#endif
 id|HANDLE_IOCTL
 c_func
 (paren
@@ -17289,6 +17290,7 @@ id|SIOCGSTAMP
 comma
 id|do_siocgstamp
 )paren
+macro_line|#endif
 id|HANDLE_IOCTL
 c_func
 (paren

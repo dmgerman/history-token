@@ -2583,12 +2583,6 @@ r_struct
 id|packet_opt
 op_star
 id|po
-op_assign
-id|pkt_sk
-c_func
-(paren
-id|sk
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2598,6 +2592,14 @@ id|sk
 )paren
 r_return
 l_int|0
+suffix:semicolon
+id|po
+op_assign
+id|pkt_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|write_lock_bh
 c_func

@@ -51,6 +51,15 @@ DECL|macro|MMC_RSP_CRC
 mdefine_line|#define MMC_RSP_CRC&t;(1 &lt;&lt; 3)&t;&t;/* expect valid crc */
 DECL|macro|MMC_RSP_BUSY
 mdefine_line|#define MMC_RSP_BUSY&t;(1 &lt;&lt; 4)&t;&t;/* card may send busy */
+multiline_comment|/*&n; * These are the response types, and correspond to valid bit&n; * patterns of the above flags.  One additional valid pattern&n; * is all zeros, which means we don&squot;t expect a response.&n; */
+DECL|macro|MMC_RSP_R1
+mdefine_line|#define MMC_RSP_R1&t;(MMC_RSP_SHORT|MMC_RSP_CRC)
+DECL|macro|MMC_RSP_R1B
+mdefine_line|#define MMC_RSP_R1B&t;(MMC_RSP_SHORT|MMC_RSP_CRC|MMC_RSP_BUSY)
+DECL|macro|MMC_RSP_R2
+mdefine_line|#define MMC_RSP_R2&t;(MMC_RSP_LONG|MMC_RSP_CRC)
+DECL|macro|MMC_RSP_R3
+mdefine_line|#define MMC_RSP_R3&t;(MMC_RSP_SHORT)
 DECL|member|retries
 r_int
 r_int

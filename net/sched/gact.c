@@ -188,6 +188,7 @@ id|parm
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef CONFIG_GACT_PROB
 r_struct
 id|tc_gact_p
 op_star
@@ -195,6 +196,7 @@ id|p_parm
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
 r_struct
 id|tcf_gact
 op_star
@@ -661,10 +663,12 @@ r_struct
 id|tc_gact
 id|opt
 suffix:semicolon
+macro_line|#ifdef CONFIG_GACT_PROB
 r_struct
 id|tc_gact_p
 id|p_opt
 suffix:semicolon
+macro_line|#endif
 r_struct
 id|tcf_gact
 op_star

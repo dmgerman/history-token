@@ -3500,10 +3500,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|HARD_TX_LOCK_BH
-mdefine_line|#define HARD_TX_LOCK_BH(dev, cpu) {&t;&t;&t;&bslash;&n;&t;if ((dev-&gt;features &amp; NETIF_F_LLTX) == 0) {&t;&bslash;&n;&t;&t;spin_lock_bh(&amp;dev-&gt;xmit_lock);&t;&t;&bslash;&n;&t;&t;dev-&gt;xmit_lock_owner = cpu;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;}
-DECL|macro|HARD_TX_UNLOCK_BH
-mdefine_line|#define HARD_TX_UNLOCK_BH(dev) {&t;&t;&t;&bslash;&n;&t;if ((dev-&gt;features &amp; NETIF_F_LLTX) == 0) {&t;&bslash;&n;&t;&t;dev-&gt;xmit_lock_owner = -1;&t;&t;&bslash;&n;&t;&t;spin_unlock_bh(&amp;dev-&gt;xmit_lock);&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;}
+DECL|macro|HARD_TX_LOCK
+mdefine_line|#define HARD_TX_LOCK(dev, cpu) {&t;&t;&t;&bslash;&n;&t;if ((dev-&gt;features &amp; NETIF_F_LLTX) == 0) {&t;&bslash;&n;&t;&t;spin_lock(&amp;dev-&gt;xmit_lock);&t;&t;&bslash;&n;&t;&t;dev-&gt;xmit_lock_owner = cpu;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;}
+DECL|macro|HARD_TX_UNLOCK
+mdefine_line|#define HARD_TX_UNLOCK(dev) {&t;&t;&t;&t;&bslash;&n;&t;if ((dev-&gt;features &amp; NETIF_F_LLTX) == 0) {&t;&bslash;&n;&t;&t;dev-&gt;xmit_lock_owner = -1;&t;&t;&bslash;&n;&t;&t;spin_unlock(&amp;dev-&gt;xmit_lock);&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|function|qdisc_run
 r_static
 r_inline
@@ -3690,7 +3690,8 @@ l_int|0
 r_goto
 id|out_kfree_skb
 suffix:semicolon
-id|rcu_read_lock
+multiline_comment|/* Disable soft irqs for various locks below. Also &n;&t; * stops preemption for RCU. &n;&t; */
+id|local_bh_disable
 c_func
 (paren
 )paren
@@ -3723,7 +3724,7 @@ id|q-&gt;enqueue
 )paren
 (brace
 multiline_comment|/* Grab device queue */
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -3748,16 +3749,11 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|dev-&gt;queue_lock
-)paren
-suffix:semicolon
-id|rcu_read_unlock
-c_func
-(paren
 )paren
 suffix:semicolon
 id|rc
@@ -3775,11 +3771,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|rcu_read_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* The device has no queue. Common case for software devices:&n;&t;   loopback, all the sorts of tunnels...&n;&n;&t;   Really, it is unlikely that xmit_lock protection is necessary here.&n;&t;   (f.e. loopback and IP tunnels are clean ignoring statistics&n;&t;   counters.)&n;&t;   However, it is possible, that they rely on protection&n;&t;   made by us here.&n;&n;&t;   Check this and shot the lock. It is not prone from deadlocks.&n;&t;   Either shot noqueue qdisc, it is even simpler 8)&n;&t; */
 r_if
 c_cond
@@ -3792,11 +3783,12 @@ id|IFF_UP
 r_int
 id|cpu
 op_assign
-id|get_cpu
+id|smp_processor_id
 c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* ok because BHs are off */
 r_if
 c_cond
 (paren
@@ -3805,17 +3797,12 @@ op_ne
 id|cpu
 )paren
 (brace
-id|HARD_TX_LOCK_BH
+id|HARD_TX_LOCK
 c_func
 (paren
 id|dev
 comma
 id|cpu
-)paren
-suffix:semicolon
-id|put_cpu
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -3861,7 +3848,7 @@ id|dev
 )paren
 )paren
 (brace
-id|HARD_TX_UNLOCK_BH
+id|HARD_TX_UNLOCK
 c_func
 (paren
 id|dev
@@ -3872,7 +3859,7 @@ id|out
 suffix:semicolon
 )brace
 )brace
-id|HARD_TX_UNLOCK_BH
+id|HARD_TX_UNLOCK
 c_func
 (paren
 id|dev
@@ -3902,11 +3889,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|put_cpu
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Recursion is detected! It is possible,&n;&t;&t;&t; * unfortunately */
 r_if
 c_cond
@@ -3945,6 +3927,11 @@ id|skb
 suffix:semicolon
 id|out
 suffix:colon
+id|local_bh_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon

@@ -90,11 +90,6 @@ op_star
 id|sctp_bucket_cachep
 suffix:semicolon
 r_extern
-r_struct
-id|net_proto_family
-id|inet_family_ops
-suffix:semicolon
-r_extern
 r_int
 id|sctp_snmp_proc_init
 c_func

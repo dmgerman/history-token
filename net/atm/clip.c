@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;net/route.h&gt; /* for struct rtable and routing */
 macro_line|#include &lt;net/icmp.h&gt; /* icmp_send */
 macro_line|#include &lt;asm/param.h&gt; /* for HZ */
@@ -1487,8 +1488,11 @@ r_struct
 id|in_device
 op_star
 id|in_dev
-op_assign
-id|dev-&gt;ip_ptr
+suffix:semicolon
+r_struct
+id|neigh_parms
+op_star
+id|parms
 suffix:semicolon
 id|DPRINTK
 c_func
@@ -1499,16 +1503,6 @@ id|neigh
 comma
 id|entry
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|in_dev
-)paren
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 id|neigh-&gt;type
 op_assign
@@ -1529,14 +1523,62 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|in_dev
+op_assign
+id|rcu_dereference
+c_func
+(paren
+id|__in_dev_get
+c_func
+(paren
+id|dev
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|in_dev-&gt;arp_parms
+op_logical_neg
+id|in_dev
 )paren
-id|neigh-&gt;parms
+(brace
+id|rcu_read_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+id|parms
 op_assign
 id|in_dev-&gt;arp_parms
+suffix:semicolon
+id|__neigh_parms_put
+c_func
+(paren
+id|neigh-&gt;parms
+)paren
+suffix:semicolon
+id|neigh-&gt;parms
+op_assign
+id|neigh_parms_clone
+c_func
+(paren
+id|parms
+)paren
+suffix:semicolon
+id|rcu_read_unlock
+c_func
+(paren
+)paren
 suffix:semicolon
 id|neigh-&gt;ops
 op_assign

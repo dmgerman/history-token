@@ -2805,9 +2805,23 @@ r_void
 (brace
 r_int
 r_int
+id|limit
+suffix:semicolon
+r_int
+r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t; * Emergency stacks must be under 256MB, we cannot afford to take&n;&t; * SLB misses on them. The ABI also requires them to be 128-byte&n;&t; * aligned.&n;&t; */
+multiline_comment|/*&n;&t; * Emergency stacks must be under 256MB, we cannot afford to take&n;&t; * SLB misses on them. The ABI also requires them to be 128-byte&n;&t; * aligned.&n;&t; *&n;&t; * Since we use these as temporary stacks during secondary CPU&n;&t; * bringup, we need to get at them in real mode. This means they&n;&t; * must also be within the RMO region.&n;&t; */
+id|limit
+op_assign
+id|min
+c_func
+(paren
+l_int|0x10000000UL
+comma
+id|lmb.rmo_size
+)paren
+suffix:semicolon
 id|for_each_cpu
 c_func
 (paren
@@ -2830,7 +2844,7 @@ id|PAGE_SIZE
 comma
 l_int|128
 comma
-l_int|0x10000000
+id|limit
 )paren
 )paren
 op_plus

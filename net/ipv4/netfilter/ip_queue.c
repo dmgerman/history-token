@@ -2471,6 +2471,7 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 r_static
 r_int
 DECL|function|ipq_get_info
@@ -2572,6 +2573,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PROC_FS */
 r_static
 r_int
 DECL|function|init_or_cleanup
