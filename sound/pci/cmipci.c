@@ -13093,7 +13093,7 @@ id|ports
 id|i
 )braket
 comma
-l_int|8
+l_int|1
 comma
 l_string|&quot;CMIPCI gameport&quot;
 )paren
@@ -13119,7 +13119,7 @@ id|joystick_port
 id|dev
 )braket
 comma
-l_int|8
+l_int|1
 comma
 l_string|&quot;CMIPCI gameport&quot;
 )paren
