@@ -924,7 +924,7 @@ op_eq
 id|RH_CLEAN
 )paren
 (brace
-id|spin_lock_irq
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -941,7 +941,7 @@ op_amp
 id|rh-&gt;clean_regions
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock
 c_func
 (paren
 op_amp
