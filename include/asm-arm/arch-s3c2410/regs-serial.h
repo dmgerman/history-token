@@ -119,6 +119,10 @@ DECL|macro|S3C2410_UFCON_RESETRX
 mdefine_line|#define S3C2410_UFCON_RESETRX&t;  (1&lt;&lt;1)
 DECL|macro|S3C2410_UFCON_DEFAULT
 mdefine_line|#define S3C2410_UFCON_DEFAULT&t;  (S3C2410_UFCON_FIFOMODE | &bslash;&n;&t;&t;&t;&t;   S3C2410_UFCON_TXTRIG0  | &bslash;&n;&t;&t;&t;&t;   S3C2410_UFCON_RXTRIG8 )
+DECL|macro|S3C2410_UMCOM_AFC
+mdefine_line|#define&t;S3C2410_UMCOM_AFC&t;  (1&lt;&lt;4)
+DECL|macro|S3C2410_UMCOM_RTS_LOW
+mdefine_line|#define&t;S3C2410_UMCOM_RTS_LOW&t;  (1&lt;&lt;0)
 DECL|macro|S3C2410_UFSTAT_TXFULL
 mdefine_line|#define S3C2410_UFSTAT_TXFULL&t;  (1&lt;&lt;9)
 DECL|macro|S3C2410_UFSTAT_RXFULL

@@ -1113,6 +1113,10 @@ id|err
 )paren
 suffix:semicolon
 )brace
+id|i
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Fall back to interpreting status bits */
 r_while
 c_loop
