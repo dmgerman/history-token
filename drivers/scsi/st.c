@@ -20102,7 +20102,7 @@ c_func
 (paren
 id|MAJOR_NR
 comma
-id|i
+id|dev_num
 op_plus
 (paren
 id|mode
@@ -20162,7 +20162,7 @@ id|DEVFS_FL_DEFAULT
 comma
 id|MAJOR_NR
 comma
-id|i
+id|dev_num
 op_plus
 (paren
 id|mode
@@ -20268,7 +20268,7 @@ c_func
 (paren
 id|MAJOR_NR
 comma
-id|i
+id|dev_num
 op_plus
 (paren
 id|mode
@@ -20330,7 +20330,7 @@ id|DEVFS_FL_DEFAULT
 comma
 id|MAJOR_NR
 comma
-id|i
+id|dev_num
 op_plus
 (paren
 id|mode
