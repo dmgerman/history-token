@@ -45,9 +45,8 @@ mdefine_line|#define cpu_set_pte&t;&t;&t;__cpu_fn(CPU_NAME,_set_pte)
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-multiline_comment|/* forward declare task_struct */
 r_struct
-id|task_struct
+id|mm_struct
 suffix:semicolon
 multiline_comment|/* declare all the functions as extern */
 r_extern
@@ -197,6 +196,11 @@ c_func
 r_int
 r_int
 id|pgd_phys
+comma
+r_struct
+id|mm_struct
+op_star
+id|mm
 )paren
 suffix:semicolon
 r_extern
@@ -237,7 +241,7 @@ id|addr
 )paren
 suffix:semicolon
 DECL|macro|cpu_switch_mm
-mdefine_line|#define cpu_switch_mm(pgd,tsk) cpu_set_pgd(__virt_to_phys((unsigned long)(pgd)))
+mdefine_line|#define cpu_switch_mm(pgd,mm) cpu_set_pgd(__virt_to_phys((unsigned long)(pgd)),mm)
 DECL|macro|cpu_get_pgd
 mdefine_line|#define cpu_get_pgd()&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long pg;&t;&t;&t;&bslash;&n;&t;&t;__asm__(&quot;mrc p15, 0, %0, c2, c0, 0&quot;&t;&bslash;&n;&t;&t;&t; : &quot;=r&quot; (pg));&t;&t;&t;&bslash;&n;&t;&t;pg &amp;= ~0x3fff;&t;&t;&t;&t;&bslash;&n;&t;&t;(pgd_t *)phys_to_virt(pg);&t;&t;&bslash;&n;&t;})
 macro_line|#endif

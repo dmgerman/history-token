@@ -2,9 +2,8 @@ multiline_comment|/*&n; *  linux/include/asm-arm/cpu-multi32.h&n; *&n; *  Copyri
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-multiline_comment|/* forward-declare task_struct */
 r_struct
-id|task_struct
+id|mm_struct
 suffix:semicolon
 multiline_comment|/*&n; * Don&squot;t change this structure - ASM code&n; * relies on it.&n; */
 DECL|struct|processor
@@ -240,6 +239,11 @@ id|set_pgd
 r_int
 r_int
 id|pgd_phys
+comma
+r_struct
+id|mm_struct
+op_star
+id|mm
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Set a PMD (handling IMP bit 4)&n;&t;&t; */
@@ -326,13 +330,13 @@ mdefine_line|#define cpu_icache_invalidate_range(s,e)&t;processor.icache.invalid
 DECL|macro|cpu_icache_invalidate_page
 mdefine_line|#define cpu_icache_invalidate_page(vp)&t;&t;processor.icache.invalidate_page(vp)
 DECL|macro|cpu_set_pgd
-mdefine_line|#define cpu_set_pgd(pgd)&t;&t;&t;processor.pgtable.set_pgd(pgd)
+mdefine_line|#define cpu_set_pgd(pgd,mm)&t;&t;&t;processor.pgtable.set_pgd(pgd,mm)
 DECL|macro|cpu_set_pmd
 mdefine_line|#define cpu_set_pmd(pmdp, pmd)&t;&t;&t;processor.pgtable.set_pmd(pmdp, pmd)
 DECL|macro|cpu_set_pte
 mdefine_line|#define cpu_set_pte(ptep, pte)&t;&t;&t;processor.pgtable.set_pte(ptep, pte)
 DECL|macro|cpu_switch_mm
-mdefine_line|#define cpu_switch_mm(pgd,tsk)&t;&t;&t;cpu_set_pgd(__virt_to_phys((unsigned long)(pgd)))
+mdefine_line|#define cpu_switch_mm(pgd,mm)&t;&t;&t;cpu_set_pgd(__virt_to_phys((unsigned long)(pgd)),mm)
 DECL|macro|cpu_get_pgd
 mdefine_line|#define cpu_get_pgd()&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long pg;&t;&t;&t;&bslash;&n;&t;&t;__asm__(&quot;mrc p15, 0, %0, c2, c0, 0&quot;&t;&bslash;&n;&t;&t;&t; : &quot;=r&quot; (pg));&t;&t;&t;&bslash;&n;&t;&t;pg &amp;= ~0x3fff;&t;&t;&t;&t;&bslash;&n;&t;&t;(pgd_t *)phys_to_virt(pg);&t;&t;&bslash;&n;&t;})
 macro_line|#endif
