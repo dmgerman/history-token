@@ -2060,7 +2060,7 @@ l_int|0
 comma
 l_string|&quot;Headphone detect&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 OL
 l_int|0
@@ -2118,9 +2118,9 @@ c_func
 (paren
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -2182,7 +2182,7 @@ c_func
 (paren
 id|gpio_headphone_irq
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -2889,7 +2889,7 @@ l_int|0
 comma
 l_string|&quot;Built-in Sound misc&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 r_return
@@ -2909,7 +2909,7 @@ l_int|0
 comma
 l_string|&quot;Built-in Sound out&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 op_logical_or
 id|request_irq
@@ -2923,7 +2923,7 @@ l_int|0
 comma
 l_string|&quot;Built-in Sound in&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 r_return
@@ -3049,7 +3049,7 @@ c_func
 (paren
 id|awacs_irq
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|free_irq
@@ -3057,7 +3057,7 @@ c_func
 (paren
 id|awacs_tx_irq
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|free_irq
@@ -3065,7 +3065,7 @@ c_func
 (paren
 id|awacs_rx_irq
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -7063,9 +7063,9 @@ c_func
 (paren
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_break
@@ -13877,7 +13877,7 @@ id|info
 comma
 l_string|&quot;device-id&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -14370,7 +14370,7 @@ id|mio
 suffix:semicolon
 id|macio_base
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop

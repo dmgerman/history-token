@@ -981,7 +981,7 @@ id|sq-&gt;buffers
 suffix:semicolon
 id|sq-&gt;buffers
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 op_minus
@@ -1074,7 +1074,7 @@ id|setup_func
 r_void
 )paren
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|hard_frame

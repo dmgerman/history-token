@@ -22670,7 +22670,7 @@ l_int|0
 dot
 id|rmidi
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hdsp-&gt;midi
 (braket
@@ -22679,7 +22679,7 @@ l_int|1
 dot
 id|rmidi
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hdsp-&gt;midi
 (braket
@@ -22688,7 +22688,7 @@ l_int|0
 dot
 id|input
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hdsp-&gt;midi
 (braket
@@ -22697,7 +22697,7 @@ l_int|1
 dot
 id|input
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hdsp-&gt;midi
 (braket
@@ -22706,7 +22706,7 @@ l_int|0
 dot
 id|output
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hdsp-&gt;midi
 (braket
@@ -22715,7 +22715,7 @@ l_int|1
 dot
 id|output
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_lock_init
 c_func
@@ -22747,7 +22747,7 @@ l_int|0
 suffix:semicolon
 id|hdsp-&gt;res_port
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hdsp-&gt;control_register
 op_assign

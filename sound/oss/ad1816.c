@@ -5679,7 +5679,7 @@ c_func
 l_int|0x7150
 )paren
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
@@ -5703,7 +5703,7 @@ c_func
 l_int|0x7180
 )paren
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
