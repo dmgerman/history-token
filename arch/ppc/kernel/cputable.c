@@ -267,7 +267,7 @@ id|spec
 )paren
 suffix:semicolon
 DECL|macro|CLASSIC_PPC
-mdefine_line|#define CLASSIC_PPC (!defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_4xx) &amp;&amp; &bslash;&n;&t;&t;     !defined(CONFIG_POWER3) &amp;&amp; !defined(CONFIG_POWER4))
+mdefine_line|#define CLASSIC_PPC (!defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_4xx) &amp;&amp; &bslash;&n;&t;&t;     !defined(CONFIG_POWER3) &amp;&amp; !defined(CONFIG_POWER4) &amp;&amp; &bslash;&n;&t;&t;     !defined(CONFIG_BOOKE))
 multiline_comment|/* This table only contains &quot;desktop&quot; CPUs, it need to be filled with embedded&n; * ones as well...&n; */
 DECL|macro|COMMON_PPC
 mdefine_line|#define COMMON_PPC&t;(PPC_FEATURE_32 | PPC_FEATURE_HAS_FPU | &bslash;&n;&t;&t;&t; PPC_FEATURE_HAS_MMU)
@@ -2030,6 +2030,34 @@ multiline_comment|/*__setup_cpu_440 */
 )brace
 comma
 macro_line|#endif /* CONFIG_44x */
+macro_line|#ifdef CONFIG_E500
+(brace
+multiline_comment|/* e500 */
+l_int|0xffff0000
+comma
+l_int|0x80200000
+comma
+l_string|&quot;e500&quot;
+comma
+multiline_comment|/* xxx - galak: add CPU_FTR_CAN_DOZE */
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_USE_TB
+comma
+id|PPC_FEATURE_32
+op_or
+id|PPC_FEATURE_HAS_MMU
+comma
+l_int|32
+comma
+l_int|32
+comma
+l_int|0
+comma
+multiline_comment|/*__setup_cpu_e500 */
+)brace
+comma
+macro_line|#endif
 macro_line|#if !CLASSIC_PPC
 (brace
 multiline_comment|/* default match */

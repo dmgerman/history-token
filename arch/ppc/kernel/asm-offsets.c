@@ -184,7 +184,7 @@ id|fpscr
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_4xx
+macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_BOOKE)
 id|DEFINE
 c_func
 (paren
@@ -269,6 +269,67 @@ id|used_vr
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
+macro_line|#ifdef CONFIG_SPE
+id|DEFINE
+c_func
+(paren
+id|THREAD_EVR0
+comma
+m_offsetof
+(paren
+r_struct
+id|thread_struct
+comma
+id|evr
+(braket
+l_int|0
+)braket
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|THREAD_ACC
+comma
+m_offsetof
+(paren
+r_struct
+id|thread_struct
+comma
+id|acc
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|THREAD_SPEFSCR
+comma
+m_offsetof
+(paren
+r_struct
+id|thread_struct
+comma
+id|spefscr
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|THREAD_USED_SPE
+comma
+m_offsetof
+(paren
+r_struct
+id|thread_struct
+comma
+id|used_spe
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_SPE */
 multiline_comment|/* Interrupt register frame */
 id|DEFINE
 c_func

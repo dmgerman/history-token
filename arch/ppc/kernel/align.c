@@ -23,7 +23,7 @@ id|flags
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_POWER4)
+macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_POWER4) || defined(CONFIG_BOOKE)
 DECL|macro|OPCD
 mdefine_line|#define&t;OPCD(inst)&t;(((inst) &amp; 0xFC000000) &gt;&gt; 26)
 DECL|macro|RS
@@ -778,7 +778,7 @@ id|nb
 comma
 id|flags
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_POWER4)
+macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_POWER4) || defined(CONFIG_BOOKE)
 r_int
 id|opcode
 comma
@@ -832,8 +832,8 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_POWER4)
-multiline_comment|/* The 4xx-family processors have no DSISR register,&n;&t; * so we emulate it.&n;&t; * The POWER4 has a DSISR register but doesn&squot;t set it on&n;&t; * an alignment fault.  -- paulus&n;&t; */
+macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_POWER4) || defined(CONFIG_BOOKE)
+multiline_comment|/* The 4xx-family &amp; Book-E processors have no DSISR register,&n;&t; * so we emulate it.&n;&t; * The POWER4 has a DSISR register but doesn&squot;t set it on&n;&t; * an alignment fault.  -- paulus&n;&t; */
 id|instr
 op_assign
 op_star
@@ -1075,7 +1075,7 @@ id|instr
 dot
 id|flags
 suffix:semicolon
-multiline_comment|/* For the 4xx-family processors, the &squot;dar&squot; field of the&n;&t; * pt_regs structure is overloaded and is really from the DEAR.&n;&t; */
+multiline_comment|/* For the 4xx-family &amp; Book-E processors, the &squot;dar&squot; field of the&n;&t; * pt_regs structure is overloaded and is really from the DEAR.&n;&t; */
 id|addr
 op_assign
 (paren

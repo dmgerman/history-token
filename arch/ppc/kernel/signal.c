@@ -634,7 +634,7 @@ l_int|56
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Save the current user registers on the user stack.&n; * We only save the altivec registers if the process has used&n; * altivec instructions at some point.&n; */
+multiline_comment|/*&n; * Save the current user registers on the user stack.&n; * We only save the altivec/spe registers if the process has used&n; * altivec/spe instructions at some point.&n; */
 r_static
 r_int
 DECL|function|save_user_regs
@@ -693,6 +693,25 @@ id|MSR_VEC
 )paren
 )paren
 id|giveup_altivec
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
+macro_line|#ifdef CONFIG_SPE
+r_if
+c_cond
+(paren
+id|current-&gt;thread.used_spe
+op_logical_and
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_SPE
+)paren
+)paren
+id|giveup_spe
 c_func
 (paren
 id|current
@@ -819,6 +838,82 @@ r_return
 l_int|1
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
+macro_line|#ifdef CONFIG_SPE
+multiline_comment|/* save spe registers */
+r_if
+c_cond
+(paren
+id|current-&gt;thread.used_spe
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|__copy_to_user
+c_func
+(paren
+op_amp
+id|frame-&gt;mc_vregs
+comma
+id|current-&gt;thread.evr
+comma
+id|ELF_NEVRREG
+op_star
+r_sizeof
+(paren
+id|u32
+)paren
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* set MSR_SPE in the saved MSR value to indicate that&n;&t;&t;   frame-&gt;mc_vregs contains valid data */
+r_if
+c_cond
+(paren
+id|__put_user
+c_func
+(paren
+id|regs-&gt;msr
+op_or
+id|MSR_SPE
+comma
+op_amp
+id|frame-&gt;mc_gregs
+(braket
+id|PT_MSR
+)braket
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* else assert((regs-&gt;msr &amp; MSR_SPE) == 0) */
+multiline_comment|/* We always copy to/from spefscr */
+r_if
+c_cond
+(paren
+id|__put_user
+c_func
+(paren
+id|current-&gt;thread.spefscr
+comma
+(paren
+id|u32
+op_star
+)paren
+op_amp
+id|frame-&gt;mc_vregs
+op_plus
+id|ELF_NEVRREG
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#endif /* CONFIG_SPE */
 r_if
 c_cond
 (paren
@@ -913,7 +1008,7 @@ r_int
 r_int
 id|save_r2
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALTIVEC
+macro_line|#if defined(CONFIG_ALTIVEC) || defined(CONFIG_SPE)
 r_int
 r_int
 id|msr
@@ -1124,6 +1219,105 @@ r_return
 l_int|1
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
+macro_line|#ifdef CONFIG_SPE
+multiline_comment|/* force the process to reload the spe registers from&n;&t;   current-&gt;thread when it next does spe instructions */
+id|regs-&gt;msr
+op_and_assign
+op_complement
+id|MSR_SPE
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|__get_user
+c_func
+(paren
+id|msr
+comma
+op_amp
+id|sr-&gt;mc_gregs
+(braket
+id|PT_MSR
+)braket
+)paren
+op_logical_and
+(paren
+id|msr
+op_amp
+id|MSR_SPE
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* restore spe registers from the stack */
+r_if
+c_cond
+(paren
+id|__copy_from_user
+c_func
+(paren
+id|current-&gt;thread.evr
+comma
+op_amp
+id|sr-&gt;mc_vregs
+comma
+r_sizeof
+(paren
+id|sr-&gt;mc_vregs
+)paren
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|current-&gt;thread.used_spe
+)paren
+id|memset
+c_func
+(paren
+op_amp
+id|current-&gt;thread.evr
+comma
+l_int|0
+comma
+id|ELF_NEVRREG
+op_star
+r_sizeof
+(paren
+id|u32
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Always get SPEFSCR back */
+r_if
+c_cond
+(paren
+id|__get_user
+c_func
+(paren
+id|current-&gt;thread.spefscr
+comma
+(paren
+id|u32
+op_star
+)paren
+op_amp
+id|sr-&gt;mc_vregs
+op_plus
+id|ELF_NEVRREG
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#endif /* CONFIG_SPE */
 r_return
 l_int|0
 suffix:semicolon

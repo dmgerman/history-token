@@ -204,5 +204,10 @@ DECL|macro|PTRACE_GETVRREGS
 mdefine_line|#define PTRACE_GETVRREGS&t;18
 DECL|macro|PTRACE_SETVRREGS
 mdefine_line|#define PTRACE_SETVRREGS&t;19
+multiline_comment|/* Get/set all the upper 32-bits of the SPE registers, accumulator, and&n; * spefscr, in one go */
+DECL|macro|PTRACE_GETEVRREGS
+mdefine_line|#define PTRACE_GETEVRREGS&t;20
+DECL|macro|PTRACE_SETEVRREGS
+mdefine_line|#define PTRACE_SETEVRREGS&t;21
 macro_line|#endif
 eof

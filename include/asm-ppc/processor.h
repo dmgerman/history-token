@@ -34,6 +34,9 @@ DECL|macro|_CHRP_IBM
 mdefine_line|#define _CHRP_IBM&t;0x05&t;/* IBM chrp, the longtrail and longtrail 2 */
 DECL|macro|_GLOBAL
 mdefine_line|#define _GLOBAL(n)&bslash;&n;&t;.stabs __stringify(n:F-1),N_FUN,0,0,n;&bslash;&n;&t;.globl n;&bslash;&n;n:
+multiline_comment|/*&n; * this is the minimum allowable io space due to the location&n; * of the io areas on prep (first one at 0x80000000) but&n; * as soon as I get around to remapping the io areas with the BATs&n; * to match the mac we can raise this. -- Cort&n; */
+DECL|macro|TASK_SIZE
+mdefine_line|#define TASK_SIZE&t;(CONFIG_TASK_SIZE)
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 r_extern
@@ -152,9 +155,12 @@ id|task_struct
 op_star
 id|last_task_used_altivec
 suffix:semicolon
-multiline_comment|/*&n; * this is the minimum allowable io space due to the location&n; * of the io areas on prep (first one at 0x80000000) but&n; * as soon as I get around to remapping the io areas with the BATs&n; * to match the mac we can raise this. -- Cort&n; */
-DECL|macro|TASK_SIZE
-mdefine_line|#define TASK_SIZE&t;(CONFIG_TASK_SIZE)
+r_extern
+r_struct
+id|task_struct
+op_star
+id|last_task_used_spe
+suffix:semicolon
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;(TASK_SIZE / 8 * 3)
@@ -208,7 +214,7 @@ r_int
 r_int
 id|last_syscall
 suffix:semicolon
-macro_line|#ifdef CONFIG_4xx
+macro_line|#if defined(CONFIG_4xx) || defined (CONFIG_BOOKE)
 DECL|member|dbcr0
 r_int
 r_int
@@ -286,6 +292,33 @@ id|used_vr
 suffix:semicolon
 multiline_comment|/* set if process has used altivec */
 macro_line|#endif /* CONFIG_ALTIVEC */
+macro_line|#ifdef CONFIG_SPE
+DECL|member|evr
+r_int
+r_int
+id|evr
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* upper 32-bits of SPE regs */
+DECL|member|acc
+id|u64
+id|acc
+suffix:semicolon
+multiline_comment|/* Accumulator */
+DECL|member|spefscr
+r_int
+r_int
+id|spefscr
+suffix:semicolon
+multiline_comment|/* SPE &amp; eFP status */
+DECL|member|used_spe
+r_int
+id|used_spe
+suffix:semicolon
+multiline_comment|/* set if process has used spe */
+macro_line|#endif /* CONFIG_SPE */
 )brace
 suffix:semicolon
 DECL|macro|ARCH_MIN_TASKALIGN

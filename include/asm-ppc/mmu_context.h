@@ -45,6 +45,13 @@ DECL|macro|LAST_CONTEXT
 mdefine_line|#define LAST_CONTEXT    &t;255
 DECL|macro|FIRST_CONTEXT
 mdefine_line|#define FIRST_CONTEXT    &t;1
+macro_line|#elif CONFIG_E500
+DECL|macro|NO_CONTEXT
+mdefine_line|#define NO_CONTEXT      &t;256
+DECL|macro|LAST_CONTEXT
+mdefine_line|#define LAST_CONTEXT    &t;255
+DECL|macro|FIRST_CONTEXT
+mdefine_line|#define FIRST_CONTEXT    &t;1
 macro_line|#else
 multiline_comment|/* PPC 6xx, 7xx CPUs */
 DECL|macro|NO_CONTEXT

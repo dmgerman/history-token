@@ -270,7 +270,7 @@ id|code
 op_assign
 id|SEGV_MAPERR
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx)
+macro_line|#if defined(CONFIG_4xx) || defined (CONFIG_BOOKE)
 r_int
 id|is_write
 op_assign
@@ -307,7 +307,7 @@ id|error_code
 op_amp
 l_int|0x02000000
 suffix:semicolon
-macro_line|#endif /* CONFIG_4xx */
+macro_line|#endif /* CONFIG_4xx || CONFIG_BOOKE */
 macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
 r_if
 c_cond
@@ -333,7 +333,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if !defined(CONFIG_4xx)
+macro_line|#if !(defined(CONFIG_4xx) || defined(CONFIG_BOOKE))
 r_if
 c_cond
 (paren
@@ -356,7 +356,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* !CONFIG_4xx */
+macro_line|#endif /* !(CONFIG_4xx || CONFIG_BOOKE)*/
 macro_line|#endif /* CONFIG_XMON || CONFIG_KGDB */
 r_if
 c_cond
@@ -560,8 +560,8 @@ id|VM_WRITE
 r_goto
 id|bad_area
 suffix:semicolon
-macro_line|#if defined(CONFIG_4xx)
-multiline_comment|/* an exec  - 4xx allows for per-page execute permission */
+macro_line|#if defined(CONFIG_4xx) || defined(CONFIG_BOOKE)
+multiline_comment|/* an exec  - 4xx/Book-E allows for per-page execute permission */
 )brace
 r_else
 r_if
@@ -596,7 +596,7 @@ r_goto
 id|bad_area
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Since 4xx supports per-page execute permission,&n;&t;&t; * we lazily flush dcache to icache. */
+multiline_comment|/* Since 4xx/Book-E supports per-page execute permission,&n;&t;&t; * we lazily flush dcache to icache. */
 id|ptep
 op_assign
 l_int|NULL
