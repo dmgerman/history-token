@@ -1681,8 +1681,8 @@ op_amp
 id|desc
 )paren
 suffix:semicolon
-r_if
-c_cond
+r_while
+c_loop
 (paren
 op_logical_neg
 id|list_empty
