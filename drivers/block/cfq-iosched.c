@@ -2330,6 +2330,12 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|crq-&gt;accounted
+)paren
+(brace
 id|crq-&gt;accounted
 op_assign
 l_int|0
@@ -2337,6 +2343,7 @@ suffix:semicolon
 id|cfqq-&gt;cfqd-&gt;rq_in_driver
 op_decrement
 suffix:semicolon
+)brace
 )brace
 id|list_add
 c_func

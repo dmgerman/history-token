@@ -232,9 +232,9 @@ id|MMCR0_FCECE
 suffix:semicolon
 id|mmcr0
 op_or_assign
-id|MMCR0_PMC1INTCONTROL
+id|MMCR0_PMC1CE
 op_or
-id|MMCR0_PMCNINTCONTROL
+id|MMCR0_PMCjCE
 suffix:semicolon
 id|mtspr
 c_func

@@ -13143,17 +13143,12 @@ comma
 id|ha-&gt;req_ring_index
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
-id|RD_REG_WORD
+multiline_comment|/* Enforce mmio write ordering; see comment in qla1280_isp_cmd(). */
+id|mmiowb
 c_func
 (paren
-op_amp
-id|reg-&gt;mailbox4
 )paren
 suffix:semicolon
-multiline_comment|/* PCI posted write flush */
 id|out
 suffix:colon
 r_if
@@ -14325,17 +14320,12 @@ comma
 id|ha-&gt;req_ring_index
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
-id|RD_REG_WORD
+multiline_comment|/* Enforce mmio write ordering; see comment in qla1280_isp_cmd(). */
+id|mmiowb
 c_func
 (paren
-op_amp
-id|reg-&gt;mailbox4
 )paren
 suffix:semicolon
-multiline_comment|/* PCI posted write flush */
 id|out
 suffix:colon
 r_if
@@ -14620,7 +14610,7 @@ r_else
 id|ha-&gt;request_ring_ptr
 op_increment
 suffix:semicolon
-multiline_comment|/* Set chip new ring index. */
+multiline_comment|/*&n;&t; * Update request index to mailbox4 (Request Queue In).&n;&t; * The mmiowb() ensures that this write is ordered with writes by other&n;&t; * CPUs.  Without the mmiowb(), it is possible for the following:&n;&t; *    CPUA posts write of index 5 to mailbox4&n;&t; *    CPUA releases host lock&n;&t; *    CPUB acquires host lock&n;&t; *    CPUB posts write of index 6 to mailbox4&n;&t; *    On PCI bus, order reverses and write of 6 posts, then index 5,&n;&t; *       causing chip to issue full queue of stale commands&n;&t; * The mmiowb() prevents future writes from crossing the barrier.&n;&t; * See Documentation/DocBook/deviceiobook.tmpl for more information.&n;&t; */
 id|WRT_REG_WORD
 c_func
 (paren
@@ -14630,17 +14620,11 @@ comma
 id|ha-&gt;req_ring_index
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
-id|RD_REG_WORD
+id|mmiowb
 c_func
 (paren
-op_amp
-id|reg-&gt;mailbox4
 )paren
 suffix:semicolon
-multiline_comment|/* PCI posted write flush */
 id|LEAVE
 c_func
 (paren

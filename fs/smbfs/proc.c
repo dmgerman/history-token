@@ -191,6 +191,7 @@ op_star
 id|fattr
 )paren
 suffix:semicolon
+r_static
 r_int
 id|smb_proc_query_cifsunix
 c_func
@@ -9309,6 +9310,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|smb_decode_unix_basic
+r_static
 r_void
 id|smb_decode_unix_basic
 c_func
@@ -15546,6 +15548,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|smb_proc_query_cifsunix
 id|smb_proc_query_cifsunix

@@ -24,7 +24,6 @@ multiline_comment|/* &quot;Knobs&quot; that adjust features and parameters. */
 multiline_comment|/* Set the copy breakpoint for the copy-only-tiny-frames scheme.&n;   Setting to &gt; 1512 effectively disables this feature. */
 DECL|variable|rx_copybreak
 r_static
-r_const
 r_int
 id|rx_copybreak
 op_assign

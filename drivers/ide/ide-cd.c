@@ -549,6 +549,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;  %s -- (asc=0x%02x, ascq=0x%02x)&bslash;n&quot;
 comma
 id|s
@@ -659,6 +660,7 @@ suffix:semicolon
 )brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;  The failed &bslash;&quot;%s&bslash;&quot; packet command was: &bslash;n  &bslash;&quot;&quot;
 comma
 id|s
@@ -737,6 +739,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;  Command is %02d%% complete&bslash;n&quot;
 comma
 id|progress
@@ -767,6 +770,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;  Error in %s byte %d&quot;
 comma
 (paren
@@ -863,6 +867,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: error code: 0x%02x  sense_key: 0x%02x  asc: 0x%02x  ascq: 0x%02x&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -2600,6 +2605,7 @@ multiline_comment|/* Whoops... The drive is expecting to receive data from us! *
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: read_intr: Drive wants to transfer data the &quot;
 l_string|&quot;wrong way!&bslash;n&quot;
 comma
@@ -2684,6 +2690,7 @@ multiline_comment|/* Drive wants a command packet, or invalid ireason... */
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: read_intr: bad interrupt reason %x&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -2939,6 +2946,7 @@ l_int|0
 (brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;%s: cdrom_read_intr: data underrun (%d blocks)&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -3003,6 +3011,7 @@ l_int|0
 (brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;%s: cdrom_read_intr: Bad transfer size %d&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -3023,6 +3032,7 @@ id|limit_nframes
 )paren
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;  This drive is not supported by this version of the driver&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3030,6 +3040,7 @@ r_else
 (brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;  Trying to limit transfer sizes&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3446,6 +3457,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: cdrom_read_from_buffer: buffer botch (%ld)&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -3557,7 +3569,9 @@ l_int|1
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: cdrom_start_read_continuation: buffer botch (%u)&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -4506,6 +4520,7 @@ id|confused
 suffix:colon
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;%s: cdrom_pc_intr: The drive &quot;
 l_string|&quot;appears confused (ireason = 0x%02x)&bslash;n&quot;
 comma
@@ -4906,6 +4921,7 @@ multiline_comment|/* Whoops... The drive wants to send data. */
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: write_intr: wrong transfer direction!&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -4959,6 +4975,7 @@ multiline_comment|/* Drive wants a command packet, or invalid ireason... */
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: write_intr: bad interrupt reason %x&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -5217,6 +5234,7 @@ id|dma_error
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ide-cd: dma error&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5470,6 +5488,7 @@ id|ptr
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: confused, missing data&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -5762,6 +5781,7 @@ id|drive
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ide-cd: write dma error&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5909,6 +5929,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: write_intr: data underrun (%d blocks)&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -5978,6 +5999,7 @@ id|rq-&gt;current_nr_sectors
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ide-cd: write_intr: oops&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6536,6 +6558,7 @@ suffix:semicolon
 )brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;%s: DSC timeout&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -7116,6 +7139,7 @@ l_int|0x20
 (brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;%s: door locking not supported&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -7664,6 +7688,7 @@ l_int|NULL
 (brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;%s: No cdrom TOC buffer!&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -10796,6 +10821,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: ATAPI magneto-optical drive&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -11325,6 +11351,7 @@ multiline_comment|/* don&squot;t print speed if the drive reported 0.&n;&t; */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: ATAPI&quot;
 comma
 id|drive-&gt;name
@@ -12717,6 +12744,7 @@ id|nslots
 (brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;%s: ide_cdrom_setup failed to register device with the cdrom driver.&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -12828,6 +12856,7 @@ id|drive
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: %s: failed to ide_unregister_subdriver&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -12894,6 +12923,7 @@ id|devinfo
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: ide_cdrom_cleanup failed to unregister device from the cdrom driver.&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -13582,6 +13612,7 @@ id|drive-&gt;name
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;ide-cd: ignoring drive %s&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -13601,6 +13632,7 @@ id|drive-&gt;scsi
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;ide-cd: passing drive %s to ide-scsi emulation.&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -13639,6 +13671,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Can&squot;t allocate a cdrom structure&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -13664,6 +13697,7 @@ id|ide_cdrom_driver
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Failed to register the driver with ide.c&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -13823,6 +13857,7 @@ id|devinfo
 )paren
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;%s: ide_cdrom_cleanup failed to unregister device from the cdrom driver.&bslash;n&quot;
 comma
 id|drive-&gt;name

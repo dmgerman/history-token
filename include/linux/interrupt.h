@@ -182,17 +182,109 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Temporary defines for UP kernels, until all code gets fixed.&n; */
 macro_line|#ifndef CONFIG_SMP
-DECL|macro|cli
-macro_line|# define cli()&t;&t;&t;local_irq_disable()
-DECL|macro|sti
-macro_line|# define sti()&t;&t;&t;local_irq_enable()
+DECL|function|cli
+r_static
+r_inline
+r_void
+id|__deprecated
+id|cli
+c_func
+(paren
+r_void
+)paren
+(brace
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|sti
+r_static
+r_inline
+r_void
+id|__deprecated
+id|sti
+c_func
+(paren
+r_void
+)paren
+(brace
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|save_flags
+r_static
+r_inline
+r_void
+id|__deprecated
+id|save_flags
+c_func
+(paren
+r_int
+r_int
+op_star
+id|x
+)paren
+(brace
+id|local_save_flags
+c_func
+(paren
+op_star
+id|x
+)paren
+suffix:semicolon
+)brace
 DECL|macro|save_flags
-macro_line|# define save_flags(x)&t;&t;local_save_flags(x)
-DECL|macro|restore_flags
-macro_line|# define restore_flags(x)&t;local_irq_restore(x)
+mdefine_line|#define save_flags(x) save_flags(&amp;x);
+DECL|function|restore_flags
+r_static
+r_inline
+r_void
+id|__deprecated
+id|restore_flags
+c_func
+(paren
+r_int
+r_int
+id|x
+)paren
+(brace
+id|local_irq_restore
+c_func
+(paren
+id|x
+)paren
+suffix:semicolon
+)brace
+DECL|function|save_and_cli
+r_static
+r_inline
+r_void
+id|__deprecated
+id|save_and_cli
+c_func
+(paren
+r_int
+r_int
+op_star
+id|x
+)paren
+(brace
+id|local_irq_save
+c_func
+(paren
+op_star
+id|x
+)paren
+suffix:semicolon
+)brace
 DECL|macro|save_and_cli
-macro_line|# define save_and_cli(x)&t;local_irq_save(x)
-macro_line|#endif
+mdefine_line|#define save_and_cli(x)&t;save_and_cli(&amp;x)
+macro_line|#endif /* CONFIG_SMP */
 multiline_comment|/* SoftIRQ primitives.  */
 DECL|macro|local_bh_disable
 mdefine_line|#define local_bh_disable() &bslash;&n;&t;&t;do { add_preempt_count(SOFTIRQ_OFFSET); barrier(); } while (0)

@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2440-dsc.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2440 Drive Strength Control support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     29-Aug-2004 BJD  Start of drive-strength control&n; *     09-Nov-2004 BJD  Added symbol export&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2440-dsc.c&n; *&n; * Copyright (c) 2004-2005 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2440 Drive Strength Control support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     29-Aug-2004 BJD  Start of drive-strength control&n; *     09-Nov-2004 BJD  Added symbol export&n; *     11-Jan-2005 BJD  Include fix&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -12,8 +12,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/arch/regs-gpio.h&gt;
 macro_line|#include &lt;asm/arch/regs-dsc.h&gt;
-macro_line|#include &quot;s3c2440.h&quot;
 macro_line|#include &quot;cpu.h&quot;
+macro_line|#include &quot;s3c2440.h&quot;
 DECL|function|s3c2440_set_dsc
 r_int
 id|s3c2440_set_dsc

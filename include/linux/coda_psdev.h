@@ -320,9 +320,6 @@ comma
 r_int
 id|mode
 comma
-id|dev_t
-id|rdev
-comma
 r_struct
 id|CodaFid
 op_star

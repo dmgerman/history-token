@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -60,6 +61,22 @@ mdefine_line|#define IXGB_DBG(args...)
 macro_line|#endif
 DECL|macro|IXGB_ERR
 mdefine_line|#define IXGB_ERR(args...) printk(KERN_ERR &quot;ixgb: &quot; args)
+multiline_comment|/* TX/RX descriptor defines */
+DECL|macro|DEFAULT_TXD
+mdefine_line|#define DEFAULT_TXD&t; 256
+DECL|macro|MAX_TXD
+mdefine_line|#define MAX_TXD   &t;4096
+DECL|macro|MIN_TXD
+mdefine_line|#define MIN_TXD&t;  64
+multiline_comment|/* hardware cannot reliably support more than 512 descriptors owned by&n; * hardware descrioptor cache otherwise an unreliable ring under heavy &n; * recieve load may result */
+multiline_comment|/* #define DEFAULT_RXD&t;   1024 */
+multiline_comment|/* #define MAX_RXD&t;   4096 */
+DECL|macro|DEFAULT_RXD
+mdefine_line|#define DEFAULT_RXD&t;512
+DECL|macro|MAX_RXD
+mdefine_line|#define MAX_RXD&t;512
+DECL|macro|MIN_RXD
+mdefine_line|#define MIN_RXD&t; 64
 multiline_comment|/* Supported Rx Buffer Sizes */
 DECL|macro|IXGB_RXBUFFER_2048
 mdefine_line|#define IXGB_RXBUFFER_2048  2048
@@ -93,19 +110,17 @@ DECL|member|dma
 r_uint64
 id|dma
 suffix:semicolon
-DECL|member|length
-r_int
-r_int
-id|length
-suffix:semicolon
 DECL|member|time_stamp
 r_int
 r_int
 id|time_stamp
 suffix:semicolon
+DECL|member|length
+r_uint16
+id|length
+suffix:semicolon
 DECL|member|next_to_watch
-r_int
-r_int
+r_uint16
 id|next_to_watch
 suffix:semicolon
 )brace
@@ -276,10 +291,6 @@ DECL|member|rx_int_delay
 r_uint32
 id|rx_int_delay
 suffix:semicolon
-DECL|member|raidc
-id|boolean_t
-id|raidc
-suffix:semicolon
 DECL|member|rx_csum
 id|boolean_t
 id|rx_csum
@@ -313,7 +324,13 @@ r_struct
 id|ixgb_hw_stats
 id|stats
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI_MSI
+DECL|member|have_msi
+id|boolean_t
+id|have_msi
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* _IXGB_H_ */
+macro_line|#endif /* _IXGB_H_ */
 eof

@@ -443,7 +443,9 @@ id|create_cow_out
 id|time_t
 id|mtime
 suffix:semicolon
-id|__u64
+r_int
+r_int
+r_int
 id|size
 suffix:semicolon
 id|__u32

@@ -21,6 +21,17 @@ id|kmem_cache_t
 op_star
 id|req_cachep
 suffix:semicolon
+r_static
+r_int
+id|smb_request_send_req
+c_func
+(paren
+r_struct
+id|smb_request
+op_star
+id|req
+)paren
+suffix:semicolon
 multiline_comment|/*&n;  /proc/slabinfo:&n;  name, active, num, objsize, active_slabs, num_slaps, #pages&n;*/
 DECL|function|smb_init_request_cache
 r_int
@@ -427,6 +438,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * What prevents a rget to race with a rput? The count must never drop to zero&n; * while it is in use. Only rput if it is ok that it is free&squot;d.&n; */
 DECL|function|smb_rget
+r_static
 r_void
 id|smb_rget
 c_func
@@ -1551,6 +1563,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Send a request and place it on the recvq if successfully sent.&n; * Must be called with the server lock held.&n; */
 DECL|function|smb_request_send_req
+r_static
 r_int
 id|smb_request_send_req
 c_func

@@ -185,16 +185,6 @@ op_star
 id|link
 )paren
 suffix:semicolon
-r_void
-id|snd_vxpocket_detach_all
-c_func
-(paren
-r_struct
-id|snd_vxp_entry
-op_star
-id|hw
-)paren
-suffix:semicolon
 r_int
 id|vxp_add_mic_controls
 c_func

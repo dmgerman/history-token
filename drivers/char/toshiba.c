@@ -1332,6 +1332,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Probe for the presence of a Toshiba laptop&n; *&n; *   returns and non-zero if unable to detect the presence of a Toshiba&n; *   laptop, otherwise zero and determines the Machine ID, BIOS version and&n; *   date, and SCI version.&n; */
 DECL|function|tosh_probe
+r_static
 r_int
 id|tosh_probe
 c_func

@@ -327,6 +327,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;n_tty_flush_buffer&t;-&t;clean input queue&n; *&t;@tty:&t;terminal device&n; *&n; *&t;Flush the input buffer. Called when the line discipline is&n; *&t;being closed, when the tty layer wants the buffer flushed (eg&n; *&t;at hangup) or when the N_TTY line discipline internally has to&n; *&t;clean the pending queue (for example some signals).&n; *&n; *&t;FIXME: tty-&gt;ctrl_status is not spinlocked and relies on&n; *&t;lock_kernel() still.&n; */
 DECL|function|n_tty_flush_buffer
+r_static
 r_void
 id|n_tty_flush_buffer
 c_func
@@ -373,6 +374,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;n_tty_chars_in_buffer&t;-&t;report available bytes&n; *&t;@tty: tty device&n; *&n; *&t;Report the number of characters buffered to be delivered to user&n; *&t;at this instant in time. &n; */
 DECL|function|n_tty_chars_in_buffer
+r_static
 id|ssize_t
 id|n_tty_chars_in_buffer
 c_func

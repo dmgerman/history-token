@@ -2,24 +2,21 @@ multiline_comment|/*&n; * Hardware specific definitions for SL-C7xx series of PD
 macro_line|#ifndef __ASM_ARCH_CORGI_H
 DECL|macro|__ASM_ARCH_CORGI_H
 mdefine_line|#define __ASM_ARCH_CORGI_H  1
-multiline_comment|/*&n; * Corgi GPIO definitions&n; */
+multiline_comment|/*&n; * Corgi (Non Standard) GPIO Definitions&n; */
 DECL|macro|CORGI_GPIO_KEY_INT
-mdefine_line|#define CORGI_GPIO_KEY_INT&t;&t;&t;(0)&t;/* key interrupt */
+mdefine_line|#define CORGI_GPIO_KEY_INT&t;&t;&t;(0)&t;/* Keyboard Interrupt */
 DECL|macro|CORGI_GPIO_AC_IN
 mdefine_line|#define CORGI_GPIO_AC_IN&t;&t;&t;(1)
 DECL|macro|CORGI_GPIO_WAKEUP
 mdefine_line|#define CORGI_GPIO_WAKEUP&t;&t;&t;(3)
 DECL|macro|CORGI_GPIO_AK_INT
-mdefine_line|#define CORGI_GPIO_AK_INT&t;&t;&t;(4)&t;
-singleline_comment|// Remote Controller
+mdefine_line|#define CORGI_GPIO_AK_INT&t;&t;&t;(4)&t;/* IR Controller Interrupt */
 DECL|macro|CORGI_GPIO_TP_INT
-mdefine_line|#define CORGI_GPIO_TP_INT&t;&t;&t;(5)&t;/* Touch Panel interrupt */
-DECL|macro|CORGI_GPIO_nSD_CLK
-mdefine_line|#define CORGI_GPIO_nSD_CLK&t;&t;&t;(6)
+mdefine_line|#define CORGI_GPIO_TP_INT&t;&t;&t;(5)&t;/* Touch Panel Interrupt */
 DECL|macro|CORGI_GPIO_nSD_WP
 mdefine_line|#define CORGI_GPIO_nSD_WP&t;&t;&t;(7)
 DECL|macro|CORGI_GPIO_nSD_DETECT
-mdefine_line|#define CORGI_GPIO_nSD_DETECT&t;&t;(9)
+mdefine_line|#define CORGI_GPIO_nSD_DETECT&t;&t;(9) /* MMC/SD Card Detect */
 DECL|macro|CORGI_GPIO_nSD_INT
 mdefine_line|#define CORGI_GPIO_nSD_INT&t;&t;&t;(10)
 DECL|macro|CORGI_GPIO_MAIN_BAT_LOW
@@ -29,23 +26,29 @@ mdefine_line|#define CORGI_GPIO_BAT_COVER&t;&t;(11)
 DECL|macro|CORGI_GPIO_LED_ORANGE
 mdefine_line|#define CORGI_GPIO_LED_ORANGE&t;&t;(13)
 DECL|macro|CORGI_GPIO_CF_CD
-mdefine_line|#define CORGI_GPIO_CF_CD&t;&t;&t;(14)
+mdefine_line|#define CORGI_GPIO_CF_CD&t;&t;&t;(14) /* Compact Flash Card Detect */
 DECL|macro|CORGI_GPIO_CHRG_FULL
 mdefine_line|#define CORGI_GPIO_CHRG_FULL&t;&t;(16)
 DECL|macro|CORGI_GPIO_CF_IRQ
-mdefine_line|#define CORGI_GPIO_CF_IRQ&t;&t;&t;(17)
+mdefine_line|#define CORGI_GPIO_CF_IRQ&t;&t;&t;(17) /* Compact Flash Interrupt */
+DECL|macro|CORGI_GPIO_LCDCON_CS
+mdefine_line|#define CORGI_GPIO_LCDCON_CS&t;&t;(19) /* LCD Control Chip Select */
+DECL|macro|CORGI_GPIO_MAX1111_CS
+mdefine_line|#define CORGI_GPIO_MAX1111_CS&t;&t;(20) /* MAX111 Chip Select */
 DECL|macro|CORGI_GPIO_ADC_TEMP_ON
 mdefine_line|#define CORGI_GPIO_ADC_TEMP_ON&t;&t;(21)
 DECL|macro|CORGI_GPIO_IR_ON
 mdefine_line|#define CORGI_GPIO_IR_ON&t;&t;&t;(22)
+DECL|macro|CORGI_GPIO_ADS7846_CS
+mdefine_line|#define CORGI_GPIO_ADS7846_CS&t;&t;(24) /* ADS7846 Chip Select */
 DECL|macro|CORGI_GPIO_SD_PWR
-mdefine_line|#define CORGI_GPIO_SD_PWR&t;&t;&t;(33)
+mdefine_line|#define CORGI_GPIO_SD_PWR&t;&t;&t;(33) /* MMC/SD Power */
 DECL|macro|CORGI_GPIO_CHRG_ON
 mdefine_line|#define CORGI_GPIO_CHRG_ON&t;&t;&t;(38)
 DECL|macro|CORGI_GPIO_DISCHARGE_ON
 mdefine_line|#define CORGI_GPIO_DISCHARGE_ON&t;&t;(42)
 DECL|macro|CORGI_GPIO_HSYNC
-mdefine_line|#define CORGI_GPIO_HSYNC&t;&t;&t;(44)
+mdefine_line|#define CORGI_GPIO_HSYNC&t;&t;&t;(44) /* LCD HSync Pulse */
 DECL|macro|CORGI_GPIO_USB_PULLUP
 mdefine_line|#define CORGI_GPIO_USB_PULLUP&t;&t;(45)
 multiline_comment|/*&n; * Corgi Keyboard Definitions&n; */

@@ -1768,6 +1768,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Send a high priority character to the tty.&n; */
 DECL|function|send_prio_char
+r_static
 r_void
 id|send_prio_char
 c_func

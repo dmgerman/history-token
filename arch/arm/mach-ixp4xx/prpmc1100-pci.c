@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * arch/arm/mach-ixp4xx/prpmc1100-pci.c &n; *&n; * PrPMC1100 PCI initialization&n; *&n; * Copyright (C) 2003-2004 MontaVista Sofwtare, Inc. &n; * Based on IXDP425 code originally (C) Intel Corporation&n; *&n; * Author: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; *&n; * PrPMC1100 PCI init code.  GPIO usage is similar to that on &n; * IXDP425, but the IRQ routing is completely different and&n; * depends on what carrier you are using. This code is written&n; * to work on the Motorola PrPMC800 ATX carrier board.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

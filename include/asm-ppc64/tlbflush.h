@@ -90,7 +90,7 @@ op_star
 id|batch
 op_assign
 op_amp
-id|__get_cpu_var
+id|get_cpu_var
 c_func
 (paren
 id|ppc64_tlb_batch
@@ -105,6 +105,12 @@ id|__flush_tlb_pending
 c_func
 (paren
 id|batch
+)paren
+suffix:semicolon
+id|put_cpu_var
+c_func
+(paren
+id|ppc64_tlb_batch
 )paren
 suffix:semicolon
 )brace
