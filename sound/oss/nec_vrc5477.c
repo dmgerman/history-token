@@ -36,7 +36,6 @@ DECL|macro|VRC5477_AC97_DEBUG
 mdefine_line|#define VRC5477_AC97_DEBUG
 macro_line|#endif
 macro_line|#if defined(VRC5477_AC97_DEBUG)
-macro_line|#include &lt;linux/kernel.h&gt;
 DECL|macro|ASSERT
 mdefine_line|#define ASSERT(x)  if (!(x)) { &bslash;&n;&t;panic(&quot;assertion failed at %s:%d: %s&bslash;n&quot;, __FILE__, __LINE__, #x); }
 macro_line|#else

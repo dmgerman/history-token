@@ -18,7 +18,6 @@ macro_line|#include &quot;sound_config.h&quot;
 multiline_comment|/*****************************************************************************/
 multiline_comment|/* debug stuff */
 macro_line|#ifdef VWSND_DEBUG
-macro_line|#include &lt;linux/interrupt.h&gt;&t;&t;/* for in_interrupt() */
 DECL|variable|shut_up
 r_static
 r_int
