@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/list.h&gt;
 multiline_comment|/*&n; * Yes this is ugly, but moving all of ACPI&squot;s private headers to include/acpi &n; * isn&squot;t the right answer either.  Please just ignore it for now.&n; */
 macro_line|#include &quot;../../drivers/acpi/include/acpi.h&quot;
 macro_line|#include &lt;asm/acpi.h&gt;
-macro_line|#ifdef CONFIG_ACPI_BOOT
+macro_line|#ifdef CONFIG_ACPI
 DECL|enum|acpi_irq_model_id
 r_enum
 id|acpi_irq_model_id

@@ -21,12 +21,12 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Boot-time Configuration&n;   -------------------------------------------------------------------------- */
-macro_line|#ifdef CONFIG_ACPI_BOOT
 DECL|variable|acpi_irq_model
 r_enum
 id|acpi_irq_model_id
 id|acpi_irq_model
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/*&n; * Use reserved fixmap pages for physical-to-virtual mappings of ACPI tables.&n; * Note that the same range is used for each table, so tables that need to&n; * persist should be memcpy&squot;d.&n; */
 r_char
 op_star
