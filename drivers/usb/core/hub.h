@@ -350,6 +350,12 @@ op_star
 id|intf
 suffix:semicolon
 multiline_comment|/* the &quot;real&quot; device */
+DECL|member|hdev
+r_struct
+id|usb_device
+op_star
+id|hdev
+suffix:semicolon
 DECL|member|urb
 r_struct
 id|urb
