@@ -1190,7 +1190,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;revision&bslash;t: %hd.%hd&bslash;n&quot;
+l_string|&quot;revision&bslash;t: %hd.%hd&bslash;n&bslash;n&quot;
 comma
 id|maj
 comma

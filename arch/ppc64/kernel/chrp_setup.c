@@ -306,6 +306,11 @@ id|rd_image_start
 suffix:semicolon
 multiline_comment|/* starting block # of image */
 macro_line|#endif
+r_extern
+r_int
+r_int
+id|ppc_tb_freq
+suffix:semicolon
 r_void
 DECL|function|chrp_get_cpuinfo
 id|chrp_get_cpuinfo
@@ -328,6 +333,16 @@ op_star
 id|model
 op_assign
 l_string|&quot;&quot;
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;timebase&bslash;t: %lu&bslash;n&quot;
+comma
+id|ppc_tb_freq
+)paren
 suffix:semicolon
 id|root
 op_assign
