@@ -8693,6 +8693,14 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|h8300_ide_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * probe_for_hwifs() finds/initializes &quot;known&quot; IDE interfaces&n; */
 DECL|function|probe_for_hwifs
 r_static
@@ -8908,6 +8916,13 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDEPNP */
+macro_line|#ifdef CONFIG_H8300
+id|h8300_ide_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; *&t;Actually unregister the subdriver. Called with the&n; *&t;request lock dropped.&n; */
 DECL|function|default_cleanup
