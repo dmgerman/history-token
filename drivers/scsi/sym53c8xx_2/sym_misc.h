@@ -366,7 +366,7 @@ suffix:semicolon
 r_else
 id|elem
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|elem

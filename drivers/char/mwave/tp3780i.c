@@ -1377,7 +1377,7 @@ l_int|0
 comma
 l_string|&quot;mwave_uart&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -1421,7 +1421,7 @@ l_int|0
 comma
 l_string|&quot;mwave_3780i&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace

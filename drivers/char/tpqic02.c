@@ -9367,7 +9367,7 @@ id|TPQBUF_SIZE
 suffix:semicolon
 id|buffaddr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Better to cause a panic than overwite someone else */
 id|status_zombie

@@ -844,7 +844,7 @@ id|uap
 )paren
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
