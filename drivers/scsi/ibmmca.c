@@ -593,6 +593,7 @@ DECL|macro|INTEGRATED_SCSI
 mdefine_line|#define INTEGRATED_SCSI          101
 multiline_comment|/* List of possible IBM-SCSI-adapters */
 DECL|variable|subsys_list
+r_static
 r_struct
 id|subsys_list_struct
 id|subsys_list
