@@ -253,6 +253,7 @@ l_string|&quot;*** ERROR *** &quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_DEBUG
 DECL|variable|ircomm_tty_event
 r_static
 r_char
@@ -292,6 +293,7 @@ l_string|&quot;*** ERROR ****&quot;
 comma
 )brace
 suffix:semicolon
+macro_line|#endif /* CONFIG_IRDA_DEBUG */
 DECL|variable|state
 r_static
 r_int
