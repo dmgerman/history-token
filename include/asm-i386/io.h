@@ -442,18 +442,36 @@ macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#ifdef SLOW_IO_BY_JUMPING
 DECL|macro|__SLOW_DOWN_IO
-mdefine_line|#define __SLOW_DOWN_IO &quot;&bslash;njmp 1f&bslash;n1:&bslash;tjmp 1f&bslash;n1:&quot;
+mdefine_line|#define __SLOW_DOWN_IO &quot;jmp 1f; 1: jmp 1f; 1:&quot;
 macro_line|#else
 DECL|macro|__SLOW_DOWN_IO
-mdefine_line|#define __SLOW_DOWN_IO &quot;&bslash;noutb %%al,$0x80&quot;
+mdefine_line|#define __SLOW_DOWN_IO &quot;outb %%al,$0x80;&quot;
 macro_line|#endif
+DECL|function|slow_down_io
+r_static
+r_inline
+r_void
+id|slow_down_io
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+id|__SLOW_DOWN_IO
 macro_line|#ifdef REALLY_SLOW_IO
-DECL|macro|__FULL_SLOW_DOWN_IO
-mdefine_line|#define __FULL_SLOW_DOWN_IO __SLOW_DOWN_IO __SLOW_DOWN_IO __SLOW_DOWN_IO __SLOW_DOWN_IO
-macro_line|#else
-DECL|macro|__FULL_SLOW_DOWN_IO
-mdefine_line|#define __FULL_SLOW_DOWN_IO __SLOW_DOWN_IO
+id|__SLOW_DOWN_IO
+id|__SLOW_DOWN_IO
+id|__SLOW_DOWN_IO
 macro_line|#endif
+suffix:colon
+suffix:colon
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_MULTIQUAD
 r_extern
 r_void
@@ -461,130 +479,41 @@ op_star
 id|xquad_portio
 suffix:semicolon
 multiline_comment|/* Where the IO area was mapped */
-macro_line|#endif /* CONFIG_MULTIQUAD */
-multiline_comment|/*&n; * Talk about misusing macros..&n; */
-DECL|macro|__OUT1
-mdefine_line|#define __OUT1(s,x) &bslash;&n;static inline void out##s(unsigned x value, unsigned short port) {
-DECL|macro|__OUT2
-mdefine_line|#define __OUT2(s,s1,s2) &bslash;&n;__asm__ __volatile__ (&quot;out&quot; #s &quot; %&quot; s1 &quot;0,%&quot; s2 &quot;1&quot;
-macro_line|#ifdef CONFIG_MULTIQUAD
-DECL|macro|__OUTQ
-mdefine_line|#define __OUTQ(s,ss,x)    /* Do the equivalent of the portio op on quads */ &bslash;&n;static inline void out##ss(unsigned x value, unsigned short port) { &bslash;&n;&t;if (xquad_portio) &bslash;&n;&t;&t;write##s(value, (unsigned long) xquad_portio + port); &bslash;&n;&t;else               /* We&squot;re still in early boot, running on quad 0 */ &bslash;&n;&t;&t;out##ss##_local(value, port); &bslash;&n;} &bslash;&n;static inline void out##ss##_quad(unsigned x value, unsigned short port, int quad) { &bslash;&n;&t;if (xquad_portio) &bslash;&n;&t;&t;write##s(value, (unsigned long) xquad_portio + (XQUAD_PORTIO_QUAD*quad)&bslash;&n;&t;&t;&t;+ port); &bslash;&n;}
-DECL|macro|__INQ
-mdefine_line|#define __INQ(s,ss)       /* Do the equivalent of the portio op on quads */ &bslash;&n;static inline RETURN_TYPE in##ss(unsigned short port) { &bslash;&n;&t;if (xquad_portio) &bslash;&n;&t;&t;return read##s((unsigned long) xquad_portio + port); &bslash;&n;&t;else               /* We&squot;re still in early boot, running on quad 0 */ &bslash;&n;&t;&t;return in##ss##_local(port); &bslash;&n;} &bslash;&n;static inline RETURN_TYPE in##ss##_quad(unsigned short port, int quad) { &bslash;&n;&t;if (xquad_portio) &bslash;&n;&t;&t;return read##s((unsigned long) xquad_portio + (XQUAD_PORTIO_QUAD*quad)&bslash;&n;&t;&t;&t;+ port); &bslash;&n;&t;else&bslash;&n;&t;&t;return 0;&bslash;&n;}
-macro_line|#endif /* CONFIG_MULTIQUAD */
-macro_line|#ifndef CONFIG_MULTIQUAD
-DECL|macro|__OUT
-mdefine_line|#define __OUT(s,s1,x) &bslash;&n;__OUT1(s,x) __OUT2(s,s1,&quot;w&quot;) : : &quot;a&quot; (value), &quot;Nd&quot; (port)); } &bslash;&n;__OUT1(s##_p,x) __OUT2(s,s1,&quot;w&quot;) __FULL_SLOW_DOWN_IO : : &quot;a&quot; (value), &quot;Nd&quot; (port));} 
+DECL|macro|XQUAD_PORT_ADDR
+mdefine_line|#define XQUAD_PORT_ADDR(port, quad) (xquad_portio + (XQUAD_PORTIO_QUAD*quad) + port)
+DECL|macro|__BUILDIO
+mdefine_line|#define __BUILDIO(bwl,bw,type) &bslash;&n;static inline void out##bwl##_quad(unsigned type value, int port, int quad) { &bslash;&n;&t;if (xquad_portio) &bslash;&n;&t;&t;write##bwl(value, XQUAD_PORT_ADDR(port, quad)); &bslash;&n;&t;else &bslash;&n;&t;&t;out##bwl##_local(value, port); &bslash;&n;} &bslash;&n;static inline void out##bwl(unsigned type value, int port) { &bslash;&n;&t;out##bwl##_quad(value, port, 0); &bslash;&n;} &bslash;&n;static inline unsigned type in##bwl##_quad(int port, int quad) { &bslash;&n;&t;if (xquad_portio) &bslash;&n;&t;&t;return read##bwl(XQUAD_PORT_ADDR(port, quad)); &bslash;&n;&t;else &bslash;&n;&t;&t;return in##bwl##_local(port); &bslash;&n;} &bslash;&n;static inline unsigned type in##bwl(int port) { &bslash;&n;&t;return in##bwl##_quad(port, 0); &bslash;&n;}
 macro_line|#else
-multiline_comment|/* Make the default portio routines operate on quad 0 */
-DECL|macro|__OUT
-mdefine_line|#define __OUT(s,s1,x) &bslash;&n;__OUT1(s##_local,x) __OUT2(s,s1,&quot;w&quot;) : : &quot;a&quot; (value), &quot;Nd&quot; (port)); } &bslash;&n;__OUT1(s##_p_local,x) __OUT2(s,s1,&quot;w&quot;) __FULL_SLOW_DOWN_IO : : &quot;a&quot; (value), &quot;Nd&quot; (port));} &bslash;&n;__OUTQ(s,s,x) &bslash;&n;__OUTQ(s,s##_p,x) 
-macro_line|#endif /* CONFIG_MULTIQUAD */
-DECL|macro|__IN1
-mdefine_line|#define __IN1(s) &bslash;&n;static inline RETURN_TYPE in##s(unsigned short port) { RETURN_TYPE _v;
-DECL|macro|__IN2
-mdefine_line|#define __IN2(s,s1,s2) &bslash;&n;__asm__ __volatile__ (&quot;in&quot; #s &quot; %&quot; s2 &quot;1,%&quot; s1 &quot;0&quot;
-macro_line|#ifndef CONFIG_MULTIQUAD
-DECL|macro|__IN
-mdefine_line|#define __IN(s,s1,i...) &bslash;&n;__IN1(s) __IN2(s,s1,&quot;w&quot;) : &quot;=a&quot; (_v) : &quot;Nd&quot; (port) ,##i ); return _v; } &bslash;&n;__IN1(s##_p) __IN2(s,s1,&quot;w&quot;) __FULL_SLOW_DOWN_IO : &quot;=a&quot; (_v) : &quot;Nd&quot; (port) ,##i ); return _v; } 
-macro_line|#else
-multiline_comment|/* Make the default portio routines operate on quad 0 */
-DECL|macro|__IN
-mdefine_line|#define __IN(s,s1,i...) &bslash;&n;__IN1(s##_local) __IN2(s,s1,&quot;w&quot;) : &quot;=a&quot; (_v) : &quot;Nd&quot; (port) ,##i ); return _v; } &bslash;&n;__IN1(s##_p_local) __IN2(s,s1,&quot;w&quot;) __FULL_SLOW_DOWN_IO : &quot;=a&quot; (_v) : &quot;Nd&quot; (port) ,##i ); return _v; } &bslash;&n;__INQ(s,s) &bslash;&n;__INQ(s,s##_p) 
-macro_line|#endif /* CONFIG_MULTIQUAD */
-DECL|macro|__INS
-mdefine_line|#define __INS(s) &bslash;&n;static inline void ins##s(unsigned short port, void * addr, unsigned long count) &bslash;&n;{ __asm__ __volatile__ (&quot;rep ; ins&quot; #s &bslash;&n;: &quot;=D&quot; (addr), &quot;=c&quot; (count) : &quot;d&quot; (port),&quot;0&quot; (addr),&quot;1&quot; (count)); }
-DECL|macro|__OUTS
-mdefine_line|#define __OUTS(s) &bslash;&n;static inline void outs##s(unsigned short port, const void * addr, unsigned long count) &bslash;&n;{ __asm__ __volatile__ (&quot;rep ; outs&quot; #s &bslash;&n;: &quot;=S&quot; (addr), &quot;=c&quot; (count) : &quot;d&quot; (port),&quot;0&quot; (addr),&quot;1&quot; (count)); }
-DECL|macro|RETURN_TYPE
-mdefine_line|#define RETURN_TYPE unsigned char
-id|__IN
+DECL|macro|__BUILDIO
+mdefine_line|#define __BUILDIO(bwl,bw,type) &bslash;&n;static inline void out##bwl(unsigned type value, int port) { &bslash;&n;&t;out##bwl##_local(value, port); &bslash;&n;} &bslash;&n;static inline unsigned type in##bwl(int port) { &bslash;&n;&t;return in##bwl##_local(port); &bslash;&n;}
+macro_line|#endif
+DECL|macro|BUILDIO
+mdefine_line|#define BUILDIO(bwl,bw,type) &bslash;&n;static inline void out##bwl##_local(unsigned type value, int port) { &bslash;&n;&t;__asm__ __volatile__(&quot;out&quot; #bwl &quot; %&quot; #bw &quot;0, %w1&quot; : : &quot;a&quot;(value), &quot;Nd&quot;(port)); &bslash;&n;} &bslash;&n;static inline unsigned type in##bwl##_local(int port) { &bslash;&n;&t;unsigned type value; &bslash;&n;&t;__asm__ __volatile__(&quot;in&quot; #bwl &quot; %w1, %&quot; #bw &quot;0&quot; : &quot;=a&quot;(value) : &quot;Nd&quot;(port)); &bslash;&n;&t;return value; &bslash;&n;} &bslash;&n;static inline void out##bwl##_local_p(unsigned type value, int port) { &bslash;&n;&t;out##bwl##_local(value, port); &bslash;&n;&t;slow_down_io(); &bslash;&n;} &bslash;&n;static inline unsigned type in##bwl##_local_p(int port) { &bslash;&n;&t;unsigned type value = in##bwl##_local(port); &bslash;&n;&t;slow_down_io(); &bslash;&n;&t;return value; &bslash;&n;} &bslash;&n;__BUILDIO(bwl,bw,type) &bslash;&n;static inline void out##bwl##_p(unsigned type value, int port) { &bslash;&n;&t;out##bwl(value, port); &bslash;&n;&t;slow_down_io(); &bslash;&n;} &bslash;&n;static inline unsigned type in##bwl##_p(int port) { &bslash;&n;&t;unsigned type value = in##bwl(port); &bslash;&n;&t;slow_down_io(); &bslash;&n;&t;return value; &bslash;&n;} &bslash;&n;static inline void outs##bwl(int port, const void *addr, unsigned long count) { &bslash;&n;&t;__asm__ __volatile__(&quot;rep; outs&quot; #bwl : &quot;+S&quot;(addr), &quot;+c&quot;(count) : &quot;d&quot;(port)); &bslash;&n;} &bslash;&n;static inline void ins##bwl(int port, void *addr, unsigned long count) { &bslash;&n;&t;__asm__ __volatile__(&quot;rep; ins&quot; #bwl : &quot;+D&quot;(addr), &quot;+c&quot;(count) : &quot;d&quot;(port)); &bslash;&n;}
+id|BUILDIO
 c_func
 (paren
 id|b
 comma
-l_string|&quot;&quot;
-)paren
-DECL|macro|RETURN_TYPE
-macro_line|#undef RETURN_TYPE
-DECL|macro|RETURN_TYPE
-mdefine_line|#define RETURN_TYPE unsigned short
-id|__IN
-c_func
-(paren
-id|w
-comma
-l_string|&quot;&quot;
-)paren
-DECL|macro|RETURN_TYPE
-macro_line|#undef RETURN_TYPE
-DECL|macro|RETURN_TYPE
-mdefine_line|#define RETURN_TYPE unsigned int
-id|__IN
-c_func
-(paren
-id|l
-comma
-l_string|&quot;&quot;
-)paren
-DECL|macro|RETURN_TYPE
-macro_line|#undef RETURN_TYPE
-id|__OUT
-c_func
-(paren
 id|b
-comma
-l_string|&quot;b&quot;
 comma
 r_char
 )paren
-id|__OUT
+id|BUILDIO
 c_func
 (paren
 id|w
 comma
-l_string|&quot;w&quot;
+id|w
 comma
 r_int
 )paren
-id|__OUT
+id|BUILDIO
 c_func
 (paren
 id|l
 comma
 comma
 r_int
-)paren
-id|__INS
-c_func
-(paren
-id|b
-)paren
-id|__INS
-c_func
-(paren
-id|w
-)paren
-id|__INS
-c_func
-(paren
-id|l
-)paren
-id|__OUTS
-c_func
-(paren
-id|b
-)paren
-id|__OUTS
-c_func
-(paren
-id|w
-)paren
-id|__OUTS
-c_func
-(paren
-id|l
 )paren
 macro_line|#endif
 eof
