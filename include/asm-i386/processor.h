@@ -1636,7 +1636,7 @@ id|x
 id|alternative_input
 c_func
 (paren
-id|ASM_NOP3
+id|ASM_NOP4
 comma
 l_string|&quot;prefetchnta (%1)&quot;
 comma
@@ -1672,7 +1672,7 @@ id|x
 id|alternative_input
 c_func
 (paren
-id|ASM_NOP3
+id|ASM_NOP4
 comma
 l_string|&quot;prefetchw (%1)&quot;
 comma
