@@ -1941,6 +1941,80 @@ DECL|typedef|emu10k1_midi_t
 )brace
 id|emu10k1_midi_t
 suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|vendor
+id|u32
+id|vendor
+suffix:semicolon
+DECL|member|device
+id|u32
+id|device
+suffix:semicolon
+DECL|member|subsystem
+id|u32
+id|subsystem
+suffix:semicolon
+DECL|member|emu10k1_chip
+id|u32
+id|emu10k1_chip
+suffix:semicolon
+multiline_comment|/* Original SB Live. Not SB Live 24bit. */
+DECL|member|emu10k2_chip
+id|u32
+id|emu10k2_chip
+suffix:semicolon
+multiline_comment|/* Audigy 1 or Audigy 2. */
+DECL|member|ca0102_chip
+id|u32
+id|ca0102_chip
+suffix:semicolon
+multiline_comment|/* Audigy 1 or Audigy 2. Not SB Audigy 2 Value. */
+DECL|member|ca0108_chip
+id|u32
+id|ca0108_chip
+suffix:semicolon
+multiline_comment|/* Audigy 2 Value */
+DECL|member|ca0151_chip
+id|u32
+id|ca0151_chip
+suffix:semicolon
+multiline_comment|/* P16V */
+DECL|member|spk71
+id|u32
+id|spk71
+suffix:semicolon
+multiline_comment|/* Has 7.1 speakers */
+DECL|member|spdif_bug
+id|u32
+id|spdif_bug
+suffix:semicolon
+multiline_comment|/* Has Spdif phasing bug */
+DECL|member|ac97_chip
+id|u32
+id|ac97_chip
+suffix:semicolon
+multiline_comment|/* Has an AC97 chip */
+DECL|member|ecard
+id|u32
+id|ecard
+suffix:semicolon
+multiline_comment|/* APS EEPROM */
+DECL|member|driver
+r_char
+op_star
+id|driver
+suffix:semicolon
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|typedef|emu_chip_details_t
+)brace
+id|emu_chip_details_t
+suffix:semicolon
 DECL|struct|_snd_emu10k1
 r_struct
 id|_snd_emu10k1
@@ -1987,6 +2061,12 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 7.1 configuration (Audigy 2 ZS) */
+DECL|member|card_capabilities
+id|emu_chip_details_t
+op_star
+id|card_capabilities
+suffix:semicolon
+multiline_comment|/* Contains profile of card capabilities */
 DECL|member|audigy
 r_int
 r_int
