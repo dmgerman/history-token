@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  ebtable_broute&n; *&n; *&t;Authors:&n; *&t;Bart De Sc
 macro_line|#include &lt;linux/netfilter_bridge/ebtables.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 multiline_comment|/* EBT_ACCEPT means the frame will be bridged&n; * EBT_DROP means the frame will be routed&n; */
 DECL|variable|initial_chain
 r_static
@@ -241,22 +240,10 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
-id|br_write_lock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
 multiline_comment|/* see br_input.c */
 id|br_should_route_hook
 op_assign
 id|ebt_broute
-suffix:semicolon
-id|br_write_unlock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
-)paren
 suffix:semicolon
 r_return
 id|ret
@@ -272,20 +259,13 @@ c_func
 r_void
 )paren
 (brace
-id|br_write_lock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
 id|br_should_route_hook
 op_assign
 l_int|NULL
 suffix:semicolon
-id|br_write_unlock_bh
+id|synchronize_net
 c_func
 (paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 id|ebt_unregister_table
