@@ -32,11 +32,6 @@ macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_NFORCE2_SMBUS
 DECL|macro|PCI_DEVICE_ID_NVIDIA_NFORCE2_SMBUS
 mdefine_line|#define PCI_DEVICE_ID_NVIDIA_NFORCE2_SMBUS   0x0064
 macro_line|#endif
-multiline_comment|/* TODO: sync with lm-sensors */
-macro_line|#ifndef I2C_HW_SMBUS_NFORCE2
-DECL|macro|I2C_HW_SMBUS_NFORCE2
-mdefine_line|#define I2C_HW_SMBUS_NFORCE2&t;0x0c
-macro_line|#endif
 DECL|struct|nforce2_smbus
 r_struct
 id|nforce2_smbus
@@ -226,30 +221,6 @@ l_string|&quot;unset&quot;
 comma
 )brace
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* Internally used pause function */
-r_static
-r_void
-id|nforce2_do_pause
-c_func
-(paren
-r_int
-r_int
-id|amount
-)paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|amount
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Return -1 on error. See smbus.h for more information */
 DECL|function|nforce2_access
 r_static
@@ -731,7 +702,7 @@ suffix:semicolon
 macro_line|#if 0
 r_do
 (brace
-id|nforce2_do_pause
+id|i2c_do_pause
 c_func
 (paren
 l_int|1
@@ -1146,10 +1117,13 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;smbus-&gt;adapter.owner = THIS_MODULE;&n;&t;smbus-&gt;adapter.id = I2C_ALGO_SMBUS | I2C_HW_SMBUS_NFORCE2;&n;&t;smbus-&gt;adapter.algo = &amp;smbus_algorithm;&n;&t;smbus-&gt;adapter.algo_data = smbus;&n;*/
 id|smbus-&gt;adapter
 op_assign
 id|nforce2_adapter
+suffix:semicolon
+id|smbus-&gt;adapter.algo_data
+op_assign
+id|smbus
 suffix:semicolon
 id|smbus-&gt;adapter.dev.parent
 op_assign

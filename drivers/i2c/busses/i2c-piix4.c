@@ -385,6 +385,41 @@ op_amp
 id|temp
 )paren
 suffix:semicolon
+multiline_comment|/* Some BIOS will set up the chipset incorrectly and leave a register&n;&t;   in an undefined state (causing I2C to act very strangely). */
+r_if
+c_cond
+(paren
+id|temp
+op_amp
+l_int|0x02
+)paren
+(brace
+id|dev_info
+c_func
+(paren
+op_amp
+id|PIIX4_dev-&gt;dev
+comma
+l_string|&quot;Worked around buggy BIOS (I2C)&bslash;n&quot;
+)paren
+suffix:semicolon
+id|temp
+op_assign
+id|temp
+op_amp
+l_int|0xfd
+suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|PIIX4_dev
+comma
+id|SMBHSTCFG
+comma
+id|temp
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* If force_addr is set, we program the new address here. Just to make&n;&t;   sure, we disable the PIIX4 first. */
 r_if
 c_cond
