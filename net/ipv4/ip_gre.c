@@ -829,6 +829,15 @@ id|dev-&gt;init
 op_assign
 id|ipgre_tunnel_init
 suffix:semicolon
+id|nt
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|nt-&gt;parms
+op_assign
+op_star
+id|parms
+suffix:semicolon
 r_if
 c_cond
 (paren
