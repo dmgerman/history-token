@@ -29284,7 +29284,11 @@ op_logical_and
 (paren
 id|mac_stat
 op_amp
+(paren
 id|MAC_STATUS_PCS_SYNCED
+op_or
+id|MAC_STATUS_SIGNAL_DET
+)paren
 )paren
 )paren
 (brace
