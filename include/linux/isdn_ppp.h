@@ -66,22 +66,6 @@ DECL|macro|SC_OUT_SHORT_SEQ
 mdefine_line|#define SC_OUT_SHORT_SEQ 0x00000800
 DECL|macro|SC_IN_SHORT_SEQ
 mdefine_line|#define SC_IN_SHORT_SEQ  0x00004000
-DECL|macro|SC_DECOMP_ON
-mdefine_line|#define SC_DECOMP_ON&t;&t;0x01
-DECL|macro|SC_COMP_ON
-mdefine_line|#define SC_COMP_ON&t;&t;0x02
-DECL|macro|SC_DECOMP_DISCARD
-mdefine_line|#define SC_DECOMP_DISCARD&t;0x04
-DECL|macro|SC_COMP_DISCARD
-mdefine_line|#define SC_COMP_DISCARD&t;&t;0x08
-DECL|macro|SC_LINK_DECOMP_ON
-mdefine_line|#define SC_LINK_DECOMP_ON&t;0x10
-DECL|macro|SC_LINK_COMP_ON
-mdefine_line|#define SC_LINK_COMP_ON&t;&t;0x20
-DECL|macro|SC_LINK_DECOMP_DISCARD
-mdefine_line|#define SC_LINK_DECOMP_DISCARD&t;0x40
-DECL|macro|SC_LINK_COMP_DISCARD
-mdefine_line|#define SC_LINK_COMP_DISCARD&t;0x80
 DECL|macro|ISDN_PPP_COMP_MAX_OPTIONS
 mdefine_line|#define ISDN_PPP_COMP_MAX_OPTIONS 16
 DECL|macro|IPPP_COMP_FLAG_XMIT

@@ -627,10 +627,6 @@ id|kick_up
 r_void
 op_star
 id|priv
-comma
-r_int
-r_int
-id|flags
 )paren
 )paren
 (brace
@@ -845,6 +841,28 @@ id|mru
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+r_int
+r_int
+id|ippp_ccp_get_flags
+c_func
+(paren
+r_struct
+id|ippp_ccp
+op_star
+id|ccp
+)paren
+suffix:semicolon
+(brace
+r_return
+id|idev-&gt;ccp-&gt;compflags
+op_amp
+(paren
+id|SC_DC_ERROR
+op_or
+id|SC_DC_FERROR
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * compress a frame &n; * returns original skb if we did not compress the frame&n; * and a new skb otherwise&n; */
@@ -1290,6 +1308,10 @@ suffix:semicolon
 r_case
 id|DECOMP_FATALERROR
 suffix:colon
+id|ccp-&gt;compflags
+op_or_assign
+id|SC_DC_FERROR
+suffix:semicolon
 multiline_comment|/* Kick ipppd to recognize the error */
 id|ccp
 op_member_access_from_pointer
@@ -1297,8 +1319,6 @@ id|kick_up
 c_func
 (paren
 id|ccp-&gt;priv
-comma
-id|SC_DC_FERROR
 )paren
 suffix:semicolon
 r_break

@@ -1,5 +1,15 @@
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/isdn_ppp.h&gt;
+multiline_comment|/* for ippp_ccp::flags */
+DECL|macro|SC_DECOMP_ON
+mdefine_line|#define SC_DECOMP_ON&t;&t;0x01
+DECL|macro|SC_COMP_ON
+mdefine_line|#define SC_COMP_ON&t;&t;0x02
+DECL|macro|SC_DECOMP_DISCARD
+mdefine_line|#define SC_DECOMP_DISCARD&t;0x04
+DECL|macro|SC_COMP_DISCARD
+mdefine_line|#define SC_COMP_DISCARD&t;&t;0x08
+multiline_comment|/* SC_DC_ERROR/FERROR go in here as well, but are defined elsewhere&n;&n;   #define SC_DC_FERROR&t;0x00800000&n;   #define SC_DC_ERROR&t;0x00400000&n;*/
 DECL|struct|ippp_ccp
 r_struct
 id|ippp_ccp
@@ -95,10 +105,6 @@ id|kick_up
 r_void
 op_star
 id|priv
-comma
-r_int
-r_int
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -155,10 +161,6 @@ id|kick_up
 r_void
 op_star
 id|priv
-comma
-r_int
-r_int
-id|flags
 )paren
 )paren
 suffix:semicolon
@@ -184,6 +186,17 @@ comma
 r_int
 r_int
 id|mru
+)paren
+suffix:semicolon
+r_int
+r_int
+id|ippp_ccp_get_flags
+c_func
+(paren
+r_struct
+id|ippp_ccp
+op_star
+id|ccp
 )paren
 suffix:semicolon
 r_struct
