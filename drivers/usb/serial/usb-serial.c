@@ -3101,8 +3101,6 @@ r_if
 c_cond
 (paren
 id|retval
-OL
-l_int|0
 )paren
 (brace
 id|dbg
@@ -3116,8 +3114,7 @@ id|serial
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENODEV
+id|retval
 suffix:semicolon
 )brace
 )brace
