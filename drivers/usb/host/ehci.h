@@ -916,6 +916,143 @@ l_int|32
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* description of one iso highspeed transaction (up to 3 KB data) */
+DECL|struct|ehci_iso_uframe
+r_struct
+id|ehci_iso_uframe
+(brace
+multiline_comment|/* These will be copied to iTD when scheduling */
+DECL|member|bufp
+id|u64
+id|bufp
+suffix:semicolon
+multiline_comment|/* itd-&gt;hw_bufp{,_hi}[pg] |= */
+DECL|member|transaction
+id|u32
+id|transaction
+suffix:semicolon
+multiline_comment|/* itd-&gt;hw_transaction[i] |= */
+DECL|member|cross
+id|u8
+id|cross
+suffix:semicolon
+multiline_comment|/* buf crosses pages */
+)brace
+suffix:semicolon
+multiline_comment|/* temporary schedule data for highspeed packets from iso urbs&n; * each packet is one uframe&squot;s usb transactions, in some itd,&n; * beginning at stream-&gt;next_uframe&n; */
+DECL|struct|ehci_itd_sched
+r_struct
+id|ehci_itd_sched
+(brace
+DECL|member|itd_list
+r_struct
+id|list_head
+id|itd_list
+suffix:semicolon
+DECL|member|span
+r_int
+id|span
+suffix:semicolon
+DECL|member|packet
+r_struct
+id|ehci_iso_uframe
+id|packet
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * ehci_iso_stream - groups all (s)itds for this endpoint.&n; * acts like a qh would, if EHCI had them for ISO.&n; */
+DECL|struct|ehci_iso_stream
+r_struct
+id|ehci_iso_stream
+(brace
+multiline_comment|/* first two fields match QH, but info1 == 0 */
+DECL|member|hw_next
+id|u32
+id|hw_next
+suffix:semicolon
+DECL|member|hw_info1
+id|u32
+id|hw_info1
+suffix:semicolon
+DECL|member|refcount
+id|u32
+id|refcount
+suffix:semicolon
+DECL|member|bEndpointAddress
+id|u8
+id|bEndpointAddress
+suffix:semicolon
+DECL|member|itd_list
+r_struct
+id|list_head
+id|itd_list
+suffix:semicolon
+multiline_comment|/* queued itds */
+DECL|member|free_itd_list
+r_struct
+id|list_head
+id|free_itd_list
+suffix:semicolon
+multiline_comment|/* list of unused itds */
+DECL|member|dev
+r_struct
+id|hcd_dev
+op_star
+id|dev
+suffix:semicolon
+multiline_comment|/* output of (re)scheduling */
+DECL|member|start
+r_int
+r_int
+id|start
+suffix:semicolon
+multiline_comment|/* jiffies */
+DECL|member|rescheduled
+r_int
+r_int
+id|rescheduled
+suffix:semicolon
+DECL|member|next_uframe
+r_int
+id|next_uframe
+suffix:semicolon
+multiline_comment|/* the rest is derived from the endpoint descriptor,&n;&t; * trusting urb-&gt;interval == (1 &lt;&lt; (epdesc-&gt;bInterval - 1)),&n;&t; * including the extra info for hw_bufp[0..2]&n;&t; */
+DECL|member|interval
+id|u8
+id|interval
+suffix:semicolon
+DECL|member|usecs
+id|u8
+id|usecs
+suffix:semicolon
+DECL|member|maxp
+id|u16
+id|maxp
+suffix:semicolon
+DECL|member|bandwidth
+r_int
+id|bandwidth
+suffix:semicolon
+multiline_comment|/* This is used to initialize iTD&squot;s hw_bufp fields */
+DECL|member|buf0
+id|u32
+id|buf0
+suffix:semicolon
+DECL|member|buf1
+id|u32
+id|buf1
+suffix:semicolon
+DECL|member|buf2
+id|u32
+id|buf2
+suffix:semicolon
+multiline_comment|/* ... sITD won&squot;t use buf[012], and needs TT access ... */
+)brace
+suffix:semicolon
+multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * EHCI Specification 0.95 Section 3.3&n; * Fig 3-4 &quot;Isochronous Transaction Descriptor (iTD)&quot;&n; *&n; * Schedule records for high speed iso xfers&n; */
 DECL|struct|ehci_itd
 r_struct
@@ -983,35 +1120,43 @@ id|urb
 op_star
 id|urb
 suffix:semicolon
+DECL|member|stream
+r_struct
+id|ehci_iso_stream
+op_star
+id|stream
+suffix:semicolon
+multiline_comment|/* endpoint&squot;s queue */
 DECL|member|itd_list
 r_struct
 id|list_head
 id|itd_list
 suffix:semicolon
-multiline_comment|/* list of urb frames&squot; itds */
-DECL|member|buf_dma
-id|dma_addr_t
-id|buf_dma
+multiline_comment|/* list of stream&squot;s itds */
+multiline_comment|/* any/all hw_transactions here may be used by that urb */
+DECL|member|frame
+r_int
+id|frame
 suffix:semicolon
-multiline_comment|/* frame&squot;s buffer address */
-multiline_comment|/* for now, only one hw_transaction per itd */
-DECL|member|transaction
-id|u32
-id|transaction
+multiline_comment|/* where scheduled */
+DECL|member|pg
+r_int
+id|pg
 suffix:semicolon
 DECL|member|index
-id|u16
+r_int
 id|index
+(braket
+l_int|8
+)braket
 suffix:semicolon
 multiline_comment|/* in urb-&gt;iso_frame_desc */
-DECL|member|uframe
-id|u16
-id|uframe
-suffix:semicolon
-multiline_comment|/* in periodic schedule */
 DECL|member|usecs
-id|u16
+id|u8
 id|usecs
+(braket
+l_int|8
+)braket
 suffix:semicolon
 )brace
 id|__attribute__
