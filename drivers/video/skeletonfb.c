@@ -714,9 +714,10 @@ id|info.pseudo_palette
 op_assign
 id|pseudo_palette
 suffix:semicolon
+multiline_comment|/*&n;     * Set up flags to indicate what sort of acceleration your&n;     * driver can provide (pan/wrap/copyarea/etc.) and whether it&n;     * is a module -- see FBINFO_* in include/linux/fb.h&n;     */
 id|info.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 id|info.par
 op_assign
