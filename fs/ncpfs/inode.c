@@ -2031,18 +2031,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_star
-(paren
-id|__u32
-op_star
-)paren
-id|raw_data
-op_eq
-id|cpu_to_be32
+id|memcmp
 c_func
 (paren
-l_int|0x76657273
+id|raw_data
+comma
+l_string|&quot;vers&quot;
+comma
+l_int|4
 )paren
+op_eq
+l_int|0
 )paren
 (brace
 id|error
@@ -2753,8 +2752,9 @@ id|aDIR
 suffix:semicolon
 id|finfo.i.dataStreamSize
 op_assign
-id|NCP_BLOCK_SIZE
+l_int|0
 suffix:semicolon
+multiline_comment|/* ignored */
 id|finfo.i.dirEntNum
 op_assign
 l_int|0

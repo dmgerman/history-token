@@ -4960,7 +4960,11 @@ c_func
 (paren
 id|server
 comma
+id|cpu_to_le16
+c_func
+(paren
 l_int|32767
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* max returned items */

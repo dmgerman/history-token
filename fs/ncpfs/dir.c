@@ -4859,7 +4859,11 @@ id|OC_MODE_CREATE
 comma
 id|aDIR
 comma
+id|cpu_to_le16
+c_func
+(paren
 l_int|0xffff
+)paren
 comma
 op_amp
 id|finfo
