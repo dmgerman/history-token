@@ -49,6 +49,24 @@ id|name
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|modversion_info
+r_struct
+id|modversion_info
+(brace
+DECL|member|crc
+r_int
+r_int
+id|crc
+suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+id|MODULE_NAME_LEN
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* These are either module local, or the kernel&squot;s dummy ones. */
 r_extern
 r_int
