@@ -85,16 +85,16 @@ multiline_comment|/* virtual address pointer */
 )brace
 suffix:semicolon
 multiline_comment|/* Event classes */
-DECL|macro|INTERNAL_ERROR
-mdefine_line|#define INTERNAL_ERROR&t;&t;0x80000000 /* set bit 0 */
-DECL|macro|EPOW_WARNING
-mdefine_line|#define EPOW_WARNING&t;&t;0x40000000 /* set bit 1 */
-DECL|macro|POWERMGM_EVENTS
-mdefine_line|#define POWERMGM_EVENTS&t;&t;0x20000000 /* set bit 2 */
-DECL|macro|HOTPLUG_EVENTS
-mdefine_line|#define HOTPLUG_EVENTS&t;&t;0x10000000 /* set bit 3 */
-DECL|macro|EVENT_SCAN_ALL_EVENTS
-mdefine_line|#define EVENT_SCAN_ALL_EVENTS&t;0xf0000000
+DECL|macro|RTAS_INTERNAL_ERROR
+mdefine_line|#define RTAS_INTERNAL_ERROR&t;&t;0x80000000 /* set bit 0 */
+DECL|macro|RTAS_EPOW_WARNING
+mdefine_line|#define RTAS_EPOW_WARNING&t;&t;0x40000000 /* set bit 1 */
+DECL|macro|RTAS_POWERMGM_EVENTS
+mdefine_line|#define RTAS_POWERMGM_EVENTS&t;&t;0x20000000 /* set bit 2 */
+DECL|macro|RTAS_HOTPLUG_EVENTS
+mdefine_line|#define RTAS_HOTPLUG_EVENTS&t;&t;0x10000000 /* set bit 3 */
+DECL|macro|RTAS_EVENT_SCAN_ALL_EVENTS
+mdefine_line|#define RTAS_EVENT_SCAN_ALL_EVENTS&t;0xf0000000
 multiline_comment|/* event-scan returns */
 DECL|macro|SEVERITY_FATAL
 mdefine_line|#define SEVERITY_FATAL&t;&t;0x5

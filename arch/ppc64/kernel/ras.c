@@ -343,9 +343,9 @@ l_int|0x500
 comma
 id|irq
 comma
-id|EPOW_WARNING
+id|RTAS_EPOW_WARNING
 op_or
-id|POWERMGM_EVENTS
+id|RTAS_POWERMGM_EVENTS
 comma
 l_int|1
 comma
@@ -462,7 +462,7 @@ l_int|0x500
 comma
 id|irq
 comma
-id|INTERNAL_ERROR
+id|RTAS_INTERNAL_ERROR
 comma
 l_int|1
 comma

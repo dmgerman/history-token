@@ -70,8 +70,6 @@ r_int
 r_int
 id|rtas_error_log_max
 suffix:semicolon
-DECL|macro|EVENT_SCAN_ALL_EVENTS
-mdefine_line|#define EVENT_SCAN_ALL_EVENTS&t;0xf0000000
 DECL|macro|SURVEILLANCE_TOKEN
 mdefine_line|#define SURVEILLANCE_TOKEN&t;9000
 DECL|macro|SURVEILLANCE_TIMEOUT
@@ -926,7 +924,7 @@ l_int|1
 comma
 l_int|NULL
 comma
-id|EVENT_SCAN_ALL_EVENTS
+id|RTAS_EVENT_SCAN_ALL_EVENTS
 comma
 l_int|0
 comma
