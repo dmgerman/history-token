@@ -870,7 +870,7 @@ op_assign
 op_star
 (paren
 (paren
-r_int
+id|__be32
 op_star
 )paren
 id|bytes
@@ -885,7 +885,7 @@ suffix:semicolon
 op_star
 (paren
 (paren
-r_int
+id|__be32
 op_star
 )paren
 id|dst

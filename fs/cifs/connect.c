@@ -1352,7 +1352,11 @@ suffix:semicolon
 multiline_comment|/* always try 445 first on reconnect&n;&t;&t;&t;&t;&t;since we get NACK on some if we ever&n;&t;&t;&t;&t;&t;connected to port 139 (the NACK is &n;&t;&t;&t;&t;&t;since we do not begin with RFC1001&n;&t;&t;&t;&t;&t;session initialize frame) */
 id|server-&gt;addr.sockAddr.sin_port
 op_assign
+id|htons
+c_func
+(paren
 id|CIFS_PORT
+)paren
 suffix:semicolon
 id|cifs_reconnect
 c_func
@@ -4553,7 +4557,7 @@ DECL|function|find_unc
 id|find_unc
 c_func
 (paren
-id|__u32
+id|__be32
 id|new_target_ip_addr
 comma
 r_char
@@ -5147,9 +5151,7 @@ id|connected
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
-r_int
+id|__be16
 id|orig_port
 op_assign
 l_int|0
@@ -5663,9 +5665,7 @@ id|connected
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
-r_int
+id|__be16
 id|orig_port
 op_assign
 l_int|0
