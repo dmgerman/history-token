@@ -2033,13 +2033,6 @@ c_func
 id|tcp_timewait_cachep
 )paren
 suffix:semicolon
-DECL|variable|tcp_timewait_kill
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_timewait_kill
-)paren
-suffix:semicolon
 DECL|variable|tcp_sendmsg
 id|EXPORT_SYMBOL
 c_func

@@ -531,17 +531,6 @@ id|timeo
 suffix:semicolon
 r_extern
 r_void
-id|tcp_timewait_kill
-c_func
-(paren
-r_struct
-id|tcp_tw_bucket
-op_star
-id|tw
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|tcp_tw_schedule
 c_func
 (paren

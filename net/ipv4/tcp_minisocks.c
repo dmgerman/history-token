@@ -105,6 +105,7 @@ id|tcp_tw_count
 suffix:semicolon
 multiline_comment|/* Must be called with locally disabled BHs. */
 DECL|function|tcp_timewait_kill
+r_static
 r_void
 id|tcp_timewait_kill
 c_func
@@ -535,12 +536,6 @@ c_func
 id|tw
 )paren
 suffix:semicolon
-id|tcp_timewait_kill
-c_func
-(paren
-id|tw
-)paren
-suffix:semicolon
 id|tcp_tw_put
 c_func
 (paren
@@ -679,12 +674,6 @@ l_int|0
 id|kill
 suffix:colon
 id|tcp_tw_deschedule
-c_func
-(paren
-id|tw
-)paren
-suffix:semicolon
-id|tcp_timewait_kill
 c_func
 (paren
 id|tw
@@ -1724,6 +1713,12 @@ c_func
 (paren
 op_amp
 id|tw_death_lock
+)paren
+suffix:semicolon
+id|tcp_timewait_kill
+c_func
+(paren
+id|tw
 )paren
 suffix:semicolon
 )brace
