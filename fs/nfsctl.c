@@ -386,10 +386,12 @@ id|cmd
 comma
 r_struct
 id|nfsctl_arg
+id|__user
 op_star
 id|arg
 comma
 r_void
+id|__user
 op_star
 id|res
 )paren
@@ -400,6 +402,7 @@ op_star
 id|file
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|p
 op_assign
