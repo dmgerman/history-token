@@ -394,7 +394,7 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/* If we are allowed to map IPs, then we must be in the&n;&t;&t;   range specified, otherwise we must be unchanged. */
+multiline_comment|/* If we are supposed to map IPs, then we must be in the&n;&t;&t;   range specified. */
 r_if
 c_cond
 (paren
@@ -446,18 +446,6 @@ dot
 id|max_ip
 )paren
 )paren
-)paren
-r_continue
-suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|tuple-&gt;src.ip
-op_ne
-id|tuple-&gt;src.ip
 )paren
 r_continue
 suffix:semicolon
@@ -2885,10 +2873,6 @@ c_func
 id|pskb
 comma
 id|iphdroff
-op_plus
-id|iph-&gt;ihl
-op_star
-l_int|4
 comma
 id|manip
 comma

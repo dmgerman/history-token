@@ -608,6 +608,20 @@ id|sk_buff
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|nf_ct_attach
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+comma
+r_struct
+id|sk_buff
+op_star
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 r_extern
 r_void
@@ -637,6 +651,25 @@ suffix:semicolon
 macro_line|#else /* !CONFIG_NETFILTER */
 DECL|macro|NF_HOOK
 mdefine_line|#define NF_HOOK(pf, hook, skb, indev, outdev, okfn) (okfn)(skb)
+DECL|function|nf_ct_attach
+r_static
+r_inline
+r_void
+id|nf_ct_attach
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+r_new
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+)brace
 macro_line|#endif /*CONFIG_NETFILTER*/
 macro_line|#endif /*__KERNEL__*/
 macro_line|#endif /*__LINUX_NETFILTER_H*/
