@@ -550,7 +550,7 @@ op_assign
 id|alloc_skb
 c_func
 (paren
-l_int|1
+l_int|0
 comma
 id|GFP_ATOMIC
 )paren
@@ -584,7 +584,7 @@ id|ev-&gt;data.tmr.timer_specific
 op_assign
 l_int|NULL
 suffix:semicolon
-id|llc_station_send_ev
+id|llc_station_state_process
 c_func
 (paren
 id|station

@@ -393,7 +393,7 @@ id|bit_value
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_decode_pf_bit
 c_func
 (paren
@@ -408,7 +408,7 @@ id|pf_bit
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_decode_cr_bit
 c_func
 (paren
@@ -423,7 +423,7 @@ id|cr_bit
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_decode_sa
 c_func
 (paren
@@ -438,7 +438,7 @@ id|sa
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_decode_da
 c_func
 (paren
@@ -453,7 +453,7 @@ id|ds
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_decode_dsap
 c_func
 (paren
@@ -468,7 +468,7 @@ id|dsap
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_decode_ssap
 c_func
 (paren
@@ -483,7 +483,7 @@ id|ssap
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_decode_pdu_type
 c_func
 (paren
@@ -521,7 +521,7 @@ id|cr
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_ui_cmd
 c_func
 (paren
@@ -532,7 +532,7 @@ id|skb
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_xid_cmd
 c_func
 (paren
@@ -549,7 +549,7 @@ id|rx_window
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_test_cmd
 c_func
 (paren
@@ -560,7 +560,7 @@ id|skb
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_disc_cmd
 c_func
 (paren
@@ -574,7 +574,7 @@ id|p_bit
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_i_cmd
 c_func
 (paren
@@ -594,7 +594,7 @@ id|nr
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_rej_cmd
 c_func
 (paren
@@ -611,7 +611,7 @@ id|nr
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_rnr_cmd
 c_func
 (paren
@@ -628,7 +628,7 @@ id|nr
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_rr_cmd
 c_func
 (paren
@@ -645,7 +645,7 @@ id|nr
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_sabme_cmd
 c_func
 (paren
@@ -659,7 +659,7 @@ id|p_bit
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_dm_rsp
 c_func
 (paren
@@ -673,7 +673,7 @@ id|f_bit
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_xid_rsp
 c_func
 (paren
@@ -690,7 +690,7 @@ id|rx_window
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_test_rsp
 c_func
 (paren
@@ -706,7 +706,7 @@ id|ev_skb
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_frmr_rsp
 c_func
 (paren
@@ -734,7 +734,7 @@ id|vzyxw
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_rr_rsp
 c_func
 (paren
@@ -751,7 +751,7 @@ id|nr
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_rej_rsp
 c_func
 (paren
@@ -768,7 +768,7 @@ id|nr
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_rnr_rsp
 c_func
 (paren
@@ -785,7 +785,7 @@ id|nr
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|llc_pdu_init_as_ua_rsp
 c_func
 (paren
