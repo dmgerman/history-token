@@ -3007,7 +3007,6 @@ suffix:semicolon
 multiline_comment|/*&n; * The core wakeup function.  Non-exclusive wakeups (nr_exclusive == 0) just&n; * wake everything up.  If it&squot;s an exclusive wakeup (nr_exclusive == small +ve&n; * number) then we wake all the non-exclusive tasks and one exclusive task.&n; *&n; * There are circumstances in which we can try to wake a task which has already&n; * started to run but is not in state TASK_RUNNING.  try_to_wake_up() returns&n; * zero in this (rare) case, and we handle it by continuing to scan the queue.&n; */
 DECL|function|__wake_up_common
 r_static
-r_inline
 r_void
 id|__wake_up_common
 c_func
@@ -3159,6 +3158,34 @@ op_amp
 id|q-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Same as __wake_up but called with the spinlock in wait_queue_head_t held.&n; */
+DECL|function|__wake_up_locked
+r_void
+id|__wake_up_locked
+c_func
+(paren
+id|wait_queue_head_t
+op_star
+id|q
+comma
+r_int
+r_int
+id|mode
+)paren
+(brace
+id|__wake_up_common
+c_func
+(paren
+id|q
+comma
+id|mode
+comma
+l_int|1
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

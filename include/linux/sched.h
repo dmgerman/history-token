@@ -1511,6 +1511,24 @@ r_void
 id|FASTCALL
 c_func
 (paren
+id|__wake_up_locked
+c_func
+(paren
+id|wait_queue_head_t
+op_star
+id|q
+comma
+r_int
+r_int
+id|mode
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
 id|__wake_up_sync
 c_func
 (paren
@@ -1647,6 +1665,8 @@ DECL|macro|wake_up_interruptible_nr
 mdefine_line|#define wake_up_interruptible_nr(x, nr)&t;__wake_up((x),TASK_INTERRUPTIBLE, nr)
 DECL|macro|wake_up_interruptible_all
 mdefine_line|#define wake_up_interruptible_all(x)&t;__wake_up((x),TASK_INTERRUPTIBLE, 0)
+DECL|macro|wake_up_locked
+mdefine_line|#define&t;wake_up_locked(x)&t;&t;__wake_up_locked((x), TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE)
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|wake_up_interruptible_sync
 mdefine_line|#define wake_up_interruptible_sync(x)   __wake_up_sync((x),TASK_INTERRUPTIBLE, 1)
@@ -2672,6 +2692,62 @@ DECL|macro|wait_event
 mdefine_line|#define wait_event(wq, condition) &t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (condition)&t; &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__wait_event(wq, condition);&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|__wait_event_interruptible
 mdefine_line|#define __wait_event_interruptible(wq, condition, ret)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;wait_queue_t __wait;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;init_waitqueue_entry(&amp;__wait, current);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;add_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&t;&bslash;&n;&t;for (;;) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_current_state(TASK_INTERRUPTIBLE);&t;&t;&t;&bslash;&n;&t;&t;if (condition)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;break;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!signal_pending(current)) {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;schedule();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;continue;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = -ERESTARTSYS;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;current-&gt;state = TASK_RUNNING;&t;&t;&t;&t;&t;&bslash;&n;&t;remove_wait_queue(&amp;wq, &amp;__wait);&t;&t;&t;&t;&bslash;&n;} while (0)
+multiline_comment|/*&n; * Must be called with the spinlock in the wait_queue_head_t held.&n; */
+DECL|function|add_wait_queue_exclusive_locked
+r_static
+r_inline
+r_void
+id|add_wait_queue_exclusive_locked
+c_func
+(paren
+id|wait_queue_head_t
+op_star
+id|q
+comma
+id|wait_queue_t
+op_star
+id|wait
+)paren
+(brace
+id|wait-&gt;flags
+op_or_assign
+id|WQ_FLAG_EXCLUSIVE
+suffix:semicolon
+id|__add_wait_queue_tail
+c_func
+(paren
+id|q
+comma
+id|wait
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Must be called with the spinlock in the wait_queue_head_t held.&n; */
+DECL|function|remove_wait_queue_locked
+r_static
+r_inline
+r_void
+id|remove_wait_queue_locked
+c_func
+(paren
+id|wait_queue_head_t
+op_star
+id|q
+comma
+id|wait_queue_t
+op_star
+id|wait
+)paren
+(brace
+id|__remove_wait_queue
+c_func
+(paren
+id|q
+comma
+id|wait
+)paren
+suffix:semicolon
+)brace
 DECL|macro|wait_event_interruptible
 mdefine_line|#define wait_event_interruptible(wq, condition)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __ret = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!(condition))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__wait_event_interruptible(wq, condition, __ret);&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|remove_parent
