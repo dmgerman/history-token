@@ -4,8 +4,8 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 DECL|function|check_set
@@ -806,36 +806,14 @@ r_int
 id|count
 )paren
 (brace
-r_struct
-id|scsi_device
-op_star
-id|sdev
-op_assign
+id|scsi_remove_device
+c_func
+(paren
 id|to_scsi_device
 c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * FIXME and scsi_proc.c: racey use of access_count,&n;&t; */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|sdev-&gt;access_count
-)paren
-)paren
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-id|scsi_remove_device
-c_func
-(paren
-id|sdev
 )paren
 suffix:semicolon
 r_return
@@ -1363,38 +1341,11 @@ op_star
 id|sdev
 )paren
 (brace
-r_struct
-r_class
-op_star
-r_class
-op_assign
-id|class_get
-c_func
-(paren
-op_amp
-id|sdev_class
-)paren
-suffix:semicolon
 id|class_device_unregister
 c_func
 (paren
 op_amp
 id|sdev-&gt;sdev_classdev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-r_class
-)paren
-(brace
-id|down_write
-c_func
-(paren
-op_amp
-r_class
-op_member_access_from_pointer
-id|subsys.rwsem
 )paren
 suffix:semicolon
 id|set_bit
@@ -1426,28 +1377,11 @@ op_amp
 id|sdev-&gt;sdev_gendev
 )paren
 suffix:semicolon
-id|up_write
-c_func
-(paren
-op_amp
-r_class
-op_member_access_from_pointer
-id|subsys.rwsem
-)paren
-suffix:semicolon
-)brace
 id|put_device
 c_func
 (paren
 op_amp
 id|sdev-&gt;sdev_gendev
-)paren
-suffix:semicolon
-id|class_put
-c_func
-(paren
-op_amp
-id|sdev_class
 )paren
 suffix:semicolon
 )brace
