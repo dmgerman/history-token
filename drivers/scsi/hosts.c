@@ -135,6 +135,28 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|shost-&gt;can_queue
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: can_queue = 0 no longer supported&bslash;n&quot;
+comma
+id|sht-&gt;name
+)paren
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|error
 )paren
 (brace
@@ -305,26 +327,6 @@ id|dump_stack
 c_func
 (paren
 )paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sht-&gt;can_queue
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: can_queue = 0 no more supported&bslash;n&quot;
-comma
-id|sht-&gt;name
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* if its not set in the template, use the default */
