@@ -505,7 +505,7 @@ op_assign
 r_int
 r_int
 )paren
-id|ioremap_nocache
+id|z_ioremap
 c_func
 (paren
 id|board
@@ -676,7 +676,7 @@ l_int|0
 suffix:semicolon
 id|err_unmap
 suffix:colon
-id|iounmap
+id|z_iounmap
 c_func
 (paren
 (paren
