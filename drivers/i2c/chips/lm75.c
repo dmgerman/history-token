@@ -316,7 +316,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp1_hyst
+id|temp1_max_hyst
 comma
 id|S_IWUSR
 op_or
@@ -797,7 +797,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp1_hyst
+id|dev_attr_temp1_max_hyst
 )paren
 suffix:semicolon
 id|device_create_file

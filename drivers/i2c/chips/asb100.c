@@ -1547,7 +1547,7 @@ comma
 id|temp_hyst
 )paren
 DECL|macro|sysfs_temp
-mdefine_line|#define sysfs_temp(num) &bslash;&n;static ssize_t show_temp##num(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp(dev, buf, num-1); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp##num##_input, S_IRUGO, show_temp##num, NULL) &bslash;&n;static ssize_t show_temp_max##num(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp_max(dev, buf, num-1); &bslash;&n;} &bslash;&n;static ssize_t set_temp_max##num(struct device *dev, const char *buf, &bslash;&n;&t;&t;&t;&t;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;return set_temp_max(dev, buf, count, num-1); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp##num##_max, S_IRUGO | S_IWUSR, &bslash;&n;&t;&t;show_temp_max##num, set_temp_max##num) &bslash;&n;static ssize_t show_temp_hyst##num(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp_hyst(dev, buf, num-1); &bslash;&n;} &bslash;&n;static ssize_t set_temp_hyst##num(struct device *dev, const char *buf, &bslash;&n;&t;&t;&t;&t;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;return set_temp_hyst(dev, buf, count, num-1); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp##num##_hyst, S_IRUGO | S_IWUSR, &bslash;&n;&t;&t;show_temp_hyst##num, set_temp_hyst##num)
+mdefine_line|#define sysfs_temp(num) &bslash;&n;static ssize_t show_temp##num(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp(dev, buf, num-1); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp##num##_input, S_IRUGO, show_temp##num, NULL) &bslash;&n;static ssize_t show_temp_max##num(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp_max(dev, buf, num-1); &bslash;&n;} &bslash;&n;static ssize_t set_temp_max##num(struct device *dev, const char *buf, &bslash;&n;&t;&t;&t;&t;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;return set_temp_max(dev, buf, count, num-1); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp##num##_max, S_IRUGO | S_IWUSR, &bslash;&n;&t;&t;show_temp_max##num, set_temp_max##num) &bslash;&n;static ssize_t show_temp_hyst##num(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp_hyst(dev, buf, num-1); &bslash;&n;} &bslash;&n;static ssize_t set_temp_hyst##num(struct device *dev, const char *buf, &bslash;&n;&t;&t;&t;&t;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;return set_temp_hyst(dev, buf, count, num-1); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp##num##_max_hyst, S_IRUGO | S_IWUSR, &bslash;&n;&t;&t;show_temp_hyst##num, set_temp_hyst##num)
 id|sysfs_temp
 c_func
 (paren
@@ -1570,7 +1570,7 @@ l_int|4
 )paren
 multiline_comment|/* VID */
 DECL|macro|device_create_file_temp
-mdefine_line|#define device_create_file_temp(client, num) do { &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##num##_input); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##num##_max); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##num##_hyst); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_temp(client, num) do { &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##num##_input); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##num##_max); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##num##_max_hyst); &bslash;&n;} while (0)
 DECL|function|show_vid
 r_static
 id|ssize_t
@@ -1620,7 +1620,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|vid
+id|in0_ref
 comma
 id|S_IRUGO
 comma
@@ -1629,7 +1629,7 @@ comma
 l_int|NULL
 )paren
 DECL|macro|device_create_file_vid
-mdefine_line|#define device_create_file_vid(client) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_vid)
+mdefine_line|#define device_create_file_vid(client) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in0_ref)
 multiline_comment|/* VRM */
 DECL|function|show_vrm
 r_static
@@ -2079,7 +2079,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|pwm1
+id|fan1_pwm
 comma
 id|S_IRUGO
 op_or
@@ -2093,7 +2093,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|pwm1_enable
+id|fan1_pwm_enable
 comma
 id|S_IRUGO
 op_or
@@ -2104,7 +2104,7 @@ comma
 id|set_pwm_enable1
 )paren
 DECL|macro|device_create_file_pwm1
-mdefine_line|#define device_create_file_pwm1(client) do { &bslash;&n;&t;device_create_file(&amp;new_client-&gt;dev, &amp;dev_attr_pwm1); &bslash;&n;&t;device_create_file(&amp;new_client-&gt;dev, &amp;dev_attr_pwm1_enable); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_pwm1(client) do { &bslash;&n;&t;device_create_file(&amp;new_client-&gt;dev, &amp;dev_attr_fan1_pwm); &bslash;&n;&t;device_create_file(&amp;new_client-&gt;dev, &amp;dev_attr_fan1_pwm_enable); &bslash;&n;} while (0)
 multiline_comment|/* This function is called when:&n;&t;asb100_driver is inserted (when this module is loaded), for each&n;&t;&t;available adapter&n;&t;when a new adapter is inserted (and asb100_driver is still present)&n; */
 DECL|function|asb100_attach_adapter
 r_static

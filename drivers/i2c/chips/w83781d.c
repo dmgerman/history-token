@@ -539,9 +539,9 @@ id|u8
 id|temp_max
 suffix:semicolon
 multiline_comment|/* Register value */
-DECL|member|temp_hyst
+DECL|member|temp_max_hyst
 id|u8
-id|temp_hyst
+id|temp_max_hyst
 suffix:semicolon
 multiline_comment|/* Register value */
 DECL|member|temp_add
@@ -560,9 +560,9 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* Register value */
-DECL|member|temp_hyst_add
+DECL|member|temp_max_hyst_add
 id|u16
-id|temp_hyst_add
+id|temp_max_hyst_add
 (braket
 l_int|2
 )braket
@@ -1080,11 +1080,11 @@ c_func
 id|temp_max
 )paren
 suffix:semicolon
-DECL|variable|temp_hyst
+DECL|variable|temp_max_hyst
 id|show_temp_reg
 c_func
 (paren
-id|temp_hyst
+id|temp_max_hyst
 )paren
 suffix:semicolon
 DECL|macro|store_temp_reg
@@ -1102,7 +1102,7 @@ c_func
 (paren
 id|HYST
 comma
-id|hyst
+id|max_hyst
 )paren
 suffix:semicolon
 DECL|macro|sysfs_temp_offset
@@ -1110,7 +1110,7 @@ mdefine_line|#define sysfs_temp_offset(offset) &bslash;&n;static ssize_t &bslash
 DECL|macro|sysfs_temp_reg_offset
 mdefine_line|#define sysfs_temp_reg_offset(reg, offset) &bslash;&n;static ssize_t show_regs_temp_##reg##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_temp_##reg (dev, buf, 0x##offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_temp_##reg##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_temp_##reg (dev, buf, count, 0x##offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp##offset##_##reg, S_IRUGO| S_IWUSR, show_regs_temp_##reg##offset, store_regs_temp_##reg##offset)
 DECL|macro|sysfs_temp_offsets
-mdefine_line|#define sysfs_temp_offsets(offset) &bslash;&n;sysfs_temp_offset(offset); &bslash;&n;sysfs_temp_reg_offset(max, offset); &bslash;&n;sysfs_temp_reg_offset(hyst, offset);
+mdefine_line|#define sysfs_temp_offsets(offset) &bslash;&n;sysfs_temp_offset(offset); &bslash;&n;sysfs_temp_reg_offset(max, offset); &bslash;&n;sysfs_temp_reg_offset(max_hyst, offset);
 id|sysfs_temp_offsets
 c_func
 (paren
@@ -1130,7 +1130,7 @@ l_int|3
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_temp
-mdefine_line|#define device_create_file_temp(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##offset##_input); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##offset##_max); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##offset##_hyst); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_temp(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##offset##_input); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##offset##_max); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##offset##_max_hyst); &bslash;&n;} while (0)
 r_static
 id|ssize_t
 DECL|function|show_vid_reg
@@ -1200,7 +1200,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|vid
+id|in0_ref
 comma
 id|S_IRUGO
 comma
@@ -1209,7 +1209,7 @@ comma
 l_int|NULL
 )paren
 DECL|macro|device_create_file_vid
-mdefine_line|#define device_create_file_vid(client) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_vid);
+mdefine_line|#define device_create_file_vid(client) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in0_ref);
 r_static
 id|ssize_t
 DECL|function|show_vrm_reg
@@ -2557,9 +2557,9 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|sysfs_pwm
-mdefine_line|#define sysfs_pwm(offset) &bslash;&n;static ssize_t show_regs_pwm_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_pwm_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_pwm_##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_pwm_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(pwm##offset, S_IRUGO | S_IWUSR, show_regs_pwm_##offset, store_regs_pwm_##offset)
+mdefine_line|#define sysfs_pwm(offset) &bslash;&n;static ssize_t show_regs_pwm_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_pwm_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_pwm_##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_pwm_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(fan##offset##_pwm, S_IRUGO | S_IWUSR, show_regs_pwm_##offset, store_regs_pwm_##offset)
 DECL|macro|sysfs_pwmenable
-mdefine_line|#define sysfs_pwmenable(offset) &bslash;&n;static ssize_t show_regs_pwmenable_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_pwmenable_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_pwmenable_##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_pwmenable_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(pwm##offset##_enable, S_IRUGO | S_IWUSR, show_regs_pwmenable_##offset, store_regs_pwmenable_##offset)
+mdefine_line|#define sysfs_pwmenable(offset) &bslash;&n;static ssize_t show_regs_pwmenable_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_pwmenable_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_pwmenable_##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_pwmenable_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(fan##offset##_pwm_enable, S_IRUGO | S_IWUSR, show_regs_pwmenable_##offset, store_regs_pwmenable_##offset)
 id|sysfs_pwm
 c_func
 (paren
@@ -2592,9 +2592,9 @@ l_int|4
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_pwm
-mdefine_line|#define device_create_file_pwm(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_pwm##offset); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_pwm(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_pwm); &bslash;&n;} while (0)
 DECL|macro|device_create_file_pwmenable
-mdefine_line|#define device_create_file_pwmenable(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_pwm##offset##_enable); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_pwmenable(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_pwm_enable); &bslash;&n;} while (0)
 r_static
 id|ssize_t
 DECL|function|show_sensor_reg
@@ -2938,7 +2938,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|sysfs_sensor
-mdefine_line|#define sysfs_sensor(offset) &bslash;&n;static ssize_t show_regs_sensor_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;    return show_sensor_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_sensor_##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;    return store_sensor_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(sensor##offset, S_IRUGO | S_IWUSR, show_regs_sensor_##offset, store_regs_sensor_##offset)
+mdefine_line|#define sysfs_sensor(offset) &bslash;&n;static ssize_t show_regs_sensor_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;    return show_sensor_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t store_regs_sensor_##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;    return store_sensor_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(temp##offset##_type, S_IRUGO | S_IWUSR, show_regs_sensor_##offset, store_regs_sensor_##offset)
 id|sysfs_sensor
 c_func
 (paren
@@ -2958,7 +2958,7 @@ l_int|3
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_sensor
-mdefine_line|#define device_create_file_sensor(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_sensor##offset); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_sensor(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##offset##_type); &bslash;&n;} while (0)
 macro_line|#ifdef W83781D_RT
 r_static
 id|ssize_t
@@ -7162,7 +7162,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|data-&gt;temp_hyst
+id|data-&gt;temp_max_hyst
 op_assign
 id|w83781d_read_value
 c_func
@@ -7210,7 +7210,7 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
-id|data-&gt;temp_hyst_add
+id|data-&gt;temp_max_hyst_add
 (braket
 l_int|0
 )braket
@@ -7273,7 +7273,7 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
-id|data-&gt;temp_hyst_add
+id|data-&gt;temp_max_hyst_add
 (braket
 l_int|1
 )braket

@@ -1713,7 +1713,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|show_sensor_offset
-mdefine_line|#define show_sensor_offset(offset)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_sensor_##offset (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_sensor(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_sensor_##offset (struct device *dev, &t;&t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_sensor(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(sensor##offset, S_IRUGO | S_IWUSR,&t; &t;&t;&bslash;&n;&t;&t;show_sensor_##offset, set_sensor_##offset)
+mdefine_line|#define show_sensor_offset(offset)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_sensor_##offset (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_sensor(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_sensor_##offset (struct device *dev, &t;&t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_sensor(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(temp##offset##_type, S_IRUGO | S_IWUSR,&t; &t;&t;&bslash;&n;&t;&t;show_sensor_##offset, set_sensor_##offset)
 id|show_sensor_offset
 c_func
 (paren
@@ -3360,7 +3360,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_sensor1
+id|dev_attr_temp1_type
 )paren
 suffix:semicolon
 id|device_create_file
@@ -3370,7 +3370,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_sensor2
+id|dev_attr_temp2_type
 )paren
 suffix:semicolon
 id|device_create_file
@@ -3380,7 +3380,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_sensor3
+id|dev_attr_temp3_type
 )paren
 suffix:semicolon
 id|device_create_file
