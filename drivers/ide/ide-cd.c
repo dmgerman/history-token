@@ -1658,10 +1658,16 @@ id|failed
 op_logical_and
 id|failed-&gt;sense
 )paren
+(brace
 id|sense
 op_assign
 id|failed-&gt;sense
 suffix:semicolon
+id|failed-&gt;sense_len
+op_assign
+id|rq-&gt;sense_len
+suffix:semicolon
+)brace
 id|cdrom_analyze_sense_data
 c_func
 (paren
@@ -1908,7 +1914,7 @@ id|rq-&gt;errors
 )paren
 id|rq-&gt;errors
 op_assign
-id|CHECK_CONDITION
+id|SAM_STAT_CHECK_CONDITION
 suffix:semicolon
 multiline_comment|/* Check for tray open. */
 r_if
@@ -5422,7 +5428,7 @@ r_char
 op_star
 id|ibuf
 op_assign
-id|req-&gt;buffer
+id|req-&gt;data
 suffix:semicolon
 id|u8
 op_star
@@ -5439,6 +5445,14 @@ c_func
 (paren
 id|req
 )paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ibuf
 )paren
 r_return
 suffix:semicolon
