@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Prolific PL2303 USB to serial adaptor driver&n; *&n; * Copyright (C) 2001-2002 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; * Original driver for 2.2.x by anonymous&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 2002_Mar_26 gkh&n; *&t;allowed driver to work properly if there is no tty assigned to a port&n; *&t;(this happens for serial console devices.)&n; *&n; * 2001_Oct_06 gkh&n; *&t;Added RTS and DTR line control.  Thanks to joe@bndlg.de for parts of it.&n; *&n; * 2001_Sep_19 gkh&n; *&t;Added break support.&n; *&n; * 2001_Aug_30 gkh&n; *&t;fixed oops in write_bulk_callback.&n; *&n; * 2001_Aug_28 gkh&n; *&t;reworked buffer logic to be like other usb-serial drivers.  Hopefully&n; *&t;removing some reported problems.&n; *&n; * 2001_Jun_06 gkh&n; *&t;finished porting to 2.4 format.&n; * &n; */
+multiline_comment|/*&n; * Prolific PL2303 USB to serial adaptor driver&n; *&n; * Copyright (C) 2001-2003 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (C) 2003 IBM Corp.&n; *&n; * Original driver for 2.2.x by anonymous&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 2002_Mar_26 gkh&n; *&t;allowed driver to work properly if there is no tty assigned to a port&n; *&t;(this happens for serial console devices.)&n; *&n; * 2001_Oct_06 gkh&n; *&t;Added RTS and DTR line control.  Thanks to joe@bndlg.de for parts of it.&n; *&n; * 2001_Sep_19 gkh&n; *&t;Added break support.&n; *&n; * 2001_Aug_30 gkh&n; *&t;fixed oops in write_bulk_callback.&n; *&n; * 2001_Aug_28 gkh&n; *&t;reworked buffer logic to be like other usb-serial drivers.  Hopefully&n; *&t;removing some reported problems.&n; *&n; * 2001_Jun_06 gkh&n; *&t;finished porting to 2.4 format.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -226,6 +226,24 @@ DECL|macro|VENDOR_READ_REQUEST_TYPE
 mdefine_line|#define VENDOR_READ_REQUEST_TYPE&t;0xc0
 DECL|macro|VENDOR_READ_REQUEST
 mdefine_line|#define VENDOR_READ_REQUEST&t;&t;0x01
+DECL|macro|UART_STATE
+mdefine_line|#define UART_STATE&t;&t;&t;0x08
+DECL|macro|UART_DCD
+mdefine_line|#define UART_DCD&t;&t;&t;0x01
+DECL|macro|UART_DSR
+mdefine_line|#define UART_DSR&t;&t;&t;0x02
+DECL|macro|UART_BREAK_ERROR
+mdefine_line|#define UART_BREAK_ERROR&t;&t;0x04
+DECL|macro|UART_RING
+mdefine_line|#define UART_RING&t;&t;&t;0x08
+DECL|macro|UART_FRAME_ERROR
+mdefine_line|#define UART_FRAME_ERROR&t;&t;0x10
+DECL|macro|UART_PARITY_ERROR
+mdefine_line|#define UART_PARITY_ERROR&t;&t;0x20
+DECL|macro|UART_OVERRUN_ERROR
+mdefine_line|#define UART_OVERRUN_ERROR&t;&t;0x40
+DECL|macro|UART_CTS
+mdefine_line|#define UART_CTS&t;&t;&t;0x80
 multiline_comment|/* function prototypes for a PL2303 serial converter */
 r_static
 r_int
@@ -555,6 +573,10 @@ suffix:semicolon
 DECL|member|line_control
 id|u8
 id|line_control
+suffix:semicolon
+DECL|member|line_status
+id|u8
+id|line_status
 suffix:semicolon
 DECL|member|termios_initialized
 id|u8
@@ -915,6 +937,10 @@ id|port
 suffix:semicolon
 r_int
 r_int
+id|flags
+suffix:semicolon
+r_int
+r_int
 id|cflag
 suffix:semicolon
 r_int
@@ -963,11 +989,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|priv-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -1001,11 +1029,13 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|priv-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|cflag
@@ -1680,10 +1710,13 @@ id|CBAUD
 id|u8
 id|control
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|priv-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -1719,10 +1752,13 @@ id|control
 op_assign
 id|priv-&gt;line_control
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
+c_func
 (paren
 op_amp
 id|priv-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|set_control_lines
@@ -2229,6 +2265,10 @@ id|priv
 suffix:semicolon
 r_int
 r_int
+id|flags
+suffix:semicolon
+r_int
+r_int
 id|c_cflag
 suffix:semicolon
 r_int
@@ -2378,20 +2418,25 @@ c_func
 id|port
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irqsave
+c_func
 (paren
 op_amp
 id|priv-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|priv-&gt;line_control
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 (paren
 op_amp
 id|priv-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|set_control_lines
@@ -2439,13 +2484,19 @@ c_func
 id|port
 )paren
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|u8
 id|control
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irqsave
 (paren
 op_amp
 id|priv-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -2498,10 +2549,12 @@ id|control
 op_assign
 id|priv-&gt;line_control
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 (paren
 op_amp
 id|priv-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -2542,6 +2595,10 @@ id|port
 suffix:semicolon
 r_int
 r_int
+id|flags
+suffix:semicolon
+r_int
+r_int
 id|mcr
 suffix:semicolon
 r_int
@@ -2558,20 +2615,24 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irqsave
 (paren
 op_amp
 id|priv-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|mcr
 op_assign
 id|priv-&gt;line_control
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 (paren
 op_amp
 id|priv-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|result
@@ -2896,9 +2957,40 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-singleline_comment|//unsigned char *data = urb-&gt;transfer_buffer;
+r_struct
+id|pl2303_private
+op_star
+id|priv
+op_assign
+id|usb_get_serial_port_data
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
+r_int
+r_char
+op_star
+id|data
+op_assign
+id|urb-&gt;transfer_buffer
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_int
 id|status
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s (%d)&quot;
+comma
+id|__FUNCTION__
+comma
+id|port-&gt;number
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -2974,7 +3066,42 @@ comma
 id|urb-&gt;transfer_buffer
 )paren
 suffix:semicolon
-singleline_comment|//FIXME need to update state of terminal lines variable
+r_if
+c_cond
+(paren
+id|urb-&gt;actual_length
+OG
+id|UART_STATE
+)paren
+r_goto
+m_exit
+suffix:semicolon
+multiline_comment|/* Save off the uart status for others to look at */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|priv-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|priv-&gt;line_status
+op_assign
+id|data
+(braket
+id|UART_STATE
+)braket
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|priv-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 m_exit
 suffix:colon
 id|status
@@ -3046,6 +3173,17 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_struct
+id|pl2303_private
+op_star
+id|priv
+op_assign
+id|usb_get_serial_port_data
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
+r_struct
 id|tty_struct
 op_star
 id|tty
@@ -3058,10 +3196,20 @@ op_assign
 id|urb-&gt;transfer_buffer
 suffix:semicolon
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
 id|i
 suffix:semicolon
 r_int
 id|result
+suffix:semicolon
+id|u8
+id|status
+suffix:semicolon
+r_char
+id|tty_flag
 suffix:semicolon
 r_if
 c_cond
@@ -3216,6 +3364,80 @@ comma
 id|data
 )paren
 suffix:semicolon
+multiline_comment|/* get tty_flag from status */
+id|tty_flag
+op_assign
+id|TTY_NORMAL
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|priv-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|priv-&gt;line_status
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|priv-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* break takes precedence over parity, */
+multiline_comment|/* which takes precedence over framing errors */
+r_if
+c_cond
+(paren
+id|status
+op_amp
+id|UART_BREAK_ERROR
+)paren
+id|tty_flag
+op_assign
+id|TTY_BREAK
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|status
+op_amp
+id|UART_PARITY_ERROR
+)paren
+id|tty_flag
+op_assign
+id|TTY_PARITY
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|status
+op_amp
+id|UART_FRAME_ERROR
+)paren
+id|tty_flag
+op_assign
+id|TTY_FRAME
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - tty_flag = %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|tty_flag
+)paren
+suffix:semicolon
 id|tty
 op_assign
 id|port-&gt;tty
@@ -3228,6 +3450,24 @@ op_logical_and
 id|urb-&gt;actual_length
 )paren
 (brace
+multiline_comment|/* overrun is special, not associated with a char */
+r_if
+c_cond
+(paren
+id|status
+op_amp
+id|UART_OVERRUN_ERROR
+)paren
+id|tty_insert_flip_char
+c_func
+(paren
+id|tty
+comma
+l_int|0
+comma
+id|TTY_OVERRUN
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3267,7 +3507,7 @@ id|data
 id|i
 )braket
 comma
-l_int|0
+id|tty_flag
 )paren
 suffix:semicolon
 )brace
