@@ -103,11 +103,6 @@ DECL|struct|ip_nat_info
 r_struct
 id|ip_nat_info
 (brace
-multiline_comment|/* Set to zero when conntrack created: bitmask of maniptypes */
-DECL|member|initialized
-id|u_int16_t
-id|initialized
-suffix:semicolon
 DECL|member|bysource
 r_struct
 id|list_head

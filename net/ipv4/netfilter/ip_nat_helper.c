@@ -1787,7 +1787,9 @@ multiline_comment|/* This must be a fresh one. */
 id|BUG_ON
 c_func
 (paren
-id|ct-&gt;nat.info.initialized
+id|ct-&gt;status
+op_amp
+id|IPS_NAT_DONE_MASK
 )paren
 suffix:semicolon
 multiline_comment|/* Change src to where master sends to */
