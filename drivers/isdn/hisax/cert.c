@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: cert.c,v 2.3 2000/06/26 08:59:12 keil Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; *&t;&t;This file is (c) under GNU PUBLIC LICENSE&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; */
+multiline_comment|/* $Id: cert.c,v 2.3.6.1 2001/02/16 16:43:25 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 r_int
 DECL|function|certification_check

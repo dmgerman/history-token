@@ -26,6 +26,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mmx.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 r_extern
 r_void
 id|dump_thread
@@ -589,6 +590,14 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|smp_call_function
+)paren
+suffix:semicolon
+multiline_comment|/* TLB flushing */
+DECL|variable|flush_tlb_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_tlb_page
 )paren
 suffix:semicolon
 macro_line|#endif

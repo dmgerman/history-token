@@ -188,6 +188,8 @@ r_int
 r_int
 id|cpu_present_mask
 suffix:semicolon
+DECL|macro|cpu_online_map
+mdefine_line|#define cpu_online_map cpu_present_mask
 macro_line|#endif /* CONFIG_SMP */
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;(-1)

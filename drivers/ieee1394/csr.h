@@ -127,5 +127,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_void
+id|cleanup_csr
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* _IEEE1394_CSR_H */
 eof

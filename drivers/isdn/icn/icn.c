@@ -1,5 +1,6 @@
-multiline_comment|/* $Id: icn.c,v 1.65 2000/11/13 22:51:48 kai Exp $&n;&n; * ISDN low-level module for the ICN active ISDN-Card.&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: icn.c,v 1.65.6.3 2001/02/16 16:43:31 kai Exp $&n;&n; * ISDN low-level module for the ICN active ISDN-Card.&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &quot;icn.h&quot;
+macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/*&n; * Verbose bootcode- and protocol-downloading.&n; */
 DECL|macro|BOOT_DEBUG
 macro_line|#undef BOOT_DEBUG
@@ -12,7 +13,7 @@ DECL|variable|revision
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.65 $&quot;
+l_string|&quot;$Revision: 1.65.6.3 $&quot;
 suffix:semicolon
 r_static
 r_int
@@ -3896,7 +3897,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Bootloader transfered&bslash;n&quot;
+l_string|&quot;Bootloader transferred&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3983,7 +3984,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Bootloader transfered&bslash;n&quot;
+l_string|&quot;Bootloader transferred&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7968,11 +7969,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|macro|icn_init
-mdefine_line|#define icn_init init_module
-macro_line|#else
-macro_line|#include &lt;linux/init.h&gt;
+macro_line|#ifndef MODULE
 r_static
 r_int
 id|__init
@@ -8125,9 +8122,11 @@ comma
 id|icn_setup
 )paren
 suffix:semicolon
-macro_line|#endif /* MODULES */
-r_int
+macro_line|#endif /* MODULE */
 DECL|function|icn_init
+r_static
+r_int
+id|__init
 id|icn_init
 c_func
 (paren
@@ -8186,9 +8185,6 @@ suffix:semicolon
 id|dev.firstload
 op_assign
 l_int|1
-suffix:semicolon
-multiline_comment|/* No symbols to export, hide all symbols */
-id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 r_if
 c_cond
@@ -8269,10 +8265,11 @@ id|icn_id2
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
+DECL|function|icn_exit
+r_static
 r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+id|icn_exit
 c_func
 (paren
 r_void
@@ -8447,5 +8444,18 @@ l_string|&quot;ICN-ISDN-driver unloaded&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|icn_init
+id|module_init
+c_func
+(paren
+id|icn_init
+)paren
+suffix:semicolon
+DECL|variable|icn_exit
+id|module_exit
+c_func
+(paren
+id|icn_exit
+)paren
+suffix:semicolon
 eof

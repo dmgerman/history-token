@@ -623,7 +623,7 @@ id|tsk
 r_if
 c_cond
 (paren
-id|cpu_has_fxsr
+id|cpu_has_xmm
 )paren
 (brace
 r_return

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 1996 Universidade de Lisboa&n; *&n; * Written by Pedro Roque Marques (roque@di.fc.ul.pt)&n; *&n; * This software may be used and distributed according to the terms of&n; * the GNU Public License, incorporated herein by reference.&n; */
+multiline_comment|/*&n; * Copyright (C) 1996 Universidade de Lisboa&n; *&n; * Written by Pedro Roque Marques (roque@di.fc.ul.pt)&n; *&n; * This software may be used and distributed according to the terms of&n; * the GNU General Public License, incorporated herein by reference.&n; */
 multiline_comment|/*&n; * 19991203 - Fernando Carvalho - takion@superbofh.org&n; * Hacked to compile with egcs and run with current version of isdn modules&n;*/
 multiline_comment|/*&n; *        PCBIT-D low-layer interface&n; */
 multiline_comment|/*&n; *        Based on documentation provided by Inesc:&n; *        - &quot;Interface com bus do PC para o PCBIT e PCBIT-D&quot;, Inesc, Jan 93&n; */

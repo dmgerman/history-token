@@ -199,7 +199,7 @@ id|node
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_set_compression (self, proto)&n; *&n; *    The the compression protocol to be used by this session&n; *&n; */
+multiline_comment|/*&n; * Function irda_set_compression (self, proto)&n; *&n; *    The compression protocol to be used by this session&n; *&n; */
 DECL|function|irda_set_compression
 r_int
 id|irda_set_compression

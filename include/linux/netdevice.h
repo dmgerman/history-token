@@ -2366,22 +2366,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|ether_config
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
-id|ifmap
-op_star
-id|map
-)paren
-suffix:semicolon
 multiline_comment|/* Support for loadable net-drivers */
 r_extern
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: eicon_idi.c,v 1.41 2000/08/12 18:00:47 armin Exp $&n; *&n; * ISDN lowlevel-module for Eicon active cards.&n; *        IDI interface &n; *&n; * Copyright 1998-2000  by Armin Schindler (mac@melware.de)&n; * Copyright 1999,2000  Cytronics &amp; Melware (info@melware.de)&n; *&n; * Thanks to&t;Deutsche Mailbox Saar-Lor-Lux GmbH&n; *&t;&t;for sponsoring and testing fax&n; *&t;&t;capabilities with Diva Server cards.&n; *&t;&t;(dor@deutschemailbox.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
+multiline_comment|/* $Id: eicon_idi.c,v 1.41.6.1 2001/02/10 14:44:09 kai Exp $&n; *&n; * ISDN lowlevel-module for Eicon active cards.&n; *        IDI interface &n; *&n; * Copyright 1998-2000  by Armin Schindler (mac@melware.de)&n; * Copyright 1999,2000  Cytronics &amp; Melware (info@melware.de)&n; *&n; * Thanks to&t;Deutsche Mailbox Saar-Lor-Lux GmbH&n; *&t;&t;for sponsoring and testing fax&n; *&t;&t;capabilities with Diva Server cards.&n; *&t;&t;(dor@deutschemailbox.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
@@ -13,7 +13,7 @@ r_char
 op_star
 id|eicon_idi_revision
 op_assign
-l_string|&quot;$Revision: 1.41 $&quot;
+l_string|&quot;$Revision: 1.41.6.1 $&quot;
 suffix:semicolon
 DECL|variable|manbuf
 id|eicon_manifbuf
@@ -13319,8 +13319,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 multiline_comment|/* On most incoming calls we use automatic connect */
 multiline_comment|/* idi_do_req(ccard, chan, N_CONNECT, 1); */
 )brace

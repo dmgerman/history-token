@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for NS8390-based cards&n;&n;    This driver supports the D-Link DE-650 and Linksys EthernetCard&n;    cards, the newer D-Link and Linksys combo cards, Accton EN2212&n;    cards, the RPTI EP400, and the PreMax PE-200 in non-shared-memory&n;    mode, and the IBM Credit Card Adapter, the NE4100, the Thomas&n;    Conrad ethernet card, and the Kingston KNE-PCM/x in shared-memory&n;    mode.  It will also handle the Socket EA card in either mode.&n;&n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    pcnet_cs.c 1.126 2000/10/02 20:38:23&n;    &n;    The network driver code is based on Donald Becker&squot;s NE2000 code:&n;&n;    Written 1992,1993 by Donald Becker.&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;    Donald Becker may be reached at becker@cesdis1.gsfc.nasa.gov&n;&n;    Based also on Keith Moore&squot;s changes to Don Becker&squot;s code, for IBM&n;    CCAE support.  Drivers merged back together, and shared-memory&n;    Socket EA support added, by Ken Raeburn, September 1995.&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for NS8390-based cards&n;&n;    This driver supports the D-Link DE-650 and Linksys EthernetCard&n;    cards, the newer D-Link and Linksys combo cards, Accton EN2212&n;    cards, the RPTI EP400, and the PreMax PE-200 in non-shared-memory&n;    mode, and the IBM Credit Card Adapter, the NE4100, the Thomas&n;    Conrad ethernet card, and the Kingston KNE-PCM/x in shared-memory&n;    mode.  It will also handle the Socket EA card in either mode.&n;&n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    pcnet_cs.c 1.132 2001/02/09 03:13:29&n;    &n;    The network driver code is based on Donald Becker&squot;s NE2000 code:&n;&n;    Written 1992,1993 by Donald Becker.&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;    Donald Becker may be reached at becker@cesdis1.gsfc.nasa.gov&n;&n;    Based also on Keith Moore&squot;s changes to Don Becker&squot;s code, for IBM&n;    CCAE support.  Drivers merged back together, and shared-memory&n;    Socket EA support added, by Ken Raeburn, September 1995.&n;&n;======================================================================*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -78,7 +78,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;pcnet_cs.c 1.126 2000/10/02 20:38:23 (David Hinds)&quot;
+l_string|&quot;pcnet_cs.c 1.132 2001/02/09 03:13:29 (David Hinds)&quot;
 suffix:semicolon
 macro_line|#else
 DECL|macro|DEBUG
@@ -433,8 +433,8 @@ DECL|macro|IS_DL10019
 mdefine_line|#define IS_DL10019&t;0x10
 DECL|macro|IS_DL10022
 mdefine_line|#define IS_DL10022&t;0x20
-DECL|macro|IS_AX88190
-mdefine_line|#define IS_AX88190&t;0x40
+DECL|macro|HAS_MII
+mdefine_line|#define HAS_MII&t;&t;0x40
 DECL|macro|USE_SHMEM
 mdefine_line|#define USE_SHMEM&t;0x80&t;/* autodetected */
 DECL|variable|hw_info
@@ -1049,6 +1049,8 @@ comma
 l_int|0
 comma
 id|IS_DL10019
+op_or
+id|HAS_MII
 )brace
 suffix:semicolon
 DECL|variable|dl10022_info
@@ -1065,9 +1067,9 @@ l_int|0
 comma
 l_int|0
 comma
-id|IS_DL10019
-op_or
 id|IS_DL10022
+op_or
+id|HAS_MII
 )brace
 suffix:semicolon
 DECL|struct|pcnet_dev_t
@@ -2524,6 +2526,8 @@ c_func
 (paren
 l_int|0x01
 comma
+id|ioaddr
+op_plus
 id|EN0_DCFG
 )paren
 suffix:semicolon
@@ -2533,6 +2537,8 @@ c_func
 (paren
 l_int|0x00
 comma
+id|ioaddr
+op_plus
 id|EN0_RSARLO
 )paren
 suffix:semicolon
@@ -2542,6 +2548,8 @@ c_func
 (paren
 l_int|0x04
 comma
+id|ioaddr
+op_plus
 id|EN0_RSARHI
 )paren
 suffix:semicolon
@@ -2552,6 +2560,8 @@ id|E8390_RREAD
 op_plus
 id|E8390_START
 comma
+id|ioaddr
+op_plus
 id|E8390_CMD
 )paren
 suffix:semicolon
@@ -3627,6 +3637,12 @@ op_logical_or
 (paren
 id|prodid
 op_eq
+id|PRODID_SOCKET_LPE_CF
+)paren
+op_logical_or
+(paren
+id|prodid
+op_eq
 id|PRODID_SOCKET_EIO
 )paren
 )paren
@@ -3767,7 +3783,11 @@ c_cond
 (paren
 id|info-&gt;flags
 op_amp
+(paren
 id|IS_DL10019
+op_or
+id|IS_DL10022
+)paren
 )paren
 (brace
 id|dev-&gt;do_ioctl
@@ -3803,25 +3823,6 @@ id|dev-&gt;base_addr
 op_plus
 l_int|0x1a
 )paren
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|info-&gt;flags
-op_amp
-id|IS_AX88190
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: NE2000 (AX88190): &quot;
-comma
-id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -5133,6 +5134,20 @@ id|ei_status.dmaing
 op_assign
 l_int|0
 suffix:semicolon
+id|outb_p
+c_func
+(paren
+id|E8390_NODMA
+op_plus
+id|E8390_PAGE0
+op_plus
+id|E8390_STOP
+comma
+id|nic_base
+op_plus
+id|E8390_CMD
+)paren
+suffix:semicolon
 id|outb
 c_func
 (paren
@@ -5526,7 +5541,7 @@ op_logical_neg
 (paren
 id|info-&gt;flags
 op_amp
-id|IS_DL10019
+id|HAS_MII
 )paren
 )paren
 r_goto
@@ -5545,7 +5560,40 @@ l_int|0
 comma
 l_int|1
 )paren
-op_amp
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|link
+op_logical_or
+(paren
+id|link
+op_eq
+l_int|0xffff
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: MII is missing!&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|info-&gt;flags
+op_and_assign
+op_complement
+id|HAS_MII
+suffix:semicolon
+r_goto
+id|reschedule
+suffix:semicolon
+)brace
+id|link
+op_and_assign
 l_int|0x0004
 suffix:semicolon
 r_if

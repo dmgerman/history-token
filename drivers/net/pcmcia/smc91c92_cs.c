@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for SMC91c92-based cards.&n;&n;    This driver supports Megahertz PCMCIA ethernet cards; and&n;    Megahertz, Motorola, Ositech, and Psion Dacom ethernet/modem&n;    multifunction cards.&n;&n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    smc91c92_cs.c 1.104 2000/08/31 21:25:13&n;    &n;    This driver contains code written by Donald Becker&n;    (becker@cesdis.gsfc.nasa.gov), Rowan Hughes (x-csrdh@jcu.edu.au),&n;    David Hinds (dahinds@users.sourceforge.net), and Erik Stahlman&n;    (erik@vt.edu).  Donald wrote the SMC 91c92 code using parts of&n;    Erik&squot;s SMC 91c94 driver.  Rowan wrote a similar driver, and I&squot;ve&n;    incorporated some parts of his driver here.  I (Dave) wrote most&n;    of the PCMCIA glue code, and the Ositech support code.  Kelly&n;    Stephens (kstephen@holli.com) added support for the Motorola&n;    Mariner, with help from Allen Brost. &n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License, incorporated herein by reference.&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for SMC91c92-based cards.&n;&n;    This driver supports Megahertz PCMCIA ethernet cards; and&n;    Megahertz, Motorola, Ositech, and Psion Dacom ethernet/modem&n;    multifunction cards.&n;&n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    smc91c92_cs.c 1.106 2001/02/07 00:19:58&n;    &n;    This driver contains code written by Donald Becker&n;    (becker@cesdis.gsfc.nasa.gov), Rowan Hughes (x-csrdh@jcu.edu.au),&n;    David Hinds (dahinds@users.sourceforge.net), and Erik Stahlman&n;    (erik@vt.edu).  Donald wrote the SMC 91c92 code using parts of&n;    Erik&squot;s SMC 91c94 driver.  Rowan wrote a similar driver, and I&squot;ve&n;    incorporated some parts of his driver here.  I (Dave) wrote most&n;    of the PCMCIA glue code, and the Ositech support code.  Kelly&n;    Stephens (kstephen@holli.com) added support for the Motorola&n;    Mariner, with help from Allen Brost. &n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License, incorporated herein by reference.&n;&n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -440,7 +440,7 @@ mdefine_line|#define  RCR_SOFTRESET&t;0x8000 &t;/* resets the chip */
 DECL|macro|RCR_STRIP_CRC
 mdefine_line|#define&t; RCR_STRIP_CRC&t;0x200&t;/* strips CRC */
 DECL|macro|RCR_ENABLE
-mdefine_line|#define  RCR_ENABLE&t;0x100&t;/* IFF this is set, we can recieve packets */
+mdefine_line|#define  RCR_ENABLE&t;0x100&t;/* IFF this is set, we can receive packets */
 DECL|macro|RCR_ALMUL
 mdefine_line|#define  RCR_ALMUL&t;0x4 &t;/* receive all multicast packets */
 DECL|macro|RCR_PROMISC
@@ -7163,12 +7163,16 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|smc-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
 id|smc-&gt;stats.rx_bytes
 op_add_assign
-id|skb-&gt;len
+id|packet_length
 suffix:semicolon
 r_if
 c_cond

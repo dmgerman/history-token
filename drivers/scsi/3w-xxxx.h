@@ -759,9 +759,10 @@ r_char
 id|aen_tail
 suffix:semicolon
 DECL|member|flags
-id|u32
+r_int
 id|flags
 suffix:semicolon
+multiline_comment|/* long req&squot;d for set_bit --RR */
 DECL|typedef|TW_Device_Extension
 )brace
 id|TW_Device_Extension

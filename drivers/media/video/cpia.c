@@ -11430,10 +11430,6 @@ suffix:semicolon
 op_increment
 id|cam-&gt;open_count
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -11605,10 +11601,6 @@ id|cam
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace
@@ -13492,6 +13484,10 @@ id|video_device
 id|cpia_template
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;CPiA Camera&quot;

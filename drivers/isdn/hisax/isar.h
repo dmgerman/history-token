@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isar.h,v 1.9 2000/06/26 08:59:13 keil Exp $&n; *&n; * isar.h   ISAR (Siemens PSB 7110) specific defines&n; *&n; * Author Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: isar.h,v 1.9.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; * isar.h   ISAR (Siemens PSB 7110) specific defines&n; *&n; * Author Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|ISAR_IRQMSK
 mdefine_line|#define ISAR_IRQMSK&t;0x04
 DECL|macro|ISAR_IRQSTA

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: jade.h,v 1.3 2000/06/26 08:59:14 keil Exp $&n; * jade.h   JADE specific defines&n; *&n; * Author   Roland Klabunde (R.Klabunde@Berkom.de)&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: jade.h,v 1.3.6.1 2001/02/16 16:43:27 kai Exp $&n; * jade.h   JADE specific defines&n; *&n; * Author   Roland Klabunde (R.Klabunde@Berkom.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 multiline_comment|/* All Registers original Siemens Spec  */
 macro_line|#ifndef&t;__JADE_H__
 DECL|macro|__JADE_H__

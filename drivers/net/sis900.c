@@ -1,4 +1,4 @@
-multiline_comment|/* sis900.c: A SiS 900/7016 PCI Fast Ethernet driver for Linux.&n;   Copyright 1999 Silicon Integrated System Corporation &n;   Revision:&t;1.07.08&t;Jan. 8 2001&n;   &n;   Modified from the driver which is originally written by Donald Becker.&n;   &n;   This software may be used and distributed according to the terms&n;   of the GNU General Public License (GPL), incorporated herein by reference.&n;   Drivers based on this skeleton fall under the GPL and must retain&n;   the authorship (implicit copyright) notice.&n;   &n;   References:&n;   SiS 7016 Fast Ethernet PCI Bus 10/100 Mbps LAN Controller with OnNow Support,&n;   preliminary Rev. 1.0 Jan. 14, 1998&n;   SiS 900 Fast Ethernet PCI Bus 10/100 Mbps LAN Single Chip with OnNow Support,&n;   preliminary Rev. 1.0 Nov. 10, 1998&n;   SiS 7014 Single Chip 100BASE-TX/10BASE-T Physical Layer Solution,&n;   preliminary Rev. 1.0 Jan. 18, 1998&n;   http://www.sis.com.tw/support/databook.htm&n;&n;   Rev 1.07.08 Jan.  8 2001 Lei-Chun Chang added RTL8201 PHY support&n;   Rev 1.07.07 Nov. 29 2000 Lei-Chun Chang added kernel-doc extractable documentation and 630 workaround fix&n;   Rev 1.07.06 Nov.  7 2000 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; some bug fix and cleaning&n;   Rev 1.07.05 Nov.  6 2000 metapirat&lt;metapirat@gmx.de&gt; contribute media type select by ifconfig&n;   Rev 1.07.04 Sep.  6 2000 Lei-Chun Chang added ICS1893 PHY support&n;   Rev 1.07.03 Aug. 24 2000 Lei-Chun Chang (lcchang@sis.com.tw) modified 630E eqaulizer workaround rule&n;   Rev 1.07.01 Aug. 08 2000 Ollie Lho minor update for SiS 630E and SiS 630E A1&n;   Rev 1.07    Mar. 07 2000 Ollie Lho bug fix in Rx buffer ring&n;   Rev 1.06.04 Feb. 11 2000 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; softnet and init for kernel 2.4&n;   Rev 1.06.03 Dec. 23 1999 Ollie Lho Third release&n;   Rev 1.06.02 Nov. 23 1999 Ollie Lho bug in mac probing fixed&n;   Rev 1.06.01 Nov. 16 1999 Ollie Lho CRC calculation provide by Joseph Zbiciak (im14u2c@primenet.com)&n;   Rev 1.06 Nov. 4 1999 Ollie Lho (ollie@sis.com.tw) Second release&n;   Rev 1.05.05 Oct. 29 1999 Ollie Lho (ollie@sis.com.tw) Single buffer Tx/Rx&n;   Chin-Shan Li (lcs@sis.com.tw) Added AMD Am79c901 HomePNA PHY support&n;   Rev 1.05 Aug. 7 1999 Jim Huang (cmhuang@sis.com.tw) Initial release&n;*/
+multiline_comment|/* sis900.c: A SiS 900/7016 PCI Fast Ethernet driver for Linux.&n;   Copyright 1999 Silicon Integrated System Corporation &n;   Revision:&t;1.07.08&t;Jan. 8 2001&n;   &n;   Modified from the driver which is originally written by Donald Becker.&n;   &n;   This software may be used and distributed according to the terms&n;   of the GNU General Public License (GPL), incorporated herein by reference.&n;   Drivers based on this skeleton fall under the GPL and must retain&n;   the authorship (implicit copyright) notice.&n;   &n;   References:&n;   SiS 7016 Fast Ethernet PCI Bus 10/100 Mbps LAN Controller with OnNow Support,&n;   preliminary Rev. 1.0 Jan. 14, 1998&n;   SiS 900 Fast Ethernet PCI Bus 10/100 Mbps LAN Single Chip with OnNow Support,&n;   preliminary Rev. 1.0 Nov. 10, 1998&n;   SiS 7014 Single Chip 100BASE-TX/10BASE-T Physical Layer Solution,&n;   preliminary Rev. 1.0 Jan. 18, 1998&n;   http://www.sis.com.tw/support/databook.htm&n;&n;   Rev 1.07.09 Feb.  9 2001 Dave Jones &lt;davej@suse.de&gt; PCI enable cleanup&n;   Rev 1.07.08 Jan.  8 2001 Lei-Chun Chang added RTL8201 PHY support&n;   Rev 1.07.07 Nov. 29 2000 Lei-Chun Chang added kernel-doc extractable documentation and 630 workaround fix&n;   Rev 1.07.06 Nov.  7 2000 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; some bug fix and cleaning&n;   Rev 1.07.05 Nov.  6 2000 metapirat&lt;metapirat@gmx.de&gt; contribute media type select by ifconfig&n;   Rev 1.07.04 Sep.  6 2000 Lei-Chun Chang added ICS1893 PHY support&n;   Rev 1.07.03 Aug. 24 2000 Lei-Chun Chang (lcchang@sis.com.tw) modified 630E eqaulizer workaround rule&n;   Rev 1.07.01 Aug. 08 2000 Ollie Lho minor update for SiS 630E and SiS 630E A1&n;   Rev 1.07    Mar. 07 2000 Ollie Lho bug fix in Rx buffer ring&n;   Rev 1.06.04 Feb. 11 2000 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; softnet and init for kernel 2.4&n;   Rev 1.06.03 Dec. 23 1999 Ollie Lho Third release&n;   Rev 1.06.02 Nov. 23 1999 Ollie Lho bug in mac probing fixed&n;   Rev 1.06.01 Nov. 16 1999 Ollie Lho CRC calculation provide by Joseph Zbiciak (im14u2c@primenet.com)&n;   Rev 1.06 Nov. 4 1999 Ollie Lho (ollie@sis.com.tw) Second release&n;   Rev 1.05.05 Oct. 29 1999 Ollie Lho (ollie@sis.com.tw) Single buffer Tx/Rx&n;   Chin-Shan Li (lcs@sis.com.tw) Added AMD Am79c901 HomePNA PHY support&n;   Rev 1.05 Aug. 7 1999 Jim Huang (cmhuang@sis.com.tw) Initial release&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -26,7 +26,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;sis900.c: v1.07.08  1/8/2001&bslash;n&quot;
+l_string|&quot;sis900.c: v1.07.09  2/9/2001&bslash;n&quot;
 suffix:semicolon
 DECL|variable|max_interrupt_work
 r_static
@@ -1108,14 +1108,6 @@ id|sis_priv
 suffix:semicolon
 r_int
 id|ioaddr
-op_assign
-id|pci_resource_start
-c_func
-(paren
-id|pci_dev
-comma
-l_int|0
-)paren
 suffix:semicolon
 r_struct
 id|net_device
@@ -1124,15 +1116,11 @@ id|net_dev
 suffix:semicolon
 r_int
 id|irq
-op_assign
-id|pci_dev-&gt;irq
 suffix:semicolon
 r_int
 id|i
 comma
 id|ret
-op_assign
-l_int|0
 suffix:semicolon
 id|u8
 id|revision
@@ -1173,22 +1161,39 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* setup various bits in PCI command register */
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|pci_enable_device
 (paren
 id|pci_dev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 r_return
-op_minus
-id|ENODEV
+id|ret
 suffix:semicolon
 id|pci_set_master
 c_func
 (paren
 id|pci_dev
+)paren
+suffix:semicolon
+id|irq
+op_assign
+id|pci_dev-&gt;irq
+suffix:semicolon
+id|ioaddr
+op_assign
+id|pci_resource_start
+c_func
+(paren
+id|pci_dev
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|net_dev
@@ -6372,7 +6377,7 @@ op_amp
 id|OWN
 )paren
 (brace
-multiline_comment|/* The packet is not transmited yet (owned by hardware) !&n;&t;&t;&t;   Note: the interrupt is generated only when Tx Machine&n;&t;&t;&t;   is idle, so this is an almost impossible case */
+multiline_comment|/* The packet is not transmitted yet (owned by hardware) !&n;&t;&t;&t;   Note: the interrupt is generated only when Tx Machine&n;&t;&t;&t;   is idle, so this is an almost impossible case */
 r_break
 suffix:semicolon
 )brace
@@ -6390,7 +6395,7 @@ id|OWCOLL
 )paren
 )paren
 (brace
-multiline_comment|/* packet unsuccessfully transmited */
+multiline_comment|/* packet unsuccessfully transmitted */
 r_if
 c_cond
 (paren
@@ -6456,7 +6461,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* packet successfully transmited */
+multiline_comment|/* packet successfully transmitted */
 id|sis_priv-&gt;stats.collisions
 op_add_assign
 (paren

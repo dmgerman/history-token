@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * Support for VIA 82Cxxx Audio Codecs&n; * Copyright 1999,2000 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n; *&n; * Distributed under the GNU GENERAL PUBLIC LICENSE (GPL) Version 2.&n; * See the &quot;COPYING&quot; file distributed with this software for more info.&n; *&n; * For a list of known bugs (errata) and documentation,&n; * see via-audio.pdf in linux/Documentation/DocBook.&n; * If this documentation does not exist, run &quot;make pdfdocs&quot;.&n; * If &quot;make pdfdocs&quot; fails, obtain the documentation from&n; * the driver&squot;s Website at&n; * http://gtf.org/garzik/drivers/via82cxxx/&n; *&n; */
 DECL|macro|VIA_VERSION
-mdefine_line|#define VIA_VERSION&t;&quot;1.1.14a&quot;
+mdefine_line|#define VIA_VERSION&t;&quot;1.1.14b&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -451,6 +451,12 @@ multiline_comment|/* /dev/dsp index from register_sound_dsp() */
 DECL|member|rev_h
 r_int
 id|rev_h
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|locked_rate
+r_int
+id|locked_rate
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -1169,6 +1175,13 @@ r_int
 id|rate
 )paren
 (brace
+r_struct
+id|via_info
+op_star
+id|card
+op_assign
+id|ac97-&gt;private_data
+suffix:semicolon
 r_int
 id|rate_reg
 suffix:semicolon
@@ -1179,6 +1192,20 @@ comma
 id|rate
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|card-&gt;locked_rate
+)paren
+(brace
+id|chan-&gt;rate
+op_assign
+l_int|48000
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1272,6 +1299,32 @@ comma
 id|rate_reg
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|chan-&gt;rate
+op_eq
+l_int|0
+)paren
+(brace
+id|card-&gt;locked_rate
+op_assign
+l_int|1
+suffix:semicolon
+id|chan-&gt;rate
+op_assign
+l_int|48000
+suffix:semicolon
+id|printk
+(paren
+id|KERN_WARNING
+id|PFX
+l_string|&quot;Codec rate locked at 48Khz&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|out
+suffix:colon
 id|DPRINTK
 (paren
 l_string|&quot;EXIT, returning rate %d Hz&bslash;n&quot;
@@ -4166,6 +4219,7 @@ l_int|0x8C
 suffix:semicolon
 multiline_comment|/* WARNING: this line is magic.  Remove this&n;&t; * and things break. */
 multiline_comment|/* enable variable rate, variable rate MIC ADC */
+multiline_comment|/*&n; &t; * If we cannot enable VRA, we have a locked-rate codec.&n; &t; * We try again to enable VRA before assuming so, however.&n; &t; */
 id|tmp16
 op_assign
 id|via_ac97_read_reg
@@ -4173,69 +4227,67 @@ id|via_ac97_read_reg
 op_amp
 id|card-&gt;ac97
 comma
-l_int|0x2A
-)paren
-suffix:semicolon
-id|via_ac97_write_reg
-(paren
-op_amp
-id|card-&gt;ac97
-comma
-l_int|0x2A
-comma
-id|tmp16
-op_or
-(paren
-l_int|1
-op_lshift
-l_int|0
-)paren
-)paren
-suffix:semicolon
-id|pci_read_config_byte
-(paren
-id|pdev
-comma
-id|VIA_ACLINK_CTRL
-comma
-op_amp
-id|tmp8
+id|AC97_EXTENDED_STATUS
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-id|tmp8
+id|tmp16
 op_amp
-(paren
-id|VIA_CR41_AC97_ENABLE
-op_or
-id|VIA_CR41_AC97_RESET
-)paren
+l_int|1
 )paren
 op_eq
 l_int|0
 )paren
 (brace
+id|via_ac97_write_reg
+(paren
+op_amp
+id|card-&gt;ac97
+comma
+id|AC97_EXTENDED_STATUS
+comma
+id|tmp16
+op_or
+l_int|1
+)paren
+suffix:semicolon
+id|tmp16
+op_assign
+id|via_ac97_read_reg
+(paren
+op_amp
+id|card-&gt;ac97
+comma
+id|AC97_EXTENDED_STATUS
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|tmp16
+op_amp
+l_int|1
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|card-&gt;locked_rate
+op_assign
+l_int|1
+suffix:semicolon
 id|printk
 (paren
-id|KERN_ERR
+id|KERN_WARNING
 id|PFX
-l_string|&quot;cannot enable AC97 controller, aborting&bslash;n&quot;
+l_string|&quot;Codec rate locked at 48Khz&bslash;n&quot;
 )paren
 suffix:semicolon
-id|DPRINTK
-(paren
-l_string|&quot;EXIT, tmp8=%X, returning -ENODEV&bslash;n&quot;
-comma
-id|tmp8
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
+)brace
 )brace
 id|DPRINTK
 (paren
@@ -4425,7 +4477,7 @@ id|via_ac97_read_reg
 op_amp
 id|card-&gt;ac97
 comma
-l_int|0x2A
+id|AC97_EXTENDED_STATUS
 )paren
 suffix:semicolon
 id|via_ac97_write_reg
@@ -4433,15 +4485,11 @@ id|via_ac97_write_reg
 op_amp
 id|card-&gt;ac97
 comma
-l_int|0x2A
+id|AC97_EXTENDED_STATUS
 comma
 id|tmp16
 op_or
-(paren
 l_int|1
-op_lshift
-l_int|0
-)paren
 )paren
 suffix:semicolon
 id|DPRINTK

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: saphir.c,v 1.8 2000/11/24 17:05:38 kai Exp $&n; *&n; * saphir.c low level stuff for HST Saphir 1&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; * Thanks to    HST High Soft Tech GmbH&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: saphir.c,v 1.8.6.1 2001/02/16 16:43:29 kai Exp $&n; *&n; * saphir.c low level stuff for HST Saphir 1&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; * Thanks to    HST High Soft Tech GmbH&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -20,7 +20,7 @@ r_char
 op_star
 id|saphir_rev
 op_assign
-l_string|&quot;$Revision: 1.8 $&quot;
+l_string|&quot;$Revision: 1.8.6.1 $&quot;
 suffix:semicolon
 DECL|macro|byteout
 mdefine_line|#define byteout(addr,val) outb(val,addr)

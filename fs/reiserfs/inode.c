@@ -2970,6 +2970,12 @@ comma
 id|unbh
 )paren
 suffix:semicolon
+id|mark_buffer_dirty
+c_func
+(paren
+id|unbh
+)paren
+suffix:semicolon
 singleline_comment|//inode-&gt;i_blocks += inode-&gt;i_sb-&gt;s_blocksize / 512;
 singleline_comment|//mark_tail_converted (inode);
 )brace

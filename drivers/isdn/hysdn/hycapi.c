@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hycapi.c,v 1.8 2000/11/22 17:13:13 kai Exp $&n; *&n; * Linux driver for HYSDN cards, CAPI2.0-Interface.&n; * written by Ulrich Albrecht (u.albrecht@hypercope.de) for Hypercope GmbH&n; *&n; * Copyright 2000 by Hypercope GmbH&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: hycapi.c,v 1.8.6.1 2001/02/16 16:43:30 kai Exp $&n; *&n; * Linux driver for HYSDN cards, CAPI2.0-Interface.&n; * written by Ulrich Albrecht (u.albrecht@hypercope.de) for Hypercope GmbH&n; *&n; * Copyright 2000 by Hypercope GmbH&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
@@ -31,7 +31,7 @@ id|hycapi_revision
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.8 $&quot;
+l_string|&quot;$Revision: 1.8.6.1 $&quot;
 suffix:semicolon
 DECL|struct|_hycapi_appl
 r_typedef
@@ -2481,7 +2481,7 @@ r_return
 id|cinfo-&gt;infobuf
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************&n;hycapi_rx_capipkt&n;&n;Recieve a capi-message.&n;&n;All B3_DATA_IND are converted to 64K-extension compatible format.&n;New nccis are created if neccessary.&n;*******************************************************************/
+multiline_comment|/******************************************************************&n;hycapi_rx_capipkt&n;&n;Receive a capi-message.&n;&n;All B3_DATA_IND are converted to 64K-extension compatible format.&n;New nccis are created if neccessary.&n;*******************************************************************/
 r_void
 DECL|function|hycapi_rx_capipkt
 id|hycapi_rx_capipkt

@@ -94,6 +94,8 @@ r_int
 r_int
 id|cpu_present_map
 suffix:semicolon
+DECL|macro|cpu_online_map
+mdefine_line|#define cpu_online_map cpu_present_map
 DECL|typedef|smpfunc_t
 r_typedef
 r_void

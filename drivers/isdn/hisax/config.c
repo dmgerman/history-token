@@ -1,10 +1,9 @@
-multiline_comment|/* $Id: config.c,v 2.57.6.6 2000/12/10 23:39:19 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: config.c,v 2.57.6.10 2001/02/16 16:43:25 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
@@ -4309,12 +4308,36 @@ comma
 id|cs-&gt;protocol
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|CallcNewChan
 c_func
 (paren
 id|cs
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|closecard
+c_func
+(paren
+id|cardnr
+)paren
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* ISAR needs firmware download first */
 r_if
 c_cond
@@ -5159,9 +5182,10 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+DECL|function|HiSax_init
+r_static
 r_int
 id|__init
-DECL|function|HiSax_init
 id|HiSax_init
 c_func
 (paren
@@ -6083,25 +6107,11 @@ id|EIO
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
+DECL|function|HiSax_exit
+r_static
 r_void
-)paren
-(brace
-r_return
-id|HiSax_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+id|HiSax_exit
 c_func
 (paren
 r_void
@@ -6183,7 +6193,6 @@ l_string|&quot;HiSax module removed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_HISAX_ELSA
 DECL|function|elsa_init_pcmcia
 r_int
@@ -7325,6 +7334,7 @@ id|ret
 )paren
 suffix:semicolon
 )brace
+macro_line|#include &lt;linux/pci.h&gt;
 DECL|variable|__initdata
 r_static
 r_struct
@@ -7728,6 +7738,20 @@ c_func
 id|pci
 comma
 id|hisax_pci_tbl
+)paren
+suffix:semicolon
+DECL|variable|HiSax_init
+id|module_init
+c_func
+(paren
+id|HiSax_init
+)paren
+suffix:semicolon
+DECL|variable|HiSax_exit
+id|module_exit
+c_func
+(paren
+id|HiSax_exit
 )paren
 suffix:semicolon
 eof

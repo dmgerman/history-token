@@ -289,10 +289,8 @@ id|termios
 id|stli_deftermios
 op_assign
 (brace
-l_int|0
-comma
-l_int|0
-comma
+id|c_cflag
+suffix:colon
 (paren
 id|B9600
 op_or
@@ -305,11 +303,10 @@ op_or
 id|CLOCAL
 )paren
 comma
-l_int|0
-comma
-l_int|0
-comma
+id|c_cc
+suffix:colon
 id|INIT_C_CC
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Define global stats structures. Not used often, and can be&n; *&t;re-used for each stats call.&n; */

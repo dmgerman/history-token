@@ -635,7 +635,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function ircomm_lmp_data_indication (instance, sap, skb)&n; *&n; *    Incomming data which we must deliver to the state machine, to check&n; *    we are still connected.&n; */
+multiline_comment|/*&n; * Function ircomm_lmp_data_indication (instance, sap, skb)&n; *&n; *    Incoming data which we must deliver to the state machine, to check&n; *    we are still connected.&n; */
 DECL|function|ircomm_lmp_data_indication
 r_int
 id|ircomm_lmp_data_indication

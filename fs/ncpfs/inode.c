@@ -1413,6 +1413,10 @@ id|default_bufsize
 op_assign
 l_int|1024
 suffix:semicolon
+id|sb-&gt;s_maxbytes
+op_assign
+id|MAX_NON_LFS
+suffix:semicolon
 id|sb-&gt;s_blocksize
 op_assign
 l_int|1024

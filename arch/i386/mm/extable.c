@@ -197,6 +197,17 @@ c_cond
 id|mp-&gt;ex_table_start
 op_eq
 l_int|NULL
+op_logical_or
+op_logical_neg
+(paren
+id|mp-&gt;flags
+op_amp
+(paren
+id|MOD_RUNNING
+op_or
+id|MOD_INITIALIZING
+)paren
+)paren
 )paren
 r_continue
 suffix:semicolon

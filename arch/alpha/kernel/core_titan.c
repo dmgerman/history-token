@@ -95,7 +95,7 @@ id|type1
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign
@@ -642,7 +642,7 @@ id|titan_pci_tbi
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 comma
@@ -795,7 +795,7 @@ op_star
 id|port
 comma
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 )paren
@@ -901,13 +901,13 @@ id|index
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon
 id|hose
 op_assign
-id|alloc_pci_controler
+id|alloc_pci_controller
 c_func
 (paren
 )paren

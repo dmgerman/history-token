@@ -778,6 +778,10 @@ op_assign
 op_amp
 id|proc_sops
 suffix:semicolon
+id|s-&gt;s_maxbytes
+op_assign
+id|MAX_NON_LFS
+suffix:semicolon
 id|root_inode
 op_assign
 id|proc_get_inode

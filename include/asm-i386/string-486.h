@@ -1202,11 +1202,6 @@ DECL|macro|__HAVE_ARCH_MEMCPY
 mdefine_line|#define __HAVE_ARCH_MEMCPY
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_X86_USE_3DNOW
-macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/mmx.h&gt;
 multiline_comment|/*&n;**      This CPU favours 3DNow strongly (eg AMD K6-II, K6-III, Athlon)&n;*/
 DECL|function|__constant_memcpy3d
@@ -1236,13 +1231,7 @@ c_cond
 id|len
 OL
 l_int|512
-op_logical_or
-id|in_interrupt
-c_func
-(paren
 )paren
-)paren
-(brace
 r_return
 id|__memcpy_c
 c_func
@@ -1254,7 +1243,6 @@ comma
 id|len
 )paren
 suffix:semicolon
-)brace
 r_return
 id|_mmx_memcpy
 c_func
@@ -1294,11 +1282,6 @@ c_cond
 id|len
 OL
 l_int|512
-op_logical_or
-id|in_interrupt
-c_func
-(paren
-)paren
 )paren
 (brace
 r_return

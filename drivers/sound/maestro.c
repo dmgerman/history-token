@@ -6001,7 +6001,7 @@ l_int|0x8F08
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* clear WP interupts */
+multiline_comment|/* clear WP interrupts */
 id|outw
 c_func
 (paren
@@ -6554,7 +6554,7 @@ id|route
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* clear WP interupts */
+multiline_comment|/* clear WP interrupts */
 id|outw
 c_func
 (paren
@@ -16390,7 +16390,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;maestro: no PCI power managment interface found.&bslash;n&quot;
+l_string|&quot;maestro: no PCI power management interface found.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -16411,7 +16411,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;maestro: PCI power managment capability: 0x%x&bslash;n&quot;
+l_string|&quot;maestro: PCI power management capability: 0x%x&bslash;n&quot;
 comma
 id|n
 op_rshift

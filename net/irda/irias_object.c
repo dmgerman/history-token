@@ -485,7 +485,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* Remove atribute from object */
+multiline_comment|/* Remove attribute from object */
 id|node
 op_assign
 id|hashbin_remove

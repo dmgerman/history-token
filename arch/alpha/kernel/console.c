@@ -26,7 +26,7 @@ suffix:semicolon
 multiline_comment|/* base for default hose */
 r_static
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|__init
 DECL|function|default_vga_hose_select
@@ -34,12 +34,12 @@ id|default_vga_hose_select
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|h1
 comma
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|h2
 )paren
@@ -65,7 +65,7 @@ id|set_vga_hose
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 )paren
@@ -108,7 +108,7 @@ op_star
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign

@@ -530,7 +530,7 @@ l_int|0x7FFF
 id|pr_debug
 c_func
 (paren
-l_string|&quot;%s: Got Incomming Call&bslash;n&quot;
+l_string|&quot;%s: Got Incoming Call&bslash;n&quot;
 comma
 id|adapter
 (braket

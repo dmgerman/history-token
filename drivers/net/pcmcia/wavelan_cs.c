@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Wavelan Pcmcia driver&n; *&n; *&t;&t;Jean II - HPLB &squot;96&n; *&n; * Reorganisation and extension of the driver.&n; * Original copyright follow. See wavelan_cs.h for details.&n; *&n; * This code is derived from Anthony D. Joseph&squot;s code and all the changes here&n; * are also under the original copyright below.&n; *&n; * This code supports version 2.00 of WaveLAN/PCMCIA cards (2.4GHz), and&n; * can work on Linux 2.0.36 with support of David Hinds&squot; PCMCIA Card Services&n; *&n; * Joe Finney (joe@comp.lancs.ac.uk) at Lancaster University in UK added&n; * critical code in the routine to initialize the Modem Management Controller.&n; *&n; * Thanks to Alan Cox and Bruce Janson for their advice.&n; *&n; *&t;-- Yunzhou Li (scip4166@nus.sg)&n; *&n;#ifdef WAVELAN_ROAMING&t;&n; * Roaming support added 07/22/98 by Justin Seger (jseger@media.mit.edu)&n; * based on patch by Joe Finney from Lancaster University.&n;#endif :-)&n; *&n; * Lucent (formerly AT&amp;T GIS, formerly NCR) WaveLAN PCMCIA card: An&n; * Ethernet-like radio transceiver controlled by an Intel 82593 coprocessor.&n; *&n; *   A non-shared memory PCMCIA ethernet driver for linux&n; *&n; * ISA version modified to support PCMCIA by Anthony Joseph (adj@lcs.mit.edu)&n; *&n; *&n; * Joseph O&squot;Sullivan &amp; John Langford (josullvn@cs.cmu.edu &amp; jcl@cs.cmu.edu)&n; *&n; * Apr 2 &squot;98  made changes to bring the i82593 control/int handling in line&n; *             with offical specs...&n; *&n; ****************************************************************************&n; *   Copyright 1995&n; *   Anthony D. Joseph&n; *   Massachusetts Institute of Technology&n; *&n; *   Permission to use, copy, modify, and distribute this program&n; *   for any purpose and without fee is hereby granted, provided&n; *   that this copyright and permission notice appear on all copies&n; *   and supporting documentation, the name of M.I.T. not be used&n; *   in advertising or publicity pertaining to distribution of the&n; *   program without specific prior permission, and notice be given&n; *   in supporting documentation that copying and distribution is&n; *   by permission of M.I.T.  M.I.T. makes no representations about&n; *   the suitability of this software for any purpose.  It is pro-&n; *   vided &quot;as is&quot; without express or implied warranty.         &n; ****************************************************************************&n; *&n; */
+multiline_comment|/*&n; *&t;Wavelan Pcmcia driver&n; *&n; *&t;&t;Jean II - HPLB &squot;96&n; *&n; * Reorganisation and extension of the driver.&n; * Original copyright follow. See wavelan_cs.h for details.&n; *&n; * This code is derived from Anthony D. Joseph&squot;s code and all the changes here&n; * are also under the original copyright below.&n; *&n; * This code supports version 2.00 of WaveLAN/PCMCIA cards (2.4GHz), and&n; * can work on Linux 2.0.36 with support of David Hinds&squot; PCMCIA Card Services&n; *&n; * Joe Finney (joe@comp.lancs.ac.uk) at Lancaster University in UK added&n; * critical code in the routine to initialize the Modem Management Controller.&n; *&n; * Thanks to Alan Cox and Bruce Janson for their advice.&n; *&n; *&t;-- Yunzhou Li (scip4166@nus.sg)&n; *&n;#ifdef WAVELAN_ROAMING&t;&n; * Roaming support added 07/22/98 by Justin Seger (jseger@media.mit.edu)&n; * based on patch by Joe Finney from Lancaster University.&n;#endif :-)&n; *&n; * Lucent (formerly AT&amp;T GIS, formerly NCR) WaveLAN PCMCIA card: An&n; * Ethernet-like radio transceiver controlled by an Intel 82593 coprocessor.&n; *&n; *   A non-shared memory PCMCIA ethernet driver for linux&n; *&n; * ISA version modified to support PCMCIA by Anthony Joseph (adj@lcs.mit.edu)&n; *&n; *&n; * Joseph O&squot;Sullivan &amp; John Langford (josullvn@cs.cmu.edu &amp; jcl@cs.cmu.edu)&n; *&n; * Apr 2 &squot;98  made changes to bring the i82593 control/int handling in line&n; *             with offical specs...&n; *&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 08/08/2000&n; * - reorganize kmallocs in wavelan_attach, checking all for failure&n; *   and releasing the previous allocations if one fails&n; *&n; *&n; ****************************************************************************&n; *   Copyright 1995&n; *   Anthony D. Joseph&n; *   Massachusetts Institute of Technology&n; *&n; *   Permission to use, copy, modify, and distribute this program&n; *   for any purpose and without fee is hereby granted, provided&n; *   that this copyright and permission notice appear on all copies&n; *   and supporting documentation, the name of M.I.T. not be used&n; *   in advertising or publicity pertaining to distribution of the&n; *   program without specific prior permission, and notice be given&n; *   in supporting documentation that copying and distribution is&n; *   by permission of M.I.T.  M.I.T. makes no representations about&n; *   the suitability of this software for any purpose.  It is pro-&n; *   vided &quot;as is&quot; without express or implied warranty.         &n; ****************************************************************************&n; *&n; */
 macro_line|#include &quot;wavelan_cs.h&quot;&t;&t;/* Private header */
 multiline_comment|/************************* MISC SUBROUTINES **************************/
 multiline_comment|/*&n; * Subroutines which won&squot;t fit in one of the following category&n; * (wavelan modem or i82593)&n; */
@@ -1781,7 +1781,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;Roaming is currently an experimental unsuported feature&quot;
+l_string|&quot;Roaming is currently an experimental unsupported feature&quot;
 l_string|&quot; of the Wavelan driver.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3141,7 +3141,7 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;/* WAVELAN_ROAMING */
 multiline_comment|/************************ I82593 SUBROUTINES *************************/
-multiline_comment|/*&n; * Usefull subroutines to manage the Ethernet controler&n; */
+multiline_comment|/*&n; * Useful subroutines to manage the Ethernet controller&n; */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Routine to synchronously send a command to the i82593 chip. &n; * Should be called with interrupts enabled.&n; */
 r_static
@@ -3254,7 +3254,7 @@ id|wv_wait_completed
 op_assign
 id|TRUE
 suffix:semicolon
-multiline_comment|/* Issue the command to the controler */
+multiline_comment|/* Issue the command to the controller */
 id|outb
 c_func
 (paren
@@ -6808,7 +6808,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Channel number */
-macro_line|#endif WIRELESS_EXT
+macro_line|#endif /* WIRELESS_EXT */
 multiline_comment|/* Read the frequency table */
 id|fee_read
 c_func
@@ -6911,7 +6911,7 @@ op_assign
 id|c
 suffix:semicolon
 multiline_comment|/* Set the list index */
-macro_line|#endif WIRELESS_EXT
+macro_line|#endif /* WIRELESS_EXT */
 multiline_comment|/* put in the list */
 id|list
 (braket
@@ -10611,12 +10611,16 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Keep stats up to date */
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
 id|lp-&gt;stats.rx_bytes
 op_add_assign
-id|skb-&gt;len
+id|sksize
 suffix:semicolon
 macro_line|#ifdef DEBUG_RX_TRACE
 id|printk
@@ -11444,7 +11448,7 @@ id|dev
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * This routine is called when we want to send a packet (NET3 callback)&n; * In this routine, we check if the the harware is ready to accept&n; * the packet. We also prevent reentrance. Then, we call the function&n; * to send the packet...&n; */
+multiline_comment|/*&n; * This routine is called when we want to send a packet (NET3 callback)&n; * In this routine, we check if the hardware is ready to accept&n; * the packet. We also prevent reentrance. Then, we call the function&n; * to send the packet...&n; */
 DECL|function|wavelan_packet_xmit
 r_static
 r_int
@@ -11498,7 +11502,7 @@ c_cond
 l_int|1
 )paren
 (brace
-multiline_comment|/* If somebody has asked to reconfigure the controler, we can do it now */
+multiline_comment|/* If somebody has asked to reconfigure the controller, we can do it now */
 r_if
 c_cond
 (paren
@@ -12903,7 +12907,7 @@ id|TRUE
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * This routine does a standard config of the WaveLAN controler (i82593).&n; * In the ISA driver, this is integrated in wavelan_hardware_reset()&n; * (called by wv_hw_config(), wv_82593_reconfig() &amp; wavelan_packet_xmit())&n; */
+multiline_comment|/*&n; * This routine does a standard config of the WaveLAN controller (i82593).&n; * In the ISA driver, this is integrated in wavelan_hardware_reset()&n; * (called by wv_hw_config(), wv_82593_reconfig() &amp; wavelan_packet_xmit())&n; */
 r_static
 r_int
 DECL|function|wv_82593_config
@@ -14175,7 +14179,7 @@ comma
 id|HACR_DEFAULT
 )paren
 suffix:semicolon
-multiline_comment|/* Check if the the module has been powered up... */
+multiline_comment|/* Check if the module has been powered up... */
 r_if
 c_cond
 (paren
@@ -14240,7 +14244,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* A bit crude ! */
-multiline_comment|/* Initialize the LAN controler */
+multiline_comment|/* Initialize the LAN controller */
 r_if
 c_cond
 (paren
@@ -15215,7 +15219,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/************************ INTERRUPT HANDLING ************************/
-multiline_comment|/*&n; * This function is the interrupt handler for the WaveLAN card. This&n; * routine will be called whenever: &n; *&t;1. A packet is received.&n; *&t;2. A packet has successfully been transfered and the unit is&n; *&t;   ready to transmit another packet.&n; *&t;3. A command has completed execution.&n; */
+multiline_comment|/*&n; * This function is the interrupt handler for the WaveLAN card. This&n; * routine will be called whenever: &n; *&t;1. A packet is received.&n; *&t;2. A packet has successfully been transferred and the unit is&n; *&t;   ready to transmit another packet.&n; *&t;3. A command has completed execution.&n; */
 r_static
 r_void
 DECL|function|wavelan_interrupt
@@ -16394,7 +16398,7 @@ comma
 id|HACR_DEFAULT
 )paren
 suffix:semicolon
-multiline_comment|/* Check if the the module has been powered up... */
+multiline_comment|/* Check if the module has been powered up... */
 r_if
 c_cond
 (paren
@@ -16788,6 +16792,79 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|link
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* Allocate the generic data structure */
+id|dev
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|net_device
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+r_goto
+id|fail_alloc_dev
+suffix:semicolon
+multiline_comment|/* Allocate the wavelan-specific data structure. */
+id|lp
+op_assign
+(paren
+id|net_local
+op_star
+)paren
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+id|net_local
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|lp
+)paren
+r_goto
+id|fail_alloc_dev_priv
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|lp
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|net_local
+)paren
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -16801,6 +16878,24 @@ r_struct
 id|dev_link_t
 )paren
 )paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|dev
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|net_device
+)paren
+)paren
+suffix:semicolon
+id|dev-&gt;priv
+op_assign
+id|lp
 suffix:semicolon
 multiline_comment|/* Unused for the Wavelan */
 id|link-&gt;release.function
@@ -16906,73 +17001,11 @@ id|dev_list
 op_assign
 id|link
 suffix:semicolon
-multiline_comment|/* Allocate the generic data structure */
-id|dev
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|net_device
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|dev
-comma
-l_int|0x00
-comma
-r_sizeof
-(paren
-r_struct
-id|net_device
-)paren
-)paren
-suffix:semicolon
 id|link-&gt;priv
 op_assign
 id|link-&gt;irq.Instance
 op_assign
 id|dev
-suffix:semicolon
-multiline_comment|/* Allocate the wavelan-specific data structure. */
-id|dev-&gt;priv
-op_assign
-id|lp
-op_assign
-(paren
-id|net_local
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-id|net_local
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|lp
-comma
-l_int|0x00
-comma
-r_sizeof
-(paren
-id|net_local
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/* Init specific data */
 id|wv_wait_completed
@@ -17202,6 +17235,25 @@ suffix:semicolon
 macro_line|#endif
 r_return
 id|link
+suffix:semicolon
+id|fail_alloc_dev_priv
+suffix:colon
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|fail_alloc_dev
+suffix:colon
+id|kfree
+c_func
+(paren
+id|link
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/

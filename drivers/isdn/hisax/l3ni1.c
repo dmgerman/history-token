@@ -1,4 +1,4 @@
-singleline_comment|// $Id: l3ni1.c,v 2.5.6.1 2000/12/06 16:59:19 kai Exp $
+singleline_comment|// $Id: l3ni1.c,v 2.5.6.2 2001/02/16 16:43:28 kai Exp $
 singleline_comment|//
 singleline_comment|//-----------------------------------------------------------------------------
 singleline_comment|//
@@ -16,7 +16,7 @@ singleline_comment|// Ragnar Paulson - for some handy code fragments
 singleline_comment|// Will Scales - beta tester extraordinaire
 singleline_comment|// Brett Whittacre - beta tester and remote devel system in Vegas
 singleline_comment|//
-singleline_comment|// This file is (c) under GNU PUBLIC LICENSE
+singleline_comment|// This file is (c) under GNU General Public License
 singleline_comment|//
 singleline_comment|//-----------------------------------------------------------------------------
 DECL|macro|__NO_VERSION__
@@ -43,7 +43,7 @@ r_char
 op_star
 id|ni1_revision
 op_assign
-l_string|&quot;$Revision: 2.5.6.1 $&quot;
+l_string|&quot;$Revision: 2.5.6.2 $&quot;
 suffix:semicolon
 DECL|macro|EXT_BEARER_CAPS
 mdefine_line|#define EXT_BEARER_CAPS 1
@@ -1599,7 +1599,7 @@ id|id
 )paren
 )paren
 (brace
-multiline_comment|/* Diversion successfull */
+multiline_comment|/* Diversion successful */
 id|free_invoke_id
 c_func
 (paren
@@ -1636,7 +1636,7 @@ id|pc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Diversion successfull */
+multiline_comment|/* Diversion successful */
 r_else
 id|l3_debug
 c_func
@@ -10124,7 +10124,7 @@ id|subp
 op_plus
 l_int|2
 suffix:semicolon
-multiline_comment|/* length including info subadress element */
+multiline_comment|/* length including info subaddress element */
 op_star
 id|p
 op_increment
@@ -10313,7 +10313,7 @@ op_increment
 op_assign
 l_int|0x04
 suffix:semicolon
-multiline_comment|/* called party subadress */
+multiline_comment|/* called party subaddress */
 op_star
 id|p
 op_increment

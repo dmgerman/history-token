@@ -459,7 +459,7 @@ op_amp
 id|mask
 )paren
 (brace
-multiline_comment|/* &n;&t;&t; * We don&squot;t want to miss an interrupt that would have occured&n;&t;&t; * while it was masked.  Simulate it if it is the case.&n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * We don&squot;t want to miss an interrupt that would have occurred&n;&t;&t; * while it was masked.  Simulate it if it is the case.&n;&t;&t; */
 r_int
 id|state
 op_assign

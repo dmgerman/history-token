@@ -3,7 +3,7 @@ r_struct
 id|pci_dev
 suffix:semicolon
 r_struct
-id|pci_controler
+id|pci_controller
 suffix:semicolon
 r_struct
 id|pci_iommu_arena
@@ -77,7 +77,7 @@ id|lock
 suffix:semicolon
 DECL|member|hose
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon
@@ -111,7 +111,7 @@ suffix:semicolon
 multiline_comment|/* The hose list.  */
 r_extern
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose_head
 comma
@@ -121,7 +121,7 @@ id|hose_tail
 suffix:semicolon
 r_extern
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|pci_isa_hose
 suffix:semicolon
@@ -148,9 +148,9 @@ op_star
 suffix:semicolon
 r_extern
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
-id|alloc_pci_controler
+id|alloc_pci_controller
 c_func
 (paren
 r_void
@@ -174,7 +174,7 @@ id|iommu_arena_new
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 comma
 id|dma_addr_t

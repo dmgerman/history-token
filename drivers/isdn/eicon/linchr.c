@@ -1,4 +1,7 @@
-multiline_comment|/*&n; *&n; * Copyright (C) Eicon Technology Corporation, 2000.&n; *&n; * This source file is supplied for the exclusive use with Eicon&n; * Technology Corporation&squot;s range of DIVA Server Adapters.&n; *&n; * Eicon File Revision :    1.12  &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY OF ANY KIND WHATSOEVER INCLUDING ANY &n; * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  &n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; *&n; * Copyright (C) Eicon Technology Corporation, 2000.&n; *&n; * Eicon File Revision :    1.12  &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY OF ANY KIND WHATSOEVER INCLUDING ANY &n; * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  &n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+DECL|macro|__NO_VERSION__
+mdefine_line|#define __NO_VERSION__
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -841,24 +844,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|private_usage_count
+r_static
 r_int
 id|private_usage_count
-suffix:semicolon
-r_extern
-r_void
-id|mod_inc_use_count
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|mod_dec_use_count
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 DECL|function|do_open
 r_int
@@ -876,12 +864,9 @@ op_star
 id|pFile
 )paren
 (brace
-macro_line|#if defined(MODULE)
-id|mod_inc_use_count
-c_func
-(paren
-)paren
+id|MOD_INC_USE_COUNT
 suffix:semicolon
+macro_line|#ifdef MODULE
 id|private_usage_count
 op_increment
 suffix:semicolon
@@ -906,12 +891,9 @@ op_star
 id|pFile
 )paren
 (brace
-macro_line|#if defined(MODULE)
-id|mod_dec_use_count
-c_func
-(paren
-)paren
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
+macro_line|#ifdef MODULE
 id|private_usage_count
 op_decrement
 suffix:semicolon
@@ -939,13 +921,8 @@ l_int|0
 id|private_usage_count
 op_decrement
 suffix:semicolon
-macro_line|#if defined(MODULE)
-id|mod_dec_use_count
-c_func
-(paren
-)paren
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 eof

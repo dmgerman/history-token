@@ -745,6 +745,12 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* 408 */
 macro_line|#endif /* CONFIG_UNIXWARE_DISKLABEL */
+macro_line|#ifdef CONFIG_MINIX_SUBPARTITION
+DECL|macro|MINIX_PARTITION
+macro_line|#   define MINIX_PARTITION         0x81  /* Minix Partition ID */
+DECL|macro|MINIX_NR_SUBPARTITIONS
+macro_line|#   define MINIX_NR_SUBPARTITIONS  4
+macro_line|#endif /* CONFIG_MINIX_SUBPARTITION */
 macro_line|#ifdef __KERNEL__
 r_extern
 r_struct

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ipac.h,v 1.5 2000/06/26 08:59:13 keil Exp $&n; *&n; * ipac.h   IPAC specific defines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: ipac.h,v 1.5.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; * ipac.h   IPAC specific defines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 multiline_comment|/* All Registers original Siemens Spec  */
 DECL|macro|IPAC_CONF
 mdefine_line|#define IPAC_CONF&t;0xC0

@@ -1,4 +1,4 @@
-singleline_comment|// $Id: l3ni1.h,v 2.3 2000/11/16 13:50:43 keil Exp $
+singleline_comment|// $Id: l3ni1.h,v 2.3.6.1 2001/02/16 16:43:28 kai Exp $
 singleline_comment|//-----------------------------------------------------------------------------
 singleline_comment|//
 singleline_comment|// NI1 D-channel protocol
@@ -12,7 +12,7 @@ singleline_comment|// driver written by Karsten Keil et al.  Thanks also for the
 singleline_comment|// code provided by Ragnar Paulson.
 singleline_comment|//
 singleline_comment|//
-singleline_comment|// This file is (c) under GNU PUBLIC LICENSE
+singleline_comment|// This file is (c) under GNU General Public License
 singleline_comment|//
 singleline_comment|//-----------------------------------------------------------------------------
 macro_line|#ifndef l3ni1_process

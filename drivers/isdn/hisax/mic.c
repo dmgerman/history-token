@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: mic.c,v 1.10 2000/11/24 17:05:38 kai Exp $&n; *&n; * mic.c  low level stuff for mic cards&n; *&n; * Copyright (C) 1997 &n; *&n; * Author  Stephan von Krawczynski &lt;skraw@ithnet.com&gt;&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: mic.c,v 1.10.6.1 2001/02/16 16:43:28 kai Exp $&n; *&n; * mic.c  low level stuff for mic cards&n; *&n; * Copyright (C) 1997 &n; *&n; * Author  Stephan von Krawczynski &lt;skraw@ithnet.com&gt;&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -20,7 +20,7 @@ r_char
 op_star
 id|mic_revision
 op_assign
-l_string|&quot;$Revision: 1.10 $&quot;
+l_string|&quot;$Revision: 1.10.6.1 $&quot;
 suffix:semicolon
 DECL|macro|byteout
 mdefine_line|#define byteout(addr,val) outb(val,addr)

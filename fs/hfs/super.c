@@ -1751,6 +1751,10 @@ r_goto
 id|bail1
 suffix:semicolon
 )brace
+id|s-&gt;s_maxbytes
+op_assign
+id|MAX_NON_LFS
+suffix:semicolon
 id|s-&gt;s_magic
 op_assign
 id|HFS_SUPER_MAGIC

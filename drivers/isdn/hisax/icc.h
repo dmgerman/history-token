@@ -1,4 +1,4 @@
-singleline_comment|// $Id: icc.h,v 1.2 2000/06/26 08:59:13 keil Exp $
+singleline_comment|// $Id: icc.h,v 1.2.6.1 2001/02/16 16:43:27 kai Exp $
 singleline_comment|//-----------------------------------------------------------------------------
 singleline_comment|//
 singleline_comment|// ICC specific routines
@@ -7,10 +7,10 @@ singleline_comment|// Author       Matt Henderson &amp; Guy Ellis - Traverse Tec
 singleline_comment|//              www.traverse.com.au
 singleline_comment|//
 singleline_comment|// 1999.7.14 Initial implementation of routines for Siemens ISDN 
-singleline_comment|// Communication Controler PEB 2070 based on the ISAC routines 
+singleline_comment|// Communication Controller PEB 2070 based on the ISAC routines 
 singleline_comment|// written by Karsten Keil.
 singleline_comment|//
-singleline_comment|// This file is (c) under GNU PUBLIC LICENSE
+singleline_comment|// This file is (c) under GNU General Public License
 singleline_comment|//
 singleline_comment|//-----------------------------------------------------------------------------
 multiline_comment|/* All Registers original Siemens Spec  */

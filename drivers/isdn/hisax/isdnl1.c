@@ -1,11 +1,11 @@
-multiline_comment|/* $Id: isdnl1.c,v 2.41.6.1 2000/12/10 22:01:04 kai Exp $&n; *&n; * isdnl1.c     common low level stuff for Siemens Chipsetbased isdn cards&n; *              based on the teles driver from Jan den Ouden&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; *&t;&t;This file is (c) under GNU PUBLIC LICENSE&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *              Beat Doebeli&n; *&n; */
+multiline_comment|/* $Id: isdnl1.c,v 2.41.6.2 2001/02/16 16:43:27 kai Exp $&n; *&n; * isdnl1.c     common low level stuff for Siemens Chipsetbased isdn cards&n; *              based on the teles driver from Jan den Ouden&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *              Beat Doebeli&n; *&n; */
 DECL|variable|l1_revision
 r_const
 r_char
 op_star
 id|l1_revision
 op_assign
-l_string|&quot;$Revision: 2.41.6.1 $&quot;
+l_string|&quot;$Revision: 2.41.6.2 $&quot;
 suffix:semicolon
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__

@@ -11479,6 +11479,10 @@ id|video_device
 id|planb_template
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 id|PLANB_DEVICE_NAME

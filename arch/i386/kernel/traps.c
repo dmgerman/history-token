@@ -1643,7 +1643,7 @@ DECL|variable|nmi_watchdog
 r_int
 id|nmi_watchdog
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 DECL|function|setup_nmi_watchdog
 r_static

@@ -20,7 +20,7 @@ r_struct
 id|pci_dev
 suffix:semicolon
 r_struct
-id|pci_controler
+id|pci_controller
 suffix:semicolon
 multiline_comment|/* core_apecs.c */
 r_extern
@@ -64,7 +64,7 @@ id|apecs_pci_tbi
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 comma
 id|dma_addr_t
@@ -122,7 +122,7 @@ id|cia_pci_tbi
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 comma
 id|dma_addr_t
@@ -202,7 +202,7 @@ id|lca_pci_tbi
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 comma
 id|dma_addr_t
@@ -252,7 +252,7 @@ id|mcpcia_pci_tbi
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 comma
 id|dma_addr_t
@@ -391,7 +391,7 @@ id|titan_pci_tbi
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 comma
 id|dma_addr_t
@@ -441,7 +441,7 @@ id|tsunami_pci_tbi
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 comma
 id|dma_addr_t
@@ -491,7 +491,7 @@ id|wildfire_pci_tbi
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 comma
 id|dma_addr_t

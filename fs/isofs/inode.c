@@ -2874,7 +2874,7 @@ l_int|1
 r_goto
 id|out_no_support
 suffix:semicolon
-macro_line|#endif IGNORE_WRONG_MULTI_VOLUME_SPECS
+macro_line|#endif /* IGNORE_WRONG_MULTI_VOLUME_SPECS */
 id|s-&gt;u.isofs_sb.s_nzones
 op_assign
 id|isonum_733
@@ -2923,7 +2923,7 @@ l_int|1
 r_goto
 id|out_no_support
 suffix:semicolon
-macro_line|#endif IGNORE_WRONG_MULTI_VOLUME_SPECS
+macro_line|#endif /* IGNORE_WRONG_MULTI_VOLUME_SPECS */
 id|s-&gt;u.isofs_sb.s_nzones
 op_assign
 id|isonum_733
@@ -3032,6 +3032,11 @@ id|s-&gt;s_flags
 op_or_assign
 id|MS_RDONLY
 multiline_comment|/* | MS_NODEV | MS_NOSUID */
+suffix:semicolon
+multiline_comment|/* Set this for reference. Its not currently used except on write&n;&t;   which we don&squot;t have .. */
+id|s-&gt;s_maxbytes
+op_assign
+id|MAX_NON_LFS
 suffix:semicolon
 multiline_comment|/* RDE: data zone now byte offset! */
 id|first_data_zone

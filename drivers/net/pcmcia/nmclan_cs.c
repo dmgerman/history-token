@@ -4068,12 +4068,16 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Send the packet to the upper (protocol) layers. */
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;linux_stats.rx_packets
 op_increment
 suffix:semicolon
 id|lp-&gt;linux_stats.rx_bytes
 op_add_assign
-id|skb-&gt;len
+id|pkt_len
 suffix:semicolon
 id|outb
 c_func

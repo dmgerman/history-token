@@ -440,7 +440,7 @@ op_amp
 id|mcic
 comma
 op_amp
-id|S390_lowcore.mcck_interuption_code
+id|S390_lowcore.mcck_interruption_code
 comma
 r_sizeof
 (paren

@@ -2589,6 +2589,13 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+r_void
+id|md_autodetect_dev
+(paren
+id|kdev_t
+id|dev
+)paren
+suffix:semicolon
 DECL|function|export_rdev
 r_static
 r_void
@@ -2683,6 +2690,12 @@ id|rdev-&gt;pending
 )paren
 suffix:semicolon
 )brace
+id|md_autodetect_dev
+c_func
+(paren
+id|rdev-&gt;dev
+)paren
+suffix:semicolon
 id|rdev-&gt;dev
 op_assign
 l_int|0
@@ -14766,7 +14779,6 @@ suffix:semicolon
 DECL|function|md_autodetect_dev
 r_void
 id|md_autodetect_dev
-c_func
 (paren
 id|kdev_t
 id|dev
@@ -14914,6 +14926,10 @@ id|pending_raid_disks
 )paren
 suffix:semicolon
 )brace
+id|dev_cnt
+op_assign
+l_int|0
+suffix:semicolon
 id|autorun_devices
 c_func
 (paren
@@ -15896,12 +15912,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|dev_cnt
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/* make sure further calls to md_autodetect_dev are ignored */
 id|md_setup_drive
 c_func
 (paren

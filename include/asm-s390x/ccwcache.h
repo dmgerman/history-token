@@ -189,7 +189,7 @@ mdefine_line|#define CQR_STATUS_QUEUED   0x02&t;/* request is queued to be proce
 DECL|macro|CQR_STATUS_IN_IO
 mdefine_line|#define CQR_STATUS_IN_IO    0x03&t;/* request is currently in IO */
 DECL|macro|CQR_STATUS_DONE
-mdefine_line|#define CQR_STATUS_DONE     0x04&t;/* request is completed sucessfully */
+mdefine_line|#define CQR_STATUS_DONE     0x04&t;/* request is completed successfully */
 DECL|macro|CQR_STATUS_ERROR
 mdefine_line|#define CQR_STATUS_ERROR    0x05&t;/* request is completed with error */
 DECL|macro|CQR_STATUS_FAILED

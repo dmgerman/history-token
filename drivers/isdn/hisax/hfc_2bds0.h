@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hfc_2bds0.h,v 1.4 2000/06/26 08:59:12 keil Exp $&n; *&n; *  specific defines for CCD&squot;s HFC 2BDS0&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: hfc_2bds0.h,v 1.4.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; *  specific defines for CCD&squot;s HFC 2BDS0&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|HFCD_CIRM
 mdefine_line|#define HFCD_CIRM  &t;0x18
 DECL|macro|HFCD_CTMT

@@ -3824,7 +3824,7 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-multiline_comment|/* ATAPI mixer setings */
+multiline_comment|/* ATAPI mixer settings */
 id|I2CWrite
 c_func
 (paren
@@ -11988,6 +11988,10 @@ id|video_device
 id|saa_template
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;SAA7146A&quot;

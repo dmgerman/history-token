@@ -1036,7 +1036,7 @@ l_int|3
 )brace
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * On Assabet, we must probe for the Neponset board *before* paging_init() &n; * has occured to actually determine the amount of RAM available.  To do so, &n; * we map the appropriate IO section in the page table here in order to &n; * access GPIO registers.&n; */
+multiline_comment|/*&n; * On Assabet, we must probe for the Neponset board *before* paging_init() &n; * has occurred to actually determine the amount of RAM available.  To do so, &n; * we map the appropriate IO section in the page table here in order to &n; * access GPIO registers.&n; */
 DECL|function|map_sa1100_gpio_regs
 r_void
 id|__init

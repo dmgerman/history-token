@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hysdn_boot.c,v 1.4 2000/11/13 22:51:47 kai Exp $&n;&n; * Linux driver for HYSDN cards, specific routines for booting and pof handling.&n; *&n; * written by Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; *&n; * Copyright 1999  by Werner Cornelius (werner@titro.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: hysdn_boot.c,v 1.4.6.2 2001/02/16 16:43:30 kai Exp $&n;&n; * Linux driver for HYSDN cards, specific routines for booting and pof handling.&n; *&n; * written by Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; *&n; * Copyright 1999  by Werner Cornelius (werner@titro.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
@@ -54,7 +54,7 @@ DECL|member|last_error
 r_int
 id|last_error
 suffix:semicolon
-multiline_comment|/* last occured error */
+multiline_comment|/* last occurred error */
 DECL|member|pof_recid
 id|word
 id|pof_recid
@@ -102,7 +102,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*****************************************************/
-multiline_comment|/*  start decryption of sucessive POF file chuncks.  */
+multiline_comment|/*  start decryption of successive POF file chuncks.  */
 multiline_comment|/*                                                   */
 multiline_comment|/*  to be called at start of POF file reading,       */
 multiline_comment|/*  before starting any decryption on any POF record. */
@@ -192,7 +192,7 @@ suffix:semicolon
 multiline_comment|/* DecryptBuf */
 multiline_comment|/********************************************************************************/
 multiline_comment|/* pof_handle_data executes the required actions dependant on the active record */
-multiline_comment|/* id. If successfull 0 is returned, a negative value shows an error.           */
+multiline_comment|/* id. If successful 0 is returned, a negative value shows an error.           */
 multiline_comment|/********************************************************************************/
 r_static
 r_int
@@ -555,7 +555,7 @@ multiline_comment|/* pof_write_buffer is called when the buffer has been filled 
 multiline_comment|/* number of data bytes. The number delivered is additionally supplied for    */
 multiline_comment|/* verification. The functions handles the data and returns the needed number */
 multiline_comment|/* of bytes for the next action. If the returned value is 0 or less an error  */
-multiline_comment|/* occured and booting must be aborted.                                       */
+multiline_comment|/* occurred and booting must be aborted.                                       */
 multiline_comment|/******************************************************************************/
 r_int
 DECL|function|pof_write_buffer
@@ -880,7 +880,7 @@ r_return
 id|boot-&gt;last_error
 )paren
 suffix:semicolon
-multiline_comment|/* an error occured */
+multiline_comment|/* an error occurred */
 id|boot-&gt;pof_recoffset
 op_add_assign
 id|datlen
@@ -1263,7 +1263,7 @@ suffix:semicolon
 multiline_comment|/* pof_write_close */
 multiline_comment|/*********************************************************************************/
 multiline_comment|/* EvalSysrTokData checks additional records delivered with the Sysready Message */
-multiline_comment|/* when POF has been booted. A return value of 0 is used if no error occured.    */
+multiline_comment|/* when POF has been booted. A return value of 0 is used if no error occurred.    */
 multiline_comment|/*********************************************************************************/
 r_int
 DECL|function|EvalSysrTokData

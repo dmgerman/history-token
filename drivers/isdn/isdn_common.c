@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_common.c,v 1.114.6.6 2001/02/07 11:31:30 kai Exp $&n;&n; * Linux ISDN subsystem, common used functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: isdn_common.c,v 1.114.6.8 2001/02/16 16:43:22 kai Exp $&n;&n; * Linux ISDN subsystem, common used functions (linklevel).&n; *&n; * Copyright 1994-1999  by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -20,9 +20,8 @@ mdefine_line|#define CONFIG_ISDN_DIVERSION
 macro_line|#endif
 macro_line|#ifdef CONFIG_ISDN_DIVERSION
 macro_line|#include &lt;linux/isdn_divertif.h&gt;
-macro_line|#endif CONFIG_ISDN_DIVERSION
+macro_line|#endif /* CONFIG_ISDN_DIVERSION */
 macro_line|#include &quot;isdn_v110.h&quot;
-macro_line|#include &quot;isdn_cards.h&quot;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 multiline_comment|/* Debugflags */
 DECL|macro|ISDN_DEBUG_STATCALLB
@@ -38,7 +37,7 @@ r_char
 op_star
 id|isdn_revision
 op_assign
-l_string|&quot;$Revision: 1.114.6.6 $&quot;
+l_string|&quot;$Revision: 1.114.6.8 $&quot;
 suffix:semicolon
 r_extern
 r_char
@@ -95,7 +94,7 @@ op_star
 id|divert_if
 suffix:semicolon
 multiline_comment|/* = NULL */
-macro_line|#endif CONFIG_ISDN_DIVERSION
+macro_line|#endif /* CONFIG_ISDN_DIVERSION */
 r_static
 r_int
 id|isdn_writebuf_stub
@@ -2127,7 +2126,7 @@ r_return
 id|retval
 suffix:semicolon
 multiline_comment|/* processed */
-macro_line|#endif CONFIG_ISDN_DIVERSION                        
+macro_line|#endif /* CONFIG_ISDN_DIVERSION */                       
 r_if
 c_cond
 (paren
@@ -2447,7 +2446,7 @@ c_func
 id|c
 )paren
 suffix:semicolon
-macro_line|#endif CONFIG_ISDN_DIVERSION
+macro_line|#endif /* CONFIG_ISDN_DIVERSION */
 r_break
 suffix:semicolon
 r_case
@@ -2488,7 +2487,7 @@ c_func
 id|c
 )paren
 suffix:semicolon
-macro_line|#endif CONFIG_ISDN_DIVERSION
+macro_line|#endif /* CONFIG_ISDN_DIVERSION */
 r_break
 suffix:semicolon
 r_case
@@ -2690,7 +2689,7 @@ c_func
 id|c
 )paren
 suffix:semicolon
-macro_line|#endif CONFIG_ISDN_DIVERSION
+macro_line|#endif /* CONFIG_ISDN_DIVERSION */
 r_break
 suffix:semicolon
 r_break
@@ -3411,7 +3410,7 @@ c_func
 id|c
 )paren
 suffix:semicolon
-macro_line|#endif CONFIG_ISDN_DIVERSION
+macro_line|#endif /* CONFIG_ISDN_DIVERSION */
 r_default
 suffix:colon
 r_return
@@ -11068,7 +11067,7 @@ c_func
 id|DIVERT_REG_NAME
 )paren
 suffix:semicolon
-macro_line|#endif CONFIG_ISDN_DIVERSION
+macro_line|#endif /* CONFIG_ISDN_DIVERSION */
 DECL|variable|register_isdn
 id|EXPORT_SYMBOL
 c_func
@@ -12347,11 +12346,6 @@ id|printk
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|isdn_cards_init
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#endif

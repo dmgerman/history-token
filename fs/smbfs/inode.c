@@ -1448,6 +1448,11 @@ op_assign
 op_amp
 id|smb_sops
 suffix:semicolon
+id|sb-&gt;s_maxbytes
+op_assign
+id|MAX_NON_LFS
+suffix:semicolon
+multiline_comment|/* client support missing */
 id|sb-&gt;u.smbfs_sb.mnt
 op_assign
 l_int|NULL

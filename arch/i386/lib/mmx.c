@@ -2,6 +2,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
+macro_line|#include &lt;asm/hardirq.h&gt; 
 multiline_comment|/*&n; *&t;MMX 3DNow! library helper functions&n; *&n; *&t;To do:&n; *&t;We can use MMX just for prefetch in IRQ&squot;s. This may be a win. &n; *&t;&t;(reported so on K6-III)&n; *&t;We should use a better code neutral filler for the short jump&n; *&t;&t;leal ebx. [ebx] is apparently best for K6-2, but Cyrix ??&n; *&t;We also want to clobber the filler register so we dont get any&n; *&t;&t;register forwarding stalls on the filler. &n; *&n; *&t;Add *user handling. Checksums are not a win with MMX on any CPU&n; *&t;tested so far for any MMX solution figured.&n; *&n; *&t;22/09/2000 - Arjan van de Ven &n; *&t;&t;Improved for non-egineering-sample Athlons &n; *&n; */
 DECL|function|_mmx_memcpy
 r_void
@@ -25,10 +26,33 @@ id|len
 r_void
 op_star
 id|p
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+r_return
+id|__memcpy
+c_func
+(paren
+id|to
+comma
+id|from
+comma
+id|len
+)paren
+suffix:semicolon
+id|p
 op_assign
 id|to
 suffix:semicolon
-r_int
 id|i
 op_assign
 id|len

@@ -8,9 +8,7 @@ macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
-macro_line|#endif
 multiline_comment|/* #define _CPIA_DEBUG_&t;&t;define for verbose debug output */
 macro_line|#include &quot;cpia.h&quot;
 r_static
@@ -1782,10 +1780,6 @@ suffix:semicolon
 op_increment
 id|cam-&gt;open_count
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1877,10 +1871,6 @@ id|cam
 op_assign
 id|privdata
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

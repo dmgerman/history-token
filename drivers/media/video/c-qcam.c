@@ -2470,8 +2470,6 @@ r_int
 id|flags
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2488,8 +2486,6 @@ op_star
 id|dev
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|qcam_write
 r_static
@@ -3520,6 +3516,10 @@ id|video_device
 id|qcam_template
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Colour QuickCam&quot;

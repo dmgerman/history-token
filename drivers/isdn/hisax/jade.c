@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: jade.c,v 1.6 2000/11/24 17:05:38 kai Exp $&n; *&n; * jade.c   JADE stuff (derived from original hscx.c)&n; *&n; * Author   Roland Klabunde (R.Klabunde@Berkom.de)&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: jade.c,v 1.6.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; * jade.c   JADE stuff (derived from original hscx.c)&n; *&n; * Author   Roland Klabunde (R.Klabunde@Berkom.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;

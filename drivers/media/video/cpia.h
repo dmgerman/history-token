@@ -67,7 +67,7 @@ op_star
 id|cbdata
 )paren
 suffix:semicolon
-multiline_comment|/* transferCmd sends commands to the camera.  command MUST point to&n;&t; * an  8 byte buffer in kernel space. data can be NULL if no extra&n;&t; * data is needed.  The size of the data is given by the last 2&n;&t; * bytes of comand.  data must also point to memory in kernel space.&n;&t; * Returns negative value on error, otherwise 0.&n;&t; */
+multiline_comment|/* transferCmd sends commands to the camera.  command MUST point to&n;&t; * an  8 byte buffer in kernel space. data can be NULL if no extra&n;&t; * data is needed.  The size of the data is given by the last 2&n;&t; * bytes of command.  data must also point to memory in kernel space.&n;&t; * Returns negative value on error, otherwise 0.&n;&t; */
 DECL|member|transferCmd
 r_int
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: boardergo.c,v 1.5.6.1 2000/12/10 22:01:04 kai Exp $&n;&n; * Linux driver for HYSDN cards, specific routines for ergo type boards.&n; *&n; * As all Linux supported cards Champ2, Ergo and Metro2/4 use the same&n; * DPRAM interface and layout with only minor differences all related&n; * stuff is done here, not in separate modules.&n; *&n; * written by Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; *&n; * Copyright 1999  by Werner Cornelius (werner@titro.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: boardergo.c,v 1.5.6.2 2001/02/16 16:43:30 kai Exp $&n;&n; * Linux driver for HYSDN cards, specific routines for ergo type boards.&n; *&n; * As all Linux supported cards Champ2, Ergo and Metro2/4 use the same&n; * DPRAM interface and layout with only minor differences all related&n; * stuff is done here, not in separate modules.&n; *&n; * written by Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; *&n; * Copyright 1999  by Werner Cornelius (werner@titro.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
@@ -1000,7 +1000,7 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* successfull */
+multiline_comment|/* successful */
 )brace
 multiline_comment|/* ergo_writebootimg */
 multiline_comment|/********************************************************************************/
@@ -1262,7 +1262,7 @@ suffix:semicolon
 multiline_comment|/* ergo_writebootseq */
 multiline_comment|/***********************************************************************************/
 multiline_comment|/* ergo_waitpofready waits for a maximum of 10 seconds for the completition of the */
-multiline_comment|/* boot process. If the process has been successfull 0 is returned otherwise a     */
+multiline_comment|/* boot process. If the process has been successful 0 is returned otherwise a     */
 multiline_comment|/* negative error code is returned.                                                */
 multiline_comment|/***********************************************************************************/
 r_static
@@ -1367,7 +1367,7 @@ id|RDY_MAGIC
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* an error occured */
+multiline_comment|/* an error occurred */
 multiline_comment|/* Check for additional data delivered during SysReady */
 id|msg_size
 op_assign

@@ -486,7 +486,7 @@ id|self-&gt;daddr
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Function irlan_provider_connect_response (handle)&n; *&n; *    Accept incomming connection&n; *&n; */
+multiline_comment|/*&n; * Function irlan_provider_connect_response (handle)&n; *&n; *    Accept incoming connection&n; *&n; */
 DECL|function|irlan_provider_connect_response
 r_void
 id|irlan_provider_connect_response
@@ -1388,7 +1388,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlan_provider_register(void)&n; *&n; *    Register provider support so we can accept incomming connections.&n; * &n; */
+multiline_comment|/*&n; * Function irlan_provider_register(void)&n; *&n; *    Register provider support so we can accept incoming connections.&n; * &n; */
 DECL|function|irlan_provider_open_ctrl_tsap
 r_int
 id|irlan_provider_open_ctrl_tsap

@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for the 3com 3c589 card.&n;    &n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    3c589_cs.c 1.154 2000/09/30 17:39:04&n;&n;    The network driver code is based on Donald Becker&squot;s 3c589 code:&n;    &n;    Written 1994 by Donald Becker.&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;    Donald Becker may be reached at becker@cesdis1.gsfc.nasa.gov&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for the 3com 3c589 card.&n;    &n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    3c589_cs.c 1.156 2001/02/07 00:19:41&n;&n;    The network driver code is based on Donald Becker&squot;s 3c589 code:&n;    &n;    Written 1994 by Donald Becker.&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;    Donald Becker may be reached at becker@cesdis1.gsfc.nasa.gov&n;&n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -377,7 +377,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;3c589_cs.c 1.154 2000/09/30 17:39:04 (David Hinds)&quot;
+l_string|&quot;3c589_cs.c 1.156 2001/02/07 00:19:41 (David Hinds)&quot;
 suffix:semicolon
 macro_line|#else
 DECL|macro|DEBUG
@@ -4972,12 +4972,16 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
 id|lp-&gt;stats.rx_bytes
 op_add_assign
-id|skb-&gt;len
+id|pkt_len
 suffix:semicolon
 )brace
 r_else

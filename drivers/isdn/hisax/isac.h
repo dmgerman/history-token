@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isac.h,v 1.7 2000/06/26 08:59:13 keil Exp $&n; *&n; * isac.h   ISAC specific defines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: isac.h,v 1.7.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; * isac.h   ISAC specific defines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 multiline_comment|/* All Registers original Siemens Spec  */
 DECL|macro|ISAC_MASK
 mdefine_line|#define ISAC_MASK 0x20

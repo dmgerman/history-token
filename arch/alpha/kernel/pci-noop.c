@@ -5,11 +5,11 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &quot;proto.h&quot;
-multiline_comment|/*&n; * The PCI controler list.&n; */
+multiline_comment|/*&n; * The PCI controller list.&n; */
 DECL|variable|hose_head
 DECL|variable|hose_tail
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose_head
 comma
@@ -22,23 +22,23 @@ id|hose_head
 suffix:semicolon
 DECL|variable|pci_isa_hose
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|pci_isa_hose
 suffix:semicolon
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|__init
-DECL|function|alloc_pci_controler
-id|alloc_pci_controler
+DECL|function|alloc_pci_controller
+id|alloc_pci_controller
 c_func
 (paren
 r_void
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon
@@ -119,7 +119,7 @@ id|dfn
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon

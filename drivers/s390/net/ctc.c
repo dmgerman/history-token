@@ -3596,7 +3596,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: System reset occured (remote side)&bslash;n&quot;
+l_string|&quot;%s: System reset occurred (remote side)&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren

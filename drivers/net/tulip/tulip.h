@@ -295,6 +295,37 @@ DECL|enumerator|CSR15
 id|CSR15
 op_assign
 l_int|0x78
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* register offset and bits for CFDD PCI config reg */
+DECL|enum|pci_cfg_driver_reg
+r_enum
+id|pci_cfg_driver_reg
+(brace
+DECL|enumerator|CFDD
+id|CFDD
+op_assign
+l_int|0x40
+comma
+DECL|enumerator|CFDD_Sleep
+id|CFDD_Sleep
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|31
+)paren
+comma
+DECL|enumerator|CFDD_Snooze
+id|CFDD_Snooze
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|30
+)paren
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* The bits in the CSR5 status registers, mostly interrupt sources. */

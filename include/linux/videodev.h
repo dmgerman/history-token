@@ -4,14 +4,18 @@ mdefine_line|#define __LINUX_VIDEODEV_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#ifdef __KERNEL__
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020100
 macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 DECL|struct|video_device
 r_struct
 id|video_device
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|name
 r_char
 id|name

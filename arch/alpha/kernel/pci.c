@@ -74,11 +74,11 @@ id|pci_hae0_name
 op_assign
 l_string|&quot;HAE0&quot;
 suffix:semicolon
-multiline_comment|/*&n; * The PCI controler list.&n; */
+multiline_comment|/*&n; * The PCI controller list.&n; */
 DECL|variable|hose_head
 DECL|variable|hose_tail
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose_head
 comma
@@ -91,7 +91,7 @@ id|hose_head
 suffix:semicolon
 DECL|variable|pci_isa_hose
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|pci_isa_hose
 suffix:semicolon
@@ -470,7 +470,7 @@ op_assign
 id|data
 suffix:semicolon
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign
@@ -802,13 +802,13 @@ id|bus
 (brace
 multiline_comment|/* Update device resources.  */
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 )paren
 id|bus-&gt;sysdata
@@ -909,7 +909,7 @@ id|bus
 (brace
 multiline_comment|/* Propogate hose info into the subordinate devices.  */
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign
@@ -1140,7 +1140,7 @@ id|resource
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign
@@ -1323,7 +1323,7 @@ id|pinp
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign
@@ -1404,13 +1404,13 @@ id|ranges
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 )paren
 id|bus-&gt;sysdata
@@ -1512,7 +1512,7 @@ r_void
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon
@@ -1524,7 +1524,7 @@ suffix:semicolon
 r_int
 id|next_busno
 suffix:semicolon
-multiline_comment|/* Scan all of the recorded PCI controlers.  */
+multiline_comment|/* Scan all of the recorded PCI controllers.  */
 r_for
 c_loop
 (paren
@@ -1593,18 +1593,18 @@ id|alpha_mv.pci_map_irq
 suffix:semicolon
 )brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|__init
-DECL|function|alloc_pci_controler
-id|alloc_pci_controler
+DECL|function|alloc_pci_controller
+id|alloc_pci_controller
 c_func
 (paren
 r_void
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon
@@ -1686,7 +1686,7 @@ id|dfn
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; */
+multiline_comment|/*&n; * Copyright 2000 by Hans Reiser, licensing governed by reiserfs/README&n; *&n; * Trivial changes by Alan Cox to add the LFS fixes&n; *&n; * Trivial Changes:&n; * Rights granted to Hans Reiser to redistribute under other terms providing&n; * he accepts all liability including but not limited to patent, fitness&n; * for purpose, and direct or indirect claims arising from failure to perform.&n; *&n; * NO WARRANTY&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -2303,6 +2303,11 @@ op_assign
 op_amp
 id|reiserfs_sops
 suffix:semicolon
+id|s-&gt;s_maxbytes
+op_assign
+l_int|0xFFFFFFFF
+suffix:semicolon
+multiline_comment|/* 4Gig */
 r_return
 l_int|0
 suffix:semicolon

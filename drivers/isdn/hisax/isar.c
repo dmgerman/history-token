@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isar.c,v 1.17 2000/11/24 17:05:37 kai Exp $&n; *&n; * isar.c   ISAR (Siemens PSB 7110) specific routines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: isar.c,v 1.17.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; * isar.c   ISAR (Siemens PSB 7110) specific routines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;

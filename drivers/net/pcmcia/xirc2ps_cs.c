@@ -141,7 +141,7 @@ id|MACIntr
 op_assign
 l_int|0x04
 comma
-multiline_comment|/* MAC Interrupt occured */
+multiline_comment|/* MAC Interrupt occurred */
 DECL|enumerator|TxResGrant
 id|TxResGrant
 op_assign
@@ -5455,15 +5455,6 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|PutWord
-c_func
-(paren
-id|XIRCREG0_DO
-comma
-l_int|0x8000
-)paren
-suffix:semicolon
-multiline_comment|/* issue cmd: skip_rx_packet */
 )brace
 r_else
 r_if
@@ -5829,6 +5820,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
@@ -5850,18 +5845,10 @@ id|lp-&gt;stats.multicast
 op_increment
 suffix:semicolon
 )brace
-id|PutWord
-c_func
-(paren
-id|XIRCREG0_DO
-comma
-l_int|0x8000
-)paren
-suffix:semicolon
-multiline_comment|/* issue cmd: skip_rx_packet */
 )brace
 r_else
 (brace
+multiline_comment|/* bad packet */
 id|DEBUG
 c_func
 (paren
@@ -5940,6 +5927,16 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* clear the received/dropped/error packet */
+id|PutWord
+c_func
+(paren
+id|XIRCREG0_DO
+comma
+l_int|0x8000
+)paren
+suffix:semicolon
+multiline_comment|/* issue cmd: skip_rx_packet */
 multiline_comment|/* get the new ethernet status */
 id|eth_status
 op_assign

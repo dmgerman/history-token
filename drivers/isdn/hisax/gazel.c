@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: gazel.c,v 2.11.6.2 2000/11/29 16:00:14 kai Exp $&n; *&n; * gazel.c     low level stuff for Gazel isdn cards&n; *&n; * Author       BeWan Systems&n; *              based on source code from Karsten Keil&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: gazel.c,v 2.11.6.4 2001/02/16 16:43:26 kai Exp $&n; *&n; * gazel.c     low level stuff for Gazel isdn cards&n; *&n; * Author       BeWan Systems&n; *              based on source code from Karsten Keil&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|__NO_VERSION__
@@ -23,7 +23,7 @@ r_char
 op_star
 id|gazel_revision
 op_assign
-l_string|&quot;$Revision: 2.11.6.2 $&quot;
+l_string|&quot;$Revision: 2.11.6.4 $&quot;
 suffix:semicolon
 DECL|macro|R647
 mdefine_line|#define R647      1

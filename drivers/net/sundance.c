@@ -1020,6 +1020,8 @@ suffix:semicolon
 DECL|macro|PRIV_ALIGN
 mdefine_line|#define PRIV_ALIGN&t;15 &t;/* Required alignment mask */
 multiline_comment|/* Use  __attribute__((aligned (L1_CACHE_BYTES)))  to maintain alignment&n;   within the structure. */
+DECL|macro|MII_CNT
+mdefine_line|#define MII_CNT&t;&t;4
 DECL|struct|netdev_private
 r_struct
 id|netdev_private
@@ -1195,10 +1197,10 @@ r_int
 r_char
 id|phys
 (braket
-l_int|2
+id|MII_CNT
 )braket
 suffix:semicolon
-multiline_comment|/* MII device addresses. */
+multiline_comment|/* MII device addresses, only first one used. */
 )brace
 suffix:semicolon
 multiline_comment|/* The station address location in the EEPROM. */
@@ -1474,8 +1476,6 @@ id|ent-&gt;driver_data
 suffix:semicolon
 r_int
 id|irq
-op_assign
-id|pdev-&gt;irq
 suffix:semicolon
 r_int
 id|i
@@ -1516,6 +1516,10 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
+id|irq
+op_assign
+id|pdev-&gt;irq
+suffix:semicolon
 id|dev
 op_assign
 id|init_etherdev
@@ -1546,6 +1550,20 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_request_regions
+c_func
+(paren
+id|pdev
+comma
+id|dev-&gt;name
+)paren
+)paren
+r_goto
+id|err_out_netdev
+suffix:semicolon
 macro_line|#ifdef USE_IO_OPS
 id|ioaddr
 op_assign
@@ -1557,28 +1575,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|request_region
-c_func
-(paren
-id|ioaddr
-comma
-id|pci_id_tbl
-(braket
-id|chip_idx
-)braket
-dot
-id|io_size
-comma
-id|dev-&gt;name
-)paren
-)paren
-r_goto
-id|err_out_netdev
-suffix:semicolon
 macro_line|#else
 id|ioaddr
 op_assign
@@ -1589,28 +1585,6 @@ id|pdev
 comma
 l_int|1
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|request_mem_region
-c_func
-(paren
-id|ioaddr
-comma
-id|pci_id_tbl
-(braket
-id|chip_idx
-)braket
-dot
-id|io_size
-comma
-id|dev-&gt;name
-)paren
-)paren
-r_goto
-id|err_out_netdev
 suffix:semicolon
 id|ioaddr
 op_assign
@@ -1914,7 +1888,7 @@ l_int|32
 op_logical_and
 id|phy_idx
 OL
-l_int|4
+id|MII_CNT
 suffix:semicolon
 id|phy
 op_increment
@@ -2077,23 +2051,10 @@ suffix:semicolon
 macro_line|#ifndef USE_IO_OPS
 id|err_out_iomem
 suffix:colon
-id|release_mem_region
-c_func
-(paren
-id|pci_resource_start
+id|pci_release_regions
 c_func
 (paren
 id|pdev
-comma
-l_int|1
-)paren
-comma
-id|pci_id_tbl
-(braket
-id|chip_idx
-)braket
-dot
-id|io_size
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3425,7 +3386,17 @@ suffix:semicolon
 id|np-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
+op_logical_neg
+id|np-&gt;tx_full
+)paren
+id|netif_wake_queue
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize the Rx and Tx rings, along with various &squot;dev&squot; bits. */
@@ -6309,40 +6280,13 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef USE_IO_OPS
-id|release_region
-c_func
-(paren
-id|dev-&gt;base_addr
-comma
-id|pci_id_tbl
-(braket
-id|np-&gt;chip_id
-)braket
-dot
-id|io_size
-)paren
-suffix:semicolon
-macro_line|#else
-id|release_mem_region
-c_func
-(paren
-id|pci_resource_start
+id|pci_release_regions
 c_func
 (paren
 id|pdev
-comma
-l_int|1
-)paren
-comma
-id|pci_id_tbl
-(braket
-id|np-&gt;chip_id
-)braket
-dot
-id|io_size
 )paren
 suffix:semicolon
+macro_line|#ifndef USE_IO_OPS
 id|iounmap
 c_func
 (paren

@@ -1883,6 +1883,29 @@ id|u8
 )paren
 )paren
 suffix:semicolon
+DECL|macro|HAVE_PCI_REQ_REGIONS
+mdefine_line|#define HAVE_PCI_REQ_REGIONS 1
+r_int
+id|pci_request_regions
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
+r_void
+id|pci_release_regions
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* New-style probing supporting hot-pluggable devices */
 r_int
 id|pci_register_driver

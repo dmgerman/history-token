@@ -425,7 +425,7 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/* an error occured */
+multiline_comment|/* an error occurred */
 r_return
 (paren
 id|retval

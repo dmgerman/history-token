@@ -145,6 +145,11 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|journal_begin
 c_func
 (paren
@@ -207,6 +212,11 @@ comma
 id|dentry-&gt;d_inode-&gt;i_sb
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

@@ -58,7 +58,7 @@ id|semaphore
 id|lock
 suffix:semicolon
 multiline_comment|/* freq is in 1/16 kHz to internal number, hw precision is 50 kHz */
-multiline_comment|/* It is only usefull to give freq in intervall of 800 (=0.05Mhz),&n; * other bits will be truncated, e.g 92.7400016 -&gt; 92.7, but &n; * 92.7400017 -&gt; 92.75&n; */
+multiline_comment|/* It is only useful to give freq in intervall of 800 (=0.05Mhz),&n; * other bits will be truncated, e.g 92.7400016 -&gt; 92.7, but &n; * 92.7400017 -&gt; 92.75&n; */
 DECL|macro|RSF16_ENCODE
 mdefine_line|#define RSF16_ENCODE(x)&t;((x)/800+214)
 DECL|macro|RSF16_MINFREQ
@@ -1145,8 +1145,6 @@ suffix:semicolon
 id|users
 op_increment
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1166,8 +1164,6 @@ id|dev
 id|users
 op_decrement
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|variable|fmi_unit
 r_static
@@ -1182,6 +1178,10 @@ id|video_device
 id|fmi_radio
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;SF16FMx radio&quot;

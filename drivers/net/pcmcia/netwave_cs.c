@@ -5508,6 +5508,17 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
+id|priv-&gt;stats.rx_packets
+op_increment
+suffix:semicolon
+id|priv-&gt;stats.rx_bytes
+op_add_assign
+id|rcvLen
+suffix:semicolon
 multiline_comment|/* Got the packet, tell the adapter to skip it */
 id|wait_WOC
 c_func
@@ -5546,13 +5557,6 @@ l_int|3
 comma
 l_string|&quot;Packet reception ok&bslash;n&quot;
 )paren
-suffix:semicolon
-id|priv-&gt;stats.rx_packets
-op_increment
-suffix:semicolon
-id|priv-&gt;stats.rx_bytes
-op_add_assign
-id|skb-&gt;len
 suffix:semicolon
 )brace
 r_return

@@ -290,9 +290,9 @@ l_int|0xcc
 )braket
 suffix:semicolon
 multiline_comment|/* 0x0cc */
-DECL|member|mcck_interuption_code
+DECL|member|mcck_interruption_code
 id|__u32
-id|mcck_interuption_code
+id|mcck_interruption_code
 (braket
 l_int|2
 )braket

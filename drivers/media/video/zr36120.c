@@ -3763,8 +3763,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3868,8 +3866,6 @@ suffix:semicolon
 id|ztv-&gt;overinfo.overlay
 op_assign
 l_int|0
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This read function could be used reentrant in a SMP situation.&n; *&n; * This is made possible by the spinlock which is kept till we&n; * found and marked a buffer for our own use. The lock must&n; * be released as soon as possible to prevent lock contention.&n; */
@@ -7036,6 +7032,10 @@ id|video_device
 id|zr36120_template
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;UNSET&quot;
@@ -7252,8 +7252,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -7365,8 +7363,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * This read function could be used reentrant in a SMP situation.&n; *&n; * This is made possible by the spinlock which is kept till we&n; * found and marked a buffer for our own use. The lock must&n; * be released as soon as possible to prevent lock contention.&n; */
 r_static
@@ -8538,6 +8534,10 @@ id|video_device
 id|vbi_template
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;UNSET&quot;

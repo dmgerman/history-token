@@ -483,7 +483,7 @@ multiline_comment|/* nothing to send */
 )brace
 multiline_comment|/* hysdn_sched_tx */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/* send one config line to the card and return 0 if successfull, otherwise a */
+multiline_comment|/* send one config line to the card and return 0 if successful, otherwise a */
 multiline_comment|/* negative error code.                                                      */
 multiline_comment|/* The function works with timeouts perhaps not giving the greatest speed    */
 multiline_comment|/* sending the line, but this should be meaningless beacuse only some lines  */

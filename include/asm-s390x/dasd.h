@@ -382,7 +382,7 @@ op_star
 id|dasd_ck_id_fn_t
 )paren
 (paren
-id|dev_info_t
+id|s390_dev_info_t
 op_star
 )paren
 suffix:semicolon
@@ -830,7 +830,7 @@ r_struct
 id|dasd_device_t
 (brace
 DECL|member|devinfo
-id|dev_info_t
+id|s390_dev_info_t
 id|devinfo
 suffix:semicolon
 DECL|member|discipline

@@ -1,6 +1,7 @@
-multiline_comment|/*&n; * Copyright (C) 1996 Universidade de Lisboa&n; * &n; * Written by Pedro Roque Marques (roque@di.fc.ul.pt)&n; *&n; * This software may be used and distributed according to the terms of &n; * the GNU Public License, incorporated herein by reference.&n; */
+multiline_comment|/*&n; * Copyright (C) 1996 Universidade de Lisboa&n; * &n; * Written by Pedro Roque Marques (roque@di.fc.ul.pt)&n; *&n; * This software may be used and distributed according to the terms of &n; * the GNU General Public License, incorporated herein by reference.&n; */
 multiline_comment|/*        &n; *        PCBIT-D module support&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -51,26 +52,7 @@ op_assign
 (brace
 l_int|0
 comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
 )brace
-suffix:semicolon
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 r_extern
 r_void
@@ -96,40 +78,10 @@ r_int
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MODULE_PARM
-c_func
-(paren
-id|mem
-comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|MAX_PCBIT_CARDS
-)paren
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|irq
-comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|MAX_PCBIT_CARDS
-)paren
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-DECL|macro|pcbit_init
-mdefine_line|#define pcbit_init init_module
-macro_line|#endif
 DECL|function|pcbit_init
+r_static
 r_int
+id|__init
 id|pcbit_init
 c_func
 (paren
@@ -305,17 +257,15 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/* No symbols to export, hide all symbols */
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|cleanup_module
+DECL|function|pcbit_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|pcbit_exit
 c_func
 (paren
 r_void
@@ -352,10 +302,9 @@ l_string|&quot;PCBIT-D module unloaded&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
+macro_line|#ifndef MODULE
 DECL|macro|MAX_PARA
 mdefine_line|#define MAX_PARA&t;(MAX_PCBIT_CARDS * 2)
-macro_line|#include &lt;linux/init.h&gt;
 DECL|function|pcbit_setup
 r_static
 r_int
@@ -489,4 +438,46 @@ id|pcbit_setup
 )paren
 suffix:semicolon
 macro_line|#endif
+id|MODULE_PARM
+c_func
+(paren
+id|mem
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|MAX_PCBIT_CARDS
+)paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|MAX_PCBIT_CARDS
+)paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+DECL|variable|pcbit_init
+id|module_init
+c_func
+(paren
+id|pcbit_init
+)paren
+suffix:semicolon
+DECL|variable|pcbit_exit
+id|module_exit
+c_func
+(paren
+id|pcbit_exit
+)paren
+suffix:semicolon
 eof

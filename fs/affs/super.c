@@ -2117,6 +2117,11 @@ id|MS_NODEV
 op_or
 id|MS_NOSUID
 suffix:semicolon
+multiline_comment|/*&n;&t; * Max file size is 2Gb&n;&t; */
+id|s-&gt;s_maxbytes
+op_assign
+id|MAX_NON_LFS
+suffix:semicolon
 multiline_comment|/* Keep super block in cache */
 id|bb
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isac.c,v 1.28 2000/11/24 17:05:37 kai Exp $&n; *&n; * isac.c   ISAC specific routines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; *&t;&t;This file is (c) under GNU PUBLIC LICENSE&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; */
+multiline_comment|/* $Id: isac.c,v 1.28.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; * isac.c   ISAC specific routines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;
@@ -2617,6 +2617,7 @@ suffix:semicolon
 )brace
 id|AfterMOX1
 suffix:colon
+suffix:semicolon
 macro_line|#endif
 )brace
 )brace

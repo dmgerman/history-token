@@ -1,6 +1,7 @@
-multiline_comment|/* &n; * $Id: divert_init.c,v 1.5 2000/11/13 22:51:47 kai Exp $&n; *&n; * Module init for DSS1 diversion services for i4l.&n; *&n; * Copyright 1999       by Werner Cornelius (werner@isdn4linux.de)&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
+multiline_comment|/* &n; * $Id: divert_init.c,v 1.5.6.2 2001/01/24 22:18:17 kai Exp $&n; *&n; * Module init for DSS1 diversion services for i4l.&n; *&n; * Copyright 1999       by Werner Cornelius (werner@isdn4linux.de)&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;isdn_divert.h&quot;
 multiline_comment|/********************/
 multiline_comment|/* needed externals */
@@ -52,9 +53,11 @@ multiline_comment|/*************************/
 multiline_comment|/* Module interface code */
 multiline_comment|/* no cmd line parms     */
 multiline_comment|/*************************/
-DECL|function|init_module
+DECL|function|divert_init
+r_static
 r_int
-id|init_module
+id|__init
+id|divert_init
 c_func
 (paren
 r_void
@@ -139,13 +142,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* init_module */
 multiline_comment|/**********************/
 multiline_comment|/* Module deinit code */
 multiline_comment|/**********************/
-DECL|function|cleanup_module
+DECL|function|divert_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|divert_exit
 c_func
 (paren
 r_void
@@ -260,5 +264,18 @@ l_string|&quot;dss1_divert module successfully removed &bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* cleanup_module */
+DECL|variable|divert_init
+id|module_init
+c_func
+(paren
+id|divert_init
+)paren
+suffix:semicolon
+DECL|variable|divert_exit
+id|module_exit
+c_func
+(paren
+id|divert_exit
+)paren
+suffix:semicolon
 eof

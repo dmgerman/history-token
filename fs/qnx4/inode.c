@@ -1782,6 +1782,10 @@ id|s-&gt;s_magic
 op_assign
 id|QNX4_SUPER_MAGIC
 suffix:semicolon
+id|s-&gt;s_maxbytes
+op_assign
+id|MAX_NON_LFS
+suffix:semicolon
 macro_line|#ifndef CONFIG_QNX4FS_RW
 id|s-&gt;s_flags
 op_or_assign

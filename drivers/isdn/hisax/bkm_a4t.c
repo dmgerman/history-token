@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: bkm_a4t.c,v 1.13.6.2 2000/11/29 16:00:14 kai Exp $&n; * bkm_a4t.c    low level stuff for T-Berkom A4T&n; *              derived from the original file sedlbauer.c&n; *              derived from the original file niccy.c&n; *              derived from the original file netjet.c&n; *&n; * Author       Roland Klabunde (R.Klabunde@Berkom.de)&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: bkm_a4t.c,v 1.13.6.4 2001/02/16 16:43:25 kai Exp $&n; * bkm_a4t.c    low level stuff for T-Berkom A4T&n; *              derived from the original file sedlbauer.c&n; *              derived from the original file niccy.c&n; *              derived from the original file netjet.c&n; *&n; * Author       Roland Klabunde (R.Klabunde@Berkom.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
@@ -24,7 +24,7 @@ r_char
 op_star
 id|bkm_a4t_revision
 op_assign
-l_string|&quot;$Revision: 1.13.6.2 $&quot;
+l_string|&quot;$Revision: 1.13.6.4 $&quot;
 suffix:semicolon
 r_static
 r_inline

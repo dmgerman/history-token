@@ -1615,7 +1615,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* &n;&t;&t; *  If this is an incomming connection, then the destination &n;&t;&t; *  LSAP selector may have been specified as LM_ANY so that &n;&t;&t; *  any client can connect. In that case we only need to check&n;&t;&t; *  if the source LSAP (in our view!) match!&n;&t;&t; */
+multiline_comment|/* &n;&t;&t; *  If this is an incoming connection, then the destination &n;&t;&t; *  LSAP selector may have been specified as LM_ANY so that &n;&t;&t; *  any client can connect. In that case we only need to check&n;&t;&t; *  if the source LSAP (in our view!) match!&n;&t;&t; */
 r_if
 c_cond
 (paren

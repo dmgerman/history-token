@@ -7125,6 +7125,11 @@ r_goto
 id|error_out
 suffix:semicolon
 )brace
+id|sb-&gt;s_maxbytes
+op_assign
+op_complement
+l_int|0ULL
+suffix:semicolon
 r_return
 id|sb
 suffix:semicolon

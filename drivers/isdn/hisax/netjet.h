@@ -1,4 +1,4 @@
-singleline_comment|// $Id: netjet.h,v 2.5.6.1 2000/11/28 12:02:46 kai Exp $
+singleline_comment|// $Id: netjet.h,v 2.5.6.2 2001/02/16 16:43:28 kai Exp $
 singleline_comment|//-----------------------------------------------------------------------------
 singleline_comment|//
 singleline_comment|// NETjet common header file
@@ -6,7 +6,7 @@ singleline_comment|//
 singleline_comment|// Author       Kerstern Keil repackaged by
 singleline_comment|//              Matt Henderson - Traverse Technologies P/L www.traverse.com.au
 singleline_comment|//
-singleline_comment|// This file is (c) under GNU PUBLIC LICENSE
+singleline_comment|// This file is (c) under GNU General Public License
 singleline_comment|//
 singleline_comment|//-----------------------------------------------------------------------------
 r_extern

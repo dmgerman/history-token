@@ -7580,8 +7580,6 @@ comma
 id|btv-&gt;nr
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -7706,8 +7704,6 @@ c_func
 op_amp
 id|btv-&gt;lock
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|ret
@@ -7854,8 +7850,6 @@ c_func
 op_amp
 id|btv-&gt;lock
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/***********************************/
@@ -11215,6 +11209,10 @@ id|video_device
 id|bttv_template
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;UNSET&quot;
@@ -11683,8 +11681,6 @@ r_int
 r_int
 id|irq_flags
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -11817,8 +11813,6 @@ id|btv-&gt;s_lock
 comma
 id|irq_flags
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|vbi_ioctl
@@ -11997,6 +11991,10 @@ id|video_device
 id|vbi_template
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;bttv vbi&quot;
@@ -12077,8 +12075,6 @@ r_int
 r_int
 id|v
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -12156,8 +12152,6 @@ op_amp
 id|btv-&gt;lock
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EBUSY
@@ -12211,8 +12205,6 @@ c_func
 op_amp
 id|btv-&gt;lock
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|radio_read
@@ -12583,6 +12575,10 @@ id|video_device
 id|radio_template
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;bttv radio&quot;

@@ -1572,7 +1572,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlmp_connect_indication (self)&n; *&n; *    Incomming connection&n; *&n; */
+multiline_comment|/*&n; * Function irlmp_connect_indication (self)&n; *&n; *    Incoming connection&n; *&n; */
 DECL|function|irlmp_connect_indication
 r_void
 id|irlmp_connect_indication

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * $Id: isdn_divert.c,v 1.6.6.1 2001/02/07 11:31:31 kai Exp $&n; *&n; * DSS1 main diversion supplementary handling for i4l.&n; *&n; * Copyright 1999       by Werner Cornelius (werner@isdn4linux.de)&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
+multiline_comment|/* &n; * $Id: isdn_divert.c,v 1.6.6.2 2001/02/16 16:43:25 kai Exp $&n; *&n; * DSS1 main diversion supplementary handling for i4l.&n; *&n; * Copyright 1999       by Werner Cornelius (werner@isdn4linux.de)&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
@@ -1378,6 +1378,8 @@ id|ds
 comma
 op_star
 id|ds1
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|flags

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hisax.h,v 2.52.6.1 2000/12/06 16:59:19 kai Exp $&n; *&n; *   Basic declarations, defines and prototypes&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: hisax.h,v 2.52.6.3 2001/02/16 16:43:27 kai Exp $&n; *&n; *   Basic declarations, defines and prototypes&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -193,14 +193,14 @@ mdefine_line|#define l3dss1_process
 macro_line|#include &quot;l3dss1.h&quot; 
 DECL|macro|l3dss1_process
 macro_line|#undef  l3dss1_process
-macro_line|#endif CONFIG_HISAX_EURO
+macro_line|#endif /* CONFIG_HISAX_EURO */
 macro_line|#ifdef CONFIG_HISAX_NI1
 DECL|macro|l3ni1_process
 mdefine_line|#define l3ni1_process
 macro_line|#include &quot;l3ni1.h&quot; 
 DECL|macro|l3ni1_process
 macro_line|#undef  l3ni1_process
-macro_line|#endif CONFIG_HISAX_NI1
+macro_line|#endif /* CONFIG_HISAX_NI1 */
 DECL|macro|MAX_DFRAME_LEN
 mdefine_line|#define MAX_DFRAME_LEN&t;260
 DECL|macro|MAX_DFRAME_LEN_L1
@@ -1028,14 +1028,14 @@ id|dss1_stk_priv
 id|dss1
 suffix:semicolon
 multiline_comment|/* private dss1 data */
-macro_line|#endif CONFIG_HISAX_EURO              
+macro_line|#endif /* CONFIG_HISAX_EURO */              
 macro_line|#ifdef CONFIG_HISAX_NI1
 DECL|member|ni1
 id|ni1_stk_priv
 id|ni1
 suffix:semicolon
 multiline_comment|/* private ni1 data */
-macro_line|#endif CONFIG_HISAX_NI1              
+macro_line|#endif /* CONFIG_HISAX_NI1 */             
 DECL|member|prot
 )brace
 id|prot
@@ -1108,14 +1108,14 @@ id|dss1_proc_priv
 id|dss1
 suffix:semicolon
 multiline_comment|/* private dss1 data */
-macro_line|#endif CONFIG_HISAX_EURO            
+macro_line|#endif /* CONFIG_HISAX_EURO */            
 macro_line|#ifdef CONFIG_HISAX_NI1
 DECL|member|ni1
 id|ni1_proc_priv
 id|ni1
 suffix:semicolon
 multiline_comment|/* private ni1 data */
-macro_line|#endif CONFIG_HISAX_NI1              
+macro_line|#endif /* CONFIG_HISAX_NI1 */             
 DECL|member|prot
 )brace
 id|prot

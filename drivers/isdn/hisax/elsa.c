@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: elsa.c,v 2.26.6.1 2000/11/28 12:02:46 kai Exp $&n; *&n; * elsa.c     low level stuff for Elsa isdn cards&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; *&t;&t;This file is (c) under GNU PUBLIC LICENSE&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Elsa GmbH for documents and informations&n; *&n; *              Klaus Lichtenwalder (Klaus.Lichtenwalder@WebForum.DE)&n; *              for ELSA PCMCIA support&n; *&n; */
+multiline_comment|/* $Id: elsa.c,v 2.26.6.3 2001/02/16 16:43:25 kai Exp $&n; *&n; * elsa.c     low level stuff for Elsa isdn cards&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Elsa GmbH for documents and informations&n; *&n; *              Klaus Lichtenwalder (Klaus.Lichtenwalder@WebForum.DE)&n; *              for ELSA PCMCIA support&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -26,7 +26,7 @@ r_char
 op_star
 id|Elsa_revision
 op_assign
-l_string|&quot;$Revision: 2.26.6.1 $&quot;
+l_string|&quot;$Revision: 2.26.6.3 $&quot;
 suffix:semicolon
 DECL|variable|Elsa_Types
 r_const

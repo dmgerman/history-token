@@ -15,7 +15,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;Linux Tulip driver version 0.9.13a (January 20, 2001)&bslash;n&quot;
+l_string|&quot;Linux Tulip driver version 0.9.14 (February 20, 2001)&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* A few user-configurable values. */
 multiline_comment|/* Maximum events (Rx packets, etc.) to handle at each interrupt. */
@@ -276,6 +276,7 @@ id|tulip_tbl
 )braket
 op_assign
 (brace
+multiline_comment|/* DC21040 */
 (brace
 l_string|&quot;Digital DC21040 Tulip&quot;
 comma
@@ -288,6 +289,7 @@ comma
 id|tulip_timer
 )brace
 comma
+multiline_comment|/* DC21041 */
 (brace
 l_string|&quot;Digital DC21041 Tulip&quot;
 comma
@@ -302,6 +304,7 @@ comma
 id|tulip_timer
 )brace
 comma
+multiline_comment|/* DC21140 */
 (brace
 l_string|&quot;Digital DS21140 Tulip&quot;
 comma
@@ -318,6 +321,7 @@ comma
 id|tulip_timer
 )brace
 comma
+multiline_comment|/* DC21142, DC21143 */
 (brace
 l_string|&quot;Digital DS21143 Tulip&quot;
 comma
@@ -340,12 +344,13 @@ comma
 id|t21142_timer
 )brace
 comma
+multiline_comment|/* LC82C168 */
 (brace
 l_string|&quot;Lite-On 82c168 PNIC&quot;
 comma
 l_int|256
 comma
-l_int|0x0001ebef
+l_int|0x0001fbef
 comma
 id|HAS_MII
 op_or
@@ -354,6 +359,7 @@ comma
 id|pnic_timer
 )brace
 comma
+multiline_comment|/* MX98713 */
 (brace
 l_string|&quot;Macronix 98713 PMAC&quot;
 comma
@@ -370,6 +376,7 @@ comma
 id|mxic_timer
 )brace
 comma
+multiline_comment|/* MX98715 */
 (brace
 l_string|&quot;Macronix 98715 PMAC&quot;
 comma
@@ -382,6 +389,7 @@ comma
 id|mxic_timer
 )brace
 comma
+multiline_comment|/* MX98725 */
 (brace
 l_string|&quot;Macronix 98725 PMAC&quot;
 comma
@@ -394,6 +402,7 @@ comma
 id|mxic_timer
 )brace
 comma
+multiline_comment|/* AX88140 */
 (brace
 l_string|&quot;ASIX AX88140&quot;
 comma
@@ -414,6 +423,7 @@ comma
 id|tulip_timer
 )brace
 comma
+multiline_comment|/* PNIC2 */
 (brace
 l_string|&quot;Lite-On PNIC-II&quot;
 comma
@@ -430,6 +440,7 @@ comma
 id|t21142_timer
 )brace
 comma
+multiline_comment|/* COMET */
 (brace
 l_string|&quot;ADMtek Comet&quot;
 comma
@@ -442,6 +453,7 @@ comma
 id|comet_timer
 )brace
 comma
+multiline_comment|/* COMPEX9881 */
 (brace
 l_string|&quot;Compex 9881 PMAC&quot;
 comma
@@ -458,6 +470,7 @@ comma
 id|mxic_timer
 )brace
 comma
+multiline_comment|/* I21145 */
 (brace
 l_string|&quot;Intel DS21145 Tulip&quot;
 comma
@@ -478,6 +491,7 @@ comma
 id|t21142_timer
 )brace
 comma
+multiline_comment|/* DM910X */
 (brace
 l_string|&quot;Davicom DM9102/DM9102A&quot;
 comma
@@ -494,10 +508,6 @@ op_or
 id|HAS_ACPI
 comma
 id|tulip_timer
-)brace
-comma
-(brace
-l_int|0
 )brace
 comma
 )brace
@@ -836,6 +846,22 @@ comma
 (brace
 l_int|0x1113
 comma
+l_int|0x1216
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|COMET
+)brace
+comma
+(brace
+l_int|0x1113
+comma
 l_int|0x1217
 comma
 id|PCI_ANY_ID
@@ -1133,6 +1159,94 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+DECL|function|tulip_set_power_state
+r_static
+r_void
+id|tulip_set_power_state
+(paren
+r_struct
+id|tulip_private
+op_star
+id|tp
+comma
+r_int
+id|sleep
+comma
+r_int
+id|snooze
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|tp-&gt;flags
+op_amp
+id|HAS_ACPI
+)paren
+(brace
+id|u32
+id|tmp
+comma
+id|newtmp
+suffix:semicolon
+id|pci_read_config_dword
+(paren
+id|tp-&gt;pdev
+comma
+id|CFDD
+comma
+op_amp
+id|tmp
+)paren
+suffix:semicolon
+id|newtmp
+op_assign
+id|tmp
+op_amp
+op_complement
+(paren
+id|CFDD_Sleep
+op_or
+id|CFDD_Snooze
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sleep
+)paren
+id|newtmp
+op_or_assign
+id|CFDD_Sleep
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|snooze
+)paren
+id|newtmp
+op_or_assign
+id|CFDD_Snooze
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+op_ne
+id|newtmp
+)paren
+id|pci_write_config_dword
+(paren
+id|tp-&gt;pdev
+comma
+id|CFDD
+comma
+id|newtmp
+)paren
+suffix:semicolon
+)brace
+)brace
 DECL|function|tulip_up
 r_static
 r_void
@@ -1179,19 +1293,11 @@ l_string|&quot;ENTER&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Wake the chip from sleep/snooze mode. */
-r_if
-c_cond
+id|tulip_set_power_state
 (paren
-id|tp-&gt;flags
-op_amp
-id|HAS_ACPI
-)paren
-id|pci_write_config_dword
-c_func
-(paren
-id|tp-&gt;pdev
+id|tp
 comma
-l_int|0x40
+l_int|0
 comma
 l_int|0
 )paren
@@ -3239,16 +3345,21 @@ op_increment
 suffix:semicolon
 id|out
 suffix:colon
-id|dev-&gt;trans_start
-op_assign
-id|jiffies
-suffix:semicolon
 id|spin_unlock_irqrestore
 (paren
 op_amp
 id|tp-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
+id|netif_wake_queue
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -3996,20 +4107,13 @@ op_assign
 id|tp-&gt;saved_if_port
 suffix:semicolon
 multiline_comment|/* Leave the driver in snooze, not sleep, mode. */
-r_if
-c_cond
+id|tulip_set_power_state
 (paren
-id|tp-&gt;flags
-op_amp
-id|HAS_ACPI
-)paren
-id|pci_write_config_dword
-(paren
-id|tp-&gt;pdev
+id|tp
 comma
-l_int|0x40
+l_int|0
 comma
-l_int|0x40000000
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -6216,7 +6320,7 @@ c_cond
 (paren
 id|pdev-&gt;subsystem_vendor
 op_eq
-l_int|0x1376
+id|PCI_VENDOR_ID_LMC
 )paren
 (brace
 id|printk
@@ -6291,7 +6395,7 @@ c_func
 (paren
 id|PCI_VENDOR_ID_INTEL
 comma
-l_int|0x0483
+id|PCI_DEVICE_ID_INTEL_82424
 comma
 l_int|NULL
 )paren
@@ -6309,7 +6413,7 @@ c_func
 (paren
 id|PCI_VENDOR_ID_SI
 comma
-l_int|0x0496
+id|PCI_DEVICE_ID_SI_496
 comma
 l_int|NULL
 )paren
@@ -6319,6 +6423,33 @@ op_assign
 l_int|0x00A04800
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;And back to business&n;&t; */
+id|i
+op_assign
+id|pci_enable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+)paren
+(brace
+id|printk
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Cannot enable tulip board #%d, aborting&bslash;n&quot;
+comma
+id|board_idx
+)paren
+suffix:semicolon
+r_return
+id|i
+suffix:semicolon
+)brace
 id|ioaddr
 op_assign
 id|pci_resource_start
@@ -6514,29 +6645,6 @@ l_int|1
 suffix:semicolon
 r_goto
 id|err_out_free_pio_res
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|pci_enable_device
-c_func
-(paren
-id|pdev
-)paren
-)paren
-(brace
-id|printk
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;%s: Cannot enable PCI device, aborting&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-r_goto
-id|err_out_free_mmio_res
 suffix:semicolon
 )brace
 id|pci_set_master
@@ -8399,26 +8507,13 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* put the chip in snooze mode until opened */
-r_if
-c_cond
+id|tulip_set_power_state
 (paren
-id|tulip_tbl
-(braket
-id|chip_idx
-)braket
-dot
-id|flags
-op_amp
-id|HAS_ACPI
-)paren
-id|pci_write_config_dword
-c_func
-(paren
-id|pdev
+id|tp
 comma
-l_int|0x40
+l_int|0
 comma
-l_int|0x40000000
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -8522,8 +8617,8 @@ id|tulip_down
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* pci_power_off(pdev, -1); */
 )brace
-singleline_comment|//&t;pci_set_power_state(pdev, 3);
 )brace
 DECL|function|tulip_resume
 r_static
@@ -8548,12 +8643,13 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
+macro_line|#if 1
 id|pci_enable_device
-c_func
 (paren
 id|pdev
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8566,6 +8662,7 @@ id|dev
 )paren
 )paren
 (brace
+multiline_comment|/* pci_power_on(pdev); */
 id|tulip_up
 (paren
 id|dev
@@ -8596,31 +8693,28 @@ op_star
 id|dev
 op_assign
 id|pci_get_drvdata
-c_func
 (paren
 id|pdev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev
-)paren
-(brace
 r_struct
 id|tulip_private
 op_star
 id|tp
-op_assign
+suffix:semicolon
+r_if
+c_cond
 (paren
-r_struct
-id|tulip_private
-op_star
+op_logical_neg
+id|dev
 )paren
+r_return
+suffix:semicolon
+id|tp
+op_assign
 id|dev-&gt;priv
 suffix:semicolon
 id|pci_free_consistent
-c_func
 (paren
 id|pdev
 comma
@@ -8646,7 +8740,6 @@ id|tp-&gt;rx_ring_dma
 )paren
 suffix:semicolon
 id|unregister_netdev
-c_func
 (paren
 id|dev
 )paren
@@ -8685,21 +8778,29 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tp-&gt;mtable
+)paren
 id|kfree
-c_func
+(paren
+id|tp-&gt;mtable
+)paren
+suffix:semicolon
+id|kfree
 (paren
 id|dev
 )paren
 suffix:semicolon
 id|pci_set_drvdata
-c_func
 (paren
 id|pdev
 comma
 l_int|NULL
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* pci_power_off (pdev, -1); */
 )brace
 DECL|variable|tulip_driver
 r_static

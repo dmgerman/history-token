@@ -2386,7 +2386,7 @@ c_func
 (paren
 id|EXIT_FAILURE
 comma
-l_string|&quot;%s: error occured during stat: &quot;
+l_string|&quot;%s: error occurred during stat: &quot;
 "&bslash;"
 l_string|&quot;%s&bslash;n&quot;
 comma

@@ -85,7 +85,7 @@ id|iommu_arena_new
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 comma
@@ -542,7 +542,7 @@ id|direction
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign
@@ -837,7 +837,7 @@ id|direction
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign
@@ -1826,7 +1826,7 @@ op_star
 id|out
 suffix:semicolon
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon
@@ -2125,7 +2125,7 @@ id|direction
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon
@@ -2436,7 +2436,7 @@ id|mask
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon

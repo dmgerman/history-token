@@ -1164,6 +1164,10 @@ op_member_access_from_pointer
 id|b_data
 )paren
 suffix:semicolon
+id|s-&gt;s_maxbytes
+op_assign
+id|MAX_NON_LFS
+suffix:semicolon
 multiline_comment|/* set up enough so that it can read an inode */
 id|s-&gt;s_op
 op_assign

@@ -453,7 +453,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function ircomm_state_waitr (self, event, skb)&n; *&n; *    IrCOMM has received an incomming connection request and is awaiting&n; *    response from the user&n; */
+multiline_comment|/*&n; * Function ircomm_state_waitr (self, event, skb)&n; *&n; *    IrCOMM has received an incoming connection request and is awaiting&n; *    response from the user&n; */
 DECL|function|ircomm_state_waitr
 r_static
 r_int

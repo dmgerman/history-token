@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fsm.c,v 1.14 2000/11/24 17:05:37 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: fsm.c,v 1.14.6.1 2001/02/16 16:43:26 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;

@@ -46,7 +46,7 @@ r_char
 id|type1
 comma
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 )paren
@@ -295,7 +295,7 @@ r_char
 id|type1
 comma
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 )paren
@@ -494,7 +494,7 @@ r_int
 id|where
 comma
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 comma
@@ -627,7 +627,7 @@ id|value
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign
@@ -718,7 +718,7 @@ id|value
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign
@@ -809,7 +809,7 @@ id|value
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign
@@ -888,7 +888,7 @@ id|mask
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign
@@ -1090,7 +1090,7 @@ id|mcpcia_pci_tbi
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 comma
@@ -1300,7 +1300,7 @@ id|h
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon
@@ -1326,7 +1326,7 @@ id|h
 suffix:semicolon
 id|hose
 op_assign
-id|alloc_pci_controler
+id|alloc_pci_controller
 c_func
 (paren
 )paren
@@ -1616,7 +1616,7 @@ id|mcpcia_startup_hose
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 )paren
@@ -2004,7 +2004,7 @@ r_void
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon
@@ -2426,7 +2426,7 @@ op_star
 id|frame
 suffix:semicolon
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon
@@ -2811,7 +2811,7 @@ suffix:colon
 (brace
 multiline_comment|/* FIXME: how do we figure out which hose the&n;&t;&t;   error was on?  */
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon

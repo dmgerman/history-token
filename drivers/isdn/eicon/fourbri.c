@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Copyright (C) Eicon Technology Corporation, 2000.&n; *&n; * This source file is supplied for the exclusive use with Eicon&n; * Technology Corporation&squot;s range of DIVA Server Adapters.&n; *&n; * Eicon File Revision :    1.7  &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY OF ANY KIND WHATSOEVER INCLUDING ANY &n; * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  &n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; *&n; * Copyright (C) Eicon Technology Corporation, 2000.&n; *&n; * Eicon File Revision :    1.7  &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY OF ANY KIND WHATSOEVER INCLUDING ANY &n; * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  &n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 multiline_comment|/* Diva Server 4BRI specific part of initialisation */
 macro_line|#include &quot;sys.h&quot;
 macro_line|#include &quot;idi.h&quot;
@@ -186,6 +186,7 @@ op_star
 id|cfg
 )paren
 suffix:semicolon
+r_static
 r_int
 id|fourbri_ISR
 (paren
@@ -490,7 +491,7 @@ id|shared
 l_int|10
 )braket
 comma
-l_int|0
+id|config-&gt;sig_flags
 )paren
 suffix:semicolon
 id|UxCardMemOut
@@ -2343,6 +2344,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*int fourbri_ISR (card_t* card) &n;{&n;&t;int served = 0;&n;&t;byte *DivasIOBase = UxCardMemAttach(card-&gt;hw, DIVAS_IOBASE);&n;&t;&n;&n;&t;if (UxCardPortIoIn (card-&gt;hw, DivasIOBase, M_PCI_RESET) &amp; 0x01) &n;&t;{&n;&t;&t;served = 1;&n;&t;&t;card-&gt;int_pend  += 1;&n;&t;&t;DivasDpcSchedule(); &n;&t;&t;UxCardPortIoOut (card-&gt;hw, DivasIOBase, M_PCI_RESET, 0x08);&n;&t;}&n;&n;&t;UxCardMemDetach(card-&gt;hw, DivasIOBase);&n;&n;&t;return (served != 0);&n;}*/
 DECL|function|fourbri_ISR
+r_static
 r_int
 id|fourbri_ISR
 (paren
@@ -2351,46 +2353,9 @@ op_star
 id|card
 )paren
 (brace
-r_int
-id|served
-op_assign
-l_int|0
-suffix:semicolon
 id|byte
 op_star
 id|ctl
-suffix:semicolon
-id|byte
-op_star
-id|reg
-op_assign
-id|UxCardMemAttach
-c_func
-(paren
-id|card-&gt;hw
-comma
-id|DIVAS_REG_MEMORY
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|UxCardPortIoIn
-c_func
-(paren
-id|card-&gt;hw
-comma
-id|reg
-comma
-id|PLX9054_INTCSR
-)paren
-op_amp
-l_int|0x80
-)paren
-(brace
-id|served
-op_assign
-l_int|1
 suffix:semicolon
 id|card-&gt;int_pend
 op_add_assign
@@ -2434,20 +2399,9 @@ comma
 id|ctl
 )paren
 suffix:semicolon
-)brace
-id|UxCardMemDetach
-c_func
-(paren
-id|card-&gt;hw
-comma
-id|reg
-)paren
-suffix:semicolon
 r_return
 (paren
-id|served
-op_ne
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 )brace

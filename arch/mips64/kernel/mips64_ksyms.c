@@ -454,4 +454,11 @@ c_func
 id|get_wchan
 )paren
 suffix:semicolon
+DECL|variable|flush_tlb_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_tlb_page
+)paren
+suffix:semicolon
 eof

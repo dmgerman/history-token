@@ -1,3 +1,5 @@
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;includes.h&quot;
 macro_line|#include &quot;hardware.h&quot;
 macro_line|#include &quot;card.h&quot;
@@ -261,7 +263,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_PARM
 c_func
 (paren
@@ -294,14 +295,11 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-DECL|macro|init_sc
-mdefine_line|#define init_sc init_module
-macro_line|#else
-multiline_comment|/*&n;Initialization code for non-module version to be included&n;&n;void sc_setup(char *str, int *ints)&n;{&n;}&n;*/
-macro_line|#endif
-DECL|function|init_sc
+DECL|function|sc_init
+r_static
 r_int
-id|init_sc
+id|__init
+id|sc_init
 c_func
 (paren
 r_void
@@ -1982,10 +1980,11 @@ r_return
 id|status
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|cleanup_module
+DECL|function|sc_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|sc_exit
 c_func
 (paren
 r_void
@@ -2241,7 +2240,6 @@ l_string|&quot;SpellCaster ISA ISDN Adapter Driver Unloaded.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|identify_board
 r_int
 id|identify_board
@@ -2780,4 +2778,18 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|sc_init
+id|module_init
+c_func
+(paren
+id|sc_init
+)paren
+suffix:semicolon
+DECL|variable|sc_exit
+id|module_exit
+c_func
+(paren
+id|sc_exit
+)paren
+suffix:semicolon
 eof

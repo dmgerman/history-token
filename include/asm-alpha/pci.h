@@ -18,14 +18,14 @@ suffix:semicolon
 r_struct
 id|pci_iommu_arena
 suffix:semicolon
-multiline_comment|/* A controler.  Used to manage multiple PCI busses.  */
-DECL|struct|pci_controler
+multiline_comment|/* A controller.  Used to manage multiple PCI busses.  */
+DECL|struct|pci_controller
 r_struct
-id|pci_controler
+id|pci_controller
 (brace
 DECL|member|next
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|next
 suffix:semicolon

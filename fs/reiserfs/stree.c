@@ -5524,15 +5524,12 @@ id|p_s_un_bh
 r_int
 id|off
 suffix:semicolon
-r_int
-id|block_off
-suffix:semicolon
 r_char
 op_star
 id|data
 suffix:semicolon
 multiline_comment|/* We are in direct2indirect conversion, so move tail contents&n;           to the unformatted node */
-multiline_comment|/* note, we do the copy before preparing the buffer because we&n;&t;** don&squot;t care about the contents of the unformatted node yet.&n;&t;** the only thing we really care about is the direct item&squot;s data&n;&t;** is in the unformatted node.&n;&t;**&n;&t;** Otherwise, we would have to call reiserfs_prepare_for_journal on&n;&t;** the unformatted node, which might schedule, meaning we&squot;d have to&n;&t;** loop all the way back up to the start of the while loop.&n;&t;**&n;&t;** The unformatted node is prepared and logged after the do_balance.&n;        **&n;        ** p_s_un_bh is from the page cache (all unformatted nodes are&n;        ** from the page cache) and might be a highmem page.  So, we&n;        ** can&squot;t use p_s_un_bh-&gt;b_data.  But, the page has already been&n;        ** kmapped, so we can use page_address()&n;&t;** -clm&n;&t;*/
+multiline_comment|/* note, we do the copy before preparing the buffer because we&n;&t;** don&squot;t care about the contents of the unformatted node yet.&n;&t;** the only thing we really care about is the direct item&squot;s data&n;&t;** is in the unformatted node.&n;&t;**&n;&t;** Otherwise, we would have to call reiserfs_prepare_for_journal on&n;&t;** the unformatted node, which might schedule, meaning we&squot;d have to&n;&t;** loop all the way back up to the start of the while loop.&n;&t;**&n;&t;** The unformatted node must be dirtied later on.  We can&squot;t be&n;&t;** sure here if the entire tail has been deleted yet.&n;        **&n;        ** p_s_un_bh is from the page cache (all unformatted nodes are&n;        ** from the page cache) and might be a highmem page.  So, we&n;        ** can&squot;t use p_s_un_bh-&gt;b_data.  But, the page has already been&n;        ** kmapped, so we can use page_address()&n;&t;** -clm&n;&t;*/
 id|data
 op_assign
 id|page_address
@@ -5561,16 +5558,6 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|block_off
-op_assign
-id|off
-op_amp
-(paren
-id|p_s_un_bh-&gt;b_size
-op_minus
-l_int|1
-)paren
-suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -5594,36 +5581,6 @@ comma
 id|n_ret_value
 )paren
 suffix:semicolon
-multiline_comment|/* clear out the rest of the block past the end of the file. */
-r_if
-c_cond
-(paren
-id|block_off
-op_plus
-id|n_ret_value
-OL
-id|p_s_un_bh-&gt;b_size
-)paren
-(brace
-id|memset
-c_func
-(paren
-id|data
-op_plus
-id|off
-op_plus
-id|n_ret_value
-comma
-l_int|0
-comma
-id|p_s_un_bh-&gt;b_size
-op_minus
-id|block_off
-op_minus
-id|n_ret_value
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Perform balancing after all resources have been collected at once. */
 id|do_balance
@@ -5639,20 +5596,6 @@ comma
 id|M_DELETE
 )paren
 suffix:semicolon
-multiline_comment|/* see comment above for why this is after the do_balance */
-r_if
-c_cond
-(paren
-id|p_s_un_bh
-)paren
-(brace
-id|mark_buffer_dirty
-c_func
-(paren
-id|p_s_un_bh
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Return deleted body length */
 r_return
 id|n_ret_value

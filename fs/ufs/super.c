@@ -2597,6 +2597,11 @@ id|uspi
 r_goto
 id|failed
 suffix:semicolon
+multiline_comment|/* Set a 2Gig file limit. Some UFS variants need to override &n;&t;   this but as I don&squot;t know which I&squot;ll let those in the know loosen&n;&t;   the rules */
+id|sb-&gt;s_maxbytes
+op_assign
+id|MAX_NON_LFS
+suffix:semicolon
 r_switch
 c_cond
 (paren

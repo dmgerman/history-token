@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: elsa_ser.c,v 2.10 2000/11/19 17:02:47 kai Exp $&n; *&n; * stuff for the serial modem on ELSA cards&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: elsa_ser.c,v 2.10.6.1 2001/02/16 16:43:26 kai Exp $&n; *&n; * stuff for the serial modem on ELSA cards&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;

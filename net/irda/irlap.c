@@ -34,6 +34,22 @@ l_int|1000
 op_div
 id|HZ
 suffix:semicolon
+r_extern
+r_void
+id|irlap_queue_xmit
+c_func
+(paren
+r_struct
+id|irlap_cb
+op_star
+id|self
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
 r_static
 r_void
 id|__irlap_close
@@ -750,7 +766,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_connect_response (self, skb)&n; *&n; *    Service user has accepted incomming connection&n; *&n; */
+multiline_comment|/*&n; * Function irlap_connect_response (self, skb)&n; *&n; *    Service user has accepted incoming connection&n; *&n; */
 DECL|function|irlap_connect_response
 r_void
 id|irlap_connect_response

@@ -1514,7 +1514,7 @@ op_assign
 l_int|5
 suffix:semicolon
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign
@@ -1542,7 +1542,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* ??? The Contaq IDE controler on the ISA bridge uses&n;&t;&t;   &quot;legacy&quot; interrupts 14 and 15.  I don&squot;t know if anything&n;&t;&t;   can wind up at the same slot+pin on hose1, so we&squot;ll&n;&t;&t;   just have to trust whatever value the console might&n;&t;&t;   have assigned.  */
+multiline_comment|/* ??? The Contaq IDE controller on the ISA bridge uses&n;&t;&t;   &quot;legacy&quot; interrupts 14 and 15.  I don&squot;t know if anything&n;&t;&t;   can wind up at the same slot+pin on hose1, so we&squot;ll&n;&t;&t;   just have to trust whatever value the console might&n;&t;&t;   have assigned.  */
 id|u8
 id|irq8
 suffix:semicolon
@@ -1863,7 +1863,7 @@ id|pinp
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign
@@ -2423,7 +2423,7 @@ op_assign
 l_int|5
 suffix:semicolon
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign

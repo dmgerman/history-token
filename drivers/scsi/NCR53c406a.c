@@ -273,12 +273,6 @@ r_static
 r_void
 op_star
 id|bios_base
-op_assign
-(paren
-r_void
-op_star
-)paren
-l_int|0
 suffix:semicolon
 macro_line|#endif
 macro_line|#if PORT_BASE
@@ -294,8 +288,6 @@ DECL|variable|port_base
 r_static
 r_int
 id|port_base
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 macro_line|#if IRQ_LEV
@@ -322,8 +314,6 @@ DECL|variable|dma_chan
 r_static
 r_int
 id|dma_chan
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 macro_line|#if USE_PIO
@@ -340,24 +330,18 @@ r_static
 id|Scsi_Cmnd
 op_star
 id|current_SC
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|internal_done_flag
 r_static
 r_volatile
 r_int
 id|internal_done_flag
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|internal_done_errcode
 r_static
 r_volatile
 r_int
 id|internal_done_errcode
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|info_msg
 r_static
@@ -1605,12 +1589,15 @@ macro_line|#ifdef PORT_BASE
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|port_base
 comma
 l_int|0x10
+comma
+l_string|&quot;NCR53c406a&quot;
 )paren
 )paren
 multiline_comment|/* ports already snatched */
@@ -1629,12 +1616,15 @@ multiline_comment|/* LILO override */
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|port_base
 comma
 l_int|0x10
+comma
+l_string|&quot;NCR53c406a&quot;
 )paren
 )paren
 id|port_base
@@ -1665,7 +1655,8 @@ op_increment
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|ports
@@ -1674,6 +1665,8 @@ id|i
 )braket
 comma
 l_int|0x10
+comma
+l_string|&quot;NCR53c406a&quot;
 )paren
 )paren
 (brace
@@ -1797,6 +1790,13 @@ op_eq
 l_int|0x58
 )paren
 (brace
+id|port_base
+op_assign
+id|ports
+(braket
+id|i
+)braket
+suffix:semicolon
 id|VDEB
 c_func
 (paren
@@ -1819,12 +1819,7 @@ id|port_base
 )paren
 )paren
 suffix:semicolon
-id|port_base
-op_assign
-id|ports
-(braket
-id|i
-)braket
+r_break
 suffix:semicolon
 )brace
 )brace
@@ -1903,8 +1898,8 @@ comma
 id|irq_level
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|err_release
 suffix:semicolon
 )brace
 )brace
@@ -1919,16 +1914,6 @@ l_string|&quot;NCR53c406a: using port_base %x&bslash;n&quot;
 comma
 id|port_base
 )paren
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-id|port_base
-comma
-l_int|0x10
-comma
-l_string|&quot;NCR53c406a&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1965,8 +1950,8 @@ comma
 id|irq_level
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|err_release
 suffix:semicolon
 )brace
 id|tpnt-&gt;can_queue
@@ -2016,8 +2001,8 @@ c_func
 l_string|&quot;NCR53c406a: No interrupts found and DMA mode defined. Giving up.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|err_release
 suffix:semicolon
 macro_line|#endif USE_DMA
 )brace
@@ -2033,8 +2018,8 @@ l_string|&quot;NCR53c406a: Shouldn&squot;t get here!&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|err_free_irq
 suffix:semicolon
 )brace
 macro_line|#if USE_DMA
@@ -2064,8 +2049,8 @@ comma
 id|dma_chan
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|err_release
 suffix:semicolon
 )brace
 id|DEB
@@ -2099,6 +2084,23 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|shpnt
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;NCR53c406a: Unable to register host, giving up.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|err_free_dma
+suffix:semicolon
+)brace
 id|shpnt-&gt;irq
 op_assign
 id|irq_level
@@ -2157,6 +2159,39 @@ r_return
 (paren
 id|tpnt-&gt;present
 )paren
+suffix:semicolon
+id|err_free_dma
+suffix:colon
+macro_line|#if USE_DMA
+id|free_dma
+c_func
+(paren
+id|dma_chan
+)paren
+suffix:semicolon
+macro_line|#endif
+id|err_free_irq
+suffix:colon
+id|free_irq
+c_func
+(paren
+id|irq_level
+comma
+id|do_NCR53c406a_intr
+)paren
+suffix:semicolon
+id|err_release
+suffix:colon
+id|release_region
+c_func
+(paren
+id|port_base
+comma
+l_int|0x10
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 )def_block

@@ -153,7 +153,7 @@ c_func
 )paren
 )paren
 (brace
-multiline_comment|/* &n;&t;&t; * On Assabet, we must probe for the Neponset board *before*&n;&t;&t; * paging_init() has occured to actually determine the amount&n;&t;&t; * of RAM available.&n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * On Assabet, we must probe for the Neponset board *before*&n;&t;&t; * paging_init() has occurred to actually determine the amount&n;&t;&t; * of RAM available.&n;&t;&t; */
 r_extern
 r_void
 id|map_sa1100_gpio_regs

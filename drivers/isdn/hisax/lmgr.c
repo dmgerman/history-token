@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: lmgr.c,v 1.7 2000/06/26 08:59:14 keil Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; *  Layermanagement module&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: lmgr.c,v 1.7.6.1 2001/02/16 16:43:28 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; *  Layermanagement module&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;

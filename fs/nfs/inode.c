@@ -1815,6 +1815,26 @@ id|server-&gt;namelen
 op_assign
 id|maxlen
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|version
+op_eq
+l_int|2
+)paren
+(brace
+id|sb-&gt;s_maxbytes
+op_assign
+id|MAX_NON_LFS
+suffix:semicolon
+)brace
+r_else
+id|sb-&gt;s_maxbytes
+op_assign
+op_complement
+l_int|0ULL
+suffix:semicolon
+multiline_comment|/* Unlimited on NFSv3 */
 multiline_comment|/* Fire up the writeback cache */
 r_if
 c_cond

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hysdn_init.c,v 1.6.6.1 2000/11/28 12:02:47 kai Exp $&n;&n; * Linux driver for HYSDN cards, init functions.&n; * written by Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; *&n; * Copyright 1999  by Werner Cornelius (werner@titro.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: hysdn_init.c,v 1.6.6.5 2001/02/16 16:43:30 kai Exp $&n;&n; * Linux driver for HYSDN cards, init functions.&n; * written by Werner Cornelius (werner@titro.de) for Hypercope GmbH&n; *&n; * Copyright 1999  by Werner Cornelius (werner@titro.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -14,7 +14,7 @@ r_char
 op_star
 id|hysdn_init_revision
 op_assign
-l_string|&quot;$Revision: 1.6.6.1 $&quot;
+l_string|&quot;$Revision: 1.6.6.5 $&quot;
 suffix:semicolon
 DECL|variable|cardmax
 r_int
@@ -576,7 +576,6 @@ multiline_comment|/* Using the driver as module is always advisable, because the
 multiline_comment|/* image becomes smaller and the driver code is only loaded when needed.    */
 multiline_comment|/* Additionally newer versions may be activated without rebooting.          */
 multiline_comment|/****************************************************************************/
-macro_line|#ifdef CONFIG_MODULES
 multiline_comment|/******************************************************/
 multiline_comment|/* extract revision number from string for log output */
 multiline_comment|/******************************************************/
@@ -651,13 +650,15 @@ suffix:semicolon
 multiline_comment|/****************************************************************************/
 multiline_comment|/* init_module is called once when the module is loaded to do all necessary */
 multiline_comment|/* things like autodetect...                                                */
-multiline_comment|/* If the return value of this function is 0 the init has been successfull  */
+multiline_comment|/* If the return value of this function is 0 the init has been successful   */
 multiline_comment|/* and the module is added to the list in /proc/modules, otherwise an error */
 multiline_comment|/* is assumed and the module will not be kept in memory.                    */
 multiline_comment|/****************************************************************************/
+r_static
 r_int
-DECL|function|init_module
-id|init_module
+id|__init
+DECL|function|hysdn_init
+id|hysdn_init
 c_func
 (paren
 r_void
@@ -813,15 +814,17 @@ multiline_comment|/* no error */
 multiline_comment|/* init_module */
 multiline_comment|/***********************************************************************/
 multiline_comment|/* cleanup_module is called when the module is released by the kernel. */
-multiline_comment|/* The routine is only called if init_module has been successfull and  */
+multiline_comment|/* The routine is only called if init_module has been successful and   */
 multiline_comment|/* the module counter has a value of 0. Otherwise this function will   */
 multiline_comment|/* not be called. This function must release all resources still allo- */
 multiline_comment|/* cated as after the return from this function the module code will   */
 multiline_comment|/* be removed from memory.                                             */
 multiline_comment|/***********************************************************************/
+r_static
 r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+DECL|function|hysdn_exit
+id|hysdn_exit
 c_func
 (paren
 r_void
@@ -888,5 +891,18 @@ l_string|&quot;HYSDN: module unloaded&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* cleanup_module */
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_MODULES */
+DECL|variable|hysdn_init
+id|module_init
+c_func
+(paren
+id|hysdn_init
+)paren
+suffix:semicolon
+DECL|variable|hysdn_exit
+id|module_exit
+c_func
+(paren
+id|hysdn_exit
+)paren
+suffix:semicolon
 eof

@@ -566,7 +566,7 @@ r_void
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon
@@ -584,7 +584,7 @@ id|pci_isa_hose
 op_assign
 id|hose
 op_assign
-id|alloc_pci_controler
+id|alloc_pci_controller
 c_func
 (paren
 )paren

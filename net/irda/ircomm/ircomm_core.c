@@ -635,7 +635,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function ircomm_connect_indication (self, qos, skb)&n; *&n; *    Notify user layer about the incomming connection&n; *&n; */
+multiline_comment|/*&n; * Function ircomm_connect_indication (self, qos, skb)&n; *&n; *    Notify user layer about the incoming connection&n; *&n; */
 DECL|function|ircomm_connect_indication
 r_void
 id|ircomm_connect_indication

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: callc.c,v 2.51 2000/11/24 17:05:37 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU PUBLIC LICENSE&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* $Id: callc.c,v 2.51.6.1 2001/02/16 16:43:25 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -14,7 +14,7 @@ r_char
 op_star
 id|lli_revision
 op_assign
-l_string|&quot;$Revision: 2.51 $&quot;
+l_string|&quot;$Revision: 2.51.6.1 $&quot;
 suffix:semicolon
 r_extern
 r_struct
@@ -1369,7 +1369,7 @@ id|chanp-&gt;chan
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * RESUME&n; */
-multiline_comment|/* incomming call */
+multiline_comment|/* incoming call */
 r_static
 r_void
 DECL|function|lli_deliver_call
@@ -5119,7 +5119,7 @@ id|arg
 suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|init_PStack
 id|init_PStack
 c_func
@@ -5145,6 +5145,17 @@ id|PStack
 comma
 id|GFP_ATOMIC
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+op_star
+id|stp
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 (paren
 op_star
@@ -5254,9 +5265,12 @@ id|ma.layer
 op_assign
 id|dummy_pstack
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|init_d_st
 id|init_d_st
 c_func
@@ -5285,12 +5299,25 @@ id|tmp
 l_int|16
 )braket
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
+id|err
+op_assign
 id|init_PStack
 c_func
 (paren
 op_amp
 id|chanp-&gt;d_st
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 id|st
 op_assign
@@ -5438,6 +5465,9 @@ id|st-&gt;l3.l3l4
 op_assign
 id|dchan_l3l4
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -5513,7 +5543,7 @@ id|args
 suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|init_chan
 id|init_chan
 c_func
@@ -5535,6 +5565,9 @@ op_assign
 id|csta-&gt;channel
 op_plus
 id|chan
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|chanp-&gt;cs
 op_assign
@@ -5566,12 +5599,22 @@ id|chanp-&gt;leased
 op_assign
 l_int|0
 suffix:semicolon
+id|err
+op_assign
 id|init_PStack
 c_func
 (paren
 op_amp
 id|chanp-&gt;b_st
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 id|chanp-&gt;b_st-&gt;l1.delay
 op_assign
@@ -5640,11 +5683,21 @@ l_int|2
 )paren
 )paren
 (brace
+id|err
+op_assign
 id|init_d_st
 c_func
 (paren
 id|chanp
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 )brace
 r_else
@@ -5656,6 +5709,9 @@ suffix:semicolon
 )brace
 id|chanp-&gt;data_open
 op_assign
+l_int|0
+suffix:semicolon
+r_return
 l_int|0
 suffix:semicolon
 )brace
@@ -5672,11 +5728,15 @@ id|csta
 (brace
 r_int
 id|i
+comma
+id|err
 suffix:semicolon
 id|chancount
 op_add_assign
 l_int|2
 suffix:semicolon
+id|err
+op_assign
 id|init_chan
 c_func
 (paren
@@ -5685,6 +5745,16 @@ comma
 id|csta
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
+suffix:semicolon
+id|err
+op_assign
 id|init_chan
 c_func
 (paren
@@ -5692,6 +5762,14 @@ l_int|1
 comma
 id|csta
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 id|printk
 c_func
@@ -5714,6 +5792,9 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
+id|err
+op_assign
 id|init_chan
 c_func
 (paren
@@ -5724,6 +5805,15 @@ comma
 id|csta
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -5768,7 +5858,7 @@ suffix:semicolon
 )brace
 r_return
 (paren
-l_int|2
+l_int|0
 )paren
 suffix:semicolon
 )brace

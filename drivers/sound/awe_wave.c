@@ -529,6 +529,7 @@ r_static
 r_int
 id|isapnp
 op_assign
+op_minus
 l_int|1
 suffix:semicolon
 macro_line|#else
@@ -26052,10 +26053,20 @@ id|KERN_ERR
 l_string|&quot;AWE32: No ISAPnP cards found&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|isapnp
+op_ne
+op_minus
+l_int|1
+)paren
 r_return
 l_int|0
 suffix:semicolon
 )brace
+r_else
+(brace
 id|setup_ports
 c_func
 (paren
@@ -26069,6 +26080,7 @@ suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+)brace
 )brace
 macro_line|#endif /* isapnp */
 r_if

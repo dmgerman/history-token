@@ -2301,6 +2301,10 @@ op_assign
 op_amp
 id|hpfs_sops
 suffix:semicolon
+id|s-&gt;s_maxbytes
+op_assign
+id|MAX_NON_LFS
+suffix:semicolon
 id|s-&gt;s_hpfs_root
 op_assign
 id|superblock-&gt;root

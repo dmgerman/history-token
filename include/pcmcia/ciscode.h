@@ -119,10 +119,14 @@ DECL|macro|PRODID_SOCKET_EIO
 mdefine_line|#define PRODID_SOCKET_EIO&t;&t;0x000a
 DECL|macro|PRODID_SOCKET_LPE
 mdefine_line|#define PRODID_SOCKET_LPE&t;&t;0x000d
+DECL|macro|PRODID_SOCKET_LPE_CF
+mdefine_line|#define PRODID_SOCKET_LPE_CF&t;&t;0x0075
 DECL|macro|MANFID_SUNDISK
 mdefine_line|#define MANFID_SUNDISK&t;&t;&t;0x0045
 DECL|macro|MANFID_TDK
 mdefine_line|#define MANFID_TDK&t;&t;&t;0x0105
+DECL|macro|PRODID_TDK_CF010
+mdefine_line|#define PRODID_TDK_CF010&t;&t;0x0900
 DECL|macro|MANFID_TOSHIBA
 mdefine_line|#define MANFID_TOSHIBA&t;&t;&t;0x0098
 DECL|macro|MANFID_XIRCOM

@@ -3214,8 +3214,6 @@ r_int
 id|flags
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3232,8 +3230,6 @@ op_star
 id|dev
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|pms_write
 r_static
@@ -4308,6 +4304,10 @@ id|video_device
 id|pms_template
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Mediavision PMS&quot;
@@ -4379,12 +4379,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 l_int|0x9A01
 comma
 l_int|1
+comma
+l_string|&quot;Mediavision PMS config&quot;
 )paren
 )paren
 (brace
@@ -4403,12 +4406,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|io_port
 comma
 l_int|3
+comma
+l_string|&quot;Mediavision PMS&quot;
 )paren
 )paren
 (brace
@@ -4419,6 +4425,14 @@ id|KERN_WARNING
 l_string|&quot;mediavision: I/O port %d in use.&bslash;n&quot;
 comma
 id|io_port
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+l_int|0x9A01
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -4536,32 +4550,28 @@ op_eq
 l_int|0
 )paren
 (brace
+id|release_region
+c_func
+(paren
+id|io_port
+comma
+l_int|3
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+l_int|0x9A01
+comma
+l_int|1
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;Ok we have a PMS of some sort&n;&t; */
-id|request_region
-c_func
-(paren
-id|io_port
-comma
-l_int|3
-comma
-l_string|&quot;Mediavision PMS&quot;
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-l_int|0x9A01
-comma
-l_int|1
-comma
-l_string|&quot;Mediavision PMS config&quot;
-)paren
-suffix:semicolon
 id|mvv_write
 c_func
 (paren

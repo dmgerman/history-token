@@ -11226,12 +11226,16 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|local-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
 id|local-&gt;stats.rx_bytes
 op_add_assign
-id|skb-&gt;len
+id|total_len
 suffix:semicolon
 multiline_comment|/* Gather signal strength per address */
 macro_line|#ifdef WIRELESS_SPY

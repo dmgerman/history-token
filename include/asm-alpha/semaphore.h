@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/compiler.h&gt;&t;/* __builtin_expect */
+macro_line|#include &lt;linux/wait.h&gt;
 DECL|macro|DEBUG_SEMAPHORE
 mdefine_line|#define DEBUG_SEMAPHORE 0
 DECL|macro|DEBUG_RW_SEMAPHORE

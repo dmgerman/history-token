@@ -865,8 +865,6 @@ id|tp-&gt;mtable
 suffix:semicolon
 id|u32
 id|new_csr6
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|i

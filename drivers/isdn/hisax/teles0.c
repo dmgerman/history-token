@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: teles0.c,v 2.13 2000/11/24 17:05:38 kai Exp $&n; *&n; * teles0.c     low level stuff for Teles Memory IO isdn cards&n; *              based on the teles driver from Jan den Ouden&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *              Beat Doebeli&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: teles0.c,v 2.13.6.1 2001/02/16 16:43:29 kai Exp $&n; *&n; * teles0.c     low level stuff for Teles Memory IO isdn cards&n; *              based on the teles driver from Jan den Ouden&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *              Beat Doebeli&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -20,7 +20,7 @@ r_char
 op_star
 id|teles0_revision
 op_assign
-l_string|&quot;$Revision: 2.13 $&quot;
+l_string|&quot;$Revision: 2.13.6.1 $&quot;
 suffix:semicolon
 DECL|macro|TELES_IOMEM_SIZE
 mdefine_line|#define TELES_IOMEM_SIZE&t;0x400

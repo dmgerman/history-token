@@ -1712,7 +1712,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/************************** SERVER SOCKET **************************/
-multiline_comment|/*&n; * The IrNET service is composed of one server socket and a variable&n; * number of regular IrNET sockets. The server socket is supposed to&n; * handle incomming connections and redirect them to one IrNET sockets.&n; * It&squot;s a superset of the regular IrNET socket, but has a very distinct&n; * behaviour...&n; */
+multiline_comment|/*&n; * The IrNET service is composed of one server socket and a variable&n; * number of regular IrNET sockets. The server socket is supposed to&n; * handle incoming connections and redirect them to one IrNET sockets.&n; * It&squot;s a superset of the regular IrNET socket, but has a very distinct&n; * behaviour...&n; */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Function irnet_daddr_to_dname (self)&n; *&n; *    Convert an IrDA address to a IrDA nickname&n; *&n; * It basically look into the discovery log until there is a match.&n; */
 r_static
@@ -2246,7 +2246,7 @@ r_new
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Function irda_connect_socket (self)&n; *&n; *    Connect an incomming connection to the socket&n; *&n; */
+multiline_comment|/*&n; * Function irda_connect_socket (self)&n; *&n; *    Connect an incoming connection to the socket&n; *&n; */
 r_static
 r_inline
 r_int
@@ -2480,7 +2480,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Function irda_disconnect_server (self)&n; *&n; *    Cleanup the server socket when the incomming connection abort&n; *&n; */
+multiline_comment|/*&n; * Function irda_disconnect_server (self)&n; *&n; *    Cleanup the server socket when the incoming connection abort&n; *&n; */
 r_static
 r_inline
 r_void
@@ -3620,7 +3620,7 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Function irnet_connect_indication(instance, sap, qos, max_sdu_size, userdata)&n; *&n; *    Incomming connection&n; *&n; * In theory, this function is called only on the server socket.&n; * Some other node is attempting to connect to the IrNET service, and has&n; * sent a connection request on our server socket.&n; * We just redirect the connection to the relevant IrNET socket.&n; * &n; * Note : we also make sure that between 2 irnet nodes, there can&n; * exist only one irnet connection.&n; */
+multiline_comment|/*&n; * Function irnet_connect_indication(instance, sap, qos, max_sdu_size, userdata)&n; *&n; *    Incoming connection&n; *&n; * In theory, this function is called only on the server socket.&n; * Some other node is attempting to connect to the IrNET service, and has&n; * sent a connection request on our server socket.&n; * We just redirect the connection to the relevant IrNET socket.&n; * &n; * Note : we also make sure that between 2 irnet nodes, there can&n; * exist only one irnet connection.&n; */
 r_static
 r_void
 DECL|function|irnet_connect_indication

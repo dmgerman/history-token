@@ -351,7 +351,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function ircomm_ttp_data_indication (instance, sap, skb)&n; *&n; *    Incomming data&n; *&n; */
+multiline_comment|/*&n; * Function ircomm_ttp_data_indication (instance, sap, skb)&n; *&n; *    Incoming data&n; *&n; */
 DECL|function|ircomm_ttp_data_indication
 r_int
 id|ircomm_ttp_data_indication

@@ -78,7 +78,7 @@ suffix:semicolon
 multiline_comment|/***********************************************************************/
 multiline_comment|/* process_line parses one config line and transfers it to the card if */
 multiline_comment|/* necessary.                                                          */
-multiline_comment|/* if the return value is negative an error occured.                   */
+multiline_comment|/* if the return value is negative an error occurred.                   */
 multiline_comment|/***********************************************************************/
 r_static
 r_int
@@ -461,7 +461,7 @@ r_return
 id|cnf-&gt;needed_size
 )paren
 suffix:semicolon
-multiline_comment|/* an error occured -&gt; exit */
+multiline_comment|/* an error occurred -&gt; exit */
 id|cnf-&gt;buf_size
 op_assign
 l_int|0
@@ -622,7 +622,7 @@ r_return
 id|cnf-&gt;needed_size
 )paren
 suffix:semicolon
-multiline_comment|/* an error occured */
+multiline_comment|/* an error occurred */
 )brace
 id|cnf-&gt;buf_size
 op_assign

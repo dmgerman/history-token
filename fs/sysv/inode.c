@@ -1796,6 +1796,10 @@ id|sb-&gt;sv_block_base
 op_assign
 l_int|0
 suffix:semicolon
+id|sb-&gt;s_maxbytes
+op_assign
+id|MAX_NON_LFS
+suffix:semicolon
 multiline_comment|/* Try to read Xenix superblock */
 r_if
 c_cond

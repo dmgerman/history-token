@@ -19,7 +19,7 @@ DECL|macro|LOOPS_PER_TICK
 mdefine_line|#define LOOPS_PER_TICK cpu_data[smp_processor_id()].loops_per_jiffy
 macro_line|#else
 DECL|macro|LOOPS_PER_TICK
-mdefine_line|#define LOOPS_PER_TICK&t;loops_per_sec
+mdefine_line|#define LOOPS_PER_TICK&t;loops_per_jiffy
 macro_line|#endif
 macro_line|#endif
 macro_line|#if defined(__i386__)
@@ -2129,7 +2129,7 @@ l_int|0
 suffix:semicolon
 )brace
 "&f;"
-multiline_comment|/***********************************************************************&n;WaveFront: data munging   &n;&n;Things here are wierd. All data written to the board cannot &n;have its most significant bit set. Any data item with values &n;potentially &gt; 0x7F (127) must be split across multiple bytes.&n;&n;Sometimes, we need to munge numeric values that are represented on&n;the x86 side as 8-32 bit values. Sometimes, we need to munge data&n;that is represented on the x86 side as an array of bytes. The most&n;efficient approach to handling both cases seems to be to use 2&n;different functions for munging and 2 for de-munging. This avoids&n;wierd casting and worrying about bit-level offsets.&n;&n;**********************************************************************/
+multiline_comment|/***********************************************************************&n;WaveFront: data munging   &n;&n;Things here are weird. All data written to the board cannot &n;have its most significant bit set. Any data item with values &n;potentially &gt; 0x7F (127) must be split across multiple bytes.&n;&n;Sometimes, we need to munge numeric values that are represented on&n;the x86 side as 8-32 bit values. Sometimes, we need to munge data&n;that is represented on the x86 side as an array of bytes. The most&n;efficient approach to handling both cases seems to be to use 2&n;different functions for munging and 2 for de-munging. This avoids&n;weird casting and worrying about bit-level offsets.&n;&n;**********************************************************************/
 r_static
 r_int
 r_char
@@ -4000,7 +4000,7 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-multiline_comment|/* This one is truly wierd. What kind of wierdo decided that in&n;&t;   a system dominated by 16 and 32 bit integers, they would use&n;&t;   a just 12 bits ?&n;&t;*/
+multiline_comment|/* This one is truly weird. What kind of weirdo decided that in&n;&t;   a system dominated by 16 and 32 bit integers, they would use&n;&t;   a just 12 bits ?&n;&t;*/
 id|shptr
 op_assign
 id|munge_int32
@@ -10530,7 +10530,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* YSS225 initialization.&n;&n;   This code was developed using DOSEMU. The Turtle Beach SETUPSND&n;   utility was run with I/O tracing in DOSEMU enabled, and a reconstruction&n;   of the port I/O done, using the Yamaha faxback document as a guide&n;   to add more logic to the code. Its really pretty wierd.&n;&n;   There was an alternative approach of just dumping the whole I/O&n;   sequence as a series of port/value pairs and a simple loop&n;   that output it. However, I hope that eventually I&squot;ll get more&n;   control over what this code does, and so I tried to stick with&n;   a somewhat &quot;algorithmic&quot; approach.&n;*/
+multiline_comment|/* YSS225 initialization.&n;&n;   This code was developed using DOSEMU. The Turtle Beach SETUPSND&n;   utility was run with I/O tracing in DOSEMU enabled, and a reconstruction&n;   of the port I/O done, using the Yamaha faxback document as a guide&n;   to add more logic to the code. Its really pretty weird.&n;&n;   There was an alternative approach of just dumping the whole I/O&n;   sequence as a series of port/value pairs and a simple loop&n;   that output it. However, I hope that eventually I&squot;ll get more&n;   control over what this code does, and so I tried to stick with&n;   a somewhat &quot;algorithmic&quot; approach.&n;*/
 DECL|function|wffx_init
 r_static
 r_int

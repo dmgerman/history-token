@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: arcofi.h,v 1.6 2000/06/26 08:59:12 keil Exp $&n; *&n; * arcofi.h   Ansteuerung ARCOFI 2165&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: arcofi.h,v 1.6.6.1 2001/02/16 16:43:25 kai Exp $&n; *&n; * arcofi.h   Ansteuerung ARCOFI 2165&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|ARCOFI_USE
 mdefine_line|#define ARCOFI_USE&t;1
 multiline_comment|/* states */

@@ -280,4 +280,11 @@ id|flush_dcache_page
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|flush_tlb_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_tlb_page
+)paren
+suffix:semicolon
 eof

@@ -1067,8 +1067,6 @@ suffix:semicolon
 id|users
 op_increment
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1088,8 +1086,6 @@ id|dev
 id|users
 op_decrement
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|variable|aztech_unit
 r_static
@@ -1104,6 +1100,10 @@ id|video_device
 id|aztech_radio
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Aztech radio&quot;

@@ -722,7 +722,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Saves at boot time configured settings for any netdevice.&n; */
 DECL|function|netdev_boot_setup
-r_static
 r_int
 id|__init
 id|netdev_boot_setup
@@ -779,8 +778,7 @@ c_func
 op_amp
 id|map
 comma
-op_minus
-l_int|1
+l_int|0
 comma
 r_sizeof
 (paren

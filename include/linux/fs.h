@@ -398,7 +398,7 @@ r_char
 op_star
 id|b_data
 suffix:semicolon
-multiline_comment|/* pointer to data block (512 byte) */
+multiline_comment|/* pointer to data block */
 DECL|member|b_page
 r_struct
 id|page
@@ -1327,6 +1327,8 @@ comma
 r_int
 )paren
 suffix:semicolon
+DECL|macro|MAX_NON_LFS
+mdefine_line|#define&t;MAX_NON_LFS&t;((1UL&lt;&lt;31) - 1)
 DECL|macro|FL_POSIX
 mdefine_line|#define FL_POSIX&t;1
 DECL|macro|FL_FLOCK
@@ -1941,6 +1943,13 @@ r_int
 r_char
 id|s_dirt
 suffix:semicolon
+DECL|member|s_maxbytes
+r_int
+r_int
+r_int
+id|s_maxbytes
+suffix:semicolon
+multiline_comment|/* Max file size */
 DECL|member|s_type
 r_struct
 id|file_system_type

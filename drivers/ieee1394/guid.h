@@ -53,5 +53,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_void
+id|cleanup_ieee1394_guid
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* _IEEE1394_GUID_H */
 eof

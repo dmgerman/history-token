@@ -980,7 +980,7 @@ multiline_comment|/* HACK -- this better only be called once */
 macro_line|#ifdef CONFIG_VGA_HOSE
 r_static
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|__init
 DECL|function|privateer_vga_hose_select
@@ -988,18 +988,18 @@ id|privateer_vga_hose_select
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|h1
 comma
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|h2
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 op_assign

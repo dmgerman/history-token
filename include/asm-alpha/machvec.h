@@ -28,7 +28,7 @@ r_struct
 id|pci_ops
 suffix:semicolon
 r_struct
-id|pci_controler
+id|pci_controller
 suffix:semicolon
 DECL|struct|alpha_machine_vector
 r_struct
@@ -91,7 +91,7 @@ id|mv_pci_tbi
 )paren
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 comma

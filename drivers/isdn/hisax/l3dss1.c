@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: l3dss1.c,v 2.30 2000/11/19 17:02:48 kai Exp $&n; *&n; * EURO/DSS1 D-channel protocol&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU PUBLIC LICENSE&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* $Id: l3dss1.c,v 2.30.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; * EURO/DSS1 D-channel protocol&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;
@@ -24,7 +24,7 @@ r_char
 op_star
 id|dss1_revision
 op_assign
-l_string|&quot;$Revision: 2.30 $&quot;
+l_string|&quot;$Revision: 2.30.6.1 $&quot;
 suffix:semicolon
 DECL|macro|EXT_BEARER_CAPS
 mdefine_line|#define EXT_BEARER_CAPS 1
@@ -1833,7 +1833,7 @@ suffix:semicolon
 DECL|macro|FOO1
 macro_line|#undef FOO1
 )brace
-macro_line|#else  not HISAX_DE_AOC
+macro_line|#else  /* not HISAX_DE_AOC */
 id|l3_debug
 c_func
 (paren
@@ -1842,7 +1842,7 @@ comma
 l_string|&quot;invoke break&quot;
 )paren
 suffix:semicolon
-macro_line|#endif not HISAX_DE_AOC 
+macro_line|#endif /* not HISAX_DE_AOC */
 r_break
 suffix:semicolon
 r_case
@@ -1894,7 +1894,7 @@ id|id
 )paren
 )paren
 (brace
-multiline_comment|/* Diversion successfull */
+multiline_comment|/* Diversion successful */
 id|free_invoke_id
 c_func
 (paren
@@ -1931,7 +1931,7 @@ id|pc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Diversion successfull */
+multiline_comment|/* Diversion successful */
 r_else
 id|l3_debug
 c_func
@@ -10770,7 +10770,7 @@ id|subp
 op_plus
 l_int|2
 suffix:semicolon
-multiline_comment|/* length including info subadress element */
+multiline_comment|/* length including info subaddress element */
 op_star
 id|p
 op_increment
@@ -10959,7 +10959,7 @@ op_increment
 op_assign
 l_int|0x04
 suffix:semicolon
-multiline_comment|/* called party subadress */
+multiline_comment|/* called party subaddress */
 op_star
 id|p
 op_increment

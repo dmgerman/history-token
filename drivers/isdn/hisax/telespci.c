@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: telespci.c,v 2.16.6.2 2000/11/29 16:00:14 kai Exp $&n; *&n; * telespci.c     low level stuff for Teles PCI isdn cards&n; *&n; * Author       Ton van Rosmalen &n; *              Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: telespci.c,v 2.16.6.4 2001/02/16 16:43:29 kai Exp $&n; *&n; * telespci.c     low level stuff for Teles PCI isdn cards&n; *&n; * Author       Ton van Rosmalen &n; *              Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -22,7 +22,7 @@ r_char
 op_star
 id|telespci_revision
 op_assign
-l_string|&quot;$Revision: 2.16.6.2 $&quot;
+l_string|&quot;$Revision: 2.16.6.4 $&quot;
 suffix:semicolon
 DECL|macro|ZORAN_PO_RQ_PEN
 mdefine_line|#define ZORAN_PO_RQ_PEN&t;0x02000000

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: w6692.h,v 1.2 2000/06/26 08:59:15 keil Exp $&n; *&n; * w6692.h   Winbond W6692 specific defines&n; *&n; * Author       Petr Novak &lt;petr.novak@i.cz&gt;&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: w6692.h,v 1.2.6.1 2001/02/16 16:43:29 kai Exp $&n; *&n; * w6692.h   Winbond W6692 specific defines&n; *&n; * Author       Petr Novak &lt;petr.novak@i.cz&gt;&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 multiline_comment|/* map W6692 functions to ISAC functions */
 DECL|macro|readW6692
 mdefine_line|#define readW6692&t;readisac

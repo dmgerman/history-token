@@ -1063,7 +1063,7 @@ id|cia_pci_tbi
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 comma
@@ -1108,7 +1108,7 @@ id|cia_pci_tbi_try1
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 comma
@@ -1360,7 +1360,7 @@ id|cia_pci_tbi_try2
 c_func
 (paren
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 comma
@@ -2528,7 +2528,7 @@ id|is_pyxis
 )paren
 (brace
 r_struct
-id|pci_controler
+id|pci_controller
 op_star
 id|hose
 suffix:semicolon
@@ -2661,7 +2661,7 @@ id|CIA_IOC_HAE_IO
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* For PYXIS, we always use BWX bus and i/o accesses.  To that end,&n;&t;   make sure they&squot;re enabled on the controler.  */
+multiline_comment|/* For PYXIS, we always use BWX bus and i/o accesses.  To that end,&n;&t;   make sure they&squot;re enabled on the controller.  */
 r_if
 c_cond
 (paren
@@ -2706,7 +2706,7 @@ id|pci_isa_hose
 op_assign
 id|hose
 op_assign
-id|alloc_pci_controler
+id|alloc_pci_controller
 c_func
 (paren
 )paren

@@ -1,5 +1,6 @@
-multiline_comment|/*&n; *&n; * Copyright (C) Eicon Technology Corporation, 2000.&n; *&n; * This source file is supplied for the exclusive use with Eicon&n; * Technology Corporation&squot;s range of DIVA Server Adapters.&n; *&n; * Eicon File Revision :    1.15  &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY OF ANY KIND WHATSOEVER INCLUDING ANY &n; * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  &n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY OF ANY KIND WHATSOEVER INCLUDING ANY &n; * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  &n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 DECL|macro|N_DATA
 macro_line|#undef N_DATA
@@ -44,21 +45,7 @@ c_func
 id|DivasPrintf
 )paren
 suffix:semicolon
-DECL|macro|Divas_init
-mdefine_line|#define Divas_init init_module
-macro_line|#else
-DECL|macro|Divas_init
-mdefine_line|#define Divas_init eicon_init
 macro_line|#endif
-r_extern
-r_char
-op_star
-id|file_check
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_int
 id|DivasCardsDiscover
 c_func
@@ -66,9 +53,11 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
 r_int
-DECL|function|Divas_init
-id|Divas_init
+id|__init
+DECL|function|divas_init
+id|divas_init
 c_func
 (paren
 r_void
@@ -85,12 +74,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;DIVA Server Driver - Version 2.0.15 (%s)&bslash;n&quot;
-comma
-id|file_check
-c_func
-(paren
-)paren
+l_string|&quot;DIVA Server Driver - Version 2.0.16&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#if !defined(CONFIG_PCI)
@@ -157,10 +141,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
+r_static
 r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+DECL|function|divas_exit
+id|divas_exit
 c_func
 (paren
 r_void
@@ -379,27 +364,18 @@ l_string|&quot;Divas&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|mod_inc_use_count
-r_void
-id|mod_inc_use_count
+DECL|variable|divas_init
+id|module_init
 c_func
 (paren
-r_void
+id|divas_init
 )paren
-(brace
-id|MOD_INC_USE_COUNT
 suffix:semicolon
-)brace
-DECL|function|mod_dec_use_count
-r_void
-id|mod_dec_use_count
+DECL|variable|divas_exit
+id|module_exit
 c_func
 (paren
-r_void
+id|divas_exit
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
-)brace
-macro_line|#endif
 eof

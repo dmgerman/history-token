@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File Name:&n; *   defxx.c&n; *&n; * Copyright Information:&n; *   Copyright Digital Equipment Corporation 1996.&n; *&n; *   This software may be used and distributed according to the terms of&n; *   the GNU General Public License, incorporated herein by reference.&n; *&n; * Abstract:&n; *   A Linux device driver supporting the Digital Equipment Corporation&n; *   FDDI EISA and PCI controller families.  Supported adapters include:&n; *&n; *&t;&t;DEC FDDIcontroller/EISA (DEFEA)&n; *&t;&t;DEC FDDIcontroller/PCI  (DEFPA)&n; *&n; * Maintainers:&n; *   LVS&t;Lawrence V. Stefani&n; *&n; * Contact:&n; *&t; The author may be reached at:&n; *&n; *&t;&t;Inet: stefani@lkg.dec.com&n; *&t;&t;(NOTE! this address no longer works -jgarzik)&n; *&n; *&t;&t;Mail: Digital Equipment Corporation&n; *&t;&t;&t;  550 King Street&n; *&t;&t;&t;  M/S: LKG1-3/M07&n; *&t;&t;&t;  Littleton, MA  01460&n; *&n; * Credits:&n; *   I&squot;d like to thank Patricia Cross for helping me get started with&n; *   Linux, David Davies for a lot of help upgrading and configuring&n; *   my development system and for answering many OS and driver&n; *   development questions, and Alan Cox for recommendations and&n; *   integration help on getting FDDI support into Linux.  LVS&n; *&n; * Driver Architecture:&n; *   The driver architecture is largely based on previous driver work&n; *   for other operating systems.  The upper edge interface and&n; *   functions were largely taken from existing Linux device drivers&n; *   such as David Davies&squot; DE4X5.C driver and Donald Becker&squot;s TULIP.C&n; *   driver.&n; *&n; *   Adapter Probe -&n; *&t;&t;The driver scans for supported EISA adapters by reading the&n; *&t;&t;SLOT ID register for each EISA slot and making a match&n; *&t;&t;against the expected value.&n; *&n; *   Bus-Specific Initialization -&n; *&t;&t;This driver currently supports both EISA and PCI controller&n; *&t;&t;families.  While the custom DMA chip and FDDI logic is similar&n; *&t;&t;or identical, the bus logic is very different.  After&n; *&t;&t;initialization, the&t;only bus-specific differences is in how the&n; *&t;&t;driver enables and disables interrupts.  Other than that, the&n; *&t;&t;run-time critical code behaves the same on both families.&n; *&t;&t;It&squot;s important to note that both adapter families are configured&n; *&t;&t;to I/O map, rather than memory map, the adapter registers.&n; *&n; *   Driver Open/Close -&n; *&t;&t;In the driver open routine, the driver ISR (interrupt service&n; *&t;&t;routine) is registered and the adapter is brought to an&n; *&t;&t;operational state.  In the driver close routine, the opposite&n; *&t;&t;occurs; the driver ISR is deregistered and the adapter is&n; *&t;&t;brought to a safe, but closed state.  Users may use consecutive&n; *&t;&t;commands to bring the adapter up and down as in the following&n; *&t;&t;example:&n; *&t;&t;&t;&t;&t;ifconfig fddi0 up&n; *&t;&t;&t;&t;&t;ifconfig fddi0 down&n; *&t;&t;&t;&t;&t;ifconfig fddi0 up&n; *&n; *   Driver Shutdown -&n; *&t;&t;Apparently, there is no shutdown or halt routine support under&n; *&t;&t;Linux.  This routine would be called during &quot;reboot&quot; or&n; *&t;&t;&quot;shutdown&quot; to allow the driver to place the adapter in a safe&n; *&t;&t;state before a warm reboot occurs.  To be really safe, the user&n; *&t;&t;should close the adapter before shutdown (eg. ifconfig fddi0 down)&n; *&t;&t;to ensure that the adapter DMA engine is taken off-line.  However,&n; *&t;&t;the current driver code anticipates this problem and always issues&n; *&t;&t;a soft reset of the adapter&t;at the beginning of driver initialization.&n; *&t;&t;A future driver enhancement in this area may occur in 2.1.X where&n; *&t;&t;Alan indicated that a shutdown handler may be implemented.&n; *&n; *   Interrupt Service Routine -&n; *&t;&t;The driver supports shared interrupts, so the ISR is registered for&n; *&t;&t;each board with the appropriate flag and the pointer to that board&squot;s&n; *&t;&t;device structure.  This provides the context during interrupt&n; *&t;&t;processing to support shared interrupts and multiple boards.&n; *&n; *&t;&t;Interrupt enabling/disabling can occur at many levels.  At the host&n; *&t;&t;end, you can disable system interrupts, or disable interrupts at the&n; *&t;&t;PIC (on Intel systems).  Across the bus, both EISA and PCI adapters&n; *&t;&t;have a bus-logic chip interrupt enable/disable as well as a DMA&n; *&t;&t;controller interrupt enable/disable.&n; *&n; *&t;&t;The driver currently enables and disables adapter interrupts at the&n; *&t;&t;bus-logic chip and assumes that Linux will take care of clearing or&n; *&t;&t;acknowledging any host-based interrupt chips.&n; *&n; *   Control Functions -&n; *&t;&t;Control functions are those used to support functions such as adding&n; *&t;&t;or deleting multicast addresses, enabling or disabling packet&n; *&t;&t;reception filters, or other custom/proprietary commands.  Presently,&n; *&t;&t;the driver supports the &quot;get statistics&quot;, &quot;set multicast list&quot;, and&n; *&t;&t;&quot;set mac address&quot; functions defined by Linux.  A list of possible&n; *&t;&t;enhancements include:&n; *&n; *&t;&t;&t;&t;- Custom ioctl interface for executing port interface commands&n; *&t;&t;&t;&t;- Custom ioctl interface for adding unicast addresses to&n; *&t;&t;&t;&t;  adapter CAM (to support bridge functions).&n; *&t;&t;&t;&t;- Custom ioctl interface for supporting firmware upgrades.&n; *&n; *   Hardware (port interface) Support Routines -&n; *&t;&t;The driver function names that start with &quot;dfx_hw_&quot; represent&n; *&t;&t;low-level port interface routines that are called frequently.  They&n; *&t;&t;include issuing a DMA or port control command to the adapter,&n; *&t;&t;resetting the adapter, or reading the adapter state.  Since the&n; *&t;&t;driver initialization and run-time code must make calls into the&n; *&t;&t;port interface, these routines were written to be as generic and&n; *&t;&t;usable as possible.&n; *&n; *   Receive Path -&n; *&t;&t;The adapter DMA engine supports a 256 entry receive descriptor block&n; *&t;&t;of which up to 255 entries can be used at any given time.  The&n; *&t;&t;architecture is a standard producer, consumer, completion model in&n; *&t;&t;which the driver &quot;produces&quot; receive buffers to the adapter, the&n; *&t;&t;adapter &quot;consumes&quot; the receive buffers by DMAing incoming packet data,&n; *&t;&t;and the driver &quot;completes&quot; the receive buffers by servicing the&n; *&t;&t;incoming packet, then &quot;produces&quot; a new buffer and starts the cycle&n; *&t;&t;again.  Receive buffers can be fragmented in up to 16 fragments&n; *&t;&t;(descriptor&t;entries).  For simplicity, this driver posts&n; *&t;&t;single-fragment receive buffers of 4608 bytes, then allocates a&n; *&t;&t;sk_buff, copies the data, then reposts the buffer.  To reduce CPU&n; *&t;&t;utilization, a better approach would be to pass up the receive&n; *&t;&t;buffer (no extra copy) then allocate and post a replacement buffer.&n; *&t;&t;This is a performance enhancement that should be looked into at&n; *&t;&t;some point.&n; *&n; *   Transmit Path -&n; *&t;&t;Like the receive path, the adapter DMA engine supports a 256 entry&n; *&t;&t;transmit descriptor block of which up to 255 entries can be used at&n; *&t;&t;any&t;given time.  Transmit buffers can be fragmented&t;in up to 255&n; *&t;&t;fragments (descriptor entries).  This driver always posts one&n; *&t;&t;fragment per transmit packet request.&n; *&n; *&t;&t;The fragment contains the entire packet from FC to end of data.&n; *&t;&t;Before posting the buffer to the adapter, the driver sets a three-byte&n; *&t;&t;packet request header (PRH) which is required by the Motorola MAC chip&n; *&t;&t;used on the adapters.  The PRH tells the MAC the type of token to&n; *&t;&t;receive/send, whether or not to generate and append the CRC, whether&n; *&t;&t;synchronous or asynchronous framing is used, etc.  Since the PRH&n; *&t;&t;definition is not necessarily consistent across all FDDI chipsets,&n; *&t;&t;the driver, rather than the common FDDI packet handler routines,&n; *&t;&t;sets these bytes.&n; *&n; *&t;&t;To reduce the amount of descriptor fetches needed per transmit request,&n; *&t;&t;the driver takes advantage of the fact that there are at least three&n; *&t;&t;bytes available before the skb-&gt;data field on the outgoing transmit&n; *&t;&t;request.  This is guaranteed by having fddi_setup() in net_init.c set&n; *&t;&t;dev-&gt;hard_header_len to 24 bytes.  21 bytes accounts for the largest&n; *&t;&t;header in an 802.2 SNAP frame.  The other 3 bytes are the extra &quot;pad&quot;&n; *&t;&t;bytes which we&squot;ll use to store the PRH.&n; *&n; *&t;&t;There&squot;s a subtle advantage to adding these pad bytes to the&n; *&t;&t;hard_header_len, it ensures that the data portion of the packet for&n; *&t;&t;an 802.2 SNAP frame is longword aligned.  Other FDDI driver&n; *&t;&t;implementations may not need the extra padding and can start copying&n; *&t;&t;or DMAing directly from the FC byte which starts at skb-&gt;data.  Should&n; *&t;&t;another driver implementation need ADDITIONAL padding, the net_init.c&n; *&t;&t;module should be updated and dev-&gt;hard_header_len should be increased.&n; *&t;&t;NOTE: To maintain the alignment on the data portion of the packet,&n; *&t;&t;dev-&gt;hard_header_len should always be evenly divisible by 4 and at&n; *&t;&t;least 24 bytes in size.&n; *&n; * Modification History:&n; *&t;&t;Date&t;&t;Name&t;Description&n; *&t;&t;16-Aug-96&t;LVS&t;&t;Created.&n; *&t;&t;20-Aug-96&t;LVS&t;&t;Updated dfx_probe so that version information&n; *&t;&t;&t;&t;&t;&t;&t;string is only displayed if 1 or more cards are&n; *&t;&t;&t;&t;&t;&t;&t;found.  Changed dfx_rcv_queue_process to copy&n; *&t;&t;&t;&t;&t;&t;&t;3 NULL bytes before FC to ensure that data is&n; *&t;&t;&t;&t;&t;&t;&t;longword aligned in receive buffer.&n; *&t;&t;09-Sep-96&t;LVS&t;&t;Updated dfx_ctl_set_multicast_list to enable&n; *&t;&t;&t;&t;&t;&t;&t;LLC group promiscuous mode if multicast list&n; *&t;&t;&t;&t;&t;&t;&t;is too large.  LLC individual/group promiscuous&n; *&t;&t;&t;&t;&t;&t;&t;mode is now disabled if IFF_PROMISC flag not set.&n; *&t;&t;&t;&t;&t;&t;&t;dfx_xmt_queue_pkt no longer checks for NULL skb&n; *&t;&t;&t;&t;&t;&t;&t;on Alan Cox recommendation.  Added node address&n; *&t;&t;&t;&t;&t;&t;&t;override support.&n; *&t;&t;12-Sep-96&t;LVS&t;&t;Reset current address to factory address during&n; *&t;&t;&t;&t;&t;&t;&t;device open.  Updated transmit path to post a&n; *&t;&t;&t;&t;&t;&t;&t;single fragment which includes PRH-&gt;end of data.&n; *&t;&t;Mar 2000&t;AC&t;&t;Did various cleanups for 2.3.x&n; *&t;&t;Jun 2000&t;jgarzik&t;&t;PCI and resource alloc cleanups&n; *&t;&t;Jul 2000&t;tjeerd&t;&t;Much cleanup and some bug fixes&n; *&t;&t;Sep 2000&t;tjeerd&t;&t;Fix leak on unload, cosmetic code cleanup&n; */
+multiline_comment|/*&n; * File Name:&n; *   defxx.c&n; *&n; * Copyright Information:&n; *   Copyright Digital Equipment Corporation 1996.&n; *&n; *   This software may be used and distributed according to the terms of&n; *   the GNU General Public License, incorporated herein by reference.&n; *&n; * Abstract:&n; *   A Linux device driver supporting the Digital Equipment Corporation&n; *   FDDI EISA and PCI controller families.  Supported adapters include:&n; *&n; *&t;&t;DEC FDDIcontroller/EISA (DEFEA)&n; *&t;&t;DEC FDDIcontroller/PCI  (DEFPA)&n; *&n; * Maintainers:&n; *   LVS&t;Lawrence V. Stefani&n; *&n; * Contact:&n; *&t; The author may be reached at:&n; *&n; *&t;&t;Inet: stefani@lkg.dec.com&n; *&t;&t;(NOTE! this address no longer works -jgarzik)&n; *&n; *&t;&t;Mail: Digital Equipment Corporation&n; *&t;&t;&t;  550 King Street&n; *&t;&t;&t;  M/S: LKG1-3/M07&n; *&t;&t;&t;  Littleton, MA  01460&n; *&n; * Credits:&n; *   I&squot;d like to thank Patricia Cross for helping me get started with&n; *   Linux, David Davies for a lot of help upgrading and configuring&n; *   my development system and for answering many OS and driver&n; *   development questions, and Alan Cox for recommendations and&n; *   integration help on getting FDDI support into Linux.  LVS&n; *&n; * Driver Architecture:&n; *   The driver architecture is largely based on previous driver work&n; *   for other operating systems.  The upper edge interface and&n; *   functions were largely taken from existing Linux device drivers&n; *   such as David Davies&squot; DE4X5.C driver and Donald Becker&squot;s TULIP.C&n; *   driver.&n; *&n; *   Adapter Probe -&n; *&t;&t;The driver scans for supported EISA adapters by reading the&n; *&t;&t;SLOT ID register for each EISA slot and making a match&n; *&t;&t;against the expected value.&n; *&n; *   Bus-Specific Initialization -&n; *&t;&t;This driver currently supports both EISA and PCI controller&n; *&t;&t;families.  While the custom DMA chip and FDDI logic is similar&n; *&t;&t;or identical, the bus logic is very different.  After&n; *&t;&t;initialization, the&t;only bus-specific differences is in how the&n; *&t;&t;driver enables and disables interrupts.  Other than that, the&n; *&t;&t;run-time critical code behaves the same on both families.&n; *&t;&t;It&squot;s important to note that both adapter families are configured&n; *&t;&t;to I/O map, rather than memory map, the adapter registers.&n; *&n; *   Driver Open/Close -&n; *&t;&t;In the driver open routine, the driver ISR (interrupt service&n; *&t;&t;routine) is registered and the adapter is brought to an&n; *&t;&t;operational state.  In the driver close routine, the opposite&n; *&t;&t;occurs; the driver ISR is deregistered and the adapter is&n; *&t;&t;brought to a safe, but closed state.  Users may use consecutive&n; *&t;&t;commands to bring the adapter up and down as in the following&n; *&t;&t;example:&n; *&t;&t;&t;&t;&t;ifconfig fddi0 up&n; *&t;&t;&t;&t;&t;ifconfig fddi0 down&n; *&t;&t;&t;&t;&t;ifconfig fddi0 up&n; *&n; *   Driver Shutdown -&n; *&t;&t;Apparently, there is no shutdown or halt routine support under&n; *&t;&t;Linux.  This routine would be called during &quot;reboot&quot; or&n; *&t;&t;&quot;shutdown&quot; to allow the driver to place the adapter in a safe&n; *&t;&t;state before a warm reboot occurs.  To be really safe, the user&n; *&t;&t;should close the adapter before shutdown (eg. ifconfig fddi0 down)&n; *&t;&t;to ensure that the adapter DMA engine is taken off-line.  However,&n; *&t;&t;the current driver code anticipates this problem and always issues&n; *&t;&t;a soft reset of the adapter&t;at the beginning of driver initialization.&n; *&t;&t;A future driver enhancement in this area may occur in 2.1.X where&n; *&t;&t;Alan indicated that a shutdown handler may be implemented.&n; *&n; *   Interrupt Service Routine -&n; *&t;&t;The driver supports shared interrupts, so the ISR is registered for&n; *&t;&t;each board with the appropriate flag and the pointer to that board&squot;s&n; *&t;&t;device structure.  This provides the context during interrupt&n; *&t;&t;processing to support shared interrupts and multiple boards.&n; *&n; *&t;&t;Interrupt enabling/disabling can occur at many levels.  At the host&n; *&t;&t;end, you can disable system interrupts, or disable interrupts at the&n; *&t;&t;PIC (on Intel systems).  Across the bus, both EISA and PCI adapters&n; *&t;&t;have a bus-logic chip interrupt enable/disable as well as a DMA&n; *&t;&t;controller interrupt enable/disable.&n; *&n; *&t;&t;The driver currently enables and disables adapter interrupts at the&n; *&t;&t;bus-logic chip and assumes that Linux will take care of clearing or&n; *&t;&t;acknowledging any host-based interrupt chips.&n; *&n; *   Control Functions -&n; *&t;&t;Control functions are those used to support functions such as adding&n; *&t;&t;or deleting multicast addresses, enabling or disabling packet&n; *&t;&t;reception filters, or other custom/proprietary commands.  Presently,&n; *&t;&t;the driver supports the &quot;get statistics&quot;, &quot;set multicast list&quot;, and&n; *&t;&t;&quot;set mac address&quot; functions defined by Linux.  A list of possible&n; *&t;&t;enhancements include:&n; *&n; *&t;&t;&t;&t;- Custom ioctl interface for executing port interface commands&n; *&t;&t;&t;&t;- Custom ioctl interface for adding unicast addresses to&n; *&t;&t;&t;&t;  adapter CAM (to support bridge functions).&n; *&t;&t;&t;&t;- Custom ioctl interface for supporting firmware upgrades.&n; *&n; *   Hardware (port interface) Support Routines -&n; *&t;&t;The driver function names that start with &quot;dfx_hw_&quot; represent&n; *&t;&t;low-level port interface routines that are called frequently.  They&n; *&t;&t;include issuing a DMA or port control command to the adapter,&n; *&t;&t;resetting the adapter, or reading the adapter state.  Since the&n; *&t;&t;driver initialization and run-time code must make calls into the&n; *&t;&t;port interface, these routines were written to be as generic and&n; *&t;&t;usable as possible.&n; *&n; *   Receive Path -&n; *&t;&t;The adapter DMA engine supports a 256 entry receive descriptor block&n; *&t;&t;of which up to 255 entries can be used at any given time.  The&n; *&t;&t;architecture is a standard producer, consumer, completion model in&n; *&t;&t;which the driver &quot;produces&quot; receive buffers to the adapter, the&n; *&t;&t;adapter &quot;consumes&quot; the receive buffers by DMAing incoming packet data,&n; *&t;&t;and the driver &quot;completes&quot; the receive buffers by servicing the&n; *&t;&t;incoming packet, then &quot;produces&quot; a new buffer and starts the cycle&n; *&t;&t;again.  Receive buffers can be fragmented in up to 16 fragments&n; *&t;&t;(descriptor&t;entries).  For simplicity, this driver posts&n; *&t;&t;single-fragment receive buffers of 4608 bytes, then allocates a&n; *&t;&t;sk_buff, copies the data, then reposts the buffer.  To reduce CPU&n; *&t;&t;utilization, a better approach would be to pass up the receive&n; *&t;&t;buffer (no extra copy) then allocate and post a replacement buffer.&n; *&t;&t;This is a performance enhancement that should be looked into at&n; *&t;&t;some point.&n; *&n; *   Transmit Path -&n; *&t;&t;Like the receive path, the adapter DMA engine supports a 256 entry&n; *&t;&t;transmit descriptor block of which up to 255 entries can be used at&n; *&t;&t;any&t;given time.  Transmit buffers can be fragmented&t;in up to 255&n; *&t;&t;fragments (descriptor entries).  This driver always posts one&n; *&t;&t;fragment per transmit packet request.&n; *&n; *&t;&t;The fragment contains the entire packet from FC to end of data.&n; *&t;&t;Before posting the buffer to the adapter, the driver sets a three-byte&n; *&t;&t;packet request header (PRH) which is required by the Motorola MAC chip&n; *&t;&t;used on the adapters.  The PRH tells the MAC the type of token to&n; *&t;&t;receive/send, whether or not to generate and append the CRC, whether&n; *&t;&t;synchronous or asynchronous framing is used, etc.  Since the PRH&n; *&t;&t;definition is not necessarily consistent across all FDDI chipsets,&n; *&t;&t;the driver, rather than the common FDDI packet handler routines,&n; *&t;&t;sets these bytes.&n; *&n; *&t;&t;To reduce the amount of descriptor fetches needed per transmit request,&n; *&t;&t;the driver takes advantage of the fact that there are at least three&n; *&t;&t;bytes available before the skb-&gt;data field on the outgoing transmit&n; *&t;&t;request.  This is guaranteed by having fddi_setup() in net_init.c set&n; *&t;&t;dev-&gt;hard_header_len to 24 bytes.  21 bytes accounts for the largest&n; *&t;&t;header in an 802.2 SNAP frame.  The other 3 bytes are the extra &quot;pad&quot;&n; *&t;&t;bytes which we&squot;ll use to store the PRH.&n; *&n; *&t;&t;There&squot;s a subtle advantage to adding these pad bytes to the&n; *&t;&t;hard_header_len, it ensures that the data portion of the packet for&n; *&t;&t;an 802.2 SNAP frame is longword aligned.  Other FDDI driver&n; *&t;&t;implementations may not need the extra padding and can start copying&n; *&t;&t;or DMAing directly from the FC byte which starts at skb-&gt;data.  Should&n; *&t;&t;another driver implementation need ADDITIONAL padding, the net_init.c&n; *&t;&t;module should be updated and dev-&gt;hard_header_len should be increased.&n; *&t;&t;NOTE: To maintain the alignment on the data portion of the packet,&n; *&t;&t;dev-&gt;hard_header_len should always be evenly divisible by 4 and at&n; *&t;&t;least 24 bytes in size.&n; *&n; * Modification History:&n; *&t;&t;Date&t;&t;Name&t;Description&n; *&t;&t;16-Aug-96&t;LVS&t;&t;Created.&n; *&t;&t;20-Aug-96&t;LVS&t;&t;Updated dfx_probe so that version information&n; *&t;&t;&t;&t;&t;&t;&t;string is only displayed if 1 or more cards are&n; *&t;&t;&t;&t;&t;&t;&t;found.  Changed dfx_rcv_queue_process to copy&n; *&t;&t;&t;&t;&t;&t;&t;3 NULL bytes before FC to ensure that data is&n; *&t;&t;&t;&t;&t;&t;&t;longword aligned in receive buffer.&n; *&t;&t;09-Sep-96&t;LVS&t;&t;Updated dfx_ctl_set_multicast_list to enable&n; *&t;&t;&t;&t;&t;&t;&t;LLC group promiscuous mode if multicast list&n; *&t;&t;&t;&t;&t;&t;&t;is too large.  LLC individual/group promiscuous&n; *&t;&t;&t;&t;&t;&t;&t;mode is now disabled if IFF_PROMISC flag not set.&n; *&t;&t;&t;&t;&t;&t;&t;dfx_xmt_queue_pkt no longer checks for NULL skb&n; *&t;&t;&t;&t;&t;&t;&t;on Alan Cox recommendation.  Added node address&n; *&t;&t;&t;&t;&t;&t;&t;override support.&n; *&t;&t;12-Sep-96&t;LVS&t;&t;Reset current address to factory address during&n; *&t;&t;&t;&t;&t;&t;&t;device open.  Updated transmit path to post a&n; *&t;&t;&t;&t;&t;&t;&t;single fragment which includes PRH-&gt;end of data.&n; *&t;&t;Mar 2000&t;AC&t;&t;Did various cleanups for 2.3.x&n; *&t;&t;Jun 2000&t;jgarzik&t;&t;PCI and resource alloc cleanups&n; *&t;&t;Jul 2000&t;tjeerd&t;&t;Much cleanup and some bug fixes&n; *&t;&t;Sep 2000&t;tjeerd&t;&t;Fix leak on unload, cosmetic code cleanup&n; *&t;&t;Feb 2001&t;&t;&t;Skb allocation fixes&n; *&t;&t;Feb 2001&t;davej&t;&t;PCI enable cleanups.&n; */
 multiline_comment|/* Include files */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -28,7 +28,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;defxx.c:v1.05d 2000/09/05  Lawrence V. Stefani and others&bslash;n&quot;
+l_string|&quot;defxx.c:v1.05e 2001/02/03  Lawrence V. Stefani and others&bslash;n&quot;
 suffix:semicolon
 DECL|macro|DYNAMIC_BUFFERS
 mdefine_line|#define DYNAMIC_BUFFERS 1
@@ -78,6 +78,9 @@ c_func
 id|DFX_board_t
 op_star
 id|bp
+comma
+r_int
+id|get_buffers
 )paren
 suffix:semicolon
 r_static
@@ -280,8 +283,21 @@ id|type
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|dfx_rcv_init
+c_func
+(paren
+id|DFX_board_t
+op_star
+id|bp
+comma
+r_int
+id|get_buffers
+)paren
+suffix:semicolon
+r_static
+r_void
+id|dfx_rcv_queue_process
 c_func
 (paren
 id|DFX_board_t
@@ -291,7 +307,7 @@ id|bp
 suffix:semicolon
 r_static
 r_void
-id|dfx_rcv_queue_process
+id|dfx_rcv_flush
 c_func
 (paren
 id|DFX_board_t
@@ -378,8 +394,6 @@ comma
 id|port
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|dfx_port_read_byte
 r_static
@@ -416,8 +430,6 @@ c_func
 id|port
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|dfx_port_write_long
 r_static
@@ -451,8 +463,6 @@ id|data
 comma
 id|port
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|dfx_port_read_long
@@ -490,11 +500,9 @@ c_func
 id|port
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 "&f;"
-multiline_comment|/*&n; * =============&n; * = dfx_init_one_pci_or_eisa =&n; * =============&n; *   &n; * Overview:&n; *   Initializes a supported FDDI EISA or PCI controller&n; *  &n; * Returns:&n; *   Condition code&n; *       &n; * Arguments:&n; *   pdev - pointer to pci device information (NULL for EISA)&n; *&n; * Functional Description:&n; *&n; * Return Codes:&n; *   0&t;&t; - This device (fddi0, fddi1, etc) configured successfully&n; *   -EBUSY      - Failed to get resources, or dfx_driver_init failed.&n; *&n; * Assumptions:&n; *   It compiles so it should work :-( (PCI cards do :-)&n; *&n; * Side Effects:&n; *   Device structures for FDDI adapters (fddi0, fddi1, etc) are&n; *   initialized and the board resources are read and stored in&n; *   the device structure.&n; */
+multiline_comment|/*&n; * =============&n; * = dfx_init_one_pci_or_eisa =&n; * =============&n; *   &n; * Overview:&n; *   Initializes a supported FDDI EISA or PCI controller&n; *  &n; * Returns:&n; *   Condition code&n; *       &n; * Arguments:&n; *   pdev - pointer to pci device information (NULL for EISA)&n; *   ioaddr - pointer to port (NULL for PCI)&n; *&n; * Functional Description:&n; *&n; * Return Codes:&n; *   0&t;&t; - This device (fddi0, fddi1, etc) configured successfully&n; *   -EBUSY      - Failed to get resources, or dfx_driver_init failed.&n; *&n; * Assumptions:&n; *   It compiles so it should work :-( (PCI cards do :-)&n; *&n; * Side Effects:&n; *   Device structures for FDDI adapters (fddi0, fddi1, etc) are&n; *   initialized and the board resources are read and stored in&n; *   the device structure.&n; */
 DECL|function|dfx_init_one_pci_or_eisa
 r_static
 r_int
@@ -524,6 +532,9 @@ multiline_comment|/* board pointer */
 r_static
 r_int
 id|version_disp
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -579,12 +590,48 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+multiline_comment|/* Enable PCI device. */
+r_if
+c_cond
+(paren
+id|pdev
+op_ne
+l_int|NULL
+)paren
+(brace
+id|err
+op_assign
+id|pci_enable_device
+(paren
+id|pdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|err_out
+suffix:semicolon
+id|ioaddr
+op_assign
+id|pci_resource_start
+(paren
+id|pdev
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|bp
 op_assign
-(paren
-id|DFX_board_t
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_if
@@ -617,6 +664,11 @@ id|PFI_K_CSR_IO_LEN
 comma
 id|ioaddr
 )paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EBUSY
 suffix:semicolon
 r_goto
 id|err_out
@@ -689,17 +741,6 @@ id|pdev-&gt;driver_data
 op_assign
 id|dev
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pci_enable_device
-(paren
-id|pdev
-)paren
-)paren
-r_goto
-id|err_out_region
-suffix:semicolon
 id|pci_set_master
 (paren
 id|pdev
@@ -717,9 +758,16 @@ id|dev
 op_ne
 id|DFX_K_SUCCESS
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|err_out_region
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -753,8 +801,7 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENODEV
+id|err
 suffix:semicolon
 )brace
 DECL|function|dfx_init_one
@@ -782,12 +829,7 @@ c_func
 (paren
 id|pdev
 comma
-id|pci_resource_start
-(paren
-id|pdev
-comma
-l_int|1
-)paren
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1196,8 +1238,6 @@ id|PFI_MODE_M_DMA_ENB
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 "&f;"
 multiline_comment|/*&n; * ========================&n; * = dfx_bus_config_check =&n; * ========================&n; *   &n; * Overview:&n; *   Checks the configuration (burst size, full-duplex, etc.)  If any parameters&n; *   are illegal, then this routine will set new defaults.&n; *  &n; * Returns:&n; *   None&n; *       &n; * Arguments:&n; *   bp - pointer to board information&n; *&n; * Functional Description:&n; *   For Revision 1 FDDI EISA, Revision 2 or later FDDI EISA with rev E or later&n; *   PDQ, and all FDDI PCI controllers, all values are legal.&n; *&n; * Return Codes:&n; *   None&n; *&n; * Assumptions:&n; *   dfx_adap_init has NOT been called yet so burst size and other items have&n; *   not been set.&n; *&n; * Side Effects:&n; *   None&n; */
@@ -1327,8 +1367,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_return
-suffix:semicolon
 )brace
 "&f;"
 multiline_comment|/*&n; * ===================&n; * = dfx_driver_init =&n; * ===================&n; *   &n; * Overview:&n; *   Initializes remaining adapter board structure information&n; *   and makes sure adapter is in a safe state prior to dfx_open().&n; *  &n; * Returns:&n; *   Condition code&n; *       &n; * Arguments:&n; *   dev - pointer to device information&n; *&n; * Functional Description:&n; *   This function allocates additional resources such as the host memory&n; *   blocks needed by the adapter (eg. descriptor and consumer blocks).&n; *&t; Remaining bus initialization steps are also completed.  The adapter&n; *   is also reset so that it is in the DMA_UNAVAILABLE state.  The OS&n; *   must call dfx_open() to open the adapter and bring it on-line.&n; *&n; * Return Codes:&n; *   DFX_K_SUCCESS&t;- initialization succeeded&n; *   DFX_K_FAILURE&t;- initialization failed - could not allocate memory&n; *&t;&t;&t;&t;&t;&t;or read adapter MAC address&n; *&n; * Assumptions:&n; *   Memory allocated from kmalloc() call is physically contiguous, locked&n; *   memory whose physical address equals its virtual address.&n; *&n; * Side Effects:&n; *   Adapter is reset and should be in DMA_UNAVAILABLE state before&n; *   returning from this routine.&n; */
@@ -1949,7 +1987,7 @@ id|DFX_K_SUCCESS
 suffix:semicolon
 )brace
 "&f;"
-multiline_comment|/*&n; * =================&n; * = dfx_adap_init =&n; * =================&n; *   &n; * Overview:&n; *   Brings the adapter to the link avail/link unavailable state.&n; *  &n; * Returns:&n; *   Condition code&n; *       &n; * Arguments:&n; *   bp - pointer to board information&n; *&n; * Functional Description:&n; *   Issues the low-level firmware/hardware calls necessary to bring&n; *   the adapter up, or to properly reset and restore adapter during&n; *   run-time.&n; *&n; * Return Codes:&n; *   DFX_K_SUCCESS - Adapter brought up successfully&n; *   DFX_K_FAILURE - Adapter initialization failed&n; *&n; * Assumptions:&n; *   bp-&gt;reset_type should be set to a valid reset type value before&n; *   calling this routine.&n; *&n; * Side Effects:&n; *   Adapter should be in LINK_AVAILABLE or LINK_UNAVAILABLE state&n; *   upon a successful return of this routine.&n; */
+multiline_comment|/*&n; * =================&n; * = dfx_adap_init =&n; * =================&n; *   &n; * Overview:&n; *   Brings the adapter to the link avail/link unavailable state.&n; *  &n; * Returns:&n; *   Condition code&n; *       &n; * Arguments:&n; *   bp - pointer to board information&n; *   get_buffers - non-zero if buffers to be allocated&n; *&n; * Functional Description:&n; *   Issues the low-level firmware/hardware calls necessary to bring&n; *   the adapter up, or to properly reset and restore adapter during&n; *   run-time.&n; *&n; * Return Codes:&n; *   DFX_K_SUCCESS - Adapter brought up successfully&n; *   DFX_K_FAILURE - Adapter initialization failed&n; *&n; * Assumptions:&n; *   bp-&gt;reset_type should be set to a valid reset type value before&n; *   calling this routine.&n; *&n; * Side Effects:&n; *   Adapter should be in LINK_AVAILABLE or LINK_UNAVAILABLE state&n; *   upon a successful return of this routine.&n; */
 DECL|function|dfx_adap_init
 r_static
 r_int
@@ -1959,6 +1997,9 @@ c_func
 id|DFX_board_t
 op_star
 id|bp
+comma
+r_int
+id|get_buffers
 )paren
 (brace
 id|DBG_printk
@@ -2357,13 +2398,54 @@ r_return
 id|DFX_K_FAILURE
 suffix:semicolon
 )brace
-multiline_comment|/* Initialize receive descriptor block and produce buffers */
-id|dfx_rcv_init
+multiline_comment|/*&n;&t; * Remove any existing dynamic buffers (i.e. if the adapter is being&n;&t; * reinitialized)&n;&t; */
+r_if
+c_cond
+(paren
+id|get_buffers
+)paren
+id|dfx_rcv_flush
 c_func
 (paren
 id|bp
 )paren
 suffix:semicolon
+multiline_comment|/* Initialize receive descriptor block and produce buffers */
+r_if
+c_cond
+(paren
+id|dfx_rcv_init
+c_func
+(paren
+id|bp
+comma
+id|get_buffers
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: Receive buffer allocation failed&bslash;n&quot;
+comma
+id|bp-&gt;dev-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_buffers
+)paren
+id|dfx_rcv_flush
+c_func
+(paren
+id|bp
+)paren
+suffix:semicolon
+r_return
+id|DFX_K_FAILURE
+suffix:semicolon
+)brace
 multiline_comment|/* Issue START command and bring adapter to LINK_(UN)AVAILABLE state */
 id|bp-&gt;cmd_req_virt-&gt;cmd_type
 op_assign
@@ -2387,6 +2469,17 @@ c_func
 l_string|&quot;%s: Start command failed&bslash;n&quot;
 comma
 id|bp-&gt;dev-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_buffers
+)paren
+id|dfx_rcv_flush
+c_func
+(paren
+id|bp
 )paren
 suffix:semicolon
 r_return
@@ -2422,6 +2515,9 @@ op_star
 id|dev
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 id|DFX_board_t
 op_star
 id|bp
@@ -2438,12 +2534,9 @@ c_func
 l_string|&quot;In dfx_open...&bslash;n&quot;
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* Register IRQ - support shared interrupts by passing device ptr */
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|request_irq
 c_func
 (paren
@@ -2461,6 +2554,11 @@ id|dev-&gt;name
 comma
 id|dev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 (brace
 id|printk
@@ -2474,11 +2572,8 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
-op_minus
-id|EAGAIN
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Set current address to factory MAC address&n;&t; *&n;&t; * Note: We&squot;ve already done this step in dfx_driver_init.&n;&t; *       However, it&squot;s possible that a user has set a node&n;&t; *&t;&t; address override, then closed and reopened the&n;&t; *&t;&t; adapter.  Unless we reset the device address field&n;&t; *&t;&t; now, we&squot;ll continue to use the existing modified&n;&t; *&t;&t; address.&n;&t; */
@@ -2556,6 +2651,8 @@ id|dfx_adap_init
 c_func
 (paren
 id|bp
+comma
+l_int|1
 )paren
 op_ne
 id|DFX_K_SUCCESS
@@ -2577,8 +2674,6 @@ id|dev-&gt;irq
 comma
 id|dev
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -2683,6 +2778,13 @@ id|PI_CONSUMER_BLOCK
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Release all dynamically allocate skb in the receive ring. */
+id|dfx_rcv_flush
+c_func
+(paren
+id|bp
+)paren
+suffix:semicolon
 multiline_comment|/* Clear device structure flags */
 id|netif_stop_queue
 c_func
@@ -2698,8 +2800,6 @@ id|dev-&gt;irq
 comma
 id|dev
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -2887,8 +2987,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 "&f;"
 multiline_comment|/*&n; * ==========================&n; * = dfx_int_type_0_process =&n; * ==========================&n; *   &n; * Overview:&n; *   Processes Type 0 interrupts.&n; *  &n; * Returns:&n; *   None&n; *       &n; * Arguments:&n; *   bp - pointer to board information&n; *&n; * Functional Description:&n; *   Processes all enabled Type 0 interrupts.  If the reason for the interrupt&n; *   is a serious fault on the adapter, then an error message is displayed&n; *   and the adapter is reset.&n; *&n; *   One tricky potential timing window is the rapid succession of &quot;link avail&quot;&n; *   &quot;link unavail&quot; state change interrupts.  The acknowledgement of the Type 0&n; *   interrupt must be done before reading the state from the Port Status&n; *   register.  This is true because a state change could occur after reading&n; *   the data, but before acknowledging the interrupt.  If this state change&n; *   does happen, it would be lost because the driver is using the old state,&n; *   and it will never know about the new state because it subsequently&n; *   acknowledges the state change interrupt.&n; *&n; *          INCORRECT                                      CORRECT&n; *      read type 0 int reasons                   read type 0 int reasons&n; *      read adapter state                        ack type 0 interrupts&n; *      ack type 0 interrupts                     read adapter state&n; *      ... process interrupt ...                 ... process interrupt ...&n; *&n; * Return Codes:&n; *   None&n; *&n; * Assumptions:&n; *   None&n; *&n; * Side Effects:&n; *   An adapter reset may occur if the adapter has any Type 0 error interrupts&n; *   or if the port status indicates that the adapter is halted.  The driver&n; *   is responsible for reinitializing the adapter with the current CAM&n; *   contents and adapter filter settings.&n; */
@@ -3022,6 +3120,8 @@ id|dfx_adap_init
 c_func
 (paren
 id|bp
+comma
+l_int|0
 )paren
 op_ne
 id|DFX_K_SUCCESS
@@ -3168,6 +3268,8 @@ id|dfx_adap_init
 c_func
 (paren
 id|bp
+comma
+l_int|0
 )paren
 op_ne
 id|DFX_K_SUCCESS
@@ -3219,8 +3321,6 @@ suffix:semicolon
 multiline_comment|/* set link available flag */
 )brace
 )brace
-r_return
-suffix:semicolon
 )brace
 "&f;"
 multiline_comment|/*&n; * ==================&n; * = dfx_int_common =&n; * ==================&n; *   &n; * Overview:&n; *   Interrupt service routine (ISR)&n; *  &n; * Returns:&n; *   None&n; *       &n; * Arguments:&n; *   bp - pointer to board information&n; *&n; * Functional Description:&n; *   This is the ISR which processes incoming adapter interrupts.&n; *&n; * Return Codes:&n; *   None&n; *&n; * Assumptions:&n; *   This routine assumes PDQ interrupts have not been disabled.&n; *   When interrupts are disabled at the PDQ, the Port Status register&n; *   is automatically cleared.  This routine uses the Port Status&n; *   register value to determine whether a Type 0 interrupt occurred,&n; *   so it&squot;s important that adapter interrupts are not normally&n; *   enabled/disabled at the PDQ.&n; *&n; *   It&squot;s vital that this routine is NOT reentered for the&n; *   same board and that the OS is not in another section of&n; *   code (eg. dfx_xmt_queue_pkt) for the same board on a&n; *   different thread.&n; *&n; * Side Effects:&n; *   Pending interrupts are serviced.  Depending on the type of&n; *   interrupt, acknowledging and clearing the interrupt at the&n; *   PDQ involves writing a register to clear the interrupt bit&n; *   or updating completion indices.&n; */
@@ -3315,8 +3415,6 @@ id|bp
 )paren
 suffix:semicolon
 multiline_comment|/* process Type 0 interrupts */
-r_return
-suffix:semicolon
 )brace
 "&f;"
 multiline_comment|/*&n; * =================&n; * = dfx_interrupt =&n; * =================&n; *   &n; * Overview:&n; *   Interrupt processing routine&n; *  &n; * Returns:&n; *   None&n; *       &n; * Arguments:&n; *   irq&t;- interrupt vector&n; *   dev_id&t;- pointer to device information&n; *&t; regs&t;- pointer to registers structure&n; *&n; * Functional Description:&n; *   This routine calls the interrupt processing routine for this adapter.  It&n; *   disables and reenables adapter interrupts, as appropriate.  We can support&n; *   shared interrupts since the incoming dev_id pointer provides our device&n; *   structure context.&n; *&n; * Return Codes:&n; *   None&n; *&n; * Assumptions:&n; *   The interrupt acknowledgement at the hardware level (eg. ACKing the PIC&n; *   on Intel-based systems) is done by the operating system outside this&n; *   routine.&n; *&n; *&t; System interrupts are enabled through this call.&n; *&n; * Side Effects:&n; *   Interrupts are disabled, then reenabled at the adapter.&n; */
@@ -3499,8 +3597,6 @@ c_func
 op_amp
 id|bp-&gt;lock
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 "&f;"
@@ -4618,8 +4714,6 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 "&f;"
 multiline_comment|/*&n; * ===========================&n; * = dfx_ctl_set_mac_address =&n; * ===========================&n; *   &n; * Overview:&n; *   Add node address override (unicast address) to adapter&n; *   CAM and update dev_addr field in device table.&n; *  &n; * Returns:&n; *   None&n; *       &n; * Arguments:&n; *   dev  - pointer to device information&n; *   addr - pointer to sockaddr structure containing unicast address to add&n; *&n; * Functional Description:&n; *   The adapter supports node address overrides by adding one or more&n; *   unicast addresses to the adapter CAM.  This is similar to adding&n; *   multicast addresses.  In this routine we&squot;ll update the driver and&n; *   device structures with the new address, then update the adapter CAM&n; *   to ensure that the adapter will copy and strip frames destined and&n; *   sourced by that address.&n; *&n; * Return Codes:&n; *   Always returns zero.&n; *&n; * Assumptions:&n; *   The address pointed to by addr-&gt;sa_data is a valid unicast&n; *   address and is presented in canonical (LSB) format.&n; *&n; * Side Effects:&n; *   On-board adapter CAM is updated.  On-board adapter filters&n; *   may be updated.&n; */
@@ -5604,8 +5698,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 "&f;"
 multiline_comment|/*&n; * ========================&n; * = dfx_hw_adap_state_rd =&n; * ========================&n; *   &n; * Overview:&n; *   Returns current adapter state&n; *  &n; * Returns:&n; *   Adapter state per PDQ Port Specification&n; *       &n; * Arguments:&n; *   bp - pointer to board information&n; *&n; * Functional Description:&n; *   Reads PDQ Port Status register and returns adapter state.&n; *&n; * Return Codes:&n; *   None&n; *&n; * Assumptions:&n; *   None&n; *&n; * Side Effects:&n; *   None&n; */
@@ -5725,6 +5817,56 @@ r_return
 id|DFX_K_SUCCESS
 suffix:semicolon
 )brace
+"&f;"
+multiline_comment|/*&n; * =================&n; * = dfx_alloc_skb =&n; * =================&n; *&n; * Overview:&n; *   Allocate an skbuff for sending.&n; *&n; * Functional Description:&n; *  Same as dev_alloc_skb(), but it may sleep.&n; */
+DECL|function|dfx_alloc_skb
+r_static
+r_inline
+r_struct
+id|sk_buff
+op_star
+id|dfx_alloc_skb
+c_func
+(paren
+r_int
+r_int
+id|length
+)paren
+(brace
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+id|skb
+op_assign
+id|alloc_skb
+c_func
+(paren
+id|length
+op_plus
+l_int|16
+comma
+id|GFP_BUFFER
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb
+)paren
+id|skb_reserve
+c_func
+(paren
+id|skb
+comma
+l_int|16
+)paren
+suffix:semicolon
+r_return
+id|skb
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;Align an sk_buff to a boundary power of 2&n; *&n; */
 DECL|function|my_skb_align
 r_static
@@ -5783,16 +5925,19 @@ id|x
 suffix:semicolon
 )brace
 "&f;"
-multiline_comment|/*&n; * ================&n; * = dfx_rcv_init =&n; * ================&n; *   &n; * Overview:&n; *   Produces buffers to adapter LLC Host receive descriptor block&n; *  &n; * Returns:&n; *   None&n; *       &n; * Arguments:&n; *   bp - pointer to board information&n; *&n; * Functional Description:&n; *   This routine can be called during dfx_adap_init() or during an adapter&n; *&t; reset.  It initializes the descriptor block and produces all allocated&n; *   LLC Host queue receive buffers.&n; *&n; * Return Codes:&n; *   None&n; *&n; * Assumptions:&n; *   The PDQ has been reset and the adapter and driver maintained Type 2&n; *   register indices are cleared.&n; *&n; * Side Effects:&n; *   Receive buffers are posted to the adapter LLC queue and the adapter&n; *   is notified.&n; */
+multiline_comment|/*&n; * ================&n; * = dfx_rcv_init =&n; * ================&n; *   &n; * Overview:&n; *   Produces buffers to adapter LLC Host receive descriptor block&n; *  &n; * Returns:&n; *   None&n; *       &n; * Arguments:&n; *   bp - pointer to board information&n; *   get_buffers - non-zero if buffers to be allocated&n; *&n; * Functional Description:&n; *   This routine can be called during dfx_adap_init() or during an adapter&n; *&t; reset.  It initializes the descriptor block and produces all allocated&n; *   LLC Host queue receive buffers.&n; *&n; * Return Codes:&n; *   Return 0 on success or -ENOMEM if buffer allocation failed (when using&n; *   dynamic buffer allocation). If the buffer allocation failed, the&n; *   already allocated buffers will not be released and the caller should do&n; *   this.&n; *&n; * Assumptions:&n; *   The PDQ has been reset and the adapter and driver maintained Type 2&n; *   register indices are cleared.&n; *&n; * Side Effects:&n; *   Receive buffers are posted to the adapter LLC queue and the adapter&n; *   is notified.&n; */
 DECL|function|dfx_rcv_init
 r_static
-r_void
+r_int
 id|dfx_rcv_init
 c_func
 (paren
 id|DFX_board_t
 op_star
 id|bp
+comma
+r_int
+id|get_buffers
 )paren
 (brace
 r_int
@@ -5802,6 +5947,12 @@ id|j
 suffix:semicolon
 multiline_comment|/* used in for loop */
 multiline_comment|/*&n;&t; *  Since each receive buffer is a single fragment of same length, initialize&n;&t; *  first longword in each receive descriptor for entire LLC Host descriptor&n;&t; *  block.  Also initialize second longword in each receive descriptor with&n;&t; *  physical address of receive buffer.  We&squot;ll always allocate receive&n;&t; *  buffers in powers of 2 so that we can easily fill the 256 entry descriptor&n;&t; *  block and produce new receive buffers by simply updating the receive&n;&t; *  producer index.&n;&t; *&n;&t; * &t;Assumptions:&n;&t; *&t;&t;To support all shipping versions of PDQ, the receive buffer size&n;&t; *&t;&t;must be mod 128 in length and the physical address must be 128 byte&n;&t; *&t;&t;aligned.  In other words, bits 0-6 of the length and address must&n;&t; *&t;&t;be zero for the following descriptor field entries to be correct on&n;&t; *&t;&t;all PDQ-based boards.  We guaranteed both requirements during&n;&t; *&t;&t;driver initialization when we allocated memory for the receive buffers.&n;&t; */
+r_if
+c_cond
+(paren
+id|get_buffers
+)paren
+(brace
 macro_line|#ifdef DYNAMIC_BUFFERS
 r_for
 c_loop
@@ -5849,6 +6000,22 @@ r_struct
 id|sk_buff
 op_star
 id|newskb
+op_assign
+id|dfx_alloc_skb
+c_func
+(paren
+id|NEW_SKB_SIZE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|newskb
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|bp-&gt;descr_block_virt-&gt;rcv_data
 (braket
@@ -5874,14 +6041,6 @@ id|PI_ALIGN_K_RCV_DATA_BUFF
 op_lshift
 id|PI_RCV_DESCR_V_SEG_LEN
 )paren
-)paren
-suffix:semicolon
-id|newskb
-op_assign
-id|dev_alloc_skb
-c_func
-(paren
-id|NEW_SKB_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * align to 128 bytes for compatibility with&n;&t;&t;&t; * the old EISA boards.&n;&t;&t;&t; */
@@ -6037,6 +6196,7 @@ id|PI_RCV_DATA_K_SIZE_MAX
 suffix:semicolon
 )brace
 macro_line|#endif
+)brace
 multiline_comment|/* Update receive producer and Type 2 register */
 id|bp-&gt;rcv_xmt_reg.index.rcv_prod
 op_assign
@@ -6053,6 +6213,7 @@ id|bp-&gt;rcv_xmt_reg.lword
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 "&f;"
@@ -6328,7 +6489,7 @@ suffix:semicolon
 r_else
 id|skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -6426,6 +6587,10 @@ comma
 id|bp-&gt;dev
 )paren
 suffix:semicolon
+id|bp-&gt;rcv_total_bytes
+op_add_assign
+id|skb-&gt;len
+suffix:semicolon
 id|netif_rx
 c_func
 (paren
@@ -6455,10 +6620,6 @@ l_int|0x01
 id|bp-&gt;rcv_multicast_frames
 op_increment
 suffix:semicolon
-id|bp-&gt;rcv_total_bytes
-op_add_assign
-id|skb-&gt;len
-suffix:semicolon
 )brace
 )brace
 )brace
@@ -6472,8 +6633,6 @@ op_add_assign
 l_int|1
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 "&f;"
 multiline_comment|/*&n; * =====================&n; * = dfx_xmt_queue_pkt =&n; * =====================&n; *   &n; * Overview:&n; *   Queues packets for transmission&n; *  &n; * Returns:&n; *   Condition code&n; *       &n; * Arguments:&n; *   skb - pointer to sk_buff to queue for transmission&n; *   dev - pointer to device information&n; *&n; * Functional Description:&n; *   Here we assume that an incoming skb transmit request&n; *   is contained in a single physically contiguous buffer&n; *   in which the virtual address of the start of packet&n; *   (skb-&gt;data) can be converted to a physical address&n; *   by using virt_to_bus().&n; *&n; *   Since the adapter architecture requires a three byte&n; *   packet request header to prepend the start of packet,&n; *   we&squot;ll write the three byte field immediately prior to&n; *   the FC byte.  This assumption is valid because we&squot;ve&n; *   ensured that dev-&gt;hard_header_len includes three pad&n; *   bytes.  By posting a single fragment to the adapter,&n; *   we&squot;ll reduce the number of descriptor fetches and&n; *   bus traffic needed to send the request.&n; *&n; *   Also, we can&squot;t free the skb until after it&squot;s been DMA&squot;d&n; *   out by the adapter, so we&squot;ll queue it in the driver and&n; *   return it in dfx_xmt_done.&n; *&n; * Return Codes:&n; *   0 - driver queued packet, link is unavailable, or skbuff was bad&n; *&t; 1 - caller should requeue the sk_buff for later transmission&n; *&n; * Assumptions:&n; *&t; First and foremost, we assume the incoming skb pointer&n; *   is NOT NULL and is pointing to a valid sk_buff structure.&n; *&n; *   The outgoing packet is complete, starting with the&n; *   frame control byte including the last byte of data,&n; *   but NOT including the 4 byte CRC.  We&squot;ll let the&n; *   adapter hardware generate and append the CRC.&n; *&n; *   The entire packet is stored in one physically&n; *   contiguous buffer which is not cached and whose&n; *   32-bit physical address can be determined.&n; *&n; *   It&squot;s vital that this routine is NOT reentered for the&n; *   same board and that the OS is not in another section of&n; *   code (eg. dfx_int_common) for the same board on a&n; *   different thread.&n; *&n; * Side Effects:&n; *   None&n; */
@@ -6887,6 +7046,122 @@ id|freed
 suffix:semicolon
 )brace
 "&f;"
+multiline_comment|/*&n; * =================&n; * = dfx_rcv_flush =&n; * =================&n; *   &n; * Overview:&n; *   Remove all skb&squot;s in the receive ring.&n; *  &n; * Returns:&n; *   None&n; *       &n; * Arguments:&n; *   bp - pointer to board information&n; *&n; * Functional Description:&n; *   Free&squot;s all the dynamically allocated skb&squot;s that are&n; *   currently attached to the device receive ring. This&n; *   function is typically only used when the device is&n; *   initialized or reinitialized.&n; *&n; * Return Codes:&n; *   None&n; *&n; * Side Effects:&n; *   None&n; */
+macro_line|#ifdef DYNAMIC_BUFFERS
+DECL|function|dfx_rcv_flush
+r_static
+r_void
+id|dfx_rcv_flush
+c_func
+(paren
+id|DFX_board_t
+op_star
+id|bp
+)paren
+(brace
+r_int
+id|i
+comma
+id|j
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+(paren
+r_int
+)paren
+(paren
+id|bp-&gt;rcv_bufs_to_post
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_for
+c_loop
+(paren
+id|j
+op_assign
+l_int|0
+suffix:semicolon
+(paren
+id|i
+op_plus
+id|j
+)paren
+OL
+(paren
+r_int
+)paren
+id|PI_RCV_DATA_K_NUM_ENTRIES
+suffix:semicolon
+id|j
+op_add_assign
+id|bp-&gt;rcv_bufs_to_post
+)paren
+(brace
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+id|skb
+op_assign
+(paren
+r_struct
+id|sk_buff
+op_star
+)paren
+id|bp-&gt;p_rcv_buff_va
+(braket
+id|i
+op_plus
+id|j
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb
+)paren
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|bp-&gt;p_rcv_buff_va
+(braket
+id|i
+op_plus
+id|j
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
+macro_line|#else
+DECL|function|dfx_rcv_flush
+r_static
+r_inline
+r_void
+id|dfx_rcv_flush
+c_func
+(paren
+id|DFX_board_t
+op_star
+id|bp
+)paren
+(brace
+)brace
+macro_line|#endif /* DYNAMIC_BUFFERS */
 multiline_comment|/*&n; * =================&n; * = dfx_xmt_flush =&n; * =================&n; *   &n; * Overview:&n; *   Processes all frames whether they&squot;ve been transmitted&n; *   or not.&n; *  &n; * Returns:&n; *   None&n; *       &n; * Arguments:&n; *   bp - pointer to board information&n; *&n; * Functional Description:&n; *   For all produced transmit descriptors that have not&n; *   yet been completed, we&squot;ll free the skb we were holding&n; *   onto using dev_kfree_skb and bump the appropriate&n; *   counters.  Of course, it&squot;s possible that some of&n; *   these transmit requests actually did go out, but we&n; *   won&squot;t make that distinction here.  Finally, we&squot;ll&n; *   update the consumer index to match the producer.&n; *&n; * Return Codes:&n; *   None&n; *&n; * Assumptions:&n; *   This routine does NOT update the Type 2 register.  It&n; *   is assumed that this routine is being called during a&n; *   transmit flush interrupt, or a shutdown or close routine.&n; *&n; * Side Effects:&n; *   None&n; */
 DECL|function|dfx_xmt_flush
 r_static
@@ -6972,8 +7247,6 @@ suffix:semicolon
 id|bp-&gt;cons_block_virt-&gt;xmt_rcv_data
 op_assign
 id|prod_cons
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|dfx_remove_one_pci_or_eisa

@@ -3940,7 +3940,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * Function ircomm_tty_data_indication (instance, sap, skb)&n; *&n; *    Handle incomming data, and deliver it to the line discipline&n; *&n; */
+multiline_comment|/*&n; * Function ircomm_tty_data_indication (instance, sap, skb)&n; *&n; *    Handle incoming data, and deliver it to the line discipline&n; *&n; */
 DECL|function|ircomm_tty_data_indication
 r_static
 r_int
@@ -4118,7 +4118,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function ircomm_tty_control_indication (instance, sap, skb)&n; *&n; *    Parse all incomming parameters (easy!)&n; *&n; */
+multiline_comment|/*&n; * Function ircomm_tty_control_indication (instance, sap, skb)&n; *&n; *    Parse all incoming parameters (easy!)&n; *&n; */
 DECL|function|ircomm_tty_control_indication
 r_static
 r_int

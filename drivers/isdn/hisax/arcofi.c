@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: arcofi.c,v 1.12 2000/11/25 17:01:00 kai Exp $&n; *&n; * arcofi.c   Ansteuerung ARCOFI 2165&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: arcofi.c,v 1.12.6.1 2001/02/16 16:43:25 kai Exp $&n; *&n; * arcofi.c   Ansteuerung ARCOFI 2165&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;

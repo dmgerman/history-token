@@ -1,5 +1,7 @@
-multiline_comment|/* $Id: isdnloop.c,v 1.11 2000/11/13 22:51:50 kai Exp $&n;&n; * ISDN low-level module implementing a dummy loop driver.&n; *&n; * Copyright 1997 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: isdnloop.c,v 1.11.6.2 2001/02/16 16:43:32 kai Exp $&n;&n; * ISDN low-level module implementing a dummy loop driver.&n; *&n; * Copyright 1997 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;isdnloop.h&quot;
 r_static
 r_char
@@ -7,7 +9,7 @@ DECL|variable|revision
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.11 $&quot;
+l_string|&quot;$Revision: 1.11.6.2 $&quot;
 suffix:semicolon
 r_static
 r_int
@@ -4316,7 +4318,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Put command-strings into the of the &squot;card&squot;. In reality, execute them&n; * right in place by calling isdnloop_parse_cmd(). Also copy every&n; * command to the read message ringbuffer, preceeding it with a &squot;&gt;&squot;.&n; * These mesagges can be read at /dev/isdnctrl.&n; *&n; * Parameter:&n; *   buf  = pointer to command buffer.&n; *   len  = length of buffer data.&n; *   user = flag: 1 = called form userlevel, 0 called from kernel.&n; *   card = pointer to card struct.&n; * Return:&n; *   number of bytes transfered (currently always equals len).&n; */
+multiline_comment|/*&n; * Put command-strings into the of the &squot;card&squot;. In reality, execute them&n; * right in place by calling isdnloop_parse_cmd(). Also copy every&n; * command to the read message ringbuffer, preceeding it with a &squot;&gt;&squot;.&n; * These mesagges can be read at /dev/isdnctrl.&n; *&n; * Parameter:&n; *   buf  = pointer to command buffer.&n; *   len  = length of buffer data.&n; *   user = flag: 1 = called form userlevel, 0 called from kernel.&n; *   card = pointer to card struct.&n; * Return:&n; *   number of bytes transferred (currently always equals len).&n; */
 r_static
 r_int
 DECL|function|isdnloop_writecmd
@@ -7172,57 +7174,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|macro|isdnloop_init
-mdefine_line|#define isdnloop_init init_module
-macro_line|#else
-r_void
-DECL|function|isdnloop_setup
-id|isdnloop_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-comma
-r_int
-op_star
-id|ints
-)paren
-(brace
 r_static
-r_char
-id|sid
-(braket
-l_int|20
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|strlen
-c_func
-(paren
-id|str
-)paren
-)paren
-(brace
-id|strcpy
-c_func
-(paren
-id|sid
-comma
-id|str
-)paren
-suffix:semicolon
-id|isdnloop_id
-op_assign
-id|sid
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 r_int
+id|__init
 DECL|function|isdnloop_init
 id|isdnloop_init
 c_func
@@ -7313,10 +7267,11 @@ id|isdnloop_id
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
+r_static
 r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+DECL|function|isdnloop_exit
+id|isdnloop_exit
 c_func
 (paren
 r_void
@@ -7451,5 +7406,18 @@ l_string|&quot;isdnloop-ISDN-driver unloaded&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|isdnloop_init
+id|module_init
+c_func
+(paren
+id|isdnloop_init
+)paren
+suffix:semicolon
+DECL|variable|isdnloop_exit
+id|module_exit
+c_func
+(paren
+id|isdnloop_exit
+)paren
+suffix:semicolon
 eof

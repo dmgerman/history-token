@@ -311,7 +311,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Close our TSAP.&n;&t; * If we leave it open, IrLMP put it back into the list of&n;&t; * unconnected LSAPs. The problem is that any incomming request&n;&t; * can then be matched to this socket (and it will be, because&n;&t; * it is at the head of the list). This would prevent any&n;&t; * listening socket waiting on the same TSAP to get those requests.&n;&t; * Some apps forget to close sockets, or hang to it a bit too long,&n;&t; * so we may stay in this dead state long enough to be noticed...&n;&t; * Note : all socket function do check sk-&gt;state, so we are safe...&n;&t; * Jean II&n;&t; */
+multiline_comment|/* Close our TSAP.&n;&t; * If we leave it open, IrLMP put it back into the list of&n;&t; * unconnected LSAPs. The problem is that any incoming request&n;&t; * can then be matched to this socket (and it will be, because&n;&t; * it is at the head of the list). This would prevent any&n;&t; * listening socket waiting on the same TSAP to get those requests.&n;&t; * Some apps forget to close sockets, or hang to it a bit too long,&n;&t; * so we may stay in this dead state long enough to be noticed...&n;&t; * Note : all socket function do check sk-&gt;state, so we are safe...&n;&t; * Jean II&n;&t; */
 id|irttp_close_tsap
 c_func
 (paren
@@ -533,7 +533,7 @@ id|sk
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_connect_indication(instance, sap, qos, max_sdu_size, userdata)&n; *&n; *    Incomming connection&n; *&n; */
+multiline_comment|/*&n; * Function irda_connect_indication(instance, sap, qos, max_sdu_size, userdata)&n; *&n; *    Incoming connection&n; *&n; */
 DECL|function|irda_connect_indication
 r_static
 r_void
@@ -737,7 +737,7 @@ id|sk
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_connect_response (handle)&n; *&n; *    Accept incomming connection&n; *&n; */
+multiline_comment|/*&n; * Function irda_connect_response (handle)&n; *&n; *    Accept incoming connection&n; *&n; */
 DECL|function|irda_connect_response
 r_void
 id|irda_connect_response
@@ -2520,7 +2520,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_accept (sock, newsock, flags)&n; *&n; *    Wait for incomming connection&n; *&n; */
+multiline_comment|/*&n; * Function irda_accept (sock, newsock, flags)&n; *&n; *    Wait for incoming connection&n; *&n; */
 DECL|function|irda_accept
 r_static
 r_int
@@ -6770,6 +6770,19 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|optlen
+OL
+l_int|0
+)paren
+(brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren

@@ -1913,7 +1913,7 @@ suffix:semicolon
 r_case
 id|SLOT_TIMER_EXPIRED
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Wait a little longer if we detect an incomming frame. This&n;&t;&t; * is not mentioned in the spec, but is a good thing to do, &n;&t;&t; * since we want to work even with devices that violate the&n;&t;&t; * timing requirements.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Wait a little longer if we detect an incoming frame. This&n;&t;&t; * is not mentioned in the spec, but is a good thing to do, &n;&t;&t; * since we want to work even with devices that violate the&n;&t;&t; * timing requirements.&n;&t;&t; */
 r_if
 c_cond
 (paren

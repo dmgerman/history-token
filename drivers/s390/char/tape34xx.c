@@ -7031,7 +7031,7 @@ id|TS_FAILED
 suffix:semicolon
 id|PRINT_ERR
 (paren
-l_string|&quot;TAPE34XX: An unexpected Unit Check occured.&bslash;n&quot;
+l_string|&quot;TAPE34XX: An unexpected Unit Check occurred.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|PRINT_ERR
@@ -8677,7 +8677,7 @@ r_else
 (brace
 id|PRINT_ERR
 (paren
-l_string|&quot;TAPE34XX: An unexpected Unit Check occured.&bslash;n&quot;
+l_string|&quot;TAPE34XX: An unexpected Unit Check occurred.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|PRINT_ERR

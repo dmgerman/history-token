@@ -1,10 +1,10 @@
-multiline_comment|/* $Id: eicon_mod.c,v 1.37 2000/09/02 11:16:47 armin Exp $&n; *&n; * ISDN lowlevel-module for Eicon active cards.&n; * &n; * Copyright 1997      by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1998-2000 by Armin Schindler (mac@melware.de) &n; * Copyright 1999,2000 Cytronics &amp; Melware (info@melware.de)&n; * &n; * Thanks to    Eicon Technology GmbH &amp; Co. oHG for&n; *              documents, informations and hardware.&n; *&n; *&t;&t;Deutsche Mailbox Saar-Lor-Lux GmbH&n; *&t;&t;for sponsoring and testing fax&n; *&t;&t;capabilities with Diva Server cards.&n; *&t;&t;(dor@deutschemailbox.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
+multiline_comment|/* $Id: eicon_mod.c,v 1.37.6.4 2001/02/16 09:09:50 armin Exp $&n; *&n; * ISDN lowlevel-module for Eicon active cards.&n; * &n; * Copyright 1997      by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1998-2000 by Armin Schindler (mac@melware.de) &n; * Copyright 1999,2000 Cytronics &amp; Melware (info@melware.de)&n; * &n; * Thanks to    Eicon Networks for&n; *              documents, informations and hardware.&n; *&n; *&t;&t;Deutsche Mailbox Saar-Lor-Lux GmbH&n; *&t;&t;for sponsoring and testing fax&n; *&t;&t;capabilities with Diva Server cards.&n; *&t;&t;(dor@deutschemailbox.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
 DECL|macro|DRIVERNAME
 mdefine_line|#define DRIVERNAME &quot;Eicon active ISDN driver&quot;
 DECL|macro|DRIVERRELEASE
 mdefine_line|#define DRIVERRELEASE &quot;2.0&quot;
 DECL|macro|DRIVERPATCH
-mdefine_line|#define DRIVERPATCH &quot;.15&quot;
+mdefine_line|#define DRIVERPATCH &quot;.16&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -38,7 +38,7 @@ r_char
 op_star
 id|eicon_revision
 op_assign
-l_string|&quot;$Revision: 1.37 $&quot;
+l_string|&quot;$Revision: 1.37.6.4 $&quot;
 suffix:semicolon
 r_extern
 r_char
@@ -87,29 +87,6 @@ c_func
 id|eicon_card
 op_star
 id|card
-)paren
-suffix:semicolon
-r_void
-id|mod_inc_use_count
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|mod_dec_use_count
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_char
-op_star
-id|file_check
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 macro_line|#ifdef MODULE
@@ -1383,10 +1360,7 @@ l_int|0
 )paren
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
-id|mod_inc_use_count
-c_func
-(paren
-)paren
+id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -2585,26 +2559,16 @@ suffix:semicolon
 r_case
 id|ISDN_CMD_LOCK
 suffix:colon
-macro_line|#ifdef MODULE
-id|mod_inc_use_count
-c_func
-(paren
-)paren
+id|MOD_INC_USE_COUNT
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 r_case
 id|ISDN_CMD_UNLOCK
 suffix:colon
-macro_line|#ifdef MODULE
-id|mod_dec_use_count
-c_func
-(paren
-)paren
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -5654,9 +5618,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 r_static
 r_void
+id|__exit
 DECL|function|unregister_card
 id|unregister_card
 c_func
@@ -5734,7 +5698,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* MODULE */
 r_static
 r_void
 DECL|function|eicon_freecard
@@ -6239,11 +6202,9 @@ id|failed
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|macro|eicon_init
-mdefine_line|#define eicon_init init_module
-macro_line|#endif
+r_static
 r_int
+id|__init
 DECL|function|eicon_init
 id|eicon_init
 c_func
@@ -6384,18 +6345,13 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s Release: %s%s (%s)&bslash;n&quot;
+l_string|&quot;%s Release: %s%s&bslash;n&quot;
 comma
 id|DRIVERNAME
 comma
 id|DRIVERRELEASE
 comma
 id|DRIVERPATCH
-comma
-id|file_check
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_DRV_EICON_ISA
@@ -6560,29 +6516,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|mod_inc_use_count
-r_void
-id|mod_inc_use_count
-c_func
-(paren
-r_void
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
-DECL|function|mod_dec_use_count
-r_void
-id|mod_dec_use_count
-c_func
-(paren
-r_void
-)paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_ISDN_DRV_EICON_PCI
 r_void
 id|DIVA_DIDD_Write
@@ -6628,9 +6561,11 @@ l_int|1
 )braket
 suffix:semicolon
 macro_line|#endif
+r_static
 r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+DECL|function|eicon_exit
+id|eicon_exit
 c_func
 (paren
 r_void
@@ -6911,7 +6846,7 @@ id|DRIVERNAME
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* no module */
+macro_line|#ifndef MODULE
 r_static
 r_int
 id|__init
@@ -7859,4 +7794,18 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#endif /* CONFIG_MCA */
 macro_line|#endif /* CONFIG_ISDN_DRV_EICON_ISA */
+DECL|variable|eicon_init
+id|module_init
+c_func
+(paren
+id|eicon_init
+)paren
+suffix:semicolon
+DECL|variable|eicon_exit
+id|module_exit
+c_func
+(paren
+id|eicon_exit
+)paren
+suffix:semicolon
 eof

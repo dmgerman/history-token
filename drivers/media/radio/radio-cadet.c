@@ -1,4 +1,4 @@
-multiline_comment|/* radio-cadet.c - A video4linux driver for the ADS Cadet AM/FM Radio Card &n; *&n; * by Fred Gleason &lt;fredg@wava.com&gt;&n; * Version 0.3.3&n; *&n; * (Loosely) based on code for the Aztech radio card by&n; *&n; * Russell Kroll    (rkroll@exploits.org)&n; * Quay Ly&n; * Donald Song&n; * Jason Lewis      (jlewis@twilight.vtc.vsc.edu) &n; * Scott McGrath    (smcgrath@twilight.vtc.vsc.edu)&n; * William McGrath  (wmcgrath@twilight.vtc.vsc.edu)&n; *&n; * History:&n; * 2000-04-29&t;Russell Kroll &lt;rkroll@exploits.org&gt;&n; *&t;&t;Added ISAPnP detection for Linux 2.3/2.4&n; *&n;*/
+multiline_comment|/* radio-cadet.c - A video4linux driver for the ADS Cadet AM/FM Radio Card &n; *&n; * by Fred Gleason &lt;fredg@wava.com&gt;&n; * Version 0.3.3&n; *&n; * (Loosely) based on code for the Aztech radio card by&n; *&n; * Russell Kroll    (rkroll@exploits.org)&n; * Quay Ly&n; * Donald Song&n; * Jason Lewis      (jlewis@twilight.vtc.vsc.edu) &n; * Scott McGrath    (smcgrath@twilight.vtc.vsc.edu)&n; * William McGrath  (wmcgrath@twilight.vtc.vsc.edu)&n; *&n; * History:&n; * 2000-04-29&t;Russell Kroll &lt;rkroll@exploits.org&gt;&n; *&t;&t;Added ISAPnP detection for Linux 2.3/2.4&n; *&n; * 2001-01-10&t;Russell Kroll &lt;rkroll@exploits.org&gt;&n; *&t;&t;Removed dead CONFIG_RADIO_CADET_PORT code&n; *&t;&t;PnP detection on load is now default (no args necessary)&n; *&n;*/
 macro_line|#include &lt;linux/module.h&gt;&t;/* Modules &t;&t;&t;*/
 macro_line|#include &lt;linux/init.h&gt;&t;&t;/* Initdata&t;&t;&t;*/
 macro_line|#include &lt;linux/ioport.h&gt;&t;/* check_region, request_region&t;*/
@@ -6,13 +6,8 @@ macro_line|#include &lt;linux/delay.h&gt;&t;/* udelay&t;&t;&t;*/
 macro_line|#include &lt;asm/io.h&gt;&t;&t;/* outb, outb_p&t;&t;&t;*/
 macro_line|#include &lt;asm/uaccess.h&gt;&t;/* copy to/from user&t;&t;*/
 macro_line|#include &lt;linux/videodev.h&gt;&t;/* kernel radio structs&t;&t;*/
-macro_line|#include &lt;linux/config.h&gt;&t;/* CONFIG_RADIO_CADET_PORT &t;*/
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
-macro_line|#ifndef CONFIG_RADIO_CADET_PORT
-DECL|macro|CONFIG_RADIO_CADET_PORT
-mdefine_line|#define CONFIG_RADIO_CADET_PORT 0x330
-macro_line|#endif
 DECL|macro|RDS_BUFFER
 mdefine_line|#define RDS_BUFFER 256
 DECL|variable|io
@@ -20,8 +15,10 @@ r_static
 r_int
 id|io
 op_assign
-id|CONFIG_RADIO_CADET_PORT
+op_minus
+l_int|1
 suffix:semicolon
+multiline_comment|/* default to isapnp activation */
 DECL|variable|users
 r_static
 r_int
@@ -2329,8 +2326,6 @@ suffix:semicolon
 id|users
 op_increment
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren
@@ -2377,8 +2372,6 @@ suffix:semicolon
 id|users
 op_decrement
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|variable|cadet_radio
 r_static
@@ -2387,6 +2380,10 @@ id|video_device
 id|cadet_radio
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Cadet radio&quot;
@@ -2644,6 +2641,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* &n;&t; * io should only be set if the user has used something like&n;&t; * isapnp (the userspace program) to initialize this card for us&n;&t; */
 DECL|function|cadet_init
 r_static
 r_int
@@ -2794,6 +2792,53 @@ c_func
 id|io
 comma
 l_string|&quot;I/O address of Cadet card (0x330,0x332,0x334,0x336,0x338,0x33a,0x33c,0x33e)&quot;
+)paren
+suffix:semicolon
+DECL|variable|__devinitdata
+r_static
+r_struct
+id|isapnp_device_id
+id|id_table
+(braket
+)braket
+id|__devinitdata
+op_assign
+(brace
+(brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_VENDOR
+c_func
+(paren
+l_char|&squot;M&squot;
+comma
+l_char|&squot;S&squot;
+comma
+l_char|&squot;M&squot;
+)paren
+comma
+id|ISAPNP_FUNCTION
+c_func
+(paren
+l_int|0x0c24
+)paren
+comma
+l_int|0
+)brace
+comma
+(brace
+l_int|0
+)brace
+)brace
+suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|isapnp
+comma
+id|id_table
 )paren
 suffix:semicolon
 id|EXPORT_NO_SYMBOLS

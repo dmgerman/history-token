@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: q931.c,v 1.10 2000/06/26 08:59:14 keil Exp $&n; *&n; * q931.c       code to decode ITU Q.931 call control messages&n; *&n; * Author       Jan den Ouden&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; * Changelog&n; *&n; * Pauline Middelink    general improvements&n; *&n; * Beat Doebeli         cause texts, display information element&n; *&n; * Karsten Keil         cause texts, display information element for 1TR6&n; *&n; */
+multiline_comment|/* $Id: q931.c,v 1.10.6.1 2001/02/16 16:43:28 kai Exp $&n; *&n; * q931.c       code to decode ITU Q.931 call control messages&n; *&n; * Author       Jan den Ouden&n; *&n; * This file is (c) under GNU General Public License&n; *&n; * Changelog&n; *&n; * Pauline Middelink    general improvements&n; *&n; * Beat Doebeli         cause texts, display information element&n; *&n; * Karsten Keil         cause texts, display information element for 1TR6&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;
@@ -5422,7 +5422,7 @@ c_func
 (paren
 id|dp
 comma
-l_string|&quot;tei managment&bslash;n&quot;
+l_string|&quot;tei management&bslash;n&quot;
 )paren
 suffix:semicolon
 id|finish

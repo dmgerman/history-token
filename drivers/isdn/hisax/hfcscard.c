@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hfcscard.c,v 1.8 2000/11/24 17:05:37 kai Exp $&n; *&n; * hfcscard.c     low level stuff for hfcs based cards (Teles3c, ACER P10)&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU PUBLIC LICENSE&n; *&n; */
+multiline_comment|/* $Id: hfcscard.c,v 1.8.6.1 2001/02/16 16:43:27 kai Exp $&n; *&n; * hfcscard.c     low level stuff for hfcs based cards (Teles3c, ACER P10)&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -20,7 +20,7 @@ r_char
 op_star
 id|hfcs_revision
 op_assign
-l_string|&quot;$Revision: 1.8 $&quot;
+l_string|&quot;$Revision: 1.8.6.1 $&quot;
 suffix:semicolon
 r_static
 r_void

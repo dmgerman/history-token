@@ -552,5 +552,5 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|I82593_MAX_MULTICAST_ADDRESSES
 mdefine_line|#define I82593_MAX_MULTICAST_ADDRESSES&t;128&t;/* Hardware hashed filter */
-macro_line|#endif _I82593_H
+macro_line|#endif /* _I82593_H */
 eof
