@@ -7542,10 +7542,8 @@ id|volume_info.rsize
 op_logical_and
 (paren
 id|volume_info.rsize
-op_plus
-id|MAX_CIFS_HDR_SIZE
-OL
-id|srvTcp-&gt;maxBuf
+op_le
+id|CIFSMaxBufSize
 )paren
 )paren
 (brace
