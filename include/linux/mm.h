@@ -462,16 +462,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|show_free_areas_node
-c_func
-(paren
-id|pg_data_t
-op_star
-id|pgdat
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|fail_writepage
 c_func
