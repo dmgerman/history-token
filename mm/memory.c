@@ -3728,11 +3728,6 @@ id|PAGE_SHIFT
 suffix:semicolon
 r_do
 (brace
-r_struct
-id|page
-op_star
-id|page
-suffix:semicolon
 id|pte_t
 id|oldpage
 op_assign
@@ -4589,15 +4584,10 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;do_wp_page: bogus page at address %08lx (page 0x%lx)&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;do_wp_page: bogus page at address %08lx&bslash;n&quot;
 comma
 id|address
-comma
-(paren
-r_int
-r_int
-)paren
-id|old_page
 )paren
 suffix:semicolon
 r_return
