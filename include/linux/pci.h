@@ -3626,10 +3626,20 @@ id|dev
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|PCI_FIXUP_HEADER
-mdefine_line|#define PCI_FIXUP_HEADER&t;1&t;&t;/* Called immediately after reading configuration header */
-DECL|macro|PCI_FIXUP_FINAL
-mdefine_line|#define PCI_FIXUP_FINAL&t;&t;2&t;&t;/* Final phase of device fixups */
+DECL|enum|pci_fixup_pass
+r_enum
+id|pci_fixup_pass
+(brace
+DECL|enumerator|pci_fixup_header
+id|pci_fixup_header
+comma
+multiline_comment|/* Called immediately after reading configuration header */
+DECL|enumerator|pci_fixup_final
+id|pci_fixup_final
+comma
+multiline_comment|/* Final phase of device fixups */
+)brace
+suffix:semicolon
 multiline_comment|/* Anonymous variables would be nice... */
 DECL|macro|DECLARE_PCI_FIXUP_HEADER
 mdefine_line|#define DECLARE_PCI_FIXUP_HEADER(vendor, device, hook)&t;&t;&t;&t;&t;&bslash;&n;&t;static struct pci_fixup __pci_fixup_##vendor##device##hook __attribute_used__&t;&bslash;&n;&t;__attribute__((__section__(&quot;.pci_fixup_header&quot;))) = {&t;&t;&t;&t;&bslash;&n;&t;&t;vendor, device, hook };
@@ -3639,7 +3649,8 @@ r_void
 id|pci_fixup_device
 c_func
 (paren
-r_int
+r_enum
+id|pci_fixup_pass
 id|pass
 comma
 r_struct
