@@ -131,7 +131,7 @@ mdefine_line|#define TIF_RESTART_SVC&t;&t;4&t;/* restart svc with new svc number
 DECL|macro|TIF_SYSCALL_AUDIT
 mdefine_line|#define TIF_SYSCALL_AUDIT&t;5&t;/* syscall auditing active */
 DECL|macro|TIF_SINGLE_STEP
-mdefine_line|#define TIF_SINGLE_STEP&t;&t;6&t;/* single stepped svc */
+mdefine_line|#define TIF_SINGLE_STEP&t;&t;6&t;/* deliver sigtrap on return to user */
 DECL|macro|TIF_USEDFPU
 mdefine_line|#define TIF_USEDFPU&t;&t;16&t;/* FPU was used by this task this quantum (SMP) */
 DECL|macro|TIF_POLLING_NRFLAG

@@ -3614,12 +3614,12 @@ id|xtlock
 op_star
 id|sxtlck
 op_assign
-l_int|0
+l_int|NULL
 comma
 op_star
 id|rxtlck
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|smp
 op_assign
@@ -5046,7 +5046,7 @@ id|xtlock
 op_star
 id|xtlck
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|rootsplit
@@ -6513,7 +6513,7 @@ id|xtlock
 op_star
 id|xtlck
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|rootsplit
@@ -11682,21 +11682,21 @@ id|tblock
 op_star
 id|tblk
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|tlock
 op_star
 id|tlck
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|xtlock
 op_star
 id|xtlck
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|xdlistlock
@@ -12286,7 +12286,7 @@ id|ip
 comma
 id|pxdlock
 comma
-l_int|0
+l_int|NULL
 comma
 id|COMMIT_WMAP
 )paren
@@ -12371,7 +12371,7 @@ op_star
 op_amp
 id|xadlock
 comma
-l_int|0
+l_int|NULL
 comma
 id|COMMIT_WMAP
 )paren
@@ -12453,7 +12453,7 @@ op_star
 op_amp
 id|xadlock
 comma
-l_int|0
+l_int|NULL
 comma
 id|COMMIT_WMAP
 )paren
@@ -12724,7 +12724,7 @@ op_star
 op_amp
 id|xadlock
 comma
-l_int|0
+l_int|NULL
 comma
 id|COMMIT_WMAP
 )paren
@@ -12974,7 +12974,7 @@ op_star
 op_amp
 id|xadlock
 comma
-l_int|0
+l_int|NULL
 comma
 id|COMMIT_WMAP
 )paren
@@ -13280,7 +13280,7 @@ id|tlock
 op_star
 id|tlck
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|xad_t
 op_star
@@ -13297,7 +13297,7 @@ id|xtlock
 op_star
 id|xtlck
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* save object truncation type */
 id|tblk

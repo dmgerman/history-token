@@ -1105,7 +1105,7 @@ id|status
 id|PARANOIA
 c_func
 (paren
-l_string|&quot;%s/%s validation failed, error=%zd&bslash;n&quot;
+l_string|&quot;%s/%s validation failed, error=%Zd&bslash;n&quot;
 comma
 id|DENTRY_PATH
 c_func

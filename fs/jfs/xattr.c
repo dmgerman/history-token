@@ -1998,7 +1998,7 @@ id|ea_buf
 suffix:semicolon
 id|ea_buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -2253,7 +2253,7 @@ comma
 op_amp
 id|ji-&gt;ea
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -4329,7 +4329,7 @@ id|dentry-&gt;d_inode
 comma
 id|name
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma

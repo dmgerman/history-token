@@ -19,7 +19,7 @@ macro_line|#if defined(CONFIG_AX25) || defined(CONFIG_AX25_MODULE)
 multiline_comment|/* prototypes for ax25_encapsulate and ax25_rebuild_header */
 macro_line|#include &lt;net/ax25.h&gt; 
 macro_line|#endif /* CONFIG_AX25 || CONFIG_AX25_MODULE */
-macro_line|#include &lt;linux/crc16.h&gt;
+macro_line|#include &lt;linux/crc-ccitt.h&gt;
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|macro|BAYCOM_DEBUG
 mdefine_line|#define BAYCOM_DEBUG
@@ -558,7 +558,7 @@ id|cnt
 (brace
 r_return
 (paren
-id|crc16
+id|crc_ccitt
 c_func
 (paren
 l_int|0xffff
@@ -594,7 +594,7 @@ id|cnt
 (brace
 r_return
 (paren
-id|crc16
+id|crc_ccitt
 c_func
 (paren
 l_int|0xffff

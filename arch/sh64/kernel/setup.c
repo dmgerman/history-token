@@ -30,6 +30,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#ifdef CONFIG_VT
 macro_line|#include &lt;linux/console.h&gt;
@@ -118,29 +119,11 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|RAMDISK_IMAGE_START_MASK
-mdefine_line|#define RAMDISK_IMAGE_START_MASK  &t;0x07FF
+mdefine_line|#define RAMDISK_IMAGE_START_MASK&t;0x07FF
 DECL|macro|RAMDISK_PROMPT_FLAG
 mdefine_line|#define RAMDISK_PROMPT_FLAG&t;&t;0x8000
 DECL|macro|RAMDISK_LOAD_FLAG
 mdefine_line|#define RAMDISK_LOAD_FLAG&t;&t;0x4000
-DECL|macro|PARAM
-mdefine_line|#define PARAM ((unsigned char *)empty_zero_page)
-DECL|macro|MOUNT_ROOT_RDONLY
-mdefine_line|#define MOUNT_ROOT_RDONLY (*(unsigned long *) (PARAM+0x000))
-DECL|macro|RAMDISK_FLAGS
-mdefine_line|#define RAMDISK_FLAGS (*(unsigned long *) (PARAM+0x004))
-DECL|macro|ORIG_ROOT_DEV
-mdefine_line|#define ORIG_ROOT_DEV (*(unsigned long *) (PARAM+0x008))
-DECL|macro|LOADER_TYPE
-mdefine_line|#define LOADER_TYPE (*(unsigned long *) (PARAM+0x00c))
-DECL|macro|INITRD_START
-mdefine_line|#define INITRD_START (*(unsigned long *) (PARAM+0x010))
-DECL|macro|INITRD_SIZE
-mdefine_line|#define INITRD_SIZE (*(unsigned long *) (PARAM+0x014))
-DECL|macro|COMMAND_LINE
-mdefine_line|#define COMMAND_LINE ((char *) (PARAM+256))
-DECL|macro|COMMAND_LINE_SIZE
-mdefine_line|#define COMMAND_LINE_SIZE 256
 DECL|variable|command_line
 r_static
 r_char
@@ -153,13 +136,6 @@ op_assign
 l_int|0
 comma
 )brace
-suffix:semicolon
-DECL|variable|saved_command_line
-r_char
-id|saved_command_line
-(braket
-id|COMMAND_LINE_SIZE
-)braket
 suffix:semicolon
 DECL|variable|memory_start
 r_int
@@ -655,7 +631,7 @@ id|last_pfn
 op_minus
 id|first_pfn
 suffix:semicolon
-multiline_comment|/*&n;&t; * Partially used pages are not usable - thus&n;&t; * we are rounding upwards:&n; &t; */
+multiline_comment|/*&n;&t; * Partially used pages are not usable - thus&n;&t; * we are rounding upwards:&n;&t; */
 id|start_pfn
 op_assign
 id|PFN_UP

@@ -2038,9 +2038,14 @@ id|out
 suffix:semicolon
 id|dev
 op_assign
-id|alloc_ei_netdev
+id|__alloc_ei_netdev
 c_func
 (paren
+r_sizeof
+(paren
+r_struct
+id|etherh_priv
+)paren
 )paren
 suffix:semicolon
 r_if

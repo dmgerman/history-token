@@ -25,7 +25,8 @@ id|exec_domain
 suffix:semicolon
 multiline_comment|/* execution domain */
 DECL|member|flags
-id|__u32
+r_int
+r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* low level flags */

@@ -700,7 +700,7 @@ op_decrement
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -718,7 +718,7 @@ l_string|&quot;find_entry called with index &gt;= next_index&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -737,7 +737,7 @@ multiline_comment|/*&n;&t;&t; * Inline directory table&n;&t;&t; */
 op_star
 id|mp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|slot
 op_assign
@@ -820,7 +820,7 @@ suffix:semicolon
 op_star
 id|mp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -865,7 +865,7 @@ l_string|&quot;free_index: error reading directory table&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|slot
@@ -1730,7 +1730,7 @@ id|metapage
 op_star
 id|mp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dirtab_slot
 op_assign
@@ -1958,7 +1958,7 @@ id|metapage
 op_star
 id|mp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|dir_table_slot
@@ -2865,7 +2865,7 @@ id|name-&gt;namlen
 suffix:semicolon
 id|data.leaf.ip
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* signifies legacy directory format */
 )brace
@@ -3201,7 +3201,7 @@ op_assign
 (brace
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )brace
 suffix:semicolon
 id|ddata_t
@@ -5352,7 +5352,7 @@ id|lblock
 suffix:semicolon
 id|mp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|stbl
 op_assign
@@ -5869,7 +5869,7 @@ id|lblock
 suffix:semicolon
 id|mp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|stbl
 op_assign
@@ -7001,7 +7001,7 @@ id|metapage
 op_star
 id|mp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|ldtentry
@@ -7862,7 +7862,7 @@ id|lblock
 suffix:semicolon
 id|imp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|stbl
 op_assign
@@ -14135,14 +14135,14 @@ id|ldtentry
 op_star
 id|lh
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|idtentry
 op_star
 id|ih
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|hsi
@@ -14198,7 +14198,7 @@ id|metapage
 op_star
 id|mp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|klen
 op_assign
@@ -14669,7 +14669,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Need to update slot number for entries that moved&n;&t;&t;&t; * in the stbl&n;&t;&t;&t; */
 id|mp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -14825,7 +14825,7 @@ comma
 op_star
 id|dlh
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|idtentry
@@ -14835,7 +14835,7 @@ comma
 op_star
 id|dih
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|dtslot
