@@ -1,6 +1,14 @@
 multiline_comment|/*&n; * linux/drivers/s390/net/qeth_mpc.c&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; * Author(s): Frank Pavlic &lt;pavlic@de.ibm.com&gt;&n; * &t;      Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; */
 macro_line|#include &lt;asm/cio.h&gt;
 macro_line|#include &quot;qeth_mpc.h&quot;
+DECL|variable|VERSION_QETH_MPC_C
+r_const
+r_char
+op_star
+id|VERSION_QETH_MPC_C
+op_assign
+l_string|&quot;$Revision: 1.11 $&quot;
+suffix:semicolon
 DECL|variable|IDX_ACTIVATE_READ
 r_int
 r_char

@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/ccwgroup.h&gt;
 macro_line|#include &quot;qeth_mpc.h&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.102 $&quot;
+mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.107 $&quot;
 macro_line|#ifdef CONFIG_QETH_IPV6
 DECL|macro|QETH_VERSION_IPV6
 mdefine_line|#define QETH_VERSION_IPV6 &t;&quot;:IPv6&quot;
@@ -297,6 +297,16 @@ r_int
 r_int
 id|outbound_time
 suffix:semicolon
+DECL|member|inbound_do_qdio
+r_int
+r_int
+id|inbound_do_qdio
+suffix:semicolon
+DECL|member|outbound_do_qdio
+r_int
+r_int
+id|outbound_do_qdio
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_QETH_PERF_STATS */
@@ -452,7 +462,7 @@ mdefine_line|#define QETH_IN_BUF_COUNT_MAX 128
 DECL|macro|QETH_MAX_BUFFER_ELEMENTS
 mdefine_line|#define QETH_MAX_BUFFER_ELEMENTS(card) ((card)-&gt;qdio.in_buf_size &gt;&gt; 12)
 DECL|macro|QETH_IN_BUF_REQUEUE_THRESHOLD
-mdefine_line|#define QETH_IN_BUF_REQUEUE_THRESHOLD(card) &bslash;&n;&t;&t;((card)-&gt;qdio.in_buf_pool.buf_count / 4)
+mdefine_line|#define QETH_IN_BUF_REQUEUE_THRESHOLD(card) &bslash;&n;&t;&t;((card)-&gt;qdio.in_buf_pool.buf_count / 2)
 multiline_comment|/* buffers we have to be behind before we get a PCI */
 DECL|macro|QETH_PCI_THRESHOLD_A
 mdefine_line|#define QETH_PCI_THRESHOLD_A(card) ((card)-&gt;qdio.in_buf_pool.buf_count+1)
@@ -1392,6 +1402,11 @@ DECL|member|seqno
 r_int
 id|seqno
 suffix:semicolon
+DECL|member|offset
+r_int
+r_int
+id|offset
+suffix:semicolon
 DECL|member|received
 r_int
 id|received
@@ -1417,6 +1432,10 @@ id|refcnt
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|QETH_BROADCAST_WITH_ECHO
+mdefine_line|#define QETH_BROADCAST_WITH_ECHO    1
+DECL|macro|QETH_BROADCAST_WITHOUT_ECHO
+mdefine_line|#define QETH_BROADCAST_WITHOUT_ECHO 2
 DECL|struct|qeth_card_info
 r_struct
 id|qeth_card_info
@@ -1555,10 +1574,6 @@ suffix:semicolon
 DECL|member|macaddr_mode
 r_int
 id|macaddr_mode
-suffix:semicolon
-DECL|member|enable_takeover
-r_int
-id|enable_takeover
 suffix:semicolon
 DECL|member|fake_broadcast
 r_int

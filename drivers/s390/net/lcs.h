@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
 DECL|macro|VERSION_LCS_H
-mdefine_line|#define VERSION_LCS_H &quot;$Revision: 1.15 $&quot;
+mdefine_line|#define VERSION_LCS_H &quot;$Revision: 1.16 $&quot;
 DECL|macro|LCS_DBF_TEXT
 mdefine_line|#define LCS_DBF_TEXT(level, name, text) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_text_event(lcs_dbf_##name, level, text); &bslash;&n;&t;} while (0)
 DECL|macro|LCS_DBF_HEX
@@ -635,6 +635,10 @@ id|lcs_card
 DECL|member|lock
 id|spinlock_t
 id|lock
+suffix:semicolon
+DECL|member|ipm_lock
+id|spinlock_t
+id|ipm_lock
 suffix:semicolon
 DECL|member|state
 r_enum
