@@ -657,7 +657,7 @@ c_func
 op_amp
 id|adap-&gt;dev
 comma
-l_string|&quot;can&squot;t detach adapter&quot;
+l_string|&quot;can&squot;t detach adapter &quot;
 l_string|&quot;while detaching driver %s: driver not &quot;
 l_string|&quot;detached!&quot;
 comma
