@@ -1,6 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2004 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;e1000.h&quot;
-multiline_comment|/* Change Log&n; * 5.3.12&t;6/7/04&n; * - kcompat NETIF_MSG for older kernels (2.4.9) &lt;sean.p.mcdermott@intel.com&gt;&n; * - if_mii support and associated kcompat for older kernels&n; * - More errlogging support from Jon Mason &lt;jonmason@us.ibm.com&gt;&n; * - Fix TSO issues on PPC64 machines -- Jon Mason &lt;jonmason@us.ibm.com&gt;&n; *&n; * 5.6.5 &t;11/01/04&n; * - Enabling NETIF_F_SG without checksum offload is illegal - &n;     John Mason &lt;jdmason@us.ibm.com&gt;&n; * 5.6.3        10/26/04&n; * - Remove redundant initialization - Jamal Hadi&n; * - Reset buffer_info-&gt;dma in tx resource cleanup logic&n; * 5.6.2&t;10/12/04&n; * - Avoid filling tx_ring completely - shemminger@osdl.org&n; * - Replace schedule_timeout() with msleep()/msleep_interruptible() -&n; *   nacc@us.ibm.com&n; * - Sparse cleanup - shemminger@osdl.org&n; * - Fix tx resource cleanup logic&n; * - LLTX support - ak@suse.de and hadi@cyberus.ca&n; */
+multiline_comment|/* Change Log&n; * 5.3.12&t;6/7/04&n; * - kcompat NETIF_MSG for older kernels (2.4.9) &lt;sean.p.mcdermott@intel.com&gt;&n; * - if_mii support and associated kcompat for older kernels&n; * - More errlogging support from Jon Mason &lt;jonmason@us.ibm.com&gt;&n; * - Fix TSO issues on PPC64 machines -- Jon Mason &lt;jonmason@us.ibm.com&gt;&n; *&n; * 5.7.1&t;12/16/04&n; * - Resurrect 82547EI/GI related fix in e1000_intr to avoid deadlocks. This&n; *   fix was removed as it caused system instability. The suspected cause of &n; *   this is the called to e1000_irq_disable in e1000_intr. Inlined the &n; *   required piece of e1000_irq_disable into e1000_intr - Anton Blanchard&n; * 5.7.0&t;12/10/04&n; * - include fix to the condition that determines when to quit NAPI - Robert Olsson&n; * - use netif_poll_{disable/enable} to synchronize between NAPI and i/f up/down&n; * 5.6.5 &t;11/01/04&n; * - Enabling NETIF_F_SG without checksum offload is illegal - &n;     John Mason &lt;jdmason@us.ibm.com&gt;&n; * 5.6.3        10/26/04&n; * - Remove redundant initialization - Jamal Hadi&n; * - Reset buffer_info-&gt;dma in tx resource cleanup logic&n; * 5.6.2&t;10/12/04&n; * - Avoid filling tx_ring completely - shemminger@osdl.org&n; * - Replace schedule_timeout() with msleep()/msleep_interruptible() -&n; *   nacc@us.ibm.com&n; * - Sparse cleanup - shemminger@osdl.org&n; * - Fix tx resource cleanup logic&n; * - LLTX support - ak@suse.de and hadi@cyberus.ca&n; */
 DECL|variable|e1000_driver_name
 r_char
 id|e1000_driver_name
@@ -30,7 +30,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.6.10.1-k2&quot;
+l_string|&quot;5.7.6-k2&quot;
 id|DRIVERNAPI
 suffix:semicolon
 DECL|variable|e1000_copyright
@@ -127,6 +127,12 @@ id|INTEL_E1000_ETHERNET_DEVICE
 c_func
 (paren
 l_int|0x1013
+)paren
+comma
+id|INTEL_E1000_ETHERNET_DEVICE
+c_func
+(paren
+l_int|0x1014
 )paren
 comma
 id|INTEL_E1000_ETHERNET_DEVICE
@@ -2239,7 +2245,6 @@ id|NETIF_F_HW_VLAN_FILTER
 suffix:semicolon
 )brace
 macro_line|#ifdef NETIF_F_TSO
-multiline_comment|/* Disbaled for now until root-cause is found for&n;&t; * hangs reported against non-IA archs.  TSO can be&n;&t; * enabled using ethtool -K eth&lt;x&gt; tso on */
 r_if
 c_cond
 (paren
@@ -3336,7 +3341,7 @@ id|PROBE
 comma
 id|ERR
 comma
-l_string|&quot;Unble to Allocate Memory for the Transmit descriptor ring&bslash;n&quot;
+l_string|&quot;Unable to Allocate Memory for the Transmit descriptor ring&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3402,7 +3407,7 @@ id|PROBE
 comma
 id|ERR
 comma
-l_string|&quot;Unble to Allocate Memory for the Transmit descriptor ring&bslash;n&quot;
+l_string|&quot;Unable to Allocate Memory for the Transmit descriptor ring&bslash;n&quot;
 )paren
 suffix:semicolon
 id|vfree
@@ -3962,7 +3967,7 @@ id|PROBE
 comma
 id|ERR
 comma
-l_string|&quot;Unble to Allocate Memory for the Recieve descriptor ring&bslash;n&quot;
+l_string|&quot;Unable to Allocate Memory for the Recieve descriptor ring&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
