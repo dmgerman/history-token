@@ -4821,7 +4821,7 @@ id|ide_started
 suffix:semicolon
 )brace
 multiline_comment|/* end of polling */
-id|hwgroup-&gt;poll_timeout
+id|hwgroup-&gt;polling
 op_assign
 l_int|0
 suffix:semicolon
@@ -4847,7 +4847,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* done polling */
-id|hwgroup-&gt;poll_timeout
+id|hwgroup-&gt;polling
 op_assign
 l_int|0
 suffix:semicolon
@@ -5157,7 +5157,7 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-id|hwgroup-&gt;poll_timeout
+id|hwgroup-&gt;polling
 op_assign
 l_int|0
 suffix:semicolon
@@ -5455,6 +5455,10 @@ id|jiffies
 op_plus
 id|WAIT_WORSTCASE
 suffix:semicolon
+id|hwgroup-&gt;polling
+op_assign
+l_int|1
+suffix:semicolon
 id|__ide_set_handler
 c_func
 (paren
@@ -5604,6 +5608,10 @@ op_assign
 id|jiffies
 op_plus
 id|WAIT_WORSTCASE
+suffix:semicolon
+id|hwgroup-&gt;polling
+op_assign
+l_int|1
 suffix:semicolon
 id|__ide_set_handler
 c_func

@@ -5350,9 +5350,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hwgroup-&gt;poll_timeout
-op_ne
-l_int|0
+id|hwgroup-&gt;polling
 )paren
 (brace
 id|startstop
@@ -5735,9 +5733,7 @@ id|hwgroup-&gt;handler
 op_eq
 l_int|NULL
 op_logical_or
-id|hwgroup-&gt;poll_timeout
-op_ne
-l_int|0
+id|hwgroup-&gt;polling
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Not expecting an interrupt from this drive.&n;&t;&t; * That means this could be:&n;&t;&t; *&t;(1) an interrupt from another PCI device&n;&t;&t; *&t;sharing the same PCI INT# as us.&n;&t;&t; * or&t;(2) a drive just entered sleep or standby mode,&n;&t;&t; *&t;and is interrupting to let us know.&n;&t;&t; * or&t;(3) a spurious interrupt of unknown origin.&n;&t;&t; *&n;&t;&t; * For PCI, we cannot tell the difference,&n;&t;&t; * so in that case we just ignore it and hope it goes away.&n;&t;&t; *&n;&t;&t; * FIXME: unexpected_intr should be hwif-&gt; then we can&n;&t;&t; * remove all the ifdef PCI crap&n;&t;&t; */
