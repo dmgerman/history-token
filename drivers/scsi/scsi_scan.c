@@ -1508,15 +1508,10 @@ id|scsi_device
 op_star
 id|SDpnt
 op_assign
-id|list_entry
+id|to_scsi_device
 c_func
 (paren
 id|driverfs_dev
-comma
-r_struct
-id|scsi_device
-comma
-id|sdev_driverfs_dev
 )paren
 suffix:semicolon
 r_if

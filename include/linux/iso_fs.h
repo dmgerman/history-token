@@ -1479,7 +1479,7 @@ id|inode
 )paren
 (brace
 r_return
-id|list_entry
+id|container_of
 c_func
 (paren
 id|inode
