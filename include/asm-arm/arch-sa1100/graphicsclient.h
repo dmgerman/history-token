@@ -58,7 +58,7 @@ DECL|macro|_ADS_UARTC
 mdefine_line|#define _ADS_UARTC&t;&t;0x10140000&t;/* UART C */
 DECL|macro|_ADS_UARTD
 mdefine_line|#define _ADS_UARTD&t;&t;0x10160000&t;/* UART D */
-multiline_comment|/* UART controll lines GPIOs */
+multiline_comment|/* UART control lines GPIOs */
 DECL|macro|GPIO_GC_UART0_RTS
 mdefine_line|#define GPIO_GC_UART0_RTS       GPIO_GPIO15
 DECL|macro|GPIO_GC_UART1_RTS
@@ -71,7 +71,7 @@ DECL|macro|GPIO_GC_UART1_CTS
 mdefine_line|#define GPIO_GC_UART1_CTS       GPIO_GPIO16
 DECL|macro|GPIO_GC_UART2_CTS
 mdefine_line|#define GPIO_GC_UART2_CTS       GPIO_GPIO17
-multiline_comment|/* UART controll lines IRQs */
+multiline_comment|/* UART control lines IRQs */
 DECL|macro|IRQ_GC_UART0_CTS
 mdefine_line|#define IRQ_GC_UART0_CTS       IRQ_GPIO14
 DECL|macro|IRQ_GC_UART1_CTS
