@@ -495,10 +495,9 @@ DECL|typedef|vg46x_state_t
 )brace
 id|vg46x_state_t
 suffix:semicolon
-DECL|struct|socket_info_t
-r_typedef
+DECL|struct|i82365_socket
 r_struct
-id|socket_info_t
+id|i82365_socket
 (brace
 DECL|member|type
 DECL|member|flags
@@ -578,9 +577,7 @@ DECL|member|state
 )brace
 id|state
 suffix:semicolon
-DECL|typedef|socket_info_t
 )brace
-id|socket_info_t
 suffix:semicolon
 multiline_comment|/* Where we keep track of our sockets... */
 DECL|variable|sockets
@@ -592,7 +589,8 @@ l_int|0
 suffix:semicolon
 DECL|variable|socket
 r_static
-id|socket_info_t
+r_struct
+id|i82365_socket
 id|socket
 (braket
 l_int|8
@@ -1451,7 +1449,8 @@ op_star
 id|buf
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|t
 op_assign
@@ -2113,7 +2112,8 @@ id|u_short
 id|s
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|t
 op_assign
@@ -2161,7 +2161,8 @@ id|u_short
 id|s
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|t
 op_assign
@@ -3562,7 +3563,8 @@ id|isa_irq
 op_assign
 l_int|0
 suffix:semicolon
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|t
 op_assign
@@ -5240,7 +5242,7 @@ c_func
 id|s
 comma
 r_struct
-id|socket_info_t
+id|i82365_socket
 comma
 id|socket
 )paren
@@ -5297,7 +5299,7 @@ c_func
 id|s
 comma
 r_struct
-id|socket_info_t
+id|i82365_socket
 comma
 id|socket
 )paren
@@ -5595,7 +5597,8 @@ op_star
 id|state
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|t
 op_assign
@@ -6118,7 +6121,8 @@ op_star
 id|state
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|t
 op_assign
@@ -7358,7 +7362,8 @@ op_star
 id|data
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|s
 op_assign
@@ -7431,7 +7436,8 @@ id|u_short
 id|sock
 op_assign
 (paren
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 )paren
 id|data
@@ -7602,7 +7608,8 @@ op_star
 id|base
 )paren
 (brace
-id|socket_info_t
+r_struct
+id|i82365_socket
 op_star
 id|s
 op_assign
@@ -7612,7 +7619,7 @@ c_func
 id|sock
 comma
 r_struct
-id|socket_info_t
+id|i82365_socket
 comma
 id|socket
 )paren
@@ -7741,7 +7748,7 @@ c_func
 id|s
 comma
 r_struct
-id|socket_info_t
+id|i82365_socket
 comma
 id|socket
 )paren
@@ -7810,7 +7817,7 @@ c_func
 id|s
 comma
 r_struct
-id|socket_info_t
+id|i82365_socket
 comma
 id|socket
 )paren
@@ -7872,7 +7879,7 @@ c_func
 id|s
 comma
 r_struct
-id|socket_info_t
+id|i82365_socket
 comma
 id|socket
 )paren
@@ -7935,7 +7942,7 @@ c_func
 id|s
 comma
 r_struct
-id|socket_info_t
+id|i82365_socket
 comma
 id|socket
 )paren
@@ -7998,7 +8005,7 @@ c_func
 id|s
 comma
 r_struct
-id|socket_info_t
+id|i82365_socket
 comma
 id|socket
 )paren
