@@ -11,9 +11,9 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/byteorder/swabb.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
@@ -731,7 +731,7 @@ id|result
 suffix:semicolon
 )brace
 multiline_comment|/* DEBI during interrupt */
-multiline_comment|/* fixme: val can be a pointer to a memory or an u32 value -- this &n;   won&squot;t work on 64bit platforms! */
+multiline_comment|/* single word writes */
 DECL|function|iwdebi
 r_static
 r_inline
@@ -757,24 +757,53 @@ r_int
 id|count
 )paren
 (brace
-r_if
-c_cond
+id|debiwrite
+c_func
 (paren
-id|count
-OG
-l_int|4
-op_logical_and
+id|av7110
+comma
+id|config
+comma
+id|addr
+comma
 id|val
+comma
+id|count
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* buffer writes */
+DECL|function|mwdebi
+r_static
+r_inline
+r_void
+id|mwdebi
+c_func
+(paren
+r_struct
+id|av7110
+op_star
+id|av7110
+comma
+id|u32
+id|config
+comma
+r_int
+id|addr
+comma
+r_char
+op_star
+id|val
+comma
+r_int
+id|count
+)paren
+(brace
 id|memcpy
 c_func
 (paren
 id|av7110-&gt;debi_virt
 comma
-(paren
-r_char
-op_star
-)paren
 id|val
 comma
 id|count
@@ -789,7 +818,7 @@ id|config
 comma
 id|addr
 comma
-id|val
+l_int|0
 comma
 id|count
 )paren
@@ -10961,7 +10990,7 @@ id|i
 )paren
 )paren
 suffix:semicolon
-id|iwdebi
+id|mwdebi
 c_func
 (paren
 id|av7110
@@ -10970,16 +10999,19 @@ id|DEBISWAB
 comma
 id|bootblock
 comma
+(paren
+(paren
+r_char
+op_star
+)paren
+id|data
+)paren
+op_plus
 id|i
 op_star
 (paren
 id|BOOT_MAX_SIZE
 )paren
-op_plus
-(paren
-id|u32
-)paren
-id|data
 comma
 id|BOOT_MAX_SIZE
 )paren
@@ -11073,7 +11105,7 @@ id|rest
 OG
 l_int|4
 )paren
-id|iwdebi
+id|mwdebi
 c_func
 (paren
 id|av7110
@@ -11082,22 +11114,25 @@ id|DEBISWAB
 comma
 id|bootblock
 comma
+(paren
+(paren
+r_char
+op_star
+)paren
+id|data
+)paren
+op_plus
 id|i
 op_star
 (paren
 id|BOOT_MAX_SIZE
 )paren
-op_plus
-(paren
-id|u32
-)paren
-id|data
 comma
 id|rest
 )paren
 suffix:semicolon
 r_else
-id|iwdebi
+id|mwdebi
 c_func
 (paren
 id|av7110
@@ -11106,6 +11141,14 @@ id|DEBISWAB
 comma
 id|bootblock
 comma
+(paren
+(paren
+r_char
+op_star
+)paren
+id|data
+)paren
+op_plus
 id|i
 op_star
 (paren
@@ -11113,11 +11156,6 @@ id|BOOT_MAX_SIZE
 )paren
 op_minus
 l_int|4
-op_plus
-(paren
-id|u32
-)paren
-id|data
 comma
 id|rest
 op_plus
@@ -11818,7 +11856,7 @@ id|SAA7146_GPIO_IRQLO
 suffix:semicolon
 singleline_comment|//saa7146_setgpio(dev, DEBI_DONE_LINE, SAA7146_GPIO_INPUT);
 singleline_comment|//saa7146_setgpio(dev, 3, SAA7146_GPIO_INPUT);
-id|iwdebi
+id|mwdebi
 c_func
 (paren
 id|av7110
@@ -11827,9 +11865,6 @@ id|DEBISWAB
 comma
 id|DPRAM_BASE
 comma
-(paren
-id|u32
-)paren
 id|bootcode
 comma
 r_sizeof
@@ -11938,7 +11973,7 @@ l_string|&quot;bootarm: load dpram code&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|iwdebi
+id|mwdebi
 c_func
 (paren
 id|av7110
@@ -11947,9 +11982,6 @@ id|DEBISWAB
 comma
 id|DPRAM_BASE
 comma
-(paren
-id|u32
-)paren
 id|Dpram
 comma
 r_sizeof
@@ -16112,9 +16144,9 @@ l_int|0
 op_eq
 id|av7110-&gt;has_analog_tuner
 op_logical_or
-id|av7110-&gt;current_input
+id|t-&gt;index
 op_ne
-l_int|1
+l_int|0
 )paren
 (brace
 r_return
@@ -18739,14 +18771,17 @@ op_assign
 r_uint64
 )paren
 (paren
-op_complement
+(paren
 id|fwstc
 (braket
-l_int|2
+l_int|3
 )braket
-)paren
 op_amp
-l_int|1
+l_int|0x8000
+)paren
+op_rshift
+l_int|15
+)paren
 )paren
 op_lshift
 l_int|32
@@ -20588,6 +20623,18 @@ id|av7110
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_ACCMODE
+)paren
+op_ne
+id|O_RDONLY
+)paren
+(brace
 id|poll_wait
 c_func
 (paren
@@ -20599,6 +20646,7 @@ comma
 id|wait
 )paren
 suffix:semicolon
+)brace
 id|poll_wait
 c_func
 (paren
@@ -20621,6 +20669,18 @@ id|mask
 op_assign
 id|POLLPRI
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_ACCMODE
+)paren
+op_ne
+id|O_RDONLY
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -20651,6 +20711,7 @@ op_or
 id|POLLWRNORM
 )paren
 suffix:semicolon
+)brace
 r_return
 id|mask
 suffix:semicolon
@@ -20713,6 +20774,23 @@ id|av7110
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_ACCMODE
+)paren
+op_eq
+id|O_RDONLY
+)paren
+(brace
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -20945,6 +21023,15 @@ op_plus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* setting n always &gt; 1, fixes problems when playing stillframes&n;&t;   consisting of I- and P-Frames */
+id|n
+op_assign
+id|MIN_IFRAME
+op_div
+id|len
+op_plus
+l_int|1
+suffix:semicolon
 multiline_comment|/* FIXME: nonblock? */
 id|dvb_play
 c_func
@@ -21087,7 +21174,6 @@ r_if
 c_cond
 (paren
 (paren
-(paren
 id|file-&gt;f_flags
 op_amp
 id|O_ACCMODE
@@ -21095,17 +21181,29 @@ id|O_ACCMODE
 op_eq
 id|O_RDONLY
 )paren
-op_logical_and
+(brace
+r_if
+c_cond
 (paren
 id|cmd
 op_ne
 id|VIDEO_GET_STATUS
+op_logical_and
+id|cmd
+op_ne
+id|VIDEO_GET_EVENT
+op_logical_and
+id|cmd
+op_ne
+id|VIDEO_GET_SIZE
 )paren
-)paren
+(brace
 r_return
 op_minus
 id|EPERM
 suffix:semicolon
+)brace
+)brace
 r_switch
 c_cond
 (paren
@@ -22461,6 +22559,18 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_ACCMODE
+)paren
+op_ne
+id|O_RDONLY
+)paren
+(brace
 id|dvb_ringbuffer_flush_spinlock_wakeup
 c_func
 (paren
@@ -22487,17 +22597,6 @@ id|av7110-&gt;videostate.stream_source
 op_assign
 id|VIDEO_SOURCE_DEMUX
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|file-&gt;f_flags
-op_amp
-id|O_ACCMODE
-)paren
-op_ne
-id|O_RDONLY
-)paren
 multiline_comment|/*  empty event queue */
 id|av7110-&gt;video_events.eventr
 op_assign
@@ -22505,6 +22604,7 @@ id|av7110-&gt;video_events.eventw
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -22560,6 +22660,18 @@ id|av7110
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_ACCMODE
+)paren
+op_ne
+id|O_RDONLY
+)paren
+(brace
 id|AV_Stop
 c_func
 (paren
@@ -22568,6 +22680,7 @@ comma
 id|RP_VIDEO
 )paren
 suffix:semicolon
+)brace
 r_return
 id|dvb_generic_release
 c_func
@@ -22789,8 +22902,14 @@ comma
 dot
 id|users
 op_assign
-l_int|1
+l_int|6
 comma
+dot
+id|readers
+op_assign
+l_int|5
+comma
+multiline_comment|/* arbitrary */
 dot
 id|writers
 op_assign
@@ -26028,6 +26147,14 @@ comma
 l_string|&quot;Technotrend/Hauppauge Nexus PCI DVB-S&quot;
 )paren
 suffix:semicolon
+id|MAKE_AV7110_INFO
+c_func
+(paren
+id|dvboc11
+comma
+l_string|&quot;Octal/Technotrend DVB-C for iTV&quot;
+)paren
+suffix:semicolon
 DECL|variable|pci_tbl
 r_static
 r_struct
@@ -26175,6 +26302,16 @@ comma
 l_int|0x00a1
 comma
 l_int|0xa1a0
+)paren
+comma
+id|MAKE_EXTENSION_PCI
+c_func
+(paren
+id|dvboc11
+comma
+l_int|0x13c2
+comma
+l_int|0x000a
 )paren
 comma
 (brace
