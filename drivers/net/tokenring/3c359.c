@@ -2001,15 +2001,9 @@ id|j
 op_assign
 l_int|0
 suffix:semicolon
-(paren
 id|j
 OL
 id|mc_size
-op_logical_and
-id|i
-op_le
-l_int|0xffff
-)paren
 suffix:semicolon
 id|i
 op_increment

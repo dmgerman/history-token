@@ -1792,11 +1792,6 @@ id|i
 comma
 id|num
 suffix:semicolon
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
 id|num
 op_assign
 l_int|0
