@@ -2824,6 +2824,8 @@ DECL|macro|MII_TG3_CTRL_ENABLE_AS_MASTER
 mdefine_line|#define  MII_TG3_CTRL_ENABLE_AS_MASTER&t;0x1000
 DECL|macro|MII_TG3_EXT_CTRL
 mdefine_line|#define MII_TG3_EXT_CTRL&t;&t;0x10 /* Extended control register */
+DECL|macro|MII_TG3_EXT_CTRL_FIFO_ELASTIC
+mdefine_line|#define  MII_TG3_EXT_CTRL_FIFO_ELASTIC&t;0x0001
 DECL|macro|MII_TG3_EXT_CTRL_LNK3_LED_MODE
 mdefine_line|#define  MII_TG3_EXT_CTRL_LNK3_LED_MODE&t;0x0002
 DECL|macro|MII_TG3_EXT_CTRL_TBI
