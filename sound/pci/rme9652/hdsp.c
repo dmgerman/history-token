@@ -1027,6 +1027,11 @@ r_int
 id|period_bytes
 suffix:semicolon
 multiline_comment|/* guess what this is */
+DECL|member|max_channels
+r_int
+r_char
+id|max_channels
+suffix:semicolon
 DECL|member|qs_in_channels
 r_int
 r_char
@@ -4314,7 +4319,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|HDSP_MAX_CHANNELS
+id|hdsp-&gt;max_channels
 suffix:semicolon
 id|i
 op_increment
@@ -4350,7 +4355,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|HDSP_MAX_CHANNELS
+id|hdsp-&gt;max_channels
 suffix:semicolon
 id|i
 op_increment
@@ -4386,7 +4391,7 @@ c_func
 (paren
 id|channel
 OL
-id|HDSP_MAX_CHANNELS
+id|hdsp-&gt;max_channels
 comma
 r_return
 )paren
@@ -11865,8 +11870,8 @@ r_if
 c_cond
 (paren
 id|source
-OG
-l_int|25
+op_ge
+id|hdsp-&gt;max_channels
 )paren
 (brace
 id|addr
@@ -11878,7 +11883,7 @@ id|hdsp
 comma
 id|source
 op_minus
-l_int|26
+id|hdsp-&gt;max_channels
 comma
 id|destination
 )paren
@@ -12009,8 +12014,8 @@ r_if
 c_cond
 (paren
 id|source
-OG
-l_int|25
+op_ge
+id|hdsp-&gt;max_channels
 )paren
 (brace
 id|addr
@@ -12022,7 +12027,7 @@ id|hdsp
 comma
 id|source
 op_minus
-l_int|26
+id|hdsp-&gt;max_channels
 comma
 id|destination
 )paren
@@ -13055,8 +13060,6 @@ id|hdsp
 r_int
 r_int
 id|idx
-comma
-id|limit
 suffix:semicolon
 r_int
 id|err
@@ -15337,9 +15340,10 @@ op_eq
 id|H9632
 )paren
 (brace
+multiline_comment|/* this is the phones/analog output */
 id|lineouts_base
 op_assign
-l_int|14
+l_int|10
 suffix:semicolon
 )brace
 r_else
@@ -15358,7 +15362,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|HDSP_MAX_CHANNELS
+id|hdsp-&gt;max_channels
 suffix:semicolon
 id|i
 op_increment
@@ -15902,7 +15906,7 @@ l_int|0
 op_logical_or
 id|channel
 OL
-id|HDSP_MAX_CHANNELS
+id|hdsp-&gt;max_channels
 comma
 r_return
 l_int|NULL
@@ -16747,7 +16751,7 @@ c_func
 (paren
 id|info-&gt;channel
 OL
-id|HDSP_MAX_CHANNELS
+id|hdsp-&gt;max_channels
 comma
 r_return
 op_minus
@@ -19967,6 +19971,10 @@ id|H9632
 r_int
 id|j
 suffix:semicolon
+id|hdsp_9632_meters_t
+op_star
+id|m
+suffix:semicolon
 r_int
 id|doublespeed
 op_assign
@@ -19988,17 +19996,17 @@ id|doublespeed
 op_assign
 l_int|1
 suffix:semicolon
-id|hdsp_9632_meters_t
-op_star
 id|m
 op_assign
 (paren
 id|hdsp_9632_meters_t
 op_star
 )paren
+(paren
 id|hdsp-&gt;iobase
 op_plus
 id|HDSP_9632_metersBase
+)paren
 suffix:semicolon
 id|peak_rms
 op_assign
@@ -21877,7 +21885,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|HDSP_MAX_CHANNELS
+id|hdsp-&gt;max_channels
 suffix:semicolon
 op_increment
 id|i
@@ -21998,6 +22006,7 @@ comma
 id|HDSP_statusRegister
 )paren
 suffix:semicolon
+multiline_comment|/* HDSP_AEBx bits are low when AEB are connected */
 id|aebi_channels
 op_assign
 (paren
@@ -22007,9 +22016,9 @@ id|HDSP_AEBI
 )paren
 ques
 c_cond
-l_int|4
-suffix:colon
 l_int|0
+suffix:colon
+l_int|4
 suffix:semicolon
 id|aebo_channels
 op_assign
@@ -22020,9 +22029,9 @@ id|HDSP_AEBO
 )paren
 ques
 c_cond
-l_int|4
-suffix:colon
 l_int|0
+suffix:colon
+l_int|4
 suffix:semicolon
 id|hdsp-&gt;card_name
 op_assign
@@ -22400,9 +22409,6 @@ r_int
 id|err
 suffix:semicolon
 r_int
-id|i
-suffix:semicolon
-r_int
 id|is_9652
 op_assign
 l_int|0
@@ -22519,6 +22525,10 @@ id|hdsp-&gt;io_type
 op_assign
 id|Undefined
 suffix:semicolon
+id|hdsp-&gt;max_channels
+op_assign
+l_int|26
+suffix:semicolon
 id|hdsp-&gt;card
 op_assign
 id|card
@@ -22620,6 +22630,10 @@ suffix:colon
 id|hdsp-&gt;card_name
 op_assign
 l_string|&quot;RME HDSP 9632&quot;
+suffix:semicolon
+id|hdsp-&gt;max_channels
+op_assign
+l_int|16
 suffix:semicolon
 id|is_9632
 op_assign
