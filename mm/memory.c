@@ -5144,6 +5144,8 @@ id|mm
 comma
 id|pmd
 comma
+id|base
+op_plus
 id|address
 comma
 id|end
