@@ -1765,7 +1765,6 @@ id|WRITE
 )paren
 id|info-&gt;dma
 op_assign
-op_logical_neg
 id|udma_init
 c_func
 (paren

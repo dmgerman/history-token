@@ -3644,7 +3644,7 @@ suffix:semicolon
 )brace
 DECL|function|hpt370_udma_start
 r_static
-r_int
+r_void
 id|hpt370_udma_start
 c_func
 (paren
@@ -3688,9 +3688,6 @@ id|ch-&gt;dma_base
 )paren
 suffix:semicolon
 multiline_comment|/* start DMA */
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|do_timeout_irq
 r_static

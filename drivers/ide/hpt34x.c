@@ -763,7 +763,7 @@ id|rq
 )paren
 )paren
 r_return
-l_int|1
+id|ide_stopped
 suffix:semicolon
 multiline_comment|/* try PIO instead of DMA */
 r_if
@@ -869,7 +869,7 @@ id|IDE_COMMAND_REG
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|ide_started
 suffix:semicolon
 )brace
 macro_line|#endif

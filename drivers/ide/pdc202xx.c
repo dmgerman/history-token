@@ -2677,9 +2677,6 @@ id|ch-&gt;dma_base
 )paren
 suffix:semicolon
 multiline_comment|/* start DMA */
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|pdc202xx_udma_stop
 r_int

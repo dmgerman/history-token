@@ -2157,7 +2157,6 @@ id|rq-&gt;bio
 )paren
 id|dma_ok
 op_assign
-op_logical_neg
 id|udma_init
 c_func
 (paren
