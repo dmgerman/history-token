@@ -90,6 +90,16 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|pcmcia_lubbock_init
+c_func
+(paren
+r_struct
+id|device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|pcmcia_neponset_init
 c_func
 (paren
