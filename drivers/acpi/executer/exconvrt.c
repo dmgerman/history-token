@@ -768,6 +768,9 @@ op_star
 id|new_buf
 suffix:semicolon
 id|u32
+id|i
+suffix:semicolon
+id|u32
 id|string_length
 op_assign
 l_int|0
@@ -776,9 +779,6 @@ id|u16
 id|base
 op_assign
 l_int|16
-suffix:semicolon
-id|u32
-id|i
 suffix:semicolon
 id|u8
 id|separator
@@ -910,6 +910,7 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
+multiline_comment|/* Setup string length, base, and separator */
 r_switch
 c_cond
 (paren
@@ -925,42 +926,109 @@ id|base
 op_assign
 l_int|10
 suffix:semicolon
-id|string_length
+multiline_comment|/*&n;&t;&t;&t; * Calculate the final string length.  Individual string values&n;&t;&t;&t; * are variable length (include separator for each)&n;&t;&t;&t; */
+r_for
+c_loop
+(paren
+id|i
 op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
 id|obj_desc-&gt;buffer.length
 suffix:semicolon
-multiline_comment|/* 4 chars for each decimal */
-multiline_comment|/*lint -fallthrough */
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|obj_desc-&gt;buffer.pointer
+(braket
+id|i
+)braket
+op_ge
+l_int|100
+)paren
+(brace
+id|string_length
+op_add_assign
+l_int|4
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|obj_desc-&gt;buffer.pointer
+(braket
+id|i
+)braket
+op_ge
+l_int|10
+)paren
+(brace
+id|string_length
+op_add_assign
+l_int|3
+suffix:semicolon
+)brace
+r_else
+(brace
+id|string_length
+op_add_assign
+l_int|2
+suffix:semicolon
+)brace
+)brace
+r_break
+suffix:semicolon
 r_case
 id|ACPI_IMPLICIT_CONVERT_HEX
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * From the ACPI spec:&n;&t;&t;&t; *&quot;The entire contents of the buffer are converted to a string of&n;&t;&t;&t; * two-character hexadecimal numbers, each separated by a space.&quot;&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|type
-op_eq
-id|ACPI_IMPLICIT_CONVERT_HEX
-)paren
-(brace
 id|separator
 op_assign
 l_char|&squot; &squot;
 suffix:semicolon
-)brace
-multiline_comment|/*lint -fallthrough */
+id|string_length
+op_assign
+(paren
+id|obj_desc-&gt;buffer.length
+op_star
+l_int|3
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|ACPI_EXPLICIT_CONVERT_HEX
 suffix:colon
 multiline_comment|/* Used by to_hex_string operator */
 multiline_comment|/*&n;&t;&t;&t; * From ACPI: &quot;If Data is a buffer, it is converted to a string of&n;&t;&t;&t; * hexadecimal values separated by commas.&quot;&n;&t;&t;&t; */
 id|string_length
-op_add_assign
+op_assign
 (paren
 id|obj_desc-&gt;buffer.length
 op_star
 l_int|3
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|return_ACPI_STATUS
+(paren
+id|AE_BAD_PARAMETER
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t; * Perform the conversion.&n;&t;&t; * (-1 because of extra separator included in string_length from above)&n;&t;&t; */
+id|string_length
+op_decrement
 suffix:semicolon
 r_if
 c_cond
@@ -977,7 +1045,7 @@ id|AE_AML_STRING_LIMIT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Create a new string object and string buffer */
+multiline_comment|/*&n;&t;&t; * Create a new string object and string buffer&n;&t;&t; */
 id|return_desc
 op_assign
 id|acpi_ut_create_string_object
@@ -986,8 +1054,6 @@ id|acpi_ut_create_string_object
 id|acpi_size
 )paren
 id|string_length
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1007,7 +1073,7 @@ id|new_buf
 op_assign
 id|return_desc-&gt;buffer.pointer
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Convert buffer bytes to hex or decimal values&n;&t;&t;&t; * (separated by commas)&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Convert buffer bytes to hex or decimal values&n;&t;&t; * (separated by commas or spaces)&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -1050,7 +1116,7 @@ id|separator
 suffix:semicolon
 multiline_comment|/* each separated by a comma or space */
 )brace
-multiline_comment|/* Null terminate the string (overwrites final comma from above) */
+multiline_comment|/* Null terminate the string (overwrites final comma/space from above) */
 id|new_buf
 op_decrement
 suffix:semicolon
@@ -1059,27 +1125,6 @@ id|new_buf
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Recalculate length */
-id|return_desc-&gt;string.length
-op_assign
-(paren
-id|u32
-)paren
-id|ACPI_STRLEN
-(paren
-id|return_desc-&gt;string.pointer
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|return_ACPI_STATUS
-(paren
-id|AE_BAD_PARAMETER
-)paren
-suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_default

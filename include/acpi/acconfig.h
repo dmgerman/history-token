@@ -7,7 +7,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; * ACPI_DEBUG_OUTPUT    - This switch enables all the debug facilities of the&n; *                        ACPI subsystem.  This includes the DEBUG_PRINT output&n; *                        statements.  When disabled, all DEBUG_PRINT&n; *                        statements are compiled out.&n; *&n; * ACPI_APPLICATION     - Use this switch if the subsystem is going to be run&n; *                        at the application level.&n; *&n; */
 multiline_comment|/* Version string */
 DECL|macro|ACPI_CA_VERSION
-mdefine_line|#define ACPI_CA_VERSION                 0x20041203
+mdefine_line|#define ACPI_CA_VERSION                 0x20041210
 multiline_comment|/*&n; * OS name, used for the _OS object.  The _OS object is essentially obsolete,&n; * but there is a large base of ASL/AML code in existing machines that check&n; * for the string below.  The use of this string usually guarantees that&n; * the ASL will execute down the most tested code path.  Also, there is some&n; * code that will not execute the _OSI method unless _OS matches the string&n; * below.  Therefore, change this string at your own risk.&n; */
 DECL|macro|ACPI_OS_NAME
 mdefine_line|#define ACPI_OS_NAME                    &quot;Microsoft Windows NT&quot;
@@ -28,7 +28,7 @@ mdefine_line|#define ACPI_CHECKSUM_ABORT             FALSE
 multiline_comment|/******************************************************************************&n; *&n; * Subsystem Constants&n; *&n; *****************************************************************************/
 multiline_comment|/* Version of ACPI supported */
 DECL|macro|ACPI_CA_SUPPORT_LEVEL
-mdefine_line|#define ACPI_CA_SUPPORT_LEVEL           2
+mdefine_line|#define ACPI_CA_SUPPORT_LEVEL           3
 multiline_comment|/* String size constants */
 DECL|macro|ACPI_MAX_STRING_LENGTH
 mdefine_line|#define ACPI_MAX_STRING_LENGTH          512
