@@ -30,6 +30,7 @@ r_int
 id|space
 suffix:semicolon
 DECL|member|wrapped
+r_volatile
 r_int
 id|wrapped
 suffix:semicolon

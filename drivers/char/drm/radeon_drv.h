@@ -162,6 +162,10 @@ id|u32
 op_star
 id|scratch
 suffix:semicolon
+DECL|member|writeback_works
+r_int
+id|writeback_works
+suffix:semicolon
 DECL|member|usec_timeout
 r_int
 id|usec_timeout
@@ -677,6 +681,8 @@ DECL|macro|RADEON_SCRATCH_UMSK
 mdefine_line|#define RADEON_SCRATCH_UMSK&t;&t;0x0770
 DECL|macro|RADEON_SCRATCH_ADDR
 mdefine_line|#define RADEON_SCRATCH_ADDR&t;&t;0x0774
+DECL|macro|GET_SCRATCH
+mdefine_line|#define GET_SCRATCH( x )&t;(dev_priv-&gt;writeback_works&t;&t;&t;&bslash;&n;&t;&t;&t;&t;? DRM_READ32( &amp;dev_priv-&gt;scratch[(x)] )&t;&t;&bslash;&n;&t;&t;&t;&t;: RADEON_READ( RADEON_SCRATCH_REG0 + 4*(x) ) )
 DECL|macro|RADEON_HOST_PATH_CNTL
 mdefine_line|#define RADEON_HOST_PATH_CNTL&t;&t;0x0130
 DECL|macro|RADEON_HDP_SOFT_RESET
