@@ -402,6 +402,8 @@ DECL|macro|pmd_bad
 mdefine_line|#define pmd_bad(pmd)&t;&t;(pmd_val(pmd) &amp; 2)
 DECL|macro|set_pmd
 mdefine_line|#define set_pmd(pmdp,pmd)&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&bslash;&n;&t;&t;*pmdp = pmd;&t;&t;&bslash;&n;&t;&t;flush_pmd_entry(pmdp);&t;&bslash;&n;&t;} while (0)
+DECL|macro|copy_pmd
+mdefine_line|#define copy_pmd(pmdpd,pmdps)&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&bslash;&n;&t;&t;pmdpd[0] = pmdps[0];&t;&bslash;&n;&t;&t;pmdpd[1] = pmdps[1];&t;&bslash;&n;&t;&t;flush_pmd_entry(pmdpd);&t;&bslash;&n;&t;} while (0)
 DECL|macro|pmd_clear
 mdefine_line|#define pmd_clear(pmdp)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&bslash;&n;&t;&t;pmdp[0] = __pmd(0);&t;&bslash;&n;&t;&t;pmdp[1] = __pmd(0);&t;&bslash;&n;&t;&t;clean_pmd_entry(pmdp);&t;&bslash;&n;&t;} while (0)
 DECL|function|pmd_page_kernel
