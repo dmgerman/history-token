@@ -212,8 +212,11 @@ id|arrays
 l_int|2
 )braket
 suffix:semicolon
+DECL|member|best_expired_prio
 DECL|member|prev_cpu_load
 r_int
+id|best_expired_prio
+comma
 id|prev_cpu_load
 (braket
 id|NR_CPUS
@@ -4200,9 +4203,9 @@ c_func
 id|kstat
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * We place interactive tasks back into the active array, if possible.&n; *&n; * To guarantee that this does not starve expired tasks we ignore the&n; * interactivity of a task if the first expired task had to wait more&n; * than a &squot;reasonable&squot; amount of time. This deadline timeout is&n; * load-dependent, as the frequency of array switched decreases with&n; * increasing number of running tasks:&n; */
+multiline_comment|/*&n; * We place interactive tasks back into the active array, if possible.&n; *&n; * To guarantee that this does not starve expired tasks we ignore the&n; * interactivity of a task if the first expired task had to wait more&n; * than a &squot;reasonable&squot; amount of time. This deadline timeout is&n; * load-dependent, as the frequency of array switched decreases with&n; * increasing number of running tasks. We also ignore the interactivity&n; * if a better static_prio task has expired:&n; */
 DECL|macro|EXPIRED_STARVING
-mdefine_line|#define EXPIRED_STARVING(rq) &bslash;&n;&t;&t;(STARVATION_LIMIT &amp;&amp; ((rq)-&gt;expired_timestamp &amp;&amp; &bslash;&n;&t;&t;(jiffies - (rq)-&gt;expired_timestamp &gt;= &bslash;&n;&t;&t;&t;STARVATION_LIMIT * ((rq)-&gt;nr_running) + 1)))
+mdefine_line|#define EXPIRED_STARVING(rq) &bslash;&n;&t;((STARVATION_LIMIT &amp;&amp; ((rq)-&gt;expired_timestamp &amp;&amp; &bslash;&n;&t;&t;(jiffies - (rq)-&gt;expired_timestamp &gt;= &bslash;&n;&t;&t;&t;STARVATION_LIMIT * ((rq)-&gt;nr_running) + 1))) || &bslash;&n;&t;&t;&t;&t;((rq)-&gt;curr-&gt;static_prio &gt; (rq)-&gt;best_expired_prio))
 multiline_comment|/*&n; * This function gets called by the timer code, with HZ frequency.&n; * We call it with interrupts disabled.&n; *&n; * It also gets called by the fork code, when changing the parent&squot;s&n; * timeslices.&n; */
 DECL|function|scheduler_tick
 r_void
@@ -4540,6 +4543,17 @@ id|p
 comma
 id|rq-&gt;expired
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;static_prio
+OL
+id|rq-&gt;best_expired_prio
+)paren
+id|rq-&gt;best_expired_prio
+op_assign
+id|p-&gt;static_prio
 suffix:semicolon
 )brace
 r_else
@@ -4985,6 +4999,10 @@ suffix:semicolon
 id|rq-&gt;expired_timestamp
 op_assign
 l_int|0
+suffix:semicolon
+id|rq-&gt;best_expired_prio
+op_assign
+id|MAX_PRIO
 suffix:semicolon
 )brace
 id|idx
@@ -9630,6 +9648,10 @@ op_assign
 id|rq-&gt;arrays
 op_plus
 l_int|1
+suffix:semicolon
+id|rq-&gt;best_expired_prio
+op_assign
+id|MAX_PRIO
 suffix:semicolon
 id|spin_lock_init
 c_func
