@@ -63,5 +63,17 @@ macro_line|#else
 DECL|macro|irq_ctx_init
 macro_line|# define irq_ctx_init(cpu) do { } while (0)
 macro_line|#endif
+macro_line|#ifdef CONFIG_IRQBALANCE
+r_extern
+r_int
+id|irqbalance_disable
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* _ASM_IRQ_H */
 eof

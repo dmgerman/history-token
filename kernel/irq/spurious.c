@@ -278,7 +278,6 @@ r_int
 id|noirqdebug
 suffix:semicolon
 DECL|function|noirqdebug_setup
-r_static
 r_int
 id|__init
 id|noirqdebug_setup

@@ -127,6 +127,10 @@ r_return
 id|len
 suffix:semicolon
 )brace
+DECL|variable|no_irq_affinity
+r_int
+id|no_irq_affinity
+suffix:semicolon
 DECL|function|irq_affinity_write_proc
 r_static
 r_int
@@ -186,6 +190,8 @@ id|irq
 )braket
 dot
 id|handler-&gt;set_affinity
+op_logical_or
+id|no_irq_affinity
 )paren
 r_return
 op_minus

@@ -2668,7 +2668,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|irqbalance_disable
-r_static
 r_int
 id|__init
 id|irqbalance_disable
@@ -2748,7 +2747,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|variable|balanced_irq_init
-id|__initcall
+id|late_initcall
 c_func
 (paren
 id|balanced_irq_init
