@@ -1,5 +1,6 @@
 multiline_comment|/*********************************************************************&n; *&n; * Filename:      iriap.c&n; * Version:       0.8&n; * Description:   Information Access Protocol (IAP)&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Thu Aug 21 00:02:07 1997&n; * Modified at:   Sat Dec 25 16:42:42 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -62,13 +63,6 @@ r_static
 r_void
 op_star
 id|service_handle
-suffix:semicolon
-r_extern
-r_char
-op_star
-id|lmp_reasons
-(braket
-)braket
 suffix:semicolon
 r_static
 r_void
@@ -654,6 +648,13 @@ r_return
 id|self
 suffix:semicolon
 )brace
+DECL|variable|iriap_open
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iriap_open
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function __iriap_close (self)&n; *&n; *    Removes (deallocates) the IrIAP instance&n; *&n; */
 DECL|function|__iriap_close
 r_static
@@ -832,6 +833,13 @@ id|self
 )paren
 suffix:semicolon
 )brace
+DECL|variable|iriap_close
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iriap_close
+)paren
+suffix:semicolon
 DECL|function|iriap_register_lsap
 r_static
 r_int
@@ -994,7 +1002,7 @@ l_string|&quot;%s(), reason=%s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|lmp_reasons
+id|irlmp_reasons
 (braket
 id|reason
 )braket
@@ -1588,6 +1596,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|iriap_getvaluebyclass_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iriap_getvaluebyclass_request
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function iriap_getvaluebyclass_confirm (self, skb)&n; *&n; *    Got result from GetValueByClass command. Parse it and return result&n; *    to service user.&n; *&n; */
 DECL|function|iriap_getvaluebyclass_confirm
 r_void
@@ -2701,7 +2716,7 @@ comma
 id|IAS_CLASS_UNKNOWN
 comma
 op_amp
-id|missing
+id|irias_missing
 )paren
 suffix:semicolon
 r_return
@@ -2757,7 +2772,7 @@ comma
 id|IAS_ATTRIB_UNKNOWN
 comma
 op_amp
-id|missing
+id|irias_missing
 )paren
 suffix:semicolon
 r_return

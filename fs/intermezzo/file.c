@@ -851,7 +851,7 @@ id|file-&gt;f_dentry-&gt;d_inode-&gt;i_gid
 suffix:semicolon
 id|fdata-&gt;fd_ngroups
 op_assign
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 suffix:semicolon
 r_for
 c_loop
@@ -862,7 +862,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|current-&gt;ngroups
+id|current-&gt;group_info-&gt;ngroups
 suffix:semicolon
 id|i
 op_increment
@@ -872,10 +872,13 @@ id|fdata-&gt;fd_groups
 id|i
 )braket
 op_assign
-id|current-&gt;groups
-(braket
+id|GROUP_AT
+c_func
+(paren
+id|current-&gt;group_info
+comma
 id|i
-)braket
+)paren
 suffix:semicolon
 r_if
 c_cond

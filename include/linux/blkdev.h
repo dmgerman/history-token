@@ -1047,10 +1047,14 @@ DECL|macro|QUEUE_FLAG_WRITEFULL
 mdefine_line|#define QUEUE_FLAG_WRITEFULL&t;4&t;/* read queue has been filled */
 DECL|macro|QUEUE_FLAG_DEAD
 mdefine_line|#define QUEUE_FLAG_DEAD&t;&t;5&t;/* queue being torn down */
+DECL|macro|QUEUE_FLAG_REENTER
+mdefine_line|#define QUEUE_FLAG_REENTER&t;6&t;/* Re-entrancy avoidance */
 DECL|macro|blk_queue_plugged
 mdefine_line|#define blk_queue_plugged(q)&t;!list_empty(&amp;(q)-&gt;plug_list)
 DECL|macro|blk_queue_tagged
 mdefine_line|#define blk_queue_tagged(q)&t;test_bit(QUEUE_FLAG_QUEUED, &amp;(q)-&gt;queue_flags)
+DECL|macro|blk_queue_stopped
+mdefine_line|#define blk_queue_stopped(q)&t;test_bit(QUEUE_FLAG_STOPPED, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_fs_request
 mdefine_line|#define blk_fs_request(rq)&t;((rq)-&gt;flags &amp; REQ_CMD)
 DECL|macro|blk_pc_request
@@ -1660,6 +1664,60 @@ r_void
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|request
+op_star
+id|blk_rq_map_user
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_int
+comma
+r_void
+id|__user
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|blk_rq_unmap_user
+c_func
+(paren
+r_struct
+id|request
+op_star
+comma
+r_void
+id|__user
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|blk_execute_rq
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|gendisk
+op_star
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
 DECL|function|bdev_get_queue
 r_static
 r_inline
@@ -2126,7 +2184,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|blk_congestion_wait
 c_func
 (paren

@@ -1,5 +1,5 @@
 multiline_comment|/* tulip_core.c: A DEC 21x4x-family ethernet driver for Linux. */
-multiline_comment|/*&n;&t;Maintained by Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&t;Copyright 2000,2001  The Linux Kernel Team&n;&t;Written/copyright 1994-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/DocBook/tulip.{pdf,ps,html}&n;&t;for more information on this driver, or visit the project&n;&t;Web page at http://sourceforge.net/projects/tulip/&n;&n;*/
+multiline_comment|/*&n;&t;Maintained by Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&t;Copyright 2000,2001  The Linux Kernel Team&n;&t;Written/copyright 1994-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/DocBook/tulip-user.{pdf,ps,html}&n;&t;for more information on this driver, or visit the project&n;&t;Web page at http://sourceforge.net/projects/tulip/&n;&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;tulip&quot;
@@ -1301,6 +1301,19 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+r_static
+r_void
+id|poll_tulip
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|tulip_set_power_state
 r_static
 r_void
@@ -1406,12 +1419,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|ioaddr
@@ -2844,12 +2856,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|ioaddr
@@ -3462,12 +3473,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|i
@@ -3821,12 +3831,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|entry
@@ -4245,12 +4254,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 r_int
@@ -4400,12 +4408,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|i
@@ -4659,12 +4666,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|ioaddr
@@ -4741,7 +4747,11 @@ id|tulip_private
 op_star
 id|np
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|u32
 id|ethcmd
@@ -4869,7 +4879,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -5444,12 +5458,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 id|u16
 id|hash_table
@@ -5668,12 +5681,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_struct
 id|dev_mc_list
@@ -5873,12 +5885,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|ioaddr
@@ -6645,7 +6656,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|u8
 id|cache
@@ -7543,7 +7558,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * initialize private data structure &squot;tp&squot;&n;&t; * it is zeroed and aligned in alloc_etherdev&n;&t; */
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|tp-&gt;rx_ring
 op_assign
@@ -8917,6 +8936,13 @@ id|dev-&gt;set_multicast_list
 op_assign
 id|set_rx_mode
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+op_amp
+id|poll_tulip
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9561,7 +9587,11 @@ r_return
 suffix:semicolon
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|pci_free_consistent
 (paren
@@ -9634,6 +9664,43 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* pci_power_off (pdev, -1); */
 )brace
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+multiline_comment|/*&n; * Polling &squot;interrupt&squot; - used by things like netconsole to send skbs&n; * without having to re-enable interrupts. It&squot;s not called while&n; * the interrupt routine is executing.&n; */
+DECL|function|poll_tulip
+r_static
+r_void
+id|poll_tulip
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+multiline_comment|/* disable_irq here is not very nice, but with the lockless&n;&t;   interrupt handler we have no other choice. */
+id|disable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|tulip_interrupt
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|variable|tulip_driver
 r_static
 r_struct

@@ -11906,7 +11906,12 @@ suffix:semicolon
 )brace
 )brace
 singleline_comment|// End of base register loop
-macro_line|#if !defined(CONFIG_X86_IO_APIC)
+r_if
+c_cond
+(paren
+id|cpqhp_legacy_mode
+)paren
+(brace
 singleline_comment|// Figure out which interrupt pin this function uses
 id|rc
 op_assign
@@ -12022,7 +12027,7 @@ comma
 id|IRQ
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 r_if
 c_cond
 (paren

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * An access vector table (avtab) is a hash table&n; * of access vectors and transition types indexed&n; * by a type pair and a class.  An access vector&n; * table is used to represent the type enforcement&n; * tables.&n; *&n; *  Author : Stephen Smalley, &lt;sds@epoch.ncsc.mil&gt;&n; */
+multiline_comment|/* Updated: Frank Mayer &lt;mayerf@tresys.com&gt; and Karl MacMillan &lt;kmacmillan@tresys.com&gt;&n; *&n; * &t;Added conditional policy language extensions&n; *&n; * Copyright (C) 2003 Tresys Technology, LLC&n; *&t;This program is free software; you can redistribute it and/or modify&n; *  &t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation, version 2.&n; */
 macro_line|#ifndef _SS_AVTAB_H_
 DECL|macro|_SS_AVTAB_H_
 mdefine_line|#define _SS_AVTAB_H_
@@ -43,6 +44,8 @@ DECL|macro|AVTAB_CHANGE
 mdefine_line|#define AVTAB_CHANGE     64
 DECL|macro|AVTAB_TYPE
 mdefine_line|#define AVTAB_TYPE       (AVTAB_TRANSITION | AVTAB_MEMBER | AVTAB_CHANGE)
+DECL|macro|AVTAB_ENABLED
+mdefine_line|#define AVTAB_ENABLED    0x80000000 /* reserved for used in cond_avtab */
 DECL|member|specified
 id|u32
 id|specified
@@ -219,6 +222,25 @@ id|tag
 )paren
 suffix:semicolon
 r_int
+id|avtab_read_item
+c_func
+(paren
+r_void
+op_star
+id|fp
+comma
+r_struct
+id|avtab_datum
+op_star
+id|avdatum
+comma
+r_struct
+id|avtab_key
+op_star
+id|avkey
+)paren
+suffix:semicolon
+r_int
 id|avtab_read
 c_func
 (paren
@@ -233,6 +255,63 @@ id|fp
 comma
 id|u32
 id|config
+)paren
+suffix:semicolon
+r_struct
+id|avtab_node
+op_star
+id|avtab_insert_nonunique
+c_func
+(paren
+r_struct
+id|avtab
+op_star
+id|h
+comma
+r_struct
+id|avtab_key
+op_star
+id|key
+comma
+r_struct
+id|avtab_datum
+op_star
+id|datum
+)paren
+suffix:semicolon
+r_struct
+id|avtab_node
+op_star
+id|avtab_search_node
+c_func
+(paren
+r_struct
+id|avtab
+op_star
+id|h
+comma
+r_struct
+id|avtab_key
+op_star
+id|key
+comma
+r_int
+id|specified
+)paren
+suffix:semicolon
+r_struct
+id|avtab_node
+op_star
+id|avtab_search_node_next
+c_func
+(paren
+r_struct
+id|avtab_node
+op_star
+id|node
+comma
+r_int
+id|specified
 )paren
 suffix:semicolon
 DECL|macro|AVTAB_HASH_BITS

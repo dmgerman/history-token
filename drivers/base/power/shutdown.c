@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * shutdown.c - power management functions for the device tree.&n; * &n; * Copyright (c) 2002-3 Patrick Mochel&n; *&t;&t; 2002-3 Open Source Development Lab&n; * &n; * This file is released under the GPLv2&n; *&n; */
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;power.h&quot;
@@ -114,7 +113,7 @@ c_func
 (paren
 l_string|&quot;shutting down %s: &quot;
 comma
-id|dev-&gt;name
+id|dev-&gt;bus_id
 )paren
 suffix:semicolon
 r_if

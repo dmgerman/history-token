@@ -478,6 +478,9 @@ DECL|macro|PSW_KERNEL_BITS
 mdefine_line|#define PSW_KERNEL_BITS&t;(PSW_BASE_BITS | PSW_MASK_DAT | PSW_ASC_PRIMARY)
 DECL|macro|PSW_USER_BITS
 mdefine_line|#define PSW_USER_BITS&t;(PSW_BASE_BITS | PSW_MASK_DAT | PSW_ASC_HOME | &bslash;&n;&t;&t;&t; PSW_MASK_IO | PSW_MASK_EXT | PSW_MASK_MCHECK | &bslash;&n;&t;&t;&t; PSW_MASK_PSTATE)
+multiline_comment|/* This macro merges a NEW PSW mask specified by the user into&n;   the currently active PSW mask CURRENT, modifying only those&n;   bits in CURRENT that the user may be allowed to change: this&n;   is the condition code and the program mask bits.  */
+DECL|macro|PSW_MASK_MERGE
+mdefine_line|#define PSW_MASK_MERGE(CURRENT,NEW) &bslash;&n;&t;(((CURRENT) &amp; ~(PSW_MASK_CC|PSW_MASK_PM)) | &bslash;&n;&t; ((NEW) &amp; (PSW_MASK_CC|PSW_MASK_PM)))
 multiline_comment|/*&n; * The first entries in pt_regs and user_regs_struct&n; * are common for the two structures. The s390_regs structure&n; * covers the common parts. It simplifies copying the common part&n; * between the three structures.&n; */
 r_typedef
 r_struct

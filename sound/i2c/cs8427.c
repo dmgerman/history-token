@@ -2959,6 +2959,10 @@ id|chip-&gt;rate
 op_ne
 id|rate
 suffix:semicolon
+id|chip-&gt;rate
+op_assign
+id|rate
+suffix:semicolon
 id|snd_i2c_unlock
 c_func
 (paren

@@ -13,6 +13,9 @@ DECL|macro|FTDI_NF_RIC_VID
 mdefine_line|#define FTDI_NF_RIC_VID&t;0x0DCD&t;/* Vendor Id */
 DECL|macro|FTDI_NF_RIC_PID
 mdefine_line|#define FTDI_NF_RIC_PID&t;0x0001&t;/* Product Id */
+multiline_comment|/* www.irtrans.de device */
+DECL|macro|FTDI_IRTRANS_PID
+mdefine_line|#define FTDI_IRTRANS_PID 0xFC60 /* Product Id */
 multiline_comment|/* www.crystalfontz.com devices - thanx for providing free devices for evaluation ! */
 multiline_comment|/* they use the ftdi chipset for the USB interface and the vendor id is the same */
 DECL|macro|FTDI_XF_632_PID

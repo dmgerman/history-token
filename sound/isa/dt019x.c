@@ -843,7 +843,7 @@ suffix:semicolon
 id|snd_printdd
 c_func
 (paren
-l_string|&quot;dt019x: found audio interface: port=0x%lx, irq=0x%lx, dma=0x%lx&bslash;n&quot;
+l_string|&quot;dt019x: found audio interface: port=0x%lx, irq=0x%x, dma=0x%x&bslash;n&quot;
 comma
 id|port
 (braket
@@ -1021,7 +1021,7 @@ suffix:semicolon
 id|snd_printdd
 c_func
 (paren
-l_string|&quot;dt019x: found MPU-401: port=0x%lx, irq=0x%lx&bslash;n&quot;
+l_string|&quot;dt019x: found MPU-401: port=0x%lx, irq=0x%x&bslash;n&quot;
 comma
 id|mpu_port
 (braket
@@ -1938,6 +1938,14 @@ c_cond
 op_logical_neg
 id|cards
 )paren
+(brace
+id|pnp_unregister_card_driver
+c_func
+(paren
+op_amp
+id|dt019x_pnpc_driver
+)paren
+suffix:semicolon
 id|snd_printk
 c_func
 (paren
@@ -1945,6 +1953,7 @@ id|KERN_ERR
 l_string|&quot;no DT-019X / ALS-007 based soundcards found&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 r_return
 id|cards

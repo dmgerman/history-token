@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: namei.h,v 1.1.1.1 1999/03/15 19:41:02 pjlahaie Exp $&n; * linux/include/asm-parisc/namei.h&n; *&n; * Included from linux/fs/namei.c&n; */
+multiline_comment|/* $Id: namei.h,v 1.1 1996/12/13 14:48:21 jj Exp $&n; * linux/include/asm-parisc/namei.h&n; *&n; * Included from linux/fs/namei.c&n; */
 macro_line|#ifndef __PARISC_NAMEI_H
 DECL|macro|__PARISC_NAMEI_H
 mdefine_line|#define __PARISC_NAMEI_H

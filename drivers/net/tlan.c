@@ -2979,6 +2979,43 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* TLan_EisaProbe */
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+DECL|function|TLan_Poll
+r_static
+r_void
+id|TLan_Poll
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+id|disable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+id|TLan_HandleInterrupt
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|dev-&gt;irq
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/***************************************************************&n;&t; *&t;TLan_Init&n;&t; *&n;&t; *&t;Returns:&n;&t; *&t;&t;0 on success, error code otherwise.&n;&t; *&t;Parms:&n;&t; *&t;&t;dev&t;The structure of the device to be&n;&t; *&t;&t;&t;init&squot;ed.&n;&t; *&n;&t; *&t;This function completes the initialization of the&n;&t; *&t;device structure and driver.  It reserves the IO&n;&t; *&t;addresses, allocates memory for the lists and bounce&n;&t; *&t;buffers, retrieves the MAC address from the eeprom&n;&t; *&t;and assignes the device&squot;s methods.&n;&t; *&t;&n;&t; **************************************************************/
 DECL|function|TLan_Init
 r_static
@@ -3307,6 +3344,13 @@ op_assign
 op_amp
 id|TLan_ioctl
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+op_amp
+id|TLan_Poll
+suffix:semicolon
+macro_line|#endif
 id|dev-&gt;tx_timeout
 op_assign
 op_amp

@@ -81,14 +81,14 @@ l_int|0x1
 suffix:semicolon
 id|val
 op_assign
-id|cmpxchg4_locked
+id|cmpxchg
 c_func
 (paren
 id|lock
 comma
-r_new
-comma
 id|old
+comma
+r_new
 )paren
 suffix:semicolon
 )brace
@@ -153,14 +153,14 @@ l_int|0x3
 suffix:semicolon
 id|val
 op_assign
-id|cmpxchg4_locked
+id|cmpxchg
 c_func
 (paren
 id|lock
 comma
-r_new
-comma
 id|old
+comma
+r_new
 )paren
 suffix:semicolon
 )brace
@@ -203,9 +203,27 @@ r_extern
 r_int
 id|acpi_noirq
 suffix:semicolon
+r_extern
+r_int
+id|acpi_strict
+suffix:semicolon
 multiline_comment|/* Fixmap pages to reserve for ACPI boot-time tables (see fixmap.h) */
 DECL|macro|FIX_ACPI_PAGES
 mdefine_line|#define FIX_ACPI_PAGES 4
+r_extern
+r_int
+id|acpi_gsi_to_irq
+c_func
+(paren
+id|u32
+id|gsi
+comma
+r_int
+r_int
+op_star
+id|irq
+)paren
+suffix:semicolon
 macro_line|#else&t;/* !CONFIG_ACPI_BOOT */
 DECL|macro|acpi_lapic
 mdefine_line|#define acpi_lapic 0

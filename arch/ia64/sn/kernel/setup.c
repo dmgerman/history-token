@@ -562,14 +562,12 @@ id|master_node_bedrock_address
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_IA64_MCA
 r_extern
 r_int
 id|platform_intr_list
 (braket
 )braket
 suffix:semicolon
-macro_line|#endif
 r_extern
 id|nasid_t
 id|master_nasid

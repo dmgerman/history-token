@@ -1634,7 +1634,7 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
-l_string|&quot;%s: %04lx [%u]&bslash;n&quot;
+l_string|&quot;%s: %04lx [%u] &quot;
 comma
 id|str
 comma
@@ -1644,6 +1644,36 @@ l_int|0xffff
 comma
 op_increment
 id|die_counter
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+id|printk
+c_func
+(paren
+l_string|&quot;PREEMPT &quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SMP
+id|printk
+c_func
+(paren
+l_string|&quot;SMP &quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_DEBUG_PAGEALLOC
+id|printk
+c_func
+(paren
+l_string|&quot;DEBUG_PAGEALLOC&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|notify_die
@@ -2133,17 +2163,6 @@ id|device_not_available
 id|DO_ERROR
 c_func
 (paren
-l_int|8
-comma
-id|SIGSEGV
-comma
-l_string|&quot;double fault&quot;
-comma
-id|double_fault
-)paren
-id|DO_ERROR
-c_func
-(paren
 l_int|9
 comma
 id|SIGFPE
@@ -2174,17 +2193,6 @@ l_string|&quot;segment not present&quot;
 comma
 id|segment_not_present
 )paren
-id|DO_ERROR
-c_func
-(paren
-l_int|12
-comma
-id|SIGBUS
-comma
-l_string|&quot;stack segment&quot;
-comma
-id|stack_segment
-)paren
 id|DO_ERROR_INFO
 c_func
 (paren
@@ -2213,6 +2221,30 @@ comma
 l_string|&quot;reserved&quot;
 comma
 id|reserved
+)paren
+DECL|macro|DO_ERROR_STACK
+mdefine_line|#define DO_ERROR_STACK(trapnr, signr, str, name) &bslash;&n;asmlinkage void *do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;struct pt_regs *pr = ((struct pt_regs *)(current-&gt;thread.rsp0))-1; &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) == NOTIFY_BAD) &bslash;&n;&t;&t;return regs; &bslash;&n;&t;if (regs-&gt;cs &amp; 3) { &bslash;&n;&t;&t;memcpy(pr, regs, sizeof(struct pt_regs)); &bslash;&n;&t;&t;regs = pr; &bslash;&n;&t;} &bslash;&n;&t;do_trap(trapnr, signr, str, regs, error_code, NULL); &bslash;&n;&t;return regs;&t;&t;&bslash;&n;}
+id|DO_ERROR_STACK
+c_func
+(paren
+l_int|12
+comma
+id|SIGBUS
+comma
+l_string|&quot;stack segment&quot;
+comma
+id|stack_segment
+)paren
+id|DO_ERROR_STACK
+c_func
+(paren
+l_int|8
+comma
+id|SIGSEGV
+comma
+l_string|&quot;double fault&quot;
+comma
+id|double_fault
 )paren
 DECL|function|do_general_protection
 id|asmlinkage
@@ -2751,9 +2783,11 @@ l_int|0x71
 suffix:semicolon
 multiline_comment|/* dummy */
 )brace
+multiline_comment|/* runs on IST stack. */
 DECL|function|do_debug
 id|asmlinkage
 r_void
+op_star
 id|do_debug
 c_func
 (paren
@@ -2763,9 +2797,15 @@ op_star
 id|regs
 comma
 r_int
+r_int
 id|error_code
 )paren
 (brace
+r_struct
+id|pt_regs
+op_star
+id|pr
+suffix:semicolon
 r_int
 r_int
 id|condition
@@ -2780,6 +2820,46 @@ suffix:semicolon
 id|siginfo_t
 id|info
 suffix:semicolon
+id|pr
+op_assign
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+(paren
+id|current-&gt;thread.rsp0
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|regs-&gt;cs
+op_amp
+l_int|3
+)paren
+(brace
+id|memcpy
+c_func
+(paren
+id|pr
+comma
+id|regs
+comma
+r_sizeof
+(paren
+r_struct
+id|pt_regs
+)paren
+)paren
+suffix:semicolon
+id|regs
+op_assign
+id|pr
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_CHECKING
 (brace
 multiline_comment|/* RED-PEN interaction with debugger - could destroy gs */
@@ -3009,7 +3089,7 @@ l_string|&quot;debug&quot;
 comma
 id|regs
 comma
-id|error_code
+id|condition
 comma
 l_int|1
 comma
@@ -3017,9 +3097,16 @@ id|SIGTRAP
 )paren
 suffix:semicolon
 r_return
+id|regs
 suffix:semicolon
 id|clear_TF_reenable
 suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;clear_tf_reenable&bslash;n&quot;
+)paren
+suffix:semicolon
 id|set_tsk_thread_flag
 c_func
 (paren
@@ -3043,7 +3130,7 @@ l_string|&quot;debug2&quot;
 comma
 id|regs
 comma
-id|error_code
+id|condition
 comma
 l_int|1
 comma
@@ -3058,6 +3145,7 @@ op_complement
 id|TF_MASK
 suffix:semicolon
 r_return
+id|regs
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Note that we play around with the &squot;TS&squot; bit in an attempt to get&n; * the correct behaviour even in the presence of the asynchronous&n; * IRQ13 behaviour&n; */
@@ -3250,9 +3338,6 @@ r_struct
 id|pt_regs
 op_star
 id|regs
-comma
-r_int
-id|error_code
 )paren
 (brace
 id|conditional_sti
@@ -3461,9 +3546,6 @@ r_struct
 id|pt_regs
 op_star
 id|regs
-comma
-r_int
-id|error_code
 )paren
 (brace
 id|conditional_sti
@@ -3543,21 +3625,6 @@ op_or_assign
 id|TS_USEDFPU
 suffix:semicolon
 )brace
-DECL|function|math_emulate
-id|asmlinkage
-r_void
-id|math_emulate
-c_func
-(paren
-r_void
-)paren
-(brace
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 DECL|function|do_call_debug
 r_void
 id|do_call_debug
@@ -3604,13 +3671,15 @@ op_amp
 id|divide_error
 )paren
 suffix:semicolon
-id|set_intr_gate
+id|set_intr_gate_ist
 c_func
 (paren
 l_int|1
 comma
 op_amp
 id|debug
+comma
+id|DEBUG_STACK
 )paren
 suffix:semicolon
 id|set_intr_gate_ist
@@ -3764,13 +3833,15 @@ op_amp
 id|alignment_check
 )paren
 suffix:semicolon
-id|set_intr_gate
+id|set_intr_gate_ist
 c_func
 (paren
 l_int|18
 comma
 op_amp
 id|machine_check
+comma
+id|MCE_STACK
 )paren
 suffix:semicolon
 id|set_intr_gate

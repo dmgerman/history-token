@@ -326,7 +326,7 @@ suffix:semicolon
 DECL|macro|PENDING
 mdefine_line|#define PENDING(p,b) has_pending_signals(&amp;(p)-&gt;signal, (b))
 DECL|function|recalc_sigpending_tsk
-r_inline
+id|fastcall
 r_void
 id|recalc_sigpending_tsk
 c_func
@@ -3543,12 +3543,10 @@ op_star
 id|pid
 suffix:semicolon
 r_int
-id|err
-comma
 id|retval
-op_assign
-op_minus
-id|ESRCH
+suffix:semicolon
+r_int
+id|found
 suffix:semicolon
 r_if
 c_cond
@@ -3560,6 +3558,14 @@ l_int|0
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+id|found
+op_assign
+l_int|0
+suffix:semicolon
+id|retval
+op_assign
+l_int|0
 suffix:semicolon
 id|for_each_task_pid
 c_func
@@ -3575,6 +3581,13 @@ comma
 id|pid
 )paren
 (brace
+r_int
+id|err
+suffix:semicolon
+id|found
+op_assign
+l_int|1
+suffix:semicolon
 id|err
 op_assign
 id|group_send_sig_info
@@ -3590,6 +3603,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|retval
 )paren
 id|retval
@@ -3598,7 +3612,13 @@ id|err
 suffix:semicolon
 )brace
 r_return
+id|found
+ques
+c_cond
 id|retval
+suffix:colon
+op_minus
+id|ESRCH
 suffix:semicolon
 )brace
 r_int
@@ -9155,7 +9175,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* __sparc__ */
 macro_line|#endif
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__) &amp;&amp; !defined(__arm__)
+macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__) &amp;&amp; &bslash;&n;    !defined(__arm__) &amp;&amp; !defined(__s390__)
 multiline_comment|/*&n; * For backwards compatibility.  Functionality superseded by sigprocmask.&n; */
 id|asmlinkage
 r_int

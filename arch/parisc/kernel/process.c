@@ -1,6 +1,4 @@
 multiline_comment|/*&n; *    PARISC Architecture-dependent parts of process handling&n; *    based on the work for i386&n; *&n; *    Copyright (C) 1999-2003 Matthew Wilcox &lt;willy at parisc-linux.org&gt;&n; *    Copyright (C) 2000 Martin K Petersen &lt;mkp at mkp.net&gt;&n; *    Copyright (C) 2000 John Marvin &lt;jsm at parisc-linux.org&gt;&n; *    Copyright (C) 2000 David Huggins-Daines &lt;dhd with pobox.org&gt;&n; *    Copyright (C) 2000-2003 Paul Bame &lt;bame at parisc-linux.org&gt;&n; *    Copyright (C) 2000 Philipp Rumpf &lt;prumpf with tux.org&gt;&n; *    Copyright (C) 2000 David Kennedy &lt;dkennedy with linuxcare.com&gt;&n; *    Copyright (C) 2000 Richard Hirst &lt;rhirst with parisc-lixux.org&gt;&n; *    Copyright (C) 2000 Grant Grundler &lt;grundler with parisc-linux.org&gt;&n; *    Copyright (C) 2001 Alan Modra &lt;amodra at parisc-linux.org&gt;&n; *    Copyright (C) 2001-2002 Ryan Bradetich &lt;rbrad at parisc-linux.org&gt;&n; *    Copyright (C) 2001-2002 Helge Deller &lt;deller at parisc-linux.org&gt;&n; *    Copyright (C) 2002 Randolph Chung &lt;tausq with parisc-linux.org&gt;&n; *&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -483,6 +481,34 @@ id|regs-&gt;gr
 l_int|26
 )braket
 suffix:semicolon
+multiline_comment|/* usp must be word aligned.  This also prevents users from&n;&t; * passing in the value 1 (which is the signal for a special&n;&t; * return for a kernel thread) */
+id|usp
+op_assign
+id|ALIGN
+c_func
+(paren
+id|usp
+comma
+l_int|4
+)paren
+suffix:semicolon
+multiline_comment|/* A zero value for usp means use the current stack */
+r_if
+c_cond
+(paren
+id|usp
+op_eq
+l_int|0
+)paren
+(brace
+id|usp
+op_assign
+id|regs-&gt;gr
+(braket
+l_int|30
+)braket
+suffix:semicolon
+)brace
 r_return
 id|do_fork
 c_func
@@ -631,7 +657,7 @@ c_cond
 (paren
 id|usp
 op_eq
-l_int|0
+l_int|1
 )paren
 (brace
 multiline_comment|/* kernel thread */
@@ -719,7 +745,7 @@ l_int|21
 )braket
 op_amp
 (paren
-id|INIT_THREAD_SIZE
+id|THREAD_SIZE
 op_minus
 l_int|1
 )paren

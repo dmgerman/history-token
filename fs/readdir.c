@@ -108,6 +108,12 @@ comma
 id|filler
 )paren
 suffix:semicolon
+id|file_accessed
+c_func
+(paren
+id|file
+)paren
+suffix:semicolon
 )brace
 id|up
 c_func

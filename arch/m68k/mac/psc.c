@@ -9,7 +9,6 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/macintosh.h&gt; 
 macro_line|#include &lt;asm/macints.h&gt; 
 macro_line|#include &lt;asm/mac_psc.h&gt;
-macro_line|#include &lt;asm/unistd.h&gt;
 DECL|macro|DEBUG_PSC
 mdefine_line|#define DEBUG_PSC
 DECL|variable|psc_present
@@ -323,7 +322,7 @@ c_func
 r_void
 )paren
 (brace
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 l_int|3
@@ -341,7 +340,7 @@ op_star
 l_int|0x30
 )paren
 suffix:semicolon
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 l_int|4
@@ -359,7 +358,7 @@ op_star
 l_int|0x40
 )paren
 suffix:semicolon
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 l_int|5
@@ -377,7 +376,7 @@ op_star
 l_int|0x50
 )paren
 suffix:semicolon
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 l_int|6

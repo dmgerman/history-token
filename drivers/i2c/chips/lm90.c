@@ -1,9 +1,5 @@
 multiline_comment|/*&n; * lm90.c - Part of lm_sensors, Linux kernel modules for hardware&n; *          monitoring&n; * Copyright (C) 2003  Jean Delvare &lt;khali@linux-fr.org&gt;&n; *&n; * Based on the lm83 driver. The LM90 is a sensor chip made by National&n; * Semiconductor. It reports up to two temperatures (its own plus up to&n; * one external one) with a 0.125 deg resolution (1 deg for local&n; * temperature) and a 3-4 deg accuracy. Complete datasheet can be&n; * obtained from National&squot;s website at:&n; *   http://www.national.com/pf/LM/LM90.html&n; *&n; * This driver also supports the ADM1032, a sensor chip made by Analog&n; * Devices. That chip is similar to the LM90, with a few differences&n; * that are not handled by this driver. Complete datasheet can be&n; * obtained from Analog&squot;s website at:&n; *   http://products.analog.com/products/info.asp?product=ADM1032&n; *&n; * Since the LM90 was the first chipset supported by this driver, most&n; * comments will refer to this chipset, but are actually general and&n; * concern all supported chipsets, unless mentioned otherwise.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_CHIP
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -203,14 +199,16 @@ id|client
 )paren
 suffix:semicolon
 r_static
-r_void
-id|lm90_update_client
+r_struct
+id|lm90_data
+op_star
+id|lm90_update_device
 c_func
 (paren
 r_struct
-id|i2c_client
+id|device
 op_star
-id|client
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Driver data (common to all clients)&n; */
@@ -325,7 +323,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show_temp
-mdefine_line|#define show_temp(value, converter) &bslash;&n;static ssize_t show_##value(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;lm90_update_client(client); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, converter(data-&gt;value)); &bslash;&n;}
+mdefine_line|#define show_temp(value, converter) &bslash;&n;static ssize_t show_##value(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct lm90_data *data = lm90_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, converter(data-&gt;value)); &bslash;&n;}
 id|show_temp
 c_func
 (paren
@@ -447,7 +445,7 @@ id|LM90_REG_W_REMOTE_CRIT
 )paren
 suffix:semicolon
 DECL|macro|show_temp_hyst
-mdefine_line|#define show_temp_hyst(value, basereg) &bslash;&n;static ssize_t show_##value(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;lm90_update_client(client); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, TEMP1_FROM_REG(data-&gt;basereg) &bslash;&n;&t;&t;       - HYST_FROM_REG(data-&gt;temp_hyst)); &bslash;&n;}
+mdefine_line|#define show_temp_hyst(value, basereg) &bslash;&n;static ssize_t show_##value(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct lm90_data *data = lm90_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, TEMP1_FROM_REG(data-&gt;basereg) &bslash;&n;&t;&t;       - HYST_FROM_REG(data-&gt;temp_hyst)); &bslash;&n;}
 id|show_temp_hyst
 c_func
 (paren
@@ -560,31 +558,14 @@ id|buf
 )paren
 (brace
 r_struct
-id|i2c_client
-op_star
-id|client
-op_assign
-id|to_i2c_client
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_struct
 id|lm90_data
 op_star
 id|data
 op_assign
-id|i2c_get_clientdata
+id|lm90_update_device
 c_func
 (paren
-id|client
-)paren
-suffix:semicolon
-id|lm90_update_client
-c_func
-(paren
-id|client
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -603,7 +584,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input1
+id|temp1_input
 comma
 id|S_IRUGO
 comma
@@ -616,7 +597,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input2
+id|temp2_input
 comma
 id|S_IRUGO
 comma
@@ -629,7 +610,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_min1
+id|temp1_min
 comma
 id|S_IWUSR
 op_or
@@ -644,7 +625,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_min2
+id|temp2_min
 comma
 id|S_IWUSR
 op_or
@@ -659,7 +640,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max1
+id|temp1_max
 comma
 id|S_IWUSR
 op_or
@@ -674,7 +655,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max2
+id|temp2_max
 comma
 id|S_IWUSR
 op_or
@@ -689,7 +670,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_crit1
+id|temp1_crit
 comma
 id|S_IWUSR
 op_or
@@ -704,7 +685,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_crit2
+id|temp2_crit
 comma
 id|S_IWUSR
 op_or
@@ -719,7 +700,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_hyst1
+id|temp1_crit_hyst
 comma
 id|S_IWUSR
 op_or
@@ -734,7 +715,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_hyst2
+id|temp2_crit_hyst
 comma
 id|S_IRUGO
 comma
@@ -1106,10 +1087,6 @@ id|kind
 op_assign
 id|lm90
 suffix:semicolon
-id|name
-op_assign
-l_string|&quot;lm90&quot;
-suffix:semicolon
 )brace
 )brace
 r_else
@@ -1154,10 +1131,6 @@ id|kind
 op_assign
 id|adm1032
 suffix:semicolon
-id|name
-op_assign
-l_string|&quot;adm1032&quot;
-suffix:semicolon
 )brace
 )brace
 r_if
@@ -1187,6 +1160,33 @@ r_goto
 id|exit_free
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|kind
+op_eq
+id|lm90
+)paren
+(brace
+id|name
+op_assign
+l_string|&quot;lm90&quot;
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|kind
+op_eq
+id|adm1032
+)paren
+(brace
+id|name
+op_assign
+l_string|&quot;adm1032&quot;
+suffix:semicolon
 )brace
 multiline_comment|/* We can fill in the remaining client fields */
 id|strlcpy
@@ -1247,7 +1247,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input1
+id|dev_attr_temp1_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1257,7 +1257,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input2
+id|dev_attr_temp2_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1267,7 +1267,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_min1
+id|dev_attr_temp1_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1277,7 +1277,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_min2
+id|dev_attr_temp2_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1287,7 +1287,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max1
+id|dev_attr_temp1_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1297,7 +1297,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max2
+id|dev_attr_temp2_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1307,7 +1307,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_crit1
+id|dev_attr_temp1_crit
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1317,7 +1317,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_crit2
+id|dev_attr_temp2_crit
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1327,7 +1327,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_hyst1
+id|dev_attr_temp1_crit_hyst
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1337,7 +1337,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_hyst2
+id|dev_attr_temp2_crit_hyst
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1478,18 +1478,31 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|lm90_update_client
+DECL|function|lm90_update_device
 r_static
-r_void
-id|lm90_update_client
+r_struct
+id|lm90_data
+op_star
+id|lm90_update_device
 c_func
 (paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
 r_struct
 id|i2c_client
 op_star
 id|client
+op_assign
+id|to_i2c_client
+c_func
+(paren
+id|dev
 )paren
-(brace
+suffix:semicolon
 r_struct
 id|lm90_data
 op_star
@@ -1762,6 +1775,9 @@ c_func
 op_amp
 id|data-&gt;update_lock
 )paren
+suffix:semicolon
+r_return
+id|data
 suffix:semicolon
 )brace
 DECL|function|sensors_lm90_init

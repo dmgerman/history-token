@@ -5774,7 +5774,7 @@ id|gendisk
 op_star
 id|cm206_gendisk
 suffix:semicolon
-multiline_comment|/* This function probes for the adapter card. It returns the base&n;   address if it has found the adapter card. One can specify a base &n;   port to probe specifically, or 0 which means span all possible&n;   bases. &n;&n;   Linus says it is too dangerous to use writes for probing, so we&n;   stick with pure reads for a while. Hope that 8 possible ranges,&n;   check_region, 15 bits of one port and 6 of another make things&n;   likely enough to accept the region on the first hit...&n; */
+multiline_comment|/* This function probes for the adapter card. It returns the base&n;   address if it has found the adapter card. One can specify a base &n;   port to probe specifically, or 0 which means span all possible&n;   bases. &n;&n;   Linus says it is too dangerous to use writes for probing, so we&n;   stick with pure reads for a while. Hope that 8 possible ranges,&n;   request_region, 15 bits of one port and 6 of another make things&n;   likely enough to accept the region on the first hit...&n; */
 DECL|function|probe_base_port
 r_int
 id|__init
@@ -5831,12 +5831,15 @@ l_int|0x10
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|base
 comma
 l_int|0x10
+comma
+l_string|&quot;cm206&quot;
 )paren
 )paren
 r_continue
@@ -5896,9 +5899,19 @@ l_int|0xad00
 op_ne
 l_int|0
 )paren
+(brace
 multiline_comment|/* data status */
+id|release_region
+c_func
+(paren
+id|base
+comma
+l_int|0x10
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 r_return
 (paren
 id|base
@@ -6078,16 +6091,6 @@ c_func
 l_string|&quot; adapter at 0x%x&quot;
 comma
 id|cm206_base
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-id|cm206_base
-comma
-l_int|16
-comma
-l_string|&quot;cm206&quot;
 )paren
 suffix:semicolon
 id|cd

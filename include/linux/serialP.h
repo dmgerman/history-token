@@ -10,10 +10,6 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x020300)
-multiline_comment|/* Unfortunate, but Linux 2.2 needs async_icount defined here and&n; * it got moved in 2.3 */
-macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#endif
 DECL|struct|serial_state
 r_struct
 id|serial_state

@@ -940,6 +940,15 @@ mdefine_line|#define METHOD_NAME__CRS        &quot;_CRS&quot;
 DECL|macro|METHOD_NAME__PRS
 mdefine_line|#define METHOD_NAME__PRS        &quot;_PRS&quot;
 id|acpi_status
+id|acpi_ut_osi_implementation
+(paren
+r_struct
+id|acpi_walk_state
+op_star
+id|walk_state
+)paren
+suffix:semicolon
+id|acpi_status
 id|acpi_ut_evaluate_object
 (paren
 r_struct
@@ -1032,6 +1041,19 @@ r_struct
 id|acpi_device_id
 op_star
 id|uid
+)paren
+suffix:semicolon
+id|acpi_status
+id|acpi_ut_execute_sxds
+(paren
+r_struct
+id|acpi_namespace_node
+op_star
+id|device_node
+comma
+id|u8
+op_star
+id|highest
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * ut_mutex - mutual exclusion interfaces&n; */

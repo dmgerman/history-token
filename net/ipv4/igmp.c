@@ -32,7 +32,9 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#endif
 DECL|macro|IP_MAX_MEMBERSHIPS
-mdefine_line|#define IP_MAX_MEMBERSHIPS 20
+mdefine_line|#define IP_MAX_MEMBERSHIPS&t;20
+DECL|macro|IP_MAX_MSF
+mdefine_line|#define IP_MAX_MSF&t;&t;10
 macro_line|#ifdef CONFIG_IP_MULTICAST
 multiline_comment|/* Parameter names and values are taken from igmp-v2-06 draft */
 DECL|macro|IGMP_V1_Router_Present_Timeout
@@ -5858,6 +5860,12 @@ id|sysctl_igmp_max_memberships
 op_assign
 id|IP_MAX_MEMBERSHIPS
 suffix:semicolon
+DECL|variable|sysctl_igmp_max_msf
+r_int
+id|sysctl_igmp_max_msf
+op_assign
+id|IP_MAX_MSF
+suffix:semicolon
 DECL|function|ip_mc_del1_src
 r_static
 r_int
@@ -8161,6 +8169,25 @@ id|done
 suffix:semicolon
 )brace
 multiline_comment|/* else, add a new source to the filter */
+r_if
+c_cond
+(paren
+id|psl
+op_logical_and
+id|psl-&gt;sl_count
+op_ge
+id|sysctl_igmp_max_msf
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENOBUFS
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

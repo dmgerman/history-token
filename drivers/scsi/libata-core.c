@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -62,6 +63,7 @@ r_int
 id|device
 )paren
 suffix:semicolon
+macro_line|#if 0 /* to be used eventually */
 r_static
 r_void
 id|ata_qc_push
@@ -76,6 +78,7 @@ r_int
 id|append
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 r_void
 id|ata_dma_complete
@@ -144,6 +147,17 @@ comma
 r_int
 r_int
 id|device
+)paren
+suffix:semicolon
+r_static
+r_void
+id|ata_set_mode
+c_func
+(paren
+r_struct
+id|ata_port
+op_star
+id|ap
 )paren
 suffix:semicolon
 DECL|variable|ata_unique_id
@@ -353,7 +367,7 @@ c_func
 (paren
 id|tf-&gt;hob_feature
 comma
-id|ioaddr-&gt;error_addr
+id|ioaddr-&gt;feature_addr
 )paren
 suffix:semicolon
 id|outb
@@ -416,7 +430,7 @@ c_func
 (paren
 id|tf-&gt;feature
 comma
-id|ioaddr-&gt;error_addr
+id|ioaddr-&gt;feature_addr
 )paren
 suffix:semicolon
 id|outb
@@ -581,7 +595,7 @@ comma
 r_void
 op_star
 )paren
-id|ioaddr-&gt;error_addr
+id|ioaddr-&gt;feature_addr
 )paren
 suffix:semicolon
 id|writeb
@@ -664,7 +678,7 @@ comma
 r_void
 op_star
 )paren
-id|ioaddr-&gt;error_addr
+id|ioaddr-&gt;feature_addr
 )paren
 suffix:semicolon
 id|writeb
@@ -800,7 +814,7 @@ c_func
 (paren
 id|tf-&gt;command
 comma
-id|ap-&gt;ioaddr.cmdstat_addr
+id|ap-&gt;ioaddr.command_addr
 )paren
 suffix:semicolon
 id|ata_pause
@@ -846,7 +860,7 @@ comma
 r_void
 op_star
 )paren
-id|ap-&gt;ioaddr.cmdstat_addr
+id|ap-&gt;ioaddr.command_addr
 )paren
 suffix:semicolon
 id|ata_pause
@@ -1313,7 +1327,7 @@ r_return
 id|inb
 c_func
 (paren
-id|ap-&gt;ioaddr.cmdstat_addr
+id|ap-&gt;ioaddr.status_addr
 )paren
 suffix:semicolon
 )brace
@@ -1337,7 +1351,7 @@ c_func
 r_void
 op_star
 )paren
-id|ap-&gt;ioaddr.cmdstat_addr
+id|ap-&gt;ioaddr.status_addr
 )paren
 suffix:semicolon
 )brace
@@ -3413,9 +3427,7 @@ id|ATA_FLAG_PORT_DISABLED
 r_goto
 id|err_out_disable
 suffix:semicolon
-id|ap-&gt;ops
-op_member_access_from_pointer
-id|phy_config
+id|ata_set_mode
 c_func
 (paren
 id|ap
@@ -3711,10 +3723,11 @@ op_or_assign
 id|ATA_FLAG_PORT_DISABLED
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pata_phy_config -&n; *&t;@ap:&n; *&n; *&t;LOCKING:&n; *&n; */
-DECL|function|pata_phy_config
+multiline_comment|/**&n; *&t;ata_set_mode - Program timings and issue SET FEATURES - XFER&n; *&t;@ap: port on which timings will be programmed&n; *&n; *&t;LOCKING:&n; *&n; */
+DECL|function|ata_set_mode
+r_static
 r_void
-id|pata_phy_config
+id|ata_set_mode
 c_func
 (paren
 r_struct
@@ -3828,6 +3841,19 @@ id|ATA_FLAG_PORT_DISABLED
 r_return
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ap-&gt;ops-&gt;post_set_mode
+)paren
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|post_set_mode
+c_func
+(paren
+id|ap
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;ata_busy_sleep - sleep until BSY clears, or timeout&n; *&t;@ap: port containing status register to be polled&n; *&t;@tmout_pat: impatience timeout&n; *&t;@tmout: overall timeout&n; *&n; *&t;LOCKING:&n; *&n; */
 DECL|function|ata_busy_sleep
@@ -4526,31 +4552,6 @@ comma
 id|ap-&gt;port_no
 )paren
 suffix:semicolon
-multiline_comment|/* set up device control */
-r_if
-c_cond
-(paren
-id|ap-&gt;flags
-op_amp
-id|ATA_FLAG_MMIO
-)paren
-id|writeb
-c_func
-(paren
-id|ap-&gt;ctl
-comma
-id|ioaddr-&gt;ctl_addr
-)paren
-suffix:semicolon
-r_else
-id|outb
-c_func
-(paren
-id|ap-&gt;ctl
-comma
-id|ioaddr-&gt;ctl_addr
-)paren
-suffix:semicolon
 multiline_comment|/* determine if device 0/1 are present */
 r_if
 c_cond
@@ -4656,6 +4657,32 @@ id|ATA_FLAG_SATA_RESET
 op_eq
 l_int|0
 )paren
+(brace
+multiline_comment|/* set up device control */
+r_if
+c_cond
+(paren
+id|ap-&gt;flags
+op_amp
+id|ATA_FLAG_MMIO
+)paren
+id|writeb
+c_func
+(paren
+id|ap-&gt;ctl
+comma
+id|ioaddr-&gt;ctl_addr
+)paren
+suffix:semicolon
+r_else
+id|outb
+c_func
+(paren
+id|ap-&gt;ctl
+comma
+id|ioaddr-&gt;ctl_addr
+)paren
+suffix:semicolon
 id|rc
 op_assign
 id|ata_bus_edd
@@ -4664,6 +4691,7 @@ c_func
 id|ap
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4785,6 +4813,44 @@ id|ATA_DEV_NONE
 r_goto
 id|err_out
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ap-&gt;flags
+op_amp
+(paren
+id|ATA_FLAG_SATA_RESET
+op_or
+id|ATA_FLAG_SRST
+)paren
+)paren
+(brace
+multiline_comment|/* set up device control for ATA_FLAG_SATA_RESET */
+r_if
+c_cond
+(paren
+id|ap-&gt;flags
+op_amp
+id|ATA_FLAG_MMIO
+)paren
+id|writeb
+c_func
+(paren
+id|ap-&gt;ctl
+comma
+id|ioaddr-&gt;ctl_addr
+)paren
+suffix:semicolon
+r_else
+id|outb
+c_func
+(paren
+id|ap-&gt;ctl
+comma
+id|ioaddr-&gt;ctl_addr
+)paren
+suffix:semicolon
+)brace
 id|DPRINTK
 c_func
 (paren
@@ -5005,6 +5071,11 @@ id|XFER_PIO_3
 suffix:colon
 id|XFER_PIO_4
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ap-&gt;ops-&gt;set_piomode
+)paren
 id|ap-&gt;ops
 op_member_access_from_pointer
 id|set_piomode
@@ -5319,6 +5390,11 @@ id|udma_mode
 op_assign
 id|udma_mode
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ap-&gt;ops-&gt;set_udmamode
+)paren
 id|ap-&gt;ops
 op_member_access_from_pointer
 id|set_udmamode
@@ -6959,8 +7035,8 @@ id|page
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0 /* to be used eventually */
 multiline_comment|/**&n; *&t;ata_eng_schedule - run an iteration of the pio/dma/whatever engine&n; *&t;@ap: port on which activity will occur&n; *&t;@eng: instance of engine&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
-DECL|function|ata_eng_schedule
 r_static
 r_void
 id|ata_eng_schedule
@@ -6978,6 +7054,7 @@ id|eng
 (brace
 multiline_comment|/* FIXME */
 )brace
+macro_line|#endif
 multiline_comment|/**&n; *&t;ata_eng_timeout - Handle timeout of queued command&n; *&t;@ap: Port on which timed-out command is active&n; *&n; *&t;Some part of the kernel (currently, only the SCSI layer)&n; *&t;has noticed that the active command on port @ap has not&n; *&t;completed after a specified length of time.  Handle this&n; *&t;condition by disabling DMA (if necessary) and completing&n; *&t;transactions, with error if necessary.&n; *&n; *&t;This also handles the case of the &quot;lost interrupt&quot;, where&n; *&t;for some reason (possibly hardware bug, possibly driver bug)&n; *&t;an interrupt was not delivered to the driver, even though the&n; *&t;transaction completed successfully.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from SCSI layer (none, can sleep)&n; */
 DECL|function|ata_eng_timeout
 r_void
@@ -7036,6 +7113,11 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+multiline_comment|/* hack alert!  We cannot use the supplied completion&n;&t; * function from inside the -&gt;eh_strategy_handler() thread.&n;&t; * libata is the only user of -&gt;eh_strategy_handler() in&n;&t; * any kernel, so the default scsi_done() assumes it is&n;&t; * not being called from the SCSI EH.&n;&t; */
+id|qc-&gt;scsidone
+op_assign
+id|scsi_finish_command
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -7603,8 +7685,8 @@ id|ap-&gt;qactive
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0 /* to be used eventually */
 multiline_comment|/**&n; *&t;ata_qc_push -&n; *&t;@qc:&n; *&t;@append:&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
-DECL|function|ata_qc_push
 r_static
 r_void
 id|ata_qc_push
@@ -7686,6 +7768,7 @@ id|eng
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/**&n; *&t;ata_qc_issue -&n; *&t;@qc:&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&n; */
 DECL|function|ata_qc_issue
 r_int
@@ -7893,17 +7976,40 @@ op_plus
 id|ATA_DMA_TABLE_OFS
 )paren
 suffix:semicolon
-multiline_comment|/* specify data direction */
-multiline_comment|/* FIXME: redundant to later start-dma command? */
+multiline_comment|/* specify data direction, triple-check start bit is clear */
+id|dmactl
+op_assign
+id|readb
+c_func
+(paren
+id|mmio
+op_plus
+id|ATA_DMA_CMD
+)paren
+suffix:semicolon
+id|dmactl
+op_and_assign
+op_complement
+(paren
+id|ATA_DMA_WR
+op_or
+id|ATA_DMA_START
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rw
+)paren
+id|dmactl
+op_or_assign
+id|ATA_DMA_WR
+suffix:semicolon
 id|writeb
 c_func
 (paren
-id|rw
-ques
-c_cond
-l_int|0
-suffix:colon
-id|ATA_DMA_WR
+id|dmactl
 comma
 id|mmio
 op_plus
@@ -7948,16 +8054,6 @@ id|qc-&gt;tf
 )paren
 suffix:semicolon
 multiline_comment|/* start host DMA transaction */
-id|dmactl
-op_assign
-id|readb
-c_func
-(paren
-id|mmio
-op_plus
-id|ATA_DMA_CMD
-)paren
-suffix:semicolon
 id|writeb
 c_func
 (paren
@@ -8016,17 +8112,40 @@ op_plus
 id|ATA_DMA_TABLE_OFS
 )paren
 suffix:semicolon
-multiline_comment|/* specify data direction */
-multiline_comment|/* FIXME: redundant to later start-dma command? */
+multiline_comment|/* specify data direction, triple-check start bit is clear */
+id|dmactl
+op_assign
+id|inb
+c_func
+(paren
+id|ap-&gt;ioaddr.bmdma_addr
+op_plus
+id|ATA_DMA_CMD
+)paren
+suffix:semicolon
+id|dmactl
+op_and_assign
+op_complement
+(paren
+id|ATA_DMA_WR
+op_or
+id|ATA_DMA_START
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rw
+)paren
+id|dmactl
+op_or_assign
+id|ATA_DMA_WR
+suffix:semicolon
 id|outb
 c_func
 (paren
-id|rw
-ques
-c_cond
-l_int|0
-suffix:colon
-id|ATA_DMA_WR
+id|dmactl
 comma
 id|ap-&gt;ioaddr.bmdma_addr
 op_plus
@@ -8071,16 +8190,6 @@ id|qc-&gt;tf
 )paren
 suffix:semicolon
 multiline_comment|/* start host DMA transaction */
-id|dmactl
-op_assign
-id|inb
-c_func
-(paren
-id|ap-&gt;ioaddr.bmdma_addr
-op_plus
-id|ATA_DMA_CMD
-)paren
-suffix:semicolon
 id|outb
 c_func
 (paren
@@ -8142,7 +8251,16 @@ multiline_comment|/* clear start/stop bit */
 id|writeb
 c_func
 (paren
-l_int|0
+id|readb
+c_func
+(paren
+id|mmio
+op_plus
+id|ATA_DMA_CMD
+)paren
+op_amp
+op_complement
+id|ATA_DMA_START
 comma
 id|mmio
 op_plus
@@ -8171,7 +8289,16 @@ multiline_comment|/* clear start/stop bit */
 id|outb
 c_func
 (paren
-l_int|0
+id|inb
+c_func
+(paren
+id|ap-&gt;ioaddr.bmdma_addr
+op_plus
+id|ATA_DMA_CMD
+)paren
+op_amp
+op_complement
+id|ATA_DMA_START
 comma
 id|ap-&gt;ioaddr.bmdma_addr
 op_plus
@@ -8248,7 +8375,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;ata_host_intr - Handle host interrupt for given (port, task)&n; *&t;@ap: Port on which interrupt arrived (possibly...)&n; *&t;@qc: Taskfile currently active in engine&n; *&n; *&t;Handle host interrupt for given queued command.  Currently,&n; *&t;only DMA interrupts are handled.  All other commands are&n; *&t;handled via polling with interrupts disabled (nIEN bit).&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; *&n; *&t;RETURNS:&n; *&t;One if interrupt was handled, zero if not (shared irq).&n; */
 DECL|function|ata_host_intr
-r_static
 r_inline
 r_int
 r_int
@@ -9006,6 +9132,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 (paren
 id|timeout
 OL
@@ -9422,10 +9561,15 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;prd alloc, virt %p, dma %x&bslash;n&quot;
+l_string|&quot;prd alloc, virt %p, dma %llx&bslash;n&quot;
 comma
 id|ap-&gt;prd
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|ap-&gt;prd_dma
 )paren
 suffix:semicolon
@@ -10488,6 +10632,12 @@ id|ioaddr-&gt;cmd_addr
 op_plus
 id|ATA_REG_ERR
 suffix:semicolon
+id|ioaddr-&gt;feature_addr
+op_assign
+id|ioaddr-&gt;cmd_addr
+op_plus
+id|ATA_REG_FEATURE
+suffix:semicolon
 id|ioaddr-&gt;nsect_addr
 op_assign
 id|ioaddr-&gt;cmd_addr
@@ -10518,7 +10668,13 @@ id|ioaddr-&gt;cmd_addr
 op_plus
 id|ATA_REG_DEVICE
 suffix:semicolon
-id|ioaddr-&gt;cmdstat_addr
+id|ioaddr-&gt;status_addr
+op_assign
+id|ioaddr-&gt;cmd_addr
+op_plus
+id|ATA_REG_STATUS
+suffix:semicolon
+id|ioaddr-&gt;command_addr
 op_assign
 id|ioaddr-&gt;cmd_addr
 op_plus
@@ -10945,6 +11101,24 @@ id|rc
 r_goto
 id|err_out_regions
 suffix:semicolon
+id|rc
+op_assign
+id|pci_set_consistent_dma_mask
+c_func
+(paren
+id|pdev
+comma
+id|ATA_DMA_MASK
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_goto
+id|err_out_regions
+suffix:semicolon
 id|probe_ent
 op_assign
 id|kmalloc
@@ -11117,6 +11291,13 @@ id|probe_ent-&gt;port
 l_int|0
 )braket
 dot
+id|altstatus_addr
+op_assign
+id|probe_ent-&gt;port
+(braket
+l_int|0
+)braket
+dot
 id|ctl_addr
 op_assign
 l_int|0x3f6
@@ -11148,6 +11329,13 @@ id|cmd_addr
 op_assign
 l_int|0x170
 suffix:semicolon
+id|probe_ent2-&gt;port
+(braket
+l_int|0
+)braket
+dot
+id|altstatus_addr
+op_assign
 id|probe_ent2-&gt;port
 (braket
 l_int|0
@@ -11245,6 +11433,13 @@ id|probe_ent-&gt;port
 l_int|0
 )braket
 dot
+id|altstatus_addr
+op_assign
+id|probe_ent-&gt;port
+(braket
+l_int|0
+)braket
+dot
 id|ctl_addr
 op_assign
 id|pci_resource_start
@@ -11282,6 +11477,13 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
+id|probe_ent-&gt;port
+(braket
+l_int|1
+)braket
+dot
+id|altstatus_addr
+op_assign
 id|probe_ent-&gt;port
 (braket
 l_int|1
@@ -12035,13 +12237,6 @@ c_func
 id|sata_phy_reset
 )paren
 suffix:semicolon
-DECL|variable|pata_phy_config
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|pata_phy_config
-)paren
-suffix:semicolon
 DECL|variable|ata_bus_reset
 id|EXPORT_SYMBOL_GPL
 c_func
@@ -12096,6 +12291,13 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|ata_scsi_release
+)paren
+suffix:semicolon
+DECL|variable|ata_host_intr
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ata_host_intr
 )paren
 suffix:semicolon
 eof

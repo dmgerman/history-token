@@ -15,7 +15,7 @@ DECL|macro|LOAD_INT
 mdefine_line|#define LOAD_INT(x) ((x) &gt;&gt; FSHIFT)
 DECL|macro|LOAD_FRAC
 mdefine_line|#define LOAD_FRAC(x) LOAD_INT(((x) &amp; (FIXED_1-1)) * 100)
-multiline_comment|/*&n; * OS data&n; */
+multiline_comment|/*&n; * OS data&n; *&n; * This is accessed as binary data by z/VM. If changes to it can&squot;t be avoided,&n; * the structure version (product ID, see appldata_base.c) needs to be changed&n; * as well and all documentation and z/VM applications using it must be&n; * updated.&n; *&n; * The record layout is documented in the Linux for zSeries Device Drivers&n; * book:&n; * http://oss.software.ibm.com/developerworks/opensource/linux390/index.shtml&n; */
 DECL|struct|appldata_os_per_cpu
 r_struct
 id|appldata_os_per_cpu

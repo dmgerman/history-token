@@ -272,10 +272,10 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|typedef|ia64_mv_dma_sync_single
+DECL|typedef|ia64_mv_dma_sync_single_for_cpu
 r_typedef
 r_void
-id|ia64_mv_dma_sync_single
+id|ia64_mv_dma_sync_single_for_cpu
 (paren
 r_struct
 id|device
@@ -288,10 +288,44 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|typedef|ia64_mv_dma_sync_sg
+DECL|typedef|ia64_mv_dma_sync_sg_for_cpu
 r_typedef
 r_void
-id|ia64_mv_dma_sync_sg
+id|ia64_mv_dma_sync_sg_for_cpu
+(paren
+r_struct
+id|device
+op_star
+comma
+r_struct
+id|scatterlist
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_dma_sync_single_for_device
+r_typedef
+r_void
+id|ia64_mv_dma_sync_single_for_device
+(paren
+r_struct
+id|device
+op_star
+comma
+id|dma_addr_t
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_dma_sync_sg_for_device
+r_typedef
+r_void
+id|ia64_mv_dma_sync_sg_for_device
 (paren
 r_struct
 id|device
@@ -527,10 +561,14 @@ DECL|macro|platform_dma_map_sg
 macro_line|#  define platform_dma_map_sg&t;&t;ia64_mv.dma_map_sg
 DECL|macro|platform_dma_unmap_sg
 macro_line|#  define platform_dma_unmap_sg&t;&t;ia64_mv.dma_unmap_sg
-DECL|macro|platform_dma_sync_single
-macro_line|#  define platform_dma_sync_single&t;ia64_mv.dma_sync_single
-DECL|macro|platform_dma_sync_sg
-macro_line|#  define platform_dma_sync_sg&t;&t;ia64_mv.dma_sync_sg
+DECL|macro|platform_dma_sync_single_for_cpu
+macro_line|#  define platform_dma_sync_single_for_cpu ia64_mv.dma_sync_single_for_cpu
+DECL|macro|platform_dma_sync_sg_for_cpu
+macro_line|#  define platform_dma_sync_sg_for_cpu&t;ia64_mv.dma_sync_sg_for_cpu
+DECL|macro|platform_dma_sync_single_for_device
+macro_line|#  define platform_dma_sync_single_for_device ia64_mv.dma_sync_single_for_device
+DECL|macro|platform_dma_sync_sg_for_device
+macro_line|#  define platform_dma_sync_sg_for_device ia64_mv.dma_sync_sg_for_device
 DECL|macro|platform_dma_supported
 macro_line|#  define platform_dma_supported&t;ia64_mv.dma_supported
 DECL|macro|platform_irq_desc
@@ -664,15 +702,25 @@ id|ia64_mv_dma_unmap_sg
 op_star
 id|dma_unmap_sg
 suffix:semicolon
-DECL|member|dma_sync_single
-id|ia64_mv_dma_sync_single
+DECL|member|dma_sync_single_for_cpu
+id|ia64_mv_dma_sync_single_for_cpu
 op_star
-id|dma_sync_single
+id|dma_sync_single_for_cpu
 suffix:semicolon
-DECL|member|dma_sync_sg
-id|ia64_mv_dma_sync_sg
+DECL|member|dma_sync_sg_for_cpu
+id|ia64_mv_dma_sync_sg_for_cpu
 op_star
-id|dma_sync_sg
+id|dma_sync_sg_for_cpu
+suffix:semicolon
+DECL|member|dma_sync_single_for_device
+id|ia64_mv_dma_sync_single_for_device
+op_star
+id|dma_sync_single_for_device
+suffix:semicolon
+DECL|member|dma_sync_sg_for_device
+id|ia64_mv_dma_sync_sg_for_device
+op_star
+id|dma_sync_sg_for_device
 suffix:semicolon
 DECL|member|dma_supported
 id|ia64_mv_dma_supported
@@ -779,7 +827,7 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* align attrib? see above comment */
 DECL|macro|MACHVEC_INIT
-mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_timer_interrupt,&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_dma_init,&t;&t;&t;&bslash;&n;&t;platform_dma_alloc_coherent,&t;&t;&bslash;&n;&t;platform_dma_free_coherent,&t;&t;&bslash;&n;&t;platform_dma_map_single,&t;&t;&bslash;&n;&t;platform_dma_unmap_single,&t;&t;&bslash;&n;&t;platform_dma_map_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_sync_single,&t;&t;&bslash;&n;&t;platform_dma_sync_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_supported,&t;&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;&t;platform_readb,&t;&t;&t;&t;&bslash;&n;&t;platform_readw,&t;&t;&t;&t;&bslash;&n;&t;platform_readl,&t;&t;&t;&t;&bslash;&n;&t;platform_readq,&t;&t;&t;&t;&bslash;&n;&t;platform_readb_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readw_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readl_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readq_relaxed,&t;&t;&t;&bslash;&n;}
+mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_cpu_init,&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_timer_interrupt,&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_dma_init,&t;&t;&t;&bslash;&n;&t;platform_dma_alloc_coherent,&t;&t;&bslash;&n;&t;platform_dma_free_coherent,&t;&t;&bslash;&n;&t;platform_dma_map_single,&t;&t;&bslash;&n;&t;platform_dma_unmap_single,&t;&t;&bslash;&n;&t;platform_dma_map_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_cpu,&t;&bslash;&n;&t;platform_dma_sync_sg_for_cpu,&t;&t;&bslash;&n;&t;platform_dma_sync_single_for_device,&t;&bslash;&n;&t;platform_dma_sync_sg_for_device,&t;&bslash;&n;&t;platform_dma_supported,&t;&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;&t;platform_readb,&t;&t;&t;&t;&bslash;&n;&t;platform_readw,&t;&t;&t;&t;&bslash;&n;&t;platform_readl,&t;&t;&t;&t;&bslash;&n;&t;platform_readq,&t;&t;&t;&t;&bslash;&n;&t;platform_readb_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readw_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readl_relaxed,&t;&t;&t;&bslash;&n;&t;platform_readq_relaxed,&t;&t;&t;&bslash;&n;}
 r_extern
 r_struct
 id|ia64_machine_vector
@@ -828,12 +876,20 @@ id|ia64_mv_dma_unmap_sg
 id|swiotlb_unmap_sg
 suffix:semicolon
 r_extern
-id|ia64_mv_dma_sync_single
-id|swiotlb_sync_single
+id|ia64_mv_dma_sync_single_for_cpu
+id|swiotlb_sync_single_for_cpu
 suffix:semicolon
 r_extern
-id|ia64_mv_dma_sync_sg
-id|swiotlb_sync_sg
+id|ia64_mv_dma_sync_sg_for_cpu
+id|swiotlb_sync_sg_for_cpu
+suffix:semicolon
+r_extern
+id|ia64_mv_dma_sync_single_for_device
+id|swiotlb_sync_single_for_device
+suffix:semicolon
+r_extern
+id|ia64_mv_dma_sync_sg_for_device
+id|swiotlb_sync_sg_for_device
 suffix:semicolon
 r_extern
 id|ia64_mv_dma_supported
@@ -908,13 +964,21 @@ macro_line|#ifndef platform_dma_unmap_sg
 DECL|macro|platform_dma_unmap_sg
 macro_line|# define platform_dma_unmap_sg&t;&t;swiotlb_unmap_sg
 macro_line|#endif
-macro_line|#ifndef platform_dma_sync_single
-DECL|macro|platform_dma_sync_single
-macro_line|# define platform_dma_sync_single&t;swiotlb_sync_single
+macro_line|#ifndef platform_dma_sync_single_for_cpu
+DECL|macro|platform_dma_sync_single_for_cpu
+macro_line|# define platform_dma_sync_single_for_cpu&t;swiotlb_sync_single_for_cpu
 macro_line|#endif
-macro_line|#ifndef platform_dma_sync_sg
-DECL|macro|platform_dma_sync_sg
-macro_line|# define platform_dma_sync_sg&t;&t;swiotlb_sync_sg
+macro_line|#ifndef platform_dma_sync_sg_for_cpu
+DECL|macro|platform_dma_sync_sg_for_cpu
+macro_line|# define platform_dma_sync_sg_for_cpu&t;&t;swiotlb_sync_sg_for_cpu
+macro_line|#endif
+macro_line|#ifndef platform_dma_sync_single_for_device
+DECL|macro|platform_dma_sync_single_for_device
+macro_line|# define platform_dma_sync_single_for_device&t;swiotlb_sync_single_for_device
+macro_line|#endif
+macro_line|#ifndef platform_dma_sync_sg_for_device
+DECL|macro|platform_dma_sync_sg_for_device
+macro_line|# define platform_dma_sync_sg_for_device&t;swiotlb_sync_sg_for_device
 macro_line|#endif
 macro_line|#ifndef platform_dma_supported
 DECL|macro|platform_dma_supported

@@ -1973,10 +1973,8 @@ id|port-&gt;serial
 suffix:semicolon
 r_int
 r_char
+op_star
 id|buf
-(braket
-l_int|10
-)braket
 suffix:semicolon
 r_int
 id|result
@@ -2020,6 +2018,27 @@ id|serial-&gt;dev
 comma
 id|port-&gt;read_urb-&gt;pipe
 )paren
+suffix:semicolon
+id|buf
+op_assign
+id|kmalloc
+c_func
+(paren
+l_int|10
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|buf
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 DECL|macro|FISH
 mdefine_line|#define FISH(a,b,c,d)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;result=usb_control_msg(serial-&gt;dev, usb_rcvctrlpipe(serial-&gt;dev,0),&t;&bslash;&n;&t;&t;&t;       b, a, c, d, buf, 1, 100);&t;&t;&t;&bslash;&n;&t;dbg(&quot;0x%x:0x%x:0x%x:0x%x  %d - %x&quot;,a,b,c,d,result,buf[0]);
@@ -2111,6 +2130,12 @@ comma
 l_int|0x8383
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|buf
 )paren
 suffix:semicolon
 multiline_comment|/* Setup termios */

@@ -4,6 +4,8 @@ DECL|macro|_LINUX_CPU_H_
 mdefine_line|#define _LINUX_CPU_H_
 macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/node.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 DECL|struct|cpu
 r_struct
@@ -122,11 +124,33 @@ DECL|macro|lock_cpu_hotplug
 mdefine_line|#define lock_cpu_hotplug()&t;down(&amp;cpucontrol)
 DECL|macro|unlock_cpu_hotplug
 mdefine_line|#define unlock_cpu_hotplug()&t;up(&amp;cpucontrol)
+DECL|macro|lock_cpu_hotplug_interruptible
+mdefine_line|#define lock_cpu_hotplug_interruptible() down_interruptible(&amp;cpucontrol)
+DECL|macro|hotcpu_notifier
+mdefine_line|#define hotcpu_notifier(fn, pri) {&t;&t;&t;&t;&bslash;&n;&t;static struct notifier_block fn##_nb = { fn, pri };&t;&bslash;&n;&t;register_cpu_notifier(&amp;fn##_nb);&t;&t;&t;&bslash;&n;}
+r_int
+id|cpu_down
+c_func
+(paren
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
+DECL|macro|cpu_is_offline
+mdefine_line|#define cpu_is_offline(cpu) unlikely(!cpu_online(cpu))
 macro_line|#else
 DECL|macro|lock_cpu_hotplug
 mdefine_line|#define lock_cpu_hotplug()&t;do { } while (0)
 DECL|macro|unlock_cpu_hotplug
 mdefine_line|#define unlock_cpu_hotplug()&t;do { } while (0)
+DECL|macro|lock_cpu_hotplug_interruptible
+mdefine_line|#define lock_cpu_hotplug_interruptible() 0
+DECL|macro|hotcpu_notifier
+mdefine_line|#define hotcpu_notifier(fn, pri)
+multiline_comment|/* CPUs don&squot;t go offline once they&squot;re online w/o CONFIG_HOTPLUG_CPU */
+DECL|macro|cpu_is_offline
+mdefine_line|#define cpu_is_offline(cpu) 0
 macro_line|#endif
 macro_line|#endif /* _LINUX_CPU_H_ */
 eof

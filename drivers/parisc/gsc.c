@@ -12,6 +12,21 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;gsc.h&quot;
+multiline_comment|/* This sets the vmerge boundary and size, it&squot;s here because it has to&n; * be available on all platforms (zero means no-virtual merging) */
+DECL|variable|parisc_vmerge_boundary
+r_int
+r_int
+id|parisc_vmerge_boundary
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|parisc_vmerge_max_size
+r_int
+r_int
+id|parisc_vmerge_max_size
+op_assign
+l_int|0
+suffix:semicolon
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG

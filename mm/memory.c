@@ -400,6 +400,7 @@ suffix:semicolon
 )brace
 DECL|function|pte_alloc_map
 id|pte_t
+id|fastcall
 op_star
 id|pte_alloc_map
 c_func
@@ -525,6 +526,7 @@ suffix:semicolon
 )brace
 DECL|function|pte_alloc_kernel
 id|pte_t
+id|fastcall
 op_star
 id|pte_alloc_kernel
 c_func
@@ -733,6 +735,8 @@ id|pte_chain_alloc
 c_func
 (paren
 id|GFP_ATOMIC
+op_or
+id|__GFP_NOWARN
 )paren
 suffix:semicolon
 r_if
@@ -1257,6 +1261,8 @@ id|pte_chain_alloc
 c_func
 (paren
 id|GFP_ATOMIC
+op_or
+id|__GFP_NOWARN
 )paren
 suffix:semicolon
 r_if
@@ -6121,6 +6127,8 @@ id|pte_chain_alloc
 c_func
 (paren
 id|GFP_ATOMIC
+op_or
+id|__GFP_NOWARN
 )paren
 suffix:semicolon
 r_if
@@ -7405,6 +7413,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Allocate page middle directory.&n; *&n; * We&squot;ve already handled the fast-path in-line, and we own the&n; * page table lock.&n; *&n; * On a two-level page table, this ends up actually being entirely&n; * optimized away.&n; */
 DECL|function|__pmd_alloc
 id|pmd_t
+id|fastcall
 op_star
 id|__pmd_alloc
 c_func

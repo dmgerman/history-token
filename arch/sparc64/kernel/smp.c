@@ -29,9 +29,6 @@ macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;linux/unistd.h&gt;
 r_extern
 r_int
 id|linux_num_cpus
@@ -56,16 +53,6 @@ id|cpumask_t
 id|cpu_online_map
 op_assign
 id|CPU_MASK_NONE
-suffix:semicolon
-DECL|variable|sparc64_num_cpus_possible
-id|atomic_t
-id|sparc64_num_cpus_possible
-op_assign
-id|ATOMIC_INIT
-c_func
-(paren
-l_int|0
-)paren
 suffix:semicolon
 DECL|variable|phys_cpu_present_map
 id|cpumask_t
@@ -5075,7 +5062,6 @@ id|mid
 OL
 id|max_cpus
 )paren
-(brace
 id|cpu_set
 c_func
 (paren
@@ -5084,14 +5070,6 @@ comma
 id|phys_cpu_present_map
 )paren
 suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|sparc64_num_cpus_possible
-)paren
-suffix:semicolon
-)brace
 id|instance
 op_increment
 suffix:semicolon
@@ -5099,11 +5077,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|atomic_read
+id|num_possible_cpus
 c_func
 (paren
-op_amp
-id|sparc64_num_cpus_possible
 )paren
 OG
 id|max_cpus
@@ -5145,21 +5121,12 @@ comma
 id|phys_cpu_present_map
 )paren
 suffix:semicolon
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|sparc64_num_cpus_possible
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|atomic_read
+id|num_possible_cpus
 c_func
 (paren
-op_amp
-id|sparc64_num_cpus_possible
 )paren
 op_le
 id|max_cpus

@@ -18,17 +18,23 @@ DECL|macro|dma_unmap_single
 mdefine_line|#define dma_unmap_single&t;platform_dma_unmap_single
 DECL|macro|dma_unmap_sg
 mdefine_line|#define dma_unmap_sg&t;&t;platform_dma_unmap_sg
-DECL|macro|dma_sync_single
-mdefine_line|#define dma_sync_single&t;&t;platform_dma_sync_single
-DECL|macro|dma_sync_sg
-mdefine_line|#define dma_sync_sg&t;&t;platform_dma_sync_sg
+DECL|macro|dma_sync_single_for_cpu
+mdefine_line|#define dma_sync_single_for_cpu&t;platform_dma_sync_single_for_cpu
+DECL|macro|dma_sync_sg_for_cpu
+mdefine_line|#define dma_sync_sg_for_cpu&t;platform_dma_sync_sg_for_cpu
+DECL|macro|dma_sync_single_for_device
+mdefine_line|#define dma_sync_single_for_device platform_dma_sync_single_for_device
+DECL|macro|dma_sync_sg_for_device
+mdefine_line|#define dma_sync_sg_for_device&t;platform_dma_sync_sg_for_device
 DECL|macro|dma_map_page
 mdefine_line|#define dma_map_page(dev, pg, off, size, dir)&t;&t;&t;&t;&bslash;&n;&t;dma_map_single(dev, page_address(pg) + (off), (size), (dir))
 DECL|macro|dma_unmap_page
 mdefine_line|#define dma_unmap_page(dev, dma_addr, size, dir)&t;&t;&t;&bslash;&n;&t;dma_unmap_single(dev, dma_addr, size, dir)
 multiline_comment|/*&n; * Rest of this file is part of the &quot;Advanced DMA API&quot;.  Use at your own risk.&n; * See Documentation/DMA-API.txt for details.&n; */
-DECL|macro|dma_sync_single_range
-mdefine_line|#define dma_sync_single_range(dev, dma_handle, offset, size, dir)&t;&bslash;&n;&t;dma_sync_single(dev, dma_handle, size, dir)
+DECL|macro|dma_sync_single_range_for_cpu
+mdefine_line|#define dma_sync_single_range_for_cpu(dev, dma_handle, offset, size, dir)&t;&bslash;&n;&t;dma_sync_single_for_cpu(dev, dma_handle, size, dir)
+DECL|macro|dma_sync_single_range_for_device
+mdefine_line|#define dma_sync_single_range_for_device(dev, dma_handle, offset, size, dir)&t;&bslash;&n;&t;dma_sync_single_for_device(dev, dma_handle, size, dir)
 DECL|macro|dma_supported
 mdefine_line|#define dma_supported&t;&t;platform_dma_supported
 r_static

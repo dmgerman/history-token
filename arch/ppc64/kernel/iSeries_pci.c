@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt; 
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1826,6 +1827,13 @@ r_return
 id|dest
 suffix:semicolon
 )brace
+DECL|variable|iSeries_memset_io
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iSeries_memset_io
+)paren
+suffix:semicolon
 DECL|function|iSeries_memcpy_toio
 r_void
 op_star
@@ -1892,6 +1900,13 @@ r_return
 id|dest
 suffix:semicolon
 )brace
+DECL|variable|iSeries_memcpy_toio
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iSeries_memcpy_toio
+)paren
+suffix:semicolon
 DECL|function|iSeries_memcpy_fromio
 r_void
 op_star
@@ -1958,6 +1973,13 @@ r_return
 id|dest
 suffix:semicolon
 )brace
+DECL|variable|iSeries_memcpy_fromio
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iSeries_memcpy_fromio
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Look down the chain to find the matching Device Device&n; */
 DECL|function|find_Device_Node
 r_static
@@ -2747,6 +2769,13 @@ id|u8
 id|ret.value
 suffix:semicolon
 )brace
+DECL|variable|iSeries_Read_Byte
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iSeries_Read_Byte
+)paren
+suffix:semicolon
 DECL|function|iSeries_Read_Word
 id|u16
 id|iSeries_Read_Word
@@ -2893,6 +2922,13 @@ id|ret.value
 )paren
 suffix:semicolon
 )brace
+DECL|variable|iSeries_Read_Word
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iSeries_Read_Word
+)paren
+suffix:semicolon
 DECL|function|iSeries_Read_Long
 id|u32
 id|iSeries_Read_Long
@@ -3039,6 +3075,13 @@ id|ret.value
 )paren
 suffix:semicolon
 )brace
+DECL|variable|iSeries_Read_Long
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iSeries_Read_Long
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Write MM I/O Instructions for the iSeries&n; *&n; * iSeries_Write_Byte = Write Byte (8 bit)&n; * iSeries_Write_Word = Write Word(16 bit)&n; * iSeries_Write_Long = Write Long(32 bit)&n; */
 DECL|function|iSeries_Write_Byte
 r_void
@@ -3178,6 +3221,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|iSeries_Write_Byte
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iSeries_Write_Byte
+)paren
+suffix:semicolon
 DECL|function|iSeries_Write_Word
 r_void
 id|iSeries_Write_Word
@@ -3320,6 +3370,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|iSeries_Write_Word
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iSeries_Write_Word
+)paren
+suffix:semicolon
 DECL|function|iSeries_Write_Long
 r_void
 id|iSeries_Write_Long
@@ -3462,6 +3519,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|iSeries_Write_Long
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iSeries_Write_Long
+)paren
+suffix:semicolon
 DECL|function|pcibios_name_device
 r_void
 id|pcibios_name_device

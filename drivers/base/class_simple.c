@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * class_simple.c - a &quot;simple&quot; interface for classes for simple char devices.&n; *&n; * Copyright (c) 2003-2004 Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n; * Copyright (c) 2003-2004 IBM Corp.&n; * &n; * This file is released under the GPLv2&n; *&n; */
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG 1
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/err.h&gt;

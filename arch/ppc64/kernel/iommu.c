@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc64/kernel/pci_iommu.c&n; * Copyright (C) 2001 Mike Corrigan &amp; Dave Engebretsen, IBM Corporation&n; * &n; * Rewrite, cleanup, new allocation schemes, virtual merging: &n; * Copyright (C) 2004 Olof Johansson, IBM Corporation&n; *               and  Ben. Herrenschmidt, IBM Corporation&n; *&n; * Dynamic DMA mapping support, platform-independent parts.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
+multiline_comment|/*&n; * arch/ppc64/kernel/iommu.c&n; * Copyright (C) 2001 Mike Corrigan &amp; Dave Engebretsen, IBM Corporation&n; * &n; * Rewrite, cleanup, new allocation schemes, virtual merging: &n; * Copyright (C) 2004 Olof Johansson, IBM Corporation&n; *               and  Ben. Herrenschmidt, IBM Corporation&n; *&n; * Dynamic DMA mapping support, bus-independent parts.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -124,10 +124,6 @@ id|start
 suffix:semicolon
 r_int
 r_int
-id|hint
-suffix:semicolon
-r_int
-r_int
 id|limit
 suffix:semicolon
 r_int
@@ -137,6 +133,43 @@ id|npages
 OG
 l_int|15
 suffix:semicolon
+r_int
+id|pass
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* This allocator was derived from x86_64&squot;s bit string search */
+multiline_comment|/* Sanity check */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|npages
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|printk_ratelimit
+c_func
+(paren
+)paren
+)paren
+id|WARN_ON
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+r_return
+id|NO_TCE
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -145,13 +178,13 @@ op_logical_and
 op_star
 id|handle
 )paren
-id|hint
+id|start
 op_assign
 op_star
 id|handle
 suffix:semicolon
 r_else
-id|hint
+id|start
 op_assign
 id|largealloc
 ques
@@ -160,12 +193,7 @@ id|tbl-&gt;it_largehint
 suffix:colon
 id|tbl-&gt;it_hint
 suffix:semicolon
-multiline_comment|/* Most of this is stolen from x86_64&squot;s bit string search function */
-id|start
-op_assign
-id|hint
-suffix:semicolon
-multiline_comment|/* Use only half of the table for small allocs (less than 15 pages). */
+multiline_comment|/* Use only half of the table for small allocs (15 pages or less) */
 id|limit
 op_assign
 id|largealloc
@@ -173,9 +201,7 @@ ques
 c_cond
 id|tbl-&gt;it_mapsize
 suffix:colon
-id|tbl-&gt;it_mapsize
-op_rshift
-l_int|1
+id|tbl-&gt;it_halfpoint
 suffix:semicolon
 r_if
 c_cond
@@ -184,17 +210,28 @@ id|largealloc
 op_logical_and
 id|start
 OL
-(paren
-id|tbl-&gt;it_mapsize
-op_rshift
-l_int|1
-)paren
+id|tbl-&gt;it_halfpoint
 )paren
 id|start
 op_assign
-id|tbl-&gt;it_mapsize
-op_rshift
-l_int|1
+id|tbl-&gt;it_halfpoint
+suffix:semicolon
+multiline_comment|/* The case below can happen if we have a small segment appended&n;&t; * to a large, or when the previous alloc was at the very end of&n;&t; * the available space. If so, go back to the initial start.&n;&t; */
+r_if
+c_cond
+(paren
+id|start
+op_ge
+id|limit
+)paren
+id|start
+op_assign
+id|largealloc
+ques
+c_cond
+id|tbl-&gt;it_largehint
+suffix:colon
+id|tbl-&gt;it_hint
 suffix:semicolon
 id|again
 suffix:colon
@@ -219,40 +256,62 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|end
 op_ge
 id|limit
+)paren
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|hint
+id|likely
+c_func
+(paren
+id|pass
+op_increment
+OL
+l_int|2
+)paren
 )paren
 (brace
+multiline_comment|/* First failure, just rescan the half of the table.&n;&t;&t;&t; * Second failure, rescan the other half of the table.&n;&t;&t;&t; */
 id|start
 op_assign
+(paren
 id|largealloc
+op_xor
+id|pass
+)paren
 ques
 c_cond
-id|tbl-&gt;it_mapsize
-op_rshift
-l_int|1
+id|tbl-&gt;it_halfpoint
 suffix:colon
 l_int|0
 suffix:semicolon
-id|hint
+id|limit
 op_assign
-l_int|0
+id|pass
+ques
+c_cond
+id|tbl-&gt;it_mapsize
+suffix:colon
+id|limit
 suffix:semicolon
 r_goto
 id|again
 suffix:semicolon
 )brace
 r_else
+(brace
+multiline_comment|/* Third failure, give up */
 r_return
 id|NO_TCE
 suffix:semicolon
+)brace
 )brace
 r_for
 c_loop
@@ -312,30 +371,22 @@ comma
 id|tbl-&gt;it_map
 )paren
 suffix:semicolon
-multiline_comment|/* Bump the hint to a new PHB cache line, which&n;&t; * is 16 entries wide on all pSeries machines.&n;&t; */
+multiline_comment|/* Bump the hint to a new block for small allocs. */
 r_if
 c_cond
 (paren
 id|largealloc
 )paren
+(brace
+multiline_comment|/* Don&squot;t bump to new block to avoid fragmentation */
 id|tbl-&gt;it_largehint
 op_assign
-(paren
 id|end
-op_plus
-id|tbl-&gt;it_blocksize
-op_minus
-l_int|1
-)paren
-op_amp
-op_complement
-(paren
-id|tbl-&gt;it_blocksize
-op_minus
-l_int|1
-)paren
 suffix:semicolon
+)brace
 r_else
+(brace
+multiline_comment|/* Overflow will be taken care of at the next allocation */
 id|tbl-&gt;it_hint
 op_assign
 (paren
@@ -353,6 +404,8 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* Update handle for SG allocations */
 r_if
 c_cond
 (paren
@@ -387,11 +440,6 @@ id|npages
 comma
 r_int
 id|direction
-comma
-r_int
-r_int
-op_star
-id|handle
 )paren
 (brace
 r_int
@@ -401,7 +449,7 @@ comma
 id|flags
 suffix:semicolon
 id|dma_addr_t
-id|retTce
+id|ret
 op_assign
 id|NO_TCE
 suffix:semicolon
@@ -416,7 +464,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Allocate a range of entries into the table */
 id|entry
 op_assign
 id|iommu_range_alloc
@@ -426,7 +473,7 @@ id|tbl
 comma
 id|npages
 comma
-id|handle
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -456,13 +503,12 @@ r_return
 id|NO_TCE
 suffix:semicolon
 )brace
-multiline_comment|/* We got the tces we wanted */
 id|entry
 op_add_assign
 id|tbl-&gt;it_offset
 suffix:semicolon
 multiline_comment|/* Offset into real TCE table */
-id|retTce
+id|ret
 op_assign
 id|entry
 op_lshift
@@ -492,7 +538,7 @@ comma
 id|direction
 )paren
 suffix:semicolon
-multiline_comment|/* Flush/invalidate TLBs if necessary */
+multiline_comment|/* Flush/invalidate TLB caches if necessary */
 r_if
 c_cond
 (paren
@@ -517,8 +563,14 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure updates are seen by hardware */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
-id|retTce
+id|ret
 suffix:semicolon
 )brace
 DECL|function|__iommu_free
@@ -611,7 +663,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;&bslash;tdma_ddr   = 0x%lx&bslash;n&quot;
+l_string|&quot;&bslash;tdma_addr  = 0x%lx&bslash;n&quot;
 comma
 (paren
 id|u64
@@ -769,7 +821,7 @@ comma
 id|npages
 )paren
 suffix:semicolon
-multiline_comment|/* Flush/invalidate TLBs if necessary */
+multiline_comment|/* Make sure TLB cache is flushed if the HW needs it. We do&n;&t; * not do an mb() here on purpose, it is not needed on any of&n;&t; * the current platforms.&n;&t; */
 r_if
 c_cond
 (paren
@@ -795,172 +847,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Build a iommu_table structure.  This contains a bit map which&n; * is used to manage allocation of the tce space.&n; */
-DECL|function|iommu_init_table
-r_struct
-id|iommu_table
-op_star
-id|iommu_init_table
-c_func
-(paren
-r_struct
-id|iommu_table
-op_star
-id|tbl
-)paren
-(brace
-r_int
-r_int
-id|sz
-suffix:semicolon
-r_static
-r_int
-id|welcomed
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* it_size is in pages, it_mapsize in number of entries */
-id|tbl-&gt;it_mapsize
-op_assign
-id|tbl-&gt;it_size
-op_star
-id|tbl-&gt;it_entrysize
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|systemcfg-&gt;platform
-op_eq
-id|PLATFORM_POWERMAC
-)paren
-id|tbl-&gt;it_mapsize
-op_assign
-id|tbl-&gt;it_size
-op_star
-(paren
-id|PAGE_SIZE
-op_div
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-suffix:semicolon
-r_else
-id|tbl-&gt;it_mapsize
-op_assign
-id|tbl-&gt;it_size
-op_star
-(paren
-id|PAGE_SIZE
-op_div
-r_sizeof
-(paren
-r_union
-id|tce_entry
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* sz is the number of bytes needed for the bitmap */
-id|sz
-op_assign
-(paren
-id|tbl-&gt;it_mapsize
-op_plus
-l_int|7
-)paren
-op_rshift
-l_int|3
-suffix:semicolon
-id|tbl-&gt;it_map
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-id|__get_free_pages
-c_func
-(paren
-id|GFP_ATOMIC
-comma
-id|get_order
-c_func
-(paren
-id|sz
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|tbl-&gt;it_map
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;iommu_init_table: Can&squot;t allocate memory, size %ld bytes&bslash;n&quot;
-comma
-id|sz
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|tbl-&gt;it_map
-comma
-l_int|0
-comma
-id|sz
-)paren
-suffix:semicolon
-id|tbl-&gt;it_hint
-op_assign
-l_int|0
-suffix:semicolon
-id|tbl-&gt;it_largehint
-op_assign
-l_int|0
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|tbl-&gt;it_lock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|welcomed
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;IOMMU table initialized, virtual merging %s&bslash;n&quot;
-comma
-id|novmerge
-ques
-c_cond
-l_string|&quot;disabled&quot;
-suffix:colon
-l_string|&quot;enabled&quot;
-)paren
-suffix:semicolon
-id|welcomed
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_return
-id|tbl
-suffix:semicolon
-)brace
 DECL|function|iommu_alloc_sg
 r_int
 id|iommu_alloc_sg
@@ -972,6 +858,11 @@ op_star
 id|tbl
 comma
 r_struct
+id|device
+op_star
+id|dev
+comma
+r_struct
 id|scatterlist
 op_star
 id|sglist
@@ -981,11 +872,6 @@ id|nelems
 comma
 r_int
 id|direction
-comma
-r_int
-r_int
-op_star
-id|handle
 )paren
 (brace
 id|dma_addr_t
@@ -996,12 +882,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-comma
-id|vaddr
-comma
-id|npages
-comma
-id|entry
 suffix:semicolon
 r_struct
 id|scatterlist
@@ -1013,14 +893,14 @@ id|outs
 comma
 op_star
 id|segstart
-comma
-op_star
-id|ps
 suffix:semicolon
 r_int
 id|outcount
 suffix:semicolon
-multiline_comment|/* Initialize some stuffs */
+r_int
+r_int
+id|handle
+suffix:semicolon
 id|outs
 op_assign
 id|s
@@ -1037,11 +917,11 @@ id|outcount
 op_assign
 l_int|1
 suffix:semicolon
-id|ps
+id|handle
 op_assign
-l_int|NULL
+l_int|0
 suffix:semicolon
-multiline_comment|/* Init first segment length for error handling */
+multiline_comment|/* Init first segment length for backout at failure */
 id|outs-&gt;dma_length
 op_assign
 l_int|0
@@ -1081,6 +961,36 @@ id|s
 op_increment
 )paren
 (brace
+r_int
+r_int
+id|vaddr
+comma
+id|npages
+comma
+id|entry
+comma
+id|slen
+suffix:semicolon
+id|slen
+op_assign
+id|s-&gt;length
+suffix:semicolon
+multiline_comment|/* Sanity check */
+r_if
+c_cond
+(paren
+id|slen
+op_eq
+l_int|0
+)paren
+(brace
+id|dma_next
+op_assign
+l_int|0
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 multiline_comment|/* Allocate iommu entries for that segment */
 id|vaddr
 op_assign
@@ -1103,7 +1013,7 @@ c_func
 (paren
 id|vaddr
 op_plus
-id|s-&gt;length
+id|slen
 )paren
 op_minus
 (paren
@@ -1125,6 +1035,7 @@ id|tbl
 comma
 id|npages
 comma
+op_amp
 id|handle
 )paren
 suffix:semicolon
@@ -1135,7 +1046,7 @@ l_string|&quot;  - vaddr: %lx, size: %lx&bslash;n&quot;
 comma
 id|vaddr
 comma
-id|s-&gt;length
+id|slen
 )paren
 suffix:semicolon
 multiline_comment|/* Handle failure */
@@ -1238,7 +1149,7 @@ c_func
 l_string|&quot;  - trying merge...&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* We cannot merge is:&n;&t;&t;&t; * - allocated dma_addr isn&squot;t contiguous to previous allocation&n;&t;&t;&t; * - current entry has an offset into the page&n;&t;&t;&t; * - previous entry didn&squot;t end on a page boundary&n;&t;&t;&t; */
+multiline_comment|/* We cannot merge if:&n;&t;&t;&t; * - allocated dma_addr isn&squot;t contiguous to previous allocation&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1249,16 +1160,6 @@ id|dma_addr
 op_ne
 id|dma_next
 )paren
-op_logical_or
-id|s-&gt;offset
-op_logical_or
-(paren
-id|ps-&gt;offset
-op_plus
-id|ps-&gt;length
-)paren
-op_mod
-id|PAGE_SIZE
 )paren
 (brace
 multiline_comment|/* Can&squot;t merge: create a new segment */
@@ -1295,7 +1196,6 @@ id|outs-&gt;dma_length
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* If we are beginning a new segment, fill entries */
 r_if
 c_cond
 (paren
@@ -1304,6 +1204,7 @@ op_eq
 id|s
 )paren
 (brace
+multiline_comment|/* This is a new segment, fill entries */
 id|DBG
 c_func
 (paren
@@ -1316,23 +1217,15 @@ id|dma_addr
 suffix:semicolon
 id|outs-&gt;dma_length
 op_assign
-id|s-&gt;length
+id|slen
 suffix:semicolon
 )brace
 multiline_comment|/* Calculate next page pointer for contiguous check */
 id|dma_next
 op_assign
-(paren
 id|dma_addr
-op_amp
-id|PAGE_MASK
-)paren
 op_plus
-(paren
-id|npages
-op_lshift
-id|PAGE_SHIFT
-)paren
+id|slen
 suffix:semicolon
 id|DBG
 c_func
@@ -1342,19 +1235,8 @@ comma
 id|dma_next
 )paren
 suffix:semicolon
-multiline_comment|/* Keep a pointer to the previous entry */
-id|ps
-op_assign
-id|s
-suffix:semicolon
 )brace
-multiline_comment|/* Make sure the update is visible to hardware. */
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Flush/invalidate TLBs if necessary */
+multiline_comment|/* Flush/invalidate TLB caches if necessary */
 r_if
 c_cond
 (paren
@@ -1377,6 +1259,12 @@ id|tbl-&gt;it_lock
 )paren
 comma
 id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure updates are seen by hardware */
+id|mb
+c_func
+(paren
 )paren
 suffix:semicolon
 id|DBG
@@ -1413,17 +1301,6 @@ id|outcount
 suffix:semicolon
 id|failure
 suffix:colon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-(paren
-id|tbl-&gt;it_lock
-)paren
-comma
-id|flags
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1451,6 +1328,12 @@ op_ne
 l_int|0
 )paren
 (brace
+r_int
+r_int
+id|vaddr
+comma
+id|npages
+suffix:semicolon
 id|vaddr
 op_assign
 id|s-&gt;dma_address
@@ -1473,7 +1356,7 @@ id|vaddr
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
-id|iommu_free
+id|__iommu_free
 c_func
 (paren
 id|tbl
@@ -1485,6 +1368,17 @@ id|npages
 suffix:semicolon
 )brace
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+(paren
+id|tbl-&gt;it_lock
+)paren
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1506,16 +1400,12 @@ id|sglist
 comma
 r_int
 id|nelems
-comma
-r_int
-id|direction
 )paren
 (brace
 r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/* Lock the whole operation to try to free as a &quot;chunk&quot; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1586,7 +1476,7 @@ id|sglist
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* Flush/invalidate TLBs if necessary */
+multiline_comment|/* Flush/invalidate TLBs if necessary. As for iommu_free(), we&n;&t; * do not do an mb() here, the affected platforms do not need it&n;&t; * when freeing.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1610,6 +1500,149 @@ id|tbl-&gt;it_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Build a iommu_table structure.  This contains a bit map which&n; * is used to manage allocation of the tce space.&n; */
+DECL|function|iommu_init_table
+r_struct
+id|iommu_table
+op_star
+id|iommu_init_table
+c_func
+(paren
+r_struct
+id|iommu_table
+op_star
+id|tbl
+)paren
+(brace
+r_int
+r_int
+id|sz
+suffix:semicolon
+r_static
+r_int
+id|welcomed
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* it_size is in pages, it_mapsize in number of entries */
+id|tbl-&gt;it_mapsize
+op_assign
+(paren
+id|tbl-&gt;it_size
+op_lshift
+id|PAGE_SHIFT
+)paren
+op_div
+id|tbl-&gt;it_entrysize
+suffix:semicolon
+multiline_comment|/* Set aside 1/4 of the table for large allocations. */
+id|tbl-&gt;it_halfpoint
+op_assign
+id|tbl-&gt;it_mapsize
+op_star
+l_int|3
+op_div
+l_int|4
+suffix:semicolon
+multiline_comment|/* number of bytes needed for the bitmap */
+id|sz
+op_assign
+(paren
+id|tbl-&gt;it_mapsize
+op_plus
+l_int|7
+)paren
+op_rshift
+l_int|3
+suffix:semicolon
+id|tbl-&gt;it_map
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|__get_free_pages
+c_func
+(paren
+id|GFP_ATOMIC
+comma
+id|get_order
+c_func
+(paren
+id|sz
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tbl-&gt;it_map
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;iommu_init_table: Can&squot;t allocate %ld bytes&bslash;n&quot;
+comma
+id|sz
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|tbl-&gt;it_map
+comma
+l_int|0
+comma
+id|sz
+)paren
+suffix:semicolon
+id|tbl-&gt;it_hint
+op_assign
+l_int|0
+suffix:semicolon
+id|tbl-&gt;it_largehint
+op_assign
+id|tbl-&gt;it_halfpoint
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|tbl-&gt;it_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|welcomed
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IOMMU table initialized, virtual merging %s&bslash;n&quot;
+comma
+id|novmerge
+ques
+c_cond
+l_string|&quot;disabled&quot;
+suffix:colon
+l_string|&quot;enabled&quot;
+)paren
+suffix:semicolon
+id|welcomed
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_return
+id|tbl
 suffix:semicolon
 )brace
 eof

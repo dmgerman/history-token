@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;    
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -8788,12 +8789,9 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#include &quot;os.h&quot;
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|errno
 r_static
@@ -8860,7 +8858,7 @@ c_cond
 (paren
 id|fd
 op_assign
-id|open
+id|sys_open
 (paren
 id|path
 comma
@@ -8901,7 +8899,7 @@ c_cond
 (paren
 id|x
 op_assign
-id|read
+id|sys_read
 (paren
 id|fd
 comma
@@ -8946,7 +8944,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|read
+id|sys_read
 (paren
 id|fd
 comma
@@ -9075,7 +9073,7 @@ id|failure
 suffix:semicolon
 )brace
 )brace
-id|close
+id|sys_close
 (paren
 id|fd
 )paren
@@ -9090,7 +9088,7 @@ l_int|0
 suffix:semicolon
 id|failure
 suffix:colon
-id|close
+id|sys_close
 (paren
 id|fd
 )paren

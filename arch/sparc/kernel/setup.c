@@ -39,6 +39,7 @@ macro_line|#include &lt;asm/mbus.h&gt;
 macro_line|#include &lt;asm/idprom.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/machines.h&gt;
+macro_line|#include &lt;asm/cpudata.h&gt;
 DECL|variable|screen_info
 r_struct
 id|screen_info
@@ -815,14 +816,6 @@ comma
 r_int
 r_int
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sun_serial_setup
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 r_extern
@@ -1626,42 +1619,15 @@ c_func
 id|set_preferred_console
 )paren
 suffix:semicolon
-DECL|function|sys_ioperm
-id|asmlinkage
-r_int
-id|sys_ioperm
-c_func
-(paren
-r_int
-r_int
-id|from
-comma
-r_int
-r_int
-id|num
-comma
-r_int
-id|on
-)paren
-(brace
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 r_extern
 r_char
 op_star
 id|sparc_cpu_type
-(braket
-)braket
 suffix:semicolon
 r_extern
 r_char
 op_star
 id|sparc_fpu_type
-(braket
-)braket
 suffix:semicolon
 DECL|function|show_cpuinfo
 r_static
@@ -1679,14 +1645,6 @@ op_star
 id|__unused
 )paren
 (brace
-r_int
-id|cpuid
-op_assign
-id|hard_smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 id|seq_printf
 c_func
 (paren
@@ -1700,24 +1658,21 @@ l_string|&quot;type&bslash;t&bslash;t: %s&bslash;n&quot;
 l_string|&quot;ncpus probed&bslash;t: %d&bslash;n&quot;
 l_string|&quot;ncpus active&bslash;t: %d&bslash;n&quot;
 macro_line|#ifndef CONFIG_SMP
-l_string|&quot;BogoMips&bslash;t: %lu.%02lu&bslash;n&quot;
+l_string|&quot;CPU0Bogo&bslash;t: %lu.%02lu&bslash;n&quot;
+l_string|&quot;CPU0ClkTck&bslash;t: %ld&bslash;n&quot;
 macro_line|#endif
 comma
 id|sparc_cpu_type
-(braket
-id|cpuid
-)braket
 ques
 c_cond
+id|sparc_cpu_type
 suffix:colon
 l_string|&quot;undetermined&quot;
 comma
 id|sparc_fpu_type
-(braket
-id|cpuid
-)braket
 ques
 c_cond
+id|sparc_fpu_type
 suffix:colon
 l_string|&quot;undetermined&quot;
 comma
@@ -1729,15 +1684,17 @@ id|romvec-&gt;pv_printrev
 op_rshift
 l_int|16
 comma
-(paren
-r_int
-)paren
 id|romvec-&gt;pv_printrev
+op_amp
+l_int|0xffff
 comma
 op_amp
 id|cputypval
 comma
-id|linux_num_cpus
+id|num_possible_cpus
+c_func
+(paren
+)paren
 comma
 id|num_online_cpus
 c_func
@@ -1745,7 +1702,13 @@ c_func
 )paren
 macro_line|#ifndef CONFIG_SMP
 comma
-id|loops_per_jiffy
+id|cpu_data
+c_func
+(paren
+l_int|0
+)paren
+dot
+id|udelay_val
 op_div
 (paren
 l_int|500000
@@ -1754,7 +1717,13 @@ id|HZ
 )paren
 comma
 (paren
-id|loops_per_jiffy
+id|cpu_data
+c_func
+(paren
+l_int|0
+)paren
+dot
+id|udelay_val
 op_div
 (paren
 l_int|5000
@@ -1764,11 +1733,19 @@ id|HZ
 )paren
 op_mod
 l_int|100
+comma
+id|cpu_data
+c_func
+(paren
+l_int|0
+)paren
+dot
+id|clock_tick
 macro_line|#endif
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-id|smp_bogo_info
+id|smp_bogo
 c_func
 (paren
 id|m

@@ -943,14 +943,12 @@ id|ia64_iobase
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_MCA
 id|ia64_mca_cmc_vector_setup
 c_func
 (paren
 )paren
 suffix:semicolon
 multiline_comment|/* Setup vector on AP &amp; enable */
-macro_line|#endif
 macro_line|#ifdef CONFIG_PERFMON
 id|pfm_init_percpu
 c_func

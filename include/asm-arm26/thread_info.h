@@ -180,8 +180,6 @@ suffix:semicolon
 multiline_comment|/* FIXME - PAGE_SIZE &lt; 32K */
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE&t;&t;(8192)
-multiline_comment|/*FIXME INIT_THREAD_SIZE - how big? */
-singleline_comment|//#define INIT_THREAD_SIZE        (65536)
 DECL|macro|__get_user_regs
 mdefine_line|#define __get_user_regs(x) (((struct pt_regs *)((unsigned long)(x) + THREAD_SIZE - 8)) - 1)
 r_extern

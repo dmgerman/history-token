@@ -10,7 +10,6 @@ macro_line|#include &lt;asm/macintosh.h&gt;
 macro_line|#include &lt;asm/macints.h&gt;
 macro_line|#include &lt;asm/mac_via.h&gt;
 macro_line|#include &lt;asm/mac_oss.h&gt;
-macro_line|#include &lt;asm/unistd.h&gt;
 DECL|variable|oss_present
 r_int
 id|oss_present
@@ -154,7 +153,7 @@ c_func
 r_void
 )paren
 (brace
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|OSS_IRQLEV_SCSI
@@ -172,7 +171,7 @@ op_star
 id|oss
 )paren
 suffix:semicolon
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|OSS_IRQLEV_IOPSCC
@@ -186,7 +185,7 @@ comma
 id|mac_scc_dispatch
 )paren
 suffix:semicolon
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|OSS_IRQLEV_NUBUS
@@ -204,7 +203,7 @@ op_star
 id|oss
 )paren
 suffix:semicolon
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|OSS_IRQLEV_SOUND
@@ -222,7 +221,7 @@ op_star
 id|oss
 )paren
 suffix:semicolon
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|OSS_IRQLEV_VIA1

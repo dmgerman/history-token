@@ -1,9 +1,5 @@
 multiline_comment|/*&n;    adm1021.c - Part of lm_sensors, Linux kernel modules for hardware&n;             monitoring&n;    Copyright (c) 1998, 1999  Frodo Looijaard &lt;frodol@dds.nl&gt; and&n;    Philip Edelbrock &lt;phil@netroedge.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_CHIP
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -346,14 +342,16 @@ id|value
 )paren
 suffix:semicolon
 r_static
-r_void
-id|adm1021_update_client
+r_struct
+id|adm1021_data
+op_star
+id|adm1021_update_device
 c_func
 (paren
 r_struct
-id|i2c_client
+id|device
 op_star
-id|client
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* (amalysh) read only mode, otherwise any limit&squot;s writing confuse BIOS */
@@ -380,7 +378,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;ADM1021-MAX1617&quot;
+l_string|&quot;adm1021&quot;
 comma
 dot
 id|id
@@ -413,7 +411,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|macro|show
-mdefine_line|#define show(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&bslash;&n;&t;struct adm1021_data *data = i2c_get_clientdata(client);&t;&bslash;&n;&t;int temp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;adm1021_update_client(client);&t;&t;&t;&t;&bslash;&n;&t;temp = TEMP_FROM_REG(data-&gt;value);&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, temp);&t;&t;&t;&bslash;&n;}
+mdefine_line|#define show(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct adm1021_data *data = adm1021_update_device(dev);&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, TEMP_FROM_REG(data-&gt;value));&t;&bslash;&n;}
 DECL|variable|temp_max
 id|show
 c_func
@@ -457,7 +455,7 @@ id|remote_temp_input
 )paren
 suffix:semicolon
 DECL|macro|show2
-mdefine_line|#define show2(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&bslash;&n;&t;struct adm1021_data *data = i2c_get_clientdata(client);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;adm1021_update_client(client);&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, data-&gt;value);&t;&t;&bslash;&n;}
+mdefine_line|#define show2(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct adm1021_data *data = adm1021_update_device(dev);&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, data-&gt;value);&t;&t;&t;&bslash;&n;}
 DECL|variable|alarms
 id|show2
 c_func
@@ -510,7 +508,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max1
+id|temp1_max
 comma
 id|S_IWUSR
 op_or
@@ -525,7 +523,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_min1
+id|temp1_min
 comma
 id|S_IWUSR
 op_or
@@ -540,7 +538,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input1
+id|temp1_input
 comma
 id|S_IRUGO
 comma
@@ -553,7 +551,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max2
+id|temp2_max
 comma
 id|S_IWUSR
 op_or
@@ -568,7 +566,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_min2
+id|temp2_min
 comma
 id|S_IWUSR
 op_or
@@ -583,7 +581,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input2
+id|temp2_input
 comma
 id|S_IRUGO
 comma
@@ -1117,23 +1115,6 @@ op_assign
 l_string|&quot;mc1066&quot;
 suffix:semicolon
 )brace
-r_else
-(brace
-id|dev_err
-c_func
-(paren
-op_amp
-id|adapter-&gt;dev
-comma
-l_string|&quot;Internal error: unknown kind (%d)?!?&quot;
-comma
-id|kind
-)paren
-suffix:semicolon
-r_goto
-id|error1
-suffix:semicolon
-)brace
 multiline_comment|/* Fill in the remaining client fields and put it into the global list */
 id|strlcpy
 c_func
@@ -1197,7 +1178,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max1
+id|dev_attr_temp1_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1207,7 +1188,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_min1
+id|dev_attr_temp1_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1217,7 +1198,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input1
+id|dev_attr_temp1_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1227,7 +1208,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max2
+id|dev_attr_temp2_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1237,7 +1218,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_min2
+id|dev_attr_temp2_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1247,7 +1228,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input2
+id|dev_attr_temp2_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -1489,18 +1470,31 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|adm1021_update_client
+DECL|function|adm1021_update_device
 r_static
-r_void
-id|adm1021_update_client
+r_struct
+id|adm1021_data
+op_star
+id|adm1021_update_device
 c_func
 (paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
 r_struct
 id|i2c_client
 op_star
 id|client
+op_assign
+id|to_i2c_client
+c_func
+(paren
+id|dev
 )paren
-(brace
+suffix:semicolon
 r_struct
 id|adm1021_data
 op_star
@@ -1716,6 +1710,9 @@ c_func
 op_amp
 id|data-&gt;update_lock
 )paren
+suffix:semicolon
+r_return
+id|data
 suffix:semicolon
 )brace
 DECL|function|sensors_adm1021_init

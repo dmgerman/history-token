@@ -1874,6 +1874,10 @@ l_int|16
 op_amp
 l_int|0xFF
 suffix:semicolon
+id|child-&gt;bridge_ctl
+op_assign
+id|bctl
+suffix:semicolon
 id|cmax
 op_assign
 id|pci_scan_child_bus
@@ -2011,6 +2015,10 @@ op_logical_neg
 id|is_cardbus
 )paren
 (brace
+id|child-&gt;bridge_ctl
+op_assign
+id|PCI_BRIDGE_CTL_NO_ISA
+suffix:semicolon
 multiline_comment|/* Now we can scan all subordinate buses... */
 id|max
 op_assign
@@ -2654,10 +2662,6 @@ id|dev-&gt;dma_mask
 op_assign
 l_int|0xffffffff
 suffix:semicolon
-id|dev-&gt;consistent_dma_mask
-op_assign
-l_int|0xffffffff
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2707,6 +2711,10 @@ id|dev-&gt;dev.dma_mask
 op_assign
 op_amp
 id|dev-&gt;dma_mask
+suffix:semicolon
+id|dev-&gt;dev.coherent_dma_mask
+op_assign
+l_int|0xffffffffull
 suffix:semicolon
 r_return
 id|dev

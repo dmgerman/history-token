@@ -1435,6 +1435,10 @@ c_cond
 id|io_base
 op_eq
 l_int|0
+op_logical_or
+id|io_base
+op_eq
+id|SNDRV_AUTO_PORT
 )paren
 (brace
 r_return
@@ -3579,6 +3583,10 @@ c_cond
 id|irq
 op_ge
 l_int|0
+op_logical_and
+id|irq
+op_ne
+id|SNDRV_AUTO_IRQ
 )paren
 (brace
 r_if
@@ -3603,11 +3611,6 @@ id|uart
 )paren
 )paren
 (brace
-id|uart-&gt;irq
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|snd_printk
 c_func
 (paren

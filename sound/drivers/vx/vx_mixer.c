@@ -4515,7 +4515,7 @@ l_int|0
 suffix:semicolon
 id|c
 OL
-l_int|1
+l_int|2
 suffix:semicolon
 id|c
 op_increment

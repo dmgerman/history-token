@@ -1,7 +1,6 @@
 macro_line|#ifndef _ASM_X8664_HPET_H
 DECL|macro|_ASM_X8664_HPET_H
 mdefine_line|#define _ASM_X8664_HPET_H 1
-macro_line|#include &lt;linux/interrupt.h&gt;
 multiline_comment|/*&n; * Documentation on HPET can be found at:&n; *      http://www.intel.com/ial/home/sp/pcmmspec.htm&n; *      ftp://download.intel.com/ial/home/sp/mmts098.pdf&n; */
 DECL|macro|HPET_MMAP_SIZE
 mdefine_line|#define HPET_MMAP_SIZE&t;1024
@@ -138,24 +137,6 @@ id|hpet_rtc_timer_init
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-id|irqreturn_t
-id|hpet_rtc_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_HPET_EMULATE_RTC */

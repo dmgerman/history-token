@@ -2353,7 +2353,11 @@ op_logical_and
 (paren
 id|device-&gt;quirks
 op_amp
-id|HID_QUIRK_2WHEEL_MOUSE_HACK
+(paren
+id|HID_QUIRK_2WHEEL_MOUSE_HACK_BACK
+op_or
+id|HID_QUIRK_2WHEEL_MOUSE_HACK_EXTRA
+)paren
 )paren
 op_logical_and
 (paren
@@ -2674,15 +2678,31 @@ r_if
 c_cond
 (paren
 (paren
+(paren
 id|hid-&gt;quirks
 op_amp
-id|HID_QUIRK_2WHEEL_MOUSE_HACK
+id|HID_QUIRK_2WHEEL_MOUSE_HACK_EXTRA
+)paren
+op_logical_and
+(paren
+id|usage-&gt;code
+op_eq
+id|BTN_EXTRA
+)paren
+)paren
+op_logical_or
+(paren
+(paren
+id|hid-&gt;quirks
+op_amp
+id|HID_QUIRK_2WHEEL_MOUSE_HACK_BACK
 )paren
 op_logical_and
 (paren
 id|usage-&gt;code
 op_eq
 id|BTN_BACK
+)paren
 )paren
 )paren
 (brace
@@ -2743,6 +2763,7 @@ op_ne
 id|usage-&gt;hat_max
 )paren
 (brace
+multiline_comment|/* FIXME: hat_max can be 0 and hat_min 1 */
 id|value
 op_assign
 (paren
@@ -3041,7 +3062,7 @@ l_int|0
 )paren
 )paren
 (brace
-multiline_comment|/* Key 0 is &quot;unassigned&quot;, not KEY_UKNOWN */
+multiline_comment|/* Key 0 is &quot;unassigned&quot;, not KEY_UNKNOWN */
 r_return
 suffix:semicolon
 )brace
@@ -3475,8 +3496,14 @@ c_cond
 op_logical_neg
 id|report-&gt;maxfield
 )paren
+(brace
+id|list
+op_assign
+id|list-&gt;next
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

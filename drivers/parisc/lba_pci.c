@@ -956,6 +956,12 @@ c_func
 id|d-&gt;hba.base_addr
 op_plus
 id|LBA_PCI_CFG_DATA
+op_plus
+(paren
+id|pos
+op_amp
+l_int|3
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -976,6 +982,12 @@ c_func
 id|d-&gt;hba.base_addr
 op_plus
 id|LBA_PCI_CFG_DATA
+op_plus
+(paren
+id|pos
+op_amp
+l_int|2
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -1478,6 +1490,12 @@ comma
 id|d-&gt;hba.base_addr
 op_plus
 id|LBA_PCI_CFG_DATA
+op_plus
+(paren
+id|pos
+op_amp
+l_int|3
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -1493,6 +1511,12 @@ comma
 id|d-&gt;hba.base_addr
 op_plus
 id|LBA_PCI_CFG_DATA
+op_plus
+(paren
+id|pos
+op_amp
+l_int|2
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -1513,6 +1537,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* flush posted write */
 id|lba_t32
 op_assign
 id|READ_REG32

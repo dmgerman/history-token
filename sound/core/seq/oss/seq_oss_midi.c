@@ -1954,14 +1954,7 @@ multiline_comment|/* bender off */
 )brace
 )brace
 )brace
-id|snd_seq_oss_midi_close
-c_func
-(paren
-id|dp
-comma
-id|dev
-)paren
-suffix:semicolon
+singleline_comment|// snd_seq_oss_midi_close(dp, dev);
 id|snd_use_lock_free
 c_func
 (paren
@@ -2300,6 +2293,10 @@ id|ossev.v.parm
 op_assign
 id|ev-&gt;data.note.velocity
 suffix:semicolon
+id|ossev.v.chn
+op_assign
+id|ev-&gt;data.note.channel
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -2323,6 +2320,10 @@ id|ossev.l.val
 op_assign
 id|ev-&gt;data.control.value
 suffix:semicolon
+id|ossev.l.chn
+op_assign
+id|ev-&gt;data.control.channel
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -2337,6 +2338,10 @@ op_assign
 id|ev-&gt;data.control.value
 op_plus
 l_int|8192
+suffix:semicolon
+id|ossev.l.chn
+op_assign
+id|ev-&gt;data.control.channel
 suffix:semicolon
 r_break
 suffix:semicolon

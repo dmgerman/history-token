@@ -619,18 +619,10 @@ op_assign
 op_amp
 id|hydra_close
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|ei_status.priv
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|root_hydra_dev
-suffix:semicolon
-id|root_hydra_dev
-op_assign
-id|dev
+id|ei_poll
 suffix:semicolon
 macro_line|#endif
 id|NS8390_init

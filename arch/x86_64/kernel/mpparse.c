@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Intel Multiprocessor Specification 1.1 and 1.4&n; *&t;compliant MP-table parsing routines.&n; *&n; *&t;(c) 1995 Alan Cox, Building #3 &lt;alan@redhat.com&gt;&n; *&t;(c) 1998, 1999, 2000 Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; *&t;Fixes&n; *&t;&t;Erich Boleyn&t;:&t;MP v1.4 and additional changes.&n; *&t;&t;Alan Cox&t;:&t;Added EBDA scanning&n; *&t;&t;Ingo Molnar&t;:&t;various cleanups and rewrites&n; *&t;Maciej W. Rozycki&t;:&t;Bits for default MP configurations&n; *&t;&t;Paul Diefenbaugh:&t;Added full ACPI support&n; */
+multiline_comment|/*&n; *&t;Intel Multiprocessor Specification 1.1 and 1.4&n; *&t;compliant MP-table parsing routines.&n; *&n; *&t;(c) 1995 Alan Cox, Building #3 &lt;alan@redhat.com&gt;&n; *&t;(c) 1998, 1999, 2000 Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; *&t;Fixes&n; *&t;&t;Erich Boleyn&t;:&t;MP v1.4 and additional changes.&n; *&t;&t;Alan Cox&t;:&t;Added EBDA scanning&n; *&t;&t;Ingo Molnar&t;:&t;various cleanups and rewrites&n; *&t;&t;Maciej W. Rozycki:&t;Bits for default MP configurations&n; *&t;&t;Paul Diefenbaugh:&t;Added full ACPI support&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2629,13 +2629,13 @@ DECL|member|apic_id
 r_int
 id|apic_id
 suffix:semicolon
-DECL|member|irq_start
+DECL|member|gsi_start
 r_int
-id|irq_start
+id|gsi_start
 suffix:semicolon
-DECL|member|irq_end
+DECL|member|gsi_end
 r_int
-id|irq_end
+id|gsi_end
 suffix:semicolon
 DECL|member|pin_programmed
 id|u32
@@ -2658,7 +2658,7 @@ id|__init
 id|mp_find_ioapic
 (paren
 r_int
-id|irq
+id|gsi
 )paren
 (brace
 r_int
@@ -2666,7 +2666,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Find the IOAPIC that manages this IRQ. */
+multiline_comment|/* Find the IOAPIC that manages this GSI. */
 r_for
 c_loop
 (paren
@@ -2686,25 +2686,25 @@ r_if
 c_cond
 (paren
 (paren
-id|irq
+id|gsi
 op_ge
 id|mp_ioapic_routing
 (braket
 id|i
 )braket
 dot
-id|irq_start
+id|gsi_start
 )paren
 op_logical_and
 (paren
-id|irq
+id|gsi
 op_le
 id|mp_ioapic_routing
 (braket
 id|i
 )braket
 dot
-id|irq_end
+id|gsi_end
 )paren
 )paren
 r_return
@@ -2715,9 +2715,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ERROR: Unable to locate IOAPIC for IRQ %d&bslash;n&quot;
+l_string|&quot;ERROR: Unable to locate IOAPIC for GSI %d&bslash;n&quot;
 comma
-id|irq
+id|gsi
 )paren
 suffix:semicolon
 r_return
@@ -2737,7 +2737,7 @@ id|u32
 id|address
 comma
 id|u32
-id|irq_base
+id|gsi_base
 )paren
 (brace
 r_int
@@ -2860,7 +2860,7 @@ c_func
 id|idx
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Build basic IRQ lookup table to facilitate irq-&gt;io_apic lookups&n;&t; * and to prevent reprogramming of IOAPIC pins (PCI IRQs).&n;&t; */
+multiline_comment|/* &n;&t; * Build basic IRQ lookup table to facilitate gsi-&gt;io_apic lookups&n;&t; * and to prevent reprogramming of IOAPIC pins (PCI IRQs).&n;&t; */
 id|mp_ioapic_routing
 (braket
 id|idx
@@ -2880,18 +2880,18 @@ id|mp_ioapic_routing
 id|idx
 )braket
 dot
-id|irq_start
+id|gsi_start
 op_assign
-id|irq_base
+id|gsi_base
 suffix:semicolon
 id|mp_ioapic_routing
 (braket
 id|idx
 )braket
 dot
-id|irq_end
+id|gsi_end
 op_assign
-id|irq_base
+id|gsi_base
 op_plus
 id|io_apic_get_redir_entries
 c_func
@@ -2904,7 +2904,7 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;IOAPIC[%d]: apic_id %d, version %d, address 0x%x, &quot;
-l_string|&quot;IRQ %d-%d&bslash;n&quot;
+l_string|&quot;GSI %d-%d&bslash;n&quot;
 comma
 id|idx
 comma
@@ -2934,14 +2934,14 @@ id|mp_ioapic_routing
 id|idx
 )braket
 dot
-id|irq_start
+id|gsi_start
 comma
 id|mp_ioapic_routing
 (braket
 id|idx
 )braket
 dot
-id|irq_end
+id|gsi_end
 )paren
 suffix:semicolon
 r_return
@@ -2962,7 +2962,7 @@ id|u8
 id|trigger
 comma
 id|u32
-id|global_irq
+id|gsi
 )paren
 (brace
 r_struct
@@ -2991,13 +2991,13 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* &n;&t; * Convert &squot;global_irq&squot; to &squot;ioapic.pin&squot;.&n;&t; */
+multiline_comment|/* &n;&t; * Convert &squot;gsi&squot; to &squot;ioapic.pin&squot;.&n;&t; */
 id|ioapic
 op_assign
 id|mp_find_ioapic
 c_func
 (paren
-id|global_irq
+id|gsi
 )paren
 suffix:semicolon
 r_if
@@ -3011,14 +3011,14 @@ r_return
 suffix:semicolon
 id|pin
 op_assign
-id|global_irq
+id|gsi
 op_minus
 id|mp_ioapic_routing
 (braket
 id|ioapic
 )braket
 dot
-id|irq_start
+id|gsi_start
 suffix:semicolon
 multiline_comment|/*&n;&t; * TBD: This check is for faulty timer entries, where the override&n;&t; *      erroneously sets the trigger to level, resulting in a HUGE &n;&t; *      increase of timer interrupts!&n;&t; */
 r_if
@@ -3110,7 +3110,7 @@ comma
 id|intsrc.mpc_dstirq
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * If an existing [IOAPIC.PIN -&gt; IRQ] routing entry exists we override it.&n;&t; * Otherwise create a new entry (e.g. global_irq == 2).&n;&t; */
+multiline_comment|/* &n;&t; * If an existing [IOAPIC.PIN -&gt; IRQ] routing entry exists we override it.&n;&t; * Otherwise create a new entry (e.g. gsi == 2).&n;&t; */
 r_for
 c_loop
 (paren
@@ -3381,10 +3381,11 @@ id|__init
 id|mp_config_ioapic_for_sci
 c_func
 (paren
-r_int
-id|irq
+id|u32
+id|gsi
 )paren
 (brace
+macro_line|#ifdef CONFIG_ACPI_INTERPRETER
 r_int
 id|ioapic
 suffix:semicolon
@@ -3539,7 +3540,7 @@ id|acpi_fadt.sci_int
 op_assign
 id|entry-&gt;global_irq
 suffix:semicolon
-id|irq
+id|gsi
 op_assign
 id|entry-&gt;global_irq
 suffix:semicolon
@@ -3548,19 +3549,19 @@ op_assign
 id|mp_find_ioapic
 c_func
 (paren
-id|irq
+id|gsi
 )paren
 suffix:semicolon
 id|ioapic_pin
 op_assign
-id|irq
+id|gsi
 op_minus
 id|mp_ioapic_routing
 (braket
 id|ioapic
 )braket
 dot
-id|irq_start
+id|gsi_start
 suffix:semicolon
 multiline_comment|/*&n;&t; * MPS INTI flags:&n;&t; *  trigger: 0=default, 1=edge, 3=level&n;&t; *  polarity: 0=default, 1=high, 3=low&n;&t; * Per ACPI spec, default for SCI means level/low.&n;&t; */
 id|io_apic_set_pci_routing
@@ -3570,7 +3571,7 @@ id|ioapic
 comma
 id|ioapic_pin
 comma
-id|irq
+id|gsi
 comma
 (paren
 id|flags.trigger
@@ -3595,6 +3596,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|function|mp_parse_prt
@@ -3631,7 +3633,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|irq
+id|gsi
 op_assign
 l_int|0
 suffix:semicolon
@@ -3675,14 +3677,14 @@ comma
 id|node
 )paren
 suffix:semicolon
-multiline_comment|/* Need to get irq for dynamic entry */
+multiline_comment|/* Need to get gsi for dynamic entry */
 r_if
 c_cond
 (paren
 id|entry-&gt;link.handle
 )paren
 (brace
-id|irq
+id|gsi
 op_assign
 id|acpi_pci_link_get_irq
 c_func
@@ -3702,15 +3704,15 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|irq
+id|gsi
 )paren
 r_continue
 suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Hardwired IRQ. Assume PCI standard settings */
-id|irq
+multiline_comment|/* Hardwired GSI. Assume PCI standard settings */
+id|gsi
 op_assign
 id|entry-&gt;link.index
 suffix:semicolon
@@ -3729,7 +3731,7 @@ c_cond
 (paren
 id|acpi_fadt.sci_int
 op_eq
-id|irq
+id|gsi
 )paren
 r_continue
 suffix:semicolon
@@ -3738,7 +3740,7 @@ op_assign
 id|mp_find_ioapic
 c_func
 (paren
-id|irq
+id|gsi
 )paren
 suffix:semicolon
 r_if
@@ -3752,16 +3754,16 @@ r_continue
 suffix:semicolon
 id|ioapic_pin
 op_assign
-id|irq
+id|gsi
 op_minus
 id|mp_ioapic_routing
 (braket
 id|ioapic
 )braket
 dot
-id|irq_start
+id|gsi_start
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Avoid pin reprogramming.  PRTs typically include entries  &n;&t;&t; * with redundant pin-&gt;irq mappings (but unique PCI devices);&n;&t;&t; * we only only program the IOAPIC on the first.&n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * Avoid pin reprogramming.  PRTs typically include entries  &n;&t;&t; * with redundant pin-&gt;gsi mappings (but unique PCI devices);&n;&t;&t; * we only only program the IOAPIC on the first.&n;&t;&t; */
 id|bit
 op_assign
 id|ioapic_pin
@@ -3833,7 +3835,7 @@ id|idx
 )braket
 )paren
 (brace
-id|printk
+id|Dprintk
 c_func
 (paren
 id|KERN_DEBUG
@@ -3849,32 +3851,14 @@ comma
 id|ioapic_pin
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|use_pci_vector
+id|acpi_gsi_to_irq
 c_func
 (paren
-)paren
-op_logical_and
-op_logical_neg
-id|platform_legacy_irq
-c_func
-(paren
-id|irq
-)paren
-)paren
-id|irq
-op_assign
-id|IO_APIC_VECTOR
-c_func
-(paren
-id|irq
-)paren
-suffix:semicolon
+id|gsi
+comma
+op_amp
 id|entry-&gt;irq
-op_assign
-id|irq
+)paren
 suffix:semicolon
 r_continue
 suffix:semicolon
@@ -3906,7 +3890,7 @@ id|ioapic
 comma
 id|ioapic_pin
 comma
-id|irq
+id|gsi
 comma
 id|edge_level
 comma
@@ -3914,40 +3898,21 @@ id|active_high_low
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|use_pci_vector
+id|acpi_gsi_to_irq
 c_func
 (paren
-)paren
-op_logical_and
-op_logical_neg
-id|platform_legacy_irq
-c_func
-(paren
-id|irq
-)paren
-)paren
-id|irq
-op_assign
-id|IO_APIC_VECTOR
-c_func
-(paren
-id|irq
-)paren
-suffix:semicolon
+id|gsi
+comma
+op_amp
 id|entry-&gt;irq
-op_assign
-id|irq
+)paren
 suffix:semicolon
 )brace
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%02x:%02x:%02x[%c] -&gt; %d-%d&quot;
-l_string|&quot; -&gt; IRQ %d&bslash;n&quot;
+l_string|&quot;%02x:%02x:%02x[%c] -&gt; %d-%d -&gt; IRQ %d&bslash;n&quot;
 comma
 id|entry-&gt;id.segment
 comma

@@ -13,7 +13,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
-macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/q40_master.h&gt;
 macro_line|#include &lt;asm/q40ints.h&gt;
 multiline_comment|/* &n; * Q40 IRQs are defined as follows: &n; *            3,4,5,6,7,10,11,14,15 : ISA dev IRQs&n; *            16-31: reserved&n; *            32   : keyboard int&n; *            33   : frame int (50/200 Hz periodic timer)&n; *            34   : sample int (10/20 KHz periodic timer)&n; *          &n;*/
@@ -35,25 +34,6 @@ op_star
 id|fp
 )paren
 suffix:semicolon
-r_extern
-id|irqreturn_t
-(paren
-op_star
-id|q40_sys_default_handler
-(braket
-)braket
-)paren
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
 r_static
 id|irqreturn_t
 id|q40_defhand
@@ -73,7 +53,7 @@ id|fp
 suffix:semicolon
 r_static
 id|irqreturn_t
-id|sys_default_handler
+id|default_handler
 c_func
 (paren
 r_int
@@ -264,7 +244,7 @@ suffix:semicolon
 multiline_comment|/* all enabled */
 )brace
 multiline_comment|/* setup handler for ISA ints */
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|IRQ2
@@ -564,7 +544,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Q40_IRQ_SAMPLE :somewhat special actions required here ..*/
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 l_int|4
@@ -578,7 +558,7 @@ comma
 id|dev_id
 )paren
 suffix:semicolon
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 l_int|6
@@ -770,7 +750,7 @@ multiline_comment|/* do not reset state !! */
 r_else
 (brace
 multiline_comment|/* == Q40_IRQ_SAMPLE */
-id|sys_free_irq
+id|cpu_free_irq
 c_func
 (paren
 l_int|4
@@ -778,7 +758,7 @@ comma
 id|dev_id
 )paren
 suffix:semicolon
-id|sys_free_irq
+id|cpu_free_irq
 c_func
 (paren
 l_int|6
@@ -1847,10 +1827,10 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-DECL|function|sys_default_handler
+DECL|function|default_handler
 r_static
 id|irqreturn_t
-id|sys_default_handler
+id|default_handler
 c_func
 (paren
 r_int
@@ -1877,11 +1857,11 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-DECL|variable|q40_sys_default_handler
+DECL|variable|q40_default_handler
 id|irqreturn_t
 (paren
 op_star
-id|q40_sys_default_handler
+id|q40_default_handler
 (braket
 id|SYS_IRQS
 )braket
@@ -1898,21 +1878,21 @@ op_star
 )paren
 op_assign
 (brace
-id|sys_default_handler
+id|default_handler
 comma
-id|sys_default_handler
+id|default_handler
 comma
-id|sys_default_handler
+id|default_handler
 comma
-id|sys_default_handler
+id|default_handler
 comma
-id|sys_default_handler
+id|default_handler
 comma
-id|sys_default_handler
+id|default_handler
 comma
-id|sys_default_handler
+id|default_handler
 comma
-id|sys_default_handler
+id|default_handler
 )brace
 suffix:semicolon
 DECL|function|q40_enable_irq

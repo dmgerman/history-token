@@ -1,15 +1,7 @@
 multiline_comment|/*&n; * mf_proc.c&n; * Copyright (C) 2001 Kyle A. Lucke  IBM Corporation&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/iSeries/mf.h&gt;
-DECL|variable|mf_proc_root
-r_static
-r_struct
-id|proc_dir_entry
-op_star
-id|mf_proc_root
-op_assign
-l_int|NULL
-suffix:semicolon
 DECL|function|proc_mf_dump_cmdline
 r_static
 r_int
@@ -903,16 +895,20 @@ id|count
 suffix:semicolon
 )brace
 DECL|function|mf_proc_init
-r_void
+r_static
+r_int
+id|__init
 id|mf_proc_init
 c_func
 (paren
+r_void
+)paren
+(brace
 r_struct
 id|proc_dir_entry
 op_star
-id|iSeries_proc
-)paren
-(brace
+id|mf_proc_root
+suffix:semicolon
 r_struct
 id|proc_dir_entry
 op_star
@@ -937,9 +933,9 @@ op_assign
 id|proc_mkdir
 c_func
 (paren
-l_string|&quot;mf&quot;
+l_string|&quot;iSeries/mf&quot;
 comma
-id|iSeries_proc
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -949,6 +945,7 @@ op_logical_neg
 id|mf_proc_root
 )paren
 r_return
+l_int|1
 suffix:semicolon
 id|name
 (braket
@@ -998,6 +995,7 @@ op_logical_neg
 id|mf
 )paren
 r_return
+l_int|1
 suffix:semicolon
 id|ent
 op_assign
@@ -1022,6 +1020,7 @@ op_logical_neg
 id|ent
 )paren
 r_return
+l_int|1
 suffix:semicolon
 id|ent-&gt;nlink
 op_assign
@@ -1077,6 +1076,7 @@ op_logical_neg
 id|ent
 )paren
 r_return
+l_int|1
 suffix:semicolon
 id|ent-&gt;nlink
 op_assign
@@ -1148,6 +1148,7 @@ op_logical_neg
 id|ent
 )paren
 r_return
+l_int|1
 suffix:semicolon
 id|ent-&gt;nlink
 op_assign
@@ -1192,6 +1193,7 @@ op_logical_neg
 id|ent
 )paren
 r_return
+l_int|1
 suffix:semicolon
 id|ent-&gt;nlink
 op_assign
@@ -1213,5 +1215,15 @@ id|ent-&gt;write_proc
 op_assign
 id|proc_mf_change_src
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|mf_proc_init
+id|__initcall
+c_func
+(paren
+id|mf_proc_init
+)paren
+suffix:semicolon
 eof

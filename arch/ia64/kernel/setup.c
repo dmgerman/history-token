@@ -1155,14 +1155,12 @@ id|vga_con
 suffix:semicolon
 macro_line|# endif
 macro_line|#endif
-macro_line|#ifdef CONFIG_IA64_MCA
 multiline_comment|/* enable IA-64 Machine Check Abort Handling */
 id|ia64_mca_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|platform_setup
 c_func
 (paren

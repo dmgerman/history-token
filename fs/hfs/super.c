@@ -1172,6 +1172,10 @@ op_assign
 op_amp
 id|hfs_super_operations
 suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_NODIRATIME
+suffix:semicolon
 id|init_MUTEX
 c_func
 (paren
@@ -1325,7 +1329,7 @@ op_logical_neg
 id|sb-&gt;s_root
 )paren
 r_goto
-id|bail_no_root
+id|bail_iput
 suffix:semicolon
 id|sb-&gt;s_root-&gt;d_op
 op_assign
@@ -1335,6 +1339,14 @@ suffix:semicolon
 multiline_comment|/* everything&squot;s okay */
 r_return
 l_int|0
+suffix:semicolon
+id|bail_iput
+suffix:colon
+id|iput
+c_func
+(paren
+id|root_inode
+)paren
 suffix:semicolon
 id|bail_no_root
 suffix:colon

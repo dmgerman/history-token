@@ -2984,15 +2984,9 @@ id|FUNC_HAS_PS0
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: executing _PS0 on %s&bslash;n&quot;
+l_string|&quot;%s: executing _PS0&bslash;n&quot;
 comma
 id|__FUNCTION__
-comma
-id|pci_name
-c_func
-(paren
-id|func-&gt;pci_dev
-)paren
 )paren
 suffix:semicolon
 id|status
@@ -3036,6 +3030,9 @@ r_goto
 id|err_exit
 suffix:semicolon
 )brace
+r_else
+r_break
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* TBD: evaluate _STA to check if the slot is enabled */
@@ -3176,6 +3173,9 @@ r_goto
 id|err_exit
 suffix:semicolon
 )brace
+r_else
+r_break
+suffix:semicolon
 )brace
 )brace
 id|list_for_each
@@ -3272,6 +3272,9 @@ r_goto
 id|err_exit
 suffix:semicolon
 )brace
+r_else
+r_break
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* TBD: evaluate _STA to check if the slot is disabled */
@@ -3661,42 +3664,12 @@ c_cond
 (paren
 id|func-&gt;pci_dev
 )paren
-(brace
-r_if
-c_cond
-(paren
 id|acpiphp_unconfigure_function
 c_func
 (paren
 id|func
 )paren
-op_eq
-l_int|0
-)paren
-(brace
-id|func-&gt;pci_dev
-op_assign
-l_int|NULL
 suffix:semicolon
-)brace
-r_else
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;failed to unconfigure device&bslash;n&quot;
-)paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-r_goto
-id|err_exit
-suffix:semicolon
-)brace
-)brace
 )brace
 id|slot-&gt;flags
 op_and_assign
@@ -5077,7 +5050,7 @@ r_goto
 id|err_exit
 suffix:semicolon
 )brace
-id|enabled
+id|disabled
 op_increment
 suffix:semicolon
 )brace
@@ -5124,7 +5097,7 @@ r_goto
 id|err_exit
 suffix:semicolon
 )brace
-id|disabled
+id|enabled
 op_increment
 suffix:semicolon
 )brace

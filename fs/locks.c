@@ -6153,6 +6153,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|locks_remove_posix
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|locks_remove_posix
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This function is called on the last close of an open file.&n; */
 DECL|function|locks_remove_flock
 r_void

@@ -3,6 +3,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -32,6 +33,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;linux/netpoll.h&gt;
 macro_line|#ifdef CONFIG_NET_RADIO
 macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* Note : will define WIRELESS_EXT */
 macro_line|#include &lt;net/iw_handler.h&gt;
@@ -4557,6 +4559,30 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETPOLL_RX
+r_if
+c_cond
+(paren
+id|skb-&gt;dev-&gt;netpoll_rx
+op_logical_and
+id|netpoll_rx
+c_func
+(paren
+id|skb
+)paren
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+id|NET_RX_DROP
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5178,6 +5204,32 @@ r_int
 r_int
 id|type
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETPOLL_RX
+r_if
+c_cond
+(paren
+id|skb-&gt;dev-&gt;netpoll_rx
+op_logical_and
+id|skb-&gt;dev-&gt;poll
+op_logical_and
+id|netpoll_rx
+c_func
+(paren
+id|skb
+)paren
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+id|NET_RX_DROP
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5714,11 +5766,6 @@ id|budget
 op_assign
 id|netdev_max_backlog
 suffix:semicolon
-id|preempt_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 id|local_irq_disable
 c_func
 (paren
@@ -5851,11 +5898,6 @@ suffix:semicolon
 id|out
 suffix:colon
 id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|preempt_enable
 c_func
 (paren
 )paren
@@ -8103,6 +8145,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_return
 id|dev_mc_add
 c_func
 (paren
@@ -8114,9 +8157,6 @@ id|dev-&gt;addr_len
 comma
 l_int|1
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 r_case
 id|SIOCDELMULTI
@@ -8149,6 +8189,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_return
 id|dev_mc_delete
 c_func
 (paren
@@ -8160,9 +8201,6 @@ id|dev-&gt;addr_len
 comma
 l_int|1
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 r_case
 id|SIOCGIFINDEX
@@ -10290,6 +10328,209 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+DECL|function|dev_cpu_callback
+r_static
+r_int
+id|dev_cpu_callback
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nfb
+comma
+r_int
+r_int
+id|action
+comma
+r_void
+op_star
+id|ocpu
+)paren
+(brace
+r_struct
+id|sk_buff
+op_star
+op_star
+id|list_skb
+suffix:semicolon
+r_struct
+id|net_device
+op_star
+op_star
+id|list_net
+suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+r_int
+r_int
+id|cpu
+comma
+id|oldcpu
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ocpu
+suffix:semicolon
+r_struct
+id|softnet_data
+op_star
+id|sd
+comma
+op_star
+id|oldsd
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|action
+op_ne
+id|CPU_DEAD
+)paren
+r_return
+id|NOTIFY_OK
+suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+id|sd
+op_assign
+op_amp
+id|per_cpu
+c_func
+(paren
+id|softnet_data
+comma
+id|cpu
+)paren
+suffix:semicolon
+id|oldsd
+op_assign
+op_amp
+id|per_cpu
+c_func
+(paren
+id|softnet_data
+comma
+id|oldcpu
+)paren
+suffix:semicolon
+multiline_comment|/* Find end of our completion_queue. */
+id|list_skb
+op_assign
+op_amp
+id|sd-&gt;completion_queue
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_star
+id|list_skb
+)paren
+id|list_skb
+op_assign
+op_amp
+(paren
+op_star
+id|list_skb
+)paren
+op_member_access_from_pointer
+id|next
+suffix:semicolon
+multiline_comment|/* Append completion queue from offline CPU. */
+op_star
+id|list_skb
+op_assign
+id|oldsd-&gt;completion_queue
+suffix:semicolon
+id|oldsd-&gt;completion_queue
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* Find end of our output_queue. */
+id|list_net
+op_assign
+op_amp
+id|sd-&gt;output_queue
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_star
+id|list_net
+)paren
+id|list_net
+op_assign
+op_amp
+(paren
+op_star
+id|list_net
+)paren
+op_member_access_from_pointer
+id|next_sched
+suffix:semicolon
+multiline_comment|/* Append output queue from offline CPU. */
+op_star
+id|list_net
+op_assign
+id|oldsd-&gt;output_queue
+suffix:semicolon
+id|oldsd-&gt;output_queue
+op_assign
+l_int|NULL
+suffix:semicolon
+id|raise_softirq_irqoff
+c_func
+(paren
+id|NET_TX_SOFTIRQ
+)paren
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Process offline CPU&squot;s input_pkt_queue */
+r_while
+c_loop
+(paren
+(paren
+id|skb
+op_assign
+id|__skb_dequeue
+c_func
+(paren
+op_amp
+id|oldsd-&gt;input_pkt_queue
+)paren
+)paren
+)paren
+id|netif_rx
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+id|NOTIFY_OK
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_HOTPLUG_CPU */
 multiline_comment|/*&n; *&t;Initialize the DEV module. At boot time this walks the device list and&n; *&t;unhooks any devices that fail to initialise (normally hardware not&n; *&t;present) and leaves us with a valid list of present and active devices.&n; *&n; */
 multiline_comment|/*&n; *       This is called single threaded during boot, so no need&n; *       to take the rtnl semaphore.&n; */
 DECL|function|net_dev_init
@@ -10557,6 +10798,14 @@ comma
 id|net_rx_action
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+id|hotcpu_notifier
+c_func
+(paren
+id|dev_cpu_callback
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|dst_init

@@ -152,9 +152,13 @@ r_struct
 id|list_head
 id|inactive_list
 suffix:semicolon
-DECL|member|refill_counter
+DECL|member|nr_scan_active
 id|atomic_t
-id|refill_counter
+id|nr_scan_active
+suffix:semicolon
+DECL|member|nr_scan_inactive
+id|atomic_t
+id|nr_scan_inactive
 suffix:semicolon
 DECL|member|nr_active
 r_int
@@ -376,6 +380,12 @@ DECL|member|kswapd_wait
 id|wait_queue_head_t
 id|kswapd_wait
 suffix:semicolon
+DECL|member|kswapd
+r_struct
+id|task_struct
+op_star
+id|kswapd
+suffix:semicolon
 DECL|typedef|pg_data_t
 )brace
 id|pg_data_t
@@ -522,6 +532,29 @@ id|ZONE_HIGHMEM
 )paren
 suffix:semicolon
 )brace
+DECL|function|is_normal
+r_static
+r_inline
+r_int
+id|is_normal
+c_func
+(paren
+r_struct
+id|zone
+op_star
+id|zone
+)paren
+(brace
+r_return
+(paren
+id|zone
+op_minus
+id|zone-&gt;zone_pgdat-&gt;node_zones
+op_eq
+id|ZONE_NORMAL
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* These two functions are used to setup the per zone pages min values */
 r_struct
 id|ctl_table
@@ -570,7 +603,7 @@ DECL|macro|pfn_to_nid
 mdefine_line|#define pfn_to_nid(pfn)&t;&t;(0)
 macro_line|#else /* CONFIG_DISCONTIGMEM */
 macro_line|#include &lt;asm/mmzone.h&gt;
-macro_line|#if BITS_PER_LONG == 32
+macro_line|#if BITS_PER_LONG == 32 || defined(ARCH_HAS_ATOMIC_UNSIGNED)
 multiline_comment|/*&n; * with 32 bit page-&gt;flags field, we reserve 8 bits for node/zone info.&n; * there are 3 zones (2 bits) and this leaves 8-2=6 bits for nodes.&n; */
 DECL|macro|MAX_NODES_SHIFT
 mdefine_line|#define MAX_NODES_SHIFT&t;&t;6

@@ -1,7 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/x86-64/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *&n; *  Pentium III FXSR, SSE support&n; *&t;Gareth Hughes &lt;gareth@valinux.com&gt;, May 2000&n; * &n; *  X86-64 port&n; *&t;Andi Kleen.&n; * &n; *  $Id: process.c,v 1.38 2002/01/15 10:08:03 ak Exp $&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -9,7 +7,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/elfcore.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -18,6 +15,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -50,8 +48,14 @@ op_or
 id|CLONE_UNTRACED
 suffix:semicolon
 DECL|variable|hlt_counter
-r_int
+id|atomic_t
 id|hlt_counter
+op_assign
+id|ATOMIC_INIT
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Powermanagement idle function, if any..&n; */
 DECL|variable|pm_idle
@@ -72,8 +76,12 @@ c_func
 r_void
 )paren
 (brace
+id|atomic_inc
+c_func
+(paren
+op_amp
 id|hlt_counter
-op_increment
+)paren
 suffix:semicolon
 )brace
 DECL|variable|disable_hlt
@@ -91,8 +99,12 @@ c_func
 r_void
 )paren
 (brace
+id|atomic_dec
+c_func
+(paren
+op_amp
 id|hlt_counter
-op_decrement
+)paren
 suffix:semicolon
 )brace
 DECL|variable|enable_hlt
@@ -115,7 +127,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|atomic_read
+c_func
+(paren
+op_amp
 id|hlt_counter
+)paren
 )paren
 (brace
 id|local_irq_disable
@@ -549,7 +566,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Pid: %d, comm: %.20s %s&bslash;n&quot;
+l_string|&quot;Pid: %d, comm: %.20s %s %s&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
@@ -559,6 +576,8 @@ id|print_tainted
 c_func
 (paren
 )paren
+comma
+id|UTS_RELEASE
 )paren
 suffix:semicolon
 id|printk

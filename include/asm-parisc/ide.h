@@ -5,107 +5,14 @@ DECL|macro|__ASM_PARISC_IDE_H
 mdefine_line|#define __ASM_PARISC_IDE_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/superio.h&gt;
 macro_line|#ifndef MAX_HWIFS
 DECL|macro|MAX_HWIFS
 mdefine_line|#define MAX_HWIFS&t;2
 macro_line|#endif
-DECL|function|ide_default_irq
-r_static
-id|__inline__
-r_int
-id|ide_default_irq
-c_func
-(paren
-id|ide_ioreg_t
-id|base
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|base
-)paren
-(brace
-macro_line|#ifdef CONFIG_SUPERIO
-r_case
-l_int|0x1f0
-suffix:colon
-r_case
-l_int|0x170
-suffix:colon
-r_return
-id|superio_get_ide_irq
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_SUPERIO */
-r_default
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-)brace
-DECL|function|ide_default_io_base
-r_static
-id|__inline__
-id|ide_ioreg_t
-id|ide_default_io_base
-c_func
-(paren
-r_int
-id|index
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|index
-)paren
-(brace
-macro_line|#ifdef CONFIG_SUPERIO 
-r_case
-l_int|0
-suffix:colon
-r_return
-(paren
-id|superio_get_ide_irq
-c_func
-(paren
-)paren
-ques
-c_cond
-l_int|0x1f0
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-r_case
-l_int|1
-suffix:colon
-r_return
-(paren
-id|superio_get_ide_irq
-c_func
-(paren
-)paren
-ques
-c_cond
-l_int|0x170
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_SUPERIO */
-r_default
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-)brace
+DECL|macro|ide_default_irq
+mdefine_line|#define ide_default_irq(base) (0)
+DECL|macro|ide_default_io_base
+mdefine_line|#define ide_default_io_base(index) ((ide_ioreg_t)0)
 DECL|function|ide_init_hwif_ports
 r_static
 id|__inline__
@@ -335,7 +242,7 @@ op_star
 )paren
 id|addr
 op_assign
-id|readw
+id|__raw_readw
 c_func
 (paren
 id|port
@@ -380,7 +287,7 @@ op_star
 )paren
 id|addr
 op_assign
-id|readl
+id|__raw_readl
 c_func
 (paren
 id|port
@@ -418,7 +325,7 @@ id|count
 op_decrement
 )paren
 (brace
-id|writew
+id|__raw_writew
 c_func
 (paren
 op_star
@@ -463,7 +370,7 @@ id|count
 op_decrement
 )paren
 (brace
-id|writel
+id|__raw_writel
 c_func
 (paren
 op_star

@@ -9,6 +9,20 @@ mdefine_line|#define USE_HPPA_IOREMAP 0
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+r_extern
+r_int
+r_int
+id|parisc_vmerge_boundary
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|parisc_vmerge_max_size
+suffix:semicolon
+DECL|macro|BIO_VMERGE_BOUNDARY
+mdefine_line|#define BIO_VMERGE_BOUNDARY&t;parisc_vmerge_boundary
+DECL|macro|BIO_VMERGE_MAX_SIZE
+mdefine_line|#define BIO_VMERGE_MAX_SIZE&t;parisc_vmerge_max_size
 DECL|macro|virt_to_phys
 mdefine_line|#define virt_to_phys(a) ((unsigned long)__pa(a))
 DECL|macro|phys_to_virt

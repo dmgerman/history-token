@@ -1690,6 +1690,18 @@ c_func
 id|task
 )paren
 suffix:semicolon
+multiline_comment|/* micro-optimization to avoid spinlock */
+r_if
+c_cond
+(paren
+id|RPC_IS_RUNNING
+c_func
+(paren
+id|task
+)paren
+)paren
+r_continue
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Check whether task is sleeping.&n;&t;&t; */
 id|spin_lock_bh
@@ -1745,16 +1757,18 @@ op_amp
 id|rpc_queue_lock
 )paren
 suffix:semicolon
-r_while
-c_loop
+r_if
+c_cond
 (paren
+op_logical_neg
 id|RPC_IS_SLEEPING
 c_func
 (paren
 id|task
 )paren
 )paren
-(brace
+r_continue
+suffix:semicolon
 multiline_comment|/* sync task: sleep here */
 id|dprintk
 c_func
@@ -1778,6 +1792,13 @@ id|KERN_ERR
 l_string|&quot;RPC: rpciod waiting on sync task!&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|task-&gt;tk_client-&gt;cl_intr
+)paren
+(brace
 id|__wait_event
 c_func
 (paren
@@ -1791,24 +1812,32 @@ id|task
 )paren
 )paren
 suffix:semicolon
-id|dprintk
+)brace
+r_else
+(brace
+id|__wait_event_interruptible
 c_func
 (paren
-l_string|&quot;RPC: %4d sync task resuming&bslash;n&quot;
+id|task-&gt;tk_wait
 comma
-id|task-&gt;tk_pid
+op_logical_neg
+id|RPC_IS_SLEEPING
+c_func
+(paren
+id|task
+)paren
+comma
+id|status
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * When a sync task receives a signal, it exits with&n;&t;&t;&t; * -ERESTARTSYS. In order to catch any callbacks that&n;&t;&t;&t; * clean up after sleeping on some queue, we don&squot;t&n;&t;&t;&t; * break the loop here, but go around once more.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
-id|task-&gt;tk_client-&gt;cl_intr
-op_logical_and
-id|signalled
-c_func
-(paren
-)paren
+id|status
+op_eq
+op_minus
+id|ERESTARTSYS
 )paren
 (brace
 id|dprintk
@@ -1840,6 +1869,14 @@ id|task
 suffix:semicolon
 )brace
 )brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;RPC: %4d sync task resuming&bslash;n&quot;
+comma
+id|task-&gt;tk_pid
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond

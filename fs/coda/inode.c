@@ -662,6 +662,11 @@ id|sb-&gt;s_fs_info
 op_assign
 id|sbi
 suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_NODIRATIME
+suffix:semicolon
+multiline_comment|/* probably even noatime */
 id|sb-&gt;s_blocksize
 op_assign
 l_int|1024
@@ -776,6 +781,15 @@ c_func
 (paren
 id|root
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sb-&gt;s_root
+)paren
+r_goto
+id|error
 suffix:semicolon
 r_return
 l_int|0
@@ -1222,6 +1236,11 @@ dot
 id|kill_sb
 op_assign
 id|kill_anon_super
+comma
+dot
+id|fs_flags
+op_assign
+id|FS_BINARY_MOUNTDATA
 comma
 )brace
 suffix:semicolon

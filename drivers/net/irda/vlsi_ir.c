@@ -574,7 +574,9 @@ l_int|0
 )paren
 comma
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|pdev-&gt;dma_mask
 )paren
@@ -3362,18 +3364,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
-c_func
-(paren
-id|pdev
-comma
-id|busaddr
-comma
-id|len
-comma
-id|dir
-)paren
-suffix:semicolon
 multiline_comment|/* initially, the dma buffer is owned by the CPU */
 id|rd-&gt;skb
 op_assign
@@ -3801,7 +3791,7 @@ id|idev
 op_assign
 id|ndev-&gt;priv
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|r-&gt;pdev
@@ -4220,7 +4210,7 @@ suffix:semicolon
 multiline_comment|/* probably not worth logging? */
 )brace
 multiline_comment|/* give dma buffer back to busmaster */
-id|pci_dma_prep_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|r-&gt;pdev
@@ -4568,7 +4558,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|r-&gt;pdev
@@ -4726,7 +4716,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|r-&gt;pdev
@@ -5623,7 +5613,7 @@ suffix:semicolon
 multiline_comment|/* must not sleep here - we are called under xmit_lock! */
 )brace
 )brace
-multiline_comment|/* tx buffer already owned by CPU due to pci_dma_sync_single() either&n;&t; * after initial pci_map_single or after subsequent tx-completion&n;&t; */
+multiline_comment|/* tx buffer already owned by CPU due to pci_dma_sync_single_for_cpu()&n;&t; * after subsequent tx-completion&n;&t; */
 r_if
 c_cond
 (paren
@@ -5731,7 +5721,7 @@ id|status
 suffix:semicolon
 multiline_comment|/* not yet active! */
 multiline_comment|/* give dma buffer back to busmaster-hw (flush caches to make&n;&t; * CPU-driven changes visible from the pci bus).&n;&t; */
-id|pci_dma_prep_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|r-&gt;pdev
@@ -6329,7 +6319,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|r-&gt;pdev

@@ -27,7 +27,7 @@ suffix:semicolon
 multiline_comment|/*&n;     *  Standard video mode definitions (taken from XFree86)&n;     */
 DECL|macro|DEFAULT_MODEDB_INDEX
 mdefine_line|#define DEFAULT_MODEDB_INDEX&t;0
-DECL|variable|__initdata
+DECL|variable|modedb
 r_static
 r_const
 r_struct
@@ -35,7 +35,6 @@ id|fb_videomode
 id|modedb
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace
@@ -682,7 +681,7 @@ id|FB_VMODE_NONINTERLACED
 comma
 (brace
 multiline_comment|/* 1400x1050 @ 75,107 Hz, 82,392 kHz +hsync +vsync*/
-l_string|&quot;LCD_XGA_75&quot;
+l_int|NULL
 comma
 l_int|75
 comma
@@ -713,7 +712,7 @@ id|FB_VMODE_NONINTERLACED
 comma
 (brace
 multiline_comment|/* 1400x1050 @ 60 Hz, ? kHz +hsync +vsync*/
-l_string|&quot;LCD_XGA_60&quot;
+l_int|NULL
 comma
 l_int|60
 comma
@@ -1604,6 +1603,8 @@ comma
 id|FB_SYNC_HOR_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 1 640x400-85 VESA */
@@ -1633,6 +1634,8 @@ comma
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 2 720x400-85 VESA */
@@ -1662,6 +1665,8 @@ comma
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 3 640x480-60 VESA */
@@ -1691,6 +1696,8 @@ comma
 l_int|0
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 4 640x480-72 VESA */
@@ -1720,6 +1727,8 @@ comma
 l_int|0
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 5 640x480-75 VESA */
@@ -1749,6 +1758,8 @@ comma
 l_int|0
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 6 640x480-85 VESA */
@@ -1778,6 +1789,8 @@ comma
 l_int|0
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 7 800x600-56 VESA */
@@ -1809,6 +1822,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 8 800x600-60 VESA */
@@ -1840,6 +1855,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 9 800x600-72 VESA */
@@ -1871,6 +1888,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 10 800x600-75 VESA */
@@ -1902,6 +1921,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 11 800x600-85 VESA */
@@ -1933,6 +1954,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 12 1024x768i-43 VESA */
@@ -1964,6 +1987,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_INTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 13 1024x768-60 VESA */
@@ -1993,6 +2018,8 @@ comma
 l_int|0
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 14 1024x768-70 VESA */
@@ -2022,6 +2049,8 @@ comma
 l_int|0
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 15 1024x768-75 VESA */
@@ -2053,6 +2082,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 16 1024x768-85 VESA */
@@ -2084,6 +2115,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 17 1152x864-75 VESA */
@@ -2115,6 +2148,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 18 1280x960-60 VESA */
@@ -2146,6 +2181,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 19 1280x960-85 VESA */
@@ -2177,6 +2214,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 20 1280x1024-60 VESA */
@@ -2208,6 +2247,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 21 1280x1024-75 VESA */
@@ -2239,6 +2280,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 22 1280x1024-85 VESA */
@@ -2270,6 +2313,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 23 1600x1200-60 VESA */
@@ -2301,6 +2346,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 24 1600x1200-65 VESA */
@@ -2332,6 +2379,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 25 1600x1200-70 VESA */
@@ -2363,6 +2412,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 26 1600x1200-75 VESA */
@@ -2394,6 +2445,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 27 1600x1200-85 VESA */
@@ -2425,6 +2478,8 @@ op_or
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 28 1792x1344-60 VESA */
@@ -2454,6 +2509,8 @@ comma
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 29 1792x1344-75 VESA */
@@ -2483,6 +2540,8 @@ comma
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 30 1856x1392-60 VESA */
@@ -2512,6 +2571,8 @@ comma
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 31 1856x1392-75 VESA */
@@ -2541,6 +2602,8 @@ comma
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 32 1920x1440-60 VESA */
@@ -2570,6 +2633,8 @@ comma
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 multiline_comment|/* 33 1920x1440-75 VESA */
@@ -2599,6 +2664,8 @@ comma
 id|FB_SYNC_VERT_HIGH_ACT
 comma
 id|FB_VMODE_NONINTERLACED
+comma
+id|FB_MODE_IS_VESA
 )brace
 comma
 )brace
@@ -2606,7 +2673,6 @@ suffix:semicolon
 DECL|function|my_atoi
 r_static
 r_int
-id|__init
 id|my_atoi
 c_func
 (paren
@@ -2818,7 +2884,6 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;fb_find_mode - finds a valid video mode&n; *&t;@var: frame buffer user defined part of display&n; *&t;@info: frame buffer info structure&n; *&t;@mode_option: string video mode to find&n; *&t;@db: video mode database&n; *&t;@dbsize: size of @db&n; *&t;@default_mode: default video mode to fall back to&n; *&t;@default_bpp: default color depth in bits per pixel&n; *&n; *&t;Finds a suitable video mode, starting with the specified mode&n; *&t;in @mode_option with fallback to @default_mode.  If&n; *&t;@default_mode fails, all modes in the video mode database will&n; *&t;be tried.&n; *&n; *&t;Valid mode specifiers for @mode_option:&n; *&n; *&t;&lt;xres&gt;x&lt;yres&gt;[-&lt;bpp&gt;][@&lt;refresh&gt;] or&n; *&t;&lt;name&gt;[-&lt;bpp&gt;][@&lt;refresh&gt;]&n; *&n; *&t;with &lt;xres&gt;, &lt;yres&gt;, &lt;bpp&gt; and &lt;refresh&gt; decimal numbers and&n; *&t;&lt;name&gt; a string.&n; *&n; *&t;NOTE: The passed struct @var is _not_ cleared!  This allows you&n; *&t;to supply values for e.g. the grayscale and accel_flags fields.&n; *&n; *&t;Returns zero for failure, 1 if using specified @mode_option,&n; *&t;2 if using specified @mode_option with an ignored refresh rate,&n; *&t;3 if default mode is used, 4 if fall back to any valid mode.&n; *&n; */
 DECL|function|fb_find_mode
 r_int
-id|__init
 id|fb_find_mode
 c_func
 (paren
@@ -3358,18 +3423,18 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|__fb_try_mode
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__fb_try_mode
-)paren
-suffix:semicolon
 DECL|variable|vesa_modes
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|vesa_modes
+)paren
+suffix:semicolon
+DECL|variable|fb_find_mode
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fb_find_mode
 )paren
 suffix:semicolon
 eof

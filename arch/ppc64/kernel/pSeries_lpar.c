@@ -16,6 +16,35 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
+multiline_comment|/* in pSeries_hvCall.S */
+DECL|variable|plpar_hcall
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|plpar_hcall
+)paren
+suffix:semicolon
+DECL|variable|plpar_hcall_4out
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|plpar_hcall_4out
+)paren
+suffix:semicolon
+DECL|variable|plpar_hcall_norets
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|plpar_hcall_norets
+)paren
+suffix:semicolon
+DECL|variable|plpar_hcall_8arg_2ret
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|plpar_hcall_8arg_2ret
+)paren
+suffix:semicolon
 DECL|function|poll_pending
 r_int
 id|poll_pending
@@ -1536,8 +1565,19 @@ r_return
 op_minus
 l_int|2
 suffix:semicolon
+multiline_comment|/* Because of iSeries, we have to pass down the secondary&n;&t; * bucket bit here as well&n;&t; */
 r_return
+(paren
 id|slot
+op_amp
+l_int|7
+)paren
+op_or
+(paren
+id|secondary
+op_lshift
+l_int|3
+)paren
 suffix:semicolon
 )brace
 DECL|variable|pSeries_lpar_tlbie_lock

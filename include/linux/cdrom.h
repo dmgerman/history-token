@@ -1463,8 +1463,12 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * feature profile&n; */
+DECL|macro|CDF_RWRT
+mdefine_line|#define CDF_RWRT&t;0x0020&t;/* &quot;Random Writable&quot; */
+DECL|macro|CDF_HWDM
+mdefine_line|#define CDF_HWDM&t;0x0024&t;/* &quot;Hardware Defect Management&quot; */
 DECL|macro|CDF_MRW
-mdefine_line|#define CDF_MRW&t;&t;0x28
+mdefine_line|#define CDF_MRW &t;0x0028
 multiline_comment|/*&n; * media status bits&n; */
 DECL|macro|CDM_MRW_NOTMRW
 mdefine_line|#define CDM_MRW_NOTMRW&t;&t;&t;0
@@ -1585,6 +1589,115 @@ suffix:semicolon
 DECL|member|reserved5
 id|__u8
 id|reserved5
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* cf. mmc4r02g.pdf 5.3.10 Random Writable Feature (0020h) pg 197 of 635 */
+DECL|struct|rwrt_feature_desc
+r_struct
+id|rwrt_feature_desc
+(brace
+DECL|member|feature_code
+id|__u16
+id|feature_code
+suffix:semicolon
+macro_line|#if defined(__BIG_ENDIAN_BITFIELD)
+DECL|member|reserved1
+id|__u8
+id|reserved1
+suffix:colon
+l_int|2
+suffix:semicolon
+DECL|member|feature_version
+id|__u8
+id|feature_version
+suffix:colon
+l_int|4
+suffix:semicolon
+DECL|member|persistent
+id|__u8
+id|persistent
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|curr
+id|__u8
+id|curr
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#elif defined(__LITTLE_ENDIAN_BITFIELD)
+DECL|member|curr
+id|__u8
+id|curr
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|persistent
+id|__u8
+id|persistent
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|feature_version
+id|__u8
+id|feature_version
+suffix:colon
+l_int|4
+suffix:semicolon
+DECL|member|reserved1
+id|__u8
+id|reserved1
+suffix:colon
+l_int|2
+suffix:semicolon
+macro_line|#endif
+DECL|member|add_len
+id|__u8
+id|add_len
+suffix:semicolon
+DECL|member|last_lba
+id|__u32
+id|last_lba
+suffix:semicolon
+DECL|member|block_size
+id|__u32
+id|block_size
+suffix:semicolon
+DECL|member|blocking
+id|__u16
+id|blocking
+suffix:semicolon
+macro_line|#if defined(__BIG_ENDIAN_BITFIELD)
+DECL|member|reserved2
+id|__u8
+id|reserved2
+suffix:colon
+l_int|7
+suffix:semicolon
+DECL|member|page_present
+id|__u8
+id|page_present
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#elif defined(__LITTLE_ENDIAN_BITFIELD)
+DECL|member|page_present
+id|__u8
+id|page_present
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|reserved2
+id|__u8
+id|reserved2
+suffix:colon
+l_int|7
+suffix:semicolon
+macro_line|#endif
+DECL|member|reserved3
+id|__u8
+id|reserved3
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -2035,6 +2148,13 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/fs.h&gt;&t;&t;/* not really needed, later.. */
 macro_line|#include &lt;linux/device.h&gt;
+multiline_comment|/*&n; * _OLD will use PIO transfer on atapi devices, _BPC_* will use DMA&n; */
+DECL|macro|CDDA_OLD
+mdefine_line|#define CDDA_OLD&t;&t;0&t;/* old style */
+DECL|macro|CDDA_BPC_SINGLE
+mdefine_line|#define CDDA_BPC_SINGLE&t;&t;1&t;/* single frame block pc */
+DECL|macro|CDDA_BPC_FULL
+mdefine_line|#define CDDA_BPC_FULL&t;&t;2&t;/* multi frame block pc */
 multiline_comment|/* Uniform cdrom data structures for cdrom.c */
 DECL|struct|cdrom_device_info
 r_struct
@@ -2054,6 +2174,13 @@ op_star
 id|next
 suffix:semicolon
 multiline_comment|/* next device_info for this major */
+DECL|member|disk
+r_struct
+id|gendisk
+op_star
+id|disk
+suffix:semicolon
+multiline_comment|/* matching block layer disk */
 DECL|member|handle
 r_void
 op_star
@@ -2119,6 +2246,15 @@ suffix:colon
 l_int|6
 suffix:semicolon
 multiline_comment|/* not used yet */
+DECL|member|cdda_method
+r_int
+id|cdda_method
+suffix:semicolon
+multiline_comment|/* see flags */
+DECL|member|last_sense
+id|__u8
+id|last_sense
+suffix:semicolon
 DECL|member|for_data
 r_int
 id|for_data
@@ -3297,6 +3433,21 @@ suffix:semicolon
 r_extern
 r_int
 id|cdrom_is_mrw
+c_func
+(paren
+r_struct
+id|cdrom_device_info
+op_star
+id|cdi
+comma
+r_int
+op_star
+id|write
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|cdrom_is_random_writable
 c_func
 (paren
 r_struct

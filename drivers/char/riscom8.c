@@ -8439,6 +8439,10 @@ id|riscom_driver-&gt;name
 op_assign
 l_string|&quot;ttyL&quot;
 suffix:semicolon
+id|riscom_driver-&gt;devfs_name
+op_assign
+l_string|&quot;tts/L&quot;
+suffix:semicolon
 id|riscom_driver-&gt;major
 op_assign
 id|RISCOM8_NORMAL_MAJOR

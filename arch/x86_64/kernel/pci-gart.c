@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
@@ -19,6 +20,13 @@ macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|macro|preempt_atomic
+mdefine_line|#define preempt_atomic() in_atomic()
+macro_line|#else
+DECL|macro|preempt_atomic
+mdefine_line|#define preempt_atomic() 1
+macro_line|#endif
 DECL|variable|bad_dma_address
 id|dma_addr_t
 id|bad_dma_address
@@ -97,6 +105,7 @@ id|iommu_sac_force
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* If this is disabled the IOMMU will use an optimized flushing strategy&n;   of only flushing when an mapping is reused. With it true the GART is flushed &n;   for every mapping. Problem is that doing the lazy flush seems to trigger&n;   bugs with some popular PCI cards, in particular 3ware (but has been also&n;   also seen with Qlogic at least). */
 DECL|variable|iommu_fullflush
 r_int
 id|iommu_fullflush
@@ -185,6 +194,27 @@ r_int
 id|need_flush
 suffix:semicolon
 multiline_comment|/* global flush state. set for each gart wrap */
+r_static
+id|dma_addr_t
+id|pci_map_area
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+r_int
+id|phys_mem
+comma
+r_int
+id|size
+comma
+r_int
+id|dir
+)paren
+suffix:semicolon
 DECL|function|alloc_iommu
 r_static
 r_int
@@ -570,7 +600,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Allocate memory for a consistent mapping.&n; * All mappings are consistent here, so this is just a wrapper around&n; * pci_map_single.&n; */
+multiline_comment|/* &n; * Allocate memory for a consistent mapping.&n; */
 DECL|function|pci_alloc_consistent
 r_void
 op_star
@@ -597,36 +627,34 @@ suffix:semicolon
 r_int
 id|gfp
 op_assign
+id|preempt_atomic
+c_func
+(paren
+)paren
+ques
+c_cond
 id|GFP_ATOMIC
+suffix:colon
+id|GFP_KERNEL
 suffix:semicolon
 r_int
 r_int
 id|dma_mask
+op_assign
+l_int|0
+suffix:semicolon
+id|u64
+id|bus
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|hwdev
-op_eq
-l_int|NULL
 )paren
-(brace
-id|gfp
-op_or_assign
-id|GFP_DMA
-suffix:semicolon
 id|dma_mask
 op_assign
-l_int|0xffffffff
+id|hwdev-&gt;dev.coherent_dma_mask
 suffix:semicolon
-)brace
-r_else
-(brace
-id|dma_mask
-op_assign
-id|hwdev-&gt;consistent_dma_mask
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -638,24 +666,13 @@ id|dma_mask
 op_assign
 l_int|0xffffffff
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dma_mask
-OL
-l_int|0xffffffff
-op_logical_or
-id|no_iommu
-)paren
-id|gfp
-op_or_assign
-id|GFP_DMA
-suffix:semicolon
 multiline_comment|/* Kludge to make it bug-to-bug compatible with i386. i386&n;&t;   uses the normal dma_mask for alloc_consistent. */
 id|dma_mask
 op_and_assign
 id|hwdev-&gt;dma_mask
 suffix:semicolon
+id|again
+suffix:colon
 id|memory
 op_assign
 (paren
@@ -681,30 +698,27 @@ id|memory
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
-r_else
 (brace
 r_int
 id|high
 comma
 id|mmu
 suffix:semicolon
-id|high
+id|bus
 op_assign
-(paren
-(paren
-r_int
-r_int
-)paren
 id|virt_to_bus
 c_func
 (paren
 id|memory
 )paren
+suffix:semicolon
+id|high
+op_assign
+(paren
+id|bus
 op_plus
 id|size
 )paren
@@ -735,6 +749,10 @@ r_if
 c_cond
 (paren
 id|no_iommu
+op_logical_or
+id|dma_mask
+OL
+l_int|0xffffffffUL
 )paren
 (brace
 r_if
@@ -742,9 +760,30 @@ c_cond
 (paren
 id|high
 )paren
-r_goto
-id|error
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|gfp
+op_amp
+id|GFP_DMA
+)paren
+)paren
+(brace
+id|gfp
+op_or_assign
+id|GFP_DMA
 suffix:semicolon
+r_goto
+id|again
+suffix:semicolon
+)brace
+r_goto
+id|free
+suffix:semicolon
+)brace
 id|mmu
 op_assign
 l_int|0
@@ -784,16 +823,16 @@ suffix:semicolon
 op_star
 id|dma_handle
 op_assign
-id|pci_map_single
+id|pci_map_area
 c_func
 (paren
 id|hwdev
 comma
-id|memory
+id|bus
 comma
 id|size
 comma
-l_int|0
+id|PCI_DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 r_if
@@ -806,6 +845,12 @@ id|bad_dma_address
 )paren
 r_goto
 id|error
+suffix:semicolon
+id|flush_gart
+c_func
+(paren
+id|hwdev
+)paren
 suffix:semicolon
 r_return
 id|memory
@@ -820,11 +865,13 @@ id|panic_on_overflow
 id|panic
 c_func
 (paren
-l_string|&quot;pci_map_single: overflow %lu bytes&bslash;n&quot;
+l_string|&quot;pci_alloc_consistent: overflow %lu bytes&bslash;n&quot;
 comma
 id|size
 )paren
 suffix:semicolon
+id|free
+suffix:colon
 id|free_pages
 c_func
 (paren
@@ -2747,6 +2794,13 @@ c_func
 id|force_iommu
 )paren
 suffix:semicolon
+DECL|variable|bad_dma_address
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bad_dma_address
+)paren
+suffix:semicolon
 DECL|function|check_iommu_size
 r_static
 id|__init
@@ -3317,7 +3371,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;PCI-DMA: Using SWIOTLB :-(&bslash;n&quot;
+l_string|&quot;PCI-DMA: Using software bounce buffering for  IO (SWIOTLB)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3697,7 +3751,7 @@ c_func
 id|pci_iommu_init
 )paren
 suffix:semicolon
-multiline_comment|/* iommu=[size][,noagp][,off][,force][,noforce][,leak][,memaper[=order]][,merge]&n;         [,forcesac][,fullflush][,nomerge]&n;   size  set size of iommu (in bytes) &n;   noagp don&squot;t initialize the AGP driver and use full aperture.&n;   off   don&squot;t use the IOMMU&n;   leak  turn on simple iommu leak tracing (only when CONFIG_IOMMU_LEAK is on)&n;   memaper[=order] allocate an own aperture over RAM with size 32MB^order.  &n;   noforce don&squot;t force IOMMU usage. Default.&n;   force  Force IOMMU.&n;   merge  Do SG merging. Implies force (experimental)  &n;   nomerge Don&squot;t do SG merging.&n;   forcesac For SAC mode for masks &lt;40bits  (experimental)&n;   fullflush Flush IOMMU on each allocation (default) &n;   nofullflush Don&squot;t use IOMMU fullflush&n;*/
+multiline_comment|/* iommu=[size][,noagp][,off][,force][,noforce][,leak][,memaper[=order]][,merge]&n;         [,forcesac][,fullflush][,nomerge]&n;   size  set size of iommu (in bytes) &n;   noagp don&squot;t initialize the AGP driver and use full aperture.&n;   off   don&squot;t use the IOMMU&n;   leak  turn on simple iommu leak tracing (only when CONFIG_IOMMU_LEAK is on)&n;   memaper[=order] allocate an own aperture over RAM with size 32MB^order.  &n;   noforce don&squot;t force IOMMU usage. Default.&n;   force  Force IOMMU.&n;   merge  Do SG merging. Implies force (experimental)  &n;   nomerge Don&squot;t do SG merging.&n;   forcesac For SAC mode for masks &lt;40bits  (experimental)&n;   fullflush Flush IOMMU on each allocation (default) &n;   nofullflush Don&squot;t use IOMMU fullflush&n;   soft&t; Use software bounce buffering (default for Intel machines)&n;*/
 DECL|function|iommu_setup
 id|__init
 r_int
@@ -3980,6 +4034,24 @@ l_int|11
 id|iommu_fullflush
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|p
+comma
+l_string|&quot;soft&quot;
+comma
+l_int|4
+)paren
+)paren
+id|swiotlb
+op_assign
+l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_IOMMU_LEAK
 r_if

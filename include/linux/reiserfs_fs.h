@@ -2660,8 +2660,10 @@ DECL|macro|get_generation
 mdefine_line|#define get_generation(s) atomic_read (&amp;fs_generation(s))
 DECL|macro|FILESYSTEM_CHANGED_TB
 mdefine_line|#define FILESYSTEM_CHANGED_TB(tb)  (get_generation((tb)-&gt;tb_sb) != (tb)-&gt;fs_gen)
+DECL|macro|__fs_changed
+mdefine_line|#define __fs_changed(gen,s) (gen != get_generation (s))
 DECL|macro|fs_changed
-mdefine_line|#define fs_changed(gen,s) (gen != get_generation (s))
+mdefine_line|#define fs_changed(gen,s) ({cond_resched(); __fs_changed(gen, s);})
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                  FIXATE NODES                                           */
 multiline_comment|/***************************************************************************/
@@ -5200,12 +5202,10 @@ suffix:semicolon
 macro_line|#if defined( REISERFS_PROC_INFO )
 DECL|macro|PROC_EXP
 mdefine_line|#define PROC_EXP( e )   e
-DECL|macro|MAX
-mdefine_line|#define MAX( a, b ) ( ( ( a ) &gt; ( b ) ) ? ( a ) : ( b ) )
 DECL|macro|__PINFO
 mdefine_line|#define __PINFO( sb ) REISERFS_SB(sb) -&gt; s_proc_info_data
 DECL|macro|PROC_INFO_MAX
-mdefine_line|#define PROC_INFO_MAX( sb, field, value )&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    __PINFO( sb ).field =&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        MAX( REISERFS_SB( sb ) -&gt; s_proc_info_data.field, value )
+mdefine_line|#define PROC_INFO_MAX( sb, field, value )&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    __PINFO( sb ).field =&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        max( REISERFS_SB( sb ) -&gt; s_proc_info_data.field, value )
 DECL|macro|PROC_INFO_INC
 mdefine_line|#define PROC_INFO_INC( sb, field ) ( ++ ( __PINFO( sb ).field ) )
 DECL|macro|PROC_INFO_ADD

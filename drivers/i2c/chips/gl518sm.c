@@ -1,9 +1,5 @@
 multiline_comment|/*&n; * gl518sm.c - Part of lm_sensors, Linux kernel modules for hardware&n; *             monitoring&n; * Copyright (C) 1998, 1999 Frodo Looijaard &lt;frodol@dds.nl&gt; and&n; * Kyosti Malkki &lt;kmalkki@cc.hut.fi&gt;&n; * Copyright (C) 2004 Hong-Gunn Chew &lt;hglinux@gunnet.org&gt; and&n; * Jean Delvare &lt;khali@linux-fr.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Ported to Linux 2.6 by Hong-Gunn Chew with the help of Jean Delvare&n; * and advice of Greg Kroah-Hartman.&n; *&n; * Notes about the port:&n; * Release 0x00 of the GL518SM chipset doesn&squot;t support reading of in0,&n; * in1 nor in2. The original driver had an ugly workaround to get them&n; * anyway (changing limits and watching alarms trigger and wear off).&n; * We did not keep that part of the original driver in the Linux 2.6&n; * version, since it was making the driver significantly more complex&n; * with no real benefit.&n; *&n; * History:&n; * 2004-01-28  Original port. (Hong-Gunn Chew)&n; * 2004-01-31  Code review and approval. (Jean Delvare)&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_CHIP
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -409,14 +405,16 @@ id|value
 )paren
 suffix:semicolon
 r_static
-r_void
-id|gl518_update_client
+r_struct
+id|gl518_data
+op_star
+id|gl518_update_device
 c_func
 (paren
 r_struct
-id|i2c_client
+id|device
 op_star
-id|client
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* This is the driver that will be inserted */
@@ -469,9 +467,9 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show
-mdefine_line|#define show(type, suffix, value)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_##suffix(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&t;&bslash;&n;&t;struct gl518_data *data = i2c_get_clientdata(client);&t;&t;&bslash;&n;&t;gl518_update_client(client);&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, type##_FROM_REG(data-&gt;value));&t;&bslash;&n;}
+mdefine_line|#define show(type, suffix, value)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_##suffix(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct gl518_data *data = gl518_update_device(dev);&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, type##_FROM_REG(data-&gt;value));&t;&bslash;&n;}
 DECL|macro|show_fan
-mdefine_line|#define show_fan(suffix, value, index)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_##suffix(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&t;&bslash;&n;&t;struct gl518_data *data = i2c_get_clientdata(client);&t;&t;&bslash;&n;&t;gl518_update_client(client);&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, FAN_FROM_REG(data-&gt;value[index],&t;&bslash;&n;&t;&t;DIV_FROM_REG(data-&gt;fan_div[index])));&t;&t;&t;&bslash;&n;}
+mdefine_line|#define show_fan(suffix, value, index)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_##suffix(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct gl518_data *data = gl518_update_device(dev);&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, FAN_FROM_REG(data-&gt;value[index],&t;&bslash;&n;&t;&t;DIV_FROM_REG(data-&gt;fan_div[index])));&t;&t;&t;&bslash;&n;}
 id|show
 c_func
 (paren
@@ -1310,7 +1308,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input1
+id|temp1_input
 comma
 id|S_IRUGO
 comma
@@ -1323,7 +1321,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max1
+id|temp1_max
 comma
 id|S_IWUSR
 op_or
@@ -1338,7 +1336,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_hyst1
+id|temp1_max_hyst
 comma
 id|S_IWUSR
 op_or
@@ -1353,7 +1351,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan_auto1
+id|fan1_auto
 comma
 id|S_IWUSR
 op_or
@@ -1368,7 +1366,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan_input1
+id|fan1_input
 comma
 id|S_IRUGO
 comma
@@ -1381,7 +1379,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan_input2
+id|fan2_input
 comma
 id|S_IRUGO
 comma
@@ -1394,7 +1392,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan_min1
+id|fan1_min
 comma
 id|S_IWUSR
 op_or
@@ -1409,7 +1407,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan_min2
+id|fan2_min
 comma
 id|S_IWUSR
 op_or
@@ -1424,7 +1422,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan_div1
+id|fan1_div
 comma
 id|S_IWUSR
 op_or
@@ -1439,7 +1437,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan_div2
+id|fan2_div
 comma
 id|S_IWUSR
 op_or
@@ -1454,7 +1452,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_input0
+id|in0_input
 comma
 id|S_IRUGO
 comma
@@ -1467,7 +1465,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_input1
+id|in1_input
 comma
 id|S_IRUGO
 comma
@@ -1480,7 +1478,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_input2
+id|in2_input
 comma
 id|S_IRUGO
 comma
@@ -1493,7 +1491,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_input3
+id|in3_input
 comma
 id|S_IRUGO
 comma
@@ -1506,7 +1504,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_min0
+id|in0_min
 comma
 id|S_IWUSR
 op_or
@@ -1521,7 +1519,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_min1
+id|in1_min
 comma
 id|S_IWUSR
 op_or
@@ -1536,7 +1534,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_min2
+id|in2_min
 comma
 id|S_IWUSR
 op_or
@@ -1551,7 +1549,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_min3
+id|in3_min
 comma
 id|S_IWUSR
 op_or
@@ -1566,7 +1564,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_max0
+id|in0_max
 comma
 id|S_IWUSR
 op_or
@@ -1581,7 +1579,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_max1
+id|in1_max
 comma
 id|S_IWUSR
 op_or
@@ -1596,7 +1594,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_max2
+id|in2_max
 comma
 id|S_IWUSR
 op_or
@@ -1611,7 +1609,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_max3
+id|in3_max
 comma
 id|S_IWUSR
 op_or
@@ -1741,13 +1739,6 @@ r_int
 id|err
 op_assign
 l_int|0
-suffix:semicolon
-r_const
-r_char
-op_star
-id|name
-op_assign
-l_string|&quot;&quot;
 suffix:semicolon
 r_if
 c_cond
@@ -1932,10 +1923,6 @@ id|kind
 op_assign
 id|gl518sm_r00
 suffix:semicolon
-id|name
-op_assign
-l_string|&quot;gl518sm&quot;
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -1949,10 +1936,6 @@ l_int|0x80
 id|kind
 op_assign
 id|gl518sm_r80
-suffix:semicolon
-id|name
-op_assign
-l_string|&quot;gl518sm&quot;
 suffix:semicolon
 )brace
 r_else
@@ -1993,7 +1976,7 @@ c_func
 (paren
 id|new_client-&gt;name
 comma
-id|name
+l_string|&quot;gl518sm&quot;
 comma
 id|I2C_NAME_SIZE
 )paren
@@ -2076,7 +2059,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_input0
+id|dev_attr_in0_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2086,7 +2069,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_input1
+id|dev_attr_in1_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2096,7 +2079,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_input2
+id|dev_attr_in2_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2106,7 +2089,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_input3
+id|dev_attr_in3_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2116,7 +2099,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_min0
+id|dev_attr_in0_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2126,7 +2109,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_min1
+id|dev_attr_in1_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2136,7 +2119,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_min2
+id|dev_attr_in2_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2146,7 +2129,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_min3
+id|dev_attr_in3_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2156,7 +2139,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_max0
+id|dev_attr_in0_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2166,7 +2149,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_max1
+id|dev_attr_in1_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2176,7 +2159,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_max2
+id|dev_attr_in2_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2186,7 +2169,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_max3
+id|dev_attr_in3_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2196,7 +2179,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan_auto1
+id|dev_attr_fan1_auto
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2206,7 +2189,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan_input1
+id|dev_attr_fan1_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2216,7 +2199,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan_input2
+id|dev_attr_fan2_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2226,7 +2209,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan_min1
+id|dev_attr_fan1_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2236,7 +2219,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan_min2
+id|dev_attr_fan2_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2246,7 +2229,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan_div1
+id|dev_attr_fan1_div
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2256,7 +2239,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan_div2
+id|dev_attr_fan2_div
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2266,7 +2249,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input1
+id|dev_attr_temp1_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2276,7 +2259,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max1
+id|dev_attr_temp1_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2286,7 +2269,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_hyst1
+id|dev_attr_temp1_max_hyst
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2611,18 +2594,31 @@ id|value
 )paren
 suffix:semicolon
 )brace
-DECL|function|gl518_update_client
+DECL|function|gl518_update_device
 r_static
-r_void
-id|gl518_update_client
+r_struct
+id|gl518_data
+op_star
+id|gl518_update_device
 c_func
 (paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
 r_struct
 id|i2c_client
 op_star
 id|client
+op_assign
+id|to_i2c_client
+c_func
+(paren
+id|dev
 )paren
-(brace
+suffix:semicolon
 r_struct
 id|gl518_data
 op_star
@@ -3066,6 +3062,9 @@ c_func
 op_amp
 id|data-&gt;update_lock
 )paren
+suffix:semicolon
+r_return
+id|data
 suffix:semicolon
 )brace
 DECL|function|sensors_gl518sm_init

@@ -266,5 +266,7 @@ DECL|macro|IBM_TTY3270_MAJOR
 mdefine_line|#define IBM_TTY3270_MAJOR&t;227
 DECL|macro|IBM_FS3270_MAJOR
 mdefine_line|#define IBM_FS3270_MAJOR&t;228
+DECL|macro|VIOTAPE_MAJOR
+mdefine_line|#define VIOTAPE_MAJOR&t;&t;230
 macro_line|#endif
 eof

@@ -1,5 +1,4 @@
 multiline_comment|/*&n;&n;    ata_piix.c - Intel PATA/SATA controllers&n;&n;&n;&t;Copyright 2003-2004 Red Hat Inc&n;&t;Copyright 2003-2004 Jeff Garzik&n;&n;&n;&t;Copyright header from piix.c:&n;&n;    Copyright (C) 1998-1999 Andrzej Krzysztofowicz, Author and Maintainer&n;    Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;&n;    Copyright (C) 2003 Red Hat Inc &lt;alan@redhat.com&gt;&n;&n;    May be copied or modified under the terms of the GNU General Public License&n;&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -12,7 +11,7 @@ macro_line|#include &lt;linux/libata.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;ata_piix&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.00&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.01&quot;
 r_enum
 (brace
 DECL|enumerator|PIIX_IOCFG
@@ -27,6 +26,16 @@ op_assign
 l_int|0x92
 comma
 multiline_comment|/* port control and status */
+DECL|enumerator|PIIX_FLAG_CHECKINTR
+id|PIIX_FLAG_CHECKINTR
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|29
+)paren
+comma
+multiline_comment|/* make sure PCI INTx enabled */
 DECL|enumerator|PIIX_FLAG_COMBINED
 id|PIIX_FLAG_COMBINED
 op_assign
@@ -327,7 +336,25 @@ multiline_comment|/* ICH6 operates in two modes, &quot;looks-like-ICH5&quot; mod
 (brace
 l_int|0x8086
 comma
-l_int|0x2562
+l_int|0x2651
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_CLASS_STORAGE_IDE
+op_lshift
+l_int|8
+comma
+l_int|0xffff00
+comma
+id|ich5_sata
+)brace
+comma
+(brace
+l_int|0x8086
+comma
+l_int|0x2652
 comma
 id|PCI_ANY_ID
 comma
@@ -507,11 +534,6 @@ op_assign
 id|piix_pata_phy_reset
 comma
 dot
-id|phy_config
-op_assign
-id|pata_phy_config
-comma
-dot
 id|bmdma_start
 op_assign
 id|ata_bmdma_start_pio
@@ -591,12 +613,6 @@ op_assign
 id|piix_sata_phy_reset
 comma
 dot
-id|phy_config
-op_assign
-id|pata_phy_config
-comma
-multiline_comment|/* not a typo */
-dot
 id|bmdma_start
 op_assign
 id|ata_bmdma_start_pio
@@ -651,6 +667,8 @@ op_assign
 id|ATA_FLAG_SLAVE_POSS
 op_or
 id|ATA_FLAG_SRST
+op_or
+id|PIIX_FLAG_CHECKINTR
 comma
 dot
 id|pio_mask
@@ -685,9 +703,11 @@ id|host_flags
 op_assign
 id|ATA_FLAG_SATA
 op_or
+id|ATA_FLAG_SRST
+op_or
 id|PIIX_FLAG_COMBINED
 op_or
-id|ATA_FLAG_SRST
+id|PIIX_FLAG_CHECKINTR
 comma
 dot
 id|pio_mask
@@ -2026,6 +2046,58 @@ op_or_assign
 id|PIIX_COMB_PRI
 suffix:semicolon
 )brace
+multiline_comment|/* move to PCI layer, integrate w/ MSI stuff */
+DECL|function|pci_enable_intx
+r_static
+r_void
+id|pci_enable_intx
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+(brace
+id|u16
+id|pci_command
+suffix:semicolon
+id|pci_read_config_word
+c_func
+(paren
+id|pdev
+comma
+id|PCI_COMMAND
+comma
+op_amp
+id|pci_command
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_command
+op_amp
+id|PCI_COMMAND_INTX_DISABLE
+)paren
+(brace
+id|pci_command
+op_and_assign
+op_complement
+id|PCI_COMMAND_INTX_DISABLE
+suffix:semicolon
+id|pci_write_config_word
+c_func
+(paren
+id|pdev
+comma
+id|PCI_COMMAND
+comma
+id|pci_command
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/**&n; *&t;piix_init_one - Register PIIX ATA PCI device with kernel services&n; *&t;@pdev: PCI device to register&n; *&t;@ent: Entry in piix_pci_tbl matching with @pdev&n; *&n; *&t;Called from kernel PCI layer.  We probe for combined mode (sigh),&n; *&t;and then hand over control to libata, for it to do the rest.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from PCI layer (may sleep).&n; *&n; *&t;RETURNS:&n; *&t;Zero on success, or -ERRNO value.&n; */
 DECL|function|piix_init_one
 r_static
@@ -2141,6 +2213,25 @@ id|pdev
 comma
 op_amp
 id|combined
+)paren
+suffix:semicolon
+multiline_comment|/* On ICH5, some BIOSen disable the interrupt using the&n;&t; * PCI_COMMAND_INTX_DISABLE bit added in PCI 2.3.&n;&t; * On ICH6, this bit has the same effect, but only when&n;&t; * MSI is disabled (and it is disabled, as we don&squot;t use&n;&t; * message-signalled interrupts currently).&n;&t; */
+r_if
+c_cond
+(paren
+id|port_info
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|host_flags
+op_amp
+id|PIIX_FLAG_CHECKINTR
+)paren
+id|pci_enable_intx
+c_func
+(paren
+id|pdev
 )paren
 suffix:semicolon
 r_if

@@ -1613,11 +1613,7 @@ id|buf
 suffix:semicolon
 id|interface
 op_assign
-op_amp
-id|iface-&gt;altsetting
-(braket
-id|iface-&gt;act_altsetting
-)braket
+id|iface-&gt;cur_altsetting
 suffix:semicolon
 r_if
 c_cond

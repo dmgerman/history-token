@@ -13,9 +13,32 @@ DECL|macro|MAXMEM_PFN
 mdefine_line|#define MAXMEM_PFN&t;PFN_DOWN(MAXMEM)
 DECL|macro|MAX_NONPAE_PFN
 mdefine_line|#define MAX_NONPAE_PFN&t;(1 &lt;&lt; 20)
+DECL|macro|PARAM_SIZE
+mdefine_line|#define PARAM_SIZE 2048
+DECL|macro|COMMAND_LINE_SIZE
+mdefine_line|#define COMMAND_LINE_SIZE 256
+DECL|macro|OLD_CL_MAGIC_ADDR
+mdefine_line|#define OLD_CL_MAGIC_ADDR&t;0x90020
+DECL|macro|OLD_CL_MAGIC
+mdefine_line|#define OLD_CL_MAGIC&t;&t;0xA33F
+DECL|macro|OLD_CL_BASE_ADDR
+mdefine_line|#define OLD_CL_BASE_ADDR&t;0x90000
+DECL|macro|OLD_CL_OFFSET
+mdefine_line|#define OLD_CL_OFFSET&t;&t;0x90022
+DECL|macro|NEW_CL_POINTER
+mdefine_line|#define NEW_CL_POINTER&t;&t;0x228&t;/* Relative to real mode data */
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * This is set up by the setup-routine at boot-time&n; */
+r_extern
+r_int
+r_char
+id|boot_params
+(braket
+id|PARAM_SIZE
+)braket
+suffix:semicolon
 DECL|macro|PARAM
-mdefine_line|#define PARAM&t;((unsigned char *)empty_zero_page)
+mdefine_line|#define PARAM&t;(boot_params)
 DECL|macro|SCREEN_INFO
 mdefine_line|#define SCREEN_INFO (*(struct screen_info *) (PARAM+0))
 DECL|macro|EXT_MEM_K
@@ -70,9 +93,6 @@ DECL|macro|EDD_NR
 mdefine_line|#define EDD_NR     (*(unsigned char *) (PARAM+EDDNR))
 DECL|macro|EDD_BUF
 mdefine_line|#define EDD_BUF     ((struct edd_info *) (PARAM+EDDBUF))
-DECL|macro|COMMAND_LINE
-mdefine_line|#define COMMAND_LINE ((char *) (PARAM+2048))
-DECL|macro|COMMAND_LINE_SIZE
-mdefine_line|#define COMMAND_LINE_SIZE 256
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _i386_SETUP_H */
 eof

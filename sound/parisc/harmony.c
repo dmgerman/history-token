@@ -304,6 +304,11 @@ DECL|member|silence_count
 r_int
 id|silence_count
 suffix:semicolon
+DECL|member|dma_dev
+r_struct
+id|snd_dma_device
+id|dma_dev
+suffix:semicolon
 multiline_comment|/* alsa stuff */
 DECL|member|card
 id|snd_card_t
@@ -810,7 +815,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * interruption routine:&n; * The interrupt routine must provide adresse of next physical pages &n; * used by harmony&n; */
 DECL|function|snd_card_harmony_interrupt
-r_void
+r_static
+r_int
 id|snd_card_harmony_interrupt
 c_func
 (paren
@@ -1023,6 +1029,9 @@ c_func
 (paren
 id|harmony
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * proc entry&n; * this proc file will give some debugging info&n; */
@@ -3052,12 +3061,25 @@ op_assign
 id|pcm
 suffix:semicolon
 multiline_comment|/* initialize graveyard buffer */
-id|harmony-&gt;graveyard_addr
+id|harmony-&gt;dma_dev.type
 op_assign
-id|snd_malloc_pci_pages
+id|SNDRV_DMA_TYPE_PCI
+suffix:semicolon
+id|harmony-&gt;dma_dev.dev
+op_assign
+id|snd_dma_pci_data
 c_func
 (paren
 id|harmony-&gt;fake_pci_dev
+)paren
+suffix:semicolon
+id|harmony-&gt;graveyard_addr
+op_assign
+id|snd_dma_alloc_pages
+c_func
+(paren
+op_amp
+id|chip-&gt;dma_dev
 comma
 id|HARMONY_BUF_SIZE
 op_star
@@ -3074,10 +3096,11 @@ suffix:semicolon
 multiline_comment|/* initialize silence buffers */
 id|harmony-&gt;silence_addr
 op_assign
-id|snd_malloc_pci_pages
+id|snd_dma_alloc_pages
 c_func
 (paren
-id|harmony-&gt;fake_pci_dev
+op_amp
+id|chip-&gt;dma_dev
 comma
 id|HARMONY_BUF_SIZE
 op_star
@@ -3108,6 +3131,28 @@ suffix:semicolon
 id|harmony-&gt;graveyard_count
 op_assign
 l_int|0
+suffix:semicolon
+id|snd_pcm_lib_preallocate_pages_for_all
+c_func
+(paren
+id|pcm
+comma
+id|SNDRV_DMA_TYPE_DEV
+comma
+id|snd_dma_pci_data
+c_func
+(paren
+id|harmony-&gt;fake_pci_dev
+)paren
+comma
+l_int|64
+op_star
+l_int|1024
+comma
+l_int|128
+op_star
+l_int|1024
+)paren
 suffix:semicolon
 r_return
 l_int|0

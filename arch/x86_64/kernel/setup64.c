@@ -868,12 +868,8 @@ id|system_call
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IA32_EMULATION   &t;&t;
-id|wrmsrl
-c_func
+id|syscall32_cpu_init
 (paren
-id|MSR_CSTAR
-comma
-id|ia32_cstar_target
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1154,6 +1150,20 @@ suffix:colon
 l_string|&quot;eax&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpu
+op_eq
+l_int|0
+)paren
+id|early_identify_cpu
+c_func
+(paren
+op_amp
+id|boot_cpu_data
+)paren
+suffix:semicolon
 id|syscall_init
 c_func
 (paren
@@ -1218,7 +1228,7 @@ c_func
 (paren
 id|GFP_ATOMIC
 comma
-l_int|0
+id|EXCEPTION_STACK_ORDER
 )paren
 suffix:semicolon
 r_if

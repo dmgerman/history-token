@@ -472,9 +472,6 @@ suffix:semicolon
 multiline_comment|/* Define AMD SHPC ID  */
 DECL|macro|PCI_DEVICE_ID_AMD_GOLAM_7450
 mdefine_line|#define PCI_DEVICE_ID_AMD_GOLAM_7450&t;0x7450 
-multiline_comment|/* Define SHPC CAP ID - not defined in kernel yet */
-DECL|macro|PCI_CAP_ID_SHPC
-mdefine_line|#define PCI_CAP_ID_SHPC&t;&t;&t;0x0C 
 DECL|macro|INT_BUTTON_IGNORE
 mdefine_line|#define INT_BUTTON_IGNORE&t;&t;0
 DECL|macro|INT_PRESENCE_ON
@@ -1700,11 +1697,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Sleep for up to 1.5 second */
+multiline_comment|/* Sleep for up to 2 seconds */
 id|schedule_timeout
 c_func
 (paren
-l_float|1.5
+l_int|2
 op_star
 id|HZ
 )paren

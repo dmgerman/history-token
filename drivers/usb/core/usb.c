@@ -485,7 +485,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_ifnum_to_if - get the interface object with a given interface number (usbcore-internal)&n; * @dev: the device whose current configuration is considered&n; * @ifnum: the desired interface&n; *&n; * This walks the device descriptor for the currently active configuration&n; * and returns a pointer to the interface with that particular interface&n; * number, or null.&n; *&n; * Note that configuration descriptors are not required to assign interface&n; * numbers sequentially, so that it would be incorrect to assume that&n; * the first interface in that descriptor corresponds to interface zero.&n; * This routine helps device drivers avoid such mistakes.&n; * However, you should make sure that you do the right thing with any&n; * alternate settings available for this interfaces.&n; */
+multiline_comment|/**&n; * usb_ifnum_to_if - get the interface object with a given interface number&n; * @dev: the device whose current configuration is considered&n; * @ifnum: the desired interface&n; *&n; * This walks the device descriptor for the currently active configuration&n; * and returns a pointer to the interface with that particular interface&n; * number, or null.&n; *&n; * Note that configuration descriptors are not required to assign interface&n; * numbers sequentially, so that it would be incorrect to assume that&n; * the first interface in that descriptor corresponds to interface zero.&n; * This routine helps device drivers avoid such mistakes.&n; * However, you should make sure that you do the right thing with any&n; * alternate settings available for this interfaces.&n; */
 DECL|function|usb_ifnum_to_if
 r_struct
 id|usb_interface
@@ -558,6 +558,66 @@ id|config-&gt;interface
 id|i
 )braket
 suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_altnum_to_altsetting - get the altsetting structure with a given&n; *&t;alternate setting number.&n; * @intf: the interface containing the altsetting in question&n; * @altnum: the desired alternate setting number&n; *&n; * This searches the altsetting array of the specified interface for&n; * an entry with the correct bAlternateSetting value and returns a pointer&n; * to that entry, or null.&n; *&n; * Note that altsettings need not be stored sequentially by number, so&n; * it would be incorrect to assume that the first altsetting entry in&n; * the array corresponds to altsetting zero.  This routine helps device&n; * drivers avoid such mistakes.&n; */
+DECL|function|usb_altnum_to_altsetting
+r_struct
+id|usb_host_interface
+op_star
+id|usb_altnum_to_altsetting
+c_func
+(paren
+r_struct
+id|usb_interface
+op_star
+id|intf
+comma
+r_int
+r_int
+id|altnum
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|intf-&gt;num_altsetting
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|intf-&gt;altsetting
+(braket
+id|i
+)braket
+dot
+id|desc.bAlternateSetting
+op_eq
+id|altnum
+)paren
+r_return
+op_amp
+id|intf-&gt;altsetting
+(braket
+id|i
+)braket
+suffix:semicolon
+)brace
 r_return
 l_int|NULL
 suffix:semicolon
@@ -635,9 +695,7 @@ id|i
 suffix:semicolon
 id|alt
 op_assign
-id|intf-&gt;altsetting
-op_plus
-id|intf-&gt;act_altsetting
+id|intf-&gt;cur_altsetting
 suffix:semicolon
 r_for
 c_loop
@@ -895,11 +953,7 @@ l_int|NULL
 suffix:semicolon
 id|intf
 op_assign
-op_amp
-id|interface-&gt;altsetting
-(braket
-id|interface-&gt;act_altsetting
-)braket
+id|interface-&gt;cur_altsetting
 suffix:semicolon
 id|dev
 op_assign
@@ -1605,10 +1659,12 @@ op_eq
 l_int|0
 )paren
 (brace
-r_int
+r_struct
+id|usb_host_interface
+op_star
 id|alt
 op_assign
-id|intf-&gt;act_altsetting
+id|intf-&gt;cur_altsetting
 suffix:semicolon
 multiline_comment|/* 2.4 only exposed interface zero.  in 2.5, hotplug&n;&t;&t; * agents are called for all interfaces, and can use&n;&t;&t; * $DEVPATH/bInterfaceNumber if necessary.&n;&t;&t; */
 id|envp
@@ -1631,26 +1687,11 @@ id|length
 comma
 l_string|&quot;INTERFACE=%d/%d/%d&quot;
 comma
-id|intf-&gt;altsetting
-(braket
-id|alt
-)braket
-dot
-id|desc.bInterfaceClass
+id|alt-&gt;desc.bInterfaceClass
 comma
-id|intf-&gt;altsetting
-(braket
-id|alt
-)braket
-dot
-id|desc.bInterfaceSubClass
+id|alt-&gt;desc.bInterfaceSubClass
 comma
-id|intf-&gt;altsetting
-(braket
-id|alt
-)braket
-dot
-id|desc.bInterfaceProtocol
+id|alt-&gt;desc.bInterfaceProtocol
 )paren
 suffix:semicolon
 r_if
@@ -3797,8 +3838,9 @@ r_return
 id|urb
 suffix:semicolon
 )brace
+multiline_comment|/* XXX DISABLED, no users currently.  If you wish to re-enable this&n; * XXX please determine whether the sync is to transfer ownership of&n; * XXX the buffer from device to cpu or vice verse, and thusly use the&n; * XXX appropriate _for_{cpu,device}() method.  -DaveM&n; */
+macro_line|#if 0
 multiline_comment|/**&n; * usb_buffer_dmasync - synchronize DMA and CPU view of buffer(s)&n; * @urb: urb whose transfer_buffer/setup_packet will be synchronized&n; */
-DECL|function|usb_buffer_dmasync
 r_void
 id|usb_buffer_dmasync
 (paren
@@ -3900,6 +3942,7 @@ id|DMA_TO_DEVICE
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 multiline_comment|/**&n; * usb_buffer_unmap - free DMA mapping(s) for an urb&n; * @urb: urb whose transfer_buffer will be unmapped&n; *&n; * Reverses the effect of usb_buffer_map().&n; */
 DECL|function|usb_buffer_unmap
 r_void
@@ -4098,8 +4141,9 @@ id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* XXX DISABLED, no users currently.  If you wish to re-enable this&n; * XXX please determine whether the sync is to transfer ownership of&n; * XXX the buffer from device to cpu or vice verse, and thusly use the&n; * XXX appropriate _for_{cpu,device}() method.  -DaveM&n; */
+macro_line|#if 0
 multiline_comment|/**&n; * usb_buffer_dmasync_sg - synchronize DMA and CPU view of scatterlist buffer(s)&n; * @dev: device to which the scatterlist will be mapped&n; * @pipe: endpoint defining the mapping direction&n; * @sg: the scatterlist to synchronize&n; * @n_hw_ents: the positive return value from usb_buffer_map_sg&n; *&n; * Use this when you are re-using a scatterlist&squot;s data buffers for&n; * another USB request.&n; */
-DECL|function|usb_buffer_dmasync_sg
 r_void
 id|usb_buffer_dmasync_sg
 (paren
@@ -4175,6 +4219,7 @@ id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/**&n; * usb_buffer_unmap_sg - free DMA mapping(s) for a scatterlist&n; * @dev: device to which the scatterlist will be mapped&n; * @pipe: endpoint defining the mapping direction&n; * @sg: the scatterlist to unmap&n; * @n_hw_ents: the positive return value from usb_buffer_map_sg&n; *&n; * Reverses the effect of usb_buffer_map_sg().&n; */
 DECL|function|usb_buffer_unmap_sg
 r_void
@@ -4730,6 +4775,13 @@ c_func
 id|usb_ifnum_to_if
 )paren
 suffix:semicolon
+DECL|variable|usb_altnum_to_altsetting
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usb_altnum_to_altsetting
+)paren
+suffix:semicolon
 DECL|variable|usb_reset_device
 id|EXPORT_SYMBOL
 c_func
@@ -4783,12 +4835,13 @@ id|EXPORT_SYMBOL
 id|usb_buffer_map
 )paren
 suffix:semicolon
-DECL|variable|usb_buffer_dmasync
+macro_line|#if 0
 id|EXPORT_SYMBOL
 (paren
 id|usb_buffer_dmasync
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|usb_buffer_unmap
 id|EXPORT_SYMBOL
 (paren
@@ -4801,12 +4854,13 @@ id|EXPORT_SYMBOL
 id|usb_buffer_map_sg
 )paren
 suffix:semicolon
-DECL|variable|usb_buffer_dmasync_sg
+macro_line|#if 0
 id|EXPORT_SYMBOL
 (paren
 id|usb_buffer_dmasync_sg
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|usb_buffer_unmap_sg
 id|EXPORT_SYMBOL
 (paren

@@ -311,11 +311,11 @@ comma
 l_int|128
 )brace
 suffix:semicolon
-DECL|variable|acpi_gbl_db_sleep_states
+DECL|variable|acpi_gbl_sleep_state_names
 r_const
 r_char
 op_star
-id|acpi_gbl_db_sleep_states
+id|acpi_gbl_sleep_state_names
 (braket
 id|ACPI_S_STATE_COUNT
 )braket
@@ -334,8 +334,47 @@ comma
 l_string|&quot;&bslash;&bslash;_S5_&quot;
 )brace
 suffix:semicolon
+DECL|variable|acpi_gbl_highest_dstate_names
+r_const
+r_char
+op_star
+id|acpi_gbl_highest_dstate_names
+(braket
+l_int|4
+)braket
+op_assign
+(brace
+l_string|&quot;_S1D&quot;
+comma
+l_string|&quot;_S2D&quot;
+comma
+l_string|&quot;_S3D&quot;
+comma
+l_string|&quot;_S4D&quot;
+)brace
+suffix:semicolon
+multiline_comment|/* Strings supported by the _OSI predefined (internal) method */
+DECL|variable|acpi_gbl_valid_osi_strings
+r_const
+r_char
+op_star
+id|acpi_gbl_valid_osi_strings
+(braket
+id|ACPI_NUM_OSI_STRINGS
+)braket
+op_assign
+(brace
+l_string|&quot;Linux&quot;
+comma
+l_string|&quot;Windows 2000&quot;
+comma
+l_string|&quot;Windows 2001&quot;
+comma
+l_string|&quot;Windows 2001.1&quot;
+)brace
+suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * Namespace globals&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; * Predefined ACPI Names (Built-in to the Interpreter)&n; *&n; * Initial values are currently supported only for types String and Number.&n; * Both are specified as strings in this table.&n; *&n; * NOTES:&n; * 1) _SB_ is defined to be a device to allow _SB_/_INI to be run&n; *    during the initialization sequence.&n; */
+multiline_comment|/*&n; * Predefined ACPI Names (Built-in to the Interpreter)&n; *&n; * NOTES:&n; * 1) _SB_ is defined to be a device to allow &bslash;_SB_._INI to be run&n; *    during the initialization sequence.&n; */
 DECL|variable|acpi_gbl_pre_defined_names
 r_const
 r_struct
@@ -409,7 +448,7 @@ comma
 l_string|&quot;0&quot;
 )brace
 comma
-macro_line|#if defined (ACPI_NO_METHOD_EXECUTION) || defined (ACPI_CONSTANT_EVAL_ONLY)
+macro_line|#if !defined (ACPI_NO_METHOD_EXECUTION) || defined (ACPI_CONSTANT_EVAL_ONLY)
 (brace
 l_string|&quot;_OSI&quot;
 comma
@@ -1187,7 +1226,7 @@ id|event_id
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_get_type_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a Type ID into a name string (Debug only)&n; *&n; ****************************************************************************/
-multiline_comment|/*&n; * Elements of acpi_gbl_ns_type_names below must match&n; * one-to-one with values of acpi_object_type&n; *&n; * The type ACPI_TYPE_ANY (Untyped) is used as a &quot;don&squot;t care&quot; when searching; when&n; * stored in a table it really means that we have thus far seen no evidence to&n; * indicatewhat type is actually going to be stored for this entry.&n; */
+multiline_comment|/*&n; * Elements of acpi_gbl_ns_type_names below must match&n; * one-to-one with values of acpi_object_type&n; *&n; * The type ACPI_TYPE_ANY (Untyped) is used as a &quot;don&squot;t care&quot; when searching; when&n; * stored in a table it really means that we have thus far seen no evidence to&n; * indicate what type is actually going to be stored for this entry.&n; */
 DECL|variable|acpi_gbl_bad_type
 r_static
 r_const
@@ -1780,6 +1819,15 @@ id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ut_init_globals&quot;
 )paren
+suffix:semicolon
+multiline_comment|/* Runtime configuration */
+id|acpi_gbl_create_osi_method
+op_assign
+id|TRUE
+suffix:semicolon
+id|acpi_gbl_all_methods_serialized
+op_assign
+id|FALSE
 suffix:semicolon
 multiline_comment|/* Memory allocation and cache lists */
 id|ACPI_MEMSET

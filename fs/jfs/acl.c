@@ -5,6 +5,7 @@ macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_xattr.h&quot;
 macro_line|#include &quot;jfs_acl.h&quot;
 DECL|function|jfs_get_acl
+r_static
 r_struct
 id|posix_acl
 op_star
@@ -262,6 +263,7 @@ id|acl
 suffix:semicolon
 )brace
 DECL|function|jfs_set_acl
+r_static
 r_int
 id|jfs_set_acl
 c_func
@@ -1047,6 +1049,7 @@ id|rc
 suffix:semicolon
 )brace
 DECL|function|jfs_acl_chmod
+r_static
 r_int
 id|jfs_acl_chmod
 c_func

@@ -411,6 +411,11 @@ macro_line|#if (defined(CONFIG_H8300H_SIM) || defined(CONFIG_H8S_SIM)) &amp;&amp
 id|register_console
 c_func
 (paren
+(paren
+r_struct
+id|console
+op_star
+)paren
 op_amp
 id|gdb_console
 )paren

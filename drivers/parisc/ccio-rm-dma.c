@@ -400,10 +400,16 @@ id|ccio_unmap_sg
 comma
 l_int|NULL
 comma
-multiline_comment|/* dma_sync_single : NOP for U2 */
+multiline_comment|/* dma_sync_single_for_cpu : NOP for U2 */
 l_int|NULL
 comma
-multiline_comment|/* dma_sync_sg     : ditto */
+multiline_comment|/* dma_sync_single_for_device : NOP for U2 */
+l_int|NULL
+comma
+multiline_comment|/* dma_sync_sg_for_cpu     : ditto */
+l_int|NULL
+comma
+multiline_comment|/* dma_sync_sg_for_device     : ditto */
 )brace
 suffix:semicolon
 multiline_comment|/*&n;** Determine if u2 should claim this chip (return 0) or not (return 1).&n;** If so, initialize the chip and tell other partners in crime they&n;** have work to do.&n;*/

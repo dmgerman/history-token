@@ -15,10 +15,10 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/edd.h&gt;
 macro_line|#include &lt;video/edid.h&gt;
 macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
-macro_line|#include &lt;asm/edd.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
@@ -26,6 +26,16 @@ macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/ist.h&gt;
 macro_line|#include &quot;setup_arch_pre.h&quot;
 macro_line|#include &quot;mach_resources.h&quot;
+multiline_comment|/* This value is set up by the early boot code to point to the value&n;   immediately after the boot time page tables.  It contains a *physical*&n;   address, and must not be in the .bss segment! */
+DECL|variable|__initdata
+r_int
+r_int
+id|init_pg_tables_end
+id|__initdata
+op_assign
+op_complement
+l_int|0UL
+suffix:semicolon
 DECL|variable|__initdata
 r_int
 id|disable_pse
@@ -295,12 +305,6 @@ r_extern
 r_int
 id|root_mountflags
 suffix:semicolon
-r_extern
-r_char
-id|_end
-(braket
-)braket
-suffix:semicolon
 DECL|variable|saved_videomode
 r_int
 r_int
@@ -325,6 +329,15 @@ r_char
 id|saved_command_line
 (braket
 id|COMMAND_LINE_SIZE
+)braket
+suffix:semicolon
+DECL|variable|boot_params
+r_int
+r_char
+id|__initdata
+id|boot_params
+(braket
+id|PARAM_SIZE
 )braket
 suffix:semicolon
 DECL|variable|code_resource
@@ -1762,7 +1775,7 @@ id|edd_disk80_sig
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/**&n; * copy_edd() - Copy the BIOS EDD information&n; *              from empty_zero_page into a safe place.&n; *&n; */
+multiline_comment|/**&n; * copy_edd() - Copy the BIOS EDD information&n; *              from boot_params into a safe place.&n; *&n; */
 DECL|function|copy_edd
 r_static
 r_inline
@@ -1861,7 +1874,7 @@ comma
 op_star
 id|from
 op_assign
-id|COMMAND_LINE
+id|saved_command_line
 suffix:semicolon
 r_int
 id|len
@@ -1874,16 +1887,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Save unparsed command line copy for /proc/cmdline */
-id|memcpy
-c_func
-(paren
-id|saved_command_line
-comma
-id|COMMAND_LINE
-comma
-id|COMMAND_LINE_SIZE
-)paren
-suffix:semicolon
 id|saved_command_line
 (braket
 id|COMMAND_LINE_SIZE
@@ -2254,6 +2257,28 @@ suffix:semicolon
 id|acpi_disabled
 op_assign
 l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* acpi=strict disables out-of-spec workarounds */
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;acpi=strict&quot;
+comma
+l_int|11
+)paren
+)paren
+(brace
+id|acpi_strict
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Limit ACPI just to boot-time to enable HT */
@@ -3176,11 +3201,7 @@ op_assign
 id|PFN_UP
 c_func
 (paren
-id|__pa
-c_func
-(paren
-id|_end
-)paren
+id|init_pg_tables_end
 )paren
 suffix:semicolon
 id|find_max_pfn
@@ -3293,6 +3314,28 @@ c_func
 l_int|0
 comma
 id|PAGE_SIZE
+)paren
+suffix:semicolon
+multiline_comment|/* could be an AMD 768MPX chipset. Reserve a page  before VGA to prevent&n;       PCI prefetch into it (errata #56). Usually the page is reserved anyways,&n;       unless you have no PS/2 mouse plugged in. */
+r_if
+c_cond
+(paren
+id|boot_cpu_data.x86_vendor
+op_eq
+id|X86_VENDOR_AMD
+op_logical_and
+id|boot_cpu_data.x86
+op_eq
+l_int|6
+)paren
+id|reserve_bootmem
+c_func
+(paren
+l_int|0xa0000
+op_minus
+l_int|4096
+comma
+l_int|4096
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
@@ -4570,11 +4613,9 @@ id|_edata
 suffix:semicolon
 id|init_mm.brk
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|_end
+id|init_pg_tables_end
+op_plus
+id|PAGE_OFFSET
 suffix:semicolon
 id|code_resource.start
 op_assign

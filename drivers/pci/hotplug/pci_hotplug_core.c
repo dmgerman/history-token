@@ -258,10 +258,12 @@ id|hotplug_slot_release
 comma
 )brace
 suffix:semicolon
-id|decl_subsys
+id|decl_subsys_name
 c_func
 (paren
 id|pci_hotplug_slots
+comma
+id|slots
 comma
 op_amp
 id|hotplug_slot_ktype
@@ -984,8 +986,6 @@ op_assign
 id|S_IFREG
 op_or
 id|S_IRUGO
-op_or
-id|S_IWUSR
 )brace
 comma
 dot
@@ -1073,8 +1073,6 @@ op_assign
 id|S_IFREG
 op_or
 id|S_IRUGO
-op_or
-id|S_IWUSR
 )brace
 comma
 dot
@@ -1299,8 +1297,6 @@ op_assign
 id|S_IFREG
 op_or
 id|S_IRUGO
-op_or
-id|S_IWUSR
 )brace
 comma
 dot
@@ -1412,8 +1408,6 @@ op_assign
 id|S_IFREG
 op_or
 id|S_IRUGO
-op_or
-id|S_IWUSR
 )brace
 comma
 dot

@@ -1,0 +1,46 @@
+multiline_comment|/*&n; * Interface to booleans in the security server. This is exported&n; * for the selinuxfs.&n; *&n; * Author: Karl MacMillan &lt;kmacmillan@tresys.com&gt;&n; *&n; * Copyright (C) 2003 - 2004 Tresys Technology, LLC&n; *&t;This program is free software; you can redistribute it and/or modify&n; *  &t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation, version 2.&n; */
+macro_line|#ifndef _SELINUX_CONDITIONAL_H_
+DECL|macro|_SELINUX_CONDITIONAL_H_
+mdefine_line|#define _SELINUX_CONDITIONAL_H_
+r_int
+id|security_get_bools
+c_func
+(paren
+r_int
+op_star
+id|len
+comma
+r_char
+op_star
+op_star
+op_star
+id|names
+comma
+r_int
+op_star
+op_star
+id|values
+)paren
+suffix:semicolon
+r_int
+id|security_set_bools
+c_func
+(paren
+r_int
+id|len
+comma
+r_int
+op_star
+id|values
+)paren
+suffix:semicolon
+r_int
+id|security_get_bool_value
+c_func
+(paren
+r_int
+r_bool
+)paren
+suffix:semicolon
+macro_line|#endif
+eof

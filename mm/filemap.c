@@ -288,7 +288,7 @@ c_func
 id|filemap_fdatawrite
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This is a mostly non-blocking flush.  Not suitable for data-integrity&n; * purposes.&n; */
+multiline_comment|/*&n; * This is a mostly non-blocking flush.  Not suitable for data-integrity&n; * purposes - I/O may not be started against all dirty pages.&n; */
 DECL|function|filemap_flush
 r_int
 id|filemap_flush
@@ -310,6 +310,13 @@ id|WB_SYNC_NONE
 )paren
 suffix:semicolon
 )brace
+DECL|variable|filemap_flush
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|filemap_flush
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * filemap_fdatawait - walk the list of locked pages of the given address&n; *                     space and wait for all of them.&n; * @mapping: address space structure to wait for&n; */
 DECL|function|filemap_fdatawait
 r_int
@@ -785,6 +792,7 @@ suffix:semicolon
 )brace
 DECL|function|wait_on_page_bit
 r_void
+id|fastcall
 id|wait_on_page_bit
 c_func
 (paren
@@ -885,6 +893,7 @@ suffix:semicolon
 multiline_comment|/**&n; * unlock_page() - unlock a locked page&n; *&n; * @page: the page&n; *&n; * Unlocks the page and wakes up sleepers in ___wait_on_page_locked().&n; * Also wakes sleepers in wait_on_page_writeback() because the wakeup&n; * mechananism between PageLocked pages and PageWriteback pages is shared.&n; * But that&squot;s OK - sleepers in wait_on_page_writeback() just go back to sleep.&n; *&n; * The first mb is necessary to safely close the critical section opened by the&n; * TestSetPageLocked(), the second mb is necessary to enforce ordering between&n; * the clear_bit and the read of the waitqueue (to avoid SMP races with a&n; * parallel wait_on_page_locked()).&n; */
 DECL|function|unlock_page
 r_void
+id|fastcall
 id|unlock_page
 c_func
 (paren
@@ -1050,6 +1059,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Get a lock on the page, assuming we need to sleep to get it.&n; *&n; * Ugly: running sync_page() in state TASK_UNINTERRUPTIBLE is scary.  If some&n; * random driver&squot;s requestfn sets TASK_RUNNING, we could busywait.  However&n; * chances are that on the second loop, the block layer&squot;s plug list is empty,&n; * so sync_page() will then return in state TASK_UNINTERRUPTIBLE.&n; */
 DECL|function|__lock_page
 r_void
+id|fastcall
 id|__lock_page
 c_func
 (paren
@@ -1778,7 +1788,7 @@ c_func
 id|grab_cache_page_nowait
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This is a generic file read routine, and uses the&n; * inode-&gt;i_op-&gt;readpage() function for the actual low-level&n; * stuff.&n; *&n; * This is really ugly. But the goto&squot;s actually try to clarify some&n; * of the logic when it comes to error handling etc.&n; * - note the struct file * is only passed for the use of readpage&n; */
+multiline_comment|/*&n; * This is a generic file read routine, and uses the&n; * mapping-&gt;a_ops-&gt;readpage() function for the actual low-level&n; * stuff.&n; *&n; * This is really ugly. But the goto&squot;s actually try to clarify some&n; * of the logic when it comes to error handling etc.&n; * - note the struct file * is only passed for the use of readpage&n; */
 DECL|function|do_generic_mapping_read
 r_void
 id|do_generic_mapping_read
@@ -2325,10 +2335,10 @@ c_func
 id|cached_page
 )paren
 suffix:semicolon
-id|update_atime
+id|file_accessed
 c_func
 (paren
-id|inode
+id|filp
 )paren
 suffix:semicolon
 )brace
@@ -2761,10 +2771,10 @@ op_plus
 id|retval
 suffix:semicolon
 )brace
-id|update_atime
+id|file_accessed
 c_func
 (paren
-id|filp-&gt;f_dentry-&gt;d_inode
+id|filp
 )paren
 suffix:semicolon
 r_goto
@@ -3444,6 +3454,7 @@ suffix:semicolon
 DECL|function|page_cache_read
 r_static
 r_int
+id|fastcall
 id|page_cache_read
 c_func
 (paren
@@ -4771,13 +4782,6 @@ id|mapping
 op_assign
 id|file-&gt;f_mapping
 suffix:semicolon
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|mapping-&gt;host
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4788,10 +4792,10 @@ r_return
 op_minus
 id|ENOEXEC
 suffix:semicolon
-id|update_atime
+id|file_accessed
 c_func
 (paren
-id|inode
+id|file
 )paren
 suffix:semicolon
 id|vma-&gt;vm_ops
@@ -5458,7 +5462,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The logic we want is&n; *&n; *&t;if suid or (sgid and xgrp)&n; *&t;&t;remove privs&n; */
 DECL|function|remove_suid
-r_void
+r_int
 id|remove_suid
 c_func
 (paren
@@ -5475,6 +5479,11 @@ id|dentry-&gt;d_inode-&gt;i_mode
 suffix:semicolon
 r_int
 id|kill
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|result
 op_assign
 l_int|0
 suffix:semicolon
@@ -5545,6 +5554,8 @@ id|ATTR_FORCE
 op_or
 id|kill
 suffix:semicolon
+id|result
+op_assign
 id|notify_change
 c_func
 (paren
@@ -5555,6 +5566,9 @@ id|newattrs
 )paren
 suffix:semicolon
 )brace
+r_return
+id|result
+suffix:semicolon
 )brace
 DECL|variable|remove_suid
 id|EXPORT_SYMBOL
@@ -6708,11 +6722,21 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
+id|err
+op_assign
 id|remove_suid
 c_func
 (paren
 id|file-&gt;f_dentry
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|out
 suffix:semicolon
 id|inode_update_time
 c_func

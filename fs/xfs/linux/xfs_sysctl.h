@@ -80,6 +80,16 @@ id|xfs_sysctl_val_t
 id|inherit_noatim
 suffix:semicolon
 multiline_comment|/* Inherit the &quot;noatime&quot; inode flag. */
+DECL|member|flush_interval
+id|xfs_sysctl_val_t
+id|flush_interval
+suffix:semicolon
+multiline_comment|/* interval between runs of the&n;&t;&t;&t;&t;&t; * delwri flush daemon.  */
+DECL|member|age_buffer
+id|xfs_sysctl_val_t
+id|age_buffer
+suffix:semicolon
+multiline_comment|/* time for buffer to age before&n;&t;&t;&t;&t;&t; * we flush it.  */
 DECL|typedef|xfs_param_t
 )brace
 id|xfs_param_t
@@ -136,6 +146,16 @@ DECL|enumerator|XFS_INHERIT_NOATIME
 id|XFS_INHERIT_NOATIME
 op_assign
 l_int|15
+comma
+DECL|enumerator|XFS_FLUSH_INTERVAL
+id|XFS_FLUSH_INTERVAL
+op_assign
+l_int|16
+comma
+DECL|enumerator|XFS_AGE_BUFFER
+id|XFS_AGE_BUFFER
+op_assign
+l_int|17
 comma
 )brace
 suffix:semicolon

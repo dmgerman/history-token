@@ -5263,7 +5263,7 @@ id|desc-&gt;result_status
 r_break
 suffix:semicolon
 )brace
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|yp-&gt;pci_dev
@@ -5848,6 +5848,18 @@ id|pkt_len
 )paren
 suffix:semicolon
 macro_line|#endif
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|yp-&gt;pci_dev
+comma
+id|desc-&gt;addr
+comma
+id|yp-&gt;rx_buf_sz
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
 )brace
 id|skb-&gt;protocol
 op_assign

@@ -126,9 +126,16 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_char
 id|cpu_sibling_map
 (braket
+)braket
+suffix:semicolon
+r_extern
+r_char
+id|phys_proc_id
+(braket
+id|NR_CPUS
 )braket
 suffix:semicolon
 DECL|macro|SMP_TRAMPOLINE_BASE
@@ -191,8 +198,25 @@ id|APIC_ID
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Some lowlevel functions might want to know about&n; * the real APIC ID &lt;-&gt; CPU # mapping.&n; * AK: why is this volatile?&n; */
+r_extern
+r_volatile
+r_char
+id|x86_apicid_to_cpu
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+r_extern
+r_volatile
+r_char
+id|x86_cpu_to_apicid
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 DECL|macro|safe_smp_processor_id
-mdefine_line|#define safe_smp_processor_id() (disable_apic ? 0 : hard_smp_processor_id())
+mdefine_line|#define safe_smp_processor_id() (disable_apic ? 0 : x86_apicid_to_cpu[hard_smp_processor_id()])
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu) cpu_isset(cpu, cpu_online_map)
 macro_line|#endif /* !ASSEMBLY */

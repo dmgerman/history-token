@@ -5,6 +5,7 @@ mdefine_line|#define _VIO_H
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
@@ -94,6 +95,18 @@ r_struct
 id|vio_dev
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_struct
+id|vio_dev
+op_star
+id|vio_find_node
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|vnode
 )paren
 suffix:semicolon
 r_const
@@ -277,6 +290,117 @@ id|dma_addr_t
 id|dma_handle
 )paren
 suffix:semicolon
+DECL|function|vio_dma_supported
+r_static
+r_inline
+r_int
+id|vio_dma_supported
+c_func
+(paren
+r_struct
+id|vio_dev
+op_star
+id|hwdev
+comma
+id|u64
+id|mask
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|macro|vio_map_page
+mdefine_line|#define vio_map_page(dev, page, off, size, dir) &bslash;&n;&t;&t;vio_map_single(dev, (page_address(page) + (off)), size, dir)
+DECL|macro|vio_unmap_page
+mdefine_line|#define vio_unmap_page(dev,addr,sz,dir) vio_unmap_single(dev,addr,sz,dir)
+DECL|function|vio_dma_sync_single
+r_static
+r_inline
+r_void
+id|vio_dma_sync_single
+c_func
+(paren
+r_struct
+id|vio_dev
+op_star
+id|hwdev
+comma
+id|dma_addr_t
+id|dma_handle
+comma
+r_int
+id|size
+comma
+r_int
+id|direction
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|direction
+op_eq
+id|PCI_DMA_NONE
+)paren
+suffix:semicolon
+multiline_comment|/* nothing to do */
+)brace
+DECL|function|vio_dma_sync_sg
+r_static
+r_inline
+r_void
+id|vio_dma_sync_sg
+c_func
+(paren
+r_struct
+id|vio_dev
+op_star
+id|hwdev
+comma
+r_struct
+id|scatterlist
+op_star
+id|sg
+comma
+r_int
+id|nelems
+comma
+r_int
+id|direction
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|direction
+op_eq
+id|PCI_DMA_NONE
+)paren
+suffix:semicolon
+multiline_comment|/* nothing to do */
+)brace
+DECL|function|vio_set_dma_mask
+r_static
+r_inline
+r_int
+id|vio_set_dma_mask
+c_func
+(paren
+r_struct
+id|vio_dev
+op_star
+id|dev
+comma
+id|u64
+id|mask
+)paren
+(brace
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 r_extern
 r_struct
 id|bus_type
@@ -412,11 +536,6 @@ op_star
 id|driver_data
 suffix:semicolon
 multiline_comment|/* data private to the driver */
-DECL|member|unit_address
-r_int
-r_int
-id|unit_address
-suffix:semicolon
 DECL|member|iommu_table
 r_struct
 id|iommu_table
@@ -424,6 +543,10 @@ op_star
 id|iommu_table
 suffix:semicolon
 multiline_comment|/* vio_map_* uses this */
+DECL|member|unit_address
+r_uint32
+id|unit_address
+suffix:semicolon
 DECL|member|irq
 r_int
 r_int

@@ -8,7 +8,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;
-macro_line|#include &lt;asm/pplus.h&gt;
+macro_line|#include &lt;asm/hawk.h&gt;
 multiline_comment|/*&n; * The Falcon/Raven and HAWK has 4 sets of registers:&n; *   1) PPC Registers which define the mappings from PPC bus to PCI bus,&n; *      etc.&n; *   2) PCI Registers which define the mappings from PCI bus to PPC bus and the&n; *      MPIC base address.&n; *   3) MPIC registers.&n; *   4) System Memory Controller (SMC) registers.&n; */
 multiline_comment|/*&n; * Initialize the Motorola MCG Raven or HAWK host bridge.&n; *&n; * This means setting up the PPC bus to PCI memory and I/O space mappings,&n; * setting the PCI memory space address of the MPIC (mapped straight&n; * through), and ioremap&squot;ing the mpic registers.&n; * This routine will set the PCI_CONFIG_ADDR or PCI_CONFIG_DATA&n; * addresses based on the PCI I/O address that is passed in.&n; * &squot;OpenPIC_Addr&squot; will be set correctly by this routine.&n; */
 r_int
@@ -227,7 +227,7 @@ op_star
 (paren
 id|ppc_reg_base
 op_plus
-id|PPLUS_PPC_XSOFF0_OFF
+id|HAWK_PPC_XSOFF0_OFF
 )paren
 comma
 l_int|0x00000000
@@ -243,7 +243,7 @@ op_star
 (paren
 id|ppc_reg_base
 op_plus
-id|PPLUS_PPC_XSOFF1_OFF
+id|HAWK_PPC_XSOFF1_OFF
 )paren
 comma
 l_int|0x00000000
@@ -259,7 +259,7 @@ op_star
 (paren
 id|ppc_reg_base
 op_plus
-id|PPLUS_PPC_XSOFF2_OFF
+id|HAWK_PPC_XSOFF2_OFF
 )paren
 comma
 l_int|0x00000000
@@ -275,7 +275,7 @@ op_star
 (paren
 id|ppc_reg_base
 op_plus
-id|PPLUS_PPC_XSOFF3_OFF
+id|HAWK_PPC_XSOFF3_OFF
 )paren
 comma
 l_int|0x00000000
@@ -313,7 +313,7 @@ op_star
 (paren
 id|ppc_reg_base
 op_plus
-id|PPLUS_PPC_XSADD0_OFF
+id|HAWK_PPC_XSADD0_OFF
 )paren
 comma
 id|addr
@@ -329,7 +329,7 @@ op_star
 (paren
 id|ppc_reg_base
 op_plus
-id|PPLUS_PPC_XSOFF0_OFF
+id|HAWK_PPC_XSOFF0_OFF
 )paren
 comma
 id|offset
@@ -345,7 +345,7 @@ op_or
 (paren
 id|processor_mpic_base
 op_plus
-id|PPLUS_MPIC_SIZE
+id|HAWK_MPIC_SIZE
 )paren
 op_rshift
 l_int|16
@@ -354,11 +354,17 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* No write posting for this PCI Mem space */
 id|offset
 op_assign
+(paren
+id|hose-&gt;mem_space.start
+op_minus
+id|processor_pci_mem_start
+)paren
+op_or
 l_int|0xc2
 suffix:semicolon
-multiline_comment|/* No write posting for this PCI Mem space */
 id|out_be32
 c_func
 (paren
@@ -369,7 +375,7 @@ op_star
 (paren
 id|ppc_reg_base
 op_plus
-id|PPLUS_PPC_XSADD1_OFF
+id|HAWK_PPC_XSADD1_OFF
 )paren
 comma
 id|addr
@@ -385,7 +391,7 @@ op_star
 (paren
 id|ppc_reg_base
 op_plus
-id|PPLUS_PPC_XSOFF1_OFF
+id|HAWK_PPC_XSOFF1_OFF
 )paren
 comma
 id|offset
@@ -422,7 +428,7 @@ op_star
 (paren
 id|ppc_reg_base
 op_plus
-id|PPLUS_PPC_XSADD3_OFF
+id|HAWK_PPC_XSADD3_OFF
 )paren
 comma
 id|addr
@@ -438,7 +444,7 @@ op_star
 (paren
 id|ppc_reg_base
 op_plus
-id|PPLUS_PPC_XSOFF3_OFF
+id|HAWK_PPC_XSOFF3_OFF
 )paren
 comma
 id|offset
@@ -472,11 +478,11 @@ id|hose
 comma
 id|processor_pci_io_start
 op_plus
-id|PPLUS_PCI_CONFIG_ADDR_OFF
+id|HAWK_PCI_CONFIG_ADDR_OFF
 comma
 id|processor_pci_io_start
 op_plus
-id|PPLUS_PCI_CONFIG_DATA_OFF
+id|HAWK_PCI_CONFIG_DATA_OFF
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Disable previous PCI-&gt;PPC mappings.&n;&t; */
@@ -521,7 +527,13 @@ l_int|0
 comma
 id|PCI_BASE_ADDRESS_1
 comma
+(paren
 id|processor_mpic_base
+op_minus
+id|processor_pci_mem_start
+op_plus
+id|hose-&gt;mem_space.start
+)paren
 op_or
 l_int|0x0
 )paren
@@ -534,7 +546,7 @@ c_func
 (paren
 id|processor_mpic_base
 comma
-id|PPLUS_MPIC_SIZE
+id|HAWK_MPIC_SIZE
 )paren
 suffix:semicolon
 r_return
@@ -553,21 +565,21 @@ id|reg_offset_table
 id|__initdata
 op_assign
 (brace
-id|PPLUS_SMC_RAM_A_SIZE_REG_OFF
+id|HAWK_SMC_RAM_A_SIZE_REG_OFF
 comma
-id|PPLUS_SMC_RAM_B_SIZE_REG_OFF
+id|HAWK_SMC_RAM_B_SIZE_REG_OFF
 comma
-id|PPLUS_SMC_RAM_C_SIZE_REG_OFF
+id|HAWK_SMC_RAM_C_SIZE_REG_OFF
 comma
-id|PPLUS_SMC_RAM_D_SIZE_REG_OFF
+id|HAWK_SMC_RAM_D_SIZE_REG_OFF
 comma
-id|PPLUS_SMC_RAM_E_SIZE_REG_OFF
+id|HAWK_SMC_RAM_E_SIZE_REG_OFF
 comma
-id|PPLUS_SMC_RAM_F_SIZE_REG_OFF
+id|HAWK_SMC_RAM_F_SIZE_REG_OFF
 comma
-id|PPLUS_SMC_RAM_G_SIZE_REG_OFF
+id|HAWK_SMC_RAM_G_SIZE_REG_OFF
 comma
-id|PPLUS_SMC_RAM_H_SIZE_REG_OFF
+id|HAWK_SMC_RAM_H_SIZE_REG_OFF
 )brace
 suffix:semicolon
 DECL|variable|__initdata
@@ -787,7 +799,7 @@ l_int|0
 suffix:semicolon
 id|reg_limit
 op_assign
-id|PPLUS_FALCON_SMC_REG_COUNT
+id|FALCON_SMC_REG_COUNT
 suffix:semicolon
 )brace
 r_else
@@ -820,7 +832,7 @@ l_int|0
 suffix:semicolon
 id|reg_limit
 op_assign
-id|PPLUS_HAWK_SMC_REG_COUNT
+id|HAWK_SMC_REG_COUNT
 suffix:semicolon
 )brace
 r_else

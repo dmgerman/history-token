@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * class.c - basic device class management&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; * Copyright (c) 2003-2004 Greg Kroah-Hartman&n; * Copyright (c) 2003-2004 IBM Corp.&n; * &n; * This file is released under the GPLv2&n; *&n; */
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -419,6 +418,9 @@ op_star
 id|cls
 )paren
 (brace
+r_int
+id|error
+suffix:semicolon
 id|pr_debug
 c_func
 (paren
@@ -441,6 +443,8 @@ op_amp
 id|cls-&gt;interfaces
 )paren
 suffix:semicolon
+id|error
+op_assign
 id|kobject_set_name
 c_func
 (paren
@@ -450,6 +454,14 @@ comma
 id|cls-&gt;name
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
+suffix:semicolon
 id|subsys_set_kset
 c_func
 (paren
@@ -458,12 +470,22 @@ comma
 id|class_subsys
 )paren
 suffix:semicolon
+id|error
+op_assign
 id|subsystem_register
 c_func
 (paren
 op_amp
 id|cls-&gt;subsys
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
 suffix:semicolon
 r_return
 l_int|0

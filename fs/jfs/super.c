@@ -1342,6 +1342,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|jfs_remount
+r_static
 r_int
 id|jfs_remount
 c_func
@@ -1717,6 +1718,10 @@ suffix:semicolon
 id|sb-&gt;s_fs_info
 op_assign
 id|sbi
+suffix:semicolon
+id|sbi-&gt;sb
+op_assign
+id|sb
 suffix:semicolon
 multiline_comment|/* initialize the mount flag and determine the default error handler */
 id|flag
@@ -2465,6 +2470,20 @@ op_eq
 id|SLAB_CTOR_CONSTRUCTOR
 )paren
 (brace
+id|memset
+c_func
+(paren
+id|jfs_ip
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|jfs_inode_info
+)paren
+)paren
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -2492,10 +2511,6 @@ c_func
 op_amp
 id|jfs_ip-&gt;xattr_sem
 )paren
-suffix:semicolon
-id|jfs_ip-&gt;atlhead
-op_assign
-l_int|0
 suffix:semicolon
 id|jfs_ip-&gt;active_ag
 op_assign

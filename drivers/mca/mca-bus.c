@@ -385,6 +385,10 @@ op_assign
 op_amp
 id|mca_dev-&gt;dma_mask
 suffix:semicolon
+id|mca_dev-&gt;dev.coherent_dma_mask
+op_assign
+id|mca_dev-&gt;dma_mask
+suffix:semicolon
 r_if
 c_cond
 (paren

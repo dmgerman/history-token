@@ -1011,7 +1011,7 @@ id|inq_len
 OG
 l_int|56
 )paren
-id|tp-&gt;inq_byte56
+id|inq_byte56
 op_assign
 id|inq_data
 (braket
@@ -1058,6 +1058,10 @@ suffix:semicolon
 id|tp-&gt;inq_byte7
 op_assign
 id|inq_byte7
+suffix:semicolon
+id|tp-&gt;inq_byte56
+op_assign
+id|inq_byte56
 suffix:semicolon
 r_return
 l_int|1

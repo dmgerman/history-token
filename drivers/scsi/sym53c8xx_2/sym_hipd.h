@@ -78,6 +78,13 @@ macro_line|#endif
 multiline_comment|/*&n; *    Asynchronous pre-scaler (ns). Shall be 40 for &n; *    the SCSI timings to be compliant.&n; */
 DECL|macro|SYM_CONF_MIN_ASYNC
 mdefine_line|#define&t;SYM_CONF_MIN_ASYNC (40)
+multiline_comment|/*&n; *  Shortest memory chunk is (1&lt;&lt;SYM_MEM_SHIFT), currently 16.&n; *  Actual allocations happen as SYM_MEM_CLUSTER_SIZE sized.&n; *  (1 PAGE at a time is just fine).&n; */
+DECL|macro|SYM_MEM_SHIFT
+mdefine_line|#define SYM_MEM_SHIFT&t;4
+DECL|macro|SYM_MEM_CLUSTER_SIZE
+mdefine_line|#define SYM_MEM_CLUSTER_SIZE&t;(1UL &lt;&lt; SYM_MEM_CLUSTER_SHIFT)
+DECL|macro|SYM_MEM_CLUSTER_MASK
+mdefine_line|#define SYM_MEM_CLUSTER_MASK&t;(SYM_MEM_CLUSTER_SIZE-1)
 multiline_comment|/*&n; *  Number of entries in the START and DONE queues.&n; *&n; *  We limit to 1 PAGE in order to succeed allocation of &n; *  these queues. Each entry is 8 bytes long (2 DWORDS).&n; */
 macro_line|#ifdef&t;SYM_CONF_MAX_START
 DECL|macro|SYM_CONF_MAX_QUEUE
@@ -101,37 +108,6 @@ macro_line|#endif
 multiline_comment|/*&n; *  For this one, we want a short name :-)&n; */
 DECL|macro|MAX_QUEUE
 mdefine_line|#define MAX_QUEUE&t;SYM_CONF_MAX_QUEUE
-multiline_comment|/*&n; *  Union of supported NVRAM formats.&n; */
-DECL|struct|sym_nvram
-r_struct
-id|sym_nvram
-(brace
-DECL|member|type
-r_int
-id|type
-suffix:semicolon
-DECL|macro|SYM_SYMBIOS_NVRAM
-mdefine_line|#define&t;SYM_SYMBIOS_NVRAM&t;(1)
-DECL|macro|SYM_TEKRAM_NVRAM
-mdefine_line|#define&t;SYM_TEKRAM_NVRAM&t;(2)
-macro_line|#if SYM_CONF_NVRAM_SUPPORT
-r_union
-(brace
-DECL|member|Symbios
-id|Symbios_nvram
-id|Symbios
-suffix:semicolon
-DECL|member|Tekram
-id|Tekram_nvram
-id|Tekram
-suffix:semicolon
-DECL|member|data
-)brace
-id|data
-suffix:semicolon
-macro_line|#endif
-)brace
-suffix:semicolon
 multiline_comment|/*&n; *  Common definitions for both bus space based and legacy IO methods.&n; */
 DECL|macro|INB
 mdefine_line|#define INB(r)&t;&t;INB_OFF(offsetof(struct sym_reg,r))
@@ -1681,107 +1657,6 @@ macro_line|#endif
 suffix:semicolon
 DECL|macro|HCB_BA
 mdefine_line|#define HCB_BA(np, lbl)&t;(np-&gt;hcb_ba + offsetof(struct sym_hcb, lbl))
-multiline_comment|/*&n; *  NVRAM reading (sym_nvram.c).&n; */
-macro_line|#if SYM_CONF_NVRAM_SUPPORT
-r_void
-id|sym_nvram_setup_host
-(paren
-id|hcb_p
-id|np
-comma
-r_struct
-id|sym_nvram
-op_star
-id|nvram
-)paren
-suffix:semicolon
-r_void
-id|sym_nvram_setup_target
-(paren
-id|hcb_p
-id|np
-comma
-r_int
-id|target
-comma
-r_struct
-id|sym_nvram
-op_star
-id|nvp
-)paren
-suffix:semicolon
-r_int
-id|sym_read_nvram
-(paren
-id|sdev_p
-id|np
-comma
-r_struct
-id|sym_nvram
-op_star
-id|nvp
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|function|sym_nvram_setup_host
-r_static
-r_inline
-r_void
-id|sym_nvram_setup_host
-c_func
-(paren
-id|hcb_p
-id|np
-comma
-r_struct
-id|sym_nvram
-op_star
-id|nvram
-)paren
-(brace
-)brace
-DECL|function|sym_nvram_setup_target
-r_static
-r_inline
-r_void
-id|sym_nvram_setup_target
-c_func
-(paren
-id|hcb_p
-id|np
-comma
-r_struct
-id|sym_nvram
-op_star
-id|nvram
-)paren
-(brace
-)brace
-DECL|function|sym_read_nvram
-r_static
-r_inline
-r_int
-id|sym_read_nvram
-c_func
-(paren
-id|sdev_p
-id|np
-comma
-r_struct
-id|sym_nvram
-op_star
-id|nvp
-)paren
-(brace
-id|nvp-&gt;type
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n; *  FIRMWARES (sym_fw.c)&n; */
 r_struct
 id|sym_fw
@@ -2326,17 +2201,21 @@ macro_line|#else
 macro_line|#error &quot;Unsupported DMA addressing mode&quot;
 macro_line|#endif
 multiline_comment|/*&n; *  Set up data pointers used by SCRIPTS.&n; *  Called from O/S specific code.&n; */
-r_static
-r_void
-id|__inline
 DECL|function|sym_setup_data_pointers
+r_static
+r_inline
+r_void
 id|sym_setup_data_pointers
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
-id|ccb_p
+r_struct
+id|sym_ccb
+op_star
 id|cp
 comma
 r_int
@@ -2547,13 +2426,6 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*&n; *  MEMORY ALLOCATOR.&n; */
-multiline_comment|/*&n; *  Shortest memory chunk is (1&lt;&lt;SYM_MEM_SHIFT), currently 16.&n; *  Actual allocations happen as SYM_MEM_CLUSTER_SIZE sized.&n; *  (1 PAGE at a time is just fine).&n; */
-DECL|macro|SYM_MEM_SHIFT
-mdefine_line|#define SYM_MEM_SHIFT&t;4
-DECL|macro|SYM_MEM_CLUSTER_SIZE
-mdefine_line|#define SYM_MEM_CLUSTER_SIZE&t;(1UL &lt;&lt; SYM_MEM_CLUSTER_SHIFT)
-DECL|macro|SYM_MEM_CLUSTER_MASK
-mdefine_line|#define SYM_MEM_CLUSTER_MASK&t;(SYM_MEM_CLUSTER_SIZE-1)
 multiline_comment|/*&n; *  Link between free memory chunks of a given size.&n; */
 DECL|struct|sym_m_link
 r_typedef

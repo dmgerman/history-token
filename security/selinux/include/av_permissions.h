@@ -952,6 +952,8 @@ DECL|macro|SECURITY__COMPUTE_USER
 mdefine_line|#define SECURITY__COMPUTE_USER                    0x00000040UL
 DECL|macro|SECURITY__SETENFORCE
 mdefine_line|#define SECURITY__SETENFORCE                      0x00000080UL
+DECL|macro|SECURITY__SETBOOL
+mdefine_line|#define SECURITY__SETBOOL                         0x00000100UL
 DECL|macro|SYSTEM__IPC_INFO
 mdefine_line|#define SYSTEM__IPC_INFO                          0x00000001UL
 DECL|macro|SYSTEM__SYSLOG_READ

@@ -3952,6 +3952,7 @@ suffix:semicolon
 )brace
 DECL|function|put_unused_fd
 r_void
+id|fastcall
 id|put_unused_fd
 c_func
 (paren
@@ -4000,6 +4001,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Install a file pointer in the fd array.  &n; *&n; * The VFS is full of places where we drop the files lock between&n; * setting the open_fds bitmap and installing the file in the file&n; * array.  At any such point, we are vulnerable to a dup2() race&n; * installing a file in the array before us.  We need to detect this and&n; * fput() the struct file we are about to overwrite in this case.&n; *&n; * It should never happen - if we allow dup2() do it, _really_ bad things&n; * will follow.&n; */
 DECL|function|fd_install
 r_void
+id|fastcall
 id|fd_install
 c_func
 (paren
@@ -4216,6 +4218,13 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+DECL|variable|sys_open
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|sys_open
+)paren
+suffix:semicolon
 macro_line|#ifndef __alpha__
 multiline_comment|/*&n; * For backward compatibility?  Maybe this should be moved&n; * into arch/i386 instead?&n; */
 DECL|function|sys_creat

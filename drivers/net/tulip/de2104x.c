@@ -3,9 +3,9 @@ multiline_comment|/*&n;&t;Copyright 2001,2003 Jeff Garzik &lt;jgarzik@pobox.com&
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;de2104x&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;0.6&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&quot;0.7&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&t;&quot;Sep 1, 2003&quot;
+mdefine_line|#define DRV_RELDATE&t;&t;&quot;Mar 17, 2004&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1123,10 +1123,6 @@ id|pci_dev
 op_star
 id|pdev
 suffix:semicolon
-DECL|member|macmode
-id|u32
-id|macmode
-suffix:semicolon
 DECL|member|setup_frame
 id|u16
 id|setup_frame
@@ -1952,7 +1948,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|de-&gt;pdev
@@ -1986,6 +1982,18 @@ comma
 id|skb-&gt;tail
 comma
 id|len
+)paren
+suffix:semicolon
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|de-&gt;pdev
+comma
+id|mapping
+comma
+id|len
+comma
+id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
 multiline_comment|/* We&squot;ll reuse the original ring buffer. */
@@ -3439,7 +3447,11 @@ l_int|NULL
 suffix:semicolon
 id|macmode
 op_assign
-id|de-&gt;macmode
+id|dr32
+c_func
+(paren
+id|MacMode
+)paren
 op_amp
 op_complement
 (paren
@@ -3766,21 +3778,20 @@ c_cond
 (paren
 id|macmode
 op_ne
-id|de-&gt;macmode
+id|dr32
+c_func
+(paren
+id|MacMode
 )paren
-(brace
+)paren
 id|dw32
+c_func
 (paren
 id|MacMode
 comma
 id|macmode
 )paren
 suffix:semicolon
-id|de-&gt;macmode
-op_assign
-id|macmode
-suffix:semicolon
-)brace
 )brace
 DECL|function|de_set_rx_mode
 r_static
@@ -4316,6 +4327,15 @@ id|media
 op_assign
 id|de-&gt;media_type
 suffix:semicolon
+id|u32
+id|macmode
+op_assign
+id|dr32
+c_func
+(paren
+id|MacMode
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4405,12 +4425,12 @@ id|media
 op_eq
 id|DE_MEDIA_TP_FD
 )paren
-id|de-&gt;macmode
+id|macmode
 op_or_assign
 id|FullDuplex
 suffix:semicolon
 r_else
-id|de-&gt;macmode
+id|macmode
 op_and_assign
 op_complement
 id|FullDuplex
@@ -4476,7 +4496,7 @@ id|CSR15
 comma
 id|de-&gt;dev-&gt;name
 comma
-id|de-&gt;macmode
+id|macmode
 comma
 id|de-&gt;media
 (braket
@@ -4501,6 +4521,25 @@ id|csr15
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|macmode
+op_ne
+id|dr32
+c_func
+(paren
+id|MacMode
+)paren
+)paren
+id|dw32
+c_func
+(paren
+id|MacMode
+comma
+id|macmode
+)paren
+suffix:semicolon
 )brace
 DECL|function|de_next_media
 r_static
@@ -5542,36 +5581,27 @@ id|status
 comma
 id|tmp
 suffix:semicolon
-multiline_comment|/*&n;&t; * Reset MAC.  Copied from de4x5.c.&n;&t; */
-id|tmp
-op_assign
-id|dr32
-(paren
-id|BusMode
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * Reset MAC.  de4x5.c and tulip.c examined for &quot;advice&quot;&n;&t; * in this area.&n;&t; */
 r_if
 c_cond
 (paren
-id|tmp
+id|dr32
+c_func
+(paren
+id|BusMode
+)paren
 op_eq
 l_int|0xffffffff
 )paren
 r_return
 op_minus
-id|ENODEV
+id|EBUSY
 suffix:semicolon
-id|mdelay
-(paren
-l_int|1
-)paren
-suffix:semicolon
+multiline_comment|/* Reset the chip, holding bit 0 set at least 50 PCI cycles. */
 id|dw32
 (paren
 id|BusMode
 comma
-id|tmp
-op_or
 id|CmdReset
 )paren
 suffix:semicolon
@@ -5584,7 +5614,7 @@ id|dw32
 (paren
 id|BusMode
 comma
-id|tmp
+id|de_bus_mode
 )paren
 suffix:semicolon
 id|mdelay
@@ -5798,6 +5828,9 @@ id|dev
 op_assign
 id|de-&gt;dev
 suffix:semicolon
+id|u32
+id|macmode
+suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
@@ -5807,7 +5840,7 @@ c_func
 id|de
 )paren
 suffix:semicolon
-id|de-&gt;macmode
+id|macmode
 op_assign
 id|dr32
 c_func
@@ -5874,7 +5907,7 @@ id|MacMode
 comma
 id|RxTx
 op_or
-id|de-&gt;macmode
+id|macmode
 )paren
 suffix:semicolon
 id|dr32
@@ -7118,7 +7151,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|de-&gt;macmode
+id|dr32
+c_func
+(paren
+id|MacMode
+)paren
 op_amp
 id|FullDuplex
 )paren

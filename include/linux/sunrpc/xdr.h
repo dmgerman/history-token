@@ -144,7 +144,7 @@ op_star
 id|p
 comma
 r_const
-r_char
+r_void
 op_star
 id|s
 comma

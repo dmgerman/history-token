@@ -268,16 +268,5 @@ op_star
 id|tm
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|mf_proc_init
-c_func
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-id|iSeries_proc
-)paren
-suffix:semicolon
 macro_line|#endif /* MF_H_INCLUDED */
 eof

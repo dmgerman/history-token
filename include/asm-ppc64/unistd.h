@@ -520,9 +520,6 @@ DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;__NR_syscalls
 macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;linux/linkage.h&gt;
 multiline_comment|/* On powerpc a system call basically clobbers the same registers like a&n; * function call, with the exception of LR (which is needed for the&n; * &quot;sc; bnslr&quot; sequence) and CR (where only CR0.SO is clobbered to signal&n; * an error return status).&n; */
 DECL|macro|__syscall_nr
 mdefine_line|#define __syscall_nr(nr, type, name, args...)&t;&t;&t;&t;&bslash;&n;&t;unsigned long __sc_ret, __sc_err;&t;&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;register unsigned long __sc_0  __asm__ (&quot;r0&quot;);&t;&t;&bslash;&n;&t;&t;register unsigned long __sc_3  __asm__ (&quot;r3&quot;);&t;&t;&bslash;&n;&t;&t;register unsigned long __sc_4  __asm__ (&quot;r4&quot;);&t;&t;&bslash;&n;&t;&t;register unsigned long __sc_5  __asm__ (&quot;r5&quot;);&t;&t;&bslash;&n;&t;&t;register unsigned long __sc_6  __asm__ (&quot;r6&quot;);&t;&t;&bslash;&n;&t;&t;register unsigned long __sc_7  __asm__ (&quot;r7&quot;);&t;&t;&bslash;&n;&t;&t;register unsigned long __sc_8  __asm__ (&quot;r8&quot;);&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__sc_loadargs_##nr(name, args);&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;(&quot;sc           &bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t; &quot;mfcr %0      &quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=&amp;r&quot; (__sc_0),&t;&t;&t;&t;&bslash;&n;&t;&t;&t;  &quot;=&amp;r&quot; (__sc_3),  &quot;=&amp;r&quot; (__sc_4),&t;&t;&bslash;&n;&t;&t;&t;  &quot;=&amp;r&quot; (__sc_5),  &quot;=&amp;r&quot; (__sc_6),&t;&t;&bslash;&n;&t;&t;&t;  &quot;=&amp;r&quot; (__sc_7),  &quot;=&amp;r&quot; (__sc_8)&t;&t;&bslash;&n;&t;&t;&t;: __sc_asm_input_##nr&t;&t;&t;&t;&bslash;&n;&t;&t;&t;: &quot;cr0&quot;, &quot;ctr&quot;, &quot;memory&quot;,&t;&t;&t;&bslash;&n;&t;&t;&t;        &quot;r9&quot;, &quot;r10&quot;,&quot;r11&quot;, &quot;r12&quot;);&t;&t;&bslash;&n;&t;&t;__sc_ret = __sc_3;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__sc_err = __sc_0;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__sc_err &amp; 0x10000000)&t;&t;&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;errno = __sc_ret;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__sc_ret = -1;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (type) __sc_ret
@@ -571,136 +568,38 @@ mdefine_line|#define _syscall6(type,name,type1,arg1,type2,arg2,type3,arg3,type4,
 macro_line|#ifdef __KERNEL_SYSCALLS__
 multiline_comment|/*&n; * Forking from kernel space will result in the child getting a new,&n; * empty kernel stack area.  Thus the child cannot access automatic&n; * variables set in the parent unless they are in registers, and the&n; * procedure where the fork was done cannot return to its caller in&n; * the child.&n; */
 multiline_comment|/*&n; * System call prototypes.&n; */
-r_extern
-id|pid_t
-id|setsid
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|write
+r_static
+r_inline
+id|_syscall3
 c_func
 (paren
 r_int
-id|fd
 comma
-r_const
-r_char
-op_star
-id|buf
-comma
-id|off_t
-id|count
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|read
-c_func
-(paren
-r_int
-id|fd
-comma
-r_char
-op_star
-id|buf
-comma
-id|off_t
-id|count
-)paren
-suffix:semicolon
-r_extern
-id|off_t
-id|lseek
-c_func
-(paren
-r_int
-id|fd
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|count
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|dup
-c_func
-(paren
-r_int
-id|fd
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|execve
-c_func
-(paren
-r_const
+comma
+id|__const__
 r_char
 op_star
+comma
 id|file
 comma
 r_char
 op_star
 op_star
+comma
 id|argv
 comma
 r_char
 op_star
 op_star
+comma
 id|envp
 )paren
-suffix:semicolon
-r_extern
-r_int
-id|open
-c_func
-(paren
-r_const
-r_char
-op_star
-id|file
-comma
-r_int
-id|flag
-comma
-r_int
-id|mode
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|close
-c_func
-(paren
-r_int
-id|fd
-)paren
-suffix:semicolon
-r_extern
-id|pid_t
-id|waitpid
-c_func
-(paren
-id|pid_t
-id|pid
-comma
-r_int
-op_star
-id|wait_stat
-comma
-r_int
-id|options
-)paren
-suffix:semicolon
 macro_line|#endif /* __KERNEL_SYSCALLS__ */
-id|asmlinkage
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
 r_int
 r_int
 id|sys_mmap
@@ -868,7 +767,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-id|asmlinkage
 r_int
 id|sys_pipe
 c_func
@@ -898,7 +796,6 @@ suffix:semicolon
 r_struct
 id|sigaction
 suffix:semicolon
-id|asmlinkage
 r_int
 id|sys_rt_sigaction
 c_func
@@ -926,6 +823,7 @@ suffix:semicolon
 multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))),&n; * but it doesn&squot;t work on all toolchains, so we just do it by hand&n; */
 DECL|macro|cond_syscall
 mdefine_line|#define cond_syscall(x) asm(&quot;.weak&bslash;t.&quot; #x &quot;&bslash;n&bslash;t.set&bslash;t.&quot; #x &quot;,.sys_ni_syscall&quot;);
+macro_line|#endif&t;&t;/* __KERNEL__ */
 macro_line|#endif&t;&t;/* __ASSEMBLY__ */
 macro_line|#endif /* _ASM_PPC_UNISTD_H_ */
 eof

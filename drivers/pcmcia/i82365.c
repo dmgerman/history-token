@@ -1,5 +1,6 @@
 multiline_comment|/*======================================================================&n;&n;    Device driver for Intel 82365 and compatible PC Card controllers.&n;&n;    i82365.c 1.265 1999/11/10 18:36:21&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in which&n;    case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -30,24 +31,7 @@ macro_line|#include &quot;cirrus.h&quot;
 macro_line|#include &quot;vg468.h&quot;
 macro_line|#include &quot;ricoh.h&quot;
 macro_line|#include &quot;o2micro.h&quot;
-macro_line|#ifdef PCMCIA_DEBUG
-DECL|variable|pc_debug
-r_static
-r_int
-id|pc_debug
-op_assign
-id|PCMCIA_DEBUG
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|pc_debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
+macro_line|#ifdef DEBUG
 DECL|variable|version
 r_static
 r_const
@@ -57,9 +41,26 @@ id|version
 op_assign
 l_string|&quot;i82365.c 1.265 1999/11/10 18:36:21 (David Hinds)&quot;
 suffix:semicolon
+DECL|variable|pc_debug
+r_static
+r_int
+id|pc_debug
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|pc_debug
+comma
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+DECL|macro|debug
+mdefine_line|#define debug(lvl, fmt, arg...) do {&t;&t;&t;&t;&bslash;&n;&t;if (pc_debug &gt; (lvl))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_DEBUG &quot;i82365: &quot; fmt , ## arg);&t;&bslash;&n;} while (0)
 macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) do { } while (0)
+DECL|macro|debug
+mdefine_line|#define debug(lvl, fmt, arg...) do { } while (0)
 macro_line|#endif
 r_static
 id|irqreturn_t
@@ -2375,7 +2376,7 @@ suffix:semicolon
 id|irq_hits
 op_increment
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|2
@@ -2403,7 +2404,7 @@ r_int
 id|irq
 )paren
 (brace
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|2
@@ -2471,7 +2472,7 @@ comma
 id|i365_count_irq
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|2
@@ -2535,7 +2536,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|2
@@ -4602,12 +4603,12 @@ id|handled
 op_assign
 l_int|0
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|4
 comma
-l_string|&quot;i82365: pcic_interrupt(%d)&bslash;n&quot;
+l_string|&quot;pcic_interrupt(%d)&bslash;n&quot;
 comma
 id|irq
 )paren
@@ -4804,12 +4805,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|2
 comma
-l_string|&quot;i82365: socket %d event 0x%02x&bslash;n&quot;
+l_string|&quot;socket %d event 0x%02x&bslash;n&quot;
 comma
 id|i
 comma
@@ -4863,12 +4864,12 @@ id|KERN_NOTICE
 l_string|&quot;i82365: infinite loop in interrupt handler&bslash;n&quot;
 )paren
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|4
 comma
-l_string|&quot;i82365: interrupt done&bslash;n&quot;
+l_string|&quot;interrupt done&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5157,12 +5158,12 @@ id|SS_XVCARD
 suffix:semicolon
 )brace
 )brace
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;i82365: GetStatus(%d) = %#4.4x&bslash;n&quot;
+l_string|&quot;GetStatus(%d) = %#4.4x&bslash;n&quot;
 comma
 id|sock
 comma
@@ -5673,12 +5674,12 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;i82365: GetSocket(%d) = flags %#3.3x, Vcc %d, Vpp %d, &quot;
+l_string|&quot;GetSocket(%d) = flags %#3.3x, Vcc %d, Vpp %d, &quot;
 l_string|&quot;io_irq %d, csc_mask %#2.2x&bslash;n&quot;
 comma
 id|sock
@@ -5728,12 +5729,12 @@ suffix:semicolon
 id|u_char
 id|reg
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;i82365: SetSocket(%d, flags %#3.3x, Vcc %d, Vpp %d, &quot;
+l_string|&quot;SetSocket(%d, flags %#3.3x, Vcc %d, Vpp %d, &quot;
 l_string|&quot;io_irq %d, csc_mask %#2.2x)&bslash;n&quot;
 comma
 id|sock
@@ -6344,12 +6345,12 @@ id|map
 comma
 id|ioctl
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;i82365: SetIOMap(%d, %d, %#2.2x, %d ns, &quot;
+l_string|&quot;SetIOMap(%d, %d, %#2.2x, %d ns, &quot;
 l_string|&quot;%#4.4x-%#4.4x)&bslash;n&quot;
 comma
 id|sock
@@ -6600,12 +6601,12 @@ suffix:semicolon
 id|u_char
 id|map
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;i82365: SetMemMap(%d, %d, %#2.2x, %d ns, %#5.5lx-%#5.5&quot;
+l_string|&quot;SetMemMap(%d, %d, %#2.2x, %d ns, %#5.5lx-%#5.5&quot;
 l_string|&quot;lx, %#5.5x)&bslash;n&quot;
 comma
 id|sock

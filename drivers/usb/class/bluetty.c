@@ -3756,11 +3756,7 @@ l_int|0
 suffix:semicolon
 id|interface
 op_assign
-op_amp
-id|intf-&gt;altsetting
-(braket
-l_int|0
-)braket
+id|intf-&gt;cur_altsetting
 suffix:semicolon
 id|control_out_endpoint
 op_assign

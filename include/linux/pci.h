@@ -307,6 +307,8 @@ DECL|macro|PCI_CAP_ID_CHSWP
 mdefine_line|#define  PCI_CAP_ID_CHSWP&t;0x06&t;/* CompactPCI HotSwap */
 DECL|macro|PCI_CAP_ID_PCIX
 mdefine_line|#define  PCI_CAP_ID_PCIX&t;0x07&t;/* PCI-X */
+DECL|macro|PCI_CAP_ID_SHPC
+mdefine_line|#define  PCI_CAP_ID_SHPC &t;0x0C&t;/* PCI Standard Hot-Plug Controller */
 DECL|macro|PCI_CAP_ID_EXP
 mdefine_line|#define  PCI_CAP_ID_EXP &t;0x10&t;/* PCI Express */
 DECL|macro|PCI_CAP_ID_MSIX
@@ -656,11 +658,6 @@ id|u64
 id|dma_mask
 suffix:semicolon
 multiline_comment|/* Mask of the bits of bus address this&n;&t;&t;&t;&t;&t;   device implements.  Normally this is&n;&t;&t;&t;&t;&t;   0xffffffff.  You only need to change&n;&t;&t;&t;&t;&t;   this if your device has broken DMA&n;&t;&t;&t;&t;&t;   or supports 64-bit transfers.  */
-DECL|member|consistent_dma_mask
-id|u64
-id|consistent_dma_mask
-suffix:semicolon
-multiline_comment|/* Like dma_mask, but for&n;&t;&t;&t;&t;&t;       pci_alloc_consistent mappings as&n;&t;&t;&t;&t;&t;       not all hardware supports&n;&t;&t;&t;&t;&t;       64 bit addresses for consistent&n;&t;&t;&t;&t;&t;       allocations such descriptors. */
 DECL|member|current_state
 id|u32
 id|current_state
@@ -858,6 +855,17 @@ id|name
 (braket
 l_int|48
 )braket
+suffix:semicolon
+DECL|member|bridge_ctl
+r_int
+r_int
+id|bridge_ctl
+suffix:semicolon
+multiline_comment|/* manage NO_ISA/FBB/et al behaviors */
+DECL|member|pad2
+r_int
+r_int
+id|pad2
 suffix:semicolon
 DECL|member|bridge
 r_struct
@@ -2522,6 +2530,11 @@ macro_line|#endif
 macro_line|#endif /* CONFIG_PCI */
 multiline_comment|/* Include architecture-dependent settings and functions */
 macro_line|#include &lt;asm/pci.h&gt;
+multiline_comment|/* Backwards compat, remove in 2.7.x */
+DECL|macro|pci_dma_sync_single
+mdefine_line|#define pci_dma_sync_single&t;pci_dma_sync_single_for_cpu
+DECL|macro|pci_dma_sync_sg
+mdefine_line|#define pci_dma_sync_sg&t;&t;pci_dma_sync_sg_for_cpu
 multiline_comment|/*&n; *  If the system does not have PCI, clearly these return errors.  Define&n; *  these as simple inline functions to avoid hair in drivers.&n; */
 macro_line|#ifndef CONFIG_PCI
 DECL|macro|_PCI_NOP

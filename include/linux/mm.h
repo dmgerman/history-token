@@ -296,14 +296,27 @@ suffix:semicolon
 r_struct
 id|inode
 suffix:semicolon
+macro_line|#ifdef ARCH_HAS_ATOMIC_UNSIGNED
+DECL|typedef|page_flags_t
+r_typedef
+r_int
+id|page_flags_t
+suffix:semicolon
+macro_line|#else
+DECL|typedef|page_flags_t
+r_typedef
+r_int
+r_int
+id|page_flags_t
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Each physical page in the system has a struct page associated with&n; * it to keep track of whatever it is we are using the page for at the&n; * moment. Note that we have no way to track which tasks are using&n; * a page.&n; *&n; * Try to keep the most commonly accessed fields in single cache lines&n; * here (16 bytes or greater).  This ordering should be particularly&n; * beneficial on 32-bit processors.&n; *&n; * The first line is data used in page cache lookup, the second line&n; * is used for linear searches (eg. clock algorithm scans). &n; *&n; * TODO: make this structure smaller, it could be as small as 32 bytes.&n; */
 DECL|struct|page
 r_struct
 id|page
 (brace
 DECL|member|flags
-r_int
-r_int
+id|page_flags_t
 id|flags
 suffix:semicolon
 multiline_comment|/* atomic flags, some possibly&n;&t;&t;&t;&t;&t;   updated asynchronously */
@@ -647,7 +660,7 @@ macro_line|#endif&t;&t;/* CONFIG_HUGETLB_PAGE */
 multiline_comment|/*&n; * Multiple processes may &quot;see&quot; the same page. E.g. for untouched&n; * mappings of /dev/null, all processes see the same page full of&n; * zeroes, and text pages of executables and shared libraries have&n; * only one copy in memory, at most, normally.&n; *&n; * For the non-reserved pages, page-&gt;count denotes a reference count.&n; *   page-&gt;count == 0 means the page is free.&n; *   page-&gt;count == 1 means the page is used for exactly one purpose&n; *   (e.g. a private data page of one process).&n; *&n; * A page may be used for kmalloc() or anyone else who does a&n; * __get_free_page(). In this case the page-&gt;count is at least 1, and&n; * all other fields are unused but should be 0 or NULL. The&n; * management of this page is the responsibility of the one who uses&n; * it.&n; *&n; * The other pages (we may call them &quot;process pages&quot;) are completely&n; * managed by the Linux memory manager: I/O, buffers, swapping etc.&n; * The following discussion applies only to them.&n; *&n; * A page may belong to an inode&squot;s memory mapping. In this case,&n; * page-&gt;mapping is the pointer to the inode, and page-&gt;index is the&n; * file offset of the page, in units of PAGE_CACHE_SIZE.&n; *&n; * A page contains an opaque `private&squot; member, which belongs to the&n; * page&squot;s address_space.  Usually, this is the address of a circular&n; * list of the page&squot;s disk buffers.&n; *&n; * For pages belonging to inodes, the page-&gt;count is the number of&n; * attaches, plus 1 if `private&squot; contains something, plus one for&n; * the page cache itself.&n; *&n; * All pages belonging to an inode are in these doubly linked lists:&n; * mapping-&gt;clean_pages, mapping-&gt;dirty_pages and mapping-&gt;locked_pages;&n; * using the page-&gt;list list_head. These fields are also used for&n; * freelist managemet (when page-&gt;count==0).&n; *&n; * There is also a per-mapping radix tree mapping index to the page&n; * in memory if present. The tree is rooted at mapping-&gt;root.  &n; *&n; * All process pages can do I/O:&n; * - inode pages may need to be read from disk,&n; * - inode pages which have been modified and are MAP_SHARED may need&n; *   to be written to disk,&n; * - private pages which have been modified may need to be swapped out&n; *   to swap space and (later) to be read back into memory.&n; */
 multiline_comment|/*&n; * The zone field is never updated after free_area_init_core()&n; * sets it, so none of the operations on it need to be atomic.&n; * We&squot;ll have up to (MAX_NUMNODES * MAX_NR_ZONES) zones total,&n; * so we use (MAX_NODES_SHIFT + MAX_ZONES_SHIFT) here to get enough bits.&n; */
 DECL|macro|NODEZONE_SHIFT
-mdefine_line|#define NODEZONE_SHIFT (BITS_PER_LONG - MAX_NODES_SHIFT - MAX_ZONES_SHIFT)
+mdefine_line|#define NODEZONE_SHIFT (sizeof(page_flags_t)*8 - MAX_NODES_SHIFT - MAX_ZONES_SHIFT)
 DECL|macro|NODEZONE
 mdefine_line|#define NODEZONE(node, zone)&t;((node &lt;&lt; ZONES_SHIFT) | zone)
 DECL|function|page_zonenum
@@ -1699,11 +1712,24 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|build_mmap_rb
+id|__vma_link_rb
 c_func
 (paren
 r_struct
 id|mm_struct
+op_star
+comma
+r_struct
+id|vm_area_struct
+op_star
+comma
+r_struct
+id|rb_node
+op_star
+op_star
+comma
+r_struct
+id|rb_node
 op_star
 )paren
 suffix:semicolon

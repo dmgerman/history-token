@@ -1254,7 +1254,7 @@ id|function
 suffix:semicolon
 DECL|macro|ACPI_INIT_DEVICE_INI
 mdefine_line|#define ACPI_INIT_DEVICE_INI        1
-multiline_comment|/* Address Spaces (Operation Regions */
+multiline_comment|/* Address Spaces (For Operation Regions) */
 r_typedef
 DECL|typedef|acpi_adr_space_handler
 id|acpi_status
@@ -1424,11 +1424,19 @@ id|acpi_device_info
 DECL|member|ACPI_COMMON_OBJ_INFO
 id|ACPI_COMMON_OBJ_INFO
 suffix:semicolon
+DECL|member|highest_dstates
+id|u8
+id|highest_dstates
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* _sx_d values 0xFF indicates not valid */
 DECL|member|valid
 id|u32
 id|valid
 suffix:semicolon
-multiline_comment|/* Indicates which fields are valid */
+multiline_comment|/* Indicates which fields below are valid */
 DECL|member|current_status
 id|u32
 id|current_status

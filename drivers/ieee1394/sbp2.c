@@ -43,7 +43,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1144 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1170 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Module load parameter definitions&n; */
 multiline_comment|/*&n; * Change max_speed on module load if you have a bad IEEE-1394&n; * controller that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; */
@@ -2196,6 +2196,13 @@ c_func
 id|scsi_id
 comma
 id|DID_BUS_BUSY
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure we unblock requests (since this is likely after a bus&n;&t; * reset). */
+id|scsi_unblock_requests
+c_func
+(paren
+id|scsi_id-&gt;scsi_host
 )paren
 suffix:semicolon
 r_return
@@ -6690,7 +6697,7 @@ comma
 id|global_outstanding_command_orbs
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -6706,7 +6713,7 @@ comma
 id|PCI_DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -6840,7 +6847,7 @@ id|scsi_id-&gt;last_orb-&gt;next_ORB_hi
 op_assign
 l_int|0x0
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_device
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -8251,7 +8258,7 @@ c_func
 l_string|&quot;Found status for command ORB&quot;
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -8267,7 +8274,7 @@ comma
 id|PCI_DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -8808,7 +8815,7 @@ comma
 id|list
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -8824,7 +8831,7 @@ comma
 id|PCI_DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -8878,12 +8885,6 @@ id|command-&gt;Current_SCpnt
 suffix:semicolon
 )brace
 )brace
-id|scsi_unblock_requests
-c_func
-(paren
-id|scsi_id-&gt;scsi_host
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -9320,7 +9321,7 @@ c_func
 l_string|&quot;Found command to abort&quot;
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev
@@ -9336,7 +9337,7 @@ comma
 id|PCI_DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|hi-&gt;host-&gt;pdev

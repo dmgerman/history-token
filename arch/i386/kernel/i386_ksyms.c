@@ -311,15 +311,6 @@ c_func
 id|apm_info
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_IOVIRT
-DECL|variable|__io_virt_debug
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__io_virt_debug
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|__down_failed
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -680,6 +671,8 @@ DECL|macro|memcpy
 macro_line|#undef memcpy
 DECL|macro|memset
 macro_line|#undef memset
+DECL|macro|memcmp
+macro_line|#undef memcmp
 r_extern
 r_void
 op_star
@@ -710,6 +703,22 @@ comma
 id|__kernel_size_t
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|memcmp
+c_func
+(paren
+r_const
+r_void
+op_star
+comma
+r_const
+r_void
+op_star
+comma
+id|__kernel_size_t
+)paren
+suffix:semicolon
 DECL|variable|memcpy
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -722,6 +731,13 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|memset
+)paren
+suffix:semicolon
+DECL|variable|memcmp
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|memcmp
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HAVE_DEC_LOCK

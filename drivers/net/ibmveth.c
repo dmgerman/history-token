@@ -46,7 +46,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/pci_dma.h&gt;
+macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/vio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -57,14 +57,14 @@ mdefine_line|#define DEBUG 1
 DECL|macro|ibmveth_printk
 mdefine_line|#define ibmveth_printk(fmt, args...) &bslash;&n;  printk(KERN_INFO &quot;%s: &quot; fmt, __FILE__, ## args)
 DECL|macro|ibmveth_error_printk
-mdefine_line|#define ibmveth_error_printk(fmt, args...) &bslash;&n;  printk(KERN_ERR &quot;(%s:%3.3d ua:%lx) ERROR: &quot; fmt, __FILE__, __LINE__ , adapter-&gt;vdev-&gt;unit_address, ## args)
+mdefine_line|#define ibmveth_error_printk(fmt, args...) &bslash;&n;  printk(KERN_ERR &quot;(%s:%3.3d ua:%x) ERROR: &quot; fmt, __FILE__, __LINE__ , adapter-&gt;vdev-&gt;unit_address, ## args)
 macro_line|#ifdef DEBUG
 DECL|macro|ibmveth_debug_printk_no_adapter
 mdefine_line|#define ibmveth_debug_printk_no_adapter(fmt, args...) &bslash;&n;  printk(KERN_DEBUG &quot;(%s:%3.3d): &quot; fmt, __FILE__, __LINE__ , ## args)
 DECL|macro|ibmveth_debug_printk
-mdefine_line|#define ibmveth_debug_printk(fmt, args...) &bslash;&n;  printk(KERN_DEBUG &quot;(%s:%3.3d ua:%lx): &quot; fmt, __FILE__, __LINE__ , adapter-&gt;vdev-&gt;unit_address, ## args)
+mdefine_line|#define ibmveth_debug_printk(fmt, args...) &bslash;&n;  printk(KERN_DEBUG &quot;(%s:%3.3d ua:%x): &quot; fmt, __FILE__, __LINE__ , adapter-&gt;vdev-&gt;unit_address, ## args)
 DECL|macro|ibmveth_assert
-mdefine_line|#define ibmveth_assert(expr) &bslash;&n;  if(!(expr)) {                                   &bslash;&n;    printk(KERN_DEBUG &quot;assertion failed (%s:%3.3d ua:%lx): %s&bslash;n&quot;, __FILE__, __LINE__, adapter-&gt;vdev-&gt;unit_address, #expr); &bslash;&n;    BUG(); &bslash;&n;  }
+mdefine_line|#define ibmveth_assert(expr) &bslash;&n;  if(!(expr)) {                                   &bslash;&n;    printk(KERN_DEBUG &quot;assertion failed (%s:%3.3d ua:%x): %s&bslash;n&quot;, __FILE__, __LINE__, adapter-&gt;vdev-&gt;unit_address, #expr); &bslash;&n;    BUG(); &bslash;&n;  }
 macro_line|#else
 DECL|macro|ibmveth_debug_printk_no_adapter
 mdefine_line|#define ibmveth_debug_printk_no_adapter(fmt, args...)
@@ -2408,10 +2408,23 @@ comma
 id|rc
 )paren
 suffix:semicolon
+r_do
+(brace
+id|rc
+op_assign
 id|h_free_logical_lan
 c_func
 (paren
 id|adapter-&gt;vdev-&gt;unit_address
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+id|H_isLongBusy
+c_func
+(paren
+id|rc
 )paren
 suffix:semicolon
 id|ibmveth_cleanup
@@ -2506,12 +2519,23 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_do
+(brace
 id|lpar_rc
 op_assign
 id|h_free_logical_lan
 c_func
 (paren
 id|adapter-&gt;vdev-&gt;unit_address
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+id|H_isLongBusy
+c_func
+(paren
+id|lpar_rc
 )paren
 suffix:semicolon
 r_if
@@ -2806,6 +2830,14 @@ op_assign
 l_int|0
 comma
 id|curfrag
+suffix:semicolon
+r_int
+r_int
+id|correlator
+suffix:semicolon
+r_int
+r_int
+id|retry_count
 suffix:semicolon
 r_if
 c_cond
@@ -3115,14 +3147,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* send the frame. Arbitrarily set retrycount to 1024 */
-r_int
-r_int
 id|correlator
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
 id|retry_count
 op_assign
 l_int|1024
@@ -4061,7 +4089,7 @@ suffix:semicolon
 id|ibmveth_debug_printk_no_adapter
 c_func
 (paren
-l_string|&quot;entering ibmveth_probe for UA 0x%lx&bslash;n&quot;
+l_string|&quot;entering ibmveth_probe for UA 0x%x&bslash;n&quot;
 comma
 id|dev-&gt;unit_address
 )paren
@@ -4244,7 +4272,7 @@ l_int|6
 suffix:semicolon
 id|adapter-&gt;liobn
 op_assign
-id|dev-&gt;tce_table-&gt;index
+id|dev-&gt;iommu_table-&gt;it_index
 suffix:semicolon
 id|netdev-&gt;irq
 op_assign
@@ -4711,7 +4739,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;Unit Address:    0x%lx&bslash;n&quot;
+l_string|&quot;Unit Address:    0x%x&bslash;n&quot;
 comma
 id|adapter-&gt;vdev-&gt;unit_address
 )paren

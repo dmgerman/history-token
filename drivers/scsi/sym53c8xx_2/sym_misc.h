@@ -2,19 +2,6 @@ multiline_comment|/*&n; * Device driver for the SYMBIOS/LSILOGIC 53C8XX and 53C1
 macro_line|#ifndef SYM_MISC_H
 DECL|macro|SYM_MISC_H
 mdefine_line|#define SYM_MISC_H
-multiline_comment|/*&n; *  A &squot;read barrier&squot; flushes any data that have been prefetched &n; *  by the processor due to out of order execution. Such a barrier &n; *  must notably be inserted prior to looking at data that have &n; *  been DMAed, assuming that program does memory READs in proper &n; *  order and that the device ensured proper ordering of WRITEs.&n; *&n; *  A &squot;write barrier&squot; prevents any previous WRITEs to pass further &n; *  WRITEs. Such barriers must be inserted each time another agent &n; *  relies on ordering of WRITEs.&n; *&n; *  Note that, due to posting of PCI memory writes, we also must &n; *  insert dummy PCI read transactions when some ordering involving &n; *  both directions over the PCI does matter. PCI transactions are &n; *  fully ordered in each direction.&n; *&n; *  IA32 processors insert implicit barriers when the processor &n; *  accesses unchacheable either for reading or writing, and &n; *  donnot reorder WRITEs. As a result, some &squot;read barriers&squot; can &n; *  be avoided (following access to uncacheable), and &squot;write &n; *  barriers&squot; should be useless (preventing compiler optimizations &n; *  should be enough).&n; */
-DECL|macro|__READ_BARRIER
-mdefine_line|#define __READ_BARRIER()&t;rmb()
-DECL|macro|__WRITE_BARRIER
-mdefine_line|#define __WRITE_BARRIER()&t;wmb()
-macro_line|#ifndef MEMORY_READ_BARRIER
-DECL|macro|MEMORY_READ_BARRIER
-mdefine_line|#define MEMORY_READ_BARRIER()&t;__READ_BARRIER()
-macro_line|#endif
-macro_line|#ifndef MEMORY_WRITE_BARRIER
-DECL|macro|MEMORY_WRITE_BARRIER
-mdefine_line|#define MEMORY_WRITE_BARRIER()&t;__WRITE_BARRIER()
-macro_line|#endif
 multiline_comment|/*&n; *  A la VMS/CAM-3 queue management.&n; */
 DECL|struct|sym_quehead
 r_typedef
@@ -446,96 +433,11 @@ DECL|macro|sym_clr_bit
 mdefine_line|#define sym_clr_bit(p, n)&t;(((u32 *)(p))[(n)&gt;&gt;5] &amp;= ~(1&lt;&lt;((n)&amp;0x1f)))
 DECL|macro|sym_is_bit
 mdefine_line|#define sym_is_bit(p, n)&t;(((u32 *)(p))[(n)&gt;&gt;5] &amp;   (1&lt;&lt;((n)&amp;0x1f)))
-multiline_comment|/*&n; *  Portable but silly implemented byte order primitives.&n; */
-macro_line|#if&t;BYTE_ORDER == BIG_ENDIAN
-DECL|macro|__revb16
-mdefine_line|#define __revb16(x) (&t;(((u16)(x) &amp; (u16)0x00ffU) &lt;&lt; 8) | &bslash;&n;&t;&t;&t;(((u16)(x) &amp; (u16)0xff00U) &gt;&gt; 8) &t;)
-DECL|macro|__revb32
-mdefine_line|#define __revb32(x) (&t;(((u32)(x) &amp; 0x000000ffU) &lt;&lt; 24) | &bslash;&n;&t;&t;&t;(((u32)(x) &amp; 0x0000ff00U) &lt;&lt;  8) | &bslash;&n;&t;&t;&t;(((u32)(x) &amp; 0x00ff0000U) &gt;&gt;  8) | &bslash;&n;&t;&t;&t;(((u32)(x) &amp; 0xff000000U) &gt;&gt; 24)&t;)
-DECL|macro|__htole16
-mdefine_line|#define __htole16(v)&t;__revb16(v)
-DECL|macro|__htole32
-mdefine_line|#define __htole32(v)&t;__revb32(v)
-DECL|macro|__le16toh
-mdefine_line|#define __le16toh(v)&t;__htole16(v)
-DECL|macro|__le32toh
-mdefine_line|#define __le32toh(v)&t;__htole32(v)
-DECL|function|_htole16
-r_static
-id|__inline
-id|u16
-id|_htole16
-c_func
-(paren
-id|u16
-id|v
-)paren
-(brace
-r_return
-id|__htole16
-c_func
-(paren
-id|v
-)paren
-suffix:semicolon
-)brace
-DECL|function|_htole32
-r_static
-id|__inline
-id|u32
-id|_htole32
-c_func
-(paren
-id|u32
-id|v
-)paren
-(brace
-r_return
-id|__htole32
-c_func
-(paren
-id|v
-)paren
-suffix:semicolon
-)brace
-DECL|macro|_le16toh
-mdefine_line|#define _le16toh&t;_htole16
-DECL|macro|_le32toh
-mdefine_line|#define _le32toh&t;_htole32
-macro_line|#else&t;/* LITTLE ENDIAN */
-DECL|macro|__htole16
-mdefine_line|#define __htole16(v)&t;(v)
-DECL|macro|__htole32
-mdefine_line|#define __htole32(v)&t;(v)
-DECL|macro|__le16toh
-mdefine_line|#define __le16toh(v)&t;(v)
-DECL|macro|__le32toh
-mdefine_line|#define __le32toh(v)&t;(v)
-DECL|macro|_htole16
-mdefine_line|#define _htole16(v)&t;(v)
-DECL|macro|_htole32
-mdefine_line|#define _htole32(v)&t;(v)
-DECL|macro|_le16toh
-mdefine_line|#define _le16toh(v)&t;(v)
-DECL|macro|_le32toh
-mdefine_line|#define _le32toh(v)&t;(v)
-macro_line|#endif&t;/* BYTE_ORDER */
 multiline_comment|/*&n; * The below round up/down macros are to be used with a constant &n; * as argument (sizeof(...) for example), for the compiler to &n; * optimize the whole thing.&n; */
 DECL|macro|_U_
 mdefine_line|#define _U_(a,m)&t;(a)&lt;=(1&lt;&lt;m)?m:
-DECL|macro|_D_
-mdefine_line|#define _D_(a,m)&t;(a)&lt;(1&lt;&lt;(m+1))?m:
 multiline_comment|/*&n; * Round up logarithm to base 2 of a 16 bit constant.&n; */
 DECL|macro|_LGRU16_
 mdefine_line|#define _LGRU16_(a) &bslash;&n;( &bslash;&n; _U_(a, 0)_U_(a, 1)_U_(a, 2)_U_(a, 3)_U_(a, 4)_U_(a, 5)_U_(a, 6)_U_(a, 7) &bslash;&n; _U_(a, 8)_U_(a, 9)_U_(a,10)_U_(a,11)_U_(a,12)_U_(a,13)_U_(a,14)_U_(a,15) &bslash;&n; 16)
-multiline_comment|/*&n; * Round down logarithm to base 2 of a 16 bit constant.&n; */
-DECL|macro|_LGRD16_
-mdefine_line|#define _LGRD16_(a) &bslash;&n;( &bslash;&n; _D_(a, 0)_D_(a, 1)_D_(a, 2)_D_(a, 3)_D_(a, 4)_D_(a, 5)_D_(a, 6)_D_(a, 7) &bslash;&n; _D_(a, 8)_D_(a, 9)_D_(a,10)_D_(a,11)_D_(a,12)_D_(a,13)_D_(a,14)_D_(a,15) &bslash;&n; 16)
-multiline_comment|/*&n; * Round up a 16 bit constant to the nearest power of 2.&n; */
-DECL|macro|_SZRU16_
-mdefine_line|#define _SZRU16_(a) ((a)==0?0:(1&lt;&lt;_LGRU16_(a)))
-multiline_comment|/*&n; * Round down a 16 bit constant to the nearest power of 2.&n; */
-DECL|macro|_SZRD16_
-mdefine_line|#define _SZRD16_(a) ((a)==0?0:(1&lt;&lt;_LGRD16_(a)))
 macro_line|#endif /* SYM_MISC_H */
 eof

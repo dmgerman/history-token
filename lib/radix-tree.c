@@ -6,6 +6,8 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/radix-tree.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 multiline_comment|/*&n; * Radix tree node definition.&n; */
@@ -1639,6 +1641,98 @@ id|i
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+DECL|function|radix_tree_callback
+r_static
+r_int
+id|radix_tree_callback
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nfb
+comma
+r_int
+r_int
+id|action
+comma
+r_void
+op_star
+id|hcpu
+)paren
+(brace
+r_int
+id|cpu
+op_assign
+(paren
+r_int
+)paren
+id|hcpu
+suffix:semicolon
+r_struct
+id|radix_tree_preload
+op_star
+id|rtp
+suffix:semicolon
+multiline_comment|/* Free per-cpu pool of perloaded nodes */
+r_if
+c_cond
+(paren
+id|action
+op_eq
+id|CPU_DEAD
+)paren
+(brace
+id|rtp
+op_assign
+op_amp
+id|per_cpu
+c_func
+(paren
+id|radix_tree_preloads
+comma
+id|cpu
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|rtp-&gt;nr
+)paren
+(brace
+id|kmem_cache_free
+c_func
+(paren
+id|radix_tree_node_cachep
+comma
+id|rtp-&gt;nodes
+(braket
+id|rtp-&gt;nr
+op_minus
+l_int|1
+)braket
+)paren
+suffix:semicolon
+id|rtp-&gt;nodes
+(braket
+id|rtp-&gt;nr
+op_minus
+l_int|1
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+id|rtp-&gt;nr
+op_decrement
+suffix:semicolon
+)brace
+)brace
+r_return
+id|NOTIFY_OK
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_HOTPLUG_CPU */
 DECL|function|radix_tree_init
 r_void
 id|__init
@@ -1684,6 +1778,14 @@ suffix:semicolon
 id|radix_tree_init_maxindex
 c_func
 (paren
+)paren
+suffix:semicolon
+id|hotcpu_notifier
+c_func
+(paren
+id|radix_tree_callback
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

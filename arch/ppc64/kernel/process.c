@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/init_task.h&gt;
 macro_line|#include &lt;linux/prctl.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -456,77 +457,6 @@ comma
 id|new_thread
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * force our kernel stack out of the ERAT and SLB, this is to&n;&t; * avoid the race where we it hangs around in the ERAT but not the&n;&t; * SLB and the ERAT gets invalidated at just the wrong moment by&n;&t; * another CPU doing a tlbie.&n;&t; *&n;&t; * We definitely dont want to flush our bolted segment, so check&n;&t; * for that first.&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
-id|CPU_FTR_SLB
-)paren
-op_logical_and
-id|GET_ESID
-c_func
-(paren
-id|__get_SP
-c_func
-(paren
-)paren
-)paren
-op_ne
-id|GET_ESID
-c_func
-(paren
-id|PAGE_OFFSET
-)paren
-)paren
-(brace
-r_union
-(brace
-r_int
-r_int
-id|word0
-suffix:semicolon
-id|slb_dword0
-id|data
-suffix:semicolon
-)brace
-id|esid_data
-suffix:semicolon
-id|esid_data.word0
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* class bit is in valid field for slbie instruction */
-id|esid_data.data.v
-op_assign
-l_int|1
-suffix:semicolon
-id|esid_data.data.esid
-op_assign
-id|GET_ESID
-c_func
-(paren
-id|__get_SP
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;isync; slbie %0; isync&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|esid_data
-)paren
-)paren
-suffix:semicolon
-)brace
 id|local_irq_restore
 c_func
 (paren
@@ -566,7 +496,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;REGS: %p TRAP: %04lx    %s&bslash;n&quot;
+l_string|&quot;REGS: %p TRAP: %04lx   %s  (%s)&bslash;n&quot;
 comma
 id|regs
 comma
@@ -576,6 +506,8 @@ id|print_tainted
 c_func
 (paren
 )paren
+comma
+id|UTS_RELEASE
 )paren
 suffix:semicolon
 id|printk

@@ -397,11 +397,6 @@ id|net_device_stats
 op_star
 id|stats
 op_assign
-(paren
-r_struct
-id|net_device_stats
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|skb_orphan

@@ -867,16 +867,6 @@ id|notifier_call
 op_assign
 id|wdt_notify_sys
 comma
-dot
-id|next
-op_assign
-l_int|NULL
-comma
-dot
-id|priority
-op_assign
-l_int|0
-comma
 )brace
 suffix:semicolon
 r_static
@@ -1118,6 +1108,13 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;w38627hf WDT driver&quot;
+)paren
+suffix:semicolon
+DECL|variable|WATCHDOG_MINOR
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|WATCHDOG_MINOR
 )paren
 suffix:semicolon
 eof

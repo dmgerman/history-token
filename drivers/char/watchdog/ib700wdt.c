@@ -784,16 +784,6 @@ id|notifier_call
 op_assign
 id|ibwdt_notify_sys
 comma
-dot
-id|next
-op_assign
-l_int|NULL
-comma
-dot
-id|priority
-op_assign
-l_int|0
-comma
 )brace
 suffix:semicolon
 DECL|function|ibwdt_init
@@ -1057,6 +1047,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|WATCHDOG_MINOR
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|WATCHDOG_MINOR
 )paren
 suffix:semicolon
 multiline_comment|/* end of ib700wdt.c */

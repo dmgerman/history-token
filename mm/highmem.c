@@ -455,6 +455,7 @@ suffix:semicolon
 )brace
 DECL|function|kmap_high
 r_void
+id|fastcall
 op_star
 id|kmap_high
 c_func
@@ -556,6 +557,7 @@ id|kmap_high
 suffix:semicolon
 DECL|function|kunmap_high
 r_void
+id|fastcall
 id|kunmap_high
 c_func
 (paren
@@ -956,6 +958,7 @@ id|fromvec-&gt;bv_page
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * fromvec-&gt;bv_offset and fromvec-&gt;bv_len might have been&n;&t;&t; * modified by the block layer, so use the original copy,&n;&t;&t; * bounce_copy_vec already uses tovec-&gt;bv_len&n;&t;&t; */
 id|vfrom
 op_assign
 id|page_address
@@ -964,7 +967,7 @@ c_func
 id|fromvec-&gt;bv_page
 )paren
 op_plus
-id|fromvec-&gt;bv_offset
+id|tovec-&gt;bv_offset
 suffix:semicolon
 id|bounce_copy_vec
 c_func

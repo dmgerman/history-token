@@ -1235,11 +1235,6 @@ suffix:semicolon
 multiline_comment|/* TCP Westwood structure */
 r_struct
 (brace
-DECL|member|bw_sample
-id|__u32
-id|bw_sample
-suffix:semicolon
-multiline_comment|/* bandwidth sample */
 DECL|member|bw_ns_est
 id|__u32
 id|bw_ns_est

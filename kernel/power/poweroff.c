@@ -3,11 +3,46 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
-multiline_comment|/**&n; * handle_poweroff&t;-&t;sysrq callback for power down&n; * @key: key pressed (unused)&n; * @pt_regs: register state (unused)&n; * @kbd: keyboard state (unused)&n; * @tty: tty involved (unused)&n; *&n; * When the user hits Sys-Rq o to power down the machine this is the&n; * callback we use.&n; */
+macro_line|#include &lt;linux/workqueue.h&gt;
+multiline_comment|/*&n; * When the user hits Sys-Rq o to power down the machine this is the&n; * callback we use.&n; */
+DECL|function|do_poweroff
+r_static
+r_void
+id|do_poweroff
+c_func
+(paren
+r_void
+op_star
+id|dummy
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pm_power_off
+)paren
+id|pm_power_off
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_static
+id|DECLARE_WORK
+c_func
+(paren
+id|poweroff_work
+comma
+id|do_poweroff
+comma
+l_int|0
+)paren
+suffix:semicolon
 DECL|function|handle_poweroff
 r_static
 r_void
 id|handle_poweroff
+c_func
 (paren
 r_int
 id|key
@@ -23,14 +58,11 @@ op_star
 id|tty
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|pm_power_off
-)paren
-id|pm_power_off
+id|schedule_work
 c_func
 (paren
+op_amp
+id|poweroff_work
 )paren
 suffix:semicolon
 )brace

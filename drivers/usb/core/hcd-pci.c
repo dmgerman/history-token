@@ -489,6 +489,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI_NAMES
+id|hcd-&gt;product_desc
+op_assign
+id|dev-&gt;pretty_name
+suffix:semicolon
+macro_line|#else
 r_if
 c_cond
 (paren
@@ -500,6 +506,7 @@ id|hcd-&gt;product_desc
 op_assign
 l_string|&quot;USB Host Controller&quot;
 suffix:semicolon
+macro_line|#endif
 id|hcd-&gt;self.controller
 op_assign
 op_amp

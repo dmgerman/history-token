@@ -683,7 +683,7 @@ id|buffer
 comma
 l_string|&quot;External TRAM (words) : 0x%x&bslash;n&quot;
 comma
-id|emu-&gt;fx8010.etram_size
+id|emu-&gt;fx8010.etram_pages.bytes
 )paren
 suffix:semicolon
 id|snd_iprintf

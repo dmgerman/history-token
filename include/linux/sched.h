@@ -1603,6 +1603,15 @@ mdefine_line|#define sched_balance_exec()   {}
 DECL|macro|node_nr_running_init
 mdefine_line|#define node_nr_running_init() {}
 macro_line|#endif
+multiline_comment|/* Move tasks off this (offline) CPU onto another. */
+r_extern
+r_void
+id|migrate_all_tasks
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|set_user_nice
@@ -1668,10 +1677,6 @@ r_struct
 id|exec_domain
 id|default_exec_domain
 suffix:semicolon
-macro_line|#ifndef INIT_THREAD_SIZE
-DECL|macro|INIT_THREAD_SIZE
-macro_line|# define INIT_THREAD_SIZE&t;2048*sizeof(long)
-macro_line|#endif
 DECL|union|thread_union
 r_union
 id|thread_union
@@ -1686,7 +1691,7 @@ r_int
 r_int
 id|stack
 (braket
-id|INIT_THREAD_SIZE
+id|THREAD_SIZE
 op_div
 r_sizeof
 (paren
@@ -1881,9 +1886,6 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
-id|FASTCALL
-c_func
-(paren
 id|kick_process
 c_func
 (paren
@@ -1891,7 +1893,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-)paren
 )paren
 suffix:semicolon
 macro_line|#else

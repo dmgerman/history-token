@@ -3640,6 +3640,10 @@ id|msdos_sb_info
 )paren
 )paren
 suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_NODIRATIME
+suffix:semicolon
 id|sb-&gt;s_magic
 op_assign
 id|MSDOS_SUPER_MAGIC

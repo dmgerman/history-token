@@ -2470,6 +2470,8 @@ l_int|32
 suffix:semicolon
 id|vertex_hdl_t
 id|pconn
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

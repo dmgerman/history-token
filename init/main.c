@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -28,9 +27,11 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 multiline_comment|/*&n; * This is one of the first .c files built. Error out early&n; * if we have compiler trouble..&n; */
@@ -417,6 +418,27 @@ id|n
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|p-&gt;setup_func
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Parameter %s is obsolete, ignored&bslash;n&quot;
+comma
+id|p-&gt;str
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -1749,15 +1771,37 @@ c_cond
 (paren
 id|initcall_debug
 )paren
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;calling initcall 0x%p&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;Calling initcall 0x%p&quot;
 comma
 op_star
 id|call
 )paren
 suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;: %s()&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+op_star
+id|call
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 (paren
 op_star
 id|call
@@ -2024,7 +2068,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|open
+id|sys_open
 c_func
 (paren
 l_string|&quot;/dev/console&quot;
@@ -2045,7 +2089,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|dup
+id|sys_dup
 c_func
 (paren
 l_int|0
@@ -2054,7 +2098,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|dup
+id|sys_dup
 c_func
 (paren
 l_int|0

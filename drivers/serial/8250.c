@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/char/8250.c&n; *&n; *  Driver for 8250/16550-type serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Russell King.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; *  $Id: 8250.c,v 1.90 2002/07/28 10:03:27 rmk Exp $&n; *&n; * A note about mapbase / membase&n; *&n; *  mapbase is the physical address of the IO port.  Currently, we don&squot;t&n; *  support this very well, and it may well be dropped from this driver&n; *  in future.  As such, mapbase should be NULL.&n; *&n; *  membase is an &squot;ioremapped&squot; cookie.  This is compatible with the old&n; *  serial.c driver, and is currently the preferred form.&n; */
+multiline_comment|/*&n; *  linux/drivers/char/8250.c&n; *&n; *  Driver for 8250/16550-type serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Russell King.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; *  $Id: 8250.c,v 1.90 2002/07/28 10:03:27 rmk Exp $&n; *&n; * A note about mapbase / membase&n; *&n; *  mapbase is the physical address of the IO port.&n; *  membase is an &squot;ioremapped&squot; cookie.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#if defined(CONFIG_SERIAL_8250_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
@@ -8230,6 +8231,16 @@ id|co-&gt;index
 dot
 id|port
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|port-&gt;ops
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 multiline_comment|/*&n;&t; * Temporary fix.&n;&t; */
 id|spin_lock_init
 c_func
@@ -8361,6 +8372,44 @@ id|console_initcall
 c_func
 (paren
 id|serial8250_console_init
+)paren
+suffix:semicolon
+DECL|function|serial8250_late_console_init
+r_static
+r_int
+id|__init
+id|serial8250_late_console_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|serial8250_console.flags
+op_amp
+id|CON_ENABLED
+)paren
+)paren
+id|register_console
+c_func
+(paren
+op_amp
+id|serial8250_console
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|serial8250_late_console_init
+id|late_initcall
+c_func
+(paren
+id|serial8250_late_console_init
 )paren
 suffix:semicolon
 DECL|macro|SERIAL8250_CONSOLE
@@ -9009,4 +9058,11 @@ l_string|&quot;Force I/O ports for RSA&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|TTY_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
+c_func
+(paren
+id|TTY_MAJOR
+)paren
+suffix:semicolon
 eof

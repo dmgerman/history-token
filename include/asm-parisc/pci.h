@@ -14,7 +14,7 @@ macro_line|#else
 DECL|macro|ASSERT
 mdefine_line|#define ASSERT(expr)
 macro_line|#endif
-multiline_comment|/*&n;** pci_hba_data (aka H2P_OBJECT in HP/UX)&n;**&n;** This is the &quot;common&quot; or &quot;base&quot; data structure which HBA drivers&n;** (eg Dino or LBA) are required to place at the top of their own&n;** dev-&gt;sysdata structure.  I&squot;ve heard this called &quot;C inheritance&quot; too.&n;**&n;** Data needed by pcibios layer belongs here.&n;*/
+multiline_comment|/*&n;** pci_hba_data (aka H2P_OBJECT in HP/UX)&n;**&n;** This is the &quot;common&quot; or &quot;base&quot; data structure which HBA drivers&n;** (eg Dino or LBA) are required to place at the top of their own&n;** platform_data structure.  I&squot;ve heard this called &quot;C inheritance&quot; too.&n;**&n;** Data needed by pcibios layer belongs here.&n;*/
 DECL|struct|pci_hba_data
 r_struct
 id|pci_hba_data

@@ -21,6 +21,13 @@ DECL|macro|EXT_IRQ6
 mdefine_line|#define EXT_IRQ6 18
 DECL|macro|EXT_IRQ7
 mdefine_line|#define EXT_IRQ7 19
+DECL|macro|EXT_IRQS
+mdefine_line|#define EXT_IRQS 5
+macro_line|#include &lt;asm/regs306x.h&gt;
+DECL|macro|h8300_clear_isr
+mdefine_line|#define h8300_clear_isr(irq)                                                &bslash;&n;do {                                                                        &bslash;&n;&t;if (irq &gt;= EXT_IRQ0 &amp;&amp; irq &lt;= EXT_IRQ5)                             &bslash;&n;&t;&t;*(volatile unsigned char *)ISR &amp;= ~(1 &lt;&lt; (irq - EXT_IRQ0)); &bslash;&n;} while(0)
+DECL|macro|IER_REGS
+mdefine_line|#define IER_REGS *(volatile unsigned char *)IER
 macro_line|#endif
 macro_line|#if defined(CONFIG_CPU_H8S)
 DECL|macro|NR_IRQS
@@ -57,6 +64,13 @@ DECL|macro|EXT_IRQ14
 mdefine_line|#define EXT_IRQ14 30
 DECL|macro|EXT_IRQ15
 mdefine_line|#define EXT_IRQ15 31
+DECL|macro|EXT_IRQS
+mdefine_line|#define EXT_IRQS 15
+macro_line|#include &lt;asm/regs267x.h&gt;
+DECL|macro|h8300_clear_isr
+mdefine_line|#define h8300_clear_isr(irq)                                                 &bslash;&n;do {                                                                         &bslash;&n;&t;if (irq &gt;= EXT_IRQ0 &amp;&amp; irq &lt;= EXT_IRQ15)                             &bslash;&n;&t;&t;*(volatile unsigned short *)ISR &amp;= ~(1 &lt;&lt; (irq - EXT_IRQ0)); &bslash;&n;} while(0)
+DECL|macro|IER_REGS
+mdefine_line|#define IER_REGS *(volatile unsigned short *)IER
 macro_line|#endif
 DECL|function|irq_canonicalize
 r_static

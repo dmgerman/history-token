@@ -1249,10 +1249,12 @@ op_logical_neg
 id|error
 )paren
 (brace
-id|update_atime
+id|touch_atime
 c_func
 (paren
-id|inode
+id|nd.mnt
+comma
+id|nd.dentry
 )paren
 suffix:semicolon
 id|error
@@ -1284,7 +1286,7 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/* ---------- LFS-64 ----------- */
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__) &amp;&amp; !defined(__mips64) &amp;&amp; !defined(__x86_64__) &amp;&amp; !defined(CONFIG_ARCH_S390X)
+macro_line|#if !defined(__ia64__) &amp;&amp; !defined(__mips64) &amp;&amp; !defined(__x86_64__) &amp;&amp; !defined(CONFIG_ARCH_S390X)
 DECL|function|cp_new_stat64
 r_static
 r_int

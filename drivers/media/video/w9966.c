@@ -4450,13 +4450,21 @@ id|parport_driver
 id|w9966_ppd
 op_assign
 (brace
+dot
+id|name
+op_assign
 id|W9966_DRIVERNAME
 comma
+dot
+id|attach
+op_assign
 id|w9966_attach
 comma
+dot
+id|detach
+op_assign
 id|w9966_detach
 comma
-l_int|NULL
 )brace
 suffix:semicolon
 singleline_comment|// Module entry point

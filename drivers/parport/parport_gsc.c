@@ -1434,12 +1434,6 @@ c_func
 l_string|&quot;]&bslash;n&quot;
 )paren
 suffix:semicolon
-id|parport_proc_register
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1653,7 +1647,7 @@ suffix:semicolon
 )brace
 DECL|function|parport_remove_chip
 r_static
-r_void
+r_int
 id|__devexit
 id|parport_remove_chip
 c_func
@@ -1691,6 +1685,12 @@ id|ops
 op_assign
 id|p-&gt;ops
 suffix:semicolon
+id|parport_remove_port
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1719,12 +1719,6 @@ comma
 id|p
 )paren
 suffix:semicolon
-id|parport_proc_unregister
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1747,7 +1741,7 @@ id|kfree
 id|p-&gt;private_data
 )paren
 suffix:semicolon
-id|parport_unregister_port
+id|parport_put_port
 c_func
 (paren
 id|p
@@ -1760,6 +1754,9 @@ id|ops
 suffix:semicolon
 multiline_comment|/* hope no-one cached it */
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|parport_tbl
 r_static
@@ -1819,7 +1816,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|parport_remove_chip
+)paren
 comma
 )brace
 suffix:semicolon

@@ -6,12 +6,20 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#if 1
 DECL|macro|dbg
 mdefine_line|#define dbg(args...) udbg_printf(args)
 macro_line|#else
 DECL|macro|dbg
 mdefine_line|#define dbg(args...)
+macro_line|#endif
+macro_line|#ifdef DEBUG_NUMA
+DECL|macro|ARRAY_INITIALISER
+mdefine_line|#define ARRAY_INITIALISER -1
+macro_line|#else
+DECL|macro|ARRAY_INITIALISER
+mdefine_line|#define ARRAY_INITIALISER 0
 macro_line|#endif
 DECL|variable|numa_cpu_lookup_table
 r_int
@@ -33,8 +41,7 @@ l_int|1
 )paren
 )braket
 op_assign
-op_minus
-l_int|1
+id|ARRAY_INITIALISER
 )brace
 suffix:semicolon
 DECL|variable|numa_memory_lookup_table
@@ -63,8 +70,7 @@ l_int|1
 )paren
 )braket
 op_assign
-op_minus
-l_int|1
+id|ARRAY_INITIALISER
 )brace
 suffix:semicolon
 DECL|variable|numa_cpumask_lookup_table
@@ -125,11 +131,32 @@ c_func
 id|node_data
 )paren
 suffix:semicolon
+DECL|variable|numa_cpu_lookup_table
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|numa_cpu_lookup_table
+)paren
+suffix:semicolon
 DECL|variable|numa_memory_lookup_table
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|numa_memory_lookup_table
+)paren
+suffix:semicolon
+DECL|variable|numa_cpumask_lookup_table
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|numa_cpumask_lookup_table
+)paren
+suffix:semicolon
+DECL|variable|nr_cpus_in_node
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|nr_cpus_in_node
 )paren
 suffix:semicolon
 DECL|function|map_cpu_to_node
@@ -240,6 +267,30 @@ id|max_domain
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|strstr
+c_func
+(paren
+id|saved_command_line
+comma
+l_string|&quot;numa=off&quot;
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;NUMA disabled by user&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|cpu
 op_assign
 id|of_find_node_by_type

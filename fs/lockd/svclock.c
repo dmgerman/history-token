@@ -163,6 +163,10 @@ id|b-&gt;b_when
 comma
 id|when
 )paren
+op_logical_and
+id|b-&gt;b_when
+op_ne
+id|NLM_NEVER
 )paren
 id|bp
 op_assign
@@ -511,6 +515,11 @@ r_struct
 id|nlm_cookie
 op_star
 id|cookie
+comma
+r_struct
+id|sockaddr_in
+op_star
+id|sin
 )paren
 (brace
 r_struct
@@ -552,6 +561,15 @@ op_amp
 id|block-&gt;b_call.a_args.cookie
 comma
 id|cookie
+)paren
+op_logical_and
+id|nlm_cmp_addr
+c_func
+(paren
+id|sin
+comma
+op_amp
+id|block-&gt;b_host-&gt;h_addr
 )paren
 )paren
 r_break
@@ -2031,6 +2049,17 @@ r_int
 r_int
 id|timeout
 suffix:semicolon
+r_struct
+id|sockaddr_in
+op_star
+id|peer_addr
+op_assign
+id|RPC_PEERADDR
+c_func
+(paren
+id|task-&gt;tk_client
+)paren
+suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -2040,7 +2069,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;callback: looking for cookie %x &bslash;n&quot;
+l_string|&quot;callback: looking for cookie %x, host (%08x)&bslash;n&quot;
 comma
 op_star
 (paren
@@ -2050,6 +2079,12 @@ op_star
 )paren
 (paren
 id|call-&gt;a_args.cookie.data
+)paren
+comma
+id|ntohl
+c_func
+(paren
+id|peer_addr-&gt;sin_addr.s_addr
 )paren
 )paren
 suffix:semicolon
@@ -2065,6 +2100,8 @@ c_func
 (paren
 op_amp
 id|call-&gt;a_args.cookie
+comma
+id|peer_addr
 )paren
 )paren
 )paren
@@ -2072,7 +2109,7 @@ id|call-&gt;a_args.cookie
 id|dprintk
 c_func
 (paren
-l_string|&quot;lockd: no block for cookie %x&bslash;n&quot;
+l_string|&quot;lockd: no block for cookie %x, host (%08x)&bslash;n&quot;
 comma
 op_star
 (paren
@@ -2081,6 +2118,12 @@ op_star
 )paren
 (paren
 id|call-&gt;a_args.cookie.data
+)paren
+comma
+id|ntohl
+c_func
+(paren
+id|peer_addr-&gt;sin_addr.s_addr
 )paren
 )paren
 suffix:semicolon
@@ -2159,6 +2202,11 @@ id|nlmsvc_grant_reply
 c_func
 (paren
 r_struct
+id|svc_rqst
+op_star
+id|rqstp
+comma
+r_struct
 id|nlm_cookie
 op_star
 id|cookie
@@ -2177,6 +2225,30 @@ id|nlm_file
 op_star
 id|file
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;grant_reply: looking for cookie %x, host (%08x), s=%d &bslash;n&quot;
+comma
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+(paren
+id|cookie-&gt;data
+)paren
+comma
+id|ntohl
+c_func
+(paren
+id|rqstp-&gt;rq_addr.sin_addr.s_addr
+)paren
+comma
+id|status
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2188,6 +2260,9 @@ id|nlmsvc_find_block
 c_func
 (paren
 id|cookie
+comma
+op_amp
+id|rqstp-&gt;rq_addr
 )paren
 )paren
 )paren
@@ -2217,6 +2292,9 @@ id|nlmsvc_find_block
 c_func
 (paren
 id|cookie
+comma
+op_amp
+id|rqstp-&gt;rq_addr
 )paren
 )paren
 op_ne

@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/x86_64/kernel/vsyscall.c&n; *&n; *  Copyright (C) 2001 Andrea Arcangeli &lt;andrea@suse.de&gt; SuSE&n; *  Copyright 2003 Andi Kleen, SuSE Labs.&n; *&n; *  Thanks to hpa@transmeta.com for some useful hint.&n; *  Special thanks to Ingo Molnar for his early experience with&n; *  a different vsyscall implementation for Linux/IA32 and for the name.&n; *&n; *  vsyscall 1 is located at -10Mbyte, vsyscall 2 is located&n; *  at virtual address -10Mbyte+1024bytes etc... There are at max 8192&n; *  vsyscalls. One vsyscall can reserve more than 1 slot to avoid&n; *  jumping out of line if necessary.&n; *&n; *  Note: the concept clashes with user mode linux. If you use UML just&n; *  set the kernel.vsyscall sysctl to 0.&n; */
-multiline_comment|/*&n; * TODO 2001-03-20:&n; *&n; * 1) make page fault handler detect faults on page1-page-last of the vsyscall&n; *    virtual space, and make it increase %rip and write -ENOSYS in %rax (so&n; *    we&squot;ll be able to upgrade to a new glibc without upgrading kernel after&n; *    we add more vsyscalls.&n; * 2) Possibly we need a fixmap table for the vsyscalls too if we want&n; *    to avoid SIGSEGV and we want to return -EFAULT from the vsyscalls as well.&n; *    Can we segfault inside a &quot;syscall&quot;? We can fix this anytime and those fixes&n; *    won&squot;t be visible for userspace. Not fixing this is a noop for correct programs,&n; *    broken programs will segfault and there&squot;s no security risk until we choose to&n; *    fix it.&n; *&n; * Add HPET support (port from 2.4). Still needed?&n; * Nop out vsyscall syscall to avoid anchor for buffer overflows when sysctl off.&n; * &n; * These are not urgent things that we need to address only before shipping the first&n; * production binary kernels.&n; */
+multiline_comment|/*&n; * TODO 2001-03-20:&n; *&n; * 1) make page fault handler detect faults on page1-page-last of the vsyscall&n; *    virtual space, and make it increase %rip and write -ENOSYS in %rax (so&n; *    we&squot;ll be able to upgrade to a new glibc without upgrading kernel after&n; *    we add more vsyscalls.&n; * 2) Possibly we need a fixmap table for the vsyscalls too if we want&n; *    to avoid SIGSEGV and we want to return -EFAULT from the vsyscalls as well.&n; *    Can we segfault inside a &quot;syscall&quot;? We can fix this anytime and those fixes&n; *    won&squot;t be visible for userspace. Not fixing this is a noop for correct programs,&n; *    broken programs will segfault and there&squot;s no security risk until we choose to&n; *    fix it.&n; *&n; * These are not urgent things that we need to address only before shipping the first&n; * production binary kernels.&n; */
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -171,7 +171,7 @@ id|__vxtime.tsc_quot
 op_rshift
 l_int|32
 suffix:semicolon
-multiline_comment|/* See comment in x86_64 do_gettimeopfday. */
+multiline_comment|/* See comment in x86_64 do_gettimeofday. */
 )brace
 r_else
 (brace
@@ -302,6 +302,48 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|time_syscall
+r_static
+id|force_inline
+r_int
+id|time_syscall
+c_func
+(paren
+r_int
+op_star
+id|t
+)paren
+(brace
+r_int
+id|secs
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;syscall&quot;
+suffix:colon
+l_string|&quot;=a&quot;
+(paren
+id|secs
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|__NR_time
+)paren
+comma
+l_string|&quot;D&quot;
+(paren
+id|t
+)paren
+suffix:colon
+id|__syscall_clobber
+)paren
+suffix:semicolon
+r_return
+id|secs
+suffix:semicolon
+)brace
 DECL|function|vgettimeofday
 r_static
 r_int
@@ -369,6 +411,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* This will break when the xtime seconds get inaccurate, but that is&n; * unlikely */
 DECL|function|vtime
 r_static
 id|time_t
@@ -385,10 +428,6 @@ op_star
 id|t
 )paren
 (brace
-r_struct
-id|timeval
-id|tv
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -399,23 +438,14 @@ op_logical_neg
 id|__sysctl_vsyscall
 )paren
 )paren
-id|gettimeofday
+r_return
+id|time_syscall
 c_func
 (paren
-op_amp
-id|tv
-comma
-l_int|NULL
+id|t
 )paren
 suffix:semicolon
 r_else
-id|do_vgettimeofday
-c_func
-(paren
-op_amp
-id|tv
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -424,10 +454,10 @@ id|t
 op_star
 id|t
 op_assign
-id|tv.tv_sec
+id|__xtime.tv_sec
 suffix:semicolon
 r_return
-id|tv.tv_sec
+id|__xtime.tv_sec
 suffix:semicolon
 )brace
 DECL|function|venosys_0

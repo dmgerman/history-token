@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt; /* for udelay */
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/parisc-device.h&gt;
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
@@ -1508,6 +1509,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|MUX_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
+c_func
+(paren
+id|MUX_MAJOR
 )paren
 suffix:semicolon
 eof

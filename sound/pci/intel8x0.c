@@ -51,6 +51,8 @@ l_string|&quot;{Intel,82801BA-ICH2},&quot;
 l_string|&quot;{Intel,82801CA-ICH3},&quot;
 l_string|&quot;{Intel,82801DB-ICH4},&quot;
 l_string|&quot;{Intel,ICH5},&quot;
+l_string|&quot;{Intel,ICH6},&quot;
+l_string|&quot;{Intel,6300ESB},&quot;
 l_string|&quot;{Intel,MX440},&quot;
 l_string|&quot;{SiS,SI7012},&quot;
 l_string|&quot;{NVidia,nForce Audio},&quot;
@@ -417,6 +419,14 @@ macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH5
 DECL|macro|PCI_DEVICE_ID_INTEL_ICH5
 mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH5&t;0x24d5
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ESB_5
+DECL|macro|PCI_DEVICE_ID_INTEL_ESB_5
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ESB_5&t;0x25a6
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH6_3
+DECL|macro|PCI_DEVICE_ID_INTEL_ICH6_3
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH6_3&t;0x266e
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_SI_7012
 DECL|macro|PCI_DEVICE_ID_SI_7012
 mdefine_line|#define PCI_DEVICE_ID_SI_7012&t;&t;0x7012
@@ -432,6 +442,10 @@ macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP3_AUDIO
 DECL|macro|PCI_DEVICE_ID_NVIDIA_MCP3_AUDIO
 mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP3_AUDIO&t;0x00da
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_CK8S_AUDIO
+DECL|macro|PCI_DEVICE_ID_NVIDIA_CK8S_AUDIO
+mdefine_line|#define PCI_DEVICE_ID_NVIDIA_CK8S_AUDIO&t;0x00ea
 macro_line|#endif
 DECL|enumerator|DEVICE_INTEL
 DECL|enumerator|DEVICE_INTEL_ICH4
@@ -552,6 +566,16 @@ mdefine_line|#define ICH_STARTBM&t;&t;&t;0x01&t;/* start busmaster operation */
 multiline_comment|/* global block */
 DECL|macro|ICH_REG_GLOB_CNT
 mdefine_line|#define ICH_REG_GLOB_CNT&t;&t;0x2c&t;/* dword - global control */
+DECL|macro|ICH_PCM_SPDIF_MASK
+mdefine_line|#define   ICH_PCM_SPDIF_MASK&t;0xc0000000&t;/* s/pdif pcm slot mask (ICH4) */
+DECL|macro|ICH_PCM_SPDIF_NONE
+mdefine_line|#define   ICH_PCM_SPDIF_NONE&t;0x00000000&t;/* reserved - undefined */
+DECL|macro|ICH_PCM_SPDIF_78
+mdefine_line|#define   ICH_PCM_SPDIF_78&t;0x40000000&t;/* s/pdif pcm on slots 7&amp;8 */
+DECL|macro|ICH_PCM_SPDIF_69
+mdefine_line|#define   ICH_PCM_SPDIF_69&t;0x80000000&t;/* s/pdif pcm on slots 6&amp;9 */
+DECL|macro|ICH_PCM_SPDIF_1011
+mdefine_line|#define   ICH_PCM_SPDIF_1011&t;0xc0000000&t;/* s/pdif pcm on slots 10&amp;11 */
 DECL|macro|ICH_PCM_20BIT
 mdefine_line|#define   ICH_PCM_20BIT&t;&t;0x00400000&t;/* 20-bit samples (ICH4) */
 DECL|macro|ICH_PCM_246_MASK
@@ -1249,6 +1273,11 @@ id|resource
 op_star
 id|res_bm
 suffix:semicolon
+DECL|member|dma_dev
+r_struct
+id|snd_dma_device
+id|dma_dev
+suffix:semicolon
 DECL|member|pci
 r_struct
 id|pci_dev
@@ -1352,13 +1381,9 @@ id|u32
 id|bdbars_count
 suffix:semicolon
 DECL|member|bdbars
-id|u32
-op_star
+r_struct
+id|snd_dma_buffer
 id|bdbars
-suffix:semicolon
-DECL|member|bdbars_addr
-id|dma_addr_t
-id|bdbars_addr
 suffix:semicolon
 DECL|member|int_sta_reg
 id|u32
@@ -1497,6 +1522,40 @@ multiline_comment|/* ICH5 */
 (brace
 l_int|0x8086
 comma
+l_int|0x25a6
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_INTEL_ICH4
+)brace
+comma
+multiline_comment|/* ESB */
+(brace
+l_int|0x8086
+comma
+l_int|0x266e
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_INTEL_ICH4
+)brace
+comma
+multiline_comment|/* ICH6 */
+(brace
+l_int|0x8086
+comma
 l_int|0x7195
 comma
 id|PCI_ANY_ID
@@ -1579,6 +1638,23 @@ id|DEVICE_NFORCE
 )brace
 comma
 multiline_comment|/* NFORCE3 */
+(brace
+l_int|0x10de
+comma
+l_int|0x00ea
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_NFORCE
+)brace
+comma
+multiline_comment|/* CK8S */
 (brace
 l_int|0x1022
 comma
@@ -3557,11 +3633,19 @@ op_eq
 l_int|0
 )paren
 (brace
+r_static
+r_int
+id|err_count
+op_assign
+l_int|10
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|status
 )paren
+(brace
+multiline_comment|/* ack */
 id|iputdword
 c_func
 (paren
@@ -3572,6 +3656,24 @@ comma
 id|status
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;device_type
+op_ne
+id|DEVICE_NFORCE
+)paren
+id|status
+op_xor_assign
+id|igetdword
+c_func
+(paren
+id|chip
+comma
+id|chip-&gt;int_sta_reg
+)paren
+suffix:semicolon
+)brace
 id|spin_unlock
 c_func
 (paren
@@ -3579,8 +3681,38 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;device_type
+op_ne
+id|DEVICE_NFORCE
+op_logical_and
+id|status
+op_logical_and
+id|err_count
+)paren
+(brace
+id|err_count
+op_decrement
+suffix:semicolon
+id|snd_printd
+c_func
+(paren
+l_string|&quot;intel8x0: unknown IRQ bits 0x%x (sta_mask=0x%x)&bslash;n&quot;
+comma
+id|status
+comma
+id|chip-&gt;int_sta_mask
+)paren
+suffix:semicolon
+)brace
 r_return
-id|IRQ_NONE
+id|IRQ_RETVAL
+c_func
+(paren
+id|status
+)paren
 suffix:semicolon
 )brace
 r_for
@@ -4840,6 +4972,10 @@ id|substream
 )paren
 suffix:semicolon
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
 id|ptr1
 comma
 id|ptr
@@ -4876,9 +5012,27 @@ id|ptr
 op_assign
 l_int|0
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|ptr
 op_add_assign
 id|ichdev-&gt;position
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5102,34 +5256,6 @@ id|runtime
 op_assign
 id|substream-&gt;runtime
 suffix:semicolon
-r_static
-r_int
-r_int
-id|i
-comma
-id|rates
-(braket
-)braket
-op_assign
-(brace
-multiline_comment|/* ATTENTION: these values depend on the definition in pcm.h! */
-l_int|5512
-comma
-l_int|8000
-comma
-l_int|11025
-comma
-l_int|16000
-comma
-l_int|22050
-comma
-l_int|32000
-comma
-l_int|44100
-comma
-l_int|48000
-)brace
-suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -5145,48 +5271,12 @@ id|runtime-&gt;hw.rates
 op_assign
 id|ichdev-&gt;pcm-&gt;rates
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|ARRAY_SIZE
+id|snd_pcm_limit_hw_rates
 c_func
 (paren
-id|rates
+id|runtime
 )paren
 suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|runtime-&gt;hw.rates
-op_amp
-(paren
-l_int|1
-op_lshift
-id|i
-)paren
-)paren
-(brace
-id|runtime-&gt;hw.rate_min
-op_assign
-id|rates
-(braket
-id|i
-)braket
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
 r_if
 c_cond
 (paren
@@ -6823,12 +6913,18 @@ id|device
 op_assign
 id|pcm
 suffix:semicolon
-id|snd_pcm_lib_preallocate_pci_pages_for_all
+id|snd_pcm_lib_preallocate_pages_for_all
+c_func
+(paren
+id|pcm
+comma
+id|SNDRV_DMA_TYPE_DEV
+comma
+id|snd_dma_pci_data
 c_func
 (paren
 id|chip-&gt;pci
-comma
-id|pcm
+)paren
 comma
 id|rec-&gt;prealloc_size
 comma
@@ -7743,6 +7839,28 @@ op_assign
 dot
 id|vendor
 op_assign
+l_int|0x1014
+comma
+dot
+id|device
+op_assign
+l_int|0x1f00
+comma
+dot
+id|name
+op_assign
+l_string|&quot;MS-9128&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_ALC_JACK
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x1028
 comma
 dot
@@ -8029,6 +8147,28 @@ comma
 dot
 id|device
 op_assign
+l_int|0x4856
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Intel D845WN (82801BA)&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_SWAP_HP
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x8086
+comma
+dot
+id|device
+op_assign
 l_int|0x4d44
 comma
 dot
@@ -8097,6 +8237,7 @@ op_assign
 id|AC97_TUNE_AD_SHARING
 )brace
 comma
+macro_line|#if 0 /* FIXME: this seems wrong on most boards */
 (brace
 dot
 id|vendor
@@ -8124,6 +8265,7 @@ op_assign
 id|AC97_TUNE_HP_ONLY
 )brace
 comma
+macro_line|#endif
 (brace
 )brace
 multiline_comment|/* terminator */
@@ -10291,7 +10433,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|chip-&gt;bdbars
+id|chip-&gt;bdbars.area
 )paren
 (brace
 r_if
@@ -10302,41 +10444,21 @@ id|chip-&gt;fix_nocache
 id|fill_nocache
 c_func
 (paren
-id|chip-&gt;bdbars
+id|chip-&gt;bdbars.area
 comma
-id|chip-&gt;bdbars_count
-op_star
-r_sizeof
-(paren
-id|u32
-)paren
-op_star
-id|ICH_MAX_FRAGS
-op_star
-l_int|2
+id|chip-&gt;bdbars.bytes
 comma
 l_int|0
 )paren
 suffix:semicolon
-id|snd_free_pci_pages
+id|snd_dma_free_pages
 c_func
 (paren
-id|chip-&gt;pci
+op_amp
+id|chip-&gt;dma_dev
 comma
-id|chip-&gt;bdbars_count
-op_star
-r_sizeof
-(paren
-id|u32
-)paren
-op_star
-id|ICH_MAX_FRAGS
-op_star
-l_int|2
-comma
+op_amp
 id|chip-&gt;bdbars
-comma
-id|chip-&gt;bdbars_addr
 )paren
 suffix:semicolon
 )brace
@@ -12563,18 +12685,42 @@ l_int|0
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* allocate buffer descriptor lists */
-multiline_comment|/* the start of each lists must be aligned to 8 bytes */
-id|chip-&gt;bdbars
-op_assign
+id|memset
+c_func
 (paren
-id|u32
-op_star
+op_amp
+id|chip-&gt;dma_dev
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|chip-&gt;dma_dev
 )paren
-id|snd_malloc_pci_pages
+)paren
+suffix:semicolon
+id|chip-&gt;dma_dev.type
+op_assign
+id|SNDRV_DMA_TYPE_DEV
+suffix:semicolon
+id|chip-&gt;dma_dev.dev
+op_assign
+id|snd_dma_pci_data
 c_func
 (paren
 id|pci
+)paren
+suffix:semicolon
+multiline_comment|/* allocate buffer descriptor lists */
+multiline_comment|/* the start of each lists must be aligned to 8 bytes */
+r_if
+c_cond
+(paren
+id|snd_dma_alloc_pages
+c_func
+(paren
+op_amp
+id|chip-&gt;dma_dev
 comma
 id|chip-&gt;bdbars_count
 op_star
@@ -12588,21 +12734,23 @@ op_star
 l_int|2
 comma
 op_amp
-id|chip-&gt;bdbars_addr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|chip-&gt;bdbars
-op_eq
-l_int|NULL
+)paren
+OL
+l_int|0
 )paren
 (brace
 id|snd_intel8x0_free
 c_func
 (paren
 id|chip
+)paren
+suffix:semicolon
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;intel8x0: cannot allocate buffer descriptors&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -12620,18 +12768,9 @@ id|chip-&gt;fix_nocache
 id|fill_nocache
 c_func
 (paren
-id|chip-&gt;bdbars
+id|chip-&gt;bdbars.area
 comma
-id|chip-&gt;bdbars_count
-op_star
-r_sizeof
-(paren
-id|u32
-)paren
-op_star
-id|ICH_MAX_FRAGS
-op_star
-l_int|2
+id|chip-&gt;bdbars.bytes
 comma
 l_int|1
 )paren
@@ -12665,7 +12804,13 @@ id|i
 suffix:semicolon
 id|ichdev-&gt;bdbar
 op_assign
-id|chip-&gt;bdbars
+(paren
+(paren
+id|u32
+op_star
+)paren
+id|chip-&gt;bdbars.area
+)paren
 op_plus
 (paren
 id|i
@@ -12677,7 +12822,7 @@ l_int|2
 suffix:semicolon
 id|ichdev-&gt;bdbar_addr
 op_assign
-id|chip-&gt;bdbars_addr
+id|chip-&gt;bdbars.addr
 op_plus
 (paren
 id|i
@@ -12868,6 +13013,18 @@ l_string|&quot;Intel ICH5&quot;
 )brace
 comma
 (brace
+id|PCI_DEVICE_ID_INTEL_ESB_5
+comma
+l_string|&quot;Intel 6300ESB&quot;
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_INTEL_ICH6_3
+comma
+l_string|&quot;Intel ICH6&quot;
+)brace
+comma
+(brace
 id|PCI_DEVICE_ID_SI_7012
 comma
 l_string|&quot;SiS SI7012&quot;
@@ -12889,6 +13046,12 @@ comma
 id|PCI_DEVICE_ID_NVIDIA_MCP3_AUDIO
 comma
 l_string|&quot;NVidia nForce3&quot;
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_NVIDIA_CK8S_AUDIO
+comma
+l_string|&quot;NVidia CK8S&quot;
 )brace
 comma
 (brace

@@ -1,6 +1,7 @@
 multiline_comment|/*********************************************************************&n; *&n; * Filename:      irias_object.c&n; * Version:       0.3&n; * Description:   IAS object database and functions&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Thu Oct  1 22:50:04 1998&n; * Modified at:   Wed Dec 15 11:23:16 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-1999 Dag Brattli, All Rights Reserved.&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irias_object.h&gt;
 DECL|variable|irias_objects
@@ -9,10 +10,10 @@ op_star
 id|irias_objects
 suffix:semicolon
 multiline_comment|/*&n; *  Used when a missing value needs to be returned&n; */
-DECL|variable|missing
+DECL|variable|irias_missing
 r_struct
 id|ias_value
-id|missing
+id|irias_missing
 op_assign
 (brace
 id|IAS_MISSING
@@ -280,6 +281,13 @@ r_return
 id|obj
 suffix:semicolon
 )brace
+DECL|variable|irias_new_object
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irias_new_object
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irias_delete_attrib (attrib)&n; *&n; *    Delete given attribute and deallocate all its memory&n; *&n; */
 DECL|function|__irias_delete_attrib
 r_void
@@ -487,6 +495,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|irias_delete_object
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irias_delete_object
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irias_delete_attrib (obj)&n; *&n; *    Remove attribute from hashbin and, if it was the last attribute of&n; *    the object, remove the object as well.&n; *&n; */
 DECL|function|irias_delete_attrib
 r_int
@@ -661,6 +676,13 @@ id|obj-&gt;name
 )paren
 suffix:semicolon
 )brace
+DECL|variable|irias_insert_object
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irias_insert_object
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irias_find_object (name)&n; *&n; *    Find object with given name&n; *&n; */
 DECL|function|irias_find_object
 r_struct
@@ -699,6 +721,13 @@ id|name
 )paren
 suffix:semicolon
 )brace
+DECL|variable|irias_find_object
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irias_find_object
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irias_find_attrib (obj, name)&n; *&n; *    Find named attribute in object&n; *&n; */
 DECL|function|irias_find_attrib
 r_struct
@@ -785,6 +814,13 @@ r_return
 id|attrib
 suffix:semicolon
 )brace
+DECL|variable|irias_find_attrib
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irias_find_attrib
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irias_add_attribute (obj, attrib)&n; *&n; *    Add attribute to object&n; *&n; */
 DECL|function|irias_add_attrib
 r_void
@@ -1054,6 +1090,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|irias_object_change_attribute
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irias_object_change_attribute
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irias_object_add_integer_attrib (obj, name, value)&n; *&n; *    Add an integer attribute to an LM-IAS object&n; *&n; */
 DECL|function|irias_add_integer_attrib
 r_void
@@ -1200,6 +1243,13 @@ id|owner
 )paren
 suffix:semicolon
 )brace
+DECL|variable|irias_add_integer_attrib
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irias_add_integer_attrib
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irias_add_octseq_attrib (obj, name, octet_seq, len)&n; *&n; *    Add a octet sequence attribute to an LM-IAS object&n; *&n; */
 DECL|function|irias_add_octseq_attrib
 r_void
@@ -1362,6 +1412,13 @@ id|owner
 )paren
 suffix:semicolon
 )brace
+DECL|variable|irias_add_octseq_attrib
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irias_add_octseq_attrib
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irias_object_add_string_attrib (obj, string)&n; *&n; *    Add a string attribute to an LM-IAS object&n; *&n; */
 DECL|function|irias_add_string_attrib
 r_void
@@ -1519,6 +1576,13 @@ id|owner
 )paren
 suffix:semicolon
 )brace
+DECL|variable|irias_add_string_attrib
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irias_add_string_attrib
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irias_new_integer_value (integer)&n; *&n; *    Create new IAS integer value&n; *&n; */
 DECL|function|irias_new_integer_value
 r_struct
@@ -1600,6 +1664,13 @@ r_return
 id|value
 suffix:semicolon
 )brace
+DECL|variable|irias_new_integer_value
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irias_new_integer_value
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irias_new_string_value (string)&n; *&n; *    Create new IAS string value&n; *&n; * Per IrLMP 1.1, 4.3.3.2, strings are up to 256 chars - Jean II&n; */
 DECL|function|irias_new_string_value
 r_struct
@@ -1696,6 +1767,13 @@ r_return
 id|value
 suffix:semicolon
 )brace
+DECL|variable|irias_new_string_value
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irias_new_string_value
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irias_new_octseq_value (octets, len)&n; *&n; *    Create new IAS octet-sequence value&n; *&n; * Per IrLMP 1.1, 4.3.3.2, octet-sequence are up to 1024 bytes - Jean II&n; */
 DECL|function|irias_new_octseq_value
 r_struct
@@ -1837,6 +1915,13 @@ r_return
 id|value
 suffix:semicolon
 )brace
+DECL|variable|irias_new_octseq_value
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irias_new_octseq_value
+)paren
+suffix:semicolon
 DECL|function|irias_new_missing_value
 r_struct
 id|ias_value
@@ -2021,4 +2106,11 @@ id|value
 )paren
 suffix:semicolon
 )brace
+DECL|variable|irias_delete_value
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irias_delete_value
+)paren
+suffix:semicolon
 eof

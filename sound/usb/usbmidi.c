@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * usbmidi.c - ALSA USB MIDI driver&n; *&n; * Copyright (c) 2002 Clemens Ladisch&n; * All rights reserved.&n; *&n; * Based on the OSS usb-midi driver by NAGANO Daisuke,&n; *          NetBSD&squot;s umidi driver by Takuya SHIOZAKI,&n; *          the &quot;USB Device Class Definition for MIDI Devices&quot; by Roland&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed and/or modified under the&n; * terms of the GNU General Public License as published by the Free Software&n; * Foundation; either version 2 of the License, or (at your option) any later&n; * version.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
+multiline_comment|/*&n; * usbmidi.c - ALSA USB MIDI driver&n; *&n; * Copyright (c) 2002-2004 Clemens Ladisch&n; * All rights reserved.&n; *&n; * Based on the OSS usb-midi driver by NAGANO Daisuke,&n; *          NetBSD&squot;s umidi driver by Takuya SHIOZAKI,&n; *          the &quot;USB Device Class Definition for MIDI Devices&quot; by Roland&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed and/or modified under the&n; * terms of the GNU General Public License as published by the Free Software&n; * Foundation; either version 2 of the License, or (at your option) any later&n; * version.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -429,13 +429,18 @@ op_logical_or
 id|status
 op_eq
 op_minus
+id|ECONNRESET
+op_logical_or
+id|status
+op_eq
+op_minus
 id|ETIMEDOUT
 )paren
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* device removed */
+multiline_comment|/* device removed/shutdown */
 id|snd_printk
 c_func
 (paren
@@ -2041,6 +2046,35 @@ c_cond
 (paren
 id|up
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|port-&gt;ep-&gt;umidi-&gt;chip-&gt;shutdown
+)paren
+(brace
+multiline_comment|/* gobble up remaining bytes to prevent wait in&n;&t;&t;&t; * snd_rawmidi_drain_output */
+r_while
+c_loop
+(paren
+op_logical_neg
+id|snd_rawmidi_transmit_empty
+c_func
+(paren
+id|substream
+)paren
+)paren
+id|snd_rawmidi_transmit_ack
+c_func
+(paren
+id|substream
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|tasklet_hi_schedule
 c_func
 (paren
@@ -2048,6 +2082,7 @@ op_amp
 id|port-&gt;ep-&gt;tasklet
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|snd_usbmidi_input_open
 r_static
@@ -3163,14 +3198,6 @@ comma
 id|list
 )paren
 suffix:semicolon
-id|usb_driver_release_interface
-c_func
-(paren
-id|driver
-comma
-id|umidi-&gt;iface
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3223,6 +3250,14 @@ id|ep-&gt;in-&gt;urb
 )paren
 suffix:semicolon
 )brace
+id|usb_driver_release_interface
+c_func
+(paren
+id|driver
+comma
+id|umidi-&gt;iface
+)paren
+suffix:semicolon
 )brace
 DECL|function|snd_usbmidi_rawmidi_free
 r_static
@@ -3322,6 +3357,566 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This list specifies names for ports that do not fit into the standard&n; * &quot;(product) MIDI (n)&quot; schema because they aren&squot;t external MIDI ports,&n; * such as internal control or synthesizer ports.&n; */
+r_static
+r_struct
+(brace
+DECL|member|vendor
+id|__u16
+id|vendor
+suffix:semicolon
+DECL|member|product
+id|__u16
+id|product
+suffix:semicolon
+DECL|member|port
+r_int
+id|port
+suffix:semicolon
+DECL|member|name_format
+r_const
+r_char
+op_star
+id|name_format
+suffix:semicolon
+DECL|variable|snd_usbmidi_port_names
+)brace
+id|snd_usbmidi_port_names
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* Roland UA-100 */
+(brace
+l_int|0x0582
+comma
+l_int|0x0000
+comma
+l_int|2
+comma
+l_string|&quot;%s Control&quot;
+)brace
+comma
+multiline_comment|/* Roland SC-8850 */
+(brace
+l_int|0x0582
+comma
+l_int|0x0003
+comma
+l_int|0
+comma
+l_string|&quot;%s Part A&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0003
+comma
+l_int|1
+comma
+l_string|&quot;%s Part B&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0003
+comma
+l_int|2
+comma
+l_string|&quot;%s Part C&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0003
+comma
+l_int|3
+comma
+l_string|&quot;%s Part D&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0003
+comma
+l_int|4
+comma
+l_string|&quot;%s MIDI 1&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0003
+comma
+l_int|5
+comma
+l_string|&quot;%s MIDI 2&quot;
+)brace
+comma
+multiline_comment|/* Roland U-8 */
+(brace
+l_int|0x0582
+comma
+l_int|0x0004
+comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0004
+comma
+l_int|1
+comma
+l_string|&quot;%s Control&quot;
+)brace
+comma
+multiline_comment|/* Roland SC-8820 */
+(brace
+l_int|0x0582
+comma
+l_int|0x0007
+comma
+l_int|0
+comma
+l_string|&quot;%s Part A&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0007
+comma
+l_int|1
+comma
+l_string|&quot;%s Part B&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0007
+comma
+l_int|2
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+multiline_comment|/* Roland SK-500 */
+(brace
+l_int|0x0582
+comma
+l_int|0x000b
+comma
+l_int|0
+comma
+l_string|&quot;%s Part A&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x000b
+comma
+l_int|1
+comma
+l_string|&quot;%s Part B&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x000b
+comma
+l_int|2
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+multiline_comment|/* Roland SC-D70 */
+(brace
+l_int|0x0582
+comma
+l_int|0x000c
+comma
+l_int|0
+comma
+l_string|&quot;%s Part A&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x000c
+comma
+l_int|1
+comma
+l_string|&quot;%s Part B&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x000c
+comma
+l_int|2
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+multiline_comment|/* Edirol UM-880 */
+(brace
+l_int|0x0582
+comma
+l_int|0x0014
+comma
+l_int|8
+comma
+l_string|&quot;%s Control&quot;
+)brace
+comma
+multiline_comment|/* Edirol SD-90 */
+(brace
+l_int|0x0582
+comma
+l_int|0x0016
+comma
+l_int|0
+comma
+l_string|&quot;%s Part A&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0016
+comma
+l_int|1
+comma
+l_string|&quot;%s Part B&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0016
+comma
+l_int|2
+comma
+l_string|&quot;%s MIDI 1&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0016
+comma
+l_int|3
+comma
+l_string|&quot;%s MIDI 2&quot;
+)brace
+comma
+multiline_comment|/* Edirol UM-550 */
+(brace
+l_int|0x0582
+comma
+l_int|0x0023
+comma
+l_int|5
+comma
+l_string|&quot;%s Control&quot;
+)brace
+comma
+multiline_comment|/* Edirol SD-20 */
+(brace
+l_int|0x0582
+comma
+l_int|0x0027
+comma
+l_int|0
+comma
+l_string|&quot;%s Part A&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0027
+comma
+l_int|1
+comma
+l_string|&quot;%s Part B&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0027
+comma
+l_int|2
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+multiline_comment|/* Edirol SD-80 */
+(brace
+l_int|0x0582
+comma
+l_int|0x0029
+comma
+l_int|0
+comma
+l_string|&quot;%s Part A&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0029
+comma
+l_int|1
+comma
+l_string|&quot;%s Part B&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0029
+comma
+l_int|2
+comma
+l_string|&quot;%s MIDI 1&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0029
+comma
+l_int|3
+comma
+l_string|&quot;%s MIDI 2&quot;
+)brace
+comma
+multiline_comment|/* Edirol UA-700 */
+(brace
+l_int|0x0582
+comma
+l_int|0x002b
+comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x002b
+comma
+l_int|1
+comma
+l_string|&quot;%s Control&quot;
+)brace
+comma
+multiline_comment|/* Roland VariOS */
+(brace
+l_int|0x0582
+comma
+l_int|0x002f
+comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x002f
+comma
+l_int|1
+comma
+l_string|&quot;%s External MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x002f
+comma
+l_int|2
+comma
+l_string|&quot;%s Sync&quot;
+)brace
+comma
+multiline_comment|/* Edirol PCR */
+(brace
+l_int|0x0582
+comma
+l_int|0x0033
+comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0033
+comma
+l_int|1
+comma
+l_string|&quot;%s 1&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0033
+comma
+l_int|2
+comma
+l_string|&quot;%s 2&quot;
+)brace
+comma
+multiline_comment|/* BOSS GS-10 */
+(brace
+l_int|0x0582
+comma
+l_int|0x003b
+comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x003b
+comma
+l_int|1
+comma
+l_string|&quot;%s Control&quot;
+)brace
+comma
+multiline_comment|/* Edirol UA-1000 */
+(brace
+l_int|0x0582
+comma
+l_int|0x0044
+comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0044
+comma
+l_int|1
+comma
+l_string|&quot;%s Control&quot;
+)brace
+comma
+multiline_comment|/* Edirol UR-80 */
+(brace
+l_int|0x0582
+comma
+l_int|0x0048
+comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0048
+comma
+l_int|1
+comma
+l_string|&quot;%s 1&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x0048
+comma
+l_int|2
+comma
+l_string|&quot;%s 2&quot;
+)brace
+comma
+multiline_comment|/* Edirol PCR-A */
+(brace
+l_int|0x0582
+comma
+l_int|0x004d
+comma
+l_int|0
+comma
+l_string|&quot;%s MIDI&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x004d
+comma
+l_int|1
+comma
+l_string|&quot;%s 1&quot;
+)brace
+comma
+(brace
+l_int|0x0582
+comma
+l_int|0x004d
+comma
+l_int|2
+comma
+l_string|&quot;%s 2&quot;
+)brace
+comma
+multiline_comment|/* M-Audio MidiSport 8x8 */
+(brace
+l_int|0x0763
+comma
+l_int|0x1031
+comma
+l_int|8
+comma
+l_string|&quot;%s Control&quot;
+)brace
+comma
+(brace
+l_int|0x0763
+comma
+l_int|0x1033
+comma
+l_int|8
+comma
+l_string|&quot;%s Control&quot;
+)brace
+comma
+)brace
+suffix:semicolon
 DECL|function|snd_usbmidi_init_substream
 r_static
 r_void
@@ -3344,6 +3939,19 @@ op_star
 id|rsubstream
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
+id|__u16
+id|vendor
+comma
+id|product
+suffix:semicolon
+r_const
+r_char
+op_star
+id|name_format
+suffix:semicolon
 id|snd_rawmidi_substream_t
 op_star
 id|substream
@@ -3380,6 +3988,81 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* TODO: read port name from jack descriptor */
+id|name_format
+op_assign
+l_string|&quot;%s MIDI %d&quot;
+suffix:semicolon
+id|vendor
+op_assign
+id|umidi-&gt;chip-&gt;dev-&gt;descriptor.idVendor
+suffix:semicolon
+id|product
+op_assign
+id|umidi-&gt;chip-&gt;dev-&gt;descriptor.idProduct
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_usbmidi_port_names
+)paren
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|snd_usbmidi_port_names
+(braket
+id|i
+)braket
+dot
+id|vendor
+op_eq
+id|vendor
+op_logical_and
+id|snd_usbmidi_port_names
+(braket
+id|i
+)braket
+dot
+id|product
+op_eq
+id|product
+op_logical_and
+id|snd_usbmidi_port_names
+(braket
+id|i
+)braket
+dot
+id|port
+op_eq
+id|number
+)paren
+(brace
+id|name_format
+op_assign
+id|snd_usbmidi_port_names
+(braket
+id|i
+)braket
+dot
+id|name_format
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
 id|snprintf
 c_func
 (paren
@@ -3390,11 +4073,13 @@ r_sizeof
 id|substream-&gt;name
 )paren
 comma
-l_string|&quot;%s Port %d&quot;
+id|name_format
 comma
 id|umidi-&gt;chip-&gt;card-&gt;shortname
 comma
 id|number
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 op_star
@@ -4267,6 +4952,7 @@ r_return
 op_minus
 id|ENOENT
 suffix:semicolon
+multiline_comment|/*&n;&t; * For each port there is one MIDI_IN/OUT_JACK descriptor, not&n;&t; * necessarily with any useful contents.  So simply count &squot;em.&n;&t; */
 r_for
 c_loop
 (paren
@@ -4442,6 +5128,7 @@ c_func
 id|hostif
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * The various MidiSport devices have more or less random endpoint&n;&t; * numbers, so we have to identify the endpoints by their index in&n;&t; * the descriptor array, like the driver for that other OS does.&n;&t; *&n;&t; * There is one interrupt input endpoint for all input ports, one&n;&t; * bulk output endpoint for even-numbered ports, and one for odd-&n;&t; * numbered ports.  Both bulk output endpoints have corresponding&n;&t; * input bulk endpoints (at indices 1 and 3) which aren&squot;t used.&n;&t; */
 r_if
 c_cond
 (paren

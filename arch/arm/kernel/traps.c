@@ -142,6 +142,47 @@ comma
 l_string|&quot;interrupt&quot;
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_USER
+DECL|variable|user_debug
+r_int
+r_int
+id|user_debug
+suffix:semicolon
+DECL|function|user_debug_setup
+r_static
+r_int
+id|__init
+id|user_debug_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|user_debug
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;user_debug=&quot;
+comma
+id|user_debug_setup
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|dump_backtrace_entry
 r_void
 id|dump_backtrace_entry
@@ -1275,6 +1316,14 @@ id|undef_lock
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_USER
+r_if
+c_cond
+(paren
+id|user_debug
+op_amp
+id|UDBG_UNDEFINED
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -1294,6 +1343,7 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|current-&gt;thread.error_code
 op_assign
@@ -1521,6 +1571,14 @@ id|regs-&gt;ARM_r0
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_DEBUG_USER
+r_if
+c_cond
+(paren
+id|user_debug
+op_amp
+id|UDBG_SYSCALL
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -1540,6 +1598,7 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|info.si_signo
 op_assign
@@ -1910,6 +1969,14 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_DEBUG_USER
 multiline_comment|/*&n;&t; * experience shows that these seem to indicate that&n;&t; * something catastrophic has happened&n;&t; */
+r_if
+c_cond
+(paren
+id|user_debug
+op_amp
+id|UDBG_SYSCALL
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -1956,6 +2023,7 @@ id|regs
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 id|info.si_signo
@@ -2090,6 +2158,14 @@ id|siginfo_t
 id|info
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_USER
+r_if
+c_cond
+(paren
+id|user_debug
+op_amp
+id|UDBG_BADABORT
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -2119,6 +2195,7 @@ comma
 id|addr
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|info.si_signo
 op_assign

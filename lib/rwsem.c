@@ -538,6 +538,7 @@ multiline_comment|/*&n; * wait for the read lock to be granted&n; */
 DECL|function|rwsem_down_read_failed
 r_struct
 id|rw_semaphore
+id|fastcall
 op_star
 id|rwsem_down_read_failed
 c_func
@@ -593,6 +594,7 @@ multiline_comment|/*&n; * wait for the write lock to be granted&n; */
 DECL|function|rwsem_down_write_failed
 r_struct
 id|rw_semaphore
+id|fastcall
 op_star
 id|rwsem_down_write_failed
 c_func
@@ -647,6 +649,7 @@ multiline_comment|/*&n; * handle waking up a waiter on the semaphore&n; * - up_r
 DECL|function|rwsem_wake
 r_struct
 id|rw_semaphore
+id|fastcall
 op_star
 id|rwsem_wake
 c_func
@@ -717,6 +720,7 @@ multiline_comment|/*&n; * downgrade a write lock into a read lock&n; * - caller 
 DECL|function|rwsem_downgrade_wake
 r_struct
 id|rw_semaphore
+id|fastcall
 op_star
 id|rwsem_downgrade_wake
 c_func

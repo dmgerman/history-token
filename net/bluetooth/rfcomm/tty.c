@@ -23,6 +23,13 @@ DECL|macro|RFCOMM_TTY_MAJOR
 mdefine_line|#define RFCOMM_TTY_MAJOR 216&t;&t;/* device node major id of the usb/bluetooth.c driver */
 DECL|macro|RFCOMM_TTY_MINOR
 mdefine_line|#define RFCOMM_TTY_MINOR 0
+DECL|variable|rfcomm_tty_driver
+r_static
+r_struct
+id|tty_driver
+op_star
+id|rfcomm_tty_driver
+suffix:semicolon
 DECL|struct|rfcomm_dev
 r_struct
 id|rfcomm_dev
@@ -229,6 +236,14 @@ id|rfcomm_dlc_put
 c_func
 (paren
 id|dlc
+)paren
+suffix:semicolon
+id|tty_unregister_device
+c_func
+(paren
+id|rfcomm_tty_driver
+comma
+id|dev-&gt;id
 )paren
 suffix:semicolon
 multiline_comment|/* Refcount should only hit zero when called from rfcomm_dev_del()&n;&t;   which will have taken us off the list. Everything else are&n;&t;   refcounting bugs. */
@@ -815,7 +830,16 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_else
+id|tty_register_device
+c_func
+(paren
+id|rfcomm_tty_driver
+comma
+id|dev-&gt;id
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 r_return
 id|dev-&gt;id
 suffix:semicolon
@@ -3891,13 +3915,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* ---- TTY structure ---- */
-DECL|variable|rfcomm_tty_driver
-r_static
-r_struct
-id|tty_driver
-op_star
-id|rfcomm_tty_driver
-suffix:semicolon
 DECL|variable|rfcomm_ops
 r_static
 r_struct
@@ -4048,6 +4065,8 @@ suffix:semicolon
 id|rfcomm_tty_driver-&gt;flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
+op_or
+id|TTY_DRIVER_NO_DEVFS
 suffix:semicolon
 id|rfcomm_tty_driver-&gt;init_termios
 op_assign

@@ -32,7 +32,6 @@ macro_line|#include &lt;asm/iSeries/HvCallXm.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/IoHriMainStore.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
-macro_line|#include &lt;asm/proc_pmc.h&gt;
 macro_line|#include &lt;asm/iSeries/mf.h&gt;
 multiline_comment|/* Function Prototypes */
 r_extern
@@ -1687,11 +1686,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|iSeries_proc_early_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|mf_init
 c_func
 (paren
@@ -1704,13 +1698,6 @@ suffix:semicolon
 id|mb
 c_func
 (paren
-)paren
-suffix:semicolon
-id|iSeries_proc_callback
-c_func
-(paren
-op_amp
-id|pmc_proc_init
 )paren
 suffix:semicolon
 )brace

@@ -17,7 +17,7 @@ multiline_comment|/* #define DEBUG_RMAP */
 multiline_comment|/*&n; * Shared pages have a chain of pte_chain structures, used to locate&n; * all the mappings to this page. We only need a pointer to the pte&n; * here, the page struct for the page table page contains the process&n; * it belongs to and the offset within that process.&n; *&n; * We use an array of pte pointers in this structure to minimise cache misses&n; * while traversing reverse maps.&n; */
 DECL|macro|NRPTE
 mdefine_line|#define NRPTE ((L1_CACHE_BYTES - sizeof(unsigned long))/sizeof(pte_addr_t))
-multiline_comment|/*&n; * next_and_idx encodes both the address of the next pte_chain and the&n; * offset of the highest-index used pte in ptes[].&n; */
+multiline_comment|/*&n; * next_and_idx encodes both the address of the next pte_chain and the&n; * offset of the lowest-index used pte in ptes[] (which is equal also&n; * to the offset of the highest-index unused pte in ptes[], plus one).&n; */
 DECL|struct|pte_chain
 r_struct
 id|pte_chain
@@ -151,6 +151,7 @@ multiline_comment|/**&n; ** VM stuff below this comment&n; **/
 multiline_comment|/**&n; * page_referenced - test if the page was referenced&n; * @page: the page to test&n; *&n; * Quick test_and_clear_referenced for all mappings to a page,&n; * returns the number of processes which referenced the page.&n; * Caller needs to hold the pte_chain_lock.&n; *&n; * If the page has a single-entry pte_chain, collapse that back to a PageDirect&n; * representation.  This way, it&squot;s only done under memory pressure.&n; */
 DECL|function|page_referenced
 r_int
+id|fastcall
 id|page_referenced
 c_func
 (paren
@@ -179,11 +180,8 @@ c_func
 id|page
 )paren
 )paren
-id|mark_page_accessed
-c_func
-(paren
-id|page
-)paren
+id|referenced
+op_increment
 suffix:semicolon
 r_if
 c_cond
@@ -379,6 +377,7 @@ multiline_comment|/**&n; * page_add_rmap - add reverse mapping entry to a page&n
 r_struct
 id|pte_chain
 op_star
+id|fastcall
 DECL|function|page_add_rmap
 id|page_add_rmap
 c_func
@@ -601,6 +600,7 @@ suffix:semicolon
 multiline_comment|/**&n; * page_remove_rmap - take down reverse mapping to a page&n; * @page: page to remove mapping from&n; * @ptep: page table entry to remove&n; *&n; * Removes the reverse mapping from the pte_chain of the page,&n; * after that the caller can clear the page table entry and free&n; * the page.&n; * Caller needs to hold the mm-&gt;page_table_lock.&n; */
 DECL|function|page_remove_rmap
 r_void
+id|fastcall
 id|page_remove_rmap
 c_func
 (paren
@@ -921,6 +921,7 @@ suffix:semicolon
 DECL|function|try_to_unmap_one
 r_static
 r_int
+id|fastcall
 id|try_to_unmap_one
 c_func
 (paren
@@ -1236,6 +1237,7 @@ suffix:semicolon
 multiline_comment|/**&n; * try_to_unmap - try to remove all page table mappings to a page&n; * @page: the page to get unmapped&n; *&n; * Tries to remove all the page table entries which are mapping this&n; * page, used in the pageout path.  Caller must hold the page lock&n; * and its pte chain lock.  Return values are:&n; *&n; * SWAP_SUCCESS&t;- we succeeded in removing all mappings&n; * SWAP_AGAIN&t;- we missed a trylock, try again later&n; * SWAP_FAIL&t;- the page is unswappable&n; */
 DECL|function|try_to_unmap
 r_int
+id|fastcall
 id|try_to_unmap
 c_func
 (paren

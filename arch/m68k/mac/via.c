@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/macints.h&gt;
 macro_line|#include &lt;asm/machw.h&gt; 
 macro_line|#include &lt;asm/mac_via.h&gt;
 macro_line|#include &lt;asm/mac_psc.h&gt;
-macro_line|#include &lt;asm/unistd.h&gt;
 DECL|variable|via1
 DECL|variable|via2
 r_volatile
@@ -783,7 +782,7 @@ c_cond
 id|via_alt_mapping
 )paren
 (brace
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|IRQ_AUTO_1
@@ -803,7 +802,7 @@ op_star
 id|via1
 )paren
 suffix:semicolon
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|IRQ_AUTO_6
@@ -826,7 +825,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|IRQ_AUTO_1
@@ -854,7 +853,7 @@ op_logical_neg
 id|psc_present
 )paren
 (brace
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|IRQ_AUTO_6
@@ -871,7 +870,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|IRQ_AUTO_2
@@ -898,7 +897,7 @@ op_logical_neg
 id|psc_present
 )paren
 (brace
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|IRQ_AUTO_4

@@ -29,11 +29,7 @@ suffix:semicolon
 macro_line|#if defined(XFS_RW_TRACE)
 multiline_comment|/*&n; * Defines for the trace mechanisms in xfs_lrw.c.&n; */
 DECL|macro|XFS_RW_KTRACE_SIZE
-mdefine_line|#define&t;XFS_RW_KTRACE_SIZE&t;64
-DECL|macro|XFS_STRAT_KTRACE_SIZE
-mdefine_line|#define&t;XFS_STRAT_KTRACE_SIZE&t;64
-DECL|macro|XFS_STRAT_GTRACE_SIZE
-mdefine_line|#define&t;XFS_STRAT_GTRACE_SIZE&t;512
+mdefine_line|#define&t;XFS_RW_KTRACE_SIZE&t;128
 DECL|macro|XFS_READ_ENTER
 mdefine_line|#define&t;XFS_READ_ENTER&t;&t;1
 DECL|macro|XFS_WRITE_ENTER
@@ -74,6 +70,18 @@ DECL|macro|XFS_DIORD_ENTER
 mdefine_line|#define&t;XFS_DIORD_ENTER&t;&t;19
 DECL|macro|XFS_DIOWR_ENTER
 mdefine_line|#define&t;XFS_DIOWR_ENTER&t;&t;20
+DECL|macro|XFS_SENDFILE_ENTER
+mdefine_line|#define&t;XFS_SENDFILE_ENTER&t;21
+DECL|macro|XFS_WRITEPAGE_ENTER
+mdefine_line|#define&t;XFS_WRITEPAGE_ENTER&t;22
+DECL|macro|XFS_RELEASEPAGE_ENTER
+mdefine_line|#define&t;XFS_RELEASEPAGE_ENTER&t;23
+DECL|macro|XFS_IOMAP_ALLOC_ENTER
+mdefine_line|#define&t;XFS_IOMAP_ALLOC_ENTER&t;24
+DECL|macro|XFS_IOMAP_ALLOC_MAP
+mdefine_line|#define&t;XFS_IOMAP_ALLOC_MAP&t;25
+DECL|macro|XFS_IOMAP_UNWRITTEN
+mdefine_line|#define&t;XFS_IOMAP_UNWRITTEN&t;26
 r_extern
 r_void
 id|xfs_rw_enter_trace

@@ -1743,6 +1743,7 @@ r_void
 suffix:semicolon
 macro_line|#endif
 DECL|function|hci_uart_init
+r_static
 r_int
 id|__init
 id|hci_uart_init
@@ -1877,9 +1878,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|hci_uart_cleanup
+DECL|function|hci_uart_exit
+r_static
 r_void
-id|hci_uart_cleanup
+id|__exit
+id|hci_uart_exit
 c_func
 (paren
 r_void
@@ -1934,11 +1937,11 @@ c_func
 id|hci_uart_init
 )paren
 suffix:semicolon
-DECL|variable|hci_uart_cleanup
+DECL|variable|hci_uart_exit
 id|module_exit
 c_func
 (paren
-id|hci_uart_cleanup
+id|hci_uart_exit
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -1951,6 +1954,13 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Bluetooth HCI UART driver ver &quot;
+id|VERSION
+)paren
+suffix:semicolon
+DECL|variable|VERSION
+id|MODULE_VERSION
+c_func
+(paren
 id|VERSION
 )paren
 suffix:semicolon

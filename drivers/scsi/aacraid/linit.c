@@ -452,7 +452,7 @@ comma
 l_int|18
 )brace
 comma
-multiline_comment|/* ASR-2020S PCI-X ZCR (Skyhawk)*/
+multiline_comment|/* ASR-2020 ZCR PCI-X U320 */
 (brace
 l_int|0x9005
 comma
@@ -469,7 +469,7 @@ comma
 l_int|19
 )brace
 comma
-multiline_comment|/* ASR-2020S SO-DIMM PCI-X ZCR(Terminator)*/
+multiline_comment|/* ASR-2025 ZCR DIMM U320 */
 (brace
 l_int|0x9005
 comma
@@ -674,6 +674,40 @@ l_int|31
 )brace
 comma
 multiline_comment|/* ASR-2230S + ASR-2230SLP PCI-X (Lancer) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x028e
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|32
+)brace
+comma
+multiline_comment|/* ASR-2020SA      (ZCR PCI-X SATA) */
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x9005
+comma
+l_int|0x028f
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|33
+)brace
+comma
+multiline_comment|/* ASR-2025SA      (ZCR DIMM SATA) */
 (brace
 l_int|0
 comma
@@ -971,12 +1005,12 @@ l_string|&quot;aacraid&quot;
 comma
 l_string|&quot;ADAPTEC &quot;
 comma
-l_string|&quot;ASR-2020S PCI-X &quot;
+l_string|&quot;ASR-2020ZCR     &quot;
 comma
 l_int|2
 )brace
 comma
-multiline_comment|/* ASR-2020S PCI-X ZCR (Skyhawk)*/
+multiline_comment|/* ASR-2020 ZCR PCI-X U320 */
 (brace
 id|aac_rx_init
 comma
@@ -984,12 +1018,12 @@ l_string|&quot;aacraid&quot;
 comma
 l_string|&quot;ADAPTEC &quot;
 comma
-l_string|&quot;ASR-2020S PCI-X &quot;
+l_string|&quot;ASR-2025ZCR     &quot;
 comma
 l_int|2
 )brace
 comma
-multiline_comment|/* ASR-2020S SO-DIMM PCI-X ZCR(Terminator)*/
+multiline_comment|/* ASR-2025 ZCR DIMM U320 */
 (brace
 id|aac_rx_init
 comma
@@ -1150,6 +1184,32 @@ l_int|2
 )brace
 comma
 multiline_comment|/* ASR-2230S + ASR-2230SLP PCI-X (Lancer) */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;ASR-2020SA      &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* ASR-2020SA      (ZCR PCI-X SATA) */
+(brace
+id|aac_rx_init
+comma
+l_string|&quot;aacraid&quot;
+comma
+l_string|&quot;ADAPTEC &quot;
+comma
+l_string|&quot;ASR-2025SA      &quot;
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* ASR-2025SA      (ZCR DIMM SATA) */
 )brace
 suffix:semicolon
 multiline_comment|/**&n; *&t;aac_queuecommand&t;-&t;queue a SCSI command&n; *&t;@cmd:&t;&t;SCSI command to queue&n; *&t;@done:&t;&t;Function to call on command completion&n; *&n; *&t;Queues a command for execution by the associated Host Adapter.&n; *&n; *&t;TODO: unify with aac_scsi_cmd().&n; */

@@ -1441,6 +1441,7 @@ suffix:semicolon
 )brace
 DECL|function|put_files_struct
 r_void
+id|fastcall
 id|put_files_struct
 c_func
 (paren
@@ -3133,6 +3134,7 @@ suffix:semicolon
 )brace
 DECL|function|next_thread
 id|task_t
+id|fastcall
 op_star
 id|next_thread
 c_func
@@ -4482,7 +4484,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__) &amp;&amp; !defined(__arm__)
+macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__) &amp;&amp; &bslash;&n;    !defined(__arm__) &amp;&amp; !defined(__s390__)
 multiline_comment|/*&n; * sys_waitpid() remains for compatibility. waitpid() should be&n; * implemented by calling sys_wait4() from libc.a.&n; */
 DECL|function|sys_waitpid
 id|asmlinkage

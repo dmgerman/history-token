@@ -3512,6 +3512,14 @@ comma
 comma
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|piix_pci_tbl
+)paren
+suffix:semicolon
 DECL|variable|driver
 r_static
 r_struct
@@ -3539,6 +3547,7 @@ suffix:semicolon
 DECL|function|piix_ide_init
 r_static
 r_int
+id|__init
 id|piix_ide_init
 c_func
 (paren

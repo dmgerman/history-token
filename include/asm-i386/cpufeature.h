@@ -113,6 +113,12 @@ mdefine_line|#define X86_FEATURE_MWAIT&t;(4*32+ 3) /* Monitor/Mwait support */
 multiline_comment|/* VIA/Cyrix/Centaur-defined CPU features, CPUID level 0xC0000001, word 5 */
 DECL|macro|X86_FEATURE_XSTORE
 mdefine_line|#define X86_FEATURE_XSTORE&t;(5*32+ 2) /* on-CPU RNG present (xstore insn) */
+DECL|macro|X86_FEATURE_XSTORE_EN
+mdefine_line|#define X86_FEATURE_XSTORE_EN&t;(5*32+ 3) /* on-CPU RNG enabled */
+DECL|macro|X86_FEATURE_XCRYPT
+mdefine_line|#define X86_FEATURE_XCRYPT&t;(5*32+ 6) /* on-CPU crypto (xcrypt insn) */
+DECL|macro|X86_FEATURE_XCRYPT_EN
+mdefine_line|#define X86_FEATURE_XCRYPT_EN&t;(5*32+ 7) /* on-CPU crypto enabled */
 DECL|macro|cpu_has
 mdefine_line|#define cpu_has(c, bit)&t;&t;test_bit(bit, (c)-&gt;x86_capability)
 DECL|macro|boot_cpu_has
@@ -157,6 +163,8 @@ DECL|macro|cpu_has_centaur_mcr
 mdefine_line|#define cpu_has_centaur_mcr&t;boot_cpu_has(X86_FEATURE_CENTAUR_MCR)
 DECL|macro|cpu_has_xstore
 mdefine_line|#define cpu_has_xstore&t;&t;boot_cpu_has(X86_FEATURE_XSTORE)
+DECL|macro|cpu_has_xcrypt
+mdefine_line|#define cpu_has_xcrypt&t;&t;boot_cpu_has(X86_FEATURE_XCRYPT)
 macro_line|#endif /* __ASM_I386_CPUFEATURE_H */
 multiline_comment|/* &n; * Local Variables:&n; * mode:c&n; * comment-column:42&n; * End:&n; */
 eof

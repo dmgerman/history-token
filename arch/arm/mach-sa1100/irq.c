@@ -906,7 +906,7 @@ id|sa1100irq_sysclass
 )paren
 suffix:semicolon
 r_return
-id|sys_device_register
+id|sysdev_register
 c_func
 (paren
 op_amp

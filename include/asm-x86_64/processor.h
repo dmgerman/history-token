@@ -345,7 +345,7 @@ multiline_comment|/* This decides where the kernel will search for a free chunk 
 DECL|macro|IA32_PAGE_OFFSET
 mdefine_line|#define IA32_PAGE_OFFSET ((current-&gt;personality &amp; ADDR_LIMIT_3GB) ? 0xc0000000 : 0xFFFFe000)
 DECL|macro|TASK_UNMAPPED_32
-mdefine_line|#define TASK_UNMAPPED_32 (PAGE_ALIGN(IA32_PAGE_OFFSET / 3))
+mdefine_line|#define TASK_UNMAPPED_32 PAGE_ALIGN(IA32_PAGE_OFFSET/3)
 DECL|macro|TASK_UNMAPPED_64
 mdefine_line|#define TASK_UNMAPPED_64 PAGE_ALIGN(TASK_SIZE/3) 
 DECL|macro|TASK_UNMAPPED_BASE
@@ -635,8 +635,12 @@ DECL|macro|DOUBLEFAULT_STACK
 mdefine_line|#define DOUBLEFAULT_STACK 2 
 DECL|macro|NMI_STACK
 mdefine_line|#define NMI_STACK 3 
+DECL|macro|DEBUG_STACK
+mdefine_line|#define DEBUG_STACK 4 
+DECL|macro|MCE_STACK
+mdefine_line|#define MCE_STACK 5
 DECL|macro|N_EXCEPTION_STACKS
-mdefine_line|#define N_EXCEPTION_STACKS 3  /* hw limit: 7 */
+mdefine_line|#define N_EXCEPTION_STACKS 5  /* hw limit: 7 */
 DECL|macro|EXCEPTION_STKSZ
 mdefine_line|#define EXCEPTION_STKSZ (PAGE_SIZE &lt;&lt; EXCEPTION_STACK_ORDER)
 DECL|macro|EXCEPTION_STACK_ORDER
@@ -1142,5 +1146,7 @@ suffix:semicolon
 )brace
 DECL|macro|stack_current
 mdefine_line|#define stack_current() &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct thread_info *ti;&t;&t;&t;&t;&t;&bslash;&n;&t;asm(&quot;andq %%rsp,%0; &quot;:&quot;=r&quot; (ti) : &quot;0&quot; (CURRENT_MASK));&t;&bslash;&n;&t;ti-&gt;task;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|cache_line_size
+mdefine_line|#define cache_line_size() (boot_cpu_data.x86_clflush_size)
 macro_line|#endif /* __ASM_X86_64_PROCESSOR_H */
 eof

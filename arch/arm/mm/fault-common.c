@@ -390,6 +390,14 @@ id|siginfo
 id|si
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_USER
+r_if
+c_cond
+(paren
+id|user_debug
+op_amp
+id|UDBG_SEGV
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -417,6 +425,7 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|tsk-&gt;thread.address
 op_assign
@@ -941,6 +950,14 @@ id|tsk
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_USER
+r_if
+c_cond
+(paren
+id|user_debug
+op_amp
+id|UDBG_BUS
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -958,6 +975,7 @@ id|regs
 )paren
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 multiline_comment|/* Kernel mode? Handle exceptions or die */
 r_if

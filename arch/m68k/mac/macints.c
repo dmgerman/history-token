@@ -17,7 +17,6 @@ macro_line|#include &lt;asm/mac_psc.h&gt;
 macro_line|#include &lt;asm/hwtest.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/macints.h&gt;
-macro_line|#include &lt;asm/unistd.h&gt;
 DECL|macro|DEBUG_SPURIOUS
 mdefine_line|#define DEBUG_SPURIOUS
 DECL|macro|SHUTUP_SONIC
@@ -464,7 +463,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 l_int|7
@@ -1481,7 +1480,7 @@ id|VIA1_SOURCE_BASE
 )paren
 (brace
 r_return
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|irq
@@ -1614,7 +1613,7 @@ id|VIA1_SOURCE_BASE
 )paren
 (brace
 r_return
-id|sys_free_irq
+id|cpu_free_irq
 c_func
 (paren
 id|irq

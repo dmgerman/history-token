@@ -789,7 +789,19 @@ id|hi
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_X86_OOSTORE */
+DECL|macro|ACE_PRESENT
+mdefine_line|#define ACE_PRESENT&t;(1 &lt;&lt; 6)
+DECL|macro|ACE_ENABLED
+mdefine_line|#define ACE_ENABLED&t;(1 &lt;&lt; 7)
+DECL|macro|ACE_FCR
+mdefine_line|#define ACE_FCR&t;&t;(1 &lt;&lt; 28)&t;/* MSR_VIA_FCR */
+DECL|macro|RNG_PRESENT
+mdefine_line|#define RNG_PRESENT&t;(1 &lt;&lt; 2)
+DECL|macro|RNG_ENABLED
+mdefine_line|#define RNG_ENABLED&t;(1 &lt;&lt; 3)
+DECL|macro|RNG_ENABLE
+mdefine_line|#define RNG_ENABLE&t;(1 &lt;&lt; 6)&t;/* MSR_VIA_RNG */
 DECL|function|init_c3
 r_static
 r_void
@@ -821,6 +833,111 @@ op_ge
 l_int|0xC0000001
 )paren
 (brace
+id|u32
+id|tmp
+op_assign
+id|cpuid_edx
+c_func
+(paren
+l_int|0xC0000001
+)paren
+suffix:semicolon
+multiline_comment|/* enable ACE unit, if present and disabled */
+r_if
+c_cond
+(paren
+(paren
+id|tmp
+op_amp
+(paren
+id|ACE_PRESENT
+op_or
+id|ACE_ENABLED
+)paren
+)paren
+op_eq
+id|ACE_PRESENT
+)paren
+(brace
+id|rdmsr
+(paren
+id|MSR_VIA_FCR
+comma
+id|lo
+comma
+id|hi
+)paren
+suffix:semicolon
+id|lo
+op_or_assign
+id|ACE_FCR
+suffix:semicolon
+multiline_comment|/* enable ACE unit */
+id|wrmsr
+(paren
+id|MSR_VIA_FCR
+comma
+id|lo
+comma
+id|hi
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;CPU: Enabled ACE h/w crypto&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* enable RNG unit, if present and disabled */
+r_if
+c_cond
+(paren
+(paren
+id|tmp
+op_amp
+(paren
+id|RNG_PRESENT
+op_or
+id|RNG_ENABLED
+)paren
+)paren
+op_eq
+id|RNG_PRESENT
+)paren
+(brace
+id|rdmsr
+(paren
+id|MSR_VIA_RNG
+comma
+id|lo
+comma
+id|hi
+)paren
+suffix:semicolon
+id|lo
+op_or_assign
+id|RNG_ENABLE
+suffix:semicolon
+multiline_comment|/* enable RNG unit */
+id|wrmsr
+(paren
+id|MSR_VIA_RNG
+comma
+id|lo
+comma
+id|hi
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;CPU: Enabled h/w RNG&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* store Centaur Extended Feature Flags as&n;&t;&t; * word 5 of the CPU capability bit array&n;&t;&t; */
 id|c-&gt;x86_capability
 (braket

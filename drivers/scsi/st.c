@@ -5,7 +5,7 @@ r_char
 op_star
 id|verstr
 op_assign
-l_string|&quot;20040213&quot;
+l_string|&quot;20040226&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -279,16 +279,52 @@ id|try_direct_io
 )brace
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Restrict the number of modes so that names for all are assigned */
+macro_line|#if ST_NBR_MODES &gt; 16
+macro_line|#error &quot;Maximum number of modes is 16&quot;
+macro_line|#endif
+multiline_comment|/* Bit reversed order to get same names for same minors with all&n;   mode counts */
 DECL|variable|st_formats
 r_static
 r_char
 op_star
 id|st_formats
 (braket
-id|ST_NBR_MODES
 )braket
 op_assign
-initialization_block
+(brace
+l_string|&quot;&quot;
+comma
+l_string|&quot;r&quot;
+comma
+l_string|&quot;k&quot;
+comma
+l_string|&quot;s&quot;
+comma
+l_string|&quot;l&quot;
+comma
+l_string|&quot;t&quot;
+comma
+l_string|&quot;o&quot;
+comma
+l_string|&quot;u&quot;
+comma
+l_string|&quot;m&quot;
+comma
+l_string|&quot;v&quot;
+comma
+l_string|&quot;p&quot;
+comma
+l_string|&quot;x&quot;
+comma
+l_string|&quot;a&quot;
+comma
+l_string|&quot;y&quot;
+comma
+l_string|&quot;q&quot;
+comma
+l_string|&quot;z&quot;
+)brace
 suffix:semicolon
 multiline_comment|/* The default definitions have been moved to st_options.h */
 DECL|macro|ST_FIXED_BUFFER_SIZE
@@ -20364,27 +20400,6 @@ r_goto
 id|out_free_tape
 suffix:semicolon
 )brace
-id|snprintf
-c_func
-(paren
-id|cdev-&gt;kobj.name
-comma
-id|KOBJ_NAME_LEN
-comma
-l_string|&quot;%sm%d%s&quot;
-comma
-id|disk-&gt;disk_name
-comma
-id|mode
-comma
-id|j
-ques
-c_cond
-l_string|&quot;n&quot;
-suffix:colon
-l_string|&quot;&quot;
-)paren
-suffix:semicolon
 id|cdev-&gt;owner
 op_assign
 id|THIS_MODULE
@@ -20491,6 +20506,17 @@ op_increment
 id|mode
 )paren
 (brace
+multiline_comment|/* Make sure that the minor numbers corresponding to the four&n;&t;&t;   first modes always get the same names */
+id|i
+op_assign
+id|mode
+op_lshift
+(paren
+l_int|4
+op_minus
+id|ST_NBR_MODE_BITS
+)paren
+suffix:semicolon
 multiline_comment|/*  Rewind entry  */
 id|devfs_mk_cdev
 c_func
@@ -20500,12 +20526,14 @@ c_func
 (paren
 id|SCSI_TAPE_MAJOR
 comma
-id|dev_num
-op_plus
+id|TAPE_MINOR
+c_func
 (paren
+id|dev_num
+comma
 id|mode
-op_lshift
-l_int|5
+comma
+l_int|0
 )paren
 )paren
 comma
@@ -20521,7 +20549,7 @@ id|SDp-&gt;devfs_name
 comma
 id|st_formats
 (braket
-id|mode
+id|i
 )braket
 )paren
 suffix:semicolon
@@ -20534,15 +20562,15 @@ c_func
 (paren
 id|SCSI_TAPE_MAJOR
 comma
-id|dev_num
-op_plus
+id|TAPE_MINOR
+c_func
 (paren
+id|dev_num
+comma
 id|mode
-op_lshift
-l_int|5
+comma
+l_int|1
 )paren
-op_plus
-l_int|128
 )paren
 comma
 id|S_IFCHR
@@ -20557,7 +20585,7 @@ id|SDp-&gt;devfs_name
 comma
 id|st_formats
 (braket
-id|mode
+id|i
 )braket
 )paren
 suffix:semicolon
@@ -20595,7 +20623,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: try direct i/o: %s, max page reachable by HBA %lu&bslash;n&quot;
+l_string|&quot;%s: try direct i/o: %s (alignment %d B), max page reachable by HBA %lu&bslash;n&quot;
 comma
 id|tape_name
 c_func
@@ -20609,6 +20637,14 @@ c_cond
 l_string|&quot;yes&quot;
 suffix:colon
 l_string|&quot;no&quot;
+comma
+id|queue_dma_alignment
+c_func
+(paren
+id|SDp-&gt;request_queue
+)paren
+op_plus
+l_int|1
 comma
 id|tpnt-&gt;max_pfn
 )paren
@@ -20727,11 +20763,10 @@ c_cond
 (paren
 id|cdev
 )paren
-id|kobject_put
+id|cdev_del
 c_func
 (paren
-op_amp
-id|cdev-&gt;kobj
+id|cdev
 )paren
 suffix:semicolon
 id|write_lock
@@ -20914,6 +20949,16 @@ op_increment
 id|mode
 )paren
 (brace
+id|j
+op_assign
+id|mode
+op_lshift
+(paren
+l_int|4
+op_minus
+id|ST_NBR_MODE_BITS
+)paren
+suffix:semicolon
 id|devfs_remove
 c_func
 (paren
@@ -20923,7 +20968,7 @@ id|SDp-&gt;devfs_name
 comma
 id|st_formats
 (braket
-id|mode
+id|j
 )braket
 )paren
 suffix:semicolon
@@ -20936,7 +20981,7 @@ id|SDp-&gt;devfs_name
 comma
 id|st_formats
 (braket
-id|mode
+id|j
 )braket
 )paren
 suffix:semicolon

@@ -19,7 +19,7 @@ macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/l2cap.h&gt;
 macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;1.1&quot;
+mdefine_line|#define VERSION &quot;1.2&quot;
 macro_line|#ifndef CONFIG_BT_RFCOMM_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
@@ -1699,6 +1699,7 @@ suffix:semicolon
 )brace
 DECL|function|__rfcomm_dlc_throttle
 r_void
+id|fastcall
 id|__rfcomm_dlc_throttle
 c_func
 (paren
@@ -1748,6 +1749,7 @@ suffix:semicolon
 )brace
 DECL|function|__rfcomm_dlc_unthrottle
 r_void
+id|fastcall
 id|__rfcomm_dlc_unthrottle
 c_func
 (paren
@@ -9564,6 +9566,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* ---- Initialization ---- */
 DECL|function|rfcomm_init
+r_static
 r_int
 id|__init
 id|rfcomm_init
@@ -9616,10 +9619,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|rfcomm_cleanup
+DECL|function|rfcomm_exit
+r_static
 r_void
 id|__exit
-id|rfcomm_cleanup
+id|rfcomm_exit
 c_func
 (paren
 r_void
@@ -9680,11 +9684,11 @@ c_func
 id|rfcomm_init
 )paren
 suffix:semicolon
-DECL|variable|rfcomm_cleanup
+DECL|variable|rfcomm_exit
 id|module_exit
 c_func
 (paren
-id|rfcomm_cleanup
+id|rfcomm_exit
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -9697,6 +9701,13 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Bluetooth RFCOMM ver &quot;
+id|VERSION
+)paren
+suffix:semicolon
+DECL|variable|VERSION
+id|MODULE_VERSION
+c_func
+(paren
 id|VERSION
 )paren
 suffix:semicolon

@@ -66,7 +66,7 @@ DECL|macro|ifdebug
 macro_line|#undef ifdebug
 macro_line|#ifdef RPC_DEBUG&t;&t;&t;
 DECL|macro|ifdebug
-macro_line|# define ifdebug(fac)&t;&t;if (rpc_debug &amp; RPCDBG_##fac)
+macro_line|# define ifdebug(fac)&t;&t;if (unlikely(rpc_debug &amp; RPCDBG_##fac))
 DECL|macro|dfprintk
 macro_line|# define dfprintk(fac, args...)&t;do { ifdebug(fac) printk(args); } while(0)
 DECL|macro|RPC_IFDEBUG
@@ -122,6 +122,12 @@ id|CTL_NFSDDEBUG
 comma
 DECL|enumerator|CTL_NLMDEBUG
 id|CTL_NLMDEBUG
+comma
+DECL|enumerator|CTL_SLOTTABLE_UDP
+id|CTL_SLOTTABLE_UDP
+comma
+DECL|enumerator|CTL_SLOTTABLE_TCP
+id|CTL_SLOTTABLE_TCP
 comma
 )brace
 suffix:semicolon

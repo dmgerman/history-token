@@ -119,12 +119,20 @@ id|ia64_mv_dma_unmap_sg
 id|sn_dma_unmap_sg
 suffix:semicolon
 r_extern
-id|ia64_mv_dma_sync_single
-id|sn_dma_sync_single
+id|ia64_mv_dma_sync_single_for_cpu
+id|sn_dma_sync_single_for_cpu
 suffix:semicolon
 r_extern
-id|ia64_mv_dma_sync_sg
-id|sn_dma_sync_sg
+id|ia64_mv_dma_sync_sg_for_cpu
+id|sn_dma_sync_sg_for_cpu
+suffix:semicolon
+r_extern
+id|ia64_mv_dma_sync_single_for_device
+id|sn_dma_sync_single_for_device
+suffix:semicolon
+r_extern
+id|ia64_mv_dma_sync_sg_for_device
+id|sn_dma_sync_sg_for_device
 suffix:semicolon
 r_extern
 id|ia64_mv_dma_supported
@@ -195,10 +203,14 @@ DECL|macro|platform_dma_map_sg
 mdefine_line|#define platform_dma_map_sg&t;&t;sn_dma_map_sg
 DECL|macro|platform_dma_unmap_sg
 mdefine_line|#define platform_dma_unmap_sg&t;&t;sn_dma_unmap_sg
-DECL|macro|platform_dma_sync_single
-mdefine_line|#define platform_dma_sync_single&t;sn_dma_sync_single
-DECL|macro|platform_dma_sync_sg
-mdefine_line|#define platform_dma_sync_sg&t;&t;sn_dma_sync_sg
+DECL|macro|platform_dma_sync_single_for_cpu
+mdefine_line|#define platform_dma_sync_single_for_cpu sn_dma_sync_single_for_cpu
+DECL|macro|platform_dma_sync_sg_for_cpu
+mdefine_line|#define platform_dma_sync_sg_for_cpu&t;sn_dma_sync_sg_for_cpu
+DECL|macro|platform_dma_sync_single_for_device
+mdefine_line|#define platform_dma_sync_single_for_device sn_dma_sync_single_for_device
+DECL|macro|platform_dma_sync_sg_for_device
+mdefine_line|#define platform_dma_sync_sg_for_device&t;sn_dma_sync_sg_for_device
 DECL|macro|platform_dma_supported
 mdefine_line|#define platform_dma_supported&t;&t;sn_dma_supported
 macro_line|#include &lt;asm/sn/sn2/io.h&gt;

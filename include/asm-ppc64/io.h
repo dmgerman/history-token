@@ -24,9 +24,6 @@ DECL|macro|SIO_CONFIG_RD
 mdefine_line|#define SIO_CONFIG_RD&t;0x399
 DECL|macro|SLOW_DOWN_IO
 mdefine_line|#define SLOW_DOWN_IO
-multiline_comment|/* Define this if you want to see virt_to_* messages */
-DECL|macro|__IO_DEBUG
-macro_line|#undef __IO_DEBUG
 r_extern
 r_int
 r_int
@@ -85,6 +82,11 @@ DECL|macro|outw
 mdefine_line|#define outw(data,addr)&t;&t;writew(data,((unsigned long)(addr)))  
 DECL|macro|outl
 mdefine_line|#define outl(data,addr)&t;&t;writel(data,((unsigned long)(addr)))
+multiline_comment|/*&n; * The *_ns versions below don&squot;t do byte-swapping.&n; * Neither do the standard versions now, these are just here&n; * for older code.&n; */
+DECL|macro|insw_ns
+mdefine_line|#define insw_ns(port, buf, ns)&t;_insw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
+DECL|macro|insl_ns
+mdefine_line|#define insl_ns(port, buf, nl)&t;_insl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
 macro_line|#else
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb(addr)       (*(volatile unsigned char *)(addr))
@@ -138,17 +140,21 @@ DECL|macro|outl
 mdefine_line|#define outl(val, port)&t;&t;eeh_outl(val, (unsigned long)port)
 multiline_comment|/*&n; * The insw/outsw/insl/outsl macros don&squot;t do byte-swapping.&n; * They are only used in practice for transferring buffers which&n; * are arrays of bytes, and byte-swapping is not appropriate in&n; * that case.  - paulus */
 DECL|macro|insb
-mdefine_line|#define insb(port, buf, ns)&t;_insb((u8 *)((port)+pci_io_base), (buf), (ns))
-DECL|macro|outsb
-mdefine_line|#define outsb(port, buf, ns)&t;_outsb((u8 *)((port)+pci_io_base), (buf), (ns))
+mdefine_line|#define insb(port, buf, ns)&t;eeh_insb((port), (buf), (ns))
 DECL|macro|insw
-mdefine_line|#define insw(port, buf, ns)&t;_insw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
-DECL|macro|outsw
-mdefine_line|#define outsw(port, buf, ns)&t;_outsw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
+mdefine_line|#define insw(port, buf, ns)&t;eeh_insw_ns((port), (buf), (ns))
 DECL|macro|insl
-mdefine_line|#define insl(port, buf, nl)&t;_insl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
+mdefine_line|#define insl(port, buf, nl)&t;eeh_insl_ns((port), (buf), (nl))
+DECL|macro|insw_ns
+mdefine_line|#define insw_ns(port, buf, ns)&t;eeh_insw_ns((port), (buf), (ns))
+DECL|macro|insl_ns
+mdefine_line|#define insl_ns(port, buf, nl)&t;eeh_insl_ns((port), (buf), (nl))
+DECL|macro|outsb
+mdefine_line|#define outsb(port, buf, ns)  _outsb((u8 *)((port)+pci_io_base), (buf), (ns))
+DECL|macro|outsw
+mdefine_line|#define outsw(port, buf, ns)  _outsw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
 DECL|macro|outsl
-mdefine_line|#define outsl(port, buf, nl)&t;_outsl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
+mdefine_line|#define outsl(port, buf, nl)  _outsl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
 macro_line|#endif
 DECL|macro|readb_relaxed
 mdefine_line|#define readb_relaxed(addr) readb(addr)
@@ -357,18 +363,13 @@ mdefine_line|#define inl_p(port)             inl(port)
 DECL|macro|outl_p
 mdefine_line|#define outl_p(val, port)       (udelay(1), outl((val), (port)))
 multiline_comment|/*&n; * The *_ns versions below don&squot;t do byte-swapping.&n; * Neither do the standard versions now, these are just here&n; * for older code.&n; */
-DECL|macro|insw_ns
-mdefine_line|#define insw_ns(port, buf, ns)&t;_insw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
 DECL|macro|outsw_ns
 mdefine_line|#define outsw_ns(port, buf, ns)&t;_outsw_ns((u16 *)((port)+pci_io_base), (buf), (ns))
-DECL|macro|insl_ns
-mdefine_line|#define insl_ns(port, buf, nl)&t;_insl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
 DECL|macro|outsl_ns
 mdefine_line|#define outsl_ns(port, buf, nl)&t;_outsl_ns((u32 *)((port)+pci_io_base), (buf), (nl))
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT ~(0UL)
 macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n; * Map in an area of physical address space, for accessing&n; * I/O devices etc.&n; */
 r_extern
 r_int
 id|__ioremap_explicit
@@ -410,6 +411,7 @@ r_int
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/**&n; * ioremap     -   map bus memory into CPU space&n; * @address:   bus address of the memory&n; * @size:      size of the resource to map&n; *&n; * ioremap performs a platform specific sequence of operations to&n; * make bus memory CPU accessible via the readb/readw/readl/writeb/&n; * writew/writel functions and the other mmio helpers. The returned&n; * address is not guaranteed to be usable directly as a virtual&n; * address.&n; */
 r_extern
 r_void
 op_star
@@ -462,7 +464,7 @@ r_int
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv, for&n; * addresses in the area where the kernel has the RAM mapped.&n; */
+multiline_comment|/**&n; *&t;virt_to_phys&t;-&t;map virtual addresses to physical&n; *&t;@address: address to remap&n; *&n; *&t;The returned physical address is the physical (CPU) mapping for&n; *&t;the memory address given. It is only valid to use this function on&n; *&t;addresses directly mapped or allocated via kmalloc.&n; *&n; *&t;This function does not give bus mappings for DMA transfers. In&n; *&t;almost all conceivable cases a device driver should not be using&n; *&t;this function&n; */
 DECL|function|virt_to_phys
 r_static
 r_inline
@@ -477,30 +479,6 @@ op_star
 id|address
 )paren
 (brace
-macro_line|#ifdef __IO_DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;virt_to_phys: 0x%08lx -&gt; 0x%08lx&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|address
-comma
-id|__pa
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|address
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|__pa
 c_func
@@ -513,6 +491,7 @@ id|address
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;phys_to_virt&t;-&t;map physical address to virtual&n; *&t;@address: address to remap&n; *&n; *&t;The returned virtual address is a current CPU mapping for&n; *&t;the memory address given. It is only valid to use this function on&n; *&t;addresses that have a kernel mapping&n; *&n; *&t;This function does not handle bus mappings for DMA transfers. In&n; *&t;almost all conceivable cases a device driver should not be using&n; *&t;this function&n; */
 DECL|function|phys_to_virt
 r_static
 r_inline
@@ -526,22 +505,6 @@ r_int
 id|address
 )paren
 (brace
-macro_line|#ifdef __IO_DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;phys_to_virt: 0x%08lx -&gt; 0x%08lx&bslash;n&quot;
-comma
-id|address
-comma
-id|__va
-c_func
-(paren
-id|address
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 r_void
@@ -589,7 +552,7 @@ DECL|macro|iobarrier_r
 mdefine_line|#define iobarrier_r()  eieio()
 DECL|macro|iobarrier_w
 mdefine_line|#define iobarrier_w()  eieio()
-multiline_comment|/*&n; * 8, 16 and 32 bit, big and little endian I/O operations, with barrier.&n; */
+multiline_comment|/*&n; * 8, 16 and 32 bit, big and little endian I/O operations, with barrier.&n; * These routines do not perform EEH-related I/O address translation,&n; * and should not be used directly by device drivers.  Use inb/readb&n; * instead.&n; */
 DECL|function|in_8
 r_static
 r_inline
@@ -1182,6 +1145,7 @@ macro_line|#ifndef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/eeh.h&gt;
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
+multiline_comment|/**&n; *&t;check_signature&t;&t;-&t;find BIOS signatures&n; *&t;@io_addr: mmio address to check&n; *&t;@signature:  signature block&n; *&t;@length: length of signature&n; *&n; *&t;Perform a signature comparison with the mmio address io_addr. This&n; *&t;address should have been obtained by ioremap.&n; *&t;Returns 1 on a match.&n; */
 DECL|function|check_signature
 r_static
 r_inline

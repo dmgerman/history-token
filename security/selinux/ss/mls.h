@@ -244,17 +244,17 @@ mdefine_line|#define mls_for_user_ranges(user, usercon) { &bslash;&n;struct mls_
 DECL|macro|mls_end_user_ranges
 mdefine_line|#define mls_end_user_ranges } }
 DECL|macro|mls_symtab_names
-mdefine_line|#define mls_symtab_names , &quot;levels&quot;, &quot;categories&quot;
+mdefine_line|#define mls_symtab_names  &quot;levels&quot;, &quot;categories&quot;,
 DECL|macro|mls_symtab_sizes
-mdefine_line|#define mls_symtab_sizes , 16, 16
+mdefine_line|#define mls_symtab_sizes  16, 16,
 DECL|macro|mls_index_f
-mdefine_line|#define mls_index_f ,sens_index, cat_index
+mdefine_line|#define mls_index_f sens_index, cat_index,
 DECL|macro|mls_destroy_f
-mdefine_line|#define mls_destroy_f ,sens_destroy, cat_destroy
+mdefine_line|#define mls_destroy_f sens_destroy, cat_destroy,
 DECL|macro|mls_read_f
-mdefine_line|#define mls_read_f ,sens_read, cat_read
+mdefine_line|#define mls_read_f sens_read, cat_read,
 DECL|macro|mls_write_f
-mdefine_line|#define mls_write_f ,sens_write, cat_write
+mdefine_line|#define mls_write_f sens_write, cat_write,
 DECL|macro|mls_policydb_index_others
 mdefine_line|#define mls_policydb_index_others(p) printk(&quot;, %d levels&quot;, p-&gt;nlevels);
 DECL|macro|mls_set_config

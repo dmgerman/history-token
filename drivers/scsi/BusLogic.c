@@ -120,7 +120,6 @@ multiline_comment|/*&n;  BusLogic_AnnounceDriver announces the Driver Version an
 DECL|function|BusLogic_AnnounceDriver
 r_static
 r_void
-id|__init
 id|BusLogic_AnnounceDriver
 c_func
 (paren
@@ -234,7 +233,6 @@ multiline_comment|/*&n;  BusLogic_UnregisterHostAdapter removes Host Adapter fro
 DECL|function|BusLogic_UnregisterHostAdapter
 r_static
 r_void
-id|__init
 id|BusLogic_UnregisterHostAdapter
 c_func
 (paren

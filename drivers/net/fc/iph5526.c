@@ -1457,11 +1457,6 @@ id|fc_info
 op_star
 id|fi
 op_assign
-(paren
-r_struct
-id|fc_info
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|fi-&gt;dev
@@ -16939,11 +16934,6 @@ id|fc_info
 op_star
 id|fi
 op_assign
-(paren
-r_struct
-id|fc_info
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|printk
@@ -16991,11 +16981,6 @@ id|fc_info
 op_star
 id|fi
 op_assign
-(paren
-r_struct
-id|fc_info
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -21243,11 +21228,6 @@ id|fc_info
 op_star
 id|fi
 op_assign
-(paren
-r_struct
-id|fc_info
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_return

@@ -6032,7 +6032,7 @@ id|DescOwn
 )paren
 r_break
 suffix:semicolon
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|hmp-&gt;pci_dev
@@ -6473,6 +6473,23 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* 16 byte align the IP header */
+id|pci_dma_sync_single_for_cpu
+c_func
+(paren
+id|hmp-&gt;pci_dev
+comma
+id|hmp-&gt;rx_ring
+(braket
+id|entry
+)braket
+dot
+id|addr
+comma
+id|hmp-&gt;rx_buf_sz
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
 multiline_comment|/* Call copy + cksum if available. */
 macro_line|#if 1 || USE_IP_COPYSUM
 id|eth_copy_and_sum
@@ -6526,6 +6543,23 @@ id|pkt_len
 )paren
 suffix:semicolon
 macro_line|#endif
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|hmp-&gt;pci_dev
+comma
+id|hmp-&gt;rx_ring
+(braket
+id|entry
+)braket
+dot
+id|addr
+comma
+id|hmp-&gt;rx_buf_sz
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace

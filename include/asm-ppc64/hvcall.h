@@ -7,6 +7,22 @@ DECL|macro|H_Busy
 mdefine_line|#define H_Busy&t;&t;1&t;/* Hardware busy -- retry later */
 DECL|macro|H_Constrained
 mdefine_line|#define H_Constrained&t;4&t;/* Resource request constrained to max allowed */
+DECL|macro|H_LongBusyStartRange
+mdefine_line|#define H_LongBusyStartRange   9900  /* Start of long busy range */
+DECL|macro|H_LongBusyOrder1msec
+mdefine_line|#define H_LongBusyOrder1msec   9900  /* Long busy, hint that 1msec is a good time to retry */
+DECL|macro|H_LongBusyOrder10msec
+mdefine_line|#define H_LongBusyOrder10msec  9901  /* Long busy, hint that 10msec is a good time to retry */
+DECL|macro|H_LongBusyOrder100msec
+mdefine_line|#define H_LongBusyOrder100msec 9902  /* Long busy, hint that 100msec is a good time to retry */
+DECL|macro|H_LongBusyOrder1sec
+mdefine_line|#define H_LongBusyOrder1sec    9903  /* Long busy, hint that 1sec is a good time to retry */
+DECL|macro|H_LongBusyOrder10sec
+mdefine_line|#define H_LongBusyOrder10sec   9904  /* Long busy, hint that 10sec is a good time to retry */
+DECL|macro|H_LongBusyOrder100sec
+mdefine_line|#define H_LongBusyOrder100sec  9905  /* Long busy, hint that 100sec is a good time to retry */
+DECL|macro|H_LongBusyEndRange
+mdefine_line|#define H_LongBusyEndRange     9905  /* End of long busy range */
 DECL|macro|H_Hardware
 mdefine_line|#define H_Hardware&t;-1&t;/* Hardware error */
 DECL|macro|H_Function
@@ -39,6 +55,9 @@ DECL|macro|H_RemoteParm
 mdefine_line|#define H_RemoteParm           -15
 DECL|macro|H_Resource
 mdefine_line|#define H_Resource             -16
+multiline_comment|/* Long Busy is a condition that can be returned by the firmware&n; * when a call cannot be completed now, but the identical call&n; * should be retried later.  This prevents calls blocking in the&n; * firmware for long periods of time. Annoyingly the firmware can return&n; * a range of return codes, hinting at how long we should wait before&n; * retrying.  If you don&squot;t care for the hint, the macro below is a good&n; * way to check for the long_busy return codes&n; */
+DECL|macro|H_isLongBusy
+mdefine_line|#define H_isLongBusy(x)  ((x &gt;= H_LongBusyStartRange) &amp;&amp; (x &lt;= H_LongBusyEndRange))
 multiline_comment|/* Flags */
 DECL|macro|H_LARGE_PAGE
 mdefine_line|#define H_LARGE_PAGE&t;&t;(1UL&lt;&lt;(63-16))
@@ -141,8 +160,8 @@ DECL|macro|H_GET_PPP
 mdefine_line|#define H_GET_PPP&t;&t;0xEC
 DECL|macro|H_SET_PPP
 mdefine_line|#define H_SET_PPP&t;&t;0xF0
-DECL|macro|H_SET_PURR
-mdefine_line|#define H_SET_PURR&t;&t;0xF4
+DECL|macro|H_PURR
+mdefine_line|#define H_PURR&t;&t;&t;0xF4
 DECL|macro|H_PIC
 mdefine_line|#define H_PIC&t;&t;        0xF8
 DECL|macro|H_REG_CRQ
@@ -157,6 +176,12 @@ DECL|macro|H_COPY_RDMA
 mdefine_line|#define H_COPY_RDMA             0x110
 DECL|macro|H_POLL_PENDING
 mdefine_line|#define H_POLL_PENDING&t;        0x1D8
+DECL|macro|H_VTERM_PARTNER_INFO
+mdefine_line|#define H_VTERM_PARTNER_INFO&t;0x150
+DECL|macro|H_REGISTER_VTERM
+mdefine_line|#define H_REGISTER_VTERM&t;&t;0x154
+DECL|macro|H_FREE_VTERM
+mdefine_line|#define H_FREE_VTERM&t;&t;&t;0x158
 multiline_comment|/* plpar_hcall() -- Generic call interface using above opcodes&n; *&n; * The actual call interface is a hypervisor call instruction with&n; * the opcode in R3 and input args in R4-R7.&n; * Status is returned in R3 with variable output values in R4-R11.&n; * Only H_PTE_READ with H_READ_4 uses R6-R11 so we ignore it for now&n; * and return only two out args which MUST ALWAYS BE PROVIDED.&n; */
 r_int
 id|plpar_hcall

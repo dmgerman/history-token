@@ -90,7 +90,7 @@ id|dma_addr_t
 id|dma_handle
 )paren
 suffix:semicolon
-multiline_comment|/* Map a single buffer of the indicated size for DMA in streaming mode.&n; * The 32-bit bus address to use is returned.&n; *&n; * Once the device is given the dma address, the device owns this memory&n; * until either pci_unmap_single or pci_dma_sync_single is performed.&n; */
+multiline_comment|/* Map a single buffer of the indicated size for DMA in streaming mode.&n; * The 32-bit bus address to use is returned.&n; *&n; * Once the device is given the dma address, the device owns this memory&n; * until either pci_unmap_single or pci_dma_sync_single_for_cpu is performed.&n; */
 r_extern
 id|dma_addr_t
 id|pci_map_single
@@ -239,10 +239,10 @@ r_int
 id|direction
 )paren
 suffix:semicolon
-multiline_comment|/* Make physical memory consistent for a single&n; * streaming mode DMA translation after a transfer.&n; *&n; * If you perform a pci_map_single() but wish to interrogate the&n; * buffer using the cpu, yet do not wish to teardown the PCI dma&n; * mapping, you must call this function before doing so.  At the&n; * next point you give the PCI dma address back to the card, the&n; * device again owns the buffer.&n; */
+multiline_comment|/* Make physical memory consistent for a single&n; * streaming mode DMA translation after a transfer.&n; *&n; * If you perform a pci_map_single() but wish to interrogate the&n; * buffer using the cpu, yet do not wish to teardown the PCI dma&n; * mapping, you must call this function before doing so.  At the&n; * next point you give the PCI dma address back to the card, you&n; * must first perform a pci_dma_sync_for_device, and then the device&n; * again owns the buffer.&n; */
 r_extern
 r_void
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 r_struct
@@ -260,10 +260,52 @@ r_int
 id|direction
 )paren
 suffix:semicolon
-multiline_comment|/* Make physical memory consistent for a set of streaming&n; * mode DMA translations after a transfer.&n; *&n; * The same as pci_dma_sync_single but for a scatter-gather list,&n; * same rules and usage.&n; */
 r_extern
 r_void
-id|pci_dma_sync_sg
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+id|dma_addr_t
+id|dma_handle
+comma
+r_int
+id|size
+comma
+r_int
+id|direction
+)paren
+suffix:semicolon
+multiline_comment|/* Make physical memory consistent for a set of streaming&n; * mode DMA translations after a transfer.&n; *&n; * The same as pci_dma_sync_single_* but for a scatter-gather list,&n; * same rules and usage.&n; */
+r_extern
+r_void
+id|pci_dma_sync_sg_for_cpu
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+r_struct
+id|scatterlist
+op_star
+id|sg
+comma
+r_int
+id|nelems
+comma
+r_int
+id|direction
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pci_dma_sync_sg_for_device
 c_func
 (paren
 r_struct

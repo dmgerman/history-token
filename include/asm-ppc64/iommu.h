@@ -4,6 +4,7 @@ DECL|macro|_PCI_DMA_H
 mdefine_line|#define _PCI_DMA_H
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 multiline_comment|/*&n; * IOMAP_MAX_ORDER defines the largest contiguous block&n; * of dma (tce) space we can get.  IOMAP_MAX_ORDER = 10 &n; * allows up to 2**9 pages (512 * 4096) = 2 MB&n; */
 DECL|macro|IOMAP_MAX_ORDER
 mdefine_line|#define IOMAP_MAX_ORDER 10
@@ -173,6 +174,12 @@ r_int
 id|it_largehint
 suffix:semicolon
 multiline_comment|/* Hint for large allocs */
+DECL|member|it_halfpoint
+r_int
+r_int
+id|it_halfpoint
+suffix:semicolon
+multiline_comment|/* Breaking point for small/large allocs */
 DECL|member|it_lock
 id|spinlock_t
 id|it_lock
@@ -373,11 +380,6 @@ id|numPages
 comma
 r_int
 id|direction
-comma
-r_int
-r_int
-op_star
-id|handle
 )paren
 suffix:semicolon
 r_extern
@@ -410,6 +412,11 @@ op_star
 id|table
 comma
 r_struct
+id|device
+op_star
+id|dev
+comma
+r_struct
 id|scatterlist
 op_star
 id|sglist
@@ -419,11 +426,6 @@ id|nelems
 comma
 r_int
 id|direction
-comma
-r_int
-r_int
-op_star
-id|handle
 )paren
 suffix:semicolon
 r_extern
@@ -443,9 +445,6 @@ id|sglist
 comma
 r_int
 id|nelems
-comma
-r_int
-id|direction
 )paren
 suffix:semicolon
 r_extern

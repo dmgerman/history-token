@@ -806,6 +806,28 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* acpi=strict disables out-of-spec workarounds */
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;acpi=strict&quot;
+comma
+l_int|11
+)paren
+)paren
+(brace
+id|acpi_strict
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 macro_line|#endif
 r_if
 c_cond
@@ -865,7 +887,7 @@ id|from
 comma
 l_string|&quot;apic&quot;
 comma
-l_int|6
+l_int|4
 )paren
 )paren
 (brace
@@ -1822,13 +1844,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
-multiline_comment|/* Temporary hack: disable the IO-APIC for UP Nvidia and &n;&t;   This is until we sort out the ACPI problems. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|acpi_disabled
-)paren
+multiline_comment|/* Temporary hack: disable the IO-APIC for UP Nvidia and VIA. */
 id|check_ioapic
 c_func
 (paren
@@ -2496,13 +2512,6 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_SMP
-r_extern
-r_int
-id|phys_proc_id
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 id|u32
 id|eax
 comma
@@ -2592,14 +2601,12 @@ op_assign
 l_int|31
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * At this point we only support two siblings per&n;&t;&t; * processor package.&n;&t;&t; */
-DECL|macro|NR_SIBLINGS
-mdefine_line|#define NR_SIBLINGS&t;2
 r_if
 c_cond
 (paren
 id|smp_num_siblings
-op_ne
-id|NR_SIBLINGS
+OG
+id|NR_CPUS
 )paren
 (brace
 id|printk
@@ -3574,11 +3581,11 @@ l_int|16
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * This does the hard work of actually picking apart the CPU stuff...&n; */
-DECL|function|identify_cpu
+multiline_comment|/* Do some early cpuid on the boot CPU to get some parameter that are&n;   needed before check_bugs. Everything advanced is in identify_cpu&n;   below. */
+DECL|function|early_identify_cpu
 r_void
 id|__init
-id|identify_cpu
+id|early_identify_cpu
 c_func
 (paren
 r_struct
@@ -3587,12 +3594,7 @@ op_star
 id|c
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|u32
-id|xlvl
-comma
 id|tfms
 suffix:semicolon
 id|c-&gt;loops_per_jiffy
@@ -3631,6 +3633,10 @@ op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 multiline_comment|/* Unset */
+id|c-&gt;x86_clflush_size
+op_assign
+l_int|64
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -3823,6 +3829,32 @@ op_assign
 l_int|4
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/*&n; * This does the hard work of actually picking apart the CPU stuff...&n; */
+DECL|function|identify_cpu
+r_void
+id|__init
+id|identify_cpu
+c_func
+(paren
+r_struct
+id|cpuinfo_x86
+op_star
+id|c
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|u32
+id|xlvl
+suffix:semicolon
+id|early_identify_cpu
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
 multiline_comment|/* AMD-defined flags: level 0x80000001 */
 id|xlvl
 op_assign
@@ -4587,13 +4619,6 @@ c_cond
 id|cpu_has_ht
 )paren
 (brace
-r_extern
-r_int
-id|phys_proc_id
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 id|seq_printf
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&t;drivers/net/tulip/interrupt.c&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&t;Copyright 2000,2001  The Linux Kernel Team&n;&t;Written/copyright 1994-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/DocBook/tulip.{pdf,ps,html}&n;&t;for more information on this driver, or visit the project&n;&t;Web page at http://sourceforge.net/projects/tulip/&n;&n;*/
+multiline_comment|/*&n;&t;drivers/net/tulip/interrupt.c&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&t;Copyright 2000,2001  The Linux Kernel Team&n;&t;Written/copyright 1994-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/DocBook/tulip-user.{pdf,ps,html}&n;&t;for more information on this driver, or visit the project&n;&t;Web page at http://sourceforge.net/projects/tulip/&n;&n;*/
 macro_line|#include &quot;tulip.h&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -83,12 +83,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|entry
@@ -320,12 +319,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|entry
@@ -724,7 +722,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* 16 byte align the IP header */
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|tp-&gt;pdev
@@ -790,6 +788,23 @@ id|pkt_len
 )paren
 suffix:semicolon
 macro_line|#endif
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|tp-&gt;pdev
+comma
+id|tp-&gt;rx_buffers
+(braket
+id|entry
+)braket
+dot
+id|mapping
+comma
+id|pkt_len
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -841,7 +856,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;%s: Internal fault: The skbuff addresses &quot;
-l_string|&quot;do not match in tulip_rx: %08x vs. %llx %p / %p.&bslash;n&quot;
+l_string|&quot;do not match in tulip_rx: %08x vs. %08llx %p / %p.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -1236,12 +1251,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|entry
@@ -1577,7 +1591,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* 16 byte align the IP header */
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 id|tp-&gt;pdev
@@ -1643,6 +1657,23 @@ id|pkt_len
 )paren
 suffix:semicolon
 macro_line|#endif
+id|pci_dma_sync_single_for_device
+c_func
+(paren
+id|tp-&gt;pdev
+comma
+id|tp-&gt;rx_buffers
+(braket
+id|entry
+)braket
+dot
+id|mapping
+comma
+id|pkt_len
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -1841,12 +1872,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_if
 c_cond
@@ -1953,12 +1983,11 @@ id|tulip_private
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|tulip_private
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|ioaddr

@@ -4647,7 +4647,7 @@ id|amdtp_highlevel
 comma
 id|host
 comma
-id|ah-&gt;ohci-&gt;id
+id|ah-&gt;host-&gt;id
 )paren
 suffix:semicolon
 id|minor
@@ -4656,7 +4656,7 @@ id|IEEE1394_MINOR_BLOCK_AMDTP
 op_star
 l_int|16
 op_plus
-id|ah-&gt;ohci-&gt;id
+id|ah-&gt;host-&gt;id
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
@@ -4691,7 +4691,7 @@ id|S_IWUSR
 comma
 l_string|&quot;amdtp/%d&quot;
 comma
-id|ah-&gt;ohci-&gt;id
+id|ah-&gt;host-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -4731,7 +4731,7 @@ c_func
 (paren
 l_string|&quot;amdtp/%d&quot;
 comma
-id|ah-&gt;ohci-&gt;id
+id|ah-&gt;host-&gt;id
 )paren
 suffix:semicolon
 r_return
@@ -4809,15 +4809,6 @@ suffix:semicolon
 id|amdtp_cdev.owner
 op_assign
 id|THIS_MODULE
-suffix:semicolon
-id|kobject_set_name
-c_func
-(paren
-op_amp
-id|amdtp_cdev.kobj
-comma
-l_string|&quot;amdtp&quot;
-)paren
 suffix:semicolon
 r_if
 c_cond

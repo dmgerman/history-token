@@ -209,7 +209,7 @@ suffix:semicolon
 suffix:semicolon
 r_extern
 r_int
-id|sys_device_register
+id|sysdev_register
 c_func
 (paren
 r_struct
@@ -219,7 +219,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|sys_device_unregister
+id|sysdev_unregister
 c_func
 (paren
 r_struct

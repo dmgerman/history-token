@@ -1,67 +1,9 @@
 multiline_comment|/*&n; *  linux/fs/hpfs/file.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  file VFS functions&n; */
-macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 DECL|macro|BLOCKS
 mdefine_line|#define BLOCKS(size) (((size) + 511) &gt;&gt; 9)
-multiline_comment|/* HUH? */
-DECL|function|hpfs_open
-r_int
-id|hpfs_open
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|i
-comma
-r_struct
-id|file
-op_star
-id|f
-)paren
-(brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|hpfs_lock_inode
-c_func
-(paren
-id|i
-)paren
-suffix:semicolon
-id|hpfs_unlock_inode
-c_func
-(paren
-id|i
-)paren
-suffix:semicolon
-multiline_comment|/* make sure nobody is deleting the file */
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|i-&gt;i_nlink
-)paren
-r_return
-op_minus
-id|ENOENT
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|hpfs_file_release
+r_static
 r_int
 id|hpfs_file_release
 c_func
@@ -124,6 +66,7 @@ multiline_comment|/* Don&squot;t fsync :-) */
 )brace
 multiline_comment|/*&n; * generic_file_read often calls bmap with non-existing sector,&n; * so we must ignore such errors.&n; */
 DECL|function|hpfs_bmap
+r_static
 id|secno
 id|hpfs_bmap
 c_func
@@ -274,6 +217,7 @@ id|disk_secno
 suffix:semicolon
 )brace
 DECL|function|hpfs_truncate
+r_static
 r_void
 id|hpfs_truncate
 c_func
@@ -378,6 +322,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|hpfs_get_block
+r_static
 r_int
 id|hpfs_get_block
 c_func
@@ -711,6 +656,7 @@ id|_hpfs_bmap
 )brace
 suffix:semicolon
 DECL|function|hpfs_file_write
+r_static
 id|ssize_t
 id|hpfs_file_write
 c_func
@@ -785,4 +731,65 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|hpfs_file_ops
+r_struct
+id|file_operations
+id|hpfs_file_ops
+op_assign
+(brace
+dot
+id|llseek
+op_assign
+id|generic_file_llseek
+comma
+dot
+id|read
+op_assign
+id|generic_file_read
+comma
+dot
+id|write
+op_assign
+id|hpfs_file_write
+comma
+dot
+id|mmap
+op_assign
+id|generic_file_mmap
+comma
+dot
+id|release
+op_assign
+id|hpfs_file_release
+comma
+dot
+id|fsync
+op_assign
+id|hpfs_file_fsync
+comma
+dot
+id|sendfile
+op_assign
+id|generic_file_sendfile
+comma
+)brace
+suffix:semicolon
+DECL|variable|hpfs_file_iops
+r_struct
+id|inode_operations
+id|hpfs_file_iops
+op_assign
+(brace
+dot
+id|truncate
+op_assign
+id|hpfs_truncate
+comma
+dot
+id|setattr
+op_assign
+id|hpfs_notify_change
+comma
+)brace
+suffix:semicolon
 eof

@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/a.out.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -644,7 +645,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; EFLAGS: %08lx    %s&bslash;n&quot;
+l_string|&quot; EFLAGS: %08lx    %s  (%s)&bslash;n&quot;
 comma
 id|regs-&gt;eflags
 comma
@@ -652,6 +653,8 @@ id|print_tainted
 c_func
 (paren
 )paren
+comma
+id|UTS_RELEASE
 )paren
 suffix:semicolon
 id|printk
@@ -1677,6 +1680,7 @@ multiline_comment|/*&n; *&t;switch_to(x,yn) should switch tasks from x to y.&n; 
 DECL|function|__switch_to
 r_struct
 id|task_struct
+id|fastcall
 op_star
 id|__switch_to
 c_func

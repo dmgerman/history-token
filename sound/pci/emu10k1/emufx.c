@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *                   Creative Labs, Inc.&n; *  Routines for effect processor FX8010&n; *&n; *  BUGS:&n; *    --&n; *&n; *  TODO:&n; *    --&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2803,7 +2804,7 @@ r_int
 r_int
 op_star
 )paren
-id|emu-&gt;fx8010.etram_pages
+id|emu-&gt;fx8010.etram_pages.area
 op_plus
 op_star
 id|tram_pos
@@ -2813,7 +2814,7 @@ r_int
 r_int
 op_star
 )paren
-id|emu-&gt;fx8010.etram_pages
+id|emu-&gt;fx8010.etram_pages.area
 op_plus
 op_star
 id|tram_pos
@@ -2866,7 +2867,7 @@ r_int
 r_int
 op_star
 )paren
-id|emu-&gt;fx8010.etram_pages
+id|emu-&gt;fx8010.etram_pages.area
 op_plus
 op_star
 id|tram_pos
@@ -2876,7 +2877,7 @@ r_int
 r_int
 op_star
 )paren
-id|emu-&gt;fx8010.etram_pages
+id|emu-&gt;fx8010.etram_pages.area
 op_plus
 op_star
 id|tram_pos
@@ -4250,12 +4251,18 @@ id|emu-&gt;pcm_fx8010
 op_assign
 id|pcm
 suffix:semicolon
-id|snd_pcm_lib_preallocate_pci_pages_for_all
+id|snd_pcm_lib_preallocate_pages_for_all
+c_func
+(paren
+id|pcm
+comma
+id|SNDRV_DMA_TYPE_DEV
+comma
+id|snd_dma_pci_data
 c_func
 (paren
 id|emu-&gt;pci
-comma
-id|pcm
+)paren
 comma
 l_int|64
 op_star
@@ -17513,7 +17520,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|emu-&gt;fx8010.etram_size
+id|emu-&gt;fx8010.etram_pages.bytes
 op_eq
 id|size
 )paren
@@ -17579,30 +17586,26 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|emu-&gt;fx8010.etram_pages
+id|emu-&gt;fx8010.etram_pages.area
 op_ne
 l_int|NULL
 )paren
 (brace
-id|snd_free_pci_pages
+id|snd_dma_free_pages
 c_func
 (paren
-id|emu-&gt;pci
+op_amp
+id|emu-&gt;dma_dev
 comma
-id|emu-&gt;fx8010.etram_size
-op_star
-l_int|2
-comma
+op_amp
 id|emu-&gt;fx8010.etram_pages
-comma
-id|emu-&gt;fx8010.etram_pages_dmaaddr
 )paren
 suffix:semicolon
-id|emu-&gt;fx8010.etram_pages
+id|emu-&gt;fx8010.etram_pages.area
 op_assign
 l_int|NULL
 suffix:semicolon
-id|emu-&gt;fx8010.etram_size
+id|emu-&gt;fx8010.etram_pages.bytes
 op_assign
 l_int|0
 suffix:semicolon
@@ -17615,27 +17618,24 @@ OG
 l_int|0
 )paren
 (brace
-id|emu-&gt;fx8010.etram_pages
-op_assign
-id|snd_malloc_pci_pages
+r_if
+c_cond
+(paren
+id|snd_dma_alloc_pages
 c_func
 (paren
-id|emu-&gt;pci
+op_amp
+id|emu-&gt;dma_dev
 comma
 id|size
 op_star
 l_int|2
 comma
 op_amp
-id|emu-&gt;fx8010.etram_pages_dmaaddr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|emu-&gt;fx8010.etram_pages
-op_eq
-l_int|NULL
+)paren
+OL
+l_int|0
 )paren
 r_return
 op_minus
@@ -17644,7 +17644,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|emu-&gt;fx8010.etram_pages
+id|emu-&gt;fx8010.etram_pages.area
 comma
 l_int|0
 comma
@@ -17662,7 +17662,7 @@ id|TCB
 comma
 l_int|0
 comma
-id|emu-&gt;fx8010.etram_pages_dmaaddr
+id|emu-&gt;fx8010.etram_pages.addr
 )paren
 suffix:semicolon
 id|snd_emu10k1_ptr_write
@@ -17711,10 +17711,6 @@ id|emu-&gt;emu_lock
 )paren
 suffix:semicolon
 )brace
-id|emu-&gt;fx8010.etram_size
-op_assign
-id|size
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -17852,7 +17848,7 @@ id|emu-&gt;fx8010.itram_size
 suffix:semicolon
 id|info-&gt;external_tram_size
 op_assign
-id|emu-&gt;fx8010.etram_size
+id|emu-&gt;fx8010.etram_pages.bytes
 suffix:semicolon
 id|fxbus
 op_assign

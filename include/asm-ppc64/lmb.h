@@ -232,5 +232,10 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|io_hole_start
+suffix:semicolon
 macro_line|#endif /* _PPC64_LMB_H */
 eof

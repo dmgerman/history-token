@@ -532,10 +532,10 @@ op_star
 id|vma
 )paren
 (brace
-id|update_atime
+id|file_accessed
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_inode
+id|file
 )paren
 suffix:semicolon
 id|vma-&gt;vm_ops
@@ -2867,6 +2867,16 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* round down */
 r_else
+macro_line|#ifndef __ARCH_FORCE_SHMLBA
+r_if
+c_cond
+(paren
+id|addr
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
+macro_line|#endif
 r_return
 op_minus
 id|EINVAL
@@ -3316,6 +3326,7 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * This function tries to be smart and unmap shm segments that&n;&t; * were modified by partial mlock or munmap calls:&n;&t; * - It first determines the size of the shm segment that should be&n;&t; *   unmapped: It searches for a vma that is backed by shm and that&n;&t; *   started at address shmaddr. It records it&squot;s size and then unmaps&n;&t; *   it.&n;&t; * - Then it unmaps all shm vmas that started at shmaddr and that&n;&t; *   are within the initially determined size.&n;&t; * Errors from do_munmap are ignored: the function only fails if&n;&t; * it&squot;s called with invalid parameters or if it&squot;s called to unmap&n;&t; * a part of a vma. Both calls in this function are for full vmas,&n;&t; * the parameters are directly copied from the vma itself and always&n;&t; * valid - therefore do_munmap cannot fail. (famous last words?)&n;&t; */
 multiline_comment|/*&n;&t; * If it had been mremap()&squot;d, the starting address would not&n;&t; * match the usual checks anyway. So assume all vma&squot;s are&n;&t; * above the starting address given.&n;&t; */
 id|vma
 op_assign

@@ -286,15 +286,6 @@ comma
 id|send_sig
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-DECL|variable|kd_mksound
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|kd_mksound
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|__do_softirq
 id|EXPORT_SYMBOL_NOVERS
 c_func
@@ -737,26 +728,11 @@ c_func
 id|__arch_strnlen_user
 )paren
 suffix:semicolon
-multiline_comment|/* consistent area handling */
-DECL|variable|consistent_alloc
+DECL|variable|__arch_strncpy_from_user
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|consistent_alloc
-)paren
-suffix:semicolon
-DECL|variable|consistent_free
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|consistent_free
-)paren
-suffix:semicolon
-DECL|variable|consistent_sync
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|consistent_sync
+id|__arch_strncpy_from_user
 )paren
 suffix:semicolon
 DECL|variable|__get_user_1

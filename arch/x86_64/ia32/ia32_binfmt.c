@@ -28,6 +28,8 @@ mdefine_line|#define AT_SYSINFO_EHDR&t;&t;33
 DECL|variable|sysctl_vsyscall32
 r_int
 id|sysctl_vsyscall32
+op_assign
+l_int|1
 suffix:semicolon
 DECL|macro|ARCH_DLINFO
 mdefine_line|#define ARCH_DLINFO do {  &bslash;&n;&t;if (sysctl_vsyscall32) { &bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO, (u32)(u64)VSYSCALL32_VSYSCALL); &bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO_EHDR, VSYSCALL32_BASE);    &bslash;&n;&t;}&t;&bslash;&n;} while(0)
@@ -40,7 +42,7 @@ suffix:semicolon
 DECL|macro|IA32_EMULATOR
 mdefine_line|#define IA32_EMULATOR 1
 DECL|macro|ELF_ET_DYN_BASE
-mdefine_line|#define ELF_ET_DYN_BASE&t;&t;(IA32_PAGE_OFFSET/3 + 0x1000000)
+mdefine_line|#define ELF_ET_DYN_BASE&t;&t;(TASK_UNMAPPED_32 + 0x1000000)
 DECL|macro|ELF_ARCH
 macro_line|#undef ELF_ARCH
 DECL|macro|ELF_ARCH
@@ -611,7 +613,7 @@ mdefine_line|#define ELF_HWCAP (boot_cpu_data.x86_capability[0])
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM  (&quot;i686&quot;)
 DECL|macro|SET_PERSONALITY
-mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long new_flags = 0;&t;&t;&t;&t;&bslash;&n;&t;if ((ex).e_ident[EI_CLASS] == ELFCLASS32)&t;&t;&bslash;&n;&t;&t;new_flags = _TIF_IA32;&t;&t;&t;&t;&bslash;&n;&t;if ((current_thread_info()-&gt;flags &amp; _TIF_IA32)&t;&t;&bslash;&n;&t;    != new_flags)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_thread_flag(TIF_ABI_PENDING);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;clear_thread_flag(TIF_ABI_PENDING);&t;&t;&bslash;&n;&t;set_personality((ibcs2)?PER_SVR4:current-&gt;personality);&t;&bslash;&n;} while (0)
+mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long new_flags = 0;&t;&t;&t;&t;&bslash;&n;&t;if ((ex).e_ident[EI_CLASS] == ELFCLASS32)&t;&t;&bslash;&n;&t;&t;new_flags = _TIF_IA32;&t;&t;&t;&t;&bslash;&n;&t;if ((current_thread_info()-&gt;flags &amp; _TIF_IA32)&t;&t;&bslash;&n;&t;    != new_flags)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_thread_flag(TIF_ABI_PENDING);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;clear_thread_flag(TIF_ABI_PENDING);&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* Override some function names */
 DECL|macro|elf_format
 mdefine_line|#define elf_format&t;&t;&t;elf32_format

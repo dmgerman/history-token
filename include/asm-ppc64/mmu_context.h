@@ -119,7 +119,7 @@ r_int
 id|size
 suffix:semicolon
 DECL|member|elements
-id|mm_context_t
+id|mm_context_id_t
 id|elements
 (braket
 id|LAST_USER_CONTEXT
@@ -203,14 +203,6 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* This does the right thing across a fork (I hope) */
-r_int
-r_int
-id|low_hpages
-op_assign
-id|mm-&gt;context
-op_amp
-id|CONTEXT_LOW_HPAGES
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -246,16 +238,12 @@ id|head
 op_assign
 id|mmu_context_queue.head
 suffix:semicolon
-id|mm-&gt;context
+id|mm-&gt;context.id
 op_assign
 id|mmu_context_queue.elements
 (braket
 id|head
 )braket
-suffix:semicolon
-id|mm-&gt;context
-op_or_assign
-id|low_hpages
 suffix:semicolon
 id|head
 op_assign
@@ -408,10 +396,7 @@ id|mmu_context_queue.elements
 id|index
 )braket
 op_assign
-id|mm-&gt;context
-op_amp
-op_complement
-id|CONTEXT_LOW_HPAGES
+id|mm-&gt;context.id
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -595,7 +580,7 @@ op_rshift
 l_int|28
 )paren
 op_amp
-l_int|0x1fffff
+l_int|0x1fff
 )paren
 op_star
 id|LAST_USER_CONTEXT
@@ -677,11 +662,6 @@ id|ordinal
 comma
 id|vsid
 suffix:semicolon
-id|context
-op_and_assign
-op_complement
-id|CONTEXT_LOW_HPAGES
-suffix:semicolon
 id|ordinal
 op_assign
 (paren
@@ -692,7 +672,7 @@ op_rshift
 l_int|28
 )paren
 op_amp
-l_int|0x1fffff
+l_int|0x1fff
 )paren
 op_star
 id|LAST_USER_CONTEXT

@@ -817,6 +817,15 @@ op_eq
 id|FF_EFFECTS_MAX
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|pid_private-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 singleline_comment|// TEMP - We need to get ff_effects_max correctly first:  || id &gt;= dev-&gt;ff_effects_max) {
 id|dev_dbg
 c_func

@@ -744,6 +744,7 @@ r_int
 comma
 id|options
 )paren
+macro_line|#include &lt;linux/linkage.h&gt;
 id|asmlinkage
 r_int
 r_int
@@ -804,23 +805,6 @@ comma
 r_int
 r_int
 id|pgoff
-)paren
-suffix:semicolon
-id|asmlinkage
-r_int
-id|sys_ioperm
-c_func
-(paren
-r_int
-r_int
-id|from
-comma
-r_int
-r_int
-id|num
-comma
-r_int
-id|on
 )paren
 suffix:semicolon
 r_struct

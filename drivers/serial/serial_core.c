@@ -564,10 +564,6 @@ id|info-&gt;xmit
 )paren
 suffix:semicolon
 )brace
-id|port-&gt;mctrl
-op_assign
-l_int|0
-suffix:semicolon
 id|retval
 op_assign
 id|port-&gt;ops
@@ -6970,16 +6966,6 @@ id|termios.c_cflag
 op_or_assign
 id|CRTSCTS
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|port-&gt;ops
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* &quot;console=&quot; on ia64 */
 id|port-&gt;ops
 op_member_access_from_pointer
 id|set_termios

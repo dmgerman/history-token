@@ -4199,6 +4199,24 @@ id|PAGE_SIZE
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_DEBUG_STACK_USAGE
+id|memset
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|addr
+comma
+l_int|0
+comma
+id|PAGE_SIZE
+op_lshift
+id|THREAD_INFO_ORDER
+)paren
+suffix:semicolon
+macro_line|#endif /* DEBUG_STACK_USAGE */
 r_return
 (paren
 r_struct

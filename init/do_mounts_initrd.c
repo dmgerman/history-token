@@ -1,3 +1,6 @@
+DECL|macro|__KERNEL_SYSCALLS__
+mdefine_line|#define __KERNEL_SYSCALLS__
+macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/minix_fs.h&gt;
@@ -102,37 +105,37 @@ id|envp_init
 (braket
 )braket
 suffix:semicolon
-id|close
+id|sys_close
 c_func
 (paren
 id|old_fd
 )paren
 suffix:semicolon
-id|close
+id|sys_close
 c_func
 (paren
 id|root_fd
 )paren
 suffix:semicolon
-id|close
+id|sys_close
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
-id|close
+id|sys_close
 c_func
 (paren
 l_int|1
 )paren
 suffix:semicolon
-id|close
+id|sys_close
 c_func
 (paren
 l_int|2
 )paren
 suffix:semicolon
-id|setsid
+id|sys_setsid
 c_func
 (paren
 )paren
@@ -140,7 +143,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|open
+id|sys_open
 c_func
 (paren
 l_string|&quot;/dev/console&quot;
@@ -153,7 +156,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|dup
+id|sys_dup
 c_func
 (paren
 l_int|0
@@ -162,7 +165,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|dup
+id|sys_dup
 c_func
 (paren
 l_int|0
@@ -238,7 +241,7 @@ l_int|0700
 suffix:semicolon
 id|root_fd
 op_assign
-id|open
+id|sys_open
 c_func
 (paren
 l_string|&quot;/&quot;
@@ -250,7 +253,7 @@ l_int|0
 suffix:semicolon
 id|old_fd
 op_assign
-id|open
+id|sys_open
 c_func
 (paren
 l_string|&quot;/old&quot;
@@ -316,7 +319,7 @@ c_loop
 (paren
 id|pid
 op_ne
-id|waitpid
+id|sys_wait4
 c_func
 (paren
 op_minus
@@ -324,6 +327,8 @@ l_int|1
 comma
 op_amp
 id|i
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -368,13 +373,13 @@ c_func
 l_string|&quot;.&quot;
 )paren
 suffix:semicolon
-id|close
+id|sys_close
 c_func
 (paren
 id|old_fd
 )paren
 suffix:semicolon
-id|close
+id|sys_close
 c_func
 (paren
 id|root_fd
@@ -460,7 +465,7 @@ r_else
 r_int
 id|fd
 op_assign
-id|open
+id|sys_open
 c_func
 (paren
 l_string|&quot;/dev/root.old&quot;
@@ -525,7 +530,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|close
+id|sys_close
 c_func
 (paren
 id|fd

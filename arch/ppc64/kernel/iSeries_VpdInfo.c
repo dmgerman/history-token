@@ -27,6 +27,7 @@ multiline_comment|/* End Change Activity                                        
 multiline_comment|/************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/resource.h&gt;
@@ -259,6 +260,13 @@ r_return
 id|LocationPtr
 suffix:semicolon
 )brace
+DECL|variable|iSeries_GetLocationData
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iSeries_GetLocationData
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Formats the device information.&n; * - Pass in pci_dev* pointer to the device.&n; * - Pass in buffer to place the data.  Danger here is the buffer must&n; *   be as big as the client says it is.   Should be at least 128 bytes.&n; * Return will the length of the string data put in the buffer.&n; * Format:&n; * PCI: Bus  0, Device 26, Vendor 0x12AE  Frame  1, Card  C10  Ethernet&n; * controller&n; */
 DECL|function|iSeries_Device_Information
 r_int

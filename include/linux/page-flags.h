@@ -115,12 +115,22 @@ r_int
 id|pswpout
 suffix:semicolon
 multiline_comment|/* swap writes */
-DECL|member|pgalloc
+DECL|member|pgalloc_high
 r_int
 r_int
-id|pgalloc
+id|pgalloc_high
 suffix:semicolon
 multiline_comment|/* page allocations */
+DECL|member|pgalloc_normal
+r_int
+r_int
+id|pgalloc_normal
+suffix:semicolon
+DECL|member|pgalloc_dma
+r_int
+r_int
+id|pgalloc_dma
+suffix:semicolon
 DECL|member|pgfree
 r_int
 r_int
@@ -151,30 +161,82 @@ r_int
 id|pgmajfault
 suffix:semicolon
 multiline_comment|/* faults (major only) */
-DECL|member|pgscan
+DECL|member|pgrefill_high
 r_int
 r_int
-id|pgscan
-suffix:semicolon
-multiline_comment|/* pages scanned by page reclaim */
-DECL|member|pgrefill
-r_int
-r_int
-id|pgrefill
+id|pgrefill_high
 suffix:semicolon
 multiline_comment|/* inspected in refill_inactive_zone */
-DECL|member|pgsteal
+DECL|member|pgrefill_normal
 r_int
 r_int
-id|pgsteal
+id|pgrefill_normal
 suffix:semicolon
-multiline_comment|/* total pages reclaimed */
+DECL|member|pgrefill_dma
+r_int
+r_int
+id|pgrefill_dma
+suffix:semicolon
+DECL|member|pgsteal_high
+r_int
+r_int
+id|pgsteal_high
+suffix:semicolon
+multiline_comment|/* total highmem pages reclaimed */
+DECL|member|pgsteal_normal
+r_int
+r_int
+id|pgsteal_normal
+suffix:semicolon
+DECL|member|pgsteal_dma
+r_int
+r_int
+id|pgsteal_dma
+suffix:semicolon
+DECL|member|pgscan_kswapd_high
+r_int
+r_int
+id|pgscan_kswapd_high
+suffix:semicolon
+multiline_comment|/* total highmem pages scanned */
+DECL|member|pgscan_kswapd_normal
+r_int
+r_int
+id|pgscan_kswapd_normal
+suffix:semicolon
+DECL|member|pgscan_kswapd_dma
+r_int
+r_int
+id|pgscan_kswapd_dma
+suffix:semicolon
+DECL|member|pgscan_direct_high
+r_int
+r_int
+id|pgscan_direct_high
+suffix:semicolon
+multiline_comment|/* total highmem pages scanned */
+DECL|member|pgscan_direct_normal
+r_int
+r_int
+id|pgscan_direct_normal
+suffix:semicolon
+DECL|member|pgscan_direct_dma
+r_int
+r_int
+id|pgscan_direct_dma
+suffix:semicolon
 DECL|member|pginodesteal
 r_int
 r_int
 id|pginodesteal
 suffix:semicolon
 multiline_comment|/* pages reclaimed via inode freeing */
+DECL|member|slabs_scanned
+r_int
+r_int
+id|slabs_scanned
+suffix:semicolon
+multiline_comment|/* slab objects scanned */
 DECL|member|kswapd_steal
 r_int
 r_int
@@ -250,6 +312,8 @@ DECL|macro|add_page_state
 mdefine_line|#define add_page_state(member,delta) mod_page_state(member, (delta))
 DECL|macro|sub_page_state
 mdefine_line|#define sub_page_state(member,delta) mod_page_state(member, 0UL - (delta))
+DECL|macro|mod_page_state_zone
+mdefine_line|#define mod_page_state_zone(zone, member, delta)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long flags;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;local_irq_save(flags);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (is_highmem(zone))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__get_cpu_var(page_states).member##_high += (delta);&bslash;&n;&t;&t;else if (is_normal(zone))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__get_cpu_var(page_states).member##_normal += (delta);&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__get_cpu_var(page_states).member##_dma += (delta);&bslash;&n;&t;&t;local_irq_restore(flags);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 multiline_comment|/*&n; * Manipulation of page state flags&n; */
 DECL|macro|PageLocked
 mdefine_line|#define PageLocked(page)&t;&t;&bslash;&n;&t;&t;test_bit(PG_locked, &amp;(page)-&gt;flags)

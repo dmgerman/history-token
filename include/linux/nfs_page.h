@@ -180,10 +180,6 @@ r_struct
 id|list_head
 op_star
 comma
-r_struct
-id|file
-op_star
-comma
 r_int
 r_int
 comma

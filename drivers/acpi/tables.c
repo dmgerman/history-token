@@ -132,6 +132,12 @@ id|ACPI_HPET
 op_assign
 l_string|&quot;HPET&quot;
 comma
+(braket
+id|ACPI_MCFG
+)braket
+op_assign
+l_string|&quot;MCFG&quot;
+comma
 )brace
 suffix:semicolon
 DECL|variable|mps_inti_flags_polarity
@@ -1482,6 +1488,16 @@ id|id
 )paren
 r_continue
 suffix:semicolon
+id|count
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+op_eq
+l_int|1
+)paren
 id|handler
 c_func
 (paren
@@ -1500,8 +1516,21 @@ dot
 id|size
 )paren
 suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PREFIX
+l_string|&quot;%d duplicate %s table ignored.&bslash;n&quot;
+comma
 id|count
-op_increment
+comma
+id|acpi_table_signatures
+(braket
+id|id
+)braket
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -2243,6 +2272,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * acpi_table_init()&n; *&n; * find RSDP, find and checksum SDT/XSDT.&n; * checksum all tables, print SDT/XSDT&n; * &n; * result: sdt_entry[] is initialized&n; */
 r_int
 id|__init
 DECL|function|acpi_table_init

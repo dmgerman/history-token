@@ -1697,11 +1697,6 @@ id|comx_channel
 op_star
 id|ch
 op_assign
-(paren
-r_struct
-id|comx_channel
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_return
@@ -2650,11 +2645,6 @@ id|comx_channel
 op_star
 id|ch
 op_assign
-(paren
-r_struct
-id|comx_channel
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -3088,11 +3078,6 @@ id|comx_channel
 op_star
 id|ch
 op_assign
-(paren
-r_struct
-id|comx_channel
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_char

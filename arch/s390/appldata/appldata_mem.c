@@ -13,7 +13,7 @@ DECL|macro|MY_PRINT_NAME
 mdefine_line|#define MY_PRINT_NAME &quot;appldata_mem&quot;&t;&t;/* for debug messages, etc. */
 DECL|macro|P2K
 mdefine_line|#define P2K(x) ((x) &lt;&lt; (PAGE_SHIFT - 10))&t;/* Converts #Pages to KB */
-multiline_comment|/*&n; * Memory data&n; */
+multiline_comment|/*&n; * Memory data&n; *&n; * This is accessed as binary data by z/VM. If changes to it can&squot;t be avoided,&n; * the structure version (product ID, see appldata_base.c) needs to be changed&n; * as well and all documentation and z/VM applications using it must be&n; * updated.&n; *&n; * The record layout is documented in the Linux for zSeries Device Drivers&n; * book:&n; * http://oss.software.ibm.com/developerworks/opensource/linux390/index.shtml&n; */
 DECL|struct|appldata_mem_data
 r_struct
 id|appldata_mem_data
@@ -351,7 +351,11 @@ id|ps.pswpout
 suffix:semicolon
 id|mem_data-&gt;pgalloc
 op_assign
-id|ps.pgalloc
+id|ps.pgalloc_high
+op_plus
+id|ps.pgalloc_normal
+op_plus
+id|ps.pgalloc_dma
 suffix:semicolon
 id|mem_data-&gt;pgfault
 op_assign
@@ -360,16 +364,6 @@ suffix:semicolon
 id|mem_data-&gt;pgmajfault
 op_assign
 id|ps.pgmajfault
-suffix:semicolon
-id|P_DEBUG
-c_func
-(paren
-l_string|&quot;pgalloc = %lu, pgfree = %lu&bslash;n&quot;
-comma
-id|ps.pgalloc
-comma
-id|ps.pgfree
-)paren
 suffix:semicolon
 id|si_meminfo
 c_func

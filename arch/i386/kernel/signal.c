@@ -2650,6 +2650,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Note that &squot;init&squot; is a special process: it doesn&squot;t get signals it doesn&squot;t&n; * want to handle. Thus you cannot kill init even with a SIGKILL even by&n; * mistake.&n; */
 DECL|function|do_signal
 r_int
+id|fastcall
 id|do_signal
 c_func
 (paren

@@ -1557,13 +1557,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
-l_int|0
+id|PCI_DMA_ERROR_CODE
 suffix:semicolon
 )brace
 multiline_comment|/* Unmap a single streaming mode DMA translation. */
@@ -2615,13 +2610,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
-l_int|0
+id|PCI_DMA_ERROR_CODE
 suffix:semicolon
 )brace
 multiline_comment|/* Unmap a set of streaming mode DMA translations. */
@@ -3023,9 +3013,9 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/* Make physical memory consistent for a single&n; * streaming mode DMA translation after a transfer.&n; */
-DECL|function|pci_dma_sync_single
+DECL|function|pci_dma_sync_single_for_cpu
 r_void
-id|pci_dma_sync_single
+id|pci_dma_sync_single_for_cpu
 c_func
 (paren
 r_struct
@@ -3311,9 +3301,9 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/* Make physical memory consistent for a set of streaming&n; * mode DMA translations after a transfer.&n; */
-DECL|function|pci_dma_sync_sg
+DECL|function|pci_dma_sync_sg_for_cpu
 r_void
-id|pci_dma_sync_sg
+id|pci_dma_sync_sg_for_cpu
 c_func
 (paren
 r_struct

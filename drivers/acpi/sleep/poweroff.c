@@ -2,6 +2,7 @@ multiline_comment|/*&n; * poweroff.c - ACPI handler for powering off the system.
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 r_static
 r_void
 DECL|function|acpi_power_off
@@ -16,6 +17,19 @@ c_func
 l_string|&quot;%s called&bslash;n&quot;
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+multiline_comment|/* Some SMP machines only can poweroff in boot CPU */
+id|set_cpus_allowed
+c_func
+(paren
+id|current
+comma
+id|cpumask_of_cpu
+c_func
+(paren
+l_int|0
+)paren
 )paren
 suffix:semicolon
 id|acpi_enter_sleep_state_prep

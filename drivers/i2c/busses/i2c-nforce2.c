@@ -2,10 +2,6 @@ multiline_comment|/*&n;    SMBus driver for nVidia nForce2 MCP&n;&n;&t;Ported to
 multiline_comment|/*&n;    SUPPORTED DEVICES&t;PCI ID&n;    nForce2 MCP&t;&t;0064&n;&n;    This driver supports the 2 SMBuses that are included in the MCP2 of the&n;    nForce2 chipset.&n;*/
 multiline_comment|/* Note: we assume there can only be one nForce2, with two SMBus interfaces */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -139,6 +139,11 @@ r_int
 id|period_bytes
 suffix:semicolon
 multiline_comment|/* requested period size */
+DECL|member|period_frames
+r_int
+id|period_frames
+suffix:semicolon
+multiline_comment|/* period frames for poll */
 DECL|member|period_ptr
 r_int
 id|period_ptr

@@ -82,22 +82,6 @@ id|init_task
 )paren
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * This is to make the init_thread+stack be the right size for &gt;8k pagesize.&n; * The definition of thread_union in sched.h makes it 16k wide.&n; */
-macro_line|#if PAGE_SHIFT != 13
-DECL|variable|init_task_stack
-r_char
-id|init_task_stack
-(braket
-id|THREAD_SIZE
-op_minus
-id|INIT_THREAD_SIZE
-)braket
-op_assign
-(brace
-l_int|0
-)brace
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Initial task structure.&n; *&n; * All other task structs will be allocated on slabs in fork.c&n; */
 DECL|variable|init_task
 id|EXPORT_SYMBOL

@@ -1345,7 +1345,7 @@ id|conf-&gt;hash_spacing
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* calculate the max read-ahead size.&n;&t; * For read-ahead of large files to be effective, we need to&n;&t; * readahead at least a whole stripe. i.e. number of devices&n;&t; * multiplied by chunk size.&n;&t; * If an individual device has an ra_pages greater than the&n;&t; * chunk size, then we will not drive that device as hard as it&n;&t; * wants.  We consider this a configuration error: a larger&n;&t; * chunksize should be used in that case.&n;&t; */
+multiline_comment|/* calculate the max read-ahead size.&n;&t; * For read-ahead of large files to be effective, we need to&n;&t; * readahead at least twice a whole stripe. i.e. number of devices&n;&t; * multiplied by chunk size times 2.&n;&t; * If an individual device has an ra_pages greater than the&n;&t; * chunk size, then we will not drive that device as hard as it&n;&t; * wants.  We consider this a configuration error: a larger&n;&t; * chunksize should be used in that case.&n;&t; */
 (brace
 r_int
 id|stripe
@@ -1361,10 +1361,14 @@ c_cond
 (paren
 id|mddev-&gt;queue-&gt;backing_dev_info.ra_pages
 OL
+l_int|2
+op_star
 id|stripe
 )paren
 id|mddev-&gt;queue-&gt;backing_dev_info.ra_pages
 op_assign
+l_int|2
+op_star
 id|stripe
 suffix:semicolon
 )brace

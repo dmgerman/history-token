@@ -567,7 +567,7 @@ id|mem
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* return a page table pointing to N pages of locked memory&n; *&n; * NOTE: The meye device expects dma_addr_t size to be 32 bits&n; * (the toc must be exactly 1024 entries each of them being 4 bytes&n; * in size, the whole result being 4096 bytes). We&squot;re using here&n; * dma_addr_t for corectness but the compilation of this driver is&n; * disabled for HIGHMEM64G=y, where sizeof(dma_addr_t) != 4 */
+multiline_comment|/*&n; * return a page table pointing to N pages of locked memory&n; *&n; * NOTE: The meye device expects dma_addr_t size to be 32 bits&n; * (the toc must be exactly 1024 entries each of them being 4 bytes&n; * in size, the whole result being 4096 bytes). We&squot;re using here&n; * dma_addr_t for correctness but the compilation of this driver is&n; * disabled for HIGHMEM64G=y, where sizeof(dma_addr_t) != 4&n; */
 DECL|function|ptable_alloc
 r_static
 r_int

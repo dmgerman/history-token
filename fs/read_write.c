@@ -576,6 +576,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|sys_lseek
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|sys_lseek
+)paren
+suffix:semicolon
 macro_line|#if !defined(__alpha__)
 DECL|function|sys_llseek
 id|asmlinkage
@@ -1346,6 +1353,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|sys_read
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|sys_read
+)paren
+suffix:semicolon
 DECL|function|sys_write
 id|asmlinkage
 id|ssize_t

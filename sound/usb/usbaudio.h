@@ -193,6 +193,12 @@ DECL|member|next_midi_device
 r_int
 id|next_midi_device
 suffix:semicolon
+DECL|member|ignore_ctl_error
+r_int
+r_int
+id|ignore_ctl_error
+suffix:semicolon
+multiline_comment|/* for mixer */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Information about devices with broken descriptors&n; */
@@ -400,7 +406,7 @@ macro_line|#ifndef get_iface_desc
 DECL|macro|get_iface
 mdefine_line|#define get_iface(cfg, num)&t;((cfg)-&gt;interface[(num)])
 DECL|macro|get_iface_desc
-mdefine_line|#define get_iface_desc(iface)&t;(&amp;iface-&gt;desc)
+mdefine_line|#define get_iface_desc(iface)&t;(&amp;(iface)-&gt;desc)
 DECL|macro|get_endpoint
 mdefine_line|#define get_endpoint(alt,ep)&t;(&amp;(alt)-&gt;endpoint[ep].desc)
 DECL|macro|get_ep_desc

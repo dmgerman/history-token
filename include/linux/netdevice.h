@@ -5,10 +5,10 @@ mdefine_line|#define _LINUX_NETDEVICE_H
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/if_packet.h&gt;
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
@@ -1293,6 +1293,27 @@ id|dst_entry
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETPOLL_RX
+DECL|member|netpoll_rx
+r_int
+id|netpoll_rx
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+DECL|member|poll_controller
+r_void
+(paren
+op_star
+id|poll_controller
+)paren
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* bridge stuff */
 DECL|member|br_port
 r_struct
@@ -1839,6 +1860,16 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETPOLL_TRAP
+r_extern
+r_int
+id|netpoll_trap
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|gifconf_func_t
 r_typedef
 r_int
@@ -2094,6 +2125,18 @@ op_star
 id|dev
 )paren
 (brace
+macro_line|#ifdef CONFIG_NETPOLL_TRAP
+r_if
+c_cond
+(paren
+id|netpoll_trap
+c_func
+(paren
+)paren
+)paren
+r_return
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2126,6 +2169,18 @@ op_star
 id|dev
 )paren
 (brace
+macro_line|#ifdef CONFIG_NETPOLL_TRAP
+r_if
+c_cond
+(paren
+id|netpoll_trap
+c_func
+(paren
+)paren
+)paren
+r_return
+suffix:semicolon
+macro_line|#endif
 id|set_bit
 c_func
 (paren
@@ -2841,6 +2896,64 @@ DECL|macro|netif_msg_hw
 mdefine_line|#define netif_msg_hw(p)&t;&t;((p)-&gt;msg_enable &amp; NETIF_MSG_HW)
 DECL|macro|netif_msg_wol
 mdefine_line|#define netif_msg_wol(p)&t;((p)-&gt;msg_enable &amp; NETIF_MSG_WOL)
+DECL|function|netif_msg_init
+r_static
+r_inline
+id|u32
+id|netif_msg_init
+c_func
+(paren
+r_int
+id|debug_value
+comma
+r_int
+id|default_msg_enable_bits
+)paren
+(brace
+multiline_comment|/* use default */
+r_if
+c_cond
+(paren
+id|debug_value
+OL
+l_int|0
+op_logical_or
+id|debug_value
+op_ge
+(paren
+r_sizeof
+(paren
+id|u32
+)paren
+op_star
+l_int|8
+)paren
+)paren
+r_return
+id|default_msg_enable_bits
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|debug_value
+op_eq
+l_int|0
+)paren
+multiline_comment|/* no output */
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* set low N bits */
+r_return
+(paren
+l_int|1
+op_lshift
+id|debug_value
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* Schedule rx intr now? */
 DECL|function|netif_rx_schedule_prep
 r_static

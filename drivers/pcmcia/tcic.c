@@ -1,5 +1,6 @@
 multiline_comment|/*======================================================================&n;&n;    Device driver for Databook TCIC-2 PCMCIA controller&n;&n;    tcic.c 1.111 2000/02/15 04:13:12&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in which&n;    case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
@@ -20,13 +21,21 @@ macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/ss.h&gt;
 macro_line|#include &quot;tcic.h&quot;
-macro_line|#ifdef PCMCIA_DEBUG
+macro_line|#ifdef DEBUG
 DECL|variable|pc_debug
 r_static
 r_int
 id|pc_debug
-op_assign
-id|PCMCIA_DEBUG
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|pc_debug
+comma
+r_int
+comma
+l_int|0644
+)paren
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -45,11 +54,11 @@ id|version
 op_assign
 l_string|&quot;tcic.c 1.111 2000/02/15 04:13:12 (David Hinds)&quot;
 suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
+DECL|macro|debug
+mdefine_line|#define debug(lvl, fmt, arg...) do {&t;&t;&t;&t;&bslash;&n;&t;if (pc_debug &gt; (lvl))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(KERN_DEBUG &quot;tcic: &quot; fmt , ## arg);&t;&bslash;&n;} while (0)
 macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...)
+DECL|macro|debug
+mdefine_line|#define debug(lvl, fmt, arg...) do { } while (0)
 macro_line|#endif
 id|MODULE_AUTHOR
 c_func
@@ -305,7 +314,7 @@ multiline_comment|/*============================================================
 multiline_comment|/* Trick when selecting interrupts: the TCIC sktirq pin is supposed&n;   to map to irq 11, but is coded as 0 or 1 in the irq registers. */
 DECL|macro|TCIC_IRQ
 mdefine_line|#define TCIC_IRQ(x) ((x) ? (((x) == 11) ? 1 : (x)) : 15)
-macro_line|#ifdef PCMCIA_DEBUG_X
+macro_line|#ifdef DEBUG_X
 DECL|function|tcic_getb
 r_static
 id|u_char
@@ -479,7 +488,7 @@ id|u_int
 id|data
 )paren
 (brace
-macro_line|#ifdef PCMCIA_DEBUG_X
+macro_line|#ifdef DEBUG_X
 id|printk
 c_func
 (paren
@@ -2681,12 +2690,12 @@ id|active
 op_assign
 l_int|1
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|2
 comma
-l_string|&quot;tcic: tcic_interrupt()&bslash;n&quot;
+l_string|&quot;tcic_interrupt()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -2960,12 +2969,12 @@ id|active
 op_assign
 l_int|0
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|2
 comma
-l_string|&quot;tcic: interrupt done&bslash;n&quot;
+l_string|&quot;interrupt done&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2983,12 +2992,12 @@ id|u_long
 id|data
 )paren
 (brace
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|2
 comma
-l_string|&quot;tcic: tcic_timer()&bslash;n&quot;
+l_string|&quot;tcic_timer()&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tcic_timer_pending
@@ -3203,12 +3212,12 @@ id|value
 op_or_assign
 id|SS_POWERON
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;tcic: GetStatus(%d) = %#2.2x&bslash;n&quot;
+l_string|&quot;GetStatus(%d) = %#2.2x&bslash;n&quot;
 comma
 id|psock
 comma
@@ -3553,12 +3562,12 @@ suffix:colon
 id|SS_READY
 suffix:semicolon
 )brace
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;tcic: GetSocket(%d) = flags %#3.3x, Vcc %d, Vpp %d, &quot;
+l_string|&quot;GetSocket(%d) = flags %#3.3x, Vcc %d, Vpp %d, &quot;
 l_string|&quot;io_irq %d, csc_mask %#2.2x&bslash;n&quot;
 comma
 id|psock
@@ -3620,12 +3629,12 @@ id|scf1
 comma
 id|scf2
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;tcic: SetSocket(%d, flags %#3.3x, Vcc %d, Vpp %d, &quot;
+l_string|&quot;SetSocket(%d, flags %#3.3x, Vcc %d, Vpp %d, &quot;
 l_string|&quot;io_irq %d, csc_mask %#2.2x)&bslash;n&quot;
 comma
 id|psock
@@ -4098,12 +4107,12 @@ id|len
 comma
 id|ioctl
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;tcic: SetIOMap(%d, %d, %#2.2x, %d ns, &quot;
+l_string|&quot;SetIOMap(%d, %d, %#2.2x, %d ns, &quot;
 l_string|&quot;%#4.4x-%#4.4x)&bslash;n&quot;
 comma
 id|psock
@@ -4380,12 +4389,12 @@ id|len
 comma
 id|mmap
 suffix:semicolon
-id|DEBUG
+id|debug
 c_func
 (paren
 l_int|1
 comma
-l_string|&quot;tcic: SetMemMap(%d, %d, %#2.2x, %d ns, &quot;
+l_string|&quot;SetMemMap(%d, %d, %#2.2x, %d ns, &quot;
 l_string|&quot;%#5.5lx-%#5.5lx, %#5.5x)&bslash;n&quot;
 comma
 id|psock

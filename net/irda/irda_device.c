@@ -366,6 +366,13 @@ id|self
 suffix:semicolon
 )brace
 )brace
+DECL|variable|irda_device_set_media_busy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_device_set_media_busy
+)paren
+suffix:semicolon
 DECL|function|irda_device_set_dtr_rts
 r_int
 id|irda_device_set_dtr_rts
@@ -648,6 +655,13 @@ op_assign
 id|state
 suffix:semicolon
 )brace
+DECL|variable|irda_task_next_state
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_task_next_state
+)paren
+suffix:semicolon
 DECL|function|__irda_task_delete
 r_static
 r_void
@@ -1010,9 +1024,6 @@ id|irda_task
 op_star
 id|task
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -1102,27 +1113,26 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* No time to waste, so lets get going! */
-id|ret
-op_assign
+r_return
 id|irda_task_kick
 c_func
 (paren
 id|task
 )paren
-suffix:semicolon
-r_if
+ques
 c_cond
-(paren
-id|ret
-)paren
-r_return
 l_int|NULL
-suffix:semicolon
-r_else
-r_return
+suffix:colon
 id|task
 suffix:semicolon
 )brace
+DECL|variable|irda_task_execute
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_task_execute
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irda_task_timer_expired (data)&n; *&n; *    Task time has expired. We now try to execute task (again), and restart&n; *    the timer if the task has not finished yet&n; */
 DECL|function|irda_task_timer_expired
 r_static
@@ -1238,6 +1248,13 @@ id|irda_device_setup
 )paren
 suffix:semicolon
 )brace
+DECL|variable|alloc_irdadev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|alloc_irdadev
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irda_device_init_dongle (self, type, qos)&n; *&n; *    Initialize attached dongle.&n; *&n; * Important : request_module require us to call this function with&n; * a process context and irq enabled. - Jean II&n; */
 DECL|function|irda_device_dongle_init
 id|dongle_t
@@ -1424,6 +1441,13 @@ r_return
 id|dongle
 suffix:semicolon
 )brace
+DECL|variable|irda_device_dongle_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_device_dongle_init
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irda_device_dongle_cleanup (dongle)&n; */
 DECL|function|irda_device_dongle_cleanup
 r_int
@@ -1472,6 +1496,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|irda_device_dongle_cleanup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_device_dongle_cleanup
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irda_device_register_dongle (dongle)&n; */
 DECL|function|irda_device_register_dongle
 r_int
@@ -1554,6 +1585,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|irda_device_register_dongle
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_device_register_dongle
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irda_device_unregister_dongle (dongle)&n; *&n; *    Unregister dongle, and remove dongle from list of registered dongles&n; *&n; */
 DECL|function|irda_device_unregister_dongle
 r_void
@@ -1612,6 +1650,13 @@ id|dongles-&gt;hb_spinlock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|irda_device_unregister_dongle
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_device_unregister_dongle
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function irda_device_set_mode (self, mode)&n; *&n; *    Set the Infrared device driver into mode where it sends and receives&n; *    data without using IrLAP framing. Check out the particular device&n; *    driver to find out which modes it support.&n; */
 DECL|function|irda_device_set_mode
 r_int

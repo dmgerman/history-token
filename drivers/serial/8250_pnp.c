@@ -1252,6 +1252,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+id|__devinit
 DECL|function|serial_pnp_probe
 id|serial_pnp_probe
 c_func
@@ -1435,6 +1436,7 @@ suffix:semicolon
 DECL|function|serial_pnp_remove
 r_static
 r_void
+id|__devexit
 id|serial_pnp_remove
 c_func
 (paren

@@ -1828,6 +1828,10 @@ id|ice-&gt;num_total_dacs
 op_assign
 l_int|2
 suffix:semicolon
+id|ice-&gt;num_total_adcs
+op_assign
+l_int|2
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1837,6 +1841,10 @@ r_case
 id|ICE1712_SUBDEVICE_EWS88MT_NEW
 suffix:colon
 id|ice-&gt;num_total_dacs
+op_assign
+l_int|8
+suffix:semicolon
+id|ice-&gt;num_total_adcs
 op_assign
 l_int|8
 suffix:semicolon
@@ -1852,6 +1860,10 @@ r_case
 id|ICE1712_SUBDEVICE_DMX6FIRE
 suffix:colon
 id|ice-&gt;num_total_dacs
+op_assign
+l_int|6
+suffix:semicolon
+id|ice-&gt;num_total_adcs
 op_assign
 l_int|6
 suffix:semicolon
