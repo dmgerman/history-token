@@ -1408,6 +1408,11 @@ id|kmem_cache_t
 op_star
 id|cachep
 suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|p
+suffix:semicolon
 r_switch
 c_cond
 (paren
