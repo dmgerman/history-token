@@ -692,8 +692,6 @@ id|vlan_id
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
 id|br_write_lock
 c_func
 (paren
@@ -713,7 +711,6 @@ c_func
 id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Caller unregisters (and if necessary, puts)&n;&t;&t;&t; * VLAN device, but we get rid of the reference to&n;&t;&t;&t; * real_dev here.&n;&t;&t;&t; */
 id|dev_put
 c_func
