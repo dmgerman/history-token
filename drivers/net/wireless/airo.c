@@ -25249,7 +25249,7 @@ suffix:semicolon
 id|Resp
 id|rsp
 suffix:semicolon
-multiline_comment|/* Note : you may have realised that, as this is a SET operation,&n;&t; * this is priviledged and therefore a normal user can&squot;t&n;&t; * perform scanning.&n;&t; * This is not an error, while the device perform scanning,&n;&t; * traffic doesn&squot;t flow, so it&squot;s a perfect DoS...&n;&t; * Jean II */
+multiline_comment|/* Note : you may have realised that, as this is a SET operation,&n;&t; * this is privileged and therefore a normal user can&squot;t&n;&t; * perform scanning.&n;&t; * This is not an error, while the device perform scanning,&n;&t; * traffic doesn&squot;t flow, so it&squot;s a perfect DoS...&n;&t; * Jean II */
 multiline_comment|/* Initiate a scan command */
 id|memset
 c_func

@@ -1785,7 +1785,7 @@ id|current
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* There is an ifdef in the PALcode in MILO that enables a &n;   &quot;kernel debugging entry point&quot; as an unpriviledged call_pal.&n;&n;   We don&squot;t want to have anything to do with it, but unfortunately&n;   several versions of MILO included in distributions have it enabled,&n;   and if we don&squot;t put something on the entry point we&squot;ll oops.  */
+multiline_comment|/* There is an ifdef in the PALcode in MILO that enables a &n;   &quot;kernel debugging entry point&quot; as an unprivileged call_pal.&n;&n;   We don&squot;t want to have anything to do with it, but unfortunately&n;   several versions of MILO included in distributions have it enabled,&n;   and if we don&squot;t put something on the entry point we&squot;ll oops.  */
 id|asmlinkage
 r_void
 DECL|function|do_entDbg
