@@ -90,8 +90,14 @@ DECL|macro|_PAGE_NFO
 mdefine_line|#define _PAGE_NFO&t;_AC(0x1000000000000000,UL) /* No Fault Only           */
 DECL|macro|_PAGE_IE
 mdefine_line|#define _PAGE_IE&t;_AC(0x0800000000000000,UL) /* Invert Endianness       */
+DECL|macro|_PAGE_SOFT2
+mdefine_line|#define _PAGE_SOFT2&t;_AC(0x07FC000000000000,UL) /* Software bits, set 2    */
+DECL|macro|_PAGE_RES1
+mdefine_line|#define _PAGE_RES1&t;_AC(0x0003000000000000,UL) /* Reserved                */
 DECL|macro|_PAGE_SN
 mdefine_line|#define _PAGE_SN&t;_AC(0x0000800000000000,UL) /* (Cheetah) Snoop         */
+DECL|macro|_PAGE_RES2
+mdefine_line|#define _PAGE_RES2&t;_AC(0x0000780000000000,UL) /* Reserved                */
 DECL|macro|_PAGE_PADDR_SF
 mdefine_line|#define _PAGE_PADDR_SF&t;_AC(0x000001FFFFFFE000,UL) /* (Spitfire) paddr [40:13]*/
 DECL|macro|_PAGE_PADDR
