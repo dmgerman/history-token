@@ -713,7 +713,7 @@ id|usb_dev
 suffix:semicolon
 multiline_comment|/* used these for multi-interface device registration */
 r_extern
-r_void
+r_int
 id|usb_driver_claim_interface
 c_func
 (paren
