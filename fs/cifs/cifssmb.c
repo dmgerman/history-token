@@ -4525,6 +4525,18 @@ id|rc
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CIFS_STATS
+r_else
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_renames
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4986,6 +4998,18 @@ id|rc
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CIFS_STATS
+r_else
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|pTcon-&gt;num_t2renames
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren

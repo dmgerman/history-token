@@ -494,7 +494,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;State: %d com: %d pid: %d tsk: %p&bslash;n&quot;
+l_string|&quot;State: %d com: %d pid: %d tsk: %p mid %d&bslash;n&quot;
 comma
 id|mid_entry-&gt;midState
 comma
@@ -503,6 +503,8 @@ comma
 id|mid_entry-&gt;pid
 comma
 id|mid_entry-&gt;tsk
+comma
+id|mid_entry-&gt;mid
 )paren
 suffix:semicolon
 id|buf
@@ -1198,6 +1200,38 @@ c_func
 (paren
 op_amp
 id|tcon-&gt;num_rmdirs
+)paren
+)paren
+suffix:semicolon
+id|buf
+op_add_assign
+id|item_length
+suffix:semicolon
+id|length
+op_add_assign
+id|item_length
+suffix:semicolon
+id|item_length
+op_assign
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;&bslash;nRenames: %d T2 Renames %d&quot;
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_renames
+)paren
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_t2renames
 )paren
 )paren
 suffix:semicolon
