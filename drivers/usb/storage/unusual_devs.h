@@ -920,6 +920,31 @@ comma
 id|US_FL_SINGLE_LUN
 )paren
 comma
+multiline_comment|/* Submitted by Michal Mlotek &lt;mlotek@foobar.pl&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x054c
+comma
+l_int|0x0058
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;Sony&quot;
+comma
+l_string|&quot;PEG N760c Memorystick&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -2330,6 +2355,31 @@ comma
 l_string|&quot;Jenoptik&quot;
 comma
 l_string|&quot;JD 5200 z3&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* Reported by Lubomir Blaha &lt;tritol@trilogic.cz&gt;&n; * I _REALLY_ don&squot;t know what 3rd, 4th number and all defines mean, but this&n; * works for me. Can anybody correct these values? (I able to test corrected&n; * version.)&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0dd8
+comma
+l_int|0x1060
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Netac&quot;
+comma
+l_string|&quot;USB-CF-Card&quot;
 comma
 id|US_SC_DEVICE
 comma
