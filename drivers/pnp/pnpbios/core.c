@@ -782,7 +782,7 @@ comma
 (paren
 r_char
 )paren
-id|PNPMODE_STATIC
+id|PNPMODE_DYNAMIC
 comma
 id|node
 )paren
