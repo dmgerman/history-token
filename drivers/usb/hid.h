@@ -1,8 +1,14 @@
 macro_line|#ifndef __HID_H
 DECL|macro|__HID_H
 mdefine_line|#define __HID_H
-multiline_comment|/*&n; * $Id: hid.h,v 1.10 2001/05/10 15:56:07 vojtech Exp $&n; *&n; *  Copyright (c) 1999 Andreas Gal&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * $Id: hid.h,v 1.24 2001/12/27 10:37:41 vojtech Exp $&n; *&n; *  Copyright (c) 1999 Andreas Gal&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
+multiline_comment|/*&n; * USB HID (Human Interface Device) interface class code&n; */
+DECL|macro|USB_INTERFACE_CLASS_HID
+mdefine_line|#define USB_INTERFACE_CLASS_HID&t;&t;3
 multiline_comment|/*&n; * HID class requests&n; */
 DECL|macro|HID_REQ_GET_REPORT
 mdefine_line|#define HID_REQ_GET_REPORT&t;&t;0x01
@@ -23,347 +29,6 @@ DECL|macro|HID_DT_REPORT
 mdefine_line|#define HID_DT_REPORT&t;&t;&t;(USB_TYPE_CLASS | 0x02)
 DECL|macro|HID_DT_PHYSICAL
 mdefine_line|#define HID_DT_PHYSICAL&t;&t;&t;(USB_TYPE_CLASS | 0x03)
-multiline_comment|/*&n; * Utilities for class control messaging&n; */
-r_static
-r_inline
-r_int
-DECL|function|hid_set_idle
-id|hid_set_idle
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-id|ifnum
-comma
-r_int
-id|duration
-comma
-r_int
-id|report_id
-)paren
-(brace
-r_return
-id|usb_control_msg
-c_func
-(paren
-id|dev
-comma
-id|usb_sndctrlpipe
-c_func
-(paren
-id|dev
-comma
-l_int|0
-)paren
-comma
-id|HID_REQ_SET_IDLE
-comma
-id|USB_TYPE_CLASS
-op_or
-id|USB_RECIP_INTERFACE
-comma
-(paren
-id|duration
-op_lshift
-l_int|8
-)paren
-op_or
-id|report_id
-comma
-id|ifnum
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-id|HZ
-op_star
-id|USB_CTRL_SET_TIMEOUT
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_int
-DECL|function|hid_get_protocol
-id|hid_get_protocol
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-id|ifnum
-)paren
-(brace
-r_int
-r_char
-id|type
-suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|ret
-op_assign
-id|usb_control_msg
-c_func
-(paren
-id|dev
-comma
-id|usb_rcvctrlpipe
-c_func
-(paren
-id|dev
-comma
-l_int|0
-)paren
-comma
-id|HID_REQ_GET_PROTOCOL
-comma
-id|USB_DIR_IN
-op_or
-id|USB_TYPE_CLASS
-op_or
-id|USB_RECIP_INTERFACE
-comma
-l_int|0
-comma
-id|ifnum
-comma
-op_amp
-id|type
-comma
-l_int|1
-comma
-id|HZ
-op_star
-id|USB_CTRL_GET_TIMEOUT
-)paren
-)paren
-OL
-l_int|0
-)paren
-r_return
-id|ret
-suffix:semicolon
-r_return
-id|type
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_int
-DECL|function|hid_set_protocol
-id|hid_set_protocol
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-id|ifnum
-comma
-r_int
-id|protocol
-)paren
-(brace
-r_return
-id|usb_control_msg
-c_func
-(paren
-id|dev
-comma
-id|usb_sndctrlpipe
-c_func
-(paren
-id|dev
-comma
-l_int|0
-)paren
-comma
-id|HID_REQ_SET_PROTOCOL
-comma
-id|USB_TYPE_CLASS
-op_or
-id|USB_RECIP_INTERFACE
-comma
-id|protocol
-comma
-id|ifnum
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-id|HZ
-op_star
-id|USB_CTRL_SET_TIMEOUT
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_int
-DECL|function|hid_get_report
-id|hid_get_report
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-id|ifnum
-comma
-r_int
-r_char
-id|type
-comma
-r_int
-r_char
-id|id
-comma
-r_void
-op_star
-id|buf
-comma
-r_int
-id|size
-)paren
-(brace
-r_return
-id|usb_control_msg
-c_func
-(paren
-id|dev
-comma
-id|usb_rcvctrlpipe
-c_func
-(paren
-id|dev
-comma
-l_int|0
-)paren
-comma
-id|HID_REQ_GET_REPORT
-comma
-id|USB_DIR_IN
-op_or
-id|USB_TYPE_CLASS
-op_or
-id|USB_RECIP_INTERFACE
-comma
-(paren
-id|type
-op_lshift
-l_int|8
-)paren
-op_plus
-id|id
-comma
-id|ifnum
-comma
-id|buf
-comma
-id|size
-comma
-id|HZ
-op_star
-id|USB_CTRL_GET_TIMEOUT
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_int
-DECL|function|hid_set_report
-id|hid_set_report
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-id|ifnum
-comma
-r_int
-r_char
-id|type
-comma
-r_int
-r_char
-id|id
-comma
-r_void
-op_star
-id|buf
-comma
-r_int
-id|size
-)paren
-(brace
-r_return
-id|usb_control_msg
-c_func
-(paren
-id|dev
-comma
-id|usb_sndctrlpipe
-c_func
-(paren
-id|dev
-comma
-l_int|0
-)paren
-comma
-id|HID_REQ_SET_REPORT
-comma
-id|USB_TYPE_CLASS
-op_or
-id|USB_RECIP_INTERFACE
-comma
-(paren
-id|type
-op_lshift
-l_int|8
-)paren
-op_plus
-id|id
-comma
-id|ifnum
-comma
-id|buf
-comma
-id|size
-comma
-id|HZ
-)paren
-suffix:semicolon
-singleline_comment|// FIXME USB_CTRL_SET_TIMEOUT
-)brace
-multiline_comment|/*&n; * &quot;Boot Protocol&quot; keyboard/mouse drivers use don&squot;t use all of HID;&n; * they&squot;re a lot smaller but can&squot;t support all the device features.&n; */
-macro_line|#ifndef&t;_HID_BOOT_PROTOCOL
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/list.h&gt;
-multiline_comment|/*&n; * USB HID (Human Interface Device) interface class code&n; */
-DECL|macro|USB_INTERFACE_CLASS_HID
-mdefine_line|#define USB_INTERFACE_CLASS_HID&t;&t;3
 multiline_comment|/*&n; * We parse each description item into this structure. Short items data&n; * values are expanded to 32-bit signed int, long items contain a pointer&n; * into the data area.&n; */
 DECL|struct|hid_item
 r_struct
@@ -533,12 +198,16 @@ DECL|macro|HID_UP_LED
 mdefine_line|#define HID_UP_LED &t;&t;0x00080000
 DECL|macro|HID_UP_BUTTON
 mdefine_line|#define HID_UP_BUTTON &t;&t;0x00090000
+DECL|macro|HID_UP_ORDINAL
+mdefine_line|#define HID_UP_ORDINAL &t;&t;0x000a0000
 DECL|macro|HID_UP_CONSUMER
 mdefine_line|#define HID_UP_CONSUMER&t;&t;0x000c0000
 DECL|macro|HID_UP_DIGITIZER
 mdefine_line|#define HID_UP_DIGITIZER &t;0x000d0000
 DECL|macro|HID_UP_PID
 mdefine_line|#define HID_UP_PID &t;&t;0x000f0000
+DECL|macro|HID_UP_HPVENDOR
+mdefine_line|#define HID_UP_HPVENDOR         0xff7f0000
 DECL|macro|HID_USAGE
 mdefine_line|#define HID_USAGE&t;&t;0x0000ffff
 DECL|macro|HID_GD_POINTER
@@ -589,7 +258,7 @@ id|__s32
 id|physical_maximum
 suffix:semicolon
 DECL|member|unit_exponent
-r_int
+id|__s32
 id|unit_exponent
 suffix:semicolon
 DECL|member|unit
@@ -772,7 +441,7 @@ id|__s32
 id|physical_maximum
 suffix:semicolon
 DECL|member|unit_exponent
-r_int
+id|__s32
 id|unit_exponent
 suffix:semicolon
 DECL|member|unit
@@ -829,18 +498,6 @@ r_int
 id|size
 suffix:semicolon
 multiline_comment|/* size of the report (bits) */
-DECL|member|idx
-r_int
-id|idx
-suffix:semicolon
-multiline_comment|/* where we&squot;re in data */
-DECL|member|data
-r_int
-r_char
-op_star
-id|data
-suffix:semicolon
-multiline_comment|/* data for multi-packet reports */
 DECL|member|device
 r_struct
 id|hid_device
@@ -879,22 +536,23 @@ mdefine_line|#define HID_REPORT_TYPES 3
 DECL|macro|HID_BUFFER_SIZE
 mdefine_line|#define HID_BUFFER_SIZE&t;&t;32
 DECL|macro|HID_CONTROL_FIFO_SIZE
-mdefine_line|#define HID_CONTROL_FIFO_SIZE&t;8
+mdefine_line|#define HID_CONTROL_FIFO_SIZE&t;64
+DECL|macro|HID_OUTPUT_FIFO_SIZE
+mdefine_line|#define HID_OUTPUT_FIFO_SIZE&t;64
 DECL|struct|hid_control_fifo
 r_struct
 id|hid_control_fifo
 (brace
-DECL|member|dr
-r_struct
-id|usb_ctrlrequest
-id|dr
-suffix:semicolon
-DECL|member|buffer
+DECL|member|dir
+r_int
 r_char
-id|buffer
-(braket
-id|HID_BUFFER_SIZE
-)braket
+id|dir
+suffix:semicolon
+DECL|member|report
+r_struct
+id|hid_report
+op_star
+id|report
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -902,6 +560,10 @@ DECL|macro|HID_CLAIMED_INPUT
 mdefine_line|#define HID_CLAIMED_INPUT&t;1
 DECL|macro|HID_CLAIMED_HIDDEV
 mdefine_line|#define HID_CLAIMED_HIDDEV&t;2
+DECL|macro|HID_CTRL_RUNNING
+mdefine_line|#define HID_CTRL_RUNNING&t;1
+DECL|macro|HID_OUT_RUNNING
+mdefine_line|#define HID_OUT_RUNNING&t;&t;2
 DECL|struct|hid_device
 r_struct
 id|hid_device
@@ -959,35 +621,88 @@ r_int
 id|ifnum
 suffix:semicolon
 multiline_comment|/* USB interface number */
-DECL|member|urb
+DECL|member|iofl
+r_int
+r_int
+id|iofl
+suffix:semicolon
+multiline_comment|/* I/O flags (CTRL_RUNNING, OUT_RUNNING) */
+DECL|member|urbin
 r_struct
 id|urb
-id|urb
+op_star
+id|urbin
 suffix:semicolon
-multiline_comment|/* USB URB structure */
-DECL|member|buffer
+multiline_comment|/* Input URB */
+DECL|member|inbuf
 r_char
-id|buffer
+id|inbuf
 (braket
 id|HID_BUFFER_SIZE
 )braket
 suffix:semicolon
-multiline_comment|/* Rx buffer */
+multiline_comment|/* Input buffer */
+DECL|member|urbctrl
+r_struct
+id|urb
+op_star
+id|urbctrl
+suffix:semicolon
+multiline_comment|/* Control URB */
+DECL|member|cr
+r_struct
+id|usb_ctrlrequest
+id|cr
+suffix:semicolon
+multiline_comment|/* Control request struct */
+DECL|member|ctrl
+r_struct
+id|hid_control_fifo
+id|ctrl
+(braket
+id|HID_CONTROL_FIFO_SIZE
+)braket
+suffix:semicolon
+multiline_comment|/* Control fifo */
+DECL|member|ctrlhead
+DECL|member|ctrltail
+r_int
+r_char
+id|ctrlhead
+comma
+id|ctrltail
+suffix:semicolon
+multiline_comment|/* Control fifo head &amp; tail */
+DECL|member|ctrlbuf
+r_char
+id|ctrlbuf
+(braket
+id|HID_BUFFER_SIZE
+)braket
+suffix:semicolon
+multiline_comment|/* Control buffer */
+DECL|member|ctrllock
+id|spinlock_t
+id|ctrllock
+suffix:semicolon
+multiline_comment|/* Control fifo spinlock */
 DECL|member|urbout
 r_struct
 id|urb
+op_star
 id|urbout
 suffix:semicolon
 multiline_comment|/* Output URB */
 DECL|member|out
 r_struct
-id|hid_control_fifo
+id|hid_report
+op_star
 id|out
 (braket
 id|HID_CONTROL_FIFO_SIZE
 )braket
 suffix:semicolon
-multiline_comment|/* Transmit buffer */
+multiline_comment|/* Output pipe fifo */
 DECL|member|outhead
 DECL|member|outtail
 r_int
@@ -996,7 +711,20 @@ id|outhead
 comma
 id|outtail
 suffix:semicolon
-multiline_comment|/* Tx buffer head &amp; tail */
+multiline_comment|/* Output pipe fifo head &amp; tail */
+DECL|member|outbuf
+r_char
+id|outbuf
+(braket
+id|HID_BUFFER_SIZE
+)braket
+suffix:semicolon
+multiline_comment|/* Output buffer */
+DECL|member|outlock
+id|spinlock_t
+id|outlock
+suffix:semicolon
+multiline_comment|/* Output fifo spinlock */
 DECL|member|claimed
 r_int
 id|claimed
@@ -1024,6 +752,11 @@ r_int
 id|minor
 suffix:semicolon
 multiline_comment|/* Hiddev minor number */
+DECL|member|wait
+id|wait_queue_head_t
+id|wait
+suffix:semicolon
+multiline_comment|/* For sleeping */
 DECL|member|open
 r_int
 id|open
@@ -1037,6 +770,22 @@ l_int|128
 )braket
 suffix:semicolon
 multiline_comment|/* Device name */
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|64
+)braket
+suffix:semicolon
+multiline_comment|/* Device physical location */
+DECL|member|uniq
+r_char
+id|uniq
+(braket
+l_int|64
+)braket
+suffix:semicolon
+multiline_comment|/* Device unique identifier (serial #) */
 )brace
 suffix:semicolon
 DECL|macro|HID_GLOBAL_STACK_SIZE
@@ -1193,9 +942,14 @@ DECL|macro|hid_dump_input
 mdefine_line|#define hid_dump_input(a,b)&t;do { } while (0)
 DECL|macro|hid_dump_device
 mdefine_line|#define hid_dump_device(c)&t;do { } while (0)
-macro_line|#endif /* DEBUG */
+DECL|macro|hid_dump_field
+mdefine_line|#define hid_dump_field(a,b)&t;do { } while (0)
+macro_line|#endif
+macro_line|#endif
+multiline_comment|/* Applications from HID Usage Tables 4/8/99 Version 1.1 */
+multiline_comment|/* We ignore a few input applications that are not widely used */
 DECL|macro|IS_INPUT_APPLICATION
-mdefine_line|#define IS_INPUT_APPLICATION(a) (((a &gt;= 0x00010000) &amp;&amp; (a &lt;= 0x00010008)) || (a == 0x00010080) || ( a == 0x000c0001))
+mdefine_line|#define IS_INPUT_APPLICATION(a) (((a &gt;= 0x00010000) &amp;&amp; (a &lt;= 0x00010008)) || ( a == 0x00010080) || ( a == 0x000c0001))
 r_int
 id|hid_open
 c_func
@@ -1248,7 +1002,7 @@ id|__s32
 )paren
 suffix:semicolon
 r_void
-id|hid_write_report
+id|hid_submit_report
 c_func
 (paren
 r_struct
@@ -1258,19 +1012,10 @@ comma
 r_struct
 id|hid_report
 op_star
-)paren
-suffix:semicolon
-r_void
-id|hid_read_report
-c_func
-(paren
-r_struct
-id|hid_device
-op_star
 comma
-r_struct
-id|hid_report
-op_star
+r_int
+r_char
+id|dir
 )paren
 suffix:semicolon
 r_void
@@ -1283,6 +1028,4 @@ op_star
 id|hid
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* !_HID_BOOT_PROTOCOL */
-macro_line|#endif&t;/* !__HID_H */
 eof

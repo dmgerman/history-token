@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * $Id: wacom.c,v 1.22 2001/04/26 11:26:09 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&t;&lt;vojtech@suse.cz&gt;&n; *  Copyright (c) 2000 Andreas Bach Aaen&t;&lt;abach@stofanet.dk&gt;&n; *  Copyright (c) 2000 Clifford Wolf&t;&t;&lt;clifford@clifford.at&gt;&n; *  Copyright (c) 2000 Sam Mosel&t;&t;&lt;sam.mosel@computer.org&gt;&n; *  Copyright (c) 2000 James E. Blair&t;&t;&lt;corvus@gnu.org&gt;&n; *  Copyright (c) 2000 Daniel Egger&t;&t;&lt;egger@suse.de&gt;&n; *  Copyright (c) 2001 Frederic Lepied&t;&t;&lt;flepied@mandrakesoft.com&gt;&n; *&n; *  USB Wacom Graphire and Wacom Intuos tablet support&n; *&n; *  Sponsored by SuSE&n; *&n; *  ChangeLog:&n; *      v0.1 (vp)  - Initial release&n; *      v0.2 (aba) - Support for all buttons / combinations&n; *      v0.3 (vp)  - Support for Intuos added&n; *&t;v0.4 (sm)  - Support for more Intuos models, menustrip&n; *&t;&t;&t;relative mode, proximity.&n; *&t;v0.5 (vp)  - Big cleanup, nifty features removed,&n; * &t;&t;&t;they belong in userspace&n; *&t;v1.8 (vp)  - Submit URB only when operating, moved to CVS,&n; *&t;&t;&t;use input_report_key instead of report_btn and&n; *&t;&t;&t;other cleanups&n; *&t;v1.11 (vp) - Add URB -&gt;dev setting for new kernels&n; *&t;v1.11 (jb) - Add support for the 4D Mouse &amp; Lens&n; *&t;v1.12 (de) - Add support for two more inking pen IDs&n; *&t;v1.14 (vp) - Use new USB device id probing scheme.&n; *&t;&t;     Fix Wacom Graphire mouse wheel&n; *&t;v1.18 (vp) - Fix mouse wheel direction&n; *&t;&t;     Make mouse relative&n; *      v1.20 (fl) - Report tool id for Intuos devices&n; *                 - Multi tools support&n; *                 - Corrected Intuos protocol decoding (airbrush, 4D mouse, lens cursor...)&n; *                 - Add PL models support&n; *&t;&t;   - Fix Wacom Graphire mouse wheel again&n; *&t;v1.21 (vp) - Removed protocol descriptions&n; *&t;&t;   - Added MISC_SERIAL for tool serial numbers&n; *&t;      (gb) - Identify version on module load.&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * $Id: wacom.c,v 1.28 2001/09/25 10:12:07 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&t;&lt;vojtech@ucw.cz&gt;&n; *  Copyright (c) 2000 Andreas Bach Aaen&t;&lt;abach@stofanet.dk&gt;&n; *  Copyright (c) 2000 Clifford Wolf&t;&t;&lt;clifford@clifford.at&gt;&n; *  Copyright (c) 2000 Sam Mosel&t;&t;&lt;sam.mosel@computer.org&gt;&n; *  Copyright (c) 2000 James E. Blair&t;&t;&lt;corvus@gnu.org&gt;&n; *  Copyright (c) 2000 Daniel Egger&t;&t;&lt;egger@suse.de&gt;&n; *  Copyright (c) 2001 Frederic Lepied&t;&t;&lt;flepied@mandrakesoft.com&gt;&n; *&n; *  USB Wacom Graphire and Wacom Intuos tablet support&n; *&n; *  ChangeLog:&n; *      v0.1 (vp)  - Initial release&n; *      v0.2 (aba) - Support for all buttons / combinations&n; *      v0.3 (vp)  - Support for Intuos added&n; *&t;v0.4 (sm)  - Support for more Intuos models, menustrip&n; *&t;&t;&t;relative mode, proximity.&n; *&t;v0.5 (vp)  - Big cleanup, nifty features removed,&n; * &t;&t;&t;they belong in userspace&n; *&t;v1.8 (vp)  - Submit URB only when operating, moved to CVS,&n; *&t;&t;&t;use input_report_key instead of report_btn and&n; *&t;&t;&t;other cleanups&n; *&t;v1.11 (vp) - Add URB -&gt;dev setting for new kernels&n; *&t;v1.11 (jb) - Add support for the 4D Mouse &amp; Lens&n; *&t;v1.12 (de) - Add support for two more inking pen IDs&n; *&t;v1.14 (vp) - Use new USB device id probing scheme.&n; *&t;&t;     Fix Wacom Graphire mouse wheel&n; *&t;v1.18 (vp) - Fix mouse wheel direction&n; *&t;&t;     Make mouse relative&n; *      v1.20 (fl) - Report tool id for Intuos devices&n; *                 - Multi tools support&n; *                 - Corrected Intuos protocol decoding (airbrush, 4D mouse, lens cursor...)&n; *                 - Add PL models support&n; *&t;&t;   - Fix Wacom Graphire mouse wheel again&n; *&t;v1.21 (vp) - Removed protocol descriptions&n; *&t;&t;   - Added MISC_SERIAL for tool serial numbers&n; *&t;      (gb) - Identify version on module load.&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
@@ -10,9 +10,11 @@ multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v1.21&quot;
 DECL|macro|DRIVER_AUTHOR
-mdefine_line|#define DRIVER_AUTHOR &quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
+mdefine_line|#define DRIVER_AUTHOR &quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Wacom Graphire and Wacom Intuos tablet driver&quot;
+DECL|macro|DRIVER_LICENSE
+mdefine_line|#define DRIVER_LICENSE &quot;GPL&quot;
 DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
@@ -27,10 +29,11 @@ c_func
 id|DRIVER_DESC
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_LICENSE
 id|MODULE_LICENSE
 c_func
 (paren
-l_string|&quot;GPL&quot;
+id|DRIVER_LICENSE
 )paren
 suffix:semicolon
 DECL|macro|USB_VENDOR_ID_WACOM
@@ -162,6 +165,13 @@ id|__u32
 id|serial
 (braket
 l_int|2
+)braket
+suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|32
 )braket
 suffix:semicolon
 )brace
@@ -2339,6 +2349,12 @@ id|wacom
 op_star
 id|wacom
 suffix:semicolon
+r_char
+id|path
+(braket
+l_int|64
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2670,9 +2686,33 @@ id|wacom-&gt;dev.close
 op_assign
 id|wacom_close
 suffix:semicolon
+id|usb_make_path
+c_func
+(paren
+id|dev
+comma
+id|path
+comma
+l_int|64
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|wacom-&gt;phys
+comma
+l_string|&quot;%s/input0&quot;
+comma
+id|path
+)paren
+suffix:semicolon
 id|wacom-&gt;dev.name
 op_assign
 id|wacom-&gt;features-&gt;name
+suffix:semicolon
+id|wacom-&gt;dev.phys
+op_assign
+id|wacom-&gt;phys
 suffix:semicolon
 id|wacom-&gt;dev.idbus
 op_assign
@@ -2752,17 +2792,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: %s on usb%d:%d.%d&bslash;n&quot;
-comma
-id|wacom-&gt;dev.number
+l_string|&quot;input: %s on %s&bslash;n&quot;
 comma
 id|wacom-&gt;features-&gt;name
 comma
-id|dev-&gt;bus-&gt;busnum
-comma
-id|dev-&gt;devnum
-comma
-id|ifnum
+id|path
 )paren
 suffix:semicolon
 r_return
