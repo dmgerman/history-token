@@ -394,6 +394,9 @@ id|index
 )braket
 op_assign
 id|mm-&gt;context
+op_amp
+op_complement
+id|CONTEXT_LOW_HPAGES
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -585,6 +588,11 @@ r_int
 id|ordinal
 comma
 id|vsid
+suffix:semicolon
+id|context
+op_and_assign
+op_complement
+id|CONTEXT_LOW_HPAGES
 suffix:semicolon
 id|ordinal
 op_assign
