@@ -251,6 +251,7 @@ id|regs
 )paren
 )paren
 (brace
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
 (paren
@@ -262,6 +263,7 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+macro_line|#endif
 id|die
 c_func
 (paren
@@ -482,6 +484,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
 (paren
@@ -493,6 +496,7 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef PANIC_ON_ERROR
 id|panic
 c_func
@@ -628,6 +632,7 @@ id|regs
 r_return
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
 (paren
@@ -654,6 +659,7 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+macro_line|#endif
 id|console_verbose
 c_func
 (paren
@@ -813,6 +819,7 @@ id|regs
 id|siginfo_t
 id|info
 suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
 (paren
@@ -826,6 +833,7 @@ id|regs
 )paren
 r_return
 suffix:semicolon
+macro_line|#endif
 id|info.si_signo
 op_assign
 id|SIGTRAP
@@ -1113,6 +1121,7 @@ l_int|0x20000
 )paren
 (brace
 multiline_comment|/* trap exception */
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
 (paren
@@ -1126,6 +1135,7 @@ id|regs
 )paren
 r_return
 suffix:semicolon
+macro_line|#endif
 id|info.si_signo
 op_assign
 id|SIGTRAP
@@ -1214,6 +1224,7 @@ op_complement
 id|MSR_SE
 suffix:semicolon
 multiline_comment|/* Turn off &squot;trace&squot; bit */
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
 (paren
@@ -1227,6 +1238,7 @@ id|regs
 )paren
 r_return
 suffix:semicolon
+macro_line|#endif
 id|info.si_signo
 op_assign
 id|SIGTRAP
