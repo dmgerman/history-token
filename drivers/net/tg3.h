@@ -382,7 +382,14 @@ DECL|macro|TG3PCI_RCV_RET_RING_CON_IDX
 mdefine_line|#define TG3PCI_RCV_RET_RING_CON_IDX&t;0x000000a0 /* 64-bit */
 DECL|macro|TG3PCI_SND_PROD_IDX
 mdefine_line|#define TG3PCI_SND_PROD_IDX&t;&t;0x000000a8 /* 64-bit */
-multiline_comment|/* 0xb0 --&gt; 0x100 unused */
+multiline_comment|/* 0xb0 --&gt; 0xb8 unused */
+DECL|macro|TG3PCI_DUAL_MAC_CTRL
+mdefine_line|#define TG3PCI_DUAL_MAC_CTRL&t;&t;0x000000b8
+DECL|macro|DUAL_MAC_CTRL_CH_MASK
+mdefine_line|#define  DUAL_MAC_CTRL_CH_MASK&t;&t; 0x00000003
+DECL|macro|DUAL_MAC_CTRL_ID
+mdefine_line|#define  DUAL_MAC_CTRL_ID&t;&t; 0x00000004
+multiline_comment|/* 0xbc --&gt; 0x100 unused */
 multiline_comment|/* 0x100 --&gt; 0x200 unused */
 multiline_comment|/* Mailbox registers */
 DECL|macro|MAILBOX_INTERRUPT_0
@@ -2516,6 +2523,12 @@ DECL|macro|NVRAM_BUFFERED_PAGE_SIZE
 mdefine_line|#define    NVRAM_BUFFERED_PAGE_SIZE&t;   264
 DECL|macro|NVRAM_BUFFERED_PAGE_POS
 mdefine_line|#define    NVRAM_BUFFERED_PAGE_POS&t;   9
+DECL|macro|NVRAM_ACCESS
+mdefine_line|#define NVRAM_ACCESS&t;&t;&t;0x00007024
+DECL|macro|ACCESS_ENABLE
+mdefine_line|#define  ACCESS_ENABLE&t;&t;&t; 0x00000001
+DECL|macro|ACCESS_WR_ENABLE
+mdefine_line|#define  ACCESS_WR_ENABLE&t;&t; 0x00000002
 multiline_comment|/* 0x7024 --&gt; 0x7400 unused */
 multiline_comment|/* 0x7400 --&gt; 0x8000 unused */
 multiline_comment|/* 32K Window into NIC internal memory */
