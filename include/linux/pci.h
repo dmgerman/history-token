@@ -1303,6 +1303,9 @@ suffix:semicolon
 multiline_comment|/* pci_driver-&gt;driver_data is used */
 )brace
 suffix:semicolon
+r_struct
+id|module
+suffix:semicolon
 DECL|struct|pci_driver
 r_struct
 id|pci_driver
@@ -1316,6 +1319,12 @@ DECL|member|name
 r_char
 op_star
 id|name
+suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
 suffix:semicolon
 DECL|member|id_table
 r_const
