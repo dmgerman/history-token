@@ -2688,6 +2688,23 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|acpi_penalize_isa_irq
+r_void
+id|acpi_penalize_isa_irq
+c_func
+(paren
+r_int
+id|irq
+)paren
+(brace
+id|acpi_irq_penalty
+(braket
+id|irq
+)braket
+op_add_assign
+id|PIRQ_PENALTY_ISA_USED
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Over-ride default table to reserve additional IRQs for use by ISA&n; * e.g. acpi_irq_isa=5&n; * Useful for telling ACPI how not to interfere with your ISA sound card.&n; */
 DECL|function|acpi_irq_isa
 r_static

@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|macro|PIRQ_SIGNATURE
 mdefine_line|#define PIRQ_SIGNATURE&t;((&squot;$&squot; &lt;&lt; 0) + (&squot;P&squot; &lt;&lt; 8) + (&squot;I&squot; &lt;&lt; 16) + (&squot;R&squot; &lt;&lt; 24))
@@ -4485,6 +4486,32 @@ c_func
 id|pcibios_irq_init
 )paren
 suffix:semicolon
+DECL|function|pirq_penalize_isa_irq
+r_static
+r_void
+id|pirq_penalize_isa_irq
+c_func
+(paren
+r_int
+id|irq
+)paren
+(brace
+multiline_comment|/*&n;&t; *  If any ISAPnP device reports an IRQ in its list of possible&n;&t; *  IRQ&squot;s, we try to avoid assigning it to PCI devices.&n;&t; */
+r_if
+c_cond
+(paren
+id|irq
+OL
+l_int|16
+)paren
+id|pirq_penalty
+(braket
+id|irq
+)braket
+op_add_assign
+l_int|100
+suffix:semicolon
+)brace
 DECL|function|pcibios_penalize_isa_irq
 r_void
 id|pcibios_penalize_isa_irq
@@ -4494,13 +4521,26 @@ r_int
 id|irq
 )paren
 (brace
-multiline_comment|/*&n;&t; *  If any ISAPnP device reports an IRQ in its list of possible&n;&t; *  IRQ&squot;s, we try to avoid assigning it to PCI devices.&n;&t; */
-id|pirq_penalty
-(braket
+macro_line|#ifdef CONFIG_ACPI_PCI
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_noirq
+)paren
+id|acpi_penalize_isa_irq
+c_func
+(paren
 id|irq
-)braket
-op_add_assign
-l_int|100
+)paren
+suffix:semicolon
+r_else
+macro_line|#endif
+id|pirq_penalize_isa_irq
+c_func
+(paren
+id|irq
+)paren
 suffix:semicolon
 )brace
 DECL|function|pirq_enable_irq

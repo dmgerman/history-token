@@ -1371,7 +1371,7 @@ c_cond
 (paren
 id|HIGH_BITS_OFFSET
 )paren
-id|serial_req.port
+id|serial_req.port_high
 op_assign
 id|pnp_port_start
 c_func

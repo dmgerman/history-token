@@ -1900,5 +1900,10 @@ id|c
 suffix:semicolon
 DECL|macro|cache_line_size
 mdefine_line|#define cache_line_size() (boot_cpu_data.x86_cache_alignment)
+r_extern
+r_int
+r_int
+id|boot_option_idle_override
+suffix:semicolon
 macro_line|#endif /* __ASM_I386_PROCESSOR_H */
 eof

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/pnpbios.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;pnpbios.h&quot;
 multiline_comment|/* standard resource tags */
 DECL|macro|SMALL_TAG_PNPVERNO
@@ -143,6 +144,12 @@ r_int
 r_int
 )paren
 id|irq
+suffix:semicolon
+id|pcibios_penalize_isa_irq
+c_func
+(paren
+id|irq
+)paren
 suffix:semicolon
 )brace
 )brace

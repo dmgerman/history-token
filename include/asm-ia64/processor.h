@@ -1692,6 +1692,11 @@ suffix:semicolon
 )brace
 DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)&t;prefetchw(x)
+r_extern
+r_int
+r_int
+id|boot_option_idle_override
+suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_PROCESSOR_H */
 eof
