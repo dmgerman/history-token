@@ -643,7 +643,6 @@ id|XFER_PIO_0
 op_assign
 l_int|0x08
 comma
-multiline_comment|/* legacy IDE &squot;stuff&squot; */
 DECL|enumerator|XFER_SW_DMA_2
 id|XFER_SW_DMA_2
 op_assign
