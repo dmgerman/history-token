@@ -7419,6 +7419,7 @@ c_func
 (paren
 id|chip-&gt;dev_u.pdev
 )paren
+comma
 l_int|64
 op_star
 l_int|1024
