@@ -211,12 +211,6 @@ r_void
 op_star
 id|client_data
 suffix:semicolon
-DECL|member|bus
-r_struct
-id|bus_operations
-op_star
-id|bus
-suffix:semicolon
 DECL|typedef|event_callback_args_t
 )brace
 id|event_callback_args_t
