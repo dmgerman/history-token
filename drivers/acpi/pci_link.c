@@ -1863,6 +1863,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * acpi_pci_link_get_irq&n; * success: return IRQ &gt;= 0&n; * failure: return -1&n; */
 r_int
 DECL|function|acpi_pci_link_get_irq
 id|acpi_pci_link_get_irq
@@ -1937,7 +1938,8 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1974,7 +1976,8 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -2000,7 +2003,8 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -2016,7 +2020,8 @@ id|link
 id|return_VALUE
 c_func
 (paren
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -2039,7 +2044,8 @@ suffix:semicolon
 id|return_VALUE
 c_func
 (paren
-l_int|0
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
