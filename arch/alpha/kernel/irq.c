@@ -1460,6 +1460,17 @@ id|root_irq_dir
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP 
+r_if
+c_cond
+(paren
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|handler-&gt;set_affinity
+)paren
+(brace
 multiline_comment|/* create /proc/irq/1234/smp_affinity */
 id|entry
 op_assign
@@ -1506,6 +1517,7 @@ id|irq
 op_assign
 id|entry
 suffix:semicolon
+)brace
 macro_line|#endif
 )brace
 DECL|variable|prof_cpu_mask
@@ -1580,7 +1592,19 @@ op_assign
 id|prof_cpu_mask_write_proc
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Create entries for all existing IRQs.&n;&t; */
+multiline_comment|/*&n;&t; * Create entries for all existing IRQs. If the number of IRQs&n;&t; * is greater the 1/4 the total dynamic inode space for /proc,&n;&t; * don&squot;t pollute the inode space&n;&t; */
+r_if
+c_cond
+(paren
+id|ACTUAL_NR_IRQS
+OL
+(paren
+id|PROC_NDYNAMIC
+op_div
+l_int|4
+)paren
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -1590,7 +1614,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NR_IRQS
+id|ACTUAL_NR_IRQS
 suffix:semicolon
 id|i
 op_increment
@@ -1617,6 +1641,7 @@ c_func
 id|i
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 r_int
@@ -2085,7 +2110,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NR_IRQS
+id|ACTUAL_NR_IRQS
 suffix:semicolon
 id|i
 op_increment
