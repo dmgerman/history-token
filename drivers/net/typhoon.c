@@ -111,6 +111,13 @@ c_func
 l_string|&quot;David Dillow &lt;dave@thedillows.org&gt;&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRV_MODULE_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_MODULE_VERSION
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
@@ -123,20 +130,43 @@ c_func
 l_string|&quot;3Com Typhoon Family (3C990, 3CR990, and variants)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_PARM_DESC
 c_func
 (paren
 id|rx_copybreak
 comma
-l_string|&quot;i&quot;
+l_string|&quot;Packets smaller than this are copied and &quot;
+l_string|&quot;the buffer given back to the NIC. Default &quot;
+l_string|&quot;is 200.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_PARM_DESC
 c_func
 (paren
 id|use_mmio
 comma
-l_string|&quot;i&quot;
+l_string|&quot;Use MMIO (1) or PIO(0) to access the NIC. &quot;
+l_string|&quot;Default is to try MMIO and fallback to PIO.&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|rx_copybreak
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|use_mmio
+comma
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#if defined(NETIF_F_TSO) &amp;&amp; MAX_SKB_FRAGS &gt; 32
