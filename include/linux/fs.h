@@ -902,9 +902,11 @@ DECL|member|bd_block_size
 r_int
 id|bd_block_size
 suffix:semicolon
-DECL|member|bd_offset
-id|sector_t
-id|bd_offset
+DECL|member|bd_part
+r_struct
+id|hd_struct
+op_star
+id|bd_part
 suffix:semicolon
 DECL|member|bd_part_count
 r_int
