@@ -857,8 +857,8 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Beware! hw[] is also used in cleanup_module(). If __initdata also applies&n;   to modules, we may not declare hw[] as __initdata */
-DECL|variable|__initdata
+multiline_comment|/* Beware! hw[] is also used in cleanup_module(). */
+DECL|variable|__initdata_or_module
 r_static
 r_struct
 id|scc_hardware
@@ -866,7 +866,7 @@ id|hw
 (braket
 id|NUM_TYPES
 )braket
-id|__initdata
+id|__initdata_or_module
 op_assign
 id|HARDWARE
 suffix:semicolon
