@@ -2108,6 +2108,51 @@ suffix:semicolon
 )brace
 multiline_comment|/* NOTREACHED */
 )brace
+multiline_comment|/* BTW, this scheme means that there is no way with PFKEY2 sockets to&n; * say specifically &squot;just raw sockets&squot; as we encode them as 255.&n; */
+DECL|function|pfkey_proto_to_xfrm
+r_static
+r_uint8
+id|pfkey_proto_to_xfrm
+c_func
+(paren
+r_uint8
+id|proto
+)paren
+(brace
+r_return
+(paren
+id|proto
+op_eq
+id|IPSEC_PROTO_ANY
+ques
+c_cond
+l_int|0
+suffix:colon
+id|proto
+)paren
+suffix:semicolon
+)brace
+DECL|function|pfkey_proto_from_xfrm
+r_static
+r_uint8
+id|pfkey_proto_from_xfrm
+c_func
+(paren
+r_uint8
+id|proto
+)paren
+(brace
+r_return
+(paren
+id|proto
+ques
+c_cond
+id|proto
+suffix:colon
+id|IPSEC_PROTO_ANY
+)paren
+suffix:semicolon
+)brace
 DECL|function|pfkey_sadb_addr2xfrm_addr
 r_static
 id|xfrm_address_t
@@ -3573,6 +3618,7 @@ id|addr-&gt;sadb_address_proto
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* XXX IPSEC_PROTO_ANY ?? */
 id|addr-&gt;sadb_address_prefixlen
 op_assign
 l_int|32
@@ -3671,6 +3717,7 @@ id|addr-&gt;sadb_address_proto
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* XXX IPSEC_PROTO_ANY ?? */
 id|addr-&gt;sadb_address_prefixlen
 op_assign
 l_int|32
@@ -3774,7 +3821,11 @@ id|SADB_EXT_ADDRESS_PROXY
 suffix:semicolon
 id|addr-&gt;sadb_address_proto
 op_assign
+id|pfkey_proto_from_xfrm
+c_func
+(paren
 id|x-&gt;sel.proto
+)paren
 suffix:semicolon
 id|addr-&gt;sadb_address_prefixlen
 op_assign
@@ -7607,7 +7658,11 @@ id|SADB_EXT_ADDRESS_SRC
 suffix:semicolon
 id|addr-&gt;sadb_address_proto
 op_assign
+id|pfkey_proto_from_xfrm
+c_func
+(paren
 id|xp-&gt;selector.proto
+)paren
 suffix:semicolon
 id|addr-&gt;sadb_address_prefixlen
 op_assign
@@ -7721,7 +7776,11 @@ id|SADB_EXT_ADDRESS_DST
 suffix:semicolon
 id|addr-&gt;sadb_address_proto
 op_assign
+id|pfkey_proto_from_xfrm
+c_func
+(paren
 id|xp-&gt;selector.proto
+)paren
 suffix:semicolon
 id|addr-&gt;sadb_address_prefixlen
 op_assign
@@ -8337,7 +8396,11 @@ id|sa-&gt;sadb_address_prefixlen
 suffix:semicolon
 id|xp-&gt;selector.proto
 op_assign
+id|pfkey_proto_to_xfrm
+c_func
+(paren
 id|sa-&gt;sadb_address_proto
+)paren
 suffix:semicolon
 id|xp-&gt;selector.sport
 op_assign
@@ -8388,9 +8451,14 @@ id|xp-&gt;selector.prefixlen_d
 op_assign
 id|sa-&gt;sadb_address_prefixlen
 suffix:semicolon
+multiline_comment|/* Amusing, we set this twice.  KAME apps appear to set same value&n;&t; * in both addresses.&n;&t; */
 id|xp-&gt;selector.proto
 op_assign
+id|pfkey_proto_to_xfrm
+c_func
+(paren
 id|sa-&gt;sadb_address_proto
+)paren
 suffix:semicolon
 id|xp-&gt;selector.dport
 op_assign
@@ -8861,7 +8929,11 @@ id|sa-&gt;sadb_address_prefixlen
 suffix:semicolon
 id|sel.proto
 op_assign
+id|pfkey_proto_to_xfrm
+c_func
+(paren
 id|sa-&gt;sadb_address_proto
+)paren
 suffix:semicolon
 id|sel.sport
 op_assign
@@ -8914,7 +8986,11 @@ id|sa-&gt;sadb_address_prefixlen
 suffix:semicolon
 id|sel.proto
 op_assign
+id|pfkey_proto_to_xfrm
+c_func
+(paren
 id|sa-&gt;sadb_address_proto
+)paren
 suffix:semicolon
 id|sel.dport
 op_assign
@@ -11168,6 +11244,7 @@ id|addr-&gt;sadb_address_proto
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* XXX IPSEC_PROTO_ANY ?? */
 id|addr-&gt;sadb_address_prefixlen
 op_assign
 l_int|32
@@ -11282,6 +11359,7 @@ id|addr-&gt;sadb_address_proto
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* XXX IPSEC_PROTO_ANY ?? */
 id|addr-&gt;sadb_address_prefixlen
 op_assign
 l_int|32
