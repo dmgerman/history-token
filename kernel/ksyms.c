@@ -1099,6 +1099,13 @@ c_func
 id|do_generic_mapping_read
 )paren
 suffix:semicolon
+DECL|variable|file_ra_state_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|file_ra_state_init
+)paren
+suffix:semicolon
 DECL|variable|generic_file_write
 id|EXPORT_SYMBOL
 c_func
