@@ -1666,7 +1666,7 @@ mdefine_line|#define IS_IRQ_SW&t;(1L&lt;&lt;26)&t;/* Bit 26: (ML)&t;SW forced IR
 DECL|macro|IS_EXT_REG
 mdefine_line|#define IS_EXT_REG&t;(1L&lt;&lt;25)&t;/* Bit 25: (ML) IRQ from external reg*/
 DECL|macro|IS_IRQ_STAT
-mdefine_line|#define&t;IS_IRQ_STAT&t;(1L&lt;&lt;24)&t;/* Bit 24:&t;IRQ status execption */
+mdefine_line|#define&t;IS_IRQ_STAT&t;(1L&lt;&lt;24)&t;/* Bit 24:&t;IRQ status exception */
 multiline_comment|/*   PERR, RMABORT, RTABORT DATAPERR */
 DECL|macro|IS_IRQ_MST_ERR
 mdefine_line|#define&t;IS_IRQ_MST_ERR&t;(1L&lt;&lt;23)&t;/* Bit 23:&t;IRQ master error     */
@@ -1735,7 +1735,7 @@ mdefine_line|#define IRQ_SW&t;&t;(1L&lt;&lt;26)&t;/* Bit 26: (ML)&t;SW forced IR
 DECL|macro|IRQ_EXT_REG
 mdefine_line|#define IRQ_EXT_REG&t;(1L&lt;&lt;25)&t;/* Bit 25: (ML) IRQ from external reg*/
 DECL|macro|IRQ_STAT
-mdefine_line|#define&t;IRQ_STAT&t;(1L&lt;&lt;24)&t;/* Bit 24:&t;IRQ status execption */
+mdefine_line|#define&t;IRQ_STAT&t;(1L&lt;&lt;24)&t;/* Bit 24:&t;IRQ status exception */
 multiline_comment|/*   PERR, RMABORT, RTABORT DATAPERR */
 DECL|macro|IRQ_MST_ERR
 mdefine_line|#define&t;IRQ_MST_ERR&t;(1L&lt;&lt;23)&t;/* Bit 23:&t;IRQ master error     */
