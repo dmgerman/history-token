@@ -2642,6 +2642,8 @@ OL
 l_int|512
 comma
 r_return
+op_minus
+id|EINVAL
 )paren
 suffix:semicolon
 id|set_bit
@@ -2701,8 +2703,10 @@ l_int|0x3ff
 suffix:semicolon
 id|a
 op_assign
+(paren
 op_star
 id|ptr
+)paren
 op_increment
 op_star
 l_int|2
@@ -2788,6 +2792,8 @@ OL
 l_int|1024
 comma
 r_return
+op_minus
+id|EINVAL
 )paren
 suffix:semicolon
 id|set_bit
@@ -2847,8 +2853,10 @@ l_int|0x7ff
 suffix:semicolon
 id|a
 op_assign
+(paren
 op_star
 id|ptr
+)paren
 op_increment
 op_star
 l_int|2
@@ -6090,6 +6098,10 @@ op_plus
 l_int|256
 op_plus
 l_int|256
+op_plus
+l_int|2
+op_star
+l_int|1024
 comma
 r_sizeof
 (paren
@@ -6141,6 +6153,12 @@ suffix:semicolon
 id|icode-&gt;tram_addr_map
 op_assign
 id|icode-&gt;tram_data_map
+op_plus
+l_int|256
+suffix:semicolon
+id|icode-&gt;code
+op_assign
+id|icode-&gt;tram_addr_map
 op_plus
 l_int|256
 suffix:semicolon
@@ -10644,6 +10662,10 @@ op_plus
 l_int|160
 op_plus
 l_int|160
+op_plus
+l_int|2
+op_star
+l_int|512
 comma
 r_sizeof
 (paren
@@ -10714,6 +10736,12 @@ suffix:semicolon
 id|icode-&gt;tram_addr_map
 op_assign
 id|icode-&gt;tram_data_map
+op_plus
+l_int|160
+suffix:semicolon
+id|icode-&gt;code
+op_assign
+id|icode-&gt;tram_addr_map
 op_plus
 l_int|160
 suffix:semicolon
