@@ -11119,10 +11119,6 @@ r_int
 id|ret
 comma
 id|offset
-op_assign
-id|skb-&gt;nh.raw
-op_minus
-id|skb-&gt;data
 suffix:semicolon
 r_struct
 id|ipv6hdr
