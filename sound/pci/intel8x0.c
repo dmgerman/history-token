@@ -358,6 +358,10 @@ macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP_AUDIO
 DECL|macro|PCI_DEVICE_ID_NVIDIA_MCP_AUDIO
 mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP_AUDIO&t;0x01b1
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_CK804_AUDIO
+DECL|macro|PCI_DEVICE_ID_NVIDIA_CK804_AUDIO
+mdefine_line|#define PCI_DEVICE_ID_NVIDIA_CK804_AUDIO 0x0059
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_MCP2_AUDIO
 DECL|macro|PCI_DEVICE_ID_NVIDIA_MCP2_AUDIO
 mdefine_line|#define PCI_DEVICE_ID_NVIDIA_MCP2_AUDIO&t;0x006a
@@ -1516,6 +1520,23 @@ id|DEVICE_NFORCE
 )brace
 comma
 multiline_comment|/* NFORCE2 */
+(brace
+l_int|0x10de
+comma
+l_int|0x0059
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|DEVICE_NFORCE
+)brace
+comma
+multiline_comment|/* CK804 */
 (brace
 l_int|0x10de
 comma
@@ -12863,6 +12884,12 @@ comma
 id|PCI_DEVICE_ID_NVIDIA_CK8S_AUDIO
 comma
 l_string|&quot;NVidia CK8S&quot;
+)brace
+comma
+(brace
+id|PCI_DEVICE_ID_NVIDIA_CK804_AUDIO
+comma
+l_string|&quot;NVidia CK804&quot;
 )brace
 comma
 (brace
