@@ -137,6 +137,7 @@ r_int
 id|smbiod_start
 c_func
 (paren
+r_void
 )paren
 (brace
 id|pid_t
