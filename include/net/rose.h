@@ -450,9 +450,6 @@ id|rose_cb
 suffix:semicolon
 DECL|macro|rose_sk
 mdefine_line|#define rose_sk(__sk) ((rose_cb *)(__sk)-&gt;sk_protinfo)
-multiline_comment|/* Magic value indicating first entry in /proc (ie header) */
-DECL|macro|ROSE_PROC_START
-mdefine_line|#define ROSE_PROC_START ((void *) 1)
 multiline_comment|/* af_rose.c */
 r_extern
 id|ax25_address
