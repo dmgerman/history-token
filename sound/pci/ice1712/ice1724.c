@@ -22,6 +22,7 @@ macro_line|#include &quot;vt1720_mobo.h&quot;
 macro_line|#include &quot;pontis.h&quot;
 macro_line|#include &quot;prodigy192.h&quot;
 macro_line|#include &quot;juli.h&quot;
+macro_line|#include &quot;phase.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -51,6 +52,7 @@ id|VT1720_MOBO_DEVICE_DESC
 id|PONTIS_DEVICE_DESC
 id|PRODIGY192_DEVICE_DESC
 id|JULI_DEVICE_DESC
+id|PHASE_DEVICE_DESC
 l_string|&quot;{VIA,VT1720},&quot;
 l_string|&quot;{VIA,VT1724},&quot;
 l_string|&quot;{ICEnsemble,Generic ICE1724},&quot;
@@ -9551,6 +9553,8 @@ comma
 id|snd_vt1724_prodigy192_cards
 comma
 id|snd_vt1724_juli_cards
+comma
+id|snd_vt1724_phase_cards
 comma
 l_int|NULL
 comma
