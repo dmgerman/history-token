@@ -1637,12 +1637,22 @@ id|call_data-&gt;started
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * At this point the info structure may be out of scope unless wait==1&n;&t; */
+id|irq_enter
+c_func
+(paren
+)paren
+suffix:semicolon
 (paren
 op_star
 id|func
 )paren
 (paren
 id|info
+)paren
+suffix:semicolon
+id|irq_exit
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
