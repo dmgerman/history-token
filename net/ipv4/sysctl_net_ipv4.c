@@ -614,7 +614,14 @@ dot
 id|proc_handler
 op_assign
 op_amp
-id|proc_dointvec
+id|ipv4_doint_and_flush
+comma
+dot
+id|strategy
+op_assign
+op_amp
+id|ipv4_doint_and_flush_strategy
+comma
 )brace
 comma
 (brace

@@ -5004,7 +5004,6 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|ipv4_doint_and_flush
-r_static
 r_int
 id|ipv4_doint_and_flush
 c_func
@@ -5080,7 +5079,6 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|ipv4_doint_and_flush_strategy
-r_static
 r_int
 id|ipv4_doint_and_flush_strategy
 c_func
