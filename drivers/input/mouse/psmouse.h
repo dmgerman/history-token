@@ -10,7 +10,7 @@ mdefine_line|#define PSMOUSE_CMD_GETINFO&t;0x03e9
 DECL|macro|PSMOUSE_CMD_SETSTREAM
 mdefine_line|#define PSMOUSE_CMD_SETSTREAM&t;0x00ea
 DECL|macro|PSMOUSE_CMD_POLL
-mdefine_line|#define PSMOUSE_CMD_POLL&t;0x03eb&t;
+mdefine_line|#define PSMOUSE_CMD_POLL&t;0x03eb
 DECL|macro|PSMOUSE_CMD_GETID
 mdefine_line|#define PSMOUSE_CMD_GETID&t;0x02f2
 DECL|macro|PSMOUSE_CMD_SETRATE
@@ -30,8 +30,8 @@ mdefine_line|#define PSMOUSE_RET_ACK&t;&t;0xfa
 DECL|macro|PSMOUSE_RET_NAK
 mdefine_line|#define PSMOUSE_RET_NAK&t;&t;0xfe
 multiline_comment|/* psmouse states */
-DECL|macro|PSMOUSE_NEW_DEVICE
-mdefine_line|#define PSMOUSE_NEW_DEVICE&t;0
+DECL|macro|PSMOUSE_CMD_MODE
+mdefine_line|#define PSMOUSE_CMD_MODE&t;0
 DECL|macro|PSMOUSE_ACTIVATED
 mdefine_line|#define PSMOUSE_ACTIVATED&t;1
 DECL|macro|PSMOUSE_IGNORE

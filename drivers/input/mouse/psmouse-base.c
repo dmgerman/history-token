@@ -2308,7 +2308,7 @@ r_private
 suffix:semicolon
 id|psmouse-&gt;state
 op_assign
-id|PSMOUSE_IGNORE
+id|PSMOUSE_CMD_MODE
 suffix:semicolon
 r_if
 c_cond
@@ -2360,6 +2360,10 @@ c_func
 (paren
 id|psmouse
 )paren
+suffix:semicolon
+id|psmouse-&gt;state
+op_assign
+id|PSMOUSE_IGNORE
 suffix:semicolon
 id|input_unregister_device
 c_func
@@ -2531,7 +2535,7 @@ id|REL_Y
 suffix:semicolon
 id|psmouse-&gt;state
 op_assign
-id|PSMOUSE_NEW_DEVICE
+id|PSMOUSE_CMD_MODE
 suffix:semicolon
 id|psmouse-&gt;serio
 op_assign
@@ -2784,7 +2788,7 @@ suffix:semicolon
 )brace
 id|psmouse-&gt;state
 op_assign
-id|PSMOUSE_NEW_DEVICE
+id|PSMOUSE_CMD_MODE
 suffix:semicolon
 id|psmouse-&gt;type
 op_assign
