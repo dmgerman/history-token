@@ -119,7 +119,7 @@ comma
 DECL|enumerator|ATA_SHT_USE_CLUSTERING
 id|ATA_SHT_USE_CLUSTERING
 op_assign
-l_int|1
+l_int|0
 comma
 multiline_comment|/* struct ata_device stuff */
 DECL|enumerator|ATA_DFLAG_LBA48
