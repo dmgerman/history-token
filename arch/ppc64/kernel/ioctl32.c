@@ -4193,7 +4193,7 @@ id|mysock
 op_logical_and
 id|mysock-&gt;sk
 op_logical_and
-id|mysock-&gt;sk-&gt;family
+id|mysock-&gt;sk-&gt;sk_family
 op_eq
 id|AF_INET6
 )paren
