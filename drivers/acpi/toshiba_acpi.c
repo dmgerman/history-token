@@ -1945,6 +1945,7 @@ multiline_comment|/* proc and module init&n; */
 DECL|macro|PROC_TOSHIBA
 mdefine_line|#define PROC_TOSHIBA&t;&t;&quot;toshiba&quot;
 DECL|variable|proc_items
+r_static
 id|ProcItem
 id|proc_items
 (braket

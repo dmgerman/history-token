@@ -80,6 +80,7 @@ suffix:semicolon
 DECL|macro|ACPI_DEBUG_INIT
 mdefine_line|#define ACPI_DEBUG_INIT(v)&t;{ .name = #v, .value = v }
 DECL|variable|acpi_debug_layers
+r_static
 r_const
 r_struct
 id|acpi_dlayer
@@ -175,6 +176,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|acpi_debug_levels
+r_static
 r_const
 r_struct
 id|acpi_dlevel

@@ -1530,8 +1530,6 @@ comma
 id|AML_TYPE_EXEC_2A_1T_1R
 comma
 id|AML_FLAGS_EXEC_2A_1T_1R
-op_or
-id|AML_CONSTANT
 )paren
 comma
 multiline_comment|/* 32 */

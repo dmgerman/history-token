@@ -153,6 +153,12 @@ op_star
 id|gpe_event_info
 suffix:semicolon
 multiline_comment|/* Info for GPE (_Lxx/_Exx methods only */
+DECL|member|implicit_return_obj
+r_union
+id|acpi_operand_object
+op_star
+id|implicit_return_obj
+suffix:semicolon
 DECL|member|local_variables
 r_struct
 id|acpi_namespace_node

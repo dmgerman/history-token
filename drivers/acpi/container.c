@@ -616,12 +616,6 @@ suffix:colon
 l_string|&quot;ACPI_NOTIFY_DEVICE_CHECK&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|present
-)paren
-(brace
 id|status
 op_assign
 id|acpi_bus_get_device
@@ -633,6 +627,12 @@ op_amp
 id|device
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|present
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -672,8 +672,26 @@ comma
 id|KOBJ_ONLINE
 )paren
 suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;Failed to add container&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
+(brace
+r_if
+c_cond
+(paren
+id|ACPI_SUCCESS
+c_func
+(paren
+id|status
+)paren
+)paren
 (brace
 multiline_comment|/* device exist and this is a remove request */
 id|kobject_hotplug
@@ -935,6 +953,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 id|__init
 DECL|function|acpi_container_init
@@ -997,6 +1016,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__exit
 DECL|function|acpi_container_exit

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * sleep.c - x86-specific ACPI sleep support.&n; *&n; *  
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/* address in low memory of the wakeup routine. */
 DECL|variable|acpi_wakeup_address
 r_int
@@ -100,6 +101,11 @@ id|pgd
 op_increment
 suffix:semicolon
 )brace
+id|flush_tlb_all
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * acpi_save_state_mem - save kernel state&n; *&n; * Create an identity mapped page table and copy the wakeup routine to&n; * low memory.&n; */
 DECL|function|acpi_save_state_mem

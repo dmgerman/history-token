@@ -245,6 +245,9 @@ suffix:semicolon
 r_case
 id|ACPI_RDESC_TYPE_QWORD_ADDRESS_SPACE
 suffix:colon
+r_case
+id|ACPI_RDESC_TYPE_EXTENDED_ADDRESS_SPACE
+suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * 64-Bit Address Resource&n;&t;&t;&t; */
 id|status
 op_assign

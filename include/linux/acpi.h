@@ -1594,11 +1594,6 @@ id|entries
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
-r_struct
-id|acpi_prt_list
-id|acpi_prt
-suffix:semicolon
 r_struct
 id|pci_dev
 suffix:semicolon
