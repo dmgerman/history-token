@@ -356,7 +356,7 @@ op_amp
 (paren
 id|THREAD_SIZE
 op_minus
-l_int|1
+l_int|4
 )paren
 )paren
 op_ne
@@ -546,7 +546,7 @@ op_amp
 (paren
 id|THREAD_SIZE
 op_minus
-l_int|1
+l_int|4
 )paren
 )paren
 op_eq
