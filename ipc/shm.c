@@ -2867,6 +2867,16 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* round down */
 r_else
+macro_line|#ifndef __ARCH_FORCE_SHMLBA
+r_if
+c_cond
+(paren
+id|addr
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
+macro_line|#endif
 r_return
 op_minus
 id|EINVAL
