@@ -154,9 +154,9 @@ id|free_cells
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|udsl_usb_send_data_context
+DECL|struct|udsl_sender
 r_struct
-id|udsl_usb_send_data_context
+id|udsl_sender
 (brace
 DECL|member|list
 r_struct
@@ -294,10 +294,10 @@ id|tasklet_struct
 id|receive_tasklet
 suffix:semicolon
 multiline_comment|/* sending */
-DECL|member|send_ctx
+DECL|member|all_senders
 r_struct
-id|udsl_usb_send_data_context
-id|send_ctx
+id|udsl_sender
+id|all_senders
 (braket
 id|UDSL_NUMBER_SND_URBS
 )braket
@@ -1767,7 +1767,7 @@ op_star
 id|instance
 suffix:semicolon
 r_struct
-id|udsl_usb_send_data_context
+id|udsl_sender
 op_star
 id|snd
 suffix:semicolon
@@ -1879,7 +1879,7 @@ op_star
 id|data
 suffix:semicolon
 r_struct
-id|udsl_usb_send_data_context
+id|udsl_sender
 op_star
 id|snd
 suffix:semicolon
@@ -2001,7 +2001,7 @@ id|list_entry
 id|instance-&gt;spare_senders.next
 comma
 r_struct
-id|udsl_usb_send_data_context
+id|udsl_sender
 comma
 id|list
 )paren
@@ -2406,10 +2406,10 @@ r_goto
 id|made_progress
 suffix:semicolon
 )brace
-DECL|function|udsl_usb_cancelsends
+DECL|function|udsl_cancel_send
 r_static
 r_void
-id|udsl_usb_cancelsends
+id|udsl_cancel_send
 (paren
 r_struct
 id|udsl_instance_data
@@ -2436,7 +2436,7 @@ id|n
 suffix:semicolon
 id|PDEBUG
 (paren
-l_string|&quot;udsl_usb_cancelsends entered&bslash;n&quot;
+l_string|&quot;udsl_cancel_send entered&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -2596,7 +2596,7 @@ id|instance-&gt;send_tasklet
 suffix:semicolon
 id|PDEBUG
 (paren
-l_string|&quot;udsl_usb_cancelsends done&bslash;n&quot;
+l_string|&quot;udsl_cancel_send done&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2803,62 +2803,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************&n;*&n;* ATM helper functions&n;*&n;****************************************************************************/
-DECL|function|udsl_atm_alloc_tx
-r_static
-r_struct
-id|sk_buff
-op_star
-id|udsl_atm_alloc_tx
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_int
-r_int
-id|size
-)paren
-(brace
-r_struct
-id|atmsar_vcc_data
-op_star
-id|atmsar_vcc
-op_assign
-(paren
-(paren
-r_struct
-id|udsl_atm_dev_data
-op_star
-)paren
-id|vcc-&gt;dev_data
-)paren
-op_member_access_from_pointer
-id|atmsar_vcc
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|atmsar_vcc
-)paren
-r_return
-id|atmsar_alloc_tx
-(paren
-id|atmsar_vcc
-comma
-id|size
-)paren
-suffix:semicolon
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;SpeedTouch USB: udsl_atm_alloc_tx could not find correct alloc_tx function !&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 DECL|function|udsl_atm_proc_read
 r_static
 r_int
@@ -3220,10 +3164,6 @@ id|vcc-&gt;dev_data
 op_assign
 id|dev_data
 suffix:semicolon
-id|vcc-&gt;alloc_tx
-op_assign
-id|udsl_atm_alloc_tx
-suffix:semicolon
 id|dev_data-&gt;atmsar_vcc-&gt;mtu
 op_assign
 id|UDSL_MAX_AAL5_MRU
@@ -3297,7 +3237,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* freeing resources */
 multiline_comment|/* cancel all sends on this vcc */
-id|udsl_usb_cancelsends
+id|udsl_cancel_send
 (paren
 id|instance
 comma
@@ -3900,13 +3840,13 @@ op_increment
 )paren
 (brace
 r_struct
-id|udsl_usb_send_data_context
+id|udsl_sender
 op_star
 id|snd
 op_assign
 op_amp
 (paren
-id|instance-&gt;send_ctx
+id|instance-&gt;all_senders
 (braket
 id|i
 )braket
@@ -4236,7 +4176,7 @@ op_increment
 )paren
 id|usb_free_urb
 (paren
-id|instance-&gt;send_ctx
+id|instance-&gt;all_senders
 (braket
 id|i
 )braket
@@ -4272,6 +4212,11 @@ id|i
 )braket
 )paren
 suffix:semicolon
+id|usb_free_urb
+(paren
+id|rcv-&gt;urb
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4280,11 +4225,6 @@ id|rcv-&gt;skb
 id|kfree_skb
 (paren
 id|rcv-&gt;skb
-)paren
-suffix:semicolon
-id|usb_free_urb
-(paren
-id|rcv-&gt;urb
 )paren
 suffix:semicolon
 )brace
@@ -4647,7 +4587,7 @@ id|result
 op_assign
 id|usb_unlink_urb
 (paren
-id|instance-&gt;send_ctx
+id|instance-&gt;all_senders
 (braket
 id|i
 )braket
@@ -4795,7 +4735,7 @@ op_increment
 )paren
 id|usb_free_urb
 (paren
-id|instance-&gt;send_ctx
+id|instance-&gt;all_senders
 (braket
 id|i
 )braket
