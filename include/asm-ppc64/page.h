@@ -18,11 +18,6 @@ DECL|macro|SID_MASK
 mdefine_line|#define SID_MASK        0xfffffffff
 DECL|macro|GET_ESID
 mdefine_line|#define GET_ESID(x)     (((x) &gt;&gt; SID_SHIFT) &amp; SID_MASK)
-multiline_comment|/* Define an illegal instr to trap on the bug.&n; * We don&squot;t use 0 because that marks the end of a function&n; * in the ELF ABI.  That&squot;s &quot;Boo Boo&quot; in case you wonder...&n; */
-DECL|macro|BUG_OPCODE
-mdefine_line|#define BUG_OPCODE .long 0x00b00b00  /* For asm */
-DECL|macro|BUG_ILLEGAL_INSTR
-mdefine_line|#define BUG_ILLEGAL_INSTR &quot;0x00b00b00&quot; /* For BUG macro */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/naca.h&gt;
