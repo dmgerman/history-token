@@ -1068,9 +1068,26 @@ comma
 l_string|&quot;SBC 60XX WDT&quot;
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;I/O address 0x%04x already in use&bslash;n&quot;
+comma
+id|wdt_start
+)paren
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_goto
 id|err_out
 suffix:semicolon
+)brace
 multiline_comment|/* We cannot reserve 0x45 - the kernel already has! */
 r_if
 c_cond
@@ -1102,9 +1119,21 @@ comma
 l_string|&quot;SBC 60XX WDT&quot;
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;I/O address 0x%04x already in use&bslash;n&quot;
+comma
+id|wdt_stop
+)paren
+suffix:semicolon
 r_goto
 id|err_out_region1
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -1120,6 +1149,7 @@ op_assign
 id|WATCHDOG_TIMEOUT
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 id|PFX
@@ -1158,9 +1188,23 @@ c_cond
 (paren
 id|rc
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;cannot register miscdev on minor=%d (err=%d)&bslash;n&quot;
+comma
+id|wdt_miscdev.minor
+comma
+id|rc
+)paren
+suffix:semicolon
 r_goto
 id|err_out_region2
 suffix:semicolon
+)brace
 id|rc
 op_assign
 id|register_reboot_notifier
@@ -1175,9 +1219,21 @@ c_cond
 (paren
 id|rc
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;cannot register reboot notifier (err=%d)&bslash;n&quot;
+comma
+id|rc
+)paren
+suffix:semicolon
 r_goto
 id|err_out_miscdev
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
