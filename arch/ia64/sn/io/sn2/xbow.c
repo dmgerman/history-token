@@ -379,7 +379,7 @@ id|MAXDEVNAME
 suffix:semicolon
 macro_line|#endif
 r_static
-r_void
+id|irqreturn_t
 id|xbow_errintr_handler
 c_func
 (paren
