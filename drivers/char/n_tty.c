@@ -2430,7 +2430,6 @@ c_func
 (paren
 id|c
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 op_logical_or
@@ -3151,7 +3150,6 @@ c_func
 (paren
 id|tty-&gt;read_head
 comma
-op_amp
 id|tty-&gt;read_flags
 )paren
 suffix:semicolon
@@ -3970,7 +3968,6 @@ c_func
 (paren
 l_char|&squot;&bslash;r&squot;
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -3988,7 +3985,6 @@ c_func
 (paren
 l_char|&squot;&bslash;n&squot;
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -4011,7 +4007,6 @@ c_func
 id|tty
 )paren
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -4024,7 +4019,6 @@ c_func
 id|tty
 )paren
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -4037,7 +4031,6 @@ c_func
 id|tty
 )paren
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -4046,7 +4039,6 @@ c_func
 (paren
 l_char|&squot;&bslash;n&squot;
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -4059,7 +4051,6 @@ c_func
 id|tty
 )paren
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -4082,7 +4073,6 @@ c_func
 id|tty
 )paren
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -4095,7 +4085,6 @@ c_func
 id|tty
 )paren
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -4108,7 +4097,6 @@ c_func
 id|tty
 )paren
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -4130,7 +4118,6 @@ c_func
 id|tty
 )paren
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -4155,7 +4142,6 @@ c_func
 id|tty
 )paren
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -4168,7 +4154,6 @@ c_func
 id|tty
 )paren
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -4192,7 +4177,6 @@ c_func
 id|tty
 )paren
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -4205,7 +4189,6 @@ c_func
 id|tty
 )paren
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -4218,7 +4201,6 @@ c_func
 id|tty
 )paren
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -4228,7 +4210,6 @@ c_func
 (paren
 id|__DISABLED_CHAR
 comma
-op_amp
 id|tty-&gt;process_char_map
 )paren
 suffix:semicolon
@@ -5245,7 +5226,6 @@ c_func
 (paren
 id|tty-&gt;read_tail
 comma
-op_amp
 id|tty-&gt;read_flags
 )paren
 suffix:semicolon
