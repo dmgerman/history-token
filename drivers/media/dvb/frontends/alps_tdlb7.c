@@ -1,10 +1,11 @@
 multiline_comment|/*&n;    Driver for Alps TDLB7 Frontend&n;&n;    Copyright (C) 1999 Juergen Peitz&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 multiline_comment|/* &n;    This driver needs a copy of the firmware file &squot;Sc_main.mc&squot; from the Haupauge&n;    windows driver in the &squot;/usr/lib/DVB/driver/frontends&squot; directory.&n;    You can also pass the complete file name with the module parameter &squot;firmware_file&squot;.&n;    &n;*/
+DECL|macro|__KERNEL_SYSCALLS__
+mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;dvb_frontend.h&quot;
@@ -36,6 +37,11 @@ mdefine_line|#define SP8870_FIRMWARE_SIZE 16382
 multiline_comment|/* starting point for firmware in file &squot;Sc_main.mc&squot; */
 DECL|macro|SP8870_FIRMWARE_OFFSET
 mdefine_line|#define SP8870_FIRMWARE_OFFSET 0x0A
+DECL|variable|errno
+r_static
+r_int
+id|errno
+suffix:semicolon
 DECL|variable|tdlb7_info
 r_static
 r_struct
@@ -586,7 +592,7 @@ id|dp
 suffix:semicolon
 id|fd
 op_assign
-id|sys_open
+id|open
 c_func
 (paren
 id|fn
@@ -622,7 +628,7 @@ suffix:semicolon
 )brace
 id|filesize
 op_assign
-id|sys_lseek
+id|lseek
 c_func
 (paren
 id|fd
@@ -707,7 +713,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|sys_lseek
+id|lseek
 c_func
 (paren
 id|fd
@@ -720,7 +726,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sys_read
+id|read
 c_func
 (paren
 id|fd
@@ -2606,13 +2612,6 @@ id|arg
 )paren
 suffix:semicolon
 r_case
-id|FE_RESET
-suffix:colon
-r_return
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-r_case
 id|FE_GET_FRONTEND
 suffix:colon
 singleline_comment|// FIXME: read known values back from Hardware...
@@ -2665,6 +2664,40 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_case
+id|FE_GET_TUNE_SETTINGS
+suffix:colon
+(brace
+r_struct
+id|dvb_frontend_tune_settings
+op_star
+id|fesettings
+op_assign
+(paren
+r_struct
+id|dvb_frontend_tune_settings
+op_star
+)paren
+id|arg
+suffix:semicolon
+id|fesettings-&gt;min_delay_ms
+op_assign
+l_int|150
+suffix:semicolon
+id|fesettings-&gt;step_size
+op_assign
+l_int|166667
+suffix:semicolon
+id|fesettings-&gt;max_drift
+op_assign
+l_int|166667
+op_star
+l_int|2
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_default
 suffix:colon
 r_return
