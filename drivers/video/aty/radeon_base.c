@@ -9747,6 +9747,16 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+id|rinfo-&gt;fb_base
+comma
+l_int|0
+comma
+id|rinfo-&gt;mapped_vram
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
