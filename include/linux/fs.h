@@ -2298,6 +2298,16 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|remove_lease
+c_func
+(paren
+r_struct
+id|file_lock
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|lock_may_read
 c_func
