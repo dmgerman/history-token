@@ -7879,31 +7879,6 @@ r_return
 op_minus
 id|ENXIO
 suffix:semicolon
-multiline_comment|/*&n;&t; * TODO: where should we put this? The DMI Resolver doesn&squot;t have a&n;&t; *&t; frame buffer accessible by the CPU&n;&t; */
-macro_line|#ifdef CONFIG_GSP_RESOLVER
-r_if
-c_cond
-(paren
-id|amifb_resolver
-)paren
-(brace
-id|custom.dmacon
-op_assign
-id|DMAF_MASTER
-op_or
-id|DMAF_RASTER
-op_or
-id|DMAF_COPPER
-op_or
-id|DMAF_BLITTER
-op_or
-id|DMAF_SPRITE
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * We request all registers starting from bplpt[0]&n;&t; */
 r_if
 c_cond
