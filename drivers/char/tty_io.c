@@ -11607,7 +11607,6 @@ suffix:semicolon
 macro_line|#endif
 id|call
 op_assign
-op_amp
 id|__con_initcall_start
 suffix:semicolon
 r_while
@@ -11615,7 +11614,6 @@ c_loop
 (paren
 id|call
 OL
-op_amp
 id|__con_initcall_end
 )paren
 (brace

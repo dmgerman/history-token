@@ -1082,11 +1082,6 @@ op_star
 id|data
 )paren
 (brace
-r_extern
-r_char
-op_star
-id|linux_banner
-suffix:semicolon
 r_int
 id|len
 suffix:semicolon
