@@ -5151,6 +5151,7 @@ id|arlan_device_sysctl_header
 suffix:semicolon
 DECL|function|init_arlan_proc
 r_int
+id|__init
 id|init_arlan_proc
 c_func
 (paren
@@ -5224,27 +5225,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
+DECL|function|cleanup_arlan_proc
 r_void
-)paren
-(brace
-r_return
-id|init_arlan_proc
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+id|__exit
+id|cleanup_arlan_proc
 c_func
 (paren
 r_void
@@ -5260,16 +5244,5 @@ id|arlan_device_sysctl_header
 op_assign
 l_int|NULL
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;
-singleline_comment|// MODULE
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 eof

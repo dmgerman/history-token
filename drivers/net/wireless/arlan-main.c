@@ -519,27 +519,6 @@ l_string|&quot;(ignored)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|arlan_device
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|arlan_device
-)paren
-suffix:semicolon
-DECL|variable|arlan_conf
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|arlan_conf
-)paren
-suffix:semicolon
-DECL|variable|last_arlan
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|last_arlan
-)paren
-suffix:semicolon
 singleline_comment|//        #warning kernel 2.1.110 tested
 DECL|macro|myATOMIC_INIT
 mdefine_line|#define myATOMIC_INIT(a,b) atomic_set(&amp;(a),b)
@@ -745,13 +724,6 @@ id|dev
 comma
 r_int
 id|command
-)paren
-suffix:semicolon
-DECL|variable|arlan_command
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|arlan_command
 )paren
 suffix:semicolon
 DECL|function|arlan_time
@@ -6730,23 +6702,6 @@ op_amp
 id|priv-&gt;timer
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-macro_line|#ifndef MODULE
-r_if
-c_cond
-(paren
-id|arlan_device
-(braket
-l_int|0
-)braket
-)paren
-id|init_arlan_proc
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 id|ARLAN_DEBUG_EXIT
 c_func
 (paren
@@ -10042,6 +9997,11 @@ id|i
 suffix:semicolon
 singleline_comment|//&t;&t;arlan_command(arlan_device[i], ARLAN_COMMAND_POWERDOWN );
 )brace
+id|init_arlan_proc
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -10095,6 +10055,11 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;arlan: unloading module&bslash;n&quot;
+)paren
+suffix:semicolon
+id|cleanup_arlan_proc
+c_func
+(paren
 )paren
 suffix:semicolon
 r_for
