@@ -293,8 +293,6 @@ r_static
 r_int
 r_int
 id|logo_clutsize
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 r_void
@@ -1411,8 +1409,6 @@ DECL|variable|write_hex_cnt
 r_static
 r_int
 id|write_hex_cnt
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|write_hex
 r_static

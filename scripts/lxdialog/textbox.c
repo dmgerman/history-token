@@ -68,8 +68,6 @@ DECL|variable|bytes_read
 r_static
 r_int
 id|hscroll
-op_assign
-l_int|0
 comma
 id|fd
 comma
@@ -87,8 +85,6 @@ op_assign
 l_int|1
 comma
 id|end_reached
-op_assign
-l_int|0
 comma
 id|page_length
 suffix:semicolon

@@ -2839,16 +2839,12 @@ r_static
 r_int
 r_int
 id|l_p_j_ref
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|l_p_j_ref_freq
 r_static
 r_int
 r_int
 id|l_p_j_ref_freq
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|adjust_jiffies
 r_static
