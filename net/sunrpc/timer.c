@@ -11,7 +11,7 @@ mdefine_line|#define RPC_RTO_MAX (60*HZ)
 DECL|macro|RPC_RTO_INIT
 mdefine_line|#define RPC_RTO_INIT (HZ/5)
 DECL|macro|RPC_RTO_MIN
-mdefine_line|#define RPC_RTO_MIN (2)
+mdefine_line|#define RPC_RTO_MIN (HZ/10)
 r_void
 DECL|function|rpc_init_rtt
 id|rpc_init_rtt
@@ -107,7 +107,6 @@ id|m
 )paren
 (brace
 r_int
-r_int
 op_star
 id|srtt
 comma
@@ -147,6 +146,10 @@ l_int|1L
 suffix:semicolon
 id|srtt
 op_assign
+(paren
+r_int
+op_star
+)paren
 op_amp
 id|rt-&gt;srtt
 (braket
@@ -179,6 +182,10 @@ id|m
 suffix:semicolon
 id|sdrtt
 op_assign
+(paren
+r_int
+op_star
+)paren
 op_amp
 id|rt-&gt;sdrtt
 (braket
@@ -246,10 +253,14 @@ suffix:semicolon
 id|res
 op_assign
 (paren
+(paren
 id|rt-&gt;srtt
 (braket
 id|timer
 )braket
+op_plus
+l_int|7
+)paren
 op_rshift
 l_int|3
 )paren
