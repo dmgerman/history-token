@@ -13,6 +13,11 @@ r_static
 r_int
 id|debug_pci
 suffix:semicolon
+DECL|variable|use_firmware
+r_static
+r_int
+id|use_firmware
+suffix:semicolon
 multiline_comment|/*&n; * We can&squot;t use pci_find_device() here since we are&n; * called from interrupt context.&n; */
 DECL|function|pcibios_bus_report_status
 r_static
@@ -2101,20 +2106,28 @@ id|bus
 op_assign
 id|sys-&gt;bus
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Size the bridge windows.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|use_firmware
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; &t; * Size the bridge windows.&n;&t;&t; &t; */
 id|pci_bus_size_bridges
 c_func
 (paren
 id|bus
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Assign resources.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; &t; * Assign resources.&n;&t;&t; &t; */
 id|pci_bus_assign_resources
 c_func
 (paren
 id|bus
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Tell drivers about devices found.&n;&t;&t; */
 id|pci_bus_add_devices
 c_func
@@ -2150,6 +2163,24 @@ l_string|&quot;debug&quot;
 )paren
 (brace
 id|debug_pci
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+comma
+l_string|&quot;firmware&quot;
+)paren
+(brace
+id|use_firmware
 op_assign
 l_int|1
 suffix:semicolon
