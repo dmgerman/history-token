@@ -554,6 +554,8 @@ DECL|macro|rmb
 mdefine_line|#define rmb()&t;mb()
 DECL|macro|wmb
 mdefine_line|#define wmb()&t;mb()
+DECL|macro|read_barrier_depends
+mdefine_line|#define read_barrier_depends()&t;do { } while(0)
 DECL|macro|set_mb
 mdefine_line|#define set_mb(__var, __value)  do { __var = __value; mb(); } while(0)
 DECL|macro|set_wmb
@@ -564,6 +566,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;__asm__ __volatile__(&quot;&quot;:::&quot;memory&quot;);
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()&t;do { } while(0)
 DECL|macro|nop
 mdefine_line|#define nop() __asm__ __volatile__ (&quot;nop&quot;);
 multiline_comment|/* This has special calling conventions */

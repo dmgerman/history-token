@@ -388,6 +388,8 @@ DECL|macro|rmb
 mdefine_line|#define rmb() &bslash;&n;__asm__ __volatile__(&quot;mb&quot;: : :&quot;memory&quot;)
 DECL|macro|wmb
 mdefine_line|#define wmb() &bslash;&n;__asm__ __volatile__(&quot;wmb&quot;: : :&quot;memory&quot;)
+DECL|macro|read_barrier_depends
+mdefine_line|#define read_barrier_depends() &bslash;&n;__asm__ __volatile__(&quot;mb&quot;: : :&quot;memory&quot;)
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|smp_mb
 mdefine_line|#define smp_mb()&t;mb()
@@ -395,6 +397,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;rmb()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;wmb()
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()&t;read_barrier_depends()
 macro_line|#else
 DECL|macro|smp_mb
 mdefine_line|#define smp_mb()&t;barrier()
@@ -402,6 +406,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;barrier()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;barrier()
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()&t;barrier()
 macro_line|#endif
 DECL|macro|set_mb
 mdefine_line|#define set_mb(var, value) &bslash;&n;do { var = value; mb(); } while (0)
