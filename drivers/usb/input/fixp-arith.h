@@ -16,6 +16,7 @@ DECL|macro|FRAC_MASK
 mdefine_line|#define FRAC_MASK ((1&lt;&lt;FRAC_N)-1)
 singleline_comment|// Not to be used directly. Use fixp_{cos,sin}
 DECL|variable|cos_table
+r_static
 id|fixp_t
 id|cos_table
 (braket
@@ -116,6 +117,7 @@ l_int|0x0008
 suffix:semicolon
 multiline_comment|/* a: 123 -&gt; 123.0 */
 DECL|function|fixp_new
+r_static
 r_inline
 id|fixp_t
 id|fixp_new
@@ -133,6 +135,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* a: 0xFFFF -&gt; -1.0&n;      0x8000 -&gt; 1.0&n;      0x0000 -&gt; 0.0&n;*/
 DECL|function|fixp_new16
+r_static
 r_inline
 id|fixp_t
 id|fixp_new16
@@ -158,6 +161,7 @@ id|FRAC_N
 suffix:semicolon
 )brace
 DECL|function|fixp_cos
+r_static
 r_inline
 id|fixp_t
 id|fixp_cos
@@ -235,6 +239,7 @@ id|i
 suffix:semicolon
 )brace
 DECL|function|fixp_sin
+r_static
 r_inline
 id|fixp_t
 id|fixp_sin
@@ -257,6 +262,7 @@ l_int|90
 suffix:semicolon
 )brace
 DECL|function|fixp_mult
+r_static
 r_inline
 id|fixp_t
 id|fixp_mult

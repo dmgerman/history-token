@@ -326,6 +326,11 @@ comma
 r_int
 r_int
 id|flags
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -366,6 +371,15 @@ id|XTKBD_KEY
 )braket
 )paren
 (brace
+id|input_regs
+c_func
+(paren
+op_amp
+id|xtkbd-&gt;dev
+comma
+id|regs
+)paren
+suffix:semicolon
 id|input_report_key
 c_func
 (paren

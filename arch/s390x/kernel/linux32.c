@@ -10068,6 +10068,8 @@ op_assign
 id|dequeue_signal
 c_func
 (paren
+id|current
+comma
 op_amp
 id|these
 comma
@@ -10162,6 +10164,8 @@ op_assign
 id|dequeue_signal
 c_func
 (paren
+id|current
+comma
 op_amp
 id|these
 comma

@@ -3,6 +3,7 @@ macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 DECL|variable|ipv6_addr_type
 id|EXPORT_SYMBOL
 c_func
@@ -141,6 +142,27 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ipv6_chk_addr
+)paren
+suffix:semicolon
+DECL|variable|xfrm6_register_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm6_register_type
+)paren
+suffix:semicolon
+DECL|variable|xfrm6_unregister_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm6_unregister_type
+)paren
+suffix:semicolon
+DECL|variable|xfrm6_get_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm6_get_type
 )paren
 suffix:semicolon
 eof

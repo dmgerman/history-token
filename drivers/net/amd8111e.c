@@ -3871,9 +3871,6 @@ id|i
 op_add_assign
 l_int|4
 )paren
-(brace
-suffix:semicolon
-)brace
 id|reg_buff
 (braket
 id|i

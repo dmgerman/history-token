@@ -10074,6 +10074,7 @@ l_int|0
 suffix:semicolon
 r_struct
 id|arlan_private
+op_star
 id|ap
 suffix:semicolon
 id|ARLAN_DEBUG_ENTRY

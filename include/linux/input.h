@@ -1500,6 +1500,12 @@ id|pm_dev
 op_star
 id|pm_dev
 suffix:semicolon
+DECL|member|regs
+r_struct
+id|pt_regs
+op_star
+id|regs
+suffix:semicolon
 DECL|member|state
 r_int
 id|state
@@ -2161,8 +2167,6 @@ r_int
 id|value
 )paren
 suffix:semicolon
-DECL|macro|input_sync
-mdefine_line|#define input_sync(a)&t;&t;input_event(a, EV_SYN, SYN_REPORT, 0)
 DECL|macro|input_report_key
 mdefine_line|#define input_report_key(a,b,c) input_event(a, EV_KEY, b, !!(c))
 DECL|macro|input_report_rel
@@ -2173,6 +2177,10 @@ DECL|macro|input_report_ff
 mdefine_line|#define input_report_ff(a,b,c)&t;input_event(a, EV_FF, b, c)
 DECL|macro|input_report_ff_status
 mdefine_line|#define input_report_ff_status(a,b,c)&t;input_event(a, EV_FF_STATUS, b, c)
+DECL|macro|input_regs
+mdefine_line|#define input_regs(a,b)&t;&t;do { (a)-&gt;regs = (b); } while (0)
+DECL|macro|input_sync
+mdefine_line|#define input_sync(a)&t;&t;do { input_event(a, EV_SYN, SYN_REPORT, 0); (a)-&gt;regs = NULL; } while (0)
 r_extern
 r_struct
 id|device_class

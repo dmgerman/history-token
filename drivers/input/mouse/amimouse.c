@@ -209,6 +209,15 @@ id|potgor
 op_assign
 id|custom.potgor
 suffix:semicolon
+id|input_regs
+c_func
+(paren
+op_amp
+id|amimouse_dev
+comma
+id|fp
+)paren
+suffix:semicolon
 id|input_report_rel
 c_func
 (paren

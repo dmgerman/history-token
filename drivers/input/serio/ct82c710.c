@@ -489,6 +489,8 @@ id|ct82c710_data
 )paren
 comma
 l_int|0
+comma
+id|regs
 )paren
 suffix:semicolon
 )brace

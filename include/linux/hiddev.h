@@ -348,6 +348,11 @@ id|usage
 comma
 id|__s32
 id|value
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_void
@@ -438,6 +443,11 @@ id|usage
 comma
 id|__s32
 id|value
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 )brace

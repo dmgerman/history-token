@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
-macro_line|#include &quot;busmouse.h&quot;
 multiline_comment|/*&n; * Head entry for the doubly linked miscdevice list&n; */
 DECL|variable|misc_list
 r_static
@@ -55,14 +54,6 @@ id|DYNAMIC_MINORS
 op_div
 l_int|8
 )braket
-suffix:semicolon
-r_extern
-r_int
-id|psaux_init
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SGI_NEWPORT_GFX
 r_extern

@@ -164,6 +164,14 @@ r_goto
 id|resubmit
 suffix:semicolon
 )brace
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
+suffix:semicolon
 id|input_report_key
 c_func
 (paren

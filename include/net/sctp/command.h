@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation Copyright (C) 1999-2001&n; * Cisco, Motorola, and IBM&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * These are the definitions needed for the command object.&n; * &n; * The SCTP reference implementation  is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * the SCTP reference implementation  is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to one of the&n; * following email addresses:&n; * &n; * La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; * Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; * Ardelle Fan &lt;ardelle.fan@intel.com&gt;&n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation Copyright (C) 1999-2001&n; * Cisco, Motorola, and IBM&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These are the definitions needed for the command object.&n; *&n; * The SCTP reference implementation  is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * the SCTP reference implementation  is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to one of the&n; * following email addresses:&n; *&n; * La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; * Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; * Ardelle Fan &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#ifndef __net_sctp_command_h__
 DECL|macro|__net_sctp_command_h__
 mdefine_line|#define __net_sctp_command_h__
@@ -117,10 +117,6 @@ DECL|enumerator|SCTP_CMD_REPORT_BIGGAP
 id|SCTP_CMD_REPORT_BIGGAP
 comma
 multiline_comment|/* Narc on a TSN (it was too high).  */
-DECL|enumerator|SCTP_CMD_SET_BIND_ADDR
-id|SCTP_CMD_SET_BIND_ADDR
-comma
-multiline_comment|/* Set the association bind_addr.  */
 DECL|enumerator|SCTP_CMD_STRIKE
 id|SCTP_CMD_STRIKE
 comma
@@ -132,11 +128,15 @@ multiline_comment|/* Transmit the outqueue. */
 DECL|enumerator|SCTP_CMD_HB_TIMERS_START
 id|SCTP_CMD_HB_TIMERS_START
 comma
-multiline_comment|/* Start the heartbeat timers.  */
-DECL|enumerator|SCTP_CMD_HB_TIMERS_UPDATE
-id|SCTP_CMD_HB_TIMERS_UPDATE
+multiline_comment|/* Start the heartbeat timers. */
+DECL|enumerator|SCTP_CMD_HB_TIMER_UPDATE
+id|SCTP_CMD_HB_TIMER_UPDATE
 comma
-multiline_comment|/* Update the heartbeat timers.  */
+multiline_comment|/* Update a heartbeat timers.  */
+DECL|enumerator|SCTP_CMD_HB_TIMERS_STOP
+id|SCTP_CMD_HB_TIMERS_STOP
+comma
+multiline_comment|/* Stop the heartbeat timers.  */
 DECL|enumerator|SCTP_CMD_TRANSPORT_RESET
 id|SCTP_CMD_TRANSPORT_RESET
 comma
@@ -249,7 +249,8 @@ op_star
 id|asoc
 suffix:semicolon
 DECL|member|transport
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
@@ -455,7 +456,8 @@ c_func
 (paren
 id|TRANSPORT
 comma
-id|sctp_transport_t
+r_struct
+id|sctp_transport
 op_star
 comma
 id|transport

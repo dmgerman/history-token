@@ -1,4 +1,4 @@
-multiline_comment|/***********************************************************************&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * drivers/sound/nec_vrc5477.c&n; *     AC97 sound dirver for NEC Vrc5477 chip (an integrated, &n; *     multi-function controller chip for MIPS CPUs)&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; ***********************************************************************&n; */
+multiline_comment|/***********************************************************************&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * drivers/sound/nec_vrc5477.c&n; *     AC97 sound dirver for NEC Vrc5477 chip (an integrated, &n; *     multi-function controller chip for MIPS CPUs)&n; *&n; * VRA support Copyright 2001 Bradley D. LaRonde &lt;brad@ltc.com&gt;&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; ***********************************************************************&n; */
 multiline_comment|/*&n; * This code is derived from ite8172.c, which is written by Steve Longerbeam.&n; *&n; * Features:&n; *   Currently we only support the following capabilities:&n; *&t;. mono output to PCM L/R (line out).&n; *&t;. stereo output to PCM L/R (line out).&n; *&t;. mono input from PCM L (line in).&n; *&t;. stereo output from PCM (line in).&n; *&t;. sampling rate at 48k or variable sampling rate &n; *&t;. support /dev/dsp, /dev/mixer devices, standard OSS devices.&n; *&t;. only support 16-bit PCM format (hardware limit, no software&n; *&t;  translation) &n; *&t;. support duplex, but no trigger or realtime.&n; *&t;&n; *   Specifically the following are not supported:&n; *&t;. app-set frag size.&n; *&t;. mmap&squot;ed buffer access&n; */
 multiline_comment|/* &n; * Original comments from ite8172.c file.&n; */
 multiline_comment|/*&n; *&n; * Notes:&n; *&n; *  1. Much of the OSS buffer allocation, ioctl&squot;s, and mmap&squot;ing are&n; *     taken, slightly modified or not at all, from the ES1371 driver,&n; *     so refer to the credits in es1371.c for those. The rest of the&n; *     code (probe, open, read, write, the ISR, etc.) is new.&n; *  2. The following support is untested:&n; *      * Memory mapping the audio buffers, and the ioctl controls that go&n; *        with it.&n; *      * S/PDIF output.&n; *  3. The following is not supported:&n; *      * I2S input.&n; *      * legacy audio mode.&n; *  4. Support for volume button interrupts is implemented but doesn&squot;t&n; *     work yet.&n; *&n; *  Revision history&n; *    02.08.2001  0.1   Initial release&n; */
@@ -21,19 +21,30 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ac97_codec.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
-macro_line|#include &lt;asm/ddb5xxx/debug.h&gt;
+multiline_comment|/* -------------------debug macros -------------------------------------- */
+multiline_comment|/* #undef VRC5477_AC97_DEBUG */
+DECL|macro|VRC5477_AC97_DEBUG
+mdefine_line|#define VRC5477_AC97_DEBUG
 DECL|macro|VRC5477_AC97_VERBOSE_DEBUG
 macro_line|#undef VRC5477_AC97_VERBOSE_DEBUG
-multiline_comment|/* one must turn on CONFIG_LL_DEBUG before VERBOSE_DEBUG is turned */
+multiline_comment|/* #define VRC5477_AC97_VERBOSE_DEBUG */
 macro_line|#if defined(VRC5477_AC97_VERBOSE_DEBUG)
-macro_line|#if !defined(CONFIG_LL_DEBUG)
-macro_line|#error &quot;You must turn CONFIG_LL_DEBUG&quot;
+DECL|macro|VRC5477_AC97_DEBUG
+mdefine_line|#define VRC5477_AC97_DEBUG
 macro_line|#endif
-macro_line|#endif
+macro_line|#if defined(VRC5477_AC97_DEBUG)
+macro_line|#include &lt;linux/kernel.h&gt;
+DECL|macro|ASSERT
+mdefine_line|#define ASSERT(x)  if (!(x)) { &bslash;&n;&t;panic(&quot;assertion failed at %s:%d: %s&bslash;n&quot;, __FILE__, __LINE__, #x); }
+macro_line|#else
+DECL|macro|ASSERT
+mdefine_line|#define&t;ASSERT(x)
+macro_line|#endif /* VRC5477_AC97_DEBUG */
 macro_line|#if defined(VRC5477_AC97_VERBOSE_DEBUG)
 DECL|variable|inTicket
 r_static
@@ -200,7 +211,7 @@ r_int
 r_int
 id|irq
 suffix:semicolon
-macro_line|#ifdef CONFIG_LL_DEBUG
+macro_line|#ifdef VRC5477_AC97_DEBUG
 multiline_comment|/* debug /proc entry */
 DECL|member|ps
 r_struct
@@ -214,7 +225,7 @@ id|proc_dir_entry
 op_star
 id|ac97_ps
 suffix:semicolon
-macro_line|#endif /* CONFIG_LL_DEBUG */
+macro_line|#endif /* VRC5477_AC97_DEBUG */
 DECL|member|codec
 r_struct
 id|ac97_codec
@@ -234,6 +245,11 @@ r_int
 id|dacRate
 comma
 id|adcRate
+suffix:semicolon
+DECL|member|extended_status
+r_int
+r_int
+id|extended_status
 suffix:semicolon
 DECL|member|lock
 id|spinlock_t
@@ -368,7 +384,7 @@ id|devs
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|ld2
-r_extern
+r_static
 r_inline
 r_int
 id|ld2
@@ -587,7 +603,7 @@ op_amp
 id|VRC5477_CODEC_RD_RRDYA
 )paren
 (brace
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|addr
@@ -757,6 +773,185 @@ l_int|0x80000000
 )paren
 suffix:semicolon
 )brace
+DECL|function|ac97_codec_not_present
+r_static
+r_int
+id|ac97_codec_not_present
+c_func
+(paren
+r_struct
+id|ac97_codec
+op_star
+id|codec
+)paren
+(brace
+r_struct
+id|vrc5477_ac97_state
+op_star
+id|s
+op_assign
+(paren
+r_struct
+id|vrc5477_ac97_state
+op_star
+)paren
+id|codec-&gt;private_data
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+r_int
+id|count
+op_assign
+l_int|0xffff
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|s-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* wait until we can access codec registers */
+r_do
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|inl
+c_func
+(paren
+id|s-&gt;io
+op_plus
+id|VRC5477_CODEC_WR
+)paren
+op_amp
+l_int|0x80000000
+)paren
+)paren
+r_break
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+op_decrement
+id|count
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+op_eq
+l_int|0
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|s-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* write 0 to reset */
+id|outl
+c_func
+(paren
+(paren
+id|AC97_RESET
+op_lshift
+l_int|16
+)paren
+op_or
+l_int|0
+comma
+id|s-&gt;io
+op_plus
+id|VRC5477_CODEC_WR
+)paren
+suffix:semicolon
+multiline_comment|/* test whether we get a response from ac97 chip */
+id|count
+op_assign
+l_int|0xffff
+suffix:semicolon
+r_do
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|inl
+c_func
+(paren
+id|s-&gt;io
+op_plus
+id|VRC5477_CODEC_WR
+)paren
+op_amp
+l_int|0x80000000
+)paren
+)paren
+r_break
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+op_decrement
+id|count
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+op_eq
+l_int|0
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|s-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|s-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|vrc5477_ac97_delay
 r_static
@@ -874,6 +1069,14 @@ r_int
 id|rate
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|s-&gt;extended_status
+op_amp
+id|AC97_EXTSTAT_VRA
+)paren
+(brace
 id|wrcodec
 c_func
 (paren
@@ -887,11 +1090,19 @@ id|rate
 suffix:semicolon
 id|s-&gt;dacRate
 op_assign
-id|rate
+id|rdcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+id|AC97_PCM_FRONT_DAC_RATE
+)paren
 suffix:semicolon
 )brace
+)brace
 multiline_comment|/* --------------------------------------------------------------------- */
-r_extern
+r_static
 r_inline
 r_void
 DECL|function|stop_dac
@@ -1140,7 +1351,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* we should have some data to do the DMA trasnfer */
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|db-&gt;count
@@ -1314,7 +1525,7 @@ id|VRC5477_CTRL
 )paren
 suffix:semicolon
 multiline_comment|/* it is time to setup next dma transfer */
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|inl
@@ -1328,7 +1539,7 @@ op_amp
 id|VRC5477_DMA_WIP
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|inl
@@ -1356,7 +1567,7 @@ op_ge
 id|db-&gt;fragTotalSize
 )paren
 (brace
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|temp
@@ -1443,7 +1654,7 @@ OG
 id|db-&gt;fragSize
 )paren
 (brace
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 (paren
@@ -1480,7 +1691,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|stop_adc
-r_extern
+r_static
 r_inline
 r_void
 id|stop_adc
@@ -1699,7 +1910,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* we should at least have some free space in the buffer */
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|db-&gt;count
@@ -1867,7 +2078,7 @@ op_ge
 id|db-&gt;fragTotalSize
 )paren
 (brace
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|temp
@@ -1924,7 +2135,7 @@ mdefine_line|#define DMABUF_DEFAULTORDER (16-PAGE_SHIFT)
 DECL|macro|DMABUF_MINORDER
 mdefine_line|#define DMABUF_MINORDER 1
 DECL|function|dealloc_dmabuf
-r_extern
+r_static
 r_inline
 r_void
 id|dealloc_dmabuf
@@ -1947,7 +2158,7 @@ c_cond
 id|db-&gt;lbuf
 )paren
 (brace
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|db-&gt;rbuf
@@ -2032,7 +2243,7 @@ op_logical_neg
 id|db-&gt;lbuf
 )paren
 (brace
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 op_logical_neg
@@ -2103,7 +2314,7 @@ c_cond
 id|db-&gt;lbuf
 )paren
 (brace
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 op_logical_neg
@@ -2133,7 +2344,7 @@ op_logical_neg
 id|db-&gt;lbuf
 )paren
 (brace
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 op_logical_neg
@@ -2254,7 +2465,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|prog_dmabuf_adc
-r_extern
+r_static
 r_inline
 r_int
 id|prog_dmabuf_adc
@@ -2286,7 +2497,7 @@ id|s-&gt;adcRate
 suffix:semicolon
 )brace
 DECL|function|prog_dmabuf_dac
-r_extern
+r_static
 r_inline
 r_int
 id|prog_dmabuf_dac
@@ -2391,7 +2602,7 @@ op_ge
 id|adc-&gt;fragTotalSize
 )paren
 (brace
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 (paren
@@ -2451,7 +2662,7 @@ op_ge
 id|adc-&gt;fragTotalSize
 )paren
 (brace
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|adc-&gt;nextIn
@@ -2515,34 +2726,8 @@ r_int
 id|temp
 suffix:semicolon
 multiline_comment|/* next DMA transfer should already started */
-id|MIPS_ASSERT
-c_func
-(paren
-id|inl
-c_func
-(paren
-id|s-&gt;io
-op_plus
-id|VRC5477_DAC1_CTRL
-)paren
-op_amp
-id|VRC5477_DMA_WIP
-)paren
-suffix:semicolon
-id|MIPS_ASSERT
-c_func
-(paren
-id|inl
-c_func
-(paren
-id|s-&gt;io
-op_plus
-id|VRC5477_DAC2_CTRL
-)paren
-op_amp
-id|VRC5477_DMA_WIP
-)paren
-suffix:semicolon
+singleline_comment|// ASSERT(inl(s-&gt;io + VRC5477_DAC1_CTRL) &amp; VRC5477_DMA_WIP);
+singleline_comment|// ASSERT(inl(s-&gt;io + VRC5477_DAC2_CTRL) &amp; VRC5477_DMA_WIP);
 multiline_comment|/* let us set for next next DMA transfer */
 id|temp
 op_assign
@@ -2560,7 +2745,7 @@ op_ge
 id|dac-&gt;fragTotalSize
 )paren
 (brace
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 (paren
@@ -2668,7 +2853,7 @@ comma
 id|outTicket
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 l_int|1
@@ -2691,7 +2876,7 @@ op_ge
 id|dac-&gt;fragTotalSize
 )paren
 (brace
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|dac-&gt;nextOut
@@ -2717,23 +2902,15 @@ op_le
 l_int|0
 )paren
 (brace
-id|MIPS_ASSERT
-c_func
-(paren
-id|dac-&gt;count
-op_eq
-l_int|0
-)paren
-suffix:semicolon
-id|MIPS_ASSERT
-c_func
-(paren
-id|dac-&gt;nextIn
-op_eq
-id|dac-&gt;nextOut
-)paren
-suffix:semicolon
 multiline_comment|/* buffer under run */
+id|dac-&gt;count
+op_assign
+l_int|0
+suffix:semicolon
+id|dac-&gt;nextIn
+op_assign
+id|dac-&gt;nextOut
+suffix:semicolon
 id|stop_dac
 c_func
 (paren
@@ -2751,7 +2928,7 @@ id|dac-&gt;count
 id|outTicket
 op_increment
 suffix:semicolon
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 op_star
@@ -2771,7 +2948,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* we cannot have both under run and someone is waiting on us */
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 op_logical_neg
@@ -3532,7 +3709,7 @@ id|bufStart
 op_add_assign
 id|count
 suffix:semicolon
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|bufStart
@@ -3667,7 +3844,7 @@ id|db-&gt;fragTotalSize
 op_minus
 id|db-&gt;nextOut
 suffix:semicolon
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 (paren
@@ -3700,7 +3877,7 @@ l_int|1
 op_lshift
 id|db-&gt;fragShift
 suffix:semicolon
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|copyFragCount
@@ -3796,7 +3973,7 @@ op_ge
 id|db-&gt;fragTotalSize
 )paren
 (brace
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|db-&gt;nextOut
@@ -3809,7 +3986,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 (paren
@@ -3821,7 +3998,7 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 (paren
@@ -3958,7 +4135,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|db-&gt;ready
@@ -4081,7 +4258,7 @@ op_le
 l_int|0
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 (paren
@@ -4182,7 +4359,7 @@ id|bufStart
 op_assign
 id|db-&gt;nextIn
 suffix:semicolon
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|db-&gt;ready
@@ -4312,7 +4489,7 @@ id|bufStart
 op_add_assign
 id|count
 suffix:semicolon
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|bufStart
@@ -4453,19 +4630,7 @@ id|db-&gt;fragTotalSize
 op_minus
 id|db-&gt;nextIn
 suffix:semicolon
-id|MIPS_ASSERT
-c_func
-(paren
-(paren
-id|copyCount
-op_mod
-id|db-&gt;fragSize
-)paren
-op_eq
-l_int|0
-)paren
-suffix:semicolon
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|copyCount
@@ -4476,25 +4641,9 @@ suffix:semicolon
 )brace
 id|copyFragCount
 op_assign
-(paren
 id|copyCount
-op_minus
-l_int|1
-)paren
-op_rshift
-id|db-&gt;fragShift
 suffix:semicolon
-id|copyFragCount
-op_assign
-(paren
-id|copyFragCount
-op_plus
-l_int|1
-)paren
-op_lshift
-id|db-&gt;fragShift
-suffix:semicolon
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|copyFragCount
@@ -4676,7 +4825,7 @@ op_ge
 id|db-&gt;fragTotalSize
 )paren
 (brace
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 id|db-&gt;nextIn
@@ -4689,19 +4838,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|MIPS_ASSERT
-c_func
-(paren
-(paren
-id|copyFragCount
-op_mod
-id|db-&gt;fragSize
-)paren
-op_eq
-l_int|0
-)paren
-suffix:semicolon
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 (paren
@@ -4745,7 +4882,7 @@ id|s
 suffix:semicolon
 )brace
 multiline_comment|/* nextIn should not be equal to nextOut unless we are full */
-id|MIPS_ASSERT
+id|ASSERT
 c_func
 (paren
 (paren
@@ -4994,18 +5131,6 @@ op_le
 l_int|0
 )paren
 suffix:semicolon
-id|MIPS_ASSERT
-c_func
-(paren
-(paren
-id|avail
-op_mod
-id|db-&gt;fragSize
-)paren
-op_eq
-l_int|0
-)paren
-suffix:semicolon
 id|copyCount
 op_assign
 id|copy_dac_from_user
@@ -5215,7 +5340,7 @@ r_return
 id|mask
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_LL_DEBUG
+macro_line|#ifdef VRC5477_AC97_DEBUG
 DECL|struct|ioctl_str_t
 r_static
 r_struct
@@ -5497,7 +5622,7 @@ id|val
 comma
 id|ret
 suffix:semicolon
-macro_line|#ifdef CONFIG_LL_DEBUG
+macro_line|#ifdef VRC5477_AC97_DEBUG
 r_for
 c_loop
 (paren
@@ -7240,7 +7365,7 @@ suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/*&n; * for debugging purposes, we&squot;ll create a proc device that dumps the&n; * CODEC chipstate&n; */
-macro_line|#ifdef CONFIG_LL_DEBUG
+macro_line|#ifdef VRC5477_AC97_DEBUG
 r_struct
 (brace
 DECL|member|regname
@@ -8023,7 +8148,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_LL_DEBUG */
+macro_line|#endif /* VRC5477_AC97_DEBUG */
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/* maximum number of devices; only used for command line params */
 DECL|macro|NR_DEVICE
@@ -8054,365 +8179,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* --------------------------------------------------------------------- */
-r_extern
-r_void
-id|jsun_scan_pci_bus
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|vrc5477_show_pci_regs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|vrc5477_show_pdar_regs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* -------------------------------------------------------- */
-DECL|macro|AC97_BASE
-mdefine_line|#define         AC97_BASE               0xbb000000
-DECL|macro|myinl
-mdefine_line|#define         myinl(x)                  *(volatile u32*)(AC97_BASE + (x))
-DECL|macro|myoutl
-mdefine_line|#define         myoutl(x,y)               *(volatile u32*)(AC97_BASE + (y)) = (x)
-DECL|function|myrdcodec
-id|u16
-id|myrdcodec
-c_func
-(paren
-id|u8
-id|addr
-)paren
-(brace
-id|u32
-id|result
-suffix:semicolon
-multiline_comment|/* wait until we can access codec registers */
-singleline_comment|// while (inl(VRC5477_CODEC_WR) &amp; 0x80000000);
-multiline_comment|/* write the address and &quot;read&quot; command to codec */
-id|addr
-op_assign
-id|addr
-op_amp
-l_int|0x7f
-suffix:semicolon
-id|myoutl
-c_func
-(paren
-(paren
-id|addr
-op_lshift
-l_int|16
-)paren
-op_or
-id|VRC5477_CODEC_WR_RWC
-comma
-id|VRC5477_CODEC_WR
-)paren
-suffix:semicolon
-multiline_comment|/* get the return result */
-id|udelay
-c_func
-(paren
-l_int|100
-)paren
-suffix:semicolon
-multiline_comment|/* workaround hardware bug */
-singleline_comment|// dump_memory(0xbb000000, 48);
-r_while
-c_loop
-(paren
-(paren
-(paren
-id|result
-op_assign
-id|myinl
-c_func
-(paren
-id|VRC5477_CODEC_RD
-)paren
-)paren
-op_amp
-l_int|0xc0000000
-)paren
-op_ne
-l_int|0xc0000000
-)paren
-suffix:semicolon
-id|MIPS_ASSERT
-c_func
-(paren
-id|addr
-op_eq
-(paren
-(paren
-id|result
-op_rshift
-l_int|16
-)paren
-op_amp
-l_int|0x7f
-)paren
-)paren
-suffix:semicolon
-r_return
-id|result
-op_amp
-l_int|0xffff
-suffix:semicolon
-)brace
-DECL|function|mywrcodec
-r_void
-id|mywrcodec
-c_func
-(paren
-id|u8
-id|addr
-comma
-id|u16
-id|data
-)paren
-(brace
-multiline_comment|/* wait until we can access codec registers */
-r_while
-c_loop
-(paren
-id|myinl
-c_func
-(paren
-id|VRC5477_CODEC_WR
-)paren
-op_amp
-l_int|0x80000000
-)paren
-suffix:semicolon
-multiline_comment|/* write the address and value to codec */
-id|myoutl
-c_func
-(paren
-(paren
-id|addr
-op_lshift
-l_int|16
-)paren
-op_or
-id|data
-comma
-id|VRC5477_CODEC_WR
-)paren
-suffix:semicolon
-)brace
-DECL|function|jsun_ac97_test
-r_void
-id|jsun_ac97_test
-c_func
-(paren
-r_struct
-id|vrc5477_ac97_state
-op_star
-id|s
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-multiline_comment|/* reset codec */
-multiline_comment|/*&n;        wrcodec(&amp;s-&gt;codec, 0, 0);&n;        while (inl(s-&gt;io + VRC5477_CODEC_WR) &amp; 0x80000000);&n;&t;*/
-id|mywrcodec
-c_func
-(paren
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|myinl
-c_func
-(paren
-id|VRC5477_CODEC_WR
-)paren
-op_amp
-l_int|0x80000000
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|0x40
-suffix:semicolon
-id|i
-op_add_assign
-l_int|4
-)paren
-(brace
-id|MIPS_ASSERT
-c_func
-(paren
-id|inl
-c_func
-(paren
-id|s-&gt;io
-op_plus
-id|i
-)paren
-op_eq
-id|myinl
-c_func
-(paren
-id|i
-)paren
-)paren
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;codec registers : &quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-op_le
-l_int|0x3a
-suffix:semicolon
-id|i
-op_add_assign
-l_int|2
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|i
-op_mod
-l_int|0x10
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n%02x&bslash;t&quot;
-comma
-id|i
-)paren
-suffix:semicolon
-)brace
-singleline_comment|// printk(&quot;%04x&bslash;t&quot;, rdcodec(&amp;s-&gt;codec, i));
-id|printk
-c_func
-(paren
-l_string|&quot;%04x&bslash;t&quot;
-comma
-id|myrdcodec
-c_func
-(paren
-id|i
-)paren
-)paren
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;codec registers : &quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-op_le
-l_int|0x3a
-suffix:semicolon
-id|i
-op_add_assign
-l_int|2
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|i
-op_mod
-l_int|0x10
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n%02x&bslash;t&quot;
-comma
-id|i
-)paren
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;%04x&bslash;t&quot;
-comma
-id|rdcodec
-c_func
-(paren
-op_amp
-id|s-&gt;codec
-comma
-id|i
-)paren
-)paren
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 DECL|function|vrc5477_ac97_probe
 r_static
 r_int
@@ -8437,22 +8203,14 @@ id|vrc5477_ac97_state
 op_star
 id|s
 suffix:semicolon
+macro_line|#ifdef VRC5477_AC97_DEBUG
 r_char
 id|proc_str
 (braket
 l_int|80
 )braket
 suffix:semicolon
-id|MIPS_DEBUG
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;vrc5477_ac97_probe() invoked&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8586,6 +8344,32 @@ op_assign
 id|waitcodec
 suffix:semicolon
 multiline_comment|/* setting some other default values such as&n;&t; * adcChannels, adcRate is done in open() so that&n;         * no persistent state across file opens.&n;&t; */
+multiline_comment|/* test if get response from ac97, if not return */
+r_if
+c_cond
+(paren
+id|ac97_codec_not_present
+c_func
+(paren
+op_amp
+(paren
+id|s-&gt;codec
+)paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;no ac97 codec&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|err_region
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8722,7 +8506,7 @@ l_int|0
 r_goto
 id|err_dev2
 suffix:semicolon
-macro_line|#ifdef CONFIG_LL_DEBUG
+macro_line|#ifdef VRC5477_AC97_DEBUG
 multiline_comment|/* intialize the debug proc device */
 id|s-&gt;ps
 op_assign
@@ -8740,7 +8524,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_LL_DEBUG */
+macro_line|#endif /* VRC5477_AC97_DEBUG */
 multiline_comment|/* enable pci io and bus mastering */
 r_if
 c_cond
@@ -8760,7 +8544,6 @@ c_func
 id|pcidev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;jsun_scan_pci_bus();&n;vrc5477_show_pci_regs();&n;vrc5477_show_pdar_regs();&n;*/
 multiline_comment|/* cold reset the AC97 */
 id|outl
 c_func
@@ -8788,7 +8571,6 @@ op_amp
 id|VRC5477_ACLINK_CTRL_RST_ON
 )paren
 suffix:semicolon
-multiline_comment|/*&n;jsun_ac97_test(s);&n;*/
 multiline_comment|/* codec init */
 r_if
 c_cond
@@ -8804,7 +8586,7 @@ id|s-&gt;codec
 r_goto
 id|err_dev3
 suffix:semicolon
-macro_line|#ifdef CONFIG_LL_DEBUG
+macro_line|#ifdef VRC5477_AC97_DEBUG
 id|sprintf
 c_func
 (paren
@@ -8835,6 +8617,65 @@ id|s-&gt;codec
 suffix:semicolon
 multiline_comment|/* TODO : why this proc file does not show up? */
 macro_line|#endif
+multiline_comment|/* Try to enable variable rate audio mode. */
+id|wrcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+id|AC97_EXTENDED_STATUS
+comma
+id|rdcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+id|AC97_EXTENDED_STATUS
+)paren
+op_or
+id|AC97_EXTSTAT_VRA
+)paren
+suffix:semicolon
+multiline_comment|/* Did we enable it? */
+r_if
+c_cond
+(paren
+id|rdcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+id|AC97_EXTENDED_STATUS
+)paren
+op_amp
+id|AC97_EXTSTAT_VRA
+)paren
+(brace
+id|s-&gt;extended_status
+op_or_assign
+id|AC97_EXTSTAT_VRA
+suffix:semicolon
+)brace
+r_else
+(brace
+id|s-&gt;dacRate
+op_assign
+l_int|48000
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;VRA mode not enabled; rate fixed at %d.&quot;
+comma
+id|s-&gt;dacRate
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* let us get the default volumne louder */
 id|wrcodec
 c_func
@@ -8844,21 +8685,23 @@ id|s-&gt;codec
 comma
 l_int|0x2
 comma
-l_int|0
+l_int|0x1010
 )paren
 suffix:semicolon
+multiline_comment|/* master volume, middle */
 id|wrcodec
 c_func
 (paren
 op_amp
 id|s-&gt;codec
 comma
-l_int|0x18
+l_int|0xc
 comma
-l_int|0x0707
+l_int|0x10
 )paren
 suffix:semicolon
-multiline_comment|/* mute line in loopback to line out */
+multiline_comment|/* phone volume, middle */
+singleline_comment|// wrcodec(&amp;s-&gt;codec, 0xe, 0x10);&t;&t;/* misc volume, middle */
 id|wrcodec
 c_func
 (paren
@@ -8870,6 +8713,19 @@ comma
 l_int|0x8000
 )paren
 suffix:semicolon
+multiline_comment|/* line-in 2 line-out disable */
+id|wrcodec
+c_func
+(paren
+op_amp
+id|s-&gt;codec
+comma
+l_int|0x18
+comma
+l_int|0x0707
+)paren
+suffix:semicolon
+multiline_comment|/* PCM out (line out) middle */
 multiline_comment|/* by default we select line in the input */
 id|wrcodec
 c_func
@@ -8882,8 +8738,6 @@ comma
 l_int|0x0404
 )paren
 suffix:semicolon
-multiline_comment|/* pick middle value for record gain */
-singleline_comment|// wrcodec(&amp;s-&gt;codec, 0x1c, 0x0707);
 id|wrcodec
 c_func
 (paren
@@ -9059,7 +8913,7 @@ op_amp
 id|s-&gt;devs
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_LL_DEBUG
+macro_line|#ifdef VRC5477_AC97_DEBUG
 r_if
 c_cond
 (paren
@@ -9073,7 +8927,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_LL_DEBUG */
+macro_line|#endif /* VRC5477_AC97_DEBUG */
 id|synchronize_irq
 c_func
 (paren
@@ -9129,10 +8983,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|macro|PCI_VENDOR_ID_NEC
-mdefine_line|#define&t;&t;PCI_VENDOR_ID_NEC&t;&t;0x1033
-DECL|macro|PCI_DEVICE_ID_NEC_VRC5477_AC97
-mdefine_line|#define&t;&t;PCI_DEVICE_ID_NEC_VRC5477_AC97&t;0x00A6
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -9222,7 +9072,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Vrc5477 AC97 driver: version v0.1 time &quot;
+l_string|&quot;Vrc5477 AC97 driver: version v0.2 time &quot;
 id|__TIME__
 l_string|&quot; &quot;
 id|__DATE__

@@ -142,12 +142,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 )brace
-r_extern
-r_struct
-id|pt_regs
-op_star
-id|kbd_pt_regs
-suffix:semicolon
 multiline_comment|/* When a context switch happens we must flush all user windows so that&n; * the windows of the current process are flushed onto its stack. This&n; * way the windows are all clean for the next process and the stack&n; * frames are up to date.&n; */
 r_extern
 r_void

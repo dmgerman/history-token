@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * A driver for the Griffin Technology, Inc. &quot;PowerMate&quot; USB controller dial.&n; *&n; * v1.0, (c)2002 William R Sowerbutts &lt;will@sowerbutts.com&gt;&n; *&n; * This device is a stainless steel knob which connects over USB. It can measure&n; * clockwise and anticlockwise rotation. The dial also acts as a pushbutton with&n; * a spring for automatic release. The base contains a pair of LEDs which illuminate&n; * the translucent base. It rotates without limit and reports its relative rotation&n; * back to the host when polled by the USB controller.&n; *&n; * Testing with the knob I have has shown that it measures approximately 94 &quot;clicks&quot;&n; * for one full rotation. Testing with my High Speed Rotation Actuator (ok, it was &n; * a variable speed cordless electric drill) has shown that the device can measure&n; * speeds of up to 7 clicks either clockwise or anticlockwise between pollings from&n; * the host. If it counts more than 7 clicks before it is polled, it will wrap back&n; * to zero and start counting again. This was at quite high speed, however, almost&n; * certainly faster than the human hand could turn it.&n; *&n; * The device&squot;s microcontroller can be programmed to set the LED to either a constant&n; * intensity, or to a rhythmic pulsing. Several patterns and speeds are available.&n; *&n; * Griffin were very happy to provide documentation and free hardware for development.&n; *&n; */
+multiline_comment|/*&n; * A driver for the Griffin Technology, Inc. &quot;PowerMate&quot; USB controller dial.&n; *&n; * v1.1, (c)2002 William R Sowerbutts &lt;will@sowerbutts.com&gt;&n; *&n; * This device is a anodised aluminium knob which connects over USB. It can measure&n; * clockwise and anticlockwise rotation. The dial also acts as a pushbutton with&n; * a spring for automatic release. The base contains a pair of LEDs which illuminate&n; * the translucent base. It rotates without limit and reports its relative rotation&n; * back to the host when polled by the USB controller.&n; *&n; * Testing with the knob I have has shown that it measures approximately 94 &quot;clicks&quot;&n; * for one full rotation. Testing with my High Speed Rotation Actuator (ok, it was &n; * a variable speed cordless electric drill) has shown that the device can measure&n; * speeds of up to 7 clicks either clockwise or anticlockwise between pollings from&n; * the host. If it counts more than 7 clicks before it is polled, it will wrap back&n; * to zero and start counting again. This was at quite high speed, however, almost&n; * certainly faster than the human hand could turn it. Griffin say that it loses a&n; * pulse or two on a direction change; the granularity is so fine that I never&n; * noticed this in practice.&n; *&n; * The device&squot;s microcontroller can be programmed to set the LED to either a constant&n; * intensity, or to a rhythmic pulsing. Several patterns and speeds are available.&n; *&n; * Griffin were very happy to provide documentation and free hardware for development.&n; *&n; * Some userspace tools are available on the web: http://sowerbutts.com/powermate/&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
@@ -235,6 +235,15 @@ m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* handle updates to device state */
+id|input_regs
+c_func
+(paren
+op_amp
+id|pm-&gt;input
+comma
+id|regs
+)paren
+suffix:semicolon
 id|input_report_key
 c_func
 (paren
@@ -332,37 +341,6 @@ id|EINPROGRESS
 r_return
 suffix:semicolon
 multiline_comment|/* an update is already in progress; it&squot;ll issue this update when it completes */
-r_if
-c_cond
-(paren
-id|pm-&gt;requires_update
-op_amp
-id|UPDATE_STATIC_BRIGHTNESS
-)paren
-(brace
-id|pm-&gt;configcr-&gt;wValue
-op_assign
-id|cpu_to_le16
-c_func
-(paren
-id|SET_STATIC_BRIGHTNESS
-)paren
-suffix:semicolon
-id|pm-&gt;configcr-&gt;wIndex
-op_assign
-id|cpu_to_le16
-c_func
-(paren
-id|pm-&gt;static_brightness
-)paren
-suffix:semicolon
-id|pm-&gt;requires_update
-op_and_assign
-op_complement
-id|UPDATE_STATIC_BRIGHTNESS
-suffix:semicolon
-)brace
-r_else
 r_if
 c_cond
 (paren
@@ -535,6 +513,37 @@ id|pm-&gt;requires_update
 op_and_assign
 op_complement
 id|UPDATE_PULSE_MODE
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|pm-&gt;requires_update
+op_amp
+id|UPDATE_STATIC_BRIGHTNESS
+)paren
+(brace
+id|pm-&gt;configcr-&gt;wValue
+op_assign
+id|cpu_to_le16
+c_func
+(paren
+id|SET_STATIC_BRIGHTNESS
+)paren
+suffix:semicolon
+id|pm-&gt;configcr-&gt;wIndex
+op_assign
+id|cpu_to_le16
+c_func
+(paren
+id|pm-&gt;static_brightness
+)paren
+suffix:semicolon
+id|pm-&gt;requires_update
+op_and_assign
+op_complement
+id|UPDATE_STATIC_BRIGHTNESS
 suffix:semicolon
 )brace
 r_else
@@ -808,7 +817,11 @@ id|pulse_asleep
 suffix:semicolon
 id|pm-&gt;requires_update
 op_or_assign
+(paren
 id|UPDATE_PULSE_ASLEEP
+op_or
+id|UPDATE_STATIC_BRIGHTNESS
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -825,7 +838,11 @@ id|pulse_awake
 suffix:semicolon
 id|pm-&gt;requires_update
 op_or_assign
+(paren
 id|UPDATE_PULSE_AWAKE
+op_or
+id|UPDATE_STATIC_BRIGHTNESS
+)paren
 suffix:semicolon
 )brace
 r_if

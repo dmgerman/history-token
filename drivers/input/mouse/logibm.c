@@ -447,6 +447,15 @@ id|buttons
 op_rshift
 l_int|5
 suffix:semicolon
+id|input_regs
+c_func
+(paren
+op_amp
+id|logibm_dev
+comma
+id|regs
+)paren
+suffix:semicolon
 id|input_report_rel
 c_func
 (paren
