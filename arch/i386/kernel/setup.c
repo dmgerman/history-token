@@ -258,10 +258,6 @@ id|_edata
 comma
 id|_end
 suffix:semicolon
-r_extern
-r_int
-id|blk_nohighio
-suffix:semicolon
 DECL|variable|saved_videomode
 r_int
 r_int
@@ -4146,40 +4142,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 )brace
-DECL|function|highio_setup
-r_static
-r_int
-id|__init
-id|highio_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;i386: disabling HIGHMEM block I/O&bslash;n&quot;
-)paren
-suffix:semicolon
-id|blk_nohighio
-op_assign
-l_int|1
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;nohighio&quot;
-comma
-id|highio_setup
-)paren
-suffix:semicolon
 macro_line|#include &quot;setup_arch_post.h&quot;
 multiline_comment|/*&n; * Local Variables:&n; * mode:c&n; * c-file-style:&quot;k&amp;r&quot;&n; * c-basic-offset:8&n; * End:&n; */
 eof

@@ -237,10 +237,6 @@ r_int
 id|privsize
 )paren
 (brace
-r_extern
-r_int
-id|blk_nohighio
-suffix:semicolon
 r_struct
 id|Scsi_Host
 op_star
@@ -475,12 +471,6 @@ id|shost-&gt;use_blk_tcq
 op_assign
 id|sht-&gt;use_blk_tcq
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|blk_nohighio
-)paren
 id|shost-&gt;highmem_io
 op_assign
 id|sht-&gt;highmem_io
