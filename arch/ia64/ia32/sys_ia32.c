@@ -5370,7 +5370,7 @@ id|shmid64_ds32
 (brace
 DECL|member|shm_perm
 r_struct
-id|ipc64_perm
+id|ipc64_perm32
 id|shm_perm
 suffix:semicolon
 DECL|member|shm_segsz
