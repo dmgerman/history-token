@@ -3294,12 +3294,11 @@ id|ETH1394_HLEN
 suffix:semicolon
 id|eth
 op_assign
+id|eth1394_hdr
+c_func
 (paren
-r_struct
-id|eth1394hdr
-op_star
+id|skb
 )paren
-id|skb-&gt;mac.raw
 suffix:semicolon
 r_if
 c_cond

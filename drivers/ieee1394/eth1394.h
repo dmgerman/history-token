@@ -151,6 +151,34 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/skbuff.h&gt;
+DECL|function|eth1394_hdr
+r_static
+r_inline
+r_struct
+id|eth1394hdr
+op_star
+id|eth1394_hdr
+c_func
+(paren
+r_const
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|eth1394hdr
+op_star
+)paren
+id|skb-&gt;mac.raw
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|enumerator|ETH1394_GASP
 DECL|enumerator|ETH1394_WRREQ
 DECL|typedef|eth1394_tx_type

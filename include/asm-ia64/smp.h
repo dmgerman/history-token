@@ -51,8 +51,9 @@ id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
 r_extern
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|ipi_base_addr
 suffix:semicolon
 r_extern
@@ -142,7 +143,7 @@ c_func
 l_int|0x00
 comma
 id|ipi_base_addr
-op_or
+op_plus
 id|XTP_OFFSET
 )paren
 suffix:semicolon
@@ -170,7 +171,7 @@ c_func
 l_int|0x08
 comma
 id|ipi_base_addr
-op_or
+op_plus
 id|XTP_OFFSET
 )paren
 suffix:semicolon
@@ -198,7 +199,7 @@ c_func
 l_int|0x0f
 comma
 id|ipi_base_addr
-op_or
+op_plus
 id|XTP_OFFSET
 )paren
 suffix:semicolon

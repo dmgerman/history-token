@@ -53,12 +53,11 @@ id|ebt_802_3_hdr
 op_star
 id|hdr
 op_assign
-(paren
-r_struct
 id|ebt_802_3_hdr
-op_star
+c_func
+(paren
+id|skb
 )paren
-id|skb-&gt;mac.ethernet
 suffix:semicolon
 r_uint16
 id|type

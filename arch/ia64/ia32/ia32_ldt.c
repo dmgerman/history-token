@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Adapted from arch/i386/kernel/ldt.c&n; */
+multiline_comment|/*&n; * Copyright (C) 2001, 2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Adapted from arch/i386/kernel/ldt.c&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -8,8 +8,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;ia32priv.h&quot;
-DECL|macro|P
-mdefine_line|#define P(p)&t;((void *) (unsigned long) (p))
 multiline_comment|/*&n; * read_ldt() is not really atomic - this is not a problem since synchronization of reads&n; * and writes done to the LDT has to be assured by user-space anyway. Writes are atomic,&n; * to protect the security checks done on new descriptors.&n; */
 r_static
 r_int
@@ -17,6 +15,7 @@ DECL|function|read_ldt
 id|read_ldt
 (paren
 r_void
+id|__user
 op_star
 id|ptr
 comma
@@ -25,25 +24,27 @@ r_int
 id|bytecount
 )paren
 (brace
-r_char
-op_star
-id|src
-comma
-op_star
-id|dst
-comma
-id|buf
-(braket
-l_int|256
-)braket
-suffix:semicolon
-multiline_comment|/* temporary buffer (don&squot;t overflow kernel stack!) */
 r_int
 r_int
 id|bytes_left
 comma
 id|n
 suffix:semicolon
+r_char
+id|__user
+op_star
+id|src
+comma
+op_star
+id|dst
+suffix:semicolon
+r_char
+id|buf
+(braket
+l_int|256
+)braket
+suffix:semicolon
+multiline_comment|/* temporary buffer (don&squot;t overflow kernel stack!) */
 r_if
 c_cond
 (paren
@@ -67,6 +68,7 @@ id|src
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|IA32_LDT_OFFSET
@@ -157,6 +159,7 @@ DECL|function|read_default_ldt
 id|read_default_ldt
 (paren
 r_void
+id|__user
 op_star
 id|ptr
 comma
@@ -222,6 +225,7 @@ DECL|function|write_ldt
 id|write_ldt
 (paren
 r_void
+id|__user
 op_star
 id|ptr
 comma
@@ -427,6 +431,7 @@ id|entry
 comma
 (paren
 id|__u64
+id|__user
 op_star
 )paren
 id|IA32_LDT_OFFSET
@@ -481,7 +486,7 @@ op_assign
 id|read_ldt
 c_func
 (paren
-id|P
+id|compat_ptr
 c_func
 (paren
 id|ptr
@@ -500,7 +505,7 @@ op_assign
 id|write_ldt
 c_func
 (paren
-id|P
+id|compat_ptr
 c_func
 (paren
 id|ptr
@@ -521,7 +526,7 @@ op_assign
 id|read_default_ldt
 c_func
 (paren
-id|P
+id|compat_ptr
 c_func
 (paren
 id|ptr
@@ -540,7 +545,7 @@ op_assign
 id|write_ldt
 c_func
 (paren
-id|P
+id|compat_ptr
 c_func
 (paren
 id|ptr

@@ -521,7 +521,13 @@ c_cond
 id|memcmp
 c_func
 (paren
-id|skb-&gt;mac.ethernet-&gt;h_dest
+id|eth_hdr
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|h_dest
 comma
 id|skb-&gt;dev-&gt;dev_addr
 comma

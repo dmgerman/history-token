@@ -333,6 +333,7 @@ id|siginfo.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -975,6 +976,7 @@ id|bundle
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|fault_ip
@@ -1158,6 +1160,7 @@ id|siginfo.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -1289,6 +1292,7 @@ id|siginfo.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -1548,6 +1552,7 @@ id|si.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -1876,6 +1881,7 @@ id|regs
 )paren
 (brace
 r_void
+id|__user
 op_star
 id|addr
 suffix:semicolon
@@ -1908,6 +1914,7 @@ id|addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|ifa
@@ -1928,6 +1935,7 @@ id|addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -2037,6 +2045,7 @@ id|siginfo.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -2249,6 +2258,7 @@ id|siginfo.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|ifa
@@ -2339,6 +2349,7 @@ id|siginfo.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -2446,6 +2457,7 @@ id|siginfo.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren

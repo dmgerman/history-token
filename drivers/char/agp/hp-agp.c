@@ -101,12 +101,14 @@ id|_hp_private
 DECL|member|ioc_regs
 r_volatile
 id|u8
+id|__iomem
 op_star
 id|ioc_regs
 suffix:semicolon
 DECL|member|lba_regs
 r_volatile
 id|u8
+id|__iomem
 op_star
 id|lba_regs
 suffix:semicolon
@@ -266,7 +268,7 @@ id|hp-&gt;io_tlb_ps
 suffix:semicolon
 id|hp-&gt;gatt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hp-&gt;gatt_entries
 op_assign
@@ -360,7 +362,7 @@ id|HP_ZX1_SBA_IOMMU_COOKIE
 multiline_comment|/* Normal case when no AGP device in system */
 id|hp-&gt;gatt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hp-&gt;gatt_entries
 op_assign
@@ -617,6 +619,7 @@ id|hp_zx1_lba_find_capability
 (paren
 r_volatile
 id|u8
+id|__iomem
 op_star
 id|hpa
 comma
@@ -1035,10 +1038,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|hp-&gt;ioc_regs
 )paren
 suffix:semicolon
@@ -1051,10 +1050,6 @@ id|hp-&gt;lba_regs
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|hp-&gt;lba_regs
 )paren
 suffix:semicolon
@@ -1164,7 +1159,7 @@ l_string|&quot;memory for I/O PDIR&bslash;n&quot;
 suffix:semicolon
 id|hp-&gt;gatt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hp-&gt;gatt_entries
 op_assign

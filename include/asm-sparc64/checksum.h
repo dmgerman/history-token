@@ -51,7 +51,7 @@ id|sum
 )paren
 suffix:semicolon
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 DECL|function|csum_partial_copy_nocheck
@@ -129,7 +129,7 @@ id|ret
 suffix:semicolon
 )brace
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 DECL|function|csum_partial_copy_from_user
@@ -138,6 +138,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -173,6 +174,12 @@ r_return
 id|csum_partial_copy_sparc64
 c_func
 (paren
+(paren
+id|__force
+r_const
+r_char
+op_star
+)paren
 id|src
 comma
 id|dst
@@ -198,6 +205,7 @@ op_star
 id|src
 comma
 r_char
+id|__user
 op_star
 id|dst
 comma
@@ -210,7 +218,7 @@ id|sum
 )paren
 suffix:semicolon
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 DECL|function|csum_and_copy_to_user
@@ -286,7 +294,7 @@ suffix:semicolon
 multiline_comment|/* Fold a partial checksum without adding pseudo headers. */
 DECL|function|csum_fold
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|csum_fold
@@ -345,7 +353,7 @@ suffix:semicolon
 )brace
 DECL|function|csum_tcpudp_nofold
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|csum_tcpudp_nofold
@@ -479,7 +487,7 @@ DECL|macro|_HAVE_ARCH_IPV6_CSUM
 mdefine_line|#define _HAVE_ARCH_IPV6_CSUM
 DECL|function|csum_ipv6_magic
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 r_int
@@ -589,7 +597,7 @@ suffix:semicolon
 multiline_comment|/* this routine is used for miscellaneous IP-like checksums, mainly in icmp.c */
 DECL|function|ip_compute_csum
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|ip_compute_csum
