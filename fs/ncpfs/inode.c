@@ -302,7 +302,7 @@ suffix:semicolon
 r_extern
 r_struct
 id|dentry_operations
-id|ncp_dentry_operations
+id|ncp_root_dentry_operations
 suffix:semicolon
 macro_line|#ifdef CONFIG_NCPFS_EXTRAS
 r_extern
@@ -2190,7 +2190,7 @@ suffix:semicolon
 id|sb-&gt;s_root-&gt;d_op
 op_assign
 op_amp
-id|ncp_dentry_operations
+id|ncp_root_dentry_operations
 suffix:semicolon
 r_return
 l_int|0
