@@ -1,14 +1,7 @@
-multiline_comment|/*&n; * dib3000mb.h&n; *&n; * Copyright (C) 2004 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; * &n; *&n; * for more information see dib3000mb.c .&n; */
-macro_line|#ifndef __DIB3000MB_H_INCLUDED__
-DECL|macro|__DIB3000MB_H_INCLUDED__
-mdefine_line|#define __DIB3000MB_H_INCLUDED__
-multiline_comment|/* info and err, taken from usb.h, if there is anything available like by default,&n; * please change !&n; */
-DECL|macro|err
-mdefine_line|#define err(format, arg...) printk(KERN_ERR &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
-DECL|macro|info
-mdefine_line|#define info(format, arg...) printk(KERN_INFO &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
-DECL|macro|warn
-mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
+multiline_comment|/*&n; * dib3000mb_priv.h&n; *&n; * Copyright (C) 2004 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; * for more information see dib3000mb.c .&n; */
+macro_line|#ifndef __DIB3000MB_PRIV_H_INCLUDED__
+DECL|macro|__DIB3000MB_PRIV_H_INCLUDED__
+mdefine_line|#define __DIB3000MB_PRIV_H_INCLUDED__
 multiline_comment|/* register addresses and some of their default values */
 multiline_comment|/* restart subsystems */
 DECL|macro|DIB3000MB_REG_RESTART
@@ -24,56 +17,18 @@ mdefine_line|#define DIB3000MB_RESTART_AGC&t;&t;&t;&t;(1 &lt;&lt; 3)
 multiline_comment|/* FFT size */
 DECL|macro|DIB3000MB_REG_FFT
 mdefine_line|#define DIB3000MB_REG_FFT&t;&t;&t;&t;(     1)
-DECL|macro|DIB3000MB_FFT_2K
-mdefine_line|#define DIB3000MB_FFT_2K&t;&t;&t;&t;&t;(     0)
-DECL|macro|DIB3000MB_FFT_8K
-mdefine_line|#define DIB3000MB_FFT_8K&t;&t;&t;&t;&t;(     1)
-DECL|macro|DIB3000MB_FFT_AUTO
-mdefine_line|#define DIB3000MB_FFT_AUTO&t;&t;&t;&t;&t;(     1)
 multiline_comment|/* Guard time */
 DECL|macro|DIB3000MB_REG_GUARD_TIME
 mdefine_line|#define DIB3000MB_REG_GUARD_TIME&t;&t;(     2)
-DECL|macro|DIB3000MB_GUARD_TIME_1_32
-mdefine_line|#define DIB3000MB_GUARD_TIME_1_32&t;&t;&t;(     0)
-DECL|macro|DIB3000MB_GUARD_TIME_1_16
-mdefine_line|#define DIB3000MB_GUARD_TIME_1_16&t;&t;&t;(     1)
-DECL|macro|DIB3000MB_GUARD_TIME_1_8
-mdefine_line|#define DIB3000MB_GUARD_TIME_1_8&t;&t;&t;(     2)
-DECL|macro|DIB3000MB_GUARD_TIME_1_4
-mdefine_line|#define DIB3000MB_GUARD_TIME_1_4&t;&t;&t;(     3)
-DECL|macro|DIB3000MB_GUARD_TIME_AUTO
-mdefine_line|#define DIB3000MB_GUARD_TIME_AUTO&t;&t;&t;(     0)
 multiline_comment|/* QAM */
 DECL|macro|DIB3000MB_REG_QAM
 mdefine_line|#define DIB3000MB_REG_QAM&t;&t;&t;&t;(     3)
-DECL|macro|DIB3000MB_QAM_QPSK
-mdefine_line|#define DIB3000MB_QAM_QPSK&t;&t;&t;&t;&t;(     0)
-DECL|macro|DIB3000MB_QAM_QAM16
-mdefine_line|#define DIB3000MB_QAM_QAM16&t;&t;&t;&t;&t;(     1)
-DECL|macro|DIB3000MB_QAM_QAM64
-mdefine_line|#define DIB3000MB_QAM_QAM64&t;&t;&t;&t;&t;(     2)
-DECL|macro|DIB3000MB_QAM_RESERVED
-mdefine_line|#define DIB3000MB_QAM_RESERVED&t;&t;&t;&t;(     3)
 multiline_comment|/* Alpha coefficient high priority Viterbi algorithm */
 DECL|macro|DIB3000MB_REG_VIT_ALPHA
 mdefine_line|#define DIB3000MB_REG_VIT_ALPHA&t;&t;&t;(     4)
-DECL|macro|DIB3000MB_VIT_ALPHA_OFF
-mdefine_line|#define DIB3000MB_VIT_ALPHA_OFF&t;&t;&t;&t;(     0)
-DECL|macro|DIB3000MB_VIT_ALPHA_1
-mdefine_line|#define DIB3000MB_VIT_ALPHA_1&t;&t;&t;&t;(     1)
-DECL|macro|DIB3000MB_VIT_ALPHA_2
-mdefine_line|#define DIB3000MB_VIT_ALPHA_2&t;&t;&t;&t;(     2)
-DECL|macro|DIB3000MB_VIT_ALPHA_4
-mdefine_line|#define DIB3000MB_VIT_ALPHA_4&t;&t;&t;&t;(     4)
-DECL|macro|DIB3000MB_VIT_ALPHA_AUTO
-mdefine_line|#define DIB3000MB_VIT_ALPHA_AUTO&t;&t;&t;(     7)
 multiline_comment|/* spectrum inversion */
 DECL|macro|DIB3000MB_REG_DDS_INV
 mdefine_line|#define DIB3000MB_REG_DDS_INV&t;&t;&t;(     5)
-DECL|macro|DIB3000MB_DDS_INV_OFF
-mdefine_line|#define DIB3000MB_DDS_INV_OFF&t;&t;&t;&t;(     0)
-DECL|macro|DIB3000MB_DDS_INV_ON
-mdefine_line|#define DIB3000MB_DDS_INV_ON&t;&t;&t;&t;(     1)
 multiline_comment|/* DDS frequency value (IF position) ad ? values don&squot;t match reg_3000mb.txt */
 DECL|macro|DIB3000MB_REG_DDS_FREQ_MSB
 mdefine_line|#define DIB3000MB_REG_DDS_FREQ_MSB&t;&t;(     6)
@@ -84,10 +39,6 @@ mdefine_line|#define DIB3000MB_DDS_FREQ_MSB&t;&t;&t;&t;(   178)
 DECL|macro|DIB3000MB_DDS_FREQ_LSB
 mdefine_line|#define DIB3000MB_DDS_FREQ_LSB&t;&t;&t;&t;(  8990)
 multiline_comment|/* timing frequency (carrier spacing) */
-DECL|macro|DIB3000MB_REG_TIMING_FREQ_MSB
-mdefine_line|#define DIB3000MB_REG_TIMING_FREQ_MSB&t;(     8)
-DECL|macro|DIB3000MB_REG_TIMING_FREQ_LSB
-mdefine_line|#define DIB3000MB_REG_TIMING_FREQ_LSB&t;(     9)
 DECL|variable|dib3000mb_reg_timing_freq
 r_static
 id|u16
@@ -96,9 +47,9 @@ id|dib3000mb_reg_timing_freq
 )braket
 op_assign
 (brace
-id|DIB3000MB_REG_TIMING_FREQ_MSB
+l_int|8
 comma
-id|DIB3000MB_REG_TIMING_FREQ_LSB
+l_int|9
 )brace
 suffix:semicolon
 DECL|variable|dib3000mb_timing_freq
@@ -136,21 +87,26 @@ multiline_comment|/* 8 MHz */
 )brace
 suffix:semicolon
 multiline_comment|/* impulse noise parameter */
-DECL|macro|DIB3000MB_REG_IMPNOISE_10
-mdefine_line|#define DIB3000MB_REG_IMPNOISE_10&t;&t;(    10)
-DECL|macro|DIB3000MB_REG_IMPNOISE_11
-mdefine_line|#define DIB3000MB_REG_IMPNOISE_11&t;&t;(    11)
-DECL|macro|DIB3000MB_REG_IMPNOISE_12
-mdefine_line|#define DIB3000MB_REG_IMPNOISE_12&t;&t;(    12)
-DECL|macro|DIB3000MB_REG_IMPNOISE_13
-mdefine_line|#define DIB3000MB_REG_IMPNOISE_13&t;&t;(    13)
-DECL|macro|DIB3000MB_REG_IMPNOISE_14
-mdefine_line|#define DIB3000MB_REG_IMPNOISE_14&t;&t;(    14)
-DECL|macro|DIB3000MB_REG_IMPNOISE_15
-mdefine_line|#define DIB3000MB_REG_IMPNOISE_15&t;&t;(    15)
 multiline_comment|/* 36 ??? */
-DECL|macro|DIB3000MB_REG_IMPNOISE_36
-mdefine_line|#define DIB3000MB_REG_IMPNOISE_36&t;&t;(    36)
+DECL|variable|dib3000mb_reg_impulse_noise
+r_static
+id|u16
+id|dib3000mb_reg_impulse_noise
+(braket
+)braket
+op_assign
+(brace
+l_int|10
+comma
+l_int|11
+comma
+l_int|12
+comma
+l_int|15
+comma
+l_int|36
+)brace
+suffix:semicolon
 DECL|enum|dib3000mb_impulse_noise_type
 r_enum
 id|dib3000mb_impulse_noise_type
@@ -166,25 +122,6 @@ id|DIB3000MB_IMPNOISE_FIXED
 comma
 DECL|enumerator|DIB3000MB_IMPNOISE_DEFAULT
 id|DIB3000MB_IMPNOISE_DEFAULT
-)brace
-suffix:semicolon
-DECL|variable|dib3000mb_reg_impulse_noise
-r_static
-id|u16
-id|dib3000mb_reg_impulse_noise
-(braket
-)braket
-op_assign
-(brace
-id|DIB3000MB_REG_IMPNOISE_10
-comma
-id|DIB3000MB_REG_IMPNOISE_11
-comma
-id|DIB3000MB_REG_IMPNOISE_12
-comma
-id|DIB3000MB_REG_IMPNOISE_15
-comma
-id|DIB3000MB_REG_IMPNOISE_36
 )brace
 suffix:semicolon
 DECL|variable|dib3000mb_impulse_noise_values
@@ -254,34 +191,6 @@ multiline_comment|/* default */
 suffix:semicolon
 multiline_comment|/*&n; * Dual Automatic-Gain-Control&n; * - gains RF in tuner (AGC1)&n; * - gains IF after filtering (AGC2)&n; */
 multiline_comment|/* also from 16 to 18 */
-DECL|macro|DIB3000MB_REG_AGC_GAIN_19
-mdefine_line|#define DIB3000MB_REG_AGC_GAIN_19&t;&t;(    19)
-DECL|macro|DIB3000MB_REG_AGC_GAIN_20
-mdefine_line|#define DIB3000MB_REG_AGC_GAIN_20&t;&t;(    20)
-DECL|macro|DIB3000MB_REG_AGC_GAIN_21
-mdefine_line|#define DIB3000MB_REG_AGC_GAIN_21&t;&t;(    21)
-DECL|macro|DIB3000MB_REG_AGC_GAIN_22
-mdefine_line|#define DIB3000MB_REG_AGC_GAIN_22&t;&t;(    22)
-DECL|macro|DIB3000MB_REG_AGC_GAIN_23
-mdefine_line|#define DIB3000MB_REG_AGC_GAIN_23&t;&t;(    23)
-DECL|macro|DIB3000MB_REG_AGC_GAIN_24
-mdefine_line|#define DIB3000MB_REG_AGC_GAIN_24&t;&t;(    24)
-DECL|macro|DIB3000MB_REG_AGC_GAIN_25
-mdefine_line|#define DIB3000MB_REG_AGC_GAIN_25&t;&t;(    25)
-DECL|macro|DIB3000MB_REG_AGC_GAIN_26
-mdefine_line|#define DIB3000MB_REG_AGC_GAIN_26&t;&t;(    26)
-DECL|macro|DIB3000MB_REG_AGC_GAIN_27
-mdefine_line|#define DIB3000MB_REG_AGC_GAIN_27&t;&t;(    27)
-DECL|macro|DIB3000MB_REG_AGC_GAIN_28
-mdefine_line|#define DIB3000MB_REG_AGC_GAIN_28&t;&t;(    28)
-DECL|macro|DIB3000MB_REG_AGC_GAIN_29
-mdefine_line|#define DIB3000MB_REG_AGC_GAIN_29&t;&t;(    29)
-DECL|macro|DIB3000MB_REG_AGC_GAIN_30
-mdefine_line|#define DIB3000MB_REG_AGC_GAIN_30&t;&t;(    30)
-DECL|macro|DIB3000MB_REG_AGC_GAIN_31
-mdefine_line|#define DIB3000MB_REG_AGC_GAIN_31&t;&t;(    31)
-DECL|macro|DIB3000MB_REG_AGC_GAIN_32
-mdefine_line|#define DIB3000MB_REG_AGC_GAIN_32&t;&t;(    32)
 DECL|variable|dib3000mb_reg_agc_gain
 r_static
 id|u16
@@ -290,33 +199,33 @@ id|dib3000mb_reg_agc_gain
 )braket
 op_assign
 (brace
-id|DIB3000MB_REG_AGC_GAIN_19
+l_int|19
 comma
-id|DIB3000MB_REG_AGC_GAIN_20
+l_int|20
 comma
-id|DIB3000MB_REG_AGC_GAIN_21
+l_int|21
 comma
-id|DIB3000MB_REG_AGC_GAIN_22
+l_int|22
 comma
-id|DIB3000MB_REG_AGC_GAIN_23
+l_int|23
 comma
-id|DIB3000MB_REG_AGC_GAIN_24
+l_int|24
 comma
-id|DIB3000MB_REG_AGC_GAIN_25
+l_int|25
 comma
-id|DIB3000MB_REG_AGC_GAIN_26
+l_int|26
 comma
-id|DIB3000MB_REG_AGC_GAIN_27
+l_int|27
 comma
-id|DIB3000MB_REG_AGC_GAIN_28
+l_int|28
 comma
-id|DIB3000MB_REG_AGC_GAIN_29
+l_int|29
 comma
-id|DIB3000MB_REG_AGC_GAIN_30
+l_int|30
 comma
-id|DIB3000MB_REG_AGC_GAIN_31
+l_int|31
 comma
-id|DIB3000MB_REG_AGC_GAIN_32
+l_int|32
 )brace
 suffix:semicolon
 DECL|variable|dib3000mb_default_agc_gain
@@ -359,19 +268,7 @@ l_int|23
 suffix:semicolon
 multiline_comment|/* IF ??? */
 multiline_comment|/* phase noise */
-DECL|macro|DIB3000MB_REG_PHASE_NOISE_33
-mdefine_line|#define DIB3000MB_REG_PHASE_NOISE_33&t;&t;(    33)
-DECL|macro|DIB3000MB_REG_PHASE_NOISE_34
-mdefine_line|#define DIB3000MB_REG_PHASE_NOISE_34&t;&t;(    34)
-DECL|macro|DIB3000MB_REG_PHASE_NOISE_35
-mdefine_line|#define DIB3000MB_REG_PHASE_NOISE_35&t;&t;(    35)
-DECL|macro|DIB3000MB_REG_PHASE_NOISE_36
-mdefine_line|#define DIB3000MB_REG_PHASE_NOISE_36&t;&t;(    36)
-DECL|macro|DIB3000MB_REG_PHASE_NOISE_37
-mdefine_line|#define DIB3000MB_REG_PHASE_NOISE_37&t;&t;(    37)
-DECL|macro|DIB3000MB_REG_PHASE_NOISE_38
-mdefine_line|#define DIB3000MB_REG_PHASE_NOISE_38&t;&t;(    38)
-multiline_comment|/* DIB3000MB_REG_PHASE_NOISE_36 is set when setting the impulse noise */
+multiline_comment|/* 36 is set when setting the impulse noise */
 DECL|variable|dib3000mb_reg_phase_noise
 r_static
 id|u16
@@ -380,15 +277,15 @@ id|dib3000mb_reg_phase_noise
 )braket
 op_assign
 (brace
-id|DIB3000MB_REG_PHASE_NOISE_33
+l_int|33
 comma
-id|DIB3000MB_REG_PHASE_NOISE_34
+l_int|34
 comma
-id|DIB3000MB_REG_PHASE_NOISE_35
+l_int|35
 comma
-id|DIB3000MB_REG_PHASE_NOISE_37
+l_int|37
 comma
-id|DIB3000MB_REG_PHASE_NOISE_38
+l_int|38
 )brace
 suffix:semicolon
 DECL|variable|dib3000mb_default_noise_phase
@@ -411,10 +308,6 @@ l_int|4
 )brace
 suffix:semicolon
 multiline_comment|/* lock duration */
-DECL|macro|DIB3000MB_REG_LOCK_DURATION_39
-mdefine_line|#define DIB3000MB_REG_LOCK_DURATION_39&t;(    39)
-DECL|macro|DIB3000MB_REG_LOCK_DURATION_40
-mdefine_line|#define DIB3000MB_REG_LOCK_DURATION_40&t;(    40)
 DECL|variable|dib3000mb_reg_lock_duration
 r_static
 id|u16
@@ -423,9 +316,9 @@ id|dib3000mb_reg_lock_duration
 )braket
 op_assign
 (brace
-id|DIB3000MB_REG_LOCK_DURATION_39
+l_int|39
 comma
-id|DIB3000MB_REG_LOCK_DURATION_40
+l_int|40
 )brace
 suffix:semicolon
 DECL|variable|dib3000mb_default_lock_duration
@@ -442,22 +335,6 @@ l_int|135
 )brace
 suffix:semicolon
 multiline_comment|/* AGC loop bandwidth */
-DECL|macro|DIB3000MB_REG_AGC_BW_43
-mdefine_line|#define DIB3000MB_REG_AGC_BW_43&t;&t;&t;(    43)
-DECL|macro|DIB3000MB_REG_AGC_BW_44
-mdefine_line|#define DIB3000MB_REG_AGC_BW_44&t;&t;&t;(    44)
-DECL|macro|DIB3000MB_REG_AGC_BW_45
-mdefine_line|#define DIB3000MB_REG_AGC_BW_45&t;&t;&t;(    45)
-DECL|macro|DIB3000MB_REG_AGC_BW_46
-mdefine_line|#define DIB3000MB_REG_AGC_BW_46&t;&t;&t;(    46)
-DECL|macro|DIB3000MB_REG_AGC_BW_47
-mdefine_line|#define DIB3000MB_REG_AGC_BW_47&t;&t;&t;(    47)
-DECL|macro|DIB3000MB_REG_AGC_BW_48
-mdefine_line|#define DIB3000MB_REG_AGC_BW_48&t;&t;&t;(    48)
-DECL|macro|DIB3000MB_REG_AGC_BW_49
-mdefine_line|#define DIB3000MB_REG_AGC_BW_49&t;&t;&t;(    49)
-DECL|macro|DIB3000MB_REG_AGC_BW_50
-mdefine_line|#define DIB3000MB_REG_AGC_BW_50&t;&t;&t;(    50)
 DECL|variable|dib3000mb_reg_agc_bandwidth
 r_static
 id|u16
@@ -466,21 +343,21 @@ id|dib3000mb_reg_agc_bandwidth
 )braket
 op_assign
 (brace
-id|DIB3000MB_REG_AGC_BW_43
+l_int|43
 comma
-id|DIB3000MB_REG_AGC_BW_44
+l_int|44
 comma
-id|DIB3000MB_REG_AGC_BW_45
+l_int|45
 comma
-id|DIB3000MB_REG_AGC_BW_46
+l_int|46
 comma
-id|DIB3000MB_REG_AGC_BW_47
+l_int|47
 comma
-id|DIB3000MB_REG_AGC_BW_48
+l_int|48
 comma
-id|DIB3000MB_REG_AGC_BW_49
+l_int|49
 comma
-id|DIB3000MB_REG_AGC_BW_50
+l_int|50
 )brace
 suffix:semicolon
 DECL|variable|dib3000mb_agc_bandwidth_low
@@ -555,87 +432,7 @@ mdefine_line|#define DIB3000MB_LOCK2_DEFAULT&t;&t;&t;&t;(0x0080)
 multiline_comment|/*&n; * SEQ ? what was that again ... :)&n; * changes when, inversion, guard time and fft is&n; * either automatically detected or not&n; */
 DECL|macro|DIB3000MB_REG_SEQ
 mdefine_line|#define DIB3000MB_REG_SEQ&t;&t;&t;&t;(    54)
-multiline_comment|/* all values have been set manually */
-DECL|variable|dib3000mb_seq
-r_static
-id|u16
-id|dib3000mb_seq
-(braket
-l_int|2
-)braket
-(braket
-l_int|2
-)braket
-(braket
-l_int|2
-)braket
-op_assign
-multiline_comment|/* fft,gua,   inv   */
-(brace
-multiline_comment|/* fft */
-(brace
-multiline_comment|/* gua */
-(brace
-l_int|0
-comma
-l_int|1
-)brace
-comma
-multiline_comment|/*  0   0   { 0,1 } */
-(brace
-l_int|3
-comma
-l_int|9
-)brace
-comma
-multiline_comment|/*  0   1   { 0,1 } */
-)brace
-comma
-(brace
-(brace
-l_int|2
-comma
-l_int|5
-)brace
-comma
-multiline_comment|/*  1   0   { 0,1 } */
-(brace
-l_int|6
-comma
-l_int|11
-)brace
-comma
-multiline_comment|/*  1   1   { 0,1 } */
-)brace
-)brace
-suffix:semicolon
 multiline_comment|/* bandwidth */
-DECL|macro|DIB3000MB_REG_BW_55
-mdefine_line|#define DIB3000MB_REG_BW_55&t;&t;&t;&t;(    55)
-DECL|macro|DIB3000MB_REG_BW_56
-mdefine_line|#define DIB3000MB_REG_BW_56&t;&t;&t;&t;(    56)
-DECL|macro|DIB3000MB_REG_BW_57
-mdefine_line|#define DIB3000MB_REG_BW_57&t;&t;&t;&t;(    57)
-DECL|macro|DIB3000MB_REG_BW_58
-mdefine_line|#define DIB3000MB_REG_BW_58&t;&t;&t;&t;(    58)
-DECL|macro|DIB3000MB_REG_BW_59
-mdefine_line|#define DIB3000MB_REG_BW_59&t;&t;&t;&t;(    59)
-DECL|macro|DIB3000MB_REG_BW_60
-mdefine_line|#define DIB3000MB_REG_BW_60&t;&t;&t;&t;(    60)
-DECL|macro|DIB3000MB_REG_BW_61
-mdefine_line|#define DIB3000MB_REG_BW_61&t;&t;&t;&t;(    61)
-DECL|macro|DIB3000MB_REG_BW_62
-mdefine_line|#define DIB3000MB_REG_BW_62&t;&t;&t;&t;(    62)
-DECL|macro|DIB3000MB_REG_BW_63
-mdefine_line|#define DIB3000MB_REG_BW_63&t;&t;&t;&t;(    63)
-DECL|macro|DIB3000MB_REG_BW_64
-mdefine_line|#define DIB3000MB_REG_BW_64&t;&t;&t;&t;(    64)
-DECL|macro|DIB3000MB_REG_BW_65
-mdefine_line|#define DIB3000MB_REG_BW_65&t;&t;&t;&t;(    65)
-DECL|macro|DIB3000MB_REG_BW_66
-mdefine_line|#define DIB3000MB_REG_BW_66&t;&t;&t;&t;(    66)
-DECL|macro|DIB3000MB_REG_BW_67
-mdefine_line|#define DIB3000MB_REG_BW_67&t;&t;&t;&t;(    67)
 DECL|variable|dib3000mb_reg_bandwidth
 r_static
 id|u16
@@ -644,31 +441,31 @@ id|dib3000mb_reg_bandwidth
 )braket
 op_assign
 (brace
-id|DIB3000MB_REG_BW_55
+l_int|55
 comma
-id|DIB3000MB_REG_BW_56
+l_int|56
 comma
-id|DIB3000MB_REG_BW_57
+l_int|57
 comma
-id|DIB3000MB_REG_BW_58
+l_int|58
 comma
-id|DIB3000MB_REG_BW_59
+l_int|59
 comma
-id|DIB3000MB_REG_BW_60
+l_int|60
 comma
-id|DIB3000MB_REG_BW_61
+l_int|61
 comma
-id|DIB3000MB_REG_BW_62
+l_int|62
 comma
-id|DIB3000MB_REG_BW_63
+l_int|63
 comma
-id|DIB3000MB_REG_BW_64
+l_int|64
 comma
-id|DIB3000MB_REG_BW_65
+l_int|65
 comma
-id|DIB3000MB_REG_BW_66
+l_int|66
 comma
-id|DIB3000MB_REG_BW_67
+l_int|67
 )brace
 suffix:semicolon
 DECL|variable|dib3000mb_bandwidth_6mhz
@@ -831,7 +628,7 @@ multiline_comment|/* mobile mode ??? */
 DECL|macro|DIB3000MB_REG_MOBILE_MODE
 mdefine_line|#define DIB3000MB_REG_MOBILE_MODE&t;&t;(   101)
 DECL|macro|DIB3000MB_MOBILE_MODE_ON
-mdefine_line|#define DIB3000MB_MOBILE_MODE_ON&t;&t;&t;&t;(     1)
+mdefine_line|#define DIB3000MB_MOBILE_MODE_ON&t;&t;&t;(     1)
 DECL|macro|DIB3000MB_MOBILE_MODE_OFF
 mdefine_line|#define DIB3000MB_MOBILE_MODE_OFF&t;&t;&t;(     0)
 DECL|macro|DIB3000MB_REG_UNK_106
@@ -861,7 +658,7 @@ multiline_comment|/* QAM for mobile mode */
 DECL|macro|DIB3000MB_REG_MOBILE_MODE_QAM
 mdefine_line|#define DIB3000MB_REG_MOBILE_MODE_QAM&t;(   126)
 DECL|macro|DIB3000MB_MOBILE_MODE_QAM_64
-mdefine_line|#define DIB3000MB_MOBILE_MODE_QAM_64&t;&t;&t;(     3)
+mdefine_line|#define DIB3000MB_MOBILE_MODE_QAM_64&t;&t;(     3)
 DECL|macro|DIB3000MB_MOBILE_MODE_QAM_QPSK_16
 mdefine_line|#define DIB3000MB_MOBILE_MODE_QAM_QPSK_16&t;(     1)
 DECL|macro|DIB3000MB_MOBILE_MODE_QAM_OFF
@@ -876,31 +673,12 @@ mdefine_line|#define DIB3000MB_DATA_DIVERSITY_IN_ON&t;&t;&t;(     2)
 multiline_comment|/* vit hrch */
 DECL|macro|DIB3000MB_REG_VIT_HRCH
 mdefine_line|#define DIB3000MB_REG_VIT_HRCH&t;&t;&t;(   128)
-DECL|macro|DIB3000MB_VIT_HRCH_ON
-mdefine_line|#define DIB3000MB_VIT_HRCH_ON&t;&t;&t;&t;(     1)
-DECL|macro|DIB3000MB_VIT_HRCH_OFF
-mdefine_line|#define DIB3000MB_VIT_HRCH_OFF&t;&t;&t;&t;(     0)
 multiline_comment|/* vit code rate */
 DECL|macro|DIB3000MB_REG_VIT_CODE_RATE
 mdefine_line|#define DIB3000MB_REG_VIT_CODE_RATE&t;&t;(   129)
-multiline_comment|/* forward error correction code rates */
-DECL|macro|DIB3000MB_FEC_1_2
-mdefine_line|#define DIB3000MB_FEC_1_2&t;&t;&t;&t;&t;(     1)
-DECL|macro|DIB3000MB_FEC_2_3
-mdefine_line|#define DIB3000MB_FEC_2_3&t;&t;&t;&t;&t;(     2)
-DECL|macro|DIB3000MB_FEC_3_4
-mdefine_line|#define DIB3000MB_FEC_3_4&t;&t;&t;&t;&t;(     3)
-DECL|macro|DIB3000MB_FEC_5_6
-mdefine_line|#define DIB3000MB_FEC_5_6&t;&t;&t;&t;&t;(     5)
-DECL|macro|DIB3000MB_FEC_7_8
-mdefine_line|#define DIB3000MB_FEC_7_8&t;&t;&t;&t;&t;(     7)
 multiline_comment|/* vit select hp */
 DECL|macro|DIB3000MB_REG_VIT_HP
 mdefine_line|#define DIB3000MB_REG_VIT_HP&t;&t;&t;(   130)
-DECL|macro|DIB3000MB_VIT_LP
-mdefine_line|#define DIB3000MB_VIT_LP&t;&t;&t;&t;&t;(     0)
-DECL|macro|DIB3000MB_VIT_HP
-mdefine_line|#define DIB3000MB_VIT_HP&t;&t;&t;&t;&t;(     1)
 multiline_comment|/* time frame for Bit-Error-Rate calculation */
 DECL|macro|DIB3000MB_REG_BERLEN
 mdefine_line|#define DIB3000MB_REG_BERLEN&t;&t;&t;(   135)
@@ -924,10 +702,12 @@ DECL|macro|DIB3000MB_MPEG2_OUT_MODE_204
 mdefine_line|#define DIB3000MB_MPEG2_OUT_MODE_204&t;&t;(     0)
 DECL|macro|DIB3000MB_MPEG2_OUT_MODE_188
 mdefine_line|#define DIB3000MB_MPEG2_OUT_MODE_188&t;&t;(     1)
-DECL|macro|DIB3000MB_REG_FIFO_144
-mdefine_line|#define DIB3000MB_REG_FIFO_144&t;&t;&t;(   144)
-DECL|macro|DIB3000MB_FIFO_144
-mdefine_line|#define DIB3000MB_FIFO_144&t;&t;&t;&t;&t;(     1)
+DECL|macro|DIB3000MB_REG_PID_PARSE
+mdefine_line|#define DIB3000MB_REG_PID_PARSE&t;&t;&t;(   144)
+DECL|macro|DIB3000MB_PID_PARSE_INHIBIT
+mdefine_line|#define DIB3000MB_PID_PARSE_INHIBIT&t;&t;(     0)
+DECL|macro|DIB3000MB_PID_PARSE_ACTIVATE
+mdefine_line|#define DIB3000MB_PID_PARSE_ACTIVATE&t;(     1)
 DECL|macro|DIB3000MB_REG_FIFO
 mdefine_line|#define DIB3000MB_REG_FIFO&t;&t;&t;&t;(   145)
 DECL|macro|DIB3000MB_FIFO_INHIBIT
@@ -942,41 +722,11 @@ DECL|macro|DIB3000MB_REG_FIFO_147
 mdefine_line|#define DIB3000MB_REG_FIFO_147&t;&t;&t;(   147)
 DECL|macro|DIB3000MB_FIFO_147
 mdefine_line|#define DIB3000MB_FIFO_147&t;&t;&t;&t;&t;(0x0100)
-multiline_comment|/*&n; * pidfilter&n; * it is not a hardware pidfilter but a filter which drops all pids&n; * except the ones set. Necessary because of the limited USB1.1 bandwidth.&n; */
-DECL|macro|DIB3000MB_REG_FILTER_PID_0
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_0&t;&t;(   153)
-DECL|macro|DIB3000MB_REG_FILTER_PID_1
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_1&t;&t;(   154)
-DECL|macro|DIB3000MB_REG_FILTER_PID_2
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_2&t;&t;(   155)
-DECL|macro|DIB3000MB_REG_FILTER_PID_3
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_3&t;&t;(   156)
-DECL|macro|DIB3000MB_REG_FILTER_PID_4
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_4&t;&t;(   157)
-DECL|macro|DIB3000MB_REG_FILTER_PID_5
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_5&t;&t;(   158)
-DECL|macro|DIB3000MB_REG_FILTER_PID_6
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_6&t;&t;(   159)
-DECL|macro|DIB3000MB_REG_FILTER_PID_7
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_7&t;&t;(   160)
-DECL|macro|DIB3000MB_REG_FILTER_PID_8
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_8&t;&t;(   161)
-DECL|macro|DIB3000MB_REG_FILTER_PID_9
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_9&t;&t;(   162)
-DECL|macro|DIB3000MB_REG_FILTER_PID_10
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_10&t;&t;(   163)
-DECL|macro|DIB3000MB_REG_FILTER_PID_11
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_11&t;&t;(   164)
-DECL|macro|DIB3000MB_REG_FILTER_PID_12
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_12&t;&t;(   165)
-DECL|macro|DIB3000MB_REG_FILTER_PID_13
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_13&t;&t;(   166)
-DECL|macro|DIB3000MB_REG_FILTER_PID_14
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_14&t;&t;(   167)
-DECL|macro|DIB3000MB_REG_FILTER_PID_15
-mdefine_line|#define DIB3000MB_REG_FILTER_PID_15&t;&t;(   168)
-DECL|macro|DIB3000MB_ACTIVATE_FILTERING
-mdefine_line|#define DIB3000MB_ACTIVATE_FILTERING&t;&t;&t;(0x2000)
+multiline_comment|/*&n; * pidfilter&n; * it is not a hardware pidfilter but a filter which drops all pids&n; * except the ones set. Necessary because of the limited USB1.1 bandwidth.&n; * regs 153-168&n; */
+DECL|macro|DIB3000MB_REG_FIRST_PID
+mdefine_line|#define DIB3000MB_REG_FIRST_PID&t;&t;&t;(   153)
+DECL|macro|DIB3000MB_NUM_PIDS
+mdefine_line|#define DIB3000MB_NUM_PIDS&t;&t;&t;&t;(    16)
 multiline_comment|/*&n; * output mode&n; * USB devices have to use &squot;slave&squot;-mode&n; * see also DIB3000MB_REG_ELECT_OUT_MODE&n; */
 DECL|macro|DIB3000MB_REG_OUTPUT_MODE
 mdefine_line|#define DIB3000MB_REG_OUTPUT_MODE&t;&t;(   169)
@@ -996,54 +746,6 @@ mdefine_line|#define DIB3000MB_REG_IRQ_EVENT_MASK&t;&t;(   170)
 DECL|macro|DIB3000MB_IRQ_EVENT_MASK
 mdefine_line|#define DIB3000MB_IRQ_EVENT_MASK&t;&t;&t;&t;(     0)
 multiline_comment|/* filter coefficients */
-DECL|macro|DIB3000MB_REG_FILTER_COEF_171
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_171&t;(   171)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_172
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_172&t;(   172)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_173
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_173&t;(   173)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_174
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_174&t;(   174)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_175
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_175&t;(   175)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_176
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_176&t;(   176)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_177
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_177&t;(   177)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_178
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_178&t;(   178)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_179
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_179&t;(   179)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_180
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_180&t;(   180)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_181
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_181&t;(   181)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_182
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_182&t;(   182)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_183
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_183&t;(   183)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_184
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_184&t;(   184)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_185
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_185&t;(   185)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_186
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_186&t;(   186)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_187
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_187&t;(   187)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_188
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_188&t;(   188)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_189
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_189&t;(   189)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_190
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_190&t;(   190)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_191
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_191&t;(   191)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_192
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_192&t;(   192)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_193
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_193&t;(   193)
-DECL|macro|DIB3000MB_REG_FILTER_COEF_194
-mdefine_line|#define DIB3000MB_REG_FILTER_COEF_194&t;(   194)
 DECL|variable|dib3000mb_reg_filter_coeffs
 r_static
 id|u16
@@ -1052,49 +754,49 @@ id|dib3000mb_reg_filter_coeffs
 )braket
 op_assign
 (brace
-id|DIB3000MB_REG_FILTER_COEF_171
+l_int|171
 comma
-id|DIB3000MB_REG_FILTER_COEF_172
+l_int|172
 comma
-id|DIB3000MB_REG_FILTER_COEF_173
+l_int|173
 comma
-id|DIB3000MB_REG_FILTER_COEF_174
+l_int|174
 comma
-id|DIB3000MB_REG_FILTER_COEF_175
+l_int|175
 comma
-id|DIB3000MB_REG_FILTER_COEF_176
+l_int|176
 comma
-id|DIB3000MB_REG_FILTER_COEF_177
+l_int|177
 comma
-id|DIB3000MB_REG_FILTER_COEF_178
+l_int|178
 comma
-id|DIB3000MB_REG_FILTER_COEF_179
+l_int|179
 comma
-id|DIB3000MB_REG_FILTER_COEF_180
+l_int|180
 comma
-id|DIB3000MB_REG_FILTER_COEF_181
+l_int|181
 comma
-id|DIB3000MB_REG_FILTER_COEF_182
+l_int|182
 comma
-id|DIB3000MB_REG_FILTER_COEF_183
+l_int|183
 comma
-id|DIB3000MB_REG_FILTER_COEF_184
+l_int|184
 comma
-id|DIB3000MB_REG_FILTER_COEF_185
+l_int|185
 comma
-id|DIB3000MB_REG_FILTER_COEF_186
+l_int|186
 comma
-id|DIB3000MB_REG_FILTER_COEF_188
+l_int|188
 comma
-id|DIB3000MB_REG_FILTER_COEF_189
+l_int|189
 comma
-id|DIB3000MB_REG_FILTER_COEF_190
+l_int|190
 comma
-id|DIB3000MB_REG_FILTER_COEF_191
+l_int|191
 comma
-id|DIB3000MB_REG_FILTER_COEF_192
+l_int|192
 comma
-id|DIB3000MB_REG_FILTER_COEF_194
+l_int|194
 )brace
 suffix:semicolon
 DECL|variable|dib3000mb_filter_coeffs
@@ -1175,15 +877,6 @@ DECL|macro|DIB3000MB_RESET_DEVICE
 mdefine_line|#define DIB3000MB_RESET_DEVICE&t;&t;&t;&t;(0x812c)
 DECL|macro|DIB3000MB_RESET_DEVICE_RST
 mdefine_line|#define DIB3000MB_RESET_DEVICE_RST&t;&t;&t;(     0)
-multiline_comment|/* identification registers, manufactor an the device */
-DECL|macro|DIB3000MB_REG_MANUFACTOR_ID
-mdefine_line|#define DIB3000MB_REG_MANUFACTOR_ID&t;&t;(  1025)
-DECL|macro|DIB3000MB_MANUFACTOR_ID_DIBCOM
-mdefine_line|#define DIB3000MB_MANUFACTOR_ID_DIBCOM&t;&t;(0x01B3)
-DECL|macro|DIB3000MB_REG_DEVICE_ID
-mdefine_line|#define DIB3000MB_REG_DEVICE_ID&t;&t;&t;(  1026)
-DECL|macro|DIB3000MB_DEVICE_ID
-mdefine_line|#define DIB3000MB_DEVICE_ID&t;&t;&t;&t;&t;(0x3000)
 multiline_comment|/* hardware clock configuration */
 DECL|macro|DIB3000MB_REG_CLOCK
 mdefine_line|#define DIB3000MB_REG_CLOCK&t;&t;&t;&t;(  1027)
@@ -1208,12 +901,6 @@ mdefine_line|#define DIB3000MB_ELECT_OUT_MODE_ON&t;&t;&t;(     1)
 multiline_comment|/* set the tuner i2c address */
 DECL|macro|DIB3000MB_REG_TUNER
 mdefine_line|#define DIB3000MB_REG_TUNER&t;&t;&t;&t;(  1089)
-DECL|macro|DIB3000MB_TUNER_ADDR_DEFAULT
-mdefine_line|#define DIB3000MB_TUNER_ADDR_DEFAULT&t;&t;(   194)
-DECL|macro|DIB3000MB_ACTIVATE_TUNER_XFER
-mdefine_line|#define DIB3000MB_ACTIVATE_TUNER_XFER(a)&t;(0xffff &amp; (a &lt;&lt; 7))
-DECL|macro|DIB3000MB_DEACTIVATE_TUNER_XFER
-mdefine_line|#define DIB3000MB_DEACTIVATE_TUNER_XFER(a)&t;(0xffff &amp; ((a &lt;&lt; 7) + 0x80))
 multiline_comment|/* monitoring registers (read only) */
 multiline_comment|/* agc loop locked (size: 1) */
 DECL|macro|DIB3000MB_REG_AGC_LOCK
