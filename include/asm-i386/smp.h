@@ -17,23 +17,12 @@ macro_line|#endif
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#endif
 macro_line|#endif
-macro_line|#ifdef CONFIG_SMP
-macro_line|# ifdef CONFIG_CLUSTERED_APIC
-DECL|macro|TARGET_CPUS
-macro_line|#  define TARGET_CPUS 0xf     /* all CPUs in *THIS* quad */
+macro_line|#ifdef CONFIG_CLUSTERED_APIC
 DECL|macro|INT_DELIVERY_MODE
-macro_line|#  define INT_DELIVERY_MODE 0     /* physical delivery on LOCAL quad */
-macro_line|# else
-DECL|macro|TARGET_CPUS
-macro_line|#  define TARGET_CPUS cpu_online_map
-DECL|macro|INT_DELIVERY_MODE
-macro_line|#  define INT_DELIVERY_MODE 1     /* logical delivery broadcast to all procs */
-macro_line|# endif
+mdefine_line|#define INT_DELIVERY_MODE 0     /* physical delivery on LOCAL quad */
 macro_line|#else
 DECL|macro|INT_DELIVERY_MODE
-macro_line|# define INT_DELIVERY_MODE 1     /* logical delivery */
-DECL|macro|TARGET_CPUS
-macro_line|# define TARGET_CPUS 0x01
+mdefine_line|#define INT_DELIVERY_MODE 1     /* logical delivery broadcast to all procs */
 macro_line|#endif
 macro_line|#ifndef clustered_apic_mode
 macro_line|#ifdef CONFIG_CLUSTERED_APIC

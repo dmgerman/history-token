@@ -48,6 +48,10 @@ DECL|macro|APIC_ALL_CPUS
 mdefine_line|#define&t;&t;&t;APIC_ALL_CPUS&t;&t;0xFF
 DECL|macro|APIC_DFR
 mdefine_line|#define&t;&t;APIC_DFR&t;0xE0
+DECL|macro|APIC_DFR_CLUSTER
+mdefine_line|#define&t;&t;&t;APIC_DFR_CLUSTER&t;&t;0x0FFFFFFFul
+DECL|macro|APIC_DFR_FLAT
+mdefine_line|#define&t;&t;&t;APIC_DFR_FLAT&t;&t;&t;0xFFFFFFFFul
 DECL|macro|APIC_SPIV
 mdefine_line|#define&t;&t;APIC_SPIV&t;0xF0
 DECL|macro|APIC_SPIV_FOCUS_DISABLED
