@@ -335,38 +335,6 @@ suffix:semicolon
 multiline_comment|/**************************** PROTOTYPES ****************************/
 multiline_comment|/* ----------------------- MISC. SUBROUTINES ------------------------ */
 r_static
-r_inline
-r_void
-id|wv_splhi
-c_func
-(paren
-id|net_local
-op_star
-comma
-multiline_comment|/* Disable interrupts, lock driver */
-r_int
-r_int
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* flags */
-r_static
-r_inline
-r_void
-id|wv_splx
-c_func
-(paren
-id|net_local
-op_star
-comma
-multiline_comment|/* Enable interrupts, unlock driver */
-r_int
-r_int
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* flags */
-r_static
 id|u_char
 id|wv_irq_to_psa
 c_func

@@ -725,38 +725,6 @@ suffix:semicolon
 macro_line|#endif&t;/* WAVELAN_ROAMING */
 multiline_comment|/* ----------------------- MISC SUBROUTINES ------------------------ */
 r_static
-r_inline
-r_void
-id|wv_splhi
-c_func
-(paren
-id|net_local
-op_star
-comma
-multiline_comment|/* Disable interrupts */
-r_int
-r_int
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* flags */
-r_static
-r_inline
-r_void
-id|wv_splx
-c_func
-(paren
-id|net_local
-op_star
-comma
-multiline_comment|/* ReEnable interrupts */
-r_int
-r_int
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* flags */
-r_static
 r_void
 id|cs_error
 c_func

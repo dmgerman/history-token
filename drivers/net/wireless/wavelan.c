@@ -3,67 +3,6 @@ macro_line|#include &quot;wavelan.p.h&quot;&t;&t;/* Private header */
 multiline_comment|/************************* MISC SUBROUTINES **************************/
 multiline_comment|/*&n; * Subroutines which won&squot;t fit in one of the following category&n; * (WaveLAN modem or i82586)&n; */
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Wrapper for disabling interrupts and locking the driver.&n; * (note : inline, so optimised away)&n; */
-DECL|function|wv_splhi
-r_static
-r_inline
-r_void
-id|wv_splhi
-c_func
-(paren
-id|net_local
-op_star
-id|lp
-comma
-r_int
-r_int
-op_star
-id|pflags
-)paren
-(brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|lp-&gt;spinlock
-comma
-op_star
-id|pflags
-)paren
-suffix:semicolon
-multiline_comment|/* Note : above does the cli(); itself */
-)brace
-multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Wrapper for re-enabling interrupts and un-locking the driver.&n; */
-DECL|function|wv_splx
-r_static
-r_inline
-r_void
-id|wv_splx
-c_func
-(paren
-id|net_local
-op_star
-id|lp
-comma
-r_int
-r_int
-op_star
-id|pflags
-)paren
-(brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|lp-&gt;spinlock
-comma
-op_star
-id|pflags
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Translate irq number to PSA irq parameter&n; */
 DECL|function|wv_irq_to_psa
 r_static
@@ -3294,12 +3233,12 @@ id|dev
 )paren
 )paren
 (brace
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3310,12 +3249,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -7473,12 +7412,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Disable interrupts and save flags. */
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -7678,12 +7617,12 @@ id|lp-&gt;hacr
 )paren
 suffix:semicolon
 multiline_comment|/* Enable interrupts and restore flags. */
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -7749,12 +7688,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Disable interrupts and save flags. */
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -7818,12 +7757,12 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Superfluous */
 multiline_comment|/* Enable interrupts and restore flags. */
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -7884,12 +7823,12 @@ r_int
 id|ret
 suffix:semicolon
 multiline_comment|/* Disable interrupts and save flags. */
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -7940,12 +7879,12 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 multiline_comment|/* Enable interrupts and restore flags. */
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -8011,12 +7950,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Disable interrupts and save flags. */
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -8153,12 +8092,12 @@ id|EOPNOTSUPP
 suffix:semicolon
 )brace
 multiline_comment|/* Enable interrupts and restore flags. */
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -8224,12 +8163,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Disable interrupts and save flags. */
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -8301,12 +8240,12 @@ id|psa.psa_thr_pre_set
 )paren
 suffix:semicolon
 multiline_comment|/* Enable interrupts and restore flags. */
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -8372,12 +8311,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Disable interrupts and save flags. */
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -8425,12 +8364,12 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Enable interrupts and restore flags. */
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -8496,12 +8435,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Disable interrupts and save flags. */
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -8735,12 +8674,12 @@ id|lp-&gt;hacr
 suffix:semicolon
 )brace
 multiline_comment|/* Enable interrupts and restore flags. */
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -8806,12 +8745,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Disable interrupts and save flags. */
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -8912,12 +8851,12 @@ id|wrqu-&gt;encoding.length
 suffix:semicolon
 )brace
 multiline_comment|/* Enable interrupts and restore flags. */
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -9085,12 +9024,12 @@ l_int|2000000
 suffix:semicolon
 multiline_comment|/* 2 Mb/s */
 multiline_comment|/* Disable interrupts and save flags. */
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -9187,12 +9126,12 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Enable interrupts and restore flags. */
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -9633,12 +9572,12 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* Disable interrupts and save flags. */
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -9711,12 +9650,12 @@ id|psa.psa_quality_thr
 )paren
 suffix:semicolon
 multiline_comment|/* Enable interrupts and restore flags. */
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -9777,12 +9716,12 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* Disable interrupts and save flags. */
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -9828,12 +9767,12 @@ op_amp
 l_int|0x0F
 suffix:semicolon
 multiline_comment|/* Enable interrupts and restore flags. */
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -10452,12 +10391,12 @@ op_star
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Disable interrupts and save flags. */
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -10636,12 +10575,12 @@ op_assign
 l_int|0L
 suffix:semicolon
 multiline_comment|/* Enable interrupts and restore flags. */
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -11615,12 +11554,12 @@ id|clen
 op_assign
 id|ETH_ZLEN
 suffix:semicolon
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -11648,12 +11587,12 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -12006,12 +11945,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -12110,12 +12049,12 @@ c_cond
 id|lp-&gt;reconfig_82586
 )paren
 (brace
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -12125,12 +12064,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -15744,7 +15683,7 @@ id|dev-&gt;name
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* Prevent reentrancy. We need to do that because we may have&n;&t; * multiple interrupt handler running concurrently.&n;&t; * It is safe because wv_splhi() disables interrupts before acquiring&n;&t; * the spinlock. */
+multiline_comment|/* Prevent reentrancy. We need to do that because we may have&n;&t; * multiple interrupt handler running concurrently.&n;&t; * It is safe because interrupts are disabled before acquiring&n;&t; * the spinlock. */
 id|spin_lock
 c_func
 (paren
@@ -16186,12 +16125,12 @@ l_int|0
 r_return
 suffix:semicolon
 )brace
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -16317,12 +16256,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -16446,12 +16385,12 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -16496,12 +16435,12 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -16510,12 +16449,12 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -16585,12 +16524,12 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Flush the Tx and disable Rx.&n;&t; */
-id|wv_splhi
+id|spin_lock_irqsave
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -16600,12 +16539,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|wv_splx
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|lp
-comma
 op_amp
+id|lp-&gt;spinlock
+comma
 id|flags
 )paren
 suffix:semicolon
