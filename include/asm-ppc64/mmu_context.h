@@ -544,8 +544,51 @@ suffix:semicolon
 DECL|macro|deactivate_mm
 mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 multiline_comment|/*&n; * After we have set current-&gt;mm to a new value, this activates&n; * the context for the new mm so we see the new mappings.&n; */
-DECL|macro|activate_mm
-mdefine_line|#define activate_mm(active_mm, mm) &bslash;&n;&t;switch_mm(active_mm, mm, current);
+DECL|function|activate_mm
+r_static
+r_inline
+r_void
+id|activate_mm
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|prev
+comma
+r_struct
+id|mm_struct
+op_star
+id|next
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|switch_mm
+c_func
+(paren
+id|prev
+comma
+id|next
+comma
+id|current
+)paren
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+)brace
 DECL|macro|VSID_RANDOMIZER
 mdefine_line|#define VSID_RANDOMIZER 42470972311UL
 DECL|macro|VSID_MASK
