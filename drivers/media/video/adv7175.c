@@ -546,7 +546,10 @@ id|client
 suffix:semicolon
 r_int
 id|rv
-comma
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|i
 comma
 id|x_common

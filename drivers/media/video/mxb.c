@@ -2897,10 +2897,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_minus
-l_int|1
-op_eq
 id|msg.len
+op_eq
+op_minus
+l_int|1U
 )paren
 (brace
 r_break

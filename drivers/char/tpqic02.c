@@ -1570,7 +1570,8 @@ id|timeout
 r_int
 id|stat
 suffix:semicolon
-id|time_t
+r_int
+r_int
 id|spin_t
 suffix:semicolon
 multiline_comment|/* Wait for ready or exception, without driving the loadavg up too much.&n;&t; * In most cases, the tape drive already has READY asserted,&n;&t; * so optimize for that case.&n;&t; *&n;&t; * First, busy wait a few usec:&n;&t; */
