@@ -41,6 +41,10 @@ r_void
 op_star
 id|OpenPIC_Addr
 suffix:semicolon
+r_extern
+r_int
+id|epic_serial_mode
+suffix:semicolon
 multiline_comment|/* Exported functions */
 r_extern
 r_void
