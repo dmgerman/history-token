@@ -330,7 +330,7 @@ suffix:semicolon
 id|strlcpy
 c_func
 (paren
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 l_string|&quot;saa7111&quot;
 comma
@@ -410,7 +410,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;%s_attach: init status %d&bslash;n&quot;
 comma
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 id|i
 )paren
@@ -424,7 +424,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s_attach: chip version %x @ 0x%08x&bslash;n&quot;
 comma
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 id|i2c_smbus_read_byte_data
 c_func
@@ -494,7 +494,7 @@ c_func
 (paren
 l_string|&quot;saa7111: probing %s i2c adapter [id=0x%x]&bslash;n&quot;
 comma
-id|adap-&gt;dev.name
+id|adap-&gt;name
 comma
 id|adap-&gt;id
 )paren
@@ -628,7 +628,7 @@ c_func
 (paren
 l_string|&quot;KERN_DEBUG %s: %03x&quot;
 comma
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 id|i
 )paren
@@ -1457,15 +1457,9 @@ op_amp
 id|i2c_driver_saa7111
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;saa7111_client&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon

@@ -703,7 +703,11 @@ id|r-&gt;start
 comma
 id|r-&gt;end
 comma
-id|dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_continue

@@ -25,8 +25,6 @@ id|us
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|macro|UCR61S2B_INIT
-mdefine_line|#define UCR61S2B_INIT &quot;&bslash;xec&bslash;x0a&bslash;x06&bslash;x00$PCCHIPS&quot;
 multiline_comment|/* This function is required to activate all four slots on the UCR-61S2B&n; * flash reader */
 r_int
 id|usb_stor_ucr61s2b_init

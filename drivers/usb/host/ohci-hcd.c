@@ -1083,15 +1083,7 @@ id|ohci_dbg
 (paren
 id|ohci
 comma
-l_string|&quot;USB HC reset_hc %s: ctrl = 0x%x ;&bslash;n&quot;
-comma
-id|hcd_to_bus
-(paren
-op_amp
-id|ohci-&gt;hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;reset, control = 0x%x&bslash;n&quot;
 comma
 id|readl
 (paren
@@ -1628,11 +1620,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|create_debug_files
-(paren
-id|ohci
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -528,7 +528,7 @@ suffix:semicolon
 id|strlcpy
 c_func
 (paren
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 id|IF_NAME
 comma
@@ -981,15 +981,9 @@ op_amp
 id|i2c_driver_videotext
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;(unset)&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon
