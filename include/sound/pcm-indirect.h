@@ -61,7 +61,7 @@ id|sw_ready
 suffix:semicolon
 multiline_comment|/* Bytes ready to be transferred to/from hw */
 DECL|member|appl_ptr
-r_int
+id|snd_pcm_uframes_t
 id|appl_ptr
 suffix:semicolon
 multiline_comment|/* Last seen appl_ptr */
@@ -127,7 +127,7 @@ id|appl_ptr
 op_minus
 id|rec-&gt;appl_ptr
 suffix:semicolon
-id|snd_pcm_uframes_t
+r_int
 id|qsize
 suffix:semicolon
 r_if
@@ -157,6 +157,9 @@ id|runtime-&gt;boundary
 suffix:semicolon
 id|rec-&gt;sw_ready
 op_add_assign
+(paren
+r_int
+)paren
 id|frames_to_bytes
 c_func
 (paren
@@ -188,12 +191,14 @@ l_int|0
 )paren
 (brace
 r_int
+r_int
 id|hw_to_end
 op_assign
 id|rec-&gt;hw_buffer_size
 op_minus
 id|rec-&gt;hw_data
 suffix:semicolon
+r_int
 r_int
 id|sw_to_end
 op_assign
@@ -202,9 +207,10 @@ op_minus
 id|rec-&gt;sw_data
 suffix:semicolon
 r_int
+r_int
 id|bytes
 op_assign
-id|rec-&gt;hw_buffer_size
+id|qsize
 op_minus
 id|rec-&gt;hw_ready
 suffix:semicolon
@@ -269,9 +275,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-r_int
-)paren
 id|rec-&gt;hw_data
 op_eq
 id|rec-&gt;hw_buffer_size
@@ -322,10 +325,11 @@ op_star
 id|rec
 comma
 r_int
+r_int
 id|ptr
 )paren
 (brace
-id|ssize_t
+r_int
 id|bytes
 op_assign
 id|ptr
@@ -617,10 +621,11 @@ op_star
 id|rec
 comma
 r_int
+r_int
 id|ptr
 )paren
 (brace
-id|ssize_t
+r_int
 id|bytes
 op_assign
 id|ptr
