@@ -1760,49 +1760,109 @@ id|mvme2600_openpic_initsenses
 id|__initdata
 op_assign
 (brace
-l_int|1
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
 multiline_comment|/* MVME2600_INT_SIO */
-l_int|0
+(paren
+id|IRQ_SENSE_EDGE
+op_or
+id|IRQ_POLARITY_POSITIVE
+)paren
 comma
 multiline_comment|/* MVME2600_INT_FALCN_ECC_ERR */
-l_int|1
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
 multiline_comment|/* MVME2600_INT_PCI_ETHERNET */
-l_int|1
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
 multiline_comment|/* MVME2600_INT_PCI_SCSI */
-l_int|1
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
 multiline_comment|/* MVME2600_INT_PCI_GRAPHICS */
-l_int|1
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
 multiline_comment|/* MVME2600_INT_PCI_VME0 */
-l_int|1
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
 multiline_comment|/* MVME2600_INT_PCI_VME1 */
-l_int|1
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
 multiline_comment|/* MVME2600_INT_PCI_VME2 */
-l_int|1
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
 multiline_comment|/* MVME2600_INT_PCI_VME3 */
-l_int|1
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
 multiline_comment|/* MVME2600_INT_PCI_INTA */
-l_int|1
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
 multiline_comment|/* MVME2600_INT_PCI_INTB */
-l_int|1
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
 multiline_comment|/* MVME2600_INT_PCI_INTC */
-l_int|1
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
 multiline_comment|/* MVME2600_INT_PCI_INTD */
-l_int|1
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
 multiline_comment|/* MVME2600_INT_LM_SIG0 */
-l_int|1
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
 multiline_comment|/* MVME2600_INT_LM_SIG1 */
 )brace

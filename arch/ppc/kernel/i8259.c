@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/i8259.h&gt;
 DECL|variable|pci_intack
 r_static
 r_volatile
+r_int
 r_char
 op_star
 id|pci_intack
@@ -50,7 +51,10 @@ r_int
 id|i8259_irq
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -68,8 +72,6 @@ id|irq
 op_assign
 op_star
 id|pci_intack
-op_amp
-l_int|0xff
 suffix:semicolon
 r_if
 c_cond
@@ -663,6 +665,7 @@ comma
 id|IORESOURCE_BUSY
 )brace
 suffix:semicolon
+multiline_comment|/* i8259_init()&n; * intack_addr - PCI interrupt acknowledge (real) address which will return&n; *               the active irq from the 8259&n; */
 DECL|function|i8259_init
 r_void
 id|__init
@@ -850,11 +853,20 @@ op_amp
 id|pic_edgectrl_iores
 )paren
 suffix:semicolon
+multiline_comment|/* XXX remove me after board maintainers fix their i8259_init calls */
 r_if
 c_cond
 (paren
 id|intack_addr
+op_eq
+l_int|0
 )paren
+id|panic
+c_func
+(paren
+l_string|&quot;You must supply a PCI interrupt acknowledge address to i8259_init()&bslash;n&quot;
+)paren
+suffix:semicolon
 id|pci_intack
 op_assign
 id|ioremap
