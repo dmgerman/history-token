@@ -1989,7 +1989,7 @@ comma
 id|ehci-&gt;next_statechange
 )paren
 )paren
-id|msec_delay
+id|msleep
 (paren
 l_int|100
 )paren
@@ -2054,7 +2054,7 @@ comma
 id|ehci-&gt;next_statechange
 )paren
 )paren
-id|msec_delay
+id|msleep
 (paren
 l_int|100
 )paren

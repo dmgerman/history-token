@@ -1135,7 +1135,7 @@ op_amp
 id|OHCI_CTRL_IR
 )paren
 (brace
-id|msec_delay
+id|msleep
 (paren
 l_int|10
 )paren
@@ -1270,7 +1270,7 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
-id|msec_delay
+id|msleep
 (paren
 l_int|50
 )paren
