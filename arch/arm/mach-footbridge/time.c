@@ -1011,7 +1011,7 @@ id|footbridge_timer_irq.name
 op_assign
 l_string|&quot;Timer1 Timer Tick&quot;
 suffix:semicolon
-id|footbrdige_timer_irq.handler
+id|footbridge_timer_irq.handler
 op_assign
 id|timer1_interrupt
 suffix:semicolon
@@ -1073,14 +1073,14 @@ id|footbridge_timer_irq.name
 op_assign
 l_string|&quot;ISA Timer Tick&quot;
 suffix:semicolon
-id|footbrdige_timer_irq.handler
+id|footbridge_timer_irq.handler
 op_assign
 id|isa_timer_interrupt
 suffix:semicolon
 id|setup_irq
 c_func
 (paren
-id|IRQ_ISA
+id|IRQ_ISA_TIMER
 comma
 op_amp
 id|footbridge_timer_irq
