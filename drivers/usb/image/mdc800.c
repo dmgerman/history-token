@@ -2985,6 +2985,9 @@ r_void
 (brace
 r_int
 id|retval
+op_assign
+op_minus
+id|ENODEV
 suffix:semicolon
 multiline_comment|/* Allocate Memory */
 r_try
