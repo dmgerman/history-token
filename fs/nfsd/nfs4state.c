@@ -5541,6 +5541,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * OPEN the file, or upgrade an existing OPEN.&n;&t; * If truncate fails, the OPEN fails.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5634,7 +5635,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfs4_process_open2: stateid=(%08x/%08x/%08x/%08x)&bslash;n&bslash;n&quot;
+l_string|&quot;nfs4_process_open2: stateid=(%08x/%08x/%08x/%08x)&bslash;n&quot;
 comma
 id|stp-&gt;st_stateid.si_boot
 comma
@@ -5713,6 +5714,7 @@ id|nfs_ok
 suffix:semicolon
 id|out
 suffix:colon
+multiline_comment|/* take the opportunity to clean up unused state */
 r_if
 c_cond
 (paren
