@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -188,7 +189,7 @@ id|temp
 suffix:semicolon
 r_do
 (brace
-id|i2c_delay
+id|msleep
 c_func
 (paren
 l_int|1
@@ -271,7 +272,7 @@ suffix:semicolon
 multiline_comment|/* We will always wait for a fraction of a second! */
 r_do
 (brace
-id|i2c_delay
+id|msleep
 c_func
 (paren
 l_int|1
@@ -513,7 +514,7 @@ comma
 id|SMB_GLOBAL_ENABLE
 )paren
 suffix:semicolon
-id|i2c_delay
+id|msleep
 c_func
 (paren
 l_int|100
