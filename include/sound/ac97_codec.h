@@ -928,14 +928,14 @@ r_int
 id|num
 suffix:semicolon
 multiline_comment|/* bus number */
-DECL|member|vra
+DECL|member|no_vra
 r_int
 r_int
-id|vra
+id|no_vra
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* bridge supports VRA */
+multiline_comment|/* bridge doesn&squot;t support VRA */
 DECL|member|isdin
 id|isdin
 suffix:colon

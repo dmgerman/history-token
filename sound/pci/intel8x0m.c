@@ -3941,10 +3941,6 @@ id|pbus-&gt;clock
 op_assign
 id|ac97_clock
 suffix:semicolon
-id|pbus-&gt;vra
-op_assign
-l_int|1
-suffix:semicolon
 id|chip-&gt;ac97_bus
 op_assign
 id|pbus

@@ -2351,6 +2351,16 @@ id|pcm-&gt;stream
 id|j
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bus-&gt;no_vra
+)paren
+id|rates
+op_assign
+id|SNDRV_PCM_RATE_48000
+suffix:semicolon
+r_else
 id|rates
 op_assign
 id|get_rates

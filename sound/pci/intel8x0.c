@@ -8844,10 +8844,10 @@ r_if
 c_cond
 (paren
 id|chip-&gt;device_type
-op_ne
+op_eq
 id|DEVICE_ALI
 )paren
-id|pbus-&gt;vra
+id|pbus-&gt;no_vra
 op_assign
 l_int|1
 suffix:semicolon
