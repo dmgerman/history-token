@@ -360,7 +360,7 @@ c_cond
 (paren
 id|i
 op_eq
-id|smp_processor_id
+id|_smp_processor_id
 c_func
 (paren
 )paren
@@ -681,7 +681,7 @@ id|NR_CPUS
 )paren
 id|cpu
 op_assign
-id|smp_processor_id
+id|_smp_processor_id
 c_func
 (paren
 )paren

@@ -10,7 +10,7 @@ mdefine_line|#define kernel_locked()&t;&t;(current-&gt;lock_depth &gt;= 0)
 r_extern
 r_int
 id|__lockfunc
-id|get_kernel_lock
+id|__reacquire_kernel_lock
 c_func
 (paren
 r_void
@@ -19,7 +19,7 @@ suffix:semicolon
 r_extern
 r_void
 id|__lockfunc
-id|put_kernel_lock
+id|__release_kernel_lock
 c_func
 (paren
 r_void
@@ -27,14 +27,14 @@ r_void
 suffix:semicolon
 multiline_comment|/*&n; * Release/re-acquire global kernel lock for the scheduler&n; */
 DECL|macro|release_kernel_lock
-mdefine_line|#define release_kernel_lock(tsk) do { &t;&t;&bslash;&n;&t;if (unlikely((tsk)-&gt;lock_depth &gt;= 0))&t;&bslash;&n;&t;&t;put_kernel_lock();&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define release_kernel_lock(tsk) do { &t;&t;&bslash;&n;&t;if (unlikely((tsk)-&gt;lock_depth &gt;= 0))&t;&bslash;&n;&t;&t;__release_kernel_lock();&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * Non-SMP kernels will never block on the kernel lock,&n; * so we are better off returning a constant zero from&n; * reacquire_kernel_lock() so that the compiler can see&n; * it at compile-time.&n; */
-macro_line|#ifdef CONFIG_SMP
+macro_line|#if defined(CONFIG_SMP) &amp;&amp; !defined(CONFIG_PREEMPT_BKL)
 DECL|macro|return_value_on_smp
-mdefine_line|#define return_value_on_smp return
+macro_line|# define return_value_on_smp return
 macro_line|#else
 DECL|macro|return_value_on_smp
-mdefine_line|#define return_value_on_smp
+macro_line|# define return_value_on_smp
 macro_line|#endif
 DECL|function|reacquire_kernel_lock
 r_static
@@ -61,7 +61,7 @@ l_int|0
 )paren
 )paren
 id|return_value_on_smp
-id|get_kernel_lock
+id|__reacquire_kernel_lock
 c_func
 (paren
 )paren

@@ -1802,7 +1802,7 @@ c_func
 op_amp
 id|mod-&gt;ref
 (braket
-id|smp_processor_id
+id|_smp_processor_id
 c_func
 (paren
 )paren

@@ -2432,13 +2432,11 @@ op_assign
 id|log_end
 suffix:semicolon
 multiline_comment|/* Flush */
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|logbuf_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|call_console_drivers
@@ -2447,6 +2445,12 @@ c_func
 id|_con_start
 comma
 id|_log_end
+)paren
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 )brace

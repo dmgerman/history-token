@@ -1515,6 +1515,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Disable preemption - early bootup scheduling is extremely&n;&t; * fragile until we cpu_idle() for the first time.&n;&t; */
 id|preempt_disable
 c_func
 (paren
