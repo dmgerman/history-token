@@ -485,6 +485,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&n;  READ THIS BEFORE YOU ADD A SIGNATURE!&n;&n;  READING THIS SHORT NOTE CAN SAVE YOU LOTS OF TIME!&n;&n;  READ EVERY WORD, ESPECIALLY THE WORD *NOT*&n;&n;  This driver works *ONLY* for Future Domain cards using the TMC-1800,&n;  TMC-18C50, or TMC-18C30 chip.  This includes models TMC-1650, 1660, 1670,&n;  and 1680.  These are all 16-bit cards.&n;&n;  The following BIOS signature signatures are for boards which do *NOT*&n;  work with this driver (these TMC-8xx and TMC-9xx boards may work with the&n;  Seagate driver):&n;&n;  FUTURE DOMAIN CORP. (C) 1986-1988 V4.0I 03/16/88&n;  FUTURE DOMAIN CORP. (C) 1986-1989 V5.0C2/14/89&n;  FUTURE DOMAIN CORP. (C) 1986-1989 V6.0A7/28/89&n;  FUTURE DOMAIN CORP. (C) 1986-1990 V6.0105/31/90&n;  FUTURE DOMAIN CORP. (C) 1986-1990 V6.0209/18/90&n;  FUTURE DOMAIN CORP. (C) 1986-1990 V7.009/18/90&n;  FUTURE DOMAIN CORP. (C) 1992 V8.00.004/02/92&n;&n;  (The cards which do *NOT* work are all 8-bit cards -- although some of&n;  them have a 16-bit form-factor, the upper 8-bits are used only for IRQs&n;  and are *NOT* used for data.  You can tell the difference by following&n;  the tracings on the circuit board -- if only the IRQ lines are involved,&n;  you have a &quot;8-bit&quot; card, and should *NOT* use this driver.)&n;&n;*/
 DECL|struct|signature
+r_static
 r_struct
 id|signature
 (brace
