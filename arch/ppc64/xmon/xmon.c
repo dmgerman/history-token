@@ -814,7 +814,7 @@ r_char
 op_star
 id|help_string
 op_assign
-l_string|&quot;&bslash;&n;Commands:&bslash;n&bslash;&n;  b&t;show breakpoints&bslash;n&bslash;&n;  bd&t;set data breakpoint&bslash;n&bslash;&n;  bi&t;set instruction breakpoint&bslash;n&bslash;&n;  bc&t;clear breakpoint&bslash;n&bslash;&n;  d&t;dump bytes&bslash;n&bslash;&n;  di&t;dump instructions&bslash;n&bslash;&n;  df&t;dump float values&bslash;n&bslash;&n;  dd&t;dump double values&bslash;n&bslash;&n;  e&t;print exception information&bslash;n&bslash;&n;  f&t;flush cache&bslash;n&bslash;&n;  h&t;dump hash table&bslash;n&bslash;&n;  m&t;examine/change memory&bslash;n&bslash;&n;  mm&t;move a block of memory&bslash;n&bslash;&n;  ms&t;set a block of memory&bslash;n&bslash;&n;  md&t;compare two blocks of memory&bslash;n&bslash;&n;  ml&t;locate a block of memory&bslash;n&bslash;&n;  mz&t;zero a block of memory&bslash;n&bslash;&n;  mx&t;translation information for an effective address&bslash;n&bslash;&n;  mi&t;show information about memory allocation&bslash;n&bslash;&n;  M&t;print System.map&bslash;n&bslash;&n;  p &t;show the task list&bslash;n&bslash;&n;  r&t;print registers&bslash;n&bslash;&n;  s&t;single step&bslash;n&bslash;&n;  S&t;print special registers&bslash;n&bslash;&n;  t&t;print backtrace&bslash;n&bslash;&n;  T&t;Enable/Disable PPCDBG flags&bslash;n&bslash;&n;  x&t;exit monitor&bslash;n&bslash;&n;  z&t;reboot&bslash;n&bslash;&n;&quot;
+l_string|&quot;&bslash;&n;Commands:&bslash;n&bslash;&n;  b&t;show breakpoints&bslash;n&bslash;&n;  bd&t;set data breakpoint&bslash;n&bslash;&n;  bi&t;set instruction breakpoint&bslash;n&bslash;&n;  bc&t;clear breakpoint&bslash;n&bslash;&n;  d&t;dump bytes&bslash;n&bslash;&n;  di&t;dump instructions&bslash;n&bslash;&n;  df&t;dump float values&bslash;n&bslash;&n;  dd&t;dump double values&bslash;n&bslash;&n;  e&t;print exception information&bslash;n&bslash;&n;  f&t;flush cache&bslash;n&bslash;&n;  h&t;dump hash table&bslash;n&bslash;&n;  m&t;examine/change memory&bslash;n&bslash;&n;  mm&t;move a block of memory&bslash;n&bslash;&n;  ms&t;set a block of memory&bslash;n&bslash;&n;  md&t;compare two blocks of memory&bslash;n&bslash;&n;  ml&t;locate a block of memory&bslash;n&bslash;&n;  mz&t;zero a block of memory&bslash;n&bslash;&n;  mx&t;translation information for an effective address&bslash;n&bslash;&n;  mi&t;show information about memory allocation&bslash;n&bslash;&n;  M&t;print System.map&bslash;n&bslash;&n;  p &t;show the task list&bslash;n&bslash;&n;  r&t;print registers&bslash;n&bslash;&n;  s&t;single step&bslash;n&bslash;&n;  S&t;print special registers&bslash;n&bslash;&n;  t&t;print backtrace&bslash;n&bslash;&n;  T&t;Enable/Disable PPCDBG flags&bslash;n&bslash;&n;  x&t;exit monitor&bslash;n&bslash;&n;  z&t;reboot&bslash;n&bslash;&n;  Z&t;halt&bslash;n&bslash;&n;&quot;
 suffix:semicolon
 DECL|variable|xmon_trace
 r_static
@@ -2346,10 +2346,32 @@ id|cmd
 r_case
 l_char|&squot;z&squot;
 suffix:colon
+id|printf
+c_func
+(paren
+l_string|&quot;Rebooting machine now...&quot;
+)paren
+suffix:semicolon
 id|machine_restart
 c_func
 (paren
 l_int|NULL
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_char|&squot;Z&squot;
+suffix:colon
+id|printf
+c_func
+(paren
+l_string|&quot;Halting machine now...&quot;
+)paren
+suffix:semicolon
+id|machine_halt
+c_func
+(paren
 )paren
 suffix:semicolon
 r_break
