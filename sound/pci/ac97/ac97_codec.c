@@ -635,7 +635,7 @@ l_int|0x414c4300
 comma
 l_int|0xffffff00
 comma
-l_string|&quot;ALC100/100P&quot;
+l_string|&quot;ALC100,100P&quot;
 comma
 l_int|NULL
 comma
@@ -647,7 +647,7 @@ l_int|0x414c4710
 comma
 l_int|0xfffffff0
 comma
-l_string|&quot;ALC200/200P&quot;
+l_string|&quot;ALC200,200P&quot;
 comma
 l_int|NULL
 comma
@@ -1123,7 +1123,7 @@ l_int|0x4e534300
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;LM4540/43/45/46/48&quot;
+l_string|&quot;LM4540,43,45,46,48&quot;
 comma
 l_int|NULL
 comma
@@ -1172,7 +1172,7 @@ l_int|0x53494c20
 comma
 l_int|0xffffffe0
 comma
-l_string|&quot;Si3036/8&quot;
+l_string|&quot;Si3036,8&quot;
 comma
 l_int|NULL
 comma
@@ -1283,7 +1283,7 @@ l_int|0x574d4C03
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;WM9703/WM9707/WM9708/WM9717&quot;
+l_string|&quot;WM9703,WM9707,WM9708,WM9717&quot;
 comma
 id|patch_wolfson03
 comma
@@ -1295,7 +1295,7 @@ l_int|0x574d4C04
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;WM9704M/WM9704Q&quot;
+l_string|&quot;WM9704M,WM9704Q&quot;
 comma
 id|patch_wolfson04
 comma
@@ -1307,7 +1307,7 @@ l_int|0x574d4C05
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;WM9705/WM9710&quot;
+l_string|&quot;WM9705,WM9710&quot;
 comma
 id|patch_wolfson05
 comma
@@ -1331,7 +1331,7 @@ l_int|0x574d4C12
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;WM9711/WM9712&quot;
+l_string|&quot;WM9711,WM9712&quot;
 comma
 id|patch_wolfson11
 comma
@@ -1343,7 +1343,7 @@ l_int|0x574d4c13
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;WM9713/WM9714&quot;
+l_string|&quot;WM9713,WM9714&quot;
 comma
 id|patch_wolfson13
 comma
@@ -1393,7 +1393,7 @@ l_int|0x83847600
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;STAC9700/83/84&quot;
+l_string|&quot;STAC9700,83,84&quot;
 comma
 id|patch_sigmatel_stac9700
 comma
@@ -1405,7 +1405,7 @@ l_int|0x83847604
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;STAC9701/3/4/5&quot;
+l_string|&quot;STAC9701,3,4,5&quot;
 comma
 l_int|NULL
 comma
@@ -1429,7 +1429,7 @@ l_int|0x83847608
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;STAC9708/11&quot;
+l_string|&quot;STAC9708,11&quot;
 comma
 id|patch_sigmatel_stac9708
 comma
@@ -1441,7 +1441,7 @@ l_int|0x83847609
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;STAC9721/23&quot;
+l_string|&quot;STAC9721,23&quot;
 comma
 id|patch_sigmatel_stac9721
 comma
@@ -1465,7 +1465,7 @@ l_int|0x83847650
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;STAC9750/51&quot;
+l_string|&quot;STAC9750,51&quot;
 comma
 l_int|NULL
 comma
@@ -1478,7 +1478,7 @@ l_int|0x83847652
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;STAC9752/53&quot;
+l_string|&quot;STAC9752,53&quot;
 comma
 l_int|NULL
 comma
@@ -1491,7 +1491,7 @@ l_int|0x83847656
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;STAC9756/57&quot;
+l_string|&quot;STAC9756,57&quot;
 comma
 id|patch_sigmatel_stac9756
 comma
@@ -1503,7 +1503,7 @@ l_int|0x83847658
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;STAC9758/59&quot;
+l_string|&quot;STAC9758,59&quot;
 comma
 id|patch_sigmatel_stac9758
 comma
@@ -1515,7 +1515,7 @@ l_int|0x83847666
 comma
 l_int|0xffffffff
 comma
-l_string|&quot;STAC9766/67&quot;
+l_string|&quot;STAC9766,67&quot;
 comma
 l_int|NULL
 comma
