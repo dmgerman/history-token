@@ -614,6 +614,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef&t;CONFIG_PCI
 multiline_comment|/* EHCI 0.96 (and later) section 5.1 says how to kick BIOS/SMM/...&n; * off the controller (maybe it can boot from highspeed USB disks).&n; */
 DECL|function|bios_handoff
 r_static
@@ -751,6 +752,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 r_static
 r_int
 DECL|function|ehci_reboot
@@ -874,7 +876,16 @@ comma
 l_string|&quot;reset&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_PCI
 multiline_comment|/* EHCI 0.96 and later may have &quot;extended capabilities&quot; */
+r_if
+c_cond
+(paren
+id|hcd-&gt;self.controller-&gt;bus
+op_eq
+op_amp
+id|pci_bus_type
+)paren
 id|temp
 op_assign
 id|HCC_EXT_CAPS
@@ -885,6 +896,11 @@ op_amp
 id|ehci-&gt;caps-&gt;hcc_params
 )paren
 )paren
+suffix:semicolon
+r_else
+id|temp
+op_assign
+l_int|0
 suffix:semicolon
 r_while
 c_loop
@@ -985,6 +1001,7 @@ op_amp
 l_int|0xff
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* cache this readonly data; minimize PCI reads */
 id|ehci-&gt;hcs_params
 op_assign
@@ -1043,7 +1060,27 @@ id|u32
 id|hcc_params
 suffix:semicolon
 id|u8
-id|tempbyte
+id|sbrn
+op_assign
+l_int|0
+suffix:semicolon
+id|init_timer
+(paren
+op_amp
+id|ehci-&gt;watchdog
+)paren
+suffix:semicolon
+id|ehci-&gt;watchdog.function
+op_assign
+id|ehci_watchdog
+suffix:semicolon
+id|ehci-&gt;watchdog.data
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ehci
 suffix:semicolon
 multiline_comment|/*&n;&t; * hw default: 1K periodic list heads, one per frame.&n;&t; * periodic_size can shrink by USBCMD update if hcc_params allows.&n;&t; */
 id|ehci-&gt;periodic_size
@@ -1153,6 +1190,73 @@ op_amp
 id|ehci-&gt;regs-&gt;frame_list
 )paren
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_PCI
+r_if
+c_cond
+(paren
+id|hcd-&gt;self.controller-&gt;bus
+op_eq
+op_amp
+id|pci_bus_type
+)paren
+(brace
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
+id|pdev
+op_assign
+id|to_pci_dev
+c_func
+(paren
+id|hcd-&gt;self.controller
+)paren
+suffix:semicolon
+multiline_comment|/* Serial Bus Release Number is at PCI 0x60 offset */
+id|pci_read_config_byte
+c_func
+(paren
+id|pdev
+comma
+l_int|0x60
+comma
+op_amp
+id|sbrn
+)paren
+suffix:semicolon
+multiline_comment|/* help hc dma work well with cachelines */
+id|pci_set_mwi
+(paren
+id|pdev
+)paren
+suffix:semicolon
+multiline_comment|/* chip-specific init */
+r_switch
+c_cond
+(paren
+id|pdev-&gt;vendor
+)paren
+(brace
+r_case
+id|PCI_VENDOR_ID_ARC
+suffix:colon
+r_if
+c_cond
+(paren
+id|pdev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_ARC_EHCI
+)paren
+id|ehci-&gt;is_arc_rh_tt
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 multiline_comment|/*&n;&t; * dedicate a qh for the async ring head, since we couldn&squot;t unlink&n;&t; * a &squot;real&squot; qh without stopping the async schedule [4.8].  use it&n;&t; * as the &squot;reclamation list head&squot; too.&n;&t; * its dummy is used in hw_alt_next of many tds, to prevent the qh&n;&t; * from automatically advancing to the next td after short reads.&n;&t; */
 id|ehci-&gt;async-&gt;qh_next.qh
 op_assign
@@ -1249,16 +1353,6 @@ l_string|&quot;enabled 64bit PCI DMA&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/* help hc dma work well with cachelines */
-id|pci_set_mwi
-(paren
-id|to_pci_dev
-c_func
-(paren
-id|ehci-&gt;hcd.self.controller
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* clear interrupt enables, set irq latency */
 id|temp
 op_assign
@@ -1395,24 +1489,6 @@ id|temp
 )paren
 suffix:semicolon
 multiline_comment|/* set async sleep time = 10 us ... ? */
-id|init_timer
-(paren
-op_amp
-id|ehci-&gt;watchdog
-)paren
-suffix:semicolon
-id|ehci-&gt;watchdog.function
-op_assign
-id|ehci_watchdog
-suffix:semicolon
-id|ehci-&gt;watchdog.data
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|ehci
-suffix:semicolon
 multiline_comment|/* wire up the root hub */
 id|bus
 op_assign
@@ -1483,22 +1559,6 @@ id|ehci-&gt;regs-&gt;command
 )paren
 suffix:semicolon
 multiline_comment|/* unblock posted write */
-multiline_comment|/* PCI Serial Bus Release Number is at 0x60 offset */
-id|pci_read_config_byte
-c_func
-(paren
-id|to_pci_dev
-c_func
-(paren
-id|hcd-&gt;self.controller
-)paren
-comma
-l_int|0x60
-comma
-op_amp
-id|tempbyte
-)paren
-suffix:semicolon
 id|temp
 op_assign
 id|HC_VERSION
@@ -1519,7 +1579,7 @@ l_string|&quot;USB %x.%x enabled, EHCI %x.%02x, driver %s&bslash;n&quot;
 comma
 (paren
 (paren
-id|tempbyte
+id|sbrn
 op_amp
 l_int|0xf0
 )paren
@@ -1528,7 +1588,7 @@ l_int|4
 )paren
 comma
 (paren
-id|tempbyte
+id|sbrn
 op_amp
 l_int|0x0f
 )paren
@@ -3275,7 +3335,8 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/* EHCI spec says PCI is required. */
+multiline_comment|/* EHCI 1.0 doesn&squot;t require PCI */
+macro_line|#ifdef&t;CONFIG_PCI
 multiline_comment|/* PCI driver selection metadata; PCI hotplugging uses this */
 DECL|variable|pci_ids
 r_static
@@ -3376,6 +3437,7 @@ comma
 macro_line|#endif
 )brace
 suffix:semicolon
+macro_line|#endif&t;/* PCI */
 DECL|macro|DRIVER_INFO
 mdefine_line|#define DRIVER_INFO DRIVER_VERSION &quot; &quot; DRIVER_DESC
 DECL|variable|DRIVER_INFO

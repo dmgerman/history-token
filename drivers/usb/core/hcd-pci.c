@@ -159,9 +159,12 @@ op_logical_neg
 id|dev-&gt;irq
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;Found HC with no IRQ.  Check BIOS/PCI %s setup!&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;Found HC with no IRQ.  Check BIOS/PCI %s setup!&bslash;n&quot;
 comma
 id|pci_name
 c_func
@@ -220,9 +223,12 @@ id|driver-&gt;description
 )paren
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;controller already in use&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;controller already in use&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -247,9 +253,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;error mapping memory&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;error mapping memory&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -266,9 +275,12 @@ comma
 id|len
 )paren
 suffix:semicolon
-id|err
+id|dev_err
 (paren
-l_string|&quot;init %s fail, %d&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;init %s fail, %d&bslash;n&quot;
 comma
 id|pci_name
 c_func
@@ -366,9 +378,12 @@ op_eq
 id|PCI_ROM_RESOURCE
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;no i/o regions available&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;no i/o regions available&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -401,9 +416,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;hcd alloc fail&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;hcd alloc fail&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -439,9 +457,12 @@ comma
 id|len
 )paren
 suffix:semicolon
-id|err
+id|dev_err
 (paren
-l_string|&quot;init %s fail, %d&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;init %s fail, %d&bslash;n&quot;
 comma
 id|pci_name
 c_func
@@ -691,6 +712,12 @@ op_assign
 op_amp
 id|hcd_pci_release
 suffix:semicolon
+id|init_timer
+(paren
+op_amp
+id|hcd-&gt;rh_timer
+)paren
+suffix:semicolon
 id|INIT_LIST_HEAD
 (paren
 op_amp
@@ -717,11 +744,22 @@ id|hcd
 OL
 l_int|0
 )paren
+(brace
+id|dev_err
+(paren
+id|hcd-&gt;self.controller
+comma
+l_string|&quot;init error %d&bslash;n&quot;
+comma
+id|retval
+)paren
+suffix:semicolon
 id|usb_hcd_pci_remove
 (paren
 id|dev
 )paren
 suffix:semicolon
+)brace
 r_return
 id|retval
 suffix:semicolon

@@ -1212,9 +1212,7 @@ l_int|64
 suffix:semicolon
 id|interface
 op_assign
-id|intf-&gt;altsetting
-op_plus
-l_int|0
+id|intf-&gt;cur_altsetting
 suffix:semicolon
 id|endpoint
 op_assign

@@ -222,6 +222,53 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* port indicator status selectors, tables 11-7 and 11-25 */
+DECL|macro|HUB_LED_AUTO
+mdefine_line|#define HUB_LED_AUTO&t;0
+DECL|macro|HUB_LED_AMBER
+mdefine_line|#define HUB_LED_AMBER&t;1
+DECL|macro|HUB_LED_GREEN
+mdefine_line|#define HUB_LED_GREEN&t;2
+DECL|macro|HUB_LED_OFF
+mdefine_line|#define HUB_LED_OFF&t;3
+DECL|enum|hub_led_mode
+r_enum
+id|hub_led_mode
+(brace
+DECL|enumerator|INDICATOR_AUTO
+id|INDICATOR_AUTO
+op_assign
+l_int|0
+comma
+DECL|enumerator|INDICATOR_CYCLE
+id|INDICATOR_CYCLE
+comma
+multiline_comment|/* software blinks for attention:  software, hardware, reserved */
+DECL|enumerator|INDICATOR_GREEN_BLINK
+DECL|enumerator|INDICATOR_GREEN_BLINK_OFF
+id|INDICATOR_GREEN_BLINK
+comma
+id|INDICATOR_GREEN_BLINK_OFF
+comma
+DECL|enumerator|INDICATOR_AMBER_BLINK
+DECL|enumerator|INDICATOR_AMBER_BLINK_OFF
+id|INDICATOR_AMBER_BLINK
+comma
+id|INDICATOR_AMBER_BLINK_OFF
+comma
+DECL|enumerator|INDICATOR_ALT_BLINK
+DECL|enumerator|INDICATOR_ALT_BLINK_OFF
+id|INDICATOR_ALT_BLINK
+comma
+id|INDICATOR_ALT_BLINK_OFF
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 r_struct
 id|usb_device
 suffix:semicolon
@@ -406,6 +453,25 @@ id|usb_tt
 id|tt
 suffix:semicolon
 multiline_comment|/* Transaction Translator */
+DECL|member|has_indicators
+r_int
+id|has_indicators
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|indicator
+r_enum
+id|hub_led_mode
+id|indicator
+(braket
+id|USB_MAXCHILDREN
+)braket
+suffix:semicolon
+DECL|member|leds
+r_struct
+id|work_struct
+id|leds
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* __LINUX_HUB_H */

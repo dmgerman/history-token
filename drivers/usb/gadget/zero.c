@@ -27,9 +27,10 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;linux/usb_ch9.h&gt;
 macro_line|#include &lt;linux/usb_gadget.h&gt;
+macro_line|#include &quot;gadget_chips.h&quot;
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&t;&quot;Bastille Day 2003&quot;
+mdefine_line|#define DRIVER_VERSION&t;&t;&quot;St Patrick&squot;s Day 2004&quot;
 DECL|variable|shortname
 r_static
 r_const
@@ -71,137 +72,23 @@ op_assign
 l_string|&quot;loop input to output&quot;
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * driver assumes self-powered hardware, and&n; * has no way for users to trigger remote wakeup.&n; */
-multiline_comment|/*&n; * hardware-specific configuration, controlled by which device&n; * controller driver was configured.&n; *&n; * CHIP ... hardware identifier&n; * DRIVER_VERSION_NUM ... alerts the host side driver to differences&n; * EP_*_NAME ... which endpoints do we use for which purpose?&n; * EP_*_NUM ... numbers for them (often limited by hardware)&n; *&n; * add other defines for other portability issues, like hardware that&n; * for some reason doesn&squot;t handle full speed bulk maxpacket of 64.&n; */
-multiline_comment|/*&n; * DRIVER_VERSION_NUM 0x0000 (?):  Martin Diehl&squot;s ezusb an21/fx code&n; */
-multiline_comment|/*&n; * NetChip 2280, PCI based.&n; *&n; * This has half a dozen configurable endpoints, four with dedicated&n; * DMA channels to manage their FIFOs.  It supports high speed.&n; * Those endpoints can be arranged in any desired configuration.&n; */
-macro_line|#if defined(CONFIG_USB_GADGET_NET2280) || defined(CONFIG_USB_GADGET_DUMMY_HCD)
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;net2280&quot;
-DECL|macro|DRIVER_VERSION_NUM
-mdefine_line|#define DRIVER_VERSION_NUM&t;0x0101
-DECL|variable|EP_OUT_NAME
-r_static
-r_const
-r_char
-id|EP_OUT_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep-a&quot;
-suffix:semicolon
-DECL|macro|EP_OUT_NUM
-mdefine_line|#define EP_OUT_NUM&t;2
+multiline_comment|/*&n; * driver assumes self-powered hardware, and&n; * has no way for users to trigger remote wakeup.&n; *&n; * this version autoconfigures as much as possible,&n; * which is reasonable for most &quot;bulk-only&quot; drivers.&n; */
 DECL|variable|EP_IN_NAME
 r_static
 r_const
 r_char
+op_star
 id|EP_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep-b&quot;
 suffix:semicolon
-DECL|macro|EP_IN_NUM
-mdefine_line|#define EP_IN_NUM&t;2
-macro_line|#endif
-multiline_comment|/*&n; * PXA-2xx UDC:  widely used in second gen Linux-capable PDAs.&n; *&n; * This has fifteen fixed-function full speed endpoints, and it&n; * can support all USB transfer types.&n; *&n; * These supports three or four configurations, with fixed numbers.&n; * The hardware interprets SET_INTERFACE, net effect is that you&n; * can&squot;t use altsettings or reset the interfaces independently.&n; * So stick to a single interface.&n; */
-macro_line|#ifdef&t;CONFIG_USB_GADGET_PXA2XX
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;pxa2xx&quot;
-DECL|macro|DRIVER_VERSION_NUM
-mdefine_line|#define DRIVER_VERSION_NUM&t;0x0103
+multiline_comment|/* source */
 DECL|variable|EP_OUT_NAME
 r_static
 r_const
 r_char
+op_star
 id|EP_OUT_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep12out-bulk&quot;
 suffix:semicolon
-DECL|macro|EP_OUT_NUM
-mdefine_line|#define EP_OUT_NUM&t;12
-DECL|variable|EP_IN_NAME
-r_static
-r_const
-r_char
-id|EP_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep11in-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_IN_NUM
-mdefine_line|#define EP_IN_NUM&t;11
-macro_line|#endif
-multiline_comment|/*&n; * SA-1100 UDC:  widely used in first gen Linux-capable PDAs.&n; *&n; * This has only two fixed function endpoints, which can only&n; * be used for bulk (or interrupt) transfers.  (Plus control.)&n; *&n; * Since it can&squot;t flush its TX fifos without disabling the UDC,&n; * the current configuration or altsettings can&squot;t change except&n; * in special situations.  So this is a case of &quot;choose it right&n; * during enumeration&quot; ...&n; */
-macro_line|#ifdef&t;CONFIG_USB_GADGET_SA1100
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;sa1100&quot;
-DECL|macro|DRIVER_VERSION_NUM
-mdefine_line|#define DRIVER_VERSION_NUM&t;0x0105
-DECL|variable|EP_OUT_NAME
-r_static
-r_const
-r_char
-id|EP_OUT_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep1out-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_OUT_NUM
-mdefine_line|#define EP_OUT_NUM&t;1
-DECL|variable|EP_IN_NAME
-r_static
-r_const
-r_char
-id|EP_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep2in-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_IN_NUM
-mdefine_line|#define EP_IN_NUM&t;2
-macro_line|#endif
-multiline_comment|/*&n; * Toshiba TC86C001 (&quot;Goku-S&quot;) UDC&n; *&n; * This has three semi-configurable full speed bulk/interrupt endpoints.&n; */
-macro_line|#ifdef&t;CONFIG_USB_GADGET_GOKU
-DECL|macro|CHIP
-mdefine_line|#define CHIP&t;&t;&t;&quot;goku&quot;
-DECL|macro|DRIVER_VERSION_NUM
-mdefine_line|#define DRIVER_VERSION_NUM&t;0x0106
-DECL|variable|EP_OUT_NAME
-r_static
-r_const
-r_char
-id|EP_OUT_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep1-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_OUT_NUM
-mdefine_line|#define EP_OUT_NUM&t;1
-DECL|variable|EP_IN_NAME
-r_static
-r_const
-r_char
-id|EP_IN_NAME
-(braket
-)braket
-op_assign
-l_string|&quot;ep2-bulk&quot;
-suffix:semicolon
-DECL|macro|EP_IN_NUM
-mdefine_line|#define EP_IN_NUM&t;2
-macro_line|#endif
-multiline_comment|/*-------------------------------------------------------------------------*/
-macro_line|#ifndef EP_OUT_NUM
-macro_line|#&t;error Configure some USB peripheral controller driver!
-macro_line|#endif
+multiline_comment|/* sink */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* big enough to hold our biggest descriptor */
 DECL|macro|USB_BUFSIZ
@@ -247,21 +134,19 @@ suffix:semicolon
 DECL|macro|xprintk
 mdefine_line|#define xprintk(d,level,fmt,args...) &bslash;&n;&t;dev_printk(level , &amp;(d)-&gt;gadget-&gt;dev , fmt , ## args)
 macro_line|#ifdef DEBUG
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(dev,fmt,args...) &bslash;&n;&t;xprintk(dev , KERN_DEBUG , fmt , ## args)
+DECL|macro|DBG
+mdefine_line|#define DBG(dev,fmt,args...) &bslash;&n;&t;xprintk(dev , KERN_DEBUG , fmt , ## args)
 macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(dev,fmt,args...) &bslash;&n;&t;do { } while (0)
+DECL|macro|DBG
+mdefine_line|#define DBG(dev,fmt,args...) &bslash;&n;&t;do { } while (0)
 macro_line|#endif /* DEBUG */
 macro_line|#ifdef VERBOSE
-DECL|macro|VDEBUG
-mdefine_line|#define VDEBUG&t;DEBUG
+DECL|macro|VDBG
+mdefine_line|#define VDBG&t;DBG
 macro_line|#else
-DECL|macro|VDEBUG
-mdefine_line|#define VDEBUG(dev,fmt,args...) &bslash;&n;&t;do { } while (0)
-macro_line|#endif /* DEBUG */
+DECL|macro|VDBG
+mdefine_line|#define VDBG(dev,fmt,args...) &bslash;&n;&t;do { } while (0)
+macro_line|#endif /* VERBOSE */
 DECL|macro|ERROR
 mdefine_line|#define ERROR(dev,fmt,args...) &bslash;&n;&t;xprintk(dev , KERN_ERR , fmt , ## args)
 DECL|macro|WARN
@@ -410,14 +295,6 @@ op_assign
 id|__constant_cpu_to_le16
 (paren
 id|DRIVER_PRODUCT_NUM
-)paren
-comma
-dot
-id|bcdDevice
-op_assign
-id|__constant_cpu_to_le16
-(paren
-id|DRIVER_VERSION_NUM
 )paren
 comma
 dot
@@ -617,7 +494,6 @@ comma
 suffix:semicolon
 multiline_comment|/* two full speed bulk endpoints; their use is config-dependent */
 r_static
-r_const
 r_struct
 id|usb_endpoint_descriptor
 DECL|variable|fs_source_desc
@@ -637,8 +513,6 @@ comma
 dot
 id|bEndpointAddress
 op_assign
-id|EP_IN_NUM
-op_or
 id|USB_DIR_IN
 comma
 dot
@@ -646,18 +520,9 @@ id|bmAttributes
 op_assign
 id|USB_ENDPOINT_XFER_BULK
 comma
-dot
-id|wMaxPacketSize
-op_assign
-id|__constant_cpu_to_le16
-(paren
-l_int|64
-)paren
-comma
 )brace
 suffix:semicolon
 r_static
-r_const
 r_struct
 id|usb_endpoint_descriptor
 DECL|variable|fs_sink_desc
@@ -677,20 +542,12 @@ comma
 dot
 id|bEndpointAddress
 op_assign
-id|EP_OUT_NUM
+id|USB_DIR_OUT
 comma
 dot
 id|bmAttributes
 op_assign
 id|USB_ENDPOINT_XFER_BULK
-comma
-dot
-id|wMaxPacketSize
-op_assign
-id|__constant_cpu_to_le16
-(paren
-l_int|64
-)paren
 comma
 )brace
 suffix:semicolon
@@ -1618,7 +1475,7 @@ op_minus
 id|ESHUTDOWN
 suffix:colon
 multiline_comment|/* disconnect from host */
-id|VDEBUG
+id|VDBG
 (paren
 id|dev
 comma
@@ -1666,7 +1523,7 @@ multiline_comment|/* buffer overrun on read means that&n;&t;&t;&t;&t;&t; * we di
 r_default
 suffix:colon
 macro_line|#if 1
-id|DEBUG
+id|DBG
 (paren
 id|dev
 comma
@@ -2086,7 +1943,7 @@ id|result
 op_eq
 l_int|0
 )paren
-id|DEBUG
+id|DBG
 (paren
 id|dev
 comma
@@ -2518,7 +2375,7 @@ c_cond
 (paren
 id|result
 )paren
-id|DEBUG
+id|DBG
 (paren
 id|dev
 comma
@@ -2545,7 +2402,7 @@ id|result
 op_eq
 l_int|0
 )paren
-id|DEBUG
+id|DBG
 (paren
 id|dev
 comma
@@ -2582,7 +2439,7 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
-id|DEBUG
+id|DBG
 (paren
 id|dev
 comma
@@ -2667,10 +2524,14 @@ id|dev-&gt;config
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_USB_GADGET_SA1100
 r_if
 c_cond
 (paren
+id|gadget_is_sa1100
+(paren
+id|gadget
+)paren
+op_logical_and
 id|dev-&gt;config
 )paren
 (brace
@@ -2687,7 +2548,6 @@ op_minus
 id|ESPIPE
 suffix:semicolon
 )brace
-macro_line|#endif
 id|zero_reset_config
 (paren
 id|dev
@@ -2876,7 +2736,7 @@ id|req-&gt;actual
 op_ne
 id|req-&gt;length
 )paren
-id|DEBUG
+id|DBG
 (paren
 (paren
 r_struct
@@ -3426,7 +3286,7 @@ r_default
 suffix:colon
 id|unknown
 suffix:colon
-id|VDEBUG
+id|VDBG
 (paren
 id|dev
 comma
@@ -3476,7 +3336,7 @@ OL
 l_int|0
 )paren
 (brace
-id|DEBUG
+id|DBG
 (paren
 id|dev
 comma
@@ -3574,7 +3434,7 @@ id|get_gadget_data
 id|gadget
 )paren
 suffix:semicolon
-id|DEBUG
+id|DBG
 (paren
 id|dev
 comma
@@ -3623,6 +3483,245 @@ id|zero_dev
 op_star
 id|dev
 suffix:semicolon
+r_struct
+id|usb_ep
+op_star
+id|ep
+suffix:semicolon
+multiline_comment|/* Bulk-only drivers like this one SHOULD be able to&n;&t; * autoconfigure on any sane usb controller driver,&n;&t; * but there may also be important quirks to address.&n;&t; */
+id|usb_ep_autoconfig_reset
+(paren
+id|gadget
+)paren
+suffix:semicolon
+id|ep
+op_assign
+id|usb_ep_autoconfig
+(paren
+id|gadget
+comma
+op_amp
+id|fs_source_desc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ep
+)paren
+(brace
+id|autoconf_fail
+suffix:colon
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;%s: can&squot;t autoconfigure on %s&bslash;n&quot;
+comma
+id|shortname
+comma
+id|gadget-&gt;name
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+id|EP_IN_NAME
+op_assign
+id|ep-&gt;name
+suffix:semicolon
+id|ep-&gt;driver_data
+op_assign
+id|ep
+suffix:semicolon
+multiline_comment|/* claim */
+id|ep
+op_assign
+id|usb_ep_autoconfig
+(paren
+id|gadget
+comma
+op_amp
+id|fs_sink_desc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ep
+)paren
+r_goto
+id|autoconf_fail
+suffix:semicolon
+id|EP_OUT_NAME
+op_assign
+id|ep-&gt;name
+suffix:semicolon
+id|ep-&gt;driver_data
+op_assign
+id|ep
+suffix:semicolon
+multiline_comment|/* claim */
+multiline_comment|/*&n;&t; * DRIVER POLICY CHOICE:  you may want to do this differently.&n;&t; * One thing to avoid is reusing a bcdDevice revision code&n;&t; * with different host-visible configurations or behavior&n;&t; * restrictions -- using ep1in/ep2out vs ep1out/ep3in, etc&n;&t; */
+r_if
+c_cond
+(paren
+id|gadget_is_net2280
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x0201
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_pxa
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x0203
+)paren
+suffix:semicolon
+macro_line|#if 0
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_sh
+c_func
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x0204
+)paren
+suffix:semicolon
+multiline_comment|/* SH has only one configuration; see &quot;loopdefault&quot; */
+id|device_desc.bNumConfigurations
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* FIXME make 1 == default.bConfigurationValue */
+macro_line|#endif
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_sa1100
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x0205
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_goku
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x0206
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_mq11xx
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x0207
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|gadget_is_omap
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x0208
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* gadget zero is so simple (for now, no altsettings) that&n;&t;&t; * it SHOULD NOT have problems with bulk-capable hardware.&n;&t;&t; * so warn about unrcognized controllers, don&squot;t panic.&n;&t;&t; *&n;&t;&t; * things like configuration and altsetting numbering&n;&t;&t; * can need hardware-specific attention though.&n;&t;&t; */
+id|printk
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: controller &squot;%s&squot; not recognized&bslash;n&quot;
+comma
+id|shortname
+comma
+id|gadget-&gt;name
+)paren
+suffix:semicolon
+id|device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x9999
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* ok, we made sense of the hardware ... */
 id|dev
 op_assign
 id|kmalloc
@@ -3738,6 +3837,11 @@ op_assign
 id|fs_sink_desc.bEndpointAddress
 suffix:semicolon
 macro_line|#endif
+id|usb_gadget_set_selfpowered
+(paren
+id|gadget
+)paren
+suffix:semicolon
 id|gadget-&gt;ep0-&gt;driver_data
 op_assign
 id|dev

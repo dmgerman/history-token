@@ -3291,6 +3291,10 @@ DECL|macro|PCI_DEVICE_ID_S2IO_WIN
 mdefine_line|#define&t;PCI_DEVICE_ID_S2IO_WIN&t;&t;0x5731
 DECL|macro|PCI_DEVICE_ID_S2IO_UNI
 mdefine_line|#define&t;PCI_DEVICE_ID_S2IO_UNI&t;&t;0x5831
+DECL|macro|PCI_VENDOR_ID_ARC
+mdefine_line|#define PCI_VENDOR_ID_ARC               0x192E
+DECL|macro|PCI_DEVICE_ID_ARC_EHCI
+mdefine_line|#define PCI_DEVICE_ID_ARC_EHCI          0x0101
 DECL|macro|PCI_VENDOR_ID_SYMPHONY
 mdefine_line|#define PCI_VENDOR_ID_SYMPHONY&t;&t;0x1c1c
 DECL|macro|PCI_DEVICE_ID_SYMPHONY_101

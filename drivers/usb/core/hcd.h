@@ -934,11 +934,6 @@ DECL|macro|EndpointRequest
 mdefine_line|#define EndpointRequest &bslash;&n;&t;((USB_DIR_IN|USB_TYPE_STANDARD|USB_RECIP_INTERFACE)&lt;&lt;8)
 DECL|macro|EndpointOutRequest
 mdefine_line|#define EndpointOutRequest &bslash;&n;&t;((USB_DIR_OUT|USB_TYPE_STANDARD|USB_RECIP_INTERFACE)&lt;&lt;8)
-multiline_comment|/* table 9.6 standard features */
-DECL|macro|DEVICE_REMOTE_WAKEUP
-mdefine_line|#define DEVICE_REMOTE_WAKEUP&t;1
-DECL|macro|ENDPOINT_HALT
-mdefine_line|#define ENDPOINT_HALT&t;&t;0
 multiline_comment|/* class requests from the USB 2.0 hub spec, table 11-15 */
 multiline_comment|/* GetBusState and SetHubDescriptor are optional, omitted */
 DECL|macro|ClearHubFeature

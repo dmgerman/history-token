@@ -8219,7 +8219,7 @@ op_assign
 id|vicam_table
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *&t;vicam_probe&n; *&n; *&t;Called by the usb core when a new device is connected that it thinks&n; *&t;this driver might be interested in.&n; */
+multiline_comment|/**&n; *&t;vicam_probe&n; *&t;@intf: the interface&n; *&t;@id: the device id&n; *&n; *&t;Called by the usb core when a new device is connected that it thinks&n; *&t;this driver might be interested in.&n; */
 r_static
 r_int
 DECL|function|vicam_probe

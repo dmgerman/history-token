@@ -55,6 +55,21 @@ DECL|macro|USB_REQ_SET_INTERFACE
 mdefine_line|#define USB_REQ_SET_INTERFACE&t;&t;0x0B
 DECL|macro|USB_REQ_SYNCH_FRAME
 mdefine_line|#define USB_REQ_SYNCH_FRAME&t;&t;0x0C
+multiline_comment|/*&n; * USB feature flags are written using USB_REQ_{CLEAR,SET}_FEATURE, and&n; * are read as a bit array returned by USB_REQ_GET_STATUS.  (So there&n; * are at most sixteen features of each type.)&n; */
+DECL|macro|USB_DEVICE_SELF_POWERED
+mdefine_line|#define USB_DEVICE_SELF_POWERED&t;&t;0&t;/* (read only) */
+DECL|macro|USB_DEVICE_REMOTE_WAKEUP
+mdefine_line|#define USB_DEVICE_REMOTE_WAKEUP&t;1&t;/* dev may initiate wakeup */
+DECL|macro|USB_DEVICE_TEST_MODE
+mdefine_line|#define USB_DEVICE_TEST_MODE&t;&t;2&t;/* (high speed only) */
+DECL|macro|USB_DEVICE_B_HNP_ENABLE
+mdefine_line|#define USB_DEVICE_B_HNP_ENABLE&t;&t;3&t;/* dev may initiate HNP */
+DECL|macro|USB_DEVICE_A_HNP_SUPPORT
+mdefine_line|#define USB_DEVICE_A_HNP_SUPPORT&t;4&t;/* RH port supports HNP */
+DECL|macro|USB_DEVICE_A_ALT_HNP_SUPPORT
+mdefine_line|#define USB_DEVICE_A_ALT_HNP_SUPPORT&t;5&t;/* other RH port does */
+DECL|macro|USB_ENDPOINT_HALT
+mdefine_line|#define USB_ENDPOINT_HALT&t;&t;0&t;/* IN/OUT will STALL */
 multiline_comment|/**&n; * struct usb_ctrlrequest - SETUP data for a USB device control request&n; * @bRequestType: matches the USB bmRequestType field&n; * @bRequest: matches the USB bRequest field&n; * @wValue: matches the USB wValue field (le16 byte order)&n; * @wIndex: matches the USB wIndex field (le16 byte order)&n; * @wLength: matches the USB wLength field (le16 byte order)&n; *&n; * This structure is used to send control requests to a USB device.  It matches&n; * the different fields of the USB 2.0 Spec section 9.3, table 9-2.  See the&n; * USB spec for a fuller description of the different fields, and what they are&n; * used for.&n; *&n; * Note that the driver for any interface can issue control requests.&n; * For most devices, interfaces don&squot;t coordinate with each other, so&n; * such requests may be made at any time.&n; */
 DECL|struct|usb_ctrlrequest
 r_struct
