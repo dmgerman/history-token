@@ -1541,8 +1541,8 @@ DECL|macro|PF_FLUSHER
 mdefine_line|#define PF_FLUSHER&t;0x00002000&t;/* responsible for disk writeback */
 DECL|macro|PF_FREEZE
 mdefine_line|#define PF_FREEZE&t;0x00004000&t;/* this task should be frozen for suspend */
-DECL|macro|PF_IOTHREAD
-mdefine_line|#define PF_IOTHREAD&t;0x00008000&t;/* this thread is needed for doing I/O to swap */
+DECL|macro|PF_NOFREEZE
+mdefine_line|#define PF_NOFREEZE&t;0x00008000&t;/* this thread should not be frozen */
 DECL|macro|PF_FROZEN
 mdefine_line|#define PF_FROZEN&t;0x00010000&t;/* frozen for system suspend */
 DECL|macro|PF_FSTRANS

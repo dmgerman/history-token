@@ -1329,7 +1329,7 @@ l_int|15
 suffix:semicolon
 id|current-&gt;flags
 op_or_assign
-id|PF_IOTHREAD
+id|PF_NOFREEZE
 suffix:semicolon
 id|set_fs
 c_func

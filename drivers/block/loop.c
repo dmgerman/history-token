@@ -1997,7 +1997,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * loop can be used in an encrypted device,&n;&t; * hence, it mustn&squot;t be stopped at all&n;&t; * because it could be indirectly used during suspension&n;&t; */
 id|current-&gt;flags
 op_or_assign
-id|PF_IOTHREAD
+id|PF_NOFREEZE
 suffix:semicolon
 id|set_user_nice
 c_func
