@@ -1314,7 +1314,7 @@ id|year
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* PC-like is standard; used for year &lt; 20 || year &gt;= 70 */
+multiline_comment|/* PC-like is standard; used for year &gt;= 70 */
 id|epoch
 op_assign
 l_int|1900
