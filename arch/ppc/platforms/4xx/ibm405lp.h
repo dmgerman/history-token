@@ -5,7 +5,7 @@ DECL|macro|__ASM_IBM405LP_H__
 mdefine_line|#define __ASM_IBM405LP_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ibm4xx.h&gt;
-multiline_comment|/* Machine-specific register naming for the 4xx processors is a mess. It seems&n;   that everyone had a different idea on how to prefix/abbreviate/configure the&n;   DCR numbers and MMIO addresses.  I&squot;m no different! For the 405LP we have&n;   defined all of the DCRs and MMIO address consistently with their names as&n;   documented in the official IBM hardware manual for the processor.&n;&n;   DCRs are all given a DCRN_ prefix, which seems to be the most&n;   common consistent naming scheme in old code (although the official IBM DCR&n;   names are so unique that there&squot;s really little need for the DCRN_).&n;&n;   At the end of the DCR defines several synonyms are defined for backwards&n;   compatibility, but all new code specific to the 405LP uses the consistent&n;   names. &n;&n;   Version 07/24/02 1.1 - Armin&n;        added default pm define&n;*/
+multiline_comment|/* Machine-specific register naming for the 4xx processors is a mess. It seems&n;   that everyone had a different idea on how to prefix/abbreviate/configure the&n;   DCR numbers and MMIO addresses.  I&squot;m no different! For the 405LP we have&n;   defined all of the DCRs and MMIO address consistently with their names as&n;   documented in the official IBM hardware manual for the processor.&n;&n;   DCRs are all given a DCRN_ prefix, which seems to be the most&n;   common consistent naming scheme in old code (although the official IBM DCR&n;   names are so unique that there&squot;s really little need for the DCRN_).&n;&n;   At the end of the DCR defines several synonyms are defined for backwards&n;   compatibility, but all new code specific to the 405LP uses the consistent&n;   names.&n;&n;   Version 07/24/02 1.1 - Armin&n;        added default pm define&n;*/
 multiline_comment|/*****************************************************************************&n; * Directly accessed DCRs&n; *****************************************************************************/
 multiline_comment|/* DCRs used for Indirect Access */
 DECL|macro|DCRN_SDRAM0_CFGADDR
@@ -142,7 +142,7 @@ DECL|macro|DCRN_LCD0_ISR
 mdefine_line|#define DCRN_LCD0_ISR        0x3c2&t;/* LCD Interrupt Status Register */
 DECL|macro|DCRN_LCD0_IMR
 mdefine_line|#define DCRN_LCD0_IMR        0x3c3&t;/* LCD Interrupt Mask Register */
-multiline_comment|/*****************************************************************************&n; * Indirectly accessed DCRs. Note that unlike direct-access DCRs whose numbers&n; * must be hard-coded into the instruction, indirect-access DCR numbers can be&n; * computed. &n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; * Indirectly accessed DCRs. Note that unlike direct-access DCRs whose numbers&n; * must be hard-coded into the instruction, indirect-access DCR numbers can be&n; * computed.&n; *****************************************************************************/
 multiline_comment|/* Offsets for SDRAM Controler Registers */
 DECL|macro|DCRN_SDRAM0_BESR0
 mdefine_line|#define DCRN_SDRAM0_BESR0  0x00&t;/* Bus Error Syndrome Register 0 */
@@ -390,7 +390,7 @@ mdefine_line|#define TPC_SRY  0x20&t;&t;/* TPC Status Register Y1 */
 multiline_comment|/* Triple-DES Controller */
 DECL|macro|TDES0_IO_BASE
 mdefine_line|#define TDES0_IO_BASE  0xef600b00
-multiline_comment|/*****************************************************************************&n; * CPM bits for the 405LP.  &n; *****************************************************************************/
+multiline_comment|/*****************************************************************************&n; * CPM bits for the 405LP.&n; *****************************************************************************/
 DECL|macro|CPM_BITMASK
 mdefine_line|#define CPM_BITMASK(i) (((unsigned)0x80000000) &gt;&gt; i)
 DECL|macro|IBM_CPM_IIC0
@@ -702,7 +702,7 @@ id|apm0_sr_t
 suffix:semicolon
 DECL|macro|APM0_SR_MASK
 mdefine_line|#define APM0_SR_MASK 0xffff8000&t;/* AND to clear all non-reserved fields */
-multiline_comment|/* APM0_IER -- APM Interrupt Enable Register&n;   APM0_IPR -- APM Interrupt Polarity Register&n;   APM0_ISR -- APM Interrupt Status Register&n;   APM0_ITR -- APM Interrupt Trigger Register &n;&n;   The interrupts are also accessed via standard interrupt numbers:&n;&n;   59 : Wake-up Input 0&n;   60 : Wake-up Input 1&n;   61 : Wake-up Input 2&n;   62 : Real-Time Clock Interrupt&n;*/
+multiline_comment|/* APM0_IER -- APM Interrupt Enable Register&n;   APM0_IPR -- APM Interrupt Polarity Register&n;   APM0_ISR -- APM Interrupt Status Register&n;   APM0_ITR -- APM Interrupt Trigger Register&n;&n;   The interrupts are also accessed via standard interrupt numbers:&n;&n;   59 : Wake-up Input 0&n;   60 : Wake-up Input 1&n;   61 : Wake-up Input 2&n;   62 : Real-Time Clock Interrupt&n;*/
 r_typedef
 r_union
 (brace
@@ -2118,7 +2118,7 @@ id|sla0_slpmd_t
 suffix:semicolon
 DECL|macro|SLA0_SLPMD_MASK
 mdefine_line|#define SLA0_SLPMD_MASK 0x07dfffff&t;/* AND to clear all non-reserved fields */
-multiline_comment|/* Several direct-write DCRs on the 405LP have an interlock requirement,&n;   implemented by a &quot;valid&quot; bit in the low-order bit.  This routine handles the&n;   handshaking for these registers, by&n;&n;   1) Rewriting the current value with the valid bit clear;&n;   2) Rewriting the new value with the valid bit clear;&n;   3) Rewriting the new value with the valid bit set.&n;&n;   The mask is a mask with 1s in every reserved bit position.&n;&n;   NB: This routine always writes the register with the valid bit set,&n;       regardless of the valid bit setting in the &squot;new&squot; parameter.  &n;&n;   Unfortunately this must be a macro to work (due to mtdcr()).&n;&n;   Note that for APM registers, it takes multiple RTC clock cycles for the DCR&n;   writes to take effect.  Any time delays after writes to APM are the&n;   resonsibility of the caller.&n;*/
+multiline_comment|/* Several direct-write DCRs on the 405LP have an interlock requirement,&n;   implemented by a &quot;valid&quot; bit in the low-order bit.  This routine handles the&n;   handshaking for these registers, by&n;&n;   1) Rewriting the current value with the valid bit clear;&n;   2) Rewriting the new value with the valid bit clear;&n;   3) Rewriting the new value with the valid bit set.&n;&n;   The mask is a mask with 1s in every reserved bit position.&n;&n;   NB: This routine always writes the register with the valid bit set,&n;       regardless of the valid bit setting in the &squot;new&squot; parameter.&n;&n;   Unfortunately this must be a macro to work (due to mtdcr()).&n;&n;   Note that for APM registers, it takes multiple RTC clock cycles for the DCR&n;   writes to take effect.  Any time delays after writes to APM are the&n;   resonsibility of the caller.&n;*/
 DECL|macro|mtdcr_interlock
 mdefine_line|#define mtdcr_interlock(dcrn, new, mask)                                    &bslash;&n;do {                                                                        &bslash;&n;&t;u32 __old, __new;                                                   &bslash;&n;&t;                                                                    &bslash;&n;&t;__old = mfdcr(dcrn);                                                &bslash;&n;&t;mtdcr(dcrn, __old &amp; 0xfffffffe);                                    &bslash;&n;&t;__new = ((__old &amp; (mask)) | ((new) &amp; ~(mask))) &amp; 0xfffffffe;        &bslash;&n;&t;mtdcr(dcrn, __new);                                                 &bslash;&n;&t;mtdcr(dcrn, __new | 1);                                             &bslash;&n;} while (0)
 multiline_comment|/****************************************************************************&n; * Power Managament Routines&n; ****************************************************************************/

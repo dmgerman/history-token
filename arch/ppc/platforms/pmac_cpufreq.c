@@ -915,7 +915,7 @@ id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Currently, we support the following machines:&n; * &n; *  - Titanium PowerBook 800 (PMU based, 667Mhz &amp; 800Mhz)&n; *  - Titanium PowerBook 500 (PMU based, 300Mhz &amp; 500Mhz)&n; *  - iBook2 500 (PMU based, 400Mhz &amp; 500Mhz)&n; *  - iBook2 700 (CPU based, 400Mhz &amp; 700Mhz, support low voltage)&n; */
+multiline_comment|/* Currently, we support the following machines:&n; *&n; *  - Titanium PowerBook 800 (PMU based, 667Mhz &amp; 800Mhz)&n; *  - Titanium PowerBook 500 (PMU based, 300Mhz &amp; 500Mhz)&n; *  - iBook2 500 (PMU based, 400Mhz &amp; 500Mhz)&n; *  - iBook2 700 (CPU based, 400Mhz &amp; 700Mhz, support low voltage)&n; */
 r_static
 r_int
 id|__init

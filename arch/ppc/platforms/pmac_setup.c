@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  arch/ppc/platforms/setup.c&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Adapted for Power Macintosh by Paul Mackerras&n; *    Copyright (C) 1996 Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; *  Derived from &quot;arch/alpha/kernel/setup.c&quot;&n; *    Copyright (C) 1995 Linus Torvalds&n; *&n; *  Maintained by Benjamin Herrenschmidt (benh@kernel.crashing.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
+multiline_comment|/*&n; *  arch/ppc/platforms/setup.c&n; *&n; *  PowerPC version&n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Adapted for Power Macintosh by Paul Mackerras&n; *    Copyright (C) 1996 Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; *  Derived from &quot;arch/alpha/kernel/setup.c&quot;&n; *    Copyright (C) 1995 Linus Torvalds&n; *&n; *  Maintained by Benjamin Herrenschmidt (benh@kernel.crashing.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1346,7 +1346,7 @@ l_string|&quot;          wasn&squot;t compiled with CONFIG_ADB_CUDA option !&bsl
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;
+macro_line|#endif
 macro_line|#ifdef CONFIG_ADB_PMU
 id|find_via_pmu
 c_func
@@ -1377,7 +1377,7 @@ l_string|&quot;          wasn&squot;t compiled with CONFIG_ADB_PMU option !&bsla
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;
+macro_line|#endif
 macro_line|#ifdef CONFIG_NVRAM
 id|pmac_nvram_init
 c_func
@@ -2012,7 +2012,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif /* CONFIG_ADB_CUDA */
-macro_line|#ifdef CONFIG_ADB_PMU&t;&t;
+macro_line|#ifdef CONFIG_ADB_PMU&t;
 r_case
 id|SYS_CTRLER_PMU
 suffix:colon
@@ -2023,7 +2023,7 @@ c_func
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_ADB_PMU */&t;&t;
+macro_line|#endif /* CONFIG_ADB_PMU */&t;
 r_default
 suffix:colon
 suffix:semicolon

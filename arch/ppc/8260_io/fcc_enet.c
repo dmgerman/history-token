@@ -1528,7 +1528,7 @@ id|cpm8260_t
 op_star
 id|cp
 suffix:semicolon
-multiline_comment|/* Some transmit errors cause the transmitter to shut&n;&t;&t; * down.  We now issue a restart transmit.  Since the&n;&t;&t; * errors close the BD and update the pointers, the restart&n;&t;&t; * _should_ pick up without having to reset any of our&n;&t;&t; * pointers either.  Also, To workaround 8260 device erratum &n;&t;&t; * CPM37, we must disable and then re-enable the transmitter&n;&t;&t; * following a Late Collision, Underrun, or Retry Limit error.&n;&t;&t; */
+multiline_comment|/* Some transmit errors cause the transmitter to shut&n;&t;&t; * down.  We now issue a restart transmit.  Since the&n;&t;&t; * errors close the BD and update the pointers, the restart&n;&t;&t; * _should_ pick up without having to reset any of our&n;&t;&t; * pointers either.  Also, To workaround 8260 device erratum&n;&t;&t; * CPM37, we must disable and then re-enable the transmitter&n;&t;&t; * following a Late Collision, Underrun, or Retry Limit error.&n;&t;&t; */
 id|cep-&gt;fccp-&gt;fcc_gfmr
 op_and_assign
 op_complement

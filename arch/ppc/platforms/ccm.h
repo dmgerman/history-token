@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Siemens Card Controller Module specific definitions&n; * &n; * Copyright (C) 2001-2002 Wolfgang Denk (wd@denx.de)&n; */
+multiline_comment|/*&n; * Siemens Card Controller Module specific definitions&n; *&n; * Copyright (C) 2001-2002 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifndef __MACH_CCM_H
 DECL|macro|__MACH_CCM_H
 mdefine_line|#define __MACH_CCM_H

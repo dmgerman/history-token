@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  arch/ppc/mm/fault.c&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Derived from &quot;arch/i386/mm/fault.c&quot;&n; *    Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *&n; *  Modified by Cort Dougan and Paul Mackerras.&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *  arch/ppc/mm/fault.c&n; *&n; *  PowerPC version&n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Derived from &quot;arch/i386/mm/fault.c&quot;&n; *    Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *&n; *  Modified by Cort Dougan and Paul Mackerras.&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1485,7 +1485,7 @@ id|pte
 )paren
 suffix:semicolon
 DECL|macro|pp
-mdefine_line|#define pp ((long)pte_val(*pte))&t;&t;&t;&t;
+mdefine_line|#define pp ((long)pte_val(*pte))&t;&t;&t;
 id|printk
 c_func
 (paren
@@ -1540,7 +1540,7 @@ multiline_comment|/* valid */
 )paren
 suffix:semicolon
 DECL|macro|pp
-macro_line|#undef pp&t;&t;&t;&t;
+macro_line|#undef pp&t;&t;&t;
 )brace
 r_else
 (brace

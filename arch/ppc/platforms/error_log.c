@@ -1,9 +1,9 @@
-multiline_comment|/*&n; *  arch/ppc/kernel/error_log.c&n; *  &n; *  Copyright (c) 2000 Tilmann Bitterberg&n; *  (tilmann@bitterberg.de)&n; *&n; *  Error processing of errors found by rtas even-scan routine&n; *  which is done with every heartbeat. (chrp_setup.c)&n; */
+multiline_comment|/*&n; *  arch/ppc/kernel/error_log.c&n; *&n; *  Copyright (c) 2000 Tilmann Bitterberg&n; *  (tilmann@bitterberg.de)&n; *&n; *  Error processing of errors found by rtas even-scan routine&n; *  which is done with every heartbeat. (chrp_setup.c)&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &quot;error_log.h&quot;
 multiline_comment|/* ****************************************************************** */
-multiline_comment|/* &n; * EVENT-SCAN&n; * The whole stuff below here doesn&squot;t take any action when it found&n; * an error, it just prints as much information as possible and &n; * then its up to the user to decide what to do.&n; *&n; * Returns 0 if no errors were found&n; * Returns 1 if there may be more errors&n; */
+multiline_comment|/*&n; * EVENT-SCAN&n; * The whole stuff below here doesn&squot;t take any action when it found&n; * an error, it just prints as much information as possible and&n; * then its up to the user to decide what to do.&n; *&n; * Returns 0 if no errors were found&n; * Returns 1 if there may be more errors&n; */
 DECL|function|ppc_rtas_errorlog_scan
 r_int
 id|ppc_rtas_errorlog_scan

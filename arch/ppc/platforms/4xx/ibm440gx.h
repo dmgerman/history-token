@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/ibm440gx.h&n; *&n; * PPC440GX definitions&n; *&n; * Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * Copyright 2002 Roland Dreier&n; * Copyright 2003 MontaVista Software, Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; * &n; */
+multiline_comment|/*&n; * arch/ppc/platforms/ibm440gx.h&n; *&n; * PPC440GX definitions&n; *&n; * Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * Copyright 2002 Roland Dreier&n; * Copyright 2003 MontaVista Software, Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC_PLATFORMS_IBM440GX_H
 DECL|macro|__PPC_PLATFORMS_IBM440GX_H
@@ -142,7 +142,7 @@ mdefine_line|#define IBM_CPM_EMAC2  &t;&t;0x00000008&t;/* EMAC 2     */
 DECL|macro|IBM_CPM_EMAC3
 mdefine_line|#define IBM_CPM_EMAC3  &t;&t;0x00000004&t;/* EMAC 3     */
 DECL|macro|DFLT_IBM4xx_PM
-mdefine_line|#define DFLT_IBM4xx_PM&t;&t;~(IBM_CPM_UIC | IBM_CPM_UIC1 | IBM_CPM_CPU &bslash;&n;&t;&t;&t;&t;| IBM_CPM_EBC | IBM_CPM_SRAM | IBM_CPM_BGO &bslash;&n;&t;&t;&t;&t;| IBM_CPM_EBM | IBM_CPM_PLB | IBM_CPM_OPB &bslash;&n;&t;&t;&t;&t;| IBM_CPM_TMRCLK | IBM_CPM_DMA | IBM_CPM_PCI &bslash;&n;&t;&t;&t;&t;| IBM_CPM_TAHOE0 | IBM_CPM_TAHOE1 &bslash;&n;&t;&t;&t;&t;| IBM_CPM_EMAC0 | IBM_CPM_EMAC1 &bslash;&n;&t;&t;&t;  &t;| IBM_CPM_EMAC2 | IBM_CPM_EMAC3 )&t;
+mdefine_line|#define DFLT_IBM4xx_PM&t;&t;~(IBM_CPM_UIC | IBM_CPM_UIC1 | IBM_CPM_CPU &bslash;&n;&t;&t;&t;&t;| IBM_CPM_EBC | IBM_CPM_SRAM | IBM_CPM_BGO &bslash;&n;&t;&t;&t;&t;| IBM_CPM_EBM | IBM_CPM_PLB | IBM_CPM_OPB &bslash;&n;&t;&t;&t;&t;| IBM_CPM_TMRCLK | IBM_CPM_DMA | IBM_CPM_PCI &bslash;&n;&t;&t;&t;&t;| IBM_CPM_TAHOE0 | IBM_CPM_TAHOE1 &bslash;&n;&t;&t;&t;&t;| IBM_CPM_EMAC0 | IBM_CPM_EMAC1 &bslash;&n;&t;&t;&t;  &t;| IBM_CPM_EMAC2 | IBM_CPM_EMAC3 )
 multiline_comment|/* OPB */
 DECL|macro|PPC440GX_OPB_BASE_START
 mdefine_line|#define PPC440GX_OPB_BASE_START&t;0x0000000140000000ULL

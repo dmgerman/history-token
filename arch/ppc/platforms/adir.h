@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/adir.h&n; * &n; * Definitions for SBS Adirondack board support&n; *&n; * By Michael Sokolov &lt;msokolov@ivan.Harhan.ORG&gt;&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/adir.h&n; *&n; * Definitions for SBS Adirondack board support&n; *&n; * By Michael Sokolov &lt;msokolov@ivan.Harhan.ORG&gt;&n; */
 macro_line|#ifndef __PPC_PLATFORMS_ADIR_H
 DECL|macro|__PPC_PLATFORMS_ADIR_H
 mdefine_line|#define __PPC_PLATFORMS_ADIR_H

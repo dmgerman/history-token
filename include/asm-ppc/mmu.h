@@ -782,7 +782,7 @@ DECL|macro|TLB_G
 mdefine_line|#define TLB_G           0x00000001      /* Memory is guarded from prefetch */
 multiline_comment|/*&n; * PPC440 support&n; */
 DECL|macro|PPC44x_MMUCR_TID
-mdefine_line|#define PPC44x_MMUCR_TID&t;0x000000ff&t;
+mdefine_line|#define PPC44x_MMUCR_TID&t;0x000000ff
 DECL|macro|PPC44x_MMUCR_STS
 mdefine_line|#define PPC44x_MMUCR_STS&t;0x00010000
 DECL|macro|PPC44x_TLB_PAGEID

@@ -807,7 +807,7 @@ suffix:semicolon
 DECL|macro|SYMENT
 mdefine_line|#define&t;SYMENT&t;struct external_syment
 DECL|macro|SYMESZ
-mdefine_line|#define&t;SYMESZ&t;18&t;
+mdefine_line|#define&t;SYMESZ&t;18
 DECL|macro|AUXENT
 mdefine_line|#define&t;AUXENT&t;union external_auxent
 DECL|macro|AUXESZ
