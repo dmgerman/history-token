@@ -3635,7 +3635,7 @@ op_amp
 id|general_protection
 )paren
 suffix:semicolon
-id|set_trap_gate
+id|set_intr_gate
 c_func
 (paren
 l_int|14

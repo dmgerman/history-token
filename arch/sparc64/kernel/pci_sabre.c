@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_sabre.c,v 1.27 2001/04/24 05:14:12 davem Exp $&n; * pci_sabre.c: Sabre specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_sabre.c,v 1.29 2001/05/02 00:32:56 davem Exp $&n; * pci_sabre.c: Sabre specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -340,10 +340,10 @@ DECL|macro|SABRE_CONFIG_BASE
 mdefine_line|#define SABRE_CONFIG_BASE(PBM)&t;&bslash;&n;&t;((PBM)-&gt;config_space | (1UL &lt;&lt; 24))
 DECL|macro|SABRE_CONFIG_ENCODE
 mdefine_line|#define SABRE_CONFIG_ENCODE(BUS, DEVFN, REG)&t;&bslash;&n;&t;(((unsigned long)(BUS)   &lt;&lt; 16) |&t;&bslash;&n;&t; ((unsigned long)(DEVFN) &lt;&lt; 8)  |&t;&bslash;&n;&t; ((unsigned long)(REG)))
-DECL|variable|apb_present
+DECL|variable|hummingbird_p
 r_static
 r_int
-id|apb_present
+id|hummingbird_p
 suffix:semicolon
 DECL|function|sabre_pci_config_mkaddr
 r_static
@@ -416,8 +416,7 @@ id|devfn
 r_if
 c_cond
 (paren
-op_logical_neg
-id|apb_present
+id|hummingbird_p
 )paren
 r_return
 l_int|0
@@ -503,8 +502,7 @@ id|devfn
 r_if
 c_cond
 (paren
-op_logical_neg
-id|apb_present
+id|hummingbird_p
 )paren
 r_return
 l_int|0
@@ -6551,13 +6549,6 @@ c_func
 suffix:semicolon
 )brace
 )brace
-r_else
-(brace
-id|apb_present
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 )brace
 DECL|function|sabre_init
 r_void
@@ -6567,6 +6558,10 @@ c_func
 (paren
 r_int
 id|pnode
+comma
+r_char
+op_star
+id|model_name
 )paren
 (brace
 r_struct
@@ -6615,6 +6610,80 @@ suffix:semicolon
 r_int
 id|bus
 suffix:semicolon
+id|hummingbird_p
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|model_name
+comma
+l_string|&quot;pci108e,a001&quot;
+)paren
+)paren
+id|hummingbird_p
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|model_name
+comma
+l_string|&quot;SUNW,sabre&quot;
+)paren
+)paren
+(brace
+r_char
+id|compat
+(braket
+l_int|64
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|prom_getproperty
+c_func
+(paren
+id|pnode
+comma
+l_string|&quot;compatible&quot;
+comma
+id|compat
+comma
+r_sizeof
+(paren
+id|compat
+)paren
+)paren
+OG
+l_int|0
+op_logical_and
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|compat
+comma
+l_string|&quot;pci108e,a001&quot;
+)paren
+)paren
+id|hummingbird_p
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 id|p
 op_assign
 id|kmalloc

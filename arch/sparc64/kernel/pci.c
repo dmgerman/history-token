@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci.c,v 1.24 2001/03/28 10:56:34 davem Exp $&n; * pci.c: UltraSparc PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: pci.c,v 1.25 2001/05/02 00:27:27 davem Exp $&n; * pci.c: UltraSparc PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jj@ultra.linux.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -162,6 +162,9 @@ id|sabre_init
 c_func
 (paren
 r_int
+comma
+r_char
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -170,6 +173,9 @@ id|psycho_init
 c_func
 (paren
 r_int
+comma
+r_char
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -178,6 +184,9 @@ id|schizo_init
 c_func
 (paren
 r_int
+comma
+r_char
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -196,6 +205,9 @@ id|init
 )paren
 (paren
 r_int
+comma
+r_char
+op_star
 )paren
 suffix:semicolon
 DECL|variable|pci_controller_table
@@ -314,6 +326,8 @@ id|init
 c_func
 (paren
 id|node
+comma
+id|model_name
 )paren
 suffix:semicolon
 r_return

@@ -1194,21 +1194,11 @@ id|amount
 )paren
 multiline_comment|/* Pause for amount*10 milliseconds */
 (brace
-r_do
-(brace
-id|udelay
+id|mdelay
 c_func
 (paren
 l_int|10
 op_star
-l_int|1000
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-op_decrement
 id|amount
 )paren
 suffix:semicolon
@@ -2788,7 +2778,7 @@ suffix:semicolon
 id|scsi_set_pci_device
 c_func
 (paren
-id|shpnt-&gt;pci_dev
+id|shpnt
 comma
 id|pdev
 )paren

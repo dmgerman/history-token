@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * Copyright (c) 1994 John Aycock&n; *   The University of Calgary Department of Computer Science.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * $Id: //depot/src/linux/drivers/scsi/aic7xxx/aic7xxx_linux.h#45 $&n; *&n; * Copyright (c) 2000, 2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/linux/drivers/scsi/aic7xxx/aic7xxx_linux.h#45 $&n; *&n; */
+multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * Copyright (c) 1994 John Aycock&n; *   The University of Calgary Department of Computer Science.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * $Id: //depot/src/linux/drivers/scsi/aic7xxx/aic7xxx_linux.h#59 $&n; *&n; * Copyright (c) 2000, 2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/linux/drivers/scsi/aic7xxx/aic7xxx_linux.h#59 $&n; *&n; */
 macro_line|#ifndef _AIC7XXX_LINUX_H_
 DECL|macro|_AIC7XXX_LINUX_H_
 mdefine_line|#define _AIC7XXX_LINUX_H_
@@ -10,6 +10,10 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/malloc.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#ifndef KERNEL_VERSION
+DECL|macro|KERNEL_VERSION
+mdefine_line|#define KERNEL_VERSION(x,y,z) (((x)&lt;&lt;16)+((y)&lt;&lt;8)+(z))
+macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#endif
@@ -24,11 +28,6 @@ macro_line|#endif
 macro_line|#include &quot;cam.h&quot;
 macro_line|#include &quot;queue.h&quot;
 macro_line|#include &quot;scsi_message.h&quot;
-multiline_comment|/*&n; * We never have to reference the current task, and the driver core&n; * makes ample use of this &quot;name&quot;.&n; */
-macro_line|#ifdef current
-DECL|macro|current
-macro_line|#undef current
-macro_line|#endif
 multiline_comment|/************************* Forward Declarations *******************************/
 r_struct
 id|ahc_softc
@@ -86,7 +85,7 @@ op_star
 id|aic7xxx_driver_template
 suffix:semicolon
 multiline_comment|/***************************** Bus Space/DMA **********************************/
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,2,16)
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,2,17)
 DECL|typedef|bus_addr_t
 r_typedef
 id|dma_addr_t
@@ -745,11 +744,7 @@ macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#endif
 DECL|macro|AIC7XXX_DRIVER_VERSION
-mdefine_line|#define AIC7XXX_DRIVER_VERSION  &quot;6.1.5&quot;
-macro_line|#ifndef KERNEL_VERSION
-DECL|macro|KERNEL_VERSION
-mdefine_line|#define KERNEL_VERSION(x,y,z) (((x)&lt;&lt;16)+((y)&lt;&lt;8)+(z))
-macro_line|#endif
+mdefine_line|#define AIC7XXX_DRIVER_VERSION  &quot;6.1.13&quot;
 multiline_comment|/**************************** Front End Queues ********************************/
 multiline_comment|/*&n; * Data structure used to cast the Linux struct scsi_cmnd to something&n; * that allows us to use the queue macros.  The linux structure has&n; * plenty of space to hold the links fields as required by the queue&n; * macros, but the queue macors require them to have the correct type.&n; */
 DECL|struct|ahc_cmd_internal
@@ -865,7 +860,19 @@ DECL|enumerator|AHC_DEV_ON_RUN_LIST
 id|AHC_DEV_ON_RUN_LIST
 op_assign
 l_int|0x08
+comma
 multiline_comment|/* Queued to be run later */
+DECL|enumerator|AHC_DEV_Q_BASIC
+id|AHC_DEV_Q_BASIC
+op_assign
+l_int|0x10
+comma
+multiline_comment|/* Allow basic device queuing */
+DECL|enumerator|AHC_DEV_Q_TAGGED
+id|AHC_DEV_Q_TAGGED
+op_assign
+l_int|0x20
+multiline_comment|/* Allow full SCSI2 command queueing */
 DECL|typedef|ahc_dev_flags
 )brace
 id|ahc_dev_flags
@@ -905,9 +912,9 @@ id|u_int
 id|qfrozen
 suffix:semicolon
 multiline_comment|/*&n;&t; * Cumulative command counter.&n;&t; */
-DECL|member|num_commands
-id|u_int
-id|num_commands
+DECL|member|commands_issued
+id|u_long
+id|commands_issued
 suffix:semicolon
 multiline_comment|/*&n;&t; * The number of tagged transactions when&n;&t; * running at our current opening level&n;&t; * that have been successfully received by&n;&t; * this device since the last QUEUE FULL.&n;&t; */
 DECL|member|tag_success_count
@@ -937,6 +944,13 @@ id|last_queuefull_same_count
 suffix:semicolon
 DECL|macro|AHC_LOCK_TAGS_COUNT
 mdefine_line|#define AHC_LOCK_TAGS_COUNT 50
+multiline_comment|/*&n;&t; * How many transactions have been queued&n;&t; * without the device going idle.  We use&n;&t; * this statistic to &n;&t; */
+DECL|member|commands_since_idle_or_otag
+id|u_int
+id|commands_since_idle_or_otag
+suffix:semicolon
+DECL|macro|AHC_OTAG_THRESH
+mdefine_line|#define AHC_OTAG_THRESH&t;250
 DECL|member|lun
 r_int
 id|lun
@@ -1168,10 +1182,6 @@ macro_line|#undef mb
 macro_line|#endif
 DECL|macro|mb
 mdefine_line|#define mb() &bslash;&n;&t;__asm__ __volatile__(&quot;mb&quot;: : :&quot;memory&quot;)
-macro_line|#elif defined(__sparc__)
-DECL|macro|MMAPIO
-mdefine_line|#define MMAPIO
-multiline_comment|/* The default mb() define does what this driver wants. -DaveM */
 macro_line|#endif
 r_static
 id|__inline
@@ -1504,17 +1514,15 @@ suffix:semicolon
 )brace
 multiline_comment|/**************************** Initialization **********************************/
 r_int
-id|aic7xxx_register_host
+id|ahc_linux_register_host
 c_func
 (paren
 r_struct
 id|ahc_softc
 op_star
-id|ahc
 comma
 id|Scsi_Host_Template
 op_star
-r_template
 )paren
 suffix:semicolon
 multiline_comment|/*************************** Pretty Printing **********************************/
@@ -1982,6 +1990,44 @@ DECL|macro|PCIR_SUBVEND_0
 mdefine_line|#define PCIR_SUBVEND_0&t;0x2c
 DECL|macro|PCIR_SUBDEV_0
 mdefine_line|#define PCIR_SUBDEV_0&t;0x2e
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
+r_extern
+r_struct
+id|pci_driver
+id|aic7xxx_pci_driver
+suffix:semicolon
+macro_line|#endif
+r_typedef
+r_enum
+(brace
+DECL|enumerator|AHC_POWER_STATE_D0
+id|AHC_POWER_STATE_D0
+comma
+DECL|enumerator|AHC_POWER_STATE_D1
+id|AHC_POWER_STATE_D1
+comma
+DECL|enumerator|AHC_POWER_STATE_D2
+id|AHC_POWER_STATE_D2
+comma
+DECL|enumerator|AHC_POWER_STATE_D3
+id|AHC_POWER_STATE_D3
+DECL|typedef|ahc_power_state
+)brace
+id|ahc_power_state
+suffix:semicolon
+r_void
+id|ahc_power_state_change
+c_func
+(paren
+r_struct
+id|ahc_softc
+op_star
+id|ahc
+comma
+id|ahc_power_state
+id|new_state
+)paren
+suffix:semicolon
 multiline_comment|/**************************** VL/EISA Routines ********************************/
 r_int
 id|aic7770_linux_probe
@@ -2012,9 +2058,6 @@ id|ahc
 comma
 id|u_int
 id|irq
-comma
-r_int
-id|shared
 )paren
 suffix:semicolon
 multiline_comment|/******************************* PCI Routines *********************************/
@@ -3050,8 +3093,7 @@ id|ahc_devinfo
 op_star
 id|devinfo
 comma
-r_int
-id|enable
+id|ahc_queue_alg
 )paren
 suffix:semicolon
 r_int
@@ -3083,7 +3125,7 @@ id|status
 )paren
 suffix:semicolon
 r_void
-id|aic7xxx_isr
+id|ahc_linux_isr
 c_func
 (paren
 r_int
@@ -3153,6 +3195,9 @@ id|u_int
 id|lun
 comma
 id|ac_code
+comma
+r_void
+op_star
 )paren
 suffix:semicolon
 r_void

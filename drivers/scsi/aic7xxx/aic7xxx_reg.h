@@ -141,10 +141,10 @@ DECL|macro|SELDI
 mdefine_line|#define&t;&t;SELDI           &t;0x20
 DECL|macro|SELINGO
 mdefine_line|#define&t;&t;SELINGO         &t;0x10
-DECL|macro|IOERR
-mdefine_line|#define&t;&t;IOERR           &t;0x08
 DECL|macro|SWRAP
 mdefine_line|#define&t;&t;SWRAP           &t;0x08
+DECL|macro|IOERR
+mdefine_line|#define&t;&t;IOERR           &t;0x08
 DECL|macro|SDONE
 mdefine_line|#define&t;&t;SDONE           &t;0x04
 DECL|macro|SPIORDY
@@ -319,10 +319,10 @@ DECL|macro|BRDDAT4
 mdefine_line|#define&t;&t;BRDDAT4         &t;0x10
 DECL|macro|BRDSTB
 mdefine_line|#define&t;&t;BRDSTB          &t;0x10
-DECL|macro|BRDCS
-mdefine_line|#define&t;&t;BRDCS           &t;0x08
 DECL|macro|BRDDAT3
 mdefine_line|#define&t;&t;BRDDAT3         &t;0x08
+DECL|macro|BRDCS
+mdefine_line|#define&t;&t;BRDCS           &t;0x08
 DECL|macro|BRDDAT2
 mdefine_line|#define&t;&t;BRDDAT2         &t;0x04
 DECL|macro|BRDRW
@@ -399,10 +399,10 @@ DECL|macro|WIDEODD
 mdefine_line|#define&t;&t;WIDEODD         &t;0x40
 DECL|macro|SCSIEN
 mdefine_line|#define&t;&t;SCSIEN          &t;0x20
-DECL|macro|SDMAENACK
-mdefine_line|#define&t;&t;SDMAENACK       &t;0x10
 DECL|macro|SDMAEN
 mdefine_line|#define&t;&t;SDMAEN          &t;0x10
+DECL|macro|SDMAENACK
+mdefine_line|#define&t;&t;SDMAENACK       &t;0x10
 DECL|macro|HDMAEN
 mdefine_line|#define&t;&t;HDMAEN          &t;0x08
 DECL|macro|HDMAENACK
@@ -449,10 +449,10 @@ DECL|macro|P_COMMAND
 mdefine_line|#define&t;&t;P_COMMAND       &t;0x80
 DECL|macro|CDI
 mdefine_line|#define&t;&t;CDI             &t;0x80
-DECL|macro|IOI
-mdefine_line|#define&t;&t;IOI             &t;0x40
 DECL|macro|P_DATAIN
 mdefine_line|#define&t;&t;P_DATAIN        &t;0x40
+DECL|macro|IOI
+mdefine_line|#define&t;&t;IOI             &t;0x40
 DECL|macro|MSGI
 mdefine_line|#define&t;&t;MSGI            &t;0x20
 DECL|macro|P_BUSFREE
@@ -505,10 +505,8 @@ DECL|macro|RETURN_2
 mdefine_line|#define&t;RETURN_2        &t;&t;0x52
 DECL|macro|LAST_MSG
 mdefine_line|#define&t;LAST_MSG        &t;&t;0x53
-DECL|macro|TARGET_MSG_REQUEST
-mdefine_line|#define&t;TARGET_MSG_REQUEST&t;&t;0x54
 DECL|macro|SCSISEQ_TEMPLATE
-mdefine_line|#define&t;SCSISEQ_TEMPLATE&t;&t;0x56
+mdefine_line|#define&t;SCSISEQ_TEMPLATE&t;&t;0x54
 DECL|macro|ENSELO
 mdefine_line|#define&t;&t;ENSELO          &t;0x40
 DECL|macro|ENSELI
@@ -522,11 +520,11 @@ mdefine_line|#define&t;&t;ENAUTOATNI      &t;0x04
 DECL|macro|ENAUTOATNP
 mdefine_line|#define&t;&t;ENAUTOATNP      &t;0x02
 DECL|macro|DATA_COUNT_ODD
-mdefine_line|#define&t;DATA_COUNT_ODD  &t;&t;0x57
+mdefine_line|#define&t;DATA_COUNT_ODD  &t;&t;0x55
 DECL|macro|INITIATOR_TAG
-mdefine_line|#define&t;INITIATOR_TAG   &t;&t;0x58
+mdefine_line|#define&t;INITIATOR_TAG   &t;&t;0x56
 DECL|macro|SEQ_FLAGS2
-mdefine_line|#define&t;SEQ_FLAGS2      &t;&t;0x59
+mdefine_line|#define&t;SEQ_FLAGS2      &t;&t;0x57
 DECL|macro|SCB_DMA
 mdefine_line|#define&t;&t;SCB_DMA         &t;0x01
 DECL|macro|SCSICONF
@@ -551,10 +549,10 @@ DECL|macro|HOSTCONF
 mdefine_line|#define&t;HOSTCONF        &t;&t;0x5d
 DECL|macro|HA_274_BIOSCTRL
 mdefine_line|#define&t;HA_274_BIOSCTRL &t;&t;0x5f
-DECL|macro|BIOSMODE
-mdefine_line|#define&t;&t;BIOSMODE        &t;0x30
 DECL|macro|BIOSDISABLED
 mdefine_line|#define&t;&t;BIOSDISABLED    &t;0x30
+DECL|macro|BIOSMODE
+mdefine_line|#define&t;&t;BIOSMODE        &t;0x30
 DECL|macro|CHANNEL_B_PRIMARY
 mdefine_line|#define&t;&t;CHANNEL_B_PRIMARY&t;0x08
 DECL|macro|SEQCTL
@@ -765,8 +763,10 @@ DECL|macro|DFSTATUS
 mdefine_line|#define&t;DFSTATUS        &t;&t;0x94
 DECL|macro|PRELOAD_AVAIL
 mdefine_line|#define&t;&t;PRELOAD_AVAIL   &t;0x80
-DECL|macro|DWORDEMP
-mdefine_line|#define&t;&t;DWORDEMP        &t;0x20
+DECL|macro|DFCACHETH
+mdefine_line|#define&t;&t;DFCACHETH       &t;0x40
+DECL|macro|FIFOQWDEMP
+mdefine_line|#define&t;&t;FIFOQWDEMP      &t;0x20
 DECL|macro|MREQPEND
 mdefine_line|#define&t;&t;MREQPEND        &t;0x10
 DECL|macro|HDONE
@@ -821,6 +821,8 @@ DECL|macro|MSG_IN_PHASE
 mdefine_line|#define&t;&t;MSG_IN_PHASE    &t;0x08
 DECL|macro|MSG_OUT_PHASE
 mdefine_line|#define&t;&t;MSG_OUT_PHASE   &t;0x04
+DECL|macro|DATA_PHASE_MASK
+mdefine_line|#define&t;&t;DATA_PHASE_MASK &t;0x03
 DECL|macro|DATA_IN_PHASE
 mdefine_line|#define&t;&t;DATA_IN_PHASE   &t;0x02
 DECL|macro|DATA_OUT_PHASE
@@ -829,16 +831,16 @@ DECL|macro|SFUNCT
 mdefine_line|#define&t;SFUNCT          &t;&t;0x9f
 DECL|macro|ALT_MODE
 mdefine_line|#define&t;&t;ALT_MODE        &t;0x80
+DECL|macro|SCB_BASE
+mdefine_line|#define&t;SCB_BASE        &t;&t;0xa0
 DECL|macro|SCB_CDB_PTR
 mdefine_line|#define&t;SCB_CDB_PTR     &t;&t;0xa0
+DECL|macro|SCB_RESIDUAL_DATACNT
+mdefine_line|#define&t;SCB_RESIDUAL_DATACNT&t;&t;0xa0
 DECL|macro|SCB_CDB_STORE
 mdefine_line|#define&t;SCB_CDB_STORE   &t;&t;0xa0
 DECL|macro|SCB_TARGET_INFO
 mdefine_line|#define&t;SCB_TARGET_INFO &t;&t;0xa0
-DECL|macro|SCB_RESIDUAL_DATACNT
-mdefine_line|#define&t;SCB_RESIDUAL_DATACNT&t;&t;0xa0
-DECL|macro|SCB_BASE
-mdefine_line|#define&t;SCB_BASE        &t;&t;0xa0
 DECL|macro|SCB_RESIDUAL_SGPTR
 mdefine_line|#define&t;SCB_RESIDUAL_SGPTR&t;&t;0xa4
 DECL|macro|SCB_SCSI_STATUS
@@ -901,6 +903,8 @@ DECL|macro|SCB_SCSIOFFSET
 mdefine_line|#define&t;SCB_SCSIOFFSET  &t;&t;0xbe
 DECL|macro|SCB_NEXT
 mdefine_line|#define&t;SCB_NEXT        &t;&t;0xbf
+DECL|macro|SCB_64_SPARE
+mdefine_line|#define&t;SCB_64_SPARE    &t;&t;0xc0
 DECL|macro|SEECTL_2840
 mdefine_line|#define&t;SEECTL_2840     &t;&t;0xc0
 DECL|macro|CS_2840
@@ -909,8 +913,6 @@ DECL|macro|CK_2840
 mdefine_line|#define&t;&t;CK_2840         &t;0x02
 DECL|macro|DO_2840
 mdefine_line|#define&t;&t;DO_2840         &t;0x01
-DECL|macro|SCB_64_SPARE
-mdefine_line|#define&t;SCB_64_SPARE    &t;&t;0xc0
 DECL|macro|STATUS_2840
 mdefine_line|#define&t;STATUS_2840     &t;&t;0xc1
 DECL|macro|EEPROM_TF
@@ -1001,10 +1003,10 @@ DECL|macro|WR_DFTHRSH_50
 mdefine_line|#define&t;&t;WR_DFTHRSH_50   &t;0x20
 DECL|macro|WR_DFTHRSH_25
 mdefine_line|#define&t;&t;WR_DFTHRSH_25   &t;0x10
-DECL|macro|RD_DFTHRSH_MAX
-mdefine_line|#define&t;&t;RD_DFTHRSH_MAX  &t;0x07
 DECL|macro|RD_DFTHRSH
 mdefine_line|#define&t;&t;RD_DFTHRSH      &t;0x07
+DECL|macro|RD_DFTHRSH_MAX
+mdefine_line|#define&t;&t;RD_DFTHRSH_MAX  &t;0x07
 DECL|macro|RD_DFTHRSH_90
 mdefine_line|#define&t;&t;RD_DFTHRSH_90   &t;0x06
 DECL|macro|RD_DFTHRSH_85
@@ -1033,34 +1035,8 @@ DECL|macro|LAST_SEG_DONE
 mdefine_line|#define&t;&t;LAST_SEG_DONE   &t;0x01
 DECL|macro|SG_CACHE_PRE
 mdefine_line|#define&t;SG_CACHE_PRE    &t;&t;0xfc
-DECL|macro|CMD_GROUP_CODE_SHIFT
-mdefine_line|#define&t;CMD_GROUP_CODE_SHIFT&t;0x05
-DECL|macro|BUS_8_BIT
-mdefine_line|#define&t;BUS_8_BIT&t;0x00
-DECL|macro|CCSGRAM_MAXSEGS
-mdefine_line|#define&t;CCSGRAM_MAXSEGS&t;0x10
-DECL|macro|TARGET_DATA_IN
-mdefine_line|#define&t;TARGET_DATA_IN&t;0x01
-DECL|macro|STATUS_QUEUE_FULL
-mdefine_line|#define&t;STATUS_QUEUE_FULL&t;0x28
-DECL|macro|STATUS_BUSY
-mdefine_line|#define&t;STATUS_BUSY&t;0x08
-DECL|macro|MAX_OFFSET_8BIT
-mdefine_line|#define&t;MAX_OFFSET_8BIT&t;0x0f
-DECL|macro|BUS_16_BIT
-mdefine_line|#define&t;BUS_16_BIT&t;0x01
-DECL|macro|TID_SHIFT
-mdefine_line|#define&t;TID_SHIFT&t;0x04
-DECL|macro|SCB_DOWNLOAD_SIZE_64
-mdefine_line|#define&t;SCB_DOWNLOAD_SIZE_64&t;0x30
-DECL|macro|SCB_UPLOAD_SIZE
-mdefine_line|#define&t;SCB_UPLOAD_SIZE&t;0x20
-DECL|macro|HOST_MAILBOX_SHIFT
-mdefine_line|#define&t;HOST_MAILBOX_SHIFT&t;0x04
 DECL|macro|SCB_INITIATOR_TAG
 mdefine_line|#define&t;SCB_INITIATOR_TAG&t;0x03
-DECL|macro|SCB_TARGET_STATUS
-mdefine_line|#define&t;SCB_TARGET_STATUS&t;0x02
 DECL|macro|SCB_TARGET_DATA_DIR
 mdefine_line|#define&t;SCB_TARGET_DATA_DIR&t;0x01
 DECL|macro|SCB_TARGET_PHASES
@@ -1069,8 +1045,32 @@ DECL|macro|MAX_OFFSET_ULTRA2
 mdefine_line|#define&t;MAX_OFFSET_ULTRA2&t;0x7f
 DECL|macro|MAX_OFFSET_16BIT
 mdefine_line|#define&t;MAX_OFFSET_16BIT&t;0x08
+DECL|macro|BUS_8_BIT
+mdefine_line|#define&t;BUS_8_BIT&t;0x00
 DECL|macro|TARGET_CMD_CMPLT
 mdefine_line|#define&t;TARGET_CMD_CMPLT&t;0xfe
+DECL|macro|STATUS_QUEUE_FULL
+mdefine_line|#define&t;STATUS_QUEUE_FULL&t;0x28
+DECL|macro|STATUS_BUSY
+mdefine_line|#define&t;STATUS_BUSY&t;0x08
+DECL|macro|MAX_OFFSET_8BIT
+mdefine_line|#define&t;MAX_OFFSET_8BIT&t;0x0f
+DECL|macro|BUS_32_BIT
+mdefine_line|#define&t;BUS_32_BIT&t;0x02
+DECL|macro|CCSGADDR_MAX
+mdefine_line|#define&t;CCSGADDR_MAX&t;0x80
+DECL|macro|TID_SHIFT
+mdefine_line|#define&t;TID_SHIFT&t;0x04
+DECL|macro|SCB_DOWNLOAD_SIZE_64
+mdefine_line|#define&t;SCB_DOWNLOAD_SIZE_64&t;0x30
+DECL|macro|HOST_MAILBOX_SHIFT
+mdefine_line|#define&t;HOST_MAILBOX_SHIFT&t;0x04
+DECL|macro|SCB_TARGET_STATUS
+mdefine_line|#define&t;SCB_TARGET_STATUS&t;0x02
+DECL|macro|CMD_GROUP_CODE_SHIFT
+mdefine_line|#define&t;CMD_GROUP_CODE_SHIFT&t;0x05
+DECL|macro|CCSGRAM_MAXSEGS
+mdefine_line|#define&t;CCSGRAM_MAXSEGS&t;0x10
 DECL|macro|SCB_LIST_NULL
 mdefine_line|#define&t;SCB_LIST_NULL&t;0xff
 DECL|macro|SG_SIZEOF
@@ -1079,13 +1079,17 @@ DECL|macro|SCB_DOWNLOAD_SIZE
 mdefine_line|#define&t;SCB_DOWNLOAD_SIZE&t;0x20
 DECL|macro|SEQ_MAILBOX_SHIFT
 mdefine_line|#define&t;SEQ_MAILBOX_SHIFT&t;0x00
+DECL|macro|TARGET_DATA_IN
+mdefine_line|#define&t;TARGET_DATA_IN&t;0x01
 DECL|macro|HOST_MSG
 mdefine_line|#define&t;HOST_MSG&t;0xff
-DECL|macro|BUS_32_BIT
-mdefine_line|#define&t;BUS_32_BIT&t;0x02
-DECL|macro|CCSGADDR_MAX
-mdefine_line|#define&t;CCSGADDR_MAX&t;0x80
+DECL|macro|BUS_16_BIT
+mdefine_line|#define&t;BUS_16_BIT&t;0x01
+DECL|macro|SCB_UPLOAD_SIZE
+mdefine_line|#define&t;SCB_UPLOAD_SIZE&t;0x20
 multiline_comment|/* Downloaded Constant Definitions */
+DECL|macro|INVERTED_CACHESIZE_MASK
+mdefine_line|#define&t;INVERTED_CACHESIZE_MASK&t;0x03
 DECL|macro|SG_PREFETCH_ADDR_MASK
 mdefine_line|#define&t;SG_PREFETCH_ADDR_MASK&t;0x06
 DECL|macro|SG_PREFETCH_ALIGN_MASK
@@ -1094,8 +1098,6 @@ DECL|macro|QOUTFIFO_OFFSET
 mdefine_line|#define&t;QOUTFIFO_OFFSET&t;0x00
 DECL|macro|SG_PREFETCH_CNT
 mdefine_line|#define&t;SG_PREFETCH_CNT&t;0x04
-DECL|macro|INVERTED_CACHESIZE_MASK
-mdefine_line|#define&t;INVERTED_CACHESIZE_MASK&t;0x03
 DECL|macro|CACHESIZE_MASK
 mdefine_line|#define&t;CACHESIZE_MASK&t;0x02
 DECL|macro|QINFIFO_OFFSET

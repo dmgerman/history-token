@@ -2920,7 +2920,16 @@ id|headroom
 r_int
 id|delta
 op_assign
+(paren
 id|headroom
+OG
+l_int|16
+ques
+c_cond
+id|headroom
+suffix:colon
+l_int|16
+)paren
 op_minus
 id|skb_headroom
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;IPv4 Forwarding Information Base: policy rules.&n; *&n; * Version:&t;$Id: fib_rules.c,v 1.15 2000/04/15 01:48:10 davem Exp $&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Fixes:&n; * &t;&t;Rani Assaf&t;:&t;local_rule cannot be deleted&n; *&t;&t;Marc Boucher&t;:&t;routing by fwmark&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;IPv4 Forwarding Information Base: policy rules.&n; *&n; * Version:&t;$Id: fib_rules.c,v 1.16 2001/04/30 04:39:14 davem Exp $&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Fixes:&n; * &t;&t;Rani Assaf&t;:&t;local_rule cannot be deleted&n; *&t;&t;Marc Boucher&t;:&t;routing by fwmark&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -129,18 +129,24 @@ id|fib_rule
 id|default_rule
 op_assign
 (brace
-l_int|NULL
-comma
+id|r_clntref
+suffix:colon
 id|ATOMIC_INIT
 c_func
 (paren
 l_int|2
 )paren
 comma
+id|r_preference
+suffix:colon
 l_int|0x7FFF
 comma
+id|r_table
+suffix:colon
 id|RT_TABLE_DEFAULT
 comma
+id|r_action
+suffix:colon
 id|RTN_UNICAST
 comma
 )brace
@@ -152,19 +158,29 @@ id|fib_rule
 id|main_rule
 op_assign
 (brace
+id|r_next
+suffix:colon
 op_amp
 id|default_rule
 comma
+id|r_clntref
+suffix:colon
 id|ATOMIC_INIT
 c_func
 (paren
 l_int|2
 )paren
 comma
+id|r_preference
+suffix:colon
 l_int|0x7FFE
 comma
+id|r_table
+suffix:colon
 id|RT_TABLE_MAIN
 comma
+id|r_action
+suffix:colon
 id|RTN_UNICAST
 comma
 )brace
@@ -176,19 +192,25 @@ id|fib_rule
 id|local_rule
 op_assign
 (brace
+id|r_next
+suffix:colon
 op_amp
 id|main_rule
 comma
+id|r_clntref
+suffix:colon
 id|ATOMIC_INIT
 c_func
 (paren
 l_int|2
 )paren
 comma
-l_int|0
-comma
+id|r_table
+suffix:colon
 id|RT_TABLE_LOCAL
 comma
+id|r_action
+suffix:colon
 id|RTN_UNICAST
 comma
 )brace
@@ -1972,11 +1994,10 @@ id|notifier_block
 id|fib_rules_notifier
 op_assign
 (brace
+id|notifier_call
+suffix:colon
 id|fib_rules_event
 comma
-l_int|NULL
-comma
-l_int|0
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_RTNETLINK

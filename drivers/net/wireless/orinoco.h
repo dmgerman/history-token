@@ -1,0 +1,511 @@
+multiline_comment|/* orinoco.h&n; * &n; * Common definitions to all pieces of the various orinoco&n; * drivers&n; */
+macro_line|#ifndef _ORINOCO_H
+DECL|macro|_ORINOCO_H
+mdefine_line|#define _ORINOCO_H
+multiline_comment|/* To enable debug messages */
+singleline_comment|//#define ORINOCO_DEBUG&t;&t;3
+macro_line|#if (! defined (WIRELESS_EXT)) || (WIRELESS_EXT &lt; 10)
+macro_line|#error &quot;orinoco_cs requires Wireless extensions v10 or later.&quot;
+macro_line|#endif /* (! defined (WIRELESS_EXT)) || (WIRELESS_EXT &lt; 10) */
+DECL|macro|WIRELESS_SPY
+mdefine_line|#define WIRELESS_SPY&t;&t;
+singleline_comment|// enable iwspy support
+DECL|macro|DLDWD_MIN_MTU
+mdefine_line|#define DLDWD_MIN_MTU&t;&t;256
+DECL|macro|DLDWD_MAX_MTU
+mdefine_line|#define DLDWD_MAX_MTU&t;&t;(HERMES_FRAME_LEN_MAX - ENCAPS_OVERHEAD)
+DECL|macro|LTV_BUF_SIZE
+mdefine_line|#define LTV_BUF_SIZE&t;&t;128
+DECL|macro|USER_BAP
+mdefine_line|#define USER_BAP&t;&t;0
+DECL|macro|IRQ_BAP
+mdefine_line|#define IRQ_BAP&t;&t;&t;1
+DECL|macro|DLDWD_MACPORT
+mdefine_line|#define DLDWD_MACPORT&t;&t;0
+DECL|macro|IRQ_LOOP_MAX
+mdefine_line|#define IRQ_LOOP_MAX&t;&t;10
+DECL|macro|TX_NICBUF_SIZE
+mdefine_line|#define TX_NICBUF_SIZE&t;&t;2048
+DECL|macro|TX_NICBUF_SIZE_BUG
+mdefine_line|#define TX_NICBUF_SIZE_BUG&t;1585&t;&t;/* Bug in Intel firmware */
+DECL|macro|MAX_KEYS
+mdefine_line|#define MAX_KEYS&t;&t;4
+DECL|macro|MAX_KEY_SIZE
+mdefine_line|#define MAX_KEY_SIZE&t;&t;14
+DECL|macro|LARGE_KEY_SIZE
+mdefine_line|#define LARGE_KEY_SIZE&t;&t;13
+DECL|macro|SMALL_KEY_SIZE
+mdefine_line|#define SMALL_KEY_SIZE&t;&t;5
+DECL|macro|MAX_FRAME_SIZE
+mdefine_line|#define MAX_FRAME_SIZE&t;&t;2304
+DECL|struct|dldwd_key
+r_typedef
+r_struct
+id|dldwd_key
+(brace
+DECL|member|len
+r_uint16
+id|len
+suffix:semicolon
+DECL|member|data
+r_char
+id|data
+(braket
+id|MAX_KEY_SIZE
+)braket
+suffix:semicolon
+DECL|typedef|dldwd_key_t
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+id|dldwd_key_t
+suffix:semicolon
+DECL|typedef|dldwd_keys_t
+r_typedef
+id|dldwd_key_t
+id|dldwd_keys_t
+(braket
+id|MAX_KEYS
+)braket
+suffix:semicolon
+multiline_comment|/*====================================================================*/
+DECL|struct|dldwd_priv
+r_typedef
+r_struct
+id|dldwd_priv
+(brace
+DECL|member|card
+r_void
+op_star
+id|card
+suffix:semicolon
+multiline_comment|/* Pointer to card dependant structure */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+DECL|member|state
+r_int
+id|state
+suffix:semicolon
+DECL|macro|DLDWD_STATE_INIRQ
+mdefine_line|#define DLDWD_STATE_INIRQ 0
+DECL|macro|DLDWD_STATE_DOIRQ
+mdefine_line|#define DLDWD_STATE_DOIRQ 1
+DECL|member|hw_ready
+r_int
+id|hw_ready
+suffix:semicolon
+multiline_comment|/* HW may be suspended by platform */
+multiline_comment|/* Net device stuff */
+DECL|member|ndev
+r_struct
+id|net_device
+id|ndev
+suffix:semicolon
+DECL|member|stats
+r_struct
+id|net_device_stats
+id|stats
+suffix:semicolon
+DECL|member|wstats
+r_struct
+id|iw_statistics
+id|wstats
+suffix:semicolon
+multiline_comment|/* Hardware control variables */
+DECL|member|hw
+id|hermes_t
+id|hw
+suffix:semicolon
+DECL|member|txfid
+r_uint16
+id|txfid
+suffix:semicolon
+multiline_comment|/* Capabilities of the hardware/firmware */
+DECL|member|firmware_info
+id|hermes_identity_t
+id|firmware_info
+suffix:semicolon
+DECL|member|firmware_type
+r_int
+id|firmware_type
+suffix:semicolon
+DECL|macro|FIRMWARE_TYPE_LUCENT
+mdefine_line|#define FIRMWARE_TYPE_LUCENT 1
+DECL|macro|FIRMWARE_TYPE_PRISM2
+mdefine_line|#define FIRMWARE_TYPE_PRISM2 2
+DECL|macro|FIRMWARE_TYPE_SYMBOL
+mdefine_line|#define FIRMWARE_TYPE_SYMBOL 3
+DECL|member|has_ibss
+DECL|member|has_port3
+DECL|member|prefer_port3
+DECL|member|has_ibss_any
+r_int
+id|has_ibss
+comma
+id|has_port3
+comma
+id|prefer_port3
+comma
+id|has_ibss_any
+suffix:semicolon
+DECL|member|has_wep
+DECL|member|has_big_wep
+r_int
+id|has_wep
+comma
+id|has_big_wep
+suffix:semicolon
+DECL|member|has_mwo
+r_int
+id|has_mwo
+suffix:semicolon
+DECL|member|has_pm
+r_int
+id|has_pm
+suffix:semicolon
+DECL|member|has_preamble
+r_int
+id|has_preamble
+suffix:semicolon
+DECL|member|broken_reset
+DECL|member|broken_allocate
+r_int
+id|broken_reset
+comma
+id|broken_allocate
+suffix:semicolon
+DECL|member|channel_mask
+r_uint16
+id|channel_mask
+suffix:semicolon
+multiline_comment|/* Current configuration */
+DECL|member|iw_mode
+r_uint32
+id|iw_mode
+suffix:semicolon
+DECL|member|port_type
+DECL|member|allow_ibss
+r_int
+id|port_type
+comma
+id|allow_ibss
+suffix:semicolon
+DECL|member|wep_on
+DECL|member|wep_restrict
+DECL|member|tx_key
+r_uint16
+id|wep_on
+comma
+id|wep_restrict
+comma
+id|tx_key
+suffix:semicolon
+DECL|member|keys
+id|dldwd_keys_t
+id|keys
+suffix:semicolon
+DECL|member|nick
+r_char
+id|nick
+(braket
+id|IW_ESSID_MAX_SIZE
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+DECL|member|desired_essid
+r_char
+id|desired_essid
+(braket
+id|IW_ESSID_MAX_SIZE
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+DECL|member|frag_thresh
+DECL|member|mwo_robust
+r_uint16
+id|frag_thresh
+comma
+id|mwo_robust
+suffix:semicolon
+DECL|member|channel
+r_uint16
+id|channel
+suffix:semicolon
+DECL|member|ap_density
+DECL|member|rts_thresh
+r_uint16
+id|ap_density
+comma
+id|rts_thresh
+suffix:semicolon
+DECL|member|tx_rate_ctrl
+r_uint16
+id|tx_rate_ctrl
+suffix:semicolon
+DECL|member|pm_on
+DECL|member|pm_mcast
+DECL|member|pm_period
+DECL|member|pm_timeout
+r_uint16
+id|pm_on
+comma
+id|pm_mcast
+comma
+id|pm_period
+comma
+id|pm_timeout
+suffix:semicolon
+DECL|member|preamble
+r_uint16
+id|preamble
+suffix:semicolon
+DECL|member|promiscuous
+DECL|member|allmulti
+DECL|member|mc_count
+r_int
+id|promiscuous
+comma
+id|allmulti
+comma
+id|mc_count
+suffix:semicolon
+macro_line|#ifdef WIRELESS_SPY
+DECL|member|spy_number
+r_int
+id|spy_number
+suffix:semicolon
+DECL|member|spy_address
+id|u_char
+id|spy_address
+(braket
+id|IW_MAX_SPY
+)braket
+(braket
+id|ETH_ALEN
+)braket
+suffix:semicolon
+DECL|member|spy_stat
+r_struct
+id|iw_quality
+id|spy_stat
+(braket
+id|IW_MAX_SPY
+)braket
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* /proc based debugging stuff */
+DECL|member|dir_dev
+r_struct
+id|proc_dir_entry
+op_star
+id|dir_dev
+suffix:semicolon
+DECL|member|dir_regs
+r_struct
+id|proc_dir_entry
+op_star
+id|dir_regs
+suffix:semicolon
+DECL|member|dir_recs
+r_struct
+id|proc_dir_entry
+op_star
+id|dir_recs
+suffix:semicolon
+DECL|typedef|dldwd_priv_t
+)brace
+id|dldwd_priv_t
+suffix:semicolon
+multiline_comment|/*====================================================================*/
+r_extern
+r_int
+id|dldwd_debug
+suffix:semicolon
+r_extern
+r_struct
+id|list_head
+id|dldwd_instances
+suffix:semicolon
+macro_line|#ifdef ORINOCO_DEBUG
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...) if (dldwd_debug&gt;(n)) printk(KERN_DEBUG args)
+DECL|macro|DEBUGMORE
+mdefine_line|#define DEBUGMORE(n, args...) do { if (dldwd_debug&gt;(n)) printk(args); } while (0)
+macro_line|#else
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...) do { } while (0)
+DECL|macro|DEBUGMORE
+mdefine_line|#define DEBUGMORE(n, args...) do { } while (0)
+macro_line|#endif&t;/* ORINOCO_DEBUG */
+DECL|macro|TRACE_ENTER
+mdefine_line|#define TRACE_ENTER(devname) DEBUG(2, &quot;%s: -&gt; &quot; __FUNCTION__ &quot;()&bslash;n&quot;, devname);
+DECL|macro|TRACE_EXIT
+mdefine_line|#define TRACE_EXIT(devname)  DEBUG(2, &quot;%s: &lt;- &quot; __FUNCTION__ &quot;()&bslash;n&quot;, devname);
+DECL|macro|MAX
+mdefine_line|#define MAX(a, b) ( (a) &gt; (b) ? (a) : (b) )
+DECL|macro|MIN
+mdefine_line|#define MIN(a, b) ( (a) &lt; (b) ? (a) : (b) )
+DECL|macro|RUP_EVEN
+mdefine_line|#define RUP_EVEN(a) ( (a) % 2 ? (a) + 1 : (a) )
+multiline_comment|/* struct net_device methods */
+r_extern
+r_int
+id|dldwd_init
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dldwd_xmit
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dldwd_tx_timeout
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dldwd_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|rq
+comma
+r_int
+id|cmd
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dldwd_change_mtu
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+id|new_mtu
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dldwd_set_multicast_list
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* utility routines */
+r_extern
+r_void
+id|dldwd_shutdown
+c_func
+(paren
+id|dldwd_priv_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dldwd_reset
+c_func
+(paren
+id|dldwd_priv_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dldwd_setup
+c_func
+(paren
+id|dldwd_priv_t
+op_star
+id|priv
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dldwd_proc_dev_init
+c_func
+(paren
+id|dldwd_priv_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dldwd_proc_dev_cleanup
+c_func
+(paren
+id|dldwd_priv_t
+op_star
+id|priv
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dldwd_interrupt
+c_func
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif
+eof

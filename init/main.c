@@ -2328,13 +2328,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-id|proc_root_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|mempages
 op_assign
 id|num_physpages
@@ -2391,6 +2384,13 @@ c_func
 id|mempages
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+id|proc_root_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#if defined(CONFIG_SYSVIPC)
 id|ipc_init
 c_func

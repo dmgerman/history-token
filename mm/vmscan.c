@@ -2867,12 +2867,6 @@ c_func
 id|kswapd_done
 )paren
 suffix:semicolon
-DECL|variable|kswapd_task
-r_struct
-id|task_struct
-op_star
-id|kswapd_task
-suffix:semicolon
 multiline_comment|/*&n; * The background pageout daemon, started as a kernel thread&n; * from the init process. &n; *&n; * This basically trickles out pages so that we have _some_&n; * free memory available even if there is no other activity&n; * that frees anything up. This is needed for things like routing&n; * etc, where we otherwise might have all activity going on in&n; * asynchronous contexts that cannot page things out.&n; *&n; * If there are applications that are active memory-allocators&n; * (most normal use), this basically shouldn&squot;t matter.&n; */
 DECL|function|kswapd
 r_int
@@ -2913,10 +2907,6 @@ c_func
 op_amp
 id|tsk-&gt;blocked
 )paren
-suffix:semicolon
-id|kswapd_task
-op_assign
-id|tsk
 suffix:semicolon
 multiline_comment|/*&n;&t; * Tell the memory management that we&squot;re a &quot;memory allocator&quot;,&n;&t; * and that if we need more memory we should get access to it&n;&t; * regardless (see &quot;__alloc_pages()&quot;). &quot;kswapd&quot; should&n;&t; * never get caught in the normal page freeing logic.&n;&t; *&n;&t; * (Kswapd normally doesn&squot;t need memory anyway, but sometimes&n;&t; * you need a small amount of memory in order to be able to&n;&t; * page out something else, and this flag essentially protects&n;&t; * us from recursively trying to free more memory as we&squot;re&n;&t; * trying to free the first piece of memory in the first place).&n;&t; */
 id|tsk-&gt;flags
@@ -3057,14 +3047,18 @@ r_void
 r_if
 c_cond
 (paren
-id|current
-op_ne
-id|kswapd_task
-)paren
-id|wake_up_process
+id|waitqueue_active
 c_func
 (paren
-id|kswapd_task
+op_amp
+id|kswapd_wait
+)paren
+)paren
+id|wake_up_interruptible
+c_func
+(paren
+op_amp
+id|kswapd_wait
 )paren
 suffix:semicolon
 )brace

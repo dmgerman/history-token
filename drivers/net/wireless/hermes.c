@@ -167,7 +167,7 @@ id|hermes_t
 op_star
 id|hw
 comma
-id|ushort
+id|uint
 id|io
 )paren
 (brace

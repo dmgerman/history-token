@@ -672,7 +672,7 @@ multiline_comment|/* interrupt control.. */
 DECL|macro|__save_flags
 mdefine_line|#define __save_flags(x)&t;&t;__asm__ __volatile__(&quot;pushfl ; popl %0&quot;:&quot;=g&quot; (x): /* no input */)
 DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(x) &t;__asm__ __volatile__(&quot;pushl %0 ; popfl&quot;: /* no output */ :&quot;g&quot; (x):&quot;memory&quot;)
+mdefine_line|#define __restore_flags(x) &t;__asm__ __volatile__(&quot;pushl %0 ; popfl&quot;: /* no output */ :&quot;g&quot; (x):&quot;memory&quot;, &quot;cc&quot;)
 DECL|macro|__cli
 mdefine_line|#define __cli() &t;&t;__asm__ __volatile__(&quot;cli&quot;: : :&quot;memory&quot;)
 DECL|macro|__sti

@@ -1,6 +1,6 @@
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *          mxser.c  -- MOXA Smartio family multiport serial driver.&n; *&n; *      Copyright (C) 1999-2000  Moxa Technologies (support@moxa.com.tw).&n; *&n; *      This code is loosely based on the Linux serial driver, written by&n; *      Linus Torvalds, Theodore T&squot;so and others.&n; *&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-multiline_comment|/*&n; *    MOXA Smartio Family Serial Driver&n; *&n; *      Copyright (C) 1999,2000  Moxa Technologies Co., LTD.&n; *&n; *      for             : LINUX 2.0.X, 2.2.X&n; *      date            : 1999/07/22&n; *      version         : 1.1 &n; *      &n; */
+multiline_comment|/*&n; *    MOXA Smartio Family Serial Driver&n; *&n; *      Copyright (C) 1999,2000  Moxa Technologies Co., LTD.&n; *&n; *      for             : LINUX 2.0.X, 2.2.X, 2.4.X&n; *      date            : 2001/05/01&n; *      version         : 1.2 &n; *      &n; *    Fixes for C104H/PCI by Tim Hockin &lt;thockin@sun.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -28,7 +28,7 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MXSER_VERSION
-mdefine_line|#define&t;&t;MXSER_VERSION&t;&t;&t;&quot;1.1kern&quot;
+mdefine_line|#define&t;&t;MXSER_VERSION&t;&t;&t;&quot;1.2&quot;
 DECL|macro|MXSERMAJOR
 mdefine_line|#define&t;&t;MXSERMAJOR&t; &t;174
 DECL|macro|MXSERCUMAJOR
@@ -99,7 +99,7 @@ r_enum
 DECL|enumerator|MXSER_BOARD_C168_ISA
 id|MXSER_BOARD_C168_ISA
 op_assign
-l_int|1
+l_int|0
 comma
 DECL|enumerator|MXSER_BOARD_C104_ISA
 id|MXSER_BOARD_C104_ISA
@@ -1694,8 +1694,6 @@ comma
 id|mxser_brdname
 (braket
 id|hwconf-&gt;board_type
-op_minus
-l_int|1
 )braket
 )paren
 suffix:semicolon
@@ -1783,8 +1781,6 @@ op_assign
 id|mxser_numports
 (braket
 id|board_type
-op_minus
-l_int|1
 )braket
 suffix:semicolon
 id|ioaddress
@@ -2195,8 +2191,6 @@ comma
 id|mxser_brdname
 (braket
 id|hwconf.board_type
-op_minus
-l_int|1
 )braket
 comma
 id|ioaddr
@@ -2368,8 +2362,6 @@ comma
 id|mxser_brdname
 (braket
 id|hwconf.board_type
-op_minus
-l_int|1
 )braket
 comma
 id|ioaddr
@@ -2503,16 +2495,19 @@ id|index
 op_assign
 l_int|0
 suffix:semicolon
+r_for
+c_loop
+(paren
 id|b
 op_assign
 l_int|0
 suffix:semicolon
-r_while
-c_loop
-(paren
 id|b
 OL
 id|n
+suffix:semicolon
+id|b
+op_increment
 )paren
 (brace
 id|pdev
@@ -2542,17 +2537,7 @@ c_cond
 (paren
 op_logical_neg
 id|pdev
-)paren
-(brace
-id|b
-op_increment
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
+op_logical_or
 id|pci_enable_device
 c_func
 (paren
@@ -2578,8 +2563,6 @@ id|b
 )braket
 dot
 id|board_type
-op_minus
-l_int|1
 )braket
 comma
 id|pdev-&gt;bus-&gt;number
@@ -2588,8 +2571,6 @@ id|PCI_SLOT
 c_func
 (paren
 id|pdev-&gt;devfn
-op_rshift
-l_int|3
 )paren
 )paren
 suffix:semicolon
@@ -6195,8 +6176,6 @@ id|i
 )braket
 dot
 id|board_type
-op_minus
-l_int|1
 )braket
 suffix:semicolon
 r_while

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/aic7xxx/aic7xxx.h#19 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aic7xxx.h,v 1.30 2000/11/10 20:13:40 gibbs Exp $&n; */
+multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/aic7xxx/aic7xxx.h#27 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aic7xxx.h,v 1.30 2000/11/10 20:13:40 gibbs Exp $&n; */
 macro_line|#ifndef _AIC7XXX_H_
 DECL|macro|_AIC7XXX_H_
 mdefine_line|#define _AIC7XXX_H_
@@ -330,6 +330,7 @@ id|AHC_AIC7770_FE
 op_assign
 id|AHC_FENONE
 comma
+multiline_comment|/*&n;&t; * The real 7850 does not support Ultra modes, but there are&n;&t; * several cards that use the generic 7850 PCI ID even though&n;&t; * they are using an Ultra capable chip (7859/7860).  We start&n;&t; * out with the AHC_ULTRA feature set and then check the DEVSTATUS&n;&t; * register to determine if the capability is really present.&n;&t; */
 DECL|enumerator|AHC_AIC7850_FE
 id|AHC_AIC7850_FE
 op_assign
@@ -338,18 +339,13 @@ op_or
 id|AHC_AUTOPAUSE
 op_or
 id|AHC_TARGETMODE
-comma
-DECL|enumerator|AHC_AIC7855_FE
-id|AHC_AIC7855_FE
-op_assign
-id|AHC_AIC7850_FE
+op_or
+id|AHC_ULTRA
 comma
 DECL|enumerator|AHC_AIC7860_FE
 id|AHC_AIC7860_FE
 op_assign
 id|AHC_AIC7850_FE
-op_or
-id|AHC_ULTRA
 comma
 DECL|enumerator|AHC_AIC7870_FE
 id|AHC_AIC7870_FE
@@ -500,18 +496,12 @@ id|AHC_FNONE
 op_assign
 l_int|0x000
 comma
-DECL|enumerator|AHC_PAGESCBS
-id|AHC_PAGESCBS
+DECL|enumerator|AHC_PRIMARY_CHANNEL
+id|AHC_PRIMARY_CHANNEL
 op_assign
-l_int|0x001
+l_int|0x003
 comma
-multiline_comment|/* Enable SCB paging */
-DECL|enumerator|AHC_CHANNEL_B_PRIMARY
-id|AHC_CHANNEL_B_PRIMARY
-op_assign
-l_int|0x002
-comma
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * On twin channel adapters, probe&n;&t;&t;&t;&t;&t; * channel B first since it is the&n;&t;&t;&t;&t;&t; * primary bus.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * The channel that should&n;&t;&t;&t;&t;&t; * be probed first.&n;&t;&t;&t;&t;&t; */
 DECL|enumerator|AHC_USEDEFAULTS
 id|AHC_USEDEFAULTS
 op_assign
@@ -618,7 +608,19 @@ DECL|enumerator|AHC_ULTRA_DISABLED
 id|AHC_ULTRA_DISABLED
 op_assign
 l_int|0x200000
+comma
 multiline_comment|/*&n;&t;&t;&t;&t;&t;   * The precision resistor for&n;&t;&t;&t;&t;&t;   * ultra transmission speeds is&n;&t;&t;&t;&t;&t;   * missing, so we must limit&n;&t;&t;&t;&t;&t;   * ourselves to fast SCSI.&n;&t;&t;&t;&t;&t;   */
+DECL|enumerator|AHC_PAGESCBS
+id|AHC_PAGESCBS
+op_assign
+l_int|0x400000
+comma
+multiline_comment|/* Enable SCB paging */
+DECL|enumerator|AHC_EDGE_INTERRUPT
+id|AHC_EDGE_INTERRUPT
+op_assign
+l_int|0x800000
+multiline_comment|/* Device uses edge triggered ints */
 DECL|typedef|ahc_flag
 )brace
 id|ahc_flag
@@ -876,13 +878,20 @@ comma
 DECL|enumerator|SCB_RECOVERY_SCB
 id|SCB_RECOVERY_SCB
 op_assign
+l_int|0x0020
+comma
+DECL|enumerator|SCB_AUTO_NEGOTIATE
+id|SCB_AUTO_NEGOTIATE
+op_assign
 l_int|0x0040
 comma
+multiline_comment|/* Negotiate to achieve goal. */
 DECL|enumerator|SCB_NEGOTIATE
 id|SCB_NEGOTIATE
 op_assign
 l_int|0x0080
 comma
+multiline_comment|/* Negotiation forced for command. */
 DECL|enumerator|SCB_ABORT
 id|SCB_ABORT
 op_assign
@@ -1178,9 +1187,9 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Per enabled lun target mode state.&n; * As this state is directly influenced by the host OS&squot;es target mode&n; * environment, we let the OS module define it.  Forward declare the&n; * structure here so we can store arrays of them, etc. in OS neutral&n; * data structures.&n; */
 macro_line|#ifdef AHC_TARGET_MODE 
-DECL|struct|tmode_lstate
+DECL|struct|ahc_tmode_lstate
 r_struct
-id|tmode_lstate
+id|ahc_tmode_lstate
 (brace
 DECL|member|path
 r_struct
@@ -1218,7 +1227,7 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#else
 r_struct
-id|tmode_lstate
+id|ahc_tmode_lstate
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/******************** Transfer Negotiation Datastructures *********************/
@@ -1277,10 +1286,10 @@ r_uint8
 id|scsirate
 suffix:semicolon
 multiline_comment|/* Computed value for SCSIRATE reg */
-DECL|member|current
+DECL|member|curr
 r_struct
 id|ahc_transinfo
-id|current
+id|curr
 suffix:semicolon
 DECL|member|goal
 r_struct
@@ -1295,13 +1304,13 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Per enabled target ID state.&n; * Pointers to lun target state as well as sync/wide negotiation information&n; * for each initiator&lt;-&gt;target mapping.  For the initiator role we pretend&n; * that we are the target and the targets are the initiators since the&n; * negotiation is the same regardless of role.&n; */
-DECL|struct|tmode_tstate
+DECL|struct|ahc_tmode_tstate
 r_struct
-id|tmode_tstate
+id|ahc_tmode_tstate
 (brace
 DECL|member|enabled_luns
 r_struct
-id|tmode_lstate
+id|ahc_tmode_lstate
 op_star
 id|enabled_luns
 (braket
@@ -1317,6 +1326,11 @@ id|AHC_NUM_TARGETS
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * Per initiator state bitmasks.&n;&t; */
+DECL|member|auto_negotiate
+r_uint16
+id|auto_negotiate
+suffix:semicolon
+multiline_comment|/* Auto Negotiation Required */
 DECL|member|ultraenb
 r_uint16
 id|ultraenb
@@ -1385,51 +1399,10 @@ mdefine_line|#define AHC_SYNCRATE_ULTRA&t;3
 DECL|macro|AHC_SYNCRATE_FAST
 mdefine_line|#define AHC_SYNCRATE_FAST&t;6
 multiline_comment|/***************************** Lookup Tables **********************************/
-multiline_comment|/*&n; * Textual descriptions of the different chips indexed by chip type.&n; */
-r_extern
-r_char
-op_star
-id|ahc_chip_names
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_const
-id|u_int
-id|num_chip_names
-suffix:semicolon
-multiline_comment|/*&n; * Hardware error codes.&n; */
-DECL|struct|hard_error_entry
-r_struct
-id|hard_error_entry
-(brace
-DECL|member|errno
-r_uint8
-id|errno
-suffix:semicolon
-DECL|member|errmesg
-r_char
-op_star
-id|errmesg
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|hard_error_entry
-id|hard_error
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_const
-id|u_int
-id|num_errors
-suffix:semicolon
 multiline_comment|/*&n; * Phase -&gt; name and message out response&n; * to parity errors in each phase table. &n; */
-DECL|struct|phase_table_entry
+DECL|struct|ahc_phase_table_entry
 r_struct
-id|phase_table_entry
+id|ahc_phase_table_entry
 (brace
 DECL|member|phase
 r_uint8
@@ -1446,18 +1419,6 @@ op_star
 id|phasemsg
 suffix:semicolon
 )brace
-suffix:semicolon
-r_extern
-r_struct
-id|phase_table_entry
-id|phase_table
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_const
-id|u_int
-id|num_phases
 suffix:semicolon
 multiline_comment|/************************** Serial EEPROM Format ******************************/
 DECL|struct|seeprom_config
@@ -1509,17 +1470,32 @@ DECL|macro|CFSUPREMB
 mdefine_line|#define&t;&t;CFSUPREMB&t;0x0002&t;/* support removeable boot drives */
 DECL|macro|CFBIOSEN
 mdefine_line|#define&t;&t;CFBIOSEN&t;0x0004&t;/* BIOS enabled */
-multiline_comment|/*&t;&t;UNUSED&t;&t;0x0008&t;*/
+DECL|macro|CFBIOS_BUSSCAN
+mdefine_line|#define&t;&t;CFBIOS_BUSSCAN&t;0x0008&t;/* Have the BIOS Scan the Bus */
 DECL|macro|CFSM2DRV
 mdefine_line|#define&t;&t;CFSM2DRV&t;0x0010&t;/* support more than two drives */
-DECL|macro|CF284XEXTEND
-mdefine_line|#define&t;&t;CF284XEXTEND&t;0x0020&t;/* extended translation (284x cards) */&t;
 DECL|macro|CFSTPWLEVEL
 mdefine_line|#define&t;&t;CFSTPWLEVEL&t;0x0010&t;/* Termination level control */
+DECL|macro|CF284XEXTEND
+mdefine_line|#define&t;&t;CF284XEXTEND&t;0x0020&t;/* extended translation (284x cards) */&t;
+DECL|macro|CFCTRL_A
+mdefine_line|#define&t;&t;CFCTRL_A&t;0x0020&t;/* BIOS displays Ctrl-A message */&t;
+DECL|macro|CFTERM_MENU
+mdefine_line|#define&t;&t;CFTERM_MENU&t;0x0040&t;/* BIOS displays termination menu */&t;
 DECL|macro|CFEXTEND
 mdefine_line|#define&t;&t;CFEXTEND&t;0x0080&t;/* extended translation enabled */
 DECL|macro|CFSCAMEN
 mdefine_line|#define&t;&t;CFSCAMEN&t;0x0100&t;/* SCAM enable */
+DECL|macro|CFMSG_LEVEL
+mdefine_line|#define&t;&t;CFMSG_LEVEL&t;0x0600&t;/* BIOS Message Level */
+DECL|macro|CFMSG_VERBOSE
+mdefine_line|#define&t;&t;&t;CFMSG_VERBOSE&t;0x0000
+DECL|macro|CFMSG_SILENT
+mdefine_line|#define&t;&t;&t;CFMSG_SILENT&t;0x0200
+DECL|macro|CFMSG_DIAG
+mdefine_line|#define&t;&t;&t;CFMSG_DIAG&t;0x0400
+DECL|macro|CFBOOTCD
+mdefine_line|#define&t;&t;CFBOOTCD&t;0x0800  /* Support Bootable CD-ROM */
 multiline_comment|/*&t;&t;UNUSED&t;&t;0xff00&t;*/
 multiline_comment|/*&n; * Host Adapter Control Bits&n; */
 DECL|member|adapter_control
@@ -1544,13 +1520,15 @@ mdefine_line|#define&t;&t;CFSPARITY&t;0x0010&t;/* SCSI parity */
 DECL|macro|CF284XSTERM
 mdefine_line|#define&t;&t;CF284XSTERM     0x0020&t;/* SCSI low byte term (284x cards) */&t;
 DECL|macro|CFMULTILUN
-mdefine_line|#define&t;&t;CFMULTILUN&t;0x0020&t;/* SCSI low byte term (284x cards) */&t;
+mdefine_line|#define&t;&t;CFMULTILUN&t;0x0020
 DECL|macro|CFRESETB
 mdefine_line|#define&t;&t;CFRESETB&t;0x0040&t;/* reset SCSI bus at boot */
 DECL|macro|CFCLUSTERENB
 mdefine_line|#define&t;&t;CFCLUSTERENB&t;0x0080&t;/* Cluster Enable */
-DECL|macro|CFCHNLBPRIMARY
-mdefine_line|#define&t;&t;CFCHNLBPRIMARY&t;0x0100&t;/* aic7895 probe B channel first */
+DECL|macro|CFBOOTCHAN
+mdefine_line|#define&t;&t;CFBOOTCHAN&t;0x0300&t;/* probe this channel first */
+DECL|macro|CFBOOTCHANSHIFT
+mdefine_line|#define&t;&t;CFBOOTCHANSHIFT 8
 DECL|macro|CFSEAUTOTERM
 mdefine_line|#define&t;&t;CFSEAUTOTERM&t;0x0400&t;/* Ultra2 Perform secondary Auto Term*/
 DECL|macro|CFSELOWTERM
@@ -1597,6 +1575,8 @@ suffix:semicolon
 multiline_comment|/* Signature == 0x250 */
 DECL|macro|CFSIGNATURE
 mdefine_line|#define&t;&t;CFSIGNATURE&t;0x250
+DECL|macro|CFSIGNATURE2
+mdefine_line|#define&t;&t;CFSIGNATURE2&t;0x300
 DECL|member|checksum
 r_uint16
 id|checksum
@@ -1744,6 +1724,19 @@ id|btt
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|typedef|ahc_bus_intr_t
+r_typedef
+r_void
+(paren
+op_star
+id|ahc_bus_intr_t
+)paren
+(paren
+r_struct
+id|ahc_softc
+op_star
+)paren
+suffix:semicolon
 DECL|struct|ahc_softc
 r_struct
 id|ahc_softc
@@ -1810,10 +1803,15 @@ DECL|member|dev_softc
 id|ahc_dev_softc_t
 id|dev_softc
 suffix:semicolon
+multiline_comment|/*&n;&t; * Bus specific device information.&n;&t; */
+DECL|member|bus_intr
+id|ahc_bus_intr_t
+id|bus_intr
+suffix:semicolon
 multiline_comment|/*&n;&t; * Target mode related state kept on a per enabled lun basis.&n;&t; * Targets that are not enabled will have null entries.&n;&t; * As an initiator, we keep one target entry for our initiator&n;&t; * ID to store our sync/wide transfer settings.&n;&t; */
 DECL|member|enabled_targets
 r_struct
-id|tmode_tstate
+id|ahc_tmode_tstate
 op_star
 id|enabled_targets
 (braket
@@ -1823,14 +1821,14 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * The black hole device responsible for handling requests for&n;&t; * disabled luns on enabled targets.&n;&t; */
 DECL|member|black_hole
 r_struct
-id|tmode_lstate
+id|ahc_tmode_lstate
 op_star
 id|black_hole
 suffix:semicolon
 multiline_comment|/*&n;&t; * Device instance currently on the bus awaiting a continue TIO&n;&t; * for a command that was not given the disconnect priveledge.&n;&t; */
 DECL|member|pending_device
 r_struct
-id|tmode_lstate
+id|ahc_tmode_lstate
 op_star
 id|pending_device
 suffix:semicolon
@@ -1915,11 +1913,6 @@ suffix:semicolon
 DECL|member|our_id_b
 r_uint8
 id|our_id_b
-suffix:semicolon
-multiline_comment|/* Targets that need negotiation messages */
-DECL|member|targ_msg_req
-r_uint16
-id|targ_msg_req
 suffix:semicolon
 multiline_comment|/*&n;&t; * PCI error detection.&n;&t; */
 DECL|member|unsolicited_ints
@@ -2447,6 +2440,19 @@ id|ahc
 )paren
 suffix:semicolon
 r_void
+id|ahc_intr_enable
+c_func
+(paren
+r_struct
+id|ahc_softc
+op_star
+id|ahc
+comma
+r_int
+id|enable
+)paren
+suffix:semicolon
+r_void
 id|ahc_pause_and_flushwork
 c_func
 (paren
@@ -2749,7 +2755,7 @@ id|initiate_reset
 )paren
 suffix:semicolon
 r_void
-id|restart_sequencer
+id|ahc_restart
 c_func
 (paren
 r_struct
@@ -2758,7 +2764,27 @@ op_star
 id|ahc
 )paren
 suffix:semicolon
+r_void
+id|ahc_calc_residual
+c_func
+(paren
+r_struct
+id|scb
+op_star
+id|scb
+)paren
+suffix:semicolon
 multiline_comment|/*************************** Utility Functions ********************************/
+r_struct
+id|ahc_phase_table_entry
+op_star
+id|ahc_lookup_phase_entry
+c_func
+(paren
+r_int
+id|phase
+)paren
+suffix:semicolon
 r_void
 id|ahc_compile_devinfo
 c_func
@@ -2876,30 +2902,28 @@ id|role_t
 id|role
 )paren
 suffix:semicolon
-r_void
-id|ahc_update_target_msg_request
+r_int
+id|ahc_update_neg_request
 c_func
 (paren
 r_struct
 id|ahc_softc
 op_star
-id|ahc
 comma
 r_struct
 id|ahc_devinfo
 op_star
-id|dinfo
+comma
+r_struct
+id|ahc_tmode_tstate
+op_star
 comma
 r_struct
 id|ahc_initiator_tinfo
 op_star
-id|tinfo
 comma
 r_int
-id|force
-comma
-r_int
-id|paused
+multiline_comment|/*force*/
 )paren
 suffix:semicolon
 r_void
@@ -2961,6 +2985,21 @@ r_int
 id|paused
 )paren
 suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|AHC_QUEUE_NONE
+id|AHC_QUEUE_NONE
+comma
+DECL|enumerator|AHC_QUEUE_BASIC
+id|AHC_QUEUE_BASIC
+comma
+DECL|enumerator|AHC_QUEUE_TAGGED
+id|AHC_QUEUE_TAGGED
+DECL|typedef|ahc_queue_alg
+)brace
+id|ahc_queue_alg
+suffix:semicolon
 r_void
 id|ahc_set_tags
 c_func
@@ -2975,8 +3014,8 @@ id|ahc_devinfo
 op_star
 id|devinfo
 comma
-r_int
-id|enable
+id|ahc_queue_alg
+id|alg
 )paren
 suffix:semicolon
 multiline_comment|/**************************** Target Mode *************************************/
@@ -2990,7 +3029,7 @@ id|ahc_softc
 op_star
 comma
 r_struct
-id|tmode_lstate
+id|ahc_tmode_lstate
 op_star
 )paren
 suffix:semicolon
@@ -3034,34 +3073,19 @@ op_star
 id|ccb
 comma
 r_struct
-id|tmode_tstate
+id|ahc_tmode_tstate
 op_star
 op_star
 id|tstate
 comma
 r_struct
-id|tmode_lstate
+id|ahc_tmode_lstate
 op_star
 op_star
 id|lstate
 comma
 r_int
 id|notfound_failure
-)paren
-suffix:semicolon
-r_void
-id|ahc_setup_target_msgin
-c_func
-(paren
-r_struct
-id|ahc_softc
-op_star
-id|ahc
-comma
-r_struct
-id|ahc_devinfo
-op_star
-id|devinfo
 )paren
 suffix:semicolon
 macro_line|#ifndef AHC_TMODE_ENABLE

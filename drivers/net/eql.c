@@ -1360,6 +1360,16 @@ op_star
 )paren
 id|master_dev-&gt;priv
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|s
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|s-&gt;dev
 op_assign
 id|slave_dev

@@ -1347,9 +1347,9 @@ comma
 l_int|0x00
 comma
 multiline_comment|/* 0x78-0x7f */
-l_int|0xbd
+l_int|0x00
 comma
-l_int|0xad
+l_int|0x00
 comma
 l_int|0x00
 comma
@@ -1381,9 +1381,9 @@ comma
 l_int|0x00
 comma
 multiline_comment|/* 0x88-0x8f */
-l_int|0x00
+l_int|0xbd
 comma
-l_int|0x00
+l_int|0xad
 comma
 l_int|0x00
 comma

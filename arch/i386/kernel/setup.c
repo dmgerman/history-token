@@ -104,6 +104,14 @@ r_int
 r_int
 id|mca_pentium_flag
 suffix:semicolon
+multiline_comment|/* For PCI or other memory-mapped resources */
+DECL|variable|pci_mem_start
+r_int
+r_int
+id|pci_mem_start
+op_assign
+l_int|0x10000000
+suffix:semicolon
 multiline_comment|/*&n; * Setup options&n; */
 DECL|struct|drive_info_struct
 DECL|member|dummy
@@ -3628,6 +3636,22 @@ id|standard_io_resources
 op_plus
 id|i
 )paren
+suffix:semicolon
+multiline_comment|/* Tell the PCI layer not to allocate too close to the RAM area.. */
+id|pci_mem_start
+op_assign
+(paren
+(paren
+id|max_low_pfn
+op_lshift
+id|PAGE_SHIFT
+)paren
+op_plus
+l_int|0xfffff
+)paren
+op_amp
+op_complement
+l_int|0xfffff
 suffix:semicolon
 macro_line|#ifdef CONFIG_VT
 macro_line|#if defined(CONFIG_VGA_CONSOLE)

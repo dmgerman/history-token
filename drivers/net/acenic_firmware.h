@@ -28,7 +28,7 @@ DECL|macro|tigonFwBssAddr
 mdefine_line|#define tigonFwBssAddr 0x00015dd0
 DECL|macro|tigonFwBssLen
 mdefine_line|#define tigonFwBssLen 0x2080
-macro_line|#ifndef CONFIG_ACENIC_OMIT_TIGON_I
+macro_line|#ifdef CONFIG_ACENIC_OMIT_TIGON_I
 DECL|macro|tigonFwText
 mdefine_line|#define tigonFwText 0
 DECL|macro|tigonFwData

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000, 2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * String handling code courtesy of Gerard Roudier&squot;s &lt;groudier@club-internet.fr&gt;&n; * sym driver.&n; *&n; * $Id: //depot/src/linux/drivers/scsi/aic7xxx/aic7xxx_proc.c#7 $&n; */
+multiline_comment|/*&n; * Copyright (c) 2000, 2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * String handling code courtesy of Gerard Roudier&squot;s &lt;groudier@club-internet.fr&gt;&n; * sym driver.&n; *&n; * $Id: //depot/src/linux/drivers/scsi/aic7xxx/aic7xxx_proc.c#11 $&n; */
 macro_line|#include &quot;aic7xxx_osm.h&quot;
 macro_line|#include &quot;aic7xxx_inline.h&quot;
 r_static
@@ -678,7 +678,7 @@ op_star
 id|tinfo
 suffix:semicolon
 r_struct
-id|tmode_tstate
+id|ahc_tmode_tstate
 op_star
 id|tstate
 suffix:semicolon
@@ -778,7 +778,7 @@ c_func
 id|info
 comma
 op_amp
-id|tinfo-&gt;current
+id|tinfo-&gt;curr
 )paren
 suffix:semicolon
 r_for
@@ -865,9 +865,9 @@ c_func
 (paren
 id|info
 comma
-l_string|&quot;&bslash;t&bslash;tCommands Queued %d&bslash;n&quot;
+l_string|&quot;&bslash;t&bslash;tCommands Queued %ld&bslash;n&quot;
 comma
-id|dev-&gt;num_commands
+id|dev-&gt;commands_issued
 )paren
 suffix:semicolon
 id|copy_info
@@ -913,8 +913,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Return information to handle /proc support for the driver.&n; */
 r_int
-DECL|function|aic7xxx_proc_info
-id|aic7xxx_proc_info
+DECL|function|ahc_linux_proc_info
+id|ahc_linux_proc_info
 c_func
 (paren
 r_char

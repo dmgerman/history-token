@@ -12423,6 +12423,11 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|cdrom_sysctl_header
+)paren
 id|unregister_sysctl_table
 c_func
 (paren

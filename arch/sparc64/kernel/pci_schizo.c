@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_schizo.c,v 1.14 2001/04/17 01:19:23 davem Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_schizo.c,v 1.15 2001/05/02 00:27:27 davem Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -7284,6 +7284,10 @@ c_func
 (paren
 r_int
 id|node
+comma
+r_char
+op_star
+id|model_name
 )paren
 (brace
 r_struct

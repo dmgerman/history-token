@@ -5569,12 +5569,10 @@ c_cond
 (paren
 id|skb
 op_assign
-id|alloc_skb
+id|dev_alloc_skb
 c_func
 (paren
 id|RX_ALLOC_SIZE
-comma
-id|GFP_ATOMIC
 )paren
 )paren
 op_eq

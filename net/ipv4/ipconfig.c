@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: ipconfig.c,v 1.35 2000/12/30 06:46:36 davem Exp $&n; *&n; *  Automatic Configuration of IP -- use BOOTP or RARP or user-supplied&n; *  information to configure own IP address and routes.&n; *&n; *  Copyright (C) 1996--1998 Martin Mares &lt;mj@atrey.karlin.mff.cuni.cz&gt;&n; *&n; *  Derived from network configuration code in fs/nfs/nfsroot.c,&n; *  originally Copyright (C) 1995, 1996 Gero Kuhlmann and me.&n; *&n; *  BOOTP rewritten to construct and analyse packets itself instead&n; *  of misusing the IP layer. num_bugs_causing_wrong_arp_replies--;&n; *&t;&t;&t;&t;&t;     -- MJ, December 1998&n; *  &n; *  Fixed ip_auto_config_setup calling at startup in the new &quot;Linker Magic&quot;&n; *  initialization scheme.&n; *&t;- Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;, 08/11/1999&n; */
+multiline_comment|/*&n; *  $Id: ipconfig.c,v 1.37 2001/04/30 18:54:12 davem Exp $&n; *&n; *  Automatic Configuration of IP -- use DHCP, BOOTP, RARP, or&n; *  user-supplied information to configure own IP address and routes.&n; *&n; *  Copyright (C) 1996-1998 Martin Mares &lt;mj@atrey.karlin.mff.cuni.cz&gt;&n; *&n; *  Derived from network configuration code in fs/nfs/nfsroot.c,&n; *  originally Copyright (C) 1995, 1996 Gero Kuhlmann and me.&n; *&n; *  BOOTP rewritten to construct and analyse packets itself instead&n; *  of misusing the IP layer. num_bugs_causing_wrong_arp_replies--;&n; *&t;&t;&t;&t;&t;     -- MJ, December 1998&n; *  &n; *  Fixed ip_auto_config_setup calling at startup in the new &quot;Linker Magic&quot;&n; *  initialization scheme.&n; *&t;- Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;, 08/11/1999&n; *&n; *  DHCP support added.  To users this looks like a whole separate&n; *  protocol, but we know it&squot;s just a bag on the side of BOOTP.&n; *&t;&t;-- Chip Salzenberg &lt;chip@valinux.com&gt;, May 2000&n; *&n; *  Ported DHCP support from 2.2.16 to 2.4.0-test4&n; *              -- Eric Biederman &lt;ebiederman@lnxi.com&gt;, 30 Aug 2000&n; *&n; *  Merged changes from 2.2.19 into 2.4.3&n; *              -- Eric Biederman &lt;ebiederman@lnxi.com&gt;, 22 April Aug 2001&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/ipconfig.h&gt;
@@ -32,33 +33,88 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x) do { } while(0)
 macro_line|#endif
-multiline_comment|/* Define the timeout for waiting for a RARP/BOOTP reply */
+macro_line|#if defined(CONFIG_IP_PNP_DHCP)
+DECL|macro|IPCONFIG_DHCP
+mdefine_line|#define IPCONFIG_DHCP
+macro_line|#endif
+macro_line|#if defined(CONFIG_IP_PNP_BOOTP) || defined(CONFIG_IP_PNP_DHCP)
+DECL|macro|IPCONFIG_BOOTP
+mdefine_line|#define IPCONFIG_BOOTP
+macro_line|#endif
+macro_line|#if defined(CONFIG_IP_PNP_RARP)
+DECL|macro|IPCONFIG_RARP
+mdefine_line|#define IPCONFIG_RARP
+macro_line|#endif
+macro_line|#if defined(IPCONFIG_BOOTP) || defined(IPCONFIG_RARP)
+DECL|macro|IPCONFIG_DYNAMIC
+mdefine_line|#define IPCONFIG_DYNAMIC
+macro_line|#endif
+multiline_comment|/* Define the friendly delay before and after opening net devices */
+DECL|macro|CONF_PRE_OPEN
+mdefine_line|#define CONF_PRE_OPEN&t;&t;(HZ/2)&t;/* Before opening: 1/2 second */
+DECL|macro|CONF_POST_OPEN
+mdefine_line|#define CONF_POST_OPEN&t;&t;(1*HZ)&t;/* After opening: 1 second */
+multiline_comment|/* Define the timeout for waiting for a DHCP/BOOTP/RARP reply */
+DECL|macro|CONF_OPEN_RETRIES
+mdefine_line|#define CONF_OPEN_RETRIES &t;2&t;/* (Re)open devices twice */
+DECL|macro|CONF_SEND_RETRIES
+mdefine_line|#define CONF_SEND_RETRIES &t;6&t;/* Send six requests per open */
+DECL|macro|CONF_INTER_TIMEOUT
+mdefine_line|#define CONF_INTER_TIMEOUT&t;(HZ/2)&t;/* Inter-device timeout: 1/2 second */
 DECL|macro|CONF_BASE_TIMEOUT
-mdefine_line|#define CONF_BASE_TIMEOUT&t;(HZ*5)&t;/* Initial timeout: 5 seconds */
-DECL|macro|CONF_RETRIES
-mdefine_line|#define CONF_RETRIES&t; &t;10&t;/* 10 retries */
+mdefine_line|#define CONF_BASE_TIMEOUT&t;(HZ*2)&t;/* Initial timeout: 2 seconds */
 DECL|macro|CONF_TIMEOUT_RANDOM
 mdefine_line|#define CONF_TIMEOUT_RANDOM&t;(HZ)&t;/* Maximum amount of randomization */
 DECL|macro|CONF_TIMEOUT_MULT
-mdefine_line|#define CONF_TIMEOUT_MULT&t;*5/4&t;/* Rate of timeout growth */
+mdefine_line|#define CONF_TIMEOUT_MULT&t;*7/4&t;/* Rate of timeout growth */
 DECL|macro|CONF_TIMEOUT_MAX
 mdefine_line|#define CONF_TIMEOUT_MAX&t;(HZ*30)&t;/* Maximum allowed timeout */
-multiline_comment|/* IP configuration */
+multiline_comment|/*&n; * Public IP configuration&n; */
+multiline_comment|/* This is used by platforms which might be able to set the ipconfig&n; * variabled using firmware environment vars.  If this is set, it will&n; * ignore such firmware variables.&n; */
 DECL|variable|__initdata
-r_static
-r_char
-id|user_dev_name
-(braket
-id|IFNAMSIZ
-)braket
+r_int
+id|ic_set_manually
 id|__initdata
 op_assign
-(brace
 l_int|0
-comma
-)brace
 suffix:semicolon
-multiline_comment|/* Name of user-selected boot device */
+multiline_comment|/* IPconfig parameters set manually */
+DECL|variable|__initdata
+r_int
+id|ic_enable
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* IP config enabled? */
+multiline_comment|/* Protocol choice */
+DECL|variable|__initdata
+r_int
+id|ic_proto_enabled
+id|__initdata
+op_assign
+l_int|0
+macro_line|#ifdef IPCONFIG_BOOTP
+op_or
+id|IC_BOOTP
+macro_line|#endif
+macro_line|#ifdef CONFIG_IP_PNP_DHCP
+op_or
+id|IC_USE_DHCP
+macro_line|#endif
+macro_line|#ifdef IPCONFIG_RARP
+op_or
+id|IC_RARP
+macro_line|#endif
+suffix:semicolon
+DECL|variable|__initdata
+r_int
+id|ic_host_name_set
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Host name set by us? */
 DECL|variable|__initdata
 id|u32
 id|ic_myaddr
@@ -69,12 +125,12 @@ suffix:semicolon
 multiline_comment|/* My IP address */
 DECL|variable|__initdata
 id|u32
-id|ic_servaddr
+id|ic_netmask
 id|__initdata
 op_assign
 id|INADDR_NONE
 suffix:semicolon
-multiline_comment|/* Server IP address */
+multiline_comment|/* Netmask for local subnet */
 DECL|variable|__initdata
 id|u32
 id|ic_gateway
@@ -85,36 +141,12 @@ suffix:semicolon
 multiline_comment|/* Gateway IP address */
 DECL|variable|__initdata
 id|u32
-id|ic_netmask
+id|ic_servaddr
 id|__initdata
 op_assign
 id|INADDR_NONE
 suffix:semicolon
-multiline_comment|/* Netmask for local subnet */
-DECL|variable|__initdata
-r_int
-id|ic_enable
-id|__initdata
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Automatic IP configuration enabled */
-DECL|variable|__initdata
-r_int
-id|ic_host_name_set
-id|__initdata
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Host name configured manually */
-DECL|variable|__initdata
-r_int
-id|ic_set_manually
-id|__initdata
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* IPconfig parameters set manually */
+multiline_comment|/* Boot server IP address */
 DECL|variable|__initdata
 id|u32
 id|root_server_addr
@@ -122,7 +154,7 @@ id|__initdata
 op_assign
 id|INADDR_NONE
 suffix:semicolon
-multiline_comment|/* Address of boot server */
+multiline_comment|/* Address of NFS server */
 DECL|variable|__initdata
 id|u8
 id|root_server_path
@@ -137,44 +169,44 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Path to mount as root */
-macro_line|#if defined(CONFIG_IP_PNP_BOOTP) || defined(CONFIG_IP_PNP_RARP)
-DECL|macro|CONFIG_IP_PNP_DYNAMIC
-mdefine_line|#define CONFIG_IP_PNP_DYNAMIC
-DECL|variable|__initdata
+multiline_comment|/* Persistent data: */
+DECL|variable|ic_proto_used
 r_int
-id|ic_proto_enabled
-id|__initdata
-op_assign
-l_int|0
-multiline_comment|/* Protocols enabled */
-macro_line|#ifdef CONFIG_IP_PNP_BOOTP
-op_or
-id|IC_BOOTP
-macro_line|#endif
-macro_line|#ifdef CONFIG_IP_PNP_RARP
-op_or
-id|IC_RARP
-macro_line|#endif
+id|ic_proto_used
 suffix:semicolon
-DECL|variable|__initdata
-r_static
-r_int
-id|ic_got_reply
-id|__initdata
+multiline_comment|/* Protocol used, if any */
+DECL|variable|ic_nameserver
+id|u32
+id|ic_nameserver
 op_assign
-l_int|0
+id|INADDR_NONE
 suffix:semicolon
-multiline_comment|/* Protocol(s) we got reply from */
-macro_line|#else
+multiline_comment|/* DNS Server IP address */
+DECL|variable|ic_domain
+id|u8
+id|ic_domain
+(braket
+l_int|64
+)braket
+suffix:semicolon
+multiline_comment|/* DNS (not NIS) domain name */
+multiline_comment|/*&n; * Private state.&n; */
+multiline_comment|/* Name of user-selected boot device */
 DECL|variable|__initdata
 r_static
-r_int
-id|ic_proto_enabled
+r_char
+id|user_dev_name
+(braket
+id|IFNAMSIZ
+)braket
 id|__initdata
 op_assign
+(brace
 l_int|0
+comma
+)brace
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* Protocols supported by available interfaces */
 DECL|variable|__initdata
 r_static
 r_int
@@ -183,6 +215,36 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef IPCONFIG_DYNAMIC
+DECL|variable|ic_recv_lock
+r_static
+id|spinlock_t
+id|ic_recv_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_volatile
+r_int
+id|ic_got_reply
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Proto(s) that replied */
+macro_line|#endif
+macro_line|#ifdef IPCONFIG_DHCP
+DECL|variable|__initdata
+r_static
+r_int
+id|ic_dhcp_msgtype
+id|__initdata
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* DHCP msg type received */
+macro_line|#endif
 multiline_comment|/*&n; *&t;Network devices&n; */
 DECL|struct|ic_device
 r_struct
@@ -208,6 +270,10 @@ suffix:semicolon
 DECL|member|able
 r_int
 id|able
+suffix:semicolon
+DECL|member|xid
+id|u32
+id|xid
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -354,7 +420,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;BOOTP: Ignoring device %s, MTU %d too small&quot;
+l_string|&quot;DHCP/BOOTP: Ignoring device %s, MTU %d too small&quot;
 comma
 id|dev-&gt;name
 comma
@@ -467,6 +533,30 @@ id|d-&gt;able
 op_assign
 id|able
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|able
+op_amp
+id|IC_BOOTP
+)paren
+id|get_random_bytes
+c_func
+(paren
+op_amp
+id|d-&gt;xid
+comma
+r_sizeof
+(paren
+id|u32
+)paren
+)paren
+suffix:semicolon
+r_else
+id|d-&gt;xid
+op_assign
+l_int|0
+suffix:semicolon
 id|ic_proto_have_if
 op_or_assign
 id|able
@@ -475,11 +565,13 @@ id|DBG
 c_func
 (paren
 (paren
-l_string|&quot;IP-Config: Opened %s (able=%d)&bslash;n&quot;
+l_string|&quot;IP-Config: %s UP (able=%d, xid=%08x)&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|able
+comma
+id|d-&gt;xid
 )paren
 )paren
 suffix:semicolon
@@ -1135,12 +1227,14 @@ c_cond
 op_logical_neg
 id|ic_host_name_set
 )paren
-id|strcpy
+id|sprintf
 c_func
 (paren
 id|system_utsname.nodename
 comma
-id|in_ntoa
+l_string|&quot;%u.%u.%u.%u&quot;
+comma
+id|NIPQUAD
 c_func
 (paren
 id|ic_myaddr
@@ -1181,7 +1275,7 @@ id|ic_myaddr
 )paren
 id|ic_netmask
 op_assign
-id|htonl
+id|__constant_htonl
 c_func
 (paren
 id|IN_CLASSA_NET
@@ -1203,7 +1297,7 @@ id|ic_myaddr
 )paren
 id|ic_netmask
 op_assign
-id|htonl
+id|__constant_htonl
 c_func
 (paren
 id|IN_CLASSB_NET
@@ -1225,7 +1319,7 @@ id|ic_myaddr
 )paren
 id|ic_netmask
 op_assign
-id|htonl
+id|__constant_htonl
 c_func
 (paren
 id|IN_CLASSC_NET
@@ -1269,7 +1363,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;RARP support.&n; */
-macro_line|#ifdef CONFIG_IP_PNP_RARP
+macro_line|#ifdef IPCONFIG_RARP
 r_static
 r_int
 id|ic_rarp_recv
@@ -1299,20 +1393,18 @@ id|rarp_packet_type
 id|__initdata
 op_assign
 (brace
+id|type
+suffix:colon
 id|__constant_htons
 c_func
 (paren
 id|ETH_P_RARP
 )paren
 comma
-l_int|NULL
-comma
-multiline_comment|/* Listen to all devices */
+id|func
+suffix:colon
 id|ic_rarp_recv
 comma
-l_int|NULL
-comma
-l_int|NULL
 )brace
 suffix:semicolon
 DECL|function|ic_rarp_init
@@ -1418,6 +1510,19 @@ op_star
 id|tha
 suffix:semicolon
 multiline_comment|/* s for &quot;source&quot;, t for &quot;target&quot; */
+r_struct
+id|ic_device
+op_star
+id|d
+suffix:semicolon
+multiline_comment|/* One reply at a time, please. */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|ic_recv_lock
+)paren
+suffix:semicolon
 multiline_comment|/* If we already have a reply, just drop the packet */
 r_if
 c_cond
@@ -1427,6 +1532,34 @@ id|ic_got_reply
 r_goto
 id|drop
 suffix:semicolon
+multiline_comment|/* Find the ic_device that the packet arrived on */
+id|d
+op_assign
+id|ic_first_dev
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|d
+op_logical_and
+id|d-&gt;dev
+op_ne
+id|dev
+)paren
+id|d
+op_assign
+id|d-&gt;next
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|d
+)paren
+r_goto
+id|drop
+suffix:semicolon
+multiline_comment|/* should never happen */
 multiline_comment|/* If this test doesn&squot;t pass, it&squot;s not IP, or we should ignore it anyway */
 r_if
 c_cond
@@ -1452,7 +1585,7 @@ c_cond
 (paren
 id|rarp-&gt;ar_op
 op_ne
-id|htons
+id|__constant_htons
 c_func
 (paren
 id|ARPOP_RREPLY
@@ -1467,7 +1600,7 @@ c_cond
 (paren
 id|rarp-&gt;ar_pro
 op_ne
-id|htons
+id|__constant_htons
 c_func
 (paren
 id|ETH_P_IP
@@ -1551,18 +1684,7 @@ id|sip
 r_goto
 id|drop
 suffix:semicolon
-multiline_comment|/* Victory! The packet is what we were looking for! */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ic_got_reply
-)paren
-(brace
-id|ic_got_reply
-op_assign
-id|IC_RARP
-suffix:semicolon
+multiline_comment|/* We have a winner! */
 id|ic_dev
 op_assign
 id|dev
@@ -1582,10 +1704,21 @@ id|ic_servaddr
 op_assign
 id|sip
 suffix:semicolon
-)brace
-multiline_comment|/* And throw the packet out... */
+id|ic_got_reply
+op_assign
+id|IC_RARP
+suffix:semicolon
 id|drop
 suffix:colon
+multiline_comment|/* Show&squot;s over.  Nothing to see here.  */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|ic_recv_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Throw the packet out. */
 id|kfree_skb
 c_func
 (paren
@@ -1596,41 +1729,18 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Send RARP request packet over all devices which allow RARP.&n; */
-DECL|function|ic_rarp_send
+multiline_comment|/*&n; *  Send RARP request packet over a signle interface.&n; */
+DECL|function|ic_rarp_send_if
 r_static
 r_void
 id|__init
-id|ic_rarp_send
+id|ic_rarp_send_if
 c_func
 (paren
-r_void
-)paren
-(brace
 r_struct
 id|ic_device
 op_star
 id|d
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|d
-op_assign
-id|ic_first_dev
-suffix:semicolon
-id|d
-suffix:semicolon
-id|d
-op_assign
-id|d-&gt;next
-)paren
-r_if
-c_cond
-(paren
-id|d-&gt;able
-op_amp
-id|IC_RARP
 )paren
 (brace
 r_struct
@@ -1661,10 +1771,9 @@ id|dev-&gt;dev_addr
 )paren
 suffix:semicolon
 )brace
-)brace
 macro_line|#endif
-multiline_comment|/*&n; *&t;BOOTP support.&n; */
-macro_line|#ifdef CONFIG_IP_PNP_BOOTP
+multiline_comment|/*&n; *&t;DHCP/BOOTP support.&n; */
+macro_line|#ifdef IPCONFIG_BOOTP
 DECL|struct|bootp_pkt
 r_struct
 id|bootp_pkt
@@ -1731,7 +1840,7 @@ DECL|member|server_ip
 id|u32
 id|server_ip
 suffix:semicolon
-multiline_comment|/* Server&squot;s IP address */
+multiline_comment|/* (Next, e.g. NFS) Server&squot;s IP address */
 DECL|member|relay_ip
 id|u32
 id|relay_ip
@@ -1761,25 +1870,38 @@ l_int|128
 )braket
 suffix:semicolon
 multiline_comment|/* Name of boot file */
-DECL|member|vendor_area
+DECL|member|exten
 id|u8
-id|vendor_area
+id|exten
 (braket
-l_int|128
+l_int|312
 )braket
 suffix:semicolon
-multiline_comment|/* Area for extensions */
+multiline_comment|/* DHCP options / BOOTP vendor extensions */
 )brace
 suffix:semicolon
+multiline_comment|/* packet ops */
 DECL|macro|BOOTP_REQUEST
-mdefine_line|#define BOOTP_REQUEST 1
+mdefine_line|#define BOOTP_REQUEST&t;1
 DECL|macro|BOOTP_REPLY
-mdefine_line|#define BOOTP_REPLY 2
-DECL|variable|ic_bootp_xid
-r_static
-id|u32
-id|ic_bootp_xid
-suffix:semicolon
+mdefine_line|#define BOOTP_REPLY&t;2
+multiline_comment|/* DHCP message types */
+DECL|macro|DHCPDISCOVER
+mdefine_line|#define DHCPDISCOVER&t;1
+DECL|macro|DHCPOFFER
+mdefine_line|#define DHCPOFFER&t;2
+DECL|macro|DHCPREQUEST
+mdefine_line|#define DHCPREQUEST&t;3
+DECL|macro|DHCPDECLINE
+mdefine_line|#define DHCPDECLINE&t;4
+DECL|macro|DHCPACK
+mdefine_line|#define DHCPACK&t;&t;5
+DECL|macro|DHCPNAK
+mdefine_line|#define DHCPNAK&t;&t;6
+DECL|macro|DHCPRELEASE
+mdefine_line|#define DHCPRELEASE&t;7
+DECL|macro|DHCPINFORM
+mdefine_line|#define DHCPINFORM&t;8
 r_static
 r_int
 id|ic_bootp_recv
@@ -1809,23 +1931,263 @@ id|bootp_packet_type
 id|__initdata
 op_assign
 (brace
+id|type
+suffix:colon
 id|__constant_htons
 c_func
 (paren
 id|ETH_P_IP
 )paren
 comma
-l_int|NULL
-comma
-multiline_comment|/* Listen to all devices */
+id|func
+suffix:colon
 id|ic_bootp_recv
 comma
-l_int|NULL
-comma
-l_int|NULL
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *  Initialize BOOTP extension fields in the request.&n; */
+multiline_comment|/*&n; *  Initialize DHCP/BOOTP extension fields in the request.&n; */
+DECL|variable|ic_bootp_cookie
+r_static
+r_const
+id|u8
+id|ic_bootp_cookie
+(braket
+l_int|4
+)braket
+op_assign
+(brace
+l_int|99
+comma
+l_int|130
+comma
+l_int|83
+comma
+l_int|99
+)brace
+suffix:semicolon
+macro_line|#ifdef IPCONFIG_DHCP
+r_static
+r_void
+id|__init
+DECL|function|ic_dhcp_init_options
+id|ic_dhcp_init_options
+c_func
+(paren
+id|u8
+op_star
+id|options
+)paren
+(brace
+id|u8
+id|mt
+op_assign
+(paren
+(paren
+id|ic_servaddr
+op_eq
+id|INADDR_NONE
+)paren
+ques
+c_cond
+id|DHCPDISCOVER
+suffix:colon
+id|DHCPREQUEST
+)paren
+suffix:semicolon
+id|u8
+op_star
+id|e
+op_assign
+id|options
+suffix:semicolon
+macro_line|#ifdef IPCONFIG_DEBUG
+id|printk
+c_func
+(paren
+l_string|&quot;DHCP: Sending message type %d&bslash;n&quot;
+comma
+id|mt
+)paren
+suffix:semicolon
+macro_line|#endif
+id|memcpy
+c_func
+(paren
+id|e
+comma
+id|ic_bootp_cookie
+comma
+l_int|4
+)paren
+suffix:semicolon
+multiline_comment|/* RFC1048 Magic Cookie */
+id|e
+op_add_assign
+l_int|4
+suffix:semicolon
+op_star
+id|e
+op_increment
+op_assign
+l_int|53
+suffix:semicolon
+multiline_comment|/* DHCP message type */
+op_star
+id|e
+op_increment
+op_assign
+l_int|1
+suffix:semicolon
+op_star
+id|e
+op_increment
+op_assign
+id|mt
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mt
+op_eq
+id|DHCPREQUEST
+)paren
+(brace
+op_star
+id|e
+op_increment
+op_assign
+l_int|54
+suffix:semicolon
+multiline_comment|/* Server ID (IP address) */
+op_star
+id|e
+op_increment
+op_assign
+l_int|4
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|e
+comma
+op_amp
+id|ic_servaddr
+comma
+l_int|4
+)paren
+suffix:semicolon
+id|e
+op_add_assign
+l_int|4
+suffix:semicolon
+op_star
+id|e
+op_increment
+op_assign
+l_int|50
+suffix:semicolon
+multiline_comment|/* Requested IP address */
+op_star
+id|e
+op_increment
+op_assign
+l_int|4
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|e
+comma
+op_amp
+id|ic_myaddr
+comma
+l_int|4
+)paren
+suffix:semicolon
+id|e
+op_add_assign
+l_int|4
+suffix:semicolon
+)brace
+multiline_comment|/* always? */
+(brace
+r_static
+r_const
+id|u8
+id|ic_req_params
+(braket
+)braket
+op_assign
+(brace
+l_int|1
+comma
+multiline_comment|/* Subnet mask */
+l_int|3
+comma
+multiline_comment|/* Default gateway */
+l_int|6
+comma
+multiline_comment|/* DNS server */
+l_int|12
+comma
+multiline_comment|/* Host name */
+l_int|15
+comma
+multiline_comment|/* Domain name */
+l_int|17
+comma
+multiline_comment|/* Boot path */
+l_int|40
+comma
+multiline_comment|/* NIS domain name */
+)brace
+suffix:semicolon
+op_star
+id|e
+op_increment
+op_assign
+l_int|55
+suffix:semicolon
+multiline_comment|/* Parameter request list */
+op_star
+id|e
+op_increment
+op_assign
+r_sizeof
+(paren
+id|ic_req_params
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|e
+comma
+id|ic_req_params
+comma
+r_sizeof
+(paren
+id|ic_req_params
+)paren
+)paren
+suffix:semicolon
+id|e
+op_add_assign
+r_sizeof
+(paren
+id|ic_req_params
+)paren
+suffix:semicolon
+)brace
+op_star
+id|e
+op_increment
+op_assign
+l_int|255
+suffix:semicolon
+multiline_comment|/* End of the list */
+)brace
+macro_line|#endif /* IPCONFIG_DHCP */
 DECL|function|ic_bootp_init_ext
 r_static
 r_void
@@ -1838,30 +2200,20 @@ op_star
 id|e
 )paren
 (brace
-op_star
+id|memcpy
+c_func
+(paren
 id|e
-op_increment
-op_assign
-l_int|99
+comma
+id|ic_bootp_cookie
+comma
+l_int|4
+)paren
 suffix:semicolon
 multiline_comment|/* RFC1048 Magic Cookie */
-op_star
 id|e
-op_increment
-op_assign
-l_int|130
-suffix:semicolon
-op_star
-id|e
-op_increment
-op_assign
-l_int|83
-suffix:semicolon
-op_star
-id|e
-op_increment
-op_assign
-l_int|99
+op_add_assign
+l_int|4
 suffix:semicolon
 op_star
 id|e
@@ -1896,6 +2248,23 @@ suffix:semicolon
 id|e
 op_add_assign
 l_int|4
+suffix:semicolon
+op_star
+id|e
+op_increment
+op_assign
+l_int|5
+suffix:semicolon
+multiline_comment|/* Name server reqeust */
+op_star
+id|e
+op_increment
+op_assign
+l_int|8
+suffix:semicolon
+id|e
+op_add_assign
+l_int|8
 suffix:semicolon
 op_star
 id|e
@@ -1942,20 +2311,21 @@ op_star
 id|e
 op_increment
 op_assign
-l_int|32
+l_int|40
 suffix:semicolon
 id|e
 op_add_assign
-l_int|32
+l_int|40
 suffix:semicolon
 op_star
 id|e
+op_increment
 op_assign
 l_int|255
 suffix:semicolon
 multiline_comment|/* End of the list */
 )brace
-multiline_comment|/*&n; *  Initialize the BOOTP mechanism.&n; */
+multiline_comment|/*&n; *  Initialize the DHCP/BOOTP mechanism.&n; */
 DECL|function|ic_bootp_init
 r_static
 r_inline
@@ -1966,28 +2336,6 @@ c_func
 r_void
 )paren
 (brace
-id|get_random_bytes
-c_func
-(paren
-op_amp
-id|ic_bootp_xid
-comma
-r_sizeof
-(paren
-id|u32
-)paren
-)paren
-suffix:semicolon
-id|DBG
-c_func
-(paren
-(paren
-l_string|&quot;BOOTP: XID=%08x&bslash;n&quot;
-comma
-id|ic_bootp_xid
-)paren
-)paren
-suffix:semicolon
 id|dev_add_pack
 c_func
 (paren
@@ -1996,7 +2344,7 @@ id|bootp_packet_type
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  BOOTP cleanup.&n; */
+multiline_comment|/*&n; *  DHCP/BOOTP cleanup.&n; */
 DECL|function|ic_bootp_cleanup
 r_static
 r_inline
@@ -2015,7 +2363,7 @@ id|bootp_packet_type
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Send BOOTP request to single interface.&n; */
+multiline_comment|/*&n; *  Send DHCP/BOOTP request to single interface.&n; */
 DECL|function|ic_bootp_send_if
 r_static
 r_void
@@ -2164,7 +2512,7 @@ id|bootp_pkt
 suffix:semicolon
 id|h-&gt;frag_off
 op_assign
-id|htons
+id|__constant_htons
 c_func
 (paren
 id|IP_DF
@@ -2200,7 +2548,7 @@ suffix:semicolon
 multiline_comment|/* Construct UDP header */
 id|b-&gt;udph.source
 op_assign
-id|htons
+id|__constant_htons
 c_func
 (paren
 l_int|68
@@ -2208,7 +2556,7 @@ l_int|68
 suffix:semicolon
 id|b-&gt;udph.dest
 op_assign
-id|htons
+id|__constant_htons
 c_func
 (paren
 l_int|67
@@ -2233,7 +2581,7 @@ id|iphdr
 )paren
 suffix:semicolon
 multiline_comment|/* UDP checksum not calculated -- explicitly allowed in BOOTP RFC */
-multiline_comment|/* Construct BOOTP header */
+multiline_comment|/* Construct DHCP/BOOTP header */
 id|b-&gt;op
 op_assign
 id|BOOTP_REQUEST
@@ -2285,6 +2633,14 @@ id|b-&gt;hlen
 op_assign
 id|dev-&gt;addr_len
 suffix:semicolon
+id|b-&gt;your_ip
+op_assign
+id|INADDR_NONE
+suffix:semicolon
+id|b-&gt;server_ip
+op_assign
+id|INADDR_NONE
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -2307,12 +2663,29 @@ id|HZ
 suffix:semicolon
 id|b-&gt;xid
 op_assign
-id|ic_bootp_xid
+id|d-&gt;xid
 suffix:semicolon
+multiline_comment|/* add DHCP options or BOOTP extensions */
+macro_line|#ifdef IPCONFIG_DHCP
+r_if
+c_cond
+(paren
+id|ic_proto_enabled
+op_amp
+id|IC_USE_DHCP
+)paren
+id|ic_dhcp_init_options
+c_func
+(paren
+id|b-&gt;exten
+)paren
+suffix:semicolon
+r_else
+macro_line|#endif
 id|ic_bootp_init_ext
 c_func
 (paren
-id|b-&gt;vendor_area
+id|b-&gt;exten
 )paren
 suffix:semicolon
 multiline_comment|/* Chain packet down the line... */
@@ -2374,52 +2747,6 @@ l_string|&quot;E&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Send BOOTP requests to all interfaces.&n; */
-DECL|function|ic_bootp_send
-r_static
-r_void
-id|__init
-id|ic_bootp_send
-c_func
-(paren
-id|u32
-id|jiffies
-)paren
-(brace
-r_struct
-id|ic_device
-op_star
-id|d
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|d
-op_assign
-id|ic_first_dev
-suffix:semicolon
-id|d
-suffix:semicolon
-id|d
-op_assign
-id|d-&gt;next
-)paren
-r_if
-c_cond
-(paren
-id|d-&gt;able
-op_amp
-id|IC_BOOTP
-)paren
-id|ic_bootp_send_if
-c_func
-(paren
-id|d
-comma
-id|jiffies
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *  Copy BOOTP-supplied string if not already set.&n; */
 DECL|function|ic_bootp_string
 r_static
@@ -2467,7 +2794,7 @@ id|max
 op_minus
 l_int|1
 suffix:semicolon
-id|strncpy
+id|memcpy
 c_func
 (paren
 id|dest
@@ -2488,7 +2815,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Process BOOTP extension.&n; */
+multiline_comment|/*&n; *  Process BOOTP extensions.&n; */
 DECL|function|ic_do_bootp_ext
 r_static
 r_void
@@ -2509,7 +2836,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;BOOTP: Got extension %02x&quot;
+l_string|&quot;DHCP/BOOTP: Got extension %d:&quot;
 comma
 op_star
 id|ext
@@ -2617,6 +2944,32 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+l_int|6
+suffix:colon
+multiline_comment|/* DNS server */
+r_if
+c_cond
+(paren
+id|ic_nameserver
+op_eq
+id|INADDR_NONE
+)paren
+id|memcpy
+c_func
+(paren
+op_amp
+id|ic_nameserver
+comma
+id|ext
+op_plus
+l_int|1
+comma
+l_int|4
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 l_int|12
 suffix:colon
 multiline_comment|/* Host name */
@@ -2642,13 +2995,13 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|40
+l_int|15
 suffix:colon
-multiline_comment|/* NIS Domain name */
+multiline_comment|/* Domain name (DNS) */
 id|ic_bootp_string
 c_func
 (paren
-id|system_utsname.domainname
+id|ic_domain
 comma
 id|ext
 op_plus
@@ -2657,7 +3010,10 @@ comma
 op_star
 id|ext
 comma
-id|__NEW_UTS_LEN
+r_sizeof
+(paren
+id|ic_domain
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -2691,6 +3047,27 @@ r_sizeof
 (paren
 id|root_server_path
 )paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|40
+suffix:colon
+multiline_comment|/* NIS Domain name (_not_ DNS) */
+id|ic_bootp_string
+c_func
+(paren
+id|system_utsname.domainname
+comma
+id|ext
+op_plus
+l_int|1
+comma
+op_star
+id|ext
+comma
+id|__NEW_UTS_LEN
 )paren
 suffix:semicolon
 r_break
@@ -2741,8 +3118,21 @@ op_assign
 op_amp
 id|b-&gt;iph
 suffix:semicolon
+r_struct
+id|ic_device
+op_star
+id|d
+suffix:semicolon
 r_int
 id|len
+suffix:semicolon
+multiline_comment|/* One reply at a time, please. */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|ic_recv_lock
+)paren
 suffix:semicolon
 multiline_comment|/* If we already have a reply, just drop the packet */
 r_if
@@ -2753,6 +3143,34 @@ id|ic_got_reply
 r_goto
 id|drop
 suffix:semicolon
+multiline_comment|/* Find the ic_device that the packet arrived on */
+id|d
+op_assign
+id|ic_first_dev
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|d
+op_logical_and
+id|d-&gt;dev
+op_ne
+id|dev
+)paren
+id|d
+op_assign
+id|d-&gt;next
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|d
+)paren
+r_goto
+id|drop
+suffix:semicolon
+multiline_comment|/* should never happen */
 multiline_comment|/* Check whether it&squot;s a BOOTP packet */
 r_if
 c_cond
@@ -2811,7 +3229,7 @@ id|IPPROTO_UDP
 op_logical_or
 id|b-&gt;udph.source
 op_ne
-id|htons
+id|__constant_htons
 c_func
 (paren
 l_int|67
@@ -2819,7 +3237,7 @@ l_int|67
 op_logical_or
 id|b-&gt;udph.dest
 op_ne
-id|htons
+id|__constant_htons
 c_func
 (paren
 l_int|68
@@ -2852,7 +3270,7 @@ c_cond
 (paren
 id|h-&gt;frag_off
 op_amp
-id|htons
+id|__constant_htons
 c_func
 (paren
 id|IP_OFFSET
@@ -2865,7 +3283,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;BOOTP: Ignoring fragmented reply.&bslash;n&quot;
+l_string|&quot;DHCP/BOOTP: Ignoring fragmented reply.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2901,7 +3319,7 @@ id|BOOTP_REPLY
 op_logical_or
 id|b-&gt;xid
 op_ne
-id|ic_bootp_xid
+id|d-&gt;xid
 )paren
 (brace
 id|printk
@@ -2914,67 +3332,23 @@ r_goto
 id|drop
 suffix:semicolon
 )brace
-multiline_comment|/* Extract basic fields */
-id|ic_myaddr
-op_assign
-id|b-&gt;your_ip
-suffix:semicolon
-id|ic_servaddr
-op_assign
-id|b-&gt;server_ip
-suffix:semicolon
-id|ic_got_reply
-op_assign
-id|IC_BOOTP
-suffix:semicolon
-id|ic_dev
-op_assign
-id|dev
-suffix:semicolon
 multiline_comment|/* Parse extensions */
 r_if
 c_cond
 (paren
-id|b-&gt;vendor_area
-(braket
-l_int|0
-)braket
-op_eq
-l_int|99
-op_logical_and
-multiline_comment|/* Check magic cookie */
-id|b-&gt;vendor_area
-(braket
-l_int|1
-)braket
-op_eq
-l_int|130
-op_logical_and
-id|b-&gt;vendor_area
-(braket
-l_int|2
-)braket
-op_eq
-l_int|83
-op_logical_and
-id|b-&gt;vendor_area
-(braket
-l_int|3
-)braket
-op_eq
-l_int|99
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|b-&gt;exten
+comma
+id|ic_bootp_cookie
+comma
+l_int|4
+)paren
 )paren
 (brace
-id|u8
-op_star
-id|ext
-op_assign
-op_amp
-id|b-&gt;vendor_area
-(braket
-l_int|4
-)braket
-suffix:semicolon
+multiline_comment|/* Check magic cookie */
 id|u8
 op_star
 id|end
@@ -2991,6 +3365,29 @@ c_func
 id|b-&gt;iph.tot_len
 )paren
 suffix:semicolon
+id|u8
+op_star
+id|ext
+suffix:semicolon
+macro_line|#ifdef IPCONFIG_DHCP
+id|u32
+id|server_id
+op_assign
+id|INADDR_NONE
+suffix:semicolon
+r_int
+id|mt
+op_assign
+l_int|0
+suffix:semicolon
+id|ext
+op_assign
+op_amp
+id|b-&gt;exten
+(braket
+l_int|4
+)braket
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -3004,40 +3401,243 @@ op_ne
 l_int|0xff
 )paren
 (brace
+id|u8
+op_star
+id|opt
+op_assign
+id|ext
+op_increment
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_star
-id|ext
+id|opt
 op_eq
 l_int|0
 )paren
 multiline_comment|/* Padding */
-id|ext
-op_increment
+r_continue
 suffix:semicolon
-r_else
+id|ext
+op_add_assign
+op_star
+id|ext
+op_plus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ext
+op_ge
+id|end
+)paren
+r_break
+suffix:semicolon
+r_switch
+c_cond
+(paren
+op_star
+id|opt
+)paren
+(brace
+r_case
+l_int|53
+suffix:colon
+multiline_comment|/* Message type */
+r_if
+c_cond
+(paren
+id|opt
+(braket
+l_int|1
+)braket
+)paren
+id|mt
+op_assign
+id|opt
+(braket
+l_int|2
+)braket
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|54
+suffix:colon
+multiline_comment|/* Server ID (IP address) */
+r_if
+c_cond
+(paren
+id|opt
+(braket
+l_int|1
+)braket
+op_ge
+l_int|4
+)paren
+id|memcpy
+c_func
+(paren
+op_amp
+id|server_id
+comma
+id|opt
+op_plus
+l_int|2
+comma
+l_int|4
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+macro_line|#ifdef IPCONFIG_DEBUG
+id|printk
+c_func
+(paren
+l_string|&quot;DHCP: Got message type %d&bslash;n&quot;
+comma
+id|mt
+)paren
+suffix:semicolon
+macro_line|#endif
+r_switch
+c_cond
+(paren
+id|mt
+)paren
+(brace
+r_case
+id|DHCPOFFER
+suffix:colon
+multiline_comment|/* While in the process of accepting one offer,&n;&t;&t;&t;   ignore all others. */
+r_if
+c_cond
+(paren
+id|ic_myaddr
+op_ne
+id|INADDR_NONE
+)paren
+r_goto
+id|drop
+suffix:semicolon
+multiline_comment|/* Let&squot;s accept that offer. */
+id|ic_myaddr
+op_assign
+id|b-&gt;your_ip
+suffix:semicolon
+id|ic_servaddr
+op_assign
+id|server_id
+suffix:semicolon
+macro_line|#ifdef IPCONFIG_DEBUG
+id|printk
+c_func
+(paren
+l_string|&quot;DHCP: Offered address %u.%u.%u.%u&quot;
+comma
+id|NIPQUAD
+c_func
+(paren
+id|ic_myaddr
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot; by server %u.%u.%u.%u&bslash;n&quot;
+comma
+id|NIPQUAD
+c_func
+(paren
+id|ic_servaddr
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+r_break
+suffix:semicolon
+r_case
+id|DHCPACK
+suffix:colon
+multiline_comment|/* Yeah! */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* Urque.  Forget it*/
+id|ic_myaddr
+op_assign
+id|INADDR_NONE
+suffix:semicolon
+id|ic_servaddr
+op_assign
+id|INADDR_NONE
+suffix:semicolon
+r_goto
+id|drop
+suffix:semicolon
+)brace
+id|ic_dhcp_msgtype
+op_assign
+id|mt
+suffix:semicolon
+macro_line|#endif /* IPCONFIG_DHCP */
+id|ext
+op_assign
+op_amp
+id|b-&gt;exten
+(braket
+l_int|4
+)braket
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|ext
+OL
+id|end
+op_logical_and
+op_star
+id|ext
+op_ne
+l_int|0xff
+)paren
 (brace
 id|u8
 op_star
 id|opt
 op_assign
 id|ext
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|opt
+op_eq
+l_int|0
+)paren
+multiline_comment|/* Padding */
+r_continue
 suffix:semicolon
 id|ext
 op_add_assign
+op_star
 id|ext
-(braket
-l_int|1
-)braket
 op_plus
-l_int|2
+l_int|1
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|ext
-op_le
+OL
 id|end
 )paren
 id|ic_do_bootp_ext
@@ -3048,7 +3648,19 @@ id|opt
 suffix:semicolon
 )brace
 )brace
-)brace
+multiline_comment|/* We have a winner! */
+id|ic_dev
+op_assign
+id|dev
+suffix:semicolon
+id|ic_myaddr
+op_assign
+id|b-&gt;your_ip
+suffix:semicolon
+id|ic_servaddr
+op_assign
+id|b-&gt;server_ip
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3062,8 +3674,32 @@ id|ic_gateway
 op_assign
 id|b-&gt;relay_ip
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ic_nameserver
+op_eq
+id|INADDR_NONE
+)paren
+id|ic_nameserver
+op_assign
+id|ic_servaddr
+suffix:semicolon
+id|ic_got_reply
+op_assign
+id|IC_BOOTP
+suffix:semicolon
 id|drop
 suffix:colon
+multiline_comment|/* Show&squot;s over.  Nothing to see here.  */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|ic_recv_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Throw the packet out. */
 id|kfree_skb
 c_func
 (paren
@@ -3075,8 +3711,8 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; *&t;Dynamic IP configuration -- BOOTP and RARP.&n; */
-macro_line|#ifdef CONFIG_IP_PNP_DYNAMIC
+multiline_comment|/*&n; *&t;Dynamic IP configuration -- DHCP, BOOTP, RARP.&n; */
+macro_line|#ifdef IPCONFIG_DYNAMIC
 DECL|function|ic_dynamic
 r_static
 r_int
@@ -3090,22 +3726,18 @@ r_void
 r_int
 id|retries
 suffix:semicolon
-r_int
-r_int
-id|timeout
-comma
-id|jiff
+r_struct
+id|ic_device
+op_star
+id|d
 suffix:semicolon
 r_int
 r_int
 id|start_jiffies
-suffix:semicolon
-r_int
-id|do_rarp
-op_assign
-id|ic_proto_have_if
-op_amp
-id|IC_RARP
+comma
+id|timeout
+comma
+id|jiff
 suffix:semicolon
 r_int
 id|do_bootp
@@ -3114,7 +3746,14 @@ id|ic_proto_have_if
 op_amp
 id|IC_BOOTP
 suffix:semicolon
-multiline_comment|/*&n;&t; * If neither BOOTP nor RARP was selected, return with an error. This&n;&t; * routine gets only called when some pieces of information are mis-&n;&t; * sing, and without BOOTP and RARP we are not able to get that in-&n;&t; * formation.&n;&t; */
+r_int
+id|do_rarp
+op_assign
+id|ic_proto_have_if
+op_amp
+id|IC_RARP
+suffix:semicolon
+multiline_comment|/*&n;&t; * If none of DHCP/BOOTP/RARP was selected, return with an error.&n;&t; * This routine gets only called when some pieces of information&n;&t; * are missing, and without DHCP/BOOTP/RARP we are unable to get it.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3134,7 +3773,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IP_PNP_BOOTP
+macro_line|#ifdef IPCONFIG_BOOTP
 r_if
 c_cond
 (paren
@@ -3150,11 +3789,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;BOOTP: No suitable device found.&bslash;n&quot;
+l_string|&quot;DHCP/BOOTP: No suitable device found.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_IP_PNP_RARP
+macro_line|#ifdef IPCONFIG_RARP
 r_if
 c_cond
 (paren
@@ -3185,20 +3824,8 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * Setup RARP and BOOTP protocols&n;&t; */
-macro_line|#ifdef CONFIG_IP_PNP_RARP
-r_if
-c_cond
-(paren
-id|do_rarp
-)paren
-id|ic_rarp_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_IP_PNP_BOOTP
+multiline_comment|/*&n;&t; * Setup protocols&n;&t; */
+macro_line|#ifdef IPCONFIG_BOOTP
 r_if
 c_cond
 (paren
@@ -3210,23 +3837,48 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef IPCONFIG_RARP
+r_if
+c_cond
+(paren
+id|do_rarp
+)paren
+id|ic_rarp_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Send requests and wait, until we get an answer. This loop&n;&t; * seems to be a terrible waste of CPU time, but actually there is&n;&t; * only one process running at all, so we don&squot;t need to use any&n;&t; * scheduler functions.&n;&t; * [Actually we could now, but the nothing else running note still &n;&t; *  applies.. - AC]&n;&t; */
 id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;Sending %s%s%s requests...&quot;
+l_string|&quot;Sending %s%s%s requests .&quot;
 comma
 id|do_bootp
 ques
 c_cond
+(paren
+(paren
+id|ic_proto_enabled
+op_amp
+id|IC_USE_DHCP
+)paren
+ques
+c_cond
+l_string|&quot;DHCP&quot;
+suffix:colon
 l_string|&quot;BOOTP&quot;
+)paren
 suffix:colon
 l_string|&quot;&quot;
 comma
+(paren
 id|do_bootp
 op_logical_and
 id|do_rarp
+)paren
 ques
 c_cond
 l_string|&quot; and &quot;
@@ -3245,9 +3897,13 @@ id|start_jiffies
 op_assign
 id|jiffies
 suffix:semicolon
+id|d
+op_assign
+id|ic_first_dev
+suffix:semicolon
 id|retries
 op_assign
-id|CONF_RETRIES
+id|CONF_SEND_RETRIES
 suffix:semicolon
 id|get_random_bytes
 c_func
@@ -3281,44 +3937,60 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-macro_line|#ifdef CONFIG_IP_PNP_BOOTP
+macro_line|#ifdef IPCONFIG_BOOTP
 r_if
 c_cond
 (paren
 id|do_bootp
+op_logical_and
+(paren
+id|d-&gt;able
+op_amp
+id|IC_BOOTP
 )paren
-id|ic_bootp_send
+)paren
+id|ic_bootp_send_if
 c_func
 (paren
+id|d
+comma
 id|jiffies
 op_minus
 id|start_jiffies
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_IP_PNP_RARP
+macro_line|#ifdef IPCONFIG_RARP
 r_if
 c_cond
 (paren
 id|do_rarp
+op_logical_and
+(paren
+id|d-&gt;able
+op_amp
+id|IC_RARP
 )paren
-id|ic_rarp_send
+)paren
+id|ic_rarp_send_if
 c_func
 (paren
+id|d
 )paren
 suffix:semicolon
 macro_line|#endif
-id|printk
-c_func
-(paren
-l_string|&quot;.&quot;
-)paren
-suffix:semicolon
 id|jiff
 op_assign
 id|jiffies
 op_plus
+(paren
+id|d-&gt;next
+ques
+c_cond
+id|CONF_INTER_TIMEOUT
+suffix:colon
 id|timeout
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -3335,6 +4007,42 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef IPCONFIG_DHCP
+multiline_comment|/* DHCP isn&squot;t done until we get a DHCPACK. */
+r_if
+c_cond
+(paren
+(paren
+id|ic_got_reply
+op_amp
+id|IC_BOOTP
+)paren
+op_logical_and
+(paren
+id|ic_proto_enabled
+op_amp
+id|IC_USE_DHCP
+)paren
+op_logical_and
+id|ic_dhcp_msgtype
+op_ne
+id|DHCPACK
+)paren
+(brace
+id|ic_got_reply
+op_assign
+l_int|0
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;,&quot;
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+macro_line|#endif /* IPCONFIG_DHCP */
 r_if
 c_cond
 (paren
@@ -3353,6 +4061,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|d
+op_assign
+id|d-&gt;next
+)paren
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 op_decrement
 id|retries
@@ -3367,6 +4086,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|d
+op_assign
+id|ic_first_dev
+suffix:semicolon
 id|timeout
 op_assign
 id|timeout
@@ -3383,26 +4106,32 @@ id|timeout
 op_assign
 id|CONF_TIMEOUT_MAX
 suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_IP_PNP_RARP
-r_if
-c_cond
-(paren
-id|do_rarp
-)paren
-id|ic_rarp_cleanup
+id|printk
 c_func
 (paren
+l_string|&quot;.&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_IP_PNP_BOOTP
+)brace
+macro_line|#ifdef IPCONFIG_BOOTP
 r_if
 c_cond
 (paren
 id|do_bootp
 )paren
 id|ic_bootp_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef IPCONFIG_RARP
+r_if
+c_cond
+(paren
+id|do_rarp
+)paren
+id|ic_rarp_cleanup
 c_func
 (paren
 )paren
@@ -3424,15 +4153,26 @@ c_func
 l_string|&quot;IP-Config: Got %s answer from %u.%u.%u.%u, &quot;
 comma
 (paren
+(paren
 id|ic_got_reply
 op_amp
-id|IC_BOOTP
+id|IC_RARP
 )paren
 ques
 c_cond
-l_string|&quot;BOOTP&quot;
-suffix:colon
 l_string|&quot;RARP&quot;
+suffix:colon
+(paren
+id|ic_proto_enabled
+op_amp
+id|IC_USE_DHCP
+)paren
+ques
+c_cond
+l_string|&quot;DHCP&quot;
+suffix:colon
+l_string|&quot;BOOTP&quot;
+)paren
 comma
 id|NIPQUAD
 c_func
@@ -3457,7 +4197,170 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* IPCONFIG_DYNAMIC */
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|function|pnp_get_info
+r_static
+r_int
+id|pnp_get_info
+c_func
+(paren
+r_char
+op_star
+id|buffer
+comma
+r_char
+op_star
+op_star
+id|start
+comma
+id|off_t
+id|offset
+comma
+r_int
+id|length
+)paren
+(brace
+r_int
+id|len
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ic_proto_used
+op_amp
+id|IC_PROTO
+)paren
+id|sprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;#PROTO: %s&bslash;n&quot;
+comma
+(paren
+id|ic_proto_used
+op_amp
+id|IC_RARP
+)paren
+ques
+c_cond
+l_string|&quot;RARP&quot;
+suffix:colon
+(paren
+id|ic_proto_used
+op_amp
+id|IC_USE_DHCP
+)paren
+ques
+c_cond
+l_string|&quot;DHCP&quot;
+suffix:colon
+l_string|&quot;BOOTP&quot;
+)paren
+suffix:semicolon
+r_else
+id|strcpy
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;#MANUAL&bslash;n&quot;
+)paren
+suffix:semicolon
+id|len
+op_assign
+id|strlen
+c_func
+(paren
+id|buffer
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ic_domain
+(braket
+l_int|0
+)braket
+)paren
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buffer
+op_plus
+id|len
+comma
+l_string|&quot;domain %s&bslash;n&quot;
+comma
+id|ic_domain
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ic_nameserver
+op_ne
+id|INADDR_NONE
+)paren
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buffer
+op_plus
+id|len
+comma
+l_string|&quot;nameserver %u.%u.%u.%u&bslash;n&quot;
+comma
+id|NIPQUAD
+c_func
+(paren
+id|ic_nameserver
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|offset
+OG
+id|len
+)paren
+id|offset
+op_assign
+id|len
+suffix:semicolon
+op_star
+id|start
+op_assign
+id|buffer
+op_plus
+id|offset
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|offset
+op_plus
+id|length
+OG
+id|len
+)paren
+id|length
+op_assign
+id|len
+op_minus
+id|offset
+suffix:semicolon
+r_return
+id|length
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*&n; *&t;IP Autoconfig dispatcher.&n; */
 DECL|function|ip_auto_config
 r_static
@@ -3469,6 +4372,27 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|retries
+op_assign
+id|CONF_OPEN_RETRIES
+suffix:semicolon
+r_int
+r_int
+id|jiff
+suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+id|proc_net_create
+c_func
+(paren
+l_string|&quot;pnp&quot;
+comma
+l_int|0
+comma
+id|pnp_get_info
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PROC_FS */
 r_if
 c_cond
 (paren
@@ -3486,6 +4410,23 @@ l_string|&quot;IP-Config: Entered.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+id|try_try_again
+suffix:colon
+multiline_comment|/* Give hardware a chance to settle */
+id|jiff
+op_assign
+id|jiffies
+op_plus
+id|CONF_PRE_OPEN
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|jiffies
+OL
+id|jiff
+)paren
+suffix:semicolon
 multiline_comment|/* Setup all network devices */
 r_if
 c_cond
@@ -3500,6 +4441,21 @@ l_int|0
 r_return
 op_minus
 l_int|1
+suffix:semicolon
+multiline_comment|/* Give drivers a chance to settle */
+id|jiff
+op_assign
+id|jiffies
+op_plus
+id|CONF_POST_OPEN
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|jiffies
+OL
+id|jiff
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If the config information is insufficient (e.g., our IP address or&n;&t; * IP address of the boot server is missing or we have multiple network&n;&t; * interfaces and no default was set), use BOOTP or RARP to get the&n;&t; * missing values.&n;&t; */
 r_if
@@ -3524,7 +4480,7 @@ macro_line|#endif
 id|ic_first_dev-&gt;next
 )paren
 (brace
-macro_line|#ifdef CONFIG_IP_PNP_DYNAMIC
+macro_line|#ifdef IPCONFIG_DYNAMIC
 r_if
 c_cond
 (paren
@@ -3536,6 +4492,58 @@ OL
 l_int|0
 )paren
 (brace
+id|ic_close_devs
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * I don&squot;t know why, but sometimes the&n;&t;&t;&t; * eepro100 driver (at least) gets upset and&n;&t;&t;&t; * doesn&squot;t work the first time it&squot;s opened.&n;&t;&t;&t; * But then if you close it and reopen it, it&n;&t;&t;&t; * works just fine.  So we need to try that at&n;&t;&t;&t; * least once before giving up.&n;&t;&t;&t; *&n;&t;&t;&t; * Also, if the root will be NFS-mounted, we&n;&t;&t;&t; * have nowhere to go if DHCP fails.  So we&n;&t;&t;&t; * just have to keep trying forever.&n;&t;&t;&t; *&n;&t;&t;&t; * &t;&t;&t;&t;-- Chip&n;&t;&t;&t; */
+macro_line|#ifdef CONFIG_ROOT_NFS
+r_if
+c_cond
+(paren
+id|ROOT_DEV
+op_eq
+id|MKDEV
+c_func
+(paren
+id|UNNAMED_MAJOR
+comma
+l_int|255
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;IP-Config: Retrying forever (NFS root)...&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|try_try_again
+suffix:semicolon
+)brace
+macro_line|#endif
+r_if
+c_cond
+(paren
+op_decrement
+id|retries
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;IP-Config: Reopening network devices...&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|try_try_again
+suffix:semicolon
+)brace
+multiline_comment|/* Oh, well.  At least we tried. */
 id|printk
 c_func
 (paren
@@ -3543,17 +4551,12 @@ id|KERN_ERR
 l_string|&quot;IP-Config: Auto-configuration of network failed.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ic_close_devs
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#else
+macro_line|#else /* !DYNAMIC */
 id|printk
 c_func
 (paren
@@ -3570,15 +4573,15 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* IPCONFIG_DYNAMIC */
 )brace
 r_else
 (brace
+multiline_comment|/* Device selected manually or only one device -&gt; use it */
 id|ic_dev
 op_assign
 id|ic_first_dev-&gt;dev
 suffix:semicolon
-multiline_comment|/* Device selected manually or only one device -&gt; use it */
 )brace
 multiline_comment|/*&n;&t; * Use defaults whereever applicable.&n;&t; */
 r_if
@@ -3622,40 +4625,122 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-id|DBG
+multiline_comment|/*&n;&t; * Record which protocol was actually used.&n;&t; */
+macro_line|#ifdef IPCONFIG_DYNAMIC
+id|ic_proto_used
+op_assign
+id|ic_got_reply
+op_or
+(paren
+id|ic_proto_enabled
+op_amp
+id|IC_USE_DHCP
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifndef IPCONFIG_SILENT
+multiline_comment|/*&n;&t; * Clue in the operator.&n;&t; */
+id|printk
 c_func
 (paren
+l_string|&quot;IP-Config: Complete:&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
 (paren
-l_string|&quot;IP-Config: device=%s, local=%08x, server=%08x, boot=%08x, gw=%08x, mask=%08x&bslash;n&quot;
+l_string|&quot;&bslash;n      device=%s&quot;
 comma
 id|ic_dev-&gt;name
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;, addr=%u.%u.%u.%u&quot;
 comma
+id|NIPQUAD
+c_func
+(paren
 id|ic_myaddr
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;, mask=%u.%u.%u.%u&quot;
 comma
-id|ic_servaddr
-comma
-id|root_server_addr
-comma
-id|ic_gateway
-comma
+id|NIPQUAD
+c_func
+(paren
 id|ic_netmask
 )paren
 )paren
 suffix:semicolon
-id|DBG
+id|printk
 c_func
 (paren
+l_string|&quot;, gw=%u.%u.%u.%u&quot;
+comma
+id|NIPQUAD
+c_func
 (paren
-l_string|&quot;IP-Config: host=%s, domain=%s, path=`%s&squot;&bslash;n&quot;
-comma
-id|system_utsname.nodename
-comma
-id|system_utsname.domainname
-comma
-id|root_server_path
+id|ic_gateway
 )paren
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;,&bslash;n     host=%s, domain=%s, nis-domain=%s&quot;
+comma
+id|system_utsname.nodename
+comma
+id|ic_domain
+comma
+id|system_utsname.domainname
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;,&bslash;n     bootserver=%u.%u.%u.%u&quot;
+comma
+id|NIPQUAD
+c_func
+(paren
+id|ic_servaddr
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;, rootserver=%u.%u.%u.%u&quot;
+comma
+id|NIPQUAD
+c_func
+(paren
+id|root_server_addr
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;, rootpath=%s&quot;
+comma
+id|root_server_path
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif /* !SILENT */
 r_return
 l_int|0
 suffix:semicolon
@@ -3667,7 +4752,7 @@ c_func
 id|ip_auto_config
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *  Decode any IP configuration options in the &quot;ip=&quot; or &quot;nfsaddrs=&quot; kernel&n; *  command line parameter. It consists of option fields separated by colons in&n; *  the following order:&n; *&n; *  &lt;client-ip&gt;:&lt;server-ip&gt;:&lt;gw-ip&gt;:&lt;netmask&gt;:&lt;host name&gt;:&lt;device&gt;:&lt;bootp|rarp&gt;&n; *&n; *  Any of the fields can be empty which means to use a default value:&n; *&t;&lt;client-ip&gt;&t;- address given by BOOTP or RARP&n; *&t;&lt;server-ip&gt;&t;- address of host returning BOOTP or RARP packet&n; *&t;&lt;gw-ip&gt;&t;&t;- none, or the address returned by BOOTP&n; *&t;&lt;netmask&gt;&t;- automatically determined from &lt;client-ip&gt;, or the&n; *&t;&t;&t;  one returned by BOOTP&n; *&t;&lt;host name&gt;&t;- &lt;client-ip&gt; in ASCII notation, or the name returned&n; *&t;&t;&t;  by BOOTP&n; *&t;&lt;device&gt;&t;- use all available devices&n; *&t;&lt;bootp|rarp|both|off&gt; - use both protocols to determine my own address&n; */
+multiline_comment|/*&n; *  Decode any IP configuration options in the &quot;ip=&quot; or &quot;nfsaddrs=&quot; kernel&n; *  command line parameter. It consists of option fields separated by colons in&n; *  the following order:&n; *&n; *  &lt;client-ip&gt;:&lt;server-ip&gt;:&lt;gw-ip&gt;:&lt;netmask&gt;:&lt;host name&gt;:&lt;device&gt;:&lt;PROTO&gt;&n; *&n; *  Any of the fields can be empty which means to use a default value:&n; *&t;&lt;client-ip&gt;&t;- address given by BOOTP or RARP&n; *&t;&lt;server-ip&gt;&t;- address of host returning BOOTP or RARP packet&n; *&t;&lt;gw-ip&gt;&t;&t;- none, or the address returned by BOOTP&n; *&t;&lt;netmask&gt;&t;- automatically determined from &lt;client-ip&gt;, or the&n; *&t;&t;&t;  one returned by BOOTP&n; *&t;&lt;host name&gt;&t;- &lt;client-ip&gt; in ASCII notation, or the name returned&n; *&t;&t;&t;  by BOOTP&n; *&t;&lt;device&gt;&t;- use all available devices&n; *&t;&lt;PROTO&gt;:&n; *&t;   off|none&t;    - don&squot;t do autoconfig at all (DEFAULT)&n; *&t;   on|any           - use any configured protocol&n; *&t;   dhcp|bootp|rarp  - use only the specified protocol&n; *&t;   both             - use both BOOTP and RARP (not DHCP)&n; */
 DECL|function|ic_proto_name
 r_static
 r_int
@@ -3689,18 +4774,48 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;off&quot;
+l_string|&quot;on&quot;
+)paren
+op_logical_or
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|name
+comma
+l_string|&quot;any&quot;
+)paren
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_IP_PNP_DHCP
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|name
+comma
+l_string|&quot;dhcp&quot;
 )paren
 )paren
 (brace
 id|ic_proto_enabled
-op_assign
-l_int|0
+op_and_assign
+op_complement
+id|IC_RARP
 suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_IP_PNP_BOOTP
 r_else
 r_if
@@ -3719,7 +4834,11 @@ l_string|&quot;bootp&quot;
 id|ic_proto_enabled
 op_and_assign
 op_complement
+(paren
 id|IC_RARP
+op_or
+id|IC_USE_DHCP
+)paren
 suffix:semicolon
 r_return
 l_int|1
@@ -3744,14 +4863,18 @@ l_string|&quot;rarp&quot;
 id|ic_proto_enabled
 op_and_assign
 op_complement
+(paren
 id|IC_BOOTP
+op_or
+id|IC_USE_DHCP
+)paren
 suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_IP_PNP_DYNAMIC
+macro_line|#ifdef IPCONFIG_DYNAMIC
 r_else
 r_if
 c_cond
@@ -3766,6 +4889,12 @@ l_string|&quot;both&quot;
 )paren
 )paren
 (brace
+id|ic_proto_enabled
+op_and_assign
+op_complement
+id|IC_USE_DHCP
+suffix:semicolon
+multiline_comment|/* backward compat :-( */
 r_return
 l_int|1
 suffix:semicolon
@@ -3806,10 +4935,13 @@ id|ic_set_manually
 op_assign
 l_int|1
 suffix:semicolon
-r_if
-c_cond
+id|ic_enable
+op_assign
 (paren
-op_logical_neg
+op_star
+id|addrs
+op_logical_and
+(paren
 id|strcmp
 c_func
 (paren
@@ -3817,16 +4949,32 @@ id|addrs
 comma
 l_string|&quot;off&quot;
 )paren
-)paren
-(brace
-id|ic_enable
-op_assign
+op_ne
 l_int|0
+)paren
+op_logical_and
+(paren
+id|strcmp
+c_func
+(paren
+id|addrs
+comma
+l_string|&quot;none&quot;
+)paren
+op_ne
+l_int|0
+)paren
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ic_enable
+)paren
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

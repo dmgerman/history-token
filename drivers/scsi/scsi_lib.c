@@ -2501,9 +2501,36 @@ op_star
 id|SHpnt
 )paren
 (brace
+id|Scsi_Device
+op_star
+id|SDloop
+suffix:semicolon
 id|SHpnt-&gt;host_self_blocked
 op_assign
 id|FALSE
+suffix:semicolon
+multiline_comment|/* Now that we are unblocked, try to start the queues. */
+r_for
+c_loop
+(paren
+id|SDloop
+op_assign
+id|SHpnt-&gt;host_queue
+suffix:semicolon
+id|SDloop
+suffix:semicolon
+id|SDloop
+op_assign
+id|SDloop-&gt;next
+)paren
+id|scsi_queue_next_request
+c_func
+(paren
+op_amp
+id|SDloop-&gt;request_queue
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function:    scsi_report_bus_reset()&n; *&n; * Purpose:     Utility function used by low-level drivers to report that&n; *&t;&t;they have observed a bus reset on the bus being handled.&n; *&n; * Arguments:   SHpnt       - Host in question&n; *&t;&t;channel     - channel on which reset was observed.&n; *&n; * Returns:     Nothing&n; *&n; * Lock status: No locks are assumed held.&n; *&n; * Notes:       This only needs to be called if the reset is one which&n; *&t;&t;originates from an unknown location.  Resets originated&n; *&t;&t;by the mid-level itself don&squot;t need to call this, but there&n; *&t;&t;should be no harm.&n; *&n; *&t;&t;The main purpose of this is to make sure that a CHECK_CONDITION&n; *&t;&t;is properly treated.&n; */

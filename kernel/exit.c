@@ -169,6 +169,10 @@ id|current-&gt;counter
 op_assign
 id|MAX_COUNTER
 suffix:semicolon
+id|p-&gt;pid
+op_assign
+l_int|0
+suffix:semicolon
 id|free_task_struct
 c_func
 (paren

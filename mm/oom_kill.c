@@ -431,10 +431,6 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|sysinfo
-id|swp_info
-suffix:semicolon
 multiline_comment|/* Enough free memory?  Not OOM. */
 r_if
 c_cond
@@ -468,17 +464,10 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* Enough swap space left?  Not OOM. */
-id|si_swapinfo
-c_func
-(paren
-op_amp
-id|swp_info
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|swp_info.freeswap
+id|nr_swap_pages
 OG
 l_int|0
 )paren

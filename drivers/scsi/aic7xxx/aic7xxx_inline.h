@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Inline routines shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/aic7xxx/aic7xxx_inline.h#15 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aic7xxx_inline.h,v 1.8 2000/11/12 05:19:46 gibbs Exp $&n; */
+multiline_comment|/*&n; * Inline routines shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/aic7xxx/aic7xxx_inline.h#21 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aic7xxx_inline.h,v 1.8 2000/11/12 05:19:46 gibbs Exp $&n; */
 macro_line|#ifndef _AIC7XXX_INLINE_H_
 DECL|macro|_AIC7XXX_INLINE_H_
 mdefine_line|#define _AIC7XXX_INLINE_H_
@@ -6,7 +6,7 @@ multiline_comment|/************************* Sequencer Execution Control *******
 r_static
 id|__inline
 r_int
-id|sequencer_paused
+id|ahc_is_paused
 c_func
 (paren
 r_struct
@@ -30,7 +30,7 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|pause_sequencer
+id|ahc_pause
 c_func
 (paren
 r_struct
@@ -42,7 +42,7 @@ suffix:semicolon
 r_static
 id|__inline
 r_void
-id|unpause_sequencer
+id|ahc_unpause
 c_func
 (paren
 r_struct
@@ -92,8 +92,8 @@ multiline_comment|/*&n; * Determine whether the sequencer has halted code execut
 r_static
 id|__inline
 r_int
-DECL|function|sequencer_paused
-id|sequencer_paused
+DECL|function|ahc_is_paused
+id|ahc_is_paused
 c_func
 (paren
 r_struct
@@ -124,8 +124,8 @@ multiline_comment|/*&n; * Request that the sequencer stop and wait, indefinitely
 r_static
 id|__inline
 r_void
-DECL|function|pause_sequencer
-id|pause_sequencer
+DECL|function|ahc_pause
+id|ahc_pause
 c_func
 (paren
 r_struct
@@ -148,7 +148,7 @@ multiline_comment|/*&n;&t; * Since the sequencer can disable pausing in a critic
 r_while
 c_loop
 (paren
-id|sequencer_paused
+id|ahc_is_paused
 c_func
 (paren
 id|ahc
@@ -168,8 +168,8 @@ multiline_comment|/*&n; * Allow the sequencer to continue program execution.&n; 
 r_static
 id|__inline
 r_void
-DECL|function|unpause_sequencer
-id|unpause_sequencer
+DECL|function|ahc_unpause
+id|ahc_unpause
 c_func
 (paren
 r_struct
@@ -526,8 +526,8 @@ suffix:semicolon
 multiline_comment|/*********************** Miscelaneous Support Functions ***********************/
 r_static
 id|__inline
-r_int
-id|ahc_check_residual
+r_void
+id|ahc_update_residual
 c_func
 (paren
 r_struct
@@ -559,7 +559,7 @@ id|u_int
 id|remote_id
 comma
 r_struct
-id|tmode_tstate
+id|ahc_tmode_tstate
 op_star
 op_star
 id|tstate
@@ -669,9 +669,9 @@ suffix:semicolon
 multiline_comment|/*&n; * Determine whether the sequencer reported a residual&n; * for this SCB/transaction.&n; */
 r_static
 id|__inline
-r_int
-DECL|function|ahc_check_residual
-id|ahc_check_residual
+r_void
+DECL|function|ahc_update_residual
+id|ahc_update_residual
 c_func
 (paren
 r_struct
@@ -680,34 +680,40 @@ op_star
 id|scb
 )paren
 (brace
-r_struct
-id|status_pkt
-op_star
-id|sp
+r_uint32
+id|sgptr
 suffix:semicolon
-id|sp
+id|sgptr
 op_assign
-op_amp
-id|scb-&gt;hscb-&gt;shared_data.status
+id|ahc_le32toh
+c_func
+(paren
+id|scb-&gt;hscb-&gt;sgptr
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-id|scb-&gt;hscb-&gt;sgptr
+id|sgptr
 op_amp
 id|SG_RESID_VALID
 )paren
 op_ne
 l_int|0
 )paren
-r_return
+id|ahc_calc_residual
+c_func
 (paren
-l_int|1
+id|scb
 )paren
 suffix:semicolon
-r_return
+r_else
+id|ahc_set_residual
+c_func
 (paren
+id|scb
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -737,7 +743,7 @@ id|u_int
 id|remote_id
 comma
 r_struct
-id|tmode_tstate
+id|ahc_tmode_tstate
 op_star
 op_star
 id|tstate
@@ -1150,7 +1156,7 @@ id|AHC_AUTOPAUSE
 op_eq
 l_int|0
 )paren
-id|pause_sequencer
+id|ahc_pause
 c_func
 (paren
 id|ahc
@@ -1177,7 +1183,7 @@ id|AHC_AUTOPAUSE
 op_eq
 l_int|0
 )paren
-id|unpause_sequencer
+id|ahc_unpause
 c_func
 (paren
 id|ahc
@@ -1384,13 +1390,21 @@ id|u_int
 id|queuestat
 suffix:semicolon
 multiline_comment|/*&n;&t; * Instead of directly reading the interrupt status register,&n;&t; * infer the cause of the interrupt by checking our in-core&n;&t; * completion queues.  This avoids a costly PCI bus read in&n;&t; * most cases.&n;&t; */
-id|intstat
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ahc-&gt;flags
+op_amp
+(paren
+id|AHC_ALL_INTERRUPTS
+op_or
+id|AHC_EDGE_INTERRUPT
+)paren
+)paren
+op_eq
+l_int|0
+op_logical_and
 (paren
 id|queuestat
 op_assign
@@ -1407,25 +1421,7 @@ id|intstat
 op_assign
 id|CMDCMPLT
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|intstat
-op_amp
-id|INT_PEND
-)paren
-op_eq
-l_int|0
-op_logical_or
-(paren
-id|ahc-&gt;flags
-op_amp
-id|AHC_ALL_INTERRUPTS
-)paren
-op_ne
-l_int|0
-)paren
+r_else
 (brace
 id|intstat
 op_assign
@@ -1435,6 +1431,15 @@ c_func
 id|ahc
 comma
 id|INTSTAT
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We can&squot;t generate queuestat once above&n;&t;&t; * or we are exposed to a race when our&n;&t;&t; * interrupt is shared with another device.&n;&t;&t; * if instat showed a command complete interrupt,&n;&t;&t; * but our first generation of queue stat&n;&t;&t; * &quot;just missed&quot; the delivery of this transaction,&n;&t;&t; * we would clear the command complete interrupt&n;&t;&t; * below without ever servicing the completed&n;&t;&t; * command.&n;&t;&t; */
+id|queuestat
+op_assign
+id|ahc_check_cmdcmpltqueues
+c_func
+(paren
+id|ahc
 )paren
 suffix:semicolon
 macro_line|#if AHC_PCI_CONFIG &gt; 0
@@ -1467,7 +1472,9 @@ id|PCIERRSTAT
 op_ne
 l_int|0
 )paren
-id|ahc_pci_intr
+id|ahc
+op_member_access_from_pointer
+id|bus_intr
 c_func
 (paren
 id|ahc

@@ -2958,7 +2958,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|inode-&gt;u.proc_i.task-&gt;p_pptr
+id|pid
 )paren
 r_return
 op_minus
@@ -3209,7 +3209,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|task-&gt;p_pptr
+id|task-&gt;pid
 )paren
 r_goto
 id|out_unlock
@@ -3297,7 +3297,7 @@ id|flags
 r_if
 c_cond
 (paren
-id|dentry-&gt;d_inode-&gt;u.proc_i.task-&gt;p_pptr
+id|dentry-&gt;d_inode-&gt;u.proc_i.task-&gt;pid
 )paren
 r_return
 l_int|1

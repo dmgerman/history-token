@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux driver attachment glue for aic7770 based controllers.&n; *&n; * Copyright (c) 2000 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/linux/drivers/scsi/aic7xxx/aic7770_linux.c#5 $&n; */
+multiline_comment|/*&n; * Linux driver attachment glue for aic7770 based controllers.&n; *&n; * Copyright (c) 2000 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/linux/drivers/scsi/aic7xxx/aic7770_linux.c#7 $&n; */
 macro_line|#include &quot;aic7xxx_osm.h&quot;
 DECL|macro|MINSLOT
 mdefine_line|#define MINSLOT&t;&t;&t;1
@@ -385,18 +385,28 @@ id|ahc
 comma
 id|u_int
 id|irq
-comma
-r_int
-id|shared
 )paren
 (brace
 r_int
 id|error
 suffix:semicolon
+r_int
+id|shared
+suffix:semicolon
+id|shared
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|shared
+(paren
+id|ahc-&gt;flags
+op_amp
+id|AHC_EDGE_INTERRUPT
+)paren
+op_eq
+l_int|0
 )paren
 id|shared
 op_assign
@@ -413,32 +423,7 @@ c_func
 (paren
 id|ahc-&gt;platform_data-&gt;irq
 comma
-id|aic7xxx_isr
-comma
-id|SA_INTERRUPT
-op_or
-id|shared
-comma
-l_string|&quot;aic7xxx&quot;
-comma
-id|ahc
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-OL
-l_int|0
-)paren
-id|error
-op_assign
-id|request_irq
-c_func
-(paren
-id|ahc-&gt;platform_data-&gt;irq
-comma
-id|aic7xxx_isr
+id|ahc_linux_isr
 comma
 id|shared
 comma
