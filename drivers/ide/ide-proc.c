@@ -486,13 +486,6 @@ op_star
 )paren
 id|page
 suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|drive-&gt;driver
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|taskfile_lib_get_identify
@@ -1695,6 +1688,12 @@ suffix:semicolon
 r_int
 id|len
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|driver
+)paren
+(brace
 id|len
 op_assign
 id|sprintf
@@ -1707,6 +1706,18 @@ comma
 id|driver-&gt;name
 comma
 id|driver-&gt;version
+)paren
+suffix:semicolon
+)brace
+r_else
+id|len
+op_assign
+id|sprintf
+c_func
+(paren
+id|page
+comma
+l_string|&quot;ide-default version 0.9.newide&bslash;n&quot;
 )paren
 suffix:semicolon
 id|PROC_IDE_READ_RETURN
