@@ -294,7 +294,7 @@ r_int
 id|blocked_open
 suffix:semicolon
 DECL|member|event
-r_int
+id|ulong
 id|event
 suffix:semicolon
 DECL|member|asyncflags
