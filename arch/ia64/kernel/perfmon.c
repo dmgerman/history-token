@@ -15021,7 +15021,26 @@ id|ret
 r_goto
 id|error
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
 multiline_comment|/*&n;&t; * task is necessarily stopped at this point.&n;&t; *&n;&t; * If the previous context was zombie, then it got removed in&n;&t; * pfm_save_regs(). Therefore we should not see it here.&n;&t; * If we see a context, then this is an active context&n;&t; *&n;&t; * XXX: needs to be atomic&n;&t; */
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;[%d] before cmpxchg() old_ctx=%p new_ctx=%p&bslash;n&quot;
+comma
+id|current-&gt;pid
+comma
+id|thread-&gt;pfm_context
+comma
+id|ctx
+)paren
+)paren
+suffix:semicolon
 id|old
 op_assign
 id|ia64_cmpxchg
