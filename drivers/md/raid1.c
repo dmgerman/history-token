@@ -918,7 +918,7 @@ suffix:semicolon
 multiline_comment|/*&n; * raid_end_bio_io() is called when we have finished servicing a mirrored&n; * operation and are ready to return a success/failure code to the buffer&n; * cache layer.&n; */
 DECL|function|raid_end_bio_io
 r_static
-r_int
+r_void
 id|raid_end_bio_io
 c_func
 (paren
@@ -928,9 +928,6 @@ id|r1_bio
 comma
 r_int
 id|uptodate
-comma
-r_int
-id|nr_sectors
 )paren
 (brace
 r_struct
@@ -946,8 +943,6 @@ c_func
 id|bio
 comma
 id|uptodate
-comma
-id|nr_sectors
 )paren
 suffix:semicolon
 id|free_r1bio
@@ -955,9 +950,6 @@ c_func
 (paren
 id|r1_bio
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Update disk head position estimator based on IRQ completion info.&n; */
@@ -1016,7 +1008,7 @@ suffix:semicolon
 )brace
 DECL|function|end_request
 r_static
-r_int
+r_void
 id|end_request
 c_func
 (paren
@@ -1024,9 +1016,6 @@ r_struct
 id|bio
 op_star
 id|bio
-comma
-r_int
-id|nr_sectors
 )paren
 (brace
 r_int
@@ -1130,12 +1119,9 @@ c_func
 id|r1_bio
 comma
 id|uptodate
-comma
-id|nr_sectors
 )paren
 suffix:semicolon
 r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * oops, read error:&n;&t;&t; */
@@ -1161,7 +1147,6 @@ id|r1_bio
 )paren
 suffix:semicolon
 r_return
-l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -1228,12 +1213,7 @@ c_func
 id|r1_bio
 comma
 id|uptodate
-comma
-id|nr_sectors
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine returns the disk from which the requested read should&n; * be done. There is a per-array &squot;next expected sequential IO&squot; sector&n; * number - if this matches on the next IO then we use the last disk.&n; * There is also a per-disk &squot;last know head position&squot; sector that is&n; * maintained from IRQ contexts, both the normal and the resync IO&n; * completion handlers update this position correctly. If there is no&n; * perfect sequential match then we pick the disk whose head is closest.&n; *&n; * If there are 2 mirrors in the same 2 devices, performance degrades&n; * because position is mirror, not device based.&n; */
@@ -2026,8 +2006,6 @@ id|raid_end_bio_io
 c_func
 (paren
 id|r1_bio
-comma
-l_int|0
 comma
 l_int|0
 )paren
@@ -3547,7 +3525,7 @@ DECL|macro|REDIRECT_SECTOR
 mdefine_line|#define REDIRECT_SECTOR KERN_ERR &bslash;&n;&quot;raid1: %s: redirecting sector %lu to another mirror&bslash;n&quot;
 DECL|function|end_sync_read
 r_static
-r_int
+r_void
 id|end_sync_read
 c_func
 (paren
@@ -3555,9 +3533,6 @@ r_struct
 id|bio
 op_star
 id|bio
-comma
-r_int
-id|nr_sectors
 )paren
 (brace
 r_int
@@ -3634,13 +3609,10 @@ c_func
 id|r1_bio
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|end_sync_write
 r_static
-r_int
+r_void
 id|end_sync_write
 c_func
 (paren
@@ -3648,9 +3620,6 @@ r_struct
 id|bio
 op_star
 id|bio
-comma
-r_int
-id|nr_sectors
 )paren
 (brace
 r_int
@@ -3782,9 +3751,6 @@ id|r1_bio
 )paren
 suffix:semicolon
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|sync_request_write
 r_static
@@ -4338,8 +4304,6 @@ id|raid_end_bio_io
 c_func
 (paren
 id|r1_bio
-comma
-l_int|0
 comma
 l_int|0
 )paren

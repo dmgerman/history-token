@@ -1105,7 +1105,7 @@ suffix:semicolon
 )brace
 DECL|function|bio_end_io_kio
 r_static
-r_int
+r_void
 id|bio_end_io_kio
 c_func
 (paren
@@ -1113,9 +1113,6 @@ r_struct
 id|bio
 op_star
 id|bio
-comma
-r_int
-id|nr_sectors
 )paren
 (brace
 r_struct
@@ -1150,9 +1147,6 @@ c_func
 (paren
 id|bio
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ll_rw_kio - submit a &amp;struct kiobuf for I/O&n; * @rw:   %READ or %WRITE&n; * @kio:   the kiobuf to do I/O on&n; * @dev:   target device&n; * @sector:   start location on disk&n; *&n; * Description:&n; *   ll_rw_kio will map the page list inside the &amp;struct kiobuf to&n; *   &amp;struct bio and queue them for I/O. The kiobuf given must describe&n; *   a continous range of data, and must be fully prepared for I/O.&n; **/
@@ -1543,7 +1537,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|bio_endio
-r_int
+r_void
 id|bio_endio
 c_func
 (paren
@@ -1554,9 +1548,6 @@ id|bio
 comma
 r_int
 id|uptodate
-comma
-r_int
-id|nr_sectors
 )paren
 (brace
 r_if
@@ -1588,19 +1579,13 @@ c_cond
 (paren
 id|bio-&gt;bi_end_io
 )paren
-r_return
 id|bio
 op_member_access_from_pointer
 id|bi_end_io
 c_func
 (paren
 id|bio
-comma
-id|nr_sectors
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|biovec_init_pool
