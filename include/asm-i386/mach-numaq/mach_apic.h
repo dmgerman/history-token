@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/mmzone.h&gt;
 DECL|macro|APIC_DFR_VALUE
 mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_CLUSTER)
 DECL|macro|TARGET_CPUS
-mdefine_line|#define TARGET_CPUS (0xf)
+mdefine_line|#define TARGET_CPUS (~0UL)
 DECL|macro|NO_BALANCE_IRQ
 mdefine_line|#define NO_BALANCE_IRQ (1)
 DECL|macro|esr_disable

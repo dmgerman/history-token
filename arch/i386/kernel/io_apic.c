@@ -4789,7 +4789,11 @@ suffix:semicolon
 multiline_comment|/* enable IRQ */
 id|entry.dest.logical.logical_dest
 op_assign
+id|cpu_mask_to_apicid
+c_func
+(paren
 id|TARGET_CPUS
+)paren
 suffix:semicolon
 id|idx
 op_assign
@@ -5178,7 +5182,11 @@ suffix:semicolon
 multiline_comment|/* unmask IRQ now */
 id|entry.dest.logical.logical_dest
 op_assign
+id|cpu_mask_to_apicid
+c_func
+(paren
 id|TARGET_CPUS
+)paren
 suffix:semicolon
 id|entry.delivery_mode
 op_assign
@@ -9698,7 +9706,11 @@ id|INT_DEST_MODE
 suffix:semicolon
 id|entry.dest.logical.logical_dest
 op_assign
+id|cpu_mask_to_apicid
+c_func
+(paren
 id|TARGET_CPUS
+)paren
 suffix:semicolon
 id|entry.mask
 op_assign
