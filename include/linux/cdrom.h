@@ -781,6 +781,8 @@ DECL|macro|GPMODE_R_W_ERROR_PAGE
 mdefine_line|#define GPMODE_R_W_ERROR_PAGE&t;&t;0x01
 DECL|macro|GPMODE_WRITE_PARMS_PAGE
 mdefine_line|#define GPMODE_WRITE_PARMS_PAGE&t;&t;0x05
+DECL|macro|GPMODE_WCACHING_PAGE
+mdefine_line|#define GPMODE_WCACHING_PAGE&t;&t;0x08
 DECL|macro|GPMODE_AUDIO_CTL_PAGE
 mdefine_line|#define GPMODE_AUDIO_CTL_PAGE&t;&t;0x0e
 DECL|macro|GPMODE_POWER_PAGE
