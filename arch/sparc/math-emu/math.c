@@ -1284,6 +1284,8 @@ l_int|0x1ff
 )paren
 suffix:semicolon
 macro_line|#endif
+r_break
+suffix:semicolon
 )brace
 )brace
 r_else
@@ -1468,6 +1470,8 @@ l_int|0x1ff
 )paren
 suffix:semicolon
 macro_line|#endif
+r_break
+suffix:semicolon
 )brace
 )brace
 r_if
