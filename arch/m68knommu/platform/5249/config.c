@@ -95,6 +95,14 @@ id|MCFDMA_BASE3
 comma
 )brace
 suffix:semicolon
+DECL|variable|dma_device_address
+r_int
+r_int
+id|dma_device_address
+(braket
+id|MAX_M68K_DMA_CHANNELS
+)braket
+suffix:semicolon
 multiline_comment|/***************************************************************************/
 DECL|function|mcf_autovector
 r_void
