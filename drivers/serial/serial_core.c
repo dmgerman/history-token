@@ -1740,11 +1740,6 @@ id|state
 op_assign
 id|tty-&gt;driver_data
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tty
-)paren
 id|__uart_put_char
 c_func
 (paren
@@ -1813,9 +1808,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|tty
-op_logical_or
 op_logical_neg
 id|state-&gt;info-&gt;xmit.buf
 )paren
@@ -3005,7 +2997,7 @@ op_ne
 id|port-&gt;custom_divisor
 )paren
 (brace
-multiline_comment|/* If they&squot;re setting up a custom divisor or speed,&n;&t;&t;&t; * instead of clearing it, then bitch about it. No&n;&t;&t;&t; * need to rate-limit; it&squot;s CAP_SYS_ADMIN only. */
+multiline_comment|/*&n;&t;&t;&t; * If they&squot;re setting up a custom divisor or speed,&n;&t;&t;&t; * instead of clearing it, then bitch about it. No&n;&t;&t;&t; * need to rate-limit; it&squot;s CAP_SYS_ADMIN only.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3014,17 +3006,28 @@ op_amp
 id|UPF_SPD_MASK
 )paren
 (brace
+r_char
+id|buf
+(braket
+l_int|64
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s sets custom speed on %s%d. This is deprecated.&bslash;n&quot;
+l_string|&quot;%s sets custom speed on %s. This &quot;
+l_string|&quot;is deprecated.&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
-id|state-&gt;info-&gt;tty-&gt;driver-&gt;name
+id|tty_name
+c_func
+(paren
+id|state-&gt;info-&gt;tty
 comma
-id|state-&gt;port-&gt;line
+id|buf
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -4510,8 +4513,6 @@ r_struct
 id|uart_port
 op_star
 id|port
-op_assign
-id|state-&gt;port
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -4522,6 +4523,21 @@ c_func
 (paren
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|state
+op_logical_or
+op_logical_neg
+id|state-&gt;port
+)paren
+r_return
+suffix:semicolon
+id|port
+op_assign
+id|state-&gt;port
 suffix:semicolon
 id|DPRINTK
 c_func
