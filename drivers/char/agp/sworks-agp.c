@@ -2020,7 +2020,7 @@ suffix:semicolon
 DECL|function|agp_serverworks_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|agp_serverworks_probe
 c_func
 (paren
