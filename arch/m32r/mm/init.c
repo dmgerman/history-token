@@ -463,8 +463,6 @@ c_func
 l_int|0
 )paren
 comma
-l_int|0
-comma
 id|zones_size
 comma
 id|start_pfn

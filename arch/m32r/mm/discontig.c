@@ -718,8 +718,6 @@ c_func
 id|nid
 )paren
 comma
-l_int|NULL
-comma
 id|zones_size
 comma
 id|start_pfn
