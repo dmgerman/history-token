@@ -524,7 +524,7 @@ id|CLK_TICKS_PER_JIFFY
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ARCH_S390X */
-macro_line|#if defined(CONFIG_OPROFILE) || defined(CONFIG_OPROFILE_MODULE)
+macro_line|#ifdef CONFIG_PROFILING
 r_extern
 r_char
 id|_stext
@@ -651,7 +651,7 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|s390_do_profile
 mdefine_line|#define s390_do_profile(regs)  do { ; } while(0)
-macro_line|#endif /* CONFIG_OPROFILE */
+macro_line|#endif /* CONFIG_PROFILING */
 multiline_comment|/*&n; * timer_interrupt() needs to keep up the real-time clock,&n; * as well as call the &quot;do_timer()&quot; routine every clocktick&n; */
 DECL|function|account_ticks
 r_void
