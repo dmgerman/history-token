@@ -9859,7 +9859,7 @@ l_int|256
 comma
 l_int|0
 comma
-l_string|&quot;dbg_get_oid&quot;
+l_string|&quot;dbg_set_oid&quot;
 )brace
 comma
 multiline_comment|/* --- sub-ioctls handlers --- */
