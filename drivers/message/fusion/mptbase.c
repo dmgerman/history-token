@@ -4772,12 +4772,6 @@ id|pdev-&gt;irq
 )paren
 suffix:semicolon
 macro_line|#endif
-id|Q_DEL_ITEM
-c_func
-(paren
-id|ioc
-)paren
-suffix:semicolon
 id|list_del
 c_func
 (paren
@@ -4923,12 +4917,6 @@ comma
 id|ioc-&gt;name
 comma
 id|r
-)paren
-suffix:semicolon
-id|Q_DEL_ITEM
-c_func
-(paren
-id|ioc
 )paren
 suffix:semicolon
 id|list_del
