@@ -10746,7 +10746,7 @@ id|lo_number
 suffix:semicolon
 multiline_comment|/* ioctl r/o */
 DECL|member|lo_device
-id|__kernel_dev_t32
+id|compat_dev_t
 id|lo_device
 suffix:semicolon
 multiline_comment|/* ioctl r/o */
@@ -10757,7 +10757,7 @@ id|lo_inode
 suffix:semicolon
 multiline_comment|/* ioctl r/o */
 DECL|member|lo_rdevice
-id|__kernel_dev_t32
+id|compat_dev_t
 id|lo_rdevice
 suffix:semicolon
 multiline_comment|/* ioctl r/o */
@@ -13231,7 +13231,7 @@ c_func
 id|kuid
 comma
 (paren
-id|__kernel_uid_t32
+id|compat_uid_t
 op_star
 )paren
 id|arg
@@ -21215,7 +21215,7 @@ mdefine_line|#define HANDLE_IOCTL(cmd,handler) { cmd, (unsigned long)handler, 0 
 DECL|macro|AUTOFS_IOC_SETTIMEOUT32
 mdefine_line|#define AUTOFS_IOC_SETTIMEOUT32 _IOWR(0x93,0x64,unsigned int)
 DECL|macro|SMB_IOC_GETMOUNTUID_32
-mdefine_line|#define SMB_IOC_GETMOUNTUID_32 _IOR(&squot;u&squot;, 1, __kernel_uid_t32)
+mdefine_line|#define SMB_IOC_GETMOUNTUID_32 _IOR(&squot;u&squot;, 1, compat_uid_t)
 DECL|variable|ioctl_translations
 r_static
 r_struct
@@ -21469,6 +21469,7 @@ id|TIOCSLTC
 )paren
 comma
 multiline_comment|/* Big F */
+macro_line|#if 0
 id|COMPATIBLE_IOCTL
 c_func
 (paren
@@ -21529,6 +21530,7 @@ c_func
 id|FBIOPUT_CON2FBMAP
 )paren
 comma
+macro_line|#endif
 macro_line|#if 0
 id|COMPATIBLE_IOCTL
 c_func
@@ -25637,6 +25639,7 @@ comma
 id|do_kdfontop_ioctl
 )paren
 comma
+macro_line|#if 0
 id|HANDLE_IOCTL
 c_func
 (paren
@@ -25661,6 +25664,7 @@ comma
 id|do_fbioputcmap_ioctl
 )paren
 comma
+macro_line|#endif
 macro_line|#endif
 id|HANDLE_IOCTL
 c_func
