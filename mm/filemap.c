@@ -7188,6 +7188,13 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|pagevec_init
+c_func
+(paren
+op_amp
+id|lru_pvec
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7676,13 +7683,6 @@ r_goto
 id|out_status
 suffix:semicolon
 )brace
-id|pagevec_init
-c_func
-(paren
-op_amp
-id|lru_pvec
-)paren
-suffix:semicolon
 r_do
 (brace
 r_int
