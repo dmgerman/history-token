@@ -35,12 +35,6 @@ r_int
 r_int
 id|scsi_pid
 suffix:semicolon
-DECL|variable|last_cmnd
-r_struct
-id|scsi_cmnd
-op_star
-id|last_cmnd
-suffix:semicolon
 DECL|variable|serial_number
 r_static
 r_int
