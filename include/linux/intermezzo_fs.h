@@ -74,6 +74,7 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|# include &lt;linux/smp.h&gt;
 macro_line|# include &lt;linux/fsfilter.h&gt;
+macro_line|# include &lt;linux/mount.h&gt;
 macro_line|# include &lt;linux/slab.h&gt;
 macro_line|# include &lt;linux/vmalloc.h&gt;
 macro_line|# include &lt;linux/smp_lock.h&gt;
