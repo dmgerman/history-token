@@ -217,6 +217,14 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_EXCL
+)paren
+(brace
 id|cERROR
 c_func
 (paren
@@ -229,6 +237,7 @@ id|file
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 id|full_path
@@ -245,7 +254,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; inode = 0x%p file flags are %x for %s&quot;
+l_string|&quot; inode = 0x%p file flags are 0x%x for %s&quot;
 comma
 id|inode
 comma
