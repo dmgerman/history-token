@@ -5,6 +5,7 @@ mdefine_line|#define _SPARC64_PGTABLE_H
 multiline_comment|/* This file contains the functions and defines necessary to modify and use&n; * the SpitFire page tables.&n; */
 macro_line|#include &lt;asm-generic/pgtable-nopud.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -428,7 +429,7 @@ id|mm
 comma
 r_int
 r_int
-id|addr
+id|vaddr
 comma
 id|pte_t
 op_star
@@ -473,8 +474,19 @@ id|ptep
 op_assign
 id|pte
 suffix:semicolon
+multiline_comment|/* It is more efficient to let flush_tlb_kernel_range()&n;&t; * handle init_mm tlb flushes.&n;&t; */
 r_if
 c_cond
+(paren
+id|likely
+c_func
+(paren
+id|mm
+op_ne
+op_amp
+id|init_mm
+)paren
+op_logical_and
 (paren
 id|pte_val
 c_func
@@ -483,6 +495,7 @@ id|orig
 )paren
 op_amp
 id|_PAGE_VALID
+)paren
 )paren
 id|tlb_batch_add
 c_func

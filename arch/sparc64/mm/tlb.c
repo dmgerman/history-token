@@ -153,23 +153,6 @@ r_struct
 id|mmu_gather
 op_star
 id|mp
-suffix:semicolon
-r_int
-r_int
-id|nr
-suffix:semicolon
-multiline_comment|/* It is more efficient to let flush_tlb_kernel_range()&n;&t; * handle these cases.&n;&t; */
-r_if
-c_cond
-(paren
-id|mm
-op_eq
-op_amp
-id|init_mm
-)paren
-r_return
-suffix:semicolon
-id|mp
 op_assign
 op_amp
 id|__get_cpu_var
@@ -177,6 +160,10 @@ c_func
 (paren
 id|mmu_gathers
 )paren
+suffix:semicolon
+r_int
+r_int
+id|nr
 suffix:semicolon
 id|vaddr
 op_and_assign
