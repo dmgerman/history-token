@@ -259,6 +259,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&n; * Kiara: 0 &lt;= ver &lt;= 7&n; * Timon: 0 &lt;= ver &lt;= 15&n; *&n; */
 DECL|function|fill_table_color
+r_static
 r_void
 id|fill_table_color
 c_func
@@ -755,6 +756,7 @@ multiline_comment|/* end of for (i=0; i&lt;2; i++) */
 )brace
 multiline_comment|/*&n; * precision = (pdev-&gt;xx + pdev-&gt;yy)&n; *&n; */
 DECL|function|fill_table_dc00_d800
+r_static
 r_void
 id|fill_table_dc00_d800
 c_func

@@ -1163,7 +1163,7 @@ id|Kiara_table_entry
 op_star
 id|pChoose
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|fps
@@ -4446,6 +4446,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pwc_mpt_reset
+r_static
 r_int
 id|pwc_mpt_reset
 c_func
