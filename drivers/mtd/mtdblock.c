@@ -17,24 +17,7 @@ mdefine_line|#define DEVICE_NR(device) (device)
 DECL|macro|LOCAL_END_REQUEST
 mdefine_line|#define LOCAL_END_REQUEST
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-DECL|variable|devfs_dir_handle
-r_static
-id|devfs_handle_t
-id|devfs_dir_handle
-op_assign
-l_int|NULL
-suffix:semicolon
-DECL|variable|devfs_rw_handle
-r_static
-id|devfs_handle_t
-id|devfs_rw_handle
-(braket
-id|MAX_MTD_DEVICES
-)braket
-suffix:semicolon
-macro_line|#endif
 r_static
 r_void
 id|mtd_notify_add
@@ -2128,7 +2111,7 @@ suffix:semicolon
 r_char
 id|name
 (braket
-l_int|8
+l_int|16
 )braket
 suffix:semicolon
 r_if
@@ -2149,20 +2132,16 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;%d&quot;
+id|DEVICE_NAME
+l_string|&quot;/%d&quot;
 comma
 id|mtd-&gt;index
 )paren
 suffix:semicolon
-id|devfs_rw_handle
-(braket
-id|mtd-&gt;index
-)braket
-op_assign
 id|devfs_register
 c_func
 (paren
-id|devfs_dir_handle
+l_int|NULL
 comma
 id|name
 comma
@@ -2284,17 +2263,15 @@ id|MTD_ABSENT
 )paren
 r_return
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|devfs_rw_handle
-(braket
+id|DEVICE_NAME
+l_string|&quot;/%d&quot;
+comma
 id|mtd-&gt;index
-)braket
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2384,8 +2361,6 @@ id|EAGAIN
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_dir_handle
-op_assign
 id|devfs_mk_dir
 c_func
 (paren
@@ -2477,10 +2452,10 @@ id|notifier
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|devfs_dir_handle
+id|DEVICE_NAME
 )paren
 suffix:semicolon
 macro_line|#endif
