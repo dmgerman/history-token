@@ -1207,6 +1207,13 @@ id|dlci_ioctl_hook
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|xfrm_user_policy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_user_policy
+)paren
+suffix:semicolon
 DECL|variable|km_waitq
 id|EXPORT_SYMBOL
 c_func
