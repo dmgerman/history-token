@@ -182,6 +182,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|prepare_namespace
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_TC
 r_extern
 r_void
@@ -1632,11 +1640,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|populate_rootfs
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 id|proc_root_init
 c_func
@@ -1994,14 +1997,6 @@ id|envp_init
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|prepare_namespace
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|init
 r_static
 r_int
@@ -2045,7 +2040,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;        * check if there is an early userspace init, if yes&n;        * let it do all the work&n;        */
+id|populate_rootfs
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * check if there is an early userspace init.  If yes, let it do all&n;&t; * the work&n;&t; */
 r_if
 c_cond
 (paren
