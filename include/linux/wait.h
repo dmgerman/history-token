@@ -5,12 +5,27 @@ DECL|macro|WNOHANG
 mdefine_line|#define WNOHANG&t;&t;0x00000001
 DECL|macro|WUNTRACED
 mdefine_line|#define WUNTRACED&t;0x00000002
+DECL|macro|WSTOPPED
+mdefine_line|#define WSTOPPED&t;WUNTRACED
+DECL|macro|WEXITED
+mdefine_line|#define WEXITED&t;&t;0x00000004
+DECL|macro|WCONTINUED
+mdefine_line|#define WCONTINUED&t;0x00000008
+DECL|macro|WNOWAIT
+mdefine_line|#define WNOWAIT&t;&t;0x01000000&t;/* Don&squot;t reap, just poll status.  */
 DECL|macro|__WNOTHREAD
 mdefine_line|#define __WNOTHREAD&t;0x20000000&t;/* Don&squot;t wait on children of other threads in this group */
 DECL|macro|__WALL
 mdefine_line|#define __WALL&t;&t;0x40000000&t;/* Wait on all children, regardless of type */
 DECL|macro|__WCLONE
 mdefine_line|#define __WCLONE&t;0x80000000&t;/* Wait only on non-SIGCHLD children */
+multiline_comment|/* First argument to waitid: */
+DECL|macro|P_ALL
+mdefine_line|#define P_ALL&t;&t;0
+DECL|macro|P_PID
+mdefine_line|#define P_PID&t;&t;1
+DECL|macro|P_PGID
+mdefine_line|#define P_PGID&t;&t;2
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/list.h&gt;

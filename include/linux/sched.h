@@ -773,6 +773,11 @@ DECL|member|group_stop_count
 r_int
 id|group_stop_count
 suffix:semicolon
+multiline_comment|/* 1 if group stopped since last SIGCONT, -1 if SIGCONT since report */
+DECL|member|stop_state
+r_int
+id|stop_state
+suffix:semicolon
 multiline_comment|/* POSIX.1b Interval Timers */
 DECL|member|posix_timers
 r_struct
