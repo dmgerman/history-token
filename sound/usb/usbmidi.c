@@ -12,6 +12,8 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/minors.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &quot;usbaudio.h&quot;
+multiline_comment|/*&n; * define this to log all USB packets&n; */
+multiline_comment|/* #define DUMP_PACKETS */
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -604,6 +606,70 @@ id|length
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef DUMP_PACKETS
+DECL|function|dump_urb
+r_static
+r_void
+id|dump_urb
+c_func
+(paren
+r_const
+r_char
+op_star
+id|type
+comma
+r_const
+id|u8
+op_star
+id|data
+comma
+r_int
+id|length
+)paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s packet: [&quot;
+comma
+id|type
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|length
+OG
+l_int|0
+suffix:semicolon
+op_increment
+id|data
+comma
+op_decrement
+id|length
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; %02x&quot;
+comma
+op_star
+id|data
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot; ]&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|dump_urb
+mdefine_line|#define dump_urb(type, data, length) /* nothing */
+macro_line|#endif
 multiline_comment|/*&n; * Processes the data read from the device.&n; */
 DECL|function|snd_usbmidi_in_urb_complete
 r_static
@@ -636,6 +702,16 @@ op_eq
 l_int|0
 )paren
 (brace
+id|dump_urb
+c_func
+(paren
+l_string|&quot;received&quot;
+comma
+id|urb-&gt;transfer_buffer
+comma
+id|urb-&gt;actual_length
+)paren
+suffix:semicolon
 id|ep-&gt;umidi-&gt;usb_protocol_ops
 op_member_access_from_pointer
 id|input
@@ -816,6 +892,16 @@ OG
 l_int|0
 )paren
 (brace
+id|dump_urb
+c_func
+(paren
+l_string|&quot;sending&quot;
+comma
+id|urb-&gt;transfer_buffer
+comma
+id|urb-&gt;transfer_buffer_length
+)paren
+suffix:semicolon
 id|urb-&gt;dev
 op_assign
 id|ep-&gt;umidi-&gt;chip-&gt;dev
