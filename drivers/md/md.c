@@ -42,12 +42,12 @@ id|pers
 id|MAX_PERSONALITY
 )braket
 suffix:semicolon
-DECL|variable|pers_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pers_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Current RAID-1,4,5 parallel reconstruction &squot;guaranteed speed limit&squot;&n; * is 1000 KB/sec, so the extra system load does not show up that much.&n; * Increase it if you want to have more _guaranteed_ speed. Note that&n; * the RAID driver will use the maximum available bandwith if the IO&n; * subsystem is idle. There is also an &squot;absolute maximum&squot; reconstruction&n; * speed limit - in case reconstruction slows down your system despite&n; * idle IO detection.&n; *&n; * you can change it via /proc/sys/dev/raid/speed_limit_min and _max.&n; */
 DECL|variable|sysctl_speed_limit_min
@@ -265,12 +265,12 @@ c_func
 id|all_mddevs
 )paren
 suffix:semicolon
-DECL|variable|all_mddevs_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|all_mddevs_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * iterates through all used mddevs in the system.&n; * We take care to grab the all_mddevs_lock whenever navigating&n; * the list, and to always hold a refcount when unlocked.&n; * Any code which breaks out of this loop while own&n; * a reference to the current mddev and must mddev_put it.&n; */
 DECL|macro|ITERATE_MDDEV
