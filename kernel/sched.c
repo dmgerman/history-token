@@ -5232,7 +5232,19 @@ r_goto
 id|out_balanced
 suffix:semicolon
 )brace
-multiline_comment|/* Attempt to move tasks */
+id|nr_moved
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|busiest-&gt;nr_running
+OG
+l_int|1
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Attempt to move tasks. If find_busiest_group has found&n;&t;&t; * an imbalance but busiest-&gt;nr_running &lt;= 1, the group is&n;&t;&t; * still unbalanced. nr_moved simply stays zero, so it is&n;&t;&t; * correctly treated as an imbalance.&n;&t;&t; */
 id|double_lock_balance
 c_func
 (paren
@@ -5263,14 +5275,15 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|this_rq-&gt;lock
+id|busiest-&gt;lock
 )paren
 suffix:semicolon
+)brace
 id|spin_unlock
 c_func
 (paren
 op_amp
-id|busiest-&gt;lock
+id|this_rq-&gt;lock
 )paren
 suffix:semicolon
 r_if
