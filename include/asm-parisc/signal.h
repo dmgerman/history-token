@@ -94,7 +94,7 @@ mdefine_line|#define SA_NODEFER&t;0x00000020
 DECL|macro|SA_RESTART
 mdefine_line|#define SA_RESTART&t;0x00000040
 DECL|macro|SA_NOCLDWAIT
-mdefine_line|#define SA_NOCLDWAIT&t;0x00000080 /* not supported yet */
+mdefine_line|#define SA_NOCLDWAIT&t;0x00000080
 DECL|macro|_SA_SIGGFAULT
 mdefine_line|#define _SA_SIGGFAULT&t;0x00000100 /* HPUX */
 DECL|macro|SA_NOMASK
