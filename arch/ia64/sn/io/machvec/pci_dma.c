@@ -749,6 +749,10 @@ ques
 c_cond
 id|sg-&gt;dma_address
 suffix:colon
+(paren
+r_int
+r_int
+)paren
 id|page_address
 c_func
 (paren
@@ -1592,7 +1596,7 @@ id|pci_bus_type
 )paren
 suffix:semicolon
 r_return
-id|pci_dma_supported
+id|sn_pci_dma_supported
 c_func
 (paren
 id|to_pci_dev
@@ -1635,8 +1639,11 @@ op_amp
 id|pci_bus_type
 )paren
 suffix:semicolon
-r_return
-id|pci_set_dma_mask
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sn_dma_supported
 c_func
 (paren
 id|to_pci_dev
@@ -1647,6 +1654,16 @@ id|dev
 comma
 id|dma_mask
 )paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|dev-&gt;dma_mask
+op_assign
+id|dma_mask
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 DECL|variable|sn_dma_set_mask
@@ -1688,7 +1705,7 @@ id|pci_bus_type
 )paren
 suffix:semicolon
 r_return
-id|pci_alloc_consistent
+id|sn_pci_alloc_consistent
 c_func
 (paren
 id|to_pci_dev
@@ -1740,7 +1757,7 @@ op_amp
 id|pci_bus_type
 )paren
 suffix:semicolon
-id|pci_free_consistent
+id|sn_pci_free_consistent
 c_func
 (paren
 id|to_pci_dev
@@ -1795,7 +1812,7 @@ id|pci_bus_type
 )paren
 suffix:semicolon
 r_return
-id|pci_map_single
+id|sn_pci_map_single
 c_func
 (paren
 id|to_pci_dev
@@ -1851,7 +1868,7 @@ op_amp
 id|pci_bus_type
 )paren
 suffix:semicolon
-id|pci_unmap_single
+id|sn_pci_unmap_single
 c_func
 (paren
 id|to_pci_dev
@@ -2031,7 +2048,7 @@ id|pci_bus_type
 )paren
 suffix:semicolon
 r_return
-id|pci_map_sg
+id|sn_pci_map_sg
 c_func
 (paren
 id|to_pci_dev
@@ -2089,7 +2106,7 @@ op_amp
 id|pci_bus_type
 )paren
 suffix:semicolon
-id|pci_unmap_sg
+id|sn_pci_unmap_sg
 c_func
 (paren
 id|to_pci_dev
@@ -2145,7 +2162,7 @@ op_amp
 id|pci_bus_type
 )paren
 suffix:semicolon
-id|pci_dma_sync_single
+id|sn_pci_dma_sync_single
 c_func
 (paren
 id|to_pci_dev
@@ -2203,7 +2220,7 @@ op_amp
 id|pci_bus_type
 )paren
 suffix:semicolon
-id|pci_dma_sync_sg
+id|sn_pci_dma_sync_sg
 c_func
 (paren
 id|to_pci_dev
