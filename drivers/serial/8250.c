@@ -8298,7 +8298,8 @@ id|flow
 )paren
 suffix:semicolon
 )brace
-r_extern
+DECL|variable|serial8250_reg
+r_static
 r_struct
 id|uart_driver
 id|serial8250_reg

@@ -31,11 +31,6 @@ id|quotactl_ops
 id|cifs_quotactl_ops
 suffix:semicolon
 macro_line|#endif
-r_extern
-r_struct
-id|file_system_type
-id|cifs_fs_type
-suffix:semicolon
 DECL|variable|cifsFYI
 r_int
 id|cifsFYI

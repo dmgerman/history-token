@@ -434,11 +434,6 @@ l_int|16
 multiline_comment|/* dead, useless, please clean me up!*/
 )brace
 suffix:semicolon
-r_extern
-r_struct
-id|ppp_channel_ops
-id|pppoe_chan_ops
-suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* !(__LINUX_IF_PPPOX_H) */
 eof

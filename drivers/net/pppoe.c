@@ -89,6 +89,12 @@ id|pppoe_hash_lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
+DECL|variable|pppoe_chan_ops
+r_static
+r_struct
+id|ppp_channel_ops
+id|pppoe_chan_ops
+suffix:semicolon
 DECL|function|cmp_2_addr
 r_static
 r_inline

@@ -108,12 +108,6 @@ id|hiddev_table
 id|HIDDEV_MINORS
 )braket
 suffix:semicolon
-multiline_comment|/* forward reference to make our lives easier */
-r_extern
-r_struct
-id|usb_driver
-id|hiddev_driver
-suffix:semicolon
 multiline_comment|/*&n; * Find a report, given the report&squot;s type and ID.  The ID can be specified&n; * indirectly by REPORT_ID_FIRST (which returns the first report of the given&n; * type) or by (REPORT_ID_NEXT | old_id), which returns the next report of the&n; * given type which follows old_id.&n; */
 r_static
 r_struct

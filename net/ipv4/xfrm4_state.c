@@ -2,7 +2,8 @@ multiline_comment|/*&n; * xfrm4_state.c&n; *&n; * Changes:&n; * &t;YOSHIFUJI Hid
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
-r_extern
+DECL|variable|xfrm4_state_afinfo
+r_static
 r_struct
 id|xfrm_state_afinfo
 id|xfrm4_state_afinfo

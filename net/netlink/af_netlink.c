@@ -598,7 +598,8 @@ r_return
 id|sk
 suffix:semicolon
 )brace
-r_extern
+DECL|variable|netlink_ops
+r_static
 r_struct
 id|proto_ops
 id|netlink_ops

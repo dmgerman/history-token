@@ -627,11 +627,6 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
-r_struct
-id|semaphore
-id|ipt_mutex
-suffix:semicolon
 multiline_comment|/* Standard return verdict, or do jump. */
 DECL|macro|IPT_STANDARD_TARGET
 mdefine_line|#define IPT_STANDARD_TARGET &quot;&quot;
