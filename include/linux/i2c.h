@@ -823,6 +823,12 @@ id|device
 id|dev
 suffix:semicolon
 multiline_comment|/* the adapter device */
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
+suffix:semicolon
+multiline_comment|/* the class device */
 macro_line|#ifdef CONFIG_PROC_FS 
 multiline_comment|/* No need to set this when you initialize the adapter          */
 DECL|member|inode
