@@ -3,6 +3,8 @@ macro_line|#ifndef __LINUX_FILTER_H__
 DECL|macro|__LINUX_FILTER_H__
 mdefine_line|#define __LINUX_FILTER_H__
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Current version of the filter code architecture.&n; */
 DECL|macro|BPF_MAJOR_VERSION
 mdefine_line|#define BPF_MAJOR_VERSION 1
@@ -235,6 +237,12 @@ mdefine_line|#define SKF_NET_OFF   (-0x100000)
 DECL|macro|SKF_LL_OFF
 mdefine_line|#define SKF_LL_OFF    (-0x200000)
 macro_line|#ifdef __KERNEL__
+r_struct
+id|sk_buff
+suffix:semicolon
+r_struct
+id|sock
+suffix:semicolon
 r_extern
 r_int
 id|sk_run_filter
