@@ -3230,7 +3230,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * For kswapd, balance_pgdat() will work across all this node&squot;s zones until&n; * they are all at pages_high.&n; *&n; * If `nr_pages&squot; is non-zero then it is the number of pages which are to be&n; * reclaimed, regardless of the zone occupancies.  This is a software suspend&n; * special.&n; *&n; * Returns the number of pages which were actually freed.&n; *&n; * There is special handling here for zones which are full of pinned pages.&n; * This can happen if the pages are all mlocked, or if they are all used by&n; * device drivers (say, ZONE_DMA).  Or if they are all in use by hugetlb.&n; * What we do is to detect the case where all pages in the zone have been&n; * scanned twice and there has been zero successful reclaim.  Mark the zone as&n; * dead and from now on, only perform a short scan.  Basically we&squot;re polling&n; * the zone for when the problem goes away.&n; */
+multiline_comment|/*&n; * For kswapd, balance_pgdat() will work across all this node&squot;s zones until&n; * they are all at pages_high.&n; *&n; * If `nr_pages&squot; is non-zero then it is the number of pages which are to be&n; * reclaimed, regardless of the zone occupancies.  This is a software suspend&n; * special.&n; *&n; * Returns the number of pages which were actually freed.&n; *&n; * There is special handling here for zones which are full of pinned pages.&n; * This can happen if the pages are all mlocked, or if they are all used by&n; * device drivers (say, ZONE_DMA).  Or if they are all in use by hugetlb.&n; * What we do is to detect the case where all pages in the zone have been&n; * scanned twice and there has been zero successful reclaim.  Mark the zone as&n; * dead and from now on, only perform a short scan.  Basically we&squot;re polling&n; * the zone for when the problem goes away.&n; *&n; * kswapd scans the zones in the highmem-&gt;normal-&gt;dma direction.  It skips&n; * zones which have free_pages &gt; pages_high, but once a zone is found to have&n; * free_pages &lt;= pages_high, we scan that zone and the lower zones regardless&n; * of the number of free pages in the lower zones.  This interoperates with&n; * the page allocator fallback scheme to ensure that aging of pages is balanced&n; * across the zones.&n; */
 DECL|function|balance_pgdat
 r_static
 r_int
@@ -3331,14 +3331,16 @@ c_loop
 (paren
 id|i
 op_assign
+id|pgdat-&gt;nr_zones
+op_minus
+l_int|1
+suffix:semicolon
+id|i
+op_ge
 l_int|0
 suffix:semicolon
 id|i
-OL
-id|pgdat-&gt;nr_zones
-suffix:semicolon
-id|i
-op_increment
+op_decrement
 )paren
 (brace
 r_struct
@@ -3391,6 +3393,13 @@ id|zone-&gt;pages_high
 id|all_zones_ok
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|all_zones_ok
+)paren
+r_continue
 suffix:semicolon
 )brace
 id|zone-&gt;temp_priority
