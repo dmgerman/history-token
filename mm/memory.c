@@ -2370,6 +2370,16 @@ c_func
 )paren
 )paren
 (brace
+r_int
+id|fullmm
+op_assign
+id|tlb_is_full_mm
+c_func
+(paren
+op_star
+id|tlbp
+)paren
+suffix:semicolon
 id|tlb_finish_mmu
 c_func
 (paren
@@ -2396,7 +2406,7 @@ c_func
 (paren
 id|mm
 comma
-l_int|0
+id|fullmm
 )paren
 suffix:semicolon
 id|tlb_start_valid
