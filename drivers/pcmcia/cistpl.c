@@ -227,12 +227,6 @@ op_eq
 l_int|0
 )paren
 (brace
-id|validate_mem
-c_func
-(paren
-id|s
-)paren
-suffix:semicolon
 id|mem-&gt;sys_start
 op_assign
 l_int|0

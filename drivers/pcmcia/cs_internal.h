@@ -742,7 +742,7 @@ id|req
 suffix:semicolon
 multiline_comment|/* In rsrc_mgr */
 r_void
-id|validate_mem
+id|pcmcia_validate_mem
 c_func
 (paren
 r_struct

@@ -3880,6 +3880,12 @@ suffix:semicolon
 r_case
 id|DS_GET_FIRST_TUPLE
 suffix:colon
+id|pcmcia_validate_mem
+c_func
+(paren
+id|s-&gt;parent
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|pcmcia_get_first_tuple
@@ -3993,6 +3999,12 @@ suffix:semicolon
 r_case
 id|DS_VALIDATE_CIS
 suffix:colon
+id|pcmcia_validate_mem
+c_func
+(paren
+id|s-&gt;parent
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|pcmcia_validate_cis
