@@ -3980,7 +3980,7 @@ id|i
 dot
 id|sh_name
 comma
-l_string|&quot;.modulename&quot;
+l_string|&quot;.gnu.linkonce.modulename&quot;
 )paren
 op_eq
 l_int|0

@@ -128,15 +128,10 @@ DECL|macro|device_initcall
 mdefine_line|#define device_initcall(fn)&t;&t;module_init(fn)
 DECL|macro|late_initcall
 mdefine_line|#define late_initcall(fn)&t;&t;module_init(fn)
-multiline_comment|/* Each module knows its own name. */
-DECL|macro|__DEFINE_MODULE_NAME
-mdefine_line|#define __DEFINE_MODULE_NAME&t;&t;&t;&t;&t;&t;&bslash;&n;&t;char __module_name[] __attribute__((section(&quot;.modulename&quot;))) =&t;&bslash;&n;&t;__stringify(KBUILD_MODNAME)
 multiline_comment|/* These macros create a dummy inline: gcc 2.9x does not count alias&n; as usage, hence the `unused function&squot; warning when __init functions&n; are declared static. We use the dummy __*_module_inline functions&n; both to kill the warning and check the type of the init/cleanup&n; function. */
 multiline_comment|/* Each module must use one module_init(), or one no_module_init */
 DECL|macro|module_init
-mdefine_line|#define module_init(initfn)&t;&t;&t;&t;&t;&bslash;&n;&t;__DEFINE_MODULE_NAME;&t;&t;&t;&t;&t;&bslash;&n;&t;static inline initcall_t __inittest(void)&t;&t;&bslash;&n;&t;{ return initfn; }&t;&t;&t;&t;&t;&bslash;&n;&t;int __initfn(void) __attribute__((alias(#initfn)));
-DECL|macro|no_module_init
-mdefine_line|#define no_module_init __DEFINE_MODULE_NAME
+mdefine_line|#define module_init(initfn)&t;&t;&t;&t;&t;&bslash;&n;&t;static inline initcall_t __inittest(void)&t;&t;&bslash;&n;&t;{ return initfn; }&t;&t;&t;&t;&t;&bslash;&n;&t;int __initfn(void) __attribute__((alias(#initfn)));
 multiline_comment|/* This is only required if you want to be unloadable. */
 DECL|macro|module_exit
 mdefine_line|#define module_exit(exitfn)&t;&t;&t;&t;&t;&bslash;&n;&t;static inline exitcall_t __exittest(void)&t;&t;&bslash;&n;&t;{ return exitfn; }&t;&t;&t;&t;&t;&bslash;&n;&t;void __exitfn(void) __attribute__((alias(#exitfn)));

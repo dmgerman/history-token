@@ -52,6 +52,34 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE
+macro_line|#ifdef KBUILD_MODNAME
+DECL|variable|__module_name
+r_static
+r_const
+r_char
+id|__module_name
+(braket
+)braket
+id|__attribute__
+c_func
+(paren
+(paren
+id|section
+c_func
+(paren
+l_string|&quot;.gnu.linkonce.modulename&quot;
+)paren
+)paren
+)paren
+op_assign
+"&bslash;"
+id|__stringify
+c_func
+(paren
+id|KBUILD_MODNAME
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&bslash;&n;static const unsigned long __module_##gtype##_size &bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id); &bslash;&n;static const struct gtype##_id * __module_##gtype##_table &bslash;&n;  __attribute__ ((unused)) = name
 multiline_comment|/* This is magically filled in by the linker, but THIS_MODULE must be&n;   a constant so it works in initializers. */
@@ -652,7 +680,7 @@ multiline_comment|/* Old-style &quot;I&squot;ll just call it init_module and it&
 macro_line|#ifdef MODULE
 multiline_comment|/* Used as &quot;int init_module(void) { ... }&quot;.  Get funky to insert modname. */
 DECL|macro|init_module
-mdefine_line|#define init_module(voidarg)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__initfn(void);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;char __module_name[] __attribute__((section(&quot;.modulename&quot;))) =&t;&bslash;&n;&t;__stringify(KBUILD_MODNAME);&t;&t;&t;&t;&t;&bslash;&n;&t;int __initfn(void)
+mdefine_line|#define init_module(voidarg)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__initfn(void);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __initfn(void)
 DECL|macro|cleanup_module
 mdefine_line|#define cleanup_module(voidarg) __exitfn(void)
 macro_line|#endif
