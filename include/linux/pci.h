@@ -3424,7 +3424,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-r_int
+id|pci_power_t
 id|state
 )paren
 (brace
@@ -3444,7 +3444,7 @@ id|pci_dev
 op_star
 id|dev
 comma
-id|u32
+id|pci_power_t
 id|state
 comma
 r_int
