@@ -383,8 +383,8 @@ c_cond
 (paren
 id|err
 )paren
-r_goto
-id|out
+r_return
+id|err
 suffix:semicolon
 id|dparent
 op_assign
@@ -393,6 +393,12 @@ suffix:semicolon
 id|exp
 op_assign
 id|fhp-&gt;fh_export
+suffix:semicolon
+id|exp_get
+c_func
+(paren
+id|exp
+)paren
 suffix:semicolon
 id|err
 op_assign
@@ -747,6 +753,12 @@ id|dentry
 suffix:semicolon
 id|out
 suffix:colon
+id|exp_put
+c_func
+(paren
+id|exp
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
