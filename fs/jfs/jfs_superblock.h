@@ -5,9 +5,9 @@ mdefine_line|#define _H_JFS_SUPERBLOCK
 multiline_comment|/*&n; *&t;jfs_superblock.h&n; */
 multiline_comment|/*&n; * make the magic number something a human could read&n; */
 DECL|macro|JFS_MAGIC
-mdefine_line|#define JFS_MAGIC &t;&quot;JFS1&quot;&t;/* Magic word: Version 1 */
+mdefine_line|#define JFS_MAGIC &t;&quot;JFS1&quot;&t;/* Magic word */
 DECL|macro|JFS_VERSION
-mdefine_line|#define JFS_VERSION&t;1&t;/* Version number: Version 1 */
+mdefine_line|#define JFS_VERSION&t;2&t;/* Version number: Version 2 */
 DECL|macro|LV_NAME_SIZE
 mdefine_line|#define LV_NAME_SIZE&t;11&t;/* MUST BE 11 for OS/2 boot sector */
 multiline_comment|/* &n; *&t;aggregate superblock &n; *&n; * The name superblock is too close to super_block, so the name has been&n; * changed to jfs_superblock.  The utilities are still using the old name.&n; */
@@ -154,36 +154,11 @@ id|s_xlogpxd
 suffix:semicolon
 multiline_comment|/* 8: extendfs logpxd */
 multiline_comment|/* - 128 byte boundary - */
-multiline_comment|/*&n;&t; *      DFS VFS support (preliminary) &n;&t; */
-DECL|member|s_attach
-r_char
-id|s_attach
+DECL|member|s_device
+id|u32
+id|s_device
 suffix:semicolon
-multiline_comment|/* 1: VFS: flag: set when aggregate is attached&n;&t;&t;&t;&t; */
-DECL|member|rsrvd4
-id|u8
-id|rsrvd4
-(braket
-l_int|7
-)braket
-suffix:semicolon
-multiline_comment|/* 7: reserved - set to 0 */
-DECL|member|totalUsable
-id|u64
-id|totalUsable
-suffix:semicolon
-multiline_comment|/* 8: VFS: total of 1K blocks which are&n;&t;&t;&t;&t; * available to &quot;normal&quot; (non-root) users.&n;&t;&t;&t;&t; */
-DECL|member|minFree
-id|u64
-id|minFree
-suffix:semicolon
-multiline_comment|/* 8: VFS: # of 1K blocks held in reserve for &n;&t;&t;&t;&t; * exclusive use of root.  This value can be 0,&n;&t;&t;&t;&t; * and if it is then totalUsable will be equal &n;&t;&t;&t;&t; * to # of blocks in aggregate.  I believe this&n;&t;&t;&t;&t; * means that minFree + totalUsable = # blocks.&n;&t;&t;&t;&t; * In that case, we don&squot;t need to store both &n;&t;&t;&t;&t; * totalUsable and minFree since we can compute&n;&t;&t;&t;&t; * one from the other.  I would guess minFree &n;&t;&t;&t;&t; * would be the one we should store, and &n;&t;&t;&t;&t; * totalUsable would be the one we should &n;&t;&t;&t;&t; * compute.  (Just a guess...)&n;&t;&t;&t;&t; */
-DECL|member|realFree
-id|u64
-id|realFree
-suffix:semicolon
-multiline_comment|/* 8: VFS: # of free 1K blocks can be used by &n;&t;&t;&t;&t; * &quot;normal&quot; users.  It may be this is something&n;&t;&t;&t;&t; * we should compute when asked for instead of &n;&t;&t;&t;&t; * storing in the superblock.  I don&squot;t know how&n;&t;&t;&t;&t; * often this information is needed.&n;&t;&t;&t;&t; */
-multiline_comment|/*&n;&t; *      graffiti area&n;&t; */
+multiline_comment|/* Store device in case location changes&n;&t;&t;&t;&t; * between reboots&n;&t;&t;&t;&t; */
 )brace
 suffix:semicolon
 r_extern

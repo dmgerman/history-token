@@ -22,6 +22,8 @@ DECL|macro|LOGMAGIC
 mdefine_line|#define&t;LOGMAGIC&t;0x87654321
 DECL|macro|LOGVERSION
 mdefine_line|#define&t;LOGVERSION&t;1
+DECL|macro|MAX_ACTIVE
+mdefine_line|#define MAX_ACTIVE&t;512&t;/* Max active file systems sharing log */
 r_typedef
 r_struct
 (brace
@@ -70,25 +72,19 @@ id|s32
 id|end
 suffix:semicolon
 multiline_comment|/* 4: addr of last log record set by logredo */
+DECL|member|device
+id|u32
+id|device
+suffix:semicolon
+multiline_comment|/* 4: save device in case location changes */
 DECL|member|active
 id|u32
 id|active
 (braket
-l_int|8
+id|MAX_ACTIVE
 )braket
 suffix:semicolon
-multiline_comment|/* 32: active file systems bit vector */
-DECL|member|rsrvd
-id|s32
-id|rsrvd
-(braket
-id|LOGPSIZE
-op_div
-l_int|4
-op_minus
-l_int|17
-)braket
-suffix:semicolon
+multiline_comment|/* 2048: active file systems list */
 DECL|typedef|logsuper_t
 )brace
 id|logsuper_t
@@ -256,7 +252,7 @@ id|length
 suffix:semicolon
 multiline_comment|/* 2: length of data in record (in byte) */
 DECL|member|aggregate
-id|s32
+id|u32
 id|aggregate
 suffix:semicolon
 multiline_comment|/* 4: file system lv/aggregate */
@@ -513,13 +509,13 @@ id|kdev_t
 id|dev
 suffix:semicolon
 multiline_comment|/* 4: log lv number */
-DECL|member|devfp
+DECL|member|bdev
 r_struct
-id|file
+id|block_device
 op_star
-id|devfp
+id|bdev
 suffix:semicolon
-multiline_comment|/* 4: log device file */
+multiline_comment|/* 4: log lv pointer */
 DECL|member|serial
 id|s32
 id|serial
