@@ -2883,7 +2883,7 @@ id|emu-&gt;ac97
 comma
 id|AC97_MASTER
 comma
-l_int|0x0202
+l_int|0x0000
 )paren
 suffix:semicolon
 multiline_comment|/* set capture source to mic */
