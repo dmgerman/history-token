@@ -2305,11 +2305,7 @@ id|raw_inode-&gt;i_zone
 l_int|0
 )braket
 op_assign
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_rdev
-)paren
 suffix:semicolon
 r_else
 r_for
@@ -2467,11 +2463,7 @@ id|raw_inode-&gt;i_zone
 l_int|0
 )braket
 op_assign
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_rdev
-)paren
 suffix:semicolon
 r_else
 r_for

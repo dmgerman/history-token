@@ -986,7 +986,7 @@ id|gid_t
 id|i_gid
 suffix:semicolon
 DECL|member|i_rdev
-id|kdev_t
+id|dev_t
 id|i_rdev
 suffix:semicolon
 DECL|member|i_size
@@ -1328,7 +1328,7 @@ id|inode
 )paren
 (brace
 r_return
-id|minor
+id|MINOR
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -1349,7 +1349,7 @@ id|inode
 )paren
 (brace
 r_return
-id|major
+id|MAJOR
 c_func
 (paren
 id|inode-&gt;i_rdev

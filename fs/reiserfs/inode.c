@@ -4405,11 +4405,7 @@ c_func
 (paren
 id|sd_v2
 comma
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_rdev
-)paren
 )paren
 suffix:semicolon
 r_else
@@ -4561,11 +4557,7 @@ c_func
 (paren
 id|sd_v1
 comma
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_rdev
-)paren
 )paren
 suffix:semicolon
 r_else

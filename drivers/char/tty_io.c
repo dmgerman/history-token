@@ -5143,11 +5143,7 @@ suffix:semicolon
 id|dev_t
 id|device
 op_assign
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_rdev
-)paren
 suffix:semicolon
 r_int
 r_int

@@ -760,7 +760,7 @@ l_int|0
 (brace
 id|inode-&gt;i_rdev
 op_assign
-id|mk_kdev
+id|MKDEV
 c_func
 (paren
 id|low
@@ -777,7 +777,7 @@ r_else
 (brace
 id|inode-&gt;i_rdev
 op_assign
-id|mk_kdev
+id|MKDEV
 c_func
 (paren
 id|high

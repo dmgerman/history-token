@@ -554,11 +554,7 @@ id|mode
 )paren
 id|ip-&gt;i_rdev
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|rdev
-)paren
 suffix:semicolon
 r_else
 r_if

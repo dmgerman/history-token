@@ -51,11 +51,7 @@ id|inode-&gt;i_gid
 suffix:semicolon
 id|stat-&gt;rdev
 op_assign
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_rdev
-)paren
 suffix:semicolon
 id|stat-&gt;atime
 op_assign

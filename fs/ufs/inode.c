@@ -3297,11 +3297,7 @@ c_func
 (paren
 id|sb
 comma
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_rdev
-)paren
 )paren
 suffix:semicolon
 r_else

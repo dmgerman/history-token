@@ -5239,11 +5239,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_rdev
-)paren
 )paren
 suffix:semicolon
 r_else

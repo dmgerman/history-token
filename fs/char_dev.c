@@ -1355,11 +1355,7 @@ c_func
 (paren
 id|cdev_map
 comma
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_rdev
-)paren
 comma
 op_amp
 id|idx

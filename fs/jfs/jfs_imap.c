@@ -10762,14 +10762,10 @@ id|ip-&gt;i_mode
 )paren
 id|ip-&gt;i_rdev
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|le32_to_cpu
 c_func
 (paren
 id|dip-&gt;di_rdev
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -11115,11 +11111,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|kdev_t_to_nr
-c_func
-(paren
 id|ip-&gt;i_rdev
-)paren
 )paren
 suffix:semicolon
 )brace

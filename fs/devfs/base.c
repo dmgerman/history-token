@@ -5605,11 +5605,7 @@ id|de-&gt;mode
 (brace
 id|inode-&gt;i_rdev
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|de-&gt;u.cdev.dev
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -5624,11 +5620,7 @@ id|de-&gt;mode
 (brace
 id|inode-&gt;i_rdev
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|de-&gt;u.bdev.dev
-)paren
 suffix:semicolon
 r_if
 c_cond

@@ -1372,14 +1372,10 @@ id|i-&gt;i_mode
 )paren
 )paren
 (brace
-r_int
+id|dev_t
 id|d
 op_assign
-id|kdev_t_to_nr
-c_func
-(paren
 id|i-&gt;i_rdev
-)paren
 suffix:semicolon
 id|ea
 (braket
