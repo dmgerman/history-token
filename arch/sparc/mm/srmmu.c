@@ -10679,14 +10679,6 @@ id|SRMMU_WRITE
 op_or
 id|SRMMU_REF
 suffix:semicolon
-id|BTFIXUPSET_SIMM13
-c_func
-(paren
-id|pte_file_max_bits
-comma
-id|SRMMU_PTE_FILE_MAX_BITS
-)paren
-suffix:semicolon
 multiline_comment|/* Functions */
 macro_line|#ifndef CONFIG_SMP&t;
 id|BTFIXUPSET_CALL
