@@ -480,14 +480,14 @@ id|dev
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|tc515_probe
-c_func
-(paren
 r_struct
 id|net_device
 op_star
-id|dev
+id|tc515_probe
+c_func
+(paren
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_extern
@@ -964,14 +964,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif&t;
-macro_line|#ifdef CONFIG_3C515
-(brace
-id|tc515_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 (brace
 l_int|NULL
 comma
@@ -990,6 +982,14 @@ id|isa_probes2
 id|__initdata
 op_assign
 (brace
+macro_line|#ifdef CONFIG_3C515
+(brace
+id|tc515_probe
+comma
+l_int|0
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_ULTRA 
 (brace
 id|ultra_probe
