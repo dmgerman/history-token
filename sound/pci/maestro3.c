@@ -10373,12 +10373,12 @@ id|io
 op_assign
 id|chip-&gt;iobase
 suffix:semicolon
+multiline_comment|/* TODO: MPU401 not supported yet */
 id|outw
 c_func
 (paren
 id|ASSP_INT_ENABLE
-op_or
-id|MPU401_INT_ENABLE
+multiline_comment|/*| MPU401_INT_ENABLE*/
 comma
 id|io
 op_plus
