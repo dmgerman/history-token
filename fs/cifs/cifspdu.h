@@ -1417,6 +1417,9 @@ DECL|macro|OPLOCK_BATCH
 mdefine_line|#define OPLOCK_BATCH&t; 2
 DECL|macro|OPLOCK_READ
 mdefine_line|#define OPLOCK_READ&t; 3  /* level 2 oplock */
+multiline_comment|/* open response for CreateAction shifted left */
+DECL|macro|CIFS_CREATE_ACTION
+mdefine_line|#define CIFS_CREATE_ACTION 0x20000 /* file created */
 DECL|struct|smb_com_open_rsp
 r_typedef
 r_struct

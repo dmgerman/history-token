@@ -600,7 +600,7 @@ op_assign
 (paren
 id|w
 op_amp
-l_int|0x5555555555555555
+l_int|0x5555555555555555ul
 )paren
 op_plus
 (paren
@@ -610,7 +610,7 @@ op_rshift
 l_int|1
 )paren
 op_amp
-l_int|0x5555555555555555
+l_int|0x5555555555555555ul
 )paren
 suffix:semicolon
 id|res
@@ -618,7 +618,7 @@ op_assign
 (paren
 id|res
 op_amp
-l_int|0x3333333333333333
+l_int|0x3333333333333333ul
 )paren
 op_plus
 (paren
@@ -628,7 +628,7 @@ op_rshift
 l_int|2
 )paren
 op_amp
-l_int|0x3333333333333333
+l_int|0x3333333333333333ul
 )paren
 suffix:semicolon
 id|res
@@ -636,7 +636,7 @@ op_assign
 (paren
 id|res
 op_amp
-l_int|0x0F0F0F0F0F0F0F0F
+l_int|0x0F0F0F0F0F0F0F0Ful
 )paren
 op_plus
 (paren
@@ -646,7 +646,7 @@ op_rshift
 l_int|4
 )paren
 op_amp
-l_int|0x0F0F0F0F0F0F0F0F
+l_int|0x0F0F0F0F0F0F0F0Ful
 )paren
 suffix:semicolon
 id|res
@@ -654,7 +654,7 @@ op_assign
 (paren
 id|res
 op_amp
-l_int|0x00FF00FF00FF00FF
+l_int|0x00FF00FF00FF00FFul
 )paren
 op_plus
 (paren
@@ -664,7 +664,7 @@ op_rshift
 l_int|8
 )paren
 op_amp
-l_int|0x00FF00FF00FF00FF
+l_int|0x00FF00FF00FF00FFul
 )paren
 suffix:semicolon
 id|res
@@ -672,7 +672,7 @@ op_assign
 (paren
 id|res
 op_amp
-l_int|0x0000FFFF0000FFFF
+l_int|0x0000FFFF0000FFFFul
 )paren
 op_plus
 (paren
@@ -682,14 +682,14 @@ op_rshift
 l_int|16
 )paren
 op_amp
-l_int|0x0000FFFF0000FFFF
+l_int|0x0000FFFF0000FFFFul
 )paren
 suffix:semicolon
 r_return
 (paren
 id|res
 op_amp
-l_int|0x00000000FFFFFFFF
+l_int|0x00000000FFFFFFFFul
 )paren
 op_plus
 (paren
@@ -699,7 +699,7 @@ op_rshift
 l_int|32
 )paren
 op_amp
-l_int|0x00000000FFFFFFFF
+l_int|0x00000000FFFFFFFFul
 )paren
 suffix:semicolon
 macro_line|#endif

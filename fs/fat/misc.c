@@ -1047,6 +1047,9 @@ id|sb-&gt;s_blocksize
 op_amp
 op_complement
 (paren
+(paren
+id|loff_t
+)paren
 id|sb-&gt;s_blocksize
 op_minus
 l_int|1

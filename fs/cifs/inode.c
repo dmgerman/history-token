@@ -303,14 +303,16 @@ id|cifsInfo-&gt;time
 )paren
 )paren
 suffix:semicolon
-id|atomic_inc
+id|atomic_set
 c_func
 (paren
 op_amp
 id|cifsInfo-&gt;inUse
+comma
+l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* inc on every refresh of inode */
+multiline_comment|/* ok to set on every refresh of inode */
 id|inode-&gt;i_atime
 op_assign
 id|cifs_NTtimeToUnix
@@ -1104,14 +1106,6 @@ id|cifsInfo-&gt;time
 )paren
 )paren
 suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|cifsInfo-&gt;inUse
-)paren
-suffix:semicolon
-multiline_comment|/* inc on every refresh of inode */
 multiline_comment|/* blksize needs to be multiple of two. So safer to default to blksize&n;        and blkbits set in superblock so 2**blkbits and blksize will match */
 multiline_comment|/*&t;&t;inode-&gt;i_blksize =&n;&t;&t;    (pTcon-&gt;ses-&gt;server-&gt;maxBuf - MAX_CIFS_HDR_SIZE) &amp; 0xFFFFFE00;*/
 multiline_comment|/* Linux can not store file creation time unfortunately so we ignore it */
@@ -1164,10 +1158,25 @@ id|pfindData-&gt;Attributes
 )paren
 suffix:semicolon
 multiline_comment|/* set default mode. will override for dirs below */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|cifsInfo-&gt;inUse
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* new inode, can safely set these fields */
 id|inode-&gt;i_mode
 op_assign
 id|cifs_sb-&gt;mnt_file_mode
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1267,6 +1276,19 @@ id|pfindData-&gt;NumberOfLinks
 )paren
 suffix:semicolon
 multiline_comment|/* BB fill in uid and gid here? with help from winbind? &n;&t;&t;&t;or retrieve from NTFS stream extended attribute */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|cifsInfo-&gt;inUse
+)paren
+op_eq
+l_int|0
+)paren
+(brace
 id|inode-&gt;i_uid
 op_assign
 id|cifs_sb-&gt;mnt_uid
@@ -1275,6 +1297,17 @@ id|inode-&gt;i_gid
 op_assign
 id|cifs_sb-&gt;mnt_gid
 suffix:semicolon
+multiline_comment|/* set so we do not keep refreshing these fields with&n;&t;&t;&t;bad data after user has changed them in memory */
+id|atomic_set
+c_func
+(paren
+op_amp
+id|cifsInfo-&gt;inUse
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

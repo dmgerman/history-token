@@ -33,9 +33,6 @@ multiline_comment|/* for compatible parameter passing with &quot;insmod&quot; */
 DECL|macro|mcdx_drive_map
 mdefine_line|#define&t;mcdx_drive_map mcdx
 macro_line|#include &quot;mcdx.h&quot;
-macro_line|#if BITS_PER_LONG != 32
-macro_line|#  error FIXME: this driver only works on 32-bit platforms
-macro_line|#endif
 macro_line|#ifndef HZ
 macro_line|#error HZ not defined
 macro_line|#endif
@@ -370,38 +367,32 @@ suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* AK2 */
 multiline_comment|/* adds and odds */
 DECL|member|wreg_data
-r_void
-op_star
+r_int
 id|wreg_data
 suffix:semicolon
 multiline_comment|/* w data */
 DECL|member|wreg_reset
-r_void
-op_star
+r_int
 id|wreg_reset
 suffix:semicolon
 multiline_comment|/* w hardware reset */
 DECL|member|wreg_hcon
-r_void
-op_star
+r_int
 id|wreg_hcon
 suffix:semicolon
 multiline_comment|/* w hardware conf */
 DECL|member|wreg_chn
-r_void
-op_star
+r_int
 id|wreg_chn
 suffix:semicolon
 multiline_comment|/* w channel */
 DECL|member|rreg_data
-r_void
-op_star
+r_int
 id|rreg_data
 suffix:semicolon
 multiline_comment|/* r data */
 DECL|member|rreg_status
-r_void
-op_star
+r_int
 id|rreg_status
 suffix:semicolon
 multiline_comment|/* r status */
@@ -806,8 +797,7 @@ r_char
 )paren
 suffix:semicolon
 r_static
-r_char
-op_star
+r_int
 id|port
 c_func
 (paren
@@ -3469,10 +3459,6 @@ op_assign
 id|inb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;rreg_status
 )paren
 suffix:semicolon
@@ -3523,10 +3509,6 @@ comma
 id|inb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;rreg_data
 )paren
 )paren
@@ -3781,10 +3763,6 @@ suffix:semicolon
 id|outsb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;wreg_data
 comma
 id|cmd
@@ -4274,10 +4252,6 @@ suffix:semicolon
 id|release_region
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;wreg_data
 comma
 id|MCDX_IO_SIZE
@@ -4632,10 +4606,6 @@ op_logical_neg
 id|request_region
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;wreg_data
 comma
 id|MCDX_IO_SIZE
@@ -4647,8 +4617,8 @@ l_string|&quot;mcdx&quot;
 id|xwarn
 c_func
 (paren
-l_string|&quot;0x%3p,%d: Init failed. &quot;
-l_string|&quot;I/O ports (0x%3p..0x%3p) already in use.&bslash;n&quot;
+l_string|&quot;0x%03x,%d: Init failed. &quot;
+l_string|&quot;I/O ports (0x%03x..0x%03x) already in use.&bslash;n&quot;
 comma
 id|stuffp-&gt;wreg_data
 comma
@@ -4703,8 +4673,7 @@ c_func
 (paren
 id|INIT
 comma
-l_string|&quot;init() i/o port is available at 0x%3p&bslash;n&quot;
-comma
+l_string|&quot;init() i/o port is available at 0x%03x&bslash;n&quot;
 id|stuffp-&gt;wreg_data
 )paren
 suffix:semicolon
@@ -4756,10 +4725,6 @@ multiline_comment|/* failed, next drive */
 id|release_region
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;wreg_data
 comma
 id|MCDX_IO_SIZE
@@ -4768,7 +4733,7 @@ suffix:semicolon
 id|xwarn
 c_func
 (paren
-l_string|&quot;%s=0x%3p,%d: Init failed. Can&squot;t get version.&bslash;n&quot;
+l_string|&quot;%s=0x%03x,%d: Init failed. Can&squot;t get version.&bslash;n&quot;
 comma
 id|MCDX
 comma
@@ -4887,10 +4852,6 @@ id|stuffp-&gt;present
 id|release_region
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;wreg_data
 comma
 id|MCDX_IO_SIZE
@@ -4899,7 +4860,7 @@ suffix:semicolon
 id|xwarn
 c_func
 (paren
-l_string|&quot;%s=0x%3p,%d: Init failed. No Mitsumi CD-ROM?.&bslash;n&quot;
+l_string|&quot;%s=0x%03x,%d: Init failed. No Mitsumi CD-ROM?.&bslash;n&quot;
 comma
 id|MCDX
 comma
@@ -4948,10 +4909,6 @@ l_string|&quot;mcdx&quot;
 id|release_region
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;wreg_data
 comma
 id|MCDX_IO_SIZE
@@ -5002,10 +4959,6 @@ suffix:semicolon
 id|release_region
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;wreg_data
 comma
 id|MCDX_IO_SIZE
@@ -5063,10 +5016,6 @@ l_int|NULL
 id|release_region
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;wreg_data
 comma
 id|MCDX_IO_SIZE
@@ -5075,7 +5024,7 @@ suffix:semicolon
 id|xwarn
 c_func
 (paren
-l_string|&quot;%s=0x%3p,%d: Init failed. Can&squot;t get irq (%d).&bslash;n&quot;
+l_string|&quot;%s=0x%03x,%d: Init failed. Can&squot;t get irq (%d).&bslash;n&quot;
 comma
 id|MCDX
 comma
@@ -5152,10 +5101,6 @@ r_void
 id|inb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;rreg_status
 )paren
 suffix:semicolon
@@ -5167,10 +5112,6 @@ c_func
 (paren
 l_int|0x50
 comma
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;wreg_chn
 )paren
 suffix:semicolon
@@ -5252,7 +5193,7 @@ c_func
 (paren
 id|msg
 comma
-l_string|&quot; mcdx: Mitsumi CD-ROM installed at 0x%3p, irq %d.&quot;
+l_string|&quot; mcdx: Mitsumi CD-ROM installed at 0x%03x, irq %d.&quot;
 l_string|&quot; (Firmware version %c %x)&bslash;n&quot;
 comma
 id|stuffp-&gt;wreg_data
@@ -5305,10 +5246,6 @@ suffix:semicolon
 id|release_region
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;wreg_data
 comma
 id|MCDX_IO_SIZE
@@ -5867,10 +5804,6 @@ suffix:semicolon
 id|insb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;rreg_data
 comma
 id|p
@@ -5883,10 +5816,6 @@ multiline_comment|/* now actually read the data */
 id|insb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;rreg_data
 comma
 id|p
@@ -5920,10 +5849,6 @@ suffix:semicolon
 id|insb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;rreg_data
 comma
 op_amp
@@ -6202,10 +6127,6 @@ multiline_comment|/* Now really issue the request command */
 id|outsb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;wreg_data
 comma
 id|cmd
@@ -6258,8 +6179,7 @@ suffix:semicolon
 multiline_comment|/*&t;Access to elements of the mcdx_drive_map members */
 DECL|function|port
 r_static
-r_char
-op_star
+r_int
 id|port
 c_func
 (paren
@@ -6269,10 +6189,6 @@ id|ip
 )paren
 (brace
 r_return
-(paren
-r_char
-op_star
-)paren
 id|ip
 (braket
 l_int|0
@@ -7114,10 +7030,6 @@ suffix:semicolon
 id|outsb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;wreg_data
 comma
 id|cmd
@@ -8362,10 +8274,6 @@ c_func
 (paren
 l_int|0
 comma
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;wreg_chn
 )paren
 suffix:semicolon
@@ -8375,10 +8283,6 @@ c_func
 (paren
 l_int|0
 comma
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;wreg_reset
 )paren
 suffix:semicolon
@@ -8593,10 +8497,6 @@ c_loop
 id|inb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;rreg_status
 )paren
 op_amp
@@ -8637,10 +8537,6 @@ r_char
 id|inb
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|stuffp-&gt;rreg_data
 )paren
 op_amp

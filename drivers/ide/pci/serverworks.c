@@ -3031,6 +3031,11 @@ r_goto
 id|try_dma_modes
 suffix:semicolon
 )brace
+r_else
+multiline_comment|/* UDMA disabled by mask, try other DMA modes */
+r_goto
+id|try_dma_modes
+suffix:semicolon
 )brace
 r_else
 r_if
