@@ -435,12 +435,14 @@ id|irqaction
 id|timer_irq
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;timer&quot;
 comma
+dot
 id|handler
-suffix:colon
+op_assign
 id|iq80310_timer_interrupt
 comma
 )brace

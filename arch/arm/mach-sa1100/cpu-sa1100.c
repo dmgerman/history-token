@@ -546,8 +546,9 @@ id|notifier_block
 id|sa1100_dram_block
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|sa1100_dram_notifier
 comma
 )brace

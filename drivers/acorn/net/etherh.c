@@ -312,12 +312,14 @@ id|expansioncard_ops_t
 id|etherh_ops
 op_assign
 (brace
+dot
 id|irqenable
-suffix:colon
+op_assign
 id|etherh_irq_enable
 comma
+dot
 id|irqdisable
-suffix:colon
+op_assign
 id|etherh_irq_disable
 comma
 )brace
