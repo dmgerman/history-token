@@ -90,8 +90,6 @@ DECL|macro|E100_DEFAULT_CPUSAVER_INTERRUPT_DELAY
 mdefine_line|#define E100_DEFAULT_CPUSAVER_INTERRUPT_DELAY&t;0x600
 DECL|macro|E100_DEFAULT_BUNDLE_SMALL_FR
 mdefine_line|#define E100_DEFAULT_BUNDLE_SMALL_FR&t;&t;false
-DECL|macro|E100_DEFAULT_RX_CONGESTION_CONTROL
-mdefine_line|#define E100_DEFAULT_RX_CONGESTION_CONTROL&t;true
 multiline_comment|/* end of configurables */
 multiline_comment|/* ====================================================================== */
 multiline_comment|/*                                hw                                      */
@@ -162,16 +160,6 @@ DECL|member|rx_intr_pkts
 r_int
 r_int
 id|rx_intr_pkts
-suffix:semicolon
-DECL|member|rx_tasklet_pkts
-r_int
-r_int
-id|rx_tasklet_pkts
-suffix:semicolon
-DECL|member|poll_intr_switch
-r_int
-r_int
-id|poll_intr_switch
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1980,8 +1968,6 @@ DECL|macro|PRM_IFS
 mdefine_line|#define PRM_IFS          0x00000008
 DECL|macro|PRM_BUNDLE_SMALL
 mdefine_line|#define PRM_BUNDLE_SMALL 0x00000010
-DECL|macro|PRM_RX_CONG
-mdefine_line|#define PRM_RX_CONG      0x00000020
 DECL|struct|cfg_params
 r_struct
 id|cfg_params
@@ -2009,10 +1995,6 @@ suffix:semicolon
 DECL|member|ber
 r_int
 id|ber
-suffix:semicolon
-DECL|member|PollingMaxWork
-r_int
-id|PollingMaxWork
 suffix:semicolon
 DECL|member|b_params
 id|u32
@@ -2397,11 +2379,6 @@ id|u32
 id|speed_duplex_caps
 suffix:semicolon
 multiline_comment|/* adapter&squot;s speed/duplex capabilities */
-DECL|member|polling_tasklet
-r_struct
-id|tasklet_struct
-id|polling_tasklet
-suffix:semicolon
 multiline_comment|/* WOL params for ethtool */
 DECL|member|wolsupported
 id|u32
