@@ -1939,7 +1939,7 @@ l_string|&quot;PIO4&quot;
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *&t;ata_udma_string - convert UDMA bit offset to string&n; *&t;@udma_mask: mask of bits supported; only highest bit counts.&n; *&n; *&t;Determine string which represents the highest speed&n; *&t;(highest bit in @udma_mask).&n; *&n; *&t;LOCKING:&n; *&t;None.&n; *&n; *&t;RETURNS:&n; *&t;Constant C string representing highest speed listed in&n; *&t;@udma_mask, or the constant C string &quot;&lt;n/a&gt;&quot;.&n; */
+multiline_comment|/**&n; *&t;ata_udma_string - convert UDMA bit offset to string&n; *&t;@mask: mask of bits supported; only highest bit counts.&n; *&n; *&t;Determine string which represents the highest speed&n; *&t;(highest bit in @udma_mask).&n; *&n; *&t;LOCKING:&n; *&t;None.&n; *&n; *&t;RETURNS:&n; *&t;Constant C string representing highest speed listed in&n; *&t;@udma_mask, or the constant C string &quot;&lt;n/a&gt;&quot;.&n; */
 DECL|function|ata_mode_string
 r_static
 r_const
@@ -2678,7 +2678,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_dev_id_string - Convert IDENTIFY DEVICE page into string&n; *&t;@dev: Device whose IDENTIFY DEVICE results we will examine&n; *&t;@s: string into which data is output&n; *&t;@ofs: offset into identify device page&n; *&t;@len: length of string to return. must be an even number.&n; *&n; *&t;The strings in the IDENTIFY DEVICE page are broken up into&n; *&t;16-bit chunks.  Run through the string, and output each&n; *&t;8-bit chunk linearly, regardless of platform.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
+multiline_comment|/**&n; *&t;ata_dev_id_string - Convert IDENTIFY DEVICE page into string&n; *&t;@id: IDENTIFY DEVICE results we will examine&n; *&t;@s: string into which data is output&n; *&t;@ofs: offset into identify device page&n; *&t;@len: length of string to return. must be an even number.&n; *&n; *&t;The strings in the IDENTIFY DEVICE page are broken up into&n; *&t;16-bit chunks.  Run through the string, and output each&n; *&t;8-bit chunk linearly, regardless of platform.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
 DECL|function|ata_dev_id_string
 r_void
 id|ata_dev_id_string
@@ -6349,7 +6349,7 @@ r_return
 id|x
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_choose_xfer_mode -&n; *&t;@ap:&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&t;Zero on success, negative on error.&n; */
+multiline_comment|/**&n; *&t;ata_choose_xfer_mode - attempt to find best transfer mode&n; *&t;@ap: Port for which an xfer mode will be selected&n; *&t;@xfer_mode_out: (output) SET FEATURES - XFER MODE code&n; *&t;@xfer_shift_out: (output) bit shift that selects this mode&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&t;Zero on success, negative on error.&n; */
 DECL|function|ata_choose_xfer_mode
 r_static
 r_int
