@@ -3995,12 +3995,10 @@ id|DS_RESET_CARD
 suffix:colon
 id|ret
 op_assign
-id|pcmcia_reset_card
+id|pccard_reset_card
 c_func
 (paren
-id|s-&gt;handle
-comma
-l_int|NULL
+id|s-&gt;parent
 )paren
 suffix:semicolon
 r_break
