@@ -2580,6 +2580,40 @@ c_func
 (paren
 id|buffer
 comma
+l_string|&quot;Xilinx Firmware: %s&bslash;n&quot;
+comma
+id|chip-&gt;chip_status
+op_amp
+id|VX_STAT_XILINX_LOADED
+ques
+c_cond
+l_string|&quot;Loaded&quot;
+suffix:colon
+l_string|&quot;No&quot;
+)paren
+suffix:semicolon
+id|snd_iprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;Device Initialized: %s&bslash;n&quot;
+comma
+id|chip-&gt;chip_status
+op_amp
+id|VX_STAT_DEVICE_INIT
+ques
+c_cond
+l_string|&quot;Yes&quot;
+suffix:colon
+l_string|&quot;No&quot;
+)paren
+suffix:semicolon
+id|snd_iprintf
+c_func
+(paren
+id|buffer
+comma
 l_string|&quot;DSP audio info:&quot;
 )paren
 suffix:semicolon
