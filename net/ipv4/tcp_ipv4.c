@@ -2666,11 +2666,11 @@ suffix:semicolon
 id|unique
 suffix:colon
 multiline_comment|/* Must record num and sport now. Otherwise we will see&n;&t; * in hash table socket with a funny identity. */
-id|sk-&gt;num
+id|inet-&gt;num
 op_assign
 id|lport
 suffix:semicolon
-id|sk-&gt;sport
+id|inet-&gt;sport
 op_assign
 id|htons
 c_func
@@ -3111,7 +3111,13 @@ op_logical_neg
 id|sk-&gt;pprev
 )paren
 (brace
-id|sk-&gt;sport
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|sport
 op_assign
 id|htons
 c_func
