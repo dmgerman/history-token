@@ -98,6 +98,11 @@ op_assign
 l_string|&quot;Generic&quot;
 comma
 dot
+id|short_name
+op_assign
+l_string|&quot;generic&quot;
+comma
+dot
 id|id_table
 op_assign
 id|generic_device_ids
