@@ -12,9 +12,6 @@ macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_NET_PROFILE
-macro_line|#include &lt;net/profile.h&gt;
-macro_line|#endif
 r_struct
 id|divert_blk
 suffix:semicolon

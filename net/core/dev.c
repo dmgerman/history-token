@@ -26,7 +26,6 @@ macro_line|#include &lt;linux/if_bridge.h&gt;
 macro_line|#include &lt;linux/divert.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
-macro_line|#include &lt;net/profile.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -54,16 +53,6 @@ macro_line|#undef RAND_LIE
 multiline_comment|/* Setting this will sample the queue lengths and thus congestion&n; * via a timer instead of as each packet is received.&n; */
 DECL|macro|OFFLINE_SAMPLE
 macro_line|#undef OFFLINE_SAMPLE
-id|NET_PROFILE_DEFINE
-c_func
-(paren
-id|dev_queue_xmit
-)paren
-id|NET_PROFILE_DEFINE
-c_func
-(paren
-id|softnet_process
-)paren
 multiline_comment|/*&n; *&t;The list of packet types we will receive (as opposed to discard)&n; *&t;and the routines to invoke.&n; *&n; *&t;Why 16. Because with 16 the only overlap we get on a hash of the&n; *&t;low nibble of the protocol value is RARP/SNAP/X.25.&n; *&n; *      NOTE:  That is no longer true with the addition of VLAN tags.  Not&n; *             sure which should go first, but I bet it won&squot;t make much&n; *             difference if we are running VLANs.  The good news is that&n; *             this protocol won&squot;t be in the list unless compiled in, so&n; *             the average user (w/out VLANs) will not be adversly affected.&n; *             --BLG&n; *&n; *&t;&t;0800&t;IP&n; *&t;&t;8100    802.1Q VLAN&n; *&t;&t;0001&t;802.3&n; *&t;&t;0002&t;AX.25&n; *&t;&t;0004&t;802.2&n; *&t;&t;8035&t;RARP&n; *&t;&t;0005&t;SNAP&n; *&t;&t;0805&t;X.25&n; *&t;&t;0806&t;ARP&n; *&t;&t;8137&t;IPX&n; *&t;&t;0009&t;Localtalk&n; *&t;&t;86DD&t;IPv6&n; */
 DECL|variable|ptype_lock
 r_static
@@ -9845,25 +9834,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_NET_PROFILE
-id|net_profile_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|NET_PROFILE_REGISTER
-c_func
-(paren
-id|dev_queue_xmit
-)paren
-suffix:semicolon
-id|NET_PROFILE_REGISTER
-c_func
-(paren
-id|softnet_process
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef OFFLINE_SAMPLE
 id|samp_timer.expires
 op_assign
