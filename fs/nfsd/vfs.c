@@ -558,7 +558,7 @@ id|mnt
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_nfserr
 suffix:semicolon
 )brace
 r_if

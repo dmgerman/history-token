@@ -6008,7 +6008,7 @@ id|svc_serv
 op_star
 id|serv
 op_assign
-id|dr-&gt;serv
+id|dreq-&gt;owner
 suffix:semicolon
 r_struct
 id|svc_sock
@@ -6203,7 +6203,7 @@ l_int|NULL
 r_return
 l_int|NULL
 suffix:semicolon
-id|dr-&gt;serv
+id|dr-&gt;handle.owner
 op_assign
 id|rqstp-&gt;rq_server
 suffix:semicolon

@@ -699,12 +699,6 @@ DECL|struct|svc_deferred_req
 r_struct
 id|svc_deferred_req
 (brace
-DECL|member|serv
-r_struct
-id|svc_serv
-op_star
-id|serv
-suffix:semicolon
 DECL|member|prot
 id|u32
 id|prot
