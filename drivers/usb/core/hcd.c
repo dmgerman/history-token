@@ -549,7 +549,7 @@ id|strcpy
 (paren
 id|buf
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 singleline_comment|// product description
@@ -955,7 +955,7 @@ id|dbg
 (paren
 l_string|&quot;%s root hub device address %d&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|wValue
 )paren
@@ -1389,7 +1389,7 @@ id|dbg
 (paren
 l_string|&quot;%s, can&squot;t resubmit roothub status urb?&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -3162,12 +3162,7 @@ op_star
 )paren
 id|hcd
 suffix:semicolon
-id|hcd-&gt;bus
-op_assign
-op_amp
-id|hcd-&gt;self
-suffix:semicolon
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 op_assign
 id|dev-&gt;slot_name
 suffix:semicolon
@@ -3259,7 +3254,7 @@ id|info
 (paren
 l_string|&quot;remove: %s, state %x&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|hcd-&gt;state
 )paren
@@ -3277,7 +3272,7 @@ id|BUG
 suffix:semicolon
 id|hub
 op_assign
-id|hcd-&gt;bus-&gt;root_hub
+id|hcd-&gt;self.root_hub
 suffix:semicolon
 id|hcd-&gt;state
 op_assign
@@ -3287,7 +3282,7 @@ id|dbg
 (paren
 l_string|&quot;%s: roothub graceful disconnect&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 id|usb_disconnect
@@ -3296,7 +3291,6 @@ op_amp
 id|hub
 )paren
 suffix:semicolon
-singleline_comment|// usb_disconnect (&amp;hcd-&gt;bus-&gt;root_hub);
 id|hcd-&gt;driver-&gt;stop
 (paren
 id|hcd
@@ -3366,7 +3360,8 @@ suffix:semicolon
 )brace
 id|usb_deregister_bus
 (paren
-id|hcd-&gt;bus
+op_amp
+id|hcd-&gt;self
 )paren
 suffix:semicolon
 r_if
@@ -3384,12 +3379,8 @@ id|err
 (paren
 l_string|&quot;usb_hcd_pci_remove %s, count != 1&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
-suffix:semicolon
-id|hcd-&gt;bus
-op_assign
-l_int|NULL
 suffix:semicolon
 id|hcd-&gt;driver-&gt;hcd_free
 (paren
@@ -3441,7 +3432,7 @@ id|info
 (paren
 l_string|&quot;suspend %s to state %d&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|state
 )paren
@@ -3518,7 +3509,7 @@ id|info
 (paren
 l_string|&quot;resume %s&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 multiline_comment|/* guard against multiple resumes (APM bug?) */
@@ -3544,7 +3535,7 @@ id|err
 (paren
 l_string|&quot;concurrent PCI resumes for %s&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 )paren
 suffix:semicolon
 id|retval
@@ -3616,7 +3607,7 @@ id|dbg
 (paren
 l_string|&quot;resume %s failure, retval %d&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|retval
 )paren
@@ -3894,7 +3885,7 @@ id|dbg
 (paren
 l_string|&quot;shutdown %s urb %p pipe %x, current status %d&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|urb
 comma
@@ -4732,7 +4723,7 @@ c_cond
 (paren
 id|urb-&gt;dev
 op_eq
-id|hcd-&gt;bus-&gt;root_hub
+id|hcd-&gt;self.root_hub
 )paren
 id|status
 op_assign
@@ -5235,7 +5226,7 @@ id|dbg
 (paren
 l_string|&quot;%s: wait for giveback urb %p&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|urb
 )paren
@@ -5300,7 +5291,7 @@ comma
 id|hcd
 ques
 c_cond
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 suffix:colon
 l_string|&quot;(no bus?)&quot;
 comma
@@ -5392,7 +5383,7 @@ id|dbg
 (paren
 l_string|&quot;free busy dev, %s devnum %d (bug!)&quot;
 comma
-id|hcd-&gt;bus_name
+id|hcd-&gt;self.bus_name
 comma
 id|udev-&gt;devnum
 )paren

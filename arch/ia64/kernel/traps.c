@@ -833,7 +833,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&lt;sc%ld(%lx,%lx,%lx,%lx)&gt;&bslash;n&quot;
+l_string|&quot;%s(%d): &lt;sc%ld(%lx,%lx,%lx,%lx)&gt;&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|current-&gt;pid
 comma
 id|regs-&gt;r15
 comma

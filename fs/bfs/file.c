@@ -257,6 +257,17 @@ op_assign
 id|inode-&gt;i_sb
 suffix:semicolon
 r_struct
+id|bfs_sb_info
+op_star
+id|info
+op_assign
+id|BFS_SB
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
+r_struct
 id|bfs_inode_info
 op_star
 id|bi
@@ -272,14 +283,14 @@ id|buffer_head
 op_star
 id|sbh
 op_assign
-id|sb-&gt;su_sbh
+id|info-&gt;si_sbh
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|block
 template_param
-id|sb-&gt;su_blocks
+id|info-&gt;si_blocks
 )paren
 r_return
 op_minus
@@ -382,7 +393,7 @@ c_cond
 (paren
 id|bi-&gt;i_eblock
 op_eq
-id|sb-&gt;su_lf_eblk
+id|info-&gt;si_lf_eblk
 )paren
 (brace
 id|dprintf
@@ -407,13 +418,13 @@ comma
 id|phys
 )paren
 suffix:semicolon
-id|sb-&gt;su_freeb
+id|info-&gt;si_freeb
 op_sub_assign
 id|phys
 op_minus
 id|bi-&gt;i_eblock
 suffix:semicolon
-id|sb-&gt;su_lf_eblk
+id|info-&gt;si_lf_eblk
 op_assign
 id|bi-&gt;i_eblock
 op_assign
@@ -442,7 +453,7 @@ suffix:semicolon
 multiline_comment|/* Ok, we have to move this entire file to the next free block */
 id|phys
 op_assign
-id|sb-&gt;su_lf_eblk
+id|info-&gt;si_lf_eblk
 op_plus
 l_int|1
 suffix:semicolon
@@ -511,14 +522,14 @@ id|phys
 op_add_assign
 id|block
 suffix:semicolon
-id|sb-&gt;su_lf_eblk
+id|info-&gt;si_lf_eblk
 op_assign
 id|bi-&gt;i_eblock
 op_assign
 id|phys
 suffix:semicolon
 multiline_comment|/* this assumes nothing can write the inode back while we are here&n;&t; * and thus update inode-&gt;i_blocks! (XXX)*/
-id|sb-&gt;su_freeb
+id|info-&gt;si_freeb
 op_sub_assign
 id|bi-&gt;i_eblock
 op_minus

@@ -87,6 +87,11 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|ia64_iobase
+suffix:semicolon
 DECL|variable|cpucount
 r_int
 id|cpucount
@@ -1002,6 +1007,19 @@ multiline_comment|/*&n;&t; * Get our bogomips.&n;&t; */
 id|ia64_init_itm
 c_func
 (paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Set I/O port base per CPU&n;&t; */
+id|ia64_set_kr
+c_func
+(paren
+id|IA64_KR_IO_BASE
+comma
+id|__pa
+c_func
+(paren
+id|ia64_iobase
+)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IA64_MCA

@@ -32,7 +32,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -131,7 +132,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -190,7 +192,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -289,7 +292,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -344,7 +348,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -443,7 +448,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -498,7 +504,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -619,7 +626,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -691,7 +699,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -812,7 +821,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -885,7 +895,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -1006,7 +1017,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -1079,7 +1091,8 @@ id|nr
 comma
 id|__const__
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -1379,7 +1392,8 @@ r_int
 id|find_next_bit
 c_func
 (paren
-r_void
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -1589,7 +1603,8 @@ r_int
 id|find_next_zero_bit
 c_func
 (paren
-r_void
+r_int
+r_int
 op_star
 id|addr
 comma

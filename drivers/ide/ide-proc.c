@@ -2207,11 +2207,6 @@ suffix:semicolon
 r_struct
 id|proc_dir_entry
 op_star
-id|ent
-suffix:semicolon
-r_struct
-id|proc_dir_entry
-op_star
 id|parent
 op_assign
 id|hwif-&gt;proc

@@ -680,7 +680,7 @@ comma
 id|qh
 )paren
 suffix:semicolon
-id|qh_unput
+id|qh_put
 (paren
 id|ehci
 comma
@@ -1176,7 +1176,7 @@ id|usecs
 suffix:semicolon
 id|urb-&gt;hcpriv
 op_assign
-id|qh_put
+id|qh_get
 (paren
 id|qh
 )paren
@@ -1351,7 +1351,7 @@ id|frame
 dot
 id|qh
 op_assign
-id|qh_put
+id|qh_get
 (paren
 id|qh
 )paren
@@ -4111,7 +4111,7 @@ id|ehci
 comma
 id|frame
 comma
-id|qh_put
+id|qh_get
 (paren
 id|q.qh
 )paren
@@ -4119,7 +4119,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|qh_unput
+id|qh_put
 (paren
 id|ehci
 comma

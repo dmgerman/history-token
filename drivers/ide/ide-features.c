@@ -461,7 +461,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|ata_input_data
+id|ata_read
 c_func
 (paren
 id|drive
@@ -471,9 +471,6 @@ comma
 id|SECTOR_WORDS
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
 id|GET_STAT
 c_func
 (paren
@@ -1067,9 +1064,6 @@ c_cond
 id|error
 )paren
 (brace
-(paren
-r_void
-)paren
 id|ide_dump_status
 c_func
 (paren

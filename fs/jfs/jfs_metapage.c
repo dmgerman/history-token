@@ -2179,7 +2179,11 @@ multiline_comment|/* we&squot;re done with this page - no need to check for erro
 r_if
 c_cond
 (paren
-id|page-&gt;buffers
+id|page_has_buffers
+c_func
+(paren
+id|page
+)paren
 )paren
 (brace
 id|writeout_one_page

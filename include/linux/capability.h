@@ -202,6 +202,7 @@ DECL|macro|CAP_SYS_BOOT
 mdefine_line|#define CAP_SYS_BOOT         22
 multiline_comment|/* Allow raising priority and setting priority on other (different&n;   UID) processes */
 multiline_comment|/* Allow use of FIFO and round-robin (realtime) scheduling on own&n;   processes and setting the scheduling algorithm used by another&n;   process. */
+multiline_comment|/* Allow setting cpu affinity on other processes */
 DECL|macro|CAP_SYS_NICE
 mdefine_line|#define CAP_SYS_NICE         23
 multiline_comment|/* Override resource limits. Set resource limits. */

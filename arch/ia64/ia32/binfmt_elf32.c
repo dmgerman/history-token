@@ -76,6 +76,8 @@ mdefine_line|#define setup_arg_pages(bprm)&t;&t;ia32_setup_arg_pages(bprm)
 DECL|macro|elf_map
 mdefine_line|#define elf_map&t;&t;&t;&t;elf32_map
 DECL|macro|SET_PERSONALITY
+macro_line|#undef SET_PERSONALITY
+DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;elf32_set_personality()
 multiline_comment|/* Ugly but avoids duplication */
 macro_line|#include &quot;../../../fs/binfmt_elf.c&quot;

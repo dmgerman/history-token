@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/ticable.h&gt;
 macro_line|#include &quot;tiglusb.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;1.02&quot;
+mdefine_line|#define DRIVER_VERSION &quot;1.03&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR  &quot;Romain Lievin &lt;roms@lpg.ticalc.org&gt; &amp; Julien Blache &lt;jb@jblache.org&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -1490,6 +1490,12 @@ op_amp
 id|s-&gt;remove_ok
 )paren
 suffix:semicolon
+id|down
+(paren
+op_amp
+id|s-&gt;mutex
+)paren
+suffix:semicolon
 id|s-&gt;dev
 op_assign
 l_int|NULL
@@ -1842,7 +1848,7 @@ suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 id|__setup
 (paren
-l_string|&quot;tipar=&quot;
+l_string|&quot;tiusb=&quot;
 comma
 id|tiglusb_setup
 )paren

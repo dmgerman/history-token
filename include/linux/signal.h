@@ -44,8 +44,8 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Define some primitives to manipulate sigset_t.&n; */
 macro_line|#ifndef __HAVE_ARCH_SIG_BITOPS
-macro_line|#include &lt;asm/bitops.h&gt;
-multiline_comment|/* We don&squot;t use &lt;asm/bitops.h&gt; for these because there is no need to&n;   be atomic.  */
+macro_line|#include &lt;linux/bitops.h&gt;
+multiline_comment|/* We don&squot;t use &lt;linux/bitops.h&gt; for these because there is no need to&n;   be atomic.  */
 DECL|function|sigaddset
 r_static
 r_inline

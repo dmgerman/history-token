@@ -1274,10 +1274,12 @@ multiline_comment|/* Teardown mappings after DMA has completed.  */
 DECL|function|ide_destroy_dmatable
 r_void
 id|ide_destroy_dmatable
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
-id|drive
+id|d
 )paren
 (brace
 r_struct
@@ -1285,7 +1287,7 @@ id|pci_dev
 op_star
 id|dev
 op_assign
-id|drive-&gt;channel-&gt;pci_dev
+id|d-&gt;channel-&gt;pci_dev
 suffix:semicolon
 r_struct
 id|ata_request
@@ -1295,7 +1297,7 @@ op_assign
 id|IDE_CUR_AR
 c_func
 (paren
-id|drive
+id|d
 )paren
 suffix:semicolon
 id|pci_unmap_sg

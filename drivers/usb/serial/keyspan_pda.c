@@ -2960,6 +2960,10 @@ id|usb_serial_device_type
 id|keyspan_pda_fake_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan PDA - (prerenumeration)&quot;
@@ -2999,6 +3003,10 @@ id|usb_serial_device_type
 id|xircom_pgs_fake_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Xircom / Entregra PGS - (prerenumeration)&quot;
@@ -3037,6 +3045,10 @@ id|usb_serial_device_type
 id|keyspan_pda_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Keyspan PDA&quot;

@@ -4145,7 +4145,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sys_sched_setaffinity - set the cpu affinity of a process&n; * @pid: pid of the process&n; * @len: length of new_mask&n; * @new_mask: user-space pointer to the new cpu mask&n; */
+multiline_comment|/**&n; * sys_sched_setaffinity - set the cpu affinity of a process&n; * @pid: pid of the process&n; * @len: length of the bitmask pointed to by user_mask_ptr&n; * @user_mask_ptr: user-space pointer to the new cpu mask&n; */
 DECL|function|sys_sched_setaffinity
 id|asmlinkage
 r_int
@@ -4162,7 +4162,7 @@ comma
 r_int
 r_int
 op_star
-id|new_mask_ptr
+id|user_mask_ptr
 )paren
 (brace
 r_int
@@ -4199,7 +4199,7 @@ c_func
 op_amp
 id|new_mask
 comma
-id|new_mask_ptr
+id|user_mask_ptr
 comma
 r_sizeof
 (paren
@@ -4327,7 +4327,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sys_sched_getaffinity - get the cpu affinity of a process&n; * @pid: pid of the process&n; * @len: length of the new mask&n; * @user_mask_ptr: userspace pointer to the mask&n; */
+multiline_comment|/**&n; * sys_sched_getaffinity - get the cpu affinity of a process&n; * @pid: pid of the process&n; * @len: length of the bitmask pointed to by user_mask_ptr&n; * @user_mask_ptr: user-space pointer to hold the current cpu mask&n; */
 DECL|function|sys_sched_getaffinity
 id|asmlinkage
 r_int
@@ -5924,6 +5924,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|rq
 op_assign
 id|task_rq_lock
@@ -5961,7 +5966,8 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|init_MUTEX_LOCKED
@@ -6005,6 +6011,13 @@ c_func
 (paren
 op_amp
 id|req.sem
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

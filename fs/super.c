@@ -129,6 +129,13 @@ op_amp
 id|s-&gt;s_instances
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|s-&gt;s_anon
+)paren
+suffix:semicolon
 id|init_rwsem
 c_func
 (paren
@@ -594,6 +601,13 @@ id|shrink_dcache_parent
 c_func
 (paren
 id|root
+)paren
+suffix:semicolon
+id|shrink_dcache_anon
+c_func
+(paren
+op_amp
+id|sb-&gt;s_anon
 )paren
 suffix:semicolon
 id|dput

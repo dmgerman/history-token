@@ -316,7 +316,8 @@ id|pc-&gt;sg-&gt;page
 op_plus
 id|pc-&gt;sg-&gt;offset
 suffix:semicolon
-id|atapi_input_bytes
+id|atapi_read
+c_func
 (paren
 id|drive
 comma
@@ -437,7 +438,8 @@ id|pc-&gt;sg-&gt;page
 op_plus
 id|pc-&gt;sg-&gt;offset
 suffix:semicolon
-id|atapi_output_bytes
+id|atapi_write
+c_func
 (paren
 id|drive
 comma
@@ -1747,7 +1749,7 @@ id|temp
 )paren
 suffix:semicolon
 r_else
-id|atapi_input_bytes
+id|atapi_read
 c_func
 (paren
 id|drive
@@ -1849,7 +1851,8 @@ id|bcount
 )paren
 suffix:semicolon
 r_else
-id|atapi_input_bytes
+id|atapi_read
+c_func
 (paren
 id|drive
 comma
@@ -1885,7 +1888,8 @@ id|bcount
 )paren
 suffix:semicolon
 r_else
-id|atapi_output_bytes
+id|atapi_write
+c_func
 (paren
 id|drive
 comma
@@ -2033,7 +2037,8 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Set the interrupt routine */
-id|atapi_output_bytes
+id|atapi_write
+c_func
 (paren
 id|drive
 comma

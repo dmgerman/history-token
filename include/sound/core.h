@@ -1015,6 +1015,9 @@ DECL|macro|snd_free_isa_pages
 mdefine_line|#define snd_free_isa_pages(size, ptr, dma_addr) snd_free_pages(ptr, size)
 macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
+r_struct
+id|pci_dev
+suffix:semicolon
 r_void
 op_star
 id|snd_malloc_pci_pages

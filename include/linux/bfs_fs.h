@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_BFS_FS_H
 DECL|macro|_LINUX_BFS_FS_H
 mdefine_line|#define _LINUX_BFS_FS_H
 macro_line|#include &lt;linux/bfs_fs_i.h&gt;
+macro_line|#include &lt;linux/bfs_fs_sb.h&gt;
 DECL|macro|BFS_BSIZE_BITS
 mdefine_line|#define BFS_BSIZE_BITS&t;&t;9
 DECL|macro|BFS_BSIZE
@@ -203,6 +204,25 @@ r_struct
 id|file_operations
 id|bfs_dir_operations
 suffix:semicolon
+DECL|function|BFS_SB
+r_static
+r_inline
+r_struct
+id|bfs_sb_info
+op_star
+id|BFS_SB
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
+suffix:semicolon
+)brace
 DECL|function|BFS_I
 r_static
 r_inline

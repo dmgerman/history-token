@@ -115,7 +115,6 @@ multiline_comment|/* 4.80.20    Set max_sectors in Scsi_Host structure ( if &gt;
 multiline_comment|/*            5 second delay needed after resetting an i960 adapter          */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * Conditional Compilation directives for this driver:&n; *&n; * IPS_DEBUG            - Turn on debugging info&n; *&n; *&n; * Parameters:&n; *&n; * debug:&lt;number&gt;       - Set debug level to &lt;number&gt;&n; *                        NOTE: only works when IPS_DEBUG compile directive&n; *                              is used.&n; *&n; *       1              - Normal debug messages&n; *       2              - Verbose debug messages&n; *       11             - Method trace (non interrupt)&n; *       12             - Method trace (includes interrupt)&n; *&n; * noreset              - Don&squot;t reset the controller&n; * nocmdline            - Turn off passthru support&n; * noi2o                - Don&squot;t use I2O Queues (ServeRAID 4 only)&n; * nommap               - Don&squot;t use memory mapped I/O&n; * ioctlsize            - Initial size of the IOCTL buffer&n; */
-macro_line|#error Please convert me to Documentation/DMA-mapping.txt
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -3987,6 +3986,32 @@ id|ips_ha_t
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;          * Set pci_dev and dma_mask&n;          */
+id|pci_set_dma_mask
+c_func
+(paren
+id|dev
+(braket
+id|i
+)braket
+comma
+(paren
+id|u64
+)paren
+l_int|0xffffffff
+)paren
+suffix:semicolon
+id|scsi_set_pci_device
+c_func
+(paren
+id|sh
+comma
+id|dev
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5336,6 +5361,17 @@ op_logical_neg
 id|ha-&gt;active
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;(%s%d) controller not active&bslash;n&quot;
+comma
+id|ips_name
+comma
+id|i
+)paren
+suffix:semicolon
 id|scsi_unregister
 c_func
 (paren
@@ -11529,7 +11565,7 @@ id|sg_list
 suffix:semicolon
 id|scb-&gt;scb_busaddr
 op_assign
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|scb
@@ -11616,7 +11652,7 @@ id|pt-&gt;CmdBSize
 (brace
 id|scb-&gt;data_busaddr
 op_assign
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|scb-&gt;scsi_cmd-&gt;request_buffer
@@ -11647,7 +11683,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 op_amp
@@ -11857,7 +11893,7 @@ id|sg_list
 suffix:semicolon
 id|scb-&gt;scb_busaddr
 op_assign
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|scb
@@ -12044,7 +12080,7 @@ suffix:semicolon
 )brace
 id|scb-&gt;data_busaddr
 op_assign
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|ha-&gt;ioctl_data
@@ -12140,7 +12176,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 op_amp
@@ -13971,7 +14007,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|buffer
@@ -14662,6 +14698,10 @@ id|item
 suffix:semicolon
 r_int
 id|ret
+comma
+id|sg_entries
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|intr_status
@@ -15480,6 +15520,24 @@ id|sg
 op_assign
 id|SC-&gt;request_buffer
 suffix:semicolon
+id|sg_entries
+op_assign
+id|pci_map_sg
+c_func
+(paren
+id|ha-&gt;pcidev
+comma
+id|sg
+comma
+id|SC-&gt;use_sg
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|SC-&gt;sc_data_direction
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -15526,15 +15584,14 @@ id|scb-&gt;data_len
 suffix:semicolon
 id|scb-&gt;data_busaddr
 op_assign
-id|VIRT_TO_BUS
+id|sg_dma_address
 c_func
 (paren
+op_amp
 id|sg
 (braket
 l_int|0
 )braket
-dot
-id|address
 )paren
 suffix:semicolon
 id|scb-&gt;sg_len
@@ -15568,15 +15625,14 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|sg_dma_address
 c_func
 (paren
+op_amp
 id|sg
 (braket
 l_int|0
 )braket
-dot
-id|address
 )paren
 )paren
 suffix:semicolon
@@ -15633,15 +15689,14 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|sg_dma_address
 c_func
 (paren
+op_amp
 id|sg
 (braket
 id|i
 )braket
-dot
-id|address
 )paren
 )paren
 suffix:semicolon
@@ -15704,7 +15759,7 @@ id|scb-&gt;breakup
 )paren
 id|scb-&gt;sg_len
 op_assign
-id|SC-&gt;use_sg
+id|sg_entries
 suffix:semicolon
 r_else
 id|scb-&gt;sg_len
@@ -15718,7 +15773,7 @@ id|scb-&gt;data_len
 suffix:semicolon
 id|scb-&gt;data_busaddr
 op_assign
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|scb-&gt;sg_list
@@ -15765,7 +15820,7 @@ id|scb-&gt;data_len
 suffix:semicolon
 id|scb-&gt;data_busaddr
 op_assign
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|SC-&gt;request_buffer
@@ -17569,15 +17624,14 @@ id|ha-&gt;max_xfer
 suffix:semicolon
 id|scb-&gt;data_busaddr
 op_assign
-id|VIRT_TO_BUS
+id|sg_dma_address
 c_func
 (paren
+op_amp
 id|sg
 (braket
 l_int|0
 )braket
-dot
-id|address
 op_plus
 (paren
 id|bk_save
@@ -17612,15 +17666,14 @@ id|ha-&gt;max_xfer
 suffix:semicolon
 id|scb-&gt;data_busaddr
 op_assign
-id|VIRT_TO_BUS
+id|sg_dma_address
 c_func
 (paren
+op_amp
 id|sg
 (braket
 l_int|0
 )braket
-dot
-id|address
 op_plus
 (paren
 id|bk_save
@@ -17666,15 +17719,14 @@ l_int|0
 dot
 id|address
 op_assign
-id|VIRT_TO_BUS
+id|sg_dma_address
 c_func
 (paren
+op_amp
 id|sg
 (braket
 id|bk_save
 )braket
-dot
-id|address
 op_plus
 id|ha-&gt;max_xfer
 op_star
@@ -17809,15 +17861,14 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|sg_dma_address
 c_func
 (paren
+op_amp
 id|sg
 (braket
 id|bk_save
 )braket
-dot
-id|address
 )paren
 )paren
 suffix:semicolon
@@ -17890,15 +17941,14 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|sg_dma_address
 c_func
 (paren
+op_amp
 id|sg
 (braket
 id|i
 )braket
-dot
-id|address
 )paren
 )paren
 suffix:semicolon
@@ -17968,7 +18018,7 @@ id|scb-&gt;data_len
 suffix:semicolon
 id|scb-&gt;data_busaddr
 op_assign
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|scb-&gt;sg_list
@@ -18002,7 +18052,7 @@ id|ha-&gt;max_xfer
 suffix:semicolon
 id|scb-&gt;data_busaddr
 op_assign
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|scb-&gt;scsi_cmd-&gt;request_buffer
@@ -18035,7 +18085,7 @@ id|ha-&gt;max_xfer
 suffix:semicolon
 id|scb-&gt;data_busaddr
 op_assign
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|scb-&gt;scsi_cmd-&gt;request_buffer
@@ -18186,6 +18236,27 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* end case */
+id|pci_unmap_sg
+c_func
+(paren
+id|ha-&gt;pcidev
+comma
+(paren
+r_struct
+id|scatterlist
+op_star
+)paren
+id|scb-&gt;scsi_cmd-&gt;request_buffer
+comma
+id|scb-&gt;sg_len
+comma
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|scb-&gt;scsi_cmd-&gt;sc_data_direction
+)paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -19091,7 +19162,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 op_amp
@@ -19516,7 +19587,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|ha-&gt;enq
@@ -19551,7 +19622,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 op_amp
@@ -19792,7 +19863,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 op_amp
@@ -21756,7 +21827,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|ha-&gt;dummy
@@ -21770,7 +21841,7 @@ suffix:semicolon
 multiline_comment|/* set bus address of scb */
 id|scb-&gt;scb_busaddr
 op_assign
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|scb
@@ -21797,7 +21868,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|ha-&gt;dummy
@@ -24026,7 +24097,7 @@ id|ha-&gt;adapt-&gt;status
 suffix:semicolon
 id|phys_status_start
 op_assign
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|ha-&gt;adapt-&gt;status
@@ -24148,7 +24219,7 @@ id|ha-&gt;adapt-&gt;status
 suffix:semicolon
 id|phys_status_start
 op_assign
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|ha-&gt;adapt-&gt;status
@@ -26016,7 +26087,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|ha-&gt;enq
@@ -26180,7 +26251,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|ha-&gt;subsys
@@ -26365,7 +26436,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|ha-&gt;conf
@@ -26557,7 +26628,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|VIRT_TO_BUS
+id|virt_to_bus
 c_func
 (paren
 id|ha-&gt;nvram

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 multiline_comment|/*&n; * main cross-CPU interfaces, handles INIT, TLB flush, STOP, etc.&n; * (defined in asm header):&n; */
 multiline_comment|/*&n; * stops all CPUs but the current one:&n; */

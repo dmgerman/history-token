@@ -49,6 +49,7 @@ id|list
 suffix:semicolon
 DECL|member|flags
 r_int
+r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* type, status, etc. */
