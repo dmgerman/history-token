@@ -51,6 +51,13 @@ mdefine_line|#define ATA_TAG_POISON&t;&t;0xfafbfcfdU
 r_enum
 (brace
 multiline_comment|/* various global constants */
+DECL|enumerator|LIBATA_MAX_PRD
+id|LIBATA_MAX_PRD
+op_assign
+id|ATA_MAX_PRD
+op_div
+l_int|2
+comma
 DECL|enumerator|ATA_MAX_PORTS
 id|ATA_MAX_PORTS
 op_assign
