@@ -2,7 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_SN_RW_MMR_H
 DECL|macro|_ASM_IA64_SN_RW_MMR_H
 mdefine_line|#define _ASM_IA64_SN_RW_MMR_H
-multiline_comment|/*&n; * This file contains macros used to access MMR registers via&n; * uncached physical addresses.&n; * &t;pio_phys_read_mmr  - read an MMR&n; * &t;pio_phys_write_mmr - write an MMR&n; * &t;pio_atomic_phys_write_mmrs - atomically write 2 MMRs with psr.ic=0&n; * &t;&t;(interrupt collection)&n; *&n; * Addresses passed to these routines should be uncached physical addresses&n; * ie., 0x80000....&n; */
+multiline_comment|/*&n; * This file contains macros used to access MMR registers via&n; * uncached physical addresses.&n; * &t;pio_phys_read_mmr  - read an MMR&n; * &t;pio_phys_write_mmr - write an MMR&n; * &t;pio_atomic_phys_write_mmrs - atomically write 1 or 2 MMRs with psr.ic=0&n; *&t;&t;Second MMR will be skipped if address is NULL&n; *&n; * Addresses passed to these routines should be uncached physical addresses&n; * ie., 0x80000....&n; */
 r_extern
 r_inline
 r_int
@@ -117,9 +117,10 @@ r_volatile
 (paren
 l_string|&quot;mov r2=psr;;&quot;
 l_string|&quot;rsm psr.i | psr.dt | psr.ic;;&quot;
+l_string|&quot;cmp.ne p9,p0=%2,r0;&quot;
 l_string|&quot;srlz.i;;&quot;
 l_string|&quot;st8.rel [%0]=%1;&quot;
-l_string|&quot;st8.rel [%2]=%3;;&quot;
+l_string|&quot;(p9) st8.rel [%2]=%3;;&quot;
 l_string|&quot;mov psr.l=r2;;&quot;
 l_string|&quot;srlz.i;;&quot;
 op_scope_resolution
@@ -143,6 +144,8 @@ l_string|&quot;r&quot;
 id|val2
 )paren
 suffix:colon
+l_string|&quot;p9&quot;
+comma
 l_string|&quot;r2&quot;
 comma
 l_string|&quot;memory&quot;

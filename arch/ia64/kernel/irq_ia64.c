@@ -97,6 +97,7 @@ c_func
 id|isa_irq_to_vector_map
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_GENERIC_HARDIRQS
 r_static
 r_inline
 r_void
@@ -155,6 +156,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_int
 DECL|function|assign_irq_vector
 id|assign_irq_vector

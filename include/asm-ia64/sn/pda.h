@@ -34,6 +34,26 @@ r_int
 op_star
 id|led_address
 suffix:semicolon
+DECL|member|nasid_bitmask
+id|u16
+id|nasid_bitmask
+suffix:semicolon
+DECL|member|shub2
+id|u8
+id|shub2
+suffix:semicolon
+DECL|member|nasid_shift
+id|u8
+id|nasid_shift
+suffix:semicolon
+DECL|member|as_shift
+id|u8
+id|as_shift
+suffix:semicolon
+DECL|member|shub_1_1_found
+id|u8
+id|shub_1_1_found
+suffix:semicolon
 DECL|member|led_state
 id|u8
 id|led_state
@@ -43,10 +63,6 @@ id|u8
 id|hb_state
 suffix:semicolon
 multiline_comment|/* supports blinking heartbeat leds */
-DECL|member|shub_1_1_found
-id|u8
-id|shub_1_1_found
-suffix:semicolon
 DECL|member|hb_count
 r_int
 r_int
@@ -71,19 +87,17 @@ r_int
 op_star
 id|pio_write_status_addr
 suffix:semicolon
+DECL|member|pio_write_status_val
+r_int
+r_int
+id|pio_write_status_val
+suffix:semicolon
 DECL|member|pio_shub_war_cam_addr
 r_volatile
 r_int
 r_int
 op_star
 id|pio_shub_war_cam_addr
-suffix:semicolon
-DECL|member|mem_write_status_addr
-r_volatile
-r_int
-r_int
-op_star
-id|mem_write_status_addr
 suffix:semicolon
 DECL|member|cpu_bte_if
 r_struct
@@ -147,11 +161,15 @@ id|pda_percpu
 )paren
 suffix:semicolon
 DECL|macro|pda
-mdefine_line|#define pda&t;&t;(&amp;__get_cpu_var(pda_percpu))
+mdefine_line|#define pda&t;&t;(&amp;__ia64_per_cpu_var(pda_percpu))
 DECL|macro|pdacpu
 mdefine_line|#define pdacpu(cpu)&t;(&amp;per_cpu(pda_percpu, cpu))
 multiline_comment|/*&n; * Use this macro to test if shub 1.1 wars should be enabled&n; */
 DECL|macro|enable_shub_wars_1_1
 mdefine_line|#define enable_shub_wars_1_1()&t;(pda-&gt;shub_1_1_found)
+DECL|macro|is_shub2
+mdefine_line|#define is_shub2()&t;(pda-&gt;shub2)
+DECL|macro|is_shub1
+mdefine_line|#define is_shub1()&t;(pda-&gt;shub2 == 0)
 macro_line|#endif /* _ASM_IA64_SN_PDA_H */
 eof

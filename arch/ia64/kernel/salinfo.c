@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * salinfo.c&n; *&n; * Creates entries in /proc/sal for various system features.&n; *&n; * Copyright (c) 2003 Silicon Graphics, Inc.  All rights reserved.&n; * Copyright (c) 2003 Hewlett-Packard Co&n; *&t;Bjorn Helgaas &lt;bjorn.helgaas@hp.com&gt;&n; *&n; * 10/30/2001&t;jbarnes@sgi.com&t;&t;copied much of Stephane&squot;s palinfo&n; *&t;&t;&t;&t;&t;code to create this file&n; * Oct 23 2003&t;kaos@sgi.com&n; *   Replace IPI with set_cpus_allowed() to read a record from the required cpu.&n; *   Redesign salinfo log processing to separate interrupt and user space&n; *   contexts.&n; *   Cache the record across multi-block reads from user space.&n; *   Support &gt; 64 cpus.&n; *   Delete module_exit and MOD_INC/DEC_COUNT, salinfo cannot be a module.&n; *&n; * Jan 28 2004&t;kaos@sgi.com&n; *   Periodically check for outstanding MCA or INIT records.&n; */
+multiline_comment|/*&n; * salinfo.c&n; *&n; * Creates entries in /proc/sal for various system features.&n; *&n; * Copyright (c) 2003 Silicon Graphics, Inc.  All rights reserved.&n; * Copyright (c) 2003 Hewlett-Packard Co&n; *&t;Bjorn Helgaas &lt;bjorn.helgaas@hp.com&gt;&n; *&n; * 10/30/2001&t;jbarnes@sgi.com&t;&t;copied much of Stephane&squot;s palinfo&n; *&t;&t;&t;&t;&t;code to create this file&n; * Oct 23 2003&t;kaos@sgi.com&n; *   Replace IPI with set_cpus_allowed() to read a record from the required cpu.&n; *   Redesign salinfo log processing to separate interrupt and user space&n; *   contexts.&n; *   Cache the record across multi-block reads from user space.&n; *   Support &gt; 64 cpus.&n; *   Delete module_exit and MOD_INC/DEC_COUNT, salinfo cannot be a module.&n; *&n; * Jan 28 2004&t;kaos@sgi.com&n; *   Periodically check for outstanding MCA or INIT records.&n; *&n; * Dec  5 2004&t;kaos@sgi.com&n; *   Standardize which records are cleared automatically.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -670,9 +670,9 @@ id|data-&gt;sem
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Check for outstanding MCA/INIT records every 5 minutes (arbitrary) */
+multiline_comment|/* Check for outstanding MCA/INIT records every minute (arbitrary) */
 DECL|macro|SALINFO_TIMER_DELAY
-mdefine_line|#define SALINFO_TIMER_DELAY (5*60*HZ)
+mdefine_line|#define SALINFO_TIMER_DELAY (60*HZ)
 DECL|variable|salinfo_timer
 r_static
 r_struct
@@ -1402,6 +1402,10 @@ id|data
 op_assign
 id|context
 suffix:semicolon
+id|sal_log_record_header_t
+op_star
+id|rh
+suffix:semicolon
 id|data-&gt;log_size
 op_assign
 id|ia64_sal_get_state_info
@@ -1416,16 +1420,23 @@ op_star
 id|data-&gt;log_buffer
 )paren
 suffix:semicolon
+id|rh
+op_assign
+(paren
+id|sal_log_record_header_t
+op_star
+)paren
+(paren
+id|data-&gt;log_buffer
+)paren
+suffix:semicolon
+multiline_comment|/* Clear corrected errors as they are read from SAL */
 r_if
 c_cond
 (paren
-id|data-&gt;type
+id|rh-&gt;severity
 op_eq
-id|SAL_INFO_TYPE_CPE
-op_logical_or
-id|data-&gt;type
-op_eq
-id|SAL_INFO_TYPE_CMC
+id|sal_log_severity_corrected
 )paren
 id|ia64_sal_clear_state_info
 c_func
@@ -1792,6 +1803,10 @@ r_int
 id|cpu
 )paren
 (brace
+id|sal_log_record_header_t
+op_star
+id|rh
+suffix:semicolon
 id|data-&gt;state
 op_assign
 id|STATE_NO_DATA
@@ -1871,17 +1886,23 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* ia64_mca_log_sal_error_record or salinfo_log_read_cpu already cleared&n;&t; * CPE and CMC errors&n;&t; */
+id|rh
+op_assign
+(paren
+id|sal_log_record_header_t
+op_star
+)paren
+(paren
+id|data-&gt;log_buffer
+)paren
+suffix:semicolon
+multiline_comment|/* Corrected errors have already been cleared from SAL */
 r_if
 c_cond
 (paren
-id|data-&gt;type
+id|rh-&gt;severity
 op_ne
-id|SAL_INFO_TYPE_CPE
-op_logical_and
-id|data-&gt;type
-op_ne
-id|SAL_INFO_TYPE_CMC
+id|sal_log_severity_corrected
 )paren
 id|call_on_cpu
 c_func
