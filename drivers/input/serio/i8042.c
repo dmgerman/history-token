@@ -2246,10 +2246,22 @@ op_amp
 id|I8042_CTR_AUXDIS
 )paren
 )paren
-r_return
-op_minus
-l_int|1
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Failed to disable AUX port, but continuing anyway... Is this a SiS?&bslash;n&quot;
+)paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;If AUX port is really absent please use the &squot;i8042.noaux&squot; option.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
