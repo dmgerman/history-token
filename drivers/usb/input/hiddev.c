@@ -1835,6 +1835,9 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 r_case
 id|HIDIOCGFLAG
 suffix:colon
@@ -1856,6 +1859,9 @@ id|arg
 r_return
 op_minus
 id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 r_case
 id|HIDIOCSFLAG
@@ -2300,6 +2306,9 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 r_case
 id|HIDIOCGFIELDINFO
 suffix:colon
@@ -2473,6 +2482,9 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 r_case
 id|HIDIOCGUCODE
 suffix:colon
@@ -2593,6 +2605,9 @@ id|uref
 r_return
 op_minus
 id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 r_case
 id|HIDIOCGUSAGE

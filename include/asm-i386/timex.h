@@ -15,7 +15,7 @@ DECL|macro|CLOCK_TICK_RATE
 macro_line|#  define CLOCK_TICK_RATE 1189200 /* AMD Elan has different frequency! */
 macro_line|#else
 DECL|macro|CLOCK_TICK_RATE
-macro_line|#  define CLOCK_TICK_RATE 1193180 /* Underlying HZ */
+macro_line|#  define CLOCK_TICK_RATE 1193182 /* Underlying HZ */
 macro_line|#endif
 macro_line|#endif
 DECL|macro|CLOCK_TICK_FACTOR

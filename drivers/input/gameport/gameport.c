@@ -98,7 +98,7 @@ id|gameport_dev_list
 suffix:semicolon
 macro_line|#ifdef __i386__
 DECL|macro|DELTA
-mdefine_line|#define DELTA(x,y)      ((y)-(x)+((y)&lt;(x)?1193180/HZ:0))
+mdefine_line|#define DELTA(x,y)      ((y)-(x)+((y)&lt;(x)?1193182/HZ:0))
 DECL|macro|GET_TIME
 mdefine_line|#define GET_TIME(x)     do { x = get_time_pit(); } while (0)
 DECL|function|get_time_pit

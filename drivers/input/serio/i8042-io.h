@@ -12,14 +12,19 @@ mdefine_line|#define I8042_MUX_PHYS_DESC &quot;isa0060/serio%d&quot;
 multiline_comment|/*&n; * IRQs.&n; */
 macro_line|#ifdef __alpha__
 DECL|macro|I8042_KBD_IRQ
-mdefine_line|#define I8042_KBD_IRQ&t;1
+macro_line|# define I8042_KBD_IRQ&t;1
 DECL|macro|I8042_AUX_IRQ
-mdefine_line|#define I8042_AUX_IRQ&t;(RTC_PORT(0) == 0x170 ? 9 : 12)&t;/* Jensen is special */
+macro_line|# define I8042_AUX_IRQ&t;(RTC_PORT(0) == 0x170 ? 9 : 12)&t;/* Jensen is special */
+macro_line|#elif defined(__ia64__)
+DECL|macro|I8042_KBD_IRQ
+macro_line|# define I8042_KBD_IRQ isa_irq_to_vector(1)
+DECL|macro|I8042_AUX_IRQ
+macro_line|# define I8042_AUX_IRQ isa_irq_to_vector(12)
 macro_line|#else
 DECL|macro|I8042_KBD_IRQ
-mdefine_line|#define I8042_KBD_IRQ&t;1
+macro_line|# define I8042_KBD_IRQ&t;1
 DECL|macro|I8042_AUX_IRQ
-mdefine_line|#define I8042_AUX_IRQ&t;12
+macro_line|# define I8042_AUX_IRQ&t;12
 macro_line|#endif
 multiline_comment|/*&n; * Register numbers.&n; */
 DECL|macro|I8042_COMMAND_REG
