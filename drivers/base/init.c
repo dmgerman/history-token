@@ -34,6 +34,14 @@ r_void
 suffix:semicolon
 r_extern
 r_int
+id|platform_bus_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|sys_bus_init
 c_func
 (paren
@@ -80,6 +88,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* These are also core pieces, but must come after the &n;&t; * core core pieces.&n;&t; */
+id|platform_bus_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|sys_bus_init
 c_func
 (paren
