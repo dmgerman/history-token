@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#include &lt;linux/usb_ch9.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
