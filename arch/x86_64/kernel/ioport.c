@@ -46,11 +46,7 @@ op_plus
 (paren
 id|base
 op_div
-r_sizeof
-(paren
-r_int
-r_int
-)paren
+id|BITS_PER_LONG
 )paren
 suffix:semicolon
 r_int
@@ -59,7 +55,11 @@ id|low_index
 op_assign
 id|base
 op_amp
-l_int|0x3f
+(paren
+id|BITS_PER_LONG
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 r_int
 id|length
@@ -90,7 +90,7 @@ c_cond
 (paren
 id|length
 OL
-l_int|64
+id|BITS_PER_LONG
 )paren
 id|mask
 op_and_assign
@@ -123,7 +123,7 @@ id|mask
 suffix:semicolon
 id|length
 op_sub_assign
-l_int|64
+id|BITS_PER_LONG
 suffix:semicolon
 )brace
 id|mask
@@ -143,7 +143,7 @@ c_loop
 (paren
 id|length
 op_ge
-l_int|64
+id|BITS_PER_LONG
 )paren
 (brace
 op_star
@@ -154,7 +154,7 @@ id|mask
 suffix:semicolon
 id|length
 op_sub_assign
-l_int|64
+id|BITS_PER_LONG
 suffix:semicolon
 )brace
 r_if
@@ -460,7 +460,8 @@ op_assign
 (paren
 id|regs.eflags
 op_amp
-l_int|0xffffffffffffcfff
+op_complement
+l_int|0x3000UL
 )paren
 op_or
 (paren
