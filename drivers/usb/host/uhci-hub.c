@@ -156,7 +156,7 @@ DECL|macro|CLR_RH_PORTSTAT
 mdefine_line|#define CLR_RH_PORTSTAT(x) &bslash;&n;&t;status = inw(io_addr + USBPORTSC1 + 2 * (wIndex-1)); &bslash;&n;&t;status = (status &amp; 0xfff5) &amp; ~(x); &bslash;&n;&t;outw(status, io_addr + USBPORTSC1 + 2 * (wIndex-1))
 DECL|macro|SET_RH_PORTSTAT
 mdefine_line|#define SET_RH_PORTSTAT(x) &bslash;&n;&t;status = inw(io_addr + USBPORTSC1 + 2 * (wIndex-1)); &bslash;&n;&t;status = (status &amp; 0xfff5) | (x); &bslash;&n;&t;outw(status, io_addr + USBPORTSC1 + 2 * (wIndex-1))
-singleline_comment|// FIXME: Shouldn&squot;t this return the length of the data too?
+multiline_comment|/* size of returned buffer is part of USB spec */
 DECL|function|uhci_hub_control
 r_static
 r_int
