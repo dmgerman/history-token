@@ -81,7 +81,11 @@ id|flags
 suffix:semicolon
 id|irq_nr
 op_and_assign
+(paren
 id|NR_IRQS
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 id|current_mask
 op_assign
@@ -226,7 +230,11 @@ id|flags
 suffix:semicolon
 id|irq_nr
 op_and_assign
+(paren
 id|NR_IRQS
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 id|current_mask
 op_assign

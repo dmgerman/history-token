@@ -479,7 +479,11 @@ id|cpu_irq
 op_assign
 id|irq
 op_amp
+(paren
 id|NR_IRQS
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 id|action
 op_assign
@@ -1400,7 +1404,11 @@ id|cpu_irq
 op_assign
 id|irq
 op_amp
+(paren
 id|NR_IRQS
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 id|action
 op_assign
@@ -1805,7 +1813,11 @@ id|cpu_irq
 op_assign
 id|irq
 op_amp
+(paren
 id|NR_IRQS
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2192,7 +2204,11 @@ id|cpu_irq
 op_assign
 id|irq
 op_amp
+(paren
 id|NR_IRQS
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 r_if
 c_cond
