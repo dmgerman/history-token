@@ -22,12 +22,6 @@ c_func
 l_string|&quot;ESS ESx688 lowlevel module&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

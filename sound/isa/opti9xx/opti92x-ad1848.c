@@ -34,12 +34,6 @@ c_func
 l_string|&quot;Massimo Piccioni &lt;dafastidio@libero.it&gt;&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
@@ -53,7 +47,7 @@ c_func
 l_string|&quot;OPTi93X&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{OPTi,82C931/3}}&quot;
@@ -67,7 +61,7 @@ c_func
 l_string|&quot;OPTi92X - CS4231&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{OPTi,82C924 (CS4231)},&quot;
@@ -81,7 +75,7 @@ c_func
 l_string|&quot;OPTi92X - AD1848&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{OPTi,82C924 (AD1848)},&quot;
@@ -193,14 +187,6 @@ comma
 l_string|&quot;Index value for opti9xx based soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -219,17 +205,8 @@ comma
 l_string|&quot;ID string for opti9xx based soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 singleline_comment|//module_param(enable, bool, 0444);
 singleline_comment|//MODULE_PARM_DESC(enable, &quot;Enable opti9xx soundcard.&quot;);
-singleline_comment|//MODULE_PARM_SYNTAX(enable, SNDRV_ENABLE_DESC);
 id|module_param
 c_func
 (paren
@@ -246,14 +223,6 @@ c_func
 id|isapnp
 comma
 l_string|&quot;Enable ISA PnP detection for specified soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|isapnp
-comma
-id|SNDRV_ISAPNP_DESC
 )paren
 suffix:semicolon
 id|module_param
@@ -274,14 +243,6 @@ comma
 l_string|&quot;WSS port # for opti9xx driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|port
-comma
-id|SNDRV_PORT_DESC
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -298,14 +259,6 @@ c_func
 id|mpu_port
 comma
 l_string|&quot;MPU-401 port # for opti9xx driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_port
-comma
-id|SNDRV_PORT_DESC
 )paren
 suffix:semicolon
 id|module_param
@@ -326,14 +279,6 @@ comma
 l_string|&quot;FM port # for opti9xx driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|fm_port
-comma
-id|SNDRV_PORT_DESC
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -350,14 +295,6 @@ c_func
 id|irq
 comma
 l_string|&quot;WSS irq # for opti9xx driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|irq
-comma
-id|SNDRV_IRQ_DESC
 )paren
 suffix:semicolon
 id|module_param
@@ -378,14 +315,6 @@ comma
 l_string|&quot;MPU-401 irq # for opti9xx driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_irq
-comma
-id|SNDRV_IRQ_DESC
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -402,14 +331,6 @@ c_func
 id|dma1
 comma
 l_string|&quot;1st dma # for opti9xx driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma1
-comma
-id|SNDRV_DMA_DESC
 )paren
 suffix:semicolon
 macro_line|#if defined(CS4231) || defined(OPTi93X)
@@ -429,14 +350,6 @@ c_func
 id|dma2
 comma
 l_string|&quot;2nd dma # for opti9xx driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma2
-comma
-id|SNDRV_DMA_DESC
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* CS4231 || OPTi93X */

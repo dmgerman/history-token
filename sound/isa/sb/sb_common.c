@@ -28,12 +28,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
 DECL|macro|BUSY_LOOPS
 mdefine_line|#define BUSY_LOOPS 100000
 DECL|macro|IO_DEBUG

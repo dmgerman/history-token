@@ -30,13 +30,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Diamond Technologies DT-019X},&quot;
@@ -168,14 +162,6 @@ comma
 l_string|&quot;Index value for DT-019X based soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -194,14 +180,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for DT-019X based soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -224,14 +202,6 @@ comma
 l_string|&quot;Enable DT-019X based soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -250,14 +220,6 @@ c_func
 id|port
 comma
 l_string|&quot;Port # for dt019x driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|port
-comma
-id|SNDRV_PORT12_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -280,14 +242,6 @@ comma
 l_string|&quot;MPU-401 port # for dt019x driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_port
-comma
-id|SNDRV_PORT12_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -306,14 +260,6 @@ c_func
 id|fm_port
 comma
 l_string|&quot;FM port # for dt019x driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|fm_port
-comma
-id|SNDRV_PORT12_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -336,14 +282,6 @@ comma
 l_string|&quot;IRQ # for dt019x driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|irq
-comma
-id|SNDRV_IRQ_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -364,14 +302,6 @@ comma
 l_string|&quot;MPU-401 IRQ # for dt019x driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_irq
-comma
-id|SNDRV_IRQ_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -390,14 +320,6 @@ c_func
 id|dma8
 comma
 l_string|&quot;8-bit DMA # for dt019x driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma8
-comma
-id|SNDRV_DMA8_DESC
 )paren
 suffix:semicolon
 DECL|struct|snd_card_dt019x

@@ -25,12 +25,6 @@ c_func
 l_string|&quot;Jaroslav Kysela &lt;perex@suse.cz&gt;&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
@@ -44,7 +38,7 @@ c_func
 l_string|&quot;AMD InterWave&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Gravis,UltraSound Plug &amp; Play},&quot;
@@ -61,7 +55,7 @@ c_func
 l_string|&quot;AMD InterWave STB with TEA6330T&quot;
 )paren
 suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{AMD,InterWave STB with TEA6330T}}&quot;
@@ -307,14 +301,6 @@ comma
 l_string|&quot;Index value for InterWave soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -333,14 +319,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for InterWave soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -363,14 +341,6 @@ comma
 l_string|&quot;Enable InterWave soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -391,14 +361,6 @@ comma
 l_string|&quot;ISA PnP detection for specified soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|isapnp
-comma
-id|SNDRV_ISAPNP_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -417,15 +379,6 @@ c_func
 id|port
 comma
 l_string|&quot;Port # for InterWave driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x210,0x260,0x10}},dialog:list&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef SNDRV_STB
@@ -449,15 +402,6 @@ comma
 l_string|&quot;Tone control (TEA6330T - i2c bus) port # for InterWave driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|port_tc
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x350,0x380,0x10}},dialog:list&quot;
-)paren
-suffix:semicolon
 macro_line|#endif
 id|module_param_array
 c_func
@@ -477,15 +421,6 @@ c_func
 id|irq
 comma
 l_string|&quot;IRQ # for InterWave driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|irq
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{3},{5},{9},{11},{12},{15}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -508,14 +443,6 @@ comma
 l_string|&quot;DMA1 # for InterWave driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma1
-comma
-id|SNDRV_DMA_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -534,14 +461,6 @@ c_func
 id|dma2
 comma
 l_string|&quot;DMA2 # for InterWave driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma2
-comma
-id|SNDRV_DMA_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -564,15 +483,6 @@ comma
 l_string|&quot;Joystick DAC level 0.59V-4.52V or 0.389V-2.98V for InterWave driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|joystick_dac
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0,31}}&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -591,16 +501,6 @@ c_func
 id|midi
 comma
 l_string|&quot;MIDI UART enable for InterWave driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|midi
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -623,15 +523,6 @@ comma
 l_string|&quot;Reserved PCM channels for InterWave driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|pcm_channels
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{2,16}}&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -650,16 +541,6 @@ c_func
 id|effect
 comma
 l_string|&quot;Effects enable for InterWave driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|effect
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 DECL|struct|snd_interwave

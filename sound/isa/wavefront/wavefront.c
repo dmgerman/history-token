@@ -27,13 +27,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Turtle Beach,Maui/Tropez/Tropez+}}&quot;
@@ -245,14 +239,6 @@ comma
 l_string|&quot;Index value for WaveFront soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -273,14 +259,6 @@ comma
 l_string|&quot;ID string for WaveFront soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -299,14 +277,6 @@ c_func
 id|enable
 comma
 l_string|&quot;Enable WaveFront soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
@@ -330,14 +300,6 @@ comma
 l_string|&quot;ISA PnP detection for WaveFront soundcards.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|isapnp
-comma
-id|SNDRV_ISAPNP_DESC
-)paren
-suffix:semicolon
 macro_line|#endif
 id|module_param_array
 c_func
@@ -357,14 +319,6 @@ c_func
 id|cs4232_pcm_port
 comma
 l_string|&quot;Port # for CS4232 PCM interface.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|cs4232_pcm_port
-comma
-id|SNDRV_PORT12_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -387,15 +341,6 @@ comma
 l_string|&quot;IRQ # for CS4232 PCM interface.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|cs4232_pcm_irq
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{5},{7},{9},{11},{12},{15}},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -414,14 +359,6 @@ c_func
 id|dma1
 comma
 l_string|&quot;DMA1 # for CS4232 PCM interface.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma1
-comma
-id|SNDRV_DMA_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -444,14 +381,6 @@ comma
 l_string|&quot;DMA2 # for CS4232 PCM interface.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma2
-comma
-id|SNDRV_DMA_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -470,14 +399,6 @@ c_func
 id|cs4232_mpu_port
 comma
 l_string|&quot;port # for CS4232 MPU-401 interface.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|cs4232_mpu_port
-comma
-id|SNDRV_PORT12_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -500,15 +421,6 @@ comma
 l_string|&quot;IRQ # for CS4232 MPU-401 interface.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|cs4232_mpu_irq
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{9},{11},{12},{15}},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -527,15 +439,6 @@ c_func
 id|ics2115_irq
 comma
 l_string|&quot;IRQ # for ICS2115.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|ics2115_irq
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{9},{11},{12},{15}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -558,14 +461,6 @@ comma
 l_string|&quot;Port # for ICS2115.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|ics2115_port
-comma
-id|SNDRV_PORT12_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -586,14 +481,6 @@ comma
 l_string|&quot;FM port #.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|fm_port
-comma
-id|SNDRV_PORT12_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -612,16 +499,6 @@ c_func
 id|use_cs4232_midi
 comma
 l_string|&quot;Use CS4232 MPU-401 interface (inaccessibly located inside your computer)&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|use_cs4232_midi
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_FALSE_DESC
 )paren
 suffix:semicolon
 DECL|variable|snd_wavefront_legacy

@@ -27,13 +27,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{ESS,AudioDrive ES968}}&quot;
@@ -131,14 +125,6 @@ comma
 l_string|&quot;Index value for es968 based soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -157,14 +143,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for es968 based soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -187,14 +165,6 @@ comma
 l_string|&quot;Enable es968 based soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -213,14 +183,6 @@ c_func
 id|port
 comma
 l_string|&quot;Port # for es968 driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|port
-comma
-id|SNDRV_PORT12_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -243,14 +205,6 @@ comma
 l_string|&quot;IRQ # for es968 driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|irq
-comma
-id|SNDRV_IRQ_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -269,14 +223,6 @@ c_func
 id|dma8
 comma
 l_string|&quot;8-bit DMA # for es968 driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma8
-comma
-id|SNDRV_DMA8_DESC
 )paren
 suffix:semicolon
 DECL|struct|snd_card_es968

@@ -26,12 +26,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
 macro_line|#ifdef SNDRV_LITTLE_ENDIAN
 DECL|macro|CSP_HDR_VALUE
 mdefine_line|#define CSP_HDR_VALUE(a,b,c,d)&t;((a) | ((b)&lt;&lt;8) | ((c)&lt;&lt;16) | ((d)&lt;&lt;24))
