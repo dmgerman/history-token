@@ -333,7 +333,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Delete any timer for the current task. Because we use del_timer_sync(),&n; * this function should never be called while holding queue-&gt;lock.&n; */
 r_static
-r_inline
 r_void
 DECL|function|rpc_delete_timer
 id|rpc_delete_timer
@@ -345,6 +344,17 @@ op_star
 id|task
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|RPC_IS_QUEUED
+c_func
+(paren
+id|task
+)paren
+)paren
+r_return
+suffix:semicolon
 r_if
 c_cond
 (paren
