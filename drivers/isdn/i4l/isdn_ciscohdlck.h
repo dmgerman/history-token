@@ -11,14 +11,5 @@ op_star
 id|p
 )paren
 suffix:semicolon
-r_void
-id|isdn_ciscohdlck_disconnected
-c_func
-(paren
-id|isdn_net_local
-op_star
-id|lp
-)paren
-suffix:semicolon
 macro_line|#endif
 eof

@@ -986,6 +986,7 @@ id|lp
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|isdn_ciscohdlck_disconnected
 id|isdn_ciscohdlck_disconnected
@@ -1848,6 +1849,10 @@ suffix:semicolon
 id|p-&gt;local.connected
 op_assign
 id|isdn_ciscohdlck_connected
+suffix:semicolon
+id|p-&gt;local.disconnected
+op_assign
+id|isdn_ciscohdlck_disconnected
 suffix:semicolon
 r_return
 l_int|0

@@ -552,6 +552,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * unbind isdn_net_local &lt;=&gt; ippp-device&n; * note: it can happen, that we hangup/free the master before the slaves&n; *       in this case we bind another lp to the master device&n; */
+r_static
 r_void
 DECL|function|isdn_ppp_free
 id|isdn_ppp_free
@@ -13161,6 +13162,10 @@ suffix:semicolon
 id|p-&gt;local.connected
 op_assign
 id|isdn_ppp_wakeup_daemon
+suffix:semicolon
+id|p-&gt;local.disconnected
+op_assign
+id|isdn_ppp_free
 suffix:semicolon
 r_return
 l_int|0
