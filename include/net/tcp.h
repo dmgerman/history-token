@@ -656,7 +656,6 @@ mdefine_line|#define tcptw_sk(__sk)&t;((struct tcp_tw_bucket *)(__sk))
 DECL|function|tcp_v4_rcv_saddr
 r_static
 r_inline
-r_const
 id|u32
 id|tcp_v4_rcv_saddr
 c_func
@@ -699,7 +698,6 @@ macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
 DECL|function|__tcp_v6_rcv_saddr
 r_static
 r_inline
-r_const
 r_struct
 id|in6_addr
 op_star
@@ -745,7 +743,6 @@ suffix:semicolon
 DECL|function|tcp_v6_rcv_saddr
 r_static
 r_inline
-r_const
 r_struct
 id|in6_addr
 op_star

@@ -31,6 +31,10 @@ id|skb-&gt;dev
 op_eq
 id|p-&gt;dev
 op_logical_or
+id|skb-&gt;len
+OG
+id|p-&gt;dev-&gt;mtu
+op_logical_or
 id|p-&gt;state
 op_ne
 id|BR_STATE_FORWARDING

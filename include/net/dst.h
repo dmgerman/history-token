@@ -544,6 +544,13 @@ c_func
 (paren
 id|dst_underflow_bug_msg
 comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|dst-&gt;__refcnt
+)paren
+comma
 id|dst
 comma
 id|current_text_addr
