@@ -114,6 +114,34 @@ id|llc
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/skbuff.h&gt;
+DECL|function|ebt_802_3_hdr
+r_static
+r_inline
+r_struct
+id|ebt_802_3_hdr
+op_star
+id|ebt_802_3_hdr
+c_func
+(paren
+r_const
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|ebt_802_3_hdr
+op_star
+)paren
+id|skb-&gt;mac.raw
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|struct|ebt_802_3_info
 r_struct
 id|ebt_802_3_info

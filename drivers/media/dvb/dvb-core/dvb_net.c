@@ -488,7 +488,11 @@ id|dev-&gt;hard_header_len
 suffix:semicolon
 id|eth
 op_assign
-id|skb-&gt;mac.ethernet
+id|eth_hdr
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 r_if
 c_cond

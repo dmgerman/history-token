@@ -89,7 +89,13 @@ op_logical_and
 id|memcmp
 c_func
 (paren
-id|skb-&gt;mac.ethernet-&gt;h_source
+id|eth_hdr
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|h_source
 comma
 id|info-&gt;srcaddr
 comma
