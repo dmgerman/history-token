@@ -4110,6 +4110,11 @@ r_struct
 id|tcp_opt
 op_star
 id|tp
+comma
+r_struct
+id|dst_entry
+op_star
+id|dst
 )paren
 suffix:semicolon
 multiline_comment|/* Slow start with delack produces 3 packets of burst, so that&n; * it is safe &quot;de facto&quot;.&n; */

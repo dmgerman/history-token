@@ -32,7 +32,7 @@ r_int
 r_int
 id|nmi_watchdog
 op_assign
-id|NMI_LOCAL_APIC
+id|NMI_IO_APIC
 suffix:semicolon
 DECL|variable|nmi_hz
 r_static
@@ -442,6 +442,12 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
 macro_line|#include &lt;linux/device.h&gt;
+DECL|variable|nmi_pm_active
+r_static
+r_int
+id|nmi_pm_active
+suffix:semicolon
+multiline_comment|/* nmi_active before suspend */
 DECL|function|lapic_nmi_suspend
 r_static
 r_int
@@ -457,6 +463,10 @@ id|u32
 id|state
 )paren
 (brace
+id|nmi_pm_active
+op_assign
+id|nmi_active
+suffix:semicolon
 id|disable_lapic_nmi_watchdog
 c_func
 (paren
@@ -478,13 +488,18 @@ op_star
 id|dev
 )paren
 (brace
-macro_line|#if 0
+r_if
+c_cond
+(paren
+id|nmi_pm_active
+OG
+l_int|0
+)paren
 id|enable_lapic_nmi_watchdog
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -757,6 +772,19 @@ c_cond
 id|boot_cpu_data.x86
 OL
 l_int|6
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|strstr
+c_func
+(paren
+id|boot_cpu_data.x86_model_id
+comma
+l_string|&quot;Screwdriver&quot;
+)paren
 )paren
 r_return
 suffix:semicolon

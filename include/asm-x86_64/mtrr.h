@@ -313,7 +313,6 @@ id|u32
 id|hi
 )paren
 (brace
-suffix:semicolon
 )brace
 macro_line|#  endif
 macro_line|#endif

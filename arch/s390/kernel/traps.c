@@ -161,6 +161,11 @@ r_void
 id|show_trace
 c_func
 (paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
 r_int
 r_int
 op_star
@@ -331,6 +336,8 @@ suffix:semicolon
 id|show_trace
 c_func
 (paren
+id|tsk
+comma
 (paren
 r_int
 r_int
@@ -345,6 +352,11 @@ r_void
 id|show_stack
 c_func
 (paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
 r_int
 r_int
 op_star
@@ -464,6 +476,8 @@ suffix:semicolon
 id|show_trace
 c_func
 (paren
+id|task
+comma
 id|sp
 )paren
 suffix:semicolon
@@ -480,6 +494,8 @@ r_void
 id|show_stack
 c_func
 (paren
+id|current
+comma
 l_int|0
 )paren
 suffix:semicolon

@@ -687,20 +687,6 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-DECL|function|release_segments
-r_static
-r_inline
-r_void
-id|release_segments
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-)paren
-(brace
-)brace
 multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; * What is this good for? it will be always the scheduler or ret_from_fork.&n; */
 DECL|macro|thread_saved_pc
 mdefine_line|#define thread_saved_pc(t) (*(unsigned long *)((t)-&gt;thread.rsp - 8))

@@ -160,10 +160,6 @@ r_struct
 id|cache_head
 op_star
 id|h
-comma
-r_char
-op_star
-id|pbuf
 )paren
 suffix:semicolon
 multiline_comment|/* fields below this comment are for internal use&n;&t; * and should not be touched by cache owners&n;&t; */

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.24 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.25 $&n; */
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
@@ -430,7 +430,7 @@ id|cqr
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_cleanup */
-multiline_comment|/*&n; * DASD_3990_ERP_BLOCK_QUEUE &n; *&n; * DESCRIPTION&n; *   Block the given device request queue to prevent from further&n; *   processing until the started timer has expired or an related&n; *   interrupt was received.&n; *&n; *  PARAMETER&n; *   erp&t;&t;request to be blocked&n; *   expires&t;&t;time to wait until restart (in jiffies) &n; *&n; * RETURN VALUES&n; *   void&t;&t;&n; */
+multiline_comment|/*&n; * DASD_3990_ERP_BLOCK_QUEUE &n; *&n; * DESCRIPTION&n; *   Block the given device request queue to prevent from further&n; *   processing until the started timer has expired or an related&n; *   interrupt was received.&n; */
 r_static
 r_void
 DECL|function|dasd_3990_erp_block_queue
@@ -465,9 +465,13 @@ comma
 id|expires
 )paren
 suffix:semicolon
+id|device-&gt;stopped
+op_or_assign
+id|DASD_STOPPED_PENDING
+suffix:semicolon
 id|erp-&gt;status
 op_assign
-id|DASD_CQR_PENDING
+id|DASD_CQR_QUEUED
 suffix:semicolon
 id|dasd_set_timer
 c_func
@@ -955,10 +959,10 @@ id|KERN_INFO
 comma
 id|device
 comma
-l_string|&quot;%s&quot;
-comma
 l_string|&quot;waiting for state change pending &quot;
-l_string|&quot;int&quot;
+l_string|&quot;interrupt, %d retries left&quot;
+comma
+id|erp-&gt;retries
 )paren
 suffix:semicolon
 id|dasd_3990_erp_block_queue

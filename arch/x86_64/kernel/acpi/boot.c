@@ -181,7 +181,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;Local APIC address 0x%08x&bslash;n&quot;
+l_string|&quot;Local APIC address 0x%016x&bslash;n&quot;
 comma
 id|madt-&gt;lapic_address
 )paren

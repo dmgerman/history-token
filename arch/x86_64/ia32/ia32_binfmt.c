@@ -24,8 +24,9 @@ DECL|macro|AT_SYSINFO
 mdefine_line|#define AT_SYSINFO 32
 DECL|macro|AT_SYSINFO_EHDR
 mdefine_line|#define AT_SYSINFO_EHDR&t;&t;33
-DECL|macro|ARCH_DLINFO
+macro_line|#if 0 /* disabled for now because the code has still problems */
 mdefine_line|#define ARCH_DLINFO do {  &bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO, (u32)(u64)VSYSCALL32_VSYSCALL); &bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO_EHDR, VSYSCALL32_BASE);    &bslash;&n;} while(0)
+macro_line|#endif
 r_struct
 id|file
 suffix:semicolon

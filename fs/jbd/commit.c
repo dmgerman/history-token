@@ -2547,15 +2547,7 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|buffer_freed
-c_func
-(paren
-id|bh
-)paren
-)paren
+multiline_comment|/* needs a brelse */
 id|release_buffer_page
 c_func
 (paren

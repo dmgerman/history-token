@@ -23,23 +23,6 @@ r_void
 )paren
 suffix:semicolon
 r_struct
-id|pci_bus
-op_star
-id|pcibios_scan_root
-c_func
-(paren
-r_void
-op_star
-id|acpi_handle
-comma
-r_int
-id|segment
-comma
-r_int
-id|bus
-)paren
-suffix:semicolon
-r_struct
 id|pci_dev
 suffix:semicolon
 multiline_comment|/*&n; * PCI_DMA_BUS_IS_PHYS should be set to 1 if there is _necessarily_ a direct correspondence&n; * between device bus addresses and CPU physical addresses.  Platforms with a hardware I/O&n; * MMU _must_ turn this off to suppress the bounce buffer handling code in the block and&n; * network device layers.  Platforms with separate bus address spaces _must_ turn this off&n; * and provide a device DMA mapping implementation that takes care of the necessary&n; * address translation.&n; *&n; * For now, the ia64 platforms which may have separate/multiple bus address spaces all&n; * have I/O MMUs which support the merging of physically discontiguous buffers, so we can&n; * use that as the sole factor to determine the setting of PCI_DMA_BUS_IS_PHYS.&n; */

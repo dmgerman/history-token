@@ -939,6 +939,8 @@ id|show_stack
 c_func
 (paren
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Very crude. dump some from the end of the table too */

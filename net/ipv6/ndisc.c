@@ -449,6 +449,40 @@ l_int|1024
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* ND options */
+DECL|struct|ndisc_options
+r_struct
+id|ndisc_options
+(brace
+DECL|member|nd_opt_array
+r_struct
+id|nd_opt_hdr
+op_star
+id|nd_opt_array
+(braket
+l_int|7
+)braket
+suffix:semicolon
+DECL|member|nd_opt_piend
+r_struct
+id|nd_opt_hdr
+op_star
+id|nd_opt_piend
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|nd_opts_src_lladdr
+mdefine_line|#define nd_opts_src_lladdr&t;nd_opt_array[ND_OPT_SOURCE_LL_ADDR]
+DECL|macro|nd_opts_tgt_lladdr
+mdefine_line|#define nd_opts_tgt_lladdr&t;nd_opt_array[ND_OPT_TARGET_LL_ADDR]
+DECL|macro|nd_opts_pi
+mdefine_line|#define nd_opts_pi&t;&t;nd_opt_array[ND_OPT_PREFIX_INFO]
+DECL|macro|nd_opts_pi_end
+mdefine_line|#define nd_opts_pi_end&t;&t;nd_opt_piend
+DECL|macro|nd_opts_rh
+mdefine_line|#define nd_opts_rh&t;&t;nd_opt_array[ND_OPT_REDIRECT_HDR]
+DECL|macro|nd_opts_mtu
+mdefine_line|#define nd_opts_mtu&t;&t;nd_opt_array[ND_OPT_MTU]
 DECL|macro|NDISC_OPT_SPACE
 mdefine_line|#define NDISC_OPT_SPACE(len) (((len)+2+7)&amp;~7)
 DECL|function|ndisc_fill_option
@@ -546,6 +580,7 @@ id|space
 suffix:semicolon
 )brace
 DECL|function|ndisc_next_option
+r_static
 r_struct
 id|nd_opt_hdr
 op_star
@@ -637,6 +672,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|ndisc_parse_options
+r_static
 r_struct
 id|ndisc_options
 op_star
@@ -1653,6 +1689,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Send a Neighbour Advertisement&n; */
 DECL|function|ndisc_output
+r_static
 r_int
 id|ndisc_output
 c_func
@@ -1928,7 +1965,6 @@ r_int
 id|inc_opt
 )paren
 (brace
-r_static
 r_struct
 id|in6_addr
 id|tmpaddr
@@ -3400,6 +3436,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|ndisc_recv_ns
+r_static
 r_void
 id|ndisc_recv_ns
 c_func
@@ -3477,6 +3514,15 @@ id|neighbour
 op_star
 id|neigh
 suffix:semicolon
+r_int
+id|addr_type
+op_assign
+id|ipv6_addr_type
+c_func
+(paren
+id|saddr
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3503,6 +3549,76 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;ICMP NS: target address is multicast&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * RFC2461 7.1.1:&n;&t; * DAD has to be destined for solicited node multicast address.&n;&t; */
+r_if
+c_cond
+(paren
+id|addr_type
+op_eq
+id|IPV6_ADDR_ANY
+op_logical_and
+op_logical_neg
+(paren
+id|daddr-&gt;s6_addr32
+(braket
+l_int|0
+)braket
+op_eq
+id|htonl
+c_func
+(paren
+l_int|0xff020000
+)paren
+op_logical_and
+id|daddr-&gt;s6_addr32
+(braket
+l_int|1
+)braket
+op_eq
+id|htonl
+c_func
+(paren
+l_int|0x00000000
+)paren
+op_logical_and
+id|daddr-&gt;s6_addr32
+(braket
+l_int|2
+)braket
+op_eq
+id|htonl
+c_func
+(paren
+l_int|0x00000001
+)paren
+op_logical_and
+id|daddr-&gt;s6_addr
+(braket
+l_int|12
+)braket
+op_eq
+l_int|0xff
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;ICMP6 NS: bad DAD packet (wrong destination)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3596,9 +3712,34 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* XXX: RFC2461 7.1.1:&n;&t; &t; *&t;If the IP source address is the unspecified address, &n;&t;&t; *&t;there MUST NOT be source link-layer address option &n;&t;&t; *&t;in the message.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|addr_type
+op_eq
+id|IPV6_ADDR_ANY
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ICMP6 NS: bad DAD packet (link-layer address option)&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
 )brace
-multiline_comment|/* XXX: RFC2461 7.1.1:&n;&t; * &t;If the IP source address is the unspecified address, there&n;&t; *&t;MUST NOT be source link-layer address option in the message.&n;&t; *&n;&t; *&t;NOTE! Linux kernel &lt; 2.4.4 broke this rule.&n;&t; */
-multiline_comment|/* XXX: RFC2461 7.1.1:&n;&t; *&t;If the IP source address is the unspecified address, the IP&n;      &t; *&t;destination address MUST be a solicited-node multicast address.&n;&t; */
+)brace
 r_if
 c_cond
 (paren
@@ -3618,15 +3759,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-r_int
-id|addr_type
-op_assign
-id|ipv6_addr_type
-c_func
-(paren
-id|saddr
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3965,15 +4097,6 @@ id|in6_dev_get
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-r_int
-id|addr_type
-op_assign
-id|ipv6_addr_type
-c_func
-(paren
-id|saddr
 )paren
 suffix:semicolon
 multiline_comment|/* anycast */
@@ -4335,6 +4458,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|ndisc_recv_na
+r_static
 r_void
 id|ndisc_recv_na
 c_func

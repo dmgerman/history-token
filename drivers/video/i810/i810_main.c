@@ -4861,16 +4861,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|regno
-OG
-l_int|255
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|info-&gt;fix.visual
 op_eq
 id|FB_VISUAL_DIRECTCOLOR

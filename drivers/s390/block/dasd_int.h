@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.40 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.42 $&n; */
 macro_line|#ifndef DASD_INT_H
 DECL|macro|DASD_INT_H
 mdefine_line|#define DASD_INT_H
@@ -297,8 +297,6 @@ DECL|macro|DASD_CQR_ERROR
 mdefine_line|#define DASD_CQR_ERROR    0x04&t;/* request is completed with error */
 DECL|macro|DASD_CQR_FAILED
 mdefine_line|#define DASD_CQR_FAILED   0x05&t;/* request is finally failed */
-DECL|macro|DASD_CQR_PENDING
-mdefine_line|#define DASD_CQR_PENDING  0x06  /* request is waiting for interrupt - ERP only */ 
 multiline_comment|/* Signature for error recovery functions. */
 DECL|typedef|dasd_erp_fn_t
 r_typedef
@@ -618,6 +616,11 @@ id|state
 comma
 id|target
 suffix:semicolon
+DECL|member|stopped
+r_int
+id|stopped
+suffix:semicolon
+multiline_comment|/* device (ccw_device_start) was stopped */
 multiline_comment|/* Open and reference count. */
 DECL|member|ref_count
 id|atomic_t
@@ -696,6 +699,13 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
+multiline_comment|/* reasons why device (ccw_device_start) was stopped */
+DECL|macro|DASD_STOPPED_NOT_ACC
+mdefine_line|#define DASD_STOPPED_NOT_ACC 1         /* not accessible */
+DECL|macro|DASD_STOPPED_QUIESCE
+mdefine_line|#define DASD_STOPPED_QUIESCE 2         /* Quiesced */
+DECL|macro|DASD_STOPPED_PENDING
+mdefine_line|#define DASD_STOPPED_PENDING 4         /* long busy */
 r_void
 id|dasd_put_device_wake
 c_func

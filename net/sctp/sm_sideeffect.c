@@ -1799,10 +1799,6 @@ id|asoc-&gt;state
 op_assign
 id|state
 suffix:semicolon
-id|asoc-&gt;state_timestamp
-op_assign
-id|jiffies
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2040,6 +2036,7 @@ id|gfp
 id|sctp_cmd_seq_t
 id|commands
 suffix:semicolon
+r_const
 id|sctp_sm_table_entry_t
 op_star
 id|state_fn

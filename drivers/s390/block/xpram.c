@@ -1800,7 +1800,7 @@ id|sysdev_class_unregister
 c_func
 (paren
 op_amp
-id|xpram_sys_class
+id|xpram_sysclass
 )paren
 suffix:semicolon
 )brace
@@ -1911,7 +1911,7 @@ id|sysdev_class_unregister
 c_func
 (paren
 op_amp
-id|xpram_syclass
+id|xpram_sysclass
 )paren
 suffix:semicolon
 r_return

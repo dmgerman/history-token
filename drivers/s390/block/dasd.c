@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.99 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.101 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -18,7 +18,7 @@ mdefine_line|#define PRINTK_HEADER &quot;dasd:&quot;
 macro_line|#include &quot;dasd_int.h&quot;
 multiline_comment|/*&n; * SECTION: Constant definitions to be used within this file&n; */
 DECL|macro|DASD_CHANQ_MAX_SIZE
-mdefine_line|#define DASD_CHANQ_MAX_SIZE 5
+mdefine_line|#define DASD_CHANQ_MAX_SIZE 4
 multiline_comment|/*&n; * SECTION: exported variables of dasd.c&n; */
 DECL|variable|dasd_debug_area
 id|debug_info_t
@@ -3251,7 +3251,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Timeout function for dasd devices. This is used for different purposes&n; *  1) missing interrupt handler for normal operation&n; *  2) delayed start of request where start_IO failed with -EBUSY&n; *  3) timeout for missing state change interrupts&n; * The head of the ccw queue will have status DASD_CQR_IN_IO for 1),&n; * DASD_CQR_QUEUED for 2) and DASD_CQR_PENDING for 3).&n; */
+multiline_comment|/*&n; * Timeout function for dasd devices. This is used for different purposes&n; *  1) missing interrupt handler for normal operation&n; *  2) delayed start of request where start_IO failed with -EBUSY&n; *  3) timeout for missing state change interrupts&n; * The head of the ccw queue will have status DASD_CQR_IN_IO for 1),&n; * DASD_CQR_QUEUED for 2) and 3).&n; */
 r_static
 r_void
 DECL|function|dasd_timeout_device
@@ -3271,11 +3271,6 @@ r_struct
 id|dasd_device
 op_star
 id|device
-suffix:semicolon
-r_struct
-id|dasd_ccw_req
-op_star
-id|cqr
 suffix:semicolon
 id|device
 op_assign
@@ -3299,43 +3294,11 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* re-activate first request in queue */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|device-&gt;ccw_queue
-)paren
-)paren
-(brace
-id|cqr
-op_assign
-id|list_entry
-c_func
-(paren
-id|device-&gt;ccw_queue.next
-comma
-r_struct
-id|dasd_ccw_req
-comma
-id|list
-)paren
+id|device-&gt;stopped
+op_and_assign
+op_complement
+id|DASD_STOPPED_PENDING
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cqr-&gt;status
-op_eq
-id|DASD_CQR_PENDING
-)paren
-id|cqr-&gt;status
-op_assign
-id|DASD_CQR_QUEUED
-suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3483,7 +3446,7 @@ id|device-&gt;timer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *   Handles the state change pending interrupt.&n; *   Search for the device related request queue and check if the first&n; *   cqr in queue in in status &squot;DASD_CQR_PENDING&squot;.&n; *   If so the status is set to &squot;DASD_CQR_QUEUED&squot; to reactivate&n; *   the device.&n; */
+multiline_comment|/*&n; *   Handles the state change pending interrupt.&n; */
 r_static
 r_void
 DECL|function|do_state_change_pending
@@ -3515,11 +3478,6 @@ id|dasd_device
 op_star
 id|device
 suffix:semicolon
-r_struct
-id|dasd_ccw_req
-op_star
-id|cqr
-suffix:semicolon
 id|p
 op_assign
 id|data
@@ -3538,84 +3496,10 @@ comma
 id|device-&gt;cdev-&gt;dev.bus_id
 )paren
 suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|get_ccwdev_lock
-c_func
-(paren
-id|device-&gt;cdev
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* re-activate first request in queue */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|device-&gt;ccw_queue
-)paren
-)paren
-(brace
-id|cqr
-op_assign
-id|list_entry
-c_func
-(paren
-id|device-&gt;ccw_queue.next
-comma
-r_struct
-id|dasd_ccw_req
-comma
-id|list
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cqr
-op_eq
-l_int|NULL
-)paren
-(brace
-id|MESSAGE
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;got state change pending interrupt on&quot;
-l_string|&quot;an idle device: bus_id %s&quot;
-comma
-id|device-&gt;cdev-&gt;dev.bus_id
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|cqr-&gt;status
-op_eq
-id|DASD_CQR_PENDING
-)paren
-id|cqr-&gt;status
-op_assign
-id|DASD_CQR_QUEUED
-suffix:semicolon
-)brace
-id|spin_unlock_irq
-c_func
-(paren
-id|get_ccwdev_lock
-c_func
-(paren
-id|device-&gt;cdev
-)paren
-)paren
+id|device-&gt;stopped
+op_and_assign
+op_complement
+id|DASD_STOPPED_PENDING
 suffix:semicolon
 id|dasd_schedule_bh
 c_func
@@ -4221,9 +4105,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|next-&gt;status
 op_eq
 id|DASD_CQR_QUEUED
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|device-&gt;stopped
+)paren
 )paren
 (brace
 r_if
@@ -5200,9 +5091,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|cqr-&gt;status
 op_eq
 id|DASD_CQR_QUEUED
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|device-&gt;stopped
+)paren
 )paren
 (brace
 multiline_comment|/* try to start the first I/O that can be started */

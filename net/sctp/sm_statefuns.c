@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines, Corp.&n; * Copyright (c) 2001-2002 Intel Corp.&n; * Copyright (c) 2002      Nokia Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This is part of the SCTP Linux Kernel Reference Implementation.&n; *&n; * These are the state functions for the state machine.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Mathew Kotowsky       &lt;kotowsky@sctp.org&gt;&n; *    Sridhar Samudrala     &lt;samudrala@us.ibm.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Hui Huang &t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang &t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines, Corp.&n; * Copyright (c) 2001-2002 Intel Corp.&n; * Copyright (c) 2002      Nokia Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This is part of the SCTP Linux Kernel Reference Implementation.&n; *&n; * These are the state functions for the state machine.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Mathew Kotowsky       &lt;kotowsky@sctp.org&gt;&n; *    Sridhar Samudrala     &lt;samudrala@us.ibm.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Hui Huang &t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang &t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *    Ryan Layer&t;    &lt;rmlayer@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
@@ -1381,7 +1381,8 @@ multiline_comment|/* &quot;Decode&quot; the chunk.  We have no optional paramete
 id|chunk-&gt;subh.cookie_hdr
 op_assign
 (paren
-id|sctp_signed_cookie_t
+r_struct
+id|sctp_signed_cookie
 op_star
 )paren
 id|chunk-&gt;skb-&gt;data
@@ -2091,7 +2092,7 @@ c_cond
 (paren
 id|asoc-&gt;overall_error_count
 OG
-id|asoc-&gt;overall_error_threshold
+id|asoc-&gt;max_retrans
 )paren
 (brace
 multiline_comment|/* CMD_ASSOC_FAILED calls CMD_DELETE_TCB. */
@@ -2564,11 +2565,13 @@ id|sctp_packet
 op_star
 id|pkt
 suffix:semicolon
-id|sctp_addr_param_t
+r_union
+id|sctp_addr_param
 op_star
 id|addrparm
 suffix:semicolon
-id|sctp_errhdr_t
+r_struct
+id|sctp_errhdr
 op_star
 id|errhdr
 suffix:semicolon
@@ -2582,12 +2585,14 @@ id|buffer
 (braket
 r_sizeof
 (paren
-id|sctp_errhdr_t
+r_struct
+id|sctp_errhdr
 )paren
 op_plus
 r_sizeof
 (paren
-id|sctp_addr_param_t
+r_union
+id|sctp_addr_param
 )paren
 )braket
 suffix:semicolon
@@ -2595,7 +2600,8 @@ multiline_comment|/* Build the error on the stack.   We are way to malloc crazy&
 id|errhdr
 op_assign
 (paren
-id|sctp_errhdr_t
+r_struct
+id|sctp_errhdr
 op_star
 )paren
 id|buffer
@@ -2603,7 +2609,8 @@ suffix:semicolon
 id|addrparm
 op_assign
 (paren
-id|sctp_addr_param_t
+r_union
+id|sctp_addr_param
 op_star
 )paren
 id|errhdr-&gt;variable
@@ -4536,7 +4543,8 @@ multiline_comment|/* &quot;Decode&quot; the chunk.  We have no optional paramete
 id|chunk-&gt;subh.cookie_hdr
 op_assign
 (paren
-id|sctp_signed_cookie_t
+r_struct
+id|sctp_signed_cookie
 op_star
 )paren
 id|chunk-&gt;skb-&gt;data
@@ -5312,9 +5320,11 @@ id|sctp_errhdr_t
 suffix:semicolon
 id|stale
 op_assign
+(paren
 id|stale
-op_lshift
-l_int|1
+op_star
+l_int|2
+)paren
 op_div
 l_int|1000
 suffix:semicolon
@@ -5548,6 +5558,9 @@ id|chunk
 op_assign
 id|arg
 suffix:semicolon
+r_int
+id|len
+suffix:semicolon
 id|__u16
 id|error
 op_assign
@@ -5580,19 +5593,20 @@ comma
 id|commands
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|chunk
-op_logical_and
-(paren
+multiline_comment|/* Check that chunk header looks valid.  */
+id|len
+op_assign
 id|ntohs
 c_func
 (paren
 id|chunk-&gt;chunk_hdr-&gt;length
 )paren
-op_ge
+suffix:semicolon
+r_if
+c_cond
 (paren
+id|len
+op_ge
 r_sizeof
 (paren
 r_struct
@@ -5603,8 +5617,6 @@ r_sizeof
 (paren
 r_struct
 id|sctp_errhdr
-)paren
-)paren
 )paren
 )paren
 id|error
@@ -5646,7 +5658,6 @@ c_func
 id|SctpCurrEstab
 )paren
 suffix:semicolon
-multiline_comment|/* BUG?  This does not look complete... */
 r_return
 id|SCTP_DISPOSITION_ABORT
 suffix:semicolon
@@ -5688,6 +5699,9 @@ op_star
 id|chunk
 op_assign
 id|arg
+suffix:semicolon
+r_int
+id|len
 suffix:semicolon
 id|__u16
 id|error
@@ -5755,19 +5769,20 @@ id|SCTP_EVENT_TIMEOUT_T1_INIT
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|chunk
-op_logical_and
-(paren
+multiline_comment|/* Check that chunk header looks valid.  */
+id|len
+op_assign
 id|ntohs
 c_func
 (paren
 id|chunk-&gt;chunk_hdr-&gt;length
 )paren
-op_ge
+suffix:semicolon
+r_if
+c_cond
 (paren
+id|len
+op_ge
 r_sizeof
 (paren
 r_struct
@@ -5778,8 +5793,6 @@ r_sizeof
 (paren
 r_struct
 id|sctp_errhdr
-)paren
-)paren
 )paren
 )paren
 id|error
@@ -8988,148 +9001,6 @@ r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 )brace
-macro_line|#if 0
-multiline_comment|/*&n; * We did something stupid but got lucky.  Namely, we sent a HEARTBEAT&n; * before the association was all the way up and we did NOT get an&n; * ABORT.&n; *&n; * Log the fact and then process normally.&n; *&n; * Section: Not specified&n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
-id|lucky
-c_func
-(paren
-r_const
-r_struct
-id|sctp_endpoint
-op_star
-id|ep
-comma
-r_const
-r_struct
-id|sctp_association
-op_star
-id|asoc
-comma
-r_const
-id|sctp_subtype_t
-id|type
-comma
-r_void
-op_star
-id|arg
-comma
-id|sctp_cmd_seq_t
-op_star
-id|commands
-)paren
-(brace
-r_struct
-id|sctp_chunk
-op_star
-id|chunk
-op_assign
-id|arg
-suffix:semicolon
-multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;&t; * that the value in the Verification Tag field of the&n;&t; * received SCTP packet matches its own Tag. ...&n;&t; */
-r_if
-c_cond
-(paren
-id|chunk-&gt;sctp_hdr-&gt;vtag
-op_ne
-id|asoc-&gt;c.my_vtag
-)paren
-r_return
-id|sctp_sf_pdiscard
-c_func
-(paren
-id|ep
-comma
-id|asoc
-comma
-id|type
-comma
-id|arg
-comma
-id|commands
-)paren
-suffix:semicolon
-r_return
-id|SCTP_DISPOSITION_CONSUME
-suffix:semicolon
-id|nomem
-suffix:colon
-r_return
-id|SCTP_DISPOSITION_NOMEM
-suffix:semicolon
-)brace
-macro_line|#endif /* 0 */
-macro_line|#if 0
-multiline_comment|/*&n; * The other end is doing something very stupid.  We&squot;ll ignore them&n; * after logging their idiocy. :-)&n; *&n; * Section: Not specified&n; * Verification Tag:  8.5 Verification Tag [Normal verification]&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
-id|sctp_disposition_t
-id|other_stupid
-c_func
-(paren
-r_const
-r_struct
-id|sctp_endpoint
-op_star
-id|ep
-comma
-r_const
-r_struct
-id|sctp_association
-op_star
-id|asoc
-comma
-r_const
-id|sctp_subtype_t
-id|type
-comma
-r_void
-op_star
-id|arg
-comma
-id|sctp_cmd_seq_t
-op_star
-id|commands
-)paren
-(brace
-r_struct
-id|sctp_chunk
-op_star
-id|chunk
-op_assign
-id|arg
-suffix:semicolon
-multiline_comment|/* 8.5 When receiving an SCTP packet, the endpoint MUST ensure&n;&t; * that the value in the Verification Tag field of the&n;&t; * received SCTP packet matches its own Tag. ...&n;&t; */
-r_if
-c_cond
-(paren
-id|chunk-&gt;sctp_hdr-&gt;vtag
-op_ne
-id|asoc-&gt;c.my_vtag
-)paren
-r_return
-id|sctp_sf_pdiscard
-c_func
-(paren
-id|ep
-comma
-id|asoc
-comma
-id|type
-comma
-id|arg
-comma
-id|commands
-)paren
-suffix:semicolon
-r_return
-id|SCTP_DISPOSITION_CONSUME
-suffix:semicolon
-id|nomem
-suffix:colon
-r_return
-id|SCTP_DISPOSITION_NOMEM
-suffix:semicolon
-)brace
-macro_line|#endif /* 0 */
 multiline_comment|/*&n; * The other end is violating protocol.&n; *&n; * Section: Not specified&n; * Verification Tag: Not specified&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * We simply tag the chunk as a violation.  The state machine will log&n; * the violation and continue.&n; */
 DECL|function|sctp_sf_violation
 id|sctp_disposition_t
@@ -10692,7 +10563,7 @@ c_cond
 (paren
 id|asoc-&gt;overall_error_count
 op_ge
-id|asoc-&gt;overall_error_threshold
+id|asoc-&gt;max_retrans
 )paren
 (brace
 multiline_comment|/* CMD_ASSOC_FAILED calls CMD_DELETE_TCB. */
@@ -11086,7 +10957,7 @@ c_cond
 (paren
 id|asoc-&gt;overall_error_count
 op_ge
-id|asoc-&gt;overall_error_threshold
+id|asoc-&gt;max_retrans
 )paren
 (brace
 multiline_comment|/* Note:  CMD_ASSOC_FAILED calls CMD_DELETE_TCB. */
@@ -11849,14 +11720,16 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Special case the INIT as there is no vtag yet. */
-r_if
+multiline_comment|/* Special case the INIT and stale COOKIE_ECHO as there is no&n;&t;&t; * vtag yet.&n;&t;&t; */
+r_switch
 c_cond
 (paren
-id|SCTP_CID_INIT
-op_eq
 id|chunk-&gt;chunk_hdr-&gt;type
 )paren
+(brace
+r_case
+id|SCTP_CID_INIT
+suffix:colon
 (brace
 id|sctp_init_chunk_t
 op_star
@@ -11878,9 +11751,11 @@ c_func
 id|init-&gt;init_hdr.init_tag
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
-r_else
-(brace
+r_default
+suffix:colon
 id|vtag
 op_assign
 id|ntohl
@@ -11888,6 +11763,8 @@ c_func
 (paren
 id|chunk-&gt;sctp_hdr-&gt;vtag
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 )brace
@@ -12091,6 +11968,20 @@ c_cond
 id|packet
 )paren
 (brace
+r_struct
+id|sctp_signed_cookie
+op_star
+id|cookie
+suffix:semicolon
+multiline_comment|/* Override the OOTB vtag from the cookie. */
+id|cookie
+op_assign
+id|chunk-&gt;subh.cookie_hdr
+suffix:semicolon
+id|packet-&gt;vtag
+op_assign
+id|cookie-&gt;c.peer_vtag
+suffix:semicolon
 multiline_comment|/* Set the skb to the belonging sock for accounting. */
 id|err_chunk-&gt;skb-&gt;sk
 op_assign

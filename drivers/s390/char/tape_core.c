@@ -1518,6 +1518,14 @@ id|cdev-&gt;handler
 op_assign
 id|tape_do_irq
 suffix:semicolon
+id|ccw_device_set_options
+c_func
+(paren
+id|cdev
+comma
+id|CCWDEV_DO_PATHGROUP
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3861,7 +3869,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;tape init: ($Revision: 1.25 $)&bslash;n&quot;
+l_string|&quot;tape init: ($Revision: 1.26 $)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tape_proc_init
@@ -3932,7 +3940,7 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Linux on zSeries channel attached &quot;
-l_string|&quot;tape device driver ($Revision: 1.25 $)&quot;
+l_string|&quot;tape device driver ($Revision: 1.26 $)&quot;
 )paren
 suffix:semicolon
 DECL|variable|tape_init

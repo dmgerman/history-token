@@ -108,6 +108,25 @@ op_star
 id|bus
 )paren
 suffix:semicolon
+multiline_comment|/* Arch-defined function to add a bus to the system */
+r_struct
+id|pci_bus
+op_star
+id|pci_acpi_scan_root
+c_func
+(paren
+r_struct
+id|acpi_device
+op_star
+id|device
+comma
+r_int
+id|domain
+comma
+r_int
+id|bus
+)paren
+suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_PCI*/
 multiline_comment|/* --------------------------------------------------------------------------&n;                                  Power Resource&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_POWER

@@ -215,6 +215,11 @@ r_struct
 id|tcp_opt
 op_star
 id|tp
+comma
+r_struct
+id|dst_entry
+op_star
+id|dst
 )paren
 (brace
 id|s32
@@ -231,6 +236,8 @@ id|tcp_init_cwnd
 c_func
 (paren
 id|tp
+comma
+id|dst
 )paren
 suffix:semicolon
 id|u32
@@ -310,6 +317,11 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+r_struct
+id|sock
+op_star
+id|sk
 )paren
 (brace
 id|u32
@@ -338,6 +350,12 @@ id|tcp_cwnd_restart
 c_func
 (paren
 id|tp
+comma
+id|__sk_dst_get
+c_func
+(paren
+id|sk
+)paren
 )paren
 suffix:semicolon
 id|tp-&gt;lsndtime
@@ -954,6 +972,8 @@ c_func
 id|tp
 comma
 id|skb
+comma
+id|sk
 )paren
 suffix:semicolon
 id|TCP_INC_STATS

@@ -493,13 +493,6 @@ id|t
 )paren
 suffix:semicolon
 multiline_comment|/* This just modifies memory; should not be neccessary. But... This is neccessary, because 386 hardware has concept of busy TSS or some similar stupidity. */
-(paren
-(paren
-r_struct
-id|n_desc_struct
-op_star
-)paren
-op_amp
 id|cpu_gdt_table
 (braket
 id|cpu
@@ -507,11 +500,10 @@ id|cpu
 (braket
 id|GDT_ENTRY_TSS
 )braket
-)paren
-op_member_access_from_pointer
-id|b
-op_and_assign
-l_int|0xfffffdff
+dot
+id|type
+op_assign
+l_int|9
 suffix:semicolon
 id|syscall_init
 c_func
@@ -529,7 +521,7 @@ id|load_LDT
 c_func
 (paren
 op_amp
-id|current-&gt;mm-&gt;context
+id|current-&gt;active_mm-&gt;context
 )paren
 suffix:semicolon
 multiline_comment|/* This does lldt */

@@ -5496,12 +5496,6 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
 id|KERN_DEBUG
 l_string|&quot;IO APIC #%d......&bslash;n&quot;
 comma

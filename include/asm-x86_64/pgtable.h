@@ -1503,6 +1503,10 @@ DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()   do { } while (0)
 DECL|macro|check_pgt_cache
 mdefine_line|#define check_pgt_cache()      do { } while (0)
+DECL|macro|PAGE_AGP
+mdefine_line|#define PAGE_AGP    PAGE_KERNEL_NOCACHE
+DECL|macro|HAVE_PAGE_AGP
+mdefine_line|#define HAVE_PAGE_AGP 1
 multiline_comment|/* fs/proc/kcore.c */
 DECL|macro|kc_vaddr_to_offset
 mdefine_line|#define&t;kc_vaddr_to_offset(v) ((v) &amp; __VIRTUAL_MASK)

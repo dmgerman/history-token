@@ -71,21 +71,21 @@ DECL|macro|ACKX_ABORTED
 mdefine_line|#define ACKX_ABORTED             (-3)
 DECL|macro|ACKX_TIMEOUT
 mdefine_line|#define ACKX_TIMEOUT             (-4)
-DECL|macro|SPEED_100
-mdefine_line|#define SPEED_100&t;&t;0x00
-DECL|macro|SPEED_200
-mdefine_line|#define SPEED_200&t;&t;0x01
-DECL|macro|SPEED_400
-mdefine_line|#define SPEED_400&t;&t;0x02
-DECL|macro|SPEED_800
-mdefine_line|#define SPEED_800&t;&t;0x03
-DECL|macro|SPEED_1600
-mdefine_line|#define SPEED_1600&t;&t;0x04
-DECL|macro|SPEED_3200
-mdefine_line|#define SPEED_3200&t;&t;0x05
+DECL|macro|IEEE1394_SPEED_100
+mdefine_line|#define IEEE1394_SPEED_100&t;&t;0x00
+DECL|macro|IEEE1394_SPEED_200
+mdefine_line|#define IEEE1394_SPEED_200&t;&t;0x01
+DECL|macro|IEEE1394_SPEED_400
+mdefine_line|#define IEEE1394_SPEED_400&t;&t;0x02
+DECL|macro|IEEE1394_SPEED_800
+mdefine_line|#define IEEE1394_SPEED_800&t;&t;0x03
+DECL|macro|IEEE1394_SPEED_1600
+mdefine_line|#define IEEE1394_SPEED_1600&t;&t;0x04
+DECL|macro|IEEE1394_SPEED_3200
+mdefine_line|#define IEEE1394_SPEED_3200&t;&t;0x05
 multiline_comment|/* The current highest tested speed supported by the subsystem */
-DECL|macro|SPEED_MAX
-mdefine_line|#define SPEED_MAX&t;&t;SPEED_800
+DECL|macro|IEEE1394_SPEED_MAX
+mdefine_line|#define IEEE1394_SPEED_MAX&t;&t;IEEE1394_SPEED_800
 multiline_comment|/* Maps speed values above to a string representation */
 r_extern
 r_const

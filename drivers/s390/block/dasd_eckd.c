@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.42 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.46 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -237,7 +237,11 @@ op_star
 id|cdev
 )paren
 (brace
-r_return
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|dasd_generic_probe
 (paren
 id|cdev
@@ -245,6 +249,25 @@ comma
 op_amp
 id|dasd_eckd_discipline
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_return
+id|ret
+suffix:semicolon
+id|ccw_device_set_options
+c_func
+(paren
+id|cdev
+comma
+id|CCWDEV_DO_PATHGROUP
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_static
@@ -1034,7 +1057,7 @@ id|DE_eckd_data
 )paren
 suffix:semicolon
 id|de_ccw-&gt;flags
-op_assign
+op_or_assign
 id|CCW_FLAG_SLI
 suffix:semicolon
 )brace
@@ -1370,34 +1393,13 @@ id|attrib.nr_cyl
 OL
 id|geo.cyl
 )paren
-(brace
 id|end.cyl
 op_add_assign
 r_private
 op_member_access_from_pointer
 id|attrib.nr_cyl
 suffix:semicolon
-id|DBF_DEV_EVENT
-c_func
-(paren
-id|DBF_NOTICE
-comma
-id|device
-comma
-l_string|&quot;Enhanced DE Cylinder from  %x to %x&quot;
-comma
-(paren
-id|totrk
-op_div
-id|geo.head
-)paren
-comma
-id|end.cyl
-)paren
-suffix:semicolon
-)brace
 r_else
-(brace
 id|end.cyl
 op_assign
 (paren
@@ -1406,26 +1408,6 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|DBF_DEV_EVENT
-c_func
-(paren
-id|DBF_NOTICE
-comma
-id|device
-comma
-l_string|&quot;Enhanced DE Cylinder from  %x to &quot;
-l_string|&quot;End of device %x&quot;
-comma
-(paren
-id|totrk
-op_div
-id|geo.head
-)paren
-comma
-id|end.cyl
-)paren
-suffix:semicolon
-)brace
 )brace
 id|data-&gt;beg_ext.cyl
 op_assign
@@ -2335,7 +2317,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* get characteristis via diag to determine the kind of&n;&t; * minidisk under VM needed beacause XRC is not support&n;&t; * by VM (jet). Can be removed as soon as VM supports XRC&n;&t; * FIXME: TBD ??? HUM&n;&t; */
 )brace
 r_static
 r_struct
@@ -5596,7 +5577,7 @@ id|dasd_eckd_discipline.name
 comma
 l_int|1
 comma
-l_int|0
+l_int|32
 comma
 id|device
 )paren
@@ -5627,6 +5608,24 @@ suffix:semicolon
 id|cqr-&gt;cpaddr-&gt;cmd_code
 op_assign
 id|DASD_ECKD_CCW_RELEASE
+suffix:semicolon
+id|cqr-&gt;cpaddr-&gt;flags
+op_or_assign
+id|CCW_FLAG_SLI
+suffix:semicolon
+id|cqr-&gt;cpaddr-&gt;count
+op_assign
+l_int|32
+suffix:semicolon
+id|cqr-&gt;cpaddr-&gt;cda
+op_assign
+(paren
+id|__u32
+)paren
+(paren
+id|addr_t
+)paren
+id|cqr-&gt;data
 suffix:semicolon
 id|cqr-&gt;device
 op_assign
@@ -5661,7 +5660,7 @@ c_func
 id|cqr
 )paren
 suffix:semicolon
-id|dasd_kfree_request
+id|dasd_sfree_request
 c_func
 (paren
 id|cqr
@@ -5673,7 +5672,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Reserve device ioctl.&n; * Options are set to &squot;synchronous wait for interrupt&squot; and&n; * &squot;timeout the request&squot;. This leads to an terminate IO if &n; * the interrupt is outstanding for a certain time. &n; */
+multiline_comment|/*&n; * Reserve device ioctl.&n; * Options are set to &squot;synchronous wait for interrupt&squot; and&n; * &squot;timeout the request&squot;. This leads to a terminate IO if &n; * the interrupt is outstanding for a certain time. &n; */
 r_static
 r_int
 DECL|function|dasd_eckd_reserve
@@ -5743,7 +5742,7 @@ id|dasd_eckd_discipline.name
 comma
 l_int|1
 comma
-l_int|0
+l_int|32
 comma
 id|device
 )paren
@@ -5774,6 +5773,24 @@ suffix:semicolon
 id|cqr-&gt;cpaddr-&gt;cmd_code
 op_assign
 id|DASD_ECKD_CCW_RESERVE
+suffix:semicolon
+id|cqr-&gt;cpaddr-&gt;flags
+op_or_assign
+id|CCW_FLAG_SLI
+suffix:semicolon
+id|cqr-&gt;cpaddr-&gt;count
+op_assign
+l_int|32
+suffix:semicolon
+id|cqr-&gt;cpaddr-&gt;cda
+op_assign
+(paren
+id|__u32
+)paren
+(paren
+id|addr_t
+)paren
+id|cqr-&gt;data
 suffix:semicolon
 id|cqr-&gt;device
 op_assign
@@ -5808,28 +5825,7 @@ c_func
 id|cqr
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-op_minus
-id|EIO
-)paren
-(brace
-multiline_comment|/* Request got an error or has been timed out. */
-id|dasd_eckd_release
-c_func
-(paren
-id|bdev
-comma
-id|no
-comma
-id|args
-)paren
-suffix:semicolon
-)brace
-id|dasd_kfree_request
+id|dasd_sfree_request
 c_func
 (paren
 id|cqr
@@ -5911,7 +5907,7 @@ id|dasd_eckd_discipline.name
 comma
 l_int|1
 comma
-l_int|0
+l_int|32
 comma
 id|device
 )paren
@@ -5942,6 +5938,24 @@ suffix:semicolon
 id|cqr-&gt;cpaddr-&gt;cmd_code
 op_assign
 id|DASD_ECKD_CCW_SLCK
+suffix:semicolon
+id|cqr-&gt;cpaddr-&gt;flags
+op_or_assign
+id|CCW_FLAG_SLI
+suffix:semicolon
+id|cqr-&gt;cpaddr-&gt;count
+op_assign
+l_int|32
+suffix:semicolon
+id|cqr-&gt;cpaddr-&gt;cda
+op_assign
+(paren
+id|__u32
+)paren
+(paren
+id|addr_t
+)paren
+id|cqr-&gt;data
 suffix:semicolon
 id|cqr-&gt;device
 op_assign
@@ -5976,28 +5990,7 @@ c_func
 id|cqr
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-op_minus
-id|EIO
-)paren
-(brace
-multiline_comment|/* Request got an error or has been timed out. */
-id|dasd_eckd_release
-c_func
-(paren
-id|bdev
-comma
-id|no
-comma
-id|args
-)paren
-suffix:semicolon
-)brace
-id|dasd_kfree_request
+id|dasd_sfree_request
 c_func
 (paren
 id|cqr
@@ -6456,21 +6449,6 @@ op_star
 id|device
 op_member_access_from_pointer
 r_private
-suffix:semicolon
-id|DBF_DEV_EVENT
-c_func
-(paren
-id|DBF_ERR
-comma
-id|device
-comma
-l_string|&quot;cache operation mode got &quot;
-l_string|&quot;%x (%i cylinder prestage)&quot;
-comma
-id|attrib.operation
-comma
-id|attrib.nr_cyl
-)paren
 suffix:semicolon
 r_private
 op_member_access_from_pointer

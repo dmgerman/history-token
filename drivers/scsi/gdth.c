@@ -20079,9 +20079,6 @@ comma
 (paren
 id|dma_addr_t
 )paren
-(paren
-id|u32
-)paren
 id|scp-&gt;SCp.buffer
 comma
 l_int|16

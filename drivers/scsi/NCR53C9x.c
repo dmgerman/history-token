@@ -3749,7 +3749,7 @@ r_struct
 id|NCR_ESP
 op_star
 )paren
-id|SCpnt-&gt;device-&gt;host-&gt;hostdata
+id|shost-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond

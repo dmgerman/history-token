@@ -8878,6 +8878,7 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_VT
 DECL|function|vt_check
 r_static
 r_int
@@ -9633,6 +9634,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_VT */
 DECL|function|do_smb_getmountuid
 r_static
 r_int
@@ -14387,6 +14389,7 @@ id|AUTOFS_IOC_SETTIMEOUT32
 comma
 id|ioc_settimeout
 )paren
+macro_line|#ifdef CONFIG_VT
 id|HANDLE_IOCTL
 c_func
 (paren
@@ -14422,6 +14425,7 @@ id|KDFONTOP
 comma
 id|do_kdfontop_ioctl
 )paren
+macro_line|#endif
 id|HANDLE_IOCTL
 c_func
 (paren

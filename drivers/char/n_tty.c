@@ -1242,8 +1242,7 @@ id|tty
 )paren
 suffix:semicolon
 id|tty-&gt;column
-op_add_assign
-l_int|2
+op_increment
 suffix:semicolon
 id|tty-&gt;erasing
 op_assign

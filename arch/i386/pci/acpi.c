@@ -2,6 +2,53 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;pci.h&quot;
+DECL|function|pci_acpi_scan_root
+r_struct
+id|pci_bus
+op_star
+id|__devinit
+id|pci_acpi_scan_root
+c_func
+(paren
+r_struct
+id|acpi_device
+op_star
+id|device
+comma
+r_int
+id|domain
+comma
+r_int
+id|busnum
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|domain
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;PCI: Multiple domains not supported&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+r_return
+id|pcibios_scan_root
+c_func
+(paren
+id|busnum
+)paren
+suffix:semicolon
+)brace
 DECL|function|pci_acpi_init
 r_static
 r_int
