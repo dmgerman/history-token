@@ -63,43 +63,26 @@ mdefine_line|#define NR_NODES&t;4
 multiline_comment|/*&n; * Given a kernel address, find the home node of the underlying memory.&n; */
 DECL|macro|KVADDR_TO_NID
 mdefine_line|#define KVADDR_TO_NID(addr) &bslash;&n;&t;&t;(((unsigned long)(addr) - PAGE_OFFSET) &gt;&gt; NODE_MAX_MEM_SHIFT)
-multiline_comment|/*&n; * Given a physical address, convert it to a node id.&n; */
-DECL|macro|PHYS_TO_NID
-mdefine_line|#define PHYS_TO_NID(addr) KVADDR_TO_NID(__phys_to_virt(addr))
+multiline_comment|/*&n; * Given a page frame number, convert it to a node id.&n; */
+DECL|macro|PFN_TO_NID
+mdefine_line|#define PFN_TO_NID(pfn) &bslash;&n;&t;(((pfn) - PHYS_PFN_OFFSET) &gt;&gt; (NODE_MAX_MEM_SHIFT - PAGE_SHIFT))
 multiline_comment|/*&n; * Given a kaddr, ADDR_TO_MAPBASE finds the owning node of the memory&n; * and returns the mem_map of that node.&n; */
 DECL|macro|ADDR_TO_MAPBASE
 mdefine_line|#define ADDR_TO_MAPBASE(kaddr) &bslash;&n;&t;&t;&t;NODE_MEM_MAP(KVADDR_TO_NID((unsigned long)(kaddr)))
+DECL|macro|PFN_TO_MAPBASE
+mdefine_line|#define PFN_TO_MAPBASE(pfn)&t;NODE_MEM_MAP(PFN_TO_NID(pfn))
 multiline_comment|/*&n; * Given a kaddr, LOCAL_MAR_NR finds the owning node of the memory&n; * and returns the index corresponding to the appropriate page in the&n; * node&squot;s mem_map.&n; */
 DECL|macro|LOCAL_MAP_NR
-mdefine_line|#define LOCAL_MAP_NR(kaddr) &bslash;&n;&t;(((unsigned long)(kaddr)-LOCAL_BASE_ADDR((kaddr))) &gt;&gt; PAGE_SHIFT)
-multiline_comment|/*&n; * Given a kaddr, virt_to_page returns a pointer to the corresponding &n; * mem_map entry.&n; */
-DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr) &bslash;&n;&t;(ADDR_TO_MAPBASE(kaddr) + LOCAL_MAP_NR(kaddr))
-multiline_comment|/*&n; * VALID_PAGE returns a non-zero value if given page pointer is valid.&n; * This assumes all node&squot;s mem_maps are stored within the node they refer to.&n; */
-DECL|macro|VALID_PAGE
-mdefine_line|#define VALID_PAGE(page) &bslash;&n;({ unsigned int node = KVADDR_TO_NID(page); &bslash;&n;   ( (node &lt; NR_NODES) &amp;&amp; &bslash;&n;     ((unsigned)((page) - NODE_MEM_MAP(node)) &lt; NODE_DATA(node)-&gt;node_size) ); &bslash;&n;})
+mdefine_line|#define LOCAL_MAP_NR(addr) &bslash;&n;&t;(((unsigned long)(addr) &amp; (NODE_MAX_MEM_SIZE - 1)) &gt;&gt; PAGE_SHIFT)
 multiline_comment|/*&n; * The PS7211 allows up to 256MB max per DRAM bank, but the EDB7211&n; * uses only one of the two banks (bank #1).  However, even within&n; * bank #1, memory is discontiguous.&n; *&n; * The EDB7211 has two 8MB DRAM areas with 8MB of empty space between&n; * them, so we use 24 for the node max shift to get 16MB node sizes.&n; */
 DECL|macro|NODE_MAX_MEM_SHIFT
 mdefine_line|#define NODE_MAX_MEM_SHIFT&t;24
 DECL|macro|NODE_MAX_MEM_SIZE
 mdefine_line|#define NODE_MAX_MEM_SIZE&t;(1&lt;&lt;NODE_MAX_MEM_SHIFT)
-multiline_comment|/*&n; * Given a mem_map_t, LOCAL_MAP_BASE finds the owning node for the&n; * physical page and returns the kaddr for the mem_map of that node.&n; */
-DECL|macro|LOCAL_MAP_BASE
-mdefine_line|#define LOCAL_MAP_BASE(page) &bslash;&n;&t;&t;&t;NODE_MEM_MAP(KVADDR_TO_NID((unsigned long)(page)))
-multiline_comment|/*&n; * Given a kaddr, LOCAL_BASE_ADDR finds the owning node of the memory&n; * and returns the kaddr corresponding to first physical page in the&n; * node&squot;s mem_map.&n; */
-DECL|macro|LOCAL_BASE_ADDR
-mdefine_line|#define LOCAL_BASE_ADDR(kaddr)&t;((unsigned long)(kaddr) &amp; ~(NODE_MAX_MEM_SIZE-1))
-multiline_comment|/* &n; * With discontigmem, the conceptual mem_map array starts from PAGE_OFFSET.&n; * Given a kaddr, MAP_NR returns the appropriate global mem_map index so &n; * it matches the corresponding node&squot;s local mem_map.&n; */
-DECL|macro|MAP_NR
-mdefine_line|#define MAP_NR(kaddr)&t;(LOCAL_MAP_NR((kaddr)) + &bslash;&n;&t;&t;(((unsigned long)ADDR_TO_MAPBASE((kaddr)) - PAGE_OFFSET) / &bslash;&n;&t;&t;sizeof(mem_map_t)))
 macro_line|#else
-DECL|macro|PHYS_TO_NID
-mdefine_line|#define PHYS_TO_NID(addr)&t;(0)
+DECL|macro|PFN_TO_NID
+mdefine_line|#define PFN_TO_NID(pfn)&t;&t;(0)
 macro_line|#endif /* CONFIG_DISCONTIGMEM */
 macro_line|#endif&t;/* CONFIG_ARCH_EDB7211 */
-macro_line|#ifndef PHYS_TO_NID
-DECL|macro|PHYS_TO_NID
-mdefine_line|#define PHYS_TO_NID(addr)&t;(0)
-macro_line|#endif
 macro_line|#endif
 eof
