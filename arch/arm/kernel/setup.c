@@ -27,6 +27,15 @@ macro_line|#ifndef CONFIG_CMDLINE
 DECL|macro|CONFIG_CMDLINE
 mdefine_line|#define CONFIG_CMDLINE &quot;&quot;
 macro_line|#endif
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|variable|__cacheline_aligned_in_smp
+id|spinlock_t
+id|kernel_flag
+id|__cacheline_aligned_in_smp
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+macro_line|#endif
 macro_line|#if defined(CONFIG_FPE_NWFPE) || defined(CONFIG_FPE_FASTFPE)
 DECL|variable|fpe_type
 r_char

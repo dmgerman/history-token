@@ -37,7 +37,7 @@ suffix:semicolon
 DECL|macro|get_ds
 mdefine_line|#define get_ds()&t;(KERNEL_DS)
 DECL|macro|get_fs
-mdefine_line|#define get_fs()&t;(current-&gt;addr_limit)
+mdefine_line|#define get_fs()&t;(current_thread_info()-&gt;addr_limit)
 DECL|macro|segment_eq
 mdefine_line|#define segment_eq(a,b)&t;((a) == (b))
 macro_line|#include &lt;asm/proc/uaccess.h&gt;
