@@ -2081,6 +2081,7 @@ DECL|function|ahc_list_lockinit
 id|ahc_list_lockinit
 c_func
 (paren
+r_void
 )paren
 (brace
 id|spin_lock_init
