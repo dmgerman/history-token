@@ -1869,29 +1869,13 @@ suffix:semicolon
 r_int
 id|mirror_size
 suffix:semicolon
-multiline_comment|/* allocate struct net_device if we don&squot;t have one yet */
+multiline_comment|/* allocate struct net_device */
 id|dev
 op_assign
-id|alloc_netdev
+id|alloc_arcdev
 c_func
 (paren
-r_sizeof
-(paren
-r_struct
-id|arcnet_local
-)paren
-comma
 id|device
-(braket
-l_int|0
-)braket
-ques
-c_cond
-id|device
-suffix:colon
-l_string|&quot;arc%d&quot;
-comma
-id|arcdev_setup
 )paren
 suffix:semicolon
 r_if
