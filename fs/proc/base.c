@@ -8205,6 +8205,12 @@ op_increment
 )paren
 (brace
 r_int
+r_int
+id|j
+op_assign
+id|PROC_NUMBUF
+suffix:semicolon
+r_int
 id|tid
 op_assign
 id|tid_array
@@ -8221,12 +8227,6 @@ id|tid
 comma
 id|PROC_TID_INO
 )paren
-suffix:semicolon
-r_int
-r_int
-id|j
-op_assign
-id|PROC_NUMBUF
 suffix:semicolon
 r_do
 id|buf
