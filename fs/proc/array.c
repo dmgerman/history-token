@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1357,13 +1358,29 @@ id|task-&gt;maj_flt
 comma
 id|task-&gt;cmaj_flt
 comma
-id|task-&gt;times.tms_utime
+id|jiffies_to_clock_t
+c_func
+(paren
+id|task-&gt;utime
+)paren
 comma
-id|task-&gt;times.tms_stime
+id|jiffies_to_clock_t
+c_func
+(paren
+id|task-&gt;stime
+)paren
 comma
-id|task-&gt;times.tms_cutime
+id|jiffies_to_clock_t
+c_func
+(paren
+id|task-&gt;cutime
+)paren
 comma
-id|task-&gt;times.tms_cstime
+id|jiffies_to_clock_t
+c_func
+(paren
+id|task-&gt;cstime
+)paren
 comma
 id|priority
 comma
@@ -2992,9 +3009,9 @@ id|buffer
 comma
 l_string|&quot;cpu  %lu %lu&bslash;n&quot;
 comma
-id|task-&gt;times.tms_utime
+id|task-&gt;utime
 comma
-id|task-&gt;times.tms_stime
+id|task-&gt;stime
 )paren
 suffix:semicolon
 r_for

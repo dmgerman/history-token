@@ -2,6 +2,8 @@ multiline_comment|/* mga_drv.c -- Matrox G200/G400 driver -*- linux-c -*-&n; * C
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;mga.h&quot;
 macro_line|#include &quot;drmP.h&quot;
+macro_line|#include &quot;drm.h&quot;
+macro_line|#include &quot;mga_drm.h&quot;
 macro_line|#include &quot;mga_drv.h&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;Gareth Hughes, VA Linux Systems Inc.&quot;

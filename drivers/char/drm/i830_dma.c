@@ -3,10 +3,11 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;i830.h&quot;
 macro_line|#include &quot;drmP.h&quot;
+macro_line|#include &quot;drm.h&quot;
+macro_line|#include &quot;i830_drm.h&quot;
 macro_line|#include &quot;i830_drv.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* For task queue support */
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/pagemap.h&gt;
 multiline_comment|/* in case we don&squot;t have a 2.3.99-pre6 kernel or later: */
 macro_line|#ifndef VM_DONTCOPY
 DECL|macro|VM_DONTCOPY
@@ -25,7 +26,7 @@ mdefine_line|#define I830_BUF_MAPPED   1
 DECL|macro|RING_LOCALS
 mdefine_line|#define RING_LOCALS&t;unsigned int outring, ringmask; volatile char *virt;
 DECL|macro|DO_IDLE_WORKAROUND
-mdefine_line|#define DO_IDLE_WORKAROUND()&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;   int _head;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;   int _tail;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;   int _i;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;   do { &t;&t;&t;&t;&t;&t;&t;&bslash;&n;      _head = I830_READ(LP_RING + RING_HEAD) &amp; HEAD_ADDR;&t;&bslash;&n;      _tail = I830_READ(LP_RING + RING_TAIL) &amp; TAIL_ADDR;&t;&bslash;&n;      udelay(10);&t;&t;&t;&t;&t;&t;&bslash;&n;   } while(_head != _tail);&t;&t;&t;&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define DO_IDLE_WORKAROUND()&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;   int _head;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;   int _tail;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;   do { &t;&t;&t;&t;&t;&t;&t;&bslash;&n;      _head = I830_READ(LP_RING + RING_HEAD) &amp; HEAD_ADDR;&t;&bslash;&n;      _tail = I830_READ(LP_RING + RING_TAIL) &amp; TAIL_ADDR;&t;&bslash;&n;      udelay(10);&t;&t;&t;&t;&t;&t;&bslash;&n;   } while(_head != _tail);&t;&t;&t;&t;&t;&bslash;&n;} while(0)
 DECL|macro|I830_SYNC_WORKAROUND
 mdefine_line|#define I830_SYNC_WORKAROUND 0
 DECL|macro|BEGIN_LP_RING
@@ -1360,9 +1361,6 @@ OL
 id|n
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|ring-&gt;head
 op_assign
 id|I830_READ

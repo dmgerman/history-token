@@ -396,9 +396,9 @@ id|jiffies
 suffix:semicolon
 id|idle
 op_assign
-id|init_task.times.tms_utime
+id|init_task.utime
 op_plus
-id|init_task.times.tms_stime
+id|init_task.stime
 suffix:semicolon
 multiline_comment|/* The formula for the fraction parts really is ((t * 100) / HZ) % 100, but&n;&t;   that would overflow about every five days at HZ == 100.&n;&t;   Therefore the identity a = (a / b) * b + a % b is used so that it is&n;&t;   calculated as (((t / HZ) * 100) + ((t % HZ) * 100) / HZ) % 100.&n;&t;   The part in front of the &squot;+&squot; always evaluates as 0 (mod 100). All divisions&n;&t;   in the above formulas are truncating. For HZ being a power of 10, the&n;&t;   calculations simplify to the version in the #else part (if the printf&n;&t;   format is adapted to the same number of digits as zeroes in HZ.&n;&t; */
 macro_line|#if HZ!=100
