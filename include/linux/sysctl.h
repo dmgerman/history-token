@@ -462,6 +462,12 @@ op_assign
 l_int|63
 comma
 multiline_comment|/* int: NGROUPS_MAX */
+DECL|enumerator|KERN_SPARC_SCONS_PWROFF
+id|KERN_SPARC_SCONS_PWROFF
+op_assign
+l_int|64
+comma
+multiline_comment|/* int: serial console power-off halt */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */
