@@ -394,6 +394,15 @@ r_char
 op_star
 id|proc_name
 suffix:semicolon
+multiline_comment|/*&n;     * countdown for host blocking with no commands outstanding&n;     */
+DECL|member|max_host_blocked
+r_int
+r_int
+id|max_host_blocked
+suffix:semicolon
+multiline_comment|/*&n;     * Default value for the blocking.  If the queue is empty, host_blocked&n;     * counts down in the request_fn until it restarts host operations as&n;     * zero is reached.  &n;     *&n;     * FIXME: This should probably be a value in the template */
+DECL|macro|SCSI_DEFAULT_HOST_BLOCKED
+mdefine_line|#define SCSI_DEFAULT_HOST_BLOCKED&t;7
 DECL|typedef|Scsi_Host_Template
 )brace
 id|Scsi_Host_Template
@@ -642,9 +651,12 @@ r_int
 r_int
 id|host_blocked
 suffix:semicolon
-multiline_comment|/*&n;     * Initial value for the blocking.  If the queue is empty, host_blocked&n;     * counts down in the request_fn until it restarts host operations as&n;     * zero is reached.  &n;     *&n;     * FIXME: This should probably be a value in the template */
-DECL|macro|SCSI_START_HOST_BLOCKED
-mdefine_line|#define SCSI_START_HOST_BLOCKED&t;7
+multiline_comment|/*&n;     * Value host_blocked counts down from&n;     */
+DECL|member|max_host_blocked
+r_int
+r_int
+id|max_host_blocked
+suffix:semicolon
 DECL|member|select_queue_depths
 r_void
 (paren

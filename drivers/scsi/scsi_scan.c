@@ -5529,6 +5529,11 @@ id|sdev-&gt;single_lun
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* if the device needs this changing, it may do so in the detect&n;&t; * function */
+id|sdev-&gt;max_device_blocked
+op_assign
+id|SCSI_DEFAULT_DEVICE_BLOCKED
+suffix:semicolon
 r_for
 c_loop
 (paren
