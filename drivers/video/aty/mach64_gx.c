@@ -505,7 +505,7 @@ comma
 id|u32
 id|vclk_per
 comma
-id|u8
+id|u32
 id|bpp
 comma
 r_union
@@ -1180,7 +1180,7 @@ c_cond
 (paren
 id|info-&gt;fix.smem_len
 OL
-id|MEM_SIZE_1M
+id|ONE_MB
 )paren
 id|mask
 op_assign
@@ -1192,7 +1192,7 @@ c_cond
 (paren
 id|info-&gt;fix.smem_len
 op_eq
-id|MEM_SIZE_1M
+id|ONE_MB
 )paren
 id|mask
 op_assign
@@ -1512,7 +1512,7 @@ comma
 id|u32
 id|vclk_per
 comma
-id|u8
+id|u32
 id|bpp
 comma
 r_union
@@ -2231,7 +2231,7 @@ comma
 id|u32
 id|vclk_per
 comma
-id|u8
+id|u32
 id|bpp
 comma
 r_union
@@ -2767,7 +2767,7 @@ comma
 id|u32
 id|vclk_per
 comma
-id|u8
+id|u32
 id|bpp
 comma
 r_union
@@ -3344,7 +3344,7 @@ comma
 id|u32
 id|vclk_per
 comma
-id|u8
+id|u32
 id|bpp
 comma
 r_union
