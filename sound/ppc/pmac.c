@@ -1714,7 +1714,7 @@ comma
 dot
 id|buffer_bytes_max
 op_assign
-l_int|32768
+l_int|131072
 comma
 dot
 id|period_bytes_min
@@ -1729,7 +1729,7 @@ comma
 dot
 id|periods_min
 op_assign
-l_int|1
+l_int|3
 comma
 dot
 id|periods_max
@@ -1792,7 +1792,7 @@ comma
 dot
 id|buffer_bytes_max
 op_assign
-l_int|32768
+l_int|131072
 comma
 dot
 id|period_bytes_min
@@ -1807,7 +1807,7 @@ comma
 dot
 id|periods_min
 op_assign
-l_int|1
+l_int|3
 comma
 dot
 id|periods_max
@@ -2332,6 +2332,15 @@ id|snd_pcm_set_sync
 c_func
 (paren
 id|subs
+)paren
+suffix:semicolon
+multiline_comment|/* constraints to fix choppy sound */
+id|snd_pcm_hw_constraint_integer
+c_func
+(paren
+id|runtime
+comma
+id|SNDRV_PCM_HW_PARAM_PERIODS
 )paren
 suffix:semicolon
 r_return
