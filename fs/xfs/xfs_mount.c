@@ -2901,6 +2901,12 @@ r_goto
 id|error1
 suffix:semicolon
 )brace
+id|mp-&gt;m_dalign
+op_assign
+id|mp-&gt;m_swidth
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_else
 (brace
