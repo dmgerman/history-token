@@ -7104,6 +7104,8 @@ op_or
 id|TIOCM_OUT1
 op_or
 id|TIOCM_OUT2
+op_or
+id|TIOCM_LOOP
 suffix:semicolon
 id|clear
 op_and_assign
@@ -7114,6 +7116,8 @@ op_or
 id|TIOCM_OUT1
 op_or
 id|TIOCM_OUT2
+op_or
+id|TIOCM_LOOP
 suffix:semicolon
 id|retval
 op_assign
