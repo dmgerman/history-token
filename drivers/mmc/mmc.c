@@ -2137,6 +2137,12 @@ id|err
 op_assign
 id|MMC_ERR_TIMEOUT
 suffix:semicolon
+id|mmc_delay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
