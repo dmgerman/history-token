@@ -61,6 +61,16 @@ comma
 l_string|&quot;Use digital path capture mode (on LML33 cards)&quot;
 )paren
 suffix:semicolon
+r_static
+r_void
+id|zr36057_init_vfe
+(paren
+r_struct
+id|zoran
+op_star
+id|zr
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * General Purpose I/O and Guest bus access&n; */
 multiline_comment|/*&n; * This is a bit tricky. When a board lacks a GPIO function, the corresponding&n; * GPIO bit number in the card_info structure is set to 0.&n; */
 r_void
@@ -6934,6 +6944,7 @@ id|ZR36057_GPPGCR1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * initialize video front end&n; */
+r_static
 r_void
 DECL|function|zr36057_init_vfe
 id|zr36057_init_vfe
