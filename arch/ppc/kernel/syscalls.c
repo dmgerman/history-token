@@ -430,6 +430,7 @@ id|EFAULT
 suffix:colon
 l_int|0
 )paren
+)paren
 r_break
 suffix:semicolon
 id|ret

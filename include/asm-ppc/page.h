@@ -149,6 +149,9 @@ mdefine_line|#define _ALIGN(addr,size)&t;(((addr)+size-1)&amp;(~(size-1)))
 multiline_comment|/* to align the pointer to the (next) page boundary */
 DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
+r_struct
+id|page
+suffix:semicolon
 r_extern
 r_void
 id|clear_page
@@ -185,6 +188,11 @@ comma
 r_int
 r_int
 id|vaddr
+comma
+r_struct
+id|page
+op_star
+id|pg
 )paren
 suffix:semicolon
 r_extern
@@ -203,6 +211,11 @@ comma
 r_int
 r_int
 id|vaddr
+comma
+r_struct
+id|page
+op_star
+id|pg
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_APUS

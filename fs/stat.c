@@ -26,11 +26,7 @@ id|stat
 (brace
 id|stat-&gt;dev
 op_assign
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_dev
-)paren
 suffix:semicolon
 id|stat-&gt;ino
 op_assign

@@ -6,10 +6,6 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#endif
-multiline_comment|/*&n; * The following is not needed anymore since the descriptors buffer&n; * heads are now dynamically allocated&n; */
-multiline_comment|/* #define EXT3_MAX_GROUP_DESC&t;8 */
-DECL|macro|EXT3_MAX_GROUP_LOADED
-mdefine_line|#define EXT3_MAX_GROUP_LOADED&t;8
 multiline_comment|/*&n; * third extended-fs super-block data in memory&n; */
 DECL|struct|ext3_sb_info
 r_struct
@@ -95,50 +91,6 @@ id|buffer_head
 op_star
 op_star
 id|s_group_desc
-suffix:semicolon
-DECL|member|s_loaded_inode_bitmaps
-r_int
-r_int
-id|s_loaded_inode_bitmaps
-suffix:semicolon
-DECL|member|s_loaded_block_bitmaps
-r_int
-r_int
-id|s_loaded_block_bitmaps
-suffix:semicolon
-DECL|member|s_inode_bitmap_number
-r_int
-r_int
-id|s_inode_bitmap_number
-(braket
-id|EXT3_MAX_GROUP_LOADED
-)braket
-suffix:semicolon
-DECL|member|s_inode_bitmap
-r_struct
-id|buffer_head
-op_star
-id|s_inode_bitmap
-(braket
-id|EXT3_MAX_GROUP_LOADED
-)braket
-suffix:semicolon
-DECL|member|s_block_bitmap_number
-r_int
-r_int
-id|s_block_bitmap_number
-(braket
-id|EXT3_MAX_GROUP_LOADED
-)braket
-suffix:semicolon
-DECL|member|s_block_bitmap
-r_struct
-id|buffer_head
-op_star
-id|s_block_bitmap
-(braket
-id|EXT3_MAX_GROUP_LOADED
-)braket
 suffix:semicolon
 DECL|member|s_mount_opt
 r_int

@@ -1115,14 +1115,16 @@ DECL|macro|PF_FREE_PAGES
 mdefine_line|#define PF_FREE_PAGES&t;0x00002000&t;/* per process page freeing */
 DECL|macro|PF_FLUSHER
 mdefine_line|#define PF_FLUSHER&t;0x00004000&t;/* responsible for disk writeback */
-DECL|macro|PF_RADIX_TREE
-mdefine_line|#define PF_RADIX_TREE&t;0x00008000&t;/* debug: performing radix tree alloc */
+DECL|macro|PF_NOWARN
+mdefine_line|#define PF_NOWARN&t;0x00008000&t;/* debug: don&squot;t warn if alloc fails */
 DECL|macro|PF_FREEZE
 mdefine_line|#define PF_FREEZE&t;0x00010000&t;/* this task should be frozen for suspend */
 DECL|macro|PF_IOTHREAD
 mdefine_line|#define PF_IOTHREAD&t;0x00020000&t;/* this thread is needed for doing I/O to swap */
 DECL|macro|PF_FROZEN
 mdefine_line|#define PF_FROZEN&t;0x00040000&t;/* frozen for system suspend */
+DECL|macro|PF_INVALIDATE
+mdefine_line|#define PF_INVALIDATE&t;0x00080000&t;/* debug: unmounting an fs. killme. */
 multiline_comment|/*&n; * Ptrace flags&n; */
 DECL|macro|PT_PTRACED
 mdefine_line|#define PT_PTRACED&t;0x00000001
@@ -1196,16 +1198,13 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
-id|asmlinkage
-r_int
-id|sys_sched_yield
+r_void
+id|yield
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-DECL|macro|yield
-mdefine_line|#define yield() sys_sched_yield()
 multiline_comment|/*&n; * The default (Linux) execution domain.&n; */
 r_extern
 r_struct
@@ -3250,6 +3249,14 @@ id|TIF_NEED_RESCHED
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|__cond_resched
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|cond_resched
 r_static
 r_inline
@@ -3268,7 +3275,7 @@ c_func
 (paren
 )paren
 )paren
-id|schedule
+id|__cond_resched
 c_func
 (paren
 )paren

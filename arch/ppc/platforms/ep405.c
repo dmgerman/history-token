@@ -148,7 +148,6 @@ op_star
 )paren
 id|__res
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_RTC
 r_if
 c_cond
 (paren
@@ -175,7 +174,6 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 r_void
 id|__init
@@ -849,6 +847,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_RTC
 id|bd_t
 op_star
 id|bip
@@ -859,7 +858,6 @@ op_star
 )paren
 id|__res
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_RTC
 multiline_comment|/* FIXME: we should be able to access the NVRAM even if PPC_RTC is not configured */
 id|ppc_md.nvram_read_val
 op_assign

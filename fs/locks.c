@@ -6539,6 +6539,7 @@ l_string|&quot;READ &quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; *&t;NOTE: it should be inode-&gt;i_sb-&gt;s_id, not kdevname(...).&n;&t; */
 id|out
 op_add_assign
 id|sprintf
@@ -6556,7 +6557,11 @@ c_cond
 id|kdevname
 c_func
 (paren
+id|to_kdev_t
+c_func
+(paren
 id|inode-&gt;i_dev
+)paren
 )paren
 suffix:colon
 l_string|&quot;&lt;none&gt;&quot;

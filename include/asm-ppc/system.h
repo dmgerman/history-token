@@ -116,8 +116,25 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|_get_L3CR
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|_set_L2CR
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|_set_L3CR
 c_func
 (paren
 r_int
@@ -127,8 +144,12 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|_get_L2CR
 mdefine_line|#define _get_L2CR()&t;0L
+DECL|macro|_get_L3CR
+mdefine_line|#define _get_L3CR()&t;0L
 DECL|macro|_set_L2CR
 mdefine_line|#define _set_L2CR(val)&t;do { } while(0)
+DECL|macro|_set_L3CR
+mdefine_line|#define _set_L3CR(val)&t;do { } while(0)
 macro_line|#endif
 r_extern
 r_void
@@ -298,14 +319,20 @@ r_void
 op_star
 )paren
 suffix:semicolon
+DECL|macro|prepare_arch_schedule
+mdefine_line|#define prepare_arch_schedule(prev)&t;&t;do { } while(0)
+DECL|macro|finish_arch_schedule
+mdefine_line|#define finish_arch_schedule(prev)&t;&t;do { } while(0)
+DECL|macro|prepare_arch_switch
+mdefine_line|#define prepare_arch_switch(rq)&t;&t;&t;do { } while(0)
+DECL|macro|finish_arch_switch
+mdefine_line|#define finish_arch_switch(rq)&t;&t;&t;spin_unlock_irq(&amp;(rq)-&gt;lock)
 r_struct
 id|task_struct
 suffix:semicolon
-DECL|macro|prepare_to_switch
-mdefine_line|#define prepare_to_switch()&t;do { } while(0)
 r_extern
 r_void
-id|switch_to
+id|__switch_to
 c_func
 (paren
 r_struct
@@ -317,6 +344,8 @@ id|task_struct
 op_star
 )paren
 suffix:semicolon
+DECL|macro|switch_to
+mdefine_line|#define switch_to(prev, next, last)&t;__switch_to((prev), (next))
 r_struct
 id|thread_struct
 suffix:semicolon

@@ -2286,12 +2286,12 @@ multiline_comment|/*&n; * The way we support synthetic files &gt; 4K&n; * - with
 multiline_comment|/*&n; * For the /proc/&lt;pid&gt;/maps file, we use fixed length records, each containing&n; * a single line.&n; *&n; * f_pos = (number of the vma in the task-&gt;mm-&gt;mmap list) * PAGE_SIZE&n; *         + (index into the line)&n; */
 multiline_comment|/* for systems with sizeof(void*) == 4: */
 DECL|macro|MAPS_LINE_FORMAT4
-mdefine_line|#define MAPS_LINE_FORMAT4&t;  &quot;%08lx-%08lx %s %08lx %s %lu&quot;
+mdefine_line|#define MAPS_LINE_FORMAT4&t;  &quot;%08lx-%08lx %s %08lx %02x:%02x %lu&quot;
 DECL|macro|MAPS_LINE_MAX4
 mdefine_line|#define MAPS_LINE_MAX4&t;49 /* sum of 8  1  8  1 4 1 8 1 5 1 10 1 */
 multiline_comment|/* for systems with sizeof(void*) == 8: */
 DECL|macro|MAPS_LINE_FORMAT8
-mdefine_line|#define MAPS_LINE_FORMAT8&t;  &quot;%016lx-%016lx %s %016lx %s %lu&quot;
+mdefine_line|#define MAPS_LINE_FORMAT8&t;  &quot;%016lx-%016lx %s %016lx %02x:%02x %lu&quot;
 DECL|macro|MAPS_LINE_MAX8
 mdefine_line|#define MAPS_LINE_MAX8&t;73 /* sum of 16  1  16  1 4 1 16 1 5 1 10 1 */
 DECL|macro|MAPS_LINE_FORMAT
@@ -2327,7 +2327,7 @@ suffix:semicolon
 r_int
 id|flags
 suffix:semicolon
-id|kdev_t
+id|dev_t
 id|dev
 suffix:semicolon
 r_int
@@ -2406,7 +2406,7 @@ l_int|0
 suffix:semicolon
 id|dev
 op_assign
-id|NODEV
+l_int|0
 suffix:semicolon
 id|ino
 op_assign
@@ -2493,7 +2493,13 @@ id|map-&gt;vm_pgoff
 op_lshift
 id|PAGE_SHIFT
 comma
-id|kdevname
+id|MAJOR
+c_func
+(paren
+id|dev
+)paren
+comma
+id|MINOR
 c_func
 (paren
 id|dev

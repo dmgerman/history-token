@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* block_sync_page() */
 macro_line|#include &lt;asm/pgtable.h&gt;
-multiline_comment|/*&n; * swapper_inode doesn&squot;t do anything much.  It is really only here to&n; * avoid some special-casing in other parts of the kernel.&n; *&n; * We set i_size to &quot;infinity&quot; to keep the page I/O functions happy.  The swap&n; * block allocator makes sure that allocations are in-range.  A strange&n; * number is chosen to prevent various arith overflows elsewhere.  For example,&n; * `lblock&squot; in block_read_full_page().&n; */
+multiline_comment|/*&n; * swapper_inode doesn&squot;t do anything much.  It is really only here to&n; * avoid some special-casing in other parts of the kernel.&n; */
 DECL|variable|swapper_inode
 r_static
 r_struct
@@ -20,16 +20,6 @@ id|i_mapping
 suffix:colon
 op_amp
 id|swapper_space
-comma
-id|i_size
-suffix:colon
-id|PAGE_SIZE
-op_star
-l_int|0xffffffffLL
-comma
-id|i_blkbits
-suffix:colon
-id|PAGE_SHIFT
 comma
 )brace
 suffix:semicolon
@@ -576,29 +566,17 @@ id|pslot
 op_assign
 id|page
 suffix:semicolon
-id|page-&gt;flags
-op_and_assign
-op_complement
+multiline_comment|/*&n;&t;&t; * This code used to clear PG_uptodate, PG_error, PG_arch1,&n;&t;&t; * PG_referenced and PG_checked.  What _should_ it clear?&n;&t;&t; */
+id|ClearPageUptodate
+c_func
 (paren
-l_int|1
-op_lshift
-id|PG_uptodate
-op_or
-l_int|1
-op_lshift
-id|PG_error
-op_or
-l_int|1
-op_lshift
-id|PG_referenced
-op_or
-l_int|1
-op_lshift
-id|PG_arch_1
-op_or
-l_int|1
-op_lshift
-id|PG_checked
+id|page
+)paren
+suffix:semicolon
+id|ClearPageReferenced
+c_func
+(paren
+id|page
 )paren
 suffix:semicolon
 id|SetPageLocked
@@ -792,29 +770,17 @@ id|pslot
 op_assign
 id|page
 suffix:semicolon
-id|page-&gt;flags
-op_and_assign
-op_complement
+multiline_comment|/*&n;&t;&t; * This code used to clear PG_uptodate, PG_error, PG_referenced,&n;&t;&t; * PG_arch_1 and PG_checked.  It&squot;s not really clear why.&n;&t;&t; */
+id|ClearPageUptodate
+c_func
 (paren
-l_int|1
-op_lshift
-id|PG_uptodate
-op_or
-l_int|1
-op_lshift
-id|PG_error
-op_or
-l_int|1
-op_lshift
-id|PG_referenced
-op_or
-l_int|1
-op_lshift
-id|PG_arch_1
-op_or
-l_int|1
-op_lshift
-id|PG_checked
+id|page
+)paren
+suffix:semicolon
+id|ClearPageReferenced
+c_func
+(paren
+id|page
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * ___add_to_page_cache puts the page on -&gt;clean_pages,&n;&t;&t; * but it&squot;s dirty.  If it&squot;s on -&gt;clean_pages, it will basically&n;&t;&t; * never get written out.&n;&t;&t; */
