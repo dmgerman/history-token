@@ -152,7 +152,7 @@ comma
 id|MT_DEVICE
 )brace
 comma
-multiline_comment|/* IO space&t;&t;*/
+multiline_comment|/* IO space&t;*/
 (brace
 id|EASI_BASE
 comma
@@ -166,6 +166,7 @@ multiline_comment|/* EASI space&t;*/
 )brace
 suffix:semicolon
 DECL|function|rpc_map_io
+r_static
 r_void
 id|__init
 id|rpc_map_io
