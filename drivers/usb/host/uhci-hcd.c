@@ -1175,36 +1175,7 @@ comma
 id|list
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Patch this endpoint&squot;s URB&squot;s QHs to point to the next skelqh:&n;&t; *    skelqh --&gt; ... lqh --&gt; newqh --&gt; next skelqh&n;&t; * Do this first, so the HC always sees the right QH after this one.&n;&t; */
-id|list_for_each
-(paren
-id|tmp
-comma
-op_amp
-id|urbp-&gt;queue_list
-)paren
-(brace
-r_struct
-id|urb_priv
-op_star
-id|turbp
-op_assign
-id|list_entry
-c_func
-(paren
-id|tmp
-comma
-r_struct
-id|urb_priv
-comma
-id|queue_list
-)paren
-suffix:semicolon
-id|turbp-&gt;qh-&gt;link
-op_assign
-id|lqh-&gt;link
-suffix:semicolon
-)brace
+multiline_comment|/* Point to the next skelqh */
 id|urbp-&gt;qh-&gt;link
 op_assign
 id|lqh-&gt;link
