@@ -119,19 +119,6 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * flush a page to RAM&n;&t;&t; */
-DECL|member|_flush_ram_page
-r_void
-(paren
-op_star
-id|_flush_ram_page
-)paren
-(paren
-r_void
-op_star
-id|virt_page
-)paren
-suffix:semicolon
 DECL|member|cache
 )brace
 id|cache
@@ -327,8 +314,6 @@ DECL|macro|cpu_cache_clean_invalidate_all
 mdefine_line|#define cpu_cache_clean_invalidate_all()&t;processor.cache.clean_invalidate_all()
 DECL|macro|cpu_cache_clean_invalidate_range
 mdefine_line|#define cpu_cache_clean_invalidate_range(s,e,f)&t;processor.cache.clean_invalidate_range(s,e,f)
-DECL|macro|cpu_flush_ram_page
-mdefine_line|#define cpu_flush_ram_page(vp)&t;&t;&t;processor.cache._flush_ram_page(vp)
 DECL|macro|cpu_dcache_clean_page
 mdefine_line|#define cpu_dcache_clean_page(vp)&t;&t;processor.dcache.clean_page(vp)
 DECL|macro|cpu_dcache_clean_entry
