@@ -906,6 +906,7 @@ r_void
 id|tcp_options
 c_func
 (paren
+r_const
 r_struct
 id|sk_buff
 op_star
