@@ -118,6 +118,10 @@ DECL|macro|iu_iir
 mdefine_line|#define iu_iir u3.iir
 DECL|macro|iu_fcr
 mdefine_line|#define iu_fcr u3.fcr
+DECL|macro|ssnop
+mdefine_line|#define ssnop()&t;&t;__asm__ __volatile__(&quot;sll&t;$0, $0, 1&bslash;n&quot;);
+DECL|macro|ssnop_4
+mdefine_line|#define ssnop_4()&t;do { ssnop(); ssnop(); ssnop(); ssnop(); } while (0)
 DECL|macro|IO_BASE_64
 mdefine_line|#define IO_BASE_64&t;0x9000000000000000ULL
 DECL|function|readb_outer_space
@@ -127,6 +131,7 @@ r_char
 id|readb_outer_space
 c_func
 (paren
+r_int
 r_int
 r_int
 id|phys
@@ -169,35 +174,16 @@ op_complement
 id|ST0_IE
 )paren
 suffix:semicolon
-id|__asm__
+id|ssnop_4
 c_func
 (paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
-)paren
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
-)paren
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
-)paren
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
 )paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
 l_string|&quot;&t;.set&t;mips3&t;&t;&bslash;n&quot;
-l_string|&quot;&t;ld&t;%0, (%0)&t;&bslash;n&quot;
+l_string|&quot;&t;ld&t;%0, %1&t;&t;&bslash;n&quot;
 l_string|&quot;&t;lbu&t;%0, (%0)&t;&bslash;n&quot;
 l_string|&quot;&t;.set&t;mips0&t;&t;&bslash;n&quot;
 suffix:colon
@@ -206,9 +192,8 @@ l_string|&quot;=r&quot;
 id|res
 )paren
 suffix:colon
-l_string|&quot;0&quot;
+l_string|&quot;m&quot;
 (paren
-op_amp
 id|vaddr
 )paren
 )paren
@@ -219,28 +204,9 @@ c_func
 id|sr
 )paren
 suffix:semicolon
-id|__asm__
+id|ssnop_4
 c_func
 (paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
-)paren
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
-)paren
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
-)paren
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -255,6 +221,7 @@ c_func
 (paren
 r_int
 r_int
+r_int
 id|phys
 comma
 r_int
@@ -299,46 +266,26 @@ op_complement
 id|ST0_IE
 )paren
 suffix:semicolon
-id|__asm__
+id|ssnop_4
 c_func
 (paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
-)paren
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
-)paren
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
-)paren
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
 )paren
 suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
 l_string|&quot;&t;.set&t;mips3&t;&t;&bslash;n&quot;
-l_string|&quot;&t;ld&t;%0, (%1)&t;&bslash;n&quot;
+l_string|&quot;&t;ld&t;%0, %1&t;&t;&bslash;n&quot;
 l_string|&quot;&t;sb&t;%2, (%0)&t;&bslash;n&quot;
 l_string|&quot;&t;.set&t;mips0&t;&t;&bslash;n&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|tmp
 )paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;m&quot;
 (paren
-op_amp
 id|vaddr
 )paren
 comma
@@ -354,28 +301,9 @@ c_func
 id|sr
 )paren
 suffix:semicolon
-id|__asm__
+id|ssnop_4
 c_func
 (paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
-)paren
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
-)paren
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
-)paren
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -392,7 +320,7 @@ r_int
 r_int
 id|lsr
 op_assign
-l_int|0xfd000008UL
+l_int|0xfd000008ULL
 op_plus
 m_offsetof
 (paren
@@ -406,7 +334,7 @@ r_int
 r_int
 id|thr
 op_assign
-l_int|0xfd000008UL
+l_int|0xfd000008ULL
 op_plus
 m_offsetof
 (paren
