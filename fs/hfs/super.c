@@ -461,11 +461,11 @@ id|current-&gt;gid
 suffix:semicolon
 id|hsb-&gt;s_file_umask
 op_assign
-l_int|0644
+l_int|0133
 suffix:semicolon
 id|hsb-&gt;s_dir_umask
 op_assign
-l_int|0755
+l_int|0022
 suffix:semicolon
 id|hsb-&gt;s_type
 op_assign
@@ -1028,7 +1028,7 @@ l_int|0777
 suffix:semicolon
 id|hsb-&gt;s_file_umask
 op_and_assign
-l_int|0777
+l_int|0577
 suffix:semicolon
 r_return
 l_int|1
