@@ -301,10 +301,14 @@ r_int
 )paren
 )paren
 suffix:semicolon
-id|report-&gt;field
-(braket
+id|field-&gt;index
+op_assign
 id|report-&gt;maxfield
 op_increment
+suffix:semicolon
+id|report-&gt;field
+(braket
+id|field-&gt;index
 )braket
 op_assign
 id|field
