@@ -28,23 +28,23 @@ mdefine_line|#define write_lock_irq(lock)&t;&t;&t;do { local_irq_disable();     
 DECL|macro|write_lock_bh
 mdefine_line|#define write_lock_bh(lock)&t;&t;&t;do { local_bh_disable();         write_lock(lock); } while (0)
 DECL|macro|spin_unlock_irqrestore
-mdefine_line|#define spin_unlock_irqrestore(lock, flags)&t;do { spin_unlock(lock);  local_irq_restore(flags); } while (0)
+mdefine_line|#define spin_unlock_irqrestore(lock, flags)&t;do { _raw_spin_unlock(lock);  local_irq_restore(flags); preempt_enable(); } while (0)
 DECL|macro|_raw_spin_unlock_irqrestore
 mdefine_line|#define _raw_spin_unlock_irqrestore(lock, flags) do { _raw_spin_unlock(lock);  local_irq_restore(flags); } while (0)
 DECL|macro|spin_unlock_irq
-mdefine_line|#define spin_unlock_irq(lock)&t;&t;&t;do { spin_unlock(lock);  local_irq_enable();       } while (0)
+mdefine_line|#define spin_unlock_irq(lock)&t;&t;&t;do { _raw_spin_unlock(lock);  local_irq_enable(); preempt_enable();       } while (0)
 DECL|macro|spin_unlock_bh
-mdefine_line|#define spin_unlock_bh(lock)&t;&t;&t;do { spin_unlock(lock);  local_bh_enable();        } while (0)
+mdefine_line|#define spin_unlock_bh(lock)&t;&t;&t;do { spin_unlock(lock); local_bh_enable(); } while (0)
 DECL|macro|read_unlock_irqrestore
-mdefine_line|#define read_unlock_irqrestore(lock, flags)&t;do { read_unlock(lock);  local_irq_restore(flags); } while (0)
+mdefine_line|#define read_unlock_irqrestore(lock, flags)&t;do { _raw_read_unlock(lock);  local_irq_restore(flags); preempt_enable(); } while (0)
 DECL|macro|read_unlock_irq
-mdefine_line|#define read_unlock_irq(lock)&t;&t;&t;do { read_unlock(lock);  local_irq_enable();       } while (0)
+mdefine_line|#define read_unlock_irq(lock)&t;&t;&t;do { _raw_read_unlock(lock);  local_irq_enable(); preempt_enable(); } while (0)
 DECL|macro|read_unlock_bh
 mdefine_line|#define read_unlock_bh(lock)&t;&t;&t;do { read_unlock(lock);  local_bh_enable();        } while (0)
 DECL|macro|write_unlock_irqrestore
-mdefine_line|#define write_unlock_irqrestore(lock, flags)&t;do { write_unlock(lock); local_irq_restore(flags); } while (0)
+mdefine_line|#define write_unlock_irqrestore(lock, flags)&t;do { _raw_write_unlock(lock); local_irq_restore(flags); preempt_enable(); } while (0)
 DECL|macro|write_unlock_irq
-mdefine_line|#define write_unlock_irq(lock)&t;&t;&t;do { write_unlock(lock); local_irq_enable();       } while (0)
+mdefine_line|#define write_unlock_irq(lock)&t;&t;&t;do { _raw_write_unlock(lock); local_irq_enable(); preempt_enable();       } while (0)
 DECL|macro|write_unlock_bh
 mdefine_line|#define write_unlock_bh(lock)&t;&t;&t;do { write_unlock(lock); local_bh_enable();        } while (0)
 DECL|macro|spin_trylock_bh
@@ -148,8 +148,6 @@ DECL|macro|spin_trylock
 mdefine_line|#define spin_trylock(lock)&t;({preempt_disable(); _raw_spin_trylock(lock) ? &bslash;&n;&t;&t;&t;&t;1 : ({preempt_enable(); 0;});})
 DECL|macro|spin_unlock
 mdefine_line|#define spin_unlock(lock) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;preempt_enable(); &bslash;&n;} while (0)
-DECL|macro|spin_unlock_no_resched
-mdefine_line|#define spin_unlock_no_resched(lock) &bslash;&n;do { &bslash;&n;&t;_raw_spin_unlock(lock); &bslash;&n;&t;preempt_enable_no_resched(); &bslash;&n;} while (0)
 DECL|macro|read_lock
 mdefine_line|#define read_lock(lock)&t;&t;({preempt_disable(); _raw_read_lock(lock);})
 DECL|macro|read_unlock
@@ -167,8 +165,6 @@ DECL|macro|spin_trylock
 mdefine_line|#define spin_trylock(lock)&t;&t;_raw_spin_trylock(lock)
 DECL|macro|spin_unlock
 mdefine_line|#define spin_unlock(lock)&t;&t;_raw_spin_unlock(lock)
-DECL|macro|spin_unlock_no_resched
-mdefine_line|#define spin_unlock_no_resched(lock)&t;_raw_spin_unlock(lock)
 DECL|macro|read_lock
 mdefine_line|#define read_lock(lock)&t;&t;&t;_raw_read_lock(lock)
 DECL|macro|read_unlock

@@ -12809,15 +12809,10 @@ op_member_access_from_pointer
 id|regs
 suffix:semicolon
 multiline_comment|/*&n;&t; * Don&squot;t take interrupts on this CPU will bit banging&n;&t; * the %#%#@$ I2C device&n;&t; */
-id|local_save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
 )paren
 suffix:semicolon
 id|eeprom_start

@@ -2236,14 +2236,14 @@ multiline_comment|/* note: this timer irq context must be accounted for as well 
 r_if
 c_cond
 (paren
-id|preempt_count
+id|irq_count
 c_func
 (paren
 )paren
 op_ge
 l_int|2
 op_star
-id|IRQ_OFFSET
+id|HARDIRQ_OFFSET
 )paren
 id|kstat.per_cpu_system
 (braket
@@ -2917,6 +2917,42 @@ id|ti-&gt;preempt_count
 )paren
 r_return
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|irqs_disabled
+c_func
+(paren
+)paren
+)paren
+)paren
+(brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;bad: schedule() with irqs disabled!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|show_stack
+c_func
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+id|preempt_enable_no_resched
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 id|need_resched
 suffix:colon
 id|ti-&gt;preempt_count
@@ -3428,7 +3464,7 @@ suffix:semicolon
 DECL|macro|SLEEP_ON_VAR
 mdefine_line|#define&t;SLEEP_ON_VAR&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&bslash;&n;&t;wait_queue_t wait;&t;&t;&t;&bslash;&n;&t;init_waitqueue_entry(&amp;wait, current);
 DECL|macro|SLEEP_ON_HEAD
-mdefine_line|#define&t;SLEEP_ON_HEAD&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irqsave(&amp;q-&gt;lock,flags);&t;&t;&bslash;&n;&t;__add_wait_queue(q, &amp;wait);&t;&t;&t;&bslash;&n;&t;spin_unlock(&amp;q-&gt;lock);
+mdefine_line|#define SLEEP_ON_HEAD&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irqsave(&amp;q-&gt;lock,flags);&t;&t;&bslash;&n;&t;__add_wait_queue(q, &amp;wait);&t;&t;&t;&bslash;&n;&t;spin_unlock(&amp;q-&gt;lock);
 DECL|macro|SLEEP_ON_TAIL
 mdefine_line|#define&t;SLEEP_ON_TAIL&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irq(&amp;q-&gt;lock);&t;&t;&t;&t;&bslash;&n;&t;__remove_wait_queue(q, &amp;wait);&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;q-&gt;lock, flags);
 DECL|function|interruptible_sleep_on
@@ -5050,11 +5086,17 @@ id|array-&gt;bitmap
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_no_resched
+multiline_comment|/*&n;&t; * Since we are going to call schedule() anyway, there&squot;s&n;&t; * no need to preempt:&n;&t; */
+id|_raw_spin_unlock
 c_func
 (paren
 op_amp
 id|rq-&gt;lock
+)paren
+suffix:semicolon
+id|preempt_enable_no_resched
+c_func
+(paren
 )paren
 suffix:semicolon
 id|schedule
@@ -6063,15 +6105,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|local_save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
 )paren
 suffix:semicolon
 id|double_rq_lock
@@ -6145,6 +6182,11 @@ id|idle-&gt;lock_depth
 op_ge
 l_int|0
 )paren
+suffix:semicolon
+macro_line|#else
+id|idle-&gt;thread_info-&gt;preempt_count
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace

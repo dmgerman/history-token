@@ -974,8 +974,6 @@ id|skb-&gt;destructor
 r_if
 c_cond
 (paren
-l_int|0
-op_logical_and
 id|in_irq
 c_func
 (paren

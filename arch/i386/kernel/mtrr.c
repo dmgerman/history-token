@@ -245,13 +245,10 @@ id|ctxt
 )paren
 (brace
 multiline_comment|/*  Disable interrupts locally  */
-id|local_save_flags
+id|local_irq_save
+c_func
 (paren
 id|ctxt-&gt;flags
-)paren
-suffix:semicolon
-id|local_irq_disable
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -912,13 +909,10 @@ id|reg
 suffix:semicolon
 multiline_comment|/* avoid multiplication by 3 */
 multiline_comment|/* Save flags and disable interrupts */
-id|local_save_flags
+id|local_irq_save
+c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|local_irq_disable
-(paren
 )paren
 suffix:semicolon
 id|ccr3
