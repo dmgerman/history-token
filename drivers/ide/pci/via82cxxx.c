@@ -2329,7 +2329,6 @@ l_int|5
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 multiline_comment|/**&n; *&t;via82cxxx_ide_dma_check&t;&t;-&t;set up for DMA if possible&n; *&t;@drive: IDE drive to set up&n; *&n; *&t;Set up the drive for the highest supported speed considering the&n; *&t;driver, controller and cable&n; */
 DECL|function|via82cxxx_ide_dma_check
 r_static
@@ -2479,7 +2478,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/**&n; *&t;init_chipset_via82cxxx&t;-&t;initialization handler&n; *&t;@dev: PCI device&n; *&t;@name: Name of interface&n; *&n; *&t;The initialization callback. Here we determine the IDE chip type&n; *&t;and initialize its drive independent registers.&n; */
 DECL|function|init_chipset_via82cxxx
 r_static
@@ -3334,7 +3332,6 @@ id|hwif-&gt;swdma_mask
 op_assign
 l_int|0x07
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -3390,7 +3387,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 multiline_comment|/**&n; *&t;init_dma_via82cxxx&t;-&t;set up for IDE DMA&n; *&t;@hwif: IDE interface&n; *&t;@dmabase: DMA base address&n; *&n; *&t;We allow the BM-DMA driver to only work on enabled interfaces.&n; */
 DECL|function|init_dma_via82cxxx
