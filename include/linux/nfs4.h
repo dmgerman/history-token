@@ -967,6 +967,15 @@ comma
 DECL|enumerator|NFSPROC4_CLNT_SETCLIENTID_CONFIRM
 id|NFSPROC4_CLNT_SETCLIENTID_CONFIRM
 comma
+DECL|enumerator|NFSPROC4_CLNT_LOCK
+id|NFSPROC4_CLNT_LOCK
+comma
+DECL|enumerator|NFSPROC4_CLNT_LOCKT
+id|NFSPROC4_CLNT_LOCKT
+comma
+DECL|enumerator|NFSPROC4_CLNT_LOCKU
+id|NFSPROC4_CLNT_LOCKU
+comma
 )brace
 suffix:semicolon
 macro_line|#endif
