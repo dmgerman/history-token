@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &quot;xattr.h&quot;
 DECL|macro|DEVPTS_SUPER_MAGIC
 mdefine_line|#define DEVPTS_SUPER_MAGIC 0x1cd1
 DECL|variable|devpts_mnt
@@ -551,6 +552,35 @@ id|num
 )paren
 suffix:semicolon
 )brace
+DECL|variable|devpts_file_inode_operations
+r_static
+r_struct
+id|inode_operations
+id|devpts_file_inode_operations
+op_assign
+(brace
+dot
+id|setxattr
+op_assign
+id|devpts_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|devpts_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|devpts_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|devpts_removexattr
+comma
+)brace
+suffix:semicolon
 DECL|function|devpts_pty_new
 r_void
 id|devpts_pty_new
@@ -634,6 +664,11 @@ id|config.mode
 comma
 id|device
 )paren
+suffix:semicolon
+id|inode-&gt;i_op
+op_assign
+op_amp
+id|devpts_file_inode_operations
 suffix:semicolon
 id|dentry
 op_assign
@@ -760,6 +795,21 @@ r_void
 r_int
 id|err
 op_assign
+id|init_devpts_xattr
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
+suffix:semicolon
+id|err
+op_assign
 id|register_filesystem
 c_func
 (paren
@@ -831,6 +881,11 @@ id|mntput
 c_func
 (paren
 id|devpts_mnt
+)paren
+suffix:semicolon
+id|exit_devpts_xattr
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
