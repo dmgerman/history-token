@@ -1484,6 +1484,13 @@ r_if
 c_cond
 (paren
 (paren
+id|ACPI_SUCCESS
+(paren
+id|status
+)paren
+)paren
+op_logical_and
+(paren
 id|walk_state-&gt;control_state
 )paren
 op_logical_and

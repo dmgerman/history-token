@@ -798,7 +798,7 @@ id|obj_desc
 comma
 id|stack_ptr
 comma
-id|walk_state
+id|walk_state-&gt;opcode
 )paren
 suffix:semicolon
 r_if
@@ -861,7 +861,7 @@ id|obj_desc
 comma
 id|stack_ptr
 comma
-id|walk_state
+id|walk_state-&gt;opcode
 )paren
 suffix:semicolon
 r_if
@@ -924,11 +924,9 @@ id|obj_desc
 comma
 id|stack_ptr
 comma
-l_int|16
+id|ACPI_IMPLICIT_CONVERT_HEX
 comma
-id|ACPI_UINT32_MAX
-comma
-id|walk_state
+id|walk_state-&gt;opcode
 )paren
 suffix:semicolon
 r_if
@@ -1065,7 +1063,7 @@ id|obj_desc
 comma
 id|stack_ptr
 comma
-id|walk_state
+id|walk_state-&gt;opcode
 )paren
 suffix:semicolon
 r_if

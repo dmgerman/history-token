@@ -868,7 +868,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|acpi_debug_mem_block
+id|acpi_debug_mem_header
 )paren
 comma
 id|component
@@ -998,7 +998,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|acpi_debug_mem_block
+id|acpi_debug_mem_header
 )paren
 comma
 id|component
@@ -1513,6 +1513,15 @@ id|module
 comma
 id|ACPI_MAX_MODULE_NAME
 )paren
+suffix:semicolon
+id|allocation-&gt;module
+(braket
+id|ACPI_MAX_MODULE_NAME
+op_minus
+l_int|1
+)braket
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Insert at list head */
 r_if

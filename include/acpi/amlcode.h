@@ -384,32 +384,34 @@ DECL|macro|OPGRP_BYTELIST
 mdefine_line|#define OPGRP_BYTELIST              0x04
 multiline_comment|/*&n; * Opcode information&n; */
 multiline_comment|/* Opcode flags */
-DECL|macro|AML_HAS_ARGS
-mdefine_line|#define AML_HAS_ARGS                0x0800
-DECL|macro|AML_HAS_TARGET
-mdefine_line|#define AML_HAS_TARGET              0x0400
-DECL|macro|AML_HAS_RETVAL
-mdefine_line|#define AML_HAS_RETVAL              0x0200
-DECL|macro|AML_NSOBJECT
-mdefine_line|#define AML_NSOBJECT                0x0100
-DECL|macro|AML_NSOPCODE
-mdefine_line|#define AML_NSOPCODE                0x0080
-DECL|macro|AML_NSNODE
-mdefine_line|#define AML_NSNODE                  0x0040
-DECL|macro|AML_NAMED
-mdefine_line|#define AML_NAMED                   0x0020
-DECL|macro|AML_DEFER
-mdefine_line|#define AML_DEFER                   0x0010
-DECL|macro|AML_FIELD
-mdefine_line|#define AML_FIELD                   0x0008
-DECL|macro|AML_CREATE
-mdefine_line|#define AML_CREATE                  0x0004
-DECL|macro|AML_MATH
-mdefine_line|#define AML_MATH                    0x0002
 DECL|macro|AML_LOGICAL
 mdefine_line|#define AML_LOGICAL                 0x0001
+DECL|macro|AML_LOGICAL_NUMERIC
+mdefine_line|#define AML_LOGICAL_NUMERIC         0x0002
+DECL|macro|AML_MATH
+mdefine_line|#define AML_MATH                    0x0004
+DECL|macro|AML_CREATE
+mdefine_line|#define AML_CREATE                  0x0008
+DECL|macro|AML_FIELD
+mdefine_line|#define AML_FIELD                   0x0010
+DECL|macro|AML_DEFER
+mdefine_line|#define AML_DEFER                   0x0020
+DECL|macro|AML_NAMED
+mdefine_line|#define AML_NAMED                   0x0040
+DECL|macro|AML_NSNODE
+mdefine_line|#define AML_NSNODE                  0x0080
+DECL|macro|AML_NSOPCODE
+mdefine_line|#define AML_NSOPCODE                0x0100
+DECL|macro|AML_NSOBJECT
+mdefine_line|#define AML_NSOBJECT                0x0200
+DECL|macro|AML_HAS_RETVAL
+mdefine_line|#define AML_HAS_RETVAL              0x0400
+DECL|macro|AML_HAS_TARGET
+mdefine_line|#define AML_HAS_TARGET              0x0800
+DECL|macro|AML_HAS_ARGS
+mdefine_line|#define AML_HAS_ARGS                0x1000
 DECL|macro|AML_CONSTANT
-mdefine_line|#define AML_CONSTANT                0x1000
+mdefine_line|#define AML_CONSTANT                0x2000
 multiline_comment|/* Convenient flag groupings */
 DECL|macro|AML_FLAGS_EXEC_1A_0T_0R
 mdefine_line|#define AML_FLAGS_EXEC_1A_0T_0R     AML_HAS_ARGS                                   /* Monadic1  */

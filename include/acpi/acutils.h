@@ -1164,6 +1164,15 @@ id|acpi_size
 id|buffer_size
 )paren
 suffix:semicolon
+r_union
+id|acpi_operand_object
+op_star
+id|acpi_ut_create_string_object
+(paren
+id|acpi_size
+id|string_size
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * ut_ref_cnt - Object reference count management&n; */
 r_void
 id|acpi_ut_add_reference

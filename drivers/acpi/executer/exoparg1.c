@@ -700,10 +700,9 @@ id|acpi_integer
 id|temp32
 )paren
 op_lshift
+id|ACPI_MUL_4
 (paren
 id|i
-op_star
-l_int|4
 )paren
 )paren
 suffix:semicolon
@@ -945,11 +944,9 @@ comma
 op_amp
 id|return_desc
 comma
-l_int|10
+id|ACPI_EXPLICIT_CONVERT_DECIMAL
 comma
-id|ACPI_UINT32_MAX
-comma
-id|walk_state
+id|walk_state-&gt;opcode
 )paren
 suffix:semicolon
 r_break
@@ -970,11 +967,9 @@ comma
 op_amp
 id|return_desc
 comma
-l_int|16
+id|ACPI_EXPLICIT_CONVERT_HEX
 comma
-id|ACPI_UINT32_MAX
-comma
-id|walk_state
+id|walk_state-&gt;opcode
 )paren
 suffix:semicolon
 r_break
@@ -995,7 +990,7 @@ comma
 op_amp
 id|return_desc
 comma
-id|walk_state
+id|walk_state-&gt;opcode
 )paren
 suffix:semicolon
 r_break
@@ -1016,7 +1011,7 @@ comma
 op_amp
 id|return_desc
 comma
-id|walk_state
+id|walk_state-&gt;opcode
 )paren
 suffix:semicolon
 r_break
