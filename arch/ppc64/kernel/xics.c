@@ -902,6 +902,7 @@ op_minus
 id|virt_irq_to_real_map
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SMP
 DECL|function|get_irq_server
 r_static
 r_int
@@ -1017,6 +1018,23 @@ r_return
 id|server
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|function|get_irq_server
+r_static
+r_int
+id|get_irq_server
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+(brace
+r_return
+id|default_server
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|xics_enable_irq
 r_static
 r_void
