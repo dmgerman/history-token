@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/serial.h&gt; /* for serial_state and serial_icounter_struct */
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DEBUG
@@ -4383,16 +4384,14 @@ c_cond
 id|state-&gt;close_delay
 )paren
 (brace
-id|set_current_state
+id|msleep_interruptible
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|jiffies_to_msecs
 c_func
 (paren
 id|state-&gt;close_delay
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -4594,16 +4593,14 @@ id|port
 )paren
 )paren
 (brace
-id|set_current_state
+id|msleep_interruptible
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|jiffies_to_msecs
 c_func
 (paren
 id|char_time
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -6781,29 +6778,13 @@ id|port
 )paren
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
 l_int|10
-op_star
-id|HZ
-op_div
-l_int|1000
 )paren
 suffix:semicolon
 )brace
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 id|ops
 op_member_access_from_pointer
 id|shutdown
