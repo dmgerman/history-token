@@ -20,6 +20,10 @@ DECL|macro|USECS_PER_JIFFY
 mdefine_line|#define USECS_PER_JIFFY (1000000/HZ)
 DECL|macro|USECS_PER_JIFFY_FRAC
 mdefine_line|#define USECS_PER_JIFFY_FRAC ((1000000ULL &lt;&lt; 32) / HZ &amp; 0xffffffff)
+DECL|variable|jiffies_64
+id|u64
+id|jiffies_64
+suffix:semicolon
 multiline_comment|/*&n; * forward reference&n; */
 r_extern
 id|rwlock_t

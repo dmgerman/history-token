@@ -2,7 +2,6 @@ macro_line|#ifndef _LINUX_HIGHMEM_H
 DECL|macro|_LINUX_HIGHMEM_H
 mdefine_line|#define _LINUX_HIGHMEM_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#ifdef CONFIG_HIGHMEM
@@ -24,184 +23,12 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|create_bounce
-c_func
-(paren
-r_int
-r_int
-id|pfn
-comma
-r_int
-id|gfp
-comma
-r_struct
-id|bio
-op_star
-op_star
-id|bio_orig
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|check_highmem_ptes
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * remember to add offset! and never ever reenable interrupts between a&n; * bio_kmap_irq and bio_kunmap_irq!!&n; */
-DECL|function|bio_kmap_irq
-r_static
-r_inline
-r_char
-op_star
-id|bio_kmap_irq
-c_func
-(paren
-r_struct
-id|bio
-op_star
-id|bio
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-r_int
-r_int
-id|addr
-suffix:semicolon
-id|__save_flags
-c_func
-(paren
-op_star
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * could be low&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|PageHighMem
-c_func
-(paren
-id|bio_page
-c_func
-(paren
-id|bio
-)paren
-)paren
-)paren
-r_return
-id|bio_data
-c_func
-(paren
-id|bio
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * it&squot;s a highmem page&n;&t; */
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-id|addr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|kmap_atomic
-c_func
-(paren
-id|bio_page
-c_func
-(paren
-id|bio
-)paren
-comma
-id|KM_BIO_IRQ
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|addr
-op_amp
-op_complement
-id|PAGE_MASK
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-(paren
-r_char
-op_star
-)paren
-id|addr
-op_plus
-id|bio_offset
-c_func
-(paren
-id|bio
-)paren
-suffix:semicolon
-)brace
-DECL|function|bio_kunmap_irq
-r_static
-r_inline
-r_void
-id|bio_kunmap_irq
-c_func
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-r_int
-r_int
-id|ptr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|buffer
-op_amp
-id|PAGE_MASK
-suffix:semicolon
-id|kunmap_atomic
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|ptr
-comma
-id|KM_BIO_IRQ
-)paren
-suffix:semicolon
-id|__restore_flags
-c_func
-(paren
-op_star
-id|flags
-)paren
-suffix:semicolon
-)brace
 macro_line|#else /* CONFIG_HIGHMEM */
 DECL|function|nr_free_highpages
 r_static
@@ -246,14 +73,6 @@ DECL|macro|kmap_atomic
 mdefine_line|#define kmap_atomic(page,idx)&t;&t;kmap(page)
 DECL|macro|kunmap_atomic
 mdefine_line|#define kunmap_atomic(page,idx)&t;&t;kunmap(page)
-DECL|macro|bh_kmap
-mdefine_line|#define bh_kmap(bh)&t;((bh)-&gt;b_data)
-DECL|macro|bh_kunmap
-mdefine_line|#define bh_kunmap(bh)&t;do { } while (0)
-DECL|macro|bio_kmap_irq
-mdefine_line|#define bio_kmap_irq(bio, flags)&t;(bio_data(bio))
-DECL|macro|bio_kunmap_irq
-mdefine_line|#define bio_kunmap_irq(buf, flags)&t;do { *(flags) = 0; } while (0)
 macro_line|#endif /* CONFIG_HIGHMEM */
 multiline_comment|/* when CONFIG_HIGHMEM is not set these will be plain clear/copy_page */
 DECL|function|clear_user_highpage

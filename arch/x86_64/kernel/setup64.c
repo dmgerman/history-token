@@ -419,6 +419,15 @@ id|pda-&gt;cpudata_offset
 op_assign
 l_int|0
 suffix:semicolon
+id|pda-&gt;active_mm
+op_assign
+op_amp
+id|init_mm
+suffix:semicolon
+id|pda-&gt;mmu_state
+op_assign
+l_int|0
+suffix:semicolon
 id|asm
 r_volatile
 (paren

@@ -834,7 +834,7 @@ op_increment
 (brace
 id|bh
 op_assign
-id|get_hash_table
+id|find_get_block
 c_func
 (paren
 id|dev
