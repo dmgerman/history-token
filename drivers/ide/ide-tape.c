@@ -26985,6 +26985,7 @@ macro_line|#else
 DECL|macro|idetape_proc
 mdefine_line|#define&t;idetape_proc&t;NULL
 macro_line|#endif
+r_static
 r_int
 id|idetape_init
 (paren
@@ -27585,6 +27586,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;idetape_init will register the driver for each tape.&n; */
 DECL|function|idetape_init
+r_static
 r_int
 id|idetape_init
 (paren

@@ -4217,12 +4217,6 @@ op_star
 id|drive
 )paren
 suffix:semicolon
-r_int
-id|idedisk_init
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDISK */
 macro_line|#ifdef CONFIG_BLK_DEV_IDECD
 r_int
@@ -4231,12 +4225,6 @@ id|ide_cdrom_reinit
 id|ide_drive_t
 op_star
 id|drive
-)paren
-suffix:semicolon
-r_int
-id|ide_cdrom_init
-(paren
-r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDECD */
@@ -4249,12 +4237,6 @@ op_star
 id|drive
 )paren
 suffix:semicolon
-r_int
-id|idetape_init
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDETAPE */
 macro_line|#ifdef CONFIG_BLK_DEV_IDEFLOPPY
 r_int
@@ -4265,12 +4247,6 @@ op_star
 id|drive
 )paren
 suffix:semicolon
-r_int
-id|idefloppy_init
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEFLOPPY */
 macro_line|#ifdef CONFIG_BLK_DEV_IDESCSI
 r_int
@@ -4279,12 +4255,6 @@ id|idescsi_reinit
 id|ide_drive_t
 op_star
 id|drive
-)paren
-suffix:semicolon
-r_int
-id|idescsi_init
-(paren
-r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDESCSI */

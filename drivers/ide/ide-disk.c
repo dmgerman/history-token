@@ -9209,6 +9209,7 @@ id|drive
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 id|idedisk_init
 (paren
@@ -9618,6 +9619,7 @@ id|idedisk_module
 suffix:semicolon
 )brace
 DECL|function|idedisk_init
+r_static
 r_int
 id|idedisk_init
 (paren

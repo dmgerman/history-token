@@ -2878,6 +2878,7 @@ id|idescsi_driver.drives
 comma
 )brace
 suffix:semicolon
+r_static
 r_int
 id|idescsi_init
 (paren
@@ -3068,6 +3069,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;idescsi_init will register the driver for each scsi.&n; */
 DECL|function|idescsi_init
+r_static
 r_int
 id|idescsi_init
 (paren

@@ -101,14 +101,6 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDESCSI_24
 DECL|macro|CONFIG_BLK_DEV_IDESCSI
 mdefine_line|#define CONFIG_BLK_DEV_IDESCSI
-r_extern
-r_int
-id|idescsi_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 DECL|variable|ide_scan_direction
@@ -15228,61 +15220,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Attempt to match drivers for the available drives&n;&t; */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
-(paren
-r_void
-)paren
-id|idedisk_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDISK */
-macro_line|#ifdef CONFIG_BLK_DEV_IDECD
-(paren
-r_void
-)paren
-id|ide_cdrom_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDECD */
-macro_line|#ifdef CONFIG_BLK_DEV_IDETAPE
-(paren
-r_void
-)paren
-id|idetape_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDETAPE */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEFLOPPY
-(paren
-r_void
-)paren
-id|idefloppy_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEFLOPPY */
-macro_line|#ifdef CONFIG_BLK_DEV_IDESCSI
-macro_line|#ifdef CONFIG_SCSI
-(paren
-r_void
-)paren
-id|idescsi_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#else
-macro_line|#warning ide scsi-emulation selected but no SCSI-subsystem in kernel
-macro_line|#endif
-macro_line|#endif /* CONFIG_BLK_DEV_IDESCSI */
 )brace
 DECL|function|default_cleanup
 r_static

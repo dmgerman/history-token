@@ -8625,6 +8625,7 @@ macro_line|#else
 DECL|macro|idefloppy_proc
 mdefine_line|#define&t;idefloppy_proc&t;NULL
 macro_line|#endif&t;/* CONFIG_PROC_FS */
+r_static
 r_int
 id|idefloppy_init
 (paren
@@ -9078,6 +9079,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;idefloppy_init will register the driver for each floppy.&n; */
 DECL|function|idefloppy_init
+r_static
 r_int
 id|idefloppy_init
 (paren

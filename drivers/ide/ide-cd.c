@@ -12209,6 +12209,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 id|ide_cdrom_init
 c_func
@@ -12715,6 +12716,7 @@ id|ide_cdrom_module
 suffix:semicolon
 )brace
 DECL|function|ide_cdrom_init
+r_static
 r_int
 id|ide_cdrom_init
 c_func
