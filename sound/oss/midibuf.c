@@ -3,6 +3,7 @@ multiline_comment|/*&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * 
 multiline_comment|/*&n; * Thomas Sailer   : ioctl code reworked (vmalloc/vfree removed)&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|macro|MIDIBUF_C
 mdefine_line|#define MIDIBUF_C
 macro_line|#include &quot;sound_config.h&quot;
@@ -127,14 +128,21 @@ id|open_devs
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|lock
+r_static
+id|spinlock_t
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|macro|DATA_AVAIL
 mdefine_line|#define DATA_AVAIL(q) (q-&gt;len)
 DECL|macro|SPACE_AVAIL
 mdefine_line|#define SPACE_AVAIL(q) (MAX_QUEUE_SIZE - q-&gt;len)
 DECL|macro|QUEUE_BYTE
-mdefine_line|#define QUEUE_BYTE(q, data) &bslash;&n;&t;if (SPACE_AVAIL(q)) &bslash;&n;&t;{ &bslash;&n;&t;  unsigned long flags; &bslash;&n;&t;  save_flags( flags);cli(); &bslash;&n;&t;  q-&gt;queue[q-&gt;tail] = (data); &bslash;&n;&t;  q-&gt;len++; q-&gt;tail = (q-&gt;tail+1) % MAX_QUEUE_SIZE; &bslash;&n;&t;  restore_flags(flags); &bslash;&n;&t;}
+mdefine_line|#define QUEUE_BYTE(q, data) &bslash;&n;&t;if (SPACE_AVAIL(q)) &bslash;&n;&t;{ &bslash;&n;&t;  unsigned long flags; &bslash;&n;&t;  spin_lock_irqsave(&amp;lock, flags); &bslash;&n;&t;  q-&gt;queue[q-&gt;tail] = (data); &bslash;&n;&t;  q-&gt;len++; q-&gt;tail = (q-&gt;tail+1) % MAX_QUEUE_SIZE; &bslash;&n;&t;  spin_unlock_irqrestore(&amp;lock, flags); &bslash;&n;&t;}
 DECL|macro|REMOVE_BYTE
-mdefine_line|#define REMOVE_BYTE(q, data) &bslash;&n;&t;if (DATA_AVAIL(q)) &bslash;&n;&t;{ &bslash;&n;&t;  unsigned long flags; &bslash;&n;&t;  save_flags( flags);cli(); &bslash;&n;&t;  data = q-&gt;queue[q-&gt;head]; &bslash;&n;&t;  q-&gt;len--; q-&gt;head = (q-&gt;head+1) % MAX_QUEUE_SIZE; &bslash;&n;&t;  restore_flags(flags); &bslash;&n;&t;}
+mdefine_line|#define REMOVE_BYTE(q, data) &bslash;&n;&t;if (DATA_AVAIL(q)) &bslash;&n;&t;{ &bslash;&n;&t;  unsigned long flags; &bslash;&n;&t;  spin_lock_irqsave(&amp;lock, flags); &bslash;&n;&t;  data = q-&gt;queue[q-&gt;head]; &bslash;&n;&t;  q-&gt;len--; q-&gt;head = (q-&gt;head+1) % MAX_QUEUE_SIZE; &bslash;&n;&t;  spin_unlock_irqrestore(&amp;lock, flags); &bslash;&n;&t;}
 DECL|function|drain_midi_queue
 r_static
 r_void
@@ -297,15 +305,13 @@ suffix:semicolon
 r_int
 id|dev
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -384,9 +390,12 @@ op_member_access_from_pointer
 id|head
 )braket
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -406,9 +415,13 @@ comma
 id|c
 )paren
 suffix:semicolon
-id|cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|midi_out_buf
@@ -482,9 +495,12 @@ id|poll_timer
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Come back later&n;&t;&t; */
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -861,10 +877,6 @@ id|file
 r_int
 id|mode
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|dev
 op_assign
 id|dev
@@ -898,17 +910,6 @@ op_eq
 l_int|NULL
 )paren
 r_return
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Wait until the queue is empty&n;&t; */
 r_if
@@ -971,12 +972,6 @@ id|dev
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t;&t; * Ensure the output queues are empty&n;&t;&t;&t;&t;&t; */
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|midi_devs
 (braket
 id|dev
@@ -1081,10 +1076,6 @@ id|count
 )paren
 (brace
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|c
 comma
 id|n
@@ -1109,17 +1100,6 @@ id|count
 )paren
 r_return
 l_int|0
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
 suffix:semicolon
 id|c
 op_assign
@@ -1244,6 +1224,7 @@ op_increment
 )paren
 (brace
 multiline_comment|/* BROKE BROKE BROKE - CANT DO THIS WITH CLI !! */
+multiline_comment|/* yes, think the same, so I removed the cli() brackets &n;&t;&t;&t;&t;QUEUE_BYTE is protected against interrupts */
 r_if
 c_cond
 (paren
@@ -1296,12 +1277,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|c
 suffix:semicolon
@@ -1335,10 +1310,6 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 r_char
 id|tmp_data
 suffix:semicolon
@@ -1347,17 +1318,6 @@ op_assign
 id|dev
 op_rshift
 l_int|4
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1501,6 +1461,7 @@ op_amp
 id|tmp_data
 suffix:semicolon
 multiline_comment|/* BROKE BROKE BROKE */
+multiline_comment|/* yes removed the cli() brackets again&n;&t;&t;&t; should q-&gt;len,tail&amp;head be atomic_t? */
 r_if
 c_cond
 (paren
@@ -1537,12 +1498,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|c
 suffix:semicolon
