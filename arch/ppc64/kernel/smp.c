@@ -42,7 +42,6 @@ r_int
 r_int
 id|cache_decay_ticks
 suffix:semicolon
-multiline_comment|/* Initialised so it doesn&squot;t end up in bss */
 DECL|variable|cpu_possible_map
 id|cpumask_t
 id|cpu_possible_map
@@ -121,24 +120,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_void
-id|smp_message_pass
-c_func
-(paren
-r_int
-id|target
-comma
-r_int
-id|msg
-comma
-r_int
-r_int
-id|data
-comma
-r_int
-id|wait
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|register_vpa
@@ -157,8 +138,6 @@ r_int
 id|vpa
 )paren
 suffix:semicolon
-DECL|macro|smp_message_pass
-mdefine_line|#define smp_message_pass(t,m,d,w) smp_ops-&gt;message_pass((t),(m),(d),(w))
 multiline_comment|/* Low level assembly function used to backup CPU 0 state */
 r_extern
 r_void
@@ -289,9 +268,9 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
+DECL|function|smp_iSeries_message_pass
 r_static
 r_void
-DECL|function|smp_iSeries_message_pass
 id|smp_iSeries_message_pass
 c_func
 (paren
@@ -300,12 +279,6 @@ id|target
 comma
 r_int
 id|msg
-comma
-r_int
-id|data
-comma
-r_int
-id|wait
 )paren
 (brace
 r_int
@@ -646,13 +619,6 @@ id|target
 comma
 r_int
 id|msg
-comma
-r_int
-r_int
-id|data
-comma
-r_int
-id|wait
 )paren
 (brace
 multiline_comment|/* make sure we&squot;re sending something that translates to an IPI */
@@ -1019,13 +985,6 @@ id|target
 comma
 r_int
 id|msg
-comma
-r_int
-r_int
-id|data
-comma
-r_int
-id|wait
 )paren
 (brace
 r_int
@@ -1532,16 +1491,14 @@ r_int
 id|cpu
 )paren
 (brace
-id|smp_message_pass
+id|smp_ops
+op_member_access_from_pointer
+id|message_pass
 c_func
 (paren
 id|cpu
 comma
 id|PPC_MSG_RESCHEDULE
-comma
-l_int|0
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1555,16 +1512,14 @@ r_int
 id|cpu
 )paren
 (brace
-id|smp_message_pass
+id|smp_ops
+op_member_access_from_pointer
+id|message_pass
 c_func
 (paren
 id|cpu
 comma
 id|PPC_MSG_DEBUGGER_BREAK
-comma
-l_int|0
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1776,16 +1731,14 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Send a message to all other CPUs and wait for them to respond */
-id|smp_message_pass
+id|smp_ops
+op_member_access_from_pointer
+id|message_pass
 c_func
 (paren
 id|MSG_ALL_BUT_SELF
 comma
 id|PPC_MSG_CALL_FUNCTION
-comma
-l_int|0
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for response */
@@ -1998,6 +1951,17 @@ id|wait
 op_assign
 id|call_data-&gt;wait
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|wait
+)paren
+id|smp_mb__before_atomic_inc
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Notify initiating CPU that I&squot;ve grabbed the data and am&n;&t; * about to execute the function&n;&t; */
 id|atomic_inc
 c_func
@@ -2020,6 +1984,12 @@ c_cond
 (paren
 id|wait
 )paren
+(brace
+id|smp_mb__before_atomic_inc
+c_func
+(paren
+)paren
+suffix:semicolon
 id|atomic_inc
 c_func
 (paren
@@ -2027,6 +1997,7 @@ op_amp
 id|call_data-&gt;finished
 )paren
 suffix:semicolon
+)brace
 )brace
 r_extern
 r_int

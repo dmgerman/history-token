@@ -12,25 +12,6 @@ macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
-id|smp_message_pass
-c_func
-(paren
-r_int
-id|target
-comma
-r_int
-id|msg
-comma
-r_int
-r_int
-id|data
-comma
-r_int
-id|wait
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|smp_send_debugger_break
 c_func
 (paren
