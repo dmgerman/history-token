@@ -9600,7 +9600,6 @@ id|VM_FAULT_OOM
 suffix:semicolon
 )brace
 macro_line|#ifndef __ARCH_HAS_4LEVEL_HACK
-macro_line|#if (PTRS_PER_PUD &gt; 1)
 multiline_comment|/*&n; * Allocate page upper directory.&n; *&n; * We&squot;ve already handled the fast-path in-line, and we own the&n; * page table lock.&n; *&n; * On a two-level or three-level page table, this ends up actually being&n; * entirely optimized away.&n; */
 DECL|function|__pud_alloc
 id|pud_t
@@ -9621,6 +9620,14 @@ comma
 r_int
 r_int
 id|address
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|PTRS_PER_PUD
+OG
+l_int|1
 )paren
 (brace
 id|pud_t
@@ -9660,7 +9667,7 @@ r_new
 r_return
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * Because we dropped the lock, we should re-check the&n;&t; * entry, as somebody else could have populated it..&n;&t; */
+multiline_comment|/*&n;&t;&t; * Because we dropped the lock, we should re-check the&n;&t;&t; * entry, as somebody else could have populated it..&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -9704,8 +9711,10 @@ id|address
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if (PTRS_PER_PMD &gt; 1)
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Allocate page middle directory.&n; *&n; * We&squot;ve already handled the fast-path in-line, and we own the&n; * page table lock.&n; *&n; * On a two-level page table, this ends up actually being entirely&n; * optimized away.&n; */
 DECL|function|__pmd_alloc
 id|pmd_t
@@ -9726,6 +9735,14 @@ comma
 r_int
 r_int
 id|address
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|PTRS_PER_PMD
+OG
+l_int|1
 )paren
 (brace
 id|pmd_t
@@ -9765,7 +9782,7 @@ r_new
 r_return
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * Because we dropped the lock, we should re-check the&n;&t; * entry, as somebody else could have populated it..&n;&t; */
+multiline_comment|/*&n;&t;&t; * Because we dropped the lock, we should re-check the&n;&t;&t; * entry, as somebody else could have populated it..&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -9809,7 +9826,10 @@ id|address
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 macro_line|#else
 DECL|function|__pmd_alloc
 id|pmd_t
