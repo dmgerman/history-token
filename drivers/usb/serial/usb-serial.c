@@ -1197,8 +1197,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_goto
-m_exit
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* pass on to the driver specific version of this function */
@@ -1214,9 +1213,6 @@ c_func
 (paren
 id|port
 )paren
-suffix:semicolon
-m_exit
-suffix:colon
 suffix:semicolon
 )brace
 DECL|function|serial_unthrottle
@@ -1267,8 +1263,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_goto
-m_exit
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* pass on to the driver specific version of this function */
@@ -1284,9 +1279,6 @@ c_func
 (paren
 id|port
 )paren
-suffix:semicolon
-m_exit
-suffix:colon
 suffix:semicolon
 )brace
 DECL|function|serial_ioctl
@@ -1448,8 +1440,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_goto
-m_exit
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* pass on to the driver specific version of this function if it is available */
@@ -1467,9 +1458,6 @@ id|port
 comma
 id|old
 )paren
-suffix:semicolon
-m_exit
-suffix:colon
 suffix:semicolon
 )brace
 DECL|function|serial_break
@@ -1523,8 +1511,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_goto
-m_exit
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* pass on to the driver specific version of this function if it is available */
@@ -1542,9 +1529,6 @@ id|port
 comma
 id|break_state
 )paren
-suffix:semicolon
-m_exit
-suffix:colon
 suffix:semicolon
 )brace
 DECL|function|serial_read_proc
