@@ -5207,10 +5207,6 @@ r_int
 id|rsr
 comma
 id|pktlen
-comma
-id|handled
-op_assign
-l_int|1
 suffix:semicolon
 id|ulong
 id|start_ticks
@@ -5229,7 +5225,7 @@ id|dev
 )paren
 )paren
 r_return
-id|IRQ_NONE
+id|IRQ_HANDLED
 suffix:semicolon
 id|ioaddr
 op_assign
@@ -5308,10 +5304,6 @@ id|dev-&gt;name
 comma
 id|irq
 )paren
-suffix:semicolon
-id|handled
-op_assign
-l_int|0
 suffix:semicolon
 r_goto
 id|leave
@@ -6257,11 +6249,7 @@ suffix:semicolon
 multiline_comment|/* re-enable interrupts */
 multiline_comment|/* Instead of dropping packets during a receive, we could&n;     * force an interrupt with this command:&n;     *&t;  PutByte(XIRCREG_CR, EnableIntr|ForceIntr);&n;     */
 r_return
-id|IRQ_RETVAL
-c_func
-(paren
-id|handled
-)paren
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* xirc2ps_interrupt */
