@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/core_cia.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/8253pit.h&gt;
 macro_line|#include &quot;proto.h&quot;
 macro_line|#include &quot;irq_impl.h&quot;
 macro_line|#include &quot;pci_impl.h&quot;
@@ -172,6 +173,8 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|macro|RUFFIAN_LATCH
+mdefine_line|#define RUFFIAN_LATCH&t;((PIT_TICK_RATE + HZ / 2) / HZ)
 r_static
 r_void
 id|__init
@@ -196,7 +199,7 @@ multiline_comment|/* binary, mode 2, LSB/MSB, ch 0 */
 id|outb
 c_func
 (paren
-id|LATCH
+id|RUFFIAN_LATCH
 op_amp
 l_int|0xff
 comma
@@ -207,7 +210,7 @@ multiline_comment|/* LSB */
 id|outb
 c_func
 (paren
-id|LATCH
+id|RUFFIAN_LATCH
 op_rshift
 l_int|8
 comma

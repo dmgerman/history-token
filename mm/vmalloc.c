@@ -1296,6 +1296,12 @@ comma
 id|addr
 )paren
 suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -1325,6 +1331,12 @@ id|KERN_ERR
 l_string|&quot;Trying to vfree() nonexistent vm area (%p)&bslash;n&quot;
 comma
 id|addr
+)paren
+suffix:semicolon
+id|WARN_ON
+c_func
+(paren
+l_int|1
 )paren
 suffix:semicolon
 r_return
