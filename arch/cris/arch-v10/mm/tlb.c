@@ -181,7 +181,7 @@ suffix:semicolon
 r_int
 id|page_id
 op_assign
-id|mm-&gt;context
+id|mm-&gt;context.page_id
 suffix:semicolon
 r_int
 r_int
@@ -386,7 +386,7 @@ suffix:semicolon
 r_int
 id|page_id
 op_assign
-id|mm-&gt;context
+id|mm-&gt;context.page_id
 suffix:semicolon
 r_int
 id|i
@@ -610,7 +610,7 @@ suffix:semicolon
 r_int
 id|page_id
 op_assign
-id|mm-&gt;context
+id|mm-&gt;context.page_id
 suffix:semicolon
 r_int
 id|i
@@ -916,6 +916,31 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/*&n; * Initialize the context related info for a new mm_struct&n; * instance.&n; */
+r_int
+DECL|function|init_new_context
+id|init_new_context
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+(brace
+id|mm-&gt;context.page_id
+op_assign
+id|NO_CONTEXT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* called in schedule() just before actually doing the switch_to */
 r_void
 DECL|function|switch_mm
@@ -975,7 +1000,7 @@ id|R_MMU_CONTEXT
 comma
 id|page_id
 comma
-id|next-&gt;context
+id|next-&gt;context.page_id
 )paren
 suffix:semicolon
 )brace

@@ -9076,6 +9076,13 @@ comma
 id|HASH_PAGES_ORDER
 )paren
 suffix:semicolon
+id|blk_sync_queue
+c_func
+(paren
+id|mddev-&gt;queue
+)paren
+suffix:semicolon
+multiline_comment|/* the unplug fn references &squot;conf&squot;*/
 id|kfree
 c_func
 (paren

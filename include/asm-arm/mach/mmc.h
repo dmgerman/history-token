@@ -7,12 +7,6 @@ DECL|struct|mmc_platform_data
 r_struct
 id|mmc_platform_data
 (brace
-DECL|member|mclk
-r_int
-r_int
-id|mclk
-suffix:semicolon
-multiline_comment|/* mmc base clock rate */
 DECL|member|ocr_mask
 r_int
 r_int

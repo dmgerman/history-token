@@ -13848,6 +13848,7 @@ id|rc
 suffix:semicolon
 )brace
 DECL|function|store_ro
+r_static
 id|ssize_t
 id|store_ro
 c_func
@@ -13984,6 +13985,7 @@ id|rc
 suffix:semicolon
 )brace
 DECL|function|store_file
+r_static
 id|ssize_t
 id|store_file
 c_func

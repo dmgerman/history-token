@@ -1584,18 +1584,6 @@ l_int|0
 r_goto
 id|out_release_sem
 suffix:semicolon
-id|queue_me
-c_func
-(paren
-op_amp
-id|q
-comma
-op_minus
-l_int|1
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Access the page after the futex is queued.&n;&t; * We hold the mmap semaphore, so the mapping cannot have changed&n;&t; * since we looked it up.&n;&t; */
 r_if
 c_cond
@@ -1622,7 +1610,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 r_goto
-id|out_unqueue
+id|out_release_sem
 suffix:semicolon
 )brace
 r_if
@@ -1639,9 +1627,21 @@ op_minus
 id|EWOULDBLOCK
 suffix:semicolon
 r_goto
-id|out_unqueue
+id|out_release_sem
 suffix:semicolon
 )brace
+id|queue_me
+c_func
+(paren
+op_amp
+id|q
+comma
+op_minus
+l_int|1
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Now the futex is queued and we have checked the data, we&n;&t; * don&squot;t want to hold mmap_sem while we sleep.&n;&t; */
 id|up_read
 c_func
@@ -1741,8 +1741,6 @@ r_return
 op_minus
 id|EINTR
 suffix:semicolon
-id|out_unqueue
-suffix:colon
 multiline_comment|/* If we were woken (and unqueued), we succeeded, whatever. */
 r_if
 c_cond

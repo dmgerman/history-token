@@ -698,8 +698,7 @@ r_int
 id|value
 )paren
 (brace
-r_int
-r_int
+id|__le32
 id|divisor
 suffix:semicolon
 r_int

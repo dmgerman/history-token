@@ -2521,10 +2521,10 @@ id|err
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_COMPAT
-DECL|function|compat_get_mempolicy
+DECL|function|compat_sys_get_mempolicy
 id|asmlinkage
 r_int
-id|compat_get_mempolicy
+id|compat_sys_get_mempolicy
 c_func
 (paren
 r_int
@@ -2689,10 +2689,10 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|compat_set_mempolicy
+DECL|function|compat_sys_set_mempolicy
 id|asmlinkage
 r_int
-id|compat_set_mempolicy
+id|compat_sys_set_mempolicy
 c_func
 (paren
 r_int
@@ -2823,10 +2823,10 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|function|compat_mbind
+DECL|function|compat_sys_mbind
 id|asmlinkage
 r_int
-id|compat_mbind
+id|compat_sys_mbind
 c_func
 (paren
 id|compat_ulong_t

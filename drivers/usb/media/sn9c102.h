@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
@@ -31,8 +32,10 @@ DECL|macro|SN9C102_ISO_PACKETS
 mdefine_line|#define SN9C102_ISO_PACKETS       7
 DECL|macro|SN9C102_ALTERNATE_SETTING
 mdefine_line|#define SN9C102_ALTERNATE_SETTING 8
+DECL|macro|SN9C102_URB_TIMEOUT
+mdefine_line|#define SN9C102_URB_TIMEOUT       msecs_to_jiffies(3)
 DECL|macro|SN9C102_CTRL_TIMEOUT
-mdefine_line|#define SN9C102_CTRL_TIMEOUT      10*HZ
+mdefine_line|#define SN9C102_CTRL_TIMEOUT      msecs_to_jiffies(100)
 multiline_comment|/*****************************************************************************/
 DECL|macro|SN9C102_MODULE_NAME
 mdefine_line|#define SN9C102_MODULE_NAME     &quot;V4L2 driver for SN9C10x PC Camera Controllers&quot;
@@ -43,9 +46,9 @@ mdefine_line|#define SN9C102_AUTHOR_EMAIL    &quot;&lt;luca.risolia@studio.unibo
 DECL|macro|SN9C102_MODULE_LICENSE
 mdefine_line|#define SN9C102_MODULE_LICENSE  &quot;GPL&quot;
 DECL|macro|SN9C102_MODULE_VERSION
-mdefine_line|#define SN9C102_MODULE_VERSION  &quot;1:1.12&quot;
+mdefine_line|#define SN9C102_MODULE_VERSION  &quot;1:1.19&quot;
 DECL|macro|SN9C102_MODULE_VERSION_CODE
-mdefine_line|#define SN9C102_MODULE_VERSION_CODE  KERNEL_VERSION(1, 0, 12)
+mdefine_line|#define SN9C102_MODULE_VERSION_CODE  KERNEL_VERSION(1, 0, 19)
 DECL|enum|sn9c102_bridge
 r_enum
 id|sn9c102_bridge
@@ -177,17 +180,11 @@ r_struct
 id|sn9c102_sysfs_attr
 (brace
 DECL|member|reg
-DECL|member|val
 DECL|member|i2c_reg
-DECL|member|i2c_val
 id|u8
 id|reg
 comma
-id|val
-comma
 id|i2c_reg
-comma
-id|i2c_val
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -281,10 +278,13 @@ id|outqueue
 suffix:semicolon
 DECL|member|frame_count
 DECL|member|nbuffers
+DECL|member|nreadbuffers
 id|u32
 id|frame_count
 comma
 id|nbuffers
+comma
+id|nreadbuffers
 suffix:semicolon
 DECL|member|io
 r_enum
@@ -295,6 +295,11 @@ DECL|member|stream
 r_enum
 id|sn9c102_stream_state
 id|stream
+suffix:semicolon
+DECL|member|compression
+r_struct
+id|v4l2_jpegcompression
+id|compression
 suffix:semicolon
 DECL|member|sysfs
 r_struct

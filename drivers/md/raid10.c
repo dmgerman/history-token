@@ -7483,6 +7483,13 @@ id|mddev-&gt;thread
 op_assign
 l_int|NULL
 suffix:semicolon
+id|blk_sync_queue
+c_func
+(paren
+id|mddev-&gt;queue
+)paren
+suffix:semicolon
+multiline_comment|/* the unplug fn references &squot;conf&squot;*/
 r_if
 c_cond
 (paren

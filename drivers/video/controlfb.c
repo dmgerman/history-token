@@ -1354,12 +1354,10 @@ r_switch
 c_cond
 (paren
 id|blank_mode
-op_minus
-l_int|1
 )paren
 (brace
 r_case
-id|VESA_VSYNC_SUSPEND
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 id|ctrl
 op_and_assign
@@ -1369,7 +1367,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_HSYNC_SUSPEND
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 id|ctrl
 op_and_assign
@@ -1379,7 +1377,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_POWERDOWN
+id|FB_BLANK_POWERDOWN
 suffix:colon
 id|ctrl
 op_and_assign
@@ -1388,7 +1386,7 @@ l_int|0x33
 suffix:semicolon
 multiline_comment|/* fall through */
 r_case
-id|VESA_NO_BLANKING
+id|FB_BLANK_NORMAL
 suffix:colon
 id|ctrl
 op_or_assign

@@ -1684,7 +1684,7 @@ id|pci_dev
 op_star
 id|pdev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_WINBOND
@@ -1756,6 +1756,12 @@ l_int|4
 )braket
 dot
 id|start
+suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 )brace
 id|sandpoint_ide_ports_known

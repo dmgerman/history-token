@@ -247,9 +247,6 @@ suffix:semicolon
 id|irqctx-&gt;tinfo.previous_esp
 op_assign
 id|current_stack_pointer
-c_func
-(paren
-)paren
 suffix:semicolon
 id|asm
 r_volatile
@@ -580,9 +577,6 @@ suffix:semicolon
 id|irqctx-&gt;tinfo.previous_esp
 op_assign
 id|current_stack_pointer
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/* build the stack frame on the softirq stack */
 id|isp

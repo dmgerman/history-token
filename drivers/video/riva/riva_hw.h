@@ -59,9 +59,9 @@ mdefine_line|#define NV_WR32(p,i,d)  (__raw_writel((d), (void __iomem *)(p) + (i
 DECL|macro|NV_RD32
 mdefine_line|#define NV_RD32(p,i)    (__raw_readl((void __iomem *)(p) + (i)))
 DECL|macro|VGA_WR08
-mdefine_line|#define VGA_WR08(p,i,d) NV_WR08(p,i,d)
+mdefine_line|#define VGA_WR08(p,i,d) (writeb((d), (void __iomem *)(p) + (i)))
 DECL|macro|VGA_RD08
-mdefine_line|#define VGA_RD08(p,i)   NV_RD08(p,i)
+mdefine_line|#define VGA_RD08(p,i)   (readb((void __iomem *)(p) + (i)))
 multiline_comment|/*&n; * Define different architectures.&n; */
 DECL|macro|NV_ARCH_03
 mdefine_line|#define NV_ARCH_03  0x03

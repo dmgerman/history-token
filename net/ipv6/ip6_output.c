@@ -3213,7 +3213,8 @@ id|rt-&gt;rt6i_dst.plen
 op_ne
 l_int|128
 op_logical_or
-id|ipv6_addr_cmp
+op_logical_neg
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -3229,7 +3230,8 @@ id|np-&gt;daddr_cache
 op_eq
 l_int|NULL
 op_logical_or
-id|ipv6_addr_cmp
+op_logical_neg
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp

@@ -10048,13 +10048,6 @@ id|p
 )paren
 suffix:semicolon
 )brace
-DECL|variable|task_nice
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|task_nice
-)paren
-suffix:semicolon
 multiline_comment|/**&n; * idle_cpu - is a given cpu idle currently?&n; * @cpu: the processor in question.&n; */
 DECL|function|idle_cpu
 r_int
@@ -16349,12 +16342,5 @@ id|tasklist_lock
 )paren
 suffix:semicolon
 )brace
-DECL|variable|normalize_rt_tasks
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|normalize_rt_tasks
-)paren
-suffix:semicolon
 macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
 eof

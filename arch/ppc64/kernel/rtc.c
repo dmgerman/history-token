@@ -978,7 +978,7 @@ id|piranha_simulator
 )paren
 r_return
 suffix:semicolon
-id|mf_getRtc
+id|mf_get_rtc
 c_func
 (paren
 id|rtc_tm
@@ -1000,7 +1000,7 @@ op_star
 id|tm
 )paren
 (brace
-id|mf_setRtc
+id|mf_set_rtc
 c_func
 (paren
 id|tm

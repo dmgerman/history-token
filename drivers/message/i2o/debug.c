@@ -863,7 +863,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;MODULE_PARM(verbose, &quot;i&quot;);&n;MODULE_PARM_DESC(verbose, &quot;Verbose diagnostics&quot;);&n;*/
+multiline_comment|/*&n;module_param(verbose, int, 0644);&n;MODULE_PARM_DESC(verbose, &quot;Verbose diagnostics&quot;);&n;*/
 multiline_comment|/*&n; * Used for error reporting/debugging purposes.&n; * Following fail status are common to all classes.&n; * The preserved message must be handled in the reply handler.&n; */
 DECL|function|i2o_report_fail_status
 r_void

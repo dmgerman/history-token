@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: tuner.c,v 1.27 2004/10/20 09:43:34 kraxel Exp $&n; */
+multiline_comment|/*&n; * $Id: tuner.c,v 1.29 2004/11/07 13:17:15 kraxel Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -6384,17 +6384,25 @@ suffix:semicolon
 DECL|variable|pal
 r_static
 r_char
-op_star
 id|pal
+(braket
+)braket
 op_assign
 l_string|&quot;-&quot;
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_string
 c_func
 (paren
 id|pal
 comma
-l_string|&quot;s&quot;
+id|pal
+comma
+l_int|0644
+comma
+r_sizeof
+(paren
+id|pal
+)paren
 )paren
 suffix:semicolon
 DECL|function|tuner_fixup_std

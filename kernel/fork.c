@@ -289,6 +289,13 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; * The default maximum number of threads is set to a safe&n;&t; * value: the thread structures can take up at most half&n;&t; * of memory.&n;&t; */
+r_if
+c_cond
+(paren
+id|THREAD_SIZE
+op_ge
+id|PAGE_SIZE
+)paren
 id|max_threads
 op_assign
 id|mempages
@@ -298,6 +305,13 @@ id|THREAD_SIZE
 op_div
 id|PAGE_SIZE
 )paren
+op_div
+l_int|8
+suffix:semicolon
+r_else
+id|max_threads
+op_assign
+id|mempages
 op_div
 l_int|8
 suffix:semicolon

@@ -2660,6 +2660,10 @@ id|blk-&gt;owner
 op_assign
 id|owner
 suffix:semicolon
+id|size
+op_assign
+id|blk-&gt;size
+suffix:semicolon
 r_return
 id|size
 suffix:semicolon

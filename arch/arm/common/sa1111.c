@@ -2987,6 +2987,7 @@ id|wakeen1
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_PM
 DECL|function|sa1111_suspend
 r_static
 r_int
@@ -3043,7 +3044,7 @@ id|SUSPEND_DISABLE
 r_return
 l_int|0
 suffix:semicolon
-id|dev-&gt;saved_state
+id|save
 op_assign
 id|kmalloc
 c_func
@@ -3061,20 +3062,15 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;saved_state
+id|save
 )paren
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|save
+id|dev-&gt;power.saved_state
 op_assign
-(paren
-r_struct
-id|sa1111_save_data
-op_star
-)paren
-id|dev-&gt;saved_state
+id|save
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -3351,7 +3347,7 @@ r_struct
 id|sa1111_save_data
 op_star
 )paren
-id|dev-&gt;saved_state
+id|dev-&gt;power.saved_state
 suffix:semicolon
 r_if
 c_cond
@@ -3608,7 +3604,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|dev-&gt;saved_state
+id|dev-&gt;power.saved_state
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3622,6 +3618,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else&t;/* !CONFIG_PM */
+DECL|macro|sa1111_resume
+mdefine_line|#define sa1111_resume&t;NULL
+DECL|macro|sa1111_suspend
+mdefine_line|#define sa1111_suspend&t;NULL
+macro_line|#endif&t;/* !CONFIG_PM */
 DECL|function|sa1111_probe
 r_static
 r_int
@@ -3743,10 +3745,10 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|dev-&gt;saved_state
+id|dev-&gt;power.saved_state
 )paren
 suffix:semicolon
-id|dev-&gt;saved_state
+id|dev-&gt;power.saved_state
 op_assign
 l_int|NULL
 suffix:semicolon

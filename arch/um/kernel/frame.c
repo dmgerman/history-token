@@ -678,7 +678,7 @@ suffix:semicolon
 id|kill
 c_func
 (paren
-id|getpid
+id|os_getpid
 c_func
 (paren
 )paren
@@ -788,7 +788,7 @@ suffix:semicolon
 id|kill
 c_func
 (paren
-id|getpid
+id|os_getpid
 c_func
 (paren
 )paren
@@ -920,7 +920,7 @@ suffix:semicolon
 id|kill
 c_func
 (paren
-id|getpid
+id|os_getpid
 c_func
 (paren
 )paren
@@ -1111,7 +1111,7 @@ suffix:semicolon
 id|kill
 c_func
 (paren
-id|getpid
+id|os_getpid
 c_func
 (paren
 )paren

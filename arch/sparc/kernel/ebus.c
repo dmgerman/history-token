@@ -1338,7 +1338,7 @@ suffix:semicolon
 )brace
 id|pdev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_SUN
@@ -1694,7 +1694,7 @@ id|next_ebus
 suffix:colon
 id|pdev
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_SUN
@@ -1749,5 +1749,16 @@ op_increment
 id|num_ebus
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|pdev
+)paren
+id|pci_dev_put
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 )brace
 eof

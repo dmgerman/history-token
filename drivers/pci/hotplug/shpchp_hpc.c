@@ -2639,6 +2639,12 @@ id|php_ctlr-&gt;irq
 op_assign
 l_int|0
 suffix:semicolon
+id|pci_disable_msi
+c_func
+(paren
+id|php_ctlr-&gt;pci_dev
+)paren
+suffix:semicolon
 )brace
 )brace
 r_if

@@ -5605,7 +5605,7 @@ c_cond
 (paren
 id|state
 op_ne
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_logical_and
 id|state
 op_ge
@@ -5627,7 +5627,7 @@ id|rc
 op_eq
 l_int|0
 )paren
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_assign
 id|state
 suffix:semicolon
@@ -5671,7 +5671,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_ne
 l_int|0
 )paren
@@ -5691,7 +5691,7 @@ id|rc
 op_eq
 l_int|0
 )paren
-id|mdev-&gt;ofdev.dev.power_state
+id|mdev-&gt;ofdev.dev.power.power_state
 op_assign
 l_int|0
 suffix:semicolon
@@ -6111,7 +6111,7 @@ c_cond
 (paren
 id|state
 op_ne
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_logical_and
 id|state
 op_ge
@@ -6133,7 +6133,7 @@ id|rc
 op_eq
 l_int|0
 )paren
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_assign
 id|state
 suffix:semicolon
@@ -6176,7 +6176,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_ne
 l_int|0
 )paren
@@ -6196,7 +6196,7 @@ id|rc
 op_eq
 l_int|0
 )paren
-id|pdev-&gt;dev.power_state
+id|pdev-&gt;dev.power.power_state
 op_assign
 l_int|0
 suffix:semicolon

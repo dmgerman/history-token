@@ -1695,13 +1695,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|model
+op_logical_and
 op_logical_neg
 id|strcmp
 c_func
 (paren
 id|model
 comma
-l_string|&quot;CHRP IBM,9076-N81&quot;
+l_string|&quot;IBM,9076-N81&quot;
 )paren
 )paren
 (brace

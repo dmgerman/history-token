@@ -15259,18 +15259,16 @@ comma
 l_string|&quot;Base I/O address (SPP regs)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|io
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|PARPORT_PC_MAX_PORTS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -15281,18 +15279,16 @@ comma
 l_string|&quot;Base I/O address (ECR)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|io_hi
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|PARPORT_PC_MAX_PORTS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -15303,18 +15299,16 @@ comma
 l_string|&quot;IRQ line&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|irq
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|PARPORT_PC_MAX_PORTS
-)paren
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -15325,18 +15319,16 @@ comma
 l_string|&quot;DMA channel&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|dma
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|PARPORT_PC_MAX_PORTS
-)paren
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_PARPORT_PC_SUPERIO) || &bslash;&n;       (defined(CONFIG_PARPORT_1284) &amp;&amp; defined(CONFIG_PARPORT_PC_FIFO))
@@ -15348,12 +15340,14 @@ comma
 l_string|&quot;Log chit-chat during initialisation&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|verbose_probing
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -153,6 +153,13 @@ DECL|macro|IORESOURCE_MEM_SHADOWABLE
 mdefine_line|#define IORESOURCE_MEM_SHADOWABLE&t;(1&lt;&lt;5)&t;/* dup: IORESOURCE_SHADOWABLE */
 DECL|macro|IORESOURCE_MEM_EXPANSIONROM
 mdefine_line|#define IORESOURCE_MEM_EXPANSIONROM&t;(1&lt;&lt;6)
+multiline_comment|/* PCI ROM control bits (IORESOURCE_BITS) */
+DECL|macro|IORESOURCE_ROM_ENABLE
+mdefine_line|#define IORESOURCE_ROM_ENABLE&t;&t;(1&lt;&lt;0)&t;/* ROM is enabled, same as PCI_ROM_ADDRESS_ENABLE */
+DECL|macro|IORESOURCE_ROM_SHADOW
+mdefine_line|#define IORESOURCE_ROM_SHADOW&t;&t;(1&lt;&lt;1)&t;/* ROM is copy at C000:0 */
+DECL|macro|IORESOURCE_ROM_COPY
+mdefine_line|#define IORESOURCE_ROM_COPY&t;&t;(1&lt;&lt;2)&t;/* ROM is alloc&squot;d copy, resource field overlaid */
 multiline_comment|/* PC/ISA/whatever - the normal PC address spaces: IO and memory */
 r_extern
 r_struct

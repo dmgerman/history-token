@@ -4,11 +4,14 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;linux/mtd/partitions.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
+macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &lt;asm/arch/cerf.h&gt;
@@ -92,6 +95,158 @@ op_assign
 (brace
 op_amp
 id|cerfuart2_device
+comma
+)brace
+suffix:semicolon
+macro_line|#ifdef CONFIG_SA1100_CERF_FLASH_32MB
+DECL|macro|CERF_FLASH_SIZE
+macro_line|#  define CERF_FLASH_SIZE&t;0x02000000
+macro_line|#elif defined CONFIG_SA1100_CERF_FLASH_16MB
+DECL|macro|CERF_FLASH_SIZE
+macro_line|#  define CERF_FLASH_SIZE&t;0x01000000
+macro_line|#elif defined CONFIG_SA1100_CERF_FLASH_8MB
+DECL|macro|CERF_FLASH_SIZE
+macro_line|#  define CERF_FLASH_SIZE&t;0x00800000
+macro_line|#else
+macro_line|#  error &quot;Undefined flash size for CERF&quot;
+macro_line|#endif
+DECL|variable|cerf_partitions
+r_static
+r_struct
+id|mtd_partition
+id|cerf_partitions
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Bootloader&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00020000
+comma
+dot
+id|offset
+op_assign
+l_int|0x00000000
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Params&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00040000
+comma
+dot
+id|offset
+op_assign
+l_int|0x00020000
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Kernel&quot;
+comma
+dot
+id|size
+op_assign
+l_int|0x00100000
+comma
+dot
+id|offset
+op_assign
+l_int|0x00060000
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Filesystem&quot;
+comma
+dot
+id|size
+op_assign
+id|CERF_FLASH_SIZE
+op_minus
+l_int|0x00160000
+comma
+dot
+id|offset
+op_assign
+l_int|0x00160000
+comma
+)brace
+)brace
+suffix:semicolon
+DECL|variable|cerf_flash_data
+r_static
+r_struct
+id|flash_platform_data
+id|cerf_flash_data
+op_assign
+(brace
+dot
+id|map_name
+op_assign
+l_string|&quot;cfi_probe&quot;
+comma
+dot
+id|parts
+op_assign
+id|cerf_partitions
+comma
+dot
+id|nr_parts
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|cerf_partitions
+)paren
+comma
+)brace
+suffix:semicolon
+DECL|variable|cerf_flash_resource
+r_static
+r_struct
+id|resource
+id|cerf_flash_resource
+op_assign
+(brace
+dot
+id|start
+op_assign
+id|SA1100_CS0_PHYS
+comma
+dot
+id|end
+op_assign
+id|SA1100_CS0_PHYS
+op_plus
+id|SZ_32M
+op_minus
+l_int|1
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_MEM
 comma
 )brace
 suffix:semicolon
@@ -202,7 +357,7 @@ suffix:semicolon
 )brace
 DECL|function|cerf_init
 r_static
-r_int
+r_void
 id|__init
 id|cerf_init
 c_func
@@ -210,24 +365,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|ret
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|machine_is_cerf
-c_func
-(paren
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-id|ret
-op_assign
 id|platform_add_devices
 c_func
 (paren
@@ -240,27 +377,19 @@ id|cerf_devices
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-r_return
-id|ret
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|cerf_init
-id|arch_initcall
+id|sa11x0_set_flash_data
 c_func
 (paren
-id|cerf_init
+op_amp
+id|cerf_flash_data
+comma
+op_amp
+id|cerf_flash_resource
+comma
+l_int|1
 )paren
 suffix:semicolon
+)brace
 id|MACHINE_START
 c_func
 (paren
@@ -297,6 +426,11 @@ id|timer
 op_assign
 op_amp
 id|sa1100_timer
+comma
+dot
+id|init_machine
+op_assign
+id|cerf_init
 comma
 id|MACHINE_END
 eof
