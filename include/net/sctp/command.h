@@ -117,10 +117,6 @@ DECL|enumerator|SCTP_CMD_REPORT_BIGGAP
 id|SCTP_CMD_REPORT_BIGGAP
 comma
 multiline_comment|/* Narc on a TSN (it was too high).  */
-DECL|enumerator|SCTP_CMD_SET_BIND_ADDR
-id|SCTP_CMD_SET_BIND_ADDR
-comma
-multiline_comment|/* Set the association bind_addr.  */
 DECL|enumerator|SCTP_CMD_STRIKE
 id|SCTP_CMD_STRIKE
 comma
