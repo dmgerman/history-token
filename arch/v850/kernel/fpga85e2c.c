@@ -62,7 +62,7 @@ comma
 id|_intv_load_start
 suffix:semicolon
 multiline_comment|/* Set bus sizes: CS0 32-bit, CS1 16-bit, CS7 8-bit,&n;&t;   everything else 32-bit.  */
-id|BSC
+id|V850E2_BSC
 op_assign
 l_int|0x2AA6
 suffix:semicolon

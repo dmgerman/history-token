@@ -1,9 +1,8 @@
-multiline_comment|/*&n; * include/asm-v850/anna.h -- Anna V850E2 evaluation cpu chip/board&n; *&n; *  Copyright (C) 2001,2002  NEC Corporation&n; *  Copyright (C) 2001,2002  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/anna.h -- Anna V850E2 evaluation cpu chip/board&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_ANNA_H__
 DECL|macro|__V850_ANNA_H__
 mdefine_line|#define __V850_ANNA_H__
-DECL|macro|CPU_ARCH
-mdefine_line|#define CPU_ARCH &t;&quot;v850e2&quot;
+macro_line|#include &lt;asm/v850e2.h&gt;&t;&t;/* Based on V850E2 core.  */
 DECL|macro|CPU_MODEL
 mdefine_line|#define CPU_MODEL&t;&quot;v850e2/anna&quot;
 DECL|macro|CPU_MODEL_LONG
@@ -33,54 +32,6 @@ multiline_comment|/* We use on-chip RAM, for a few miscellaneous variables that 
 DECL|macro|R0_RAM_ADDR
 mdefine_line|#define R0_RAM_ADDR&t;&t;&t;0xFFFF8020
 multiline_comment|/* Anna specific control registers.  */
-DECL|macro|ANNA_CSC_ADDR
-mdefine_line|#define ANNA_CSC_ADDR(n)&t;&t;(0xFFFFF060 + (n) * 2)
-DECL|macro|ANNA_CSC
-mdefine_line|#define ANNA_CSC(n)&t;&t;&t;(*(volatile u16 *)ANNA_CSC_ADDR(n))
-DECL|macro|ANNA_BPC_ADDR
-mdefine_line|#define ANNA_BPC_ADDR&t;&t;&t;0xFFFFF064
-DECL|macro|ANNA_BPC
-mdefine_line|#define ANNA_BPC&t;&t;&t;(*(volatile u16 *)ANNA_BPC_ADDR)
-DECL|macro|ANNA_BSC_ADDR
-mdefine_line|#define ANNA_BSC_ADDR&t;&t;&t;0xFFFFF066
-DECL|macro|ANNA_BSC
-mdefine_line|#define ANNA_BSC&t;&t;&t;(*(volatile u16 *)ANNA_BSC_ADDR)
-DECL|macro|ANNA_BEC_ADDR
-mdefine_line|#define ANNA_BEC_ADDR&t;&t;&t;0xFFFFF068
-DECL|macro|ANNA_BEC
-mdefine_line|#define ANNA_BEC&t;&t;&t;(*(volatile u16 *)ANNA_BEC_ADDR)
-DECL|macro|ANNA_BHC_ADDR
-mdefine_line|#define ANNA_BHC_ADDR&t;&t;&t;0xFFFFF06A
-DECL|macro|ANNA_BHC
-mdefine_line|#define ANNA_BHC&t;&t;&t;(*(volatile u16 *)ANNA_BHC_ADDR)
-DECL|macro|ANNA_BCT_ADDR
-mdefine_line|#define ANNA_BCT_ADDR(n)&t;&t;(0xFFFFF480 + (n) * 2)
-DECL|macro|ANNA_BCT
-mdefine_line|#define ANNA_BCT(n)&t;&t;&t;(*(volatile u16 *)ANNA_BCT_ADDR(n))
-DECL|macro|ANNA_DWC_ADDR
-mdefine_line|#define ANNA_DWC_ADDR(n)&t;&t;(0xFFFFF484 + (n) * 2)
-DECL|macro|ANNA_DWC
-mdefine_line|#define ANNA_DWC(n)&t;&t;&t;(*(volatile u16 *)ANNA_DWC_ADDR(n))
-DECL|macro|ANNA_BCC_ADDR
-mdefine_line|#define ANNA_BCC_ADDR&t;&t;&t;0xFFFFF488
-DECL|macro|ANNA_BCC
-mdefine_line|#define ANNA_BCC&t;&t;&t;(*(volatile u16 *)ANNA_BCC_ADDR)
-DECL|macro|ANNA_ASC_ADDR
-mdefine_line|#define ANNA_ASC_ADDR&t;&t;&t;0xFFFFF48A
-DECL|macro|ANNA_ASC
-mdefine_line|#define ANNA_ASC&t;&t;&t;(*(volatile u16 *)ANNA_ASC_ADDR)
-DECL|macro|ANNA_LBS_ADDR
-mdefine_line|#define ANNA_LBS_ADDR&t;&t;&t;0xFFFFF48E
-DECL|macro|ANNA_LBS
-mdefine_line|#define ANNA_LBS&t;&t;&t;(*(volatile u16 *)ANNA_LBS_ADDR)
-DECL|macro|ANNA_SCR3_ADDR
-mdefine_line|#define ANNA_SCR3_ADDR&t;&t;&t;0xFFFFF4AC
-DECL|macro|ANNA_SCR3
-mdefine_line|#define ANNA_SCR3&t;&t;&t;(*(volatile u16 *)ANNA_SCR3_ADDR)
-DECL|macro|ANNA_RFS3_ADDR
-mdefine_line|#define ANNA_RFS3_ADDR&t;&t;&t;0xFFFFF4AE
-DECL|macro|ANNA_RFS3
-mdefine_line|#define ANNA_RFS3&t;&t;&t;(*(volatile u16 *)ANNA_RFS3_ADDR)
 DECL|macro|ANNA_ILBEN_ADDR
 mdefine_line|#define ANNA_ILBEN_ADDR&t;&t;&t;0xFFFFF7F2
 DECL|macro|ANNA_ILBEN
@@ -96,8 +47,6 @@ DECL|macro|ANNA_PORT_PM_ADDR
 mdefine_line|#define ANNA_PORT_PM_ADDR(n)&t;&t;(0xFFFFF410 + (n) * 2)
 DECL|macro|ANNA_PORT_PM
 mdefine_line|#define ANNA_PORT_PM(n)&t;&t;&t;(*(volatile u8 *)ANNA_PORT_PM_ADDR(n))
-multiline_comment|/* NB85E-style interrupt system.  */
-macro_line|#include &lt;asm/nb85e_intc.h&gt;
 multiline_comment|/* Hardware-specific interrupt numbers (in the kernel IRQ namespace).  */
 DECL|macro|IRQ_INTP
 mdefine_line|#define IRQ_INTP(n)&t;(n)&t;/* Pnnn (pin) interrupts 0-15 */

@@ -36,6 +36,9 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_V850E2_SIM85E2C
 macro_line|#include &lt;asm/sim85e2c.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_V850E2_SIM85E2S
+macro_line|#include &lt;asm/sim85e2s.h&gt;
+macro_line|#endif
 macro_line|#ifdef CONFIG_V850E2_FPGA85E2C
 macro_line|#include &lt;asm/fpga85e2c.h&gt;
 macro_line|#endif
