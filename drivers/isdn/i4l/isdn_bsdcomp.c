@@ -933,7 +933,6 @@ id|bsd_free
 id|db
 )paren
 suffix:semicolon
-multiline_comment|/* calls MOD_DEC_USE_COUNT; */
 r_return
 (paren
 l_int|NULL

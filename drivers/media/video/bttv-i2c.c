@@ -1361,40 +1361,6 @@ id|detach_inform
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* ----------------------------------------------------------------------- */
-multiline_comment|/* I2C functions - common stuff                                            */
-macro_line|#ifndef I2C_PEC
-DECL|function|bttv_inc_use
-r_static
-r_void
-id|bttv_inc_use
-c_func
-(paren
-r_struct
-id|i2c_adapter
-op_star
-id|adap
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
-DECL|function|bttv_dec_use
-r_static
-r_void
-id|bttv_dec_use
-c_func
-(paren
-r_struct
-id|i2c_adapter
-op_star
-id|adap
-)paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|attach_inform
 r_static
 r_int
