@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
-macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_bdev() */
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;

@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
