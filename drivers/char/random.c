@@ -10157,6 +10157,7 @@ suffix:semicolon
 )brace
 macro_line|#endif &t;/* CONFIG_SYSCTL */
 multiline_comment|/********************************************************************&n; *&n; * Random funtions for networking&n; *&n; ********************************************************************/
+macro_line|#ifdef CONFIG_INET
 multiline_comment|/*&n; * TCP initial sequence number picking.  This uses the random number&n; * generator to pick an initial secret value.  This value is hashed&n; * along with the TCP endpoint information to provide a unique&n; * starting point for each pair of TCP endpoints.  This defeats&n; * attacks which rely on guessing the initial TCP sequence number.&n; * This algorithm was suggested by Steve Bellovin.&n; *&n; * Using a very strong hash was taking an appreciable amount of the total&n; * TCP connection establishment time, so this is a weaker hash,&n; * compensated for by changing the secret periodically.&n; */
 multiline_comment|/* F, G and H are basic MD4 functions: selection, majority, parity */
 DECL|macro|F
@@ -12732,4 +12733,5 @@ suffix:semicolon
 multiline_comment|/* Leaving the data behind */
 )brace
 macro_line|#endif
+macro_line|#endif /* CONFIG_INET */
 eof
