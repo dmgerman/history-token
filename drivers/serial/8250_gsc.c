@@ -52,7 +52,13 @@ multiline_comment|/* We find some unattached serial ports by walking native&n;&t
 r_if
 c_cond
 (paren
-id|dev-&gt;parent-&gt;id.hw_type
+id|parisc_parent
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|id.hw_type
 op_ne
 id|HPHW_IOA
 )paren
@@ -344,7 +350,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Lasi RS232&quot;
+l_string|&quot;serial_1&quot;
 comma
 dot
 id|id_table
@@ -368,7 +374,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Serial RS232&quot;
+l_string|&quot;serial&quot;
 comma
 dot
 id|id_table

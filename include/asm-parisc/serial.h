@@ -5,27 +5,6 @@ DECL|macro|LASI_BASE_BAUD
 mdefine_line|#define LASI_BASE_BAUD ( 7272727 / 16 )
 DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD  LASI_BASE_BAUD
-macro_line|#ifdef CONFIG_SERIAL_DETECT_IRQ
-DECL|macro|STD_COM_FLAGS
-mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST | ASYNC_AUTO_IRQ)
-DECL|macro|STD_COM4_FLAGS
-mdefine_line|#define STD_COM4_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_AUTO_IRQ)
-macro_line|#else
-DECL|macro|STD_COM_FLAGS
-mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)
-DECL|macro|STD_COM4_FLAGS
-mdefine_line|#define STD_COM4_FLAGS ASYNC_BOOT_AUTOCONF
-macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_MANY_PORTS
-DECL|macro|FOURPORT_FLAGS
-mdefine_line|#define FOURPORT_FLAGS ASYNC_FOURPORT
-DECL|macro|ACCENT_FLAGS
-mdefine_line|#define ACCENT_FLAGS 0
-DECL|macro|BOCA_FLAGS
-mdefine_line|#define BOCA_FLAGS 0
-DECL|macro|HUB6_FLAGS
-mdefine_line|#define HUB6_FLAGS 0
-macro_line|#endif
 multiline_comment|/*&n; * We don&squot;t use the ISA probing code, so these entries are just to reserve&n; * space.  Some example (maximal) configurations:&n; * - 712 w/ additional Lasi &amp; RJ16 ports: 4&n; * - J5k w/ PCI serial cards: 2 + 4 * card ~= 34&n; * A500 w/ PCI serial cards: 5 + 4 * card ~= 17&n; */
 DECL|macro|STD_SERIAL_PORT_DEFNS
 mdefine_line|#define STD_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;{ 0, },&t;&t;/* ttyS0 */&t;&bslash;&n;&t;{ 0, },&t;&t;/* ttyS1 */&t;&bslash;&n;&t;{ 0, },&t;&t;/* ttyS2 */&t;&bslash;&n;&t;{ 0, },&t;&t;/* ttyS3 */&t;&bslash;&n;&t;{ 0, },&t;&t;/* ttyS4 */&t;&bslash;&n;&t;{ 0, },&t;&t;/* ttyS5 */&t;&bslash;&n;&t;{ 0, },&t;&t;/* ttyS6 */&t;&bslash;&n;&t;{ 0, },&t;&t;/* ttyS7 */&t;&bslash;&n;&t;{ 0, },&t;&t;/* ttyS8 */

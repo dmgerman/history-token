@@ -78,30 +78,6 @@ DECL|macro|WL3501_RESUME
 mdefine_line|#define WL3501_RESUME&t;0
 DECL|macro|WL3501_SUSPEND
 mdefine_line|#define WL3501_SUSPEND&t;1
-multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
-multiline_comment|/* Bit map of interrupts to choose from */
-multiline_comment|/* This means pick from 15, 14, 12, 11, 10, 9, 7, 5, 4, and 3 */
-DECL|variable|wl3501_irq_mask
-r_static
-r_int
-r_int
-id|wl3501_irq_mask
-op_assign
-l_int|0xdeb8
-suffix:semicolon
-DECL|variable|wl3501_irq_list
-r_static
-r_int
-id|wl3501_irq_list
-(braket
-l_int|4
-)braket
-op_assign
-(brace
-op_minus
-l_int|1
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * The event() function is this driver&squot;s Card Services event handler.  It will&n; * be called by Card Services when an appropriate card status event is&n; * received. The config() and release() entry points are used to configure or&n; * release a socket, in response to card insertion and ejection events.  They&n; * are invoked from the wl24 event handler.&n; */
 r_static
 r_void
@@ -9255,8 +9231,6 @@ id|dev
 suffix:semicolon
 r_int
 id|ret
-comma
-id|i
 suffix:semicolon
 multiline_comment|/* Initialize the dev_link_t structure */
 id|link
@@ -9318,47 +9292,7 @@ id|IRQ_HANDLE_PRESENT
 suffix:semicolon
 id|link-&gt;irq.IRQInfo1
 op_assign
-id|IRQ_INFO2_VALID
-op_or
 id|IRQ_LEVEL_ID
-suffix:semicolon
-id|link-&gt;irq.IRQInfo2
-op_assign
-id|wl3501_irq_mask
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|wl3501_irq_list
-(braket
-l_int|0
-)braket
-op_ne
-op_minus
-l_int|1
-)paren
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|4
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|link-&gt;irq.IRQInfo2
-op_or_assign
-l_int|1
-op_lshift
-id|wl3501_irq_list
-(braket
-id|i
-)braket
 suffix:semicolon
 id|link-&gt;irq.Handler
 op_assign
@@ -10480,28 +10414,6 @@ id|module_exit
 c_func
 (paren
 id|wl3501_exit_module
-)paren
-suffix:semicolon
-id|module_param
-c_func
-(paren
-id|wl3501_irq_mask
-comma
-id|uint
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|module_param_array
-c_func
-(paren
-id|wl3501_irq_list
-comma
-r_int
-comma
-l_int|NULL
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR

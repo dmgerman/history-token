@@ -22,10 +22,10 @@ DECL|macro|DEBUG_PTRACE
 macro_line|#undef DEBUG_PTRACE
 macro_line|#ifdef DEBUG_PTRACE
 DECL|macro|DBG
-mdefine_line|#define DBG(x)&t;printk x
+mdefine_line|#define DBG(x...)&t;printk(x)
 macro_line|#else
 DECL|macro|DBG
-mdefine_line|#define DBG(x)
+mdefine_line|#define DBG(x...)
 macro_line|#endif
 macro_line|#ifdef __LP64__
 multiline_comment|/* This function is needed to translate 32 bit pt_regs offsets in to&n; * 64 bit pt_regs offsets.  For example, a 32 bit gdb under a 64 bit kernel&n; * will request offset 12 if it wants gr3, but the lower 32 bits of&n; * the 64 bit kernels view of gr3 will be at offset 28 (3*8 + 4).&n; * This code relies on a 32 bit pt_regs being comprised of 32 bit values&n; * except for the fp registers which (a) are 64 bits, and (b) follow&n; * the gr registers at the start of pt_regs.  The 32 bit pt_regs should&n; * be half the size of the 64 bit pt_regs, plus 32*4 to allow for fr[]&n; * being 64 bit in both cases.&n; */
@@ -474,7 +474,6 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-(paren
 l_string|&quot;sys_ptrace(PEEK%s, %d, %lx, %lx) returning %ld, data %x&bslash;n&quot;
 comma
 id|request
@@ -495,7 +494,6 @@ comma
 id|ret
 comma
 id|tmp
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -600,7 +598,6 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-(paren
 l_string|&quot;sys_ptrace(POKE%s, %d, %lx, %lx)&bslash;n&quot;
 comma
 id|request
@@ -617,7 +614,6 @@ comma
 id|oaddr
 comma
 id|odata
-)paren
 )paren
 suffix:semicolon
 id|addr
@@ -795,7 +791,6 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-(paren
 l_string|&quot;sys_ptrace(PEEKUSR, %d, %lx, %lx) returning %ld, addr %lx, data %x&bslash;n&quot;
 comma
 id|pid
@@ -809,7 +804,6 @@ comma
 id|addr
 comma
 id|tmp
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -916,7 +910,6 @@ multiline_comment|/* PT_PSW=0, so this is valid for 32 bit processes&n;&t;&t;&t;
 id|DBG
 c_func
 (paren
-(paren
 l_string|&quot;sys_ptrace(POKEUSR, %d, %lx, %lx)&bslash;n&quot;
 comma
 id|pid
@@ -924,7 +917,6 @@ comma
 id|oaddr
 comma
 id|odata
-)paren
 )paren
 suffix:semicolon
 id|data
@@ -1015,7 +1007,6 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-(paren
 l_string|&quot;sys_ptrace(POKEUSR, %d, %lx, %lx) addr %lx&bslash;n&quot;
 comma
 id|pid
@@ -1025,7 +1016,6 @@ comma
 id|odata
 comma
 id|addr
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1038,6 +1028,8 @@ op_logical_and
 id|addr
 op_le
 id|PT_FR31
+op_plus
+l_int|4
 )paren
 (brace
 multiline_comment|/* Special case, fp regs are 64 bits anyway */
@@ -1224,6 +1216,8 @@ op_logical_and
 id|addr
 op_le
 id|PT_FR31
+op_plus
+l_int|4
 )paren
 op_logical_or
 id|addr
@@ -1277,7 +1271,6 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-(paren
 l_string|&quot;sys_ptrace(%s)&bslash;n&quot;
 comma
 id|request
@@ -1288,7 +1281,6 @@ c_cond
 l_string|&quot;SYSCALL&quot;
 suffix:colon
 l_string|&quot;CONT&quot;
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1356,9 +1348,7 @@ multiline_comment|/*&n;&t;&t; * make the child exit.  Best I can do is send it a
 id|DBG
 c_func
 (paren
-(paren
 l_string|&quot;sys_ptrace(KILL)&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1385,9 +1375,7 @@ suffix:colon
 id|DBG
 c_func
 (paren
-(paren
 l_string|&quot;sys_ptrace(SINGLEBLOCK)&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|ret
@@ -1480,9 +1468,7 @@ suffix:colon
 id|DBG
 c_func
 (paren
-(paren
 l_string|&quot;sys_ptrace(SINGLESTEP)&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|ret
@@ -1675,6 +1661,7 @@ id|si.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -1859,7 +1846,6 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-(paren
 l_string|&quot;sys_ptrace(%ld, %d, %lx, %lx) returning %ld&bslash;n&quot;
 comma
 id|request
@@ -1871,7 +1857,6 @@ comma
 id|odata
 comma
 id|ret
-)paren
 )paren
 suffix:semicolon
 r_return

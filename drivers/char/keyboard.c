@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
@@ -5066,25 +5065,6 @@ id|tty
 suffix:semicolon
 r_int
 id|shift_final
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|down
-op_ne
-l_int|2
-)paren
-id|add_keyboard_randomness
-c_func
-(paren
-(paren
-id|keycode
-op_lshift
-l_int|1
-)paren
-op_xor
-id|down
-)paren
 suffix:semicolon
 id|tty
 op_assign

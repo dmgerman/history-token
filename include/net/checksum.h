@@ -16,11 +16,13 @@ r_int
 id|csum_and_copy_from_user
 (paren
 r_const
+r_int
 r_char
 id|__user
 op_star
 id|src
 comma
+r_int
 r_char
 op_star
 id|dst
@@ -91,10 +93,12 @@ r_int
 id|csum_and_copy_to_user
 (paren
 r_const
+r_int
 r_char
 op_star
 id|src
 comma
+r_int
 r_char
 id|__user
 op_star

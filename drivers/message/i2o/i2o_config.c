@@ -15,6 +15,12 @@ macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+DECL|macro|OSM_NAME
+mdefine_line|#define OSM_NAME&t;&quot;config-osm&quot;
+DECL|macro|OSM_VERSION
+mdefine_line|#define OSM_VERSION&t;&quot;$Rev$&quot;
+DECL|macro|OSM_DESCRIPTION
+mdefine_line|#define OSM_DESCRIPTION&t;&quot;I2O Configuration OSM&quot;
 r_extern
 r_int
 id|i2o_parm_issue
@@ -142,7 +148,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Config-OSM&quot;
+id|OSM_NAME
 )brace
 suffix:semicolon
 DECL|function|i2o_cfg_getiops
@@ -1355,7 +1361,18 @@ l_int|4
 )braket
 )paren
 suffix:semicolon
-singleline_comment|//      printk(KERN_INFO &quot;i2o_config: swdl frag %d/%d (size %d)&bslash;n&quot;, curfrag, maxfrag, fragsize);
+id|osm_debug
+c_func
+(paren
+l_string|&quot;swdl frag %d/%d (size %d)&bslash;n&quot;
+comma
+id|curfrag
+comma
+id|maxfrag
+comma
+id|fragsize
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|i2o_msg_post_wait_mem
@@ -1399,11 +1416,10 @@ id|I2O_POST_WAIT_OK
 (brace
 singleline_comment|// it fails if you try and send frags out of order
 singleline_comment|// and for some yet unknown reasons too
-id|printk
+id|osm_info
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;i2o_config: swdl failed, DetailedStatus = %d&bslash;n&quot;
+l_string|&quot;swdl failed, DetailedStatus = %d&bslash;n&quot;
 comma
 id|status
 )paren
@@ -1809,7 +1825,18 @@ l_int|4
 )braket
 )paren
 suffix:semicolon
-singleline_comment|//      printk(KERN_INFO &quot;i2o_config: swul frag %d/%d (size %d)&bslash;n&quot;, curfrag, maxfrag, fragsize);
+id|osm_debug
+c_func
+(paren
+l_string|&quot;swul frag %d/%d (size %d)&bslash;n&quot;
+comma
+id|curfrag
+comma
+id|maxfrag
+comma
+id|fragsize
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|i2o_msg_post_wait_mem
@@ -1851,11 +1878,10 @@ op_amp
 id|buffer
 )paren
 suffix:semicolon
-id|printk
+id|osm_info
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;i2o_config: swul failed, DetailedStatus = %d&bslash;n&quot;
+l_string|&quot;swul failed, DetailedStatus = %d&bslash;n&quot;
 comma
 id|status
 )paren
@@ -2166,11 +2192,10 @@ op_ne
 id|I2O_POST_WAIT_OK
 )paren
 (brace
-id|printk
+id|osm_info
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;i2o_config: swdel failed, DetailedStatus = %d&bslash;n&quot;
+l_string|&quot;swdel failed, DetailedStatus = %d&bslash;n&quot;
 comma
 id|token
 )paren
@@ -2341,12 +2366,10 @@ op_ne
 id|I2O_POST_WAIT_OK
 )paren
 (brace
-id|printk
+id|osm_info
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;Can&squot;t validate configuration, ErrorStatus = &quot;
-l_string|&quot;%d&bslash;n&quot;
+l_string|&quot;Can&squot;t validate configuration, ErrorStatus = %d&bslash;n&quot;
 comma
 id|token
 )paren
@@ -2913,7 +2936,7 @@ op_logical_neg
 id|c
 )paren
 (brace
-id|pr_debug
+id|osm_debug
 c_func
 (paren
 l_string|&quot;controller %d not found&bslash;n&quot;
@@ -2959,10 +2982,9 @@ l_int|0
 )paren
 )paren
 (brace
-id|printk
+id|osm_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;unable to get size!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2985,7 +3007,7 @@ OG
 id|sb-&gt;inbound_frame_size
 )paren
 (brace
-id|pr_debug
+id|osm_warn
 c_func
 (paren
 l_string|&quot;size of message &gt; inbound_frame_size&quot;
@@ -3024,10 +3046,9 @@ id|size
 )paren
 )paren
 (brace
-id|printk
+id|osm_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;unable to copy user message&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3516,13 +3537,6 @@ suffix:semicolon
 r_int
 id|sg_size
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;sg_offset&bslash;n&quot;
-)paren
-suffix:semicolon
 singleline_comment|// re-acquire the original message to handle correctly the sg copy operation
 id|memset
 c_func
@@ -3746,13 +3760,6 @@ id|reply_size
 )paren
 (brace
 singleline_comment|// we wrote our own values for context - now restore the user supplied ones
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;reply_size&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3827,15 +3834,6 @@ id|kfree
 c_func
 (paren
 id|reply
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;rcode: %d&bslash;n&quot;
-comma
-id|rcode
 )paren
 suffix:semicolon
 r_return
@@ -3996,7 +3994,7 @@ op_logical_neg
 id|c
 )paren
 (brace
-id|pr_debug
+id|osm_warn
 c_func
 (paren
 l_string|&quot;controller %d not found&bslash;n&quot;
@@ -4059,7 +4057,7 @@ OG
 id|sb-&gt;inbound_frame_size
 )paren
 (brace
-id|pr_debug
+id|osm_warn
 c_func
 (paren
 l_string|&quot;size of message &gt; inbound_frame_size&quot;
@@ -4567,13 +4565,6 @@ suffix:semicolon
 r_int
 id|sg_size
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;sg_offset&bslash;n&quot;
-)paren
-suffix:semicolon
 singleline_comment|// re-acquire the original message to handle correctly the sg copy operation
 id|memset
 c_func
@@ -4790,13 +4781,6 @@ id|reply_size
 )paren
 (brace
 singleline_comment|// we wrote our own values for context - now restore the user supplied ones
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;reply_size&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5081,10 +5065,10 @@ suffix:semicolon
 macro_line|#endif
 r_default
 suffix:colon
-id|pr_debug
+id|osm_debug
 c_func
 (paren
-l_string|&quot;i2o_config: unknown ioctl called!&bslash;n&quot;
+l_string|&quot;unknown ioctl called!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -5510,14 +5494,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;I2O configuration manager v 0.04.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;  (C) Copyright 1999 Red Hat Software&bslash;n&quot;
+id|OSM_DESCRIPTION
+l_string|&quot; v&quot;
+id|OSM_VERSION
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_lock_init
@@ -5540,11 +5520,10 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2o_config: can&squot;t register device.&bslash;n&quot;
+l_string|&quot;can&squot;t register device.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5564,11 +5543,10 @@ id|i2o_config_driver
 )paren
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2o_config: handler register failed.&bslash;n&quot;
+l_string|&quot;handler register failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|misc_deregister
@@ -5653,16 +5631,24 @@ c_func
 l_string|&quot;Red Hat Software&quot;
 )paren
 suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;I2O Configuration&quot;
-)paren
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|OSM_DESCRIPTION
+id|MODULE_DESCRIPTION
+c_func
+(paren
+id|OSM_DESCRIPTION
+)paren
+suffix:semicolon
+DECL|variable|OSM_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|OSM_VERSION
 )paren
 suffix:semicolon
 DECL|variable|i2o_config_init

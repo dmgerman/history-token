@@ -83,6 +83,7 @@ multiline_comment|/*&n; * Just any arbitrary offset to the start of the vmalloc 
 DECL|macro|VMALLOC_OFFSET
 mdefine_line|#define VMALLOC_OFFSET (0x1000000) /* 16M */
 macro_line|#ifdef CONFIG_44x
+macro_line|#include &lt;asm/ibm44x.h&gt;
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START (((_ALIGN((long)high_memory, PPC44x_PIN_SIZE) + VMALLOC_OFFSET) &amp; ~(VMALLOC_OFFSET-1)))
 macro_line|#else

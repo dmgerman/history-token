@@ -6,7 +6,7 @@ macro_line|#ifdef __KERNEL__&t;&t;/* This file to be included by kernel only */
 macro_line|#include &lt;linux/i2o-dev.h&gt;
 multiline_comment|/* How many different OSM&squot;s are we allowing */
 DECL|macro|I2O_MAX_DRIVERS
-mdefine_line|#define I2O_MAX_DRIVERS&t;&t;4
+mdefine_line|#define I2O_MAX_DRIVERS&t;&t;8
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;&t;/* Needed for MUTEX init macros */
 macro_line|#include &lt;linux/pci.h&gt;
@@ -2137,7 +2137,22 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: remove&n;extern int i2o_query_table(int, struct i2o_controller *, int, int, int,&n;&t;&t;&t;   void *, int, void *, int);&n;extern int i2o_clear_table(struct i2o_controller *, int, int);&n;extern int i2o_row_add_table(struct i2o_controller *, int, int, int,&n;&t;&t;&t;     void *, int);&n;extern int i2o_issue_params(int, struct i2o_controller *, int, void *, int,&n;&t;&t;&t;    void *, int);&n;*/
+multiline_comment|/* debugging and troubleshooting/diagnostic helpers. */
+DECL|macro|osm_printk
+mdefine_line|#define osm_printk(level, format, arg...)  &bslash;&n;&t;printk(level &quot;%s: &quot; format, OSM_NAME , ## arg)
+macro_line|#ifdef DEBUG
+DECL|macro|osm_debug
+mdefine_line|#define osm_debug(format, arg...) &bslash;&n;&t;osm_printk(KERN_DEBUG, format , ## arg)
+macro_line|#else
+DECL|macro|osm_debug
+mdefine_line|#define osm_debug(format, arg...) &bslash;&n;        do { } while (0)
+macro_line|#endif
+DECL|macro|osm_err
+mdefine_line|#define osm_err(format, arg...)&t;&t;&bslash;&n;&t;osm_printk(KERN_ERR, format , ## arg)
+DECL|macro|osm_info
+mdefine_line|#define osm_info(format, arg...)&t;&t;&bslash;&n;&t;osm_printk(KERN_INFO, format , ## arg)
+DECL|macro|osm_warn
+mdefine_line|#define osm_warn(format, arg...)&t;&t;&bslash;&n;&t;osm_printk(KERN_WARNING, format , ## arg)
 multiline_comment|/* debugging functions */
 r_extern
 r_void

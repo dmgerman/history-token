@@ -746,13 +746,13 @@ id|val
 suffix:semicolon
 )brace
 DECL|macro|find_first_bit
-mdefine_line|#define find_first_bit(addr,size) &bslash;&n;((__builtin_constant_p(size) &amp;&amp; size &lt;= BITS_PER_LONG ? &bslash;&n;  (__scanbit(*(unsigned long *)addr,(size))) : &bslash;&n;  find_first_bit(addr,size)))
+mdefine_line|#define find_first_bit(addr,size) &bslash;&n;((__builtin_constant_p(size) &amp;&amp; (size) &lt;= BITS_PER_LONG ? &bslash;&n;  (__scanbit(*(unsigned long *)addr,(size))) : &bslash;&n;  find_first_bit(addr,size)))
 DECL|macro|find_next_bit
-mdefine_line|#define find_next_bit(addr,size,off) &bslash;&n;((__builtin_constant_p(size) &amp;&amp; size &lt;= BITS_PER_LONG ? &t;  &bslash;&n;  ((off) + (__scanbit((*(unsigned long *)addr) &gt;&gt; (off),(size)-(off)))) : &bslash;&n;&t;find_next_bit(addr,size,off)))
+mdefine_line|#define find_next_bit(addr,size,off) &bslash;&n;((__builtin_constant_p(size) &amp;&amp; (size) &lt;= BITS_PER_LONG ? &t;  &bslash;&n;  ((off) + (__scanbit((*(unsigned long *)addr) &gt;&gt; (off),(size)-(off)))) : &bslash;&n;&t;find_next_bit(addr,size,off)))
 DECL|macro|find_first_zero_bit
-mdefine_line|#define find_first_zero_bit(addr,size) &bslash;&n;((__builtin_constant_p(size) &amp;&amp; size &lt;= BITS_PER_LONG ? &bslash;&n;  (__scanbit(~*(unsigned long *)addr,(size))) : &bslash;&n;  &t;find_first_zero_bit(addr,size)))
+mdefine_line|#define find_first_zero_bit(addr,size) &bslash;&n;((__builtin_constant_p(size) &amp;&amp; (size) &lt;= BITS_PER_LONG ? &bslash;&n;  (__scanbit(~*(unsigned long *)addr,(size))) : &bslash;&n;  &t;find_first_zero_bit(addr,size)))
 DECL|macro|find_next_zero_bit
-mdefine_line|#define find_next_zero_bit(addr,size,off) &bslash;&n;((__builtin_constant_p(size) &amp;&amp; size &lt;= BITS_PER_LONG ? &t;  &bslash;&n;  ((off)+(__scanbit(~(((*(unsigned long *)addr)) &gt;&gt; (off)),(size)-(off)))) : &bslash;&n;&t;find_next_zero_bit(addr,size,off)))
+mdefine_line|#define find_next_zero_bit(addr,size,off) &bslash;&n;((__builtin_constant_p(size) &amp;&amp; (size) &lt;= BITS_PER_LONG ? &t;  &bslash;&n;  ((off)+(__scanbit(~(((*(unsigned long *)addr)) &gt;&gt; (off)),(size)-(off)))) : &bslash;&n;&t;find_next_zero_bit(addr,size,off)))
 multiline_comment|/* &n; * Find string of zero bits in a bitmap. -1 when not found.&n; */
 r_extern
 r_int

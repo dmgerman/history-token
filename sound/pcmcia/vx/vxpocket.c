@@ -76,27 +76,6 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE_PNP
 suffix:semicolon
 multiline_comment|/* Enable switches */
-DECL|variable|irq_mask
-r_static
-r_int
-r_int
-id|irq_mask
-op_assign
-l_int|0xffff
-suffix:semicolon
-DECL|variable|irq_list
-r_static
-r_int
-id|irq_list
-(braket
-l_int|4
-)braket
-op_assign
-(brace
-op_minus
-l_int|1
-)brace
-suffix:semicolon
 DECL|variable|ibl
 r_static
 r_int
@@ -167,48 +146,6 @@ c_func
 id|enable
 comma
 l_string|&quot;Enable &quot;
-id|CARD_NAME
-l_string|&quot; soundcard.&quot;
-)paren
-suffix:semicolon
-id|module_param
-c_func
-(paren
-id|irq_mask
-comma
-r_int
-comma
-l_int|0444
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|irq_mask
-comma
-l_string|&quot;IRQ bitmask for &quot;
-id|CARD_NAME
-l_string|&quot; soundcard.&quot;
-)paren
-suffix:semicolon
-id|module_param_array
-c_func
-(paren
-id|irq_list
-comma
-r_int
-comma
-l_int|NULL
-comma
-l_int|0444
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|irq_list
-comma
-l_string|&quot;List of Available interrupts for &quot;
 id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
@@ -337,17 +274,6 @@ dot
 id|enable_table
 op_assign
 id|enable
-comma
-dot
-id|irq_mask_p
-op_assign
-op_amp
-id|irq_mask
-comma
-dot
-id|irq_list
-op_assign
-id|irq_list
 comma
 dot
 id|ibl

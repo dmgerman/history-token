@@ -2168,6 +2168,13 @@ c_func
 id|cmdline_p
 )paren
 suffix:semicolon
+id|early_identify_cpu
+c_func
+(paren
+op_amp
+id|boot_cpu_data
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * partially used pages are not usable - thus&n;&t; * we are rounding upwards:&n;&t; */
 id|end_pfn
 op_assign

@@ -145,7 +145,7 @@ op_assign
 id|device_suspend
 c_func
 (paren
-id|state
+id|PMSG_SUSPEND
 )paren
 )paren
 )paren
@@ -192,7 +192,7 @@ r_int
 id|suspend_enter
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 (brace
@@ -220,7 +220,7 @@ op_assign
 id|device_power_down
 c_func
 (paren
-id|state
+id|PMSG_SUSPEND
 )paren
 )paren
 )paren
@@ -254,7 +254,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;suspend_finish - Do final work before exiting suspend sequence.&n; *&t;@state:&t;&t;State we&squot;re coming out of.&n; *&n; *&t;Call platform code to clean up, restart processes, and free the &n; *&t;console that we&squot;ve allocated.&n; */
+multiline_comment|/**&n; *&t;suspend_finish - Do final work before exiting suspend sequence.&n; *&t;@state:&t;&t;State we&squot;re coming out of.&n; *&n; *&t;Call platform code to clean up, restart processes, and free the &n; *&t;console that we&squot;ve allocated. This is not called for suspend-to-disk.&n; */
 DECL|function|suspend_finish
 r_static
 r_void

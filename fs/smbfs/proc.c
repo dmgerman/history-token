@@ -6149,22 +6149,28 @@ c_cond
 id|data_off
 OG
 id|SMB_READX_MAX_PAD
+op_logical_or
+id|data_off
+OL
+l_int|0
 )paren
 (brace
 id|PARANOIA
 c_func
 (paren
-l_string|&quot;offset is larger than max pad!&bslash;n&quot;
+l_string|&quot;offset is larger than SMB_READX_MAX_PAD or negative!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|PARANOIA
 c_func
 (paren
-l_string|&quot;%d &gt; %d&bslash;n&quot;
+l_string|&quot;%d &gt; %d || %d &lt; 0&bslash;n&quot;
 comma
 id|data_off
 comma
 id|SMB_READX_MAX_PAD
+comma
+id|data_off
 )paren
 suffix:semicolon
 id|req-&gt;rq_rlen

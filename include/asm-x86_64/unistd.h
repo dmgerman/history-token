@@ -1214,6 +1214,7 @@ id|__NR_mknod
 comma
 id|sys_mknod
 )paren
+multiline_comment|/* Only needed for a.out */
 DECL|macro|__NR_uselib
 mdefine_line|#define __NR_uselib                            134
 id|__SYSCALL
@@ -1221,7 +1222,7 @@ c_func
 (paren
 id|__NR_uselib
 comma
-id|sys_uselib
+id|sys_ni_syscall
 )paren
 DECL|macro|__NR_personality
 mdefine_line|#define __NR_personality                       135

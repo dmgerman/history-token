@@ -1,4 +1,10 @@
 multiline_comment|/*&n; *&t;procfs handler for Linux I2O subsystem&n; *&n; *&t;(c) Copyright 1999&t;Deepak Saxena&n; *&n; *&t;Originally written by Deepak Saxena(deepak@plexity.net)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify it&n; *&t;under the terms of the GNU General Public License as published by the&n; *&t;Free Software Foundation; either version 2 of the License, or (at your&n; *&t;option) any later version.&n; *&n; *&t;This is an initial test release. The code is based on the design of the&n; *&t;ide procfs system (drivers/block/ide-proc.c). Some code taken from&n; *&t;i2o-core module by Alan Cox.&n; *&n; *&t;DISCLAIMER: This code is still under development/test and may cause&n; *&t;your system to behave unpredictably.  Use at your own discretion.&n; *&n; *&n; *&t;Fixes/additions:&n; *&t;&t;Juha Siev&#xfffd;nen (Juha.Sievanen@cs.Helsinki.FI),&n; *&t;&t;Auvo H&#xfffd;kkinen (Auvo.Hakkinen@cs.Helsinki.FI)&n; *&t;&t;University of Helsinki, Department of Computer Science&n; *&t;&t;&t;LAN entries&n; *&t;&t;Markus Lidel &lt;Markus.Lidel@shadowconnect.com&gt;&n; *&t;&t;&t;Changes for new I2O API&n; */
+DECL|macro|OSM_NAME
+mdefine_line|#define OSM_NAME&t;&quot;proc-osm&quot;
+DECL|macro|OSM_VERSION
+mdefine_line|#define OSM_VERSION&t;&quot;$Rev$&quot;
+DECL|macro|OSM_DESCRIPTION
+mdefine_line|#define OSM_DESCRIPTION&t;&quot;I2O ProcFS OSM&quot;
 DECL|macro|I2O_MAX_MODULES
 mdefine_line|#define I2O_MAX_MODULES 4
 singleline_comment|// FIXME!
@@ -67,7 +73,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;proc-osm&quot;
+id|OSM_NAME
 comma
 )brace
 suffix:semicolon
@@ -9026,12 +9032,12 @@ comma
 id|dev-&gt;lct_data.tid
 )paren
 suffix:semicolon
-id|pr_debug
+id|osm_debug
 c_func
 (paren
-l_string|&quot;Adding device /proc/i2o/iop%d/%s&bslash;n&quot;
+l_string|&quot;adding device /proc/i2o/%s/%s&bslash;n&quot;
 comma
-id|dev-&gt;iop-&gt;unit
+id|dev-&gt;iop-&gt;name
 comma
 id|buff
 )paren
@@ -9053,11 +9059,10 @@ op_logical_neg
 id|devdir
 )paren
 (brace
-id|printk
+id|osm_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;i2o: Could not allocate procdir!&bslash;n&quot;
+l_string|&quot;Could not allocate procdir!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -9145,30 +9150,12 @@ id|i2o_device
 op_star
 id|dev
 suffix:semicolon
-r_char
-id|buff
-(braket
-l_int|10
-)braket
-suffix:semicolon
-id|snprintf
+id|osm_debug
 c_func
 (paren
-id|buff
+l_string|&quot;adding IOP /proc/i2o/%s&bslash;n&quot;
 comma
-l_int|10
-comma
-l_string|&quot;iop%d&quot;
-comma
-id|c-&gt;unit
-)paren
-suffix:semicolon
-id|pr_debug
-c_func
-(paren
-l_string|&quot;Adding IOP /proc/i2o/%s&bslash;n&quot;
-comma
-id|buff
+id|c-&gt;name
 )paren
 suffix:semicolon
 id|iopdir
@@ -9176,7 +9163,7 @@ op_assign
 id|proc_mkdir
 c_func
 (paren
-id|buff
+id|c-&gt;name
 comma
 id|dir
 )paren
@@ -9290,12 +9277,12 @@ id|dir
 )paren
 suffix:semicolon
 )brace
-id|pr_debug
+id|osm_debug
 c_func
 (paren
-l_string|&quot;Removing IOP /proc/i2o/iop%d&bslash;n&quot;
+l_string|&quot;removing IOP /proc/i2o/%s&bslash;n&quot;
 comma
-id|c-&gt;unit
+id|c-&gt;name
 )paren
 suffix:semicolon
 id|pe
@@ -9428,6 +9415,16 @@ r_void
 r_int
 id|rc
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|OSM_DESCRIPTION
+l_string|&quot; v&quot;
+id|OSM_VERSION
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 id|rc
 op_assign
 id|i2o_driver_register
@@ -9505,16 +9502,24 @@ c_func
 l_string|&quot;Deepak Saxena&quot;
 )paren
 suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;I2O procfs Handler&quot;
-)paren
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|OSM_DESCRIPTION
+id|MODULE_DESCRIPTION
+c_func
+(paren
+id|OSM_DESCRIPTION
+)paren
+suffix:semicolon
+DECL|variable|OSM_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|OSM_VERSION
 )paren
 suffix:semicolon
 DECL|variable|i2o_proc_init

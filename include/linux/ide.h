@@ -1814,11 +1814,6 @@ id|u8
 id|quirk_list
 suffix:semicolon
 multiline_comment|/* considered quirky, set for a specific host */
-DECL|member|suspend_reset
-id|u8
-id|suspend_reset
-suffix:semicolon
-multiline_comment|/* drive suspend mode flag, soft-reset recovers */
 DECL|member|init_speed
 id|u8
 id|init_speed
@@ -4047,15 +4042,6 @@ comma
 id|u8
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|try_to_flush_leftover_data
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Issue ATA command and wait for completion.&n; * Use for implementing commands in kernel&n; *&n; *  (ide_drive_t *drive, u8 cmd, u8 nsect, u8 feature, u8 sectors, u8 *buf)&n; */
 r_extern
 r_int
@@ -5111,6 +5097,14 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
+id|ide_startstop_t
+id|ide_dma_intr
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
 r_extern
 r_int
@@ -5141,15 +5135,6 @@ suffix:semicolon
 r_extern
 r_void
 id|ide_destroy_dmatable
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|ide_startstop_t
-id|ide_dma_intr
 c_func
 (paren
 id|ide_drive_t

@@ -158,6 +158,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+multiline_comment|/* This is a locked semaphore... */
 op_star
 id|data
 op_assign
@@ -245,6 +246,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+multiline_comment|/* ... so here we wait for an xterm interrupt.&n;&t; *&n;&t; * XXX Note, if the xterm doesn&squot;t work for some reason (eg. DISPLAY&n;&t; * isn&squot;t set) this will hang... */
 id|down
 c_func
 (paren

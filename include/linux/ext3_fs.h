@@ -233,6 +233,8 @@ DECL|macro|EXT3_STATE_JDATA
 mdefine_line|#define EXT3_STATE_JDATA&t;&t;0x00000001 /* journaled data exists */
 DECL|macro|EXT3_STATE_NEW
 mdefine_line|#define EXT3_STATE_NEW&t;&t;&t;0x00000002 /* inode is newly created */
+DECL|macro|EXT3_STATE_XATTR
+mdefine_line|#define EXT3_STATE_XATTR&t;&t;0x00000004 /* has in-inode xattrs */
 multiline_comment|/* Used to pass group descriptor data when online resize is done */
 DECL|struct|ext3_new_group_input
 r_struct
@@ -564,11 +566,11 @@ id|osd2
 suffix:semicolon
 multiline_comment|/* OS dependent 2 */
 DECL|member|i_extra_isize
-id|__u16
+id|__le16
 id|i_extra_isize
 suffix:semicolon
 DECL|member|i_pad1
-id|__u16
+id|__le16
 id|i_pad1
 suffix:semicolon
 )brace
@@ -1795,22 +1797,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|ext3_get_inode_loc
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|ext3_iloc
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|ext3_read_inode
 (paren
@@ -1893,6 +1879,20 @@ id|inode
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ext3_get_inode_loc
+c_func
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|ext3_iloc
+op_star
 )paren
 suffix:semicolon
 r_extern

@@ -36,10 +36,6 @@ l_string|&quot;bools&quot;
 )brace
 suffix:semicolon
 macro_line|#endif
-DECL|variable|policydb_loaded_version
-r_int
-id|policydb_loaded_version
-suffix:semicolon
 DECL|variable|symtab_sizes
 r_static
 r_int
@@ -3682,11 +3678,6 @@ id|lc
 op_assign
 l_int|NULL
 suffix:semicolon
-id|rc
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3959,6 +3950,11 @@ l_int|2
 )braket
 )paren
 suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -4123,6 +4119,10 @@ id|rc
 )paren
 r_goto
 id|bad
+suffix:semicolon
+id|rc
+op_assign
+l_int|0
 suffix:semicolon
 id|out
 suffix:colon
@@ -5074,10 +5074,6 @@ comma
 id|j
 comma
 id|rc
-comma
-id|r_policyvers
-op_assign
-l_int|0
 suffix:semicolon
 id|u32
 id|buf
@@ -5131,11 +5127,6 @@ id|rc
 )paren
 r_goto
 id|out
-suffix:semicolon
-id|rc
-op_assign
-op_minus
-id|EINVAL
 suffix:semicolon
 multiline_comment|/* Read the magic number and string length. */
 id|rc
@@ -5445,7 +5436,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|r_policyvers
+id|p-&gt;policyvers
 op_assign
 id|buf
 (braket
@@ -5455,7 +5446,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|r_policyvers
+id|p-&gt;policyvers
 template_param
 id|POLICYDB_VERSION_MAX
 )paren
@@ -5524,7 +5515,7 @@ op_assign
 id|policydb_lookup_compat
 c_func
 (paren
-id|r_policyvers
+id|p-&gt;policyvers
 )paren
 suffix:semicolon
 r_if
@@ -5541,7 +5532,7 @@ id|KERN_ERR
 l_string|&quot;security:  unable to find policy compat info &quot;
 l_string|&quot;for version %d&bslash;n&quot;
 comma
-id|r_policyvers
+id|p-&gt;policyvers
 )paren
 suffix:semicolon
 r_goto
@@ -5751,7 +5742,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|r_policyvers
+id|p-&gt;policyvers
 op_ge
 id|POLICYDB_VERSION_BOOL
 )paren
@@ -7641,12 +7632,12 @@ id|rc
 r_goto
 id|bad
 suffix:semicolon
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
 id|out
 suffix:colon
-id|policydb_loaded_version
-op_assign
-id|r_policyvers
-suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -7662,6 +7653,17 @@ id|OCON_FSUSE
 suffix:semicolon
 id|bad
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rc
+)paren
+id|rc
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 id|policydb_destroy
 c_func
 (paren

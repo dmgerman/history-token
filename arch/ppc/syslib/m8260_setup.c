@@ -54,6 +54,23 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* Place-holder for board-specific init */
+r_void
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+id|__init
+DECL|function|m82xx_board_setup
+id|m82xx_board_setup
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 r_static
 r_void
 id|__init
@@ -108,6 +125,11 @@ op_assign
 id|Root_RAM0
 suffix:semicolon
 macro_line|#endif
+id|m82xx_board_setup
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* The decrementer counts at the system (internal) clock frequency&n; * divided by four.&n; */
 r_static
@@ -538,7 +560,7 @@ id|_PAGE_IO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Place-holder for board-specific init */
+multiline_comment|/* Place-holder for board-specific ppc_md hooking */
 r_void
 id|__attribute__
 (paren

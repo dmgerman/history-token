@@ -10904,7 +10904,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|mode
+id|mode_option
 comma
 l_string|&quot;Specify resolution as &bslash;&quot;&lt;xres&gt;x&lt;yres&gt;[-&lt;bpp&gt;][@&lt;refresh&gt;]&bslash;&quot; &quot;
 )paren
@@ -10925,7 +10925,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|mtrr
+id|nomtrr
 comma
 l_string|&quot;bool: Disable MTRR support (0 or 1=disabled) (default=0)&quot;
 )paren

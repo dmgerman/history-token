@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;&t;&t;
 singleline_comment|// Needed by writeback.h
 macro_line|#include &lt;linux/writeback.h&gt;&t;
@@ -187,17 +186,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-(brace
-id|refrigerator
+id|try_to_freeze
 c_func
 (paren
 id|PF_FREEZE
 )paren
-suffix:semicolon
+)paren
+(brace
 id|spin_lock_irq
 c_func
 (paren

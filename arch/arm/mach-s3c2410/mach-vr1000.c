@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-vr1000.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Machine support for Thorcom VR1000 board. Designed for Thorcom by&n; * Simtec Electronics, http://www.simtec.co.uk/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB Power control&n; *     04-Sep-2004 BJD  Added new uart init, and io init&n; *     21-Aug-2004 BJD  Added struct s3c2410_board&n; *     06-Aug-2004 BJD  Fixed call to time initialisation&n; *     05-Apr-2004 BJD  Copied to make mach-vr1000.c&n; *     18-Oct-2004 BJD  Updated board struct&n; *     04-Nov-2004 BJD  Clock and serial configuration update&n; *     04-Jan-2005 BJD  Updated uart init call&n; *     10-Jan-2005 BJD  Removed include of s3c2410.h&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-vr1000.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Machine support for Thorcom VR1000 board. Designed for Thorcom by&n; * Simtec Electronics, http://www.simtec.co.uk/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB Power control&n; *     04-Sep-2004 BJD  Added new uart init, and io init&n; *     21-Aug-2004 BJD  Added struct s3c2410_board&n; *     06-Aug-2004 BJD  Fixed call to time initialisation&n; *     05-Apr-2004 BJD  Copied to make mach-vr1000.c&n; *     18-Oct-2004 BJD  Updated board struct&n; *     04-Nov-2004 BJD  Clock and serial configuration update&n; *     04-Jan-2005 BJD  Updated uart init call&n; *     10-Jan-2005 BJD  Removed include of s3c2410.h&n; *     14-Jan-2005 BJD  Added clock init&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -854,6 +854,12 @@ c_func
 (paren
 id|vr1000_iodesc
 )paren
+)paren
+suffix:semicolon
+id|s3c24xx_init_clocks
+c_func
+(paren
+l_int|0
 )paren
 suffix:semicolon
 id|s3c24xx_init_uarts

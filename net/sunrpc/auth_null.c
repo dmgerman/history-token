@@ -332,11 +332,12 @@ op_star
 id|task
 )paren
 (brace
+id|task-&gt;tk_msg.rpc_cred-&gt;cr_flags
+op_or_assign
+id|RPCAUTH_CRED_UPTODATE
+suffix:semicolon
 r_return
-id|task-&gt;tk_status
-op_assign
-op_minus
-id|EACCES
+l_int|0
 suffix:semicolon
 )brace
 r_static

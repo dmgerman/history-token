@@ -2892,13 +2892,13 @@ suffix:semicolon
 id|device_suspend
 c_func
 (paren
-l_int|3
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 id|device_power_down
 c_func
 (paren
-l_int|3
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 multiline_comment|/* serialize with the timer interrupt */
@@ -3134,7 +3134,7 @@ suffix:semicolon
 id|device_power_down
 c_func
 (paren
-l_int|3
+id|PMSG_SUSPEND
 )paren
 suffix:semicolon
 multiline_comment|/* serialize with the timer interrupt */

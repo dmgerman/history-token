@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &quot;mthca_provider.h&quot;
 macro_line|#include &quot;mthca_doorbell.h&quot;
 DECL|macro|DRV_NAME
@@ -87,11 +86,6 @@ l_int|2
 suffix:semicolon
 r_enum
 (brace
-DECL|enumerator|MTHCA_MPT_ENTRY_SIZE
-id|MTHCA_MPT_ENTRY_SIZE
-op_assign
-l_int|0x40
-comma
 DECL|enumerator|MTHCA_EQ_CONTEXT_SIZE
 id|MTHCA_EQ_CONTEXT_SIZE
 op_assign
@@ -107,6 +101,11 @@ id|MTHCA_QP_CONTEXT_SIZE
 op_assign
 l_int|0x200
 comma
+DECL|enumerator|MTHCA_RDB_ENTRY_SIZE
+id|MTHCA_RDB_ENTRY_SIZE
+op_assign
+l_int|0x20
+comma
 DECL|enumerator|MTHCA_AV_SIZE
 id|MTHCA_AV_SIZE
 op_assign
@@ -116,6 +115,18 @@ DECL|enumerator|MTHCA_MGM_ENTRY_SIZE
 id|MTHCA_MGM_ENTRY_SIZE
 op_assign
 l_int|0x40
+comma
+multiline_comment|/* Arbel FW gives us these, but we need them for Tavor */
+DECL|enumerator|MTHCA_MPT_ENTRY_SIZE
+id|MTHCA_MPT_ENTRY_SIZE
+op_assign
+l_int|0x40
+comma
+DECL|enumerator|MTHCA_MTT_SEG_SIZE
+id|MTHCA_MTT_SEG_SIZE
+op_assign
+l_int|0x40
+comma
 )brace
 suffix:semicolon
 r_enum
@@ -271,10 +282,6 @@ suffix:semicolon
 DECL|member|reserved_mrws
 r_int
 id|reserved_mrws
-suffix:semicolon
-DECL|member|num_rdbs
-r_int
-id|num_rdbs
 suffix:semicolon
 DECL|member|reserved_uars
 r_int
@@ -460,6 +467,14 @@ r_struct
 id|mthca_alloc
 id|alloc
 suffix:semicolon
+DECL|member|rdb_base
+id|u32
+id|rdb_base
+suffix:semicolon
+DECL|member|rdb_shift
+r_int
+id|rdb_shift
+suffix:semicolon
 DECL|member|sqp_start
 r_int
 id|sqp_start
@@ -585,11 +600,11 @@ DECL|member|eq_set_ci_base
 id|u64
 id|eq_set_ci_base
 suffix:semicolon
-DECL|member|mem
+DECL|member|icm
 r_struct
-id|scatterlist
+id|mthca_icm
 op_star
-id|mem
+id|icm
 suffix:semicolon
 DECL|member|fw_pages
 id|u16
@@ -1549,8 +1564,15 @@ comma
 id|u8
 id|port_num
 comma
-id|u16
-id|slid
+r_struct
+id|ib_wc
+op_star
+id|in_wc
+comma
+r_struct
+id|ib_grh
+op_star
+id|in_grh
 comma
 r_struct
 id|ib_mad

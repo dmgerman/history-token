@@ -1,172 +1,30 @@
-multiline_comment|/*&n; *&t;linux/include/asm-parisc/irq.h&n; *&n; *&t;(C) 1992, 1993 Linus Torvalds, (C) 1997 Ingo Molnar,&n; *&t;&t;Copyright 1999 SuSE GmbH&n; *&n; *&t;IRQ/IPI changes taken from work by Thomas Radke&n; *&t;&lt;tomsoft@informatik.tu-chemnitz.de&gt;&n; */
+multiline_comment|/*&n; * include/asm-parisc/irq.h&n; *&n; * Copyright 2005 Matthew Wilcox &lt;matthew@wil.cx&gt;&n; */
 macro_line|#ifndef _ASM_PARISC_IRQ_H
 DECL|macro|_ASM_PARISC_IRQ_H
 mdefine_line|#define _ASM_PARISC_IRQ_H
-macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;asm/errno.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-DECL|macro|CPU_IRQ_REGION
-mdefine_line|#define CPU_IRQ_REGION&t;&t;1
-DECL|macro|TIMER_IRQ
-mdefine_line|#define TIMER_IRQ&t;&t;(IRQ_FROM_REGION(CPU_IRQ_REGION) | 0)
-DECL|macro|IPI_IRQ
-mdefine_line|#define&t;IPI_IRQ&t;&t;&t;(IRQ_FROM_REGION(CPU_IRQ_REGION) | 1)
-multiline_comment|/* This should be 31 for PA1.1 binaries and 63 for PA-2.0 wide mode */
-DECL|macro|MAX_CPU_IRQ
-mdefine_line|#define MAX_CPU_IRQ&t;&t;(BITS_PER_LONG - 1)
-macro_line|#if BITS_PER_LONG == 32
-DECL|macro|IRQ_REGION_SHIFT
-macro_line|#  define IRQ_REGION_SHIFT &t;5
+macro_line|#include &lt;asm/types.h&gt;
+DECL|macro|NO_IRQ
+mdefine_line|#define NO_IRQ&t;&t;(-1)
+macro_line|#ifdef CONFIG_GSC
+DECL|macro|GSC_IRQ_BASE
+mdefine_line|#define GSC_IRQ_BASE&t;16
+DECL|macro|GSC_IRQ_MAX
+mdefine_line|#define GSC_IRQ_MAX&t;63
+DECL|macro|CPU_IRQ_BASE
+mdefine_line|#define CPU_IRQ_BASE&t;64
 macro_line|#else
-DECL|macro|IRQ_REGION_SHIFT
-macro_line|#  define IRQ_REGION_SHIFT &t;6
+DECL|macro|CPU_IRQ_BASE
+mdefine_line|#define CPU_IRQ_BASE&t;16
 macro_line|#endif
-DECL|macro|IRQ_PER_REGION
-mdefine_line|#define IRQ_PER_REGION&t;&t;(1 &lt;&lt; IRQ_REGION_SHIFT)
-DECL|macro|NR_IRQ_REGS
-mdefine_line|#define NR_IRQ_REGS&t;&t;16
+DECL|macro|TIMER_IRQ
+mdefine_line|#define TIMER_IRQ&t;(CPU_IRQ_BASE + 0)
+DECL|macro|IPI_IRQ
+mdefine_line|#define&t;IPI_IRQ&t;&t;(CPU_IRQ_BASE + 1)
+DECL|macro|CPU_IRQ_MAX
+mdefine_line|#define CPU_IRQ_MAX&t;(CPU_IRQ_BASE + (BITS_PER_LONG - 1))
 DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS&t;&t;&t;(NR_IRQ_REGS * IRQ_PER_REGION)
-DECL|macro|IRQ_REGION
-mdefine_line|#define IRQ_REGION(irq) &t;((irq) &gt;&gt; IRQ_REGION_SHIFT)
-DECL|macro|IRQ_OFFSET
-mdefine_line|#define IRQ_OFFSET(irq)&t;&t;((irq) &amp; ((1&lt;&lt;IRQ_REGION_SHIFT)-1))
-DECL|macro|IRQ_FROM_REGION
-mdefine_line|#define&t;IRQ_FROM_REGION(reg)&t;((reg) &lt;&lt; IRQ_REGION_SHIFT)
-DECL|macro|EISA_IRQ_REGION
-mdefine_line|#define EISA_IRQ_REGION&t;&t;0 /* region 0 needs to be reserved for EISA */
-DECL|macro|EISA_MAX_IRQS
-mdefine_line|#define EISA_MAX_IRQS&t;&t;16 /* max. (E)ISA irq line */
-DECL|struct|irq_region_ops
-r_struct
-id|irq_region_ops
-(brace
-DECL|member|disable_irq
-r_void
-(paren
-op_star
-id|disable_irq
-)paren
-(paren
-r_void
-op_star
-id|dev
-comma
-r_int
-id|irq
-)paren
-suffix:semicolon
-DECL|member|enable_irq
-r_void
-(paren
-op_star
-id|enable_irq
-)paren
-(paren
-r_void
-op_star
-id|dev
-comma
-r_int
-id|irq
-)paren
-suffix:semicolon
-DECL|member|mask_irq
-r_void
-(paren
-op_star
-id|mask_irq
-)paren
-(paren
-r_void
-op_star
-id|dev
-comma
-r_int
-id|irq
-)paren
-suffix:semicolon
-DECL|member|unmask_irq
-r_void
-(paren
-op_star
-id|unmask_irq
-)paren
-(paren
-r_void
-op_star
-id|dev
-comma
-r_int
-id|irq
-)paren
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|irq_region_data
-r_struct
-id|irq_region_data
-(brace
-DECL|member|dev
-r_void
-op_star
-id|dev
-suffix:semicolon
-DECL|member|name
-r_const
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|irqbase
-r_int
-id|irqbase
-suffix:semicolon
-DECL|member|status
-r_int
-r_int
-id|status
-(braket
-id|IRQ_PER_REGION
-)braket
-suffix:semicolon
-multiline_comment|/* IRQ status */
-)brace
-suffix:semicolon
-DECL|struct|irq_region
-r_struct
-id|irq_region
-(brace
-DECL|member|ops
-r_struct
-id|irq_region_ops
-id|ops
-suffix:semicolon
-DECL|member|data
-r_struct
-id|irq_region_data
-id|data
-suffix:semicolon
-DECL|member|action
-r_struct
-id|irqaction
-op_star
-id|action
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|irq_region
-op_star
-id|irq_region
-(braket
-id|NR_IRQ_REGS
-)braket
-suffix:semicolon
+mdefine_line|#define NR_IRQS&t;&t;(CPU_IRQ_MAX + 1)
 DECL|function|irq_canonicalize
 r_static
 id|__inline__
@@ -178,121 +36,39 @@ r_int
 id|irq
 )paren
 (brace
-macro_line|#ifdef CONFIG_EISA
 r_return
 (paren
 id|irq
 op_eq
-(paren
-id|IRQ_FROM_REGION
-c_func
-(paren
-id|EISA_IRQ_REGION
-)paren
-op_plus
 l_int|2
 )paren
 ques
 c_cond
-(paren
-id|IRQ_FROM_REGION
-c_func
-(paren
-id|EISA_IRQ_REGION
-)paren
-op_plus
 l_int|9
-)paren
 suffix:colon
 id|irq
-)paren
 suffix:semicolon
-macro_line|#else
-r_return
-id|irq
-suffix:semicolon
-macro_line|#endif
 )brace
-r_extern
+r_struct
+id|hw_interrupt_type
+suffix:semicolon
+multiline_comment|/*&n; * Some useful &quot;we don&squot;t have to do anything here&quot; handlers.  Should&n; * probably be provided by the generic code.&n; */
 r_void
-id|disable_irq
+id|no_ack_irq
 c_func
 (paren
 r_int
+r_int
+id|irq
 )paren
 suffix:semicolon
-DECL|macro|disable_irq_nosync
-mdefine_line|#define disable_irq_nosync(i) disable_irq(i)
-r_extern
 r_void
-id|enable_irq
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|do_irq
-c_func
-(paren
-r_struct
-id|irqaction
-op_star
-id|a
-comma
-r_int
-id|i
-comma
-r_struct
-id|pt_regs
-op_star
-id|p
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|do_irq_mask
+id|no_end_irq
 c_func
 (paren
 r_int
 r_int
-id|mask
-comma
-r_struct
-id|irq_region
-op_star
-id|region
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|irq_region
-op_star
-id|alloc_irq_region
-c_func
-(paren
-r_int
-id|count
-comma
-r_struct
-id|irq_region_ops
-op_star
-id|ops
-comma
-r_const
-r_char
-op_star
-id|name
-comma
-r_void
-op_star
-id|dev
+id|irq
 )paren
 suffix:semicolon
 r_extern
@@ -332,30 +108,28 @@ c_func
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|cpu_claim_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+comma
+r_struct
+id|hw_interrupt_type
+op_star
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* soft power switch support (power.c) */
 r_extern
 r_struct
 id|tasklet_struct
 id|power_tasklet
-suffix:semicolon
-r_struct
-id|irqaction
-suffix:semicolon
-r_int
-id|handle_IRQ_event
-c_func
-(paren
-r_int
-r_int
-comma
-r_struct
-id|pt_regs
-op_star
-comma
-r_struct
-id|irqaction
-op_star
-)paren
 suffix:semicolon
 macro_line|#endif&t;/* _ASM_PARISC_IRQ_H */
 eof

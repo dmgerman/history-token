@@ -33,6 +33,10 @@ DECL|macro|BCSR1_RS232_EN1
 mdefine_line|#define BCSR1_RS232_EN1&t;&t;((uint)0x02000000)&t;/* 0 == enable */
 DECL|macro|BCSR1_RS232_EN2
 mdefine_line|#define BCSR1_RS232_EN2&t;&t;((uint)0x01000000)&t;/* 0 == enable */
+DECL|macro|BCSR3_FETHIEN2
+mdefine_line|#define BCSR3_FETHIEN2&t;&t;((uint)0x10000000)&t;/* 0 == enable */
+DECL|macro|BCSR3_FETH2_RST
+mdefine_line|#define BCSR3_FETH2_RST &t;((uint)0x80000000)&t;/* 0 == reset */
 DECL|macro|PHY_INTERRUPT
 mdefine_line|#define PHY_INTERRUPT&t;SIU_INT_IRQ7
 macro_line|#ifdef CONFIG_PCI

@@ -2,6 +2,10 @@ multiline_comment|/*&n; *&t;Functions to handle I2O controllers and I2O message 
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/i2o.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+DECL|macro|OSM_VERSION
+mdefine_line|#define OSM_VERSION&t;&quot;$Rev$&quot;
+DECL|macro|OSM_DESCRIPTION
+mdefine_line|#define OSM_DESCRIPTION&t;&quot;I2O subsystem&quot;
 multiline_comment|/* global I2O controller list */
 DECL|variable|i2o_controllers
 id|LIST_HEAD
@@ -348,7 +352,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;NULL pointer found!&bslash;n&quot;
+l_string|&quot;%s: couldn&squot;t add NULL pointer to context list!&quot;
+l_string|&quot;&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 id|entry
@@ -376,8 +383,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i2o: Could not allocate memory for context &quot;
+l_string|&quot;%s: Could not allocate memory for context &quot;
 l_string|&quot;list element&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -460,7 +469,9 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;Add context to list %p -&gt; %d&bslash;n&quot;
+l_string|&quot;%s: Add context to list %p -&gt; %d&bslash;n&quot;
+comma
+id|c-&gt;name
 comma
 id|ptr
 comma
@@ -568,8 +579,10 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i2o: Could not remove nonexistent ptr &quot;
+l_string|&quot;%s: Could not remove nonexistent ptr &quot;
 l_string|&quot;%p&bslash;n&quot;
+comma
+id|c-&gt;name
 comma
 id|ptr
 )paren
@@ -577,7 +590,9 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;remove ptr from context list %d -&gt; %p&bslash;n&quot;
+l_string|&quot;%s: remove ptr from context list %d -&gt; %p&bslash;n&quot;
+comma
+id|c-&gt;name
 comma
 id|context
 comma
@@ -686,7 +701,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i2o: context id %d not found&bslash;n&quot;
+l_string|&quot;%s: context id %d not found&bslash;n&quot;
+comma
+id|c-&gt;name
 comma
 id|context
 )paren
@@ -694,7 +711,9 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;get ptr from context list %d -&gt; %p&bslash;n&quot;
+l_string|&quot;%s: get ptr from context list %d -&gt; %p&bslash;n&quot;
+comma
+id|c-&gt;name
 comma
 id|context
 comma
@@ -789,8 +808,10 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i2o: Could not find nonexistent ptr &quot;
+l_string|&quot;%s: Could not find nonexistent ptr &quot;
 l_string|&quot;%p&bslash;n&quot;
+comma
+id|c-&gt;name
 comma
 id|ptr
 )paren
@@ -798,7 +819,9 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;get context id from context list %p -&gt; %d&bslash;n&quot;
+l_string|&quot;%s: get context id from context list %p -&gt; %d&bslash;n&quot;
+comma
+id|c-&gt;name
 comma
 id|ptr
 comma
@@ -1500,7 +1523,9 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;Resetting controller&bslash;n&quot;
+l_string|&quot;%s: Resetting controller&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 id|m
@@ -1701,7 +1726,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;IOP reset timeout.&bslash;n&quot;
+l_string|&quot;%s: IOP reset timeout.&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 id|rc
@@ -1809,7 +1836,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;IOP reset timeout.&bslash;n&quot;
+l_string|&quot;%s: IOP reset timeout.&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 id|rc
@@ -2425,7 +2454,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Unable to obtain status of %s, &quot;
+l_string|&quot;%s: Unable to obtain status, &quot;
 l_string|&quot;attempting a reset.&bslash;n&quot;
 comma
 id|c-&gt;name
@@ -2456,7 +2485,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Not running vrs. 1.5. of the I2O &quot;
+l_string|&quot;%s: Not running version 1.5 of the I2O &quot;
 l_string|&quot;Specification.&bslash;n&quot;
 comma
 id|c-&gt;name
@@ -2504,7 +2533,9 @@ suffix:colon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;already running, trying to reset...&bslash;n&quot;
+l_string|&quot;%s: already running, trying to reset...&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -2711,7 +2742,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Can&squot;t find parent resource!&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t find parent resource!&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -2765,7 +2798,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: allocated %ld bytes of PCI memory at 0x%08lX.&bslash;n&quot;
+l_string|&quot;%s: allocated %ld bytes of PCI memory&quot;
+l_string|&quot; at 0x%08lX.&bslash;n&quot;
 comma
 id|c-&gt;name
 comma
@@ -2842,7 +2876,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Can&squot;t find parent resource!&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t find parent resource!&bslash;n&quot;
+comma
+id|c-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -2896,7 +2932,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: allocated %ld bytes of PCI I/O at 0x%08lX.&bslash;n&quot;
+l_string|&quot;%s: allocated %ld bytes of PCI I/O at&quot;
+l_string|&quot; 0x%08lX.&bslash;n&quot;
 comma
 id|c-&gt;name
 comma
@@ -3260,7 +3297,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;Deleting controller %s&bslash;n&quot;
+l_string|&quot;%s: deleting controller&bslash;n&quot;
 comma
 id|c-&gt;name
 )paren
@@ -4260,7 +4297,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i2o: Insufficient memory to allocate the &quot;
+l_string|&quot;i2o: Insufficient memory to allocate a I2O &quot;
 l_string|&quot;controller.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4425,7 +4462,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: controller could not activated&bslash;n&quot;
+l_string|&quot;%s: could not activate controller&bslash;n&quot;
 comma
 id|c-&gt;name
 )paren
@@ -4443,7 +4480,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;building sys table %s...&bslash;n&quot;
+l_string|&quot;%s: building sys table...&bslash;n&quot;
 comma
 id|c-&gt;name
 )paren
@@ -4474,7 +4511,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;online controller %s...&bslash;n&quot;
+l_string|&quot;%s: online controller...&bslash;n&quot;
 comma
 id|c-&gt;name
 )paren
@@ -4506,7 +4543,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;getting LCT %s...&bslash;n&quot;
+l_string|&quot;%s: getting LCT...&bslash;n&quot;
 comma
 id|c-&gt;name
 )paren
@@ -4727,7 +4764,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;I2O Core - (C) Copyright 1999 Red Hat Software&bslash;n&quot;
+id|OSM_DESCRIPTION
+l_string|&quot; v&quot;
+id|OSM_VERSION
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -4875,16 +4915,24 @@ c_func
 l_string|&quot;Red Hat Software&quot;
 )paren
 suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;I2O Core&quot;
-)paren
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|OSM_DESCRIPTION
+id|MODULE_DESCRIPTION
+c_func
+(paren
+id|OSM_DESCRIPTION
+)paren
+suffix:semicolon
+DECL|variable|OSM_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|OSM_VERSION
 )paren
 suffix:semicolon
 macro_line|#if BITS_PER_LONG == 64

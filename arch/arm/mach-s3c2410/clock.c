@@ -58,10 +58,10 @@ id|clocks_sem
 )paren
 suffix:semicolon
 multiline_comment|/* old functions */
-DECL|function|s3c2410_clk_enable
+DECL|function|s3c24xx_clk_enable
 r_void
 r_inline
-id|s3c2410_clk_enable
+id|s3c24xx_clk_enable
 c_func
 (paren
 r_int
@@ -154,9 +154,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|s3c2410_clkcon_enable
+DECL|function|s3c24xx_clkcon_enable
 r_int
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 c_func
 (paren
 r_struct
@@ -168,7 +168,7 @@ r_int
 id|enable
 )paren
 (brace
-id|s3c2410_clk_enable
+id|s3c24xx_clk_enable
 c_func
 (paren
 id|clk-&gt;ctrlbit
@@ -893,7 +893,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -922,7 +922,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -951,7 +951,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -980,7 +980,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -1003,7 +1003,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -1032,7 +1032,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -1060,7 +1060,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -1088,7 +1088,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -1116,7 +1116,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -1145,7 +1145,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -1174,7 +1174,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -1203,7 +1203,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -1232,7 +1232,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -1261,7 +1261,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -1290,7 +1290,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -1324,9 +1324,9 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* initialise the clock system */
-DECL|function|s3c2410_register_clock
+DECL|function|s3c24xx_register_clock
 r_int
-id|s3c2410_register_clock
+id|s3c24xx_register_clock
 c_func
 (paren
 r_struct
@@ -1389,10 +1389,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* initalise all the clocks */
-DECL|function|s3c2410_init_clocks
+DECL|function|s3c24xx_setup_clocks
 r_int
 id|__init
-id|s3c2410_init_clocks
+id|s3c24xx_setup_clocks
 c_func
 (paren
 r_void
@@ -1432,7 +1432,7 @@ op_assign
 id|s3c24xx_fclk
 suffix:semicolon
 multiline_comment|/* it looks like just setting the register here is not good&n;&t; * enough, and causes the odd hang at initial boot time, so&n;&t; * do all of them indivdually.&n;&t; *&n;&t; * I think disabling the LCD clock if the LCD is active is&n;&t; * very dangerous, and therefore the bootloader should be&n;&t; * careful to not enable the LCD clock if it is not needed.&n;&t; *&n;&t; * and of course, this looks neater&n;&t; */
-id|s3c2410_clk_enable
+id|s3c24xx_clk_enable
 c_func
 (paren
 id|S3C2410_CLKCON_NAND
@@ -1440,7 +1440,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|s3c2410_clk_enable
+id|s3c24xx_clk_enable
 c_func
 (paren
 id|S3C2410_CLKCON_USBH
@@ -1448,7 +1448,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|s3c2410_clk_enable
+id|s3c24xx_clk_enable
 c_func
 (paren
 id|S3C2410_CLKCON_USBD
@@ -1456,7 +1456,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|s3c2410_clk_enable
+id|s3c24xx_clk_enable
 c_func
 (paren
 id|S3C2410_CLKCON_ADC
@@ -1464,7 +1464,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|s3c2410_clk_enable
+id|s3c24xx_clk_enable
 c_func
 (paren
 id|S3C2410_CLKCON_IIC
@@ -1472,7 +1472,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|s3c2410_clk_enable
+id|s3c24xx_clk_enable
 c_func
 (paren
 id|S3C2410_CLKCON_SPI
@@ -1485,7 +1485,7 @@ multiline_comment|/* register our clocks */
 r_if
 c_cond
 (paren
-id|s3c2410_register_clock
+id|s3c24xx_register_clock
 c_func
 (paren
 op_amp
@@ -1504,7 +1504,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s3c2410_register_clock
+id|s3c24xx_register_clock
 c_func
 (paren
 op_amp
@@ -1523,7 +1523,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s3c2410_register_clock
+id|s3c24xx_register_clock
 c_func
 (paren
 op_amp
@@ -1563,7 +1563,7 @@ op_increment
 (brace
 id|ret
 op_assign
-id|s3c2410_register_clock
+id|s3c24xx_register_clock
 c_func
 (paren
 id|clkp

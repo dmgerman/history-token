@@ -425,7 +425,7 @@ id|u32
 id|acpi_state
 )paren
 (brace
-id|u32
+id|suspend_state_t
 id|states
 (braket
 )braket

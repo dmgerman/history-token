@@ -3037,7 +3037,7 @@ c_func
 (paren
 id|tsk-&gt;mm
 comma
-l_int|0xfffe000
+id|VSYSCALL32_BASE
 )paren
 OL
 l_int|0

@@ -620,8 +620,9 @@ id|nbits
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: better would be to fix all architectures to never return&n;          &gt; MAX_NUMNODES, then the silly min_ts could be dropped. */
 DECL|macro|first_node
-mdefine_line|#define first_node(src) __first_node(&amp;(src), MAX_NUMNODES)
+mdefine_line|#define first_node(src) __first_node(&amp;(src))
 DECL|function|__first_node
 r_static
 r_inline
@@ -633,9 +634,6 @@ r_const
 id|nodemask_t
 op_star
 id|srcp
-comma
-r_int
-id|nbits
 )paren
 (brace
 r_return
@@ -644,20 +642,20 @@ c_func
 (paren
 r_int
 comma
-id|nbits
+id|MAX_NUMNODES
 comma
 id|find_first_bit
 c_func
 (paren
 id|srcp-&gt;bits
 comma
-id|nbits
+id|MAX_NUMNODES
 )paren
 )paren
 suffix:semicolon
 )brace
 DECL|macro|next_node
-mdefine_line|#define next_node(n, src) __next_node((n), &amp;(src), MAX_NUMNODES)
+mdefine_line|#define next_node(n, src) __next_node((n), &amp;(src))
 DECL|function|__next_node
 r_static
 r_inline
@@ -672,9 +670,6 @@ r_const
 id|nodemask_t
 op_star
 id|srcp
-comma
-r_int
-id|nbits
 )paren
 (brace
 r_return
@@ -683,14 +678,14 @@ c_func
 (paren
 r_int
 comma
-id|nbits
+id|MAX_NUMNODES
 comma
 id|find_next_bit
 c_func
 (paren
 id|srcp-&gt;bits
 comma
-id|nbits
+id|MAX_NUMNODES
 comma
 id|n
 op_plus

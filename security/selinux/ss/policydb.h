@@ -614,6 +614,11 @@ id|ebitmap
 id|trustedobjects
 suffix:semicolon
 macro_line|#endif
+DECL|member|policyvers
+r_int
+r_int
+id|policyvers
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

@@ -1,0 +1,31 @@
+multiline_comment|/*&n; *  Support for the w100 frame buffer.&n; *&n; *  Copyright (c) 2004 Richard Purdie&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License version 2 as&n; *  published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * This structure describes the machine which we are running on.&n; * It is set by machine specific code and used in the probe routine&n; * of drivers/video/w100fb.c&n; */
+DECL|struct|w100fb_mach_info
+r_struct
+id|w100fb_mach_info
+(brace
+DECL|member|w100fb_ssp_send
+r_void
+(paren
+op_star
+id|w100fb_ssp_send
+)paren
+(paren
+id|u8
+id|adrs
+comma
+id|u8
+id|data
+)paren
+suffix:semicolon
+DECL|member|comadj
+r_int
+id|comadj
+suffix:semicolon
+DECL|member|phadadj
+r_int
+id|phadadj
+suffix:semicolon
+)brace
+suffix:semicolon
+eof

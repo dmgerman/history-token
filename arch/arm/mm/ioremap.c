@@ -561,6 +561,8 @@ id|PAGE_ALIGN
 c_func
 (paren
 id|last_addr
+op_plus
+l_int|1
 )paren
 op_minus
 id|phys_addr

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.151 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.154 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -653,7 +653,7 @@ c_func
 (paren
 id|device-&gt;debug_area
 comma
-id|DBF_ERR
+id|DBF_DEBUG
 )paren
 suffix:semicolon
 id|DBF_DEV_EVENT
@@ -1814,42 +1814,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|debug_text_event
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-l_string|&quot;ALLC&quot;
-)paren
-suffix:semicolon
-id|debug_text_event
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-id|magic
-)paren
-suffix:semicolon
-id|debug_int_event
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-id|cplength
-)paren
-suffix:semicolon
-id|debug_int_event
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-id|datasize
-)paren
-suffix:semicolon
 id|cqr
 op_assign
 id|kmalloc
@@ -2147,42 +2111,6 @@ id|PAGE_SIZE
 id|BUG
 c_func
 (paren
-)paren
-suffix:semicolon
-id|debug_text_event
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-l_string|&quot;ALLC&quot;
-)paren
-suffix:semicolon
-id|debug_text_event
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-id|magic
-)paren
-suffix:semicolon
-id|debug_int_event
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-id|cplength
-)paren
-suffix:semicolon
-id|debug_int_event
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-id|datasize
 )paren
 suffix:semicolon
 id|size
@@ -2489,27 +2417,6 @@ id|CCW_FLAG_DC
 )paren
 suffix:semicolon
 macro_line|#endif
-id|debug_text_event
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-l_string|&quot;FREE&quot;
-)paren
-suffix:semicolon
-id|debug_int_event
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-(paren
-r_int
-)paren
-id|cqr
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2568,29 +2475,6 @@ id|device
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|debug_text_event
-c_func
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-l_string|&quot;FREE&quot;
-)paren
-suffix:semicolon
-id|debug_int_event
-c_func
-(paren
-id|dasd_debug_area
-comma
-l_int|1
-comma
-(paren
-r_int
-)paren
-id|cqr
-)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -2828,6 +2712,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|DBF_DEV_EVENT
+c_func
+(paren
+id|DBF_DEBUG
+comma
+id|device
+comma
+l_string|&quot;terminate cqr %p successful&quot;
+comma
+id|cqr
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -3051,6 +2947,18 @@ suffix:colon
 id|cqr-&gt;status
 op_assign
 id|DASD_CQR_IN_IO
+suffix:semicolon
+id|DBF_DEV_EVENT
+c_func
+(paren
+id|DBF_DEBUG
+comma
+id|device
+comma
+l_string|&quot;%s&quot;
+comma
+l_string|&quot;start_IO: request %p started successful&quot;
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3904,7 +3812,7 @@ id|DBF_DEBUG
 comma
 id|device
 comma
-l_string|&quot;Int: CS/DS 0x%04x&quot;
+l_string|&quot;Int: CS/DS 0x%04x for cqr %p&quot;
 comma
 (paren
 (paren
@@ -3915,6 +3823,8 @@ l_int|8
 op_or
 id|irb-&gt;scsw.dstat
 )paren
+comma
+id|cqr
 )paren
 suffix:semicolon
 multiline_comment|/* Find out the appropriate era_action. */
@@ -4717,14 +4627,14 @@ op_eq
 id|WRITE
 )paren
 (brace
-id|DBF_EVENT
+id|DBF_DEV_EVENT
 c_func
 (paren
 id|DBF_ERR
 comma
-l_string|&quot;(%s) Rejecting write request %p&quot;
+id|device
 comma
-id|device-&gt;cdev-&gt;dev.bus_id
+l_string|&quot;Rejecting write request %p&quot;
 comma
 id|req
 )paren
@@ -4808,14 +4718,21 @@ id|ENOMEM
 r_break
 suffix:semicolon
 multiline_comment|/* terminate request queue loop */
-id|DBF_EVENT
+id|DBF_DEV_EVENT
 c_func
 (paren
 id|DBF_ERR
 comma
-l_string|&quot;(%s) CCW creation failed on request %p&quot;
+id|device
 comma
-id|device-&gt;cdev-&gt;dev.bus_id
+l_string|&quot;CCW creation failed (rc=%ld) &quot;
+l_string|&quot;on request %p&quot;
+comma
+id|PTR_ERR
+c_func
+(paren
+id|cqr
+)paren
 comma
 id|req
 )paren
@@ -6869,14 +6786,16 @@ c_cond
 id|dasd_probeonly
 )paren
 (brace
-id|MESSAGE
+id|DEV_MESSAGE
 c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;No access to device %s due to probeonly mode&quot;
+id|device
 comma
-id|disk-&gt;disk_name
+l_string|&quot;%s&quot;
+comma
+l_string|&quot;No access to device due to probeonly mode&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -7978,7 +7897,7 @@ c_func
 id|dasd_debug_area
 comma
 op_amp
-id|debug_hex_ascii_view
+id|debug_sprintf_view
 )paren
 suffix:semicolon
 id|debug_set_level
@@ -7986,7 +7905,7 @@ c_func
 (paren
 id|dasd_debug_area
 comma
-id|DBF_ERR
+id|DBF_DEBUG
 )paren
 suffix:semicolon
 id|DBF_EVENT

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *&t;ASP Device Driver&n; *&n; *&t;(c) Copyright 2000 The Puffin Group Inc.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *&t;by Helge Deller &lt;deller@gmx.de&gt;&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -18,7 +18,7 @@ DECL|macro|VIPER_INT_WORD
 mdefine_line|#define VIPER_INT_WORD  0xFFFBF088      /* addr of viper interrupt word */
 DECL|function|asp_choose_irq
 r_static
-r_int
+r_void
 id|asp_choose_irq
 c_func
 (paren
@@ -26,13 +26,14 @@ r_struct
 id|parisc_device
 op_star
 id|dev
+comma
+r_void
+op_star
+id|ctrl
 )paren
 (brace
 r_int
 id|irq
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 r_switch
 c_cond
@@ -45,7 +46,7 @@ l_int|0x71
 suffix:colon
 id|irq
 op_assign
-l_int|22
+l_int|9
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -55,7 +56,7 @@ l_int|0x72
 suffix:colon
 id|irq
 op_assign
-l_int|23
+l_int|8
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -65,7 +66,7 @@ l_int|0x73
 suffix:colon
 id|irq
 op_assign
-l_int|30
+l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -75,7 +76,7 @@ l_int|0x74
 suffix:colon
 id|irq
 op_assign
-l_int|24
+l_int|7
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -92,9 +93,9 @@ l_int|4
 )paren
 ques
 c_cond
-l_int|26
+l_int|5
 suffix:colon
-l_int|25
+l_int|6
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -104,7 +105,7 @@ l_int|0x76
 suffix:colon
 id|irq
 op_assign
-l_int|21
+l_int|10
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -114,7 +115,7 @@ l_int|0x77
 suffix:colon
 id|irq
 op_assign
-l_int|20
+l_int|11
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -124,7 +125,7 @@ l_int|0x7a
 suffix:colon
 id|irq
 op_assign
-l_int|18
+l_int|13
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -134,7 +135,7 @@ l_int|0x7b
 suffix:colon
 id|irq
 op_assign
-l_int|18
+l_int|13
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -144,7 +145,7 @@ l_int|0x7c
 suffix:colon
 id|irq
 op_assign
-l_int|28
+l_int|3
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -154,7 +155,7 @@ l_int|0x7d
 suffix:colon
 id|irq
 op_assign
-l_int|27
+l_int|4
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -164,14 +165,27 @@ l_int|0x7f
 suffix:colon
 id|irq
 op_assign
-l_int|18
+l_int|13
 suffix:semicolon
 r_break
 suffix:semicolon
 multiline_comment|/* Audio (Outfield) */
-)brace
+r_default
+suffix:colon
 r_return
+suffix:semicolon
+multiline_comment|/* Unknown */
+)brace
+id|gsc_asic_assign_irq
+c_func
+(paren
+id|ctrl
+comma
 id|irq
+comma
+op_amp
+id|dev-&gt;irq
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* There are two register ranges we&squot;re interested in.  Interrupt /&n; * Status / LED are at 0xf080xxxx and Asp special registers are at&n; * 0xf082fxxx.  PDC only tells us that Asp is at 0xf082f000, so for&n; * the purposes of interrupt handling, we have to tell other bits of&n; * the kernel to look at the other registers.&n; */
@@ -190,7 +204,7 @@ id|dev
 )paren
 (brace
 r_struct
-id|busdevice
+id|gsc_asic
 op_star
 id|asp
 suffix:semicolon
@@ -199,8 +213,6 @@ id|gsc_irq
 id|gsc_irq
 suffix:semicolon
 r_int
-id|irq
-comma
 id|ret
 suffix:semicolon
 id|asp
@@ -210,8 +222,8 @@ c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|busdevice
+op_star
+id|asp
 )paren
 comma
 id|GFP_KERNEL
@@ -277,7 +289,7 @@ op_assign
 op_minus
 id|EBUSY
 suffix:semicolon
-id|irq
+id|dev-&gt;irq
 op_assign
 id|gsc_claim_irq
 c_func
@@ -291,7 +303,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|irq
+id|dev-&gt;irq
 OL
 l_int|0
 )paren
@@ -309,6 +321,17 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|asp-&gt;eim
+op_assign
+(paren
+(paren
+id|u32
+)paren
+id|gsc_irq.txn_addr
+)paren
+op_or
+id|gsc_irq.txn_data
+suffix:semicolon
 id|ret
 op_assign
 id|request_irq
@@ -316,7 +339,7 @@ c_func
 (paren
 id|gsc_irq.irq
 comma
-id|busdev_barked
+id|gsc_asic_intr
 comma
 l_int|0
 comma
@@ -334,22 +357,6 @@ l_int|0
 )paren
 r_goto
 id|out
-suffix:semicolon
-multiline_comment|/* Save this for debugging later */
-id|asp-&gt;parent_irq
-op_assign
-id|gsc_irq.irq
-suffix:semicolon
-id|asp-&gt;eim
-op_assign
-(paren
-(paren
-id|u32
-)paren
-id|gsc_irq.txn_addr
-)paren
-op_or
-id|gsc_irq.txn_data
 suffix:semicolon
 multiline_comment|/* Program VIPER to interrupt on the ASP irq */
 id|gsc_writel
@@ -371,7 +378,7 @@ suffix:semicolon
 multiline_comment|/* Done init&squot;ing, register this driver */
 id|ret
 op_assign
-id|gsc_common_irqsetup
+id|gsc_common_setup
 c_func
 (paren
 id|dev
@@ -387,23 +394,27 @@ id|ret
 r_goto
 id|out
 suffix:semicolon
-id|fixup_child_irqs
+id|gsc_fixup_irqs
 c_func
 (paren
 id|dev
 comma
-id|asp-&gt;busdev_region-&gt;data.irqbase
+id|asp
 comma
 id|asp_choose_irq
 )paren
 suffix:semicolon
 multiline_comment|/* Mongoose is a sibling of Asp, not a child... */
-id|fixup_child_irqs
+id|gsc_fixup_irqs
 c_func
 (paren
-id|dev-&gt;parent
+id|parisc_parent
+c_func
+(paren
+id|dev
+)paren
 comma
-id|asp-&gt;busdev_region-&gt;data.irqbase
+id|asp
 comma
 id|asp_choose_irq
 )paren
@@ -417,10 +428,6 @@ id|DISPLAY_MODEL_OLD_ASP
 comma
 id|LED_CMD_REG_NONE
 comma
-(paren
-r_char
-op_star
-)paren
 id|ASP_LED_ADDR
 )paren
 suffix:semicolon

@@ -294,8 +294,7 @@ r_int
 id|end_pfn_map
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|cpumask_t
 id|cpu_initialized
 suffix:semicolon
 r_extern

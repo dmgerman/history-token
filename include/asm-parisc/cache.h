@@ -50,6 +50,15 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* flushes data-cache only (all processors) */
+r_extern
+r_void
+id|flush_instruction_cache
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* flushes i-cache only (all processors) */
 macro_line|#else
 DECL|macro|flush_data_cache
 mdefine_line|#define flush_data_cache flush_data_cache_local

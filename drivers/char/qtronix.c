@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kbd_ll.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1636,12 +1635,6 @@ singleline_comment|//&t;__aux_write_ack(AUX_ENABLE_DEV);  /* ping the mouse :) *
 r_return
 suffix:semicolon
 )brace
-id|add_mouse_randomness
-c_func
-(paren
-id|scancode
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

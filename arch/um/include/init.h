@@ -25,12 +25,22 @@ id|exitcall_t
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* These are for everybody (although not all archs will actually&n;   discard it in modules) */
 DECL|macro|__init
-mdefine_line|#define __init          __attribute__ ((__section__ (&quot;.text.init&quot;)))
-DECL|macro|__exit
-mdefine_line|#define __exit          __attribute__ ((unused, __section__(&quot;.text.exit&quot;)))
+mdefine_line|#define __init&t;&t;__attribute__ ((__section__ (&quot;.init.text&quot;)))
 DECL|macro|__initdata
-mdefine_line|#define __initdata      __attribute__ ((__section__ (&quot;.data.init&quot;)))
+mdefine_line|#define __initdata&t;__attribute__ ((__section__ (&quot;.init.data&quot;)))
+DECL|macro|__exitdata
+mdefine_line|#define __exitdata&t;__attribute__ ((__section__(&quot;.exit.data&quot;)))
+DECL|macro|__exit_call
+mdefine_line|#define __exit_call&t;__attribute_used__ __attribute__ ((__section__ (&quot;.exitcall.exit&quot;)))
+macro_line|#ifdef MODULE
+DECL|macro|__exit
+mdefine_line|#define __exit&t;&t;__attribute__ ((__section__(&quot;.exit.text&quot;)))
+macro_line|#else
+DECL|macro|__exit
+mdefine_line|#define __exit&t;&t;__attribute_used__ __attribute__ ((__section__(&quot;.exit.text&quot;)))
+macro_line|#endif
 macro_line|#endif
 macro_line|#ifndef MODULE
 DECL|struct|uml_param
@@ -107,15 +117,15 @@ DECL|macro|__uml_help
 mdefine_line|#define __uml_help(fn, help...)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__non_empty_string(fn ##__help, help);&t;&t;&t;&t;&bslash;&n;&t;static char __uml_help_str_##fn[] __initdata = help;&t;&t;&bslash;&n;&t;static const char *__uml_help_##fn __uml_setup_help = __uml_help_str_##fn
 multiline_comment|/*&n; * Mark functions and data as being only used at initialization&n; * or exit time.&n; */
 DECL|macro|__uml_init_setup
-mdefine_line|#define __uml_init_setup&t;__attribute__ ((unused,__section__ (&quot;.uml.setup.init&quot;)))
+mdefine_line|#define __uml_init_setup&t;__attribute_used__ __attribute__ ((__section__ (&quot;.uml.setup.init&quot;)))
 DECL|macro|__uml_setup_help
-mdefine_line|#define __uml_setup_help&t;__attribute__ ((unused,__section__ (&quot;.uml.help.init&quot;)))
+mdefine_line|#define __uml_setup_help&t;__attribute_used__ __attribute__ ((__section__ (&quot;.uml.help.init&quot;)))
 DECL|macro|__uml_init_call
-mdefine_line|#define __uml_init_call&t;&t;__attribute__ ((unused,__section__ (&quot;.uml.initcall.init&quot;)))
+mdefine_line|#define __uml_init_call&t;&t;__attribute_used__ __attribute__ ((__section__ (&quot;.uml.initcall.init&quot;)))
 DECL|macro|__uml_postsetup_call
-mdefine_line|#define __uml_postsetup_call&t;__attribute__ ((unused,__section__ (&quot;.uml.postsetup.init&quot;)))
+mdefine_line|#define __uml_postsetup_call&t;__attribute_used__ __attribute__ ((__section__ (&quot;.uml.postsetup.init&quot;)))
 DECL|macro|__uml_exit_call
-mdefine_line|#define __uml_exit_call&t;&t;__attribute__ ((unused,__section__ (&quot;.uml.exitcall.exit&quot;)))
+mdefine_line|#define __uml_exit_call&t;&t;__attribute_used__ __attribute__ ((__section__ (&quot;.uml.exitcall.exit&quot;)))
 macro_line|#endif /* _LINUX_UML_INIT_H */
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

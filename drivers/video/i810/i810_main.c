@@ -9568,7 +9568,7 @@ id|vram
 comma
 r_int
 comma
-l_int|4
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9606,7 +9606,7 @@ id|bpp
 comma
 r_int
 comma
-l_int|8
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9625,7 +9625,7 @@ id|xres
 comma
 r_int
 comma
-l_int|640
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9643,7 +9643,7 @@ id|yres
 comma
 r_int
 comma
-l_int|480
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -9661,7 +9661,7 @@ id|vyres
 comma
 r_int
 comma
-l_int|480
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

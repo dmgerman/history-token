@@ -111,7 +111,7 @@ suffix:semicolon
 multiline_comment|/* exports for arch/arm/mach-s3c2410&n; *&n; * Please DO NOT use these outside of arch/arm/mach-s3c2410&n;*/
 r_extern
 r_int
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 c_func
 (paren
 r_struct
@@ -125,7 +125,7 @@ id|enable
 suffix:semicolon
 r_extern
 r_int
-id|s3c2410_register_clock
+id|s3c24xx_register_clock
 c_func
 (paren
 r_struct
@@ -136,7 +136,7 @@ id|clk
 suffix:semicolon
 r_extern
 r_int
-id|s3c2410_init_clocks
+id|s3c24xx_setup_clocks
 c_func
 (paren
 r_void

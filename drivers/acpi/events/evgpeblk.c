@@ -2114,7 +2114,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Runtime option: Should Wake GPEs be enabled at runtime?  The default&n;&t; * is No,they should only be enabled just as the machine goes to sleep.&n;&t; */
+multiline_comment|/*&n;&t; * Runtime option: Should Wake GPEs be enabled at runtime?  The default&n;&t; * is No, they should only be enabled just as the machine goes to sleep.&n;&t; */
 r_if
 c_cond
 (paren

@@ -6,6 +6,12 @@ macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &quot;i2o_block.h&quot;
+DECL|macro|OSM_NAME
+mdefine_line|#define OSM_NAME&t;&quot;block-osm&quot;
+DECL|macro|OSM_VERSION
+mdefine_line|#define OSM_VERSION&t;&quot;$Rev$&quot;
+DECL|macro|OSM_DESCRIPTION
+mdefine_line|#define OSM_DESCRIPTION&t;&quot;I2O Block Device OSM&quot;
 DECL|variable|i2o_block_driver
 r_static
 r_struct
@@ -106,11 +112,10 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|printk
+id|osm_info
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;block-osm: Device removed %s&bslash;n&quot;
+l_string|&quot;Device removed %s&bslash;n&quot;
 comma
 id|i2o_blk_dev-&gt;gd-&gt;disk_name
 )paren
@@ -253,7 +258,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|pr_debug
+id|osm_debug
 c_func
 (paren
 l_string|&quot;Flushing...&bslash;n&quot;
@@ -380,7 +385,7 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-id|pr_debug
+id|osm_debug
 c_func
 (paren
 l_string|&quot;Mounting...&bslash;n&quot;
@@ -495,7 +500,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|pr_debug
+id|osm_debug
 c_func
 (paren
 l_string|&quot;Locking...&bslash;n&quot;
@@ -609,7 +614,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|pr_debug
+id|osm_debug
 c_func
 (paren
 l_string|&quot;Unlocking...&bslash;n&quot;
@@ -744,7 +749,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|pr_debug
+id|osm_debug
 c_func
 (paren
 l_string|&quot;Power...&bslash;n&quot;
@@ -1006,7 +1011,7 @@ op_amp
 id|REQ_SPECIAL
 )paren
 (brace
-id|pr_debug
+id|osm_debug
 c_func
 (paren
 l_string|&quot;REQ_SPECIAL already set!&bslash;n&quot;
@@ -1049,7 +1054,7 @@ id|ireq
 )paren
 )paren
 (brace
-id|pr_debug
+id|osm_debug
 c_func
 (paren
 l_string|&quot;unable to allocate i2o_block_request!&bslash;n&quot;
@@ -1276,11 +1281,10 @@ id|req
 )paren
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;block-osm: NULL reply received!&bslash;n&quot;
+l_string|&quot;NULL reply received!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1402,11 +1406,10 @@ id|req
 )paren
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;block-osm: NULL reply received!&bslash;n&quot;
+l_string|&quot;NULL reply received!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1441,11 +1444,10 @@ multiline_comment|/*&n;&t;&t; * This is HACK, but Intel Integrated RAID allows u
 id|req-&gt;errors
 op_increment
 suffix:semicolon
-id|printk
+id|osm_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;I2O Block: Data transfer to deleted device!&bslash;n&quot;
+l_string|&quot;Data transfer to deleted device!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -1587,11 +1589,10 @@ op_amp
 l_int|0xffff
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *      Device not ready means two things. One is that the&n;&t;&t; *      the thing went offline (but not a removal media)&n;&t;&t; *&n;&t;&t; *      The second is that you have a SuperTrak 100 and the&n;&t;&t; *      firmware got constipated. Unlike standard i2o card&n;&t;&t; *      setups the supertrak returns an error rather than&n;&t;&t; *      blocking for the timeout in these cases.&n;&t;&t; *&n;&t;&t; *      Don&squot;t stick a supertrak100 into cache aggressive modes&n;&t;&t; */
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;/dev/%s error: %s&quot;
+l_string|&quot;block-osm: /dev/%s error: %s&quot;
 comma
 id|dev-&gt;gd-&gt;disk_name
 comma
@@ -1742,11 +1743,10 @@ id|ireq
 suffix:semicolon
 )brace
 r_else
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2o_block: still remaining chunks&bslash;n&quot;
+l_string|&quot;still remaining chunks&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1766,10 +1766,9 @@ op_star
 id|evt
 )paren
 (brace
-id|printk
+id|osm_info
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;block-osm: event received&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1988,7 +1987,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|pr_debug
+id|osm_debug
 c_func
 (paren
 l_string|&quot;Ready.&bslash;n&quot;
@@ -2954,14 +2953,6 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|i2o_msg_post
-c_func
-(paren
-id|c
-comma
-id|m
-)paren
-suffix:semicolon
 id|list_add_tail
 c_func
 (paren
@@ -2974,6 +2965,14 @@ id|dev-&gt;open_queue
 suffix:semicolon
 id|dev-&gt;open_queue_depth
 op_increment
+suffix:semicolon
+id|i2o_msg_post
+c_func
+(paren
+id|c
+comma
+id|m
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -3152,11 +3151,10 @@ comma
 id|dreq
 )paren
 suffix:semicolon
-id|printk
+id|osm_info
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;block-osm: transfer error&bslash;n&quot;
+l_string|&quot;transfer error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3289,12 +3287,10 @@ op_logical_neg
 id|dev
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;block-osm: Insufficient memory to allocate &quot;
-l_string|&quot;I2O Block disk.&bslash;n&quot;
+l_string|&quot;Insufficient memory to allocate I2O Block disk.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -3358,12 +3354,10 @@ op_logical_neg
 id|gd
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;block-osm: Insufficient memory to allocate &quot;
-l_string|&quot;gendisk.&bslash;n&quot;
+l_string|&quot;Insufficient memory to allocate gendisk.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -3394,12 +3388,10 @@ op_logical_neg
 id|queue
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;block-osm: Insufficient memory to allocate &quot;
-l_string|&quot;request queue.&bslash;n&quot;
+l_string|&quot;Insufficient memory to allocate request queue.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -3551,7 +3543,7 @@ op_ne
 l_int|0xfff
 )paren
 (brace
-id|pr_debug
+id|osm_debug
 c_func
 (paren
 l_string|&quot;skipping used device %03x&bslash;n&quot;
@@ -3564,11 +3556,10 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|printk
+id|osm_info
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;block-osm: New device detected (TID: %03x)&bslash;n&quot;
+l_string|&quot;New device detected (TID: %03x)&bslash;n&quot;
 comma
 id|i2o_dev-&gt;lct_data.tid
 )paren
@@ -3583,12 +3574,10 @@ id|i2o_dev
 )paren
 )paren
 (brace
-id|printk
+id|osm_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;block-osm: Unable to claim device. &quot;
-l_string|&quot;Installation aborted&bslash;n&quot;
+l_string|&quot;Unable to claim device. Installation aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -3617,12 +3606,10 @@ id|i2o_blk_dev
 )paren
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;block-osm: could not alloc a new I2O block&quot;
-l_string|&quot;device&quot;
+l_string|&quot;could not alloc a new I2O block device&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -3760,26 +3747,26 @@ comma
 id|segments
 )paren
 suffix:semicolon
-id|pr_debug
+id|osm_debug
 c_func
 (paren
-l_string|&quot;max sectors:   %d&bslash;n&quot;
+l_string|&quot;max sectors = %d&bslash;n&quot;
 comma
 id|I2O_MAX_SECTORS
 )paren
 suffix:semicolon
-id|pr_debug
+id|osm_debug
 c_func
 (paren
-l_string|&quot;phys segments: %d&bslash;n&quot;
+l_string|&quot;phys segments = %d&bslash;n&quot;
 comma
 id|I2O_MAX_SEGMENTS
 )paren
 suffix:semicolon
-id|pr_debug
+id|osm_debug
 c_func
 (paren
-l_string|&quot;hw segments:   %d&bslash;n&quot;
+l_string|&quot;hw segments = %d&bslash;n&quot;
 comma
 id|segments
 )paren
@@ -3854,10 +3841,10 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
-id|pr_debug
+id|osm_debug
 c_func
 (paren
-l_string|&quot;blocksize:     %d&bslash;n&quot;
+l_string|&quot;blocksize = %d&bslash;n&quot;
 comma
 id|blocksize
 )paren
@@ -3975,7 +3962,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;block-osm&quot;
+id|OSM_NAME
 comma
 dot
 id|event
@@ -4031,14 +4018,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;I2O Block Storage OSM v0.9&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;   (c) Copyright 1999-2001 Red Hat Software.&bslash;n&quot;
+id|OSM_DESCRIPTION
+l_string|&quot; v&quot;
+id|OSM_VERSION
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Allocate request mempool and slab */
@@ -4075,11 +4058,10 @@ op_logical_neg
 id|i2o_blk_req_pool.slab
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;block-osm: can&squot;t init request slab&bslash;n&quot;
+l_string|&quot;can&squot;t init request slab&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -4112,11 +4094,10 @@ op_logical_neg
 id|i2o_blk_req_pool.pool
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;block-osm: can&squot;t init request mempool&bslash;n&quot;
+l_string|&quot;can&squot;t init request mempool&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -4145,11 +4126,10 @@ c_cond
 id|rc
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;block-osm: unable to register block device&bslash;n&quot;
+l_string|&quot;unable to register block device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4157,11 +4137,10 @@ id|free_mempool
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
-id|printk
+id|osm_info
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;block-osm: registered device at major %d&bslash;n&quot;
+l_string|&quot;registered device at major %d&bslash;n&quot;
 comma
 id|I2O_MAJOR
 )paren
@@ -4183,11 +4162,10 @@ c_cond
 id|rc
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;block-osm: Could not register Block driver&bslash;n&quot;
+l_string|&quot;Could not register Block driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4279,16 +4257,24 @@ c_func
 l_string|&quot;Red Hat&quot;
 )paren
 suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;I2O Block Device OSM&quot;
-)paren
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|OSM_DESCRIPTION
+id|MODULE_DESCRIPTION
+c_func
+(paren
+id|OSM_DESCRIPTION
+)paren
+suffix:semicolon
+DECL|variable|OSM_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|OSM_VERSION
 )paren
 suffix:semicolon
 DECL|variable|i2o_block_init

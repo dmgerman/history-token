@@ -77,6 +77,11 @@ id|rc
 op_assign
 l_int|1
 suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -105,6 +110,12 @@ suffix:semicolon
 id|rc
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* We now sleep until all other CPUs have scheduled. This ensures that&n;&t;&t;&t; * the deletion is seen by all other CPUs, and that the deleted handler&n;&t;&t;&t; * isn&squot;t still running on another CPU when we return. */
+id|synchronize_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 )brace

@@ -3731,8 +3731,8 @@ macro_line|#endif
 )brace
 id|asmlinkage
 r_int
-DECL|function|compat_rt_sigtimedwait
-id|compat_rt_sigtimedwait
+DECL|function|compat_sys_rt_sigtimedwait
+id|compat_sys_rt_sigtimedwait
 (paren
 id|compat_sigset_t
 id|__user

@@ -1403,12 +1403,11 @@ id|c
 )paren
 (brace
 r_static
-r_int
-r_int
+id|cpumask_t
 id|mce_cpus
 id|__initdata
 op_assign
-l_int|0
+id|CPU_MASK_NONE
 suffix:semicolon
 id|mce_cpu_quirks
 c_func
@@ -1421,7 +1420,7 @@ c_cond
 (paren
 id|mce_dont_init
 op_logical_or
-id|test_and_set_bit
+id|cpu_test_and_set
 c_func
 (paren
 id|smp_processor_id
@@ -1429,7 +1428,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|mce_cpus
 )paren
 op_logical_or

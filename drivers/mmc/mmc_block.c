@@ -1279,6 +1279,7 @@ op_assign
 op_amp
 id|card-&gt;dev
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * As discussed on lkml, GENHD_FL_REMOVABLE should:&n;&t;&t; *&n;&t;&t; * - be set for removable media with permanent block devices&n;&t;&t; * - be unset for removable block devices with permanent media&n;&t;&t; *&n;&t;&t; * Since MMC block devices clearly fall under the second&n;&t;&t; * case, we do not set GENHD_FL_REMOVABLE.  Userspace&n;&t;&t; * should use the block device creation/destruction hotplug&n;&t;&t; * messages to tell when the card is present.&n;&t;&t; */
 id|sprintf
 c_func
 (paren

@@ -55,6 +55,11 @@ op_assign
 id|idedefault_attach
 comma
 dot
+id|cleanup
+op_assign
+id|ide_unregister_subdriver
+comma
+dot
 id|drives
 op_assign
 id|LIST_HEAD_INIT

@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2440.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2440 Mobile CPU support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;24-Aug-2004 BJD  Start of s3c2440 support&n; *&t;12-Oct-2004 BJD&t; Moved clock info out to clock.c&n; *&t;01-Nov-2004 BJD  Fixed clock build code&n; *&t;09-Nov-2004 BJD  Added sysdev for power management&n; *&t;04-Nov-2004 BJD  New serial registration&n; *&t;15-Nov-2004 BJD  Rename the i2c device for the s3c2440&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2440.c&n; *&n; * Copyright (c) 2004-2005 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2440 Mobile CPU support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;24-Aug-2004 BJD  Start of s3c2440 support&n; *&t;12-Oct-2004 BJD&t; Moved clock info out to clock.c&n; *&t;01-Nov-2004 BJD  Fixed clock build code&n; *&t;09-Nov-2004 BJD  Added sysdev for power management&n; *&t;04-Nov-2004 BJD  New serial registration&n; *&t;15-Nov-2004 BJD  Rename the i2c device for the s3c2440&n; *&t;14-Jan-2005 BJD  Moved clock init code into seperate function&n; *&t;14-Jan-2005 BJD  Removed un-used clock bits&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -24,23 +24,6 @@ macro_line|#include &quot;clock.h&quot;
 macro_line|#include &quot;devs.h&quot;
 macro_line|#include &quot;cpu.h&quot;
 macro_line|#include &quot;pm.h&quot;
-DECL|variable|s3c2440_clock_tick_rate
-r_int
-id|s3c2440_clock_tick_rate
-op_assign
-l_int|12
-op_star
-l_int|1000
-op_star
-l_int|1000
-suffix:semicolon
-multiline_comment|/* current timers at 12MHz */
-multiline_comment|/* clock info */
-DECL|variable|s3c2440_hdiv
-r_int
-r_int
-id|s3c2440_hdiv
-suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
@@ -466,7 +449,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -489,7 +472,7 @@ comma
 dot
 id|enable
 op_assign
-id|s3c2410_clkcon_enable
+id|s3c24xx_clkcon_enable
 comma
 dot
 id|ctrlbit
@@ -656,14 +639,6 @@ r_int
 id|size
 )paren
 (brace
-r_int
-r_int
-id|clkdiv
-suffix:semicolon
-r_int
-r_int
-id|camdiv
-suffix:semicolon
 multiline_comment|/* register our io-tables */
 id|iotable_init
 c_func
@@ -684,6 +659,35 @@ id|mach_desc
 comma
 id|size
 )paren
+suffix:semicolon
+multiline_comment|/* rename any peripherals used differing from the s3c2410 */
+id|s3c_device_i2c.name
+op_assign
+l_string|&quot;s3c2440-i2c&quot;
+suffix:semicolon
+)brace
+DECL|function|s3c2440_init_clocks
+r_void
+id|__init
+id|s3c2440_init_clocks
+c_func
+(paren
+r_int
+id|xtal
+)paren
+(brace
+r_int
+r_int
+id|clkdiv
+suffix:semicolon
+r_int
+r_int
+id|camdiv
+suffix:semicolon
+r_int
+id|s3c2440_hdiv
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/* now we&squot;ve got our machine bits initialised, work out what&n;&t; * clocks we&squot;ve got */
 id|s3c24xx_fclk
@@ -831,7 +835,7 @@ id|s3c24xx_pclk
 )paren
 suffix:semicolon
 multiline_comment|/* initialise the clocks here, to allow other things like the&n;&t; * console to use them, and to add new ones after the initialisation&n;&t; */
-id|s3c2410_init_clocks
+id|s3c24xx_setup_clocks
 c_func
 (paren
 )paren
@@ -857,14 +861,14 @@ comma
 l_string|&quot;pclk&quot;
 )paren
 suffix:semicolon
-id|s3c2410_register_clock
+id|s3c24xx_register_clock
 c_func
 (paren
 op_amp
 id|s3c2440_clk_ac97
 )paren
 suffix:semicolon
-id|s3c2410_register_clock
+id|s3c24xx_register_clock
 c_func
 (paren
 op_amp
@@ -884,11 +888,6 @@ c_func
 op_amp
 id|s3c2440_clk_cam
 )paren
-suffix:semicolon
-multiline_comment|/* rename any peripherals used differing from the s3c2410 */
-id|s3c_device_i2c.name
-op_assign
-l_string|&quot;s3c2440-i2c&quot;
 suffix:semicolon
 )brace
 DECL|function|s3c2440_init

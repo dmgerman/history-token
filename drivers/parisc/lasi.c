@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *&t;LASI Device Driver&n; *&n; *&t;(c) Copyright 1999 Red Hat Software&n; *&t;Portions (c) Copyright 1999 The Puffin Group Inc.&n; *&t;Portions (c) Copyright 1999 Hewlett-Packard&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *&t;by Alan Cox &lt;alan@redhat.com&gt; and &n; * &t;   Alex deVries &lt;alex@onefishtwo.ca&gt;&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
@@ -19,7 +19,7 @@ DECL|macro|LASI_IO_CONF2
 mdefine_line|#define LASI_IO_CONF2&t;0x7FFFF&t;/* LASI secondary configuration register */
 DECL|function|lasi_choose_irq
 r_static
-r_int
+r_void
 id|lasi_choose_irq
 c_func
 (paren
@@ -27,12 +27,15 @@ r_struct
 id|parisc_device
 op_star
 id|dev
+comma
+r_void
+op_star
+id|ctrl
 )paren
 (brace
 r_int
 id|irq
 suffix:semicolon
-multiline_comment|/*&n;&t;** &quot;irq&quot; bits below are numbered relative to most significant bit.&n;&t;*/
 r_switch
 c_cond
 (paren
@@ -44,7 +47,7 @@ l_int|0x74
 suffix:colon
 id|irq
 op_assign
-l_int|24
+l_int|7
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -54,7 +57,7 @@ l_int|0x7B
 suffix:colon
 id|irq
 op_assign
-l_int|18
+l_int|13
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -64,7 +67,7 @@ l_int|0x81
 suffix:colon
 id|irq
 op_assign
-l_int|17
+l_int|14
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -74,7 +77,7 @@ l_int|0x82
 suffix:colon
 id|irq
 op_assign
-l_int|22
+l_int|9
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -84,7 +87,7 @@ l_int|0x83
 suffix:colon
 id|irq
 op_assign
-l_int|11
+l_int|20
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -94,7 +97,7 @@ l_int|0x84
 suffix:colon
 id|irq
 op_assign
-l_int|5
+l_int|26
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -104,7 +107,7 @@ l_int|0x87
 suffix:colon
 id|irq
 op_assign
-l_int|13
+l_int|18
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -114,7 +117,7 @@ l_int|0x8A
 suffix:colon
 id|irq
 op_assign
-l_int|23
+l_int|8
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -124,7 +127,7 @@ l_int|0x8C
 suffix:colon
 id|irq
 op_assign
-l_int|26
+l_int|5
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -141,26 +144,29 @@ l_int|13
 )paren
 ques
 c_cond
-l_int|15
+l_int|16
 suffix:colon
-l_int|14
+l_int|17
 suffix:semicolon
 r_break
 suffix:semicolon
 multiline_comment|/* Telephone */
 r_default
 suffix:colon
-id|irq
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-r_break
+r_return
 suffix:semicolon
 multiline_comment|/* unknown */
 )brace
-r_return
+id|gsc_asic_assign_irq
+c_func
+(paren
+id|ctrl
+comma
 id|irq
+comma
+op_amp
+id|dev-&gt;irq
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -171,7 +177,7 @@ id|lasi_init_irq
 c_func
 (paren
 r_struct
-id|busdevice
+id|gsc_asic
 op_star
 id|this_lasi
 )paren
@@ -446,7 +452,7 @@ id|dev
 )paren
 (brace
 r_struct
-id|busdevice
+id|gsc_asic
 op_star
 id|lasi
 suffix:semicolon
@@ -455,8 +461,6 @@ id|gsc_irq
 id|gsc_irq
 suffix:semicolon
 r_int
-id|irq
-comma
 id|ret
 suffix:semicolon
 id|lasi
@@ -466,8 +470,8 @@ c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|busdevice
+op_star
+id|lasi
 )paren
 comma
 id|GFP_KERNEL
@@ -532,7 +536,7 @@ id|lasi
 )paren
 suffix:semicolon
 multiline_comment|/* the IRQ lasi should use */
-id|irq
+id|dev-&gt;irq
 op_assign
 id|gsc_alloc_irq
 c_func
@@ -544,7 +548,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|irq
+id|dev-&gt;irq
 OL
 l_int|0
 )paren
@@ -569,6 +573,17 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+id|lasi-&gt;eim
+op_assign
+(paren
+(paren
+id|u32
+)paren
+id|gsc_irq.txn_addr
+)paren
+op_or
+id|gsc_irq.txn_data
+suffix:semicolon
 id|ret
 op_assign
 id|request_irq
@@ -576,7 +591,7 @@ c_func
 (paren
 id|gsc_irq.irq
 comma
-id|busdev_barked
+id|gsc_asic_intr
 comma
 l_int|0
 comma
@@ -603,22 +618,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* Save this for debugging later */
-id|lasi-&gt;parent_irq
-op_assign
-id|gsc_irq.irq
-suffix:semicolon
-id|lasi-&gt;eim
-op_assign
-(paren
-(paren
-id|u32
-)paren
-id|gsc_irq.txn_addr
-)paren
-op_or
-id|gsc_irq.txn_data
-suffix:semicolon
 multiline_comment|/* enable IRQ&squot;s for devices below LASI */
 id|gsc_writel
 c_func
@@ -633,7 +632,7 @@ suffix:semicolon
 multiline_comment|/* Done init&squot;ing, register this driver */
 id|ret
 op_assign
-id|gsc_common_irqsetup
+id|gsc_common_setup
 c_func
 (paren
 id|dev
@@ -657,12 +656,12 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|fixup_child_irqs
+id|gsc_fixup_irqs
 c_func
 (paren
 id|dev
 comma
-id|lasi-&gt;busdev_region-&gt;data.irqbase
+id|lasi
 comma
 id|lasi_choose_irq
 )paren

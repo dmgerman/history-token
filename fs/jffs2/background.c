@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 r_static
 r_int
@@ -353,21 +352,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-(brace
-id|refrigerator
+id|try_to_freeze
 c_func
 (paren
 l_int|0
 )paren
-suffix:semicolon
-multiline_comment|/* refrigerator() should recalc sigpending for us&n;&t;&t;&t;   but doesn&squot;t. No matter - allow_signal() will. */
+)paren
 r_continue
 suffix:semicolon
-)brace
 id|cond_resched
 c_func
 (paren

@@ -2284,6 +2284,10 @@ r_int
 r_int
 id|next_index
 suffix:semicolon
+r_int
+r_int
+id|prev_index
+suffix:semicolon
 id|loff_t
 id|isize
 suffix:semicolon
@@ -2316,6 +2320,10 @@ suffix:semicolon
 id|next_index
 op_assign
 id|index
+suffix:semicolon
+id|prev_index
+op_assign
+id|ra.prev_page
 suffix:semicolon
 id|req_size
 op_assign
@@ -2556,7 +2564,7 @@ multiline_comment|/*&n;&t;&t; * When (part of) the same page is read multiple ti
 r_if
 c_cond
 (paren
-id|ra.prev_page
+id|prev_index
 op_ne
 id|index
 )paren
@@ -2565,6 +2573,10 @@ c_func
 (paren
 id|page
 )paren
+suffix:semicolon
+id|prev_index
+op_assign
+id|index
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Ok, we have the page, and it&squot;s up-to-date, so&n;&t;&t; * now we can copy it to user space...&n;&t;&t; *&n;&t;&t; * The actor routine returns how many bytes were actually used..&n;&t;&t; * NOTE! This may not be the same as how much of a user buffer&n;&t;&t; * we filled up (we may be padding etc), so we can only update&n;&t;&t; * &quot;pos&quot; here (the actor routine has to update the user buffer&n;&t;&t; * pointers and the remaining count).&n;&t;&t; */
 id|ret

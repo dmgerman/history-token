@@ -1812,13 +1812,11 @@ id|TIF_IA32
 op_logical_and
 id|address
 op_ge
-l_int|0xffffe000
+id|VSYSCALL32_BASE
 op_logical_and
 id|address
 OL
-l_int|0xffffe000
-op_plus
-id|PAGE_SIZE
+id|VSYSCALL32_END
 )paren
 (brace
 r_if

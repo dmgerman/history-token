@@ -2734,6 +2734,12 @@ c_func
 l_string|&quot;Disabling LCD controller&bslash;n&quot;
 )paren
 suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|add_wait_queue
 c_func
 (paren
@@ -2742,12 +2748,6 @@ id|fbi-&gt;ctrlr_wait
 comma
 op_amp
 id|wait
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
 id|LCSR

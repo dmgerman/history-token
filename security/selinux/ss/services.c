@@ -27,7 +27,8 @@ id|u32
 id|seqno
 )paren
 suffix:semicolon
-r_extern
+DECL|variable|policydb_loaded_version
+r_int
 r_int
 id|policydb_loaded_version
 suffix:semicolon
@@ -3820,6 +3821,10 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|policydb_loaded_version
+op_assign
+id|policydb.policyvers
+suffix:semicolon
 id|ss_initialized
 op_assign
 l_int|1
@@ -4016,6 +4021,10 @@ id|seqno
 op_assign
 op_increment
 id|latest_granting
+suffix:semicolon
+id|policydb_loaded_version
+op_assign
+id|policydb.policyvers
 suffix:semicolon
 id|POLICY_WRUNLOCK
 suffix:semicolon
