@@ -1919,6 +1919,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_create_pkg_state_and_push&n; *&n; * PARAMETERS:  *Object         - Object to be added to the new state&n; *              Action          - Increment/Decrement&n; *              state_list      - List the state will be added to&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Create a new state and push it&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_ut_create_pkg_state_and_push
 id|acpi_ut_create_pkg_state_and_push
@@ -1987,6 +1988,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_push_generic_state&n; *&n; * PARAMETERS:  list_head           - Head of the state stack&n; *              State               - State object to push&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Push a state object onto a state stack&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_push_generic_state
