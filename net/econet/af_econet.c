@@ -761,6 +761,20 @@ id|port
 comma
 id|cb
 suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
+op_assign
+l_int|0
+suffix:semicolon
+r_struct
+id|ec_cb
+op_star
+id|eb
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#ifdef CONFIG_ECONET_AUNUDP
 r_struct
 id|msghdr
@@ -941,16 +955,6 @@ id|ARPHRD_ECONET
 (brace
 multiline_comment|/* Real hardware Econet.  We&squot;re not worthy etc. */
 macro_line|#ifdef CONFIG_ECONET_NATIVE
-r_struct
-id|ec_cb
-op_star
-id|eb
-suffix:semicolon
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
 r_int
 r_int
 id|proto
