@@ -927,6 +927,11 @@ r_int
 id|ksp
 suffix:semicolon
 multiline_comment|/* Kernel stack pointer */
+DECL|member|ksp_vsid
+r_int
+r_int
+id|ksp_vsid
+suffix:semicolon
 DECL|member|regs
 r_struct
 id|pt_regs

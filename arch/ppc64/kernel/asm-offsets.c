@@ -180,6 +180,20 @@ id|ksp
 )paren
 )paren
 suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|KSP_VSID
+comma
+m_offsetof
+(paren
+r_struct
+id|thread_struct
+comma
+id|ksp_vsid
+)paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ALTIVEC
 id|DEFINE
 c_func
