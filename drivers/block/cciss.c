@@ -408,7 +408,10 @@ mdefine_line|#define READ_AHEAD &t; 1024
 DECL|macro|NR_CMDS
 mdefine_line|#define NR_CMDS&t;&t; 384 /* #commands that can be outstanding */
 DECL|macro|MAX_CTLR
-mdefine_line|#define MAX_CTLR 8
+mdefine_line|#define MAX_CTLR&t;32
+multiline_comment|/* Originally cciss driver only supports 8 major numbers */
+DECL|macro|MAX_CTLR_ORIG
+mdefine_line|#define MAX_CTLR_ORIG &t;8
 DECL|macro|CCISS_DMA_MASK
 mdefine_line|#define CCISS_DMA_MASK&t;0xFFFFFFFF&t;/* 32 bit DMA */
 DECL|variable|hba
@@ -12793,7 +12796,9 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;cciss: This driver supports a maximum&quot;
-l_string|&quot; of 8 controllers.&bslash;n&quot;
+l_string|&quot; of %d controllers.&bslash;n&quot;
+comma
+id|MAX_CTLR
 )paren
 suffix:semicolon
 r_goto
@@ -12918,6 +12923,9 @@ id|i
 suffix:semicolon
 r_int
 id|j
+suffix:semicolon
+r_int
+id|rc
 suffix:semicolon
 id|printk
 c_func
@@ -13067,30 +13075,36 @@ r_goto
 id|clean1
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * register with the major number, or get a dynamic major number&n;&t; * by passing 0 as argument.  This is done for greater than&n;&t; * 8 controller support.&n;&t; */
 r_if
 c_cond
 (paren
-id|register_blkdev
-c_func
-(paren
-id|COMPAQ_CISS_MAJOR
-op_plus
 id|i
-comma
+OL
+id|MAX_CTLR_ORIG
+)paren
 id|hba
 (braket
 id|i
 )braket
 op_member_access_from_pointer
-id|devname
-)paren
-)paren
-(brace
-id|printk
+id|major
+op_assign
+id|MAJOR_NR
+op_plus
+id|i
+suffix:semicolon
+id|rc
+op_assign
+id|register_blkdev
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;cciss: Unable to register device %s&bslash;n&quot;
+id|hba
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|major
 comma
 id|hba
 (braket
@@ -13100,8 +13114,65 @@ op_member_access_from_pointer
 id|devname
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+op_minus
+id|EBUSY
+op_logical_or
+id|rc
+op_eq
+op_minus
+id|EINVAL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;cciss:  Unable to get major number %d for %s &quot;
+l_string|&quot;on hba %d&bslash;n&quot;
+comma
+id|hba
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|major
+comma
+id|hba
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|devname
+comma
+id|i
+)paren
+suffix:semicolon
 r_goto
 id|clean1
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|i
+op_ge
+id|MAX_CTLR_ORIG
+)paren
+id|hba
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|major
+op_assign
+id|rc
 suffix:semicolon
 )brace
 multiline_comment|/* make sure the board interrupts are off */
@@ -13601,9 +13672,12 @@ id|j
 suffix:semicolon
 id|disk-&gt;major
 op_assign
-id|COMPAQ_CISS_MAJOR
-op_plus
+id|hba
+(braket
 id|i
+)braket
+op_member_access_from_pointer
+id|major
 suffix:semicolon
 id|disk-&gt;first_minor
 op_assign
@@ -13808,9 +13882,12 @@ suffix:colon
 id|unregister_blkdev
 c_func
 (paren
-id|COMPAQ_CISS_MAJOR
-op_plus
+id|hba
+(braket
 id|i
+)braket
+op_member_access_from_pointer
+id|major
 comma
 id|hba
 (braket
@@ -14027,9 +14104,12 @@ multiline_comment|/* unhook from SCSI subsystem */
 id|unregister_blkdev
 c_func
 (paren
-id|COMPAQ_CISS_MAJOR
-op_plus
+id|hba
+(braket
 id|i
+)braket
+op_member_access_from_pointer
+id|major
 comma
 id|hba
 (braket
