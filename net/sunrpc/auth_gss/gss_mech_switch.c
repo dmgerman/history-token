@@ -428,6 +428,7 @@ DECL|function|gss_mech_get_by_name
 id|gss_mech_get_by_name
 c_func
 (paren
+r_const
 r_char
 op_star
 id|name
