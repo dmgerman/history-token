@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 multiline_comment|/* We are an ethernet device */
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -888,18 +889,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* this is buggered - we need locking for qos_head */
 DECL|function|atm_mpoa_disp_qos
 r_void
 id|atm_mpoa_disp_qos
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|page
-comma
-id|ssize_t
-op_star
-id|len
+id|m
 )paren
 (brace
 r_int
@@ -922,30 +921,18 @@ id|qos
 op_assign
 id|qos_head
 suffix:semicolon
-op_star
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|page
-op_plus
-op_star
-id|len
+id|m
 comma
 l_string|&quot;QoS entries for shortcuts:&bslash;n&quot;
 )paren
 suffix:semicolon
-op_star
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|page
-op_plus
-op_star
-id|len
+id|m
 comma
 l_string|&quot;IP address&bslash;n  TX:max_pcr pcr     min_pcr max_cdv max_sdu&bslash;n  RX:max_pcr pcr     min_pcr max_cdv max_sdu&bslash;n&quot;
 )paren
@@ -994,16 +981,10 @@ id|ip
 )paren
 )paren
 suffix:semicolon
-op_star
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|page
-op_plus
-op_star
-id|len
+id|m
 comma
 l_string|&quot;%u.%u.%u.%u&bslash;n     %-7d %-7d %-7d %-7d %-7d&bslash;n     %-7d %-7d %-7d %-7d %-7d&bslash;n&quot;
 comma
@@ -1039,8 +1020,6 @@ op_assign
 id|qos-&gt;next
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 DECL|function|find_lec_by_itfnum
 r_static

@@ -18,34 +18,6 @@ suffix:semicolon
 DECL|macro|init_wds
 mdefine_line|#define init_wds 0&t;/* help compiler optimize away dead code */
 multiline_comment|/* General driver definitions */
-DECL|macro|PCIVENDOR_INTERSIL
-mdefine_line|#define PCIVENDOR_INTERSIL                      0x1260UL
-DECL|macro|PCIVENDOR_3COM
-mdefine_line|#define PCIVENDOR_3COM&t;&t;&t;&t;0x10b7UL
-DECL|macro|PCIVENDOR_DLINK
-mdefine_line|#define PCIVENDOR_DLINK&t;&t;&t;&t;0x1186UL
-DECL|macro|PCIVENDOR_I4
-mdefine_line|#define PCIVENDOR_I4&t;&t;&t;&t;0x17cfUL
-DECL|macro|PCIVENDOR_IODATA
-mdefine_line|#define PCIVENDOR_IODATA&t;&t;&t;0x10fcUL
-DECL|macro|PCIVENDOR_NETGEAR
-mdefine_line|#define PCIVENDOR_NETGEAR&t;&t;&t;0x1385UL
-DECL|macro|PCIVENDOR_SMC
-mdefine_line|#define PCIVENDOR_SMC&t;&t;&t;&t;0x10b8UL
-DECL|macro|PCIVENDOR_ACCTON
-mdefine_line|#define PCIVENDOR_ACCTON&t;&t;&t;0x1113UL
-DECL|macro|PCIVENDOR_ATI
-mdefine_line|#define PCIVENDOR_ATI&t;&t;&t;&t;0x1259UL
-DECL|macro|PCIVENDOR_TTL
-mdefine_line|#define PCIVENDOR_TTL&t;&t;&t;&t;0x16a5UL
-DECL|macro|PCIDEVICE_ISL3877
-mdefine_line|#define PCIDEVICE_ISL3877                       0x3877UL
-DECL|macro|PCIDEVICE_ISL3886
-mdefine_line|#define PCIDEVICE_ISL3886                       0x3886UL
-DECL|macro|PCIDEVICE_ISL3890
-mdefine_line|#define PCIDEVICE_ISL3890                       0x3890UL
-DECL|macro|PCIDEVICE_3COM6001
-mdefine_line|#define&t;PCIDEVICE_3COM6001&t;&t;&t;0x6001UL
 DECL|macro|PCIDEVICE_LATENCY_TIMER_MIN
 mdefine_line|#define PCIDEVICE_LATENCY_TIMER_MIN &t;&t;0x40
 DECL|macro|PCIDEVICE_LATENCY_TIMER_VAL

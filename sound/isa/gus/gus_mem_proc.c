@@ -58,7 +58,12 @@ op_star
 id|buf
 comma
 r_int
+r_int
 id|count
+comma
+r_int
+r_int
+id|pos
 )paren
 (brace
 r_int
@@ -96,7 +101,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|file-&gt;f_pos
+id|pos
 op_plus
 id|size
 OG
@@ -109,7 +114,7 @@ r_int
 )paren
 id|priv-&gt;size
 op_minus
-id|file-&gt;f_pos
+id|pos
 suffix:semicolon
 r_if
 c_cond
@@ -132,7 +137,7 @@ id|gus
 comma
 id|buf
 comma
-id|file-&gt;f_pos
+id|pos
 comma
 id|size
 comma
@@ -144,10 +149,6 @@ l_int|0
 )paren
 r_return
 id|err
-suffix:semicolon
-id|file-&gt;f_pos
-op_add_assign
-id|size
 suffix:semicolon
 r_return
 id|size

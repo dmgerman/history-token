@@ -330,21 +330,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_amp
-id|file-&gt;f_pos
-op_ne
-id|off
-)paren
-multiline_comment|/* fs error check */
-r_return
-(paren
-op_minus
-id|ESPIPE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 op_logical_neg
 id|count
 )paren
@@ -940,19 +925,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|off
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-multiline_comment|/* fs error check */
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|file-&gt;f_mode
 op_amp
 id|FMODE_READ
@@ -1484,8 +1456,12 @@ c_func
 )paren
 suffix:semicolon
 r_return
+id|nonseekable_open
+c_func
 (paren
-l_int|0
+id|ino
+comma
+id|filep
 )paren
 suffix:semicolon
 )brace

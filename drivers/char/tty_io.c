@@ -1258,19 +1258,6 @@ op_star
 id|ppos
 )paren
 (brace
-multiline_comment|/* Can&squot;t seek (pread) on ttys.  */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1300,19 +1287,6 @@ op_star
 id|ppos
 )paren
 (brace
-multiline_comment|/* Can&squot;t seek (pwrite) on ttys.  */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -2590,19 +2564,6 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
-multiline_comment|/* Can&squot;t seek (pread) on ttys.  */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 id|tty
 op_assign
 (paren
@@ -2997,19 +2958,6 @@ id|inode
 op_assign
 id|file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
-multiline_comment|/* Can&squot;t seek (pwrite) on ttys.  */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 id|tty
 op_assign
 (paren
@@ -3163,19 +3111,6 @@ id|p
 (brace
 id|ssize_t
 id|res
-suffix:semicolon
-multiline_comment|/* Can&squot;t seek (pwrite) on ttys.  */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
 suffix:semicolon
 id|res
 op_assign
@@ -5341,6 +5276,14 @@ r_int
 id|saved_flags
 op_assign
 id|filp-&gt;f_flags
+suffix:semicolon
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|filp
+)paren
 suffix:semicolon
 id|retry_open
 suffix:colon

@@ -2185,18 +2185,6 @@ comma
 id|current
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -3503,7 +3491,13 @@ l_int|0x0404
 suffix:semicolon
 multiline_comment|/* attenuation */
 r_return
-l_int|0
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|file
+)paren
 suffix:semicolon
 )brace
 DECL|function|ad1889_release

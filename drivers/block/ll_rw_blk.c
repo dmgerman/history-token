@@ -1727,6 +1727,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|blk_queue_resize_tags
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|blk_queue_resize_tags
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * blk_queue_end_tag - end tag operations for a request&n; * @q:  the request queue for the device&n; * @rq: the request that has completed&n; *&n; *  Description:&n; *    Typically called when end_that_request_first() returns 0, meaning&n; *    all transfers have been done for a request. It&squot;s important to call&n; *    this function before end_that_request_last(), as that will put the&n; *    request back on the free list thus corrupting the internal tag list.&n; *&n; *  Notes:&n; *   queue lock must be held.&n; **/
 DECL|function|blk_queue_end_tag
 r_void
@@ -9701,6 +9708,13 @@ id|work
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kblockd_schedule_work
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kblockd_schedule_work
+)paren
+suffix:semicolon
 DECL|function|kblockd_flush
 r_void
 id|kblockd_flush

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MTD driver for the 28F160F3 Flash Memory (non-CFI) on LART.&n; *&n; * $Id: lart.c,v 1.6 2004/07/14 17:21:38 dwmw2 Exp $&n; *&n; * Author: Abraham vd Merwe &lt;abraham@2d3d.co.za&gt;&n; *&n; * Copyright (c) 2001, 2d3D, Inc.&n; *&n; * This code is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * References:&n; *&n; *    [1] 3 Volt Fast Boot Block Flash Memory&quot; Intel Datasheet&n; *           - Order Number: 290644-005&n; *           - January 2000&n; *&n; *    [2] MTD internal API documentation&n; *           - http://www.linux-mtd.infradead.org/tech/&n; *&n; * Limitations:&n; *&n; *    Even though this driver is written for 3 Volt Fast Boot&n; *    Block Flash Memory, it is rather specific to LART. With&n; *    Minor modifications, notably the without data/address line&n; *    mangling and different bus settings, etc. it should be&n; *    trivial to adapt to other platforms.&n; *&n; *    If somebody would sponsor me a different board, I&squot;ll&n; *    adapt the driver (:&n; */
+multiline_comment|/*&n; * MTD driver for the 28F160F3 Flash Memory (non-CFI) on LART.&n; *&n; * $Id: lart.c,v 1.7 2004/08/09 13:19:44 dwmw2 Exp $&n; *&n; * Author: Abraham vd Merwe &lt;abraham@2d3d.co.za&gt;&n; *&n; * Copyright (c) 2001, 2d3D, Inc.&n; *&n; * This code is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * References:&n; *&n; *    [1] 3 Volt Fast Boot Block Flash Memory&quot; Intel Datasheet&n; *           - Order Number: 290644-005&n; *           - January 2000&n; *&n; *    [2] MTD internal API documentation&n; *           - http://www.linux-mtd.infradead.org/tech/&n; *&n; * Limitations:&n; *&n; *    Even though this driver is written for 3 Volt Fast Boot&n; *    Block Flash Memory, it is rather specific to LART. With&n; *    Minor modifications, notably the without data/address line&n; *    mangling and different bus settings, etc. it should be&n; *    trivial to adapt to other platforms.&n; *&n; *    If somebody would sponsor me a different board, I&squot;ll&n; *    adapt the driver (:&n; */
 multiline_comment|/* debugging */
 singleline_comment|//#define LART_DEBUG
 multiline_comment|/* partition support */
@@ -728,12 +728,8 @@ id|instr-&gt;state
 op_assign
 id|MTD_ERASE_DONE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|instr-&gt;callback
-)paren
-id|instr-&gt;callback
+id|mtd_erase_callback
+c_func
 (paren
 id|instr
 )paren

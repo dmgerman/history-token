@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mtdchar.c,v 1.62 2004/07/14 13:20:42 dwmw2 Exp $&n; *&n; * Character-device access to raw MTD devices.&n; *&n; */
+multiline_comment|/*&n; * $Id: mtdchar.c,v 1.64 2004/08/09 13:59:46 dwmw2 Exp $&n; *&n; * Character-device access to raw MTD devices.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -991,10 +991,10 @@ suffix:semicolon
 )brace
 multiline_comment|/* mtd_write */
 multiline_comment|/*======================================================================&n;&n;    IOCTL calls for getting device parameters.&n;&n;======================================================================*/
-DECL|function|mtd_erase_callback
+DECL|function|mtdchar_erase_callback
 r_static
 r_void
-id|mtd_erase_callback
+id|mtdchar_erase_callback
 (paren
 r_struct
 id|erase_info
@@ -1394,7 +1394,7 @@ id|mtd
 suffix:semicolon
 id|erase-&gt;callback
 op_assign
-id|mtd_erase_callback
+id|mtdchar_erase_callback
 suffix:semicolon
 id|erase-&gt;priv
 op_assign
@@ -2147,22 +2147,6 @@ suffix:semicolon
 )brace
 r_default
 suffix:colon
-id|DEBUG
-c_func
-(paren
-id|MTD_DEBUG_LEVEL0
-comma
-l_string|&quot;Invalid ioctl %x (MEMGETINFO = %lx)&bslash;n&quot;
-comma
-id|cmd
-comma
-(paren
-r_int
-r_int
-)paren
-id|MEMGETINFO
-)paren
-suffix:semicolon
 id|ret
 op_assign
 op_minus

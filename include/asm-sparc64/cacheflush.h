@@ -7,22 +7,8 @@ multiline_comment|/* Cache flush operations. */
 multiline_comment|/* These are the same regardless of whether this is an SMP kernel or not. */
 DECL|macro|flush_cache_mm
 mdefine_line|#define flush_cache_mm(__mm) &bslash;&n;&t;do { if ((__mm) == current-&gt;mm) flushw_user(); } while(0)
-r_extern
-r_void
-id|flush_cache_range
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
+DECL|macro|flush_cache_range
+mdefine_line|#define flush_cache_range(vma, start, end) &bslash;&n;&t;flush_cache_mm((vma)-&gt;vm_mm)
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma, page) &bslash;&n;&t;flush_cache_mm((vma)-&gt;vm_mm)
 multiline_comment|/* &n; * On spitfire, the icache doesn&squot;t snoop local stores and we don&squot;t&n; * use block commit stores (which invalidate icache lines) during&n; * module load, so we need this.&n; */

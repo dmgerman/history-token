@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *&n; * linux/drivers/s390/scsi/zfcp_fsf.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt;&n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_FSF_C_REVISION
-mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.53 $&quot;
+mdefine_line|#define ZFCP_FSF_C_REVISION &quot;$Revision: 1.55 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_int
@@ -672,16 +672,14 @@ id|adapter
 )paren
 suffix:semicolon
 multiline_comment|/* wait for woken intiators to clean up their requests */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|jiffies_to_msecs
 c_func
 (paren
 id|ZFCP_FSFREQ_CLEANUP_TIMEOUT
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -9551,6 +9549,12 @@ r_int
 r_int
 id|lock_flags
 suffix:semicolon
+r_volatile
+r_struct
+id|qdio_buffer_element
+op_star
+id|sbale
+suffix:semicolon
 multiline_comment|/* setup new FSF request */
 id|retval
 op_assign
@@ -9601,6 +9605,36 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|sbale
+op_assign
+id|zfcp_qdio_sbale_req
+c_func
+(paren
+id|erp_action-&gt;fsf_req
+comma
+id|erp_action-&gt;fsf_req-&gt;sbal_curr
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|sbale
+(braket
+l_int|0
+)braket
+dot
+id|flags
+op_or_assign
+id|SBAL_FLAGS0_TYPE_READ
+suffix:semicolon
+id|sbale
+(braket
+l_int|1
+)braket
+dot
+id|flags
+op_or_assign
+id|SBAL_FLAGS_LAST_ENTRY
+suffix:semicolon
 multiline_comment|/* mark port as being closed */
 id|atomic_set_mask
 c_func

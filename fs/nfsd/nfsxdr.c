@@ -1270,6 +1270,7 @@ id|args
 )paren
 (brace
 r_int
+r_int
 id|len
 suffix:semicolon
 r_int
@@ -1389,12 +1390,17 @@ id|len
 suffix:colon
 id|PAGE_SIZE
 suffix:semicolon
-id|v
-op_increment
-suffix:semicolon
 id|len
 op_sub_assign
-id|PAGE_SIZE
+id|args-&gt;vec
+(braket
+id|v
+)braket
+dot
+id|iov_len
+suffix:semicolon
+id|v
+op_increment
 suffix:semicolon
 )brace
 id|args-&gt;vlen
@@ -1431,6 +1437,7 @@ op_star
 id|args
 )paren
 (brace
+r_int
 r_int
 id|len
 suffix:semicolon

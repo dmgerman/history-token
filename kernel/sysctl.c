@@ -300,6 +300,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 suffix:semicolon
 DECL|variable|root_table
@@ -5306,7 +5310,6 @@ id|res
 op_assign
 id|count
 suffix:semicolon
-multiline_comment|/*&n;&t; * FIXME: we need to pass on ppos to the handler.&n;&t; */
 id|error
 op_assign
 (paren
@@ -5324,6 +5327,8 @@ id|buf
 comma
 op_amp
 id|res
+comma
+id|ppos
 )paren
 suffix:semicolon
 r_if
@@ -5495,6 +5500,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_int
@@ -5522,7 +5531,8 @@ op_star
 id|lenp
 op_logical_or
 (paren
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_logical_and
 op_logical_neg
 id|write
@@ -5639,7 +5649,8 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 op_star
 id|lenp
@@ -5747,7 +5758,8 @@ id|lenp
 op_assign
 id|len
 suffix:semicolon
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 id|len
 suffix:semicolon
@@ -5783,6 +5795,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_int
@@ -5816,6 +5832,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 )paren
 suffix:semicolon
 id|up_read
@@ -5849,6 +5867,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 )paren
 suffix:semicolon
 id|up_write
@@ -5993,6 +6013,10 @@ r_int
 op_star
 id|lenp
 comma
+id|loff_t
+op_star
+id|ppos
+comma
 r_int
 (paren
 op_star
@@ -6080,7 +6104,8 @@ op_star
 id|lenp
 op_logical_or
 (paren
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_logical_and
 op_logical_neg
 id|write
@@ -6579,7 +6604,8 @@ id|lenp
 op_sub_assign
 id|left
 suffix:semicolon
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 op_star
 id|lenp
@@ -6616,6 +6642,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -6631,6 +6661,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 comma
 l_int|NULL
 comma
@@ -6864,6 +6896,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_int
@@ -6911,6 +6947,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 comma
 id|do_proc_dointvec_bset_conv
 comma
@@ -7101,6 +7139,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_struct
@@ -7142,6 +7184,8 @@ id|buffer
 comma
 id|lenp
 comma
+id|ppos
+comma
 id|do_proc_dointvec_minmax_conv
 comma
 op_amp
@@ -7175,6 +7219,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 comma
 r_int
 r_int
@@ -7244,7 +7292,8 @@ op_star
 id|lenp
 op_logical_or
 (paren
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_logical_and
 op_logical_neg
 id|write
@@ -7751,7 +7800,8 @@ id|lenp
 op_sub_assign
 id|left
 suffix:semicolon
-id|filp-&gt;f_pos
+op_star
+id|ppos
 op_add_assign
 op_star
 id|lenp
@@ -7788,6 +7838,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -7803,6 +7857,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 comma
 l_int|1l
 comma
@@ -7836,6 +7892,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -7851,6 +7911,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 comma
 id|HZ
 comma
@@ -8122,6 +8184,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -8137,6 +8203,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 comma
 id|do_proc_dointvec_jiffies_conv
 comma
@@ -8170,6 +8238,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -8185,6 +8257,8 @@ comma
 id|buffer
 comma
 id|lenp
+comma
+id|ppos
 comma
 id|do_proc_dointvec_userhz_jiffies_conv
 comma
@@ -8218,6 +8292,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -8251,6 +8329,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -8283,6 +8365,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -8315,6 +8401,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -8347,6 +8437,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -8379,6 +8473,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -8411,6 +8509,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -8443,6 +8545,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -8475,6 +8581,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -9323,6 +9433,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -9355,6 +9469,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -9387,6 +9505,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -9419,6 +9541,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -9451,6 +9577,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -9483,6 +9613,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -9515,6 +9649,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return
@@ -9547,6 +9685,10 @@ comma
 r_int
 op_star
 id|lenp
+comma
+id|loff_t
+op_star
+id|ppos
 )paren
 (brace
 r_return

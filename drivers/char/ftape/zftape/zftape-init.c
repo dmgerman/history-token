@@ -302,6 +302,14 @@ c_func
 id|ft_t_flow
 )paren
 suffix:semicolon
+id|nonseekable_open
+c_func
+(paren
+id|ino
+comma
+id|filep
+)paren
+suffix:semicolon
 id|TRACE
 c_func
 (paren
