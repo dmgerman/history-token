@@ -560,6 +560,7 @@ r_int
 id|ipv6_addr_type
 c_func
 (paren
+r_const
 r_struct
 id|in6_addr
 op_star
@@ -573,6 +574,7 @@ r_int
 id|ipv6_addr_scope
 c_func
 (paren
+r_const
 r_struct
 id|in6_addr
 op_star
@@ -596,11 +598,13 @@ r_int
 id|ipv6_addr_cmp
 c_func
 (paren
+r_const
 r_struct
 id|in6_addr
 op_star
 id|a1
 comma
+r_const
 r_struct
 id|in6_addr
 op_star
@@ -612,12 +616,14 @@ id|memcmp
 c_func
 (paren
 (paren
+r_const
 r_void
 op_star
 )paren
 id|a1
 comma
 (paren
+r_const
 r_void
 op_star
 )paren
@@ -643,6 +649,7 @@ id|in6_addr
 op_star
 id|a1
 comma
+r_const
 r_struct
 id|in6_addr
 op_star
@@ -659,6 +666,7 @@ op_star
 id|a1
 comma
 (paren
+r_const
 r_void
 op_star
 )paren
@@ -735,6 +743,7 @@ r_int
 id|ipv6_addr_any
 c_func
 (paren
+r_const
 r_struct
 id|in6_addr
 op_star

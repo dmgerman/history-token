@@ -430,6 +430,7 @@ r_int
 id|ipv6_addr_type
 c_func
 (paren
+r_const
 r_struct
 id|in6_addr
 op_star
@@ -1971,6 +1972,7 @@ id|inet6_dev
 op_star
 id|idev
 comma
+r_const
 r_struct
 id|in6_addr
 op_star
