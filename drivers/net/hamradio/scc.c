@@ -6672,7 +6672,7 @@ c_cond
 id|request_region
 c_func
 (paren
-id|scc-&gt;ctrl
+id|hwcfg.ctrl_a
 comma
 l_int|1
 comma
@@ -6753,7 +6753,7 @@ suffix:semicolon
 id|release_region
 c_func
 (paren
-id|scc-&gt;ctrl
+id|hwcfg.ctrl_a
 comma
 l_int|1
 )paren

@@ -680,7 +680,7 @@ c_cond
 (paren
 id|qh-&gt;hw_info2
 op_amp
-id|cpu_to_le32
+id|__constant_cpu_to_le32
 (paren
 l_int|0x00ff
 )paren
@@ -818,7 +818,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Process and free completed qtds for a qh, returning URBs to drivers.&n; * Chases up to qh-&gt;hw_current.  Returns number of completions called,&n; * indicating how much &quot;real&quot; work we did.&n; */
 DECL|macro|HALT_BIT
-mdefine_line|#define HALT_BIT cpu_to_le32(QTD_STS_HALT)
+mdefine_line|#define HALT_BIT __constant_cpu_to_le32(QTD_STS_HALT)
 r_static
 r_int
 DECL|function|qh_completions
@@ -1380,9 +1380,13 @@ r_return
 id|count
 suffix:semicolon
 )brace
-DECL|macro|HALT_BIT
-macro_line|#undef HALT_BIT
 multiline_comment|/*-------------------------------------------------------------------------*/
+singleline_comment|// high bandwidth multiplier, as encoded in highspeed endpoint descriptors
+DECL|macro|hb_mult
+mdefine_line|#define hb_mult(wMaxPacketSize) (1 + (((wMaxPacketSize) &gt;&gt; 11) &amp; 0x03))
+singleline_comment|// ... and packet size, for any kind of endpoint descriptor
+DECL|macro|max_packet
+mdefine_line|#define max_packet(wMaxPacketSize) ((wMaxPacketSize) &amp; 0x07ff)
 multiline_comment|/*&n; * reverse of qh_urb_transaction:  free a list of TDs.&n; * used for cleanup after errors, before HC sees an URB&squot;s TDs.&n; */
 DECL|function|qtd_list_free
 r_static
@@ -1686,7 +1690,11 @@ suffix:semicolon
 multiline_comment|/* else it&squot;s already initted to &quot;out&quot; pid (0 &lt;&lt; 8) */
 id|maxpacket
 op_assign
+id|max_packet
+c_func
+(paren
 id|usb_maxpacket
+c_func
 (paren
 id|urb-&gt;dev
 comma
@@ -1695,8 +1703,7 @@ comma
 op_logical_neg
 id|is_input
 )paren
-op_amp
-l_int|0x03ff
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * buffer gets wrapped in one or more qtds;&n;&t; * last one may be &quot;short&quot; (including zero len)&n;&t; * and may serve as a control status ack&n;&t; */
 r_for
@@ -2086,12 +2093,6 @@ singleline_comment|// when each interface/altsetting is established.  Unlink
 singleline_comment|// any previous qh and cancel its urbs first; endpoints are
 singleline_comment|// implicitly reset then (data toggle too).
 singleline_comment|// That&squot;d mean updating how usbcore talks to HCDs. (2.5?)
-singleline_comment|// high bandwidth multiplier, as encoded in highspeed endpoint descriptors
-DECL|macro|hb_mult
-mdefine_line|#define hb_mult(wMaxPacketSize) (1 + (((wMaxPacketSize) &gt;&gt; 11) &amp; 0x03))
-singleline_comment|// ... and packet size, for any kind of endpoint descriptor
-DECL|macro|max_packet
-mdefine_line|#define max_packet(wMaxPacketSize) ((wMaxPacketSize) &amp; 0x03ff)
 multiline_comment|/*&n; * Each QH holds a qtd list; a QH is used for everything except iso.&n; *&n; * For interrupt urbs, the scheduler must set the microframe scheduling&n; * mask(s) each time the QH gets scheduled.  For highspeed, that&squot;s&n; * just one microframe in the s-mask.  For split interrupt transactions&n; * there are additional complications: c-mask, maybe FSTNs.&n; */
 r_static
 r_struct
@@ -2737,10 +2738,7 @@ multiline_comment|/* posted write need not be known to HC yet ... */
 id|qh-&gt;hw_token
 op_and_assign
 op_complement
-id|__constant_cpu_to_le32
-(paren
-id|QTD_STS_HALT
-)paren
+id|HALT_BIT
 suffix:semicolon
 multiline_comment|/* splice right after start */
 id|qh-&gt;qh_next
@@ -2770,6 +2768,8 @@ suffix:semicolon
 multiline_comment|/* qtd completions reported later by interrupt */
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
+DECL|macro|QH_ADDR_MASK
+mdefine_line|#define&t;QH_ADDR_MASK&t;__constant_le32_to_cpu(0x7f)
 multiline_comment|/*&n; * For control/bulk/interrupt, return QH with these TDs appended.&n; * Allocates and initializes the QH if necessary.&n; * Returns null if it can&squot;t allocate a QH it needs to.&n; * If the QH has TDs (urbs) already, that&squot;s great.&n; */
 DECL|function|qh_append_tds
 r_static
@@ -2908,11 +2908,10 @@ multiline_comment|/* set_address changes the address */
 r_if
 c_cond
 (paren
-id|le32_to_cpu
 (paren
 id|qh-&gt;hw_info1
 op_amp
-l_int|0x7f
+id|QH_ADDR_MASK
 )paren
 op_eq
 l_int|0
@@ -2936,7 +2935,7 @@ op_logical_neg
 (paren
 id|qh-&gt;hw_info1
 op_amp
-id|cpu_to_le32
+id|__constant_cpu_to_le32
 (paren
 l_int|0x3
 op_lshift
@@ -3014,12 +3013,8 @@ l_int|0
 )paren
 id|qh-&gt;hw_info1
 op_and_assign
-id|cpu_to_le32
-c_func
-(paren
 op_complement
-l_int|0x7f
-)paren
+id|QH_ADDR_MASK
 suffix:semicolon
 )brace
 multiline_comment|/* usb_clear_halt() means qh data toggle gets reset */
@@ -3151,10 +3146,7 @@ id|qtd-&gt;hw_token
 suffix:semicolon
 id|qtd-&gt;hw_token
 op_assign
-id|cpu_to_le32
-(paren
-id|QTD_STS_HALT
-)paren
+id|HALT_BIT
 suffix:semicolon
 id|wmb
 (paren

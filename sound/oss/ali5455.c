@@ -15962,7 +15962,7 @@ multiline_comment|/* AC97 codec initialisation. */
 DECL|function|ali_ac97_init
 r_static
 r_int
-id|__init
+id|__devinit
 id|ali_ac97_init
 c_func
 (paren
@@ -16330,7 +16330,7 @@ suffix:semicolon
 DECL|function|ali_configure_clocking
 r_static
 r_void
-id|__init
+id|__devinit
 id|ali_configure_clocking
 c_func
 (paren
@@ -16673,7 +16673,7 @@ multiline_comment|/* install the driver, we do not allocate hardware channel nor
 DECL|function|ali_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|ali_probe
 c_func
 (paren

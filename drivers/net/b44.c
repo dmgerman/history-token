@@ -20,9 +20,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;b44&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;0.9&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;0.91&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;Jul 14, 2003&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;Oct 3, 2003&quot;
 DECL|macro|B44_DEF_MSG_ENABLE
 mdefine_line|#define B44_DEF_MSG_ENABLE&t;  &bslash;&n;&t;(NETIF_MSG_DRV&t;&t;| &bslash;&n;&t; NETIF_MSG_PROBE&t;| &bslash;&n;&t; NETIF_MSG_LINK&t;&t;| &bslash;&n;&t; NETIF_MSG_TIMER&t;| &bslash;&n;&t; NETIF_MSG_IFDOWN&t;| &bslash;&n;&t; NETIF_MSG_IFUP&t;&t;| &bslash;&n;&t; NETIF_MSG_RX_ERR&t;| &bslash;&n;&t; NETIF_MSG_TX_ERR)
 multiline_comment|/* length of time before we decide the hardware is borked,&n; * and dev-&gt;tx_timeout() should be called to fix the problem&n; */
@@ -114,16 +114,6 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* -1 == use B44_DEF_MSG_ENABLE as value */
-macro_line|#ifndef PCI_DEVICE_ID_BCM4401
-DECL|macro|PCI_DEVICE_ID_BCM4401
-mdefine_line|#define PCI_DEVICE_ID_BCM4401      0x4401
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
-DECL|macro|IRQ_RETVAL
-mdefine_line|#define IRQ_RETVAL(x) 
-DECL|macro|irqreturn_t
-mdefine_line|#define irqreturn_t void
-macro_line|#endif
 DECL|variable|b44_pci_tbl
 r_static
 r_struct
@@ -3975,6 +3965,12 @@ c_func
 (paren
 op_amp
 id|bp-&gt;lock
+)paren
+suffix:semicolon
+id|b44_enable_ints
+c_func
+(paren
+id|bp
 )paren
 suffix:semicolon
 id|netif_wake_queue

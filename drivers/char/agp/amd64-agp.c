@@ -1065,7 +1065,7 @@ multiline_comment|/* Some basic sanity checks for the aperture. */
 DECL|function|aperture_valid
 r_static
 r_int
-id|__init
+id|__devinit
 id|aperture_valid
 c_func
 (paren
@@ -1265,7 +1265,7 @@ suffix:semicolon
 multiline_comment|/* &n; * W*s centric BIOS sometimes only set up the aperture in the AGP&n; * bridge, not the northbridge. On AMD64 this is handled early &n; * in aperture.c, but when GART_IOMMU is not enabled or we run&n; * on a 32bit kernel this needs to be redone. &n; * Unfortunately it is impossible to fix the aperture here because it&squot;s too late&n; * to allocate that much memory. But at least error out cleanly instead of&n; * crashing.&n; */
 DECL|function|fix_northbridge
 r_static
-id|__init
+id|__devinit
 r_int
 id|fix_northbridge
 c_func
@@ -1540,7 +1540,7 @@ suffix:semicolon
 )brace
 DECL|function|cache_nbs
 r_static
-id|__init
+id|__devinit
 r_int
 id|cache_nbs
 (paren
@@ -1675,7 +1675,7 @@ suffix:semicolon
 DECL|function|agp_amd64_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|agp_amd64_probe
 c_func
 (paren

@@ -11504,8 +11504,6 @@ id|file-&gt;private_data
 op_assign
 id|s
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|CS_DBGOUT
 c_func
 (paren
@@ -11561,8 +11559,6 @@ c_func
 (paren
 id|s
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -11621,6 +11617,11 @@ id|file_operations
 id|cs4281_mixer_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|llseek
 op_assign
@@ -16705,8 +16706,6 @@ op_amp
 id|s-&gt;open_wait_dac
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -16766,8 +16765,6 @@ c_func
 op_amp
 id|s-&gt;open_wait_adc
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 r_return
@@ -17189,8 +17186,6 @@ op_amp
 id|s-&gt;open_sem_adc
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -17294,8 +17289,6 @@ op_amp
 id|s-&gt;open_sem_dac
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -17377,6 +17370,11 @@ id|file_operations
 id|cs4281_audio_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|llseek
 op_assign
@@ -19023,8 +19021,6 @@ op_amp
 id|s-&gt;open_sem
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -19320,8 +19316,6 @@ op_amp
 id|s-&gt;open_wait
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -19337,6 +19331,11 @@ id|file_operations
 id|cs4281_midi_fops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|llseek
 op_assign

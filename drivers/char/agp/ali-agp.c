@@ -1108,14 +1108,14 @@ id|m1541_destroy_page
 comma
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|agp_device_ids
 id|ali_agp_device_ids
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace
@@ -1244,7 +1244,7 @@ suffix:semicolon
 DECL|function|agp_ali_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|agp_ali_probe
 c_func
 (paren
