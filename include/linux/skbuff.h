@@ -4,6 +4,7 @@ DECL|macro|_LINUX_SKBUFF_H
 mdefine_line|#define _LINUX_SKBUFF_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -3177,8 +3178,9 @@ id|size
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;skb_linearize - convert paged skb to linear one&n; *&t;@skb: buffer to linarize&n; *&t;@gfp: allocation mode&n; *&n; *&t;If there is no free memory -ENOMEM is returned, otherwise zero&n; *&t;is returned and the old skb data released.&n; */
+r_extern
 r_int
-id|skb_linearize
+id|__skb_linearize
 c_func
 (paren
 r_struct
@@ -3190,6 +3192,33 @@ r_int
 id|gfp
 )paren
 suffix:semicolon
+DECL|function|skb_linearize
+r_static
+r_inline
+r_int
+id|__deprecated
+id|skb_linearize
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_int
+id|gfp
+)paren
+(brace
+r_return
+id|__skb_linearize
+c_func
+(paren
+id|skb
+comma
+id|gfp
+)paren
+suffix:semicolon
+)brace
 DECL|function|kmap_skb_frag
 r_static
 r_inline

@@ -439,11 +439,11 @@ c_func
 id|sock_rmalloc
 )paren
 suffix:semicolon
-DECL|variable|skb_linearize
+DECL|variable|__skb_linearize
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|skb_linearize
+id|__skb_linearize
 )paren
 suffix:semicolon
 DECL|variable|skb_checksum
