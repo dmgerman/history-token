@@ -5002,6 +5002,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|blk_fs_request
+c_func
+(paren
+id|rq
+)paren
+op_logical_or
+op_logical_neg
 id|rq-&gt;rq_disk
 )paren
 r_return
