@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/fddidevice.h&gt;
 macro_line|#include &lt;linux/trdevice.h&gt;
 macro_line|#include &lt;linux/fcdevice.h&gt;
@@ -447,13 +446,6 @@ id|EXPORT_PER_CPU_SYMBOL
 c_func
 (paren
 id|softnet_data
-)paren
-suffix:semicolon
-DECL|variable|linkwatch_fire_event
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|linkwatch_fire_event
 )paren
 suffix:semicolon
 macro_line|#endif  /* CONFIG_NET */
