@@ -853,6 +853,7 @@ suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_enter_sleep_state_s4bios&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform a S4 bios request.&n; *              THIS FUNCTION MUST BE CALLED WITH INTERRUPTS DISABLED&n; *&n; ******************************************************************************/
 id|acpi_status
+id|asmlinkage
 DECL|function|acpi_enter_sleep_state_s4bios
 id|acpi_enter_sleep_state_s4bios
 (paren

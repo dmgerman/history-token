@@ -143,8 +143,22 @@ id|semaphore
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|INFINITE_CONCURRENCY
-mdefine_line|#define INFINITE_CONCURRENCY        0xFF
+DECL|macro|ACPI_INFINITE_CONCURRENCY
+mdefine_line|#define ACPI_INFINITE_CONCURRENCY   0xFF
+r_typedef
+DECL|typedef|ACPI_INTERNAL_METHOD
+id|acpi_status
+(paren
+op_star
+id|ACPI_INTERNAL_METHOD
+)paren
+(paren
+r_struct
+id|acpi_walk_state
+op_star
+id|walk_state
+)paren
+suffix:semicolon
 DECL|struct|acpi_object_method
 r_struct
 id|acpi_object_method
@@ -171,6 +185,10 @@ DECL|member|aml_start
 id|u8
 op_star
 id|aml_start
+suffix:semicolon
+DECL|member|implementation
+id|ACPI_INTERNAL_METHOD
+id|implementation
 suffix:semicolon
 DECL|member|concurrency
 id|u8

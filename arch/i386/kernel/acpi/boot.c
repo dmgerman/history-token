@@ -293,7 +293,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PCI_MMCONFIG */
+macro_line|#else
+DECL|macro|acpi_parse_mcfg
+mdefine_line|#define&t;acpi_parse_mcfg NULL
+macro_line|#endif /* !CONFIG_PCI_MMCONFIG */
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 r_static
 r_int
@@ -1301,6 +1304,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|acpi_parse_hpet
+mdefine_line|#define&t;acpi_parse_hpet&t;NULL
 macro_line|#endif
 multiline_comment|/* detect the location of the ACPI PM Timer */
 macro_line|#ifdef CONFIG_X86_PM_TIMER
@@ -1416,6 +1422,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|acpi_parse_fadt
+mdefine_line|#define&t;acpi_parse_fadt&t;NULL
 macro_line|#endif
 r_int
 r_int
@@ -1983,9 +1992,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-(paren
-r_void
-)paren
 id|acpi_table_parse
 c_func
 (paren
@@ -2030,7 +2036,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_PM_TIMER
 id|acpi_table_parse
 c_func
 (paren
@@ -2039,11 +2044,6 @@ comma
 id|acpi_parse_fadt
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_HPET_TIMER
-(paren
-r_void
-)paren
 id|acpi_table_parse
 c_func
 (paren
@@ -2052,10 +2052,6 @@ comma
 id|acpi_parse_hpet
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_PCI_MMCONFIG
-id|error
-op_assign
 id|acpi_table_parse
 c_func
 (paren
@@ -2064,22 +2060,6 @@ comma
 id|acpi_parse_mcfg
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PREFIX
-l_string|&quot;Error %d parsing MCFG&bslash;n&quot;
-comma
-id|error
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
