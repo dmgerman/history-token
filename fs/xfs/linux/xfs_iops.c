@@ -1018,10 +1018,7 @@ id|VLNK
 suffix:semicolon
 id|va.va_mode
 op_assign
-l_int|0777
-op_amp
-op_complement
-id|current-&gt;fs-&gt;umask
+id|S_IRWXUGO
 suffix:semicolon
 id|va.va_mask
 op_assign
