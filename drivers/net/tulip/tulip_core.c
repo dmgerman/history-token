@@ -6427,7 +6427,28 @@ op_ne
 l_int|0
 )paren
 (brace
-multiline_comment|/* Avoid a chip errata by prefixing a dummy entry. */
+multiline_comment|/* Avoid a chip errata by prefixing a dummy entry. Don&squot;t do&n;&t;&t;&t;&t;   this on the ULI526X as it triggers a different problem */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|tp-&gt;chip_id
+op_eq
+id|ULI526X
+op_logical_and
+(paren
+id|tp-&gt;revision
+op_assign
+l_int|0x40
+op_logical_or
+id|tp-&gt;revision
+op_eq
+l_int|0x50
+)paren
+)paren
+)paren
+(brace
 id|tp-&gt;tx_buffers
 (braket
 id|entry
@@ -6491,6 +6512,7 @@ op_increment
 op_mod
 id|TX_RING_SIZE
 suffix:semicolon
+)brace
 )brace
 id|tp-&gt;tx_buffers
 (braket

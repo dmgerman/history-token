@@ -391,7 +391,7 @@ op_lshift
 l_int|16
 )paren
 op_or
-l_int|0x80000000
+l_int|0x08000000
 suffix:semicolon
 id|iowrite32
 c_func
@@ -931,7 +931,7 @@ op_lshift
 l_int|16
 )paren
 op_or
-l_int|0x40000000
+l_int|0x04000000
 op_or
 (paren
 id|val
