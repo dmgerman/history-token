@@ -1769,6 +1769,12 @@ id|sk-&gt;sk_protocol
 comma
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|inet-&gt;hdrincl
+)paren
 id|raw_probe_proto_opt
 c_func
 (paren
