@@ -10944,7 +10944,7 @@ id|psrch_inf-&gt;unicode
 op_assign
 id|FALSE
 suffix:semicolon
-id|psrch_inf-&gt;start_of_network_buffer
+id|psrch_inf-&gt;ntwrk_buf_start
 op_assign
 (paren
 r_char
@@ -10952,7 +10952,7 @@ op_star
 )paren
 id|pSMBr
 suffix:semicolon
-id|psrch_inf-&gt;start_of_search_entries
+id|psrch_inf-&gt;srch_entries_start
 op_assign
 (paren
 r_char
@@ -11475,14 +11475,14 @@ suffix:semicolon
 id|cifs_buf_release
 c_func
 (paren
-id|psrch_inf-&gt;start_of_network_buffer
+id|psrch_inf-&gt;ntwrk_buf_start
 )paren
 suffix:semicolon
-id|psrch_inf-&gt;start_of_search_entries
+id|psrch_inf-&gt;srch_entries_start
 op_assign
 id|response_data
 suffix:semicolon
-id|psrch_inf-&gt;start_of_network_buffer
+id|psrch_inf-&gt;ntwrk_buf_start
 op_assign
 (paren
 r_char
