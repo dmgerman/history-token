@@ -1206,8 +1206,6 @@ multiline_comment|/* buffer to check&t;&t;*/
 multiline_comment|/* Delayed Write Buffer Routines */
 DECL|macro|PBDF_WAIT
 mdefine_line|#define PBDF_WAIT    0x01
-DECL|macro|PBDF_TRYLOCK
-mdefine_line|#define PBDF_TRYLOCK 0x02
 r_extern
 r_void
 id|pagebuf_delwri_flush

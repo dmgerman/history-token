@@ -164,7 +164,7 @@ macro_line|#error BITS_PER_LONG must be 32 or 64
 macro_line|#endif
 macro_line|#endif&t;/* __KERNEL__ */
 multiline_comment|/*&n; * Some types are conditional depending on the target system.&n; * XFS_BIG_BLKNOS needs block layer disk addresses to be 64 bits.&n; * XFS_BIG_INUMS needs the VFS inode number to be 64 bits, as well&n; * as requiring XFS_BIG_BLKNOS to be set.&n; */
-macro_line|#if defined(CONFIG_LBD) || (defined(HAVE_SECTOR_T) &amp;&amp; (BITS_PER_LONG == 64))
+macro_line|#if defined(CONFIG_LBD) || (BITS_PER_LONG == 64)
 DECL|macro|XFS_BIG_BLKNOS
 macro_line|# define XFS_BIG_BLKNOS&t;1
 macro_line|# if BITS_PER_LONG == 64
