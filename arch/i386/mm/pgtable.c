@@ -1067,15 +1067,7 @@ op_plus
 id|__pa
 c_func
 (paren
-(paren
-id|u64
-)paren
-(paren
-(paren
-id|u32
-)paren
 id|pmd
-)paren
 )paren
 )paren
 )paren
