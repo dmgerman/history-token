@@ -467,6 +467,7 @@ id|ebt_log_lock
 suffix:semicolon
 )brace
 DECL|variable|log
+r_static
 r_struct
 id|ebt_watcher
 id|log
