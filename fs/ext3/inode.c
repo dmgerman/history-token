@@ -4946,9 +4946,9 @@ r_int
 id|rw
 comma
 r_struct
-id|inode
+id|file
 op_star
-id|inode
+id|file
 comma
 r_const
 r_struct
@@ -4964,6 +4964,13 @@ r_int
 id|nr_segs
 )paren
 (brace
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping-&gt;host
+suffix:semicolon
 r_struct
 id|ext3_inode_info
 op_star

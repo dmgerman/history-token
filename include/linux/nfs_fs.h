@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/sunrpc/debug.h&gt;
 macro_line|#include &lt;linux/sunrpc/auth.h&gt;
@@ -613,6 +614,29 @@ r_return
 id|cred
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * linux/fs/nfs/direct.c&n; */
+r_extern
+r_int
+id|nfs_direct_IO
+c_func
+(paren
+r_int
+comma
+r_struct
+id|file
+op_star
+comma
+r_const
+r_struct
+id|iovec
+op_star
+comma
+id|loff_t
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * linux/fs/nfs/dir.c&n; */
 r_extern
 r_struct

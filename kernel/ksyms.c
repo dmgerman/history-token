@@ -842,6 +842,13 @@ c_func
 id|invalidate_inode_pages
 )paren
 suffix:semicolon
+DECL|variable|invalidate_inode_pages2
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|invalidate_inode_pages2
+)paren
+suffix:semicolon
 DECL|variable|truncate_inode_pages
 id|EXPORT_SYMBOL
 c_func

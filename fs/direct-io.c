@@ -2428,9 +2428,9 @@ r_int
 id|rw
 comma
 r_struct
-id|inode
+id|file
 op_star
-id|inode
+id|file
 comma
 r_const
 r_struct
@@ -2451,7 +2451,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|inode-&gt;i_mapping
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
 suffix:semicolon
 id|ssize_t
 id|retval
@@ -2465,7 +2465,7 @@ c_func
 (paren
 id|rw
 comma
-id|inode
+id|file
 comma
 id|iov
 comma
@@ -2477,12 +2477,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|inode-&gt;i_mapping-&gt;nrpages
+id|mapping-&gt;nrpages
 )paren
 id|invalidate_inode_pages2
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|mapping
 )paren
 suffix:semicolon
 r_return
