@@ -414,6 +414,8 @@ DECL|macro|AML_HAS_ARGS
 mdefine_line|#define AML_HAS_ARGS                0x1000
 DECL|macro|AML_CONSTANT
 mdefine_line|#define AML_CONSTANT                0x2000
+DECL|macro|AML_NO_OPERAND_RESOLVE
+mdefine_line|#define AML_NO_OPERAND_RESOLVE      0x4000
 multiline_comment|/* Convenient flag groupings */
 DECL|macro|AML_FLAGS_EXEC_0A_0T_1R
 mdefine_line|#define AML_FLAGS_EXEC_0A_0T_1R                                     AML_HAS_RETVAL

@@ -16,6 +16,8 @@ DECL|macro|ACPI_SET_BIT
 mdefine_line|#define ACPI_SET_BIT(target,bit)        ((target) |= (bit))
 DECL|macro|ACPI_CLEAR_BIT
 mdefine_line|#define ACPI_CLEAR_BIT(target,bit)      ((target) &amp;= ~(bit))
+DECL|macro|ACPI_MIN
+mdefine_line|#define ACPI_MIN(a,b)                   (((a)&lt;(b))?(a):(b))
 macro_line|#if ACPI_MACHINE_WIDTH == 16
 multiline_comment|/*&n; * For 16-bit addresses, we have to assume that the upper 32 bits&n; * are zero.&n; */
 DECL|macro|ACPI_LODWORD
