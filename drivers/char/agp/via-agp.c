@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * VIA AGPGART routines. &n; */
+multiline_comment|/*&n; * VIA AGPGART routines.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -533,7 +533,7 @@ op_amp
 l_int|0xfffff000
 )paren
 suffix:semicolon
-multiline_comment|/* 1. Enable GTLB in RX90&lt;7&gt;, all AGP aperture access needs to fetch &n;&t; *    translation table first.&n;&t; * 2. Enable AGP aperture in RX91&lt;0&gt;. This bit controls the enabling of the&n;&t; *    graphics AGP aperture for the AGP3.0 port.&n;&t; */
+multiline_comment|/* 1. Enable GTLB in RX90&lt;7&gt;, all AGP aperture access needs to fetch&n;&t; *    translation table first.&n;&t; * 2. Enable AGP aperture in RX91&lt;0&gt;. This bit controls the enabling of the&n;&t; *    graphics AGP aperture for the AGP3.0 port.&n;&t; */
 id|pci_read_config_dword
 c_func
 (paren
