@@ -2603,6 +2603,10 @@ c_cond
 id|adapter-&gt;hw.mac_type
 op_ge
 id|e1000_82540
+op_logical_and
+id|adapter-&gt;hw.media_type
+op_eq
+id|e1000_media_type_copper
 )paren
 (brace
 id|manc
@@ -11804,6 +11808,10 @@ c_cond
 id|adapter-&gt;hw.mac_type
 op_ge
 id|e1000_82540
+op_logical_and
+id|adapter-&gt;hw.media_type
+op_eq
+id|e1000_media_type_copper
 )paren
 (brace
 id|manc
@@ -12006,6 +12014,10 @@ c_cond
 id|adapter-&gt;hw.mac_type
 op_ge
 id|e1000_82540
+op_logical_and
+id|adapter-&gt;hw.media_type
+op_eq
+id|e1000_media_type_copper
 )paren
 (brace
 id|manc
