@@ -1975,19 +1975,6 @@ suffix:semicolon
 multiline_comment|/* response */
 )brace
 suffix:semicolon
-DECL|struct|nfs4_lookup
-r_struct
-id|nfs4_lookup
-(brace
-DECL|member|lo_name
-r_struct
-id|qstr
-op_star
-id|lo_name
-suffix:semicolon
-multiline_comment|/* request */
-)brace
-suffix:semicolon
 DECL|struct|nfs4_lookup_arg
 r_struct
 id|nfs4_lookup_arg
@@ -2036,6 +2023,18 @@ r_struct
 id|nfs_fh
 op_star
 id|fh
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|nfs4_lookup_root_arg
+r_struct
+id|nfs4_lookup_root_arg
+(brace
+DECL|member|bitmask
+r_const
+id|u32
+op_star
+id|bitmask
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -2380,11 +2379,6 @@ DECL|member|link
 r_struct
 id|nfs4_link
 id|link
-suffix:semicolon
-DECL|member|lookup
-r_struct
-id|nfs4_lookup
-id|lookup
 suffix:semicolon
 DECL|member|open
 r_struct
