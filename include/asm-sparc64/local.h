@@ -17,7 +17,7 @@ mdefine_line|#define local_set(v,i)&t;atomic64_set(v,i)
 DECL|macro|local_inc
 mdefine_line|#define local_inc(v)&t;atomic64_inc(v)
 DECL|macro|local_dec
-mdefine_line|#define local_dec(v)&t;atomic64_inc(v)
+mdefine_line|#define local_dec(v)&t;atomic64_dec(v)
 DECL|macro|local_add
 mdefine_line|#define local_add(i, v)&t;atomic64_add(i, v)
 DECL|macro|local_sub
@@ -25,7 +25,7 @@ mdefine_line|#define local_sub(i, v)&t;atomic64_sub(i, v)
 DECL|macro|__local_inc
 mdefine_line|#define __local_inc(v)&t;&t;((v)-&gt;counter++)
 DECL|macro|__local_dec
-mdefine_line|#define __local_dec(v)&t;&t;((v)-&gt;counter++)
+mdefine_line|#define __local_dec(v)&t;&t;((v)-&gt;counter--)
 DECL|macro|__local_add
 mdefine_line|#define __local_add(i,v)&t;((v)-&gt;counter+=(i))
 DECL|macro|__local_sub
