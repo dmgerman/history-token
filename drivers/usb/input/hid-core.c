@@ -6552,10 +6552,12 @@ l_int|64
 OG
 l_int|0
 )paren
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|hid-&gt;name
+comma
+l_int|64
 comma
 l_string|&quot;%s %s&quot;
 comma
@@ -6566,10 +6568,12 @@ id|buf
 suffix:semicolon
 )brace
 r_else
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|hid-&gt;name
+comma
+l_int|64
 comma
 l_string|&quot;%04x:%04x&quot;
 comma
@@ -6585,13 +6589,15 @@ id|dev
 comma
 id|buf
 comma
-l_int|63
+l_int|64
 )paren
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|hid-&gt;phys
+comma
+l_int|64
 comma
 l_string|&quot;%s/input%d&quot;
 comma
