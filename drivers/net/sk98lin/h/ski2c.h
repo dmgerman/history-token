@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;ski2c.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.34 $&n; * Date:&t;$Date: 2003/01/28 09:11:21 $&n; * Purpose:&t;Defines to access Voltage and Temperature Sensor&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2003 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: ski2c.h,v $&n; *&t;Revision 1.34  2003/01/28 09:11:21  rschmidt&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.33  2002/10/14 16:40:50  rschmidt&n; *&t;Editorial changes (TWSI)&n; *&t;&n; *&t;Revision 1.32  2002/08/13 08:55:07  rschmidt&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.31  2002/08/06 09:44:22  jschmalz&n; *&t;Extensions and changes for Yukon&n; *&t;&n; *&t;Revision 1.30  2001/04/05 11:38:09  rassmann&n; *&t;Set SenState to idle in SkI2cWaitIrq().&n; *&t;Changed error message in SkI2cWaitIrq().&n; *&t;&n; *&t;Revision 1.29  2000/08/03 14:28:17  rassmann&n; *&t;- Added function to wait for I2C being ready before resetting the board.&n; *&t;- Replaced one duplicate &quot;out of range&quot; message with correct one.&n; *&t;&n; *&t;Revision 1.28  1999/11/22 13:55:46  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.27  1999/05/20 09:23:10  cgoos&n; *&t;Changes for 1000Base-T (Fan sensors).&n; *&t;&n; *&t;Revision 1.26  1998/12/01 13:45:47  gklug&n; *&t;add: InitLevel to I2c struct&n; *&t;&n; *&t;Revision 1.25  1998/11/03 06:55:16  gklug&n; *&t;add: Dummy Reads to I2c struct&n; *&t;&n; *&t;Revision 1.24  1998/10/02 14:28:59  cgoos&n; *&t;Added prototype for SkI2cIsr.&n; *&t;&n; *&t;Revision 1.23  1998/09/08 12:20:11  gklug&n; *&t;add: prototypes for init and read functions&n; *&t;&n; *&t;Revision 1.22  1998/09/08 07:37:56  gklug&n; *&t;add: log error if PCI_IO voltage sensor could not be initialized&n; *&t;&n; *&t;Revision 1.21  1998/09/04 08:38:05  malthoff&n; *&t;Change the values for I2C_READ and I2C_WRITE&n; *&t;&n; *&t;Revision 1.20  1998/08/25 07:52:22  gklug&n; *&t;chg: Timestamps (last) added for logging&n; *&n; *&t;Revision 1.19  1998/08/25 06:09:00  gklug&n; *&t;rmv: warning and error levels of the individual sensors.&n; *&t;add: timing definitions for sending traps and logging errors&n; *&t;&n; *&t;Revision 1.18  1998/08/20 11:41:15  gklug&n; *&t;chg: omit STRCPY macro by using char * as Sensor Description&n; *&t;&n; *&t;Revision 1.17  1998/08/20 11:37:43  gklug&n; *&t;chg: change Ioc to IoC&n; *&t;&n; *&t;Revision 1.16  1998/08/20 11:30:38  gklug&n; *&t;fix: SenRead declaration&n; *&t;&n; *&t;Revision 1.15  1998/08/20 11:27:53  gklug&n; *&t;fix: Compile bugs with new awrning constants&n; *&t;&n; *&t;Revision 1.14  1998/08/20 08:53:12  gklug&n; *&t;fix: compiler errors&n; *&t;add: Threshold values&n; *&t;&n; *&t;Revision 1.13  1998/08/19 12:21:16  gklug&n; *&t;fix: remove struct from C files (see CCC)&n; *&t;add: typedefs for all structs&n; *&t;&n; *&t;Revision 1.12  1998/08/19 10:57:41  gklug&n; *&t;add: Warning levels&n; *&t;&n; *&t;Revision 1.11  1998/08/18 08:37:02  malthoff&n; *&t;Prototypes not required for SK_DIAG.&n; *&t;&n; *&t;Revision 1.10  1998/08/17 13:54:00  gklug&n; *&t;fix: declaration of event function&n; *&t;&n; *&t;Revision 1.9  1998/08/17 06:48:39  malthoff&n; *&t;Remove some unrequired macros.&n; *&t;Fix the compiler errors.&n; *&t;&n; *&t;Revision 1.8  1998/08/14 06:47:19  gklug&n; *&t;fix: Values are intergers&n; *&n; *&t;Revision 1.7  1998/08/14 06:26:05  gklug&n; *&t;add: Init error message&n; *&n; *&t;Revision 1.6  1998/08/13 08:31:08  gklug&n; *&t;add: Error message&n; *&n; *&t;Revision 1.5  1998/08/12 14:32:04  gklug&n; *&t;add: new error code/message&n; *&n; *&t;Revision 1.4  1998/08/12 13:39:08  gklug&n; *&t;chg: names of error messages&n; *&t;add: defines for Sensor type and thresholds&n; *&n; *&t;Revision 1.3  1998/08/11 07:57:16  gklug&n; *&t;add: sensor struct&n; *&t;add: Timeout defines&n; *&t;add: I2C control struct for pAC&n; *&n; *&t;Revision 1.2  1998/07/17 11:29:02  gklug&n; *&t;rmv: Microwire and SMTPANIC&n; *&n; *&t;Revision 1.1  1998/06/19 14:30:10  malthoff&n; *&t;Created. Sources taken from ML Project.&n; *&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;ski2c.h&n; * Project:&t;Gigabit Ethernet Adapters, TWSI-Module&n; * Version:&t;$Revision: 1.35 $&n; * Date:&t;$Date: 2003/10/20 09:06:30 $&n; * Purpose:&t;Defines to access Voltage and Temperature Sensor&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: ski2c.h,v $&n; *&t;Revision 1.35  2003/10/20 09:06:30  rschmidt&n; *&t;Added prototypes for SkI2cRead() and SkI2cWrite().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.34  2003/01/28 09:11:21  rschmidt&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.33  2002/10/14 16:40:50  rschmidt&n; *&t;Editorial changes (TWSI)&n; *&t;&n; *&t;Revision 1.32  2002/08/13 08:55:07  rschmidt&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.31  2002/08/06 09:44:22  jschmalz&n; *&t;Extensions and changes for Yukon&n; *&t;&n; *&t;Revision 1.30  2001/04/05 11:38:09  rassmann&n; *&t;Set SenState to idle in SkI2cWaitIrq().&n; *&t;Changed error message in SkI2cWaitIrq().&n; *&t;&n; *&t;Revision 1.29  2000/08/03 14:28:17  rassmann&n; *&t;- Added function to wait for I2C being ready before resetting the board.&n; *&t;- Replaced one duplicate &quot;out of range&quot; message with correct one.&n; *&t;&n; *&t;Revision 1.28  1999/11/22 13:55:46  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.27  1999/05/20 09:23:10  cgoos&n; *&t;Changes for 1000Base-T (Fan sensors).&n; *&t;&n; *&t;Revision 1.26  1998/12/01 13:45:47  gklug&n; *&t;add: InitLevel to I2c struct&n; *&t;&n; *&t;Revision 1.25  1998/11/03 06:55:16  gklug&n; *&t;add: Dummy Reads to I2c struct&n; *&t;&n; *&t;Revision 1.24  1998/10/02 14:28:59  cgoos&n; *&t;Added prototype for SkI2cIsr.&n; *&t;&n; *&t;Revision 1.23  1998/09/08 12:20:11  gklug&n; *&t;add: prototypes for init and read functions&n; *&t;&n; *&t;Revision 1.22  1998/09/08 07:37:56  gklug&n; *&t;add: log error if PCI_IO voltage sensor could not be initialized&n; *&t;&n; *&t;Revision 1.21  1998/09/04 08:38:05  malthoff&n; *&t;Change the values for I2C_READ and I2C_WRITE&n; *&t;&n; *&t;Revision 1.20  1998/08/25 07:52:22  gklug&n; *&t;chg: Timestamps (last) added for logging&n; *&n; *&t;Revision 1.19  1998/08/25 06:09:00  gklug&n; *&t;rmv: warning and error levels of the individual sensors.&n; *&t;add: timing definitions for sending traps and logging errors&n; *&t;&n; *&t;Revision 1.18  1998/08/20 11:41:15  gklug&n; *&t;chg: omit STRCPY macro by using char * as Sensor Description&n; *&t;&n; *&t;Revision 1.17  1998/08/20 11:37:43  gklug&n; *&t;chg: change Ioc to IoC&n; *&t;&n; *&t;Revision 1.16  1998/08/20 11:30:38  gklug&n; *&t;fix: SenRead declaration&n; *&t;&n; *&t;Revision 1.15  1998/08/20 11:27:53  gklug&n; *&t;fix: Compile bugs with new awrning constants&n; *&t;&n; *&t;Revision 1.14  1998/08/20 08:53:12  gklug&n; *&t;fix: compiler errors&n; *&t;add: Threshold values&n; *&t;&n; *&t;Revision 1.13  1998/08/19 12:21:16  gklug&n; *&t;fix: remove struct from C files (see CCC)&n; *&t;add: typedefs for all structs&n; *&t;&n; *&t;Revision 1.12  1998/08/19 10:57:41  gklug&n; *&t;add: Warning levels&n; *&t;&n; *&t;Revision 1.11  1998/08/18 08:37:02  malthoff&n; *&t;Prototypes not required for SK_DIAG.&n; *&t;&n; *&t;Revision 1.10  1998/08/17 13:54:00  gklug&n; *&t;fix: declaration of event function&n; *&t;&n; *&t;Revision 1.9  1998/08/17 06:48:39  malthoff&n; *&t;Remove some unrequired macros.&n; *&t;Fix the compiler errors.&n; *&t;&n; *&t;Revision 1.8  1998/08/14 06:47:19  gklug&n; *&t;fix: Values are intergers&n; *&n; *&t;Revision 1.7  1998/08/14 06:26:05  gklug&n; *&t;add: Init error message&n; *&n; *&t;Revision 1.6  1998/08/13 08:31:08  gklug&n; *&t;add: Error message&n; *&n; *&t;Revision 1.5  1998/08/12 14:32:04  gklug&n; *&t;add: new error code/message&n; *&n; *&t;Revision 1.4  1998/08/12 13:39:08  gklug&n; *&t;chg: names of error messages&n; *&t;add: defines for Sensor type and thresholds&n; *&n; *&t;Revision 1.3  1998/08/11 07:57:16  gklug&n; *&t;add: sensor struct&n; *&t;add: Timeout defines&n; *&t;add: I2C control struct for pAC&n; *&n; *&t;Revision 1.2  1998/07/17 11:29:02  gklug&n; *&t;rmv: Microwire and SMTPANIC&n; *&n; *&t;Revision 1.1  1998/06/19 14:30:10  malthoff&n; *&t;Created. Sources taken from ML Project.&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; * SKI2C.H&t;contains all I2C specific defines&n; */
 macro_line|#ifndef _SKI2C_H_
 DECL|macro|_SKI2C_H_
@@ -191,7 +191,7 @@ DECL|member|SenErrCts
 id|SK_U64
 id|SenErrCts
 suffix:semicolon
-multiline_comment|/* Error  trap counter */
+multiline_comment|/* Error trap counter */
 DECL|member|SenWarnCts
 id|SK_U64
 id|SenWarnCts
@@ -316,6 +316,50 @@ id|SK_I2C
 suffix:semicolon
 r_extern
 r_int
+id|SkI2cInit
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+id|SK_IOC
+id|IoC
+comma
+r_int
+id|Level
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|SkI2cWrite
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+id|SK_IOC
+id|IoC
+comma
+id|SK_U32
+id|Data
+comma
+r_int
+id|Dev
+comma
+r_int
+id|Size
+comma
+r_int
+id|Reg
+comma
+r_int
+id|Burst
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|SkI2cReadSensor
 c_func
 (paren
@@ -331,7 +375,33 @@ op_star
 id|pSen
 )paren
 suffix:semicolon
-macro_line|#ifndef SK_DIAG
+macro_line|#ifdef SK_DIAG
+r_extern
+id|SK_U32
+id|SkI2cRead
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+id|SK_IOC
+id|IoC
+comma
+r_int
+id|Dev
+comma
+r_int
+id|Size
+comma
+r_int
+id|Reg
+comma
+r_int
+id|Burst
+)paren
+suffix:semicolon
+macro_line|#else /* !SK_DIAG */
 r_extern
 r_int
 id|SkI2cEvent
@@ -349,22 +419,6 @@ id|Event
 comma
 id|SK_EVPARA
 id|Para
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|SkI2cInit
-c_func
-(paren
-id|SK_AC
-op_star
-id|pAC
-comma
-id|SK_IOC
-id|IoC
-comma
-r_int
-id|Level
 )paren
 suffix:semicolon
 r_extern
@@ -393,6 +447,6 @@ id|SK_IOC
 id|IoC
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* !SK_DIAG */
 macro_line|#endif /* n_SKI2C_H */
 eof
