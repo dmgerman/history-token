@@ -5,136 +5,6 @@ mdefine_line|#define __ASM_PPCBOOT_H__
 multiline_comment|/*&n; * Board information passed to kernel from PPCBoot&n; *&n; * include/asm-ppc/ppcboot.h&n; */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/types.h&gt;
-DECL|typedef|interrupt_handler_t
-r_typedef
-r_void
-(paren
-id|interrupt_handler_t
-)paren
-(paren
-r_void
-op_star
-)paren
-suffix:semicolon
-DECL|struct|monitor_functions
-r_typedef
-r_struct
-id|monitor_functions
-(brace
-DECL|member|getc
-r_int
-(paren
-op_star
-id|getc
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|member|tstc
-r_int
-(paren
-op_star
-id|tstc
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|member|putc
-r_void
-(paren
-op_star
-id|putc
-)paren
-(paren
-r_const
-r_char
-id|c
-)paren
-suffix:semicolon
-DECL|member|puts
-r_void
-(paren
-op_star
-id|puts
-)paren
-(paren
-r_const
-r_char
-op_star
-id|s
-)paren
-suffix:semicolon
-DECL|member|printf
-r_void
-(paren
-op_star
-id|printf
-)paren
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
-DECL|member|install_hdlr
-r_void
-(paren
-op_star
-id|install_hdlr
-)paren
-(paren
-r_int
-comma
-id|interrupt_handler_t
-op_star
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
-DECL|member|free_hdlr
-r_void
-(paren
-op_star
-id|free_hdlr
-)paren
-(paren
-r_int
-)paren
-suffix:semicolon
-DECL|member|malloc
-r_void
-op_star
-(paren
-op_star
-id|malloc
-)paren
-(paren
-r_int
-)paren
-suffix:semicolon
-DECL|member|free
-r_void
-(paren
-op_star
-id|free
-)paren
-(paren
-r_void
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|mon_fnc_t
-)brace
-id|mon_fnc_t
-suffix:semicolon
 DECL|struct|bd_info
 r_typedef
 r_struct
@@ -283,7 +153,7 @@ r_int
 id|bi_baudrate
 suffix:semicolon
 multiline_comment|/* Console Baudrate */
-macro_line|#if defined(CONFIG_405GP)
+macro_line|#if defined(CONFIG_4xx)
 DECL|member|bi_s_version
 r_int
 r_char
@@ -337,8 +207,8 @@ id|bi_hymod_conf
 suffix:semicolon
 multiline_comment|/* hymod configuration information */
 macro_line|#endif
-macro_line|#if defined(CONFIG_EVB64260) || defined(CONFIG_85xx)
-multiline_comment|/* the board has three onboard ethernet ports */
+macro_line|#if defined(CONFIG_EVB64260) || defined(CONFIG_44x) || defined(CONFIG_85xx)
+multiline_comment|/* second onboard ethernet port */
 DECL|member|bi_enet1addr
 r_int
 r_char
@@ -347,6 +217,9 @@ id|bi_enet1addr
 l_int|6
 )braket
 suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_EVB64260) || defined(CONFIG_440GX) || defined(CONFIG_85xx)
+multiline_comment|/* third onboard ethernet ports */
 DECL|member|bi_enet2addr
 r_int
 r_char
@@ -356,12 +229,51 @@ l_int|6
 )braket
 suffix:semicolon
 macro_line|#endif
-DECL|member|bi_mon_fnc
-id|mon_fnc_t
-op_star
-id|bi_mon_fnc
+macro_line|#if defined(CONFIG_440GX)
+multiline_comment|/* fourth onboard ethernet ports */
+DECL|member|bi_enet3addr
+r_int
+r_char
+id|bi_enet3addr
+(braket
+l_int|6
+)braket
 suffix:semicolon
-multiline_comment|/* Pointer to monitor functions&t;*/
+macro_line|#endif
+macro_line|#if defined(CONFIG_4xx)
+DECL|member|bi_opbfreq
+r_int
+r_int
+id|bi_opbfreq
+suffix:semicolon
+multiline_comment|/* OB clock in Hz */
+DECL|member|bi_iic_fast
+r_int
+id|bi_iic_fast
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* Use fast i2c mode */
+macro_line|#endif
+macro_line|#if defined(CONFIG_440GX)
+DECL|member|bi_phynum
+r_int
+id|bi_phynum
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* phy mapping */
+DECL|member|bi_phymode
+r_int
+id|bi_phymode
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* phy mode */
+macro_line|#endif
 DECL|typedef|bd_t
 )brace
 id|bd_t
