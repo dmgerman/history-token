@@ -1560,24 +1560,11 @@ id|handler
 op_assign
 id|sctp_rcv
 comma
-multiline_comment|/* SCTP input handler.  */
 dot
 id|err_handler
 op_assign
 id|sctp_v4_err
 comma
-multiline_comment|/* SCTP error control   */
-dot
-id|protocol
-op_assign
-id|IPPROTO_SCTP
-comma
-multiline_comment|/* protocol ID          */
-dot
-id|name
-op_assign
-l_string|&quot;SCTP&quot;
-multiline_comment|/* name                 */
 )brace
 suffix:semicolon
 multiline_comment|/* IPv4 address related functions.  */
@@ -1732,20 +1719,31 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Add SCTP to inet_protos hash table.  */
+r_if
+c_cond
+(paren
+id|inet_add_protocol
+c_func
+(paren
+op_amp
+id|sctp_protocol
+comma
+id|IPPROTO_SCTP
+)paren
+OL
+l_int|0
+)paren
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
 multiline_comment|/* Add SCTP to inetsw linked list.  */
 id|inet_register_protosw
 c_func
 (paren
 op_amp
 id|sctp_protosw
-)paren
-suffix:semicolon
-multiline_comment|/* Add SCTP to inet_protos hash table.  */
-id|inet_add_protocol
-c_func
-(paren
-op_amp
-id|sctp_protocol
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize proc fs directory.  */
@@ -2252,6 +2250,8 @@ c_func
 (paren
 op_amp
 id|sctp_protocol
+comma
+id|IPPROTO_SCTP
 )paren
 suffix:semicolon
 id|inet_unregister_protosw
@@ -2347,6 +2347,8 @@ c_func
 (paren
 op_amp
 id|sctp_protocol
+comma
+id|IPPROTO_SCTP
 )paren
 suffix:semicolon
 id|inet_unregister_protosw

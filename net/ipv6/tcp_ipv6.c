@@ -10152,16 +10152,6 @@ id|err_handler
 op_assign
 id|tcp_v6_err
 comma
-dot
-id|protocol
-op_assign
-id|IPPROTO_TCP
-comma
-dot
-id|name
-op_assign
-l_string|&quot;TCPv6&quot;
-comma
 )brace
 suffix:semicolon
 r_extern
@@ -10226,11 +10216,25 @@ r_void
 )paren
 (brace
 multiline_comment|/* register inet6 protocol */
+r_if
+c_cond
+(paren
 id|inet6_add_protocol
 c_func
 (paren
 op_amp
 id|tcpv6_protocol
+comma
+id|IPPROTO_TCP
+)paren
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;tcpv6_init: Could not register protocol&bslash;n&quot;
 )paren
 suffix:semicolon
 id|inet6_register_protosw

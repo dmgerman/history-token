@@ -2129,45 +2129,15 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *&t;This can&squot;t change while we are doing it.&n;&t; *&t;Callers have obtained BR_NETPROTO_LOCK so&n;&t; *&t;we are OK.&n;&t; */
 id|ipprot
 op_assign
-(paren
-r_struct
-id|inet_protocol
-op_star
-)paren
 id|inet_protos
 (braket
 id|hash
 )braket
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|ipprot
-)paren
-(brace
-r_struct
-id|inet_protocol
-op_star
-id|nextip
-suffix:semicolon
-id|nextip
-op_assign
-(paren
-r_struct
-id|inet_protocol
-op_star
-)paren
-id|ipprot-&gt;next
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; *&t;Pass it off to everyone who wants it.&n;&t;&t; */
-multiline_comment|/* RFC1122: OK. Passes appropriate ICMP errors to the */
-multiline_comment|/* appropriate protocol layer (MUST), as per 3.2.2. */
 r_if
 c_cond
 (paren
-id|protocol
-op_eq
-id|ipprot-&gt;protocol
+id|ipprot
 op_logical_and
 id|ipprot-&gt;err_handler
 )paren
@@ -2181,11 +2151,6 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|ipprot
-op_assign
-id|nextip
-suffix:semicolon
-)brace
 id|out
 suffix:colon
 r_return
