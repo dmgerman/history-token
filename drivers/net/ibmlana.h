@@ -552,15 +552,5 @@ DECL|typedef|tda_t
 id|tda_t
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _IBM_LANA_DRIVER_ */
-r_extern
-r_int
-id|ibmlana_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
 macro_line|#endif&t;/* _IBM_LANA_INCLUDE_ */
 eof

@@ -42,8 +42,8 @@ op_star
 id|base
 suffix:semicolon
 DECL|member|ram
-r_void
-op_star
+r_int
+r_int
 id|ram
 suffix:semicolon
 )brace
@@ -198,6 +198,9 @@ id|addr
 suffix:semicolon
 id|u_long
 id|address
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -442,10 +445,6 @@ id|dev-&gt;priv
 suffix:semicolon
 id|lp-&gt;ram
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|__get_dma_pages
 c_func
 (paren

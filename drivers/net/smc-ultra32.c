@@ -195,12 +195,6 @@ comma
 id|ULTRA32_IO_EXTENT
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev-&gt;priv
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&t;Probe for the Ultra32.  This looks like a 8013 with the station&n;&t;address PROM at I/O ports &lt;base&gt;+8 to &lt;base&gt;+13, with a checksum&n;&t;following.&n;*/
 DECL|function|ultra32_probe
@@ -248,10 +242,9 @@ id|ENODEV
 suffix:semicolon
 id|dev
 op_assign
-id|alloc_etherdev
+id|alloc_ei_netdev
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -915,31 +908,6 @@ suffix:semicolon
 id|dev-&gt;irq
 op_assign
 id|irq
-suffix:semicolon
-)brace
-multiline_comment|/* Allocate dev-&gt;priv and fill in 8390 specific dev fields. */
-r_if
-c_cond
-(paren
-id|ethdev_init
-c_func
-(paren
-id|dev
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;, no memory for dev-&gt;priv.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|out
 suffix:semicolon
 )brace
 multiline_comment|/* The 8390 isn&squot;t at the base address, so fake the offset */

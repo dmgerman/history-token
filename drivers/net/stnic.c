@@ -355,10 +355,9 @@ suffix:semicolon
 multiline_comment|/* New style probing API */
 id|dev
 op_assign
-id|alloc_etherdev
+id|alloc_ei_netdev
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -377,37 +376,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|dev-&gt;priv
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* Allocate dev-&gt;priv and fill in 8390 specific dev fields. */
-r_if
-c_cond
-(paren
-id|ethdev_init
-(paren
-id|dev
-)paren
-)paren
-(brace
-id|printk
-(paren
-id|KERN_EMERG
-l_string|&quot;Unable to get memory for dev-&gt;priv.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|free_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_SH_STANDARD_BIOS 
 id|sh_bios_get_node_addr
 (paren
@@ -486,12 +454,6 @@ id|KERN_EMERG
 l_string|&quot; unable to get IRQ %d.&bslash;n&quot;
 comma
 id|dev-&gt;irq
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev-&gt;priv
 )paren
 suffix:semicolon
 id|free_netdev
@@ -582,12 +544,6 @@ c_func
 id|dev-&gt;irq
 comma
 id|dev
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev-&gt;priv
 )paren
 suffix:semicolon
 id|free_netdev
@@ -1302,12 +1258,6 @@ c_func
 id|stnic_dev-&gt;irq
 comma
 id|stnic_dev
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|stnic_dev-&gt;priv
 )paren
 suffix:semicolon
 id|free_netdev

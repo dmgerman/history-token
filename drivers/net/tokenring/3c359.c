@@ -1301,11 +1301,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|dev-&gt;init
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* Must be null with new api, otherwise get called twice */
 id|xl_priv-&gt;xl_card_name
 op_assign
 id|pci_name

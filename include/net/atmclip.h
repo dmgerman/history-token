@@ -134,7 +134,7 @@ multiline_comment|/* neighbour back-pointer */
 )brace
 suffix:semicolon
 DECL|macro|PRIV
-mdefine_line|#define PRIV(dev) ((struct clip_priv *) ((struct net_device *) (dev)+1))
+mdefine_line|#define PRIV(dev) ((struct clip_priv *) netdev_priv(dev))
 DECL|struct|clip_priv
 r_struct
 id|clip_priv

@@ -1819,11 +1819,6 @@ id|ndev
 op_assign
 l_int|NULL
 suffix:semicolon
-r_struct
-id|sonic_local
-op_star
-id|lp
-suffix:semicolon
 r_int
 r_int
 id|base_addr
