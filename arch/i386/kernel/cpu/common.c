@@ -948,6 +948,8 @@ l_int|0x00000001
 (brace
 id|u32
 id|capability
+comma
+id|excap
 suffix:semicolon
 id|cpuid
 c_func
@@ -961,7 +963,7 @@ op_amp
 id|junk
 comma
 op_amp
-id|junk
+id|excap
 comma
 op_amp
 id|capability
@@ -973,6 +975,13 @@ l_int|0
 )braket
 op_assign
 id|capability
+suffix:semicolon
+id|c-&gt;x86_capability
+(braket
+l_int|4
+)braket
+op_assign
+id|excap
 suffix:semicolon
 id|c-&gt;x86
 op_assign
