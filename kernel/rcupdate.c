@@ -73,6 +73,7 @@ multiline_comment|/* for current batch to proceed.        */
 )brace
 suffix:semicolon
 DECL|variable|____cacheline_maxaligned_in_smp
+r_static
 r_struct
 id|rcu_state
 id|rcu_state
@@ -91,6 +92,7 @@ id|CPU_MASK_NONE
 )brace
 suffix:semicolon
 DECL|variable|____cacheline_maxaligned_in_smp
+r_static
 r_struct
 id|rcu_state
 id|rcu_bh_state
