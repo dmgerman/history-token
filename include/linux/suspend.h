@@ -163,6 +163,11 @@ macro_line|#endif /* CONFIG_PM */
 macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
 r_extern
 r_int
+r_char
+id|software_suspend_enabled
+suffix:semicolon
+r_extern
+r_void
 id|software_suspend
 c_func
 (paren
@@ -180,9 +185,11 @@ c_func
 r_void
 )paren
 (brace
-r_return
-op_minus
-id|EPERM
+id|printk
+c_func
+(paren
+l_string|&quot;Warning: fake suspend called&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* CONFIG_SOFTWARE_SUSPEND */
