@@ -11311,7 +11311,35 @@ macro_line|#endif
 singleline_comment|// Connect I2S
 singleline_comment|// Connect DSP interface for SQ3500 turbo (not here i think...)
 singleline_comment|// Connect AC98 modem codec
-multiline_comment|/* Fast Play Workaround */
+multiline_comment|/* Fast Play Workaround. Revision 0xFE does not seem to need it. */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;vortex: revision = 0x%x, device = %d&bslash;n&quot;
+comma
+id|vortex-&gt;rev
+comma
+id|vortex-&gt;device
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_BAD_CHIP
+c_func
+(paren
+id|vortex
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;vortex: Erratum workaround enabled.&bslash;n&quot;
+)paren
+suffix:semicolon
 macro_line|#ifndef CHIP_AU8820
 id|vortex-&gt;fixed_res
 (braket
@@ -11330,6 +11358,7 @@ id|VORTEX_RESOURCE_SRC
 op_assign
 l_int|0x00000001
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;  Allocate nr_ch pcm audio routes if dma &lt; 0. If dma &gt;= 0, existing routes&n;  are deallocated.&n;  dma: DMA engine routes to be deallocated when dma &gt;= 0.&n;  nr_ch: Number of channels to be de/allocated.&n;  dir: direction of stream. Uses same values as substream-&gt;stream.&n;  type: Type of audio output/source (codec, spdif, i2s, dsp, etc)&n;  Return: Return allocated DMA or same DMA passed as &quot;dma&quot; when dma &gt;= 0.&n;*/
 r_static
@@ -11809,12 +11838,14 @@ id|vortex
 comma
 id|en
 comma
-singleline_comment|//src[nr_ch - 1], 
 id|src
 (braket
-l_int|0
+id|nr_ch
+op_minus
+l_int|1
 )braket
 comma
+singleline_comment|//src[0], 
 id|dma
 comma
 id|src
@@ -14349,7 +14380,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Vortex: hardware init.... &quot;
+l_string|&quot;Vortex: init.... &quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Hardware Init. */
@@ -14564,7 +14595,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Vortex: hardware shutdown...&quot;
+l_string|&quot;Vortex: shutdown...&quot;
 )paren
 suffix:semicolon
 macro_line|#ifndef CHIP_AU8820
