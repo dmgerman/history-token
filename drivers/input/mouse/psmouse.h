@@ -259,20 +259,39 @@ id|psmouse
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|PSMOUSE_PS2
-mdefine_line|#define PSMOUSE_PS2&t;&t;1
-DECL|macro|PSMOUSE_PS2PP
-mdefine_line|#define PSMOUSE_PS2PP&t;&t;2
-DECL|macro|PSMOUSE_PS2TPP
-mdefine_line|#define PSMOUSE_PS2TPP&t;&t;3
-DECL|macro|PSMOUSE_GENPS
-mdefine_line|#define PSMOUSE_GENPS&t;&t;4
-DECL|macro|PSMOUSE_IMPS
-mdefine_line|#define PSMOUSE_IMPS&t;&t;5
-DECL|macro|PSMOUSE_IMEX
-mdefine_line|#define PSMOUSE_IMEX&t;&t;6
-DECL|macro|PSMOUSE_SYNAPTICS
-mdefine_line|#define PSMOUSE_SYNAPTICS &t;7
+DECL|enum|psmouse_type
+r_enum
+id|psmouse_type
+(brace
+DECL|enumerator|PSMOUSE_NONE
+id|PSMOUSE_NONE
+comma
+DECL|enumerator|PSMOUSE_PS2
+id|PSMOUSE_PS2
+comma
+DECL|enumerator|PSMOUSE_PS2PP
+id|PSMOUSE_PS2PP
+comma
+DECL|enumerator|PSMOUSE_PS2TPP
+id|PSMOUSE_PS2TPP
+comma
+DECL|enumerator|PSMOUSE_THINKPS
+id|PSMOUSE_THINKPS
+comma
+DECL|enumerator|PSMOUSE_GENPS
+id|PSMOUSE_GENPS
+comma
+DECL|enumerator|PSMOUSE_IMPS
+id|PSMOUSE_IMPS
+comma
+DECL|enumerator|PSMOUSE_IMEX
+id|PSMOUSE_IMEX
+comma
+DECL|enumerator|PSMOUSE_SYNAPTICS
+id|PSMOUSE_SYNAPTICS
+comma
+)brace
+suffix:semicolon
 r_int
 id|psmouse_command
 c_func
