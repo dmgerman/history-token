@@ -487,6 +487,13 @@ id|now
 comma
 id|ilatency
 suffix:semicolon
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Mark the time at which the timer interrupt ocurred using&n;&t; * timer1. We need to remove interrupt latency, which we can&n;&t; * retrieve from the current system timer2 counter. Both the&n;&t; * offset timer1 and the system timer2 are counting at 6MHz,&n;&t; * so we&squot;re ok.&n;&t; */
 id|now
 op_assign
@@ -518,6 +525,13 @@ id|timer_tick
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 r_return

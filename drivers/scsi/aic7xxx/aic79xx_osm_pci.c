@@ -53,6 +53,7 @@ op_star
 id|bus_addr
 comma
 r_uint8
+id|__iomem
 op_star
 op_star
 id|maddr
@@ -938,6 +939,7 @@ op_star
 id|bus_addr
 comma
 r_uint8
+id|__iomem
 op_star
 op_star
 id|maddr
@@ -1121,6 +1123,7 @@ id|u_long
 id|base
 suffix:semicolon
 r_uint8
+id|__iomem
 op_star
 id|maddr
 suffix:semicolon
@@ -1271,18 +1274,7 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-(paren
-(paren
-id|u_long
-)paren
 id|maddr
-op_amp
-id|PAGE_MASK
-)paren
 )paren
 suffix:semicolon
 id|release_mem_region

@@ -12,11 +12,12 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm-ia64/sal.h&gt;
-macro_line|#include &lt;asm-ia64/sn/sn_sal.h&gt;
+macro_line|#include &lt;asm/sal.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 macro_line|#include &lt;asm/sn/module.h&gt;
 macro_line|#include &lt;asm/sn/geo.h&gt;
-macro_line|#include &lt;asm-ia64/sn/sn2/sn_hwperf.h&gt;
+macro_line|#include &lt;asm/sn/sn2/sn_hwperf.h&gt;
 DECL|variable|sn_hwperf_salheap
 r_static
 r_void
@@ -53,10 +54,6 @@ c_func
 (paren
 id|sn_hwperf_init_mutex
 )paren
-suffix:semicolon
-r_extern
-r_int
-id|numionodes
 suffix:semicolon
 DECL|function|sn_hwperf_enum_objects
 r_static
@@ -1848,6 +1845,7 @@ comma
 (paren
 r_const
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -1926,6 +1924,7 @@ comma
 (paren
 r_const
 r_void
+id|__user
 op_star
 )paren
 id|a.ptr
@@ -2491,6 +2490,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|a.ptr

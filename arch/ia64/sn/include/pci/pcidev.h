@@ -11,7 +11,7 @@ op_star
 id|sn_irq
 suffix:semicolon
 DECL|macro|SN_PCIDEV_INFO
-mdefine_line|#define SN_PCIDEV_INFO(pci_dev) &bslash;&n;        ((struct pcidev_info *)((pci_dev)-&gt;sysdata))
+mdefine_line|#define SN_PCIDEV_INFO(pci_dev) &bslash;&n;        ((struct pcidev_info *)(pci_dev)-&gt;sysdata)
 multiline_comment|/*&n; * Given a pci_bus, return the sn pcibus_bussoft struct.  Note that&n; * this only works for root busses, not for busses represented by PPB&squot;s.&n; */
 DECL|macro|SN_PCIBUS_BUSSOFT
 mdefine_line|#define SN_PCIBUS_BUSSOFT(pci_bus) &bslash;&n;        ((struct pcibus_bussoft *)(PCI_CONTROLLER((pci_bus))-&gt;platform_data))
@@ -71,6 +71,22 @@ op_star
 id|pdi_sn_irq_info
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_void
+id|sn_irq_fixup
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+comma
+r_struct
+id|sn_irq_info
+op_star
+id|sn_irq_info
+)paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _ASM_IA64_SN_PCI_PCIDEV_H */
 eof

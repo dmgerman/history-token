@@ -613,6 +613,7 @@ c_func
 (paren
 r_volatile
 r_uint16
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -2210,6 +2211,7 @@ id|__data
 suffix:semicolon
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 suffix:semicolon
@@ -3680,6 +3682,7 @@ id|ha
 suffix:semicolon
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 suffix:semicolon
@@ -5191,6 +5194,7 @@ id|ha
 (brace
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 suffix:semicolon
@@ -5240,6 +5244,7 @@ id|ha
 (brace
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 suffix:semicolon
@@ -5286,6 +5291,7 @@ id|ha
 (brace
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 suffix:semicolon
@@ -5866,6 +5872,7 @@ id|MAILBOX_REGISTER_COUNT
 suffix:semicolon
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -9148,6 +9155,7 @@ id|ha
 (brace
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -10136,6 +10144,7 @@ id|nv_cmd
 (brace
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -10334,6 +10343,7 @@ id|data
 (brace
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -10436,6 +10446,7 @@ id|mb
 (brace
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -10463,6 +10474,11 @@ id|optr
 comma
 op_star
 id|iptr
+suffix:semicolon
+r_uint16
+id|__iomem
+op_star
+id|mptr
 suffix:semicolon
 r_uint16
 id|data
@@ -10504,10 +10520,11 @@ id|wait
 suffix:semicolon
 multiline_comment|/*&n;&t; * We really should start out by verifying that the mailbox is&n;&t; * available before starting sending the command data&n;&t; */
 multiline_comment|/* Load mailbox registers. */
-id|optr
+id|mptr
 op_assign
 (paren
 r_uint16
+id|__iomem
 op_star
 )paren
 op_amp
@@ -10543,7 +10560,7 @@ id|BIT_0
 id|WRT_REG_WORD
 c_func
 (paren
-id|optr
+id|mptr
 comma
 (paren
 op_star
@@ -10556,7 +10573,7 @@ id|mr
 op_rshift_assign
 l_int|1
 suffix:semicolon
-id|optr
+id|mptr
 op_increment
 suffix:semicolon
 id|iptr
@@ -10885,6 +10902,7 @@ id|ha
 (brace
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -11621,6 +11639,7 @@ id|ha
 (brace
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -11803,6 +11822,7 @@ id|sp
 (brace
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -13182,6 +13202,7 @@ id|sp
 (brace
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -14356,6 +14377,7 @@ id|ha
 (brace
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -14538,6 +14560,7 @@ id|ha
 (brace
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -14647,6 +14670,7 @@ id|done_q
 (brace
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -16525,6 +16549,7 @@ id|ha
 (brace
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -16786,6 +16811,7 @@ c_func
 (paren
 r_volatile
 id|u16
+id|__iomem
 op_star
 id|addr
 )paren
@@ -16888,6 +16914,7 @@ id|scsi_control
 suffix:semicolon
 r_struct
 id|device_reg
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -18790,6 +18817,7 @@ op_assign
 (paren
 r_struct
 id|device_reg
+id|__iomem
 op_star
 )paren
 id|ha-&gt;mmpbase

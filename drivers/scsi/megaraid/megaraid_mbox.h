@@ -293,8 +293,9 @@ r_int
 id|baseport
 suffix:semicolon
 DECL|member|baseaddr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|baseaddr
 suffix:semicolon
 DECL|member|mbox_pool

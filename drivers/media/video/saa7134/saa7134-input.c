@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * handle saa7134 IR remotes via linux kernel input layer.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; * $Id: saa7134-input.c,v 1.9 2004/09/15 16:15:24 kraxel Exp $&n; *&n; * handle saa7134 IR remotes via linux kernel input layer.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -986,6 +986,259 @@ comma
 singleline_comment|// freeze
 )brace
 suffix:semicolon
+multiline_comment|/* Alex Hermann &lt;gaaf@gmx.net&gt; */
+DECL|variable|md2819_codes
+r_static
+id|IR_KEYTAB_TYPE
+id|md2819_codes
+(braket
+id|IR_KEYTAB_SIZE
+)braket
+op_assign
+(brace
+(braket
+l_int|40
+)braket
+op_assign
+id|KEY_KP1
+comma
+(braket
+l_int|24
+)braket
+op_assign
+id|KEY_KP2
+comma
+(braket
+l_int|56
+)braket
+op_assign
+id|KEY_KP3
+comma
+(braket
+l_int|36
+)braket
+op_assign
+id|KEY_KP4
+comma
+(braket
+l_int|20
+)braket
+op_assign
+id|KEY_KP5
+comma
+(braket
+l_int|52
+)braket
+op_assign
+id|KEY_KP6
+comma
+(braket
+l_int|44
+)braket
+op_assign
+id|KEY_KP7
+comma
+(braket
+l_int|28
+)braket
+op_assign
+id|KEY_KP8
+comma
+(braket
+l_int|60
+)braket
+op_assign
+id|KEY_KP9
+comma
+(braket
+l_int|34
+)braket
+op_assign
+id|KEY_KP0
+comma
+(braket
+l_int|32
+)braket
+op_assign
+id|KEY_TV
+comma
+singleline_comment|// TV/FM
+(braket
+l_int|16
+)braket
+op_assign
+id|KEY_CD
+comma
+singleline_comment|// CD
+(braket
+l_int|48
+)braket
+op_assign
+id|KEY_TEXT
+comma
+singleline_comment|// TELETEXT
+(braket
+l_int|0
+)braket
+op_assign
+id|KEY_POWER
+comma
+singleline_comment|// POWER
+(braket
+l_int|8
+)braket
+op_assign
+id|KEY_VIDEO
+comma
+singleline_comment|// VIDEO
+(braket
+l_int|4
+)braket
+op_assign
+id|KEY_AUDIO
+comma
+singleline_comment|// AUDIO
+(braket
+l_int|12
+)braket
+op_assign
+id|KEY_ZOOM
+comma
+singleline_comment|// FULL SCREEN
+(braket
+l_int|18
+)braket
+op_assign
+id|KEY_SUBTITLE
+comma
+singleline_comment|// DISPLAY&t;- ???
+(braket
+l_int|50
+)braket
+op_assign
+id|KEY_REWIND
+comma
+singleline_comment|// LOOP&t;&t;- ???
+(braket
+l_int|2
+)braket
+op_assign
+id|KEY_PRINT
+comma
+singleline_comment|// PREVIEW&t;- ???
+(braket
+l_int|42
+)braket
+op_assign
+id|KEY_SEARCH
+comma
+singleline_comment|// AUTOSCAN
+(braket
+l_int|26
+)braket
+op_assign
+id|KEY_SLEEP
+comma
+singleline_comment|// FREEZE&t;- ???
+(braket
+l_int|58
+)braket
+op_assign
+id|KEY_SHUFFLE
+comma
+singleline_comment|// SNAPSHOT&t;- ???
+(braket
+l_int|10
+)braket
+op_assign
+id|KEY_MUTE
+comma
+singleline_comment|// MUTE
+(braket
+l_int|38
+)braket
+op_assign
+id|KEY_RECORD
+comma
+singleline_comment|// RECORD
+(braket
+l_int|22
+)braket
+op_assign
+id|KEY_PAUSE
+comma
+singleline_comment|// PAUSE
+(braket
+l_int|54
+)braket
+op_assign
+id|KEY_STOP
+comma
+singleline_comment|// STOP
+(braket
+l_int|6
+)braket
+op_assign
+id|KEY_PLAY
+comma
+singleline_comment|// PLAY
+(braket
+l_int|46
+)braket
+op_assign
+id|KEY_RED
+comma
+singleline_comment|// &lt;RED&gt;
+(braket
+l_int|33
+)braket
+op_assign
+id|KEY_GREEN
+comma
+singleline_comment|// &lt;GREEN&gt;
+(braket
+l_int|14
+)braket
+op_assign
+id|KEY_YELLOW
+comma
+singleline_comment|// &lt;YELLOW&gt;
+(braket
+l_int|1
+)braket
+op_assign
+id|KEY_BLUE
+comma
+singleline_comment|// &lt;BLUE&gt;
+(braket
+l_int|30
+)braket
+op_assign
+id|KEY_VOLUMEDOWN
+comma
+singleline_comment|// VOLUME-
+(braket
+l_int|62
+)braket
+op_assign
+id|KEY_VOLUMEUP
+comma
+singleline_comment|// VOLUME+
+(braket
+l_int|17
+)braket
+op_assign
+id|KEY_CHANNELDOWN
+comma
+singleline_comment|// CHANNEL/PAGE-
+(braket
+l_int|49
+)braket
+op_assign
+id|KEY_CHANNELUP
+singleline_comment|// CHANNEL/PAGE+
+)brace
+suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------------------- */
 DECL|function|build_key
 r_static
@@ -1397,6 +1650,45 @@ op_assign
 l_int|50
 suffix:semicolon
 singleline_comment|// ms
+r_break
+suffix:semicolon
+r_case
+id|SAA7134_BOARD_MD2819
+suffix:colon
+id|ir_codes
+op_assign
+id|md2819_codes
+suffix:semicolon
+id|mask_keycode
+op_assign
+l_int|0x0007C8
+suffix:semicolon
+id|mask_keydown
+op_assign
+l_int|0x000010
+suffix:semicolon
+id|polling
+op_assign
+l_int|50
+suffix:semicolon
+singleline_comment|// ms
+multiline_comment|/* Set GPIO pin2 to high to enable the IR controller */
+id|saa_setb
+c_func
+(paren
+id|SAA7134_GPIO_GPMODE0
+comma
+l_int|0x4
+)paren
+suffix:semicolon
+id|saa_setb
+c_func
+(paren
+id|SAA7134_GPIO_GPSTATUS0
+comma
+l_int|0x4
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace

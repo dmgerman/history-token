@@ -3,7 +3,7 @@ macro_line|#ifndef _ASM_IA64_SN_PCI_TIOCP_H
 DECL|macro|_ASM_IA64_SN_PCI_TIOCP_H
 mdefine_line|#define _ASM_IA64_SN_PCI_TIOCP_H
 DECL|macro|TIOCP_HOST_INTR_ADDR
-mdefine_line|#define TIOCP_HOST_INTR_ADDR            0x003FFFFFFFFFFFFF
+mdefine_line|#define TIOCP_HOST_INTR_ADDR            0x003FFFFFFFFFFFFFUL
 DECL|macro|TIOCP_PCI64_CMDTYPE_MEM
 mdefine_line|#define TIOCP_PCI64_CMDTYPE_MEM         (0x1ull &lt;&lt; 60)
 multiline_comment|/*****************************************************************************&n; *********************** TIOCP MMR structure mapping ***************************&n; *****************************************************************************/

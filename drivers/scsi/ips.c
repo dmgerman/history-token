@@ -27126,10 +27126,12 @@ id|dma_addr_t
 id|dma_address
 suffix:semicolon
 r_char
+id|__iomem
 op_star
 id|ioremap_ptr
 suffix:semicolon
 r_char
+id|__iomem
 op_star
 id|mem_ptr
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * v4l2 device driver for philips saa7134 based TV cards&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: saa7134.h,v 1.20 2004/09/30 12:21:15 kraxel Exp $&n; *&n; * v4l2 device driver for philips saa7134 based TV cards&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|SAA7134_VERSION_CODE
 mdefine_line|#define SAA7134_VERSION_CODE KERNEL_VERSION(0,2,12)
@@ -365,6 +365,14 @@ DECL|macro|SAA7134_BOARD_FLYTVPLATINUM
 mdefine_line|#define SAA7134_BOARD_FLYTVPLATINUM    39
 DECL|macro|SAA7134_BOARD_VIDEOMATE_TV_PVR
 mdefine_line|#define SAA7134_BOARD_VIDEOMATE_TV_PVR 40
+DECL|macro|SAA7134_BOARD_VIDEOMATE_TV_GOLD_PLUS
+mdefine_line|#define SAA7134_BOARD_VIDEOMATE_TV_GOLD_PLUS 41
+DECL|macro|SAA7134_BOARD_SABRENT_SBTTVFM
+mdefine_line|#define SAA7134_BOARD_SABRENT_SBTTVFM  42
+DECL|macro|SAA7134_BOARD_ZOLID_XPERT_TV7134
+mdefine_line|#define SAA7134_BOARD_ZOLID_XPERT_TV7134 43
+DECL|macro|SAA7134_EMPIRE_PCI_TV_RADIO_LE
+mdefine_line|#define SAA7134_EMPIRE_PCI_TV_RADIO_LE 44
 DECL|macro|SAA7134_INPUT_MAX
 mdefine_line|#define SAA7134_INPUT_MAX 8
 DECL|struct|saa7134_input
@@ -1268,7 +1276,7 @@ mdefine_line|#define saa_setb(reg,bit)          saa_andorb((reg),(bit),(bit))
 DECL|macro|saa_clearb
 mdefine_line|#define saa_clearb(reg,bit)        saa_andorb((reg),(bit),0)
 DECL|macro|saa_wait
-mdefine_line|#define saa_wait(d) { udelay(d); }
+mdefine_line|#define saa_wait(us) { udelay(us); }
 multiline_comment|/* ----------------------------------------------------------- */
 multiline_comment|/* saa7134-core.c                                              */
 r_extern
@@ -1515,7 +1523,18 @@ id|saa7134_pci_tbl
 suffix:semicolon
 r_extern
 r_int
-id|saa7134_board_init
+id|saa7134_board_init1
+c_func
+(paren
+r_struct
+id|saa7134_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|saa7134_board_init2
 c_func
 (paren
 r_struct

@@ -526,34 +526,18 @@ r_break
 suffix:semicolon
 )brace
 singleline_comment|// wait a bit
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 )brace
 singleline_comment|// delay a bit to let encoder settle
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|20
+l_int|50
 )paren
 suffix:semicolon
 singleline_comment|// done

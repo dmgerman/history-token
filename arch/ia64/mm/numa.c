@@ -287,7 +287,7 @@ id|i
 comma
 id|i
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 )paren

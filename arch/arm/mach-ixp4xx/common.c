@@ -658,6 +658,13 @@ op_star
 id|regs
 )paren
 (brace
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Clear Pending Interrupt by writing &squot;1&squot; to it */
 op_star
 id|IXP4XX_OSST
@@ -693,6 +700,13 @@ id|LATCH
 (brace
 suffix:semicolon
 )brace
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 r_return
 id|IRQ_HANDLED
 suffix:semicolon

@@ -1872,9 +1872,19 @@ comma
 id|rq
 )paren
 )paren
+(brace
+id|ide_map_sg
+c_func
+(paren
+id|drive
+comma
+id|rq
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+)brace
 multiline_comment|/* PRD table */
 id|hwif
 op_member_access_from_pointer
@@ -2835,23 +2845,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|hwif-&gt;sg_table
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|hwif-&gt;sg_table
-)paren
-suffix:semicolon
-id|hwif-&gt;sg_table
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 r_return
 l_int|1
 suffix:semicolon
@@ -2983,32 +2976,10 @@ op_amp
 id|hwif-&gt;dmatable_dma
 )paren
 suffix:semicolon
-id|hwif-&gt;sg_table
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|scatterlist
-)paren
-op_star
-id|PRD_ENTRIES
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|hwif-&gt;dmatable_cpu
-)paren
-op_logical_and
-(paren
-id|hwif-&gt;sg_table
-)paren
 )paren
 r_return
 l_int|0
@@ -3017,7 +2988,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: -- Error, unable to allocate%s%s table(s).&bslash;n&quot;
+l_string|&quot;%s: -- Error, unable to allocate%s DMA table(s).&bslash;n&quot;
 comma
 (paren
 id|hwif-&gt;dmatable_cpu
@@ -3029,17 +3000,6 @@ c_cond
 l_string|&quot; CPU&quot;
 suffix:colon
 l_string|&quot;&quot;
-comma
-(paren
-id|hwif-&gt;sg_table
-op_eq
-l_int|NULL
-)paren
-ques
-c_cond
-l_string|&quot; SG DMA&quot;
-suffix:colon
-l_string|&quot; DMA&quot;
 comma
 id|hwif-&gt;cds-&gt;name
 )paren

@@ -172,6 +172,13 @@ id|regs
 r_int
 id|next_match
 suffix:semicolon
+id|write_seqlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 multiline_comment|/* Loop until we get ahead of the free running timer.&n;&t; * This ensures an exact clock tick count and time accuracy.&n;&t; * IRQs are disabled inside the loop to ensure coherence between&n;&t; * lost_ticks (updated in do_timer()) and the match reg value, so we&n;&t; * can use do_gettimeofday() from interrupt handlers.&n;&t; *&n;&t; * HACK ALERT: it seems that the PXA timer regs aren&squot;t updated right&n;&t; * away in all cases when a write occurs.  We therefore compare with&n;&t; * 8 instead of 0 in the while() condition below to avoid missing a&n;&t; * match if OSCR has already reached the next OSMR value.&n;&t; * Experience has shown that up to 6 ticks are needed to work around&n;&t; * this problem, but let&squot;s use 8 to be conservative.  Note that this&n;&t; * affect things only when the timer IRQ has been delayed by nearly&n;&t; * exactly one tick period which should be a pretty rare event.&n;&t; */
 r_do
 (brace
@@ -213,6 +220,13 @@ l_int|8
 (brace
 suffix:semicolon
 )brace
+id|write_sequnlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
