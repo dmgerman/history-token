@@ -27,7 +27,7 @@ id|u32
 id|acpi_gbl_nesting_level
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * ACPI Table globals&n; *&n; ****************************************************************************/
-multiline_comment|/*&n; * Table pointers.&n; * Although these pointers are somewhat redundant with the global Acpi_table,&n; * they are convenient because they are typed pointers.&n; *&n; * These tables are single-table only; meaning that there can be at most one&n; * of each in the system.  Each global points to the actual table.&n; *&n; */
+multiline_comment|/*&n; * Table pointers.&n; * Although these pointers are somewhat redundant with the global acpi_table,&n; * they are convenient because they are typed pointers.&n; *&n; * These tables are single-table only; meaning that there can be at most one&n; * of each in the system.  Each global points to the actual table.&n; *&n; */
 DECL|variable|acpi_gbl_table_flags
 id|ACPI_EXTERN
 id|u32

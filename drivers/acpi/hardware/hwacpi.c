@@ -7,7 +7,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;hwacpi&quot;
 )paren
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize and validate various ACPI registers&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize and validate various ACPI registers&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_initialize
 id|acpi_hw_initialize
@@ -20,7 +20,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Hw_initialize&quot;
+l_string|&quot;hw_initialize&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* We must have the ACPI tables by the time we get here */
@@ -74,7 +74,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_set_mode&n; *&n; * PARAMETERS:  Mode            - SYS_MODE_ACPI or SYS_MODE_LEGACY&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Transitions the system into the requested mode.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_set_mode&n; *&n; * PARAMETERS:  Mode            - SYS_MODE_ACPI or SYS_MODE_LEGACY&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Transitions the system into the requested mode.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_set_mode
 id|acpi_hw_set_mode
@@ -91,7 +91,7 @@ id|retry
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Hw_set_mode&quot;
+l_string|&quot;hw_set_mode&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * ACPI 2.0 clarified that if SMI_CMD in FADT is zero,&n;&t; * system does not support mode transition.&n;&t; */
@@ -290,7 +290,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_get_mode&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      SYS_MODE_ACPI or SYS_MODE_LEGACY&n; *&n; * DESCRIPTION: Return current operating state of system.  Determined by&n; *              querying the SCI_EN bit.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_get_mode&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      SYS_MODE_ACPI or SYS_MODE_LEGACY&n; *&n; * DESCRIPTION: Return current operating state of system.  Determined by&n; *              querying the SCI_EN bit.&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_hw_get_mode
 id|acpi_hw_get_mode
@@ -306,7 +306,7 @@ id|value
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Hw_get_mode&quot;
+l_string|&quot;hw_get_mode&quot;
 )paren
 suffix:semicolon
 id|status

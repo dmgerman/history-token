@@ -8,7 +8,7 @@ multiline_comment|/*&n; * ACPI_DEBUG_OUTPUT    - This switch enables all the deb
 multiline_comment|/******************************************************************************&n; *&n; * Subsystem Constants&n; *&n; *****************************************************************************/
 multiline_comment|/* Version string */
 DECL|macro|ACPI_CA_VERSION
-mdefine_line|#define ACPI_CA_VERSION                 0x20021212
+mdefine_line|#define ACPI_CA_VERSION                 0x20021217
 multiline_comment|/* Version of ACPI supported */
 DECL|macro|ACPI_CA_SUPPORT_LEVEL
 mdefine_line|#define ACPI_CA_SUPPORT_LEVEL           2
@@ -87,7 +87,7 @@ DECL|macro|ACPI_NUM_PREDEFINED_REGIONS
 mdefine_line|#define ACPI_NUM_PREDEFINED_REGIONS     8
 DECL|macro|ACPI_USER_REGION_BEGIN
 mdefine_line|#define ACPI_USER_REGION_BEGIN          0x80
-multiline_comment|/* Maximum Space_ids for Operation Regions */
+multiline_comment|/* Maximum space_ids for Operation Regions */
 DECL|macro|ACPI_MAX_ADDRESS_SPACE
 mdefine_line|#define ACPI_MAX_ADDRESS_SPACE          255
 multiline_comment|/* Array sizes.  Used for range checking also */

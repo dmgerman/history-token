@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exmutex&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_unlink_mutex&n; *&n; * PARAMETERS:  *Obj_desc           - The mutex to be unlinked&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a mutex from the &quot;Acquired_mutex&quot; list&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_unlink_mutex&n; *&n; * PARAMETERS:  *obj_desc           - The mutex to be unlinked&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a mutex from the &quot;acquired_mutex&quot; list&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_unlink_mutex
 id|acpi_ex_unlink_mutex
@@ -72,7 +72,7 @@ id|obj_desc-&gt;mutex.next
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_link_mutex&n; *&n; * PARAMETERS:  *Obj_desc           - The mutex to be linked&n; *              *List_head          - head of the &quot;Acquired_mutex&quot; list&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Add a mutex to the &quot;Acquired_mutex&quot; list for this walk&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_link_mutex&n; *&n; * PARAMETERS:  *obj_desc           - The mutex to be linked&n; *              *list_head          - head of the &quot;acquired_mutex&quot; list&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Add a mutex to the &quot;acquired_mutex&quot; list for this walk&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_link_mutex
 id|acpi_ex_link_mutex
@@ -121,7 +121,7 @@ op_assign
 id|obj_desc
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_acquire_mutex&n; *&n; * PARAMETERS:  *Time_desc          - The &squot;time to delay&squot; object descriptor&n; *              *Obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Acquire an AML mutex&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_acquire_mutex&n; *&n; * PARAMETERS:  *time_desc          - The &squot;time to delay&squot; object descriptor&n; *              *obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Acquire an AML mutex&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_acquire_mutex
 id|acpi_ex_acquire_mutex
@@ -144,7 +144,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_acquire_mutex&quot;
+l_string|&quot;ex_acquire_mutex&quot;
 comma
 id|obj_desc
 )paren
@@ -197,7 +197,7 @@ id|obj_desc-&gt;mutex.sync_level
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Cannot acquire Mutex [%4.4s], incorrect Sync_level&bslash;n&quot;
+l_string|&quot;Cannot acquire Mutex [%4.4s], incorrect sync_level&bslash;n&quot;
 comma
 id|obj_desc-&gt;mutex.node-&gt;name.ascii
 )paren
@@ -253,7 +253,7 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/* Includes failure from a timeout on Time_desc */
+multiline_comment|/* Includes failure from a timeout on time_desc */
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -287,7 +287,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_release_mutex&n; *&n; * PARAMETERS:  *Obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release a previously acquired Mutex.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_release_mutex&n; *&n; * PARAMETERS:  *obj_desc           - The object descriptor for this op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release a previously acquired Mutex.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_release_mutex
 id|acpi_ex_release_mutex
@@ -306,7 +306,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_release_mutex&quot;
+l_string|&quot;ex_release_mutex&quot;
 )paren
 suffix:semicolon
 r_if
@@ -408,7 +408,7 @@ id|walk_state-&gt;thread-&gt;current_sync_level
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Cannot release Mutex [%4.4s], incorrect Sync_level&bslash;n&quot;
+l_string|&quot;Cannot release Mutex [%4.4s], incorrect sync_level&bslash;n&quot;
 comma
 id|obj_desc-&gt;mutex.node-&gt;name.ascii
 )paren
@@ -468,7 +468,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_release_all_mutexes&n; *&n; * PARAMETERS:  *Mutex_list           - Head of the mutex list&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release all mutexes in the list&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_release_all_mutexes&n; *&n; * PARAMETERS:  *mutex_list           - Head of the mutex list&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release all mutexes in the list&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_release_all_mutexes
 id|acpi_ex_release_all_mutexes

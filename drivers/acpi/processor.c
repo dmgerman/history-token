@@ -1635,7 +1635,7 @@ op_assign
 id|inl
 c_func
 (paren
-id|acpi_fadt.Xpm_tmr_blk.address
+id|acpi_fadt.xpm_tmr_blk.address
 )paren
 suffix:semicolon
 multiline_comment|/* Invoke C2 */
@@ -1656,7 +1656,7 @@ op_assign
 id|inl
 c_func
 (paren
-id|acpi_fadt.Xpm_tmr_blk.address
+id|acpi_fadt.xpm_tmr_blk.address
 )paren
 suffix:semicolon
 multiline_comment|/* Get end time (ticks) */
@@ -1665,7 +1665,7 @@ op_assign
 id|inl
 c_func
 (paren
-id|acpi_fadt.Xpm_tmr_blk.address
+id|acpi_fadt.xpm_tmr_blk.address
 )paren
 suffix:semicolon
 multiline_comment|/* Re-enable interrupts */
@@ -1711,7 +1711,7 @@ op_assign
 id|inl
 c_func
 (paren
-id|acpi_fadt.Xpm_tmr_blk.address
+id|acpi_fadt.xpm_tmr_blk.address
 )paren
 suffix:semicolon
 multiline_comment|/* Invoke C3 */
@@ -1732,7 +1732,7 @@ op_assign
 id|inl
 c_func
 (paren
-id|acpi_fadt.Xpm_tmr_blk.address
+id|acpi_fadt.xpm_tmr_blk.address
 )paren
 suffix:semicolon
 multiline_comment|/* Get end time (ticks) */
@@ -1741,7 +1741,7 @@ op_assign
 id|inl
 c_func
 (paren
-id|acpi_fadt.Xpm_tmr_blk.address
+id|acpi_fadt.xpm_tmr_blk.address
 )paren
 suffix:semicolon
 multiline_comment|/* Enable bus master arbitration */

@@ -3,10 +3,10 @@ multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  
 macro_line|#ifndef __ACNAMESP_H__
 DECL|macro|__ACNAMESP_H__
 mdefine_line|#define __ACNAMESP_H__
-multiline_comment|/* To search the entire name space, pass this as Search_base */
+multiline_comment|/* To search the entire name space, pass this as search_base */
 DECL|macro|ACPI_NS_ALL
 mdefine_line|#define ACPI_NS_ALL                 ((acpi_handle)0)
-multiline_comment|/*&n; * Elements of Acpi_ns_properties are bit significant&n; * and should be one-to-one with values of acpi_object_type&n; */
+multiline_comment|/*&n; * Elements of acpi_ns_properties are bit significant&n; * and should be one-to-one with values of acpi_object_type&n; */
 DECL|macro|ACPI_NS_NORMAL
 mdefine_line|#define ACPI_NS_NORMAL              0
 DECL|macro|ACPI_NS_NEWSCOPE
@@ -24,7 +24,7 @@ DECL|macro|ACPI_NS_ROOT_PATH
 mdefine_line|#define ACPI_NS_ROOT_PATH           &quot;&bslash;&bslash;&quot;
 DECL|macro|ACPI_NS_SYSTEM_BUS
 mdefine_line|#define ACPI_NS_SYSTEM_BUS          &quot;_SB_&quot;
-multiline_comment|/* Flags for Acpi_ns_lookup, Acpi_ns_search_and_enter */
+multiline_comment|/* Flags for acpi_ns_lookup, acpi_ns_search_and_enter */
 DECL|macro|ACPI_NS_NO_UPSEARCH
 mdefine_line|#define ACPI_NS_NO_UPSEARCH         0
 DECL|macro|ACPI_NS_SEARCH_PARENT

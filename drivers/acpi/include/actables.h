@@ -3,7 +3,7 @@ multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  
 macro_line|#ifndef __ACTABLES_H__
 DECL|macro|__ACTABLES_H__
 mdefine_line|#define __ACTABLES_H__
-multiline_comment|/* Used in Acpi_tb_map_acpi_table for size parameter if table header is to be used */
+multiline_comment|/* Used in acpi_tb_map_acpi_table for size parameter if table header is to be used */
 DECL|macro|SIZE_IN_HEADER
 mdefine_line|#define SIZE_IN_HEADER          0
 id|acpi_status

@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;tbget&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table&n; *&n; * PARAMETERS:  Address             - Address of table to retrieve.  Can be&n; *                                    Logical or Physical&n; *              Table_info          - Where table info is returned&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Get entire table of unknown size.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_get_table&n; *&n; * PARAMETERS:  Address             - Address of table to retrieve.  Can be&n; *                                    Logical or Physical&n; *              table_info          - Where table info is returned&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Get entire table of unknown size.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_get_table
 id|acpi_tb_get_table
@@ -30,7 +30,7 @@ id|header
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_get_table&quot;
+l_string|&quot;tb_get_table&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the header in order to get signature and table size&n;&t; */
@@ -107,7 +107,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_header&n; *&n; * PARAMETERS:  Address             - Address of table to retrieve.  Can be&n; *                                    Logical or Physical&n; *              Return_header       - Where the table header is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get an ACPI table header.  Works in both physical or virtual&n; *              addressing mode.  Works with both physical or logical pointers.&n; *              Table is either copied or mapped, depending on the pointer&n; *              type and mode of the processor.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_get_table_header&n; *&n; * PARAMETERS:  Address             - Address of table to retrieve.  Can be&n; *                                    Logical or Physical&n; *              return_header       - Where the table header is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get an ACPI table header.  Works in both physical or virtual&n; *              addressing mode.  Works with both physical or logical pointers.&n; *              Table is either copied or mapped, depending on the pointer&n; *              type and mode of the processor.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_get_table_header
 id|acpi_tb_get_table_header
@@ -134,10 +134,10 @@ l_int|NULL
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_get_table_header&quot;
+l_string|&quot;tb_get_table_header&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Flags contains the current processor mode (Virtual or Physical addressing)&n;&t; * The Pointer_type is either Logical or Physical&n;&t; */
+multiline_comment|/*&n;&t; * Flags contains the current processor mode (Virtual or Physical addressing)&n;&t; * The pointer_type is either Logical or Physical&n;&t; */
 r_switch
 c_cond
 (paren
@@ -274,7 +274,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_body&n; *&n; * PARAMETERS:  Address             - Address of table to retrieve.  Can be&n; *                                    Logical or Physical&n; *              Header              - Header of the table to retrieve&n; *              Table_info          - Where the table info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get an entire ACPI table with support to allow the host OS to&n; *              replace the table with a newer version (table override.)&n; *              Works in both physical or virtual&n; *              addressing mode.  Works with both physical or logical pointers.&n; *              Table is either copied or mapped, depending on the pointer&n; *              type and mode of the processor.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_get_table_body&n; *&n; * PARAMETERS:  Address             - Address of table to retrieve.  Can be&n; *                                    Logical or Physical&n; *              Header              - Header of the table to retrieve&n; *              table_info          - Where the table info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get an entire ACPI table with support to allow the host OS to&n; *              replace the table with a newer version (table override.)&n; *              Works in both physical or virtual&n; *              addressing mode.  Works with both physical or logical pointers.&n; *              Table is either copied or mapped, depending on the pointer&n; *              type and mode of the processor.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_get_table_body
 id|acpi_tb_get_table_body
@@ -297,7 +297,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_get_table_body&quot;
+l_string|&quot;tb_get_table_body&quot;
 )paren
 suffix:semicolon
 r_if
@@ -360,7 +360,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_table_override&n; *&n; * PARAMETERS:  Header              - Pointer to table header&n; *              Table_info          - Return info if table is overridden&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Attempts override of current table with a new one if provided&n; *              by the host OS.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_table_override&n; *&n; * PARAMETERS:  Header              - Pointer to table header&n; *              table_info          - Return info if table is overridden&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Attempts override of current table with a new one if provided&n; *              by the host OS.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_table_override
 id|acpi_tb_table_override
@@ -386,10 +386,10 @@ id|address
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_table_override&quot;
+l_string|&quot;tb_table_override&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The OSL will examine the header and decide whether to override this&n;&t; * table.  If it decides to override, a table will be returned in New_table,&n;&t; * which we will then copy.&n;&t; */
+multiline_comment|/*&n;&t; * The OSL will examine the header and decide whether to override this&n;&t; * table.  If it decides to override, a table will be returned in new_table,&n;&t; * which we will then copy.&n;&t; */
 id|status
 op_assign
 id|acpi_os_table_override
@@ -508,7 +508,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_this_table&n; *&n; * PARAMETERS:  Address             - Address of table to retrieve.  Can be&n; *                                    Logical or Physical&n; *              Header              - Header of the table to retrieve&n; *              Table_info          - Where the table info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get an entire ACPI table.  Works in both physical or virtual&n; *              addressing mode.  Works with both physical or logical pointers.&n; *              Table is either copied or mapped, depending on the pointer&n; *              type and mode of the processor.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_get_this_table&n; *&n; * PARAMETERS:  Address             - Address of table to retrieve.  Can be&n; *                                    Logical or Physical&n; *              Header              - Header of the table to retrieve&n; *              table_info          - Where the table info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get an entire ACPI table.  Works in both physical or virtual&n; *              addressing mode.  Works with both physical or logical pointers.&n; *              Table is either copied or mapped, depending on the pointer&n; *              type and mode of the processor.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_get_this_table
 id|acpi_tb_get_this_table
@@ -542,10 +542,10 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_get_this_table&quot;
+l_string|&quot;tb_get_this_table&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Flags contains the current processor mode (Virtual or Physical addressing)&n;&t; * The Pointer_type is either Logical or Physical&n;&t; */
+multiline_comment|/*&n;&t; * Flags contains the current processor mode (Virtual or Physical addressing)&n;&t; * The pointer_type is either Logical or Physical&n;&t; */
 r_switch
 c_cond
 (paren
@@ -772,7 +772,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_ptr&n; *&n; * PARAMETERS:  Table_type      - one of the defined table types&n; *              Instance        - Which table of this type&n; *              Table_ptr_loc   - pointer to location to place the pointer for&n; *                                return&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get the pointer to an ACPI table.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_get_table_ptr&n; *&n; * PARAMETERS:  table_type      - one of the defined table types&n; *              Instance        - Which table of this type&n; *              table_ptr_loc   - pointer to location to place the pointer for&n; *                                return&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get the pointer to an ACPI table.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_get_table_ptr
 id|acpi_tb_get_table_ptr
@@ -798,7 +798,7 @@ id|i
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_get_table_ptr&quot;
+l_string|&quot;tb_get_table_ptr&quot;
 )paren
 suffix:semicolon
 r_if
@@ -874,7 +874,7 @@ id|AE_NOT_EXIST
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Walk the list to get the desired table&n;&t; * Since the if (Instance == 1) check above checked for the&n;&t; * first table, setting Table_desc equal to the .Next member&n;&t; * is actually pointing to the second table.  Therefore, we&n;&t; * need to walk from the 2nd table until we reach the Instance&n;&t; * that the user is looking for and return its table pointer.&n;&t; */
+multiline_comment|/* Walk the list to get the desired table&n;&t; * Since the if (Instance == 1) check above checked for the&n;&t; * first table, setting table_desc equal to the .Next member&n;&t; * is actually pointing to the second table.  Therefore, we&n;&t; * need to walk from the 2nd table until we reach the Instance&n;&t; * that the user is looking for and return its table pointer.&n;&t; */
 id|table_desc
 op_assign
 id|acpi_gbl_acpi_tables

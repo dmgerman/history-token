@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;pswalk&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_walk_op&n; *&n; * PARAMETERS:  Walk_state          - Current state of the walk&n; *              Op                  - Current Op to be walked&n; *              Ascending_callback  - Procedure called when Op is complete&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the next Op in a walk of the parse tree.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_get_next_walk_op&n; *&n; * PARAMETERS:  walk_state          - Current state of the walk&n; *              Op                  - Current Op to be walked&n; *              ascending_callback  - Procedure called when Op is complete&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the next Op in a walk of the parse tree.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ps_get_next_walk_op
 id|acpi_ps_get_next_walk_op
@@ -43,7 +43,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ps_get_next_walk_op&quot;
+l_string|&quot;ps_get_next_walk_op&quot;
 comma
 id|op
 )paren
@@ -297,7 +297,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_delete_completed_op&n; *&n; * PARAMETERS:  State           - Walk state&n; *              Op              - Completed op&n; *&n; * RETURN:      AE_OK&n; *&n; * DESCRIPTION: Callback function for Acpi_ps_get_next_walk_op(). Used during&n; *              Acpi_ps_delete_parse tree to delete Op objects when all sub-objects&n; *              have been visited (and deleted.)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_delete_completed_op&n; *&n; * PARAMETERS:  State           - Walk state&n; *              Op              - Completed op&n; *&n; * RETURN:      AE_OK&n; *&n; * DESCRIPTION: Callback function for acpi_ps_get_next_walk_op(). Used during&n; *              acpi_ps_delete_parse tree to delete Op objects when all sub-objects&n; *              have been visited (and deleted.)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ps_delete_completed_op
 id|acpi_ps_delete_completed_op
@@ -318,7 +318,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_delete_parse_tree&n; *&n; * PARAMETERS:  Subtree_root        - Root of tree (or subtree) to delete&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Delete a portion of or an entire parse tree.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_delete_parse_tree&n; *&n; * PARAMETERS:  subtree_root        - Root of tree (or subtree) to delete&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Delete a portion of or an entire parse tree.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ps_delete_parse_tree
 id|acpi_ps_delete_parse_tree
@@ -341,7 +341,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ps_delete_parse_tree&quot;
+l_string|&quot;ps_delete_parse_tree&quot;
 comma
 id|subtree_root
 )paren

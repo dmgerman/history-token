@@ -5,7 +5,7 @@ DECL|macro|__ACPIOSXF_H__
 mdefine_line|#define __ACPIOSXF_H__
 macro_line|#include &quot;platform/acenv.h&quot;
 macro_line|#include &quot;actypes.h&quot;
-multiline_comment|/* Priorities for Acpi_os_queue_for_execution */
+multiline_comment|/* Priorities for acpi_os_queue_for_execution */
 DECL|macro|OSD_PRIORITY_GPE
 mdefine_line|#define OSD_PRIORITY_GPE            1
 DECL|macro|OSD_PRIORITY_HIGH
@@ -18,7 +18,7 @@ DECL|macro|ACPI_NO_UNIT_LIMIT
 mdefine_line|#define ACPI_NO_UNIT_LIMIT          ((u32) -1)
 DECL|macro|ACPI_MUTEX_SEM
 mdefine_line|#define ACPI_MUTEX_SEM              1
-multiline_comment|/* Functions for Acpi_os_signal */
+multiline_comment|/* Functions for acpi_os_signal */
 DECL|macro|ACPI_SIGNAL_FATAL
 mdefine_line|#define ACPI_SIGNAL_FATAL           0
 DECL|macro|ACPI_SIGNAL_BREAKPOINT

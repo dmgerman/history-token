@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;nsdumpdv&quot;
 )paren
 macro_line|#if defined(ACPI_DEBUG_OUTPUT) || defined(ACPI_DEBUGGER)
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_dump_one_device&n; *&n; * PARAMETERS:  Handle              - Node to be dumped&n; *              Level               - Nesting level of the handle&n; *              Context             - Passed into Walk_namespace&n; *&n; * DESCRIPTION: Dump a single Node that represents a device&n; *              This procedure is a User_function called by Acpi_ns_walk_namespace.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_dump_one_device&n; *&n; * PARAMETERS:  Handle              - Node to be dumped&n; *              Level               - Nesting level of the handle&n; *              Context             - Passed into walk_namespace&n; *&n; * DESCRIPTION: Dump a single Node that represents a device&n; *              This procedure is a user_function called by acpi_ns_walk_namespace.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_dump_one_device
 id|acpi_ns_dump_one_device
@@ -41,7 +41,7 @@ id|i
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ns_dump_one_device&quot;
+l_string|&quot;ns_dump_one_device&quot;
 )paren
 suffix:semicolon
 id|status
@@ -131,7 +131,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_dump_root_devices&n; *&n; * PARAMETERS:  None&n; *&n; * DESCRIPTION: Dump all objects of type &quot;device&quot;&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_dump_root_devices&n; *&n; * PARAMETERS:  None&n; *&n; * DESCRIPTION: Dump all objects of type &quot;device&quot;&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_dump_root_devices
 id|acpi_ns_dump_root_devices
@@ -147,7 +147,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ns_dump_root_devices&quot;
+l_string|&quot;ns_dump_root_devices&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Only dump the table if tracing is enabled */

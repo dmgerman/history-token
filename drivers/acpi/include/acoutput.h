@@ -4,7 +4,7 @@ macro_line|#ifndef __ACOUTPUT_H__
 DECL|macro|__ACOUTPUT_H__
 mdefine_line|#define __ACOUTPUT_H__
 multiline_comment|/*&n; * Debug levels and component IDs.  These are used to control the&n; * granularity of the output of the DEBUG_PRINT macro -- on a per-&n; * component basis and a per-exception-type basis.&n; */
-multiline_comment|/* Component IDs are used in the global &quot;Debug_layer&quot; */
+multiline_comment|/* Component IDs are used in the global &quot;debug_layer&quot; */
 DECL|macro|ACPI_UTILITIES
 mdefine_line|#define ACPI_UTILITIES              0x00000001
 DECL|macro|ACPI_HARDWARE
@@ -107,7 +107,7 @@ DECL|macro|ACPI_LV_INTERRUPTS
 mdefine_line|#define ACPI_LV_INTERRUPTS          0x08000000
 DECL|macro|ACPI_LV_VERBOSITY3
 mdefine_line|#define ACPI_LV_VERBOSITY3          0x0F000000 | ACPI_LV_VERBOSITY2
-multiline_comment|/* Exceptionally verbose output -- also used in the global &quot;Debug_level&quot; */
+multiline_comment|/* Exceptionally verbose output -- also used in the global &quot;debug_level&quot; */
 DECL|macro|ACPI_LV_AML_DISASSEMBLE
 mdefine_line|#define ACPI_LV_AML_DISASSEMBLE     0x10000000
 DECL|macro|ACPI_LV_VERBOSE_INFO
@@ -121,7 +121,7 @@ mdefine_line|#define ACPI_LV_VERBOSE             0xF0000000
 multiline_comment|/*&n; * Debug level macros that are used in the DEBUG_PRINT macros&n; */
 DECL|macro|ACPI_DEBUG_LEVEL
 mdefine_line|#define ACPI_DEBUG_LEVEL(dl)        (u32) dl,__LINE__,&amp;_dbg
-multiline_comment|/* Exception level -- used in the global &quot;Debug_level&quot; */
+multiline_comment|/* Exception level -- used in the global &quot;debug_level&quot; */
 DECL|macro|ACPI_DB_ERROR
 mdefine_line|#define ACPI_DB_ERROR               ACPI_DEBUG_LEVEL (ACPI_LV_ERROR)
 DECL|macro|ACPI_DB_WARN
@@ -134,7 +134,7 @@ DECL|macro|ACPI_DB_INFO
 mdefine_line|#define ACPI_DB_INFO                ACPI_DEBUG_LEVEL (ACPI_LV_INFO)
 DECL|macro|ACPI_DB_ALL_EXCEPTIONS
 mdefine_line|#define ACPI_DB_ALL_EXCEPTIONS      ACPI_DEBUG_LEVEL (ACPI_LV_ALL_EXCEPTIONS)
-multiline_comment|/* Trace level -- also used in the global &quot;Debug_level&quot; */
+multiline_comment|/* Trace level -- also used in the global &quot;debug_level&quot; */
 DECL|macro|ACPI_DB_INIT_NAMES
 mdefine_line|#define ACPI_DB_INIT_NAMES          ACPI_DEBUG_LEVEL (ACPI_LV_INIT_NAMES)
 DECL|macro|ACPI_DB_THREADS
@@ -179,7 +179,7 @@ DECL|macro|ACPI_DB_MUTEX
 mdefine_line|#define ACPI_DB_MUTEX               ACPI_DEBUG_LEVEL (ACPI_LV_MUTEX)
 DECL|macro|ACPI_DB_ALL
 mdefine_line|#define ACPI_DB_ALL                 ACPI_DEBUG_LEVEL (ACPI_LV_ALL)
-multiline_comment|/* Defaults for Debug_level, debug and normal */
+multiline_comment|/* Defaults for debug_level, debug and normal */
 DECL|macro|ACPI_DEBUG_DEFAULT
 mdefine_line|#define ACPI_DEBUG_DEFAULT          (ACPI_LV_INIT | ACPI_LV_WARN | ACPI_LV_ERROR | ACPI_LV_DEBUG_OBJECT)
 DECL|macro|ACPI_NORMAL_DEFAULT

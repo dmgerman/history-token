@@ -20,7 +20,7 @@ multiline_comment|/* Total number of aml opcodes defined */
 DECL|macro|AML_NUM_OPCODES
 mdefine_line|#define AML_NUM_OPCODES                 0x7E
 multiline_comment|/*****************************************************************************&n; *&n; * Mutex typedefs and structs&n; *&n; ****************************************************************************/
-multiline_comment|/*&n; * Predefined handles for the mutex objects used within the subsystem&n; * All mutex objects are automatically created by Acpi_ut_mutex_initialize.&n; *&n; * The acquire/release ordering protocol is implied via this list.  Mutexes&n; * with a lower value must be acquired before mutexes with a higher value.&n; *&n; * NOTE: any changes here must be reflected in the Acpi_gbl_Mutex_names table also!&n; */
+multiline_comment|/*&n; * Predefined handles for the mutex objects used within the subsystem&n; * All mutex objects are automatically created by acpi_ut_mutex_initialize.&n; *&n; * The acquire/release ordering protocol is implied via this list.  Mutexes&n; * with a lower value must be acquired before mutexes with a higher value.&n; *&n; * NOTE: any changes here must be reflected in the acpi_gbl_mutex_names table also!&n; */
 DECL|macro|ACPI_MTX_EXECUTE
 mdefine_line|#define ACPI_MTX_EXECUTE                0
 DECL|macro|ACPI_MTX_INTERPRETER
@@ -73,7 +73,7 @@ l_string|&quot;ACPI_MTX_Dispatcher&quot;
 comma
 l_string|&quot;ACPI_MTX_Tables&quot;
 comma
-l_string|&quot;ACPI_MTX_Op_regions&quot;
+l_string|&quot;ACPI_MTX_op_regions&quot;
 comma
 l_string|&quot;ACPI_MTX_Namespace&quot;
 comma
@@ -85,9 +85,9 @@ l_string|&quot;ACPI_MTX_Caches&quot;
 comma
 l_string|&quot;ACPI_MTX_Memory&quot;
 comma
-l_string|&quot;ACPI_MTX_Debug_cmd_complete&quot;
+l_string|&quot;ACPI_MTX_debug_cmd_complete&quot;
 comma
-l_string|&quot;ACPI_MTX_Debug_cmd_ready&quot;
+l_string|&quot;ACPI_MTX_debug_cmd_ready&quot;
 comma
 )brace
 suffix:semicolon
@@ -171,7 +171,7 @@ DECL|typedef|acpi_interpreter_mode
 )brace
 id|acpi_interpreter_mode
 suffix:semicolon
-multiline_comment|/*&n; * The Node describes a named object that appears in the AML&n; * An Acpi_node is used to store Nodes.&n; *&n; * Data_type is used to differentiate between internal descriptors, and MUST&n; * be the first byte in this structure.&n; */
+multiline_comment|/*&n; * The Node describes a named object that appears in the AML&n; * An acpi_node is used to store Nodes.&n; *&n; * data_type is used to differentiate between internal descriptors, and MUST&n; * be the first byte in this structure.&n; */
 DECL|union|acpi_name_union
 r_typedef
 r_union
@@ -857,7 +857,7 @@ id|acpi_walk_state
 op_star
 id|walk_state_list
 suffix:semicolon
-multiline_comment|/* Head of list of Walk_states for this thread */
+multiline_comment|/* Head of list of walk_states for this thread */
 DECL|member|acquired_mutex_list
 r_union
 id|acpi_operand_obj
@@ -1162,7 +1162,7 @@ DECL|typedef|acpi_parse_obj_common
 )brace
 id|acpi_parse_obj_common
 suffix:semicolon
-multiline_comment|/*&n; * Extended Op for named ops (Scope, Method, etc.), deferred ops (Methods and Op_regions),&n; * and bytelists.&n; */
+multiline_comment|/*&n; * Extended Op for named ops (Scope, Method, etc.), deferred ops (Methods and op_regions),&n; * and bytelists.&n; */
 DECL|struct|acpi_parseobj_named
 r_typedef
 r_struct
@@ -1416,7 +1416,7 @@ DECL|macro|ACPI_PARSEOP_BYTELIST
 mdefine_line|#define ACPI_PARSEOP_BYTELIST                   0x08
 DECL|macro|ACPI_PARSEOP_IN_CACHE
 mdefine_line|#define ACPI_PARSEOP_IN_CACHE                   0x80
-multiline_comment|/* Parse object Disasm_flags */
+multiline_comment|/* Parse object disasm_flags */
 DECL|macro|ACPI_PARSEOP_IGNORE
 mdefine_line|#define ACPI_PARSEOP_IGNORE                     0x01
 DECL|macro|ACPI_PARSEOP_PARAMLIST
@@ -1466,7 +1466,7 @@ DECL|macro|ACPI_REGISTER_PROCESSOR_BLOCK
 mdefine_line|#define ACPI_REGISTER_PROCESSOR_BLOCK           0x08
 DECL|macro|ACPI_REGISTER_SMI_COMMAND_BLOCK
 mdefine_line|#define ACPI_REGISTER_SMI_COMMAND_BLOCK         0x09
-multiline_comment|/* Masks used to access the Bit_registers */
+multiline_comment|/* Masks used to access the bit_registers */
 DECL|macro|ACPI_BITMASK_TIMER_STATUS
 mdefine_line|#define ACPI_BITMASK_TIMER_STATUS               0x0001
 DECL|macro|ACPI_BITMASK_BUS_MASTER_STATUS
@@ -1505,7 +1505,7 @@ DECL|macro|ACPI_BITMASK_SLEEP_ENABLE
 mdefine_line|#define ACPI_BITMASK_SLEEP_ENABLE               0x2000
 DECL|macro|ACPI_BITMASK_ARB_DISABLE
 mdefine_line|#define ACPI_BITMASK_ARB_DISABLE                0x0001
-multiline_comment|/* Raw bit position of each Bit_register */
+multiline_comment|/* Raw bit position of each bit_register */
 DECL|macro|ACPI_BITPOSITION_TIMER_STATUS
 mdefine_line|#define ACPI_BITPOSITION_TIMER_STATUS           0x00
 DECL|macro|ACPI_BITPOSITION_BUS_MASTER_STATUS
@@ -1543,7 +1543,7 @@ mdefine_line|#define ACPI_BITPOSITION_SLEEP_ENABLE           0x0D
 DECL|macro|ACPI_BITPOSITION_ARB_DISABLE
 mdefine_line|#define ACPI_BITPOSITION_ARB_DISABLE            0x00
 multiline_comment|/*****************************************************************************&n; *&n; * Resource descriptors&n; *&n; ****************************************************************************/
-multiline_comment|/* Resource_type values */
+multiline_comment|/* resource_type values */
 DECL|macro|ACPI_RESOURCE_TYPE_MEMORY_RANGE
 mdefine_line|#define ACPI_RESOURCE_TYPE_MEMORY_RANGE         0
 DECL|macro|ACPI_RESOURCE_TYPE_IO_RANGE

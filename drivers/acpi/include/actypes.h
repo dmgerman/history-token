@@ -364,7 +364,7 @@ DECL|typedef|acpi_pointer
 )brace
 id|acpi_pointer
 suffix:semicolon
-multiline_comment|/* Pointer_types for above */
+multiline_comment|/* pointer_types for above */
 DECL|macro|ACPI_PHYSICAL_POINTER
 mdefine_line|#define ACPI_PHYSICAL_POINTER           0x01
 DECL|macro|ACPI_LOGICAL_POINTER
@@ -625,7 +625,7 @@ DECL|macro|ACPI_TABLE_MAX
 mdefine_line|#define ACPI_TABLE_MAX                  6
 DECL|macro|NUM_ACPI_TABLES
 mdefine_line|#define NUM_ACPI_TABLES                 (ACPI_TABLE_MAX+1)
-multiline_comment|/*&n; * Types associated with ACPI names and objects.  The first group of&n; * values (up to ACPI_TYPE_EXTERNAL_MAX) correspond to the definition&n; * of the ACPI Object_type() operator (See the ACPI Spec). Therefore,&n; * only add to the first group if the spec changes.&n; *&n; * Types must be kept in sync with the global Acpi_ns_properties&n; * and Acpi_ns_type_names arrays.&n; */
+multiline_comment|/*&n; * Types associated with ACPI names and objects.  The first group of&n; * values (up to ACPI_TYPE_EXTERNAL_MAX) correspond to the definition&n; * of the ACPI object_type() operator (See the ACPI Spec). Therefore,&n; * only add to the first group if the spec changes.&n; *&n; * Types must be kept in sync with the global acpi_ns_properties&n; * and acpi_ns_type_names arrays.&n; */
 DECL|typedef|acpi_object_type
 r_typedef
 id|u32
@@ -640,7 +640,7 @@ mdefine_line|#define ACPI_TYPE_STRING                0x02
 DECL|macro|ACPI_TYPE_BUFFER
 mdefine_line|#define ACPI_TYPE_BUFFER                0x03
 DECL|macro|ACPI_TYPE_PACKAGE
-mdefine_line|#define ACPI_TYPE_PACKAGE               0x04  /* Byte_const, multiple Data_term/Constant/Super_name */
+mdefine_line|#define ACPI_TYPE_PACKAGE               0x04  /* byte_const, multiple data_term/Constant/super_name */
 DECL|macro|ACPI_TYPE_FIELD_UNIT
 mdefine_line|#define ACPI_TYPE_FIELD_UNIT            0x05
 DECL|macro|ACPI_TYPE_DEVICE
@@ -648,15 +648,15 @@ mdefine_line|#define ACPI_TYPE_DEVICE                0x06  /* Name, multiple Nod
 DECL|macro|ACPI_TYPE_EVENT
 mdefine_line|#define ACPI_TYPE_EVENT                 0x07
 DECL|macro|ACPI_TYPE_METHOD
-mdefine_line|#define ACPI_TYPE_METHOD                0x08  /* Name, Byte_const, multiple Code */
+mdefine_line|#define ACPI_TYPE_METHOD                0x08  /* Name, byte_const, multiple Code */
 DECL|macro|ACPI_TYPE_MUTEX
 mdefine_line|#define ACPI_TYPE_MUTEX                 0x09
 DECL|macro|ACPI_TYPE_REGION
 mdefine_line|#define ACPI_TYPE_REGION                0x0A
 DECL|macro|ACPI_TYPE_POWER
-mdefine_line|#define ACPI_TYPE_POWER                 0x0B  /* Name,Byte_const,Word_const,multi Node */
+mdefine_line|#define ACPI_TYPE_POWER                 0x0B  /* Name,byte_const,word_const,multi Node */
 DECL|macro|ACPI_TYPE_PROCESSOR
-mdefine_line|#define ACPI_TYPE_PROCESSOR             0x0C  /* Name,Byte_const,DWord_const,Byte_const,multi Nm_o */
+mdefine_line|#define ACPI_TYPE_PROCESSOR             0x0C  /* Name,byte_const,Dword_const,byte_const,multi nm_o */
 DECL|macro|ACPI_TYPE_THERMAL
 mdefine_line|#define ACPI_TYPE_THERMAL               0x0D  /* Name, multiple Node */
 DECL|macro|ACPI_TYPE_BUFFER_FIELD
@@ -667,7 +667,7 @@ DECL|macro|ACPI_TYPE_DEBUG_OBJECT
 mdefine_line|#define ACPI_TYPE_DEBUG_OBJECT          0x10
 DECL|macro|ACPI_TYPE_EXTERNAL_MAX
 mdefine_line|#define ACPI_TYPE_EXTERNAL_MAX          0x10
-multiline_comment|/*&n; * These are object types that do not map directly to the ACPI&n; * Object_type() operator. They are used for various internal purposes only.&n; * If new predefined ACPI_TYPEs are added (via the ACPI specification), these&n; * internal types must move upwards. (There is code that depends on these&n; * values being contiguous with the external types above.)&n; */
+multiline_comment|/*&n; * These are object types that do not map directly to the ACPI&n; * object_type() operator. They are used for various internal purposes only.&n; * If new predefined ACPI_TYPEs are added (via the ACPI specification), these&n; * internal types must move upwards. (There is code that depends on these&n; * values being contiguous with the external types above.)&n; */
 DECL|macro|ACPI_TYPE_LOCAL_REGION_FIELD
 mdefine_line|#define ACPI_TYPE_LOCAL_REGION_FIELD    0x11
 DECL|macro|ACPI_TYPE_LOCAL_BANK_FIELD
@@ -675,7 +675,7 @@ mdefine_line|#define ACPI_TYPE_LOCAL_BANK_FIELD      0x12
 DECL|macro|ACPI_TYPE_LOCAL_INDEX_FIELD
 mdefine_line|#define ACPI_TYPE_LOCAL_INDEX_FIELD     0x13
 DECL|macro|ACPI_TYPE_LOCAL_REFERENCE
-mdefine_line|#define ACPI_TYPE_LOCAL_REFERENCE       0x14  /* Arg#, Local#, Name, Debug, Ref_of, Index */
+mdefine_line|#define ACPI_TYPE_LOCAL_REFERENCE       0x14  /* Arg#, Local#, Name, Debug, ref_of, Index */
 DECL|macro|ACPI_TYPE_LOCAL_ALIAS
 mdefine_line|#define ACPI_TYPE_LOCAL_ALIAS           0x15
 DECL|macro|ACPI_TYPE_LOCAL_NOTIFY
@@ -687,7 +687,7 @@ mdefine_line|#define ACPI_TYPE_LOCAL_RESOURCE        0x18
 DECL|macro|ACPI_TYPE_LOCAL_RESOURCE_FIELD
 mdefine_line|#define ACPI_TYPE_LOCAL_RESOURCE_FIELD  0x19
 DECL|macro|ACPI_TYPE_LOCAL_SCOPE
-mdefine_line|#define ACPI_TYPE_LOCAL_SCOPE           0x1A  /* 1 Name, multiple Object_list Nodes */
+mdefine_line|#define ACPI_TYPE_LOCAL_SCOPE           0x1A  /* 1 Name, multiple object_list Nodes */
 DECL|macro|ACPI_TYPE_NS_NODE_MAX
 mdefine_line|#define ACPI_TYPE_NS_NODE_MAX           0x1A  /* Last typecode used within a NS Node */
 multiline_comment|/*&n; * These are special object types that never appear in&n; * a Namespace node, only in an acpi_operand_object&n; */
@@ -760,7 +760,7 @@ DECL|macro|ACPI_WRITE
 mdefine_line|#define ACPI_WRITE                      1
 DECL|macro|ACPI_IO_MASK
 mdefine_line|#define ACPI_IO_MASK                    1
-multiline_comment|/*&n; * Acpi_event Types: Fixed &amp; General Purpose&n; */
+multiline_comment|/*&n; * acpi_event Types: Fixed &amp; General Purpose&n; */
 DECL|typedef|acpi_event_type
 r_typedef
 id|u32
@@ -800,7 +800,7 @@ DECL|macro|ACPI_EVENT_WAKE_ENABLE
 mdefine_line|#define ACPI_EVENT_WAKE_ENABLE          0x1
 DECL|macro|ACPI_EVENT_WAKE_DISABLE
 mdefine_line|#define ACPI_EVENT_WAKE_DISABLE         0x1
-multiline_comment|/*&n; * Acpi_event Status:&n; * -------------&n; * The encoding of acpi_event_status is illustrated below.&n; * Note that a set bit (1) indicates the property is TRUE&n; * (e.g. if bit 0 is set then the event is enabled).&n; * +-------------+-+-+-+&n; * |   Bits 31:3 |2|1|0|&n; * +-------------+-+-+-+&n; *          |     | | |&n; *          |     | | +- Enabled?&n; *          |     | +--- Enabled for wake?&n; *          |     +----- Set?&n; *          +----------- &lt;Reserved&gt;&n; */
+multiline_comment|/*&n; * acpi_event Status:&n; * -------------&n; * The encoding of acpi_event_status is illustrated below.&n; * Note that a set bit (1) indicates the property is TRUE&n; * (e.g. if bit 0 is set then the event is enabled).&n; * +-------------+-+-+-+&n; * |   Bits 31:3 |2|1|0|&n; * +-------------+-+-+-+&n; *          |     | | |&n; *          |     | | +- Enabled?&n; *          |     | +--- Enabled for wake?&n; *          |     +----- Set?&n; *          +----------- &lt;Reserved&gt;&n; */
 DECL|typedef|acpi_event_status
 r_typedef
 id|u32
@@ -845,7 +845,7 @@ DECL|macro|ACPI_ADR_SPACE_PCI_BAR_TARGET
 mdefine_line|#define ACPI_ADR_SPACE_PCI_BAR_TARGET   (acpi_adr_space_type) 6
 DECL|macro|ACPI_ADR_SPACE_DATA_TABLE
 mdefine_line|#define ACPI_ADR_SPACE_DATA_TABLE       (acpi_adr_space_type) 7
-multiline_comment|/*&n; * Bit_register IDs&n; * These are bitfields defined within the full ACPI registers&n; */
+multiline_comment|/*&n; * bit_register IDs&n; * These are bitfields defined within the full ACPI registers&n; */
 DECL|macro|ACPI_BITREG_TIMER_STATUS
 mdefine_line|#define ACPI_BITREG_TIMER_STATUS                0x00
 DECL|macro|ACPI_BITREG_BUS_MASTER_STATUS
@@ -900,7 +900,7 @@ DECL|member|type
 id|acpi_object_type
 id|type
 suffix:semicolon
-multiline_comment|/* See definition of Acpi_ns_type for values */
+multiline_comment|/* See definition of acpi_ns_type for values */
 r_struct
 (brace
 DECL|member|type
@@ -1087,14 +1087,14 @@ DECL|typedef|acpi_buffer
 )brace
 id|acpi_buffer
 suffix:semicolon
-multiline_comment|/*&n; * Name_type for Acpi_get_name&n; */
+multiline_comment|/*&n; * name_type for acpi_get_name&n; */
 DECL|macro|ACPI_FULL_PATHNAME
 mdefine_line|#define ACPI_FULL_PATHNAME              0
 DECL|macro|ACPI_SINGLE_NAME
 mdefine_line|#define ACPI_SINGLE_NAME                1
 DECL|macro|ACPI_NAME_TYPE_MAX
 mdefine_line|#define ACPI_NAME_TYPE_MAX              1
-multiline_comment|/*&n; * Structure and flags for Acpi_get_system_info&n; */
+multiline_comment|/*&n; * Structure and flags for acpi_get_system_info&n; */
 DECL|macro|ACPI_SYS_MODE_UNKNOWN
 mdefine_line|#define ACPI_SYS_MODE_UNKNOWN           0x0000
 DECL|macro|ACPI_SYS_MODE_ACPI
@@ -1117,7 +1117,7 @@ DECL|typedef|acpi_table_info
 )brace
 id|acpi_table_info
 suffix:semicolon
-multiline_comment|/*&n; * System info returned by Acpi_get_system_info()&n; */
+multiline_comment|/*&n; * System info returned by acpi_get_system_info()&n; */
 DECL|struct|_acpi_sys_info
 r_typedef
 r_struct
@@ -1338,7 +1338,7 @@ DECL|macro|ACPI_INTERRUPT_NOT_HANDLED
 mdefine_line|#define ACPI_INTERRUPT_NOT_HANDLED      0x00
 DECL|macro|ACPI_INTERRUPT_HANDLED
 mdefine_line|#define ACPI_INTERRUPT_HANDLED          0x01
-multiline_comment|/* Structure and flags for Acpi_get_device_info */
+multiline_comment|/* Structure and flags for acpi_get_device_info */
 DECL|macro|ACPI_VALID_HID
 mdefine_line|#define ACPI_VALID_HID                  0x1
 DECL|macro|ACPI_VALID_UID
@@ -1466,7 +1466,7 @@ DECL|macro|ACPI_WRITE_COMBINING_MEMORY
 mdefine_line|#define ACPI_WRITE_COMBINING_MEMORY     (u8) 0x02
 DECL|macro|ACPI_PREFETCHABLE_MEMORY
 mdefine_line|#define ACPI_PREFETCHABLE_MEMORY        (u8) 0x03
-multiline_comment|/*&n; *  IO Attributes&n; *  The ISA IO ranges are:     n000-n0_fFh, n400-n4_fFh, n800-n8_fFh, n_c00-n_cFFh.&n; *  The non-ISA IO ranges are: n100-n3_fFh, n500-n7_fFh, n900-n_bFFh, n_cD0-n_fFFh.&n; */
+multiline_comment|/*&n; *  IO Attributes&n; *  The ISA Io ranges are:     n000-n0_ffh, n400-n4_ffh, n800-n8_ffh, n_c00-n_cFFh.&n; *  The non-ISA Io ranges are: n100-n3_ffh, n500-n7_ffh, n900-n_bFfh, n_cd0-n_fFFh.&n; */
 DECL|macro|ACPI_NON_ISA_ONLY_RANGES
 mdefine_line|#define ACPI_NON_ISA_ONLY_RANGES        (u8) 0x01
 DECL|macro|ACPI_ISA_ONLY_RANGES

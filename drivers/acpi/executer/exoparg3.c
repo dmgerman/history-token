@@ -11,7 +11,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;exoparg3&quot;
 )paren
 multiline_comment|/*!&n; * Naming convention for AML interpreter execution routines.&n; *&n; * The routines that begin execution of AML opcodes are named with a common&n; * convention based upon the number of arguments, the number of target operands,&n; * and whether or not a value is returned:&n; *&n; *      AcpiExOpcode_xA_yT_zR&n; *&n; * Where:&n; *&n; * xA - ARGUMENTS:    The number of arguments (input operands) that are&n; *                    required for this opcode type (1 through 6 args).&n; * yT - TARGETS:      The number of targets (output operands) that are required&n; *                    for this opcode type (0, 1, or 2 targets).&n; * zR - RETURN VALUE: Indicates whether this opcode type returns a value&n; *                    as the function return (0 or 1).&n; *&n; * The AcpiExOpcode* functions are called via the Dispatcher component with&n; * fully resolved operands.&n;!*/
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_opcode_3A_0T_0R&n; *&n; * PARAMETERS:  Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute Triadic operator (3 operands)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_opcode_3A_0T_0R&n; *&n; * PARAMETERS:  walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute Triadic operator (3 operands)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_opcode_3A_0T_0R
 id|acpi_ex_opcode_3A_0T_0R
@@ -43,7 +43,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_STR
 (paren
-l_string|&quot;Ex_opcode_3A_0T_0R&quot;
+l_string|&quot;ex_opcode_3A_0T_0R&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren
@@ -60,13 +60,13 @@ id|walk_state-&gt;opcode
 r_case
 id|AML_FATAL_OP
 suffix:colon
-multiline_comment|/* Fatal (Fatal_type Fatal_code Fatal_arg)   */
+multiline_comment|/* Fatal (fatal_type fatal_code fatal_arg)   */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Fatal_op: Type %X Code %X Arg %X &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&bslash;n&quot;
+l_string|&quot;fatal_op: Type %X Code %X Arg %X &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -176,7 +176,7 @@ suffix:colon
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ex_opcode_3A_0T_0R: Unknown opcode %X&bslash;n&quot;
+l_string|&quot;acpi_ex_opcode_3A_0T_0R: Unknown opcode %X&bslash;n&quot;
 comma
 id|walk_state-&gt;opcode
 )paren
@@ -198,7 +198,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_opcode_3A_1T_1R&n; *&n; * PARAMETERS:  Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute Triadic operator (3 operands)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_opcode_3A_1T_1R&n; *&n; * PARAMETERS:  walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute Triadic operator (3 operands)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_opcode_3A_1T_1R
 id|acpi_ex_opcode_3A_1T_1R
@@ -242,7 +242,7 @@ id|length
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_STR
 (paren
-l_string|&quot;Ex_opcode_3A_1T_1R&quot;
+l_string|&quot;ex_opcode_3A_1T_1R&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren
@@ -434,7 +434,7 @@ suffix:colon
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ex_opcode_3A_0T_0R: Unknown opcode %X&bslash;n&quot;
+l_string|&quot;acpi_ex_opcode_3A_0T_0R: Unknown opcode %X&bslash;n&quot;
 comma
 id|walk_state-&gt;opcode
 )paren

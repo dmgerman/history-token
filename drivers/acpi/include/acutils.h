@@ -78,7 +78,7 @@ DECL|macro|REF_DECREMENT
 mdefine_line|#define REF_DECREMENT       (u16) 1
 DECL|macro|REF_FORCE_DELETE
 mdefine_line|#define REF_FORCE_DELETE    (u16) 2
-multiline_comment|/* Acpi_ut_dump_buffer */
+multiline_comment|/* acpi_ut_dump_buffer */
 DECL|macro|DB_BYTE_DISPLAY
 mdefine_line|#define DB_BYTE_DISPLAY     1
 DECL|macro|DB_WORD_DISPLAY
@@ -100,7 +100,7 @@ id|acpi_ut_terminate
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_init - miscellaneous initialization and shutdown&n; */
+multiline_comment|/*&n; * ut_init - miscellaneous initialization and shutdown&n; */
 id|acpi_status
 id|acpi_ut_hardware_initialize
 (paren
@@ -119,7 +119,7 @@ id|acpi_ut_validate_fadt
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_global - Global data structures and procedures&n; */
+multiline_comment|/*&n; * ut_global - Global data structures and procedures&n; */
 macro_line|#if defined(ACPI_DEBUG_OUTPUT) || defined(ACPI_DEBUGGER)
 r_char
 op_star
@@ -187,7 +187,7 @@ id|u32
 id|id_type
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_clib - Local implementations of C library functions&n; */
+multiline_comment|/*&n; * ut_clib - Local implementations of C library functions&n; */
 macro_line|#ifndef ACPI_USE_SYSTEM_CLIBRARY
 id|acpi_size
 id|acpi_ut_strlen
@@ -411,7 +411,7 @@ mdefine_line|#define ACPI_IS_ALPHA(c)  (_acpi_ctype[(unsigned char)(c)] &amp; (_
 DECL|macro|ACPI_IS_ASCII
 mdefine_line|#define ACPI_IS_ASCII(c)  ((c) &lt; 0x80)
 macro_line|#endif /* ACPI_USE_SYSTEM_CLIBRARY */
-multiline_comment|/*&n; * Ut_copy - Object construction and conversion interfaces&n; */
+multiline_comment|/*&n; * ut_copy - Object construction and conversion interfaces&n; */
 id|acpi_status
 id|acpi_ut_build_simple_object
 c_func
@@ -583,7 +583,7 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_create - Object creation&n; */
+multiline_comment|/*&n; * ut_create - Object creation&n; */
 id|acpi_status
 id|acpi_ut_update_object_reference
 (paren
@@ -595,7 +595,7 @@ id|u16
 id|action
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_debug - Debug interfaces&n; */
+multiline_comment|/*&n; * ut_debug - Debug interfaces&n; */
 r_void
 id|acpi_ut_init_stack_ptr_trace
 (paren
@@ -824,7 +824,7 @@ dot
 )paren
 id|ACPI_PRINTF_LIKE_FUNC
 suffix:semicolon
-multiline_comment|/*&n; * Ut_delete - Object deletion&n; */
+multiline_comment|/*&n; * ut_delete - Object deletion&n; */
 r_void
 id|acpi_ut_delete_internal_obj
 (paren
@@ -858,7 +858,7 @@ op_star
 id|obj_list
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_eval - object evaluation&n; */
+multiline_comment|/*&n; * ut_eval - object evaluation&n; */
 multiline_comment|/* Method name strings */
 DECL|macro|METHOD_NAME__HID
 mdefine_line|#define METHOD_NAME__HID        &quot;_HID&quot;
@@ -962,7 +962,7 @@ op_star
 id|uid
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_mutex - mutual exclusion interfaces&n; */
+multiline_comment|/*&n; * ut_mutex - mutual exclusion interfaces&n; */
 id|acpi_status
 id|acpi_ut_mutex_initialize
 (paren
@@ -1003,7 +1003,7 @@ id|acpi_mutex_handle
 id|mutex_id
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_object - internal object create/delete/cache routines&n; */
+multiline_comment|/*&n; * ut_object - internal object create/delete/cache routines&n; */
 id|acpi_operand_object
 op_star
 id|acpi_ut_create_internal_object_dbg
@@ -1065,7 +1065,7 @@ id|acpi_size
 id|buffer_size
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_ref_cnt - Object reference count management&n; */
+multiline_comment|/*&n; * ut_ref_cnt - Object reference count management&n; */
 r_void
 id|acpi_ut_add_reference
 (paren
@@ -1082,7 +1082,7 @@ op_star
 id|object
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_size - Object size routines&n; */
+multiline_comment|/*&n; * ut_size - Object size routines&n; */
 id|acpi_status
 id|acpi_ut_get_simple_object_size
 (paren
@@ -1139,7 +1139,7 @@ op_star
 id|context
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_state - Generic state creation/cache routines&n; */
+multiline_comment|/*&n; * ut_state - Generic state creation/cache routines&n; */
 r_void
 id|acpi_ut_push_generic_state
 (paren

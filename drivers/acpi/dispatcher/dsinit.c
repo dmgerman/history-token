@@ -12,7 +12,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dsinit&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_init_one_object&n; *&n; * PARAMETERS:  Obj_handle      - Node&n; *              Level           - Current nesting level&n; *              Context         - Points to a init info struct&n; *              Return_value    - Not used&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Callback from Acpi_walk_namespace. Invoked for every object&n; *              within the namespace.&n; *&n; *              Currently, the only objects that require initialization are:&n; *              1) Methods&n; *              2) Operation Regions&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_init_one_object&n; *&n; * PARAMETERS:  obj_handle      - Node&n; *              Level           - Current nesting level&n; *              Context         - Points to a init info struct&n; *              return_value    - Not used&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Callback from acpi_walk_namespace. Invoked for every object&n; *              within the namespace.&n; *&n; *              Currently, the only objects that require initialization are:&n; *              1) Methods&n; *              2) Operation Regions&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_init_one_object
 id|acpi_ds_init_one_object
@@ -51,7 +51,7 @@ id|context
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_init_one_object&quot;
+l_string|&quot;ds_init_one_object&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We are only interested in objects owned by the table that&n;&t; * was just loaded&n;&t; */
@@ -283,7 +283,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_initialize_objects&n; *&n; * PARAMETERS:  Table_desc      - Descriptor for parent ACPI table&n; *              Start_node      - Root of subtree to be initialized.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Walk the namespace starting at &quot;Start_node&quot; and perform any&n; *              necessary initialization on the objects found therein&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_initialize_objects&n; *&n; * PARAMETERS:  table_desc      - Descriptor for parent ACPI table&n; *              start_node      - Root of subtree to be initialized.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Walk the namespace starting at &quot;start_node&quot; and perform any&n; *              necessary initialization on the objects found therein&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_initialize_objects
 id|acpi_ds_initialize_objects
@@ -305,7 +305,7 @@ id|info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ds_initialize_objects&quot;
+l_string|&quot;ds_initialize_objects&quot;
 )paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
@@ -379,7 +379,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Walk_namespace failed, %s&bslash;n&quot;
+l_string|&quot;walk_namespace failed, %s&bslash;n&quot;
 comma
 id|acpi_format_exception
 (paren

@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exstorob&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store_buffer_to_buffer&n; *&n; * PARAMETERS:  Source_desc         - Source object to copy&n; *              Target_desc         - Destination object of the copy&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy a buffer object to another buffer object.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_store_buffer_to_buffer&n; *&n; * PARAMETERS:  source_desc         - Source object to copy&n; *              target_desc         - Destination object of the copy&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy a buffer object to another buffer object.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_store_buffer_to_buffer
 id|acpi_ex_store_buffer_to_buffer
@@ -31,12 +31,12 @@ id|buffer
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_store_buffer_to_buffer&quot;
+l_string|&quot;ex_store_buffer_to_buffer&quot;
 comma
 id|source_desc
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We know that Source_desc is a buffer by now&n;&t; */
+multiline_comment|/*&n;&t; * We know that source_desc is a buffer by now&n;&t; */
 id|buffer
 op_assign
 (paren
@@ -162,7 +162,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store_string_to_string&n; *&n; * PARAMETERS:  Source_desc         - Source object to copy&n; *              Target_desc         - Destination object of the copy&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy a String object to another String object&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_store_string_to_string&n; *&n; * PARAMETERS:  source_desc         - Source object to copy&n; *              target_desc         - Destination object of the copy&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy a String object to another String object&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_store_string_to_string
 id|acpi_ex_store_string_to_string
@@ -185,12 +185,12 @@ id|buffer
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_store_string_to_string&quot;
+l_string|&quot;ex_store_string_to_string&quot;
 comma
 id|source_desc
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We know that Source_desc is a string by now.&n;&t; */
+multiline_comment|/*&n;&t; * We know that source_desc is a string by now.&n;&t; */
 id|buffer
 op_assign
 (paren

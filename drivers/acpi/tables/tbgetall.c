@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;tbgetall&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_primary_table&n; *&n; * PARAMETERS:  Address             - Physical address of table to retrieve&n; *              *Table_info         - Where the table info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Maps the physical address of table into a logical address&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_get_primary_table&n; *&n; * PARAMETERS:  Address             - Physical address of table to retrieve&n; *              *table_info         - Where the table info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Maps the physical address of table into a logical address&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_get_primary_table
 id|acpi_tb_get_primary_table
@@ -30,7 +30,7 @@ id|header
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_get_primary_table&quot;
+l_string|&quot;tb_get_primary_table&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Ignore a NULL address in the RSDT */
@@ -73,7 +73,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Clear the Table_info */
+multiline_comment|/* Clear the table_info */
 id|ACPI_MEMSET
 (paren
 id|table_info
@@ -158,7 +158,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_secondary_table&n; *&n; * PARAMETERS:  Address             - Physical address of table to retrieve&n; *              *Table_info         - Where the table info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Maps the physical address of table into a logical address&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_get_secondary_table&n; *&n; * PARAMETERS:  Address             - Physical address of table to retrieve&n; *              *table_info         - Where the table info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Maps the physical address of table into a logical address&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_get_secondary_table
 id|acpi_tb_get_secondary_table
@@ -183,7 +183,7 @@ id|header
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_STR
 (paren
-l_string|&quot;Tb_get_secondary_table&quot;
+l_string|&quot;tb_get_secondary_table&quot;
 comma
 id|signature
 )paren
@@ -317,7 +317,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_required_tables&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate tables other than the RSDT.  The RSDT must&n; *              already be loaded and validated.&n; *&n; *              Get the minimum set of ACPI tables, namely:&n; *&n; *              1) FADT (via RSDT in loop below)&n; *              2) FACS (via FADT)&n; *              3) DSDT (via FADT)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_get_required_tables&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate tables other than the RSDT.  The RSDT must&n; *              already be loaded and validated.&n; *&n; *              Get the minimum set of ACPI tables, namely:&n; *&n; *              1) FADT (via RSDT in loop below)&n; *              2) FACS (via FADT)&n; *              3) DSDT (via FADT)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_get_required_tables
 id|acpi_tb_get_required_tables
@@ -341,7 +341,7 @@ id|address
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_get_required_tables&quot;
+l_string|&quot;tb_get_required_tables&quot;
 )paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
@@ -490,7 +490,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Get the FACS (Pointed to by the FADT)&n;&t; */
 id|address.pointer.value
 op_assign
-id|acpi_gbl_FADT-&gt;Xfirmware_ctrl
+id|acpi_gbl_FADT-&gt;xfirmware_ctrl
 suffix:semicolon
 id|status
 op_assign

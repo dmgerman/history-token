@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsparse&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Ns_one_complete_parse&n; *&n; * PARAMETERS:  Pass_number             - 1 or 2&n; *              Table_desc              - The table to be parsed.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform one complete parse of an ACPI/AML table.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    ns_one_complete_parse&n; *&n; * PARAMETERS:  pass_number             - 1 or 2&n; *              table_desc              - The table to be parsed.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform one complete parse of an ACPI/AML table.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_one_complete_parse
 id|acpi_ns_one_complete_parse
@@ -36,7 +36,7 @@ id|walk_state
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_one_complete_parse&quot;
+l_string|&quot;ns_one_complete_parse&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Create and init a Root Node */
@@ -162,7 +162,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_parse_table&n; *&n; * PARAMETERS:  Table_desc      - An ACPI table descriptor for table to parse&n; *              Start_node      - Where to enter the table into the namespace&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Parse AML within an ACPI table and return a tree of ops&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_parse_table&n; *&n; * PARAMETERS:  table_desc      - An ACPI table descriptor for table to parse&n; *              start_node      - Where to enter the table into the namespace&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Parse AML within an ACPI table and return a tree of ops&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_parse_table
 id|acpi_ns_parse_table
@@ -181,7 +181,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_parse_table&quot;
+l_string|&quot;ns_parse_table&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * AML Parse, pass 1&n;&t; *&n;&t; * In this pass, we load most of the namespace.  Control methods&n;&t; * are not parsed until later.  A parse tree is not created.  Instead,&n;&t; * each Parser Op subtree is deleted when it is finished.  This saves&n;&t; * a great deal of memory, and allows a small cache of parse objects&n;&t; * to service the entire parse.  The second pass of the parse then&n;&t; * performs another complete parse of the AML..&n;&t; */

@@ -84,7 +84,7 @@ op_star
 id|output_buffer
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Function prototypes called from Acpi_rs_create*&n; */
+multiline_comment|/*&n; * Function prototypes called from acpi_rs_create*&n; */
 r_void
 id|acpi_rs_dump_irq
 (paren

@@ -7,7 +7,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;hwsleep&quot;
 )paren
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_set_firmware_waking_vector&n; *&n; * PARAMETERS:  Physical_address    - Physical address of ACPI real mode&n; *                                    entry point.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Access function for d_firmware_waking_vector field in FACS&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_set_firmware_waking_vector&n; *&n; * PARAMETERS:  physical_address    - Physical address of ACPI real mode&n; *                                    entry point.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: access function for d_firmware_waking_vector field in FACS&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_set_firmware_waking_vector
 id|acpi_set_firmware_waking_vector
@@ -18,7 +18,7 @@ id|physical_address
 (brace
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_set_firmware_waking_vector&quot;
+l_string|&quot;acpi_set_firmware_waking_vector&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Set the vector */
@@ -60,7 +60,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_firmware_waking_vector&n; *&n; * PARAMETERS:  *Physical_address   - Output buffer where contents of&n; *                                    the Firmware_waking_vector field of&n; *                                    the FACS will be stored.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Access function for Firmware_waking_vector field in FACS&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_get_firmware_waking_vector&n; *&n; * PARAMETERS:  *physical_address   - Output buffer where contents of&n; *                                    the firmware_waking_vector field of&n; *                                    the FACS will be stored.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Access function for firmware_waking_vector field in FACS&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_firmware_waking_vector
 id|acpi_get_firmware_waking_vector
@@ -72,7 +72,7 @@ id|physical_address
 (brace
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_get_firmware_waking_vector&quot;
+l_string|&quot;acpi_get_firmware_waking_vector&quot;
 )paren
 suffix:semicolon
 r_if
@@ -129,7 +129,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_enter_sleep_state_prep&n; *&n; * PARAMETERS:  Sleep_state         - Which sleep state to enter&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Prepare to enter a system sleep state (see ACPI 2.0 spec p 231)&n; *              This function must execute with interrupts enabled.&n; *              We break sleeping into 2 stages so that OSPM can handle&n; *              various OS-specific tasks between the two steps.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_enter_sleep_state_prep&n; *&n; * PARAMETERS:  sleep_state         - Which sleep state to enter&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Prepare to enter a system sleep state (see ACPI 2.0 spec p 231)&n; *              This function must execute with interrupts enabled.&n; *              We break sleeping into 2 stages so that OSPM can handle&n; *              various OS-specific tasks between the two steps.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_enter_sleep_state_prep
 id|acpi_enter_sleep_state_prep
@@ -149,7 +149,7 @@ id|arg
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_enter_sleep_state_prep&quot;
+l_string|&quot;acpi_enter_sleep_state_prep&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * _PSW methods could be run here to enable wake-on keyboard, LAN, etc.&n;&t; */
@@ -272,7 +272,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_enter_sleep_state&n; *&n; * PARAMETERS:  Sleep_state         - Which sleep state to enter&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enter a system sleep state (see ACPI 2.0 spec p 231)&n; *              THIS FUNCTION MUST BE CALLED WITH INTERRUPTS DISABLED&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_enter_sleep_state&n; *&n; * PARAMETERS:  sleep_state         - Which sleep state to enter&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enter a system sleep state (see ACPI 2.0 spec p 231)&n; *              THIS FUNCTION MUST BE CALLED WITH INTERRUPTS DISABLED&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_enter_sleep_state
 id|acpi_enter_sleep_state
@@ -303,7 +303,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_enter_sleep_state&quot;
+l_string|&quot;acpi_enter_sleep_state&quot;
 )paren
 suffix:semicolon
 r_if
@@ -753,7 +753,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_leave_sleep_state&n; *&n; * PARAMETERS:  Sleep_state         - Which sleep state we just exited&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform OS-independent ACPI cleanup after a sleep&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_leave_sleep_state&n; *&n; * PARAMETERS:  sleep_state         - Which sleep state we just exited&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform OS-independent ACPI cleanup after a sleep&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_leave_sleep_state
 id|acpi_leave_sleep_state
@@ -773,10 +773,10 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_leave_sleep_state&quot;
+l_string|&quot;acpi_leave_sleep_state&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure Enter_sleep_state_prep -&gt; Enter_sleep_state ordering */
+multiline_comment|/* Ensure enter_sleep_state_prep -&gt; enter_sleep_state ordering */
 id|acpi_gbl_sleep_type_a
 op_assign
 id|ACPI_SLEEP_TYPE_INVALID

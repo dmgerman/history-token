@@ -1291,7 +1291,7 @@ op_star
 id|out_string
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * exregion - default Op_region handlers&n; */
+multiline_comment|/*&n; * exregion - default op_region handlers&n; */
 id|acpi_status
 id|acpi_ex_system_memory_space_handler
 (paren

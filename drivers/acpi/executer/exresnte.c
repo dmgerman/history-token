@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exresnte&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_node_to_value&n; *&n; * PARAMETERS:  Object_ptr      - Pointer to a location that contains&n; *                                a pointer to a NS node, and will receive a&n; *                                pointer to the resolved object.&n; *              Walk_state      - Current state.  Valid only if executing AML&n; *                                code.  NULL if simply resolving an object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Resolve a Namespace node to a valued object&n; *&n; * Note: for some of the data types, the pointer attached to the Node&n; * can be either a pointer to an actual internal object or a pointer into the&n; * AML stream itself.  These types are currently:&n; *&n; *      ACPI_TYPE_INTEGER&n; *      ACPI_TYPE_STRING&n; *      ACPI_TYPE_BUFFER&n; *      ACPI_TYPE_MUTEX&n; *      ACPI_TYPE_PACKAGE&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_resolve_node_to_value&n; *&n; * PARAMETERS:  object_ptr      - Pointer to a location that contains&n; *                                a pointer to a NS node, and will receive a&n; *                                pointer to the resolved object.&n; *              walk_state      - Current state.  Valid only if executing AML&n; *                                code.  NULL if simply resolving an object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Resolve a Namespace node to a valued object&n; *&n; * Note: for some of the data types, the pointer attached to the Node&n; * can be either a pointer to an actual internal object or a pointer into the&n; * AML stream itself.  These types are currently:&n; *&n; *      ACPI_TYPE_INTEGER&n; *      ACPI_TYPE_STRING&n; *      ACPI_TYPE_BUFFER&n; *      ACPI_TYPE_MUTEX&n; *      ACPI_TYPE_PACKAGE&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_resolve_node_to_value
 id|acpi_ex_resolve_node_to_value
@@ -49,7 +49,7 @@ id|entry_type
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_resolve_node_to_value&quot;
+l_string|&quot;ex_resolve_node_to_value&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The stack pointer points to a acpi_namespace_node (Node).  Get the&n;&t; * object that is attached to the Node.&n;&t; */
@@ -80,7 +80,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Entry=%p Source_desc=%p [%s]&bslash;n&quot;
+l_string|&quot;Entry=%p source_desc=%p [%s]&bslash;n&quot;
 comma
 id|node
 comma
@@ -424,7 +424,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Field_read Node=%p Source_desc=%p Type=%X&bslash;n&quot;
+l_string|&quot;field_read Node=%p source_desc=%p Type=%X&bslash;n&quot;
 comma
 id|node
 comma
@@ -545,7 +545,7 @@ id|AE_AML_OPERAND_TYPE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* switch (Entry_type) */
+multiline_comment|/* switch (entry_type) */
 multiline_comment|/* Put the object descriptor on the stack */
 op_star
 id|object_ptr

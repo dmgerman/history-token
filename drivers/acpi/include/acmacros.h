@@ -149,10 +149,10 @@ DECL|macro|ACPI_ROUND_DOWN_TO_64_BITS
 mdefine_line|#define ACPI_ROUND_DOWN_TO_64_BITS(a)        ACPI_ROUND_DOWN(a,8)
 DECL|macro|ACPI_ROUND_DOWN_TO_NATIVE_WORD
 mdefine_line|#define ACPI_ROUND_DOWN_TO_NATIVE_WORD(a)    ACPI_ROUND_DOWN(a,ALIGNED_ADDRESS_BOUNDARY)
-DECL|macro|ACPI_ROUND_UP_TO_32_bITS
-mdefine_line|#define ACPI_ROUND_UP_TO_32_bITS(a)          ACPI_ROUND_UP(a,4)
-DECL|macro|ACPI_ROUND_UP_TO_64_bITS
-mdefine_line|#define ACPI_ROUND_UP_TO_64_bITS(a)          ACPI_ROUND_UP(a,8)
+DECL|macro|ACPI_ROUND_UP_to_32_bITS
+mdefine_line|#define ACPI_ROUND_UP_to_32_bITS(a)          ACPI_ROUND_UP(a,4)
+DECL|macro|ACPI_ROUND_UP_to_64_bITS
+mdefine_line|#define ACPI_ROUND_UP_to_64_bITS(a)          ACPI_ROUND_UP(a,8)
 DECL|macro|ACPI_ROUND_UP_TO_NATIVE_WORD
 mdefine_line|#define ACPI_ROUND_UP_TO_NATIVE_WORD(a)      ACPI_ROUND_UP(a,ALIGNED_ADDRESS_BOUNDARY)
 DECL|macro|ACPI_ROUND_BITS_UP_TO_BYTES
@@ -313,7 +313,7 @@ multiline_comment|/*&n; * Debug macros that are conditionally compiled&n; */
 macro_line|#ifdef ACPI_DEBUG_OUTPUT
 DECL|macro|ACPI_MODULE_NAME
 mdefine_line|#define ACPI_MODULE_NAME(name)               static char ACPI_UNUSED_VAR *_THIS_MODULE = name;
-multiline_comment|/*&n; * Function entry tracing.&n; * The first parameter should be the procedure name as a quoted string.  This is declared&n; * as a local string (&quot;_Proc_name) so that it can be also used by the function exit macros below.&n; */
+multiline_comment|/*&n; * Function entry tracing.&n; * The first parameter should be the procedure name as a quoted string.  This is declared&n; * as a local string (&quot;_proc_name) so that it can be also used by the function exit macros below.&n; */
 DECL|macro|ACPI_FUNCTION_NAME
 mdefine_line|#define ACPI_FUNCTION_NAME(a)           acpi_debug_print_info _dbg;     &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.component_id = _COMPONENT; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.proc_name   = a;           &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.module_name = _THIS_MODULE;
 DECL|macro|ACPI_FUNCTION_TRACE
@@ -326,7 +326,7 @@ DECL|macro|ACPI_FUNCTION_TRACE_STR
 mdefine_line|#define ACPI_FUNCTION_TRACE_STR(a,b)    ACPI_FUNCTION_NAME(a)&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace_str(__LINE__,&amp;_dbg,(char *)b)
 DECL|macro|ACPI_FUNCTION_ENTRY
 mdefine_line|#define ACPI_FUNCTION_ENTRY()           acpi_ut_track_stack_ptr()
-multiline_comment|/*&n; * Function exit tracing.&n; * WARNING: These macros include a return statement.  This is usually considered&n; * bad form, but having a separate exit macro is very ugly and difficult to maintain.&n; * One of the FUNCTION_TRACE macros above must be used in conjunction with these macros&n; * so that &quot;_Proc_name&quot; is defined.&n; */
+multiline_comment|/*&n; * Function exit tracing.&n; * WARNING: These macros include a return statement.  This is usually considered&n; * bad form, but having a separate exit macro is very ugly and difficult to maintain.&n; * One of the FUNCTION_TRACE macros above must be used in conjunction with these macros&n; * so that &quot;_proc_name&quot; is defined.&n; */
 macro_line|#ifdef ACPI_USE_DO_WHILE_0
 DECL|macro|ACPI_DO_WHILE0
 mdefine_line|#define ACPI_DO_WHILE0(a)               do a while(0)

@@ -49,7 +49,7 @@ DECL|member|next_op_info
 id|u8
 id|next_op_info
 suffix:semicolon
-multiline_comment|/* Info about Next_op */
+multiline_comment|/* Info about next_op */
 DECL|member|num_operands
 id|u8
 id|num_operands
@@ -155,7 +155,7 @@ id|acpi_parse_object
 op_star
 id|method_call_op
 suffix:semicolon
-multiline_comment|/* Method_call Op if running a method */
+multiline_comment|/* method_call Op if running a method */
 DECL|member|method_desc
 r_union
 id|acpi_operand_obj
@@ -269,12 +269,12 @@ id|acpi_walk_state
 op_star
 id|next
 suffix:semicolon
-multiline_comment|/* Next Walk_state in list */
+multiline_comment|/* Next walk_state in list */
 DECL|typedef|acpi_walk_state
 )brace
 id|acpi_walk_state
 suffix:semicolon
-multiline_comment|/* Info used by Acpi_ps_init_objects */
+multiline_comment|/* Info used by acpi_ps_init_objects */
 DECL|struct|acpi_init_walk_info
 r_typedef
 r_struct
@@ -333,7 +333,7 @@ DECL|typedef|acpi_init_walk_info
 )brace
 id|acpi_init_walk_info
 suffix:semicolon
-multiline_comment|/* Info used by Acpi_ns_initialize_devices */
+multiline_comment|/* Info used by acpi_ns_initialize_devices */
 DECL|struct|acpi_device_walk_info
 r_typedef
 r_struct

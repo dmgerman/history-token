@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;psutils&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_create_scope_op&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Scope_op&n; *&n; * DESCRIPTION: Create a Scope and associated namepath op with the root name&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_create_scope_op&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      scope_op&n; *&n; * DESCRIPTION: Create a Scope and associated namepath op with the root name&n; *&n; ******************************************************************************/
 id|acpi_parse_object
 op_star
 DECL|function|acpi_ps_create_scope_op
@@ -53,7 +53,7 @@ id|scope_op
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_init_op&n; *&n; * PARAMETERS:  Op              - A newly allocated Op object&n; *              Opcode          - Opcode to store in the Op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Allocate an acpi_op, choose op type (and thus size) based on&n; *              opcode&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_init_op&n; *&n; * PARAMETERS:  Op              - A newly allocated Op object&n; *              Opcode          - Opcode to store in the Op&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Allocate an acpi_op, choose op type (and thus size) based on&n; *              opcode&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ps_init_op
 id|acpi_ps_init_op
@@ -101,7 +101,7 @@ id|op-&gt;common.aml_op_name
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_alloc_op&n; *&n; * PARAMETERS:  Opcode          - Opcode that will be stored in the new Op&n; *&n; * RETURN:      Pointer to the new Op.&n; *&n; * DESCRIPTION: Allocate an acpi_op, choose op type (and thus size) based on&n; *              opcode.  A cache of opcodes is available for the pure&n; *              GENERIC_OP, since this is by far the most commonly used.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_alloc_op&n; *&n; * PARAMETERS:  Opcode          - Opcode that will be stored in the new Op&n; *&n; * RETURN:      Pointer to the new Op.&n; *&n; * DESCRIPTION: Allocate an acpi_op, choose op type (and thus size) based on&n; *              opcode.  A cache of opcodes is available for the pure&n; *              GENERIC_OP, since this is by far the most commonly used.&n; *&n; ******************************************************************************/
 id|acpi_parse_object
 op_star
 DECL|function|acpi_ps_alloc_op
@@ -271,7 +271,7 @@ id|op
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_free_op&n; *&n; * PARAMETERS:  Op              - Op to be freed&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Free an Op object.  Either put it on the GENERIC_OP cache list&n; *              or actually free it.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_free_op&n; *&n; * PARAMETERS:  Op              - Op to be freed&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Free an Op object.  Either put it on the GENERIC_OP cache list&n; *              or actually free it.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ps_free_op
 id|acpi_ps_free_op
@@ -283,7 +283,7 @@ id|op
 (brace
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ps_free_op&quot;
+l_string|&quot;ps_free_op&quot;
 )paren
 suffix:semicolon
 r_if
@@ -333,7 +333,7 @@ id|op
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_delete_parse_cache&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Free all objects that are on the parse cache list.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_delete_parse_cache&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Free all objects that are on the parse cache list.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ps_delete_parse_cache
 id|acpi_ps_delete_parse_cache
@@ -343,7 +343,7 @@ r_void
 (brace
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ps_delete_parse_cache&quot;
+l_string|&quot;ps_delete_parse_cache&quot;
 )paren
 suffix:semicolon
 id|acpi_ut_delete_generic_cache

@@ -24,9 +24,9 @@ mdefine_line|#define ASL_RESNAME_GRANULARITY                 &quot;_GRA&quot;
 DECL|macro|ASL_RESNAME_INTERRUPT
 mdefine_line|#define ASL_RESNAME_INTERRUPT                   &quot;_INT&quot;
 DECL|macro|ASL_RESNAME_INTERRUPTLEVEL
-mdefine_line|#define ASL_RESNAME_INTERRUPTLEVEL              &quot;_LL_&quot;  /* Active_lo(1), Active_hi(0) */
+mdefine_line|#define ASL_RESNAME_INTERRUPTLEVEL              &quot;_LL_&quot;  /* active_lo(1), active_hi(0) */
 DECL|macro|ASL_RESNAME_INTERRUPTSHARE
-mdefine_line|#define ASL_RESNAME_INTERRUPTSHARE              &quot;_SHR&quot;  /* Shareable(1), No_share(0) */
+mdefine_line|#define ASL_RESNAME_INTERRUPTSHARE              &quot;_SHR&quot;  /* Shareable(1), no_share(0) */
 DECL|macro|ASL_RESNAME_INTERRUPTTYPE
 mdefine_line|#define ASL_RESNAME_INTERRUPTTYPE               &quot;_HE_&quot;  /* Edge(1), Level(0) */
 DECL|macro|ASL_RESNAME_LENGTH
@@ -34,7 +34,7 @@ mdefine_line|#define ASL_RESNAME_LENGTH                      &quot;_LEN&quot;
 DECL|macro|ASL_RESNAME_MEMATTRIBUTES
 mdefine_line|#define ASL_RESNAME_MEMATTRIBUTES               &quot;_MTP&quot;  /* Memory(0), Reserved(1), ACPI(2), NVS(3) */
 DECL|macro|ASL_RESNAME_MEMTYPE
-mdefine_line|#define ASL_RESNAME_MEMTYPE                     &quot;_MEM&quot;  /* Non_cache(0), Cacheable(1) Cache+combine(2), Cache+prefetch(3) */
+mdefine_line|#define ASL_RESNAME_MEMTYPE                     &quot;_MEM&quot;  /* non_cache(0), Cacheable(1) Cache+combine(2), Cache+prefetch(3) */
 DECL|macro|ASL_RESNAME_MAXADDR
 mdefine_line|#define ASL_RESNAME_MAXADDR                     &quot;_MAX&quot;
 DECL|macro|ASL_RESNAME_MINADDR
@@ -50,7 +50,7 @@ mdefine_line|#define ASL_RESNAME_REGISTERBITWIDTH            &quot;_RBW&quot;
 DECL|macro|ASL_RESNAME_RANGETYPE
 mdefine_line|#define ASL_RESNAME_RANGETYPE                   &quot;_RNG&quot;
 DECL|macro|ASL_RESNAME_READWRITETYPE
-mdefine_line|#define ASL_RESNAME_READWRITETYPE               &quot;_RW_&quot;  /* Read_only(0), Writeable (1) */
+mdefine_line|#define ASL_RESNAME_READWRITETYPE               &quot;_RW_&quot;  /* read_only(0), Writeable (1) */
 DECL|macro|ASL_RESNAME_TRANSLATION
 mdefine_line|#define ASL_RESNAME_TRANSLATION                 &quot;_TRA&quot;
 DECL|macro|ASL_RESNAME_TRANSTYPE
@@ -58,7 +58,7 @@ mdefine_line|#define ASL_RESNAME_TRANSTYPE                   &quot;_TRS&quot;  /
 DECL|macro|ASL_RESNAME_TYPE
 mdefine_line|#define ASL_RESNAME_TYPE                        &quot;_TTP&quot;  /* Translation(1), Static (0) */
 DECL|macro|ASL_RESNAME_XFERTYPE
-mdefine_line|#define ASL_RESNAME_XFERTYPE                    &quot;_SIZ&quot;  /* 8(0), 8_and16(1), 16(2) */
+mdefine_line|#define ASL_RESNAME_XFERTYPE                    &quot;_SIz&quot;  /* 8(0), 8_and16(1), 16(2) */
 multiline_comment|/* Default sizes for &quot;small&quot; resource descriptors */
 DECL|macro|ASL_RDESC_IRQ_SIZE
 mdefine_line|#define ASL_RDESC_IRQ_SIZE                      0x02
@@ -617,7 +617,7 @@ id|interrupt_number
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* Res_source_index, Res_source optional fields follow */
+multiline_comment|/* res_source_index, res_source optional fields follow */
 DECL|typedef|asl_extended_xrupt_desc
 )brace
 id|asl_extended_xrupt_desc
@@ -735,13 +735,13 @@ DECL|member|grg
 id|asl_general_register_desc
 id|grg
 suffix:semicolon
-DECL|member|U32_item
+DECL|member|u32_item
 id|u32
-id|U32_item
+id|u32_item
 suffix:semicolon
-DECL|member|U16_item
+DECL|member|u16_item
 id|u16
-id|U16_item
+id|u16_item
 suffix:semicolon
 DECL|member|U8item
 id|u8

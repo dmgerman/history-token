@@ -31,7 +31,7 @@ id|acpi_gbl_fn_exit_str
 op_assign
 l_string|&quot;----Exit-&quot;
 suffix:semicolon
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_init_stack_ptr_trace&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Save the current stack pointer&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_init_stack_ptr_trace&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Save the current stack pointer&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_init_stack_ptr_trace
 id|acpi_ut_init_stack_ptr_trace
@@ -53,7 +53,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_track_stack_ptr&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Save the current stack pointer&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_track_stack_ptr&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Save the current stack pointer&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_track_stack_ptr
 id|acpi_ut_track_stack_ptr
@@ -101,7 +101,7 @@ id|acpi_gbl_nesting_level
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_debug_print&n; *&n; * PARAMETERS:  Debug_level         - Requested debug print level&n; *              Proc_name           - Caller&squot;s procedure name&n; *              Module_name         - Caller&squot;s module name (for error output)&n; *              Line_number         - Caller&squot;s line number (for error output)&n; *              Component_id        - Caller&squot;s component ID (for error output)&n; *&n; *              Format              - Printf format field&n; *              ...                 - Optional printf arguments&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print error message with prefix consisting of the module name,&n; *              line number, and component ID.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_debug_print&n; *&n; * PARAMETERS:  debug_level         - Requested debug print level&n; *              proc_name           - Caller&squot;s procedure name&n; *              module_name         - Caller&squot;s module name (for error output)&n; *              line_number         - Caller&squot;s line number (for error output)&n; *              component_id        - Caller&squot;s component ID (for error output)&n; *&n; *              Format              - Printf format field&n; *              ...                 - Optional printf arguments&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print error message with prefix consisting of the module name,&n; *              line number, and component ID.&n; *&n; ****************************************************************************/
 r_void
 id|ACPI_INTERNAL_VAR_XFACE
 DECL|function|acpi_ut_debug_print
@@ -242,7 +242,7 @@ id|args
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_debug_print_raw&n; *&n; * PARAMETERS:  Requested_debug_level - Requested debug print level&n; *              Line_number         - Caller&squot;s line number&n; *              Dbg_info            - Contains:&n; *                  Proc_name           - Caller&squot;s procedure name&n; *                  Module_name         - Caller&squot;s module name&n; *                  Component_id        - Caller&squot;s component ID&n; *              Format              - Printf format field&n; *              ...                 - Optional printf arguments&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print message with no headers.  Has same interface as&n; *              Debug_print so that the same macros can be used.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_debug_print_raw&n; *&n; * PARAMETERS:  requested_debug_level - Requested debug print level&n; *              line_number         - Caller&squot;s line number&n; *              dbg_info            - Contains:&n; *                  proc_name           - Caller&squot;s procedure name&n; *                  module_name         - Caller&squot;s module name&n; *                  component_id        - Caller&squot;s component ID&n; *              Format              - Printf format field&n; *              ...                 - Optional printf arguments&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print message with no headers.  Has same interface as&n; *              debug_print so that the same macros can be used.&n; *&n; ****************************************************************************/
 r_void
 id|ACPI_INTERNAL_VAR_XFACE
 DECL|function|acpi_ut_debug_print_raw
@@ -306,7 +306,7 @@ id|args
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_trace&n; *&n; * PARAMETERS:  Line_number         - Caller&squot;s line number&n; *              Dbg_info            - Contains:&n; *                  Proc_name           - Caller&squot;s procedure name&n; *                  Module_name         - Caller&squot;s module name&n; *                  Component_id        - Caller&squot;s component ID&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function entry trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in Debug_level&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_trace&n; *&n; * PARAMETERS:  line_number         - Caller&squot;s line number&n; *              dbg_info            - Contains:&n; *                  proc_name           - Caller&squot;s procedure name&n; *                  module_name         - Caller&squot;s module name&n; *                  component_id        - Caller&squot;s component ID&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function entry trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in debug_level&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_trace
 id|acpi_ut_trace
@@ -340,7 +340,7 @@ id|acpi_gbl_fn_entry_str
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_trace_ptr&n; *&n; * PARAMETERS:  Line_number         - Caller&squot;s line number&n; *              Dbg_info            - Contains:&n; *                  Proc_name           - Caller&squot;s procedure name&n; *                  Module_name         - Caller&squot;s module name&n; *                  Component_id        - Caller&squot;s component ID&n; *              Pointer             - Pointer to display&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function entry trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in Debug_level&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_trace_ptr&n; *&n; * PARAMETERS:  line_number         - Caller&squot;s line number&n; *              dbg_info            - Contains:&n; *                  proc_name           - Caller&squot;s procedure name&n; *                  module_name         - Caller&squot;s module name&n; *                  component_id        - Caller&squot;s component ID&n; *              Pointer             - Pointer to display&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function entry trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in debug_level&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_trace_ptr
 id|acpi_ut_trace_ptr
@@ -380,7 +380,7 @@ id|pointer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_trace_str&n; *&n; * PARAMETERS:  Line_number         - Caller&squot;s line number&n; *              Dbg_info            - Contains:&n; *                  Proc_name           - Caller&squot;s procedure name&n; *                  Module_name         - Caller&squot;s module name&n; *                  Component_id        - Caller&squot;s component ID&n; *              String              - Additional string to display&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function entry trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in Debug_level&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_trace_str&n; *&n; * PARAMETERS:  line_number         - Caller&squot;s line number&n; *              dbg_info            - Contains:&n; *                  proc_name           - Caller&squot;s procedure name&n; *                  module_name         - Caller&squot;s module name&n; *                  component_id        - Caller&squot;s component ID&n; *              String              - Additional string to display&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function entry trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in debug_level&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_trace_str
 id|acpi_ut_trace_str
@@ -420,7 +420,7 @@ id|string
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_trace_u32&n; *&n; * PARAMETERS:  Line_number         - Caller&squot;s line number&n; *              Dbg_info            - Contains:&n; *                  Proc_name           - Caller&squot;s procedure name&n; *                  Module_name         - Caller&squot;s module name&n; *                  Component_id        - Caller&squot;s component ID&n; *              Integer             - Integer to display&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function entry trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in Debug_level&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_trace_u32&n; *&n; * PARAMETERS:  line_number         - Caller&squot;s line number&n; *              dbg_info            - Contains:&n; *                  proc_name           - Caller&squot;s procedure name&n; *                  module_name         - Caller&squot;s module name&n; *                  component_id        - Caller&squot;s component ID&n; *              Integer             - Integer to display&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function entry trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in debug_level&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_trace_u32
 id|acpi_ut_trace_u32
@@ -459,7 +459,7 @@ id|integer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_exit&n; *&n; * PARAMETERS:  Line_number         - Caller&squot;s line number&n; *              Dbg_info            - Contains:&n; *                  Proc_name           - Caller&squot;s procedure name&n; *                  Module_name         - Caller&squot;s module name&n; *                  Component_id        - Caller&squot;s component ID&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function exit trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in Debug_level&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_exit&n; *&n; * PARAMETERS:  line_number         - Caller&squot;s line number&n; *              dbg_info            - Contains:&n; *                  proc_name           - Caller&squot;s procedure name&n; *                  module_name         - Caller&squot;s module name&n; *                  component_id        - Caller&squot;s component ID&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function exit trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in debug_level&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_exit
 id|acpi_ut_exit
@@ -489,7 +489,7 @@ id|acpi_gbl_nesting_level
 op_decrement
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_status_exit&n; *&n; * PARAMETERS:  Line_number         - Caller&squot;s line number&n; *              Dbg_info            - Contains:&n; *                  Proc_name           - Caller&squot;s procedure name&n; *                  Module_name         - Caller&squot;s module name&n; *                  Component_id        - Caller&squot;s component ID&n; *              Status              - Exit status code&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function exit trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in Debug_level. Prints exit status also.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_status_exit&n; *&n; * PARAMETERS:  line_number         - Caller&squot;s line number&n; *              dbg_info            - Contains:&n; *                  proc_name           - Caller&squot;s procedure name&n; *                  module_name         - Caller&squot;s module name&n; *                  component_id        - Caller&squot;s component ID&n; *              Status              - Exit status code&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function exit trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in debug_level. Prints exit status also.&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_status_exit
 id|acpi_ut_status_exit
@@ -558,7 +558,7 @@ id|acpi_gbl_nesting_level
 op_decrement
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_value_exit&n; *&n; * PARAMETERS:  Line_number         - Caller&squot;s line number&n; *              Dbg_info            - Contains:&n; *                  Proc_name           - Caller&squot;s procedure name&n; *                  Module_name         - Caller&squot;s module name&n; *                  Component_id        - Caller&squot;s component ID&n; *              Value               - Value to be printed with exit msg&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function exit trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in Debug_level. Prints exit value also.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_value_exit&n; *&n; * PARAMETERS:  line_number         - Caller&squot;s line number&n; *              dbg_info            - Contains:&n; *                  proc_name           - Caller&squot;s procedure name&n; *                  module_name         - Caller&squot;s module name&n; *                  component_id        - Caller&squot;s component ID&n; *              Value               - Value to be printed with exit msg&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function exit trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in debug_level. Prints exit value also.&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_value_exit
 id|acpi_ut_value_exit
@@ -601,7 +601,7 @@ id|acpi_gbl_nesting_level
 op_decrement
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_ptr_exit&n; *&n; * PARAMETERS:  Line_number         - Caller&squot;s line number&n; *              Dbg_info            - Contains:&n; *                  Proc_name           - Caller&squot;s procedure name&n; *                  Module_name         - Caller&squot;s module name&n; *                  Component_id        - Caller&squot;s component ID&n; *              Value               - Value to be printed with exit msg&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function exit trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in Debug_level. Prints exit value also.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_ptr_exit&n; *&n; * PARAMETERS:  line_number         - Caller&squot;s line number&n; *              dbg_info            - Contains:&n; *                  proc_name           - Caller&squot;s procedure name&n; *                  module_name         - Caller&squot;s module name&n; *                  component_id        - Caller&squot;s component ID&n; *              Value               - Value to be printed with exit msg&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Function exit trace.  Prints only if TRACE_FUNCTIONS bit is&n; *              set in debug_level. Prints exit value also.&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_ptr_exit
 id|acpi_ut_ptr_exit
@@ -638,7 +638,7 @@ op_decrement
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_dump_buffer&n; *&n; * PARAMETERS:  Buffer              - Buffer to dump&n; *              Count               - Amount to dump, in bytes&n; *              Display             - BYTE, WORD, DWORD, or QWORD display&n; *              Component_iD        - Caller&squot;s component ID&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Generic dump buffer in both hex and ascii.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ut_dump_buffer&n; *&n; * PARAMETERS:  Buffer              - Buffer to dump&n; *              Count               - Amount to dump, in bytes&n; *              Display             - BYTE, WORD, DWORD, or QWORD display&n; *              component_iD        - Caller&squot;s component ID&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Generic dump buffer in both hex and ascii.&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_dump_buffer
 id|acpi_ut_dump_buffer

@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evgpe&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_gpe_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize the GPE data structures&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_gpe_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize the GPE data structures&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_gpe_initialize
 id|acpi_ev_gpe_initialize
@@ -44,7 +44,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_gpe_initialize&quot;
+l_string|&quot;ev_gpe_initialize&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize the GPE Block globals&n;&t; *&n;&t; * Why the GPE register block lengths are divided by 2:  From the ACPI Spec,&n;&t; * section &quot;General-Purpose Event Registers&quot;, we have:&n;&t; *&n;&t; * &quot;Each register block contains two registers of equal length&n;&t; *  GPEx_STS and GPEx_EN (where x is 0 or 1). The length of the&n;&t; *  GPE0_STS and GPE0_EN registers is equal to half the GPE0_LEN&n;&t; *  The length of the GPE1_STS and GPE1_EN registers is equal to&n;&t; *  half the GPE1_LEN. If a generic register block is not supported&n;&t; *  then its respective block pointer and block length values in the&n;&t; *  FADT table contain zeros. The GPE0_LEN and GPE1_LEN do not need&n;&t; *  to be the same size.&quot;&n;&t; */
@@ -74,7 +74,7 @@ dot
 id|block_address
 op_assign
 op_amp
-id|acpi_gbl_FADT-&gt;Xgpe0_blk
+id|acpi_gbl_FADT-&gt;xgpe0_blk
 suffix:semicolon
 id|acpi_gbl_gpe_block_info
 (braket
@@ -84,7 +84,7 @@ dot
 id|block_address
 op_assign
 op_amp
-id|acpi_gbl_FADT-&gt;Xgpe1_blk
+id|acpi_gbl_FADT-&gt;xgpe1_blk
 suffix:semicolon
 id|acpi_gbl_gpe_block_info
 (braket
@@ -108,9 +108,9 @@ multiline_comment|/*&n;&t; * Determine the maximum GPE number for this machine.&
 r_if
 c_cond
 (paren
-id|acpi_gbl_FADT-&gt;Xgpe0_blk.register_bit_width
+id|acpi_gbl_FADT-&gt;xgpe0_blk.register_bit_width
 op_logical_and
-id|acpi_gbl_FADT-&gt;Xgpe0_blk.address
+id|acpi_gbl_FADT-&gt;xgpe0_blk.address
 )paren
 (brace
 multiline_comment|/* GPE block 0 exists (has both length and address &gt; 0) */
@@ -125,7 +125,7 @@ op_assign
 id|u16
 )paren
 (paren
-id|acpi_gbl_FADT-&gt;Xgpe0_blk.register_bit_width
+id|acpi_gbl_FADT-&gt;xgpe0_blk.register_bit_width
 op_div
 (paren
 id|ACPI_GPE_REGISTER_WIDTH
@@ -153,9 +153,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|acpi_gbl_FADT-&gt;Xgpe1_blk.register_bit_width
+id|acpi_gbl_FADT-&gt;xgpe1_blk.register_bit_width
 op_logical_and
-id|acpi_gbl_FADT-&gt;Xgpe1_blk.address
+id|acpi_gbl_FADT-&gt;xgpe1_blk.address
 )paren
 (brace
 multiline_comment|/* GPE block 1 exists (has both length and address &gt; 0) */
@@ -170,7 +170,7 @@ op_assign
 id|u16
 )paren
 (paren
-id|acpi_gbl_FADT-&gt;Xgpe1_blk.register_bit_width
+id|acpi_gbl_FADT-&gt;xgpe1_blk.register_bit_width
 op_div
 (paren
 id|ACPI_GPE_REGISTER_WIDTH
@@ -356,7 +356,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Could not allocate the Gpe_number_to_index table&bslash;n&quot;
+l_string|&quot;Could not allocate the gpe_number_to_index table&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -419,7 +419,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Could not allocate the Gpe_register_info table&bslash;n&quot;
+l_string|&quot;Could not allocate the gpe_register_info table&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -459,7 +459,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Could not allocate the Gpe_number_info table&bslash;n&quot;
+l_string|&quot;Could not allocate the gpe_number_info table&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -854,7 +854,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_save_method_info&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Called from Acpi_walk_namespace. Expects each object to be a&n; *              control method under the _GPE portion of the namespace.&n; *              Extract the name and GPE type from the object, saving this&n; *              information for quick lookup during GPE dispatch&n; *&n; *              The name of each GPE control method is of the form:&n; *                  &quot;_Lnn&quot; or &quot;_Enn&quot;&n; *              Where:&n; *                  L      - means that the GPE is level triggered&n; *                  E      - means that the GPE is edge triggered&n; *                  nn     - is the GPE number [in HEX]&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_save_method_info&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Called from acpi_walk_namespace. Expects each object to be a&n; *              control method under the _GPE portion of the namespace.&n; *              Extract the name and GPE type from the object, saving this&n; *              information for quick lookup during GPE dispatch&n; *&n; *              The name of each GPE control method is of the form:&n; *                  &quot;_Lnn&quot; or &quot;_Enn&quot;&n; *              Where:&n; *                  L      - means that the GPE is level triggered&n; *                  E      - means that the GPE is edge triggered&n; *                  nn     - is the GPE number [in HEX]&n; *&n; ******************************************************************************/
 r_static
 id|acpi_status
 DECL|function|acpi_ev_save_method_info
@@ -898,7 +898,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ev_save_method_info&quot;
+l_string|&quot;ev_save_method_info&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Extract the name from the object and convert to a string */
@@ -1038,7 +1038,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Now we can add this information to the Gpe_info block&n;&t; * for use during dispatch of this GPE.&n;&t; */
+multiline_comment|/*&n;&t; * Now we can add this information to the gpe_info block&n;&t; * for use during dispatch of this GPE.&n;&t; */
 id|acpi_gbl_gpe_number_info
 (braket
 id|gpe_number_index
@@ -1103,7 +1103,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_init_gpe_control_methods&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Obtain the control methods associated with the GPEs.&n; *              NOTE: Must be called AFTER namespace initialization!&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_init_gpe_control_methods&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Obtain the control methods associated with the GPEs.&n; *              NOTE: Must be called AFTER namespace initialization!&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_init_gpe_control_methods
 id|acpi_ev_init_gpe_control_methods
@@ -1116,7 +1116,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_init_gpe_control_methods&quot;
+l_string|&quot;ev_init_gpe_control_methods&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Get a permanent handle to the _GPE object */
@@ -1171,7 +1171,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_gpe_detect&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Detect if any GP events have occurred.  This function is&n; *              executed at interrupt level.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_gpe_detect&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Detect if any GP events have occurred.  This function is&n; *              executed at interrupt level.&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ev_gpe_detect
 id|acpi_ev_gpe_detect
@@ -1208,7 +1208,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ev_gpe_detect&quot;
+l_string|&quot;ev_gpe_detect&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Read all of the 8-bit GPE status and enable registers&n;&t; * in both of the register blocks, saving all of it.&n;&t; * Find all currently active GP events.&n;&t; */
@@ -1407,7 +1407,7 @@ id|int_status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_asynch_execute_gpe_method&n; *&n; * PARAMETERS:  Gpe_number      - The 0-based GPE number&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Perform the actual execution of a GPE control method.  This&n; *              function is called from an invocation of Acpi_os_queue_for_execution&n; *              (and therefore does NOT execute at interrupt level) so that&n; *              the control method itself is not executed in the context of&n; *              the SCI interrupt handler.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_asynch_execute_gpe_method&n; *&n; * PARAMETERS:  gpe_number      - The 0-based GPE number&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Perform the actual execution of a GPE control method.  This&n; *              function is called from an invocation of acpi_os_queue_for_execution&n; *              (and therefore does NOT execute at interrupt level) so that&n; *              the control method itself is not executed in the context of&n; *              the SCI interrupt handler.&n; *&n; ******************************************************************************/
 r_static
 r_void
 id|ACPI_SYSTEM_XFACE
@@ -1441,7 +1441,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_asynch_execute_gpe_method&quot;
+l_string|&quot;ev_asynch_execute_gpe_method&quot;
 )paren
 suffix:semicolon
 id|gpe_number_index
@@ -1462,7 +1462,7 @@ id|ACPI_GPE_INVALID
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Take a snapshot of the GPE info for this level - we copy the&n;&t; * info to prevent a race condition with Remove_handler.&n;&t; */
+multiline_comment|/*&n;&t; * Take a snapshot of the GPE info for this level - we copy the&n;&t; * info to prevent a race condition with remove_handler.&n;&t; */
 id|status
 op_assign
 id|acpi_ut_acquire_mutex
@@ -1594,7 +1594,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_gpe_dispatch&n; *&n; * PARAMETERS:  Gpe_number      - The 0-based GPE number&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Dispatch a General Purpose Event to either a function (e.g. EC)&n; *              or method (e.g. _Lxx/_Exx) handler.  This function executes&n; *              at interrupt level.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_gpe_dispatch&n; *&n; * PARAMETERS:  gpe_number      - The 0-based GPE number&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Dispatch a General Purpose Event to either a function (e.g. EC)&n; *              or method (e.g. _Lxx/_Exx) handler.  This function executes&n; *              at interrupt level.&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ev_gpe_dispatch
 id|acpi_ev_gpe_dispatch
@@ -1615,7 +1615,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_gpe_dispatch&quot;
+l_string|&quot;ev_gpe_dispatch&quot;
 )paren
 suffix:semicolon
 id|gpe_number_index
@@ -1650,7 +1650,7 @@ id|ACPI_INTERRUPT_NOT_HANDLED
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * We don&squot;t have to worry about mutex on Gpe_info because we are&n;&t; * executing at interrupt level.&n;&t; */
+multiline_comment|/*&n;&t; * We don&squot;t have to worry about mutex on gpe_info because we are&n;&t; * executing at interrupt level.&n;&t; */
 id|gpe_info
 op_assign
 op_amp
@@ -1687,7 +1687,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ev_gpe_dispatch: Unable to clear GPE[%2.2X]&bslash;n&quot;
+l_string|&quot;acpi_ev_gpe_dispatch: Unable to clear GPE[%2.2X]&bslash;n&quot;
 comma
 id|gpe_number
 )paren
@@ -1741,7 +1741,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ev_gpe_dispatch: Unable to disable GPE[%2.2X]&bslash;n&quot;
+l_string|&quot;acpi_ev_gpe_dispatch: Unable to disable GPE[%2.2X]&bslash;n&quot;
 comma
 id|gpe_number
 )paren
@@ -1776,7 +1776,7 @@ id|gpe_number
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ev_gpe_dispatch: Unable to queue handler for GPE[%2.2X], event is disabled&bslash;n&quot;
+l_string|&quot;acpi_ev_gpe_dispatch: Unable to queue handler for GPE[%2.2X], event is disabled&bslash;n&quot;
 comma
 id|gpe_number
 )paren
@@ -1790,7 +1790,7 @@ multiline_comment|/* No handler or method to run! */
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ev_gpe_dispatch: No handler or method for GPE[%2.2X], disabling event&bslash;n&quot;
+l_string|&quot;acpi_ev_gpe_dispatch: No handler or method for GPE[%2.2X], disabling event&bslash;n&quot;
 comma
 id|gpe_number
 )paren
@@ -1816,7 +1816,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ev_gpe_dispatch: Unable to disable GPE[%2.2X]&bslash;n&quot;
+l_string|&quot;acpi_ev_gpe_dispatch: Unable to disable GPE[%2.2X]&bslash;n&quot;
 comma
 id|gpe_number
 )paren
@@ -1857,7 +1857,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ev_gpe_dispatch: Unable to clear GPE[%2.2X]&bslash;n&quot;
+l_string|&quot;acpi_ev_gpe_dispatch: Unable to clear GPE[%2.2X]&bslash;n&quot;
 comma
 id|gpe_number
 )paren
