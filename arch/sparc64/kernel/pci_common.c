@@ -1204,6 +1204,18 @@ op_amp
 l_int|0xff
 )paren
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|breg
+)paren
+(brace
+r_case
+id|PCI_ROM_ADDRESS
+suffix:colon
+multiline_comment|/* Unfortunately I have seen several cases where&n;&t;&t; * buggy FCODE uses a space value of &squot;1&squot; (I/O space)&n;&t;&t; * in the register property for the ROM address&n;&t;&t; * so disable this sanity check for now.&n;&t;&t; */
+macro_line|#if 0
+(brace
 r_int
 id|space
 op_assign
@@ -1215,15 +1227,6 @@ l_int|24
 op_amp
 l_int|3
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|breg
-)paren
-(brace
-r_case
-id|PCI_ROM_ADDRESS
-suffix:colon
 multiline_comment|/* It had better be MEM space. */
 r_if
 c_cond
@@ -1244,6 +1247,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif
 id|res
 op_assign
 op_amp
