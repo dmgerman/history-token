@@ -1120,12 +1120,6 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|bio_get
-c_func
-(paren
-id|bio
-)paren
-suffix:semicolon
 id|rw
 op_or_assign
 (paren

@@ -1746,34 +1746,6 @@ op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;init_setup_piix&t;&t;-&t;callback for IDE initialize&n; *&t;@dev: PIIX PCI device&n; *&t;@d: IDE pci info&n; *&n; *&t;Enable the xp fixup for the PIIX controller and then perform&n; *&t;a standard ide PCI setup&n; */
-DECL|function|init_setup_piix
-r_static
-r_int
-id|__devinit
-id|init_setup_piix
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-id|ide_pci_device_t
-op_star
-id|d
-)paren
-(brace
-r_return
-id|ide_setup_pci_device
-c_func
-(paren
-id|dev
-comma
-id|d
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/**&n; *&t;piix_init_one&t;-&t;called when a PIIX is found&n; *&t;@dev: the piix device&n; *&t;@id: the matching pci id&n; *&n; *&t;Called when the PCI registration layer (or the IDE initialization)&n; *&t;finds a device matching our IDE device tables.&n; */
 DECL|function|piix_init_one
 r_static
@@ -1805,9 +1777,7 @@ id|id-&gt;driver_data
 )braket
 suffix:semicolon
 r_return
-id|d
-op_member_access_from_pointer
-id|init_setup
+id|ide_setup_pci_device
 c_func
 (paren
 id|dev
