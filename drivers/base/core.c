@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;base.h&quot;
+macro_line|#include &quot;power/power.h&quot;
 DECL|variable|platform_notify
 r_int
 (paren

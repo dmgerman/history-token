@@ -3,6 +3,7 @@ DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &quot;power.h&quot;
 DECL|macro|to_dev
 mdefine_line|#define to_dev(node) container_of(node,struct device,kobj.entry)
 r_extern
@@ -10,6 +11,63 @@ r_struct
 id|subsystem
 id|devices_subsys
 suffix:semicolon
+DECL|function|device_detach_shutdown
+r_int
+id|device_detach_shutdown
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;detach_state
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;detach_state
+op_eq
+id|DEVICE_PM_OFF
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|dev-&gt;driver
+op_logical_and
+id|dev-&gt;driver-&gt;shutdown
+)paren
+id|dev-&gt;driver
+op_member_access_from_pointer
+id|shutdown
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_return
+id|dpm_runtime_suspend
+c_func
+(paren
+id|dev
+comma
+id|dev-&gt;detach_state
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * We handle system devices differently - we suspend and shut them &n; * down first and resume them first. That way, we do anything stupid like&n; * shutting down the interrupt controller before any devices..&n; *&n; * Note that there are not different stages for power management calls - &n; * they only get one called once when interrupts are disabled. &n; */
 r_extern
 r_int

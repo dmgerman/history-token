@@ -1189,6 +1189,11 @@ op_star
 id|saved_state
 suffix:semicolon
 multiline_comment|/* saved device state */
+DECL|member|detach_state
+id|u32
+id|detach_state
+suffix:semicolon
+multiline_comment|/* State to enter when device is&n;&t;&t;&t;&t;&t;   detached from its driver. */
 DECL|member|dma_mask
 id|u64
 op_star
