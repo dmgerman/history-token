@@ -12055,6 +12055,7 @@ dot
 id|major_name
 op_assign
 l_string|&quot;cdu31a&quot;
+comma
 dot
 id|fops
 op_assign
@@ -12067,7 +12068,9 @@ op_assign
 id|GENHD_FL_CD
 comma
 )brace
+suffix:semicolon
 multiline_comment|/* The different types of disc loading mechanisms supported */
+DECL|variable|__initdata
 r_static
 r_char
 op_star

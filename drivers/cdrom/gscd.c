@@ -3067,7 +3067,7 @@ id|first_minor
 op_assign
 l_int|0
 comma
-comma
+dot
 id|minor_shift
 op_assign
 l_int|0
