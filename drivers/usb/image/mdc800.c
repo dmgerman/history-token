@@ -2975,6 +2975,7 @@ mdefine_line|#define try_free_mem(A)  if (A != 0) { kfree (A); A=0; }
 DECL|macro|try_free_urb
 mdefine_line|#define try_free_urb(A)  if (A != 0) { usb_free_urb (A); A=0; }
 DECL|function|usb_mdc800_init
+r_static
 r_int
 id|__init
 id|usb_mdc800_init
@@ -2982,6 +2983,9 @@ id|usb_mdc800_init
 r_void
 )paren
 (brace
+r_int
+id|retval
+suffix:semicolon
 multiline_comment|/* Allocate Memory */
 r_try
 (paren
@@ -3134,16 +3138,19 @@ id|GFP_KERNEL
 )paren
 suffix:semicolon
 multiline_comment|/* Register the driver */
-r_if
-c_cond
-(paren
+id|retval
+op_assign
 id|usb_register
+c_func
 (paren
 op_amp
 id|mdc800_usb_driver
 )paren
-OL
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 r_goto
 id|cleanup_on_fail
@@ -3215,11 +3222,11 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|retval
 suffix:semicolon
 )brace
 DECL|function|usb_mdc800_cleanup
+r_static
 r_void
 id|__exit
 id|usb_mdc800_cleanup
