@@ -384,6 +384,14 @@ op_amp
 id|q-&gt;queue_flags
 )paren
 suffix:semicolon
+id|blk_queue_prep_rq
+c_func
+(paren
+id|q
+comma
+id|scsi_prep_fn
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
 id|MODULE_PARM
