@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    A Davicom DM9102/DM9102A/DM9102A+DM9801/DM9102A+DM9802 NIC fast&n;    ethernet driver for Linux.&n;    Copyright (C) 1997  Sten Wang&n;&n;    This program is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU General Public License&n;    as published by the Free Software Foundation; either version 2&n;    of the License, or (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    DAVICOM Web-Site: www.davicom.com.tw&n;&n;    Author: Sten Wang, 886-3-5798797-8517, E-mail: sten_wang@davicom.com.tw&n;    Maintainer: Tobias Ringstrom &lt;tori@unhappy.mine.nu&gt;&n;&n;    (C)Copyright 1997-1998 DAVICOM Semiconductor,Inc. All Rights Reserved.&n;&n;    Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; :&n;    Made it compile in 2.3 (device to net_device)&n;&n;    Alan Cox &lt;alan@redhat.com&gt; :&n;    Cleaned up for kernel merge.&n;    Removed the back compatibility support&n;    Reformatted, fixing spelling etc as I went&n;    Removed IRQ 0-15 assumption&n;&n;    Jeff Garzik &lt;jgarzik@pobox.com&gt; :&n;    Updated to use new PCI driver API.&n;    Resource usage cleanups.&n;    Report driver version to user.&n;&n;    Tobias Ringstrom &lt;tori@unhappy.mine.nu&gt; :&n;    Cleaned up and added SMP safety.  Thanks go to Jeff Garzik,&n;    Andrew Morton and Frank Davis for the SMP safety fixes.&n;&n;    Vojtech Pavlik &lt;vojtech@suse.cz&gt; :&n;    Cleaned up pointer arithmetics.&n;    Fixed a lot of 64bit issues.&n;    Cleaned up printk()s a bit.&n;    Fixed some obvious big endian problems.&n;&n;    Tobias Ringstrom &lt;tori@unhappy.mine.nu&gt; :&n;    Use time_after for jiffies calculation.  Added ethtool&n;    support.  Updated PCI resource allocation.  Do not&n;    forget to unmap PCI mapped skbs.&n;&n;    TODO&n;&n;    Implement pci_driver::suspend() and pci_driver::resume()&n;    power management methods.&n;&n;    Check on 64 bit boxes.&n;    Check and fix on big endian boxes.&n;&n;    Test and make sure PCI latency is now correct for all cases.&n;*/
+multiline_comment|/*&n;    A Davicom DM9102/DM9102A/DM9102A+DM9801/DM9102A+DM9802 NIC fast&n;    ethernet driver for Linux.&n;    Copyright (C) 1997  Sten Wang&n;&n;    This program is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU General Public License&n;    as published by the Free Software Foundation; either version 2&n;    of the License, or (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    DAVICOM Web-Site: www.davicom.com.tw&n;&n;    Author: Sten Wang, 886-3-5798797-8517, E-mail: sten_wang@davicom.com.tw&n;    Maintainer: Tobias Ringstrom &lt;tori@unhappy.mine.nu&gt;&n;&n;    (C)Copyright 1997-1998 DAVICOM Semiconductor,Inc. All Rights Reserved.&n;&n;    Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; :&n;    Made it compile in 2.3 (device to net_device)&n;&n;    Alan Cox &lt;alan@redhat.com&gt; :&n;    Cleaned up for kernel merge.&n;    Removed the back compatibility support&n;    Reformatted, fixing spelling etc as I went&n;    Removed IRQ 0-15 assumption&n;&n;    Jeff Garzik &lt;jgarzik@pobox.com&gt; :&n;    Updated to use new PCI driver API.&n;    Resource usage cleanups.&n;    Report driver version to user.&n;&n;    Tobias Ringstrom &lt;tori@unhappy.mine.nu&gt; :&n;    Cleaned up and added SMP safety.  Thanks go to Jeff Garzik,&n;    Andrew Morton and Frank Davis for the SMP safety fixes.&n;&n;    Vojtech Pavlik &lt;vojtech@suse.cz&gt; :&n;    Cleaned up pointer arithmetics.&n;    Fixed a lot of 64bit issues.&n;    Cleaned up printk()s a bit.&n;    Fixed some obvious big endian problems.&n;&n;    Tobias Ringstrom &lt;tori@unhappy.mine.nu&gt; :&n;    Use time_after for jiffies calculation.  Added ethtool&n;    support.  Updated PCI resource allocation.  Do not&n;    forget to unmap PCI mapped skbs.&n;&n;    Alan Cox &lt;alan@redhat.com&gt;&n;    Added new PCI identifiers provided by Clear Zhang at ALi &n;    for their 1563 ethernet device.&n;&n;    TODO&n;&n;    Implement pci_driver::suspend() and pci_driver::resume()&n;    power management methods.&n;&n;    Check on 64 bit boxes.&n;    Check and fix on big endian boxes.&n;&n;    Test and make sure PCI latency is now correct for all cases.&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;dmfe&quot;
 DECL|macro|DRV_VERSION
@@ -8528,6 +8528,22 @@ comma
 l_int|0
 comma
 id|PCI_DM9009_ID
+)brace
+comma
+(brace
+l_int|0x10B9
+comma
+l_int|0x5261
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|PCI_DM9102_ID
 )brace
 comma
 (brace
