@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * &t;PCI searching functions.&n; *&n; *&t;Copyright 1993 -- 1997 Drew Eckhardt, Frederic Potter,&n; *&t;&t;&t;&t;David Mosberger-Tang&n; *&t;Copyright 1997 -- 2000 Martin Mares &lt;mj@ucw.cz&gt;&n; *&t;Copyright 2003 -- Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n; */
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -12,6 +13,7 @@ r_static
 r_struct
 id|pci_bus
 op_star
+id|__devinit
 DECL|function|pci_do_find_bus
 id|pci_do_find_bus
 c_func
@@ -91,6 +93,7 @@ DECL|function|pci_find_bus
 r_struct
 id|pci_bus
 op_star
+id|__devinit
 id|pci_find_bus
 c_func
 (paren

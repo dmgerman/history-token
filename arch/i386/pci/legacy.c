@@ -117,11 +117,10 @@ op_increment
 r_if
 c_cond
 (paren
-id|pci_bus_exists
+id|pci_find_bus
 c_func
 (paren
-op_amp
-id|pci_root_buses
+l_int|0
 comma
 id|n
 )paren
