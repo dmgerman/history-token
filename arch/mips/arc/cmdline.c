@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * cmdline.c: Kernel command line creation using ARCS argc/argv.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * cmdline.c: Kernel command line creation using ARCS argc/argv.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -10,7 +10,7 @@ DECL|variable|arcs_cmdline
 r_char
 id|arcs_cmdline
 (braket
-id|COMMAND_LINE_SIZE
+id|CL_SIZE
 )braket
 suffix:semicolon
 DECL|function|prom_getcmdline
@@ -24,13 +24,7 @@ r_void
 )paren
 (brace
 r_return
-op_amp
-(paren
 id|arcs_cmdline
-(braket
-l_int|0
-)braket
-)paren
 suffix:semicolon
 )brace
 DECL|variable|ignored
@@ -57,8 +51,6 @@ comma
 l_string|&quot;OSLoadOptions=&quot;
 )brace
 suffix:semicolon
-DECL|macro|NENTS
-mdefine_line|#define NENTS(foo) ((sizeof((foo)) / (sizeof((foo[0])))))
 DECL|variable|used_arc
 r_static
 r_char
@@ -128,7 +120,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NENTS
+id|ARRAY_SIZE
 c_func
 (paren
 id|used_arc
@@ -161,9 +153,10 @@ id|strncmp
 c_func
 (paren
 id|prom_argv
-(braket
+c_func
+(paren
 id|actr
-)braket
+)paren
 comma
 id|used_arc
 (braket
@@ -213,9 +206,10 @@ id|strstr
 c_func
 (paren
 id|prom_argv
-(braket
+c_func
+(paren
 id|actr
-)braket
+)paren
 comma
 l_string|&quot;=&quot;
 )paren
@@ -289,15 +283,9 @@ suffix:semicolon
 multiline_comment|/* Always ignore argv[0] */
 id|cp
 op_assign
-op_amp
-(paren
 id|arcs_cmdline
-(braket
-l_int|0
-)braket
-)paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Move ARC variables to the beginning to make sure they can be&n;&t; * overridden by later arguments.&n;&t; */
+multiline_comment|/*&n;&t; * Move ARC variables to the beginning to make sure they can be&n;&t; * overridden by later arguments.&n;&t; */
 id|cp
 op_assign
 id|move_firmware_args
@@ -323,7 +311,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NENTS
+id|ARRAY_SIZE
 c_func
 (paren
 id|ignored
@@ -353,9 +341,10 @@ id|strncmp
 c_func
 (paren
 id|prom_argv
-(braket
+c_func
+(paren
 id|actr
-)braket
+)paren
 comma
 id|ignored
 (braket
@@ -365,11 +354,9 @@ comma
 id|len
 )paren
 )paren
-(brace
 r_goto
 id|pic_cont
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Ok, we want it. */
 id|strcpy
@@ -378,9 +365,10 @@ c_func
 id|cp
 comma
 id|prom_argv
-(braket
+c_func
+(paren
 id|actr
-)braket
+)paren
 )paren
 suffix:semicolon
 id|cp
@@ -389,9 +377,10 @@ id|strlen
 c_func
 (paren
 id|prom_argv
-(braket
+c_func
+(paren
 id|actr
-)braket
+)paren
 )paren
 suffix:semicolon
 op_star
@@ -411,13 +400,7 @@ c_cond
 (paren
 id|cp
 op_ne
-op_amp
-(paren
 id|arcs_cmdline
-(braket
-l_int|0
-)braket
-)paren
 )paren
 multiline_comment|/* get rid of trailing space */
 op_decrement
@@ -429,18 +412,13 @@ op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 macro_line|#ifdef DEBUG_CMDLINE
-id|prom_printf
+id|printk
 c_func
 (paren
-l_string|&quot;prom_init_cmdline: %s&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;prom cmdline: %s&bslash;n&quot;
 comma
-op_amp
-(paren
 id|arcs_cmdline
-(braket
-l_int|0
-)braket
-)paren
 )paren
 suffix:semicolon
 macro_line|#endif

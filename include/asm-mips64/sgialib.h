@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * SGI ARCS firmware interface library for the Linux kernel.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 2001 Ralf Baechle (ralf@gnu.org)&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * SGI ARCS firmware interface library for the Linux kernel.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 2001, 2002 Ralf Baechle (ralf@gnu.org)&n; */
 macro_line|#ifndef _ASM_SGIALIB_H
 DECL|macro|_ASM_SGIALIB_H
 mdefine_line|#define _ASM_SGIALIB_H
@@ -31,10 +31,12 @@ r_int
 id|prom_flags
 suffix:semicolon
 DECL|macro|PROM_FLAG_ARCS
-mdefine_line|#define PROM_FLAG_ARCS  1
-multiline_comment|/* Init the PROM library and it&squot;s internal data structures.  Called&n; * at boot time from head.S before start_kernel is invoked.&n; */
+mdefine_line|#define PROM_FLAG_ARCS&t;&t;&t;1
+DECL|macro|PROM_FLAG_USE_AS_CONSOLE
+mdefine_line|#define PROM_FLAG_USE_AS_CONSOLE&t;2
+multiline_comment|/* Init the PROM library and it&squot;s internal data structures. */
 r_extern
-r_int
+r_void
 id|prom_init
 c_func
 (paren
@@ -50,6 +52,10 @@ r_char
 op_star
 op_star
 id|envp
+comma
+r_int
+op_star
+id|prom_vec
 )paren
 suffix:semicolon
 multiline_comment|/* Simple char-by-char console I/O. */
@@ -146,17 +152,6 @@ comma
 r_int
 r_int
 id|end_mem
-)paren
-suffix:semicolon
-multiline_comment|/* Returns pointer to PROM physical memory block array. */
-r_extern
-r_struct
-id|prom_pmemblock
-op_star
-id|prom_getpblock_array
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 multiline_comment|/* PROM device tree library routines. */

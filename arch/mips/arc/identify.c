@@ -1,19 +1,24 @@
-multiline_comment|/*&n; * identify.c: identify machine by looking up system identifier&n; *&n; * Copyright (C) 1998 Thomas Bogendoerfer&n; * &n; * This code is based on arch/mips/sgi/kernel/system.c, which is&n; * &n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * identify.c: identify machine by looking up system identifier&n; *&n; * Copyright (C) 1998 Thomas Bogendoerfer&n; *&n; * This code is based on arch/mips/sgi/kernel/system.c, which is&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/sgi/sgi.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 DECL|struct|smatch
 r_struct
 id|smatch
 (brace
-DECL|member|name
+DECL|member|arcname
 r_char
 op_star
-id|name
+id|arcname
+suffix:semicolon
+DECL|member|liname
+r_char
+op_star
+id|liname
 suffix:semicolon
 DECL|member|group
 r_int
@@ -41,15 +46,55 @@ op_assign
 (brace
 l_string|&quot;SGI-IP22&quot;
 comma
+l_string|&quot;SGI Indy&quot;
+comma
 id|MACH_GROUP_SGI
 comma
-id|MACH_SGI_INDY
+id|MACH_SGI_IP22
+comma
+id|PROM_FLAG_ARCS
+)brace
+comma
+(brace
+l_string|&quot;SGI-IP27&quot;
+comma
+l_string|&quot;SGI Origin&quot;
+comma
+id|MACH_GROUP_SGI
+comma
+id|MACH_SGI_IP27
+comma
+id|PROM_FLAG_ARCS
+)brace
+comma
+(brace
+l_string|&quot;SGI-IP28&quot;
+comma
+l_string|&quot;SGI IP28&quot;
+comma
+id|MACH_GROUP_SGI
+comma
+id|MACH_SGI_IP28
+comma
+id|PROM_FLAG_ARCS
+)brace
+comma
+(brace
+l_string|&quot;SGI-IP32&quot;
+comma
+l_string|&quot;SGI IP32&quot;
+comma
+id|MACH_GROUP_SGI
+comma
+id|MACH_SGI_IP32
 comma
 id|PROM_FLAG_ARCS
 )brace
 comma
 (brace
 l_string|&quot;Microsoft-Jazz&quot;
+comma
+l_string|&quot;Jazz MIPS_Magnum_4000&quot;
 comma
 id|MACH_GROUP_JAZZ
 comma
@@ -61,6 +106,8 @@ comma
 (brace
 l_string|&quot;PICA-61&quot;
 comma
+l_string|&quot;Jazz Acer_PICA_61&quot;
+comma
 id|MACH_GROUP_JAZZ
 comma
 id|MACH_ACER_PICA_61
@@ -70,6 +117,8 @@ l_int|0
 comma
 (brace
 l_string|&quot;RM200PCI&quot;
+comma
+l_string|&quot;SNI RM200_PCI&quot;
 comma
 id|MACH_GROUP_SNI_RM
 comma
@@ -92,6 +141,7 @@ id|__init
 id|string_to_mach
 c_func
 (paren
+r_const
 r_char
 op_star
 id|s
@@ -142,7 +192,7 @@ id|mach_table
 id|i
 )braket
 dot
-id|name
+id|arcname
 )paren
 )paren
 r_return
@@ -153,34 +203,32 @@ id|i
 )braket
 suffix:semicolon
 )brace
-id|prom_printf
+id|panic
 c_func
 (paren
-l_string|&quot;&bslash;nYeee, could not determine architecture type &lt;%s&gt;&bslash;n&quot;
+l_string|&quot;Yeee, could not determine architecture type &lt;%s&gt;&quot;
 comma
 id|s
 )paren
 suffix:semicolon
-id|prom_printf
+)brace
+DECL|variable|system_type
+r_char
+op_star
+id|system_type
+suffix:semicolon
+DECL|function|get_system_type
+r_const
+r_char
+op_star
+id|get_system_type
 c_func
 (paren
-l_string|&quot;press a key to reboot&bslash;n&quot;
+r_void
 )paren
-suffix:semicolon
-id|prom_getchar
-c_func
-(paren
-)paren
-suffix:semicolon
-id|romvec
-op_member_access_from_pointer
-id|imode
-c_func
-(paren
-)paren
-suffix:semicolon
+(brace
 r_return
-l_int|NULL
+id|system_type
 suffix:semicolon
 )brace
 DECL|function|prom_identify_arch
@@ -201,21 +249,59 @@ id|smatch
 op_star
 id|mach
 suffix:semicolon
-multiline_comment|/*&n;&t; * The root component tells us what machine architecture we&n;&t; * have here.&n;&t; */
+r_const
+r_char
+op_star
+id|iname
+suffix:semicolon
+multiline_comment|/*&n;&t; * The root component tells us what machine architecture we have here.&n;&t; */
 id|p
 op_assign
-id|prom_getchild
+id|ArcGetChild
 c_func
 (paren
 id|PROM_NULL_COMPONENT
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|p
+op_eq
+l_int|NULL
+)paren
+(brace
+macro_line|#ifdef CONFIG_SGI_IP27
+multiline_comment|/* IP27 PROM misbehaves, seems to not implement ARC&n;&t;&t;   GetChild().  So we just assume it&squot;s an IP27.  */
+id|iname
+op_assign
+l_string|&quot;SGI-IP27&quot;
+suffix:semicolon
+macro_line|#else
+id|iname
+op_assign
+l_string|&quot;Unknown&quot;
+suffix:semicolon
+macro_line|#endif
+)brace
+r_else
+id|iname
+op_assign
+(paren
+r_char
+op_star
+)paren
+(paren
+r_int
+)paren
+id|p-&gt;iname
 suffix:semicolon
 id|printk
 c_func
 (paren
 l_string|&quot;ARCH: %s&bslash;n&quot;
 comma
-id|p-&gt;iname
+id|iname
 )paren
 suffix:semicolon
 id|mach
@@ -223,8 +309,12 @@ op_assign
 id|string_to_mach
 c_func
 (paren
-id|p-&gt;iname
+id|iname
 )paren
+suffix:semicolon
+id|system_type
+op_assign
+id|mach-&gt;liname
 suffix:semicolon
 id|mips_machgroup
 op_assign

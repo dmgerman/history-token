@@ -1,7 +1,9 @@
-multiline_comment|/* $Id: sgiarcs.h,v 1.3 1999/02/25 20:55:08 tsbogend Exp $&n; *&n; * SGI ARCS firmware interface defines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * ARC firmware interface defines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1999, 2001 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_SGIARCS_H
 DECL|macro|_ASM_SGIARCS_H
 mdefine_line|#define _ASM_SGIARCS_H
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/arc/types.h&gt;
 multiline_comment|/* Various ARCS error codes. */
 DECL|macro|PROM_ESUCCESS
@@ -259,44 +261,37 @@ id|iflags
 suffix:semicolon
 multiline_comment|/* node flags */
 DECL|member|vers
-r_int
-r_int
+id|USHORT
 id|vers
 suffix:semicolon
 multiline_comment|/* node version */
 DECL|member|rev
-r_int
-r_int
+id|USHORT
 id|rev
 suffix:semicolon
 multiline_comment|/* node revision */
 DECL|member|key
-r_int
-r_int
+id|ULONG
 id|key
 suffix:semicolon
 multiline_comment|/* completely magic */
 DECL|member|amask
-r_int
-r_int
+id|ULONG
 id|amask
 suffix:semicolon
 multiline_comment|/* XXX affinity mask??? */
 DECL|member|cdsize
-r_int
-r_int
+id|ULONG
 id|cdsize
 suffix:semicolon
 multiline_comment|/* size of configuration data */
 DECL|member|ilen
-r_int
-r_int
+id|ULONG
 id|ilen
 suffix:semicolon
 multiline_comment|/* length of string identifier */
 DECL|member|iname
-r_char
-op_star
+id|_PULONG
 id|iname
 suffix:semicolon
 multiline_comment|/* string identifier */
@@ -431,13 +426,11 @@ id|linux_memtypes
 id|type
 suffix:semicolon
 DECL|member|base
-r_int
-r_int
+id|ULONG
 id|base
 suffix:semicolon
 DECL|member|pages
-r_int
-r_int
+id|ULONG
 id|pages
 suffix:semicolon
 )brace
@@ -490,8 +483,7 @@ r_struct
 id|linux_vdirent
 (brace
 DECL|member|namelen
-r_int
-r_int
+id|ULONG
 id|namelen
 suffix:semicolon
 DECL|member|attr
@@ -571,20 +563,18 @@ id|linux_bigint
 (brace
 macro_line|#ifdef __MIPSEL__
 DECL|member|lo
-r_int
-r_int
+id|u32
 id|lo
 suffix:semicolon
 DECL|member|hi
-r_int
+id|s32
 id|hi
 suffix:semicolon
 macro_line|#else /* !(__MIPSEL__) */
-r_int
+id|s32
 id|hi
 suffix:semicolon
-r_int
-r_int
+id|u32
 id|lo
 suffix:semicolon
 macro_line|#endif
@@ -634,716 +624,285 @@ suffix:semicolon
 multiline_comment|/* XXX imperical, should be define */
 )brace
 suffix:semicolon
+multiline_comment|/* This describes the vector containing function pointers to the ARC&n;   firmware functions.  */
 DECL|struct|linux_romvec
 r_struct
 id|linux_romvec
 (brace
-multiline_comment|/* Load an executable image. */
 DECL|member|load
-r_int
-(paren
-op_star
+id|LONG
 id|load
-)paren
-(paren
-r_char
-op_star
-id|file
-comma
-r_int
-r_int
-id|end
-comma
-r_int
-r_int
-op_star
-id|start_pc
-comma
-r_int
-r_int
-op_star
-id|end_addr
-)paren
+suffix:semicolon
+multiline_comment|/* Load an executable image. */
+DECL|member|invoke
+id|LONG
+id|invoke
 suffix:semicolon
 multiline_comment|/* Invoke a standalong image. */
-DECL|member|invoke
-r_int
-(paren
-op_star
-id|invoke
-)paren
-(paren
-r_int
-r_int
-id|startpc
-comma
-r_int
-r_int
-id|sp
-comma
-r_int
-id|argc
-comma
-r_char
-op_star
-op_star
-id|argv
-comma
-r_char
-op_star
-op_star
-id|envp
-)paren
-suffix:semicolon
-multiline_comment|/* Load and begin execution of a standalong image. */
 DECL|member|exec
-r_int
-(paren
-op_star
+id|LONG
 id|exec
-)paren
-(paren
-r_char
-op_star
-id|file
-comma
-r_int
-id|argc
-comma
-r_char
-op_star
-op_star
-id|argv
-comma
-r_char
-op_star
-op_star
-id|envp
-)paren
 suffix:semicolon
+multiline_comment|/* Load and begin execution of a&n;&t;&t;&t;&t;&t;   standalone image. */
 DECL|member|halt
-r_void
-(paren
-op_star
+id|LONG
 id|halt
-)paren
-(paren
-r_void
-)paren
-id|__attribute__
-c_func
-(paren
-(paren
-id|noreturn
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/* Halt the machine. */
 DECL|member|pdown
-r_void
-(paren
-op_star
+id|LONG
 id|pdown
-)paren
-(paren
-r_void
-)paren
-id|__attribute__
-c_func
-(paren
-(paren
-id|noreturn
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/* Power down the machine. */
 DECL|member|restart
-r_void
-(paren
-op_star
+id|LONG
 id|restart
-)paren
-(paren
-r_void
-)paren
-id|__attribute__
-c_func
-(paren
-(paren
-id|noreturn
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/* XXX soft reset??? */
 DECL|member|reboot
-r_void
-(paren
-op_star
+id|LONG
 id|reboot
-)paren
-(paren
-r_void
-)paren
-id|__attribute__
-c_func
-(paren
-(paren
-id|noreturn
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/* Reboot the machine. */
 DECL|member|imode
-r_void
-(paren
-op_star
+id|LONG
 id|imode
-)paren
-(paren
-r_void
-)paren
-id|__attribute__
-c_func
-(paren
-(paren
-id|noreturn
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/* Enter PROM interactive mode. */
 DECL|member|_unused1
-r_int
+id|LONG
 id|_unused1
 suffix:semicolon
-multiline_comment|/* padding */
+multiline_comment|/* Was ReturnFromMain(). */
 multiline_comment|/* PROM device tree interface. */
 DECL|member|next_component
-id|pcomponent
-op_star
-(paren
-op_star
+id|LONG
 id|next_component
-)paren
-(paren
-id|pcomponent
-op_star
-id|this
-)paren
 suffix:semicolon
 DECL|member|child_component
-id|pcomponent
-op_star
-(paren
-op_star
+id|LONG
 id|child_component
-)paren
-(paren
-id|pcomponent
-op_star
-id|this
-)paren
 suffix:semicolon
 DECL|member|parent_component
-id|pcomponent
-op_star
-(paren
-op_star
+id|LONG
 id|parent_component
-)paren
-(paren
-id|pcomponent
-op_star
-id|this
-)paren
 suffix:semicolon
 DECL|member|component_data
-r_int
-(paren
-op_star
+id|LONG
 id|component_data
-)paren
-(paren
-r_void
-op_star
-id|opaque_data
-comma
-id|pcomponent
-op_star
-id|this
-)paren
 suffix:semicolon
 DECL|member|child_add
-id|pcomponent
-op_star
-(paren
-op_star
+id|LONG
 id|child_add
-)paren
-(paren
-id|pcomponent
-op_star
-id|this
-comma
-id|pcomponent
-op_star
-id|tmp
-comma
-r_void
-op_star
-id|opaque_data
-)paren
 suffix:semicolon
 DECL|member|comp_del
-r_int
-(paren
-op_star
+id|LONG
 id|comp_del
-)paren
-(paren
-id|pcomponent
-op_star
-id|this
-)paren
 suffix:semicolon
 DECL|member|component_by_path
-id|pcomponent
-op_star
-(paren
-op_star
+id|LONG
 id|component_by_path
-)paren
-(paren
-r_char
-op_star
-id|file
-)paren
 suffix:semicolon
 multiline_comment|/* Misc. stuff. */
 DECL|member|cfg_save
-r_int
-(paren
-op_star
+id|LONG
 id|cfg_save
-)paren
-(paren
-r_void
-)paren
 suffix:semicolon
 DECL|member|get_sysid
-r_struct
-id|linux_sysid
-op_star
-(paren
-op_star
+id|LONG
 id|get_sysid
-)paren
-(paren
-r_void
-)paren
 suffix:semicolon
 multiline_comment|/* Probing for memory. */
 DECL|member|get_mdesc
-r_struct
-id|linux_mdesc
-op_star
-(paren
-op_star
+id|LONG
 id|get_mdesc
-)paren
-(paren
-r_struct
-id|linux_mdesc
-op_star
-id|curr
-)paren
 suffix:semicolon
 DECL|member|_unused2
-r_int
+id|LONG
 id|_unused2
 suffix:semicolon
-multiline_comment|/* padding */
+multiline_comment|/* was Signal() */
 DECL|member|get_tinfo
-r_struct
-id|linux_tinfo
-op_star
-(paren
-op_star
+id|LONG
 id|get_tinfo
-)paren
-(paren
-r_void
-)paren
 suffix:semicolon
 DECL|member|get_rtime
-r_int
-r_int
-(paren
-op_star
+id|LONG
 id|get_rtime
-)paren
-(paren
-r_void
-)paren
 suffix:semicolon
 multiline_comment|/* File type operations. */
 DECL|member|get_vdirent
-r_int
-(paren
-op_star
+id|LONG
 id|get_vdirent
-)paren
-(paren
-r_int
-r_int
-id|fd
-comma
-r_struct
-id|linux_vdirent
-op_star
-id|entry
-comma
-r_int
-r_int
-id|num
-comma
-r_int
-r_int
-op_star
-id|count
-)paren
 suffix:semicolon
 DECL|member|open
-r_int
-(paren
-op_star
+id|LONG
 id|open
-)paren
-(paren
-r_char
-op_star
-id|file
-comma
-r_enum
-id|linux_omode
-id|mode
-comma
-r_int
-r_int
-op_star
-id|fd
-)paren
 suffix:semicolon
 DECL|member|close
-r_int
-(paren
-op_star
+id|LONG
 id|close
-)paren
-(paren
-r_int
-r_int
-id|fd
-)paren
 suffix:semicolon
 DECL|member|read
-r_int
-(paren
-op_star
+id|LONG
 id|read
-)paren
-(paren
-r_int
-r_int
-id|fd
-comma
-r_void
-op_star
-id|buffer
-comma
-r_int
-r_int
-id|num
-comma
-r_int
-r_int
-op_star
-id|count
-)paren
 suffix:semicolon
 DECL|member|get_rstatus
-r_int
-(paren
-op_star
+id|LONG
 id|get_rstatus
-)paren
-(paren
-r_int
-r_int
-id|fd
-)paren
 suffix:semicolon
 DECL|member|write
-r_int
-(paren
-op_star
+id|LONG
 id|write
-)paren
-(paren
-r_int
-r_int
-id|fd
-comma
-r_void
-op_star
-id|buffer
-comma
-r_int
-r_int
-id|num
-comma
-r_int
-r_int
-op_star
-id|count
-)paren
 suffix:semicolon
 DECL|member|seek
-r_int
-(paren
-op_star
+id|LONG
 id|seek
-)paren
-(paren
-r_int
-r_int
-id|fd
-comma
-r_struct
-id|linux_bigint
-op_star
-id|offset
-comma
-r_enum
-id|linux_seekmode
-id|smode
-)paren
 suffix:semicolon
 DECL|member|mount
-r_int
-(paren
-op_star
+id|LONG
 id|mount
-)paren
-(paren
-r_char
-op_star
-id|file
-comma
-r_enum
-id|linux_mountops
-id|op
-)paren
 suffix:semicolon
 multiline_comment|/* Dealing with firmware environment variables. */
 DECL|member|get_evar
-id|PCHAR
-(paren
-op_star
+id|LONG
 id|get_evar
-)paren
-(paren
-id|CHAR
-op_star
-id|name
-)paren
 suffix:semicolon
 DECL|member|set_evar
 id|LONG
-(paren
-op_star
 id|set_evar
-)paren
-(paren
-id|PCHAR
-id|name
-comma
-id|PCHAR
-id|value
-)paren
 suffix:semicolon
 DECL|member|get_finfo
-r_int
-(paren
-op_star
+id|LONG
 id|get_finfo
-)paren
-(paren
-r_int
-r_int
-id|fd
-comma
-r_struct
-id|linux_finfo
-op_star
-id|buf
-)paren
 suffix:semicolon
 DECL|member|set_finfo
-r_int
-(paren
-op_star
+id|LONG
 id|set_finfo
-)paren
-(paren
-r_int
-r_int
-id|fd
-comma
-r_int
-r_int
-id|flags
-comma
-r_int
-r_int
-id|mask
-)paren
 suffix:semicolon
 multiline_comment|/* Miscellaneous. */
 DECL|member|cache_flush
-r_void
-(paren
-op_star
+id|LONG
 id|cache_flush
-)paren
-(paren
-r_void
-)paren
 suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* The SGI ARCS parameter block is in a fixed location for standalone&n; * programs to access PROM facilities easily.&n; */
-DECL|struct|linux_promblock
+DECL|struct|_SYSTEM_PARAMETER_BLOCK
+r_typedef
 r_struct
-id|linux_promblock
+id|_SYSTEM_PARAMETER_BLOCK
 (brace
 DECL|member|magic
-r_int
+id|ULONG
 id|magic
 suffix:semicolon
 multiline_comment|/* magic cookie */
 DECL|macro|PROMBLOCK_MAGIC
 mdefine_line|#define PROMBLOCK_MAGIC      0x53435241
 DECL|member|len
-r_int
-r_int
+id|ULONG
 id|len
 suffix:semicolon
 multiline_comment|/* length of parm block */
 DECL|member|ver
-r_int
-r_int
+id|USHORT
 id|ver
 suffix:semicolon
 multiline_comment|/* ARCS firmware version */
 DECL|member|rev
-r_int
-r_int
+id|USHORT
 id|rev
 suffix:semicolon
 multiline_comment|/* ARCS firmware revision */
 DECL|member|rs_block
-r_int
-op_star
+id|_PLONG
 id|rs_block
 suffix:semicolon
 multiline_comment|/* Restart block. */
 DECL|member|dbg_block
-r_int
-op_star
+id|_PLONG
 id|dbg_block
 suffix:semicolon
 multiline_comment|/* Debug block. */
 DECL|member|gevect
-r_int
-op_star
+id|_PLONG
 id|gevect
 suffix:semicolon
 multiline_comment|/* XXX General vector??? */
 DECL|member|utlbvect
-r_int
-op_star
+id|_PLONG
 id|utlbvect
 suffix:semicolon
 multiline_comment|/* XXX UTLB vector??? */
 DECL|member|rveclen
-r_int
-r_int
+id|ULONG
 id|rveclen
 suffix:semicolon
 multiline_comment|/* Size of romvec struct. */
 DECL|member|romvec
-r_struct
-id|linux_romvec
-op_star
+id|_PVOID
 id|romvec
 suffix:semicolon
 multiline_comment|/* Function interface. */
 DECL|member|pveclen
-r_int
-r_int
+id|ULONG
 id|pveclen
 suffix:semicolon
 multiline_comment|/* Length of private vector. */
 DECL|member|pvector
-r_int
-op_star
+id|_PVOID
 id|pvector
 suffix:semicolon
 multiline_comment|/* Private vector. */
 DECL|member|adap_cnt
-r_int
+id|ULONG
 id|adap_cnt
 suffix:semicolon
 multiline_comment|/* Adapter count. */
 DECL|member|adap_typ0
-r_int
+id|ULONG
 id|adap_typ0
 suffix:semicolon
 multiline_comment|/* First adapter type. */
 DECL|member|adap_vcnt0
-r_int
+id|ULONG
 id|adap_vcnt0
 suffix:semicolon
 multiline_comment|/* Adapter 0 vector count. */
 DECL|member|adap_vector
-r_int
-op_star
+id|_PVOID
 id|adap_vector
 suffix:semicolon
 multiline_comment|/* Adapter 0 vector ptr. */
 DECL|member|adap_typ1
-r_int
+id|ULONG
 id|adap_typ1
 suffix:semicolon
 multiline_comment|/* Second adapter type. */
 DECL|member|adap_vcnt1
-r_int
+id|ULONG
 id|adap_vcnt1
 suffix:semicolon
 multiline_comment|/* Adapter 1 vector count. */
 DECL|member|adap_vector1
-r_int
-op_star
+id|_PVOID
 id|adap_vector1
 suffix:semicolon
 multiline_comment|/* Adapter 1 vector ptr. */
 multiline_comment|/* More adapter vectors go here... */
+DECL|typedef|SYSTEM_PARAMETER_BLOCK
+DECL|typedef|PSYSTEM_PARAMETER_BLOCK
 )brace
+id|SYSTEM_PARAMETER_BLOCK
+comma
+op_star
+id|PSYSTEM_PARAMETER_BLOCK
 suffix:semicolon
 DECL|macro|PROMBLOCK
-mdefine_line|#define PROMBLOCK ((struct linux_promblock *)0xA0001000UL)
+mdefine_line|#define PROMBLOCK ((PSYSTEM_PARAMETER_BLOCK) (int)0xA0001000)
 DECL|macro|ROMVECTOR
-mdefine_line|#define ROMVECTOR ((PROMBLOCK)-&gt;romvec)
+mdefine_line|#define ROMVECTOR ((struct linux_romvec *) (long)(PROMBLOCK)-&gt;romvec)
 multiline_comment|/* Cache layout parameter block. */
 DECL|union|linux_cache_key
 r_union
@@ -1715,5 +1274,36 @@ suffix:semicolon
 multiline_comment|/* Max # of symbols. */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Macros for calling a 32-bit ARC implementation from 64-bit code&n; */
+macro_line|#if defined(CONFIG_MIPS64) &amp;&amp; defined(CONFIG_ARC32)
+DECL|macro|__arc_clobbers
+mdefine_line|#define __arc_clobbers&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;$2&quot;,&quot;$3&quot; /* ... */, &quot;$8&quot;,&quot;$9&quot;,&quot;$10&quot;,&quot;$11&quot;,&t;&t;&t;&bslash;&n;&t;&quot;$12&quot;,&quot;$13&quot;,&quot;$14&quot;,&quot;$15&quot;,&quot;$16&quot;,&quot;$24&quot;,&quot;25&quot;,&quot;$31&quot;
+DECL|macro|ARC_CALL0
+mdefine_line|#define ARC_CALL0(dest)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: __arc_clobbers, &quot;$4&quot;,&quot;$5&quot;,&quot;$6&quot;,&quot;$7&quot;);&t;&t;&t;&t;&bslash;&n;&t;(unsigned long) __res;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|ARC_CALL1
+mdefine_line|#define ARC_CALL1(dest,a1)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register signed int __a1 __asm__(&quot;$4&quot;) = (int) (long) (a1);&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec), &quot;r&quot; (__a1)&t;&t;&t;&t;&t;&bslash;&n;&t;: __arc_clobbers, &quot;$5&quot;,&quot;$6&quot;,&quot;$7&quot;);&t;&t;&t;&t;&bslash;&n;&t;(unsigned long) __res;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|ARC_CALL2
+mdefine_line|#define ARC_CALL2(dest,a1,a2)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register signed int __a1 __asm__(&quot;$4&quot;) = (int) (long) (a1);&t;&bslash;&n;&t;register signed int __a2 __asm__(&quot;$5&quot;) = (int) (long) (a2);&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec), &quot;r&quot; (__a1), &quot;r&quot; (__a2)&t;&t;&t;&t;&bslash;&n;&t;: __arc_clobbers, &quot;$6&quot;,&quot;$7&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|ARC_CALL3
+mdefine_line|#define ARC_CALL3(dest,a1,a2,a3)&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register signed int __a1 __asm__(&quot;$4&quot;) = (int) (long) (a1);&t;&bslash;&n;&t;register signed int __a2 __asm__(&quot;$5&quot;) = (int) (long) (a2);&t;&bslash;&n;&t;register signed int __a3 __asm__(&quot;$6&quot;) = (int) (long) (a3);&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec), &quot;r&quot; (__a1), &quot;r&quot; (__a2), &quot;r&quot; (__a3)&t;&t;&bslash;&n;&t;: __arc_clobbers, &quot;$7&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|ARC_CALL4
+mdefine_line|#define ARC_CALL4(dest,a1,a2,a3,a4)&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register signed int __a1 __asm__(&quot;$4&quot;) = (int) (long) (a1);&t;&bslash;&n;&t;register signed int __a2 __asm__(&quot;$5&quot;) = (int) (long) (a2);&t;&bslash;&n;&t;register signed int __a3 __asm__(&quot;$6&quot;) = (int) (long) (a3);&t;&bslash;&n;&t;register signed int __a4 __asm__(&quot;$7&quot;) = (int) (long) (a4);&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec), &quot;r&quot; (__a1), &quot;r&quot; (__a2), &quot;r&quot; (__a3), &t;&t;&bslash;&n;&t;  &quot;r&quot; (__a4)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: __arc_clobbers);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|ARC_CALL5
+mdefine_line|#define ARC_CALL5(dest,a1,a2,a3,a4,a5)&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register signed int __a1 __asm__(&quot;$4&quot;) = (int) (long) (a1);&t;&bslash;&n;&t;register signed int __a2 __asm__(&quot;$5&quot;) = (int) (long) (a2);&t;&bslash;&n;&t;register signed int __a3 __asm__(&quot;$6&quot;) = (int) (long) (a3);&t;&bslash;&n;&t;register signed int __a4 __asm__(&quot;$7&quot;) = (int) (long) (a4);&t;&bslash;&n;&t;register signed int __a5 = (a5);&t;&t;&t;&t;&bslash;&n;&t;long __vec = (long) romvec-&gt;dest;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;dsubu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;sw&bslash;t%6, 16($29)&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jalr&bslash;t%1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;daddu&bslash;t$29, 32&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;move&bslash;t%0, $2&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (__res), &quot;=r&quot; (__vec)&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;1&quot; (__vec),&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  &quot;r&quot; (__a1), &quot;r&quot; (__a2), &quot;r&quot; (__a3), &quot;r&quot; (__a4),&t;&t;&bslash;&n;&t;  &quot;r&quot; (__a5)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: __arc_clobbers);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#endif /* defined(CONFIG_MIPS64) &amp;&amp; defined(CONFIG_ARC32) */
+macro_line|#if (defined(CONFIG_MIPS32) &amp;&amp; defined(CONFIG_ARC32)) ||&t;&t;&bslash;&n;    (defined(CONFIG_MIPS64) &amp;&amp; defined(CONFIG_ARC64))
+DECL|macro|ARC_CALL0
+mdefine_line|#define ARC_CALL0(dest)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long (*__vec)(void) = (void *) romvec-&gt;dest;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res = __vec();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|ARC_CALL1
+mdefine_line|#define ARC_CALL1(dest,a1)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __a1 = (long) (a1);&t;&t;&t;&t;&t;&bslash;&n;&t;long (*__vec)(long) = (void *) romvec-&gt;dest;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res = __vec(__a1);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|ARC_CALL2
+mdefine_line|#define ARC_CALL2(dest,a1,a2)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __a1 = (long) (a1);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a2 = (long) (a2);&t;&t;&t;&t;&t;&bslash;&n;&t;long (*__vec)(long, long) = (void *) romvec-&gt;dest;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res = __vec(__a1, __a2);&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|ARC_CALL3
+mdefine_line|#define ARC_CALL3(dest,a1,a2,a3)&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __a1 = (long) (a1);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a2 = (long) (a2);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a3 = (long) (a3);&t;&t;&t;&t;&t;&bslash;&n;&t;long (*__vec)(long, long, long)&t;= (void *) romvec-&gt;dest;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res = __vec(__a1, __a2, __a3);&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|ARC_CALL4
+mdefine_line|#define ARC_CALL4(dest,a1,a2,a3,a4)&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __a1 = (long) (a1);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a2 = (long) (a2);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a3 = (long) (a3);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a4 = (long) (a4);&t;&t;&t;&t;&t;&bslash;&n;&t;long (*__vec)(long, long, long, long) = (void *) romvec-&gt;dest;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res = __vec(__a1, __a2, __a3, __a4);&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|ARC_CALL5
+mdefine_line|#define ARC_CALL5(dest,a1,a2,a3,a4,a5)&t;&t;&t;&t;&t;&bslash;&n;({&t;long __res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;long __a1 = (long) (a1);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a2 = (long) (a2);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a3 = (long) (a3);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a4 = (long) (a4);&t;&t;&t;&t;&t;&bslash;&n;&t;long __a5 = (long) (a5);&t;&t;&t;&t;&t;&bslash;&n;&t;long (*__vec)(long, long, long, long, long);&t;&t;&t;&bslash;&n;&t;__vec = (void *) romvec-&gt;dest;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res = __vec(__a1, __a2, __a3, __a4, __a5);&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#endif /* both kernel and ARC either 32-bit or 64-bit */
 macro_line|#endif /* _ASM_SGIARCS_H */
 eof
