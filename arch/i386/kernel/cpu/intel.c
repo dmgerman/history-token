@@ -1047,6 +1047,14 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|c-&gt;x86_mask
+op_eq
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|l2
 op_eq
 l_int|0
@@ -1055,6 +1063,7 @@ id|p
 op_assign
 l_string|&quot;Celeron (Covington)&quot;
 suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
@@ -1066,6 +1075,7 @@ id|p
 op_assign
 l_string|&quot;Mobile Pentium II (Dixon)&quot;
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1081,6 +1091,22 @@ l_int|128
 id|p
 op_assign
 l_string|&quot;Celeron (Mendocino)&quot;
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|c-&gt;x86_mask
+op_eq
+l_int|0
+op_logical_or
+id|c-&gt;x86_mask
+op_eq
+l_int|5
+)paren
+id|p
+op_assign
+l_string|&quot;Celeron-A&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1528,6 +1554,84 @@ comma
 l_int|8
 )braket
 l_string|&quot;Mobile Pentium MMX&quot;
+)brace
+)brace
+comma
+(brace
+id|X86_VENDOR_INTEL
+comma
+l_int|6
+comma
+(brace
+(braket
+l_int|0
+)braket
+l_string|&quot;Pentium Pro A-step&quot;
+comma
+(braket
+l_int|1
+)braket
+l_string|&quot;Pentium Pro&quot;
+comma
+(braket
+l_int|3
+)braket
+l_string|&quot;Pentium II (Klamath)&quot;
+comma
+(braket
+l_int|4
+)braket
+l_string|&quot;Pentium II (Deschutes)&quot;
+comma
+(braket
+l_int|5
+)braket
+l_string|&quot;Pentium II (Deschutes)&quot;
+comma
+(braket
+l_int|6
+)braket
+l_string|&quot;Mobile Pentium II&quot;
+comma
+(braket
+l_int|7
+)braket
+l_string|&quot;Pentium III (Katmai)&quot;
+comma
+(braket
+l_int|8
+)braket
+l_string|&quot;Pentium III (Coppermine)&quot;
+comma
+(braket
+l_int|10
+)braket
+l_string|&quot;Pentium III (Cascades)&quot;
+comma
+(braket
+l_int|11
+)braket
+l_string|&quot;Pentium III (Tualatin)&quot;
+comma
+)brace
+)brace
+comma
+(brace
+id|X86_VENDOR_INTEL
+comma
+l_int|15
+comma
+(brace
+(braket
+l_int|1
+)braket
+l_string|&quot;Pentium 4 (Unknown)&quot;
+comma
+(braket
+l_int|5
+)braket
+l_string|&quot;Pentium 4 (Foster)&quot;
+comma
 )brace
 )brace
 comma
