@@ -99,7 +99,7 @@ DECL|macro|E1000_TX_QUEUE_WAKE
 mdefine_line|#define E1000_TX_QUEUE_WAKE&t;16
 multiline_comment|/* How many Rx Buffers do we bundle into one write to the hardware ? */
 DECL|macro|E1000_RX_BUFFER_WRITE
-mdefine_line|#define E1000_RX_BUFFER_WRITE&t;16
+mdefine_line|#define E1000_RX_BUFFER_WRITE&t;16&t;/* Must be power of 2 */
 DECL|macro|AUTO_ALL_MODES
 mdefine_line|#define AUTO_ALL_MODES       0
 DECL|macro|E1000_EEPROM_APME
@@ -183,7 +183,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|E1000_DESC_UNUSED
-mdefine_line|#define E1000_DESC_UNUSED(R) &bslash;&n;((((R)-&gt;next_to_clean + (R)-&gt;count) - ((R)-&gt;next_to_use + 1)) % ((R)-&gt;count))
+mdefine_line|#define E1000_DESC_UNUSED(R) &bslash;&n;&t;((((R)-&gt;next_to_clean &gt; (R)-&gt;next_to_use) ? 0 : (R)-&gt;count) + &bslash;&n;&t;(R)-&gt;next_to_clean - (R)-&gt;next_to_use - 1)
 DECL|macro|E1000_GET_DESC
 mdefine_line|#define E1000_GET_DESC(R, i, type)&t;(&amp;(((struct type *)((R).desc))[i]))
 DECL|macro|E1000_RX_DESC
@@ -291,10 +291,6 @@ suffix:semicolon
 DECL|member|tx_abs_int_delay
 r_uint32
 id|tx_abs_int_delay
-suffix:semicolon
-DECL|member|max_data_per_txd
-r_int
-id|max_data_per_txd
 suffix:semicolon
 DECL|member|tx_fifo_head
 r_uint32
