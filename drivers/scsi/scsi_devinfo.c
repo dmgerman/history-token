@@ -1264,6 +1264,8 @@ l_string|&quot;SMSC&quot;
 comma
 l_string|&quot;USB 2 HS-CF&quot;
 comma
+l_int|NULL
+comma
 id|BLIST_SPARSELUN
 )brace
 comma
