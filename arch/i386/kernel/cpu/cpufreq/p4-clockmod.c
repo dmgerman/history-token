@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *&t;Pentium 4/Xeon CPU on demand clock modulation/speed scaling&n; *&t;(C) 2002 - 2003 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&t;(C) 2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;&n; *&t;(C) 2002 Arjan van de Ven &lt;arjanv@redhat.com&gt;&n; *&t;(C) 2002 Tora T. Engstad&n; *&t;All Rights Reserved&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *      The author(s) of this software shall not be held liable for damages&n; *      of any nature resulting due to the use of this software. This&n; *      software is provided AS-IS with no warranties.&n; *&t;&n; *&t;Date&t;&t;Errata&t;&t;&t;Description&n; *&t;20020525&t;N44, O17&t;12.5% or 25% DC causes lockup&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
