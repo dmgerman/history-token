@@ -8785,6 +8785,20 @@ r_int
 )paren
 id|tp
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Call Trace:&quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_KALLSYMS
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 r_do
 (brace
 multiline_comment|/* Bogus frame pointer? */
@@ -8832,7 +8846,15 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;[%016lx] &quot;
+l_string|&quot; [%016lx] &quot;
+comma
+id|pc
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;%s&bslash;n&quot;
 comma
 id|pc
 )paren
@@ -8856,12 +8878,14 @@ OL
 l_int|16
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_KALLSYMS
 id|printk
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|show_trace_task
 r_void
@@ -8977,11 +9001,6 @@ id|count
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|reg_window
-op_star
-id|lastrw
-suffix:semicolon
 multiline_comment|/* Amuse the user. */
 id|printk
 c_func
@@ -9048,15 +9067,6 @@ id|STACK_BIAS
 )paren
 suffix:semicolon
 multiline_comment|/* Stop the back trace when we hit userland or we&n;&t;&t; * find some badly aligned kernel stack.&n;&t;&t; */
-id|lastrw
-op_assign
-(paren
-r_struct
-id|reg_window
-op_star
-)paren
-id|current
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -9067,9 +9077,17 @@ op_increment
 OL
 l_int|30
 op_logical_and
+(paren
+(paren
+(paren
+r_int
+r_int
+)paren
 id|rw
+)paren
 op_ge
-id|lastrw
+id|PAGE_OFFSET
+)paren
 op_logical_and
 (paren
 r_char
@@ -9119,7 +9137,7 @@ suffix:semicolon
 id|print_symbol
 c_func
 (paren
-l_string|&quot;: %s&bslash;n&quot;
+l_string|&quot;: %s&quot;
 comma
 id|rw-&gt;ins
 (braket
@@ -9132,10 +9150,6 @@ c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
-suffix:semicolon
-id|lastrw
-op_assign
-id|rw
 suffix:semicolon
 id|rw
 op_assign

@@ -1329,14 +1329,12 @@ op_amp
 l_int|0x80
 )paren
 (brace
+multiline_comment|/* Fix detection using BIOS tables */
 r_if
 c_cond
 (paren
 id|rinfo-&gt;is_mobility
-op_logical_and
-id|conn
-op_eq
-id|ddc_dvi
+multiline_comment|/*&amp;&amp; conn == ddc_dvi*/
 op_logical_and
 (paren
 id|INREG

@@ -16411,6 +16411,15 @@ op_plus
 id|sizeof_card
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 id|priv
 op_assign
 (paren

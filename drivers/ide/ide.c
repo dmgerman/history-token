@@ -3011,10 +3011,6 @@ id|hwif-&gt;ide_dma_on
 op_assign
 id|old_hwif.ide_dma_on
 suffix:semicolon
-id|hwif-&gt;ide_dma_off
-op_assign
-id|old_hwif.ide_dma_off
-suffix:semicolon
 id|hwif-&gt;ide_dma_off_quietly
 op_assign
 id|old_hwif.ide_dma_off_quietly
@@ -3030,18 +3026,6 @@ suffix:semicolon
 id|hwif-&gt;ide_dma_host_off
 op_assign
 id|old_hwif.ide_dma_host_off
-suffix:semicolon
-id|hwif-&gt;ide_dma_bad_drive
-op_assign
-id|old_hwif.ide_dma_bad_drive
-suffix:semicolon
-id|hwif-&gt;ide_dma_good_drive
-op_assign
-id|old_hwif.ide_dma_good_drive
-suffix:semicolon
-id|hwif-&gt;ide_dma_count
-op_assign
-id|old_hwif.ide_dma_count
 suffix:semicolon
 id|hwif-&gt;ide_dma_verbose
 op_assign
@@ -4736,6 +4720,7 @@ r_int
 id|arg
 )paren
 (brace
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -4820,13 +4805,7 @@ r_else
 r_if
 c_cond
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_off
+id|__ide_dma_off
 c_func
 (paren
 id|drive
@@ -4840,6 +4819,12 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#else
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|set_pio_mode
 r_static

@@ -587,10 +587,11 @@ id|name
 l_int|16
 )braket
 suffix:semicolon
-DECL|member|hdlc
-id|hdlc_device
+DECL|member|dev
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 suffix:semicolon
 DECL|member|private
 r_void
@@ -1131,7 +1132,8 @@ r_void
 id|cpc_net_rx
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
 )paren
 suffix:semicolon

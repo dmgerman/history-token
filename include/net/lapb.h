@@ -157,10 +157,11 @@ r_struct
 id|list_head
 id|node
 suffix:semicolon
-DECL|member|token
-r_void
+DECL|member|dev
+r_struct
+id|net_device
 op_star
-id|token
+id|dev
 suffix:semicolon
 multiline_comment|/* Link status fields */
 DECL|member|mode

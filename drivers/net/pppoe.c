@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/if_pppox.h&gt;
 macro_line|#include &lt;linux/ppp_channel.h&gt;
 macro_line|#include &lt;linux/ppp_defs.h&gt;
 macro_line|#include &lt;linux/if_ppp.h&gt;
-macro_line|#include &lt;linux/if_pppvar.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;

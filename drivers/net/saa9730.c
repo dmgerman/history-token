@@ -4171,6 +4171,7 @@ op_assign
 id|irq
 suffix:semicolon
 multiline_comment|/* &n;&t; * Make certain the data structures used by the controller are aligned &n;&t; * and DMAble. &n;&t; */
+multiline_comment|/*&n;&t; *  XXX: that is obviously broken - kfree() won&squot;t be happy with us.&n;&t; */
 id|lp
 op_assign
 (paren
@@ -4454,12 +4455,6 @@ id|kfree
 c_func
 (paren
 id|dev-&gt;priv
-)paren
-suffix:semicolon
-id|free_netdev
-c_func
-(paren
-id|dev
 )paren
 suffix:semicolon
 r_return
