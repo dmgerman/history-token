@@ -376,13 +376,6 @@ op_star
 id|parent
 suffix:semicolon
 multiline_comment|/*  The parent directory                    */
-DECL|member|slave
-r_struct
-id|devfs_entry
-op_star
-id|slave
-suffix:semicolon
-multiline_comment|/*  Another entry to unregister             */
 DECL|member|inode
 r_struct
 id|devfs_inode
@@ -4132,12 +4125,6 @@ id|devfs_get
 id|dir
 )paren
 suffix:semicolon
-id|devfs_unregister
-(paren
-id|de-&gt;slave
-)paren
-suffix:semicolon
-multiline_comment|/*  Let it handle the locking  */
 id|devfsd_notify
 (paren
 id|de
@@ -6107,107 +6094,6 @@ id|de-&gt;next
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function devfs_get_next_sibling  */
-multiline_comment|/**&n; *&t;devfs_auto_unregister - Configure a devfs entry to be automatically unregistered.&n; *&t;@master: The master devfs entry. Only one slave may be registered.&n; *&t;@slave: The devfs entry which will be automatically unregistered when the&n; *&t;&t;master entry is unregistered. It is illegal to call devfs_unregister()&n; *&t;&t;on this entry.&n; */
-DECL|function|devfs_auto_unregister
-r_void
-id|devfs_auto_unregister
-(paren
-id|devfs_handle_t
-id|master
-comma
-id|devfs_handle_t
-id|slave
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|master
-op_eq
-l_int|NULL
-)paren
-r_return
-suffix:semicolon
-id|VERIFY_ENTRY
-(paren
-id|master
-)paren
-suffix:semicolon
-id|VERIFY_ENTRY
-(paren
-id|slave
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|master-&gt;slave
-op_ne
-l_int|NULL
-)paren
-(brace
-multiline_comment|/*  Because of the dumbness of the layers above, ignore duplicates  */
-r_if
-c_cond
-(paren
-id|master-&gt;slave
-op_eq
-id|slave
-)paren
-r_return
-suffix:semicolon
-id|PRINTK
-(paren
-l_string|&quot;(%s): only one slave allowed&bslash;n&quot;
-comma
-id|master-&gt;name
-)paren
-suffix:semicolon
-id|OOPS
-(paren
-l_string|&quot;():  old slave: &bslash;&quot;%s&bslash;&quot;  new slave: &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
-comma
-id|master-&gt;slave-&gt;name
-comma
-id|slave-&gt;name
-)paren
-suffix:semicolon
-)brace
-id|master-&gt;slave
-op_assign
-id|slave
-suffix:semicolon
-)brace
-multiline_comment|/*  End Function devfs_auto_unregister  */
-multiline_comment|/**&n; *&t;devfs_get_unregister_slave - Get the slave entry which will be automatically unregistered.&n; *&t;@master: The master devfs entry.&n; *&n; *&t;Returns the slave which will be unregistered when @master is unregistered.&n; */
-DECL|function|devfs_get_unregister_slave
-id|devfs_handle_t
-id|devfs_get_unregister_slave
-(paren
-id|devfs_handle_t
-id|master
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|master
-op_eq
-l_int|NULL
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-id|VERIFY_ENTRY
-(paren
-id|master
-)paren
-suffix:semicolon
-r_return
-id|master-&gt;slave
-suffix:semicolon
-)brace
-multiline_comment|/*  End Function devfs_get_unregister_slave  */
 multiline_comment|/**&n; *&t;devfs_get_name - Get the name for a device entry in its parent directory.&n; *&t;@de: The handle to the device entry.&n; *&t;@namelen: The length of the name is written here. This may be %NULL.&n; *&n; *&t;Returns the name on success, else %NULL.&n; */
 DECL|function|devfs_get_name
 r_const
@@ -6782,20 +6668,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|devfs_get_next_sibling
-)paren
-suffix:semicolon
-DECL|variable|devfs_auto_unregister
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|devfs_auto_unregister
-)paren
-suffix:semicolon
-DECL|variable|devfs_get_unregister_slave
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|devfs_get_unregister_slave
 )paren
 suffix:semicolon
 DECL|variable|devfs_get_name
