@@ -85,7 +85,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next,last)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t; &t;&t;&t;&t;&t;&bslash;&n;&t;&t;last = __switch_to(prev-&gt;thread_info,next-&gt;thread_info); &bslash;&n;&t;&t;mb();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define switch_to(prev,next)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t; &t;&t;&t;&t;&t;&bslash;&n;&t;&t;__switch_to(prev-&gt;thread_info,next-&gt;thread_info);&t;&bslash;&n;&t;&t;mb();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 multiline_comment|/* For spinlocks etc */
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(x)&t;__save_flags_cli(x)
