@@ -532,7 +532,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Create a network byte-order representation of all the addresses&n; * formated as SCTP parameters.&n; *&n; * The second argument is the return value for the length.&n; */
 DECL|function|sctp_bind_addrs_to_raw
-id|sctpParam_t
+r_union
+id|sctp_params
 id|sctp_bind_addrs_to_raw
 c_func
 (paren
@@ -549,10 +550,12 @@ r_int
 id|priority
 )paren
 (brace
-id|sctpParam_t
+r_union
+id|sctp_params
 id|addrparms
 suffix:semicolon
-id|sctpParam_t
+r_union
+id|sctp_params
 id|retval
 suffix:semicolon
 r_int
@@ -573,10 +576,6 @@ r_struct
 id|list_head
 op_star
 id|pos
-suffix:semicolon
-id|retval.v
-op_assign
-l_int|NULL
 suffix:semicolon
 id|addrparms_len
 op_assign
@@ -604,7 +603,7 @@ id|sctp_addr_param_t
 )paren
 suffix:semicolon
 )brace
-id|addrparms.v
+id|retval.v
 op_assign
 id|kmalloc
 c_func
@@ -618,14 +617,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|addrparms.v
+id|retval.v
 )paren
 r_goto
 id|end_raw
 suffix:semicolon
-id|retval
-op_assign
 id|addrparms
+op_assign
+id|retval
 suffix:semicolon
 id|list_for_each
 c_func

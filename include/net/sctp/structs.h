@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 International Business Machines Corp.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email addresses:&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    Randall Stewart       &lt;randall@sctp.chicago.il.us&gt;&n; *    Ken Morneau           &lt;kmorneau@cisco.com&gt;&n; *    Qiaobing Xie          &lt;qxie1@email.mot.com&gt;&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang             &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Dajiang Zhang         &lt;dajiang.zhang@nokia.com&gt; &n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email addresses:&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    Randall Stewart       &lt;randall@sctp.chicago.il.us&gt;&n; *    Ken Morneau           &lt;kmorneau@cisco.com&gt;&n; *    Qiaobing Xie          &lt;qxie1@email.mot.com&gt;&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang             &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Dajiang Zhang         &lt;dajiang.zhang@nokia.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#ifndef __sctp_structs_h__
 DECL|macro|__sctp_structs_h__
 mdefine_line|#define __sctp_structs_h__
@@ -469,17 +469,39 @@ op_star
 id|optlen
 )paren
 suffix:semicolon
-DECL|member|get_dst_mtu
+DECL|member|get_dst
+r_struct
+id|dst_entry
+op_star
+(paren
+op_star
+id|get_dst
+)paren
+(paren
+id|sockaddr_storage_t
+op_star
+id|daddr
+comma
+id|sockaddr_storage_t
+op_star
+id|saddr
+)paren
+suffix:semicolon
+DECL|member|cmp_saddr
 r_int
 (paren
 op_star
-id|get_dst_mtu
+id|cmp_saddr
 )paren
 (paren
-r_const
+r_struct
+id|dst_entry
+op_star
+id|dst
+comma
 id|sockaddr_storage_t
 op_star
-id|address
+id|saddr
 )paren
 suffix:semicolon
 DECL|member|net_header_len
@@ -731,12 +753,29 @@ DECL|typedef|sctp_signed_cookie_t
 )brace
 id|sctp_signed_cookie_t
 suffix:semicolon
-multiline_comment|/* This convenience type allows us to avoid casting when walking&n; * through a parameter list.&n; */
+multiline_comment|/* This is another convenience type to allocate memory for address&n; * params for the maximum size and pass such structures around&n; * internally.&n; */
 r_typedef
 r_union
 (brace
+DECL|member|v4
+id|sctp_ipv4addr_param_t
+id|v4
+suffix:semicolon
+DECL|member|v6
+id|sctp_ipv6addr_param_t
+id|v6
+suffix:semicolon
+DECL|typedef|sctp_addr_param_t
+)brace
+id|sctp_addr_param_t
+suffix:semicolon
+multiline_comment|/* A convenience type to allow walking through the various&n; * parameters and avoid casting all over the place.&n; */
+DECL|union|sctp_params
+r_union
+id|sctp_params
+(brace
 DECL|member|v
-id|__u8
+r_void
 op_star
 id|v
 suffix:semicolon
@@ -745,10 +784,10 @@ id|sctp_paramhdr_t
 op_star
 id|p
 suffix:semicolon
-DECL|member|bht
+DECL|member|life
 id|sctp_cookie_preserve_param_t
 op_star
-id|bht
+id|life
 suffix:semicolon
 DECL|member|dns
 id|sctp_hostname_param_t
@@ -775,25 +814,12 @@ id|sctp_ipv6addr_param_t
 op_star
 id|v6
 suffix:semicolon
-DECL|typedef|sctpParam_t
-)brace
-id|sctpParam_t
-suffix:semicolon
-multiline_comment|/* This is another convenience type to allocate memory for address&n; * params for the maximum size and pass such structures around&n; * internally.&n; */
-r_typedef
-r_union
-(brace
-DECL|member|v4
-id|sctp_ipv4addr_param_t
-id|v4
-suffix:semicolon
-DECL|member|v6
-id|sctp_ipv6addr_param_t
-id|v6
-suffix:semicolon
-DECL|typedef|sctp_addr_param_t
-)brace
+DECL|member|addr
 id|sctp_addr_param_t
+op_star
+id|addr
+suffix:semicolon
+)brace
 suffix:semicolon
 multiline_comment|/* RFC 2960.  Section 3.3.5 Heartbeat.&n; *    Heartbeat Information: variable length&n; *    The Sender-specific Heartbeat Info field should normally include&n; *    information about the sender&squot;s current time when this HEARTBEAT&n; *    chunk is sent and the destination transport address to which this&n; *    HEARTBEAT is sent (see Section 8.3).&n; */
 DECL|struct|sctp_sender_hb_info
@@ -869,7 +895,8 @@ suffix:semicolon
 multiline_comment|/* These are the SCTP headers by reverse order in a packet.&n;&t; * Note that some of these may happen more than once.  In that&n;&t; * case, we point at the &quot;current&quot; one, whatever that means&n;&t; * for that level of header.&n;&t; */
 multiline_comment|/* We point this at the FIRST TLV parameter to chunk_hdr.  */
 DECL|member|param_hdr
-id|sctpParam_t
+r_union
+id|sctp_params
 id|param_hdr
 suffix:semicolon
 r_union
@@ -1027,6 +1054,11 @@ DECL|member|source
 id|sockaddr_storage_t
 id|source
 suffix:semicolon
+multiline_comment|/* Destination address for this chunk. */
+DECL|member|dest
+id|sockaddr_storage_t
+id|dest
+suffix:semicolon
 multiline_comment|/* For an inbound chunk, this tells us where it came from.&n;&t; * For an outbound chunk, it tells us where we&squot;d like it to&n;&t; * go.  It is NULL if we have no preference.&n;&t; */
 DECL|member|transport
 id|sctp_transport_t
@@ -1128,7 +1160,7 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|sctp_init_source
+id|sctp_init_addrs
 c_func
 (paren
 id|sctp_chunk_t
@@ -1445,6 +1477,13 @@ DECL|member|pmtu
 id|__u32
 id|pmtu
 suffix:semicolon
+multiline_comment|/* Destination */
+DECL|member|dst
+r_struct
+id|dst_entry
+op_star
+id|dst
+suffix:semicolon
 multiline_comment|/* When was the last time(in jiffies) that a data packet was sent on&n;&t; * this transport?  This is used to adjust the cwnd when the transport&n;&t; * becomes inactive.&n;&t; */
 DECL|member|last_time_used
 r_int
@@ -1468,20 +1507,15 @@ r_int
 r_int
 id|last_time_ecne_reduced
 suffix:semicolon
-multiline_comment|/* state       : The current state of this destination,&n;&t; *             :  i.e. DOWN, UP, ALLOW-HB, NO-HEARTBEAT, etc.&n;&t; */
-r_struct
-(brace
+multiline_comment|/* active      : The current active state of this destination,&n;&t; *             :  i.e. DOWN, UP, etc.&n;&t; */
 DECL|member|active
 r_int
 id|active
 suffix:semicolon
+multiline_comment|/* hb_allowed  : The current heartbeat state of this destination,&n;&t; *             :  i.e. ALLOW-HB, NO-HEARTBEAT, etc.&n;&t; */
 DECL|member|hb_allowed
 r_int
 id|hb_allowed
-suffix:semicolon
-DECL|member|state
-)brace
-id|state
 suffix:semicolon
 multiline_comment|/* These are the error stats for this destination.  */
 multiline_comment|/* Error count : The current error count for this destination.  */
@@ -1581,6 +1615,18 @@ id|sctp_transport_t
 op_star
 comma
 id|sctp_association_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|sctp_transport_route
+c_func
+(paren
+id|sctp_transport_t
+op_star
+comma
+id|sockaddr_storage_t
 op_star
 )paren
 suffix:semicolon
@@ -2090,7 +2136,8 @@ id|sockaddr_storage_t
 op_star
 )paren
 suffix:semicolon
-id|sctpParam_t
+r_union
+id|sctp_params
 id|sctp_bind_addrs_to_raw
 c_func
 (paren
@@ -2494,53 +2541,6 @@ id|err_chunk
 )paren
 suffix:semicolon
 r_int
-id|sctp_verify_param
-c_func
-(paren
-r_const
-id|sctp_association_t
-op_star
-id|asoc
-comma
-id|sctpParam_t
-id|param
-comma
-id|sctp_cid_t
-id|cid
-comma
-id|sctp_chunk_t
-op_star
-id|chunk
-comma
-id|sctp_chunk_t
-op_star
-op_star
-id|err_chunk
-)paren
-suffix:semicolon
-r_int
-id|sctp_process_unk_param
-c_func
-(paren
-r_const
-id|sctp_association_t
-op_star
-id|asoc
-comma
-id|sctpParam_t
-id|param
-comma
-id|sctp_chunk_t
-op_star
-id|chunk
-comma
-id|sctp_chunk_t
-op_star
-op_star
-id|err_chunk
-)paren
-suffix:semicolon
-r_void
 id|sctp_process_init
 c_func
 (paren
@@ -2572,16 +2572,14 @@ id|sctp_association_t
 op_star
 id|asoc
 comma
-id|sctpParam_t
+r_union
+id|sctp_params
 id|param
 comma
 r_const
 id|sockaddr_storage_t
 op_star
 id|peer_addr
-comma
-id|sctp_cid_t
-id|cid
 comma
 r_int
 id|priority
@@ -2665,7 +2663,7 @@ id|sctp_transport_t
 op_star
 id|primary_path
 suffix:semicolon
-multiline_comment|/* Cache the primary path address here, when we&n;&t;&t; * need a an address for msg_name. &n;&t;&t; */
+multiline_comment|/* Cache the primary path address here, when we&n;&t;&t; * need a an address for msg_name.&n;&t;&t; */
 DECL|member|primary_addr
 id|sockaddr_storage_t
 id|primary_addr
@@ -2796,7 +2794,7 @@ DECL|member|overall_error_count
 r_int
 id|overall_error_count
 suffix:semicolon
-multiline_comment|/* Overall     : The threshold for this association that if&n;&t; * Error       : the Overall Error Count reaches will cause&n;&t; * Threshold   : this association to be torn down. &n;&t; */
+multiline_comment|/* Overall     : The threshold for this association that if&n;&t; * Error       : the Overall Error Count reaches will cause&n;&t; * Threshold   : this association to be torn down.&n;&t; */
 DECL|member|overall_error_threshold
 r_int
 id|overall_error_threshold
@@ -2865,7 +2863,7 @@ DECL|member|next_tsn
 id|__u32
 id|next_tsn
 suffix:semicolon
-multiline_comment|/* &n;&t; * Last Rcvd   : This is the last TSN received in sequence.  This value&n;&t; * TSN         : is set initially by taking the peer&squot;s Initial TSN,&n;&t; *             : received in the INIT or INIT ACK chunk, and&n;&t; *             : subtracting one from it.&n;&t; *&n;&t; * Most of RFC 2960 refers to this as the Cumulative TSN Ack Point. &n;&t; */
+multiline_comment|/*&n;&t; * Last Rcvd   : This is the last TSN received in sequence.  This value&n;&t; * TSN         : is set initially by taking the peer&squot;s Initial TSN,&n;&t; *             : received in the INIT or INIT ACK chunk, and&n;&t; *             : subtracting one from it.&n;&t; *&n;&t; * Most of RFC 2960 refers to this as the Cumulative TSN Ack Point.&n;&t; */
 DECL|member|ctsn_ack_point
 id|__u32
 id|ctsn_ack_point

@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * This file is part of the implementation of the add-IP extension,&n; * based on &lt;draft-ietf-tsvwg-addip-sctp-02.txt&gt; June 29, 2001,&n; * for the SCTP kernel reference Implementation.&n; * &n; * These are definitions needed by the state machine.&n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email addresses:&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Xingang Guo &lt;xingang.guo@intel.com&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Dajiang Zhang &lt;dajiang.zhang@nokia.com&gt;&n; *    Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang &lt;daisyc@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * This file is part of the implementation of the add-IP extension,&n; * based on &lt;draft-ietf-tsvwg-addip-sctp-02.txt&gt; June 29, 2001,&n; * for the SCTP kernel reference Implementation.&n; * &n; * These are definitions needed by the state machine.&n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email addresses:&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson &lt;karl@athena.chicago.il.us&gt;&n; *    Xingang Guo &lt;xingang.guo@intel.com&gt;&n; *    Jon Grimm &lt;jgrimm@us.ibm.com&gt;&n; *    Dajiang Zhang &lt;dajiang.zhang@nokia.com&gt;&n; *    Sridhar Samudrala &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang &lt;daisyc@us.ibm.com&gt;&n; *    Ardelle Fan &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -340,6 +340,10 @@ DECL|variable|sctp_sf_ignore_primitive
 id|sctp_state_fn_t
 id|sctp_sf_ignore_primitive
 suffix:semicolon
+DECL|variable|sctp_sf_do_prm_requestheartbeat
+id|sctp_state_fn_t
+id|sctp_sf_do_prm_requestheartbeat
+suffix:semicolon
 multiline_comment|/* Prototypes for other event state functions.  */
 DECL|variable|sctp_sf_do_9_2_start_shutdown
 id|sctp_state_fn_t
@@ -486,23 +490,6 @@ id|sctp_generate_verification_tag
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-id|sctpParam_t
-id|sctp_get_my_addrs_raw
-c_func
-(paren
-r_const
-id|sctp_association_t
-op_star
-comma
-r_const
-r_int
-id|priority
-comma
-r_int
-op_star
-id|addrs_len
 )paren
 suffix:semicolon
 r_void
@@ -813,6 +800,25 @@ op_star
 comma
 id|__u32
 id|tsn
+)paren
+suffix:semicolon
+id|sctp_chunk_t
+op_star
+id|sctp_make_abort_user
+c_func
+(paren
+r_const
+id|sctp_association_t
+op_star
+comma
+r_const
+id|sctp_chunk_t
+op_star
+comma
+r_const
+r_struct
+id|msghdr
+op_star
 )paren
 suffix:semicolon
 id|sctp_chunk_t
@@ -1213,7 +1219,8 @@ id|sctp_addr2sockaddr
 c_func
 (paren
 r_const
-id|sctpParam_t
+r_union
+id|sctp_params
 comma
 id|sockaddr_storage_t
 op_star

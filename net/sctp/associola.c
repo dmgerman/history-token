@@ -492,6 +492,10 @@ id|asoc-&gt;highest_sacked
 op_assign
 id|asoc-&gt;ctsn_ack_point
 suffix:semicolon
+id|asoc-&gt;last_cwr_tsn
+op_assign
+id|asoc-&gt;ctsn_ack_point
+suffix:semicolon
 id|asoc-&gt;unack_data
 op_assign
 l_int|0
@@ -1062,6 +1066,15 @@ comma
 id|asoc
 )paren
 suffix:semicolon
+multiline_comment|/* Cache a route for the transport. */
+id|sctp_transport_route
+c_func
+(paren
+id|peer
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 multiline_comment|/* If this is the first transport addr on this association,&n;&t; * initialize the association PMTU to the peer&squot;s PMTU.&n;&t; * If not and the current association PMTU is higher than the new&n;&t; * peer&squot;s PMTU, reset the association PMTU to the new peer&squot;s PMTU.&n;&t; */
 r_if
 c_cond
@@ -1164,6 +1177,11 @@ id|peer-&gt;error_threshold
 comma
 id|asoc-&gt;max_retrans
 )paren
+suffix:semicolon
+multiline_comment|/* By default, enable heartbeat for peer address. */
+id|peer-&gt;hb_allowed
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/* Initialize the peer&squot;s heartbeat interval based on the&n;&t; * sock configured value.&n;&t; */
 id|sp
@@ -1372,7 +1390,7 @@ id|command
 r_case
 id|SCTP_TRANSPORT_UP
 suffix:colon
-id|transport-&gt;state.active
+id|transport-&gt;active
 op_assign
 l_int|1
 suffix:semicolon
@@ -1385,7 +1403,7 @@ suffix:semicolon
 r_case
 id|SCTP_TRANSPORT_DOWN
 suffix:colon
-id|transport-&gt;state.active
+id|transport-&gt;active
 op_assign
 l_int|0
 suffix:semicolon
@@ -1478,7 +1496,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|t-&gt;state.active
+id|t-&gt;active
 )paren
 r_continue
 suffix:semicolon
@@ -1521,7 +1539,7 @@ multiline_comment|/* RFC 2960 6.4 Multi-Homed SCTP Endpoints&n;&t; *&n;&t; * By 
 r_if
 c_cond
 (paren
-id|asoc-&gt;peer.primary_path-&gt;state.active
+id|asoc-&gt;peer.primary_path-&gt;active
 op_logical_and
 id|first
 op_ne
@@ -2839,7 +2857,7 @@ multiline_comment|/* Try to find an active transport. */
 r_if
 c_cond
 (paren
-id|t-&gt;state.active
+id|t-&gt;active
 )paren
 (brace
 r_break

@@ -1,8 +1,8 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * The base lksctp header. &n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * The base lksctp header.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#ifndef __net_sctp_h__
 DECL|macro|__net_sctp_h__
 mdefine_line|#define __net_sctp_h__
-multiline_comment|/* Header Strategy.&n; *    Start getting some control over the header file depencies:&n; *       includes&n; *       constants&n; *       structs&n; *       prototypes&n; *       macros, externs, and inlines&n; * &n; *   Move test_frame specific items out of the kernel headers &n; *   and into the test frame headers.   This is not perfect in any sense&n; *   and will continue to evolve.  &n; */
+multiline_comment|/* Header Strategy.&n; *    Start getting some control over the header file depencies:&n; *       includes&n; *       constants&n; *       structs&n; *       prototypes&n; *       macros, externs, and inlines&n; *&n; *   Move test_frame specific items out of the kernel headers&n; *   and into the test frame headers.   This is not perfect in any sense&n; *   and will continue to evolve.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef TEST_FRAME
 DECL|macro|CONFIG_PROC_FS
@@ -22,10 +22,11 @@ macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
-macro_line|#endif 
+macro_line|#endif
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#include &lt;net/sctp/structs.h&gt;
 macro_line|#include &lt;net/sctp/constants.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
@@ -46,13 +47,13 @@ macro_line|#else /* static! */
 DECL|macro|SCTP_PROTOSW_FLAG
 mdefine_line|#define SCTP_PROTOSW_FLAG INET_PROTOSW_PERMANENT
 macro_line|#endif
-multiline_comment|/* Certain internal static functions need to be exported when &n; * compiled into the test frame.&n; */
+multiline_comment|/* Certain internal static functions need to be exported when&n; * compiled into the test frame.&n; */
 macro_line|#ifndef SCTP_STATIC
 DECL|macro|SCTP_STATIC
 mdefine_line|#define SCTP_STATIC static
 macro_line|#endif
-multiline_comment|/* &n; * Function declarations. &n; */
-multiline_comment|/*&n; * sctp_protocol.c &n; */
+multiline_comment|/*&n; * Function declarations.&n; */
+multiline_comment|/*&n; * sctp_protocol.c&n; */
 r_extern
 id|sctp_protocol_t
 id|sctp_proto
@@ -215,6 +216,19 @@ suffix:semicolon
 r_extern
 r_int
 id|sctp_primitive_SEND
+c_func
+(paren
+id|sctp_association_t
+op_star
+comma
+r_void
+op_star
+id|arg
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sctp_primitive_REQUESTHEARTBEAT
 c_func
 (paren
 id|sctp_association_t
@@ -404,6 +418,23 @@ DECL|macro|SCTP_SOCK_SLEEP_PRE
 mdefine_line|#define SCTP_SOCK_SLEEP_PRE(sk) SOCK_SLEEP_PRE(sk)
 DECL|macro|SCTP_SOCK_SLEEP_POST
 mdefine_line|#define SCTP_SOCK_SLEEP_POST(sk) SOCK_SLEEP_POST(sk)
+multiline_comment|/* SCTP SNMP MIB stats handlers */
+r_extern
+r_struct
+id|sctp_mib
+id|sctp_statistics
+(braket
+id|NR_CPUS
+op_star
+l_int|2
+)braket
+suffix:semicolon
+DECL|macro|SCTP_INC_STATS
+mdefine_line|#define SCTP_INC_STATS(field)&t;&t;SNMP_INC_STATS(sctp_statistics, field)
+DECL|macro|SCTP_INC_STATS_BH
+mdefine_line|#define SCTP_INC_STATS_BH(field)&t;SNMP_INC_STATS_BH(sctp_statistics, field)
+DECL|macro|SCTP_INC_STATS_USER
+mdefine_line|#define SCTP_INC_STATS_USER(field)&t;SNMP_INC_STATS_USER(sctp_statistics, field)
 multiline_comment|/* Determine if this is a valid kernel address.  */
 DECL|function|sctp_is_valid_kaddr
 r_static
@@ -998,6 +1029,11 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/* Walk through a list of TLV parameters.  Don&squot;t trust the&n; * individual parameter lengths and instead depend on&n; * the chunk length to indicate when to stop.  Make sure&n; * there is room for a param header too.&n; */
+DECL|macro|sctp_walk_params
+mdefine_line|#define sctp_walk_params(pos, chunk, member)&bslash;&n;_sctp_walk_params((pos), (chunk), ntohs((chunk)-&gt;chunk_hdr.length), member)
+DECL|macro|_sctp_walk_params
+mdefine_line|#define _sctp_walk_params(pos, chunk, end, member)&bslash;&n;for (pos.v = chunk-&gt;member;&bslash;&n;     pos.v &lt;= (void *)chunk + end - sizeof(sctp_paramhdr_t) &amp;&amp;&bslash;&n;     pos.v &lt;= (void *)chunk + end - WORD_ROUND(ntohs(pos.p-&gt;length)); &bslash;&n;     pos.v += WORD_ROUND(ntohs(pos.p-&gt;length)))
 multiline_comment|/* Round an int up to the next multiple of 4.  */
 DECL|macro|WORD_ROUND
 mdefine_line|#define WORD_ROUND(s) (((s)+3)&amp;~3)

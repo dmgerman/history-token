@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement that state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@austin.ibm.com&gt;&n; *    Hui Huang&t;&t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement that state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@austin.ibm.com&gt;&n; *    Hui Huang&t;&t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -88,6 +88,13 @@ comma
 id|sctp_association_t
 op_star
 id|asoc
+comma
+id|sctp_event_t
+id|event_type
+comma
+id|sctp_chunk_t
+op_star
+id|chunk
 )paren
 suffix:semicolon
 r_static
@@ -123,6 +130,21 @@ id|sctp_cmd_seq_t
 op_star
 comma
 id|sctp_association_t
+op_star
+)paren
+suffix:semicolon
+r_static
+r_void
+id|sctp_cmd_hb_timers_update
+c_func
+(paren
+id|sctp_cmd_seq_t
+op_star
+comma
+id|sctp_association_t
+op_star
+comma
+id|sctp_transport_t
 op_star
 )paren
 suffix:semicolon
@@ -486,6 +508,11 @@ id|SCTP_DISPOSITION_NOMEM
 suffix:colon
 multiline_comment|/* We ran out of memory, so we need to discard this&n;&t;&t; * packet.&n;&t;&t; */
 multiline_comment|/* BUG--we should now recover some memory, probably by&n;&t;&t; * reneging...&n;&t;&t; */
+id|error
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -654,6 +681,8 @@ suffix:semicolon
 id|sctp_chunk_t
 op_star
 id|chunk
+op_assign
+l_int|NULL
 suffix:semicolon
 id|sctp_packet_t
 op_star
@@ -680,6 +709,14 @@ suffix:semicolon
 id|sctp_sackhdr_t
 id|sackh
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|SCTP_EVENT_T_TIMEOUT
+op_ne
+id|event_type
+)paren
+(brace
 id|chunk
 op_assign
 (paren
@@ -688,6 +725,7 @@ op_star
 )paren
 id|event_arg
 suffix:semicolon
+)brace
 multiline_comment|/* Note:  This whole file is a huge candidate for rework.&n;&t; * For example, each command could either have its own handler, so&n;&t; * the loop would look like:&n;&t; *     while (cmds)&n;&t; *         cmd-&gt;handle(x, y, z)&n;&t; * --jgrimm&n;&t; */
 r_while
 c_loop
@@ -1483,6 +1521,10 @@ c_func
 id|commands
 comma
 id|asoc
+comma
+id|event_type
+comma
+id|chunk
 )paren
 suffix:semicolon
 r_break
@@ -1650,6 +1692,25 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|SCTP_CMD_HB_TIMERS_UPDATE
+suffix:colon
+id|t
+op_assign
+id|command-&gt;obj.transport
+suffix:semicolon
+id|sctp_cmd_hb_timers_update
+c_func
+(paren
+id|commands
+comma
+id|asoc
+comma
+id|t
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|SCTP_CMD_REPORT_ERROR
 suffix:colon
 id|error
@@ -1752,7 +1813,7 @@ id|__u32
 id|lowest_tsn
 )paren
 (brace
-multiline_comment|/*&n;&t; * Save the TSN away for comparison when we receive CWR&n;&t; * Note: dp-&gt;TSN is expected in host endian&n;&t; */
+multiline_comment|/* Save the TSN away for comparison when we receive CWR */
 id|asoc-&gt;last_ecne_tsn
 op_assign
 id|lowest_tsn
@@ -1787,12 +1848,25 @@ id|sctp_chunk_t
 op_star
 id|repl
 suffix:semicolon
+multiline_comment|/* Our previously transmitted packet ran into some congestion&n;&t; * so we should take action by reducing cwnd and ssthresh&n;&t; * and then ACK our peer that we we&squot;ve done so by&n;&t; * sending a CWR.&n;&t; */
+multiline_comment|/* First, try to determine if we want to actually lower&n;&t; * our cwnd variables.  Only lower them if the ECNE looks more&n;&t; * recent than the last response.&n;&t; */
+r_if
+c_cond
+(paren
+id|TSN_lt
+c_func
+(paren
+id|asoc-&gt;last_cwr_tsn
+comma
+id|lowest_tsn
+)paren
+)paren
+(brace
 id|sctp_transport_t
 op_star
 id|transport
 suffix:semicolon
-multiline_comment|/* Our previously transmitted packet ran into some congestion&n;&t; * so we should take action by reducing cwnd and ssthresh&n;&t; * and then ACK our peer that we we&squot;ve done so by&n;&t; * sending a CWR.&n;&t; */
-multiline_comment|/* Find which transport&squot;s congestion variables&n;&t; * need to be adjusted.&n;&t; */
+multiline_comment|/* Find which transport&squot;s congestion variables&n;&t;&t; * need to be adjusted.&n;&t;&t; */
 id|transport
 op_assign
 id|sctp_assoc_lookup_tsn
@@ -1817,13 +1891,12 @@ comma
 id|SCTP_LOWER_CWND_ECNE
 )paren
 suffix:semicolon
-multiline_comment|/* Save away a rough idea of when we last sent out a CWR.&n;&t; * We compare against this value (see above) to decide if&n;&t; * this is a fairly new request.&n;&t; * Note that this is not a perfect solution.  We may&n;&t; * have moved beyond the window (several times) by the&n;&t; * next time we get an ECNE.  However, it is cute.  This idea&n;&t; * came from Randy&squot;s reference code.&n;&t; *&n;&t; * Here&squot;s what RFC 2960 has to say about CWR.  This is NOT&n;&t; * what we do.&n;&t; *&n;&t; * RFC 2960 Appendix A&n;&t; *&n;&t; *    CWR:&n;&t; *&n;&t; *    RFC 2481 details a specific bit for a sender to send in&n;&t; *    the header of its next outbound TCP segment to indicate&n;&t; *    to its peer that it has reduced its congestion window.&n;&t; *    This is termed the CWR bit.  For SCTP the same&n;&t; *    indication is made by including the CWR chunk.  This&n;&t; *    chunk contains one data element, i.e. the TSN number&n;&t; *    that was sent in the ECNE chunk.  This element&n;&t; *    represents the lowest TSN number in the datagram that&n;&t; *    was originally marked with the CE bit.&n;&t; */
 id|asoc-&gt;last_cwr_tsn
 op_assign
-id|asoc-&gt;next_tsn
-op_minus
-l_int|1
+id|lowest_tsn
 suffix:semicolon
+)brace
+multiline_comment|/* Always try to quiet the other end.  In case of lost CWR,&n;&t; * resend last_cwr_tsn.  &n;&t; */
 id|repl
 op_assign
 id|sctp_make_cwr
@@ -2779,7 +2852,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|transport-&gt;state.active
+id|transport-&gt;active
 op_logical_and
 (paren
 id|transport-&gt;error_count
@@ -2919,12 +2992,82 @@ comma
 id|sctp_association_t
 op_star
 id|asoc
+comma
+id|sctp_event_t
+id|event_type
+comma
+id|sctp_chunk_t
+op_star
+id|chunk
 )paren
 (brace
 id|sctp_ulpevent_t
 op_star
 id|event
 suffix:semicolon
+id|__u16
+id|error
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|event_type
+op_eq
+id|SCTP_EVENT_T_PRIMITIVE
+)paren
+id|error
+op_assign
+id|SCTP_ERROR_USER_ABORT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chunk
+op_logical_and
+(paren
+id|SCTP_CID_ABORT
+op_eq
+id|chunk-&gt;chunk_hdr-&gt;type
+)paren
+op_logical_and
+(paren
+id|ntohs
+c_func
+(paren
+id|chunk-&gt;chunk_hdr-&gt;length
+)paren
+op_ge
+(paren
+r_sizeof
+(paren
+r_struct
+id|sctp_chunkhdr
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|sctp_errhdr
+)paren
+)paren
+)paren
+)paren
+(brace
+id|error
+op_assign
+(paren
+(paren
+id|sctp_errhdr_t
+op_star
+)paren
+id|chunk-&gt;skb-&gt;data
+)paren
+op_member_access_from_pointer
+id|cause
+suffix:semicolon
+)brace
 id|event
 op_assign
 id|sctp_ulpevent_make_assoc_change
@@ -2936,7 +3079,7 @@ l_int|0
 comma
 id|SCTP_COMM_LOST
 comma
-l_int|0
+id|error
 comma
 l_int|0
 comma
@@ -3114,6 +3257,51 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/* Helper function to update the heartbeat timer. */
+DECL|function|sctp_cmd_hb_timers_update
+r_static
+r_void
+id|sctp_cmd_hb_timers_update
+c_func
+(paren
+id|sctp_cmd_seq_t
+op_star
+id|cmds
+comma
+id|sctp_association_t
+op_star
+id|asoc
+comma
+id|sctp_transport_t
+op_star
+id|t
+)paren
+(brace
+multiline_comment|/* Update the heartbeat timer.  */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mod_timer
+c_func
+(paren
+op_amp
+id|t-&gt;hb_timer
+comma
+id|t-&gt;hb_interval
+op_plus
+id|t-&gt;rto
+op_plus
+id|jiffies
+)paren
+)paren
+id|sctp_transport_hold
+c_func
+(paren
+id|t
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Helper function to break out SCTP_CMD_SET_BIND_ADDR handling.  */
 DECL|function|sctp_cmd_set_bind_addrs
 r_void
@@ -3218,7 +3406,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|t-&gt;state.active
+id|t-&gt;active
 )paren
 id|sctp_assoc_control_transport
 c_func
@@ -3288,30 +3476,6 @@ c_func
 (paren
 id|asoc
 comma
-id|t
-)paren
-suffix:semicolon
-multiline_comment|/* Update the heartbeat timer.  */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mod_timer
-c_func
-(paren
-op_amp
-id|t-&gt;hb_timer
-comma
-id|t-&gt;hb_interval
-op_plus
-id|t-&gt;rto
-op_plus
-id|jiffies
-)paren
-)paren
-id|sctp_transport_hold
-c_func
-(paren
 id|t
 )paren
 suffix:semicolon
