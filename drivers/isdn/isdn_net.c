@@ -1243,14 +1243,6 @@ id|p-&gt;dev
 suffix:semicolon
 )brace
 )brace
-r_else
-id|isdn_net_hangup
-c_func
-(paren
-op_amp
-id|p-&gt;dev
-)paren
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -11785,8 +11777,6 @@ l_int|10
 (brace
 id|lp-&gt;hupflags
 op_or_assign
-id|ISDN_CHARGEHUP
-op_or
 id|ISDN_HAVECHARGE
 op_or
 id|ISDN_MANCHARGE
