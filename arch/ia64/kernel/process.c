@@ -2445,7 +2445,8 @@ id|current
 suffix:semicolon
 r_int
 id|result
-comma
+suffix:semicolon
+id|pid_t
 id|tid
 suffix:semicolon
 id|tid
