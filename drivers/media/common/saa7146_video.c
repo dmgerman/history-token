@@ -6625,6 +6625,16 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|saa7146_res_free
+c_func
+(paren
+id|fh
+comma
+id|RESOURCE_DMA1_HPS
+op_or
+id|RESOURCE_DMA2_CLP
+)paren
+suffix:semicolon
 )brace
 )brace
 r_if
