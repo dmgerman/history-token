@@ -5898,19 +5898,6 @@ suffix:semicolon
 r_int
 id|ii
 suffix:semicolon
-r_int
-id|rc
-suffix:semicolon
-r_int
-id|did_errcode
-suffix:semicolon
-r_int
-id|issueCmd
-suffix:semicolon
-id|did_errcode
-op_assign
-l_int|0
-suffix:semicolon
 id|hd
 op_assign
 (paren
@@ -6313,10 +6300,6 @@ id|MPT_SENSE_BUFFER_ALLOC
 )paren
 suffix:semicolon
 multiline_comment|/* Now add the SG list&n;&t; * Always have a SGE even if null length.&n;&t; */
-id|rc
-op_assign
-id|SUCCESS
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6351,8 +6334,9 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Add a 32 or 64 bit SGE */
-id|rc
-op_assign
+r_if
+c_cond
+(paren
 id|mptscsih_AddSGE
 c_func
 (paren
@@ -6364,16 +6348,13 @@ id|pScsiReq
 comma
 id|my_idx
 )paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|rc
-op_eq
+op_ne
 id|SUCCESS
 )paren
-(brace
+r_goto
+id|fail
+suffix:semicolon
+)brace
 id|hd-&gt;ScsiLookup
 (braket
 id|my_idx
@@ -6385,11 +6366,7 @@ id|SCpnt-&gt;host_scribble
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* SCSI specific processing */
-id|issueCmd
-op_assign
-l_int|1
-suffix:semicolon
+macro_line|#ifdef MPTSCSIH_ENABLE_DOMAIN_VALIDATION
 r_if
 c_cond
 (paren
@@ -6404,6 +6381,11 @@ id|hd-&gt;ioc-&gt;spi_data.dvStatus
 id|target
 )braket
 suffix:semicolon
+r_int
+id|issueCmd
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6412,7 +6394,6 @@ op_logical_or
 id|hd-&gt;ioc-&gt;spi_data.forceDv
 )paren
 (brace
-macro_line|#ifdef MPTSCSIH_ENABLE_DOMAIN_VALIDATION
 r_if
 c_cond
 (paren
@@ -6504,7 +6485,7 @@ op_complement
 id|MPT_SCSICFG_NEED_DV
 suffix:semicolon
 )brace
-multiline_comment|/* Trying to do DV to this target, extend timeout.&n;&t;&t;&t;&t; * Wait to issue until flag is clear&n;&t;&t;&t;&t; */
+multiline_comment|/* Trying to do DV to this target, extend timeout.&n;&t;&t;&t; * Wait to issue until flag is clear&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6531,7 +6512,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Set the DV flags.&n;&t;&t;&t;&t; */
+multiline_comment|/* Set the DV flags.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6547,15 +6528,18 @@ comma
 id|pScsiReq
 )paren
 suffix:semicolon
-macro_line|#endif
-)brace
-)brace
 r_if
 c_cond
 (paren
+op_logical_neg
 id|issueCmd
 )paren
-(brace
+r_goto
+id|fail
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 id|mpt_put_msg_frame
 c_func
 (paren
@@ -6588,16 +6572,6 @@ c_func
 (paren
 id|mf
 )paren
-)brace
-r_else
-r_goto
-id|fail
-suffix:semicolon
-)brace
-r_else
-r_goto
-id|fail
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
