@@ -3,6 +3,7 @@ DECL|macro|_LINUX_LIST_H
 mdefine_line|#define _LINUX_LIST_H
 macro_line|#if defined(__KERNEL__) || defined(_LVM_H_INCLUDE)
 macro_line|#include &lt;linux/prefetch.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * Simple doubly linked list implementation.&n; *&n; * Some of the internal functions (&quot;__xxx&quot;) are useful when&n; * manipulating whole lists rather than single entries, as&n; * sometimes we already know the next/prev entries and we can&n; * generate better code by using them directly rather than&n; * using the generic single-entry routines.&n; */
 DECL|struct|list_head
 r_struct
@@ -131,6 +132,116 @@ id|head
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Insert a new entry between two known consecutive entries. &n; *&n; * This is only for internal list manipulation where we know&n; * the prev/next entries already!&n; */
+DECL|function|__list_add_rcu
+r_static
+id|__inline__
+r_void
+id|__list_add_rcu
+c_func
+(paren
+r_struct
+id|list_head
+op_star
+r_new
+comma
+r_struct
+id|list_head
+op_star
+id|prev
+comma
+r_struct
+id|list_head
+op_star
+id|next
+)paren
+(brace
+r_new
+op_member_access_from_pointer
+id|next
+op_assign
+id|next
+suffix:semicolon
+r_new
+op_member_access_from_pointer
+id|prev
+op_assign
+id|prev
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|next-&gt;prev
+op_assign
+r_new
+suffix:semicolon
+id|prev-&gt;next
+op_assign
+r_new
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * list_add_rcu - add a new entry to rcu-protected list&n; * @new: new entry to be added&n; * @head: list head to add it after&n; *&n; * Insert a new entry after the specified head.&n; * This is good for implementing stacks.&n; */
+DECL|function|list_add_rcu
+r_static
+id|__inline__
+r_void
+id|list_add_rcu
+c_func
+(paren
+r_struct
+id|list_head
+op_star
+r_new
+comma
+r_struct
+id|list_head
+op_star
+id|head
+)paren
+(brace
+id|__list_add_rcu
+c_func
+(paren
+r_new
+comma
+id|head
+comma
+id|head-&gt;next
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * list_add_tail_rcu - add a new entry to rcu-protected list&n; * @new: new entry to be added&n; * @head: list head to add it before&n; *&n; * Insert a new entry before the specified head.&n; * This is useful for implementing queues.&n; */
+DECL|function|list_add_tail_rcu
+r_static
+id|__inline__
+r_void
+id|list_add_tail_rcu
+c_func
+(paren
+r_struct
+id|list_head
+op_star
+r_new
+comma
+r_struct
+id|list_head
+op_star
+id|head
+)paren
+(brace
+id|__list_add_rcu
+c_func
+(paren
+r_new
+comma
+id|head-&gt;prev
+comma
+id|head
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Delete a list entry by making the prev/next entries&n; * point to each other.&n; *&n; * This is only for internal list manipulation where we know&n; * the prev/next entries already!&n; */
 DECL|function|__list_del
 r_static
@@ -165,6 +276,29 @@ r_static
 r_inline
 r_void
 id|list_del
+c_func
+(paren
+r_struct
+id|list_head
+op_star
+id|entry
+)paren
+(brace
+id|__list_del
+c_func
+(paren
+id|entry-&gt;prev
+comma
+id|entry-&gt;next
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * list_del_rcu - deletes entry from list without re-initialization&n; * @entry: the element to delete from the list.&n; * Note: list_empty on entry does not return true after this, &n; * the entry is in an undefined state. It is useful for RCU based&n; * lockfree traversal.&n; */
+DECL|function|list_del_rcu
+r_static
+r_inline
+r_void
+id|list_del_rcu
 c_func
 (paren
 r_struct
@@ -461,6 +595,14 @@ mdefine_line|#define list_for_each_safe(pos, n, head) &bslash;&n;&t;for (pos = (
 multiline_comment|/**&n; * list_for_each_entry&t;-&t;iterate over list of given type&n; * @pos:&t;the type * to use as a loop counter.&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the list_struct within the struct.&n; */
 DECL|macro|list_for_each_entry
 mdefine_line|#define list_for_each_entry(pos, head, member)&t;&t;&t;&t;&bslash;&n;&t;for (pos = list_entry((head)-&gt;next, typeof(*pos), member),&t;&bslash;&n;&t;&t;     prefetch(pos-&gt;member.next);&t;&t;&t;&bslash;&n;&t;     &amp;pos-&gt;member != (head); &t;&t;&t;&t;&t;&bslash;&n;&t;     pos = list_entry(pos-&gt;member.next, typeof(*pos), member),&t;&bslash;&n;&t;&t;     prefetch(pos-&gt;member.next))
+multiline_comment|/**&n; * list_for_each_rcu&t;-&t;iterate over an rcu-protected list&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
+DECL|macro|list_for_each_rcu
+mdefine_line|#define list_for_each_rcu(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next, prefetch(pos-&gt;next); pos != (head); &bslash;&n;        &t;pos = pos-&gt;next, ({ read_barrier_depends(); 0;}), prefetch(pos-&gt;next))
+DECL|macro|__list_for_each_rcu
+mdefine_line|#define __list_for_each_rcu(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next; pos != (head); &bslash;&n;        &t;pos = pos-&gt;next, ({ read_barrier_depends(); 0;}))
+multiline_comment|/**&n; * list_for_each_safe_rcu&t;-&t;iterate over an rcu-protected list safe&n; *&t;&t;&t;&t;&t;against removal of list entry&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @n:&t;&t;another &amp;struct list_head to use as temporary storage&n; * @head:&t;the head for your list.&n; */
+DECL|macro|list_for_each_safe_rcu
+mdefine_line|#define list_for_each_safe_rcu(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); &bslash;&n;&t;&t;pos = n, ({ read_barrier_depends(); 0;}), n = pos-&gt;next)
 macro_line|#endif /* __KERNEL__ || _LVM_H_INCLUDE */
 macro_line|#endif
 eof

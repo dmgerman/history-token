@@ -149,6 +149,8 @@ DECL|macro|wmb
 mdefine_line|#define wmb()&t;wbflush()
 DECL|macro|mb
 mdefine_line|#define mb()&t;wbflush()
+DECL|macro|read_barrier_depends
+mdefine_line|#define read_barrier_depends()&t;do { } while(0)
 macro_line|#else /* CONFIG_CPU_HAS_WB  */
 DECL|macro|mb
 mdefine_line|#define mb()&t;&t;&t;&t;&t;&t;&bslash;&n;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;# prevent instructions being moved around&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;# 8 nops to fool the R4400 pipeline&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&quot;nop;nop;nop;nop;nop;nop;nop;nop&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&quot;.set&bslash;treorder&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: /* no output */&t;&t;&t;&t;&bslash;&n;&t;: /* no input */&t;&t;&t;&t;&bslash;&n;&t;: &quot;memory&quot;)
@@ -156,6 +158,8 @@ DECL|macro|rmb
 mdefine_line|#define rmb() mb()
 DECL|macro|wmb
 mdefine_line|#define wmb() mb()
+DECL|macro|read_barrier_depends
+mdefine_line|#define read_barrier_depends()&t;do { } while(0)
 macro_line|#endif /* CONFIG_CPU_HAS_WB  */
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|smp_mb
@@ -164,6 +168,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;rmb()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;wmb()
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()&t;read_barrier_depends()
 macro_line|#else
 DECL|macro|smp_mb
 mdefine_line|#define smp_mb()&t;barrier()
@@ -171,6 +177,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;barrier()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;barrier()
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()&t;do { } while(0)
 macro_line|#endif
 DECL|macro|set_mb
 mdefine_line|#define set_mb(var, value) &bslash;&n;do { var = value; mb(); } while (0)
