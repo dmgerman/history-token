@@ -34,7 +34,7 @@ id|proc_bt
 suffix:semicolon
 multiline_comment|/* Bluetooth sockets */
 DECL|macro|BT_MAX_PROTO
-mdefine_line|#define BT_MAX_PROTO&t;5
+mdefine_line|#define BT_MAX_PROTO&t;6
 DECL|variable|bt_proto
 r_static
 r_struct
