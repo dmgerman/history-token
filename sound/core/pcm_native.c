@@ -130,10 +130,11 @@ id|_oparams
 suffix:semicolon
 multiline_comment|/*&n; *&n; */
 DECL|variable|snd_pcm_link_rwlock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|snd_pcm_link_rwlock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|DECLARE_RWSEM

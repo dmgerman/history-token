@@ -61,10 +61,11 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|snd_card_rwlock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|snd_card_rwlock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_SND_MIXER_OSS) || defined(CONFIG_SND_MIXER_OSS_MODULE)
 DECL|variable|snd_mixer_oss_notify_callback

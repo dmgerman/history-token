@@ -166,12 +166,12 @@ id|snd_timer_slave_list
 )paren
 suffix:semicolon
 multiline_comment|/* lock for slave active lists */
-DECL|variable|slave_active_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|slave_active_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|DECLARE_MUTEX

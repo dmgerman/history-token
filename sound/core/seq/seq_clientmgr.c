@@ -24,12 +24,12 @@ DECL|macro|SNDRV_SEQ_LFLG_OUTPUT
 mdefine_line|#define SNDRV_SEQ_LFLG_OUTPUT&t;0x0002
 DECL|macro|SNDRV_SEQ_LFLG_OPEN
 mdefine_line|#define SNDRV_SEQ_LFLG_OPEN&t;(SNDRV_SEQ_LFLG_INPUT|SNDRV_SEQ_LFLG_OUTPUT)
-DECL|variable|clients_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|clients_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|DECLARE_MUTEX

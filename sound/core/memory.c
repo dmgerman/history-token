@@ -68,19 +68,19 @@ c_func
 id|snd_alloc_vmalloc_list
 )paren
 suffix:semicolon
-DECL|variable|snd_alloc_kmalloc_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|snd_alloc_kmalloc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
-DECL|variable|snd_alloc_vmalloc_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|snd_alloc_vmalloc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|KMALLOC_MAGIC
 mdefine_line|#define KMALLOC_MAGIC 0x87654321
