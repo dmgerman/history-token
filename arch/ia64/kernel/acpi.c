@@ -2906,7 +2906,7 @@ id|acpi_unmap_lsapic
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ACPI_HOTPLUG_CPU */
-macro_line|#ifdef CONFIG_NUMA
+macro_line|#ifdef CONFIG_ACPI_NUMA
 id|acpi_status
 id|__init
 DECL|function|acpi_map_iosapic
