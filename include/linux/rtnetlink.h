@@ -888,6 +888,9 @@ comma
 DECL|enumerator|NDA_CACHEINFO
 id|NDA_CACHEINFO
 comma
+DECL|enumerator|NDA_PROBES
+id|NDA_PROBES
+comma
 DECL|enumerator|__NDA_MAX
 id|__NDA_MAX
 )brace
