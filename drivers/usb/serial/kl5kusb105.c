@@ -1285,10 +1285,6 @@ comma
 id|port
 )paren
 suffix:semicolon
-id|port-&gt;read_urb-&gt;transfer_flags
-op_or_assign
-id|USB_QUEUE_BULK
-suffix:semicolon
 id|rc
 op_assign
 id|usb_submit_urb
@@ -1923,10 +1919,6 @@ id|klsi_105_write_bulk_callback
 comma
 id|port
 )paren
-suffix:semicolon
-id|urb-&gt;transfer_flags
-op_or_assign
-id|USB_QUEUE_BULK
 suffix:semicolon
 multiline_comment|/* send the data out the bulk port */
 id|result

@@ -28,6 +28,10 @@ mdefine_line|#define SA1111_SAC_DMA_MIN_XFER&t;(0x800)
 multiline_comment|/*&n; * SA1111 register definitions.&n; */
 DECL|macro|__CCREG
 mdefine_line|#define __CCREG(x)&t;__REGP(SA1111_VBASE + (x))
+DECL|macro|sa1111_writel
+mdefine_line|#define sa1111_writel(val,addr)&t;({ *(volatile unsigned int *)(addr) = (val); })
+DECL|macro|sa1111_readl
+mdefine_line|#define sa1111_readl(addr)&t;(*(volatile unsigned int *)(addr))
 multiline_comment|/*&n; * System Bus Interface (SBI)&n; *&n; * Registers&n; *    SKCR&t;Control Register&n; *    SMCR&t;Shared Memory Controller Register&n; *    SKID&t;ID Register&n; */
 DECL|macro|SA1111_SKCR
 mdefine_line|#define SA1111_SKCR&t;0x0000
@@ -919,6 +923,25 @@ r_struct
 id|sa1111_device
 op_star
 id|sa1111
+suffix:semicolon
+multiline_comment|/*&n; * These frob the SKPCR register.&n; */
+r_void
+id|sa1111_enable_device
+c_func
+(paren
+r_int
+r_int
+id|mask
+)paren
+suffix:semicolon
+r_void
+id|sa1111_disable_device
+c_func
+(paren
+r_int
+r_int
+id|mask
+)paren
 suffix:semicolon
 macro_line|#endif  /* _ASM_ARCH_SA1111 */
 eof

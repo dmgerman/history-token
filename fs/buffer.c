@@ -8808,7 +8808,7 @@ r_return
 id|tmp.b_blocknr
 suffix:semicolon
 )brace
-DECL|function|generic_direct_IO
+macro_line|#if 0
 r_int
 id|generic_direct_IO
 c_func
@@ -8844,12 +8844,21 @@ comma
 id|nr_blocks
 comma
 id|retval
+op_assign
+l_int|0
 suffix:semicolon
 id|sector_t
 op_star
 id|blocks
 op_assign
 id|iobuf-&gt;blocks
+suffix:semicolon
+r_struct
+id|block_device
+op_star
+id|bdev
+op_assign
+l_int|NULL
 suffix:semicolon
 id|nr_blocks
 op_assign
@@ -9005,8 +9014,17 @@ id|i
 op_assign
 id|bh.b_blocknr
 suffix:semicolon
+id|bdev
+op_assign
+id|bh.b_bdev
+suffix:semicolon
 )brace
 multiline_comment|/* This does not understand multi-device filesystems currently */
+r_if
+c_cond
+(paren
+id|bdev
+)paren
 id|retval
 op_assign
 id|brw_kiovec
@@ -9019,7 +9037,7 @@ comma
 op_amp
 id|iobuf
 comma
-id|inode-&gt;i_sb-&gt;s_bdev
+id|bdev
 comma
 id|blocks
 comma
@@ -9032,6 +9050,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Start I/O on a physical range of kernel memory, defined by a vector&n; * of kiobuf structs (much like a user-space iovec list).&n; *&n; * The kiobuf must already be locked for IO.  IO is submitted&n; * asynchronously: you need to check page-&gt;locked and page-&gt;uptodate.&n; *&n; * It is up to the caller to make sure that there are enough blocks&n; * passed in to completely map the iobufs to disk.&n; */
 DECL|function|brw_kiovec
 r_int

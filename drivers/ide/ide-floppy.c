@@ -580,1071 +580,6 @@ mdefine_line|#define IDEFLOPPY_IOCTL_FORMAT_GET_PROGRESS&t;0x4603
 multiline_comment|/*&n; *&t;Error codes which are returned in rq-&gt;errors to the higher part&n; *&t;of the driver.&n; */
 DECL|macro|IDEFLOPPY_ERROR_GENERAL
 mdefine_line|#define&t;IDEFLOPPY_ERROR_GENERAL&t;&t;101
-multiline_comment|/*&n; *&t;The ATAPI Status Register.&n; */
-r_typedef
-r_union
-(brace
-r_int
-id|all
-suffix:colon
-l_int|8
-suffix:semicolon
-r_struct
-(brace
-macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
-DECL|member|check
-r_int
-id|check
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Error occurred */
-DECL|member|idx
-r_int
-id|idx
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|corr
-r_int
-id|corr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Correctable error occurred */
-DECL|member|drq
-r_int
-id|drq
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Data is request by the device */
-DECL|member|dsc
-r_int
-id|dsc
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Media access command finished */
-DECL|member|reserved5
-r_int
-id|reserved5
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|drdy
-r_int
-id|drdy
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Ignored for ATAPI commands (ready to accept ATA command) */
-DECL|member|bsy
-r_int
-id|bsy
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* The device has access to the command block */
-macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
-r_int
-id|bsy
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* The device has access to the command block */
-r_int
-id|drdy
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Ignored for ATAPI commands (ready to accept ATA command) */
-r_int
-id|reserved5
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Reserved */
-r_int
-id|dsc
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Media access command finished */
-r_int
-id|drq
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Data is request by the device */
-r_int
-id|corr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Correctable error occurred */
-r_int
-id|idx
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Reserved */
-r_int
-id|check
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Error occurred */
-macro_line|#else
-macro_line|#error &quot;Bitfield endianness not defined! Check your byteorder.h&quot;
-macro_line|#endif
-DECL|member|b
-)brace
-id|b
-suffix:semicolon
-DECL|typedef|idefloppy_status_reg_t
-)brace
-id|idefloppy_status_reg_t
-suffix:semicolon
-multiline_comment|/*&n; *&t;The ATAPI error register.&n; */
-r_typedef
-r_union
-(brace
-r_int
-id|all
-suffix:colon
-l_int|8
-suffix:semicolon
-r_struct
-(brace
-macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
-DECL|member|ili
-r_int
-id|ili
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Illegal Length Indication */
-DECL|member|eom
-r_int
-id|eom
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* End Of Media Detected */
-DECL|member|abrt
-r_int
-id|abrt
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Aborted command - As defined by ATA */
-DECL|member|mcr
-r_int
-id|mcr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Media Change Requested - As defined by ATA */
-DECL|member|sense_key
-r_int
-id|sense_key
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* Sense key of the last failed packet command */
-macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
-r_int
-id|sense_key
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* Sense key of the last failed packet command */
-r_int
-id|mcr
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Media Change Requested - As defined by ATA */
-r_int
-id|abrt
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Aborted command - As defined by ATA */
-r_int
-id|eom
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* End Of Media Detected */
-r_int
-id|ili
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Illegal Length Indication */
-macro_line|#else
-macro_line|#error &quot;Bitfield endianness not defined! Check your byteorder.h&quot;
-macro_line|#endif
-DECL|member|b
-)brace
-id|b
-suffix:semicolon
-DECL|typedef|idefloppy_error_reg_t
-)brace
-id|idefloppy_error_reg_t
-suffix:semicolon
-multiline_comment|/*&n; *&t;ATAPI Feature Register&n; */
-r_typedef
-r_union
-(brace
-r_int
-id|all
-suffix:colon
-l_int|8
-suffix:semicolon
-r_struct
-(brace
-macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
-DECL|member|dma
-r_int
-id|dma
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Using DMA or PIO */
-DECL|member|reserved321
-r_int
-id|reserved321
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|reserved654
-r_int
-id|reserved654
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* Reserved (Tag Type) */
-DECL|member|reserved7
-r_int
-id|reserved7
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Reserved */
-macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
-r_int
-id|reserved7
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Reserved */
-r_int
-id|reserved654
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* Reserved (Tag Type) */
-r_int
-id|reserved321
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* Reserved */
-r_int
-id|dma
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Using DMA or PIO */
-macro_line|#else
-macro_line|#error &quot;Bitfield endianness not defined! Check your byteorder.h&quot;
-macro_line|#endif
-DECL|member|b
-)brace
-id|b
-suffix:semicolon
-DECL|typedef|idefloppy_feature_reg_t
-)brace
-id|idefloppy_feature_reg_t
-suffix:semicolon
-multiline_comment|/*&n; *&t;ATAPI Byte Count Register.&n; */
-r_typedef
-r_union
-(brace
-r_int
-id|all
-suffix:colon
-l_int|16
-suffix:semicolon
-r_struct
-(brace
-macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
-DECL|member|low
-r_int
-id|low
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* LSB */
-DECL|member|high
-r_int
-id|high
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* MSB */
-macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
-r_int
-id|high
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* MSB */
-r_int
-id|low
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* LSB */
-macro_line|#else
-macro_line|#error &quot;Bitfield endianness not defined! Check your byteorder.h&quot;
-macro_line|#endif
-DECL|member|b
-)brace
-id|b
-suffix:semicolon
-DECL|typedef|idefloppy_bcount_reg_t
-)brace
-id|idefloppy_bcount_reg_t
-suffix:semicolon
-multiline_comment|/*&n; *&t;ATAPI Interrupt Reason Register.&n; */
-r_typedef
-r_union
-(brace
-r_int
-id|all
-suffix:colon
-l_int|8
-suffix:semicolon
-r_struct
-(brace
-macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
-DECL|member|cod
-r_int
-id|cod
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Information transferred is command (1) or data (0) */
-DECL|member|io
-r_int
-id|io
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* The device requests us to read (1) or write (0) */
-DECL|member|reserved
-r_int
-id|reserved
-suffix:colon
-l_int|6
-suffix:semicolon
-multiline_comment|/* Reserved */
-macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
-r_int
-id|reserved
-suffix:colon
-l_int|6
-suffix:semicolon
-multiline_comment|/* Reserved */
-r_int
-id|io
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* The device requests us to read (1) or write (0) */
-r_int
-id|cod
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Information transferred is command (1) or data (0) */
-macro_line|#else
-macro_line|#error &quot;Bitfield endianness not defined! Check your byteorder.h&quot;
-macro_line|#endif
-DECL|member|b
-)brace
-id|b
-suffix:semicolon
-DECL|typedef|idefloppy_ireason_reg_t
-)brace
-id|idefloppy_ireason_reg_t
-suffix:semicolon
-multiline_comment|/*&n; *&t;ATAPI floppy Drive Select Register&n; */
-r_typedef
-r_union
-(brace
-r_int
-id|all
-suffix:colon
-l_int|8
-suffix:semicolon
-r_struct
-(brace
-macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
-DECL|member|sam_lun
-r_int
-id|sam_lun
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* Logical unit number */
-DECL|member|reserved3
-r_int
-id|reserved3
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|drv
-r_int
-id|drv
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* The responding drive will be drive 0 (0) or drive 1 (1) */
-DECL|member|one5
-r_int
-id|one5
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Should be set to 1 */
-DECL|member|reserved6
-r_int
-id|reserved6
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|one7
-r_int
-id|one7
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Should be set to 1 */
-macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
-r_int
-id|one7
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Should be set to 1 */
-r_int
-id|reserved6
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Reserved */
-r_int
-id|one5
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Should be set to 1 */
-r_int
-id|drv
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* The responding drive will be drive 0 (0) or drive 1 (1) */
-r_int
-id|reserved3
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Reserved */
-r_int
-id|sam_lun
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* Logical unit number */
-macro_line|#else
-macro_line|#error &quot;Bitfield endianness not defined! Check your byteorder.h&quot;
-macro_line|#endif
-DECL|member|b
-)brace
-id|b
-suffix:semicolon
-DECL|typedef|idefloppy_drivesel_reg_t
-)brace
-id|idefloppy_drivesel_reg_t
-suffix:semicolon
-multiline_comment|/*&n; *&t;ATAPI Device Control Register&n; */
-r_typedef
-r_union
-(brace
-r_int
-id|all
-suffix:colon
-l_int|8
-suffix:semicolon
-r_struct
-(brace
-macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
-DECL|member|zero0
-r_int
-id|zero0
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Should be set to zero */
-DECL|member|nien
-r_int
-id|nien
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Device interrupt is disabled (1) or enabled (0) */
-DECL|member|srst
-r_int
-id|srst
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* ATA software reset. ATAPI devices should use the new ATAPI srst. */
-DECL|member|one3
-r_int
-id|one3
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Should be set to 1 */
-DECL|member|reserved4567
-r_int
-id|reserved4567
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* Reserved */
-macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
-r_int
-id|reserved4567
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* Reserved */
-r_int
-id|one3
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Should be set to 1 */
-r_int
-id|srst
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* ATA software reset. ATAPI devices should use the new ATAPI srst. */
-r_int
-id|nien
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Device interrupt is disabled (1) or enabled (0) */
-r_int
-id|zero0
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Should be set to zero */
-macro_line|#else
-macro_line|#error &quot;Bitfield endianness not defined! Check your byteorder.h&quot;
-macro_line|#endif
-DECL|member|b
-)brace
-id|b
-suffix:semicolon
-DECL|typedef|idefloppy_control_reg_t
-)brace
-id|idefloppy_control_reg_t
-suffix:semicolon
-multiline_comment|/*&n; *&t;The following is used to format the general configuration word of&n; *&t;the ATAPI IDENTIFY DEVICE command.&n; */
-DECL|struct|idefloppy_id_gcw
-r_struct
-id|idefloppy_id_gcw
-(brace
-macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
-DECL|member|packet_size
-r_int
-id|packet_size
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* Packet Size */
-DECL|member|reserved234
-r_int
-id|reserved234
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|drq_type
-r_int
-id|drq_type
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* Command packet DRQ type */
-DECL|member|removable
-r_int
-id|removable
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Removable media */
-DECL|member|device_type
-r_int
-id|device_type
-suffix:colon
-l_int|5
-suffix:semicolon
-multiline_comment|/* Device type */
-DECL|member|reserved13
-r_int
-id|reserved13
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|protocol
-r_int
-id|protocol
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* Protocol type */
-macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
-r_int
-id|protocol
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* Protocol type */
-r_int
-id|reserved13
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Reserved */
-r_int
-id|device_type
-suffix:colon
-l_int|5
-suffix:semicolon
-multiline_comment|/* Device type */
-r_int
-id|removable
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Removable media */
-r_int
-id|drq_type
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* Command packet DRQ type */
-r_int
-id|reserved234
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* Reserved */
-r_int
-id|packet_size
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* Packet Size */
-macro_line|#else
-macro_line|#error &quot;Bitfield endianness not defined! Check your byteorder.h&quot;
-macro_line|#endif
-)brace
-suffix:semicolon
-multiline_comment|/*&n; *&t;INQUIRY packet command - Data Format&n; */
-r_typedef
-r_struct
-(brace
-macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
-DECL|member|device_type
-r_int
-id|device_type
-suffix:colon
-l_int|5
-suffix:semicolon
-multiline_comment|/* Peripheral Device Type */
-DECL|member|reserved0_765
-r_int
-id|reserved0_765
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* Peripheral Qualifier - Reserved */
-DECL|member|reserved1_6t0
-r_int
-id|reserved1_6t0
-suffix:colon
-l_int|7
-suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|rmb
-r_int
-id|rmb
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Removable Medium Bit */
-DECL|member|ansi_version
-r_int
-id|ansi_version
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* ANSI Version */
-DECL|member|ecma_version
-r_int
-id|ecma_version
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* ECMA Version */
-DECL|member|iso_version
-r_int
-id|iso_version
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* ISO Version */
-DECL|member|response_format
-r_int
-id|response_format
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* Response Data Format */
-DECL|member|reserved3_45
-r_int
-id|reserved3_45
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|reserved3_6
-r_int
-id|reserved3_6
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* TrmIOP - Reserved */
-DECL|member|reserved3_7
-r_int
-id|reserved3_7
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* AENC - Reserved */
-macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
-r_int
-id|reserved0_765
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* Peripheral Qualifier - Reserved */
-r_int
-id|device_type
-suffix:colon
-l_int|5
-suffix:semicolon
-multiline_comment|/* Peripheral Device Type */
-r_int
-id|rmb
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Removable Medium Bit */
-r_int
-id|reserved1_6t0
-suffix:colon
-l_int|7
-suffix:semicolon
-multiline_comment|/* Reserved */
-r_int
-id|iso_version
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* ISO Version */
-r_int
-id|ecma_version
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* ECMA Version */
-r_int
-id|ansi_version
-suffix:colon
-l_int|3
-suffix:semicolon
-multiline_comment|/* ANSI Version */
-r_int
-id|reserved3_7
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* AENC - Reserved */
-r_int
-id|reserved3_6
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* TrmIOP - Reserved */
-r_int
-id|reserved3_45
-suffix:colon
-l_int|2
-suffix:semicolon
-multiline_comment|/* Reserved */
-r_int
-id|response_format
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* Response Data Format */
-macro_line|#else
-macro_line|#error &quot;Bitfield endianness not defined! Check your byteorder.h&quot;
-macro_line|#endif
-DECL|member|additional_length
-id|u8
-id|additional_length
-suffix:semicolon
-multiline_comment|/* Additional Length (total_length-4) */
-DECL|member|rsv5
-DECL|member|rsv6
-DECL|member|rsv7
-id|u8
-id|rsv5
-comma
-id|rsv6
-comma
-id|rsv7
-suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|vendor_id
-id|u8
-id|vendor_id
-(braket
-l_int|8
-)braket
-suffix:semicolon
-multiline_comment|/* Vendor Identification */
-DECL|member|product_id
-id|u8
-id|product_id
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* Product Identification */
-DECL|member|revision_level
-id|u8
-id|revision_level
-(braket
-l_int|4
-)braket
-suffix:semicolon
-multiline_comment|/* Revision Level */
-DECL|member|vendor_specific
-id|u8
-id|vendor_specific
-(braket
-l_int|20
-)braket
-suffix:semicolon
-multiline_comment|/* Vendor Specific - Optional */
-DECL|member|reserved56t95
-id|u8
-id|reserved56t95
-(braket
-l_int|40
-)braket
-suffix:semicolon
-multiline_comment|/* Reserved - Optional */
-multiline_comment|/* Additional information may be returned */
-DECL|typedef|idefloppy_inquiry_result_t
-)brace
-id|idefloppy_inquiry_result_t
-suffix:semicolon
-multiline_comment|/*&n; *&t;REQUEST SENSE packet command result - Data Format.&n; */
-r_typedef
-r_struct
-(brace
-macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
-DECL|member|error_code
-r_int
-id|error_code
-suffix:colon
-l_int|7
-suffix:semicolon
-multiline_comment|/* Current error (0x70) */
-DECL|member|valid
-r_int
-id|valid
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* The information field conforms to SFF-8070i */
-DECL|member|reserved1
-id|u8
-id|reserved1
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|sense_key
-r_int
-id|sense_key
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* Sense Key */
-DECL|member|reserved2_4
-r_int
-id|reserved2_4
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Reserved */
-DECL|member|ili
-r_int
-id|ili
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Incorrect Length Indicator */
-DECL|member|reserved2_67
-r_int
-id|reserved2_67
-suffix:colon
-l_int|2
-suffix:semicolon
-macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
-r_int
-id|valid
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* The information field conforms to SFF-8070i */
-r_int
-id|error_code
-suffix:colon
-l_int|7
-suffix:semicolon
-multiline_comment|/* Current error (0x70) */
-id|u8
-id|reserved1
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* Reserved */
-r_int
-id|reserved2_67
-suffix:colon
-l_int|2
-suffix:semicolon
-r_int
-id|ili
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Incorrect Length Indicator */
-r_int
-id|reserved2_4
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Reserved */
-r_int
-id|sense_key
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* Sense Key */
-macro_line|#else
-macro_line|#error &quot;Bitfield endianness not defined! Check your byteorder.h&quot;
-macro_line|#endif
-DECL|member|information
-id|u32
-id|information
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|asl
-id|u8
-id|asl
-suffix:semicolon
-multiline_comment|/* Additional sense length (n-7) */
-DECL|member|command_specific
-id|u32
-id|command_specific
-suffix:semicolon
-multiline_comment|/* Additional command specific information */
-DECL|member|asc
-id|u8
-id|asc
-suffix:semicolon
-multiline_comment|/* Additional Sense Code */
-DECL|member|ascq
-id|u8
-id|ascq
-suffix:semicolon
-multiline_comment|/* Additional Sense Code Qualifier */
-DECL|member|replaceable_unit_code
-id|u8
-id|replaceable_unit_code
-suffix:semicolon
-multiline_comment|/* Field Replaceable Unit Code */
-DECL|member|sksv
-id|u8
-id|sksv
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|pad
-id|u8
-id|pad
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* Padding to 20 bytes */
-DECL|typedef|idefloppy_request_sense_result_t
-)brace
-id|idefloppy_request_sense_result_t
-suffix:semicolon
 multiline_comment|/*&n; *&t;Pages of the SELECT SENSE / MODE SENSE packet commands.&n; */
 DECL|macro|IDEFLOPPY_CAPABILITIES_PAGE
 mdefine_line|#define&t;IDEFLOPPY_CAPABILITIES_PAGE&t;0x1b
@@ -1706,10 +641,6 @@ DECL|typedef|idefloppy_mode_parameter_header_t
 )brace
 id|idefloppy_mode_parameter_header_t
 suffix:semicolon
-DECL|macro|IDEFLOPPY_MIN
-mdefine_line|#define IDEFLOPPY_MIN(a,b)&t;((a)&lt;(b) ? (a):(b))
-DECL|macro|IDEFLOPPY_MAX
-mdefine_line|#define&t;IDEFLOPPY_MAX(a,b)&t;((a)&gt;(b) ? (a):(b))
 multiline_comment|/*&n; *&t;idefloppy_end_request is used to finish servicing a request.&n; *&n; *&t;For read/write requests, we will call ata_end_request to pass to the&n; *&t;next buffer.&n; */
 DECL|function|idefloppy_end_request
 r_static
@@ -1731,6 +662,17 @@ r_int
 id|uptodate
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|idefloppy_floppy_t
 op_star
 id|floppy
@@ -1809,7 +751,7 @@ id|REQ_SPECIAL
 )paren
 )paren
 (brace
-id|ata_end_request
+id|__ata_end_request
 c_func
 (paren
 id|drive
@@ -1817,12 +759,22 @@ comma
 id|rq
 comma
 id|uptodate
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|rq-&gt;errors
 op_assign
 id|error
@@ -1841,6 +793,14 @@ id|end_that_request_last
 c_func
 (paren
 id|rq
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -1964,9 +924,12 @@ suffix:semicolon
 )brace
 id|count
 op_assign
-id|IDEFLOPPY_MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|bio-&gt;bi_size
 op_minus
 id|pc-&gt;b_count
@@ -2123,9 +1086,12 @@ suffix:semicolon
 )brace
 id|count
 op_assign
-id|IDEFLOPPY_MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|pc-&gt;b_count
 comma
 id|bcount
@@ -2362,7 +1328,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|idefloppy_request_sense_result_t
+id|atapi_request_sense_result_t
 op_star
 id|result
 )paren
@@ -2388,11 +1354,6 @@ suffix:semicolon
 id|floppy-&gt;progress_indication
 op_assign
 id|result-&gt;sksv
-(braket
-l_int|0
-)braket
-op_amp
-l_int|0x80
 ques
 c_cond
 (paren
@@ -2407,9 +1368,7 @@ id|u16
 op_star
 )paren
 (paren
-id|result-&gt;sksv
-op_plus
-l_int|1
+id|result-&gt;sk_specific
 )paren
 )paren
 suffix:colon
@@ -2497,7 +1456,7 @@ c_func
 id|drive
 comma
 (paren
-id|idefloppy_request_sense_result_t
+id|atapi_request_sense_result_t
 op_star
 )paren
 id|floppy-&gt;pc-&gt;buffer
@@ -2647,7 +1606,7 @@ id|request
 op_star
 id|rq
 suffix:semicolon
-id|idefloppy_error_reg_t
+id|atapi_error_reg_t
 id|error
 suffix:semicolon
 id|error.all
@@ -2709,30 +1668,19 @@ op_star
 id|rq
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
 id|idefloppy_floppy_t
 op_star
 id|floppy
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|idefloppy_status_reg_t
+id|atapi_status_reg_t
 id|status
 suffix:semicolon
-id|idefloppy_bcount_reg_t
+id|atapi_bcount_reg_t
 id|bcount
 suffix:semicolon
-id|idefloppy_ireason_reg_t
+id|atapi_ireason_reg_t
 id|ireason
 suffix:semicolon
 r_struct
@@ -2906,7 +1854,7 @@ l_string|&quot;ide-floppy: I/O error in request sense command&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 id|idefloppy_retry_pc
@@ -2916,7 +1864,7 @@ id|drive
 suffix:semicolon
 multiline_comment|/* Retry operation */
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 multiline_comment|/* queued, but not started */
 )brace
@@ -2947,7 +1895,7 @@ id|rq
 suffix:semicolon
 multiline_comment|/* Command finished - Call the callback function */
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
@@ -2981,19 +1929,10 @@ l_int|1
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|bcount.b.high
 op_assign
 id|IN_BYTE
@@ -3023,14 +1962,6 @@ c_cond
 id|ireason.b.cod
 )paren
 (brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
@@ -3038,7 +1969,7 @@ l_string|&quot;ide-floppy: CoD != 0 in idefloppy_pc_intr&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 r_if
@@ -3057,14 +1988,6 @@ id|pc-&gt;flags
 )paren
 (brace
 multiline_comment|/* Hopefully, we will never get here */
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
@@ -3092,7 +2015,7 @@ l_string|&quot;Write&quot;
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 r_if
@@ -3157,16 +2080,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 macro_line|#if IDEFLOPPY_DEBUG_LOG
@@ -3278,16 +2193,8 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* And set the interrupt handler again */
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the original routine that did the packet transfer.&n; * It fails at high speeds on the Iomega ZIP drive, so there&squot;s a slower version&n; * for that drive below. The algorithm is chosen based on drive type&n; */
@@ -3308,44 +2215,20 @@ op_star
 id|rq
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
-id|ide_startstop_t
-id|startstop
-suffix:semicolon
 id|idefloppy_floppy_t
 op_star
 id|floppy
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|idefloppy_ireason_reg_t
+id|atapi_ireason_reg_t
 id|ireason
 suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-multiline_comment|/* FIXME: Move this lock upwards.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|ata_status_poll
 c_func
 (paren
@@ -3358,10 +2241,14 @@ comma
 id|WAIT_READY
 comma
 id|rq
-comma
-op_amp
-id|startstop
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+id|ATA_OP_READY
 )paren
 (brace
 id|printk
@@ -3370,16 +2257,14 @@ id|KERN_ERR
 l_string|&quot;ide-floppy: Strange, packet command initiated yet DRQ isn&squot;t asserted&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
 id|ret
-op_assign
-id|startstop
 suffix:semicolon
 )brace
-r_else
-(brace
 id|ireason.all
 op_assign
 id|IN_BYTE
+c_func
 (paren
 id|IDE_IREASON_REG
 )paren
@@ -3401,12 +2286,13 @@ l_string|&quot;ide-floppy: (IO,CoD) != (0,1) while issuing a packet command&bsla
 suffix:semicolon
 id|ret
 op_assign
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 r_else
 (brace
 id|ata_set_handler
+c_func
 (paren
 id|drive
 comma
@@ -3431,18 +2317,9 @@ suffix:semicolon
 multiline_comment|/* Send the actual packet */
 id|ret
 op_assign
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
-)brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -3450,7 +2327,7 @@ suffix:semicolon
 multiline_comment|/*&n; * What we have here is a classic case of a top half / bottom half&n; * interrupt service routine. In interrupt mode, the device sends&n; * an interrupt to signal it&squot;s ready to receive a packet. However,&n; * we need to delay about 2-3 ticks before issuing the packet or we&n; * gets in trouble.&n; *&n; * So, follow carefully. transfer_pc1 is called as an interrupt (or&n; * directly). In either case, when the device says it&squot;s ready for a &n; * packet, we schedule the packet transfer to occur about 2-3 ticks&n; * later in transfer_pc2.&n; */
 DECL|function|idefloppy_transfer_pc2
 r_static
-r_int
+id|ide_startstop_t
 id|idefloppy_transfer_pc2
 c_func
 (paren
@@ -3463,6 +2340,11 @@ r_struct
 id|request
 op_star
 id|__rq
+comma
+r_int
+r_int
+op_star
+id|wait
 )paren
 (brace
 id|idefloppy_floppy_t
@@ -3482,10 +2364,15 @@ l_int|12
 )paren
 suffix:semicolon
 multiline_comment|/* Send the actual packet */
-r_return
+op_star
+id|wait
+op_assign
 id|IDEFLOPPY_WAIT_CMD
 suffix:semicolon
 multiline_comment|/* Timeout for the packet command */
+r_return
+id|ATA_OP_CONTINUES
+suffix:semicolon
 )brace
 DECL|function|idefloppy_transfer_pc1
 r_static
@@ -3504,17 +2391,6 @@ op_star
 id|rq
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
 id|idefloppy_floppy_t
 op_star
 id|floppy
@@ -3524,15 +2400,14 @@ suffix:semicolon
 id|ide_startstop_t
 id|startstop
 suffix:semicolon
-id|idefloppy_ireason_reg_t
+id|atapi_ireason_reg_t
 id|ireason
 suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|ret
+op_assign
 id|ata_status_poll
 c_func
 (paren
@@ -3545,10 +2420,14 @@ comma
 id|WAIT_READY
 comma
 id|rq
-comma
-op_amp
-id|startstop
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+id|ATA_OP_READY
 )paren
 (brace
 id|printk
@@ -3558,18 +2437,9 @@ l_string|&quot;ide-floppy: Strange, packet command initiated yet DRQ isn&squot;t
 )paren
 suffix:semicolon
 r_return
-id|startstop
+id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|ireason.all
 op_assign
 id|IN_BYTE
@@ -3595,7 +2465,7 @@ l_string|&quot;ide-floppy: (IO,CoD) != (0,1) while issuing a packet command&bsla
 suffix:semicolon
 id|ret
 op_assign
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 r_else
@@ -3618,17 +2488,9 @@ suffix:semicolon
 multiline_comment|/* fail == transfer_pc2 */
 id|ret
 op_assign
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -3662,7 +2524,7 @@ id|floppy
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|idefloppy_bcount_reg_t
+id|atapi_bcount_reg_t
 id|bcount
 suffix:semicolon
 r_int
@@ -3814,7 +2676,7 @@ id|rq
 )paren
 suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 macro_line|#if IDEFLOPPY_DEBUG_LOG
@@ -4012,26 +2874,6 @@ id|floppy-&gt;flags
 )paren
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t; * file access too.&n;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|ata_set_handler
 c_func
 (paren
@@ -4052,16 +2894,8 @@ id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
 multiline_comment|/* Issue the packet command */
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|ide_started
+id|ATA_OP_CONTINUES
 suffix:semicolon
 )brace
 r_else
@@ -4815,13 +3649,6 @@ id|sector_t
 id|block
 )paren
 (brace
-r_struct
-id|ata_channel
-op_star
-id|ch
-op_assign
-id|drive-&gt;channel
-suffix:semicolon
 id|idefloppy_floppy_t
 op_star
 id|floppy
@@ -4832,9 +3659,6 @@ r_struct
 id|atapi_packet_command
 op_star
 id|pc
-suffix:semicolon
-r_int
-id|ret
 suffix:semicolon
 macro_line|#if IDEFLOPPY_DEBUG_LOG
 id|printk
@@ -4911,13 +3735,6 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: make this unlocking go away*/
-id|spin_unlock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 id|idefloppy_end_request
 c_func
 (paren
@@ -4928,14 +3745,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 r_if
@@ -4965,13 +3776,6 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: make this unlocking go away*/
-id|spin_unlock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 id|idefloppy_end_request
 c_func
 (paren
@@ -4982,14 +3786,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
 id|pc
@@ -5042,13 +3840,6 @@ comma
 l_string|&quot;ide-floppy: unsupported command in queue&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: make this unlocking go away*/
-id|spin_unlock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 id|idefloppy_end_request
 c_func
 (paren
@@ -5059,25 +3850,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
 r_return
-id|ide_stopped
+id|ATA_OP_FINISHED
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: make this unlocking go away*/
-id|spin_unlock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
-id|ret
-op_assign
+r_return
 id|idefloppy_issue_pc
 c_func
 (paren
@@ -5087,15 +3864,6 @@ id|rq
 comma
 id|pc
 )paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|ch-&gt;lock
-)paren
-suffix:semicolon
-r_return
-id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;idefloppy_queue_pc_tail adds a special packet command request to the&n; *&t;tail of the request queue, and waits for it to be serviced.&n; */
@@ -6394,7 +5162,7 @@ multiline_comment|/* Else assume format_unit has finished, and we&squot;re&n;&t;
 )brace
 r_else
 (brace
-id|idefloppy_status_reg_t
+id|atapi_status_reg_t
 id|status
 suffix:semicolon
 r_int
@@ -7181,7 +5949,7 @@ id|id
 )paren
 (brace
 r_struct
-id|idefloppy_id_gcw
+id|atapi_id_gcw
 id|gcw
 suffix:semicolon
 macro_line|#if IDEFLOPPY_DEBUG_INFO
@@ -8054,7 +6822,7 @@ id|floppy
 )paren
 (brace
 r_struct
-id|idefloppy_id_gcw
+id|atapi_id_gcw
 id|gcw
 suffix:semicolon
 r_int

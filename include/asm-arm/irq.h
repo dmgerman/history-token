@@ -58,6 +58,8 @@ DECL|macro|IRQT_LOW
 mdefine_line|#define IRQT_LOW&t;(__IRQT_LOWLVL)
 DECL|macro|IRQT_HIGH
 mdefine_line|#define IRQT_HIGH&t;(__IRQT_HIGHLVL)
+DECL|macro|IRQT_PROBE
+mdefine_line|#define IRQT_PROBE&t;(1 &lt;&lt; 4)
 r_int
 id|set_irq_type
 c_func

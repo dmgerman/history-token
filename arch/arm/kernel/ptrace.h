@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/kernel/ptrace.h&n; *&n; *  Copyright (C) 2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/arch/arm/kernel/ptrace.h&n; *&n; *  Copyright (C) 2000-2002 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 r_extern
 r_void
 id|__ptrace_cancel_bpt
@@ -16,6 +16,20 @@ c_func
 (paren
 r_struct
 id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ptrace_break
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+r_struct
+id|pt_regs
 op_star
 )paren
 suffix:semicolon

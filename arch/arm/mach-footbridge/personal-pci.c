@@ -192,7 +192,6 @@ DECL|variable|personal_pci_init
 id|subsys_initcall
 c_func
 (paren
-op_amp
 id|personal_pci_init
 )paren
 suffix:semicolon

@@ -696,7 +696,7 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Data transfer routines&n; ***********************************************************************/
-multiline_comment|/*&n; * This is subtle, so pay attention:&n; * ---------------------------------&n; * We&squot;re very concered about races with a command abort.  Hanging this code is&n; * a sure fire way to hang the kernel.&n; *&n; * The abort function first sets the machine state, then tries to acquire the&n; * lock on the current_urb to abort it.&n; *&n; * Once a function grabs the current_urb_sem, then it -MUST- test the state to&n; * see if we just got aborted before the lock was grabbed.  If so, it&squot;s&n; * essential to release the lock and return.&n; *&n; * The idea is that, once the current_urb_sem is held, the state can&squot;t really&n; * change anymore without also engaging the usb_unlink_urb() call _after_ the&n; * URB is actually submitted.&n; *&n; * So, we&squot;ve guaranteed that (after the sm_state test), if we do submit the&n; * URB it will get aborted when we release the current_urb_sem.  And we&squot;ve&n; * also guaranteed that if the abort code was called before we held the&n; * current_urb_sem, we can safely get out before the URB is submitted.&n; */
+multiline_comment|/*&n; * This is subtle, so pay attention:&n; * ---------------------------------&n; * We&squot;re very concerned about races with a command abort.  Hanging this code&n; * is a sure fire way to hang the kernel.  (Note that this discussion applies&n; * only to transactions resulting from a scsi queued-command, since only&n; * these transactions are subject to a scsi abort.  Other transactions, such&n; * as those occurring during device-specific initialization, must be handled&n; * by a separate code path.)&n; *&n; * The abort function first sets the machine state, then acquires the lock&n; * on the current_urb before checking if it needs to be aborted.&n; *&n; * When a function submits the current_urb, it must first grab the&n; * current_urb_sem to prevent the abort function from trying to cancel the&n; * URB while the submit call is underway.  After a function submits the&n; * current_urb, it -MUST- test the state to see if we got aborted just before&n; * the submission.  If so, it&squot;s essential to abort the URB if it&squot;s still in&n; * progress.  Either way, the function must then release the lock and wait&n; * for the URB to finish.&n; *&n; * (It&squot;s also permissible, but not necessary, to test the state -before-&n; * submitting the URB.  Doing so would prevent an unnecessary submission if&n; * the transaction had already been aborted, but this is very unlikely to&n; * happen, because the abort would have to have been requested during actual&n; * kernel processing rather than during an I/O delay.)&n; *&n; * The idea is that (1) once the state is changed to ABORTING, either the&n; * aborting function or the submitting function is guaranteed to call&n; * usb_unlink_urb() for an active URB, and (2) current_urb_sem prevents&n; * usb_unlink_urb() from being called more than once or from being called&n; * during usb_submit_urb().&n; */
 multiline_comment|/* This is the completion handler which will wake us up when an URB&n; * completes.&n; */
 DECL|function|usb_stor_blocking_completion
 r_static
@@ -729,7 +729,7 @@ id|urb_done_ptr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* This is the common part of the URB message submission code&n; * This function expects the current_urb_sem to be held upon entry.&n; *&n; * All URBs from the usb-storage driver _must_ pass through this function&n; * (or something like it) for the abort mechanisms to work properly.&n; */
+multiline_comment|/* This is the common part of the URB message submission code&n; *&n; * All URBs from the usb-storage driver involved in handling a queued scsi&n; * command _must_ pass through this function (or something like it) for the&n; * abort mechanisms to work properly.&n; */
 DECL|function|usb_stor_msg_common
 r_static
 r_int
@@ -775,7 +775,16 @@ id|us-&gt;current_urb-&gt;transfer_flags
 op_assign
 id|USB_ASYNC_UNLINK
 suffix:semicolon
-multiline_comment|/* submit the URB */
+multiline_comment|/* lock and submit the URB */
+id|down
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;current_urb_sem
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|usb_submit_urb
@@ -793,11 +802,6 @@ id|status
 )paren
 (brace
 multiline_comment|/* something went wrong */
-r_return
-id|status
-suffix:semicolon
-)brace
-multiline_comment|/* wait for the completion of the URB */
 id|up
 c_func
 (paren
@@ -807,20 +811,63 @@ id|us-&gt;current_urb_sem
 )paren
 )paren
 suffix:semicolon
-id|wait_for_completion
+r_return
+id|status
+suffix:semicolon
+)brace
+multiline_comment|/* has the current command been aborted? */
+r_if
+c_cond
+(paren
+id|atomic_read
 c_func
 (paren
 op_amp
-id|urb_done
+id|us-&gt;sm_state
+)paren
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+multiline_comment|/* cancel the URB, if it hasn&squot;t been cancelled already */
+r_if
+c_cond
+(paren
+id|us-&gt;current_urb-&gt;status
+op_eq
+op_minus
+id|EINPROGRESS
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;-- cancelling URB&bslash;n&quot;
 )paren
 suffix:semicolon
-id|down
+id|usb_unlink_urb
+c_func
+(paren
+id|us-&gt;current_urb
+)paren
+suffix:semicolon
+)brace
+)brace
+id|up
 c_func
 (paren
 op_amp
 (paren
 id|us-&gt;current_urb_sem
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/* wait for the completion of the URB */
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|urb_done
 )paren
 suffix:semicolon
 multiline_comment|/* return the URB status */
@@ -899,44 +946,7 @@ c_func
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/* lock the URB */
-id|down
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;current_urb_sem
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* has the current command been aborted? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|up
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;current_urb_sem
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* fill the URB */
+multiline_comment|/* fill and submit the URB */
 id|FILL_CONTROL_URB
 c_func
 (paren
@@ -962,7 +972,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* submit the URB */
 id|status
 op_assign
 id|usb_stor_msg_common
@@ -982,16 +991,6 @@ l_int|0
 id|status
 op_assign
 id|us-&gt;current_urb-&gt;actual_length
-suffix:semicolon
-multiline_comment|/* release the lock and return status */
-id|up
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;current_urb_sem
-)paren
-)paren
 suffix:semicolon
 r_return
 id|status
@@ -1028,44 +1027,7 @@ id|act_len
 r_int
 id|status
 suffix:semicolon
-multiline_comment|/* lock the URB */
-id|down
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;current_urb_sem
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* has the current command been aborted? */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
-)paren
-(brace
-id|up
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;current_urb_sem
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* fill the URB */
+multiline_comment|/* fill and submit the URB */
 id|FILL_BULK_URB
 c_func
 (paren
@@ -1084,7 +1046,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* submit the URB */
 id|status
 op_assign
 id|usb_stor_msg_common
@@ -1093,21 +1054,11 @@ c_func
 id|us
 )paren
 suffix:semicolon
-multiline_comment|/* return the actual length of the data transferred */
+multiline_comment|/* store the actual length of the data transferred */
 op_star
 id|act_len
 op_assign
 id|us-&gt;current_urb-&gt;actual_length
-suffix:semicolon
-multiline_comment|/* release the lock and return status */
-id|up
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;current_urb_sem
-)paren
-)paren
 suffix:semicolon
 r_return
 id|status
@@ -2303,7 +2254,7 @@ op_assign
 l_int|0x0
 suffix:semicolon
 )brace
-multiline_comment|/* Abort the currently running scsi command or device reset.&n; */
+multiline_comment|/* Abort the currently running scsi command or device reset.&n; * This must be called with scsi_lock(us-&gt;srb-&gt;host) held */
 DECL|function|usb_stor_abort_transport
 r_void
 id|usb_stor_abort_transport
@@ -2331,7 +2282,7 @@ c_func
 l_string|&quot;usb_stor_abort_transport called&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* If the current state is wrong or if there&squot;s&n;&t; *  no srb, then there&squot;s nothing to do */
+multiline_comment|/* Normally the current state is RUNNING.  If the control thread&n;&t; * hasn&squot;t even started processing this command, the state will be&n;&t; * IDLE.  Anything else is a bug. */
 id|BUG_ON
 c_func
 (paren
@@ -2342,20 +2293,11 @@ id|US_STATE_RUNNING
 op_logical_and
 id|state
 op_ne
-id|US_STATE_RESETTING
+id|US_STATE_IDLE
 )paren
 )paren
 suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-(paren
-id|us-&gt;srb
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* set state to abort */
+multiline_comment|/* set state to abort and release the lock */
 id|atomic_set
 c_func
 (paren
@@ -2365,8 +2307,14 @@ comma
 id|US_STATE_ABORTING
 )paren
 suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|us-&gt;srb-&gt;host
+)paren
+suffix:semicolon
 multiline_comment|/* If the state machine is blocked waiting for an URB or an IRQ,&n;&t; * let&squot;s wake it up */
-multiline_comment|/* If we have an URB pending, cancel it.  Note that we guarantee with&n;&t; * the current_urb_sem that either (a) an URB has just been submitted,&n;&t; * or (b) the URB will never get submitted.  But, because of the use&n;&t; * of us-&gt;sm_state and current_urb_sem, we can&squot;t get an URB sumbitted&n;&t; * _after_ we set the state to US_STATE_ABORTING and this section of&n;&t; * code runs.  Thus we avoid deadlocks.&n;&t; */
+multiline_comment|/* If we have an URB pending, cancel it.  Note that we guarantee with&n;&t; * the current_urb_sem that if a URB has just been submitted, it&n;&t; * won&squot;t be cancelled more than once. */
 id|down
 c_func
 (paren
@@ -2414,10 +2362,10 @@ c_cond
 id|test_bit
 c_func
 (paren
-id|IP_WANTED
+id|US_FLIDX_IP_WANTED
 comma
 op_amp
-id|us-&gt;bitflags
+id|us-&gt;flags
 )paren
 )paren
 (brace
@@ -2434,6 +2382,13 @@ id|us-&gt;irq_urb
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Reacquire the lock */
+id|scsi_lock
+c_func
+(paren
+id|us-&gt;srb-&gt;host
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Control/Bulk/Interrupt transport&n; */
 multiline_comment|/* The interrupt handler for CBI devices */
@@ -2522,10 +2477,10 @@ op_logical_neg
 id|test_and_clear_bit
 c_func
 (paren
-id|IP_WANTED
+id|US_FLIDX_IP_WANTED
 comma
 op_amp
-id|us-&gt;bitflags
+id|us-&gt;flags
 )paren
 )paren
 (brace
@@ -2579,10 +2534,10 @@ op_logical_neg
 id|test_and_clear_bit
 c_func
 (paren
-id|IP_WANTED
+id|US_FLIDX_IP_WANTED
 comma
 op_amp
-id|us-&gt;bitflags
+id|us-&gt;flags
 )paren
 )paren
 r_return
@@ -2662,10 +2617,10 @@ op_logical_neg
 id|test_and_clear_bit
 c_func
 (paren
-id|IP_WANTED
+id|US_FLIDX_IP_WANTED
 comma
 op_amp
-id|us-&gt;bitflags
+id|us-&gt;flags
 )paren
 )paren
 (brace
@@ -2742,10 +2697,10 @@ multiline_comment|/* Set up for status notification */
 id|set_bit
 c_func
 (paren
-id|IP_WANTED
+id|US_FLIDX_IP_WANTED
 comma
 op_amp
-id|us-&gt;bitflags
+id|us-&gt;flags
 )paren
 suffix:semicolon
 multiline_comment|/* COMMAND STAGE */
@@ -2801,10 +2756,10 @@ multiline_comment|/* Reset flag for status notification */
 id|clear_bit
 c_func
 (paren
-id|IP_WANTED
+id|US_FLIDX_IP_WANTED
 comma
 op_amp
-id|us-&gt;bitflags
+id|us-&gt;flags
 )paren
 suffix:semicolon
 )brace
@@ -2949,10 +2904,10 @@ id|US_BULK_TRANSFER_ABORTED
 id|clear_bit
 c_func
 (paren
-id|IP_WANTED
+id|US_FLIDX_IP_WANTED
 comma
 op_amp
-id|us-&gt;bitflags
+id|us-&gt;flags
 )paren
 suffix:semicolon
 r_return
@@ -2970,10 +2925,10 @@ id|US_BULK_TRANSFER_FAILED
 id|clear_bit
 c_func
 (paren
-id|IP_WANTED
+id|US_FLIDX_IP_WANTED
 comma
 op_amp
-id|us-&gt;bitflags
+id|us-&gt;flags
 )paren
 suffix:semicolon
 r_return
@@ -4313,12 +4268,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-id|us-&gt;srb-&gt;result
-op_assign
-id|DID_ERROR
-op_lshift
-l_int|16
-suffix:semicolon
 id|result
 op_assign
 id|FAILED
@@ -4331,12 +4280,6 @@ c_func
 (paren
 l_string|&quot;Soft reset done&bslash;n&quot;
 )paren
-suffix:semicolon
-id|us-&gt;srb-&gt;result
-op_assign
-id|GOOD
-op_lshift
-l_int|1
 suffix:semicolon
 id|result
 op_assign

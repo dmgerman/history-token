@@ -3992,9 +3992,7 @@ op_complement
 (paren
 id|USBDEVFS_URB_ISO_ASAP
 op_or
-id|USBDEVFS_URB_DISABLE_SPD
-op_or
-id|USBDEVFS_URB_QUEUE_BULK
+id|USBDEVFS_URB_SHORT_NOT_OK
 op_or
 id|USB_NO_FSBR
 op_or

@@ -325,6 +325,8 @@ r_sizeof
 r_struct
 id|hpsb_host
 )paren
+op_plus
+id|extra
 )paren
 suffix:semicolon
 id|h-&gt;hostdata

@@ -777,6 +777,9 @@ r_struct
 id|ata_device
 op_star
 id|drive
+comma
+r_int
+id|map
 )paren
 (brace
 r_return
@@ -1029,44 +1032,31 @@ op_star
 id|hwif
 )paren
 (brace
-id|hwif-&gt;serialized
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hwif-&gt;dma_base
-)paren
-(brace
-id|hwif-&gt;autodma
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_else
-(brace
-r_int
-r_int
+id|u32
 id|basereg
 comma
 id|d0_timings
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
-id|hwif-&gt;udma_setup
+id|hwif-&gt;serialized
 op_assign
-id|cs5530_udma_setup
+l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
+r_if
+c_cond
+(paren
+id|hwif-&gt;dma_base
+)paren
+(brace
 id|hwif-&gt;highmem
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#else
-id|hwif-&gt;autodma
+id|hwif-&gt;udma_setup
 op_assign
-l_int|0
+id|cs5530_udma_setup
 suffix:semicolon
+)brace
 macro_line|#endif
 id|hwif-&gt;tuneproc
 op_assign
@@ -1206,7 +1196,6 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* needs autotuning later */
-)brace
 )brace
 )brace
 multiline_comment|/* module data table */

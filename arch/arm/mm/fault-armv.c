@@ -123,6 +123,7 @@ id|fsr_info
 )braket
 op_assign
 (brace
+multiline_comment|/*&n;&t; * The following are the standard ARMv3 and ARMv4 aborts.  ARMv5&n;&t; * defines these to be &quot;precise&quot; aborts.&n;&t; */
 (brace
 id|do_bad
 comma
@@ -250,6 +251,138 @@ id|SIGSEGV
 comma
 l_string|&quot;page permission fault&quot;
 )brace
+comma
+multiline_comment|/*&n;&t; * The following are &quot;imprecise&quot; aborts, which are signalled by bit&n;&t; * 10 of the FSR, and may not be recoverable.  These are only&n;&t; * supported if the CPU abort handler supports bit 10.&n;&t; */
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 16&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 17&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 18&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 19&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;lock abort&quot;
+)brace
+comma
+multiline_comment|/* xscale */
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 21&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;imprecise external abort&quot;
+)brace
+comma
+multiline_comment|/* xscale */
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 23&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;dcache parity error&quot;
+)brace
+comma
+multiline_comment|/* xscale */
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 25&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 26&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 27&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 28&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 29&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 30&quot;
+)brace
+comma
+(brace
+id|do_bad
+comma
+id|SIGBUS
+comma
+l_string|&quot;unknown 31&quot;
+)brace
 )brace
 suffix:semicolon
 r_void
@@ -296,7 +429,11 @@ l_int|0
 op_logical_and
 id|nr
 OL
-l_int|16
+id|ARRAY_SIZE
+c_func
+(paren
+id|fsr_info
+)paren
 )paren
 (brace
 id|fsr_info
@@ -361,6 +498,20 @@ op_plus
 id|fsr
 op_amp
 l_int|15
+)paren
+op_plus
+(paren
+(paren
+id|fsr
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|10
+)paren
+)paren
+op_rshift
+l_int|6
 )paren
 suffix:semicolon
 r_if

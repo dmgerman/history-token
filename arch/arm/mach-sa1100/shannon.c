@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
+macro_line|#include &lt;asm/arch/shannon.h&gt;
 macro_line|#include &quot;generic.h&quot;
 DECL|function|shannon_map_io
 r_static
@@ -55,6 +56,8 @@ suffix:semicolon
 id|GPDR
 op_or_assign
 id|GPIO_UART_TXD
+op_or
+id|SHANNON_GPIO_CODEC_RESET
 suffix:semicolon
 id|GPDR
 op_and_assign
@@ -65,11 +68,14 @@ id|PPAR
 op_or_assign
 id|PPAR_UPR
 suffix:semicolon
-id|set_GPIO_IRQ_edge
-c_func
-(paren
-id|SHANNON_GPIO_IRQ_CODEC
-)paren
+multiline_comment|/* reset the codec */
+id|GPCR
+op_assign
+id|SHANNON_GPIO_CODEC_RESET
+suffix:semicolon
+id|GPSR
+op_assign
+id|SHANNON_GPIO_CODEC_RESET
 suffix:semicolon
 )brace
 id|MACHINE_START

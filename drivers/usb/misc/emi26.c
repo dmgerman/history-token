@@ -208,10 +208,9 @@ op_logical_neg
 id|buffer
 )paren
 (brace
-id|printk
+id|err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;emi26: kmalloc(%d) failed.&quot;
 comma
 id|length
@@ -289,10 +288,9 @@ id|reset_bit
 r_int
 id|response
 suffix:semicolon
-id|printk
+id|info
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s - %d&quot;
 comma
 id|__FUNCTION__
@@ -325,10 +323,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;emi26: set_reset (%d) failed&quot;
 comma
 id|reset_bit
@@ -391,10 +388,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - error loading firmware: error = %d&quot;
 comma
 id|__FUNCTION__
@@ -466,10 +462,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - error loading firmware: error = %d&quot;
 comma
 id|__FUNCTION__
@@ -600,10 +595,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - error loading firmware: error = %d&quot;
 comma
 id|__FUNCTION__
@@ -643,10 +637,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - error loading firmware: error = %d&quot;
 comma
 id|__FUNCTION__
@@ -718,10 +711,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - error loading firmware: error = %d&quot;
 comma
 id|__FUNCTION__
@@ -753,10 +745,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - error loading firmware: error = %d&quot;
 comma
 id|__FUNCTION__
@@ -844,10 +835,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - error loading firmware: error = %d&quot;
 comma
 id|__FUNCTION__
@@ -880,10 +870,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - error loading firmware: error = %d&quot;
 comma
 id|__FUNCTION__
@@ -969,10 +958,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - error loading firmware: error = %d&quot;
 comma
 id|__FUNCTION__
@@ -1005,10 +993,9 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - error loading firmware: error = %d&quot;
 comma
 id|__FUNCTION__
@@ -1080,10 +1067,9 @@ op_star
 id|id
 )paren
 (brace
-id|printk
+id|info
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s start&quot;
 comma
 id|__FUNCTION__
