@@ -4,6 +4,8 @@ DECL|macro|_LINUX_NFSD_XDR4_H
 mdefine_line|#define _LINUX_NFSD_XDR4_H
 DECL|macro|NFSD4_MAX_TAGLEN
 mdefine_line|#define NFSD4_MAX_TAGLEN&t;128
+DECL|macro|XDR_LEN
+mdefine_line|#define XDR_LEN(n)                     (((n) + 3) &amp; ~3)
 DECL|typedef|delegation_zero_t
 r_typedef
 id|u32
@@ -261,6 +263,153 @@ suffix:semicolon
 multiline_comment|/* response */
 )brace
 suffix:semicolon
+DECL|struct|nfsd4_lock_denied
+r_struct
+id|nfsd4_lock_denied
+(brace
+DECL|member|ld_sop
+r_struct
+id|nfs4_stateowner
+op_star
+id|ld_sop
+suffix:semicolon
+DECL|member|ld_start
+id|u64
+id|ld_start
+suffix:semicolon
+DECL|member|ld_length
+id|u64
+id|ld_length
+suffix:semicolon
+DECL|member|ld_type
+id|u32
+id|ld_type
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|nfsd4_lock
+r_struct
+id|nfsd4_lock
+(brace
+multiline_comment|/* request */
+DECL|member|lk_type
+id|u32
+id|lk_type
+suffix:semicolon
+DECL|member|lk_reclaim
+id|u32
+id|lk_reclaim
+suffix:semicolon
+multiline_comment|/* boolean */
+DECL|member|lk_offset
+id|u64
+id|lk_offset
+suffix:semicolon
+DECL|member|lk_length
+id|u64
+id|lk_length
+suffix:semicolon
+DECL|member|lk_is_new
+id|u32
+id|lk_is_new
+suffix:semicolon
+r_union
+(brace
+r_struct
+(brace
+DECL|member|open_seqid
+id|u32
+id|open_seqid
+suffix:semicolon
+DECL|member|open_stateid
+id|stateid_t
+id|open_stateid
+suffix:semicolon
+DECL|member|lock_seqid
+id|u32
+id|lock_seqid
+suffix:semicolon
+DECL|member|clientid
+id|clientid_t
+id|clientid
+suffix:semicolon
+DECL|member|owner
+r_struct
+id|xdr_netobj
+id|owner
+suffix:semicolon
+DECL|member|new
+)brace
+r_new
+suffix:semicolon
+r_struct
+(brace
+DECL|member|lock_stateid
+id|stateid_t
+id|lock_stateid
+suffix:semicolon
+DECL|member|lock_seqid
+id|u32
+id|lock_seqid
+suffix:semicolon
+DECL|member|old
+)brace
+id|old
+suffix:semicolon
+DECL|member|v
+)brace
+id|v
+suffix:semicolon
+multiline_comment|/* response */
+r_union
+(brace
+r_struct
+(brace
+DECL|member|stateid
+id|stateid_t
+id|stateid
+suffix:semicolon
+DECL|member|ok
+)brace
+id|ok
+suffix:semicolon
+DECL|member|denied
+r_struct
+id|nfsd4_lock_denied
+id|denied
+suffix:semicolon
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
+DECL|member|lk_stateowner
+r_struct
+id|nfs4_stateowner
+op_star
+id|lk_stateowner
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|lk_new_open_seqid
+mdefine_line|#define lk_new_open_seqid       v.new.open_seqid
+DECL|macro|lk_new_open_stateid
+mdefine_line|#define lk_new_open_stateid     v.new.open_stateid
+DECL|macro|lk_new_lock_seqid
+mdefine_line|#define lk_new_lock_seqid       v.new.lock_seqid
+DECL|macro|lk_new_clientid
+mdefine_line|#define lk_new_clientid         v.new.clientid
+DECL|macro|lk_new_owner
+mdefine_line|#define lk_new_owner            v.new.owner
+DECL|macro|lk_old_lock_stateid
+mdefine_line|#define lk_old_lock_stateid     v.old.lock_stateid
+DECL|macro|lk_old_lock_seqid
+mdefine_line|#define lk_old_lock_seqid       v.old.lock_seqid
+DECL|macro|lk_rflags
+mdefine_line|#define lk_rflags       u.ok.rflags
+DECL|macro|lk_resp_stateid
+mdefine_line|#define lk_resp_stateid u.ok.stateid
+DECL|macro|lk_denied
+mdefine_line|#define lk_denied       u.denied
 DECL|struct|nfsd4_lookup
 r_struct
 id|nfsd4_lookup
@@ -902,6 +1051,11 @@ r_struct
 id|nfsd4_link
 id|link
 suffix:semicolon
+DECL|member|lock
+r_struct
+id|nfsd4_lock
+id|lock
+suffix:semicolon
 DECL|member|lookup
 r_struct
 id|nfsd4_lookup
@@ -1420,6 +1574,27 @@ r_struct
 id|nfsd4_open_downgrade
 op_star
 id|od
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|nfsd4_lock
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+id|rqstp
+comma
+r_struct
+id|svc_fh
+op_star
+id|current_fh
+comma
+r_struct
+id|nfsd4_lock
+op_star
+id|lock
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -191,7 +191,7 @@ id|NFSD4_REPLAY_ISIZE
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n;* nfs4_stateowner can either be an open_owner, or (eventually) a lock_owner&n;*&n;*    o so_perfilestate list is used to ensure no dangling nfs4_stateid&n;*              reverences when we release a stateowner.&n;*/
+multiline_comment|/*&n;* nfs4_stateowner can either be an open_owner, or a lock_owner&n;*&n;*    so_idhash:  stateid_hashtbl[] for open owner, lockstateid_hashtbl[]&n;*         for lock_owner&n;*    so_strhash: ownerstr_hashtbl[] for open_owner, lock_ownerstr_hashtbl[]&n;*         for lock_owner&n;*    so_perclient: nfs4_client-&gt;cl_perclient entry - used when nfs4_client&n;*         struct is reaped.&n;*    so_perfilestate: heads the list of nfs4_stateid (either open or lock) &n;*         and is used to ensure no dangling nfs4_stateid references when we &n;*         release a stateowner.&n;*/
 DECL|struct|nfs4_stateowner
 r_struct
 id|nfs4_stateowner
@@ -220,6 +220,11 @@ id|list_head
 id|so_perfilestate
 suffix:semicolon
 multiline_comment|/* list: nfs4_stateid */
+DECL|member|so_is_open_owner
+r_int
+id|so_is_open_owner
+suffix:semicolon
+multiline_comment|/* 1=openowner,0=lockowner */
 DECL|member|so_id
 id|u32
 id|so_id
@@ -282,7 +287,7 @@ suffix:semicolon
 multiline_comment|/* used with stateowner-&gt;so_id &n;&t;&t;&t;&t;&t;     * for stateid_hashtbl hash */
 )brace
 suffix:semicolon
-multiline_comment|/*&n;* nfs4_stateid can either be an open stateid or (eventually) a lock stateid&n;*&n;* (open)nfs4_stateid: one per (open)nfs4_stateowner, nfs4_file&n;*/
+multiline_comment|/*&n;* nfs4_stateid can either be an open stateid or (eventually) a lock stateid&n;*&n;* (open)nfs4_stateid: one per (open)nfs4_stateowner, nfs4_file&n;*&n;* &t;st_hash: stateid_hashtbl[] entry or lockstateid_hashtbl entry&n;* &t;st_perfile: file_hashtbl[] entry.&n;* &t;st_perfile_state: nfs4_stateowner-&gt;so_perfilestate&n;* &t;st_share_access: used only for open stateid&n;* &t;st_share_deny: used only for open stateid&n;*/
 DECL|struct|nfs4_stateid
 r_struct
 id|nfs4_stateid
@@ -344,6 +349,12 @@ DECL|macro|CHECK_FH
 mdefine_line|#define CHECK_FH                0x00000001
 DECL|macro|CONFIRM
 mdefine_line|#define CONFIRM                 0x00000002
+DECL|macro|OPEN_STATE
+mdefine_line|#define OPEN_STATE              0x00000004
+DECL|macro|LOCK_STATE
+mdefine_line|#define LOCK_STATE              0x00000008
+DECL|macro|RDWR_STATE
+mdefine_line|#define RDWR_STATE              0x00000010
 DECL|macro|seqid_mutating_err
 mdefine_line|#define seqid_mutating_err(err)                       &bslash;&n;&t;(((err) != nfserr_stale_clientid) &amp;&amp;    &bslash;&n;&t;((err) != nfserr_bad_seqid) &amp;&amp;          &bslash;&n;&t;((err) != nfserr_stale_stateid) &amp;&amp;      &bslash;&n;&t;((err) != nfserr_bad_stateid))
 r_extern
