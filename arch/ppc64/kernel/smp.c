@@ -1042,6 +1042,14 @@ suffix:semicolon
 )brace
 )brace
 )brace
+r_extern
+r_void
+id|xics_request_IPIs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|smp_xics_probe
 r_static
 r_int
@@ -1089,14 +1097,6 @@ op_increment
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
-r_extern
-r_void
-id|xics_request_IPIs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 id|xics_request_IPIs
 c_func
 (paren

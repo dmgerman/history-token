@@ -751,6 +751,19 @@ r_int
 id|r7
 )paren
 (brace
+r_struct
+id|device_node
+op_star
+id|dn
+suffix:semicolon
+r_char
+op_star
+id|hypertas
+suffix:semicolon
+r_int
+r_int
+id|len
+suffix:semicolon
 macro_line|#if 0 /* PPPBBB remove this later... -Peter */
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 multiline_comment|/* take care of initrd if we have one */
@@ -858,19 +871,6 @@ op_assign
 id|chrp_progress
 suffix:semicolon
 multiline_comment|/* build up the firmware_features bitmask field&n;         * using contents of device-tree/ibm,hypertas-functions.&n;         * Ultimately this functionality may be moved into prom.c prom_init().&n;         */
-r_struct
-id|device_node
-op_star
-id|dn
-suffix:semicolon
-r_char
-op_star
-id|hypertas
-suffix:semicolon
-r_int
-r_int
-id|len
-suffix:semicolon
 id|dn
 op_assign
 id|of_find_node_by_path
@@ -912,6 +912,8 @@ l_int|0
 (brace
 r_int
 id|i
+comma
+id|hypertas_len
 suffix:semicolon
 multiline_comment|/* check value against table of strings */
 r_for
@@ -977,7 +979,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_int
 id|hypertas_len
 op_assign
 id|strlen
@@ -1140,6 +1141,45 @@ c_func
 (paren
 l_string|&quot;set-indicator&quot;
 )paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|display_character
+op_eq
+id|RTAS_UNKNOWN_SERVICE
+)paren
+(brace
+multiline_comment|/* use hex display */
+r_if
+c_cond
+(paren
+id|set_indicator
+op_eq
+id|RTAS_UNKNOWN_SERVICE
+)paren
+r_return
+suffix:semicolon
+id|rtas_call
+c_func
+(paren
+id|set_indicator
+comma
+l_int|3
+comma
+l_int|1
+comma
+l_int|NULL
+comma
+l_int|6
+comma
+l_int|0
+comma
+id|hex
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 r_if

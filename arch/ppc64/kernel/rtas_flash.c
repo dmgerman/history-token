@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/proc_fs.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 DECL|macro|MODULE_VERSION
 mdefine_line|#define MODULE_VERSION &quot;1.0&quot;
