@@ -929,7 +929,7 @@ id|SM_4_110
 suffix:colon
 id|sun4c_vacinfo.type
 op_assign
-id|NONE
+id|VAC_NONE
 suffix:semicolon
 id|sun4c_vacinfo.num_bytes
 op_assign
@@ -965,7 +965,7 @@ id|SM_4_260
 suffix:colon
 id|sun4c_vacinfo.type
 op_assign
-id|WRITE_BACK
+id|VAC_WRITE_BACK
 suffix:semicolon
 id|sun4c_vacinfo.num_bytes
 op_assign
@@ -992,7 +992,7 @@ id|SM_4_330
 suffix:colon
 id|sun4c_vacinfo.type
 op_assign
-id|WRITE_THROUGH
+id|VAC_WRITE_THROUGH
 suffix:semicolon
 id|sun4c_vacinfo.num_bytes
 op_assign
@@ -1019,7 +1019,7 @@ id|SM_4_470
 suffix:colon
 id|sun4c_vacinfo.type
 op_assign
-id|WRITE_BACK
+id|VAC_WRITE_BACK
 suffix:semicolon
 id|sun4c_vacinfo.num_bytes
 op_assign
@@ -1059,7 +1059,7 @@ r_else
 (brace
 id|sun4c_vacinfo.type
 op_assign
-id|WRITE_THROUGH
+id|VAC_WRITE_THROUGH
 suffix:semicolon
 r_if
 c_cond
