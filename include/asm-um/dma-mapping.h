@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASM_DMA_MAPPING_H
 DECL|macro|_ASM_DMA_MAPPING_H
 mdefine_line|#define _ASM_DMA_MAPPING_H
+macro_line|#include &lt;asm/scatterlist.h&gt;
 r_static
 r_inline
 r_int

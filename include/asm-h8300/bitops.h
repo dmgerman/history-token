@@ -660,6 +660,8 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
+DECL|macro|find_first_bit
+mdefine_line|#define find_first_bit(addr, size) find_next_bit(addr, size, 0)
 multiline_comment|/*&n; * Every architecture must define this function. It&squot;s the fastest&n; * way of searching a 140-bit bitmap where the first 100 bits are&n; * unlikely to be set. It&squot;s guaranteed that at least one of the 140&n; * bits is cleared.&n; */
 DECL|function|sched_find_first_bit
 r_static

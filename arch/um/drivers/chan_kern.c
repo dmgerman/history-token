@@ -14,6 +14,7 @@ macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;sigio.h&quot;
 macro_line|#include &quot;line.h&quot;
 macro_line|#include &quot;os.h&quot;
+macro_line|#ifdef CONFIG_NOCONFIG_CHAN
 DECL|function|not_configged_init
 r_static
 r_void
@@ -319,6 +320,7 @@ l_int|0
 comma
 )brace
 suffix:semicolon
+macro_line|#endif /* CONFIG_NOCONFIG_CHAN */
 DECL|function|generic_close
 r_void
 id|generic_close

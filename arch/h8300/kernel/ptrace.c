@@ -365,6 +365,8 @@ suffix:colon
 r_int
 r_int
 id|tmp
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond

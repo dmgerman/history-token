@@ -85,6 +85,7 @@ r_int
 r_int
 id|prev_usecs
 suffix:semicolon
+macro_line|#ifdef CONFIG_UML_REAL_TIME_CLOCK
 DECL|variable|delta
 r_static
 r_int
@@ -92,6 +93,7 @@ r_int
 id|delta
 suffix:semicolon
 multiline_comment|/* Deviation per interval */
+macro_line|#endif
 DECL|macro|MILLION
 mdefine_line|#define MILLION 1000000
 DECL|function|timer_irq
@@ -133,7 +135,7 @@ c_cond
 id|first_tick
 )paren
 (brace
-macro_line|#if defined(CONFIG_UML_REAL_TIME_CLOCK)
+macro_line|#ifdef CONFIG_UML_REAL_TIME_CLOCK
 multiline_comment|/* We&squot;ve had 1 tick */
 r_int
 r_int
