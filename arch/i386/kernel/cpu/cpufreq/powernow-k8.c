@@ -4087,7 +4087,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|pol-&gt;policy
+id|pol-&gt;governor
 op_assign
 id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
