@@ -1384,9 +1384,9 @@ DECL|macro|PCI66
 mdefine_line|#define PCI66&t;&t;0x04
 r_extern
 r_struct
-id|pci_ops
+id|pci_bus
 op_star
-id|ibmphp_pci_root_ops
+id|ibmphp_pci_bus
 suffix:semicolon
 multiline_comment|/* Variables */
 DECL|struct|pci_func
@@ -1721,13 +1721,6 @@ op_star
 op_star
 comma
 r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ibmphp_increase_count
-(paren
-r_void
 )paren
 suffix:semicolon
 r_extern
