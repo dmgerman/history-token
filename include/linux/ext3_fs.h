@@ -571,6 +571,8 @@ DECL|macro|EXT2_MOUNT_NOLOAD
 mdefine_line|#define EXT2_MOUNT_NOLOAD&t;&t;EXT3_MOUNT_NOLOAD
 DECL|macro|EXT2_MOUNT_ABORT
 mdefine_line|#define EXT2_MOUNT_ABORT&t;&t;EXT3_MOUNT_ABORT
+DECL|macro|EXT2_MOUNT_DATA_FLAGS
+mdefine_line|#define EXT2_MOUNT_DATA_FLAGS&t;&t;EXT3_MOUNT_DATA_FLAGS
 macro_line|#endif
 DECL|macro|ext3_set_bit
 mdefine_line|#define ext3_set_bit&t;&t;&t;ext2_set_bit

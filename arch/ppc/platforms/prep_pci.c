@@ -4142,12 +4142,10 @@ id|tdev-&gt;devfn
 )paren
 suffix:semicolon
 multiline_comment|/* Read the interrupt pin of the device and adjust for indexing */
-id|pcibios_read_config_byte
+id|pci_read_config_byte
 c_func
 (paren
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
+id|dev
 comma
 id|PCI_INTERRUPT_PIN
 comma
@@ -4496,12 +4494,10 @@ id|dev-&gt;devfn
 )braket
 )paren
 suffix:semicolon
-id|pcibios_write_config_byte
+id|pci_write_config_byte
 c_func
 (paren
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
+id|dev
 comma
 id|PCI_INTERRUPT_LINE
 comma

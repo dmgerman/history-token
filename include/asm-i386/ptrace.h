@@ -117,11 +117,8 @@ DECL|macro|PTRACE_GETFPXREGS
 mdefine_line|#define PTRACE_GETFPXREGS         18
 DECL|macro|PTRACE_SETFPXREGS
 mdefine_line|#define PTRACE_SETFPXREGS         19
-DECL|macro|PTRACE_SETOPTIONS
-mdefine_line|#define PTRACE_SETOPTIONS         21
-multiline_comment|/* options set using PTRACE_SETOPTIONS */
-DECL|macro|PTRACE_O_TRACESYSGOOD
-mdefine_line|#define PTRACE_O_TRACESYSGOOD     0x00000001
+DECL|macro|PTRACE_OLDSETOPTIONS
+mdefine_line|#define PTRACE_OLDSETOPTIONS         21
 macro_line|#ifdef __KERNEL__
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) ((VM_MASK &amp; (regs)-&gt;eflags) || (3 &amp; (regs)-&gt;xcs))

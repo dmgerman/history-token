@@ -393,6 +393,7 @@ r_int
 id|unused
 )paren
 (brace
+r_volatile
 r_struct
 id|pt_regs
 op_star

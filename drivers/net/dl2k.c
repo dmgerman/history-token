@@ -2722,7 +2722,7 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Tx timed out (%4.4lx), is buffer full?&bslash;n&quot;
+l_string|&quot;%s: Tx timed out (%4.4x), is buffer full?&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma

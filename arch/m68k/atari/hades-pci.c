@@ -1089,12 +1089,10 @@ c_cond
 (paren
 id|pci_modify
 )paren
-id|pcibios_write_config_byte
+id|pci_write_config_byte
 c_func
 (paren
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
+id|dev
 comma
 id|PCI_INTERRUPT_LINE
 comma
@@ -1104,7 +1102,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * static void hades_conf_device(unsigned char bus, unsigned char device_fn)&n; *&n; * Machine dependent Configure the given device.&n; *&n; * Parameters:&n; *&n; * bus&t;&t;- bus number of the device.&n; * device_fn&t;- device and function number of the device.&n; */
+multiline_comment|/*&n; * static void hades_conf_device(struct pci_dev *dev)&n; *&n; * Machine dependent Configure the given device.&n; *&n; * Parameters:&n; *&n; * dev&t;&t;- the pci device.&n; */
 DECL|function|hades_conf_device
 r_static
 r_void
@@ -1112,21 +1110,16 @@ id|__init
 id|hades_conf_device
 c_func
 (paren
-r_int
-r_char
-id|bus
-comma
-r_int
-r_char
-id|device_fn
+r_struct
+id|pci_dev
+op_star
+id|dev
 )paren
 (brace
-id|pcibios_write_config_byte
+id|pci_write_config_byte
 c_func
 (paren
-id|bus
-comma
-id|device_fn
+id|dev
 comma
 id|PCI_CACHE_LINE_SIZE
 comma

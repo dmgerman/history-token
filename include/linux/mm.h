@@ -1272,6 +1272,22 @@ op_star
 id|val
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
+r_extern
+r_void
+id|si_meminfo_node
+c_func
+(paren
+r_struct
+id|sysinfo
+op_star
+id|val
+comma
+r_int
+id|nid
+)paren
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_void
 id|swapin_readahead

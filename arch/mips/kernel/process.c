@@ -680,6 +680,8 @@ l_string|&quot;r&quot;
 id|flags
 op_or
 id|CLONE_VM
+op_or
+id|CLONE_UNTRACED
 )paren
 multiline_comment|/*&n;&t;&t;  * The called subroutine might have destroyed any of the&n;&t;&t;  * at, result, argument or temporary registers ...&n;&t;&t;  */
 suffix:colon

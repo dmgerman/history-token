@@ -1,8 +1,5 @@
 multiline_comment|/*&n; *   u14-34f.h - used by the low-level driver for UltraStor 14F/34F&n; */
-macro_line|#ifndef _U14_34F_H
-DECL|macro|_U14_34F_H
-mdefine_line|#define _U14_34F_H
-macro_line|#include &lt;scsi/scsicam.h&gt;
+r_static
 r_int
 id|u14_34f_detect
 c_func
@@ -11,6 +8,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|u14_34f_release
 c_func
@@ -20,6 +18,7 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|u14_34f_queuecommand
 c_func
@@ -38,43 +37,51 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_static
 r_int
-id|u14_34f_abort
+id|u14_34f_eh_abort
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
-id|u14_34f_reset
+id|u14_34f_eh_host_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
-id|u14_34f_biosparam
+id|u14_34f_bios_param
 c_func
 (paren
-r_struct
-id|scsi_device
+id|Disk
 op_star
 comma
 r_struct
 id|block_device
 op_star
 comma
-id|sector_t
-comma
 r_int
 op_star
 )paren
 suffix:semicolon
+r_static
+r_int
+id|u14_34f_slave_attach
+c_func
+(paren
+id|Scsi_Device
+op_star
+)paren
+suffix:semicolon
 DECL|macro|U14_34F_VERSION
-mdefine_line|#define U14_34F_VERSION &quot;7.70.00&quot;
+mdefine_line|#define U14_34F_VERSION &quot;8.00.00&quot;
 DECL|macro|ULTRASTOR_14_34F
-mdefine_line|#define ULTRASTOR_14_34F {                                                   &bslash;&n;                name:         &quot;UltraStor 14F/34F rev. &quot; U14_34F_VERSION &quot; &quot;, &bslash;&n;                detect:                  u14_34f_detect,                     &bslash;&n;                release:                 u14_34f_release,                    &bslash;&n;                queuecommand:            u14_34f_queuecommand,               &bslash;&n;                abort:                   NULL,                               &bslash;&n;                reset:                   NULL,                               &bslash;&n;                eh_abort_handler:        u14_34f_abort,                      &bslash;&n;                eh_device_reset_handler: NULL,                               &bslash;&n;                eh_bus_reset_handler:    NULL,                               &bslash;&n;                eh_host_reset_handler:   u14_34f_reset,                      &bslash;&n;                bios_param:              u14_34f_biosparam,                  &bslash;&n;                this_id:                 7,                                  &bslash;&n;                unchecked_isa_dma:       1,                                  &bslash;&n;                use_clustering:          ENABLE_CLUSTERING,                  &bslash;&n;                }
-macro_line|#endif
+mdefine_line|#define ULTRASTOR_14_34F {                                                   &bslash;&n;                name:         &quot;UltraStor 14F/34F rev. &quot; U14_34F_VERSION &quot; &quot;, &bslash;&n;                detect:                  u14_34f_detect,                     &bslash;&n;                release:                 u14_34f_release,                    &bslash;&n;                queuecommand:            u14_34f_queuecommand,               &bslash;&n;                abort:                   NULL,                               &bslash;&n;                reset:                   NULL,                               &bslash;&n;                eh_abort_handler:        u14_34f_eh_abort,                   &bslash;&n;                eh_device_reset_handler: NULL,                               &bslash;&n;                eh_bus_reset_handler:    NULL,                               &bslash;&n;                eh_host_reset_handler:   u14_34f_eh_host_reset,              &bslash;&n;                bios_param:              u14_34f_bios_param,                 &bslash;&n;                slave_attach:            u14_34f_slave_attach,               &bslash;&n;                this_id:                 7,                                  &bslash;&n;                unchecked_isa_dma:       1,                                  &bslash;&n;                use_clustering:          ENABLE_CLUSTERING                   &bslash;&n;                }
 eof
