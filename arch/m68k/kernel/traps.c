@@ -1100,11 +1100,12 @@ op_assign
 (paren
 id|addr
 op_plus
-l_int|7
+id|PAGE_SIZE
+op_minus
+l_int|1
 )paren
 op_amp
-op_minus
-l_int|8
+id|PAGE_MASK
 suffix:semicolon
 id|errorcode
 op_assign
@@ -1253,12 +1254,6 @@ id|wbs
 )paren
 )paren
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;.chip 68040&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1267,7 +1262,7 @@ id|iswrite
 id|asm
 r_volatile
 (paren
-l_string|&quot;ptestw (%0)&quot;
+l_string|&quot;.chip 68040; ptestw (%0); .chip 68k&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;a&quot;
@@ -1280,7 +1275,7 @@ r_else
 id|asm
 r_volatile
 (paren
-l_string|&quot;ptestr (%0)&quot;
+l_string|&quot;.chip 68040; ptestr (%0); .chip 68k&quot;
 suffix:colon
 suffix:colon
 l_string|&quot;a&quot;
@@ -1292,18 +1287,12 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;movec %%mmusr,%0&quot;
+l_string|&quot;.chip 68040; movec %%mmusr,%0; .chip 68k&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
 id|mmusr
 )paren
-)paren
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;.chip 68k&quot;
 )paren
 suffix:semicolon
 id|set_fs
@@ -2007,6 +1996,13 @@ id|ssw
 op_assign
 id|fp-&gt;un.fmtb.ssw
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|_sun3_map_test_start
+comma
+id|_sun3_map_test_end
+suffix:semicolon
 macro_line|#if DEBUG
 r_if
 c_cond
@@ -2201,6 +2197,43 @@ op_amp
 id|DF
 )paren
 (brace
+multiline_comment|/* was this fault incurred testing bus mappings? */
+r_if
+c_cond
+(paren
+(paren
+id|fp-&gt;ptregs.pc
+op_ge
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|_sun3_map_test_start
+)paren
+op_logical_and
+(paren
+id|fp-&gt;ptregs.pc
+op_le
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|_sun3_map_test_end
+)paren
+)paren
+(brace
+id|send_fault_sig
+c_func
+(paren
+op_amp
+id|fp-&gt;ptregs
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|printk
 (paren
 l_string|&quot;Data %s fault at %#010lx in %s (pc=%#lx)&bslash;n&quot;
@@ -3606,16 +3639,13 @@ r_int
 id|addr
 )paren
 (brace
+macro_line|#ifdef CONFIG_MODULES
 r_struct
 id|module
 op_star
 id|mod
 suffix:semicolon
-r_int
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
+macro_line|#endif
 r_extern
 r_char
 id|_stext
@@ -3678,18 +3708,13 @@ comma
 id|mod
 )paren
 )paren
-(brace
-id|retval
-op_assign
+r_return
 l_int|1
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 )brace
 macro_line|#endif
 r_return
-id|retval
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|show_trace
