@@ -1186,6 +1186,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;device_find - locate device on a bus by name.&n; *&t;@name:&t;name of the device.&n; *&t;@bus:&t;bus to scan for the device.&n; *&n; *&t;Call kset_find_obj() to iterate over list of devices on&n; *&t;a bus to find device by name. Return device if found.&n; *&n; *&t;Note that kset_find_obj increments device&squot;s reference count.&n; */
 DECL|function|device_find
 r_struct
 id|device

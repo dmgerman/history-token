@@ -2165,7 +2165,7 @@ id|bus-&gt;subsys
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;find_bus - locate bus by name.&n; *&t;@name:&t;name of bus.&n; *&n; *&t;Call kset_find_obj() to iterate over list of buses to&n; *&t;find a bus by name. Return bus if found.&n; */
+multiline_comment|/**&n; *&t;find_bus - locate bus by name.&n; *&t;@name:&t;name of bus.&n; *&n; *&t;Call kset_find_obj() to iterate over list of buses to&n; *&t;find a bus by name. Return bus if found.&n; *&n; *&t;Note that kset_find_obj increments bus&squot; reference count.&n; */
 DECL|function|find_bus
 r_struct
 id|bus_type
