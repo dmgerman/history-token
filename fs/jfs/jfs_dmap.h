@@ -451,6 +451,14 @@ id|semaphore
 id|db_bmaplock
 suffix:semicolon
 multiline_comment|/* aggregate map lock */
+DECL|member|db_active
+id|atomic_t
+id|db_active
+(braket
+id|MAXAG
+)braket
+suffix:semicolon
+multiline_comment|/* count of active, open files in AG */
 DECL|member|db_DBmap
 id|u32
 op_star
