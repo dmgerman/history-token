@@ -362,7 +362,7 @@ DECL|macro|TW_RESPONSE_ID_MASK
 mdefine_line|#define TW_RESPONSE_ID_MASK&t;&t;       0x00000FF0
 multiline_comment|/* PCI related defines */
 DECL|macro|TW_IO_ADDRESS_RANGE
-mdefine_line|#define TW_IO_ADDRESS_RANGE&t;&t;       0xD
+mdefine_line|#define TW_IO_ADDRESS_RANGE&t;&t;       0x10
 DECL|macro|TW_DEVICE_NAME
 mdefine_line|#define TW_DEVICE_NAME&t;&t;&t;       &quot;3ware Storage Controller&quot;
 DECL|macro|TW_VENDOR_ID
@@ -396,6 +396,8 @@ DECL|macro|TW_OP_SECTOR_INFO
 mdefine_line|#define TW_OP_SECTOR_INFO     0x1a
 DECL|macro|TW_OP_AEN_LISTEN
 mdefine_line|#define TW_OP_AEN_LISTEN      0x1c
+DECL|macro|TW_OP_FLUSH_CACHE
+mdefine_line|#define TW_OP_FLUSH_CACHE     0x0e
 DECL|macro|TW_CMD_PACKET
 mdefine_line|#define TW_CMD_PACKET         0x1d
 DECL|macro|TW_ATA_PASSTHRU
@@ -466,8 +468,6 @@ DECL|macro|TW_BLOCK_SIZE
 mdefine_line|#define TW_BLOCK_SIZE&t;&t;&t;      0x200 /* 512-byte blocks */
 DECL|macro|TW_IOCTL
 mdefine_line|#define TW_IOCTL                              0x80
-DECL|macro|TW_MAX_AEN_TRIES
-mdefine_line|#define TW_MAX_AEN_TRIES                      100
 DECL|macro|TW_UNIT_ONLINE
 mdefine_line|#define TW_UNIT_ONLINE                        1
 DECL|macro|TW_IN_INTR
@@ -503,13 +503,11 @@ r_struct
 id|TAG_TW_SG_Entry
 (brace
 DECL|member|address
-r_int
-r_int
+id|u32
 id|address
 suffix:semicolon
 DECL|member|length
-r_int
-r_int
+id|u32
 id|length
 suffix:semicolon
 DECL|typedef|TW_SG_Entry
@@ -619,8 +617,7 @@ r_union
 r_struct
 (brace
 DECL|member|lba
-r_int
-r_int
+id|u32
 id|lba
 suffix:semicolon
 DECL|member|sgl
@@ -631,8 +628,7 @@ id|TW_MAX_SGL_LENGTH
 )braket
 suffix:semicolon
 DECL|member|padding
-r_int
-r_int
+id|u32
 id|padding
 suffix:semicolon
 multiline_comment|/* pad to 512 bytes */
@@ -650,8 +646,7 @@ id|TW_MAX_SGL_LENGTH
 )braket
 suffix:semicolon
 DECL|member|padding
-r_int
-r_int
+id|u32
 id|padding
 (braket
 l_int|2
@@ -664,13 +659,11 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|response_queue_pointer
-r_int
-r_int
+id|u32
 id|response_queue_pointer
 suffix:semicolon
 DECL|member|padding
-r_int
-r_int
+id|u32
 id|padding
 (braket
 l_int|125
@@ -1025,7 +1018,8 @@ id|TW_Registers
 id|registers
 suffix:semicolon
 DECL|member|alignment_virtual_address
-id|u32
+r_int
+r_int
 op_star
 id|alignment_virtual_address
 (braket
@@ -1033,7 +1027,8 @@ id|TW_Q_LENGTH
 )braket
 suffix:semicolon
 DECL|member|alignment_physical_address
-id|u32
+r_int
+r_int
 id|alignment_physical_address
 (braket
 id|TW_Q_LENGTH
@@ -1051,7 +1046,8 @@ r_int
 id|num_units
 suffix:semicolon
 DECL|member|command_packet_virtual_address
-id|u32
+r_int
+r_int
 op_star
 id|command_packet_virtual_address
 (braket
@@ -1059,7 +1055,8 @@ id|TW_Q_LENGTH
 )braket
 suffix:semicolon
 DECL|member|command_packet_physical_address
-id|u32
+r_int
+r_int
 id|command_packet_physical_address
 (braket
 id|TW_Q_LENGTH
@@ -1217,7 +1214,8 @@ id|flags
 suffix:semicolon
 multiline_comment|/* long req&squot;d for set_bit --RR */
 DECL|member|ioctl_data
-r_char
+r_int
+r_int
 op_star
 id|ioctl_data
 (braket
@@ -1227,6 +1225,10 @@ suffix:semicolon
 DECL|member|reset_print
 r_int
 id|reset_print
+suffix:semicolon
+DECL|member|online
+r_char
+id|online
 suffix:semicolon
 DECL|typedef|TW_Device_Extension
 )brace
@@ -1488,6 +1490,21 @@ id|seconds
 )paren
 suffix:semicolon
 r_int
+id|tw_poll_status_gone
+c_func
+(paren
+id|TW_Device_Extension
+op_star
+id|tw_dev
+comma
+id|u32
+id|flag
+comma
+r_int
+id|seconds
+)paren
+suffix:semicolon
+r_int
 id|tw_post_command_packet
 c_func
 (paren
@@ -1529,7 +1546,7 @@ comma
 r_struct
 id|block_device
 op_star
-id|bev
+id|bdev
 comma
 id|sector_t
 id|capacity
@@ -1647,6 +1664,30 @@ id|request_id
 )paren
 suffix:semicolon
 r_int
+id|tw_scsiop_mode_sense
+c_func
+(paren
+id|TW_Device_Extension
+op_star
+id|tw_dev
+comma
+r_int
+id|request_id
+)paren
+suffix:semicolon
+r_int
+id|tw_scsiop_mode_sense_complete
+c_func
+(paren
+id|TW_Device_Extension
+op_star
+id|tw_dev
+comma
+r_int
+id|request_id
+)paren
+suffix:semicolon
+r_int
 id|tw_scsiop_read_capacity
 c_func
 (paren
@@ -1684,6 +1725,18 @@ id|request_id
 suffix:semicolon
 r_int
 id|tw_scsiop_request_sense
+c_func
+(paren
+id|TW_Device_Extension
+op_star
+id|tw_dev
+comma
+r_int
+id|request_id
+)paren
+suffix:semicolon
+r_int
+id|tw_scsiop_synchronize_cache
 c_func
 (paren
 id|TW_Device_Extension
@@ -1789,6 +1842,6 @@ id|tw_dev
 suffix:semicolon
 multiline_comment|/* Scsi_Host_Template Initializer */
 DECL|macro|TWXXXX
-mdefine_line|#define TWXXXX {&t;&t;&t;&t;&t;&bslash;&n;&t;proc_name : &quot;3w-xxxx&quot;,&t;&t;&t;&t;&bslash;&n;&t;proc_info : tw_scsi_proc_info,&t;&t;&t;&bslash;&n;&t;name : &quot;3ware Storage Controller&quot;,&t;&t;&bslash;&n;&t;detect : tw_scsi_detect,&t;&t;&t;&bslash;&n;&t;release : tw_scsi_release,&t;&t;&t;&bslash;&n;&t;queuecommand : tw_scsi_queue,&t;&t;&t;&bslash;&n;&t;eh_abort_handler : tw_scsi_eh_abort,&t;&t;&bslash;&n;&t;eh_host_reset_handler : tw_scsi_eh_reset,&t;&bslash;&n;&t;bios_param : tw_scsi_biosparam,&t;&t;&t;&bslash;&n;&t;can_queue : TW_Q_LENGTH-1,&t;&t;&t;&bslash;&n;&t;this_id: -1,&t;&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize : TW_MAX_SGL_LENGTH,&t;&t;&bslash;&n;&t;cmd_per_lun: TW_MAX_CMDS_PER_LUN,&t;&t;&bslash;&n;&t;present : 0,&t;&t;&t;&t;&t;&bslash;&n;&t;unchecked_isa_dma : 0,&t;&t;&t;&t;&bslash;&n;&t;use_clustering : ENABLE_CLUSTERING,&t;&t;&bslash;&n;&t;emulated : 1&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define TWXXXX {&t;&t;&t;&t;&t;&bslash;&n;&t;proc_name : &quot;3w-xxxx&quot;,&t;&t;&t;&t;&bslash;&n;&t;proc_info : tw_scsi_proc_info,&t;&t;&t;&bslash;&n;&t;name : &quot;3ware Storage Controller&quot;,&t;&t;&bslash;&n;&t;detect : tw_scsi_detect,&t;&t;&t;&bslash;&n;&t;release : tw_scsi_release,&t;&t;&t;&bslash;&n;&t;queuecommand : tw_scsi_queue,&t;&t;&t;&bslash;&n;&t;eh_abort_handler : tw_scsi_eh_abort,&t;&t;&bslash;&n;&t;eh_host_reset_handler : tw_scsi_eh_reset,&t;&bslash;&n;&t;bios_param : tw_scsi_biosparam,&t;&t;&t;&bslash;&n;&t;can_queue : TW_Q_LENGTH-1,&t;&t;&t;&bslash;&n;&t;this_id: -1,&t;&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize : TW_MAX_SGL_LENGTH,&t;&t;&bslash;&n;&t;cmd_per_lun: TW_MAX_CMDS_PER_LUN,&t;&t;&bslash;&n;&t;present : 0,&t;&t;&t;&t;&t;&bslash;&n;&t;unchecked_isa_dma : 0,&t;&t;&t;&t;&bslash;&n;&t;use_clustering : ENABLE_CLUSTERING,&t;&t;&bslash;&n;&t;emulated : 1,&t;&t;&t;&t;&t;&bslash;&n;&t;highmem_io : 1&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#endif /* _3W_XXXX_H */
 eof
