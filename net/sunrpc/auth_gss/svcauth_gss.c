@@ -1817,6 +1817,25 @@ c_func
 id|buf
 )paren
 suffix:semicolon
+id|status
+op_assign
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|gm
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|status
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 multiline_comment|/* mech-specific data: */
 id|len
 op_assign
