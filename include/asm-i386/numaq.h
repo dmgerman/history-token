@@ -3,7 +3,6 @@ macro_line|#ifndef NUMAQ_H
 DECL|macro|NUMAQ_H
 mdefine_line|#define NUMAQ_H
 macro_line|#ifdef CONFIG_X86_NUMAQ
-macro_line|#include &lt;asm/smpboot.h&gt;
 multiline_comment|/*&n; * for now assume that 64Gb is max amount of RAM for whole system&n; *    64Gb / 4096bytes/page = 16777216 pages&n; */
 DECL|macro|MAX_NR_PAGES
 mdefine_line|#define MAX_NR_PAGES 16777216

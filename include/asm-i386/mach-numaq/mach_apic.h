@@ -2,15 +2,17 @@ macro_line|#ifndef __ASM_MACH_APIC_H
 DECL|macro|__ASM_MACH_APIC_H
 mdefine_line|#define __ASM_MACH_APIC_H
 DECL|macro|APIC_DFR_VALUE
-mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_FLAT)
+mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_CLUSTER)
 DECL|macro|TARGET_CPUS
 mdefine_line|#define TARGET_CPUS (0xf)
 DECL|macro|no_balance_irq
 mdefine_line|#define no_balance_irq (1)
+DECL|macro|esr_disable
+mdefine_line|#define esr_disable (1)
 DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID      0x0F
 DECL|macro|check_apicid_used
-mdefine_line|#define check_apicid_used(bitmap, apicid) (bitmap &amp; (1 &lt;&lt; apicid))
+mdefine_line|#define check_apicid_used(bitmap, apicid) ((bitmap) &amp; (1 &lt;&lt; (apicid)))
 DECL|function|apic_id_registered
 r_static
 r_inline
@@ -60,6 +62,7 @@ id|nr_ioapics
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Skip adding the timer int on secondary nodes, which causes&n; * a small but painful rift in the time-space continuum.&n; */
 DECL|function|multi_timer_check
 r_static
 r_inline
@@ -172,11 +175,11 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|function|apicid_to_quad
+DECL|function|apicid_to_node
 r_static
 r_inline
 r_int
-id|apicid_to_quad
+id|apicid_to_node
 c_func
 (paren
 r_int
@@ -214,7 +217,7 @@ op_lshift
 (paren
 l_int|4
 op_star
-id|apicid_to_quad
+id|apicid_to_node
 c_func
 (paren
 id|logical_apicid
@@ -284,8 +287,6 @@ r_return
 id|logical_apicid
 suffix:semicolon
 )brace
-DECL|macro|WAKE_SECONDARY_VIA_NMI
-mdefine_line|#define WAKE_SECONDARY_VIA_NMI
 DECL|function|setup_portio_remap
 r_static
 r_inline
@@ -340,6 +341,23 @@ id|u_long
 id|numnodes
 op_star
 id|XQUAD_PORTIO_QUAD
+)paren
+suffix:semicolon
+)brace
+DECL|function|check_phys_apicid_present
+r_static
+r_inline
+r_int
+id|check_phys_apicid_present
+c_func
+(paren
+r_int
+id|boot_cpu_physical_apicid
+)paren
+(brace
+r_return
+(paren
+l_int|1
 )paren
 suffix:semicolon
 )brace
