@@ -97,11 +97,11 @@ r_struct
 id|inode
 op_star
 comma
-id|lb_addr
+id|kernel_lb_addr
 comma
 r_int
 comma
-id|lb_addr
+id|kernel_lb_addr
 comma
 r_uint32
 comma
