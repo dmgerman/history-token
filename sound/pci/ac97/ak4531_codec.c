@@ -1873,7 +1873,7 @@ comma
 id|AK4531_INPUT_SW
 c_func
 (paren
-l_string|&quot;Aux Input Route&quot;
+l_string|&quot;Aux Capture Route&quot;
 comma
 l_int|0
 comma
