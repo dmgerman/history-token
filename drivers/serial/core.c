@@ -4762,11 +4762,6 @@ id|info-&gt;open_wait
 suffix:semicolon
 id|done
 suffix:colon
-id|module_put
-c_func
-(paren
-id|drv-&gt;owner
-)paren
 suffix:semicolon
 )brace
 DECL|function|uart_wait_until_sent
@@ -5675,26 +5670,6 @@ id|tty-&gt;driver.num
 r_goto
 id|fail
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we fail to increment the module use count, we can&squot;t have&n;&t; * any other users of this tty (since this implies that the module&n;&t; * is about to be unloaded).  Therefore, it is safe to set&n;&t; * tty-&gt;driver_data to be NULL, so uart_close() doesn&squot;t bite us.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|try_module_get
-c_func
-(paren
-id|drv-&gt;owner
-)paren
-)paren
-(brace
-id|tty-&gt;driver_data
-op_assign
-l_int|NULL
-suffix:semicolon
-r_goto
-id|fail
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * FIXME: This one isn&squot;t fun.  We can&squot;t guarantee that the tty isn&squot;t&n;&t; * already in open, nor can we guarantee the state of tty-&gt;driver_data&n;&t; */
 id|info
 op_assign
@@ -5717,20 +5692,9 @@ c_cond
 op_logical_neg
 id|info
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|tty-&gt;driver_data
-)paren
 r_goto
 id|fail
 suffix:semicolon
-r_else
-r_goto
-id|out
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Once we set tty-&gt;driver_data here, we are guaranteed that&n;&t; * uart_close() will decrement the driver module use count.&n;&t; * Any failures from here onwards should not touch the count.&n;&t; */
 id|tty-&gt;driver_data
 op_assign
@@ -5930,14 +5894,6 @@ suffix:semicolon
 )brace
 r_return
 id|retval
-suffix:semicolon
-id|out
-suffix:colon
-id|module_put
-c_func
-(paren
-id|drv-&gt;owner
-)paren
 suffix:semicolon
 id|fail
 suffix:colon
@@ -8095,6 +8051,10 @@ suffix:semicolon
 id|normal-&gt;magic
 op_assign
 id|TTY_DRIVER_MAGIC
+suffix:semicolon
+id|normal-&gt;owner
+op_assign
+id|drv-&gt;owner
 suffix:semicolon
 id|normal-&gt;driver_name
 op_assign
