@@ -3438,6 +3438,10 @@ multiline_comment|/*&n;&t;&t; * Some systems have trouble with IDE IRQs arriving
 r_if
 c_cond
 (paren
+id|masked_irq
+op_ne
+id|IDE_NO_IRQ
+op_logical_and
 id|hwif-&gt;irq
 op_ne
 id|masked_irq
@@ -3481,6 +3485,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|masked_irq
+op_ne
+id|IDE_NO_IRQ
+op_logical_and
 id|hwif-&gt;irq
 op_ne
 id|masked_irq
