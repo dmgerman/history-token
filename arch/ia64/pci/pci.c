@@ -547,24 +547,10 @@ id|KERN_INFO
 l_string|&quot;** so I can fix the driver.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|dev
-op_assign
-id|pci_find_device
+id|for_each_pci_dev
 c_func
 (paren
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
 id|dev
-)paren
-)paren
-op_ne
-l_int|NULL
 )paren
 id|acpi_pci_irq_enable
 c_func
