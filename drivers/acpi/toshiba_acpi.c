@@ -1138,10 +1138,9 @@ op_star
 id|buffer
 comma
 r_int
-r_int
 id|count
 comma
-r_void
+id|loff_t
 op_star
 id|data
 )paren
@@ -1381,10 +1380,9 @@ op_star
 id|buffer
 comma
 r_int
-r_int
 id|count
 comma
-r_void
+id|loff_t
 op_star
 id|data
 )paren
@@ -1759,10 +1757,9 @@ op_star
 id|buffer
 comma
 r_int
-r_int
 id|count
 comma
-r_void
+id|loff_t
 op_star
 id|data
 )paren
@@ -1988,10 +1985,9 @@ op_star
 id|buffer
 comma
 r_int
-r_int
 id|count
 comma
-r_void
+id|loff_t
 op_star
 id|data
 )paren
@@ -2142,7 +2138,7 @@ op_assign
 op_amp
 id|toshiba_lcd_fops
 suffix:semicolon
-id|proc-&gt;write_proc
+id|proc-&gt;proc_fops-&gt;write
 op_assign
 id|proc_write_lcd
 suffix:semicolon
@@ -2174,7 +2170,7 @@ op_assign
 op_amp
 id|toshiba_video_fops
 suffix:semicolon
-id|proc-&gt;write_proc
+id|proc-&gt;proc_fops-&gt;write
 op_assign
 id|proc_write_video
 suffix:semicolon
@@ -2206,7 +2202,7 @@ op_assign
 op_amp
 id|toshiba_fan_fops
 suffix:semicolon
-id|proc-&gt;write_proc
+id|proc-&gt;proc_fops-&gt;write
 op_assign
 id|proc_write_fan
 suffix:semicolon
@@ -2238,7 +2234,7 @@ op_assign
 op_amp
 id|toshiba_keys_fops
 suffix:semicolon
-id|proc-&gt;write_proc
+id|proc-&gt;proc_fops-&gt;write
 op_assign
 id|proc_write_keys
 suffix:semicolon

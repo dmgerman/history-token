@@ -267,20 +267,24 @@ id|seq_operations
 id|cpuinfo_op
 op_assign
 (brace
+dot
 id|start
-suffix:colon
+op_assign
 id|c_start
 comma
+dot
 id|next
-suffix:colon
+op_assign
 id|c_next
 comma
+dot
 id|stop
-suffix:colon
+op_assign
 id|c_stop
 comma
+dot
 id|show
-suffix:colon
+op_assign
 id|show_cpuinfo
 comma
 )brace
@@ -347,6 +351,7 @@ id|ncpus
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_MODE_TT
 multiline_comment|/* Pointer set in linux_main, the array itself is private to each thread,&n; * and changed at address space creation time so this poses no concurrency&n; * problems.&n; */
 DECL|variable|argv1_begin
 r_static
@@ -364,6 +369,7 @@ id|argv1_end
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Set in early boot */
 DECL|variable|__initdata
 r_static
@@ -393,6 +399,7 @@ op_star
 id|cmd
 )paren
 (brace
+macro_line|#ifdef CONFIG_MODE_TT
 r_char
 op_star
 id|umid
@@ -517,6 +524,7 @@ id|argv1_begin
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|variable|usage_string
 r_static
@@ -702,6 +710,71 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else
+macro_line|#ifdef CONFIG_MODE_SKAS
+DECL|macro|DEFAULT_TT
+mdefine_line|#define DEFAULT_TT 0
+DECL|function|mode_tt_setup
+r_static
+r_int
+id|__init
+id|mode_tt_setup
+c_func
+(paren
+r_char
+op_star
+id|line
+comma
+r_int
+op_star
+id|add
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;CONFIG_MODE_TT disabled - &squot;mode=tt&squot; ignored&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#else
+macro_line|#ifdef CONFIG_MODE_TT
+DECL|macro|DEFAULT_TT
+mdefine_line|#define DEFAULT_TT 1
+DECL|function|mode_tt_setup
+r_static
+r_int
+id|__init
+id|mode_tt_setup
+c_func
+(paren
+r_char
+op_star
+id|line
+comma
+r_int
+op_star
+id|add
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;CONFIG_MODE_SKAS disabled - &squot;mode=tt&squot; redundant&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#else
+macro_line|#error Either CONFIG_MODE_TT or CONFIG_MODE_SKAS must be enabled
+macro_line|#endif
+macro_line|#endif
+macro_line|#endif
 id|__uml_setup
 c_func
 (paren
@@ -715,19 +788,6 @@ l_string|&quot;    forces UML to run in tt (tracing thread) mode.  It is not the
 l_string|&quot;    because it&squot;s slower and less secure than skas mode.&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#else
-macro_line|#ifdef CONFIG_MODE_SKAS
-DECL|macro|DEFAULT_TT
-mdefine_line|#define DEFAULT_TT 0
-macro_line|#else
-macro_line|#ifdef CONFIG_MODE_TT
-DECL|macro|DEFAULT_TT
-mdefine_line|#define DEFAULT_TT 1
-macro_line|#else
-macro_line|#error Either CONFIG_MODE_TT or CONFIG_MODE_SKAS must be enabled
-macro_line|#endif
-macro_line|#endif
-macro_line|#endif
 DECL|variable|mode_tt
 r_int
 id|mode_tt
@@ -1154,6 +1214,7 @@ c_func
 id|system_utsname.machine
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MODE_TT
 id|argv1_begin
 op_assign
 id|argv
@@ -1179,6 +1240,7 @@ l_int|1
 )paren
 )braket
 suffix:semicolon
+macro_line|#endif
 id|set_usable_vm
 c_func
 (paren
@@ -1223,6 +1285,21 @@ id|physmem_size
 op_sub_assign
 id|highmem
 suffix:semicolon
+macro_line|#ifndef CONFIG_HIGHMEM
+id|highmem
+op_assign
+l_int|0
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;CONFIG_HIGHMEM not enabled - physical memory shrunk &quot;
+l_string|&quot;to %ld bytes&bslash;n&quot;
+comma
+id|physmem_size
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 id|high_physmem
 op_assign
@@ -1428,16 +1505,19 @@ id|notifier_block
 id|panic_exit_notifier
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|panic_exit
 comma
+dot
 id|next
-suffix:colon
+op_assign
 l_int|NULL
 comma
+dot
 id|priority
-suffix:colon
+op_assign
 l_int|0
 )brace
 suffix:semicolon

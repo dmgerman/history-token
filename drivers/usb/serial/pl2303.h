@@ -29,4 +29,8 @@ DECL|macro|RATOC_VENDOR_ID
 mdefine_line|#define RATOC_VENDOR_ID&t;&t;0x0584
 DECL|macro|RATOC_PRODUCT_ID
 mdefine_line|#define RATOC_PRODUCT_ID&t;0xb000
+DECL|macro|TRIPP_VENDOR_ID
+mdefine_line|#define TRIPP_VENDOR_ID&t;&t;0x2478
+DECL|macro|TRIPP_PRODUCT_ID
+mdefine_line|#define TRIPP_PRODUCT_ID&t;0x2008
 eof

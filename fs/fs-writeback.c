@@ -72,6 +72,12 @@ id|inode
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * make sure that changes are seen by all cpus before we test i_state&n;&t; * -- mikulas&n;&t; */
+id|smp_mb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* avoid the locking if we can */
 r_if
 c_cond
@@ -105,6 +111,14 @@ op_ne
 id|flags
 )paren
 (brace
+r_const
+r_int
+id|was_dirty
+op_assign
+id|inode-&gt;i_state
+op_amp
+id|I_DIRTY
+suffix:semicolon
 r_struct
 id|address_space
 op_star
@@ -153,7 +167,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|mapping-&gt;dirtied_when
+id|was_dirty
 )paren
 (brace
 id|mapping-&gt;dirtied_when
@@ -235,9 +249,6 @@ id|inode
 op_star
 id|inode
 comma
-r_int
-id|wait
-comma
 r_struct
 id|writeback_control
 op_star
@@ -260,6 +271,13 @@ op_star
 id|sb
 op_assign
 id|inode-&gt;i_sb
+suffix:semicolon
+r_int
+id|wait
+op_assign
+id|wbc-&gt;sync_mode
+op_eq
+id|WB_SYNC_ALL
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -285,6 +303,7 @@ op_and_assign
 op_complement
 id|I_DIRTY
 suffix:semicolon
+multiline_comment|/*&n;&t; * smp_rmb(); note: if you remove write_lock below, you must add this.&n;&t; * mark_inode_dirty doesn&squot;t take spinlock, make sure that inode is not&n;&t; * read speculatively by this cpu before &amp;= ~I_DIRTY  -- mikulas&n;&t; */
 id|write_lock
 c_func
 (paren
@@ -537,9 +556,6 @@ id|inode
 op_star
 id|inode
 comma
-r_int
-id|sync
-comma
 r_struct
 id|writeback_control
 op_star
@@ -549,9 +565,10 @@ id|wbc
 r_if
 c_cond
 (paren
-id|current_is_pdflush
-c_func
 (paren
+id|wbc-&gt;sync_mode
+op_ne
+id|WB_SYNC_ALL
 )paren
 op_logical_and
 (paren
@@ -574,6 +591,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * It&squot;s a data-integrity sync.  We must wait.&n;&t; */
 r_while
 c_loop
 (paren
@@ -619,8 +637,6 @@ id|__sync_single_inode
 c_func
 (paren
 id|inode
-comma
-id|sync
 comma
 id|wbc
 )paren
@@ -716,9 +732,6 @@ op_star
 id|bdi
 op_assign
 id|mapping-&gt;backing_dev_info
-suffix:semicolon
-r_int
-id|really_sync
 suffix:semicolon
 r_if
 c_cond
@@ -850,14 +863,6 @@ id|bdi
 )paren
 r_break
 suffix:semicolon
-id|really_sync
-op_assign
-(paren
-id|wbc-&gt;sync_mode
-op_eq
-id|WB_SYNC_ALL
-)paren
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -877,8 +882,6 @@ c_func
 (paren
 id|inode
 comma
-id|really_sync
-comma
 id|wbc
 )paren
 suffix:semicolon
@@ -893,6 +896,8 @@ id|WB_SYNC_HOLD
 id|mapping-&gt;dirtied_when
 op_assign
 id|jiffies
+op_or
+l_int|1
 suffix:semicolon
 id|list_move
 c_func
@@ -1079,11 +1084,6 @@ c_func
 (paren
 op_amp
 id|inode_lock
-)paren
-suffix:semicolon
-id|blk_run_queues
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -1491,6 +1491,11 @@ id|nr_to_write
 op_assign
 id|LONG_MAX
 comma
+dot
+id|sync_mode
+op_assign
+id|WB_SYNC_ALL
+comma
 )brace
 suffix:semicolon
 id|spin_lock
@@ -1504,8 +1509,6 @@ id|__writeback_single_inode
 c_func
 (paren
 id|inode
-comma
-id|sync
 comma
 op_amp
 id|wbc

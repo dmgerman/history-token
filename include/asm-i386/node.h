@@ -39,7 +39,7 @@ id|num
 r_int
 id|p_node
 op_assign
-id|__parent_node
+id|parent_node
 c_func
 (paren
 id|num

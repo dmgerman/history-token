@@ -516,7 +516,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|TX_BUFFS_AVAIL
 mdefine_line|#define TX_BUFFS_AVAIL ((lp-&gt;tx_old&lt;=lp-&gt;tx_new)?&bslash;&n;&t;&t;&t;lp-&gt;tx_old+TX_RING_MOD_MASK-lp-&gt;tx_new:&bslash;&n;&t;&t;&t;lp-&gt;tx_old - lp-&gt;tx_new-1)
-multiline_comment|/* The lance control ports are at an absolute address, machine and tc-slot&n; * dependant.&n; * DECstations do only 32-bit access and the LANCE uses 16 bit addresses,&n; * so we have to give the structure an extra member making rap pointing&n; * at the right address&n; */
+multiline_comment|/* The lance control ports are at an absolute address, machine and tc-slot&n; * dependent.&n; * DECstations do only 32-bit access and the LANCE uses 16 bit addresses,&n; * so we have to give the structure an extra member making rap pointing&n; * at the right address&n; */
 DECL|struct|lance_regs
 r_struct
 id|lance_regs

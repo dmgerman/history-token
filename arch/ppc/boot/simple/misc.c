@@ -237,7 +237,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_LOPEC) || defined(CONFIG_PAL4)
-multiline_comment|/*&n;&t; * Call get_mem_size(), which is memory controller dependant,&n;&t; * and we must have the correct file linked in here.&n;&t; */
+multiline_comment|/*&n;&t; * Call get_mem_size(), which is memory controller dependent,&n;&t; * and we must have the correct file linked in here.&n;&t; */
 id|TotalMemory
 op_assign
 id|get_mem_size

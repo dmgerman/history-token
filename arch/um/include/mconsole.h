@@ -2,6 +2,11 @@ multiline_comment|/*&n; * Copyright (C) 2001 Lennert Buytenhek (buytenh@gnu.org)
 macro_line|#ifndef __MCONSOLE_H__
 DECL|macro|__MCONSOLE_H__
 mdefine_line|#define __MCONSOLE_H__
+macro_line|#ifndef __KERNEL__
+macro_line|#include &lt;stdint.h&gt;
+DECL|macro|u32
+mdefine_line|#define u32 uint32_t
+macro_line|#endif
 DECL|macro|MCONSOLE_MAGIC
 mdefine_line|#define MCONSOLE_MAGIC (0xcafebabe)
 DECL|macro|MCONSOLE_MAX_DATA
@@ -13,16 +18,15 @@ r_struct
 id|mconsole_request
 (brace
 DECL|member|magic
-r_int
-r_int
+id|u32
 id|magic
 suffix:semicolon
 DECL|member|version
-r_int
+id|u32
 id|version
 suffix:semicolon
 DECL|member|len
-r_int
+id|u32
 id|len
 suffix:semicolon
 DECL|member|data
@@ -39,15 +43,15 @@ r_struct
 id|mconsole_reply
 (brace
 DECL|member|err
-r_int
+id|u32
 id|err
 suffix:semicolon
 DECL|member|more
-r_int
+id|u32
 id|more
 suffix:semicolon
 DECL|member|len
-r_int
+id|u32
 id|len
 suffix:semicolon
 DECL|member|data
@@ -64,12 +68,11 @@ r_struct
 id|mconsole_notify
 (brace
 DECL|member|magic
-r_int
-r_int
+id|u32
 id|magic
 suffix:semicolon
 DECL|member|version
-r_int
+id|u32
 id|version
 suffix:semicolon
 DECL|enumerator|MCONSOLE_SOCKET
@@ -90,7 +93,7 @@ id|MCONSOLE_USER_NOTIFY
 id|type
 suffix:semicolon
 DECL|member|len
-r_int
+id|u32
 id|len
 suffix:semicolon
 DECL|member|data

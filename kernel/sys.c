@@ -5228,8 +5228,6 @@ id|arg5
 (brace
 r_int
 id|error
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|sig

@@ -1388,7 +1388,7 @@ l_string|&quot;Enabled&quot;
 suffix:colon
 l_string|&quot;Disabled&quot;
 comma
-id|sdptr-&gt;new_queue_depth
+id|sdptr-&gt;queue_depth
 comma
 id|aic_dev-&gt;max_q_depth
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ng1hw.h,v 1.4 1999/08/04 06:01:51 ulfc Exp $&n; * &n; * ng1hw.h: Tweaks the newport.h structures and definations to be compatible&n; * &t;    with IRIX.  Quite ugly, but it works.&n; *&n; * Copyright (C) 1999 Ulf Carlsson (ulfc@thepuffingroup.com)&n; *&n; */
+multiline_comment|/* $Id: ng1hw.h,v 1.4 1999/08/04 06:01:51 ulfc Exp $&n; * &n; * ng1hw.h: Tweaks the newport.h structures and definitions to be compatible&n; * &t;    with IRIX.  Quite ugly, but it works.&n; *&n; * Copyright (C) 1999 Ulf Carlsson (ulfc@thepuffingroup.com)&n; *&n; */
 macro_line|#ifndef _SGI_NG1HW_H
 DECL|macro|_SGI_NG1HW_H
 mdefine_line|#define _SGI_NG1HW_H

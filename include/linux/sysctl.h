@@ -1125,6 +1125,11 @@ DECL|enumerator|NET_TCP_FRTO
 id|NET_TCP_FRTO
 op_assign
 l_int|92
+comma
+DECL|enumerator|NET_TCP_LOW_LATENCY
+id|NET_TCP_LOW_LATENCY
+op_assign
+l_int|93
 )brace
 suffix:semicolon
 r_enum

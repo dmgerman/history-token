@@ -390,11 +390,6 @@ id|new_permitted
 comma
 id|working
 suffix:semicolon
-r_int
-id|do_unlock
-op_assign
-l_int|0
-suffix:semicolon
 id|new_permitted
 op_assign
 id|cap_intersect
@@ -422,6 +417,12 @@ comma
 id|working
 )paren
 suffix:semicolon
+id|task_lock
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -437,10 +438,6 @@ id|current-&gt;cap_permitted
 id|current-&gt;mm-&gt;dumpable
 op_assign
 l_int|0
-suffix:semicolon
-id|lock_kernel
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -469,7 +466,7 @@ op_logical_or
 id|atomic_read
 (paren
 op_amp
-id|current-&gt;sig-&gt;count
+id|current-&gt;sighand-&gt;count
 )paren
 OG
 l_int|1
@@ -498,10 +495,6 @@ id|cap_permitted
 suffix:semicolon
 )brace
 )brace
-id|do_unlock
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 multiline_comment|/* For init, we want to retain the capabilities set&n;&t; * in the init_task struct. Thus we skip the usual&n;&t; * capability rules */
 r_if
@@ -527,13 +520,10 @@ id|bprm-&gt;cap_effective
 suffix:semicolon
 )brace
 multiline_comment|/* AUD: Audit candidate if current-&gt;cap_effective is set */
-r_if
-c_cond
+id|task_unlock
+c_func
 (paren
-id|do_unlock
-)paren
-id|unlock_kernel
-(paren
+id|current
 )paren
 suffix:semicolon
 id|current-&gt;keep_capabilities

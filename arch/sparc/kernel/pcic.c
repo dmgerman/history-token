@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/swift.h&gt; /* for cache flushing. */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -19,10 +20,6 @@ macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/pcic.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-r_extern
-id|rwlock_t
-id|xtime_lock
-suffix:semicolon
 macro_line|#ifndef CONFIG_PCI
 DECL|function|sys_pciconfig_read
 id|asmlinkage
@@ -3237,7 +3234,7 @@ op_star
 id|regs
 )paren
 (brace
-id|write_lock
+id|write_seqlock
 c_func
 (paren
 op_amp
@@ -3256,7 +3253,7 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-id|write_unlock
+id|write_sequnlock
 c_func
 (paren
 op_amp
@@ -3521,11 +3518,19 @@ id|flags
 suffix:semicolon
 r_int
 r_int
+id|seq
+suffix:semicolon
+r_int
+r_int
 id|usec
 comma
 id|sec
 suffix:semicolon
-id|read_lock_irqsave
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin_irqsave
 c_func
 (paren
 op_amp
@@ -3578,13 +3583,20 @@ op_div
 l_int|1000
 )paren
 suffix:semicolon
-id|read_unlock_irqrestore
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry_irqrestore
 c_func
 (paren
 op_amp
 id|xtime_lock
 comma
+id|seq
+comma
 id|flags
+)paren
 )paren
 suffix:semicolon
 r_while

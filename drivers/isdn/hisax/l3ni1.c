@@ -10412,7 +10412,7 @@ suffix:semicolon
 multiline_comment|/* l3ni1_redir_req_early */
 multiline_comment|/***********************************************/
 multiline_comment|/* handle special commands for this protocol.  */
-multiline_comment|/* Examples are call independant services like */
+multiline_comment|/* Examples are call independent services like */
 multiline_comment|/* remote operations with dummy  callref.      */
 multiline_comment|/***********************************************/
 DECL|function|l3ni1_cmd_global

@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;cpqphp.h&quot;
 macro_line|#include &quot;cpqphp_nvram.h&quot;
-macro_line|#include &quot;../../arch/i386/pci/pci.h&quot;&t;/* horrible hack showing how processor dependant we are... */
+macro_line|#include &quot;../../arch/i386/pci/pci.h&quot;&t;/* horrible hack showing how processor dependent we are... */
 multiline_comment|/* Global variables */
 DECL|variable|cpqhp_debug
 r_int
@@ -1900,6 +1900,16 @@ id|pcibios_get_irq_routing_table
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PCIIRQRoutingInfoLength
+)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 id|len
 op_assign

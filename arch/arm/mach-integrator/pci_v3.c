@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
@@ -27,7 +28,7 @@ DECL|macro|v3_writel
 mdefine_line|#define v3_writel(o,v) __raw_writel(v, PCI_V3_VADDR + (unsigned int)(o))
 DECL|macro|v3_readl
 mdefine_line|#define v3_readl(o)    (__raw_readl(PCI_V3_VADDR + (unsigned int)(o)))
-multiline_comment|/*============================================================================&n; *&n; * routine:&t;uHALir_PCIMakeConfigAddress()&n; *&n; * parameters:&t;bus = which bus&n; *              device = which device&n; *              function = which function&n; *&t;&t;offset = configuration space register we are interested in&n; *&n; * description:&t;this routine will generate a platform dependant config&n; *&t;&t;address.&n; *&n; * calls:&t;none&n; *&n; * returns:&t;configuration address to play on the PCI bus&n; *&n; * To generate the appropriate PCI configuration cycles in the PCI &n; * configuration address space, you present the V3 with the following pattern &n; * (which is very nearly a type 1 (except that the lower two bits are 00 and&n; * not 01).   In order for this mapping to work you need to set up one of&n; * the local to PCI aperatures to 16Mbytes in length translating to&n; * PCI configuration space starting at 0x0000.0000.&n; *&n; * PCI configuration cycles look like this:&n; *&n; * Type 0:&n; *&n; *  3 3|3 3 2 2|2 2 2 2|2 2 2 2|1 1 1 1|1 1 1 1|1 1 &n; *  3 2|1 0 9 8|7 6 5 4|3 2 1 0|9 8 7 6|5 4 3 2|1 0 9 8|7 6 5 4|3 2 1 0&n; * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; * | | |D|D|D|D|D|D|D|D|D|D|D|D|D|D|D|D|D|D|D|D|D|F|F|F|R|R|R|R|R|R|0|0|&n; * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *&n; *&t;31:11&t;Device select bit.&n; * &t;10:8&t;Function number&n; * &t; 7:2&t;Register number&n; *&n; * Type 1:&n; *&n; *  3 3|3 3 2 2|2 2 2 2|2 2 2 2|1 1 1 1|1 1 1 1|1 1 &n; *  3 2|1 0 9 8|7 6 5 4|3 2 1 0|9 8 7 6|5 4 3 2|1 0 9 8|7 6 5 4|3 2 1 0&n; * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; * | | | | | | | | | | |B|B|B|B|B|B|B|B|D|D|D|D|D|F|F|F|R|R|R|R|R|R|0|1|&n; * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *&n; *&t;31:24&t;reserved&n; *&t;23:16&t;bus number (8 bits = 128 possible buses)&n; *&t;15:11&t;Device number (5 bits)&n; *&t;10:8&t;function number&n; *&t; 7:2&t;register number&n; *  &n; */
+multiline_comment|/*============================================================================&n; *&n; * routine:&t;uHALir_PCIMakeConfigAddress()&n; *&n; * parameters:&t;bus = which bus&n; *              device = which device&n; *              function = which function&n; *&t;&t;offset = configuration space register we are interested in&n; *&n; * description:&t;this routine will generate a platform dependent config&n; *&t;&t;address.&n; *&n; * calls:&t;none&n; *&n; * returns:&t;configuration address to play on the PCI bus&n; *&n; * To generate the appropriate PCI configuration cycles in the PCI &n; * configuration address space, you present the V3 with the following pattern &n; * (which is very nearly a type 1 (except that the lower two bits are 00 and&n; * not 01).   In order for this mapping to work you need to set up one of&n; * the local to PCI aperatures to 16Mbytes in length translating to&n; * PCI configuration space starting at 0x0000.0000.&n; *&n; * PCI configuration cycles look like this:&n; *&n; * Type 0:&n; *&n; *  3 3|3 3 2 2|2 2 2 2|2 2 2 2|1 1 1 1|1 1 1 1|1 1 &n; *  3 2|1 0 9 8|7 6 5 4|3 2 1 0|9 8 7 6|5 4 3 2|1 0 9 8|7 6 5 4|3 2 1 0&n; * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; * | | |D|D|D|D|D|D|D|D|D|D|D|D|D|D|D|D|D|D|D|D|D|F|F|F|R|R|R|R|R|R|0|0|&n; * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *&n; *&t;31:11&t;Device select bit.&n; * &t;10:8&t;Function number&n; * &t; 7:2&t;Register number&n; *&n; * Type 1:&n; *&n; *  3 3|3 3 2 2|2 2 2 2|2 2 2 2|1 1 1 1|1 1 1 1|1 1 &n; *  3 2|1 0 9 8|7 6 5 4|3 2 1 0|9 8 7 6|5 4 3 2|1 0 9 8|7 6 5 4|3 2 1 0&n; * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; * | | | | | | | | | | |B|B|B|B|B|B|B|B|D|D|D|D|D|F|F|F|R|R|R|R|R|R|0|1|&n; * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *&n; *&t;31:24&t;reserved&n; *&t;23:16&t;bus number (8 bits = 128 possible buses)&n; *&t;15:11&t;Device number (5 bits)&n; *&t;10:8&t;function number&n; *&t; 7:2&t;register number&n; *  &n; */
 DECL|variable|v3_lock
 r_static
 id|spinlock_t
@@ -411,8 +412,7 @@ id|addr
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-l_int|4
+r_default
 suffix:colon
 id|v
 op_assign

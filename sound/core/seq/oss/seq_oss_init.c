@@ -1015,10 +1015,6 @@ suffix:semicolon
 id|num_clients
 op_increment
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|debug_printk
 c_func
 (paren
@@ -1579,10 +1575,6 @@ c_func
 id|dp
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|debug_printk
 c_func
 (paren

@@ -26,10 +26,6 @@ id|jiffies_64
 suffix:semicolon
 multiline_comment|/*&n; * forward reference&n; */
 r_extern
-id|rwlock_t
-id|xtime_lock
-suffix:semicolon
-r_extern
 r_volatile
 r_int
 r_int
@@ -121,7 +117,16 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|read_lock_irqsave
+r_int
+r_int
+id|seq
+suffix:semicolon
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin_irqsave
+c_func
 (paren
 op_amp
 id|xtime_lock
@@ -141,7 +146,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * xtime is atomically updated in timer_bh. jiffies - wall_jiffies&n;&t; * is nonzero if the timer bottom half hasnt executed yet.&n;&t; */
+multiline_comment|/*&n;&t;&t; * xtime is atomically updated in timer_bh. &n;&t;&t; * jiffies - wall_jiffies&n;&t;&t; * is nonzero if the timer bottom half hasnt executed yet.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -153,12 +158,20 @@ id|tv-&gt;tv_usec
 op_add_assign
 id|USECS_PER_JIFFY
 suffix:semicolon
-id|read_unlock_irqrestore
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry_irqrestore
+c_func
 (paren
 op_amp
 id|xtime_lock
 comma
+id|seq
+comma
 id|flags
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -189,7 +202,7 @@ op_star
 id|tv
 )paren
 (brace
-id|write_lock_irq
+id|write_seqlock_irq
 (paren
 op_amp
 id|xtime_lock
@@ -241,7 +254,7 @@ id|time_esterror
 op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
-id|write_unlock_irq
+id|write_sequnlock_irq
 (paren
 op_amp
 id|xtime_lock
@@ -711,6 +724,10 @@ op_star
 id|regs
 )paren
 (brace
+r_int
+r_int
+id|seq
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -838,7 +855,12 @@ id|regs
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we have an externally synchronized Linux clock, then update&n;&t; * CMOS clock accordingly every ~11 minutes. rtc_set_time() has to be&n;&t; * called as close as possible to 500 ms before the new second starts.&n;&t; */
-id|read_lock
+r_do
+(brace
+id|seq
+op_assign
+id|read_seqbegin
+c_func
 (paren
 op_amp
 id|xtime_lock
@@ -916,10 +938,18 @@ suffix:semicolon
 multiline_comment|/* do it again in 60 s */
 )brace
 )brace
-id|read_unlock
+)brace
+r_while
+c_loop
+(paren
+id|read_seqretry
+c_func
 (paren
 op_amp
 id|xtime_lock
+comma
+id|seq
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If jiffies has overflowed in this timer_interrupt we must&n;&t; * update the timer[hi]/[lo] to make fast gettimeoffset funcs&n;&t; * quotient calc still valid. -arca&n;&t; */

@@ -107,10 +107,6 @@ DECL|member|header_len
 r_int
 id|header_len
 suffix:semicolon
-DECL|member|trailer_len
-r_int
-id|trailer_len
-suffix:semicolon
 DECL|member|props
 )brace
 id|props

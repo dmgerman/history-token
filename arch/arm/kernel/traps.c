@@ -169,9 +169,15 @@ suffix:semicolon
 id|print_symbol
 c_func
 (paren
-l_string|&quot;  %s&bslash;n&quot;
+l_string|&quot;  %s&quot;
 comma
 id|where
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

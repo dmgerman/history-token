@@ -287,7 +287,7 @@ id|error
 suffix:semicolon
 id|node-&gt;cpumap
 op_assign
-id|__node_to_cpu_mask
+id|node_to_cpumask
 c_func
 (paren
 id|num

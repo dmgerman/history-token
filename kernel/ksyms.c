@@ -45,6 +45,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -61,32 +62,6 @@ r_extern
 r_int
 id|panic_timeout
 suffix:semicolon
-macro_line|#ifdef CONFIG_MODVERSIONS
-DECL|variable|__export_Using_Versions
-r_const
-r_struct
-id|module_symbol
-id|__export_Using_Versions
-id|__attribute__
-c_func
-(paren
-(paren
-id|section
-c_func
-(paren
-l_string|&quot;__ksymtab&quot;
-)paren
-)paren
-)paren
-op_assign
-(brace
-l_int|1
-multiline_comment|/* Version version */
-comma
-l_string|&quot;Using_Versions&quot;
-)brace
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* process memory management */
 DECL|variable|do_mmap_pgoff
 id|EXPORT_SYMBOL
@@ -1387,6 +1362,34 @@ c_func
 id|vfs_getattr
 )paren
 suffix:semicolon
+DECL|variable|inode_add_bytes
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inode_add_bytes
+)paren
+suffix:semicolon
+DECL|variable|inode_sub_bytes
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inode_sub_bytes
+)paren
+suffix:semicolon
+DECL|variable|inode_get_bytes
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inode_get_bytes
+)paren
+suffix:semicolon
+DECL|variable|inode_set_bytes
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inode_set_bytes
+)paren
+suffix:semicolon
 DECL|variable|lock_rename
 id|EXPORT_SYMBOL
 c_func
@@ -2568,6 +2571,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|xtime
+)paren
+suffix:semicolon
+DECL|variable|xtime_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xtime_lock
 )paren
 suffix:semicolon
 DECL|variable|do_gettimeofday

@@ -63,7 +63,7 @@ multiline_comment|/* Extensions made by Werner Cornelius (werner@ikt.de)        
 multiline_comment|/*                                                                         */
 multiline_comment|/* The proceed command holds a incoming call in a state to leave processes */
 multiline_comment|/* enough time to check whether ist should be accepted.                    */
-multiline_comment|/* The PROT_IO Command extends the interface to make protocol dependant    */
+multiline_comment|/* The PROT_IO Command extends the interface to make protocol dependent    */
 multiline_comment|/* features available (call diversion, call waiting...).                   */
 multiline_comment|/*                                                                         */
 multiline_comment|/* The PROT_IO Command is executed with the desired driver id and the arg  */

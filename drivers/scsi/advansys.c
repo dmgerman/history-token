@@ -6810,7 +6810,7 @@ mdefine_line|#define REQPNEXT(reqp)       ((REQP) ((reqp)-&gt;host_scribble))
 DECL|macro|REQPNEXTP
 mdefine_line|#define REQPNEXTP(reqp)      ((REQP *) &amp;((reqp)-&gt;host_scribble))
 DECL|macro|REQPTID
-mdefine_line|#define REQPTID(reqp)        ((reqp)-&gt;target)
+mdefine_line|#define REQPTID(reqp)        ((reqp)-&gt;device-&gt;id)
 DECL|macro|REQPTIME
 mdefine_line|#define REQPTIME(reqp)       ((reqp)-&gt;SCp.this_residual)
 DECL|macro|REQTIMESTAMP
@@ -13818,7 +13818,7 @@ id|done_scp
 suffix:semicolon
 id|shp
 op_assign
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 suffix:semicolon
 id|boardp
 op_assign
@@ -14084,7 +14084,7 @@ macro_line|#ifdef ADVANSYS_STATS
 r_if
 c_cond
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 op_ne
 l_int|NULL
 )paren
@@ -14092,7 +14092,7 @@ l_int|NULL
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|reset
 )paren
@@ -14105,7 +14105,7 @@ c_cond
 (paren
 id|shp
 op_assign
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 )paren
 op_eq
 l_int|NULL
@@ -15692,7 +15692,7 @@ suffix:semicolon
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|done
 )paren
@@ -15713,7 +15713,7 @@ id|from_isr
 id|spin_lock_irqsave
 c_func
 (paren
-id|scp-&gt;host-&gt;host_lock
+id|scp-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -15734,7 +15734,7 @@ id|from_isr
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|scp-&gt;host-&gt;host_lock
+id|scp-&gt;device-&gt;host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -15813,14 +15813,14 @@ op_assign
 id|ASC_BOARDP
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 )paren
 suffix:semicolon
 id|device
 op_assign
 id|boardp-&gt;device
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 suffix:semicolon
 r_if
@@ -15857,7 +15857,7 @@ id|ASC_ERROR
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|build_error
 )paren
@@ -15888,7 +15888,7 @@ suffix:colon
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|exe_noerror
 )paren
@@ -15896,7 +15896,7 @@ suffix:semicolon
 multiline_comment|/*&n;             * Increment monotonically increasing per device successful&n;             * request counter. Wrapping doesn&squot;t matter.&n;             */
 id|boardp-&gt;reqcnt
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 op_increment
 suffix:semicolon
@@ -15928,7 +15928,7 @@ multiline_comment|/*&n;             * Caller will enqueue request on the target&
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|exe_busy
 )paren
@@ -15951,7 +15951,7 @@ suffix:semicolon
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|exe_error
 )paren
@@ -15992,7 +15992,7 @@ suffix:semicolon
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|exe_unknown
 )paren
@@ -16089,7 +16089,7 @@ suffix:semicolon
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|build_error
 )paren
@@ -16119,7 +16119,7 @@ suffix:colon
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|exe_noerror
 )paren
@@ -16127,7 +16127,7 @@ suffix:semicolon
 multiline_comment|/*&n;             * Increment monotonically increasing per device successful&n;             * request counter. Wrapping doesn&squot;t matter.&n;             */
 id|boardp-&gt;reqcnt
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 op_increment
 suffix:semicolon
@@ -16159,7 +16159,7 @@ multiline_comment|/*&n;             * Caller will enqueue request on the target&
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|exe_busy
 )paren
@@ -16182,7 +16182,7 @@ suffix:semicolon
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|exe_error
 )paren
@@ -16223,7 +16223,7 @@ suffix:semicolon
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|exe_unknown
 )paren
@@ -16364,21 +16364,21 @@ op_assign
 id|ASC_TID_TO_TARGET_ID
 c_func
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|asc_scsi_q.q1.target_lun
 op_assign
-id|scp-&gt;lun
+id|scp-&gt;device-&gt;lun
 suffix:semicolon
 id|asc_scsi_q.q2.target_ix
 op_assign
 id|ASC_TIDLUN_TO_IX
 c_func
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 comma
-id|scp-&gt;lun
+id|scp-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|asc_scsi_q.q1.sense_addr
@@ -16411,7 +16411,7 @@ c_cond
 (paren
 id|boardp-&gt;dvc_var.asc_dvc_var.cur_dvc_qng
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 OG
 l_int|0
@@ -16420,7 +16420,7 @@ op_logical_and
 (paren
 id|boardp-&gt;reqcnt
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 op_mod
 l_int|255
@@ -16454,7 +16454,7 @@ multiline_comment|/*&n;         * CDB request of single contiguous buffer.&n;   
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|cont_cnt
 )paren
@@ -16482,7 +16482,7 @@ suffix:semicolon
 id|ASC_STATS_ADD
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|cont_xfer
 comma
@@ -16520,7 +16520,7 @@ c_cond
 (paren
 id|scp-&gt;use_sg
 OG
-id|scp-&gt;host-&gt;sg_tablesize
+id|scp-&gt;device-&gt;host-&gt;sg_tablesize
 )paren
 (brace
 id|ASC_PRINT3
@@ -16532,7 +16532,7 @@ id|boardp-&gt;id
 comma
 id|scp-&gt;use_sg
 comma
-id|scp-&gt;host-&gt;sg_tablesize
+id|scp-&gt;device-&gt;host-&gt;sg_tablesize
 )paren
 suffix:semicolon
 id|scp-&gt;result
@@ -16561,7 +16561,7 @@ suffix:semicolon
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|sg_cnt
 )paren
@@ -16608,7 +16608,7 @@ suffix:semicolon
 id|ASC_STATS_ADD
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|sg_elem
 comma
@@ -16687,7 +16687,7 @@ suffix:semicolon
 id|ASC_STATS_ADD
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|sg_xfer
 comma
@@ -16780,7 +16780,7 @@ suffix:semicolon
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|adv_build_noreq
 )paren
@@ -16949,11 +16949,11 @@ suffix:semicolon
 )brace
 id|scsiqp-&gt;target_id
 op_assign
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 suffix:semicolon
 id|scsiqp-&gt;target_lun
 op_assign
-id|scp-&gt;lun
+id|scp-&gt;device-&gt;lun
 suffix:semicolon
 id|scsiqp-&gt;sense_addr
 op_assign
@@ -17027,7 +17027,7 @@ suffix:semicolon
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|cont_cnt
 )paren
@@ -17035,7 +17035,7 @@ suffix:semicolon
 id|ASC_STATS_ADD
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|cont_xfer
 comma
@@ -17069,7 +17069,7 @@ id|boardp-&gt;id
 comma
 id|scp-&gt;use_sg
 comma
-id|scp-&gt;host-&gt;sg_tablesize
+id|scp-&gt;device-&gt;host-&gt;sg_tablesize
 )paren
 suffix:semicolon
 id|scp-&gt;result
@@ -17140,7 +17140,7 @@ suffix:semicolon
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|sg_cnt
 )paren
@@ -17148,7 +17148,7 @@ suffix:semicolon
 id|ASC_STATS_ADD
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|sg_elem
 comma
@@ -17292,7 +17292,7 @@ suffix:semicolon
 id|ASC_STATS
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|adv_build_nosg
 )paren
@@ -17479,7 +17479,7 @@ suffix:semicolon
 id|ASC_STATS_ADD
 c_func
 (paren
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 comma
 id|sg_xfer
 comma
@@ -17652,7 +17652,7 @@ suffix:semicolon
 multiline_comment|/*&n;     * If the request&squot;s host pointer is not valid, display a&n;     * message and return.&n;     */
 id|shp
 op_assign
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 suffix:semicolon
 r_for
 c_loop
@@ -17814,7 +17814,7 @@ l_int|0
 op_eq
 id|SCSICMD_Inquiry
 op_logical_and
-id|scp-&gt;lun
+id|scp-&gt;device-&gt;lun
 op_eq
 l_int|0
 op_logical_and
@@ -17832,7 +17832,7 @@ c_func
 (paren
 id|asc_dvc_varp
 comma
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 op_amp
 l_int|0x7
 comma
@@ -18067,7 +18067,7 @@ op_amp
 id|ADV_TID_TO_TIDMASK
 c_func
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )paren
 )paren
 op_eq
@@ -18087,7 +18087,7 @@ op_or_assign
 id|ADV_TID_TO_TIDMASK
 c_func
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -18268,7 +18268,7 @@ suffix:semicolon
 multiline_comment|/*&n;     * If the request&squot;s host pointer is not valid, display a message&n;     * and return.&n;     */
 id|shp
 op_assign
-id|scp-&gt;host
+id|scp-&gt;device-&gt;host
 suffix:semicolon
 r_for
 c_loop
@@ -18637,7 +18637,7 @@ op_amp
 id|ADV_TID_TO_TIDMASK
 c_func
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )paren
 )paren
 op_eq
@@ -18657,7 +18657,7 @@ op_or_assign
 id|ADV_TID_TO_TIDMASK
 c_func
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -19592,7 +19592,7 @@ id|ascq
 comma
 id|reqp
 comma
-id|reqp-&gt;target
+id|reqp-&gt;device-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -23263,132 +23263,6 @@ r_else
 id|chip_scsi_id
 op_assign
 id|boardp-&gt;dvc_var.adv_dvc_var.chip_scsi_id
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|boardp-&gt;flags
-op_amp
-id|ASC_SELECT_QUEUE_DEPTHS
-)paren
-(brace
-id|len
-op_assign
-id|asc_prt_line
-c_func
-(paren
-id|cp
-comma
-id|leftlen
-comma
-l_string|&quot; queue_depth:&quot;
-)paren
-suffix:semicolon
-id|ASC_PRT_NEXT
-c_func
-(paren
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-op_le
-id|ADV_MAX_TID
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|chip_scsi_id
-op_eq
-id|i
-)paren
-op_logical_or
-(paren
-(paren
-id|boardp-&gt;init_tidmask
-op_amp
-id|ADV_TID_TO_TIDMASK
-c_func
-(paren
-id|i
-)paren
-)paren
-op_eq
-l_int|0
-)paren
-)paren
-(brace
-r_continue
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|boardp-&gt;device
-(braket
-id|i
-)braket
-op_eq
-l_int|NULL
-)paren
-(brace
-r_continue
-suffix:semicolon
-)brace
-id|len
-op_assign
-id|asc_prt_line
-c_func
-(paren
-id|cp
-comma
-id|leftlen
-comma
-l_string|&quot; %X:%d&quot;
-comma
-id|i
-comma
-id|boardp-&gt;device
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|current_queue_depth
-)paren
-suffix:semicolon
-id|ASC_PRT_NEXT
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-id|len
-op_assign
-id|asc_prt_line
-c_func
-(paren
-id|cp
-comma
-id|leftlen
-comma
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ASC_PRT_NEXT
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 r_return

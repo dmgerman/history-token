@@ -106,7 +106,7 @@ DECL|macro|FT_RAID5
 mdefine_line|#define&t;&t;FT_RAID5&t;15&t;/* Container - Raid 5 Set */
 DECL|macro|FT_DATABASE
 mdefine_line|#define&t;&t;FT_DATABASE&t;16&t;/* Storage object with &quot;foreign&quot; content manager */
-multiline_comment|/*&n; *&t;Host side memory scatter gather list&n; *&t;Used by the adapter for read, write, and readdirplus operations&n; *&t;We have seperate 32 and 64 bit version because even&n; *&t;on 64 bit systems not all cards support the 64 bit version&n; */
+multiline_comment|/*&n; *&t;Host side memory scatter gather list&n; *&t;Used by the adapter for read, write, and readdirplus operations&n; *&t;We have separate 32 and 64 bit version because even&n; *&t;on 64 bit systems not all cards support the 64 bit version&n; */
 DECL|struct|sgentry
 r_struct
 id|sgentry
@@ -1046,7 +1046,7 @@ id|channels
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;The adapter interface specs all queues to be located in the same&n; *&t;physically contigous block. The host structure that defines the&n; *&t;commuication queues will assume they are each a seperate physically&n; *&t;contigous memory region that will support them all being one big&n; *&t;contigous block. &n; *&t;There is a command and response queue for each level and direction of&n; *&t;commuication. These regions are accessed by both the host and adapter.&n; */
+multiline_comment|/*&n; *&t;The adapter interface specs all queues to be located in the same&n; *&t;physically contigous block. The host structure that defines the&n; *&t;commuication queues will assume they are each a separate physically&n; *&t;contigous memory region that will support them all being one big&n; *&t;contigous block. &n; *&t;There is a command and response queue for each level and direction of&n; *&t;commuication. These regions are accessed by both the host and adapter.&n; */
 DECL|struct|aac_queue
 r_struct
 id|aac_queue

@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;cpqphp.h&quot;
 macro_line|#include &quot;cpqphp_nvram.h&quot;
-macro_line|#include &quot;../../arch/i386/pci/pci.h&quot;&t;/* horrible hack showing how processor dependant we are... */
+macro_line|#include &quot;../../arch/i386/pci/pci.h&quot;&t;/* horrible hack showing how processor dependent we are... */
 DECL|variable|cpqhp_nic_irq
 id|u8
 id|cpqhp_nic_irq
@@ -1816,6 +1816,16 @@ id|pcibios_get_irq_routing_table
 c_func
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PCIIRQRoutingInfoLength
+)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 id|len
 op_assign
@@ -5324,6 +5334,8 @@ comma
 id|func-&gt;config_space
 (braket
 id|cloop
+op_rshift
+l_int|2
 )braket
 )paren
 suffix:semicolon

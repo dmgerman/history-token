@@ -20,11 +20,11 @@ id|cpu_2_node
 )braket
 suffix:semicolon
 multiline_comment|/* Returns the number of the node containing CPU &squot;cpu&squot; */
-DECL|function|__cpu_to_node
+DECL|function|cpu_to_node
 r_static
 r_inline
 r_int
-id|__cpu_to_node
+id|cpu_to_node
 c_func
 (paren
 r_int
@@ -39,18 +39,18 @@ id|cpu
 suffix:semicolon
 )brace
 multiline_comment|/* Returns the number of the node containing MemBlk &squot;memblk&squot; */
-DECL|macro|__memblk_to_node
-mdefine_line|#define __memblk_to_node(memblk) (memblk)
+DECL|macro|memblk_to_node
+mdefine_line|#define memblk_to_node(memblk) (memblk)
 multiline_comment|/* Returns the number of the node containing Node &squot;node&squot;.  This architecture is flat, &n;   so it is a pretty simple function! */
-DECL|macro|__parent_node
-mdefine_line|#define __parent_node(node) (node)
+DECL|macro|parent_node
+mdefine_line|#define parent_node(node) (node)
 multiline_comment|/* Returns a bitmask of CPUs on Node &squot;node&squot;. */
-DECL|function|__node_to_cpu_mask
+DECL|function|node_to_cpumask
 r_static
 r_inline
 r_int
 r_int
-id|__node_to_cpu_mask
+id|node_to_cpumask
 c_func
 (paren
 r_int
@@ -65,11 +65,11 @@ id|node
 suffix:semicolon
 )brace
 multiline_comment|/* Returns the number of the first CPU on Node &squot;node&squot;. */
-DECL|function|__node_to_first_cpu
+DECL|function|node_to_first_cpu
 r_static
 r_inline
 r_int
-id|__node_to_first_cpu
+id|node_to_first_cpu
 c_func
 (paren
 r_int
@@ -80,7 +80,7 @@ r_return
 id|__ffs
 c_func
 (paren
-id|__node_to_cpu_mask
+id|node_to_cpumask
 c_func
 (paren
 id|node
@@ -89,8 +89,8 @@ id|node
 suffix:semicolon
 )brace
 multiline_comment|/* Returns the number of the first MemBlk on Node &squot;node&squot; */
-DECL|macro|__node_to_memblk
-mdefine_line|#define __node_to_memblk(node) (node)
+DECL|macro|node_to_memblk
+mdefine_line|#define node_to_memblk(node) (node)
 multiline_comment|/* Cross-node load balancing interval. */
 DECL|macro|NODE_BALANCE_RATE
 mdefine_line|#define NODE_BALANCE_RATE 100

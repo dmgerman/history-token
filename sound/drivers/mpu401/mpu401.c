@@ -90,7 +90,7 @@ op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
 multiline_comment|/* MPU-401 IRQ */
-macro_line|#ifdef CONFIG_PC9800
+macro_line|#ifdef CONFIG_X86_PC9800
 DECL|variable|pc98ii
 r_static
 r_int
@@ -251,7 +251,7 @@ comma
 id|SNDRV_IRQ_DESC
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PC9800
+macro_line|#ifdef CONFIG_X86_PC9800
 id|MODULE_PARM
 c_func
 (paren
@@ -397,7 +397,7 @@ id|card
 comma
 l_int|0
 comma
-macro_line|#ifdef CONFIG_PC9800
+macro_line|#ifdef CONFIG_X86_PC9800
 id|pc98ii
 (braket
 id|dev
@@ -782,6 +782,23 @@ id|nr_dev
 op_eq
 l_int|2
 op_logical_and
+macro_line|#ifdef CONFIG_X86_PC9800
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|pc98ii
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+op_logical_and
+macro_line|#endif
 id|get_option
 c_func
 (paren

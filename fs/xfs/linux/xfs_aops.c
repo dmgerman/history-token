@@ -70,9 +70,11 @@ id|inode-&gt;i_size
 )paren
 id|count
 op_assign
-id|max
+id|max_t
 c_func
 (paren
+id|ssize_t
+comma
 id|count
 comma
 id|XFS_WRITE_IO_LOG

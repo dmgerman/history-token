@@ -104,6 +104,59 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
+DECL|function|__ndelay
+r_extern
+id|__inline__
+r_void
+id|__ndelay
+c_func
+(paren
+r_int
+r_int
+id|usecs
+comma
+r_int
+r_int
+id|lps
+)paren
+(brace
+id|usecs
+op_mul_assign
+l_int|0x0000000000000005UL
+suffix:semicolon
+multiline_comment|/* 2**32 / 10000 */
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;&t;mulx&t;%1, %2, %0&bslash;n&quot;
+l_string|&quot;&t;srlx&t;%0, 32, %0&bslash;n&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|usecs
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|usecs
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|lps
+)paren
+)paren
+suffix:semicolon
+id|__delay
+c_func
+(paren
+id|usecs
+op_star
+id|HZ
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|__udelay_val
 mdefine_line|#define __udelay_val cpu_data[smp_processor_id()].udelay_val
@@ -113,6 +166,8 @@ mdefine_line|#define __udelay_val loops_per_jiffy
 macro_line|#endif
 DECL|macro|udelay
 mdefine_line|#define udelay(usecs) __udelay((usecs),__udelay_val)
+DECL|macro|ndelay
+mdefine_line|#define ndelay(usecs) __ndelay((usecs),__udelay_val)
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* defined(__SPARC64_DELAY_H) */
 eof

@@ -19,7 +19,7 @@ mdefine_line|#define US_PR_SCM_ATAPI&t;0x80&t;&t;/* SCM-ATAPI bridge */
 macro_line|#endif
 macro_line|#ifdef CONFIG_USB_STORAGE_SDDR09
 DECL|macro|US_PR_EUSB_SDDR09
-mdefine_line|#define US_PR_EUSB_SDDR09&t;0x81&t;/* SCM-SCSI bridge for&n;&t;&t;&t;&t;&t;&t;SDDR-09 */
+mdefine_line|#define US_PR_EUSB_SDDR09&t;0x81&t;/* SCM-SCSI bridge for SDDR-09 */
 macro_line|#endif
 macro_line|#ifdef CONFIG_USB_STORAGE_SDDR55
 DECL|macro|US_PR_SDDR55
@@ -29,15 +29,15 @@ DECL|macro|US_PR_DPCM_USB
 mdefine_line|#define US_PR_DPCM_USB  0xf0&t;&t;/* Combination CB/SDDR09 */
 macro_line|#ifdef CONFIG_USB_STORAGE_FREECOM
 DECL|macro|US_PR_FREECOM
-mdefine_line|#define US_PR_FREECOM   0xf1            /* Freecom */
+mdefine_line|#define US_PR_FREECOM   0xf1&t;    /* Freecom */
 macro_line|#endif
 macro_line|#ifdef CONFIG_USB_STORAGE_DATAFAB
 DECL|macro|US_PR_DATAFAB
-mdefine_line|#define US_PR_DATAFAB   0xf2            /* Datafab chipsets */
+mdefine_line|#define US_PR_DATAFAB   0xf2&t;    /* Datafab chipsets */
 macro_line|#endif
 macro_line|#ifdef CONFIG_USB_STORAGE_JUMPSHOT
 DECL|macro|US_PR_JUMPSHOT
-mdefine_line|#define US_PR_JUMPSHOT  0xf3            /* Lexar Jumpshot */
+mdefine_line|#define US_PR_JUMPSHOT  0xf3&t;    /* Lexar Jumpshot */
 macro_line|#endif
 multiline_comment|/*&n; * Bulk only data structures&n; */
 multiline_comment|/* command block wrapper */
@@ -144,13 +144,13 @@ DECL|macro|US_BULK_GET_MAX_LUN
 mdefine_line|#define US_BULK_GET_MAX_LUN&t;0xfe
 multiline_comment|/*&n; * usb_stor_bulk_transfer_xxx() return codes, in order of severity&n; */
 DECL|macro|USB_STOR_XFER_GOOD
-mdefine_line|#define USB_STOR_XFER_GOOD&t;&t;0  /* good transfer                 */
+mdefine_line|#define USB_STOR_XFER_GOOD&t;0&t;/* good transfer                 */
 DECL|macro|USB_STOR_XFER_SHORT
-mdefine_line|#define USB_STOR_XFER_SHORT&t;&t;1  /* transfered less than expected */
+mdefine_line|#define USB_STOR_XFER_SHORT&t;1&t;/* transfered less than expected */
 DECL|macro|USB_STOR_XFER_STALLED
-mdefine_line|#define USB_STOR_XFER_STALLED&t;&t;2  /* endpoint stalled&t;&t;    */
+mdefine_line|#define USB_STOR_XFER_STALLED&t;2&t;/* endpoint stalled              */
 DECL|macro|USB_STOR_XFER_ERROR
-mdefine_line|#define USB_STOR_XFER_ERROR&t;&t;3  /* transfer died in the middle   */
+mdefine_line|#define USB_STOR_XFER_ERROR&t;3&t;/* transfer died in the middle   */
 multiline_comment|/*&n; * Transport return codes&n; */
 DECL|macro|USB_STOR_TRANSPORT_GOOD
 mdefine_line|#define USB_STOR_TRANSPORT_GOOD&t;   0   /* Transport good, command good&t;   */

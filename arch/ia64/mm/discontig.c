@@ -743,6 +743,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;node info missing!&bslash;n&quot;
 )paren
 suffix:semicolon

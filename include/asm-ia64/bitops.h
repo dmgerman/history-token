@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_BITOPS_H
 DECL|macro|_ASM_IA64_BITOPS_H
 mdefine_line|#define _ASM_IA64_BITOPS_H
-multiline_comment|/*&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 02/06/02 find_next_bit() and find_first_bit() added from Erich Focht&squot;s ia64 O(1)&n; *&t;    scheduler patch&n; */
+multiline_comment|/*&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 02/06/02 find_next_bit() and find_first_bit() added from Erich Focht&squot;s ia64 O(1)&n; *&t;    scheduler patch&n; */
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/intrinsics.h&gt;
@@ -1065,6 +1065,7 @@ r_int
 id|x
 )paren
 (brace
+r_int
 r_float
 id|d
 op_assign

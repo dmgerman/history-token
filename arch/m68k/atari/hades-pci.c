@@ -1272,7 +1272,7 @@ id|pci_bus_info
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Claim resources. The m68k has no seperate I/O space, both&n;&t; * PCI memory space and PCI I/O space are in memory space. Therefore&n;&t; * the I/O resources are requested in memory space as well.&n;&t; */
+multiline_comment|/*&n;&t; * Claim resources. The m68k has no separate I/O space, both&n;&t; * PCI memory space and PCI I/O space are in memory space. Therefore&n;&t; * the I/O resources are requested in memory space as well.&n;&t; */
 r_if
 c_cond
 (paren

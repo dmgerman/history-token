@@ -1567,7 +1567,7 @@ l_int|73
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* These limits and adjustments are independant of&n;&t;&t; * whether the chip is in binary mode or not.&n;&t;&t; */
+multiline_comment|/* These limits and adjustments are independent of&n;&t;&t; * whether the chip is in binary mode or not.&n;&t;&t; */
 r_if
 c_cond
 (paren

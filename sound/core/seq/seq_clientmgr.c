@@ -1405,10 +1405,6 @@ c_func
 id|c
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1472,10 +1468,6 @@ id|client
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

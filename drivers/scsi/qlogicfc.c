@@ -645,7 +645,7 @@ DECL|macro|MBOX_SEND_CHANGE_REQUEST
 mdefine_line|#define MBOX_SEND_CHANGE_REQUEST        0x0070
 DECL|macro|MBOX_PORT_LOGOUT
 mdefine_line|#define MBOX_PORT_LOGOUT                0x0071
-multiline_comment|/*&n; *&t;Firmware if needed (note this is a hack, it belongs in a seperate&n; *&t;module.&n; */
+multiline_comment|/*&n; *&t;Firmware if needed (note this is a hack, it belongs in a separate&n; *&t;module.&n; */
 macro_line|#ifdef CONFIG_SCSI_QLOGIC_FC_FIRMWARE
 macro_line|#include &quot;qlogicfc_asm.c&quot;
 macro_line|#else
@@ -4555,7 +4555,7 @@ l_string|&quot;isp2x00_queuecommand&quot;
 suffix:semicolon
 id|host
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign
@@ -5131,14 +5131,14 @@ l_int|1
 suffix:semicolon
 id|cmd-&gt;target_lun
 op_assign
-id|Cmnd-&gt;lun
+id|Cmnd-&gt;device-&gt;lun
 suffix:semicolon
 id|cmd-&gt;expanded_lun
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|Cmnd-&gt;lun
+id|Cmnd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 macro_line|#if ISP2x00_PORTDB
@@ -5146,7 +5146,7 @@ id|cmd-&gt;target_id
 op_assign
 id|hostdata-&gt;port_db
 (braket
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 )braket
 dot
 id|loop_id
@@ -5699,7 +5699,7 @@ id|jiffies
 op_minus
 id|hostdata-&gt;tag_ages
 (braket
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 )braket
 )paren
 OG
@@ -5720,7 +5720,7 @@ id|CFLAG_ORDERED_TAG
 suffix:semicolon
 id|hostdata-&gt;tag_ages
 (braket
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 )braket
 op_assign
 id|jiffies
@@ -6083,7 +6083,7 @@ id|hostdata-&gt;handle_ptrs
 id|i
 )braket
 op_member_access_from_pointer
-id|target
+id|device-&gt;id
 )braket
 dot
 id|loop_id
@@ -6106,7 +6106,7 @@ id|hostdata-&gt;handle_ptrs
 id|i
 )braket
 op_member_access_from_pointer
-id|target
+id|device-&gt;id
 )braket
 dot
 id|loop_id
@@ -7136,7 +7136,7 @@ id|CS_PORT_CONFIG_CHANGED
 op_logical_and
 id|hostdata-&gt;port_db
 (braket
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 )braket
 dot
 id|wwn
@@ -7651,7 +7651,7 @@ l_string|&quot;isp2x00_abort&quot;
 suffix:semicolon
 id|host
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign
@@ -7726,7 +7726,7 @@ id|u_short
 )paren
 id|hostdata-&gt;port_db
 (braket
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 )braket
 dot
 id|loop_id
@@ -7735,7 +7735,7 @@ op_lshift
 l_int|8
 )paren
 op_or
-id|Cmnd-&gt;lun
+id|Cmnd-&gt;device-&gt;lun
 suffix:semicolon
 macro_line|#else
 id|param
@@ -7953,7 +7953,7 @@ l_string|&quot;isp2x00_reset&quot;
 suffix:semicolon
 id|host
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign

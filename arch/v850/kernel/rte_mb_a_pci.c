@@ -2314,7 +2314,7 @@ id|mapping
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Make physical memory consistant for a single streaming mode DMA&n;   translation after a transfer.&n;&n;   If you perform a pci_map_single() but wish to interrogate the&n;   buffer using the cpu, yet do not wish to teardown the PCI dma&n;   mapping, you must call this function before doing so.  At the next&n;   point you give the PCI dma address back to the card, the device&n;   again owns the buffer.  */
+multiline_comment|/* Make physical memory consistent for a single streaming mode DMA&n;   translation after a transfer.&n;&n;   If you perform a pci_map_single() but wish to interrogate the&n;   buffer using the cpu, yet do not wish to teardown the PCI dma&n;   mapping, you must call this function before doing so.  At the next&n;   point you give the PCI dma address back to the card, the device&n;   again owns the buffer.  */
 r_void
 DECL|function|pci_dma_sync_single
 id|pci_dma_sync_single
@@ -2456,7 +2456,7 @@ id|BUG
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Make physical memory consistant for a set of streaming mode DMA&n;   translations after a transfer.  The same as pci_dma_sync_single but&n;   for a scatter-gather list, same rules and usage.  */
+multiline_comment|/* Make physical memory consistent for a set of streaming mode DMA&n;   translations after a transfer.  The same as pci_dma_sync_single but&n;   for a scatter-gather list, same rules and usage.  */
 r_void
 DECL|function|pci_dma_sync_sg
 id|pci_dma_sync_sg

@@ -14,7 +14,7 @@ l_string|&quot;@(#)cmdpkt.h&t;1.2&quot;
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-multiline_comment|/*&n;** overlays for the data area of a packet. Used in both directions&n;** (to build a packet to send, and to interpret a packet that arrives)&n;** and is very inconvenient for MIPS, so they appear as two seperate&n;** structures - those used for modifying/reading packets on the card&n;** and those for modifying/reading packets in real memory, which have an _M&n;** suffix.&n;*/
+multiline_comment|/*&n;** overlays for the data area of a packet. Used in both directions&n;** (to build a packet to send, and to interpret a packet that arrives)&n;** and is very inconvenient for MIPS, so they appear as two separate&n;** structures - those used for modifying/reading packets on the card&n;** and those for modifying/reading packets in real memory, which have an _M&n;** suffix.&n;*/
 DECL|macro|RTA_BOOT_DATA_SIZE
 mdefine_line|#define&t;RTA_BOOT_DATA_SIZE (PKT_MAX_DATA_LEN-2)
 multiline_comment|/*&n;** The boot information packet looks like this:&n;** This structure overlays a PktCmd-&gt;CmdData structure, and so starts&n;** at Data[2] in the actual pkt!&n;*/

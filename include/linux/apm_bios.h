@@ -83,7 +83,7 @@ DECL|macro|APM_BIOS_DISABLED
 mdefine_line|#define APM_BIOS_DISABLED      &t;0x0008
 DECL|macro|APM_BIOS_DISENGAGED
 mdefine_line|#define APM_BIOS_DISENGAGED     0x0010
-multiline_comment|/*&n; * Data for APM that is persistant across module unload/load&n; */
+multiline_comment|/*&n; * Data for APM that is persistent across module unload/load&n; */
 DECL|struct|apm_info
 r_struct
 id|apm_info

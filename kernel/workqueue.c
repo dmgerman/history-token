@@ -648,6 +648,15 @@ id|cwq-&gt;thread
 op_assign
 id|current
 suffix:semicolon
+id|set_user_nice
+c_func
+(paren
+id|current
+comma
+op_minus
+l_int|10
+)paren
+suffix:semicolon
 id|set_cpus_allowed
 c_func
 (paren
@@ -662,7 +671,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|siginitsetinv
@@ -687,7 +696,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|complete
@@ -854,7 +863,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|flush_signals
@@ -872,7 +881,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sig-&gt;siglock
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace

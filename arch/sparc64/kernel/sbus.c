@@ -3510,7 +3510,7 @@ id|imap
 op_add_assign
 id|reg_base
 suffix:semicolon
-multiline_comment|/* SYSIO inconsistancy.  For external SLOTS, we have to select&n;&t; * the right ICLR register based upon the lower SBUS irq level&n;&t; * bits.&n;&t; */
+multiline_comment|/* SYSIO inconsistency.  For external SLOTS, we have to select&n;&t; * the right ICLR register based upon the lower SBUS irq level&n;&t; * bits.&n;&t; */
 r_if
 c_cond
 (paren

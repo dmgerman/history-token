@@ -1524,7 +1524,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Why 32 ? is this not cache line size dependant?&n; */
+multiline_comment|/*&n; * Why 32 ? is this not cache line size dependent?&n; */
 id|writel
 c_func
 (paren

@@ -19,7 +19,7 @@ mdefine_line|#define US_SC_8070&t;0x05&t;&t;/* Removable media */
 DECL|macro|US_SC_SCSI
 mdefine_line|#define US_SC_SCSI&t;0x06&t;&t;/* Transparent */
 DECL|macro|US_SC_ISD200
-mdefine_line|#define US_SC_ISD200    0x07            /* ISD200 ATA */
+mdefine_line|#define US_SC_ISD200    0x07&t;&t;/* ISD200 ATA */
 DECL|macro|US_SC_MIN
 mdefine_line|#define US_SC_MIN&t;US_SC_RBC
 DECL|macro|US_SC_MAX

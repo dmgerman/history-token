@@ -278,7 +278,7 @@ DECL|macro|X25RES_PKT_TIMEOUT
 mdefine_line|#define X25RES_PKT_TIMEOUT&t;0x42&t;/* X.25 packet time out */
 DECL|macro|X25RES_PKT_RETRY_LIMIT
 mdefine_line|#define X25RES_PKT_RETRY_LIMIT&t;0x43&t;/* X.25 packet retry limit exceeded */
-multiline_comment|/*----- Command-dependant results -----*/
+multiline_comment|/*----- Command-dependent results -----*/
 DECL|macro|X25RES_LINK_DISC
 mdefine_line|#define X25RES_LINK_DISC&t;0x00&t;/* HDLC_LINK_STATUS */
 DECL|macro|X25RES_LINK_IN_ABM

@@ -80,23 +80,31 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-DECL|variable|pfm_pmc_desc
+DECL|variable|pfm_mck_pmc_desc
 r_static
 id|pfm_reg_desc_t
-id|pfm_pmc_desc
+id|pfm_mck_pmc_desc
 (braket
 id|PMU_MAX_PMCS
 )braket
 op_assign
 initialization_block
 suffix:semicolon
-DECL|variable|pfm_pmd_desc
+DECL|variable|pfm_mck_pmd_desc
 r_static
 id|pfm_reg_desc_t
-id|pfm_pmd_desc
+id|pfm_mck_pmd_desc
 (braket
 id|PMU_MAX_PMDS
 )braket
+op_assign
+initialization_block
+suffix:semicolon
+multiline_comment|/*&n; * impl_pmcs, impl_pmds are computed at runtime to minimize errors!&n; */
+DECL|variable|pmu_conf
+r_static
+id|pmu_config_t
+id|pmu_conf
 op_assign
 initialization_block
 suffix:semicolon
@@ -629,6 +637,7 @@ id|ret
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;perfmon: failure check_case1&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -3288,7 +3288,7 @@ id|retval
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Read and write the MII management registers using software-generated&n;   serial MDIO protocol. Note that the command bits and data bits are&n;   send out seperately */
+multiline_comment|/* Read and write the MII management registers using software-generated&n;   serial MDIO protocol. Note that the command bits and data bits are&n;   send out separately */
 DECL|macro|mdio_delay
 mdefine_line|#define mdio_delay()    inl(mdio_addr)
 DECL|function|mdio_idle

@@ -207,7 +207,7 @@ DECL|macro|APIC_TDR_DIV_128
 mdefine_line|#define&t;&t;&t;APIC_TDR_DIV_128&t;0xA
 DECL|macro|APIC_BASE
 mdefine_line|#define APIC_BASE (fix_to_virt(FIX_APIC_BASE))
-macro_line|#ifdef CONFIG_X86_NUMA
+macro_line|#ifdef CONFIG_NUMA
 DECL|macro|MAX_IO_APICS
 mdefine_line|#define MAX_IO_APICS 32
 macro_line|#else

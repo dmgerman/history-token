@@ -49,6 +49,8 @@ DECL|macro|PFM_FL_NOTIFY_BLOCK
 mdefine_line|#define PFM_FL_NOTIFY_BLOCK    &t; 0x04&t;/* block task on user level notifications */
 DECL|macro|PFM_FL_SYSTEM_WIDE
 mdefine_line|#define PFM_FL_SYSTEM_WIDE&t; 0x08&t;/* create a system wide context */
+DECL|macro|PFM_FL_EXCL_IDLE
+mdefine_line|#define PFM_FL_EXCL_IDLE         0x20   /* exclude idle task from system wide session */
 multiline_comment|/*&n; * PMC flags&n; */
 DECL|macro|PFM_REGFL_OVFL_NOTIFY
 mdefine_line|#define PFM_REGFL_OVFL_NOTIFY&t;0x1&t;/* send notification on overflow */
@@ -172,12 +174,18 @@ r_int
 id|reg_random_mask
 suffix:semicolon
 multiline_comment|/* bitmask used to limit random value */
+DECL|member|reg_last_reset_value
+r_int
+r_int
+id|reg_last_reset_value
+suffix:semicolon
+multiline_comment|/* last value used to reset the PMD (PFM_READ_PMDS) */
 DECL|member|reserved
 r_int
 r_int
 id|reserved
 (braket
-l_int|14
+l_int|13
 )braket
 suffix:semicolon
 multiline_comment|/* for future use */
@@ -290,7 +298,7 @@ multiline_comment|/*&n; * Define the version numbers for both perfmon as a whole
 DECL|macro|PFM_VERSION_MAJ
 mdefine_line|#define PFM_VERSION_MAJ&t;&t;1U
 DECL|macro|PFM_VERSION_MIN
-mdefine_line|#define PFM_VERSION_MIN&t;&t;1U
+mdefine_line|#define PFM_VERSION_MIN&t;&t;3U
 DECL|macro|PFM_VERSION
 mdefine_line|#define PFM_VERSION&t;&t;(((PFM_VERSION_MAJ&amp;0xffff)&lt;&lt;16)|(PFM_VERSION_MIN &amp; 0xffff))
 DECL|macro|PFM_SMPL_VERSION_MAJ
@@ -341,10 +349,10 @@ r_int
 id|regs
 suffix:semicolon
 multiline_comment|/* bitmask of which registers overflowed */
-DECL|member|period
+DECL|member|reserved
 r_int
 r_int
-id|period
+id|reserved
 suffix:semicolon
 multiline_comment|/* unused */
 DECL|typedef|perfmon_smpl_entry_t
@@ -371,6 +379,33 @@ id|narg
 )paren
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+r_typedef
+r_struct
+(brace
+DECL|member|handler
+r_void
+(paren
+op_star
+id|handler
+)paren
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|arg
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+DECL|typedef|pfm_intr_handler_desc_t
+)brace
+id|pfm_intr_handler_desc_t
+suffix:semicolon
 r_extern
 r_void
 id|pfm_save_regs
@@ -478,6 +513,11 @@ id|task_struct
 op_star
 comma
 r_int
+r_int
+id|info
+comma
+r_int
+id|is_ctxswin
 )paren
 suffix:semicolon
 r_extern
@@ -490,12 +530,40 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|perfmon_init_percpu
+id|pfm_init_percpu
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* &n; * hooks to allow VTune/Prospect to cooperate with perfmon.&n; * (reserved for system wide monitoring modules only)&n; */
+r_extern
+r_int
+id|pfm_install_alternate_syswide_subsystem
+c_func
+(paren
+id|pfm_intr_handler_desc_t
+op_star
+id|h
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pfm_remove_alternate_syswide_subsystem
+c_func
+(paren
+id|pfm_intr_handler_desc_t
+op_star
+id|h
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * describe the content of the local_cpu_date-&gt;pfm_syst_info field&n; */
+DECL|macro|PFM_CPUINFO_SYST_WIDE
+mdefine_line|#define PFM_CPUINFO_SYST_WIDE&t;0x1&t;/* if set a system wide session exist */
+DECL|macro|PFM_CPUINFO_DCR_PP
+mdefine_line|#define PFM_CPUINFO_DCR_PP&t;0x2&t;/* if set the system wide session has started */
+DECL|macro|PFM_CPUINFO_EXCL_IDLE
+mdefine_line|#define PFM_CPUINFO_EXCL_IDLE&t;0x4&t;/* the system wide session excludes the idle task */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_PERFMON_H */
 eof

@@ -541,7 +541,7 @@ r_return
 id|handle
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Obtain a new handle.  &n; *&n; * We make sure that the transaction can guarantee at least nblocks of&n; * modified buffers in the log.  We block until the log can guarantee&n; * that much space.  &n; *&n; * This function is visible to journal users (like ext2fs), so is not&n; * called with the journal already locked.&n; *&n; * Return a pointer to a newly allocated handle, or NULL on failure&n; */
+multiline_comment|/**&n; * handle_t *journal_start() - Obtain a new handle.  &n; * @journal: Journal to start transaction on.&n; * @nblocks: number of block buffer we might modify&n; *&n; * We make sure that the transaction can guarantee at least nblocks of&n; * modified buffers in the log.  We block until the log can guarantee&n; * that much space.  &n; *&n; * This function is visible to journal users (like ext3fs), so is not&n; * called with the journal already locked.&n; *&n; * Return a pointer to a newly allocated handle, or NULL on failure&n; */
 DECL|function|journal_start
 id|handle_t
 op_star
@@ -901,7 +901,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Try to start a handle, but non-blockingly.  If we weren&squot;t able&n; * to, return an ERR_PTR value.&n; */
+multiline_comment|/**&n; * handle_t *journal_try_start() - Don&squot;t block, but try and get a handle&n; * @journal: Journal to start transaction on.&n; * @nblocks: number of block buffer we might modify&n; * &n; * Try to start a handle, but non-blockingly.  If we weren&squot;t able&n; * to, return an ERR_PTR value.&n; */
 DECL|function|journal_try_start
 id|handle_t
 op_star
@@ -1088,7 +1088,7 @@ r_return
 id|handle
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * journal_extend: extend buffer credits.&n; *&n; * Some transactions, such as large extends and truncates, can be done&n; * atomically all at once or in several stages.  The operation requests&n; * a credit for a number of buffer modications in advance, but can&n; * extend its credit if it needs more.  &n; *&n; * journal_extend tries to give the running handle more buffer credits.&n; * It does not guarantee that allocation: this is a best-effort only.&n; * The calling process MUST be able to deal cleanly with a failure to&n; * extend here.&n; *&n; * Return 0 on success, non-zero on failure.&n; *&n; * return code &lt; 0 implies an error&n; * return code &gt; 0 implies normal transaction-full status.&n; */
+multiline_comment|/**&n; * int journal_extend() - extend buffer credits.&n; * @handle:  handle to &squot;extend&squot;&n; * @nblocks: nr blocks to try to extend by.&n; * &n; * Some transactions, such as large extends and truncates, can be done&n; * atomically all at once or in several stages.  The operation requests&n; * a credit for a number of buffer modications in advance, but can&n; * extend its credit if it needs more.  &n; *&n; * journal_extend tries to give the running handle more buffer credits.&n; * It does not guarantee that allocation - this is a best-effort only.&n; * The calling process MUST be able to deal cleanly with a failure to&n; * extend here.&n; *&n; * Return 0 on success, non-zero on failure.&n; *&n; * return code &lt; 0 implies an error&n; * return code &gt; 0 implies normal transaction-full status.&n; */
 DECL|function|journal_extend
 r_int
 id|journal_extend
@@ -1266,7 +1266,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * journal_restart: restart a handle for a multi-transaction filesystem&n; * operation.&n; *&n; * If the journal_extend() call above fails to grant new buffer credits&n; * to a running handle, a call to journal_restart will commit the&n; * handle&squot;s transaction so far and reattach the handle to a new&n; * transaction capabable of guaranteeing the requested number of&n; * credits.&n; */
+multiline_comment|/**&n; * int journal_restart() - restart a handle .&n; * @handle:  handle to restart&n; * @nblocks: nr credits requested&n; * &n; * Restart a handle for a multi-transaction filesystem&n; * operation.&n; *&n; * If the journal_extend() call above fails to grant new buffer credits&n; * to a running handle, a call to journal_restart will commit the&n; * handle&squot;s transaction so far and reattach the handle to a new&n; * transaction capabable of guaranteeing the requested number of&n; * credits.&n; */
 DECL|function|journal_restart
 r_int
 id|journal_restart
@@ -1382,7 +1382,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Barrier operation: establish a transaction barrier. &n; *&n; * This locks out any further updates from being started, and blocks&n; * until all existing updates have completed, returning only once the&n; * journal is in a quiescent state with no updates running.&n; *&n; * The journal lock should not be held on entry.&n; */
+multiline_comment|/**&n; * void journal_lock_updates () - establish a transaction barrier.&n; * @journal:  Journal to establish a barrier on.&n; *&n; * This locks out any further updates from being started, and blocks&n; * until all existing updates have completed, returning only once the&n; * journal is in a quiescent state with no updates running.&n; *&n; * The journal lock should not be held on entry.&n; */
 DECL|function|journal_lock_updates
 r_void
 id|journal_lock_updates
@@ -1465,7 +1465,7 @@ id|journal-&gt;j_barrier
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Release a transaction barrier obtained with journal_lock_updates().&n; *&n; * Should be called without the journal lock held.&n; */
+multiline_comment|/**&n; * void journal_unlock_updates (journal_t* journal) - release barrier&n; * @journal:  Journal to release the barrier on.&n; * &n; * Release a transaction barrier obtained with journal_lock_updates().&n; *&n; * Should be called without the journal lock held.&n; */
 DECL|function|journal_unlock_updates
 r_void
 id|journal_unlock_updates
@@ -1607,7 +1607,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * journal_get_write_access: notify intent to modify a buffer for metadata&n; * (not data) update.&n; *&n; * If the buffer is already part of the current transaction, then there&n; * is nothing we need to do.  If it is already part of a prior&n; * transaction which we are still committing to disk, then we need to&n; * make sure that we do not overwrite the old copy: we do copy-out to&n; * preserve the copy going to disk.  We also account the buffer against&n; * the handle&squot;s metadata buffer credits (unless the buffer is already&n; * part of the transaction, that is).&n; *&n; * Returns an error code or 0 on success.&n; */
+multiline_comment|/*&n; * If the buffer is already part of the current transaction, then there&n; * is nothing we need to do.  If it is already part of a prior&n; * transaction which we are still committing to disk, then we need to&n; * make sure that we do not overwrite the old copy: we do copy-out to&n; * preserve the copy going to disk.  We also account the buffer against&n; * the handle&squot;s metadata buffer credits (unless the buffer is already&n; * part of the transaction, that is).&n; *&n; */
 r_static
 r_int
 DECL|function|do_get_write_access
@@ -1949,6 +1949,10 @@ op_eq
 id|BJ_Shadow
 )paren
 (brace
+id|wait_queue_head_t
+op_star
+id|wqh
+suffix:semicolon
 id|JBUFFER_TRACE
 c_func
 (paren
@@ -1971,13 +1975,28 @@ id|journal
 )paren
 suffix:semicolon
 multiline_comment|/* commit wakes up all shadow buffers after IO */
-id|sleep_on_buffer
+id|wqh
+op_assign
+id|bh_waitq_head
 c_func
 (paren
 id|jh2bh
 c_func
 (paren
 id|jh
+)paren
+)paren
+suffix:semicolon
+id|wait_event
+c_func
+(paren
+op_star
+id|wqh
+comma
+(paren
+id|jh-&gt;b_jlist
+op_ne
+id|BJ_Shadow
 )paren
 )paren
 suffix:semicolon
@@ -2320,6 +2339,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * int journal_get_write_access() - notify intent to modify a buffer for metadata (not data) update.&n; * @handle: transaction to add buffer modifications to&n; * @bh:     bh to be used for metadata writes&n; *&n; * Returns an error code or 0 on success.&n; *&n; * In full data journalling mode the buffer may be of type BJ_AsyncData,&n; * because we&squot;re write()ing a buffer which is also part of a shared mapping.&n; */
 DECL|function|journal_get_write_access
 r_int
 id|journal_get_write_access
@@ -2396,6 +2416,7 @@ id|rc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * When the user wants to journal a newly created buffer_head&n; * (ie. getblk() returned a new buffer and we are going to populate it&n; * manually rather than reading off disk), then we need to keep the&n; * buffer_head locked until it has been completely filled with new&n; * data.  In this case, we should be able to make the assertion that&n; * the bh is not already part of an existing transaction.  &n; * &n; * The buffer should already be locked by the caller by this point.&n; * There is no lock ranking violation: it was a newly created,&n; * unlocked buffer beforehand. */
+multiline_comment|/**&n; * int journal_get_create_access () - notify intent to use newly created bh&n; * @handle: transaction to new buffer to&n; * @bh: new buffer.&n; *&n; * Call this if you create a new bh.&n; */
 DECL|function|journal_get_create_access
 r_int
 id|journal_get_create_access
@@ -2649,7 +2670,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * journal_get_undo_access: Notify intent to modify metadata with non-&n; * rewindable consequences&n; *&n; * Sometimes there is a need to distinguish between metadata which has&n; * been committed to disk and that which has not.  The ext3fs code uses&n; * this for freeing and allocating space: we have to make sure that we&n; * do not reuse freed space until the deallocation has been committed,&n; * since if we overwrote that space we would make the delete&n; * un-rewindable in case of a crash.&n; * &n; * To deal with that, journal_get_undo_access requests write access to a&n; * buffer for parts of non-rewindable operations such as delete&n; * operations on the bitmaps.  The journaling code must keep a copy of&n; * the buffer&squot;s contents prior to the undo_access call until such time&n; * as we know that the buffer has definitely been committed to disk.&n; * &n; * We never need to know which transaction the committed data is part&n; * of: buffers touched here are guaranteed to be dirtied later and so&n; * will be committed to a new transaction in due course, at which point&n; * we can discard the old committed data pointer.&n; *&n; * Returns error number or 0 on success.  &n; */
+multiline_comment|/**&n; * int journal_get_undo_access() -  Notify intent to modify metadata with non-rewindable consequences&n; * @handle: transaction&n; * @bh: buffer to undo&n; * &n; * Sometimes there is a need to distinguish between metadata which has&n; * been committed to disk and that which has not.  The ext3fs code uses&n; * this for freeing and allocating space, we have to make sure that we&n; * do not reuse freed space until the deallocation has been committed,&n; * since if we overwrote that space we would make the delete&n; * un-rewindable in case of a crash.&n; * &n; * To deal with that, journal_get_undo_access requests write access to a&n; * buffer for parts of non-rewindable operations such as delete&n; * operations on the bitmaps.  The journaling code must keep a copy of&n; * the buffer&squot;s contents prior to the undo_access call until such time&n; * as we know that the buffer has definitely been committed to disk.&n; * &n; * We never need to know which transaction the committed data is part&n; * of, buffers touched here are guaranteed to be dirtied later and so&n; * will be committed to a new transaction in due course, at which point&n; * we can discard the old committed data pointer.&n; *&n; * Returns error number or 0 on success.  &n; */
 DECL|function|journal_get_undo_access
 r_int
 id|journal_get_undo_access
@@ -2829,7 +2850,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * journal_dirty_data: mark a buffer as containing dirty data which&n; * needs to be flushed before we can commit the current transaction.  &n; *&n; * The buffer is placed on the transaction&squot;s data list and is marked as&n; * belonging to the transaction.&n; *&n; * Returns error number or 0 on success.  &n; *&n; * journal_dirty_data() can be called via page_launder-&gt;ext3_writepage&n; * by kswapd.  So it cannot block.  Happily, there&squot;s nothing here&n; * which needs lock_journal if `async&squot; is set.&n; */
+multiline_comment|/** &n; * int journal_dirty_data() -  mark a buffer as containing dirty data which needs to be flushed before we can commit the current transaction.  &n; * @handle: transaction&n; * @bh: bufferhead to mark&n; * &n; * The buffer is placed on the transaction&squot;s data list and is marked as&n; * belonging to the transaction.&n; *&n; * Returns error number or 0 on success.  &n; */
 DECL|function|journal_dirty_data
 r_int
 id|journal_dirty_data
@@ -2844,6 +2865,7 @@ op_star
 id|bh
 )paren
 (brace
+multiline_comment|/*&n; * journal_dirty_data() can be called via page_launder-&gt;ext3_writepage&n; * by kswapd.  So it cannot block.  Happily, there&squot;s nothing here&n; * which needs lock_journal if `async&squot; is set.&n; */
 id|journal_t
 op_star
 id|journal
@@ -3188,7 +3210,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * journal_dirty_metadata: mark a buffer as containing dirty metadata&n; * which needs to be journaled as part of the current transaction.&n; *&n; * The buffer is placed on the transaction&squot;s metadata list and is marked&n; * as belonging to the transaction.  &n; *&n; * Special care needs to be taken if the buffer already belongs to the&n; * current committing transaction (in which case we should have frozen&n; * data present for that commit).  In that case, we don&squot;t relink the&n; * buffer: that only gets done when the old transaction finally&n; * completes its commit.&n; * &n; * Returns error number or 0 on success.  &n; */
+multiline_comment|/** &n; * int journal_dirty_metadata() -  mark a buffer as containing dirty metadata&n; * @handle: transaction to add buffer to.&n; * @bh: buffer to mark &n; * &n; * mark dirty metadata which needs to be journaled as part of the current transaction.&n; *&n; * The buffer is placed on the transaction&squot;s metadata list and is marked&n; * as belonging to the transaction.  &n; *&n; * Returns error number or 0 on success.  &n; */
 DECL|function|journal_dirty_metadata
 r_int
 id|journal_dirty_metadata
@@ -3203,6 +3225,7 @@ op_star
 id|bh
 )paren
 (brace
+multiline_comment|/*&n; * Special care needs to be taken if the buffer already belongs to the&n; * current committing transaction (in which case we should have frozen&n; * data present for that commit).  In that case, we don&squot;t relink the&n; * buffer: that only gets done when the old transaction finally&n; * completes its commit.&n; * &n; */
 id|transaction_t
 op_star
 id|transaction
@@ -3523,7 +3546,7 @@ id|journal
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* &n; * journal_forget: bforget() for potentially-journaled buffers.  We can&n; * only do the bforget if there are no commits pending against the&n; * buffer.  If the buffer is dirty in the current running transaction we&n; * can safely unlink it. &n; *&n; * bh may not be a journalled buffer at all - it may be a non-JBD&n; * buffer which came off the hashtable.  Check for this.&n; *&n; * Decrements bh-&gt;b_count by one.&n; * &n; * Allow this call even if the handle has aborted --- it may be part of&n; * the caller&squot;s cleanup after an abort.&n; */
+multiline_comment|/** &n; * void journal_forget() - bforget() for potentially-journaled buffers.&n; * @handle: transaction handle&n; * @bh:     bh to &squot;forget&squot;&n; *&n; * We can only do the bforget if there are no commits pending against the&n; * buffer.  If the buffer is dirty in the current running transaction we&n; * can safely unlink it. &n; *&n; * bh may not be a journalled buffer at all - it may be a non-JBD&n; * buffer which came off the hashtable.  Check for this.&n; *&n; * Decrements bh-&gt;b_count by one.&n; * &n; * Allow this call even if the handle has aborted --- it may be part of&n; * the caller&squot;s cleanup after an abort.&n; */
 DECL|function|journal_forget
 r_void
 id|journal_forget
@@ -4015,7 +4038,7 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * Register a callback function for this handle.  The function will be&n; * called when the transaction that this handle is part of has been&n; * committed to disk with the original callback data struct and the&n; * error status of the journal as parameters.  There is no guarantee of&n; * ordering between handles within a single transaction, nor between&n; * callbacks registered on the same handle.&n; *&n; * The caller is responsible for allocating the journal_callback struct.&n; * This is to allow the caller to add as much extra data to the callback&n; * as needed, but reduce the overhead of multiple allocations.  The caller&n; * allocated struct must start with a struct journal_callback at offset 0,&n; * and has the caller-specific data afterwards.&n; */
+multiline_comment|/**&n; * void journal_callback_set() -  Register a callback function for this handle.&n; * @handle: handle to attach the callback to.&n; * @func: function to callback.&n; * @jcb:  structure with additional information required by func() , and&n; *        some space for jbd internal information.&n; * &n; * The function will be&n; * called when the transaction that this handle is part of has been&n; * committed to disk with the original callback data struct and the&n; * error status of the journal as parameters.  There is no guarantee of&n; * ordering between handles within a single transaction, nor between&n; * callbacks registered on the same handle.&n; *&n; * The caller is responsible for allocating the journal_callback struct.&n; * This is to allow the caller to add as much extra data to the callback&n; * as needed, but reduce the overhead of multiple allocations.  The caller&n; * allocated struct must start with a struct journal_callback at offset 0,&n; * and has the caller-specific data afterwards.&n; */
 DECL|function|journal_callback_set
 r_void
 id|journal_callback_set
@@ -4061,7 +4084,7 @@ op_assign
 id|func
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * All done for a particular handle.&n; *&n; * There is not much action needed here.  We just return any remaining&n; * buffer credits to the transaction and remove the handle.  The only&n; * complication is that we need to start a commit operation if the&n; * filesystem is marked for synchronous update.&n; *&n; * journal_stop itself will not usually return an error, but it may&n; * do so in unusual circumstances.  In particular, expect it to &n; * return -EIO if a journal_abort has been executed since the&n; * transaction began.&n; */
+multiline_comment|/**&n; * int journal_stop() - complete a transaction&n; * @handle: tranaction to complete.&n; * &n; * All done for a particular handle.&n; *&n; * There is not much action needed here.  We just return any remaining&n; * buffer credits to the transaction and remove the handle.  The only&n; * complication is that we need to start a commit operation if the&n; * filesystem is marked for synchronous update.&n; *&n; * journal_stop itself will not usually return an error, but it may&n; * do so in unusual circumstances.  In particular, expect it to &n; * return -EIO if a journal_abort has been executed since the&n; * transaction began.&n; */
 DECL|function|journal_stop
 r_int
 id|journal_stop
@@ -4331,7 +4354,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * For synchronous operations: force any uncommitted trasnactions&n; * to disk.  May seem kludgy, but it reuses all the handle batching&n; * code in a very simple manner.&n; */
+multiline_comment|/**int journal_force_commit() - force any uncommitted transactions&n; * @journal: journal to force&n; *&n; * For synchronous operations: force any uncommitted transactions&n; * to disk.  May seem kludgy, but it reuses all the handle batching&n; * code in a very simple manner.&n; */
 DECL|function|journal_force_commit
 r_int
 id|journal_force_commit
@@ -4958,7 +4981,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * journal_try_to_free_buffers().  Try to remove all this page&squot;s buffers&n; * from the journal.&n; *&n; * This complicates JBD locking somewhat.  We aren&squot;t protected by the&n; * BKL here.  We wish to remove the buffer from its committing or&n; * running transaction&squot;s -&gt;t_datalist via __journal_unfile_buffer.&n; *&n; * This may *change* the value of transaction_t-&gt;t_datalist, so anyone&n; * who looks at t_datalist needs to lock against this function.&n; *&n; * Even worse, someone may be doing a journal_dirty_data on this&n; * buffer.  So we need to lock against that.  journal_dirty_data()&n; * will come out of the lock with the buffer dirty, which makes it&n; * ineligible for release here.&n; *&n; * Who else is affected by this?  hmm...  Really the only contender&n; * is do_get_write_access() - it could be looking at the buffer while&n; * journal_try_to_free_buffer() is changing its state.  But that&n; * cannot happen because we never reallocate freed data as metadata&n; * while the data is part of a transaction.  Yes?&n; */
+multiline_comment|/** &n; * int journal_try_to_free_buffers() - try to free page buffers.&n; * @journal: journal for operation&n; * @page: to try and free&n; * @gfp_mask: &squot;IO&squot; mode for try_to_free_buffers()&n; *&n; * &n; * For all the buffers on this page,&n; * if they are fully written out ordered data, move them onto BUF_CLEAN&n; * so try_to_free_buffers() can reap them.&n; * &n; * This function returns non-zero if we wish try_to_free_buffers()&n; * to be called. We do this if the page is releasable by try_to_free_buffers().&n; * We also do it if the page has locked or dirty buffers and the caller wants&n; * us to perform sync or async writeout.&n; */
 DECL|function|journal_try_to_free_buffers
 r_int
 id|journal_try_to_free_buffers
@@ -4977,6 +5000,7 @@ r_int
 id|unused_gfp_mask
 )paren
 (brace
+multiline_comment|/*&n; * journal_try_to_free_buffers().  Try to remove all this page&squot;s buffers&n; * from the journal.&n; *&n; * This complicates JBD locking somewhat.  We aren&squot;t protected by the&n; * BKL here.  We wish to remove the buffer from its committing or&n; * running transaction&squot;s -&gt;t_datalist via __journal_unfile_buffer.&n; *&n; * This may *change* the value of transaction_t-&gt;t_datalist, so anyone&n; * who looks at t_datalist needs to lock against this function.&n; *&n; * Even worse, someone may be doing a journal_dirty_data on this&n; * buffer.  So we need to lock against that.  journal_dirty_data()&n; * will come out of the lock with the buffer dirty, which makes it&n; * ineligible for release here.&n; *&n; * Who else is affected by this?  hmm...  Really the only contender&n; * is do_get_write_access() - it could be looking at the buffer while&n; * journal_try_to_free_buffer() is changing its state.  But that&n; * cannot happen because we never reallocate freed data as metadata&n; * while the data is part of a transaction.  Yes?&n; */
 r_struct
 id|buffer_head
 op_star
@@ -5506,7 +5530,7 @@ r_return
 id|may_free
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return non-zero if the page&squot;s buffers were successfully reaped&n; */
+multiline_comment|/** &n; * int journal_invalidatepage() &n; * @journal: journal to use for flush... &n; * @page:    page to flush&n; * @offset:  length of page to invalidate.&n; *&n; * Reap page buffers containing data after offset in page.&n; *&n; * Return non-zero if the page&squot;s buffers were successfully reaped.&n; */
 DECL|function|journal_invalidatepage
 r_int
 id|journal_invalidatepage

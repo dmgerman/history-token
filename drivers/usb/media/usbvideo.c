@@ -212,7 +212,7 @@ id|file
 )paren
 suffix:semicolon
 r_static
-r_int
+id|ssize_t
 id|usbvideo_v4l_read
 c_func
 (paren
@@ -7534,7 +7534,7 @@ suffix:semicolon
 multiline_comment|/*&n; * usbvideo_v4l_read()&n; *&n; * This is mostly boring stuff. We simply ask for a frame and when it&n; * arrives copy all the video data from it into user space. There is&n; * no obvious need to override this method.&n; *&n; * History:&n; * 20-Oct-2000 Created.&n; * 01-Nov-2000 Added mutex (uvd-&gt;lock).&n; */
 DECL|function|usbvideo_v4l_read
 r_static
-r_int
+id|ssize_t
 id|usbvideo_v4l_read
 c_func
 (paren

@@ -22,6 +22,9 @@ id|len
 comma
 r_int
 id|token
+comma
+r_int
+id|maxpacket
 )paren
 (brace
 r_int
@@ -181,6 +184,22 @@ op_assign
 id|len
 suffix:semicolon
 )brace
+multiline_comment|/* short packets may only terminate transfers */
+r_if
+c_cond
+(paren
+id|count
+op_ne
+id|len
+)paren
+id|count
+op_sub_assign
+(paren
+id|count
+op_mod
+id|maxpacket
+)paren
+suffix:semicolon
 )brace
 id|qtd-&gt;hw_token
 op_assign
@@ -240,7 +259,7 @@ id|qtd-&gt;qtd_dma
 suffix:semicolon
 id|qh-&gt;hw_alt_next
 op_assign
-id|ehci-&gt;async-&gt;hw_alt_next
+id|EHCI_LIST_END
 suffix:semicolon
 multiline_comment|/* HC must see latest qtd and qh data before we clear ACTIVE+HALT */
 id|wmb
@@ -262,7 +281,6 @@ DECL|macro|IS_SHORT_READ
 mdefine_line|#define IS_SHORT_READ(token) (QTD_LENGTH (token) != 0 &amp;&amp; QTD_PID (token) == 1)
 DECL|function|qtd_copy_status
 r_static
-r_inline
 r_void
 id|qtd_copy_status
 (paren
@@ -820,13 +838,19 @@ id|tmp
 suffix:semicolon
 r_int
 id|stopped
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|count
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+id|do_status
+op_assign
+l_int|0
+suffix:semicolon
+id|u8
+id|state
 suffix:semicolon
 r_if
 c_cond
@@ -842,6 +866,23 @@ id|qh-&gt;qtd_list
 )paren
 r_return
 id|count
+suffix:semicolon
+multiline_comment|/* completions (or tasks on other cpus) must never clobber HALT&n;&t; * till we&squot;ve gone through and cleaned everything up, even when&n;&t; * they add urbs to this qh&squot;s queue or mark them for unlinking.&n;&t; *&n;&t; * NOTE:  unlinking expects to be done in queue order.&n;&t; */
+id|state
+op_assign
+id|qh-&gt;qh_state
+suffix:semicolon
+id|qh-&gt;qh_state
+op_assign
+id|QH_STATE_COMPLETING
+suffix:semicolon
+id|stopped
+op_assign
+(paren
+id|state
+op_eq
+id|QH_STATE_IDLE
+)paren
 suffix:semicolon
 multiline_comment|/* remove de-activated QTDs from front of queue.&n;&t; * after faults (including short reads), cleanup this urb&n;&t; * then let the queue advance.&n;&t; * if queue is stopped, handles unlinks.&n;&t; */
 id|list_for_each_safe
@@ -955,12 +996,6 @@ op_assign
 id|stopped
 op_logical_or
 (paren
-id|qh-&gt;qh_state
-op_eq
-id|QH_STATE_IDLE
-)paren
-op_logical_or
-(paren
 id|HALT_BIT
 op_amp
 id|qh-&gt;hw_token
@@ -1003,13 +1038,23 @@ op_amp
 id|QTD_STS_HALT
 )paren
 op_logical_and
-id|ehci-&gt;async-&gt;hw_alt_next
-op_eq
+(paren
 id|qh-&gt;hw_alt_next
+op_amp
+id|QTD_MASK
 )paren
+op_eq
+id|ehci-&gt;async-&gt;hw_alt_next
+)paren
+(brace
+id|stopped
+op_assign
+l_int|1
+suffix:semicolon
 r_goto
 id|halt
 suffix:semicolon
+)brace
 multiline_comment|/* stop scanning when we reach qtds the hc is using */
 )brace
 r_else
@@ -1023,38 +1068,75 @@ id|stopped
 )paren
 )paren
 (brace
-id|last
-op_assign
-l_int|0
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* ignore active qtds unless some previous qtd&n;&t;&t;&t; * for the urb faulted (including short read) or&n;&t;&t;&t; * its urb was canceled.  we may patch qh or qtds.&n;&t;&t;&t; */
+multiline_comment|/* ignore active urbs unless some previous qtd&n;&t;&t;&t; * for the urb faulted (including short read) or&n;&t;&t;&t; * its urb was canceled.  we may patch qh or qtds.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
+id|likely
 (paren
-id|token
-op_amp
-id|QTD_STS_ACTIVE
-)paren
-op_logical_and
 id|urb-&gt;status
 op_eq
 op_minus
 id|EINPROGRESS
 )paren
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* issue status after short control reads */
+r_if
+c_cond
+(paren
+id|unlikely
+(paren
+id|do_status
+op_ne
+l_int|0
+)paren
+op_logical_and
+id|QTD_PID
+(paren
+id|token
+)paren
+op_eq
+l_int|0
+multiline_comment|/* OUT */
+)paren
 (brace
-id|last
+id|do_status
 op_assign
 l_int|0
 suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+multiline_comment|/* token in overlay may be most current */
+r_if
+c_cond
+(paren
+id|state
+op_eq
+id|QH_STATE_IDLE
+op_logical_and
+id|cpu_to_le32
+(paren
+id|qtd-&gt;qtd_dma
+)paren
+op_eq
+id|qh-&gt;hw_current
+)paren
+id|token
+op_assign
+id|le32_to_cpu
+(paren
+id|qh-&gt;hw_token
+)paren
+suffix:semicolon
+multiline_comment|/* force halt for unlinked or blocked qh, so we&squot;ll&n;&t;&t;&t; * patch the qh later and so that completions can&squot;t&n;&t;&t;&t; * activate it while we &quot;know&quot; it&squot;s stopped.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1077,10 +1159,6 @@ id|wmb
 (paren
 )paren
 suffix:semicolon
-id|stopped
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/* remove it from the queue */
@@ -1099,6 +1177,20 @@ comma
 id|qtd-&gt;length
 comma
 id|token
+)paren
+suffix:semicolon
+id|do_status
+op_assign
+(paren
+id|urb-&gt;status
+op_eq
+op_minus
+id|EREMOTEIO
+)paren
+op_logical_and
+id|usb_pipecontrol
+(paren
+id|urb-&gt;pipe
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -1178,6 +1270,11 @@ id|last
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* restore original state; caller must unlink or relink */
+id|qh-&gt;qh_state
+op_assign
+id|state
+suffix:semicolon
 multiline_comment|/* update qh after fault cleanup */
 r_if
 c_cond
@@ -1344,10 +1441,6 @@ id|maxpacket
 suffix:semicolon
 r_int
 id|is_input
-comma
-id|status_patch
-op_assign
-l_int|0
 suffix:semicolon
 id|u32
 id|token
@@ -1440,6 +1533,8 @@ multiline_comment|/* &quot;setup&quot; */
 op_lshift
 l_int|8
 )paren
+comma
+l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* ... and always at least one more pid */
@@ -1491,26 +1586,6 @@ comma
 id|head
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-OG
-l_int|0
-op_logical_and
-id|is_input
-op_logical_and
-op_logical_neg
-(paren
-id|urb-&gt;transfer_flags
-op_amp
-id|URB_SHORT_NOT_OK
-)paren
-)paren
-id|status_patch
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * data transfer stage:  buffer setup&n;&t; */
 r_if
@@ -1532,6 +1607,7 @@ id|buf
 op_assign
 l_int|0
 suffix:semicolon
+singleline_comment|// FIXME this &squot;buf&squot; check break some zlps...
 r_if
 c_cond
 (paren
@@ -1586,6 +1662,8 @@ comma
 id|len
 comma
 id|token
+comma
+id|maxpacket
 )paren
 suffix:semicolon
 id|len
@@ -1595,6 +1673,15 @@ suffix:semicolon
 id|buf
 op_add_assign
 id|this_qtd_len
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|is_input
+)paren
+id|qtd-&gt;hw_alt_next
+op_assign
+id|ehci-&gt;async-&gt;hw_alt_next
 suffix:semicolon
 multiline_comment|/* qh makes control packets use qtd toggle; maybe switch it */
 r_if
@@ -1677,6 +1764,30 @@ id|head
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* unless the bulk/interrupt caller wants a chance to clean&n;&t; * up after short reads, hc should advance qh past this urb&n;&t; */
+r_if
+c_cond
+(paren
+id|likely
+(paren
+(paren
+id|urb-&gt;transfer_flags
+op_amp
+id|URB_SHORT_NOT_OK
+)paren
+op_eq
+l_int|0
+op_logical_or
+id|usb_pipecontrol
+(paren
+id|urb-&gt;pipe
+)paren
+)paren
+)paren
+id|qtd-&gt;hw_alt_next
+op_assign
+id|EHCI_LIST_END
+suffix:semicolon
 multiline_comment|/*&n;&t; * control requests may need a terminating data &quot;status&quot; ack;&n;&t; * bulk ones may need a terminating short packet (zero length).&n;&t; */
 r_if
 c_cond
@@ -1806,41 +1917,11 @@ comma
 l_int|0
 comma
 id|token
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* if we&squot;re permitting a short control read, we want the hardware to&n;&t; * just continue after short data and send the status ack.  it can do&n;&t; * that on the last data packet (typically the only one).  for other&n;&t; * packets, software fixup is needed (in qh_completions).&n;&t; */
-r_if
-c_cond
-(paren
-id|status_patch
-)paren
-(brace
-r_struct
-id|ehci_qtd
-op_star
-id|prev
-suffix:semicolon
-id|prev
-op_assign
-id|list_entry
-(paren
-id|qtd-&gt;qtd_list.prev
-comma
-r_struct
-id|ehci_qtd
-comma
-id|qtd_list
-)paren
-suffix:semicolon
-id|prev-&gt;hw_alt_next
-op_assign
-id|QTD_NEXT
-(paren
-id|qtd-&gt;qtd_dma
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* by default, enable interrupt on urb completion */
 r_if
@@ -2234,6 +2315,13 @@ r_case
 id|USB_SPEED_FULL
 suffix:colon
 multiline_comment|/* EPS 0 means &quot;full&quot; */
+r_if
+c_cond
+(paren
+id|type
+op_ne
+id|PIPE_INTERRUPT
+)paren
 id|info1
 op_or_assign
 (paren
@@ -2309,14 +2397,6 @@ l_int|12
 )paren
 suffix:semicolon
 multiline_comment|/* EPS &quot;high&quot; */
-id|info1
-op_or_assign
-(paren
-id|EHCI_TUNE_RL_HS
-op_lshift
-l_int|28
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2325,6 +2405,14 @@ op_eq
 id|PIPE_CONTROL
 )paren
 (brace
+id|info1
+op_or_assign
+(paren
+id|EHCI_TUNE_RL_HS
+op_lshift
+l_int|28
+)paren
+suffix:semicolon
 id|info1
 op_or_assign
 l_int|64
@@ -2357,6 +2445,14 @@ op_eq
 id|PIPE_BULK
 )paren
 (brace
+id|info1
+op_or_assign
+(paren
+id|EHCI_TUNE_RL_HS
+op_lshift
+l_int|28
+)paren
+suffix:semicolon
 id|info1
 op_or_assign
 l_int|512
@@ -2905,16 +3001,9 @@ id|qh-&gt;qh_state
 op_ne
 id|QH_STATE_IDLE
 op_logical_and
-(paren
-id|cpu_to_le32
-(paren
-id|QTD_STS_HALT
-)paren
-op_amp
-id|qh-&gt;hw_token
-)paren
-op_eq
-l_int|0
+id|qh-&gt;qh_state
+op_ne
+id|QH_STATE_COMPLETING
 )paren
 id|ehci_warn
 (paren
@@ -3044,10 +3133,6 @@ id|qtd
 comma
 id|qtd-&gt;qtd_dma
 )paren
-suffix:semicolon
-id|qtd-&gt;hw_alt_next
-op_assign
-id|ehci-&gt;async-&gt;hw_alt_next
 suffix:semicolon
 id|qh-&gt;dummy
 op_assign
@@ -3342,6 +3427,21 @@ suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* the async qh for the qtds being reclaimed are now unlinked from the HC */
+r_static
+r_void
+id|start_unlink_async
+(paren
+r_struct
+id|ehci_hcd
+op_star
+id|ehci
+comma
+r_struct
+id|ehci_qh
+op_star
+id|qh
+)paren
+suffix:semicolon
 DECL|function|end_unlink_async
 r_static
 r_void
@@ -3364,6 +3464,11 @@ op_star
 id|qh
 op_assign
 id|ehci-&gt;reclaim
+suffix:semicolon
+r_struct
+id|ehci_qh
+op_star
+id|next
 suffix:semicolon
 id|del_timer
 (paren
@@ -3399,6 +3504,15 @@ op_assign
 l_int|0
 suffix:semicolon
 id|ehci-&gt;reclaim_ready
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* other unlink(s) may be pending (in QH_STATE_UNLINK_WAIT) */
+id|next
+op_assign
+id|qh-&gt;reclaim
+suffix:semicolon
+id|qh-&gt;reclaim
 op_assign
 l_int|0
 suffix:semicolon
@@ -3480,6 +3594,18 @@ id|EHCI_ASYNC_JIFFIES
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|next
+)paren
+id|start_unlink_async
+(paren
+id|ehci
+comma
+id|next
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* makes sure the async qh will become idle */
 multiline_comment|/* caller must own ehci-&gt;lock */
@@ -3519,9 +3645,15 @@ c_cond
 (paren
 id|ehci-&gt;reclaim
 op_logical_or
+(paren
 id|qh-&gt;qh_state
 op_ne
 id|QH_STATE_LINKED
+op_logical_and
+id|qh-&gt;qh_state
+op_ne
+id|QH_STATE_UNLINK_WAIT
+)paren
 macro_line|#ifdef CONFIG_SMP
 singleline_comment|// this macro lies except on SMP compiles
 op_logical_or
@@ -3630,6 +3762,7 @@ id|USB_STATE_HALT
 )paren
 )paren
 (brace
+multiline_comment|/* if (unlikely (qh-&gt;reclaim != 0))&n;&t;&t; * &t;this will recurse, probably not much&n;&t;&t; */
 id|end_unlink_async
 (paren
 id|ehci

@@ -130,7 +130,7 @@ DECL|macro|FSR_CEXC_SHIFT
 mdefine_line|#define FSR_CEXC_SHIFT&t;0UL
 DECL|macro|FSR_CEXC_MASK
 mdefine_line|#define FSR_CEXC_MASK&t;(0x1fUL &lt;&lt; FSR_CEXC_SHIFT)
-multiline_comment|/* All routines returning an exception to raise should detect&n; * such exceptions _before_ rounding to be consistant with&n; * the behavior of the hardware in the implemented cases&n; * (and thus with the recommendations in the V9 architecture&n; * manual).&n; *&n; * We return 0 if a SIGFPE should be sent, 1 otherwise.&n; */
+multiline_comment|/* All routines returning an exception to raise should detect&n; * such exceptions _before_ rounding to be consistent with&n; * the behavior of the hardware in the implemented cases&n; * (and thus with the recommendations in the V9 architecture&n; * manual).&n; *&n; * We return 0 if a SIGFPE should be sent, 1 otherwise.&n; */
 DECL|function|record_exception
 r_static
 r_inline

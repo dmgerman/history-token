@@ -3,7 +3,7 @@ macro_line|#ifndef __PTRACE_SKAS_H
 DECL|macro|__PTRACE_SKAS_H
 mdefine_line|#define __PTRACE_SKAS_H
 macro_line|#include &quot;uml-config.h&quot;
-macro_line|#ifdef CONFIG_MODE_SKAS
+macro_line|#ifdef UML_CONFIG_MODE_SKAS
 macro_line|#include &quot;skas_ptregs.h&quot;
 DECL|macro|HOST_FRAME_SIZE
 mdefine_line|#define HOST_FRAME_SIZE 17

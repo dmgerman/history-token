@@ -513,6 +513,12 @@ id|dumpable
 suffix:colon
 l_int|1
 suffix:semicolon
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|member|used_hugetlb
+r_int
+id|used_hugetlb
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Architecture-specific MM context */
 DECL|member|context
 id|mm_context_t
@@ -554,9 +560,9 @@ r_extern
 r_int
 id|mmlist_nr
 suffix:semicolon
-DECL|struct|signal_struct
+DECL|struct|sighand_struct
 r_struct
-id|signal_struct
+id|sighand_struct
 (brace
 DECL|member|count
 id|atomic_t
@@ -573,6 +579,17 @@ suffix:semicolon
 DECL|member|siglock
 id|spinlock_t
 id|siglock
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * NOTE! &quot;signal_struct&quot; does not have it&squot;s own&n; * locking, because a shared signal_struct always&n; * implies a shared sighand_struct, so locking&n; * sighand_struct is always a proper superset of&n; * the locking of signal_struct.&n; */
+DECL|struct|signal_struct
+r_struct
+id|signal_struct
+(brace
+DECL|member|count
+id|atomic_t
+id|count
 suffix:semicolon
 multiline_comment|/* current thread group signal load-balancing target: */
 DECL|member|curr_target
@@ -600,6 +617,11 @@ r_struct
 id|task_struct
 op_star
 id|group_exit_task
+suffix:semicolon
+multiline_comment|/* thread group stop support, overloads group_exit_code too */
+DECL|member|group_stop_count
+r_int
+id|group_stop_count
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -945,8 +967,7 @@ comma
 id|cstime
 suffix:semicolon
 DECL|member|start_time
-r_int
-r_int
+id|u64
 id|start_time
 suffix:semicolon
 multiline_comment|/* mm fault and swap info: this can arguably be seen as either mm-specific or thread-specific */
@@ -1106,11 +1127,17 @@ op_star
 r_namespace
 suffix:semicolon
 multiline_comment|/* signal handlers */
-DECL|member|sig
+DECL|member|signal
 r_struct
 id|signal_struct
 op_star
-id|sig
+id|signal
+suffix:semicolon
+DECL|member|sighand
+r_struct
+id|sighand_struct
+op_star
+id|sighand
 suffix:semicolon
 DECL|member|blocked
 DECL|member|real_blocked
@@ -1582,20 +1609,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|sig_exit
-c_func
-(paren
-r_int
-comma
-r_int
-comma
-r_struct
-id|siginfo
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|dequeue_signal
 c_func
@@ -1807,17 +1820,14 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|__broadcast_thread_group
+r_void
+id|zap_other_threads
 c_func
 (paren
 r_struct
 id|task_struct
 op_star
 id|p
-comma
-r_int
-id|sig
 )paren
 suffix:semicolon
 r_extern
@@ -2161,6 +2171,26 @@ op_star
 suffix:semicolon
 r_extern
 r_void
+id|exit_signal
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__exit_signal
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|exit_sighand
 c_func
 (paren
@@ -2177,6 +2207,15 @@ c_func
 r_struct
 id|task_struct
 op_star
+)paren
+suffix:semicolon
+r_extern
+id|NORET_TYPE
+r_void
+id|do_group_exit
+c_func
+(paren
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -2771,6 +2810,20 @@ id|recalc_sigpending
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|signal_wake_up
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|t
+comma
+r_int
+id|resume_stopped
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Wrappers for p-&gt;thread_info-&gt;cpu access. No-op on UP.&n; */

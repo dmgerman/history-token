@@ -4839,7 +4839,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* allocate the main DMA buffer, playback and recording buffer should be */
-multiline_comment|/* allocated seperately */
+multiline_comment|/* allocated separately */
 DECL|function|alloc_main_dmabuf
 r_static
 r_int
