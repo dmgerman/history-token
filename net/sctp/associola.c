@@ -591,23 +591,6 @@ op_amp
 id|asoc-&gt;outqueue
 )paren
 suffix:semicolon
-id|sctp_outq_set_output_handlers
-c_func
-(paren
-op_amp
-id|asoc-&gt;outqueue
-comma
-id|sctp_packet_init
-comma
-id|sctp_packet_config
-comma
-id|sctp_packet_append_chunk
-comma
-id|sctp_packet_transmit_chunk
-comma
-id|sctp_packet_transmit
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1270,9 +1253,8 @@ id|asoc-&gt;pmtu
 )paren
 suffix:semicolon
 multiline_comment|/* The asoc-&gt;peer.port might not be meaningful yet, but&n;&t; * initialize the packet structure anyway.&n;&t; */
-(paren
-id|asoc-&gt;outqueue.init_output
-)paren
+id|sctp_packet_init
+c_func
 (paren
 op_amp
 id|peer-&gt;packet

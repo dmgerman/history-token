@@ -17,17 +17,6 @@ macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
 multiline_comment|/* Forward declarations for private helpers. */
 r_static
-r_void
-id|sctp_packet_reset
-c_func
-(paren
-r_struct
-id|sctp_packet
-op_star
-id|packet
-)paren
-suffix:semicolon
-r_static
 id|sctp_xmit_t
 id|sctp_packet_append_data
 c_func
@@ -43,7 +32,7 @@ op_star
 id|chunk
 )paren
 suffix:semicolon
-multiline_comment|/* Config a packet.&n; * This appears to be a followup set of initializations.)&n; */
+multiline_comment|/* Config a packet.&n; * This appears to be a followup set of initializations.&n; */
 DECL|function|sctp_packet_config
 r_struct
 id|sctp_packet
@@ -61,23 +50,30 @@ id|vtag
 comma
 r_int
 id|ecn_capable
-comma
-id|sctp_packet_phandler_t
-op_star
-id|prepend_handler
 )paren
 (brace
+r_struct
+id|sctp_chunk
+op_star
+id|chunk
+op_assign
+l_int|NULL
+suffix:semicolon
+id|SCTP_DEBUG_PRINTK
+c_func
+(paren
+l_string|&quot;%s: packet:%p vtag:0x%x&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|packet
+comma
+id|vtag
+)paren
+suffix:semicolon
 id|packet-&gt;vtag
 op_assign
 id|vtag
-suffix:semicolon
-id|packet-&gt;ecn_capable
-op_assign
-id|ecn_capable
-suffix:semicolon
-id|packet-&gt;get_prepend_chunk
-op_assign
-id|prepend_handler
 suffix:semicolon
 id|packet-&gt;has_cookie_echo
 op_assign
@@ -91,22 +87,41 @@ id|packet-&gt;ipfragok
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* We might need to call the prepend_handler right away.  */
 r_if
 c_cond
 (paren
+id|ecn_capable
+op_logical_and
 id|sctp_packet_empty
 c_func
 (paren
 id|packet
 )paren
 )paren
-id|sctp_packet_reset
+(brace
+id|chunk
+op_assign
+id|sctp_get_ecne_prepend
+c_func
+(paren
+id|packet-&gt;transport-&gt;asoc
+)paren
+suffix:semicolon
+multiline_comment|/* If there a is a prepend chunk stick it on the list before&n;&t; &t; * any other chunks get appended.&n;&t; &t; */
+r_if
+c_cond
+(paren
+id|chunk
+)paren
+id|sctp_packet_append_chunk
 c_func
 (paren
 id|packet
+comma
+id|chunk
 )paren
 suffix:semicolon
+)brace
 r_return
 id|packet
 suffix:semicolon
@@ -145,6 +160,18 @@ id|transport-&gt;asoc
 suffix:semicolon
 r_int
 id|overhead
+suffix:semicolon
+id|SCTP_DEBUG_PRINTK
+c_func
+(paren
+l_string|&quot;%s: packet:%p transport:%p&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|packet
+comma
+id|transport
+)paren
 suffix:semicolon
 id|packet-&gt;transport
 op_assign
@@ -218,14 +245,6 @@ id|packet-&gt;vtag
 op_assign
 l_int|0
 suffix:semicolon
-id|packet-&gt;ecn_capable
-op_assign
-l_int|0
-suffix:semicolon
-id|packet-&gt;get_prepend_chunk
-op_assign
-l_int|NULL
-suffix:semicolon
 id|packet-&gt;has_cookie_echo
 op_assign
 l_int|0
@@ -241,12 +260,6 @@ suffix:semicolon
 id|packet-&gt;malloced
 op_assign
 l_int|0
-suffix:semicolon
-id|sctp_packet_reset
-c_func
-(paren
-id|packet
-)paren
 suffix:semicolon
 r_return
 id|packet
@@ -268,6 +281,16 @@ r_struct
 id|sctp_chunk
 op_star
 id|chunk
+suffix:semicolon
+id|SCTP_DEBUG_PRINTK
+c_func
+(paren
+l_string|&quot;%s: packet:%p&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|packet
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -331,6 +354,18 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
+id|SCTP_DEBUG_PRINTK
+c_func
+(paren
+l_string|&quot;%s: packet:%p chunk:%p&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|packet
+comma
+id|chunk
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -393,9 +428,6 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-r_case
-id|SCTP_XMIT_MUST_FRAG
-suffix:colon
 r_case
 id|SCTP_XMIT_RWND_FULL
 suffix:colon
@@ -592,6 +624,18 @@ suffix:semicolon
 r_int
 id|too_big
 suffix:semicolon
+id|SCTP_DEBUG_PRINTK
+c_func
+(paren
+l_string|&quot;%s: packet:%p chunk:%p&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|packet
+comma
+id|chunk
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|sctp_packet_bundle_sack
@@ -687,13 +731,6 @@ r_goto
 id|finish
 suffix:semicolon
 )brace
-)brace
-r_else
-(brace
-multiline_comment|/* The chunk fits in the packet.  */
-r_goto
-id|append
-suffix:semicolon
 )brace
 id|append
 suffix:colon
@@ -851,6 +888,16 @@ r_struct
 id|dst_entry
 op_star
 id|dst
+suffix:semicolon
+id|SCTP_DEBUG_PRINTK
+c_func
+(paren
+l_string|&quot;%s: packet:%p&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|packet
+)paren
 suffix:semicolon
 multiline_comment|/* Do NOT generate a chunkless packet. */
 id|chunk
@@ -1478,60 +1525,6 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/********************************************************************&n; * 2nd Level Abstractions&n; ********************************************************************/
-multiline_comment|/*&n; * This private function resets the packet to a fresh state.&n; */
-DECL|function|sctp_packet_reset
-r_static
-r_void
-id|sctp_packet_reset
-c_func
-(paren
-r_struct
-id|sctp_packet
-op_star
-id|packet
-)paren
-(brace
-r_struct
-id|sctp_chunk
-op_star
-id|chunk
-op_assign
-l_int|NULL
-suffix:semicolon
-id|packet-&gt;size
-op_assign
-id|packet-&gt;overhead
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|packet-&gt;get_prepend_chunk
-)paren
-id|chunk
-op_assign
-id|packet
-op_member_access_from_pointer
-id|get_prepend_chunk
-c_func
-(paren
-id|packet-&gt;transport-&gt;asoc
-)paren
-suffix:semicolon
-multiline_comment|/* If there a is a prepend chunk stick it on the list before&n;&t; * any other chunks get appended.&n;&t; */
-r_if
-c_cond
-(paren
-id|chunk
-)paren
-id|sctp_packet_append_chunk
-c_func
-(paren
-id|packet
-comma
-id|chunk
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* This private function handles the specifics of appending DATA chunks.  */
 DECL|function|sctp_packet_append_data
 r_static
