@@ -89,6 +89,30 @@ id|SECURITY_SCAFFOLD_VERSION
 l_string|&quot; initialized&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|verify
+(paren
+op_amp
+id|dummy_security_ops
+)paren
+)paren
+(brace
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;%s could not verify &quot;
+l_string|&quot;dummy_security_ops structure.&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|security_ops
 op_assign
 op_amp
