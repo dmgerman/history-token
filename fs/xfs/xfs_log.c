@@ -3559,7 +3559,7 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return size of each in-core log record buffer.&n; *&n; * Low memory machines only get 2 16KB buffers.  We don&squot;t want to waste&n; * memory here.  However, all other machines get at least 2 32KB buffers.&n; * The number is hard coded because we don&squot;t care about the minimum&n; * memory size, just 32MB systems.&n; *&n; * If the filesystem blocksize is too large, we may need to choose a&n; * larger size since the directory code currently logs entire blocks.&n; * XXXmiken XXXcurtis&n; */
+multiline_comment|/*&n; * Return size of each in-core log record buffer.&n; *&n; * Low memory machines only get 2 16KB buffers.  We don&squot;t want to waste&n; * memory here.  However, all other machines get at least 2 32KB buffers.&n; * The number is hard coded because we don&squot;t care about the minimum&n; * memory size, just 32MB systems.&n; *&n; * If the filesystem blocksize is too large, we may need to choose a&n; * larger size since the directory code currently logs entire blocks.&n; */
 id|STATIC
 r_void
 DECL|function|xlog_get_iclog_buffer_size
@@ -3582,7 +3582,7 @@ r_int
 id|xhdrs
 suffix:semicolon
 macro_line|#if defined(DEBUG) || defined(XLOG_NOLOG)
-multiline_comment|/*&n;&t; * When logbufs == 0, someone has disabled the log from the FSTAB&n;&t; * file.  This is not a documented feature.  We need to set xlog_debug&n;&t; * to zero (this deactivates the log) and set xlog_target to the&n;&t; * appropriate dev_t.  Only one filesystem may be affected as such&n;&t; * since this is just a performance hack to test what we might be able&n;&t; * to get if the log were not present.&n;&t; */
+multiline_comment|/*&n;&t; * When logbufs == 0, someone has disabled the log from the FSTAB&n;&t; * file.  This is not a documented feature.  We need to set xlog_debug&n;&t; * to zero (this deactivates the log) and set xlog_target to the&n;&t; * appropriate device.  Only one filesystem may be affected as such&n;&t; * since this is just a performance hack to test what we might be able&n;&t; * to get if the log were not present.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3676,7 +3676,7 @@ op_assign
 id|mp-&gt;m_logbufs
 suffix:semicolon
 macro_line|#if defined(DEBUG) || defined(XLOG_NOLOG)
-multiline_comment|/* We are reactivating a filesystem after it was active */
+multiline_comment|/* We are reactivating a filesystem after it was inactive */
 r_if
 c_cond
 (paren
@@ -3687,9 +3687,8 @@ id|xlog_target
 (brace
 id|xlog_target
 op_assign
-l_int|1
+l_int|NULL
 suffix:semicolon
-multiline_comment|/* XXX(hch): WTF? */
 id|xlog_debug
 op_assign
 l_int|1
