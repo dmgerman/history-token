@@ -956,6 +956,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|node_set_online
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 id|node_data
 (braket
 l_int|0
