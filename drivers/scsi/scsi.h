@@ -1383,20 +1383,6 @@ r_struct
 id|scsi_device
 (brace
 multiline_comment|/*&n;&t; * This information is private to the scsi mid-layer.&n;&t; */
-DECL|member|next
-r_struct
-id|scsi_device
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* Used for linked list */
-DECL|member|prev
-r_struct
-id|scsi_device
-op_star
-id|prev
-suffix:semicolon
-multiline_comment|/* Used for linked list */
 DECL|member|siblings
 r_struct
 id|list_head
@@ -1422,6 +1408,7 @@ id|host
 suffix:semicolon
 DECL|member|request_queue
 id|request_queue_t
+op_star
 id|request_queue
 suffix:semicolon
 DECL|member|device_active
@@ -2326,13 +2313,6 @@ r_int
 id|depth
 )paren
 (brace
-id|request_queue_t
-op_star
-id|q
-op_assign
-op_amp
-id|SDpnt-&gt;request_queue
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2346,14 +2326,14 @@ op_logical_neg
 id|blk_queue_tagged
 c_func
 (paren
-id|q
+id|SDpnt-&gt;request_queue
 )paren
 )paren
 (brace
 id|blk_queue_init_tags
 c_func
 (paren
-id|q
+id|SDpnt-&gt;request_queue
 comma
 id|depth
 )paren
@@ -2387,27 +2367,20 @@ r_int
 id|depth
 )paren
 (brace
-id|request_queue_t
-op_star
-id|q
-op_assign
-op_amp
-id|SDpnt-&gt;request_queue
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|blk_queue_tagged
 c_func
 (paren
-id|q
+id|SDpnt-&gt;request_queue
 )paren
 )paren
 (brace
 id|blk_queue_free_tags
 c_func
 (paren
-id|q
+id|SDpnt-&gt;request_queue
 )paren
 suffix:semicolon
 )brace
@@ -2531,7 +2504,6 @@ op_assign
 id|blk_queue_find_tag
 c_func
 (paren
-op_amp
 id|SDpnt-&gt;request_queue
 comma
 id|tag
