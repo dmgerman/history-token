@@ -81,11 +81,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Maybe we need to smp-ify kernel_stat some day. It would be nice to do&n; * that without having to modify all the code that increments the stats.&n; */
-DECL|macro|KERNEL_STAT_INC
-mdefine_line|#define KERNEL_STAT_INC(x) kstat.x++
-DECL|macro|KERNEL_STAT_ADD
-mdefine_line|#define KERNEL_STAT_ADD(x, y) kstat.x += y
 macro_line|#if !defined(CONFIG_ARCH_S390)
 multiline_comment|/*&n; * Number of interrupts per specific IRQ source, since bootup&n; */
 DECL|function|kstat_irqs
@@ -93,6 +88,7 @@ r_static
 r_inline
 r_int
 id|kstat_irqs
+c_func
 (paren
 r_int
 id|irq
