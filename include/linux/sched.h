@@ -335,6 +335,9 @@ suffix:semicolon
 multiline_comment|/* Maximum number of active map areas.. This is a random (large) number */
 DECL|macro|MAX_MAP_COUNT
 mdefine_line|#define MAX_MAP_COUNT&t;(65536)
+r_struct
+id|kioctx
+suffix:semicolon
 DECL|struct|mm_struct
 r_struct
 id|mm_struct
@@ -468,6 +471,17 @@ multiline_comment|/* Architecture-specific MM context */
 DECL|member|context
 id|mm_context_t
 id|context
+suffix:semicolon
+multiline_comment|/* aio bits */
+DECL|member|ioctx_list_lock
+id|rwlock_t
+id|ioctx_list_lock
+suffix:semicolon
+DECL|member|ioctx_list
+r_struct
+id|kioctx
+op_star
+id|ioctx_list
 suffix:semicolon
 )brace
 suffix:semicolon
