@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &lt;linux/pci_msi.h&gt;
-id|_DEFINE_DBG_BUFFER
 DECL|variable|msi_lock
 r_static
 id|spinlock_t
