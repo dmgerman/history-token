@@ -6558,13 +6558,21 @@ id|ret
 comma
 id|size
 suffix:semicolon
-multiline_comment|/* doesn&squot;t apply to DVD+RW */
+multiline_comment|/* doesn&squot;t apply to DVD+RW or DVD-RAM */
 r_if
 c_cond
+(paren
 (paren
 id|pd-&gt;mmc3_profile
 op_eq
 l_int|0x1a
+)paren
+op_logical_or
+(paren
+id|pd-&gt;mmc3_profile
+op_eq
+l_int|0x12
+)paren
 )paren
 r_return
 l_int|0
@@ -7068,6 +7076,10 @@ r_case
 l_int|0x13
 suffix:colon
 multiline_comment|/* DVD-RW */
+r_case
+l_int|0x12
+suffix:colon
+multiline_comment|/* DVD-RAM */
 r_return
 l_int|0
 suffix:semicolon
@@ -7359,6 +7371,18 @@ id|printk
 c_func
 (paren
 l_string|&quot;pktcdvd: inserted media is DVD-RW&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x12
+suffix:colon
+multiline_comment|/* DVD-RAM */
+id|printk
+c_func
+(paren
+l_string|&quot;pktcdvd: inserted media is DVD-RAM&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -8874,6 +8898,10 @@ r_case
 l_int|0x1a
 suffix:colon
 multiline_comment|/* DVD+RW */
+r_case
+l_int|0x12
+suffix:colon
+multiline_comment|/* DVD-RAM */
 id|DPRINTK
 c_func
 (paren
