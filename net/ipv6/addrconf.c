@@ -132,6 +132,7 @@ op_star
 id|HZ
 suffix:semicolon
 macro_line|#endif
+r_static
 r_int
 id|ipv6_count_addresses
 c_func
