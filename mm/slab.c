@@ -53,17 +53,11 @@ macro_line|# define CREATE_MASK&t;(SLAB_HWCACHE_ALIGN | SLAB_NO_REAP | &bslash;&
 macro_line|#endif
 multiline_comment|/*&n; * kmem_bufctl_t:&n; *&n; * Bufctl&squot;s are used for linking objs within a slab&n; * linked offsets.&n; *&n; * This implementation relies on &quot;struct page&quot; for locating the cache &amp;&n; * slab an object belongs to.&n; * This allows the bufctl structure to be small (one int), but limits&n; * the number of objects a slab (not a cache) can contain when off-slab&n; * bufctls are used. The limit is the size of the largest general cache&n; * that does not use off-slab slabs.&n; * For 32bit archs with 4 kB pages, is this 56.&n; * This is not serious, as it is only for large objects, when it is unwise&n; * to have too many per slab.&n; * Note: This limit can be raised by introducing a general cache whose size&n; * is less than 512 (PAGE_SIZE&lt;&lt;3), but greater than 256.&n; */
 DECL|macro|BUFCTL_END
-mdefine_line|#define BUFCTL_END&t;0xffffFFFF
+mdefine_line|#define BUFCTL_END&t;(((kmem_bufctl_t)(~0U))-0)
 DECL|macro|BUFCTL_FREE
-mdefine_line|#define BUFCTL_FREE&t;0xffffFFFE
+mdefine_line|#define BUFCTL_FREE&t;(((kmem_bufctl_t)(~0U))-1)
 DECL|macro|SLAB_LIMIT
-mdefine_line|#define&t;SLAB_LIMIT&t;0xffffFFFD
-DECL|typedef|kmem_bufctl_t
-r_typedef
-r_int
-r_int
-id|kmem_bufctl_t
-suffix:semicolon
+mdefine_line|#define&t;SLAB_LIMIT&t;(((kmem_bufctl_t)(~0U))-2)
 multiline_comment|/* Max number of objs-per-slab for caches which use off-slab slabs.&n; * Needed to avoid a possible looping condition in cache_grow().&n; */
 DECL|variable|offslab_limit
 r_static

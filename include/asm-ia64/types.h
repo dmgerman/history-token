@@ -121,6 +121,12 @@ r_typedef
 id|u64
 id|dma_addr_t
 suffix:semicolon
+DECL|typedef|kmem_bufctl_t
+r_typedef
+r_int
+r_int
+id|kmem_bufctl_t
+suffix:semicolon
 macro_line|# endif /* __KERNEL__ */
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_TYPES_H */

@@ -195,6 +195,12 @@ suffix:semicolon
 DECL|macro|HAVE_SECTOR_T
 mdefine_line|#define HAVE_SECTOR_T
 macro_line|#endif
+DECL|typedef|kmem_bufctl_t
+r_typedef
+r_int
+r_int
+id|kmem_bufctl_t
+suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_TYPES_H */
