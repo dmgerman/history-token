@@ -2499,6 +2499,8 @@ r_if
 c_cond
 (paren
 id|retval
+OL
+l_int|0
 )paren
 r_return
 id|retval

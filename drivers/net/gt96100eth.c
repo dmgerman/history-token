@@ -5852,7 +5852,7 @@ id|u32
 id|rxOwn
 )paren
 (brace
-singleline_comment|//err(__FUNCTION__ &quot;: device owns descriptor!&bslash;n&quot;);
+singleline_comment|//err(&quot;%s: device owns descriptor!&bslash;n&quot;, __FUNCTION__);
 singleline_comment|// DMA is not finished updating descriptor???
 singleline_comment|// Leave and come back later to pick-up where
 singleline_comment|// we left off.

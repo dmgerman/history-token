@@ -18,6 +18,10 @@ macro_line|#include &lt;linux/atmdev.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/*&n;#define DEBUG&n;#define VERBOSE_DEBUG&n;*/
+macro_line|#if !defined (DEBUG) &amp;&amp; defined (CONFIG_USB_DEBUG)
+DECL|macro|DEBUG
+macro_line|#&t;define DEBUG
+macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef DEBUG
 DECL|macro|DEBUG_ON
@@ -53,10 +57,10 @@ mdefine_line|#define vdbg(arg...)
 macro_line|#endif
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&quot;Johan Verrept, Duncan Sands &lt;duncan.sands@free.fr&gt;&quot;
-DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC&t;&quot;Alcatel SpeedTouch USB driver&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&quot;1.7&quot;
+mdefine_line|#define DRIVER_VERSION&t;&quot;1.8&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&quot;Alcatel SpeedTouch USB driver version &quot; DRIVER_VERSION
 DECL|variable|udsl_driver_name
 r_static
 r_const
@@ -882,6 +886,43 @@ id|udsl_usb_ids
 comma
 )brace
 suffix:semicolon
+multiline_comment|/***********&n;**  misc  **&n;***********/
+DECL|function|udsl_pop
+r_static
+r_inline
+r_void
+id|udsl_pop
+(paren
+r_struct
+id|atm_vcc
+op_star
+id|vcc
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|vcc-&gt;pop
+)paren
+id|vcc-&gt;pop
+(paren
+id|vcc
+comma
+id|skb
+)paren
+suffix:semicolon
+r_else
+id|dev_kfree_skb
+(paren
+id|skb
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*************&n;**  decode  **&n;*************/
 DECL|function|udsl_find_vcc
 r_static
@@ -3048,21 +3089,10 @@ id|skb
 op_member_access_from_pointer
 id|atm_data.vcc
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|vcc-&gt;pop
-)paren
-id|vcc-&gt;pop
+id|udsl_pop
 (paren
 id|vcc
 comma
-id|skb
-)paren
-suffix:semicolon
-r_else
-id|dev_kfree_skb
-(paren
 id|skb
 )paren
 suffix:semicolon
@@ -3173,21 +3203,10 @@ op_amp
 id|instance-&gt;sndqueue
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|vcc-&gt;pop
-)paren
-id|vcc-&gt;pop
+id|udsl_pop
 (paren
 id|vcc
 comma
-id|skb
-)paren
-suffix:semicolon
-r_else
-id|dev_kfree_skb
-(paren
 id|skb
 )paren
 suffix:semicolon
@@ -3236,21 +3255,10 @@ id|instance-&gt;current_skb
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|vcc-&gt;pop
-)paren
-id|vcc-&gt;pop
+id|udsl_pop
 (paren
 id|vcc
 comma
-id|skb
-)paren
-suffix:semicolon
-r_else
-id|dev_kfree_skb
-(paren
 id|skb
 )paren
 suffix:semicolon
@@ -3290,6 +3298,9 @@ id|instance
 op_assign
 id|vcc-&gt;dev-&gt;dev_data
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|vdbg
 (paren
 l_string|&quot;udsl_atm_send called (skb 0x%p, len %u)&quot;
@@ -3314,9 +3325,13 @@ id|dbg
 l_string|&quot;udsl_atm_send: NULL data!&quot;
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 op_minus
 id|ENODEV
+suffix:semicolon
+r_goto
+id|fail
 suffix:semicolon
 )brace
 r_if
@@ -3334,9 +3349,13 @@ comma
 id|vcc-&gt;qos.aal
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 op_minus
 id|EINVAL
+suffix:semicolon
+r_goto
+id|fail
 suffix:semicolon
 )brace
 r_if
@@ -3356,9 +3375,13 @@ comma
 id|ATM_MAX_AAL5_PDU
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 op_minus
 id|EINVAL
+suffix:semicolon
+r_goto
+id|fail
 suffix:semicolon
 )brace
 id|PACKETDEBUG
@@ -3391,6 +3414,18 @@ id|instance-&gt;send_tasklet
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|fail
+suffix:colon
+id|udsl_pop
+(paren
+id|vcc
+comma
+id|skb
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/**********&n;**  ATM  **&n;**********/
@@ -5924,6 +5959,12 @@ suffix:semicolon
 id|MODULE_LICENSE
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|DRIVER_VERSION
+id|MODULE_VERSION
+(paren
+id|DRIVER_VERSION
 )paren
 suffix:semicolon
 multiline_comment|/************&n;**  debug  **&n;************/

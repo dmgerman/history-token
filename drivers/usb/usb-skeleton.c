@@ -1586,8 +1586,9 @@ id|err
 l_string|&quot;Out of memory&quot;
 )paren
 suffix:semicolon
-r_goto
-id|error
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|memset

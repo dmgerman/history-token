@@ -4675,12 +4675,10 @@ op_star
 id|ttusb
 )paren
 (brace
-id|usb_set_configuration
+id|usb_reset_configuration
 c_func
 (paren
 id|ttusb-&gt;dev
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|usb_set_interface
@@ -4999,6 +4997,31 @@ c_func
 id|intf
 )paren
 suffix:semicolon
+multiline_comment|/* Device has already been reset; its configuration was chosen.&n;&t; * If this fault happens, use a hotplug script to choose the&n;&t; * right configuration (write bConfigurationValue in sysfs).&n;&t; */
+r_if
+c_cond
+(paren
+id|udev-&gt;actconfig-&gt;desc.bConfigurationValue
+op_ne
+l_int|1
+)paren
+(brace
+id|dev_err
+c_func
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+l_string|&quot;device config is #%d, need #1&bslash;n&quot;
+comma
+id|udev-&gt;actconfig-&gt;desc.bConfigurationValue
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

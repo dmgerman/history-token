@@ -341,9 +341,9 @@ DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...) do { } while (0)
 macro_line|#endif&t;/* ORINOCO_DEBUG */
 DECL|macro|TRACE_ENTER
-mdefine_line|#define TRACE_ENTER(devname) DEBUG(2, &quot;%s: -&gt; &quot; __FUNCTION__ &quot;()&bslash;n&quot;, devname);
+mdefine_line|#define TRACE_ENTER(devname) DEBUG(2, &quot;%s: -&gt; %s()&bslash;n&quot;, devname, __FUNCTION__);
 DECL|macro|TRACE_EXIT
-mdefine_line|#define TRACE_EXIT(devname)  DEBUG(2, &quot;%s: &lt;- &quot; __FUNCTION__ &quot;()&bslash;n&quot;, devname);
+mdefine_line|#define TRACE_EXIT(devname)  DEBUG(2, &quot;%s: &lt;- %s()&bslash;n&quot;, devname, __FUNCTION__);
 r_extern
 r_struct
 id|net_device

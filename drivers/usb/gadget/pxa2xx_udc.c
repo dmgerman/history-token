@@ -62,7 +62,7 @@ macro_line|#ifdef CONFIG_PROC_FS
 DECL|macro|UDC_PROC_FILE
 mdefine_line|#define&t;UDC_PROC_FILE
 macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_IXP425
+macro_line|#ifdef CONFIG_ARCH_IXP4XX
 DECL|macro|USE_DMA
 macro_line|#undef USE_DMA
 multiline_comment|/* cpu-specific register addresses are compiled in to this code */
@@ -9205,9 +9205,9 @@ mdefine_line|#define CP15R0_VENDOR_MASK&t;0xffffe000
 macro_line|#if&t;defined(CONFIG_ARCH_PXA)
 DECL|macro|CP15R0_XSCALE_VALUE
 mdefine_line|#define CP15R0_XSCALE_VALUE&t;0x69052000&t;/* intel/arm/xscale */
-macro_line|#elif&t;defined(CONFIG_ARCH_IXP425)
+macro_line|#elif&t;defined(CONFIG_ARCH_IXP4XX)
 DECL|macro|CP15R0_XSCALE_VALUE
-mdefine_line|#define CP15R0_XSCALE_VALUE&t;0x69054000&t;/* intel/arm/ixp425 */
+mdefine_line|#define CP15R0_XSCALE_VALUE&t;0x69054000&t;/* intel/arm/ixp4xx */
 macro_line|#endif
 DECL|macro|CP15R0_PROD_MASK
 mdefine_line|#define CP15R0_PROD_MASK&t;0x000003f0
@@ -9371,7 +9371,7 @@ id|PXA210_C0
 suffix:colon
 r_break
 suffix:semicolon
-macro_line|#elif&t;defined(CONFIG_ARCH_IXP425)
+macro_line|#elif&t;defined(CONFIG_ARCH_IXP4XX)
 r_case
 id|IXP425_A0
 suffix:colon

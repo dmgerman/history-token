@@ -1377,6 +1377,10 @@ id|padded
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|NETDEV_ALIGN
+mdefine_line|#define&t;NETDEV_ALIGN&t;&t;32
+DECL|macro|NETDEV_ALIGN_CONST
+mdefine_line|#define&t;NETDEV_ALIGN_CONST&t;(NETDEV_ALIGN - 1)
 DECL|function|netdev_priv
 r_static
 r_inline
@@ -1406,11 +1410,11 @@ r_struct
 id|net_device
 )paren
 op_plus
-l_int|31
+id|NETDEV_ALIGN_CONST
 )paren
 op_amp
 op_complement
-l_int|31
+id|NETDEV_ALIGN_CONST
 )paren
 suffix:semicolon
 )brace

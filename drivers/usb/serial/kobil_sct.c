@@ -1033,7 +1033,7 @@ id|transfer_buffer
 (brace
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
 )brace
 r_else
@@ -1102,7 +1102,7 @@ id|transfer_buffer
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
 )brace
 )brace
@@ -1135,9 +1135,19 @@ c_func
 id|transfer_buffer
 )paren
 suffix:semicolon
+id|usb_free_urb
+c_func
+(paren
+id|port-&gt;write_urb
+)paren
+suffix:semicolon
+id|port-&gt;write_urb
+op_assign
+l_int|NULL
+suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
 )brace
 singleline_comment|// get hardware version

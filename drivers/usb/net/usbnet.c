@@ -11268,7 +11268,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|out2
+id|out1
 suffix:semicolon
 id|dev-&gt;maxpacket
 op_assign
@@ -11349,8 +11349,6 @@ comma
 id|udev
 )paren
 suffix:semicolon
-id|out2
-suffix:colon
 id|free_netdev
 c_func
 (paren

@@ -538,6 +538,10 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+DECL|macro|VM_FAULT_BADMAP
+mdefine_line|#define VM_FAULT_BADMAP&t;&t;(-20)
+DECL|macro|VM_FAULT_BADACCESS
+mdefine_line|#define VM_FAULT_BADACCESS&t;(-21)
 r_static
 r_int
 DECL|function|__do_page_fault
@@ -585,10 +589,8 @@ id|addr
 suffix:semicolon
 id|fault
 op_assign
-op_minus
-l_int|2
+id|VM_FAULT_BADMAP
 suffix:semicolon
-multiline_comment|/* bad map area */
 r_if
 c_cond
 (paren
@@ -634,10 +636,8 @@ id|VM_WRITE
 suffix:semicolon
 id|fault
 op_assign
-op_minus
-l_int|1
+id|VM_FAULT_BADACCESS
 suffix:semicolon
-multiline_comment|/* bad access type */
 r_if
 c_cond
 (paren
@@ -682,7 +682,7 @@ id|fault
 )paren
 (brace
 r_case
-l_int|2
+id|VM_FAULT_MAJOR
 suffix:colon
 id|tsk-&gt;maj_flt
 op_increment
@@ -691,24 +691,18 @@ r_return
 id|fault
 suffix:semicolon
 r_case
-l_int|1
+id|VM_FAULT_MINOR
 suffix:colon
 id|tsk-&gt;min_flt
 op_increment
 suffix:semicolon
 r_case
-l_int|0
+id|VM_FAULT_SIGBUS
 suffix:colon
 r_return
 id|fault
 suffix:semicolon
 )brace
-id|fault
-op_assign
-op_minus
-l_int|3
-suffix:semicolon
-multiline_comment|/* out of memory */
 r_if
 c_cond
 (paren
@@ -879,8 +873,7 @@ c_cond
 (paren
 id|fault
 op_eq
-op_minus
-l_int|3
+id|VM_FAULT_OOM
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * We ran out of memory, or some other thing happened to&n;&t;&t; * us that made us unable to handle the page fault gracefully.&n;&t;&t; */
@@ -911,8 +904,7 @@ id|fsr
 comma
 id|fault
 op_eq
-op_minus
-l_int|1
+id|VM_FAULT_BADACCESS
 ques
 c_cond
 id|SEGV_ACCERR

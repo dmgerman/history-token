@@ -1806,7 +1806,7 @@ id|i
 op_decrement
 )paren
 (brace
-multiline_comment|/* retries if the returned length was 0; flakey device */
+multiline_comment|/* retry on length 0 or stall; some devices are flakey */
 r_if
 c_cond
 (paren
@@ -1853,11 +1853,26 @@ OG
 l_int|0
 op_logical_or
 id|result
-op_eq
+op_ne
 op_minus
 id|EPIPE
 )paren
 r_break
+suffix:semicolon
+id|dev_dbg
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;RETRY descriptor, result %d&bslash;n&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+id|result
+op_assign
+op_minus
+id|ENOMSG
 suffix:semicolon
 )brace
 r_return
@@ -2181,7 +2196,7 @@ id|USB_REQ_CLEAR_FEATURE
 comma
 id|USB_RECIP_ENDPOINT
 comma
-l_int|0
+id|USB_ENDPOINT_HALT
 comma
 id|endp
 comma
@@ -2823,10 +2838,13 @@ op_logical_neg
 id|iface
 )paren
 (brace
-id|warn
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;selecting invalid interface %d&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;selecting invalid interface %d&bslash;n&quot;
 comma
 id|interface
 )paren
@@ -2912,12 +2930,13 @@ op_eq
 l_int|1
 )paren
 (brace
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;manual set_interface for dev %d, iface %d, alt %d&quot;
+op_amp
+id|dev-&gt;dev
 comma
-id|dev-&gt;devnum
+l_string|&quot;manual set_interface for iface %d, alt %d&bslash;n&quot;
 comma
 id|interface
 comma
@@ -3246,7 +3265,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_set_configuration - Makes a particular device setting be current&n; * @dev: the device whose configuration is being updated&n; * @configuration: the configuration being chosen.&n; * Context: !in_interrupt ()&n; *&n; * This is used to enable non-default device modes.  Not all devices&n; * use this kind of configurability; many devices only have one&n; * configuration.&n; *&n; * USB device configurations may affect Linux interoperability,&n; * power consumption and the functionality available.  For example,&n; * the default configuration is limited to using 100mA of bus power,&n; * so that when certain device functionality requires more power,&n; * and the device is bus powered, that functionality should be in some&n; * non-default device configuration.  Other device modes may also be&n; * reflected as configuration options, such as whether two ISDN&n; * channels are available independently; and choosing between open&n; * standard device protocols (like CDC) or proprietary ones.&n; *&n; * Note that USB has an additional level of device configurability,&n; * associated with interfaces.  That configurability is accessed using&n; * usb_set_interface().&n; *&n; * This call is synchronous. The calling context must be able to sleep,&n; * and must not hold the driver model lock for USB; usb device driver&n; * probe() methods may not use this routine.&n; *&n; * Returns zero on success, or else the status code returned by the&n; * underlying call that failed.  On succesful completion, each interface&n; * in the original device configuration has been destroyed, and each one&n; * in the new configuration has been probed by all relevant usb device&n; * drivers currently known to the kernel.&n; */
+multiline_comment|/*&n; * usb_set_configuration - Makes a particular device setting be current&n; * @dev: the device whose configuration is being updated&n; * @configuration: the configuration being chosen.&n; * Context: !in_interrupt(), caller holds dev-&gt;serialize&n; *&n; * This is used to enable non-default device modes.  Not all devices&n; * use this kind of configurability; many devices only have one&n; * configuration.&n; *&n; * USB device configurations may affect Linux interoperability,&n; * power consumption and the functionality available.  For example,&n; * the default configuration is limited to using 100mA of bus power,&n; * so that when certain device functionality requires more power,&n; * and the device is bus powered, that functionality should be in some&n; * non-default device configuration.  Other device modes may also be&n; * reflected as configuration options, such as whether two ISDN&n; * channels are available independently; and choosing between open&n; * standard device protocols (like CDC) or proprietary ones.&n; *&n; * Note that USB has an additional level of device configurability,&n; * associated with interfaces.  That configurability is accessed using&n; * usb_set_interface().&n; *&n; * This call is synchronous. The calling context must be able to sleep,&n; * and must not hold the driver model lock for USB; usb device driver&n; * probe() methods may not use this routine.&n; *&n; * Returns zero on success, or else the status code returned by the&n; * underlying call that failed.  On succesful completion, each interface&n; * in the original device configuration has been destroyed, and each one&n; * in the new configuration has been probed by all relevant usb device&n; * drivers currently known to the kernel.&n; */
 DECL|function|usb_set_configuration
 r_int
 id|usb_set_configuration
@@ -3274,13 +3293,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* dev-&gt;serialize guards all config changes */
-id|down
-c_func
-(paren
-op_amp
-id|dev-&gt;serialize
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3530,6 +3542,12 @@ id|intf-&gt;dev.release
 op_assign
 id|release_interface
 suffix:semicolon
+id|device_initialize
+(paren
+op_amp
+id|intf-&gt;dev
+)paren
+suffix:semicolon
 id|sprintf
 (paren
 op_amp
@@ -3549,26 +3567,94 @@ comma
 id|alt-&gt;desc.bInterfaceNumber
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* Now that all interfaces are setup, probe() calls&n;&t;&t; * may claim() any interface that&squot;s not yet bound.&n;&t;&t; * Many class drivers need that: CDC, audio, video, etc.&n;&t;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|cp-&gt;desc.bNumInterfaces
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+r_struct
+id|usb_interface
+op_star
+id|intf
+op_assign
+id|cp-&gt;interface
+(braket
+id|i
+)braket
+suffix:semicolon
+r_struct
+id|usb_interface_descriptor
+op_star
+id|desc
+suffix:semicolon
+id|desc
+op_assign
+op_amp
+id|intf-&gt;altsetting
+(braket
+l_int|0
+)braket
+dot
+id|desc
+suffix:semicolon
 id|dev_dbg
 (paren
 op_amp
 id|dev-&gt;dev
 comma
-l_string|&quot;registering %s (config #%d, interface %d)&bslash;n&quot;
+l_string|&quot;adding %s (config #%d, interface %d)&bslash;n&quot;
 comma
 id|intf-&gt;dev.bus_id
 comma
 id|configuration
 comma
-id|alt-&gt;desc.bInterfaceNumber
+id|desc-&gt;bInterfaceNumber
 )paren
 suffix:semicolon
-id|device_register
+id|ret
+op_assign
+id|device_add
 (paren
 op_amp
 id|intf-&gt;dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+l_int|0
+)paren
+(brace
+id|dev_err
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;device_add(%s) --&gt; %d&bslash;n&quot;
+comma
+id|intf-&gt;dev.bus_id
+comma
+id|ret
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 id|usb_create_driverfs_intf_files
 (paren
 id|intf
@@ -3578,13 +3664,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|up
-c_func
-(paren
-op_amp
-id|dev-&gt;serialize
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -3681,12 +3760,12 @@ id|dev-&gt;have_langid
 (brace
 id|err
 op_assign
-id|usb_get_string
+id|usb_get_descriptor
 c_func
 (paren
 id|dev
 comma
-l_int|0
+id|USB_DT_STRING
 comma
 l_int|0
 comma
@@ -3703,10 +3782,12 @@ OL
 l_int|0
 )paren
 (brace
-id|err
-c_func
+id|dev_err
 (paren
-l_string|&quot;error getting string descriptor 0 (error=%d)&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;string descriptor 0 read error: %d&bslash;n&quot;
 comma
 id|err
 )paren
@@ -3731,10 +3812,12 @@ OL
 l_int|4
 )paren
 (brace
-id|err
-c_func
+id|dev_err
 (paren
-l_string|&quot;string descriptor 0 too short&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;string descriptor 0 too short&bslash;n&quot;
 )paren
 suffix:semicolon
 id|err
@@ -3770,12 +3853,12 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* always use the first langid listed */
-id|dbg
-c_func
+id|dev_dbg
 (paren
-l_string|&quot;USB device number %d default language ID 0x%x&quot;
+op_amp
+id|dev-&gt;dev
 comma
-id|dev-&gt;devnum
+l_string|&quot;default language 0x%04x&bslash;n&quot;
 comma
 id|dev-&gt;string_langid
 )paren
@@ -3799,6 +3882,45 @@ comma
 l_int|2
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|EPIPE
+)paren
+(brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;RETRY string %d read/%d&bslash;n&quot;
+comma
+id|index
+comma
+l_int|2
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|usb_get_string
+c_func
+(paren
+id|dev
+comma
+id|dev-&gt;string_langid
+comma
+id|index
+comma
+id|tbuf
+comma
+l_int|2
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3834,6 +3956,45 @@ comma
 id|len
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|EPIPE
+)paren
+(brace
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;RETRY string %d read/%d&bslash;n&quot;
+comma
+id|index
+comma
+id|len
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|usb_get_string
+c_func
+(paren
+id|dev
+comma
+id|dev-&gt;string_langid
+comma
+id|index
+comma
+id|tbuf
+comma
+id|len
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4011,13 +4172,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|usb_reset_configuration
-)paren
-suffix:semicolon
-DECL|variable|usb_set_configuration
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|usb_set_configuration
 )paren
 suffix:semicolon
 DECL|variable|usb_set_interface
