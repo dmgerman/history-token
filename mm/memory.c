@@ -2997,20 +2997,14 @@ id|vma
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Dispose of an entire struct mmu_gather per rescheduling point */
-macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PREEMPT)
+macro_line|#ifdef CONFIG_PREEMPT
+multiline_comment|/*&n; * It&squot;s not an issue to have a small zap block size - TLB flushes&n; * only happen once normally, due to the tlb-&gt;need_flush optimization.&n; */
 DECL|macro|ZAP_BLOCK_SIZE
-mdefine_line|#define ZAP_BLOCK_SIZE&t;(FREE_PTE_NR * PAGE_SIZE)
-macro_line|#endif
-multiline_comment|/* For UP, 256 pages at a time gives nice low latency */
-macro_line|#if !defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PREEMPT)
-DECL|macro|ZAP_BLOCK_SIZE
-mdefine_line|#define ZAP_BLOCK_SIZE&t;(256 * PAGE_SIZE)
-macro_line|#endif
+macro_line|# define ZAP_BLOCK_SIZE&t;(8 * PAGE_SIZE)
+macro_line|#else
 multiline_comment|/* No preempt: go for improved straight-line efficiency */
-macro_line|#if !defined(CONFIG_PREEMPT)
 DECL|macro|ZAP_BLOCK_SIZE
-mdefine_line|#define ZAP_BLOCK_SIZE&t;(1024 * PAGE_SIZE)
+macro_line|# define ZAP_BLOCK_SIZE&t;(1024 * PAGE_SIZE)
 macro_line|#endif
 multiline_comment|/**&n; * unmap_vmas - unmap a range of memory covered by a list of vma&squot;s&n; * @tlbp: address of the caller&squot;s struct mmu_gather&n; * @mm: the controlling mm_struct&n; * @vma: the starting vma&n; * @start_addr: virtual address at which to start unmapping&n; * @end_addr: virtual address at which to end unmapping&n; * @nr_accounted: Place number of unmapped pages in vm-accountable vma&squot;s here&n; * @details: details of nonlinear truncation or shared cache invalidation&n; *&n; * Returns the number of vma&squot;s which were covered by the unmapping.&n; *&n; * Unmap all pages in the vma list.  Called under page_table_lock.&n; *&n; * We aim to not hold page_table_lock for too long (for scheduling latency&n; * reasons).  So zap pages in ZAP_BLOCK_SIZE bytecounts.  This means we need to&n; * return the ending mmu_gather to the caller.&n; *&n; * Only addresses between `start&squot; and `end&squot; will be unmapped.&n; *&n; * The VMA list must be sorted in ascending virtual address order.&n; *&n; * unmap_vmas() assumes that the caller will flush the whole unmapped address&n; * range after unmap_vmas() returns.  So the only responsibility here is to&n; * ensure that any thus-far unmapped pages are flushed before unmap_vmas()&n; * drops the lock and schedules.&n; */
 DECL|function|unmap_vmas
@@ -3263,25 +3257,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-r_int
-)paren
-id|zap_bytes
-OG
-l_int|0
-)paren
-r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
 op_logical_neg
 id|atomic
-op_logical_and
-id|need_resched
-c_func
-(paren
-)paren
 )paren
 (brace
 r_int
@@ -3328,6 +3305,18 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+(paren
+r_int
+)paren
+id|zap_bytes
+OG
+l_int|0
+)paren
+r_continue
+suffix:semicolon
 id|zap_bytes
 op_assign
 id|ZAP_BLOCK_SIZE
