@@ -3957,7 +3957,8 @@ comma
 id|tmp
 )paren
 suffix:semicolon
-r_break
+r_return
+l_int|0
 suffix:semicolon
 r_case
 id|FBIO_RADEON_GET_MIRROR
