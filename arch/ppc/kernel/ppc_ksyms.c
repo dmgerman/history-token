@@ -1221,6 +1221,7 @@ c_func
 id|nvram_write_byte
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PMAC
 DECL|variable|pmac_xpram_read
 id|EXPORT_SYMBOL
 c_func
@@ -1235,6 +1236,7 @@ c_func
 id|pmac_xpram_write
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* CONFIG_NVRAM */
 DECL|variable|to_tm
 id|EXPORT_SYMBOL
