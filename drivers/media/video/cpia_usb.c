@@ -2242,7 +2242,7 @@ id|intf
 )paren
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 suffix:semicolon
@@ -2339,7 +2339,7 @@ id|udev
 suffix:semicolon
 id|ucpia-&gt;iface
 op_assign
-id|interface-&gt;bInterfaceNumber
+id|interface-&gt;desc.bInterfaceNumber
 suffix:semicolon
 id|init_waitqueue_head
 c_func
