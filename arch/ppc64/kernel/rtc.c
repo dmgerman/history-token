@@ -1268,7 +1268,7 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_PPC_PSERIES
+macro_line|#ifdef CONFIG_PPC_RTAS
 DECL|macro|MAX_RTC_WAIT
 mdefine_line|#define MAX_RTC_WAIT 5000&t;/* 5 sec */
 DECL|macro|RTAS_CLOCK_BUSY

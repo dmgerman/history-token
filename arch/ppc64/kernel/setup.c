@@ -1847,14 +1847,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
+macro_line|#ifdef CONFIG_PPC_RTAS
 multiline_comment|/*&n;&t; * Initialize RTAS if available&n;&t; */
 id|rtas_initialize
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PPC_PSERIES */
+macro_line|#endif /* CONFIG_PPC_RTAS */
 multiline_comment|/*&n;&t; * Check if we have an initrd provided via the device-tree&n;&t; */
 id|check_for_initrd
 c_func
