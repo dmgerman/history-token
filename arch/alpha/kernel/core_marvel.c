@@ -3888,14 +3888,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;MARVEL - using hose %d as AGP&bslash;n&quot;
-comma
-id|hose-&gt;index
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3907,6 +3899,14 @@ id|hose-&gt;sg_pci
 )paren
 r_return
 l_int|NULL
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;MARVEL - using hose %d as AGP&bslash;n&quot;
+comma
+id|hose-&gt;index
+)paren
 suffix:semicolon
 multiline_comment|/* &n;&t; * Get the csrs from the hose.&n;&t; */
 id|csrs
