@@ -601,7 +601,9 @@ op_le
 id|mp-&gt;m_sb.sb_blocklog
 )paren
 suffix:semicolon
-id|mp-&gt;m_da_node_ents
+id|mp-&gt;m_dir_node_ents
+op_assign
+id|mp-&gt;m_attr_node_ents
 op_assign
 (paren
 id|XFS_LBSIZE
@@ -3198,6 +3200,10 @@ id|state-&gt;blocksize
 op_assign
 id|state-&gt;mp-&gt;m_sb.sb_blocksize
 suffix:semicolon
+id|state-&gt;node_ents
+op_assign
+id|state-&gt;mp-&gt;m_dir_node_ents
+suffix:semicolon
 multiline_comment|/*&n;&t; * Search to see if name already exists, and get back a pointer&n;&t; * to where it should go.&n;&t; */
 id|error
 op_assign
@@ -3372,6 +3378,10 @@ id|state-&gt;blocksize
 op_assign
 id|state-&gt;mp-&gt;m_sb.sb_blocksize
 suffix:semicolon
+id|state-&gt;node_ents
+op_assign
+id|state-&gt;mp-&gt;m_dir_node_ents
+suffix:semicolon
 multiline_comment|/*&n;&t; * Search to see if name exists, and get back a pointer to it.&n;&t; */
 id|error
 op_assign
@@ -3530,6 +3540,10 @@ suffix:semicolon
 id|state-&gt;blocksize
 op_assign
 id|state-&gt;mp-&gt;m_sb.sb_blocksize
+suffix:semicolon
+id|state-&gt;node_ents
+op_assign
+id|state-&gt;mp-&gt;m_dir_node_ents
 suffix:semicolon
 multiline_comment|/*&n;&t; * Search to see if name exists,&n;&t; * and get back a pointer to it.&n;&t; */
 id|error
@@ -4457,6 +4471,10 @@ suffix:semicolon
 id|state-&gt;blocksize
 op_assign
 id|state-&gt;mp-&gt;m_sb.sb_blocksize
+suffix:semicolon
+id|state-&gt;node_ents
+op_assign
+id|state-&gt;mp-&gt;m_dir_node_ents
 suffix:semicolon
 id|inum
 op_assign

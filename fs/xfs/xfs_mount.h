@@ -741,11 +741,16 @@ id|uint
 id|m_attroffset
 suffix:semicolon
 multiline_comment|/* inode attribute offset */
-DECL|member|m_da_node_ents
-r_int
-id|m_da_node_ents
+DECL|member|m_dir_node_ents
+id|uint
+id|m_dir_node_ents
 suffix:semicolon
-multiline_comment|/* how many entries in danode */
+multiline_comment|/* #entries in a dir danode */
+DECL|member|m_attr_node_ents
+id|uint
+id|m_attr_node_ents
+suffix:semicolon
+multiline_comment|/* #entries in attr danode */
 DECL|member|m_ialloc_inos
 r_int
 id|m_ialloc_inos
