@@ -101,6 +101,7 @@ DECL|macro|BITS_PER_LONG
 mdefine_line|#define BITS_PER_LONG 64
 macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/config.h&gt;
 DECL|typedef|s8
 r_typedef
 r_int
