@@ -3815,7 +3815,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_ACPI */
 multiline_comment|/* Do per-CPU MCA-related initialization.  */
 r_void
-id|__init
+id|__devinit
 DECL|function|ia64_mca_cpu_init
 id|ia64_mca_cpu_init
 c_func
