@@ -54,6 +54,12 @@ id|FIX_LI_PCIB
 comma
 multiline_comment|/* Lithium PCI Bridge B */
 macro_line|#endif
+macro_line|#ifdef CONFIG_X86_F00F_BUG
+DECL|enumerator|FIX_F00F_IDT
+id|FIX_F00F_IDT
+comma
+multiline_comment|/* Virtual mapping for IDT */
+macro_line|#endif
 macro_line|#ifdef CONFIG_HIGHMEM
 DECL|enumerator|FIX_KMAP_BEGIN
 id|FIX_KMAP_BEGIN

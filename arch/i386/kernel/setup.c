@@ -7899,14 +7899,6 @@ op_star
 id|c
 )paren
 (brace
-macro_line|#ifndef CONFIG_M686
-r_static
-r_int
-id|f00f_workaround_enabled
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_char
 op_star
 id|p
@@ -7932,7 +7924,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Cache sizes */
-macro_line|#ifndef CONFIG_M686
+macro_line|#ifdef CONFIG_X86_F00F_BUG
 multiline_comment|/*&n;&t; * All current models of Pentium and Pentium with MMX technology CPUs&n;&t; * have the F0 0F bug, which lets nonpriviledged users lock up the system.&n;&t; * Note that the workaround only should be initialized once...&n;&t; */
 id|c-&gt;f00f_bug
 op_assign
@@ -7946,6 +7938,12 @@ op_eq
 l_int|5
 )paren
 (brace
+r_static
+r_int
+id|f00f_workaround_enabled
+op_assign
+l_int|0
+suffix:semicolon
 id|c-&gt;f00f_bug
 op_assign
 l_int|1
