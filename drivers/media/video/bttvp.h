@@ -132,12 +132,6 @@ id|bttv_tvnorms
 (braket
 )braket
 suffix:semicolon
-r_extern
-r_const
-r_int
-r_int
-id|BTTV_TVNORMS
-suffix:semicolon
 DECL|struct|bttv_format
 r_struct
 id|bttv_format
@@ -185,20 +179,6 @@ id|vshift
 suffix:semicolon
 multiline_comment|/* for planar modes   */
 )brace
-suffix:semicolon
-r_extern
-r_const
-r_struct
-id|bttv_format
-id|bttv_formats
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_const
-r_int
-r_int
-id|BTTV_FORMATS
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------- */
 DECL|struct|bttv_geometry

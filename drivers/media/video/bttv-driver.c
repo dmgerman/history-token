@@ -1654,6 +1654,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|BTTV_TVNORMS
+r_static
 r_const
 r_int
 r_int
@@ -1668,6 +1669,7 @@ suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------------------- */
 multiline_comment|/* bttv format list&n;   packed pixel formats must come first */
 DECL|variable|bttv_formats
+r_static
 r_const
 r_struct
 id|bttv_format
@@ -2401,6 +2403,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|BTTV_FORMATS
+r_static
 r_const
 r_int
 r_int
