@@ -1091,9 +1091,9 @@ DECL|member|retrans
 id|__u8
 id|retrans
 suffix:semicolon
-DECL|member|index
+DECL|member|__pad
 id|__u8
-id|index
+id|__pad
 suffix:semicolon
 DECL|member|snd_wscale
 id|__u16

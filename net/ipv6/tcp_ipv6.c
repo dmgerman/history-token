@@ -5557,10 +5557,6 @@ id|req-&gt;retrans
 op_assign
 l_int|0
 suffix:semicolon
-id|req-&gt;index
-op_assign
-id|h
-suffix:semicolon
 id|req-&gt;dl_next
 op_assign
 id|lopt-&gt;syn_table

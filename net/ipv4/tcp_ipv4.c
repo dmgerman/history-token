@@ -3493,10 +3493,6 @@ id|req-&gt;sk
 op_assign
 l_int|NULL
 suffix:semicolon
-id|req-&gt;index
-op_assign
-id|h
-suffix:semicolon
 id|req-&gt;dl_next
 op_assign
 id|lopt-&gt;syn_table
