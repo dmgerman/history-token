@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * VIDEO MOTION CODECs internal API for video devices&n; *&n; * Interface for MJPEG (and maybe later MPEG/WAVELETS) codec&squot;s&n; * bound to a master device.&n; *&n; * (c) 2002 Wolfgang Scherr &lt;scherr@net4you.at&gt;&n; *&n; * $Id: videocodec.c,v 1.1.2.8 2003/03/29 07:16:04 rbultje Exp $&n; *&n; * ------------------------------------------------------------------------&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * ------------------------------------------------------------------------&n; */
 DECL|macro|VIDEOCODEC_VERSION
 mdefine_line|#define VIDEOCODEC_VERSION &quot;v0.2&quot;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

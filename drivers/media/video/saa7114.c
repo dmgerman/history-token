@@ -1,5 +1,4 @@
 multiline_comment|/* &n; * saa7114 - Philips SAA7114H video decoder driver version 0.0.1&n; *&n; * Copyright (C) 2002 Maxim Yevtyushkin &lt;max@linuxmedialabs.com&gt;&n; *&n; * Based on saa7111 driver by Dave Perks&n; *&n; * Copyright (C) 1998 Dave Perks &lt;dperks@ibm.net&gt;&n; *&n; * Slight changes for video timing and attachment output by&n; * Wolfgang Scherr &lt;scherr@net4you.net&gt;&n; *&n; * Changes by Ronald Bultje &lt;rbultje@ronald.bitfreak.net&gt;&n; *    - moved over to linux&gt;=2.4.x i2c protocol (1/1/2003)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -18,7 +17,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 id|MODULE_DESCRIPTION
 c_func

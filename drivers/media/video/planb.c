@@ -1,6 +1,5 @@
 multiline_comment|/* &n;    planb - PlanB frame grabber driver&n;&n;    PlanB is used in the 7x00/8x00 series of PowerMacintosh&n;    Computers as video input DMA controller.&n;&n;    Copyright (C) 1998 Michel Lanners (mlan@cpu.lu)&n;&n;    Based largely on the bttv driver by Ralph Metzler (rjkm@thp.uni-koeln.de)&n;&n;    Additional debugging and coding by Takashi Oe (toe@unlserve.unl.edu)&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/* $Id: planb.c,v 1.18 1999/05/02 17:36:34 mlan Exp $ */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
