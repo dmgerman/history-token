@@ -100,7 +100,7 @@ macro_line|#include &lt;net/if_inet6.h&gt;
 DECL|macro|IN6_ADDR_HSIZE
 mdefine_line|#define IN6_ADDR_HSIZE&t;&t;16
 r_extern
-r_void
+r_int
 id|addrconf_init
 c_func
 (paren
