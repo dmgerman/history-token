@@ -8967,17 +8967,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-r_struct
-id|inet_opt
-op_star
-id|inet
-op_assign
-id|inet_sk
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
 id|tcp_clear_xmit_timers
 c_func
 (paren
