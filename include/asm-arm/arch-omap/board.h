@@ -11,9 +11,11 @@ DECL|macro|OMAP_TAG_MMC
 mdefine_line|#define OMAP_TAG_MMC&t;&t;0x4f02
 DECL|macro|OMAP_TAG_UART
 mdefine_line|#define OMAP_TAG_UART&t;&t;0x4f03
-DECL|struct|omap_clock_info
+DECL|macro|OMAP_TAG_USB
+mdefine_line|#define OMAP_TAG_USB            0x4f04
+DECL|struct|omap_clock_config
 r_struct
-id|omap_clock_info
+id|omap_clock_config
 (brace
 multiline_comment|/* 0 for 12 MHz, 1 for 13 MHz and 2 for 19.2 MHz */
 DECL|member|system_clock_type
@@ -22,9 +24,9 @@ id|system_clock_type
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|omap_mmc_info
+DECL|struct|omap_mmc_config
 r_struct
-id|omap_mmc_info
+id|omap_mmc_config
 (brace
 DECL|member|mmc_blocks
 id|u8
@@ -46,9 +48,9 @@ id|mmc2_switch_pin
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|omap_uart_info
+DECL|struct|omap_uart_config
 r_struct
-id|omap_uart_info
+id|omap_uart_config
 (brace
 DECL|member|console_uart
 id|u8
@@ -60,9 +62,50 @@ id|console_speed
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|omap_board_info_entry
+DECL|struct|omap_usb_config
 r_struct
-id|omap_board_info_entry
+id|omap_usb_config
+(brace
+multiline_comment|/* Configure drivers according to the connectors on your board:&n;&t; *  - &quot;A&quot; connector (rectagular)&n;&t; *&t;... for host/OHCI use, set &quot;register_host&quot;.&n;&t; *  - &quot;B&quot; connector (squarish) or &quot;Mini-B&quot;&n;&t; *&t;... for device/gadget use, set &quot;register_dev&quot;.&n;&t; *  - &quot;Mini-AB&quot; connector (very similar to Mini-B)&n;&t; *&t;... for OTG use as device OR host, initialize &quot;otg&quot;&n;&t; */
+DECL|member|register_host
+r_int
+id|register_host
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|register_dev
+r_int
+id|register_dev
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|otg
+id|u8
+id|otg
+suffix:semicolon
+multiline_comment|/* port number, 1-based:  usb1 == 2 */
+DECL|member|hmc_mode
+id|u8
+id|hmc_mode
+suffix:semicolon
+multiline_comment|/* implicitly true if otg:  host supports remote wakeup? */
+DECL|member|rwc
+id|u8
+id|rwc
+suffix:semicolon
+multiline_comment|/* signaling pins used to talk to transceiver on usbN:&n;&t; *  0 == usbN unused&n;&t; *  2 == usb0-only, using internal transceiver&n;&t; *  3 == 3 wire bidirectional&n;&t; *  4 == 4 wire bidirectional&n;&t; *  6 == 6 wire unidirectional (or TLL)&n;&t; */
+DECL|member|pins
+id|u8
+id|pins
+(braket
+l_int|3
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|omap_board_config_entry
+r_struct
+id|omap_board_config_entry
 (brace
 DECL|member|tag
 id|u16
@@ -81,11 +124,27 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|omap_board_config_kernel
+r_struct
+id|omap_board_config_kernel
+(brace
+DECL|member|tag
+id|u16
+id|tag
+suffix:semicolon
+DECL|member|data
+r_const
+r_void
+op_star
+id|data
+suffix:semicolon
+)brace
+suffix:semicolon
 r_extern
 r_const
 r_void
 op_star
-id|__omap_get_per_info
+id|__omap_get_config
 c_func
 (paren
 id|u16
@@ -95,7 +154,17 @@ r_int
 id|len
 )paren
 suffix:semicolon
-DECL|macro|omap_get_per_info
-mdefine_line|#define omap_get_per_info(tag, type) &bslash;&n;&t;((const type *) __omap_get_per_info((tag), sizeof(type)))
+DECL|macro|omap_get_config
+mdefine_line|#define omap_get_config(tag, type) &bslash;&n;&t;((const type *) __omap_get_config((tag), sizeof(type)))
+r_extern
+r_struct
+id|omap_board_config_kernel
+op_star
+id|omap_board_config
+suffix:semicolon
+r_extern
+r_int
+id|omap_board_config_size
+suffix:semicolon
 macro_line|#endif
 eof

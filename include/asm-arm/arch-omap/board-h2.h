@@ -3,5 +3,19 @@ macro_line|#ifndef __ASM_ARCH_OMAP_H2_H
 DECL|macro|__ASM_ARCH_OMAP_H2_H
 mdefine_line|#define __ASM_ARCH_OMAP_H2_H
 multiline_comment|/* Placeholder for H2 specific defines */
+multiline_comment|/* At OMAP1610 Innovator the Ethernet is directly connected to CS1 */
+DECL|macro|OMAP1610_ETHR_BASE
+mdefine_line|#define OMAP1610_ETHR_BASE&t;&t;0xE8000000
+DECL|macro|OMAP1610_ETHR_SIZE
+mdefine_line|#define OMAP1610_ETHR_SIZE&t;&t;SZ_4K
+DECL|macro|OMAP1610_ETHR_START
+mdefine_line|#define OMAP1610_ETHR_START&t;&t;0x04000000
+multiline_comment|/* Intel STRATA NOR flash at CS3 */
+DECL|macro|OMAP1610_NOR_FLASH_BASE
+mdefine_line|#define OMAP1610_NOR_FLASH_BASE&t;&t;0xD8000000
+DECL|macro|OMAP1610_NOR_FLASH_SIZE
+mdefine_line|#define OMAP1610_NOR_FLASH_SIZE&t;&t;SZ_32M
+DECL|macro|OMAP1610_NOR_FLASH_START
+mdefine_line|#define OMAP1610_NOR_FLASH_START&t;0x0C000000
 macro_line|#endif /*  __ASM_ARCH_OMAP_H2_H */
 eof

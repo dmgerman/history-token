@@ -21,7 +21,7 @@ mdefine_line|#define virt_to_lbus(x)&t;&t;((x) - PAGE_OFFSET + OMAP1510_LB_OFFSE
 DECL|macro|lbus_to_virt
 mdefine_line|#define lbus_to_virt(x)&t;&t;((x) - OMAP1510_LB_OFFSET + PAGE_OFFSET)
 DECL|macro|is_lbus_device
-mdefine_line|#define is_lbus_device(dev)&t;(cpu_is_omap1510() &amp;&amp; dev-&gt;coherent_dma_mask == 0x0fffffff)
+mdefine_line|#define is_lbus_device(dev)&t;(cpu_is_omap1510() &amp;&amp; dev &amp;&amp; dev-&gt;coherent_dma_mask == 0x0fffffff)
 DECL|macro|__arch_page_to_dma
 mdefine_line|#define __arch_page_to_dma(dev, page)&t;({is_lbus_device(dev) ? &bslash;&n;&t;&t;&t;&t;&t;(dma_addr_t)virt_to_lbus(page_address(page)) : &bslash;&n;&t;&t;&t;&t;&t;(dma_addr_t)__virt_to_bus(page_address(page));})
 DECL|macro|__arch_dma_to_virt
