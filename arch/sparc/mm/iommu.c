@@ -1025,7 +1025,7 @@ r_while
 c_loop
 (paren
 id|sz
-op_ge
+op_ne
 l_int|0
 )paren
 (brace
