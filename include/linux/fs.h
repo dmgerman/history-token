@@ -2542,6 +2542,13 @@ r_void
 op_star
 id|s_security
 suffix:semicolon
+DECL|member|s_xattr
+r_struct
+id|xattr_handler
+op_star
+op_star
+id|s_xattr
+suffix:semicolon
 DECL|member|s_dirty
 r_struct
 id|list_head
