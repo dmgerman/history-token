@@ -845,6 +845,7 @@ id|sp
 )paren
 suffix:semicolon
 multiline_comment|/* uart */
+macro_line|#ifdef CONFIG_SERIAL_8250
 r_extern
 r_void
 id|ibmasm_register_uart
@@ -867,4 +868,10 @@ op_star
 id|sp
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|ibmasm_register_uart
+mdefine_line|#define ibmasm_register_uart(sp)&t;do { } while(0)
+DECL|macro|ibmasm_unregister_uart
+mdefine_line|#define ibmasm_unregister_uart(sp)&t;do { } while(0)
+macro_line|#endif
 eof
