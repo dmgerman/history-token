@@ -34,8 +34,14 @@ DECL|macro|PCIVENDOR_SMC
 mdefine_line|#define PCIVENDOR_SMC&t;&t;&t;&t;0x10b8UL
 DECL|macro|PCIVENDOR_ACCTON
 mdefine_line|#define PCIVENDOR_ACCTON&t;&t;&t;0x1113UL
+DECL|macro|PCIVENDOR_ATI
+mdefine_line|#define PCIVENDOR_ATI&t;&t;&t;&t;0x1259UL
+DECL|macro|PCIVENDOR_TTL
+mdefine_line|#define PCIVENDOR_TTL&t;&t;&t;&t;0x16a5UL
 DECL|macro|PCIDEVICE_ISL3877
 mdefine_line|#define PCIDEVICE_ISL3877                       0x3877UL
+DECL|macro|PCIDEVICE_ISL3886
+mdefine_line|#define PCIDEVICE_ISL3886                       0x3886UL
 DECL|macro|PCIDEVICE_ISL3890
 mdefine_line|#define PCIDEVICE_ISL3890                       0x3890UL
 DECL|macro|PCIDEVICE_3COM6001
