@@ -20,7 +20,7 @@ DECL|function|update_dn_pci_info
 r_static
 r_void
 op_star
-id|__init
+id|__devinit
 id|update_dn_pci_info
 c_func
 (paren
@@ -456,6 +456,35 @@ id|ret
 suffix:semicolon
 r_return
 l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|pci_devs_phb_init_dynamic
+r_void
+id|__devinit
+id|pci_devs_phb_init_dynamic
+c_func
+(paren
+r_struct
+id|pci_controller
+op_star
+id|phb
+)paren
+(brace
+multiline_comment|/* Update dn-&gt;phb ptrs for new phb and children devices */
+id|traverse_pci_devices
+c_func
+(paren
+(paren
+r_struct
+id|device_node
+op_star
+)paren
+id|phb-&gt;arch_data
+comma
+id|update_dn_pci_info
+comma
+id|phb
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Traversal func that looks for a &lt;busno,devfcn&gt; value.&n; * If found, the device_node is returned (thus terminating the traversal).&n; */

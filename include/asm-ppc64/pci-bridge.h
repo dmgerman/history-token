@@ -84,6 +84,10 @@ id|pci_bus
 op_star
 id|bus
 suffix:semicolon
+DECL|member|is_dynamic
+r_char
+id|is_dynamic
+suffix:semicolon
 DECL|member|arch_data
 r_void
 op_star
@@ -117,6 +121,11 @@ DECL|member|pci_mem_offset
 r_int
 r_int
 id|pci_mem_offset
+suffix:semicolon
+DECL|member|pci_io_size
+r_int
+r_int
+id|pci_io_size
 suffix:semicolon
 DECL|member|ops
 r_struct
@@ -287,9 +296,6 @@ r_struct
 id|device_node
 op_star
 id|dev
-comma
-r_int
-id|primary
 )paren
 suffix:semicolon
 r_extern
