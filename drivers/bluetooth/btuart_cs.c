@@ -3421,6 +3421,4 @@ c_func
 id|exit_btuart_cs
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 eof

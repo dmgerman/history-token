@@ -3926,7 +3926,7 @@ macro_line|#else
 dot
 id|name
 op_assign
-l_string|&quot;rfcomm%d&quot;
+l_string|&quot;rfcomm&quot;
 comma
 macro_line|#endif
 dot
