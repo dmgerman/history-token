@@ -1,4 +1,4 @@
-multiline_comment|/**&n; * inode.c - NTFS kernel inode handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001,2002 Anton Altaparmakov.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/**&n; * inode.c - NTFS kernel inode handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -3652,29 +3652,6 @@ c_func
 (paren
 id|compressed_size
 )paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|vi-&gt;i_size
-op_ne
-id|ni-&gt;initialized_size
-)paren
-id|ntfs_warning
-c_func
-(paren
-id|vi-&gt;i_sb
-comma
-l_string|&quot;BUG: Found &quot;
-l_string|&quot;compressed file with &quot;
-l_string|&quot;data_size not equal to &quot;
-l_string|&quot;initialized_size. This will &quot;
-l_string|&quot;probably cause problems when &quot;
-l_string|&quot;trying to access the file. &quot;
-l_string|&quot;Please notify linux-ntfs-dev@&quot;
-l_string|&quot;lists.sf.net that you saw &quot;
-l_string|&quot;this message. Thanks!&quot;
 )paren
 suffix:semicolon
 )brace
