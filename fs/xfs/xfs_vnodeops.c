@@ -2743,9 +2743,14 @@ op_amp
 id|XFS_AT_XFLAGS
 )paren
 (brace
+multiline_comment|/* can&squot;t set PREALLOC this way, just preserve it */
 id|ip-&gt;i_d.di_flags
 op_assign
-l_int|0
+(paren
+id|ip-&gt;i_d.di_flags
+op_amp
+id|XFS_DIFLAG_PREALLOC
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2761,6 +2766,14 @@ id|XFS_DIFLAG_REALTIME
 suffix:semicolon
 id|ip-&gt;i_iocore.io_flags
 op_or_assign
+id|XFS_IOCORE_RT
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ip-&gt;i_iocore.io_flags
+op_and_assign
+op_complement
 id|XFS_IOCORE_RT
 suffix:semicolon
 )brace
@@ -2819,7 +2832,6 @@ id|ip-&gt;i_d.di_flags
 op_or_assign
 id|XFS_DIFLAG_NODUMP
 suffix:semicolon
-multiline_comment|/* can&squot;t set PREALLOC this way, just ignore it */
 )brace
 id|xfs_trans_log_inode
 c_func
