@@ -63,6 +63,8 @@ DECL|macro|HPAGE_SIZE
 macro_line|# define HPAGE_SIZE&t;(__IA64_UL_CONST(1) &lt;&lt; HPAGE_SHIFT)
 DECL|macro|HPAGE_MASK
 macro_line|# define HPAGE_MASK&t;(~(HPAGE_SIZE - 1))
+DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA
+macro_line|# define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 macro_line|#endif /* CONFIG_HUGETLB_PAGE */
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|__pa
