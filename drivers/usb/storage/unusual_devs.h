@@ -2381,30 +2381,6 @@ comma
 id|US_FL_MODE_XLATE
 )paren
 comma
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0a16
-comma
-l_int|0x8888
-comma
-l_int|0x0100
-comma
-l_int|0x0100
-comma
-l_string|&quot;IBM&quot;
-comma
-l_string|&quot;IBM USB Memory Key&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
-)paren
-comma
 multiline_comment|/* This Pentax still camera is not conformant&n; * to the USB storage specification: -&n; * - It does not like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * Tested on Rev. 10.00 (0x1000)&n; * Submitted by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; */
 id|UNUSUAL_DEV
 c_func
