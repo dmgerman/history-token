@@ -645,14 +645,6 @@ op_amp
 id|proc_ppc64_lock
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_EEH
-id|eeh_init_proc
-c_func
-(paren
-id|proc_ppc64_root
-)paren
-suffix:semicolon
-macro_line|#endif
 id|proc_ppc64_pmc_root
 op_assign
 id|proc_mkdir
