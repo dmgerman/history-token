@@ -5622,6 +5622,8 @@ op_assign
 op_star
 id|set
 suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|error
