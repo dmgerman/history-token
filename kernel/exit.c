@@ -825,6 +825,15 @@ id|current-&gt;rlim
 )paren
 )paren
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+(paren
+id|INIT_USER-&gt;__count
+)paren
+)paren
+suffix:semicolon
 id|switch_uid
 c_func
 (paren
