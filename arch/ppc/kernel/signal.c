@@ -1784,6 +1784,16 @@ id|__user
 op_star
 id|rt_sf
 suffix:semicolon
+multiline_comment|/* Always make any pending restarted system calls return -EINTR */
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
+suffix:semicolon
 id|rt_sf
 op_assign
 (paren
@@ -2238,6 +2248,16 @@ suffix:semicolon
 id|sigset_t
 id|set
 suffix:semicolon
+multiline_comment|/* Always make any pending restarted system calls return -EINTR */
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
+suffix:semicolon
 id|sc
 op_assign
 (paren
@@ -2583,16 +2603,6 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* no signals delivered */
-multiline_comment|/* Always make any pending restarted system calls return -EINTR */
-id|current_thread_info
-c_func
-(paren
-)paren
-op_member_access_from_pointer
-id|restart_block.fn
-op_assign
-id|do_no_restart_syscall
-suffix:semicolon
 r_if
 c_cond
 (paren
