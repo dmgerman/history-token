@@ -1531,16 +1531,6 @@ c_func
 id|acmd
 )paren
 suffix:semicolon
-id|acmd
-op_assign
-id|TAILQ_NEXT
-c_func
-(paren
-id|acmd
-comma
-id|acmd_links.tqe
-)paren
-suffix:semicolon
 id|cmd-&gt;host_scribble
 op_assign
 l_int|NULL
@@ -4427,6 +4417,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 multiline_comment|/* Yeild to our interrupt handler */
 id|ahc_unlock
 c_func
@@ -4446,6 +4437,7 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 id|ahc_unlock

@@ -1967,12 +1967,18 @@ id|flags
 (brace
 multiline_comment|/*&n;&t; * In 2.5.X and some 2.4.X versions, the midlayer takes our&n;&t; * lock just before calling us, so we avoid locking again.&n;&t; * For other kernel versions, the io_request_lock is taken&n;&t; * just before our entry point is called.  In this case, we&n;&t; * trade the io_request_lock for our per-softc lock.&n;&t; */
 macro_line|#if AHC_SCSI_HAS_HOST_LOCK == 0
-id|ahc_lock
+id|spin_unlock
 c_func
 (paren
-id|ahc
-comma
-id|flags
+op_amp
+id|io_request_lock
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|ahc-&gt;platform_data-&gt;spin_lock
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1996,12 +2002,18 @@ id|flags
 )paren
 (brace
 macro_line|#if AHC_SCSI_HAS_HOST_LOCK == 0
-id|ahc_unlock
+id|spin_unlock
 c_func
 (paren
-id|ahc
-comma
-id|flags
+op_amp
+id|ahd-&gt;platform_data-&gt;spin_lock
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|io_request_lock
 )paren
 suffix:semicolon
 macro_line|#endif
