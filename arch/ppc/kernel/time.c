@@ -707,10 +707,6 @@ id|flags
 suffix:semicolon
 r_int
 id|tb_delta
-comma
-id|new_nsec
-comma
-id|new_sec
 suffix:semicolon
 r_if
 c_cond
