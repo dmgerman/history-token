@@ -3244,7 +3244,6 @@ DECL|function|skb_linearize
 r_static
 r_inline
 r_int
-id|__deprecated
 id|skb_linearize
 c_func
 (paren

@@ -2256,6 +2256,11 @@ id|in_irq
 c_func
 (paren
 )paren
+op_logical_or
+id|irqs_disabled
+c_func
+(paren
+)paren
 )paren
 id|dev_kfree_skb_irq
 c_func
