@@ -7,11 +7,13 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/compiler.h&gt;
 DECL|macro|MARVEL_MAX_PIDS
-mdefine_line|#define MARVEL_MAX_PIDS&t;&t;128
-DECL|macro|MARVEL_MAX_LSIS_PER_PID
-mdefine_line|#define MARVEL_MAX_LSIS_PER_PID&t;256
+mdefine_line|#define MARVEL_MAX_PIDS&t;&t; 32 /* as long as we rely on 43-bit superpage */
+DECL|macro|MARVEL_IRQ_VEC_PE_SHIFT
+mdefine_line|#define MARVEL_IRQ_VEC_PE_SHIFT&t;(10)
+DECL|macro|MARVEL_IRQ_VEC_IRQ_MASK
+mdefine_line|#define MARVEL_IRQ_VEC_IRQ_MASK&t;((1 &lt;&lt; MARVEL_IRQ_VEC_PE_SHIFT) - 1)
 DECL|macro|MARVEL_NR_IRQS
-mdefine_line|#define MARVEL_NR_IRQS (MARVEL_MAX_PIDS * MARVEL_MAX_LSIS_PER_PID)
+mdefine_line|#define MARVEL_NR_IRQS&t;&t;&bslash;&n;&t;(16 + (MARVEL_MAX_PIDS * (1 &lt;&lt; MARVEL_IRQ_VEC_PE_SHIFT)))
 multiline_comment|/*&n; * EV7 RBOX Registers&n; */
 r_typedef
 r_struct

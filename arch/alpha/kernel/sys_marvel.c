@@ -21,12 +21,11 @@ macro_line|#include &quot;err_impl.h&quot;
 macro_line|#include &quot;irq_impl.h&quot;
 macro_line|#include &quot;pci_impl.h&quot;
 macro_line|#include &quot;machvec_impl.h&quot;
+macro_line|#if NR_IRQS &lt; MARVEL_NR_IRQS
+macro_line|# error NR_IRQS &lt; MARVEL_NR_IRQS !!!
+macro_line|#endif
 "&f;"
 multiline_comment|/*&n; * Interrupt handling.&n; */
-DECL|macro|IRQ_VEC_PE_SHIFT
-mdefine_line|#define IRQ_VEC_PE_SHIFT (10)
-DECL|macro|IRQ_VEC_IRQ_MASK
-mdefine_line|#define IRQ_VEC_IRQ_MASK ((1 &lt;&lt; IRQ_VEC_PE_SHIFT) - 1)
 r_static
 r_void
 DECL|function|io7_device_interrupt
@@ -79,14 +78,14 @@ suffix:semicolon
 multiline_comment|/* offset for legacy */
 id|irq
 op_and_assign
-id|IRQ_VEC_IRQ_MASK
+id|MARVEL_IRQ_VEC_IRQ_MASK
 suffix:semicolon
 multiline_comment|/* not too many bits */
 id|irq
 op_or_assign
 id|pid
 op_lshift
-id|IRQ_VEC_PE_SHIFT
+id|MARVEL_IRQ_VEC_PE_SHIFT
 suffix:semicolon
 multiline_comment|/* merge the pid     */
 id|handle_irq
@@ -137,7 +136,7 @@ id|pid
 op_assign
 id|irq
 op_rshift
-id|IRQ_VEC_PE_SHIFT
+id|MARVEL_IRQ_VEC_PE_SHIFT
 suffix:semicolon
 r_if
 c_cond
@@ -173,7 +172,7 @@ suffix:semicolon
 )brace
 id|irq
 op_and_assign
-id|IRQ_VEC_IRQ_MASK
+id|MARVEL_IRQ_VEC_IRQ_MASK
 suffix:semicolon
 multiline_comment|/* isolate the vector    */
 id|irq
@@ -1019,7 +1018,7 @@ op_assign
 (paren
 id|io7-&gt;pe
 op_lshift
-id|IRQ_VEC_PE_SHIFT
+id|MARVEL_IRQ_VEC_PE_SHIFT
 )paren
 op_plus
 l_int|16
@@ -1584,7 +1583,7 @@ op_or
 (paren
 id|io7-&gt;pe
 op_lshift
-id|IRQ_VEC_PE_SHIFT
+id|MARVEL_IRQ_VEC_PE_SHIFT
 )paren
 comma
 (paren
@@ -1596,7 +1595,7 @@ op_or
 (paren
 id|io7-&gt;pe
 op_lshift
-id|IRQ_VEC_PE_SHIFT
+id|MARVEL_IRQ_VEC_PE_SHIFT
 )paren
 )paren
 suffix:semicolon
@@ -1653,7 +1652,7 @@ id|irq
 op_or_assign
 id|io7-&gt;pe
 op_lshift
-id|IRQ_VEC_PE_SHIFT
+id|MARVEL_IRQ_VEC_PE_SHIFT
 suffix:semicolon
 multiline_comment|/* merge the pid     */
 r_return
