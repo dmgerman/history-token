@@ -2850,10 +2850,6 @@ op_minus
 id|EAGAIN
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 macro_line|#ifdef PARPORT_DEBUG_SHARING
 id|printk
 c_func
