@@ -365,6 +365,13 @@ id|ei_index
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|tsk
+op_assign
+id|current
+suffix:semicolon
 multiline_comment|/*&n;&t; * If this architecture has a platform capability string, copy it&n;&t; * to userspace.  In some cases (Sparc), this info is impossible&n;&t; * for userspace to get any other way, in others (i386) it is&n;&t; * merely difficult.&n;&t; */
 id|u_platform
 op_assign
@@ -532,7 +539,7 @@ comma
 (paren
 id|elf_addr_t
 )paren
-id|current-&gt;uid
+id|tsk-&gt;uid
 )paren
 suffix:semicolon
 id|NEW_AUX_ENT
@@ -543,7 +550,7 @@ comma
 (paren
 id|elf_addr_t
 )paren
-id|current-&gt;euid
+id|tsk-&gt;euid
 )paren
 suffix:semicolon
 id|NEW_AUX_ENT
@@ -554,7 +561,7 @@ comma
 (paren
 id|elf_addr_t
 )paren
-id|current-&gt;gid
+id|tsk-&gt;gid
 )paren
 suffix:semicolon
 id|NEW_AUX_ENT
@@ -565,7 +572,7 @@ comma
 (paren
 id|elf_addr_t
 )paren
-id|current-&gt;egid
+id|tsk-&gt;egid
 )paren
 suffix:semicolon
 r_if
