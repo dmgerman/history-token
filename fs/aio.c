@@ -3877,6 +3877,7 @@ r_int
 id|nr_events
 comma
 id|aio_context_t
+id|__user
 op_star
 id|ctxp
 )paren
@@ -4600,6 +4601,7 @@ r_struct
 id|iocb
 id|__user
 op_star
+id|__user
 op_star
 id|iocbpp
 )paren
