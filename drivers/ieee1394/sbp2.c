@@ -352,6 +352,7 @@ id|scsi_host_template
 id|scsi_driver_template
 suffix:semicolon
 DECL|variable|sbp2_speedto_max_payload
+r_static
 r_const
 id|u8
 id|sbp2_speedto_max_payload
@@ -925,6 +926,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This is much like hpsb_node_write(), except it ignores the response&n; * subaction and returns immediately. Can be used from interrupts.&n; */
 DECL|function|sbp2util_node_write_no_wait
+r_static
 r_int
 id|sbp2util_node_write_no_wait
 c_func

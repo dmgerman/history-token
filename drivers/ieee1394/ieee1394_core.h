@@ -236,16 +236,6 @@ r_int
 id|__opaque
 )paren
 suffix:semicolon
-r_void
-id|abort_requests
-c_func
-(paren
-r_struct
-id|hpsb_host
-op_star
-id|host
-)paren
-suffix:semicolon
 r_struct
 id|hpsb_packet
 op_star

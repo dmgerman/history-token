@@ -269,6 +269,7 @@ mdefine_line|#define PRINT_G(level, fmt, args...) &bslash;&n;printk(level &quot;
 multiline_comment|/* print card specific information */
 DECL|macro|PRINT
 mdefine_line|#define PRINT(level, card, fmt, args...) &bslash;&n;printk(level &quot;video1394_%d: &quot; fmt &quot;&bslash;n&quot; , card , ## args)
+r_static
 r_void
 id|wakeup_dma_ir_ctx
 c_func
@@ -278,6 +279,7 @@ r_int
 id|l
 )paren
 suffix:semicolon
+r_static
 r_void
 id|wakeup_dma_it_ctx
 c_func
@@ -2321,6 +2323,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|wakeup_dma_ir_ctx
+r_static
 r_void
 id|wakeup_dma_ir_ctx
 c_func
@@ -2737,6 +2740,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|wakeup_dma_it_ctx
+r_static
 r_void
 id|wakeup_dma_it_ctx
 c_func
@@ -5977,6 +5981,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This maps the vmalloced and reserved buffer to user space.&n; *&n; *  FIXME:&n; *  - PAGE_READONLY should suffice!?&n; *  - remap_pfn_range is kind of inefficient for page by page remapping.&n; *    But e.g. pte_alloc() does not work in modules ... :-(&n; */
 DECL|function|video1394_mmap
+r_static
 r_int
 id|video1394_mmap
 c_func

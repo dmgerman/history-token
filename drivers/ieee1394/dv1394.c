@@ -4484,6 +4484,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;       **********************************&n;       *** MMAP() THEORY OF OPERATION ***&n;       **********************************&n;&n;        The ringbuffer cannot be re-allocated or freed while&n;        a user program maintains a mapping of it. (note that a mapping&n;&t;can persist even after the device fd is closed!)&n;&n;&t;So, only let the user process allocate the DMA buffer once.&n;&t;To resize or deallocate it, you must close the device file&n;&t;and open it again.&n;&n;&t;Previously Dan M. hacked out a scheme that allowed the DMA&n;&t;buffer to change by forcefully unmapping it from the user&squot;s&n;&t;address space. It was prone to error because it&squot;s very hard to&n;&t;track all the places the buffer could have been mapped (we&n;&t;would have had to walk the vma list of every process in the&n;&t;system to be sure we found all the mappings!). Instead, we&n;&t;force the user to choose one buffer size and stick with&n;&t;it. This small sacrifice is worth the huge reduction in&n;&t;error-prone code in dv1394.&n;*/
 DECL|function|dv1394_mmap
+r_static
 r_int
 id|dv1394_mmap
 c_func
