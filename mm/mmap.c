@@ -5361,6 +5361,13 @@ c_cond
 id|locked
 OG
 id|limit
+op_logical_and
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_IPC_LOCK
+)paren
 )paren
 r_return
 op_minus
