@@ -7045,11 +7045,6 @@ id|cp
 op_assign
 l_int|NULL
 suffix:semicolon
-id|DECLARE_WAIT_QUEUE_HEAD
-(paren
-id|wqh
-)paren
-suffix:semicolon
 r_int
 r_int
 id|u
@@ -7221,11 +7216,15 @@ id|cp-&gt;version
 )paren
 suffix:semicolon
 multiline_comment|/* allow some time to settle the device */
-id|sleep_on_timeout
+id|set_current_state
+c_func
 (paren
-op_amp
-id|wqh
-comma
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 id|HZ
 op_div
 l_int|3
