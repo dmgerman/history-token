@@ -78,7 +78,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|skb-&gt;nh.iph-&gt;protocol
+id|nexthdr
 )paren
 (brace
 r_case

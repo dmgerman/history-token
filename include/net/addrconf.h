@@ -803,6 +803,7 @@ id|u8
 id|ipv6_addr_hash
 c_func
 (paren
+r_const
 r_struct
 id|in6_addr
 op_star
@@ -865,6 +866,7 @@ r_void
 id|addrconf_addr_solict_mult
 c_func
 (paren
+r_const
 r_struct
 id|in6_addr
 op_star
@@ -987,6 +989,7 @@ r_int
 id|ipv6_addr_is_multicast
 c_func
 (paren
+r_const
 r_struct
 id|in6_addr
 op_star

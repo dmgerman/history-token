@@ -64,7 +64,8 @@ id|handler
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|skbp
 )paren
 suffix:semicolon
 DECL|member|err_handler
