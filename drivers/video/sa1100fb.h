@@ -148,6 +148,12 @@ r_struct
 id|fb_info
 id|fb
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|device
+op_star
+id|dev
+suffix:semicolon
 DECL|member|rgb
 r_struct
 id|sa1100fb_rgb

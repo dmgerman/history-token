@@ -11,6 +11,8 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -4968,6 +4970,25 @@ id|mb_freed
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acornfb_device
+r_static
+r_struct
+id|device
+id|acornfb_device
+op_assign
+(brace
+dot
+id|bus_id
+op_assign
+l_string|&quot;acornfb&quot;
+comma
+dot
+id|coherent_dma_mask
+op_assign
+l_int|0xffffffff
+comma
+)brace
+suffix:semicolon
 r_int
 id|__init
 DECL|function|acornfb_init
@@ -4995,6 +5016,11 @@ id|acornfb_init_fbinfo
 c_func
 (paren
 )paren
+suffix:semicolon
+id|current_par.dev
+op_assign
+op_amp
+id|acornfb_device
 suffix:semicolon
 r_if
 c_cond
@@ -5263,32 +5289,27 @@ op_logical_neg
 id|current_par.using_vram
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * RiscPC needs to allocate the DRAM memory&n;&t;&t; * for the framebuffer if we are not using&n;&t;&t; * VRAM.  Archimedes/A5000 machines use a&n;&t;&t; * fixed address for their framebuffers.&n;&t;&t; */
-r_int
-r_int
-id|page
-comma
-id|top
-comma
+id|dma_addr_t
+id|handle
+suffix:semicolon
+r_void
+op_star
 id|base
 suffix:semicolon
-r_int
-id|order
+multiline_comment|/*&n;&t;&t; * RiscPC needs to allocate the DRAM memory&n;&t;&t; * for the framebuffer if we are not using&n;&t;&t; * VRAM.&n;&t;&t; */
+id|base
 op_assign
-id|get_order
+id|dma_alloc_writecombine
 c_func
 (paren
+id|current_par.dev
+comma
 id|size
-)paren
-suffix:semicolon
-id|base
-op_assign
-id|__get_free_pages
-c_func
-(paren
-id|GFP_KERNEL
 comma
-id|order
+op_amp
+id|handle
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -5296,7 +5317,7 @@ c_cond
 (paren
 id|base
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|printk
@@ -5312,92 +5333,18 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|top
-op_assign
-id|base
-op_plus
-(paren
-id|PAGE_SIZE
-op_lshift
-id|order
-)paren
-suffix:semicolon
-multiline_comment|/* Mark the framebuffer pages as reserved so mmap will work. */
-r_for
-c_loop
-(paren
-id|page
-op_assign
-id|base
-suffix:semicolon
-id|page
-OL
-id|PAGE_ALIGN
-c_func
-(paren
-id|base
-op_plus
-id|size
-)paren
-suffix:semicolon
-id|page
-op_add_assign
-id|PAGE_SIZE
-)paren
-id|SetPageReserved
-c_func
-(paren
-id|virt_to_page
-c_func
-(paren
-id|page
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Hand back any excess pages that we allocated. */
-r_for
-c_loop
-(paren
-id|page
-op_assign
-id|base
-op_plus
-id|size
-suffix:semicolon
-id|page
-OL
-id|top
-suffix:semicolon
-id|page
-op_add_assign
-id|PAGE_SIZE
-)paren
-id|free_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|fb_info.screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|base
 suffix:semicolon
 id|fb_info.fix.smem_start
 op_assign
-id|virt_to_phys
-c_func
-(paren
-id|fb_info.screen_base
-)paren
+id|handle
 suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#if defined(HAS_VIDC)
-multiline_comment|/*&n;&t; * Free unused pages&n;&t; */
+multiline_comment|/*&n;&t; * Archimedes/A5000 machines use a fixed address for their&n;&t; * framebuffers.  Free unused pages&n;&t; */
 id|free_unused_pages
 c_func
 (paren
