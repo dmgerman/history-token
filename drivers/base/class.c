@@ -1170,11 +1170,10 @@ id|cls-&gt;subsys
 )paren
 suffix:semicolon
 )brace
-DECL|function|class_subsys_init
-r_static
+DECL|function|classes_init
 r_int
 id|__init
-id|class_subsys_init
+id|classes_init
 c_func
 (paren
 r_void
@@ -1189,13 +1188,6 @@ id|class_subsys
 )paren
 suffix:semicolon
 )brace
-DECL|variable|class_subsys_init
-id|core_initcall
-c_func
-(paren
-id|class_subsys_init
-)paren
-suffix:semicolon
 DECL|variable|devclass_create_file
 id|EXPORT_SYMBOL
 c_func
