@@ -115,6 +115,32 @@ r_return
 id|result
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Scheduler clock - returns current time in nanosec units.&n; *&n; * Copied from ARM code for expediency... ;-}&n; */
+DECL|function|sched_clock
+r_int
+r_int
+r_int
+id|sched_clock
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies
+op_star
+(paren
+l_int|1000000000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * timer_interrupt() needs to keep up the real-time clock,&n; * as well as call the &quot;do_timer()&quot; routine every clocktick&n; */
 DECL|function|timer_interrupt
 id|irqreturn_t
