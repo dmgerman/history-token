@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * originally based on the dummy device.&n; *&n; * Copyright 1999, Thomas Davis, tadavis@lbl.gov.  &n; * Licensed under the GPL. Based on dummy.c, and eql.c devices.&n; *&n; * bonding.c: an Ethernet Bonding driver&n; *&n; * This is useful to talk to a Cisco EtherChannel compatible equipment:&n; *&t;Cisco 5500&n; *&t;Sun Trunking (Solaris)&n; *&t;Alteon AceDirector Trunks&n; *&t;Linux Bonding&n; *&t;and probably many L2 switches ...&n; *&n; * How it works:&n; *    ifconfig bond0 ipaddress netmask up&n; *      will setup a network device, with an ip address.  No mac address &n; *&t;will be assigned at this time.  The hw mac address will come from &n; *&t;the first slave bonded to the channel.  All slaves will then use &n; *&t;this hw mac address.&n; *&n; *    ifconfig bond0 down&n; *         will release all slaves, marking them as down.&n; *&n; *    ifenslave bond0 eth0&n; *&t;will attach eth0 to bond0 as a slave.  eth0 hw mac address will either&n; *&t;a: be used as initial mac address&n; *&t;b: if a hw mac address already is there, eth0&squot;s hw mac address &n; *&t;   will then be set from bond0.&n; *&n; * v0.1 - first working version.&n; * v0.2 - changed stats to be calculated by summing slaves stats.&n; *&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * - fix leaks on failure at bond_init&n; *&n; * 2000/09/30 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - added trivial code to release a slave device.&n; *     - fixed security bug (CAP_NET_ADMIN not checked)&n; *     - implemented MII link monitoring to disable dead links :&n; *       All MII capable slaves are checked every &lt;miimon&gt; milliseconds&n; *       (100 ms seems good). This value can be changed by passing it to&n; *       insmod. A value of zero disables the monitoring (default).&n; *     - fixed an infinite loop in bond_xmit_roundrobin() when there&squot;s no&n; *       good slave.&n; *     - made the code hopefully SMP safe&n; *&n; * 2000/10/03 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - optimized slave lists based on relevant suggestions from Thomas Davis&n; *     - implemented active-backup method to obtain HA with two switches:&n; *       stay as long as possible on the same active interface, while we&n; *       also monitor the backup one (MII link status) because we want to know&n; *       if we are able to switch at any time. ( pass &quot;mode=1&quot; to insmod )&n; *     - lots of stress testings because we need it to be more robust than the&n; *       wires ! :-&gt;&n; *&n; * 2000/10/09 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - added up and down delays after link state change.&n; *     - optimized the slaves chaining so that when we run forward, we never&n; *       repass through the bond itself, but we can find it by searching&n; *       backwards. Renders the deletion more difficult, but accelerates the&n; *       scan.&n; *     - smarter enslaving and releasing.&n; *     - finer and more robust SMP locking&n; *&n; * 2000/10/17 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - fixed two potential SMP race conditions&n; *&n; * 2000/10/18 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - small fixes to the monitoring FSM in case of zero delays&n; * 2000/11/01 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - fixed first slave not automatically used in trunk mode.&n; * 2000/11/10 : spelling of &quot;EtherChannel&quot; corrected.&n; * 2000/11/13 : fixed a race condition in case of concurrent accesses to ioctl().&n; * 2000/12/16 : fixed improper usage of rtnl_exlock_nowait().&n; *&n; * 2001/1/3 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - The bonding driver now simulates MII status monitoring, just like&n; *       a normal network device.  It will show that the link is down iff&n; *       every slave in the bond shows that their links are down.  If at least&n; *       one slave is up, the bond&squot;s MII status will appear as up.&n; *&n; * 2001/2/7 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Applications can now query the bond from user space to get&n; *       information which may be useful.  They do this by calling&n; *       the BOND_INFO_QUERY ioctl.  Once the app knows how many slaves&n; *       are in the bond, it can call the BOND_SLAVE_INFO_QUERY ioctl to&n; *       get slave specific information (# link failures, etc).  See&n; *       &lt;linux/if_bonding.h&gt; for more details.  The structs of interest&n; *       are ifbond and ifslave.&n; *&n; * 2001/4/5 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Ported to 2.4 Kernel&n; * &n; * 2001/5/2 - Jeffrey E. Mast &lt;jeff at mastfamily dot com&gt;&n; *     - When a device is detached from a bond, the slave device is no longer&n; *       left thinking that is has a master.&n; *&n; * 2001/5/16 - Jeffrey E. Mast &lt;jeff at mastfamily dot com&gt;&n; *     - memset did not appropriately initialized the bond rw_locks. Used &n; *       rwlock_init to initialize to unlocked state to prevent deadlock when &n; *       first attempting a lock&n; *     - Called SET_MODULE_OWNER for bond device&n; *&n; * 2001/5/17 - Tim Anderson &lt;tsa at mvista.com&gt;&n; *     - 2 paths for releasing for slave release; 1 through ioctl&n; *       and 2) through close. Both paths need to release the same way.&n; *     - the free slave in bond release is changing slave status before&n; *       the free. The netdev_set_master() is intended to change slave state&n; *       so it should not be done as part of the release process.&n; *     - Simple rule for slave state at release: only the active in A/B and&n; *       only one in the trunked case.&n; *&n; * 2001/6/01 - Tim Anderson &lt;tsa at mvista.com&gt;&n; *     - Now call dev_close when releasing a slave so it doesn&squot;t screw up&n; *       out routing table.&n; *&n; * 2001/6/01 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Added /proc support for getting bond and slave information.&n; *       Information is in /proc/net/&lt;bond device&gt;/info. &n; *     - Changed the locking when calling bond_close to prevent deadlock.&n; *&n; * 2001/8/05 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - correct problem where refcnt of slave is not incremented in bond_ioctl&n; *       so the system hangs when halting.&n; *     - correct locking problem when unable to malloc in bond_enslave.&n; *     - adding bond_xmit_xor logic.&n; *     - adding multiple bond device support.&n; *&n; * 2001/8/13 - Erik Habbinga &lt;erik_habbinga at hp dot com&gt;&n; *     - correct locking problem with rtnl_exlock_nowait&n; *&n; * 2001/8/23 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - bzero initial dev_bonds, to correct oops&n; *     - convert SIOCDEVPRIVATE to new MII ioctl calls&n; *&n; * 2001/9/13 - Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *     - Add the BOND_CHANGE_ACTIVE ioctl implementation&n; *&n; * 2001/9/14 - Mark Huth &lt;mhuth at mvista dot com&gt;&n; *     - Change MII_LINK_READY to not check for end of auto-negotiation,&n; *       but only for an up link.&n; *&n; * 2001/9/20 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Add the device field to bonding_t.  Previously the net_device &n; *       corresponding to a bond wasn&squot;t available from the bonding_t &n; *       structure.&n; *&n; * 2001/9/25 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - add arp_monitor for active backup mode&n; *&n; * 2001/10/23 - Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *     - Various memory leak fixes&n; *&n; * 2001/11/5 - Mark Huth &lt;mark dot huth at mvista dot com&gt;&n; *     - Don&squot;t take rtnl lock in bond_mii_monitor as it deadlocks under &n; *       certain hotswap conditions.  &n; *       Note:  this same change may be required in bond_arp_monitor ???&n; *     - Remove possibility of calling bond_sethwaddr with NULL slave_dev ptr &n; *     - Handle hot swap ethernet interface deregistration events to remove&n; *       kernel oops following hot swap of enslaved interface&n; *&n; * 2002/1/2 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Restore original slave flags at release time.&n; *&n; * 2002/02/18 - Erik Habbinga &lt;erik_habbinga at hp dot com&gt;&n; *     - bond_release(): calling kfree on our_slave after call to&n; *       bond_restore_slave_flags, not before&n; *     - bond_enslave(): saving slave flags into original_flags before&n; *       call to netdev_set_master, so the IFF_SLAVE flag doesn&squot;t end&n; *       up in original_flags&n; *&n; * 2002/04/05 - Mark Smith &lt;mark.smith at comdev dot cc&gt; and&n; *              Steve Mead &lt;steve.mead at comdev dot cc&gt;&n; *     - Port Gleb Natapov&squot;s multicast support patchs from 2.4.12&n; *       to 2.4.18 adding support for multicast.&n; */
+multiline_comment|/*&n; * originally based on the dummy device.&n; *&n; * Copyright 1999, Thomas Davis, tadavis@lbl.gov.  &n; * Licensed under the GPL. Based on dummy.c, and eql.c devices.&n; *&n; * bonding.c: an Ethernet Bonding driver&n; *&n; * This is useful to talk to a Cisco EtherChannel compatible equipment:&n; *&t;Cisco 5500&n; *&t;Sun Trunking (Solaris)&n; *&t;Alteon AceDirector Trunks&n; *&t;Linux Bonding&n; *&t;and probably many L2 switches ...&n; *&n; * How it works:&n; *    ifconfig bond0 ipaddress netmask up&n; *      will setup a network device, with an ip address.  No mac address &n; *&t;will be assigned at this time.  The hw mac address will come from &n; *&t;the first slave bonded to the channel.  All slaves will then use &n; *&t;this hw mac address.&n; *&n; *    ifconfig bond0 down&n; *         will release all slaves, marking them as down.&n; *&n; *    ifenslave bond0 eth0&n; *&t;will attach eth0 to bond0 as a slave.  eth0 hw mac address will either&n; *&t;a: be used as initial mac address&n; *&t;b: if a hw mac address already is there, eth0&squot;s hw mac address &n; *&t;   will then be set from bond0.&n; *&n; * v0.1 - first working version.&n; * v0.2 - changed stats to be calculated by summing slaves stats.&n; *&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * - fix leaks on failure at bond_init&n; *&n; * 2000/09/30 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - added trivial code to release a slave device.&n; *     - fixed security bug (CAP_NET_ADMIN not checked)&n; *     - implemented MII link monitoring to disable dead links :&n; *       All MII capable slaves are checked every &lt;miimon&gt; milliseconds&n; *       (100 ms seems good). This value can be changed by passing it to&n; *       insmod. A value of zero disables the monitoring (default).&n; *     - fixed an infinite loop in bond_xmit_roundrobin() when there&squot;s no&n; *       good slave.&n; *     - made the code hopefully SMP safe&n; *&n; * 2000/10/03 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - optimized slave lists based on relevant suggestions from Thomas Davis&n; *     - implemented active-backup method to obtain HA with two switches:&n; *       stay as long as possible on the same active interface, while we&n; *       also monitor the backup one (MII link status) because we want to know&n; *       if we are able to switch at any time. ( pass &quot;mode=1&quot; to insmod )&n; *     - lots of stress testings because we need it to be more robust than the&n; *       wires ! :-&gt;&n; *&n; * 2000/10/09 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - added up and down delays after link state change.&n; *     - optimized the slaves chaining so that when we run forward, we never&n; *       repass through the bond itself, but we can find it by searching&n; *       backwards. Renders the deletion more difficult, but accelerates the&n; *       scan.&n; *     - smarter enslaving and releasing.&n; *     - finer and more robust SMP locking&n; *&n; * 2000/10/17 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - fixed two potential SMP race conditions&n; *&n; * 2000/10/18 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - small fixes to the monitoring FSM in case of zero delays&n; * 2000/11/01 - Willy Tarreau &lt;willy at meta-x.org&gt;&n; *     - fixed first slave not automatically used in trunk mode.&n; * 2000/11/10 : spelling of &quot;EtherChannel&quot; corrected.&n; * 2000/11/13 : fixed a race condition in case of concurrent accesses to ioctl().&n; * 2000/12/16 : fixed improper usage of rtnl_exlock_nowait().&n; *&n; * 2001/1/3 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - The bonding driver now simulates MII status monitoring, just like&n; *       a normal network device.  It will show that the link is down iff&n; *       every slave in the bond shows that their links are down.  If at least&n; *       one slave is up, the bond&squot;s MII status will appear as up.&n; *&n; * 2001/2/7 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Applications can now query the bond from user space to get&n; *       information which may be useful.  They do this by calling&n; *       the BOND_INFO_QUERY ioctl.  Once the app knows how many slaves&n; *       are in the bond, it can call the BOND_SLAVE_INFO_QUERY ioctl to&n; *       get slave specific information (# link failures, etc).  See&n; *       &lt;linux/if_bonding.h&gt; for more details.  The structs of interest&n; *       are ifbond and ifslave.&n; *&n; * 2001/4/5 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Ported to 2.4 Kernel&n; * &n; * 2001/5/2 - Jeffrey E. Mast &lt;jeff at mastfamily dot com&gt;&n; *     - When a device is detached from a bond, the slave device is no longer&n; *       left thinking that is has a master.&n; *&n; * 2001/5/16 - Jeffrey E. Mast &lt;jeff at mastfamily dot com&gt;&n; *     - memset did not appropriately initialized the bond rw_locks. Used &n; *       rwlock_init to initialize to unlocked state to prevent deadlock when &n; *       first attempting a lock&n; *     - Called SET_MODULE_OWNER for bond device&n; *&n; * 2001/5/17 - Tim Anderson &lt;tsa at mvista.com&gt;&n; *     - 2 paths for releasing for slave release; 1 through ioctl&n; *       and 2) through close. Both paths need to release the same way.&n; *     - the free slave in bond release is changing slave status before&n; *       the free. The netdev_set_master() is intended to change slave state&n; *       so it should not be done as part of the release process.&n; *     - Simple rule for slave state at release: only the active in A/B and&n; *       only one in the trunked case.&n; *&n; * 2001/6/01 - Tim Anderson &lt;tsa at mvista.com&gt;&n; *     - Now call dev_close when releasing a slave so it doesn&squot;t screw up&n; *       out routing table.&n; *&n; * 2001/6/01 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Added /proc support for getting bond and slave information.&n; *       Information is in /proc/net/&lt;bond device&gt;/info. &n; *     - Changed the locking when calling bond_close to prevent deadlock.&n; *&n; * 2001/8/05 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - correct problem where refcnt of slave is not incremented in bond_ioctl&n; *       so the system hangs when halting.&n; *     - correct locking problem when unable to malloc in bond_enslave.&n; *     - adding bond_xmit_xor logic.&n; *     - adding multiple bond device support.&n; *&n; * 2001/8/13 - Erik Habbinga &lt;erik_habbinga at hp dot com&gt;&n; *     - correct locking problem with rtnl_exlock_nowait&n; *&n; * 2001/8/23 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - bzero initial dev_bonds, to correct oops&n; *     - convert SIOCDEVPRIVATE to new MII ioctl calls&n; *&n; * 2001/9/13 - Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *     - Add the BOND_CHANGE_ACTIVE ioctl implementation&n; *&n; * 2001/9/14 - Mark Huth &lt;mhuth at mvista dot com&gt;&n; *     - Change MII_LINK_READY to not check for end of auto-negotiation,&n; *       but only for an up link.&n; *&n; * 2001/9/20 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Add the device field to bonding_t.  Previously the net_device &n; *       corresponding to a bond wasn&squot;t available from the bonding_t &n; *       structure.&n; *&n; * 2001/9/25 - Janice Girouard &lt;girouard at us.ibm.com&gt;&n; *     - add arp_monitor for active backup mode&n; *&n; * 2001/10/23 - Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *     - Various memory leak fixes&n; *&n; * 2001/11/5 - Mark Huth &lt;mark dot huth at mvista dot com&gt;&n; *     - Don&squot;t take rtnl lock in bond_mii_monitor as it deadlocks under &n; *       certain hotswap conditions.  &n; *       Note:  this same change may be required in bond_arp_monitor ???&n; *     - Remove possibility of calling bond_sethwaddr with NULL slave_dev ptr &n; *     - Handle hot swap ethernet interface deregistration events to remove&n; *       kernel oops following hot swap of enslaved interface&n; *&n; * 2002/1/2 - Chad N. Tindel &lt;ctindel at ieee dot org&gt;&n; *     - Restore original slave flags at release time.&n; *&n; * 2002/02/18 - Erik Habbinga &lt;erik_habbinga at hp dot com&gt;&n; *     - bond_release(): calling kfree on our_slave after call to&n; *       bond_restore_slave_flags, not before&n; *     - bond_enslave(): saving slave flags into original_flags before&n; *       call to netdev_set_master, so the IFF_SLAVE flag doesn&squot;t end&n; *       up in original_flags&n; *&n; * 2002/04/05 - Mark Smith &lt;mark.smith at comdev dot cc&gt; and&n; *              Steve Mead &lt;steve.mead at comdev dot cc&gt;&n; *     - Port Gleb Natapov&squot;s multicast support patchs from 2.4.12&n; *       to 2.4.18 adding support for multicast.&n; *&n; * 2002/06/17 - Tony Cureington &lt;tony.cureington * hp_com&gt;&n; *     - corrected uninitialized pointer (ifr.ifr_data) in bond_check_dev_link;&n; *       actually changed function to use ETHTOOL, then MIIPHY, and finally&n; *       MIIREG to determine the link status&n; *     - fixed bad ifr_data pointer assignments in bond_ioctl&n; *     - corrected mode 1 being reported as active-backup in bond_get_info;&n; *       also added text to distinguish type of load balancing (rr or xor)&n; *     - change arp_ip_target module param from &quot;1-12s&quot; (array of 12 ptrs)&n; *       to &quot;s&quot; (a single ptr)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -29,6 +29,8 @@ macro_line|#include &lt;linux/if_bonding.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
 multiline_comment|/* monitor all links that often (in milliseconds). &lt;=0 disables monitoring */
 macro_line|#ifndef BOND_LINK_MON_INTERV
 DECL|macro|BOND_LINK_MON_INTERV
@@ -212,7 +214,7 @@ c_func
 (paren
 id|arp_ip_target
 comma
-l_string|&quot;1-12s&quot;
+l_string|&quot;s&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -952,29 +954,16 @@ r_struct
 id|ifreq
 id|ifr
 suffix:semicolon
-id|u16
-op_star
-id|data
-op_assign
-(paren
-id|u16
-op_star
-)paren
-op_amp
-id|ifr.ifr_data
+r_struct
+id|mii_ioctl_data
+id|mii
 suffix:semicolon
-multiline_comment|/* data[0] automagically filled by the ioctl */
-id|data
-(braket
-l_int|1
-)braket
-op_assign
-l_int|1
+r_struct
+id|ethtool_value
+id|etool
 suffix:semicolon
-multiline_comment|/* MII location 1 reports Link Status */
 r_if
 c_cond
-(paren
 (paren
 (paren
 id|ioctl
@@ -984,8 +973,79 @@ id|dev-&gt;do_ioctl
 op_ne
 l_int|NULL
 )paren
-op_logical_and
+(brace
 multiline_comment|/* ioctl to access MII */
+multiline_comment|/* TODO: set pointer to correct ioctl on a per team member */
+multiline_comment|/*       bases to make this more efficient. that is, once  */
+multiline_comment|/*       we determine the correct ioctl, we will always    */
+multiline_comment|/*       call it and not the others for that team          */
+multiline_comment|/*       member.                                           */
+multiline_comment|/* try SOICETHTOOL ioctl, some drivers cache ETHTOOL_GLINK */
+multiline_comment|/* for a period of time; we need to encourage link status  */
+multiline_comment|/* be reported by network drivers in real time; if the     */
+multiline_comment|/* value is cached, the mmimon module parm may have no     */
+multiline_comment|/* effect...                                               */
+id|etool.cmd
+op_assign
+id|ETHTOOL_GLINK
+suffix:semicolon
+id|ifr.ifr_data
+op_assign
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|etool
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ioctl
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|ifr
+comma
+id|SIOCETHTOOL
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|etool.data
+op_eq
+l_int|1
+)paren
+(brace
+r_return
+id|MII_LINK_READY
+suffix:semicolon
+)brace
+r_else
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+id|ifr.ifr_data
+op_assign
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|mii
+suffix:semicolon
+multiline_comment|/* try MIIPHY first then, if that doesn&squot;t work, try MIIREG */
+r_if
+c_cond
 (paren
 id|ioctl
 c_func
@@ -1000,23 +1060,45 @@ id|SIOCGMIIPHY
 op_eq
 l_int|0
 )paren
-)paren
 (brace
-multiline_comment|/* now, data[3] contains info about link status :&n;&t;&t;   - data[3] &amp; 0x04 means link up&n;&t;&t;   - data[3] &amp; 0x20 means end of auto-negociation&n;&t;&t;*/
+multiline_comment|/* now, mii.phy_id contains info about link status :&n;&t;&t;&t;- mii.phy_id &amp; 0x04 means link up&n;&t;&t;&t;- mii.phy_id &amp; 0x20 means end of auto-negociation&n;&t;&t;&t;*/
 r_return
-id|data
-(braket
-l_int|3
-)braket
+id|mii.phy_id
 suffix:semicolon
 )brace
-r_else
+id|mii.reg_num
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* the MII register we want to read */
+r_if
+c_cond
+(paren
+id|ioctl
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|ifr
+comma
+id|SIOCGMIIREG
+)paren
+op_eq
+l_int|0
+)paren
 (brace
+multiline_comment|/* mii.val_out contians the same link info as phy_id */
+multiline_comment|/* above                                             */
+r_return
+id|mii.val_out
+suffix:semicolon
+)brace
+)brace
 r_return
 id|MII_LINK_READY
 suffix:semicolon
 multiline_comment|/* spoof link up ( we can&squot;t check it) */
-)brace
 )brace
 DECL|function|bond_check_mii_link
 r_static
@@ -6064,7 +6146,6 @@ op_assign
 id|u16
 op_star
 )paren
-op_amp
 id|ifr-&gt;ifr_data
 suffix:semicolon
 r_if
@@ -6098,7 +6179,6 @@ op_assign
 id|u16
 op_star
 )paren
-op_amp
 id|ifr-&gt;ifr_data
 suffix:semicolon
 r_if
@@ -7561,6 +7641,15 @@ comma
 l_string|&quot;Bonding Mode: &quot;
 )paren
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|mode
+)paren
+(brace
+r_case
+id|BOND_MODE_ACTIVEBACKUP
+suffix:colon
 id|len
 op_add_assign
 id|sprintf
@@ -7572,14 +7661,68 @@ id|len
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|mode
-ques
-c_cond
 l_string|&quot;active-backup&quot;
-suffix:colon
-l_string|&quot;load balancing&quot;
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|BOND_MODE_ROUNDROBIN
+suffix:colon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;%s&bslash;n&quot;
+comma
+l_string|&quot;load balancing (round-robin)&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|BOND_MODE_XOR
+suffix:colon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;%s&bslash;n&quot;
+comma
+l_string|&quot;load balancing (xor)&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;%s&bslash;n&quot;
+comma
+l_string|&quot;unknown&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8655,9 +8798,87 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|updelay
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;bonding_init(): updelay module parameter (%d), &quot;
+l_string|&quot;not in range 0-%d, so it was reset to 0&bslash;n&quot;
+comma
+id|updelay
+comma
+id|INT_MAX
+)paren
+suffix:semicolon
+id|updelay
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|downdelay
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;bonding_init(): downdelay module parameter (%d), &quot;
+l_string|&quot;not in range 0-%d, so it was reset to 0&bslash;n&quot;
+comma
+id|downdelay
+comma
+id|INT_MAX
+)paren
+suffix:semicolon
+id|downdelay
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|arp_interval
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;bonding_init(): arp_interval module parameter (%d), &quot;
+l_string|&quot;not in range 0-%d, so it was reset to %d&bslash;n&quot;
+comma
+id|arp_interval
+comma
+id|INT_MAX
+comma
+id|BOND_LINK_ARP_INTERV
+)paren
+suffix:semicolon
+id|arp_interval
+op_assign
+id|BOND_LINK_ARP_INTERV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|arp_ip_target
 )paren
 (brace
+multiline_comment|/* TODO: check and log bad ip address */
 r_if
 c_cond
 (paren
