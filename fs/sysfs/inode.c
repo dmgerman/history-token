@@ -605,10 +605,6 @@ c_func
 id|s
 comma
 id|page
-comma
-id|PAGE_SIZE
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -679,10 +675,6 @@ c_func
 id|s
 comma
 id|page
-comma
-id|PAGE_SIZE
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
