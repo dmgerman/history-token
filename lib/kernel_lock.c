@@ -344,13 +344,13 @@ suffix:semicolon
 )brace
 macro_line|#else
 multiline_comment|/*&n; * The &squot;big kernel lock&squot;&n; *&n; * This spinlock is taken and released recursively by lock_kernel()&n; * and unlock_kernel().  It is transparently dropped and reaquired&n; * over schedule().  It is used to protect legacy code that hasn&squot;t&n; * been migrated to a proper locking design yet.&n; *&n; * Don&squot;t use in new code.&n; */
-DECL|variable|__cacheline_aligned_in_smp
 r_static
-id|spinlock_t
-id|kernel_flag
 id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
+id|DEFINE_SPINLOCK
+c_func
+(paren
+id|kernel_flag
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Acquire/release the underlying lock from the scheduler.&n; *&n; * This is called with preemption disabled, and should&n; * return an error value if it cannot get the lock and&n; * TIF_NEED_RESCHED gets set.&n; *&n; * If it successfully gets the lock, it should increment&n; * the preemption count like any spinlock does.&n; *&n; * (This works on UP too - _raw_spin_trylock will never&n; * return false in that case)&n; */
 DECL|function|__reacquire_kernel_lock
