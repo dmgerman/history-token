@@ -1622,6 +1622,14 @@ id|ipcd
 op_assign
 id|x-&gt;data
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ipcd
+)paren
+r_return
+suffix:semicolon
 id|ipcomp_free_data
 c_func
 (paren
@@ -1725,10 +1733,6 @@ r_struct
 id|iphdr
 )paren
 suffix:semicolon
-id|x-&gt;data
-op_assign
-id|ipcd
-suffix:semicolon
 id|ipcd-&gt;scratch
 op_assign
 id|kmalloc
@@ -1808,6 +1812,10 @@ suffix:semicolon
 id|ipcd-&gt;threshold
 op_assign
 id|calg_desc-&gt;uinfo.comp.threshold
+suffix:semicolon
+id|x-&gt;data
+op_assign
+id|ipcd
 suffix:semicolon
 id|err
 op_assign
