@@ -15,7 +15,7 @@ id|loops_per_jiffy
 suffix:semicolon
 macro_line|#endif 
 DECL|function|__delay
-r_extern
+r_static
 id|__inline__
 r_void
 id|__delay
@@ -52,7 +52,7 @@ l_string|&quot;cc&quot;
 suffix:semicolon
 )brace
 DECL|function|__udelay
-r_extern
+r_static
 id|__inline__
 r_void
 id|__udelay

@@ -73,7 +73,7 @@ mdefine_line|#define L1DCACHE_SIZE&t;&t;0x4000
 DECL|macro|sparc64_highest_locked_tlbent
 mdefine_line|#define sparc64_highest_locked_tlbent()&t;&bslash;&n;&t;(tlb_type == spitfire ? &bslash;&n;&t; SPITFIRE_HIGHEST_LOCKED_TLBENT : &bslash;&n;&t; CHEETAH_HIGHEST_LOCKED_TLBENT)
 DECL|function|spitfire_get_isfsr
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -114,7 +114,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|spitfire_get_dsfsr
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -155,7 +155,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|spitfire_get_sfar
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -196,7 +196,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|spitfire_put_isfsr
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_put_isfsr
@@ -234,7 +234,7 @@ id|ASI_IMMU
 suffix:semicolon
 )brace
 DECL|function|spitfire_put_dsfsr
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_put_dsfsr
@@ -272,7 +272,7 @@ id|ASI_DMMU
 suffix:semicolon
 )brace
 DECL|function|spitfire_get_primary_context
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -313,7 +313,7 @@ id|ctx
 suffix:semicolon
 )brace
 DECL|function|spitfire_set_primary_context
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_set_primary_context
@@ -363,7 +363,7 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 DECL|function|spitfire_get_secondary_context
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -404,7 +404,7 @@ id|ctx
 suffix:semicolon
 )brace
 DECL|function|spitfire_set_secondary_context
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_set_secondary_context
@@ -455,7 +455,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* The data cache is write through, so this just invalidates the&n; * specified line.&n; */
 DECL|function|spitfire_put_dcache_tag
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_put_dcache_tag
@@ -508,7 +508,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* The instruction cache lines are flushed with this, but note that&n; * this does not flush the pipeline.  It is possible for a line to&n; * get flushed but stale instructions to still be in the pipeline,&n; * a flush instruction (to any address) is sufficient to handle&n; * this issue after the line is invalidated.&n; */
 DECL|function|spitfire_put_icache_tag
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_put_icache_tag
@@ -550,7 +550,7 @@ id|ASI_IC_TAG
 suffix:semicolon
 )brace
 DECL|function|spitfire_get_dtlb_data
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -600,7 +600,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|spitfire_get_dtlb_tag
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -644,7 +644,7 @@ id|tag
 suffix:semicolon
 )brace
 DECL|function|spitfire_put_dtlb_data
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_put_dtlb_data
@@ -687,7 +687,7 @@ id|ASI_DTLB_DATA_ACCESS
 suffix:semicolon
 )brace
 DECL|function|spitfire_get_itlb_data
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -737,7 +737,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|spitfire_get_itlb_tag
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -781,7 +781,7 @@ id|tag
 suffix:semicolon
 )brace
 DECL|function|spitfire_put_itlb_data
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_put_itlb_data
@@ -826,7 +826,7 @@ suffix:semicolon
 multiline_comment|/* Spitfire hardware assisted TLB flushes. */
 multiline_comment|/* Context level flushes. */
 DECL|function|spitfire_flush_dtlb_primary_context
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_flush_dtlb_primary_context
@@ -857,7 +857,7 @@ id|ASI_DMMU_DEMAP
 suffix:semicolon
 )brace
 DECL|function|spitfire_flush_itlb_primary_context
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_flush_itlb_primary_context
@@ -888,7 +888,7 @@ id|ASI_IMMU_DEMAP
 suffix:semicolon
 )brace
 DECL|function|spitfire_flush_dtlb_secondary_context
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_flush_dtlb_secondary_context
@@ -919,7 +919,7 @@ id|ASI_DMMU_DEMAP
 suffix:semicolon
 )brace
 DECL|function|spitfire_flush_itlb_secondary_context
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_flush_itlb_secondary_context
@@ -950,7 +950,7 @@ id|ASI_IMMU_DEMAP
 suffix:semicolon
 )brace
 DECL|function|spitfire_flush_dtlb_nucleus_context
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_flush_dtlb_nucleus_context
@@ -981,7 +981,7 @@ id|ASI_DMMU_DEMAP
 suffix:semicolon
 )brace
 DECL|function|spitfire_flush_itlb_nucleus_context
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_flush_itlb_nucleus_context
@@ -1013,7 +1013,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Page level flushes. */
 DECL|function|spitfire_flush_dtlb_primary_page
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_flush_dtlb_primary_page
@@ -1046,7 +1046,7 @@ id|ASI_DMMU_DEMAP
 suffix:semicolon
 )brace
 DECL|function|spitfire_flush_itlb_primary_page
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_flush_itlb_primary_page
@@ -1079,7 +1079,7 @@ id|ASI_IMMU_DEMAP
 suffix:semicolon
 )brace
 DECL|function|spitfire_flush_dtlb_secondary_page
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_flush_dtlb_secondary_page
@@ -1114,7 +1114,7 @@ id|ASI_DMMU_DEMAP
 suffix:semicolon
 )brace
 DECL|function|spitfire_flush_itlb_secondary_page
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_flush_itlb_secondary_page
@@ -1149,7 +1149,7 @@ id|ASI_IMMU_DEMAP
 suffix:semicolon
 )brace
 DECL|function|spitfire_flush_dtlb_nucleus_page
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_flush_dtlb_nucleus_page
@@ -1184,7 +1184,7 @@ id|ASI_DMMU_DEMAP
 suffix:semicolon
 )brace
 DECL|function|spitfire_flush_itlb_nucleus_page
-r_extern
+r_static
 id|__inline__
 r_void
 id|spitfire_flush_itlb_nucleus_page
@@ -1220,7 +1220,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Cheetah has &quot;all non-locked&quot; tlb flushes. */
 DECL|function|cheetah_flush_dtlb_all
-r_extern
+r_static
 id|__inline__
 r_void
 id|cheetah_flush_dtlb_all
@@ -1251,7 +1251,7 @@ id|ASI_DMMU_DEMAP
 suffix:semicolon
 )brace
 DECL|function|cheetah_flush_itlb_all
-r_extern
+r_static
 id|__inline__
 r_void
 id|cheetah_flush_itlb_all
@@ -1283,7 +1283,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Cheetah has a 4-tlb layout so direct access is a bit different.&n; * The first two TLBs are fully assosciative, hold 16 entries, and are&n; * used only for locked and &gt;8K sized translations.  One exists for&n; * data accesses and one for instruction accesses.&n; *&n; * The third TLB is for data accesses to 8K non-locked translations, is&n; * 2 way assosciative, and holds 512 entries.  The fourth TLB is for&n; * instruction accesses to 8K non-locked translations, is 2 way&n; * assosciative, and holds 128 entries.&n; *&n; * Cheetah has some bug where bogus data can be returned from&n; * ASI_{D,I}TLB_DATA_ACCESS loads, doing the load twice fixes&n; * the problem for me. -DaveM&n; */
 DECL|function|cheetah_get_ldtlb_data
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -1336,7 +1336,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|cheetah_get_litlb_data
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -1389,7 +1389,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|cheetah_get_ldtlb_tag
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -1441,7 +1441,7 @@ id|tag
 suffix:semicolon
 )brace
 DECL|function|cheetah_get_litlb_tag
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -1493,7 +1493,7 @@ id|tag
 suffix:semicolon
 )brace
 DECL|function|cheetah_put_ldtlb_data
-r_extern
+r_static
 id|__inline__
 r_void
 id|cheetah_put_ldtlb_data
@@ -1544,7 +1544,7 @@ id|ASI_DTLB_DATA_ACCESS
 suffix:semicolon
 )brace
 DECL|function|cheetah_put_litlb_data
-r_extern
+r_static
 id|__inline__
 r_void
 id|cheetah_put_litlb_data
@@ -1595,7 +1595,7 @@ id|ASI_ITLB_DATA_ACCESS
 suffix:semicolon
 )brace
 DECL|function|cheetah_get_dtlb_data
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -1651,7 +1651,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|cheetah_get_dtlb_tag
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -1706,7 +1706,7 @@ id|tag
 suffix:semicolon
 )brace
 DECL|function|cheetah_put_dtlb_data
-r_extern
+r_static
 id|__inline__
 r_void
 id|cheetah_put_dtlb_data
@@ -1760,7 +1760,7 @@ id|ASI_DTLB_DATA_ACCESS
 suffix:semicolon
 )brace
 DECL|function|cheetah_get_itlb_data
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -1813,7 +1813,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|cheetah_get_itlb_tag
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -1865,7 +1865,7 @@ id|tag
 suffix:semicolon
 )brace
 DECL|function|cheetah_put_itlb_data
-r_extern
+r_static
 id|__inline__
 r_void
 id|cheetah_put_itlb_data

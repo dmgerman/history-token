@@ -20,7 +20,7 @@ suffix:semicolon
 DECL|macro|FPUSTATE
 mdefine_line|#define FPUSTATE (struct fpustate *)(current_thread_info()-&gt;fpregs)
 DECL|function|fprs_read
-r_extern
+r_static
 id|__inline__
 r_int
 r_int
@@ -51,7 +51,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|fprs_write
-r_extern
+r_static
 id|__inline__
 r_void
 id|fprs_write

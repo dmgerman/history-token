@@ -22,7 +22,7 @@ mdefine_line|#define spin_is_locked(lock)&t;(*((volatile unsigned char *)(lock))
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(lock)&t;&bslash;&n;do {&t;membar(&quot;#LoadLoad&quot;);&t;&bslash;&n;} while(*((volatile unsigned char *)lock))
 DECL|function|_raw_spin_lock
-r_extern
+r_static
 id|__inline__
 r_void
 id|_raw_spin_lock
@@ -61,7 +61,7 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 DECL|function|_raw_spin_trylock
-r_extern
+r_static
 id|__inline__
 r_int
 id|_raw_spin_trylock
@@ -105,7 +105,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|_raw_spin_unlock
-r_extern
+r_static
 id|__inline__
 r_void
 id|_raw_spin_unlock

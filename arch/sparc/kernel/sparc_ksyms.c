@@ -18,6 +18,9 @@ macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#ifdef CONFIG_HIGHMEM
+macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -844,6 +847,23 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|iounmap
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* in arch/sparc/mm/highmem.c */
+macro_line|#ifdef CONFIG_HIGHMEM
+DECL|variable|kmap_atomic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_atomic
+)paren
+suffix:semicolon
+DECL|variable|kunmap_atomic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kunmap_atomic
 )paren
 suffix:semicolon
 macro_line|#endif

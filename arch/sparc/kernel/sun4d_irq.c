@@ -2789,7 +2789,7 @@ comma
 id|BTFIXUPCALL_NORM
 )paren
 suffix:semicolon
-id|init_timers
+id|sparc_init_timers
 op_assign
 id|sun4d_init_timers
 suffix:semicolon
