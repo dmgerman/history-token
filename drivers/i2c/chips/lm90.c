@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * lm90.c - Part of lm_sensors, Linux kernel modules for hardware&n; *          monitoring&n; * Copyright (C) 2003-2004  Jean Delvare &lt;khali@linux-fr.org&gt;&n; *&n; * Based on the lm83 driver. The LM90 is a sensor chip made by National&n; * Semiconductor. It reports up to two temperatures (its own plus up to&n; * one external one) with a 0.125 deg resolution (1 deg for local&n; * temperature) and a 3-4 deg accuracy. Complete datasheet can be&n; * obtained from National&squot;s website at:&n; *   http://www.national.com/pf/LM/LM90.html&n; *&n; * This driver also supports the LM89 and LM99, two other sensor chips&n; * made by National Semiconductor. Both have an increased remote&n; * temperature measurement accuracy (1 degree), and the LM99&n; * additionally shifts remote temperatures (measured and limits) by 16&n; * degrees, which allows for higher temperatures measurement. The&n; * driver doesn&squot;t handle it since it can be done easily in user-space.&n; * Complete datasheets can be obtained from National&squot;s website at:&n; *   http://www.national.com/pf/LM/LM89.html&n; *   http://www.national.com/pf/LM/LM99.html&n; * Note that there is no way to differenciate between both chips.&n; *&n; * This driver also supports the LM86, another sensor chip made by&n; * National Semiconductor. It is exactly similar to the LM90 except it&n; * has a higher accuracy.&n; * Complete datasheet can be obtained from National&squot;s website at:&n; *   http://www.national.com/pf/LM/LM86.html&n; *&n; * This driver also supports the ADM1032, a sensor chip made by Analog&n; * Devices. That chip is similar to the LM90, with a few differences&n; * that are not handled by this driver. Complete datasheet can be&n; * obtained from Analog&squot;s website at:&n; *   http://products.analog.com/products/info.asp?product=ADM1032&n; * Among others, it has a higher accuracy than the LM90, much like the&n; * LM86 does.&n; *&n; * This driver also supports the MAX6657, MAX6658 and MAX6659 sensor&n; * chips made by Maxim. These chips are similar to the LM86. Complete&n; * datasheet can be obtained at Maxim&squot;s website at:&n; *   http://www.maxim-ic.com/quick_view2.cfm/qv_pk/2578&n; * Note that there is no easy way to differenciate between the three&n; * variants. The extra address and features of the MAX6659 are not&n; * supported by this driver.&n; *&n; * Since the LM90 was the first chipset supported by this driver, most&n; * comments will refer to this chipset, but are actually general and&n; * concern all supported chipsets, unless mentioned otherwise.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * lm90.c - Part of lm_sensors, Linux kernel modules for hardware&n; *          monitoring&n; * Copyright (C) 2003-2004  Jean Delvare &lt;khali@linux-fr.org&gt;&n; *&n; * Based on the lm83 driver. The LM90 is a sensor chip made by National&n; * Semiconductor. It reports up to two temperatures (its own plus up to&n; * one external one) with a 0.125 deg resolution (1 deg for local&n; * temperature) and a 3-4 deg accuracy. Complete datasheet can be&n; * obtained from National&squot;s website at:&n; *   http://www.national.com/pf/LM/LM90.html&n; *&n; * This driver also supports the LM89 and LM99, two other sensor chips&n; * made by National Semiconductor. Both have an increased remote&n; * temperature measurement accuracy (1 degree), and the LM99&n; * additionally shifts remote temperatures (measured and limits) by 16&n; * degrees, which allows for higher temperatures measurement. The&n; * driver doesn&squot;t handle it since it can be done easily in user-space.&n; * Complete datasheets can be obtained from National&squot;s website at:&n; *   http://www.national.com/pf/LM/LM89.html&n; *   http://www.national.com/pf/LM/LM99.html&n; * Note that there is no way to differenciate between both chips.&n; *&n; * This driver also supports the LM86, another sensor chip made by&n; * National Semiconductor. It is exactly similar to the LM90 except it&n; * has a higher accuracy.&n; * Complete datasheet can be obtained from National&squot;s website at:&n; *   http://www.national.com/pf/LM/LM86.html&n; *&n; * This driver also supports the ADM1032, a sensor chip made by Analog&n; * Devices. That chip is similar to the LM90, with a few differences&n; * that are not handled by this driver. Complete datasheet can be&n; * obtained from Analog&squot;s website at:&n; *   http://products.analog.com/products/info.asp?product=ADM1032&n; * Among others, it has a higher accuracy than the LM90, much like the&n; * LM86 does.&n; *&n; * This driver also supports the MAX6657, MAX6658 and MAX6659 sensor&n; * chips made by Maxim. These chips are similar to the LM86. Complete&n; * datasheet can be obtained at Maxim&squot;s website at:&n; *   http://www.maxim-ic.com/quick_view2.cfm/qv_pk/2578&n; * Note that there is no easy way to differenciate between the three&n; * variants. The extra address and features of the MAX6659 are not&n; * supported by this driver.&n; *&n; * This driver also supports the ADT7461 chip from Analog Devices but&n; * only in its &quot;compatability mode&quot;. If an ADT7461 chip is found but&n; * is configured in non-compatible mode (where its temperature&n; * register values are decoded differently) it is ignored by this&n; * driver. Complete datasheet can be obtained from Analog&squot;s website&n; * at:&n; *   http://products.analog.com/products/info.asp?product=ADT7461&n; *&n; * Since the LM90 was the first chipset supported by this driver, most&n; * comments will refer to this chipset, but are actually general and&n; * concern all supported chipsets, unless mentioned otherwise.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
-multiline_comment|/*&n; * Addresses to scan&n; * Address is fully defined internally and cannot be changed except for&n; * MAX6659.&n; * LM86, LM89, LM90, LM99, ADM1032, MAX6657 and MAX6658 have address 0x4c.&n; * LM89-1, and LM99-1 have address 0x4d.&n; * MAX6659 can have address 0x4c, 0x4d or 0x4e (unsupported).&n; */
+multiline_comment|/*&n; * Addresses to scan&n; * Address is fully defined internally and cannot be changed except for&n; * MAX6659.&n; * LM86, LM89, LM90, LM99, ADM1032, MAX6657 and MAX6658 have address 0x4c.&n; * LM89-1, and LM99-1 have address 0x4d.&n; * MAX6659 can have address 0x4c, 0x4d or 0x4e (unsupported).&n; * ADT7461 always has address 0x4c.&n; */
 DECL|variable|normal_i2c
 r_static
 r_int
@@ -36,7 +36,7 @@ id|I2C_CLIENT_ISA_END
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Insmod parameters&n; */
-id|SENSORS_INSMOD_5
+id|SENSORS_INSMOD_6
 c_func
 (paren
 id|lm90
@@ -48,6 +48,8 @@ comma
 id|lm86
 comma
 id|max6657
+comma
+id|adt7461
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * The LM90 registers&n; */
@@ -130,6 +132,11 @@ DECL|macro|TEMP2_TO_REG
 mdefine_line|#define TEMP2_TO_REG(val)&t;((val) &lt;= -128000 ? 0x8000 : &bslash;&n;&t;&t;&t;&t; (val) &gt;= 127875 ? 0x7FE0 : &bslash;&n;&t;&t;&t;&t; (val) &lt; 0 ? ((val) - 62) / 125 * 32 : &bslash;&n;&t;&t;&t;&t; ((val) + 62) / 125 * 32)
 DECL|macro|HYST_TO_REG
 mdefine_line|#define HYST_TO_REG(val)&t;((val) &lt;= 0 ? 0 : (val) &gt;= 30500 ? 31 : &bslash;&n;&t;&t;&t;&t; ((val) + 500) / 1000)
+multiline_comment|/* &n; * ADT7461 is almost identical to LM90 except that attempts to write&n; * values that are outside the range 0 &lt; temp &lt; 127 are treated as&n; * the boundary value. &n; */
+DECL|macro|TEMP1_TO_REG_ADT7461
+mdefine_line|#define TEMP1_TO_REG_ADT7461(val) ((val) &lt;= 0 ? 0 : &bslash;&n;&t;&t;&t;&t; (val) &gt;= 127000 ? 127 : &bslash;&n;&t;&t;&t;&t; ((val) + 500) / 1000)
+DECL|macro|TEMP2_TO_REG_ADT7461
+mdefine_line|#define TEMP2_TO_REG_ADT7461(val) ((val) &lt;= 0 ? 0 : &bslash;&n;&t;&t;&t;&t; (val) &gt;= 127750 ? 0x7FC0 : &bslash;&n;&t;&t;&t;&t; ((val) + 125) / 250 * 64)
 multiline_comment|/*&n; * Functions declaration&n; */
 r_static
 r_int
@@ -260,6 +267,10 @@ r_int
 id|last_updated
 suffix:semicolon
 multiline_comment|/* in jiffies */
+DECL|member|kind
+r_int
+id|kind
+suffix:semicolon
 multiline_comment|/* registers values */
 DECL|member|temp_input1
 DECL|member|temp_low1
@@ -369,9 +380,9 @@ id|TEMP1_FROM_REG
 )paren
 suffix:semicolon
 DECL|macro|set_temp1
-mdefine_line|#define set_temp1(value, reg) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;data-&gt;value = TEMP1_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp1(value, reg) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;if (data-&gt;kind == adt7461) &bslash;&n;&t;&t;data-&gt;value = TEMP1_TO_REG_ADT7461(val); &bslash;&n;&t;else &bslash;&n;&t;&t;data-&gt;value = TEMP1_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
 DECL|macro|set_temp2
-mdefine_line|#define set_temp2(value, regh, regl) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;data-&gt;value = TEMP2_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regh, data-&gt;value &gt;&gt; 8); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regl, data-&gt;value &amp; 0xff); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp2(value, regh, regl) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm90_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;if (data-&gt;kind == adt7461) &bslash;&n;&t;&t;data-&gt;value = TEMP2_TO_REG_ADT7461(val); &bslash;&n;&t;else &bslash;&n;&t;&t;data-&gt;value = TEMP2_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regh, data-&gt;value &gt;&gt; 8); &bslash;&n;&t;i2c_smbus_write_byte_data(client, regl, data-&gt;value &amp; 0xff); &bslash;&n;&t;return count; &bslash;&n;}
 id|set_temp1
 c_func
 (paren
@@ -1116,6 +1127,38 @@ op_assign
 id|adm1032
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|address
+op_eq
+l_int|0x4c
+op_logical_and
+id|chip_id
+op_eq
+l_int|0x51
+multiline_comment|/* ADT7461 */
+op_logical_and
+(paren
+id|reg_config1
+op_amp
+l_int|0x1F
+)paren
+op_eq
+l_int|0x00
+multiline_comment|/* check compat mode */
+op_logical_and
+id|reg_convrate
+op_le
+l_int|0x0A
+)paren
+(brace
+id|kind
+op_assign
+id|adt7461
+suffix:semicolon
+)brace
 )brace
 r_else
 r_if
@@ -1255,6 +1298,20 @@ op_assign
 l_string|&quot;max6657&quot;
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|kind
+op_eq
+id|adt7461
+)paren
+(brace
+id|name
+op_assign
+l_string|&quot;adt7461&quot;
+suffix:semicolon
+)brace
 multiline_comment|/* We can fill in the remaining client fields */
 id|strlcpy
 c_func
@@ -1269,6 +1326,10 @@ suffix:semicolon
 id|data-&gt;valid
 op_assign
 l_int|0
+suffix:semicolon
+id|data-&gt;kind
+op_assign
+id|kind
 suffix:semicolon
 id|init_MUTEX
 c_func

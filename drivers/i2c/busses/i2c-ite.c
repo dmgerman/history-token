@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -226,6 +227,12 @@ c_func
 r_void
 )paren
 (brace
+id|DEFINE_WAIT
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 r_int
 id|timeout
 op_assign
@@ -269,15 +276,24 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|interruptible_sleep_on_timeout
+id|prepare_to_wait
 c_func
 (paren
 op_amp
 id|iic_wait
 comma
+op_amp
+id|wait
+comma
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|schedule_timeout
+c_func
+(paren
 id|timeout
 op_star
 id|HZ
@@ -316,6 +332,16 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+id|finish_wait
+c_func
+(paren
+op_amp
+id|iic_wait
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace

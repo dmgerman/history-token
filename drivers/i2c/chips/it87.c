@@ -3260,7 +3260,7 @@ id|it87_driver.name
 r_goto
 id|ERROR0
 suffix:semicolon
-multiline_comment|/* Probe whether there is anything available on this address. Already&n;&t;   done for SMBus clients */
+multiline_comment|/* Probe whether there is anything available on this address. Already&n;&t;   done for SMBus and Super-I/O clients */
 r_if
 c_cond
 (paren
@@ -3273,6 +3273,9 @@ r_if
 c_cond
 (paren
 id|is_isa
+op_logical_and
+op_logical_neg
+id|chip_type
 )paren
 (brace
 DECL|macro|REALLY_SLOW_IO
@@ -4260,6 +4263,13 @@ op_eq
 id|it8712
 )paren
 (brace
+id|data-&gt;vrm
+op_assign
+id|i2c_which_vrm
+c_func
+(paren
+)paren
+suffix:semicolon
 id|device_create_file_vrm
 c_func
 (paren
@@ -4270,13 +4280,6 @@ id|device_create_file_vid
 c_func
 (paren
 id|new_client
-)paren
-suffix:semicolon
-id|data-&gt;vrm
-op_assign
-id|i2c_which_vrm
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -5365,11 +5368,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* The 8705 does not have VID capability */
-id|data-&gt;vid
-op_assign
-l_int|0x1f
-suffix:semicolon
 id|i
 op_assign
 id|it87_read_value

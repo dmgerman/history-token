@@ -948,6 +948,7 @@ id|new_client
 op_eq
 l_char|&squot;-&squot;
 )paren
+(brace
 id|dev_info
 c_func
 (paren
@@ -962,6 +963,7 @@ id|data-&gt;nature
 op_assign
 id|VAIO
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* create the sysfs eeprom file */
 id|sysfs_create_bin_file

@@ -222,8 +222,8 @@ c_func
 id|SMBHSTSTS
 )paren
 )paren
-op_ne
-l_int|0x00
+op_amp
+l_int|0x1F
 )paren
 (brace
 id|dev_dbg
@@ -258,8 +258,8 @@ c_func
 id|SMBHSTSTS
 )paren
 )paren
-op_ne
-l_int|0x00
+op_amp
+l_int|0x1F
 )paren
 (brace
 id|dev_dbg
@@ -439,22 +439,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|temp
+op_assign
 id|inb_p
 c_func
 (paren
 id|SMBHSTSTS
 )paren
-op_ne
-l_int|0x00
 )paren
+op_amp
+l_int|0x1F
+)paren
+(brace
 id|outb_p
 c_func
 (paren
-id|inb
-c_func
-(paren
-id|SMBHSTSTS
-)paren
+id|temp
 comma
 id|SMBHSTSTS
 )paren
@@ -471,22 +472,23 @@ c_func
 id|SMBHSTSTS
 )paren
 )paren
-op_ne
-l_int|0x00
+op_amp
+l_int|0x1F
 )paren
 (brace
-id|dev_dbg
+id|dev_warn
 c_func
 (paren
 op_amp
 id|vt596_adapter.dev
 comma
-l_string|&quot;Failed reset at end of &quot;
-l_string|&quot;transaction (%02x)&bslash;n&quot;
+l_string|&quot;Failed reset at end &quot;
+l_string|&quot;of transaction (%02x)&bslash;n&quot;
 comma
 id|temp
 )paren
 suffix:semicolon
+)brace
 )brace
 id|dev_dbg
 c_func
