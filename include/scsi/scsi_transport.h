@@ -47,6 +47,12 @@ r_class
 op_star
 id|host_class
 suffix:semicolon
+DECL|member|host_statistics
+r_struct
+id|attribute_group
+op_star
+id|host_statistics
+suffix:semicolon
 multiline_comment|/* Constructor functions */
 DECL|member|device_setup
 r_int
