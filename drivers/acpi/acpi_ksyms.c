@@ -421,6 +421,13 @@ c_func
 id|acpi_os_wait_semaphore
 )paren
 suffix:semicolon
+DECL|variable|acpi_os_wait_events_complete
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_os_wait_events_complete
+)paren
+suffix:semicolon
 DECL|variable|acpi_os_read_pci_configuration
 id|EXPORT_SYMBOL
 c_func

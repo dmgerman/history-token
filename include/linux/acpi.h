@@ -1267,6 +1267,11 @@ id|acpi_madt_entry_handler
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 suffix:semicolon
 r_char

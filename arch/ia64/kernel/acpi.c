@@ -19,6 +19,8 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/cyclone.h&gt;
+DECL|macro|BAD_MADT_ENTRY
+mdefine_line|#define BAD_MADT_ENTRY(entry, end) (                                        &bslash;&n;&t;&t;(!entry) || (unsigned long)entry + sizeof(*entry) &gt; end ||  &bslash;&n;&t;&t;((acpi_table_entry_header *)entry)-&gt;length != sizeof(*entry))
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
 DECL|variable|pm_idle
@@ -398,6 +400,11 @@ id|acpi_parse_lapic_addr_ovr
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -417,8 +424,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|BAD_MADT_ENTRY
+c_func
+(paren
 id|lapic
+comma
+id|end
+)paren
 )paren
 r_return
 op_minus
@@ -474,6 +486,11 @@ id|acpi_parse_lsapic
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -493,8 +510,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|BAD_MADT_ENTRY
+c_func
+(paren
 id|lsapic
+comma
+id|end
+)paren
 )paren
 r_return
 op_minus
@@ -607,6 +629,11 @@ id|acpi_parse_lapic_nmi
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -626,8 +653,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|BAD_MADT_ENTRY
+c_func
+(paren
 id|lacpi_nmi
+comma
+id|end
+)paren
 )paren
 r_return
 op_minus
@@ -653,6 +685,11 @@ id|acpi_parse_iosapic
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -672,8 +709,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|BAD_MADT_ENTRY
+c_func
+(paren
 id|iosapic
+comma
+id|end
+)paren
 )paren
 r_return
 op_minus
@@ -706,6 +748,11 @@ id|acpi_parse_plat_int_src
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -728,8 +775,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|BAD_MADT_ENTRY
+c_func
+(paren
 id|plintsrc
+comma
+id|end
+)paren
 )paren
 r_return
 op_minus
@@ -800,6 +852,11 @@ id|acpi_parse_int_src_ovr
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -819,8 +876,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|BAD_MADT_ENTRY
+c_func
+(paren
 id|p
+comma
+id|end
+)paren
 )paren
 r_return
 op_minus
@@ -875,6 +937,11 @@ id|acpi_parse_nmi_src
 id|acpi_table_entry_header
 op_star
 id|header
+comma
+r_const
+r_int
+r_int
+id|end
 )paren
 (brace
 r_struct
@@ -894,8 +961,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|BAD_MADT_ENTRY
+c_func
+(paren
 id|nmi_src
+comma
+id|end
+)paren
 )paren
 r_return
 op_minus
