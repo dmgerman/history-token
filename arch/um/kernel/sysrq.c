@@ -265,6 +265,27 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * The architecture-independent dump_stack generator&n; */
+DECL|function|dump_stack
+r_void
+id|dump_stack
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|stack
+suffix:semicolon
+id|show_trace
+c_func
+(paren
+op_amp
+id|stack
+)paren
+suffix:semicolon
+)brace
 DECL|function|show_trace_task
 r_void
 id|show_trace_task
