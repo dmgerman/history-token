@@ -3112,9 +3112,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|executable_stack
-op_eq
-id|EXSTACK_DISABLE_X
+op_logical_neg
+(paren
+id|current-&gt;personality
+op_amp
+id|ADDR_NO_RANDOMIZE
+)paren
 op_logical_and
 id|randomize_va_space
 )paren
