@@ -3876,8 +3876,6 @@ op_star
 id|amd
 )paren
 comma
-l_int|0
-comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
