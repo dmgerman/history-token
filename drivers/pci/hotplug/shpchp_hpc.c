@@ -6161,7 +6161,7 @@ id|slot_reg
 suffix:semicolon
 id|tempdword
 op_assign
-l_int|0xffffffff
+l_int|0xffff3fff
 suffix:semicolon
 id|writel
 c_func
@@ -6423,7 +6423,7 @@ id|slot_reg
 suffix:semicolon
 id|tempdword
 op_assign
-l_int|0xe01fffff
+l_int|0xe01f3fff
 suffix:semicolon
 id|writel
 c_func
