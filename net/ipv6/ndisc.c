@@ -5574,6 +5574,7 @@ id|mtu
 suffix:semicolon
 )brace
 )brace
+r_else
 r_if
 c_cond
 (paren
