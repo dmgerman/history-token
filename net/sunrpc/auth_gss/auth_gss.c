@@ -1805,7 +1805,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: %4u gss_upcall for uid %u result %d&quot;
+l_string|&quot;RPC: %4u gss_upcall for uid %u result %d&bslash;n&quot;
 comma
 id|task-&gt;tk_pid
 comma

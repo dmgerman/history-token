@@ -239,25 +239,6 @@ op_star
 id|fh
 )paren
 (brace
-multiline_comment|/*&n;&t; * Zero all nonused bytes&n;&t; */
-id|memset
-c_func
-(paren
-(paren
-id|u8
-op_star
-)paren
-id|fh
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|fh
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
