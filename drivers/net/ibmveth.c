@@ -2,8 +2,8 @@ multiline_comment|/*************************************************************
 multiline_comment|/*                                                                        */
 multiline_comment|/* IBM eServer i/pSeries Virtual Ethernet Device Driver                   */
 multiline_comment|/* Copyright (C) 2003 IBM Corp.                                           */
-multiline_comment|/*  Dave Larson (larson1@us.ibm.com)                                      */
-multiline_comment|/*  Santiago Leon (santil@us.ibm.com)                                     */
+multiline_comment|/*  Originally written by Dave Larson (larson1@us.ibm.com)                */
+multiline_comment|/*  Maintained by Santiago Leon (santil@us.ibm.com)                       */
 multiline_comment|/*                                                                        */
 multiline_comment|/*  This program is free software; you can redistribute it and/or modify  */
 multiline_comment|/*  it under the terms of the GNU General Public License as published by  */
@@ -269,20 +269,12 @@ id|ibmveth_driver_string
 op_assign
 l_string|&quot;IBM i/pSeries Virtual Ethernet Driver&quot;
 suffix:semicolon
-DECL|variable|ibmveth_driver_version
-r_static
-r_const
-r_char
-id|ibmveth_driver_version
-(braket
-)braket
-op_assign
-l_string|&quot;1.0&quot;
-suffix:semicolon
+DECL|macro|ibmveth_driver_version
+mdefine_line|#define ibmveth_driver_version &quot;1.02&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Dave Larson &lt;larson1@us.ibm.com&gt;&quot;
+l_string|&quot;Santiago Leon &lt;santil@us.ibm.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -295,6 +287,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|ibmveth_driver_version
+id|MODULE_VERSION
+c_func
+(paren
+id|ibmveth_driver_version
 )paren
 suffix:semicolon
 multiline_comment|/* simple methods of getting data from the current rxq entry */
