@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifdef __sparc__
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;
 macro_line|#ifdef __sparc_v9__
 macro_line|#include &lt;asm/isa.h&gt;
