@@ -217,7 +217,7 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
-l_string|&quot;flags:0x%08lx mapping:%p mapped:%d count:%d&bslash;n&quot;
+l_string|&quot;flags:0x%08lx mapping:%p mapcount:%d count:%d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -227,11 +227,10 @@ id|page-&gt;flags
 comma
 id|page-&gt;mapping
 comma
-id|page_mapped
-c_func
 (paren
-id|page
+r_int
 )paren
+id|page-&gt;mapcount
 comma
 id|page_count
 c_func
@@ -311,6 +310,10 @@ suffix:semicolon
 id|page-&gt;mapping
 op_assign
 l_int|NULL
+suffix:semicolon
+id|page-&gt;mapcount
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_HUGETLB_PAGE
