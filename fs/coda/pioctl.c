@@ -66,7 +66,7 @@ id|coda_ioctl_permission
 comma
 id|setattr
 suffix:colon
-id|coda_notify_change
+id|coda_setattr
 comma
 )brace
 suffix:semicolon

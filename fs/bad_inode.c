@@ -171,10 +171,6 @@ id|permission
 suffix:colon
 id|EIO_ERROR
 comma
-id|revalidate
-suffix:colon
-id|EIO_ERROR
-comma
 id|getattr
 suffix:colon
 id|EIO_ERROR

@@ -3227,8 +3227,8 @@ id|out
 suffix:semicolon
 )brace
 r_int
-DECL|function|nfs_notify_change
-id|nfs_notify_change
+DECL|function|nfs_setattr
+id|nfs_setattr
 c_func
 (paren
 r_struct
@@ -3286,7 +3286,7 @@ macro_line|#ifdef NFS_PARANOIA
 id|printk
 c_func
 (paren
-l_string|&quot;nfs_notify_change: revalidate failed, error=%d&bslash;n&quot;
+l_string|&quot;nfs_setattr: revalidate failed, error=%d&bslash;n&quot;
 comma
 id|error
 )paren
@@ -3391,7 +3391,7 @@ id|fattr.size
 id|printk
 c_func
 (paren
-l_string|&quot;nfs_notify_change: attr=%Ld, fattr=%Ld??&bslash;n&quot;
+l_string|&quot;nfs_setattr: attr=%Ld, fattr=%Ld??&bslash;n&quot;
 comma
 (paren
 r_int
@@ -3569,16 +3569,25 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Externally visible revalidation function&n; */
+DECL|function|nfs_getattr
 r_int
-DECL|function|nfs_revalidate
-id|nfs_revalidate
+id|nfs_getattr
 c_func
 (paren
+r_struct
+id|vfsmount
+op_star
+id|mnt
+comma
 r_struct
 id|dentry
 op_star
 id|dentry
+comma
+r_struct
+id|kstat
+op_star
+id|stat
 )paren
 (brace
 r_struct
@@ -3588,7 +3597,9 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
-r_return
+r_int
+id|err
+op_assign
 id|nfs_revalidate_inode
 c_func
 (paren
@@ -3600,6 +3611,23 @@ id|inode
 comma
 id|inode
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
+)paren
+id|generic_fillattr
+c_func
+(paren
+id|inode
+comma
+id|stat
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Ensure that mmap has a recent RPC credential for use when writing out&n; * shared pages&n; */
