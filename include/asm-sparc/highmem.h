@@ -3,13 +3,8 @@ macro_line|#ifndef _ASM_HIGHMEM_H
 DECL|macro|_ASM_HIGHMEM_H
 mdefine_line|#define _ASM_HIGHMEM_H
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;asm/vaddrs.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/cacheflush.h&gt;
-macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/* undef for production */
 DECL|macro|HIGHMEM_DEBUG
 mdefine_line|#define HIGHMEM_DEBUG 1
@@ -167,10 +162,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The use of kmap_atomic/kunmap_atomic is discouraged - kmap/kunmap&n; * gives a more generic (and caching) interface. But kmap_atomic can&n; * be used in IRQ contexts, so in some (very limited) cases we need&n; * it.&n; */
-DECL|function|kmap_atomic
-r_static
-r_inline
+r_extern
 r_void
 op_star
 id|kmap_atomic
@@ -185,132 +177,8 @@ r_enum
 id|km_type
 id|type
 )paren
-(brace
-r_int
-r_int
-id|idx
 suffix:semicolon
-r_int
-r_int
-id|vaddr
-suffix:semicolon
-id|inc_preempt_count
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|page
-OL
-id|highmem_start_page
-)paren
-r_return
-id|page_address
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|idx
-op_assign
-id|type
-op_plus
-id|KM_TYPE_NR
-op_star
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-id|vaddr
-op_assign
-id|FIX_KMAP_BEGIN
-op_plus
-id|idx
-op_star
-id|PAGE_SIZE
-suffix:semicolon
-multiline_comment|/* XXX Fix - Anton */
-macro_line|#if 0
-id|__flush_cache_one
-c_func
-(paren
-id|vaddr
-)paren
-suffix:semicolon
-macro_line|#else
-id|flush_cache_all
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if HIGHMEM_DEBUG
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pte_none
-c_func
-(paren
-op_star
-(paren
-id|kmap_pte
-op_plus
-id|idx
-)paren
-)paren
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-id|set_pte
-c_func
-(paren
-id|kmap_pte
-op_plus
-id|idx
-comma
-id|mk_pte
-c_func
-(paren
-id|page
-comma
-id|kmap_prot
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* XXX Fix - Anton */
-macro_line|#if 0
-id|__flush_tlb_one
-c_func
-(paren
-id|vaddr
-)paren
-suffix:semicolon
-macro_line|#else
-id|flush_tlb_all
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-(paren
-r_void
-op_star
-)paren
-id|vaddr
-suffix:semicolon
-)brace
-DECL|function|kunmap_atomic
-r_static
-r_inline
+r_extern
 r_void
 id|kunmap_atomic
 c_func
@@ -323,110 +191,7 @@ r_enum
 id|km_type
 id|type
 )paren
-(brace
-r_int
-r_int
-id|vaddr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|kvaddr
 suffix:semicolon
-r_int
-r_int
-id|idx
-op_assign
-id|type
-op_plus
-id|KM_TYPE_NR
-op_star
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|vaddr
-OL
-id|FIX_KMAP_BEGIN
-)paren
-(brace
-singleline_comment|// FIXME
-id|dec_preempt_count
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|vaddr
-op_ne
-id|FIX_KMAP_BEGIN
-op_plus
-id|idx
-op_star
-id|PAGE_SIZE
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* XXX Fix - Anton */
-macro_line|#if 0
-id|__flush_cache_one
-c_func
-(paren
-id|vaddr
-)paren
-suffix:semicolon
-macro_line|#else
-id|flush_cache_all
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef HIGHMEM_DEBUG
-multiline_comment|/*&n;&t; * force other mappings to Oops if they&squot;ll try to access&n;&t; * this pte without first remap it&n;&t; */
-id|pte_clear
-c_func
-(paren
-id|kmap_pte
-op_plus
-id|idx
-)paren
-suffix:semicolon
-multiline_comment|/* XXX Fix - Anton */
-macro_line|#if 0
-id|__flush_tlb_one
-c_func
-(paren
-id|vaddr
-)paren
-suffix:semicolon
-macro_line|#else
-id|flush_tlb_all
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
-id|dec_preempt_count
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 DECL|function|kmap_atomic_to_page
 r_static
 r_inline

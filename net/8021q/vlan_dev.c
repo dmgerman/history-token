@@ -1832,6 +1832,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|mp
+op_assign
+id|mp-&gt;next
+suffix:semicolon
 )brace
 multiline_comment|/* Create a new mapping then. */
 id|mp

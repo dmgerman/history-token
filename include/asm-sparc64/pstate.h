@@ -108,13 +108,5 @@ DECL|macro|VERS_MAXTL
 mdefine_line|#define VERS_MAXTL&t;0x000000000000ff00&t;/* Maximum Trap Level.&t;&t;*/
 DECL|macro|VERS_MAXWIN
 mdefine_line|#define VERS_MAXWIN&t;0x000000000000001f&t;/* Maximum Reg Window Index.&t;*/
-macro_line|#if defined(__KERNEL__) &amp;&amp; !defined(__ASSEMBLY__)
-DECL|macro|set_pstate
-mdefine_line|#define set_pstate(bits)&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;rdpr      %%pstate, %%g1&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;or        %%g1, %0, %%g1&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;wrpr      %%g1, 0x0, %%pstate&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;: /* no outputs */&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;i&quot; (bits)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;g1&quot;)
-DECL|macro|clear_pstate
-mdefine_line|#define clear_pstate(bits)&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;rdpr      %%pstate, %%g1&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;andn        %%g1, %0, %%g1&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&quot;wrpr      %%g1, 0x0, %%pstate&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;: /* no outputs */&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;i&quot; (bits)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;g1&quot;)
-DECL|macro|change_pstate
-mdefine_line|#define change_pstate(bits)&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;rdpr      %%pstate, %%g1&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;wrpr      %%g1, %0, %%pstate&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;: /* no outputs */&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;i&quot; (bits)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;g1&quot;)
-macro_line|#endif
 macro_line|#endif /* !(_SPARC64_PSTATE_H) */
 eof

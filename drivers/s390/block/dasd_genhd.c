@@ -540,10 +540,6 @@ DECL|function|dasd_gendisk_alloc
 id|dasd_gendisk_alloc
 c_func
 (paren
-r_char
-op_star
-id|device_name
-comma
 r_int
 id|devindex
 )paren
@@ -699,17 +695,20 @@ id|ENOMEM
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize gendisk structure. */
-id|memcpy
+id|memset
 c_func
 (paren
-id|gdp-&gt;disk_name
+id|gdp
 comma
-id|device_name
+l_int|0
 comma
-l_int|16
+r_sizeof
+(paren
+r_struct
+id|gendisk
+)paren
 )paren
 suffix:semicolon
-multiline_comment|/* huh? -- AV */
 id|gdp-&gt;major
 op_assign
 id|mi-&gt;major
@@ -735,7 +734,7 @@ op_assign
 id|sprintf
 c_func
 (paren
-id|device_name
+id|gdp-&gt;disk_name
 comma
 l_string|&quot;dasd&quot;
 )paren
@@ -760,7 +759,7 @@ op_add_assign
 id|sprintf
 c_func
 (paren
-id|device_name
+id|gdp-&gt;disk_name
 op_plus
 id|len
 comma
@@ -788,7 +787,7 @@ op_add_assign
 id|sprintf
 c_func
 (paren
-id|device_name
+id|gdp-&gt;disk_name
 op_plus
 id|len
 comma
@@ -817,7 +816,7 @@ op_add_assign
 id|sprintf
 c_func
 (paren
-id|device_name
+id|gdp-&gt;disk_name
 op_plus
 id|len
 comma

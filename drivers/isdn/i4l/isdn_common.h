@@ -17,15 +17,15 @@ macro_line|#undef  ISDN_DEBUG_MODEM_VOICE
 DECL|macro|ISDN_DEBUG_AT
 macro_line|#undef  ISDN_DEBUG_AT
 DECL|macro|ISDN_DEBUG_NET_DUMP
-macro_line|#undef  ISDN_DEBUG_NET_DUMP
+mdefine_line|#define  ISDN_DEBUG_NET_DUMP
 DECL|macro|ISDN_DEBUG_NET_DIAL
-macro_line|#undef  ISDN_DEBUG_NET_DIAL
+mdefine_line|#define  ISDN_DEBUG_NET_DIAL
 DECL|macro|ISDN_DEBUG_NET_ICALL
-macro_line|#undef  ISDN_DEBUG_NET_ICALL
+mdefine_line|#define  ISDN_DEBUG_NET_ICALL
 DECL|macro|ISDN_DEBUG_STATCALLB
-macro_line|#undef  ISDN_DEBUG_STATCALLB
+mdefine_line|#define  ISDN_DEBUG_STATCALLB
 DECL|macro|ISDN_DEBUG_COMMAND
-macro_line|#undef  ISDN_DEBUG_COMMAND
+mdefine_line|#define  ISDN_DEBUG_COMMAND
 macro_line|#ifdef ISDN_DEBUG_NET_DIAL
 DECL|macro|dbg_net_dial
 mdefine_line|#define dbg_net_dial(arg...) printk(KERN_DEBUG arg)
@@ -51,6 +51,11 @@ DECL|macro|isdn_BUG
 mdefine_line|#define isdn_BUG() &bslash;&n;do { printk(KERN_WARNING &quot;ISDN Bug at %s:%d&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;} while(0)
 DECL|macro|HERE
 mdefine_line|#define HERE printk(&quot;%s:%d (%s)&bslash;n&quot;, __FILE__, __LINE__, __FUNCTION__)
+r_extern
+r_struct
+id|list_head
+id|isdn_net_devs
+suffix:semicolon
 multiline_comment|/* Prototypes */
 r_extern
 r_void
@@ -281,11 +286,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
-r_struct
-id|list_head
-id|isdn_net_devs
-suffix:semicolon
-r_extern
 r_int
 id|isdn_get_free_slot
 c_func
@@ -479,7 +479,7 @@ id|midx
 suffix:semicolon
 r_extern
 r_void
-id|isdn_slot_set_rx_netdev
+id|isdn_slot_set_idev
 c_func
 (paren
 r_int
@@ -487,36 +487,12 @@ id|sl
 comma
 id|isdn_net_dev
 op_star
-id|nd
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|isdn_slot_set_st_netdev
-c_func
-(paren
-r_int
-id|sl
-comma
-id|isdn_net_dev
-op_star
-id|nd
 )paren
 suffix:semicolon
 r_extern
 id|isdn_net_dev
 op_star
-id|isdn_slot_rx_netdev
-c_func
-(paren
-r_int
-id|sl
-)paren
-suffix:semicolon
-r_extern
-id|isdn_net_dev
-op_star
-id|isdn_slot_st_netdev
+id|isdn_slot_idev
 c_func
 (paren
 r_int

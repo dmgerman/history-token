@@ -2191,6 +2191,10 @@ comma
 id|intval
 )paren
 suffix:semicolon
+id|device-&gt;ro_flag
+op_assign
+id|intval
+suffix:semicolon
 id|dasd_put_device
 c_func
 (paren

@@ -7910,7 +7910,7 @@ c_cond
 op_star
 id|ptr
 op_eq
-id|__constant_ntohl
+id|ntohl
 c_func
 (paren
 (paren
@@ -13146,7 +13146,7 @@ c_cond
 op_star
 id|ptr
 op_ne
-id|__constant_ntohl
+id|ntohl
 c_func
 (paren
 (paren

@@ -267,7 +267,7 @@ id|dst-&gt;dev
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IPV6
@@ -823,7 +823,7 @@ op_star
 )paren
 id|hdr
 op_assign
-id|__constant_htonl
+id|htonl
 c_func
 (paren
 l_int|0x60000000
@@ -1030,7 +1030,7 @@ id|totlen
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IPV6

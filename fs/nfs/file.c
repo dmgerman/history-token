@@ -641,11 +641,7 @@ r_int
 r_int
 id|index
 op_assign
-id|page_index
-c_func
-(paren
-id|page
-)paren
+id|page-&gt;index
 suffix:semicolon
 r_int
 r_int
@@ -746,6 +742,14 @@ dot
 id|commit_write
 op_assign
 id|nfs_commit_write
+comma
+macro_line|#ifdef CONFIG_NFS_DIRECTIO
+dot
+id|direct_IO
+op_assign
+id|nfs_direct_IO
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* &n; * Write to a file (through the page cache).&n; */

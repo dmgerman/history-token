@@ -3035,8 +3035,6 @@ comma
 l_int|0
 comma
 l_int|0
-comma
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -3852,8 +3850,6 @@ comma
 l_int|16
 comma
 l_int|0
-comma
-id|SLAB_KERNEL
 )paren
 suffix:semicolon
 r_if

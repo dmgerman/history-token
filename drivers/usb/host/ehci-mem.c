@@ -517,8 +517,6 @@ multiline_comment|/* byte alignment (for hw parts) */
 comma
 l_int|4096
 multiline_comment|/* can&squot;t cross 4K */
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -563,8 +561,6 @@ multiline_comment|/* byte alignment (for hw parts) */
 comma
 l_int|4096
 multiline_comment|/* can&squot;t cross 4K */
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -609,8 +605,6 @@ multiline_comment|/* byte alignment (for hw parts) */
 comma
 l_int|4096
 multiline_comment|/* can&squot;t cross 4K */
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -655,8 +649,6 @@ multiline_comment|/* byte alignment (for hw parts) */
 comma
 l_int|4096
 multiline_comment|/* can&squot;t cross 4K */
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if

@@ -80,8 +80,9 @@ c_func
 l_int|0
 )paren
 comma
+dot
 id|__tcp_lhash_wait
-suffix:colon
+op_assign
 id|__WAIT_QUEUE_HEAD_INITIALIZER
 c_func
 (paren

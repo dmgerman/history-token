@@ -6913,6 +6913,16 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;
 multiline_comment|/* Initialize the boot-time allocator. */
+id|max_pfn
+op_assign
+id|max_low_pfn
+op_assign
+id|end_pfn
+suffix:semicolon
+id|min_low_pfn
+op_assign
+id|pfn_base
+suffix:semicolon
 id|bootmap_size
 op_assign
 id|init_bootmem_node

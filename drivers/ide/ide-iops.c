@@ -28,7 +28,7 @@ r_static
 id|u8
 id|ide_inb
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 (brace
@@ -48,7 +48,7 @@ r_static
 id|u16
 id|ide_inw
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 (brace
@@ -68,7 +68,7 @@ r_static
 r_void
 id|ide_insw
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
@@ -96,7 +96,7 @@ r_static
 id|u32
 id|ide_inl
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 (brace
@@ -116,7 +116,7 @@ r_static
 r_void
 id|ide_insl
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
@@ -146,7 +146,7 @@ id|ide_outb
 id|u8
 id|addr
 comma
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 (brace
@@ -167,7 +167,7 @@ id|ide_outw
 id|u16
 id|addr
 comma
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 (brace
@@ -185,7 +185,7 @@ r_static
 r_void
 id|ide_outsw
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
@@ -215,7 +215,7 @@ id|ide_outl
 id|u32
 id|addr
 comma
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 (brace
@@ -233,7 +233,7 @@ r_static
 r_void
 id|ide_outsl
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
@@ -318,7 +318,7 @@ r_static
 id|u8
 id|ide_mm_inb
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 (brace
@@ -338,7 +338,7 @@ r_static
 id|u16
 id|ide_mm_inw
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 (brace
@@ -358,7 +358,7 @@ r_static
 r_void
 id|ide_mm_insw
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
@@ -434,7 +434,7 @@ r_static
 id|u32
 id|ide_mm_inl
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 (brace
@@ -454,7 +454,7 @@ r_static
 r_void
 id|ide_mm_insl
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
@@ -533,7 +533,7 @@ id|ide_mm_outb
 id|u8
 id|value
 comma
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 (brace
@@ -554,7 +554,7 @@ id|ide_mm_outw
 id|u16
 id|value
 comma
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 (brace
@@ -572,7 +572,7 @@ r_static
 r_void
 id|ide_mm_outsw
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
@@ -651,7 +651,7 @@ id|ide_mm_outl
 id|u32
 id|value
 comma
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 (brace
@@ -669,7 +669,7 @@ r_static
 r_void
 id|ide_mm_outsl
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
