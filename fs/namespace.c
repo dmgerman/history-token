@@ -5753,7 +5753,7 @@ id|tasklist_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Moves the current root to put_root, and sets root/cwd of all processes&n; * which had them on the old root to new_root.&n; *&n; * Note:&n; *  - we don&squot;t move root/cwd if they are not at the root (reason: if something&n; *    cared enough to change them, it&squot;s probably wrong to force them elsewhere)&n; *  - it&squot;s okay to pick a root that isn&squot;t the root of a file system, e.g.&n; *    /nfs/my_root where /nfs is the mount point. It must be a mountpoint,&n; *    though, so you may need to say mount --bind /nfs/my_root /nfs/my_root&n; *    first.&n; */
+multiline_comment|/*&n; * pivot_root Semantics:&n; * Moves the root file system of the current process to the directory put_old,&n; * makes new_root as the new root file system of the current process, and sets&n; * root/cwd of all processes which had them on the current root to new_root.&n; *&n; * Restrictions:&n; * The new_root and put_old must be directories, and  must not be on the&n; * same file  system as the current process root. The put_old  must  be&n; * underneath new_root,  i.e. adding a non-zero number of /.. to the string&n; * pointed to by put_old must yield the same directory as new_root. No other&n; * file system may be mounted on put_old. After all, new_root is a mountpoint.&n; *&n; * Notes:&n; *  - we don&squot;t move root/cwd if they are not at the root (reason: if something&n; *    cared enough to change them, it&squot;s probably wrong to force them elsewhere)&n; *  - it&squot;s okay to pick a root that isn&squot;t the root of a file system, e.g.&n; *    /nfs/my_root where /nfs is the mount point. It must be a mountpoint,&n; *    though, so you may need to say mount --bind /nfs/my_root /nfs/my_root&n; *    first.&n; */
 DECL|function|sys_pivot_root
 id|asmlinkage
 r_int
@@ -6045,7 +6045,7 @@ id|user_nd.mnt
 r_goto
 id|out2
 suffix:semicolon
-multiline_comment|/* loop */
+multiline_comment|/* loop, on the same file system  */
 id|error
 op_assign
 op_minus
@@ -6061,6 +6061,7 @@ id|user_nd.dentry
 r_goto
 id|out2
 suffix:semicolon
+multiline_comment|/* not a mountpoint */
 r_if
 c_cond
 (paren
@@ -6109,6 +6110,7 @@ id|tmp
 r_goto
 id|out3
 suffix:semicolon
+multiline_comment|/* already mounted on put_old */
 r_if
 c_cond
 (paren
@@ -6182,6 +6184,7 @@ op_amp
 id|old_nd
 )paren
 suffix:semicolon
+multiline_comment|/* mount old root on put_old */
 id|attach_mnt
 c_func
 (paren
@@ -6191,6 +6194,7 @@ op_amp
 id|root_parent
 )paren
 suffix:semicolon
+multiline_comment|/* mount new_root on / */
 id|spin_unlock
 c_func
 (paren
