@@ -1354,7 +1354,7 @@ c_func
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Next, set the appropriate busy bit for the device/host.&n;&t; *&n;&t; * If the host/device isn&squot;t busy, assume that something actually&n;&t; * completed, and that we should be able to queue a command now.&n;&t; *&n;&t; * Note that there is an implicit assumption that every host can&n;&t; * always queue at least one command.  If a host is inactive and&n;&t; * cannot queue any commands, I don&squot;t see how things could&n;&t; * possibly work anyways.&n;&t; */
+multiline_comment|/*&n;&t; * Next, set the appropriate busy bit for the device/host.&n;&t; *&n;&t; * If the host/device isn&squot;t busy, assume that something actually&n;&t; * completed, and that we should be able to queue a command now.&n;&t; *&n;&t; * Note that the prior mid-layer assumption that any host could&n;&t; * always queue at least one command is now broken.  The mid-layer&n;&t; * will implement a user specifiable stall (see&n;&t; * scsi_host.max_host_blocked and scsi_device.max_device_blocked)&n;&t; * if a command is requeued with no other commands outstanding&n;&t; * either for the device or for the host.&n;&t; */
 r_if
 c_cond
 (paren
