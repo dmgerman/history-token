@@ -436,21 +436,6 @@ r_void
 suffix:semicolon
 multiline_comment|/* From fs/ntfs/mst.c */
 r_extern
-r_inline
-r_void
-id|__post_read_mst_fixup
-c_func
-(paren
-id|NTFS_RECORD
-op_star
-id|b
-comma
-r_const
-id|u32
-id|size
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|post_read_mst_fixup
 c_func
@@ -476,6 +461,16 @@ comma
 r_const
 id|u32
 id|size
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|post_write_mst_fixup
+c_func
+(paren
+id|NTFS_RECORD
+op_star
+id|b
 )paren
 suffix:semicolon
 multiline_comment|/* From fs/ntfs/time.c */

@@ -6254,9 +6254,11 @@ id|vol-&gt;nls_map
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * Default is group and other don&squot;t have any access to files or&n;&t; * directories while owner has full access.&n;&t; */
+multiline_comment|/*&n;&t; * Default is group and other don&squot;t have any access to files or&n;&t; * directories while owner has full access. Further files by default&n;&t; * are not executable but directories are of course browseable.&n;&t; */
 id|vol-&gt;fmask
 op_assign
+l_int|0177
+suffix:semicolon
 id|vol-&gt;dmask
 op_assign
 l_int|0077
