@@ -3434,11 +3434,11 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|bfusb_cleanup
+DECL|function|bfusb_exit
 r_static
 r_void
 id|__exit
-id|bfusb_cleanup
+id|bfusb_exit
 c_func
 (paren
 r_void
@@ -3459,11 +3459,11 @@ c_func
 id|bfusb_init
 )paren
 suffix:semicolon
-DECL|variable|bfusb_cleanup
+DECL|variable|bfusb_exit
 id|module_exit
 c_func
 (paren
-id|bfusb_cleanup
+id|bfusb_exit
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -3476,6 +3476,13 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;BlueFRITZ! USB driver ver &quot;
+id|VERSION
+)paren
+suffix:semicolon
+DECL|variable|VERSION
+id|MODULE_VERSION
+c_func
+(paren
 id|VERSION
 )paren
 suffix:semicolon

@@ -2223,7 +2223,7 @@ suffix:semicolon
 id|BT_DBG
 c_func
 (paren
-l_string|&quot;hu %p count %d rx_state %ld rx_count %ld&quot;
+l_string|&quot;hu %p count %d rx_state %d rx_count %ld&quot;
 comma
 id|hu
 comma

@@ -1109,11 +1109,11 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|bcm203x_cleanup
+DECL|function|bcm203x_exit
 r_static
 r_void
 id|__exit
-id|bcm203x_cleanup
+id|bcm203x_exit
 c_func
 (paren
 r_void
@@ -1134,11 +1134,11 @@ c_func
 id|bcm203x_init
 )paren
 suffix:semicolon
-DECL|variable|bcm203x_cleanup
+DECL|variable|bcm203x_exit
 id|module_exit
 c_func
 (paren
-id|bcm203x_cleanup
+id|bcm203x_exit
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -1151,6 +1151,13 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Broadcom Blutonium firmware driver ver &quot;
+id|VERSION
+)paren
+suffix:semicolon
+DECL|variable|VERSION
+id|MODULE_VERSION
+c_func
+(paren
 id|VERSION
 )paren
 suffix:semicolon
