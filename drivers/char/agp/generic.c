@@ -3637,6 +3637,11 @@ id|i
 suffix:semicolon
 multiline_comment|/* PCI Posting. */
 )brace
+id|global_cache_flush
+c_func
+(paren
+)paren
+suffix:semicolon
 id|agp_bridge-&gt;driver
 op_member_access_from_pointer
 id|tlb_flush
