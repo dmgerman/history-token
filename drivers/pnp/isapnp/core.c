@@ -101,14 +101,6 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|isapnp_allow_dma0
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
 id|isapnp_verbose
 comma
 l_string|&quot;i&quot;
