@@ -27,10 +27,10 @@ macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef DEBUG
 DECL|macro|UDSL_ASSERT
-mdefine_line|#define UDSL_ASSERT(x)&t;BUG_ON(x)
+mdefine_line|#define UDSL_ASSERT(x)&t;BUG_ON(!(x))
 macro_line|#else
 DECL|macro|UDSL_ASSERT
-mdefine_line|#define UDSL_ASSERT(x)
+mdefine_line|#define UDSL_ASSERT(x)&t;warn(&quot;failed assertion &squot;&quot; #x &quot;&squot; at line %d&quot;, __LINE__)
 macro_line|#endif
 macro_line|#ifdef VERBOSE_DEBUG
 r_static
@@ -1701,6 +1701,7 @@ suffix:semicolon
 id|UDSL_ASSERT
 c_func
 (paren
+op_logical_neg
 id|ctrl-&gt;num_cells
 )paren
 suffix:semicolon
@@ -1865,7 +1866,7 @@ id|UDSL_ASSERT
 c_func
 (paren
 id|buf-&gt;filled_cells
-OG
+op_le
 id|rcv_buf_size
 )paren
 suffix:semicolon
