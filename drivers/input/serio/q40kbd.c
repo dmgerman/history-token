@@ -58,9 +58,6 @@ op_star
 id|port
 )paren
 (brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|variable|q40kbd_port
 r_static
@@ -120,10 +117,6 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
