@@ -767,6 +767,37 @@ id|shost-&gt;use_clustering
 op_assign
 id|sht-&gt;use_clustering
 suffix:semicolon
+id|shost-&gt;ordered_flush
+op_assign
+id|sht-&gt;ordered_flush
+suffix:semicolon
+id|shost-&gt;ordered_tag
+op_assign
+id|sht-&gt;ordered_tag
+suffix:semicolon
+multiline_comment|/*&n;&t; * hosts/devices that do queueing must support ordered tags&n;&t; */
+r_if
+c_cond
+(paren
+id|shost-&gt;can_queue
+OG
+l_int|1
+op_logical_and
+id|shost-&gt;ordered_flush
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;scsi: ordered flushes don&squot;t support queueing&bslash;n&quot;
+)paren
+suffix:semicolon
+id|shost-&gt;ordered_flush
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -6735,7 +6735,6 @@ suffix:semicolon
 DECL|variable|mss
 r_static
 r_int
-id|__initdata
 id|mss
 op_assign
 l_int|0

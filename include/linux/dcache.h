@@ -438,7 +438,7 @@ r_extern
 id|spinlock_t
 id|dcache_lock
 suffix:semicolon
-multiline_comment|/**&n; * d_drop - drop a dentry&n; * @dentry: dentry to drop&n; *&n; * d_drop() unhashes the entry from the parent&n; * dentry hashes, so that it won&squot;t be found through&n; * a VFS lookup any more. Note that this is different&n; * from deleting the dentry - d_delete will try to&n; * mark the dentry negative if possible, giving a&n; * successful _negative_ lookup, while d_drop will&n; * just make the cache lookup fail.&n; *&n; * d_drop() is used mainly for stuff that wants&n; * to invalidate a dentry for some reason (NFS&n; * timeouts or autofs deletes).&n; */
+multiline_comment|/**&n; * d_drop - drop a dentry&n; * @dentry: dentry to drop&n; *&n; * d_drop() unhashes the entry from the parent dentry hashes, so that it won&squot;t&n; * be found through a VFS lookup any more. Note that this is different from&n; * deleting the dentry - d_delete will try to mark the dentry negative if&n; * possible, giving a successful _negative_ lookup, while d_drop will&n; * just make the cache lookup fail.&n; *&n; * d_drop() is used mainly for stuff that wants to invalidate a dentry for some&n; * reason (NFS timeouts or autofs deletes).&n; *&n; * __d_drop requires dentry-&gt;d_lock.&n; */
 DECL|function|__d_drop
 r_static
 r_inline
@@ -496,10 +496,24 @@ op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_lock
+)paren
+suffix:semicolon
 id|__d_drop
 c_func
 (paren
 id|dentry
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_lock
 )paren
 suffix:semicolon
 id|spin_unlock

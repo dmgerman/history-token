@@ -1566,7 +1566,7 @@ suffix:semicolon
 DECL|function|sram_test_pass
 r_static
 r_int
-id|__init
+id|__devinit
 id|sram_test_pass
 c_func
 (paren
@@ -1625,7 +1625,7 @@ suffix:semicolon
 DECL|function|sram_test_and_clear
 r_static
 r_int
-id|__init
+id|__devinit
 id|sram_test_and_clear
 c_func
 (paren
@@ -3013,7 +3013,7 @@ multiline_comment|/* Stub functions to use if EEPROM reading is disabled */
 DECL|function|eeprom_read
 r_static
 r_int
-id|__init
+id|__devinit
 id|eeprom_read
 c_func
 (paren
@@ -3054,7 +3054,7 @@ suffix:semicolon
 DECL|function|eeprom_validate
 r_static
 r_int
-id|__init
+id|__devinit
 id|eeprom_validate
 c_func
 (paren
@@ -3080,7 +3080,7 @@ macro_line|#else /* READ_EEPROM */
 DECL|function|eeprom_read
 r_static
 r_int
-id|__init
+id|__devinit
 id|eeprom_read
 c_func
 (paren
@@ -3538,7 +3538,7 @@ multiline_comment|/* Checksum/validate EEPROM contents */
 DECL|function|eeprom_validate
 r_static
 r_int
-id|__init
+id|__devinit
 id|eeprom_validate
 c_func
 (paren
@@ -6230,7 +6230,7 @@ macro_line|#endif
 DECL|function|vcc_table_allocate
 r_static
 r_int
-id|__init
+id|__devinit
 id|vcc_table_allocate
 c_func
 (paren
@@ -6974,7 +6974,7 @@ multiline_comment|/*&n; * Allocate service buffer and tell card about it&n; */
 DECL|function|service_buffer_allocate
 r_static
 r_int
-id|__init
+id|__devinit
 id|service_buffer_allocate
 c_func
 (paren
@@ -8801,7 +8801,7 @@ multiline_comment|/* -------------------- PCI INITIALIZATION/SHUTDOWN: */
 DECL|function|lanai_pci_start
 r_static
 r_int
-id|__init
+id|__devinit
 id|lanai_pci_start
 c_func
 (paren
@@ -9690,7 +9690,7 @@ multiline_comment|/* setup a newly detected device */
 DECL|function|lanai_dev_open
 r_static
 r_int
-id|__init
+id|__devinit
 id|lanai_dev_open
 c_func
 (paren

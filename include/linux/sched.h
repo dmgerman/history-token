@@ -29,6 +29,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/pid.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
+macro_line|#include &lt;linux/seccomp.h&gt;
 r_struct
 id|exec_domain
 suffix:semicolon
@@ -809,6 +810,35 @@ r_struct
 id|list_head
 id|posix_timers
 suffix:semicolon
+multiline_comment|/* ITIMER_REAL timer for the process */
+DECL|member|real_timer
+r_struct
+id|timer_list
+id|real_timer
+suffix:semicolon
+DECL|member|it_real_value
+DECL|member|it_real_incr
+r_int
+r_int
+id|it_real_value
+comma
+id|it_real_incr
+suffix:semicolon
+multiline_comment|/* ITIMER_PROF and ITIMER_VIRTUAL timers for the process */
+DECL|member|it_prof_expires
+DECL|member|it_virt_expires
+id|cputime_t
+id|it_prof_expires
+comma
+id|it_virt_expires
+suffix:semicolon
+DECL|member|it_prof_incr
+DECL|member|it_virt_incr
+id|cputime_t
+id|it_prof_incr
+comma
+id|it_virt_incr
+suffix:semicolon
 multiline_comment|/* job control IDs */
 DECL|member|pgrp
 id|pid_t
@@ -876,6 +906,13 @@ id|cmin_flt
 comma
 id|cmaj_flt
 suffix:semicolon
+multiline_comment|/*&n;&t; * Cumulative ns of scheduled CPU time for dead threads in the&n;&t; * group, not including a zombie group leader.  (This only differs&n;&t; * from jiffies_to_ns(utime + stime) if sched_clock uses something&n;&t; * other than jiffies.)&n;&t; */
+DECL|member|sched_time
+r_int
+r_int
+r_int
+id|sched_time
+suffix:semicolon
 multiline_comment|/*&n;&t; * We don&squot;t bother to synchronize most readers of this at all,&n;&t; * because there is no reader checking a limit that actually needs&n;&t; * to get both rlim_cur and rlim_max atomically, and either one&n;&t; * alone is a single word that can safely be read normally.&n;&t; * getrlimit/setrlimit use task_lock(current-&gt;group_leader) to&n;&t; * protect this instead of the siglock, because they really&n;&t; * have no need to disable irqs.&n;&t; */
 DECL|member|rlim
 r_struct
@@ -883,6 +920,14 @@ id|rlimit
 id|rlim
 (braket
 id|RLIM_NLIMITS
+)braket
+suffix:semicolon
+DECL|member|cpu_timers
+r_struct
+id|list_head
+id|cpu_timers
+(braket
+l_int|3
 )braket
 suffix:semicolon
 )brace
@@ -1462,6 +1507,13 @@ id|timestamp
 comma
 id|last_ran
 suffix:semicolon
+DECL|member|sched_time
+r_int
+r_int
+r_int
+id|sched_time
+suffix:semicolon
+multiline_comment|/* sched_clock time spent running */
 DECL|member|activated
 r_int
 id|activated
@@ -1629,33 +1681,6 @@ r_int
 r_int
 id|rt_priority
 suffix:semicolon
-DECL|member|it_real_value
-DECL|member|it_real_incr
-r_int
-r_int
-id|it_real_value
-comma
-id|it_real_incr
-suffix:semicolon
-DECL|member|it_virt_value
-DECL|member|it_virt_incr
-id|cputime_t
-id|it_virt_value
-comma
-id|it_virt_incr
-suffix:semicolon
-DECL|member|it_prof_value
-DECL|member|it_prof_incr
-id|cputime_t
-id|it_prof_value
-comma
-id|it_prof_incr
-suffix:semicolon
-DECL|member|real_timer
-r_struct
-id|timer_list
-id|real_timer
-suffix:semicolon
 DECL|member|utime
 DECL|member|stime
 id|cputime_t
@@ -1685,6 +1710,27 @@ r_int
 id|min_flt
 comma
 id|maj_flt
+suffix:semicolon
+DECL|member|it_prof_expires
+DECL|member|it_virt_expires
+id|cputime_t
+id|it_prof_expires
+comma
+id|it_virt_expires
+suffix:semicolon
+DECL|member|it_sched_expires
+r_int
+r_int
+r_int
+id|it_sched_expires
+suffix:semicolon
+DECL|member|cpu_timers
+r_struct
+id|list_head
+id|cpu_timers
+(braket
+l_int|3
+)braket
 suffix:semicolon
 multiline_comment|/* process credentials */
 DECL|member|uid
@@ -1883,6 +1929,10 @@ r_struct
 id|audit_context
 op_star
 id|audit_context
+suffix:semicolon
+DECL|member|seccomp
+id|seccomp_t
+id|seccomp
 suffix:semicolon
 multiline_comment|/* Thread group tracking */
 DECL|member|parent_exec_id
@@ -2192,6 +2242,19 @@ id|sched_clock
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+r_int
+id|current_sched_time
+c_func
+(paren
+r_const
+id|task_t
+op_star
+id|current_task
 )paren
 suffix:semicolon
 multiline_comment|/* sched_exec is called by processes performing an exec */

@@ -1543,6 +1543,10 @@ op_assign
 op_amp
 id|wait
 suffix:semicolon
+id|rq-&gt;end_io
+op_assign
+id|blk_end_sync_rq
+suffix:semicolon
 id|elv_add_request
 c_func
 (paren

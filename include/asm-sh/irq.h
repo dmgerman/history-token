@@ -5,7 +5,7 @@ multiline_comment|/*&n; *&n; * linux/include/asm-sh/irq.h&n; *&n; * Copyright (C
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;&t;&t;/* for pt_regs */
-macro_line|#if defined(CONFIG_SH_HP600) || &bslash;&n;    defined(CONFIG_SH_RTS7751R2D) || &bslash;&n;    defined(CONFIG_SH_HS7751RVOIP)
+macro_line|#if defined(CONFIG_SH_HP600) || &bslash;&n;    defined(CONFIG_SH_RTS7751R2D) || &bslash;&n;    defined(CONFIG_SH_HS7751RVOIP) || &bslash;&n;    defined(CONFIG_SH_SH03)
 macro_line|#include &lt;asm/mach/ide.h&gt;
 macro_line|#endif
 macro_line|#if defined(CONFIG_CPU_SH3)

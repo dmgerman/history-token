@@ -324,6 +324,11 @@ DECL|member|eeh_config_addr
 r_int
 id|eeh_config_addr
 suffix:semicolon
+DECL|member|pci_ext_config_space
+r_int
+id|pci_ext_config_space
+suffix:semicolon
+multiline_comment|/* for pci devices */
 DECL|member|phb
 r_struct
 id|pci_controller

@@ -11476,7 +11476,7 @@ id|buff
 l_int|1024
 )braket
 suffix:semicolon
-multiline_comment|/**&n;&t; * we use workavail = 2 to ensure 2 passes with nothing dequeued before&n;&t; * exiting the loop. If pendingq_count == 0 after the loop, there is no&n;&t; * work remaining on the queues.&n;&t; */
+multiline_comment|/**&n;&t; * we use workavail = 2 to ensure 2 passes with nothing dequeued before&n;&t; * exiting the loop. If (pendingq_count+requestq_count) == 0 after the&n;&t; * loop, there is no work remaining on the queues.&n;&t; */
 id|resp_addr
 op_assign
 l_int|0
@@ -11655,6 +11655,8 @@ r_if
 c_cond
 (paren
 id|pendingq_count
+op_plus
+id|requestq_count
 )paren
 id|z90crypt_schedule_reader_timer
 c_func

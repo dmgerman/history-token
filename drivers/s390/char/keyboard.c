@@ -44,11 +44,11 @@ id|K_HANDLERS
 )brace
 suffix:semicolon
 multiline_comment|/* maximum values each key_handler can handle */
-DECL|variable|max_vals
+DECL|variable|kbd_max_vals
 r_static
 r_const
 r_int
-id|max_vals
+id|kbd_max_vals
 (braket
 )braket
 op_assign
@@ -92,16 +92,16 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-DECL|variable|NR_TYPES
+DECL|variable|KBD_NR_TYPES
 r_static
 r_const
 r_int
-id|NR_TYPES
+id|KBD_NR_TYPES
 op_assign
 id|ARRAY_SIZE
 c_func
 (paren
-id|max_vals
+id|kbd_max_vals
 )paren
 suffix:semicolon
 DECL|variable|ret_diacr
@@ -1925,7 +1925,7 @@ c_func
 id|val
 )paren
 op_ge
-id|NR_TYPES
+id|KBD_NR_TYPES
 )paren
 id|val
 op_assign
@@ -2018,7 +2018,7 @@ c_func
 id|tmp.kb_value
 )paren
 op_ge
-id|NR_TYPES
+id|KBD_NR_TYPES
 )paren
 r_return
 op_minus
@@ -2033,7 +2033,7 @@ c_func
 id|tmp.kb_value
 )paren
 OG
-id|max_vals
+id|kbd_max_vals
 (braket
 id|KTYP
 c_func

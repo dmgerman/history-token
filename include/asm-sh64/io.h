@@ -3,9 +3,11 @@ DECL|macro|__ASM_SH64_IO_H
 mdefine_line|#define __ASM_SH64_IO_H
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * include/asm-sh64/io.h&n; *&n; * Copyright (C) 2000, 2001  Paolo Alberelli&n; * Copyright (C) 2003  Paul Mundt&n; *&n; */
 multiline_comment|/*&n; * Convention:&n; *    read{b,w,l}/write{b,w,l} are for PCI,&n; *    while in{b,w,l}/out{b,w,l} are for ISA&n; * These may (will) be platform specific function.&n; *&n; * In addition, we have&n; *   ctrl_in{b,w,l}/ctrl_out{b,w,l} for SuperH specific I/O.&n; * which are processor specific. Address should be the result of&n; * onchip_remap();&n; */
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm-generic/iomap.h&gt;
 DECL|macro|virt_to_bus
 mdefine_line|#define virt_to_bus virt_to_phys
 DECL|macro|bus_to_virt
@@ -21,8 +23,11 @@ r_char
 id|sh64_in8
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -32,6 +37,7 @@ op_star
 r_volatile
 r_int
 r_char
+id|__force
 op_star
 )paren
 id|addr
@@ -45,8 +51,11 @@ r_int
 id|sh64_in16
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -56,6 +65,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -69,8 +79,11 @@ r_int
 id|sh64_in32
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -80,6 +93,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -94,8 +108,11 @@ r_int
 id|sh64_in64
 c_func
 (paren
-r_int
-r_int
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -106,6 +123,7 @@ r_volatile
 r_int
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -122,8 +140,10 @@ r_int
 r_char
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -132,6 +152,7 @@ op_star
 r_volatile
 r_int
 r_char
+id|__force
 op_star
 )paren
 id|addr
@@ -155,8 +176,10 @@ r_int
 r_int
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -165,6 +188,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -188,8 +212,10 @@ r_int
 r_int
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -198,6 +224,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -222,8 +249,10 @@ r_int
 r_int
 id|b
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|addr
 )paren
 (brace
@@ -233,6 +262,7 @@ r_volatile
 r_int
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -252,11 +282,11 @@ mdefine_line|#define readw(addr)&t;&t;sh64_in16(addr)
 DECL|macro|readl
 mdefine_line|#define readl(addr)&t;&t;sh64_in32(addr)
 DECL|macro|readb_relaxed
-mdefine_line|#define readb_relaxed(addr)&t;&t;sh64_in8(addr)
+mdefine_line|#define readb_relaxed(addr)&t;sh64_in8(addr)
 DECL|macro|readw_relaxed
-mdefine_line|#define readw_relaxed(addr)&t;&t;sh64_in16(addr)
+mdefine_line|#define readw_relaxed(addr)&t;sh64_in16(addr)
 DECL|macro|readl_relaxed
-mdefine_line|#define readl_relaxed(addr)&t;&t;sh64_in32(addr)
+mdefine_line|#define readl_relaxed(addr)&t;sh64_in32(addr)
 DECL|macro|writeb
 mdefine_line|#define writeb(b, addr)&t;&t;sh64_out8(b, addr)
 DECL|macro|writew
@@ -264,84 +294,144 @@ mdefine_line|#define writew(b, addr)&t;&t;sh64_out16(b, addr)
 DECL|macro|writel
 mdefine_line|#define writel(b, addr)&t;&t;sh64_out32(b, addr)
 DECL|macro|ctrl_inb
-mdefine_line|#define ctrl_inb(addr)&t;&t;sh64_in8(addr)
+mdefine_line|#define ctrl_inb(addr)&t;&t;sh64_in8(ioport_map(addr, 1))
 DECL|macro|ctrl_inw
-mdefine_line|#define ctrl_inw(addr)&t;&t;sh64_in16(addr)
+mdefine_line|#define ctrl_inw(addr)&t;&t;sh64_in16(ioport_map(addr, 2))
 DECL|macro|ctrl_inl
-mdefine_line|#define ctrl_inl(addr)&t;&t;sh64_in32(addr)
+mdefine_line|#define ctrl_inl(addr)&t;&t;sh64_in32(ioport_map(addr, 4))
 DECL|macro|ctrl_outb
-mdefine_line|#define ctrl_outb(b, addr)&t;sh64_out8(b, addr)
+mdefine_line|#define ctrl_outb(b, addr)&t;sh64_out8(b, ioport_map(addr, 1))
 DECL|macro|ctrl_outw
-mdefine_line|#define ctrl_outw(b, addr)&t;sh64_out16(b, addr)
+mdefine_line|#define ctrl_outw(b, addr)&t;sh64_out16(b, ioport_map(addr, 2))
 DECL|macro|ctrl_outl
-mdefine_line|#define ctrl_outl(b, addr)&t;sh64_out32(b, addr)
-r_int
-r_int
-id|inb
-c_func
-(paren
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_int
-r_int
-id|inw
-c_func
-(paren
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
-r_int
-r_int
-id|inl
-c_func
-(paren
-r_int
-r_int
-id|port
-)paren
-suffix:semicolon
+mdefine_line|#define ctrl_outl(b, addr)&t;sh64_out32(b, ioport_map(addr, 4))
+DECL|macro|ioread8
+mdefine_line|#define ioread8(addr)&t;&t;sh64_in8(addr)
+DECL|macro|ioread16
+mdefine_line|#define ioread16(addr)&t;&t;sh64_in16(addr)
+DECL|macro|ioread32
+mdefine_line|#define ioread32(addr)&t;&t;sh64_in32(addr)
+DECL|macro|iowrite8
+mdefine_line|#define iowrite8(b, addr)&t;sh64_out8(b, addr)
+DECL|macro|iowrite16
+mdefine_line|#define iowrite16(b, addr)&t;sh64_out16(b, addr)
+DECL|macro|iowrite32
+mdefine_line|#define iowrite32(b, addr)&t;sh64_out32(b, addr)
+DECL|macro|inb
+mdefine_line|#define inb(addr)&t;&t;ctrl_inb(addr)
+DECL|macro|inw
+mdefine_line|#define inw(addr)&t;&t;ctrl_inw(addr)
+DECL|macro|inl
+mdefine_line|#define inl(addr)&t;&t;ctrl_inl(addr)
+DECL|macro|outb
+mdefine_line|#define outb(b, addr)&t;&t;ctrl_outb(b, addr)
+DECL|macro|outw
+mdefine_line|#define outw(b, addr)&t;&t;ctrl_outw(b, addr)
+DECL|macro|outl
+mdefine_line|#define outl(b, addr)&t;&t;ctrl_outl(b, addr)
 r_void
-id|outb
+id|outsw
 c_func
 (paren
 r_int
 r_int
-id|value
+id|port
+comma
+r_const
+r_void
+op_star
+id|addr
 comma
 r_int
 r_int
-id|port
+id|count
 )paren
 suffix:semicolon
 r_void
-id|outw
+id|insw
 c_func
 (paren
 r_int
 r_int
-id|value
+id|port
+comma
+r_void
+op_star
+id|addr
 comma
 r_int
 r_int
-id|port
+id|count
 )paren
 suffix:semicolon
 r_void
-id|outl
+id|outsl
 c_func
 (paren
 r_int
 r_int
-id|value
+id|port
+comma
+r_const
+r_void
+op_star
+id|addr
 comma
 r_int
 r_int
+id|count
+)paren
+suffix:semicolon
+r_void
+id|insl
+c_func
+(paren
+r_int
+r_int
 id|port
+comma
+r_void
+op_star
+id|addr
+comma
+r_int
+r_int
+id|count
+)paren
+suffix:semicolon
+r_void
+id|memcpy_toio
+c_func
+(paren
+r_void
+id|__iomem
+op_star
+id|to
+comma
+r_const
+r_void
+op_star
+id|from
+comma
+r_int
+id|count
+)paren
+suffix:semicolon
+r_void
+id|memcpy_fromio
+c_func
+(paren
+r_void
+op_star
+id|to
+comma
+r_void
+id|__iomem
+op_star
+id|from
+comma
+r_int
+id|count
 )paren
 suffix:semicolon
 DECL|macro|mmiowb
@@ -529,8 +619,10 @@ r_int
 id|check_signature
 c_func
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|io_addr
 comma
 r_const

@@ -68,6 +68,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ignore_cis_vcc
+comma
+l_string|&quot;Allow voltage mismatch between card and socket&quot;
+)paren
+suffix:semicolon
 multiline_comment|/********************************************************************/
 multiline_comment|/* Magic constants&t;&t;&t;&t;&t;&t;    */
 multiline_comment|/********************************************************************/
@@ -242,6 +250,12 @@ id|err
 r_return
 id|err
 suffix:semicolon
+id|msleep
+c_func
+(paren
+l_int|100
+)paren
+suffix:semicolon
 id|clear_bit
 c_func
 (paren
@@ -343,6 +357,8 @@ multiline_comment|/* Interrupt setup */
 id|link-&gt;irq.Attributes
 op_assign
 id|IRQ_TYPE_EXCLUSIVE
+op_or
+id|IRQ_HANDLE_PRESENT
 suffix:semicolon
 id|link-&gt;irq.IRQInfo1
 op_assign
@@ -350,7 +366,11 @@ id|IRQ_LEVEL_ID
 suffix:semicolon
 id|link-&gt;irq.Handler
 op_assign
-l_int|NULL
+id|orinoco_interrupt
+suffix:semicolon
+id|link-&gt;irq.Instance
+op_assign
+id|dev
 suffix:semicolon
 multiline_comment|/* General socket configuration defaults can go here.  In this&n;&t; * client, we assume very little, and rely on the CIS for&n;&t; * almost everything.  In most clients, many details (i.e.,&n;&t; * number, sizes, and attributes of IO windows) are fixed by&n;&t; * the nature of the device, and can be hard-wired here. */
 id|link-&gt;conf.Attributes
@@ -582,7 +602,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-id|free_netdev
+id|free_orinocodev
 c_func
 (paren
 id|dev
@@ -663,6 +683,11 @@ id|tuple
 suffix:semicolon
 id|cisparse_t
 id|parse
+suffix:semicolon
+r_void
+id|__iomem
+op_star
+id|mem
 suffix:semicolon
 id|CS_CHECK
 c_func
@@ -835,6 +860,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|pcmcia_get_tuple_data
 c_func
 (paren
@@ -845,7 +871,9 @@ id|tuple
 )paren
 op_ne
 l_int|0
+)paren
 op_logical_or
+(paren
 id|pcmcia_parse_tuple
 c_func
 (paren
@@ -859,6 +887,7 @@ id|parse
 )paren
 op_ne
 l_int|0
+)paren
 )paren
 r_goto
 id|next_entry
@@ -1064,13 +1093,6 @@ op_div
 l_int|10000
 suffix:semicolon
 multiline_comment|/* Do we need to allocate an interrupt? */
-r_if
-c_cond
-(paren
-id|cfg-&gt;irq.IRQInfo1
-op_logical_or
-id|dflt.irq.IRQInfo1
-)paren
 id|link-&gt;conf.Attributes
 op_or_assign
 id|CONF_ENABLE_IRQ
@@ -1263,7 +1285,7 @@ c_func
 id|KERN_ERR
 id|PFX
 l_string|&quot;GetNextTuple(): No matching &quot;
-l_string|&quot;CIS configuration, maybe you need the &quot;
+l_string|&quot;CIS configuration.  Maybe you need the &quot;
 l_string|&quot;ignore_cis_vcc=1 parameter.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1273,32 +1295,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * Allocate an interrupt line.  Note that this does not assign&n;&t; * a handler to the interrupt, unless the &squot;Handler&squot; member of&n;&t; * the irq structure is initialized.&n;&t; */
-r_if
-c_cond
-(paren
-id|link-&gt;conf.Attributes
-op_amp
-id|CONF_ENABLE_IRQ
-)paren
-(brace
-id|link-&gt;irq.Attributes
-op_assign
-id|IRQ_TYPE_EXCLUSIVE
-op_or
-id|IRQ_HANDLE_PRESENT
-suffix:semicolon
-id|link-&gt;irq.IRQInfo1
-op_assign
-id|IRQ_LEVEL_ID
-suffix:semicolon
-id|link-&gt;irq.Handler
-op_assign
-id|orinoco_interrupt
-suffix:semicolon
-id|link-&gt;irq.Instance
-op_assign
-id|dev
-suffix:semicolon
 id|CS_CHECK
 c_func
 (paren
@@ -1314,16 +1310,32 @@ id|link-&gt;irq
 )paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* We initialize the hermes structure before completing PCMCIA&n;&t; * configuration just in case the interrupt handler gets&n;&t; * called. */
+id|mem
+op_assign
+id|ioport_map
+c_func
+(paren
+id|link-&gt;io.BasePort1
+comma
+id|link-&gt;io.NumPorts1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mem
+)paren
+r_goto
+id|cs_failed
+suffix:semicolon
 id|hermes_struct_init
 c_func
 (paren
 id|hw
 comma
-id|link-&gt;io.BasePort1
-comma
-id|HERMES_IO
+id|mem
 comma
 id|HERMES_16BIT_REGSPACING
 )paren
@@ -1364,14 +1376,6 @@ op_assign
 id|card-&gt;node.minor
 op_assign
 l_int|0
-suffix:semicolon
-multiline_comment|/* register_netdev will give us an ethX name */
-id|dev-&gt;name
-(braket
-l_int|0
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|SET_NETDEV_DEV
 c_func
@@ -1470,13 +1474,6 @@ op_mod
 l_int|10
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;conf.Attributes
-op_amp
-id|CONF_ENABLE_IRQ
-)paren
 id|printk
 c_func
 (paren
@@ -1649,6 +1646,17 @@ op_and_assign
 op_complement
 id|DEV_CONFIG
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|priv-&gt;hw.iobase
+)paren
+id|ioport_unmap
+c_func
+(paren
+id|priv-&gt;hw.iobase
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* orinoco_cs_release */
 multiline_comment|/*&n; * The card status event handler.  Mostly, this schedules other stuff&n; * to run after an event is received.&n; */
@@ -1731,12 +1739,16 @@ op_amp
 id|DEV_CONFIG
 )paren
 (brace
-id|orinoco_lock
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
 c_func
 (paren
-id|priv
-comma
 op_amp
+id|priv-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1749,12 +1761,12 @@ suffix:semicolon
 id|priv-&gt;hw_unavailable
 op_increment
 suffix:semicolon
-id|orinoco_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|priv
-comma
 op_amp
+id|priv-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon

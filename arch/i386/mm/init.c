@@ -2171,7 +2171,6 @@ l_string|&quot;Ok.&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|function|set_max_mapnr_init
 r_static
 r_void
@@ -2183,35 +2182,23 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_HIGHMEM
-id|max_mapnr
-op_assign
 id|num_physpages
 op_assign
 id|highend_pfn
 suffix:semicolon
 macro_line|#else
-id|max_mapnr
-op_assign
 id|num_physpages
 op_assign
 id|max_low_pfn
 suffix:semicolon
 macro_line|#endif
-)brace
-DECL|macro|__free_all_bootmem
-mdefine_line|#define __free_all_bootmem() free_all_bootmem()
-macro_line|#else
-DECL|macro|__free_all_bootmem
-mdefine_line|#define __free_all_bootmem() free_all_bootmem_node(NODE_DATA(0))
-r_extern
-r_void
-id|set_max_mapnr_init
-c_func
-(paren
-r_void
-)paren
+macro_line|#ifndef CONFIG_DISCONTIGMEM
+id|max_mapnr
+op_assign
+id|num_physpages
 suffix:semicolon
-macro_line|#endif /* !CONFIG_DISCONTIGMEM */
+macro_line|#endif
+)brace
 DECL|variable|kcore_mem
 DECL|variable|kcore_vmalloc
 r_static
@@ -2336,7 +2323,11 @@ c_func
 id|highstart_pfn
 op_star
 id|PAGE_SIZE
+op_minus
+l_int|1
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 macro_line|#else
 id|high_memory
@@ -2351,13 +2342,17 @@ c_func
 id|max_low_pfn
 op_star
 id|PAGE_SIZE
+op_minus
+l_int|1
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* this will put all low memory onto the freelists */
 id|totalram_pages
 op_add_assign
-id|__free_all_bootmem
+id|free_all_bootmem
 c_func
 (paren
 )paren

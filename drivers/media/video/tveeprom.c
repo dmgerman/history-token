@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;media/tuner.h&gt;
 macro_line|#include &lt;media/tveeprom.h&gt;

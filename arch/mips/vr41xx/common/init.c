@@ -1,8 +1,10 @@
 multiline_comment|/*&n; *  init.c, Common initialization routines for NEC VR4100 series.&n; *&n; *  Copyright (C) 2003-2005  Yoichi Yuasa &lt;yuasa@hh.iij4u.or.jp&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/vr41xx/vr41xx.h&gt;
 DECL|macro|IO_MEM_RESOURCE_START
 mdefine_line|#define IO_MEM_RESOURCE_START&t;0UL
@@ -25,6 +27,93 @@ suffix:semicolon
 id|iomem_resource.end
 op_assign
 id|IO_MEM_RESOURCE_END
+suffix:semicolon
+)brace
+DECL|function|setup_timer_frequency
+r_static
+r_void
+id|__init
+id|setup_timer_frequency
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|tclock
+suffix:semicolon
+id|tclock
+op_assign
+id|vr41xx_get_tclock_frequency
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current_cpu_data.processor_id
+op_eq
+id|PRID_VR4131_REV2_0
+op_logical_or
+id|current_cpu_data.processor_id
+op_eq
+id|PRID_VR4131_REV2_1
+)paren
+id|mips_hpt_frequency
+op_assign
+id|tclock
+op_div
+l_int|2
+suffix:semicolon
+r_else
+id|mips_hpt_frequency
+op_assign
+id|tclock
+op_div
+l_int|4
+suffix:semicolon
+)brace
+DECL|function|setup_timer_irq
+r_static
+r_void
+id|__init
+id|setup_timer_irq
+c_func
+(paren
+r_struct
+id|irqaction
+op_star
+id|irq
+)paren
+(brace
+id|setup_irq
+c_func
+(paren
+id|TIMER_IRQ
+comma
+id|irq
+)paren
+suffix:semicolon
+)brace
+DECL|function|timer_init
+r_static
+r_void
+id|__init
+id|timer_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|board_time_init
+op_assign
+id|setup_timer_frequency
+suffix:semicolon
+id|board_timer_setup
+op_assign
+id|setup_timer_irq
 suffix:semicolon
 )brace
 DECL|function|prom_init
@@ -106,6 +195,11 @@ l_string|&quot; &quot;
 suffix:semicolon
 )brace
 id|vr41xx_calculate_clock_frequency
+c_func
+(paren
+)paren
+suffix:semicolon
+id|timer_init
 c_func
 (paren
 )paren

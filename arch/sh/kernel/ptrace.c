@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ptrace.c,v 1.15 2004/05/07 05:32:05 sugioka Exp $&n; *&n; * linux/arch/sh/kernel/ptrace.c&n; *&n; * Original x86 implementation:&n; *&t;By Ross Biro 1/23/92&n; *&t;edited by Linus Torvalds&n; *&n; * SuperH version:   Copyright (C) 1999, 2000  Kaz Kojima &amp; Niibe Yutaka&n; *&n; */
+multiline_comment|/*&n; * linux/arch/sh/kernel/ptrace.c&n; *&n; * Original x86 implementation:&n; *&t;By Ross Biro 1/23/92&n; *&t;edited by Linus Torvalds&n; *&n; * SuperH version:   Copyright (C) 1999, 2000  Kaz Kojima &amp; Niibe Yutaka&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

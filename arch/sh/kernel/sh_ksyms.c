@@ -273,9 +273,6 @@ c_func
 id|__copy_user
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-multiline_comment|/* XXX: MRB-remove - what was screen_info changed to?&n;EXPORT_SYMBOL(screen_info);&n;*/
-macro_line|#endif
 DECL|variable|boot_cpu_data
 id|EXPORT_SYMBOL
 c_func

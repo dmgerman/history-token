@@ -16080,12 +16080,12 @@ DECL|member|vol
 r_int
 id|vol
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 )brace
 id|initvol
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace

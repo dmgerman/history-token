@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: hitfb.c,v 1.12 2004/03/16 00:07:51 lethal Exp $&n; * linux/drivers/video/hitfb.c -- Hitachi LCD frame buffer device&n; * (C) 1999 Mihai Spatar&n; * (C) 2000 YAEGASHI Takeshi&n; * (C) 2003, 2004 Paul Mundt&n; * (C) 2003, 2004 Andriy Skulysh&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
+multiline_comment|/*&n; * linux/drivers/video/hitfb.c -- Hitachi LCD frame buffer device&n; *&n; * (C) 1999 Mihai Spatar&n; * (C) 2000 YAEGASHI Takeshi&n; * (C) 2003, 2004 Paul Mundt&n; * (C) 2003, 2004 Andriy Skulysh&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1541,8 +1541,6 @@ suffix:semicolon
 id|fb_info.flags
 op_assign
 id|FBINFO_DEFAULT
-op_or
-id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
 id|fb_info.screen_base
 op_assign
@@ -1632,7 +1630,6 @@ c_func
 id|hitfb_init
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|hitfb_exit
 id|module_exit
 c_func
@@ -1640,7 +1637,6 @@ c_func
 id|hitfb_exit
 )paren
 suffix:semicolon
-macro_line|#endif
 id|MODULE_LICENSE
 c_func
 (paren

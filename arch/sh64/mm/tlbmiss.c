@@ -139,11 +139,6 @@ op_and_assign
 id|_PAGE_FLAGS_HARDWARE_MASK
 suffix:semicolon
 multiline_comment|/* drop software flags */
-id|ptel
-op_or_assign
-id|_PAGE_FLAGS_HARDWARE_DEFAULT
-suffix:semicolon
-multiline_comment|/* add default flags */
 id|tlbp
 op_assign
 id|is_text_not_data

@@ -233,7 +233,7 @@ id|offset
 op_assign
 l_int|0
 comma
-id|clear_screen
+id|opt_clear
 op_assign
 l_int|0
 comma
@@ -451,7 +451,7 @@ l_string|&quot;--clear&quot;
 r_if
 c_cond
 (paren
-id|clear_screen
+id|opt_clear
 )paren
 (brace
 multiline_comment|/* Hey, &quot;--clear&quot; can&squot;t appear twice! */
@@ -499,7 +499,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|clear_screen
+id|opt_clear
 op_assign
 l_int|1
 suffix:semicolon
@@ -650,7 +650,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|clear_screen
+id|opt_clear
 )paren
 (brace
 multiline_comment|/* clear screen before exit */

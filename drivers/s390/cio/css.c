@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.84 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/css.c&n; *  driver for channel subsystem&n; *   $Revision: 1.85 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -670,6 +670,10 @@ id|subchannel
 op_star
 id|sch
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|sch
 op_assign
 id|get_subchannel_by_schid
@@ -839,10 +843,28 @@ id|CIO_NO_PATH
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Uargh, hack again. Because we don&squot;t get a machine&n;&t;&t;&t; * check on configure on, our path bookkeeping can&n;&t;&t;&t; * be out of date here (it&squot;s fine while we only do&n;&t;&t;&t; * logical varying or get chsc machine checks). We&n;&t;&t;&t; * need to force reprobing or we might miss devices&n;&t;&t;&t; * coming operational again. It won&squot;t do harm in real&n;&t;&t;&t; * no path situations.&n;&t;&t;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|device_trigger_reprobe
 c_func
 (paren
 id|sch
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|ret
@@ -976,10 +998,28 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t;&t; * We can&squot;t immediately deregister the disconnected&n;&t;&t;&t; * device since it might block.&n;&t;&t;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|device_trigger_reprobe
 c_func
 (paren
 id|sch
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|ret
@@ -997,6 +1037,16 @@ c_cond
 (paren
 id|disc
 )paren
+(brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Get device operational again. */
 id|device_trigger_reprobe
 c_func
@@ -1004,6 +1054,16 @@ c_func
 id|sch
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|sch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
 id|ret
 op_assign
 id|sch

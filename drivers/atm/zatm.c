@@ -6311,7 +6311,7 @@ multiline_comment|/*----------------------------- (E)EPROM access --------------
 DECL|function|eprom_set
 r_static
 r_void
-id|__init
+id|__devinit
 id|eprom_set
 c_func
 (paren
@@ -6364,7 +6364,7 @@ DECL|function|eprom_get
 r_static
 r_int
 r_int
-id|__init
+id|__devinit
 id|eprom_get
 c_func
 (paren
@@ -6420,7 +6420,7 @@ suffix:semicolon
 DECL|function|eprom_put_bits
 r_static
 r_void
-id|__init
+id|__devinit
 id|eprom_put_bits
 c_func
 (paren
@@ -6523,7 +6523,7 @@ suffix:semicolon
 DECL|function|eprom_get_byte
 r_static
 r_void
-id|__init
+id|__devinit
 id|eprom_get_byte
 c_func
 (paren
@@ -6624,7 +6624,7 @@ DECL|function|eprom_try_esi
 r_static
 r_int
 r_char
-id|__init
+id|__devinit
 id|eprom_try_esi
 c_func
 (paren
@@ -6790,7 +6790,7 @@ multiline_comment|/* assumes ESI_LEN == 6 */
 DECL|function|eprom_get_esi
 r_static
 r_void
-id|__init
+id|__devinit
 id|eprom_get_esi
 c_func
 (paren

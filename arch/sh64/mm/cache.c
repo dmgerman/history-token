@@ -145,6 +145,22 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_DCACHE_DISABLED
+DECL|macro|sh64_dcache_purge_all
+mdefine_line|#define sh64_dcache_purge_all()&t;&t;&t;&t;&t;do { } while (0)
+DECL|macro|sh64_dcache_purge_coloured_phy_page
+mdefine_line|#define sh64_dcache_purge_coloured_phy_page(paddr, eaddr)&t;do { } while (0)
+DECL|macro|sh64_dcache_purge_user_range
+mdefine_line|#define sh64_dcache_purge_user_range(mm, start, end)&t;&t;do { } while (0)
+DECL|macro|sh64_dcache_purge_phy_page
+mdefine_line|#define sh64_dcache_purge_phy_page(paddr)&t;&t;&t;do { } while (0)
+DECL|macro|sh64_dcache_purge_virt_page
+mdefine_line|#define sh64_dcache_purge_virt_page(mm, eaddr)&t;&t;&t;do { } while (0)
+DECL|macro|sh64_dcache_purge_kernel_range
+mdefine_line|#define sh64_dcache_purge_kernel_range(start, end)&t;&t;do { } while (0)
+DECL|macro|sh64_dcache_wback_current_user_range
+mdefine_line|#define sh64_dcache_wback_current_user_range(start, end)&t;do { } while (0)
+macro_line|#endif
 multiline_comment|/*##########################################################################*/
 multiline_comment|/* From here onwards, a rewrite of the implementation,&n;   by Richard.Curnow@superh.com.&n;&n;   The major changes in this compared to the old version are;&n;   1. use more selective purging through OCBP instead of using ALLOCO to purge&n;      by natural replacement.  This avoids purging out unrelated cache lines&n;      that happen to be in the same set.&n;   2. exploit the APIs copy_user_page and clear_user_page better&n;   3. be more selective about I-cache purging, in particular use invalidate_all&n;      more sparingly.&n;&n;   */
 multiline_comment|/*##########################################################################&n;&t;&t;&t;       SUPPORT FUNCTIONS&n;  ##########################################################################*/
@@ -1201,6 +1217,13 @@ id|eaddr
 )paren
 )paren
 suffix:semicolon
+id|asm
+id|__volatile__
+(paren
+l_string|&quot;synco&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* TAKum03020 */
 )brace
 id|eaddr1
 op_assign
@@ -2110,7 +2133,6 @@ id|L1_CACHE_BYTES
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* !CONFIG_DCACHE_DISABLED */
 multiline_comment|/****************************************************************************/
 multiline_comment|/* These *MUST* lie in an area of virtual address space that&squot;s otherwise unused. */
 DECL|macro|UNIQUE_EADDR_START
@@ -2342,6 +2364,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* !CONFIG_DCACHE_DISABLED */
 multiline_comment|/****************************************************************************/
 multiline_comment|/*##########################################################################&n;&t;&t;&t;    EXTERNALLY CALLABLE API.&n;  ##########################################################################*/
 multiline_comment|/* These functions are described in Documentation/cachetlb.txt.&n;   Each one of these functions varies in behaviour depending on whether the&n;   I-cache and/or D-cache are configured out.&n;&n;   Note that the Linux term &squot;flush&squot; corresponds to what is termed &squot;purge&squot; in&n;   the sh/sh64 jargon for the D-cache, i.e. write back dirty data then&n;   invalidate the cache lines, and &squot;invalidate&squot; for the I-cache.&n;   */

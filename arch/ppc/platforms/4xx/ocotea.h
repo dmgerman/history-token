@@ -50,9 +50,9 @@ DECL|macro|RS_TABLE_SIZE
 mdefine_line|#define RS_TABLE_SIZE&t;2
 multiline_comment|/* OpenBIOS defined UART mappings, used before early_serial_setup */
 DECL|macro|UART0_IO_BASE
-mdefine_line|#define UART0_IO_BASE&t;(u8 *) 0xE0000200
+mdefine_line|#define UART0_IO_BASE&t;0xE0000200
 DECL|macro|UART1_IO_BASE
-mdefine_line|#define UART1_IO_BASE&t;(u8 *) 0xE0000300
+mdefine_line|#define UART1_IO_BASE&t;0xE0000300
 DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD&t;11059200/16
 DECL|macro|STD_UART_OP

@@ -942,6 +942,7 @@ DECL|typedef|arr_state_t
 id|arr_state_t
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 id|arr_state_t
 id|arr_state
 (braket
@@ -1016,6 +1017,7 @@ l_int|0UL
 )brace
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|ccr_state
@@ -1156,11 +1158,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0
 multiline_comment|/*&n; * On Cyrix 6x86(MX) and M II the ARR3 is special: it has connection&n; * with the SMM (System Management Mode) mode. So we need the following:&n; * Check whether SMI_LOCK (CCR3 bit 0) is set&n; *   if it is set, write a warning message: ARR3 cannot be changed!&n; *     (it cannot be changed until the next processor reset)&n; *   if it is reset, then we can change it, set all the needed bits:&n; *   - disable access to SMM memory through ARR3 range (CCR1 bit 7 reset)&n; *   - disable access to SMM memory (CCR1 bit 2 reset)&n; *   - disable SMM mode (CCR1 bit 1 reset)&n; *   - disable write protection of ARR3 (CCR6 bit 1 reset)&n; *   - (maybe) disable ARR3&n; * Just to be sure, we enable ARR usage by the processor (CCR5 bit 5 set)&n; */
 r_static
 r_void
 id|__init
-DECL|function|cyrix_arr_init
 id|cyrix_arr_init
 c_func
 (paren
@@ -1629,6 +1631,7 @@ l_string|&quot;mtrr: ARR3 was write protected, unprotected&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|variable|cyrix_mtrr_ops
 r_static
 r_struct
@@ -1641,11 +1644,7 @@ id|vendor
 op_assign
 id|X86_VENDOR_CYRIX
 comma
-dot
-id|init
-op_assign
-id|cyrix_arr_init
-comma
+singleline_comment|//&t;.init              = cyrix_arr_init,
 dot
 id|set_all
 op_assign

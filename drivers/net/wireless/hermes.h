@@ -782,7 +782,7 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Timeouts */
 DECL|macro|HERMES_BAP_BUSY_TIMEOUT
-mdefine_line|#define HERMES_BAP_BUSY_TIMEOUT (500) /* In iterations of ~1us */
+mdefine_line|#define HERMES_BAP_BUSY_TIMEOUT (10000) /* In iterations of ~1us */
 multiline_comment|/* Basic control structure */
 DECL|struct|hermes
 r_typedef
@@ -790,19 +790,11 @@ r_struct
 id|hermes
 (brace
 DECL|member|iobase
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|iobase
 suffix:semicolon
-DECL|member|io_space
-r_int
-id|io_space
-suffix:semicolon
-multiline_comment|/* 1 if we IO-mapped IO, 0 for memory-mapped IO? */
-DECL|macro|HERMES_IO
-mdefine_line|#define HERMES_IO&t;1
-DECL|macro|HERMES_MEM
-mdefine_line|#define HERMES_MEM&t;0
 DECL|member|reg_spacing
 r_int
 id|reg_spacing
@@ -847,9 +839,9 @@ id|hermes_t
 suffix:semicolon
 multiline_comment|/* Register access convenience macros */
 DECL|macro|hermes_read_reg
-mdefine_line|#define hermes_read_reg(hw, off) ((hw)-&gt;io_space ? &bslash;&n;&t;inw((hw)-&gt;iobase + ( (off) &lt;&lt; (hw)-&gt;reg_spacing )) : &bslash;&n;&t;readw((hw)-&gt;iobase + ( (off) &lt;&lt; (hw)-&gt;reg_spacing )))
+mdefine_line|#define hermes_read_reg(hw, off) &bslash;&n;&t;(ioread16((hw)-&gt;iobase + ( (off) &lt;&lt; (hw)-&gt;reg_spacing )))
 DECL|macro|hermes_write_reg
-mdefine_line|#define hermes_write_reg(hw, off, val) do { &bslash;&n;&t;if ((hw)-&gt;io_space) &bslash;&n;&t;&t;outw_p((val), (hw)-&gt;iobase + ((off) &lt;&lt; (hw)-&gt;reg_spacing)); &bslash;&n;&t;else &bslash;&n;&t;&t;writew((val), (hw)-&gt;iobase + ((off) &lt;&lt; (hw)-&gt;reg_spacing)); &bslash;&n;&t;} while (0)
+mdefine_line|#define hermes_write_reg(hw, off, val) &bslash;&n;&t;(iowrite16((val), (hw)-&gt;iobase + ((off) &lt;&lt; (hw)-&gt;reg_spacing)))
 DECL|macro|hermes_read_regn
 mdefine_line|#define hermes_read_regn(hw, name) hermes_read_reg((hw), HERMES_##name)
 DECL|macro|hermes_write_regn
@@ -863,11 +855,10 @@ id|hermes_t
 op_star
 id|hw
 comma
-id|ulong
+r_void
+id|__iomem
+op_star
 id|address
-comma
-r_int
-id|io_space
 comma
 r_int
 id|reg_spacing
@@ -1207,13 +1198,7 @@ id|off
 op_lshift
 id|hw-&gt;reg_spacing
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hw-&gt;io_space
-)paren
-(brace
-id|insw
+id|ioread16_rep
 c_func
 (paren
 id|hw-&gt;iobase
@@ -1225,54 +1210,6 @@ comma
 id|count
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-r_int
-id|i
-suffix:semicolon
-id|u16
-op_star
-id|p
-suffix:semicolon
-multiline_comment|/* This needs to *not* byteswap (like insw()) but&n;&t;&t; * readw() does byteswap hence the conversion.  I hope&n;&t;&t; * gcc is smart enough to fold away the two swaps on&n;&t;&t; * big-endian platforms. */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-comma
-id|p
-op_assign
-id|buf
-suffix:semicolon
-id|i
-OL
-id|count
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-op_star
-id|p
-op_increment
-op_assign
-id|cpu_to_le16
-c_func
-(paren
-id|readw
-c_func
-(paren
-id|hw-&gt;iobase
-op_plus
-id|off
-)paren
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 DECL|function|hermes_write_words
 r_static
@@ -1304,13 +1241,7 @@ id|off
 op_lshift
 id|hw-&gt;reg_spacing
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hw-&gt;io_space
-)paren
-(brace
-id|outsw
+id|iowrite16_rep
 c_func
 (paren
 id|hw-&gt;iobase
@@ -1322,55 +1253,6 @@ comma
 id|count
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-r_int
-id|i
-suffix:semicolon
-r_const
-id|u16
-op_star
-id|p
-suffix:semicolon
-multiline_comment|/* This needs to *not* byteswap (like outsw()) but&n;&t;&t; * writew() does byteswap hence the conversion.  I&n;&t;&t; * hope gcc is smart enough to fold away the two swaps&n;&t;&t; * on big-endian platforms. */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-comma
-id|p
-op_assign
-id|buf
-suffix:semicolon
-id|i
-OL
-id|count
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|writew
-c_func
-(paren
-id|le16_to_cpu
-c_func
-(paren
-op_star
-id|p
-op_increment
-)paren
-comma
-id|hw-&gt;iobase
-op_plus
-id|off
-)paren
-suffix:semicolon
-)brace
-)brace
 )brace
 DECL|function|hermes_clear_words
 r_static
@@ -1400,12 +1282,6 @@ id|off
 op_lshift
 id|hw-&gt;reg_spacing
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hw-&gt;io_space
-)paren
-(brace
 r_for
 c_loop
 (paren
@@ -1420,7 +1296,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|outw
+id|iowrite16
 c_func
 (paren
 l_int|0
@@ -1430,34 +1306,6 @@ op_plus
 id|off
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|count
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|writew
-c_func
-(paren
-l_int|0
-comma
-id|hw-&gt;iobase
-op_plus
-id|off
-)paren
-suffix:semicolon
-)brace
 )brace
 DECL|macro|HERMES_READ_RECORD
 mdefine_line|#define HERMES_READ_RECORD(hw, bap, rid, buf) &bslash;&n;&t;(hermes_read_ltv((hw),(bap),(rid), sizeof(*buf), NULL, (buf)))

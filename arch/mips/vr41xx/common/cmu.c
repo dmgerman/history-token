@@ -442,7 +442,7 @@ c_cond
 (paren
 id|cmuclkmsk
 op_amp
-id|MSKSIU
+id|MSKSSIU
 )paren
 id|cmuclkmsk
 op_and_assign

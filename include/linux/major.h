@@ -40,8 +40,6 @@ DECL|macro|SCSI_CDROM_MAJOR
 mdefine_line|#define SCSI_CDROM_MAJOR&t;11
 DECL|macro|MUX_MAJOR
 mdefine_line|#define MUX_MAJOR&t;&t;11&t;/* PA-RISC only */
-DECL|macro|QIC02_TAPE_MAJOR
-mdefine_line|#define QIC02_TAPE_MAJOR&t;12
 DECL|macro|XT_DISK_MAJOR
 mdefine_line|#define XT_DISK_MAJOR&t;&t;13
 DECL|macro|INPUT_MAJOR

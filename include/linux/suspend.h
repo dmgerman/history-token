@@ -31,15 +31,25 @@ DECL|member|swap_address
 id|swp_entry_t
 id|swap_address
 suffix:semicolon
-DECL|member|dummy
-id|swp_entry_t
-id|dummy
+DECL|member|next
+r_struct
+id|pbe
+op_star
+id|next
 suffix:semicolon
-multiline_comment|/* we need scratch space at &n;&t;&t;&t;&t;&t; * end of page (see link, diskpage)&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* also used as scratch space at&n;&t;&t;&t;&t; * end of page (see link, diskpage)&n;&t;&t;&t;&t; */
 DECL|typedef|suspend_pagedir_t
 )brace
 id|suspend_pagedir_t
 suffix:semicolon
+DECL|macro|for_each_pbe
+mdefine_line|#define for_each_pbe(pbe, pblist) &bslash;&n;&t;for (pbe = pblist ; pbe ; pbe = pbe-&gt;next)
+DECL|macro|PBES_PER_PAGE
+mdefine_line|#define PBES_PER_PAGE      (PAGE_SIZE/sizeof(struct pbe))
+DECL|macro|PB_PAGE_SKIP
+mdefine_line|#define PB_PAGE_SKIP       (PBES_PER_PAGE-1)
+DECL|macro|for_each_pb_page
+mdefine_line|#define for_each_pb_page(pbe, pblist) &bslash;&n;&t;for (pbe = pblist ; pbe ; pbe = (pbe+PB_PAGE_SKIP)-&gt;next)
 DECL|macro|SWAP_FILENAME_MAXLENGTH
 mdefine_line|#define SWAP_FILENAME_MAXLENGTH&t;32
 DECL|macro|SUSPEND_PD_PAGES

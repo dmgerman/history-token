@@ -32,6 +32,8 @@ macro_line|#elif defined(CONFIG_83xx)
 macro_line|#include &lt;asm/mpc83xx.h&gt;
 macro_line|#elif defined(CONFIG_85xx)
 macro_line|#include &lt;asm/mpc85xx.h&gt;
+macro_line|#elif defined(CONFIG_RADSTONE_PPC7D)
+macro_line|#include &lt;platforms/radstone_ppc7d.h&gt;
 macro_line|#else
 multiline_comment|/*&n; * XXX Assume for now it has PC-style ISA serial ports.&n; * This is true for PReP and CHRP at least.&n; */
 macro_line|#include &lt;asm/pc_serial.h&gt;

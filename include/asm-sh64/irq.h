@@ -83,12 +83,14 @@ DECL|macro|IRQ_P2INTC
 mdefine_line|#define IRQ_P2INTC      (START_EXT_IRQS + (3*8) + 2)
 DECL|macro|IRQ_P2INTD
 mdefine_line|#define IRQ_P2INTD      (START_EXT_IRQS + (3*8) + 3)
-DECL|macro|START_EXT_IRQS
-mdefine_line|#define START_EXT_IRQS  64
 DECL|macro|I8042_KBD_IRQ
 mdefine_line|#define I8042_KBD_IRQ&t;(START_EXT_IRQS + 2)
 DECL|macro|I8042_AUX_IRQ
 mdefine_line|#define I8042_AUX_IRQ&t;(START_EXT_IRQS + 6)
+DECL|macro|IRQ_CFCARD
+mdefine_line|#define IRQ_CFCARD&t;(START_EXT_IRQS + 7)
+DECL|macro|IRQ_PCMCIA
+mdefine_line|#define IRQ_PCMCIA&t;(0)
 macro_line|#else
 DECL|macro|NR_EXT_IRQS
 mdefine_line|#define NR_EXT_IRQS&t;0

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#if defined(__KERNEL__) &amp;&amp; defined(CONFIG_SMP) &amp;&amp; !defined(__ASSEMBLY__)
 macro_line|#include &lt;asm/lowcore.h&gt;
+macro_line|#include &lt;asm/sigp.h&gt;
 multiline_comment|/*&n;  s390 specific smp.c headers&n; */
 r_typedef
 r_struct
@@ -112,6 +113,72 @@ id|cpu_address
 suffix:semicolon
 r_return
 id|cpu_address
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * returns 1 if cpu is in stopped/check stopped state or not operational&n; * returns 0 otherwise&n; */
+r_static
+r_inline
+r_int
+DECL|function|smp_cpu_not_running
+id|smp_cpu_not_running
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+id|__u32
+id|status
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|signal_processor_ps
+c_func
+(paren
+op_amp
+id|status
+comma
+l_int|0
+comma
+id|cpu
+comma
+id|sigp_sense
+)paren
+)paren
+(brace
+r_case
+id|sigp_order_code_accepted
+suffix:colon
+r_case
+id|sigp_status_stored
+suffix:colon
+multiline_comment|/* Check for stopped and check stop state */
+r_if
+c_cond
+(paren
+id|status
+op_amp
+l_int|0x50
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|sigp_not_operational
+suffix:colon
+r_return
+l_int|1
+suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|macro|cpu_logical_map

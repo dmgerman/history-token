@@ -8500,6 +8500,10 @@ op_assign
 op_amp
 id|wait
 suffix:semicolon
+id|rq-&gt;end_io
+op_assign
+id|blk_end_sync_rq
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
@@ -14465,12 +14469,14 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
-id|nonseekable_open
-c_func
+multiline_comment|/*&n;&t; * We really want to do nonseekable_open(inode, filp); here, but some&n;&t; * versions of tar incorrectly call lseek on tapes and bail out if that&n;&t; * fails.  So we disallow pread() and pwrite(), but permit lseeks.&n;&t; */
+id|filp-&gt;f_mode
+op_and_assign
+op_complement
 (paren
-id|inode
-comma
-id|filp
+id|FMODE_PREAD
+op_or
+id|FMODE_PWRITE
 )paren
 suffix:semicolon
 macro_line|#if IDETAPE_DEBUG_LOG

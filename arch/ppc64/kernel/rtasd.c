@@ -1233,7 +1233,8 @@ c_cond
 (paren
 id|error
 op_eq
-id|RTAS_NO_SUCH_INDICATOR
+op_minus
+id|EINVAL
 )paren
 (brace
 id|printk

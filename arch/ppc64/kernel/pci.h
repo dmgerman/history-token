@@ -43,6 +43,9 @@ r_struct
 id|pci_controller
 op_star
 id|hose
+comma
+r_int
+id|primary
 )paren
 suffix:semicolon
 r_extern

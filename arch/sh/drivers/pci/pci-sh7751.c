@@ -687,7 +687,6 @@ comma
 id|pci_fixup_ide_bases
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; *  Called after each bus is probed, but before its children&n; *  are examined.&n; */
 DECL|function|pcibios_fixup_bus
 r_void

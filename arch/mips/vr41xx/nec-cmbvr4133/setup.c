@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * arch/mips/vr41xx/nec-cmbvr4133/setup.c&n; *&n; * Setup for the NEC CMB-VR4133.&n; *&n; * Author: Yoichi Yuasa &lt;yyuasa@mvista.com, or source@mvista.com&gt; and&n; *         Alex Sapkov &lt;asapkov@ru.mvista.com&gt;&n; *&n; * 2001-2004 (c) MontaVista, Software, Inc. This file is licensed under&n; * the terms of the GNU General Public License version 2. This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; *&n; * Support for CMBVR4133 board in 2.6&n; * Author: Manish Lachwani (mlachwani@mvista.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
@@ -98,45 +97,6 @@ mdefine_line|#define number_partitions (sizeof(cmbvr4133_mtd_parts)/sizeof(struc
 macro_line|#endif
 r_extern
 r_void
-(paren
-op_star
-id|late_time_init
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|function|vr4133_serial_init
-r_static
-r_void
-id|__init
-id|vr4133_serial_init
-c_func
-(paren
-r_void
-)paren
-(brace
-id|vr41xx_select_siu_interface
-c_func
-(paren
-id|SIU_RS232C
-comma
-id|IRDA_NONE
-)paren
-suffix:semicolon
-id|vr41xx_siu_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|vr41xx_dsiu_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_extern
-r_void
 id|i8259_init
 c_func
 (paren
@@ -185,10 +145,6 @@ suffix:semicolon
 id|mips_machtype
 op_assign
 id|MACH_NEC_CMBVR4133
-suffix:semicolon
-id|late_time_init
-op_assign
-id|vr4133_serial_init
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 macro_line|#ifdef CONFIG_ROCKHOPPER

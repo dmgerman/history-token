@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -108,13 +109,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|csum_partial_copy
-)paren
-suffix:semicolon
-DECL|variable|strtok
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|strtok
 )paren
 suffix:semicolon
 DECL|variable|strpbrk
@@ -224,6 +218,14 @@ c_func
 id|flush_dcache_page
 )paren
 suffix:semicolon
+multiline_comment|/* For ext3 */
+DECL|variable|sh64_page_clear
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sh64_page_clear
+)paren
+suffix:semicolon
 multiline_comment|/* Ugh.  These come in from libgcc.a at link time. */
 r_extern
 r_void
@@ -249,6 +251,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_char
+id|__div_table
+suffix:semicolon
 DECL|variable|__sdivsi3
 id|EXPORT_SYMBOL
 c_func
@@ -268,6 +274,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__udivsi3
+)paren
+suffix:semicolon
+DECL|variable|__div_table
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__div_table
 )paren
 suffix:semicolon
 eof

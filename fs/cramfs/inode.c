@@ -217,6 +217,10 @@ id|inode-&gt;i_size
 op_assign
 l_int|0
 suffix:semicolon
+id|inode-&gt;i_blocks
+op_assign
+l_int|0
+suffix:semicolon
 id|init_special_inode
 c_func
 (paren

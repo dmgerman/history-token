@@ -59,10 +59,10 @@ id|sel_buffer
 suffix:semicolon
 multiline_comment|/* clear_selection, highlight and highlight_pointer can be called&n;   from interrupt (via scrollback/front) */
 multiline_comment|/* set reverse video on characters s-e of console with selection. */
-r_inline
-r_static
-r_void
 DECL|function|highlight
+r_static
+r_inline
+r_void
 id|highlight
 c_func
 (paren
@@ -93,10 +93,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* use complementary color to show the pointer */
-r_inline
-r_static
-r_void
 DECL|function|highlight_pointer
+r_static
+r_inline
+r_void
 id|highlight_pointer
 c_func
 (paren
@@ -1282,13 +1282,13 @@ id|tty
 )paren
 (brace
 r_struct
-id|vt_struct
+id|vc_data
 op_star
-id|vt
+id|vc
 op_assign
 (paren
 r_struct
-id|vt_struct
+id|vc_data
 op_star
 )paren
 id|tty-&gt;driver_data
@@ -1340,7 +1340,7 @@ id|add_wait_queue
 c_func
 (paren
 op_amp
-id|vt-&gt;paste_wait
+id|vc-&gt;paste_wait
 comma
 op_amp
 id|wait
@@ -1430,7 +1430,7 @@ id|remove_wait_queue
 c_func
 (paren
 op_amp
-id|vt-&gt;paste_wait
+id|vc-&gt;paste_wait
 comma
 op_amp
 id|wait

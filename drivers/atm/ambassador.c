@@ -53,7 +53,7 @@ mdefine_line|#define UCODE2(x) #x
 DECL|variable|ucode_start
 r_static
 id|u32
-id|__initdata
+id|__devinitdata
 id|ucode_start
 op_assign
 macro_line|#include UCODE(start)
@@ -61,7 +61,7 @@ suffix:semicolon
 DECL|variable|ucode_regions
 r_static
 id|region
-id|__initdata
+id|__devinitdata
 id|ucode_regions
 (braket
 )braket
@@ -78,7 +78,7 @@ suffix:semicolon
 DECL|variable|ucode_data
 r_static
 id|u32
-id|__initdata
+id|__devinitdata
 id|ucode_data
 (braket
 )braket
@@ -5607,7 +5607,7 @@ multiline_comment|/********** creation of communication queues **********/
 DECL|function|create_queues
 r_static
 r_int
-id|__init
+id|__devinit
 id|create_queues
 (paren
 id|amb_dev
@@ -6547,7 +6547,7 @@ suffix:semicolon
 DECL|function|do_loader_command
 r_static
 r_int
-id|__init
+id|__devinit
 id|do_loader_command
 (paren
 r_volatile
@@ -6775,7 +6775,7 @@ multiline_comment|/* loader: determine loader version */
 DECL|function|get_loader_version
 r_static
 r_int
-id|__init
+id|__devinit
 id|get_loader_version
 (paren
 id|loader_block
@@ -6844,7 +6844,7 @@ multiline_comment|/* loader: write memory data blocks */
 DECL|function|loader_write
 r_static
 r_int
-id|__init
+id|__devinit
 id|loader_write
 (paren
 id|loader_block
@@ -6956,7 +6956,7 @@ multiline_comment|/* loader: verify memory data blocks */
 DECL|function|loader_verify
 r_static
 r_int
-id|__init
+id|__devinit
 id|loader_verify
 (paren
 id|loader_block
@@ -7093,7 +7093,7 @@ multiline_comment|/* loader: start microcode */
 DECL|function|loader_start
 r_static
 r_int
-id|__init
+id|__devinit
 id|loader_start
 (paren
 id|loader_block
@@ -7467,7 +7467,7 @@ multiline_comment|/********** transfer and start the microcode **********/
 DECL|function|ucode_init
 r_static
 r_int
-id|__init
+id|__devinit
 id|ucode_init
 (paren
 id|loader_block
@@ -7736,7 +7736,7 @@ suffix:semicolon
 DECL|function|amb_talk
 r_static
 r_int
-id|__init
+id|__devinit
 id|amb_talk
 (paren
 id|amb_dev
@@ -8000,7 +8000,7 @@ singleline_comment|// get microcode version
 DECL|function|amb_ucode_version
 r_static
 r_void
-id|__init
+id|__devinit
 id|amb_ucode_version
 (paren
 id|amb_dev
@@ -8150,7 +8150,7 @@ singleline_comment|// get end station address
 DECL|function|amb_esi
 r_static
 r_void
-id|__init
+id|__devinit
 id|amb_esi
 (paren
 id|amb_dev
@@ -8409,7 +8409,7 @@ suffix:semicolon
 DECL|function|amb_init
 r_static
 r_int
-id|__init
+id|__devinit
 id|amb_init
 (paren
 id|amb_dev

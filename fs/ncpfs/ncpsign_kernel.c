@@ -3,9 +3,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_NCPFS_PACKET_SIGNING
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ncp.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &quot;ncpsign_kernel.h&quot;
-DECL|macro|rol32
-mdefine_line|#define rol32(i,c) (((((i)&amp;0xffffffff)&lt;&lt;c)&amp;0xffffffff)| &bslash;&n;                    (((i)&amp;0xffffffff)&gt;&gt;(32-c)))
 multiline_comment|/* i386: 32-bit, little endian, handles mis-alignment */
 macro_line|#ifdef __i386__
 DECL|macro|GET_LE32

@@ -325,6 +325,14 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* dev. recog. complete */
+DECL|member|fake_irb
+r_int
+r_int
+id|fake_irb
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* deliver faked irb */
 DECL|member|flags
 )brace
 id|__attribute__
@@ -561,6 +569,15 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Helper functions for vary on/off. */
+r_int
+id|device_is_online
+c_func
+(paren
+r_struct
+id|subchannel
+op_star
+)paren
+suffix:semicolon
 r_void
 id|device_set_waiting
 c_func

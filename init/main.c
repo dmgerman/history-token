@@ -635,6 +635,40 @@ comma
 id|quiet_kernel
 )paren
 suffix:semicolon
+DECL|function|loglevel
+r_static
+r_int
+id|__init
+id|loglevel
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|console_loglevel
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;loglevel=&quot;
+comma
+id|loglevel
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Unknown boot options get handed to init, unless they look like&n; * failed parameters&n; */
 DECL|function|unknown_bootoption
 r_static
@@ -2185,6 +2219,15 @@ id|unused
 id|lock_kernel
 c_func
 (paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * init can run on any cpu.&n;&t; */
+id|set_cpus_allowed
+c_func
+(paren
+id|current
+comma
+id|CPU_MASK_ALL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Tell the world that we&squot;re going to be the grim&n;&t; * reaper of innocent orphaned children.&n;&t; *&n;&t; * We don&squot;t want people to have to make incorrect&n;&t; * assumptions about where in the task array this&n;&t; * can be found.&n;&t; */

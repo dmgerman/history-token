@@ -3,7 +3,7 @@ macro_line|#ifndef _ORINOCO_H
 DECL|macro|_ORINOCO_H
 mdefine_line|#define _ORINOCO_H
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;0.13e&quot;
+mdefine_line|#define DRIVER_VERSION &quot;0.14alpha2&quot;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -42,6 +42,21 @@ id|__attribute__
 id|packed
 )paren
 )paren
+suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|FIRMWARE_TYPE_AGERE
+id|FIRMWARE_TYPE_AGERE
+comma
+DECL|enumerator|FIRMWARE_TYPE_INTERSIL
+id|FIRMWARE_TYPE_INTERSIL
+comma
+DECL|enumerator|FIRMWARE_TYPE_SYMBOL
+id|FIRMWARE_TYPE_SYMBOL
+DECL|typedef|fwtype_t
+)brace
+id|fwtype_t
 suffix:semicolon
 DECL|struct|orinoco_private
 r_struct
@@ -88,10 +103,6 @@ DECL|member|last_linkstatus
 id|u16
 id|last_linkstatus
 suffix:semicolon
-DECL|member|connected
-r_int
-id|connected
-suffix:semicolon
 multiline_comment|/* Net device stuff */
 DECL|member|ndev
 r_struct
@@ -120,50 +131,19 @@ id|txfid
 suffix:semicolon
 multiline_comment|/* Capabilities of the hardware/firmware */
 DECL|member|firmware_type
-r_int
+id|fwtype_t
 id|firmware_type
 suffix:semicolon
-DECL|macro|FIRMWARE_TYPE_AGERE
-mdefine_line|#define FIRMWARE_TYPE_AGERE 1
-DECL|macro|FIRMWARE_TYPE_INTERSIL
-mdefine_line|#define FIRMWARE_TYPE_INTERSIL 2
-DECL|macro|FIRMWARE_TYPE_SYMBOL
-mdefine_line|#define FIRMWARE_TYPE_SYMBOL 3
-DECL|member|has_ibss
-DECL|member|has_port3
-DECL|member|has_ibss_any
+DECL|member|fw_name
+r_char
+id|fw_name
+(braket
+l_int|32
+)braket
+suffix:semicolon
 DECL|member|ibss_port
 r_int
-id|has_ibss
-comma
-id|has_port3
-comma
-id|has_ibss_any
-comma
 id|ibss_port
-suffix:semicolon
-DECL|member|has_wep
-DECL|member|has_big_wep
-r_int
-id|has_wep
-comma
-id|has_big_wep
-suffix:semicolon
-DECL|member|has_mwo
-r_int
-id|has_mwo
-suffix:semicolon
-DECL|member|has_pm
-r_int
-id|has_pm
-suffix:semicolon
-DECL|member|has_preamble
-r_int
-id|has_preamble
-suffix:semicolon
-DECL|member|has_sensitivity
-r_int
-id|has_sensitivity
 suffix:semicolon
 DECL|member|nicbuf_size
 r_int
@@ -173,9 +153,69 @@ DECL|member|channel_mask
 id|u16
 id|channel_mask
 suffix:semicolon
+multiline_comment|/* Boolean capabilities */
+DECL|member|has_ibss
+r_int
+r_int
+id|has_ibss
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|has_port3
+r_int
+r_int
+id|has_port3
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|has_wep
+r_int
+r_int
+id|has_wep
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|has_big_wep
+r_int
+r_int
+id|has_big_wep
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|has_mwo
+r_int
+r_int
+id|has_mwo
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|has_pm
+r_int
+r_int
+id|has_pm
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|has_preamble
+r_int
+r_int
+id|has_preamble
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|has_sensitivity
+r_int
+r_int
+id|has_sensitivity
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|broken_disableport
 r_int
+r_int
 id|broken_disableport
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* Configuration paramaters */
 DECL|member|iw_mode
@@ -343,6 +383,17 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|free_orinocodev
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|__orinoco_up
 c_func
@@ -442,10 +493,11 @@ c_cond
 id|priv-&gt;hw_unavailable
 )paren
 (brace
-id|printk
+id|DEBUG
 c_func
 (paren
-id|KERN_DEBUG
+l_int|1
+comma
 l_string|&quot;orinoco_lock() called with hw_unavailable (dev=%p)&bslash;n&quot;
 comma
 id|priv-&gt;ndev

@@ -95,6 +95,11 @@ DECL|member|may_writepage
 r_int
 id|may_writepage
 suffix:semicolon
+multiline_comment|/* This context&squot;s SWAP_CLUSTER_MAX. If freeing memory for&n;&t; * suspend, we effectively ignore SWAP_CLUSTER_MAX.&n;&t; * In this context, it doesn&squot;t matter that we scan the&n;&t; * whole list at once. */
+DECL|member|swap_cluster_max
+r_int
+id|swap_cluster_max
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The list of shrinker callbacks used by to apply pressure to&n; * ageable caches.&n; */
@@ -224,7 +229,7 @@ op_amp
 id|shrinker_rwsem
 )paren
 suffix:semicolon
-id|list_add
+id|list_add_tail
 c_func
 (paren
 op_amp
@@ -1710,7 +1715,7 @@ c_loop
 id|nr_scan
 op_increment
 OL
-id|SWAP_CLUSTER_MAX
+id|sc-&gt;swap_cluster_max
 op_logical_and
 op_logical_neg
 id|list_empty
@@ -2799,7 +2804,7 @@ c_cond
 (paren
 id|nr_active
 op_ge
-id|SWAP_CLUSTER_MAX
+id|sc-&gt;swap_cluster_max
 )paren
 id|zone-&gt;nr_scan_active
 op_assign
@@ -2829,7 +2834,7 @@ c_cond
 (paren
 id|nr_inactive
 op_ge
-id|SWAP_CLUSTER_MAX
+id|sc-&gt;swap_cluster_max
 )paren
 id|zone-&gt;nr_scan_inactive
 op_assign
@@ -2842,7 +2847,7 @@ l_int|0
 suffix:semicolon
 id|sc-&gt;nr_to_reclaim
 op_assign
-id|SWAP_CLUSTER_MAX
+id|sc-&gt;swap_cluster_max
 suffix:semicolon
 r_while
 c_loop
@@ -2869,7 +2874,7 @@ comma
 r_int
 r_int
 )paren
-id|SWAP_CLUSTER_MAX
+id|sc-&gt;swap_cluster_max
 )paren
 suffix:semicolon
 id|nr_active
@@ -2902,7 +2907,7 @@ comma
 r_int
 r_int
 )paren
-id|SWAP_CLUSTER_MAX
+id|sc-&gt;swap_cluster_max
 )paren
 suffix:semicolon
 id|nr_inactive
@@ -2928,6 +2933,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|throttle_vm_writeout
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the direct reclaim path, for page-allocating processes.  We only&n; * try to reclaim pages from zones which will satisfy the caller&squot;s allocation&n; * request.&n; *&n; * We reclaim from a zone even if that zone is over pages_high.  Because:&n; * a) The caller may be trying to free *extra* pages to satisfy a higher-order&n; *    allocation or&n; * b) The zones may be over pages_high but they must go *over* pages_high to&n; *    satisfy the `incremental min&squot; zone defense algorithm.&n; *&n; * Returns the number of reclaimed pages.&n; *&n; * If a zone is deemed to be full of pinned pages then just give it a light&n; * scan then give up on it.&n; */
 r_static
@@ -3171,6 +3181,10 @@ id|sc.priority
 op_assign
 id|priority
 suffix:semicolon
+id|sc.swap_cluster_max
+op_assign
+id|SWAP_CLUSTER_MAX
+suffix:semicolon
 id|shrink_caches
 c_func
 (paren
@@ -3205,12 +3219,20 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|total_scanned
+op_add_assign
+id|sc.nr_scanned
+suffix:semicolon
+id|total_reclaimed
+op_add_assign
+id|sc.nr_reclaimed
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|sc.nr_reclaimed
+id|total_reclaimed
 op_ge
-id|SWAP_CLUSTER_MAX
+id|sc.swap_cluster_max
 )paren
 (brace
 id|ret
@@ -3221,23 +3243,15 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|total_scanned
-op_add_assign
-id|sc.nr_scanned
-suffix:semicolon
-id|total_reclaimed
-op_add_assign
-id|sc.nr_reclaimed
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Try to write back as many pages as we just scanned.  This&n;&t;&t; * tends to cause slow streaming writers to write data to the&n;&t;&t; * disk smoothly, at the dirtying rate, which is nice.   But&n;&t;&t; * that&squot;s undesirable in laptop mode, where we *want* lumpy&n;&t;&t; * writeout.  So in laptop mode, write out the whole world.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|total_scanned
 OG
-id|SWAP_CLUSTER_MAX
+id|sc.swap_cluster_max
 op_plus
-id|SWAP_CLUSTER_MAX
+id|sc.swap_cluster_max
 op_div
 l_int|2
 )paren
@@ -3695,6 +3709,15 @@ id|sc.priority
 op_assign
 id|priority
 suffix:semicolon
+id|sc.swap_cluster_max
+op_assign
+id|nr_pages
+ques
+c_cond
+id|nr_pages
+suffix:colon
+id|SWAP_CLUSTER_MAX
+suffix:semicolon
 id|shrink_zone
 c_func
 (paren
@@ -3823,9 +3846,16 @@ multiline_comment|/*&n;&t;&t; * We do this so kswapd doesn&squot;t build up larg
 r_if
 c_cond
 (paren
+(paren
 id|total_reclaimed
 op_ge
 id|SWAP_CLUSTER_MAX
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|nr_pages
+)paren
 )paren
 r_break
 suffix:semicolon

@@ -46,9 +46,12 @@ id|dma_info
 id|MAX_DMA_CHANNELS
 )braket
 suffix:semicolon
-r_extern
-id|spinlock_t
+r_static
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dma_spin_lock
+)paren
 suffix:semicolon
 multiline_comment|/* arch/sh64/kernel/irq_intc.c */
 r_extern

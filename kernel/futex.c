@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 DECL|macro|FUTEX_HASHBITS
-mdefine_line|#define FUTEX_HASHBITS 8
+mdefine_line|#define FUTEX_HASHBITS (CONFIG_BASE_SMALL ? 4 : 8)
 multiline_comment|/*&n; * Futexes are matched on equal values of this key.&n; * The key type depends on whether it&squot;s a shared or private mapping.&n; * Don&squot;t rearrange members without looking at hash_futex().&n; *&n; * offset is aligned to a multiple of sizeof(u32) (== 4) by definition.&n; * We set bit 0 to indicate if it&squot;s an inode-based key.&n; */
 DECL|union|futex_key
 r_union

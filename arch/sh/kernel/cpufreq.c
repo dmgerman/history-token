@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/sh/kernel/cpufreq.c&n; *&n; * cpufreq driver for the SuperH processors.&n; *&n; * Copyright (C) 2002, 2003 Paul Mundt&n; * Copyright (C) 2002 M. R. Brown&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * arch/sh/kernel/cpufreq.c&n; *&n; * cpufreq driver for the SuperH processors.&n; *&n; * Copyright (C) 2002, 2003, 2004, 2005 Paul Mundt&n; * Copyright (C) 2002 M. R. Brown&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/watchdog.h&gt;
@@ -70,12 +71,10 @@ multiline_comment|/* max - IFC: 1, BFC: 1/2, PFC: 1/2 */
 macro_line|#endif
 )brace
 suffix:semicolon
-DECL|macro|NR_CLOCK_SETS
-mdefine_line|#define NR_CLOCK_SETS&t;(sizeof(clock_sets) / sizeof(struct clock_set))
 DECL|macro|MIN_CLOCK_SET
 mdefine_line|#define MIN_CLOCK_SET&t;0
 DECL|macro|MAX_CLOCK_SET
-mdefine_line|#define MAX_CLOCK_SET&t;(NR_CLOCK_SETS - 1)
+mdefine_line|#define MAX_CLOCK_SET&t;(ARRAY_SIZE(clock_sets) - 1)
 multiline_comment|/*&n; * For the time being, we only support two frequencies, which in turn are&n; * aimed at the POWERSAVE and PERFORMANCE policies, which in turn are derived&n; * directly from the respective min/max clock sets. Technically we could&n; * support a wider range of frequencies, but these vary far too much for each&n; * CPU subtype (and we&squot;d have to construct a frequency table for each subtype).&n; *&n; * Maybe something to implement in the future..&n; */
 DECL|macro|SH_FREQ_MAX
 mdefine_line|#define SH_FREQ_MAX&t;0
@@ -186,16 +185,12 @@ c_func
 id|FRQCR
 )paren
 suffix:semicolon
-r_int
-r_int
+id|cpumask_t
 id|cpus_allowed
 suffix:semicolon
 r_struct
 id|cpufreq_freqs
 id|freqs
-suffix:semicolon
-r_int
-id|allowable_cpu_map
 suffix:semicolon
 r_if
 c_cond
@@ -215,36 +210,27 @@ id|cpus_allowed
 op_assign
 id|current-&gt;cpus_allowed
 suffix:semicolon
-id|allowable_cpu_map
-op_assign
-l_int|1
-op_lshift
-id|cpu
-suffix:semicolon
 id|set_cpus_allowed
 c_func
 (paren
 id|current
 comma
-id|allowable_cpu_map
+id|cpumask_of_cpu
+c_func
+(paren
+id|cpu
+)paren
 )paren
 suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-op_logical_neg
-(paren
-id|allowable_cpu_map
-op_amp
-(paren
-l_int|1
-op_lshift
 id|smp_processor_id
 c_func
 (paren
 )paren
-)paren
-)paren
+op_ne
+id|cpu
 )paren
 suffix:semicolon
 id|freqs.cpu

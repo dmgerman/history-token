@@ -106,6 +106,11 @@ mdefine_line|#define PORT_MPSC&t;63
 multiline_comment|/* TXX9 type number */
 DECL|macro|PORT_TXX9
 mdefine_line|#define PORT_TXX9       64
+multiline_comment|/* NEC VR4100 series SIU/DSIU */
+DECL|macro|PORT_VR41XX_SIU
+mdefine_line|#define PORT_VR41XX_SIU&t;&t;65
+DECL|macro|PORT_VR41XX_DSIU
+mdefine_line|#define PORT_VR41XX_DSIU&t;66
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

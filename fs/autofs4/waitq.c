@@ -990,6 +990,12 @@ op_amp
 id|sbi-&gt;wq_sem
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|name
+)paren
+suffix:semicolon
 id|DPRINTK
 c_func
 (paren

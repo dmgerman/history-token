@@ -1559,6 +1559,13 @@ mdefine_line|#define pte_unmap(pte) do { } while (0)
 DECL|macro|pte_unmap_nested
 mdefine_line|#define pte_unmap_nested(pte) do { } while (0)
 multiline_comment|/*&n; * 31 bit swap entry format:&n; * A page-table entry has some bits we have to treat in a special way.&n; * Bits 0, 20 and bit 23 have to be zero, otherwise an specification&n; * exception will occur instead of a page translation exception. The&n; * specifiation exception has the bad habit not to store necessary&n; * information in the lowcore.&n; * Bit 21 and bit 22 are the page invalid bit and the page protection&n; * bit. We set both to indicate a swapped page.&n; * Bit 30 and 31 are used to distinguish the different page types. For&n; * a swapped page these bits need to be zero.&n; * This leaves the bits 1-19 and bits 24-29 to store type and offset.&n; * We use the 5 bits from 25-29 for the type and the 20 bits from 1-19&n; * plus 24 for the offset.&n; * 0|     offset        |0110|o|type |00|&n; * 0 0000000001111111111 2222 2 22222 33&n; * 0 1234567890123456789 0123 4 56789 01&n; *&n; * 64 bit swap entry format:&n; * A page-table entry has some bits we have to treat in a special way.&n; * Bits 52 and bit 55 have to be zero, otherwise an specification&n; * exception will occur instead of a page translation exception. The&n; * specifiation exception has the bad habit not to store necessary&n; * information in the lowcore.&n; * Bit 53 and bit 54 are the page invalid bit and the page protection&n; * bit. We set both to indicate a swapped page.&n; * Bit 62 and 63 are used to distinguish the different page types. For&n; * a swapped page these bits need to be zero.&n; * This leaves the bits 0-51 and bits 56-61 to store type and offset.&n; * We use the 5 bits from 57-61 for the type and the 53 bits from 0-51&n; * plus 56 for the offset.&n; * |                      offset                        |0110|o|type |00|&n; *  0000000000111111111122222222223333333333444444444455 5555 5 55566 66&n; *  0123456789012345678901234567890123456789012345678901 2345 6 78901 23&n; */
+macro_line|#ifndef __s390x__
+DECL|macro|__SWP_OFFSET_MASK
+mdefine_line|#define __SWP_OFFSET_MASK (~0UL &gt;&gt; 12)
+macro_line|#else
+DECL|macro|__SWP_OFFSET_MASK
+mdefine_line|#define __SWP_OFFSET_MASK (~0UL &gt;&gt; 11)
+macro_line|#endif
 DECL|function|mk_swap_pte
 r_extern
 r_inline
@@ -1577,6 +1584,10 @@ id|offset
 (brace
 id|pte_t
 id|pte
+suffix:semicolon
+id|offset
+op_and_assign
+id|__SWP_OFFSET_MASK
 suffix:semicolon
 id|pte_val
 c_func
@@ -1600,7 +1611,7 @@ op_or
 (paren
 id|offset
 op_amp
-l_int|1
+l_int|1UL
 )paren
 op_lshift
 l_int|7
@@ -1610,7 +1621,8 @@ op_or
 (paren
 id|offset
 op_amp
-l_int|0xffffe
+op_complement
+l_int|1UL
 )paren
 op_lshift
 l_int|11

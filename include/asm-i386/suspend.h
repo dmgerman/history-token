@@ -11,17 +11,26 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* If you want to make non-PSE machine work, turn off paging&n;           in do_magic. swsusp_pg_dir should have identity mapping, so&n;           it could work...  */
+multiline_comment|/* If you want to make non-PSE machine work, turn off paging&n;           in swsusp_arch_suspend. swsusp_pg_dir should have identity mapping, so&n;           it could work...  */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|cpu_has_pse
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PSE is required for swsusp.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EPERM
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

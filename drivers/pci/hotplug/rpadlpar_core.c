@@ -598,7 +598,8 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|sprintf
@@ -817,7 +818,8 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|secondary_bus
@@ -844,7 +846,8 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ERANGE
 suffix:semicolon
 )brace
 id|pci_remove_bus_device
@@ -1113,6 +1116,8 @@ r_if
 c_cond
 (paren
 id|rc
+OL
+l_int|0
 )paren
 r_return
 id|rc
@@ -1153,7 +1158,8 @@ op_logical_neg
 id|phb
 )paren
 r_return
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 r_return
 l_int|0
