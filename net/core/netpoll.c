@@ -1971,10 +1971,9 @@ id|ulen
 op_minus
 r_sizeof
 (paren
-id|uh
+r_struct
+id|udphdr
 )paren
-op_minus
-l_int|4
 )paren
 suffix:semicolon
 r_return
