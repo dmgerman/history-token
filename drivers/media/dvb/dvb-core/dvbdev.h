@@ -52,6 +52,13 @@ r_char
 op_star
 id|name
 suffix:semicolon
+DECL|member|proposed_mac
+id|u8
+id|proposed_mac
+(braket
+l_int|6
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|dvb_device
