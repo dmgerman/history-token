@@ -811,7 +811,7 @@ op_logical_neg
 id|try_module_get
 c_func
 (paren
-id|s-&gt;ss_entry-&gt;owner
+id|s-&gt;owner
 )paren
 )paren
 r_return
@@ -841,7 +841,7 @@ id|handler
 id|module_put
 c_func
 (paren
-id|s-&gt;ss_entry-&gt;owner
+id|s-&gt;owner
 )paren
 suffix:semicolon
 r_return

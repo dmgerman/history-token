@@ -1935,6 +1935,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|socket_table
+(braket
+id|sockets
+)braket
+dot
+id|socket.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 multiline_comment|/* only 16-bit cards, memory windows must be size-aligned */
 multiline_comment|/* No PCI or CardBus support */
 id|socket_table
@@ -5047,11 +5056,6 @@ id|pccard_operations
 id|tcic_operations
 op_assign
 (brace
-dot
-id|owner
-op_assign
-id|THIS_MODULE
-comma
 dot
 id|init
 op_assign

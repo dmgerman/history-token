@@ -7980,11 +7980,6 @@ id|pcic_operations
 op_assign
 (brace
 dot
-id|owner
-op_assign
-id|THIS_MODULE
-comma
-dot
 id|init
 op_assign
 id|pcic_init
@@ -8263,6 +8258,15 @@ id|socket.ss_entry
 op_assign
 op_amp
 id|pcic_operations
+suffix:semicolon
+id|socket
+(braket
+id|i
+)braket
+dot
+id|socket.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|socket
 (braket

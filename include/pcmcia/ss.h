@@ -210,12 +210,6 @@ DECL|struct|pccard_operations
 r_struct
 id|pccard_operations
 (brace
-DECL|member|owner
-r_struct
-id|module
-op_star
-id|owner
-suffix:semicolon
 DECL|member|init
 r_int
 (paren
@@ -482,6 +476,12 @@ DECL|struct|pcmcia_socket
 r_struct
 id|pcmcia_socket
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|lock
 id|spinlock_t
 id|lock

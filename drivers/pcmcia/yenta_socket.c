@@ -4146,11 +4146,6 @@ id|yenta_socket_operations
 op_assign
 (brace
 dot
-id|owner
-op_assign
-id|THIS_MODULE
-comma
-dot
 id|init
 op_assign
 id|yenta_init
@@ -4607,6 +4602,10 @@ suffix:semicolon
 id|socket-&gt;socket.driver_data
 op_assign
 id|socket
+suffix:semicolon
+id|socket-&gt;socket.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 multiline_comment|/* prepare struct yenta_socket */
 id|socket-&gt;dev

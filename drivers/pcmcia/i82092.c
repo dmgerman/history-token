@@ -166,11 +166,6 @@ id|i82092aa_operations
 op_assign
 (brace
 dot
-id|owner
-op_assign
-id|THIS_MODULE
-comma
-dot
 id|init
 op_assign
 id|i82092aa_init
@@ -521,6 +516,15 @@ dot
 id|socket.pci_irq
 op_assign
 id|dev-&gt;irq
+suffix:semicolon
+id|sockets
+(braket
+id|i
+)braket
+dot
+id|socket.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|sockets
 (braket
