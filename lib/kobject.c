@@ -435,16 +435,16 @@ r_return
 id|path
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_HOTPLUG
-DECL|macro|BUFFER_SIZE
-mdefine_line|#define BUFFER_SIZE&t;1024&t;/* should be enough memory for the env */
-DECL|macro|NUM_ENVP
-mdefine_line|#define NUM_ENVP&t;32&t;/* number of env pointers */
 DECL|variable|hotplug_seqnum
 r_int
 r_int
 id|hotplug_seqnum
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG
+DECL|macro|BUFFER_SIZE
+mdefine_line|#define BUFFER_SIZE&t;1024&t;/* should be enough memory for the env */
+DECL|macro|NUM_ENVP
+mdefine_line|#define NUM_ENVP&t;32&t;/* number of env pointers */
 DECL|variable|sequence_lock
 r_static
 id|spinlock_t
