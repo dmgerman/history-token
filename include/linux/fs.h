@@ -796,6 +796,12 @@ id|prio_tree_root
 id|i_mmap_shared
 suffix:semicolon
 multiline_comment|/* tree of shared mappings */
+DECL|member|i_mmap_nonlinear
+r_struct
+id|list_head
+id|i_mmap_nonlinear
+suffix:semicolon
+multiline_comment|/*list of nonlinear mappings */
 DECL|member|i_mmap_lock
 id|spinlock_t
 id|i_mmap_lock
@@ -982,6 +988,14 @@ c_func
 op_amp
 id|mapping-&gt;i_mmap_shared
 )paren
+op_logical_or
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|mapping-&gt;i_mmap_nonlinear
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Might pages of this file have been modified in userspace?&n; * Note that i_mmap_shared holds all the VM_SHARED vmas: do_mmap_pgoff&n; * marks vma as VM_SHARED if it is shared, and the file was opened for&n; * writing i.e. vma may be mprotected writable even if now readonly.&n; */
@@ -1005,6 +1019,14 @@ c_func
 (paren
 op_amp
 id|mapping-&gt;i_mmap_shared
+)paren
+op_logical_or
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|mapping-&gt;i_mmap_nonlinear
 )paren
 suffix:semicolon
 )brace
