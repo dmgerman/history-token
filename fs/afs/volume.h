@@ -269,6 +269,7 @@ r_int
 id|afs_volume_lookup
 c_func
 (paren
+r_const
 r_char
 op_star
 id|name
