@@ -1806,26 +1806,5 @@ r_int
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/* Power Management */
-macro_line|#ifdef CONFIG_PM
-r_void
-id|snd_trident_suspend
-c_func
-(paren
-id|trident_t
-op_star
-id|trident
-)paren
-suffix:semicolon
-r_void
-id|snd_trident_resume
-c_func
-(paren
-id|trident_t
-op_star
-id|trident
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* __SOUND_TRIDENT_H */
 eof
