@@ -5819,6 +5819,11 @@ id|generic_ide_ioctl
 c_func
 (paren
 r_struct
+id|file
+op_star
+id|file
+comma
+r_struct
 id|block_device
 op_star
 id|bdev
@@ -6629,6 +6634,8 @@ r_return
 id|scsi_cmd_ioctl
 c_func
 (paren
+id|file
+comma
 id|bdev-&gt;bd_disk
 comma
 id|cmd

@@ -264,7 +264,7 @@ DECL|macro|do_flush_tlb_mm
 mdefine_line|#define do_flush_tlb_mm(mm) smp_flush_tlb_mm(mm)
 macro_line|#else
 DECL|macro|do_flush_tlb_mm
-mdefine_line|#define do_flush_tlb_mm(mm) __flush_tlb_mm(CTX_HWBITS(mm), SECONDARY_CONTEXT)
+mdefine_line|#define do_flush_tlb_mm(mm) __flush_tlb_mm(CTX_HWBITS(mm-&gt;context), SECONDARY_CONTEXT)
 macro_line|#endif
 DECL|function|tlb_finish_mmu
 r_static
