@@ -5740,16 +5740,6 @@ comma
 id|PCI_CAP_ID_AGP
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cap_ptr
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 id|bridge
 op_assign
 id|agp_alloc_bridge
