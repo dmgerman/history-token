@@ -885,20 +885,6 @@ c_func
 id|___test_and_change_bit
 )paren
 suffix:semicolon
-DECL|variable|___test_and_set_le_bit
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|___test_and_set_le_bit
-)paren
-suffix:semicolon
-DECL|variable|___test_and_clear_le_bit
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|___test_and_clear_le_bit
-)paren
-suffix:semicolon
 multiline_comment|/* Bit searching */
 DECL|variable|find_next_bit
 id|EXPORT_SYMBOL
