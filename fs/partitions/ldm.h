@@ -17,9 +17,9 @@ mdefine_line|#define MAGIC_VMDB&t;0x564D4442&t;&t;/* VMDB */
 DECL|macro|MAGIC_VBLK
 mdefine_line|#define MAGIC_VBLK&t;0x56424C4B&t;&t;/* VBLK */
 DECL|macro|MAGIC_PRIVHEAD
-mdefine_line|#define MAGIC_PRIVHEAD&t;0x5052495648454144&t;/* PRIVHEAD */
+mdefine_line|#define MAGIC_PRIVHEAD&t;0x5052495648454144ULL&t;/* PRIVHEAD */
 DECL|macro|MAGIC_TOCBLOCK
-mdefine_line|#define MAGIC_TOCBLOCK&t;0x544F43424C4F434B&t;/* TOCBLOCK */
+mdefine_line|#define MAGIC_TOCBLOCK&t;0x544F43424C4F434BULL&t;/* TOCBLOCK */
 multiline_comment|/* The defined vblk types. */
 DECL|macro|VBLK_VOL5
 mdefine_line|#define VBLK_VOL5&t;&t;0x51&t;&t;/* Volume,     version 5 */
