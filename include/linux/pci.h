@@ -714,22 +714,6 @@ id|DEVICE_COUNT_RESOURCE
 )braket
 suffix:semicolon
 multiline_comment|/* I/O and memory regions + expansion ROMs */
-DECL|member|dma_resource
-r_struct
-id|resource
-id|dma_resource
-(braket
-id|DEVICE_COUNT_DMA
-)braket
-suffix:semicolon
-DECL|member|irq_resource
-r_struct
-id|resource
-id|irq_resource
-(braket
-id|DEVICE_COUNT_IRQ
-)braket
-suffix:semicolon
 DECL|member|slot_name
 r_char
 op_star
