@@ -10642,6 +10642,16 @@ id|p
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * The only users of task_nice are binfmt_elf and binfmt_elf32.&n; * binfmt_elf is no longer modular, but binfmt_elf32 still is.&n; * Therefore, task_nice is needed if there is a compat_mode.&n; */
+macro_line|#ifdef CONFIG_COMPAT
+DECL|variable|task_nice
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|task_nice
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/**&n; * idle_cpu - is a given cpu idle currently?&n; * @cpu: the processor in question.&n; */
 DECL|function|idle_cpu
 r_int
