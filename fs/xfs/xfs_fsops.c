@@ -572,7 +572,7 @@ suffix:semicolon
 )brace
 r_new
 op_assign
-id|in-&gt;newblocks
+id|nb
 op_minus
 id|mp-&gt;m_sb.sb_dblocks
 suffix:semicolon
