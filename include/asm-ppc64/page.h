@@ -38,8 +38,14 @@ DECL|macro|TASK_HPAGE_END_32
 mdefine_line|#define TASK_HPAGE_END_32&t;(0xc0000000UL)
 DECL|macro|ARCH_HAS_HUGEPAGE_ONLY_RANGE
 mdefine_line|#define ARCH_HAS_HUGEPAGE_ONLY_RANGE
+DECL|macro|ARCH_HAS_PREPARE_HUGEPAGE_RANGE
+mdefine_line|#define ARCH_HAS_PREPARE_HUGEPAGE_RANGE
+DECL|macro|is_hugepage_low_range
+mdefine_line|#define is_hugepage_low_range(addr, len) &bslash;&n;&t;(((addr) &gt; (TASK_HPAGE_BASE_32-(len))) &amp;&amp; ((addr) &lt; TASK_HPAGE_END_32))
+DECL|macro|is_hugepage_high_range
+mdefine_line|#define is_hugepage_high_range(addr, len) &bslash;&n;&t;(((addr) &gt; (TASK_HPAGE_BASE-(len))) &amp;&amp; ((addr) &lt; TASK_HPAGE_END))
 DECL|macro|is_hugepage_only_range
-mdefine_line|#define is_hugepage_only_range(addr, len) &bslash;&n;&t;( ((addr &gt; (TASK_HPAGE_BASE-len)) &amp;&amp; (addr &lt; TASK_HPAGE_END)) || &bslash;&n;&t;  (current-&gt;mm-&gt;context.low_hpages &amp;&amp; &bslash;&n;&t;   (addr &gt; (TASK_HPAGE_BASE_32-len)) &amp;&amp; (addr &lt; TASK_HPAGE_END_32)) )
+mdefine_line|#define is_hugepage_only_range(addr, len) &bslash;&n;&t;(is_hugepage_high_range((addr), (len)) || &bslash;&n;&t; (current-&gt;mm-&gt;context.low_hpages &bslash;&n;&t;  &amp;&amp; is_hugepage_low_range((addr), (len))))
 DECL|macro|hugetlb_free_pgtables
 mdefine_line|#define hugetlb_free_pgtables free_pgtables
 DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA

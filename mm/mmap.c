@@ -3452,10 +3452,10 @@ id|file
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Make sure that addr and length are properly aligned.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Check if the given range is hugepage aligned, and&n;&t;&t;&t; * can be made suitable for hugepages.&n;&t;&t;&t; */
 id|ret
 op_assign
-id|is_aligned_hugepage_range
+id|prepare_hugepage_range
 c_func
 (paren
 id|addr
