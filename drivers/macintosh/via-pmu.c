@@ -526,7 +526,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|via_pmu_interrupt
 c_func
 (paren
@@ -544,7 +544,7 @@ id|regs
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|gpio1_interrupt
 c_func
 (paren
@@ -8027,7 +8027,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 id|__pmac
 DECL|function|via_pmu_interrupt
 id|via_pmu_interrupt
@@ -8070,6 +8070,11 @@ op_star
 id|req
 op_assign
 l_int|NULL
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* This is a bit brutal, we can probably do better */
 id|spin_lock_irqsave
@@ -8117,6 +8122,10 @@ op_eq
 l_int|0
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -8425,9 +8434,16 @@ r_goto
 id|recheck
 suffix:semicolon
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 id|__pmac
 DECL|function|gpio1_interrupt
 id|gpio1_interrupt
@@ -8478,7 +8494,13 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 DECL|variable|__pmacdata
