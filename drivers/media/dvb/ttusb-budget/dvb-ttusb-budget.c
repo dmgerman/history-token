@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * TTUSB DVB driver&n; *&n; * Copyright (c) 2002 Holger Waechtler &lt;holger@convergence.de&gt;&n; * Copyright (c) 2003 Felix Domke &lt;tmbinc@gmx.net&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation; either version 2 of&n; *&t;the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * TTUSB DVB driver&n; *&n; * Copyright (c) 2002 Holger Waechtler &lt;holger@convergence.de&gt;&n; * Copyright (c) 2003 Felix Domke &lt;tmbinc@elitedvb.net&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation; either version 2 of&n; *&t;the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
