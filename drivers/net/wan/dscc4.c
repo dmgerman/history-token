@@ -4122,7 +4122,8 @@ id|pci_dev
 op_star
 id|pdev
 comma
-id|u32
+r_int
+r_int
 id|ioaddr
 )paren
 (brace
@@ -6230,9 +6231,11 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|ioaddr
-comma
+suffix:semicolon
+id|u32
 id|state
 suffix:semicolon
 r_int
@@ -7028,7 +7031,8 @@ op_amp
 id|Xpr
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|scc_addr
 comma
 id|ring
@@ -8692,7 +8696,8 @@ id|dscc4_dev_priv
 op_star
 id|root
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|ioaddr
 suffix:semicolon
 r_int
