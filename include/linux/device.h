@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|DEVICE_NAME_SIZE
@@ -17,7 +18,7 @@ mdefine_line|#define DEVICE_NAME_HALF&t;__stringify(20)&t;/* Less than half to a
 DECL|macro|DEVICE_ID_SIZE
 mdefine_line|#define DEVICE_ID_SIZE&t;&t;32
 DECL|macro|BUS_ID_SIZE
-mdefine_line|#define BUS_ID_SIZE&t;&t;20
+mdefine_line|#define BUS_ID_SIZE&t;&t;KOBJ_NAME_LEN
 r_enum
 (brace
 DECL|enumerator|SUSPEND_NOTIFY
@@ -1595,6 +1596,16 @@ DECL|member|dev
 r_struct
 id|device
 id|dev
+suffix:semicolon
+DECL|member|res
+r_struct
+id|resource
+id|res
+suffix:semicolon
+DECL|member|irq
+r_int
+r_int
+id|irq
 suffix:semicolon
 )brace
 suffix:semicolon
