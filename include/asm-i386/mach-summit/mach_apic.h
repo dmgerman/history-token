@@ -85,6 +85,9 @@ DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID     (x86_summit ? 0xFF : 0x0F)
 DECL|macro|check_apicid_used
 mdefine_line|#define check_apicid_used(bitmap, apicid) (0)
+multiline_comment|/* we don&squot;t use the phys_cpu_present_map to indicate apicid presence */
+DECL|macro|check_apicid_present
+mdefine_line|#define check_apicid_present(bit) (1) 
 DECL|function|clustered_apic_check
 r_static
 r_inline
@@ -132,6 +135,35 @@ l_int|5
 )paren
 suffix:semicolon
 multiline_comment|/* 2 clusterids per CEC */
+)brace
+multiline_comment|/* Mapping from cpu number to logical apicid */
+r_extern
+r_volatile
+id|u8
+id|cpu_2_logical_apicid
+(braket
+)braket
+suffix:semicolon
+DECL|function|cpu_to_logical_apicid
+r_static
+r_inline
+r_int
+id|cpu_to_logical_apicid
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+r_return
+(paren
+r_int
+)paren
+id|cpu_2_logical_apicid
+(braket
+id|cpu
+)braket
+suffix:semicolon
 )brace
 DECL|function|cpu_present_to_apicid
 r_static

@@ -911,9 +911,11 @@ c_func
 (paren
 id|irq
 comma
-l_int|1
-op_lshift
+id|cpu_to_logical_apicid
+c_func
+(paren
 id|new_cpu
+)paren
 )paren
 suffix:semicolon
 )brace

@@ -22,6 +22,8 @@ DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID      0x0F
 DECL|macro|check_apicid_used
 mdefine_line|#define check_apicid_used(bitmap, apicid) (bitmap &amp; (1 &lt;&lt; apicid))
+DECL|macro|check_apicid_present
+mdefine_line|#define check_apicid_present(bit) (phys_cpu_present_map &amp; (1 &lt;&lt; bit))
 DECL|function|apic_id_registered
 r_static
 r_inline
@@ -176,6 +178,24 @@ id|logical_apicid
 (brace
 r_return
 l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Mapping from cpu number to logical apicid */
+DECL|function|cpu_to_logical_apicid
+r_static
+r_inline
+r_int
+id|cpu_to_logical_apicid
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+r_return
+l_int|1
+op_lshift
+id|cpu
 suffix:semicolon
 )brace
 DECL|function|cpu_present_to_apicid
