@@ -105,6 +105,7 @@ id|jeb
 )paren
 suffix:semicolon
 DECL|function|jffs2_erase_block
+r_static
 r_void
 id|jffs2_erase_block
 c_func

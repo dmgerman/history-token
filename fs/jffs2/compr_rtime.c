@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &quot;compr.h&quot;
 multiline_comment|/* _compress returns the compressed size, -1 if bigger */
 DECL|function|jffs2_rtime_compress
+r_static
 r_int
 id|jffs2_rtime_compress
 c_func
@@ -211,6 +212,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|jffs2_rtime_decompress
+r_static
 r_int
 id|jffs2_rtime_decompress
 c_func

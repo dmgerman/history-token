@@ -36,21 +36,6 @@ DECL|macro|JFFS2_COMPR_MODE_PRIORITY
 mdefine_line|#define JFFS2_COMPR_MODE_PRIORITY   1
 DECL|macro|JFFS2_COMPR_MODE_SIZE
 mdefine_line|#define JFFS2_COMPR_MODE_SIZE       2
-r_void
-id|jffs2_set_compression_mode
-c_func
-(paren
-r_int
-id|mode
-)paren
-suffix:semicolon
-r_int
-id|jffs2_get_compression_mode
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|struct|jffs2_compressor
 r_struct
 id|jffs2_compressor

@@ -1759,21 +1759,6 @@ id|c
 suffix:semicolon
 multiline_comment|/* erase.c */
 r_void
-id|jffs2_erase_block
-c_func
-(paren
-r_struct
-id|jffs2_sb_info
-op_star
-id|c
-comma
-r_struct
-id|jffs2_eraseblock
-op_star
-id|jeb
-)paren
-suffix:semicolon
-r_void
 id|jffs2_erase_pending_blocks
 c_func
 (paren

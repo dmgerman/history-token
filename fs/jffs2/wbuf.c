@@ -5065,6 +5065,7 @@ l_int|5
 )brace
 suffix:semicolon
 DECL|function|jffs2_nand_set_oobinfo
+r_static
 r_int
 id|jffs2_nand_set_oobinfo
 c_func

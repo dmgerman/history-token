@@ -12,6 +12,17 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
+r_static
+r_int
+id|jffs2_flash_setup
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+suffix:semicolon
 DECL|function|jffs2_do_setattr
 r_static
 r_int
@@ -3097,6 +3108,7 @@ id|pg
 suffix:semicolon
 )brace
 DECL|function|jffs2_flash_setup
+r_static
 r_int
 id|jffs2_flash_setup
 c_func
