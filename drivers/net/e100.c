@@ -6535,6 +6535,16 @@ op_minus
 id|ENOSPC
 suffix:colon
 multiline_comment|/* We queued the skb, but now we&squot;re out of space. */
+id|DPRINTK
+c_func
+(paren
+id|TX_ERR
+comma
+id|DEBUG
+comma
+l_string|&quot;No space for CB&bslash;n&quot;
+)paren
+suffix:semicolon
 id|netif_stop_queue
 c_func
 (paren
@@ -10042,6 +10052,20 @@ c_func
 id|cbs-&gt;count
 comma
 id|cbs-&gt;max
+)paren
+suffix:semicolon
+id|DPRINTK
+c_func
+(paren
+id|DRV
+comma
+id|INFO
+comma
+l_string|&quot;Ring Param settings: rx: %d, tx %d&bslash;n&quot;
+comma
+id|rfds-&gt;count
+comma
+id|cbs-&gt;count
 )paren
 suffix:semicolon
 r_if
