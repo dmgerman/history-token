@@ -93,7 +93,7 @@ id|inode
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * NAME:&t;jfs_create(dip, dentry, mode)&n; *&n; * FUNCTION:&t;create a regular file in the parent directory &lt;dip&gt;&n; *&t;&t;with name = &lt;from dentry&gt; and mode = &lt;mode&gt;&n; *&n; * PARAMETER:&t;dip &t;- parent directory vnode&n; *&t;&t;dentry&t;- dentry of new file&n; *&t;&t;mode&t;- create mode (rwxrwxrwx).&n; *&n; * RETURN:&t;Errors from subroutines&n; *&n; */
+multiline_comment|/*&n; * NAME:&t;jfs_create(dip, dentry, mode)&n; *&n; * FUNCTION:&t;create a regular file in the parent directory &lt;dip&gt;&n; *&t;&t;with name = &lt;from dentry&gt; and mode = &lt;mode&gt;&n; *&n; * PARAMETER:&t;dip &t;- parent directory vnode&n; *&t;&t;dentry&t;- dentry of new file&n; *&t;&t;mode&t;- create mode (rwxrwxrwx).&n; *&t;&t;nd- nd struct&n; *&n; * RETURN:&t;Errors from subroutines&n; *&n; */
 DECL|function|jfs_create
 r_int
 id|jfs_create
@@ -111,6 +111,11 @@ id|dentry
 comma
 r_int
 id|mode
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_int
@@ -5537,6 +5542,11 @@ r_struct
 id|dentry
 op_star
 id|dentry
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_struct

@@ -16095,6 +16095,8 @@ c_func
 id|inode
 comma
 l_int|2
+comma
+l_int|NULL
 )paren
 op_eq
 l_int|0

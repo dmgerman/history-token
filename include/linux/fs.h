@@ -2152,6 +2152,10 @@ id|dentry
 op_star
 comma
 r_int
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -2891,6 +2895,10 @@ id|dentry
 op_star
 comma
 r_int
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 DECL|member|lookup
@@ -2908,6 +2916,10 @@ op_star
 comma
 r_struct
 id|dentry
+op_star
+comma
+r_struct
+id|nameidata
 op_star
 )paren
 suffix:semicolon
@@ -3103,6 +3115,10 @@ id|inode
 op_star
 comma
 r_int
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 DECL|member|setattr
@@ -5261,6 +5277,10 @@ id|inode
 op_star
 comma
 r_int
+comma
+r_struct
+id|nameidata
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -7000,6 +7020,10 @@ op_star
 comma
 r_struct
 id|dentry
+op_star
+comma
+r_struct
+id|nameidata
 op_star
 )paren
 suffix:semicolon

@@ -3031,6 +3031,8 @@ c_cond
 id|pci_find_bus
 c_func
 (paren
+l_int|0
+comma
 id|busno
 )paren
 op_logical_or
@@ -3279,6 +3281,8 @@ op_assign
 id|pci_find_bus
 c_func
 (paren
+l_int|0
+comma
 id|func-&gt;busno
 )paren
 suffix:semicolon
@@ -5392,6 +5396,8 @@ op_assign
 id|pci_find_bus
 c_func
 (paren
+l_int|0
+comma
 l_int|0
 )paren
 suffix:semicolon

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* processor.h for distable_tsc flag */
@@ -21,11 +22,6 @@ suffix:semicolon
 r_extern
 id|spinlock_t
 id|i8253_lock
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|jiffies
 suffix:semicolon
 DECL|variable|use_tsc
 r_static

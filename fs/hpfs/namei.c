@@ -703,6 +703,11 @@ id|dentry
 comma
 r_int
 id|mode
+comma
+r_struct
+id|nameidata
+op_star
+id|nd
 )paren
 (brace
 r_const
@@ -2594,6 +2599,8 @@ c_func
 id|inode
 comma
 id|MAY_WRITE
+comma
+l_int|NULL
 )paren
 op_logical_or
 id|get_write_access

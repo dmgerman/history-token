@@ -376,6 +376,8 @@ comma
 id|S_IFREG
 op_or
 l_int|0777
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
