@@ -1055,6 +1055,20 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|acpi_os_printf
+(paren
+l_string|&quot; Type Specific: %s Translation&bslash;n&quot;
+comma
+id|ACPI_SPARSE_TRANSLATION
+op_eq
+id|address16_data-&gt;attribute.io.translation_attribute
+ques
+c_cond
+l_string|&quot;Sparse&quot;
+suffix:colon
+l_string|&quot;Dense&quot;
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1375,6 +1389,20 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|acpi_os_printf
+(paren
+l_string|&quot; Type Specific: %s Translation&bslash;n&quot;
+comma
+id|ACPI_SPARSE_TRANSLATION
+op_eq
+id|address32_data-&gt;attribute.io.translation_attribute
+ques
+c_cond
+l_string|&quot;Sparse&quot;
+suffix:colon
+l_string|&quot;Dense&quot;
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1695,6 +1723,20 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|acpi_os_printf
+(paren
+l_string|&quot; Type Specific: %s Translation&bslash;n&quot;
+comma
+id|ACPI_SPARSE_TRANSLATION
+op_eq
+id|address64_data-&gt;attribute.io.translation_attribute
+ques
+c_cond
+l_string|&quot;Sparse&quot;
+suffix:colon
+l_string|&quot;Dense&quot;
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case

@@ -1449,6 +1449,8 @@ DECL|macro|ACPI_ISA_ONLY_RANGES
 mdefine_line|#define ACPI_ISA_ONLY_RANGES            (u8) 0x02
 DECL|macro|ACPI_ENTIRE_RANGE
 mdefine_line|#define ACPI_ENTIRE_RANGE               (ACPI_NON_ISA_ONLY_RANGES | ACPI_ISA_ONLY_RANGES)
+DECL|macro|ACPI_SPARSE_TRANSLATION
+mdefine_line|#define ACPI_SPARSE_TRANSLATION         (u8) 0x03
 multiline_comment|/*&n; *  IO Port Descriptor Decode&n; */
 DECL|macro|ACPI_DECODE_10
 mdefine_line|#define ACPI_DECODE_10                  (u8) 0x00    /* 10-bit IO address decode */
@@ -1745,9 +1747,9 @@ DECL|member|range_attribute
 id|u16
 id|range_attribute
 suffix:semicolon
-DECL|member|reserved
+DECL|member|translation_attribute
 id|u16
-id|reserved
+id|translation_attribute
 suffix:semicolon
 )brace
 suffix:semicolon
