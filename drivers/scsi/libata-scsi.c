@@ -3363,6 +3363,8 @@ OG
 id|ATA_SERNO_LEN
 op_plus
 l_int|4
+op_minus
+l_int|1
 )paren
 )paren
 id|ata_dev_id_string
@@ -3458,6 +3460,8 @@ op_plus
 l_int|4
 op_plus
 l_int|4
+op_minus
+l_int|1
 )paren
 )paren
 (brace
