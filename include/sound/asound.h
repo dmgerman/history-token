@@ -2234,6 +2234,8 @@ DECL|macro|SNDRV_TIMER_GLOBAL_SYSTEM
 mdefine_line|#define SNDRV_TIMER_GLOBAL_SYSTEM&t;0
 DECL|macro|SNDRV_TIMER_GLOBAL_RTC
 mdefine_line|#define SNDRV_TIMER_GLOBAL_RTC&t;&t;1
+DECL|macro|SNDRV_TIMER_GLOBAL_HPET
+mdefine_line|#define SNDRV_TIMER_GLOBAL_HPET&t;&t;2
 multiline_comment|/* info flags */
 DECL|macro|SNDRV_TIMER_FLG_SLAVE
 mdefine_line|#define SNDRV_TIMER_FLG_SLAVE&t;&t;(1&lt;&lt;0)&t;/* cannot be controlled */

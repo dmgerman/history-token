@@ -16,12 +16,15 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#ifdef CONFIG_KERNELD
 macro_line|#include &lt;linux/kerneld.h&gt;
 macro_line|#endif
-macro_line|#if !defined(CONFIG_SND_RTCTIMER) &amp;&amp; !defined(CONFIG_SND_RTCTIMER_MODULE)
+macro_line|#if defined(CONFIG_SND_HPET) || defined(CONFIG_SND_HPET_MODULE)
 DECL|macro|DEFAULT_TIMER_LIMIT
-mdefine_line|#define DEFAULT_TIMER_LIMIT 1
-macro_line|#else
+mdefine_line|#define DEFAULT_TIMER_LIMIT 3
+macro_line|#elif defined(CONFIG_SND_RTCTIMER) || defined(CONFIG_SND_RTCTIMER_MODULE)
 DECL|macro|DEFAULT_TIMER_LIMIT
 mdefine_line|#define DEFAULT_TIMER_LIMIT 2
+macro_line|#else
+DECL|macro|DEFAULT_TIMER_LIMIT
+mdefine_line|#define DEFAULT_TIMER_LIMIT 1
 macro_line|#endif
 DECL|variable|timer_limit
 r_static
