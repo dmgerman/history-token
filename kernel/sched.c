@@ -90,7 +90,7 @@ macro_line|#endif
 DECL|macro|SCALE
 mdefine_line|#define SCALE(v1,v1_max,v2_max) &bslash;&n;&t;(v1) * (v2_max) / (v1_max)
 DECL|macro|DELTA
-mdefine_line|#define DELTA(p) &bslash;&n;&t;(SCALE(TASK_NICE(p), 40, MAX_USER_PRIO*PRIO_BONUS_RATIO/100) + &bslash;&n;&t;&t;INTERACTIVE_DELTA)
+mdefine_line|#define DELTA(p) &bslash;&n;&t;(SCALE(TASK_NICE(p), 40, MAX_BONUS) + INTERACTIVE_DELTA)
 DECL|macro|TASK_INTERACTIVE
 mdefine_line|#define TASK_INTERACTIVE(p) &bslash;&n;&t;((p)-&gt;prio &lt;= (p)-&gt;static_prio - DELTA(p))
 DECL|macro|INTERACTIVE_SLEEP
