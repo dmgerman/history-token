@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  linux/include/asm-arm/arch-integrator/system.h&n; *&n
 macro_line|#ifndef __ASM_ARCH_SYSTEM_H
 DECL|macro|__ASM_ARCH_SYSTEM_H
 mdefine_line|#define __ASM_ARCH_SYSTEM_H
-macro_line|#include &lt;asm/arch/platform.h&gt;
+macro_line|#include &lt;asm/arch/cm.h&gt;
 DECL|function|arch_idle
 r_static
 r_inline
@@ -31,43 +31,13 @@ r_char
 id|mode
 )paren
 (brace
-r_int
-r_int
-id|hdr_ctrl
-op_assign
-(paren
-id|IO_ADDRESS
-c_func
-(paren
-id|INTEGRATOR_HDR_BASE
-)paren
-op_plus
-id|INTEGRATOR_HDR_CTRL_OFFSET
-)paren
-suffix:semicolon
-r_int
-r_int
-id|val
-suffix:semicolon
 multiline_comment|/*&n;&t; * To reset, we hit the on-board reset register&n;&t; * in the system FPGA&n;&t; */
-id|val
-op_assign
-id|__raw_readl
+id|cm_control
 c_func
 (paren
-id|hdr_ctrl
-)paren
-suffix:semicolon
-id|val
-op_or_assign
-id|INTEGRATOR_HDR_CTRL_RESET
-suffix:semicolon
-id|__raw_writel
-c_func
-(paren
-id|val
+id|CM_CTRL_RESET
 comma
-id|hdr_ctrl
+id|CM_CTRL_RESET
 )paren
 suffix:semicolon
 )brace

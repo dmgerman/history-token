@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  linux/include/asm-arm/hardware/amba.h&n; *&n; *  Copy
 macro_line|#ifndef ASMARM_AMBA_H
 DECL|macro|ASMARM_AMBA_H
 mdefine_line|#define ASMARM_AMBA_H
+DECL|macro|AMBA_NR_IRQS
+mdefine_line|#define AMBA_NR_IRQS&t;2
 DECL|struct|amba_device
 r_struct
 id|amba_device
@@ -16,15 +18,18 @@ r_struct
 id|resource
 id|res
 suffix:semicolon
-DECL|member|irq
-r_int
-r_int
-id|irq
-suffix:semicolon
 DECL|member|periphid
 r_int
 r_int
 id|periphid
+suffix:semicolon
+DECL|member|irq
+r_int
+r_int
+id|irq
+(braket
+id|AMBA_NR_IRQS
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -175,5 +180,56 @@ id|amba_device
 op_star
 )paren
 suffix:semicolon
+r_struct
+id|amba_device
+op_star
+id|amba_find_device
+c_func
+(paren
+r_const
+r_char
+op_star
+comma
+r_struct
+id|device
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_int
+id|amba_request_regions
+c_func
+(paren
+r_struct
+id|amba_device
+op_star
+comma
+r_const
+r_char
+op_star
+)paren
+suffix:semicolon
+r_void
+id|amba_release_regions
+c_func
+(paren
+r_struct
+id|amba_device
+op_star
+)paren
+suffix:semicolon
+DECL|macro|amba_config
+mdefine_line|#define amba_config(d)&t;(((d)-&gt;periphid &gt;&gt; 24) &amp; 0xff)
+DECL|macro|amba_rev
+mdefine_line|#define amba_rev(d)&t;(((d)-&gt;periphid &gt;&gt; 20) &amp; 0x0f)
+DECL|macro|amba_manf
+mdefine_line|#define amba_manf(d)&t;(((d)-&gt;periphid &gt;&gt; 12) &amp; 0xff)
+DECL|macro|amba_part
+mdefine_line|#define amba_part(d)&t;((d)-&gt;periphid &amp; 0xfff)
 macro_line|#endif
 eof

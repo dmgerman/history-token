@@ -172,7 +172,7 @@ suffix:semicolon
 )brace
 DECL|function|assabet_init
 r_static
-r_int
+r_void
 id|__init
 id|assabet_init
 c_func
@@ -180,19 +180,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|machine_is_assabet
-c_func
-(paren
-)paren
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 multiline_comment|/*&n;&t; * Ensure that the power supply is in &quot;high power&quot; mode.&n;&t; */
 id|GPDR
 op_or_assign
@@ -282,17 +269,7 @@ l_string|&quot;hasn&squot;t been configured in the kernel&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
-DECL|variable|assabet_init
-id|arch_initcall
-c_func
-(paren
-id|assabet_init
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * On Assabet, we must probe for the Neponset board _before_&n; * paging_init() has occurred to actually determine the amount&n; * of RAM available.  To do so, we map the appropriate IO section&n; * in the page table here in order to access GPIO registers.&n; */
 DECL|function|map_sa1100_gpio_regs
 r_static
@@ -944,6 +921,11 @@ id|INITIRQ
 c_func
 (paren
 id|sa1100_init_irq
+)paren
+id|INIT_MACHINE
+c_func
+(paren
+id|assabet_init
 )paren
 id|MACHINE_END
 eof
