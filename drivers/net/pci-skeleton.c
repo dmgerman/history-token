@@ -1413,14 +1413,6 @@ DECL|member|chipset
 id|chip_t
 id|chipset
 suffix:semicolon
-DECL|member|pci_state
-id|u32
-id|pci_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* Data saved during suspend */
 )brace
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -7729,8 +7721,6 @@ suffix:semicolon
 id|pci_save_state
 (paren
 id|pdev
-comma
-id|tp-&gt;pci_state
 )paren
 suffix:semicolon
 id|pci_set_power_state
@@ -7795,8 +7785,6 @@ suffix:semicolon
 id|pci_restore_state
 (paren
 id|pdev
-comma
-id|tp-&gt;pci_state
 )paren
 suffix:semicolon
 id|netif_device_attach

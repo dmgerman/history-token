@@ -12173,16 +12173,6 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|nsp32_hw_data
-op_star
-id|data
-op_assign
-(paren
-id|nsp32_hw_data
-op_star
-)paren
-id|host-&gt;hostdata
-suffix:semicolon
 id|nsp32_msg
 c_func
 (paren
@@ -12206,8 +12196,6 @@ suffix:semicolon
 id|pci_save_state
 (paren
 id|pdev
-comma
-id|data-&gt;PciState
 )paren
 suffix:semicolon
 id|pci_disable_device
@@ -12303,8 +12291,6 @@ suffix:semicolon
 id|pci_restore_state
 (paren
 id|pdev
-comma
-id|data-&gt;PciState
 )paren
 suffix:semicolon
 id|reg

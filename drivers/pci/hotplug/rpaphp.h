@@ -4,6 +4,8 @@ DECL|macro|_PPC64PHP_H
 mdefine_line|#define _PPC64PHP_H
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;pci_hotplug.h&quot;
+DECL|macro|PHB
+mdefine_line|#define&t;PHB     2
 DECL|macro|HOTPLUG
 mdefine_line|#define&t;HOTPLUG&t;1
 DECL|macro|EMBEDDED
@@ -338,15 +340,32 @@ id|slot
 )paren
 suffix:semicolon
 r_extern
-r_char
-op_star
-id|rpaphp_get_drc_name
+r_int
+id|rpaphp_get_drc_props
 c_func
 (paren
 r_struct
 id|device_node
 op_star
 id|dn
+comma
+r_int
+op_star
+id|drc_index
+comma
+r_char
+op_star
+op_star
+id|drc_name
+comma
+r_char
+op_star
+op_star
+id|drc_type
+comma
+r_int
+op_star
+id|drc_power_domain
 )paren
 suffix:semicolon
 multiline_comment|/* rpaphp_vio.c */

@@ -291,7 +291,7 @@ c_loop
 (paren
 id|gx_pci
 op_assign
-id|pci_find_device
+id|pci_get_device
 c_func
 (paren
 id|PCI_ANY_ID
@@ -1553,6 +1553,12 @@ c_func
 (paren
 op_amp
 id|gx_suspmod_driver
+)paren
+suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|gx_params-&gt;cs55x0
 )paren
 suffix:semicolon
 id|kfree

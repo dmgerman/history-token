@@ -1447,13 +1447,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Is Wake-on-LAN enabled? */
-DECL|member|power_state
-id|u32
-id|power_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
 DECL|member|mii_if
 r_struct
 id|mii_if_info
@@ -8866,8 +8859,6 @@ id|cp-&gt;wol_enabled
 id|pci_save_state
 (paren
 id|cp-&gt;pdev
-comma
-id|cp-&gt;power_state
 )paren
 suffix:semicolon
 id|cp_set_d3_state
@@ -8939,8 +8930,6 @@ suffix:semicolon
 id|pci_restore_state
 (paren
 id|cp-&gt;pdev
-comma
-id|cp-&gt;power_state
 )paren
 suffix:semicolon
 )brace

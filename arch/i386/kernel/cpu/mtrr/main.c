@@ -152,7 +152,7 @@ c_cond
 (paren
 id|dev
 op_assign
-id|pci_find_class
+id|pci_get_class
 c_func
 (paren
 id|PCI_CLASS_BRIDGE_HOST
@@ -186,6 +186,12 @@ id|KERN_INFO
 l_string|&quot;mtrr: Serverworks LE detected. Write-combining disabled.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -210,10 +216,22 @@ id|KERN_INFO
 l_string|&quot;mtrr: Intel 450NX MMC detected. Write-combining disabled.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 r_return
 (paren

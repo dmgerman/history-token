@@ -1078,8 +1078,6 @@ suffix:semicolon
 id|pci_save_state
 (paren
 id|dev
-comma
-id|hcd-&gt;pci_state
 )paren
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_USB_SUSPEND
@@ -1309,8 +1307,6 @@ suffix:semicolon
 id|pci_restore_state
 (paren
 id|dev
-comma
-id|hcd-&gt;pci_state
 )paren
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_USB_SUSPEND

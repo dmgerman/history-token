@@ -3687,15 +3687,6 @@ r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-DECL|member|pci_state
-id|u32
-id|pci_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
-macro_line|#endif
 DECL|member|rd_pool_dma
 id|dma_addr_t
 id|rd_pool_dma

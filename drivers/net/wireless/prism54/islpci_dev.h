@@ -262,14 +262,6 @@ op_star
 id|pdev
 suffix:semicolon
 multiline_comment|/* PCI structure information */
-DECL|member|pci_state
-id|u32
-id|pci_state
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* used for suspend/resume */
 DECL|member|firmware
 r_char
 id|firmware

@@ -893,8 +893,6 @@ id|pci_save_state
 c_func
 (paren
 id|pdev
-comma
-id|priv-&gt;pci_state
 )paren
 suffix:semicolon
 multiline_comment|/* tell the device not to trigger interrupts for now... */
@@ -986,8 +984,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|priv-&gt;pci_state
 )paren
 suffix:semicolon
 multiline_comment|/* alright let&squot;s go into the PREBOOT state */

@@ -8540,8 +8540,6 @@ id|pci_save_state
 c_func
 (paren
 id|bp-&gt;pdev
-comma
-id|bp-&gt;pci_cfg_state
 )paren
 suffix:semicolon
 id|printk
@@ -8844,8 +8842,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pdev
-comma
-id|bp-&gt;pci_cfg_state
 )paren
 suffix:semicolon
 r_if

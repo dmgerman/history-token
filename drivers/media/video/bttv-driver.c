@@ -18847,8 +18847,6 @@ id|pci_save_state
 c_func
 (paren
 id|pci_dev
-comma
-id|btv-&gt;state.pci_cfg
 )paren
 suffix:semicolon
 r_if
@@ -18945,8 +18943,6 @@ id|pci_restore_state
 c_func
 (paren
 id|pci_dev
-comma
-id|btv-&gt;state.pci_cfg
 )paren
 suffix:semicolon
 multiline_comment|/* restore bt878 state */

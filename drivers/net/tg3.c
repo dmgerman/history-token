@@ -16424,8 +16424,6 @@ id|pci_restore_state
 c_func
 (paren
 id|tp-&gt;pdev
-comma
-id|tp-&gt;pci_cfg_state
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure PCI-X relaxed ordering bit is clear. */
@@ -41843,8 +41841,6 @@ id|pci_save_state
 c_func
 (paren
 id|tp-&gt;pdev
-comma
-id|tp-&gt;pci_cfg_state
 )paren
 suffix:semicolon
 id|tw32
@@ -41975,8 +41971,6 @@ id|pci_save_state
 c_func
 (paren
 id|tp-&gt;pdev
-comma
-id|tp-&gt;pci_cfg_state
 )paren
 suffix:semicolon
 id|printk
@@ -42573,8 +42567,6 @@ id|pci_restore_state
 c_func
 (paren
 id|tp-&gt;pdev
-comma
-id|tp-&gt;pci_cfg_state
 )paren
 suffix:semicolon
 id|err

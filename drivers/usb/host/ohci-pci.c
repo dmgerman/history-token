@@ -785,7 +785,7 @@ id|td
 )paren
 suffix:semicolon
 r_return
-id|pci_module_init
+id|pci_register_driver
 (paren
 op_amp
 id|ohci_pci_driver

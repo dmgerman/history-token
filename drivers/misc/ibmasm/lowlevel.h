@@ -42,6 +42,7 @@ id|sp_interrupt_pending
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|base_address
 )paren
@@ -66,6 +67,7 @@ id|uart_interrupt_pending
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|base_address
 )paren
@@ -90,6 +92,7 @@ id|ibmasm_enable_interrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|base_address
 comma
@@ -98,6 +101,7 @@ id|mask
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|ctrl_reg
 op_assign
@@ -129,6 +133,7 @@ id|ibmasm_disable_interrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|base_address
 comma
@@ -137,6 +142,7 @@ id|mask
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|ctrl_reg
 op_assign
@@ -167,6 +173,7 @@ id|enable_sp_interrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|base_address
 )paren
@@ -188,6 +195,7 @@ id|disable_sp_interrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|base_address
 )paren
@@ -209,6 +217,7 @@ id|enable_uart_interrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|base_address
 )paren
@@ -230,6 +239,7 @@ id|disable_uart_interrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|base_address
 )paren
@@ -253,6 +263,7 @@ id|get_mfa_outbound
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|base_address
 )paren
@@ -312,6 +323,7 @@ id|set_mfa_outbound
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|base_address
 comma
@@ -338,6 +350,7 @@ id|get_mfa_inbound
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|base_address
 )paren
@@ -377,6 +390,7 @@ id|set_mfa_inbound
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|base_address
 comma
@@ -405,6 +419,7 @@ id|get_i2o_message
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|base_address
 comma
