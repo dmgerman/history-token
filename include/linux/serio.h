@@ -9,6 +9,7 @@ mdefine_line|#define SPIOCSTYPE&t;_IOW(&squot;q&squot;, 0x01, unsigned long)
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 DECL|struct|serio
 r_struct
 id|serio
@@ -127,6 +128,11 @@ op_star
 id|drv
 suffix:semicolon
 multiline_comment|/* Accessed from interrupt, writes must be protected by serio_lock */
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
 DECL|member|node
 r_struct
 id|list_head
@@ -134,6 +140,8 @@ id|node
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_serio_port
+mdefine_line|#define to_serio_port(d)&t;container_of(d, struct serio, dev)
 DECL|struct|serio_driver
 r_struct
 id|serio_driver
@@ -143,10 +151,10 @@ r_void
 op_star
 r_private
 suffix:semicolon
-DECL|member|name
+DECL|member|description
 r_char
 op_star
-id|name
+id|description
 suffix:semicolon
 DECL|member|write_wakeup
 r_void
@@ -235,6 +243,11 @@ id|serio
 op_star
 )paren
 suffix:semicolon
+DECL|member|driver
+r_struct
+id|device_driver
+id|driver
+suffix:semicolon
 DECL|member|node
 r_struct
 id|list_head
@@ -242,6 +255,8 @@ id|node
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_serio_driver
+mdefine_line|#define to_serio_driver(d)&t;container_of(d, struct serio_driver, driver)
 r_int
 id|serio_open
 c_func

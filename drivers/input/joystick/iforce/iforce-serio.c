@@ -611,6 +611,22 @@ id|iforce_serio_drv
 op_assign
 (brace
 dot
+id|driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;iforce&quot;
+comma
+)brace
+comma
+dot
+id|description
+op_assign
+l_string|&quot;RS232 I-Force joysticks and wheels driver&quot;
+comma
+dot
 id|write_wakeup
 op_assign
 id|iforce_serio_write_wakeup
