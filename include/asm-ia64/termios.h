@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_TERMIOS_H
 DECL|macro|_ASM_IA64_TERMIOS_H
 mdefine_line|#define _ASM_IA64_TERMIOS_H
-multiline_comment|/*&n; * Copyright (C) 1999 Hewlett-Packard Co&n; * Copyright (C) 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 99/01/28&t;Added N_IRDA and N_SMSBLOCK&n; */
+multiline_comment|/*&n; * Modified 1999&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;, Hewlett-Packard Co&n; *&n; * 99/01/28&t;Added N_IRDA and N_SMSBLOCK&n; */
 macro_line|#include &lt;asm/termbits.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 DECL|struct|winsize

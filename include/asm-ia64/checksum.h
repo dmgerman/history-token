@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_CHECKSUM_H
 DECL|macro|_ASM_IA64_CHECKSUM_H
 mdefine_line|#define _ASM_IA64_CHECKSUM_H
-multiline_comment|/*&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Modified 1998, 1999&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;, Hewlett-Packard Co&n; */
 multiline_comment|/*&n; * This is a version of ip_compute_csum() optimized for IP headers,&n; * which always checksum on 4 octet boundaries.&n; */
 r_extern
 r_int

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -660,6 +661,16 @@ id|regs
 r_int
 r_int
 id|new_itm
+suffix:semicolon
+id|platform_timer_interrupt
+c_func
+(paren
+id|irq
+comma
+id|dev_id
+comma
+id|regs
+)paren
 suffix:semicolon
 id|new_itm
 op_assign

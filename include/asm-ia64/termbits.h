@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_TERMBITS_H
 DECL|macro|_ASM_IA64_TERMBITS_H
 mdefine_line|#define _ASM_IA64_TERMBITS_H
-multiline_comment|/*&n; * Copyright (C) 1999 Hewlett-Packard Co&n; * Copyright (C) 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 99/01/28&t;Added new baudrates&n; */
+multiline_comment|/*&n; * Based on &lt;asm-i386/termbits.h&gt;.&n; *&n; * Modified 1999&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;, Hewlett-Packard Co&n; *&n; * 99/01/28&t;Added new baudrates&n; */
 macro_line|#include &lt;linux/posix_types.h&gt;
 DECL|typedef|cc_t
 r_typedef

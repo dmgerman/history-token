@@ -27,11 +27,6 @@ mdefine_line|#define MM_VM_SIZE(mm)&t;&t;DEFAULT_TASK_SIZE
 multiline_comment|/*&n; * This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;(current-&gt;thread.map_base)
-multiline_comment|/*&n; * Bus types&n; */
-DECL|macro|MCA_bus
-mdefine_line|#define MCA_bus 0
-DECL|macro|MCA_bus__is_a_macro
-mdefine_line|#define MCA_bus__is_a_macro /* for versions in ksyms.c */
 DECL|macro|IA64_THREAD_FPH_VALID
 mdefine_line|#define IA64_THREAD_FPH_VALID&t;(__IA64_UL(1) &lt;&lt; 0)&t;/* floating-point high state valid? */
 DECL|macro|IA64_THREAD_DBG_VALID
