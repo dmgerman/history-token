@@ -1327,10 +1327,6 @@ id|video_device
 suffix:semicolon
 id|cam-&gt;vdev.priv
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|cam
 suffix:semicolon
 r_if
@@ -3265,11 +3261,6 @@ id|w9966_dev
 op_star
 id|cam
 op_assign
-(paren
-r_struct
-id|w9966_dev
-op_star
-)paren
 id|vdev-&gt;priv
 suffix:semicolon
 r_switch
@@ -3987,11 +3978,6 @@ id|w9966_dev
 op_star
 id|cam
 op_assign
-(paren
-r_struct
-id|w9966_dev
-op_star
-)paren
 id|vdev-&gt;priv
 suffix:semicolon
 r_int
