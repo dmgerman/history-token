@@ -4933,12 +4933,6 @@ id|dst
 r_return
 id|dst
 suffix:semicolon
-id|dst_release
-c_func
-(paren
-id|dst
-)paren
-suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon

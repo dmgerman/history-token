@@ -1099,12 +1099,6 @@ id|u32
 id|cookie
 )paren
 (brace
-id|dst_hold
-c_func
-(paren
-id|dst
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1120,12 +1114,6 @@ c_func
 id|dst
 comma
 id|cookie
-)paren
-suffix:semicolon
-id|dst_release
-c_func
-(paren
-id|dst
 )paren
 suffix:semicolon
 r_return
