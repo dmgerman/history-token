@@ -971,7 +971,7 @@ id|invalue
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * longhaul_set_cpu_frequency()&n; * @clock_ratio_index : index of clock_ratio[] for new frequency&n; *&n; * Sets a new clock ratio, and -if applicable- a new Front Side Bus&n; */
+multiline_comment|/**&n; * longhaul_set_cpu_frequency()&n; * @clock_ratio_index : bitpattern of the new multiplier.&n; *&n; * Sets a new clock ratio, and -if applicable- a new Front Side Bus&n; */
 DECL|function|longhaul_setstate
 r_static
 r_void
@@ -994,6 +994,10 @@ suffix:semicolon
 r_union
 id|msr_longhaul
 id|longhaul
+suffix:semicolon
+r_union
+id|msr_bcr2
+id|bcr2
 suffix:semicolon
 r_if
 c_cond
@@ -1100,7 +1104,6 @@ id|clock_ratio_index
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* &quot;bits&quot; contains the bitpattern of the new multiplier.&n;&t;   we now need to transform it to the desired format. */
 r_switch
 c_cond
 (paren
@@ -1110,22 +1113,53 @@ id|longhaul_version
 r_case
 l_int|1
 suffix:colon
-singleline_comment|//&t;&t;rdmsr (MSR_VIA_BCR2, lo, hi);
+id|rdmsrl
+(paren
+id|MSR_VIA_BCR2
+comma
+id|bcr2.val
+)paren
+suffix:semicolon
 multiline_comment|/* Enable software clock multiplier */
-singleline_comment|//&t;&t;lo |= (1&lt;&lt;19);
-multiline_comment|/* desired multiplier */
-singleline_comment|//&t;&t;lo &amp;= ~(1&lt;&lt;23|1&lt;&lt;24|1&lt;&lt;25|1&lt;&lt;26);
-singleline_comment|//&t;&t;lo |= (bits&lt;&lt;23);
-singleline_comment|//&t;&t;wrmsr (MSR_VIA_BCR2, lo, hi);
+id|bcr2.bits.ESOFTBF
+op_assign
+l_int|1
+suffix:semicolon
+id|bcr2.bits.CLOCKMUL
+op_assign
+id|clock_ratio_index
+suffix:semicolon
+id|wrmsrl
+(paren
+id|MSR_VIA_BCR2
+comma
+id|bcr2.val
+)paren
+suffix:semicolon
 id|__hlt
 c_func
 (paren
 )paren
 suffix:semicolon
 multiline_comment|/* Disable software clock multiplier */
-singleline_comment|//&t;&t;rdmsr (MSR_VIA_BCR2, lo, hi);
-singleline_comment|//&t;&t;lo &amp;= ~(1&lt;&lt;19);
-singleline_comment|//&t;&t;wrmsr (MSR_VIA_BCR2, lo, hi);
+id|rdmsrl
+(paren
+id|MSR_VIA_BCR2
+comma
+id|bcr2.val
+)paren
+suffix:semicolon
+id|bcr2.bits.ESOFTBF
+op_assign
+l_int|0
+suffix:semicolon
+id|wrmsrl
+(paren
+id|MSR_VIA_BCR2
+comma
+id|bcr2.val
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case

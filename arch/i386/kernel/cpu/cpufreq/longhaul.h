@@ -1,4 +1,52 @@
 multiline_comment|/*&n; *  longhaul.h&n; *  (C) 2003 Dave Jones.&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  VIA-specific information&n; */
+DECL|union|msr_bcr2
+r_union
+id|msr_bcr2
+(brace
+r_struct
+(brace
+DECL|member|Reseved
+r_int
+id|Reseved
+suffix:colon
+l_int|19
+comma
+singleline_comment|// 18:0
+DECL|member|ESOFTBF
+id|ESOFTBF
+suffix:colon
+l_int|1
+comma
+singleline_comment|// 19
+DECL|member|Reserved2
+id|Reserved2
+suffix:colon
+l_int|3
+comma
+singleline_comment|// 22:20
+DECL|member|CLOCKMUL
+id|CLOCKMUL
+suffix:colon
+l_int|4
+comma
+singleline_comment|// 26:23
+DECL|member|Reserved3
+id|Reserved3
+suffix:colon
+l_int|5
+suffix:semicolon
+singleline_comment|// 31:27
+DECL|member|bits
+)brace
+id|bits
+suffix:semicolon
+DECL|member|val
+r_int
+r_int
+id|val
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|union|msr_longhaul
 r_union
 id|msr_longhaul
