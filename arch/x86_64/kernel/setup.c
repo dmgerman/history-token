@@ -3988,6 +3988,14 @@ id|c
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_NUMA
+r_if
+c_cond
+(paren
+id|c
+op_ne
+op_amp
+id|boot_cpu_data
+)paren
 id|numa_add_cpu
 c_func
 (paren
