@@ -2536,7 +2536,7 @@ id|firstblock
 op_assign
 id|NULLFSBLOCK
 suffix:semicolon
-multiline_comment|/*&n;&t; * roundup the allocation request to m_dalign boundary if file size&n;&t; * is greater that 512K and we are allocating past the allocation eof&n;&t; */
+multiline_comment|/*&n;&t; * Roundup the allocation request to a stripe unit (m_dalign) boundary&n;&t; * if the file size is &gt;= stripe unit size, and we are allocating past&n;&t; * the allocation eof.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2545,7 +2545,13 @@ op_logical_and
 (paren
 id|isize
 op_ge
+id|XFS_FSB_TO_B
+c_func
+(paren
+id|mp
+comma
 id|mp-&gt;m_dalign
+)paren
 )paren
 op_logical_and
 id|aeof
