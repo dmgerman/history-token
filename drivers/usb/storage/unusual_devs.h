@@ -365,7 +365,7 @@ l_string|&quot;Fujifilm&quot;
 comma
 l_string|&quot;FinePix 1400Zoom&quot;
 comma
-id|US_SC_DEVICE
+id|US_SC_UFI
 comma
 id|US_PR_DEVICE
 comma
