@@ -2005,7 +2005,7 @@ id|dev-&gt;rawdescriptors
 suffix:semicolon
 id|dev-&gt;rawdescriptors
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_for
@@ -2079,7 +2079,7 @@ id|dev-&gt;config
 suffix:semicolon
 id|dev-&gt;config
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 singleline_comment|// hub-only!! ... and only in reset path, or usb_new_device()

@@ -714,7 +714,7 @@ id|p
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_static

@@ -154,7 +154,7 @@ l_string|&quot;sysvipc/shm&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|sysvipc_shm_read_proc
 comma

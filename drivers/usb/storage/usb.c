@@ -567,7 +567,7 @@ id|US_PR_BULK
 comma
 multiline_comment|/* Terminating entry */
 (brace
-l_int|0
+l_int|NULL
 )brace
 )brace
 suffix:semicolon

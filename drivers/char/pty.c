@@ -476,7 +476,7 @@ id|to
 comma
 id|temp_buffer
 comma
-l_int|0
+l_int|NULL
 comma
 id|n
 )paren
@@ -522,7 +522,7 @@ id|to
 comma
 id|buf
 comma
-l_int|0
+l_int|NULL
 comma
 id|c
 )paren

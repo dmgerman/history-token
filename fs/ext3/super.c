@@ -1263,7 +1263,7 @@ id|bdev
 suffix:semicolon
 id|sbi-&gt;journal_bdev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -5225,7 +5225,7 @@ id|ext3_super_block
 op_star
 id|es
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|ext3_sb_info
@@ -6641,7 +6641,7 @@ suffix:semicolon
 multiline_comment|/* unlinked but open files */
 id|sb-&gt;s_root
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|needs_recovery
 op_assign

@@ -1223,7 +1223,7 @@ id|T_COMMIT
 suffix:semicolon
 id|descriptor
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|bufs
 op_assign

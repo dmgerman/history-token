@@ -153,7 +153,7 @@ id|dcookie_struct
 op_star
 id|found
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|dcookie_struct

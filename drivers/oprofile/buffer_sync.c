@@ -29,7 +29,7 @@ id|sync_wq
 comma
 id|wq_sync_buffers
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 DECL|variable|sync_timer
@@ -1304,7 +1304,7 @@ id|mm_struct
 op_star
 id|mm
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|task_struct

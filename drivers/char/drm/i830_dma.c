@@ -618,7 +618,7 @@ id|buf_priv
 op_member_access_from_pointer
 r_virtual
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|up_write
@@ -710,7 +710,7 @@ id|buf_priv
 op_member_access_from_pointer
 r_virtual
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|retcode

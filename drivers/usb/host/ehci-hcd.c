@@ -1209,7 +1209,7 @@ id|hcc_params
 suffix:semicolon
 id|ehci-&gt;reclaim
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ehci-&gt;next_uframe
 op_assign
@@ -1345,7 +1345,7 @@ macro_line|#endif
 multiline_comment|/*&n;&t; * dedicate a qh for the async ring head, since we couldn&squot;t unlink&n;&t; * a &squot;real&squot; qh without stopping the async schedule [4.8].  use it&n;&t; * as the &squot;reclamation list head&squot; too.&n;&t; * its dummy is used in hw_alt_next of many tds, to prevent the qh&n;&t; * from automatically advancing to the next td after short reads.&n;&t; */
 id|ehci-&gt;async-&gt;qh_next.qh
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ehci-&gt;async-&gt;hw_next
 op_assign
@@ -3294,7 +3294,7 @@ id|dev-&gt;ep
 id|epnum
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|done
 suffix:colon

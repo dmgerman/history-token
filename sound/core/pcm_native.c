@@ -5332,7 +5332,7 @@ id|substream
 comma
 id|SNDRV_PCM_IOCTL1_RESET
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -6967,7 +6967,7 @@ op_logical_neg
 id|file
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|inode
 op_assign
@@ -6999,7 +6999,7 @@ id|file
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|minor
@@ -7031,7 +7031,7 @@ id|file
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -8284,7 +8284,7 @@ id|SNDRV_PCM_HW_PARAM_FORMAT
 comma
 id|snd_pcm_hw_rule_format
 comma
-l_int|0
+l_int|NULL
 comma
 id|SNDRV_PCM_HW_PARAM_SAMPLE_BITS
 comma
@@ -8315,7 +8315,7 @@ id|SNDRV_PCM_HW_PARAM_SAMPLE_BITS
 comma
 id|snd_pcm_hw_rule_sample_bits
 comma
-l_int|0
+l_int|NULL
 comma
 id|SNDRV_PCM_HW_PARAM_FORMAT
 comma
@@ -8348,7 +8348,7 @@ id|SNDRV_PCM_HW_PARAM_SAMPLE_BITS
 comma
 id|snd_pcm_hw_rule_div
 comma
-l_int|0
+l_int|NULL
 comma
 id|SNDRV_PCM_HW_PARAM_FRAME_BITS
 comma
@@ -8381,7 +8381,7 @@ id|SNDRV_PCM_HW_PARAM_FRAME_BITS
 comma
 id|snd_pcm_hw_rule_mul
 comma
-l_int|0
+l_int|NULL
 comma
 id|SNDRV_PCM_HW_PARAM_SAMPLE_BITS
 comma
@@ -8488,7 +8488,7 @@ id|SNDRV_PCM_HW_PARAM_CHANNELS
 comma
 id|snd_pcm_hw_rule_div
 comma
-l_int|0
+l_int|NULL
 comma
 id|SNDRV_PCM_HW_PARAM_FRAME_BITS
 comma
@@ -8595,7 +8595,7 @@ id|SNDRV_PCM_HW_PARAM_PERIODS
 comma
 id|snd_pcm_hw_rule_div
 comma
-l_int|0
+l_int|NULL
 comma
 id|SNDRV_PCM_HW_PARAM_BUFFER_SIZE
 comma
@@ -8628,7 +8628,7 @@ id|SNDRV_PCM_HW_PARAM_PERIOD_SIZE
 comma
 id|snd_pcm_hw_rule_div
 comma
-l_int|0
+l_int|NULL
 comma
 id|SNDRV_PCM_HW_PARAM_BUFFER_SIZE
 comma
@@ -8735,7 +8735,7 @@ id|SNDRV_PCM_HW_PARAM_BUFFER_SIZE
 comma
 id|snd_pcm_hw_rule_mul
 comma
-l_int|0
+l_int|NULL
 comma
 id|SNDRV_PCM_HW_PARAM_PERIOD_SIZE
 comma

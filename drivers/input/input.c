@@ -1621,7 +1621,7 @@ id|argv
 l_int|2
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|envp
 (braket
@@ -1851,7 +1851,7 @@ id|i
 op_increment
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#ifdef INPUT_DEBUG
 id|printk

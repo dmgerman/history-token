@@ -864,10 +864,11 @@ op_assign
 id|USB_STATE_HALT
 suffix:semicolon
 id|pci_set_drvdata
+c_func
 (paren
 id|dev
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|free_irq

@@ -197,7 +197,7 @@ c_func
 (paren
 l_string|&quot;net&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SYSVIPC
@@ -206,7 +206,7 @@ c_func
 (paren
 l_string|&quot;sysvipc&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -218,7 +218,7 @@ c_func
 (paren
 l_string|&quot;sys&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -228,7 +228,7 @@ c_func
 (paren
 l_string|&quot;sys/fs&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|proc_mkdir
@@ -236,7 +236,7 @@ c_func
 (paren
 l_string|&quot;sys/fs/binfmt_misc&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -247,7 +247,7 @@ c_func
 (paren
 l_string|&quot;fs&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|proc_root_driver
@@ -257,7 +257,7 @@ c_func
 (paren
 l_string|&quot;driver&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|proc_mkdir
@@ -265,7 +265,7 @@ c_func
 (paren
 l_string|&quot;fs/nfsd&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* somewhere for the nfsd filesystem to be mounted */
@@ -276,7 +276,7 @@ c_func
 (paren
 l_string|&quot;openprom&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -299,7 +299,7 @@ c_func
 (paren
 l_string|&quot;bus&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

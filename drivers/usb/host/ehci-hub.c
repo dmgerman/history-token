@@ -231,10 +231,11 @@ op_assign
 l_int|1
 suffix:semicolon
 id|ehci_work
+c_func
 (paren
 id|ehci
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 (paren

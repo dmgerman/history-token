@@ -68,7 +68,7 @@ id|ehci-&gt;hcd
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|ehci_hcd_free
@@ -436,7 +436,7 @@ id|qh-&gt;qh_dma
 suffix:semicolon
 id|qh
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -514,7 +514,7 @@ id|ehci-&gt;async
 suffix:semicolon
 id|ehci-&gt;async
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* DMA consistent memory and pools */
 r_if
@@ -529,7 +529,7 @@ id|ehci-&gt;qtd_pool
 suffix:semicolon
 id|ehci-&gt;qtd_pool
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -544,7 +544,7 @@ id|ehci-&gt;qh_pool
 suffix:semicolon
 id|ehci-&gt;qh_pool
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -559,7 +559,7 @@ id|ehci-&gt;itd_pool
 suffix:semicolon
 id|ehci-&gt;itd_pool
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -573,7 +573,7 @@ id|ehci-&gt;sitd_pool
 suffix:semicolon
 id|ehci-&gt;sitd_pool
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -598,7 +598,7 @@ id|ehci-&gt;periodic_dma
 suffix:semicolon
 id|ehci-&gt;periodic
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* shadow periodic table */
 r_if
@@ -613,7 +613,7 @@ id|ehci-&gt;pshadow
 suffix:semicolon
 id|ehci-&gt;pshadow
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* remember to add cleanup code (above) if you add anything here */

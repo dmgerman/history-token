@@ -2390,7 +2390,7 @@ c_func
 (paren
 l_string|&quot;fs/nfs&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace

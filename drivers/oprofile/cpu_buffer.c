@@ -152,7 +152,7 @@ id|fail
 suffix:semicolon
 id|b-&gt;last_task
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|b-&gt;last_is_kernel
 op_assign
@@ -538,7 +538,7 @@ l_int|1
 suffix:semicolon
 id|cpu_buf-&gt;last_task
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 eof
