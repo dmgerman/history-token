@@ -59,7 +59,7 @@ id|files
 op_assign
 id|current-&gt;files
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -88,7 +88,7 @@ comma
 id|files-&gt;close_on_exec
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -118,7 +118,7 @@ suffix:semicolon
 r_int
 id|res
 suffix:semicolon
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -135,7 +135,7 @@ comma
 id|files-&gt;close_on_exec
 )paren
 suffix:semicolon
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -465,7 +465,7 @@ suffix:semicolon
 r_int
 id|fd
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -508,7 +508,7 @@ comma
 id|files-&gt;close_on_exec
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -526,7 +526,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -580,7 +580,7 @@ id|files
 op_assign
 id|current-&gt;files
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -720,7 +720,7 @@ comma
 id|files-&gt;close_on_exec
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -751,7 +751,7 @@ id|err
 suffix:semicolon
 id|out_unlock
 suffix:colon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -763,7 +763,7 @@ id|out
 suffix:semicolon
 id|out_fput
 suffix:colon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
