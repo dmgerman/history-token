@@ -1059,9 +1059,6 @@ r_int
 id|max
 suffix:semicolon
 r_int
-id|min
-suffix:semicolon
-r_int
 id|orig_next_size
 suffix:semicolon
 r_int
@@ -1127,14 +1124,6 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/* No readahead */
-id|min
-op_assign
-id|get_min_readahead
-c_func
-(paren
-id|ra
-)paren
-suffix:semicolon
 id|orig_next_size
 op_assign
 id|ra-&gt;next_size
