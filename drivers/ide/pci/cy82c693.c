@@ -1433,7 +1433,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Cypress IDE&quot;
+l_string|&quot;Cypress_IDE&quot;
 comma
 dot
 id|id_table

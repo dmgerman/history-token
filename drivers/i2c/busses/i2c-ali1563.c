@@ -1880,7 +1880,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;i2c-ali1563&quot;
+l_string|&quot;ali1563_i2c&quot;
 comma
 dot
 id|id_table

@@ -2916,7 +2916,7 @@ multiline_comment|/* Fix up broken headers */
 id|pci_fixup_device
 c_func
 (paren
-id|PCI_FIXUP_HEADER
+id|pci_fixup_header
 comma
 id|dev
 )paren

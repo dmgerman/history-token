@@ -19,33 +19,22 @@ DECL|macro|PM_IBSR
 mdefine_line|#define&t;PM_IBSR&t;&t;IT8172_PCI_IO_BASE + IT_PM_DSR + 0x04 
 DECL|macro|GPIO_CCR
 mdefine_line|#define GPIO_CCR&t;IT8172_PCI_IO_BASE + IT_GPCCR
-multiline_comment|/* ----- global defines ----------------------------------------------- */
-DECL|macro|DEB
-mdefine_line|#define DEB(x) if (i2c_debug&gt;=1) x
 DECL|macro|DEB2
 mdefine_line|#define DEB2(x) if (i2c_debug&gt;=2) x
 DECL|macro|DEB3
 mdefine_line|#define DEB3(x) if (i2c_debug&gt;=3) x /* print several statistical values*/
-DECL|macro|DEBPROTO
-mdefine_line|#define DEBPROTO(x) if (i2c_debug&gt;=9) x;
-multiline_comment|/* debug the protocol by showing transferred bits */
 DECL|macro|DEF_TIMEOUT
 mdefine_line|#define DEF_TIMEOUT 16
-multiline_comment|/* ----- global variables ---------------------------------------------&t;*/
 multiline_comment|/* module parameters:&n; */
 DECL|variable|i2c_debug
 r_static
 r_int
 id|i2c_debug
-op_assign
-l_int|1
 suffix:semicolon
 DECL|variable|iic_test
 r_static
 r_int
 id|iic_test
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* see if the line-setting functions work&t;*/
 multiline_comment|/* --- setting states on the bus with the right timing: ---------------&t;*/
@@ -3485,20 +3474,26 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|iic_test
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|i2c_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

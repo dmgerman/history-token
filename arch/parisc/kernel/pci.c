@@ -227,32 +227,6 @@ r_return
 id|str
 suffix:semicolon
 )brace
-multiline_comment|/* Used in drivers/pci/quirks.c */
-DECL|variable|pcibios_fixups
-r_struct
-id|pci_fixup
-id|pcibios_fixups
-(braket
-)braket
-op_assign
-(brace
-macro_line|#ifdef CONFIG_SUPERIO
-(brace
-id|PCI_FIXUP_HEADER
-comma
-id|PCI_VENDOR_ID_NS
-comma
-id|PCI_DEVICE_ID_NS_87415
-comma
-id|superio_fixup_pci
-)brace
-comma
-macro_line|#endif
-(brace
-l_int|0
-)brace
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * Called by pci_set_master() - a driver interface.&n; *&n; * Legacy PDC guarantees to set:&n; *&t;Map Memory BAR&squot;s into PA IO space.&n; *&t;Map Expansion ROM BAR into one common PA IO space per bus.&n; *&t;Map IO BAR&squot;s into PCI IO space.&n; *&t;Command (see below)&n; *&t;Cache Line Size&n; *&t;Latency Timer&n; *&t;Interrupt Line&n; *&t;PPB: secondary latency timer, io/mmio base/limit,&n; *&t;&t;bus numbers, bridge control&n; *&n; */
 DECL|function|pcibios_set_master
 r_void

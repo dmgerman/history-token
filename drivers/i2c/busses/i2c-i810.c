@@ -882,7 +882,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;i810 smbus&quot;
+l_string|&quot;i810_smbus&quot;
 comma
 dot
 id|id_table

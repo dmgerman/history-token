@@ -1439,7 +1439,10 @@ id|i
 suffix:semicolon
 id|data-&gt;vrm
 op_assign
-l_int|82
+id|i2c_which_vrm
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set high limits&n;&t; * Usually we avoid setting limits on driver init, but it happens&n;&t; * that the ADM1025 comes with stupid default limits (all registers&n;&t; * set to 0). In case the chip has not gone through any limit&n;&t; * setting yet, we better set the high limits to the max so that&n;&t; * no alarm triggers.&n;&t; */
 r_for

@@ -4683,7 +4683,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;SiI IDE&quot;
+l_string|&quot;SiI_IDE&quot;
 comma
 dot
 id|id_table

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/scx200.h&gt;
 DECL|macro|NAME
@@ -45,12 +46,21 @@ comma
 l_int|0x840
 )brace
 suffix:semicolon
-id|MODULE_PARM
+DECL|variable|num_base
+r_static
+r_int
+id|num_base
+suffix:semicolon
+id|module_param_array
 c_func
 (paren
 id|base
 comma
-l_string|&quot;1-4i&quot;
+r_int
+comma
+id|num_base
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -804,14 +814,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|100
-op_plus
-l_int|1
+l_int|10
 )paren
 suffix:semicolon
 )brace

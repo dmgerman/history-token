@@ -594,7 +594,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;FM801 GP&quot;
+l_string|&quot;FM801_gameport&quot;
 comma
 dot
 id|id_table

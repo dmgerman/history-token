@@ -1198,7 +1198,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;CyrixIDE&quot;
+l_string|&quot;Cyrix_IDE&quot;
 comma
 dot
 id|id_table

@@ -5157,22 +5157,6 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * attention LED ON: 1&n; *&t;&t;OFF: 0&n; *&n; * TBD&n; * no direct attention led status information via ACPI&n; *&n; */
-DECL|function|acpiphp_get_attention_status
-id|u8
-id|acpiphp_get_attention_status
-c_func
-(paren
-r_struct
-id|acpiphp_slot
-op_star
-id|slot
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * latch closed:  1&n; * latch   open:  0&n; */
 DECL|function|acpiphp_get_latch_status
 id|u8

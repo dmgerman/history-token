@@ -70,12 +70,14 @@ r_static
 r_int
 id|input_mode
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|input_mode
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

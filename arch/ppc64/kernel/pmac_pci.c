@@ -3378,4 +3378,14 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|DECLARE_PCI_FIXUP_HEADER
+c_func
+(paren
+id|PCI_VENDOR_ID_SERVERWORKS
+comma
+l_int|0x0240
+comma
+id|fixup_k2_sata
+)paren
+suffix:semicolon
 eof

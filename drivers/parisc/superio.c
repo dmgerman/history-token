@@ -1558,6 +1558,16 @@ id|prog
 )paren
 suffix:semicolon
 )brace
+id|DECLARE_PCI_FIXUP_HEADER
+c_func
+(paren
+id|PCI_VENDOR_ID_NS
+comma
+id|PCI_DEVICE_ID_NS_87415
+comma
+id|superio_fixup_pci
+)paren
+suffix:semicolon
 multiline_comment|/* Because of a defect in Super I/O, all reads of the PCI DMA status &n; * registers, IDE status register and the IDE select register need to be &n; * retried&n; */
 DECL|function|superio_ide_inb
 r_static

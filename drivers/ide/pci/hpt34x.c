@@ -1687,7 +1687,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;HPT34x IDE&quot;
+l_string|&quot;HPT34x_IDE&quot;
 comma
 dot
 id|id_table

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;shpchp.h&quot;
@@ -600,18 +601,10 @@ l_int|0x1
 r_break
 suffix:semicolon
 multiline_comment|/*  Check every 0.1 sec for a total of 1 sec*/
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 )brace

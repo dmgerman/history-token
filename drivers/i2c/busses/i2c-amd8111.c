@@ -1701,7 +1701,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;amd8111 smbus 2&quot;
+l_string|&quot;amd8111_smbus2&quot;
 comma
 dot
 id|id_table

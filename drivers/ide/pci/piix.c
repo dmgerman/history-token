@@ -3494,7 +3494,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;PIIX IDE&quot;
+l_string|&quot;PIIX_IDE&quot;
 comma
 dot
 id|id_table

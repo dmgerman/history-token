@@ -279,6 +279,8 @@ DECL|macro|I2C_ALGO_BITHS
 mdefine_line|#define I2C_ALGO_BITHS&t;0x130000&t;/* enhanced bit style adapters&t;*/
 DECL|macro|I2C_ALGO_OCP_IOP3XX
 mdefine_line|#define I2C_ALGO_OCP_IOP3XX  0x140000&t;/* XSCALE IOP3XX On-chip I2C alg */
+DECL|macro|I2C_ALGO_PCA
+mdefine_line|#define I2C_ALGO_PCA&t;0x150000&t;/* PCA 9564 style adapters&t;*/
 DECL|macro|I2C_ALGO_EXP
 mdefine_line|#define I2C_ALGO_EXP&t;0x800000&t;/* experimental&t;&t;&t;*/
 DECL|macro|I2C_ALGO_MASK
@@ -348,6 +350,9 @@ DECL|macro|I2C_HW_P_ISA
 mdefine_line|#define I2C_HW_P_ISA&t;0x01&t;/* generic ISA Bus inteface card&t;*/
 DECL|macro|I2C_HW_P_ELEK
 mdefine_line|#define I2C_HW_P_ELEK&t;0x02&t;/* Elektor ISA Bus inteface card&t;*/
+multiline_comment|/* --- PCA 9564 based algorithms */
+DECL|macro|I2C_HW_A_ISA
+mdefine_line|#define I2C_HW_A_ISA&t;0x00&t;/* generic ISA Bus interface card&t;*/
 multiline_comment|/* --- ACPI Embedded controller algorithms                              */
 DECL|macro|I2C_HW_ACPI_EC
 mdefine_line|#define I2C_HW_ACPI_EC          0x00

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * IBM Hot Plug Controller Driver&n; *&n; * Written By: Jyoti Shah, IBM Corporation&n; *&n; * Copyright (C) 2001-2003 IBM Corp.&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;gregkh@us.ibm.com&gt;&n; *                  &lt;jshah@us.ibm.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -555,13 +556,10 @@ c_loop
 id|i
 )paren
 (brace
-id|long_delay
+id|msleep
+c_func
 (paren
-l_int|1
-op_star
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 id|wpg_addr
@@ -631,13 +629,10 @@ c_loop
 id|i
 )paren
 (brace
-id|long_delay
+id|msleep
+c_func
 (paren
-l_int|1
-op_star
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 id|wpg_addr
@@ -992,13 +987,10 @@ c_loop
 id|i
 )paren
 (brace
-id|long_delay
+id|msleep
+c_func
 (paren
-l_int|1
-op_star
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 id|wpg_addr
@@ -1069,13 +1061,10 @@ c_loop
 id|i
 )paren
 (brace
-id|long_delay
+id|msleep
+c_func
 (paren
-l_int|1
-op_star
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 id|wpg_addr
@@ -2715,11 +2704,10 @@ op_logical_neg
 id|done
 )paren
 (brace
-id|long_delay
+id|msleep
+c_func
 (paren
-l_int|1
-op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -3245,11 +3233,12 @@ op_amp
 id|semOperations
 )paren
 suffix:semicolon
-id|long_delay
+id|msleep
+c_func
 (paren
 id|POLL_INTERVAL_SEC
 op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -3298,16 +3287,10 @@ id|semOperations
 )paren
 suffix:semicolon
 multiline_comment|/* sleep for a short time just for good measure */
-id|set_current_state
+id|msleep
+c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-(paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 )brace
@@ -3537,11 +3520,10 @@ id|pslot-&gt;status
 (brace
 singleline_comment|// power goes on and off after closing latch
 singleline_comment|// check again to make sure power is still ON
-id|long_delay
+id|msleep
+c_func
 (paren
-l_int|1
-op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 id|rc
@@ -4180,11 +4162,10 @@ op_logical_neg
 id|done
 )paren
 (brace
-id|long_delay
+id|msleep
+c_func
 (paren
-l_int|1
-op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if

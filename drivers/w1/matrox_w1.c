@@ -207,7 +207,7 @@ comma
 id|u8
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * These functions read and write DDC Data bit.&n; *&n; * Using tristate pins, since i can&squot;t  fin any open-drain pin in whole motherboard.&n; * Unfortunately we can&squot;t connect to Intel&squot;s 82801xx IO controller&n; * since we don&squot;t know motherboard schema, wich has pretty unused(may be not) GPIO.&n; *&n; * I&squot;ve heard that PIIX also has open drain pin.&n; *&n; * Port mapping.&n; */
+multiline_comment|/*&n; * These functions read and write DDC Data bit.&n; *&n; * Using tristate pins, since i can&squot;t find any open-drain pin in whole motherboard.&n; * Unfortunately we can&squot;t connect to Intel&squot;s 82801xx IO controller&n; * since we don&squot;t know motherboard schema, wich has pretty unused(may be not) GPIO.&n; *&n; * I&squot;ve heard that PIIX also has open drain pin.&n; *&n; * Port mapping.&n; */
 DECL|function|matrox_w1_read_reg
 r_static
 id|__inline__
