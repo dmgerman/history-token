@@ -885,15 +885,11 @@ id|ndev
 op_assign
 l_int|NULL
 suffix:semicolon
-r_static
-r_int
-id|probed
-suffix:semicolon
 r_int
 id|err
 op_assign
 op_minus
-id|ENDOEV
+id|ENODEV
 suffix:semicolon
 r_struct
 id|nubus_dir
@@ -905,6 +901,11 @@ id|ent
 suffix:semicolon
 r_int
 id|offset
+suffix:semicolon
+r_static
+r_int
+r_int
+id|slots
 suffix:semicolon
 r_enum
 id|mac8390_type
@@ -1520,7 +1521,7 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-id|ERR_PTE
+id|ERR_PTR
 c_func
 (paren
 id|err

@@ -389,9 +389,8 @@ op_star
 id|atarilance_probe
 c_func
 (paren
-r_struct
-id|net_device
-op_star
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_extern
@@ -522,10 +521,8 @@ op_star
 id|mace_probe
 c_func
 (paren
-r_struct
-id|net_device
-op_star
-id|dev
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_extern

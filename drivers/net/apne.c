@@ -52,14 +52,15 @@ DECL|macro|NESM_START_PG
 mdefine_line|#define NESM_START_PG&t;0x40&t;/* First page of TX buffer */
 DECL|macro|NESM_STOP_PG
 mdefine_line|#define NESM_STOP_PG&t;0x80&t;/* Last page +1 of RX ring */
-r_int
-id|apne_probe
-c_func
-(paren
 r_struct
 id|net_device
 op_star
-id|dev
+id|__init
+id|apne_probe
+c_func
+(paren
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_static
@@ -2597,9 +2598,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|err
-suffix:semicolon
 id|apne_dev
 op_assign
 id|apne_probe
