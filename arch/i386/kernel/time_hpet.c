@@ -479,6 +479,10 @@ id|ntimer
 op_increment
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Register with driver.&n;&t;&t; * Timer0 and Timer1 is used by platform.&n;&t;&t; */
+id|hd.hd_phys_address
+op_assign
+id|hpet_address
+suffix:semicolon
 id|hd.hd_address
 op_assign
 id|hpet_virt_address
