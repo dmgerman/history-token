@@ -9478,6 +9478,16 @@ comma
 id|PCI_ANY_ID
 )brace
 comma
+(brace
+id|PCI_VENDOR_ID_EICON
+comma
+id|PCI_DEVICE_ID_EICON_DIVA202
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+)brace
+comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_HISAX_ELSA
 (brace
