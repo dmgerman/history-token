@@ -300,18 +300,8 @@ r_return
 id|order
 suffix:semicolon
 )brace
+macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#endif /* !__ASSEMBLY__ */
-macro_line|#include &lt;asm/arch/memory.h&gt;
-DECL|macro|__pa
-mdefine_line|#define __pa(x)&t;&t;&t;__virt_to_phys((unsigned long)(x))
-DECL|macro|__va
-mdefine_line|#define __va(x)&t;&t;&t;((void *)__phys_to_virt((unsigned long)(x)))
-macro_line|#ifndef CONFIG_DISCONTIGMEM
-DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr)&t;(mem_map + (__pa(kaddr) &gt;&gt; PAGE_SHIFT) - &bslash;&n;&t;&t;&t;&t; (PHYS_OFFSET &gt;&gt; PAGE_SHIFT))
-DECL|macro|VALID_PAGE
-mdefine_line|#define VALID_PAGE(page)&t;((page - mem_map) &lt; max_mapnr)
-macro_line|#endif
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#endif /* __KERNEL__ */
