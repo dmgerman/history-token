@@ -208,6 +208,11 @@ r_struct
 id|br_timer
 id|message_age_timer
 suffix:semicolon
+DECL|member|rcu
+r_struct
+id|rcu_head
+id|rcu
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|net_bridge
@@ -215,7 +220,7 @@ r_struct
 id|net_bridge
 (brace
 DECL|member|lock
-id|rwlock_t
+id|spinlock_t
 id|lock
 suffix:semicolon
 DECL|member|port_list
@@ -506,6 +511,7 @@ r_void
 id|br_deliver
 c_func
 (paren
+r_const
 r_struct
 id|net_bridge_port
 op_star
@@ -533,6 +539,7 @@ r_void
 id|br_forward
 c_func
 (paren
+r_const
 r_struct
 id|net_bridge_port
 op_star

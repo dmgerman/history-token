@@ -111,6 +111,13 @@ op_assign
 op_amp
 id|br-&gt;tick
 suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|br-&gt;lock
+)paren
+suffix:semicolon
 id|init_timer
 c_func
 (paren
@@ -190,6 +197,13 @@ comma
 id|jiffies
 )paren
 suffix:semicolon
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|br-&gt;lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* NO locks held */
 DECL|function|br_stp_disable_bridge
@@ -208,7 +222,7 @@ id|net_bridge_port
 op_star
 id|p
 suffix:semicolon
-id|write_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -282,7 +296,7 @@ id|p
 )paren
 suffix:semicolon
 )brace
-id|write_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp

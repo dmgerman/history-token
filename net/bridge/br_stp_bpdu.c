@@ -814,7 +814,7 @@ id|br
 op_assign
 id|p-&gt;br
 suffix:semicolon
-id|write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -1184,7 +1184,7 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
 op_amp

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/if_bridge.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;br_private.h&quot;
@@ -77,7 +76,38 @@ r_return
 l_int|100
 suffix:semicolon
 )brace
-multiline_comment|/* called under BR_NETPROTO_LOCK and bridge lock */
+DECL|function|destroy_nbp
+r_static
+r_void
+id|destroy_nbp
+c_func
+(paren
+r_void
+op_star
+id|arg
+)paren
+(brace
+r_struct
+id|net_bridge_port
+op_star
+id|p
+op_assign
+id|arg
+suffix:semicolon
+id|dev_put
+c_func
+(paren
+id|p-&gt;dev
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* called under bridge lock */
 DECL|function|del_nbp
 r_static
 r_void
@@ -116,7 +146,7 @@ id|dev-&gt;br_port
 op_assign
 l_int|NULL
 suffix:semicolon
-id|list_del
+id|list_del_rcu
 c_func
 (paren
 op_amp
@@ -131,16 +161,15 @@ comma
 id|p
 )paren
 suffix:semicolon
-id|kfree
+id|call_rcu
 c_func
 (paren
+op_amp
+id|p-&gt;rcu
+comma
+id|destroy_nbp
+comma
 id|p
-)paren
-suffix:semicolon
-id|dev_put
-c_func
-(paren
-id|dev
 )paren
 suffix:semicolon
 )brace
@@ -164,13 +193,7 @@ comma
 op_star
 id|n
 suffix:semicolon
-id|br_write_lock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
-id|write_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -204,17 +227,11 @@ id|list
 )paren
 suffix:semicolon
 )brace
-id|write_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
 id|br-&gt;lock
-)paren
-suffix:semicolon
-id|br_write_unlock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 )brace
@@ -324,7 +341,7 @@ id|dev
 suffix:semicolon
 id|br-&gt;lock
 op_assign
-id|RW_LOCK_UNLOCKED
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
@@ -597,7 +614,7 @@ id|p-&gt;state
 op_assign
 id|BR_STATE_DISABLED
 suffix:semicolon
-id|list_add
+id|list_add_rcu
 c_func
 (paren
 op_amp
@@ -842,7 +859,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -867,7 +884,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -932,7 +949,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
-id|write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -969,13 +986,7 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|br_write_lock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
-id|write_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -1017,17 +1028,11 @@ id|br
 )paren
 suffix:semicolon
 )brace
-id|write_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
 id|br-&gt;lock
-)paren
-suffix:semicolon
-id|br_write_unlock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 r_return
@@ -1125,14 +1130,12 @@ id|net_bridge_port
 op_star
 id|p
 suffix:semicolon
-id|read_lock
+id|rcu_read_lock
 c_func
 (paren
-op_amp
-id|br-&gt;lock
 )paren
 suffix:semicolon
-id|list_for_each_entry
+id|list_for_each_entry_rcu
 c_func
 (paren
 id|p
@@ -1151,11 +1154,9 @@ op_assign
 id|p-&gt;dev-&gt;ifindex
 suffix:semicolon
 )brace
-id|read_unlock
+id|rcu_read_unlock
 c_func
 (paren
-op_amp
-id|br-&gt;lock
 )paren
 suffix:semicolon
 )brace
