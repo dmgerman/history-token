@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Frontend driver for mobile DVB-T demodulator DiBcom 3000-MB&n; * DiBcom (http://www.dibcom.fr/)&n; *&n; * Copyright (C) 2004-5 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; * based on GPL code from DibCom, which has&n; *&n; * Copyright (C) 2004 Amaury Demol for DiBcom (ademol@dibcom.fr)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; * Acknowledgements&n; *&n; *  Amaury Demol (ademol@dibcom.fr) from DiBcom for providing specs and driver&n; *  sources, on which this driver (and the dvb-dibusb) are based.&n; *&n; * see Documentation/dvb/README.dibusb for more information&n; *&n; */
+multiline_comment|/*&n; * Frontend driver for mobile DVB-T demodulator DiBcom 3000M-B&n; * DiBcom (http://www.dibcom.fr/)&n; *&n; * Copyright (C) 2004-5 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; * based on GPL code from DibCom, which has&n; *&n; * Copyright (C) 2004 Amaury Demol for DiBcom (ademol@dibcom.fr)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; * Acknowledgements&n; *&n; *  Amaury Demol (ademol@dibcom.fr) from DiBcom for providing specs and driver&n; *  sources, on which this driver (and the dvb-dibusb) are based.&n; *&n; * see Documentation/dvb/README.dibusb for more information&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -13,7 +13,7 @@ multiline_comment|/* Version information */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;0.1&quot;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC &quot;DiBcom 3000M-B DVB-T demodulator driver&quot;
+mdefine_line|#define DRIVER_DESC &quot;DiBcom 3000M-B DVB-T demodulator&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Patrick Boettcher, patrick.boettcher@desy.de&quot;
 macro_line|#ifdef CONFIG_DVB_DIBCOM_DEBUG
@@ -3508,7 +3508,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;DiBcom 3000-MB DVB-T&quot;
+l_string|&quot;DiBcom 3000M-B DVB-T&quot;
 comma
 dot
 id|type
