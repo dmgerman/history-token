@@ -268,7 +268,6 @@ id|len
 op_mod
 id|PAGE_SIZE
 )paren
-(brace
 id|len
 op_add_assign
 id|PAGE_SIZE
@@ -279,7 +278,6 @@ op_mod
 id|PAGE_SIZE
 )paren
 suffix:semicolon
-)brace
 r_return
 id|len
 suffix:semicolon

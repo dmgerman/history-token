@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * eth1394.c -- Ethernet driver for Linux IEEE-1394 Subsystem&n; * &n; * Copyright (C) 2001 Ben Collins &lt;bcollins@debian.org&gt;&n; *               2000 Bonin Franck &lt;boninf@free.fr&gt;&n; *               2003 Steve Kinneberg &lt;kinnebergsteve@acmsystems.com&gt;&n; *&n; * Mainly based on work by Emanuel Pirker and Andreas E. Bombe&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
-multiline_comment|/* This driver intends to support RFC 2734, which describes a method for&n; * transporting IPv4 datagrams over IEEE-1394 serial busses. This driver&n; * will ultimately support that method, but currently falls short in&n; * several areas.&n; *&n; * TODO:&n; * RFC 2734 related:&n; * - Add Config ROM entry&n; * - Add MCAP and multicast&n; *&n; * Non-RFC 2734 related:&n; * - Fix bug related to fragmented broadcast datagrams&n; * - Move generic GASP reception to core 1394 code&n; * - Convert kmalloc/kfree for link fragments to use kmem_cache_* instead&n; * - Stability improvements&n; * - Performance enhancements&n; * - Change hardcoded 1394 bus address region to a dynamic memory space allocation&n; * - Consider garbage collecting old partial datagrams after X amount of time&n; */
+multiline_comment|/* This driver intends to support RFC 2734, which describes a method for&n; * transporting IPv4 datagrams over IEEE-1394 serial busses. This driver&n; * will ultimately support that method, but currently falls short in&n; * several areas.&n; *&n; * TODO:&n; * RFC 2734 related:&n; * - Add Config ROM entry&n; * - Add MCAP. Limited Multicast exists only to 224.0.0.1 and 224.0.0.2.&n; *&n; * Non-RFC 2734 related:&n; * - Fix bug related to fragmented broadcast datagrams&n; * - Move generic GASP reception to core 1394 code&n; * - Convert kmalloc/kfree for link fragments to use kmem_cache_* instead&n; * - Stability improvements&n; * - Performance enhancements&n; * - Change hardcoded 1394 bus address region to a dynamic memory space allocation&n; * - Consider garbage collecting old partial datagrams after X amount of time&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -14,9 +14,12 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
@@ -29,13 +32,13 @@ macro_line|#include &quot;iso.h&quot;
 macro_line|#include &quot;nodemgr.h&quot;
 macro_line|#include &quot;eth1394.h&quot;
 DECL|macro|ETH1394_PRINT_G
-mdefine_line|#define ETH1394_PRINT_G(level, fmt, args...) &bslash;&n;&t;printk(level ETHER1394_DRIVER_NAME&quot;: &quot;fmt, ## args)
+mdefine_line|#define ETH1394_PRINT_G(level, fmt, args...) &bslash;&n;&t;printk(level &quot;%s: &quot; fmt, driver_name, ## args)
 DECL|macro|ETH1394_PRINT
-mdefine_line|#define ETH1394_PRINT(level, dev_name, fmt, args...) &bslash;&n;&t;printk(level ETHER1394_DRIVER_NAME&quot;: %s: &quot; fmt, dev_name, ## args)
+mdefine_line|#define ETH1394_PRINT(level, dev_name, fmt, args...) &bslash;&n;&t;printk(level &quot;%s: %s: &quot; fmt, driver_name, dev_name, ## args)
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG(fmt, args...) &bslash;&n;&t;printk(KERN_ERR &quot;eth1394:%s[%d]: &quot;fmt&quot;&bslash;n&quot;, __FUNCTION__, __LINE__, ## args)
+mdefine_line|#define DEBUG(fmt, args...) &bslash;&n;&t;printk(KERN_ERR &quot;%s:%s[%d]: &quot; fmt &quot;&bslash;n&quot;, driver_name, __FUNCTION__, __LINE__, ## args)
 DECL|macro|TRACE
-mdefine_line|#define TRACE() printk(KERN_ERR &quot;eth1394:%s[%d] ---- TRACE&bslash;n&quot;, __FUNCTION__, __LINE__)
+mdefine_line|#define TRACE() printk(KERN_ERR &quot;%s:%s[%d] ---- TRACE&bslash;n&quot;, driver_name, __FUNCTION__, __LINE__)
 DECL|variable|__devinitdata
 r_static
 r_char
@@ -44,7 +47,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 951 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 971 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 DECL|struct|fragment_info
 r_struct
@@ -105,8 +108,16 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Our ieee1394 highlevel driver */
-DECL|macro|ETHER1394_DRIVER_NAME
-mdefine_line|#define ETHER1394_DRIVER_NAME &quot;ether1394&quot;
+DECL|variable|driver_name
+r_static
+r_const
+r_char
+id|driver_name
+(braket
+)braket
+op_assign
+l_string|&quot;eth1394&quot;
+suffix:semicolon
 DECL|variable|packet_task_cache
 r_static
 id|kmem_cache_t
@@ -369,6 +380,76 @@ op_star
 id|iso
 )paren
 suffix:semicolon
+r_static
+r_int
+id|ether1394_do_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|ifr
+comma
+r_int
+id|cmd
+)paren
+suffix:semicolon
+r_static
+r_int
+id|ether1394_ethtool_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+suffix:semicolon
+DECL|function|eth1394_iso_shutdown
+r_static
+r_void
+id|eth1394_iso_shutdown
+c_func
+(paren
+r_struct
+id|eth1394_priv
+op_star
+id|priv
+)paren
+(brace
+id|priv-&gt;bc_state
+op_assign
+id|ETHER1394_BC_CLOSED
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|priv-&gt;iso
+op_ne
+l_int|NULL
+)paren
+(brace
+id|hpsb_iso_shutdown
+c_func
+(paren
+id|priv-&gt;iso
+)paren
+suffix:semicolon
+id|priv-&gt;iso
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
 DECL|function|ether1394_init_bc
 r_static
 r_int
@@ -381,11 +462,6 @@ op_star
 id|dev
 )paren
 (brace
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 r_struct
 id|eth1394_priv
 op_star
@@ -448,25 +524,15 @@ c_func
 (paren
 )paren
 )paren
-(brace
-id|hpsb_iso_shutdown
+id|eth1394_iso_shutdown
 c_func
 (paren
-id|priv-&gt;iso
+id|priv
 )paren
 suffix:semicolon
-id|priv-&gt;bc_state
-op_assign
-id|ETHER1394_BC_CLOSED
-suffix:semicolon
-)brace
-id|ret
-op_assign
+r_return
 op_minus
 id|EAGAIN
-suffix:semicolon
-r_goto
-id|fail
 suffix:semicolon
 )brace
 r_if
@@ -490,20 +556,14 @@ c_func
 (paren
 )paren
 )paren
-(brace
-id|ret
-op_assign
+r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
-r_goto
-id|fail
-suffix:semicolon
-)brace
-id|hpsb_iso_shutdown
+id|eth1394_iso_shutdown
 c_func
 (paren
-id|priv-&gt;iso
+id|priv
 )paren
 suffix:semicolon
 id|priv-&gt;broadcast_channel
@@ -563,13 +623,9 @@ l_string|&quot;failed to change broadcast &quot;
 l_string|&quot;channel&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 op_minus
 id|EAGAIN
-suffix:semicolon
-r_goto
-id|fail
 suffix:semicolon
 )brace
 )brace
@@ -616,25 +672,15 @@ c_func
 (paren
 )paren
 )paren
-(brace
-id|hpsb_iso_shutdown
+id|eth1394_iso_shutdown
 c_func
 (paren
-id|priv-&gt;iso
+id|priv
 )paren
 suffix:semicolon
-id|priv-&gt;bc_state
-op_assign
-id|ETHER1394_BC_CLOSED
-suffix:semicolon
-)brace
-id|ret
-op_assign
+r_return
 op_minus
 id|EAGAIN
-suffix:semicolon
-r_goto
-id|fail
 suffix:semicolon
 )brace
 id|priv-&gt;bc_state
@@ -642,10 +688,8 @@ op_assign
 id|ETHER1394_BC_OPENED
 suffix:semicolon
 )brace
-id|fail
-suffix:colon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* This is called after an &quot;ifup&quot; */
@@ -715,11 +759,9 @@ c_cond
 (paren
 id|ret
 )paren
-(brace
 r_return
 id|ret
 suffix:semicolon
-)brace
 id|netif_start_queue
 (paren
 id|dev
@@ -884,6 +926,11 @@ op_logical_or
 (paren
 id|new_mtu
 OG
+id|MIN
+c_func
+(paren
+id|ETH_DATA_LEN
+comma
 (paren
 id|priv-&gt;maxpayload
 (braket
@@ -898,6 +945,7 @@ id|eth1394_hdr
 )paren
 op_plus
 id|ETHER1394_GASP_OVERHEAD
+)paren
 )paren
 )paren
 )paren
@@ -1082,17 +1130,32 @@ suffix:semicolon
 id|u64
 id|guid
 op_assign
-op_star
+(paren
+id|u64
+)paren
+(paren
 (paren
 (paren
 id|u64
-op_star
 )paren
-op_amp
+id|be32_to_cpu
+c_func
 (paren
 id|host-&gt;csr.rom
 (braket
 l_int|3
+)braket
+)paren
+op_lshift
+l_int|32
+)paren
+op_or
+id|be32_to_cpu
+c_func
+(paren
+id|host-&gt;csr.rom
+(braket
+l_int|4
 )braket
 )paren
 )paren
@@ -1168,14 +1231,14 @@ id|priv-&gt;fifo
 )paren
 )paren
 suffix:semicolon
-macro_line|#if 0
+macro_line|#if 1
 multiline_comment|/* Compile this out to make testing of fragmented broadcast datagrams&n; * easier. */
 id|priv-&gt;sspd
 (braket
 id|ALL_NODES
 )braket
 op_assign
-id|SPEED_MAX
+id|IEEE1394_SPEED_MAX
 suffix:semicolon
 id|priv-&gt;maxpayload
 (braket
@@ -1184,7 +1247,7 @@ id|ALL_NODES
 op_assign
 id|eth1394_speedto_maxpayload
 (braket
-id|SPEED_MAX
+id|IEEE1394_SPEED_MAX
 )braket
 suffix:semicolon
 macro_line|#else
@@ -1193,7 +1256,7 @@ id|priv-&gt;sspd
 id|ALL_NODES
 )braket
 op_assign
-id|SPEED_100
+id|IEEE1394_SPEED_100
 suffix:semicolon
 id|priv-&gt;maxpayload
 (braket
@@ -1202,7 +1265,7 @@ id|ALL_NODES
 op_assign
 id|eth1394_speedto_maxpayload
 (braket
-id|SPEED_100
+id|IEEE1394_SPEED_100
 )braket
 suffix:semicolon
 macro_line|#endif
@@ -1245,6 +1308,11 @@ id|set_mtu
 (brace
 id|dev-&gt;mtu
 op_assign
+id|MIN
+c_func
+(paren
+id|ETH_DATA_LEN
+comma
 id|priv-&gt;maxpayload
 (braket
 id|phy_id
@@ -1258,6 +1326,7 @@ id|eth1394_hdr
 )paren
 op_plus
 id|ETHER1394_GASP_OVERHEAD
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Set our hardware address while we&squot;re at it */
@@ -1457,6 +1526,10 @@ id|dev-&gt;set_mac_address
 op_assign
 id|ether1394_mac_addr
 suffix:semicolon
+id|dev-&gt;do_ioctl
+op_assign
+id|ether1394_do_ioctl
+suffix:semicolon
 multiline_comment|/* Some constants */
 id|dev-&gt;watchdog_timeo
 op_assign
@@ -1465,14 +1538,12 @@ suffix:semicolon
 id|dev-&gt;flags
 op_assign
 id|IFF_BROADCAST
+op_or
+id|IFF_MULTICAST
 suffix:semicolon
-multiline_comment|/* | IFF_MULTICAST someday */
+multiline_comment|/* !! If data corruption or untrackable kernel panics occur, try&n;         * removing NETIF_F_FRAGLIST !! */
 id|dev-&gt;features
 op_assign
-id|NETIF_F_NO_CSUM
-op_or
-id|NETIF_F_SG
-op_or
 id|NETIF_F_HIGHDMA
 op_or
 id|NETIF_F_FRAGLIST
@@ -1577,9 +1648,23 @@ id|dev
 op_eq
 l_int|NULL
 )paren
+(brace
+id|ETH1394_PRINT_G
+(paren
+id|KERN_ERR
+comma
+l_string|&quot;Out of memory trying to allocate &quot;
+l_string|&quot;etherdevice for IEEE 1394 device %s-%d&bslash;n&quot;
+comma
+id|host-&gt;driver-&gt;name
+comma
+id|host-&gt;id
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 id|SET_MODULE_OWNER
 c_func
 (paren
@@ -1683,9 +1768,23 @@ id|hi
 op_eq
 l_int|NULL
 )paren
+(brace
+id|ETH1394_PRINT_G
+(paren
+id|KERN_ERR
+comma
+l_string|&quot;Out of memory trying to create &quot;
+l_string|&quot;hostinfo for IEEE 1394 device %s-%d&bslash;n&quot;
+comma
+id|host-&gt;driver-&gt;name
+comma
+id|host-&gt;id
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1798,13 +1897,6 @@ comma
 id|host
 )paren
 suffix:semicolon
-id|ETH1394_PRINT_G
-(paren
-id|KERN_ERR
-comma
-l_string|&quot;Out of memory&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -1858,15 +1950,21 @@ id|priv-&gt;bc_state
 op_assign
 id|ETHER1394_BC_CLOSED
 suffix:semicolon
-id|unregister_netdev
+id|eth1394_iso_shutdown
+c_func
+(paren
+id|priv
+)paren
+suffix:semicolon
+r_if
+c_cond
 (paren
 id|hi-&gt;dev
 )paren
-suffix:semicolon
-id|hpsb_iso_shutdown
-c_func
+(brace
+id|unregister_netdev
 (paren
-id|priv-&gt;iso
+id|hi-&gt;dev
 )paren
 suffix:semicolon
 id|kfree
@@ -1875,6 +1973,7 @@ c_func
 id|hi-&gt;dev
 )paren
 suffix:semicolon
+)brace
 )brace
 r_return
 suffix:semicolon
@@ -2175,7 +2274,7 @@ id|ETH1394_ALEN
 )paren
 suffix:semicolon
 r_return
-id|ETH_ALEN
+id|ETH1394_ALEN
 suffix:semicolon
 )brace
 DECL|function|ether1394_header_cache
@@ -2420,12 +2519,10 @@ id|dev-&gt;addr_len
 op_eq
 l_int|0
 )paren
-(brace
 id|skb-&gt;pkt_type
 op_assign
 id|PACKET_BROADCAST
 suffix:semicolon
-)brace
 macro_line|#if 0
 r_else
 id|skb-&gt;pkt_type
@@ -2449,12 +2546,10 @@ comma
 id|dev-&gt;addr_len
 )paren
 )paren
-(brace
 id|skb-&gt;pkt_type
 op_assign
 id|PACKET_OTHERHOST
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -2560,13 +2655,11 @@ op_or
 id|ALL_NODES
 )paren
 )paren
-(brace
 id|dest_hw
 op_assign
 op_complement
 l_int|0ULL
 suffix:semicolon
-)brace
 multiline_comment|/* broadcast */
 r_else
 id|dest_hw
@@ -2784,7 +2877,6 @@ id|arp-&gt;ar_op
 op_eq
 l_int|1
 )paren
-(brace
 multiline_comment|/* just set ARP req target unique ID to 0 */
 id|memset
 c_func
@@ -2796,7 +2888,6 @@ comma
 id|ETH1394_ALEN
 )paren
 suffix:semicolon
-)brace
 r_else
 id|memcpy
 c_func
@@ -2928,11 +3019,9 @@ id|fi-&gt;offset
 )paren
 )paren
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 )brace
 r_return
 l_int|0
@@ -2994,11 +3083,9 @@ id|pd-&gt;dgl
 op_eq
 id|dgl
 )paren
-(brace
 r_return
 id|lh
 suffix:semicolon
-)brace
 )brace
 r_return
 l_int|NULL
@@ -3253,12 +3340,10 @@ c_cond
 op_logical_neg
 r_new
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 r_new
 op_member_access_from_pointer
 id|offset
@@ -3345,12 +3430,10 @@ c_cond
 op_logical_neg
 r_new
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -4025,6 +4108,8 @@ suffix:semicolon
 id|dg_size
 op_assign
 id|hdr-&gt;ff.dg_size
+op_plus
+l_int|1
 suffix:semicolon
 id|fg_off
 op_assign
@@ -4048,6 +4133,8 @@ suffix:semicolon
 id|dg_size
 op_assign
 id|hdr-&gt;sf.dg_size
+op_plus
+l_int|1
 suffix:semicolon
 id|fg_off
 op_assign
@@ -4495,14 +4582,12 @@ c_func
 id|dev
 )paren
 )paren
-(brace
 id|netif_wake_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4609,11 +4694,9 @@ comma
 id|len
 )paren
 )paren
-(brace
 r_return
 id|RCODE_ADDRESS_ERROR
 suffix:semicolon
-)brace
 r_else
 r_return
 id|RCODE_COMPLETE
@@ -5102,6 +5185,8 @@ suffix:semicolon
 id|hdr-&gt;ff.dg_size
 op_assign
 id|dg_size
+op_minus
+l_int|1
 suffix:semicolon
 id|hdr-&gt;ff.dgl
 op_assign
@@ -5299,12 +5384,10 @@ id|max_payload
 op_ge
 id|skb-&gt;len
 )paren
-(brace
 id|hdr-&gt;common.lf
 op_assign
 id|ETH1394_HDR_LF_LF
 suffix:semicolon
-)brace
 id|bufhdr-&gt;words.word1
 op_assign
 id|htons
@@ -5501,7 +5584,16 @@ c_func
 (paren
 id|KERN_ERR
 comma
-l_string|&quot;No more tlabels left&quot;
+l_string|&quot;No more tlabels left while sending &quot;
+l_string|&quot;to node &quot;
+id|NODE_BUS_FMT
+l_string|&quot;&bslash;n&quot;
+comma
+id|NODE_BUS_ARGS
+c_func
+(paren
+id|node
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -5721,6 +5813,19 @@ op_star
 id|packet
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|packet-&gt;tcode
+op_ne
+id|TCODE_STREAM_DATA
+)paren
+id|hpsb_free_tlabel
+c_func
+(paren
+id|packet
+)paren
+suffix:semicolon
 id|packet-&gt;data
 op_assign
 l_int|NULL
@@ -5769,6 +5874,8 @@ r_struct
 id|hpsb_packet
 op_star
 id|packet
+op_assign
+l_int|NULL
 suffix:semicolon
 id|packet
 op_assign
@@ -5784,12 +5891,10 @@ c_cond
 op_logical_neg
 id|packet
 )paren
-(brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5826,7 +5931,6 @@ id|length
 suffix:semicolon
 )brace
 r_else
-(brace
 r_if
 c_cond
 (paren
@@ -5851,7 +5955,6 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
-)brace
 id|ptask-&gt;packet
 op_assign
 id|packet
@@ -5875,13 +5978,22 @@ c_func
 id|packet
 )paren
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|fail
 suffix:colon
+r_if
+c_cond
+(paren
+id|packet
+)paren
+id|ether1394_free_packet
+c_func
+(paren
+id|packet
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -6052,7 +6164,6 @@ id|packet-&gt;tcode
 op_ne
 id|TCODE_STREAM_DATA
 )paren
-(brace
 id|fail
 op_assign
 id|hpsb_packet_success
@@ -6061,13 +6172,6 @@ c_func
 id|packet
 )paren
 suffix:semicolon
-id|hpsb_free_tlabel
-c_func
-(paren
-id|packet
-)paren
-suffix:semicolon
-)brace
 id|ether1394_free_packet
 c_func
 (paren
@@ -6116,7 +6220,6 @@ comma
 id|tx_len
 )paren
 )paren
-(brace
 id|ether1394_dg_complete
 c_func
 (paren
@@ -6125,7 +6228,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -6228,37 +6330,6 @@ id|node_entry
 op_star
 id|ne
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb_is_nonlinear
-c_func
-(paren
-id|skb
-)paren
-)paren
-(brace
-id|ret
-op_assign
-id|skb_linearize
-c_func
-(paren
-id|skb
-comma
-id|kmflags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-(brace
-r_goto
-id|fail
-suffix:semicolon
-)brace
-)brace
 id|ptask
 op_assign
 id|kmem_cache_alloc
@@ -6435,14 +6506,12 @@ c_cond
 op_logical_neg
 id|ne
 )paren
-(brace
 id|dest_node
 op_assign
 id|LOCAL_BUS
 op_or
 id|ALL_NODES
 suffix:semicolon
-)brace
 r_else
 id|dest_node
 op_assign
@@ -6507,10 +6576,9 @@ op_assign
 l_int|512
 suffix:semicolon
 )brace
-multiline_comment|/* Set the transmission type for the packet.  ARP packets and IP&n;&t; * broadcast packets are sent via GASP, however, we cheat a little bit&n;&t; * when detecting IP broadcast packets.  This will need to change when&n;&t; * we switch from using node id for the hardware address to the EUI&n;&t; * which we should be using instead.  IP multicast is not yet&n;&t; * supported. */
+multiline_comment|/* Set the transmission type for the packet.  ARP packets and IP&n;&t; * broadcast packets are sent via GASP. */
 r_if
 c_cond
-(paren
 (paren
 id|memcmp
 c_func
@@ -6523,6 +6591,13 @@ id|ETH1394_ALEN
 )paren
 op_eq
 l_int|0
+op_logical_or
+id|proto
+op_eq
+id|__constant_htons
+c_func
+(paren
+id|ETH_P_ARP
 )paren
 op_logical_or
 (paren
@@ -6531,7 +6606,17 @@ op_eq
 id|__constant_htons
 c_func
 (paren
-id|ETH_P_ARP
+id|ETH_P_IP
+)paren
+op_logical_and
+id|IN_MULTICAST
+c_func
+(paren
+id|__constant_ntohl
+c_func
+(paren
+id|skb-&gt;nh.iph-&gt;daddr
+)paren
 )paren
 )paren
 )paren
@@ -6587,7 +6672,6 @@ id|hdr_type_len
 id|ETH1394_HDR_LF_UF
 )braket
 )paren
-(brace
 id|priv-&gt;dgl
 (braket
 id|NODEID_TO_NODE
@@ -6598,7 +6682,6 @@ id|dest_node
 )braket
 op_increment
 suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 (paren
 op_amp
@@ -6763,11 +6846,9 @@ comma
 id|tx_len
 )paren
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 id|netif_wake_queue
 c_func
 (paren
@@ -6782,22 +6863,8 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ptask-&gt;packet
-)paren
-(brace
-id|ether1394_free_packet
-c_func
-(paren
-id|ptask-&gt;packet
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|ptask
 )paren
-(brace
 id|kmem_cache_free
 c_func
 (paren
@@ -6806,7 +6873,6 @@ comma
 id|ptask
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6814,14 +6880,12 @@ id|skb
 op_ne
 l_int|NULL
 )paren
-(brace
 id|dev_kfree_skb
 c_func
 (paren
 id|skb
 )paren
 suffix:semicolon
-)brace
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -6864,6 +6928,201 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* returning non-zero causes serious problems */
 )brace
+DECL|function|ether1394_do_ioctl
+r_static
+r_int
+id|ether1394_do_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ifreq
+op_star
+id|ifr
+comma
+r_int
+id|cmd
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+r_return
+id|ether1394_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|ifr-&gt;ifr_data
+)paren
+suffix:semicolon
+r_case
+id|SIOCGMIIPHY
+suffix:colon
+multiline_comment|/* Get address of MII PHY in use. */
+r_case
+id|SIOCGMIIREG
+suffix:colon
+multiline_comment|/* Read MII PHY register. */
+r_case
+id|SIOCSMIIREG
+suffix:colon
+multiline_comment|/* Write MII PHY register. */
+r_default
+suffix:colon
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|ether1394_ethtool_ioctl
+r_static
+r_int
+id|ether1394_ethtool_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+id|u32
+id|ethcmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|ethcmd
+comma
+(paren
+id|u32
+op_star
+)paren
+id|useraddr
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+(paren
+id|info.driver
+comma
+id|driver_name
+)paren
+suffix:semicolon
+id|strcpy
+(paren
+id|info.version
+comma
+l_string|&quot;$Rev: 971 $&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* FIXME XXX provide sane businfo */
+id|strcpy
+(paren
+id|info.bus_info
+comma
+l_string|&quot;ieee1394&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_case
+id|ETHTOOL_GSET
+suffix:colon
+r_case
+id|ETHTOOL_SSET
+suffix:colon
+r_case
+id|ETHTOOL_NWAY_RST
+suffix:colon
+r_case
+id|ETHTOOL_GLINK
+suffix:colon
+r_case
+id|ETHTOOL_GMSGLVL
+suffix:colon
+r_case
+id|ETHTOOL_SMSGLVL
+suffix:colon
+r_default
+suffix:colon
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Function for incoming 1394 packets */
 DECL|variable|addr_ops
 r_static
@@ -6890,7 +7149,7 @@ op_assign
 dot
 id|name
 op_assign
-id|ETHER1394_DRIVER_NAME
+id|driver_name
 comma
 dot
 id|add_host

@@ -78,6 +78,7 @@ id|state
 suffix:semicolon
 multiline_comment|/* These are core internal. */
 DECL|member|tlabel
+r_int
 r_char
 id|tlabel
 suffix:semicolon

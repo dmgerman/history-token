@@ -712,12 +712,10 @@ c_cond
 op_logical_neg
 id|len
 )paren
-(brace
 id|len
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 id|first
 op_assign
 id|dma_region_find
@@ -824,11 +822,9 @@ c_cond
 op_logical_neg
 id|dma-&gt;kvirt
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -858,11 +854,9 @@ id|dma-&gt;n_pages
 )paren
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|offset
 op_assign
 id|address
@@ -948,12 +942,10 @@ c_cond
 op_logical_neg
 id|dma-&gt;kvirt
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 multiline_comment|/* must be page-aligned */
 r_if
 c_cond
@@ -962,12 +954,10 @@ id|vma-&gt;vm_pgoff
 op_ne
 l_int|0
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 multiline_comment|/* check the length */
 id|size
 op_assign
@@ -986,12 +976,10 @@ op_star
 id|dma-&gt;n_pages
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|vma-&gt;vm_ops
 op_assign
 op_amp
