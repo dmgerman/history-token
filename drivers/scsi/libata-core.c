@@ -43,20 +43,6 @@ id|tmout
 suffix:semicolon
 r_static
 r_void
-id|__ata_dev_select
-(paren
-r_struct
-id|ata_port
-op_star
-id|ap
-comma
-r_int
-r_int
-id|device
-)paren
-suffix:semicolon
-r_static
-r_void
 id|ata_set_mode
 c_func
 (paren
@@ -2082,7 +2068,9 @@ id|nsect
 comma
 id|lbal
 suffix:semicolon
-id|__ata_dev_select
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|dev_select
 c_func
 (paren
 id|ap
@@ -2209,7 +2197,9 @@ id|nsect
 comma
 id|lbal
 suffix:semicolon
-id|__ata_dev_select
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|dev_select
 c_func
 (paren
 id|ap
@@ -2391,7 +2381,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;ata_dev_classify - determine device type based on ATA-spec signature&n; *&t;@tf: ATA taskfile register set for device to be identified&n; *&n; *&t;Determine from taskfile register contents whether a device is&n; *&t;ATA or ATAPI, as per &quot;Signature and persistence&quot; section&n; *&t;of ATA/PI spec (volume 1, sect 5.14).&n; *&n; *&t;LOCKING:&n; *&t;None.&n; *&n; *&t;RETURNS:&n; *&t;Device type, %ATA_DEV_ATA, %ATA_DEV_ATAPI, or %ATA_DEV_UNKNOWN&n; *&t;the event of failure.&n; */
 DECL|function|ata_dev_classify
-r_static
 r_int
 r_int
 id|ata_dev_classify
@@ -2537,7 +2526,9 @@ suffix:semicolon
 id|u8
 id|err
 suffix:semicolon
-id|__ata_dev_select
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|dev_select
 c_func
 (paren
 id|ap
@@ -2748,11 +2739,25 @@ l_int|2
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;__ata_dev_select - Select device 0/1 on ATA bus&n; *&t;@ap: ATA channel to manipulate&n; *&t;@device: ATA device (numbered from zero) to select&n; *&n; *&t;Use the method defined in the ATA specification to&n; *&t;make either device 0, or device 1, active on the&n; *&t;ATA channel.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
-DECL|function|__ata_dev_select
-r_static
+DECL|function|ata_noop_dev_select
 r_void
-id|__ata_dev_select
+id|ata_noop_dev_select
+(paren
+r_struct
+id|ata_port
+op_star
+id|ap
+comma
+r_int
+r_int
+id|device
+)paren
+(brace
+)brace
+multiline_comment|/**&n; *&t;ata_std_dev_select - Select device 0/1 on ATA bus&n; *&t;@ap: ATA channel to manipulate&n; *&t;@device: ATA device (numbered from zero) to select&n; *&n; *&t;Use the method defined in the ATA specification to&n; *&t;make either device 0, or device 1, active on the&n; *&t;ATA channel.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
+DECL|function|ata_std_dev_select
+r_void
+id|ata_std_dev_select
 (paren
 r_struct
 id|ata_port
@@ -2826,7 +2831,7 @@ id|ap
 suffix:semicolon
 multiline_comment|/* needed; also flushes, for mmio */
 )brace
-multiline_comment|/**&n; *&t;ata_dev_select - Select device 0/1 on ATA bus&n; *&t;@ap: ATA channel to manipulate&n; *&t;@device: ATA device (numbered from zero) to select&n; *&t;@wait: non-zero to wait for Status register BSY bit to clear&n; *&t;@can_sleep: non-zero if context allows sleeping&n; *&n; *&t;Use the method defined in the ATA specification to&n; *&t;make either device 0, or device 1, active on the&n; *&t;ATA channel.&n; *&n; *&t;This is a high-level version of __ata_dev_select(),&n; *&t;which additionally provides the services of inserting&n; *&t;the proper pauses and status polling, where needed.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
+multiline_comment|/**&n; *&t;ata_dev_select - Select device 0/1 on ATA bus&n; *&t;@ap: ATA channel to manipulate&n; *&t;@device: ATA device (numbered from zero) to select&n; *&t;@wait: non-zero to wait for Status register BSY bit to clear&n; *&t;@can_sleep: non-zero if context allows sleeping&n; *&n; *&t;Use the method defined in the ATA specification to&n; *&t;make either device 0, or device 1, active on the&n; *&t;ATA channel.&n; *&n; *&t;This is a high-level version of ata_std_dev_select(),&n; *&t;which additionally provides the services of inserting&n; *&t;the proper pauses and status polling, where needed.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
 DECL|function|ata_dev_select
 r_void
 id|ata_dev_select
@@ -2873,7 +2878,9 @@ c_func
 id|ap
 )paren
 suffix:semicolon
-id|__ata_dev_select
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|dev_select
 c_func
 (paren
 id|ap
@@ -4001,10 +4008,10 @@ op_complement
 id|ATA_FLAG_PORT_DISABLED
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sata_phy_reset -&n; *&t;@ap:&n; *&n; *&t;LOCKING:&n; *&n; */
-DECL|function|sata_phy_reset
+multiline_comment|/**&n; *&t;__sata_phy_reset -&n; *&t;@ap:&n; *&n; *&t;LOCKING:&n; *&n; */
+DECL|function|__sata_phy_reset
 r_void
-id|sata_phy_reset
+id|__sata_phy_reset
 c_func
 (paren
 r_struct
@@ -4198,6 +4205,38 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|ap-&gt;cbl
+op_assign
+id|ATA_CBL_SATA
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;__sata_phy_reset -&n; *&t;@ap:&n; *&n; *&t;LOCKING:&n; *&n; */
+DECL|function|sata_phy_reset
+r_void
+id|sata_phy_reset
+c_func
+(paren
+r_struct
+id|ata_port
+op_star
+id|ap
+)paren
+(brace
+id|__sata_phy_reset
+c_func
+(paren
+id|ap
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ap-&gt;flags
+op_amp
+id|ATA_FLAG_PORT_DISABLED
+)paren
+r_return
+suffix:semicolon
 id|ata_bus_reset
 c_func
 (paren
@@ -5170,7 +5209,9 @@ id|nsect
 comma
 id|lbal
 suffix:semicolon
-id|__ata_dev_select
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|dev_select
 c_func
 (paren
 id|ap
@@ -5292,7 +5333,9 @@ id|ATA_TMOUT_BOOT
 )paren
 suffix:semicolon
 multiline_comment|/* is all this really necessary? */
-id|__ata_dev_select
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|dev_select
 c_func
 (paren
 id|ap
@@ -5305,7 +5348,9 @@ c_cond
 (paren
 id|dev1
 )paren
-id|__ata_dev_select
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|dev_select
 c_func
 (paren
 id|ap
@@ -5318,7 +5363,9 @@ c_cond
 (paren
 id|dev0
 )paren
-id|__ata_dev_select
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|dev_select
 c_func
 (paren
 id|ap
@@ -5687,7 +5734,9 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* select device 0 again */
-id|__ata_dev_select
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|dev_select
 c_func
 (paren
 id|ap
@@ -5825,7 +5874,9 @@ r_class
 op_ne
 id|ATA_DEV_NONE
 )paren
-id|__ata_dev_select
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|dev_select
 c_func
 (paren
 id|ap
@@ -5845,7 +5896,9 @@ r_class
 op_ne
 id|ATA_DEV_NONE
 )paren
-id|__ata_dev_select
+id|ap-&gt;ops
+op_member_access_from_pointer
+id|dev_select
 c_func
 (paren
 id|ap
@@ -7926,7 +7979,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;data %s, drv_stat 0x%X&bslash;n&quot;
+l_string|&quot;data %s&bslash;n&quot;
 comma
 id|qc-&gt;tf.flags
 op_amp
@@ -7936,8 +7989,6 @@ c_cond
 l_string|&quot;write&quot;
 suffix:colon
 l_string|&quot;read&quot;
-comma
-id|status
 )paren
 suffix:semicolon
 multiline_comment|/* do the actual data transfer */
@@ -13241,6 +13292,20 @@ c_func
 id|ata_tf_read
 )paren
 suffix:semicolon
+DECL|variable|ata_noop_dev_select
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ata_noop_dev_select
+)paren
+suffix:semicolon
+DECL|variable|ata_std_dev_select
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ata_std_dev_select
+)paren
+suffix:semicolon
 DECL|variable|ata_tf_to_fis
 id|EXPORT_SYMBOL_GPL
 c_func
@@ -13346,6 +13411,13 @@ c_func
 id|sata_phy_reset
 )paren
 suffix:semicolon
+DECL|variable|__sata_phy_reset
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|__sata_phy_reset
+)paren
+suffix:semicolon
 DECL|variable|ata_bus_reset
 id|EXPORT_SYMBOL_GPL
 c_func
@@ -13414,6 +13486,13 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|ata_host_intr
+)paren
+suffix:semicolon
+DECL|variable|ata_dev_classify
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ata_dev_classify
 )paren
 suffix:semicolon
 DECL|variable|ata_dev_id_string

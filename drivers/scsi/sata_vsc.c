@@ -879,6 +879,11 @@ op_assign
 id|ata_check_status
 comma
 dot
+id|dev_select
+op_assign
+id|ata_std_dev_select
+comma
+dot
 id|phy_reset
 op_assign
 id|sata_phy_reset
