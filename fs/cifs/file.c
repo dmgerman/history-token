@@ -2700,13 +2700,7 @@ op_amp
 id|FL_POSIX
 )paren
 )paren
-r_if
-c_cond
-(paren
-id|experimEnabled
-)paren
-(brace
-id|posix_lock_file
+id|posix_lock_file_wait
 c_func
 (paren
 id|file
@@ -2714,7 +2708,6 @@ comma
 id|pfLock
 )paren
 suffix:semicolon
-)brace
 id|FreeXid
 c_func
 (paren

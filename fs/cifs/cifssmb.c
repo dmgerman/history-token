@@ -18566,8 +18566,6 @@ id|pSMB-&gt;TotalParameterCount
 op_assign
 id|pSMB-&gt;ParameterCount
 suffix:semicolon
-multiline_comment|/* I doubt that passthrough levels apply to this old&n;&t;preNT info level */
-multiline_comment|/*&t;if (tcon-&gt;ses-&gt;capabilities &amp; CAP_INFOLEVEL_PASSTHRU)&n;&t;&t;pSMB-&gt;InformationLevel = cpu_to_le16(SMB_SET_FILE_BASIC_INFO2);&n;&t;else*/
 id|pSMB-&gt;InformationLevel
 op_assign
 id|cpu_to_le16
