@@ -1,32 +1,11 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skgeinit.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.63 $&n; * Date:&t;$Date: 2001/04/05 11:02:09 $&n; * Purpose:&t;Contains functions to initialize the GE HW&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2001 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgeinit.c,v $&n; *&t;Revision 1.63  2001/04/05 11:02:09  rassmann&n; *&t;Stop Port check of the STOP bit did not take 2/18 sec as wanted.&n; *&t;&n; *&t;Revision 1.62  2001/02/07 07:54:21  rassmann&n; *&t;Corrected copyright.&n; *&t;&n; *&t;Revision 1.61  2001/01/31 15:31:40  gklug&n; *&t;fix: problem with autosensing an SR8800 switch&n; *&t;&n; *&t;Revision 1.60  2000/10/18 12:22:21  cgoos&n; *&t;Added workaround for half duplex hangup.&n; *&t;&n; *&t;Revision 1.59  2000/10/10 11:22:06  gklug&n; *&t;add: in manual half duplex mode ignore carrier extension errors&n; *&t;&n; *&t;Revision 1.58  2000/10/02 14:10:27  rassmann&n; *&t;Reading BCOM PHY after releasing reset until it returns a valid value.&n; *&t;&n; *&t;Revision 1.57  2000/08/03 14:55:28  rassmann&n; *&t;Waiting for I2C to be ready before de-initializing adapter&n; *&t;(prevents sensors from hanging up).&n; *&t;&n; *&t;Revision 1.56  2000/07/27 12:16:48  gklug&n; *&t;fix: Stop Port check of the STOP bit does now take 2/18 sec as wanted&n; *&t;&n; *&t;Revision 1.55  1999/11/22 13:32:26  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.54  1999/10/26 07:32:54  malthoff&n; *&t;Initialize PHWLinkUp with SK_FALSE. Required for Diagnostics.&n; *&t;&n; *&t;Revision 1.53  1999/08/12 19:13:50  malthoff&n; *&t;Fix for 1000BT. Do not owerwrite XM_MMU_CMD when&n; *&t;disabling receiver and transmitter. Other bits&n; *&t;may be lost.&n; *&t;&n; *&t;Revision 1.52  1999/07/01 09:29:54  gklug&n; *&t;fix: DoInitRamQueue needs pAC&n; *&t;&n; *&t;Revision 1.51  1999/07/01 08:42:21  gklug&n; *&t;chg: use Store &amp; forward for RAM buffer when Jumbos are used&n; *&t;&n; *&t;Revision 1.50  1999/05/27 13:19:38  cgoos&n; *&t;Added Tx PCI watermark initialization.&n; *&t;Removed Tx RAM queue Store &amp; Forward setting.&n; *&t;&n; *&t;Revision 1.49  1999/05/20 14:32:45  malthoff&n; *&t;SkGeLinkLED() is completly removed now.&n; *&t;&n; *&t;Revision 1.48  1999/05/19 07:28:24  cgoos&n; *&t;SkGeLinkLED no more available for drivers.&n; *&t;Changes for 1000Base-T.&n; *&t;&n; *&t;Revision 1.47  1999/04/08 13:57:45  gklug&n; *&t;add: Init of new port struct fiels PLinkResCt&n; *&t;chg: StopPort Timer check&n; *&t;&n; *&t;Revision 1.46  1999/03/25 07:42:15  malthoff&n; *&t;SkGeStopPort(): Add workaround for cache incoherency.&n; *&t;&t;&t;Create error log entry, disable port, and&n; *&t;&t;&t;exit loop if it does not terminate.&n; *&t;Add XM_RX_LENERR_OK to the default value for the&n; *&t;XMAC receive command register.&n; *&t;&n; *&t;Revision 1.45  1999/03/12 16:24:47  malthoff&n; *&t;Remove PPollRxD and PPollTxD.&n; *&t;Add check for GIPollTimerVal.&n; *&n; *&t;Revision 1.44  1999/03/12 13:40:23  malthoff&n; *&t;Fix: SkGeXmitLED(), SK_LED_TST mode does not work.&n; *&t;Add: Jumbo frame support.&n; *&t;Chg: Resolution of parameter IntTime in SkGeCfgSync().&n; *&n; *&t;Revision 1.43  1999/02/09 10:29:46  malthoff&n; *&t;Bugfix: The previous modification again also for the second location.&n; *&n; *&t;Revision 1.42  1999/02/09 09:35:16  malthoff&n; *&t;Bugfix: The bits &squot;66 MHz Capable&squot; and &squot;NEWCAP are reset while&n; *&t;&t;clearing the error bits in the PCI status register.&n; *&n; *&t;Revision 1.41  1999/01/18 13:07:02  malthoff&n; *&t;Bugfix: Do not use CFG cycles after during Init- or Runtime, because&n; *&t;&t;they may not be available after Boottime.&n; *&n; *&t;Revision 1.40  1999/01/11 12:40:49  malthoff&n; *&t;Bug fix: PCI_STATUS: clearing error bits sets the UDF bit.&n; *&n; *&t;Revision 1.39  1998/12/11 15:17:33  gklug&n; *&t;chg: Init LipaAutoNeg with Unknown&n; *&n; *&t;Revision 1.38  1998/12/10 11:02:57  malthoff&n; *&t;Disable Error Log Message when calling SkGeInit(level 2)&n; *&t;more than once.&n; *&n; *&t;Revision 1.37  1998/12/07 12:18:25  gklug&n; *&t;add: refinement of autosense mode: take into account the autoneg cap of LiPa&n; *&n; *&t;Revision 1.36  1998/12/07 07:10:39  gklug&n; *&t;fix: init values of LinkBroken/ Capabilities for management&n; *&n; *&t;Revision 1.35  1998/12/02 10:56:20  gklug&n; *&t;fix: do NOT init LoinkSync Counter.&n; *&n; *&t;Revision 1.34  1998/12/01 10:53:21  gklug&n; *&t;add: init of additional Counters for workaround&n; *&n; *&t;Revision 1.33  1998/12/01 10:00:49  gklug&n; *&t;add: init PIsave var in Port struct&n; *&n; *&t;Revision 1.32  1998/11/26 14:50:40  gklug&n; *&t;chg: Default is autosensing with AUTOFULL mode&n; *&n; *&t;Revision 1.31  1998/11/25 15:36:16  gklug&n; *&t;fix: do NOT stop LED Timer when port should be stoped&n; *&n; *&t;Revision 1.30  1998/11/24 13:15:28  gklug&n; *&t;add: Init PCkeckPar struct member&n; *&n; *&t;Revision 1.29  1998/11/18 13:19:27  malthoff&n; *&t;Disable packet arbiter timeouts on receive side.&n; *&t;Use maximum timeout value for packet arbiter&n; *&t;transmit timeouts.&n; *&t;Add TestStopBit() function to handle stop RX/TX&n; *&t;problem with active descriptor poll timers.&n; *&t;Bug Fix: Descriptor Poll Timer not started, beacuse&n; *&t;GIPollTimerVal was initilaized with 0.&n; *&n; *&t;Revision 1.28  1998/11/13 14:24:26  malthoff&n; *&t;Bug Fix: SkGeStopPort() may hang if a Packet Arbiter Timout&n; *&t;is pending or occurs while waiting for TX_STOP and RX_STOP.&n; *&t;The PA timeout is cleared now while waiting for TX- or RX_STOP.&n; *&n; *&t;Revision 1.27  1998/11/02 11:04:36  malthoff&n; *&t;fix the last fix&n; *&n; *&t;Revision 1.26  1998/11/02 10:37:03  malthoff&n; *&t;Fix: SkGePollTxD() enables always the synchronounous poll timer.&n; *&n; *&t;Revision 1.25  1998/10/28 07:12:43  cgoos&n; *&t;Fixed &quot;LED_STOP&quot; in SkGeLnkSyncCnt, &quot;== SK_INIT_IO&quot; in SkGeInit.&n; *&t;Removed: Reset of RAM Interface in SkGeStopPort.&n; *&n; *&t;Revision 1.24  1998/10/27 08:13:12  malthoff&n; *&t;Remove temporary code.&n; *&n; *&t;Revision 1.23  1998/10/26 07:45:03  malthoff&n; *&t;Add Address Calculation Workaround: If the EPROM byte&n; *&t;Id is 3, the address offset is 512 kB.&n; *&t;Initialize default values for PLinkMode and PFlowCtrlMode.&n; *&n; *&t;Revision 1.22  1998/10/22 09:46:47  gklug&n; *&t;fix SysKonnectFileId typo&n; *&n; *&t;Revision 1.21  1998/10/20 12:11:56  malthoff&n; *&t;Don&squot;t dendy the Queue config if the size of the unused&n; *&t;rx queue is zero.&n; *&n; *&t;Revision 1.20  1998/10/19 07:27:58  malthoff&n; *&t;SkGeInitRamIface() is public to be called by diagnostics.&n; *&n; *&t;Revision 1.19  1998/10/16 13:33:45  malthoff&n; *&t;Fix: enabling descriptor polling is not allowed until&n; *&t;the descriptor addresses are set. Descriptor polling&n; *&t;must be handled by the driver.&n; *&n; *&t;Revision 1.18  1998/10/16 10:58:27  malthoff&n; *&t;Remove temp. code for Diag prototype.&n; *&t;Remove lint warning for dummy reads.&n; *&t;Call SkGeLoadLnkSyncCnt() during SkGeInitPort().&n; *&n; *&t;Revision 1.17  1998/10/14 09:16:06  malthoff&n; *&t;Change parameter LimCount and programming of&n; *&t;the limit counter in SkGeCfgSync().&n; *&n; *&t;Revision 1.16  1998/10/13 09:21:16  malthoff&n; *&t;Don&squot;t set XM_RX_SELF_RX in RxCmd Reg, because it&squot;s&n; *&t;like a Loopback Mode in half duplex.&n; *&n; *&t;Revision 1.15  1998/10/09 06:47:40  malthoff&n; *&t;SkGeInitMacArb(): set recovery counters init value&n; *&t;to zero although this counters are not uesd.&n; *&t;Bug fix in Rx Upper/Lower Pause Threshold calculation.&n; *&t;Add XM_RX_SELF_RX to RxCmd.&n; *&n; *&t;Revision 1.14  1998/10/06 15:15:53  malthoff&n; *&t;Make sure no pending IRQ is cleared in SkGeLoadLnkSyncCnt().&n; *&n; *&t;Revision 1.13  1998/10/06 14:09:36  malthoff&n; *&t;Add SkGeLoadLnkSyncCnt(). Modify&n; *&t;the &squot;port stopped&squot; condition according&n; *&t;to the current problem report.&n; *&n; *&t;Revision 1.12  1998/10/05 08:17:21  malthoff&n; *&t;Add functions: SkGePollRxD(), SkGePollTxD(),&n; *&t;DoCalcAddr(), SkGeCheckQSize(),&n; *&t;DoInitRamQueue(), and SkGeCfgSync().&n; *&t;Add coding for SkGeInitMacArb(), SkGeInitPktArb(),&n; *&t;SkGeInitMacFifo(), SkGeInitRamBufs(),&n; *&t;SkGeInitRamIface(), and SkGeInitBmu().&n; *&n; *&t;Revision 1.11  1998/09/29 08:26:29  malthoff&n; *&t;bug fix: SkGeInit0() &squot;i&squot; should be increment.&n; *&n; *&t;Revision 1.10  1998/09/28 13:19:01  malthoff&n; *&t;Coding time: Save the done work.&n; *&t;Modify SkGeLinkLED(), add SkGeXmitLED(),&n; *&t;define SkGeCheckQSize(), SkGeInitMacArb(),&n; *&t;SkGeInitPktArb(), SkGeInitMacFifo(),&n; *&t;SkGeInitRamBufs(), SkGeInitRamIface(),&n; *&t;and SkGeInitBmu(). Do coding for SkGeStopPort(),&n; *&t;SkGeInit1(), SkGeInit2(), and SkGeInit3().&n; *&t;Do coding for SkGeDinit() and SkGeInitPort().&n; *&n; *&t;Revision 1.9  1998/09/16 14:29:05  malthoff&n; *&t;Some minor changes.&n; *&n; *&t;Revision 1.8  1998/09/11 05:29:14  gklug&n; *&t;add: init state of a port&n; *&n; *&t;Revision 1.7  1998/09/04 09:26:25  malthoff&n; *&t;Short temporary modification.&n; *&n; *&t;Revision 1.6  1998/09/04 08:27:59  malthoff&n; *&t;Remark the do-while in StopPort() because it never ends&n; *&t;without a GE adapter.&n; *&n; *&t;Revision 1.5  1998/09/03 14:05:45  malthoff&n; *&t;Change comment for SkGeInitPort(). Do not&n; *&t;repair the queue sizes if invalid.&n; *&n; *&t;Revision 1.4  1998/09/03 10:03:19  malthoff&n; *&t;Implement the new interface according to the&n; *&t;reviewed interface specification.&n; *&n; *&t;Revision 1.3  1998/08/19 09:11:25  gklug&n; *&t;fix: struct are removed from c-source (see CCC)&n; *&n; *&t;Revision 1.2  1998/07/28 12:33:58  malthoff&n; *&t;Add &squot;IoC&squot; parameter in function declaration and SK IO macros.&n; *&n; *&t;Revision 1.1  1998/07/23 09:48:57  malthoff&n; *&t;Creation. First dummy &squot;C&squot; file.&n; *&t;SkGeInit(Level 0) is card_start for ML.&n; *&t;SkGeDeInit() is card_stop for ML.&n; *&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skgeinit.c&n; * Project:&t;Gigabit Ethernet Adapters, Common Modules&n; * Version:&t;$Revision: 1.93 $&n; * Date:&t;$Date: 2003/05/28 15:44:43 $&n; * Purpose:&t;Contains functions to initialize the adapter&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgeinit.c,v $&n; *&t;Revision 1.93  2003/05/28 15:44:43  rschmidt&n; *&t;Added check for chip Id on WOL WA for chip Rev. A.&n; *&t;Added setting of GILevel in SkGeDeInit().&n; *&t;Minor changes to avoid LINT warnings.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.92  2003/05/13 17:42:26  mkarl&n; *&t;Added SK_FAR for PXE.&n; *&t;Separated code pathes not used for SLIM driver to reduce code size.&n; *&t;Removed calls to I2C for SLIM driver.&n; *&t;Removed currently unused function SkGeLoadLnkSyncCnt.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.91  2003/05/06 12:21:48  rschmidt&n; *&t;Added use of pAC-&gt;GIni.GIYukon for selection of YUKON branches.&n; *&t;Added defines around GENESIS resp. YUKON branches to reduce&n; *&t;code size for PXE.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.90  2003/04/28 09:12:20  rschmidt&n; *&t;Added init for GIValIrqMask (common IRQ mask).&n; *&t;Disabled HW Error IRQ on Yukon if sensor IRQ is set in SkGeInit1()&n; *&t;by changing the common mask stored in GIValIrqMask.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.89  2003/04/10 14:33:10  rschmidt&n; *&t;Fixed alignement error of patchable configuration parameter&n; *&t;in struct OemConfig caused by length of recognition string.&n; *&t;&n; *&t;Revision 1.88  2003/04/09 12:59:45  rschmidt&n; *&t;Added define around initialization of patchable OEM specific&n; *&t;configuration parameter.&n; *&t;&n; *&t;Revision 1.87  2003/04/08 16:46:13  rschmidt&n; *&t;Added configuration variable for OEMs and initialization for&n; *&t;GILedBlinkCtrl (LED Blink Control).&n; *&t;Improved detection for YUKON-Lite Rev. A1.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.86  2003/03/31 06:53:13  mkarl&n; *&t;Corrected Copyright.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.85  2003/02/05 15:30:33  rschmidt&n; *&t;Corrected setting of GIHstClkFact (Host Clock Factor) and&n; *&t;GIPollTimerVal (Descr. Poll Timer Init Value) for YUKON.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.84  2003/01/28 09:57:25  rschmidt&n; *&t;Added detection of YUKON-Lite Rev. A0 (stored in GIYukonLite).&n; *&t;Disabled Rx GMAC FIFO Flush for YUKON-Lite Rev. A0.&n; *&t;Added support for CLK_RUN (YUKON-Lite).&n; *&t;Added additional check of PME from D3cold for setting GIVauxAvail.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.83  2002/12/17 16:15:41  rschmidt&n; *&t;Added default setting of PhyType (Copper) for YUKON.&n; *&t;Added define around check for HW self test results.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.82  2002/12/05 13:40:21  rschmidt&n; *&t;Added setting of Rx GMAC FIFO Flush Mask register.&n; *&t;Corrected PhyType with new define SK_PHY_MARV_FIBER when&n; *&t;YUKON Fiber board was found.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.81  2002/11/15 12:48:35  rschmidt&n; *&t;Replaced message SKERR_HWI_E018 with SKERR_HWI_E024 for Rx queue error&n; *&t;in SkGeStopPort().&n; *&t;Added init for pAC-&gt;GIni.GIGenesis with SK_FALSE in YUKON-branch.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.80  2002/11/12 17:28:30  rschmidt&n; *&t;Initialized GIPciSlot64 and GIPciClock66 in SkGeInit1().&n; *&t;Reduced PCI FIFO watermarks for 32bit/33MHz bus in SkGeInitBmu().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.79  2002/10/21 09:31:02  mkarl&n; *&t;Changed SkGeInitAssignRamToQueues(), removed call to&n; *&t;SkGeInitAssignRamToQueues in SkGeInit1 and fixed compiler warning in&n; *&t;SkGeInit1.&n; *&t;&n; *&t;Revision 1.78  2002/10/16 15:55:07  mkarl&n; *&t;Fixed a bug in SkGeInitAssignRamToQueues.&n; *&t;&n; *&t;Revision 1.77  2002/10/14 15:07:22  rschmidt&n; *&t;Corrected timeout handling for Rx queue in SkGeStopPort() (#10748)&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.76  2002/10/11 09:24:38  mkarl&n; *&t;Added check for HW self test results.&n; *&t;&n; *&t;Revision 1.75  2002/10/09 16:56:44  mkarl&n; *&t;Now call SkGeInitAssignRamToQueues() in Init Level 1 in order to assign&n; *&t;the adapter memory to the queues. This default assignment is not suitable&n; *&t;for dual net mode.&n; *&t;&n; *&t;Revision 1.74  2002/09/12 08:45:06  rwahl&n; *&t;Set defaults for PMSCap, PLinkSpeed &amp; PLinkSpeedCap dependent on PHY.&n; *&t;&n; *&t;Revision 1.73  2002/08/16 15:19:45  rschmidt&n; *&t;Corrected check for Tx queues in SkGeCheckQSize().&n; *&t;Added init for new entry GIGenesis and GICopperType&n; *&t;Replaced all if(GIChipId == CHIP_ID_GENESIS) with new entry GIGenesis.&n; *&t;Replaced wrong 1st para pAC with IoC in SK_IN/OUT macros.&n; *&t;&n; *&t;Revision 1.72  2002/08/12 13:38:55  rschmidt&n; *&t;Added check if VAUX is available (stored in GIVauxAvail)&n; *&t;Initialized PLinkSpeedCap in Port struct with SK_LSPEED_CAP_1000MBPS&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.71  2002/08/08 16:32:58  rschmidt&n; *&t;Added check for Tx queues in SkGeCheckQSize().&n; *&t;Added start of Time Stamp Timer (YUKON) in SkGeInit2().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.70  2002/07/23 16:04:26  rschmidt&n; *&t;Added init for GIWolOffs (HW-Bug in YUKON 1st rev.)&n; *&t;Minor changes&n; *&t;&n; *&t;Revision 1.69  2002/07/17 17:07:08  rwahl&n; *&t;- SkGeInit1(): fixed PHY type debug output; corrected init of GIFunc&n; *&t;  table &amp; GIMacType.&n; *&t;- Editorial changes.&n; *&t;&n; *&t;Revision 1.68  2002/07/15 18:38:31  rwahl&n; *&t;Added initialization for MAC type dependent function table.&n; *&t;&n; *&t;Revision 1.67  2002/07/15 15:45:39  rschmidt&n; *&t;Added Tx Store &amp; Forward for YUKON (GMAC Tx FIFO is only 1 kB)&n; *&t;Replaced SK_PHY_MARV by SK_PHY_MARV_COPPER&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.66  2002/06/10 09:35:08  rschmidt&n; *&t;Replaced C++ comments (//)&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.65  2002/06/05 08:33:37  rschmidt&n; *&t;Changed GIRamSize and Reset sequence for YUKON.&n; *&t;SkMacInit() replaced by SkXmInitMac() resp. SkGmInitMac()&n; *&t;&n; *&t;Revision 1.64  2002/04/25 13:03:20  rschmidt&n; *&t;Changes for handling YUKON.&n; *&t;Removed reference to xmac_ii.h (not necessary).&n; *&t;Moved all defines into header file.&n; *&t;Replaced all SkXm...() functions with SkMac...() to handle also&n; *&t;YUKON&squot;s GMAC.&n; *&t;Added handling for GMAC FIFO in SkGeInitMacFifo(), SkGeStopPort().&n; *&t;Removed &squot;goto&squot;-directive from SkGeCfgSync(), SkGeCheckQSize().&n; *&t;Replaced all XMAC-access macros by functions: SkMacRxTxDisable(),&n; *&t;SkMacFlushTxFifo().&n; *&t;Optimized timeout handling in SkGeStopPort().&n; *&t;Initialized PLinkSpeed in Port struct with SK_LSPEED_AUTO.&n; *&t;Release of GMAC Link Control reset in SkGeInit1().&n; *&t;Initialized GIChipId and GIChipRev in GE Init structure.&n; *&t;Added GIRamSize and PhyType values for YUKON.&n; *&t;Removed use of PRxCmd to setup XMAC.&n; *&t;Moved setting of XM_RX_DIS_CEXT to SkXmInitMac().&n; *&t;Use of SkGeXmitLED() only for GENESIS.&n; *&t;Changes for V-CPU support.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.63  2001/04/05 11:02:09  rassmann&n; *&t;Stop Port check of the STOP bit did not take 2/18 sec as wanted.&n; *&t;&n; *&t;Revision 1.62  2001/02/07 07:54:21  rassmann&n; *&t;Corrected copyright.&n; *&t;&n; *&t;Revision 1.61  2001/01/31 15:31:40  gklug&n; *&t;fix: problem with autosensing an SR8800 switch&n; *&t;&n; *&t;Revision 1.60  2000/10/18 12:22:21  cgoos&n; *&t;Added workaround for half duplex hangup.&n; *&t;&n; *&t;Revision 1.59  2000/10/10 11:22:06  gklug&n; *&t;add: in manual half duplex mode ignore carrier extension errors&n; *&t;&n; *&t;Revision 1.58  2000/10/02 14:10:27  rassmann&n; *&t;Reading BCOM PHY after releasing reset until it returns a valid value.&n; *&t;&n; *&t;Revision 1.57  2000/08/03 14:55:28  rassmann&n; *&t;Waiting for I2C to be ready before de-initializing adapter&n; *&t;(prevents sensors from hanging up).&n; *&t;&n; *&t;Revision 1.56  2000/07/27 12:16:48  gklug&n; *&t;fix: Stop Port check of the STOP bit does now take 2/18 sec as wanted&n; *&t;&n; *&t;Revision 1.55  1999/11/22 13:32:26  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.54  1999/10/26 07:32:54  malthoff&n; *&t;Initialize PHWLinkUp with SK_FALSE. Required for Diagnostics.&n; *&t;&n; *&t;Revision 1.53  1999/08/12 19:13:50  malthoff&n; *&t;Fix for 1000BT. Do not owerwrite XM_MMU_CMD when&n; *&t;disabling receiver and transmitter. Other bits&n; *&t;may be lost.&n; *&t;&n; *&t;Revision 1.52  1999/07/01 09:29:54  gklug&n; *&t;fix: DoInitRamQueue needs pAC&n; *&t;&n; *&t;Revision 1.51  1999/07/01 08:42:21  gklug&n; *&t;chg: use Store &amp; forward for RAM buffer when Jumbos are used&n; *&t;&n; *&t;Revision 1.50  1999/05/27 13:19:38  cgoos&n; *&t;Added Tx PCI watermark initialization.&n; *&t;Removed Tx RAM queue Store &amp; Forward setting.&n; *&t;&n; *&t;Revision 1.49  1999/05/20 14:32:45  malthoff&n; *&t;SkGeLinkLED() is completly removed now.&n; *&t;&n; *&t;Revision 1.48  1999/05/19 07:28:24  cgoos&n; *&t;SkGeLinkLED no more available for drivers.&n; *&t;Changes for 1000Base-T.&n; *&t;&n; *&t;Revision 1.47  1999/04/08 13:57:45  gklug&n; *&t;add: Init of new port struct fiels PLinkResCt&n; *&t;chg: StopPort Timer check&n; *&t;&n; *&t;Revision 1.46  1999/03/25 07:42:15  malthoff&n; *&t;SkGeStopPort(): Add workaround for cache incoherency.&n; *&t;&t;&t;Create error log entry, disable port, and&n; *&t;&t;&t;exit loop if it does not terminate.&n; *&t;Add XM_RX_LENERR_OK to the default value for the&n; *&t;XMAC receive command register.&n; *&t;&n; *&t;Revision 1.45  1999/03/12 16:24:47  malthoff&n; *&t;Remove PPollRxD and PPollTxD.&n; *&t;Add check for GIPollTimerVal.&n; *&n; *&t;Revision 1.44  1999/03/12 13:40:23  malthoff&n; *&t;Fix: SkGeXmitLED(), SK_LED_TST mode does not work.&n; *&t;Add: Jumbo frame support.&n; *&t;Chg: Resolution of parameter IntTime in SkGeCfgSync().&n; *&n; *&t;Revision 1.43  1999/02/09 10:29:46  malthoff&n; *&t;Bugfix: The previous modification again also for the second location.&n; *&n; *&t;Revision 1.42  1999/02/09 09:35:16  malthoff&n; *&t;Bugfix: The bits &squot;66 MHz Capable&squot; and &squot;NEWCAP are reset while&n; *&t;&t;clearing the error bits in the PCI status register.&n; *&n; *&t;Revision 1.41  1999/01/18 13:07:02  malthoff&n; *&t;Bugfix: Do not use CFG cycles after during Init- or Runtime, because&n; *&t;&t;they may not be available after Boottime.&n; *&n; *&t;Revision 1.40  1999/01/11 12:40:49  malthoff&n; *&t;Bug fix: PCI_STATUS: clearing error bits sets the UDF bit.&n; *&n; *&t;Revision 1.39  1998/12/11 15:17:33  gklug&n; *&t;chg: Init LipaAutoNeg with Unknown&n; *&n; *&t;Revision 1.38  1998/12/10 11:02:57  malthoff&n; *&t;Disable Error Log Message when calling SkGeInit(level 2)&n; *&t;more than once.&n; *&n; *&t;Revision 1.37  1998/12/07 12:18:25  gklug&n; *&t;add: refinement of autosense mode: take into account the autoneg cap of LiPa&n; *&n; *&t;Revision 1.36  1998/12/07 07:10:39  gklug&n; *&t;fix: init values of LinkBroken/ Capabilities for management&n; *&n; *&t;Revision 1.35  1998/12/02 10:56:20  gklug&n; *&t;fix: do NOT init LoinkSync Counter.&n; *&n; *&t;Revision 1.34  1998/12/01 10:53:21  gklug&n; *&t;add: init of additional Counters for workaround&n; *&n; *&t;Revision 1.33  1998/12/01 10:00:49  gklug&n; *&t;add: init PIsave var in Port struct&n; *&n; *&t;Revision 1.32  1998/11/26 14:50:40  gklug&n; *&t;chg: Default is autosensing with AUTOFULL mode&n; *&n; *&t;Revision 1.31  1998/11/25 15:36:16  gklug&n; *&t;fix: do NOT stop LED Timer when port should be stopped&n; *&n; *&t;Revision 1.30  1998/11/24 13:15:28  gklug&n; *&t;add: Init PCkeckPar struct member&n; *&n; *&t;Revision 1.29  1998/11/18 13:19:27  malthoff&n; *&t;Disable packet arbiter timeouts on receive side.&n; *&t;Use maximum timeout value for packet arbiter&n; *&t;transmit timeouts.&n; *&t;Add TestStopBit() function to handle stop RX/TX&n; *&t;problem with active descriptor poll timers.&n; *&t;Bug Fix: Descriptor Poll Timer not started, because&n; *&t;GIPollTimerVal was initialized with 0.&n; *&n; *&t;Revision 1.28  1998/11/13 14:24:26  malthoff&n; *&t;Bug Fix: SkGeStopPort() may hang if a Packet Arbiter Timout&n; *&t;is pending or occurs while waiting for TX_STOP and RX_STOP.&n; *&t;The PA timeout is cleared now while waiting for TX- or RX_STOP.&n; *&n; *&t;Revision 1.27  1998/11/02 11:04:36  malthoff&n; *&t;fix the last fix&n; *&n; *&t;Revision 1.26  1998/11/02 10:37:03  malthoff&n; *&t;Fix: SkGePollTxD() enables always the synchronounous poll timer.&n; *&n; *&t;Revision 1.25  1998/10/28 07:12:43  cgoos&n; *&t;Fixed &quot;LED_STOP&quot; in SkGeLnkSyncCnt, &quot;== SK_INIT_IO&quot; in SkGeInit.&n; *&t;Removed: Reset of RAM Interface in SkGeStopPort.&n; *&n; *&t;Revision 1.24  1998/10/27 08:13:12  malthoff&n; *&t;Remove temporary code.&n; *&n; *&t;Revision 1.23  1998/10/26 07:45:03  malthoff&n; *&t;Add Address Calculation Workaround: If the EPROM byte&n; *&t;Id is 3, the address offset is 512 kB.&n; *&t;Initialize default values for PLinkMode and PFlowCtrlMode.&n; *&n; *&t;Revision 1.22  1998/10/22 09:46:47  gklug&n; *&t;fix SysKonnectFileId typo&n; *&n; *&t;Revision 1.21  1998/10/20 12:11:56  malthoff&n; *&t;Don&squot;t dendy the Queue config if the size of the unused&n; *&t;Rx qeueu is zero.&n; *&n; *&t;Revision 1.20  1998/10/19 07:27:58  malthoff&n; *&t;SkGeInitRamIface() is public to be called by diagnostics.&n; *&n; *&t;Revision 1.19  1998/10/16 13:33:45  malthoff&n; *&t;Fix: enabling descriptor polling is not allowed until&n; *&t;the descriptor addresses are set. Descriptor polling&n; *&t;must be handled by the driver.&n; *&n; *&t;Revision 1.18  1998/10/16 10:58:27  malthoff&n; *&t;Remove temp. code for Diag prototype.&n; *&t;Remove lint warning for dummy reads.&n; *&t;Call SkGeLoadLnkSyncCnt() during SkGeInitPort().&n; *&n; *&t;Revision 1.17  1998/10/14 09:16:06  malthoff&n; *&t;Change parameter LimCount and programming of&n; *&t;the limit counter in SkGeCfgSync().&n; *&n; *&t;Revision 1.16  1998/10/13 09:21:16  malthoff&n; *&t;Don&squot;t set XM_RX_SELF_RX in RxCmd Reg, because it&squot;s&n; *&t;like a Loopback Mode in half duplex.&n; *&n; *&t;Revision 1.15  1998/10/09 06:47:40  malthoff&n; *&t;SkGeInitMacArb(): set recovery counters init value&n; *&t;to zero although this counters are not uesd.&n; *&t;Bug fix in Rx Upper/Lower Pause Threshold calculation.&n; *&t;Add XM_RX_SELF_RX to RxCmd.&n; *&n; *&t;Revision 1.14  1998/10/06 15:15:53  malthoff&n; *&t;Make sure no pending IRQ is cleared in SkGeLoadLnkSyncCnt().&n; *&n; *&t;Revision 1.13  1998/10/06 14:09:36  malthoff&n; *&t;Add SkGeLoadLnkSyncCnt(). Modify&n; *&t;the &squot;port stopped&squot; condition according&n; *&t;to the current problem report.&n; *&n; *&t;Revision 1.12  1998/10/05 08:17:21  malthoff&n; *&t;Add functions: SkGePollRxD(), SkGePollTxD(),&n; *&t;DoCalcAddr(), SkGeCheckQSize(),&n; *&t;DoInitRamQueue(), and SkGeCfgSync().&n; *&t;Add coding for SkGeInitMacArb(), SkGeInitPktArb(),&n; *&t;SkGeInitMacFifo(), SkGeInitRamBufs(),&n; *&t;SkGeInitRamIface(), and SkGeInitBmu().&n; *&n; *&t;Revision 1.11  1998/09/29 08:26:29  malthoff&n; *&t;bug fix: SkGeInit0() &squot;i&squot; should be increment.&n; *&n; *&t;Revision 1.10  1998/09/28 13:19:01  malthoff&n; *&t;Coding time: Save the done work.&n; *&t;Modify SkGeLinkLED(), add SkGeXmitLED(),&n; *&t;define SkGeCheckQSize(), SkGeInitMacArb(),&n; *&t;SkGeInitPktArb(), SkGeInitMacFifo(),&n; *&t;SkGeInitRamBufs(), SkGeInitRamIface(),&n; *&t;and SkGeInitBmu(). Do coding for SkGeStopPort(),&n; *&t;SkGeInit1(), SkGeInit2(), and SkGeInit3().&n; *&t;Do coding for SkGeDinit() and SkGeInitPort().&n; *&n; *&t;Revision 1.9  1998/09/16 14:29:05  malthoff&n; *&t;Some minor changes.&n; *&n; *&t;Revision 1.8  1998/09/11 05:29:14  gklug&n; *&t;add: init state of a port&n; *&n; *&t;Revision 1.7  1998/09/04 09:26:25  malthoff&n; *&t;Short temporary modification.&n; *&n; *&t;Revision 1.6  1998/09/04 08:27:59  malthoff&n; *&t;Remark the do-while in StopPort() because it never ends&n; *&t;without a GE adapter.&n; *&n; *&t;Revision 1.5  1998/09/03 14:05:45  malthoff&n; *&t;Change comment for SkGeInitPort(). Do not&n; *&t;repair the queue sizes if invalid.&n; *&n; *&t;Revision 1.4  1998/09/03 10:03:19  malthoff&n; *&t;Implement the new interface according to the&n; *&t;reviewed interface specification.&n; *&n; *&t;Revision 1.3  1998/08/19 09:11:25  gklug&n; *&t;fix: struct are removed from c-source (see CCC)&n; *&n; *&t;Revision 1.2  1998/07/28 12:33:58  malthoff&n; *&t;Add &squot;IoC&squot; parameter in function declaration and SK IO macros.&n; *&n; *&t;Revision 1.1  1998/07/23 09:48:57  malthoff&n; *&t;Creation. First dummy &squot;C&squot; file.&n; *&t;SkGeInit(Level 0) is card_start for GE.&n; *&t;SkGeDeInit() is card_stop for GE.&n; *&n; *&n; ******************************************************************************/
 macro_line|#include &quot;h/skdrv1st.h&quot;
-macro_line|#include &quot;h/xmac_ii.h&quot;
 macro_line|#include &quot;h/skdrv2nd.h&quot;
-multiline_comment|/* defines ********************************************************************/
-multiline_comment|/* defines for SkGeXmitLed() */
-DECL|macro|XMIT_LED_INI
-mdefine_line|#define XMIT_LED_INI&t;0
-DECL|macro|XMIT_LED_CNT
-mdefine_line|#define XMIT_LED_CNT&t;(RX_LED_VAL - RX_LED_INI)
-DECL|macro|XMIT_LED_CTRL
-mdefine_line|#define XMIT_LED_CTRL&t;(RX_LED_CTRL- RX_LED_INI)
-DECL|macro|XMIT_LED_TST
-mdefine_line|#define XMIT_LED_TST&t;(RX_LED_TST - RX_LED_INI)
-multiline_comment|/* Queue Size units */
-DECL|macro|QZ_UNITS
-mdefine_line|#define QZ_UNITS&t;0x7
-multiline_comment|/* Types of RAM Buffer Queues */
-DECL|macro|SK_RX_SRAM_Q
-mdefine_line|#define SK_RX_SRAM_Q&t;1&t;/* small receive queue */
-DECL|macro|SK_RX_BRAM_Q
-mdefine_line|#define SK_RX_BRAM_Q&t;2&t;/* big receive queue */
-DECL|macro|SK_TX_RAM_Q
-mdefine_line|#define SK_TX_RAM_Q&t;3&t;/* small or big transmit queue */
-multiline_comment|/* typedefs *******************************************************************/
 multiline_comment|/* global variables ***********************************************************/
 multiline_comment|/* local variables ************************************************************/
+macro_line|#if (defined(DEBUG) || ((!defined(LINT)) &amp;&amp; (!defined(SK_SLIM))))
 DECL|variable|SysKonnectFileId
 r_static
 r_const
@@ -35,8 +14,9 @@ id|SysKonnectFileId
 (braket
 )braket
 op_assign
-l_string|&quot;@(#)$Id: skgeinit.c,v 1.63 2001/04/05 11:02:09 rassmann Exp $ (C) SK &quot;
+l_string|&quot;@(#) $Id: skgeinit.c,v 1.93 2003/05/28 15:44:43 rschmidt Exp $ (C) Marvell.&quot;
 suffix:semicolon
+macro_line|#endif
 DECL|struct|s_QOffTab
 r_struct
 id|s_QOffTab
@@ -84,7 +64,58 @@ id|Q_XA2
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkGePollRxD() - Enable/Disable Descriptor Polling of RxD Ring&n; *&n; * Description:&n; *&t;Enable or disable the descriptor polling the receive descriptor&n; *&t;ring (RxD) of port &squot;port&squot;.&n; *&t;The new configuration is *not* saved over any SkGeStopPort() and&n; *&t;SkGeInitPort() calls.&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|struct|s_Config
+r_struct
+id|s_Config
+(brace
+DECL|member|ScanString
+r_char
+id|ScanString
+(braket
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|Value
+id|SK_U32
+id|Value
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|variable|OemConfig
+r_static
+r_struct
+id|s_Config
+id|OemConfig
+op_assign
+(brace
+(brace
+l_char|&squot;O&squot;
+comma
+l_char|&squot;E&squot;
+comma
+l_char|&squot;M&squot;
+comma
+l_char|&squot;_&squot;
+comma
+l_char|&squot;C&squot;
+comma
+l_char|&squot;o&squot;
+comma
+l_char|&squot;n&squot;
+comma
+l_char|&squot;f&squot;
+)brace
+comma
+macro_line|#ifdef SK_OEM_CONFIG
+id|OEM_CONFIG_VALUE
+comma
+macro_line|#else
+l_int|0
+comma
+macro_line|#endif
+)brace
+suffix:semicolon
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGePollRxD() - Enable / Disable Descriptor Polling of RxD Ring&n; *&n; * Description:&n; *&t;Enable or disable the descriptor polling of the receive descriptor&n; *&t;ring (RxD) for port &squot;Port&squot;.&n; *&t;The new configuration is *not* saved over any SkGeStopPort() and&n; *&t;SkGeInitPort() calls.&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkGePollRxD
 r_void
 id|SkGePollRxD
@@ -120,51 +151,32 @@ id|pAC-&gt;GIni.GP
 id|Port
 )braket
 suffix:semicolon
-r_if
-c_cond
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|Q_ADDR
+c_func
+(paren
+id|pPrt-&gt;PRxQOff
+comma
+id|Q_CSR
+)paren
+comma
 (paren
 id|PollRxD
 )paren
-(brace
-id|SK_OUT32
-c_func
-(paren
-id|IoC
-comma
-id|Q_ADDR
-c_func
-(paren
-id|pPrt-&gt;PRxQOff
-comma
-id|Q_CSR
-)paren
-comma
+ques
+c_cond
 id|CSR_ENA_POL
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|SK_OUT32
-c_func
-(paren
-id|IoC
-comma
-id|Q_ADDR
-c_func
-(paren
-id|pPrt-&gt;PRxQOff
-comma
-id|Q_CSR
-)paren
-comma
+suffix:colon
 id|CSR_DIS_POL
 )paren
 suffix:semicolon
 )brace
-)brace
 multiline_comment|/* SkGePollRxD */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkGePollTxD() - Enable/Disable Descriptor Polling of TxD Rings&n; *&n; * Description:&n; *&t;Enable or disable the descriptor polling the transmit descriptor&n; *&t;ring(s) (RxD) of port &squot;port&squot;.&n; *&t;The new configuration is *not* saved over any SkGeStopPort() and&n; *&t;SkGeInitPort() calls.&n; *&n; * Returns:&n; *&t;nothing&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGePollTxD() - Enable / Disable Descriptor Polling of TxD Rings&n; *&n; * Description:&n; *&t;Enable or disable the descriptor polling of the transmit descriptor&n; *&t;ring(s) (TxD) for port &squot;Port&squot;.&n; *&t;The new configuration is *not* saved over any SkGeStopPort() and&n; *&t;SkGeInitPort() calls.&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkGePollTxD
 r_void
 id|SkGePollTxD
@@ -203,24 +215,20 @@ id|pAC-&gt;GIni.GP
 id|Port
 )braket
 suffix:semicolon
-r_if
-c_cond
+id|DWord
+op_assign
+(paren
+id|SK_U32
+)paren
 (paren
 id|PollTxD
-)paren
-(brace
-id|DWord
-op_assign
+ques
+c_cond
 id|CSR_ENA_POL
-suffix:semicolon
-)brace
-r_else
-(brace
-id|DWord
-op_assign
+suffix:colon
 id|CSR_DIS_POL
+)paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -329,6 +337,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* SkGeYellowLED */
+macro_line|#if (!defined(SK_SLIM) || defined(GENESIS))
 multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeXmitLED() - Modify the Operational Mode of a transmission LED.&n; *&n; * Description:&n; *&t;The Rx or Tx LED which is specified by &squot;Led&squot; will be&n; *&t;enabled, disabled or switched on in test mode.&n; *&n; * Note:&n; *&t;&squot;Led&squot; must contain the address offset of the LEDs INI register.&n; *&n; * Usage:&n; *&t;SkGeXmitLED(pAC, IoC, MR_ADDR(Port, TX_LED_INI), SK_LED_ENA);&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkGeXmitLED
 r_void
@@ -479,7 +488,8 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * 1000BT: The Transmit LED is driven by the PHY.&n;&t; * But the default LED configuration is used for&n;&t; * Level One and Broadcom PHYs.&n;&t; * (Broadcom: It may be that PHY_B_PEC_EN_LTR has to be set.)&n;&t; * (In this case it has to be added here. But we will see. XXX)&n;&t; */
 )brace
 multiline_comment|/* SkGeXmitLED */
-multiline_comment|/******************************************************************************&n; *&n; *&t;DoCalcAddr() - Calculates the start and the end address of a queue.&n; *&n; * Description:&n; *&t;This function calculates the start- end the end address&n; *&t;of a queue. Afterwards the &squot;StartVal&squot; is incremented to the&n; *&t;next start position.&n; *&t;If the port is already initialized the calculated values&n; *&t;will be checked against the configured values and an&n; *&t;error will be returned, if they are not equal.&n; *&t;If the port is not initialized the values will be written to&n; *&t;*StartAdr and *EndAddr.&n; *&n; * Returns:&n; *&t;0:&t;success&n; *&t;1:&t;configuration error&n; */
+macro_line|#endif&t;/* !SK_SLIM || GENESIS */
+multiline_comment|/******************************************************************************&n; *&n; *&t;DoCalcAddr() - Calculates the start and the end address of a queue.&n; *&n; * Description:&n; *&t;This function calculates the start and the end address of a queue.&n; *  Afterwards the &squot;StartVal&squot; is incremented to the next start position.&n; *&t;If the port is already initialized the calculated values&n; *&t;will be checked against the configured values and an&n; *&t;error will be returned, if they are not equal.&n; *&t;If the port is not initialized the values will be written to&n; *&t;*StartAdr and *EndAddr.&n; *&n; * Returns:&n; *&t;0:&t;success&n; *&t;1:&t;configuration error&n; */
 DECL|function|DoCalcAddr
 r_static
 r_int
@@ -492,6 +502,7 @@ id|pAC
 comma
 multiline_comment|/* adapter context */
 id|SK_GEPORT
+id|SK_FAR
 op_star
 id|pPrt
 comma
@@ -501,16 +512,19 @@ id|QuSize
 comma
 multiline_comment|/* size of the queue to configure in kB */
 id|SK_U32
+id|SK_FAR
 op_star
 id|StartVal
 comma
 multiline_comment|/* start value for address calculation */
 id|SK_U32
+id|SK_FAR
 op_star
 id|QuStartAddr
 comma
 multiline_comment|/* start addr to calculate */
 id|SK_U32
+id|SK_FAR
 op_star
 id|QuEndAddr
 )paren
@@ -621,13 +635,385 @@ op_assign
 id|NextStart
 suffix:semicolon
 r_return
-(paren
 id|Rtv
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* DoCalcAddr */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeCheckQSize() - Checks the Adapters Queue Size Configuration&n; *&n; * Description:&n; *&t;This function verifies the Queue Size Configuration specified&n; *&t;in the variabels PRxQSize, PXSQSize, and PXAQSize of all&n; *&t;used ports.&n; *&t;This requirements must be fullfilled to have a valid configuration:&n; *&t;&t;- The size of all queues must not exceed GIRamSize.&n; *&t;&t;- The queue sizes must be specified in units of 8 kB.&n; *&t;&t;- The size of rx queues of available ports must not be&n; *&t;&t;  smaller than 16kB.&n; *&t;&t;- The RAM start and end addresses must not be changed&n; *&t;&t;  for ports which are already initialized.&n; *&t;Furthermore SkGeCheckQSize() defines the Start and End&n; *&t;Addresses of all ports and stores them into the HWAC port&n; *&t;structure.&n; *&n; * Returns:&n; *&t;0:&t;Queue Size Configuration valid&n; *&t;1:&t;Queue Size Configuration invalid&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInitAssignRamToQueues() - allocate default queue sizes&n; *&n; * Description:&n; *&t;This function assigns the memory to the different queues and ports.&n; *&t;When DualNet is set to SK_TRUE all ports get the same amount of memory.&n; *  Otherwise the first port gets most of the memory and all the&n; *&t;other ports just the required minimum.&n; *&t;This function can only be called when pAC-&gt;GIni.GIRamSize and&n; *&t;pAC-&gt;GIni.GIMacsFound have been initialized, usually this happens&n; *&t;at init level 1&n; *&n; * Returns:&n; *&t;0 - ok&n; *&t;1 - invalid input values&n; *&t;2 - not enough memory&n; */
+DECL|function|SkGeInitAssignRamToQueues
+r_int
+id|SkGeInitAssignRamToQueues
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter context */
+r_int
+id|ActivePort
+comma
+multiline_comment|/* Active Port in RLMT mode */
+id|SK_BOOL
+id|DualNet
+)paren
+multiline_comment|/* adapter context */
+(brace
+r_int
+id|i
+suffix:semicolon
+r_int
+id|UsedKilobytes
+suffix:semicolon
+multiline_comment|/* memory already assigned */
+r_int
+id|ActivePortKilobytes
+suffix:semicolon
+multiline_comment|/* memory available for active port */
+id|SK_GEPORT
+op_star
+id|pGePort
+suffix:semicolon
+id|UsedKilobytes
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ActivePort
+op_ge
+id|pAC-&gt;GIni.GIMacsFound
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_INIT
+comma
+(paren
+l_string|&quot;SkGeInitAssignRamToQueues: ActivePort (%d) invalid&bslash;n&quot;
+comma
+id|ActivePort
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|pAC-&gt;GIni.GIMacsFound
+op_star
+(paren
+id|SK_MIN_RXQ_SIZE
+op_plus
+id|SK_MIN_TXQ_SIZE
+)paren
+)paren
+op_plus
+(paren
+(paren
+id|RAM_QUOTA_SYNC
+op_eq
+l_int|0
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+id|SK_MIN_TXQ_SIZE
+)paren
+)paren
+OG
+id|pAC-&gt;GIni.GIRamSize
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_INIT
+comma
+(paren
+l_string|&quot;SkGeInitAssignRamToQueues: Not enough memory (%d)&bslash;n&quot;
+comma
+id|pAC-&gt;GIni.GIRamSize
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|2
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|DualNet
+)paren
+(brace
+multiline_comment|/* every port gets the same amount of memory */
+id|ActivePortKilobytes
+op_assign
+id|pAC-&gt;GIni.GIRamSize
+op_div
+id|pAC-&gt;GIni.GIMacsFound
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|pAC-&gt;GIni.GIMacsFound
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|pGePort
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|i
+)braket
+suffix:semicolon
+multiline_comment|/* take away the minimum memory for active queues */
+id|ActivePortKilobytes
+op_sub_assign
+(paren
+id|SK_MIN_RXQ_SIZE
+op_plus
+id|SK_MIN_TXQ_SIZE
+)paren
+suffix:semicolon
+multiline_comment|/* receive queue gets the minimum + 80% of the rest */
+id|pGePort-&gt;PRxQSize
+op_assign
+(paren
+r_int
+)paren
+(paren
+id|ROUND_QUEUE_SIZE_KB
+c_func
+(paren
+(paren
+id|ActivePortKilobytes
+op_star
+(paren
+r_int
+r_int
+)paren
+id|RAM_QUOTA_RX
+)paren
+op_div
+l_int|100
+)paren
+)paren
+op_plus
+id|SK_MIN_RXQ_SIZE
+suffix:semicolon
+id|ActivePortKilobytes
+op_sub_assign
+(paren
+id|pGePort-&gt;PRxQSize
+op_minus
+id|SK_MIN_RXQ_SIZE
+)paren
+suffix:semicolon
+multiline_comment|/* synchronous transmit queue */
+id|pGePort-&gt;PXSQSize
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* asynchronous transmit queue */
+id|pGePort-&gt;PXAQSize
+op_assign
+(paren
+r_int
+)paren
+id|ROUND_QUEUE_SIZE_KB
+c_func
+(paren
+id|ActivePortKilobytes
+op_plus
+id|SK_MIN_TXQ_SIZE
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/* Rlmt Mode or single link adapter */
+multiline_comment|/* Set standby queue size defaults for all standby ports */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|pAC-&gt;GIni.GIMacsFound
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|i
+op_ne
+id|ActivePort
+)paren
+(brace
+id|pGePort
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|i
+)braket
+suffix:semicolon
+id|pGePort-&gt;PRxQSize
+op_assign
+id|SK_MIN_RXQ_SIZE
+suffix:semicolon
+id|pGePort-&gt;PXAQSize
+op_assign
+id|SK_MIN_TXQ_SIZE
+suffix:semicolon
+id|pGePort-&gt;PXSQSize
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Count used RAM */
+id|UsedKilobytes
+op_add_assign
+id|pGePort-&gt;PRxQSize
+op_plus
+id|pGePort-&gt;PXAQSize
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* what&squot;s left? */
+id|ActivePortKilobytes
+op_assign
+id|pAC-&gt;GIni.GIRamSize
+op_minus
+id|UsedKilobytes
+suffix:semicolon
+multiline_comment|/* assign it to the active port */
+multiline_comment|/* first take away the minimum memory */
+id|ActivePortKilobytes
+op_sub_assign
+(paren
+id|SK_MIN_RXQ_SIZE
+op_plus
+id|SK_MIN_TXQ_SIZE
+)paren
+suffix:semicolon
+id|pGePort
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|ActivePort
+)braket
+suffix:semicolon
+multiline_comment|/* receive queue get&squot;s the minimum + 80% of the rest */
+id|pGePort-&gt;PRxQSize
+op_assign
+(paren
+r_int
+)paren
+(paren
+id|ROUND_QUEUE_SIZE_KB
+c_func
+(paren
+(paren
+id|ActivePortKilobytes
+op_star
+(paren
+r_int
+r_int
+)paren
+id|RAM_QUOTA_RX
+)paren
+op_div
+l_int|100
+)paren
+)paren
+op_plus
+id|SK_MIN_RXQ_SIZE
+suffix:semicolon
+id|ActivePortKilobytes
+op_sub_assign
+(paren
+id|pGePort-&gt;PRxQSize
+op_minus
+id|SK_MIN_RXQ_SIZE
+)paren
+suffix:semicolon
+multiline_comment|/* synchronous transmit queue */
+id|pGePort-&gt;PXSQSize
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* asynchronous transmit queue */
+id|pGePort-&gt;PXAQSize
+op_assign
+(paren
+r_int
+)paren
+id|ROUND_QUEUE_SIZE_KB
+c_func
+(paren
+id|ActivePortKilobytes
+)paren
+op_plus
+id|SK_MIN_TXQ_SIZE
+suffix:semicolon
+)brace
+macro_line|#ifdef VCPU
+id|VCPUprintf
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;PRxQSize=%u, PXSQSize=%u, PXAQSize=%u&bslash;n&quot;
+comma
+id|pGePort-&gt;PRxQSize
+comma
+id|pGePort-&gt;PXSQSize
+comma
+id|pGePort-&gt;PXAQSize
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* SkGeInitAssignRamToQueues */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeCheckQSize() - Checks the Adapters Queue Size Configuration&n; *&n; * Description:&n; *&t;This function verifies the Queue Size Configuration specified&n; *&t;in the variables PRxQSize, PXSQSize, and PXAQSize of all&n; *&t;used ports.&n; *&t;This requirements must be fullfilled to have a valid configuration:&n; *&t;&t;- The size of all queues must not exceed GIRamSize.&n; *&t;&t;- The queue sizes must be specified in units of 8 kB.&n; *&t;&t;- The size of Rx queues of available ports must not be&n; *&t;&t;  smaller than 16 kB.&n; *&t;&t;- The size of at least one Tx queue (synch. or asynch.)&n; *        of available ports must not be smaller than 16 kB&n; *        when Jumbo Frames are used.&n; *&t;&t;- The RAM start and end addresses must not be changed&n; *&t;&t;  for ports which are already initialized.&n; *&t;Furthermore SkGeCheckQSize() defines the Start and End Addresses&n; *  of all ports and stores them into the HWAC port&t;structure.&n; *&n; * Returns:&n; *&t;0:&t;Queue Size Configuration valid&n; *&t;1:&t;Queue Size Configuration invalid&n; */
 DECL|function|SkGeCheckQSize
 r_static
 r_int
@@ -649,9 +1035,6 @@ op_star
 id|pPrt
 suffix:semicolon
 r_int
-id|UsedMem
-suffix:semicolon
-r_int
 id|i
 suffix:semicolon
 r_int
@@ -663,11 +1046,18 @@ suffix:semicolon
 id|SK_U32
 id|StartAddr
 suffix:semicolon
+macro_line|#ifndef SK_SLIM
+r_int
 id|UsedMem
+suffix:semicolon
+multiline_comment|/* total memory used (max. found ports) */
+macro_line|#endif&t;
+id|Rtv
 op_assign
 l_int|0
 suffix:semicolon
-id|Rtv
+macro_line|#ifndef SK_SLIM
+id|UsedMem
 op_assign
 l_int|0
 suffix:semicolon
@@ -702,18 +1092,24 @@ id|pPrt-&gt;PRxQSize
 op_amp
 id|QZ_UNITS
 )paren
+op_ne
+l_int|0
 op_logical_or
 (paren
 id|pPrt-&gt;PXSQSize
 op_amp
 id|QZ_UNITS
 )paren
+op_ne
+l_int|0
 op_logical_or
 (paren
 id|pPrt-&gt;PXAQSize
 op_amp
 id|QZ_UNITS
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SK_ERR_LOG
@@ -728,22 +1124,10 @@ comma
 id|SKERR_HWI_E012MSG
 )paren
 suffix:semicolon
-id|Rtv
-op_assign
+r_return
 l_int|1
 suffix:semicolon
-r_goto
-id|CheckQSizeEnd
-suffix:semicolon
 )brace
-id|UsedMem
-op_add_assign
-id|pPrt-&gt;PRxQSize
-op_plus
-id|pPrt-&gt;PXSQSize
-op_plus
-id|pPrt-&gt;PXAQSize
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -768,14 +1152,81 @@ comma
 id|SKERR_HWI_E011MSG
 )paren
 suffix:semicolon
-id|Rtv
-op_assign
+r_return
 l_int|1
 suffix:semicolon
-r_goto
-id|CheckQSizeEnd
+)brace
+multiline_comment|/*&n;&t;&t; * the size of at least one Tx queue (synch. or asynch.) has to be &gt; 0.&n;&t;&t; * if Jumbo Frames are used, this size has to be &gt;= 16 kB.&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|i
+op_eq
+id|Port
+op_logical_and
+id|pPrt-&gt;PXSQSize
+op_eq
+l_int|0
+op_logical_and
+id|pPrt-&gt;PXAQSize
+op_eq
+l_int|0
+)paren
+op_logical_or
+(paren
+id|pAC-&gt;GIni.GIPortUsage
+op_eq
+id|SK_JUMBO_LINK
+op_logical_and
+(paren
+(paren
+id|pPrt-&gt;PXSQSize
+OG
+l_int|0
+op_logical_and
+id|pPrt-&gt;PXSQSize
+OL
+id|SK_MIN_TXQ_SIZE
+)paren
+op_logical_or
+(paren
+id|pPrt-&gt;PXAQSize
+OG
+l_int|0
+op_logical_and
+id|pPrt-&gt;PXAQSize
+OL
+id|SK_MIN_TXQ_SIZE
+)paren
+)paren
+)paren
+)paren
+(brace
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_SW
+comma
+id|SKERR_HWI_E023
+comma
+id|SKERR_HWI_E023MSG
+)paren
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
+id|UsedMem
+op_add_assign
+id|pPrt-&gt;PRxQSize
+op_plus
+id|pPrt-&gt;PXSQSize
+op_plus
+id|pPrt-&gt;PXAQSize
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -797,14 +1248,11 @@ comma
 id|SKERR_HWI_E012MSG
 )paren
 suffix:semicolon
-id|Rtv
-op_assign
+r_return
 l_int|1
 suffix:semicolon
-r_goto
-id|CheckQSizeEnd
-suffix:semicolon
 )brace
+macro_line|#endif&t;/* !SK_SLIM */
 multiline_comment|/* Now start address calculation */
 id|StartAddr
 op_assign
@@ -859,7 +1307,7 @@ id|Rtv
 op_or_assign
 id|Rtv2
 suffix:semicolon
-multiline_comment|/* Calculate/Check values for the synchronous tx queue */
+multiline_comment|/* Calculate/Check values for the synchronous Tx queue */
 id|Rtv2
 op_assign
 id|DoCalcAddr
@@ -885,7 +1333,7 @@ id|Rtv
 op_or_assign
 id|Rtv2
 suffix:semicolon
-multiline_comment|/* Calculate/Check values for the asynchronous tx queue */
+multiline_comment|/* Calculate/Check values for the asynchronous Tx queue */
 id|Rtv2
 op_assign
 id|DoCalcAddr
@@ -929,20 +1377,18 @@ comma
 id|SKERR_HWI_E013MSG
 )paren
 suffix:semicolon
-r_break
+r_return
+l_int|1
 suffix:semicolon
 )brace
 )brace
-id|CheckQSizeEnd
-suffix:colon
 r_return
-(paren
-id|Rtv
-)paren
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* SkGeCheckQSize */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInitMacArb() - Initialize the MAC Arbiter&n; *&n; * Description:&n; *&t;This function initializes the MAC Arbiter.&n; *&t;It must not be called if there is still an&n; *&t;initilaized or active port.&n; *&n; * Returns:&n; *&t;nothing:&n; */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInitMacArb() - Initialize the MAC Arbiter&n; *&n; * Description:&n; *&t;This function initializes the MAC Arbiter.&n; *&t;It must not be called if there is still an&n; *&t;initialized or active port.&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkGeInitMacArb
 r_static
 r_void
@@ -1053,10 +1499,10 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* recovery values are needed for XMAC II Rev. B2 only */
 multiline_comment|/* Fast Output Enable Mode was intended to use with Rev. B2, but now? */
-multiline_comment|/*&n;&t; * There is not start or enable buttom to push, therefore&n;&t; * the MAC arbiter is configured and enabled now.&n;&t; */
+multiline_comment|/*&n;&t; * There is no start or enable button to push, therefore&n;&t; * the MAC arbiter is configured and enabled now.&n;&t; */
 )brace
 multiline_comment|/* SkGeInitMacArb */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInitPktArb() - Initialize the Packet Arbiter&n; *&n; * Description:&n; *&t;This function initializes the Packet Arbiter.&n; *&t;It must not be called if there is still an&n; *&t;initilaized or active port.&n; *&n; * Returns:&n; *&t;nothing:&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInitPktArb() - Initialize the Packet Arbiter&n; *&n; * Description:&n; *&t;This function initializes the Packet Arbiter.&n; *&t;It must not be called if there is still an&n; *&t;initialized or active port.&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkGeInitPktArb
 r_static
 r_void
@@ -1162,17 +1608,16 @@ id|IoC
 comma
 id|B3_PA_CTRL
 comma
-(paren
 id|PA_ENA_TO_TX1
 op_or
 id|PA_ENA_TO_TX2
-)paren
 )paren
 suffix:semicolon
 )brace
 )brace
 )brace
 multiline_comment|/* SkGeInitPktArb */
+macro_line|#endif /* GENESIS */
 multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInitMacFifo() - Initialize the MAC FIFOs&n; *&n; * Description:&n; *&t;Initialize all MAC FIFOs of the specified port&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkGeInitMacFifo
 r_static
@@ -1194,8 +1639,30 @@ id|Port
 )paren
 multiline_comment|/* Port Index (MAC_1 + n) */
 (brace
+id|SK_U16
+id|Word
+suffix:semicolon
+macro_line|#ifdef VCPU
+id|SK_U32
+id|DWord
+suffix:semicolon
+macro_line|#endif /* VCPU */
 multiline_comment|/*&n;&t; * For each FIFO:&n;&t; *&t;- release local reset&n;&t; *&t;- use default value for MAC FIFO size&n;&t; *&t;- setup defaults for the control register&n;&t; *&t;- enable the FIFO&n;&t; */
-multiline_comment|/* Configure RX MAC FIFO */
+id|Word
+op_assign
+(paren
+id|SK_U16
+)paren
+id|GMF_RX_CTRL_DEF
+suffix:semicolon
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+multiline_comment|/* Configure Rx MAC FIFO */
 id|SK_OUT8
 c_func
 (paren
@@ -1244,7 +1711,7 @@ comma
 id|MFF_ENA_OP_MD
 )paren
 suffix:semicolon
-multiline_comment|/* Configure TX MAC FIFO */
+multiline_comment|/* Configure Tx MAC FIFO */
 id|SK_OUT8
 c_func
 (paren
@@ -1320,8 +1787,187 @@ id|MFF_ENA_FLUSH
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+multiline_comment|/* set Rx GMAC FIFO Flush Mask */
+id|SK_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|RX_GMF_FL_MSK
+)paren
+comma
+(paren
+id|SK_U16
+)paren
+id|RX_FF_FL_DEF_MSK
+)paren
+suffix:semicolon
+multiline_comment|/* disable Rx GMAC FIFO Flush for YUKON-Lite Rev. A0 only */
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukonLite
+op_logical_and
+id|pAC-&gt;GIni.GIChipId
+op_eq
+id|CHIP_ID_YUKON
+)paren
+(brace
+id|Word
+op_and_assign
+op_complement
+id|GMF_RX_F_FL_ON
+suffix:semicolon
+)brace
+multiline_comment|/* Configure Rx MAC FIFO */
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|RX_GMF_CTRL_T
+)paren
+comma
+(paren
+id|SK_U8
+)paren
+id|GMF_RST_CLR
+)paren
+suffix:semicolon
+id|SK_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|RX_GMF_CTRL_T
+)paren
+comma
+id|Word
+)paren
+suffix:semicolon
+multiline_comment|/* set Rx GMAC FIFO Flush Threshold (default: 0x0a -&gt; 56 bytes) */
+id|SK_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|RX_GMF_FL_THR
+)paren
+comma
+id|RX_GMF_FL_THR_DEF
+)paren
+suffix:semicolon
+multiline_comment|/* Configure Tx MAC FIFO */
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|TX_GMF_CTRL_T
+)paren
+comma
+(paren
+id|SK_U8
+)paren
+id|GMF_RST_CLR
+)paren
+suffix:semicolon
+id|SK_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|TX_GMF_CTRL_T
+)paren
+comma
+(paren
+id|SK_U16
+)paren
+id|GMF_TX_CTRL_DEF
+)paren
+suffix:semicolon
+macro_line|#ifdef VCPU
+id|SK_IN32
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|RX_GMF_AF_THR
+)paren
+comma
+op_amp
+id|DWord
+)paren
+suffix:semicolon
+id|SK_IN32
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|TX_GMF_AE_THR
+)paren
+comma
+op_amp
+id|DWord
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+multiline_comment|/* set Tx GMAC FIFO Almost Empty Threshold */
+multiline_comment|/*&t;&t;SK_OUT32(IoC, MR_ADDR(Port, TX_GMF_AE_THR), 0); */
+)brace
+macro_line|#endif /* YUKON */
+)brace
 multiline_comment|/* SkGeInitMacFifo */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeLoadLnkSyncCnt() - Load the Link Sync Counter and starts counting&n; *&n; * Description:&n; *&t;This function starts the Link Sync Counter of the specified&n; *&t;port and enables the generation of an Link Sync IRQ.&n; *&t;The Link Sync Counter may be used to detect an active link,&n; *&t;if autonegotiation is not used.&n; *&n; * Note:&n; *&t;o To ensure receiving the Link Sync Event the LinkSyncCounter&n; *&t;  should be initialized BEFORE clearing the XMACs reset!&n; *&t;o Enable IS_LNK_SYNC_M1 and IS_LNK_SYNC_M2 after calling this&n; *&t;  function.&n; *&n; * Retruns:&n; *&t;nothing&n; */
+macro_line|#ifdef&t;SK_LNK_SYNC_CNT
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeLoadLnkSyncCnt() - Load the Link Sync Counter and starts counting&n; *&n; * Description:&n; *&t;This function starts the Link Sync Counter of the specified&n; *&t;port and enables the generation of an Link Sync IRQ.&n; *&t;The Link Sync Counter may be used to detect an active link,&n; *&t;if autonegotiation is not used.&n; *&n; * Note:&n; *&t;o To ensure receiving the Link Sync Event the LinkSyncCounter&n; *&t;  should be initialized BEFORE clearing the XMAC&squot;s reset!&n; *&t;o Enable IS_LNK_SYNC_M1 and IS_LNK_SYNC_M2 after calling this&n; *&t;  function.&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkGeLoadLnkSyncCnt
 r_void
 id|SkGeLoadLnkSyncCnt
@@ -1419,9 +2065,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|ISrc
 op_amp
 id|IS_LNK_SYNC_M1
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|IrqPend
@@ -1442,9 +2092,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|ISrc
 op_amp
 id|IS_LNK_SYNC_M2
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|IrqPend
@@ -1542,7 +2196,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* SkGeLoadLnkSyncCnt*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeCfgSync() - Configure synchronous bandwidth for this port.&n; *&n; * Description:&n; *&t;This function may be used to configure synchronous bandwidth&n; *&t;to the specified port. This may be done any time after&n; *&t;initializing the port. The configuration values are NOT saved&n; *&t;in the HWAC port structure and will be overwritten any&n; *&t;time when stopping and starting the port.&n; *&t;Any values for the synchronous configuration will be ignored&n; *&t;if the size of the synchronous queue is zero!&n; *&n; *&t;The default configuration for the synchronous service is&n; *&t;TXA_ENA_FSYNC. This means if the size of&n; *&t;the synchronous queue is unequal zero but no specific&n; *&t;synchronous bandwidth is configured, the synchronous queue&n; *&t;will always have the &squot;unlimitted&squot; transmit priority!&n; *&n; *&t;This mode will be restored if the synchronous bandwidth is&n; *&t;deallocated (&squot;IntTime&squot; = 0 and &squot;LimCount&squot; = 0).&n; *&n; * Returns:&n; *&t;0:&t;success&n; *&t;1:&t;paramter configuration error&n; *&t;2:&t;try to configure quality of service although no&n; *&t;&t;synchronous queue is configured&n; */
+macro_line|#endif&t;/* SK_LNK_SYNC_CNT */
+macro_line|#if defined(SK_DIAG) || defined(SK_CFG_SYNC)
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeCfgSync() - Configure synchronous bandwidth for this port.&n; *&n; * Description:&n; *&t;This function may be used to configure synchronous bandwidth&n; *&t;to the specified port. This may be done any time after&n; *&t;initializing the port. The configuration values are NOT saved&n; *&t;in the HWAC port structure and will be overwritten any&n; *&t;time when stopping and starting the port.&n; *&t;Any values for the synchronous configuration will be ignored&n; *&t;if the size of the synchronous queue is zero!&n; *&n; *&t;The default configuration for the synchronous service is&n; *&t;TXA_ENA_FSYNC. This means if the size of&n; *&t;the synchronous queue is unequal zero but no specific&n; *&t;synchronous bandwidth is configured, the synchronous queue&n; *&t;will always have the &squot;unlimited&squot; transmit priority!&n; *&n; *&t;This mode will be restored if the synchronous bandwidth is&n; *&t;deallocated (&squot;IntTime&squot; = 0 and &squot;LimCount&squot; = 0).&n; *&n; * Returns:&n; *&t;0:&t;success&n; *&t;1:&t;parameter configuration error&n; *&t;2:&t;try to configure quality of service although no&n; *&t;&t;synchronous queue is configured&n; */
 DECL|function|SkGeCfgSync
 r_int
 id|SkGeCfgSync
@@ -1622,12 +2278,8 @@ comma
 id|SKERR_HWI_E010MSG
 )paren
 suffix:semicolon
-id|Rtv
-op_assign
+r_return
 l_int|1
-suffix:semicolon
-r_goto
-id|CfgSyncEnd
 suffix:semicolon
 )brace
 r_if
@@ -1639,10 +2291,26 @@ id|Port
 )braket
 dot
 id|PXSQSize
-op_ne
+op_eq
 l_int|0
 )paren
 (brace
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_SW
+comma
+id|SKERR_HWI_E009
+comma
+id|SKERR_HWI_E009MSG
+)paren
+suffix:semicolon
+r_return
+l_int|2
+suffix:semicolon
+)brace
 multiline_comment|/* calculate register values */
 id|IntTime
 op_assign
@@ -1686,15 +2354,11 @@ comma
 id|SKERR_HWI_E010MSG
 )paren
 suffix:semicolon
-id|Rtv
-op_assign
+r_return
 l_int|1
 suffix:semicolon
-r_goto
-id|CfgSyncEnd
-suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * - Enable &squot;Force Sync&squot; to ensure the synchronous queue&n;&t;&t; *   has the priority while configuring the new values.&n;&t;&t; * - Also &squot;disable alloc&squot; to ensure the settings complies&n;&t;&t; *   to the SyncMode parameter.&n;&t;&t; * - Disable &squot;Rate Control&squot; to configure the new values.&n;&t;&t; * - write IntTime and Limcount&n;&t;&t; * - start &squot;Rate Control&squot; and disable &squot;Force Sync&squot;&n;&t;&t; *   if Interval Timer or Limit Counter not zero.&n;&t;&t; */
+multiline_comment|/*&n;&t; * - Enable &squot;Force Sync&squot; to ensure the synchronous queue&n;&t; *   has the priority while configuring the new values.&n;&t; * - Also &squot;disable alloc&squot; to ensure the settings complies&n;&t; *   to the SyncMode parameter.&n;&t; * - Disable &squot;Rate Control&squot; to configure the new values.&n;&t; * - write IntTime and LimCount&n;&t; * - start &squot;Rate Control&squot; and disable &squot;Force Sync&squot;&n;&t; *   if Interval Timer or Limit Counter not zero.&n;&t; */
 id|SK_OUT8
 c_func
 (paren
@@ -1761,6 +2425,9 @@ id|TXA_CTRL
 )paren
 comma
 (paren
+id|SK_U8
+)paren
+(paren
 id|SyncMode
 op_amp
 (paren
@@ -1802,36 +2469,13 @@ id|TXA_START_RC
 )paren
 suffix:semicolon
 )brace
-)brace
-r_else
-(brace
-id|SK_ERR_LOG
-c_func
-(paren
-id|pAC
-comma
-id|SK_ERRCL_SW
-comma
-id|SKERR_HWI_E009
-comma
-id|SKERR_HWI_E009MSG
-)paren
-suffix:semicolon
-id|Rtv
-op_assign
-l_int|2
-suffix:semicolon
-)brace
-id|CfgSyncEnd
-suffix:colon
 r_return
-(paren
-id|Rtv
-)paren
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* SkGeCfgSync */
-multiline_comment|/******************************************************************************&n; *&n; *&t;DoInitRamQueue() - Initilaize the RAM Buffer Address of a single Queue&n; *&n; * Desccription:&n; *&t;If the queue is used, enable and initilaize it.&n; *&t;Make sure the queue is still reset, if it is not used.&n; *&n; * Returns:&n; *&t;nothing&n; */
+macro_line|#endif /* SK_DIAG || SK_CFG_SYNC*/
+multiline_comment|/******************************************************************************&n; *&n; *&t;DoInitRamQueue() - Initialize the RAM Buffer Address of a single Queue&n; *&n; * Desccription:&n; *&t;If the queue is used, enable and initialize it.&n; *&t;Make sure the queue is still reset, if it is not used.&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|DoInitRamQueue
 r_static
 r_void
@@ -2065,16 +2709,18 @@ suffix:semicolon
 r_case
 id|SK_TX_RAM_Q
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Do NOT use Store and forward under normal&n;&t;&t;&t; * operation due to performance optimization.&n;&t;&t;&t; * But if Jumbo frames are configured we NEED&n;&t;&t;&t; * the store and forward of the RAM buffer.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Do NOT use Store &amp; Forward under normal operation due to&n;&t;&t;&t; * performance optimization (GENESIS only).&n;&t;&t;&t; * But if Jumbo Frames are configured (XMAC Tx FIFO is only 4 kB)&n;&t;&t;&t; * or YUKON is used ((GMAC Tx FIFO is only 1 kB)&n;&t;&t;&t; * we NEED Store &amp; Forward of the RAM buffer.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 id|pAC-&gt;GIni.GIPortUsage
 op_eq
 id|SK_JUMBO_LINK
+op_logical_or
+id|pAC-&gt;GIni.GIYukon
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * enable Store &amp; Forward Mode for the&n;&t;&t;&t;&t; * Tx Side&n;&t;&t;&t;&t; */
+multiline_comment|/* enable Store &amp; Forward Mode for the Tx Side */
 id|SK_OUT8
 c_func
 (paren
@@ -2134,7 +2780,7 @@ id|RB_RST_SET
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* DoInitRamQueue*/
+multiline_comment|/* DoInitRamQueue */
 multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInitRamBufs() - Initialize the RAM Buffer Queues&n; *&n; * Description:&n; *&t;Initialize all RAM Buffer Queues of the specified port&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkGeInitRamBufs
 r_static
@@ -2243,7 +2889,7 @@ id|SK_TX_RAM_Q
 suffix:semicolon
 )brace
 multiline_comment|/* SkGeInitRamBufs */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInitRamIface() - Initialize the RAM Interface&n; *&n; * Description:&n; *&t;This function initializes the Adapbers RAM Interface.&n; *&n; * Note:&n; *&t;This function is used in the diagnostics.&n; *&n; * Returns:&n; *&t;nothing&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInitRamIface() - Initialize the RAM Interface&n; *&n; * Description:&n; *&t;This function initializes the Adapters RAM Interface.&n; *&n; * Note:&n; *&t;This function is used in the diagnostics.&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkGeInitRamIface
 r_void
 id|SkGeInitRamIface
@@ -2418,6 +3064,12 @@ id|SK_GEPORT
 op_star
 id|pPrt
 suffix:semicolon
+id|SK_U32
+id|RxWm
+suffix:semicolon
+id|SK_U32
+id|TxWm
+suffix:semicolon
 id|pPrt
 op_assign
 op_amp
@@ -2426,6 +3078,34 @@ id|pAC-&gt;GIni.GP
 id|Port
 )braket
 suffix:semicolon
+id|RxWm
+op_assign
+id|SK_BMU_RX_WM
+suffix:semicolon
+id|TxWm
+op_assign
+id|SK_BMU_TX_WM
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pAC-&gt;GIni.GIPciSlot64
+op_logical_and
+op_logical_neg
+id|pAC-&gt;GIni.GIPciClock66
+)paren
+(brace
+multiline_comment|/* for better performance */
+id|RxWm
+op_div_assign
+l_int|2
+suffix:semicolon
+id|TxWm
+op_div_assign
+l_int|2
+suffix:semicolon
+)brace
 multiline_comment|/* Rx Queue: Release all local resets and set the watermark */
 id|SK_OUT32
 c_func
@@ -2456,10 +3136,10 @@ comma
 id|Q_F
 )paren
 comma
-id|SK_BMU_RX_WM
+id|RxWm
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Tx Queue: Release all local resets if the queue is used!&n;&t; * &t;&t;set watermark&n;&t; */
+multiline_comment|/*&n;&t; * Tx Queue: Release all local resets if the queue is used !&n;&t; * &t;&t;set watermark&n;&t; */
 r_if
 c_cond
 (paren
@@ -2497,7 +3177,7 @@ comma
 id|Q_F
 )paren
 comma
-id|SK_BMU_TX_WM
+id|TxWm
 )paren
 suffix:semicolon
 )brace
@@ -2538,14 +3218,14 @@ comma
 id|Q_F
 )paren
 comma
-id|SK_BMU_TX_WM
+id|TxWm
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Do NOT enable the descriptor poll timers here, because&n;&t; * the descriptor addresses are not specified yet.&n;&t; */
 )brace
 multiline_comment|/* SkGeInitBmu */
-multiline_comment|/******************************************************************************&n; *&n; *&t;TestStopBit() -&t;Test the stop bit of the queue&n; *&n; * Description:&n; *&t;Stopping a queue is not as simple as it seems to be.&n; *&t;If descriptor polling is enabled, it may happen&n; *&t;that RX/TX stop is done and SV idle is NOT set.&n; *&t;In this case we have to issue another stop command.&n; *&n; * Retruns:&n; *&t;The queues control status register&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;TestStopBit() -&t;Test the stop bit of the queue&n; *&n; * Description:&n; *&t;Stopping a queue is not as simple as it seems to be.&n; *&t;If descriptor polling is enabled, it may happen&n; *&t;that RX/TX stop is done and SV idle is NOT set.&n; *&t;In this case we have to issue another stop command.&n; *&n; * Returns:&n; *&t;The queues control status register&n; */
 DECL|function|TestStopBit
 r_static
 id|SK_U32
@@ -2603,6 +3283,7 @@ op_eq
 l_int|0
 )paren
 (brace
+multiline_comment|/* Stop Descriptor overridden by start command */
 id|SK_OUT32
 c_func
 (paren
@@ -2638,13 +3319,11 @@ id|QuCsr
 suffix:semicolon
 )brace
 r_return
-(paren
 id|QuCsr
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/* TestStopBit*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeStopPort() - Stop the Rx/Tx activity of the port &squot;Port&squot;.&n; *&n; * Description:&n; *&t;After calling this function the descriptor rings and rx and tx&n; *&t;queues of this port may be reconfigured.&n; *&n; *&t;It is possible to stop the receive and transmit path separate or&n; *&t;both together.&n; *&n; *&t;Dir =&t;SK_STOP_TX &t;Stops the transmit path only and resets&n; *&t;&t;&t;&t;the XMAC. The receive queue is still and&n; *&t;&t;&t;&t;the pending rx frames may still transfered&n; *&t;&t;&t;&t;into the RxD.&n; *&t;&t;SK_STOP_RX&t;Stop the receive path. The tansmit path&n; *&t;&t;&t;&t;has to be stoped once before.&n; *&t;&t;SK_STOP_ALL&t;SK_STOP_TX + SK_STOP_RX&n; *&n; *&t;RstMode=SK_SOFT_RST&t;Resets the XMAC. The PHY is still alive.&n; *&t;&t;SK_HARD_RST&t;Resets the XMAC and the PHY.&n; *&n; * Example:&n; *&t;1) A Link Down event was signaled for a port. Therefore the activity&n; *&t;of this port should be stoped and a hardware reset should be issued&n; *&t;to enable the workaround of XMAC errata #2. But the received frames&n; *&t;should not be discarded.&n; *&t;&t;...&n; *&t;&t;SkGeStopPort(pAC, IoC, Port, SK_STOP_TX, SK_HARD_RST);&n; *&t;&t;(transfer all pending rx frames)&n; *&t;&t;SkGeStopPort(pAC, IoC, Port, SK_STOP_RX, SK_HARD_RST);&n; *&t;&t;...&n; *&n; *&t;2) An event was issued which request the driver to switch&n; *&t;the &squot;virtual active&squot; link to an other already active port&n; *&t;as soon as possible. The frames in the receive queue of this&n; *&t;port may be lost. But the PHY must not be reset during this&n; *&t;event.&n; *&t;&t;...&n; *&t;&t;SkGeStopPort(pAC, IoC, Port, SK_STOP_ALL, SK_SOFT_RST);&n; *&t;&t;...&n; *&n; * Extended Description:&n; *&t;If SK_STOP_TX is set,&n; *&t;&t;o disable the XMACs receive and transmiter to prevent&n; *&t;&t;  from sending incomplete frames&n; *&t;&t;o stop the port&squot;s transmit queues before terminating the&n; *&t;&t;  BMUs to prevent from performing incomplete PCI cycles&n; *&t;&t;  on the PCI bus&n; *&t;&t;- The network rx and tx activity and PCI tx transfer is&n; *&t;&t;  disabled now.&n; *&t;&t;o reset the XMAC depending on the RstMode&n; *&t;&t;o Stop Interval Timer and Limit Counter of Tx Arbiter,&n; *&t;&t;  also disable Force Sync bit and Enable Alloc bit.&n; *&t;&t;o perform a local reset of the port&squot;s tx path&n; *&t;&t;&t;- reset the PCI FIFO of the async tx queue&n; *&t;&t;&t;- reset the PCI FIFO of the sync tx queue&n; *&t;&t;&t;- reset the RAM Buffer async tx queue&n; *&t;&t;&t;- reset the RAM Butter sync tx queue&n; *&t;&t;&t;- reset the MAC Tx FIFO&n; *&t;&t;o switch Link and Tx LED off, stop the LED counters&n; *&n; *&t;If SK_STOP_RX is set,&n; *&t;&t;o stop the port&squot;s receive queue&n; *&t;&t;- The path data transfer activity is fully stopped now.&n; *&t;&t;o perform a local reset of the port&squot;s rx path&n; *&t;&t;&t;- reset the PCI FIFO of the rx queue&n; *&t;&t;&t;- reset the RAM Buffer receive queue&n; *&t;&t;&t;- reset the MAC Rx FIFO&n; *&t;&t;o switch Rx LED off, stop the LED counter&n; *&n; *&t;If all ports are stopped,&n; *&t;&t;o reset the RAM Interface.&n; *&n; * Notes:&n; *&t;o This function may be called during the driver states RESET_PORT and&n; *&t;  SWITCH_PORT.&n; */
+multiline_comment|/* TestStopBit */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeStopPort() - Stop the Rx/Tx activity of the port &squot;Port&squot;.&n; *&n; * Description:&n; *&t;After calling this function the descriptor rings and Rx and Tx&n; *&t;queues of this port may be reconfigured.&n; *&n; *&t;It is possible to stop the receive and transmit path separate or&n; *&t;both together.&n; *&n; *&t;Dir =&t;SK_STOP_TX &t;Stops the transmit path only and resets the MAC.&n; *&t;&t;&t;&t;The receive queue is still active and&n; *&t;&t;&t;&t;the pending Rx frames may be still transferred&n; *&t;&t;&t;&t;into the RxD.&n; *&t;&t;SK_STOP_RX&t;Stop the receive path. The tansmit path&n; *&t;&t;&t;&t;has to be stopped once before.&n; *&t;&t;SK_STOP_ALL&t;SK_STOP_TX + SK_STOP_RX&n; *&n; *&t;RstMode = SK_SOFT_RST&t;Resets the MAC. The PHY is still alive.&n; *&t;&t;&t;SK_HARD_RST&t;Resets the MAC and the PHY.&n; *&n; * Example:&n; *&t;1) A Link Down event was signaled for a port. Therefore the activity&n; *&t;of this port should be stopped and a hardware reset should be issued&n; *&t;to enable the workaround of XMAC Errata #2. But the received frames&n; *&t;should not be discarded.&n; *&t;&t;...&n; *&t;&t;SkGeStopPort(pAC, IoC, Port, SK_STOP_TX, SK_HARD_RST);&n; *&t;&t;(transfer all pending Rx frames)&n; *&t;&t;SkGeStopPort(pAC, IoC, Port, SK_STOP_RX, SK_HARD_RST);&n; *&t;&t;...&n; *&n; *&t;2) An event was issued which request the driver to switch&n; *&t;the &squot;virtual active&squot; link to an other already active port&n; *&t;as soon as possible. The frames in the receive queue of this&n; *&t;port may be lost. But the PHY must not be reset during this&n; *&t;event.&n; *&t;&t;...&n; *&t;&t;SkGeStopPort(pAC, IoC, Port, SK_STOP_ALL, SK_SOFT_RST);&n; *&t;&t;...&n; *&n; * Extended Description:&n; *&t;If SK_STOP_TX is set,&n; *&t;&t;o disable the MAC&squot;s receive and transmitter to prevent&n; *&t;&t;  from sending incomplete frames&n; *&t;&t;o stop the port&squot;s transmit queues before terminating the&n; *&t;&t;  BMUs to prevent from performing incomplete PCI cycles&n; *&t;&t;  on the PCI bus&n; *&t;&t;- The network Rx and Tx activity and PCI Tx transfer is&n; *&t;&t;  disabled now.&n; *&t;&t;o reset the MAC depending on the RstMode&n; *&t;&t;o Stop Interval Timer and Limit Counter of Tx Arbiter,&n; *&t;&t;  also disable Force Sync bit and Enable Alloc bit.&n; *&t;&t;o perform a local reset of the port&squot;s Tx path&n; *&t;&t;&t;- reset the PCI FIFO of the async Tx queue&n; *&t;&t;&t;- reset the PCI FIFO of the sync Tx queue&n; *&t;&t;&t;- reset the RAM Buffer async Tx queue&n; *&t;&t;&t;- reset the RAM Buffer sync Tx queue&n; *&t;&t;&t;- reset the MAC Tx FIFO&n; *&t;&t;o switch Link and Tx LED off, stop the LED counters&n; *&n; *&t;If SK_STOP_RX is set,&n; *&t;&t;o stop the port&squot;s receive queue&n; *&t;&t;- The path data transfer activity is fully stopped now.&n; *&t;&t;o perform a local reset of the port&squot;s Rx path&n; *&t;&t;&t;- reset the PCI FIFO of the Rx queue&n; *&t;&t;&t;- reset the RAM Buffer receive queue&n; *&t;&t;&t;- reset the MAC Rx FIFO&n; *&t;&t;o switch Rx LED off, stop the LED counter&n; *&n; *&t;If all ports are stopped,&n; *&t;&t;o reset the RAM Interface.&n; *&n; * Notes:&n; *&t;o This function may be called during the driver states RESET_PORT and&n; *&t;  SWITCH_PORT.&n; */
 DECL|function|SkGeStopPort
 r_void
 id|SkGeStopPort
@@ -2672,11 +3351,11 @@ id|RstMode
 )paren
 multiline_comment|/* Reset Mode (SK_SOFT_RST, SK_HARD_RST) */
 (brace
-macro_line|#ifndef&t;SK_DIAG
+macro_line|#ifndef SK_DIAG
 id|SK_EVPARA
 id|Para
 suffix:semicolon
-macro_line|#endif&t;/* !SK_DIAG */
+macro_line|#endif /* !SK_DIAG */
 id|SK_GEPORT
 op_star
 id|pPrt
@@ -2684,23 +3363,17 @@ suffix:semicolon
 id|SK_U32
 id|DWord
 suffix:semicolon
-id|SK_U16
-id|Word
-suffix:semicolon
 id|SK_U32
 id|XsCsr
 suffix:semicolon
 id|SK_U32
 id|XaCsr
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-id|SK_BOOL
-id|AllPortsDis
-suffix:semicolon
 id|SK_U64
 id|ToutStart
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 r_int
 id|ToutCnt
@@ -2716,56 +3389,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|Dir
 op_amp
 id|SK_STOP_TX
 )paren
+op_ne
+l_int|0
+)paren
 (brace
-multiline_comment|/* disable the XMACs receiver and transmitter */
-id|XM_IN16
+multiline_comment|/* disable receiver and transmitter */
+id|SkMacRxTxDisable
 c_func
 (paren
+id|pAC
+comma
 id|IoC
 comma
 id|Port
-comma
-id|XM_MMU_CMD
-comma
-op_amp
-id|Word
-)paren
-suffix:semicolon
-id|XM_OUT16
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MMU_CMD
-comma
-id|Word
-op_amp
-op_complement
-(paren
-id|XM_MMU_ENA_RX
-op_or
-id|XM_MMU_ENA_TX
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* dummy read to ensure writing */
-id|XM_IN16
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MMU_CMD
-comma
-op_amp
-id|Word
 )paren
 suffix:semicolon
 multiline_comment|/* stop both transmit queues */
@@ -2817,26 +3458,6 @@ suffix:semicolon
 r_do
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Clear packet arbiter timeout to make sure&n;&t;&t;&t; * this loop will terminate.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|Port
-op_eq
-id|MAC_1
-)paren
-(brace
-id|Word
-op_assign
-id|PA_CLR_TO_TX1
-suffix:semicolon
-)brace
-r_else
-(brace
-id|Word
-op_assign
-id|PA_CLR_TO_TX2
-suffix:semicolon
-)brace
 id|SK_OUT16
 c_func
 (paren
@@ -2844,37 +3465,32 @@ id|IoC
 comma
 id|B3_PA_CTRL
 comma
-id|Word
+(paren
+id|SK_U16
+)paren
+(paren
+(paren
+id|Port
+op_eq
+id|MAC_1
+)paren
+ques
+c_cond
+id|PA_CLR_TO_TX1
+suffix:colon
+id|PA_CLR_TO_TX2
+)paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * If the transfer stucks at the XMAC the STOP command will not&n;&t;&t;&t; * terminate if we don&squot;t flush the XMAC&squot;s transmit FIFO!&n;&t;&t;&t; */
-id|XM_IN32
+multiline_comment|/*&n;&t;&t;&t; * If the transfer stucks at the MAC the STOP command will not&n;&t;&t;&t; * terminate if we don&squot;t flush the XMAC&squot;s transmit FIFO !&n;&t;&t;&t; */
+id|SkMacFlushTxFifo
 c_func
 (paren
+id|pAC
+comma
 id|IoC
 comma
 id|Port
-comma
-id|XM_MODE
-comma
-op_amp
-id|DWord
-)paren
-suffix:semicolon
-id|DWord
-op_or_assign
-id|XM_MD_FTF
-suffix:semicolon
-id|XM_OUT32
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MODE
-comma
-id|DWord
 )paren
 suffix:semicolon
 id|XsCsr
@@ -2923,84 +3539,16 @@ multiline_comment|/*&n;&t;&t;&t;&t; * Timeout of 1/18 second reached.&n;&t;&t;&t
 id|ToutCnt
 op_increment
 suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
 id|ToutCnt
-)paren
-(brace
-r_case
+OG
 l_int|1
-suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * Cache Incoherency workaround: Assume a start command&n;&t;&t;&t;&t;&t; * has been lost while sending the frame. &n;&t;&t;&t;&t;&t; */
-id|ToutStart
-op_assign
-id|SkOsGetTime
-c_func
-(paren
-id|pAC
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|XsCsr
-op_amp
-id|CSR_STOP
 )paren
 (brace
-id|SK_OUT32
-c_func
-(paren
-id|IoC
-comma
-id|Q_ADDR
-c_func
-(paren
-id|pPrt-&gt;PXsQOff
-comma
-id|Q_CSR
-)paren
-comma
-id|CSR_START
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|XaCsr
-op_amp
-id|CSR_STOP
-)paren
-(brace
-id|SK_OUT32
-c_func
-(paren
-id|IoC
-comma
-id|Q_ADDR
-c_func
-(paren
-id|pPrt-&gt;PXaQOff
-comma
-id|Q_CSR
-)paren
-comma
-id|CSR_START
-)paren
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-r_case
-l_int|2
-suffix:colon
-r_default
-suffix:colon
-multiline_comment|/* Might be a problem when the driver event handler&n;&t;&t;&t;&t;&t; * calls StopPort again.&n;&t;&t;&t;&t;&t; * XXX.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Might be a problem when the driver event handler&n;&t;&t;&t;&t;&t; * calls StopPort again. XXX.&n;&t;&t;&t;&t;&t; */
 multiline_comment|/* Fatal Error, Loop aborted */
-multiline_comment|/* Create an Error Log Entry */
 id|SK_ERR_LOG
 c_func
 (paren
@@ -3030,8 +3578,75 @@ comma
 id|Para
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* !SK_DIAG */
+macro_line|#endif /* !SK_DIAG */
 r_return
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t;&t;&t; * Cache incoherency workaround: Assume a start command&n;&t;&t;&t;&t; * has been lost while sending the frame.&n;&t;&t;&t;&t; */
+id|ToutStart
+op_assign
+id|SkOsGetTime
+c_func
+(paren
+id|pAC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|XsCsr
+op_amp
+id|CSR_STOP
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|Q_ADDR
+c_func
+(paren
+id|pPrt-&gt;PXsQOff
+comma
+id|Q_CSR
+)paren
+comma
+id|CSR_START
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|XaCsr
+op_amp
+id|CSR_STOP
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|Q_ADDR
+c_func
+(paren
+id|pPrt-&gt;PXaQOff
+comma
+id|Q_CSR
+)paren
+comma
+id|CSR_START
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -3065,7 +3680,7 @@ op_ne
 id|CSR_SV_IDLE
 )paren
 suffix:semicolon
-multiline_comment|/* reset the XMAC depending on the RstMode */
+multiline_comment|/* Reset the MAC depending on the RstMode */
 r_if
 c_cond
 (paren
@@ -3074,7 +3689,7 @@ op_eq
 id|SK_SOFT_RST
 )paren
 (brace
-id|SkXmSoftRst
+id|SkMacSoftRst
 c_func
 (paren
 id|pAC
@@ -3087,7 +3702,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|SkXmHardRst
+id|SkMacHardRst
 c_func
 (paren
 id|pAC
@@ -3098,7 +3713,7 @@ id|Port
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Stop Interval Timer and Limit Counter of Tx Arbiter,&n; &t;&t; * also disable Force Sync bit and Enable Alloc bit.&n;&t;&t; */
+multiline_comment|/* Disable Force Sync bit and Enable Alloc bit */
 id|SK_OUT8
 c_func
 (paren
@@ -3119,6 +3734,7 @@ op_or
 id|TXA_STOP_RC
 )paren
 suffix:semicolon
+multiline_comment|/* Stop Interval Timer and Limit Counter of Tx Arbiter */
 id|SK_OUT32
 c_func
 (paren
@@ -3132,7 +3748,7 @@ comma
 id|TXA_ITI_INI
 )paren
 comma
-l_int|0x00000000L
+l_int|0L
 )paren
 suffix:semicolon
 id|SK_OUT32
@@ -3148,10 +3764,11 @@ comma
 id|TXA_LIM_INI
 )paren
 comma
-l_int|0x00000000L
+l_int|0L
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * perform a local reset of the port&squot;s tx path&n;&t;&t; *&t;- reset the PCI FIFO of the async tx queue&n;&t;&t; *&t;- reset the PCI FIFO of the sync tx queue&n;&t;&t; *&t;- reset the RAM Buffer async tx queue&n;&t;&t; *&t;- reset the RAM Butter sync tx queue&n;&t;&t; *&t;- reset the MAC Tx FIFO&n;&t;&t; */
+multiline_comment|/* Perform a local reset of the port&squot;s Tx path */
+multiline_comment|/* Reset the PCI FIFO of the async Tx queue */
 id|SK_OUT32
 c_func
 (paren
@@ -3168,6 +3785,7 @@ comma
 id|CSR_SET_RESET
 )paren
 suffix:semicolon
+multiline_comment|/* Reset the PCI FIFO of the sync Tx queue */
 id|SK_OUT32
 c_func
 (paren
@@ -3184,6 +3802,7 @@ comma
 id|CSR_SET_RESET
 )paren
 suffix:semicolon
+multiline_comment|/* Reset the RAM Buffer async Tx queue */
 id|SK_OUT8
 c_func
 (paren
@@ -3200,6 +3819,7 @@ comma
 id|RB_RST_SET
 )paren
 suffix:semicolon
+multiline_comment|/* Reset the RAM Buffer sync Tx queue */
 id|SK_OUT8
 c_func
 (paren
@@ -3216,7 +3836,15 @@ comma
 id|RB_RST_SET
 )paren
 suffix:semicolon
-multiline_comment|/* Note: MFF_RST_SET does NOT reset the XMAC! */
+multiline_comment|/* Reset Tx MAC FIFO */
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+multiline_comment|/* Note: MFF_RST_SET does NOT reset the XMAC ! */
 id|SK_OUT8
 c_func
 (paren
@@ -3254,12 +3882,47 @@ id|SK_LED_DIS
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
 r_if
 c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+multiline_comment|/* Reset TX MAC FIFO */
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|TX_GMF_CTRL_T
+)paren
+comma
+(paren
+id|SK_U8
+)paren
+id|GMF_RST_SET
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* YUKON */
+)brace
+r_if
+c_cond
+(paren
 (paren
 id|Dir
 op_amp
 id|SK_STOP_RX
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * The RX Stop Command will not terminate if no buffers&n;&t;&t; * are queued in the RxD ring. But it will always reach&n;&t;&t; * the Idle state. Therefore we can use this feature to&n;&t;&t; * stop the transfer of received packets.&n;&t;&t; */
@@ -3287,26 +3950,6 @@ suffix:semicolon
 r_do
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Clear packet arbiter timeout to make sure&n;&t;&t;&t; * this loop will terminate&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|Port
-op_eq
-id|MAC_1
-)paren
-(brace
-id|Word
-op_assign
-id|PA_CLR_TO_RX1
-suffix:semicolon
-)brace
-r_else
-(brace
-id|Word
-op_assign
-id|PA_CLR_TO_RX2
-suffix:semicolon
-)brace
 id|SK_OUT16
 c_func
 (paren
@@ -3314,7 +3957,21 @@ id|IoC
 comma
 id|B3_PA_CTRL
 comma
-id|Word
+(paren
+id|SK_U16
+)paren
+(paren
+(paren
+id|Port
+op_eq
+id|MAC_1
+)paren
+ques
+c_cond
+id|PA_CLR_TO_RX1
+suffix:colon
+id|PA_CLR_TO_RX2
+)paren
 )paren
 suffix:semicolon
 id|DWord
@@ -3329,19 +3986,31 @@ comma
 id|pPrt-&gt;PRxQOff
 )paren
 suffix:semicolon
+multiline_comment|/* timeout if i==0 (bug fix for #10748) */
 r_if
 c_cond
 (paren
+op_decrement
 id|i
-op_ne
+op_eq
 l_int|0
 )paren
 (brace
-id|i
-op_decrement
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_HW
+comma
+id|SKERR_HWI_E024
+comma
+id|SKERR_HWI_E024MSG
+)paren
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
-multiline_comment|/* finish if CSR_STOP is done or CSR_SV_IDLE is true and i==0 */
 multiline_comment|/*&n;&t;&t;&t; * because of the ASIC problem report entry from 21.08.98&n;&t;&t;&t; * it is required to wait until CSR_STOP is reset and&n;&t;&t;&t; * CSR_SV_IDLE is set.&n;&t;&t;&t; */
 )brace
 r_while
@@ -3358,24 +4027,11 @@ id|CSR_SV_IDLE
 )paren
 op_ne
 id|CSR_SV_IDLE
-op_logical_and
-(paren
-(paren
-id|DWord
-op_amp
-id|CSR_SV_IDLE
-)paren
-op_eq
-l_int|0
-op_logical_or
-id|i
-op_ne
-l_int|0
-)paren
 )paren
 suffix:semicolon
-multiline_comment|/* The path data transfer activity is fully stopped now. */
-multiline_comment|/*&n;&t;&t; * perform a local reset of the port&squot;s rx path&n;&t;&t; *&t;- reset the PCI FIFO of the rx queue&n;&t;&t; *&t;- reset the RAM Buffer receive queue&n;&t;&t; *&t;- reset the MAC Rx FIFO&n;&t;&t; */
+multiline_comment|/* The path data transfer activity is fully stopped now */
+multiline_comment|/* Perform a local reset of the port&squot;s Rx path */
+multiline_comment|/*&t;Reset the PCI FIFO of the Rx queue */
 id|SK_OUT32
 c_func
 (paren
@@ -3392,6 +4048,7 @@ comma
 id|CSR_SET_RESET
 )paren
 suffix:semicolon
+multiline_comment|/* Reset the RAM Buffer receive queue */
 id|SK_OUT8
 c_func
 (paren
@@ -3408,6 +4065,14 @@ comma
 id|RB_RST_SET
 )paren
 suffix:semicolon
+multiline_comment|/* Reset Rx MAC FIFO */
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
 id|SK_OUT8
 c_func
 (paren
@@ -3444,66 +4109,36 @@ id|SK_LED_DIS
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If all ports are stopped reset the RAM Interface.&n;&t; */
-r_for
-c_loop
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
 (paren
-id|i
-op_assign
-l_int|0
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+multiline_comment|/* Reset Rx MAC FIFO */
+id|SK_OUT8
+c_func
+(paren
+id|IoC
 comma
-id|AllPortsDis
-op_assign
-id|SK_TRUE
-suffix:semicolon
-id|i
-OL
-id|pAC-&gt;GIni.GIMacsFound
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
+id|MR_ADDR
+c_func
 (paren
-id|pAC-&gt;GIni.GP
-(braket
-id|i
-)braket
-dot
-id|PState
-op_ne
-id|SK_PRT_RESET
-op_logical_and
-id|pAC-&gt;GIni.GP
-(braket
-id|i
-)braket
-dot
-id|PState
-op_ne
-id|SK_PRT_STOP
+id|Port
+comma
+id|RX_GMF_CTRL_T
 )paren
-(brace
-id|AllPortsDis
-op_assign
-id|SK_FALSE
-suffix:semicolon
-r_break
+comma
+(paren
+id|SK_U8
+)paren
+id|GMF_RST_SET
+)paren
 suffix:semicolon
 )brace
-)brace
-r_if
-c_cond
-(paren
-id|AllPortsDis
-)paren
-(brace
-id|pAC-&gt;GIni.GIAnyPortAct
-op_assign
-id|SK_FALSE
-suffix:semicolon
+macro_line|#endif /* YUKON */
 )brace
 )brace
 multiline_comment|/* SkGeStopPort */
@@ -3589,12 +4224,6 @@ id|pPrt-&gt;PCheckPar
 op_assign
 id|SK_FALSE
 suffix:semicolon
-id|pPrt-&gt;PRxCmd
-op_assign
-id|XM_RX_STRIP_FCS
-op_or
-id|XM_RX_LENERR_OK
-suffix:semicolon
 id|pPrt-&gt;PIsave
 op_assign
 l_int|0
@@ -3625,23 +4254,51 @@ id|SK_DEF_RX_WA_LIM
 suffix:semicolon
 id|pPrt-&gt;PLinkMode
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_AUTOFULL
+suffix:semicolon
+id|pPrt-&gt;PLinkSpeedCap
+op_assign
+(paren
+id|SK_U8
+)paren
+id|SK_LSPEED_CAP_1000MBPS
+suffix:semicolon
+id|pPrt-&gt;PLinkSpeed
+op_assign
+(paren
+id|SK_U8
+)paren
+id|SK_LSPEED_1000MBPS
+suffix:semicolon
+id|pPrt-&gt;PLinkSpeedUsed
+op_assign
+(paren
+id|SK_U8
+)paren
+id|SK_LSPEED_STAT_UNKNOWN
 suffix:semicolon
 id|pPrt-&gt;PLinkModeConf
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_AUTOSENSE
 suffix:semicolon
 id|pPrt-&gt;PFlowCtrlMode
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_FLOW_MODE_SYM_OR_REM
 suffix:semicolon
-id|pPrt-&gt;PLinkBroken
-op_assign
-id|SK_TRUE
-suffix:semicolon
-multiline_comment|/* See WA code */
 id|pPrt-&gt;PLinkCap
 op_assign
+(paren
+id|SK_U8
+)paren
 (paren
 id|SK_LMODE_CAP_HALF
 op_or
@@ -3654,54 +4311,78 @@ id|SK_LMODE_CAP_AUTOFULL
 suffix:semicolon
 id|pPrt-&gt;PLinkModeStatus
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_STAT_UNKNOWN
 suffix:semicolon
 id|pPrt-&gt;PFlowCtrlCap
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_FLOW_MODE_SYM_OR_REM
 suffix:semicolon
 id|pPrt-&gt;PFlowCtrlStatus
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_FLOW_STAT_NONE
 suffix:semicolon
 id|pPrt-&gt;PMSCap
 op_assign
-(paren
-id|SK_MS_CAP_AUTO
-op_or
-id|SK_MS_CAP_MASTER
-op_or
-id|SK_MS_CAP_SLAVE
-)paren
+l_int|0
 suffix:semicolon
 id|pPrt-&gt;PMSMode
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_MS_MODE_AUTO
 suffix:semicolon
 id|pPrt-&gt;PMSStatus
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_MS_STAT_UNSET
+suffix:semicolon
+id|pPrt-&gt;PLipaAutoNeg
+op_assign
+(paren
+id|SK_U8
+)paren
+id|SK_LIPA_UNKNOWN
 suffix:semicolon
 id|pPrt-&gt;PAutoNegFail
 op_assign
 id|SK_FALSE
 suffix:semicolon
-id|pPrt-&gt;PLipaAutoNeg
-op_assign
-id|SK_LIPA_UNKNOWN
-suffix:semicolon
 id|pPrt-&gt;PHWLinkUp
 op_assign
 id|SK_FALSE
 suffix:semicolon
+id|pPrt-&gt;PLinkBroken
+op_assign
+id|SK_TRUE
+suffix:semicolon
+multiline_comment|/* See WA code */
 )brace
 id|pAC-&gt;GIni.GIPortUsage
 op_assign
 id|SK_RED_LINK
 suffix:semicolon
-id|pAC-&gt;GIni.GIAnyPortAct
+id|pAC-&gt;GIni.GILedBlinkCtrl
 op_assign
-id|SK_FALSE
+(paren
+id|SK_U16
+)paren
+id|OemConfig.Value
+suffix:semicolon
+id|pAC-&gt;GIni.GIValIrqMask
+op_assign
+id|IS_ALL_MSK
 suffix:semicolon
 )brace
 multiline_comment|/* SkGeInit0*/
@@ -3811,19 +4492,17 @@ c_cond
 (paren
 id|PmCtlSts
 op_amp
-id|PCI_PM_STATE
+id|PCI_PM_STATE_MSK
 )paren
 op_ne
 id|PCI_PM_STATE_D3
 )paren
 (brace
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Return to D0 state.&n;&t; */
+multiline_comment|/* Return to D0 state. */
 id|SkPciWriteCfgWord
 c_func
 (paren
@@ -3852,19 +4531,17 @@ c_cond
 (paren
 id|PmCtlSts
 op_amp
-id|PCI_PM_STATE
+id|PCI_PM_STATE_MSK
 )paren
 op_ne
 id|PCI_PM_STATE_D0
 )paren
 (brace
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Check PCI Config Registers.&n;&t; */
+multiline_comment|/* Check PCI Config Registers. */
 id|SkPciReadCfgWord
 c_func
 (paren
@@ -3917,7 +4594,7 @@ comma
 id|PCI_LAT_TIM
 comma
 op_amp
-id|lat
+id|Lat
 )paren
 suffix:semicolon
 r_if
@@ -3929,6 +4606,16 @@ l_int|0
 op_logical_or
 id|Cls
 op_ne
+(paren
+id|SK_U8
+)paren
+l_int|0
+op_logical_or
+id|Lat
+op_ne
+(paren
+id|SK_U8
+)paren
 l_int|0
 op_logical_or
 (paren
@@ -3942,19 +4629,13 @@ op_logical_or
 id|Bp2
 op_ne
 l_int|1
-op_logical_or
-id|Lat
-op_ne
-l_int|0
 )paren
 (brace
 r_return
-(paren
-l_int|0
-)paren
+l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Restore Config Space.&n;&t; */
+multiline_comment|/* Restore PCI Config Space. */
 r_for
 c_loop
 (paren
@@ -3987,14 +4668,12 @@ id|i
 suffix:semicolon
 )brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* SkGePciReset */
-macro_line|#endif&t;/* SK_PCI_RESET */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInit1() - Level 1 Initialization&n; *&n; * Description:&n; *&t;o Do a software reset.&n; *&t;o Clear all reset bits.&n; *&t;o Verify that the detected hardware is present.&n; *&t;  Return an error if not.&n; *&t;o Get the hardware configuration&n; *&t;&t;+ Read the number of MACs/Ports.&n; *&t;&t;+ Read the RAM size.&n; *&t;&t;+ Read the PCI Revision ID.&n; *&t;&t;+ Find out the adapters host clock speed&n; *&t;&t;+ Read and check the PHY type&n; *&n; * Returns:&n; *&t;0:&t;success&n; *&t;5:&t;Unexpected PHY type detected&n; */
+macro_line|#endif /* SK_PCI_RESET */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInit1() - Level 1 Initialization&n; *&n; * Description:&n; *&t;o Do a software reset.&n; *&t;o Clear all reset bits.&n; *&t;o Verify that the detected hardware is present.&n; *&t;  Return an error if not.&n; *&t;o Get the hardware configuration&n; *&t;&t;+ Read the number of MACs/Ports.&n; *&t;&t;+ Read the RAM size.&n; *&t;&t;+ Read the PCI Revision Id.&n; *&t;&t;+ Find out the adapters host clock speed&n; *&t;&t;+ Read and check the PHY type&n; *&n; * Returns:&n; *&t;0:&t;success&n; *&t;5:&t;Unexpected PHY type detected&n; *&t;6:&t;HW self test failed&n; */
 DECL|function|SkGeInit1
 r_static
 r_int
@@ -4017,6 +4696,12 @@ suffix:semicolon
 id|SK_U16
 id|Word
 suffix:semicolon
+id|SK_U16
+id|CtrlStat
+suffix:semicolon
+id|SK_U32
+id|DWord
+suffix:semicolon
 r_int
 id|RetVal
 suffix:semicolon
@@ -4026,6 +4711,18 @@ suffix:semicolon
 id|RetVal
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* save CLK_RUN bits (YUKON-Lite) */
+id|SK_IN16
+c_func
+(paren
+id|IoC
+comma
+id|B0_CTST
+comma
+op_amp
+id|CtrlStat
+)paren
 suffix:semicolon
 macro_line|#ifdef SK_PCI_RESET
 (paren
@@ -4039,8 +4736,8 @@ comma
 id|IoC
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* SK_PCI_RESET */
-multiline_comment|/* Do the reset */
+macro_line|#endif /* SK_PCI_RESET */
+multiline_comment|/* do the SW-reset */
 id|SK_OUT8
 c_func
 (paren
@@ -4051,7 +4748,7 @@ comma
 id|CS_RST_SET
 )paren
 suffix:semicolon
-multiline_comment|/* Release the reset */
+multiline_comment|/* release the SW-reset */
 id|SK_OUT8
 c_func
 (paren
@@ -4062,18 +4759,8 @@ comma
 id|CS_RST_CLR
 )paren
 suffix:semicolon
-multiline_comment|/* Reset all error bits in the PCI STATUS register */
-multiline_comment|/*&n;&t; * Note: Cfg cycles cannot be used, because they are not&n;&t; *&t;&t; available on some platforms after &squot;boot time&squot;.&n;&t; */
-id|SK_OUT8
-c_func
-(paren
-id|IoC
-comma
-id|B2_TST_CTRL1
-comma
-id|TST_CFG_WRITE_ON
-)paren
-suffix:semicolon
+multiline_comment|/* reset all error bits in the PCI STATUS register */
+multiline_comment|/*&n;&t; * Note: PCI Cfg cycles cannot be used, because they are not&n;&t; *&t;&t; available on some platforms after &squot;boot time&squot;.&n;&t; */
 id|SK_IN16
 c_func
 (paren
@@ -4089,6 +4776,16 @@ op_amp
 id|Word
 )paren
 suffix:semicolon
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|B2_TST_CTRL1
+comma
+id|TST_CFG_WRITE_ON
+)paren
+suffix:semicolon
 id|SK_OUT16
 c_func
 (paren
@@ -4100,9 +4797,14 @@ c_func
 id|PCI_STATUS
 )paren
 comma
+(paren
+id|SK_U16
+)paren
+(paren
 id|Word
 op_or
 id|PCI_ERRBITS
+)paren
 )paren
 suffix:semicolon
 id|SK_OUT8
@@ -4115,7 +4817,7 @@ comma
 id|TST_CFG_WRITE_OFF
 )paren
 suffix:semicolon
-multiline_comment|/* Release Master_Reset */
+multiline_comment|/* release Master Reset */
 id|SK_OUT8
 c_func
 (paren
@@ -4126,7 +4828,53 @@ comma
 id|CS_MRST_CLR
 )paren
 suffix:semicolon
-multiline_comment|/* Read number of MACs */
+macro_line|#ifdef CLK_RUN
+id|CtrlStat
+op_or_assign
+id|CS_CLK_RUN_ENA
+suffix:semicolon
+macro_line|#endif /* CLK_RUN */
+multiline_comment|/* restore CLK_RUN bits */
+id|SK_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|B0_CTST
+comma
+(paren
+id|SK_U16
+)paren
+(paren
+id|CtrlStat
+op_amp
+(paren
+id|CS_CLK_RUN_HOT
+op_or
+id|CS_CLK_RUN_RST
+op_or
+id|CS_CLK_RUN_ENA
+)paren
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* read Chip Identification Number */
+id|SK_IN8
+c_func
+(paren
+id|IoC
+comma
+id|B2_CHIP_ID
+comma
+op_amp
+id|Byte
+)paren
+suffix:semicolon
+id|pAC-&gt;GIni.GIChipId
+op_assign
+id|Byte
+suffix:semicolon
+multiline_comment|/* read number of MACs */
 id|SK_IN8
 c_func
 (paren
@@ -4138,49 +4886,48 @@ op_amp
 id|Byte
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|pAC-&gt;GIni.GIMacsFound
+op_assign
 (paren
 id|Byte
 op_amp
 id|CFG_SNG_MAC
 )paren
-(brace
-id|pAC-&gt;GIni.GIMacsFound
-op_assign
+ques
+c_cond
 l_int|1
-suffix:semicolon
-)brace
-r_else
-(brace
-id|pAC-&gt;GIni.GIMacsFound
-op_assign
+suffix:colon
 l_int|2
 suffix:semicolon
-)brace
-id|SK_IN8
+multiline_comment|/* get Chip Revision Number */
+id|pAC-&gt;GIni.GIChipRev
+op_assign
+(paren
+id|SK_U8
+)paren
+(paren
+(paren
+id|Byte
+op_amp
+id|CFG_CHIP_R_MSK
+)paren
+op_rshift
+l_int|4
+)paren
+suffix:semicolon
+multiline_comment|/* get diff. PCI parameters */
+id|SK_IN16
 c_func
 (paren
 id|IoC
 comma
-id|PCI_C
-c_func
-(paren
-id|PCI_REV_ID
-)paren
+id|B0_CTST
 comma
 op_amp
-id|Byte
+id|CtrlStat
 )paren
 suffix:semicolon
-id|pAC-&gt;GIni.GIPciHwRev
-op_assign
-(paren
-r_int
-)paren
-id|Byte
-suffix:semicolon
-multiline_comment|/* Read the adapters RAM size */
+multiline_comment|/* read the adapters RAM size */
 id|SK_IN8
 c_func
 (paren
@@ -4192,26 +4939,46 @@ op_amp
 id|Byte
 )paren
 suffix:semicolon
+id|pAC-&gt;GIni.GIGenesis
+op_assign
+id|SK_FALSE
+suffix:semicolon
+id|pAC-&gt;GIni.GIYukon
+op_assign
+id|SK_FALSE
+suffix:semicolon
+id|pAC-&gt;GIni.GIYukonLite
+op_assign
+id|SK_FALSE
+suffix:semicolon
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIChipId
+op_eq
+id|CHIP_ID_GENESIS
+)paren
+(brace
+id|pAC-&gt;GIni.GIGenesis
+op_assign
+id|SK_TRUE
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|Byte
 op_eq
+(paren
+id|SK_U8
+)paren
 l_int|3
 )paren
 (brace
+multiline_comment|/* special case: 4 x 64k x 36, offset = 0x80000 */
 id|pAC-&gt;GIni.GIRamSize
 op_assign
-(paren
-r_int
-)paren
-(paren
-id|Byte
-op_minus
-l_int|1
-)paren
-op_star
-l_int|512
+l_int|1024
 suffix:semicolon
 id|pAC-&gt;GIni.GIRamOffs
 op_assign
@@ -4239,11 +5006,12 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* All known GE Adapters works with 53.125 MHz host clock */
+multiline_comment|/* all GE adapters work with 53.125 MHz host clock */
 id|pAC-&gt;GIni.GIHstClkFact
 op_assign
 id|SK_FACT_53
 suffix:semicolon
+multiline_comment|/* set Descr. Poll Timer Init Value to 250 ms */
 id|pAC-&gt;GIni.GIPollTimerVal
 op_assign
 id|SK_DPOLL_DEF
@@ -4255,7 +5023,386 @@ id|pAC-&gt;GIni.GIHstClkFact
 op_div
 l_int|100
 suffix:semicolon
-multiline_comment|/* Read the PHY type */
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIChipId
+op_ne
+id|CHIP_ID_GENESIS
+)paren
+(brace
+id|pAC-&gt;GIni.GIYukon
+op_assign
+id|SK_TRUE
+suffix:semicolon
+id|pAC-&gt;GIni.GIRamSize
+op_assign
+(paren
+id|Byte
+op_eq
+(paren
+id|SK_U8
+)paren
+l_int|0
+)paren
+ques
+c_cond
+l_int|128
+suffix:colon
+(paren
+r_int
+)paren
+id|Byte
+op_star
+l_int|4
+suffix:semicolon
+id|pAC-&gt;GIni.GIRamOffs
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* WA for chip Rev. A */
+id|pAC-&gt;GIni.GIWolOffs
+op_assign
+(paren
+id|pAC-&gt;GIni.GIChipId
+op_eq
+id|CHIP_ID_YUKON
+op_logical_and
+id|pAC-&gt;GIni.GIChipRev
+op_eq
+l_int|0
+)paren
+ques
+c_cond
+id|WOL_REG_OFFS
+suffix:colon
+l_int|0
+suffix:semicolon
+multiline_comment|/* get PM Capabilities of PCI config space */
+id|SK_IN16
+c_func
+(paren
+id|IoC
+comma
+id|PCI_C
+c_func
+(paren
+id|PCI_PM_CAP_REG
+)paren
+comma
+op_amp
+id|Word
+)paren
+suffix:semicolon
+multiline_comment|/* check if VAUX is available */
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|CtrlStat
+op_amp
+id|CS_VAUX_AVAIL
+)paren
+op_ne
+l_int|0
+)paren
+op_logical_and
+multiline_comment|/* check also if PME from D3cold is set */
+(paren
+(paren
+id|Word
+op_amp
+id|PCI_PME_D3C_SUP
+)paren
+op_ne
+l_int|0
+)paren
+)paren
+(brace
+multiline_comment|/* set entry in GE init struct */
+id|pAC-&gt;GIni.GIVauxAvail
+op_assign
+id|SK_TRUE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIChipId
+op_eq
+id|CHIP_ID_YUKON_LITE
+)paren
+(brace
+multiline_comment|/* this is Rev. A1 */
+id|pAC-&gt;GIni.GIYukonLite
+op_assign
+id|SK_TRUE
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* save Flash-Address Register */
+id|SK_IN32
+c_func
+(paren
+id|IoC
+comma
+id|B2_FAR
+comma
+op_amp
+id|DWord
+)paren
+suffix:semicolon
+multiline_comment|/* test Flash-Address Register */
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|B2_FAR
+op_plus
+l_int|3
+comma
+l_int|0xff
+)paren
+suffix:semicolon
+id|SK_IN8
+c_func
+(paren
+id|IoC
+comma
+id|B2_FAR
+op_plus
+l_int|3
+comma
+op_amp
+id|Byte
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|Byte
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* this is Rev. A0 */
+id|pAC-&gt;GIni.GIYukonLite
+op_assign
+id|SK_TRUE
+suffix:semicolon
+multiline_comment|/* restore Flash-Address Register */
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|B2_FAR
+comma
+id|DWord
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* read the Interrupt source */
+id|SK_IN32
+c_func
+(paren
+id|IoC
+comma
+id|B0_ISRC
+comma
+op_amp
+id|DWord
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|DWord
+op_amp
+id|IS_HW_ERR
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* read the HW Error Interrupt source */
+id|SK_IN32
+c_func
+(paren
+id|IoC
+comma
+id|B0_HWE_ISRC
+comma
+op_amp
+id|DWord
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|DWord
+op_amp
+id|IS_IRQ_SENSOR
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* disable HW Error IRQ */
+id|pAC-&gt;GIni.GIValIrqMask
+op_and_assign
+op_complement
+id|IS_HW_ERR
+suffix:semicolon
+)brace
+)brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|pAC-&gt;GIni.GIMacsFound
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+multiline_comment|/* set GMAC Link Control reset */
+id|SK_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|i
+comma
+id|GMAC_LINK_CTRL
+)paren
+comma
+id|GMLC_RST_SET
+)paren
+suffix:semicolon
+multiline_comment|/* clear GMAC Link Control reset */
+id|SK_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|i
+comma
+id|GMAC_LINK_CTRL
+)paren
+comma
+id|GMLC_RST_CLR
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* all YU chips work with 78.125 MHz host clock */
+id|pAC-&gt;GIni.GIHstClkFact
+op_assign
+id|SK_FACT_78
+suffix:semicolon
+id|pAC-&gt;GIni.GIPollTimerVal
+op_assign
+id|SK_DPOLL_MAX
+suffix:semicolon
+multiline_comment|/* 215 ms */
+)brace
+macro_line|#endif /* YUKON */
+multiline_comment|/* check if 64-bit PCI Slot is present */
+id|pAC-&gt;GIni.GIPciSlot64
+op_assign
+(paren
+id|SK_BOOL
+)paren
+(paren
+(paren
+id|CtrlStat
+op_amp
+id|CS_BUS_SLOT_SZ
+)paren
+op_ne
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* check if 66 MHz PCI Clock is active */
+id|pAC-&gt;GIni.GIPciClock66
+op_assign
+(paren
+id|SK_BOOL
+)paren
+(paren
+(paren
+id|CtrlStat
+op_amp
+id|CS_BUS_CLOCK
+)paren
+op_ne
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* read PCI HW Revision Id. */
+id|SK_IN8
+c_func
+(paren
+id|IoC
+comma
+id|PCI_C
+c_func
+(paren
+id|PCI_REV_ID
+)paren
+comma
+op_amp
+id|Byte
+)paren
+suffix:semicolon
+id|pAC-&gt;GIni.GIPciHwRev
+op_assign
+id|Byte
+suffix:semicolon
+multiline_comment|/* read the PMD type */
+id|SK_IN8
+c_func
+(paren
+id|IoC
+comma
+id|B2_PMD_TYP
+comma
+op_amp
+id|Byte
+)paren
+suffix:semicolon
+id|pAC-&gt;GIni.GICopperType
+op_assign
+(paren
+id|SK_U8
+)paren
+(paren
+id|Byte
+op_eq
+l_char|&squot;T&squot;
+)paren
+suffix:semicolon
+multiline_comment|/* read the PHY type */
 id|SK_IN8
 c_func
 (paren
@@ -4287,15 +5434,13 @@ id|i
 op_increment
 )paren
 (brace
-id|pAC-&gt;GIni.GP
-(braket
-id|i
-)braket
-dot
-id|PhyType
-op_assign
-id|Byte
-suffix:semicolon
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
 r_switch
 c_cond
 (paren
@@ -4328,8 +5473,27 @@ id|PhyAddr
 op_assign
 id|PHY_ADDR_BCOM
 suffix:semicolon
+id|pAC-&gt;GIni.GP
+(braket
+id|i
+)braket
+dot
+id|PMSCap
+op_assign
+(paren
+id|SK_U8
+)paren
+(paren
+id|SK_MS_CAP_AUTO
+op_or
+id|SK_MS_CAP_MASTER
+op_or
+id|SK_MS_CAP_SLAVE
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef OTHER_PHY
 r_case
 id|SK_PHY_LONE
 suffix:colon
@@ -4358,9 +5522,10 @@ id|PHY_ADDR_NAT
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif /* OTHER_PHY */
 r_default
 suffix:colon
-multiline_comment|/* ERROR: unexpected PHY typ detected */
+multiline_comment|/* ERROR: unexpected PHY type detected */
 id|RetVal
 op_assign
 l_int|5
@@ -4369,6 +5534,128 @@ r_break
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|Byte
+OL
+(paren
+id|SK_U8
+)paren
+id|SK_PHY_MARV_COPPER
+)paren
+(brace
+multiline_comment|/* if this field is not initialized */
+id|Byte
+op_assign
+(paren
+id|SK_U8
+)paren
+id|SK_PHY_MARV_COPPER
+suffix:semicolon
+id|pAC-&gt;GIni.GICopperType
+op_assign
+id|SK_TRUE
+suffix:semicolon
+)brace
+id|pAC-&gt;GIni.GP
+(braket
+id|i
+)braket
+dot
+id|PhyAddr
+op_assign
+id|PHY_ADDR_MARV
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GICopperType
+)paren
+(brace
+id|pAC-&gt;GIni.GP
+(braket
+id|i
+)braket
+dot
+id|PLinkSpeedCap
+op_assign
+(paren
+id|SK_U8
+)paren
+(paren
+id|SK_LSPEED_CAP_AUTO
+op_or
+id|SK_LSPEED_CAP_10MBPS
+op_or
+id|SK_LSPEED_CAP_100MBPS
+op_or
+id|SK_LSPEED_CAP_1000MBPS
+)paren
+suffix:semicolon
+id|pAC-&gt;GIni.GP
+(braket
+id|i
+)braket
+dot
+id|PLinkSpeed
+op_assign
+(paren
+id|SK_U8
+)paren
+id|SK_LSPEED_AUTO
+suffix:semicolon
+id|pAC-&gt;GIni.GP
+(braket
+id|i
+)braket
+dot
+id|PMSCap
+op_assign
+(paren
+id|SK_U8
+)paren
+(paren
+id|SK_MS_CAP_AUTO
+op_or
+id|SK_MS_CAP_MASTER
+op_or
+id|SK_MS_CAP_SLAVE
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|Byte
+op_assign
+(paren
+id|SK_U8
+)paren
+id|SK_PHY_MARV_FIBER
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif /* YUKON */
+id|pAC-&gt;GIni.GP
+(braket
+id|i
+)braket
+dot
+id|PhyType
+op_assign
+(paren
+r_int
+)paren
+id|Byte
+suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -4379,14 +5666,9 @@ comma
 id|SK_DBGCAT_INIT
 comma
 (paren
-l_string|&quot;PHY type: %d  PHY addr: %x&bslash;n&quot;
+l_string|&quot;PHY type: %d  PHY addr: %04x&bslash;n&quot;
 comma
-id|pAC-&gt;GIni.GP
-(braket
-id|i
-)braket
-dot
-id|PhyType
+id|Byte
 comma
 id|pAC-&gt;GIni.GP
 (braket
@@ -4397,13 +5679,107 @@ id|PhyAddr
 )paren
 )paren
 suffix:semicolon
-r_return
+)brace
+multiline_comment|/* get MAC Type &amp; set function pointers dependent on */
+macro_line|#ifdef GENESIS
+r_if
+c_cond
 (paren
-id|RetVal
+id|pAC-&gt;GIni.GIGenesis
 )paren
+(brace
+id|pAC-&gt;GIni.GIMacType
+op_assign
+id|SK_MAC_XMAC
+suffix:semicolon
+id|pAC-&gt;GIni.GIFunc.pFnMacUpdateStats
+op_assign
+id|SkXmUpdateStats
+suffix:semicolon
+id|pAC-&gt;GIni.GIFunc.pFnMacStatistic
+op_assign
+id|SkXmMacStatistic
+suffix:semicolon
+id|pAC-&gt;GIni.GIFunc.pFnMacResetCounter
+op_assign
+id|SkXmResetCounter
+suffix:semicolon
+id|pAC-&gt;GIni.GIFunc.pFnMacOverflow
+op_assign
+id|SkXmOverflowStatus
 suffix:semicolon
 )brace
-multiline_comment|/* SkGeInit1*/
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+id|pAC-&gt;GIni.GIMacType
+op_assign
+id|SK_MAC_GMAC
+suffix:semicolon
+id|pAC-&gt;GIni.GIFunc.pFnMacUpdateStats
+op_assign
+id|SkGmUpdateStats
+suffix:semicolon
+id|pAC-&gt;GIni.GIFunc.pFnMacStatistic
+op_assign
+id|SkGmMacStatistic
+suffix:semicolon
+id|pAC-&gt;GIni.GIFunc.pFnMacResetCounter
+op_assign
+id|SkGmResetCounter
+suffix:semicolon
+id|pAC-&gt;GIni.GIFunc.pFnMacOverflow
+op_assign
+id|SkGmOverflowStatus
+suffix:semicolon
+macro_line|#ifdef SPECIAL_HANDLING
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIChipId
+op_eq
+id|CHIP_ID_YUKON
+)paren
+(brace
+multiline_comment|/* check HW self test result */
+id|SK_IN8
+c_func
+(paren
+id|IoC
+comma
+id|B2_E_3
+comma
+op_amp
+id|Byte
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|Byte
+op_amp
+id|B2_E3_RES_MASK
+)paren
+(brace
+id|RetVal
+op_assign
+l_int|6
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
+)brace
+macro_line|#endif /* YUKON */
+r_return
+id|RetVal
+suffix:semicolon
+)brace
+multiline_comment|/* SkGeInit1 */
 multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInit2() - Level 2 Initialization&n; *&n; * Description:&n; *&t;- start the Blink Source Counter&n; *&t;- start the Descriptor Poll Timer&n; *&t;- configure the MAC-Arbiter&n; *&t;- configure the Packet-Arbiter&n; *&t;- enable the Tx Arbiters&n; *&t;- enable the RAM Interface Arbiter&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkGeInit2
 r_static
@@ -4421,47 +5797,13 @@ id|IoC
 )paren
 multiline_comment|/* IO context */
 (brace
-id|SK_GEPORT
-op_star
-id|pPrt
-suffix:semicolon
+macro_line|#ifdef GENESIS
 id|SK_U32
 id|DWord
 suffix:semicolon
+macro_line|#endif /* GENESIS */
 r_int
 id|i
-suffix:semicolon
-multiline_comment|/* start the Blink Source Counter */
-id|DWord
-op_assign
-id|SK_BLK_DUR
-op_star
-(paren
-id|SK_U32
-)paren
-id|pAC-&gt;GIni.GIHstClkFact
-op_div
-l_int|100
-suffix:semicolon
-id|SK_OUT32
-c_func
-(paren
-id|IoC
-comma
-id|B2_BSC_INI
-comma
-id|DWord
-)paren
-suffix:semicolon
-id|SK_OUT8
-c_func
-(paren
-id|IoC
-comma
-id|B2_BSC_CTRL
-comma
-id|BSC_START
-)paren
 suffix:semicolon
 multiline_comment|/* start the Descriptor Poll Timer */
 r_if
@@ -4484,7 +5826,6 @@ id|pAC-&gt;GIni.GIPollTimerVal
 op_assign
 id|SK_DPOLL_MAX
 suffix:semicolon
-multiline_comment|/* Create an Error Log Entry */
 id|SK_ERR_LOG
 c_func
 (paren
@@ -4519,7 +5860,46 @@ id|DPT_START
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Configure&n;&t; *&t;- the MAC-Arbiter and&n;&t; *&t;- the Paket Arbiter&n;&t; *&n;&t; * The MAC and the packet arbiter will be started once&n;&t; * and never be stopped.&n;&t; */
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+multiline_comment|/* start the Blink Source Counter */
+id|DWord
+op_assign
+id|SK_BLK_DUR
+op_star
+(paren
+id|SK_U32
+)paren
+id|pAC-&gt;GIni.GIHstClkFact
+op_div
+l_int|100
+suffix:semicolon
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|B2_BSC_INI
+comma
+id|DWord
+)paren
+suffix:semicolon
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|B2_BSC_CTRL
+comma
+id|BSC_START
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Configure the MAC Arbiter and the Packet Arbiter.&n;&t;&t; * They will be started once and never be stopped.&n;&t;&t; */
 id|SkGeInitMacArb
 c_func
 (paren
@@ -4536,29 +5916,45 @@ comma
 id|IoC
 )paren
 suffix:semicolon
-multiline_comment|/* enable the Tx Arbiters */
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+multiline_comment|/* start Time Stamp Timer */
 id|SK_OUT8
 c_func
 (paren
 id|IoC
 comma
-id|MR_ADDR
-c_func
+id|GMAC_TI_ST_CTRL
+comma
 (paren
-id|MAC_1
-comma
-id|TXA_CTRL
+id|SK_U8
 )paren
-comma
-id|TXA_ENA_ARB
+id|GMT_ST_START
 )paren
 suffix:semicolon
-r_if
-c_cond
+)brace
+macro_line|#endif /* YUKON */
+multiline_comment|/* enable the Tx Arbiters */
+r_for
+c_loop
 (paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
 id|pAC-&gt;GIni.GIMacsFound
-OG
-l_int|1
+suffix:semicolon
+id|i
+op_increment
 )paren
 (brace
 id|SK_OUT8
@@ -4569,7 +5965,7 @@ comma
 id|MR_ADDR
 c_func
 (paren
-id|MAC_2
+id|i
 comma
 id|TXA_CTRL
 )paren
@@ -4587,60 +5983,9 @@ comma
 id|IoC
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|SK_MAX_MACS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|pPrt
-op_assign
-op_amp
-id|pAC-&gt;GIni.GP
-(braket
-id|i
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pAC-&gt;GIni.GIPortUsage
-op_eq
-id|SK_JUMBO_LINK
-)paren
-(brace
-id|pPrt-&gt;PRxCmd
-op_or_assign
-id|XM_RX_BIG_PK_OK
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|pPrt-&gt;PLinkModeConf
-op_eq
-id|SK_LMODE_HALF
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * If in manual half duplex mode&n;&t;&t;&t; * the other side might be in full duplex mode&n;&t;&t;&t; * so ignore if a carrier extension is not seen on&n;&t;&t;&t; * frames received&n;&t;&t;&t; */
-id|pPrt-&gt;PRxCmd
-op_or_assign
-id|XM_RX_DIS_CEXT
-suffix:semicolon
-)brace
-)brace
 )brace
 multiline_comment|/* SkGeInit2 */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInit() - Initialize the GE Adapter with the specified level.&n; *&n; * Description:&n; *&t;Level&t;0:&t;Initialize the Module structures.&n; *&t;Level&t;1:&t;Generic Hardware Initialization. The&n; *&t;&t;&t;IOP/MemBase pointer has to be set before&n; *&t;&t;&t;calling this level.&n; *&n; *&t;&t;&t;o Do a software reset.&n; *&t;&t;&t;o Clear all reset bits.&n; *&t;&t;&t;o Verify that the detected hardware is present.&n; *&t;&t;&t;  Return an error if not.&n; *&t;&t;&t;o Get the hardware configuration&n; *&t;&t;&t;&t;+ Set GIMacsFound with the number of MACs.&n; *&t;&t;&t;&t;+ Store the RAM size in GIRamSize.&n; *&t;&t;&t;&t;+ Save the PCI Revision ID in GIPciHwRev.&n; *&t;&t;&t;o return an error&n; *&t;&t;&t;&t;if Number of MACs &gt; SK_MAX_MACS&n; *&n; *&t;&t;&t;After returning from Level 0 the adapter&n; *&t;&t;&t;may be accessed with IO operations.&n; *&n; *&t;Level&t;2:&t;start the Blink Source Counter&n; *&n; * Returns:&n; *&t;0:&t;success&n; *&t;1:&t;Number of MACs exceeds SK_MAX_MACS&t;( after level 1)&n; *&t;2:&t;Adapter not present or not accessible&n; *&t;3:&t;Illegal initialization level&n; *&t;4:&t;Initialization Level 1 Call missing&n; *&t;5:&t;Unexpected PHY type detected&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInit() - Initialize the GE Adapter with the specified level.&n; *&n; * Description:&n; *&t;Level&t;0:&t;Initialize the Module structures.&n; *&t;Level&t;1:&t;Generic Hardware Initialization. The IOP/MemBase pointer has&n; *&t;&t;&t;&t;to be set before calling this level.&n; *&n; *&t;&t;&t;o Do a software reset.&n; *&t;&t;&t;o Clear all reset bits.&n; *&t;&t;&t;o Verify that the detected hardware is present.&n; *&t;&t;&t;  Return an error if not.&n; *&t;&t;&t;o Get the hardware configuration&n; *&t;&t;&t;&t;+ Set GIMacsFound with the number of MACs.&n; *&t;&t;&t;&t;+ Store the RAM size in GIRamSize.&n; *&t;&t;&t;&t;+ Save the PCI Revision ID in GIPciHwRev.&n; *&t;&t;&t;o return an error&n; *&t;&t;&t;&t;if Number of MACs &gt; SK_MAX_MACS&n; *&n; *&t;&t;&t;After returning from Level 0 the adapter&n; *&t;&t;&t;may be accessed with IO operations.&n; *&n; *&t;Level&t;2:&t;start the Blink Source Counter&n; *&n; * Returns:&n; *&t;0:&t;success&n; *&t;1:&t;Number of MACs exceeds SK_MAX_MACS&t;(after level 1)&n; *&t;2:&t;Adapter not present or not accessible&n; *&t;3:&t;Illegal initialization level&n; *&t;4:&t;Initialization Level 1 Call missing&n; *&t;5:&t;Unexpected PHY type detected&n; *&t;6:&t;HW self test failed&n; */
 DECL|function|SkGeInit
 r_int
 id|SkGeInit
@@ -4725,7 +6070,18 @@ comma
 id|IoC
 )paren
 suffix:semicolon
-multiline_comment|/* Check if the adapter seems to be accessible */
+r_if
+c_cond
+(paren
+id|RetVal
+op_ne
+l_int|0
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* check if the adapter seems to be accessible */
 id|SK_OUT32
 c_func
 (paren
@@ -4733,7 +6089,7 @@ id|IoC
 comma
 id|B2_IRQM_INI
 comma
-l_int|0x11335577L
+id|SK_TEST_VAL
 )paren
 suffix:semicolon
 id|SK_IN32
@@ -4754,7 +6110,7 @@ id|IoC
 comma
 id|B2_IRQM_INI
 comma
-l_int|0x00000000L
+l_int|0L
 )paren
 suffix:semicolon
 r_if
@@ -4762,7 +6118,7 @@ c_cond
 (paren
 id|DWord
 op_ne
-l_int|0x11335577L
+id|SK_TEST_VAL
 )paren
 (brace
 id|RetVal
@@ -4772,7 +6128,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Check if the number of GIMacsFound matches SK_MAX_MACS */
+multiline_comment|/* check if the number of GIMacsFound matches SK_MAX_MACS */
 r_if
 c_cond
 (paren
@@ -4807,7 +6163,7 @@ op_ne
 id|SK_INIT_IO
 )paren
 (brace
-macro_line|#ifndef&t;SK_DIAG
+macro_line|#ifndef SK_DIAG
 id|SK_ERR_LOG
 c_func
 (paren
@@ -4820,7 +6176,7 @@ comma
 id|SKERR_HWI_E002MSG
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* !SK_DIAG */
 id|RetVal
 op_assign
 l_int|4
@@ -4845,7 +6201,6 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/* Create an Error Log Entry */
 id|SK_ERR_LOG
 c_func
 (paren
@@ -4866,13 +6221,11 @@ r_break
 suffix:semicolon
 )brace
 r_return
-(paren
 id|RetVal
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/* SkGeInit*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeDeInit() - Deinitialize the adapter.&n; *&n; * Description:&n; *&t;All ports of the adapter will be stopped if not already done.&n; *&t;Do a software reset and switch off all LEDs.&n; *&n; * Returns:&n; *&t;nothing&n; */
+multiline_comment|/* SkGeInit */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeDeInit() - Deinitialize the adapter&n; *&n; * Description:&n; *&t;All ports of the adapter will be stopped if not already done.&n; *&t;Do a software reset and switch off all LEDs.&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkGeDeInit
 r_void
 id|SkGeDeInit
@@ -4894,7 +6247,8 @@ suffix:semicolon
 id|SK_U16
 id|Word
 suffix:semicolon
-multiline_comment|/* Ensure I2C is ready. */
+macro_line|#if (!defined(SK_SLIM) &amp;&amp; !defined(VCPU))
+multiline_comment|/* ensure I2C is ready */
 id|SkI2cWaitIrq
 c_func
 (paren
@@ -4903,7 +6257,8 @@ comma
 id|IoC
 )paren
 suffix:semicolon
-multiline_comment|/* Stop all current transfer activity */
+macro_line|#endif&t;
+multiline_comment|/* stop all current transfer activity */
 r_for
 c_loop
 (paren
@@ -4958,17 +6313,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Reset all bits in the PCI STATUS register */
-multiline_comment|/*&n;&t; * Note: Cfg cycles cannot be used, because they are not&n;&t; *&t; available on some platforms after &squot;boot time&squot;.&n;&t; */
-id|SK_OUT8
-c_func
-(paren
-id|IoC
-comma
-id|B2_TST_CTRL1
-comma
-id|TST_CFG_WRITE_ON
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * Note: PCI Cfg cycles cannot be used, because they are not&n;&t; *&t; available on some platforms after &squot;boot time&squot;.&n;&t; */
 id|SK_IN16
 c_func
 (paren
@@ -4984,6 +6329,16 @@ op_amp
 id|Word
 )paren
 suffix:semicolon
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|B2_TST_CTRL1
+comma
+id|TST_CFG_WRITE_ON
+)paren
+suffix:semicolon
 id|SK_OUT16
 c_func
 (paren
@@ -4995,9 +6350,14 @@ c_func
 id|PCI_STATUS
 )paren
 comma
+(paren
+id|SK_U16
+)paren
+(paren
 id|Word
 op_or
 id|PCI_ERRBITS
+)paren
 )paren
 suffix:semicolon
 id|SK_OUT8
@@ -5010,7 +6370,7 @@ comma
 id|TST_CFG_WRITE_OFF
 )paren
 suffix:semicolon
-multiline_comment|/* Do the reset, all LEDs are switched off now */
+multiline_comment|/* do the reset, all LEDs are switched off now */
 id|SK_OUT8
 c_func
 (paren
@@ -5021,9 +6381,13 @@ comma
 id|CS_RST_SET
 )paren
 suffix:semicolon
+id|pAC-&gt;GIni.GILevel
+op_assign
+id|SK_INIT_DATA
+suffix:semicolon
 )brace
-multiline_comment|/* SkGeDeInit*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInitPort()&t;Initialize the specified prot.&n; *&n; * Description:&n; *&t;PRxQSize, PXSQSize, and PXAQSize has to be&n; *&t;configured for the specified port before calling this&n; *&t;function. The descriptor rings has to be initialized, too.&n; *&n; *&t;o (Re)configure queues of the specified port.&n; *&t;o configure the XMAC of the specified port.&n; *&t;o put ASIC and XMAC(s) in operational mode.&n; *&t;o initialize Rx/Tx and Sync LED&n; *&t;o initialize RAM Buffers and MAC FIFOs&n; *&n; *&t;The port is ready to connect when returning.&n; *&n; * Note:&n; *&t;The XMACs Rx and Tx state machine is still disabled when&n; *&t;returning.&n; *&n; * Returns:&n; *&t;0:&t;success&n; *&t;1:&t;Queue size initialization error. The configured values&n; *&t;&t;for PRxQSize, PXSQSize, or PXAQSize are invalid for one&n; *&t;&t;or more queues. The specified port was NOT initialized.&n; *&t;&t;An error log entry was generated.&n; *&t;2:&t;The port has to be stopped before it can be initialized again.&n; */
+multiline_comment|/* SkGeDeInit */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInitPort()&t;Initialize the specified port.&n; *&n; * Description:&n; *&t;PRxQSize, PXSQSize, and PXAQSize has to be&n; *&t;configured for the specified port before calling this function.&n; *  The descriptor rings has to be initialized too.&n; *&n; *&t;o (Re)configure queues of the specified port.&n; *&t;o configure the MAC of the specified port.&n; *&t;o put ASIC and MAC(s) in operational mode.&n; *&t;o initialize Rx/Tx and Sync LED&n; *&t;o initialize RAM Buffers and MAC FIFOs&n; *&n; *&t;The port is ready to connect when returning.&n; *&n; * Note:&n; *&t;The MAC&squot;s Rx and Tx state machine is still disabled when returning.&n; *&n; * Returns:&n; *&t;0:&t;success&n; *&t;1:&t;Queue size initialization error. The configured values&n; *&t;&t;for PRxQSize, PXSQSize, or PXAQSize are invalid for one&n; *&t;&t;or more queues. The specified port was NOT initialized.&n; *&t;&t;An error log entry was generated.&n; *&t;2:&t;The port has to be stopped before it can be initialized again.&n; */
 DECL|function|SkGeInitPort
 r_int
 id|SkGeInitPort
@@ -5082,9 +6446,7 @@ id|SKERR_HWI_E004MSG
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -5112,14 +6474,19 @@ id|SKERR_HWI_E005MSG
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|2
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/* Configuration ok, initialize the Port now */
-multiline_comment|/* Initialize Rx, Tx and Link LED */
-multiline_comment|/*&n;&t; * If 1000BT Phy needs LED initialization than swap&n;&t; * LED and XMAC initialization order&n;&t; */
+multiline_comment|/* configuration ok, initialize the Port now */
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+multiline_comment|/* initialize Rx, Tx and Link LED */
+multiline_comment|/*&n;&t;&t; * If 1000BT Phy needs LED initialization than swap&n;&t;&t; * LED and XMAC initialization order&n;&t;&t; */
 id|SkGeXmitLED
 c_func
 (paren
@@ -5157,8 +6524,6 @@ id|SK_LED_ENA
 )paren
 suffix:semicolon
 multiline_comment|/* The Link LED is initialized by RLMT or Diagnostics itself */
-multiline_comment|/* Do NOT initialize the Link Sync Counter */
-multiline_comment|/*&n;&t; * Configure&n;&t; *&t;- XMAC&n;&t; *&t;- MAC FIFOs&n;&t; *&t;- RAM Buffers&n;&t; *&t;- enable Force Sync bit if synchronous queue available&n;&t; *&t;- BMUs&n;&t; */
 id|SkXmInitMac
 c_func
 (paren
@@ -5169,6 +6534,28 @@ comma
 id|Port
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+id|SkGmInitMac
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* YUKON */
+multiline_comment|/* do NOT initialize the Link Sync Counter */
 id|SkGeInitMacFifo
 c_func
 (paren
@@ -5197,6 +6584,7 @@ op_ne
 l_int|0
 )paren
 (brace
+multiline_comment|/* enable Force Sync bit if synchronous queue available */
 id|SK_OUT8
 c_func
 (paren
@@ -5224,19 +6612,13 @@ comma
 id|Port
 )paren
 suffix:semicolon
-multiline_comment|/* Mark port as initialized. */
+multiline_comment|/* mark port as initialized */
 id|pPrt-&gt;PState
 op_assign
 id|SK_PRT_INIT
 suffix:semicolon
-id|pAC-&gt;GIni.GIAnyPortAct
-op_assign
-id|SK_TRUE
-suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* SkGeInitPort */

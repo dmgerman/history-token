@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skvpd.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.9 $&n; * Date:&t;$Date: 1999/11/22 14:02:27 $&n; * Purpose:&t;Defines and Macros for VPD handling&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998,1999 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skvpd.h,v $&n; *&t;Revision 1.9  1999/11/22 14:02:27  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.8  1999/03/11 14:26:40  malthoff&n; *&t;Replace __STDC__ with SK_KR_PROTO.&n; *&t;&n; *&t;Revision 1.7  1998/10/28 07:27:17  gklug&n; *&t;rmv: SWAP macros&n; *&t;add: VPD_IN/OUT8 macros&n; *&t;chg: interface definition&n; *&t;&n; *&t;Revision 1.6  1998/10/22 10:03:44  gklug&n; *&t;fix: use SK_OUT16 instead of SK_OUTW&n; *&t;&n; *&t;Revision 1.5  1998/10/14 07:05:31  cgoos&n; *&t;Changed constants in SK_SWAP_32 to UL.&n; *&t;&n; *&t;Revision 1.4  1998/08/19 08:14:09  gklug&n; *&t;fix: remove struct keyword as much as possible from the c-code (see CCC)&n; *&t;&n; *&t;Revision 1.3  1998/08/18 08:18:56  malthoff&n; *&t;Modify VPD in and out macros for SK_DIAG&n; *&t;&n; *&t;Revision 1.2  1998/07/03 14:49:08  malthoff&n; *&t;Add VPD_INxx() and VPD_OUTxx() macros for the Diagnostics tool.&n; *&t;&n; *&t;Revision 1.1  1998/06/19 14:08:03  malthoff&n; *&t;Created.&n; *&t;&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skvpd.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.15 $&n; * Date:&t;$Date: 2003/01/13 10:39:38 $&n; * Purpose:&t;Defines and Macros for VPD handling&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2003 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skvpd.h,v $&n; *&t;Revision 1.15  2003/01/13 10:39:38  rschmidt&n; *&t;Replaced define for PCI device Id for YUKON with GENESIS&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.14  2002/11/14 15:18:10  gheinig&n; *&t;Added const specifier to key and buf parameters for VpdPara,VpdRead&n; *&t;and VpdWrite. This is necessary for the Diag 7 GUI API&n; *&t;&n; *&t;Revision 1.13  2002/10/14 15:58:18  rschmidt&n; *&t;Added entry in rom_size struct s_vpd&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.12  2002/09/09 14:43:51  mkarl&n; *&t;added PCI Id of Yukon for reading VPD in diag before the adapter has&n; *&t;been initialized&n; *&t;editorial changes&n; *&t;&n; *&t;Revision 1.11  2002/07/26 13:19:16  mkarl&n; *&t;added support for Yukon&n; *&t;added vpd_size to VPD struct&n; *&t;&n; *&t;Revision 1.10  2000/08/10 11:29:07  rassmann&n; *&t;Editorial changes.&n; *&t;Preserving 32-bit alignment in structs for the adapter context.&n; *&t;Removed unused function VpdWriteDword() (#if 0).&n; *&t;Made VpdReadKeyword() available for SKDIAG only.&n; *&t;&n; *&t;Revision 1.9  1999/11/22 14:02:27  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.8  1999/03/11 14:26:40  malthoff&n; *&t;Replace __STDC__ with SK_KR_PROTO.&n; *&t;&n; *&t;Revision 1.7  1998/10/28 07:27:17  gklug&n; *&t;rmv: SWAP macros&n; *&t;add: VPD_IN/OUT8 macros&n; *&t;chg: interface definition&n; *&t;&n; *&t;Revision 1.6  1998/10/22 10:03:44  gklug&n; *&t;fix: use SK_OUT16 instead of SK_OUTW&n; *&t;&n; *&t;Revision 1.5  1998/10/14 07:05:31  cgoos&n; *&t;Changed constants in SK_SWAP_32 to UL.&n; *&t;&n; *&t;Revision 1.4  1998/08/19 08:14:09  gklug&n; *&t;fix: remove struct keyword as much as possible from the C-code (see CCC)&n; *&t;&n; *&t;Revision 1.3  1998/08/18 08:18:56  malthoff&n; *&t;Modify VPD in and out macros for SK_DIAG&n; *&t;&n; *&t;Revision 1.2  1998/07/03 14:49:08  malthoff&n; *&t;Add VPD_INxx() and VPD_OUTxx() macros for the Diagnostics tool.&n; *&t;&n; *&t;Revision 1.1  1998/06/19 14:08:03  malthoff&n; *&t;Created.&n; *&t;&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; * skvpd.h&t;contains Diagnostic specific defines for VPD handling&n; */
 macro_line|#ifndef __INC_SKVPD_H_
 DECL|macro|__INC_SKVPD_H_
@@ -49,8 +49,14 @@ mdefine_line|#define&t;ADD_KEY&t;&t;1&t;/* add the key at the pos &quot;RV&quot;
 DECL|macro|OWR_KEY
 mdefine_line|#define OWR_KEY&t;&t;2&t;/* overwrite key if already exists */
 multiline_comment|/*&n; * Define READ and WRITE Constants.&n; */
+DECL|macro|VPD_DEV_ID_GENESIS
+mdefine_line|#define VPD_DEV_ID_GENESIS &t;0x4300
+DECL|macro|VPD_SIZE_YUKON
+mdefine_line|#define&t;VPD_SIZE_YUKON&t;&t;256
+DECL|macro|VPD_SIZE_GENESIS
+mdefine_line|#define&t;VPD_SIZE_GENESIS&t;512
 DECL|macro|VPD_SIZE
-mdefine_line|#define&t;VPD_SIZE&t;512
+mdefine_line|#define&t;VPD_SIZE&t;&t;&t;512
 DECL|macro|VPD_READ
 mdefine_line|#define VPD_READ&t;0x0000
 DECL|macro|VPD_WRITE
@@ -68,7 +74,7 @@ mdefine_line|#define VPD_MAX_LEN&t;50
 multiline_comment|/* VPD status */
 multiline_comment|/* bit 7..1 reserved */
 DECL|macro|VPD_VALID
-mdefine_line|#define VPD_VALID&t;(1&lt;&lt;0)&t;&t;/* VPD data buffer, vpd_free_ro, */
+mdefine_line|#define VPD_VALID&t;(1&lt;&lt;0)&t;/* VPD data buffer, vpd_free_ro, */
 multiline_comment|/* and vpd_free_rw valid&t; */
 multiline_comment|/*&n; * VPD structs&n; */
 DECL|struct|s_vpd_status
@@ -76,6 +82,12 @@ r_typedef
 r_struct
 id|s_vpd_status
 (brace
+DECL|member|Align01
+r_int
+r_int
+id|Align01
+suffix:semicolon
+multiline_comment|/* Alignment */
 DECL|member|vpd_status
 r_int
 r_int
@@ -114,6 +126,16 @@ id|VPD_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* VPD buffer */
+DECL|member|rom_size
+r_int
+id|rom_size
+suffix:semicolon
+multiline_comment|/* VPD ROM Size from PCI_OUR_REG_2 */
+DECL|member|vpd_size
+r_int
+id|vpd_size
+suffix:semicolon
+multiline_comment|/* saved VPD-size */
 DECL|typedef|SK_VPD
 )brace
 id|SK_VPD
@@ -140,8 +162,8 @@ DECL|typedef|SK_VPD_PARA
 id|SK_VPD_PARA
 suffix:semicolon
 multiline_comment|/*&n; * structure of Large Resource Type Identifiers&n; */
-multiline_comment|/* was removed, because of alignment problems */
-multiline_comment|/*&n; * sturcture of VPD keywords&n; */
+multiline_comment|/* was removed because of alignment problems */
+multiline_comment|/*&n; * structure of VPD keywords&n; */
 DECL|struct|s_vpd_key
 r_typedef
 r_struct
@@ -201,20 +223,21 @@ mdefine_line|#define VPD_IN32(pAC,IoC,Addr,pVal)&t;SK_IN32(IoC,PCI_C(Addr),pVal)
 macro_line|#endif&t;/* VPD_DO_IO */
 macro_line|#else&t;/* SKDIAG */
 DECL|macro|VPD_OUT8
-mdefine_line|#define VPD_OUT8(pAC,Ioc,Addr,Val) {&t;&t;&t;&t;&bslash;&n;&t;&t;if ((pAC)-&gt;DgT.DgUseCfgCycle)&t;&t;&t;&bslash;&n;&t;&t;&t;SkPciWriteCfgByte(pAC,Addr,Val) ;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SK_OUT8(pAC,PCI_C(Addr),Val);&t;&t;&bslash;&n;&t;&t;}
+mdefine_line|#define VPD_OUT8(pAC,Ioc,Addr,Val) {&t;&t;&t;&bslash;&n;&t;&t;if ((pAC)-&gt;DgT.DgUseCfgCycle)&t;&t;&t;&bslash;&n;&t;&t;&t;SkPciWriteCfgByte(pAC,Addr,Val);&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SK_OUT8(pAC,PCI_C(Addr),Val);&t;&t;&bslash;&n;&t;&t;}
 DECL|macro|VPD_OUT16
-mdefine_line|#define VPD_OUT16(pAC,Ioc,Addr,Val) {&t;&t;&t;&t;&bslash;&n;&t;&t;if ((pAC)-&gt;DgT.DgUseCfgCycle)&t;&t;&t;&bslash;&n;&t;&t;&t;SkPciWriteCfgWord(pAC,Addr,Val) ;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SK_OUT16(pAC,PCI_C(Addr),Val);&t;&t;&bslash;&n;&t;&t;}
+mdefine_line|#define VPD_OUT16(pAC,Ioc,Addr,Val) {&t;&t;&t;&bslash;&n;&t;&t;if ((pAC)-&gt;DgT.DgUseCfgCycle)&t;&t;&t;&bslash;&n;&t;&t;&t;SkPciWriteCfgWord(pAC,Addr,Val);&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SK_OUT16(pAC,PCI_C(Addr),Val);&t;&t;&bslash;&n;&t;&t;}
 DECL|macro|VPD_OUT32
-mdefine_line|#define VPD_OUT32(pAC,Ioc,Addr,Val) {&t;&t;&t;&t;&bslash;&n;&t;&t;if ((pAC)-&gt;DgT.DgUseCfgCycle)&t;&t;&t;&bslash;&n;&t;&t;&t;SkPciWriteCfgDWord(pAC,Addr,Val) ;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SK_OUT32(pAC,PCI_C(Addr),Val); &t;&t;&bslash;&n;&t;&t;}
+mdefine_line|#define VPD_OUT32(pAC,Ioc,Addr,Val) {&t;&t;&t;&bslash;&n;&t;&t;if ((pAC)-&gt;DgT.DgUseCfgCycle)&t;&t;&t;&bslash;&n;&t;&t;&t;SkPciWriteCfgDWord(pAC,Addr,Val);&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SK_OUT32(pAC,PCI_C(Addr),Val); &t;&t;&bslash;&n;&t;&t;}
 DECL|macro|VPD_IN8
-mdefine_line|#define VPD_IN8(pAC,Ioc,Addr,pVal) {&t;&t;&t;&t;&bslash;&n;&t;&t;if ((pAC)-&gt;DgT.DgUseCfgCycle) &t;&t;&t;&bslash;&n;&t;&t;&t;SkPciReadCfgByte(pAC,Addr,pVal) ;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SK_IN8(pAC,PCI_C(Addr),pVal); &t;&t;&bslash;&n;&t;&t;}
+mdefine_line|#define VPD_IN8(pAC,Ioc,Addr,pVal) {&t;&t;&t;&bslash;&n;&t;&t;if ((pAC)-&gt;DgT.DgUseCfgCycle) &t;&t;&t;&bslash;&n;&t;&t;&t;SkPciReadCfgByte(pAC,Addr,pVal);&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SK_IN8(pAC,PCI_C(Addr),pVal); &t;&t;&bslash;&n;&t;&t;}
 DECL|macro|VPD_IN16
-mdefine_line|#define VPD_IN16(pAC,Ioc,Addr,pVal) {&t;&t;&t;&t;&bslash;&n;&t;&t;if ((pAC)-&gt;DgT.DgUseCfgCycle) &t;&t;&t;&bslash;&n;&t;&t;&t;SkPciReadCfgWord(pAC,Addr,pVal) ;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SK_IN16(pAC,PCI_C(Addr),pVal); &t;&t;&bslash;&n;&t;&t;}
+mdefine_line|#define VPD_IN16(pAC,Ioc,Addr,pVal) {&t;&t;&t;&bslash;&n;&t;&t;if ((pAC)-&gt;DgT.DgUseCfgCycle) &t;&t;&t;&bslash;&n;&t;&t;&t;SkPciReadCfgWord(pAC,Addr,pVal);&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SK_IN16(pAC,PCI_C(Addr),pVal); &t;&t;&bslash;&n;&t;&t;}
 DECL|macro|VPD_IN32
-mdefine_line|#define VPD_IN32(pAC,Ioc,Addr,pVal) {&t;&t;&t;&t;&bslash;&n;&t;&t;if ((pAC)-&gt;DgT.DgUseCfgCycle)&t;&t;&t;&bslash;&n;&t;&t;&t;SkPciReadCfgDWord(pAC,Addr,pVal) ;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SK_IN32(pAC,PCI_C(Addr),pVal);&t;&t;&bslash;&n;&t;&t;}
+mdefine_line|#define VPD_IN32(pAC,Ioc,Addr,pVal) {&t;&t;&t;&bslash;&n;&t;&t;if ((pAC)-&gt;DgT.DgUseCfgCycle)&t;&t;&t;&bslash;&n;&t;&t;&t;SkPciReadCfgDWord(pAC,Addr,pVal);&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SK_IN32(pAC,PCI_C(Addr),pVal);&t;&t;&bslash;&n;&t;&t;}
 macro_line|#endif&t;/* nSKDIAG */
 multiline_comment|/* function prototypes ********************************************************/
 macro_line|#ifndef&t;SK_KR_PROTO
+macro_line|#ifdef SKDIAG
 r_extern
 id|SK_U32
 id|VpdReadDWord
@@ -231,6 +254,7 @@ r_int
 id|addr
 )paren
 suffix:semicolon
+macro_line|#endif&t;/* SKDIAG */
 r_extern
 r_int
 id|VpdSetupPara
@@ -240,10 +264,12 @@ id|SK_AC
 op_star
 id|pAC
 comma
+r_const
 r_char
 op_star
 id|key
 comma
+r_const
 r_char
 op_star
 id|buf
@@ -309,6 +335,7 @@ comma
 id|SK_IOC
 id|IoC
 comma
+r_const
 r_char
 op_star
 id|key
@@ -344,10 +371,12 @@ comma
 id|SK_IOC
 id|IoC
 comma
+r_const
 r_char
 op_star
 id|key
 comma
+r_const
 r_char
 op_star
 id|buf
