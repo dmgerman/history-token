@@ -12,6 +12,14 @@ DECL|macro|EDDEXTSIZE
 mdefine_line|#define EDDEXTSIZE 4&t;&t;/* change these if you muck with the structures */
 DECL|macro|EDDPARMSIZE
 mdefine_line|#define EDDPARMSIZE 74
+DECL|macro|CHECKEXTENSIONSPRESENT
+mdefine_line|#define CHECKEXTENSIONSPRESENT 0x41
+DECL|macro|GETDEVICEPARAMETERS
+mdefine_line|#define GETDEVICEPARAMETERS 0x48
+DECL|macro|EDDMAGIC1
+mdefine_line|#define EDDMAGIC1 0x55AA
+DECL|macro|EDDMAGIC2
+mdefine_line|#define EDDMAGIC2 0xAA55
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|EDD_EXT_FIXED_DISK_ACCESS
 mdefine_line|#define EDD_EXT_FIXED_DISK_ACCESS           (1 &lt;&lt; 0)
