@@ -92,30 +92,7 @@ r_int
 id|sum
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Same as csum_partial, but copies from src while it checksums.&n; *&n; * Here it is even more important to align src and dst on a 32-bit (or&n; * even better 64-bit) boundary.&n; *&n; * this will go away soon.&n; */
-r_extern
-r_int
-r_int
-id|csum_partial_copy
-(paren
-r_const
-r_char
-op_star
-id|src
-comma
-r_char
-op_star
-id|dst
-comma
-r_int
-id|len
-comma
-r_int
-r_int
-id|sum
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * This is a new version of the above that records errors it finds in&n; * *errp, but continues and zeros the rest of the buffer.&n; */
+multiline_comment|/*&n; * Same as csum_partial, but copies from src while it checksums.&n; *&n; * Here it is even more important to align src and dst on a 32-bit (or&n; * even better 64-bit) boundary.&n; */
 r_extern
 r_int
 r_int

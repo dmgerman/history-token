@@ -28,9 +28,6 @@ id|sum
 )paren
 suffix:semicolon
 multiline_comment|/* the same as csum_partial, but copies from fs:src while it&n; * checksums&n; *&n; * here even more important to align src and dst on a 32-bit (or even&n; * better 64-bit) boundary&n; */
-multiline_comment|/* FIXME: Remove this macro ASAP */
-DECL|macro|csum_partial_copy
-mdefine_line|#define csum_partial_copy(src, dst, len, sum) &bslash;&n; &t;&t;       csum_partial_copy_nocheck(src,dst,len,sum)
 r_extern
 r_int
 r_int

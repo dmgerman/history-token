@@ -24,9 +24,6 @@ id|sum
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * this is a new version of the above that records errors it finds in *errp,&n; * but continues and zeros the rest of the buffer.&n; */
-DECL|macro|csum_partial_copy_nocheck
-mdefine_line|#define csum_partial_copy_nocheck csum_partial_copy
-multiline_comment|/*&n; * this is a new version of the above that records errors it finds in *errp,&n; * but continues and zeros the rest of the buffer.&n; */
 r_int
 r_int
 id|csum_partial_copy_from_user
@@ -124,10 +121,10 @@ r_return
 id|sum
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * the same as csum_partial, but copies from user space (but on MIPS&n; * we have just one address space, so this is identical to the above)&n; *&n; * this is obsolete and will go away.&n; */
+multiline_comment|/*&n; * the same as csum_partial, but copies from user space (but on MIPS&n; * we have just one address space, so this is identical to the above)&n; */
 r_int
 r_int
-id|csum_partial_copy
+id|csum_partial_copy_nocheck
 c_func
 (paren
 r_const

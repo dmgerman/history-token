@@ -111,14 +111,6 @@ c_func
 id|no_irq_type
 )paren
 suffix:semicolon
-multiline_comment|/* Networking helper routines. */
-DECL|variable|csum_partial_copy
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|csum_partial_copy
-)paren
-suffix:semicolon
 DECL|variable|strpbrk
 id|EXPORT_SYMBOL
 c_func

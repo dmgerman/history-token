@@ -266,14 +266,6 @@ id|vme_brdtype
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Networking helper routines. */
-DECL|variable|csum_partial_copy
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|csum_partial_copy
-)paren
-suffix:semicolon
 multiline_comment|/* The following are special because they&squot;re not called&n;   explicitly (the C compiler generates them).  Fortunately,&n;   their interface isn&squot;t gonna change any time soon now, so&n;   it&squot;s OK to leave it out of version control.  */
 DECL|variable|__ashldi3
 id|EXPORT_SYMBOL_NOVERS

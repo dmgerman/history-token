@@ -390,10 +390,10 @@ id|result
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * copy while checksumming, otherwise like csum_partial&n; */
-DECL|function|csum_partial_copy
+DECL|function|csum_partial_copy_nocheck
 r_int
 r_int
-id|csum_partial_copy
+id|csum_partial_copy_nocheck
 c_func
 (paren
 r_const
