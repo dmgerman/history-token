@@ -200,7 +200,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|clear_buffer_async
+id|clear_buffer_async_read
 c_func
 (paren
 id|bh
@@ -237,7 +237,7 @@ id|tmp
 r_if
 c_cond
 (paren
-id|buffer_async
+id|buffer_async_read
 c_func
 (paren
 id|tmp
@@ -885,7 +885,7 @@ id|tbh-&gt;b_end_io
 op_assign
 id|end_buffer_read_file_async
 suffix:semicolon
-id|set_buffer_async
+id|set_buffer_async_read
 c_func
 (paren
 id|tbh
@@ -1545,7 +1545,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|clear_buffer_async
+id|clear_buffer_async_read
 c_func
 (paren
 id|bh
@@ -1582,7 +1582,7 @@ id|tmp
 r_if
 c_cond
 (paren
-id|buffer_async
+id|buffer_async_read
 c_func
 (paren
 id|tmp
@@ -2147,7 +2147,7 @@ id|tbh-&gt;b_end_io
 op_assign
 id|end_buffer_read_mftbmp_async
 suffix:semicolon
-id|set_buffer_async
+id|set_buffer_async_read
 c_func
 (paren
 id|tbh
@@ -2410,7 +2410,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|clear_buffer_async
+id|clear_buffer_async_read
 c_func
 (paren
 id|bh
@@ -2447,7 +2447,7 @@ id|tmp
 r_if
 c_cond
 (paren
-id|buffer_async
+id|buffer_async_read
 c_func
 (paren
 id|tmp
@@ -3283,7 +3283,7 @@ id|tbh-&gt;b_end_io
 op_assign
 id|end_buffer_read_mst_async
 suffix:semicolon
-id|set_buffer_async
+id|set_buffer_async_read
 c_func
 (paren
 id|tbh
