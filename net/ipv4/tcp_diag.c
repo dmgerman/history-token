@@ -22,30 +22,6 @@ id|tcpnl
 suffix:semicolon
 DECL|macro|TCPDIAG_PUT
 mdefine_line|#define TCPDIAG_PUT(skb, attrtype, attrlen) &bslash;&n;({ int rtalen = RTA_LENGTH(attrlen);        &bslash;&n;   struct rtattr *rta;                      &bslash;&n;   if (skb_tailroom(skb) &lt; RTA_ALIGN(rtalen)) goto nlmsg_failure; &bslash;&n;   rta = (void*)__skb_put(skb, RTA_ALIGN(rtalen)); &bslash;&n;   rta-&gt;rta_type = attrtype;                &bslash;&n;   rta-&gt;rta_len = rtalen;                   &bslash;&n;   RTA_DATA(rta); })
-DECL|function|jiffies_to_usecs
-r_static
-r_inline
-r_int
-r_int
-id|jiffies_to_usecs
-c_func
-(paren
-r_const
-r_int
-r_int
-id|j
-)paren
-(brace
-r_return
-l_int|1000
-op_star
-id|jiffies_to_msecs
-c_func
-(paren
-id|j
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Return information about state of tcp endpoint in API format. */
 DECL|function|tcp_get_info
 r_void
