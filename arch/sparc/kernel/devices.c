@@ -385,7 +385,7 @@ l_string|&quot;No CPU nodes found, cannot continue.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Probably a sun4e, Sun is trying to trick us ;-) */
-id|halt
+id|prom_halt
 c_func
 (paren
 )paren
