@@ -389,6 +389,7 @@ op_assign
 id|acpi_hw_clear_acpi_status
 c_func
 (paren
+id|ACPI_MTX_DO_NOT_LOCK
 )paren
 suffix:semicolon
 r_if
@@ -762,6 +763,7 @@ suffix:semicolon
 id|acpi_hw_clear_acpi_status
 c_func
 (paren
+id|ACPI_MTX_DO_NOT_LOCK
 )paren
 suffix:semicolon
 id|acpi_hw_disable_non_wakeup_gpes

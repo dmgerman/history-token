@@ -34,6 +34,22 @@ r_int
 r_int
 id|wsize
 suffix:semicolon
+DECL|member|mnt_uid
+id|uid_t
+id|mnt_uid
+suffix:semicolon
+DECL|member|mnt_gid
+id|gid_t
+id|mnt_gid
+suffix:semicolon
+DECL|member|mnt_file_mode
+id|mode_t
+id|mnt_file_mode
+suffix:semicolon
+DECL|member|mnt_dir_mode
+id|mode_t
+id|mnt_dir_mode
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _CIFS_FS_SB_H */

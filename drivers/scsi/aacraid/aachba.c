@@ -6843,7 +6843,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-l_int|NULL
+l_int|0
 )paren
 suffix:semicolon
 id|psg-&gt;sg
@@ -7098,6 +7098,9 @@ op_assign
 (paren
 r_char
 op_star
+)paren
+(paren
+id|ulong
 )paren
 id|addr
 suffix:semicolon
@@ -7172,7 +7175,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-l_int|NULL
+l_int|0
 )paren
 suffix:semicolon
 id|psg-&gt;sg
@@ -7188,7 +7191,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-l_int|NULL
+l_int|0
 )paren
 suffix:semicolon
 id|psg-&gt;sg
@@ -7509,6 +7512,9 @@ op_assign
 (paren
 r_char
 op_star
+)paren
+(paren
+id|ulong
 )paren
 id|addr
 suffix:semicolon

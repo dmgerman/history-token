@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * ACPI PCI Hot Plug Controller Driver&n; *&n; * Copyright (c) 1995,2001 Compaq Computer Corporation&n; * Copyright (c) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (c) 2001 IBM Corp.&n; * Copyright (c) 2002 Hiroshi Aono (h-aono@ap.jp.nec.com)&n; * Copyright (c) 2002 Takayoshi Kochi (t-kouchi@cq.jp.nec.com)&n; * Copyright (c) 2002 NEC Corporation&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;gregkh@us.ibm.com&gt;,&n; *&t;&t;    &lt;h-aono@ap.jp.nec.com&gt;,&n; *&t;&t;    &lt;t-kouchi@cq.jp.nec.com&gt;&n; *&n; */
+multiline_comment|/*&n; * ACPI PCI Hot Plug Controller Driver&n; *&n; * Copyright (c) 1995,2001 Compaq Computer Corporation&n; * Copyright (c) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (c) 2001 IBM Corp.&n; * Copyright (c) 2002 Hiroshi Aono (h-aono@ap.jp.nec.com)&n; * Copyright (c) 2002,2003 Takayoshi Kochi (t-kochi@bq.jp.nec.com)&n; * Copyright (c) 2002,2003 NEC Corporation&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;gregkh@us.ibm.com&gt;,&n; *&t;&t;    &lt;t-kochi@bq.jp.nec.com&gt;&n; *&n; */
 macro_line|#ifndef _ACPIPHP_H
 DECL|macro|_ACPIPHP_H
 mdefine_line|#define _ACPIPHP_H
 macro_line|#include &lt;linux/acpi.h&gt;
+macro_line|#include &lt;linux/kobject.h&gt;&t;/* for KOBJ_NAME_LEN */
 macro_line|#include &quot;pci_hotplug.h&quot;
 DECL|macro|dbg
 mdefine_line|#define dbg(format, arg...)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (acpiphp_debug)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_DEBUG &quot;%s: &quot; format,&t;&bslash;&n;&t;&t;&t;&t;MY_NAME , ## arg); &t;&t;&bslash;&n;&t;} while (0)
@@ -16,7 +17,7 @@ DECL|macro|SLOT_MAGIC
 mdefine_line|#define SLOT_MAGIC&t;0x67267322
 multiline_comment|/* name size which is used for entries in pcihpfs */
 DECL|macro|SLOT_NAME_SIZE
-mdefine_line|#define SLOT_NAME_SIZE&t;32&t;&t;/* ACPI{_SUN}-{BUS}:{DEV} */
+mdefine_line|#define SLOT_NAME_SIZE&t;KOBJ_NAME_LEN&t;&t;/* {_SUN} */
 r_struct
 id|acpiphp_bridge
 suffix:semicolon
@@ -371,15 +372,8 @@ DECL|macro|FUNC_HAS_PS2
 mdefine_line|#define FUNC_HAS_PS2&t;&t;(0x00000040)
 DECL|macro|FUNC_HAS_PS3
 mdefine_line|#define FUNC_HAS_PS3&t;&t;(0x00000080)
-multiline_comment|/* not yet */
-DECL|macro|SLOT_SUPPORT_66MHZ
-mdefine_line|#define SLOT_SUPPORT_66MHZ&t;(0x00010000)
-DECL|macro|SLOT_SUPPORT_100MHZ
-mdefine_line|#define SLOT_SUPPORT_100MHZ&t;(0x00020000)
-DECL|macro|SLOT_SUPPORT_133MHZ
-mdefine_line|#define SLOT_SUPPORT_133MHZ&t;(0x00040000)
-DECL|macro|SLOT_SUPPORT_PCIX
-mdefine_line|#define SLOT_SUPPORT_PCIX&t;(0x00080000)
+DECL|macro|FUNC_EXISTS
+mdefine_line|#define FUNC_EXISTS&t;&t;(0x10000000) /* to make sure we call _EJ0 only for existing funcs */
 multiline_comment|/* function prototypes */
 multiline_comment|/* acpiphp_glue.c */
 r_extern

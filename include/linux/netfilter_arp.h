@@ -12,7 +12,9 @@ DECL|macro|NF_ARP_IN
 mdefine_line|#define NF_ARP_IN&t;0
 DECL|macro|NF_ARP_OUT
 mdefine_line|#define NF_ARP_OUT&t;1
+DECL|macro|NF_ARP_FORWARD
+mdefine_line|#define NF_ARP_FORWARD&t;2
 DECL|macro|NF_ARP_NUMHOOKS
-mdefine_line|#define NF_ARP_NUMHOOKS&t;2
+mdefine_line|#define NF_ARP_NUMHOOKS&t;3
 macro_line|#endif /* __LINUX_ARP_NETFILTER_H */
 eof

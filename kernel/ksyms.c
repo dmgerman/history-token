@@ -3140,13 +3140,6 @@ c_func
 id|init_task
 )paren
 suffix:semicolon
-DECL|variable|init_thread_union
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|init_thread_union
-)paren
-suffix:semicolon
 DECL|variable|tasklist_lock
 id|EXPORT_SYMBOL
 c_func
@@ -3190,6 +3183,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ptrace_notify
+)paren
+suffix:semicolon
+DECL|variable|console_printk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|console_printk
 )paren
 suffix:semicolon
 DECL|variable|current_kernel_time

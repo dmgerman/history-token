@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: arch.h,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id: arch.h,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_SN2_ARCH_H
 DECL|macro|_ASM_IA64_SN_SN2_ARCH_H
 mdefine_line|#define _ASM_IA64_SN_SN2_ARCH_H
@@ -25,6 +25,8 @@ DECL|macro|MAX_PARTITIONS
 mdefine_line|#define MAX_PARTITIONS&t;&t;MAX_REGIONS
 DECL|macro|NASID_MASK_BYTES
 mdefine_line|#define NASID_MASK_BYTES&t;((MAX_NASIDS + 7) / 8)
+DECL|macro|CNASID_MASK_BYTES
+mdefine_line|#define CNASID_MASK_BYTES&t;(NASID_MASK_BYTES / 2)
 multiline_comment|/*&n; * 1 FSB per SHUB, with up to 4 cpus per FSB.&n; */
 DECL|macro|NUM_SUBNODES
 mdefine_line|#define NUM_SUBNODES&t;1

@@ -384,17 +384,21 @@ id|rwlock_t
 id|hh_lock
 suffix:semicolon
 multiline_comment|/* cached hardware header; allow for machine alignment needs.        */
+DECL|macro|HH_DATA_MOD
+mdefine_line|#define HH_DATA_MOD&t;16
+DECL|macro|HH_DATA_OFF
+mdefine_line|#define HH_DATA_OFF(__len) &bslash;&n;&t;(HH_DATA_MOD - ((__len) &amp; (HH_DATA_MOD - 1)))
+DECL|macro|HH_DATA_ALIGN
+mdefine_line|#define HH_DATA_ALIGN(__len) &bslash;&n;&t;(((__len)+(HH_DATA_MOD-1))&amp;~(HH_DATA_MOD - 1))
 DECL|member|hh_data
 r_int
 r_int
 id|hh_data
 (braket
-l_int|16
-op_div
-r_sizeof
+id|HH_DATA_ALIGN
+c_func
 (paren
-r_int
-r_int
+id|LL_MAX_HEADER
 )paren
 )braket
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#ifndef _ASM_SN_XTALK_XBOW_INFO_H
 DECL|macro|_ASM_SN_XTALK_XBOW_INFO_H
 mdefine_line|#define _ASM_SN_XTALK_XBOW_INFO_H
@@ -106,7 +106,7 @@ r_void
 id|xbow_update_perf_counters
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -115,7 +115,7 @@ op_star
 id|xbow_get_perf_counters
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -123,7 +123,7 @@ r_int
 id|xbow_enable_perf_counter
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 comma

@@ -1151,11 +1151,10 @@ id|sk
 op_member_access_from_pointer
 id|bind_hash
 suffix:semicolon
-id|__hlist_del
+id|__sk_del_bind_node
 c_func
 (paren
-op_amp
-id|sk-&gt;sk_bind_node
+id|sk
 )paren
 suffix:semicolon
 id|tcp_sk
@@ -1418,7 +1417,7 @@ id|lock
 )paren
 suffix:semicolon
 )brace
-id|sk_add_node
+id|__sk_add_node
 c_func
 (paren
 id|sk
@@ -1575,7 +1574,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk_del_node_init
+id|__sk_del_node_init
 c_func
 (paren
 id|sk
@@ -2605,7 +2604,7 @@ id|sk
 )paren
 )paren
 suffix:semicolon
-id|sk_add_node
+id|__sk_add_node
 c_func
 (paren
 id|sk

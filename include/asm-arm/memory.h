@@ -7,7 +7,7 @@ macro_line|#include &lt;asm/arch/memory.h&gt;
 multiline_comment|/*&n; * PFNs are used to describe any physical page; this means&n; * PFN 0 == physical address 0.&n; *&n; * This is the PFN of the first RAM page in the kernel&n; * direct-mapped view.  We assume this is the first page&n; * of RAM in the mem_map as well.&n; */
 DECL|macro|PHYS_PFN_OFFSET
 mdefine_line|#define PHYS_PFN_OFFSET&t;(PHYS_OFFSET &gt;&gt; PAGE_SHIFT)
-multiline_comment|/*&n; * These are *only* valid on the kernel direct mapped RAM memory.&n; */
+multiline_comment|/*&n; * These are *only* valid on the kernel direct mapped RAM memory.&n; * Note: Drivers should NOT use these.  They are the wrong&n; * translation for translating DMA addresses.  Use the driver&n; * DMA support - see dma-mapping.h.&n; */
 DECL|function|virt_to_phys
 r_static
 r_inline
@@ -68,6 +68,7 @@ id|x
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Drivers should NOT use these either.&n; */
 DECL|macro|__pa
 mdefine_line|#define __pa(x)&t;&t;&t;__virt_to_phys((unsigned long)(x))
 DECL|macro|__va
@@ -88,7 +89,7 @@ mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &gt;= PHYS_PFN_OFFSET &amp;&amp;
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;(pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT))
 DECL|macro|virt_addr_valid
-mdefine_line|#define virt_addr_valid(kaddr)&t;((kaddr) &gt;= PAGE_OFFSET &amp;&amp; (kaddr) &lt; (unsigned long)high_memory)
+mdefine_line|#define virt_addr_valid(kaddr)&t;((unsigned long)(kaddr) &gt;= PAGE_OFFSET &amp;&amp; (unsigned long)(kaddr) &lt; (unsigned long)high_memory)
 DECL|macro|PHYS_TO_NID
 mdefine_line|#define PHYS_TO_NID(addr)&t;(0)
 macro_line|#else

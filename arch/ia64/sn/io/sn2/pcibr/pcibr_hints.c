@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -19,14 +19,13 @@ macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
 macro_line|#include &lt;asm/sn/prio.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/ioc3.h&gt;
-macro_line|#include &lt;asm/sn/eeprom.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 id|pcibr_hints_t
 id|pcibr_hints_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 )paren
@@ -35,14 +34,14 @@ r_void
 id|pcibr_hints_fix_rrbs
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_void
 id|pcibr_hints_dualslot
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|pciio_slot_t
 comma
@@ -53,7 +52,7 @@ r_void
 id|pcibr_hints_intr_bits
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|pcibr_intr_bits_f
 op_star
@@ -63,7 +62,7 @@ r_void
 id|pcibr_set_rrb_callback
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|rrb_alloc_funct_t
 )paren
@@ -72,14 +71,14 @@ r_void
 id|pcibr_hints_handsoff
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_void
 id|pcibr_hints_subdevs
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|pciio_slot_t
 comma
@@ -91,7 +90,7 @@ DECL|function|pcibr_hints_get
 id|pcibr_hints_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 comma
 r_int
@@ -241,7 +240,7 @@ DECL|function|pcibr_hints_fix_some_rrbs
 id|pcibr_hints_fix_some_rrbs
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 comma
 r_int
@@ -287,7 +286,7 @@ DECL|function|pcibr_hints_fix_rrbs
 id|pcibr_hints_fix_rrbs
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 )paren
 (brace
@@ -305,7 +304,7 @@ DECL|function|pcibr_hints_dualslot
 id|pcibr_hints_dualslot
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 comma
 id|pciio_slot_t
@@ -359,7 +358,7 @@ DECL|function|pcibr_hints_intr_bits
 id|pcibr_hints_intr_bits
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 comma
 id|pcibr_intr_bits_f
@@ -406,7 +405,7 @@ DECL|function|pcibr_set_rrb_callback
 id|pcibr_set_rrb_callback
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 comma
 id|rrb_alloc_funct_t
@@ -439,7 +438,7 @@ DECL|function|pcibr_hints_handsoff
 id|pcibr_hints_handsoff
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 )paren
 (brace
@@ -482,7 +481,7 @@ DECL|function|pcibr_hints_subdevs
 id|pcibr_hints_subdevs
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 comma
 id|pciio_slot_t
@@ -503,7 +502,7 @@ id|sdname
 l_int|16
 )braket
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pconn_vhdl
 op_assign
 id|GRAPH_VERTEX_NONE

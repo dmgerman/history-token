@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * TLB support routines.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 08/02/00 A. Mallick &lt;asit.k.mallick@intel.com&gt;&n; *&t;&t;Modified RID allocation for SMP&n; *          Goutham Rao &lt;goutham.rao@intel.com&gt;&n; *              IPI based ptc implementation and A-step IPI implementation.&n; */
+multiline_comment|/*&n; * TLB support routines.&n; *&n; * Copyright (C) 1998-2001, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 08/02/00 A. Mallick &lt;asit.k.mallick@intel.com&gt;&n; *&t;&t;Modified RID allocation for SMP&n; *          Goutham Rao &lt;goutham.rao@intel.com&gt;&n; *              IPI based ptc implementation and A-step IPI implementation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -10,8 +10,25 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-DECL|macro|SUPPORTED_PGBITS
-mdefine_line|#define SUPPORTED_PGBITS (&t;&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_256M |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_64M  |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_16M  |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_4M   |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_1M   |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_256K |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_64K  |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_16K  |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_8K   |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_4K )
+r_static
+r_struct
+(brace
+DECL|member|mask
+r_int
+r_int
+id|mask
+suffix:semicolon
+multiline_comment|/* mask of supported purge page-sizes */
+DECL|member|max_bits
+r_int
+r_int
+id|max_bits
+suffix:semicolon
+multiline_comment|/* log2() of largest supported purge page-size */
+DECL|variable|purge
+)brace
+id|purge
+suffix:semicolon
 DECL|variable|ia64_ctx
 r_struct
 id|ia64_ctx
@@ -538,8 +555,10 @@ op_plus
 l_int|0xfff
 )paren
 suffix:semicolon
-r_if
-c_cond
+r_while
+c_loop
+(paren
+id|unlikely
 (paren
 (paren
 (paren
@@ -548,52 +567,32 @@ op_lshift
 id|nbits
 )paren
 op_amp
-id|SUPPORTED_PGBITS
+id|purge.mask
 )paren
 op_eq
 l_int|0
 )paren
-(brace
-r_if
-c_cond
+op_logical_and
 (paren
 id|nbits
-OG
-id|_PAGE_SIZE_256M
+OL
+id|purge.max_bits
 )paren
-id|nbits
-op_assign
-id|_PAGE_SIZE_256M
-suffix:semicolon
-r_else
-multiline_comment|/*&n;&t;&t;&t; * Some page sizes are not implemented in the&n;&t;&t;&t; * IA-64 arch, so if we get asked to clear an&n;&t;&t;&t; * unsupported page size, round up to the&n;&t;&t;&t; * nearest page size.  Note that we depend on&n;&t;&t;&t; * the fact that if page size N is not&n;&t;&t;&t; * implemented, 2*N _is_ implemented.&n;&t;&t;&t; */
+)paren
 op_increment
 id|nbits
 suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-(paren
-l_int|1UL
-op_lshift
 id|nbits
+OG
+id|purge.max_bits
 )paren
-op_amp
-id|SUPPORTED_PGBITS
-)paren
-op_eq
-l_int|0
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;flush_tlb_range: BUG: nbits=%lu&bslash;n&quot;
-comma
 id|nbits
-)paren
+op_assign
+id|purge.max_bits
 suffix:semicolon
-)brace
 id|start
 op_and_assign
 op_complement
@@ -686,6 +685,56 @@ r_void
 (brace
 id|ia64_ptce_info_t
 id|ptce_info
+suffix:semicolon
+r_int
+r_int
+id|tr_pgbits
+suffix:semicolon
+r_int
+id|status
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|status
+op_assign
+id|ia64_pal_vm_page_size
+c_func
+(paren
+op_amp
+id|tr_pgbits
+comma
+op_amp
+id|purge.mask
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PAL_VM_PAGE_SIZE failed with status=%ld;&quot;
+l_string|&quot;defaulting to architected purge page-sizes.&bslash;n&quot;
+comma
+id|status
+)paren
+suffix:semicolon
+id|purge.mask
+op_assign
+l_int|0x115557000
+suffix:semicolon
+)brace
+id|purge.max_bits
+op_assign
+id|ia64_fls
+c_func
+(paren
+id|purge.mask
+)paren
 suffix:semicolon
 id|ia64_get_ptce
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_SN_PCI_PCIBR_H
 DECL|macro|_ASM_SN_PCI_PCIBR_H
 mdefine_line|#define _ASM_SN_PCI_PCIBR_H
@@ -45,19 +45,11 @@ id|pcibr_intr_t
 suffix:semicolon
 multiline_comment|/* =====================================================================&n; *    primary entry points: Bridge (pcibr) device driver&n; *&n; *&t;These functions are normal device driver entry points&n; *&t;and are called along with the similar entry points from&n; *&t;other device drivers. They are included here as documentation&n; *&t;of their existence and purpose.&n; *&n; *&t;pcibr_init() is called to inform us that there is a pcibr driver&n; *&t;configured into the kernel; it is responsible for registering&n; *&t;as a crosstalk widget and providing a routine to be called&n; *&t;when a widget with the proper part number is observed.&n; *&n; *&t;pcibr_attach() is called for each vertex in the hardware graph&n; *&t;corresponding to a crosstalk widget with the manufacturer&n; *&t;code and part number registered by pcibr_init().&n; */
 r_extern
-r_void
-id|pcibr_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|pcibr_attach
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 multiline_comment|/* =====================================================================&n; *    bus provider function table&n; *&n; *&t;Normally, this table is only handed off explicitly&n; *&t;during provider initialization, and the PCI generic&n; *&t;layer will stash a pointer to it in the vertex; however,&n; *&t;exporting it explicitly enables a performance hack in&n; *&t;the generic PCI provider where if we know at compile&n; *&t;time that the only possible PCI provider is a&n; *&t;pcibr, we can go directly to this ops table.&n; */
@@ -75,7 +67,7 @@ id|pcibr_piomap_t
 id|pcibr_piomap_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|device_desc_t
@@ -135,7 +127,7 @@ id|caddr_t
 id|pcibr_piotrans_addr
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|device_desc_t
@@ -159,7 +151,7 @@ id|iopaddr_t
 id|pcibr_piospace_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|device_desc_t
@@ -180,7 +172,7 @@ r_void
 id|pcibr_piospace_free
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|pciio_space_t
@@ -198,7 +190,7 @@ id|pcibr_dmamap_t
 id|pcibr_dmamap_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|device_desc_t
@@ -265,7 +257,7 @@ id|cnodeid_t
 id|pcibr_get_dmatrans_node
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pconn_vhdl
 )paren
 suffix:semicolon
@@ -274,7 +266,7 @@ id|iopaddr_t
 id|pcibr_dmatrans_addr
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|device_desc_t
@@ -295,7 +287,7 @@ id|alenlist_t
 id|pcibr_dmatrans_list
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|device_desc_t
@@ -322,7 +314,7 @@ r_void
 id|pcibr_dmaaddr_drain
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 comma
 id|paddr_t
@@ -337,7 +329,7 @@ r_void
 id|pcibr_dmalist_drain
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 comma
 id|alenlist_t
@@ -362,7 +354,7 @@ r_void
 id|pcibr_intr_ibit_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|pcibr_intr_ibit_f
 op_star
@@ -373,7 +365,7 @@ id|pcibr_intr_t
 id|pcibr_intr_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|device_desc_t
@@ -382,7 +374,7 @@ comma
 id|pciio_intr_line_t
 id|lines
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 id|owner_dev
 )paren
 suffix:semicolon
@@ -395,17 +387,6 @@ id|pcibr_intr_t
 id|intr
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-r_extern
-r_int
-id|pcibr_intr_connect
-c_func
-(paren
-id|pcibr_intr_t
-id|intr
-)paren
-suffix:semicolon
-macro_line|#else
 r_extern
 r_int
 id|pcibr_intr_connect
@@ -419,7 +400,6 @@ comma
 id|intr_arg_t
 )paren
 suffix:semicolon
-macro_line|#endif
 r_extern
 r_void
 id|pcibr_intr_disconnect
@@ -430,7 +410,7 @@ id|intr
 )paren
 suffix:semicolon
 r_extern
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pcibr_intr_cpu_get
 c_func
 (paren
@@ -443,7 +423,7 @@ r_void
 id|pcibr_provider_startup
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pcibr
 )paren
 suffix:semicolon
@@ -452,7 +432,7 @@ r_void
 id|pcibr_provider_shutdown
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pcibr
 )paren
 suffix:semicolon
@@ -461,7 +441,7 @@ r_int
 id|pcibr_reset
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 )paren
 suffix:semicolon
@@ -470,7 +450,7 @@ r_int
 id|pcibr_write_gather_flush
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 )paren
 suffix:semicolon
@@ -479,7 +459,7 @@ id|pciio_endian_t
 id|pcibr_endian_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|pciio_endian_t
@@ -494,7 +474,7 @@ id|pciio_priority_t
 id|pcibr_priority_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|pciio_priority_t
@@ -506,7 +486,7 @@ r_uint64
 id|pcibr_config_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|conn
 comma
 r_int
@@ -521,7 +501,7 @@ r_void
 id|pcibr_config_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|conn
 comma
 r_int
@@ -539,38 +519,19 @@ r_int
 id|pcibr_error_devenable
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pconn_vhdl
 comma
 r_int
 id|error_code
 )paren
 suffix:semicolon
-macro_line|#ifdef PIC_LATER
-r_extern
-id|pciio_slot_t
-id|pcibr_error_extract
-c_func
-(paren
-id|devfs_handle_t
-id|pcibr_vhdl
-comma
-id|pciio_space_t
-op_star
-id|spacep
-comma
-id|iopaddr_t
-op_star
-id|addrp
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_int
 id|pcibr_wrb_flush
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pconn_vhdl
 )paren
 suffix:semicolon
@@ -579,7 +540,7 @@ r_int
 id|pcibr_rrb_check
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pconn_vhdl
 comma
 r_int
@@ -599,13 +560,12 @@ op_star
 id|count_pool
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_SN1
 r_extern
 r_int
 id|pcibr_alloc_all_rrbs
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 comma
 r_int
@@ -636,13 +596,12 @@ r_int
 id|virt4
 )paren
 suffix:semicolon
-macro_line|#endif
 r_typedef
 r_void
 DECL|typedef|rrb_alloc_funct_f
 id|rrb_alloc_funct_f
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 comma
 r_int
@@ -660,7 +619,7 @@ r_void
 id|pcibr_set_rrb_callback
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 comma
 id|rrb_alloc_funct_f
@@ -673,7 +632,7 @@ r_int
 id|pcibr_device_unregister
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -681,7 +640,7 @@ r_int
 id|pcibr_dma_enabled
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Bridge-specific flags that can be set via pcibr_device_flags_set&n; * and cleared via pcibr_device_flags_clear.  Other flags are&n; * more generic and are maniuplated through PCI-generic interfaces.&n; *&n; * Note that all PCI implementation-specific flags (Bridge flags, in&n; * this case) are in bits 15-31.  The lower 15 bits are reserved&n; * for PCI-generic flags.&n; *&n; * Some of these flags have been &quot;promoted&quot; to the&n; * generic layer, so they can be used without having&n; * to &quot;know&quot; that the PCI bus is hosted by a Bridge.&n; *&n; * PCIBR_NO_ATE_ROUNDUP: Request that no rounding up be done when &n; * allocating ATE&squot;s. ATE count computation will assume that the&n; * address to be mapped will start on a page boundary.&n; */
@@ -736,7 +695,7 @@ r_int
 id|pcibr_device_flags_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|pcibr_device_flags_t
@@ -749,7 +708,7 @@ r_int
 id|pcibr_rrb_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pconn_vhdl
 comma
 r_int
@@ -779,7 +738,7 @@ r_void
 id|pcibr_hints_fix_rrbs
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_extern
@@ -787,7 +746,7 @@ r_void
 id|pcibr_hints_dualslot
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|pciio_slot_t
 comma
@@ -799,7 +758,7 @@ r_void
 id|pcibr_hints_subdevs
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|pciio_slot_t
 comma
@@ -811,22 +770,9 @@ r_void
 id|pcibr_hints_handsoff
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-DECL|typedef|pcibr_intr_bits_f
-r_typedef
-r_int
-id|pcibr_intr_bits_f
-c_func
-(paren
-id|pciio_info_t
-comma
-id|pciio_intr_line_t
-)paren
-suffix:semicolon
-macro_line|#else
 DECL|typedef|pcibr_intr_bits_f
 r_typedef
 r_int
@@ -840,13 +786,12 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#endif
 r_extern
 r_void
 id|pcibr_hints_intr_bits
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|pcibr_intr_bits_f
 op_star
@@ -857,7 +802,7 @@ r_int
 id|pcibr_asic_rev
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 macro_line|#endif &t;/* __ASSEMBLY__ */
@@ -1031,7 +976,7 @@ r_char
 id|resp_host_slot
 suffix:semicolon
 DECL|member|resp_slot_conn
-id|devfs_handle_t
+id|vertex_hdl_t
 id|resp_slot_conn
 suffix:semicolon
 DECL|member|resp_slot_conn_name
@@ -1146,7 +1091,6 @@ DECL|member|resp_b_int_host
 id|bridgereg_t
 id|resp_b_int_host
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_SN1
 DECL|member|resp_p_int_enable
 id|picreg_t
 id|resp_p_int_enable
@@ -1155,7 +1099,6 @@ DECL|member|resp_p_int_host
 id|picreg_t
 id|resp_p_int_host
 suffix:semicolon
-macro_line|#endif
 DECL|struct|pcibr_slot_func_info_resp_s
 r_struct
 id|pcibr_slot_func_info_resp_s

@@ -361,7 +361,19 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_INTERRUPTS
 comma
-l_string|&quot;GPE block at %8.8X%8.8X - Values: Enable %02X Status %02X&bslash;n&quot;
+l_string|&quot;GPE pair: Status %8.8X%8.8X = %02X, Enable %8.8X%8.8X = %02X&bslash;n&quot;
+comma
+id|ACPI_HIDWORD
+(paren
+id|gpe_register_info-&gt;status_address.address
+)paren
+comma
+id|ACPI_LODWORD
+(paren
+id|gpe_register_info-&gt;status_address.address
+)paren
+comma
+id|gpe_register_info-&gt;status
 comma
 id|ACPI_HIDWORD
 (paren
@@ -374,8 +386,6 @@ id|gpe_register_info-&gt;enable_address.address
 )paren
 comma
 id|gpe_register_info-&gt;enable
-comma
-id|gpe_register_info-&gt;status
 )paren
 )paren
 suffix:semicolon

@@ -37,11 +37,11 @@ op_star
 id|port3
 suffix:semicolon
 r_struct
-id|pnp_resources
+id|pnp_option
 op_star
 id|res
 op_assign
-id|dev-&gt;possible-&gt;dep
+id|dev-&gt;dependent
 suffix:semicolon
 multiline_comment|/*&n;&t; * Unfortunately the isapnp_add_port_resource is too tightly bound&n;&t; * into the PnP discovery sequence, and cannot be used. Link in the&n;&t; * two extra ports (at offset 0x400 and 0x800 from the one given) by&n;&t; * hand.&n;&t; */
 r_for
@@ -52,7 +52,7 @@ id|res
 suffix:semicolon
 id|res
 op_assign
-id|res-&gt;dep
+id|res-&gt;next
 )paren
 (brace
 id|port2
@@ -181,11 +181,11 @@ id|dev
 )paren
 (brace
 r_struct
-id|pnp_resources
+id|pnp_option
 op_star
 id|res
 op_assign
-id|dev-&gt;possible-&gt;dep
+id|dev-&gt;dependent
 suffix:semicolon
 r_for
 c_loop
@@ -195,7 +195,7 @@ id|res
 suffix:semicolon
 id|res
 op_assign
-id|res-&gt;dep
+id|res-&gt;next
 )paren
 (brace
 r_struct
@@ -287,11 +287,11 @@ op_star
 id|port
 suffix:semicolon
 r_struct
-id|pnp_resources
+id|pnp_option
 op_star
 id|res
 op_assign
-id|dev-&gt;possible-&gt;dep
+id|dev-&gt;dependent
 suffix:semicolon
 r_int
 id|changed
@@ -307,7 +307,7 @@ id|res
 suffix:semicolon
 id|res
 op_assign
-id|res-&gt;dep
+id|res-&gt;next
 )paren
 (brace
 id|port
@@ -407,7 +407,7 @@ id|dev
 (brace
 multiline_comment|/* This really isn&squot;t a device quirk but isapnp core code&n;&t; * doesn&squot;t allow a DMA channel of 0, afflicted card is an&n;&t; * OPL3Sax where x=4.&n;&t; */
 r_struct
-id|pnp_resources
+id|pnp_option
 op_star
 id|res
 suffix:semicolon
@@ -416,7 +416,7 @@ id|max
 suffix:semicolon
 id|res
 op_assign
-id|dev-&gt;possible
+id|dev-&gt;dependent
 suffix:semicolon
 id|max
 op_assign
@@ -425,15 +425,12 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|res
-op_assign
-id|res-&gt;dep
 suffix:semicolon
 id|res
 suffix:semicolon
 id|res
 op_assign
-id|res-&gt;dep
+id|res-&gt;next
 )paren
 (brace
 r_if

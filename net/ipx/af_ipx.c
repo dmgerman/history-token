@@ -415,12 +415,6 @@ op_amp
 id|intrfc-&gt;if_sklist_lock
 )paren
 suffix:semicolon
-id|sock_put
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
 id|ipxitf_put
 c_func
 (paren
@@ -773,12 +767,6 @@ id|ipxitf_hold
 c_func
 (paren
 id|intrfc
-)paren
-suffix:semicolon
-id|sock_hold
-c_func
-(paren
-id|sk
 )paren
 suffix:semicolon
 id|spin_lock_bh

@@ -1075,9 +1075,9 @@ id|fork_by_hand
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t; * don&squot;t care about the eip and regs settings since we&squot;ll never reschedule the&n;&t; * forked task.&n;&t; */
+multiline_comment|/*&n;&t; * Don&squot;t care about the IP and regs settings since we&squot;ll never reschedule the&n;&t; * forked task.&n;&t; */
 r_return
-id|do_fork
+id|copy_process
 c_func
 (paren
 id|CLONE_VM
@@ -1140,6 +1140,12 @@ c_func
 l_string|&quot;failed fork for CPU %d&quot;
 comma
 id|cpu
+)paren
+suffix:semicolon
+id|wake_up_forked_process
+c_func
+(paren
+id|idle
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We remove it from the pidhash and the runqueue&n;&t; * once we got the process:&n;&t; */
@@ -1459,11 +1465,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sapicid
-op_eq
-op_minus
-l_int|1
-op_logical_or
 id|sapicid
 op_eq
 id|boot_cpu_id
@@ -1996,13 +1997,13 @@ c_func
 (paren
 id|SAL_VECTOR_OS_BOOT_RENDEZ
 comma
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|ap_startup-&gt;fp
 )paren
 comma
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|ap_startup-&gt;gp

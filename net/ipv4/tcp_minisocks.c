@@ -946,7 +946,7 @@ multiline_comment|/* Step 2: Remove SK from established hash. */
 r_if
 c_cond
 (paren
-id|sk_del_node_init
+id|__sk_del_node_init
 c_func
 (paren
 id|sk

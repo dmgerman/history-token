@@ -1102,6 +1102,10 @@ r_if
 c_cond
 (paren
 (paren
+(paren
+r_int
+r_int
+)paren
 id|length
 OL
 l_int|2
@@ -1131,6 +1135,10 @@ id|MAX_CIFS_HDR_SIZE
 r_if
 c_cond
 (paren
+(paren
+r_int
+r_int
+)paren
 id|length
 OL
 l_int|2
@@ -1156,6 +1164,10 @@ r_if
 c_cond
 (paren
 (paren
+(paren
+r_int
+r_int
+)paren
 id|length
 op_ge
 r_sizeof
@@ -1261,6 +1273,10 @@ c_func
 id|smb-&gt;smb_buf_length
 )paren
 op_ne
+(paren
+r_int
+r_int
+)paren
 id|length
 )paren
 )paren

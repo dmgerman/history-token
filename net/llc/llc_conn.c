@@ -1336,7 +1336,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|LLC_PDU_TYPE_IS_I
 c_func
 (paren

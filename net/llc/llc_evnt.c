@@ -216,7 +216,6 @@ id|ev-&gt;type
 op_eq
 id|LLC_STATION_EV_TYPE_PDU
 op_logical_and
-op_logical_neg
 id|LLC_PDU_IS_CMD
 c_func
 (paren
@@ -224,7 +223,6 @@ id|pdu
 )paren
 op_logical_and
 multiline_comment|/* command PDU */
-op_logical_neg
 id|LLC_PDU_TYPE_IS_U
 c_func
 (paren
@@ -293,7 +291,6 @@ id|ev-&gt;type
 op_eq
 id|LLC_STATION_EV_TYPE_PDU
 op_logical_and
-op_logical_neg
 id|LLC_PDU_IS_RSP
 c_func
 (paren
@@ -301,7 +298,6 @@ id|pdu
 )paren
 op_logical_and
 multiline_comment|/* response PDU */
-op_logical_neg
 id|LLC_PDU_TYPE_IS_U
 c_func
 (paren
@@ -373,7 +369,6 @@ id|ev-&gt;type
 op_eq
 id|LLC_STATION_EV_TYPE_PDU
 op_logical_and
-op_logical_neg
 id|LLC_PDU_IS_RSP
 c_func
 (paren
@@ -381,7 +376,6 @@ id|pdu
 )paren
 op_logical_and
 multiline_comment|/* response PDU */
-op_logical_neg
 id|LLC_PDU_TYPE_IS_U
 c_func
 (paren
@@ -454,7 +448,6 @@ id|ev-&gt;type
 op_eq
 id|LLC_STATION_EV_TYPE_PDU
 op_logical_and
-op_logical_neg
 id|LLC_PDU_IS_CMD
 c_func
 (paren
@@ -462,7 +455,6 @@ id|pdu
 )paren
 op_logical_and
 multiline_comment|/* command PDU */
-op_logical_neg
 id|LLC_PDU_TYPE_IS_U
 c_func
 (paren

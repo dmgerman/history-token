@@ -26,12 +26,6 @@ id|widget_info_fingerprint
 op_assign
 l_string|&quot;widget_info&quot;
 suffix:semicolon
-DECL|variable|xtalk_registry
-id|cdl_p
-id|xtalk_registry
-op_assign
-l_int|NULL
-suffix:semicolon
 DECL|macro|DEV_FUNC
 mdefine_line|#define&t;DEV_FUNC(dev,func)&t;hub_##func
 DECL|macro|CAST_PIOMAP
@@ -45,7 +39,7 @@ id|xtalk_piomap_t
 id|xtalk_piomap_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|device_desc_t
 comma
@@ -87,7 +81,7 @@ id|caddr_t
 id|xtalk_piotrans_addr
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|device_desc_t
 comma
@@ -102,7 +96,7 @@ id|caddr_t
 id|xtalk_pio_addr
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|device_desc_t
 comma
@@ -163,7 +157,7 @@ id|xtalk_dmamap_t
 id|xtalk_dmamap_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|device_desc_t
 comma
@@ -212,7 +206,7 @@ id|iopaddr_t
 id|xtalk_dmatrans_addr
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|device_desc_t
 comma
@@ -227,7 +221,7 @@ id|alenlist_t
 id|xtalk_dmatrans_list
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|device_desc_t
 comma
@@ -247,7 +241,7 @@ r_void
 id|xtalk_dmaaddr_drain
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|iopaddr_t
 comma
@@ -258,7 +252,7 @@ r_void
 id|xtalk_dmalist_drain
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|alenlist_t
 )paren
@@ -267,22 +261,22 @@ id|xtalk_intr_t
 id|xtalk_intr_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|device_desc_t
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 id|xtalk_intr_t
 id|xtalk_intr_alloc_nothd
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|device_desc_t
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_void
@@ -315,7 +309,7 @@ c_func
 id|xtalk_intr_t
 )paren
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xtalk_intr_cpu_get
 c_func
 (paren
@@ -326,7 +320,7 @@ r_int
 id|xtalk_error_handler
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 comma
@@ -340,7 +334,7 @@ r_int
 id|xtalk_error_devenable
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 comma
@@ -351,17 +345,17 @@ r_void
 id|xtalk_provider_startup
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_void
 id|xtalk_provider_shutdown
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xtalk_intr_dev_get
 c_func
 (paren
@@ -399,7 +393,7 @@ c_func
 id|xtalk_intr_t
 )paren
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xtalk_pio_dev_get
 c_func
 (paren
@@ -434,7 +428,7 @@ c_func
 id|xtalk_piomap_t
 )paren
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xtalk_dma_dev_get
 c_func
 (paren
@@ -452,26 +446,26 @@ id|xwidget_info_t
 id|xwidget_info_chk
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 id|xwidget_info_t
 id|xwidget_info_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_void
 id|xwidget_info_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|xwidget_info_t
 )paren
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget_info_dev_get
 c_func
 (paren
@@ -485,7 +479,7 @@ c_func
 id|xwidget_info_t
 )paren
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget_info_master_get
 c_func
 (paren
@@ -522,17 +516,10 @@ id|xwidget_info_t
 )paren
 suffix:semicolon
 r_void
-id|xtalk_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
 id|xtalk_provider_register
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|xtalk_provider_t
 op_star
@@ -542,7 +529,7 @@ r_void
 id|xtalk_provider_unregister
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 id|xtalk_provider_t
@@ -550,7 +537,7 @@ op_star
 id|xtalk_provider_fns_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_int
@@ -581,29 +568,27 @@ c_func
 (paren
 id|xwidget_hwid_t
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|xwidgetnum_t
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 id|xwidgetnum_t
-comma
-id|async_attach_t
 )paren
 suffix:semicolon
 r_int
 id|xwidget_unregister
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_void
 id|xwidget_reset
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 r_char
@@ -611,7 +596,7 @@ op_star
 id|xwidget_name_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 macro_line|#if !defined(DEV_FUNC)
@@ -631,7 +616,7 @@ DECL|function|xwidget_to_provider_fns
 id|xwidget_to_provider_fns
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn
 )paren
 (brace
@@ -694,7 +679,7 @@ DECL|function|xtalk_piomap_alloc
 id|xtalk_piomap_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* set up mapping for this device */
@@ -838,7 +823,7 @@ DECL|function|xtalk_piotrans_addr
 id|xtalk_piotrans_addr
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* translate for this device */
@@ -885,7 +870,7 @@ DECL|function|xtalk_pio_addr
 id|xtalk_pio_addr
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* translate for this device */
@@ -1142,7 +1127,7 @@ DECL|function|xtalk_dmamap_alloc
 id|xtalk_dmamap_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* set up mappings for this device */
@@ -1313,7 +1298,7 @@ DECL|function|xtalk_dmatrans_addr
 id|xtalk_dmatrans_addr
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* translate for this device */
@@ -1360,7 +1345,7 @@ DECL|function|xtalk_dmatrans_list
 id|xtalk_dmatrans_list
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* translate for this device */
@@ -1426,7 +1411,7 @@ DECL|function|xtalk_dmaaddr_drain
 id|xtalk_dmaaddr_drain
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|paddr_t
@@ -1457,7 +1442,7 @@ DECL|function|xtalk_dmalist_drain
 id|xtalk_dmalist_drain
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|alenlist_t
@@ -1485,7 +1470,7 @@ DECL|function|xtalk_intr_alloc
 id|xtalk_intr_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* which Crosstalk device */
@@ -1493,7 +1478,7 @@ id|device_desc_t
 id|dev_desc
 comma
 multiline_comment|/* device descriptor */
-id|devfs_handle_t
+id|vertex_hdl_t
 id|owner_dev
 )paren
 (brace
@@ -1524,7 +1509,7 @@ DECL|function|xtalk_intr_alloc_nothd
 id|xtalk_intr_alloc_nothd
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 multiline_comment|/* which Crosstalk device */
@@ -1532,7 +1517,7 @@ id|device_desc_t
 id|dev_desc
 comma
 multiline_comment|/* device descriptor */
-id|devfs_handle_t
+id|vertex_hdl_t
 id|owner_dev
 )paren
 multiline_comment|/* owner of this interrupt */
@@ -1663,7 +1648,7 @@ id|intr_hdl
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Return a hwgraph vertex that represents the CPU currently&n; * targeted by an interrupt.&n; */
-id|devfs_handle_t
+id|vertex_hdl_t
 DECL|function|xtalk_intr_cpu_get
 id|xtalk_intr_cpu_get
 c_func
@@ -1673,20 +1658,10 @@ id|intr_hdl
 )paren
 (brace
 r_return
-id|INTR_FUNC
-c_func
 (paren
-id|intr_hdl
-comma
-id|intr_cpu_get
+id|vertex_hdl_t
 )paren
-(paren
-id|CAST_INTR
-c_func
-(paren
-id|intr_hdl
-)paren
-)paren
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * =====================================================================&n; *                      ERROR MANAGEMENT&n; */
@@ -1696,7 +1671,7 @@ DECL|function|xtalk_error_handler
 id|xtalk_error_handler
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn
 comma
 r_int
@@ -1783,6 +1758,10 @@ c_func
 id|KERN_WARNING
 l_string|&quot;Xbow at 0x%p encountered Fatal error&quot;
 comma
+(paren
+r_void
+op_star
+)paren
 id|xconn
 )paren
 suffix:semicolon
@@ -1808,7 +1787,7 @@ DECL|function|xtalk_error_devenable
 id|xtalk_error_devenable
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 comma
 r_int
@@ -1842,7 +1821,7 @@ DECL|function|xtalk_provider_startup
 id|xtalk_provider_startup
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xtalk_provider
 )paren
 (brace
@@ -1864,7 +1843,7 @@ DECL|function|xtalk_provider_shutdown
 id|xtalk_provider_shutdown
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xtalk_provider
 )paren
 (brace
@@ -1886,25 +1865,14 @@ DECL|function|xtalk_widgetdev_enable
 id|xtalk_widgetdev_enable
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 comma
 r_int
 id|devnum
 )paren
 (brace
-id|DEV_FUNC
-c_func
-(paren
-id|xconn_vhdl
-comma
-id|widgetdev_enable
-)paren
-(paren
-id|xconn_vhdl
-comma
-id|devnum
-)paren
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Shutdown a device on a xtalk widget &n; */
@@ -1913,25 +1881,14 @@ DECL|function|xtalk_widgetdev_shutdown
 id|xtalk_widgetdev_shutdown
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 comma
 r_int
 id|devnum
 )paren
 (brace
-id|DEV_FUNC
-c_func
-(paren
-id|xconn_vhdl
-comma
-id|widgetdev_shutdown
-)paren
-(paren
-id|xconn_vhdl
-comma
-id|devnum
-)paren
+r_return
 suffix:semicolon
 )brace
 r_int
@@ -1939,7 +1896,7 @@ DECL|function|xtalk_dma_enabled
 id|xtalk_dma_enabled
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 )paren
 (brace
@@ -1958,7 +1915,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Generic crosstalk functions, for use with all crosstalk providers&n; * and all crosstalk devices.&n; */
 multiline_comment|/****** Generic crosstalk interrupt interfaces ******/
-id|devfs_handle_t
+id|vertex_hdl_t
 DECL|function|xtalk_intr_dev_get
 id|xtalk_intr_dev_get
 c_func
@@ -2037,7 +1994,7 @@ id|xtalk_intr-&gt;xi_sfarg
 suffix:semicolon
 )brace
 multiline_comment|/****** Generic crosstalk pio interfaces ******/
-id|devfs_handle_t
+id|vertex_hdl_t
 DECL|function|xtalk_pio_dev_get
 id|xtalk_pio_dev_get
 c_func
@@ -2113,7 +2070,7 @@ id|xtalk_piomap-&gt;xp_kvaddr
 suffix:semicolon
 )brace
 multiline_comment|/****** Generic crosstalk dma interfaces ******/
-id|devfs_handle_t
+id|vertex_hdl_t
 DECL|function|xtalk_dma_dev_get
 id|xtalk_dma_dev_get
 c_func
@@ -2150,7 +2107,7 @@ DECL|function|xwidget_info_chk
 id|xwidget_info_chk
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget
 )paren
 (brace
@@ -2182,7 +2139,7 @@ DECL|function|xwidget_info_get
 id|xwidget_info_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget
 )paren
 (brace
@@ -2200,42 +2157,6 @@ c_func
 id|xwidget
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;LATER
-r_if
-c_cond
-(paren
-(paren
-id|widget_info
-op_ne
-l_int|NULL
-)paren
-op_logical_and
-(paren
-id|widget_info-&gt;w_fingerprint
-op_ne
-id|widget_info_fingerprint
-)paren
-)paren
-macro_line|#ifdef SUPPORT_PRINTING_V_FORMAT
-id|PRINT_PANIC
-c_func
-(paren
-l_string|&quot;%v bad xwidget_info&quot;
-comma
-id|xwidget
-)paren
-suffix:semicolon
-macro_line|#else
-id|PRINT_PANIC
-c_func
-(paren
-l_string|&quot;%x bad xwidget_info&quot;
-comma
-id|xwidget
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif&t;/* LATER */
 r_return
 (paren
 id|widget_info
@@ -2247,7 +2168,7 @@ DECL|function|xwidget_info_set
 id|xwidget_info_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget
 comma
 id|xwidget_info_t
@@ -2291,7 +2212,7 @@ id|widget_info
 )paren
 suffix:semicolon
 )brace
-id|devfs_handle_t
+id|vertex_hdl_t
 DECL|function|xwidget_info_dev_get
 id|xwidget_info_dev_get
 c_func
@@ -2310,7 +2231,7 @@ l_int|NULL
 id|panic
 c_func
 (paren
-l_string|&quot;null xwidget_info&quot;
+l_string|&quot;xwidget_info_dev_get: null xwidget_info&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2338,7 +2259,7 @@ l_int|NULL
 id|panic
 c_func
 (paren
-l_string|&quot;null xwidget_info&quot;
+l_string|&quot;xwidget_info_id_get: null xwidget_info&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2347,7 +2268,7 @@ id|xwidget_info-&gt;w_id
 )paren
 suffix:semicolon
 )brace
-id|devfs_handle_t
+id|vertex_hdl_t
 DECL|function|xwidget_info_master_get
 id|xwidget_info_master_get
 c_func
@@ -2366,7 +2287,7 @@ l_int|NULL
 id|panic
 c_func
 (paren
-l_string|&quot;null xwidget_info&quot;
+l_string|&quot;xwidget_info_master_get: null xwidget_info&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2394,7 +2315,7 @@ l_int|NULL
 id|panic
 c_func
 (paren
-l_string|&quot;null xwidget_info&quot;
+l_string|&quot;xwidget_info_masterid_get: null xwidget_info&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2422,7 +2343,7 @@ l_int|NULL
 id|panic
 c_func
 (paren
-l_string|&quot;null xwidget_info&quot;
+l_string|&quot;xwidget_info_part_num_get: null xwidget_info&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2450,7 +2371,7 @@ l_int|NULL
 id|panic
 c_func
 (paren
-l_string|&quot;null xwidget_info&quot;
+l_string|&quot;xwidget_info_mfg_num_get: null xwidget_info&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2480,7 +2401,7 @@ l_int|NULL
 id|panic
 c_func
 (paren
-l_string|&quot;null xwidget info&quot;
+l_string|&quot;xwidget_info_name_get: null xwidget_info&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2488,96 +2409,13 @@ id|xwidget_info-&gt;w_name
 suffix:semicolon
 )brace
 multiline_comment|/****** Generic crosstalk initialization interfaces ******/
-multiline_comment|/*&n; * One-time initialization needed for systems that support crosstalk.&n; */
-r_void
-DECL|function|xtalk_init
-id|xtalk_init
-c_func
-(paren
-r_void
-)paren
-(brace
-id|cdl_p
-id|cp
-suffix:semicolon
-macro_line|#if DEBUG &amp;&amp; ATTACH_DEBUG
-id|printf
-c_func
-(paren
-l_string|&quot;xtalk_init&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Allocate the registry.&n;     * We might already have one.&n;     * If we don&squot;t, go get one.&n;     * MPness: someone might have&n;     * set one up for us while we&n;     * were not looking; use an atomic&n;     * compare-and-swap to commit to&n;     * using the new registry if and&n;     * only if nobody else did first.&n;     * If someone did get there first,&n;     * toss the one we allocated back&n;     * into the pool.&n;     */
-r_if
-c_cond
-(paren
-id|xtalk_registry
-op_eq
-l_int|NULL
-)paren
-(brace
-id|cp
-op_assign
-id|cdl_new
-c_func
-(paren
-id|EDGE_LBL_XIO
-comma
-l_string|&quot;part&quot;
-comma
-l_string|&quot;mfgr&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|compare_and_swap_ptr
-c_func
-(paren
-(paren
-r_void
-op_star
-op_star
-)paren
-op_amp
-id|xtalk_registry
-comma
-l_int|NULL
-comma
-(paren
-r_void
-op_star
-)paren
-id|cp
-)paren
-)paren
-(brace
-id|cdl_del
-c_func
-(paren
-id|cp
-)paren
-suffix:semicolon
-)brace
-)brace
-id|ASSERT
-c_func
-(paren
-id|xtalk_registry
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Associate a set of xtalk_provider functions with a vertex.&n; */
 r_void
 DECL|function|xtalk_provider_register
 id|xtalk_provider_register
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|provider
 comma
 id|xtalk_provider_t
@@ -2603,7 +2441,7 @@ DECL|function|xtalk_provider_unregister
 id|xtalk_provider_unregister
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|provider
 )paren
 (brace
@@ -2626,7 +2464,7 @@ DECL|function|xtalk_provider_fns_get
 id|xtalk_provider_fns_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|provider
 )paren
 (brace
@@ -2644,58 +2482,6 @@ id|provider
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Announce a driver for a particular crosstalk part.&n; * Returns 0 on success or -1 on failure.  Failure occurs if the&n; * specified hardware already has a driver.&n; */
-multiline_comment|/*ARGSUSED4 */
-r_int
-DECL|function|xwidget_driver_register
-id|xwidget_driver_register
-c_func
-(paren
-id|xwidget_part_num_t
-id|part_num
-comma
-id|xwidget_mfg_num_t
-id|mfg_num
-comma
-r_char
-op_star
-id|driver_prefix
-comma
-r_int
-id|flags
-)paren
-(brace
-multiline_comment|/* a driver&squot;s init routine could call&n;     * xwidget_driver_register before the&n;     * system calls xtalk_init; so, we&n;     * make the call here.&n;     */
-r_if
-c_cond
-(paren
-id|xtalk_registry
-op_eq
-l_int|NULL
-)paren
-id|xtalk_init
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|cdl_add_driver
-c_func
-(paren
-id|xtalk_registry
-comma
-id|part_num
-comma
-id|mfg_num
-comma
-id|driver_prefix
-comma
-id|flags
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Inform xtalk infrastructure that a driver is no longer available for&n; * handling any widgets.&n; */
 r_void
 DECL|function|xwidget_driver_unregister
@@ -2707,24 +2493,7 @@ op_star
 id|driver_prefix
 )paren
 (brace
-multiline_comment|/* before a driver calls unregister,&n;     * it must have called registger; so we&n;     * can assume we have a registry here.&n;     */
-id|ASSERT
-c_func
-(paren
-id|xtalk_registry
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
-id|cdl_del_driver
-c_func
-(paren
-id|xtalk_registry
-comma
-id|driver_prefix
-comma
-l_int|NULL
-)paren
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Call some function with each vertex that&n; * might be one of this driver&squot;s attach points.&n; */
@@ -2742,28 +2511,6 @@ op_star
 id|func
 )paren
 (brace
-id|ASSERT
-c_func
-(paren
-id|xtalk_registry
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
-id|cdl_iterate
-c_func
-(paren
-id|xtalk_registry
-comma
-id|driver_prefix
-comma
-(paren
-id|cdl_iter_f
-op_star
-)paren
-id|func
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * xwidget_register:&n; *&t;Register a xtalk device (xwidget) by doing the following.&n; *      -allocate and initialize xwidget_info data&n; *      -allocate a hwgraph vertex with name based on widget number (id)&n; *      -look up the widget&squot;s initialization function and call it,&n; *      or remember the vertex for later initialization.&n; *&n; */
 r_int
@@ -2775,7 +2522,7 @@ id|xwidget_hwid_t
 id|hwid
 comma
 multiline_comment|/* widget&squot;s hardware ID */
-id|devfs_handle_t
+id|vertex_hdl_t
 id|widget
 comma
 multiline_comment|/* widget to initialize */
@@ -2783,17 +2530,14 @@ id|xwidgetnum_t
 id|id
 comma
 multiline_comment|/* widget&squot;s target id (0..f) */
-id|devfs_handle_t
+id|vertex_hdl_t
 id|master
 comma
 multiline_comment|/* widget&squot;s master vertex */
 id|xwidgetnum_t
 id|targetid
-comma
-multiline_comment|/* master&squot;s target id (9/a) */
-id|async_attach_t
-id|aa
 )paren
+multiline_comment|/* master&squot;s target id (9/a) */
 (brace
 id|xwidget_info_t
 id|widget_info
@@ -2898,35 +2642,11 @@ comma
 id|master
 )paren
 suffix:semicolon
-multiline_comment|/* All the driver init routines (including&n;     * xtalk_init) are called before we get into&n;     * attaching devices, so we can assume we&n;     * have a registry here.&n;     */
-id|ASSERT
-c_func
-(paren
-id|xtalk_registry
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
 multiline_comment|/* &n;     * Add pointer to async attach info -- tear down will be done when&n;     * the particular descendant is done with the info.&n;     */
-r_if
-c_cond
-(paren
-id|aa
-)paren
-id|async_attach_add_info
-c_func
-(paren
-id|widget
-comma
-id|aa
-)paren
-suffix:semicolon
 r_return
 id|cdl_add_connpt
 c_func
 (paren
-id|xtalk_registry
-comma
 id|hwid-&gt;part_num
 comma
 id|hwid-&gt;mfg_num
@@ -2943,7 +2663,7 @@ DECL|function|xwidget_unregister
 id|xwidget_unregister
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|widget
 )paren
 (brace
@@ -3000,20 +2720,6 @@ op_amp
 id|widget_info-&gt;w_hwid
 )paren
 suffix:semicolon
-id|cdl_del_connpt
-c_func
-(paren
-id|xtalk_registry
-comma
-id|hwid-&gt;part_num
-comma
-id|hwid-&gt;mfg_num
-comma
-id|widget
-comma
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/* Clean out the xwidget information */
 (paren
 r_void
@@ -3054,7 +2760,7 @@ DECL|function|xwidget_error_register
 id|xwidget_error_register
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget
 comma
 id|error_handler_f
@@ -3099,7 +2805,7 @@ DECL|function|xwidget_reset
 id|xwidget_reset
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget
 )paren
 (brace
@@ -3115,58 +2821,11 @@ DECL|function|xwidget_gfx_reset
 id|xwidget_gfx_reset
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget
 )paren
 (brace
-id|xwidget_info_t
-id|info
-suffix:semicolon
-id|xswitch_reset_link
-c_func
-(paren
-id|xwidget
-)paren
-suffix:semicolon
-id|info
-op_assign
-id|xwidget_info_get
-c_func
-(paren
-id|xwidget
-)paren
-suffix:semicolon
-macro_line|#ifdef LATER
-id|ASSERT_ALWAYS
-c_func
-(paren
-id|info
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;     * Enable this for other architectures once we add widget_reset to the&n;     * xtalk provider interface.&n;     */
-id|DEV_FUNC
-c_func
-(paren
-id|xtalk_provider
-comma
-id|widget_reset
-)paren
-(paren
-id|xwidget_info_master_get
-c_func
-(paren
-id|info
-)paren
-comma
-id|xwidget_info_id_get
-c_func
-(paren
-id|info
-)paren
-)paren
+r_return
 suffix:semicolon
 )brace
 DECL|macro|ANON_XWIDGET_NAME
@@ -3178,7 +2837,7 @@ DECL|function|xwidget_name_get
 id|xwidget_name_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget_vhdl
 )paren
 (brace

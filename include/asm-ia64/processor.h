@@ -5,7 +5,7 @@ multiline_comment|/*&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;Davi
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
-macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/ustack.h&gt;
 DECL|macro|IA64_NUM_DBG_REGS
 mdefine_line|#define IA64_NUM_DBG_REGS&t;8
 multiline_comment|/*&n; * Limits for PMC and PMD are set to less than maximum architected values&n; * but should be sufficient for a while&n; */
@@ -66,8 +66,8 @@ macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
-macro_line|#include &lt;asm/offsets.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/percpu.h&gt;
 macro_line|#include &lt;asm/rse.h&gt;
@@ -563,6 +563,11 @@ id|__u64
 id|task_size
 suffix:semicolon
 multiline_comment|/* limit for task size */
+DECL|member|rbs_bot
+id|__u64
+id|rbs_bot
+suffix:semicolon
+multiline_comment|/* the base address for the RBS */
 DECL|member|last_fph_cpu
 r_int
 id|last_fph_cpu
@@ -594,16 +599,6 @@ id|__u64
 id|fdr
 suffix:semicolon
 multiline_comment|/* IA32 fp except. data reg */
-DECL|member|csd
-id|__u64
-id|csd
-suffix:semicolon
-multiline_comment|/* IA32 code selector descriptor */
-DECL|member|ssd
-id|__u64
-id|ssd
-suffix:semicolon
-multiline_comment|/* IA32 stack selector descriptor */
 DECL|member|old_k1
 id|__u64
 id|old_k1
@@ -615,56 +610,40 @@ id|old_iob
 suffix:semicolon
 multiline_comment|/* old IOBase value */
 DECL|macro|INIT_THREAD_IA32
-macro_line|# define INIT_THREAD_IA32&t;.eflag =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fsr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fcr =&t;&t;0x17800000037fULL,&t;&bslash;&n;&t;&t;&t;&t;.fir =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fdr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.csd =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.ssd =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_k1 =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_iob =&t;0,
+macro_line|# define INIT_THREAD_IA32&t;.eflag =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fsr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fcr =&t;&t;0x17800000037fULL,&t;&bslash;&n;&t;&t;&t;&t;.fir =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.fdr =&t;&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_k1 =&t;0,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;.old_iob =&t;0,
 macro_line|#else
 DECL|macro|INIT_THREAD_IA32
 macro_line|# define INIT_THREAD_IA32
 macro_line|#endif /* CONFIG_IA32_SUPPORT */
 macro_line|#ifdef CONFIG_PERFMON
-DECL|member|pmc
+DECL|member|pmcs
 id|__u64
-id|pmc
+id|pmcs
 (braket
 id|IA64_NUM_PMC_REGS
 )braket
 suffix:semicolon
-DECL|member|pmd
+DECL|member|pmds
 id|__u64
-id|pmd
+id|pmds
 (braket
 id|IA64_NUM_PMD_REGS
 )braket
 suffix:semicolon
-DECL|member|pfm_ovfl_block_reset
-r_int
-r_int
-id|pfm_ovfl_block_reset
-suffix:semicolon
-multiline_comment|/* non-zero if we need to block or reset regs on ovfl */
 DECL|member|pfm_context
 r_void
 op_star
 id|pfm_context
 suffix:semicolon
 multiline_comment|/* pointer to detailed PMU context */
-DECL|member|pfm_notifiers_check
-id|atomic_t
-id|pfm_notifiers_check
+DECL|member|pfm_needs_checking
+r_int
+r_int
+id|pfm_needs_checking
 suffix:semicolon
-multiline_comment|/* when &gt;0, will cleanup ctx_notify_task in tasklist */
-DECL|member|pfm_owners_check
-id|atomic_t
-id|pfm_owners_check
-suffix:semicolon
-multiline_comment|/* when &gt;0, will cleanup ctx_owner in tasklist */
-DECL|member|pfm_smpl_buf_list
-r_void
-op_star
-id|pfm_smpl_buf_list
-suffix:semicolon
-multiline_comment|/* list of sampling buffers to vfree */
+multiline_comment|/* when &gt;0, pending perfmon work on kernel exit */
 DECL|macro|INIT_THREAD_PM
-macro_line|# define INIT_THREAD_PM&t;&t;.pmc =&t;&t;&t;{0, },&t;&bslash;&n;&t;&t;&t;&t;.pmd =&t;&t;&t;{0, },&t;&bslash;&n;&t;&t;&t;&t;.pfm_ovfl_block_reset =&t;0,&t;&bslash;&n;&t;&t;&t;&t;.pfm_context =&t;&t;NULL,&t;&bslash;&n;&t;&t;&t;&t;.pfm_notifiers_check =&t;{ 0 },&t;&bslash;&n;&t;&t;&t;&t;.pfm_owners_check =&t;{ 0 },&t;&bslash;&n;&t;&t;&t;&t;.pfm_smpl_buf_list =&t;NULL,
+macro_line|# define INIT_THREAD_PM&t;&t;.pmcs =&t;&t;&t;{0UL, },  &bslash;&n;&t;&t;&t;&t;.pmds =&t;&t;&t;{0UL, },  &bslash;&n;&t;&t;&t;&t;.pfm_context =&t;&t;NULL,     &bslash;&n;&t;&t;&t;&t;.pfm_needs_checking =&t;0UL,
 macro_line|#else
 DECL|macro|INIT_THREAD_PM
 macro_line|# define INIT_THREAD_PM
@@ -695,9 +674,9 @@ multiline_comment|/* saved/loaded on demand */
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD {&t;&t;&t;&t;&bslash;&n;&t;.flags =&t;0,&t;&t;&t;&bslash;&n;&t;.on_ustack =&t;0,&t;&t;&t;&bslash;&n;&t;.ksp =&t;&t;0,&t;&t;&t;&bslash;&n;&t;.map_base =&t;DEFAULT_MAP_BASE,&t;&bslash;&n;&t;.task_size =&t;DEFAULT_TASK_SIZE,&t;&bslash;&n;&t;.last_fph_cpu =  0,&t;&t;&t;&bslash;&n;&t;INIT_THREAD_IA32&t;&t;&t;&bslash;&n;&t;INIT_THREAD_PM&t;&t;&t;&t;&bslash;&n;&t;.dbr =&t;&t;{0, },&t;&t;&t;&bslash;&n;&t;.ibr =&t;&t;{0, },&t;&t;&t;&bslash;&n;&t;.fph =&t;&t;{{{{0}}}, }&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD {&t;&t;&t;&t;&bslash;&n;&t;.flags =&t;0,&t;&t;&t;&bslash;&n;&t;.on_ustack =&t;0,&t;&t;&t;&bslash;&n;&t;.ksp =&t;&t;0,&t;&t;&t;&bslash;&n;&t;.map_base =&t;DEFAULT_MAP_BASE,&t;&bslash;&n;&t;.rbs_bot =&t;DEFAULT_USER_STACK_SIZE,&t;&bslash;&n;&t;.task_size =&t;DEFAULT_TASK_SIZE,&t;&bslash;&n;&t;.last_fph_cpu =  -1,&t;&t;&t;&bslash;&n;&t;INIT_THREAD_IA32&t;&t;&t;&bslash;&n;&t;INIT_THREAD_PM&t;&t;&t;&t;&bslash;&n;&t;.dbr =&t;&t;{0, },&t;&t;&t;&bslash;&n;&t;.ibr =&t;&t;{0, },&t;&t;&t;&bslash;&n;&t;.fph =&t;&t;{{{{0}}}, }&t;&t;&bslash;&n;}
 DECL|macro|start_thread
-mdefine_line|#define start_thread(regs,new_ip,new_sp) do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;cr_ipsr = ((regs-&gt;cr_ipsr | (IA64_PSR_BITS_TO_SET | IA64_PSR_CPL))&t;&t;&bslash;&n;&t;&t;&t; &amp; ~(IA64_PSR_BITS_TO_CLEAR | IA64_PSR_RI | IA64_PSR_IS));&t;&t;&bslash;&n;&t;regs-&gt;cr_iip = new_ip;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_rsc = 0xf;&t;&t;/* eager mode, privilege level 3 */&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_rnat = 0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_bspstore = IA64_RBS_BOT;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_fpsr = FPSR_DEFAULT;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;loadrs = 0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;r8 = current-&gt;mm-&gt;dumpable;&t;/* set &quot;don&squot;t zap registers&quot; flag */&t;&t;&bslash;&n;&t;regs-&gt;r12 = new_sp - 16;&t;/* allocate 16 byte scratch area */&t;&t;&t;&bslash;&n;&t;if (unlikely(!current-&gt;mm-&gt;dumpable)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t; * Zap scratch regs to avoid leaking bits between processes with different&t;&bslash;&n;&t;&t; * uid/privileges.&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;ar_pfs = 0;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;pr = 0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t; * XXX fix me: everything below can go away once we stop preserving scratch&t;&bslash;&n;&t;&t; * regs on a system call.&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;b6 = 0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r1 = 0; regs-&gt;r2 = 0; regs-&gt;r3 = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r13 = 0; regs-&gt;r14 = 0; regs-&gt;r15 = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r9  = 0; regs-&gt;r11 = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r16 = 0; regs-&gt;r17 = 0; regs-&gt;r18 = 0; regs-&gt;r19 = 0;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r20 = 0; regs-&gt;r21 = 0; regs-&gt;r22 = 0; regs-&gt;r23 = 0;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r24 = 0; regs-&gt;r25 = 0; regs-&gt;r26 = 0; regs-&gt;r27 = 0;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r28 = 0; regs-&gt;r29 = 0; regs-&gt;r30 = 0; regs-&gt;r31 = 0;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;ar_ccv = 0;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;b0 = 0; regs-&gt;b7 = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;f6.u.bits[0] = 0; regs-&gt;f6.u.bits[1] = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;f7.u.bits[0] = 0; regs-&gt;f7.u.bits[1] = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;f8.u.bits[0] = 0; regs-&gt;f8.u.bits[1] = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;f9.u.bits[0] = 0; regs-&gt;f9.u.bits[1] = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define start_thread(regs,new_ip,new_sp) do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;cr_ipsr = ((regs-&gt;cr_ipsr | (IA64_PSR_BITS_TO_SET | IA64_PSR_CPL))&t;&t;&bslash;&n;&t;&t;&t; &amp; ~(IA64_PSR_BITS_TO_CLEAR | IA64_PSR_RI | IA64_PSR_IS));&t;&t;&bslash;&n;&t;regs-&gt;cr_iip = new_ip;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_rsc = 0xf;&t;&t;/* eager mode, privilege level 3 */&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_rnat = 0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_bspstore = current-&gt;thread.rbs_bot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_fpsr = FPSR_DEFAULT;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;loadrs = 0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;r8 = current-&gt;mm-&gt;dumpable;&t;/* set &quot;don&squot;t zap registers&quot; flag */&t;&t;&bslash;&n;&t;regs-&gt;r12 = new_sp - 16;&t;/* allocate 16 byte scratch area */&t;&t;&t;&bslash;&n;&t;if (unlikely(!current-&gt;mm-&gt;dumpable)) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t; * Zap scratch regs to avoid leaking bits between processes with different&t;&bslash;&n;&t;&t; * uid/privileges.&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;ar_pfs = 0; regs-&gt;b0 = 0; regs-&gt;pr = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r1 = 0; regs-&gt;r9  = 0; regs-&gt;r11 = 0; regs-&gt;r13 = 0; regs-&gt;r15 = 0;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* Forward declarations, a strange C thing... */
 r_struct
 id|mm_struct
@@ -706,27 +685,14 @@ r_struct
 id|task_struct
 suffix:semicolon
 multiline_comment|/*&n; * Free all resources held by a thread. This is called after the&n; * parent of DEAD_TASK has collected the exist status of the task via&n; * wait().&n; */
-macro_line|#ifdef CONFIG_PERFMON
-r_extern
-r_void
-id|release_thread
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-)paren
-suffix:semicolon
-macro_line|#else
 DECL|macro|release_thread
-macro_line|# define release_thread(dead_task)
-macro_line|#endif
+mdefine_line|#define release_thread(dead_task)
 multiline_comment|/* Prepare to copy thread state - unlazy all lazy status */
 DECL|macro|prepare_to_copy
 mdefine_line|#define prepare_to_copy(tsk)&t;do { } while (0)
 multiline_comment|/*&n; * This is the mechanism for creating a new kernel thread.&n; *&n; * NOTE 1: Only a kernel-only process (ie the swapper or direct&n; * descendants who haven&squot;t done an &quot;execve()&quot;) should use this: it&n; * will work within a system call from a &quot;real&quot; process, but the&n; * process memory space will not be free&squot;d until both the parent and&n; * the child have exited.&n; *&n; * NOTE 2: This MUST NOT be an inlined function.  Otherwise, we get&n; * into trouble in init/main.c when the child thread returns to&n; * do_basic_setup() and the timing is such that free_initmem() has&n; * been called already.&n; */
 r_extern
-r_int
+id|pid_t
 id|kernel_thread
 (paren
 r_int
@@ -1074,55 +1040,16 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_static
-r_inline
-r_struct
-id|task_struct
-op_star
-DECL|function|ia64_get_fpu_owner
-id|ia64_get_fpu_owner
-(paren
-r_void
-)paren
-(brace
-r_return
-(paren
-r_struct
-id|task_struct
-op_star
-)paren
-id|ia64_get_kr
-c_func
-(paren
-id|IA64_KR_FPU_OWNER
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_void
-DECL|function|ia64_set_fpu_owner
-id|ia64_set_fpu_owner
-(paren
-r_struct
-id|task_struct
-op_star
-id|t
-)paren
-(brace
-id|ia64_set_kr
-c_func
-(paren
-id|IA64_KR_FPU_OWNER
-comma
-(paren
-r_int
-r_int
-)paren
-id|t
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/*&n; * The following three macros can&squot;t be inline functions because we don&squot;t have struct&n; * task_struct at this point.&n; */
+multiline_comment|/* Return TRUE if task T owns the fph partition of the CPU we&squot;re running on. */
+DECL|macro|ia64_is_local_fpu_owner
+mdefine_line|#define ia64_is_local_fpu_owner(t)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct task_struct *__ia64_islfo_task = (t);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(__ia64_islfo_task-&gt;thread.last_fph_cpu == smp_processor_id()&t;&t;&t;&t;&bslash;&n;&t; &amp;&amp; __ia64_islfo_task == (struct task_struct *) ia64_get_kr(IA64_KR_FPU_OWNER));&t;&bslash;&n;})
+multiline_comment|/* Mark task T as owning the fph partition of the CPU we&squot;re running on. */
+DECL|macro|ia64_set_local_fpu_owner
+mdefine_line|#define ia64_set_local_fpu_owner(t) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct task_struct *__ia64_slfo_task = (t);&t;&t;&t;&t;&t;&bslash;&n;&t;__ia64_slfo_task-&gt;thread.last_fph_cpu = smp_processor_id();&t;&t;&t;&bslash;&n;&t;ia64_set_kr(IA64_KR_FPU_OWNER, (unsigned long) __ia64_slfo_task);&t;&t;&bslash;&n;} while (0)
+multiline_comment|/* Mark the fph partition of task T as being invalid on all CPUs.  */
+DECL|macro|ia64_drop_fpu
+mdefine_line|#define ia64_drop_fpu(t)&t;((t)-&gt;thread.last_fph_cpu = -1)
 r_extern
 r_void
 id|__ia64_init_fpu
@@ -1974,8 +1901,27 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_void
+DECL|function|ia64_hint_pause
+id|ia64_hint_pause
+(paren
+r_void
+)paren
+(brace
+id|asm
+r_volatile
+(paren
+l_string|&quot;hint @pause&quot;
+op_scope_resolution
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;barrier()
+mdefine_line|#define cpu_relax()&t;ia64_hint_pause()
 r_static
 r_inline
 r_void
@@ -2893,6 +2839,46 @@ id|addr
 suffix:semicolon
 r_return
 id|result
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Take a mapped kernel address and return the equivalent address&n; * in the region 7 identity mapped virtual area.&n; */
+r_static
+r_inline
+r_void
+op_star
+DECL|function|ia64_imva
+id|ia64_imva
+(paren
+r_void
+op_star
+id|addr
+)paren
+(brace
+r_void
+op_star
+id|result
+suffix:semicolon
+id|asm
+(paren
+l_string|&quot;tpa %0=%1&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|result
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|addr
+)paren
+)paren
+suffix:semicolon
+r_return
+id|__va
+c_func
+(paren
+id|result
+)paren
 suffix:semicolon
 )brace
 DECL|macro|ARCH_HAS_PREFETCH

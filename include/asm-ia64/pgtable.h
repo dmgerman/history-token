@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_PGTABLE_H
 DECL|macro|_ASM_IA64_PGTABLE_H
 mdefine_line|#define _ASM_IA64_PGTABLE_H
-multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the IA-64 page table tree.&n; *&n; * This hopefully works with any (fixed) IA-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the IA-64 page table tree.&n; *&n; * This hopefully works with any (fixed) IA-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -98,6 +98,10 @@ DECL|macro|_PAGE_SIZE_64M
 mdefine_line|#define _PAGE_SIZE_64M&t;26
 DECL|macro|_PAGE_SIZE_256M
 mdefine_line|#define _PAGE_SIZE_256M&t;28
+DECL|macro|_PAGE_SIZE_1G
+mdefine_line|#define _PAGE_SIZE_1G&t;30
+DECL|macro|_PAGE_SIZE_4G
+mdefine_line|#define _PAGE_SIZE_4G&t;32
 DECL|macro|__ACCESS_BITS
 mdefine_line|#define __ACCESS_BITS&t;&t;_PAGE_ED | _PAGE_A | _PAGE_P | _PAGE_MA_WB
 DECL|macro|__DIRTY_BITS_NO_ED
@@ -225,21 +229,31 @@ DECL|macro|set_pte
 mdefine_line|#define set_pte(ptep, pteval)&t;(*(ptep) = (pteval))
 DECL|macro|RGN_SIZE
 mdefine_line|#define RGN_SIZE&t;(1UL &lt;&lt; 61)
-DECL|macro|RGN_MAP_LIMIT
-mdefine_line|#define RGN_MAP_LIMIT&t;((1UL &lt;&lt; (4*PAGE_SHIFT - 12)) - PAGE_SIZE)&t;/* per region addr limit */
 DECL|macro|RGN_KERNEL
 mdefine_line|#define RGN_KERNEL&t;7
 DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START&t;&t;(0xa000000000000000 + 3*PERCPU_PAGE_SIZE)
+mdefine_line|#define VMALLOC_START&t;&t;0xa000000200000000
 DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x)&t;((unsigned long)(x))
+macro_line|#ifdef CONFIG_VIRTUAL_MEM_MAP
+DECL|macro|VMALLOC_END_INIT
+macro_line|# define VMALLOC_END_INIT&t;(0xa000000000000000 + (1UL &lt;&lt; (4*PAGE_SHIFT - 9)))
 DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END&t;&t;(0xa000000000000000 + (1UL &lt;&lt; (4*PAGE_SHIFT - 9)))
+macro_line|# define VMALLOC_END&t;&t;vmalloc_end
+r_extern
+r_int
+r_int
+id|vmalloc_end
+suffix:semicolon
+macro_line|#else
+DECL|macro|VMALLOC_END
+macro_line|# define VMALLOC_END&t;&t;(0xa000000000000000 + (1UL &lt;&lt; (4*PAGE_SHIFT - 9)))
+macro_line|#endif
 multiline_comment|/* fs/proc/kcore.c */
 DECL|macro|kc_vaddr_to_offset
-mdefine_line|#define&t;kc_vaddr_to_offset(v) ((v) - 0xA000000000000000)
+mdefine_line|#define&t;kc_vaddr_to_offset(v) ((v) - 0xa000000000000000)
 DECL|macro|kc_offset_to_vaddr
-mdefine_line|#define&t;kc_offset_to_vaddr(o) ((o) + 0xA000000000000000)
+mdefine_line|#define&t;kc_offset_to_vaddr(o) ((o) + 0xa000000000000000)
 multiline_comment|/*&n; * Conversion functions: convert page frame number (pfn) and a protection value to a page&n; * table entry (pte).&n; */
 DECL|macro|pfn_pte
 mdefine_line|#define pfn_pte(pfn, pgprot) &bslash;&n;({ pte_t __pte; pte_val(__pte) = ((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(pgprot); __pte; })
@@ -288,6 +302,8 @@ mdefine_line|#define pgd_clear(pgdp)&t;&t;&t;(pgd_val(*(pgdp)) = 0UL)
 DECL|macro|pgd_page
 mdefine_line|#define pgd_page(pgd)&t;&t;&t;((unsigned long) __va(pgd_val(pgd) &amp; _PFN_MASK))
 multiline_comment|/*&n; * The following have defined behavior only work if pte_present() is true.&n; */
+DECL|macro|pte_user
+mdefine_line|#define pte_user(pte)&t;&t;((pte_val(pte) &amp; _PAGE_PL_MASK) == _PAGE_PL_3)
 DECL|macro|pte_read
 mdefine_line|#define pte_read(pte)&t;&t;(((pte_val(pte) &amp; _PAGE_AR_MASK) &gt;&gt; _PAGE_AR_SHIFT) &lt; 6)
 DECL|macro|pte_write
@@ -315,7 +331,7 @@ DECL|macro|pte_mkclean
 mdefine_line|#define pte_mkclean(pte)&t;(__pte(pte_val(pte) &amp; ~_PAGE_D))
 DECL|macro|pte_mkdirty
 mdefine_line|#define pte_mkdirty(pte)&t;(__pte(pte_val(pte) | _PAGE_D))
-multiline_comment|/*&n; * Macro to make mark a page protection value as &quot;uncacheable&quot;.  Note&n; * that &quot;protection&quot; is really a misnomer here as the protection value&n; * contains the memory attribute bits, dirty bits, and various other&n; * bits as well.&n; */
+multiline_comment|/*&n; * Macro to a page protection value as &quot;uncacheable&quot;.  Note that &quot;protection&quot; is really a&n; * misnomer here as the protection value contains the memory attribute bits, dirty bits,&n; * and various other bits as well.&n; */
 DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;&t;__pgprot((pgprot_val(prot) &amp; ~_PAGE_MA_MASK) | _PAGE_MA_UC)
 multiline_comment|/*&n; * Macro to make mark a page protection value as &quot;write-combining&quot;.&n; * Note that &quot;protection&quot; is really a misnomer here as the protection&n; * value contains the memory attribute bits, dirty bits, and various&n; * other bits as well.  Accesses through a write-combining translation&n; * works bypasses the caches, but does allow for consecutive writes to&n; * be combined into single (but larger) write transactions.&n; */
@@ -794,8 +810,14 @@ r_int
 )paren
 )braket
 suffix:semicolon
+r_extern
+r_struct
+id|page
+op_star
+id|zero_page_memmap_ptr
+suffix:semicolon
 DECL|macro|ZERO_PAGE
-mdefine_line|#define ZERO_PAGE(vaddr) (virt_to_page(empty_zero_page))
+mdefine_line|#define ZERO_PAGE(vaddr) (zero_page_memmap_ptr)
 multiline_comment|/* We provide our own get_unmapped_area to cope with VA holes for userland */
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
@@ -805,6 +827,54 @@ id|pte_t
 op_star
 id|pte_addr_t
 suffix:semicolon
+multiline_comment|/*&n; * IA-64 doesn&squot;t have any external MMU info: the page tables contain all the necessary&n; * information.  However, we use this routine to take care of any (delayed) i-cache&n; * flushing that may be necessary.&n; */
+r_extern
+r_void
+id|update_mmu_cache
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|vaddr
+comma
+id|pte_t
+id|pte
+)paren
+suffix:semicolon
+macro_line|#  ifdef CONFIG_VIRTUAL_MEM_MAP
+multiline_comment|/* arch mem_map init routine is needed due to holes in a virtual mem_map */
+DECL|macro|__HAVE_ARCH_MEMMAP_INIT
+macro_line|#   define __HAVE_ARCH_MEMMAP_INIT
+r_extern
+r_void
+id|memmap_init
+(paren
+r_struct
+id|page
+op_star
+id|start
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+id|nid
+comma
+r_int
+r_int
+id|zone
+comma
+r_int
+r_int
+id|start_pfn
+)paren
+suffix:semicolon
+macro_line|#  endif /* CONFIG_VIRTUAL_MEM_MAP */
 macro_line|# endif /* !__ASSEMBLY__ */
 multiline_comment|/*&n; * Identity-mapped regions use a large page size.  We&squot;ll call such large pages&n; * &quot;granules&quot;.  If you can think of a better name that&squot;s unambiguous, let me&n; * know...&n; */
 macro_line|#if defined(CONFIG_IA64_GRANULE_64MB)
@@ -821,10 +891,13 @@ DECL|macro|KERNEL_TR_PAGE_SHIFT
 mdefine_line|#define KERNEL_TR_PAGE_SHIFT&t;_PAGE_SIZE_64M
 DECL|macro|KERNEL_TR_PAGE_SIZE
 mdefine_line|#define KERNEL_TR_PAGE_SIZE&t;(1 &lt;&lt; KERNEL_TR_PAGE_SHIFT)
-DECL|macro|KERNEL_TR_PAGE_NUM
-mdefine_line|#define KERNEL_TR_PAGE_NUM&t;((KERNEL_START - PAGE_OFFSET) / KERNEL_TR_PAGE_SIZE)
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
+multiline_comment|/* These tell get_user_pages() that the first gate page is accessible from user-level.  */
+DECL|macro|FIXADDR_USER_START
+mdefine_line|#define FIXADDR_USER_START&t;GATE_ADDR
+DECL|macro|FIXADDR_USER_END
+mdefine_line|#define FIXADDR_USER_END&t;(GATE_ADDR + 2*PAGE_SIZE)
 macro_line|#endif /* _ASM_IA64_PGTABLE_H */
 eof

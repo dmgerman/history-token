@@ -315,7 +315,9 @@ id|card-&gt;proclog
 suffix:semicolon
 r_int
 id|i
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 suffix:semicolon
 r_if
@@ -1301,11 +1303,13 @@ op_star
 id|card
 suffix:semicolon
 r_int
-id|flags
-comma
 id|retval
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|lock_kernel
 c_func

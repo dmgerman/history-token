@@ -666,11 +666,10 @@ op_amp
 id|dn_hash_lock
 )paren
 suffix:semicolon
-id|hlist_del
+id|sk_del_node_init
 c_func
 (paren
-op_amp
-id|sk-&gt;sk_node
+id|sk
 )paren
 suffix:semicolon
 id|DN_SK

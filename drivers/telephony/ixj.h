@@ -4097,7 +4097,6 @@ id|read_convert_buffer
 suffix:semicolon
 DECL|member|read_buffer_size
 r_int
-r_int
 id|read_buffer_size
 suffix:semicolon
 DECL|member|read_buffer_ready
@@ -4133,7 +4132,6 @@ op_star
 id|write_convert_buffer
 suffix:semicolon
 DECL|member|write_buffer_size
-r_int
 r_int
 id|write_buffer_size
 suffix:semicolon
@@ -4408,6 +4406,7 @@ r_int
 id|cidcnt
 suffix:semicolon
 DECL|member|pstn_cid_received
+r_int
 r_int
 id|pstn_cid_received
 suffix:semicolon

@@ -4,6 +4,7 @@ DECL|macro|_LINUX_SKBUFF_H
 mdefine_line|#define _LINUX_SKBUFF_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -2137,11 +2138,11 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|macro|SKB_PAGE_ASSERT
-mdefine_line|#define SKB_PAGE_ASSERT(skb) do { if (skb_shinfo(skb)-&gt;nr_frags) &bslash;&n;&t;&t;&t;&t;&t;BUG(); } while (0)
+mdefine_line|#define SKB_PAGE_ASSERT(skb) &t;BUG_ON(skb_shinfo(skb)-&gt;nr_frags)
 DECL|macro|SKB_FRAG_ASSERT
-mdefine_line|#define SKB_FRAG_ASSERT(skb) do { if (skb_shinfo(skb)-&gt;frag_list) &bslash;&n;&t;&t;&t;&t;&t;BUG(); } while (0)
+mdefine_line|#define SKB_FRAG_ASSERT(skb) &t;BUG_ON(skb_shinfo(skb)-&gt;frag_list)
 DECL|macro|SKB_LINEAR_ASSERT
-mdefine_line|#define SKB_LINEAR_ASSERT(skb) do { if (skb_is_nonlinear(skb)) &bslash;&n;&t;&t;&t;&t;&t;BUG(); } while (0)
+mdefine_line|#define SKB_LINEAR_ASSERT(skb)  BUG_ON(skb_is_nonlinear(skb))
 multiline_comment|/*&n; *&t;Add data to an sk_buff&n; */
 DECL|function|__skb_put
 r_static
@@ -2231,9 +2232,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|skb-&gt;tail
 OG
 id|skb-&gt;end
+)paren
 )paren
 id|skb_over_panic
 c_func
@@ -2314,9 +2319,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|skb-&gt;data
 OL
 id|skb-&gt;head
+)paren
 )paren
 id|skb_under_panic
 c_func
@@ -2357,16 +2366,12 @@ id|skb-&gt;len
 op_sub_assign
 id|len
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|skb-&gt;len
 OL
 id|skb-&gt;data_len
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -3177,8 +3182,9 @@ id|size
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;skb_linearize - convert paged skb to linear one&n; *&t;@skb: buffer to linarize&n; *&t;@gfp: allocation mode&n; *&n; *&t;If there is no free memory -ENOMEM is returned, otherwise zero&n; *&t;is returned and the old skb data released.&n; */
+r_extern
 r_int
-id|skb_linearize
+id|__skb_linearize
 c_func
 (paren
 r_struct
@@ -3190,6 +3196,33 @@ r_int
 id|gfp
 )paren
 suffix:semicolon
+DECL|function|skb_linearize
+r_static
+r_inline
+r_int
+id|__deprecated
+id|skb_linearize
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_int
+id|gfp
+)paren
+(brace
+r_return
+id|__skb_linearize
+c_func
+(paren
+id|skb
+comma
+id|gfp
+)paren
+suffix:semicolon
+)brace
 DECL|function|kmap_skb_frag
 r_static
 r_inline
@@ -3205,17 +3238,13 @@ id|frag
 )paren
 (brace
 macro_line|#ifdef CONFIG_HIGHMEM
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|in_irq
 c_func
 (paren
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|local_bh_disable
@@ -3263,7 +3292,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|macro|skb_queue_walk
-mdefine_line|#define skb_queue_walk(queue, skb) &bslash;&n;&t;&t;for (skb = (queue)-&gt;next;&t;&t;&t;&bslash;&n;&t;&t;     (skb != (struct sk_buff *)(queue));&t;&bslash;&n;&t;&t;     skb = skb-&gt;next)
+mdefine_line|#define skb_queue_walk(queue, skb) &bslash;&n;&t;&t;for (skb = (queue)-&gt;next, prefetch(skb-&gt;next);&t;&bslash;&n;&t;&t;     (skb != (struct sk_buff *)(queue));&t;&bslash;&n;&t;&t;     skb = skb-&gt;next, prefetch(skb-&gt;next))
 r_extern
 r_struct
 id|sk_buff

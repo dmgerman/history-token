@@ -3,30 +3,96 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/dirent.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;&t;&t;/* argh, msdos_fs.h isn&squot;t self-contained... */
 macro_line|#include &lt;linux/signal.h&gt;&t;/* argh, msdos_fs.h isn&squot;t self-contained... */
-macro_line|#include &lt;asm/ia32.h&gt;
-macro_line|#include &lt;linux/msdos_fs.h&gt;
-macro_line|#include &lt;linux/mtio.h&gt;
-macro_line|#include &lt;linux/ncp_fs.h&gt;
-macro_line|#include &lt;linux/capi.h&gt;
-macro_line|#include &lt;linux/videodev.h&gt;
-macro_line|#include &lt;linux/synclink.h&gt;
-macro_line|#include &lt;linux/atmdev.h&gt;
-macro_line|#include &lt;linux/atm_eni.h&gt;
-macro_line|#include &lt;linux/atm_nicstar.h&gt;
-macro_line|#include &lt;linux/atm_zatm.h&gt;
-macro_line|#include &lt;linux/atm_idt77105.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
+macro_line|#include &quot;ia32priv.h&quot;
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/ioctl.h&gt;
+macro_line|#include &lt;linux/if.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
+macro_line|#include &lt;linux/raid/md.h&gt;
+macro_line|#include &lt;linux/kd.h&gt;
+macro_line|#include &lt;linux/route.h&gt;
+macro_line|#include &lt;linux/in6.h&gt;
+macro_line|#include &lt;linux/ipv6_route.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/netlink.h&gt;
+macro_line|#include &lt;linux/vt.h&gt;
+macro_line|#include &lt;linux/file.h&gt;
+macro_line|#include &lt;linux/fd.h&gt;
 macro_line|#include &lt;linux/ppp_defs.h&gt;
 macro_line|#include &lt;linux/if_ppp.h&gt;
-macro_line|#include &lt;linux/ixjuser.h&gt;
-macro_line|#include &lt;linux/i2o-dev.h&gt;
+macro_line|#include &lt;linux/if_pppox.h&gt;
+macro_line|#include &lt;linux/mtio.h&gt;
+macro_line|#include &lt;linux/cdrom.h&gt;
+macro_line|#include &lt;linux/loop.h&gt;
+macro_line|#include &lt;linux/auto_fs.h&gt;
+macro_line|#include &lt;linux/auto_fs4.h&gt;
+macro_line|#include &lt;linux/devfs_fs.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/vt_kern.h&gt;
+macro_line|#include &lt;linux/fb.h&gt;
+macro_line|#include &lt;linux/ext2_fs.h&gt;
+macro_line|#include &lt;linux/videodev.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/raw.h&gt;
+macro_line|#include &lt;linux/smb_fs.h&gt;
+macro_line|#include &lt;linux/blkpg.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/elevator.h&gt;
+macro_line|#include &lt;linux/rtc.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/rtc.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/reiserfs_fs.h&gt;
+macro_line|#include &lt;linux/if_tun.h&gt;
+macro_line|#include &lt;linux/dirent.h&gt;
+macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/ncp_fs.h&gt;
+macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
+macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 multiline_comment|/* Ugly hack. */
 DECL|macro|__KERNEL__
-macro_line|#undef&t;__KERNEL__
+macro_line|#undef __KERNEL__
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 DECL|macro|__KERNEL__
-mdefine_line|#define&t;__KERNEL__
+mdefine_line|#define __KERNEL__
 macro_line|#include &lt;scsi/sg.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
+macro_line|#include &lt;linux/if_bonding.h&gt;
+macro_line|#include &lt;linux/watchdog.h&gt;
+macro_line|#include &lt;asm/module.h&gt;
+macro_line|#include &lt;asm/ioctl32.h&gt;
+macro_line|#include &lt;linux/soundcard.h&gt;
+macro_line|#include &lt;linux/lp.h&gt;
+macro_line|#include &lt;linux/atm.h&gt;
+macro_line|#include &lt;linux/atmarp.h&gt;
+macro_line|#include &lt;linux/atmclip.h&gt;
+macro_line|#include &lt;linux/atmdev.h&gt;
+macro_line|#include &lt;linux/atmioc.h&gt;
+macro_line|#include &lt;linux/atmlec.h&gt;
+macro_line|#include &lt;linux/atmmpc.h&gt;
+macro_line|#include &lt;linux/atmsvc.h&gt;
+macro_line|#include &lt;linux/atm_tcp.h&gt;
+macro_line|#include &lt;linux/sonet.h&gt;
+macro_line|#include &lt;linux/atm_suni.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
+macro_line|#include &lt;net/bluetooth/hci.h&gt;
+macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;linux/usbdevice_fs.h&gt;
+macro_line|#include &lt;linux/nbd.h&gt;
+macro_line|#include &lt;linux/random.h&gt;
+macro_line|#include &lt;linux/filter.h&gt;
 macro_line|#include &lt;../drivers/char/drm/drm.h&gt;
 macro_line|#include &lt;../drivers/char/drm/mga_drm.h&gt;
 macro_line|#include &lt;../drivers/char/drm/i810_drm.h&gt;
@@ -54,6 +120,10 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+DECL|macro|VFAT_IOCTL_READDIR_BOTH32
+mdefine_line|#define&t;VFAT_IOCTL_READDIR_BOTH32&t;_IOR(&squot;r&squot;, 1, struct linux32_dirent[2])
+DECL|macro|VFAT_IOCTL_READDIR_SHORT32
+mdefine_line|#define&t;VFAT_IOCTL_READDIR_SHORT32&t;_IOR(&squot;r&squot;, 2, struct linux32_dirent[2])
 r_static
 r_int
 DECL|function|put_dirent32
@@ -120,6 +190,124 @@ op_plus
 l_int|1
 )paren
 )paren
+suffix:semicolon
+)brace
+DECL|function|vfat_ioctl32
+r_static
+r_int
+id|vfat_ioctl32
+c_func
+(paren
+r_int
+id|fd
+comma
+r_int
+id|cmd
+comma
+r_void
+op_star
+id|ptr
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+id|mm_segment_t
+id|oldfs
+op_assign
+id|get_fs
+c_func
+(paren
+)paren
+suffix:semicolon
+r_struct
+id|dirent
+id|d
+(braket
+l_int|2
+)braket
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|KERNEL_DS
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|sys_ioctl
+c_func
+(paren
+id|fd
+comma
+id|cmd
+comma
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|d
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|oldfs
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+)paren
+(brace
+id|ret
+op_or_assign
+id|put_dirent32
+c_func
+(paren
+op_amp
+id|d
+(braket
+l_int|0
+)braket
+comma
+(paren
+r_struct
+id|linux32_dirent
+op_star
+)paren
+id|ptr
+)paren
+suffix:semicolon
+id|ret
+op_or_assign
+id|put_dirent32
+c_func
+(paren
+op_amp
+id|d
+(braket
+l_int|1
+)braket
+comma
+(paren
+(paren
+r_struct
+id|linux32_dirent
+op_star
+)paren
+id|ptr
+)paren
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  The transform code for the SG_IO ioctl was brazenly lifted from&n; *  the Sparc64 port in the file `arch/sparc64/kernel/ioctl32.c&squot;.&n; *  Thanks to Jakub Jelinek &amp; Eddie C. Dost.&n; */
@@ -1312,4 +1500,388 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|function|alloc_user_space
+r_static
+id|__inline__
+r_void
+op_star
+id|alloc_user_space
+c_func
+(paren
+r_int
+id|len
+)paren
+(brace
+r_struct
+id|pt_regs
+op_star
+id|regs
+op_assign
+(paren
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|current
+op_plus
+id|IA64_STK_OFFSET
+)paren
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+r_return
+(paren
+r_void
+op_star
+)paren
+id|regs-&gt;r12
+op_minus
+id|len
+suffix:semicolon
+)brace
+DECL|struct|ifmap32
+r_struct
+id|ifmap32
+(brace
+DECL|member|mem_start
+id|u32
+id|mem_start
+suffix:semicolon
+DECL|member|mem_end
+id|u32
+id|mem_end
+suffix:semicolon
+DECL|member|base_addr
+r_int
+r_int
+id|base_addr
+suffix:semicolon
+DECL|member|irq
+r_int
+r_char
+id|irq
+suffix:semicolon
+DECL|member|dma
+r_int
+r_char
+id|dma
+suffix:semicolon
+DECL|member|port
+r_int
+r_char
+id|port
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|ifreq32
+r_struct
+id|ifreq32
+(brace
+DECL|macro|IFHWADDRLEN
+mdefine_line|#define IFHWADDRLEN     6
+DECL|macro|IFNAMSIZ
+mdefine_line|#define IFNAMSIZ        16
+r_union
+(brace
+DECL|member|ifrn_name
+r_char
+id|ifrn_name
+(braket
+id|IFNAMSIZ
+)braket
+suffix:semicolon
+multiline_comment|/* if name, e.g. &quot;en0&quot; */
+DECL|member|ifr_ifrn
+)brace
+id|ifr_ifrn
+suffix:semicolon
+r_union
+(brace
+DECL|member|ifru_addr
+r_struct
+id|sockaddr
+id|ifru_addr
+suffix:semicolon
+DECL|member|ifru_dstaddr
+r_struct
+id|sockaddr
+id|ifru_dstaddr
+suffix:semicolon
+DECL|member|ifru_broadaddr
+r_struct
+id|sockaddr
+id|ifru_broadaddr
+suffix:semicolon
+DECL|member|ifru_netmask
+r_struct
+id|sockaddr
+id|ifru_netmask
+suffix:semicolon
+DECL|member|ifru_hwaddr
+r_struct
+id|sockaddr
+id|ifru_hwaddr
+suffix:semicolon
+DECL|member|ifru_flags
+r_int
+id|ifru_flags
+suffix:semicolon
+DECL|member|ifru_ivalue
+r_int
+id|ifru_ivalue
+suffix:semicolon
+DECL|member|ifru_mtu
+r_int
+id|ifru_mtu
+suffix:semicolon
+DECL|member|ifru_map
+r_struct
+id|ifmap32
+id|ifru_map
+suffix:semicolon
+DECL|member|ifru_slave
+r_char
+id|ifru_slave
+(braket
+id|IFNAMSIZ
+)braket
+suffix:semicolon
+multiline_comment|/* Just fits the size */
+DECL|member|ifru_newname
+r_char
+id|ifru_newname
+(braket
+id|IFNAMSIZ
+)braket
+suffix:semicolon
+DECL|member|ifru_data
+id|compat_caddr_t
+id|ifru_data
+suffix:semicolon
+DECL|member|ifr_ifru
+)brace
+id|ifr_ifru
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|function|siocdevprivate_ioctl
+r_int
+id|siocdevprivate_ioctl
+c_func
+(paren
+r_int
+r_int
+id|fd
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+(brace
+r_struct
+id|ifreq
+op_star
+id|u_ifreq64
+suffix:semicolon
+r_struct
+id|ifreq32
+op_star
+id|u_ifreq32
+op_assign
+(paren
+r_struct
+id|ifreq32
+op_star
+)paren
+id|arg
+suffix:semicolon
+r_char
+id|tmp_buf
+(braket
+id|IFNAMSIZ
+)braket
+suffix:semicolon
+r_void
+op_star
+id|data64
+suffix:semicolon
+id|u32
+id|data32
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|tmp_buf
+(braket
+l_int|0
+)braket
+comma
+op_amp
+(paren
+id|u_ifreq32-&gt;ifr_ifrn.ifrn_name
+(braket
+l_int|0
+)braket
+)paren
+comma
+id|IFNAMSIZ
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|__get_user
+c_func
+(paren
+id|data32
+comma
+op_amp
+id|u_ifreq32-&gt;ifr_ifru.ifru_data
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+id|data64
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|P
+c_func
+(paren
+id|data32
+)paren
+suffix:semicolon
+id|u_ifreq64
+op_assign
+id|alloc_user_space
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+id|u_ifreq64
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Don&squot;t check these user accesses, just let that get trapped&n;&t; * in the ioctl handler instead.&n;&t; */
+id|copy_to_user
+c_func
+(paren
+op_amp
+id|u_ifreq64-&gt;ifr_ifrn.ifrn_name
+(braket
+l_int|0
+)braket
+comma
+op_amp
+id|tmp_buf
+(braket
+l_int|0
+)braket
+comma
+id|IFNAMSIZ
+)paren
+suffix:semicolon
+id|__put_user
+c_func
+(paren
+id|data64
+comma
+op_amp
+id|u_ifreq64-&gt;ifr_ifru.ifru_data
+)paren
+suffix:semicolon
+r_return
+id|sys_ioctl
+c_func
+(paren
+id|fd
+comma
+id|cmd
+comma
+(paren
+r_int
+r_int
+)paren
+id|u_ifreq64
+)paren
+suffix:semicolon
+)brace
+DECL|typedef|ioctl32_handler_t
+r_typedef
+r_int
+(paren
+op_star
+id|ioctl32_handler_t
+)paren
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_struct
+id|file
+op_star
+)paren
+suffix:semicolon
+DECL|macro|COMPATIBLE_IOCTL
+mdefine_line|#define COMPATIBLE_IOCTL(cmd)&t;&t;HANDLE_IOCTL((cmd),sys_ioctl)
+DECL|macro|HANDLE_IOCTL
+mdefine_line|#define HANDLE_IOCTL(cmd,handler)&t;{ (cmd), (ioctl32_handler_t)(handler), NULL },
+DECL|macro|IOCTL_TABLE_START
+mdefine_line|#define IOCTL_TABLE_START &bslash;&n;&t;struct ioctl_trans ioctl_start[] = {
+DECL|macro|IOCTL_TABLE_END
+mdefine_line|#define IOCTL_TABLE_END &bslash;&n;&t;}; struct ioctl_trans ioctl_end[0];
+id|IOCTL_TABLE_START
+macro_line|#include &lt;linux/compat_ioctl.h&gt;
+id|HANDLE_IOCTL
+c_func
+(paren
+id|VFAT_IOCTL_READDIR_BOTH32
+comma
+id|vfat_ioctl32
+)paren
+id|HANDLE_IOCTL
+c_func
+(paren
+id|VFAT_IOCTL_READDIR_SHORT32
+comma
+id|vfat_ioctl32
+)paren
+id|HANDLE_IOCTL
+c_func
+(paren
+id|SG_IO
+comma
+id|sg_ioctl_trans
+)paren
+id|IOCTL_TABLE_END
 eof
