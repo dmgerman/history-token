@@ -394,9 +394,12 @@ op_amp
 l_int|0x02
 )paren
 (brace
-id|printk
+id|dev_info
 c_func
 (paren
+op_amp
+id|PIIX4_dev-&gt;dev
+comma
 l_string|&quot;Fixed I2C problem on Force CPCI735&bslash;n&quot;
 )paren
 suffix:semicolon
