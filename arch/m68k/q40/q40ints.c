@@ -428,8 +428,7 @@ l_int|10
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -690,8 +689,7 @@ l_int|10
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -1156,8 +1154,7 @@ id|irq
 comma
 id|i
 suffix:semicolon
-id|repeat
-suffix:colon
+singleline_comment|//repeat:
 id|mir
 op_assign
 id|master_inb

@@ -340,7 +340,7 @@ l_string|&quot;end of hole listing...&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif DVMA_DEBUG
+macro_line|#endif /* DVMA_DEBUG */
 DECL|function|refill
 r_static
 r_inline

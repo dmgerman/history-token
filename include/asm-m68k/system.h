@@ -166,6 +166,10 @@ id|ptr
 op_assign
 id|x
 suffix:semicolon
+id|x
+op_assign
+id|tmp
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -188,6 +192,10 @@ op_star
 id|ptr
 op_assign
 id|x
+suffix:semicolon
+id|x
+op_assign
+id|tmp
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -212,6 +220,10 @@ id|ptr
 op_assign
 id|x
 suffix:semicolon
+id|x
+op_assign
+id|tmp
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -229,7 +241,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|tmp
+id|x
 suffix:semicolon
 )brace
 macro_line|#else
