@@ -156,7 +156,6 @@ r_return
 id|p-&gt;sibling
 suffix:semicolon
 )brace
-DECL|function|r_start
 r_static
 r_void
 op_star
@@ -171,6 +170,12 @@ comma
 id|loff_t
 op_star
 id|pos
+)paren
+DECL|function|__acquires
+id|__acquires
+c_func
+(paren
+id|resource_lock
 )paren
 (brace
 r_struct
@@ -226,7 +231,6 @@ r_return
 id|p
 suffix:semicolon
 )brace
-DECL|function|r_stop
 r_static
 r_void
 id|r_stop
@@ -240,6 +244,12 @@ comma
 r_void
 op_star
 id|v
+)paren
+DECL|function|__releases
+id|__releases
+c_func
+(paren
+id|resource_lock
 )paren
 (brace
 id|read_unlock
