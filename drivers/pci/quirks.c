@@ -3468,10 +3468,10 @@ DECL|macro|EHCI_USBLEGCTLSTS
 mdefine_line|#define EHCI_USBLEGCTLSTS&t;4&t;&t;/* legacy control/status */
 DECL|macro|EHCI_USBLEGCTLSTS_SOOE
 mdefine_line|#define EHCI_USBLEGCTLSTS_SOOE&t;(1 &lt;&lt; 13)&t;/* SMI on ownership change */
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_int
 id|usb_early_handoff
-id|__initdata
+id|__devinitdata
 op_assign
 l_int|0
 suffix:semicolon

@@ -141,6 +141,7 @@ id|m
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 op_assign
@@ -229,6 +230,7 @@ id|c
 comma
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 op_star
 id|msg
@@ -915,6 +917,7 @@ id|c
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -1079,6 +1082,7 @@ id|c
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -1322,6 +1326,7 @@ id|c
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -1470,6 +1475,7 @@ id|c-&gt;status.virt
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -1937,6 +1943,7 @@ id|m
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -2252,6 +2259,7 @@ id|c
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -2612,6 +2620,7 @@ id|c
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -3671,6 +3680,7 @@ id|c
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -4005,6 +4015,7 @@ op_increment
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -4586,6 +4597,7 @@ id|dev-&gt;iop
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon

@@ -75,6 +75,7 @@ multiline_comment|/* message id */
 DECL|member|msg
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -241,6 +242,7 @@ l_int|0x80000000
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 op_assign
@@ -459,6 +461,7 @@ id|m
 comma
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 )paren
@@ -796,6 +799,7 @@ id|MSG_FAIL
 singleline_comment|// Fail bit is set
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|pmsg
 suffix:semicolon
@@ -1025,6 +1029,7 @@ id|c
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -1238,6 +1243,7 @@ id|dev
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon

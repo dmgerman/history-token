@@ -4858,6 +4858,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|data
 comma
@@ -5229,7 +5230,8 @@ id|fh-&gt;vidq.read_buf
 id|buffer_release
 c_func
 (paren
-id|file-&gt;private_data
+op_amp
+id|fh-&gt;vidq
 comma
 id|fh-&gt;vidq.read_buf
 )paren

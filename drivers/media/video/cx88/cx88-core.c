@@ -6257,6 +6257,7 @@ id|core-&gt;bmmio
 op_assign
 (paren
 id|u8
+id|__iomem
 op_star
 )paren
 id|core-&gt;lmmio

@@ -973,6 +973,7 @@ id|buffer
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -1461,6 +1462,7 @@ id|buffer
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -1943,6 +1945,7 @@ id|arg
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -2206,6 +2209,7 @@ id|arg
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -2375,6 +2379,7 @@ id|fp
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -3940,6 +3945,7 @@ id|sb
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon

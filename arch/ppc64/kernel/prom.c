@@ -2146,7 +2146,7 @@ op_sub_assign
 r_sizeof
 (paren
 r_struct
-id|reg_property
+id|isa_reg_property
 )paren
 )paren
 op_ge
@@ -4319,8 +4319,20 @@ c_cond
 id|l
 op_eq
 l_int|0
+op_logical_or
+(paren
+id|l
+op_eq
+l_int|1
+op_logical_and
+(paren
+op_star
+id|p
 )paren
-multiline_comment|/* dbl check */
+op_eq
+l_int|0
+)paren
+)paren
 id|strlcpy
 c_func
 (paren

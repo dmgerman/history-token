@@ -7304,6 +7304,7 @@ id|msp_command
 comma
 dot
 id|driver
+op_assign
 (brace
 dot
 id|suspend

@@ -1097,11 +1097,13 @@ id|pci_lat
 suffix:semicolon
 DECL|member|lmmio
 id|__u32
+id|__iomem
 op_star
 id|lmmio
 suffix:semicolon
 DECL|member|bmmio
 id|__u8
+id|__iomem
 op_star
 id|bmmio
 suffix:semicolon

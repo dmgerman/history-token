@@ -4065,7 +4065,7 @@ suffix:semicolon
 )brace
 DECL|function|pms_read
 r_static
-r_int
+id|ssize_t
 id|pms_read
 c_func
 (paren

@@ -199,6 +199,7 @@ suffix:semicolon
 DECL|member|saa7146_mem
 r_int
 r_char
+id|__iomem
 op_star
 id|saa7146_mem
 suffix:semicolon
@@ -363,12 +364,12 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef _ALPHA_SAA7146
 DECL|macro|saawrite
-mdefine_line|#define saawrite(dat,adr)    writel((dat),(char *) (saa-&gt;saa7146_adr+(adr)))
+mdefine_line|#define saawrite(dat,adr)    writel((dat), saa-&gt;saa7146_adr+(adr))
 DECL|macro|saaread
 mdefine_line|#define saaread(adr)         readl(saa-&gt;saa7146_adr+(adr))
 macro_line|#else
 DECL|macro|saawrite
-mdefine_line|#define saawrite(dat,adr)    writel((dat), (char *) (saa-&gt;saa7146_mem+(adr)))
+mdefine_line|#define saawrite(dat,adr)    writel((dat), saa-&gt;saa7146_mem+(adr))
 DECL|macro|saaread
 mdefine_line|#define saaread(adr)         readl(saa-&gt;saa7146_mem+(adr))
 macro_line|#endif

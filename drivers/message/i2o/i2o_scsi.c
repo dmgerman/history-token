@@ -940,6 +940,7 @@ l_int|13
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|pmsg
 suffix:semicolon
@@ -1959,6 +1960,7 @@ id|tid
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -1971,9 +1973,12 @@ comma
 id|sg_flags
 suffix:semicolon
 id|u32
+id|__iomem
 op_star
 id|mptr
-comma
+suffix:semicolon
+id|u32
+id|__iomem
 op_star
 id|lenptr
 suffix:semicolon
@@ -2547,6 +2552,7 @@ id|c
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon

@@ -1797,6 +1797,7 @@ suffix:semicolon
 )brace
 DECL|function|divasa_remap_pci_bar
 r_void
+id|__iomem
 op_star
 id|divasa_remap_pci_bar
 c_func
@@ -1818,15 +1819,10 @@ id|area_length
 )paren
 (brace
 r_void
+id|__iomem
 op_star
-id|ret
-suffix:semicolon
 id|ret
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -1839,7 +1835,7 @@ id|DBG_TRC
 c_func
 (paren
 (paren
-l_string|&quot;remap(%08x)-&gt;%08x&quot;
+l_string|&quot;remap(%08x)-&gt;%p&quot;
 comma
 id|bar
 comma
@@ -1859,6 +1855,7 @@ id|divasa_unmap_pci_bar
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|bar
 )paren
@@ -1885,6 +1882,7 @@ id|inpp
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -1910,6 +1908,7 @@ id|inppw
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -1935,6 +1934,7 @@ id|inppw_buffer
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 comma
@@ -1974,6 +1974,7 @@ id|outppw_buffer
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 comma
@@ -2013,6 +2014,7 @@ id|outppw
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 comma
@@ -2040,6 +2042,7 @@ id|outpp
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 comma
