@@ -13775,14 +13775,6 @@ id|ai-&gt;config.modulation
 op_assign
 id|MOD_CCK
 suffix:semicolon
-id|ai-&gt;config._reserved1a
-(braket
-l_int|0
-)braket
-op_assign
-l_int|2
-suffix:semicolon
-multiline_comment|/* ??? */
 macro_line|#ifdef MICSUPPORT
 r_if
 c_cond
