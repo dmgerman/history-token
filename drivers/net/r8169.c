@@ -170,6 +170,12 @@ DECL|enumerator|RTL_GIGA_MAC_VER_E
 id|RTL_GIGA_MAC_VER_E
 op_assign
 l_int|0x02
+comma
+DECL|enumerator|RTL_GIGA_MAC_VER_X
+id|RTL_GIGA_MAC_VER_X
+op_assign
+l_int|0x04
+multiline_comment|/* Greater than RTL_GIGA_MAC_VER_E */
 )brace
 suffix:semicolon
 DECL|enum|phy_version
@@ -3825,6 +3831,14 @@ id|mac_info
 )braket
 op_assign
 (brace
+(brace
+l_int|0x1
+op_lshift
+l_int|28
+comma
+id|RTL_GIGA_MAC_VER_X
+)brace
+comma
 (brace
 l_int|0x1
 op_lshift
