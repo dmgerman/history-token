@@ -260,8 +260,6 @@ c_func
 id|j
 )paren
 )paren
-id|p
-op_add_assign
 id|seq_printf
 c_func
 (paren
@@ -376,8 +374,6 @@ c_func
 id|j
 )paren
 )paren
-id|p
-op_add_assign
 id|seq_printf
 c_func
 (paren
@@ -504,8 +500,6 @@ c_func
 id|j
 )paren
 )paren
-id|p
-op_add_assign
 id|seq_printf
 c_func
 (paren
@@ -560,8 +554,6 @@ c_func
 id|j
 )paren
 )paren
-id|p
-op_add_assign
 id|seq_printf
 c_func
 (paren
