@@ -213,8 +213,9 @@ id|timer_list
 id|dn_rt_flush_timer
 op_assign
 (brace
+dot
 id|function
-suffix:colon
+op_assign
 id|dn_run_flush
 )brace
 suffix:semicolon
