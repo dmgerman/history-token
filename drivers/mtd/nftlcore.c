@@ -3373,12 +3373,11 @@ id|block
 op_plus
 id|nsect
 OG
-id|part_table
-(braket
-id|dev
-)braket
-dot
-id|nr_sects
+id|get_capacity
+c_func
+(paren
+id|nftl-&gt;disk
+)paren
 )paren
 (brace
 multiline_comment|/* access past the end of device */
@@ -3387,15 +3386,7 @@ c_func
 (paren
 l_string|&quot;nftl%c%d: bad access: block = %d, count = %d&bslash;n&quot;
 comma
-(paren
-id|minor
-c_func
-(paren
-id|req-&gt;rq_dev
-)paren
-op_rshift
-l_int|6
-)paren
+id|unit
 op_plus
 l_char|&squot;a&squot;
 comma

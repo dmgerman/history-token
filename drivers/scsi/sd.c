@@ -832,6 +832,14 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* No such device */
 )brace
+DECL|variable|sd_disks
+r_static
+r_struct
+id|gendisk
+op_star
+op_star
+id|sd_disks
+suffix:semicolon
 multiline_comment|/**&n; *&t;sd_init_command - build a scsi (read or write) command from&n; *&t;information in the request structure.&n; *&t;@SCpnt: pointer to mid-level&squot;s per scsi command structure that&n; *&t;contains request and into which the scsi command is written&n; *&n; *&t;Returns 1 if successful and 0 if error (or cannot be done now).&n; **/
 DECL|function|sd_init_command
 r_static
@@ -957,12 +965,14 @@ id|block
 op_plus
 id|SCpnt-&gt;request-&gt;nr_sectors
 OG
-id|sd
+id|get_capacity
+c_func
+(paren
+id|sd_disks
 (braket
-id|part_nr
+id|dsk_nr
 )braket
-dot
-id|nr_sects
+)paren
 )paren
 (brace
 id|SCSI_LOG_HLQUEUE
@@ -2050,14 +2060,6 @@ id|revalidate
 suffix:colon
 id|sd_revalidate
 )brace
-suffix:semicolon
-DECL|variable|sd_disks
-r_static
-r_struct
-id|gendisk
-op_star
-op_star
-id|sd_disks
 suffix:semicolon
 multiline_comment|/**&n; *&t;sd_rw_intr - bottom half handler: called when the lower level&n; *&t;driver has completed (successfully or otherwise) a scsi command.&n; *&t;@SCpnt: mid-level&squot;s per command structure.&n; *&n; *&t;Note: potentially run from within an ISR. Must not block.&n; **/
 DECL|function|sd_rw_intr
@@ -5224,19 +5226,16 @@ comma
 id|dsk_nr
 )paren
 suffix:semicolon
+id|set_capacity
+c_func
+(paren
 id|sd_disks
 (braket
 id|dsk_nr
 )braket
-op_member_access_from_pointer
-id|part
-(braket
-l_int|0
-)braket
-dot
-id|nr_sects
-op_assign
+comma
 id|sdkp-&gt;capacity
+)paren
 suffix:semicolon
 r_return
 l_int|0
