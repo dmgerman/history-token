@@ -812,9 +812,9 @@ id|ide_build_sglist
 c_func
 (paren
 r_struct
-id|ata_channel
+id|ata_device
 op_star
-id|ch
+id|drive
 comma
 r_struct
 id|request
@@ -822,6 +822,13 @@ op_star
 id|rq
 )paren
 (brace
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 r_struct
 id|scatterlist
 op_star
@@ -916,7 +923,8 @@ op_assign
 id|blk_rq_map_sg
 c_func
 (paren
-id|rq-&gt;q
+op_amp
+id|drive-&gt;queue
 comma
 id|rq
 comma
@@ -2008,7 +2016,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
@@ -2016,8 +2024,6 @@ comma
 l_int|NULL
 comma
 l_string|&quot;UDMA timeout&quot;
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 )brace

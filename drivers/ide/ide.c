@@ -1295,36 +1295,13 @@ c_func
 id|IDE_ERROR_REG
 )paren
 suffix:semicolon
-id|ar-&gt;taskfile.sector_count
-op_assign
-id|IN_BYTE
+id|ata_in_regfile
 c_func
 (paren
-id|IDE_NSECTOR_REG
-)paren
-suffix:semicolon
-id|ar-&gt;taskfile.sector_number
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_SECTOR_REG
-)paren
-suffix:semicolon
-id|ar-&gt;taskfile.low_cylinder
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_LCYL_REG
-)paren
-suffix:semicolon
-id|ar-&gt;taskfile.high_cylinder
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_HCYL_REG
+id|drive
+comma
+op_amp
+id|ar-&gt;taskfile
 )paren
 suffix:semicolon
 id|ar-&gt;taskfile.device_head
@@ -1377,36 +1354,13 @@ c_func
 id|IDE_FEATURE_REG
 )paren
 suffix:semicolon
-id|ar-&gt;hobfile.sector_count
-op_assign
-id|IN_BYTE
+id|ata_in_regfile
 c_func
 (paren
-id|IDE_NSECTOR_REG
-)paren
-suffix:semicolon
-id|ar-&gt;hobfile.sector_number
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_SECTOR_REG
-)paren
-suffix:semicolon
-id|ar-&gt;hobfile.low_cylinder
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_LCYL_REG
-)paren
-suffix:semicolon
-id|ar-&gt;hobfile.high_cylinder
-op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_HCYL_REG
+id|drive
+comma
+op_amp
+id|ar-&gt;hobfile
 )paren
 suffix:semicolon
 )brace
@@ -1464,7 +1418,7 @@ id|BUSY_STAT
 comma
 id|BUSY_STAT
 comma
-l_string|&quot;Busy&quot;
+l_string|&quot;busy&quot;
 )brace
 comma
 (brace
@@ -1472,7 +1426,7 @@ id|READY_STAT
 comma
 id|READY_STAT
 comma
-l_string|&quot;DriveReady&quot;
+l_string|&quot;drive ready&quot;
 )brace
 comma
 (brace
@@ -1480,7 +1434,7 @@ id|WRERR_STAT
 comma
 id|WRERR_STAT
 comma
-l_string|&quot;DeviceFault&quot;
+l_string|&quot;device fault&quot;
 )brace
 comma
 (brace
@@ -1488,7 +1442,7 @@ id|SEEK_STAT
 comma
 id|SEEK_STAT
 comma
-l_string|&quot;SeekComplete&quot;
+l_string|&quot;seek complete&quot;
 )brace
 comma
 (brace
@@ -1496,7 +1450,7 @@ id|DRQ_STAT
 comma
 id|DRQ_STAT
 comma
-l_string|&quot;DataRequest&quot;
+l_string|&quot;data request&quot;
 )brace
 comma
 (brace
@@ -1504,7 +1458,7 @@ id|ECC_STAT
 comma
 id|ECC_STAT
 comma
-l_string|&quot;CorrectedError&quot;
+l_string|&quot;corrected error&quot;
 )brace
 comma
 (brace
@@ -1512,7 +1466,7 @@ id|INDEX_STAT
 comma
 id|INDEX_STAT
 comma
-l_string|&quot;Index&quot;
+l_string|&quot;index&quot;
 )brace
 comma
 (brace
@@ -1520,7 +1474,7 @@ id|ERR_STAT
 comma
 id|ERR_STAT
 comma
-l_string|&quot;Error&quot;
+l_string|&quot;error&quot;
 )brace
 )brace
 suffix:semicolon
@@ -1540,7 +1494,7 @@ id|ABRT_ERR
 comma
 id|ABRT_ERR
 comma
-l_string|&quot;DriveStatusError&quot;
+l_string|&quot;drive status error&quot;
 )brace
 comma
 (brace
@@ -1550,7 +1504,7 @@ id|ABRT_ERR
 comma
 id|ICRC_ERR
 comma
-l_string|&quot;BadSector&quot;
+l_string|&quot;bad sectorr&quot;
 )brace
 comma
 (brace
@@ -1562,7 +1516,7 @@ id|ICRC_ERR
 op_or
 id|ABRT_ERR
 comma
-l_string|&quot;BadCRC&quot;
+l_string|&quot;invalid checksum&quot;
 )brace
 comma
 (brace
@@ -1570,7 +1524,7 @@ id|ECC_ERR
 comma
 id|ECC_ERR
 comma
-l_string|&quot;UncorrectableError&quot;
+l_string|&quot;uncorrectable error&quot;
 )brace
 comma
 (brace
@@ -1578,7 +1532,7 @@ id|ID_ERR
 comma
 id|ID_ERR
 comma
-l_string|&quot;SectorIdNotFound&quot;
+l_string|&quot;sector id not found&quot;
 )brace
 comma
 (brace
@@ -1586,7 +1540,7 @@ id|TRK0_ERR
 comma
 id|TRK0_ERR
 comma
-l_string|&quot;TrackZeroNotFound&quot;
+l_string|&quot;track zero not found&quot;
 )brace
 comma
 (brace
@@ -1594,14 +1548,14 @@ id|MARK_ERR
 comma
 id|MARK_ERR
 comma
-l_string|&quot;AddrMarkNotFound&quot;
+l_string|&quot;addr mark not found&quot;
 )brace
 )brace
 suffix:semicolon
-DECL|function|ata_dump_bits
+DECL|function|dump_bits
 r_static
 r_void
-id|ata_dump_bits
+id|dump_bits
 c_func
 (paren
 r_struct
@@ -1622,7 +1576,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; { &quot;
+l_string|&quot; [ &quot;
 )paren
 suffix:semicolon
 r_for
@@ -1664,18 +1618,18 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;} &quot;
+l_string|&quot;] &quot;
 )paren
 suffix:semicolon
 )brace
 macro_line|#else
-DECL|macro|ata_dump_bits
-macro_line|# define ata_dump_bits(msgs,nr,bits) do { } while (0)
+DECL|macro|dump_bits
+macro_line|# define dump_bits(msgs,nr,bits) do { } while (0)
 macro_line|#endif
 multiline_comment|/*&n; * Error reporting, in human readable form (luxurious, but a memory hog).&n; */
-DECL|function|ide_dump_status
+DECL|function|ata_dump
 id|u8
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 r_struct
@@ -1692,9 +1646,6 @@ r_const
 r_char
 op_star
 id|msg
-comma
-id|u8
-id|stat
 )paren
 (brace
 r_int
@@ -1727,10 +1678,10 @@ id|drive-&gt;name
 comma
 id|msg
 comma
-id|stat
+id|drive-&gt;status
 )paren
 suffix:semicolon
-id|ata_dump_bits
+id|dump_bits
 c_func
 (paren
 id|ata_status_msgs
@@ -1741,7 +1692,7 @@ c_func
 id|ata_status_msgs
 )paren
 comma
-id|stat
+id|drive-&gt;status
 )paren
 suffix:semicolon
 id|printk
@@ -1754,7 +1705,7 @@ r_if
 c_cond
 (paren
 (paren
-id|stat
+id|drive-&gt;status
 op_amp
 (paren
 id|BUSY_STAT
@@ -1794,7 +1745,7 @@ op_eq
 id|ATA_DISK
 )paren
 (brace
-id|ata_dump_bits
+id|dump_bits
 c_func
 (paren
 id|ata_error_msgs
@@ -2259,7 +2210,7 @@ id|drive-&gt;status
 suffix:semicolon
 id|err
 op_assign
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
@@ -2267,8 +2218,6 @@ comma
 id|rq
 comma
 id|msg
-comma
-id|stat
 )paren
 suffix:semicolon
 r_if
@@ -5419,11 +5368,11 @@ c_func
 id|ide_set_handler
 )paren
 suffix:semicolon
-DECL|variable|ide_dump_status
+DECL|variable|ata_dump
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|ide_dump_status
+id|ata_dump
 )paren
 suffix:semicolon
 DECL|variable|ata_error

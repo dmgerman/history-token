@@ -1806,16 +1806,14 @@ c_cond
 id|error
 )paren
 (brace
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
 comma
 l_int|NULL
 comma
-l_string|&quot;set_drive_speed_status&quot;
-comma
-id|drive-&gt;status
+l_string|&quot;set drive speed&quot;
 )paren
 suffix:semicolon
 r_return

@@ -360,7 +360,7 @@ op_assign
 id|udma_new_table
 c_func
 (paren
-id|ch
+id|drive
 comma
 id|rq
 )paren

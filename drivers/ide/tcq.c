@@ -786,25 +786,14 @@ id|BUSY_STAT
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: BUSY clear took too long&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
 comma
 id|rq
 comma
-id|__FUNCTION__
-comma
-id|stat
+l_string|&quot;BUSY clear took too long&quot;
 )paren
 suffix:semicolon
 id|tcq_invalidate_queue
@@ -836,16 +825,14 @@ op_amp
 id|ERR_STAT
 )paren
 (brace
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
 comma
 id|rq
 comma
-id|__FUNCTION__
-comma
-id|stat
+l_string|&quot;ERR condition&quot;
 )paren
 suffix:semicolon
 id|tcq_invalidate_queue
@@ -1089,20 +1076,7 @@ id|DRQ_STAT
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: %s: error status %x&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|drive-&gt;name
-comma
-id|drive-&gt;status
-)paren
-suffix:semicolon
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
@@ -1110,8 +1084,6 @@ comma
 id|rq
 comma
 id|__FUNCTION__
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 id|tcq_invalidate_queue
@@ -1927,7 +1899,7 @@ id|BUSY_STAT
 )paren
 )paren
 (brace
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
@@ -1935,8 +1907,6 @@ comma
 id|rq
 comma
 l_string|&quot;queued start&quot;
-comma
-id|stat
 )paren
 suffix:semicolon
 id|tcq_invalidate_queue
@@ -1967,7 +1937,7 @@ op_amp
 id|ERR_STAT
 )paren
 (brace
-id|ide_dump_status
+id|ata_dump
 c_func
 (paren
 id|drive
@@ -1975,8 +1945,6 @@ comma
 id|rq
 comma
 l_string|&quot;tcq_start&quot;
-comma
-id|stat
 )paren
 suffix:semicolon
 r_return
