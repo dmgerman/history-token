@@ -6156,45 +6156,6 @@ DECL|macro|SCHIZO_PCI_B_IO_MATCH
 mdefine_line|#define SCHIZO_PCI_B_IO_MATCH&t;&t;0x00070UL
 DECL|macro|SCHIZO_PCI_B_IO_MASK
 mdefine_line|#define SCHIZO_PCI_B_IO_MASK&t;&t;0x00078UL
-multiline_comment|/* VAL must be non-zero. */
-DECL|function|strip_to_lowest_bit_set
-r_static
-r_int
-r_int
-id|strip_to_lowest_bit_set
-c_func
-(paren
-r_int
-r_int
-id|val
-)paren
-(brace
-r_int
-r_int
-id|tmp
-suffix:semicolon
-id|tmp
-op_assign
-l_int|1UL
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|tmp
-op_amp
-id|val
-)paren
-)paren
-id|tmp
-op_lshift_assign
-l_int|1UL
-suffix:semicolon
-r_return
-id|tmp
-suffix:semicolon
-)brace
 DECL|function|schizo_determine_mem_io_space
 r_static
 r_void
@@ -6223,10 +6184,7 @@ id|u64
 id|io_match
 suffix:semicolon
 id|u64
-r_int
 id|a
-comma
-id|b
 suffix:semicolon
 r_if
 c_cond
@@ -6279,19 +6237,7 @@ op_amp
 op_complement
 l_int|0x8000000000000000UL
 suffix:semicolon
-id|b
-op_assign
-id|strip_to_lowest_bit_set
-c_func
-(paren
-id|schizo_read
-c_func
-(paren
-id|mem_mask
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* It should be 2GB in size. */
+multiline_comment|/* It should be 2GB in size but the decode is set for the full&n;&t; * 4GB so we have to add the 2G by hand.&n;&t; */
 id|pbm-&gt;mem_space.start
 op_assign
 id|a
@@ -6300,11 +6246,7 @@ id|pbm-&gt;mem_space.end
 op_assign
 id|a
 op_plus
-(paren
-id|b
-op_minus
-l_int|1UL
-)paren
+l_int|0x80000000
 suffix:semicolon
 id|pbm-&gt;mem_space.flags
 op_assign
