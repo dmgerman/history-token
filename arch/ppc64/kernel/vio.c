@@ -1984,17 +1984,13 @@ id|IOMAP_MAX_ORDER
 id|printk
 c_func
 (paren
-l_string|&quot;VIO_DMA: vio_alloc_consistent size to large: 0x%lx &bslash;n&quot;
+l_string|&quot;VIO_DMA: vio_alloc_consistent size too large: 0x%lx &bslash;n&quot;
 comma
 id|size
 )paren
 suffix:semicolon
 r_return
-(paren
-r_void
-op_star
-)paren
-id|DMA_ERROR_CODE
+l_int|NULL
 suffix:semicolon
 )brace
 id|tbl
