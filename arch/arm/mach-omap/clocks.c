@@ -8,6 +8,16 @@ macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/arch/clocks.h&gt;
 macro_line|#include &lt;asm/arch/board.h&gt;
+r_extern
+r_void
+id|start_mputimer1
+c_func
+(paren
+r_int
+r_int
+id|load_val
+)paren
+suffix:semicolon
 multiline_comment|/* Input clock in MHz */
 DECL|variable|source_clock
 r_static
@@ -914,12 +924,12 @@ DECL|macro|CK_MAX_PLL_FREQ
 mdefine_line|#define CK_MAX_PLL_FREQ&t;&t;OMAP_CK_MAX_RATE
 DECL|variable|ck_valid_table
 r_static
-id|__u8
+id|__u32
 id|ck_valid_table
 (braket
 id|CK_MAX_PLL_FREQ
 op_div
-l_int|8
+l_int|32
 op_plus
 l_int|1
 )braket
@@ -2515,7 +2525,7 @@ r_void
 (brace
 r_const
 r_struct
-id|omap_clock_info
+id|omap_clock_config
 op_star
 id|info
 suffix:semicolon
@@ -2532,13 +2542,13 @@ c_func
 suffix:semicolon
 id|info
 op_assign
-id|omap_get_per_info
+id|omap_get_config
 c_func
 (paren
 id|OMAP_TAG_CLOCK
 comma
 r_struct
-id|omap_clock_info
+id|omap_clock_config
 )paren
 suffix:semicolon
 r_if
@@ -2674,7 +2684,7 @@ comma
 id|DPLL_CTL
 )paren
 suffix:semicolon
-macro_line|#elif defined(CONFIG_OMAP_ARM_192MHZ) &amp;&amp; (defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912))
+macro_line|#elif defined(CONFIG_OMAP_ARM_192MHZ) &amp;&amp; (defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912) &bslash;&n;&t;&t;&t;&t;&t;  || defined(CONFIG_ARCH_OMAP1710))
 id|omap_writew
 c_func
 (paren

@@ -9,7 +9,18 @@ macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/arch/clocks.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/arch/mux.h&gt;
+macro_line|#include &lt;asm/arch/usb.h&gt;
+macro_line|#include &lt;asm/arch/board.h&gt;
 macro_line|#include &quot;common.h&quot;
+r_extern
+r_void
+id|__init
+id|omap_init_time
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|omap_generic_init_irq
 r_static
 r_void
@@ -27,6 +38,7 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Muxes the serial ports on&n; */
+macro_line|#ifdef CONFIG_ARCH_OMAP1510
 DECL|function|omap_early_serial_init
 r_static
 r_void
@@ -37,6 +49,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_OMAP_LL_DEBUG_UART1
 id|omap_cfg_reg
 c_func
 (paren
@@ -49,6 +62,8 @@ c_func
 id|UART1_RTS
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_OMAP_LL_DEBUG_UART2
 id|omap_cfg_reg
 c_func
 (paren
@@ -61,6 +76,8 @@ c_func
 id|UART2_RTS
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_OMAP_LL_DEBUG_UART1
 id|omap_cfg_reg
 c_func
 (paren
@@ -73,7 +90,97 @@ c_func
 id|UART3_RX
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
+macro_line|#endif
+multiline_comment|/* assume no Mini-AB port */
+macro_line|#ifdef CONFIG_ARCH_OMAP1510
+DECL|variable|__initdata
+r_static
+r_struct
+id|omap_usb_config
+id|generic1510_usb_config
+id|__initdata
+op_assign
+(brace
+dot
+id|register_host
+op_assign
+l_int|1
+comma
+dot
+id|register_dev
+op_assign
+l_int|1
+comma
+dot
+id|hmc_mode
+op_assign
+l_int|16
+comma
+dot
+id|pins
+(braket
+l_int|0
+)braket
+op_assign
+l_int|3
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_OMAP1610
+DECL|variable|__initdata
+r_static
+r_struct
+id|omap_usb_config
+id|generic1610_usb_config
+id|__initdata
+op_assign
+(brace
+dot
+id|register_host
+op_assign
+l_int|1
+comma
+dot
+id|register_dev
+op_assign
+l_int|1
+comma
+dot
+id|hmc_mode
+op_assign
+l_int|16
+comma
+dot
+id|pins
+(braket
+l_int|0
+)braket
+op_assign
+l_int|6
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
+DECL|variable|generic_config
+r_static
+r_struct
+id|omap_board_config_kernel
+id|generic_config
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|OMAP_TAG_USB
+comma
+l_int|NULL
+)brace
+comma
+)brace
+suffix:semicolon
 DECL|function|omap_generic_init
 r_static
 r_void
@@ -85,6 +192,7 @@ r_void
 )paren
 (brace
 multiline_comment|/*&n;&t; * Make sure the serial ports are muxed on at this point.&n;&t; * You have to mux them off in device drivers later on&n;&t; * if not needed.&n;&t; */
+macro_line|#ifdef CONFIG_ARCH_OMAP1510
 r_if
 c_cond
 (paren
@@ -99,7 +207,53 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|generic_config
+(braket
+l_int|0
+)braket
+dot
+id|data
+op_assign
+op_amp
+id|generic1510_usb_config
+suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_OMAP1610
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_is_omap1510
+c_func
+(paren
+)paren
+)paren
+(brace
+id|generic_config
+(braket
+l_int|0
+)braket
+dot
+id|data
+op_assign
+op_amp
+id|generic1610_usb_config
+suffix:semicolon
+)brace
+macro_line|#endif
+id|omap_board_config
+op_assign
+id|generic_config
+suffix:semicolon
+id|omap_board_config_size
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|generic_config
+)paren
+suffix:semicolon
 )brace
 DECL|function|omap_generic_map_io
 r_static
@@ -117,28 +271,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|omap_generic_init_time
-r_static
-r_void
-id|__init
-id|omap_generic_init_time
-c_func
-(paren
-r_void
-)paren
-(brace
-id|omap_init_time
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 id|MACHINE_START
 c_func
 (paren
 id|OMAP_GENERIC
 comma
-l_string|&quot;Generic OMAP-1510/1610/1710&quot;
+l_string|&quot;Generic OMAP1510/1610/1710&quot;
 )paren
 id|MAINTAINER
 c_func
@@ -177,7 +315,7 @@ id|omap_generic_init
 id|INITTIME
 c_func
 (paren
-id|omap_generic_init_time
+id|omap_init_time
 )paren
 id|MACHINE_END
 eof

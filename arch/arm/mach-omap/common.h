@@ -10,13 +10,5 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|omap_init_time
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif /* __ARCH_ARM_MACH_OMAP_COMMON_H */
 eof

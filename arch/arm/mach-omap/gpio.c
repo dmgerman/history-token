@@ -132,7 +132,7 @@ DECL|macro|METHOD_GPIO_1610
 mdefine_line|#define METHOD_GPIO_1610&t;2
 DECL|macro|METHOD_GPIO_730
 mdefine_line|#define METHOD_GPIO_730&t;&t;3
-macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912)
+macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP1710) || defined(CONFIG_ARCH_OMAP5912)
 DECL|variable|gpio_bank_1610
 r_static
 r_struct
@@ -249,7 +249,7 @@ op_assign
 (brace
 id|OMAP_MPUIO_BASE
 comma
-id|INT_MPUIO
+id|INT_730_MPUIO
 comma
 id|IH_MPUIO_BASE
 comma
@@ -389,11 +389,16 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912)
+macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP1710) || defined(CONFIG_ARCH_OMAP5912)
 r_if
 c_cond
 (paren
 id|cpu_is_omap1610
+c_func
+(paren
+)paren
+op_logical_or
+id|cpu_is_omap1710
 c_func
 (paren
 )paren
@@ -576,12 +581,17 @@ r_return
 l_int|0
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912)
+macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP1710) || defined(CONFIG_ARCH_OMAP5912)
 r_if
 c_cond
 (paren
 (paren
 id|cpu_is_omap1610
+c_func
+(paren
+)paren
+op_logical_or
+id|cpu_is_omap1710
 c_func
 (paren
 )paren
@@ -2367,7 +2377,7 @@ op_plus
 id|OMAP1510_GPIO_INT_STATUS
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912)
+macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP1710) || defined(CONFIG_ARCH_OMAP5912)
 r_if
 c_cond
 (paren
@@ -2533,7 +2543,7 @@ id|OMAP1510_GPIO_INT_STATUS
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912)
+macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP1710) || defined(CONFIG_ARCH_OMAP5912)
 r_if
 c_cond
 (paren
@@ -2768,7 +2778,11 @@ c_func
 (paren
 id|bank
 comma
+id|get_gpio_index
+c_func
+(paren
 id|gpio
+)paren
 comma
 l_int|0
 )paren
@@ -2813,7 +2827,11 @@ c_func
 (paren
 id|bank
 comma
+id|get_gpio_index
+c_func
+(paren
 id|gpio
+)paren
 comma
 l_int|1
 )paren
@@ -2922,11 +2940,16 @@ id|gpio_bank_1510
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912)
+macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP1710) || defined(CONFIG_ARCH_OMAP5912)
 r_if
 c_cond
 (paren
 id|cpu_is_omap1610
+c_func
+(paren
+)paren
+op_logical_or
+id|cpu_is_omap1710
 c_func
 (paren
 )paren
@@ -3110,7 +3133,7 @@ id|OMAP1510_GPIO_INT_STATUS
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912)
+macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP1710) || defined(CONFIG_ARCH_OMAP5912)
 r_if
 c_cond
 (paren
@@ -3259,6 +3282,11 @@ r_if
 c_cond
 (paren
 id|cpu_is_omap1610
+c_func
+(paren
+)paren
+op_logical_or
+id|cpu_is_omap1710
 c_func
 (paren
 )paren

@@ -490,7 +490,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912)
+macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912) &bslash;&n;&t;&t;&t;&t;  || defined(CONFIG_ARCH_OMAP1710)
 DECL|variable|omap1610_irq_banks
 r_static
 r_struct
@@ -641,7 +641,7 @@ id|omap1510_irq_banks
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912)
+macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912) &bslash;&n;&t;&t;&t;&t;  || defined(CONFIG_ARCH_OMAP1710)
 r_if
 c_cond
 (paren
@@ -651,6 +651,11 @@ c_func
 )paren
 op_logical_or
 id|cpu_is_omap5912
+c_func
+(paren
+)paren
+op_logical_or
+id|cpu_is_omap1710
 c_func
 (paren
 )paren
@@ -741,6 +746,27 @@ comma
 id|IRQ_CONTROL_REG_OFFSET
 )paren
 suffix:semicolon
+multiline_comment|/* Enable interrupts in global mask */
+r_if
+c_cond
+(paren
+id|cpu_is_omap730
+c_func
+(paren
+)paren
+)paren
+(brace
+id|irq_bank_writel
+c_func
+(paren
+l_int|0x0
+comma
+l_int|0
+comma
+id|IRQ_GMR_REG_OFFSET
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Install the interrupt handlers for each bank */
 r_for
 c_loop
@@ -838,11 +864,30 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Unmask level 2 handler */
+r_if
+c_cond
+(paren
+id|cpu_is_omap730
+c_func
+(paren
+)paren
+)paren
+(brace
+id|omap_unmask_irq
+c_func
+(paren
+id|INT_730_IH2_IRQ
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|omap_unmask_irq
 c_func
 (paren
 id|INT_IH2_IRQ
 )paren
 suffix:semicolon
+)brace
 )brace
 eof
