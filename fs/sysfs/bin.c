@@ -261,7 +261,7 @@ op_assign
 id|to_bin_attr
 c_func
 (paren
-id|dentry-&gt;d_parent
+id|dentry
 )paren
 suffix:semicolon
 r_struct
@@ -272,7 +272,7 @@ op_assign
 id|to_kobj
 c_func
 (paren
-id|dentry
+id|dentry-&gt;d_parent
 )paren
 suffix:semicolon
 r_return
