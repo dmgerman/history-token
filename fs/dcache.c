@@ -1862,7 +1862,7 @@ id|found
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * shrink_dcache_anon - further prune the cache&n; * @head: head of d_hash list of dentries to prune&n; *&n; * Prune the dentries that are anonymous&n; *&n; * parsing d_hash list does not read_barrier_depends() as it&n; * done under dcache_lock.&n; *&n; */
+multiline_comment|/**&n; * shrink_dcache_anon - further prune the cache&n; * @head: head of d_hash list of dentries to prune&n; *&n; * Prune the dentries that are anonymous&n; *&n; * parsing d_hash list does not hlist_for_each_rcu() as it&n; * done under dcache_lock.&n; *&n; */
 DECL|function|shrink_dcache_anon
 r_void
 id|shrink_dcache_anon
@@ -3090,7 +3090,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|hlist_for_each
+id|hlist_for_each_rcu
+c_func
 (paren
 id|node
 comma
@@ -3106,11 +3107,6 @@ r_struct
 id|qstr
 op_star
 id|qstr
-suffix:semicolon
-id|smp_read_barrier_depends
-c_func
-(paren
-)paren
 suffix:semicolon
 id|dentry
 op_assign
@@ -3183,12 +3179,11 @@ id|next
 suffix:semicolon
 id|qstr
 op_assign
-op_amp
-id|dentry-&gt;d_name
-suffix:semicolon
-id|smp_read_barrier_depends
+id|rcu_dereference
 c_func
 (paren
+op_amp
+id|dentry-&gt;d_name
 )paren
 suffix:semicolon
 r_if
@@ -3378,7 +3373,7 @@ comma
 id|base
 )paren
 (brace
-multiline_comment|/* read_barrier_depends() not required for d_hash list&n;&t;&t; * as it is parsed under dcache_lock&n;&t;&t; */
+multiline_comment|/* hlist_for_each_rcu() not required for d_hash list&n;&t;&t; * as it is parsed under dcache_lock&n;&t;&t; */
 r_if
 c_cond
 (paren

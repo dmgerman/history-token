@@ -418,6 +418,9 @@ mdefine_line|#define rcu_read_lock_bh()&t;local_bh_disable()
 multiline_comment|/*&n; * rcu_read_unlock_bh - marks the end of a softirq-only RCU critical section&n; *&n; * See rcu_read_lock_bh() for more information.&n; */
 DECL|macro|rcu_read_unlock_bh
 mdefine_line|#define rcu_read_unlock_bh()&t;local_bh_enable()
+multiline_comment|/**&n; * rcu_dereference - fetch an RCU-protected pointer in an&n; * RCU read-side critical section.  This pointer may later&n; * be safely dereferenced.&n; *&n; * Inserts memory barriers on architectures that require them&n; * (currently only the Alpha), and, more importantly, documents&n; * exactly which pointers are protected by RCU.&n; */
+DECL|macro|rcu_dereference
+mdefine_line|#define rcu_dereference(p)     ({ &bslash;&n;&t;&t;&t;&t;typeof(p) _________p1 = p; &bslash;&n;&t;&t;&t;&t;smp_read_barrier_depends(); &bslash;&n;&t;&t;&t;&t;(_________p1); &bslash;&n;&t;&t;&t;&t;})
 r_extern
 r_void
 id|rcu_init

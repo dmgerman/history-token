@@ -154,11 +154,10 @@ c_func
 suffix:semicolon
 id|p
 op_assign
-id|skb-&gt;dev-&gt;br_port
-suffix:semicolon
-id|smp_read_barrier_depends
+id|rcu_dereference
 c_func
 (paren
+id|skb-&gt;dev-&gt;br_port
 )paren
 suffix:semicolon
 r_if

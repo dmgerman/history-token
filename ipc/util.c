@@ -223,7 +223,7 @@ id|max_id
 op_assign
 id|ids-&gt;max_id
 suffix:semicolon
-multiline_comment|/*&n;&t; * read_barrier_depends is not needed here&n;&t; * since ipc_ids.sem is held&n;&t; */
+multiline_comment|/*&n;&t; * rcu_dereference() is not needed here&n;&t; * since ipc_ids.sem is held&n;&t; */
 r_for
 c_loop
 (paren
@@ -464,7 +464,7 @@ comma
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * read_barrier_depends() is not needed here since&n;&t; * ipc_ids.sem is held&n;&t; */
+multiline_comment|/*&n;&t; * rcu_dereference()() is not needed here since&n;&t; * ipc_ids.sem is held&n;&t; */
 r_for
 c_loop
 (paren
@@ -640,7 +640,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * do not need a read_barrier_depends() here to force ordering&n;&t; * on Alpha, since the ipc_ids.sem is held.&n;&t; */
+multiline_comment|/* &n;&t; * do not need a rcu_dereference()() here to force ordering&n;&t; * on Alpha, since the ipc_ids.sem is held.&n;&t; */
 id|p
 op_assign
 id|ids-&gt;entries
@@ -1597,7 +1597,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * Note: The following two read barriers are corresponding&n;&t; * to the two write barriers in grow_ary(). They guarantee &n;&t; * the writes are seen in the same order on the read side. &n;&t; * smp_rmb() has effect on all CPUs.  read_barrier_depends() &n;&t; * is used if there are data dependency between two reads, and &n;&t; * has effect only on Alpha.&n;&t; */
+multiline_comment|/* &n;&t; * Note: The following two read barriers are corresponding&n;&t; * to the two write barriers in grow_ary(). They guarantee &n;&t; * the writes are seen in the same order on the read side. &n;&t; * smp_rmb() has effect on all CPUs.  rcu_dereference()&n;&t; * is used if there are data dependency between two reads, and &n;&t; * has effect only on Alpha.&n;&t; */
 id|smp_rmb
 c_func
 (paren
@@ -1606,14 +1606,12 @@ suffix:semicolon
 multiline_comment|/* prevent indexing old array with new size */
 id|entries
 op_assign
-id|ids-&gt;entries
-suffix:semicolon
-id|read_barrier_depends
+id|rcu_dereference
 c_func
 (paren
+id|ids-&gt;entries
 )paren
 suffix:semicolon
-multiline_comment|/*prevent seeing new array unitialized */
 id|out
 op_assign
 id|entries

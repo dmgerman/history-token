@@ -3566,10 +3566,14 @@ c_func
 suffix:semicolon
 id|logfn
 op_assign
+id|rcu_dereference
+c_func
+(paren
 id|nf_logging
 (braket
 id|pf
 )braket
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3607,11 +3611,6 @@ id|args
 )paren
 suffix:semicolon
 multiline_comment|/* We must read logging before nf_logfn[pf] */
-id|smp_read_barrier_depends
-c_func
-(paren
-)paren
-suffix:semicolon
 id|logfn
 c_func
 (paren
