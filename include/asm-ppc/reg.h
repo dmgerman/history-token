@@ -300,6 +300,8 @@ DECL|macro|SPRN_HID1
 mdefine_line|#define SPRN_HID1&t;0x3F1&t;&t;/* Hardware Implementation Register 1 */
 DECL|macro|HID1_EMCP
 mdefine_line|#define HID1_EMCP&t;(1&lt;&lt;31)&t;&t;/* 7450 Machine Check Pin Enable */
+DECL|macro|HID1_DFS
+mdefine_line|#define HID1_DFS&t;(1&lt;&lt;22)&t;&t;/* 7447A Dynamic Frequency Scaling */
 DECL|macro|HID1_PC0
 mdefine_line|#define HID1_PC0&t;(1&lt;&lt;16)&t;&t;/* 7450 PLL_CFG[0] */
 DECL|macro|HID1_PC1

@@ -4222,6 +4222,10 @@ op_amp
 id|sk-&gt;sk_error_queue
 )paren
 suffix:semicolon
+id|sk-&gt;sk_send_head
+op_assign
+l_int|NULL
+suffix:semicolon
 id|init_timer
 c_func
 (paren
@@ -4319,6 +4323,10 @@ id|sk-&gt;sk_peercred.gid
 op_assign
 op_minus
 l_int|1
+suffix:semicolon
+id|sk-&gt;sk_write_pending
+op_assign
+l_int|0
 suffix:semicolon
 id|sk-&gt;sk_rcvlowat
 op_assign

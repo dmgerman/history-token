@@ -44,7 +44,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;dpm_runtime_resume - Power one device back on.&n; *&t;@dev:&t;Device.&n; *&n; *&t;Bring one device back to the on state by first powering it &n; *&t;on, then restoring state. We only operate on devices that aren&squot;t&n; *&t;already on. &n; *&t;FIXME: We need to handle devices that are in an unknown state.&n; */
+multiline_comment|/**&n; *&t;dpm_runtime_resume - Power one device back on.&n; *&t;@dev:&t;Device.&n; *&n; *&t;Bring one device back to the on state by first powering it&n; *&t;on, then restoring state. We only operate on devices that aren&squot;t&n; *&t;already on.&n; *&t;FIXME: We need to handle devices that are in an unknown state.&n; */
 DECL|function|dpm_runtime_resume
 r_void
 id|dpm_runtime_resume
@@ -158,7 +158,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;dpm_set_power_state - Update power_state field.&n; *&t;@dev:&t;Device.&n; *&t;@state:&t;Power state device is in.&n; *&n; *&t;This is an update mechanism for drivers to notify the core&n; *&t;what power state a device is in. Device probing code may not&n; *&t;always be able to tell, but we need accurate information to &n; *&t;work reliably.&n; */
+multiline_comment|/**&n; *&t;dpm_set_power_state - Update power_state field.&n; *&t;@dev:&t;Device.&n; *&t;@state:&t;Power state device is in.&n; *&n; *&t;This is an update mechanism for drivers to notify the core&n; *&t;what power state a device is in. Device probing code may not&n; *&t;always be able to tell, but we need accurate information to&n; *&t;work reliably.&n; */
 DECL|function|dpm_set_power_state
 r_void
 id|dpm_set_power_state

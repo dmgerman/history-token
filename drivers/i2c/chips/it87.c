@@ -281,8 +281,8 @@ DECL|macro|IT87_REG_FAN
 mdefine_line|#define IT87_REG_FAN(nr)       (0x0d + (nr))
 DECL|macro|IT87_REG_FAN_MIN
 mdefine_line|#define IT87_REG_FAN_MIN(nr)   (0x10 + (nr))
-DECL|macro|IT87_REG_FAN_CTRL
-mdefine_line|#define IT87_REG_FAN_CTRL      0x13
+DECL|macro|IT87_REG_FAN_MAIN_CTRL
+mdefine_line|#define IT87_REG_FAN_MAIN_CTRL 0x13
 DECL|macro|IT87_REG_VIN
 mdefine_line|#define IT87_REG_VIN(nr)       (0x20 + (nr))
 DECL|macro|IT87_REG_TEMP
@@ -292,9 +292,9 @@ mdefine_line|#define IT87_REG_VIN_MAX(nr)   (0x30 + (nr) * 2)
 DECL|macro|IT87_REG_VIN_MIN
 mdefine_line|#define IT87_REG_VIN_MIN(nr)   (0x31 + (nr) * 2)
 DECL|macro|IT87_REG_TEMP_HIGH
-mdefine_line|#define IT87_REG_TEMP_HIGH(nr) (0x40 + ((nr) * 2))
+mdefine_line|#define IT87_REG_TEMP_HIGH(nr) (0x40 + (nr) * 2)
 DECL|macro|IT87_REG_TEMP_LOW
-mdefine_line|#define IT87_REG_TEMP_LOW(nr)  (0x41 + ((nr) * 2))
+mdefine_line|#define IT87_REG_TEMP_LOW(nr)  (0x41 + (nr) * 2)
 DECL|macro|IT87_REG_I2C_ADDR
 mdefine_line|#define IT87_REG_I2C_ADDR      0x48
 DECL|macro|IT87_REG_VIN_ENABLE
@@ -304,9 +304,9 @@ mdefine_line|#define IT87_REG_TEMP_ENABLE   0x51
 DECL|macro|IT87_REG_CHIPID
 mdefine_line|#define IT87_REG_CHIPID        0x58
 DECL|macro|IN_TO_REG
-mdefine_line|#define IN_TO_REG(val)  (SENSORS_LIMIT((((val) * 10 + 8)/16),0,255))
+mdefine_line|#define IN_TO_REG(val)  (SENSORS_LIMIT((((val) + 8)/16),0,255))
 DECL|macro|IN_FROM_REG
-mdefine_line|#define IN_FROM_REG(val) (((val) *  16) / 10)
+mdefine_line|#define IN_FROM_REG(val) ((val) * 16)
 DECL|function|FAN_TO_REG
 r_static
 r_inline
@@ -372,9 +372,9 @@ suffix:semicolon
 DECL|macro|FAN_FROM_REG
 mdefine_line|#define FAN_FROM_REG(val,div) ((val)==0?-1:(val)==255?0:1350000/((val)*(div)))
 DECL|macro|TEMP_TO_REG
-mdefine_line|#define TEMP_TO_REG(val) (SENSORS_LIMIT(((val)&lt;0?(((val)-5)/10):&bslash;&n;&t;&t;&t;&t;&t;((val)+5)/10),0,255))
+mdefine_line|#define TEMP_TO_REG(val) (SENSORS_LIMIT(((val)&lt;0?(((val)-500)/1000):&bslash;&n;&t;&t;&t;&t;&t;((val)+500)/1000),-128,127))
 DECL|macro|TEMP_FROM_REG
-mdefine_line|#define TEMP_FROM_REG(val) (((val)&gt;0x80?(val)-0x100:(val))*10)
+mdefine_line|#define TEMP_FROM_REG(val) (((val)&gt;0x80?(val)-0x100:(val))*1000)
 DECL|macro|VID_FROM_REG
 mdefine_line|#define VID_FROM_REG(val) ((val)==0x1f?0:(val)&gt;=0x10?510-(val)*10:&bslash;&n;&t;&t;&t;&t;205-(val)*5)
 DECL|macro|ALARMS_FROM_REG
@@ -402,6 +402,8 @@ id|val
 op_rshift_assign
 l_int|1
 )paren
+op_ne
+l_int|0
 )paren
 id|answer
 op_increment
@@ -738,8 +740,6 @@ id|data-&gt;in
 id|nr
 )braket
 )paren
-op_star
-l_int|10
 )paren
 suffix:semicolon
 )brace
@@ -789,8 +789,6 @@ id|data-&gt;in_min
 id|nr
 )braket
 )paren
-op_star
-l_int|10
 )paren
 suffix:semicolon
 )brace
@@ -840,8 +838,6 @@ id|data-&gt;in_max
 id|nr
 )braket
 )paren
-op_star
-l_int|10
 )paren
 suffix:semicolon
 )brace
@@ -903,8 +899,6 @@ l_int|NULL
 comma
 l_int|10
 )paren
-op_div
-l_int|10
 suffix:semicolon
 id|data-&gt;in_min
 (braket
@@ -996,8 +990,6 @@ l_int|NULL
 comma
 l_int|10
 )paren
-op_div
-l_int|10
 suffix:semicolon
 id|data-&gt;in_max
 (braket
@@ -1032,9 +1024,9 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|show_in_offset
-mdefine_line|#define show_in_offset(offset)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;show_in##offset (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_in(dev, buf, 0x##offset);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(in##offset##_input, S_IRUGO, show_in##offset, NULL)
+mdefine_line|#define show_in_offset(offset)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;show_in##offset (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_in(dev, buf, 0x##offset);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(in##offset##_input, S_IRUGO, show_in##offset, NULL);
 DECL|macro|limit_in_offset
-mdefine_line|#define limit_in_offset(offset)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;show_in##offset##_min (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_in_min(dev, buf, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;show_in##offset##_max (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_in_max(dev, buf, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_in##offset##_min (struct device *dev, &t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_in_min(dev, buf, count, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_in##offset##_max (struct device *dev,&t;&bslash;&n;&t;&t;&t;const char *buf, size_t count)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_in_max(dev, buf, count, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(in##offset##_min, S_IRUGO | S_IWUSR, &t;&bslash;&n;&t;&t;show_in##offset##_min, set_in##offset##_min)&t;&bslash;&n;static DEVICE_ATTR(in##offset##_max, S_IRUGO | S_IWUSR, &t;&bslash;&n;&t;&t;show_in##offset##_max, set_in##offset##_max)
+mdefine_line|#define limit_in_offset(offset)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;show_in##offset##_min (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_in_min(dev, buf, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;show_in##offset##_max (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_in_max(dev, buf, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_in##offset##_min (struct device *dev, &t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_in_min(dev, buf, count, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_in##offset##_max (struct device *dev,&t;&bslash;&n;&t;&t;&t;const char *buf, size_t count)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_in_max(dev, buf, count, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(in##offset##_min, S_IRUGO | S_IWUSR, &t;&bslash;&n;&t;&t;show_in##offset##_min, set_in##offset##_min);&t;&bslash;&n;static DEVICE_ATTR(in##offset##_max, S_IRUGO | S_IWUSR, &t;&bslash;&n;&t;&t;show_in##offset##_max, set_in##offset##_max);
 id|show_in_offset
 c_func
 (paren
@@ -1184,8 +1176,6 @@ id|data-&gt;temp
 id|nr
 )braket
 )paren
-op_star
-l_int|100
 )paren
 suffix:semicolon
 )brace
@@ -1235,8 +1225,6 @@ id|data-&gt;temp_high
 id|nr
 )braket
 )paren
-op_star
-l_int|100
 )paren
 suffix:semicolon
 )brace
@@ -1286,8 +1274,6 @@ id|data-&gt;temp_low
 id|nr
 )braket
 )paren
-op_star
-l_int|100
 )paren
 suffix:semicolon
 )brace
@@ -1348,8 +1334,6 @@ l_int|NULL
 comma
 l_int|10
 )paren
-op_div
-l_int|100
 suffix:semicolon
 id|data-&gt;temp_high
 (braket
@@ -1440,8 +1424,6 @@ l_int|NULL
 comma
 l_int|10
 )paren
-op_div
-l_int|100
 suffix:semicolon
 id|data-&gt;temp_low
 (braket
@@ -1476,7 +1458,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|show_temp_offset
-mdefine_line|#define show_temp_offset(offset)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_temp_##offset (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_temp(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_temp_##offset##_max (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_temp_max(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_temp_##offset##_min (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_temp_min(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_temp_##offset##_max (struct device *dev, &t;&t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_temp_max(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_temp_##offset##_min (struct device *dev, &t;&t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_temp_min(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(temp##offset##_input, S_IRUGO, show_temp_##offset, NULL) &bslash;&n;static DEVICE_ATTR(temp##offset##_max, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_temp_##offset##_max, set_temp_##offset##_max) &t;&bslash;&n;static DEVICE_ATTR(temp##offset##_min, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_temp_##offset##_min, set_temp_##offset##_min)&t;
+mdefine_line|#define show_temp_offset(offset)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_temp_##offset (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_temp(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_temp_##offset##_max (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_temp_max(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_temp_##offset##_min (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_temp_min(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_temp_##offset##_max (struct device *dev, &t;&t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_temp_max(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_temp_##offset##_min (struct device *dev, &t;&t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_temp_min(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(temp##offset##_input, S_IRUGO, show_temp_##offset, NULL); &bslash;&n;static DEVICE_ATTR(temp##offset##_max, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_temp_##offset##_max, set_temp_##offset##_max); &t;&bslash;&n;static DEVICE_ATTR(temp##offset##_min, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_temp_##offset##_min, set_temp_##offset##_min);&t;
 id|show_temp_offset
 c_func
 (paren
@@ -1709,7 +1691,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|show_sensor_offset
-mdefine_line|#define show_sensor_offset(offset)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_sensor_##offset (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_sensor(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_sensor_##offset (struct device *dev, &t;&t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_sensor(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(temp##offset##_type, S_IRUGO | S_IWUSR,&t; &t;&t;&bslash;&n;&t;&t;show_sensor_##offset, set_sensor_##offset)
+mdefine_line|#define show_sensor_offset(offset)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_sensor_##offset (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_sensor(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_sensor_##offset (struct device *dev, &t;&t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_sensor(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(temp##offset##_type, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_sensor_##offset, set_sensor_##offset);
 id|show_sensor_offset
 c_func
 (paren
@@ -2275,7 +2257,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|show_fan_offset
-mdefine_line|#define show_fan_offset(offset)&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_fan_##offset (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_fan(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_fan_##offset##_min (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_fan_min(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_fan_##offset##_div (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_fan_div(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_fan_##offset##_min (struct device *dev, &t;&t;&bslash;&n;&t;const char *buf, size_t count) &t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_fan_min(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_fan_##offset##_div (struct device *dev, &t;&t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_fan_div(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(fan##offset##_input, S_IRUGO, show_fan_##offset, NULL) &bslash;&n;static DEVICE_ATTR(fan##offset##_min, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_fan_##offset##_min, set_fan_##offset##_min) &t;&bslash;&n;static DEVICE_ATTR(fan##offset##_div, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_fan_##offset##_div, set_fan_##offset##_div)
+mdefine_line|#define show_fan_offset(offset)&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_fan_##offset (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_fan(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_fan_##offset##_min (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_fan_min(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_fan_##offset##_div (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_fan_div(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_fan_##offset##_min (struct device *dev, &t;&t;&bslash;&n;&t;const char *buf, size_t count) &t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_fan_min(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_fan_##offset##_div (struct device *dev, &t;&t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_fan_div(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(fan##offset##_input, S_IRUGO, show_fan_##offset, NULL); &bslash;&n;static DEVICE_ATTR(fan##offset##_min, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_fan_##offset##_min, set_fan_##offset##_min); &t;&bslash;&n;static DEVICE_ATTR(fan##offset##_div, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_fan_##offset##_div, set_fan_##offset##_div);
 id|show_fan_offset
 c_func
 (paren
@@ -3602,7 +3584,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* The SMBus locks itself, but ISA access must be locked explicitely! &n;   We don&squot;t want to lock the whole ISA bus, so we lock each client&n;   separately.&n;   We ignore the IT87 BUSY flag at this moment - it could lead to deadlocks,&n;   would slow down the IT87 access and should not be necessary. &n;   There are some ugly typecasts here, but the good new is - they should&n;   nowhere else be necessary! */
+multiline_comment|/* The SMBus locks itself, but ISA access must be locked explicitely! &n;   We don&squot;t want to lock the whole ISA bus, so we lock each client&n;   separately.&n;   We ignore the IT87 BUSY flag at this moment - it could lead to deadlocks,&n;   would slow down the IT87 access and should not be necessary. */
 DECL|function|it87_read_value
 r_static
 r_int
@@ -3691,7 +3673,7 @@ id|reg
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* The SMBus locks itself, but ISA access muse be locked explicitely! &n;   We don&squot;t want to lock the whole ISA bus, so we lock each client&n;   separately.&n;   We ignore the IT87 BUSY flag at this moment - it could lead to deadlocks,&n;   would slow down the IT87 access and should not be necessary. &n;   There are some ugly typecasts here, but the good new is - they should&n;   nowhere else be necessary! */
+multiline_comment|/* The SMBus locks itself, but ISA access muse be locked explicitely! &n;   We don&squot;t want to lock the whole ISA bus, so we lock each client&n;   separately.&n;   We ignore the IT87 BUSY flag at this moment - it could lead to deadlocks,&n;   would slow down the IT87 access and should not be necessary. */
 DECL|function|it87_write_value
 r_static
 r_int
@@ -3913,7 +3895,7 @@ c_func
 (paren
 id|client
 comma
-id|IT87_REG_FAN_CTRL
+id|IT87_REG_FAN_MAIN_CTRL
 )paren
 suffix:semicolon
 r_if
@@ -3944,7 +3926,7 @@ c_func
 (paren
 id|client
 comma
-id|IT87_REG_FAN_CTRL
+id|IT87_REG_FAN_MAIN_CTRL
 comma
 id|tmp
 )paren

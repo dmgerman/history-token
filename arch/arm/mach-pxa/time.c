@@ -1,62 +1,39 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-sa1100/time.h&n; *&n; * Copyright (C) 1998 Deborah Wallach.&n; * Twiddles  (C) 1999 &t;Hugo Fiennes &lt;hugo@empeg.com&gt;&n; * &n; * 2000/03/29 (C) Nicolas Pitre &lt;nico@cam.org&gt;&n; *&t;Rewritten: big cleanup, much simpler, better HZ accuracy.&n; *&n; */
-DECL|macro|RTC_DEF_DIVIDER
-mdefine_line|#define RTC_DEF_DIVIDER&t;&t;(32768 - 1)
-DECL|macro|RTC_DEF_TRIM
-mdefine_line|#define RTC_DEF_TRIM            0
-DECL|function|sa1100_get_rtc_time
+multiline_comment|/*&n; * arch/arm/mach-pxa/time.c&n; *&n; * Author:&t;Nicolas Pitre&n; * Created:&t;Jun 15, 2001&n; * Copyright:&t;MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/signal.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/leds.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/mach/irq.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
+DECL|function|pxa_get_rtc_time
 r_static
+r_inline
 r_int
 r_int
-id|__init
-id|sa1100_get_rtc_time
+id|pxa_get_rtc_time
 c_func
 (paren
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t; * According to the manual we should be able to let RTTR be zero&n;&t; * and then a default diviser for a 32.768KHz clock is used.&n;&t; * Apparently this doesn&squot;t work, at least for my SA1110 rev 5.&n;&t; * If the clock divider is uninitialized then reset it to the&n;&t; * default value to get the 1Hz clock.&n;&t; */
-r_if
-c_cond
-(paren
-id|RTTR
-op_eq
-l_int|0
-)paren
-(brace
-id|RTTR
-op_assign
-id|RTC_DEF_DIVIDER
-op_plus
-(paren
-id|RTC_DEF_TRIM
-op_lshift
-l_int|16
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Warning: uninitialized Real Time Clock&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* The current RTC value probably doesn&squot;t make sense either */
-id|RCNR
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_return
 id|RCNR
 suffix:semicolon
 )brace
-DECL|function|sa1100_set_rtc
+DECL|function|pxa_set_rtc
 r_static
 r_int
-id|sa1100_set_rtc
+id|pxa_set_rtc
 c_func
 (paren
 r_void
@@ -108,16 +85,15 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* IRQs are disabled before entering here from do_gettimeofday() */
-DECL|function|sa1100_gettimeoffset
+DECL|function|pxa_gettimeoffset
 r_static
 r_int
 r_int
-id|sa1100_gettimeoffset
+id|pxa_gettimeoffset
 (paren
 r_void
 )paren
 (brace
-r_int
 r_int
 id|ticks_to_match
 comma
@@ -138,6 +114,17 @@ op_assign
 id|LATCH
 op_minus
 id|ticks_to_match
+suffix:semicolon
+multiline_comment|/* don&squot;t get fooled by the workaround in pxa_timer_interrupt() */
+r_if
+c_cond
+(paren
+id|elapsed
+op_le
+l_int|0
+)paren
+r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* Now convert them to usec */
 id|usec
@@ -162,11 +149,10 @@ r_return
 id|usec
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We will be entered with IRQs enabled.&n; *&n; * Loop until we get ahead of the free running timer.&n; * This ensures an exact clock tick count and time accuracy.&n; * IRQs are disabled inside the loop to ensure coherence between&n; * lost_ticks (updated in do_timer()) and the match reg value, so we&n; * can use do_gettimeofday() from interrupt handlers.&n; */
 r_static
 id|irqreturn_t
-DECL|function|sa1100_timer_interrupt
-id|sa1100_timer_interrupt
+DECL|function|pxa_timer_interrupt
+id|pxa_timer_interrupt
 c_func
 (paren
 r_int
@@ -183,17 +169,12 @@ id|regs
 )paren
 (brace
 r_int
-r_int
 id|next_match
 suffix:semicolon
+multiline_comment|/* Loop until we get ahead of the free running timer.&n;&t; * This ensures an exact clock tick count and time accuracy.&n;&t; * IRQs are disabled inside the loop to ensure coherence between&n;&t; * lost_ticks (updated in do_timer()) and the match reg value, so we&n;&t; * can use do_gettimeofday() from interrupt handlers.&n;&t; *&n;&t; * HACK ALERT: it seems that the PXA timer regs aren&squot;t updated right&n;&t; * away in all cases when a write occurs.  We therefore compare with&n;&t; * 8 instead of 0 in the while() condition below to avoid missing a&n;&t; * match if OSCR has already reached the next OSMR value.&n;&t; * Experience has shown that up to 6 ticks are needed to work around&n;&t; * this problem, but let&squot;s use 8 to be conservative.  Note that this&n;&t; * affect things only when the timer IRQ has been delayed by nearly&n;&t; * exactly one tick period which should be a pretty rare event.&n;&t; */
 r_do
 (brace
-id|do_leds
-c_func
-(paren
-)paren
-suffix:semicolon
-id|do_timer
+id|timer_tick
 c_func
 (paren
 id|regs
@@ -212,11 +193,6 @@ op_add_assign
 id|LATCH
 )paren
 suffix:semicolon
-id|do_set_rtc
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 r_while
 c_loop
@@ -231,23 +207,42 @@ op_minus
 id|OSCR
 )paren
 op_le
-l_int|0
+l_int|8
 )paren
+(brace
 suffix:semicolon
-id|do_profile
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
+)brace
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-DECL|function|time_init
+DECL|variable|pxa_timer_irq
+r_static
+r_struct
+id|irqaction
+id|pxa_timer_irq
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;PXA Timer Tick&quot;
+comma
+dot
+id|flags
+op_assign
+id|SA_INTERRUPT
+comma
+dot
+id|handler
+op_assign
+id|pxa_timer_interrupt
+)brace
+suffix:semicolon
+DECL|function|pxa_init_time
 r_void
 id|__init
-id|time_init
+id|pxa_init_time
 c_func
 (paren
 r_void
@@ -259,11 +254,11 @@ id|tv
 suffix:semicolon
 id|gettimeoffset
 op_assign
-id|sa1100_gettimeoffset
+id|pxa_gettimeoffset
 suffix:semicolon
 id|set_rtc
 op_assign
-id|sa1100_set_rtc
+id|pxa_set_rtc
 suffix:semicolon
 id|tv.tv_nsec
 op_assign
@@ -271,7 +266,7 @@ l_int|0
 suffix:semicolon
 id|tv.tv_sec
 op_assign
-id|sa1100_get_rtc_time
+id|pxa_get_rtc_time
 c_func
 (paren
 )paren
@@ -282,10 +277,6 @@ c_func
 op_amp
 id|tv
 )paren
-suffix:semicolon
-id|timer_irq.handler
-op_assign
-id|sa1100_timer_interrupt
 suffix:semicolon
 id|OSMR0
 op_assign
@@ -303,7 +294,7 @@ c_func
 id|IRQ_OST0
 comma
 op_amp
-id|timer_irq
+id|pxa_timer_irq
 )paren
 suffix:semicolon
 id|OIER

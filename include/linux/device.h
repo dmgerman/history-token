@@ -88,6 +88,18 @@ r_struct
 id|kset
 id|devices
 suffix:semicolon
+DECL|member|bus_attrs
+r_struct
+id|bus_attribute
+op_star
+id|bus_attrs
+suffix:semicolon
+DECL|member|dev_attrs
+r_struct
+id|device_attribute
+op_star
+id|dev_attrs
+suffix:semicolon
 DECL|member|match
 r_int
 (paren
@@ -369,7 +381,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|BUS_ATTR
-mdefine_line|#define BUS_ATTR(_name,_mode,_show,_store)&t;&bslash;&n;struct bus_attribute bus_attr_##_name = { &t;&t;&bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode, .owner = THIS_MODULE },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&bslash;&n;};
+mdefine_line|#define BUS_ATTR(_name,_mode,_show,_store)&t;&bslash;&n;struct bus_attribute bus_attr_##_name = __ATTR(_name,_mode,_show,_store)
 r_extern
 r_int
 id|bus_create_file
@@ -599,7 +611,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|DRIVER_ATTR
-mdefine_line|#define DRIVER_ATTR(_name,_mode,_show,_store)&t;&bslash;&n;struct driver_attribute driver_attr_##_name = { &t;&t;&bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode, .owner = THIS_MODULE },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&bslash;&n;};
+mdefine_line|#define DRIVER_ATTR(_name,_mode,_show,_store)&t;&bslash;&n;struct driver_attribute driver_attr_##_name = __ATTR(_name,_mode,_show,_store)
 r_extern
 r_int
 id|driver_create_file
@@ -652,6 +664,18 @@ DECL|member|interfaces
 r_struct
 id|list_head
 id|interfaces
+suffix:semicolon
+DECL|member|class_attrs
+r_struct
+id|class_attribute
+op_star
+id|class_attrs
+suffix:semicolon
+DECL|member|class_dev_attrs
+r_struct
+id|class_device_attribute
+op_star
+id|class_dev_attrs
 suffix:semicolon
 DECL|member|hotplug
 r_int
@@ -799,7 +823,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|CLASS_ATTR
-mdefine_line|#define CLASS_ATTR(_name,_mode,_show,_store)&t;&t;&t;&bslash;&n;struct class_attribute class_attr_##_name = { &t;&t;&t;&bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode, .owner = THIS_MODULE },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&t;&bslash;&n;};
+mdefine_line|#define CLASS_ATTR(_name,_mode,_show,_store)&t;&t;&t;&bslash;&n;struct class_attribute class_attr_##_name = __ATTR(_name,_mode,_show,_store) 
 r_extern
 r_int
 id|class_create_file
@@ -1045,7 +1069,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|CLASS_DEVICE_ATTR
-mdefine_line|#define CLASS_DEVICE_ATTR(_name,_mode,_show,_store)&t;&t;&bslash;&n;struct class_device_attribute class_device_attr_##_name = { &t;&bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode, .owner = THIS_MODULE },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&t;&bslash;&n;};
+mdefine_line|#define CLASS_DEVICE_ATTR(_name,_mode,_show,_store)&t;&t;&bslash;&n;struct class_device_attribute class_device_attr_##_name = &t;&bslash;&n;&t;__ATTR(_name,_mode,_show,_store)
 r_extern
 r_int
 id|class_device_create_file
@@ -1616,7 +1640,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|DEVICE_ATTR
-mdefine_line|#define DEVICE_ATTR(_name,_mode,_show,_store) &bslash;&n;struct device_attribute dev_attr_##_name = { &t;&t;&bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode, .owner = THIS_MODULE },&t;&bslash;&n;&t;.show&t;= _show,&t;&t;&t;&t;&bslash;&n;&t;.store&t;= _store,&t;&t;&t;&t;&bslash;&n;};
+mdefine_line|#define DEVICE_ATTR(_name,_mode,_show,_store) &bslash;&n;struct device_attribute dev_attr_##_name = __ATTR(_name,_mode,_show,_store)
 r_extern
 r_int
 id|device_create_file
@@ -1782,6 +1806,50 @@ r_extern
 r_struct
 id|device
 id|platform_bus
+suffix:semicolon
+r_extern
+r_struct
+id|resource
+op_star
+id|platform_get_resource
+c_func
+(paren
+r_struct
+id|platform_device
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|platform_get_irq
+c_func
+(paren
+r_struct
+id|platform_device
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|platform_add_devices
+c_func
+(paren
+r_struct
+id|platform_device
+op_star
+op_star
+comma
+r_int
+)paren
 suffix:semicolon
 multiline_comment|/* drivers/base/power.c */
 r_extern

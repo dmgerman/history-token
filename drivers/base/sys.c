@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * sys.c - pseudo-bus for system &squot;devices&squot; (cpus, PICs, timers, etc)&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; *               2002-3 Open Source Development Lab&n; *&n; * This file is released under the GPLv2&n; * &n; * This exports a &squot;system&squot; bus type. &n; * By default, a &squot;sys&squot; bus gets added to the root of the system. There will&n; * always be core system devices. Devices can use sysdev_register() to&n; * add themselves as children of the system bus.&n; */
+multiline_comment|/*&n; * sys.c - pseudo-bus for system &squot;devices&squot; (cpus, PICs, timers, etc)&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; *               2002-3 Open Source Development Lab&n; *&n; * This file is released under the GPLv2&n; *&n; * This exports a &squot;system&squot; bus type.&n; * By default, a &squot;sys&squot; bus gets added to the root of the system. There will&n; * always be core system devices. Devices can use sysdev_register() to&n; * add themselves as children of the system bus.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
@@ -13,9 +13,9 @@ id|subsystem
 id|devices_subsys
 suffix:semicolon
 DECL|macro|to_sysdev
-mdefine_line|#define to_sysdev(k) container_of(k,struct sys_device,kobj)
+mdefine_line|#define to_sysdev(k) container_of(k, struct sys_device, kobj)
 DECL|macro|to_sysdev_attr
-mdefine_line|#define to_sysdev_attr(a) container_of(a,struct sysdev_attribute,attr)
+mdefine_line|#define to_sysdev_attr(a) container_of(a, struct sysdev_attribute, attr)
 r_static
 id|ssize_t
 DECL|function|sysdev_show
@@ -251,7 +251,7 @@ c_func
 id|sysdev_remove_file
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * declare system_subsys &n; */
+multiline_comment|/*&n; * declare system_subsys&n; */
 id|decl_subsys
 c_func
 (paren
@@ -369,7 +369,7 @@ c_func
 id|global_drivers
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;sysdev_driver_register - Register auxillary driver&n; * &t;@cls:&t;Device class driver belongs to.&n; *&t;@drv:&t;Driver.&n; *&n; *&t;If @cls is valid, then @drv is inserted into @cls-&gt;drivers to be &n; *&t;called on each operation on devices of that class. The refcount&n; *&t;of @cls is incremented. &n; *&t;Otherwise, @drv is inserted into global_drivers, and called for &n; *&t;each device.&n; */
+multiline_comment|/**&n; *&t;sysdev_driver_register - Register auxillary driver&n; * &t;@cls:&t;Device class driver belongs to.&n; *&t;@drv:&t;Driver.&n; *&n; *&t;If @cls is valid, then @drv is inserted into @cls-&gt;drivers to be&n; *&t;called on each operation on devices of that class. The refcount&n; *&t;of @cls is incremented.&n; *&t;Otherwise, @drv is inserted into global_drivers, and called for&n; *&t;each device.&n; */
 DECL|function|sysdev_driver_register
 r_int
 id|sysdev_driver_register
@@ -681,7 +681,7 @@ op_amp
 id|system_subsys.rwsem
 )paren
 suffix:semicolon
-multiline_comment|/* Generic notification is implicit, because it&squot;s that &n;&t;&t; * code that should have called us. &n;&t;&t; */
+multiline_comment|/* Generic notification is implicit, because it&squot;s that&n;&t;&t; * code that should have called us.&n;&t;&t; */
 multiline_comment|/* Notify global drivers */
 id|list_for_each_entry
 c_func
@@ -834,7 +834,7 @@ id|sysdev-&gt;kobj
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sysdev_shutdown - Shut down all system devices.&n; *&n; *&t;Loop over each class of system devices, and the devices in each&n; *&t;of those classes. For each device, we call the shutdown method for&n; *&t;each driver registered for the device - the globals, the auxillaries,&n; *&t;and the class driver. &n; *&n; *&t;Note: The list is iterated in reverse order, so that we shut down&n; *&t;child devices before we shut down thier parents. The list ordering&n; *&t;is guaranteed by virtue of the fact that child devices are registered&n; *&t;after their parents. &n; */
+multiline_comment|/**&n; *&t;sysdev_shutdown - Shut down all system devices.&n; *&n; *&t;Loop over each class of system devices, and the devices in each&n; *&t;of those classes. For each device, we call the shutdown method for&n; *&t;each driver registered for the device - the globals, the auxillaries,&n; *&t;and the class driver.&n; *&n; *&t;Note: The list is iterated in reverse order, so that we shut down&n; *&t;child devices before we shut down thier parents. The list ordering&n; *&t;is guaranteed by virtue of the fact that child devices are registered&n; *&t;after their parents.&n; */
 DECL|function|sysdev_shutdown
 r_void
 id|sysdev_shutdown
@@ -995,7 +995,7 @@ id|system_subsys.rwsem
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sysdev_suspend - Suspend all system devices.&n; *&t;@state:&t;&t;Power state to enter.&n; *&n; *&t;We perform an almost identical operation as sys_device_shutdown()&n; *&t;above, though calling -&gt;suspend() instead. Interrupts are disabled&n; *&t;when this called. Devices are responsible for both saving state and&n; *&t;quiescing or powering down the device. &n; *&n; *&t;This is only called by the device PM core, so we let them handle&n; *&t;all synchronization.&n; */
+multiline_comment|/**&n; *&t;sysdev_suspend - Suspend all system devices.&n; *&t;@state:&t;&t;Power state to enter.&n; *&n; *&t;We perform an almost identical operation as sys_device_shutdown()&n; *&t;above, though calling -&gt;suspend() instead. Interrupts are disabled&n; *&t;when this called. Devices are responsible for both saving state and&n; *&t;quiescing or powering down the device.&n; *&n; *&t;This is only called by the device PM core, so we let them handle&n; *&t;all synchronization.&n; */
 DECL|function|sysdev_suspend
 r_int
 id|sysdev_suspend
@@ -1152,7 +1152,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;sysdev_resume - Bring system devices back to life.&n; *&n; *&t;Similar to sys_device_suspend(), but we iterate the list forwards&n; *&t;to guarantee that parent devices are resumed before their children.&n; *&n; *&t;Note: Interrupts are disabled when called. &n; */
+multiline_comment|/**&n; *&t;sysdev_resume - Bring system devices back to life.&n; *&n; *&t;Similar to sys_device_suspend(), but we iterate the list forwards&n; *&t;to guarantee that parent devices are resumed before their children.&n; *&n; *&t;Note: Interrupts are disabled when called.&n; */
 DECL|function|sysdev_resume
 r_int
 id|sysdev_resume

@@ -44,7 +44,7 @@ r_struct
 id|semaphore
 id|dpm_sem
 suffix:semicolon
-multiline_comment|/* &n; * The PM lists.&n; */
+multiline_comment|/*&n; * The PM lists.&n; */
 r_extern
 r_struct
 id|list_head
@@ -161,7 +161,7 @@ id|device
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * resume.c &n; */
+multiline_comment|/*&n; * resume.c&n; */
 r_extern
 r_void
 id|dpm_resume

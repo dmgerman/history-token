@@ -1,21 +1,17 @@
 multiline_comment|/* linux/include/asm-arm/arch-s3c2410/time.h&n; *&n; *  Copyright (C) 2003 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *    Ben Dooks, &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/arch/map.h&gt;
 macro_line|#include &lt;asm/arch/regs-timer.h&gt;
-r_extern
-r_int
-r_int
-(paren
-op_star
-id|gettimeoffset
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#include &lt;asm/mach/time.h&gt;
 DECL|variable|timer_startval
 r_static
 r_int
@@ -102,24 +98,7 @@ op_star
 id|regs
 )paren
 (brace
-id|do_leds
-c_func
-(paren
-)paren
-suffix:semicolon
-id|do_timer
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-id|do_set_rtc
-c_func
-(paren
-)paren
-suffix:semicolon
-singleline_comment|//s3c2410_rtc_check();
-id|do_profile
+id|timer_tick
 c_func
 (paren
 id|regs
@@ -129,12 +108,34 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; */
-multiline_comment|/* currently we only use timer4, as it is the only timer which has no&n; * other function that can be exploited externally&n;*/
-DECL|function|time_init
+DECL|variable|s3c2410_timer_irq
+r_static
+r_struct
+id|irqaction
+id|s3c2410_timer_irq
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;S32410 Timer Tick&quot;
+comma
+dot
+id|flags
+op_assign
+id|SA_INTERRUPT
+comma
+dot
+id|handler
+op_assign
+id|s3c2410_timer_interrupt
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; *&n; * Currently we only use timer4, as it is the only timer which has no&n; * other function that can be exploited externally&n; */
+DECL|function|s3c2410_init_time
 r_void
 id|__init
-id|time_init
+id|s3c2410_init_time
 (paren
 r_void
 )paren
@@ -158,10 +159,6 @@ suffix:semicolon
 id|gettimeoffset
 op_assign
 id|s3c2410_gettimeoffset
-suffix:semicolon
-id|timer_irq.handler
-op_assign
-id|s3c2410_timer_interrupt
 suffix:semicolon
 id|tcnt
 op_assign
@@ -416,7 +413,7 @@ c_func
 id|IRQ_TIMER4
 comma
 op_amp
-id|timer_irq
+id|s3c2410_timer_irq
 )paren
 suffix:semicolon
 multiline_comment|/* start the timer running */

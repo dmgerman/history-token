@@ -3063,7 +3063,7 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/* API 3.1.3 sendmsg() - UDP Style Syntax&n; *&n; * An application uses sendmsg() and recvmsg() calls to transmit data to&n; * and receive data from its peer.&n; *&n; *  ssize_t sendmsg(int socket, const struct msghdr *message,&n; *                  int flags);&n; *&n; *  socket  - the socket descriptor of the endpoint.&n; *  message - pointer to the msghdr structure which contains a single&n; *            user message and possibly some ancillary data.&n; *&n; *            See Section 5 for complete description of the data&n; *            structures.&n; *&n; *  flags   - flags sent or received with the user message, see Section&n; *            5 for complete description of the flags.&n; *&n; * Note:  This function could use a rewrite especially when explicit&n; * connect support comes in.&n; */
-multiline_comment|/* BUG:  We do not implement the equivalent of wait_for_tcp_memory(). */
+multiline_comment|/* BUG:  We do not implement the equivalent of sk_stream_wait_memory(). */
 id|SCTP_STATIC
 r_int
 id|sctp_msghdr_parse

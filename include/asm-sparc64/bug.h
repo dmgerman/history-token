@@ -2,6 +2,7 @@ multiline_comment|/* $Id$ */
 macro_line|#ifndef _SPARC64_BUG_H
 DECL|macro|_SPARC64_BUG_H
 mdefine_line|#define _SPARC64_BUG_H
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
 r_extern
 r_void

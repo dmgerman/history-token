@@ -1,9 +1,9 @@
-multiline_comment|/*&n; * drivers/base/interface.c - common driverfs interface that&squot;s exported to &n; * &t;the world for all devices.&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; * &n; * This file is released under the GPLv2&n; *&n; */
+multiline_comment|/*&n; * drivers/base/interface.c - common driverfs interface that&squot;s exported to&n; * &t;the world for all devices.&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; * Copyright (c) 2002-3 Open Source Development Labs&n; *&n; * This file is released under the GPLv2&n; *&n; */
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-multiline_comment|/**&n; *&t;detach_state - control the default power state for the device.&n; *&t;&n; *&t;This is the state the device enters when it&squot;s driver module is &n; *&t;unloaded. The value is an unsigned integer, in the range of 0-4.&n; *&t;&squot;0&squot; indicates &squot;On&squot;, so no action will be taken when the driver is&n; *&t;unloaded. This is the default behavior.&n; *&t;&squot;4&squot; indicates &squot;Off&squot;, meaning the driver core will call the driver&squot;s&n; *&t;shutdown method to quiesce the device.&n; *&t;1-3 indicate a low-power state for the device to enter via the &n; *&t;driver&squot;s suspend method. &n; */
+multiline_comment|/**&n; *&t;detach_state - control the default power state for the device.&n; *&n; *&t;This is the state the device enters when it&squot;s driver module is&n; *&t;unloaded. The value is an unsigned integer, in the range of 0-4.&n; *&t;&squot;0&squot; indicates &squot;On&squot;, so no action will be taken when the driver is&n; *&t;unloaded. This is the default behavior.&n; *&t;&squot;4&squot; indicates &squot;Off&squot;, meaning the driver core will call the driver&squot;s&n; *&t;shutdown method to quiesce the device.&n; *&t;1-3 indicate a low-power state for the device to enter via the&n; *&t;driver&squot;s suspend method.&n; */
 DECL|function|detach_show
 r_static
 id|ssize_t

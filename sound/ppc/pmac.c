@@ -4034,6 +4034,32 @@ l_int|0x11
 suffix:semicolon
 multiline_comment|/* disable IEE */
 )brace
+r_if
+c_cond
+(paren
+id|device_is_compatible
+c_func
+(paren
+id|sound
+comma
+l_string|&quot;AOAKeylargo&quot;
+)paren
+)paren
+(brace
+multiline_comment|/* Seems to support the stock AWACS frequencies, but has&n;&t;&t;   a snapper mixer */
+id|chip-&gt;model
+op_assign
+id|PMAC_SNAPPER
+suffix:semicolon
+singleline_comment|// chip-&gt;can_byte_swap = 0; /* FIXME: check this */
+id|chip-&gt;control_mask
+op_assign
+id|MASK_IEPC
+op_or
+l_int|0x11
+suffix:semicolon
+multiline_comment|/* disable IEE */
+)brace
 id|prop
 op_assign
 (paren

@@ -121,6 +121,22 @@ DECL|macro|I2C_DRIVERID_ADV7170
 mdefine_line|#define I2C_DRIVERID_ADV7170&t;54&t;/* video encoder&t;&t;*/
 DECL|macro|I2C_DRIVERID_RADEON
 mdefine_line|#define I2C_DRIVERID_RADEON&t;55&t;/* I2C bus on Radeon boards&t;*/
+DECL|macro|I2C_DRIVERID_MAX1617
+mdefine_line|#define I2C_DRIVERID_MAX1617&t;56&t;/* temp sensor&t;&t;&t;*/
+DECL|macro|I2C_DRIVERID_SAA7191
+mdefine_line|#define I2C_DRIVERID_SAA7191&t;57&t;/* video encoder&t;&t;*/
+DECL|macro|I2C_DRIVERID_INDYCAM
+mdefine_line|#define I2C_DRIVERID_INDYCAM&t;58&t;/* SGI IndyCam&t;&t;&t;*/
+DECL|macro|I2C_DRIVERID_BT832
+mdefine_line|#define I2C_DRIVERID_BT832&t;59&t;/* CMOS camera video processor&t;*/
+DECL|macro|I2C_DRIVERID_TDA9887
+mdefine_line|#define I2C_DRIVERID_TDA9887&t;60&t;/* TDA988x IF-PLL demodulator&t;*/
+DECL|macro|I2C_DRIVERID_OVCAMCHIP
+mdefine_line|#define I2C_DRIVERID_OVCAMCHIP&t;61&t;/* OmniVision CMOS image sens.&t;*/
+DECL|macro|I2C_DRIVERID_TDA7313
+mdefine_line|#define I2C_DRIVERID_TDA7313&t;62&t;/* TDA7313 audio processor&t;*/
+DECL|macro|I2C_DRIVERID_MAX6900
+mdefine_line|#define I2C_DRIVERID_MAX6900&t;63&t;/* MAX6900 real-time clock&t;*/
 DECL|macro|I2C_DRIVERID_EXP0
 mdefine_line|#define I2C_DRIVERID_EXP0&t;0xF0&t;/* experimental use id&squot;s&t;*/
 DECL|macro|I2C_DRIVERID_EXP1
@@ -379,6 +395,14 @@ DECL|macro|I2C_HW_SMBUS_NFORCE2
 mdefine_line|#define I2C_HW_SMBUS_NFORCE2&t;0x0c
 DECL|macro|I2C_HW_SMBUS_W9968CF
 mdefine_line|#define I2C_HW_SMBUS_W9968CF&t;0x0d
+DECL|macro|I2C_HW_SMBUS_OV511
+mdefine_line|#define I2C_HW_SMBUS_OV511&t;0x0e&t;/* OV511(+) USB 1.1 webcam ICs&t;*/
+DECL|macro|I2C_HW_SMBUS_OV518
+mdefine_line|#define I2C_HW_SMBUS_OV518&t;0x0f&t;/* OV518(+) USB 1.1 webcam ICs&t;*/
+DECL|macro|I2C_HW_SMBUS_OV519
+mdefine_line|#define I2C_HW_SMBUS_OV519&t;0x10&t;/* OV519 USB 1.1 webcam IC&t;*/
+DECL|macro|I2C_HW_SMBUS_OVFX2
+mdefine_line|#define I2C_HW_SMBUS_OVFX2&t;0x11&t;/* Cypress/OmniVision FX2 webcam */
 multiline_comment|/* --- ISA pseudo-adapter&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_ISA
 mdefine_line|#define I2C_HW_ISA 0x00

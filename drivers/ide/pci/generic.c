@@ -461,6 +461,7 @@ comma
 l_int|8
 )brace
 comma
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_SATA
 (brace
 id|PCI_VENDOR_ID_VIA
 comma
@@ -477,6 +478,7 @@ comma
 l_int|9
 )brace
 comma
+macro_line|#endif
 (brace
 id|PCI_VENDOR_ID_TOSHIBA
 comma
