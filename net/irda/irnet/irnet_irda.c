@@ -855,6 +855,19 @@ comma
 id|irnet_discovervalue_confirm
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|self-&gt;iriap
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 multiline_comment|/* Next discovery - before the call to avoid races */
 id|self-&gt;disco_index
 op_increment
@@ -1017,12 +1030,19 @@ id|ret
 )paren
 (brace
 multiline_comment|/* Close IAP */
+r_if
+c_cond
+(paren
+id|self-&gt;iriap
+)paren
+(brace
 id|iriap_close
 c_func
 (paren
 id|self-&gt;iriap
 )paren
 suffix:semicolon
+)brace
 id|self-&gt;iriap
 op_assign
 l_int|NULL

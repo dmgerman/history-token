@@ -270,6 +270,14 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+id|hashbin_delete
+c_func
+(paren
+id|iriap
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -576,6 +584,11 @@ suffix:semicolon
 id|self-&gt;priv
 op_assign
 id|priv
+suffix:semicolon
+multiline_comment|/* iriap_getvaluebyclass_request() will construct packets before&n;&t; * we connect, so this must have a sane value... Jean II */
+id|self-&gt;max_header_size
+op_assign
+id|LMP_MAX_HEADER
 suffix:semicolon
 id|init_timer
 c_func

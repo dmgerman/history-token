@@ -1881,6 +1881,25 @@ c_func
 id|HB_NOLOCK
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|self-&gt;discovery_log
+op_eq
+l_int|NULL
+)paren
+(brace
+id|WARNING
+c_func
+(paren
+l_string|&quot;%s(), Unable to allocate discovery log!&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|info.S
 op_assign
 id|discovery-&gt;nslots

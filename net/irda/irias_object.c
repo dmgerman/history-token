@@ -197,11 +197,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|IRDA_DEBUG
+id|WARNING
 c_func
 (paren
-l_int|0
-comma
 l_string|&quot;%s(), Unable to allocate object!&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -252,6 +250,32 @@ c_func
 id|HB_LOCK
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|obj-&gt;attribs
+op_eq
+l_int|NULL
+)paren
+(brace
+id|WARNING
+c_func
+(paren
+l_string|&quot;%s(), Unable to allocate attribs!&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|obj
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 r_return
 id|obj
 suffix:semicolon

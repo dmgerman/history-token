@@ -169,6 +169,14 @@ id|KERN_WARNING
 l_string|&quot;IrDA: Can&squot;t allocate tasks hashbin!&bslash;n&quot;
 )paren
 suffix:semicolon
+id|hashbin_delete
+c_func
+(paren
+id|dongles
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
