@@ -1721,13 +1721,6 @@ r_static
 r_int
 id|n_hpt_devs
 suffix:semicolon
-DECL|variable|hpt366_proc
-r_static
-id|u8
-id|hpt366_proc
-op_assign
-l_int|0
-suffix:semicolon
 r_static
 r_int
 r_int
@@ -1744,6 +1737,13 @@ id|rev
 )paren
 suffix:semicolon
 macro_line|#if defined(DISPLAY_HPT366_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
+DECL|variable|hpt366_proc
+r_static
+id|u8
+id|hpt366_proc
+op_assign
+l_int|0
+suffix:semicolon
 r_static
 r_int
 id|hpt366_get_info
@@ -3476,16 +3476,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|drive-&gt;init_speed
-)paren
-id|drive-&gt;init_speed
-op_assign
-id|speed
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|hpt_min_rev
 c_func
 (paren
@@ -3944,13 +3934,6 @@ id|map
 suffix:semicolon
 id|byte
 id|mode
-suffix:semicolon
-multiline_comment|/* FIXME: remove this --bkz */
-id|config_chipset_for_pio
-c_func
-(paren
-id|drive
-)paren
 suffix:semicolon
 r_if
 c_cond

@@ -916,11 +916,6 @@ id|byte
 id|suspend_reset
 suffix:semicolon
 multiline_comment|/* drive suspend mode flag, soft-reset recovers */
-DECL|member|init_speed
-id|byte
-id|init_speed
-suffix:semicolon
-multiline_comment|/* transfer rate set at boot */
 DECL|member|current_speed
 id|byte
 id|current_speed

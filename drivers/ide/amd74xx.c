@@ -1747,16 +1747,6 @@ op_amp
 id|t
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|drive-&gt;init_speed
-)paren
-id|drive-&gt;init_speed
-op_assign
-id|speed
-suffix:semicolon
 id|drive-&gt;current_speed
 op_assign
 id|speed

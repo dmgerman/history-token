@@ -5829,16 +5829,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|drive-&gt;init_speed
-)paren
-id|drive-&gt;init_speed
-op_assign
-id|feature
-suffix:semicolon
 multiline_comment|/* which drive is it ? */
 r_if
 c_cond
@@ -6011,16 +6001,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|drive-&gt;init_speed
-)paren
-id|drive-&gt;init_speed
-op_assign
-id|feature
-suffix:semicolon
 multiline_comment|/* which drive is it ? */
 r_if
 c_cond
