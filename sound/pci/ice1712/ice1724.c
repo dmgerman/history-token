@@ -4038,12 +4038,14 @@ comma
 l_string|&quot;ICE1724&quot;
 )paren
 suffix:semicolon
-id|snd_pcm_lib_preallocate_pci_pages_for_all
+id|snd_pcm_lib_preallocate_pages_for_all
 c_func
 (paren
-id|ice-&gt;pci
-comma
 id|pcm
+comma
+id|SNDRV_DMA_TYPE_PCI
+comma
+id|ice-&gt;pci
 comma
 l_int|256
 op_star
@@ -4718,12 +4720,14 @@ comma
 l_string|&quot;ICE1724 IEC958&quot;
 )paren
 suffix:semicolon
-id|snd_pcm_lib_preallocate_pci_pages_for_all
+id|snd_pcm_lib_preallocate_pages_for_all
 c_func
 (paren
-id|ice-&gt;pci
-comma
 id|pcm
+comma
+id|SNDRV_DMA_TYPE_PCI
+comma
+id|ice-&gt;pci
 comma
 l_int|64
 op_star
@@ -5282,12 +5286,14 @@ comma
 l_string|&quot;ICE1724 Surround PCM&quot;
 )paren
 suffix:semicolon
-id|snd_pcm_lib_preallocate_pci_pages_for_all
+id|snd_pcm_lib_preallocate_pages_for_all
 c_func
 (paren
-id|ice-&gt;pci
-comma
 id|pcm
+comma
+id|SNDRV_DMA_TYPE_PCI
+comma
+id|ice-&gt;pci
 comma
 l_int|64
 op_star

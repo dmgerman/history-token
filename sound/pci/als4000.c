@@ -2244,12 +2244,14 @@ op_amp
 id|snd_als4000_capture_ops
 )paren
 suffix:semicolon
-id|snd_pcm_lib_preallocate_pci_pages_for_all
+id|snd_pcm_lib_preallocate_pages_for_all
 c_func
 (paren
-id|chip-&gt;pci
-comma
 id|pcm
+comma
+id|SNDRV_DMA_TYPE_PCI
+comma
+id|chip-&gt;pci
 comma
 l_int|64
 op_star
