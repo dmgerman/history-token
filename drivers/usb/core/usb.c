@@ -18,6 +18,10 @@ DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/scatterlist.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &quot;hcd.h&quot;
 macro_line|#include &quot;usb.h&quot;
 r_extern
@@ -2128,10 +2132,11 @@ id|pdev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|info
-c_func
+id|dev_info
 (paren
-l_string|&quot;USB disconnect on device %d&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;USB disconnect, address %d&bslash;n&quot;
 comma
 id|dev-&gt;devnum
 )paren
@@ -2175,11 +2180,11 @@ id|child
 )paren
 suffix:semicolon
 )brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;unregistering interfaces on device %d&quot;
+id|dev-&gt;dev
 comma
-id|dev-&gt;devnum
+l_string|&quot;unregistering interfaces&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2224,11 +2229,11 @@ id|interface-&gt;dev
 suffix:semicolon
 )brace
 )brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;unregistering the device %d&quot;
+id|dev-&gt;dev
 comma
-id|dev-&gt;devnum
+l_string|&quot;unregistering device&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Free the device number and remove the /proc/bus/usb entry */
@@ -2731,6 +2736,11 @@ id|dev-&gt;bus-&gt;busnum
 comma
 id|dev-&gt;devpath
 )paren
+suffix:semicolon
+multiline_comment|/* dma masks come from the controller; readonly, except to hcd */
+id|dev-&gt;dev.dma_mask
+op_assign
+id|parent-&gt;dma_mask
 suffix:semicolon
 multiline_comment|/* USB device state == default ... it&squot;s not usable yet */
 multiline_comment|/* USB 2.0 section 5.5.3 talks about ep0 maxpacket ...&n;&t; * it&squot;s fixed size except for full speed devices.&n;&t; */
@@ -3265,6 +3275,10 @@ op_assign
 op_amp
 id|usb_bus_type
 suffix:semicolon
+id|interface-&gt;dev.dma_mask
+op_assign
+id|parent-&gt;dma_mask
+suffix:semicolon
 id|sprintf
 (paren
 op_amp
@@ -3476,9 +3490,9 @@ op_star
 id|bus
 suffix:semicolon
 r_struct
-id|usb_operations
+id|device
 op_star
-id|op
+id|controller
 suffix:semicolon
 r_if
 c_cond
@@ -3503,28 +3517,21 @@ id|urb-&gt;dev-&gt;bus
 op_logical_or
 op_logical_neg
 (paren
-id|op
+id|controller
 op_assign
-id|bus-&gt;op
+id|bus-&gt;controller
 )paren
-op_logical_or
-op_logical_neg
-id|op-&gt;buffer_map
 )paren
 r_return
 l_int|0
 suffix:semicolon
-r_if
-c_cond
+id|urb-&gt;transfer_dma
+op_assign
+id|dma_map_single
 (paren
-id|op-&gt;buffer_map
-(paren
-id|bus
+id|controller
 comma
 id|urb-&gt;transfer_buffer
-comma
-op_amp
-id|urb-&gt;transfer_dma
 comma
 id|urb-&gt;transfer_buffer_length
 comma
@@ -3534,14 +3541,13 @@ id|urb-&gt;pipe
 )paren
 ques
 c_cond
-id|USB_DIR_IN
+id|DMA_FROM_DEVICE
 suffix:colon
-id|USB_DIR_OUT
+id|DMA_TO_DEVICE
 )paren
-)paren
-r_return
-l_int|0
 suffix:semicolon
+singleline_comment|// FIXME generic api broken like pci, can&squot;t report errors
+singleline_comment|// if (urb-&gt;transfer_dma == DMA_ADDR_INVALID) return 0;
 id|urb-&gt;transfer_flags
 op_or_assign
 id|URB_NO_DMA_MAP
@@ -3567,9 +3573,9 @@ op_star
 id|bus
 suffix:semicolon
 r_struct
-id|usb_operations
+id|device
 op_star
-id|op
+id|controller
 suffix:semicolon
 r_if
 c_cond
@@ -3596,19 +3602,16 @@ id|urb-&gt;dev-&gt;bus
 op_logical_or
 op_logical_neg
 (paren
-id|op
+id|controller
 op_assign
-id|bus-&gt;op
+id|bus-&gt;controller
 )paren
-op_logical_or
-op_logical_neg
-id|op-&gt;buffer_dmasync
 )paren
 r_return
 suffix:semicolon
-id|op-&gt;buffer_dmasync
+id|dma_sync_single
 (paren
-id|bus
+id|controller
 comma
 id|urb-&gt;transfer_dma
 comma
@@ -3620,9 +3623,9 @@ id|urb-&gt;pipe
 )paren
 ques
 c_cond
-id|USB_DIR_IN
+id|DMA_FROM_DEVICE
 suffix:colon
-id|USB_DIR_OUT
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
@@ -3643,9 +3646,9 @@ op_star
 id|bus
 suffix:semicolon
 r_struct
-id|usb_operations
+id|device
 op_star
-id|op
+id|controller
 suffix:semicolon
 r_if
 c_cond
@@ -3672,19 +3675,16 @@ id|urb-&gt;dev-&gt;bus
 op_logical_or
 op_logical_neg
 (paren
-id|op
+id|controller
 op_assign
-id|bus-&gt;op
+id|bus-&gt;controller
 )paren
-op_logical_or
-op_logical_neg
-id|op-&gt;buffer_unmap
 )paren
 r_return
 suffix:semicolon
-id|op-&gt;buffer_unmap
+id|dma_unmap_single
 (paren
-id|bus
+id|controller
 comma
 id|urb-&gt;transfer_dma
 comma
@@ -3696,13 +3696,13 @@ id|urb-&gt;pipe
 )paren
 ques
 c_cond
-id|USB_DIR_IN
+id|DMA_FROM_DEVICE
 suffix:colon
-id|USB_DIR_OUT
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_buffer_map_sg - create scatterlist DMA mapping(s) for an endpoint&n; * @dev: device to which the scatterlist will be mapped&n; * @pipe: endpoint defining the mapping direction&n; * @sg: the scatterlist to map&n; * @nents: the number of entries in the scatterlist&n; *&n; * Return value is either &lt; 0 (indicating no buffers could be mapped), or&n; * the number of DMA mapping array entries in the scatterlist.&n; *&n; * The caller is responsible for placing the resulting DMA addresses from&n; * the scatterlist into URB transfer buffer pointers, and for setting the&n; * URB_NO_DMA_MAP transfer flag in each of those URBs.&n; *&n; * Top I/O rates come from queuing URBs, instead of waiting for each one&n; * to complete before starting the next I/O.   This is particularly easy&n; * to do with scatterlists.  Just allocate and submit one URB for each DMA&n; * mapping entry returned, stopping on the first error or when all succeed.&n; *&n; * This call would normally be used when translating scatterlist requests,&n; * rather than usb_buffer_map(), since on some hardware (with IOMMUs) it&n; * may be able to coalesce mappings for improved I/O efficiency.&n; *&n; * Reverse the effect of this call with usb_buffer_unmap_sg().&n; */
+multiline_comment|/**&n; * usb_buffer_map_sg - create scatterlist DMA mapping(s) for an endpoint&n; * @dev: device to which the scatterlist will be mapped&n; * @pipe: endpoint defining the mapping direction&n; * @sg: the scatterlist to map&n; * @nents: the number of entries in the scatterlist&n; *&n; * Return value is either &lt; 0 (indicating no buffers could be mapped), or&n; * the number of DMA mapping array entries in the scatterlist.&n; *&n; * The caller is responsible for placing the resulting DMA addresses from&n; * the scatterlist into URB transfer buffer pointers, and for setting the&n; * URB_NO_DMA_MAP transfer flag in each of those URBs.&n; *&n; * Top I/O rates come from queuing URBs, instead of waiting for each one&n; * to complete before starting the next I/O.   This is particularly easy&n; * to do with scatterlists.  Just allocate and submit one URB for each DMA&n; * mapping entry returned, stopping on the first error or when all succeed.&n; * Better yet, use the usb_sg_*() calls, which do that (and more) for you.&n; *&n; * This call would normally be used when translating scatterlist requests,&n; * rather than usb_buffer_map(), since on some hardware (with IOMMUs) it&n; * may be able to coalesce mappings for improved I/O efficiency.&n; *&n; * Reverse the effect of this call with usb_buffer_unmap_sg().&n; */
 DECL|function|usb_buffer_map_sg
 r_int
 id|usb_buffer_map_sg
@@ -3730,12 +3730,9 @@ op_star
 id|bus
 suffix:semicolon
 r_struct
-id|usb_operations
+id|device
 op_star
-id|op
-suffix:semicolon
-r_int
-id|n_hw_ents
+id|controller
 suffix:semicolon
 r_if
 c_cond
@@ -3757,29 +3754,22 @@ id|dev-&gt;bus
 op_logical_or
 op_logical_neg
 (paren
-id|op
+id|controller
 op_assign
-id|bus-&gt;op
+id|bus-&gt;controller
 )paren
-op_logical_or
-op_logical_neg
-id|op-&gt;buffer_map_sg
 )paren
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-r_if
-c_cond
+singleline_comment|// FIXME generic api broken like pci, can&squot;t report errors
+r_return
+id|dma_map_sg
 (paren
-id|op-&gt;buffer_map_sg
-(paren
-id|bus
+id|controller
 comma
 id|sg
-comma
-op_amp
-id|n_hw_ents
 comma
 id|nents
 comma
@@ -3789,17 +3779,10 @@ id|pipe
 )paren
 ques
 c_cond
-id|USB_DIR_IN
+id|DMA_FROM_DEVICE
 suffix:colon
-id|USB_DIR_OUT
+id|DMA_TO_DEVICE
 )paren
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-r_return
-id|n_hw_ents
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_buffer_dmasync_sg - synchronize DMA and CPU view of scatterlist buffer(s)&n; * @dev: device to which the scatterlist will be mapped&n; * @pipe: endpoint defining the mapping direction&n; * @sg: the scatterlist to synchronize&n; * @n_hw_ents: the positive return value from usb_buffer_map_sg&n; *&n; * Use this when you are re-using a scatterlist&squot;s data buffers for&n; * another USB request.&n; */
@@ -3830,9 +3813,9 @@ op_star
 id|bus
 suffix:semicolon
 r_struct
-id|usb_operations
+id|device
 op_star
-id|op
+id|controller
 suffix:semicolon
 r_if
 c_cond
@@ -3849,19 +3832,16 @@ id|dev-&gt;bus
 op_logical_or
 op_logical_neg
 (paren
-id|op
+id|controller
 op_assign
-id|bus-&gt;op
+id|bus-&gt;controller
 )paren
-op_logical_or
-op_logical_neg
-id|op-&gt;buffer_dmasync_sg
 )paren
 r_return
 suffix:semicolon
-id|op-&gt;buffer_dmasync_sg
+id|dma_sync_sg
 (paren
-id|bus
+id|controller
 comma
 id|sg
 comma
@@ -3873,9 +3853,9 @@ id|pipe
 )paren
 ques
 c_cond
-id|USB_DIR_IN
+id|DMA_FROM_DEVICE
 suffix:colon
-id|USB_DIR_OUT
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace
@@ -3907,9 +3887,9 @@ op_star
 id|bus
 suffix:semicolon
 r_struct
-id|usb_operations
+id|device
 op_star
-id|op
+id|controller
 suffix:semicolon
 r_if
 c_cond
@@ -3926,19 +3906,16 @@ id|dev-&gt;bus
 op_logical_or
 op_logical_neg
 (paren
-id|op
+id|controller
 op_assign
-id|bus-&gt;op
+id|bus-&gt;controller
 )paren
-op_logical_or
-op_logical_neg
-id|op-&gt;buffer_unmap_sg
 )paren
 r_return
 suffix:semicolon
-id|op-&gt;buffer_unmap_sg
+id|dma_unmap_sg
 (paren
-id|bus
+id|controller
 comma
 id|sg
 comma
@@ -3950,9 +3927,9 @@ id|pipe
 )paren
 ques
 c_cond
-id|USB_DIR_IN
+id|DMA_FROM_DEVICE
 suffix:colon
-id|USB_DIR_OUT
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace

@@ -21,6 +21,10 @@ DECL|macro|DEBUG
 macro_line|#   define DEBUG
 macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/scatterlist.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 multiline_comment|/* minidrivers _could_ be individually configured */
 DECL|macro|CONFIG_USB_AN2720
 mdefine_line|#define&t;CONFIG_USB_AN2720
@@ -7321,11 +7325,27 @@ id|node_id
 )paren
 suffix:semicolon
 singleline_comment|// point-to-point link ... we always use Ethernet headers 
-singleline_comment|// supports win32 interop and the bridge driver.
+singleline_comment|// supports win32 interop (some devices) and the bridge driver.
 id|ether_setup
 (paren
 id|net
 )paren
+suffix:semicolon
+singleline_comment|// possible with some EHCI controllers
+r_if
+c_cond
+(paren
+id|dma_supported
+(paren
+op_amp
+id|udev-&gt;dev
+comma
+l_int|0xffffffffffffffffULL
+)paren
+)paren
+id|net-&gt;features
+op_or_assign
+id|NETIF_F_HIGHDMA
 suffix:semicolon
 id|net-&gt;change_mtu
 op_assign

@@ -60,31 +60,6 @@ id|ms
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * USB device number allocation bitmap. There&squot;s one bitmap&n; * per USB tree.&n; */
-DECL|struct|usb_devmap
-r_struct
-id|usb_devmap
-(brace
-DECL|member|devicemap
-r_int
-r_int
-id|devicemap
-(braket
-l_int|128
-op_div
-(paren
-l_int|8
-op_star
-r_sizeof
-(paren
-r_int
-r_int
-)paren
-)paren
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 r_struct
 id|usb_device
 suffix:semicolon
@@ -274,11 +249,43 @@ multiline_comment|/* -----------------------------------------------------------
 r_struct
 id|usb_operations
 suffix:semicolon
-multiline_comment|/*&n; * Allocated per bus we have&n; */
+multiline_comment|/* USB device number allocation bitmap */
+DECL|struct|usb_devmap
+r_struct
+id|usb_devmap
+(brace
+DECL|member|devicemap
+r_int
+r_int
+id|devicemap
+(braket
+l_int|128
+op_div
+(paren
+l_int|8
+op_star
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+)paren
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Allocated per bus (tree of devices) we have:&n; */
 DECL|struct|usb_bus
 r_struct
 id|usb_bus
 (brace
+DECL|member|controller
+r_struct
+id|device
+op_star
+id|controller
+suffix:semicolon
+multiline_comment|/* host/master side hardware */
 DECL|member|busnum
 r_int
 id|busnum

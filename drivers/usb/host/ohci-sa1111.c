@@ -534,10 +534,14 @@ id|hcd-&gt;pdev
 op_assign
 id|SA1111_FAKE_PCIDEV
 suffix:semicolon
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 op_assign
 op_amp
 id|dev-&gt;dev
+suffix:semicolon
+id|hcd-&gt;controller
+op_assign
+id|hcd-&gt;self.controller
 suffix:semicolon
 id|retval
 op_assign

@@ -444,10 +444,14 @@ id|hcd-&gt;product_desc
 op_assign
 id|dev-&gt;dev.name
 suffix:semicolon
-id|hcd-&gt;controller
+id|hcd-&gt;self.controller
 op_assign
 op_amp
 id|dev-&gt;dev
+suffix:semicolon
+id|hcd-&gt;controller
+op_assign
+id|hcd-&gt;self.controller
 suffix:semicolon
 r_if
 c_cond
