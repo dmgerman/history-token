@@ -1468,7 +1468,11 @@ id|BUG_TRAP
 c_func
 (paren
 op_logical_neg
-id|child-&gt;lock.users
+id|sock_owned_by_user
+c_func
+(paren
+id|child
+)paren
 )paren
 suffix:semicolon
 id|sock_hold
@@ -7416,7 +7420,11 @@ id|BUG_TRAP
 c_func
 (paren
 op_logical_neg
-id|sk-&gt;lock.users
+id|sock_owned_by_user
+c_func
+(paren
+id|sk
+)paren
 )paren
 suffix:semicolon
 id|sock_hold

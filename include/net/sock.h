@@ -24,6 +24,9 @@ DECL|macro|SOCK_DEBUG
 mdefine_line|#define SOCK_DEBUG(sk, msg...) do { } while (0)
 macro_line|#endif
 multiline_comment|/* This is the per-socket lock.  The spinlock provides a synchronization&n; * between user contexts and software interrupt processing, whereas the&n; * mini-semaphore synchronizes multiple users amongst themselves.&n; */
+r_struct
+id|sock_iocb
+suffix:semicolon
 r_typedef
 r_struct
 (brace
@@ -31,10 +34,11 @@ DECL|member|slock
 id|spinlock_t
 id|slock
 suffix:semicolon
-DECL|member|users
-r_int
-r_int
-id|users
+DECL|member|owner
+r_struct
+id|sock_iocb
+op_star
+id|owner
 suffix:semicolon
 DECL|member|wq
 id|wait_queue_head_t
@@ -45,7 +49,7 @@ DECL|typedef|socket_lock_t
 id|socket_lock_t
 suffix:semicolon
 DECL|macro|sock_lock_init
-mdefine_line|#define sock_lock_init(__sk) &bslash;&n;do {&t;spin_lock_init(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;&t;(__sk)-&gt;lock.users = 0; &bslash;&n;&t;init_waitqueue_head(&amp;((__sk)-&gt;lock.wq)); &bslash;&n;} while(0)
+mdefine_line|#define sock_lock_init(__sk) &bslash;&n;do {&t;spin_lock_init(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;&t;(__sk)-&gt;lock.owner = NULL; &bslash;&n;&t;init_waitqueue_head(&amp;((__sk)-&gt;lock.wq)); &bslash;&n;} while(0)
 DECL|struct|sock
 r_struct
 id|sock
@@ -937,6 +941,24 @@ DECL|macro|SOCK_BINDPORT_LOCK
 mdefine_line|#define SOCK_BINDPORT_LOCK&t;8
 multiline_comment|/* Used by processes to &quot;lock&quot; a socket state, so that&n; * interrupts and bottom half handlers won&squot;t change it&n; * from under us. It essentially blocks any incoming&n; * packets, so that we won&squot;t get any new data or any&n; * packets that change the state of the socket.&n; *&n; * While locked, BH processing will add new packets to&n; * the backlog queue.  This queue is processed by the&n; * owner of the socket lock right before it is released.&n; *&n; * Since ~2.3.5 it is also exclusive sleep lock serializing&n; * accesses from user process context.&n; */
 r_extern
+r_int
+id|__async_lock_sock
+c_func
+(paren
+r_struct
+id|sock_iocb
+op_star
+comma
+r_struct
+id|sock
+op_star
+comma
+r_struct
+id|list_head
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|__lock_sock
 c_func
@@ -958,10 +980,12 @@ op_star
 id|sk
 )paren
 suffix:semicolon
+DECL|macro|sock_owned_by_user
+mdefine_line|#define sock_owned_by_user(sk)&t;(NULL != (sk)-&gt;lock.owner)
 DECL|macro|lock_sock
-mdefine_line|#define lock_sock(__sk) &bslash;&n;do {&t;might_sleep(); &bslash;&n;&t;spin_lock_bh(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;&t;if ((__sk)-&gt;lock.users != 0) &bslash;&n;&t;&t;__lock_sock(__sk); &bslash;&n;&t;(__sk)-&gt;lock.users = 1; &bslash;&n;&t;spin_unlock_bh(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;} while(0)
+mdefine_line|#define lock_sock(__sk) &bslash;&n;do {&t;might_sleep(); &bslash;&n;&t;spin_lock_bh(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;&t;if ((__sk)-&gt;lock.owner != NULL) &bslash;&n;&t;&t;__lock_sock(__sk); &bslash;&n;&t;(__sk)-&gt;lock.owner = (void *)1; &bslash;&n;&t;spin_unlock_bh(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;} while(0)
 DECL|macro|release_sock
-mdefine_line|#define release_sock(__sk) &bslash;&n;do {&t;spin_lock_bh(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;&t;if ((__sk)-&gt;backlog.tail != NULL) &bslash;&n;&t;&t;__release_sock(__sk); &bslash;&n;&t;(__sk)-&gt;lock.users = 0; &bslash;&n;        if (waitqueue_active(&amp;((__sk)-&gt;lock.wq))) wake_up(&amp;((__sk)-&gt;lock.wq)); &bslash;&n;&t;spin_unlock_bh(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;} while(0)
+mdefine_line|#define release_sock(__sk) &bslash;&n;do {&t;spin_lock_bh(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;&t;if ((__sk)-&gt;backlog.tail != NULL) &bslash;&n;&t;&t;__release_sock(__sk); &bslash;&n;&t;(__sk)-&gt;lock.owner = NULL; &bslash;&n;        if (waitqueue_active(&amp;((__sk)-&gt;lock.wq))) wake_up(&amp;((__sk)-&gt;lock.wq)); &bslash;&n;&t;spin_unlock_bh(&amp;((__sk)-&gt;lock.slock)); &bslash;&n;} while(0)
 multiline_comment|/* BH context may only use the following locking interface. */
 DECL|macro|bh_lock_sock
 mdefine_line|#define bh_lock_sock(__sk)&t;spin_lock(&amp;((__sk)-&gt;lock.slock))

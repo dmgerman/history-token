@@ -4640,7 +4640,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;lock.users
+id|sock_owned_by_user
+c_func
+(paren
+id|sk
+)paren
 )paren
 id|BUG
 c_func

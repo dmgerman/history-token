@@ -3605,9 +3605,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|child-&gt;lock.users
-op_eq
-l_int|0
+op_logical_neg
+id|sock_owned_by_user
+c_func
+(paren
+id|child
+)paren
 )paren
 (brace
 id|ret

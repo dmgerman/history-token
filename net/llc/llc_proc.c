@@ -863,7 +863,11 @@ op_logical_neg
 op_logical_neg
 id|sk-&gt;backlog.tail
 comma
-id|sk-&gt;lock.users
+id|sock_owned_by_user
+c_func
+(paren
+id|sk
+)paren
 )paren
 suffix:semicolon
 id|out

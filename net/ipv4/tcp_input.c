@@ -9921,7 +9921,11 @@ id|tp-&gt;rcv_nxt
 op_logical_and
 id|tp-&gt;ucopy.len
 op_logical_and
-id|sk-&gt;lock.users
+id|sock_owned_by_user
+c_func
+(paren
+id|sk
+)paren
 op_logical_and
 op_logical_neg
 id|tp-&gt;urg_data
@@ -12967,7 +12971,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;lock.users
+id|sock_owned_by_user
+c_func
+(paren
+id|sk
+)paren
 )paren
 (brace
 id|local_bh_enable
@@ -13329,7 +13337,11 @@ id|tcp_header_len
 op_le
 id|tp-&gt;ucopy.len
 op_logical_and
-id|sk-&gt;lock.users
+id|sock_owned_by_user
+c_func
+(paren
+id|sk
+)paren
 )paren
 (brace
 id|__set_current_state
@@ -15254,7 +15266,11 @@ c_cond
 (paren
 id|th-&gt;fin
 op_logical_or
-id|sk-&gt;lock.users
+id|sock_owned_by_user
+c_func
+(paren
+id|sk
+)paren
 )paren
 (brace
 multiline_comment|/* Bad case. We could lose such FIN otherwise.&n;&t;&t;&t;&t;&t;&t; * It is not a big problem, but it looks confusing&n;&t;&t;&t;&t;&t;&t; * and not so rare event. We still can lose it now,&n;&t;&t;&t;&t;&t;&t; * if it spins in bh_lock_sock(), but it is really&n;&t;&t;&t;&t;&t;&t; * marginal case.&n;&t;&t;&t;&t;&t;&t; */
