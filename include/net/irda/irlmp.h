@@ -403,11 +403,6 @@ op_star
 id|cachelog
 suffix:semicolon
 multiline_comment|/* Current discovery log */
-DECL|member|log_lock
-id|spinlock_t
-id|log_lock
-suffix:semicolon
-multiline_comment|/* discovery log spinlock */
 DECL|member|running
 r_int
 id|running
@@ -469,7 +464,8 @@ r_int
 id|service
 )paren
 suffix:semicolon
-id|__u32
+r_void
+op_star
 id|irlmp_register_service
 c_func
 (paren
@@ -481,11 +477,13 @@ r_int
 id|irlmp_unregister_service
 c_func
 (paren
-id|__u32
+r_void
+op_star
 id|handle
 )paren
 suffix:semicolon
-id|__u32
+r_void
+op_star
 id|irlmp_register_client
 c_func
 (paren
@@ -507,7 +505,8 @@ r_int
 id|irlmp_unregister_client
 c_func
 (paren
-id|__u32
+r_void
+op_star
 id|handle
 )paren
 suffix:semicolon
@@ -515,7 +514,8 @@ r_int
 id|irlmp_update_client
 c_func
 (paren
-id|__u32
+r_void
+op_star
 id|handle
 comma
 id|__u16
@@ -679,6 +679,7 @@ op_star
 id|discovery_log
 comma
 id|DISCOVERY_MODE
+id|mode
 )paren
 suffix:semicolon
 r_void
@@ -925,21 +926,6 @@ id|irlmp_cb
 op_star
 id|irlmp
 suffix:semicolon
-DECL|function|irlmp_get_cachelog
-r_static
-r_inline
-id|hashbin_t
-op_star
-id|irlmp_get_cachelog
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|irlmp-&gt;cachelog
-suffix:semicolon
-)brace
 multiline_comment|/* Check if LAP queue is full.&n; * Used by IrTTP for low control, see comments in irlap.h - Jean II */
 DECL|function|irlmp_lap_tx_queue_full
 r_static

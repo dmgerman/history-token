@@ -1456,8 +1456,9 @@ r_else
 id|printk
 (paren
 id|KERN_INFO
+l_string|&quot;%s(), memory squeeze, dropping frame.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), memory squeeze, dropping frame.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2866,8 +2867,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), dev_alloc() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), dev_alloc() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|err
@@ -2946,8 +2948,9 @@ id|err
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), register_netdev() failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), register_netdev() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* XXX there is not freeing for dev? */

@@ -148,7 +148,7 @@ op_assign
 id|hashbin_new
 c_func
 (paren
-id|HB_GLOBAL
+id|HB_LOCK
 )paren
 suffix:semicolon
 r_if
@@ -176,7 +176,7 @@ op_assign
 id|hashbin_new
 c_func
 (paren
-id|HB_GLOBAL
+id|HB_LOCK
 )paren
 suffix:semicolon
 r_if
@@ -1340,7 +1340,7 @@ op_logical_neg
 (paren
 id|reg
 op_assign
-id|hashbin_find
+id|hashbin_lock_find
 c_func
 (paren
 id|dongles
@@ -1469,7 +1469,7 @@ multiline_comment|/* Check if this dongle has been registred before */
 r_if
 c_cond
 (paren
-id|hashbin_find
+id|hashbin_lock_find
 c_func
 (paren
 id|dongles

@@ -242,12 +242,13 @@ id|obj-&gt;id
 op_assign
 id|id
 suffix:semicolon
+multiline_comment|/* Locking notes : the attrib spinlock has lower precendence&n;&t; * than the objects spinlock. Never grap the objects spinlock&n;&t; * while holding any attrib spinlock (risk of deadlock). Jean II */
 id|obj-&gt;attribs
 op_assign
 id|hashbin_new
 c_func
 (paren
-id|HB_LOCAL
+id|HB_LOCK
 )paren
 suffix:semicolon
 r_return
@@ -429,14 +430,16 @@ suffix:semicolon
 suffix:semicolon
 id|node
 op_assign
-id|hashbin_remove
+id|hashbin_remove_this
 c_func
 (paren
 id|objects
 comma
-l_int|0
-comma
-id|obj-&gt;name
+(paren
+id|irda_queue_t
+op_star
+)paren
+id|obj
 )paren
 suffix:semicolon
 r_if
@@ -523,14 +526,16 @@ suffix:semicolon
 multiline_comment|/* Remove attribute from object */
 id|node
 op_assign
-id|hashbin_remove
+id|hashbin_remove_this
 c_func
 (paren
 id|obj-&gt;attribs
 comma
-l_int|0
-comma
-id|attrib-&gt;name
+(paren
+id|irda_queue_t
+op_star
+)paren
+id|attrib
 )paren
 suffix:semicolon
 r_if
@@ -656,8 +661,9 @@ l_int|NULL
 suffix:semicolon
 )paren
 suffix:semicolon
+multiline_comment|/* Unsafe (locking), object might change */
 r_return
-id|hashbin_find
+id|hashbin_lock_find
 c_func
 (paren
 id|objects
@@ -729,7 +735,7 @@ suffix:semicolon
 suffix:semicolon
 id|attrib
 op_assign
-id|hashbin_find
+id|hashbin_lock_find
 c_func
 (paren
 id|obj-&gt;attribs
@@ -749,6 +755,7 @@ l_int|NULL
 r_return
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* Unsafe (locking), attrib might change */
 r_return
 id|attrib
 suffix:semicolon
@@ -869,10 +876,14 @@ id|ias_attrib
 op_star
 id|attrib
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 multiline_comment|/* Find object */
 id|obj
 op_assign
-id|hashbin_find
+id|hashbin_lock_find
 c_func
 (paren
 id|objects
@@ -905,6 +916,16 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Slightly unsafe (obj might get removed under us) */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|obj-&gt;attribs-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Find attribute */
 id|attrib
 op_assign
@@ -936,6 +957,15 @@ comma
 id|attrib_name
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|obj-&gt;attribs-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -958,6 +988,15 @@ id|__FUNCTION__
 l_string|&quot;(), changing value type not allowed!&bslash;n&quot;
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|obj-&gt;attribs-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -976,6 +1015,15 @@ op_assign
 id|new_value
 suffix:semicolon
 multiline_comment|/* Success */
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|obj-&gt;attribs-&gt;hb_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

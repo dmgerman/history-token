@@ -1079,6 +1079,7 @@ id|info.saddr
 op_assign
 id|discovery-&gt;saddr
 suffix:semicolon
+multiline_comment|/* FIXME. We probably need to use hashbin_find_next(), but we first&n;&t; * need to ensure that &quot;line&quot; is unique. - Jean II */
 id|self
 op_assign
 (paren
