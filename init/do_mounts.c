@@ -2083,6 +2083,8 @@ c_func
 l_string|&quot;/dev/root&quot;
 comma
 id|O_RDWR
+op_or
+id|O_NDELAY
 comma
 l_int|0
 )paren
