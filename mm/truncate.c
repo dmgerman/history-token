@@ -126,16 +126,6 @@ op_star
 id|page
 )paren
 (brace
-id|BUG_ON
-c_func
-(paren
-id|page_mapped
-c_func
-(paren
-id|page
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
