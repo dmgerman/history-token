@@ -822,7 +822,7 @@ id|med
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_int
@@ -973,7 +973,7 @@ id|cdi
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_char
@@ -1079,7 +1079,7 @@ id|write
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -1220,7 +1220,7 @@ id|cont
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_int
@@ -1399,7 +1399,7 @@ id|immed
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 id|init_cdrom_command
@@ -1475,7 +1475,7 @@ id|cdi
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 id|init_cdrom_command
@@ -1614,7 +1614,7 @@ id|space
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -1779,7 +1779,7 @@ id|rfd
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_char
@@ -1953,7 +1953,7 @@ id|cdi
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_char
@@ -2383,7 +2383,7 @@ id|cdi
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_char
@@ -3813,7 +3813,7 @@ id|buf
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -4179,7 +4179,7 @@ id|slot
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 id|cdinfo
@@ -5005,7 +5005,7 @@ id|init_cdrom_command
 c_func
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 comma
@@ -5030,7 +5030,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 )paren
 )paren
 suffix:semicolon
@@ -5084,7 +5084,7 @@ id|setup_report_key
 c_func
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 comma
@@ -5183,7 +5183,7 @@ id|setup_send_key
 c_func
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 comma
@@ -5292,7 +5292,7 @@ l_int|20
 )braket
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -6090,7 +6090,7 @@ op_star
 id|layer
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -6412,7 +6412,7 @@ l_int|8
 )braket
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -6542,7 +6542,7 @@ op_star
 id|buf
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -6714,7 +6714,7 @@ l_int|188
 )braket
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -6867,7 +6867,7 @@ op_star
 id|buf
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -7162,7 +7162,7 @@ op_star
 id|cdi
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 comma
@@ -7258,7 +7258,7 @@ op_star
 id|cdi
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 )paren
@@ -7370,7 +7370,7 @@ op_assign
 id|cdi-&gt;ops
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_char
@@ -7551,7 +7551,7 @@ op_star
 id|cdi
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 comma
@@ -7707,7 +7707,7 @@ op_star
 id|cdi
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 comma
@@ -7942,7 +7942,7 @@ id|nframes
 )paren
 (brace
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_int
@@ -10626,7 +10626,7 @@ op_assign
 id|cdi-&gt;ops
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -10785,7 +10785,7 @@ op_assign
 id|cdi-&gt;ops
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_struct
@@ -12289,7 +12289,7 @@ op_assign
 id|cdi-&gt;ops
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_int
@@ -12453,7 +12453,7 @@ op_assign
 id|cdi-&gt;ops
 suffix:semicolon
 r_struct
-id|cdrom_generic_command
+id|packet_command
 id|cgc
 suffix:semicolon
 r_int
