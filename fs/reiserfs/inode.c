@@ -11980,6 +11980,8 @@ c_cond
 op_logical_neg
 id|error
 )paren
+id|error
+op_assign
 id|inode_setattr
 c_func
 (paren
