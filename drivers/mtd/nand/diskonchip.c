@@ -1,9 +1,10 @@
-multiline_comment|/* &n; * drivers/mtd/nand/diskonchip.c&n; *&n; * (C) 2003 Red Hat, Inc.&n; * (C) 2004 Dan Brown &lt;dan_brown@ieee.org&gt;&n; * (C) 2004 Kalev Lember &lt;kalev@smartlink.ee&gt;&n; *&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; * Additional Diskonchip 2000 and Millennium support by Dan Brown &lt;dan_brown@ieee.org&gt;&n; * Diskonchip Millennium Plus support by Kalev Lember &lt;kalev@smartlink.ee&gt;&n; * &n; * Error correction code lifted from the old docecc code&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; * converted to the generic Reed-Solomon library by Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *  &n; * Interface to generic NAND code for M-Systems DiskOnChip devices&n; *&n; * $Id: diskonchip.c,v 1.42 2004/11/16 18:29:03 dwmw2 Exp $&n; */
+multiline_comment|/* &n; * drivers/mtd/nand/diskonchip.c&n; *&n; * (C) 2003 Red Hat, Inc.&n; * (C) 2004 Dan Brown &lt;dan_brown@ieee.org&gt;&n; * (C) 2004 Kalev Lember &lt;kalev@smartlink.ee&gt;&n; *&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; * Additional Diskonchip 2000 and Millennium support by Dan Brown &lt;dan_brown@ieee.org&gt;&n; * Diskonchip Millennium Plus support by Kalev Lember &lt;kalev@smartlink.ee&gt;&n; * &n; * Error correction code lifted from the old docecc code&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; * converted to the generic Reed-Solomon library by Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *  &n; * Interface to generic NAND code for M-Systems DiskOnChip devices&n; *&n; * $Id: diskonchip.c,v 1.44 2005/01/05 17:34:27 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/rslib.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/nand.h&gt;
