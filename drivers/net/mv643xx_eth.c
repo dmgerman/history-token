@@ -3914,6 +3914,7 @@ id|skb-&gt;ip_summed
 op_ne
 id|CHECKSUM_HW
 )paren
+(brace
 id|pkt_info.cmd_sts
 op_assign
 id|ETH_TX_ENABLE_INTERRUPT
@@ -3922,6 +3923,11 @@ id|ETH_TX_FIRST_DESC
 op_or
 id|ETH_TX_LAST_DESC
 suffix:semicolon
+id|pkt_info.l4i_chk
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_else
 (brace
 id|u32
@@ -4182,6 +4188,10 @@ comma
 id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
+id|pkt_info.l4i_chk
+op_assign
+l_int|0
+suffix:semicolon
 id|pkt_info.return_info
 op_assign
 l_int|0
@@ -4418,6 +4428,10 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|pkt_info.l4i_chk
+op_assign
+l_int|0
+suffix:semicolon
 id|pkt_info.byte_cnt
 op_assign
 id|this_frag-&gt;size
@@ -4513,6 +4527,10 @@ op_or
 id|ETH_TX_FIRST_DESC
 op_or
 id|ETH_TX_LAST_DESC
+suffix:semicolon
+id|pkt_info.l4i_chk
+op_assign
+l_int|0
 suffix:semicolon
 id|pkt_info.byte_cnt
 op_assign
