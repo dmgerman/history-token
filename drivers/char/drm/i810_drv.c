@@ -192,6 +192,11 @@ op_assign
 id|i810_driver_pretakedown
 comma
 dot
+id|prerelease
+op_assign
+id|i810_driver_prerelease
+comma
+dot
 id|release
 op_assign
 id|i810_driver_release
