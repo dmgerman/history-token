@@ -17533,12 +17533,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|ov-&gt;rawfbuf
-)paren
-(brace
 id|vfree
 c_func
 (paren
@@ -17549,13 +17543,6 @@ id|ov-&gt;rawfbuf
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ov-&gt;tempfbuf
-)paren
-(brace
 id|vfree
 c_func
 (paren
@@ -17566,7 +17553,6 @@ id|ov-&gt;tempfbuf
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
