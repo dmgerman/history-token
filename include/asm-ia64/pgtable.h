@@ -837,6 +837,14 @@ mdefine_line|#define pgoff_to_pte(off)&t;&t;((pte_t) { ((off) &lt;&lt; 2) | _PAG
 multiline_comment|/* XXX is this right? */
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range(vma, vaddr, paddr, size, prot)&t;&t;&bslash;&n;&t;&t;remap_pfn_range(vma, vaddr, (paddr) &gt;&gt; PAGE_SHIFT, size, prot)
+DECL|macro|io_remap_pfn_range
+mdefine_line|#define io_remap_pfn_range(vma, vaddr, pfn, size, prot)&t;&t;&bslash;&n;&t;&t;remap_pfn_range(vma, vaddr, pfn, size, prot)
+DECL|macro|MK_IOSPACE_PFN
+mdefine_line|#define MK_IOSPACE_PFN(space, pfn)&t;(pfn)
+DECL|macro|GET_IOSPACE
+mdefine_line|#define GET_IOSPACE(pfn)&t;&t;0
+DECL|macro|GET_PFN
+mdefine_line|#define GET_PFN(pfn)&t;&t;&t;(pfn)
 multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
 r_extern
 r_int

@@ -1501,6 +1501,39 @@ r_int
 id|space
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|io_remap_pfn_range
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|from
+comma
+r_int
+r_int
+id|pfn
+comma
+r_int
+r_int
+id|size
+comma
+id|pgprot_t
+id|prot
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * For sparc32&amp;64, the pfn in io_remap_pfn_range() carries &lt;iospace&gt; in&n; * its high 4 bits.  These macros/functions put it there or get it from there.&n; */
+DECL|macro|MK_IOSPACE_PFN
+mdefine_line|#define MK_IOSPACE_PFN(space, pfn)&t;(pfn | (space &lt;&lt; (BITS_PER_LONG - 4)))
+DECL|macro|GET_IOSPACE
+mdefine_line|#define GET_IOSPACE(pfn)&t;&t;(pfn &gt;&gt; (BITS_PER_LONG - 4))
+DECL|macro|GET_PFN
+mdefine_line|#define GET_PFN(pfn)&t;&t;&t;(pfn &amp; 0x0fffffffUL)
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* !(__ASSEMBLY__) */
 multiline_comment|/* We provide our own get_unmapped_area to cope with VA holes for userland */

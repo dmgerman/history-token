@@ -1721,10 +1721,77 @@ id|prot
 )paren
 suffix:semicolon
 )brace
+DECL|function|io_remap_pfn_range
+r_static
+r_inline
+r_int
+id|io_remap_pfn_range
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|vaddr
+comma
+r_int
+r_int
+id|pfn
+comma
+r_int
+r_int
+id|size
+comma
+id|pgprot_t
+id|prot
+)paren
+(brace
+id|phys_addr_t
+id|paddr64
+op_assign
+id|fixup_bigphys_addr
+c_func
+(paren
+id|pfn
+op_lshift
+id|PAGE_SHIFT
+comma
+id|size
+)paren
+suffix:semicolon
+r_return
+id|remap_pfn_range
+c_func
+(paren
+id|vma
+comma
+id|vaddr
+comma
+id|paddr64
+op_rshift
+id|PAGE_SHIFT
+comma
+id|size
+comma
+id|prot
+)paren
+suffix:semicolon
+)brace
 macro_line|#else
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range(vma, vaddr, paddr, size, prot)&t;&t;&bslash;&n;&t;&t;remap_pfn_range(vma, vaddr, (paddr) &gt;&gt; PAGE_SHIFT, size, prot)
+DECL|macro|io_remap_pfn_range
+mdefine_line|#define io_remap_pfn_range(vma, vaddr, pfn, size, prot)&t;&t;&bslash;&n;&t;&t;remap_pfn_range(vma, vaddr, pfn, size, prot)
 macro_line|#endif
+DECL|macro|MK_IOSPACE_PFN
+mdefine_line|#define MK_IOSPACE_PFN(space, pfn)&t;(pfn)
+DECL|macro|GET_IOSPACE
+mdefine_line|#define GET_IOSPACE(pfn)&t;&t;0
+DECL|macro|GET_PFN
+mdefine_line|#define GET_PFN(pfn)&t;&t;&t;(pfn)
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)

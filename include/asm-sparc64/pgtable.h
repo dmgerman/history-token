@@ -6,6 +6,7 @@ multiline_comment|/* This file contains the functions and defines necessary to m
 macro_line|#include &lt;asm-generic/pgtable-nopud.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -844,6 +845,39 @@ r_int
 id|space
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|io_remap_pfn_range
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|from
+comma
+r_int
+r_int
+id|pfn
+comma
+r_int
+r_int
+id|size
+comma
+id|pgprot_t
+id|prot
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * For sparc32&amp;64, the pfn in io_remap_pfn_range() carries &lt;iospace&gt; in&n; * its high 4 bits.  These macros/functions put it there or get it from there.&n; */
+DECL|macro|MK_IOSPACE_PFN
+mdefine_line|#define MK_IOSPACE_PFN(space, pfn)&t;(pfn | (space &lt;&lt; (BITS_PER_LONG - 4)))
+DECL|macro|GET_IOSPACE
+mdefine_line|#define GET_IOSPACE(pfn)&t;&t;(pfn &gt;&gt; (BITS_PER_LONG - 4))
+DECL|macro|GET_PFN
+mdefine_line|#define GET_PFN(pfn)&t;&t;&t;(pfn &amp; 0x0fffffffffffffffUL)
 multiline_comment|/* Override for {pgd,pmd}_addr_end() to deal with the virtual address&n; * space hole.  We simply sign extend bit 43.&n; */
 DECL|macro|pgd_addr_end
 mdefine_line|#define pgd_addr_end(addr, end)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __boundary = ((addr) + PGDIR_SIZE) &amp; PGDIR_MASK;&t;&bslash;&n;&t;__boundary = ((long) (__boundary &lt;&lt; 20)) &gt;&gt; 20;&t;&t;&t;&bslash;&n;&t;(__boundary - 1 &lt; (end) - 1)? __boundary: (end);&t;&t;&bslash;&n;})
