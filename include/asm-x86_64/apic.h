@@ -348,8 +348,26 @@ suffix:semicolon
 r_extern
 r_int
 id|check_nmi_watchdog
+c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nmi_watchdog_default
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|setup_nmi_watchdog
+c_func
+(paren
+r_char
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -357,6 +375,8 @@ r_int
 r_int
 id|nmi_watchdog
 suffix:semicolon
+DECL|macro|NMI_DEFAULT
+mdefine_line|#define NMI_DEFAULT&t;-1
 DECL|macro|NMI_NONE
 mdefine_line|#define NMI_NONE&t;0
 DECL|macro|NMI_IO_APIC

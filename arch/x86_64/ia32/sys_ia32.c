@@ -10262,7 +10262,11 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 )brace
-DECL|variable|ia32_exec_domain
+id|cond_syscall
+c_func
+(paren
+id|sys32_ipc
+)paren
 r_struct
 id|exec_domain
 id|ia32_exec_domain

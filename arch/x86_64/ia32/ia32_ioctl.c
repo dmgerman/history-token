@@ -745,44 +745,6 @@ c_func
 l_int|0x4B51
 )paren
 multiline_comment|/* KDSHWCLK - not in the kernel, but don&squot;t complain */
-macro_line|#ifdef CONFIG_AUTOFS_FS
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|AUTOFS_IOC_READY
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|AUTOFS_IOC_FAIL
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|AUTOFS_IOC_CATATONIC
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|AUTOFS_IOC_PROTOVER
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|AUTOFS_IOC_SETTIMEOUT
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|AUTOFS_IOC_EXPIRE
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|AUTOFS_IOC_EXPIRE_MULTI
-)paren
-macro_line|#endif
-macro_line|#ifdef CONFIG_RTC
 id|COMPATIBLE_IOCTL
 c_func
 (paren
@@ -853,7 +815,6 @@ c_func
 (paren
 id|RTC_WKALM_RD
 )paren
-macro_line|#endif
 id|COMPATIBLE_IOCTL
 c_func
 (paren

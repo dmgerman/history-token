@@ -438,6 +438,14 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|check_efer
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|unhandled_signal
 c_func

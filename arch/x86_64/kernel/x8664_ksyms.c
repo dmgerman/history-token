@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
@@ -959,4 +960,11 @@ id|flush_tlb_all
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|sys_ioctl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sys_ioctl
+)paren
+suffix:semicolon
 eof

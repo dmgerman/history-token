@@ -2639,6 +2639,8 @@ r_if
 c_cond
 (paren
 id|nmi_watchdog
+OG
+l_int|0
 )paren
 (brace
 id|nmi_watchdog_tick
