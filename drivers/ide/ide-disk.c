@@ -5139,7 +5139,6 @@ r_return
 id|addr
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IDEDISK_STROKE
 multiline_comment|/*&n; * Sets maximum virtual LBA address of the drive.&n; * Returns new maximum virtual LBA address (&gt; 0) or 0 on failure.&n; */
 DECL|function|idedisk_set_max_address
 r_static
@@ -5622,7 +5621,6 @@ r_return
 id|addr_set
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_IDEDISK_STROKE */
 DECL|function|sectors_to_MB
 r_static
 r_int
@@ -5805,7 +5803,14 @@ id|set_max
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDEDISK_STROKE
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drive-&gt;stroke
+)paren
+r_return
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5852,7 +5857,6 @@ id|drive-&gt;name
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Compute drive-&gt;capacity, the full capacity of the drive&n; * Called with drive-&gt;id != NULL.&n; *&n; * To compute capacity, this uses either of&n; *&n; *    1. CHS value set by user       (whatever user sets will be trusted)&n; *    2. LBA value from target drive (require new ATA feature)&n; *    3. LBA value from system BIOS  (new one is OK, old one may break)&n; *    4. CHS value from system BIOS  (traditional style)&n; *&n; * in above order (i.e., if value of higher priority is available,&n; * reset will be ignored).&n; */
 DECL|function|init_idedisk_capacity
