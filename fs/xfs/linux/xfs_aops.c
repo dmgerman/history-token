@@ -100,7 +100,6 @@ c_func
 (paren
 id|pb
 comma
-op_minus
 id|EIO
 )paren
 suffix:semicolon
