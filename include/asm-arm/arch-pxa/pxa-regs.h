@@ -3,51 +3,6 @@ macro_line|#ifndef __PXA_REGS_H
 DECL|macro|__PXA_REGS_H
 mdefine_line|#define __PXA_REGS_H
 macro_line|#include &lt;linux/config.h&gt;
-singleline_comment|// FIXME hack so that SA-1111.h will work [cb]
-macro_line|#ifndef __ASSEMBLY__
-DECL|typedef|Word16
-r_typedef
-r_int
-r_int
-id|Word16
-suffix:semicolon
-DECL|typedef|Word32
-r_typedef
-r_int
-r_int
-id|Word32
-suffix:semicolon
-DECL|typedef|Word
-r_typedef
-id|Word32
-id|Word
-suffix:semicolon
-DECL|typedef|Quad
-r_typedef
-id|Word
-id|Quad
-(braket
-l_int|4
-)braket
-suffix:semicolon
-DECL|typedef|Address
-r_typedef
-r_void
-op_star
-id|Address
-suffix:semicolon
-DECL|typedef|ExcpHndlr
-r_typedef
-r_void
-(paren
-op_star
-id|ExcpHndlr
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * PXA Chip selects&n; */
 DECL|macro|PXA_CS0_PHYS
 mdefine_line|#define PXA_CS0_PHYS&t;0x00000000

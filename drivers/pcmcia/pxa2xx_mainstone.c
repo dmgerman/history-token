@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;pcmcia/ss.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#include &lt;asm/arch/mainstone.h&gt;
 macro_line|#include &quot;soc_common.h&quot;
 DECL|variable|irqs
