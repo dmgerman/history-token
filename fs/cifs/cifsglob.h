@@ -425,6 +425,14 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* BB make bigger for tcp names - will ipv6 and sctp addresses fit here?? */
+DECL|member|workstation_RFC1001_name
+r_char
+id|workstation_RFC1001_name
+(braket
+l_int|15
+)braket
+suffix:semicolon
+multiline_comment|/* 16th byte is always zero */
 DECL|member|userName
 r_char
 id|userName
