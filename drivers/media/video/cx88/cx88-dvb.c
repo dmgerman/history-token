@@ -10,7 +10,7 @@ multiline_comment|/* those two frontends need merging via linuxtv cvs ... */
 DECL|macro|HAVE_CX22702
 mdefine_line|#define HAVE_CX22702 0
 DECL|macro|HAVE_OR51132
-mdefine_line|#define HAVE_OR51132 0
+mdefine_line|#define HAVE_OR51132 1
 macro_line|#include &quot;cx88.h&quot;
 macro_line|#include &quot;dvb-pll.h&quot;
 macro_line|#include &quot;mt352.h&quot;
