@@ -352,6 +352,11 @@ id|request
 op_star
 id|rq
 suffix:semicolon
+r_struct
+id|bio
+op_star
+id|bio
+suffix:semicolon
 r_char
 id|sense
 (braket
@@ -575,6 +580,10 @@ id|rq-&gt;flags
 op_or_assign
 id|REQ_BLOCK_PC
 suffix:semicolon
+id|bio
+op_assign
+id|rq-&gt;bio
+suffix:semicolon
 id|rq-&gt;timeout
 op_assign
 (paren
@@ -737,6 +746,8 @@ c_func
 id|rq
 comma
 id|hdr-&gt;dxferp
+comma
+id|bio
 comma
 id|hdr-&gt;dxfer_len
 )paren
