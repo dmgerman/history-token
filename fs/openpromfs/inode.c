@@ -3214,11 +3214,6 @@ id|op-&gt;len
 op_assign
 l_int|0
 suffix:semicolon
-id|save_and_cli
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|prom_setprop
@@ -3232,11 +3227,6 @@ comma
 id|op-&gt;len
 op_plus
 l_int|1
-)paren
-suffix:semicolon
-id|restore_flags
-(paren
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -3270,11 +3260,6 @@ op_logical_neg
 id|op-&gt;len
 )paren
 (brace
-id|save_and_cli
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|prom_setprop
@@ -3286,11 +3271,6 @@ comma
 id|op-&gt;value
 comma
 id|op-&gt;len
-)paren
-suffix:semicolon
-id|restore_flags
-(paren
-id|flags
 )paren
 suffix:semicolon
 r_if
