@@ -13,8 +13,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|NFSDBG_FACILITY
 mdefine_line|#define NFSDBG_FACILITY&t;&t;NFSDBG_VFS
-DECL|macro|VERF_SIZE
-mdefine_line|#define VERF_SIZE&t;&t;(2 * sizeof(__u32))
 DECL|macro|MAX_DIRECTIO_SIZE
 mdefine_line|#define MAX_DIRECTIO_SIZE&t;(4096UL &lt;&lt; PAGE_SHIFT)
 multiline_comment|/**&n; * nfs_get_user_pages - find and set up pages underlying user&squot;s buffer&n; * rw: direction (read or write)&n; * user_addr: starting address of this segment of user&squot;s buffer&n; * count: size of this segment&n; * @pages: returned array of page struct pointers underlying user&squot;s buffer&n; */
@@ -1024,7 +1022,10 @@ comma
 op_amp
 id|wdata.verf.verifier
 comma
-id|VERF_SIZE
+r_sizeof
+(paren
+id|first_verf.verifier
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1051,9 +1052,13 @@ comma
 op_amp
 id|wdata.verf.verifier
 comma
-id|VERF_SIZE
+r_sizeof
+(paren
+id|first_verf.verifier
 )paren
 )paren
+)paren
+suffix:semicolon
 r_goto
 id|sync_retry
 suffix:semicolon
@@ -1150,7 +1155,10 @@ comma
 op_amp
 id|wdata.verf.verifier
 comma
-id|VERF_SIZE
+r_sizeof
+(paren
+id|first_verf.verifier
+)paren
 )paren
 op_ne
 l_int|0
