@@ -1770,7 +1770,17 @@ l_string|&quot;REQ_BLOCK_PC&quot;
 comma
 l_string|&quot;REQ_SENSE&quot;
 comma
+l_string|&quot;REQ_FAILED&quot;
+comma
+l_string|&quot;REQ_QUIET&quot;
+comma
 l_string|&quot;REQ_SPECIAL&quot;
+l_string|&quot;REQ_DRIVE_CMD&quot;
+comma
+l_string|&quot;REQ_DRIVE_TASK&quot;
+comma
+l_string|&quot;REQ_DRIVE_TASKFILE&quot;
+comma
 )brace
 suffix:semicolon
 DECL|function|blk_dump_rq_flags
@@ -1794,7 +1804,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: dev %02x:%02x: &quot;
+l_string|&quot;%s: dev %02x:%02x: flags = &quot;
 comma
 id|msg
 comma
@@ -1854,7 +1864,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;sector %llu, nr/cnr %lu/%u&bslash;n&quot;
+l_string|&quot;&bslash;nsector %llu, nr/cnr %lu/%u&bslash;n&quot;
 comma
 (paren
 r_int
@@ -1871,13 +1881,72 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;bio %p, biotail %p&bslash;n&quot;
+l_string|&quot;bio %p, biotail %p, buffer %p, data %p, len %u&bslash;n&quot;
 comma
 id|rq-&gt;bio
 comma
 id|rq-&gt;biotail
+comma
+id|rq-&gt;buffer
+comma
+id|rq-&gt;data
+comma
+id|rq-&gt;data_len
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rq-&gt;flags
+op_amp
+(paren
+id|REQ_BLOCK_PC
+op_or
+id|REQ_PC
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;cdb: &quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|bit
+op_assign
+l_int|0
+suffix:semicolon
+id|bit
+OL
+r_sizeof
+(paren
+id|rq-&gt;cmd
+)paren
+suffix:semicolon
+id|bit
+op_increment
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%02x &quot;
+comma
+id|rq-&gt;cmd
+(braket
+id|bit
+)braket
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|blk_recount_segments
 r_void
