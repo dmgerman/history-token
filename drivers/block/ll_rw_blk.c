@@ -4167,7 +4167,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Using %s elevator&bslash;n&quot;
+l_string|&quot;Using %s io scheduler&bslash;n&quot;
 comma
 id|chosen_elevator-&gt;elevator_name
 )paren
