@@ -2757,6 +2757,7 @@ r_int
 r_int
 comma
 r_void
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -2775,6 +2776,7 @@ r_int
 r_int
 comma
 r_void
+id|__user
 op_star
 )paren
 )paren
@@ -3181,11 +3183,7 @@ c_func
 (paren
 id|cmd
 comma
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 id|up
