@@ -232,6 +232,7 @@ id|shrink_slab
 c_func
 (paren
 r_int
+r_int
 id|scanned
 comma
 r_int
@@ -285,13 +286,13 @@ id|delta
 suffix:semicolon
 id|delta
 op_assign
+(paren
 l_int|4
 op_star
-(paren
 id|scanned
+)paren
 op_div
 id|shrinker-&gt;seeks
-)paren
 suffix:semicolon
 id|delta
 op_mul_assign
