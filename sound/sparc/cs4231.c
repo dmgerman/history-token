@@ -165,8 +165,9 @@ id|spinlock_t
 id|lock
 suffix:semicolon
 DECL|member|port
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|port
 suffix:semicolon
 macro_line|#ifdef EBUS_SUPPORT
@@ -858,8 +859,9 @@ id|cs4231_t
 op_star
 id|cp
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|reg_addr
 )paren
 (brace
@@ -909,8 +911,9 @@ comma
 id|u8
 id|val
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|reg_addr
 )paren
 (brace
@@ -2245,7 +2248,7 @@ l_int|0x80
 id|snd_printk
 c_func
 (paren
-l_string|&quot;mce_up [0x%lx]: serious init problem - codec still busy&bslash;n&quot;
+l_string|&quot;mce_up [%p]: serious init problem - codec still busy&bslash;n&quot;
 comma
 id|chip-&gt;port
 )paren
@@ -2427,7 +2430,7 @@ l_int|0x80
 id|snd_printk
 c_func
 (paren
-l_string|&quot;mce_down [0x%lx]: serious init problem - codec still busy&bslash;n&quot;
+l_string|&quot;mce_down [%p]: serious init problem - codec still busy&bslash;n&quot;
 comma
 id|chip-&gt;port
 )paren
@@ -10181,10 +10184,6 @@ l_int|1
 suffix:semicolon
 id|chip-&gt;port
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -10200,10 +10199,6 @@ l_int|0x10
 suffix:semicolon
 id|chip-&gt;eb2p.regs
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -10219,10 +10214,6 @@ l_int|0x10
 suffix:semicolon
 id|chip-&gt;eb2c.regs
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren

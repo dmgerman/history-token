@@ -1186,7 +1186,6 @@ id|b44_hw_stats
 id|hw_stats
 suffix:semicolon
 DECL|member|regs
-r_volatile
 r_void
 id|__iomem
 op_star

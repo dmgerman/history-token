@@ -731,8 +731,9 @@ id|qlogicpti
 (brace
 multiline_comment|/* These are the hot elements in the cache, so they come first. */
 DECL|member|qregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|qregs
 suffix:semicolon
 multiline_comment|/* Adapter registers          */
@@ -888,8 +889,9 @@ id|MAX_TARGETS
 )braket
 suffix:semicolon
 DECL|member|sreg
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|sreg
 suffix:semicolon
 DECL|macro|SREG_TPOWER

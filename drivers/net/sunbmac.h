@@ -529,26 +529,30 @@ r_struct
 id|bigmac
 (brace
 DECL|member|gregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|gregs
 suffix:semicolon
 multiline_comment|/* QEC Global Registers               */
 DECL|member|creg
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|creg
 suffix:semicolon
 multiline_comment|/* QEC BigMAC Channel Registers       */
 DECL|member|bregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|bregs
 suffix:semicolon
 multiline_comment|/* BigMAC Registers                   */
 DECL|member|tregs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|tregs
 suffix:semicolon
 multiline_comment|/* BigMAC Transceiver                 */

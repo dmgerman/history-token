@@ -108,8 +108,9 @@ mdefine_line|#define SOC_SETIMASK(s, i) &bslash;&n;do {&t;(s)-&gt;imask = (i); &
 multiline_comment|/* XRAM&n; *&n; * This is a 64KB register area. It accepts only halfword access.&n; * That&squot;s why here are the following inline functions...&n; */
 DECL|typedef|xram_p
 r_typedef
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|xram_p
 suffix:semicolon
 multiline_comment|/* Get 32bit number from XRAM */
@@ -118,6 +119,7 @@ r_static
 r_inline
 id|u32
 id|xram_get_32
+c_func
 (paren
 id|xram_p
 id|x
@@ -155,6 +157,7 @@ r_static
 r_inline
 id|u32
 id|xram_get_32low
+c_func
 (paren
 id|xram_p
 id|x
@@ -178,6 +181,7 @@ r_static
 r_inline
 id|u16
 id|xram_get_16
+c_func
 (paren
 id|xram_p
 id|x
@@ -196,6 +200,7 @@ r_static
 r_inline
 id|u8
 id|xram_get_8
+c_func
 (paren
 id|xram_p
 id|x
@@ -204,12 +209,13 @@ id|x
 r_if
 c_cond
 (paren
+(paren
+r_int
+r_int
+)paren
 id|x
 op_amp
-(paren
-id|xram_p
-)paren
-l_int|0x1
+l_int|0x1UL
 )paren
 (brace
 id|x
@@ -252,6 +258,7 @@ r_static
 r_inline
 r_void
 id|xram_copy_from
+c_func
 (paren
 r_void
 op_star
@@ -337,6 +344,7 @@ r_static
 r_inline
 r_void
 id|xram_copy_to
+c_func
 (paren
 id|xram_p
 id|x
@@ -418,6 +426,7 @@ r_static
 r_inline
 r_void
 id|xram_bzero
+c_func
 (paren
 id|xram_p
 id|x
@@ -815,8 +824,9 @@ r_int
 id|soc_no
 suffix:semicolon
 DECL|member|regs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|regs
 suffix:semicolon
 DECL|member|xram

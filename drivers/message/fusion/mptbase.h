@@ -1314,15 +1314,15 @@ id|prod_name
 suffix:semicolon
 multiline_comment|/* &quot;LSIFC9x9&quot;         */
 DECL|member|chip
-r_volatile
 id|SYSIF_REGS
+id|__iomem
 op_star
 id|chip
 suffix:semicolon
 multiline_comment|/* == c8817000 (mmap) */
 DECL|member|pio_chip
-r_volatile
 id|SYSIF_REGS
+id|__iomem
 op_star
 id|pio_chip
 suffix:semicolon
