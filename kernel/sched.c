@@ -7024,7 +7024,7 @@ r_int
 op_star
 )paren
 (paren
-id|p
+id|p-&gt;thread_info
 op_plus
 l_int|1
 )paren
