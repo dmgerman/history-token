@@ -4224,8 +4224,10 @@ DECL|macro|I_DIRTY_DATASYNC
 mdefine_line|#define I_DIRTY_DATASYNC&t;2 /* Data-related inode changes pending */
 DECL|macro|I_DIRTY_PAGES
 mdefine_line|#define I_DIRTY_PAGES&t;&t;4 /* Data-related inode changes pending */
+DECL|macro|__I_LOCK
+mdefine_line|#define __I_LOCK&t;&t;3
 DECL|macro|I_LOCK
-mdefine_line|#define I_LOCK&t;&t;&t;8
+mdefine_line|#define I_LOCK&t;&t;&t;(1 &lt;&lt; __I_LOCK)
 DECL|macro|I_FREEING
 mdefine_line|#define I_FREEING&t;&t;16
 DECL|macro|I_CLEAR
