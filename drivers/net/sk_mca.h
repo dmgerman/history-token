@@ -1,3 +1,4 @@
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#ifndef _SK_MCA_INCLUDE_
 DECL|macro|_SK_MCA_INCLUDE_
 mdefine_line|#define _SK_MCA_INCLUDE_

@@ -3,7 +3,6 @@ multiline_comment|/*&n;&t;Written 1996 by Russell Nelson, with reference to skel
 multiline_comment|/* Always include &squot;config.h&squot; first in case the user wants to turn on&n;   or override something. */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 multiline_comment|/*&n; * Set this to zero to disable DMA code&n; *&n; * Note that even if DMA is turned off we still support the &squot;dma&squot; and  &squot;use_dma&squot;&n; * module options so we don&squot;t break any startup scripts.&n; */
 DECL|macro|ALLOW_DMA
 mdefine_line|#define ALLOW_DMA&t;1

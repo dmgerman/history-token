@@ -5783,6 +5783,10 @@ op_logical_and
 op_logical_neg
 id|ap-&gt;fw_running
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond

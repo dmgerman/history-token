@@ -11838,7 +11838,7 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|10
+l_int|100
 suffix:semicolon
 id|i
 op_logical_and
@@ -13420,8 +13420,35 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;intel810: architecture does not support&quot;
+l_string|&quot;i810_audio: architecture does not support&quot;
 l_string|&quot; 32bit PCI busmaster DMA&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pci_resource_start
+c_func
+(paren
+id|pci_dev
+comma
+l_int|1
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* MMIO only ICH5 .. here be dragons .. */
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;i810_audio: Pure MMIO interfaces not yet supported.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
