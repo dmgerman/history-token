@@ -90,10 +90,22 @@ id|sleep_save
 id|SLEEP_SAVE_SIZE
 )braket
 suffix:semicolon
+r_int
+r_int
+id|delta
+comma
+id|gpio
+suffix:semicolon
 multiline_comment|/* preserve current time */
-id|RCNR
+id|delta
 op_assign
 id|xtime.tv_sec
+op_minus
+id|RCNR
+suffix:semicolon
+id|gpio
+op_assign
+id|GPLR
 suffix:semicolon
 multiline_comment|/* save vital registers */
 id|SAVE
@@ -261,6 +273,15 @@ c_func
 id|Ser1SDCR0
 )paren
 suffix:semicolon
+id|GPSR
+op_assign
+id|gpio
+suffix:semicolon
+id|GPCR
+op_assign
+op_complement
+id|gpio
+suffix:semicolon
 multiline_comment|/*&n;&t; * Clear the peripheral sleep-hold bit.&n;&t; */
 id|PSSR
 op_assign
@@ -306,6 +327,8 @@ multiline_comment|/* restore current time */
 id|xtime.tv_sec
 op_assign
 id|RCNR
+op_plus
+id|delta
 suffix:semicolon
 r_return
 l_int|0

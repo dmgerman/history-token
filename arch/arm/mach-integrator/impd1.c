@@ -821,7 +821,7 @@ r_sizeof
 id|d-&gt;dev.bus_id
 )paren
 comma
-l_string|&quot;lm%x:%5.5x&quot;
+l_string|&quot;lm%x:%5.5lx&quot;
 comma
 id|pdev-&gt;id
 comma
