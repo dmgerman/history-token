@@ -1985,6 +1985,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|kobject_name
+c_func
+(paren
+id|k
+)paren
+op_logical_and
+(paren
 op_logical_neg
 id|strcmp
 c_func
@@ -1996,6 +2003,7 @@ id|k
 )paren
 comma
 id|name
+)paren
 )paren
 )paren
 (brace
