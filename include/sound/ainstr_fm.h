@@ -227,11 +227,6 @@ id|fm_xinstrument_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &quot;seq_instr.h&quot;
-r_extern
-r_char
-op_star
-id|snd_seq_fm_id
-suffix:semicolon
 r_int
 id|snd_seq_fm_init
 c_func

@@ -6481,19 +6481,19 @@ op_assign
 multiline_comment|/* These come first to reduce init pop noise */
 l_int|0x1b
 comma
-l_int|0x005
+l_int|0x044
 comma
 multiline_comment|/* ADC Mux (AC&squot;97 source) */
 l_int|0x1c
 comma
 l_int|0x00B
 comma
-multiline_comment|/* Out Mux1 (VOUT1 = ADC+AUX, VOUT2 = ADC) */
+multiline_comment|/* Out Mux1 (VOUT1 = DAC+AUX, VOUT2 = DAC) */
 l_int|0x1d
 comma
 l_int|0x009
 comma
-multiline_comment|/* Out Mux2 (VOUT2 = ADC, VOUT3 = ADC) */
+multiline_comment|/* Out Mux2 (VOUT2 = DAC, VOUT3 = DAC) */
 l_int|0x18
 comma
 l_int|0x000

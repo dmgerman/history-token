@@ -28,12 +28,6 @@ id|next
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|snd_cards_count
-r_int
-id|snd_cards_count
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|snd_cards_lock
 r_int
 r_int
@@ -918,9 +912,6 @@ id|card-&gt;number
 op_assign
 l_int|NULL
 suffix:semicolon
-id|snd_cards_count
-op_decrement
-suffix:semicolon
 id|write_unlock
 c_func
 (paren
@@ -1778,9 +1769,6 @@ id|card-&gt;number
 )braket
 op_assign
 id|card
-suffix:semicolon
-id|snd_cards_count
-op_increment
 suffix:semicolon
 id|write_unlock
 c_func
