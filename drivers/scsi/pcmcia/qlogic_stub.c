@@ -960,15 +960,6 @@ l_int|0xd
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* A bad hack... */
-id|release_region
-c_func
-(paren
-id|link-&gt;io.BasePort1
-comma
-id|link-&gt;io.NumPorts1
-)paren
-suffix:semicolon
 multiline_comment|/* The KXL-810AN has a bigger IO port window */
 r_if
 c_cond
