@@ -86,6 +86,17 @@ DECL|member|lowest_consistent_map
 id|u32
 id|lowest_consistent_map
 suffix:semicolon
+multiline_comment|/* In order to deal with some buggy third-party PCI bridges that&n;&t; * do wrong prefetching, we never mark valid mappings as invalid.&n;&t; * Instead we point them at this dummy page.&n;&t; */
+DECL|member|dummy_page
+r_int
+r_int
+id|dummy_page
+suffix:semicolon
+DECL|member|dummy_page_pa
+r_int
+r_int
+id|dummy_page_pa
+suffix:semicolon
 multiline_comment|/* If PBM_NCLUSTERS is ever decreased to 4 or lower,&n;&t; * or if largest supported page_table_sz * 8K goes above&n;&t; * 2GB, you must increase the size of the type of&n;&t; * these counters.  You have been duly warned. -DaveM&n;&t; */
 r_struct
 (brace
@@ -110,6 +121,18 @@ id|u32
 id|dma_addr_mask
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_void
+id|pci_iommu_table_init
+c_func
+(paren
+r_struct
+id|pci_iommu
+op_star
+comma
+r_int
+)paren
 suffix:semicolon
 multiline_comment|/* This describes a PCI bus module&squot;s streaming buffer. */
 DECL|struct|pci_strbuf
