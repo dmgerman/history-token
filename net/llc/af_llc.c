@@ -4225,6 +4225,11 @@ id|create
 op_assign
 id|llc_ui_create
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 DECL|variable|llc_ui_ops
