@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: tg3.c,v 1.43.2.79 2002/03/12 07:11:17 davem Exp $&n; * tg3.c: Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001, 2002 Jeff Garzik (jgarzik@mandrakesoft.com)&n; */
+multiline_comment|/* $Id: tg3.c,v 1.43.2.80 2002/03/14 00:10:04 davem Exp $&n; * tg3.c: Broadcom Tigon3 ethernet driver.&n; *&n; * Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com)&n; * Copyright (C) 2001, 2002 Jeff Garzik (jgarzik@mandrakesoft.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -3923,6 +3923,42 @@ id|SPEED_10
 id|tp-&gt;mac_mode
 op_or_assign
 id|MAC_MODE_LINK_POLARITY
+suffix:semicolon
+)brace
+multiline_comment|/* ??? Without this setting Netgear GA302T PHY does not&n;&t; * ??? send/receive packets...&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|tp-&gt;phy_id
+op_amp
+id|PHY_ID_MASK
+)paren
+op_eq
+id|PHY_ID_BCM5411
+op_logical_and
+id|tp-&gt;pci_chip_rev_id
+op_eq
+id|CHIPREV_ID_5700_ALTIMA
+)paren
+(brace
+id|tp-&gt;mi_mode
+op_or_assign
+id|MAC_MI_MODE_AUTO_POLL
+suffix:semicolon
+id|tw32
+c_func
+(paren
+id|MAC_MI_MODE
+comma
+id|tp-&gt;mi_mode
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|40
+)paren
 suffix:semicolon
 )brace
 id|tw32
