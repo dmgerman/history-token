@@ -5,7 +5,7 @@ mdefine_line|#define __ASM_I386_FLOPPY_H
 macro_line|#include &lt;linux/vmalloc.h&gt;
 multiline_comment|/*&n; * The DMA channel used by the floppy controller cannot access data at&n; * addresses &gt;= 16MB&n; *&n; * Went back to the 1MB limit, as some people had problems with the floppy&n; * driver otherwise. It doesn&squot;t matter much for performance anyway, as most&n; * floppy accesses go through the track buffer.&n; */
 DECL|macro|_CROSS_64KB
-mdefine_line|#define _CROSS_64KB(a,s,vdma) &bslash;&n;(!vdma &amp;&amp; ((unsigned long)(a)/K_64 != ((unsigned long)(a) + (s) - 1) / K_64))
+mdefine_line|#define _CROSS_64KB(a,s,vdma) &bslash;&n;(!(vdma) &amp;&amp; ((unsigned long)(a)/K_64 != ((unsigned long)(a) + (s) - 1) / K_64))
 DECL|macro|CROSS_64KB
 mdefine_line|#define CROSS_64KB(a,s) _CROSS_64KB(a,s,use_virtual_dma &amp; 1)
 DECL|macro|SW
