@@ -250,11 +250,11 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|AR_READ
-mdefine_line|#define AR_READ      (ntohs(0x0100))
+mdefine_line|#define AR_READ      (cpu_to_le16(1))
 DECL|macro|AR_WRITE
-mdefine_line|#define AR_WRITE     (ntohs(0x0200))
+mdefine_line|#define AR_WRITE     (cpu_to_le16(2))
 DECL|macro|AR_EXCLUSIVE
-mdefine_line|#define AR_EXCLUSIVE (ntohs(0x2000))
+mdefine_line|#define AR_EXCLUSIVE (cpu_to_le16(0x20))
 DECL|macro|NCP_FILE_ID_LEN
 mdefine_line|#define NCP_FILE_ID_LEN 6
 multiline_comment|/* Defines for Name Spaces */
@@ -270,33 +270,33 @@ DECL|macro|NW_NS_OS2
 mdefine_line|#define NW_NS_OS2     4
 multiline_comment|/*  Defines for ReturnInformationMask */
 DECL|macro|RIM_NAME
-mdefine_line|#define RIM_NAME&t;      (ntohl(0x01000000L))
+mdefine_line|#define RIM_NAME&t;      (cpu_to_le32(1))
 DECL|macro|RIM_SPACE_ALLOCATED
-mdefine_line|#define RIM_SPACE_ALLOCATED   (ntohl(0x02000000L))
+mdefine_line|#define RIM_SPACE_ALLOCATED   (cpu_to_le32(2))
 DECL|macro|RIM_ATTRIBUTES
-mdefine_line|#define RIM_ATTRIBUTES&t;      (ntohl(0x04000000L))
+mdefine_line|#define RIM_ATTRIBUTES&t;      (cpu_to_le32(4))
 DECL|macro|RIM_DATA_SIZE
-mdefine_line|#define RIM_DATA_SIZE&t;      (ntohl(0x08000000L))
+mdefine_line|#define RIM_DATA_SIZE&t;      (cpu_to_le32(8))
 DECL|macro|RIM_TOTAL_SIZE
-mdefine_line|#define RIM_TOTAL_SIZE&t;      (ntohl(0x10000000L))
+mdefine_line|#define RIM_TOTAL_SIZE&t;      (cpu_to_le32(0x10))
 DECL|macro|RIM_EXT_ATTR_INFO
-mdefine_line|#define RIM_EXT_ATTR_INFO     (ntohl(0x20000000L))
+mdefine_line|#define RIM_EXT_ATTR_INFO     (cpu_to_le32(0x20))
 DECL|macro|RIM_ARCHIVE
-mdefine_line|#define RIM_ARCHIVE&t;      (ntohl(0x40000000L))
+mdefine_line|#define RIM_ARCHIVE&t;      (cpu_to_le32(0x40))
 DECL|macro|RIM_MODIFY
-mdefine_line|#define RIM_MODIFY&t;      (ntohl(0x80000000L))
+mdefine_line|#define RIM_MODIFY&t;      (cpu_to_le32(0x80))
 DECL|macro|RIM_CREATION
-mdefine_line|#define RIM_CREATION&t;      (ntohl(0x00010000L))
+mdefine_line|#define RIM_CREATION&t;      (cpu_to_le32(0x100))
 DECL|macro|RIM_OWNING_NAMESPACE
-mdefine_line|#define RIM_OWNING_NAMESPACE  (ntohl(0x00020000L))
+mdefine_line|#define RIM_OWNING_NAMESPACE  (cpu_to_le32(0x200))
 DECL|macro|RIM_DIRECTORY
-mdefine_line|#define RIM_DIRECTORY&t;      (ntohl(0x00040000L))
+mdefine_line|#define RIM_DIRECTORY&t;      (cpu_to_le32(0x400))
 DECL|macro|RIM_RIGHTS
-mdefine_line|#define RIM_RIGHTS&t;      (ntohl(0x00080000L))
+mdefine_line|#define RIM_RIGHTS&t;      (cpu_to_le32(0x800))
 DECL|macro|RIM_ALL
-mdefine_line|#define RIM_ALL &t;      (ntohl(0xFF0F0000L))
+mdefine_line|#define RIM_ALL &t;      (cpu_to_le32(0xFFF))
 DECL|macro|RIM_COMPRESSED_INFO
-mdefine_line|#define RIM_COMPRESSED_INFO   (ntohl(0x00000080L))
+mdefine_line|#define RIM_COMPRESSED_INFO   (cpu_to_le32(0x80000000))
 multiline_comment|/* Defines for NSInfoBitMask */
 DECL|macro|NSIBM_NFS_NAME
 mdefine_line|#define NSIBM_NFS_NAME&t;&t;0x0001
@@ -674,31 +674,31 @@ macro_line|#endif
 suffix:semicolon
 multiline_comment|/* modify mask - use with MODIFY_DOS_INFO structure */
 DECL|macro|DM_ATTRIBUTES
-mdefine_line|#define DM_ATTRIBUTES&t;&t;  (ntohl(0x02000000L))
+mdefine_line|#define DM_ATTRIBUTES&t;&t;  (cpu_to_le32(0x02))
 DECL|macro|DM_CREATE_DATE
-mdefine_line|#define DM_CREATE_DATE&t;&t;  (ntohl(0x04000000L))
+mdefine_line|#define DM_CREATE_DATE&t;&t;  (cpu_to_le32(0x04))
 DECL|macro|DM_CREATE_TIME
-mdefine_line|#define DM_CREATE_TIME&t;&t;  (ntohl(0x08000000L))
+mdefine_line|#define DM_CREATE_TIME&t;&t;  (cpu_to_le32(0x08))
 DECL|macro|DM_CREATOR_ID
-mdefine_line|#define DM_CREATOR_ID&t;&t;  (ntohl(0x10000000L))
+mdefine_line|#define DM_CREATOR_ID&t;&t;  (cpu_to_le32(0x10))
 DECL|macro|DM_ARCHIVE_DATE
-mdefine_line|#define DM_ARCHIVE_DATE &t;  (ntohl(0x20000000L))
+mdefine_line|#define DM_ARCHIVE_DATE &t;  (cpu_to_le32(0x20))
 DECL|macro|DM_ARCHIVE_TIME
-mdefine_line|#define DM_ARCHIVE_TIME &t;  (ntohl(0x40000000L))
+mdefine_line|#define DM_ARCHIVE_TIME &t;  (cpu_to_le32(0x40))
 DECL|macro|DM_ARCHIVER_ID
-mdefine_line|#define DM_ARCHIVER_ID&t;&t;  (ntohl(0x80000000L))
+mdefine_line|#define DM_ARCHIVER_ID&t;&t;  (cpu_to_le32(0x80))
 DECL|macro|DM_MODIFY_DATE
-mdefine_line|#define DM_MODIFY_DATE&t;&t;  (ntohl(0x00010000L))
+mdefine_line|#define DM_MODIFY_DATE&t;&t;  (cpu_to_le32(0x0100))
 DECL|macro|DM_MODIFY_TIME
-mdefine_line|#define DM_MODIFY_TIME&t;&t;  (ntohl(0x00020000L))
+mdefine_line|#define DM_MODIFY_TIME&t;&t;  (cpu_to_le32(0x0200))
 DECL|macro|DM_MODIFIER_ID
-mdefine_line|#define DM_MODIFIER_ID&t;&t;  (ntohl(0x00040000L))
+mdefine_line|#define DM_MODIFIER_ID&t;&t;  (cpu_to_le32(0x0400))
 DECL|macro|DM_LAST_ACCESS_DATE
-mdefine_line|#define DM_LAST_ACCESS_DATE&t;  (ntohl(0x00080000L))
+mdefine_line|#define DM_LAST_ACCESS_DATE&t;  (cpu_to_le32(0x0800))
 DECL|macro|DM_INHERITED_RIGHTS_MASK
-mdefine_line|#define DM_INHERITED_RIGHTS_MASK  (ntohl(0x00100000L))
+mdefine_line|#define DM_INHERITED_RIGHTS_MASK  (cpu_to_le32(0x1000))
 DECL|macro|DM_MAXIMUM_SPACE
-mdefine_line|#define DM_MAXIMUM_SPACE&t;  (ntohl(0x00200000L))
+mdefine_line|#define DM_MAXIMUM_SPACE&t;  (cpu_to_le32(0x2000))
 DECL|struct|nw_modify_dos_info
 r_struct
 id|nw_modify_dos_info

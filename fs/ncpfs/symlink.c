@@ -10,9 +10,9 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &quot;ncplib_kernel.h&quot;
 multiline_comment|/* these magic numbers must appear in the symlink file -- this makes it a bit&n;   more resilient against the magic attributes being set on random files. */
 DECL|macro|NCP_SYMLINK_MAGIC0
-mdefine_line|#define NCP_SYMLINK_MAGIC0&t;le32_to_cpu(0x6c6d7973)     /* &quot;symlnk-&gt;&quot; */
+mdefine_line|#define NCP_SYMLINK_MAGIC0&t;cpu_to_le32(0x6c6d7973)     /* &quot;symlnk-&gt;&quot; */
 DECL|macro|NCP_SYMLINK_MAGIC1
-mdefine_line|#define NCP_SYMLINK_MAGIC1&t;le32_to_cpu(0x3e2d6b6e)
+mdefine_line|#define NCP_SYMLINK_MAGIC1&t;cpu_to_le32(0x3e2d6b6e)
 multiline_comment|/* ----- read a symbolic link ------------------------------------------ */
 DECL|function|ncp_symlink_readpage
 r_static
