@@ -597,6 +597,22 @@ op_star
 id|modpath
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|device_to_hwpath
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_struct
+id|hardware_path
+op_star
+id|path
+)paren
+suffix:semicolon
 multiline_comment|/* inventory.c: */
 r_extern
 r_void

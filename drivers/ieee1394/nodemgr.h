@@ -78,6 +78,8 @@ DECL|macro|UNIT_DIRECTORY_HAS_LUN_DIRECTORY
 mdefine_line|#define UNIT_DIRECTORY_HAS_LUN_DIRECTORY&t;0x10
 DECL|macro|UNIT_DIRECTORY_LUN_DIRECTORY
 mdefine_line|#define UNIT_DIRECTORY_LUN_DIRECTORY&t;&t;0x20
+DECL|macro|UNIT_DIRECTORY_HAS_LUN
+mdefine_line|#define UNIT_DIRECTORY_HAS_LUN&t;&t;&t;0x40
 multiline_comment|/*&n; * A unit directory corresponds to a protocol supported by the&n; * node. If a node supports eg. IP/1394 and AV/C, its config rom has a&n; * unit directory for each of these protocols.&n; */
 DECL|struct|unit_directory
 r_struct
@@ -164,6 +166,11 @@ id|csr1212_keyval
 op_star
 id|ud_kv
 suffix:semicolon
+DECL|member|lun
+id|u32
+id|lun
+suffix:semicolon
+multiline_comment|/* logical unit number immediate value */
 )brace
 suffix:semicolon
 DECL|struct|node_entry
