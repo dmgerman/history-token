@@ -1,4 +1,5 @@
-multiline_comment|/* drm_dma.c -- DMA IOCTL and function support -*- linux-c -*-&n; * Created: Fri Mar 19 14:30:16 1999 by faith@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/**&n; * &bslash;file drm_dma.h &n; * DMA IOCTL and function support&n; *&n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/*&n; * Created: Fri Mar 19 14:30:16 1999 by faith@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* For task queue support */
 macro_line|#ifndef __HAVE_DMA_WAITQUEUE
@@ -21,6 +22,7 @@ DECL|macro|DRM_IRQ_TYPE
 mdefine_line|#define DRM_IRQ_TYPE&t;&t;0
 macro_line|#endif
 macro_line|#if __HAVE_DMA
+multiline_comment|/**&n; * Initialize the DMA data.&n; * &n; * &bslash;param dev DRM device.&n; * &bslash;return zero on success or a negative value on failure.&n; *&n; * Allocate and initialize a drm_device_dma structure.&n; */
 DECL|function|dma_setup
 r_int
 id|DRM
@@ -116,6 +118,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Cleanup the DMA resources.&n; *&n; * &bslash;param dev DRM device.&n; *&n; * Free all pages associated with DMA buffers, the buffers and pages lists, and&n; * finally the the drm_device::dma structure itself.&n; */
 DECL|function|dma_takedown
 r_void
 id|DRM
@@ -504,6 +507,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Free a buffer.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param buf buffer to free.&n; * &n; * Resets the fields of &bslash;p buf.&n; */
 DECL|function|free_buffer
 r_void
 id|DRM
@@ -599,6 +603,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#if !__HAVE_DMA_RECLAIM
+multiline_comment|/**&n; * Reclaim the buffers.&n; *&n; * &bslash;param filp file pointer.&n; *&n; * Frees each buffer associated with &bslash;p filp not already on the hardware.&n; */
 DECL|function|reclaim_buffers
 r_void
 id|DRM
@@ -725,6 +730,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#if __HAVE_DMA_IRQ
+multiline_comment|/**&n; * Install IRQ handler.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param irq IRQ number.&n; *&n; * Initializes the IRQ related data, and setups drm_device::vbl_queue. Installs the handler, calling the driver&n; * &bslash;c DRM(driver_irq_preinstall)() and &bslash;c DRM(driver_irq_postinstall)() functions&n; * before and after the installation.&n; */
 DECL|function|irq_install
 r_int
 id|DRM
@@ -963,6 +969,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Uninstall the IRQ handler.&n; *&n; * &bslash;param dev DRM device.&n; *&n; * Calls the driver&squot;s &bslash;c DRM(driver_irq_uninstall)() function, and stops the irq.&n; */
 DECL|function|irq_uninstall
 r_int
 id|DRM
@@ -1042,6 +1049,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * IRQ control ioctl.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument, pointing to a drm_control structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Calls irq_install() or irq_uninstall() according to &bslash;p arg.&n; */
 DECL|function|control
 r_int
 id|DRM
@@ -1152,6 +1160,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#if __HAVE_VBL_IRQ
+multiline_comment|/**&n; * Wait for VBLANK.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param data user argument, pointing to a drm_wait_vblank structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Verifies the IRQ is installed. &n; *&n; * If a signal is requested checks if this task has already scheduled the same signal&n; * for the same vblank sequence number - nothing to be done in&n; * that case. If the number of tasks waiting for the interrupt exceeds 100 the&n; * function fails. Otherwise adds a new entry to drm_device::vbl_sigs for this&n; * task.&n; *&n; * If a signal is not requested, then calls vblank_wait().&n; */
 DECL|function|wait_vblank
 r_int
 id|DRM
@@ -1513,6 +1522,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Send the VBLANK signals.&n; *&n; * &bslash;param dev DRM device.&n; *&n; * Sends a signal for each task in drm_device::vbl_sigs and empties the list.&n; *&n; * If a signal is not requested, then calls vblank_wait().&n; */
 DECL|function|vbl_send_signals
 r_void
 id|DRM

@@ -1,4 +1,5 @@
-multiline_comment|/* drm_proc.h -- /proc support for DRM -*- linux-c -*-&n; * Created: Mon Jan 11 09:48:47 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; *&n; * Acknowledgements:&n; *    Matthew J Sottek &lt;matthew.j.sottek@intel.com&gt; sent in a patch to fix&n; *    the problem with the proc files not outputting all their information.&n; */
+multiline_comment|/**&n; * &bslash;file drm_proc.h &n; * /proc support for DRM&n; *&n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; *&n; * &bslash;par Acknowledgements:&n; *    Matthew J Sottek &lt;matthew.j.sottek@intel.com&gt; sent in a patch to fix&n; *    the problem with the proc files not outputting all their information.&n; */
+multiline_comment|/*&n; * Created: Mon Jan 11 09:48:47 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
 r_static
 r_int
@@ -194,6 +195,7 @@ id|data
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/**&n; * Proc file list.&n; */
 DECL|struct|drm_proc_list
 r_struct
 id|drm_proc_list
@@ -204,6 +206,7 @@ r_char
 op_star
 id|name
 suffix:semicolon
+multiline_comment|/**&lt; file name */
 DECL|member|f
 r_int
 (paren
@@ -229,6 +232,7 @@ r_void
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/**&lt; proc callback*/
 )brace
 id|DRM
 c_func
@@ -315,6 +319,7 @@ macro_line|#endif
 suffix:semicolon
 DECL|macro|DRM_PROC_ENTRIES
 mdefine_line|#define DRM_PROC_ENTRIES (sizeof(DRM(proc_list))/sizeof(DRM(proc_list)[0]))
+multiline_comment|/**&n; * Initialize the DRI proc filesystem for a device.&n; *&n; * &bslash;param dev DRM device.&n; * &bslash;param minor device minor number.&n; * &bslash;param root DRI proc dir entry.&n; * &bslash;param dev_root resulting DRI device proc dir entry.&n; * &bslash;return root entry pointer on success, or NULL on failure.&n; * &n; * Create the DRI proc root entry &quot;/proc/dri&quot;, the device proc root entry&n; * &quot;/proc/dri/%minor%/&quot;, and each entry in proc_list as&n; * &quot;/proc/dri/%minor%/%name%&quot;.&n; */
 DECL|function|proc_init
 r_struct
 id|proc_dir_entry
@@ -429,7 +434,7 @@ id|dev_root
 id|DRM_ERROR
 c_func
 (paren
-l_string|&quot;Cannot create /proc/%s&bslash;n&quot;
+l_string|&quot;Cannot create /proc/dri/%s&bslash;n&quot;
 comma
 id|name
 )paren
@@ -583,6 +588,7 @@ r_return
 id|root
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Cleanup the proc filesystem resources.&n; *&n; * &bslash;param minor device minor number.&n; * &bslash;param root DRI proc dir entry.&n; * &bslash;param dev_root DRI device proc dir entry.&n; * &bslash;return always zero.&n; *&n; * Remove all proc entries created by proc_init().&n; */
 DECL|function|proc_cleanup
 r_int
 id|DRM
@@ -693,6 +699,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Called when &quot;/proc/dri/.../name&quot; is read.&n; * &n; * &bslash;param buf output buffer.&n; * &bslash;param start start of output data.&n; * &bslash;param offset requested start offset.&n; * &bslash;param request requested number of bytes.&n; * &bslash;param eof whether there is no more data to return.&n; * &bslash;param data private data.&n; * &bslash;return number of written bytes.&n; * &n; * Prints the device name together with the bus id if available.&n; */
 DECL|function|name_info
 r_static
 r_int
@@ -833,6 +840,7 @@ op_minus
 id|offset
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Called when &quot;/proc/dri/.../vm&quot; is read.&n; * &n; * &bslash;param buf output buffer.&n; * &bslash;param start start of output data.&n; * &bslash;param offset requested start offset.&n; * &bslash;param request requested number of bytes.&n; * &bslash;param eof whether there is no more data to return.&n; * &bslash;param data private data.&n; * &bslash;return number of written bytes.&n; * &n; * Prints information about all mappings in drm_device::maplist.&n; */
 DECL|function|_vm_info
 r_static
 r_int
@@ -1100,6 +1108,7 @@ op_minus
 id|offset
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Simply calls _vm_info() while holding the drm_device::struct_sem lock.&n; */
 DECL|function|vm_info
 r_static
 r_int
@@ -1185,6 +1194,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Called when &quot;/proc/dri/.../queues&quot; is read.&n; * &n; * &bslash;param buf output buffer.&n; * &bslash;param start start of output data.&n; * &bslash;param offset requested start offset.&n; * &bslash;param request requested number of bytes.&n; * &bslash;param eof whether there is no more data to return.&n; * &bslash;param data private data.&n; * &bslash;return number of written bytes.&n; */
 DECL|function|_queues_info
 r_static
 r_int
@@ -1445,6 +1455,7 @@ op_minus
 id|offset
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Simply calls _queues_info() while holding the drm_device::struct_sem lock.&n; */
 DECL|function|queues_info
 r_static
 r_int
@@ -1530,7 +1541,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* drm_bufs_info is called whenever a process reads&n;   /dev/dri/&lt;dev&gt;/bufs. */
+multiline_comment|/**&n; * Called when &quot;/proc/dri/.../bufs&quot; is read.&n; * &n; * &bslash;param buf output buffer.&n; * &bslash;param start start of output data.&n; * &bslash;param offset requested start offset.&n; * &bslash;param request requested number of bytes.&n; * &bslash;param eof whether there is no more data to return.&n; * &bslash;param data private data.&n; * &bslash;return number of written bytes.&n; */
 DECL|function|_bufs_info
 r_static
 r_int
@@ -1819,6 +1830,7 @@ op_minus
 id|offset
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Simply calls _bufs_info() while holding the drm_device::struct_sem lock.&n; */
 DECL|function|bufs_info
 r_static
 r_int
@@ -1904,6 +1916,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Called when &quot;/proc/dri/.../clients&quot; is read.&n; * &n; * &bslash;param buf output buffer.&n; * &bslash;param start start of output data.&n; * &bslash;param offset requested start offset.&n; * &bslash;param request requested number of bytes.&n; * &bslash;param eof whether there is no more data to return.&n; * &bslash;param data private data.&n; * &bslash;return number of written bytes.&n; */
 DECL|function|_clients_info
 r_static
 r_int
@@ -2054,6 +2067,7 @@ op_minus
 id|offset
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Simply calls _clients_info() while holding the drm_device::struct_sem lock.&n; */
 DECL|function|clients_info
 r_static
 r_int

@@ -1,5 +1,7 @@
-multiline_comment|/* drm_init.h -- Setup/Cleanup for DRM -*- linux-c -*-&n; * Created: Mon Jan  4 08:58:31 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/**&n; * &bslash;file drm_init.h &n; * Setup/Cleanup for DRM&n; *&n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/*&n; * Created: Mon Jan  4 08:58:31 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
+multiline_comment|/** Debug flags.  Set by parse_option(). */
 macro_line|#if 0
 r_int
 id|DRM
@@ -22,7 +24,7 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* drm_parse_option parses a single option.  See description for&n; * drm_parse_options for details.&n; */
+multiline_comment|/**&n; * Parse a single option.&n; *&n; * &bslash;param s option string.&n; *&n; * &bslash;sa See parse_options() for details.&n; */
 DECL|function|parse_option
 r_static
 r_void
@@ -149,7 +151,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* drm_parse_options parse the insmod &quot;drm_opts=&quot; options, or the command-line&n; * options passed to the kernel via LILO.  The grammar of the format is as&n; * follows:&n; *&n; * drm&t;&t;::= &squot;drm_opts=&squot; option_list&n; * option_list&t;::= option [ &squot;;&squot; option_list ]&n; * option&t;::= &squot;device:&squot; major&n; *&t;&t;|   &squot;debug&squot;&n; *&t;&t;|   &squot;noctx&squot;&n; * major&t;::= INTEGER&n; *&n; * Note that &squot;s&squot; contains option_list without the &squot;drm_opts=&squot; part.&n; *&n; * device=major,minor specifies the device number used for /dev/drm&n; *&t;  if major == 0 then the misc device is used&n; *&t;  if major == 0 and minor == 0 then dynamic misc allocation is used&n; * debug=on specifies that debugging messages will be printk&squot;d&n; * debug=trace specifies that each function call will be logged via printk&n; * debug=off turns off all debugging options&n; *&n; */
+multiline_comment|/**&n; * Parse the insmod &quot;drm_opts=&quot; options, or the command-line&n; * options passed to the kernel via LILO.  &n; *&n; * &bslash;param s contains option_list without the &squot;drm_opts=&squot; part.&n; *&n; * The grammar of the format is as&n; * follows:&n; *&n; * &bslash;code&n; * drm&t;&t;::= &squot;drm_opts=&squot; option_list&n; * option_list&t;::= option [ &squot;;&squot; option_list ]&n; * option&t;::= &squot;device:&squot; major&n; *&t;&t;|   &squot;debug&squot;&n; *&t;&t;|   &squot;noctx&squot;&n; * major&t;::= INTEGER&n; * &bslash;endcode&n; *&n; * - device=major,minor specifies the device number used for /dev/drm&n; *   - if major == 0 then the misc device is used&n; *   - if major == 0 and minor == 0 then dynamic misc allocation is used&n; * - debug=on specifies that debugging messages will be printk&squot;d&n; * - debug=trace specifies that each function call will be logged via printk&n; * - debug=off turns off all debugging options&n; *&n; * &bslash;todo Actually only the &bslash;e presence of the &squot;debug&squot; option is currently&n; * checked.&n; */
 DECL|function|parse_options
 r_void
 id|DRM
@@ -271,7 +273,7 @@ suffix:semicolon
 multiline_comment|/* parse */
 )brace
 )brace
-multiline_comment|/* drm_cpu_valid returns non-zero if the DRI will run on this CPU, and 0&n; * otherwise.&n; */
+multiline_comment|/**&n; * Check whether DRI will run on this CPU.&n; *&n; * &bslash;return non-zero if the DRI will run on this CPU, or zero otherwise.&n; */
 DECL|function|cpu_valid
 r_int
 id|DRM

@@ -1,5 +1,5 @@
-multiline_comment|/* drm_drv.h -- Generic driver template -*- linux-c -*-&n; * Created: Thu Nov 23 03:10:50 2000 by gareth@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
-multiline_comment|/*&n; * To use this template, you must at least define the following (samples&n; * given for the MGA driver):&n; *&n; * #define DRIVER_AUTHOR&t;&quot;VA Linux Systems, Inc.&quot;&n; *&n; * #define DRIVER_NAME&t;&t;&quot;mga&quot;&n; * #define DRIVER_DESC&t;&t;&quot;Matrox G200/G400&quot;&n; * #define DRIVER_DATE&t;&t;&quot;20001127&quot;&n; *&n; * #define DRIVER_MAJOR&t;&t;2&n; * #define DRIVER_MINOR&t;&t;0&n; * #define DRIVER_PATCHLEVEL&t;2&n; *&n; * #define DRIVER_IOCTL_COUNT&t;DRM_ARRAY_SIZE( mga_ioctls )&n; *&n; * #define DRM(x)&t;&t;mga_##x&n; */
+multiline_comment|/**&n; * &bslash;file drm_drv.h &n; * Generic driver template&n; *&n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; *&n; * To use this template, you must at least define the following (samples&n; * given for the MGA driver):&n; *&n; * &bslash;code&n; * #define DRIVER_AUTHOR&t;&quot;VA Linux Systems, Inc.&quot;&n; *&n; * #define DRIVER_NAME&t;&t;&quot;mga&quot;&n; * #define DRIVER_DESC&t;&t;&quot;Matrox G200/G400&quot;&n; * #define DRIVER_DATE&t;&t;&quot;20001127&quot;&n; *&n; * #define DRIVER_MAJOR&t;&t;2&n; * #define DRIVER_MINOR&t;&t;0&n; * #define DRIVER_PATCHLEVEL&t;2&n; *&n; * #define DRIVER_IOCTL_COUNT&t;DRM_ARRAY_SIZE( mga_ioctls )&n; *&n; * #define DRM(x)&t;&t;mga_##x&n; * &bslash;endcode&n; */
+multiline_comment|/*&n; * Created: Thu Nov 23 03:10:50 2000 by gareth@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#ifndef __MUST_HAVE_AGP
 DECL|macro|__MUST_HAVE_AGP
 mdefine_line|#define __MUST_HAVE_AGP&t;&t;&t;0
@@ -97,10 +97,10 @@ DECL|macro|DRIVER_FOPS
 mdefine_line|#define DRIVER_FOPS&t;&t;&t;&t;&bslash;&n;static struct file_operations&t;DRM(fops) = {&t;&bslash;&n;&t;.owner   = THIS_MODULE,&t;&t;&t;&bslash;&n;&t;.open&t; = DRM(open),&t;&t;&t;&bslash;&n;&t;.flush&t; = DRM(flush),&t;&t;&t;&bslash;&n;&t;.release = DRM(release),&t;&t;&bslash;&n;&t;.ioctl&t; = DRM(ioctl),&t;&t;&t;&bslash;&n;&t;.mmap&t; = DRM(mmap),&t;&t;&t;&bslash;&n;&t;.fasync  = DRM(fasync),&t;&t;&t;&bslash;&n;&t;.poll&t; = DRM(poll),&t;&t;&t;&bslash;&n;&t;.read&t; = DRM(read),&t;&t;&t;&bslash;&n;}
 macro_line|#endif
 macro_line|#ifndef MODULE
-multiline_comment|/* DRM(options) is called by the kernel to parse command-line options&n; * passed via the boot-loader (e.g., LILO).  It calls the insmod option&n; * routine, drm_parse_drm.&n; */
-multiline_comment|/* Use an additional macro to avoid preprocessor troubles */
+multiline_comment|/** Use an additional macro to avoid preprocessor troubles */
 DECL|macro|DRM_OPTIONS_FUNC
 mdefine_line|#define DRM_OPTIONS_FUNC DRM(options)
+multiline_comment|/**&n; * Called by the kernel to parse command-line options passed via the&n; * boot-loader (e.g., LILO).  It calls the insmod option routine,&n; * parse_options().&n; */
 DECL|function|options
 r_static
 r_int
@@ -141,7 +141,7 @@ suffix:semicolon
 DECL|macro|DRM_OPTIONS_FUNC
 macro_line|#undef DRM_OPTIONS_FUNC
 macro_line|#endif
-multiline_comment|/*&n; * The default number of instances (minor numbers) to initialize.&n; */
+multiline_comment|/**&n; * The default number of instances (minor numbers) to initialize.&n; */
 macro_line|#ifndef DRIVER_NUM_CARDS
 DECL|macro|DRIVER_NUM_CARDS
 mdefine_line|#define DRIVER_NUM_CARDS 1
@@ -177,6 +177,7 @@ l_int|0
 suffix:semicolon
 id|DRIVER_FOPS
 suffix:semicolon
+multiline_comment|/** Ioctl table */
 r_static
 id|drm_ioctl_desc_t
 id|DRM
@@ -1589,7 +1590,7 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* The kernel&squot;s context could be created here, but is now created&n;&t; * in drm_dma_enqueue.&t;This is more resource-efficient for&n;&t; * hardware that does not do DMA, but may mean that&n;&t; * drm_select_queue fails between the time the interrupt is&n;&t; * initialized and the time the queues are initialized.&n;&t; */
+multiline_comment|/*&n;&t; * The kernel&squot;s context could be created here, but is now created&n;&t; * in drm_dma_enqueue.&t;This is more resource-efficient for&n;&t; * hardware that does not do DMA, but may mean that&n;&t; * drm_select_queue fails between the time the interrupt is&n;&t; * initialized and the time the queues are initialized.&n;&t; */
 id|DRIVER_POSTSETUP
 c_func
 (paren
@@ -1599,6 +1600,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Take down the DRM device.&n; *&n; * &bslash;param dev DRM device structure.&n; *&n; * Frees every resource in &bslash;p dev.&n; *&n; * &bslash;sa drm_device and setup().&n; */
 DECL|function|takedown
 r_static
 r_int
@@ -2347,7 +2349,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Figure out how many instances to initialize.&n; */
+multiline_comment|/**&n; * Figure out how many instances to initialize.&n; *&n; * &bslash;return number of cards found.&n; *&n; * Searches for every PCI card in &bslash;c DRIVER_CARD_LIST with matching vendor and device ids.&n; */
 DECL|function|drm_count_cards
 r_static
 r_int
@@ -2511,7 +2513,7 @@ r_return
 id|num
 suffix:semicolon
 )brace
-multiline_comment|/* drm_init is called via init_module at module load time, or via&n; * linux/init/main.c (this is not currently supported).&n; */
+multiline_comment|/**&n; * Module initialization. Called via init_module at module load time, or via&n; * linux/init/main.c (this is not currently supported).&n; *&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Allocates and initialize an array of drm_device structures, and attempts to&n; * initialize all available devices, using consecutive minors, registering the&n; * stubs and initializing the AGP device.&n; * &n; * Expands the &bslash;c DRIVER_PREINIT and &bslash;c DRIVER_POST_INIT macros before and&n; * after the initialization for driver customization.&n; */
 DECL|function|drm_init
 r_static
 r_int
@@ -2995,7 +2997,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* drm_cleanup is called via cleanup_module at module unload time.&n; */
+multiline_comment|/**&n; * Called via cleanup_module() at module unload time.&n; *&n; * Cleans up all DRM device, calling takedown().&n; * &n; * &bslash;sa drm_init().&n; */
 DECL|function|drm_cleanup
 r_static
 r_void
@@ -3261,6 +3263,7 @@ c_func
 id|drm_cleanup
 )paren
 suffix:semicolon
+multiline_comment|/**&n; * Get version information&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument, pointing to a drm_version structure.&n; * &bslash;return zero on success or negative number on failure.&n; *&n; * Fills in the version information in &bslash;p arg.&n; */
 DECL|function|version
 r_int
 id|DRM
@@ -3386,6 +3389,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Open file.&n; * &n; * &bslash;param inode device inode&n; * &bslash;param filp file pointer.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Searches the DRM device with the same minor number, calls open_helper(), and&n; * increments the device open count. If the open count was previous at zero,&n; * i.e., it&squot;s the first that the device is open, then calls setup().&n; */
 DECL|function|open
 r_int
 id|DRM
@@ -3564,6 +3568,7 @@ r_return
 id|retcode
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * Release file.&n; *&n; * &bslash;param inode device inode&n; * &bslash;param filp file pointer.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * If the hardware lock is held then free it, and take it again for the kernel&n; * context since it&squot;s necessary to reclaim buffers. Unlink the file private&n; * data from its list and free it. Decreases the open count and if it reaches&n; * zero calls takedown().&n; */
 DECL|function|release
 r_int
 id|DRM
@@ -4088,7 +4093,7 @@ r_return
 id|retcode
 suffix:semicolon
 )brace
-multiline_comment|/* DRM(ioctl) is called whenever a process performs an ioctl on /dev/drm.&n; */
+multiline_comment|/** &n; * Called whenever a process performs an ioctl on /dev/drm.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument.&n; * &bslash;return zero on success or negative number on failure.&n; *&n; * Looks up the ioctl function in the ::ioctls table, checking for root&n; * previleges if so required, and dispatches to the respective function.&n; */
 DECL|function|ioctl
 r_int
 id|DRM
@@ -4298,6 +4303,7 @@ r_return
 id|retcode
 suffix:semicolon
 )brace
+multiline_comment|/** &n; * Lock ioctl.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument, pointing to a drm_lock structure.&n; * &bslash;return zero on success or negative number on failure.&n; *&n; * Add the current task to the lock wait queue, and attempt to take to lock.&n; */
 DECL|function|lock
 r_int
 id|DRM
@@ -4765,6 +4771,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/** &n; * Unlock ioctl.&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg user argument, pointing to a drm_lock structure.&n; * &bslash;return zero on success or negative number on failure.&n; *&n; * Transfer and free the lock.&n; */
 DECL|function|unlock
 r_int
 id|DRM

@@ -1,5 +1,7 @@
-multiline_comment|/* drm_vm.h -- Memory mapping for DRM -*- linux-c -*-&n; * Created: Mon Jan  4 08:58:31 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; *&n; * Authors:&n; *    Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; *    Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/**&n; * &bslash;file drm_vm.h&n; * Memory mapping for DRM&n; * &n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; */
+multiline_comment|/*&n; * Created: Mon Jan  4 08:58:31 1999 by faith@valinux.com&n; *&n; * Copyright 1999 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &quot;drmP.h&quot;
+multiline_comment|/** AGP virtual memory operations */
 DECL|variable|vm_ops
 r_struct
 id|vm_operations_struct
@@ -39,6 +41,7 @@ id|vm_close
 comma
 )brace
 suffix:semicolon
+multiline_comment|/** Shared virtual memory operations */
 DECL|variable|vm_shm_ops
 r_struct
 id|vm_operations_struct
@@ -78,6 +81,7 @@ id|vm_shm_close
 comma
 )brace
 suffix:semicolon
+multiline_comment|/** DMA virtual memory operations */
 DECL|variable|vm_dma_ops
 r_struct
 id|vm_operations_struct
@@ -117,6 +121,7 @@ id|vm_close
 comma
 )brace
 suffix:semicolon
+multiline_comment|/** Scatter-gather virtual memory operations */
 DECL|variable|vm_sg_ops
 r_struct
 id|vm_operations_struct
@@ -156,6 +161,7 @@ id|vm_close
 comma
 )brace
 suffix:semicolon
+multiline_comment|/**&n; * &bslash;c nopage method for AGP virtual memory.&n; *&n; * &bslash;param vma virtual memory area.&n; * &bslash;param address access address.&n; * &bslash;param write_access sharing.&n; * &bslash;return pointer to the page structure.&n; * &n; * Find the right map and if it&squot;s AGP memory find the real physical page to&n; * map, get the page, increment the use count and return it.&n; */
 DECL|function|vm_nopage
 r_struct
 id|page
@@ -428,6 +434,7 @@ id|NOPAGE_SIGBUS
 suffix:semicolon
 multiline_comment|/* Disallow mremap */
 )brace
+multiline_comment|/**&n; * &bslash;c nopage method for shared virtual memory.&n; *&n; * &bslash;param vma virtual memory area.&n; * &bslash;param address access address.&n; * &bslash;param write_access sharing.&n; * &bslash;return pointer to the page structure.&n; * &n; * Get the the mapping, find the real physical page to map, get the page, and&n; * return it.&n; */
 DECL|function|vm_shm_nopage
 r_struct
 id|page
@@ -550,7 +557,7 @@ r_return
 id|page
 suffix:semicolon
 )brace
-multiline_comment|/* Special close routine which deletes map information if we are the last&n; * person to close a mapping and it&squot;s not in the global maplist.&n; */
+multiline_comment|/**&n; * &bslash;c close method for shared virtual memory.&n; * &n; * &bslash;param vma virtual memory area.&n; * &n; * Deletes map information if we are the last&n; * person to close a mapping and it&squot;s not in the global maplist.&n; */
 DECL|function|vm_shm_close
 r_void
 id|DRM
@@ -889,6 +896,7 @@ id|dev-&gt;struct_sem
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * &bslash;c nopage method for DMA virtual memory.&n; *&n; * &bslash;param vma virtual memory area.&n; * &bslash;param address access address.&n; * &bslash;param write_access sharing.&n; * &bslash;return pointer to the page structure.&n; * &n; * Determine the page number from the page offset and get it from drm_device_dma::pagelist.&n; */
 DECL|function|vm_dma_nopage
 r_struct
 id|page
@@ -1029,6 +1037,7 @@ r_return
 id|page
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * &bslash;c nopage method for scatter-gather virtual memory.&n; *&n; * &bslash;param vma virtual memory area.&n; * &bslash;param address access address.&n; * &bslash;param write_access sharing.&n; * &bslash;return pointer to the page structure.&n; * &n; * Determine the map offset from the page offset and get it from drm_sg_mem::pagelist.&n; */
 DECL|function|vm_sg_nopage
 r_struct
 id|page
@@ -1171,6 +1180,7 @@ r_return
 id|page
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * &bslash;c open method for shared virtual memory.&n; * &n; * &bslash;param vma virtual memory area.&n; * &n; * Create a new drm_vma_entry structure as the &bslash;p vma private data entry and&n; * add it to drm_device::vmalist.&n; */
 DECL|function|vm_open
 r_void
 id|DRM
@@ -1275,6 +1285,7 @@ id|dev-&gt;struct_sem
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * &bslash;c close method for all virtual memory types.&n; * &n; * &bslash;param vma virtual memory area.&n; * &n; * Search the &bslash;p vma private data entry in drm_device::vmalist, unlink it, and&n; * free it.&n; */
 DECL|function|vm_close
 r_void
 id|DRM
@@ -1411,6 +1422,7 @@ id|dev-&gt;struct_sem
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * mmap DMA memory.&n; *&n; * &bslash;param filp file pointer.&n; * &bslash;param vma virtual memory area.&n; * &bslash;return zero on success or a negative number on failure.&n; * &n; * Sets the virtual memory area operations structure to vm_dma_ops, the file&n; * pointer, and calls vm_open().&n; */
 DECL|function|mmap_dma
 r_int
 id|DRM
@@ -1567,6 +1579,7 @@ DECL|macro|DRIVER_GET_REG_OFS
 mdefine_line|#define DRIVER_GET_REG_OFS()&t;0
 macro_line|#endif
 macro_line|#endif
+multiline_comment|/**&n; * mmap DMA memory.&n; *&n; * &bslash;param filp file pointer.&n; * &bslash;param vma virtual memory area.&n; * &bslash;return zero on success or a negative number on failure.&n; * &n; * If the virtual memory area has no offset associated with it then it&squot;s a DMA&n; * area, so calls mmap_dma(). Otherwise searches the map in drm_device::maplist,&n; * checks that the restricted flag is not set, sets the virtual memory operations&n; * according to the mapping type and remaps the pages. Finally sets the file&n; * pointer and calls vm_open().&n; */
 DECL|function|mmap
 r_int
 id|DRM
