@@ -199,9 +199,23 @@ op_eq
 id|AT_UNUSED
 )paren
 )paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|na-&gt;name
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|na-&gt;name_len
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 multiline_comment|/* It is a fake inode. */
 id|NInoSetAttr
 c_func
@@ -213,8 +227,6 @@ multiline_comment|/*&n;&t; * We have I30 global constant as an optimization as i
 r_if
 c_cond
 (paren
-id|na-&gt;name
-op_logical_and
 id|na-&gt;name_len
 op_logical_and
 id|na-&gt;name
@@ -225,6 +237,13 @@ id|I30
 r_int
 r_int
 id|i
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|na-&gt;name
+)paren
 suffix:semicolon
 id|i
 op_assign
@@ -282,6 +301,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
+id|L
 l_char|&squot;&bslash;0&squot;
 )paren
 suffix:semicolon
