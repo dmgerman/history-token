@@ -43,7 +43,6 @@ id|direntry
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB for DFS case should stop at the root of share which could be lower than root of this mount due to implicit dfs connections */
 )brace
 multiline_comment|/* Note: caller must free return buffer */
 r_char
@@ -72,6 +71,19 @@ r_char
 op_star
 id|full_path
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|direntry
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/* not much we can do if dentry is freed and&n;&t;&t;we need to reopen the file after it was closed implicitly&n;&t;&t;when the server crashed */
 r_for
 c_loop
 (paren
