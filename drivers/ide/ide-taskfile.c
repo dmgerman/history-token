@@ -553,6 +553,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* drive ready: *might* be interrupting */
 )brace
+multiline_comment|/*&n; * FIXME: Channel lock should be held on entry.&n; */
 DECL|function|ata_taskfile
 id|ide_startstop_t
 id|ata_taskfile
