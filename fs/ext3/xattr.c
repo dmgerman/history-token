@@ -4701,7 +4701,7 @@ id|ext3_xattr_cache
 comma
 l_int|0
 comma
-id|inode-&gt;i_bdev
+id|inode-&gt;i_sb-&gt;s_bdev
 comma
 id|hash
 )paren
@@ -4859,7 +4859,7 @@ id|ce
 comma
 l_int|0
 comma
-id|inode-&gt;i_bdev
+id|inode-&gt;i_sb-&gt;s_bdev
 comma
 id|hash
 )paren
