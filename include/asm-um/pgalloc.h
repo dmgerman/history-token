@@ -1,11 +1,12 @@
-multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Derived from include/asm-i386/pgalloc.h and include/asm-i386/pgtable.h&n; * Licensed under the GPL&n; */
+multiline_comment|/* &n; * Copyright (C) 2000, 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Copyright 2003 PathScale, Inc.&n; * Derived from include/asm-i386/pgalloc.h and include/asm-i386/pgtable.h&n; * Licensed under the GPL&n; */
 macro_line|#ifndef __UM_PGALLOC_H
 DECL|macro|__UM_PGALLOC_H
 mdefine_line|#define __UM_PGALLOC_H
+macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;linux/mm.h&quot;
 macro_line|#include &quot;asm/fixmap.h&quot;
 DECL|macro|pmd_populate_kernel
-mdefine_line|#define pmd_populate_kernel(mm, pmd, pte) &bslash;&n;&t;&t;set_pmd(pmd, __pmd(_PAGE_TABLE + (unsigned long) __pa(pte)))
+mdefine_line|#define pmd_populate_kernel(mm, pmd, pte) &bslash;&n;&t;set_pmd(pmd, __pmd(_PAGE_TABLE + (unsigned long) __pa(pte)))
 DECL|macro|pmd_populate
 mdefine_line|#define pmd_populate(mm, pmd, pte) &t;&t;&t;&t;&bslash;&n;&t;set_pmd(pmd, __pmd(_PAGE_TABLE +&t;&t;&t;&bslash;&n;&t;&t;((unsigned long long)page_to_pfn(pte) &lt;&lt;&t;&bslash;&n;&t;&t;&t;(unsigned long long) PAGE_SHIFT)))
 multiline_comment|/*&n; * Allocate and free page tables.&n; */
@@ -104,15 +105,13 @@ suffix:semicolon
 )brace
 DECL|macro|__pte_free_tlb
 mdefine_line|#define __pte_free_tlb(tlb,pte) tlb_remove_page((tlb),(pte))
-multiline_comment|/*&n; * allocating and freeing a pmd is trivial: the 1-entry pmd is&n; * inside the pgd, so has no extra memory associated with it.&n; */
-DECL|macro|pmd_alloc_one
-mdefine_line|#define pmd_alloc_one(mm, addr)&t;&t;({ BUG(); ((pmd_t *)2); })
+macro_line|#ifdef CONFIG_3_LEVEL_PGTABLES
+multiline_comment|/*&n; * In the 3-level case we free the pmds as part of the pgd.&n; */
 DECL|macro|pmd_free
 mdefine_line|#define pmd_free(x)&t;&t;&t;do { } while (0)
 DECL|macro|__pmd_free_tlb
 mdefine_line|#define __pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
-DECL|macro|pud_populate
-mdefine_line|#define pud_populate(mm, pmd, pte)&t;BUG()
+macro_line|#endif
 DECL|macro|check_pgt_cache
 mdefine_line|#define check_pgt_cache()&t;do { } while (0)
 macro_line|#endif

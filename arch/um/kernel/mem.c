@@ -40,7 +40,7 @@ DECL|variable|swapper_pg_dir
 id|pgd_t
 id|swapper_pg_dir
 (braket
-l_int|1024
+id|PTRS_PER_PGD
 )braket
 suffix:semicolon
 DECL|variable|highmem
@@ -1665,7 +1665,7 @@ id|pte
 suffix:semicolon
 id|pte
 op_assign
-id|alloc_pages
+id|alloc_page
 c_func
 (paren
 id|GFP_KERNEL
@@ -1673,8 +1673,6 @@ op_or
 id|__GFP_REPEAT
 op_or
 id|__GFP_ZERO
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
