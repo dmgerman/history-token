@@ -1,6 +1,6 @@
-multiline_comment|/*======================================================================&n;&n;    NinjaSCSI-3 / NinjaSCSI-32Bi PCMCIA SCSI hostadapter card driver&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    Ver.2.0   Support 32bit PIO mode&n;    Ver.1.1.2 Fix for scatter list buffer exceeds&n;    Ver.1.1   Support scatter list&n;    Ver.0.1   Initial version&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License.&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    NinjaSCSI-3 / NinjaSCSI-32Bi PCMCIA SCSI host adapter card driver&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    Ver.2.8   Support 32bit MMIO mode&n;              Support Synchronous Data TRansfer (SDTR) mode&n;    Ver.2.0   Support 32bit PIO mode&n;    Ver.1.1.2 Fix for scatter list buffer exceeds&n;    Ver.1.1   Support scatter list&n;    Ver.0.1   Initial version&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License.&n;&n;======================================================================*/
 multiline_comment|/***********************************************************************&n;    This driver is for these PCcards.&n;&n;&t;I-O DATA PCSC-F&t; (Workbit NinjaSCSI-3)&n;&t;&t;&t;&quot;WBT&quot;, &quot;NinjaSCSI-3&quot;, &quot;R1.0&quot;&n;&t;I-O DATA CBSC-II (Workbit NinjaSCSI-32Bi in 16bit mode)&n;&t;&t;&t;&quot;IO DATA&quot;, &quot;CBSC16&t; &quot;, &quot;1&quot;&n;&n;***********************************************************************/
-multiline_comment|/* $Id: nsp_cs.c,v 1.42 2001/09/10 10:30:58 elca Exp $ */
+multiline_comment|/* $Id: nsp_cs.c,v 1.4 2002/10/15 15:57:01 elca Exp $ */
 macro_line|#ifdef NSP_KERNEL_2_2
 macro_line|#include &lt;pcmcia/config.h&gt;
 macro_line|#include &lt;pcmcia/k_compat.h&gt;
@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
@@ -30,7 +29,9 @@ macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
+macro_line|#include &lt;pcmcia/cisreg.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
+macro_line|#include &lt;pcmcia/bus_ops.h&gt;
 macro_line|#include &quot;nsp_cs.h&quot;
 id|MODULE_AUTHOR
 c_func
@@ -41,7 +42,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;WorkBit NinjaSCSI-3 / NinjaSCSI-32Bi(16bit) PCMCIA SCSI host adapter module&quot;
+l_string|&quot;WorkBit NinjaSCSI-3 / NinjaSCSI-32Bi(16bit) PCMCIA SCSI host adapter module $Revision: 1.4 $&quot;
 )paren
 suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE
@@ -50,12 +51,14 @@ c_func
 l_string|&quot;sd,sr,sg,st&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE_LICENSE
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef PCMCIA_DEBUG
 DECL|variable|pc_debug
 r_static
@@ -86,7 +89,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;$Id: nsp_cs.c,v 1.42 2001/09/10 10:30:58 elca Exp $&quot;
+l_string|&quot;$Id: nsp_cs.c,v 1.4 2002/10/15 15:57:01 elca Exp $&quot;
 suffix:semicolon
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
@@ -186,7 +189,7 @@ c_func
 (paren
 id|irq_mask
 comma
-l_string|&quot;IRQ mask bits&quot;
+l_string|&quot;IRQ mask bits (default: 0xffff)&quot;
 )paren
 suffix:semicolon
 DECL|variable|irq_list
@@ -215,20 +218,56 @@ c_func
 (paren
 id|irq_list
 comma
-l_string|&quot;IRQ number list&quot;
+l_string|&quot;Use specified IRQ number. (default: auto select)&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* driver state info, local to driver */
-DECL|variable|nspinfo
+DECL|variable|nsp_burst_mode
 r_static
-r_char
-id|nspinfo
-(braket
-l_int|100
-)braket
+r_int
+id|nsp_burst_mode
+op_assign
+l_int|2
 suffix:semicolon
-multiline_comment|/* description */
+id|MODULE_PARM
+c_func
+(paren
+id|nsp_burst_mode
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nsp_burst_mode
+comma
+l_string|&quot;Burst transfer mode (0=io8, 1=io32, 2=mem32(default))&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Release IO ports after configuration? */
+DECL|variable|free_ports
+r_static
+r_int
+id|free_ports
+op_assign
+l_int|0
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|free_ports
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|free_ports
+comma
+l_string|&quot;Release IO ports after configuration? (default: 0 (=no))&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* /usr/src/linux/drivers/scsi/hosts.h */
 DECL|variable|driver_template
 r_static
@@ -236,93 +275,114 @@ id|Scsi_Host_Template
 id|driver_template
 op_assign
 (brace
-multiline_comment|/*&t;next:&t;&t;&t;NULL,*/
-macro_line|#if (KERNEL_VERSION(2,3,99) &gt; LINUX_VERSION_CODE)
+multiline_comment|/*&t;.next&t;&t;&t; = NULL,*/
+macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0))
+dot
+id|proc_name
+op_assign
+l_string|&quot;nsp_cs&quot;
+comma
+multiline_comment|/* kernel 2.4 */
+macro_line|#else
+dot
 id|proc_dir
-suffix:colon
+op_assign
 op_amp
 id|proc_scsi_nsp
 comma
 multiline_comment|/* kernel 2.2 */
-macro_line|#else
-id|proc_name
-suffix:colon
-l_string|&quot;nsp_cs&quot;
-comma
-multiline_comment|/* kernel 2.4 */
 macro_line|#endif
-multiline_comment|/*&t;proc_info:&t;&t;NULL,*/
+dot
+id|proc_info
+op_assign
+id|nsp_proc_info
+comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;WorkBit NinjaSCSI-3/32Bi&quot;
 comma
+dot
 id|detect
-suffix:colon
+op_assign
 id|nsp_detect
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|nsp_release
 comma
+dot
 id|info
-suffix:colon
+op_assign
 id|nsp_info
 comma
-multiline_comment|/*&t;command:&t;&t;NULL,*/
+multiline_comment|/*&t;.command&t;&t; = NULL,*/
+dot
 id|queuecommand
-suffix:colon
+op_assign
 id|nsp_queuecommand
 comma
-multiline_comment|/*&t;eh_strategy_handler:&t;nsp_eh_strategy,*/
-id|eh_abort_handler
-suffix:colon
-id|nsp_eh_abort
-comma
-id|eh_device_reset_handler
-suffix:colon
-id|nsp_eh_device_reset
-comma
+multiline_comment|/*&t;.eh_strategy_handler&t; = nsp_eh_strategy,*/
+multiline_comment|/*&t;.eh_abort_handler&t; = nsp_eh_abort,*/
+multiline_comment|/*&t;.eh_device_reset_handler = nsp_eh_device_reset,*/
+dot
 id|eh_bus_reset_handler
-suffix:colon
+op_assign
 id|nsp_eh_bus_reset
 comma
+dot
 id|eh_host_reset_handler
-suffix:colon
+op_assign
 id|nsp_eh_host_reset
 comma
+dot
 m_abort
-suffix:colon
+op_assign
 id|nsp_abort
 comma
+dot
 id|reset
-suffix:colon
+op_assign
 id|nsp_reset
 comma
-multiline_comment|/*&t;slave_attach:&t;&t;NULL,*/
-multiline_comment|/*&t;bios_param:&t;&t;NULL,*/
+multiline_comment|/*&t;.slave_attach&t;&t; = NULL,*/
+multiline_comment|/*&t;.bios_param&t;&t; = NULL,*/
+dot
 id|can_queue
-suffix:colon
+op_assign
 l_int|1
 comma
+dot
 id|this_id
-suffix:colon
-id|SCSI_INITIATOR_ID
+op_assign
+id|NSP_INITIATOR_ID
 comma
+dot
 id|sg_tablesize
-suffix:colon
+op_assign
 id|SG_ALL
 comma
+dot
 id|cmd_per_lun
-suffix:colon
+op_assign
 l_int|1
 comma
-multiline_comment|/*&t;present:&t;&t;0,*/
-multiline_comment|/*&t;unchecked_isa_dma:&t;0,*/
+multiline_comment|/*&t;.present&t;&t; = 0,*/
+multiline_comment|/*&t;.unchecked_isa_dma&t; = 0,*/
+dot
 id|use_clustering
-suffix:colon
+op_assign
 id|DISABLE_CLUSTERING
 comma
-multiline_comment|/*&t;emulated:&t;&t;0,*/
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,2))
+dot
+id|use_new_eh_code
+op_assign
+l_int|1
+comma
+macro_line|#endif
+multiline_comment|/*&t;.emulated&t;&t; = 0,*/
 )brace
 suffix:semicolon
 DECL|variable|dev_list
@@ -370,8 +430,8 @@ op_star
 )paren
 (brace
 macro_line|#ifdef PCMCIA_DEBUG
-singleline_comment|//unsigned int host_id = SCpnt-&gt;host-&gt;this_id;
-singleline_comment|//unsigned int base    = SCpnt-&gt;host-&gt;io_port;
+multiline_comment|/*unsigned int host_id = SCpnt-&gt;host-&gt;this_id;*/
+multiline_comment|/*unsigned int base    = SCpnt-&gt;host-&gt;io_port;*/
 r_int
 r_char
 id|target
@@ -391,8 +451,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() SCpnt=0x%p target=%d lun=%d buff=0x%p bufflen=%d use_sg=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() SCpnt=0x%p target=%d lun=%d buff=0x%p bufflen=%d use_sg=%d&bslash;n&quot;
 comma
 id|SCpnt
 comma
@@ -420,9 +481,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot; &quot;
+l_string|&quot; %s() CurrentSC!=NULL cannot happen!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() CurrentSC!=NULL this can&squot;t be happen&bslash;n&quot;
 )paren
 suffix:semicolon
 id|data-&gt;CurrentSC
@@ -460,19 +521,13 @@ id|data-&gt;CurrentSC
 op_assign
 id|SCpnt
 suffix:semicolon
-id|RESID
-op_assign
-id|SCpnt-&gt;request_bufflen
-suffix:semicolon
 id|SCpnt-&gt;SCp.Status
 op_assign
-op_minus
-l_int|1
+id|CHECK_CONDITION
 suffix:semicolon
 id|SCpnt-&gt;SCp.Message
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 id|SCpnt-&gt;SCp.have_data_in
 op_assign
@@ -485,6 +540,10 @@ suffix:semicolon
 id|SCpnt-&gt;SCp.phase
 op_assign
 id|PH_UNDETERMINED
+suffix:semicolon
+id|RESID
+op_assign
+id|SCpnt-&gt;request_bufflen
 suffix:semicolon
 multiline_comment|/* setup scratch area&n;&t;   SCp.ptr&t;&t;: buffer pointer&n;&t;   SCp.this_residual&t;: buffer length&n;&t;   SCp.buffer&t;&t;: next buffer&n;&t;   SCp.buffers_residual : left buffers in list&n;&t;   SCp.phase&t;&t;: current state of the command */
 r_if
@@ -504,7 +563,7 @@ id|SCpnt-&gt;request_buffer
 suffix:semicolon
 id|SCpnt-&gt;SCp.ptr
 op_assign
-id|SCpnt-&gt;SCp.buffer-&gt;address
+id|BUFFER_ADDR
 suffix:semicolon
 id|SCpnt-&gt;SCp.this_residual
 op_assign
@@ -583,7 +642,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;() out&bslash;n&quot;);
+singleline_comment|//DEBUG(0, __func__ &quot;() out&bslash;n&quot;);
 r_return
 l_int|0
 suffix:semicolon
@@ -613,7 +672,7 @@ r_int
 r_char
 id|transfer_mode_reg
 suffix:semicolon
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;() enabled=%d&bslash;n&quot;, enabled);
+singleline_comment|//DEBUG(0, __func__ &quot;() enabled=%d&bslash;n&quot;, enabled);
 r_if
 c_cond
 (paren
@@ -651,6 +710,65 @@ id|transfer_mode_reg
 )paren
 suffix:semicolon
 )brace
+DECL|function|nsphw_init_sync
+r_static
+r_void
+id|nsphw_init_sync
+c_func
+(paren
+id|nsp_hw_data
+op_star
+id|data
+)paren
+(brace
+id|sync_data
+id|tmp_sync
+op_assign
+(brace
+dot
+id|SyncNegotiation
+op_assign
+id|SYNC_NOT_YET
+comma
+dot
+id|SyncPeriod
+op_assign
+l_int|0
+comma
+dot
+id|SyncOffset
+op_assign
+l_int|0
+)brace
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/* setup sync data */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|N_TARGET
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|data-&gt;Sync
+(braket
+id|i
+)braket
+op_assign
+id|tmp_sync
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n; * Initialize Ninja hardware&n; */
 DECL|function|nsphw_init
 r_static
@@ -669,35 +787,14 @@ id|base
 op_assign
 id|data-&gt;BaseAddress
 suffix:semicolon
-r_int
-id|i
-comma
-id|j
-suffix:semicolon
-id|sync_data
-id|tmp_sync
-op_assign
-(brace
-id|SyncNegotiation
-suffix:colon
-id|SYNC_NOT_YET
-comma
-id|SyncPeriod
-suffix:colon
-l_int|0
-comma
-id|SyncOffset
-suffix:colon
-l_int|0
-)brace
-suffix:semicolon
 id|DEBUG
 c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() in base=0x%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() in base=0x%x&bslash;n&quot;
 comma
 id|base
 )paren
@@ -705,6 +802,8 @@ suffix:semicolon
 id|data-&gt;ScsiClockDiv
 op_assign
 id|CLOCK_40M
+op_or
+id|FAST_20
 suffix:semicolon
 id|data-&gt;CurrentSC
 op_assign
@@ -718,49 +817,12 @@ id|data-&gt;TransferMode
 op_assign
 id|MODE_IO8
 suffix:semicolon
-multiline_comment|/* setup sync data */
-r_for
-c_loop
+id|nsphw_init_sync
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|N_TARGET
-suffix:semicolon
-id|i
-op_increment
+id|data
 )paren
-(brace
-r_for
-c_loop
-(paren
-id|j
-op_assign
-l_int|0
 suffix:semicolon
-id|j
-OL
-id|N_LUN
-suffix:semicolon
-id|j
-op_increment
-)paren
-(brace
-id|data-&gt;Sync
-(braket
-id|i
-)braket
-(braket
-id|j
-)braket
-op_assign
-id|tmp_sync
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/* block all interrupts */
 id|nsp_write
 c_func
@@ -1010,7 +1072,7 @@ op_assign
 id|SCpnt-&gt;target
 suffix:semicolon
 r_int
-id|wait_count
+id|time_out
 suffix:semicolon
 r_int
 r_char
@@ -1018,7 +1080,7 @@ id|phase
 comma
 id|arbit
 suffix:semicolon
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;()in&bslash;n&quot;);
+singleline_comment|//DEBUG(0, __func__ &quot;()in&bslash;n&quot;);
 id|phase
 op_assign
 id|nsp_index_read
@@ -1058,13 +1120,9 @@ comma
 id|ARBIT_GO
 )paren
 suffix:semicolon
-id|wait_count
+id|time_out
 op_assign
-id|jiffies
-op_plus
-l_int|10
-op_star
-id|HZ
+l_int|1000
 suffix:semicolon
 r_do
 (brace
@@ -1103,12 +1161,11 @@ id|ARBIT_FAIL
 op_eq
 l_int|0
 op_logical_and
-id|time_before
-c_func
 (paren
-id|jiffies
-comma
-id|wait_count
+id|time_out
+op_decrement
+op_ne
+l_int|0
 )paren
 )paren
 (brace
@@ -1160,15 +1217,15 @@ id|base
 comma
 id|SCSIDATALATCH
 comma
+id|BIT
+c_func
 (paren
-l_int|1
-op_lshift
 id|host_id
 )paren
 op_or
+id|BIT
+c_func
 (paren
-l_int|1
-op_lshift
 id|target
 )paren
 )paren
@@ -1425,12 +1482,7 @@ id|target
 op_assign
 id|SCpnt-&gt;target
 suffix:semicolon
-r_int
-r_char
-id|lun
-op_assign
-id|SCpnt-&gt;lun
-suffix:semicolon
+singleline_comment|//&t;unsigned char&t;       lun    = SCpnt-&gt;lun;
 id|sync_data
 op_star
 id|sync
@@ -1440,9 +1492,6 @@ op_amp
 id|data-&gt;Sync
 (braket
 id|target
-)braket
-(braket
-id|lun
 )braket
 )paren
 suffix:semicolon
@@ -1465,11 +1514,11 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/**!**/
 id|period
 op_assign
 id|sync-&gt;SyncPeriod
@@ -1493,7 +1542,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|data-&gt;ScsiClockDiv
+op_amp
+(paren
+id|BIT
+c_func
+(paren
+l_int|0
+)paren
+op_or
+id|BIT
+c_func
+(paren
+l_int|1
+)paren
+)paren
+)paren
 op_eq
 id|CLOCK_20M
 )paren
@@ -1589,10 +1654,6 @@ id|sync-&gt;AckWidth
 op_assign
 l_int|0
 suffix:semicolon
-id|sync-&gt;SyncNegotiation
-op_assign
-id|SYNC_OK
-suffix:semicolon
 r_return
 id|FALSE
 suffix:semicolon
@@ -1614,10 +1675,6 @@ suffix:semicolon
 id|sync-&gt;AckWidth
 op_assign
 id|sync_table-&gt;ack_width
-suffix:semicolon
-id|sync-&gt;SyncNegotiation
-op_assign
-id|SYNC_OK
 suffix:semicolon
 id|DEBUG
 c_func
@@ -1660,7 +1717,7 @@ id|base
 op_assign
 id|SCpnt-&gt;host-&gt;io_port
 suffix:semicolon
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;() in SCpnt=0x%p, time=%d&bslash;n&quot;, SCpnt, time);
+singleline_comment|//DEBUG(0, __func__ &quot;() in SCpnt=0x%p, time=%d&bslash;n&quot;, SCpnt, time);
 id|data-&gt;TimerCount
 op_assign
 id|time
@@ -1707,18 +1764,12 @@ r_char
 id|reg
 suffix:semicolon
 r_int
-id|count
-comma
-id|i
-op_assign
-id|TRUE
+id|time_out
 suffix:semicolon
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;()&bslash;n&quot;);
-id|count
+singleline_comment|//DEBUG(0, __func__ &quot;()&bslash;n&quot;);
+id|time_out
 op_assign
-id|jiffies
-op_plus
-id|HZ
+l_int|100
 suffix:semicolon
 r_do
 (brace
@@ -1748,15 +1799,10 @@ r_while
 c_loop
 (paren
 (paren
-id|i
-op_assign
-id|time_before
-c_func
-(paren
-id|jiffies
-comma
-id|count
-)paren
+id|time_out
+op_decrement
+op_ne
+l_int|0
 )paren
 op_logical_and
 (paren
@@ -1771,16 +1817,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|i
+id|time_out
+op_eq
+l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
+l_string|&quot;%s: %s signal off timeut&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; %s signal off timeut&bslash;n&quot;
 comma
 id|str
 )paren
@@ -1817,7 +1865,7 @@ op_assign
 id|SCpnt-&gt;host-&gt;io_port
 suffix:semicolon
 r_int
-id|wait_count
+id|time_out
 suffix:semicolon
 r_int
 r_char
@@ -1825,12 +1873,10 @@ id|phase
 comma
 id|i_src
 suffix:semicolon
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;() current_phase=0x%x, mask=0x%x&bslash;n&quot;, current_phase, mask);
-id|wait_count
+singleline_comment|//DEBUG(0, __func__ &quot;() current_phase=0x%x, mask=0x%x&bslash;n&quot;, current_phase, mask);
+id|time_out
 op_assign
-id|jiffies
-op_plus
-id|HZ
+l_int|100
 suffix:semicolon
 r_do
 (brace
@@ -1910,18 +1956,15 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|time_before
-c_func
-(paren
-id|jiffies
-comma
-id|wait_count
-)paren
+id|time_out
+op_decrement
+op_ne
+l_int|0
 )paren
 (brace
 suffix:semicolon
 )brace
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot; : &quot; __FUNCTION__ &quot; timeout&bslash;n&quot;);
+singleline_comment|//DEBUG(0, __func__ &quot; : &quot; __func__ &quot; timeout&bslash;n&quot;);
 r_return
 op_minus
 l_int|1
@@ -1975,7 +2018,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;()&bslash;n&quot;);
+singleline_comment|//DEBUG(0, __func__ &quot;()&bslash;n&quot;);
 r_for
 c_loop
 (paren
@@ -2142,7 +2185,7 @@ r_int
 r_int
 id|count
 suffix:semicolon
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;()&bslash;n&quot;);
+singleline_comment|//DEBUG(0, __func__ &quot;()&bslash;n&quot;);
 r_if
 c_cond
 (paren
@@ -2177,6 +2220,14 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * XXX: NSP_QUIRK&n;&t; * data phase skip only occures in case of SCSI_LOW_READ&n;&t; */
+id|DEBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot; use bypass quirk&bslash;n&quot;
+)paren
+suffix:semicolon
 id|SCpnt-&gt;SCp.phase
 op_assign
 id|PH_DATA
@@ -2195,14 +2246,6 @@ c_func
 id|data
 comma
 id|FALSE
-)paren
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot; use bypass quirk&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2235,7 +2278,7 @@ r_int
 r_char
 id|reg
 suffix:semicolon
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;()&bslash;n&quot;);
+singleline_comment|//DEBUG(0, __func__ &quot;()&bslash;n&quot;);
 id|nsp_negate_signal
 c_func
 (paren
@@ -2328,6 +2371,8 @@ comma
 id|m
 comma
 id|h
+comma
+id|dummy
 suffix:semicolon
 id|nsp_index_write
 c_func
@@ -2337,48 +2382,48 @@ comma
 id|POINTERCLR
 comma
 id|POINTER_CLEAR
+op_or
+id|ACK_COUNTER
 )paren
 suffix:semicolon
 id|l
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|nsp_read
+id|nsp_index_read
 c_func
 (paren
 id|base
 comma
-id|DATAREG
+id|TRANSFERCOUNT
 )paren
 suffix:semicolon
 id|m
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|nsp_read
+id|nsp_index_read
 c_func
 (paren
 id|base
 comma
-id|DATAREG
+id|TRANSFERCOUNT
 )paren
 suffix:semicolon
 id|h
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|nsp_read
+id|nsp_index_read
 c_func
 (paren
 id|base
 comma
-id|DATAREG
+id|TRANSFERCOUNT
+)paren
+suffix:semicolon
+id|dummy
+op_assign
+id|nsp_index_read
+c_func
+(paren
+id|base
+comma
+id|TRANSFERCOUNT
 )paren
 suffix:semicolon
 id|count
@@ -2401,7 +2446,7 @@ op_lshift
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;() =0x%x&bslash;n&quot;, count);
+singleline_comment|//DEBUG(0, __func__ &quot;() =0x%x&bslash;n&quot;, count);
 r_return
 id|count
 suffix:semicolon
@@ -2434,9 +2479,13 @@ op_assign
 id|SCpnt-&gt;host-&gt;io_port
 suffix:semicolon
 r_int
+r_int
+id|mmio_base
+op_assign
+id|SCpnt-&gt;host-&gt;base
+suffix:semicolon
+r_int
 id|time_out
-comma
-id|i
 suffix:semicolon
 r_int
 id|ocount
@@ -2458,8 +2507,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() in SCpnt=0x%p resid=%d ocount=%d ptr=0x%p this_residual=%d buffers=0x%p nbuf=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() in SCpnt=0x%p resid=%d ocount=%d ptr=0x%p this_residual=%d buffers=0x%p nbuf=%d&bslash;n&quot;
 comma
 id|SCpnt
 comma
@@ -2478,25 +2528,16 @@ id|SCpnt-&gt;SCp.buffers_residual
 suffix:semicolon
 id|time_out
 op_assign
-id|jiffies
-op_plus
-l_int|10
-op_star
-id|HZ
+l_int|1000
 suffix:semicolon
 r_while
 c_loop
 (paren
 (paren
-id|i
-op_assign
-id|time_before
-c_func
-(paren
-id|jiffies
-comma
 id|time_out
-)paren
+op_decrement
+op_ne
+l_int|0
 )paren
 op_logical_and
 (paren
@@ -2667,6 +2708,41 @@ id|res
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|MODE_MEM32
+suffix:colon
+id|res
+op_and_assign
+op_complement
+(paren
+id|BIT
+c_func
+(paren
+l_int|1
+)paren
+op_or
+id|BIT
+c_func
+(paren
+l_int|0
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* align 4 */
+id|nsp_mmio_fifo32_read
+c_func
+(paren
+id|mmio_base
+comma
+id|SCpnt-&gt;SCp.ptr
+comma
+id|res
+op_rshift
+l_int|2
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|DEBUG
@@ -2677,7 +2753,7 @@ comma
 l_string|&quot;unknown read mode&bslash;n&quot;
 )paren
 suffix:semicolon
-r_break
+r_return
 suffix:semicolon
 )brace
 id|RESID
@@ -2719,21 +2795,18 @@ op_increment
 suffix:semicolon
 id|SCpnt-&gt;SCp.ptr
 op_assign
-id|SCpnt-&gt;SCp.buffer-&gt;address
+id|BUFFER_ADDR
 suffix:semicolon
 id|SCpnt-&gt;SCp.this_residual
 op_assign
 id|SCpnt-&gt;SCp.buffer-&gt;length
 suffix:semicolon
-)brace
 id|time_out
 op_assign
-id|jiffies
-op_plus
-l_int|10
-op_star
-id|HZ
+l_int|1000
 suffix:semicolon
+singleline_comment|//DEBUG(0, &quot;page: 0x%p, off: 0x%x&bslash;n&quot;, SCpnt-&gt;SCp.buffer-&gt;page, SCpnt-&gt;SCp.buffer-&gt;offset);
+)brace
 )brace
 id|data-&gt;FifoCount
 op_assign
@@ -2742,16 +2815,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|i
+id|time_out
+op_eq
+l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
+l_string|&quot;%s() pio read timeout resid=%d this_residual=%d buffers_residual=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() pio read timeout resid=%d this_residual=%d buffers_residual=%d&bslash;n&quot;
 comma
 id|RESID
 comma
@@ -2795,11 +2870,14 @@ op_assign
 id|SCpnt-&gt;host-&gt;io_port
 suffix:semicolon
 r_int
-id|time_out
-comma
-id|i
+r_int
+id|mmio_base
+op_assign
+id|SCpnt-&gt;host-&gt;base
 suffix:semicolon
 r_int
+id|time_out
+suffix:semicolon
 r_int
 id|ocount
 comma
@@ -2818,8 +2896,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() in fifocount=%d ptr=0x%p this_residual=%d buffers=0x%p nbuf=%d resid=0x%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() in fifocount=%d ptr=0x%p this_residual=%d buffers=0x%p nbuf=%d resid=0x%x&bslash;n&quot;
 comma
 id|data-&gt;FifoCount
 comma
@@ -2836,25 +2915,16 @@ id|RESID
 suffix:semicolon
 id|time_out
 op_assign
-id|jiffies
-op_plus
-l_int|10
-op_star
-id|HZ
+l_int|1000
 suffix:semicolon
 r_while
 c_loop
 (paren
 (paren
-id|i
-op_assign
-id|time_before
-c_func
-(paren
-id|jiffies
-comma
 id|time_out
-)paren
+op_decrement
+op_ne
+l_int|0
 )paren
 op_logical_and
 (paren
@@ -2890,15 +2960,44 @@ op_ne
 id|BUSPHASE_DATA_OUT
 )paren
 (brace
+id|res
+op_assign
+id|ocount
+op_minus
+id|nsp_fifo_count
+c_func
+(paren
+id|SCpnt
+)paren
+suffix:semicolon
 id|DEBUG
 c_func
 (paren
 l_int|0
 comma
-l_string|&quot; phase changed stat=0x%x&bslash;n&quot;
+l_string|&quot; phase changed stat=0x%x, res=%d&bslash;n&quot;
 comma
 id|stat
+comma
+id|res
 )paren
+suffix:semicolon
+multiline_comment|/* Put back pointer */
+id|RESID
+op_add_assign
+id|res
+suffix:semicolon
+id|SCpnt-&gt;SCp.ptr
+op_sub_assign
+id|res
+suffix:semicolon
+id|SCpnt-&gt;SCp.this_residual
+op_add_assign
+id|res
+suffix:semicolon
+id|ocount
+op_sub_assign
+id|res
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3003,6 +3102,41 @@ id|res
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|MODE_MEM32
+suffix:colon
+id|res
+op_and_assign
+op_complement
+(paren
+id|BIT
+c_func
+(paren
+l_int|1
+)paren
+op_or
+id|BIT
+c_func
+(paren
+l_int|0
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* align 4 */
+id|nsp_mmio_fifo32_write
+c_func
+(paren
+id|mmio_base
+comma
+id|SCpnt-&gt;SCp.ptr
+comma
+id|res
+op_rshift
+l_int|2
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|DEBUG
@@ -3054,21 +3188,17 @@ op_increment
 suffix:semicolon
 id|SCpnt-&gt;SCp.ptr
 op_assign
-id|SCpnt-&gt;SCp.buffer-&gt;address
+id|BUFFER_ADDR
 suffix:semicolon
 id|SCpnt-&gt;SCp.this_residual
 op_assign
 id|SCpnt-&gt;SCp.buffer-&gt;length
 suffix:semicolon
-)brace
 id|time_out
 op_assign
-id|jiffies
-op_plus
-l_int|10
-op_star
-id|HZ
+l_int|1000
 suffix:semicolon
+)brace
 )brace
 id|data-&gt;FifoCount
 op_assign
@@ -3077,22 +3207,33 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|i
+id|time_out
+op_eq
+l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
+l_string|&quot;%s() pio write timeout resid=0x%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() pio write timeout resid=%d&bslash;n&quot;
 comma
 id|RESID
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//DEBUG(0, &quot; write ocount=%d&bslash;n&quot;, ocount);
+id|DEBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot; write ocount=0x%x&bslash;n&quot;
+comma
+id|ocount
+)paren
+suffix:semicolon
 )brace
 DECL|macro|RFIFO_CRIT
 macro_line|#undef RFIFO_CRIT
@@ -3126,12 +3267,7 @@ id|target
 op_assign
 id|SCpnt-&gt;target
 suffix:semicolon
-r_int
-r_char
-id|lun
-op_assign
-id|SCpnt-&gt;lun
-suffix:semicolon
+singleline_comment|//&t;unsigned char  lun    = SCpnt-&gt;lun;
 id|sync_data
 op_star
 id|sync
@@ -3142,12 +3278,9 @@ id|data-&gt;Sync
 (braket
 id|target
 )braket
-(braket
-id|lun
-)braket
 )paren
 suffix:semicolon
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;() in SCpnt=0x%p&bslash;n&quot;, SCpnt);
+singleline_comment|//DEBUG(0, __func__ &quot;() in SCpnt=0x%p&bslash;n&quot;, SCpnt);
 multiline_comment|/* setup synch transfer registers */
 id|nsp_index_write
 c_func
@@ -3172,6 +3305,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|SCpnt-&gt;use_sg
+op_eq
+l_int|0
+op_logical_or
 id|RESID
 op_mod
 l_int|4
@@ -3180,7 +3317,7 @@ l_int|0
 op_logical_or
 id|RESID
 op_le
-l_int|256
+id|PAGE_SIZE
 )paren
 (brace
 id|data-&gt;TransferMode
@@ -3189,10 +3326,38 @@ id|MODE_IO8
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|nsp_burst_mode
+op_eq
+id|BURST_MEM32
+)paren
+(brace
+id|data-&gt;TransferMode
+op_assign
+id|MODE_MEM32
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|nsp_burst_mode
+op_eq
+id|BURST_IO32
+)paren
 (brace
 id|data-&gt;TransferMode
 op_assign
 id|MODE_IO32
+suffix:semicolon
+)brace
+r_else
+(brace
+id|data-&gt;TransferMode
+op_assign
+id|MODE_IO8
 suffix:semicolon
 )brace
 multiline_comment|/* setup pdma fifo */
@@ -3267,9 +3432,6 @@ op_star
 id|tmpSC
 suffix:semicolon
 r_int
-id|len
-suffix:semicolon
-r_int
 r_char
 id|target
 comma
@@ -3288,44 +3450,10 @@ suffix:semicolon
 id|nsp_hw_data
 op_star
 id|data
-suffix:semicolon
-singleline_comment|//printk(&quot;&amp;nsp_data=0x%p, dev_id=0x%p&bslash;n&quot;, &amp;nsp_data, dev_id);
-multiline_comment|/* sanity check */
-r_if
-c_cond
-(paren
-op_amp
-id|nsp_data
-op_ne
-id|dev_id
-)paren
-(brace
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot; irq conflict? this can&squot;t happen&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|data
 op_assign
 id|dev_id
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|irq
-op_ne
-id|data-&gt;IrqNumber
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
+singleline_comment|//printk(&quot;&amp;nsp_data=0x%p, dev_id=0x%p&bslash;n&quot;, &amp;nsp_data, dev_id);
 id|base
 op_assign
 id|data-&gt;BaseAddress
@@ -3352,13 +3480,17 @@ comma
 id|IRQSTATUS
 )paren
 suffix:semicolon
+singleline_comment|//DEBUG(0, &quot; i_src=0x%x&bslash;n&quot;, i_src);
 r_if
 c_cond
+(paren
 (paren
 id|i_src
 op_eq
 l_int|0xff
+)paren
 op_logical_or
+(paren
 (paren
 id|i_src
 op_amp
@@ -3366,6 +3498,7 @@ id|IRQSTATUS_MASK
 )paren
 op_eq
 l_int|0
+)paren
 )paren
 (brace
 id|nsp_write
@@ -3378,11 +3511,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|//DEBUG(0, &quot; no irq&bslash;n&quot;);
+singleline_comment|//DEBUG(0, &quot; no irq/shared irq&bslash;n&quot;);
 r_return
 suffix:semicolon
 )brace
-singleline_comment|//DEBUG(0, &quot; i_src=0x%x&bslash;n&quot;, i_src);
 multiline_comment|/* XXX: IMPORTANT&n;&t; * Do not read an irq_phase register if no scsi phase interrupt.&n;&t; * Unless, you should lose a scsi phase interrupt.&n;&t; */
 id|phase
 op_assign
@@ -3515,8 +3647,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
+l_string|&quot;%s: CurrentSC==NULL irq_status=0x%x phase=0x%x irq_phase=0x%x cannot happen&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; CurrentSC==NULL irq_status=0x%x phase=0x%x irq_phase=0x%x this can&squot;t be happen&bslash;n&quot;
 comma
 id|i_src
 comma
@@ -3549,9 +3682,6 @@ op_amp
 id|data-&gt;Sync
 (braket
 id|target
-)braket
-(braket
-id|lun
 )braket
 dot
 id|SyncNegotiation
@@ -3587,9 +3717,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot; &quot;
+l_string|&quot; %s() bus reset (power off?)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() bus reset (power off?)&bslash;n&quot;
 )paren
 suffix:semicolon
 op_star
@@ -3603,9 +3733,31 @@ l_int|NULL
 suffix:semicolon
 id|tmpSC-&gt;result
 op_assign
+(paren
 id|DID_RESET
 op_lshift
 l_int|16
+)paren
+op_or
+(paren
+(paren
+id|tmpSC-&gt;SCp.Message
+op_amp
+l_int|0xff
+)paren
+op_lshift
+l_int|8
+)paren
+op_or
+(paren
+(paren
+id|tmpSC-&gt;SCp.Status
+op_amp
+l_int|0xff
+)paren
+op_lshift
+l_int|0
+)paren
 suffix:semicolon
 id|tmpSC
 op_member_access_from_pointer
@@ -3696,11 +3848,7 @@ id|tmpSC-&gt;SCp.phase
 r_case
 id|PH_SELSTART
 suffix:colon
-op_star
-id|sync_neg
-op_assign
-id|SYNC_NOT_YET
-suffix:semicolon
+singleline_comment|//*sync_neg = SYNC_NOT_YET;
 r_if
 c_cond
 (paren
@@ -3832,11 +3980,7 @@ r_case
 id|PH_RESELECT
 suffix:colon
 singleline_comment|//DEBUG(0, &quot; phase reselect&bslash;n&quot;);
-op_star
-id|sync_neg
-op_assign
-id|SYNC_NOT_YET
-suffix:semicolon
+singleline_comment|//*sync_neg = SYNC_NOT_YET;
 r_if
 c_cond
 (paren
@@ -3904,6 +4048,20 @@ r_if
 c_cond
 (paren
 (paren
+(paren
+id|tmpSC-&gt;SCp.phase
+op_eq
+id|PH_MSG_IN
+)paren
+op_logical_or
+(paren
+id|tmpSC-&gt;SCp.phase
+op_eq
+id|PH_MSG_OUT
+)paren
+)paren
+op_logical_and
+(paren
 id|irq_phase
 op_amp
 id|LATCHED_BUS_FREE
@@ -3912,7 +4070,20 @@ op_ne
 l_int|0
 )paren
 (brace
-singleline_comment|//DEBUG(0, &quot; normal disconnect i_src=0x%x, phase=0x%x, irq_phase=0x%x&bslash;n&quot;, i_src, phase, irq_phase);
+id|DEBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot; normal disconnect i_src=0x%x, phase=0x%x, irq_phase=0x%x&bslash;n&quot;
+comma
+id|i_src
+comma
+id|phase
+comma
+id|irq_phase
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3924,11 +4095,7 @@ id|MSG_COMMAND_COMPLETE
 )paren
 (brace
 multiline_comment|/* all command complete and return status */
-op_star
-id|sync_neg
-op_assign
-id|SYNC_NOT_YET
-suffix:semicolon
+singleline_comment|//*sync_neg       = SYNC_NOT_YET;
 id|data-&gt;CurrentSC
 op_assign
 l_int|NULL
@@ -3942,13 +4109,21 @@ l_int|16
 )paren
 op_or
 (paren
+(paren
 id|tmpSC-&gt;SCp.Message
+op_amp
+l_int|0xff
+)paren
 op_lshift
 l_int|8
 )paren
 op_or
 (paren
+(paren
 id|tmpSC-&gt;SCp.Status
+op_amp
+l_int|0xff
+)paren
 op_lshift
 l_int|0
 )paren
@@ -3990,9 +4165,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot; &quot;
+l_string|&quot;%s: unexpected bus free. i_src=0x%x, phase=0x%x, irq_phase=0x%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; unexpected bus free. i_src=0x%x, phase=0x%x, irq_phase=0x%x&bslash;n&quot;
 comma
 id|i_src
 comma
@@ -4082,6 +4257,16 @@ id|data
 )paren
 suffix:semicolon
 multiline_comment|/* write scsi command */
+id|DEBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot; cmd_len=%d&bslash;n&quot;
+comma
+id|tmpSC-&gt;cmd_len
+)paren
+suffix:semicolon
 id|nsp_index_write
 c_func
 (paren
@@ -4095,22 +4280,15 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|len
+id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|len
+id|i
 OL
-id|COMMAND_SIZE
-c_func
-(paren
-id|tmpSC-&gt;cmnd
-(braket
-l_int|0
-)braket
-)paren
+id|tmpSC-&gt;cmd_len
 suffix:semicolon
-id|len
+id|i
 op_increment
 )paren
 (brace
@@ -4123,7 +4301,7 @@ id|COMMANDDATA
 comma
 id|tmpSC-&gt;cmnd
 (braket
-id|len
+id|i
 )braket
 )paren
 suffix:semicolon
@@ -4233,7 +4411,18 @@ comma
 id|SCSIDATAWITHACK
 )paren
 suffix:semicolon
-singleline_comment|//DEBUG(0, &quot; message=0x%x status=0x%x&bslash;n&quot;, tmpSC-&gt;SCp.Message, tmpSC-&gt;SCp.Status);
+id|DEBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot; message=0x%x status=0x%x&bslash;n&quot;
+comma
+id|tmpSC-&gt;SCp.Message
+comma
+id|tmpSC-&gt;SCp.Status
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -4269,9 +4458,25 @@ id|PH_MSG_OUT
 suffix:semicolon
 id|data-&gt;MsgLen
 op_assign
-id|len
+id|i
 op_assign
 l_int|0
+suffix:semicolon
+id|data-&gt;MsgBuffer
+(braket
+id|i
+)braket
+op_assign
+id|IDENTIFY
+c_func
+(paren
+id|TRUE
+comma
+id|lun
+)paren
+suffix:semicolon
+id|i
+op_increment
 suffix:semicolon
 r_if
 c_cond
@@ -4286,9 +4491,6 @@ id|data-&gt;Sync
 (braket
 id|target
 )braket
-(braket
-id|lun
-)braket
 dot
 id|SyncPeriod
 op_assign
@@ -4298,13 +4500,67 @@ id|data-&gt;Sync
 (braket
 id|target
 )braket
-(braket
-id|lun
-)braket
 dot
 id|SyncOffset
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/**/
+id|data-&gt;MsgBuffer
+(braket
+id|i
+)braket
+op_assign
+id|MSG_EXTENDED
+suffix:semicolon
+id|i
+op_increment
+suffix:semicolon
+id|data-&gt;MsgBuffer
+(braket
+id|i
+)braket
+op_assign
+l_int|3
+suffix:semicolon
+id|i
+op_increment
+suffix:semicolon
+id|data-&gt;MsgBuffer
+(braket
+id|i
+)braket
+op_assign
+id|MSG_EXT_SDTR
+suffix:semicolon
+id|i
+op_increment
+suffix:semicolon
+id|data-&gt;MsgBuffer
+(braket
+id|i
+)braket
+op_assign
+l_int|0x0c
+suffix:semicolon
+id|i
+op_increment
+suffix:semicolon
+id|data-&gt;MsgBuffer
+(braket
+id|i
+)braket
+op_assign
+l_int|15
+suffix:semicolon
+id|i
+op_increment
+suffix:semicolon
+multiline_comment|/**/
+)brace
+id|data-&gt;MsgLen
+op_assign
+id|i
 suffix:semicolon
 id|nsp_msg
 c_func
@@ -4313,47 +4569,6 @@ id|tmpSC
 comma
 id|data
 )paren
-suffix:semicolon
-id|data-&gt;MsgBuffer
-(braket
-id|len
-)braket
-op_assign
-id|IDENTIFY
-c_func
-(paren
-id|TRUE
-comma
-id|lun
-)paren
-suffix:semicolon
-id|len
-op_increment
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;data-&gt;MsgBuffer[len] = MSG_EXTENDED;        len++;&n;&t;&t;&t;data-&gt;MsgBuffer[len] = 3;                   len++;&n;&t;&t;&t;data-&gt;MsgBuffer[len] = MSG_EXT_SDTR;        len++;&n;&t;&t;&t;data-&gt;MsgBuffer[len] = 0x0c;                len++;&n;&t;&t;&t;data-&gt;MsgBuffer[len] = 15;                  len++;&n;&t;&t;&t;*/
-)brace
-r_if
-c_cond
-(paren
-id|len
-op_eq
-l_int|0
-)paren
-(brace
-id|data-&gt;MsgBuffer
-(braket
-id|len
-)braket
-op_assign
-id|MSG_NO_OPERATION
-suffix:semicolon
-id|len
-op_increment
-suffix:semicolon
-)brace
-id|data-&gt;MsgLen
-op_assign
-id|len
 suffix:semicolon
 id|show_message
 c_func
@@ -4418,7 +4633,113 @@ comma
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;if (data-&gt;MsgLen       &gt;= 5            &amp;&amp;&n;&t;&t;    data-&gt;MsgBuffer[0] == MSG_EXTENDED &amp;&amp;&n;&t;&t;    data-&gt;MsgBuffer[1] == 3            &amp;&amp;&n;&t;&t;    data-&gt;MsgBuffer[2] == MSG_EXT_SDTR ) {&n;&t;&t;&t;data-&gt;Sync[target][lun].SyncPeriod = data-&gt;MsgBuffer[3];&n;&t;&t;&t;data-&gt;Sync[target][lun].SyncOffset = data-&gt;MsgBuffer[4];&n;&t;&t;&t;nsp_msg(tmpSC, data);&n;&t;&t;}&n;&t;&t;*/
+multiline_comment|/**/
+r_if
+c_cond
+(paren
+op_star
+id|sync_neg
+op_eq
+id|SYNC_NOT_YET
+)paren
+(brace
+singleline_comment|//printk(&quot;%d,%d&bslash;n&quot;,target,lun);
+r_if
+c_cond
+(paren
+id|data-&gt;MsgLen
+op_ge
+l_int|5
+op_logical_and
+id|data-&gt;MsgBuffer
+(braket
+l_int|0
+)braket
+op_eq
+id|MSG_EXTENDED
+op_logical_and
+id|data-&gt;MsgBuffer
+(braket
+l_int|1
+)braket
+op_eq
+l_int|3
+op_logical_and
+id|data-&gt;MsgBuffer
+(braket
+l_int|2
+)braket
+op_eq
+id|MSG_EXT_SDTR
+)paren
+(brace
+id|data-&gt;Sync
+(braket
+id|target
+)braket
+dot
+id|SyncPeriod
+op_assign
+id|data-&gt;MsgBuffer
+(braket
+l_int|3
+)braket
+suffix:semicolon
+id|data-&gt;Sync
+(braket
+id|target
+)braket
+dot
+id|SyncOffset
+op_assign
+id|data-&gt;MsgBuffer
+(braket
+l_int|4
+)braket
+suffix:semicolon
+singleline_comment|//printk(&quot;sync ok, %d %d&bslash;n&quot;, data-&gt;MsgBuffer[3], data-&gt;MsgBuffer[4]);
+op_star
+id|sync_neg
+op_assign
+id|SYNC_OK
+suffix:semicolon
+)brace
+r_else
+(brace
+id|data-&gt;Sync
+(braket
+id|target
+)braket
+dot
+id|SyncPeriod
+op_assign
+l_int|0
+suffix:semicolon
+id|data-&gt;Sync
+(braket
+id|target
+)braket
+dot
+id|SyncOffset
+op_assign
+l_int|0
+suffix:semicolon
+op_star
+id|sync_neg
+op_assign
+id|SYNC_NG
+suffix:semicolon
+)brace
+id|nsp_msg
+c_func
+(paren
+id|tmpSC
+comma
+id|data
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**/
 multiline_comment|/* search last messeage byte */
 id|tmp
 op_assign
@@ -4513,7 +4834,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|//DEBUG(0, __FUNCTION__ &quot;() out&bslash;n&quot;);
+singleline_comment|//DEBUG(0, __func__ &quot;() out&bslash;n&quot;);
 r_return
 suffix:semicolon
 id|timer_out
@@ -4568,8 +4889,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s: this_id=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; this_id=%d&bslash;n&quot;
 comma
 id|sht-&gt;this_id
 )paren
@@ -4594,11 +4916,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|host-&gt;io_port
+id|host-&gt;unique_id
 op_assign
 id|data-&gt;BaseAddress
 suffix:semicolon
-id|host-&gt;unique_id
+id|host-&gt;io_port
 op_assign
 id|data-&gt;BaseAddress
 suffix:semicolon
@@ -4610,49 +4932,91 @@ id|host-&gt;irq
 op_assign
 id|data-&gt;IrqNumber
 suffix:semicolon
-id|host-&gt;dma_channel
+macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0))
+id|host-&gt;base
 op_assign
-l_int|0xff
+id|data-&gt;MmioAddress
 suffix:semicolon
-multiline_comment|/* not use dms */
-id|sprintf
+multiline_comment|/* kernel 2.4 */
+macro_line|#else
+id|host-&gt;base
+op_assign
+(paren
+r_char
+op_star
+)paren
+(paren
+id|data-&gt;MmioAddress
+)paren
+suffix:semicolon
+multiline_comment|/* 2.2 */
+macro_line|#endif
+id|spin_lock_init
 c_func
 (paren
-id|nspinfo
+op_amp
+(paren
+id|data-&gt;Lock
+)paren
+)paren
+suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|data-&gt;nspinfo
 comma
-multiline_comment|/* Buffer size is 100 bytes */
-multiline_comment|/*  0         1         2         3         4         5         6         7         8         9         0*/
-multiline_comment|/*  01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890*/
-l_string|&quot;NinjaSCSI-3/32Bi Driver $Revision: 1.42 $, I/O 0x%04lx-0x%04lx IRQ %2d&quot;
+r_sizeof
+(paren
+id|data-&gt;nspinfo
+)paren
+comma
+l_string|&quot;NinjaSCSI-3/32Bi Driver $Revision: 1.4 $ IO:0x%04lx-0x%04lx MMIO(virt addr):0x%04lx IRQ:%02d&quot;
 comma
 id|host-&gt;io_port
 comma
 id|host-&gt;io_port
 op_plus
 id|host-&gt;n_io_port
+op_minus
+l_int|1
+comma
+id|host-&gt;base
 comma
 id|host-&gt;irq
 )paren
 suffix:semicolon
+id|data-&gt;nspinfo
+(braket
+r_sizeof
+(paren
+id|data-&gt;nspinfo
+)paren
+op_minus
+l_int|1
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
 id|sht-&gt;name
 op_assign
-id|nspinfo
+id|data-&gt;nspinfo
 suffix:semicolon
 id|DEBUG
 c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s: end&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; end&bslash;n&quot;
 )paren
 suffix:semicolon
+singleline_comment|//MOD_INC_USE_COUNT;
 r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/* detect done. */
 )brace
-multiline_comment|/* nsp_cs requires own release handler because its uses dev_id (=data) */
 DECL|function|nsp_release
 r_static
 r_int
@@ -4665,45 +5029,15 @@ op_star
 id|shpnt
 )paren
 (brace
-id|nsp_hw_data
-op_star
-id|data
-op_assign
-op_amp
-id|nsp_data
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|shpnt-&gt;irq
-)paren
-(brace
-id|free_irq
-c_func
-(paren
-id|shpnt-&gt;irq
-comma
-id|data
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|shpnt-&gt;io_port
-op_logical_and
-id|shpnt-&gt;n_io_port
-)paren
-(brace
-id|release_region
-c_func
-(paren
-id|shpnt-&gt;io_port
-comma
-id|shpnt-&gt;n_io_port
-)paren
-suffix:semicolon
-)brace
+singleline_comment|//nsp_hw_data *data = &amp;nsp_data;
+multiline_comment|/* PCMCIA Card Service dose same things */
+singleline_comment|//if (shpnt-&gt;irq) {
+singleline_comment|//&t;free_irq(shpnt-&gt;irq, data);
+singleline_comment|//}
+singleline_comment|//if (shpnt-&gt;io_port) {
+singleline_comment|//&t;release_region(shpnt-&gt;io_port, shpnt-&gt;n_io_port);
+singleline_comment|//}
+singleline_comment|//MOD_DEC_USE_COUNT;
 r_return
 l_int|0
 suffix:semicolon
@@ -4725,10 +5059,457 @@ op_star
 id|shpnt
 )paren
 (brace
+id|nsp_hw_data
+op_star
+id|data
+op_assign
+op_amp
+id|nsp_data
+suffix:semicolon
 r_return
-id|nspinfo
+id|data-&gt;nspinfo
 suffix:semicolon
 )brace
+DECL|macro|SPRINTF
+macro_line|#undef SPRINTF
+DECL|macro|SPRINTF
+mdefine_line|#define SPRINTF(args...) &bslash;&n;        do { if(pos &lt; buffer + length) pos += sprintf(pos, ## args); } while(0)
+DECL|function|nsp_proc_info
+r_static
+r_int
+id|nsp_proc_info
+c_func
+(paren
+r_char
+op_star
+id|buffer
+comma
+r_char
+op_star
+op_star
+id|start
+comma
+id|off_t
+id|offset
+comma
+r_int
+id|length
+comma
+r_int
+id|hostno
+comma
+r_int
+id|inout
+)paren
+(brace
+r_int
+id|id
+suffix:semicolon
+r_char
+op_star
+id|pos
+op_assign
+id|buffer
+suffix:semicolon
+r_int
+id|thislength
+suffix:semicolon
+r_int
+id|speed
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|nsp_hw_data
+op_star
+id|data
+op_assign
+op_amp
+id|nsp_data
+suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|host
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|inout
+)paren
+(brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+id|host
+op_assign
+id|scsi_host_hn_get
+c_func
+(paren
+id|hostno
+)paren
+suffix:semicolon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;NinjaSCSI status&bslash;n&bslash;n&quot;
+)paren
+suffix:semicolon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;Driver version:        $Revision: 1.4 $&bslash;n&quot;
+)paren
+suffix:semicolon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;SCSI host No.:         %d&bslash;n&quot;
+comma
+id|hostno
+)paren
+suffix:semicolon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;IRQ:                   %d&bslash;n&quot;
+comma
+id|host-&gt;irq
+)paren
+suffix:semicolon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;IO:                    0x%lx-0x%lx&bslash;n&quot;
+comma
+id|host-&gt;io_port
+comma
+id|host-&gt;io_port
+op_plus
+id|host-&gt;n_io_port
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;MMIO(virtual address): 0x%lx&bslash;n&quot;
+comma
+id|host-&gt;base
+)paren
+suffix:semicolon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;sg_tablesize:          %d&bslash;n&quot;
+comma
+id|host-&gt;sg_tablesize
+)paren
+suffix:semicolon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;burst transfer mode:   &quot;
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|nsp_burst_mode
+)paren
+(brace
+r_case
+id|BURST_IO8
+suffix:colon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;io8&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|BURST_IO32
+suffix:colon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;io32&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|BURST_MEM32
+suffix:colon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;mem32&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;???&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+(paren
+id|data-&gt;Lock
+)paren
+comma
+id|flags
+)paren
+suffix:semicolon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;CurrentSC:             0x%p&bslash;n&bslash;n&quot;
+comma
+id|data-&gt;CurrentSC
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+(paren
+id|data-&gt;Lock
+)paren
+comma
+id|flags
+)paren
+suffix:semicolon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;SDTR status&bslash;n&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|id
+op_assign
+l_int|0
+suffix:semicolon
+id|id
+OL
+id|N_TARGET
+suffix:semicolon
+id|id
+op_increment
+)paren
+(brace
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;id %d: &quot;
+comma
+id|id
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|id
+op_eq
+id|host-&gt;this_id
+)paren
+(brace
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;----- NinjaSCSI-3 host adapter&bslash;n&quot;
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_switch
+c_cond
+(paren
+id|data-&gt;Sync
+(braket
+id|id
+)braket
+dot
+id|SyncNegotiation
+)paren
+(brace
+r_case
+id|SYNC_OK
+suffix:colon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot; sync&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SYNC_NG
+suffix:colon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;async&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SYNC_NOT_YET
+suffix:colon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot; none&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;?????&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|data-&gt;Sync
+(braket
+id|id
+)braket
+dot
+id|SyncPeriod
+op_ne
+l_int|0
+)paren
+(brace
+id|speed
+op_assign
+l_int|1000000
+op_div
+(paren
+id|data-&gt;Sync
+(braket
+id|id
+)braket
+dot
+id|SyncPeriod
+op_star
+l_int|4
+)paren
+suffix:semicolon
+id|SPRINTF
+c_func
+(paren
+l_string|&quot; transfer %d.%dMB/s, offset %d&quot;
+comma
+id|speed
+op_div
+l_int|1000
+comma
+id|speed
+op_mod
+l_int|1000
+comma
+id|data-&gt;Sync
+(braket
+id|id
+)braket
+dot
+id|SyncOffset
+)paren
+suffix:semicolon
+)brace
+id|SPRINTF
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|thislength
+op_assign
+id|pos
+op_minus
+(paren
+id|buffer
+op_plus
+id|offset
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|thislength
+OL
+l_int|0
+)paren
+(brace
+op_star
+id|start
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|thislength
+op_assign
+id|MIN
+c_func
+(paren
+id|thislength
+comma
+id|length
+)paren
+suffix:semicolon
+op_star
+id|start
+op_assign
+id|buffer
+op_plus
+id|offset
+suffix:semicolon
+r_return
+id|thislength
+suffix:semicolon
+)brace
+DECL|macro|SPRINTF
+macro_line|#undef SPRINTF
 multiline_comment|/*---------------------------------------------------------------*/
 multiline_comment|/* error handler                                                 */
 multiline_comment|/*---------------------------------------------------------------*/
@@ -4744,31 +5525,99 @@ id|SCpnt
 comma
 r_int
 r_int
-id|why
+id|reset_flags
 )paren
 (brace
+id|nsp_hw_data
+op_star
+id|data
+op_assign
+op_amp
+id|nsp_data
+suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 id|DEBUG
 c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s: SCpnt=0x%p why=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; SCpnt=0x%p why=%d&bslash;n&quot;
 comma
 id|SCpnt
 comma
-id|why
+id|reset_flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|reset_flags
+op_amp
+id|SCSI_RESET_SUGGEST_BUS_RESET
+)paren
+(brace
 id|nsp_eh_bus_reset
 c_func
 (paren
 id|SCpnt
 )paren
 suffix:semicolon
+id|ret
+op_or_assign
+id|SCSI_RESET_BUS_RESET
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|reset_flags
+op_amp
+id|SCSI_RESET_SUGGEST_HOST_RESET
+)paren
+(brace
+id|nsp_eh_host_reset
+c_func
+(paren
+id|SCpnt
+)paren
+suffix:semicolon
+id|ret
+op_or_assign
+id|SCSI_RESET_HOST_RESET
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+l_int|0
+)paren
+(brace
 r_return
 id|SCSI_RESET_SUCCESS
+op_or
+id|ret
 suffix:semicolon
+)brace
+r_else
+(brace
+id|nsphw_init_sync
+c_func
+(paren
+id|data
+)paren
+suffix:semicolon
+r_return
+id|SCSI_RESET_PUNT
+suffix:semicolon
+)brace
 )brace
 DECL|function|nsp_abort
 r_static
@@ -4786,9 +5635,16 @@ c_func
 (paren
 l_int|0
 comma
-id|__FUNCTION__
-l_string|&quot; SCpnt=0x%p&bslash;n&quot;
+l_string|&quot;%s: SCpnt=0x%p&bslash;n&quot;
 comma
+id|__FUNCTION__
+comma
+id|SCpnt
+)paren
+suffix:semicolon
+id|nsp_eh_host_reset
+c_func
+(paren
 id|SCpnt
 )paren
 suffix:semicolon
@@ -4803,64 +5659,8 @@ id|SCSI_ABORT_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*static int nsp_eh_strategy(struct Scsi_Host *Shost)&n;{&n;&t;return FAILED;&n;}*/
-DECL|function|nsp_eh_abort
-r_static
-r_int
-id|nsp_eh_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-(brace
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-id|__FUNCTION__
-l_string|&quot; SCpnt=0x%p&bslash;n&quot;
-comma
-id|SCpnt
-)paren
-suffix:semicolon
-id|nsp_eh_bus_reset
-c_func
-(paren
-id|SCpnt
-)paren
-suffix:semicolon
-r_return
-id|SUCCESS
-suffix:semicolon
-)brace
-DECL|function|nsp_eh_device_reset
-r_static
-r_int
-id|nsp_eh_device_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-(brace
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-id|__FUNCTION__
-l_string|&quot; SCpnt=0x%p&bslash;n&quot;
-comma
-id|SCpnt
-)paren
-suffix:semicolon
-r_return
-id|FAILED
-suffix:semicolon
-)brace
+multiline_comment|/*&n;static int nsp_eh_abort(Scsi_Cmnd *SCpnt)&n;{&n;&t;DEBUG(0, &quot;%s: SCpnt=0x%p&bslash;n&quot;, __FUNCTION__, SCpnt);&n;&n;&t;return nsp_eh_bus_reset(SCpnt);&n;}*/
+multiline_comment|/*&n;static int nsp_eh_device_reset(Scsi_Cmnd *SCpnt)&n;{&n;&t;DEBUG(0, &quot;%s: SCpnt=0x%p&bslash;n&quot;, __FUNCTION__, SCpnt);&n;&n;&t;return FAILED;&n;}*/
 DECL|function|nsp_eh_bus_reset
 r_static
 r_int
@@ -4872,6 +5672,13 @@ op_star
 id|SCpnt
 )paren
 (brace
+id|nsp_hw_data
+op_star
+id|data
+op_assign
+op_amp
+id|nsp_data
+suffix:semicolon
 r_int
 r_int
 id|base
@@ -4886,8 +5693,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() SCpnt=0x%p base=0x%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() SCpnt=0x%p base=0x%x&bslash;n&quot;
 comma
 id|SCpnt
 comma
@@ -4966,6 +5774,12 @@ comma
 id|IRQCONTROL_ALLCLEAR
 )paren
 suffix:semicolon
+id|nsphw_init_sync
+c_func
+(paren
+id|data
+)paren
+suffix:semicolon
 r_return
 id|SUCCESS
 suffix:semicolon
@@ -4993,8 +5807,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|nsphw_init
@@ -5004,14 +5819,10 @@ id|data
 )paren
 suffix:semicolon
 r_return
-id|nsp_eh_bus_reset
-c_func
-(paren
-id|SCpnt
-)paren
+id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/**********************************************************************&n;  PCMCIA functions&n;  *********************************************************************/
+multiline_comment|/**********************************************************************&n;  PCMCIA functions&n;**********************************************************************/
 multiline_comment|/*====================================================================*/
 DECL|function|cs_error
 r_static
@@ -5082,8 +5893,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s()&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;()&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Create new SCSI device */
@@ -5220,6 +6032,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* IRQ &#x1b;$B$N3NJ]$O$3$3$G&#x1b;(B PCMCIA &#x1b;$B$N4X?t$rMQ$$$F9T$J$&amp;$N$G&#x1b;(B&n;&t; * host-&gt;hostdata &#x1b;$B$r&#x1b;(B irq.Instance &#x1b;$B$KBeF~$G$-$J$$!#&#x1b;(B&n;&t; * host-&gt;hostdata &#x1b;$B$,;H$($l$PJ#?t$N&#x1b;(B NinjaSCSI &#x1b;$B$,&#x1b;(B&n;&t; * &#x1b;$B;HMQ$G$-$k$N$@$,!#&#x1b;(B&n;&t; */
 id|link-&gt;irq.Handler
 op_assign
 op_amp
@@ -5229,6 +6042,14 @@ id|link-&gt;irq.Instance
 op_assign
 op_amp
 id|nsp_data
+suffix:semicolon
+id|link-&gt;irq.Attributes
+op_or_assign
+(paren
+id|SA_SHIRQ
+op_or
+id|SA_SAMPLE_RANDOM
+)paren
 suffix:semicolon
 multiline_comment|/* General socket configuration */
 id|link-&gt;conf.Attributes
@@ -5363,8 +6184,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(0x%p)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(0x%p)&bslash;n&quot;
 comma
 id|link
 )paren
@@ -5417,7 +6239,7 @@ l_int|NULL
 r_return
 suffix:semicolon
 )brace
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -5485,6 +6307,10 @@ c_func
 id|link-&gt;priv
 )paren
 suffix:semicolon
+id|link-&gt;priv
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 multiline_comment|/* nsp_cs_detach */
 multiline_comment|/*======================================================================&n;    nsp_cs_config() is scheduled to run after a CARD_INSERTION event&n;    is received, to configure the PCMCIA socket, and to make the&n;    ethernet device available to the system.&n;======================================================================*/
@@ -5522,8 +6348,6 @@ id|cisparse_t
 id|parse
 suffix:semicolon
 r_int
-id|i
-comma
 id|last_ret
 comma
 id|last_fn
@@ -5536,6 +6360,19 @@ l_int|64
 suffix:semicolon
 id|config_info_t
 id|conf
+suffix:semicolon
+id|win_req_t
+id|req
+suffix:semicolon
+id|memreq_t
+id|map
+suffix:semicolon
+id|cistpl_cftable_entry_t
+id|dflt
+op_assign
+(brace
+l_int|0
+)brace
 suffix:semicolon
 id|Scsi_Device
 op_star
@@ -5566,8 +6403,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() in&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() in&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tuple.DesiredTuple
@@ -5641,11 +6479,6 @@ l_int|0
 )braket
 suffix:semicolon
 multiline_comment|/* Configure card */
-id|driver_template.module
-op_assign
-op_amp
-id|__this_module
-suffix:semicolon
 id|link-&gt;state
 op_or_assign
 id|DEV_CONFIG
@@ -5687,6 +6520,15 @@ c_loop
 l_int|1
 )paren
 (brace
+id|cistpl_cftable_entry_t
+op_star
+id|cfg
+op_assign
+op_amp
+(paren
+id|parse.cftable_entry
+)paren
+suffix:semicolon
 id|CFG_CHECK
 c_func
 (paren
@@ -5712,43 +6554,452 @@ op_amp
 id|parse
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cfg-&gt;flags
+op_amp
+id|CISTPL_CFTABLE_DEFAULT
+)paren
+(brace
+id|dflt
+op_assign
+op_star
+id|cfg
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|cfg-&gt;index
+op_eq
+l_int|0
+)paren
+(brace
+r_goto
+id|next_entry
+suffix:semicolon
+)brace
 id|link-&gt;conf.ConfigIndex
 op_assign
-id|parse.cftable_entry.index
+id|cfg-&gt;index
+suffix:semicolon
+multiline_comment|/* Does this card need audio output? */
+r_if
+c_cond
+(paren
+id|cfg-&gt;flags
+op_amp
+id|CISTPL_CFTABLE_AUDIO
+)paren
+(brace
+id|link-&gt;conf.Attributes
+op_or_assign
+id|CONF_ENABLE_SPKR
+suffix:semicolon
+id|link-&gt;conf.Status
+op_assign
+id|CCSR_AUDIO_ENA
+suffix:semicolon
+)brace
+multiline_comment|/* Use power settings for Vcc and Vpp if present */
+multiline_comment|/*  Note that the CIS values need to be rescaled */
+r_if
+c_cond
+(paren
+id|cfg-&gt;vcc.present
+op_amp
+(paren
+l_int|1
+op_lshift
+id|CISTPL_POWER_VNOM
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|conf.Vcc
+op_ne
+id|cfg-&gt;vcc.param
+(braket
+id|CISTPL_POWER_VNOM
+)braket
+op_div
+l_int|10000
+)paren
+(brace
+r_goto
+id|next_entry
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|dflt.vcc.present
+op_amp
+(paren
+l_int|1
+op_lshift
+id|CISTPL_POWER_VNOM
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|conf.Vcc
+op_ne
+id|dflt.vcc.param
+(braket
+id|CISTPL_POWER_VNOM
+)braket
+op_div
+l_int|10000
+)paren
+(brace
+r_goto
+id|next_entry
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|cfg-&gt;vpp1.present
+op_amp
+(paren
+l_int|1
+op_lshift
+id|CISTPL_POWER_VNOM
+)paren
+)paren
+(brace
+id|link-&gt;conf.Vpp1
+op_assign
+id|link-&gt;conf.Vpp2
+op_assign
+id|cfg-&gt;vpp1.param
+(braket
+id|CISTPL_POWER_VNOM
+)braket
+op_div
+l_int|10000
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|dflt.vpp1.present
+op_amp
+(paren
+l_int|1
+op_lshift
+id|CISTPL_POWER_VNOM
+)paren
+)paren
+(brace
+id|link-&gt;conf.Vpp1
+op_assign
+id|link-&gt;conf.Vpp2
+op_assign
+id|dflt.vpp1.param
+(braket
+id|CISTPL_POWER_VNOM
+)braket
+op_div
+l_int|10000
+suffix:semicolon
+)brace
+multiline_comment|/* Do we need to allocate an interrupt? */
+r_if
+c_cond
+(paren
+id|cfg-&gt;irq.IRQInfo1
+op_logical_or
+id|dflt.irq.IRQInfo1
+)paren
+(brace
+id|link-&gt;conf.Attributes
+op_or_assign
+id|CONF_ENABLE_IRQ
+suffix:semicolon
+)brace
+multiline_comment|/* IO window settings */
+id|link-&gt;io.NumPorts1
+op_assign
+id|link-&gt;io.NumPorts2
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|cfg-&gt;io.nwin
+OG
+l_int|0
+)paren
+op_logical_or
+(paren
+id|dflt.io.nwin
+OG
+l_int|0
+)paren
+)paren
+(brace
+id|cistpl_io_t
+op_star
+id|io
+op_assign
+(paren
+id|cfg-&gt;io.nwin
+)paren
+ques
+c_cond
+op_amp
+id|cfg-&gt;io
+suffix:colon
+op_amp
+id|dflt.io
+suffix:semicolon
+id|link-&gt;io.Attributes1
+op_assign
+id|IO_DATA_PATH_WIDTH_AUTO
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|io-&gt;flags
+op_amp
+id|CISTPL_IO_8BIT
+)paren
+)paren
+id|link-&gt;io.Attributes1
+op_assign
+id|IO_DATA_PATH_WIDTH_16
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|io-&gt;flags
+op_amp
+id|CISTPL_IO_16BIT
+)paren
+)paren
+id|link-&gt;io.Attributes1
+op_assign
+id|IO_DATA_PATH_WIDTH_8
+suffix:semicolon
+id|link-&gt;io.IOAddrLines
+op_assign
+id|io-&gt;flags
+op_amp
+id|CISTPL_IO_LINES_MASK
 suffix:semicolon
 id|link-&gt;io.BasePort1
 op_assign
-id|parse.cftable_entry.io.win
+id|io-&gt;win
 (braket
 l_int|0
 )braket
 dot
 id|base
 suffix:semicolon
-id|i
+id|link-&gt;io.NumPorts1
 op_assign
-id|CardServices
+id|io-&gt;win
+(braket
+l_int|0
+)braket
+dot
+id|len
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|io-&gt;nwin
+OG
+l_int|1
+)paren
+(brace
+id|link-&gt;io.Attributes2
+op_assign
+id|link-&gt;io.Attributes1
+suffix:semicolon
+id|link-&gt;io.BasePort2
+op_assign
+id|io-&gt;win
+(braket
+l_int|1
+)braket
+dot
+id|base
+suffix:semicolon
+id|link-&gt;io.NumPorts2
+op_assign
+id|io-&gt;win
+(braket
+l_int|1
+)braket
+dot
+id|len
+suffix:semicolon
+)brace
+multiline_comment|/* This reserves IO space but doesn&squot;t actually enable it */
+id|CFG_CHECK
 c_func
 (paren
 id|RequestIO
 comma
-id|handle
+id|link-&gt;handle
 comma
 op_amp
 id|link-&gt;io
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
-id|i
-op_eq
-id|CS_SUCCESS
+(paren
+id|cfg-&gt;mem.nwin
+OG
+l_int|0
+)paren
+op_logical_or
+(paren
+id|dflt.mem.nwin
+OG
+l_int|0
+)paren
 )paren
 (brace
-r_break
+id|cistpl_mem_t
+op_star
+id|mem
+op_assign
+(paren
+id|cfg-&gt;mem.nwin
+)paren
+ques
+c_cond
+op_amp
+id|cfg-&gt;mem
+suffix:colon
+op_amp
+id|dflt.mem
+suffix:semicolon
+id|req.Attributes
+op_assign
+id|WIN_DATA_WIDTH_16
+op_or
+id|WIN_MEMORY_TYPE_CM
+suffix:semicolon
+id|req.Attributes
+op_or_assign
+id|WIN_ENABLE
+suffix:semicolon
+id|req.Base
+op_assign
+id|mem-&gt;win
+(braket
+l_int|0
+)braket
+dot
+id|host_addr
+suffix:semicolon
+id|req.Size
+op_assign
+id|mem-&gt;win
+(braket
+l_int|0
+)braket
+dot
+id|len
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|req.Size
+OL
+l_int|0x1000
+)paren
+id|req.Size
+op_assign
+l_int|0x1000
+suffix:semicolon
+id|req.AccessSpeed
+op_assign
+l_int|0
+suffix:semicolon
+id|link-&gt;win
+op_assign
+(paren
+id|window_handle_t
+)paren
+id|link-&gt;handle
+suffix:semicolon
+id|CFG_CHECK
+c_func
+(paren
+id|RequestWindow
+comma
+op_amp
+id|link-&gt;win
+comma
+op_amp
+id|req
+)paren
+suffix:semicolon
+id|map.Page
+op_assign
+l_int|0
+suffix:semicolon
+id|map.CardOffset
+op_assign
+id|mem-&gt;win
+(braket
+l_int|0
+)braket
+dot
+id|card_addr
+suffix:semicolon
+id|CFG_CHECK
+c_func
+(paren
+id|MapMemPage
+comma
+id|link-&gt;win
+comma
+op_amp
+id|map
+)paren
+suffix:semicolon
+id|data-&gt;MmioAddress
+op_assign
+(paren
+id|u_long
+)paren
+id|ioremap_nocache
+c_func
+(paren
+id|req.Base
+comma
+id|req.Size
+)paren
 suffix:semicolon
 )brace
+multiline_comment|/* If we got this far, we&squot;re cool! */
+r_break
+suffix:semicolon
 id|next_entry
 suffix:colon
 id|DEBUG
@@ -5756,8 +7007,25 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s next&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; next&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|link-&gt;io.NumPorts1
+)paren
+id|CardServices
+c_func
+(paren
+id|ReleaseIO
+comma
+id|link-&gt;handle
+comma
+op_amp
+id|link-&gt;io
 )paren
 suffix:semicolon
 id|CS_CHECK
@@ -5772,12 +7040,19 @@ id|tuple
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|link-&gt;conf.Attributes
+op_amp
+id|CONF_ENABLE_IRQ
+)paren
 id|CS_CHECK
 c_func
 (paren
 id|RequestIRQ
 comma
-id|handle
+id|link-&gt;handle
 comma
 op_amp
 id|link-&gt;irq
@@ -5794,7 +7069,17 @@ op_amp
 id|link-&gt;conf
 )paren
 suffix:semicolon
-multiline_comment|/* A bad hack... */
+r_if
+c_cond
+(paren
+id|free_ports
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|link-&gt;io.BasePort1
+)paren
 id|release_region
 c_func
 (paren
@@ -5803,6 +7088,20 @@ comma
 id|link-&gt;io.NumPorts1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|link-&gt;io.BasePort2
+)paren
+id|release_region
+c_func
+(paren
+id|link-&gt;io.BasePort2
+comma
+id|link-&gt;io.NumPorts2
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Set port and IRQ */
 id|data-&gt;BaseAddress
 op_assign
@@ -5821,8 +7120,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s I/O[0x%x+0x%x] IRQ %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; I/O[0x%x+0x%x] IRQ %d&bslash;n&quot;
 comma
 id|data-&gt;BaseAddress
 comma
@@ -5847,6 +7147,7 @@ r_goto
 id|cs_failed
 suffix:semicolon
 )brace
+macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,2))
 id|scsi_register_host
 c_func
 (paren
@@ -5854,6 +7155,17 @@ op_amp
 id|driver_template
 )paren
 suffix:semicolon
+macro_line|#else
+id|scsi_register_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|driver_template
+)paren
+suffix:semicolon
+macro_line|#endif
 id|DEBUG
 c_func
 (paren
@@ -5892,6 +7204,7 @@ c_func
 id|host
 )paren
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -6203,6 +7516,44 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|link-&gt;io.NumPorts2
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; &amp; 0x%04x-0x%04x&quot;
+comma
+id|link-&gt;io.BasePort2
+comma
+id|link-&gt;io.BasePort2
+op_plus
+id|link-&gt;io.NumPorts2
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|link-&gt;win
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;, mem 0x%06lx-0x%06lx&quot;
+comma
+id|req.Base
+comma
+id|req.Base
+op_plus
+id|req.Size
+op_minus
+l_int|1
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -6241,9 +7592,12 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* nsp_cs_config */
+DECL|macro|CS_CHECK
 macro_line|#undef CS_CHECK
+DECL|macro|CFG_CHECK
 macro_line|#undef CFG_CHECK
 multiline_comment|/*======================================================================&n;    After a card is removed, nsp_cs_release() will unregister the net&n;    device, and release the PCMCIA configuration.  If the device is&n;    still open, this will be postponed until it is closed.&n;======================================================================*/
+DECL|function|nsp_cs_release
 r_static
 r_void
 id|nsp_cs_release
@@ -6268,8 +7622,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s(0x%p)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(0x%p)&bslash;n&quot;
 comma
 id|link
 )paren
@@ -6299,6 +7654,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Unlink the device chain */
+macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,2))
 id|scsi_unregister_host
 c_func
 (paren
@@ -6306,6 +7662,17 @@ op_amp
 id|driver_template
 )paren
 suffix:semicolon
+macro_line|#else
+id|scsi_unregister_module
+c_func
+(paren
+id|MODULE_SCSI_HA
+comma
+op_amp
+id|driver_template
+)paren
+suffix:semicolon
+macro_line|#endif
 id|link-&gt;dev
 op_assign
 l_int|NULL
@@ -6316,6 +7683,18 @@ c_cond
 id|link-&gt;win
 )paren
 (brace
+id|iounmap
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+id|nsp_data.MmioAddress
+)paren
+)paren
+suffix:semicolon
 id|CardServices
 c_func
 (paren
@@ -6392,6 +7771,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* nsp_cs_release */
 multiline_comment|/*======================================================================&n;&n;    The card status event handler.  Mostly, this schedules other&n;    stuff to run after an event is received.  A CARD_REMOVAL event&n;    also sets some flags to discourage the net drivers from trying&n;    to talk to the card any more.&n;&n;    When a CARD_REMOVAL event is received, we immediately set a flag&n;    to block future accesses to this device.  All the functions that&n;    actually access the device should check this flag to make sure&n;    the card is still present.&n;    &n;======================================================================*/
+DECL|function|nsp_cs_event
 r_static
 r_int
 id|nsp_cs_event
@@ -6420,13 +7800,17 @@ id|info
 op_assign
 id|link-&gt;priv
 suffix:semicolon
+id|Scsi_Cmnd
+id|tmp
+suffix:semicolon
 id|DEBUG
 c_func
 (paren
 l_int|1
 comma
+l_string|&quot;%s(0x%06x)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(0x%06x)&bslash;n&quot;
 comma
 id|event
 )paren
@@ -6581,9 +7965,6 @@ op_amp
 id|DEV_CONFIG
 )paren
 (brace
-id|Scsi_Cmnd
-id|tmp
-suffix:semicolon
 id|CardServices
 c_func
 (paren
@@ -6594,6 +7975,11 @@ comma
 op_amp
 id|link-&gt;conf
 )paren
+suffix:semicolon
+)brace
+id|info-&gt;stop
+op_assign
+l_int|0
 suffix:semicolon
 id|tmp.host
 op_assign
@@ -6606,10 +7992,12 @@ op_amp
 id|tmp
 )paren
 suffix:semicolon
-)brace
-id|info-&gt;stop
-op_assign
-l_int|0
+id|nsp_eh_bus_reset
+c_func
+(paren
+op_amp
+id|tmp
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -6631,8 +8019,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s end&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; end&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6641,6 +8030,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* nsp_cs_event */
 multiline_comment|/*======================================================================*&n; *&t;module entry point&n; *====================================================================*/
+DECL|function|nsp_cs_init
 r_static
 r_int
 id|__init
@@ -6658,8 +8048,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() in&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() in&bslash;n&quot;
 )paren
 suffix:semicolon
 id|DEBUG
@@ -6720,14 +8111,16 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() out&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() out&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|nsp_cs_cleanup
 r_static
 r_void
 id|__exit
@@ -6742,8 +8135,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s() unloading&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() unloading&bslash;n&quot;
 )paren
 suffix:semicolon
 id|unregister_pcmcia_driver
@@ -6792,13 +8186,11 @@ c_func
 (paren
 id|nsp_cs_init
 )paren
-suffix:semicolon
 id|module_exit
 c_func
 (paren
 id|nsp_cs_cleanup
 )paren
-suffix:semicolon
 multiline_comment|/*&n; *&n; *&n; */
 multiline_comment|/* end */
 eof

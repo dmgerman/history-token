@@ -168,7 +168,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_host_generic_release - default release function for hosts&n; * @shost: &n; * &n; * Description:&n; * &t;This is the default case for the release function.  It should do&n; * &t;the right thing for most correctly written host adapters.&n; **/
+multiline_comment|/**&n; * scsi_host_generic_release - default release function for hosts&n; * @shost: &n; * &n; * Description:&n; * &t;This is the default case for the release function.  Its completely&n; *&t;useless for anything but old ISA adapters&n; **/
 DECL|function|scsi_host_generic_release
 r_static
 r_void

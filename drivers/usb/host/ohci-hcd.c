@@ -931,11 +931,17 @@ op_amp
 id|OHCI_CTRL_IR
 )paren
 (brace
+id|dbg
+(paren
+l_string|&quot;USB HC TakeOver from BIOS/SMM&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* this timeout is arbitrary.  we make it long, so systems&n;&t;&t; * depending on usb keyboards may be usable even if the&n;&t;&t; * BIOS/SMM code seems pretty broken.&n;&t;&t; */
 id|temp
 op_assign
-l_int|50
+l_int|500
 suffix:semicolon
-multiline_comment|/* arbitrary: half second */
+multiline_comment|/* arbitrary: five seconds */
 id|writel
 (paren
 id|OHCI_INTR_OC
@@ -950,11 +956,6 @@ id|OHCI_OCR
 comma
 op_amp
 id|ohci-&gt;regs-&gt;cmdstatus
-)paren
-suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;USB HC TakeOver from SMM&quot;
 )paren
 suffix:semicolon
 r_while

@@ -321,7 +321,14 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* notify userspace (call /sbin/hotplug) here */
+multiline_comment|/* notify userspace (call /sbin/hotplug) */
+id|class_hotplug
+(paren
+id|dev
+comma
+l_string|&quot;add&quot;
+)paren
+suffix:semicolon
 id|up_write
 c_func
 (paren
@@ -409,6 +416,14 @@ c_func
 id|cls
 comma
 id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* notify userspace (call /sbin/hotplug) */
+id|class_hotplug
+(paren
+id|dev
+comma
+l_string|&quot;remove&quot;
 )paren
 suffix:semicolon
 r_if

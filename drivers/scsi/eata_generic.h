@@ -105,8 +105,6 @@ DECL|macro|CD
 mdefine_line|#define CD(cmd)&t; ((struct eata_ccb *)(cmd-&gt;host_scribble))
 DECL|macro|SD
 mdefine_line|#define SD(host) ((hostdata *)&amp;(host-&gt;hostdata))
-DECL|macro|DELAY
-mdefine_line|#define DELAY(x) { ulong flags, i;                &bslash;&n;                   save_flags(flags); sti();      &bslash;&n;                   i = jiffies + (x * HZ);        &bslash;&n;                   while (jiffies &lt; i);           &bslash;&n;                   restore_flags(flags); }
 multiline_comment|/***********************************************&n; *    EATA Command &amp; Register definitions      *&n; ***********************************************/
 DECL|macro|PCI_REG_DPTconfig
 mdefine_line|#define PCI_REG_DPTconfig&t; 0x40&t; 

@@ -3988,6 +3988,9 @@ comma
 r_int
 r_int
 id|length
+comma
+id|u16
+id|flags
 )paren
 (brace
 multiline_comment|/*&n;         * Manually put the data in the right place.&n;         */
@@ -4052,6 +4055,9 @@ comma
 r_int
 r_int
 id|length
+comma
+id|u16
+id|flags
 )paren
 (brace
 multiline_comment|/*&n;         * Grab data from memory and send a read response.&n;         */

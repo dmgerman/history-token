@@ -198,10 +198,11 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Translate GSI number to the corresponding IA-64 interrupt vector.  If no&n; * entry exists, return -1.&n; */
+r_static
+r_inline
 r_int
-DECL|function|gsi_to_vector
-id|gsi_to_vector
+DECL|function|_gsi_to_vector
+id|_gsi_to_vector
 (paren
 r_int
 r_int
@@ -248,6 +249,43 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Translate GSI number to the corresponding IA-64 interrupt vector.  If no&n; * entry exists, return -1.&n; */
+r_inline
+r_int
+DECL|function|gsi_to_vector
+id|gsi_to_vector
+(paren
+r_int
+r_int
+id|gsi
+)paren
+(brace
+r_return
+id|_gsi_to_vector
+c_func
+(paren
+id|gsi
+)paren
+suffix:semicolon
+)brace
+r_int
+DECL|function|gsi_to_irq
+id|gsi_to_irq
+(paren
+r_int
+r_int
+id|gsi
+)paren
+(brace
+multiline_comment|/*&n;&t; * XXX fix me: this assumes an identity mapping vetween IA-64 vector and Linux irq&n;&t; * numbers...&n;&t; */
+r_return
+id|_gsi_to_vector
+c_func
+(paren
+id|gsi
+)paren
+suffix:semicolon
+)brace
 r_static
 r_void
 DECL|function|set_rte
@@ -289,7 +327,7 @@ id|DBG
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;IOSAPIC: routing vector %d to %x&bslash;n&quot;
+l_string|&quot;IOSAPIC: routing vector %d to 0x%x&bslash;n&quot;
 comma
 id|vector
 comma

@@ -496,7 +496,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Called after each bus is probed, but before its children are examined.&n; */
 r_void
-id|__init
+id|__devinit
 DECL|function|pcibios_fixup_bus
 id|pcibios_fixup_bus
 (paren
@@ -510,7 +510,7 @@ r_return
 suffix:semicolon
 )brace
 r_void
-id|__init
+id|__devinit
 DECL|function|pcibios_update_resource
 id|pcibios_update_resource
 (paren
@@ -606,7 +606,7 @@ suffix:semicolon
 multiline_comment|/* ??? FIXME -- record old value for shutdown.  */
 )brace
 r_void
-id|__init
+id|__devinit
 DECL|function|pcibios_update_irq
 id|pcibios_update_irq
 (paren
@@ -632,7 +632,7 @@ suffix:semicolon
 multiline_comment|/* ??? FIXME -- record old value for shutdown.  */
 )brace
 r_void
-id|__init
+id|__devinit
 DECL|function|pcibios_fixup_pbus_ranges
 id|pcibios_fixup_pbus_ranges
 (paren

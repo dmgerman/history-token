@@ -3140,6 +3140,7 @@ id|lp-&gt;lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Called with lp-&gt;lock held */
 DECL|function|depca_rx
 r_static
 r_int
@@ -3806,7 +3807,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** Buffer sent - check for buffer errors.&n;*/
+multiline_comment|/*&n;** Buffer sent - check for buffer errors.&n;** Called with lp-&gt;lock held&n;*/
 DECL|function|depca_tx
 r_static
 r_int
@@ -8887,8 +8888,7 @@ c_func
 (paren
 id|ioc-&gt;data
 comma
-op_amp
-id|lp-&gt;pktStats
+id|buf
 comma
 id|ioc-&gt;len
 )paren

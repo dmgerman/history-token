@@ -12,7 +12,7 @@ mdefine_line|#define PCI_VENDOR_ID_DOMEX&t;&t;0x134a
 DECL|macro|PCI_DEVICE_ID_DOMEX_DMX3191D
 mdefine_line|#define PCI_DEVICE_ID_DOMEX_DMX3191D&t;0x0001
 macro_line|#endif
-macro_line|#ifndef ASM
+r_static
 r_int
 id|dmx3191d_abort
 c_func
@@ -21,6 +21,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|dmx3191d_detect
 c_func
@@ -29,6 +30,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
+r_static
 r_const
 r_char
 op_star
@@ -40,6 +42,7 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|dmx3191d_proc_info
 c_func
@@ -60,6 +63,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_static
 r_int
 id|dmx3191d_queue_command
 c_func
@@ -78,6 +82,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_static
 r_int
 id|dmx3191d_release_resources
 c_func
@@ -87,6 +92,7 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|dmx3191d_bus_reset
 c_func
@@ -95,6 +101,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|dmx3191d_host_reset
 c_func
@@ -103,6 +110,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|dmx3191d_device_reset
 c_func
@@ -133,8 +141,11 @@ DECL|macro|NCR5380_proc_info
 mdefine_line|#define NCR5380_proc_info&t;&t;&t;dmx3191d_proc_info
 DECL|macro|NCR5380_queue_command
 mdefine_line|#define NCR5380_queue_command&t;&t;&t;dmx3191d_queue_command
-DECL|macro|NCR5380_reset
-mdefine_line|#define NCR5380_reset&t;&t;&t;&t;dmx3191d_reset
-macro_line|#endif&t;/* ASM */
+DECL|macro|NCR5380_host_reset
+mdefine_line|#define NCR5380_host_reset&t;&t;&t;dmx3191d_host_reset
+DECL|macro|NCR5380_bus_reset
+mdefine_line|#define NCR5380_bus_reset&t;&t;&t;dmx3191d_bus_reset
+DECL|macro|NCR5380_device_reset
+mdefine_line|#define NCR5380_device_reset&t;&t;&t;dmx3191d_device_reset
 macro_line|#endif&t;/* __DMX3191D_H */
 eof

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;pas16.h&quot;
@@ -1180,7 +1181,7 @@ c_func
 (paren
 id|instance-&gt;irq
 comma
-id|do_pas16_intr
+id|pas16_intr
 comma
 id|SA_INTERRUPT
 comma

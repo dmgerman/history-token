@@ -2848,7 +2848,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Function : static int normal_init(Scsi_Host_Template *tpnt, int board, &n; *&t;int chip, u32 base, int io_port, int irq, int dma, int pcivalid,&n; *&t;unsigned char pci_bus, unsigned char pci_device_fn,&n; *      struct pci_dev *pci_dev, long long options);&n; *&n; * Purpose : initializes a NCR53c7,8x0 based on base addresses,&n; *&t;IRQ, and DMA channel.&t;&n; *&t;&n; *&t;Useful where a new NCR chip is backwards compatible with&n; *&t;a supported chip, but the DEVICE ID has changed so it &n; *&t;doesn&squot;t show up when the autoprobe does a pcibios_find_device.&n; *&n; * Inputs : tpnt - Template for this SCSI adapter, board - board level&n; *&t;product, chip - 810, 820, or 825, bus - PCI bus, device_fn -&n; *&t;device and function encoding as used by PCI BIOS calls.&n; * &n; * Returns : 0 on success, -1 on failure.&n; *&n; */
+multiline_comment|/* &n; * Function : static int normal_init(Scsi_Host_Template *tpnt, int board, &n; *&t;int chip, u32 base, int io_port, int irq, int dma, int pcivalid,&n; *      struct pci_dev *pci_dev, long long options);&n; *&n; * Purpose : initializes a NCR53c7,8x0 based on base addresses,&n; *&t;IRQ, and DMA channel.&t;&n; *&t;&n; *&t;Useful where a new NCR chip is backwards compatible with&n; *&t;a supported chip, but the DEVICE ID has changed so it &n; *&t;doesn&squot;t show up when the autoprobe does a pci_find_device.&n; *&n; * Inputs : tpnt - Template for this SCSI adapter, board - board level&n; *&t;product, chip - 810, 820, or 825, bus - PCI bus, device_fn -&n; *&t;device and function encoding as used by PCI BIOS calls.&n; * &n; * Returns : 0 on success, -1 on failure.&n; *&n; */
 r_static
 r_int
 id|__init
@@ -2879,14 +2879,6 @@ id|dma
 comma
 r_int
 id|pci_valid
-comma
-r_int
-r_char
-id|pci_bus
-comma
-r_int
-r_char
-id|pci_device_fn
 comma
 r_struct
 id|pci_dev
@@ -3218,13 +3210,9 @@ id|pci_valid
 )paren
 )paren
 (brace
-id|hostdata-&gt;pci_bus
+id|hostdata-&gt;pci_dev
 op_assign
-id|pci_bus
-suffix:semicolon
-id|hostdata-&gt;pci_device_fn
-op_assign
-id|pci_device_fn
+id|pci_dev
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     * Being memory mapped is more desirable, since &n;     *&n;     * - Memory accesses may be faster.&n;     *&n;     * - The destination and source address spaces are the same for &n;     *&t; all instructions, meaning we don&squot;t have to twiddle dmode or &n;     *&t; any other registers.&n;     *&n;     * So, we try for memory mapped, and if we don&squot;t get it,&n;     * we go for port mapped, and that failing we tell the user&n;     * it can&squot;t work.&n;     */
@@ -3508,7 +3496,7 @@ id|instance
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Function : static int ncr_pci_init(Scsi_Host_Template *tpnt, int board, &n; *&t;int chip, int bus, int device_fn, long long options)&n; *&n; * Purpose : initializes a NCR53c800 family based on the PCI&n; *&t;bus, device, and function location of it.  Allows &n; * &t;reprogramming of latency timer and determining addresses&n; *&t;and whether bus mastering, etc. are OK.&n; *&t;&n; *&t;Useful where a new NCR chip is backwards compatible with&n; *&t;a supported chip, but the DEVICE ID has changed so it &n; *&t;doesn&squot;t show up when the autoprobe does a pcibios_find_device.&n; *&n; * Inputs : tpnt - Template for this SCSI adapter, board - board level&n; *&t;product, chip - 810, 820, or 825, bus - PCI bus, device_fn -&n; *&t;device and function encoding as used by PCI BIOS calls.&n; * &n; * Returns : 0 on success, -1 on failure.&n; *&n; */
+multiline_comment|/* &n; * Function : static int ncr_pci_init(Scsi_Host_Template *tpnt, int board, &n; *&t;int chip, int bus, int device_fn, long long options)&n; *&n; * Purpose : initializes a NCR53c800 family based on the PCI&n; *&t;bus, device, and function location of it.  Allows &n; * &t;reprogramming of latency timer and determining addresses&n; *&t;and whether bus mastering, etc. are OK.&n; *&t;&n; *&t;Useful where a new NCR chip is backwards compatible with&n; *&t;a supported chip, but the DEVICE ID has changed so it &n; *&t;doesn&squot;t show up when the autoprobe does a pci_find_device.&n; *&n; * Inputs : tpnt - Template for this SCSI adapter, board - board level&n; *&t;product, chip - 810, 820, or 825, bus - PCI bus, device_fn -&n; *&t;device and function encoding as used by PCI BIOS calls.&n; * &n; * Returns : 0 on success, -1 on failure.&n; *&n; */
 r_static
 r_int
 id|__init
@@ -4178,10 +4166,6 @@ comma
 id|DMA_NONE
 comma
 l_int|1
-comma
-id|bus
-comma
-id|device_fn
 comma
 id|pdev
 comma
@@ -18708,11 +18692,9 @@ c_func
 suffix:semicolon
 id|tmp
 op_assign
-id|pcibios_read_config_word
+id|pci_read_config_word
 (paren
-id|hostdata-&gt;pci_bus
-comma
-id|hostdata-&gt;pci_device_fn
+id|hostdata-&gt;pcidev
 comma
 id|PCI_STATUS
 comma

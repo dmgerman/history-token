@@ -68,6 +68,7 @@ mdefine_line|#define OPERATION_MODE_1 0xec03
 DECL|macro|IO_CONFIG_3
 mdefine_line|#define IO_CONFIG_3 0xf002
 macro_line|#ifndef ASM
+r_static
 r_int
 id|pas16_abort
 c_func
@@ -76,6 +77,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|pas16_biosparam
 c_func
@@ -94,6 +96,7 @@ r_int
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|pas16_detect
 c_func
@@ -102,6 +105,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|pas16_queue_command
 c_func
@@ -120,6 +124,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_static
 r_int
 id|pas16_bus_reset
 c_func
@@ -128,6 +133,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|pas16_host_reset
 c_func
@@ -136,6 +142,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|pas16_device_reset
 c_func
@@ -144,6 +151,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|pas16_proc_info
 (paren

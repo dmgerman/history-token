@@ -381,24 +381,6 @@ suffix:colon
 multiline_comment|/* no error */
 r_break
 suffix:semicolon
-r_case
-op_minus
-id|EPIPE
-suffix:colon
-id|usb_clear_halt
-(paren
-id|dev
-comma
-id|usb_sndctrlpipe
-(paren
-id|dev
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 id|printk

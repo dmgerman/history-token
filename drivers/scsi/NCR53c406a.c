@@ -41,7 +41,7 @@ multiline_comment|/* ===========================================================
 DECL|macro|WATCHDOG
 mdefine_line|#define WATCHDOG 5000000
 DECL|macro|SYNC_MODE
-mdefine_line|#define SYNC_MODE 0 &t;&t;/* Synchronous transfer mode */
+mdefine_line|#define SYNC_MODE 0&t;&t;/* Synchronous transfer mode */
 macro_line|#if DEBUG
 DECL|macro|NCR53C406A_DEBUG
 macro_line|#undef NCR53C406A_DEBUG
@@ -306,7 +306,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* 0 is &squot;no irq&squot;, so use -1 for &squot;uninitialized&squot;*/
+multiline_comment|/* 0 is &squot;no irq&squot;, so use -1 for &squot;uninitialized&squot; */
 macro_line|#endif
 macro_line|#if USE_DMA
 DECL|variable|dma_chan
@@ -377,7 +377,7 @@ l_int|0xc8000
 suffix:semicolon
 DECL|macro|ADDRESS_COUNT
 mdefine_line|#define ADDRESS_COUNT (sizeof( addresses ) / sizeof( unsigned ))
-macro_line|#endif /* USE_BIOS */
+macro_line|#endif&t;&t;&t;&t;/* USE_BIOS */
 multiline_comment|/* possible i/o port addresses */
 DECL|variable|ports
 r_static
@@ -473,7 +473,7 @@ comma
 suffix:semicolon
 DECL|macro|SIGNATURE_COUNT
 mdefine_line|#define SIGNATURE_COUNT (sizeof( signatures ) / sizeof( struct signature ))
-macro_line|#endif /* USE_BIOS */
+macro_line|#endif&t;&t;&t;&t;/* USE_BIOS */
 multiline_comment|/* ============================================================ */
 multiline_comment|/* Control Register Set 0 */
 DECL|variable|TC_LSB
@@ -481,31 +481,31 @@ r_static
 r_int
 id|TC_LSB
 suffix:semicolon
-multiline_comment|/* transfer counter lsb &t;*/
+multiline_comment|/* transfer counter lsb         */
 DECL|variable|TC_MSB
 r_static
 r_int
 id|TC_MSB
 suffix:semicolon
-multiline_comment|/* transfer counter msb&t;*/
+multiline_comment|/* transfer counter msb */
 DECL|variable|SCSI_FIFO
 r_static
 r_int
 id|SCSI_FIFO
 suffix:semicolon
-multiline_comment|/* scsi fifo register&t;*/
+multiline_comment|/* scsi fifo register   */
 DECL|variable|CMD_REG
 r_static
 r_int
 id|CMD_REG
 suffix:semicolon
-multiline_comment|/* command register&t;&t;*/
+multiline_comment|/* command register             */
 DECL|variable|STAT_REG
 r_static
 r_int
 id|STAT_REG
 suffix:semicolon
-multiline_comment|/* status register&t;&t;*/
+multiline_comment|/* status register              */
 DECL|variable|DEST_ID
 r_static
 r_int
@@ -529,7 +529,7 @@ r_static
 r_int
 id|SEQ_REG
 suffix:semicolon
-multiline_comment|/* sequence step register&t;*/
+multiline_comment|/* sequence step register       */
 DECL|variable|SYNCPRD
 r_static
 r_int
@@ -553,15 +553,15 @@ r_static
 r_int
 id|CONFIG1
 suffix:semicolon
-multiline_comment|/* configuration register&t;*/
+multiline_comment|/* configuration register       */
 DECL|variable|CLKCONV
 r_static
 r_int
 id|CLKCONV
 suffix:semicolon
-multiline_comment|/* clock conversion reg&t;*/
+multiline_comment|/* clock conversion reg */
 multiline_comment|/*static int TESTREG;*/
-multiline_comment|/* test mode register&t;&t;*/
+multiline_comment|/* test mode register           */
 DECL|variable|CONFIG2
 r_static
 r_int
@@ -573,7 +573,7 @@ r_static
 r_int
 id|CONFIG3
 suffix:semicolon
-multiline_comment|/* Configuration 3 Register&t;*/
+multiline_comment|/* Configuration 3 Register     */
 DECL|variable|CONFIG4
 r_static
 r_int
@@ -616,7 +616,7 @@ multiline_comment|/* PIO status (r/w) */
 multiline_comment|/*static int ATA_CMD;*/
 multiline_comment|/* ATA command/status reg (r/w) */
 multiline_comment|/*static int ATA_ERR;*/
-multiline_comment|/* ATA features/error register (r/w)*/
+multiline_comment|/* ATA features/error register (r/w) */
 DECL|variable|PIO_FLAG
 r_static
 r_int
@@ -635,11 +635,12 @@ multiline_comment|/*static int CONFIG6;*/
 multiline_comment|/* Configuration 6 register (r) */
 multiline_comment|/* ============================================================== */
 macro_line|#if USE_DMA
+DECL|function|NCR53c406a_dma_setup
 r_static
 id|__inline__
 r_int
-DECL|function|NCR53c406a_dma_setup
 id|NCR53c406a_dma_setup
+c_func
 (paren
 r_int
 r_char
@@ -796,6 +797,7 @@ l_int|1
 )paren
 )paren
 id|panic
+c_func
 (paren
 l_string|&quot;NCR53c406a: attempted unaligned DMA transfer&bslash;n&quot;
 )paren
@@ -862,10 +864,10 @@ r_return
 id|count
 suffix:semicolon
 )brace
+DECL|function|NCR53c406a_dma_write
 r_static
 id|__inline__
 r_int
-DECL|function|NCR53c406a_dma_write
 id|NCR53c406a_dma_write
 c_func
 (paren
@@ -881,6 +883,7 @@ id|count
 (brace
 r_return
 id|NCR53c406a_dma_setup
+c_func
 (paren
 id|src
 comma
@@ -890,10 +893,10 @@ id|DMA_MODE_WRITE
 )paren
 suffix:semicolon
 )brace
+DECL|function|NCR53c406a_dma_read
 r_static
 id|__inline__
 r_int
-DECL|function|NCR53c406a_dma_read
 id|NCR53c406a_dma_read
 c_func
 (paren
@@ -909,6 +912,7 @@ id|count
 (brace
 r_return
 id|NCR53c406a_dma_setup
+c_func
 (paren
 id|src
 comma
@@ -918,11 +922,12 @@ id|DMA_MODE_READ
 )paren
 suffix:semicolon
 )brace
+DECL|function|NCR53c406a_dma_residual
 r_static
 id|__inline__
 r_int
-DECL|function|NCR53c406a_dma_residual
 id|NCR53c406a_dma_residual
+c_func
 (paren
 r_void
 )paren
@@ -966,7 +971,7 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
-macro_line|#endif /* USE_DMA */
+macro_line|#endif&t;&t;&t;&t;/* USE_DMA */
 macro_line|#if USE_PIO
 DECL|function|NCR53c406a_pio_read
 r_static
@@ -992,12 +997,6 @@ r_int
 id|len
 suffix:semicolon
 multiline_comment|/* current scsi fifo size */
-r_int
-r_int
-id|flags
-op_assign
-l_int|0
-suffix:semicolon
 id|REG1
 suffix:semicolon
 r_while
@@ -1113,22 +1112,9 @@ id|len
 OG
 id|reqlen
 )paren
-(brace
 id|len
 op_assign
 id|reqlen
-suffix:semicolon
-)brace
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1189,12 +1175,6 @@ op_decrement
 suffix:semicolon
 )brace
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 )brace
 )brace
 r_return
@@ -1227,12 +1207,6 @@ r_int
 id|len
 suffix:semicolon
 multiline_comment|/* current scsi fifo size */
-r_int
-r_int
-id|flags
-op_assign
-l_int|0
-suffix:semicolon
 id|REG1
 suffix:semicolon
 r_while
@@ -1337,22 +1311,9 @@ id|len
 OG
 id|reqlen
 )paren
-(brace
 id|len
 op_assign
 id|reqlen
-suffix:semicolon
-)brace
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1413,23 +1374,17 @@ op_decrement
 suffix:semicolon
 )brace
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 )brace
 )brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* USE_PIO */
+macro_line|#endif&t;&t;&t;&t;/* USE_PIO */
+DECL|function|NCR53c406a_detect
+r_static
 r_int
 id|__init
-DECL|function|NCR53c406a_detect
-(def_block
 id|NCR53c406a_detect
 c_func
 (paren
@@ -1542,7 +1497,6 @@ dot
 id|sig_length
 )paren
 )paren
-(brace
 id|bios_base
 op_assign
 id|addresses
@@ -1550,7 +1504,6 @@ id|addresses
 id|ii
 )braket
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1585,7 +1538,7 @@ id|bios_base
 suffix:semicolon
 )paren
 suffix:semicolon
-macro_line|#endif /* USE_BIOS */
+macro_line|#endif&t;&t;&t;&t;/* USE_BIOS */
 macro_line|#ifdef PORT_BASE
 r_if
 c_cond
@@ -1606,7 +1559,7 @@ id|port_base
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#else  /* autodetect */
+macro_line|#else&t;&t;&t;&t;/* autodetect */
 r_if
 c_cond
 (paren
@@ -1837,7 +1790,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* PORT_BASE */
+macro_line|#endif&t;&t;&t;&t;/* PORT_BASE */
 r_if
 c_cond
 (paren
@@ -1885,7 +1838,7 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/* LILO override if &gt;= 0*/
+multiline_comment|/* LILO override if &gt;= 0 */
 id|irq_level
 op_assign
 id|irq_probe
@@ -2051,7 +2004,7 @@ suffix:semicolon
 r_goto
 id|err_free_scsi
 suffix:semicolon
-macro_line|#endif /* USE_DMA */
+macro_line|#endif&t;&t;&t;&t;/* USE_DMA */
 )brace
 r_else
 (brace
@@ -2112,7 +2065,7 @@ id|dma_chan
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif /* USE_DMA */
+macro_line|#endif&t;&t;&t;&t;/* USE_DMA */
 id|shpnt-&gt;irq
 op_assign
 id|irq_level
@@ -2180,7 +2133,6 @@ c_cond
 (paren
 id|irq_level
 )paren
-(brace
 id|free_irq
 c_func
 (paren
@@ -2189,8 +2141,7 @@ comma
 id|shpnt
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif    &t;
+macro_line|#endif
 id|err_free_scsi
 suffix:colon
 id|scsi_unregister
@@ -2213,9 +2164,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-)def_block
 multiline_comment|/* called from init/main.c */
 DECL|function|NCR53c406a_setup
+r_static
 r_void
 id|__init
 id|NCR53c406a_setup
@@ -2512,11 +2463,19 @@ id|fast_pio
 suffix:semicolon
 )paren
 )brace
+id|__setup
+c_func
+(paren
+l_string|&quot;ncr53c406a=&quot;
+comma
+id|NCR53c406a_setup
+)paren
+suffix:semicolon
+DECL|function|NCR53c406a_info
+r_static
 r_const
 r_char
 op_star
-DECL|function|NCR53c406a_info
-(def_block
 id|NCR53c406a_info
 c_func
 (paren
@@ -2542,7 +2501,6 @@ id|info_msg
 )paren
 suffix:semicolon
 )brace
-)def_block
 DECL|function|internal_done
 r_static
 r_void
@@ -2602,6 +2560,11 @@ l_int|0xe0
 )paren
 (brace
 multiline_comment|/* wait for a pseudo-interrupt */
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 id|barrier
 c_func
 (paren
@@ -2660,8 +2623,8 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|NCR53c406a_command
+r_static
 r_int
-(def_block
 id|NCR53c406a_command
 c_func
 (paren
@@ -2699,6 +2662,10 @@ c_loop
 op_logical_neg
 id|internal_done_flag
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 r_else
 multiline_comment|/* interrupts not supported */
@@ -2721,10 +2688,9 @@ r_return
 id|internal_done_errcode
 suffix:semicolon
 )brace
-)def_block
-r_int
 DECL|function|NCR53c406a_queue
-(def_block
+r_static
+r_int
 id|NCR53c406a_queue
 c_func
 (paren
@@ -2745,12 +2711,6 @@ op_star
 (brace
 r_int
 id|i
-suffix:semicolon
-r_int
-r_int
-id|flags
-op_assign
-l_int|0
 suffix:semicolon
 id|VDEB
 c_func
@@ -2847,17 +2807,7 @@ id|current_SC-&gt;SCp.Message
 op_assign
 l_int|0
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* We are locked here already by the mid layer */
 id|REG0
 suffix:semicolon
 id|outb
@@ -2913,12 +2863,6 @@ comma
 id|CMD_REG
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 id|rtrc
 c_func
 (paren
@@ -2929,10 +2873,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-)def_block
-r_int
 DECL|function|NCR53c406a_abort
-(def_block
+r_static
+r_int
 id|NCR53c406a_abort
 c_func
 (paren
@@ -2952,24 +2895,19 @@ l_string|&quot;NCR53c406a_abort called&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_SNOOZE
+id|FAILED
 suffix:semicolon
 multiline_comment|/* Don&squot;t know how to abort */
 )brace
-)def_block
+DECL|function|NCR53c406a_host_reset
+r_static
 r_int
-DECL|function|NCR53c406a_reset
-(def_block
-id|NCR53c406a_reset
+id|NCR53c406a_host_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|SCpnt
-comma
-r_int
-r_int
-id|ignored
 )paren
 (brace
 id|DEB
@@ -3027,37 +2965,54 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|irq_level
-)paren
 r_return
-id|SCSI_RESET_PENDING
+id|SUCCESS
 suffix:semicolon
-multiline_comment|/* should get an interrupt */
-r_else
-r_return
-id|SCSI_RESET_WAKEUP
-suffix:semicolon
-multiline_comment|/* won&squot;t get any interrupts */
 )brace
-)def_block
+DECL|function|NCR53c406a_device_reset
+r_static
 r_int
+id|NCR53c406a_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+(brace
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+DECL|function|NCR53c406a_bus_reset
+r_static
+r_int
+id|NCR53c406a_bus_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+(brace
+r_return
+id|FAILED
+suffix:semicolon
+)brace
 DECL|function|NCR53c406a_biosparm
-(def_block
+r_static
+r_int
 id|NCR53c406a_biosparm
 c_func
 (paren
-r_struct
-id|scsi_device
+id|Scsi_Disk
 op_star
-id|sdev
+id|disk
 comma
 r_struct
 id|block_device
 op_star
-id|bdev
+id|dev
 comma
 id|sector_t
 id|capacity
@@ -3154,11 +3109,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-)def_block
+DECL|function|do_NCR53c406a_intr
 r_static
 r_void
-DECL|function|do_NCR53c406a_intr
-(def_block
 id|do_NCR53c406a_intr
 c_func
 (paren
@@ -3213,11 +3166,9 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-)def_block
+DECL|function|NCR53c406a_intr
 r_static
 r_void
-DECL|function|NCR53c406a_intr
-(def_block
 id|NCR53c406a_intr
 c_func
 (paren
@@ -3256,12 +3207,6 @@ id|status
 comma
 id|int_reg
 suffix:semicolon
-r_int
-r_int
-id|flags
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#if USE_PIO
 r_int
 r_char
@@ -3285,17 +3230,6 @@ c_func
 (paren
 l_string|&quot;NCR53c406a_intr called&bslash;n&quot;
 )paren
-)paren
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#if USE_PIO
@@ -3354,12 +3288,6 @@ op_amp
 l_int|0x1f
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 macro_line|#if NCR53C406A_DEBUG
 id|printk
 c_func
@@ -3391,8 +3319,8 @@ comma
 id|pio_status
 )paren
 suffix:semicolon
-macro_line|#endif /* USE_DMA */
-macro_line|#endif /* NCR53C406A_DEBUG */
+macro_line|#endif&t;&t;&t;&t;/* USE_DMA */
+macro_line|#endif&t;&t;&t;&t;/* NCR53C406A_DEBUG */
 r_if
 c_cond
 (paren
@@ -3475,7 +3403,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif /* USE_PIO */
+macro_line|#endif&t;&t;&t;&t;/* USE_PIO */
 r_if
 c_cond
 (paren
@@ -3698,7 +3626,7 @@ comma
 id|current_SC-&gt;request_bufflen
 )paren
 suffix:semicolon
-macro_line|#endif /* USE_DMA */
+macro_line|#endif&t;&t;&t;&t;/* USE_DMA */
 id|outb
 c_func
 (paren
@@ -3764,7 +3692,7 @@ suffix:semicolon
 )brace
 id|REG0
 suffix:semicolon
-macro_line|#endif /* USE_PIO */
+macro_line|#endif&t;&t;&t;&t;/* USE_PIO */
 )brace
 r_break
 suffix:semicolon
@@ -3825,7 +3753,7 @@ comma
 id|current_SC-&gt;request_bufflen
 )paren
 suffix:semicolon
-macro_line|#endif /* USE_DMA */
+macro_line|#endif&t;&t;&t;&t;/* USE_DMA */
 id|outb
 c_func
 (paren
@@ -3891,7 +3819,7 @@ suffix:semicolon
 )brace
 id|REG0
 suffix:semicolon
-macro_line|#endif /* USE_PIO */
+macro_line|#endif&t;&t;&t;&t;/* USE_PIO */
 )brace
 r_break
 suffix:semicolon
@@ -4122,7 +4050,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-)def_block
 macro_line|#ifndef IRQ_LEV
 DECL|function|irq_probe
 r_static
@@ -4195,13 +4122,11 @@ op_amp
 l_int|0x80
 )paren
 )paren
-(brace
 id|barrier
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4260,7 +4185,7 @@ r_return
 id|irq
 suffix:semicolon
 )brace
-macro_line|#endif /* IRQ_LEV */
+macro_line|#endif&t;&t;&t;&t;/* IRQ_LEV */
 DECL|function|chip_init
 r_static
 r_void
@@ -4281,7 +4206,7 @@ comma
 id|PIO_STATUS
 )paren
 suffix:semicolon
-macro_line|#else  /* USE_PIO */
+macro_line|#else&t;&t;&t;&t;/* USE_PIO */
 id|outb
 c_func
 (paren
@@ -4370,6 +4295,7 @@ suffix:semicolon
 multiline_comment|/* synchronous mode */
 )brace
 DECL|function|calc_port_addr
+r_static
 r_void
 id|__init
 id|calc_port_addr
@@ -4491,7 +4417,7 @@ op_plus
 l_int|0x09
 )paren
 suffix:semicolon
-multiline_comment|/* TESTREG&t;&t;= (port_base+0x0A); */
+multiline_comment|/* TESTREG          = (port_base+0x0A); */
 id|CONFIG2
 op_assign
 (paren
@@ -4524,11 +4450,11 @@ op_plus
 l_int|0x0E
 )paren
 suffix:semicolon
-multiline_comment|/* FIFO_BOTTOM&t;= (port_base+0x0F); */
+multiline_comment|/* FIFO_BOTTOM      = (port_base+0x0F); */
 multiline_comment|/* Control Register Set 1 */
-multiline_comment|/* JUMPER_SENSE&t;= (port_base+0x00);*/
-multiline_comment|/* SRAM_PTR&t;&t;= (port_base+0x01);*/
-multiline_comment|/* SRAM_DATA&t;= (port_base+0x02);*/
+multiline_comment|/* JUMPER_SENSE     = (port_base+0x00); */
+multiline_comment|/* SRAM_PTR         = (port_base+0x01); */
+multiline_comment|/* SRAM_DATA        = (port_base+0x02); */
 id|PIO_FIFO
 op_assign
 (paren
@@ -4537,9 +4463,9 @@ op_plus
 l_int|0x04
 )paren
 suffix:semicolon
-multiline_comment|/* PIO_FIFO1&t;= (port_base+0x05);*/
-multiline_comment|/* PIO_FIFO2&t;= (port_base+0x06);*/
-multiline_comment|/* PIO_FIFO3&t;= (port_base+0x07);*/
+multiline_comment|/* PIO_FIFO1        = (port_base+0x05); */
+multiline_comment|/* PIO_FIFO2        = (port_base+0x06); */
+multiline_comment|/* PIO_FIFO3        = (port_base+0x07); */
 id|PIO_STATUS
 op_assign
 (paren
@@ -4548,8 +4474,8 @@ op_plus
 l_int|0x08
 )paren
 suffix:semicolon
-multiline_comment|/* ATA_CMD&t;&t;= (port_base+0x09);*/
-multiline_comment|/* ATA_ERR&t;&t;= (port_base+0x0A);*/
+multiline_comment|/* ATA_CMD          = (port_base+0x09); */
+multiline_comment|/* ATA_ERR          = (port_base+0x0A); */
 id|PIO_FLAG
 op_assign
 (paren
@@ -4566,8 +4492,8 @@ op_plus
 l_int|0x0D
 )paren
 suffix:semicolon
-multiline_comment|/* SIGNATURE&t;= (port_base+0x0E);*/
-multiline_comment|/* CONFIG6&t;&t;= (port_base+0x0F);*/
+multiline_comment|/* SIGNATURE        = (port_base+0x0E); */
+multiline_comment|/* CONFIG6          = (port_base+0x0F); */
 )brace
 id|MODULE_LICENSE
 c_func
