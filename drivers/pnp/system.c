@@ -5,34 +5,11 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-DECL|variable|pnp_card_table
-r_static
-r_const
-r_struct
-id|pnp_id
-id|pnp_card_table
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_string|&quot;ANYDEVS&quot;
-comma
-l_int|0
-)brace
-comma
-(brace
-l_string|&quot;&quot;
-comma
-l_int|0
-)brace
-)brace
-suffix:semicolon
 DECL|variable|pnp_dev_table
 r_static
 r_const
 r_struct
-id|pnp_id
+id|pnp_device_id
 id|pnp_dev_table
 (braket
 )braket
@@ -354,13 +331,7 @@ id|dev
 comma
 r_const
 r_struct
-id|pnp_id
-op_star
-id|card_id
-comma
-r_const
-r_struct
-id|pnp_id
+id|pnp_device_id
 op_star
 id|dev_id
 )paren
@@ -386,11 +357,6 @@ dot
 id|name
 op_assign
 l_string|&quot;system&quot;
-comma
-dot
-id|card_id_table
-op_assign
-id|pnp_card_table
 comma
 dot
 id|id_table

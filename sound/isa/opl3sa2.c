@@ -4,13 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#ifndef LINUX_ISAPNP_H
-macro_line|#include &lt;linux/isapnp.h&gt;
-DECL|macro|isapnp_card
-mdefine_line|#define isapnp_card pci_bus
-DECL|macro|isapnp_dev
-mdefine_line|#define isapnp_dev pci_dev
-macro_line|#endif
+macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/cs4231.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
@@ -87,7 +81,7 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE_ISAPNP
 suffix:semicolon
 multiline_comment|/* Enable this card */
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 DECL|variable|isapnp
 r_static
 r_int
@@ -317,7 +311,7 @@ comma
 id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 id|MODULE_PARM
 c_func
 (paren
@@ -735,10 +729,10 @@ id|cs4231_t
 op_star
 id|cs4231
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 DECL|member|dev
 r_struct
-id|isapnp_dev
+id|pnp_dev
 op_star
 id|dev
 suffix:semicolon
@@ -809,122 +803,154 @@ id|SNDRV_CARDS
 op_assign
 id|SNDRV_DEFAULT_PTR
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
-DECL|variable|__devinitdata
+macro_line|#ifdef CONFIG_PNP
+DECL|variable|snd_opl3sa2_isapnp_cards
 r_static
 r_struct
-id|isapnp_card
+id|pnp_card
 op_star
 id|snd_opl3sa2_isapnp_cards
 (braket
 id|SNDRV_CARDS
 )braket
-id|__devinitdata
 op_assign
 id|SNDRV_DEFAULT_PTR
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_opl3sa2_isapnp_id
 r_static
 r_const
 r_struct
-id|isapnp_card_id
+id|pnp_card_id
 op_star
 id|snd_opl3sa2_isapnp_id
 (braket
 id|SNDRV_CARDS
 )braket
-id|__devinitdata
 op_assign
 id|SNDRV_DEFAULT_PTR
 suffix:semicolon
-DECL|macro|ISAPNP_OPL3SA2
-mdefine_line|#define ISAPNP_OPL3SA2(_va, _vb, _vc, _device, _function) &bslash;&n;        { &bslash;&n;                ISAPNP_CARD_ID(_va, _vb, _vc, _device), &bslash;&n;                devs : { ISAPNP_DEVICE_ID(_va, _vb, _vc, _function), } &bslash;&n;        }
-DECL|variable|__devinitdata
+DECL|variable|snd_opl3sa2_pnpids
 r_static
 r_struct
-id|isapnp_card_id
+id|pnp_card_id
 id|snd_opl3sa2_pnpids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* Yamaha YMF719E-S (Genius Sound Maker 3DX) */
-id|ISAPNP_OPL3SA2
-c_func
-(paren
-l_char|&squot;Y&squot;
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;YMH0020&quot;
 comma
-l_char|&squot;M&squot;
+dot
+id|driver_data
+op_assign
+l_int|0
 comma
-l_char|&squot;H&squot;
+id|devs
+suffix:colon
+(brace
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;YMH0021&quot;
+)brace
 comma
-l_int|0x0020
-comma
-l_int|0x0021
-)paren
+)brace
+)brace
 comma
 multiline_comment|/* Yamaha OPL3-SA3 (integrated on Intel&squot;s Pentium II AL440LX motherboard) */
-id|ISAPNP_OPL3SA2
-c_func
-(paren
-l_char|&squot;Y&squot;
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;YMH0030&quot;
 comma
-l_char|&squot;M&squot;
+dot
+id|driver_data
+op_assign
+l_int|0
 comma
-l_char|&squot;H&squot;
+id|devs
+suffix:colon
+(brace
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;YMH0021&quot;
+)brace
 comma
-l_int|0x0030
-comma
-l_int|0x0021
-)paren
+)brace
+)brace
 comma
 multiline_comment|/* Yamaha OPL3-SA2 */
-id|ISAPNP_OPL3SA2
-c_func
-(paren
-l_char|&squot;Y&squot;
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;YMH0800&quot;
 comma
-l_char|&squot;M&squot;
+dot
+id|driver_data
+op_assign
+l_int|0
 comma
-l_char|&squot;H&squot;
+id|devs
+suffix:colon
+(brace
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;YMH0021&quot;
+)brace
 comma
-l_int|0x0800
-comma
-l_int|0x0021
-)paren
+)brace
+)brace
 comma
 multiline_comment|/* NeoMagic MagicWave 3DX */
-id|ISAPNP_OPL3SA2
-c_func
-(paren
-l_char|&squot;N&squot;
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;NMX2200&quot;
 comma
-l_char|&squot;M&squot;
+dot
+id|driver_data
+op_assign
+l_int|0
 comma
-l_char|&squot;X&squot;
+id|devs
+suffix:colon
+(brace
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;NMX2210&quot;
+)brace
 comma
-l_int|0x2200
-comma
-l_int|0x2210
-)paren
+)brace
+)brace
 comma
 multiline_comment|/* --- */
 (brace
-id|ISAPNP_CARD_END
+dot
+id|id
+op_assign
+l_string|&quot;&quot;
 comma
 )brace
 multiline_comment|/* end */
 )brace
 suffix:semicolon
-DECL|variable|snd_opl3sa2_pnpids
-id|ISAPNP_CARD_TABLE
-c_func
-(paren
-id|snd_opl3sa2_pnpids
-)paren
-suffix:semicolon
-macro_line|#endif /* __ISAPNP__ */
+multiline_comment|/*PNP_CARD_TABLE(snd_opl3sa2_pnpids);*/
+macro_line|#endif /* CONFIG_PNP */
 multiline_comment|/* read control port (w/o spinlock) */
 DECL|function|__snd_opl3sa2_read
 r_static
@@ -3574,7 +3600,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PM */
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 DECL|function|snd_opl3sa2_isapnp
 r_static
 r_int
@@ -3592,7 +3618,7 @@ id|chip
 (brace
 r_const
 r_struct
-id|isapnp_card_id
+id|pnp_card_id
 op_star
 id|id
 op_assign
@@ -3602,7 +3628,7 @@ id|dev
 )braket
 suffix:semicolon
 r_struct
-id|isapnp_card
+id|pnp_card
 op_star
 id|card
 op_assign
@@ -3612,13 +3638,13 @@ id|dev
 )braket
 suffix:semicolon
 r_struct
-id|isapnp_dev
+id|pnp_dev
 op_star
 id|pdev
 suffix:semicolon
 id|chip-&gt;dev
 op_assign
-id|isapnp_find_dev
+id|pnp_request_card_device
 c_func
 (paren
 id|card
@@ -3628,34 +3654,11 @@ id|id-&gt;devs
 l_int|0
 )braket
 dot
-id|vendor
-comma
-id|id-&gt;devs
-(braket
-l_int|0
-)braket
-dot
-id|function
+id|id
 comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|chip-&gt;dev-&gt;active
-)paren
-(brace
-id|chip-&gt;dev
-op_assign
-l_int|NULL
-suffix:semicolon
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-multiline_comment|/* PnP initialization */
 id|pdev
 op_assign
 id|chip-&gt;dev
@@ -3663,259 +3666,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|pdev
-op_member_access_from_pointer
-id|prepare
-c_func
-(paren
-id|pdev
-)paren
-OL
-l_int|0
-)paren
-r_return
-op_minus
-id|EAGAIN
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sb_port
-(braket
-id|dev
-)braket
-op_ne
-id|SNDRV_AUTO_PORT
-)paren
-id|isapnp_resource_change
-c_func
-(paren
-op_amp
-id|pdev-&gt;resource
-(braket
-l_int|0
-)braket
-comma
-id|sb_port
-(braket
-id|dev
-)braket
-comma
-l_int|16
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|wss_port
-(braket
-id|dev
-)braket
-op_ne
-id|SNDRV_AUTO_PORT
-)paren
-id|isapnp_resource_change
-c_func
-(paren
-op_amp
-id|pdev-&gt;resource
-(braket
-l_int|1
-)braket
-comma
-id|wss_port
-(braket
-id|dev
-)braket
-comma
-l_int|8
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fm_port
-(braket
-id|dev
-)braket
-op_ne
-id|SNDRV_AUTO_PORT
-)paren
-id|isapnp_resource_change
-c_func
-(paren
-op_amp
-id|pdev-&gt;resource
-(braket
-l_int|2
-)braket
-comma
-id|fm_port
-(braket
-id|dev
-)braket
-comma
-l_int|4
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|midi_port
-(braket
-id|dev
-)braket
-op_ne
-id|SNDRV_AUTO_PORT
-)paren
-id|isapnp_resource_change
-c_func
-(paren
-op_amp
-id|pdev-&gt;resource
-(braket
-l_int|3
-)braket
-comma
-id|midi_port
-(braket
-id|dev
-)braket
-comma
-l_int|2
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port
-(braket
-id|dev
-)braket
-op_ne
-id|SNDRV_AUTO_PORT
-)paren
-id|isapnp_resource_change
-c_func
-(paren
-op_amp
-id|pdev-&gt;resource
-(braket
-l_int|4
-)braket
-comma
-id|port
-(braket
-id|dev
-)braket
-comma
-l_int|2
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dma1
-(braket
-id|dev
-)braket
-op_ne
-id|SNDRV_AUTO_DMA
-)paren
-id|isapnp_resource_change
-c_func
-(paren
-op_amp
-id|pdev-&gt;dma_resource
-(braket
-l_int|0
-)braket
-comma
-id|dma1
-(braket
-id|dev
-)braket
-comma
-l_int|1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dma2
-(braket
-id|dev
-)braket
-op_ne
-id|SNDRV_AUTO_DMA
-)paren
-id|isapnp_resource_change
-c_func
-(paren
-op_amp
-id|pdev-&gt;dma_resource
-(braket
-l_int|1
-)braket
-comma
-id|dma2
-(braket
-id|dev
-)braket
-comma
-l_int|1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|irq
-(braket
-id|dev
-)braket
-op_ne
-id|SNDRV_AUTO_IRQ
-)paren
-id|isapnp_resource_change
-c_func
-(paren
-op_amp
-id|pdev-&gt;irq_resource
-(braket
-l_int|0
-)braket
-comma
-id|irq
-(braket
-id|dev
-)braket
-comma
-l_int|1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pdev
-op_member_access_from_pointer
-id|activate
-c_func
-(paren
-id|pdev
-)paren
-OL
-l_int|0
 )paren
 (brace
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-l_string|&quot;isapnp configure failure (out of resources?)&bslash;n&quot;
+l_string|&quot;isapnp OPL3-SA: a card was found but it did not contain the needed devices&bslash;n&quot;
+comma
 )paren
 suffix:semicolon
 r_return
 op_minus
-id|EBUSY
+id|ENODEV
 suffix:semicolon
 )brace
 id|sb_port
@@ -4070,38 +3834,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_opl3sa2_deactivate
-r_static
-r_void
-id|snd_opl3sa2_deactivate
-c_func
-(paren
-id|opl3sa2_t
-op_star
-id|chip
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|chip-&gt;dev
-)paren
-(brace
-id|chip-&gt;dev
-op_member_access_from_pointer
-id|deactivate
-c_func
-(paren
-id|chip-&gt;dev
-)paren
-suffix:semicolon
-id|chip-&gt;dev
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif /* __ISAPNP__ */
+macro_line|#endif /* CONFIG_PNP */
 DECL|function|snd_opl3sa2_free
 r_static
 r_int
@@ -4113,12 +3846,10 @@ op_star
 id|chip
 )paren
 (brace
-macro_line|#ifdef __ISAPNP__
-id|snd_opl3sa2_deactivate
-c_func
-(paren
-id|chip
-)paren
+macro_line|#ifdef CONFIG_PNP
+id|chip-&gt;dev
+op_assign
+l_int|NULL
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PM
@@ -4267,7 +3998,7 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 r_if
 c_cond
 (paren
@@ -4367,7 +4098,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 )brace
 macro_line|#endif
 id|card
@@ -4476,7 +4207,7 @@ l_int|0
 r_goto
 id|__error
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 r_if
 c_cond
 (paren
@@ -5039,7 +4770,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 DECL|function|snd_opl3sa2_isapnp_detect
 r_static
 r_int
@@ -5048,13 +4779,13 @@ id|snd_opl3sa2_isapnp_detect
 c_func
 (paren
 r_struct
-id|isapnp_card
+id|pnp_card
 op_star
 id|card
 comma
 r_const
 r_struct
-id|isapnp_card_id
+id|pnp_card_id
 op_star
 id|id
 )paren
@@ -5133,7 +4864,50 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#endif /* __ISAPNP__ */
+DECL|function|snd_opl3sa2_isapnp_remove
+r_static
+r_void
+id|snd_opl3sa2_isapnp_remove
+c_func
+(paren
+r_struct
+id|pnp_card
+op_star
+id|card
+)paren
+(brace
+multiline_comment|/* FIXME */
+)brace
+DECL|variable|opl3sa2_pnpc_driver
+r_static
+r_struct
+id|pnpc_driver
+id|opl3sa2_pnpc_driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;opl3sa2&quot;
+comma
+dot
+id|id_table
+op_assign
+id|snd_opl3sa2_pnpids
+comma
+dot
+id|probe
+op_assign
+id|snd_opl3sa2_isapnp_detect
+comma
+dot
+id|remove
+op_assign
+id|snd_opl3sa2_isapnp_remove
+comma
+)brace
+suffix:semicolon
+macro_line|#endif /* CONFIG_PNP */
 DECL|function|alsa_card_opl3sa2_init
 r_static
 r_int
@@ -5177,7 +4951,7 @@ id|dev
 )paren
 r_continue
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 r_if
 c_cond
 (paren
@@ -5204,15 +4978,14 @@ id|cards
 op_increment
 suffix:semicolon
 )brace
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 id|cards
 op_add_assign
-id|isapnp_probe_cards
+id|pnpc_register_driver
 c_func
 (paren
-id|snd_opl3sa2_pnpids
-comma
-id|snd_opl3sa2_isapnp_detect
+op_amp
+id|opl3sa2_pnpc_driver
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5547,7 +5320,7 @@ op_eq
 l_int|2
 )paren
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 r_if
 c_cond
 (paren
