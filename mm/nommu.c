@@ -2159,9 +2159,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|remap_page_range
+DECL|function|remap_pfn_range
 r_int
-id|remap_page_range
+id|remap_pfn_range
 c_func
 (paren
 r_struct
