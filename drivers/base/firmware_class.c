@@ -575,8 +575,6 @@ id|memcpy
 c_func
 (paren
 id|buffer
-op_plus
-id|offset
 comma
 id|fw-&gt;data
 op_plus
@@ -782,8 +780,6 @@ op_plus
 id|offset
 comma
 id|buffer
-op_plus
-id|offset
 comma
 id|count
 )paren
