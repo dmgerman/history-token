@@ -120,7 +120,7 @@ DECL|macro|CPM_DATAONLY_BASE
 mdefine_line|#define CPM_DATAONLY_BASE&t;((uint)128)
 DECL|macro|CPM_DP_NOSPACE
 mdefine_line|#define CPM_DP_NOSPACE&t;&t;((uint)0x7fffffff)
-macro_line|#ifdef CONFIG_8272
+macro_line|#if defined(CONFIG_8272) || defined(CONFIG_MPC8555)
 DECL|macro|CPM_DATAONLY_SIZE
 mdefine_line|#define CPM_DATAONLY_SIZE&t;((uint)(8 * 1024) - CPM_DATAONLY_BASE)
 DECL|macro|CPM_FCC_SPECIAL_BASE
