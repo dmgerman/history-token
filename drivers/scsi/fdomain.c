@@ -19,6 +19,7 @@ macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
+macro_line|#include &quot;fdomain.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1046,9 +1047,7 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|function|fdomain_setup
-r_static
 r_int
-id|__init
 id|fdomain_setup
 c_func
 (paren
