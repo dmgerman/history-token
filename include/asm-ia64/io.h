@@ -134,12 +134,12 @@ macro_line|# endif /* KERNEL */
 multiline_comment|/*&n; * Memory fence w/accept.  This should never be used in code that is&n; * not IA-64 specific.&n; */
 DECL|macro|__ia64_mf_a
 mdefine_line|#define __ia64_mf_a()&t;ia64_mfa()
-multiline_comment|/**&n; * __ia64_mmiowb - I/O write barrier&n; *&n; * Ensure ordering of I/O space writes.  This will make sure that writes&n; * following the barrier will arrive after all previous writes.  For most&n; * ia64 platforms, this is a simple &squot;mf.a&squot; instruction.&n; *&n; * See Documentation/DocBook/deviceiobook.tmpl for more information.&n; */
-DECL|function|__ia64_mmiowb
+multiline_comment|/**&n; * ___ia64_mmiowb - I/O write barrier&n; *&n; * Ensure ordering of I/O space writes.  This will make sure that writes&n; * following the barrier will arrive after all previous writes.  For most&n; * ia64 platforms, this is a simple &squot;mf.a&squot; instruction.&n; *&n; * See Documentation/DocBook/deviceiobook.tmpl for more information.&n; */
+DECL|function|___ia64_mmiowb
 r_static
 r_inline
 r_void
-id|__ia64_mmiowb
+id|___ia64_mmiowb
 c_func
 (paren
 r_void
@@ -278,6 +278,8 @@ DECL|macro|__ia64_writel
 mdefine_line|#define __ia64_writel&t;___ia64_writel
 DECL|macro|__ia64_writeq
 mdefine_line|#define __ia64_writeq&t;___ia64_writeq
+DECL|macro|__ia64_mmiowb
+mdefine_line|#define __ia64_mmiowb&t;___ia64_mmiowb
 multiline_comment|/*&n; * For the in/out routines, we need to do &quot;mf.a&quot; _after_ doing the I/O access to ensure&n; * that the access has completed before executing other I/O accesses.  Since we&squot;re doing&n; * the accesses through an uncachable (UC) translation, the CPU will execute them in&n; * program order.  However, we still need to tell the compiler not to shuffle them around&n; * during optimization, which is why we use &quot;volatile&quot; pointers.&n; */
 r_static
 r_inline
