@@ -1,22 +1,16 @@
 multiline_comment|/* &n; * dvbdev.c&n; *&n; * Copyright (C) 2000 Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *                  &amp; Marcus Metzler &lt;marcus@convergence.de&gt;&n; *                    for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &quot;dvbdev.h&quot;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
-macro_line|#include &quot;compat.h&quot;
-macro_line|#endif
+macro_line|#include &quot;dvb_functions.h&quot;
 DECL|variable|dvbdev_debug
 r_static
 r_int
@@ -620,13 +614,13 @@ r_int
 id|type
 )paren
 (brace
-id|u32
-id|id
-suffix:semicolon
 r_struct
 id|dvb_device
 op_star
 id|dvbdev
+suffix:semicolon
+r_int
+id|id
 suffix:semicolon
 r_if
 c_cond
@@ -1077,14 +1071,6 @@ op_amp
 id|adap-&gt;device_list
 )paren
 suffix:semicolon
-multiline_comment|/* fixme: is this correct? */
-multiline_comment|/* No */
-id|try_module_get
-c_func
-(paren
-id|THIS_MODULE
-)paren
-suffix:semicolon
 id|printk
 (paren
 l_string|&quot;DVB: registering new adapter (%s).&bslash;n&quot;
@@ -1174,14 +1160,6 @@ suffix:semicolon
 id|kfree
 (paren
 id|adap
-)paren
-suffix:semicolon
-multiline_comment|/* fixme: is this correct? */
-multiline_comment|/* No. */
-id|module_put
-c_func
-(paren
-id|THIS_MODULE
 )paren
 suffix:semicolon
 r_return

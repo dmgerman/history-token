@@ -2,8 +2,9 @@ multiline_comment|/*&n; *&n; * dvb_ringbuffer.h: ring buffer implementation for 
 macro_line|#ifndef _DVB_RINGBUFFER_H_
 DECL|macro|_DVB_RINGBUFFER_H_
 mdefine_line|#define _DVB_RINGBUFFER_H_
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 DECL|struct|dvb_ringbuffer
-r_typedef
 r_struct
 id|dvb_ringbuffer
 (brace
@@ -32,9 +33,7 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-DECL|typedef|dvb_ringbuffer_t
 )brace
-id|dvb_ringbuffer_t
 suffix:semicolon
 multiline_comment|/*&n;** Notes:&n;** ------&n;** (1) For performance reasons read and write routines don&squot;t check buffer sizes&n;**     and/or number of bytes free/available. This has to be done before these&n;**     routines are called. For example:&n;**&n;**     *** write &lt;buflen&gt; bytes ***&n;**     free = dvb_ringbuffer_free(rbuf);&n;**     if (free &gt;= buflen) &n;**         count = dvb_ringbuffer_write(rbuf, buffer, buflen, 0);&n;**     else&n;**         ...&n;**&n;**     *** read min. 1000, max. &lt;bufsize&gt; bytes ***&n;**     avail = dvb_ringbuffer_avail(rbuf);&n;**     if (avail &gt;= 1000)&n;**         count = dvb_ringbuffer_read(rbuf, buffer, min(avail, bufsize), 0);&n;**     else&n;**         ...&n;**&n;** (2) If there is exactly one reader and one writer, there is no need &n;**     to lock read or write operations.&n;**     Two or more readers must be locked against each other.&n;**     Flushing the buffer counts as a read operation.&n;**     Two or more writers must be locked against each other.&n;*/
 multiline_comment|/* initialize ring buffer, lock and queue */
@@ -43,7 +42,8 @@ r_void
 id|dvb_ringbuffer_init
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 comma
@@ -61,7 +61,8 @@ r_int
 id|dvb_ringbuffer_empty
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 )paren
@@ -72,7 +73,8 @@ id|ssize_t
 id|dvb_ringbuffer_free
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 )paren
@@ -83,7 +85,8 @@ id|ssize_t
 id|dvb_ringbuffer_avail
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 )paren
@@ -96,7 +99,8 @@ r_void
 id|dvb_ringbuffer_flush
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 )paren
@@ -107,7 +111,8 @@ r_void
 id|dvb_ringbuffer_flush_spinlock_wakeup
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 )paren
@@ -124,7 +129,8 @@ id|ssize_t
 id|dvb_ringbuffer_read
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 comma
@@ -150,7 +156,8 @@ id|ssize_t
 id|dvb_ringbuffer_write
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 comma

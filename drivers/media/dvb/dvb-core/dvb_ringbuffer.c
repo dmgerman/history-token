@@ -1,17 +1,20 @@
 multiline_comment|/*&n; *&n; * dvb_ringbuffer.c: ring buffer implementation for the dvb driver&n; *&n; * Copyright (C) 2003 Oliver Endriss &n; * &n; * based on code originally found in av7110.c:&n; * Copyright (C) 1999-2002 Ralph  Metzler &n; *                       &amp; Marcus Metzler for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;dvb_ringbuffer.h&quot;
 DECL|function|dvb_ringbuffer_init
 r_void
 id|dvb_ringbuffer_init
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 comma
@@ -53,17 +56,14 @@ id|rbuf-&gt;lock
 )paren
 )paren
 suffix:semicolon
-id|rbuf-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 )brace
 DECL|function|dvb_ringbuffer_empty
 r_int
 id|dvb_ringbuffer_empty
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 )paren
@@ -81,7 +81,8 @@ id|ssize_t
 id|dvb_ringbuffer_free
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 )paren
@@ -117,7 +118,8 @@ id|ssize_t
 id|dvb_ringbuffer_avail
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 )paren
@@ -151,7 +153,8 @@ r_void
 id|dvb_ringbuffer_flush
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 )paren
@@ -166,7 +169,8 @@ r_void
 id|dvb_ringbuffer_flush_spinlock_wakeup
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 )paren
@@ -212,7 +216,8 @@ id|ssize_t
 id|dvb_ringbuffer_read
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 comma
@@ -368,7 +373,8 @@ id|ssize_t
 id|dvb_ringbuffer_write
 c_func
 (paren
-id|dvb_ringbuffer_t
+r_struct
+id|dvb_ringbuffer
 op_star
 id|rbuf
 comma

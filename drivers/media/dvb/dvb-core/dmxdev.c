@@ -1,17 +1,16 @@
 multiline_comment|/* &n; * dmxdev.c - DVB demultiplexer device &n; *&n; * Copyright (C) 2000 Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *&t;&t;  &amp; Marcus Metzler &lt;marcus@convergence.de&gt;&n;&t;&t;      for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/ioctl.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &quot;dmxdev.h&quot;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
-macro_line|#include &quot;compat.h&quot;
-macro_line|#endif
-singleline_comment|//MODULE_DESCRIPTION(&quot;&quot;);
-singleline_comment|//MODULE_AUTHOR(&quot;Ralph Metzler, Marcus Metzler&quot;);
-singleline_comment|//#ifdef MODULE_LICENSE
-singleline_comment|//MODULE_LICENSE(&quot;GPL&quot;);
-singleline_comment|//#endif
+macro_line|#include &quot;dvb_functions.h&quot;
 id|MODULE_PARM
 c_func
 (paren
@@ -30,7 +29,8 @@ suffix:semicolon
 DECL|macro|dprintk
 mdefine_line|#define dprintk&t;if (debug) printk
 r_inline
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 DECL|function|dvb_dmxdev_file_to_filter
 id|dvb_dmxdev_file_to_filter
@@ -44,20 +44,23 @@ id|file
 (brace
 r_return
 (paren
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
 )brace
 r_inline
-id|dmxdev_dvr_t
+r_struct
+id|dmxdev_dvr
 op_star
 DECL|function|dvb_dmxdev_file_to_dvr
 id|dvb_dmxdev_file_to_dvr
 c_func
 (paren
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 comma
@@ -69,7 +72,8 @@ id|file
 (brace
 r_return
 (paren
-id|dmxdev_dvr_t
+r_struct
+id|dmxdev_dvr
 op_star
 )paren
 id|file-&gt;private_data
@@ -82,7 +86,8 @@ DECL|function|dvb_dmxdev_buffer_init
 id|dvb_dmxdev_buffer_init
 c_func
 (paren
-id|dmxdev_buffer_t
+r_struct
+id|dmxdev_buffer
 op_star
 id|buffer
 )paren
@@ -122,7 +127,8 @@ r_int
 id|dvb_dmxdev_buffer_write
 c_func
 (paren
-id|dmxdev_buffer_t
+r_struct
+id|dmxdev_buffer
 op_star
 id|buf
 comma
@@ -286,7 +292,8 @@ DECL|function|dvb_dmxdev_buffer_read
 id|dvb_dmxdev_buffer_read
 c_func
 (paren
-id|dmxdev_buffer_t
+r_struct
+id|dmxdev_buffer
 op_star
 id|src
 comma
@@ -582,13 +589,15 @@ id|count
 suffix:semicolon
 )brace
 r_static
-id|dmx_frontend_t
+r_struct
+id|dmx_frontend
 op_star
 DECL|function|get_fe
 id|get_fe
 c_func
 (paren
-id|dmx_demux_t
+r_struct
+id|dmx_demux
 op_star
 id|demux
 comma
@@ -661,7 +670,8 @@ DECL|function|dvb_dmxdev_dvr_state_set
 id|dvb_dmxdev_dvr_state_set
 c_func
 (paren
-id|dmxdev_dvr_t
+r_struct
+id|dmxdev_dvr
 op_star
 id|dmxdevdvr
 comma
@@ -717,17 +727,20 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 op_assign
 (paren
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 )paren
 id|dvbdev-&gt;priv
 suffix:semicolon
-id|dmx_frontend_t
+r_struct
+id|dmx_frontend
 op_star
 id|front
 suffix:semicolon
@@ -961,12 +974,14 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 op_assign
 (paren
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 )paren
 id|dvbdev-&gt;priv
@@ -1117,12 +1132,14 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 op_assign
 (paren
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 )paren
 id|dvbdev-&gt;priv
@@ -1228,12 +1245,14 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 op_assign
 (paren
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 )paren
 id|dvbdev-&gt;priv
@@ -1273,7 +1292,8 @@ DECL|function|dvb_dmxdev_filter_state_set
 id|dvb_dmxdev_filter_state_set
 c_func
 (paren
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 comma
@@ -1306,7 +1326,8 @@ DECL|function|dvb_dmxdev_set_buffer_size
 id|dvb_dmxdev_set_buffer_size
 c_func
 (paren
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 comma
@@ -1315,7 +1336,8 @@ r_int
 id|size
 )paren
 (brace
-id|dmxdev_buffer_t
+r_struct
+id|dmxdev_buffer
 op_star
 id|buf
 op_assign
@@ -1448,12 +1470,14 @@ r_int
 id|data
 )paren
 (brace
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 op_assign
 (paren
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 )paren
 id|data
@@ -1495,7 +1519,8 @@ DECL|function|dvb_dmxdev_filter_timer
 id|dvb_dmxdev_filter_timer
 c_func
 (paren
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 )paren
@@ -1582,20 +1607,24 @@ comma
 r_int
 id|buffer2_len
 comma
-id|dmx_section_filter_t
+r_struct
+id|dmx_section_filter
 op_star
 id|filter
 comma
-id|dmx_success_t
+r_enum
+id|dmx_success
 id|success
 )paren
 (brace
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 op_assign
 (paren
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 )paren
 id|filter-&gt;priv
@@ -1793,25 +1822,30 @@ comma
 r_int
 id|buffer2_len
 comma
-id|dmx_ts_feed_t
+r_struct
+id|dmx_ts_feed
 op_star
 id|feed
 comma
-id|dmx_success_t
+r_enum
+id|dmx_success
 id|success
 )paren
 (brace
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 op_assign
 (paren
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 )paren
 id|feed-&gt;priv
 suffix:semicolon
-id|dmxdev_buffer_t
+r_struct
+id|dmxdev_buffer
 op_star
 id|buffer
 suffix:semicolon
@@ -1960,7 +1994,8 @@ DECL|function|dvb_dmxdev_feed_stop
 id|dvb_dmxdev_feed_stop
 c_func
 (paren
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 )paren
@@ -2030,7 +2065,8 @@ r_int
 id|dvb_dmxdev_feed_start
 c_func
 (paren
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|filter
 )paren
@@ -2094,7 +2130,8 @@ r_int
 id|dvb_dmxdev_feed_restart
 c_func
 (paren
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|filter
 )paren
@@ -2102,13 +2139,14 @@ id|filter
 r_int
 id|i
 suffix:semicolon
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 op_assign
 id|filter-&gt;dev
 suffix:semicolon
-r_uint16
+id|u16
 id|pid
 op_assign
 id|filter-&gt;params.sec.pid
@@ -2192,7 +2230,8 @@ DECL|function|dvb_dmxdev_filter_stop
 id|dvb_dmxdev_filter_stop
 c_func
 (paren
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 )paren
@@ -2326,7 +2365,8 @@ DECL|function|dvb_dmxdev_filter_reset
 id|dvb_dmxdev_filter_reset
 c_func
 (paren
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 )paren
@@ -2367,12 +2407,14 @@ DECL|function|dvb_dmxdev_filter_start
 id|dvb_dmxdev_filter_start
 c_func
 (paren
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|filter
 )paren
 (brace
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 op_assign
@@ -2483,7 +2525,8 @@ op_assign
 op_amp
 id|filter-&gt;params.sec
 suffix:semicolon
-id|dmx_section_filter_t
+r_struct
+id|dmx_section_filter
 op_star
 op_star
 id|secfilter
@@ -2491,7 +2534,8 @@ op_assign
 op_amp
 id|filter-&gt;filter.sec
 suffix:semicolon
-id|dmx_section_feed_t
+r_struct
+id|dmx_section_feed
 op_star
 op_star
 id|secfeed
@@ -2942,10 +2986,12 @@ suffix:semicolon
 r_int
 id|ts_type
 suffix:semicolon
-id|dmx_ts_pes_t
+r_enum
+id|dmx_ts_pes
 id|ts_pes
 suffix:semicolon
-id|dmx_ts_feed_t
+r_struct
+id|dmx_ts_feed
 op_star
 op_star
 id|tsfeed
@@ -2964,7 +3010,8 @@ suffix:semicolon
 id|ts_pes
 op_assign
 (paren
-id|dmx_ts_pes_t
+r_enum
+id|dmx_ts_pes
 )paren
 id|para-&gt;pes_type
 suffix:semicolon
@@ -3167,12 +3214,14 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 op_assign
 (paren
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 )paren
 id|dvbdev-&gt;priv
@@ -3180,7 +3229,8 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 suffix:semicolon
@@ -3328,11 +3378,13 @@ r_int
 id|dvb_dmxdev_filter_free
 c_func
 (paren
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 comma
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 )paren
@@ -3499,11 +3551,13 @@ DECL|function|dvb_dmxdev_filter_set
 id|dvb_dmxdev_filter_set
 c_func
 (paren
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 comma
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 comma
@@ -3588,11 +3642,13 @@ DECL|function|dvb_dmxdev_pes_filter_set
 id|dvb_dmxdev_pes_filter_set
 c_func
 (paren
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 comma
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 comma
@@ -3678,7 +3734,8 @@ DECL|function|dvb_dmxdev_read_sec
 id|dvb_dmxdev_read_sec
 c_func
 (paren
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dfil
 comma
@@ -3919,7 +3976,8 @@ op_star
 id|ppos
 )paren
 (brace
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 op_assign
@@ -4027,7 +4085,8 @@ op_star
 id|parg
 )paren
 (brace
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 op_assign
@@ -4037,7 +4096,8 @@ c_func
 id|file
 )paren
 suffix:semicolon
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 op_assign
@@ -4356,7 +4416,7 @@ c_func
 id|dmxdev-&gt;demux
 comma
 (paren
-r_uint16
+id|u16
 op_star
 )paren
 id|parg
@@ -4505,7 +4565,8 @@ op_star
 id|wait
 )paren
 (brace
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 op_assign
@@ -4552,6 +4613,10 @@ op_logical_and
 id|dmxdevfilter-&gt;state
 op_ne
 id|DMXDEV_STATE_DONE
+op_logical_and
+id|dmxdevfilter-&gt;state
+op_ne
+id|DMXDEV_STATE_TIMEDOUT
 )paren
 r_return
 l_int|0
@@ -4611,7 +4676,8 @@ op_star
 id|file
 )paren
 (brace
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 op_star
 id|dmxdevfilter
 op_assign
@@ -4621,7 +4687,8 @@ c_func
 id|file
 )paren
 suffix:semicolon
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 op_assign
@@ -4742,12 +4809,14 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 op_assign
 (paren
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 )paren
 id|dvbdev-&gt;priv
@@ -4874,12 +4943,14 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 op_assign
 (paren
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 )paren
 id|dvbdev-&gt;priv
@@ -5014,8 +5085,8 @@ id|dvb_dvr_poll
 comma
 )brace
 suffix:semicolon
-DECL|variable|dvbdev_dvr
 r_static
+DECL|variable|dvbdev_dvr
 r_struct
 id|dvb_device
 id|dvbdev_dvr
@@ -5048,7 +5119,8 @@ DECL|function|dvb_dmxdev_init
 id|dvb_dmxdev_init
 c_func
 (paren
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 comma
@@ -5087,7 +5159,8 @@ id|dmxdev-&gt;filternum
 op_star
 r_sizeof
 (paren
-id|dmxdev_filter_t
+r_struct
+id|dmxdev_filter
 )paren
 )paren
 suffix:semicolon
@@ -5110,7 +5183,8 @@ id|dmxdev-&gt;filternum
 op_star
 r_sizeof
 (paren
-id|dmxdev_dvr_t
+r_struct
+id|dmxdev_dvr
 )paren
 )paren
 suffix:semicolon
@@ -5129,7 +5203,7 @@ id|dmxdev-&gt;filter
 suffix:semicolon
 id|dmxdev-&gt;filter
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 op_minus
@@ -5279,13 +5353,6 @@ op_amp
 id|dmxdev-&gt;dvr_buffer
 )paren
 suffix:semicolon
-multiline_comment|/* fixme: is this correct? */
-id|try_module_get
-c_func
-(paren
-id|THIS_MODULE
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5295,7 +5362,8 @@ DECL|function|dvb_dmxdev_release
 id|dvb_dmxdev_release
 c_func
 (paren
-id|dmxdev_t
+r_struct
+id|dmxdev
 op_star
 id|dmxdev
 )paren
@@ -5352,13 +5420,6 @@ id|close
 c_func
 (paren
 id|dmxdev-&gt;demux
-)paren
-suffix:semicolon
-multiline_comment|/* fixme: is this correct? */
-id|module_put
-c_func
-(paren
-id|THIS_MODULE
 )paren
 suffix:semicolon
 )brace

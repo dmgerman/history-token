@@ -1,11 +1,14 @@
 multiline_comment|/* &n; * dvb_net.c&n; *&n; * Copyright (C) 2001 Convergence integrated media GmbH&n; *                    Ralph Metzler &lt;ralph@convergence.de&gt;&n; * Copyright (C) 2002 Ralph Metzler &lt;rjkm@metzlerbros.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/ioctl.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/dvb/net.h&gt;
 macro_line|#include &quot;dvb_demux.h&quot;
 macro_line|#include &quot;dvb_net.h&quot;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,51)
-macro_line|#include &quot;compat.h&quot;
-macro_line|#endif
+macro_line|#include &quot;dvb_functions.h&quot;
 DECL|macro|DVB_NET_MULTICAST_MAX
 mdefine_line|#define DVB_NET_MULTICAST_MAX 10
 DECL|struct|dvb_net_priv
@@ -30,17 +33,19 @@ id|pid
 suffix:semicolon
 DECL|member|demux
 r_struct
-id|dmx_demux_s
+id|dmx_demux
 op_star
 id|demux
 suffix:semicolon
 DECL|member|secfeed
-id|dmx_section_feed_t
+r_struct
+id|dmx_section_feed
 op_star
 id|secfeed
 suffix:semicolon
 DECL|member|secfilter
-id|dmx_section_filter_t
+r_struct
+id|dmx_section_filter
 op_star
 id|secfilter
 suffix:semicolon
@@ -49,7 +54,8 @@ r_int
 id|multi_num
 suffix:semicolon
 DECL|member|multi_secfilter
-id|dmx_section_filter_t
+r_struct
+id|dmx_section_filter
 op_star
 id|multi_secfilter
 (braket
@@ -503,11 +509,13 @@ comma
 r_int
 id|buffer2_len
 comma
-id|dmx_section_filter_t
+r_struct
+id|dmx_section_filter
 op_star
 id|filter
 comma
-id|dmx_success_t
+r_enum
+id|dmx_success
 id|success
 )paren
 (brace
@@ -610,7 +618,8 @@ id|net_device
 op_star
 id|dev
 comma
-id|dmx_section_filter_t
+r_struct
+id|dmx_section_filter
 op_star
 op_star
 id|secfilter
@@ -1009,7 +1018,8 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|dmx_demux_t
+r_struct
+id|dmx_demux
 op_star
 id|demux
 op_assign
@@ -2023,7 +2033,8 @@ id|net_device
 op_star
 id|net
 suffix:semicolon
-id|dmx_demux_t
+r_struct
+id|dmx_demux
 op_star
 id|demux
 suffix:semicolon
@@ -2688,7 +2699,8 @@ id|dvb_net
 op_star
 id|dvbnet
 comma
-id|dmx_demux_t
+r_struct
+id|dmx_demux
 op_star
 id|dmx
 )paren

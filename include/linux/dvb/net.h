@@ -2,21 +2,17 @@ multiline_comment|/* &n; * net.h&n; *&n; * Copyright (C) 2000 Marcus Metzler &lt
 macro_line|#ifndef _DVBNET_H_
 DECL|macro|_DVBNET_H_
 mdefine_line|#define _DVBNET_H_
-macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#else
-macro_line|#include &lt;stdint.h&gt;
-macro_line|#endif
+macro_line|#include &lt;asm/types.h&gt;
 DECL|struct|dvb_net_if
 r_struct
 id|dvb_net_if
 (brace
 DECL|member|pid
-r_uint16
+id|__u16
 id|pid
 suffix:semicolon
 DECL|member|if_num
-r_uint16
+id|__u16
 id|if_num
 suffix:semicolon
 )brace
