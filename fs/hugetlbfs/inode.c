@@ -923,6 +923,13 @@ op_amp
 id|inode-&gt;i_list
 )paren
 suffix:semicolon
+id|list_del_init
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sb_list
+)paren
+suffix:semicolon
 id|inode-&gt;i_state
 op_or_assign
 id|I_FREEING
@@ -1116,6 +1123,13 @@ c_func
 (paren
 op_amp
 id|inode-&gt;i_list
+)paren
+suffix:semicolon
+id|list_del_init
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sb_list
 )paren
 suffix:semicolon
 id|inode-&gt;i_state

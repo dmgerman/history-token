@@ -175,6 +175,13 @@ op_amp
 id|s-&gt;s_anon
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|s-&gt;s_inodes
+)paren
+suffix:semicolon
 id|init_rwsem
 c_func
 (paren

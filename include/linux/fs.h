@@ -1073,6 +1073,11 @@ r_struct
 id|list_head
 id|i_list
 suffix:semicolon
+DECL|member|i_sb_list
+r_struct
+id|list_head
+id|i_sb_list
+suffix:semicolon
 DECL|member|i_dentry
 r_struct
 id|list_head
@@ -2631,6 +2636,12 @@ op_star
 op_star
 id|s_xattr
 suffix:semicolon
+DECL|member|s_inodes
+r_struct
+id|list_head
+id|s_inodes
+suffix:semicolon
+multiline_comment|/* all inodes */
 DECL|member|s_dirty
 r_struct
 id|list_head
