@@ -47,7 +47,7 @@ suffix:semicolon
 multiline_comment|/* This handler receives all interrupts, dispatching them to the registered handlers */
 DECL|function|hp300_int_handler
 r_static
-r_void
+id|irqreturn_t
 id|hp300_int_handler
 c_func
 (paren
@@ -100,9 +100,12 @@ id|fp
 suffix:semicolon
 )brace
 multiline_comment|/* We could put in some accounting routines, checks for stray interrupts,&n;         * etc, in here. Note that currently we can&squot;t tell whether or not&n;         * a handler handles the interrupt, though. &n;         */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|variable|hp300_default_handler
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|hp300_default_handler
@@ -149,7 +152,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
