@@ -72,6 +72,11 @@ id|list_head
 id|sv_tempsocks
 suffix:semicolon
 multiline_comment|/* all temporary sockets */
+DECL|member|sv_tmpcnt
+r_int
+id|sv_tmpcnt
+suffix:semicolon
+multiline_comment|/* count of temporary sockets */
 DECL|member|sv_name
 r_char
 op_star
