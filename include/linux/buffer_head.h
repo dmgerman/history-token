@@ -739,7 +739,7 @@ op_star
 id|bh
 )paren
 suffix:semicolon
-r_int
+r_void
 id|submit_bh
 c_func
 (paren

@@ -10267,7 +10267,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|submit_bh
-r_int
+r_void
 id|submit_bh
 c_func
 (paren
@@ -10471,7 +10471,6 @@ id|bio-&gt;bi_private
 op_assign
 id|bh
 suffix:semicolon
-r_return
 id|submit_bio
 c_func
 (paren
