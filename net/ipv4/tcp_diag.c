@@ -448,6 +448,7 @@ id|r-&gt;tcpdiag_inode
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_TCPDIAG_IPV6
 r_if
 c_cond
 (paren
@@ -485,6 +486,7 @@ id|tw-&gt;tw_v6_daddr
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|nlh-&gt;nlmsg_len
 op_assign
 id|skb-&gt;tail
@@ -517,6 +519,7 @@ l_int|0
 op_assign
 id|inet-&gt;daddr
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_TCPDIAG_IPV6
 r_if
 c_cond
 (paren
@@ -565,6 +568,7 @@ id|np-&gt;daddr
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|macro|EXPIRES_IN_MS
 mdefine_line|#define EXPIRES_IN_MS(tmo)  ((tmo-jiffies)*1000+HZ-1)/HZ
 r_if
@@ -988,6 +992,7 @@ id|req-&gt;id.tcpdiag_if
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_IP_TCPDIAG_IPV6
 r_else
 r_if
 c_cond
@@ -1024,6 +1029,7 @@ id|req-&gt;id.tcpdiag_if
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_else
 (brace
 r_return
@@ -2049,6 +2055,7 @@ id|entry.family
 op_assign
 id|sk-&gt;sk_family
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_TCPDIAG_IPV6
 r_if
 c_cond
 (paren
@@ -2078,6 +2085,7 @@ id|np-&gt;daddr.s6_addr32
 suffix:semicolon
 )brace
 r_else
+macro_line|#endif
 (brace
 id|entry.saddr
 op_assign
@@ -2371,6 +2379,7 @@ id|r-&gt;tcpdiag_inode
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_TCPDIAG_IPV6
 r_if
 c_cond
 (paren
@@ -2408,6 +2417,7 @@ id|req-&gt;af.v6_req.rmt_addr
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|nlh-&gt;nlmsg_len
 op_assign
 id|skb-&gt;tail
@@ -2688,6 +2698,7 @@ id|bc
 (brace
 id|entry.saddr
 op_assign
+macro_line|#ifdef CONFIG_IP_TCPDIAG_IPV6
 (paren
 id|entry.family
 op_eq
@@ -2697,11 +2708,13 @@ ques
 c_cond
 id|req-&gt;af.v6_req.loc_addr.s6_addr32
 suffix:colon
+macro_line|#endif
 op_amp
 id|req-&gt;af.v4_req.loc_addr
 suffix:semicolon
 id|entry.daddr
 op_assign
+macro_line|#ifdef CONFIG_IP_TCPDIAG_IPV6
 (paren
 id|entry.family
 op_eq
@@ -2711,6 +2724,7 @@ ques
 c_cond
 id|req-&gt;af.v6_req.rmt_addr.s6_addr32
 suffix:colon
+macro_line|#endif
 op_amp
 id|req-&gt;af.v4_req.rmt_addr
 suffix:semicolon
