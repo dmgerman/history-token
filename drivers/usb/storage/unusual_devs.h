@@ -942,6 +942,31 @@ comma
 id|US_FL_SINGLE_LUN
 )paren
 comma
+multiline_comment|/* Fabrizio Fellini &lt;fello@libero.it&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0595
+comma
+l_int|0x4343
+comma
+l_int|0x0000
+comma
+l_int|0x2210
+comma
+l_string|&quot;Fujifilm&quot;
+comma
+l_string|&quot;Digital Camera EX-20 DSC&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_CBI
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
