@@ -13,6 +13,9 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#if defined(CONFIG_MULTIQUAD) || defined(CONFIG_IA64)
 DECL|macro|LOG_BUF_LEN
 mdefine_line|#define LOG_BUF_LEN&t;(65536)
+macro_line|#elif defined(CONFIG_ARCH_S390)
+DECL|macro|LOG_BUF_LEN
+mdefine_line|#define LOG_BUF_LEN&t;(131072)
 macro_line|#elif defined(CONFIG_SMP)
 DECL|macro|LOG_BUF_LEN
 mdefine_line|#define LOG_BUF_LEN&t;(32768)
