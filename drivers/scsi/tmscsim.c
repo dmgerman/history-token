@@ -2572,10 +2572,6 @@ id|pDCB-&gt;CtrlR4
 op_assign
 id|pDCB2-&gt;CtrlR4
 suffix:semicolon
-id|pDCB-&gt;Inquiry7
-op_assign
-id|pDCB2-&gt;Inquiry7
-suffix:semicolon
 )brace
 r_else
 (brace

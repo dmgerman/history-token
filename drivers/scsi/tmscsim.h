@@ -256,10 +256,6 @@ DECL|member|CtrlR4
 id|u8
 id|CtrlR4
 suffix:semicolon
-DECL|member|Inquiry7
-id|u8
-id|Inquiry7
-suffix:semicolon
 DECL|member|SyncMode
 id|u8
 id|SyncMode
@@ -710,120 +706,6 @@ DECL|typedef|dc390_cmd_scp_t
 )brace
 id|dc390_cmd_scp_t
 suffix:semicolon
-multiline_comment|/*&n;**  Inquiry Data format&n;*/
-DECL|struct|_SCSIInqData
-r_typedef
-r_struct
-id|_SCSIInqData
-(brace
-multiline_comment|/* INQUIRY */
-DECL|member|DevType
-id|u8
-id|DevType
-suffix:semicolon
-multiline_comment|/* Periph Qualifier &amp; Periph Dev Type*/
-DECL|member|RMB_TypeMod
-id|u8
-id|RMB_TypeMod
-suffix:semicolon
-multiline_comment|/* rem media bit &amp; Dev Type Modifier */
-DECL|member|Vers
-id|u8
-id|Vers
-suffix:semicolon
-multiline_comment|/* ISO, ECMA, &amp; ANSI versions&t;     */
-DECL|member|RDF
-id|u8
-id|RDF
-suffix:semicolon
-multiline_comment|/* AEN, TRMIOP, &amp; response data format*/
-DECL|member|AddLen
-id|u8
-id|AddLen
-suffix:semicolon
-multiline_comment|/* length of additional data&t;     */
-DECL|member|Res1
-id|u8
-id|Res1
-suffix:semicolon
-multiline_comment|/* reserved&t;&t;&t;     */
-DECL|member|Res2
-id|u8
-id|Res2
-suffix:semicolon
-multiline_comment|/* reserved&t;&t;&t;     */
-DECL|member|Flags
-id|u8
-id|Flags
-suffix:semicolon
-multiline_comment|/* RelADr,Wbus32,Wbus16,Sync,etc.    */
-DECL|member|VendorID
-id|u8
-id|VendorID
-(braket
-l_int|8
-)braket
-suffix:semicolon
-multiline_comment|/* Vendor Identification&t;     */
-DECL|member|ProductID
-id|u8
-id|ProductID
-(braket
-l_int|16
-)braket
-suffix:semicolon
-multiline_comment|/* Product Identification&t;     */
-DECL|member|ProductRev
-id|u8
-id|ProductRev
-(braket
-l_int|4
-)braket
-suffix:semicolon
-multiline_comment|/* Product Revision&t;&t;     */
-DECL|typedef|SCSI_INQDATA
-DECL|typedef|PSCSI_INQDATA
-)brace
-id|SCSI_INQDATA
-comma
-op_star
-id|PSCSI_INQDATA
-suffix:semicolon
-multiline_comment|/*  Inquiry byte 0 masks */
-DECL|macro|SCSI_DEVTYPE
-mdefine_line|#define SCSI_DEVTYPE&t;    0x1F      /* Peripheral Device Type &t;    */
-DECL|macro|SCSI_PERIPHQUAL
-mdefine_line|#define SCSI_PERIPHQUAL     0xE0      /* Peripheral Qualifier&t;&t;    */
-DECL|macro|TYPE_NODEV
-mdefine_line|#define TYPE_NODEV&t;    SCSI_DEVTYPE    /* Unknown or no device type    */
-multiline_comment|/*  Inquiry byte 1 mask */
-DECL|macro|SCSI_REMOVABLE_MEDIA
-mdefine_line|#define SCSI_REMOVABLE_MEDIA  0x80    /* Removable Media bit (1=removable)  */
-multiline_comment|/*  Peripheral Device Type definitions */
-multiline_comment|/*  see include/scsi/scsi.h for the rest */
-macro_line|#ifndef TYPE_PRINTER
-DECL|macro|TYPE_PRINTER
-macro_line|# define TYPE_PRINTER&t;&t; 0x02&t;   /* Printer device&t;&t;   */
-macro_line|#endif
-macro_line|#ifndef TYPE_COMM
-DECL|macro|TYPE_COMM
-macro_line|# define TYPE_COMM&t;&t; 0x09&t;   /* Communications device&t;   */
-macro_line|#endif
-multiline_comment|/*&n;** Inquiry flag definitions (Inq data byte 7)&n;*/
-DECL|macro|SCSI_INQ_RELADR
-mdefine_line|#define SCSI_INQ_RELADR       0x80    /* device supports relative addressing*/
-DECL|macro|SCSI_INQ_WBUS32
-mdefine_line|#define SCSI_INQ_WBUS32       0x40    /* device supports 32 bit data xfers  */
-DECL|macro|SCSI_INQ_WBUS16
-mdefine_line|#define SCSI_INQ_WBUS16       0x20    /* device supports 16 bit data xfers  */
-DECL|macro|SCSI_INQ_SYNC
-mdefine_line|#define SCSI_INQ_SYNC&t;      0x10    /* device supports synchronous xfer   */
-DECL|macro|SCSI_INQ_LINKED
-mdefine_line|#define SCSI_INQ_LINKED       0x08    /* device supports linked commands    */
-DECL|macro|SCSI_INQ_CMDQUEUE
-mdefine_line|#define SCSI_INQ_CMDQUEUE     0x02    /* device supports command queueing   */
-DECL|macro|SCSI_INQ_SFTRE
-mdefine_line|#define SCSI_INQ_SFTRE&t;      0x01    /* device supports soft resets */
 multiline_comment|/*&n;;==========================================================&n;; EEPROM byte offset&n;;==========================================================&n;*/
 DECL|struct|_EEprom
 r_typedef
