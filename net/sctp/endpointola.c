@@ -45,7 +45,7 @@ id|gfp
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
