@@ -4510,16 +4510,6 @@ id|cam-&gt;urb_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Wake up the user process */
-r_if
-c_cond
-(paren
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|cam-&gt;wait_queue
-)paren
-)paren
 id|wake_up_interruptible
 c_func
 (paren
@@ -13035,6 +13025,8 @@ op_minus
 id|EWOULDBLOCK
 suffix:semicolon
 )brace
+id|retry
+suffix:colon
 id|up
 c_func
 (paren
@@ -13081,6 +13073,15 @@ c_func
 op_amp
 id|cam-&gt;dev_sem
 )paren
+suffix:semicolon
+multiline_comment|/*recheck - there may be several waiters */
+r_if
+c_cond
+(paren
+id|cam-&gt;users
+)paren
+r_goto
+id|retry
 suffix:semicolon
 )brace
 id|DBG
@@ -13323,16 +13324,6 @@ c_func
 id|cam
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|cam-&gt;open
-)paren
-)paren
 id|wake_up_interruptible
 c_func
 (paren
