@@ -334,6 +334,20 @@ c_func
 id|scsi_slave_detach
 )paren
 suffix:semicolon
+DECL|variable|scsi_device_get
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_device_get
+)paren
+suffix:semicolon
+DECL|variable|scsi_device_put
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_device_put
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This symbol is for the highlevel drivers (e.g. sg) only.&n; */
 DECL|variable|scsi_reset_provider
 id|EXPORT_SYMBOL

@@ -22697,10 +22697,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|try_module_get
+id|scsi_device_get
 c_func
 (paren
-id|STp-&gt;device-&gt;host-&gt;hostt-&gt;module
+id|STp-&gt;device
 )paren
 )paren
 (brace
@@ -22716,7 +22716,7 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;%s:D: Failed try_module_get.&bslash;n&quot;
+l_string|&quot;%s:D: Failed scsi_device_get.&bslash;n&quot;
 comma
 id|name
 )paren
@@ -22729,9 +22729,6 @@ id|ENXIO
 )paren
 suffix:semicolon
 )brace
-id|STp-&gt;device-&gt;access_count
-op_increment
-suffix:semicolon
 id|filp-&gt;private_data
 op_assign
 id|STp
@@ -24809,13 +24806,10 @@ id|STp-&gt;in_use
 op_assign
 l_int|0
 suffix:semicolon
-id|STp-&gt;device-&gt;access_count
-op_decrement
-suffix:semicolon
-id|module_put
+id|scsi_device_put
 c_func
 (paren
-id|STp-&gt;device-&gt;host-&gt;hostt-&gt;module
+id|STp-&gt;device
 )paren
 suffix:semicolon
 r_return
@@ -25486,13 +25480,10 @@ op_amp
 id|os_scsi_tapes_lock
 )paren
 suffix:semicolon
-id|STp-&gt;device-&gt;access_count
-op_decrement
-suffix:semicolon
-id|module_put
+id|scsi_device_put
 c_func
 (paren
-id|STp-&gt;device-&gt;host-&gt;hostt-&gt;module
+id|STp-&gt;device
 )paren
 suffix:semicolon
 r_return

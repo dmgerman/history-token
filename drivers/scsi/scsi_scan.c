@@ -5064,7 +5064,7 @@ suffix:semicolon
 )brace
 DECL|function|scsi_remove_lun
 r_static
-r_int
+r_void
 id|scsi_remove_lun
 c_func
 (paren
