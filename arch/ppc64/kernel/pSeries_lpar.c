@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/pci_dma.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/tlb.h&gt;
 multiline_comment|/* Status return values */
 DECL|macro|H_Success
 mdefine_line|#define H_Success&t;0
@@ -3069,26 +3070,23 @@ id|local
 r_int
 id|i
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
-id|tlb_batch_data
+id|ppc64_tlb_batch
 op_star
-id|ptes
+id|batch
 op_assign
 op_amp
-id|tlb_batch_array
+id|ppc64_tlb_batch
 (braket
 id|smp_processor_id
 c_func
 (paren
 )paren
 )braket
-(braket
-l_int|0
-)braket
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -3113,23 +3111,24 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|flush_hash_page
 c_func
 (paren
 id|context
 comma
-id|ptes-&gt;addr
+id|batch-&gt;addr
+(braket
+id|i
+)braket
 comma
-id|ptes-&gt;pte
+id|batch-&gt;pte
+(braket
+id|i
+)braket
 comma
 id|local
 )paren
 suffix:semicolon
-id|ptes
-op_increment
-suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
