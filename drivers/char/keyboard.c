@@ -582,7 +582,7 @@ id|dev
 comma
 id|scancode
 comma
-id|oldkey
+id|keycode
 )paren
 suffix:semicolon
 id|clear_bit
