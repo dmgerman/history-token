@@ -901,17 +901,6 @@ id|dev
 suffix:semicolon
 r_extern
 r_void
-id|usb_set_maxpacket
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|usb_destroy_configuration
 c_func
 (paren
