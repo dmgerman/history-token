@@ -198,6 +198,8 @@ op_star
 id|out3
 )paren
 suffix:semicolon
+DECL|macro|HVSC
+mdefine_line|#define HVSC&t;&t;&t;&quot;.long 0x44000022&bslash;n&quot;
 multiline_comment|/* Same as plpar_hcall but for those opcodes that return no values&n; * other than status.  Slightly more efficient.&n; */
 r_int
 id|plpar_hcall_norets
