@@ -1,10 +1,12 @@
-multiline_comment|/*  devfs (Device FileSystem) utilities.&n;&n;    Copyright (C) 1999-2002  Richard Gooch&n;&n;    This library is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU Library General Public&n;    License as published by the Free Software Foundation; either&n;    version 2 of the License, or (at your option) any later version.&n;&n;    This library is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    Library General Public License for more details.&n;&n;    You should have received a copy of the GNU Library General Public&n;    License along with this library; if not, write to the Free&n;    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;    Richard Gooch may be reached by email at  rgooch@atnf.csiro.au&n;    The postal address is:&n;      Richard Gooch, c/o ATNF, P. O. Box 76, Epping, N.S.W., 2121, Australia.&n;&n;    ChangeLog&n;&n;    19991031   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created.&n;    19991103   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;_devfs_convert_name&gt; and supported SCSI and IDE CD-ROMs&n;    20000203   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Changed operations pointer type to void *.&n;    20000621   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Changed interface to &lt;devfs_register_series&gt;.&n;    20000622   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Took account of interface change to &lt;devfs_mk_symlink&gt;.&n;               Took account of interface change to &lt;devfs_mk_dir&gt;.&n;    20010519   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Documentation cleanup.&n;    20010709   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_*alloc_major&gt; and &lt;devfs_*alloc_devnum&gt;.&n;    20010710   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_*alloc_unique_number&gt;.&n;    20010730   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Documentation typo fix.&n;    20010806   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Made &lt;block_semaphore&gt; and &lt;char_semaphore&gt; private.&n;    20010813   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fixed bug in &lt;devfs_alloc_unique_number&gt;: limited to 128 numbers&n;    20010818   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Updated major masks up to Linus&squot; &quot;no new majors&quot; proclamation.&n;&t;       Block: were 126 now 122 free, char: were 26 now 19 free.&n;    20020324   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fixed bug in &lt;devfs_alloc_unique_number&gt;: was clearing beyond&n;&t;       bitfield.&n;    20020326   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fixed bitfield data type for &lt;devfs_*alloc_devnum&gt;.&n;               Made major bitfield type and initialiser 64 bit safe.&n;    20020413   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fixed shift warning on 64 bit machines.&n;*/
+multiline_comment|/*  devfs (Device FileSystem) utilities.&n;&n;    Copyright (C) 1999-2002  Richard Gooch&n;&n;    This library is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU Library General Public&n;    License as published by the Free Software Foundation; either&n;    version 2 of the License, or (at your option) any later version.&n;&n;    This library is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    Library General Public License for more details.&n;&n;    You should have received a copy of the GNU Library General Public&n;    License along with this library; if not, write to the Free&n;    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;    Richard Gooch may be reached by email at  rgooch@atnf.csiro.au&n;    The postal address is:&n;      Richard Gooch, c/o ATNF, P. O. Box 76, Epping, N.S.W., 2121, Australia.&n;&n;    ChangeLog&n;&n;    19991031   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created.&n;    19991103   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;_devfs_convert_name&gt; and supported SCSI and IDE CD-ROMs&n;    20000203   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Changed operations pointer type to void *.&n;    20000621   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Changed interface to &lt;devfs_register_series&gt;.&n;    20000622   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Took account of interface change to &lt;devfs_mk_symlink&gt;.&n;               Took account of interface change to &lt;devfs_mk_dir&gt;.&n;    20010519   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Documentation cleanup.&n;    20010709   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_*alloc_major&gt; and &lt;devfs_*alloc_devnum&gt;.&n;    20010710   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Created &lt;devfs_*alloc_unique_number&gt;.&n;    20010730   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Documentation typo fix.&n;    20010806   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Made &lt;block_semaphore&gt; and &lt;char_semaphore&gt; private.&n;    20010813   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fixed bug in &lt;devfs_alloc_unique_number&gt;: limited to 128 numbers&n;    20010818   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Updated major masks up to Linus&squot; &quot;no new majors&quot; proclamation.&n;&t;       Block: were 126 now 122 free, char: were 26 now 19 free.&n;    20020324   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fixed bug in &lt;devfs_alloc_unique_number&gt;: was clearing beyond&n;&t;       bitfield.&n;    20020326   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fixed bitfield data type for &lt;devfs_*alloc_devnum&gt;.&n;               Made major bitfield type and initialiser 64 bit safe.&n;    20020413   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Fixed shift warning on 64 bit machines.&n;    20020428   Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;               Copied and used macro for error messages from fs/devfs/base.c &n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
+DECL|macro|PRINTK
+mdefine_line|#define PRINTK(format, args...) &bslash;&n;   {printk (KERN_ERR &quot;%s&quot; format, __FUNCTION__ , ## args);}
 multiline_comment|/*  Private functions follow  */
 multiline_comment|/**&n; *&t;devfs_register_tape - Register a tape device in the &quot;/dev/tapes&quot; hierarchy.&n; *&t;@de: Any tape device entry in the device directory.&n; */
 DECL|function|devfs_register_tape
@@ -529,10 +531,8 @@ c_cond
 op_logical_neg
 id|was_set
 )paren
-id|printk
+id|PRINTK
 (paren
-id|KERN_ERR
-id|__FUNCTION__
 l_string|&quot;(): major %d was already free&bslash;n&quot;
 comma
 id|major
@@ -1036,10 +1036,8 @@ c_cond
 op_logical_neg
 id|was_set
 )paren
-id|printk
+id|PRINTK
 (paren
-id|KERN_ERR
-id|__FUNCTION__
 l_string|&quot;(): device %s was already free&bslash;n&quot;
 comma
 id|kdevname
@@ -1056,10 +1054,8 @@ id|up
 id|semaphore
 )paren
 suffix:semicolon
-id|printk
+id|PRINTK
 (paren
-id|KERN_ERR
-id|__FUNCTION__
 l_string|&quot;(): major for %s not previously allocated&bslash;n&quot;
 comma
 id|kdevname
@@ -1345,10 +1341,8 @@ c_cond
 op_logical_neg
 id|was_set
 )paren
-id|printk
+id|PRINTK
 (paren
-id|KERN_ERR
-id|__FUNCTION__
 l_string|&quot;(): number %d was already free&bslash;n&quot;
 comma
 id|number
