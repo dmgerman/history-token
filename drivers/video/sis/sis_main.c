@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * SiS 300/630/540/315H/315 frame buffer device For Kernal 2.4.x&n; *&n; * This driver is partly based on the VBE 2.0 compliant graphic &n; * boards framebuffer driver, which is &n; * &n; * (c) 1998 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n; *&n; */
-singleline_comment|//#undef SISFBDEBUG
+multiline_comment|/*&n; * SiS 300/630/730/540/315/550/650/740 frame buffer device&n; * for Linux kernels 2.4.x and 2.5.x&n; *&n; * Partly based on the VBE 2.0 compliant graphic boards framebuffer driver,&n; * which is (c) 1998 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n; *&n; * Authors:   &t;SiS (www.sis.com.tw)&n; *&t;&t;(Various others)&n; *&t;&t;Thomas Winischhofer &lt;thomas@winischhofer.net&gt;:&n; *&t;&t;&t;- many fixes and enhancements for 630 &amp; 310/325 series,&n; *&t;&t;&t;- extended bridge handling, TV output for Chrontel&n; *                      - 650/LVDS support (for LCD panels up to 1400x1050)&n; *                      - 650/Chrontel 7019 support&n; *                      - 301B/301LV LCD and TV support&n; *&t;&t;&t;- memory queue handling enhancements,&n; *&t;&t;&t;- everything marked with &quot;TW&quot;&n; *&t;&t;&t;(see http://www.winischhofer.net/linuxsis630.shtml&n; *&t;&t;&t;for more information and updates)&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -22,7 +22,7 @@ macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sisfb.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/mtrr.h&gt;
+macro_line|#include &lt;asm/mtrr.h&gt; 
 macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;video/fbcon-cfb8.h&gt;
 macro_line|#include &lt;video/fbcon-cfb16.h&gt;
@@ -31,7 +31,13 @@ macro_line|#include &lt;video/fbcon-cfb32.h&gt;
 macro_line|#include &quot;osdef.h&quot;
 macro_line|#include &quot;vgatypes.h&quot;
 macro_line|#include &quot;sis_main.h&quot;
+singleline_comment|//#ifdef LINUXBIOS
+singleline_comment|//#include &quot;bios.h&quot;
+singleline_comment|//#endif
 multiline_comment|/* -------------------- Macro definitions ---------------------------- */
+singleline_comment|// #define SISFBDEBUG
+DECL|macro|SISFBDEBUG
+macro_line|#undef SISFBDEBUG /* TW */
 macro_line|#ifdef SISFBDEBUG
 DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(fmt, args...) printk(KERN_DEBUG &quot;%s: &quot; fmt, __FUNCTION__ , ## args)
@@ -51,6 +57,7 @@ multiline_comment|/* --------------- Hardware Access Routines ------------------
 DECL|function|sisfb_set_reg1
 r_void
 id|sisfb_set_reg1
+c_func
 (paren
 id|u16
 id|port
@@ -63,6 +70,7 @@ id|data
 )paren
 (brace
 id|outb
+c_func
 (paren
 (paren
 id|u8
@@ -80,6 +88,7 @@ id|port
 op_increment
 suffix:semicolon
 id|outb
+c_func
 (paren
 (paren
 id|u8
@@ -97,6 +106,7 @@ suffix:semicolon
 DECL|function|sisfb_set_reg3
 r_void
 id|sisfb_set_reg3
+c_func
 (paren
 id|u16
 id|port
@@ -106,6 +116,7 @@ id|data
 )paren
 (brace
 id|outb
+c_func
 (paren
 (paren
 id|u8
@@ -123,6 +134,7 @@ suffix:semicolon
 DECL|function|sisfb_set_reg4
 r_void
 id|sisfb_set_reg4
+c_func
 (paren
 id|u16
 id|port
@@ -133,6 +145,7 @@ id|data
 )paren
 (brace
 id|outl
+c_func
 (paren
 (paren
 id|u32
@@ -150,6 +163,7 @@ suffix:semicolon
 DECL|function|sisfb_get_reg1
 id|u8
 id|sisfb_get_reg1
+c_func
 (paren
 id|u16
 id|port
@@ -162,6 +176,7 @@ id|u8
 id|data
 suffix:semicolon
 id|outb
+c_func
 (paren
 (paren
 id|u8
@@ -182,6 +197,7 @@ suffix:semicolon
 id|data
 op_assign
 id|inb
+c_func
 (paren
 id|port
 )paren
@@ -195,6 +211,7 @@ suffix:semicolon
 DECL|function|sisfb_get_reg2
 id|u8
 id|sisfb_get_reg2
+c_func
 (paren
 id|u16
 id|port
@@ -206,6 +223,7 @@ suffix:semicolon
 id|data
 op_assign
 id|inb
+c_func
 (paren
 id|port
 )paren
@@ -219,6 +237,7 @@ suffix:semicolon
 DECL|function|sisfb_get_reg3
 id|u32
 id|sisfb_get_reg3
+c_func
 (paren
 id|u16
 id|port
@@ -230,6 +249,7 @@ suffix:semicolon
 id|data
 op_assign
 id|inl
+c_func
 (paren
 id|port
 )paren
@@ -240,10 +260,27 @@ id|data
 )paren
 suffix:semicolon
 )brace
+singleline_comment|// Eden Chen
+singleline_comment|//void sisfb_clear_DAC(u16 port)
+singleline_comment|//{
+singleline_comment|//&t;int i,j;
+singleline_comment|//
+singleline_comment|//&t;vgawb(DAC_ADR, 0x00);
+singleline_comment|//&t;for(i=0; i&lt;256; i++)
+singleline_comment|//&t;&t;for(j=0; j&lt;3; j++)
+singleline_comment|//&t;&t;&t;vgawb(DAC_DATA, 0);
+singleline_comment|//}
+singleline_comment|//void sisfb_clear_buffer(PHW_DEVICE_EXTENSION psishw_ext)
+singleline_comment|//{
+singleline_comment|//&t;memset((char *) ivideo.video_vbase, 0,
+singleline_comment|//&t;&t;video_linelength * ivideo.video_height);
+singleline_comment|//}
+singleline_comment|// ~Eden Chen
 multiline_comment|/* --------------- Interface to BIOS code ---------------------------- */
-DECL|function|sisfb_query_VGA_config_space
 id|BOOLEAN
+DECL|function|sisfb_query_VGA_config_space
 id|sisfb_query_VGA_config_space
+c_func
 (paren
 id|PSIS_HW_DEVICE_INFO
 id|psishw_ext
@@ -288,16 +325,18 @@ op_logical_neg
 id|set
 )paren
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;Get VGA offset 0x%lx&bslash;n&quot;
+l_string|&quot;sisfb: Get VGA offset 0x%lx&bslash;n&quot;
 comma
 id|offset
 )paren
 suffix:semicolon
 r_else
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;Set offset 0x%lx to 0x%lx&bslash;n&quot;
+l_string|&quot;sisfb: Set offset 0x%lx to 0x%lx&bslash;n&quot;
 comma
 id|offset
 comma
@@ -317,13 +356,15 @@ op_assign
 id|TRUE
 suffix:semicolon
 id|pci_for_each_dev
+c_func
 (paren
 id|pdev
 )paren
 (brace
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;Current: 0x%x, target: 0x%x&bslash;n&quot;
+l_string|&quot;sisfb: Current: 0x%x, target: 0x%x&bslash;n&quot;
 comma
 id|pdev-&gt;device
 comma
@@ -363,9 +404,10 @@ id|valid_pdev
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Can&squot;t find SiS %d VGA device.&bslash;n&quot;
+l_string|&quot;sisfb: Can&squot;t find SiS %d VGA device.&bslash;n&quot;
 comma
 id|ivideo.chip_id
 )paren
@@ -382,6 +424,7 @@ op_eq
 l_int|0
 )paren
 id|pci_read_config_dword
+c_func
 (paren
 id|pdev
 comma
@@ -396,6 +439,7 @@ id|value
 suffix:semicolon
 r_else
 id|pci_write_config_dword
+c_func
 (paren
 id|pdev
 comma
@@ -417,6 +461,7 @@ suffix:semicolon
 DECL|function|sisfb_query_north_bridge_space
 id|BOOLEAN
 id|sisfb_query_north_bridge_space
+c_func
 (paren
 id|PSIS_HW_DEVICE_INFO
 id|psishw_ext
@@ -512,6 +557,15 @@ id|PCI_DEVICE_ID_SI_550
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|SIS_650
+suffix:colon
+id|nbridge_id
+op_assign
+id|PCI_DEVICE_ID_SI_650
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|nbridge_id
@@ -522,11 +576,13 @@ r_break
 suffix:semicolon
 )brace
 id|pci_for_each_dev
+c_func
 (paren
 id|pdev
 )paren
 (brace
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;Current: 0x%x, target: 0x%x&bslash;n&quot;
 comma
@@ -568,9 +624,10 @@ id|valid_pdev
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Can&squot;t find SiS %d North Bridge device.&bslash;n&quot;
+l_string|&quot;sisfb: Can&squot;t find SiS %d North Bridge device.&bslash;n&quot;
 comma
 id|nbridge_id
 )paren
@@ -587,6 +644,7 @@ op_eq
 l_int|0
 )paren
 id|pci_read_config_dword
+c_func
 (paren
 id|pdev
 comma
@@ -601,6 +659,7 @@ id|value
 suffix:semicolon
 r_else
 id|pci_write_config_dword
+c_func
 (paren
 id|pdev
 comma
@@ -620,10 +679,22 @@ id|TRUE
 suffix:semicolon
 )brace
 multiline_comment|/* -------------------- Export functions ----------------------------- */
+macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,23)
 DECL|function|sis_get_glyph
 r_static
 r_void
 id|sis_get_glyph
+c_func
+(paren
+id|SIS_GLYINFO
+op_star
+id|gly
+)paren
+macro_line|#else
+r_static
+r_void
+id|sis_get_glyph
+c_func
 (paren
 r_struct
 id|fb_info
@@ -634,7 +705,21 @@ id|SIS_GLYINFO
 op_star
 id|gly
 )paren
+macro_line|#endif
 (brace
+macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,23)
+r_struct
+id|display
+op_star
+id|p
+op_assign
+op_amp
+id|fb_display
+(braket
+id|currcon
+)braket
+suffix:semicolon
+macro_line|#else
 r_struct
 id|display
 op_star
@@ -646,6 +731,7 @@ id|fb_display
 id|info-&gt;currcon
 )braket
 suffix:semicolon
+macro_line|#endif
 id|u16
 id|c
 suffix:semicolon
@@ -668,6 +754,7 @@ suffix:semicolon
 id|gly-&gt;fontheight
 op_assign
 id|fontheight
+c_func
 (paren
 id|p
 )paren
@@ -675,6 +762,7 @@ suffix:semicolon
 id|gly-&gt;fontwidth
 op_assign
 id|fontwidth
+c_func
 (paren
 id|p
 )paren
@@ -683,6 +771,7 @@ id|widthb
 op_assign
 (paren
 id|fontwidth
+c_func
 (paren
 id|p
 )paren
@@ -702,6 +791,7 @@ r_if
 c_cond
 (paren
 id|fontwidth
+c_func
 (paren
 id|p
 )paren
@@ -715,6 +805,7 @@ op_plus
 id|c
 op_star
 id|fontheight
+c_func
 (paren
 id|p
 )paren
@@ -728,6 +819,7 @@ op_plus
 id|c
 op_star
 id|fontheight
+c_func
 (paren
 id|p
 )paren
@@ -738,6 +830,7 @@ suffix:semicolon
 id|size
 op_assign
 id|fontheight
+c_func
 (paren
 id|p
 )paren
@@ -745,6 +838,7 @@ op_star
 id|widthb
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|gbuf
 comma
@@ -761,6 +855,7 @@ suffix:semicolon
 DECL|function|sis_dispinfo
 r_void
 id|sis_dispinfo
+c_func
 (paren
 r_struct
 id|ap_data
@@ -852,6 +947,7 @@ DECL|function|sisfb_search_mode
 r_static
 r_void
 id|sisfb_search_mode
+c_func
 (paren
 r_const
 r_char
@@ -891,6 +987,7 @@ c_cond
 (paren
 op_logical_neg
 id|strcmp
+c_func
 (paren
 id|name
 comma
@@ -921,9 +1018,11 @@ id|sisfb_mode_idx
 OL
 l_int|0
 )paren
-id|DPRINTK
+id|printk
+c_func
 (paren
-l_string|&quot;Invalid user mode : %s&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;sisfb: Invalid mode &squot;%s&squot;&bslash;n&quot;
 comma
 id|name
 )paren
@@ -933,10 +1032,16 @@ DECL|function|sisfb_validate_mode
 r_static
 r_void
 id|sisfb_validate_mode
+c_func
 (paren
 r_void
 )paren
 (brace
+id|u16
+id|xres
+comma
+id|yres
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -948,7 +1053,6 @@ id|DISPTYPE_DISP2
 r_case
 id|DISPTYPE_LCD
 suffix:colon
-singleline_comment|// Eden Chen
 r_switch
 c_cond
 (paren
@@ -958,141 +1062,199 @@ id|sishw_ext.ulCRT2LCDType
 r_case
 id|LCD_1024x768
 suffix:colon
-r_if
-c_cond
-(paren
-id|sisbios_mode
-(braket
-id|sisfb_mode_idx
-)braket
-dot
 id|xres
-OG
-l_int|1024
-)paren
-id|sisfb_mode_idx
 op_assign
-op_minus
-l_int|1
+l_int|1024
+suffix:semicolon
+id|yres
+op_assign
+l_int|768
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|LCD_1280x1024
 suffix:colon
+id|xres
+op_assign
+l_int|1280
+suffix:semicolon
+id|yres
+op_assign
+l_int|1024
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|LCD_1280x960
 suffix:colon
-r_if
-c_cond
-(paren
-id|sisbios_mode
-(braket
-id|sisfb_mode_idx
-)braket
-dot
 id|xres
-OG
-l_int|1280
-)paren
-id|sisfb_mode_idx
 op_assign
-op_minus
-l_int|1
+l_int|1280
+suffix:semicolon
+id|yres
+op_assign
+l_int|960
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|LCD_2048x1536
 suffix:colon
-r_if
-c_cond
-(paren
-id|sisbios_mode
-(braket
-id|sisfb_mode_idx
-)braket
-dot
 id|xres
-OG
-l_int|2048
-)paren
-id|sisfb_mode_idx
 op_assign
-op_minus
-l_int|1
+l_int|2048
+suffix:semicolon
+id|yres
+op_assign
+l_int|1536
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|LCD_1920x1440
 suffix:colon
-r_if
-c_cond
-(paren
-id|sisbios_mode
-(braket
-id|sisfb_mode_idx
-)braket
-dot
 id|xres
-OG
-l_int|1920
-)paren
-id|sisfb_mode_idx
 op_assign
-op_minus
-l_int|1
+l_int|1920
+suffix:semicolon
+id|yres
+op_assign
+l_int|1440
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|LCD_1600x1200
 suffix:colon
-r_if
-c_cond
-(paren
-id|sisbios_mode
-(braket
-id|sisfb_mode_idx
-)braket
-dot
 id|xres
-OG
-l_int|1600
-)paren
-id|sisfb_mode_idx
 op_assign
-op_minus
-l_int|1
+l_int|1600
+suffix:semicolon
+id|yres
+op_assign
+l_int|1200
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|LCD_800x600
 suffix:colon
-r_if
-c_cond
-(paren
-id|sisbios_mode
-(braket
-id|sisfb_mode_idx
-)braket
-dot
 id|xres
-OG
-l_int|800
-)paren
-id|sisfb_mode_idx
 op_assign
-op_minus
-l_int|1
+l_int|800
+suffix:semicolon
+id|yres
+op_assign
+l_int|600
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|LCD_640x480
 suffix:colon
+id|xres
+op_assign
+l_int|640
+suffix:semicolon
+id|yres
+op_assign
+l_int|480
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|LCD_320x480
+suffix:colon
+multiline_comment|/* TW: FSTN */
+id|xres
+op_assign
+l_int|320
+suffix:semicolon
+id|yres
+op_assign
+l_int|480
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|LCD_1024x600
+suffix:colon
+id|xres
+op_assign
+l_int|1024
+suffix:semicolon
+id|yres
+op_assign
+l_int|600
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|LCD_1152x864
+suffix:colon
+id|xres
+op_assign
+l_int|1152
+suffix:semicolon
+id|yres
+op_assign
+l_int|864
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|LCD_1152x768
+suffix:colon
+id|xres
+op_assign
+l_int|1152
+suffix:semicolon
+id|yres
+op_assign
+l_int|768
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|LCD_1280x768
+suffix:colon
+id|xres
+op_assign
+l_int|1280
+suffix:semicolon
+id|yres
+op_assign
+l_int|768
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|LCD_1400x1050
+suffix:colon
+id|xres
+op_assign
+l_int|1400
+suffix:semicolon
+id|yres
+op_assign
+l_int|1050
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|xres
+op_assign
+l_int|0
+suffix:semicolon
+id|yres
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1103,24 +1265,34 @@ id|sisfb_mode_idx
 dot
 id|xres
 OG
-l_int|640
+id|xres
 )paren
-id|sisfb_mode_idx
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
+(brace
 id|sisfb_mode_idx
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
 )brace
-singleline_comment|// ~Eden Chen
+r_if
+c_cond
+(paren
+id|sisbios_mode
+(braket
+id|sisfb_mode_idx
+)braket
+dot
+id|yres
+OG
+id|yres
+)paren
+(brace
+id|sisfb_mode_idx
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1155,10 +1327,13 @@ id|xres
 )paren
 (brace
 r_case
-l_int|800
+l_int|512
 suffix:colon
 r_case
 l_int|640
+suffix:colon
+r_case
+l_int|800
 suffix:colon
 r_break
 suffix:semicolon
@@ -1218,9 +1393,25 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* TW: LVDS/CHRONTEL does not support 720 */
+r_if
+c_cond
+(paren
+id|ivideo.hasVB
+op_eq
+id|HASVB_LVDS_CHRONTEL
+op_logical_or
+id|ivideo.hasVB
+op_eq
+id|HASVB_CHRONTEL
+)paren
+id|sisfb_mode_idx
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/*karl */
 r_case
 l_int|1024
 suffix:colon
@@ -1244,10 +1435,41 @@ id|bpp
 op_eq
 l_int|32
 )paren
+(brace
 id|sisfb_mode_idx
-op_sub_assign
+op_assign
+op_minus
 l_int|1
 suffix:semicolon
+)brace
+)brace
+multiline_comment|/* TW: LVDS/CHRONTEL only supports &lt; 800 (1024 on 650/Ch7019)*/
+r_if
+c_cond
+(paren
+id|ivideo.hasVB
+op_eq
+id|HASVB_LVDS_CHRONTEL
+op_logical_or
+id|ivideo.hasVB
+op_eq
+id|HASVB_CHRONTEL
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ivideo.chip
+OL
+id|SIS_315H
+)paren
+(brace
+id|sisfb_mode_idx
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 )brace
 r_break
 suffix:semicolon
@@ -1262,11 +1484,223 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ivideo.chip
+OL
+id|SIS_315H
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|sisbios_mode
+(braket
+id|sisfb_mode_idx
+)braket
+dot
+id|xres
+OG
+l_int|1920
+)paren
+(brace
+id|sisfb_mode_idx
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* TW: TODO: Validate modes available on either 300 or 310/325 series only */
+)brace
+DECL|function|sisfb_search_crt2type
+r_static
+r_void
+id|sisfb_search_crt2type
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+)paren
+(brace
+r_int
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|name
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|sis_crt2type
+(braket
+id|i
+)braket
+dot
+id|type_no
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|name
+comma
+id|sis_crt2type
+(braket
+id|i
+)braket
+dot
+id|name
+)paren
+)paren
+(brace
+id|sisfb_crt2type
+op_assign
+id|sis_crt2type
+(braket
+id|i
+)braket
+dot
+id|type_no
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|i
+op_increment
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|sisfb_crt2type
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Invalid CRT2 type: %s&bslash;n&quot;
+comma
+id|name
+)paren
+suffix:semicolon
+)brace
+DECL|function|sisfb_search_queuemode
+r_static
+r_void
+id|sisfb_search_queuemode
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+)paren
+(brace
+r_int
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|name
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|sis_queuemode
+(braket
+id|i
+)braket
+dot
+id|type_no
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|name
+comma
+id|sis_queuemode
+(braket
+id|i
+)braket
+dot
+id|name
+)paren
+)paren
+(brace
+id|sisfb_queuemode
+op_assign
+id|sis_queuemode
+(braket
+id|i
+)braket
+dot
+id|type_no
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|i
+op_increment
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|sisfb_queuemode
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Invalid queuemode type: %s&bslash;n&quot;
+comma
+id|name
+)paren
+suffix:semicolon
 )brace
 DECL|function|sisfb_search_refresh_rate
 r_static
 id|u8
 id|sisfb_search_refresh_rate
+c_func
 (paren
 r_int
 r_int
@@ -1414,8 +1848,9 @@ l_int|2
 )paren
 (brace
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;Adjust rate from %d up to %d&bslash;n&quot;
+l_string|&quot;sisfb: Adjusting rate from %d up to %d&bslash;n&quot;
 comma
 id|rate
 comma
@@ -1482,7 +1917,7 @@ l_int|1
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;Adjust rate from %d down to %d&bslash;n&quot;
+l_string|&quot;sisfb: Adjusting rate from %d down to %d&bslash;n&quot;
 comma
 id|rate
 comma
@@ -1541,9 +1976,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|DPRINTK
+id|printk
+c_func
 (paren
-l_string|&quot;Unsupported rate %d for %dx%d mode&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;sisfb: Unsupported rate %d for %dx%d&bslash;n&quot;
 comma
 id|rate
 comma
@@ -1561,6 +1998,7 @@ DECL|function|sis_getcolreg
 r_static
 r_int
 id|sis_getcolreg
+c_func
 (paren
 r_int
 id|regno
@@ -1640,6 +2078,7 @@ DECL|function|sisfb_setcolreg
 r_static
 r_int
 id|sisfb_setcolreg
+c_func
 (paren
 r_int
 id|regno
@@ -1710,6 +2149,7 @@ r_case
 l_int|8
 suffix:colon
 id|vgawb
+c_func
 (paren
 id|DAC_ADR
 comma
@@ -1717,6 +2157,7 @@ id|regno
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|DAC_DATA
 comma
@@ -1726,6 +2167,7 @@ l_int|10
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|DAC_DATA
 comma
@@ -1735,6 +2177,7 @@ l_int|10
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|DAC_DATA
 comma
@@ -1752,6 +2195,7 @@ id|DISPTYPE_DISP2
 )paren
 (brace
 id|vgawb
+c_func
 (paren
 id|DAC2_ADR
 comma
@@ -1759,6 +2203,7 @@ id|regno
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|DAC2_DATA
 comma
@@ -1768,6 +2213,7 @@ l_int|8
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|DAC2_DATA
 comma
@@ -1777,6 +2223,7 @@ l_int|8
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|DAC2_DATA
 comma
@@ -1921,6 +2368,7 @@ DECL|function|sisfb_do_set_var
 r_static
 r_int
 id|sisfb_do_set_var
+c_func
 (paren
 r_struct
 id|fb_var_screeninfo
@@ -1952,14 +2400,10 @@ r_int
 r_int
 id|vtotal
 op_assign
-id|var-&gt;upper_margin
-op_plus
-id|var-&gt;yres
-op_plus
-id|var-&gt;lower_margin
-op_plus
-id|var-&gt;vsync_len
+l_int|0
 suffix:semicolon
+multiline_comment|/* TW */
+multiline_comment|/*&t;var-&gt;upper_margin + var-&gt;yres + var-&gt;lower_margin +&n;&t;&t;var-&gt;vsync_len;     */
 r_float
 id|drate
 op_assign
@@ -1988,10 +2432,23 @@ id|FB_VMODE_MASK
 op_eq
 id|FB_VMODE_NONINTERLACED
 )paren
+(brace
+id|vtotal
+op_assign
+id|var-&gt;upper_margin
+op_plus
+id|var-&gt;yres
+op_plus
+id|var-&gt;lower_margin
+op_plus
+id|var-&gt;vsync_len
+suffix:semicolon
+multiline_comment|/* TW */
 id|vtotal
 op_lshift_assign
 l_int|1
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -2004,10 +2461,23 @@ id|FB_VMODE_MASK
 op_eq
 id|FB_VMODE_DOUBLE
 )paren
+(brace
+id|vtotal
+op_assign
+id|var-&gt;upper_margin
+op_plus
+id|var-&gt;yres
+op_plus
+id|var-&gt;lower_margin
+op_plus
+id|var-&gt;vsync_len
+suffix:semicolon
+multiline_comment|/* TW */
 id|vtotal
 op_lshift_assign
 l_int|2
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -2020,23 +2490,54 @@ id|FB_VMODE_MASK
 op_eq
 id|FB_VMODE_INTERLACED
 )paren
+(brace
+id|vtotal
+op_assign
+id|var-&gt;upper_margin
+op_plus
+(paren
 id|var-&gt;yres
-op_lshift_assign
-l_int|1
+op_div
+l_int|2
+)paren
+op_plus
+id|var-&gt;lower_margin
+op_plus
+id|var-&gt;vsync_len
+suffix:semicolon
+multiline_comment|/* TW */
+multiline_comment|/* var-&gt;yres &lt;&lt;= 1; */
+multiline_comment|/* TW */
+)brace
+r_else
+id|vtotal
+op_assign
+id|var-&gt;upper_margin
+op_plus
+id|var-&gt;yres
+op_plus
+id|var-&gt;lower_margin
+op_plus
+id|var-&gt;vsync_len
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|htotal
+)paren
 op_logical_or
 op_logical_neg
+(paren
 id|vtotal
+)paren
 )paren
 (brace
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;Invalid &squot;var&squot; Information!&bslash;n&quot;
+l_string|&quot;sisfb: Invalid &squot;var&squot; information&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2072,9 +2573,10 @@ op_plus
 l_float|0.5
 )paren
 suffix:semicolon
-id|DPRINTK
+id|printk
+c_func
 (paren
-l_string|&quot;Chagne mode to %dx%dx%d-%dMHz&bslash;n&quot;
+l_string|&quot;sisfb: Change mode to %dx%dx%d-%dHz&bslash;n&quot;
 comma
 id|var-&gt;xres
 comma
@@ -2182,6 +2684,7 @@ c_cond
 id|found_mode
 )paren
 id|sisfb_validate_mode
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2199,9 +2702,10 @@ OL
 l_int|0
 )paren
 (brace
-id|DPRINTK
+id|printk
+c_func
 (paren
-l_string|&quot;sisfb does not support mode %dx%d-%d&bslash;n&quot;
+l_string|&quot;sisfb: Mode %dx%d-%d not supported&bslash;n&quot;
 comma
 id|var-&gt;xres
 comma
@@ -2223,6 +2727,7 @@ r_if
 c_cond
 (paren
 id|sisfb_search_refresh_rate
+c_func
 (paren
 id|ivideo.refresh_rate
 )paren
@@ -2261,15 +2766,15 @@ id|isactive
 )paren
 (brace
 id|sisfb_pre_setmode
+c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|// Eden Chen
-multiline_comment|/*&n;#ifdef CONFIG_FB_SIS_300&n;&t;&t;if (SiSSetMode(&amp;sishw_ext, sisfb_mode_no)) {&n;&t;&t;&t;DPRINTK(&quot;set mode[0x%x]: failed&bslash;n&quot;, sisfb_mode_no);&n;&t;&t;&t;return -1;&n;&t;&t;}&n;#endif&n;&n;#ifdef CONFIG_FB_SIS_315&n;&t;&t;if (SiSSetMode310(&amp;sishw_ext, sisfb_mode_no)) {&n;&t;&t;&t;DPRINTK(&quot;set mode[0x%x]: failed&bslash;n&quot;, sisfb_mode_no);&n;&t;&t;&t;return -1;&n;&t;&t;}&n;&n;#endif&n;*/
 r_if
 c_cond
 (paren
 id|SiSSetMode
+c_func
 (paren
 op_amp
 id|sishw_ext
@@ -2280,9 +2785,10 @@ op_eq
 l_int|0
 )paren
 (brace
-id|DPRINTK
+id|printk
+c_func
 (paren
-l_string|&quot;set mode[0x%x]: failed&bslash;n&quot;
+l_string|&quot;sisfb: Setting mode[0x%x] failed&bslash;n&quot;
 comma
 id|sisfb_mode_no
 )paren
@@ -2293,6 +2799,7 @@ l_int|1
 suffix:semicolon
 )brace
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -2300,20 +2807,22 @@ id|IND_SIS_PASSWORD
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
 id|SIS_PASSWORD
 )paren
 suffix:semicolon
-singleline_comment|// ~Eden Chen
 id|sisfb_post_setmode
+c_func
 (paren
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;Set New Mode : %dx%dx%d-%d &bslash;n&quot;
+l_string|&quot;sisfb: Set new mode: %dx%dx%d-%d &bslash;n&quot;
 comma
 id|sisbios_mode
 (braket
@@ -2395,6 +2904,7 @@ DECL|function|sisfb_set_disp
 r_static
 r_void
 id|sisfb_set_disp
+c_func
 (paren
 r_int
 id|con
@@ -2419,7 +2929,7 @@ id|display_switch
 op_star
 id|sw
 suffix:semicolon
-id|u32
+r_int
 id|flags
 suffix:semicolon
 r_if
@@ -2444,6 +2954,7 @@ op_amp
 id|disp
 suffix:semicolon
 id|sisfb_get_fix
+c_func
 (paren
 op_amp
 id|fix
@@ -2453,6 +2964,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,23)
+id|display-&gt;screen_base
+op_assign
+id|ivideo.video_vbase
+suffix:semicolon
+macro_line|#endif
 id|display-&gt;visual
 op_assign
 id|fix.visual
@@ -2495,6 +3012,7 @@ op_star
 id|var
 suffix:semicolon
 id|save_flags
+c_func
 (paren
 id|flags
 )paren
@@ -2579,6 +3097,7 @@ r_return
 suffix:semicolon
 )brace
 id|memcpy
+c_func
 (paren
 op_amp
 id|sisfb_sw
@@ -2598,6 +3117,7 @@ op_amp
 id|sisfb_sw
 suffix:semicolon
 id|restore_flags
+c_func
 (paren
 id|flags
 )paren
@@ -2615,6 +3135,7 @@ DECL|function|sisfb_do_install_cmap
 r_static
 r_void
 id|sisfb_do_install_cmap
+c_func
 (paren
 r_int
 id|con
@@ -2625,6 +3146,7 @@ op_star
 id|info
 )paren
 (brace
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,23)
 r_if
 c_cond
 (paren
@@ -2645,6 +3167,7 @@ dot
 id|cmap.len
 )paren
 id|fb_set_cmap
+c_func
 (paren
 op_amp
 id|fb_display
@@ -2661,8 +3184,10 @@ id|info
 suffix:semicolon
 r_else
 id|fb_set_cmap
+c_func
 (paren
 id|fb_default_cmap
+c_func
 (paren
 id|video_cmap_len
 )paren
@@ -2672,13 +3197,70 @@ comma
 id|info
 )paren
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+id|con
+op_ne
+id|currcon
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fb_display
+(braket
+id|con
+)braket
+dot
+id|cmap.len
+)paren
+id|fb_set_cmap
+c_func
+(paren
+op_amp
+id|fb_display
+(braket
+id|con
+)braket
+dot
+id|cmap
+comma
+l_int|1
+comma
+id|sisfb_setcolreg
+comma
+id|info
+)paren
+suffix:semicolon
+r_else
+id|fb_set_cmap
+c_func
+(paren
+id|fb_default_cmap
+c_func
+(paren
+id|video_cmap_len
+)paren
+comma
+l_int|1
+comma
+id|sisfb_setcolreg
+comma
+id|info
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* --------------- Chip-dependent Routines --------------------------- */
-macro_line|#ifdef CONFIG_FB_SIS_300&t;/* for SiS 300/630/540/730 */
+macro_line|#ifdef CONFIG_FB_SIS_300 /* for SiS 300/630/540/730 */
 DECL|function|sisfb_get_dram_size_300
 r_static
 r_int
 id|sisfb_get_dram_size_300
+c_func
 (paren
 r_void
 )paren
@@ -2753,7 +3335,9 @@ op_eq
 l_int|0
 )paren
 (brace
+multiline_comment|/* 300 */
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -2770,6 +3354,7 @@ r_int
 (paren
 (paren
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -2786,7 +3371,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* 540, 630, 730 */
 id|pci_for_each_dev
+c_func
 (paren
 id|pdev
 )paren
@@ -2807,8 +3394,8 @@ id|nbridge_id
 )paren
 )paren
 (brace
-singleline_comment|//&amp;&amp; (pdev-&gt;device == PCI_DEVICE_ID_SI_630)) {
 id|pci_read_config_byte
+c_func
 (paren
 id|pdev
 comma
@@ -2855,6 +3442,7 @@ op_lshift
 l_int|6
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -2923,6 +3511,7 @@ r_break
 suffix:semicolon
 )brace
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -2954,7 +3543,6 @@ r_void
 id|sisfb_detect_VB_connect_300
 c_func
 (paren
-r_void
 )paren
 (brace
 id|u8
@@ -2967,6 +3555,7 @@ comma
 id|temp
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -2976,11 +3565,13 @@ suffix:semicolon
 id|sr17
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -2990,6 +3581,7 @@ suffix:semicolon
 id|cr32
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -3054,6 +3646,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|sisfb_crt2type
+op_ne
+op_minus
+l_int|1
+)paren
+multiline_comment|/* TW: override detected CRT2 type */
+id|ivideo.disp_state
+op_assign
+id|sisfb_crt2type
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
 id|sr17
 op_amp
 l_int|0x08
@@ -3082,10 +3688,14 @@ id|sr17
 op_amp
 l_int|0x04
 )paren
-(brace
 id|ivideo.disp_state
 op_assign
 id|DISPTYPE_TV
+suffix:semicolon
+r_else
+id|ivideo.disp_state
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -3111,6 +3721,7 @@ op_assign
 id|TVPLUG_COMPOSITE
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -3120,6 +3731,7 @@ suffix:semicolon
 id|sr16
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -3139,12 +3751,6 @@ r_else
 id|ivideo.TV_type
 op_assign
 id|TVMODE_NTSC
-suffix:semicolon
-)brace
-r_else
-id|ivideo.disp_state
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 r_else
@@ -3187,6 +3793,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|sisfb_crt2type
+op_ne
+op_minus
+l_int|1
+)paren
+multiline_comment|/* TW: override detected CRT2 type */
+id|ivideo.disp_state
+op_assign
+id|sisfb_crt2type
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
 id|cr32
 op_amp
 id|SIS_VB_CRT2
@@ -3215,11 +3835,16 @@ id|cr32
 op_amp
 id|SIS_VB_TV
 )paren
-(brace
 id|ivideo.disp_state
 op_assign
 id|DISPTYPE_TV
 suffix:semicolon
+r_else
+id|ivideo.disp_state
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* TW: Detect TV plug &amp; type anyway */
 r_if
 c_cond
 (paren
@@ -3284,9 +3909,10 @@ l_int|0
 singleline_comment|// Eden Chen
 singleline_comment|//temp = *((u8 *)(sishw_ext.VirtualRomBase+0x52));
 singleline_comment|//if (temp&amp;0x40) {
-singleline_comment|//      temp=*((u8 *)(sishw_ext.VirtualRomBase+0x53));
+singleline_comment|//&t;temp=*((u8 *)(sishw_ext.VirtualRomBase+0x53));
 singleline_comment|//} else {
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -3296,6 +3922,7 @@ suffix:semicolon
 id|temp
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -3320,10 +3947,66 @@ id|TVMODE_NTSC
 suffix:semicolon
 )brace
 )brace
-r_else
-id|ivideo.disp_state
+multiline_comment|/* TW: Copy forceCRT1 option to CRT1off if option is given */
+r_if
+c_cond
+(paren
+id|sisfb_forcecrt1
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+id|vgawb
+c_func
+(paren
+id|SEQ_ADR
+comma
+id|IND_SIS_SCRATCH_REG_17
+)paren
+suffix:semicolon
+id|sr17
+op_assign
+id|vgarb
+c_func
+(paren
+id|SEQ_DATA
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sisfb_forcecrt1
+)paren
+(brace
+id|sisfb_crt1off
 op_assign
 l_int|0
+suffix:semicolon
+id|sr17
+op_or_assign
+l_int|0x80
+suffix:semicolon
+)brace
+r_else
+(brace
+id|sisfb_crt1off
+op_assign
+l_int|1
+suffix:semicolon
+id|sr17
+op_and_assign
+op_complement
+l_int|0x80
+suffix:semicolon
+)brace
+id|vgawb
+c_func
+(paren
+id|SEQ_DATA
+comma
+id|sr17
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -3331,6 +4014,7 @@ DECL|function|sisfb_get_VB_type_300
 r_static
 r_void
 id|sisfb_get_VB_type_300
+c_func
 (paren
 r_void
 )paren
@@ -3351,11 +4035,13 @@ c_cond
 (paren
 op_logical_neg
 id|sisfb_has_VB_300
+c_func
 (paren
 )paren
 )paren
 (brace
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -3365,6 +4051,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -3436,16 +4123,17 @@ suffix:semicolon
 r_else
 (brace
 id|sisfb_has_VB_300
+c_func
 (paren
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//sishw_ext.hasVB = ivideo.hasVB;
 )brace
 DECL|function|sisfb_has_VB_300
 r_static
 r_int
 id|sisfb_has_VB_300
+c_func
 (paren
 r_void
 )paren
@@ -3460,6 +4148,7 @@ singleline_comment|//sr38 = vgarb(SEQ_DATA);
 singleline_comment|//vgawb(SEQ_ADR, IND_SIS_POWER_ON_TRAP2);
 singleline_comment|//sr39 = vgarb(SEQ_DATA);
 id|vgawb
+c_func
 (paren
 id|VB_PART4_ADR
 comma
@@ -3469,6 +4158,7 @@ suffix:semicolon
 id|vb_chipid
 op_assign
 id|vgarb
+c_func
 (paren
 id|VB_PART4_DATA
 )paren
@@ -3519,18 +4209,38 @@ suffix:semicolon
 r_return
 id|TRUE
 suffix:semicolon
+singleline_comment|//if (
+singleline_comment|//&t;( (ivideo.chip == SIS_300) &amp;&amp; (sr38 &amp; 0x20) )
+singleline_comment|//&t;||
+singleline_comment|//&t;( (ivideo.chip == SIS_540) &amp;&amp; (sr38 &amp; 0x20) &amp;&amp; (!(sr39 &amp; 0x80)) )
+singleline_comment|//&t;||
+singleline_comment|//&t;( (ivideo.chip == SIS_630 ) &amp;&amp; (sr38 &amp; 0x20) &amp;&amp; (!(sr39 &amp; 0x80)) &amp;&amp; 
+singleline_comment|//&t;&t;((ivideo.revision_id &amp; 0xf0) &lt; 0x30) &amp;&amp; (vb_chipid == 1) ) 
+singleline_comment|//&t;||
+singleline_comment|//&t;( (ivideo.chip == SIS_630 ) &amp;&amp; ((ivideo.revision_id &amp; 0xf0) &gt;= 0x30) &amp;&amp; 
+singleline_comment|//&t;&t;(vb_chipid == 1) ) 
+singleline_comment|//&t;||
+singleline_comment|//&t;( (ivideo.chip == SIS_730) &amp;&amp; (vb_chipid == 1) ) /* 730 */
+singleline_comment|//) {
+singleline_comment|//&t;ivideo.hasVB = HASVB_301;
+singleline_comment|//&t;return TRUE;
+singleline_comment|//} else {
+singleline_comment|//&t;ivideo.hasVB = HASVB_NONE;
+singleline_comment|//&t;return FALSE;
+singleline_comment|//}
+singleline_comment|// ~Eden Chen
 )brace
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_FB_SIS_300 */
-macro_line|#ifdef CONFIG_FB_SIS_315&t;/* for SiS 315H/315 */
+macro_line|#endif  /* CONFIG_FB_SIS_300 */
+macro_line|#ifdef CONFIG_FB_SIS_315    /* for SiS 315/550/650/740 */
 DECL|function|sisfb_get_dram_size_315
 r_static
 r_int
 id|sisfb_get_dram_size_315
+c_func
 (paren
 r_void
 )paren
 (brace
-macro_line|#ifdef LINUXBIOS
 r_struct
 id|pci_dev
 op_star
@@ -3546,7 +4256,6 @@ suffix:semicolon
 id|u8
 id|pci_data
 suffix:semicolon
-macro_line|#endif
 id|u8
 id|reg
 op_assign
@@ -3558,10 +4267,15 @@ c_cond
 id|ivideo.chip
 op_eq
 id|SIS_550
+op_logical_or
+id|ivideo.chip
+op_eq
+id|SIS_650
 )paren
 (brace
 macro_line|#ifdef LINUXBIOS
 id|pci_for_each_dev
+c_func
 (paren
 id|pdev
 )paren
@@ -3576,13 +4290,22 @@ id|PCI_VENDOR_ID_SI
 )paren
 op_logical_and
 (paren
+(paren
 id|pdev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_SI_550
 )paren
+op_logical_or
+(paren
+id|pdev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SI_650
+)paren
+)paren
 )paren
 (brace
 id|pci_read_config_byte
+c_func
 (paren
 id|pdev
 comma
@@ -3622,7 +4345,9 @@ id|pdev_valid
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* TW: Initialize SR14 &quot;by hand&quot; */
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -3632,6 +4357,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -3645,7 +4371,7 @@ id|pci_data
 )paren
 (brace
 singleline_comment|//case BRI_DRAM_SIZE_2MB:
-singleline_comment|//      reg |= (SIS315_DRAM_SIZE_2MB &lt;&lt; 4); break;
+singleline_comment|//&t;reg |= (SIS315_DRAM_SIZE_2MB &lt;&lt; 4); break;
 r_case
 id|BRI_DRAM_SIZE_4MB
 suffix:colon
@@ -3691,10 +4417,11 @@ id|SIS550_DRAM_SIZE_64MB
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* case BRI_DRAM_SIZE_128MB:&n;&t;&t;&t;&t;&t;   reg |= (SIS315_DRAM_SIZE_128MB &lt;&lt; 4); break; */
+multiline_comment|/* case BRI_DRAM_SIZE_128MB:&n;&t;&t;&t;&t;&t;reg |= (SIS315_DRAM_SIZE_128MB &lt;&lt; 4); break; */
 )brace
 multiline_comment|/* TODO : set Dual channel and bus width bits here */
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -3717,6 +4444,7 @@ l_int|1
 suffix:semicolon
 macro_line|#else
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -3726,6 +4454,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -3821,19 +4550,85 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_return
-op_minus
-l_int|1
+multiline_comment|/* TW: Some 550 BIOSes don&squot;t seem to initialize SR14 correctly (if at all),&n;&t;&t;&t; *     do it the hard way ourselves in this case. Unfortunately, we don&squot;t&n;&t;&t;&t; *     support 24, 48, 96 and other &quot;odd&quot; amounts here.&n;&t;&t;&t; */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Warning: Could not determine memory size, &quot;
+l_string|&quot;now reading from PCI config&bslash;n&quot;
+)paren
 suffix:semicolon
-)brace
-macro_line|#endif
-r_return
+id|pdev_valid
+op_assign
 l_int|0
 suffix:semicolon
-)brace
-r_else
+id|pci_for_each_dev
+c_func
+(paren
+id|pdev
+)paren
 (brace
+r_if
+c_cond
+(paren
+(paren
+id|pdev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_SI
+)paren
+op_logical_and
+(paren
+id|pdev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SI_550
+)paren
+)paren
+(brace
+id|pci_read_config_byte
+c_func
+(paren
+id|pdev
+comma
+id|IND_BRI_DRAM_STATUS
+comma
+op_amp
+id|pci_data
+)paren
+suffix:semicolon
+id|pci_data
+op_assign
+(paren
+id|pci_data
+op_amp
+id|BRI_DRAM_SIZE_MASK
+)paren
+op_rshift
+l_int|4
+suffix:semicolon
+id|ivideo.video_size
+op_assign
+(paren
+r_int
+r_int
+)paren
+(paren
+l_int|1
+op_lshift
+(paren
+id|pci_data
+op_plus
+l_int|21
+)paren
+)paren
+suffix:semicolon
+id|pdev_valid
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* TW: Initialize SR14=IND_SIS_DRAM_SIZE */
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -3843,6 +4638,132 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
+(paren
+id|SEQ_DATA
+)paren
+op_amp
+l_int|0xC0
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|pci_data
+)paren
+(brace
+r_case
+id|BRI_DRAM_SIZE_4MB
+suffix:colon
+id|reg
+op_or_assign
+id|SIS550_DRAM_SIZE_4MB
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|BRI_DRAM_SIZE_8MB
+suffix:colon
+id|reg
+op_or_assign
+id|SIS550_DRAM_SIZE_8MB
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|BRI_DRAM_SIZE_16MB
+suffix:colon
+id|reg
+op_or_assign
+id|SIS550_DRAM_SIZE_16MB
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|BRI_DRAM_SIZE_32MB
+suffix:colon
+id|reg
+op_or_assign
+id|SIS550_DRAM_SIZE_32MB
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|BRI_DRAM_SIZE_64MB
+suffix:colon
+id|reg
+op_or_assign
+id|SIS550_DRAM_SIZE_64MB
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* case BRI_DRAM_SIZE_128MB:&n;&t;&t;&t;&t;&t;reg |= (SIS315_DRAM_SIZE_128MB &lt;&lt; 4); break; */
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Unable to determine memory size, giving up.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|vgawb
+c_func
+(paren
+id|SEQ_DATA
+comma
+id|reg
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pdev_valid
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Total confusion - No SiS PCI VGA device found?!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* 315 */
+id|vgawb
+c_func
+(paren
+id|SEQ_ADR
+comma
+id|IND_SIS_DRAM_SIZE
+)paren
+suffix:semicolon
+id|reg
+op_assign
+id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -3962,6 +4883,20 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|SIS315_ASYM_DDR
+suffix:colon
+multiline_comment|/* TW: DDR asymentric */
+id|ivideo.video_size
+op_add_assign
+(paren
+id|ivideo.video_size
+op_div
+l_int|2
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 r_return
 l_int|0
@@ -3971,16 +4906,20 @@ DECL|function|sisfb_detect_VB_connect_315
 r_static
 r_void
 id|sisfb_detect_VB_connect_315
+c_func
 (paren
 r_void
 )paren
 (brace
 id|u8
+id|sr17
+comma
 id|cr32
 comma
 id|temp
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -3990,6 +4929,7 @@ suffix:semicolon
 id|cr32
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -4038,6 +4978,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|sisfb_crt2type
+op_ne
+op_minus
+l_int|1
+)paren
+multiline_comment|/* TW: Override with option */
+id|ivideo.disp_state
+op_assign
+id|sisfb_crt2type
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
 id|cr32
 op_amp
 id|SIS_VB_CRT2
@@ -4066,10 +5020,14 @@ id|cr32
 op_amp
 id|SIS_VB_TV
 )paren
-(brace
 id|ivideo.disp_state
 op_assign
 id|DISPTYPE_TV
+suffix:semicolon
+r_else
+id|ivideo.disp_state
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -4132,7 +5090,18 @@ op_eq
 l_int|0
 )paren
 (brace
+multiline_comment|/* TW: PAL/NTSC changed for 315/650 */
+r_if
+c_cond
+(paren
+id|ivideo.chip
+op_le
+id|SIS_315PRO
+)paren
+(brace
+macro_line|#if 0
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -4142,8 +5111,26 @@ suffix:semicolon
 id|temp
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
+)paren
+suffix:semicolon
+macro_line|#endif
+id|vgawb
+c_func
+(paren
+id|CRTC_ADR
+comma
+l_int|0x38
+)paren
+suffix:semicolon
+id|temp
+op_assign
+id|vgarb
+c_func
+(paren
+id|CRTC_DATA
 )paren
 suffix:semicolon
 r_if
@@ -4151,7 +5138,42 @@ c_cond
 (paren
 id|temp
 op_amp
-l_int|0x01
+l_int|0x10
+)paren
+id|ivideo.TV_type
+op_assign
+id|TVMODE_PAL
+suffix:semicolon
+r_else
+id|ivideo.TV_type
+op_assign
+id|TVMODE_NTSC
+suffix:semicolon
+)brace
+r_else
+(brace
+id|vgawb
+c_func
+(paren
+id|CRTC_ADR
+comma
+l_int|0x79
+)paren
+suffix:semicolon
+id|temp
+op_assign
+id|vgarb
+c_func
+(paren
+id|CRTC_DATA
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|temp
+op_amp
+l_int|0x20
 )paren
 id|ivideo.TV_type
 op_assign
@@ -4164,16 +5186,159 @@ id|TVMODE_NTSC
 suffix:semicolon
 )brace
 )brace
-r_else
-id|ivideo.disp_state
+multiline_comment|/* TW: Copy forceCRT1 option to CRT1off if option is given */
+r_if
+c_cond
+(paren
+id|sisfb_forcecrt1
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+id|vgawb
+c_func
+(paren
+id|SEQ_ADR
+comma
+id|IND_SIS_SCRATCH_REG_17
+)paren
+suffix:semicolon
+id|sr17
+op_assign
+id|vgarb
+c_func
+(paren
+id|SEQ_DATA
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sisfb_forcecrt1
+)paren
+(brace
+id|sisfb_crt1off
 op_assign
 l_int|0
 suffix:semicolon
+id|sr17
+op_or_assign
+l_int|0x80
+suffix:semicolon
+)brace
+r_else
+(brace
+id|sisfb_crt1off
+op_assign
+l_int|1
+suffix:semicolon
+id|sr17
+op_and_assign
+op_complement
+l_int|0x80
+suffix:semicolon
+)brace
+id|vgawb
+c_func
+(paren
+id|SEQ_DATA
+comma
+id|sr17
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|sisfb_get_VB_type_315
 r_static
 r_void
 id|sisfb_get_VB_type_315
+c_func
+(paren
+r_void
+)paren
+(brace
+id|u8
+id|reg
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sisfb_has_VB_315
+c_func
+(paren
+)paren
+)paren
+(brace
+id|vgawb
+c_func
+(paren
+id|CRTC_ADR
+comma
+id|IND_SIS_SCRATCH_REG_CR37
+)paren
+suffix:semicolon
+id|reg
+op_assign
+id|vgarb
+c_func
+(paren
+id|CRTC_DATA
+)paren
+suffix:semicolon
+multiline_comment|/* TW: CR37 changed on 310/325 series */
+r_switch
+c_cond
+(paren
+(paren
+id|reg
+op_amp
+id|SIS_EXTERNAL_CHIP_MASK
+)paren
+op_rshift
+l_int|1
+)paren
+(brace
+r_case
+id|SIS_EXTERNAL_CHIP_SIS301
+suffix:colon
+id|ivideo.hasVB
+op_assign
+id|HASVB_301
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SIS310_EXTERNAL_CHIP_LVDS
+suffix:colon
+id|ivideo.hasVB
+op_assign
+id|HASVB_LVDS
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SIS310_EXTERNAL_CHIP_LVDS_CHRONTEL
+suffix:colon
+id|ivideo.hasVB
+op_assign
+id|HASVB_LVDS_CHRONTEL
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+)brace
+)brace
+DECL|function|sisfb_has_VB_315
+r_static
+r_int
+id|sisfb_has_VB_315
+c_func
 (paren
 r_void
 )paren
@@ -4182,15 +5347,17 @@ id|u8
 id|vb_chipid
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART4_ADR
 comma
-l_int|0x0
+l_int|0x00
 )paren
 suffix:semicolon
 id|vb_chipid
 op_assign
 id|vgarb
+c_func
 (paren
 id|VB_PART4_DATA
 )paren
@@ -4234,17 +5401,21 @@ id|ivideo.hasVB
 op_assign
 id|HASVB_NONE
 suffix:semicolon
+r_return
+id|FALSE
+suffix:semicolon
 )brace
-singleline_comment|// Eden Chen
-singleline_comment|//sishw_ext.hasVB = ivideo.hasVB;
-singleline_comment|// ~Eden Chen
+r_return
+id|TRUE
+suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_FB_SIS_315 */
+macro_line|#endif   /* CONFIG_FB_SIS_315 */
 multiline_comment|/* --------------------- Heap Routines ------------------------------- */
 DECL|function|sisfb_heap_init
 r_static
 r_int
 id|sisfb_heap_init
+c_func
 (paren
 r_void
 )paren
@@ -4305,12 +5476,24 @@ id|agp_phys
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-multiline_comment|/*karl:10/01/2001 */
+multiline_comment|/* TW: The heap start is either set manually using the &quot;mem&quot; parameter, or&n; *     defaults as follows:&n; *     -) If more than 16MB videoRAM available, let our heap start at 12MB.&n; *     -) If more than  8MB videoRAM available, let our heap start at  8MB.&n; *     -) If 4MB or less is available, let it start at 4MB.&n; *     This is for avoiding a clash with X driver which uses the beginning&n; *     of the videoRAM. To limit size of X framebuffer, use Option MaxXFBMem&n; *     in XF86Config-4.&n; *     The heap start can also be specified by parameter &quot;mem&quot; when starting the sisfb&n; *     driver. sisfb mem=1024 lets heap starts at 1MB, etc.&n; */
 r_if
 c_cond
 (paren
+(paren
 op_logical_neg
 id|sisfb_mem
+)paren
+op_logical_or
+(paren
+id|sisfb_mem
+OG
+(paren
+id|ivideo.video_size
+op_div
+l_int|1024
+)paren
+)paren
 )paren
 (brace
 r_if
@@ -4318,31 +5501,45 @@ c_cond
 (paren
 id|ivideo.video_size
 OG
-l_int|0x800000
+l_int|0x1000000
 )paren
-id|sisfb_heap_start
+(brace
+id|ivideo.heapstart
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|ivideo.video_vbase
-op_plus
-l_int|0x800000
-suffix:semicolon
-r_else
-id|sisfb_heap_start
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|ivideo.video_vbase
-op_plus
-l_int|0x400000
+l_int|0xc00000
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|ivideo.video_size
+OG
+l_int|0x800000
+)paren
+(brace
+id|ivideo.heapstart
+op_assign
+l_int|0x800000
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ivideo.heapstart
+op_assign
+l_int|0x400000
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|ivideo.heapstart
+op_assign
+id|sisfb_mem
+op_star
+l_int|1024
+suffix:semicolon
+)brace
 id|sisfb_heap_start
 op_assign
 (paren
@@ -4352,9 +5549,23 @@ r_int
 (paren
 id|ivideo.video_vbase
 op_plus
-id|sisfb_mem
-op_star
-l_int|0x100000
+id|ivideo.heapstart
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Memory heap starting at %dK&bslash;n&quot;
+comma
+(paren
+r_int
+)paren
+(paren
+id|ivideo.heapstart
+op_div
+l_int|1024
+)paren
 )paren
 suffix:semicolon
 id|sisfb_heap_end
@@ -4374,6 +5585,15 @@ op_minus
 id|sisfb_heap_start
 suffix:semicolon
 macro_line|#ifdef CONFIG_FB_SIS_315
+r_if
+c_cond
+(paren
+id|sisvga_engine
+op_eq
+id|SIS_315_VGA
+)paren
+(brace
+multiline_comment|/* TW: Now initialize the 310 series&squot; command queue mode.&n;&t; * On 310, there are three queue modes available which&n;&t; *     are chosen by setting bits 7:5 in SR26:&n;&t; * 1. MMIO queue mode (bit 5, 0x20). The hardware will keep&n;&t; *    track of the queue, the FIFO, command parsing and so&n;&t; *    on. This is the one comparable to the 300 series.&n;&t; * 2. VRAM queue mode (bit 6, 0x40). In this case, one will&n;&t; *    have to do queue management himself. Register 0x85c4 will&n;&t; *    hold the location of the next free queue slot, 0x85c8&n;&t; *    is the &quot;queue read pointer&quot; whose way of working is&n;&t; *    unknown to me. Anyway, this mode would require a&n;&t; *    translation of the MMIO commands to some kind of&n;&t; *    accelerator assembly and writing these commands&n;&t; *    to the memory location pointed to by 0x85c4.&n;&t; *    We will not use this, as nobody knows how this&n;&t; *    &quot;assembly&quot; works, and as it would require a complete&n;&t; *    re-write of the accelerator code.&n;&t; * 3. AGP queue mode (bit 7, 0x80). Works as 2., but keeps the&n;&t; *    queue in AGP memory space.&n;&t; *&n;&t; * SR26 bit 4 is called &quot;Bypass H/W queue&quot;.&n;&t; * SR26 bit 1 is called &quot;Enable Command Queue Auto Correction&quot;&n;&t; * SR26 bit 0 resets the queue&n;&t; * Size of queue memory is encoded in bits 3:2 like this:&n;&t; *    00  (0x00)  512K&n;&t; *    01  (0x04)  1M&n;&t; *    10  (0x08)  2M&n;&t; *    11  (0x0C)  4M&n;&t; * The queue location is to be written to 0x85C0.&n;&t; *&n;         */
 id|cmdq_baseport
 op_assign
 (paren
@@ -4414,6 +5634,7 @@ id|MMIO_QUEUE_READPORT
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;AGP base: 0x%p, read: 0x%p, write: 0x%p&bslash;n&quot;
 comma
@@ -4429,9 +5650,18 @@ op_assign
 id|COMMAND_QUEUE_AREA_SIZE
 suffix:semicolon
 macro_line|#ifndef AGPOFF
+r_if
+c_cond
+(paren
+id|sisfb_queuemode
+op_eq
+id|AGP_CMD_QUEUE
+)paren
+(brace
 id|agp_info
 op_assign
 id|vmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -4440,6 +5670,7 @@ id|agp_kern_info
 )paren
 suffix:semicolon
 id|memset
+c_func
 (paren
 (paren
 r_void
@@ -4456,17 +5687,20 @@ id|agp_kern_info
 )paren
 suffix:semicolon
 id|agp_copy_info
+c_func
 (paren
 id|agp_info
 )paren
 suffix:semicolon
 id|agp_backend_acquire
+c_func
 (paren
 )paren
 suffix:semicolon
 id|agp
 op_assign
 id|agp_allocate_memory
+c_func
 (paren
 id|COMMAND_QUEUE_AREA_SIZE
 op_div
@@ -4484,8 +5718,9 @@ l_int|NULL
 )paren
 (brace
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;Allocate AGP buffer failed.&bslash;n&quot;
+l_string|&quot;sisfb: Allocating AGP buffer failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|agp_enabled
@@ -4499,6 +5734,7 @@ r_if
 c_cond
 (paren
 id|agp_bind_memory
+c_func
 (paren
 id|agp
 comma
@@ -4509,10 +5745,12 @@ l_int|0
 )paren
 (brace
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;AGP : can not bind memory&bslash;n&quot;
+l_string|&quot;sisfb: AGP: Failed to bind memory&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* TODO: Free AGP memory here */
 id|agp_enabled
 op_assign
 l_int|0
@@ -4521,10 +5759,12 @@ suffix:semicolon
 r_else
 (brace
 id|agp_enable
+c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 macro_line|#else
@@ -4533,32 +5773,69 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* TW: Now select the queue mode */
 r_if
 c_cond
 (paren
+(paren
 id|agp_enabled
 )paren
+op_logical_and
+(paren
+id|sisfb_queuemode
+op_eq
+id|AGP_CMD_QUEUE
+)paren
+)paren
+(brace
 id|cmd_type
 op_assign
 id|AGP_CMD_QUEUE
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Using AGP queue mode&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&t;} else if (sisfb_heap_size &gt;= COMMAND_QUEUE_AREA_SIZE)  */
+)brace
 r_else
 r_if
 c_cond
 (paren
-id|sisfb_heap_size
-op_ge
-id|COMMAND_QUEUE_AREA_SIZE
+id|sisfb_queuemode
+op_eq
+id|VM_CMD_QUEUE
 )paren
+(brace
 id|cmd_type
 op_assign
 id|VM_CMD_QUEUE
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Using VRAM queue mode&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Using MMIO queue mode&bslash;n&quot;
+)paren
+suffix:semicolon
 id|cmd_type
 op_assign
 id|MMIO_CMD
 suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -4613,8 +5890,9 @@ id|AGP_CMD_QUEUE
 suffix:colon
 macro_line|#ifndef AGPOFF
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;AGP buffer base:0x%lx, offset:0x%x, size is %dK&bslash;n&quot;
+l_string|&quot;sisfb: AGP buffer base:0x%lx, offset:0x%x, size: %dK&bslash;n&quot;
 comma
 id|agp_info-&gt;aper_base
 comma
@@ -4632,6 +5910,7 @@ op_plus
 id|agp-&gt;physical
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -4639,6 +5918,7 @@ id|IND_SIS_AGP_IO_PAD
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_DATA
 comma
@@ -4646,6 +5926,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_DATA
 comma
@@ -4653,6 +5934,7 @@ id|SIS_AGP_2X
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -4660,6 +5942,7 @@ id|IND_SIS_CMDQUEUE_THRESHOLD
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -4667,6 +5950,7 @@ id|COMMAND_QUEUE_THRESHOLD
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -4674,6 +5958,7 @@ id|IND_SIS_CMDQUEUE_SET
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -4691,6 +5976,7 @@ op_or_assign
 id|SIS_AGP_CMDQUEUE_ENABLE
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -4698,6 +5984,7 @@ id|IND_SIS_CMDQUEUE_SET
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -4728,6 +6015,7 @@ op_sub_assign
 id|COMMAND_QUEUE_AREA_SIZE
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -4735,6 +6023,7 @@ id|IND_SIS_CMDQUEUE_THRESHOLD
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -4742,6 +6031,7 @@ id|COMMAND_QUEUE_THRESHOLD
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -4749,6 +6039,7 @@ id|IND_SIS_CMDQUEUE_SET
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -4766,6 +6057,7 @@ op_or_assign
 id|SIS_VRAM_CMDQUEUE_ENABLE
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -4773,6 +6065,7 @@ id|IND_SIS_CMDQUEUE_SET
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -4791,8 +6084,9 @@ op_or_assign
 id|VM_CMD_QUEUE_CAP
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;VM Cmd Queue offset = 0x%lx, size is %dK&bslash;n&quot;
+l_string|&quot;sisfb: VM Cmd Queue offset = 0x%lx, size is %dK&bslash;n&quot;
 comma
 op_star
 id|cmdq_baseport
@@ -4806,7 +6100,34 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+multiline_comment|/* MMIO */
+multiline_comment|/* TW: This previously only wrote SIS_MMIO_CMD_ENABLE&n;&t;&t; * to IND_SIS_CMDQUEUE_SET. I doubt that this is&n;&t;&t; * enough. Reserve memory in any way.&n;&t;&t; */
+id|sisfb_heap_end
+op_sub_assign
+id|COMMAND_QUEUE_AREA_SIZE
+suffix:semicolon
+id|sisfb_heap_size
+op_sub_assign
+id|COMMAND_QUEUE_AREA_SIZE
+suffix:semicolon
 id|vgawb
+c_func
+(paren
+id|SEQ_ADR
+comma
+id|IND_SIS_CMDQUEUE_THRESHOLD
+)paren
+suffix:semicolon
+id|vgawb
+c_func
+(paren
+id|SEQ_DATA
+comma
+id|COMMAND_QUEUE_THRESHOLD
+)paren
+suffix:semicolon
+id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -4814,17 +6135,80 @@ id|IND_SIS_CMDQUEUE_SET
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
+id|SIS_CMD_QUEUE_RESET
+)paren
+suffix:semicolon
+op_star
+id|write_port
+op_assign
+op_star
+id|read_port
+suffix:semicolon
+multiline_comment|/* TW: Set Auto_Correction bit; this works in sisfb lite,&n;&t;&t; * so why not.&n;&t;&t; */
+id|temp
+op_or_assign
+(paren
 id|SIS_MMIO_CMD_ENABLE
+op_or
+id|SIS_CMD_AUTO_CORR
+)paren
+suffix:semicolon
+id|vgawb
+c_func
+(paren
+id|SEQ_ADR
+comma
+id|IND_SIS_CMDQUEUE_SET
+)paren
+suffix:semicolon
+id|vgawb
+c_func
+(paren
+id|SEQ_DATA
+comma
+id|temp
+)paren
+suffix:semicolon
+op_star
+id|cmdq_baseport
+op_assign
+id|ivideo.video_size
+op_minus
+id|COMMAND_QUEUE_AREA_SIZE
+suffix:semicolon
+id|DPRINTK
+c_func
+(paren
+l_string|&quot;sisfb: MMIO Cmd Queue offset = 0x%lx, size is %dK&bslash;n&quot;
+comma
+op_star
+id|cmdq_baseport
+comma
+id|COMMAND_QUEUE_AREA_SIZE
+op_div
+l_int|1024
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* sisvga_engine = 315 */
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_SIS_300
+r_if
+c_cond
+(paren
+id|sisvga_engine
+op_eq
+id|SIS_300_VGA
+)paren
+(brace
+multiline_comment|/* TW: Now initialize TurboQueue. TB is always located at the very&n;&t;     * top of the video RAM. */
 r_if
 c_cond
 (paren
@@ -4866,6 +6250,7 @@ l_int|0xff
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -4875,6 +6260,7 @@ suffix:semicolon
 id|tq_state
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -4899,6 +6285,7 @@ l_int|8
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -4906,6 +6293,7 @@ id|tq_state
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -4913,6 +6301,7 @@ id|IND_SIS_TURBOQUEUE_ADR
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -4932,8 +6321,9 @@ op_sub_assign
 id|TURBO_QUEUE_AREA_SIZE
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;Turbo Queue: start at 0x%lx, size is %dK&bslash;n&quot;
+l_string|&quot;sisfb: TurboQueue start at 0x%lx, size is %dK&bslash;n&quot;
 comma
 id|sisfb_heap_end
 comma
@@ -4943,22 +6333,24 @@ l_int|1024
 )paren
 suffix:semicolon
 )brace
+)brace
 macro_line|#endif
+multiline_comment|/* TW: Now reserve memory for the HWCursor. It is always located at the very&n;               top of the videoRAM, right below the TB memory area (if used). */
 r_if
 c_cond
 (paren
 id|sisfb_heap_size
 op_ge
-id|HW_CURSOR_AREA_SIZE
+id|sisfb_hwcursor_size
 )paren
 (brace
 id|sisfb_heap_end
 op_sub_assign
-id|HW_CURSOR_AREA_SIZE
+id|sisfb_hwcursor_size
 suffix:semicolon
 id|sisfb_heap_size
 op_sub_assign
-id|HW_CURSOR_AREA_SIZE
+id|sisfb_hwcursor_size
 suffix:semicolon
 id|sisfb_hwcursor_vbase
 op_assign
@@ -4969,12 +6361,13 @@ op_or_assign
 id|HW_CURSOR_CAP
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;Hardware Cursor: start at 0x%lx, size is %dK&bslash;n&quot;
+l_string|&quot;sisfb: Hardware Cursor start at 0x%lx, size is %dK&bslash;n&quot;
 comma
 id|sisfb_heap_end
 comma
-id|HW_CURSOR_AREA_SIZE
+id|sisfb_hwcursor_size
 op_div
 l_int|1024
 )paren
@@ -4991,6 +6384,7 @@ suffix:semicolon
 id|poh
 op_assign
 id|sisfb_poh_new_node
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -5033,8 +6427,9 @@ r_int
 id|ivideo.video_vbase
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;sisfb:Heap start:0x%p, end:0x%p, len=%dk&bslash;n&quot;
+l_string|&quot;sisfb: Heap start:0x%p, end:0x%p, len=%dk&bslash;n&quot;
 comma
 (paren
 r_char
@@ -5058,8 +6453,9 @@ l_int|1024
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;sisfb:First Node offset:0x%x, size:%dk&bslash;n&quot;
+l_string|&quot;sisfb: First Node offset:0x%x, size:%dk&bslash;n&quot;
 comma
 (paren
 r_int
@@ -5115,6 +6511,7 @@ r_static
 id|SIS_OH
 op_star
 id|sisfb_poh_new_node
+c_func
 (paren
 r_void
 )paren
@@ -5145,12 +6542,24 @@ l_int|NULL
 id|poha
 op_assign
 id|kmalloc
+c_func
 (paren
 id|OH_ALLOC_SIZE
 comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|poha
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|poha-&gt;poha_next
 op_assign
 id|sisfb_heap.poha_chain
@@ -5247,6 +6656,7 @@ r_static
 id|SIS_OH
 op_star
 id|sisfb_poh_allocate
+c_func
 (paren
 r_int
 r_int
@@ -5275,6 +6685,7 @@ id|sisfb_heap.max_freesize
 )paren
 (brace
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;sisfb: Can&squot;t allocate %dk size on offscreen&bslash;n&quot;
 comma
@@ -5334,6 +6745,7 @@ id|bAllocated
 )paren
 (brace
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;sisfb: Can&squot;t allocate %dk size on offscreen&bslash;n&quot;
 comma
@@ -5365,6 +6777,7 @@ op_assign
 id|pohThis
 suffix:semicolon
 id|sisfb_delete_node
+c_func
 (paren
 id|pohThis
 )paren
@@ -5375,6 +6788,7 @@ r_else
 id|pohRoot
 op_assign
 id|sisfb_poh_new_node
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -5419,6 +6833,7 @@ op_amp
 id|sisfb_heap.oh_used
 suffix:semicolon
 id|sisfb_insert_node
+c_func
 (paren
 id|pohThis
 comma
@@ -5435,6 +6850,7 @@ DECL|function|sisfb_delete_node
 r_static
 r_void
 id|sisfb_delete_node
+c_func
 (paren
 id|SIS_OH
 op_star
@@ -5472,6 +6888,7 @@ DECL|function|sisfb_insert_node
 r_static
 r_void
 id|sisfb_insert_node
+c_func
 (paren
 id|SIS_OH
 op_star
@@ -5512,6 +6929,7 @@ r_static
 id|SIS_OH
 op_star
 id|sisfb_poh_free
+c_func
 (paren
 r_int
 r_int
@@ -5661,6 +7079,7 @@ id|pohThis-&gt;poh_next
 suffix:semicolon
 )brace
 id|sisfb_delete_node
+c_func
 (paren
 id|poh_freed
 )paren
@@ -5682,16 +7101,19 @@ id|poh_next-&gt;size
 )paren
 suffix:semicolon
 id|sisfb_delete_node
+c_func
 (paren
 id|poh_next
 )paren
 suffix:semicolon
 id|sisfb_free_node
+c_func
 (paren
 id|poh_freed
 )paren
 suffix:semicolon
 id|sisfb_free_node
+c_func
 (paren
 id|poh_next
 )paren
@@ -5713,6 +7135,7 @@ op_add_assign
 id|poh_freed-&gt;size
 suffix:semicolon
 id|sisfb_free_node
+c_func
 (paren
 id|poh_freed
 )paren
@@ -5738,6 +7161,7 @@ op_assign
 id|poh_freed-&gt;offset
 suffix:semicolon
 id|sisfb_free_node
+c_func
 (paren
 id|poh_freed
 )paren
@@ -5749,6 +7173,7 @@ id|poh_next
 suffix:semicolon
 )brace
 id|sisfb_insert_node
+c_func
 (paren
 op_amp
 id|sisfb_heap.oh_free
@@ -5766,6 +7191,7 @@ DECL|function|sisfb_free_node
 r_static
 r_void
 id|sisfb_free_node
+c_func
 (paren
 id|SIS_OH
 op_star
@@ -5797,6 +7223,7 @@ suffix:semicolon
 DECL|function|sis_malloc
 r_void
 id|sis_malloc
+c_func
 (paren
 r_struct
 id|sis_memreq
@@ -5811,6 +7238,7 @@ suffix:semicolon
 id|poh
 op_assign
 id|sisfb_poh_allocate
+c_func
 (paren
 id|req-&gt;size
 )paren
@@ -5832,16 +7260,18 @@ op_assign
 l_int|0
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;sisfb: VMEM Allocation Failed&bslash;n&quot;
+l_string|&quot;sisfb: Video RAM allocation failed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
 id|DPRINTK
+c_func
 (paren
-l_string|&quot;sisfb: VMEM Allocation Successed : 0x%p&bslash;n&quot;
+l_string|&quot;sisfb: Video RAM allocation succeeded: 0x%p&bslash;n&quot;
 comma
 (paren
 r_char
@@ -5871,6 +7301,7 @@ suffix:semicolon
 DECL|function|sis_free
 r_void
 id|sis_free
+c_func
 (paren
 r_int
 r_int
@@ -5884,6 +7315,7 @@ suffix:semicolon
 id|poh
 op_assign
 id|sisfb_poh_free
+c_func
 (paren
 id|base
 )paren
@@ -5897,6 +7329,7 @@ l_int|NULL
 )paren
 (brace
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;sisfb: sisfb_poh_free() failed at base 0x%x&bslash;n&quot;
 comma
@@ -5914,6 +7347,7 @@ DECL|function|sisfb_pre_setmode
 r_static
 r_void
 id|sisfb_pre_setmode
+c_func
 (paren
 r_void
 )paren
@@ -5928,6 +7362,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -5937,6 +7372,7 @@ suffix:semicolon
 id|cr31
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -5955,6 +7391,13 @@ id|DISPTYPE_DISP2
 r_case
 id|DISPTYPE_CRT2
 suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: CRT2 type is VGA&bslash;n&quot;
+)paren
+suffix:semicolon
 id|cr30
 op_assign
 (paren
@@ -5972,6 +7415,13 @@ suffix:semicolon
 r_case
 id|DISPTYPE_LCD
 suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: CRT2 type is LCD&bslash;n&quot;
+)paren
+suffix:semicolon
 id|cr30
 op_assign
 (paren
@@ -5989,6 +7439,13 @@ suffix:semicolon
 r_case
 id|DISPTYPE_TV
 suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: CRT2 type is TV&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6056,13 +7513,20 @@ id|cr31
 op_or_assign
 id|SIS_DRIVER_MODE
 suffix:semicolon
-multiline_comment|/*karl */
+multiline_comment|/* cr31 &amp;= ~0x04; */
+multiline_comment|/* TW @@@ 5/5/02 */
+multiline_comment|/* TW: No NotSimuMode by default  */
+multiline_comment|/*karl*/
 r_if
 c_cond
 (paren
 id|sisfb_tvmode
 op_eq
 l_int|1
+op_logical_or
+id|ivideo.TV_type
+op_eq
+id|TVMODE_PAL
 )paren
 id|cr31
 op_or_assign
@@ -6074,6 +7538,10 @@ c_cond
 id|sisfb_tvmode
 op_eq
 l_int|2
+op_logical_or
+id|ivideo.TV_type
+op_eq
+id|TVMODE_NTSC
 )paren
 id|cr31
 op_and_assign
@@ -6084,6 +7552,14 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+multiline_comment|/* CRT2 disable */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: CRT2 is disabled&bslash;n&quot;
+)paren
+suffix:semicolon
 id|cr30
 op_assign
 l_int|0x00
@@ -6098,6 +7574,7 @@ id|SIS_VB_OUTPUT_DISABLE
 suffix:semicolon
 )brace
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -6105,6 +7582,7 @@ id|IND_SIS_SCRATCH_REG_CR30
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_DATA
 comma
@@ -6112,6 +7590,7 @@ id|cr30
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -6119,6 +7598,7 @@ id|IND_SIS_SCRATCH_REG_CR31
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_DATA
 comma
@@ -6126,13 +7606,16 @@ id|cr31
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
 id|IND_SIS_SCRATCH_REG_CR33
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;if (ivideo.disp_state &amp; DISPTYPE_CRT2) {&n;&t;&t;sisfb_rate_idx &amp;= 0x0F;&n;&t;&t;sisfb_rate_idx |= (sisfb_rate_idx &lt;&lt; 4);&n;&t;&t;vgawb(CRTC_DATA, sisfb_rate_idx);&n;&t;} else {&n;&t;&t;vgawb(CRTC_DATA, sisfb_rate_idx &amp; 0x0F);&n;&t;}&n;*/
 id|vgawb
+c_func
 (paren
 id|CRTC_DATA
 comma
@@ -6146,6 +7629,7 @@ DECL|function|sisfb_post_setmode
 r_static
 r_void
 id|sisfb_post_setmode
+c_func
 (paren
 r_void
 )paren
@@ -6153,20 +7637,7 @@ r_void
 id|u8
 id|reg
 suffix:semicolon
-id|vgawb
-(paren
-id|CRTC_ADR
-comma
-l_int|0x17
-)paren
-suffix:semicolon
-id|reg
-op_assign
-id|vgarb
-(paren
-id|CRTC_DATA
-)paren
-suffix:semicolon
+multiline_comment|/* TW: We can&squot;t switch off CRT1 on LVDS/Chrontel in 8bpp Modes */
 r_if
 c_cond
 (paren
@@ -6182,6 +7653,7 @@ op_eq
 id|HASVB_LVDS_CHRONTEL
 )paren
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -6189,9 +7661,134 @@ id|ivideo.video_bpp
 op_eq
 l_int|8
 )paren
+(brace
 id|sisfb_crt1off
 op_assign
 l_int|0
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* TW: We can&squot;t switch off CRT1 on 630+301B in 8bpp Modes */
+r_if
+c_cond
+(paren
+(paren
+id|sishw_ext.ujVBChipID
+op_eq
+id|VB_CHIP_301B
+)paren
+op_logical_and
+(paren
+id|sisvga_engine
+op_eq
+id|SIS_300_VGA
+)paren
+op_logical_and
+(paren
+id|ivideo.disp_state
+op_amp
+id|DISPTYPE_LCD
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ivideo.video_bpp
+op_eq
+l_int|8
+)paren
+(brace
+id|sisfb_crt1off
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* TW: We can&squot;t switch off CRT1 if bridge is in slave mode */
+id|vgawb
+c_func
+(paren
+id|VB_PART1_ADR
+comma
+l_int|0x00
+)paren
+suffix:semicolon
+id|reg
+op_assign
+id|vgarb
+c_func
+(paren
+id|VB_PART1_DATA
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sisvga_engine
+op_eq
+id|SIS_300_VGA
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|reg
+op_amp
+l_int|0xa0
+)paren
+op_eq
+l_int|0x20
+)paren
+(brace
+id|sisfb_crt1off
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|sisvga_engine
+op_eq
+id|SIS_315_VGA
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|reg
+op_amp
+l_int|0x50
+)paren
+op_eq
+l_int|0x10
+)paren
+(brace
+id|sisfb_crt1off
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+id|vgawb
+c_func
+(paren
+id|CRTC_ADR
+comma
+l_int|0x17
+)paren
+suffix:semicolon
+id|reg
+op_assign
+id|vgarb
+c_func
+(paren
+id|CRTC_DATA
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6209,6 +7806,7 @@ op_or_assign
 l_int|0x80
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_DATA
 comma
@@ -6216,6 +7814,7 @@ id|reg
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -6225,6 +7824,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -6235,6 +7835,7 @@ op_complement
 l_int|0x04
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -6257,8 +7858,8 @@ id|HASVB_301
 )paren
 )paren
 (brace
-multiline_comment|/*karl */
 id|vgawb
+c_func
 (paren
 id|VB_PART4_ADR
 comma
@@ -6268,6 +7869,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|VB_PART4_DATA
 )paren
@@ -6275,20 +7877,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|reg
-op_ne
-l_int|0xB1
-)paren
-op_logical_and
-(paren
-id|reg
-op_ne
+OL
 l_int|0xB0
 )paren
-)paren
+multiline_comment|/* 301B Revision ID */
 (brace
-multiline_comment|/*301B Revision ID */
 singleline_comment|// Eden Chen
 r_switch
 c_cond
@@ -6382,22 +7976,22 @@ singleline_comment|// ~Eden Chen
 singleline_comment|// Eden Chen
 singleline_comment|//vgawb(VB_PART1_ADR,  0x24);
 id|vgawb
+c_func
 (paren
 id|VB_PART1_ADR
 comma
-id|IND_SIS_CRT2_WRITE_ENABLE
+id|sisfb_CRT2_write_enable
 )paren
 suffix:semicolon
 singleline_comment|// ~Eden Chen
 id|vgawb
+c_func
 (paren
 id|VB_PART1_DATA
 comma
-l_int|0x1
+l_int|0x01
 )paren
 suffix:semicolon
-singleline_comment|// Eden Chen for Debug
-singleline_comment|// ~Eden Chen
 r_if
 c_cond
 (paren
@@ -6407,6 +8001,7 @@ id|TVMODE_NTSC
 )paren
 (brace
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6416,6 +8011,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|VB_PART2_DATA
 )paren
@@ -6425,6 +8021,7 @@ op_and_assign
 l_int|0x1F
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6440,6 +8037,7 @@ id|TVPLUG_SVIDEO
 )paren
 (brace
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6449,6 +8047,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|VB_PART2_DATA
 )paren
@@ -6458,6 +8057,7 @@ op_and_assign
 l_int|0xDF
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6475,6 +8075,7 @@ id|TVPLUG_COMPOSITE
 )paren
 (brace
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6484,6 +8085,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|VB_PART2_DATA
 )paren
@@ -6493,6 +8095,7 @@ op_or_assign
 l_int|0x20
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6509,6 +8112,7 @@ r_case
 l_int|640
 suffix:colon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6516,6 +8120,7 @@ l_int|0x35
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6523,6 +8128,7 @@ l_int|0xEB
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6530,6 +8136,7 @@ l_int|0x36
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6537,6 +8144,7 @@ l_int|0x04
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6544,6 +8152,7 @@ l_int|0x37
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6551,6 +8160,7 @@ l_int|0x25
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6558,6 +8168,7 @@ l_int|0x38
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6570,6 +8181,7 @@ r_case
 l_int|720
 suffix:colon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6577,6 +8189,7 @@ l_int|0x35
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6584,6 +8197,7 @@ l_int|0xEE
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6591,6 +8205,7 @@ l_int|0x36
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6598,6 +8213,7 @@ l_int|0x0C
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6605,6 +8221,7 @@ l_int|0x37
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6612,6 +8229,7 @@ l_int|0x22
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6619,6 +8237,7 @@ l_int|0x38
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6631,6 +8250,7 @@ r_case
 l_int|800
 suffix:colon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6638,6 +8258,7 @@ l_int|0x35
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6645,6 +8266,7 @@ l_int|0xEB
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6652,6 +8274,7 @@ l_int|0x36
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6659,6 +8282,7 @@ l_int|0x15
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6666,6 +8290,7 @@ l_int|0x37
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6673,6 +8298,7 @@ l_int|0x25
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6680,6 +8306,7 @@ l_int|0x38
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6701,6 +8328,7 @@ id|TVMODE_PAL
 )paren
 (brace
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6710,6 +8338,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|VB_PART2_DATA
 )paren
@@ -6719,6 +8348,7 @@ op_and_assign
 l_int|0x1F
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6734,6 +8364,7 @@ id|TVPLUG_SVIDEO
 )paren
 (brace
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6743,6 +8374,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|VB_PART2_DATA
 )paren
@@ -6752,6 +8384,7 @@ op_and_assign
 l_int|0xDF
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6769,6 +8402,7 @@ id|TVPLUG_COMPOSITE
 )paren
 (brace
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6778,6 +8412,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|VB_PART2_DATA
 )paren
@@ -6787,6 +8422,7 @@ op_or_assign
 l_int|0x20
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6803,6 +8439,7 @@ r_case
 l_int|640
 suffix:colon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6810,6 +8447,7 @@ l_int|0x35
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6817,6 +8455,7 @@ l_int|0xF1
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6824,6 +8463,7 @@ l_int|0x36
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6831,6 +8471,7 @@ l_int|0xF7
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6838,6 +8479,7 @@ l_int|0x37
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6845,6 +8487,7 @@ l_int|0x1F
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6852,6 +8495,7 @@ l_int|0x38
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6864,6 +8508,7 @@ r_case
 l_int|720
 suffix:colon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6871,6 +8516,7 @@ l_int|0x35
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6878,6 +8524,7 @@ l_int|0xF3
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6885,6 +8532,7 @@ l_int|0x36
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6892,6 +8540,7 @@ l_int|0x00
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6899,6 +8548,7 @@ l_int|0x37
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6906,6 +8556,7 @@ l_int|0x1D
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6913,6 +8564,7 @@ l_int|0x38
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6925,6 +8577,7 @@ r_case
 l_int|800
 suffix:colon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6932,6 +8585,7 @@ l_int|0x35
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6939,6 +8593,7 @@ l_int|0xFC
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6946,6 +8601,7 @@ l_int|0x36
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6953,6 +8609,7 @@ l_int|0xFB
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6960,6 +8617,7 @@ l_int|0x37
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -6967,6 +8625,7 @@ l_int|0x14
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -6974,6 +8633,7 @@ l_int|0x38
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -7003,6 +8663,7 @@ l_int|7
 )paren
 (brace
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;FilterTable[%d]-%d: %02x %02x %02x %02x&bslash;n&quot;
 comma
@@ -7064,6 +8725,7 @@ l_int|3
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -7071,6 +8733,7 @@ l_int|0x35
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -7089,6 +8752,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -7096,6 +8760,7 @@ l_int|0x36
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -7114,6 +8779,7 @@ l_int|1
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -7121,6 +8787,7 @@ l_int|0x37
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -7139,6 +8806,7 @@ l_int|2
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_ADR
 comma
@@ -7146,6 +8814,7 @@ l_int|0x38
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|VB_PART2_DATA
 comma
@@ -7172,6 +8841,7 @@ DECL|function|sisfb_crtc_to_var
 r_static
 r_void
 id|sisfb_crtc_to_var
+c_func
 (paren
 r_struct
 id|fb_var_screeninfo
@@ -7237,6 +8907,7 @@ comma
 id|drate
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -7246,6 +8917,7 @@ suffix:semicolon
 id|sr_data
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -7458,6 +9130,7 @@ r_break
 suffix:semicolon
 )brace
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -7467,11 +9140,13 @@ suffix:semicolon
 id|sr_data
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -7481,11 +9156,13 @@ suffix:semicolon
 id|cr_data
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -7495,6 +9172,7 @@ suffix:semicolon
 id|cr_data2
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -7553,6 +9231,7 @@ op_plus
 l_int|2
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -7562,6 +9241,7 @@ suffix:semicolon
 id|cr_data
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -7620,6 +9300,7 @@ op_plus
 l_int|1
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -7629,6 +9310,7 @@ suffix:semicolon
 id|cr_data
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -7689,6 +9371,7 @@ op_minus
 id|E
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -7698,11 +9381,13 @@ suffix:semicolon
 id|cr_data
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -7712,6 +9397,7 @@ suffix:semicolon
 id|cr_data3
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -7764,6 +9450,7 @@ l_int|8
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -7773,6 +9460,7 @@ suffix:semicolon
 id|cr_data
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -7830,6 +9518,7 @@ l_int|512
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -7839,6 +9528,7 @@ suffix:semicolon
 id|cr_data
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -7908,6 +9598,29 @@ id|var-&gt;yres_virtual
 op_assign
 id|E
 suffix:semicolon
+multiline_comment|/* TW: We have to report the physical dimension to the console! */
+r_if
+c_cond
+(paren
+(paren
+id|var-&gt;vmode
+op_amp
+id|FB_VMODE_MASK
+)paren
+op_eq
+id|FB_VMODE_INTERLACED
+)paren
+(brace
+id|var-&gt;yres
+op_lshift_assign
+l_int|1
+suffix:semicolon
+id|var-&gt;yres_virtual
+op_lshift_assign
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* TW end */
 id|var-&gt;upper_margin
 op_assign
 id|D
@@ -7921,6 +9634,7 @@ op_assign
 id|C
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -7930,11 +9644,13 @@ suffix:semicolon
 id|sr_data
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -7944,6 +9660,7 @@ suffix:semicolon
 id|cr_data
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -7976,6 +9693,7 @@ op_plus
 l_int|5
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -7985,6 +9703,7 @@ suffix:semicolon
 id|cr_data
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -8017,6 +9736,7 @@ op_plus
 l_int|1
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -8026,6 +9746,7 @@ suffix:semicolon
 id|cr_data
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -8060,6 +9781,7 @@ op_minus
 l_int|3
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -8069,6 +9791,7 @@ suffix:semicolon
 id|cr_data
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -8095,6 +9818,7 @@ l_int|4
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -8104,11 +9828,13 @@ suffix:semicolon
 id|sr_data
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -8118,11 +9844,13 @@ suffix:semicolon
 id|cr_data
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -8132,6 +9860,7 @@ suffix:semicolon
 id|cr_data2
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -8297,6 +10026,7 @@ suffix:semicolon
 id|mr_data
 op_assign
 id|vgarb
+c_func
 (paren
 l_int|0x1C
 )paren
@@ -8390,6 +10120,7 @@ DECL|function|sisfb_get_fix
 r_static
 r_int
 id|sisfb_get_fix
+c_func
 (paren
 r_struct
 id|fb_fix_screeninfo
@@ -8406,6 +10137,7 @@ id|info
 )paren
 (brace
 id|memset
+c_func
 (paren
 id|fix
 comma
@@ -8419,6 +10151,7 @@ id|fb_fix_screeninfo
 )paren
 suffix:semicolon
 id|strcpy
+c_func
 (paren
 id|fix-&gt;id
 comma
@@ -8429,14 +10162,41 @@ id|fix-&gt;smem_start
 op_assign
 id|ivideo.video_base
 suffix:semicolon
-multiline_comment|/*karl:10/01/2001 */
+multiline_comment|/*karl:10/01/2001*/
+multiline_comment|/* TW */
 r_if
 c_cond
+(paren
 (paren
 op_logical_neg
 id|sisfb_mem
 )paren
+op_logical_or
+(paren
+id|sisfb_mem
+OG
+(paren
+id|ivideo.video_size
+op_div
+l_int|1024
+)paren
+)paren
+)paren
 (brace
+r_if
+c_cond
+(paren
+id|ivideo.video_size
+OG
+l_int|0x1000000
+)paren
+(brace
+id|fix-&gt;smem_len
+op_assign
+l_int|0xc00000
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -8459,7 +10219,7 @@ id|fix-&gt;smem_len
 op_assign
 id|sisfb_mem
 op_star
-l_int|0x100000
+l_int|1024
 suffix:semicolon
 id|fix-&gt;type
 op_assign
@@ -8550,6 +10310,7 @@ DECL|function|sisfb_get_var
 r_static
 r_int
 id|sisfb_get_var
+c_func
 (paren
 r_struct
 id|fb_var_screeninfo
@@ -8574,6 +10335,7 @@ op_minus
 l_int|1
 )paren
 id|memcpy
+c_func
 (paren
 id|var
 comma
@@ -8598,6 +10360,23 @@ id|con
 dot
 id|var
 suffix:semicolon
+multiline_comment|/* JennyLee 2001126: for FSTN */
+r_if
+c_cond
+(paren
+id|var-&gt;xres
+op_eq
+l_int|320
+op_logical_and
+id|var-&gt;yres
+op_eq
+l_int|480
+)paren
+id|var-&gt;yres
+op_assign
+l_int|240
+suffix:semicolon
+multiline_comment|/* ~JennyLee */
 r_return
 l_int|0
 suffix:semicolon
@@ -8606,6 +10385,7 @@ DECL|function|sisfb_set_var
 r_static
 r_int
 id|sisfb_set_var
+c_func
 (paren
 r_struct
 id|fb_var_screeninfo
@@ -8639,10 +10419,12 @@ id|var.activate
 op_assign
 id|FB_ACTIVATE_NOW
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,23)
 r_if
 c_cond
 (paren
 id|sisfb_do_set_var
+c_func
 (paren
 id|var
 comma
@@ -8654,7 +10436,26 @@ id|info
 )paren
 )paren
 (brace
+macro_line|#else
+r_if
+c_cond
+(paren
+id|sisfb_do_set_var
+c_func
+(paren
+id|var
+comma
+id|con
+op_eq
+id|currcon
+comma
+id|info
+)paren
+)paren
+(brace
+macro_line|#endif
 id|sisfb_crtc_to_var
+c_func
 (paren
 id|var
 )paren
@@ -8665,11 +10466,13 @@ id|EINVAL
 suffix:semicolon
 )brace
 id|sisfb_crtc_to_var
+c_func
 (paren
 id|var
 )paren
 suffix:semicolon
 id|sisfb_set_disp
+c_func
 (paren
 id|con
 comma
@@ -8696,6 +10499,7 @@ c_cond
 id|err
 op_assign
 id|fb_alloc_cmap
+c_func
 (paren
 op_amp
 id|fb_display
@@ -8715,6 +10519,7 @@ r_return
 id|err
 suffix:semicolon
 id|sisfb_do_install_cmap
+c_func
 (paren
 id|con
 comma
@@ -8740,6 +10545,7 @@ dot
 id|rows
 suffix:semicolon
 id|vc_resize_con
+c_func
 (paren
 id|rows
 comma
@@ -8761,6 +10567,7 @@ DECL|function|sisfb_get_cmap
 r_static
 r_int
 id|sisfb_get_cmap
+c_func
 (paren
 r_struct
 id|fb_cmap
@@ -8779,6 +10586,7 @@ op_star
 id|info
 )paren
 (brace
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,23)
 r_if
 c_cond
 (paren
@@ -8786,8 +10594,18 @@ id|con
 op_eq
 id|info-&gt;currcon
 )paren
+macro_line|#else
+r_if
+c_cond
+(paren
+id|con
+op_eq
+id|currcon
+)paren
+macro_line|#endif
 r_return
 id|fb_get_cmap
+c_func
 (paren
 id|cmap
 comma
@@ -8810,6 +10628,7 @@ dot
 id|cmap.len
 )paren
 id|fb_copy_cmap
+c_func
 (paren
 op_amp
 id|fb_display
@@ -8831,8 +10650,10 @@ l_int|2
 suffix:semicolon
 r_else
 id|fb_copy_cmap
+c_func
 (paren
 id|fb_default_cmap
+c_func
 (paren
 id|video_cmap_len
 )paren
@@ -8855,6 +10676,7 @@ DECL|function|sisfb_set_cmap
 r_static
 r_int
 id|sisfb_set_cmap
+c_func
 (paren
 r_struct
 id|fb_cmap
@@ -8891,6 +10713,7 @@ id|cmap.len
 id|err
 op_assign
 id|fb_alloc_cmap
+c_func
 (paren
 op_amp
 id|fb_display
@@ -8914,6 +10737,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,23)
 r_if
 c_cond
 (paren
@@ -8923,6 +10747,7 @@ id|info-&gt;currcon
 )paren
 r_return
 id|fb_set_cmap
+c_func
 (paren
 id|cmap
 comma
@@ -8931,8 +10756,31 @@ comma
 id|info
 )paren
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+id|con
+op_eq
+id|currcon
+)paren
+r_return
+id|fb_set_cmap
+c_func
+(paren
+id|cmap
+comma
+id|kspc
+comma
+id|sisfb_setcolreg
+comma
+id|info
+)paren
+suffix:semicolon
+macro_line|#endif
 r_else
 id|fb_copy_cmap
+c_func
 (paren
 id|cmap
 comma
@@ -8960,6 +10808,7 @@ DECL|function|sisfb_ioctl
 r_static
 r_int
 id|sisfb_ioctl
+c_func
 (paren
 r_struct
 id|inode
@@ -9002,6 +10851,7 @@ c_cond
 (paren
 op_logical_neg
 id|capable
+c_func
 (paren
 id|CAP_SYS_RAWIO
 )paren
@@ -9011,6 +10861,7 @@ op_minus
 id|EPERM
 suffix:semicolon
 id|sis_malloc
+c_func
 (paren
 (paren
 r_struct
@@ -9030,6 +10881,7 @@ c_cond
 (paren
 op_logical_neg
 id|capable
+c_func
 (paren
 id|CAP_SYS_RAWIO
 )paren
@@ -9039,6 +10891,7 @@ op_minus
 id|EPERM
 suffix:semicolon
 id|sis_free
+c_func
 (paren
 op_star
 (paren
@@ -9054,7 +10907,20 @@ suffix:semicolon
 r_case
 id|FBIOGET_GLYPH
 suffix:colon
+macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,23)
 id|sis_get_glyph
+c_func
+(paren
+(paren
+id|SIS_GLYINFO
+op_star
+)paren
+id|arg
+)paren
+suffix:semicolon
+macro_line|#else
+id|sis_get_glyph
+c_func
 (paren
 id|info
 comma
@@ -9065,6 +10931,7 @@ op_star
 id|arg
 )paren
 suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -9165,6 +11032,7 @@ r_case
 id|FBIOGET_DISPINFO
 suffix:colon
 id|sis_dispinfo
+c_func
 (paren
 (paren
 r_struct
@@ -9176,6 +11044,60 @@ id|arg
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|SISFB_GET_INFO
+suffix:colon
+multiline_comment|/* TW: New for communication with X driver */
+(brace
+id|sisfb_info
+op_star
+id|x
+op_assign
+(paren
+id|sisfb_info
+op_star
+)paren
+id|arg
+suffix:semicolon
+id|x-&gt;sisfb_id
+op_assign
+id|SISFB_ID
+suffix:semicolon
+id|x-&gt;sisfb_version
+op_assign
+id|VER_MAJOR
+suffix:semicolon
+id|x-&gt;sisfb_revision
+op_assign
+id|VER_MINOR
+suffix:semicolon
+id|x-&gt;sisfb_patchlevel
+op_assign
+id|VER_LEVEL
+suffix:semicolon
+id|x-&gt;chip_id
+op_assign
+id|ivideo.chip_id
+suffix:semicolon
+id|x-&gt;memory
+op_assign
+id|ivideo.video_size
+op_div
+l_int|1024
+suffix:semicolon
+id|x-&gt;heapstart
+op_assign
+id|ivideo.heapstart
+op_div
+l_int|1024
+suffix:semicolon
+id|x-&gt;fbvidmode
+op_assign
+id|sisfb_mode_no
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_default
 suffix:colon
 r_return
@@ -9191,6 +11113,7 @@ DECL|function|sisfb_mmap
 r_static
 r_int
 id|sisfb_mmap
+c_func
 (paren
 r_struct
 id|fb_info
@@ -9256,6 +11179,7 @@ suffix:semicolon
 id|len
 op_assign
 id|PAGE_ALIGN
+c_func
 (paren
 (paren
 id|start
@@ -9279,7 +11203,9 @@ id|off
 op_sub_assign
 id|len
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,23)
 id|sisfb_get_var
+c_func
 (paren
 op_amp
 id|var
@@ -9289,6 +11215,19 @@ comma
 id|info
 )paren
 suffix:semicolon
+macro_line|#else
+id|sisfb_get_var
+c_func
+(paren
+op_amp
+id|var
+comma
+id|currcon
+comma
+id|info
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9309,6 +11248,7 @@ suffix:semicolon
 id|len
 op_assign
 id|PAGE_ALIGN
+c_func
 (paren
 (paren
 id|start
@@ -9352,7 +11292,7 @@ id|off
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
-macro_line|#if defined(__i386__)
+macro_line|#if defined(__i386__) || defined(__x86_64__)
 r_if
 c_cond
 (paren
@@ -9361,6 +11301,7 @@ OG
 l_int|3
 )paren
 id|pgprot_val
+c_func
 (paren
 id|vma-&gt;vm_page_prot
 )paren
@@ -9368,6 +11309,25 @@ op_or_assign
 id|_PAGE_PCD
 suffix:semicolon
 macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+r_if
+c_cond
+(paren
+id|io_remap_page_range
+c_func
+(paren
+id|vma-&gt;vm_start
+comma
+id|off
+comma
+id|vma-&gt;vm_end
+op_minus
+id|vma-&gt;vm_start
+comma
+id|vma-&gt;vm_page_prot
+)paren
+)paren
+macro_line|#else&t;/* TW: 2.5 API */
 r_if
 c_cond
 (paren
@@ -9387,6 +11347,7 @@ comma
 id|vma-&gt;vm_page_prot
 )paren
 )paren
+macro_line|#endif
 r_return
 op_minus
 id|EAGAIN
@@ -9426,6 +11387,7 @@ id|fb_set_cmap
 suffix:colon
 id|sisfb_set_cmap
 comma
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,23)
 id|fb_setcolreg
 suffix:colon
 id|sisfb_setcolreg
@@ -9434,6 +11396,7 @@ id|fb_blank
 suffix:colon
 id|sisfb_blank
 comma
+macro_line|#endif
 id|fb_ioctl
 suffix:colon
 id|sisfb_ioctl
@@ -9449,6 +11412,7 @@ DECL|function|sisfb_update_var
 r_static
 r_int
 id|sisfb_update_var
+c_func
 (paren
 r_int
 id|con
@@ -9467,6 +11431,7 @@ DECL|function|sisfb_switch
 r_static
 r_int
 id|sisfb_switch
+c_func
 (paren
 r_int
 id|con
@@ -9482,6 +11447,7 @@ id|cols
 comma
 id|rows
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,23)
 r_if
 c_cond
 (paren
@@ -9493,6 +11459,7 @@ dot
 id|cmap.len
 )paren
 id|fb_get_cmap
+c_func
 (paren
 op_amp
 id|fb_display
@@ -9509,6 +11476,36 @@ comma
 id|info
 )paren
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+id|fb_display
+(braket
+id|currcon
+)braket
+dot
+id|cmap.len
+)paren
+id|fb_get_cmap
+c_func
+(paren
+op_amp
+id|fb_display
+(braket
+id|currcon
+)braket
+dot
+id|cmap
+comma
+l_int|1
+comma
+id|sis_getcolreg
+comma
+id|info
+)paren
+suffix:semicolon
+macro_line|#endif
 id|fb_display
 (braket
 id|con
@@ -9518,6 +11515,7 @@ id|var.activate
 op_assign
 id|FB_ACTIVATE_NOW
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,23)
 r_if
 c_cond
 (paren
@@ -9561,7 +11559,53 @@ id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
+macro_line|#else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+op_amp
+id|fb_display
+(braket
+id|con
+)braket
+dot
+id|var
+comma
+op_amp
+id|fb_display
+(braket
+id|currcon
+)braket
+dot
+id|var
+comma
+r_sizeof
+(paren
+r_struct
+id|fb_var_screeninfo
+)paren
+)paren
+)paren
+(brace
+id|currcon
+op_assign
+id|con
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|currcon
+op_assign
+id|con
+suffix:semicolon
+macro_line|#endif
 id|sisfb_do_set_var
+c_func
 (paren
 op_amp
 id|fb_display
@@ -9577,6 +11621,7 @@ id|info
 )paren
 suffix:semicolon
 id|sisfb_set_disp
+c_func
 (paren
 id|con
 comma
@@ -9590,6 +11635,7 @@ id|var
 )paren
 suffix:semicolon
 id|sisfb_do_install_cmap
+c_func
 (paren
 id|con
 comma
@@ -9615,6 +11661,7 @@ dot
 id|rows
 suffix:semicolon
 id|vc_resize_con
+c_func
 (paren
 id|rows
 comma
@@ -9629,6 +11676,7 @@ id|conp-&gt;vc_num
 )paren
 suffix:semicolon
 id|sisfb_update_var
+c_func
 (paren
 id|con
 comma
@@ -9641,7 +11689,7 @@ suffix:semicolon
 )brace
 DECL|function|sisfb_blank
 r_static
-r_int
+r_void
 id|sisfb_blank
 c_func
 (paren
@@ -9658,6 +11706,7 @@ id|u8
 id|reg
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -9667,6 +11716,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
@@ -9688,6 +11738,7 @@ op_or_assign
 l_int|0x80
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -9695,19 +11746,18 @@ l_int|0x17
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_DATA
 comma
 id|reg
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|sisfb_setup
 r_int
 id|sisfb_setup
+c_func
 (paren
 r_char
 op_star
@@ -9749,6 +11799,7 @@ c_loop
 id|this_opt
 op_assign
 id|strsep
+c_func
 (paren
 op_amp
 id|options
@@ -9774,6 +11825,7 @@ c_cond
 (paren
 op_logical_neg
 id|strcmp
+c_func
 (paren
 id|this_opt
 comma
@@ -9786,6 +11838,7 @@ op_assign
 l_int|1
 suffix:semicolon
 id|fb_invert_cmaps
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -9796,6 +11849,7 @@ c_cond
 (paren
 op_logical_neg
 id|strncmp
+c_func
 (paren
 id|this_opt
 comma
@@ -9806,6 +11860,7 @@ l_int|5
 )paren
 (brace
 id|strcpy
+c_func
 (paren
 id|fb_info.fontname
 comma
@@ -9821,6 +11876,7 @@ c_cond
 (paren
 op_logical_neg
 id|strncmp
+c_func
 (paren
 id|this_opt
 comma
@@ -9831,6 +11887,7 @@ l_int|5
 )paren
 (brace
 id|sisfb_search_mode
+c_func
 (paren
 id|this_opt
 op_plus
@@ -9844,6 +11901,7 @@ c_cond
 (paren
 op_logical_neg
 id|strncmp
+c_func
 (paren
 id|this_opt
 comma
@@ -9856,6 +11914,7 @@ l_int|6
 id|ivideo.refresh_rate
 op_assign
 id|simple_strtoul
+c_func
 (paren
 id|this_opt
 op_plus
@@ -9873,6 +11932,38 @@ c_cond
 (paren
 op_logical_neg
 id|strncmp
+c_func
+(paren
+id|this_opt
+comma
+l_string|&quot;rate:&quot;
+comma
+l_int|5
+)paren
+)paren
+(brace
+id|ivideo.refresh_rate
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|this_opt
+op_plus
+l_int|5
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
 (paren
 id|this_opt
 comma
@@ -9893,6 +11984,7 @@ c_cond
 (paren
 op_logical_neg
 id|strncmp
+c_func
 (paren
 id|this_opt
 comma
@@ -9913,6 +12005,7 @@ c_cond
 (paren
 op_logical_neg
 id|strncmp
+c_func
 (paren
 id|this_opt
 comma
@@ -9928,6 +12021,7 @@ op_assign
 r_int
 )paren
 id|simple_strtoul
+c_func
 (paren
 id|this_opt
 op_plus
@@ -9939,13 +12033,72 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*karl */
 r_else
 r_if
 c_cond
 (paren
 op_logical_neg
 id|strncmp
+c_func
+(paren
+id|this_opt
+comma
+l_string|&quot;forcecrt2type:&quot;
+comma
+l_int|14
+)paren
+)paren
+(brace
+id|sisfb_search_crt2type
+c_func
+(paren
+id|this_opt
+op_plus
+l_int|14
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|this_opt
+comma
+l_string|&quot;forcecrt1:&quot;
+comma
+l_int|10
+)paren
+)paren
+(brace
+id|sisfb_forcecrt1
+op_assign
+(paren
+r_int
+)paren
+id|simple_strtoul
+c_func
+(paren
+id|this_opt
+op_plus
+l_int|10
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
 (paren
 id|this_opt
 comma
@@ -9960,6 +12113,7 @@ c_cond
 (paren
 op_logical_neg
 id|strncmp
+c_func
 (paren
 id|this_opt
 op_plus
@@ -9979,6 +12133,7 @@ c_cond
 (paren
 op_logical_neg
 id|strncmp
+c_func
 (paren
 id|this_opt
 op_plus
@@ -9994,13 +12149,13 @@ op_assign
 l_int|2
 suffix:semicolon
 )brace
-multiline_comment|/*karl:10/01/2001 */
 r_else
 r_if
 c_cond
 (paren
 op_logical_neg
 id|strncmp
+c_func
 (paren
 id|this_opt
 comma
@@ -10013,6 +12168,7 @@ l_int|4
 id|sisfb_mem
 op_assign
 id|simple_strtoul
+c_func
 (paren
 id|this_opt
 op_plus
@@ -10025,13 +12181,135 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
-id|DPRINTK
+r_if
+c_cond
 (paren
-l_string|&quot;invalid parameter %s&bslash;n&quot;
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|this_opt
+comma
+l_string|&quot;dstn:&quot;
+comma
+l_int|5
+)paren
+)paren
+(brace
+id|enable_dstn
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|this_opt
+op_plus
+l_int|5
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* TW: DSTN overrules forcecrt2type */
+r_if
+c_cond
+(paren
+id|enable_dstn
+)paren
+id|sisfb_crt2type
+op_assign
+id|DISPTYPE_LCD
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|this_opt
+comma
+l_string|&quot;queuemode:&quot;
+comma
+l_int|10
+)paren
+)paren
+(brace
+id|sisfb_search_queuemode
+c_func
+(paren
+id|this_opt
+op_plus
+l_int|10
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|this_opt
+comma
+l_string|&quot;pdc:&quot;
+comma
+l_int|4
+)paren
+)paren
+(brace
+id|sisfb_pdc
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|this_opt
+op_plus
+l_int|4
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sisfb_pdc
+op_amp
+op_complement
+l_int|0x3c
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Illegal pdc parameter&bslash;n&quot;
+)paren
+suffix:semicolon
+id|sisfb_pdc
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Invalid parameter %s&bslash;n&quot;
 comma
 id|this_opt
 )paren
 suffix:semicolon
+)brace
 )brace
 r_return
 l_int|0
@@ -10041,6 +12319,7 @@ DECL|function|sisfb_init
 r_int
 id|__init
 id|sisfb_init
+c_func
 (paren
 r_void
 )paren
@@ -10073,15 +12352,52 @@ id|u8
 id|reg
 suffix:semicolon
 r_int
-id|nRes
+id|temp1
+comma
+id|temp2
 suffix:semicolon
 id|outb
+c_func
 (paren
 l_int|0x77
 comma
 l_int|0x80
 )paren
 suffix:semicolon
+macro_line|#if 0 &t;
+multiline_comment|/* for DOC VB */
+id|sisfb_set_reg4
+c_func
+(paren
+l_int|0xcf8
+comma
+l_int|0x800000e0
+)paren
+suffix:semicolon
+id|reg32
+op_assign
+id|sisfb_get_reg3
+c_func
+(paren
+l_int|0xcfc
+)paren
+suffix:semicolon
+id|reg32
+op_assign
+id|reg32
+op_or
+l_int|0x00001000
+suffix:semicolon
+id|sisfb_set_reg4
+c_func
+(paren
+l_int|0xcfc
+comma
+id|reg32
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -10091,7 +12407,18 @@ r_return
 op_minus
 id|ENXIO
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|enable_dstn
+)paren
+id|SetEnableDstn
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pci_for_each_dev
+c_func
 (paren
 id|pdev
 )paren
@@ -10130,6 +12457,7 @@ op_assign
 l_int|1
 suffix:semicolon
 id|strcpy
+c_func
 (paren
 id|fb_info.modename
 comma
@@ -10141,6 +12469,7 @@ op_assign
 id|pdev-&gt;device
 suffix:semicolon
 id|pci_read_config_byte
+c_func
 (paren
 id|pdev
 comma
@@ -10151,6 +12480,7 @@ id|ivideo.revision_id
 )paren
 suffix:semicolon
 id|pci_read_config_word
+c_func
 (paren
 id|pdev
 comma
@@ -10160,13 +12490,10 @@ op_amp
 id|reg16
 )paren
 suffix:semicolon
-singleline_comment|// Eden Chen
-singleline_comment|//sishw_ext.uRevisionID = ivideo.revision_id;
 id|sishw_ext.jChipRevision
 op_assign
 id|ivideo.revision_id
 suffix:semicolon
-singleline_comment|// ~Eden Chen
 id|sisvga_enabled
 op_assign
 id|reg16
@@ -10213,6 +12540,14 @@ id|sisvga_engine
 op_assign
 id|SIS_300_VGA
 suffix:semicolon
+id|sisfb_hwcursor_size
+op_assign
+id|HW_CURSOR_AREA_SIZE_300
+suffix:semicolon
+id|sisfb_CRT2_write_enable
+op_assign
+id|IND_SIS_CRT2_WRITE_ENABLE_300
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -10220,6 +12555,7 @@ id|PCI_DEVICE_ID_SI_630_VGA
 suffix:colon
 (brace
 id|sisfb_set_reg4
+c_func
 (paren
 l_int|0xCF8
 comma
@@ -10229,6 +12565,7 @@ suffix:semicolon
 id|reg32
 op_assign
 id|sisfb_get_reg3
+c_func
 (paren
 l_int|0xCFC
 )paren
@@ -10246,6 +12583,7 @@ op_assign
 id|SIS_730
 suffix:semicolon
 id|strcpy
+c_func
 (paren
 id|fb_info.modename
 comma
@@ -10262,6 +12600,14 @@ id|sisvga_engine
 op_assign
 id|SIS_300_VGA
 suffix:semicolon
+id|sisfb_hwcursor_size
+op_assign
+id|HW_CURSOR_AREA_SIZE_300
+suffix:semicolon
+id|sisfb_CRT2_write_enable
+op_assign
+id|IND_SIS_CRT2_WRITE_ENABLE_300
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -10276,6 +12622,14 @@ id|sisvga_engine
 op_assign
 id|SIS_300_VGA
 suffix:semicolon
+id|sisfb_hwcursor_size
+op_assign
+id|HW_CURSOR_AREA_SIZE_300
+suffix:semicolon
+id|sisfb_CRT2_write_enable
+op_assign
+id|IND_SIS_CRT2_WRITE_ENABLE_300
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -10288,6 +12642,14 @@ suffix:semicolon
 id|sisvga_engine
 op_assign
 id|SIS_315_VGA
+suffix:semicolon
+id|sisfb_hwcursor_size
+op_assign
+id|HW_CURSOR_AREA_SIZE_315
+suffix:semicolon
+id|sisfb_CRT2_write_enable
+op_assign
+id|IND_SIS_CRT2_WRITE_ENABLE_315
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -10302,6 +12664,14 @@ id|sisvga_engine
 op_assign
 id|SIS_315_VGA
 suffix:semicolon
+id|sisfb_hwcursor_size
+op_assign
+id|HW_CURSOR_AREA_SIZE_315
+suffix:semicolon
+id|sisfb_CRT2_write_enable
+op_assign
+id|IND_SIS_CRT2_WRITE_ENABLE_315
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -10314,6 +12684,14 @@ suffix:semicolon
 id|sisvga_engine
 op_assign
 id|SIS_315_VGA
+suffix:semicolon
+id|sisfb_hwcursor_size
+op_assign
+id|HW_CURSOR_AREA_SIZE_315
+suffix:semicolon
+id|sisfb_CRT2_write_enable
+op_assign
+id|IND_SIS_CRT2_WRITE_ENABLE_315
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -10328,11 +12706,38 @@ id|sisvga_engine
 op_assign
 id|SIS_315_VGA
 suffix:semicolon
+id|sisfb_hwcursor_size
+op_assign
+id|HW_CURSOR_AREA_SIZE_315
+suffix:semicolon
+id|sisfb_CRT2_write_enable
+op_assign
+id|IND_SIS_CRT2_WRITE_ENABLE_315
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PCI_DEVICE_ID_SI_650_VGA
+suffix:colon
+id|ivideo.chip
+op_assign
+id|SIS_650
+suffix:semicolon
+id|sisvga_engine
+op_assign
+id|SIS_315_VGA
+suffix:semicolon
+id|sisfb_hwcursor_size
+op_assign
+id|HW_CURSOR_AREA_SIZE_315
+suffix:semicolon
+id|sisfb_CRT2_write_enable
+op_assign
+id|IND_SIS_CRT2_WRITE_ENABLE_315
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// Eden Chen
-singleline_comment|//sishw_ext.jChipID = ivideo.chip;
 id|sishw_ext.jChipType
 op_assign
 id|ivideo.chip
@@ -10357,8 +12762,8 @@ id|sishw_ext.jChipType
 op_assign
 id|SIS_315H
 suffix:semicolon
-singleline_comment|// ~Eden Chen
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;%s is used as %s device(VGA Engine %d).&bslash;n&quot;
 comma
@@ -10377,6 +12782,7 @@ suffix:semicolon
 id|ivideo.video_base
 op_assign
 id|pci_resource_start
+c_func
 (paren
 id|pdev
 comma
@@ -10386,15 +12792,13 @@ suffix:semicolon
 id|ivideo.mmio_base
 op_assign
 id|pci_resource_start
+c_func
 (paren
 id|pdev
 comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// Eden Chen
-singleline_comment|//sishw_ext.IOAddress = (unsigned short) ivideo.vga_base 
-singleline_comment|//      = pci_resource_start(pdev, 2) + 0x30;
 id|sishw_ext.ulIOAddress
 op_assign
 (paren
@@ -10404,6 +12808,7 @@ r_int
 id|ivideo.vga_base
 op_assign
 id|pci_resource_start
+c_func
 (paren
 id|pdev
 comma
@@ -10412,10 +12817,10 @@ l_int|2
 op_plus
 l_int|0x30
 suffix:semicolon
-singleline_comment|// ~Eden Chen
 id|sisfb_mmio_size
 op_assign
 id|pci_resource_len
+c_func
 (paren
 id|pdev
 comma
@@ -10432,6 +12837,7 @@ r_if
 c_cond
 (paren
 id|pci_enable_device
+c_func
 (paren
 id|pdev
 )paren
@@ -10440,7 +12846,21 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
+singleline_comment|// Eden Eden
+singleline_comment|//#ifdef LINUXBIOS
+singleline_comment|//&t;sishw_ext.VirtualRomBase = rom_vbase = (unsigned long) rom_data;
+singleline_comment|//#else
+singleline_comment|//&t;{
+singleline_comment|//&t;unsigned long rom_base  = 0x000C0000;
+singleline_comment|//
+singleline_comment|//&t;request_region(rom_base, 32, &quot;sisfb&quot;);
+singleline_comment|//&t;sishw_ext.VirtualRomBase = rom_vbase 
+singleline_comment|//&t;&t;= (unsigned long) ioremap(rom_base, MAX_ROM_SCAN);
+singleline_comment|//&t;}
+singleline_comment|//#endif
+singleline_comment|// ~Eden Chen
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -10448,12 +12868,39 @@ id|IND_SIS_PASSWORD
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
 id|SIS_PASSWORD
 )paren
 suffix:semicolon
+multiline_comment|/* TW: Debug kernel 2.5 problem */
+id|vgawb
+c_func
+(paren
+id|SEQ_ADR
+comma
+l_int|0x14
+)paren
+suffix:semicolon
+id|reg
+op_assign
+id|vgarb
+c_func
+(paren
+id|SEQ_DATA
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;sisfb: SR14 = 0x%02x&bslash;n&quot;
+comma
+id|reg
+)paren
+suffix:semicolon
+multiline_comment|/* /TW */
 macro_line|#ifdef LINUXBIOS
 macro_line|#ifdef CONFIG_FB_SIS_300
 r_if
@@ -10465,6 +12912,7 @@ id|SIS_300_VGA
 )paren
 (brace
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -10472,6 +12920,7 @@ l_int|0x28
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -10479,6 +12928,7 @@ l_int|0x37
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -10486,6 +12936,7 @@ l_int|0x29
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -10493,6 +12944,7 @@ l_int|0x61
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -10502,6 +12954,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -10511,6 +12964,7 @@ op_or_assign
 id|SIS_SCRATCH_REG_1A_MASK
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -10526,9 +12980,14 @@ c_cond
 id|ivideo.chip
 op_eq
 id|SIS_550
+op_logical_or
+id|ivideo.chip
+op_eq
+id|SIS_650
 )paren
 (brace
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -10536,6 +12995,7 @@ l_int|0x28
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -10543,6 +13003,7 @@ l_int|0x5A
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -10550,6 +13011,7 @@ l_int|0x29
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -10557,6 +13019,7 @@ l_int|0x64
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -10564,6 +13027,7 @@ l_int|0x3A
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|CRTC_DATA
 comma
@@ -10572,7 +13036,7 @@ l_int|0x00
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#endif
+macro_line|#endif /* LinuxBIOS */
 r_if
 c_cond
 (paren
@@ -10602,13 +13066,16 @@ suffix:semicolon
 r_case
 id|SIS_550
 suffix:colon
+r_case
+id|SIS_650
+suffix:colon
 singleline_comment|// Eden Chen
 singleline_comment|//vgawb(SEQ_ADR, IND_SIS_SCRATCH_REG_1A);
 singleline_comment|//reg = vgarb(SEQ_DATA);
 singleline_comment|//if (reg &amp; SIS_SCRATCH_REG_1A_MASK)
-singleline_comment|//      sishw_ext.bIntegratedMMEnabled = TRUE;
+singleline_comment|//&t;sishw_ext.bIntegratedMMEnabled = TRUE;
 singleline_comment|//else
-singleline_comment|//      sishw_ext.bIntegratedMMEnabled = FALSE;
+singleline_comment|//&t;sishw_ext.bIntegratedMMEnabled = FALSE;
 singleline_comment|//for Debug
 id|sishw_ext.bIntegratedMMEnabled
 op_assign
@@ -10648,6 +13115,7 @@ suffix:semicolon
 r_else
 (brace
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -10657,6 +13125,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -10679,7 +13148,6 @@ id|FALSE
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// Eden Chen
 id|sishw_ext.pDevice
 op_assign
 l_int|NULL
@@ -10707,15 +13175,69 @@ op_amp
 id|sisfb_query_north_bridge_space
 suffix:semicolon
 id|strcpy
+c_func
 (paren
 id|sishw_ext.szVBIOSVer
 comma
 l_string|&quot;0.84&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* TW: Mode numbers for 1280x960 are different for 300 and 310/325 series */
+r_if
+c_cond
+(paren
+id|sisvga_engine
+op_eq
+id|SIS_300_VGA
+)paren
+(brace
+id|sisbios_mode
+(braket
+id|MODEINDEX_1280x960
+)braket
+dot
+id|mode_no
+op_assign
+l_int|0x6e
+suffix:semicolon
+id|sisbios_mode
+(braket
+id|MODEINDEX_1280x960
+op_plus
+l_int|1
+)braket
+dot
+id|mode_no
+op_assign
+l_int|0x6f
+suffix:semicolon
+id|sisbios_mode
+(braket
+id|MODEINDEX_1280x960
+op_plus
+l_int|2
+)braket
+dot
+id|mode_no
+op_assign
+l_int|0x7b
+suffix:semicolon
+id|sisbios_mode
+(braket
+id|MODEINDEX_1280x960
+op_plus
+l_int|3
+)braket
+dot
+id|mode_no
+op_assign
+l_int|0x7b
+suffix:semicolon
+)brace
 id|sishw_ext.pSR
 op_assign
 id|vmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -10732,12 +13254,19 @@ id|sishw_ext.pSR
 op_eq
 l_int|NULL
 )paren
+(brace
 id|printk
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;Allocated SRReg space fail.&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;sisfb: Fatal error: Allocating SRReg space failed.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|sishw_ext.pSR
 (braket
 l_int|0
@@ -10757,6 +13286,7 @@ suffix:semicolon
 id|sishw_ext.pCR
 op_assign
 id|vmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -10773,12 +13303,19 @@ id|sishw_ext.pCR
 op_eq
 l_int|NULL
 )paren
+(brace
 id|printk
+c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;Allocated CRReg space fail.&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;sisfb: Fatal error: Allocating CRReg space failed.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|sishw_ext.pCR
 (braket
 l_int|0
@@ -10795,7 +13332,6 @@ id|jVal
 op_assign
 l_int|0xFF
 suffix:semicolon
-singleline_comment|// ~Eden Chen
 macro_line|#ifdef CONFIG_FB_SIS_300
 r_if
 c_cond
@@ -10812,24 +13348,41 @@ op_logical_neg
 id|sisvga_enabled
 )paren
 (brace
-singleline_comment|// Eden Chen
 id|sishw_ext.pjVideoMemoryAddress
 op_assign
 id|ioremap
+c_func
 (paren
 id|ivideo.video_base
 comma
 l_int|0x2000000
 )paren
 suffix:semicolon
-singleline_comment|//SiSInit300(&amp;sishw_ext);
+r_if
+c_cond
+(paren
+(paren
+id|sisbios_mode
+(braket
+id|sisfb_mode_idx
+)braket
+dot
+id|mode_no
+)paren
+op_ne
+l_int|0xFF
+)paren
+(brace
+multiline_comment|/* TW: for mode &quot;none&quot; */
 id|SiSInit
+c_func
 (paren
 op_amp
 id|sishw_ext
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -10837,35 +13390,53 @@ id|IND_SIS_PASSWORD
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
 id|SIS_PASSWORD
 )paren
 suffix:semicolon
-singleline_comment|// ~Eden Chen
+)brace
 )brace
 macro_line|#ifdef LINUXBIOS
 r_else
 (brace
-singleline_comment|// Eden Chen
 id|sishw_ext.pjVideoMemoryAddress
 op_assign
 id|ioremap
+c_func
 (paren
 id|ivideo.video_base
 comma
 l_int|0x2000000
 )paren
 suffix:semicolon
-singleline_comment|//SiSInit300(&amp;sishw_ext);
+r_if
+c_cond
+(paren
+(paren
+id|sisbios_mode
+(braket
+id|sisfb_mode_idx
+)braket
+dot
+id|mode_no
+)paren
+op_ne
+l_int|0xFF
+)paren
+(brace
+multiline_comment|/* TW: for mode &quot;none&quot; */
 id|SiSInit
+c_func
 (paren
 op_amp
 id|sishw_ext
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -10873,15 +13444,33 @@ id|IND_SIS_PASSWORD
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
 id|SIS_PASSWORD
 )paren
 suffix:semicolon
-singleline_comment|// ~Eden Chen
 )brace
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|sisbios_mode
+(braket
+id|sisfb_mode_idx
+)braket
+dot
+id|mode_no
+)paren
+op_ne
+l_int|0xFF
+)paren
+(brace
+multiline_comment|/* TW: for mode &quot;none&quot; */
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -10891,6 +13480,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -10900,17 +13490,36 @@ op_or_assign
 l_int|0x10
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
 id|reg
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
+r_if
+c_cond
+(paren
 id|sisfb_get_dram_size_300
+c_func
 (paren
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Fatal error: Unable to determine RAM size&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_SIS_315
@@ -10935,20 +13544,38 @@ singleline_comment|//sishw_ext.VirtualVideoMemoryAddress
 id|sishw_ext.pjVideoMemoryAddress
 op_assign
 id|ioremap
+c_func
 (paren
 id|ivideo.video_base
 comma
 l_int|0x8000000
 )paren
 suffix:semicolon
-singleline_comment|//SiSInit310(&amp;sishw_ext);
+r_if
+c_cond
+(paren
+(paren
+id|sisbios_mode
+(braket
+id|sisfb_mode_idx
+)braket
+dot
+id|mode_no
+)paren
+op_ne
+l_int|0xFF
+)paren
+(brace
+multiline_comment|/* TW: for mode &quot;none&quot; */
 id|SiSInit
+c_func
 (paren
 op_amp
 id|sishw_ext
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -10956,6 +13583,7 @@ id|IND_SIS_PASSWORD
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -10967,6 +13595,7 @@ op_assign
 id|TRUE
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -10990,11 +13619,13 @@ dot
 id|jVal
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -11018,6 +13649,7 @@ dot
 id|jVal
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -11040,7 +13672,7 @@ id|jVal
 op_assign
 l_int|0xFF
 suffix:semicolon
-singleline_comment|// Eden Chen
+)brace
 )brace
 macro_line|#ifdef LINUXBIOS
 r_else
@@ -11048,19 +13680,38 @@ r_else
 id|sishw_ext.pjVideoMemoryAddress
 op_assign
 id|ioremap
+c_func
 (paren
 id|ivideo.video_base
 comma
 l_int|0x8000000
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|sisbios_mode
+(braket
+id|sisfb_mode_idx
+)braket
+dot
+id|mode_no
+)paren
+op_ne
+l_int|0xFF
+)paren
+(brace
+multiline_comment|/* TW: for mode &quot;none&quot; */
 id|SiSInit
+c_func
 (paren
 op_amp
 id|sishw_ext
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -11068,6 +13719,7 @@ id|IND_SIS_PASSWORD
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -11079,6 +13731,7 @@ op_assign
 id|TRUE
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -11102,11 +13755,13 @@ dot
 id|jVal
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -11130,6 +13785,7 @@ dot
 id|jVal
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -11153,15 +13809,49 @@ op_assign
 l_int|0xFF
 suffix:semicolon
 )brace
+)brace
 macro_line|#endif
+r_if
+c_cond
+(paren
 id|sisfb_get_dram_size_315
+c_func
 (paren
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Fatal error: Unable to determine RAM size.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
+)brace
 macro_line|#endif
-singleline_comment|//Eden Chen 
+r_if
+c_cond
+(paren
+(paren
+id|sisbios_mode
+(braket
+id|sisfb_mode_idx
+)braket
+dot
+id|mode_no
+)paren
+op_ne
+l_int|0xFF
+)paren
+(brace
+multiline_comment|/* TW: for mode &quot;none&quot; */
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -11171,6 +13861,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -11179,11 +13870,14 @@ id|reg
 op_or_assign
 id|SIS_PCI_ADDR_ENABLE
 suffix:semicolon
+multiline_comment|/* Enable PCI_LINEAR_ADDRESSING */
 id|reg
 op_or_assign
 id|SIS_MEM_MAP_IO_ENABLE
 suffix:semicolon
+multiline_comment|/* Enable MMIO_ENABLE */
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
@@ -11191,6 +13885,7 @@ id|reg
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -11200,6 +13895,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|SEQ_DATA
 )paren
@@ -11208,25 +13904,44 @@ id|reg
 op_or_assign
 id|SIS_ENABLE_2D
 suffix:semicolon
+multiline_comment|/* Enable 2D accelerator engine */
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
 id|reg
 )paren
 suffix:semicolon
-singleline_comment|//~Eden Chen
-singleline_comment|// Eden Chen
+)brace
 id|sishw_ext.ulVideoMemorySize
 op_assign
 id|ivideo.video_size
 suffix:semicolon
-singleline_comment|// ~Eden Chen
+r_if
+c_cond
+(paren
+id|sisfb_pdc
+)paren
+(brace
+id|sishw_ext.pdc
+op_assign
+id|sisfb_pdc
+suffix:semicolon
+)brace
+r_else
+(brace
+id|sishw_ext.pdc
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 op_logical_neg
 id|request_mem_region
+c_func
 (paren
 id|ivideo.video_base
 comma
@@ -11237,9 +13952,17 @@ l_string|&quot;sisfb FB&quot;
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;sisfb: cannot reserve frame buffer memory&bslash;n&quot;
+l_string|&quot;sisfb: Fatal error: Unable to reserve frame buffer memory&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sisfb: Is there another framebuffer driver active?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -11252,6 +13975,7 @@ c_cond
 (paren
 op_logical_neg
 id|request_mem_region
+c_func
 (paren
 id|ivideo.mmio_base
 comma
@@ -11262,12 +13986,14 @@ l_string|&quot;sisfb MMIO&quot;
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;sisfb: cannot reserve MMIO region&bslash;n&quot;
+l_string|&quot;sisfb: Fatal error: Unable to reserve MMIO region&bslash;n&quot;
 )paren
 suffix:semicolon
 id|release_mem_region
+c_func
 (paren
 id|ivideo.video_base
 comma
@@ -11279,23 +14005,22 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-singleline_comment|// Eden Chen
-singleline_comment|//sishw_ext.VirtualVideoMemoryAddress = ivideo.video_vbase 
 id|sishw_ext.pjVideoMemoryAddress
 op_assign
 id|ivideo.video_vbase
 op_assign
 id|ioremap
+c_func
 (paren
 id|ivideo.video_base
 comma
 id|ivideo.video_size
 )paren
 suffix:semicolon
-singleline_comment|// Eden Chen
 id|ivideo.mmio_vbase
 op_assign
 id|ioremap
+c_func
 (paren
 id|ivideo.mmio_base
 comma
@@ -11303,9 +14028,10 @@ id|sisfb_mmio_size
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sisfb: framebuffer at 0x%lx, mapped to 0x%p, size %dk&bslash;n&quot;
+l_string|&quot;sisfb: Framebuffer at 0x%lx, mapped to 0x%p, size %dk&bslash;n&quot;
 comma
 id|ivideo.video_base
 comma
@@ -11317,6 +14043,7 @@ l_int|1024
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;sisfb: MMIO at 0x%lx, mapped to 0x%p, size %ldk&bslash;n&quot;
@@ -11330,6 +14057,22 @@ op_div
 l_int|1024
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|sisbios_mode
+(braket
+id|sisfb_mode_idx
+)braket
+dot
+id|mode_no
+)paren
+op_ne
+l_int|0xFF
+)paren
+(brace
+multiline_comment|/* TW: for mode &quot;none&quot; */
 macro_line|#ifdef CONFIG_FB_SIS_300
 r_if
 c_cond
@@ -11340,6 +14083,7 @@ id|SIS_300_VGA
 )paren
 (brace
 id|sisfb_get_VB_type_300
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -11352,6 +14096,7 @@ id|HASVB_NONE
 )paren
 (brace
 id|sisfb_detect_VB_connect_300
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -11368,6 +14113,7 @@ id|SIS_315_VGA
 )paren
 (brace
 id|sisfb_get_VB_type_315
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -11380,13 +14126,13 @@ id|HASVB_NONE
 )paren
 (brace
 id|sisfb_detect_VB_connect_315
+c_func
 (paren
 )paren
 suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-singleline_comment|// Eden Chen
 id|sishw_ext.ujVBChipID
 op_assign
 id|VB_CHIP_UNKNOWN
@@ -11404,8 +14150,8 @@ id|ivideo.hasVB
 r_case
 id|HASVB_301
 suffix:colon
-multiline_comment|/*karl */
 id|vgawb
+c_func
 (paren
 id|VB_PART4_ADR
 comma
@@ -11415,6 +14161,7 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|VB_PART4_DATA
 )paren
@@ -11422,36 +14169,142 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|reg
-op_ne
-l_int|0xB1
+op_ge
+l_int|0xD0
 )paren
-op_logical_and
-(paren
-id|reg
-op_ne
-l_int|0xB0
-)paren
-)paren
+(brace
 id|sishw_ext.ujVBChipID
 op_assign
-id|VB_CHIP_301
+id|VB_CHIP_301LV
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: SiS301LV bridge detected (revision 0x%02x)&bslash;n&quot;
+comma
+id|reg
+)paren
+suffix:semicolon
+)brace
 r_else
+r_if
+c_cond
+(paren
+id|reg
+op_ge
+l_int|0xB0
+)paren
+(brace
 id|sishw_ext.ujVBChipID
 op_assign
 id|VB_CHIP_301B
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: SiS301B bridge detected (revision 0x%02x&bslash;n&quot;
+comma
+id|reg
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|sishw_ext.ujVBChipID
+op_assign
+id|VB_CHIP_301
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: SiS301 bridge detected&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
 id|HASVB_302
 suffix:colon
+id|vgawb
+c_func
+(paren
+id|VB_PART4_ADR
+comma
+l_int|0x01
+)paren
+suffix:semicolon
+id|reg
+op_assign
+id|vgarb
+c_func
+(paren
+id|VB_PART4_DATA
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reg
+op_ge
+l_int|0xD0
+)paren
+(brace
+id|sishw_ext.ujVBChipID
+op_assign
+id|VB_CHIP_302LV
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: SiS302LV bridge detected (revision 0x%02x)&bslash;n&quot;
+comma
+id|reg
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|reg
+op_ge
+l_int|0xB0
+)paren
+(brace
+id|sishw_ext.ujVBChipID
+op_assign
+id|VB_CHIP_302B
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: SiS302B bridge detected (revision 0x%02x)&bslash;n&quot;
+comma
+id|reg
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|sishw_ext.ujVBChipID
 op_assign
 id|VB_CHIP_302
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: SiS302 bridge detected&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -11460,6 +14313,13 @@ suffix:colon
 id|sishw_ext.ujVBChipID
 op_assign
 id|VB_CHIP_303
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: SiS303 bridge detected (not supported)&bslash;n&quot;
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -11470,6 +14330,13 @@ id|sishw_ext.usExternalChip
 op_assign
 l_int|0x1
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: LVDS transmitter detected&bslash;n&quot;
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -11478,6 +14345,13 @@ suffix:colon
 id|sishw_ext.usExternalChip
 op_assign
 l_int|0x2
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Trumpion Zurac LVDS scaler detected&bslash;n&quot;
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -11488,6 +14362,13 @@ id|sishw_ext.usExternalChip
 op_assign
 l_int|0x4
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Chrontel TV encoder detected&bslash;n&quot;
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -11497,14 +14378,540 @@ id|sishw_ext.usExternalChip
 op_assign
 l_int|0x5
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: LVDS transmitter and Chrontel TV encoder detected&bslash;n&quot;
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: No or unknown bridge type detected&bslash;n&quot;
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// ~Eden Chen
+multiline_comment|/* TW: Determine and detect attached TV&squot;s on Chrontel */
+r_if
+c_cond
+(paren
+id|sishw_ext.usExternalChip
+op_eq
+l_int|0x04
+op_logical_or
+id|sishw_ext.usExternalChip
+op_eq
+l_int|0x05
+)paren
+(brace
+id|SiSRegInit
+c_func
+(paren
+id|sishw_ext.ulIOAddress
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ivideo.chip
+OL
+id|SIS_315H
+)paren
+(brace
+multiline_comment|/* TW: Chrontel 7005 */
+macro_line|#ifdef CONFIG_FB_SIS_300
+id|SiS_IF_DEF_CH70xx
+op_assign
+l_int|1
+suffix:semicolon
+id|temp1
+op_assign
+id|SiS_GetCH700x
+c_func
+(paren
+l_int|0x25
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|temp1
+op_ge
+l_int|50
+)paren
+op_logical_and
+(paren
+id|temp1
+op_le
+l_int|100
+)paren
+)paren
+(brace
+multiline_comment|/* TW: Read power status */
+id|temp1
+op_assign
+id|SiS_GetCH700x
+c_func
+(paren
+l_int|0x0e
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|temp1
+op_amp
+l_int|0x03
+)paren
+op_ne
+l_int|0x03
+)paren
+(brace
+multiline_comment|/* TW: Power all outputs */
+id|SiS_SetCH70xxANDOR
+c_func
+(paren
+l_int|0x030E
+comma
+l_int|0xF8
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* TW: Sense connected TV devices */
+id|SiS_SetCH700x
+c_func
+(paren
+l_int|0x0110
+)paren
+suffix:semicolon
+id|SiS_SetCH700x
+c_func
+(paren
+l_int|0x0010
+)paren
+suffix:semicolon
+id|temp1
+op_assign
+id|SiS_GetCH700x
+c_func
+(paren
+l_int|0x10
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|temp1
+op_amp
+l_int|0x08
+)paren
+)paren
+(brace
+multiline_comment|/* TW: So we can be sure that there IS a SVHS output */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Chrontel: Detected TV connected to SVHS output&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ivideo.TV_plug
+op_assign
+id|TVPLUG_SVIDEO
+suffix:semicolon
+id|vgawb
+c_func
+(paren
+id|CRTC_ADR
+comma
+l_int|0x32
+)paren
+suffix:semicolon
+id|temp2
+op_assign
+id|vgarb
+c_func
+(paren
+id|CRTC_DATA
+)paren
+op_or
+l_int|0x02
+suffix:semicolon
+id|vgawb
+c_func
+(paren
+id|CRTC_DATA
+comma
+id|temp2
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|temp1
+op_amp
+l_int|0x02
+)paren
+)paren
+(brace
+multiline_comment|/* TW: So we can be sure that there IS a CVBS output */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Chrontel: Detected TV connected to CVBS output&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ivideo.TV_plug
+op_assign
+id|TVPLUG_COMPOSITE
+suffix:semicolon
+id|vgawb
+c_func
+(paren
+id|CRTC_ADR
+comma
+l_int|0x32
+)paren
+suffix:semicolon
+id|temp2
+op_assign
+id|vgarb
+c_func
+(paren
+id|CRTC_DATA
+)paren
+op_or
+l_int|0x01
+suffix:semicolon
+id|vgawb
+c_func
+(paren
+id|CRTC_DATA
+comma
+id|temp2
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|SiS_SetCH70xxANDOR
+c_func
+(paren
+l_int|0x010E
+comma
+l_int|0xF8
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|temp1
+op_eq
+l_int|0
+)paren
+(brace
+id|SiS_SetCH70xxANDOR
+c_func
+(paren
+l_int|0x010E
+comma
+l_int|0xF8
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+)brace
+r_else
+(brace
+multiline_comment|/* TW: Chrontel 7019 */
+macro_line|#ifdef CONFIG_FB_SIS_315
+id|SiS_IF_DEF_CH70xx
+op_assign
+l_int|2
+suffix:semicolon
+id|temp1
+op_assign
+id|SiS_GetCH701x
+c_func
+(paren
+l_int|0x49
+)paren
+suffix:semicolon
+id|SiS_SetCH701x
+c_func
+(paren
+l_int|0x2049
+)paren
+suffix:semicolon
+id|SiS_DDC2Delay
+c_func
+(paren
+l_int|0x96
+)paren
+suffix:semicolon
+id|temp2
+op_assign
+id|SiS_GetCH701x
+c_func
+(paren
+l_int|0x20
+)paren
+suffix:semicolon
+id|temp2
+op_or_assign
+l_int|0x01
+suffix:semicolon
+id|SiS_SetCH701x
+c_func
+(paren
+(paren
+id|temp2
+op_lshift
+l_int|8
+)paren
+op_or
+l_int|0x20
+)paren
+suffix:semicolon
+id|SiS_DDC2Delay
+c_func
+(paren
+l_int|0x96
+)paren
+suffix:semicolon
+id|temp2
+op_xor_assign
+l_int|0x01
+suffix:semicolon
+id|SiS_SetCH701x
+c_func
+(paren
+(paren
+id|temp2
+op_lshift
+l_int|8
+)paren
+op_or
+l_int|0x20
+)paren
+suffix:semicolon
+id|SiS_DDC2Delay
+c_func
+(paren
+l_int|0x96
+)paren
+suffix:semicolon
+id|temp2
+op_assign
+id|SiS_GetCH701x
+c_func
+(paren
+l_int|0x20
+)paren
+suffix:semicolon
+id|SiS_SetCH701x
+c_func
+(paren
+(paren
+id|temp1
+op_lshift
+l_int|8
+)paren
+op_or
+l_int|0x49
+)paren
+suffix:semicolon
+id|temp1
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|temp2
+op_amp
+l_int|0x02
+)paren
+(brace
+id|temp1
+op_or_assign
+l_int|0x01
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|temp2
+op_amp
+l_int|0x10
+)paren
+(brace
+id|temp1
+op_or_assign
+l_int|0x01
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|temp2
+op_amp
+l_int|0x04
+)paren
+(brace
+id|temp1
+op_or_assign
+l_int|0x02
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|temp1
+op_amp
+l_int|0x01
+)paren
+op_logical_and
+(paren
+id|temp1
+op_amp
+l_int|0x02
+)paren
+)paren
+(brace
+id|temp1
+op_assign
+l_int|0x04
+suffix:semicolon
+)brace
+r_switch
+c_cond
+(paren
+id|temp1
+)paren
+(brace
+r_case
+l_int|0x01
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Chrontel: Detected TV connected to CVBS output&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ivideo.TV_plug
+op_assign
+id|TVPLUG_COMPOSITE
+suffix:semicolon
+id|vgawb
+c_func
+(paren
+id|CRTC_ADR
+comma
+l_int|0x32
+)paren
+suffix:semicolon
+id|temp2
+op_assign
+id|vgarb
+c_func
+(paren
+id|CRTC_DATA
+)paren
+op_or
+l_int|0x01
+suffix:semicolon
+id|vgawb
+c_func
+(paren
+id|CRTC_DATA
+comma
+id|temp2
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x02
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Chrontel: Detected TV connected to SVHS output&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ivideo.TV_plug
+op_assign
+id|TVPLUG_SVIDEO
+suffix:semicolon
+id|vgawb
+c_func
+(paren
+id|CRTC_ADR
+comma
+l_int|0x32
+)paren
+suffix:semicolon
+id|temp2
+op_assign
+id|vgarb
+c_func
+(paren
+id|CRTC_DATA
+)paren
+op_or
+l_int|0x02
+suffix:semicolon
+id|vgawb
+c_func
+(paren
+id|CRTC_DATA
+comma
+id|temp2
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x04
+suffix:colon
+multiline_comment|/* TW: This should not happen */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Chrontel: Detected TV connected to SCART output!?&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+macro_line|#endif
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -11533,12 +14940,14 @@ id|DISPTYPE_CRT1
 suffix:semicolon
 )brace
 r_else
+(brace
 id|ivideo.disp_state
 op_assign
 id|DISPMODE_SINGLE
 op_or
 id|DISPTYPE_CRT1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -11547,7 +14956,15 @@ op_amp
 id|DISPTYPE_LCD
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|enable_dstn
+)paren
+(brace
 id|vgawb
+c_func
 (paren
 id|CRTC_ADR
 comma
@@ -11557,72 +14974,48 @@ suffix:semicolon
 id|reg
 op_assign
 id|vgarb
+c_func
 (paren
 id|CRTC_DATA
 )paren
+op_amp
+l_int|0x0f
 suffix:semicolon
-singleline_comment|// Eden Chen
-r_switch
+r_if
 c_cond
 (paren
-id|reg
+id|sisvga_engine
+op_eq
+id|SIS_300_VGA
 )paren
 (brace
-r_case
-id|SIS_LCD_PANEL_800X600
-suffix:colon
 id|sishw_ext.ulCRT2LCDType
 op_assign
-id|LCD_800x600
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SIS_LCD_PANEL_1024X768
-suffix:colon
-id|sishw_ext.ulCRT2LCDType
-op_assign
-id|LCD_1024x768
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SIS_LCD_PANEL_1280X1024
-suffix:colon
-id|sishw_ext.ulCRT2LCDType
-op_assign
-id|LCD_1280x1024
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SIS_LCD_PANEL_640X480
-suffix:colon
-id|sishw_ext.ulCRT2LCDType
-op_assign
-id|LCD_640x480
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SIS_LCD_PANEL_1280X960
-suffix:colon
-id|sishw_ext.ulCRT2LCDType
-op_assign
-id|LCD_1280x960
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|sishw_ext.ulCRT2LCDType
-op_assign
-id|LCD_1024x768
-suffix:semicolon
-r_break
+id|sis300paneltype
+(braket
+id|reg
+)braket
 suffix:semicolon
 )brace
-singleline_comment|// ~Eden Chen
+r_else
+(brace
+id|sishw_ext.ulCRT2LCDType
+op_assign
+id|sis310paneltype
+(braket
+id|reg
+)braket
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/* TW: FSTN/DSTN */
+id|sishw_ext.ulCRT2LCDType
+op_assign
+id|LCD_320x480
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -11632,6 +15025,7 @@ op_ge
 l_int|0
 )paren
 id|sisfb_validate_mode
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -11696,6 +15090,7 @@ op_ne
 l_int|0
 )paren
 id|sisfb_search_refresh_rate
+c_func
 (paren
 id|ivideo.refresh_rate
 )paren
@@ -11770,9 +15165,10 @@ l_int|3
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sisfb: mode is %dx%dx%d, linelength=%d&bslash;n&quot;
+l_string|&quot;sisfb: Mode is %dx%dx%d (%dHz), linelength=%d&bslash;n&quot;
 comma
 id|ivideo.video_width
 comma
@@ -11780,12 +15176,15 @@ id|ivideo.video_height
 comma
 id|ivideo.video_bpp
 comma
+id|ivideo.refresh_rate
+comma
 id|video_linelength
 )paren
 suffix:semicolon
 singleline_comment|// Eden Chen
 singleline_comment|// Check interface correction  For Debug
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;VM Adr=0x%p&bslash;n&quot;
 comma
@@ -11793,6 +15192,7 @@ id|sishw_ext.pjVideoMemoryAddress
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;VM Size=%ldK&bslash;n&quot;
 comma
@@ -11802,6 +15202,7 @@ l_int|1024
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;IO Adr=0x%lx&bslash;n&quot;
 comma
@@ -11809,6 +15210,7 @@ id|sishw_ext.ulIOAddress
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;Chip=%d&bslash;n&quot;
 comma
@@ -11816,6 +15218,7 @@ id|sishw_ext.jChipType
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;ChipRevision=%d&bslash;n&quot;
 comma
@@ -11823,6 +15226,7 @@ id|sishw_ext.jChipRevision
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;VBChip=%d&bslash;n&quot;
 comma
@@ -11830,6 +15234,7 @@ id|sishw_ext.ujVBChipID
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;ExtVB=%d&bslash;n&quot;
 comma
@@ -11837,6 +15242,7 @@ id|sishw_ext.usExternalChip
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;LCD=%ld&bslash;n&quot;
 comma
@@ -11844,6 +15250,7 @@ id|sishw_ext.ulCRT2LCDType
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 l_string|&quot;bIntegratedMMEnabled=%d&bslash;n&quot;
 comma
@@ -11852,6 +15259,7 @@ id|sishw_ext.bIntegratedMMEnabled
 suffix:semicolon
 singleline_comment|// ~Eden Chen
 id|sisfb_pre_setmode
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -11859,6 +15267,7 @@ r_if
 c_cond
 (paren
 id|SiSSetMode
+c_func
 (paren
 op_amp
 id|sishw_ext
@@ -11869,9 +15278,10 @@ op_eq
 l_int|0
 )paren
 (brace
-id|DPRINTK
+id|printk
+c_func
 (paren
-l_string|&quot;set mode[0x%x]: failed&bslash;n&quot;
+l_string|&quot;sisfb: Setting mode[0x%x] failed, using default mode&bslash;n&quot;
 comma
 id|sisfb_mode_no
 )paren
@@ -11882,6 +15292,7 @@ l_int|1
 suffix:semicolon
 )brace
 id|vgawb
+c_func
 (paren
 id|SEQ_ADR
 comma
@@ -11889,18 +15300,20 @@ id|IND_SIS_PASSWORD
 )paren
 suffix:semicolon
 id|vgawb
+c_func
 (paren
 id|SEQ_DATA
 comma
 id|SIS_PASSWORD
 )paren
 suffix:semicolon
-singleline_comment|// Eden Chen
 id|sisfb_post_setmode
+c_func
 (paren
 )paren
 suffix:semicolon
 id|sisfb_crtc_to_var
+c_func
 (paren
 op_amp
 id|default_var
@@ -11910,28 +15323,38 @@ id|fb_info.changevar
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
+id|fb_info.node
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+macro_line|#else
 id|fb_info.node
 op_assign
 id|NODEV
 suffix:semicolon
+macro_line|#endif
 id|fb_info.fbops
 op_assign
 op_amp
 id|sisfb_ops
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,23)
 id|fb_info.screen_base
 op_assign
 id|ivideo.video_vbase
-suffix:semicolon
-id|fb_info.disp
-op_assign
-op_amp
-id|disp
 suffix:semicolon
 id|fb_info.currcon
 op_assign
 op_minus
 l_int|1
+suffix:semicolon
+macro_line|#endif
+id|fb_info.disp
+op_assign
+op_amp
+id|disp
 suffix:semicolon
 id|fb_info.switch_con
 op_assign
@@ -11943,11 +15366,19 @@ op_assign
 op_amp
 id|sisfb_update_var
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,23)
+id|fb_info.blank
+op_assign
+op_amp
+id|sisfb_blank
+suffix:semicolon
+macro_line|#endif
 id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
 id|sisfb_set_disp
+c_func
 (paren
 op_minus
 l_int|1
@@ -11956,24 +15387,53 @@ op_amp
 id|default_var
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* TW: if mode = &quot;none&quot; */
 r_if
 c_cond
 (paren
 id|sisfb_heap_init
+c_func
 (paren
 )paren
 )paren
 (brace
-id|DPRINTK
+id|printk
+c_func
 (paren
-l_string|&quot;sisfb: Failed to enable offscreen heap&bslash;n&quot;
+l_string|&quot;sisfb: Failed to initialize offscreen memory heap&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*H.C. */
-id|nRes
+id|ivideo.mtrr
+op_assign
+(paren
+r_int
+r_int
+)paren
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|sisbios_mode
+(braket
+id|sisfb_mode_idx
+)braket
+dot
+id|mode_no
+)paren
+op_ne
+l_int|0xFF
+)paren
+(brace
+multiline_comment|/* TW: for mode &quot;none&quot; */
+multiline_comment|/*H.C.*/
+id|ivideo.mtrr
 op_assign
 id|mtrr_add
+c_func
 (paren
 (paren
 r_int
@@ -11992,7 +15452,9 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;if (ivideo.mtrr &gt;= 0) {&n;           &t;    printk(KERN_INFO &quot;Succeed to turn on Write-Combining on VideoMemory %08XH, Size: %08XH&bslash;n&quot;,&n;&t;&t;&t;&t;&t;ivideo.video_base, ivideo.video_size);&n;      &t;&t;} else&t;{&n;           &t;    printk(KERN_INFO &quot;Fail to turn on Write-Combining on Video Memory 0x%08X, Size: 0x%08X&bslash;n&quot;,&n;&t;&t;&t;&t;&t;ivideo.video_base, ivideo.video_size);&n;      &t;&t;}&n;&t;&t;*/
 id|vc_resize_con
+c_func
 (paren
 l_int|1
 comma
@@ -12005,6 +15467,7 @@ r_if
 c_cond
 (paren
 id|register_framebuffer
+c_func
 (paren
 op_amp
 id|fb_info
@@ -12017,11 +15480,13 @@ op_minus
 id|EINVAL
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;fb%d: %s frame buffer device, Version %d.%d.%02d&bslash;n&quot;
 comma
 id|GET_FB_IDX
+c_func
 (paren
 id|fb_info.node
 )paren
@@ -12035,6 +15500,17 @@ comma
 id|VER_LEVEL
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Added SISFB_GET_INFO ioctl = %x&bslash;n&quot;
+comma
+id|SISFB_GET_INFO
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* TW: if mode = &quot;none&quot; */
 r_return
 l_int|0
 suffix:semicolon
@@ -12056,45 +15532,274 @@ id|rate
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|crt1
+DECL|variable|crt1off
 r_static
 r_int
 r_int
-id|crt1
+id|crt1off
 op_assign
 l_int|1
 suffix:semicolon
+DECL|variable|mem
+r_static
+r_int
+r_int
+id|mem
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|dstn
+r_static
+r_int
+r_int
+id|dstn
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|forcecrt2type
+r_static
+r_char
+op_star
+id|forcecrt2type
+op_assign
+l_int|NULL
+suffix:semicolon
+DECL|variable|forcecrt1
+r_static
+r_int
+id|forcecrt1
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+DECL|variable|queuemode
+r_static
+r_char
+op_star
+id|queuemode
+op_assign
+l_int|NULL
+suffix:semicolon
+DECL|variable|pdc
+r_static
+r_int
+id|pdc
+op_assign
+l_int|0
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;SiS 300/540/630/730/315/550/650/740 framebuffer driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* TW (Code is officially open says SiS) */
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Various; SiS; Thomas Winischhofer &lt;thomas@winischhofer.net&gt;&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
+c_func
 (paren
 id|mode
 comma
 l_string|&quot;s&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mode
+comma
+l_string|&quot;Selects the desired display mode in the format [X]x[Y]x[Depth], eg. 800x600x16 &quot;
+l_string|&quot;(default: none; this leaves the console untouched and the driver will only do &quot;
+l_string|&quot;the video memory management for eg. DRM/DRI)&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
+c_func
 (paren
 id|rate
 comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_PARM_DESC
+c_func
 (paren
-id|crt1
+id|rate
+comma
+l_string|&quot;Selects the desired vertical refresh rate for CRT1 (external VGA) in Hz. &quot;
+l_string|&quot;(default: 60)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|crt1off
 comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|crt1off
+comma
+l_string|&quot;If this option is set, the driver will switch off CRT1 (external VGA). &quot;
+l_string|&quot;(Deprecated, please use forcecrt1)&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
+c_func
 (paren
 id|filter
 comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|filter
+comma
+l_string|&quot;Selects TV flicker filter type (only for SiS30x video bridges). &quot;
+l_string|&quot;(Possible values 0-7, default: [no filter])&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|dstn
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* JennyLee 20011211 */
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dstn
+comma
+l_string|&quot;Selects DSTN/FSTN display mode for SiS550. This sets CRT2 type to LCD and &quot;
+l_string|&quot;overrides forcecrt2type setting. (1=ON, 0=OFF) (default: 0)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|queuemode
+comma
+l_string|&quot;s&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|queuemode
+comma
+l_string|&quot;Selects the queue mode on 315/550/650/740. Possible choices are AGP, VRAM &quot;
+l_string|&quot;or MMIO. AGP is only available if the kernel has AGP support. &quot;
+l_string|&quot;The queue mode is important to programs using the 2D/3D accelerator of &quot;
+l_string|&quot;the SiS chip. The modes require a totally different way of programming &quot;
+l_string|&quot;the engines. On 300/540/630/730, this option is ignored. (default: MMIO)&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* TW: &quot;Import&quot; the options from the X driver */
+id|MODULE_PARM
+c_func
+(paren
+id|mem
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mem
+comma
+l_string|&quot;Determines the beginning of the video memory heap in KB. This heap is used for &quot;
+l_string|&quot;video RAM management for eg. DRM/DRI. The default depends on the amount of video &quot;
+l_string|&quot;memory available. If 8MB of video RAM or less is available, &quot;
+l_string|&quot;the heap starts at 4096KB, if between 8 and 16MB are available at 8192KB, otherwise at 12288MB.&quot;
+l_string|&quot;The value is to be specified without &squot;KB&squot; and should match MaxXFBMem setting for &quot;
+l_string|&quot;XFree 4.x (x&gt;=2). See http://www.winischhofer.net/linuxsis630.shtml for a closer description.&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|forcecrt2type
+comma
+l_string|&quot;s&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|forcecrt2type
+comma
+l_string|&quot;If this option is omitted, the driver autodetects CRT2 output devices, such as LCD, &quot;
+l_string|&quot;TV or secondary VGA (in this order; so if eg. an LCD is there, it will be used regardless &quot;
+l_string|&quot;of a connected TV set). With this option, this autodetection can be overridden. &quot;
+l_string|&quot;Possible parameters are LCD, TV, VGA or NONE. NONE disables CRT2 and makes it &quot;
+l_string|&quot;possible to use higher resolutions on CRT1 than eg. your LCD panel supports. TV &quot;
+l_string|&quot;selects TV output (only resolutions 640x480 and 800x600 are supported for TV!). &quot;
+l_string|&quot;VGA refers to _secondary_ VGA which is unlikely to be available; the VGA plug found &quot;
+l_string|&quot;on most machines is CRT1. (default: [autodetected])&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|forcecrt1
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|forcecrt1
+comma
+l_string|&quot;Normally, the driver autodetects whether or not CRT1 (external VGA) is connected. &quot;
+l_string|&quot;With this option, the detection can be overridden (1=CRT1 ON, 0=CRT1 off) &quot;
+l_string|&quot;(default: [autodetected])&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|pdc
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|pdc
+comma
+l_string|&quot;(300 series only) This is for manually selecting the LCD panel delay compensation. The &quot;
+l_string|&quot;driver should detect this correctly in most cases; however, sometimes this is not possible. If &quot;
+l_string|&quot;you see &squot;small waves&squot; on the LCD, try setting this to 4, 32 or 24. If the problem persists, &quot;
+l_string|&quot;try other values between 4 and 60 in steps of 4. &quot;
+l_string|&quot;(default: [autodetected])&quot;
+)paren
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module
+c_func
 (paren
 r_void
 )paren
@@ -12105,9 +15810,16 @@ c_cond
 id|mode
 )paren
 id|sisfb_search_mode
+c_func
 (paren
 id|mode
 )paren
+suffix:semicolon
+r_else
+multiline_comment|/* TW: set mode=none if no mode parameter is given */
+id|sisfb_mode_idx
+op_assign
+id|MODE_INDEX_NONE
 suffix:semicolon
 id|ivideo.refresh_rate
 op_assign
@@ -12116,7 +15828,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|crt1
+id|forcecrt2type
+)paren
+id|sisfb_search_crt2type
+c_func
+(paren
+id|forcecrt2type
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|crt1off
 op_eq
 l_int|0
 )paren
@@ -12129,7 +15852,96 @@ id|sisfb_crt1off
 op_assign
 l_int|0
 suffix:semicolon
+id|sisfb_forcecrt1
+op_assign
+id|forcecrt1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|forcecrt1
+op_eq
+l_int|1
+)paren
+id|sisfb_crt1off
+op_assign
+l_int|0
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|forcecrt1
+op_eq
+l_int|0
+)paren
+id|sisfb_crt1off
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mem
+)paren
+id|sisfb_mem
+op_assign
+id|mem
+suffix:semicolon
+id|enable_dstn
+op_assign
+id|dstn
+suffix:semicolon
+multiline_comment|/* JennyLee 20011211 */
+multiline_comment|/* TW: DSTN overrules forcecrt2type */
+r_if
+c_cond
+(paren
+id|enable_dstn
+)paren
+id|sisfb_crt2type
+op_assign
+id|DISPTYPE_LCD
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|queuemode
+)paren
+id|sisfb_search_queuemode
+c_func
+(paren
+id|queuemode
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdc
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|pdc
+op_amp
+op_complement
+l_int|0x3c
+)paren
+)paren
+(brace
+id|sisfb_pdc
+op_assign
+id|pdc
+op_amp
+l_int|0x3c
+suffix:semicolon
+)brace
+)brace
 id|sisfb_init
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -12140,38 +15952,93 @@ suffix:semicolon
 DECL|function|cleanup_module
 r_void
 id|cleanup_module
+c_func
 (paren
 r_void
 )paren
 (brace
+multiline_comment|/* TW: Release mem regions */
+id|release_mem_region
+c_func
+(paren
+id|ivideo.video_base
+comma
+id|ivideo.video_size
+)paren
+suffix:semicolon
+id|release_mem_region
+c_func
+(paren
+id|ivideo.mmio_base
+comma
+id|sisfb_mmio_size
+)paren
+suffix:semicolon
+multiline_comment|/* TW: Release MTRR region */
+r_if
+c_cond
+(paren
+id|ivideo.mtrr
+)paren
+id|mtrr_del
+c_func
+(paren
+id|ivideo.mtrr
+comma
+(paren
+r_int
+r_int
+)paren
+id|ivideo.video_base
+comma
+(paren
+r_int
+r_int
+)paren
+id|ivideo.video_size
+)paren
+suffix:semicolon
+multiline_comment|/* Unregister the framebuffer */
 id|unregister_framebuffer
+c_func
 (paren
 op_amp
 id|fb_info
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sisfb: Module unloaded&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 macro_line|#endif
 DECL|variable|sis_malloc
 id|EXPORT_SYMBOL
+c_func
 (paren
 id|sis_malloc
 )paren
 suffix:semicolon
 DECL|variable|sis_free
 id|EXPORT_SYMBOL
+c_func
 (paren
 id|sis_free
 )paren
 suffix:semicolon
 DECL|variable|sis_dispinfo
 id|EXPORT_SYMBOL
+c_func
 (paren
 id|sis_dispinfo
 )paren
 suffix:semicolon
 DECL|variable|ivideo
 id|EXPORT_SYMBOL
+c_func
 (paren
 id|ivideo
 )paren
