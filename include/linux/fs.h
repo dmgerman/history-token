@@ -2004,6 +2004,18 @@ DECL|member|last_type
 r_int
 id|last_type
 suffix:semicolon
+DECL|member|old_dentry
+r_struct
+id|dentry
+op_star
+id|old_dentry
+suffix:semicolon
+DECL|member|old_mnt
+r_struct
+id|vfsmount
+op_star
+id|old_mnt
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|DQUOT_USR_ENABLED
@@ -6080,8 +6092,6 @@ DECL|macro|LOOKUP_PARENT
 mdefine_line|#define LOOKUP_PARENT&t;&t;(16)
 DECL|macro|LOOKUP_NOALT
 mdefine_line|#define LOOKUP_NOALT&t;&t;(32)
-DECL|macro|LOOKUP_LOCKED
-mdefine_line|#define LOOKUP_LOCKED&t;&t;(64)
 multiline_comment|/*&n; * Type of the last component on LOOKUP_PARENT&n; */
 DECL|enumerator|LAST_NORM
 DECL|enumerator|LAST_ROOT
