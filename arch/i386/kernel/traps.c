@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#ifdef CONFIG_EISA
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#endif
