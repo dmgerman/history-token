@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/topology.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 DECL|macro|SD_NODES_PER_DOMAIN
-mdefine_line|#define SD_NODES_PER_DOMAIN 4
+mdefine_line|#define SD_NODES_PER_DOMAIN 6
 macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/**&n; * find_next_best_node - find the next node to include in a sched_domain&n; * @node: node whose sched_domain we&squot;re building&n; * @used_nodes: nodes already in the sched_domain&n; *&n; * Find the next node to include in a given scheduling domain.  Simply&n; * finds the closest node not already in the @used_nodes map.&n; *&n; * Should use nodemask_t.&n; */
 DECL|function|find_next_best_node
@@ -69,6 +69,18 @@ id|i
 op_mod
 id|MAX_NUMNODES
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nr_cpus_node
+c_func
+(paren
+id|n
+)paren
+)paren
+r_continue
+suffix:semicolon
 multiline_comment|/* Skip already used nodes */
 r_if
 c_cond
@@ -91,7 +103,7 @@ c_func
 (paren
 id|node
 comma
-id|i
+id|n
 )paren
 suffix:semicolon
 r_if
@@ -141,6 +153,8 @@ id|i
 suffix:semicolon
 id|cpumask_t
 id|span
+comma
+id|nodemask
 suffix:semicolon
 id|DECLARE_BITMAP
 c_func
@@ -164,12 +178,38 @@ comma
 id|MAX_NUMNODES
 )paren
 suffix:semicolon
+id|nodemask
+op_assign
+id|node_to_cpumask
+c_func
+(paren
+id|node
+)paren
+suffix:semicolon
+id|cpus_or
+c_func
+(paren
+id|span
+comma
+id|span
+comma
+id|nodemask
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|node
+comma
+id|used_nodes
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
 id|i
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|i
 OL
@@ -189,9 +229,6 @@ id|node
 comma
 id|used_nodes
 )paren
-suffix:semicolon
-id|cpumask_t
-id|nodemask
 suffix:semicolon
 id|nodemask
 op_assign
@@ -369,6 +406,15 @@ id|cpu_default_map
 )paren
 (brace
 r_int
+id|node
+op_assign
+id|cpu_to_node
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+r_int
 id|group
 suffix:semicolon
 r_struct
@@ -387,11 +433,7 @@ op_assign
 id|node_to_cpumask
 c_func
 (paren
-id|cpu_to_node
-c_func
-(paren
-id|i
-)paren
+id|node
 )paren
 suffix:semicolon
 id|cpus_and
@@ -426,11 +468,7 @@ op_assign
 id|sched_domain_node_span
 c_func
 (paren
-id|cpu_to_node
-c_func
-(paren
-id|i
-)paren
+id|node
 )paren
 suffix:semicolon
 id|cpus_and
