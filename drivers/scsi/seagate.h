@@ -13,15 +13,6 @@ op_star
 suffix:semicolon
 r_static
 r_int
-id|seagate_st0x_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
 id|seagate_st0x_queue_command
 c_func
 (paren
