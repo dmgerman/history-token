@@ -46,16 +46,18 @@ c_func
 (paren
 id|page
 comma
-id|KM_CRYPTO
+id|KM_CRYPTO_SOFTIRQ
 )paren
 suffix:semicolon
 )brace
 r_else
 r_return
-id|kmap
+id|kmap_atomic
 c_func
 (paren
 id|page
+comma
+id|KM_CRYPTO_USER
 )paren
 suffix:semicolon
 )brace
@@ -70,11 +72,6 @@ r_struct
 id|crypto_tfm
 op_star
 id|tfm
-comma
-r_struct
-id|page
-op_star
-id|page
 comma
 r_void
 op_star
@@ -94,7 +91,7 @@ c_func
 (paren
 id|vaddr
 comma
-id|KM_CRYPTO
+id|KM_CRYPTO_SOFTIRQ
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
@@ -106,10 +103,12 @@ suffix:semicolon
 macro_line|#endif
 )brace
 r_else
-id|kunmap
+id|kunmap_atomic
 c_func
 (paren
-id|page
+id|vaddr
+comma
+id|KM_CRYPTO_USER
 )paren
 suffix:semicolon
 )brace

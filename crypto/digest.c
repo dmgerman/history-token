@@ -113,13 +113,6 @@ c_func
 (paren
 id|tfm
 comma
-id|sg
-(braket
-id|i
-)braket
-dot
-id|page
-comma
 id|p
 )paren
 suffix:semicolon
@@ -257,13 +250,6 @@ id|crypto_kunmap
 c_func
 (paren
 id|tfm
-comma
-id|sg
-(braket
-id|i
-)braket
-dot
-id|page
 comma
 id|p
 )paren
