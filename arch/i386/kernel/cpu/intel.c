@@ -8,14 +8,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;cpu.h&quot;
-DECL|variable|__initdata
-r_static
-r_int
-id|disable_P4_HT
-id|__initdata
-op_assign
-l_int|0
-suffix:semicolon
 r_extern
 r_int
 id|trap_init_f00f_bug
@@ -224,34 +216,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|P4_disable_ht
-r_static
-r_int
-id|__init
-id|P4_disable_ht
-c_func
-(paren
-r_char
-op_star
-id|s
-)paren
-(brace
-id|disable_P4_HT
-op_assign
-l_int|1
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;noht&quot;
-comma
-id|P4_disable_ht
-)paren
-suffix:semicolon
 DECL|macro|LVL_1_INST
 mdefine_line|#define LVL_1_INST&t;1
 DECL|macro|LVL_1_DATA
@@ -1271,9 +1235,6 @@ id|c
 comma
 id|X86_FEATURE_HT
 )paren
-op_logical_and
-op_logical_neg
-id|disable_P4_HT
 )paren
 (brace
 r_extern
@@ -1490,19 +1451,6 @@ suffix:semicolon
 )brace
 id|too_many_siblings
 suffix:colon
-r_if
-c_cond
-(paren
-id|disable_P4_HT
-)paren
-id|clear_bit
-c_func
-(paren
-id|X86_FEATURE_HT
-comma
-id|c-&gt;x86_capability
-)paren
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Work around errata */
 id|Intel_errata_workarounds

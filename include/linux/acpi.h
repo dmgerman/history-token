@@ -11,7 +11,7 @@ macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 macro_line|#include &lt;asm/acpi.h&gt;
-macro_line|#ifdef CONFIG_ACPI
+macro_line|#ifdef CONFIG_ACPI_BOOT
 DECL|enum|acpi_irq_model_id
 r_enum
 id|acpi_irq_model_id
@@ -1308,10 +1308,10 @@ r_extern
 r_int
 id|acpi_mp_config
 suffix:semicolon
-macro_line|#else
+macro_line|#else&t;/*!CONFIG_ACPI_BOOT*/
 DECL|macro|acpi_mp_config
 mdefine_line|#define acpi_mp_config&t;0
-macro_line|#endif
+macro_line|#endif &t;/*!CONFIG_ACPI_BOOT*/
 macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|struct|acpi_prt_entry
 r_struct

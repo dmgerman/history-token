@@ -3296,6 +3296,9 @@ c_cond
 (paren
 op_logical_neg
 id|smp_found_config
+op_logical_and
+op_logical_neg
+id|acpi_lapic
 )paren
 (brace
 id|printk

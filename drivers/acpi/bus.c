@@ -2389,7 +2389,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;Disabled via command line (acpi=off)&bslash;n&quot;
+l_string|&quot;Interpreter disabled.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

@@ -16,6 +16,10 @@ r_extern
 r_int
 id|acpi_disabled
 suffix:semicolon
+r_extern
+r_int
+id|acpi_ht
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Boot-time Configuration&n;   -------------------------------------------------------------------------- */
 DECL|variable|acpi_irq_model
 r_enum
@@ -374,7 +378,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_ACPI_HT_ONLY
+macro_line|#ifdef CONFIG_ACPI
 r_static
 r_int
 id|__init
@@ -437,14 +441,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /*CONFIG_ACPI_HT_ONLY*/
+macro_line|#endif /*CONFIG_ACPI*/
 macro_line|#endif /*CONFIG_X86_LOCAL_APIC*/
 macro_line|#ifdef CONFIG_X86_IO_APIC
 DECL|variable|acpi_ioapic
 r_int
 id|acpi_ioapic
 suffix:semicolon
-macro_line|#ifndef CONFIG_ACPI_HT_ONLY
+macro_line|#ifdef CONFIG_ACPI
 r_static
 r_int
 id|__init
@@ -607,7 +611,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /*!CONFIG_ACPI_HT_ONLY*/ 
+macro_line|#endif /*CONFIG_ACPI*/ 
 macro_line|#endif /*CONFIG_X86_IO_APIC*/
 r_static
 r_int
@@ -738,6 +742,7 @@ r_return
 id|rsdp_phys
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * acpi_boot_init()&n; *  called from setup_arch(), always.&n; *&t;1. maps ACPI tables for later use&n; *&t;2. enumerates lapics&n; *&t;3. enumerates io-apics&n; *&n; * side effects:&n; *&t;acpi_lapic = 1 if LAPIC found&n; *&t;acpi_ioapic = 1 if IOAPIC found&n; *&t;if (acpi_lapic &amp;&amp; acpi_ioapic) smp_found_config = 1;&n; *&t;if acpi_blacklisted() acpi_disabled = 1;&n; *&t;acpi_irq_model=...&n; *&t;...&n; *&n; * return value: (currently ignored)&n; *&t;0: success&n; *&t;!0: failure&n; */
 r_int
 id|__init
 DECL|function|acpi_boot_init
@@ -750,6 +755,17 @@ r_int
 id|result
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_disabled
+op_logical_and
+op_logical_neg
+id|acpi_ht
+)paren
+r_return
+l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * The default interrupt routing model is PIC (8259).  This gets&n;&t; * overriden if IOAPICs are enumerated (below).&n;&t; */
 id|acpi_irq_model
@@ -772,6 +788,7 @@ id|result
 r_return
 id|result
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_ACPI
 id|result
 op_assign
 id|acpi_blacklisted
@@ -801,15 +818,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-r_else
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-id|PREFIX
-l_string|&quot;BIOS not listed in blacklist&bslash;n&quot;
-)paren
-suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/* &n;&t; * MADT&n;&t; * ----&n;&t; * Parse the Multiple APIC Description Table (MADT), if exists.&n;&t; * Note that this table provides platform SMP configuration &n;&t; * information -- the successor to MPS tables.&n;&t; */
 id|result
@@ -968,7 +977,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_ACPI_HT_ONLY
+macro_line|#ifdef&t;CONFIG_ACPI
 id|result
 op_assign
 id|acpi_table_parse_madt
@@ -1000,15 +1009,26 @@ r_return
 id|result
 suffix:semicolon
 )brace
-macro_line|#endif /*!CONFIG_ACPI_HT_ONLY*/
+macro_line|#endif /*CONFIG_ACPI*/
 id|acpi_lapic
 op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif /*CONFIG_X86_LOCAL_APIC*/
 macro_line|#ifdef CONFIG_X86_IO_APIC
-macro_line|#ifndef CONFIG_ACPI_HT_ONLY
+macro_line|#ifdef&t;CONFIG_ACPI
 multiline_comment|/* &n;&t; * I/O APIC &n;&t; * --------&n;&t; */
+multiline_comment|/*&n;&t; * ACPI interpreter is required to complete interrupt setup,&n;&t; * so if it is off, don&squot;t enumerate the io-apics with ACPI.&n;&t; * If MPS is present, it will handle them,&n;&t; * otherwise the system will stay in PIC mode&n;&t; */
+r_if
+c_cond
+(paren
+id|acpi_disabled
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
 id|result
 op_assign
 id|acpi_table_parse_madt
@@ -1136,7 +1156,7 @@ id|acpi_ioapic
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif /*!CONFIG_ACPI_HT_ONLY*/
+macro_line|#endif /*CONFIG_ACPI*/
 macro_line|#endif /*CONFIG_X86_IO_APIC*/
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 r_if

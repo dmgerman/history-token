@@ -2686,7 +2686,7 @@ id|mpf
 op_assign
 id|mpf_found
 suffix:semicolon
-multiline_comment|/*&n;&t; * ACPI may be used to obtain the entire SMP configuration or just to &n;&t; * enumerate/configure processors (CONFIG_ACPI_HT_ONLY).  Note that &n;&t; * ACPI supports both logical (e.g. Hyper-Threading) and physical &n;&t; * processors, where MPS only supports physical.&n;&t; */
+multiline_comment|/*&n;&t; * ACPI may be used to obtain the entire SMP configuration or just to &n;&t; * enumerate/configure processors (CONFIG_ACPI_HT).  Note that &n;&t; * ACPI supports both logical (e.g. Hyper-Threading) and physical &n;&t; * processors, where MPS only supports physical.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4147,7 +4147,8 @@ l_string|&quot;Max # of irq sources exceeded!&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef CONFIG_ACPI_HT_ONLY
+macro_line|#endif&t;/* CONFIG_X86_IO_APIC */
+macro_line|#ifdef&t;CONFIG_ACPI
 multiline_comment|/* Ensure the ACPI SCI interrupt level is active low, edge-triggered */
 r_extern
 id|FADT_DESCRIPTOR
@@ -4357,7 +4358,7 @@ l_int|1
 suffix:semicolon
 singleline_comment|// Active low, level triggered
 )brace
-macro_line|#endif /*CONFIG_ACPI_HT_ONLY*/
+macro_line|#endif&t;/* CONFIG_ACPI */
 macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|function|mp_parse_prt
 r_void
@@ -4705,6 +4706,5 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /*CONFIG_ACPI_PCI*/
-macro_line|#endif /*CONFIG_X86_IO_APIC*/
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
 eof

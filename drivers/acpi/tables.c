@@ -285,7 +285,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;%.4s (v%3.3d %6.6s %8.8s %5.5d.%5.5d) @ 0x%p&bslash;n&quot;
+l_string|&quot;%.4s (v%3.3d %6.6s %8.8s 0x%08x %.4s 0x%08x) @ 0x%p&bslash;n&quot;
 comma
 id|name
 comma
@@ -296,12 +296,10 @@ comma
 id|header-&gt;oem_table_id
 comma
 id|header-&gt;oem_revision
-op_rshift
-l_int|16
 comma
-id|header-&gt;oem_revision
-op_amp
-l_int|0xffff
+id|header-&gt;asl_compiler_id
+comma
+id|header-&gt;asl_compiler_revision
 comma
 (paren
 r_void
@@ -754,6 +752,7 @@ l_int|0xFF
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * acpi_get_table_header_early()&n; * for acpi_blacklisted(), acpi_table_get_sdt()&n; */
 r_int
 id|__init
 DECL|function|acpi_get_table_header_early
@@ -770,6 +769,7 @@ op_star
 id|header
 )paren
 (brace
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -1015,6 +1015,7 @@ id|madt_end
 op_assign
 l_int|0
 suffix:semicolon
+r_int
 r_int
 id|i
 op_assign
@@ -1272,6 +1273,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
+r_int
 id|i
 op_assign
 l_int|0
@@ -1360,6 +1362,7 @@ id|header
 op_assign
 l_int|NULL
 suffix:semicolon
+r_int
 r_int
 id|i
 comma
@@ -2233,7 +2236,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;RSDP (v%3.3d %6.6s                     ) @ 0x%p&bslash;n&quot;
+l_string|&quot;RSDP (v%3.3d %6.6s                                    ) @ 0x%p&bslash;n&quot;
 comma
 id|rsdp-&gt;revision
 comma

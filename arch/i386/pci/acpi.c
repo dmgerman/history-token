@@ -123,6 +123,21 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * pci_disable_acpi()&n; * act like pci=noacpi seen on command line&n; * called by DMI blacklist code&n; */
+DECL|function|pci_disable_acpi
+id|__init
+r_void
+id|pci_disable_acpi
+c_func
+(paren
+r_void
+)paren
+(brace
+id|pci_probe
+op_or_assign
+id|PCI_NO_ACPI_ROUTING
+suffix:semicolon
+)brace
 DECL|variable|pci_acpi_init
 id|subsys_initcall
 c_func
