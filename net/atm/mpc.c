@@ -3539,6 +3539,9 @@ id|lec_priv
 op_star
 id|priv
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3560,6 +3563,8 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* This lets us now how our LECs are doing */
+id|err
+op_assign
 id|register_netdevice_notifier
 c_func
 (paren
@@ -3567,6 +3572,25 @@ op_amp
 id|mpoa_notifier
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+(brace
+id|del_timer
+c_func
+(paren
+op_amp
+id|mpc_timer
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 )brace
 id|mpc
 op_assign
