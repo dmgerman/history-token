@@ -49,7 +49,7 @@ op_assign
 op_amp
 id|node_devices
 (braket
-id|__cpu_to_node
+id|cpu_to_node
 c_func
 (paren
 id|num

@@ -5497,7 +5497,7 @@ suffix:semicolon
 id|memblk_set_online
 c_func
 (paren
-id|__node_to_memblk
+id|node_to_memblk
 c_func
 (paren
 id|nid

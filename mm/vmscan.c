@@ -3321,7 +3321,7 @@ c_func
 (paren
 id|tsk
 comma
-id|__node_to_cpu_mask
+id|node_to_cpumask
 c_func
 (paren
 id|pgdat-&gt;node_id

@@ -497,7 +497,7 @@ macro_line|#endif /* CONFIG_NUMA */
 macro_line|#include &lt;asm/topology.h&gt;
 multiline_comment|/* Returns the number of the current Node. */
 DECL|macro|numa_node_id
-mdefine_line|#define numa_node_id()&t;&t;(__cpu_to_node(smp_processor_id()))
+mdefine_line|#define numa_node_id()&t;&t;(cpu_to_node(smp_processor_id()))
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 r_extern
 r_struct
