@@ -254,6 +254,7 @@ id|realp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -392,6 +393,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -552,6 +554,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -751,6 +754,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1078,6 +1082,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1387,6 +1392,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1406,6 +1412,7 @@ op_star
 id|ppos
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|tmp
 op_assign
@@ -1493,6 +1500,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1513,6 +1521,7 @@ id|ppos
 suffix:semicolon
 r_const
 r_char
+id|__user
 op_star
 id|tmp
 op_assign
@@ -1605,6 +1614,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1633,6 +1643,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1658,6 +1669,7 @@ id|read_zero_pagealigned
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1895,6 +1907,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2257,6 +2270,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2622,6 +2636,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
