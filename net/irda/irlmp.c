@@ -2371,6 +2371,12 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
+id|self-&gt;lap-&gt;cache.valid
+op_assign
+id|FALSE
+suffix:semicolon
+macro_line|#endif
 id|ASSERT
 c_func
 (paren
