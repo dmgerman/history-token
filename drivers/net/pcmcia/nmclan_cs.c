@@ -1761,7 +1761,6 @@ id|dev
 op_assign
 id|link-&gt;priv
 suffix:semicolon
-suffix:semicolon
 id|mace_private
 op_star
 id|lp
