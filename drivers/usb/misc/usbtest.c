@@ -83,7 +83,7 @@ id|alt
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* this is accessed only through usbfs ioctl calls.&n; * one ioctl to issue a test ... no locking needed!!!&n; * tests create other threads if they need them.&n; * urbs and buffers are allocated dynamically,&n; * and data generated deterministically.&n; *&n; * there&squot;s a minor complication on rmmod, since&n; * usbfs.disconnect() waits till our ioctl completes.&n; * unplug works fine since we&squot;ll see real i/o errors.&n; */
+multiline_comment|/* this is accessed only through usbfs ioctl calls.&n; * one ioctl to issue a test ... one lock per device.&n; * tests create other threads if they need them.&n; * urbs and buffers are allocated dynamically,&n; * and data generated deterministically.&n; */
 DECL|struct|usbtest_dev
 r_struct
 id|usbtest_dev
@@ -114,6 +114,11 @@ suffix:semicolon
 DECL|member|out_pipe
 r_int
 id|out_pipe
+suffix:semicolon
+DECL|member|sem
+r_struct
+id|semaphore
+id|sem
 suffix:semicolon
 DECL|macro|TBUF_SIZE
 mdefine_line|#define TBUF_SIZE&t;256
@@ -914,6 +919,27 @@ suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* unqueued control message testing&n; *&n; * there&squot;s a nice set of device functional requirements in chapter 9 of the&n; * usb 2.0 spec, which we can apply to ANY device, even ones that don&squot;t use&n; * special test firmware.&n; *&n; * we know the device is configured (or suspended) by the time it&squot;s visible&n; * through usbfs.  we can&squot;t change that, so we won&squot;t test enumeration (which&n; * worked &squot;well enough&squot; to get here, this time), power management (ditto),&n; * or remote wakeup (which needs human interaction).&n; */
+DECL|variable|realworld
+r_static
+r_int
+id|realworld
+op_assign
+l_int|1
+suffix:semicolon
+id|MODULE_PARM
+(paren
+id|realworld
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|realworld
+comma
+l_string|&quot;clear to demand stricter ch9 compliance&quot;
+)paren
+suffix:semicolon
 DECL|function|get_altsetting
 r_static
 r_int
@@ -1323,11 +1349,13 @@ l_int|9
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#if 0
 multiline_comment|/* this bit &squot;must be 1&squot; but often isn&squot;t */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|realworld
+op_logical_and
 op_logical_neg
 (paren
 id|config-&gt;bmAttributes
@@ -1345,7 +1373,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1480,6 +1507,8 @@ multiline_comment|/* [real world] get/set unimplemented if there&squot;s only on
 r_if
 c_cond
 (paren
+id|realworld
+op_logical_and
 id|iface-&gt;num_altsetting
 op_eq
 l_int|1
@@ -1563,6 +1592,9 @@ multiline_comment|/* [real world] get_config unimplemented if there&squot;s only
 r_if
 c_cond
 (paren
+op_logical_neg
+id|realworld
+op_logical_or
 id|udev-&gt;descriptor.bNumConfigurations
 op_ne
 l_int|1
@@ -1589,6 +1621,8 @@ l_int|0
 comma
 id|USB_REQ_GET_CONFIGURATION
 comma
+id|USB_DIR_IN
+op_or
 id|USB_RECIP_DEVICE
 comma
 l_int|0
@@ -2076,9 +2110,9 @@ multiline_comment|/*------------------------------------------------------------
 singleline_comment|// control queueing !!
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* We only have this one interface to user space, through usbfs.&n; * User mode code can scan usbfs to find N different devices (maybe on&n; * different busses) to use when testing, and allocate one thread per&n; * test.  So discovery is simplified, and we have no device naming issues.&n; *&n; * Don&squot;t use these only as stress/load tests.  Use them along with with&n; * other USB bus activity:  plugging, unplugging, mousing, mp3 playback,&n; * video capture, and so on.  Run different tests at different times, in&n; * different sequences.  Nothing here should interact with other devices,&n; * except indirectly by consuming USB bandwidth and CPU resources for test&n; * threads and request completion.&n; */
-DECL|function|usbtest_ioctl
 r_static
 r_int
+DECL|function|usbtest_ioctl
 id|usbtest_ioctl
 (paren
 r_struct
@@ -2185,6 +2219,19 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|down_interruptible
+(paren
+op_amp
+id|dev-&gt;sem
+)paren
+)paren
+r_return
+op_minus
+id|ERESTARTSYS
+suffix:semicolon
 multiline_comment|/* some devices, like ez-usb default devices, need a non-default&n;&t; * altsetting to have any active endpoints.  some tests change&n;&t; * altsettings; force a default so most tests don&squot;t need to check.&n;&t; */
 r_if
 c_cond
@@ -2202,10 +2249,18 @@ c_cond
 (paren
 id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 )paren
+(brace
+id|up
+(paren
+op_amp
+id|dev-&gt;sem
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 id|res
 op_assign
 id|set_altsetting
@@ -2230,6 +2285,12 @@ comma
 id|dev-&gt;info-&gt;alt
 comma
 id|res
+)paren
+suffix:semicolon
+id|up
+(paren
+op_amp
+id|dev-&gt;sem
 )paren
 suffix:semicolon
 r_return
@@ -2985,6 +3046,12 @@ op_sub_assign
 l_int|1
 suffix:semicolon
 )brace
+id|up
+(paren
+op_amp
+id|dev-&gt;sem
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -3196,6 +3263,12 @@ suffix:semicolon
 id|dev-&gt;info
 op_assign
 id|info
+suffix:semicolon
+id|init_MUTEX
+(paren
+op_amp
+id|dev-&gt;sem
+)paren
 suffix:semicolon
 multiline_comment|/* use the same kind of id the hid driver shows */
 id|snprintf
@@ -3450,6 +3523,12 @@ id|dev_get_drvdata
 (paren
 op_amp
 id|intf-&gt;dev
+)paren
+suffix:semicolon
+id|down
+(paren
+op_amp
+id|dev-&gt;sem
 )paren
 suffix:semicolon
 id|dev_set_drvdata

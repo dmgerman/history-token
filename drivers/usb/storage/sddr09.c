@@ -6359,10 +6359,6 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-id|srb-&gt;resid
-op_assign
-l_int|0
-suffix:semicolon
 id|info
 op_assign
 (paren
