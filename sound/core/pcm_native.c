@@ -2371,7 +2371,7 @@ op_minus
 id|ENXIO
 )paren
 suffix:semicolon
-id|snd_pcm_stream_unlock_irq
+id|snd_pcm_stream_lock_irq
 c_func
 (paren
 id|substream
