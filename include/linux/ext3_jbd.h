@@ -499,6 +499,20 @@ DECL|macro|ext3_journal_get_create_access
 mdefine_line|#define ext3_journal_get_create_access(handle, bh) &bslash;&n;&t;__ext3_journal_get_create_access(__FUNCTION__, (handle), (bh))
 DECL|macro|ext3_journal_dirty_metadata
 mdefine_line|#define ext3_journal_dirty_metadata(handle, bh) &bslash;&n;&t;__ext3_journal_dirty_metadata(__FUNCTION__, (handle), (bh))
+r_int
+id|ext3_journal_dirty_data
+c_func
+(paren
+id|handle_t
+op_star
+id|handle
+comma
+r_struct
+id|buffer_head
+op_star
+id|bh
+)paren
+suffix:semicolon
 id|handle_t
 op_star
 id|ext3_journal_start_sb
