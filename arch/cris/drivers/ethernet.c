@@ -5000,8 +5000,6 @@ c_cond
 (paren
 id|led_active
 op_logical_and
-id|jiffies
-OG
 id|time_after
 c_func
 (paren
