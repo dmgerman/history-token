@@ -10287,9 +10287,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|state-&gt;card-&gt;ac97_status
 op_amp
 id|SURR_ON
+)paren
 )paren
 id|val
 op_and_assign
@@ -10300,9 +10302,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|state-&gt;card-&gt;ac97_status
 op_amp
 id|CENTER_LFE_ON
+)paren
 )paren
 id|val
 op_and_assign
