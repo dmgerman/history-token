@@ -1362,13 +1362,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|serio_open
-c_func
-(paren
-id|serio
-comma
-id|drv
-)paren
+id|err
 )paren
 (brace
 id|serio_set_drvdata
