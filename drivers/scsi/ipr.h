@@ -2278,10 +2278,6 @@ id|tcq_active
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|qdepth
-r_int
-id|qdepth
-suffix:semicolon
 DECL|member|sdev
 r_struct
 id|scsi_device
