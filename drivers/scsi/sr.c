@@ -1824,6 +1824,8 @@ r_return
 id|cdrom_ioctl
 c_func
 (paren
+id|file
+comma
 op_amp
 id|cd-&gt;cdi
 comma

@@ -1280,6 +1280,11 @@ id|scsi_cmd_ioctl
 c_func
 (paren
 r_struct
+id|file
+op_star
+id|file
+comma
+r_struct
 id|gendisk
 op_star
 id|bd_disk

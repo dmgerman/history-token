@@ -13611,6 +13611,8 @@ op_assign
 id|generic_ide_ioctl
 c_func
 (paren
+id|file
+comma
 id|bdev
 comma
 id|cmd
@@ -13639,6 +13641,8 @@ op_assign
 id|cdrom_ioctl
 c_func
 (paren
+id|file
+comma
 op_amp
 id|info-&gt;devinfo
 comma
