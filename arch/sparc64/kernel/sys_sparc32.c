@@ -23561,7 +23561,7 @@ id|KERNEL_DS
 suffix:semicolon
 id|ret
 op_assign
-id|sys_schet_getaffinity
+id|sys_sched_getaffinity
 c_func
 (paren
 id|pid
