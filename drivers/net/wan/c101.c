@@ -759,7 +759,7 @@ suffix:semicolon
 id|hdlc_close
 c_func
 (paren
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 r_return

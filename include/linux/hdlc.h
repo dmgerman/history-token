@@ -839,9 +839,10 @@ r_void
 id|hdlc_close
 c_func
 (paren
-id|hdlc_device
+r_struct
+id|net_device
 op_star
-id|hdlc
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Called by hardware driver when DCD line level changes */

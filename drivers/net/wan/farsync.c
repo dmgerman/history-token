@@ -4225,10 +4225,7 @@ id|dev
 suffix:semicolon
 id|hdlc_close
 (paren
-id|dev_to_hdlc
-(paren
 id|dev
-)paren
 )paren
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
