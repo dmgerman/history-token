@@ -109,6 +109,8 @@ DECL|macro|ETH_P_ECONET
 mdefine_line|#define ETH_P_ECONET&t;0x0018&t;&t;/* Acorn Econet&t;&t;&t;*/
 DECL|macro|ETH_P_HDLC
 mdefine_line|#define ETH_P_HDLC&t;0x0019&t;&t;/* HDLC frames&t;&t;&t;*/
+DECL|macro|ETH_P_ARCNET
+mdefine_line|#define ETH_P_ARCNET&t;0x001A&t;&t;/* 1A for ArcNet :-)            */
 multiline_comment|/*&n; *&t;This is an Ethernet frame header.&n; */
 DECL|struct|ethhdr
 r_struct

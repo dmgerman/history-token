@@ -175,6 +175,10 @@ id|sk_buff
 op_star
 id|skb
 comma
+r_int
+r_int
+id|hooknr
+comma
 r_const
 r_struct
 id|net_device
@@ -194,6 +198,8 @@ id|watcher
 c_func
 (paren
 id|skb
+comma
+id|hooknr
 comma
 id|in
 comma
@@ -963,6 +969,8 @@ id|ebt_do_watcher
 comma
 op_star
 id|pskb
+comma
+id|hook
 comma
 id|in
 comma

@@ -1343,6 +1343,7 @@ id|tfm
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* CONFIG_CRYPTO_HMAC */
+r_static
 r_void
 DECL|function|test_cipher
 id|test_cipher
