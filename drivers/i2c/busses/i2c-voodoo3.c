@@ -47,6 +47,7 @@ mdefine_line|#define TIMEOUT&t;&t;(HZ / 2)
 DECL|variable|ioaddr
 r_static
 r_void
+id|__iomem
 op_star
 id|ioaddr
 suffix:semicolon
