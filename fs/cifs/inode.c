@@ -261,27 +261,12 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot; Alloc new inode %p &quot;
-comma
-op_star
-id|pinode
-)paren
-)paren
-suffix:semicolon
 )brace
 id|inode
 op_assign
 op_star
 id|pinode
 suffix:semicolon
-multiline_comment|/*        new_inode = iget(parent_dir_inode-&gt;i_sb, findData.IndexNumber); */
-multiline_comment|/* index number not reliable in response data */
 id|cifsInfo
 op_assign
 id|CIFS_I
@@ -958,19 +943,6 @@ id|new_inode
 c_func
 (paren
 id|sb
-)paren
-suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot; Alloc new inode %p &quot;
-comma
-op_star
-id|pinode
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -3125,6 +3097,8 @@ id|ATTR_UID
 )paren
 )paren
 )paren
+id|rc
+op_assign
 id|CIFSSMBUnixSetPerms
 c_func
 (paren
@@ -3284,8 +3258,15 @@ id|cifs_sb-&gt;local_nls
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&t;cifsInode-&gt;time = 0; */
-multiline_comment|/* force revalidate to get attributes when needed */
+multiline_comment|/* do not  need local check to inode_check_ok since the server does that */
+id|inode_setattr
+c_func
+(paren
+id|direntry-&gt;d_inode
+comma
+id|attrs
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -5080,7 +5080,15 @@ multiline_comment|/* fallthrough */
 r_case
 l_int|2
 suffix:colon
-multiline_comment|/* Should we first check if file-&gt;private_data is null? */
+multiline_comment|/* do not reallocate search handle if rewind */
+r_if
+c_cond
+(paren
+id|file-&gt;private_data
+op_eq
+l_int|NULL
+)paren
+(brace
 id|rc
 op_assign
 id|CIFSFindFirst
@@ -5120,6 +5128,25 @@ id|findParms.EndofSearch
 )paren
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Search rewinding on %s&quot;
+comma
+id|full_path
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|readdir_rewind
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5132,6 +5159,14 @@ id|searchHandle
 op_assign
 id|findParms.SearchHandle
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|file-&gt;private_data
+op_eq
+l_int|NULL
+)paren
+(brace
 id|file-&gt;private_data
 op_assign
 id|kmalloc
@@ -5146,6 +5181,23 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* BB close search handle */
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Search rewinding on %s&quot;
+comma
+id|full_path
+)paren
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5512,10 +5564,13 @@ multiline_comment|/* unless parent directory disappeared - do not return error h
 )brace
 r_break
 suffix:semicolon
+id|readdir_rewind
+suffix:colon
 r_default
 suffix:colon
 (brace
 )brace
+multiline_comment|/* BB rewrite eventually to better handle rewind */
 r_if
 c_cond
 (paren
