@@ -26,11 +26,6 @@ l_int|0
 suffix:semicolon
 DECL|macro|dprintk
 mdefine_line|#define dprintk if (dvbdev_debug) printk
-DECL|variable|dvb_devfs_handle
-r_static
-id|devfs_handle_t
-id|dvb_devfs_handle
-suffix:semicolon
 r_static
 id|LIST_HEAD
 c_func
@@ -790,8 +785,6 @@ comma
 id|id
 )paren
 suffix:semicolon
-id|dvbdev-&gt;devfs_handle
-op_assign
 id|devfs_register
 c_func
 (paren
@@ -872,28 +865,38 @@ id|dvbdev
 r_if
 c_cond
 (paren
-op_logical_neg
 id|dvbdev
 )paren
-r_return
-suffix:semicolon
-id|devfs_unregister
+(brace
+id|devfs_remove
 c_func
 (paren
-id|dvbdev-&gt;devfs_handle
+l_string|&quot;dvb/adapter%d%s%d&quot;
+comma
+id|dvbdev-&gt;adapter-&gt;num
+comma
+id|dnames
+(braket
+id|dvbdev-&gt;type
+)braket
+comma
+id|dvbdev-&gt;id
 )paren
 suffix:semicolon
 id|list_del
+c_func
 (paren
 op_amp
 id|dvbdev-&gt;list_head
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|dvbdev
 )paren
 suffix:semicolon
+)brace
 )brace
 r_static
 DECL|function|dvbdev_get_free_adapter_num
@@ -1088,6 +1091,7 @@ id|adap-&gt;device_list
 )paren
 suffix:semicolon
 multiline_comment|/* fixme: is this correct? */
+multiline_comment|/* No */
 id|try_module_get
 c_func
 (paren
@@ -1101,8 +1105,6 @@ comma
 id|name
 )paren
 suffix:semicolon
-id|adap-&gt;devfs_handle
-op_assign
 id|devfs_mk_dir
 c_func
 (paren
@@ -1149,11 +1151,6 @@ op_star
 id|adap
 )paren
 (brace
-id|devfs_unregister
-(paren
-id|adap-&gt;devfs_handle
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1166,6 +1163,14 @@ id|dvbdev_register_lock
 r_return
 op_minus
 id|ERESTARTSYS
+suffix:semicolon
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;dvb/adapter%d&quot;
+comma
+id|adap-&gt;num
+)paren
 suffix:semicolon
 id|list_del
 (paren
@@ -1185,6 +1190,7 @@ id|adap
 )paren
 suffix:semicolon
 multiline_comment|/* fixme: is this correct? */
+multiline_comment|/* No. */
 id|module_put
 c_func
 (paren
@@ -1205,9 +1211,8 @@ c_func
 r_void
 )paren
 (brace
-id|dvb_devfs_handle
-op_assign
 id|devfs_mk_dir
+c_func
 (paren
 l_string|&quot;dvb&quot;
 )paren
@@ -1266,10 +1271,10 @@ l_string|&quot;DVB&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|dvb_devfs_handle
+l_string|&quot;dvb&quot;
 )paren
 suffix:semicolon
 )brace
