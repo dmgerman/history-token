@@ -197,7 +197,7 @@ macro_line|#endif
 multiline_comment|/*&n; * Conversion functions:  convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|page_to_pa
-mdefine_line|#define page_to_pa(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define page_to_pa(page)&t;(((page) - mem_map) &lt;&lt; PAGE_SHIFT)
 DECL|macro|pte_pfn
 mdefine_line|#define pte_pfn(pte)&t;(pte_val(pte) &gt;&gt; 32)
 DECL|macro|pte_page
@@ -1073,7 +1073,7 @@ DECL|macro|PAGE_DIR_OFFSET
 mdefine_line|#define PAGE_DIR_OFFSET(tsk,address) pgd_offset((tsk),(address))
 multiline_comment|/* to find an entry in a kernel page-table-directory */
 DECL|macro|pgd_offset_k
-mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
+mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, (address))
 multiline_comment|/* to find an entry in a page-table-directory. */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address)&t;(((address) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
