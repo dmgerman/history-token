@@ -5,7 +5,7 @@ mdefine_line|#define _LINUX_PNPBIOS_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-multiline_comment|/*&n; * Status codes (warnings and errors)&n; */
+multiline_comment|/*&n; * Return codes&n; */
 DECL|macro|PNP_SUCCESS
 mdefine_line|#define PNP_SUCCESS                     0x00
 DECL|macro|PNP_NOT_SET_STATICALLY
@@ -96,6 +96,11 @@ DECL|macro|pnpbios_is_static
 mdefine_line|#define pnpbios_is_static(x) (((x)-&gt;flags &amp; 0x0100) == 0x0000)
 DECL|macro|pnpbios_is_dynamic
 mdefine_line|#define pnpbios_is_dynamic(x) ((x)-&gt;flags &amp; 0x0080)
+multiline_comment|/*&n; * Function Parameters&n; */
+DECL|macro|PNPMODE_STATIC
+mdefine_line|#define PNPMODE_STATIC 1
+DECL|macro|PNPMODE_DYNAMIC
+mdefine_line|#define PNPMODE_DYNAMIC 0
 multiline_comment|/* 0x8000 through 0xffff are OEM defined */
 macro_line|#pragma pack(1)
 DECL|struct|pnp_dev_node_info
@@ -214,6 +219,11 @@ r_int
 id|pnpbios_dont_use_current_config
 suffix:semicolon
 r_extern
+r_struct
+id|pnp_dev_node_info
+id|node_info
+suffix:semicolon
+r_extern
 r_void
 op_star
 id|pnpbios_kmalloc
@@ -231,6 +241,17 @@ r_int
 id|pnpbios_init
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pnpbios_interface_attach_device
+c_func
+(paren
+r_struct
+id|pnp_bios_node
+op_star
+id|node
 )paren
 suffix:semicolon
 r_extern
