@@ -127,12 +127,12 @@ c_func
 id|sd_index_idr
 )paren
 suffix:semicolon
-DECL|variable|sd_index_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sd_index_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* This semaphore is used to mediate the 0-&gt;1 reference get in the&n; * face of object destruction (i.e. we can&squot;t allow a get on an&n; * object after last put) */
 r_static

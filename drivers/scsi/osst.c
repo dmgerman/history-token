@@ -301,12 +301,12 @@ id|os_scsi_tapes
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|os_scsi_tapes_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|os_scsi_tapes_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|modes_defined
 r_static

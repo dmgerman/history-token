@@ -63,12 +63,12 @@ id|ipr_testmode
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|ipr_driver_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ipr_driver_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* This table describes the differences between DMA controller chips */
 DECL|variable|ipr_chip_cfg

@@ -715,12 +715,12 @@ id|i
 suffix:semicolon
 )brace
 )brace
-DECL|variable|ncr53c8xx_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ncr53c8xx_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|__m_calloc2
 r_static

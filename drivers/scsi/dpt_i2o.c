@@ -279,12 +279,12 @@ id|adpt_post_wait_id
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|adpt_post_wait_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|adpt_post_wait_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*============================================================================&n; * &t;&t;&t;&t;Functions&n; *============================================================================&n; */
 DECL|function|adpt_read_blink_led
