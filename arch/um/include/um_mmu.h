@@ -5,10 +5,10 @@ mdefine_line|#define __ARCH_UM_MMU_H
 macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;choose-mode.h&quot;
 macro_line|#ifdef CONFIG_MODE_TT
-macro_line|#include &quot;../kernel/tt/include/mmu.h&quot;
+macro_line|#include &quot;mmu-tt.h&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_MODE_SKAS
-macro_line|#include &quot;../kernel/skas/include/mmu.h&quot;
+macro_line|#include &quot;mmu-skas.h&quot;
 macro_line|#endif
 r_typedef
 r_union

@@ -1,17 +1,11 @@
-multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
-macro_line|#ifndef __SKAS_MMU_H
-DECL|macro|__SKAS_MMU_H
-mdefine_line|#define __SKAS_MMU_H
-macro_line|#include &quot;linux/list.h&quot;
-macro_line|#include &quot;linux/spinlock.h&quot;
-DECL|struct|mmu_context_skas
+multiline_comment|/*&n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+macro_line|#ifndef __TT_MMU_H
+DECL|macro|__TT_MMU_H
+mdefine_line|#define __TT_MMU_H
+DECL|struct|mmu_context_tt
 r_struct
-id|mmu_context_skas
+id|mmu_context_tt
 (brace
-DECL|member|mm_fd
-r_int
-id|mm_fd
-suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif
