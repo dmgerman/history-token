@@ -7,7 +7,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/ma1.h&gt;
 macro_line|#include &lt;asm/rte_ma1_cb.h&gt;
-macro_line|#include &lt;asm/nb85e_timer_c.h&gt;
+macro_line|#include &lt;asm/v850e_timer_c.h&gt;
 macro_line|#include &quot;mach.h&quot;
 multiline_comment|/* SRAM and SDRAM are almost contiguous (with a small hole in between;&n;   see mach_reserve_bootmem for details), so just use both as one big area.  */
 DECL|macro|RAM_START
@@ -184,7 +184,7 @@ id|rte_cb_init_irqs
 )paren
 suffix:semicolon
 multiline_comment|/* Use falling-edge-sensitivity for interrupts .  */
-id|NB85E_TIMER_C_SESC
+id|V850E_TIMER_C_SESC
 (paren
 l_int|0
 )paren
@@ -192,7 +192,7 @@ op_and_assign
 op_complement
 l_int|0xC
 suffix:semicolon
-id|NB85E_TIMER_C_SESC
+id|V850E_TIMER_C_SESC
 (paren
 l_int|1
 )paren
@@ -216,12 +216,12 @@ id|tc
 op_increment
 )paren
 multiline_comment|/* Turn on the timer.  */
-id|NB85E_TIMER_C_TMCC0
+id|V850E_TIMER_C_TMCC0
 (paren
 id|tc
 )paren
 op_or_assign
-id|NB85E_TIMER_C_TMCC0_CAE
+id|V850E_TIMER_C_TMCC0_CAE
 suffix:semicolon
 multiline_comment|/* Make sure the relevant port0/port1 pins are assigned&n;&t;   interrupt duty.  We used INTP001-INTP011 (don&squot;t screw with&n;&t;   INTP000 because the monitor uses it).  */
 id|MA_PORT0_PMC

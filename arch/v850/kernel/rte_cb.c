@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/nb85e_uart.h&gt;
+macro_line|#include &lt;asm/v850e_uart.h&gt;
 macro_line|#include &quot;mach.h&quot;
 r_static
 r_void
@@ -63,7 +63,7 @@ id|rte_cb_early_init
 r_void
 )paren
 (brace
-id|nb85e_intc_disable_irqs
+id|v850e_intc_disable_irqs
 (paren
 )paren
 suffix:semicolon
@@ -85,6 +85,7 @@ op_star
 id|cmdline
 )paren
 (brace
+macro_line|#ifdef CONFIG_RTE_MB_A_PCI
 multiline_comment|/* Probe for Mother-A, and print a message if we find it.  */
 op_star
 (paren

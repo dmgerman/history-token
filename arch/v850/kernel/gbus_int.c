@@ -863,7 +863,7 @@ dot
 id|gint
 suffix:semicolon
 r_struct
-id|nb85e_intc_irq_init
+id|v850e_intc_irq_init
 id|gint_irq_init
 (braket
 l_int|2
@@ -933,7 +933,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Terminate the vector.  */
-id|nb85e_intc_init_irq_types
+id|v850e_intc_init_irq_types
 (paren
 id|gint_irq_init
 comma

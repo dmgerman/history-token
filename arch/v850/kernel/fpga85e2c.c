@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/v850/kernel/fpga85e2c.h -- Machine-dependent defs for&n; *&t;FPGA implementation of V850E2/NA85E2C&n; *&n; *  Copyright (C) 2002  NEC Corporation&n; *  Copyright (C) 2002  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * arch/v850/kernel/fpga85e2c.h -- Machine-dependent defs for&n; *&t;FPGA implementation of V850E2/NA85E2C&n; *&n; *  Copyright (C) 2002,03  NEC Electronics Corporation&n; *  Copyright (C) 2002,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -455,7 +455,7 @@ suffix:semicolon
 multiline_comment|/* Interrupts */
 DECL|variable|irq_inits
 r_struct
-id|nb85e_intc_irq_init
+id|v850e_intc_irq_init
 id|irq_inits
 (braket
 )braket
@@ -513,7 +513,7 @@ id|mach_init_irqs
 r_void
 )paren
 (brace
-id|nb85e_intc_init_irq_types
+id|v850e_intc_init_irq_types
 (paren
 id|irq_inits
 comma

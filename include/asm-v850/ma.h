@@ -1,9 +1,9 @@
-multiline_comment|/*&n; * include/asm-v850/ma.h -- V850E/MA series of cpu chips&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/ma.h -- V850E/MA series of cpu chips&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_MA_H__
 DECL|macro|__V850_MA_H__
 mdefine_line|#define __V850_MA_H__
-multiline_comment|/* The MA series uses the NB85E cpu core.  */
-macro_line|#include &lt;asm/nb85e.h&gt;
+multiline_comment|/* The MA series uses the V850E cpu core.  */
+macro_line|#include &lt;asm/v850e.h&gt;
 multiline_comment|/* For &lt;asm/entry.h&gt; */
 multiline_comment|/* We use on-chip RAM, for a few miscellaneous variables that must be&n;   accessible using a load instruction relative to R0.  The amount&n;   varies between chip models, but there&squot;s always at least 4K, and it&n;   should always start at FFFFC000.  */
 DECL|macro|R0_RAM_ADDR
@@ -31,19 +31,19 @@ id|baud
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* MA series timer C details.  */
-DECL|macro|NB85E_TIMER_C_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_C_BASE_ADDR&t;&t;0xFFFFF600
+DECL|macro|V850E_TIMER_C_BASE_ADDR
+mdefine_line|#define V850E_TIMER_C_BASE_ADDR&t;&t;0xFFFFF600
 multiline_comment|/* MA series timer D details.  */
-DECL|macro|NB85E_TIMER_D_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_BASE_ADDR&t;&t;0xFFFFF540
-DECL|macro|NB85E_TIMER_D_TMD_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_TMD_BASE_ADDR &t;(NB85E_TIMER_D_BASE_ADDR + 0x0)
-DECL|macro|NB85E_TIMER_D_CMD_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_CMD_BASE_ADDR &t;(NB85E_TIMER_D_BASE_ADDR + 0x2)
-DECL|macro|NB85E_TIMER_D_TMCD_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_TMCD_BASE_ADDR &t;(NB85E_TIMER_D_BASE_ADDR + 0x4)
-DECL|macro|NB85E_TIMER_D_BASE_FREQ
-mdefine_line|#define NB85E_TIMER_D_BASE_FREQ&t;&t;CPU_CLOCK_FREQ
+DECL|macro|V850E_TIMER_D_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_BASE_ADDR&t;&t;0xFFFFF540
+DECL|macro|V850E_TIMER_D_TMD_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_TMD_BASE_ADDR &t;(V850E_TIMER_D_BASE_ADDR + 0x0)
+DECL|macro|V850E_TIMER_D_CMD_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_CMD_BASE_ADDR &t;(V850E_TIMER_D_BASE_ADDR + 0x2)
+DECL|macro|V850E_TIMER_D_TMCD_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_TMCD_BASE_ADDR &t;(V850E_TIMER_D_BASE_ADDR + 0x4)
+DECL|macro|V850E_TIMER_D_BASE_FREQ
+mdefine_line|#define V850E_TIMER_D_BASE_FREQ&t;&t;CPU_CLOCK_FREQ
 multiline_comment|/* Port 0 */
 multiline_comment|/* Direct I/O.  Bits 0-7 are pins P00-P07.  */
 DECL|macro|MA_PORT0_IO_ADDR

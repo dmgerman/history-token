@@ -179,21 +179,21 @@ multiline_comment|/* RTS for UART channel 1 is pin P07 (bit 7 of port 0).  */
 DECL|macro|NB85E_UART_SET_RTS
 mdefine_line|#define NB85E_UART_SET_RTS(chan, val)&t;&t;&t;&t;&t;      &bslash;&n;   do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;   if (chan == 1) {&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;   unsigned old = ANNA_PORT_IO(0); &t;&t;&t;      &bslash;&n;&t;&t;   if (val)&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   ANNA_PORT_IO(0) = old &amp; ~0x80;&t;&t;      &bslash;&n;&t;&t;   else&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   ANNA_PORT_IO(0) = old | 0x80;&t;&t;      &bslash;&n;&t;   }&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;   } while (0)
 multiline_comment|/* Timer C details.  */
-DECL|macro|NB85E_TIMER_C_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_C_BASE_ADDR&t;&t;0xFFFFF600
+DECL|macro|V850E_TIMER_C_BASE_ADDR
+mdefine_line|#define V850E_TIMER_C_BASE_ADDR&t;&t;0xFFFFF600
 multiline_comment|/* Timer D details (the Anna actually has 5 of these; should change later). */
-DECL|macro|NB85E_TIMER_D_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_BASE_ADDR&t;&t;0xFFFFF540
-DECL|macro|NB85E_TIMER_D_TMD_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_TMD_BASE_ADDR &t;(NB85E_TIMER_D_BASE_ADDR + 0x0)
-DECL|macro|NB85E_TIMER_D_CMD_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_CMD_BASE_ADDR &t;(NB85E_TIMER_D_BASE_ADDR + 0x2)
-DECL|macro|NB85E_TIMER_D_TMCD_BASE_ADDR
-mdefine_line|#define NB85E_TIMER_D_TMCD_BASE_ADDR &t;(NB85E_TIMER_D_BASE_ADDR + 0x4)
-DECL|macro|NB85E_TIMER_D_BASE_FREQ
-mdefine_line|#define NB85E_TIMER_D_BASE_FREQ&t;&t;SYS_CLOCK_FREQ
-DECL|macro|NB85E_TIMER_D_TMCD_CS_MIN
-mdefine_line|#define NB85E_TIMER_D_TMCD_CS_MIN&t;1 /* min 2^1 divider */
+DECL|macro|V850E_TIMER_D_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_BASE_ADDR&t;&t;0xFFFFF540
+DECL|macro|V850E_TIMER_D_TMD_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_TMD_BASE_ADDR &t;(V850E_TIMER_D_BASE_ADDR + 0x0)
+DECL|macro|V850E_TIMER_D_CMD_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_CMD_BASE_ADDR &t;(V850E_TIMER_D_BASE_ADDR + 0x2)
+DECL|macro|V850E_TIMER_D_TMCD_BASE_ADDR
+mdefine_line|#define V850E_TIMER_D_TMCD_BASE_ADDR &t;(V850E_TIMER_D_BASE_ADDR + 0x4)
+DECL|macro|V850E_TIMER_D_BASE_FREQ
+mdefine_line|#define V850E_TIMER_D_BASE_FREQ&t;&t;SYS_CLOCK_FREQ
+DECL|macro|V850E_TIMER_D_TMCD_CS_MIN
+mdefine_line|#define V850E_TIMER_D_TMCD_CS_MIN&t;1 /* min 2^1 divider */
 multiline_comment|/* For &lt;asm/param.h&gt; */
 macro_line|#ifndef HZ
 DECL|macro|HZ
