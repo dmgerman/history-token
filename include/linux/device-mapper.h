@@ -258,6 +258,13 @@ id|module
 op_star
 id|module
 suffix:semicolon
+DECL|member|version
+r_int
+id|version
+(braket
+l_int|3
+)braket
+suffix:semicolon
 DECL|member|ctr
 id|dm_ctr_fn
 id|ctr
@@ -354,7 +361,7 @@ DECL|member|split_io
 id|sector_t
 id|split_io
 suffix:semicolon
-multiline_comment|/*&n;&t; * These are automaticall filled in by&n;&t; * dm_table_get_device.&n;&t; */
+multiline_comment|/*&n;&t; * These are automatically filled in by&n;&t; * dm_table_get_device.&n;&t; */
 DECL|member|limits
 r_struct
 id|io_restrictions

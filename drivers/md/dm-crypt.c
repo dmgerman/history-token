@@ -3093,6 +3093,17 @@ op_assign
 l_string|&quot;crypt&quot;
 comma
 dot
+id|version
+op_assign
+(brace
+l_int|1
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+dot
 id|module
 op_assign
 id|THIS_MODULE
