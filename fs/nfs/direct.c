@@ -510,7 +510,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * nfs_direct_read - For each iov segment, map the user&squot;s buffer&n; *                   then generate read RPCs.&n; * @inode: target inode&n; * @file: target file (may be NULL)&n; * @iov: array of vectors that define I/O buffer&n; * file_offset: offset in file to begin the operation&n; * nr_segs: size of iovec array&n; *&n; * generic_file_direct_IO has already pushed out any non-direct&n; * writes so that this read will see them when we read from the&n; * server.&n; */
 r_static
-r_int
+id|ssize_t
 DECL|function|nfs_direct_read
 id|nfs_direct_read
 c_func
@@ -539,7 +539,7 @@ r_int
 id|nr_segs
 )paren
 (brace
-r_int
+id|ssize_t
 id|tot_bytes
 op_assign
 l_int|0
@@ -566,9 +566,10 @@ l_int|0
 )paren
 )paren
 (brace
-r_int
+id|ssize_t
 id|result
-comma
+suffix:semicolon
+r_int
 id|page_count
 suffix:semicolon
 r_struct
@@ -1181,7 +1182,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * nfs_direct_write - For each iov segment, map the user&squot;s buffer&n; *                    then generate write and commit RPCs.&n; * @inode: target inode&n; * @file: target file (may be NULL)&n; * @iov: array of vectors that define I/O buffer&n; * file_offset: offset in file to begin the operation&n; * nr_segs: size of iovec array&n; *&n; * Upon return, generic_file_direct_IO invalidates any cached pages&n; * that non-direct readers might access, so they will pick up these&n; * writes immediately.&n; */
 r_static
-r_int
+id|ssize_t
 DECL|function|nfs_direct_write
 id|nfs_direct_write
 c_func
@@ -1210,7 +1211,7 @@ r_int
 id|nr_segs
 )paren
 (brace
-r_int
+id|ssize_t
 id|tot_bytes
 op_assign
 l_int|0
@@ -1237,9 +1238,10 @@ l_int|0
 )paren
 )paren
 (brace
-r_int
+id|ssize_t
 id|result
-comma
+suffix:semicolon
+r_int
 id|page_count
 suffix:semicolon
 r_struct
@@ -1396,7 +1398,7 @@ id|tot_bytes
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * nfs_direct_IO - NFS address space operation for direct I/O&n; * rw: direction (read or write)&n; * @iocb: target I/O control block&n; * @iov: array of vectors that define I/O buffer&n; * file_offset: offset in file to begin the operation&n; * nr_segs: size of iovec array&n; *&n; * Usually a file system implements direct I/O by calling out to&n; * blockdev_direct_IO.  The NFS client doesn&squot;t have a backing block&n; * device, so we do everything by hand instead.&n; *&n; * The inode&squot;s i_sem is no longer held by the VFS layer before it calls&n; * this function to do a write.&n; */
-r_int
+id|ssize_t
 DECL|function|nfs_direct_IO
 id|nfs_direct_IO
 c_func
@@ -1423,7 +1425,7 @@ r_int
 id|nr_segs
 )paren
 (brace
-r_int
+id|ssize_t
 id|result
 op_assign
 op_minus

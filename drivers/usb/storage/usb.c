@@ -833,7 +833,7 @@ l_string|&quot;usb-storage&quot;
 suffix:semicolon
 id|current-&gt;flags
 op_or_assign
-id|PF_IOTHREAD
+id|PF_NOFREEZE
 suffix:semicolon
 id|unlock_kernel
 c_func
