@@ -213,16 +213,6 @@ l_int|15
 comma
 multiline_comment|/* do not block in current thread&t;   */
 multiline_comment|/* flags used only internally */
-DECL|enumerator|_PBF_LOCKABLE
-id|_PBF_LOCKABLE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|16
-)paren
-comma
-multiline_comment|/* page_buf_t may be locked&t;&t;   */
 DECL|enumerator|_PBF_ALL_PAGES_MAPPED
 id|_PBF_ALL_PAGES_MAPPED
 op_assign
@@ -650,7 +640,7 @@ id|page_buf_flags_t
 )paren
 suffix:semicolon
 multiline_comment|/* PBF_READ, PBF_WRITE,&t;&t;*/
-multiline_comment|/* PBF_FORCEIO, _PBF_LOCKABLE&t;*/
+multiline_comment|/* PBF_FORCEIO, &t;&t;*/
 r_extern
 id|page_buf_t
 op_star
@@ -1432,12 +1422,6 @@ id|bp
 r_if
 c_cond
 (paren
-(paren
-id|bp-&gt;pb_flags
-op_amp
-id|_PBF_LOCKABLE
-)paren
-op_logical_and
 op_logical_neg
 id|bp-&gt;pb_relse
 )paren
