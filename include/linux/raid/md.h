@@ -113,15 +113,6 @@ id|mddev
 suffix:semicolon
 r_extern
 r_void
-id|md_interrupt_thread
-(paren
-id|mdk_thread_t
-op_star
-id|thread
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|md_write_start
 c_func
 (paren
