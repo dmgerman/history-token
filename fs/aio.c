@@ -989,7 +989,7 @@ id|ctx-&gt;user_id
 comma
 id|current-&gt;mm
 comma
-id|ctx-&gt;ring_info.ring-&gt;nr
+id|ctx-&gt;ring_info.nr
 )paren
 suffix:semicolon
 r_return
@@ -1146,6 +1146,7 @@ c_cond
 (paren
 id|cancel
 )paren
+(brace
 id|iocb-&gt;ki_users
 op_increment
 suffix:semicolon
@@ -1156,11 +1157,6 @@ op_amp
 id|ctx-&gt;ctx_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cancel
-)paren
 id|cancel
 c_func
 (paren
@@ -1177,6 +1173,7 @@ op_amp
 id|ctx-&gt;ctx_lock
 )paren
 suffix:semicolon
+)brace
 )brace
 id|spin_unlock_irq
 c_func
@@ -1500,7 +1497,7 @@ id|aio_nr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* aio_get_req&n; *&t;Allocate a slot for an aio request.  Increments the users count&n; * of the kioctx so that the kioctx stays around until all requests are&n; * complete.  Returns -EAGAIN if no requests are free.&n; */
+multiline_comment|/* aio_get_req&n; *&t;Allocate a slot for an aio request.  Increments the users count&n; * of the kioctx so that the kioctx stays around until all requests are&n; * complete.  Returns NULL if no requests are free.&n; */
 r_static
 r_struct
 id|kiocb
@@ -1668,17 +1665,6 @@ suffix:semicolon
 id|req-&gt;ki_users
 op_assign
 l_int|1
-suffix:semicolon
-)brace
-r_else
-(brace
-id|kmem_cache_free
-c_func
-(paren
-id|kiocb_cachep
-comma
-id|req
-)paren
 suffix:semicolon
 id|okay
 op_assign
@@ -1966,7 +1952,6 @@ suffix:semicolon
 multiline_comment|/* __aio_put_req&n; *&t;Returns true if this put was the last user of the request.&n; */
 DECL|function|__aio_put_req
 r_static
-r_inline
 r_int
 id|__aio_put_req
 c_func
@@ -2178,7 +2163,6 @@ suffix:semicolon
 multiline_comment|/*&t;Lookup an ioctx id.  ioctx_list is lockless for reads.&n; *&t;FIXME: this is O(n) and is only suitable for development.&n; */
 DECL|function|lookup_ioctx
 r_static
-r_inline
 r_struct
 id|kioctx
 op_star
@@ -3525,6 +3509,13 @@ r_return
 id|ret
 suffix:semicolon
 multiline_comment|/* End fast path */
+id|init_timeout
+c_func
+(paren
+op_amp
+id|to
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3563,13 +3554,6 @@ id|ts
 )paren
 r_goto
 id|out
-suffix:semicolon
-id|init_timeout
-c_func
-(paren
-op_amp
-id|to
-)paren
 suffix:semicolon
 id|set_timeout
 c_func
@@ -5102,6 +5086,35 @@ c_func
 (paren
 l_string|&quot;calling cancel&bslash;n&quot;
 )paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|tmp
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|tmp
+)paren
+)paren
+suffix:semicolon
+id|tmp.obj
+op_assign
+(paren
+id|u64
+)paren
+(paren
+r_int
+r_int
+)paren
+id|kiocb-&gt;ki_user_obj
+suffix:semicolon
+id|tmp.data
+op_assign
+id|kiocb-&gt;ki_user_data
 suffix:semicolon
 id|ret
 op_assign

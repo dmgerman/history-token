@@ -394,7 +394,7 @@ suffix:semicolon
 multiline_comment|/*&n; * &n; *  Service functions for specialix IO8+ driver.&n; * &n; */
 multiline_comment|/* Get board number from pointer */
 DECL|function|board_No
-r_extern
+r_static
 r_inline
 r_int
 id|board_No
@@ -413,7 +413,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Get port number from pointer */
 DECL|function|port_No
-r_extern
+r_static
 r_inline
 r_int
 id|port_No
@@ -437,7 +437,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Get pointer to board from pointer to port */
 DECL|function|port_Board
-r_extern
+r_static
 r_inline
 r_struct
 id|specialix_board
@@ -468,7 +468,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Input Byte from CL CD186x register */
 DECL|function|sx_in
-r_extern
+r_static
 r_inline
 r_int
 r_char
@@ -513,7 +513,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Output Byte to CL CD186x register */
 DECL|function|sx_out
-r_extern
+r_static
 r_inline
 r_void
 id|sx_out
@@ -562,7 +562,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Input Byte from CL CD186x register */
 DECL|function|sx_in_off
-r_extern
+r_static
 r_inline
 r_int
 r_char
@@ -603,7 +603,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Output Byte to CL CD186x register */
 DECL|function|sx_out_off
-r_extern
+r_static
 r_inline
 r_void
 id|sx_out_off
@@ -648,7 +648,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Wait for Channel Command Register ready */
 DECL|function|sx_wait_CCR
-r_extern
+r_static
 r_inline
 r_void
 id|sx_wait_CCR
@@ -706,7 +706,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Wait for Channel Command Register ready */
 DECL|function|sx_wait_CCR_off
-r_extern
+r_static
 r_inline
 r_void
 id|sx_wait_CCR_off
@@ -764,7 +764,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  specialix IO8+ IO range functions.&n; */
 DECL|function|sx_check_io_range
-r_extern
+r_static
 r_inline
 r_int
 id|sx_check_io_range
@@ -786,7 +786,7 @@ id|SX_IO_SPACE
 suffix:semicolon
 )brace
 DECL|function|sx_request_io_range
-r_extern
+r_static
 r_inline
 r_void
 id|sx_request_io_range
@@ -817,7 +817,7 @@ l_string|&quot;specialix IO8+&quot;
 suffix:semicolon
 )brace
 DECL|function|sx_release_io_range
-r_extern
+r_static
 r_inline
 r_void
 id|sx_release_io_range
@@ -848,7 +848,7 @@ suffix:semicolon
 multiline_comment|/* Must be called with enabled interrupts */
 multiline_comment|/* Ugly. Very ugly. Don&squot;t use this for anything else than initialization &n;   code */
 DECL|function|sx_long_delay
-r_extern
+r_static
 r_inline
 r_void
 id|sx_long_delay
@@ -2004,7 +2004,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * &n; *  Interrupt processing routines.&n; * */
 DECL|function|sx_mark_event
-r_extern
+r_static
 r_inline
 r_void
 id|sx_mark_event
@@ -2047,7 +2047,7 @@ id|SPECIALIX_BH
 suffix:semicolon
 )brace
 DECL|function|sx_get_port
-r_extern
+r_static
 r_inline
 r_struct
 id|specialix_port
@@ -2147,7 +2147,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|sx_receive_exc
-r_extern
+r_static
 r_inline
 r_void
 id|sx_receive_exc
@@ -2463,7 +2463,7 @@ id|tq_timer
 suffix:semicolon
 )brace
 DECL|function|sx_receive
-r_extern
+r_static
 r_inline
 r_void
 id|sx_receive
@@ -2607,7 +2607,7 @@ id|tq_timer
 suffix:semicolon
 )brace
 DECL|function|sx_transmit
-r_extern
+r_static
 r_inline
 r_void
 id|sx_transmit
@@ -3008,7 +3008,7 @@ id|RS_EVENT_WRITE_WAKEUP
 suffix:semicolon
 )brace
 DECL|function|sx_check_modem
-r_extern
+r_static
 r_inline
 r_void
 id|sx_check_modem
@@ -3714,7 +3714,7 @@ multiline_comment|/* Turn ON interrupts. */
 )brace
 multiline_comment|/* Called with disabled interrupts */
 DECL|function|sx_setup_board
-r_extern
+r_static
 r_inline
 r_int
 id|sx_setup_board
@@ -3806,7 +3806,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Called with disabled interrupts */
 DECL|function|sx_shutdown_board
-r_extern
+r_static
 r_inline
 r_void
 id|sx_shutdown_board
@@ -8046,7 +8046,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|sx_send_break
-r_extern
+r_static
 r_inline
 r_void
 id|sx_send_break
@@ -8168,7 +8168,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|sx_set_serial_info
-r_extern
+r_static
 r_inline
 r_int
 id|sx_set_serial_info
@@ -8479,7 +8479,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|sx_get_serial_info
-r_extern
+r_static
 r_inline
 r_int
 id|sx_get_serial_info

@@ -168,7 +168,7 @@ r_struct
 id|xfs_buf
 suffix:semicolon
 r_struct
-id|xfs_bmbt_rec_32
+id|xfs_bmbt_rec_64
 suffix:semicolon
 r_struct
 id|xfs_inode
@@ -235,14 +235,14 @@ suffix:semicolon
 multiline_comment|/* fields when flushed */
 DECL|member|ili_extents_buf
 r_struct
-id|xfs_bmbt_rec_32
+id|xfs_bmbt_rec_64
 op_star
 id|ili_extents_buf
 suffix:semicolon
 multiline_comment|/* array of logged&n;&t;&t;&t;&t;&t;&t;      data exts */
 DECL|member|ili_aextents_buf
 r_struct
-id|xfs_bmbt_rec_32
+id|xfs_bmbt_rec_64
 op_star
 id|ili_aextents_buf
 suffix:semicolon

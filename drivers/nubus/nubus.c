@@ -60,7 +60,7 @@ id|nubus_boards
 suffix:semicolon
 multiline_comment|/* Meaning of &quot;bytelanes&quot;:&n;&n;   The card ROM may appear on any or all bytes of each long word in&n;   NuBus memory.  The low 4 bits of the &quot;map&quot; value found in the&n;   format block (at the top of the slot address space, as well as at&n;   the top of the MacOS ROM) tells us which bytelanes, i.e. which byte&n;   offsets within each longword, are valid.  Thus:&n;&n;   A map of 0x0f, as found in the MacOS ROM, means that all bytelanes&n;   are valid.&n;&n;   A map of 0xf0 means that no bytelanes are valid (We pray that we&n;   will never encounter this, but stranger things have happened)&n;&n;   A map of 0xe1 means that only the MSB of each long word is actually&n;   part of the card ROM.  (We hope to never encounter NuBus on a&n;   little-endian machine.  Again, stranger things have happened)&n;&n;   A map of 0x78 means that only the LSB of each long word is valid.&n;&n;   Etcetera, etcetera.  Hopefully this clears up some confusion over&n;   what the following code actually does.  */
 DECL|function|not_useful
-r_extern
+r_static
 r_inline
 r_int
 id|not_useful
@@ -413,7 +413,7 @@ suffix:semicolon
 multiline_comment|/* Now, functions to read the sResource tree */
 multiline_comment|/* Each sResource entry consists of a 1-byte ID and a 3-byte data&n;   field.  If that data field contains an offset, then obviously we&n;   have to expand it from a 24-bit signed number to a 32-bit signed&n;   number. */
 DECL|function|nubus_expand32
-r_extern
+r_static
 r_inline
 r_int
 id|nubus_expand32
@@ -442,7 +442,7 @@ id|foo
 suffix:semicolon
 )brace
 DECL|function|nubus_rom_addr
-r_extern
+r_static
 r_inline
 r_void
 op_star

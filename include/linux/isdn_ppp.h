@@ -66,22 +66,6 @@ DECL|macro|SC_OUT_SHORT_SEQ
 mdefine_line|#define SC_OUT_SHORT_SEQ 0x00000800
 DECL|macro|SC_IN_SHORT_SEQ
 mdefine_line|#define SC_IN_SHORT_SEQ  0x00004000
-DECL|macro|SC_DECOMP_ON
-mdefine_line|#define SC_DECOMP_ON&t;&t;0x01
-DECL|macro|SC_COMP_ON
-mdefine_line|#define SC_COMP_ON&t;&t;0x02
-DECL|macro|SC_DECOMP_DISCARD
-mdefine_line|#define SC_DECOMP_DISCARD&t;0x04
-DECL|macro|SC_COMP_DISCARD
-mdefine_line|#define SC_COMP_DISCARD&t;&t;0x08
-DECL|macro|SC_LINK_DECOMP_ON
-mdefine_line|#define SC_LINK_DECOMP_ON&t;0x10
-DECL|macro|SC_LINK_COMP_ON
-mdefine_line|#define SC_LINK_COMP_ON&t;&t;0x20
-DECL|macro|SC_LINK_DECOMP_DISCARD
-mdefine_line|#define SC_LINK_DECOMP_DISCARD&t;0x40
-DECL|macro|SC_LINK_COMP_DISCARD
-mdefine_line|#define SC_LINK_COMP_DISCARD&t;0x80
 DECL|macro|ISDN_PPP_COMP_MAX_OPTIONS
 mdefine_line|#define ISDN_PPP_COMP_MAX_OPTIONS 16
 DECL|macro|IPPP_COMP_FLAG_XMIT
@@ -116,6 +100,8 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/ppp_defs.h&gt;
 DECL|macro|DECOMP_ERR_NOMEM
 mdefine_line|#define DECOMP_ERR_NOMEM&t;(-10)
 DECL|macro|MP_END_FRAG
@@ -513,19 +499,19 @@ id|ippp_ccp_reset_states
 id|state
 suffix:semicolon
 multiline_comment|/* State of this transaction */
-DECL|member|is
+DECL|member|ccp
 r_struct
-id|ippp_struct
+id|ippp_ccp
 op_star
-id|is
+id|ccp
 suffix:semicolon
-multiline_comment|/* Backlink to device stuff */
+multiline_comment|/* Backlink */
 DECL|member|id
 r_int
 r_char
 id|id
 suffix:semicolon
-multiline_comment|/* Backlink id index */
+multiline_comment|/* id index */
 DECL|member|ta
 r_int
 r_char
@@ -585,158 +571,6 @@ r_char
 id|lastid
 suffix:semicolon
 multiline_comment|/* Last id allocated by the engine */
-)brace
-suffix:semicolon
-DECL|struct|ippp_struct
-r_struct
-id|ippp_struct
-(brace
-DECL|member|next_link
-r_struct
-id|ippp_struct
-op_star
-id|next_link
-suffix:semicolon
-DECL|member|state
-r_int
-id|state
-suffix:semicolon
-DECL|member|rq
-r_struct
-id|sk_buff_head
-id|rq
-suffix:semicolon
-DECL|member|wq
-id|wait_queue_head_t
-id|wq
-suffix:semicolon
-DECL|member|tk
-r_struct
-id|task_struct
-op_star
-id|tk
-suffix:semicolon
-DECL|member|mpppcfg
-r_int
-r_int
-id|mpppcfg
-suffix:semicolon
-DECL|member|pppcfg
-r_int
-r_int
-id|pppcfg
-suffix:semicolon
-DECL|member|mru
-r_int
-r_int
-id|mru
-suffix:semicolon
-DECL|member|mpmru
-r_int
-r_int
-id|mpmru
-suffix:semicolon
-DECL|member|mpmtu
-r_int
-r_int
-id|mpmtu
-suffix:semicolon
-DECL|member|maxcid
-r_int
-r_int
-id|maxcid
-suffix:semicolon
-DECL|member|idev
-r_struct
-id|isdn_net_dev_s
-op_star
-id|idev
-suffix:semicolon
-DECL|member|unit
-r_int
-id|unit
-suffix:semicolon
-DECL|member|minor
-r_int
-id|minor
-suffix:semicolon
-DECL|member|last_link_seqno
-r_int
-r_int
-id|last_link_seqno
-suffix:semicolon
-DECL|member|mp_seqno
-r_int
-id|mp_seqno
-suffix:semicolon
-macro_line|#ifdef CONFIG_ISDN_PPP_VJ
-DECL|member|cbuf
-r_int
-r_char
-op_star
-id|cbuf
-suffix:semicolon
-DECL|member|slcomp
-r_struct
-id|slcompress
-op_star
-id|slcomp
-suffix:semicolon
-macro_line|#endif
-DECL|member|debug
-r_int
-r_int
-id|debug
-suffix:semicolon
-DECL|member|compressor
-DECL|member|decompressor
-r_struct
-id|isdn_ppp_compressor
-op_star
-id|compressor
-comma
-op_star
-id|decompressor
-suffix:semicolon
-DECL|member|link_compressor
-DECL|member|link_decompressor
-r_struct
-id|isdn_ppp_compressor
-op_star
-id|link_compressor
-comma
-op_star
-id|link_decompressor
-suffix:semicolon
-DECL|member|decomp_stat
-DECL|member|comp_stat
-DECL|member|link_decomp_stat
-DECL|member|link_comp_stat
-r_void
-op_star
-id|decomp_stat
-comma
-op_star
-id|comp_stat
-comma
-op_star
-id|link_decomp_stat
-comma
-op_star
-id|link_comp_stat
-suffix:semicolon
-DECL|member|reset
-r_struct
-id|ippp_ccp_reset
-op_star
-id|reset
-suffix:semicolon
-multiline_comment|/* Allocated on demand, may never be needed */
-DECL|member|compflags
-r_int
-r_int
-id|compflags
-suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */

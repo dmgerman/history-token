@@ -2113,6 +2113,14 @@ comma
 r_int
 )paren
 suffix:semicolon
+DECL|macro|MSG_SIMPLE_TAG
+mdefine_line|#define MSG_SIMPLE_TAG&t;0x20
+DECL|macro|MSG_HEAD_TAG
+mdefine_line|#define MSG_HEAD_TAG&t;0x21
+DECL|macro|MSG_ORDERED_TAG
+mdefine_line|#define MSG_ORDERED_TAG&t;0x22
+DECL|macro|SCSI_NO_TAG
+mdefine_line|#define SCSI_NO_TAG&t;(-1)    /* identify no tag in use */
 multiline_comment|/**&n; * scsi_activate_tcq - turn on tag command queueing&n; * @SDpnt:&t;device to turn on TCQ for&n; * @depth:&t;queue depth&n; *&n; * Notes:&n; *&t;Eventually, I hope depth would be the maximum depth&n; *&t;the device could cope with and the real queue depth&n; *&t;would be adjustable from 0 to depth.&n; **/
 DECL|function|scsi_activate_tcq
 r_static
@@ -2157,9 +2165,15 @@ comma
 id|depth
 )paren
 suffix:semicolon
-id|SDpnt-&gt;tagged_queue
-op_assign
-l_int|1
+id|scsi_adjust_queue_depth
+c_func
+(paren
+id|SDpnt
+comma
+id|MSG_ORDERED_TAG
+comma
+id|depth
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -2183,19 +2197,17 @@ op_amp
 id|SDpnt-&gt;request_queue
 )paren
 suffix:semicolon
-id|SDpnt-&gt;tagged_queue
-op_assign
+id|scsi_adjust_queue_depth
+c_func
+(paren
+id|SDpnt
+comma
 l_int|0
+comma
+l_int|2
+)paren
 suffix:semicolon
 )brace
-DECL|macro|MSG_SIMPLE_TAG
-mdefine_line|#define MSG_SIMPLE_TAG&t;0x20
-DECL|macro|MSG_HEAD_TAG
-mdefine_line|#define MSG_HEAD_TAG&t;0x21
-DECL|macro|MSG_ORDERED_TAG
-mdefine_line|#define MSG_ORDERED_TAG&t;0x22
-DECL|macro|SCSI_NO_TAG
-mdefine_line|#define SCSI_NO_TAG&t;(-1)    /* identify no tag in use */
 multiline_comment|/**&n; * scsi_populate_tag_msg - place a tag message in a buffer&n; * @SCpnt:&t;pointer to the Scsi_Cmnd for the tag&n; * @msg:&t;pointer to the area to place the tag&n; *&n; * Notes:&n; *&t;designed to create the correct type of tag message for the &n; *&t;particular request.  Returns the size of the tag message.&n; *&t;May return 0 if TCQ is disabled for this device.&n; **/
 DECL|function|scsi_populate_tag_msg
 r_static

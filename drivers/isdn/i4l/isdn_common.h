@@ -48,7 +48,7 @@ DECL|macro|dbg_statcallb
 mdefine_line|#define dbg_statcallb(arg...) do {} while (0)
 macro_line|#endif
 DECL|macro|isdn_BUG
-mdefine_line|#define isdn_BUG() &bslash;&n;do { printk(KERN_WARNING &quot;ISDN Bug at %s:%d&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;} while(0)
+mdefine_line|#define isdn_BUG() &bslash;&n;do { printk(KERN_WARNING &quot;ISDN BUG at %s:%d&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;} while(0)
 DECL|macro|HERE
 mdefine_line|#define HERE printk(&quot;%s:%d (%s)&bslash;n&quot;, __FILE__, __LINE__, __FUNCTION__)
 r_extern

@@ -825,18 +825,18 @@ r_struct
 id|list_head
 id|slaves
 suffix:semicolon
-multiline_comment|/* list of all bundled channels     */
+multiline_comment|/* list of all bundled channels    &n;&t;&t;&t;&t;&t;  protected by serializing config&n;&t;&t;&t;&t;&t;  ioctls / no change allowed when&n;&t;&t;&t;&t;&t;  interface is running             */
 DECL|member|online
 r_struct
 id|list_head
 id|online
 suffix:semicolon
-multiline_comment|/* list of all bundled channels, &n;&t;&t;&t;&t;&t;  which are currently online       */
-DECL|member|online_lock
+multiline_comment|/* list of all bundled channels &n;&t;&t;&t;&t;&t;  which can be used for actual&n;&t;&t;&t;&t;&t;  data (IP) transfer              &n;&t;&t;&t;&t;&t;  protected by xmit_lock           */
+DECL|member|xmit_lock
 id|spinlock_t
-id|online_lock
+id|xmit_lock
 suffix:semicolon
-multiline_comment|/* lock to protect online list      */
+multiline_comment|/* used to protect the xmit path of &n;&t;&t;&t;&t;&t;  a net_device, including all&n;&t;&t;&t;&t;&t;  associated channels&squot;s frame_cnt  */
 DECL|member|running_devs
 r_struct
 id|list_head
@@ -856,6 +856,42 @@ op_star
 id|dops
 suffix:semicolon
 multiline_comment|/* callbacks used by encapsulator   */
+macro_line|#endif
+macro_line|#ifdef CONFIG_ISDN_PPP
+DECL|member|mpppcfg
+r_int
+r_int
+id|mpppcfg
+suffix:semicolon
+DECL|member|mp_seqno
+r_int
+id|mp_seqno
+suffix:semicolon
+DECL|member|ccp
+r_struct
+id|ippp_ccp
+op_star
+id|ccp
+suffix:semicolon
+DECL|member|debug
+r_int
+r_int
+id|debug
+suffix:semicolon
+macro_line|#ifdef CONFIG_ISDN_PPP_VJ
+DECL|member|cbuf
+r_int
+r_char
+op_star
+id|cbuf
+suffix:semicolon
+DECL|member|slcomp
+r_struct
+id|slcompress
+op_star
+id|slcomp
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/* use an own struct for that in later versions */
 DECL|member|cisco_myseq
@@ -1028,18 +1064,13 @@ r_int
 id|pppbind
 suffix:semicolon
 multiline_comment|/* ippp device for bindings         */
-DECL|member|ppp_slot
-r_int
-id|ppp_slot
+DECL|member|ipppd
+r_struct
+id|ipppd
+op_star
+id|ipppd
 suffix:semicolon
-multiline_comment|/* PPPD device slot number          */
-DECL|member|xmit_lock
-id|spinlock_t
-id|xmit_lock
-suffix:semicolon
-multiline_comment|/* used to protect the xmit path of */
-multiline_comment|/* a particular channel (including  */
-multiline_comment|/* the frame_cnt                    */
+multiline_comment|/* /dev/ipppX which controls us     */
 DECL|member|super_tx_queue
 r_struct
 id|sk_buff_head
@@ -1048,7 +1079,7 @@ suffix:semicolon
 multiline_comment|/* List of supervisory frames to  */
 multiline_comment|/* be transmitted asap              */
 DECL|member|frame_cnt
-id|atomic_t
+r_int
 id|frame_cnt
 suffix:semicolon
 multiline_comment|/* number of frames currently       */
@@ -1091,6 +1122,28 @@ id|global_list
 suffix:semicolon
 multiline_comment|/* global list of all isdn_net_devs */
 macro_line|#ifdef CONFIG_ISDN_PPP
+DECL|member|pppcfg
+r_int
+r_int
+id|pppcfg
+suffix:semicolon
+DECL|member|pppseq
+r_int
+r_int
+id|pppseq
+suffix:semicolon
+multiline_comment|/* last seq no seen                 */
+DECL|member|ccp
+r_struct
+id|ippp_ccp
+op_star
+id|ccp
+suffix:semicolon
+DECL|member|debug
+r_int
+r_int
+id|debug
+suffix:semicolon
 DECL|member|pb
 id|ippp_bundle
 op_star

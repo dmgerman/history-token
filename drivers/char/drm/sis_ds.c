@@ -42,6 +42,12 @@ id|set_t
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|set
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -105,6 +111,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 r_return
 id|set
 suffix:semicolon
@@ -483,6 +490,11 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|addr
+)paren
 id|memset
 c_func
 (paren
