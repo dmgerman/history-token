@@ -433,6 +433,47 @@ id|PAGE_SIZE
 op_plus
 id|BENCH_SIZE
 suffix:semicolon
+multiline_comment|/*&n;&t; * If this arch/cpu has a short-circuited selection, don&squot;t loop through all&n;&t; * the possible functions, just test the best one&n;&t; */
+id|fastest
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#ifdef XOR_SELECT_TEMPLATE
+id|fastest
+op_assign
+id|XOR_SELECT_TEMPLATE
+c_func
+(paren
+id|fastest
+)paren
+suffix:semicolon
+macro_line|#endif
+DECL|macro|xor_speed
+mdefine_line|#define xor_speed(templ)&t;do_xor_speed((templ), b1, b2)
+r_if
+c_cond
+(paren
+id|fastest
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;raid5: automatically using best checksumming function: %s&bslash;n&quot;
+comma
+id|fastest-&gt;name
+)paren
+suffix:semicolon
+id|xor_speed
+c_func
+(paren
+id|fastest
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|printk
 c_func
 (paren
@@ -440,23 +481,7 @@ id|KERN_INFO
 l_string|&quot;raid5: measuring checksumming speed&bslash;n&quot;
 )paren
 suffix:semicolon
-DECL|macro|xor_speed
-mdefine_line|#define xor_speed(templ)&t;do_xor_speed((templ), b1, b2)
 id|XOR_TRY_TEMPLATES
-suffix:semicolon
-DECL|macro|xor_speed
-macro_line|#undef xor_speed
-id|free_pages
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|b1
-comma
-l_int|2
-)paren
 suffix:semicolon
 id|fastest
 op_assign
@@ -486,20 +511,7 @@ id|fastest
 op_assign
 id|f
 suffix:semicolon
-macro_line|#ifdef XOR_SELECT_TEMPLATE
-id|fastest
-op_assign
-id|XOR_SELECT_TEMPLATE
-c_func
-(paren
-id|fastest
-)paren
-suffix:semicolon
-macro_line|#endif
-id|active_template
-op_assign
-id|fastest
-suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -515,6 +527,24 @@ id|fastest-&gt;speed
 op_mod
 l_int|1000
 )paren
+suffix:semicolon
+DECL|macro|xor_speed
+macro_line|#undef xor_speed
+id|free_pages
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|b1
+comma
+l_int|2
+)paren
+suffix:semicolon
+id|active_template
+op_assign
+id|fastest
 suffix:semicolon
 r_return
 l_int|0
