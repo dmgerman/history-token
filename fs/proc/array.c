@@ -1488,14 +1488,27 @@ id|tasklist_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Temporary variable needed for gcc-2.96 */
+multiline_comment|/* convert timespec -&gt; nsec*/
 id|start_time
 op_assign
-id|jiffies_64_to_clock_t
+(paren
+r_int
+r_int
+r_int
+)paren
+id|task-&gt;start_time.tv_sec
+op_star
+id|NSEC_PER_SEC
+op_plus
+id|task-&gt;start_time.tv_nsec
+suffix:semicolon
+multiline_comment|/* convert nsec -&gt; ticks */
+id|start_time
+op_assign
+id|nsec_to_clock_t
 c_func
 (paren
-id|task-&gt;start_time
-op_minus
-id|INITIAL_JIFFIES
+id|start_time
 )paren
 suffix:semicolon
 id|res
