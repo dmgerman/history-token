@@ -51,12 +51,12 @@ c_func
 id|simple_dev_list
 )paren
 suffix:semicolon
-DECL|variable|simple_dev_list_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|simple_dev_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|release_simple_dev
 r_static
