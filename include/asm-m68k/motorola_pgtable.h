@@ -1066,7 +1066,6 @@ id|pte_t
 id|pgoff_to_pte
 c_func
 (paren
-r_inline
 r_int
 id|off
 )paren
