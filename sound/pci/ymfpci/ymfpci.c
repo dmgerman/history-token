@@ -1204,8 +1204,6 @@ op_assign
 id|p
 suffix:semicolon
 )brace
-r_else
-(brace
 r_switch
 c_cond
 (paren
@@ -1275,6 +1273,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|joystick_res
+op_logical_and
 id|joystick_port
 (braket
 id|dev
@@ -1297,7 +1298,6 @@ comma
 l_string|&quot;YMFPCI gameport&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
