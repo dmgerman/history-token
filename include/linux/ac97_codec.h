@@ -738,6 +738,8 @@ DECL|macro|AC97_DELUDED_MODEM
 mdefine_line|#define AC97_DELUDED_MODEM&t;1&t;/* Audio codec reports its a modem */
 DECL|macro|AC97_NO_PCM_VOLUME
 mdefine_line|#define AC97_NO_PCM_VOLUME&t;2&t;/* Volume control is missing &t;   */
+DECL|macro|AC97_DEFAULT_POWER_OFF
+mdefine_line|#define AC97_DEFAULT_POWER_OFF 4 /* Needs warm reset to power up */
 )brace
 suffix:semicolon
 r_extern
