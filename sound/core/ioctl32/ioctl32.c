@@ -1009,17 +1009,7 @@ id|err
 suffix:semicolon
 id|ctl
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_ctl_file_t
-comma
 id|file-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 id|down_read
 c_func

@@ -142,14 +142,10 @@ r_struct
 id|snd_sg_buf
 id|snd_pcm_sgbuf_t
 suffix:semicolon
-DECL|macro|_snd_pcm_substream_chip
-mdefine_line|#define _snd_pcm_substream_chip(substream) ((substream)-&gt;private_data)
 DECL|macro|snd_pcm_substream_chip
-mdefine_line|#define snd_pcm_substream_chip(substream) snd_magic_cast1(chip_t, _snd_pcm_substream_chip(substream), return -ENXIO)
-DECL|macro|_snd_pcm_chip
-mdefine_line|#define _snd_pcm_chip(pcm) ((pcm)-&gt;private_data)
+mdefine_line|#define snd_pcm_substream_chip(substream) ((substream)-&gt;private_data)
 DECL|macro|snd_pcm_chip
-mdefine_line|#define snd_pcm_chip(pcm) snd_magic_cast1(chip_t, _snd_pcm_chip(pcm), return -ENXIO)
+mdefine_line|#define snd_pcm_chip(pcm) ((pcm)-&gt;private_data)
 DECL|typedef|snd_pcm_file_t
 r_typedef
 r_struct

@@ -698,17 +698,7 @@ suffix:semicolon
 multiline_comment|/* FIXME: need to check whether fop-&gt;ioctl is sane */
 id|pcm_file
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_pcm_file_t
-comma
 id|file-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 id|substream
 op_assign

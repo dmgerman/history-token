@@ -82,10 +82,8 @@ r_struct
 id|sndrv_timer_tread
 id|snd_timer_tread_t
 suffix:semicolon
-DECL|macro|_snd_timer_chip
-mdefine_line|#define _snd_timer_chip(timer) ((timer)-&gt;private_data)
 DECL|macro|snd_timer_chip
-mdefine_line|#define snd_timer_chip(timer) snd_magic_cast1(chip_t, _snd_timer_chip(timer), return -ENXIO)
+mdefine_line|#define snd_timer_chip(timer) ((timer)-&gt;private_data)
 DECL|macro|SNDRV_TIMER_DEVICES
 mdefine_line|#define SNDRV_TIMER_DEVICES&t;16
 DECL|macro|SNDRV_TIMER_DEV_FLG_PCM

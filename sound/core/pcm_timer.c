@@ -4,8 +4,6 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/timer.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t snd_pcm_substream_t
 multiline_comment|/*&n; *  Timer functions&n; */
 multiline_comment|/* Greatest common divisor */
 DECL|function|gcd
@@ -247,17 +245,7 @@ id|substream
 suffix:semicolon
 id|substream
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_pcm_substream_t
-comma
 id|timer-&gt;private_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|substream-&gt;runtime
@@ -431,15 +419,7 @@ id|snd_pcm_substream_t
 op_star
 id|substream
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_pcm_substream_t
-comma
 id|timer-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|substream-&gt;timer
 op_assign
