@@ -17344,8 +17344,6 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;  * pfm_handle_work() is currently called with interrupts disabled.&n;&t;  * The down_interruptible call may sleep, therefore we&n;&t;  * must re-enable interrupts to avoid deadlocks. It is&n;&t;  * safe to do so because this function is called ONLY&n;&t;  * when returning to user level (PUStk=1), in which case&n;&t;  * there is no risk of kernel stack overflow due to deep&n;&t;  * interrupt nesting.&n;&t;  */
-op_star
-op_div
 id|BUG_ON
 c_func
 (paren
