@@ -85,7 +85,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_struct
 id|bus_node
 op_star
@@ -6863,7 +6862,6 @@ suffix:semicolon
 )brace
 DECL|function|find_bus_wprev
 r_static
-r_inline
 r_struct
 id|bus_node
 op_star

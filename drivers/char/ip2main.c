@@ -2212,6 +2212,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#else /* LINUX_VERSION_CODE &gt; 2.1.99 */
+(brace
 r_struct
 id|pci_dev
 op_star
@@ -2315,10 +2316,10 @@ id|pci_irq
 suffix:semicolon
 singleline_comment|//&t;&t;If the PCI BIOS assigned it, lets try and use it.  If we
 singleline_comment|//&t;&t;can&squot;t acquire it or it screws up, deal with it then.
-singleline_comment|//&t;&t;&t;&t;if (!is_valid_irq(pci_irq)) {
-singleline_comment|//&t;&t;&t;&t;&t;printk( KERN_ERR &quot;IP2: Bad PCI BIOS IRQ(%d)&bslash;n&quot;,pci_irq);
-singleline_comment|//&t;&t;&t;&t;&t;pci_irq = 0;
-singleline_comment|//&t;&t;&t;&t;}
+singleline_comment|//&t;&t;&t;&t;&t;if (!is_valid_irq(pci_irq)) {
+singleline_comment|//&t;&t;&t;&t;&t;&t;printk( KERN_ERR &quot;IP2: Bad PCI BIOS IRQ(%d)&bslash;n&quot;,pci_irq);
+singleline_comment|//&t;&t;&t;&t;&t;&t;pci_irq = 0;
+singleline_comment|//&t;&t;&t;&t;&t;}
 id|ip2config.irq
 (braket
 id|i
@@ -2363,6 +2364,7 @@ c_func
 id|status
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 macro_line|#endif&t;/* ! 2_0_X */

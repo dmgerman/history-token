@@ -360,24 +360,26 @@ op_star
 id|wpg_addr
 suffix:semicolon
 singleline_comment|// base addr + offset
-id|ulong
+r_int
+r_int
 id|wpg_data
-comma
+suffix:semicolon
 singleline_comment|// data to/from WPG LOHI format
+r_int
+r_int
 id|ultemp
-comma
+suffix:semicolon
+r_int
+r_int
 id|data
 suffix:semicolon
 singleline_comment|// actual data HILO format
 id|debug_polling
 (paren
-l_string|&quot;%s - Entry WPGBbar[%lx] index[%x] &bslash;n&quot;
+l_string|&quot;%s - Entry WPGBbar[%p] index[%x] &bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-(paren
-id|ulong
-)paren
 id|WPGBbar
 comma
 id|index
@@ -403,7 +405,8 @@ singleline_comment|// fill in I2C address
 id|ultemp
 op_assign
 (paren
-id|ulong
+r_int
+r_int
 )paren
 id|ctlr_ptr-&gt;u.wpeg_ctlr.i2c_addr
 suffix:semicolon
@@ -425,7 +428,8 @@ singleline_comment|// fill in index
 id|data
 op_or_assign
 (paren
-id|ulong
+r_int
+r_int
 )paren
 id|index
 suffix:semicolon
@@ -447,7 +451,8 @@ singleline_comment|// fill in index
 id|ultemp
 op_assign
 (paren
-id|ulong
+r_int
+r_int
 )paren
 id|index
 suffix:semicolon
@@ -481,19 +486,10 @@ id|data
 )paren
 suffix:semicolon
 singleline_comment|// swap data before writing
-(paren
-id|ulong
-)paren
 id|wpg_addr
 op_assign
-(paren
-id|ulong
-)paren
 id|WPGBbar
 op_plus
-(paren
-id|ulong
-)paren
 id|WPG_I2CMOSUP_OFFSET
 suffix:semicolon
 id|writel
@@ -516,19 +512,10 @@ id|swab32
 id|data
 )paren
 suffix:semicolon
-(paren
-id|ulong
-)paren
 id|wpg_addr
 op_assign
-(paren
-id|ulong
-)paren
 id|WPGBbar
 op_plus
-(paren
-id|ulong
-)paren
 id|WPG_I2CMBUFL_OFFSET
 suffix:semicolon
 id|writel
@@ -552,24 +539,12 @@ id|swab32
 id|data
 )paren
 suffix:semicolon
-(paren
-id|ulong
-)paren
 id|wpg_addr
 op_assign
-(paren
-id|ulong
-)paren
 id|WPGBbar
 op_plus
-(paren
-id|ulong
-)paren
 id|WPG_I2CMCNTL_OFFSET
 op_plus
-(paren
-id|ulong
-)paren
 id|WPG_I2C_OR
 suffix:semicolon
 id|writel
@@ -600,19 +575,10 @@ op_div
 l_int|100
 )paren
 suffix:semicolon
-(paren
-id|ulong
-)paren
 id|wpg_addr
 op_assign
-(paren
-id|ulong
-)paren
 id|WPGBbar
 op_plus
-(paren
-id|ulong
-)paren
 id|WPG_I2CMCNTL_OFFSET
 suffix:semicolon
 id|wpg_data
@@ -685,19 +651,10 @@ op_div
 l_int|100
 )paren
 suffix:semicolon
-(paren
-id|ulong
-)paren
 id|wpg_addr
 op_assign
-(paren
-id|ulong
-)paren
 id|WPGBbar
 op_plus
-(paren
-id|ulong
-)paren
 id|WPG_I2CSTAT_OFFSET
 suffix:semicolon
 id|wpg_data
@@ -747,19 +704,10 @@ suffix:semicolon
 )brace
 singleline_comment|//--------------------------------------------------------------------
 singleline_comment|// READ - step 6 : get DATA
-(paren
-id|ulong
-)paren
 id|wpg_addr
 op_assign
-(paren
-id|ulong
-)paren
 id|WPGBbar
 op_plus
-(paren
-id|ulong
-)paren
 id|WPG_I2CMBUFL_OFFSET
 suffix:semicolon
 id|wpg_data
@@ -830,12 +778,17 @@ op_star
 id|wpg_addr
 suffix:semicolon
 singleline_comment|// base addr + offset
-id|ulong
+r_int
+r_int
 id|wpg_data
-comma
+suffix:semicolon
 singleline_comment|// data to/from WPG LOHI format 
+r_int
+r_int
 id|ultemp
-comma
+suffix:semicolon
+r_int
+r_int
 id|data
 suffix:semicolon
 singleline_comment|// actual data HILO format
@@ -844,13 +797,10 @@ id|i
 suffix:semicolon
 id|debug_polling
 (paren
-l_string|&quot;%s - Entry WPGBbar[%lx] index[%x] cmd[%x]&bslash;n&quot;
+l_string|&quot;%s - Entry WPGBbar[%p] index[%x] cmd[%x]&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-(paren
-id|ulong
-)paren
 id|WPGBbar
 comma
 id|index
@@ -886,7 +836,8 @@ singleline_comment|// fill in I2C address
 id|ultemp
 op_assign
 (paren
-id|ulong
+r_int
+r_int
 )paren
 id|ctlr_ptr-&gt;u.wpeg_ctlr.i2c_addr
 suffix:semicolon
@@ -908,7 +859,8 @@ singleline_comment|// fill in index
 id|data
 op_or_assign
 (paren
-id|ulong
+r_int
+r_int
 )paren
 id|index
 suffix:semicolon
@@ -930,7 +882,8 @@ singleline_comment|// fill in index
 id|ultemp
 op_assign
 (paren
-id|ulong
+r_int
+r_int
 )paren
 id|index
 suffix:semicolon
@@ -964,19 +917,10 @@ id|data
 )paren
 suffix:semicolon
 singleline_comment|// swap data before writing
-(paren
-id|ulong
-)paren
 id|wpg_addr
 op_assign
-(paren
-id|ulong
-)paren
 id|WPGBbar
 op_plus
-(paren
-id|ulong
-)paren
 id|WPG_I2CMOSUP_OFFSET
 suffix:semicolon
 id|writel
@@ -993,7 +937,8 @@ op_assign
 l_int|0x00000000
 op_or
 (paren
-id|ulong
+r_int
+r_int
 )paren
 id|cmd
 suffix:semicolon
@@ -1004,19 +949,10 @@ id|swab32
 id|data
 )paren
 suffix:semicolon
-(paren
-id|ulong
-)paren
 id|wpg_addr
 op_assign
-(paren
-id|ulong
-)paren
 id|WPGBbar
 op_plus
-(paren
-id|ulong
-)paren
 id|WPG_I2CMBUFL_OFFSET
 suffix:semicolon
 id|writel
@@ -1040,24 +976,12 @@ id|swab32
 id|data
 )paren
 suffix:semicolon
-(paren
-id|ulong
-)paren
 id|wpg_addr
 op_assign
-(paren
-id|ulong
-)paren
 id|WPGBbar
 op_plus
-(paren
-id|ulong
-)paren
 id|WPG_I2CMCNTL_OFFSET
 op_plus
-(paren
-id|ulong
-)paren
 id|WPG_I2C_OR
 suffix:semicolon
 id|writel
@@ -1088,19 +1012,10 @@ op_div
 l_int|100
 )paren
 suffix:semicolon
-(paren
-id|ulong
-)paren
 id|wpg_addr
 op_assign
-(paren
-id|ulong
-)paren
 id|WPGBbar
 op_plus
-(paren
-id|ulong
-)paren
 id|WPG_I2CMCNTL_OFFSET
 suffix:semicolon
 id|wpg_data
@@ -1174,19 +1089,10 @@ op_div
 l_int|100
 )paren
 suffix:semicolon
-(paren
-id|ulong
-)paren
 id|wpg_addr
 op_assign
-(paren
-id|ulong
-)paren
 id|WPGBbar
 op_plus
-(paren
-id|ulong
-)paren
 id|WPG_I2CSTAT_OFFSET
 suffix:semicolon
 id|wpg_data
@@ -1903,20 +1809,14 @@ id|busindex
 suffix:semicolon
 id|debug_polling
 (paren
-l_string|&quot;%s - Entry pslot[%lx] cmd[%x] pstatus[%lx]&bslash;n&quot;
+l_string|&quot;%s - Entry pslot[%p] cmd[%x] pstatus[%p]&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-(paren
-id|ulong
-)paren
 id|pslot
 comma
 id|cmd
 comma
-(paren
-id|ulong
-)paren
 id|pstatus
 )paren
 suffix:semicolon
@@ -2504,13 +2404,10 @@ id|timeout
 suffix:semicolon
 id|debug_polling
 (paren
-l_string|&quot;%s - Entry pslot[%lx] cmd[%x]&bslash;n&quot;
+l_string|&quot;%s - Entry pslot[%p] cmd[%x]&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-(paren
-id|ulong
-)paren
 id|pslot
 comma
 id|cmd
@@ -3585,13 +3482,10 @@ l_int|0
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;%s - Entry pslot[%lx]&bslash;n&quot;
+l_string|&quot;%s - Entry pslot[%p]&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-(paren
-id|ulong
-)paren
 id|pslot
 )paren
 suffix:semicolon
@@ -3656,16 +3550,10 @@ id|FALSE
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;process_changeinstatus - Entry pslot[%lx], poldslot[%lx]&bslash;n&quot;
+l_string|&quot;process_changeinstatus - Entry pslot[%p], poldslot[%p]&bslash;n&quot;
 comma
-(paren
-id|ulong
-)paren
 id|pslot
 comma
-(paren
-id|ulong
-)paren
 id|poldslot
 )paren
 suffix:semicolon

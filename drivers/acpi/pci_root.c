@@ -849,17 +849,6 @@ id|u16
 )paren
 id|value
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;_SEG exists! Unsupported. Abort.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1034,9 +1023,13 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Scan the Root Bridge&n;&t; * --------------------&n;&t; * Must do this prior to any attempt to bind the root device, as the&n;&t; * PCI namespace does not get created until this call is made (and &n;&t; * thus the root bridge&squot;s pci_dev does not exist).&n;&t; */
 id|root-&gt;bus
 op_assign
-id|pcibios_scan_root
+id|pci_acpi_scan_root
 c_func
 (paren
+id|device
+comma
+id|root-&gt;id.segment
+comma
 id|root-&gt;id.bus
 )paren
 suffix:semicolon
