@@ -18,7 +18,7 @@ id|neponset_pcmcia_configure_socket
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 comma
@@ -283,7 +283,7 @@ id|neponset_pcmcia_socket_init
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren

@@ -295,7 +295,7 @@ suffix:semicolon
 id|asm
 c_func
 (paren
-l_string|&quot;mcr p15, 0, %0, c0, c0, 1&quot;
+l_string|&quot;mrc p15, 0, %0, c0, c0, 1&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren

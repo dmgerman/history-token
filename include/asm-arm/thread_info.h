@@ -74,7 +74,7 @@ suffix:semicolon
 multiline_comment|/* Xscale &squot;acc&squot; register, etc */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * low level task data that entry.S needs immediate access to.&n; * We assume cpu_context follows immedately after cpu_domain.&n; */
+multiline_comment|/*&n; * low level task data that entry.S needs immediate access to.&n; * __switch_to() assumes cpu_context follows immediately after cpu_domain.&n; */
 DECL|struct|thread_info
 r_struct
 id|thread_info

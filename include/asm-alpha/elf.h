@@ -1,6 +1,11 @@
 macro_line|#ifndef __ASM_ALPHA_ELF_H
 DECL|macro|__ASM_ALPHA_ELF_H
 mdefine_line|#define __ASM_ALPHA_ELF_H
+multiline_comment|/* Special values for the st_other field in the symbol table.  */
+DECL|macro|STO_ALPHA_NOPV
+mdefine_line|#define STO_ALPHA_NOPV&t;&t;0x80
+DECL|macro|STO_ALPHA_STD_GPLOAD
+mdefine_line|#define STO_ALPHA_STD_GPLOAD&t;0x88
 multiline_comment|/*&n; * Alpha ELF relocation types&n; */
 DECL|macro|R_ALPHA_NONE
 mdefine_line|#define R_ALPHA_NONE            0       /* No reloc */

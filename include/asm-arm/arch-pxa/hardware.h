@@ -3,11 +3,6 @@ macro_line|#ifndef __ASM_ARCH_HARDWARE_H
 DECL|macro|__ASM_ARCH_HARDWARE_H
 mdefine_line|#define __ASM_ARCH_HARDWARE_H
 macro_line|#include &lt;asm/mach-types.h&gt;
-multiline_comment|/*&n; * These are statically mapped PCMCIA IO space for designs using it as a&n; * generic IO bus, typically with ISA parts, hardwired IDE interfaces, etc.&n; * The actual PCMCIA code is mapping required IO region at run time.&n; */
-DECL|macro|PCMCIA_IO_0_BASE
-mdefine_line|#define PCMCIA_IO_0_BASE&t;0xf6000000
-DECL|macro|PCMCIA_IO_1_BASE
-mdefine_line|#define PCMCIA_IO_1_BASE&t;0xf7000000
 multiline_comment|/*&n; * We requires absolute addresses.&n; */
 DECL|macro|PCIO_BASE
 mdefine_line|#define PCIO_BASE&t;&t;0
@@ -16,11 +11,11 @@ DECL|macro|UNCACHED_PHYS_0
 mdefine_line|#define UNCACHED_PHYS_0&t;&t;0xff000000
 DECL|macro|UNCACHED_ADDR
 mdefine_line|#define UNCACHED_ADDR&t;&t;UNCACHED_PHYS_0
-multiline_comment|/*&n; * Intel PXA internal I/O mappings:&n; *&n; * 0x40000000 - 0x41ffffff &lt;--&gt; 0xf8000000 - 0xf9ffffff&n; * 0x44000000 - 0x45ffffff &lt;--&gt; 0xfa000000 - 0xfbffffff&n; * 0x48000000 - 0x49ffffff &lt;--&gt; 0xfc000000 - 0xfdffffff&n; */
+multiline_comment|/*&n; * Intel PXA2xx internal register mapping:&n; *&n; * 0x40000000 - 0x41ffffff &lt;--&gt; 0xf2000000 - 0xf3ffffff&n; * 0x44000000 - 0x45ffffff &lt;--&gt; 0xf4000000 - 0xf5ffffff&n; * 0x48000000 - 0x49ffffff &lt;--&gt; 0xf6000000 - 0xf7ffffff&n; * 0x4c000000 - 0x4dffffff &lt;--&gt; 0xf8000000 - 0xf9ffffff&n; * 0x50000000 - 0x51ffffff &lt;--&gt; 0xfa000000 - 0xfbffffff&n; * 0x54000000 - 0x55ffffff &lt;--&gt; 0xfc000000 - 0xfdffffff&n; * 0x58000000 - 0x59ffffff &lt;--&gt; 0xfe000000 - 0xffffffff&n; *&n; * Note that not all PXA2xx chips implement all those addresses, and the&n; * kernel only maps the minimum needed range of this mapping.&n; */
 DECL|macro|io_p2v
-mdefine_line|#define io_p2v(x)&t;( ((x) | 0xbe000000) ^ (~((x) &gt;&gt; 1) &amp; 0x06000000) )
+mdefine_line|#define io_p2v(x) (0xf2000000 + ((x) &amp; 0x01ffffff) + (((x) &amp; 0x1c000000) &gt;&gt; 1))
 DECL|macro|io_v2p
-mdefine_line|#define io_v2p( x )&t;( ((x) &amp; 0x41ffffff) ^ ( ((x) &amp; 0x06000000) &lt;&lt; 1) )
+mdefine_line|#define io_v2p(x) (0x40000000 + ((x) &amp; 0x01ffffff) + (((x) &amp; 0x0e000000) &lt;&lt; 1))
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#if 0
 macro_line|# define __REG(x)&t;(*((volatile u32 *)io_p2v(x)))

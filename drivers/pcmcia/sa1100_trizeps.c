@@ -39,7 +39,7 @@ id|trizeps_pcmcia_init
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
@@ -80,7 +80,7 @@ id|TRIZEPS_GPIO_PCMCIA_IRQ0
 )paren
 suffix:semicolon
 r_return
-id|sa11xx_request_irqs
+id|soc_pcmcia_request_irqs
 c_func
 (paren
 id|skt
@@ -103,7 +103,7 @@ id|trizeps_pcmcia_shutdown
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
@@ -114,7 +114,7 @@ c_func
 l_string|&quot;&gt;&gt;&gt;&gt;&gt;PCMCIA TRIZEPS shutdown&bslash;n&quot;
 )paren
 suffix:semicolon
-id|sa11xx_free_irqs
+id|soc_pcmcia_free_irqs
 c_func
 (paren
 id|skt
@@ -146,7 +146,7 @@ id|trizeps_pcmcia_socket_state
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 comma
@@ -288,7 +288,7 @@ id|trizeps_pcmcia_configure_socket
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 comma
@@ -453,12 +453,12 @@ id|trizeps_pcmcia_socket_init
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
 (brace
-id|sa11xx_enable_irqs
+id|soc_pcmcia_enable_irqs
 c_func
 (paren
 id|skt
@@ -480,12 +480,12 @@ id|trizeps_pcmcia_socket_suspend
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
 (brace
-id|sa11xx_disable_irqs
+id|soc_pcmcia_disable_irqs
 c_func
 (paren
 id|skt

@@ -526,6 +526,11 @@ op_assign
 id|sil_post_set_mode
 comma
 dot
+id|bmdma_setup
+op_assign
+id|ata_bmdma_setup_mmio
+comma
+dot
 id|bmdma_start
 op_assign
 id|ata_bmdma_start_mmio

@@ -1,4 +1,5 @@
-macro_line|#include &quot;sa11xx_core.h&quot;
+macro_line|#include &quot;soc_common.h&quot;
+macro_line|#include &quot;sa11xx_base.h&quot;
 multiline_comment|/*&n; * Declaration for all machine specific init/exit functions.&n; */
 r_extern
 r_int

@@ -49,7 +49,7 @@ id|stork_pcmcia_hw_init
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
@@ -70,7 +70,7 @@ suffix:colon
 id|IRQ_GPIO_STORK_PCMCIA_A_RDY
 suffix:semicolon
 r_return
-id|sa11xx_request_irqs
+id|soc_pcmcia_request_irqs
 c_func
 (paren
 id|skt
@@ -92,7 +92,7 @@ id|stork_pcmcia_hw_shutdown
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
@@ -109,7 +109,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* disable IRQs */
-id|sa11xx_free_irqs
+id|soc_pcmcia_free_irqs
 c_func
 (paren
 id|skt
@@ -150,7 +150,7 @@ id|stork_pcmcia_socket_state
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 comma
@@ -318,7 +318,7 @@ id|stork_pcmcia_configure_socket
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 comma
@@ -523,7 +523,7 @@ id|stork_pcmcia_socket_init
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
@@ -534,7 +534,7 @@ c_func
 id|STORK_PCMCIA_PULL_UPS_POWER_ON
 )paren
 suffix:semicolon
-id|sa11xx_enable_irqs
+id|soc_pcmcia_enable_irqs
 c_func
 (paren
 id|skt
@@ -556,12 +556,12 @@ id|stork_pcmcia_socket_suspend
 c_func
 (paren
 r_struct
-id|sa1100_pcmcia_socket
+id|soc_pcmcia_socket
 op_star
 id|skt
 )paren
 (brace
-id|sa11xx_disable_irqs
+id|soc_pcmcia_disable_irqs
 c_func
 (paren
 id|skt

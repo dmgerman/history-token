@@ -9747,7 +9747,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|memset
+id|memset_io
 c_func
 (paren
 id|rinfo-&gt;fb_base

@@ -44,7 +44,7 @@ DECL|variable|dma_channels
 )brace
 id|dma_channels
 (braket
-l_int|16
+id|PXA_DMA_CHANNELS
 )braket
 suffix:semicolon
 DECL|function|pxa_request_dma
@@ -122,16 +122,11 @@ id|i
 OL
 id|prio
 op_plus
+id|PXA_DMA_NBCH
+c_func
 (paren
 id|prio
-op_eq
-id|DMA_PRIO_LOW
 )paren
-ques
-c_cond
-l_int|8
-suffix:colon
-l_int|4
 suffix:semicolon
 id|i
 op_increment
@@ -381,7 +376,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|16
+id|PXA_DMA_CHANNELS
 suffix:semicolon
 id|i
 op_increment
