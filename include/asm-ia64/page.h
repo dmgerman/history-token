@@ -62,31 +62,18 @@ DECL|macro|clear_user_page
 mdefine_line|#define clear_user_page(addr, vaddr, page)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;clear_page(addr);&t;&t;&t;&bslash;&n;&t;flush_dcache_page(page);&t;&t;&bslash;&n;} while (0)
 DECL|macro|copy_user_page
 mdefine_line|#define copy_user_page(to, from, vaddr, page)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;copy_page((to), (from));&t;&t;&bslash;&n;&t;flush_dcache_page(page);&t;&t;&bslash;&n;} while (0)
-multiline_comment|/*&n; * Note: the MAP_NR_*() macro can&squot;t use __pa() because MAP_NR_*(X) MUST&n; * map to something &gt;= max_mapnr if X is outside the identity mapped&n; * kernel space.&n; */
-multiline_comment|/*&n; * The dense variant can be used as long as the size of memory holes isn&squot;t&n; * very big.&n; */
-DECL|macro|MAP_NR_DENSE
-mdefine_line|#define MAP_NR_DENSE(addr)&t;(((unsigned long) (addr) - PAGE_OFFSET) &gt;&gt; PAGE_SHIFT)
-macro_line|#ifdef CONFIG_IA64_GENERIC
-macro_line|# include &lt;asm/machvec.h&gt;
+DECL|macro|pfn_valid
+mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
+DECL|macro|virt_addr_valid
+mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|virt_to_page
-macro_line|# define virt_to_page(kaddr)&t;(mem_map + platform_map_nr(kaddr))
+mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+DECL|macro|page_to_pfn
+mdefine_line|#define page_to_pfn(page)&t;((unsigned long) (page - mem_map))
+DECL|macro|pfn_to_page
+mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + (pfn))
 DECL|macro|page_to_phys
-macro_line|# define page_to_phys(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
-macro_line|#elif defined (CONFIG_IA64_SGI_SN1)
-macro_line|# ifndef CONFIG_DISCONTIGMEM
-DECL|macro|virt_to_page
-macro_line|#  define virt_to_page(kaddr)&t;(mem_map + MAP_NR_DENSE(kaddr))
-DECL|macro|page_to_phys
-macro_line|#  define page_to_phys(page)&t;XXX fix me
-macro_line|# endif
-macro_line|#else
-DECL|macro|virt_to_page
-macro_line|# define virt_to_page(kaddr)&t;(mem_map + MAP_NR_DENSE(kaddr))
-DECL|macro|page_to_phys
-macro_line|# define page_to_phys(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
-macro_line|#endif
-DECL|macro|VALID_PAGE
-mdefine_line|#define VALID_PAGE(page)&t;((page - mem_map) &lt; max_mapnr)
+mdefine_line|#define page_to_phys(page)&t;(page_to_pfn(page) &lt;&lt; PAGE_SHIFT)
 DECL|union|ia64_va
 r_typedef
 r_union
@@ -140,7 +127,7 @@ mdefine_line|#define REGION_OFFSET(x)&t;({ia64_va _v; _v.l = (long) (x); _v.f.of
 DECL|macro|REGION_SIZE
 mdefine_line|#define REGION_SIZE&t;&t;REGION_NUMBER(1)
 DECL|macro|REGION_KERNEL
-mdefine_line|#define REGION_KERNEL&t;7
+mdefine_line|#define REGION_KERNEL&t;&t;7
 DECL|macro|BUG
 mdefine_line|#define BUG() do { printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); *(int *)0=0; } while (0)
 DECL|macro|PAGE_BUG

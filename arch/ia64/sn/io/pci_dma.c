@@ -1,10 +1,11 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000,2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000,2002 Silicon Graphics, Inc. All rights reserved.&n; *&n; * Routines for PCI DMA mapping.  See Documentation/DMA-mapping.txt for&n; * a description of how these routines should be used.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
@@ -972,29 +973,11 @@ r_continue
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * It is a 32bit card and we cannot do Direct mapping.&n;&t;&t; * Let&squot;s 32Bit Page map the request.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * It is a 32 bit card and we cannot do direct mapping,&n;&t;&t; * so we use an ATE.&n;&t;&t; */
 id|dma_map
 op_assign
-l_int|NULL
+l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-id|dma_map
-op_assign
-id|pciio_dmamap_alloc
-c_func
-(paren
-id|vhdl
-comma
-l_int|NULL
-comma
-id|sg-&gt;length
-comma
-id|PCIIO_BYTE_STREAM
-op_or
-id|PCIIO_DMA_DATA
-)paren
-suffix:semicolon
-macro_line|#else
 id|dma_map
 op_assign
 id|pciio_dmamap_alloc
@@ -1006,10 +989,9 @@ l_int|NULL
 comma
 id|sg-&gt;length
 comma
-id|PCIIO_DMA_DATA
+id|DMA_DATA_FLAGS
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1020,7 +1002,9 @@ id|dma_map
 id|printk
 c_func
 (paren
-l_string|&quot;pci_map_sg: Unable to allocate anymore 32Bits Page Map entries.&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;sn_pci_map_sg: Unable to allocate &quot;
+l_string|&quot;anymore 32 bit page map entries.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|BUG
@@ -1031,20 +1015,16 @@ suffix:semicolon
 )brace
 id|dma_addr
 op_assign
-(paren
-id|dma_addr_t
-)paren
 id|pciio_dmamap_addr
 c_func
 (paren
 id|dma_map
 comma
-id|temp_ptr
+id|phys_addr
 comma
 id|sg-&gt;length
 )paren
 suffix:semicolon
-multiline_comment|/* printk(&quot;pci_map_sg: dma_map 0x%p Phys Addr 0x%p dma_addr 0x%p&bslash;n&quot;, dma_map, temp_ptr, dma_addr); */
 id|sg-&gt;address
 op_assign
 (paren
@@ -1180,7 +1160,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * We map this to the one step pciio_dmamap_trans interface rather than&n; * the two step pciio_dmamap_alloc/pciio_dmamap_addr because we have&n; * no way of saving the dmamap handle from the alloc to later free&n; * (which is pretty much unacceptable).&n; *&n; * TODO: simplify our interface;&n; *       get rid of dev_desc and vhdl (seems redundant given a pci_dev);&n; *       figure out how to save dmamap handle so can use two step.&n; */
+multiline_comment|/**&n; * sn_pci_map_single - map a single region for DMA&n; * @hwdev: device to map for&n; * @ptr: kernel virtual address of the region to map&n; * @size: size of the region&n; * @direction: DMA direction&n; *&n; * Map the region pointed to by @ptr for DMA and return the&n; * DMA address.   Also known as platform_pci_map_single() by&n; * the IA64 machvec code.&n; *&n; * We map this to the one step pciio_dmamap_trans interface rather than&n; * the two step pciio_dmamap_alloc/pciio_dmamap_addr because we have&n; * no way of saving the dmamap handle from the alloc to later free&n; * (which is pretty much unacceptable).&n; *&n; * TODO: simplify our interface;&n; *       get rid of dev_desc and vhdl (seems redundant given a pci_dev);&n; *       figure out how to save dmamap handle so can use two step.&n; */
 DECL|function|sn1_pci_map_single
 id|dma_addr_t
 id|sn1_pci_map_single

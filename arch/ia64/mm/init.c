@@ -779,17 +779,6 @@ comma
 id|pgtable_cache_size
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%ld buffermem pages&bslash;n&quot;
-comma
-id|nr_buffermem_pages
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
 macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 )brace
 multiline_comment|/*&n; * This is like put_dirty_page() but installs a clean page with PAGE_GATE protection&n; * (execute-only, typically).&n; */
@@ -979,7 +968,7 @@ id|my_cpu_data
 (brace
 r_int
 r_int
-id|flags
+id|psr
 comma
 id|rid
 comma
@@ -1002,10 +991,11 @@ macro_line|#else
 macro_line|#&t;define VHPT_ENABLE_BIT&t;1
 macro_line|#endif
 multiline_comment|/*&n;&t; * Set up the kernel identity mapping for regions 6 and 5.  The mapping for region&n;&t; * 7 is setup up in _start().&n;&t; */
+id|psr
+op_assign
 id|ia64_clear_ic
 c_func
 (paren
-id|flags
 )paren
 suffix:semicolon
 id|rid
@@ -1102,10 +1092,10 @@ comma
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
-id|__restore_flags
+id|ia64_set_psr
 c_func
 (paren
-id|flags
+id|psr
 )paren
 suffix:semicolon
 id|ia64_srlz_i

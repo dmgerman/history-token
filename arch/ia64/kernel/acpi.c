@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  acpi.c - Architecture-Specific Low-Level ACPI Support&n; *&n; *  Copyright (C) 1999 VA Linux Systems&n; *  Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; *  Copyright (C) 2000 Hewlett-Packard Co.&n; *  Copyright (C) 2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *  Copyright (C) 2000 Intel Corp.&n; *  Copyright (C) 2000,2001 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; *  Copyright (C) 2001 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
+multiline_comment|/*&n; *  acpi.c - Architecture-Specific Low-Level ACPI Support&n; *&n; *  Copyright (C) 1999 VA Linux Systems&n; *  Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; *  Copyright (C) 2000, 2002 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *  Copyright (C) 2000 Intel Corp.&n; *  Copyright (C) 2000,2001 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; *  Copyright (C) 2001 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -464,6 +464,21 @@ id|platform_irq_list
 (braket
 id|ACPI_MAX_PLATFORM_IRQS
 )braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+id|ACPI_MAX_PLATFORM_IRQS
+op_minus
+l_int|1
+)braket
+op_assign
+op_minus
+l_int|1
+)brace
 suffix:semicolon
 multiline_comment|/*&n; * Interrupt routing API for device drivers.  Provides interrupt vector for&n; * a generic platform event.  Currently only CPEI is implemented.&n; */
 r_int
@@ -1363,11 +1378,6 @@ r_int
 id|size
 )paren
 (brace
-r_int
-id|i
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1414,29 +1424,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* Initialize platform interrupt vector array */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|ACPI_MAX_PLATFORM_IRQS
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|platform_irq_list
-(braket
-id|i
-)braket
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 multiline_comment|/* Get base address of IPI Message Block */
 r_if
 c_cond
@@ -2155,7 +2142,7 @@ r_if
 c_cond
 (paren
 id|acpi_prts.count
-OL
+op_le
 l_int|0
 )paren
 (brace
@@ -2234,9 +2221,6 @@ id|i
 dot
 id|bus
 op_assign
-(paren
-id|u16
-)paren
 id|entry-&gt;id.bus
 suffix:semicolon
 id|vector
@@ -2247,11 +2231,13 @@ dot
 id|pci_id
 op_assign
 (paren
+(paren
 id|u32
 )paren
 id|entry-&gt;id.dev
 op_lshift
 l_int|16
+)paren
 op_or
 l_int|0xffff
 suffix:semicolon
@@ -2262,9 +2248,6 @@ id|i
 dot
 id|pin
 op_assign
-(paren
-id|u8
-)paren
 id|entry-&gt;id.pin
 suffix:semicolon
 id|vector
@@ -2274,9 +2257,6 @@ id|i
 dot
 id|irq
 op_assign
-(paren
-id|u8
-)paren
 id|entry-&gt;source.index
 suffix:semicolon
 id|i
