@@ -8485,7 +8485,6 @@ suffix:semicolon
 id|neigh_sysctl_unregister
 c_func
 (paren
-op_amp
 id|idev-&gt;nd_parms
 )paren
 suffix:semicolon
