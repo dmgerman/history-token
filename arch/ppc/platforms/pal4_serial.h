@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/pal4_serial.h&n; * &n; * Definitions for SBS PalomarIV serial support &n; *&n; * Author: Dan Cox&n; *&n; * 2002 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/pal4_serial.h&n; * &n; * Definitions for SBS PalomarIV serial support &n; *&n; * Author: Dan Cox&n; *&n; * 2002 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#ifndef __PPC_PAL4_SERIAL_H
 DECL|macro|__PPC_PAL4_SERIAL_H
 mdefine_line|#define __PPC_PAL4_SERIAL_H
