@@ -367,6 +367,13 @@ dot
 id|end
 op_assign
 l_int|0
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_BUSY
+op_or
+id|IORESOURCE_MEM
 )brace
 suffix:semicolon
 DECL|variable|code_resource
@@ -384,12 +391,19 @@ comma
 dot
 id|start
 op_assign
-l_int|0x100000
+l_int|0
 comma
 dot
 id|end
 op_assign
 l_int|0
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_BUSY
+op_or
+id|IORESOURCE_MEM
 )brace
 suffix:semicolon
 DECL|variable|system_rom_resource
@@ -656,11 +670,11 @@ op_or
 id|IORESOURCE_MEM
 )brace
 suffix:semicolon
-DECL|variable|vram_resource
+DECL|variable|video_ram_resource
 r_static
 r_struct
 id|resource
-id|vram_resource
+id|video_ram_resource
 op_assign
 (brace
 dot
@@ -892,11 +906,11 @@ DECL|macro|STANDARD_IO_RESOURCES
 mdefine_line|#define STANDARD_IO_RESOURCES &bslash;&n;&t;(sizeof standard_io_resources / sizeof standard_io_resources[0])
 DECL|macro|romsignature
 mdefine_line|#define romsignature(x) (*(unsigned short *)(x) == 0xaa55)
-DECL|function|checksum
+DECL|function|romchecksum
 r_static
 r_int
 id|__init
-id|checksum
+id|romchecksum
 c_func
 (paren
 r_int
@@ -1037,7 +1051,7 @@ c_cond
 (paren
 id|length
 op_logical_and
-id|checksum
+id|romchecksum
 c_func
 (paren
 id|rom
@@ -1135,7 +1149,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|checksum
+id|romchecksum
 c_func
 (paren
 id|rom
@@ -1225,7 +1239,7 @@ OG
 id|upper
 op_logical_or
 op_logical_neg
-id|checksum
+id|romchecksum
 c_func
 (paren
 id|rom
@@ -4736,7 +4750,7 @@ op_amp
 id|iomem_resource
 comma
 op_amp
-id|vram_resource
+id|video_ram_resource
 )paren
 suffix:semicolon
 multiline_comment|/* request I/O space for devices used on all i[345]86 PCs */
