@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Universal Host Controller Interface driver for USB.&n; *&n; * Maintainer: Alan Stern &lt;stern@rowland.harvard.edu&gt;&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999-2002 Johannes Erdfelt, johannes@erdfelt.com&n; * (C) Copyright 1999 Randy Dunlap&n; * (C) Copyright 1999 Georg Acher, acher@in.tum.de&n; * (C) Copyright 1999 Deti Fliegl, deti@fliegl.de&n; * (C) Copyright 1999 Thomas Sailer, sailer@ife.ee.ethz.ch&n; * (C) Copyright 1999 Roman Weissgaerber, weissg@vienna.at&n; * (C) Copyright 2000 Yggdrasil Computing, Inc. (port of new PCI interface&n; *               support from usb-ohci.c by Adam Richter, adam@yggdrasil.com).&n; * (C) Copyright 1999 Gregory P. Smith (from usb-ohci.c)&n; *&n; * Intel documents this fairly well, and as far as I know there&n; * are no royalties or anything like that, but even so there are&n; * people who decided that they want to do the same thing in a&n; * completely different way.&n; *&n; * WARNING! The USB documentation is downright evil. Most of it&n; * is just crap, written by a committee. You&squot;re better off ignoring&n; * most of it, the important stuff is:&n; *  - the low-level protocol (fairly simple but lots of small details)&n; *  - working around the horridness of the rest&n; */
+multiline_comment|/*&n; * Universal Host Controller Interface driver for USB.&n; *&n; * Maintainer: Alan Stern &lt;stern@rowland.harvard.edu&gt;&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999-2002 Johannes Erdfelt, johannes@erdfelt.com&n; * (C) Copyright 1999 Randy Dunlap&n; * (C) Copyright 1999 Georg Acher, acher@in.tum.de&n; * (C) Copyright 1999 Deti Fliegl, deti@fliegl.de&n; * (C) Copyright 1999 Thomas Sailer, sailer@ife.ee.ethz.ch&n; * (C) Copyright 1999 Roman Weissgaerber, weissg@vienna.at&n; * (C) Copyright 2000 Yggdrasil Computing, Inc. (port of new PCI interface&n; *               support from usb-ohci.c by Adam Richter, adam@yggdrasil.com).&n; * (C) Copyright 1999 Gregory P. Smith (from usb-ohci.c)&n; * (C) Copyright 2004 Alan Stern, stern@rowland.harvard.edu&n; *&n; * Intel documents this fairly well, and as far as I know there&n; * are no royalties or anything like that, but even so there are&n; * people who decided that they want to do the same thing in a&n; * completely different way.&n; *&n; * WARNING! The USB documentation is downright evil. Most of it&n; * is just crap, written by a committee. You&squot;re better off ignoring&n; * most of it, the important stuff is:&n; *  - the low-level protocol (fairly simple but lots of small details)&n; *  - working around the horridness of the rest&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/dmapool.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
@@ -31,12 +32,11 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;../core/hcd.h&quot;
 macro_line|#include &quot;uhci-hcd.h&quot;
-macro_line|#include &lt;linux/pm.h&gt;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v2.1&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v2.2&quot;
 DECL|macro|DRIVER_AUTHOR
-mdefine_line|#define DRIVER_AUTHOR &quot;Linus &squot;Frodo Rabbit&squot; Torvalds, Johannes Erdfelt, Randy Dunlap, Georg Acher, Deti Fliegl, Thomas Sailer, Roman Weissgaerber&quot;
+mdefine_line|#define DRIVER_AUTHOR &quot;Linus &squot;Frodo Rabbit&squot; Torvalds, Johannes Erdfelt, &bslash;&n;Randy Dunlap, Georg Acher, Deti Fliegl, Thomas Sailer, Roman Weissgaerber, &bslash;&n;Alan Stern&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Universal Host Controller Interface driver&quot;
 multiline_comment|/*&n; * debug = 0, no debugging messages&n; * debug = 1, dump failed URB&squot;s except for stalls&n; * debug = 2, dump all failed URB&squot;s (including stalls)&n; *            show all queues in /proc/driver/uhci/[pci_addr]&n; * debug = 3, show all TD&squot;s in URB&squot;s when dumping&n; */
@@ -945,10 +945,16 @@ op_amp
 id|td-&gt;list
 )paren
 )paren
-id|dbg
+id|dev_warn
 c_func
 (paren
-l_string|&quot;td %p is still in list!&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;td %p still in list!&bslash;n&quot;
 comma
 id|td
 )paren
@@ -964,10 +970,16 @@ op_amp
 id|td-&gt;remove_list
 )paren
 )paren
-id|dbg
+id|dev_warn
 c_func
 (paren
-l_string|&quot;td %p still in remove_list!&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;td %p still in remove_list!&bslash;n&quot;
 comma
 id|td
 )paren
@@ -983,10 +995,16 @@ op_amp
 id|td-&gt;fl_list
 )paren
 )paren
-id|dbg
+id|dev_warn
 c_func
 (paren
-l_string|&quot;td %p is still in fl_list!&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;td %p still in fl_list!&bslash;n&quot;
 comma
 id|td
 )paren
@@ -1134,10 +1152,16 @@ op_amp
 id|qh-&gt;list
 )paren
 )paren
-id|dbg
+id|dev_warn
 c_func
 (paren
-l_string|&quot;qh %p list not empty!&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;qh %p list not empty!&bslash;n&quot;
 comma
 id|qh
 )paren
@@ -1153,10 +1177,16 @@ op_amp
 id|qh-&gt;remove_list
 )paren
 )paren
-id|dbg
+id|dev_warn
 c_func
 (paren
-l_string|&quot;qh %p still in remove_list!&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;qh %p still in remove_list!&bslash;n&quot;
 comma
 id|qh
 )paren
@@ -2470,17 +2500,9 @@ c_cond
 op_logical_neg
 id|urbp
 )paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;uhci_alloc_urb_priv: couldn&squot;t allocate memory for urb_priv&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -2695,10 +2717,17 @@ op_amp
 id|urbp-&gt;urb_list
 )paren
 )paren
-id|warn
+id|dev_warn
 c_func
 (paren
-l_string|&quot;uhci_destroy_urb_priv: urb %p still on uhci-&gt;urb_list or uhci-&gt;remove_list&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;urb %p still on uhci-&gt;urb_list &quot;
+l_string|&quot;or uhci-&gt;remove_list!&bslash;n&quot;
 comma
 id|urb
 )paren
@@ -3704,18 +3733,10 @@ c_cond
 op_logical_neg
 id|urbp-&gt;qh
 )paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;unable to allocate new QH for control retrigger&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|urbp-&gt;qh-&gt;urbp
 op_assign
 id|urbp
@@ -4163,10 +4184,18 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Some debugging code */
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;uhci_result_control() failed with status %x&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;%s: failed with status %x&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|status
 )paren
@@ -4918,10 +4947,18 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Some debugging code */
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;uhci_result_common() failed with status %x&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;%s: failed with status %x&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|status
 )paren
@@ -6513,10 +6550,19 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|info
+id|dev_info
 c_func
 (paren
-l_string|&quot;uhci_transfer_result: unknown pipe type %d for urb %p&bslash;n&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;%s: unknown pipe type %d &quot;
+l_string|&quot;for urb %p&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|usb_pipetype
 c_func
@@ -7978,12 +8024,17 @@ id|status
 op_amp
 id|USBSTS_HSE
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%x: host system error, PCI problems?&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 comma
-id|io_addr
+l_string|&quot;host system error, &quot;
+l_string|&quot;PCI problems?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -7993,12 +8044,17 @@ id|status
 op_amp
 id|USBSTS_HCPE
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%x: host controller process error. something bad happened&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 comma
-id|io_addr
+l_string|&quot;host controller process &quot;
+l_string|&quot;error, something bad happened!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -8015,12 +8071,17 @@ OG
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%x: host controller halted. very bad&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 comma
-id|io_addr
+l_string|&quot;host controller halted, &quot;
+l_string|&quot;very bad!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: Reset the controller, fix the offending TD */
@@ -8249,12 +8310,18 @@ id|io_addr
 op_assign
 id|uhci-&gt;io_addr
 suffix:semicolon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;%x: suspend_hc&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 comma
-id|io_addr
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|uhci-&gt;state
@@ -8304,12 +8371,18 @@ r_case
 id|UHCI_SUSPENDED
 suffix:colon
 multiline_comment|/* Start the resume */
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;%x: wakeup_hc&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 comma
-id|io_addr
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* Global resume for &gt;= 20ms */
@@ -8512,13 +8585,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|uhci-&gt;hcd.self.controller
-op_logical_or
 id|to_pci_dev
 c_func
 (paren
-id|uhci-&gt;hcd.self.controller
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 )paren
 op_member_access_from_pointer
 id|vendor
@@ -8765,11 +8839,16 @@ op_decrement
 id|timeout
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;uhci: USBCMD_HCRESET timed out!&bslash;n&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;USBCMD_HCRESET timed out!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -8964,7 +9043,11 @@ id|uhci-&gt;fl
 id|dma_free_coherent
 c_func
 (paren
-id|uhci-&gt;hcd.self.controller
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 comma
 r_sizeof
 (paren
@@ -9059,7 +9142,11 @@ c_func
 id|to_pci_dev
 c_func
 (paren
-id|hcd-&gt;self.controller
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 )paren
 comma
 id|USBLEGSUP
@@ -9132,7 +9219,11 @@ c_func
 id|to_pci_dev
 c_func
 (paren
-id|hcd-&gt;self.controller
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 )paren
 comma
 id|hcd-&gt;region
@@ -9162,10 +9253,16 @@ op_logical_neg
 id|ent
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;couldn&squot;t create uhci proc entry&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;couldn&squot;t create uhci proc entry&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -9285,7 +9382,11 @@ op_assign
 id|dma_alloc_coherent
 c_func
 (paren
-id|hcd-&gt;self.controller
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 comma
 r_sizeof
 (paren
@@ -9306,10 +9407,17 @@ op_logical_neg
 id|uhci-&gt;fl
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;unable to allocate consistent memory for frame list&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;unable to allocate &quot;
+l_string|&quot;consistent memory for frame list&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -9345,7 +9453,11 @@ c_func
 (paren
 l_string|&quot;uhci_td&quot;
 comma
-id|hcd-&gt;self.controller
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 comma
 r_sizeof
 (paren
@@ -9365,10 +9477,16 @@ op_logical_neg
 id|uhci-&gt;td_pool
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;unable to create td dma_pool&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;unable to create td dma_pool&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -9382,7 +9500,11 @@ c_func
 (paren
 l_string|&quot;uhci_qh&quot;
 comma
-id|hcd-&gt;self.controller
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 comma
 r_sizeof
 (paren
@@ -9402,10 +9524,16 @@ op_logical_neg
 id|uhci-&gt;qh_pool
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;unable to create qh dma_pool&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;unable to create qh dma_pool&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -9476,10 +9604,16 @@ c_cond
 (paren
 id|debug
 )paren
-id|info
+id|dev_info
 c_func
 (paren
-l_string|&quot;detected %d ports&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;detected %d ports&bslash;n&quot;
 comma
 id|port
 )paren
@@ -9494,10 +9628,17 @@ template_param
 id|UHCI_RH_MAXCHILD
 )paren
 (brace
-id|info
+id|dev_info
 c_func
 (paren
-l_string|&quot;port count misdetected? forcing to 2 ports&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;port count misdetected? &quot;
+l_string|&quot;forcing to 2 ports&bslash;n&quot;
 )paren
 suffix:semicolon
 id|port
@@ -9531,10 +9672,16 @@ op_logical_neg
 id|udev
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;unable to allocate root hub&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;unable to allocate root hub&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -9558,10 +9705,16 @@ op_logical_neg
 id|uhci-&gt;term_td
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;unable to allocate terminating TD&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;unable to allocate terminating TD&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -9606,12 +9759,16 @@ id|i
 )braket
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;unable to allocate QH %d&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 comma
-id|i
+l_string|&quot;unable to allocate QH&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -9815,16 +9972,26 @@ c_func
 (paren
 id|udev
 comma
-id|hcd-&gt;self.controller
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 )paren
 op_ne
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;unable to start root hub&quot;
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
+comma
+l_string|&quot;unable to start root hub&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -9952,7 +10119,11 @@ suffix:colon
 id|dma_free_coherent
 c_func
 (paren
-id|hcd-&gt;self.controller
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 comma
 r_sizeof
 (paren
@@ -10164,7 +10335,11 @@ c_func
 id|to_pci_dev
 c_func
 (paren
-id|uhci-&gt;hcd.self.controller
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -10531,12 +10706,14 @@ op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|info
+id|printk
 c_func
 (paren
+id|KERN_INFO
 id|DRIVER_DESC
 l_string|&quot; &quot;
 id|DRIVER_VERSION
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -10665,8 +10842,8 @@ id|uhci_up_cachep
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;uhci: not all urb_priv&squot;s were freed&bslash;n&quot;
+id|KERN_WARN
+l_string|&quot;uhci: not all urb_priv&squot;s were freed!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|up_failed
@@ -10729,8 +10906,8 @@ id|uhci_up_cachep
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;uhci: not all urb_priv&squot;s were freed&bslash;n&quot;
+id|KERN_WARN
+l_string|&quot;uhci: not all urb_priv&squot;s were freed!&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS

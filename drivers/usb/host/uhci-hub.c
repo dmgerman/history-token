@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Universal Host Controller Interface driver for USB.&n; *&n; * Maintainer: Johannes Erdfelt &lt;johannes@erdfelt.com&gt;&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999-2002 Johannes Erdfelt, johannes@erdfelt.com&n; * (C) Copyright 1999 Randy Dunlap&n; * (C) Copyright 1999 Georg Acher, acher@in.tum.de&n; * (C) Copyright 1999 Deti Fliegl, deti@fliegl.de&n; * (C) Copyright 1999 Thomas Sailer, sailer@ife.ee.ethz.ch&n; */
+multiline_comment|/*&n; * Universal Host Controller Interface driver for USB.&n; *&n; * Maintainer: Alan Stern &lt;stern@rowland.harvard.edu&gt;&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999-2002 Johannes Erdfelt, johannes@erdfelt.com&n; * (C) Copyright 1999 Randy Dunlap&n; * (C) Copyright 1999 Georg Acher, acher@in.tum.de&n; * (C) Copyright 1999 Deti Fliegl, deti@fliegl.de&n; * (C) Copyright 1999 Thomas Sailer, sailer@ife.ee.ethz.ch&n; * (C) Copyright 2004 Alan Stern, stern@rowland.harvard.edu&n; */
 DECL|variable|root_hub_hub_des
 r_static
 id|__u8
@@ -440,8 +440,13 @@ c_cond
 id|wPortChange
 )paren
 id|dev_dbg
+c_func
 (paren
-id|uhci-&gt;hcd.self.controller
+id|uhci_dev
+c_func
+(paren
+id|uhci
+)paren
 comma
 l_string|&quot;port %d portsc %04x&bslash;n&quot;
 comma

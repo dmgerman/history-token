@@ -516,6 +516,8 @@ id|UHCI_RESUMING_2
 suffix:semicolon
 DECL|macro|hcd_to_uhci
 mdefine_line|#define hcd_to_uhci(hcd_ptr) container_of(hcd_ptr, struct uhci_hcd, hcd)
+DECL|macro|uhci_dev
+mdefine_line|#define uhci_dev(u)&t;((u)-&gt;hcd.self.controller)
 multiline_comment|/*&n; * This describes the full uhci information.&n; *&n; * Note how the &quot;proper&quot; USB information is just&n; * a subset of what the full implementation needs.&n; */
 DECL|struct|uhci_hcd
 r_struct
