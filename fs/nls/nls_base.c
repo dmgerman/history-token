@@ -1102,12 +1102,7 @@ op_star
 id|nls
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|nls-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|nls-&gt;owner

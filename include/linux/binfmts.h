@@ -315,7 +315,7 @@ id|regs
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|set_binfmt
 c_func
 (paren
@@ -325,10 +325,6 @@ op_star
 r_new
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* this went away now */
-mdefine_line|#define change_ldt(a,b) setup_arg_pages(a,b)
-macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_BINFMTS_H */
 eof
