@@ -729,6 +729,12 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+id|select_idle_routine
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

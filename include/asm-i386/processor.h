@@ -678,6 +678,86 @@ macro_line|#else
 DECL|macro|pc98
 mdefine_line|#define pc98 0
 macro_line|#endif
+DECL|function|__monitor
+r_static
+r_inline
+r_void
+id|__monitor
+c_func
+(paren
+r_const
+r_void
+op_star
+id|eax
+comma
+r_int
+r_int
+id|ecx
+comma
+r_int
+r_int
+id|edx
+)paren
+(brace
+multiline_comment|/* &quot;monitor %eax,%ecx,%edx;&quot; */
+id|asm
+r_volatile
+(paren
+l_string|&quot;.byte 0x0f,0x01,0xc8;&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|eax
+)paren
+comma
+l_string|&quot;c&quot;
+(paren
+id|ecx
+)paren
+comma
+l_string|&quot;d&quot;
+(paren
+id|edx
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|__mwait
+r_static
+r_inline
+r_void
+id|__mwait
+c_func
+(paren
+r_int
+r_int
+id|eax
+comma
+r_int
+r_int
+id|ecx
+)paren
+(brace
+multiline_comment|/* &quot;mwait %eax,%ecx;&quot; */
+id|asm
+r_volatile
+(paren
+l_string|&quot;.byte 0x0f,0x01,0xc9;&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|eax
+)paren
+comma
+l_string|&quot;c&quot;
+(paren
+id|ecx
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* from system description table in BIOS.  Mostly for MCA use, but&n;others may find it useful. */
 r_extern
 r_int
@@ -1729,5 +1809,17 @@ suffix:semicolon
 )brace
 DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)&t;prefetchw(x)
+r_extern
+r_void
+id|select_idle_routine
+c_func
+(paren
+r_const
+r_struct
+id|cpuinfo_x86
+op_star
+id|c
+)paren
+suffix:semicolon
 macro_line|#endif /* __ASM_I386_PROCESSOR_H */
 eof
