@@ -8,13 +8,15 @@ macro_line|#include &lt;linux/if_bonding.h&gt;
 macro_line|#include &quot;bond_3ad.h&quot;
 macro_line|#include &quot;bond_alb.h&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;2.5.3&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;2.5.4&quot;
 DECL|macro|DRV_RELDATE
 mdefine_line|#define DRV_RELDATE&t;&quot;December 30, 2003&quot;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;bonding&quot;
 DECL|macro|DRV_DESCRIPTION
 mdefine_line|#define DRV_DESCRIPTION&t;&quot;Ethernet Channel Bonding Driver&quot;
+DECL|macro|BOND_MAX_ARP_TARGETS
+mdefine_line|#define BOND_MAX_ARP_TARGETS&t;16
 macro_line|#ifdef BONDING_DEBUG
 DECL|macro|dprintk
 mdefine_line|#define dprintk(fmt, args...) &bslash;&n;&t;printk(KERN_DEBUG     &bslash;&n;&t;       DRV_NAME &quot;: %s() %d: &quot; fmt, __FUNCTION__, __LINE__ , ## args )
@@ -44,6 +46,54 @@ mdefine_line|#define bond_for_each_slave_from_to(bond, pos, cnt, start, stop)&t;
 multiline_comment|/**&n; * bond_for_each_slave - iterate the slaves list from head&n; * @bond:&t;the bond holding this list.&n; * @pos:&t;current slave.&n; * @cnt:&t;counter for max number of moves&n; *&n; * Caller must hold bond-&gt;lock&n; */
 DECL|macro|bond_for_each_slave
 mdefine_line|#define bond_for_each_slave(bond, pos, cnt)&t;&bslash;&n;&t;&t;bond_for_each_slave_from(bond, pos, cnt, (bond)-&gt;first_slave)
+DECL|struct|bond_params
+r_struct
+id|bond_params
+(brace
+DECL|member|mode
+r_int
+id|mode
+suffix:semicolon
+DECL|member|miimon
+r_int
+id|miimon
+suffix:semicolon
+DECL|member|arp_interval
+r_int
+id|arp_interval
+suffix:semicolon
+DECL|member|use_carrier
+r_int
+id|use_carrier
+suffix:semicolon
+DECL|member|updelay
+r_int
+id|updelay
+suffix:semicolon
+DECL|member|downdelay
+r_int
+id|downdelay
+suffix:semicolon
+DECL|member|lacp_fast
+r_int
+id|lacp_fast
+suffix:semicolon
+DECL|member|primary
+r_char
+id|primary
+(braket
+id|IFNAMSIZ
+)braket
+suffix:semicolon
+DECL|member|arp_targets
+id|u32
+id|arp_targets
+(braket
+id|BOND_MAX_ARP_TARGETS
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|slave
 r_struct
 id|slave
@@ -228,6 +278,11 @@ DECL|member|alb_info
 r_struct
 id|alb_bond_info
 id|alb_info
+suffix:semicolon
+DECL|member|params
+r_struct
+id|bond_params
+id|params
 suffix:semicolon
 )brace
 suffix:semicolon
