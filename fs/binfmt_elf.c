@@ -356,10 +356,8 @@ r_int
 id|items
 suffix:semicolon
 id|elf_addr_t
+op_star
 id|elf_info
-(braket
-l_int|40
-)braket
 suffix:semicolon
 r_int
 id|ei_index
@@ -447,6 +445,10 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/* Create the ELF interpreter info */
+id|elf_info
+op_assign
+id|current-&gt;mm-&gt;saved_auxv
+suffix:semicolon
 DECL|macro|NEW_AUX_ENT
 mdefine_line|#define NEW_AUX_ENT(id, val) &bslash;&n;&t;do { elf_info[ei_index++] = id; elf_info[ei_index++] = val; } while (0)
 macro_line|#ifdef ARCH_DLINFO
@@ -5033,7 +5035,7 @@ id|file
 )paren
 (brace
 DECL|macro|NUM_NOTES
-mdefine_line|#define&t;NUM_NOTES&t;5
+mdefine_line|#define&t;NUM_NOTES&t;6
 r_int
 id|has_dumped
 op_assign
@@ -5085,8 +5087,6 @@ id|rlim_cur
 suffix:semicolon
 r_int
 id|numnote
-op_assign
-id|NUM_NOTES
 suffix:semicolon
 r_struct
 id|memelfnote
@@ -5515,6 +5515,57 @@ comma
 id|current
 )paren
 suffix:semicolon
+id|numnote
+op_assign
+l_int|3
+suffix:semicolon
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+r_do
+id|i
+op_add_assign
+l_int|2
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|current-&gt;mm-&gt;saved_auxv
+(braket
+id|i
+op_minus
+l_int|2
+)braket
+op_ne
+id|AT_NULL
+)paren
+suffix:semicolon
+id|fill_note
+c_func
+(paren
+op_amp
+id|notes
+(braket
+id|numnote
+op_increment
+)braket
+comma
+l_string|&quot;CORE&quot;
+comma
+id|NT_AUXV
+comma
+id|i
+op_star
+r_sizeof
+id|current-&gt;mm-&gt;saved_auxv
+(braket
+l_int|0
+)braket
+comma
+id|current-&gt;mm-&gt;saved_auxv
+)paren
+suffix:semicolon
 multiline_comment|/* Try to dump the FPU. */
 r_if
 c_cond
@@ -5538,7 +5589,8 @@ c_func
 (paren
 id|notes
 op_plus
-l_int|3
+id|numnote
+op_increment
 comma
 l_string|&quot;CORE&quot;
 comma
@@ -5552,10 +5604,6 @@ id|fpu
 comma
 id|fpu
 )paren
-suffix:semicolon
-r_else
-op_decrement
-id|numnote
 suffix:semicolon
 macro_line|#ifdef ELF_CORE_COPY_XFPREGS
 r_if
@@ -5574,7 +5622,8 @@ c_func
 (paren
 id|notes
 op_plus
-l_int|4
+id|numnote
+op_increment
 comma
 l_string|&quot;LINUX&quot;
 comma
@@ -5588,14 +5637,6 @@ id|xfpu
 comma
 id|xfpu
 )paren
-suffix:semicolon
-r_else
-op_decrement
-id|numnote
-suffix:semicolon
-macro_line|#else
-id|numnote
-op_decrement
 suffix:semicolon
 macro_line|#endif&t;
 id|fs
