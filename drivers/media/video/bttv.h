@@ -143,6 +143,12 @@ DECL|macro|BTTV_FLYVIDEO98EZ
 mdefine_line|#define BTTV_FLYVIDEO98EZ   0x47
 DECL|macro|BTTV_PV_BT878P_9B
 mdefine_line|#define BTTV_PV_BT878P_9B   0x48
+DECL|macro|BTTV_SENSORAY311
+mdefine_line|#define BTTV_SENSORAY311    0x49
+DECL|macro|BTTV_RV605
+mdefine_line|#define BTTV_RV605          0x4a
+DECL|macro|BTTV_WINDVR
+mdefine_line|#define BTTV_WINDVR         0x4c
 multiline_comment|/* i2c address list */
 DECL|macro|I2C_TSA5522
 mdefine_line|#define I2C_TSA5522        0xc2
@@ -154,8 +160,8 @@ DECL|macro|I2C_TDA9840
 mdefine_line|#define I2C_TDA9840        0x84
 DECL|macro|I2C_TDA9850
 mdefine_line|#define I2C_TDA9850        0xb6 /* also used by 9855,9873 */
-DECL|macro|I2C_TDA9874A
-mdefine_line|#define I2C_TDA9874A       0xb0 /* also used by 9875 */
+DECL|macro|I2C_TDA9874
+mdefine_line|#define I2C_TDA9874        0xb0 /* also used by 9875 */
 DECL|macro|I2C_TDA9875
 mdefine_line|#define I2C_TDA9875        0xb0
 DECL|macro|I2C_HAUPEE
@@ -221,7 +227,7 @@ DECL|member|muxsel
 id|u32
 id|muxsel
 (braket
-l_int|8
+l_int|16
 )braket
 suffix:semicolon
 DECL|member|audiomux
@@ -296,6 +302,23 @@ r_int
 id|set
 )paren
 suffix:semicolon
+DECL|member|muxsel_hook
+r_void
+(paren
+op_star
+id|muxsel_hook
+)paren
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+comma
+r_int
+r_int
+id|input
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -324,7 +347,18 @@ id|btv
 suffix:semicolon
 r_extern
 r_void
-id|bttv_init_card
+id|bttv_init_card1
+c_func
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|bttv_init_card2
 c_func
 (paren
 r_struct
@@ -351,7 +385,7 @@ id|freq
 suffix:semicolon
 r_extern
 r_void
-id|bttv_boot_msp34xx
+id|bttv_tda9880_setnorm
 c_func
 (paren
 r_struct
@@ -360,7 +394,7 @@ op_star
 id|btv
 comma
 r_int
-id|pin
+id|norm
 )paren
 suffix:semicolon
 multiline_comment|/* kernel cmd line parse helper */
