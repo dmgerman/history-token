@@ -40,6 +40,9 @@ macro_line|#ifdef CONFIG_SBUS
 macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_PCI
+macro_line|#include &lt;asm/ebus.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/io-unit.h&gt;
 DECL|struct|poll
@@ -772,19 +775,11 @@ id|sbus_ioremap
 suffix:semicolon
 macro_line|#endif
 macro_line|#if CONFIG_PCI
-multiline_comment|/* Actually, ioremap/iounmap are not PCI specific. But it is ok for drivers. */
-DECL|variable|ioremap
+DECL|variable|ebus_chain
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|ioremap
-)paren
-suffix:semicolon
-DECL|variable|iounmap
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iounmap
+id|ebus_chain
 )paren
 suffix:semicolon
 DECL|variable|insl
@@ -834,6 +829,21 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pci_dma_sync_single
+)paren
+suffix:semicolon
+multiline_comment|/* Actually, ioremap/iounmap are not PCI specific. But it is ok for drivers. */
+DECL|variable|ioremap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ioremap
+)paren
+suffix:semicolon
+DECL|variable|iounmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iounmap
 )paren
 suffix:semicolon
 macro_line|#endif
