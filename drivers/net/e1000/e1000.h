@@ -42,7 +42,6 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
-macro_line|#include &lt;linux/moduleparam.h&gt;
 DECL|macro|BAR_0
 mdefine_line|#define BAR_0&t;&t;0
 DECL|macro|BAR_1
