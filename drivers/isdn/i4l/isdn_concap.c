@@ -6,7 +6,6 @@ macro_line|#include &quot;isdn_net.h&quot;
 macro_line|#include &lt;linux/concap.h&gt;
 macro_line|#include &quot;isdn_concap.h&quot;
 macro_line|#include &lt;linux/if_arp.h&gt;
-macro_line|#ifdef CONFIG_ISDN_X25
 multiline_comment|/* The following set of device service operations are for encapsulation&n;   protocols that require for reliable datalink semantics. That means:&n;&n;   - before any data is to be submitted the connection must explicitly&n;     be set up.&n;   - after the successful set up of the connection is signalled the&n;     connection is considered to be reliably up.&n;&n;   Auto-dialing ist not compatible with this requirements. Thus, auto-dialing &n;   is completely bypassed.&n;&n;   It might be possible to implement a (non standardized) datalink protocol&n;   that provides a reliable data link service while using some auto dialing&n;   mechanism. Such a protocol would need an auxiliary channel (i.e. user-user-&n;   signaling on the D-channel) while the B-channel is down.&n;   */
 r_static
 r_int
@@ -910,5 +909,4 @@ id|isdn_x25_close
 comma
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_ISDN_X25 */
 eof
