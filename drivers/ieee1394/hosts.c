@@ -384,7 +384,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|INIT_TQUEUE
+id|HPSB_INIT_WORK
 c_func
 (paren
 op_amp

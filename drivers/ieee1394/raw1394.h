@@ -17,21 +17,37 @@ DECL|macro|RAW1394_REQ_SET_CARD
 mdefine_line|#define RAW1394_REQ_SET_CARD      3
 multiline_comment|/* state: connected */
 DECL|macro|RAW1394_REQ_ASYNC_READ
-mdefine_line|#define RAW1394_REQ_ASYNC_READ    100
+mdefine_line|#define RAW1394_REQ_ASYNC_READ      100
 DECL|macro|RAW1394_REQ_ASYNC_WRITE
-mdefine_line|#define RAW1394_REQ_ASYNC_WRITE   101
+mdefine_line|#define RAW1394_REQ_ASYNC_WRITE     101
 DECL|macro|RAW1394_REQ_LOCK
-mdefine_line|#define RAW1394_REQ_LOCK          102
+mdefine_line|#define RAW1394_REQ_LOCK            102
 DECL|macro|RAW1394_REQ_LOCK64
-mdefine_line|#define RAW1394_REQ_LOCK64        103
+mdefine_line|#define RAW1394_REQ_LOCK64          103
 DECL|macro|RAW1394_REQ_ISO_SEND
-mdefine_line|#define RAW1394_REQ_ISO_SEND      104
+mdefine_line|#define RAW1394_REQ_ISO_SEND        104
+DECL|macro|RAW1394_REQ_ASYNC_SEND
+mdefine_line|#define RAW1394_REQ_ASYNC_SEND      105
 DECL|macro|RAW1394_REQ_ISO_LISTEN
-mdefine_line|#define RAW1394_REQ_ISO_LISTEN    200
+mdefine_line|#define RAW1394_REQ_ISO_LISTEN      200
 DECL|macro|RAW1394_REQ_FCP_LISTEN
-mdefine_line|#define RAW1394_REQ_FCP_LISTEN    201
+mdefine_line|#define RAW1394_REQ_FCP_LISTEN      201
 DECL|macro|RAW1394_REQ_RESET_BUS
-mdefine_line|#define RAW1394_REQ_RESET_BUS     202
+mdefine_line|#define RAW1394_REQ_RESET_BUS       202
+DECL|macro|RAW1394_REQ_GET_ROM
+mdefine_line|#define RAW1394_REQ_GET_ROM         203
+DECL|macro|RAW1394_REQ_UPDATE_ROM
+mdefine_line|#define RAW1394_REQ_UPDATE_ROM      204
+DECL|macro|RAW1394_REQ_ECHO
+mdefine_line|#define RAW1394_REQ_ECHO            205
+DECL|macro|RAW1394_REQ_ARM_REGISTER
+mdefine_line|#define RAW1394_REQ_ARM_REGISTER    300
+DECL|macro|RAW1394_REQ_ARM_UNREGISTER
+mdefine_line|#define RAW1394_REQ_ARM_UNREGISTER  301
+DECL|macro|RAW1394_REQ_RESET_NOTIFY
+mdefine_line|#define RAW1394_REQ_RESET_NOTIFY    400
+DECL|macro|RAW1394_REQ_PHYPACKET
+mdefine_line|#define RAW1394_REQ_PHYPACKET       500
 multiline_comment|/* kernel to user */
 DECL|macro|RAW1394_REQ_BUS_RESET
 mdefine_line|#define RAW1394_REQ_BUS_RESET     10000
@@ -39,6 +55,8 @@ DECL|macro|RAW1394_REQ_ISO_RECEIVE
 mdefine_line|#define RAW1394_REQ_ISO_RECEIVE   10001
 DECL|macro|RAW1394_REQ_FCP_REQUEST
 mdefine_line|#define RAW1394_REQ_FCP_REQUEST   10002
+DECL|macro|RAW1394_REQ_ARM
+mdefine_line|#define RAW1394_REQ_ARM           10003
 multiline_comment|/* error codes */
 DECL|macro|RAW1394_ERROR_NONE
 mdefine_line|#define RAW1394_ERROR_NONE        0
@@ -64,6 +82,22 @@ DECL|macro|RAW1394_ERROR_ABORTED
 mdefine_line|#define RAW1394_ERROR_ABORTED     (-1101)
 DECL|macro|RAW1394_ERROR_TIMEOUT
 mdefine_line|#define RAW1394_ERROR_TIMEOUT     (-1102)
+multiline_comment|/* arm_codes */
+DECL|macro|ARM_READ
+mdefine_line|#define ARM_READ   1
+DECL|macro|ARM_WRITE
+mdefine_line|#define ARM_WRITE  2
+DECL|macro|ARM_LOCK
+mdefine_line|#define ARM_LOCK   4
+DECL|macro|RAW1394_LONG_RESET
+mdefine_line|#define RAW1394_LONG_RESET  0
+DECL|macro|RAW1394_SHORT_RESET
+mdefine_line|#define RAW1394_SHORT_RESET 1
+multiline_comment|/* busresetnotify ... */
+DECL|macro|RAW1394_NOTIFY_OFF
+mdefine_line|#define RAW1394_NOTIFY_OFF 0
+DECL|macro|RAW1394_NOTIFY_ON
+mdefine_line|#define RAW1394_NOTIFY_ON  1
 macro_line|#include &lt;asm/types.h&gt;
 DECL|struct|raw1394_request
 r_struct
@@ -123,6 +157,98 @@ l_int|32
 )braket
 suffix:semicolon
 )brace
+suffix:semicolon
+DECL|struct|arm_request
+r_typedef
+r_struct
+id|arm_request
+(brace
+DECL|member|destination_nodeid
+id|nodeid_t
+id|destination_nodeid
+suffix:semicolon
+DECL|member|source_nodeid
+id|nodeid_t
+id|source_nodeid
+suffix:semicolon
+DECL|member|destination_offset
+id|nodeaddr_t
+id|destination_offset
+suffix:semicolon
+DECL|member|tlabel
+id|u8
+id|tlabel
+suffix:semicolon
+DECL|member|tcode
+id|u8
+id|tcode
+suffix:semicolon
+DECL|member|extended_transaction_code
+id|u_int8_t
+id|extended_transaction_code
+suffix:semicolon
+DECL|member|generation
+id|u_int32_t
+id|generation
+suffix:semicolon
+DECL|member|buffer_length
+id|arm_length_t
+id|buffer_length
+suffix:semicolon
+DECL|member|buffer
+id|byte_t
+op_star
+id|buffer
+suffix:semicolon
+DECL|typedef|arm_request_t
+)brace
+op_star
+id|arm_request_t
+suffix:semicolon
+DECL|struct|arm_response
+r_typedef
+r_struct
+id|arm_response
+(brace
+DECL|member|response_code
+r_int
+id|response_code
+suffix:semicolon
+DECL|member|buffer_length
+id|arm_length_t
+id|buffer_length
+suffix:semicolon
+DECL|member|buffer
+id|byte_t
+op_star
+id|buffer
+suffix:semicolon
+DECL|typedef|arm_response_t
+)brace
+op_star
+id|arm_response_t
+suffix:semicolon
+DECL|struct|arm_request_response
+r_typedef
+r_struct
+id|arm_request_response
+(brace
+DECL|member|request
+r_struct
+id|arm_request
+op_star
+id|request
+suffix:semicolon
+DECL|member|response
+r_struct
+id|arm_response
+op_star
+id|response
+suffix:semicolon
+DECL|typedef|arm_request_response_t
+)brace
+op_star
+id|arm_request_response_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 DECL|struct|iso_block_store
@@ -203,6 +329,11 @@ DECL|member|poll_wait_complete
 id|wait_queue_head_t
 id|poll_wait_complete
 suffix:semicolon
+DECL|member|addr_list
+r_struct
+id|list_head
+id|addr_list
+suffix:semicolon
 DECL|member|fcp_buffer
 id|u8
 op_star
@@ -221,6 +352,60 @@ DECL|member|iso_buffer_length
 r_int
 id|iso_buffer_length
 suffix:semicolon
+DECL|member|notification
+id|u8
+id|notification
+suffix:semicolon
+multiline_comment|/* (busreset-notification) RAW1394_NOTIFY_OFF/ON */
+)brace
+suffix:semicolon
+DECL|struct|arm_addr
+r_struct
+id|arm_addr
+(brace
+DECL|member|addr_list
+r_struct
+id|list_head
+id|addr_list
+suffix:semicolon
+multiline_comment|/* file_info list */
+DECL|member|start
+DECL|member|end
+id|u64
+id|start
+comma
+id|end
+suffix:semicolon
+DECL|member|arm_tag
+id|u64
+id|arm_tag
+suffix:semicolon
+DECL|member|access_rights
+id|u8
+id|access_rights
+suffix:semicolon
+DECL|member|notification_options
+id|u8
+id|notification_options
+suffix:semicolon
+DECL|member|client_transactions
+id|u8
+id|client_transactions
+suffix:semicolon
+DECL|member|recvb
+id|u64
+id|recvb
+suffix:semicolon
+DECL|member|rec_length
+id|u16
+id|rec_length
+suffix:semicolon
+DECL|member|addr_space_buffer
+id|u8
+op_star
+id|addr_space_buffer
+suffix:semicolon
+multiline_comment|/* accessed by read/write/lock */
 )brace
 suffix:semicolon
 DECL|struct|pending_request
@@ -246,7 +431,7 @@ id|packet
 suffix:semicolon
 DECL|member|tq
 r_struct
-id|tq_struct
+id|hpsb_queue_struct
 id|tq
 suffix:semicolon
 DECL|member|ibs

@@ -1,7 +1,6 @@
 macro_line|#ifndef _IEEE1394_CORE_H
 DECL|macro|_IEEE1394_CORE_H
 mdefine_line|#define _IEEE1394_CORE_H
-macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -183,7 +182,7 @@ op_star
 id|packet
 comma
 r_struct
-id|tq_struct
+id|hpsb_queue_struct
 op_star
 id|tq
 )paren

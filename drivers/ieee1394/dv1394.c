@@ -20,7 +20,6 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -9955,6 +9954,7 @@ r_return
 id|p
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_DEVFS_FS
 DECL|function|dv1394_devfs_add_entry
 r_static
 r_int
@@ -10508,6 +10508,7 @@ id|p
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif /* CONFIG_DEVFS_FS */
 multiline_comment|/*** IEEE1394 HPSB CALLBACKS ***********************************************/
 DECL|function|dv1394_init
 r_static
@@ -11246,11 +11247,6 @@ id|buf
 l_int|16
 )braket
 suffix:semicolon
-r_struct
-id|dv1394_devfs_entry
-op_star
-id|devfs_entry
-suffix:semicolon
 multiline_comment|/* We only work with the OHCI-1394 driver */
 r_if
 c_cond
@@ -11347,6 +11343,10 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_DEVFS_FS
+(brace
+r_struct
+id|dv1394_devfs_entry
+op_star
 id|devfs_entry
 op_assign
 id|dv1394_devfs_find
@@ -11409,6 +11409,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 id|dv1394_init

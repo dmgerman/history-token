@@ -849,16 +849,12 @@ DECL|macro|NCR5380_read
 mdefine_line|#define NCR5380_read(reg) ecoscsi_read(_instance, reg)
 DECL|macro|NCR5380_write
 mdefine_line|#define NCR5380_write(reg, value) ecoscsi_write(_instance, reg, value)
-DECL|macro|do_NCR5380_intr
-mdefine_line|#define do_NCR5380_intr do_ecoscsi_intr
+DECL|macro|NCR5380_intr
+mdefine_line|#define NCR5380_intr&t;&t;ecoscsi_intr
 DECL|macro|NCR5380_queue_command
-mdefine_line|#define NCR5380_queue_command ecoscsi_queue_command
-DECL|macro|NCR5380_abort
-mdefine_line|#define NCR5380_abort ecoscsi_abort
-DECL|macro|NCR5380_reset
-mdefine_line|#define NCR5380_reset ecoscsi_reset
+mdefine_line|#define NCR5380_queue_command&t;ecoscsi_queue_command
 DECL|macro|NCR5380_proc_info
-mdefine_line|#define NCR5380_proc_info ecoscsi_proc_info
+mdefine_line|#define NCR5380_proc_info&t;ecoscsi_proc_info
 r_int
 id|NCR5380_proc_info
 c_func
@@ -927,14 +923,24 @@ op_assign
 id|ecoscsi_queue_command
 comma
 dot
-m_abort
+id|eh_abort_handler
 op_assign
-id|ecoscsi_abort
+id|NCR5380_abort
 comma
 dot
-id|reset
+id|eh_device_reset_handler
 op_assign
-id|ecoscsi_reset
+id|NCR5380_device_reset
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|NCR5380_bus_reset
+comma
+dot
+id|eh_host_reset_handler
+op_assign
+id|NCR5380_host_reset
 comma
 dot
 id|can_queue

@@ -1,8 +1,10 @@
 multiline_comment|/* &n; * User address space access functions.&n; *&n; * Copyright 1997 Andi Kleen &lt;ak@muc.de&gt;&n; * Copyright 1997 Linus Torvalds&n; * Copyright 2002 Andi Kleen &lt;ak@suse.de&gt;&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * Copy a null terminated string from userspace.&n; */
-DECL|function|__strncpy_from_user
+DECL|macro|__do_strncpy_from_user
+mdefine_line|#define __do_strncpy_from_user(dst,src,count,res)&t;&t;&t;   &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;long __d0, __d1, __d2;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;testq %1,%1&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;jz 2f&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;0:&t;lodsb&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;stosb&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;testb %%al,%%al&bslash;n&quot;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;jz 1f&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;decq %1&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;jnz 0b&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;1:&t;subq %1,%0&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;3:&t;movq %5,%0&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;jmp 2b&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;.align 4&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;&t;.quad 0b,3b&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;: &quot;=r&quot;(res), &quot;=c&quot;(count), &quot;=&amp;a&quot; (__d0), &quot;=&amp;S&quot; (__d1),&t;   &bslash;&n;&t;&t;  &quot;=&amp;D&quot; (__d2)&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;: &quot;i&quot;(-EFAULT), &quot;0&quot;(count), &quot;1&quot;(count), &quot;3&quot;(src), &quot;4&quot;(dst) &bslash;&n;&t;&t;: &quot;memory&quot;);&t;&t;&t;&t;&t;&t;   &bslash;&n;} while (0)
 r_int
+DECL|function|__strncpy_from_user
 id|__strncpy_from_user
 c_func
 (paren
@@ -22,94 +24,24 @@ id|count
 r_int
 id|res
 suffix:semicolon
-r_int
-id|__d0
-comma
-id|__d1
-comma
-id|__d2
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-"&bslash;"
-l_string|&quot;&t;testq %1,%1&bslash;n&quot;
-l_string|&quot;&t;jz 2f&bslash;n&quot;
-l_string|&quot;0:&t;lodsb&bslash;n&quot;
-l_string|&quot;&t;stosb&bslash;n&quot;
-l_string|&quot;&t;testb %%al,%%al&bslash;n&quot;
-l_string|&quot;   &t;loopnz 0b&bslash;n&quot;
-l_string|&quot;1:&t;subq %1,%0&bslash;n&quot;
-l_string|&quot;2:&bslash;n&quot;
-l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
-l_string|&quot;3:&t;movq %5,%0&bslash;n&quot;
-l_string|&quot;&t;jmp 2b&bslash;n&quot;
-l_string|&quot;.previous&bslash;n&quot;
-l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
-l_string|&quot;&t;.align 8&bslash;n&quot;
-l_string|&quot;&t;.quad 0b,3b&bslash;n&quot;
-l_string|&quot;.previous&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|res
-)paren
-comma
-l_string|&quot;=c&quot;
-(paren
-id|count
-)paren
-comma
-l_string|&quot;=&amp;a&quot;
-(paren
-id|__d0
-)paren
-comma
-l_string|&quot;=&amp;S&quot;
-(paren
-id|__d1
-)paren
-comma
-l_string|&quot;=&amp;D&quot;
-(paren
-id|__d2
-)paren
-suffix:colon
-l_string|&quot;i&quot;
-(paren
-op_minus
-id|EFAULT
-)paren
-comma
-l_string|&quot;0&quot;
-(paren
-id|count
-)paren
-comma
-l_string|&quot;1&quot;
-(paren
-id|count
-)paren
-comma
-l_string|&quot;3&quot;
-(paren
-id|src
-)paren
-comma
-l_string|&quot;4&quot;
+id|__do_strncpy_from_user
+c_func
 (paren
 id|dst
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
+comma
+id|src
+comma
+id|count
+comma
+id|res
 )paren
 suffix:semicolon
 r_return
 id|res
 suffix:semicolon
 )brace
-DECL|function|strncpy_from_user
 r_int
+DECL|function|strncpy_from_user
 id|strncpy_from_user
 c_func
 (paren
@@ -126,6 +58,12 @@ r_int
 id|count
 )paren
 (brace
+r_int
+id|res
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -139,8 +77,7 @@ comma
 l_int|1
 )paren
 )paren
-r_return
-id|__strncpy_from_user
+id|__do_strncpy_from_user
 c_func
 (paren
 id|dst
@@ -148,11 +85,12 @@ comma
 id|src
 comma
 id|count
+comma
+id|res
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|EFAULT
+id|res
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Zero Userspace&n; */
@@ -182,13 +120,13 @@ l_string|&quot;&t;testq  %[size8],%[size8]&bslash;n&quot;
 l_string|&quot;&t;jz     4f&bslash;n&quot;
 l_string|&quot;0:&t;movnti %[zero],(%[dst])&bslash;n&quot;
 l_string|&quot;&t;addq   %[eight],%[dst]&bslash;n&quot;
-l_string|&quot;&t;loop   0b&bslash;n&quot;
+l_string|&quot;&t;decl %%ecx ; jnz   0b&bslash;n&quot;
 l_string|&quot;4:&t;movq  %[size1],%%rcx&bslash;n&quot;
 l_string|&quot;&t;testl %%ecx,%%ecx&bslash;n&quot;
 l_string|&quot;&t;jz     2f&bslash;n&quot;
 l_string|&quot;1:&t;movb   %b[zero],(%[dst])&bslash;n&quot;
 l_string|&quot;&t;incq   %[dst]&bslash;n&quot;
-l_string|&quot;&t;loop   1b&bslash;n&quot;
+l_string|&quot;&t;decl %%ecx ; jnz  1b&bslash;n&quot;
 l_string|&quot;2:&t;sfence&bslash;n&quot;
 l_string|&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
 l_string|&quot;3:&t;lea 0(%[size1],%[size8],8),%[size8]&bslash;n&quot;

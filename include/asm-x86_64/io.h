@@ -249,9 +249,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This one maps high address device memory and turns off caching for that area.&n; * it&squot;s useful if some control registers are in such an area and write combining&n; * or read caching is not desirable:&n; */
-DECL|function|ioremap_nocache
 r_extern
-r_inline
 r_void
 op_star
 id|ioremap_nocache
@@ -264,19 +262,7 @@ r_int
 r_int
 id|size
 )paren
-(brace
-r_return
-id|__ioremap
-c_func
-(paren
-id|offset
-comma
-id|size
-comma
-id|_PAGE_PCD
-)paren
 suffix:semicolon
-)brace
 r_extern
 r_void
 id|iounmap

@@ -779,9 +779,9 @@ id|page
 op_plus
 id|len
 comma
-l_string|&quot;HugePages:    %8lu&bslash;n&quot;
-l_string|&quot;Available:    %8lu&bslash;n&quot;
-l_string|&quot;Size:         %8lu kB&bslash;n&quot;
+l_string|&quot;HugePages_Total: %5lu&bslash;n&quot;
+l_string|&quot;HugePages_Free:  %5lu&bslash;n&quot;
+l_string|&quot;Hugepagesize:    %5lu kB&bslash;n&quot;
 comma
 id|htlbzone_pages
 comma

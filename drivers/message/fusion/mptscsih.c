@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptscsih.c&n; *      High performance SCSI / Fibre Channel SCSI Host device driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Original author: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptscsih.c,v 1.101 2002/09/05 22:30:11 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptscsih.c&n; *      High performance SCSI / Fibre Channel SCSI Host device driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Original author: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptscsih.c,v 1.102 2002/10/03 13:10:14 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/blk.h&gt;&t;&t;/* for io_request_lock (spinlock) d
 macro_line|#include &lt;linux/delay.h&gt;&t;/* for mdelay */
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* needed for in_interrupt() proto */
 macro_line|#include &lt;linux/reboot.h&gt;&t;/* notifier code */
-macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
 macro_line|#include &quot;../../scsi/sd.h&quot;
@@ -552,6 +551,7 @@ r_char
 id|byte56
 )paren
 suffix:semicolon
+macro_line|#ifdef MPT_SAVE_AUTOSENSE
 r_static
 r_void
 id|clear_sense_flag
@@ -566,6 +566,7 @@ op_star
 id|pReq
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 r_void
 id|mptscsih_set_dvflags
@@ -949,7 +950,7 @@ suffix:semicolon
 DECL|variable|mptscsih_ptaskfoo
 r_static
 r_struct
-id|work_struct
+id|mpt_work_struct
 id|mptscsih_ptaskfoo
 suffix:semicolon
 DECL|variable|mpt_taskQdepth
@@ -984,7 +985,7 @@ suffix:semicolon
 DECL|variable|mptscsih_dvTask
 r_static
 r_struct
-id|work_struct
+id|mpt_work_struct
 id|mptscsih_dvTask
 suffix:semicolon
 macro_line|#endif
@@ -1303,6 +1304,7 @@ id|dlen
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef MPT_SAVE_AUTOSENSE
 id|clear_sense_flag
 c_func
 (paren
@@ -1311,6 +1313,7 @@ comma
 id|pScsiReq
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
@@ -1569,6 +1572,7 @@ l_int|16
 op_or
 id|pScsiReply-&gt;SCSIStatus
 suffix:semicolon
+macro_line|#ifdef MPT_SAVE_AUTOSENSE
 id|clear_sense_flag
 c_func
 (paren
@@ -1577,10 +1581,22 @@ comma
 id|pScsiReq
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
-id|pScsiReply-&gt;SCSIState
+id|scsi_state
+op_eq
+l_int|0
+)paren
+(brace
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|scsi_state
 op_amp
 id|MPI_SCSI_STATE_AUTOSENSE_VALID
 )paren
@@ -1592,7 +1608,7 @@ r_else
 r_if
 c_cond
 (paren
-id|pScsiReply-&gt;SCSIState
+id|scsi_state
 op_amp
 (paren
 id|MPI_SCSI_STATE_AUTOSENSE_FAILED
@@ -1613,7 +1629,7 @@ r_else
 r_if
 c_cond
 (paren
-id|pScsiReply-&gt;SCSIState
+id|scsi_state
 op_amp
 id|MPI_SCSI_STATE_TERMINATED
 )paren
@@ -1760,6 +1776,7 @@ l_int|16
 op_or
 id|pScsiReply-&gt;SCSIStatus
 suffix:semicolon
+macro_line|#ifdef MPT_SAVE_AUTOSENSE
 id|clear_sense_flag
 c_func
 (paren
@@ -1768,10 +1785,22 @@ comma
 id|pScsiReq
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
-id|pScsiReply-&gt;SCSIState
+id|scsi_state
+op_eq
+l_int|0
+)paren
+(brace
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|scsi_state
 op_amp
 id|MPI_SCSI_STATE_AUTOSENSE_VALID
 )paren
@@ -1823,7 +1852,7 @@ r_else
 r_if
 c_cond
 (paren
-id|pScsiReply-&gt;SCSIState
+id|scsi_state
 op_amp
 (paren
 id|MPI_SCSI_STATE_AUTOSENSE_FAILED
@@ -1844,7 +1873,7 @@ r_else
 r_if
 c_cond
 (paren
-id|pScsiReply-&gt;SCSIState
+id|scsi_state
 op_amp
 id|MPI_SCSI_STATE_TERMINATED
 )paren
@@ -1861,7 +1890,7 @@ r_else
 r_if
 c_cond
 (paren
-id|pScsiReply-&gt;SCSIState
+id|scsi_state
 op_amp
 id|MPI_SCSI_STATE_QUEUE_TAG_REJECTED
 )paren
@@ -3541,46 +3570,17 @@ id|sz
 comma
 id|ii
 comma
-id|numChain
+id|num_chain
 suffix:semicolon
-multiline_comment|/* Chain buffer allocations&n;&t; * Allocate and initialize tracker structures&n;&t; */
-r_if
-c_cond
-(paren
-id|hd-&gt;ioc-&gt;req_sz
-op_le
-l_int|64
-)paren
-id|numChain
-op_assign
-id|MPT_SG_REQ_64_SCALE
-op_star
-id|hd-&gt;ioc-&gt;req_depth
+r_int
+id|scale
+comma
+id|num_sge
 suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|hd-&gt;ioc-&gt;req_sz
-op_le
-l_int|96
-)paren
-id|numChain
-op_assign
-id|MPT_SG_REQ_96_SCALE
-op_star
-id|hd-&gt;ioc-&gt;req_depth
-suffix:semicolon
-r_else
-id|numChain
-op_assign
-id|MPT_SG_REQ_128_SCALE
-op_star
-id|hd-&gt;ioc-&gt;req_depth
-suffix:semicolon
+multiline_comment|/* ReqToChain size must equal the req_depth&n;&t; * index = req_idx&n;&t; */
 id|sz
 op_assign
-id|numChain
+id|hd-&gt;ioc-&gt;req_depth
 op_star
 r_sizeof
 (paren
@@ -3646,6 +3646,147 @@ comma
 id|sz
 )paren
 suffix:semicolon
+multiline_comment|/* ChainToChain size must equal the total number&n;&t; * of chain buffers to be allocated.&n;&t; * index = chain_idx&n;&t; *&n;&t; * Calculate the number of chain buffers needed(plus 1) per I/O &n;&t; * then multiply the the maximum number of simultaneous cmds&n;&t; *&n;&t; * num_sge = num sge in request frame + last chain buffer&n;&t; * scale = num sge per chain buffer if no chain element&n;&t; */
+id|scale
+op_assign
+id|hd-&gt;ioc-&gt;req_sz
+op_div
+(paren
+r_sizeof
+(paren
+id|dma_addr_t
+)paren
+op_plus
+r_sizeof
+(paren
+id|u32
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+r_sizeof
+(paren
+id|dma_addr_t
+)paren
+op_eq
+r_sizeof
+(paren
+id|u64
+)paren
+)paren
+id|num_sge
+op_assign
+id|scale
+op_plus
+(paren
+id|hd-&gt;ioc-&gt;req_sz
+op_minus
+l_int|60
+)paren
+op_div
+(paren
+r_sizeof
+(paren
+id|dma_addr_t
+)paren
+op_plus
+r_sizeof
+(paren
+id|u32
+)paren
+)paren
+suffix:semicolon
+r_else
+id|num_sge
+op_assign
+l_int|1
+op_plus
+id|scale
+op_plus
+(paren
+id|hd-&gt;ioc-&gt;req_sz
+op_minus
+l_int|64
+)paren
+op_div
+(paren
+r_sizeof
+(paren
+id|dma_addr_t
+)paren
+op_plus
+r_sizeof
+(paren
+id|u32
+)paren
+)paren
+suffix:semicolon
+id|num_chain
+op_assign
+l_int|1
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|hd-&gt;max_sge
+op_minus
+id|num_sge
+OG
+l_int|0
+)paren
+(brace
+id|num_chain
+op_increment
+suffix:semicolon
+id|num_sge
+op_add_assign
+(paren
+id|scale
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+id|num_chain
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+r_int
+)paren
+id|hd-&gt;ioc-&gt;chip_type
+OG
+(paren
+r_int
+)paren
+id|FC929
+)paren
+id|num_chain
+op_mul_assign
+id|MPT_SCSI_CAN_QUEUE
+suffix:semicolon
+r_else
+id|num_chain
+op_mul_assign
+id|MPT_FC_CAN_QUEUE
+suffix:semicolon
+id|hd-&gt;num_chain
+op_assign
+id|num_chain
+suffix:semicolon
+id|sz
+op_assign
+id|num_chain
+op_star
+r_sizeof
+(paren
+r_int
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3705,6 +3846,12 @@ comma
 id|sz
 )paren
 suffix:semicolon
+id|sz
+op_assign
+id|num_chain
+op_star
+id|hd-&gt;ioc-&gt;req_sz
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3714,12 +3861,6 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* Allocate free chain buffer pool&n;&t;&t; */
-id|sz
-op_assign
-id|numChain
-op_star
-id|hd-&gt;ioc-&gt;req_sz
-suffix:semicolon
 id|mem
 op_assign
 id|pci_alloc_consistent
@@ -3846,7 +3987,7 @@ l_int|0
 suffix:semicolon
 id|ii
 OL
-id|numChain
+id|num_chain
 suffix:semicolon
 id|ii
 op_increment
@@ -4310,9 +4451,11 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|mptscsih_save_flags
+id|mptscsih_lock
 c_func
 (paren
+id|this
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -4371,6 +4514,18 @@ id|MPT_LAST_LUN
 op_plus
 l_int|1
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,7)
+id|sh-&gt;max_sectors
+op_assign
+id|MPT_SCSI_MAX_SECTORS
+suffix:semicolon
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,1)
+id|sh-&gt;highmem_io
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 id|sh-&gt;this_id
 op_assign
 id|this-&gt;pfacts
@@ -4384,6 +4539,11 @@ multiline_comment|/* OS entry to allow host drivers to force&n;&t;&t;&t;&t; * a 
 id|sh-&gt;select_queue_depths
 op_assign
 id|mptscsih_select_queue_depths
+suffix:semicolon
+multiline_comment|/* Required entry.&n;&t;&t;&t;&t; */
+id|sh-&gt;unique_id
+op_assign
+id|this-&gt;id
 suffix:semicolon
 multiline_comment|/* Verify that we won&squot;t exceed the maximum&n;&t;&t;&t;&t; * number of chain buffers&n;&t;&t;&t;&t; * We can optimize:  ZZ = req_sz/sizeof(SGE)&n;&t;&t;&t;&t; * For 32bit SGE&squot;s:&n;&t;&t;&t;&t; *  numSGE = 1 + (ZZ-1)*(maxChain -1) + ZZ&n;&t;&t;&t;&t; *               + (req_sz - 64)/sizeof(SGE)&n;&t;&t;&t;&t; * A slightly different algorithm is required for&n;&t;&t;&t;&t; * 64bit SGEs.&n;&t;&t;&t;&t; */
 id|scale
@@ -4528,9 +4688,11 @@ comma
 id|this-&gt;pcidev
 )paren
 suffix:semicolon
-id|mptscsih_restore_flags
+id|mptscsih_unlock
 c_func
 (paren
+id|this
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -4545,6 +4707,10 @@ suffix:semicolon
 id|hd-&gt;ioc
 op_assign
 id|this
+suffix:semicolon
+id|hd-&gt;max_sge
+op_assign
+id|sh-&gt;sg_tablesize
 suffix:semicolon
 r_if
 c_cond
@@ -5429,9 +5595,6 @@ id|szQ
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|scale
-suffix:semicolon
 multiline_comment|/* Synchronize disk caches&n;&t;&t; */
 (paren
 r_void
@@ -5451,34 +5614,6 @@ op_assign
 id|sz3
 op_assign
 l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hd-&gt;ioc-&gt;req_sz
-op_le
-l_int|64
-)paren
-id|scale
-op_assign
-id|MPT_SG_REQ_64_SCALE
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|hd-&gt;ioc-&gt;req_sz
-op_le
-l_int|96
-)paren
-id|scale
-op_assign
-id|MPT_SG_REQ_96_SCALE
-suffix:semicolon
-r_else
-id|scale
-op_assign
-id|MPT_SG_REQ_128_SCALE
 suffix:semicolon
 r_if
 c_cond
@@ -5519,8 +5654,6 @@ l_int|NULL
 (brace
 id|szr2chain
 op_assign
-id|scale
-op_star
 id|hd-&gt;ioc-&gt;req_depth
 op_star
 r_sizeof
@@ -5549,9 +5682,7 @@ l_int|NULL
 (brace
 id|szc2chain
 op_assign
-id|scale
-op_star
-id|hd-&gt;ioc-&gt;req_depth
+id|hd-&gt;num_chain
 op_star
 r_sizeof
 (paren
@@ -5579,9 +5710,7 @@ l_int|NULL
 (brace
 id|sz2
 op_assign
-id|scale
-op_star
-id|hd-&gt;ioc-&gt;req_depth
+id|hd-&gt;num_chain
 op_star
 id|hd-&gt;ioc-&gt;req_sz
 suffix:semicolon
@@ -5668,6 +5797,13 @@ r_else
 id|max
 op_assign
 id|MPT_MAX_FC_DEVICES
+OL
+l_int|256
+ques
+c_cond
+id|MPT_MAX_FC_DEVICES
+suffix:colon
+l_int|255
 suffix:semicolon
 )brace
 r_for
@@ -6421,6 +6557,7 @@ id|done
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef MPT_SAVE_AUTOSENSE
 multiline_comment|/* 20000617 -sralston&n;&t; *  GRRRRR...  Shouldn&squot;t have to do this but...&n;&t; *  Do explicit check for REQUEST_SENSE and cached SenseData.&n;&t; *  If yes, return cached SenseData.&n;&t; */
 r_if
 c_cond
@@ -6559,6 +6696,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7229,7 +7367,7 @@ comma
 id|lflags
 )paren
 suffix:semicolon
-id|INIT_WORK
+id|MPT_INIT_WORK
 c_func
 (paren
 op_amp
@@ -10602,7 +10740,7 @@ op_star
 id|mf
 suffix:semicolon
 r_struct
-id|work_struct
+id|mpt_work_struct
 op_star
 id|ptaskfoo
 suffix:semicolon
@@ -11043,23 +11181,26 @@ id|ptaskfoo
 op_assign
 (paren
 r_struct
-id|work_struct
+id|mpt_work_struct
 op_star
 )paren
 op_amp
 id|mptscsih_ptaskfoo
 suffix:semicolon
-id|ptaskfoo-&gt;sync
-op_assign
-l_int|0
-suffix:semicolon
-id|ptaskfoo-&gt;routine
-op_assign
+id|MPT_INIT_WORK
+c_func
+(paren
+op_amp
+id|mptscsih_ptaskfoo
+comma
 id|mptscsih_taskmgmt_bh
-suffix:semicolon
-id|ptaskfoo-&gt;data
-op_assign
+comma
+(paren
+r_void
+op_star
+)paren
 id|SCpnt
+)paren
 suffix:semicolon
 id|SCHEDULE_TASK
 c_func
@@ -11109,7 +11250,7 @@ op_star
 id|mf
 suffix:semicolon
 r_struct
-id|work_struct
+id|mpt_work_struct
 op_star
 id|ptaskfoo
 suffix:semicolon
@@ -11535,23 +11676,26 @@ id|ptaskfoo
 op_assign
 (paren
 r_struct
-id|work_struct
+id|mpt_work_struct
 op_star
 )paren
 op_amp
 id|mptscsih_ptaskfoo
 suffix:semicolon
-id|ptaskfoo-&gt;sync
-op_assign
-l_int|0
-suffix:semicolon
-id|ptaskfoo-&gt;routine
-op_assign
+id|MPT_INIT_WORK
+c_func
+(paren
+op_amp
+id|mptscsih_ptaskfoo
+comma
 id|mptscsih_taskmgmt_bh
-suffix:semicolon
-id|ptaskfoo-&gt;data
-op_assign
+comma
+(paren
+r_void
+op_star
+)paren
 id|SCpnt
+)paren
 suffix:semicolon
 id|SCHEDULE_TASK
 c_func
@@ -12929,6 +13073,13 @@ r_else
 id|max
 op_assign
 id|MPT_MAX_FC_DEVICES
+OL
+l_int|256
+ques
+c_cond
+id|MPT_MAX_FC_DEVICES
+suffix:colon
+l_int|255
 suffix:semicolon
 r_for
 c_loop
@@ -13405,6 +13556,7 @@ c_cond
 id|target
 )paren
 (brace
+macro_line|#ifdef MPT_SAVE_AUTOSENSE
 r_int
 id|sz
 suffix:semicolon
@@ -13443,6 +13595,7 @@ id|target-&gt;tflags
 op_or_assign
 id|MPT_TARGET_FLAGS_VALID_SENSE
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef ABORT_FIX
 r_if
 c_cond
@@ -15920,7 +16073,7 @@ id|l
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-DECL|function|dump_sd
+macro_line|#if 0
 r_static
 r_int
 id|dump_sd
@@ -16017,6 +16170,7 @@ r_return
 id|l
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*  Do ASC/ASCQ lookup/grindage to English readable string(s)  */
 DECL|function|ascq_set_strings_4max
@@ -16427,6 +16581,7 @@ id|s1
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+multiline_comment|/*&n; *  SCSI Information Report; desired output format...&n; *---&n;SCSI Error: (iocnum:target_id:LUN) Status=02h (CHECK CONDITION)&n;  Key=6h (UNIT ATTENTION); FRU=03h&n;  ASC/ASCQ=29h/00h, &quot;POWER ON, RESET, OR BUS DEVICE RESET OCCURRED&quot;&n;  CDB: 00 00 00 00 00 00 - TestUnitReady&n; *---&n; */
 multiline_comment|/*&n; *  SCSI Error Report; desired output format...&n; *---&n;SCSI Error Report =-=-=-=-=-=-=-=-=-=-=-=-=-= (ioc0,scsi0:0)&n;  SCSI_Status=02h (CHECK CONDITION)&n;  Original_CDB[]: 00 00 00 00 00 00 - TestUnitReady&n;  SenseData[12h]: 70 00 06 00 00 00 00 0A 00 00 00 00 29 00 03 00 00 00&n;  SenseKey=6h (UNIT ATTENTION); FRU=03h&n;  ASC/ASCQ=29h/00h, &quot;POWER ON, RESET, OR BUS DEVICE RESET OCCURRED&quot;&n; *---&n; */
 DECL|function|mpt_ScsiHost_ErrorReport
 r_int
@@ -16501,6 +16656,42 @@ suffix:semicolon
 r_int
 id|l
 suffix:semicolon
+multiline_comment|/* Change the error logging to only report errors on&n;&t; * read and write commands. Ignore errors on other commands.&n;&t; * Should this be configurable via proc?&n;&t; */
+r_switch
+c_cond
+(paren
+id|ioop-&gt;cdbPtr
+(braket
+l_int|0
+)braket
+)paren
+(brace
+r_case
+id|READ_6
+suffix:colon
+r_case
+id|WRITE_6
+suffix:colon
+r_case
+id|READ_10
+suffix:colon
+r_case
+id|WRITE_10
+suffix:colon
+r_case
+id|READ_12
+suffix:colon
+r_case
+id|WRITE_12
+suffix:colon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; *  More quiet mode.&n;&t; *  Filter out common, repetitive, warning-type errors...  like:&n;&t; *    POWER ON (06,29/00 or 06,29/01),&n;&t; *    SPINNING UP (02,04/01),&n;&t; *    LOGICAL UNIT NOT SUPPORTED (05,25/00), etc.&n;&t; */
 r_if
 c_cond
@@ -16835,9 +17026,7 @@ c_func
 (paren
 id|foo
 comma
-l_string|&quot;SCSI Error Report =-=-= (%s)&bslash;n&quot;
-l_string|&quot;  SCSI_Status=%02Xh (%s)&bslash;n&quot;
-l_string|&quot;  Original_CDB[]:&quot;
+l_string|&quot;SCSI Error: (%s) Status=%02Xh (%s)&bslash;n&quot;
 comma
 id|ioop-&gt;DevIDStr
 comma
@@ -16848,23 +17037,6 @@ id|statstr
 suffix:semicolon
 id|l
 op_add_assign
-id|dump_cdb
-c_func
-(paren
-id|foo
-op_plus
-id|l
-comma
-id|ioop-&gt;cdbPtr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|opstr
-)paren
-id|l
-op_add_assign
 id|sprintf
 c_func
 (paren
@@ -16872,53 +17044,7 @@ id|foo
 op_plus
 id|l
 comma
-l_string|&quot; - &bslash;&quot;%s&bslash;&quot;&quot;
-comma
-id|opstr
-)paren
-suffix:semicolon
-id|l
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|foo
-op_plus
-id|l
-comma
-l_string|&quot;&bslash;n  SenseData[%02Xh]:&quot;
-comma
-l_int|8
-op_plus
-id|SD_Additional_Sense_Length
-c_func
-(paren
-id|ioop-&gt;sensePtr
-)paren
-)paren
-suffix:semicolon
-id|l
-op_add_assign
-id|dump_sd
-c_func
-(paren
-id|foo
-op_plus
-id|l
-comma
-id|ioop-&gt;sensePtr
-)paren
-suffix:semicolon
-id|l
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|foo
-op_plus
-id|l
-comma
-l_string|&quot;&bslash;n  SenseKey=%Xh (%s); FRU=%02Xh&bslash;n  ASC/ASCQ=%02Xh/%02Xh&quot;
+l_string|&quot; Key=%Xh (%s); FRU=%02Xh&bslash;n ASC/ASCQ=%02Xh/%02Xh&quot;
 comma
 id|sk
 comma
@@ -17043,17 +17169,34 @@ id|x4
 suffix:semicolon
 )brace
 )brace
-macro_line|#if 0
+id|l
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|foo
+op_plus
+id|l
+comma
+l_string|&quot;&bslash;n CDB:&quot;
+)paren
+suffix:semicolon
+id|l
+op_add_assign
+id|dump_cdb
+c_func
+(paren
+id|foo
+op_plus
+id|l
+comma
+id|ioop-&gt;cdbPtr
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|SPECIAL_ASCQ
-c_func
-(paren
-id|asc
-comma
-id|ascq
-)paren
+id|opstr
 )paren
 id|l
 op_add_assign
@@ -17064,12 +17207,23 @@ id|foo
 op_plus
 id|l
 comma
-l_string|&quot; (%02Xh)&quot;
+l_string|&quot; - &bslash;&quot;%s&bslash;&quot;&quot;
 comma
-id|ascq
+id|opstr
 )paren
 suffix:semicolon
-macro_line|#endif
+id|l
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|foo
+op_plus
+id|l
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 id|PrintF
 c_func
 (paren
@@ -18030,6 +18184,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#ifdef MPT_SAVE_AUTOSENSE
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *  Clear sense valid flag.&n; */
 DECL|function|clear_sense_flag
@@ -18081,6 +18236,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* If DV disabled (negoNvram set to USE_NVARM) or if not LUN 0, return.&n; * Else set the NEED_DV flag after Read Capacity Issued (disks) &n; * or Mode Sense (cdroms). &n; *&n; * Tapes, initTarget will set this flag on completion of Inquiry command.&n; * Called only if DV_NOT_DONE flag is set&n; */
 DECL|function|mptscsih_set_dvflags
 r_static
@@ -19456,6 +19612,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* If target struct exists, clear sense valid flag.&n;&t; */
+macro_line|#ifdef MPT_SAVE_AUTOSENSE
 id|clear_sense_flag
 c_func
 (paren
@@ -19464,6 +19621,7 @@ comma
 id|pReq
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -19660,10 +19818,12 @@ op_amp
 id|MPI_SCSI_STATE_AUTOSENSE_VALID
 )paren
 (brace
+macro_line|#ifdef MPT_SAVE_AUTOSENSE
 id|VirtDevice
 op_star
 id|target
 suffix:semicolon
+macro_line|#endif
 id|u8
 op_star
 id|sense_data
@@ -19715,6 +19875,7 @@ comma
 id|sz
 )paren
 suffix:semicolon
+macro_line|#ifdef MPT_SAVE_AUTOSENSE
 id|target
 op_assign
 id|hd-&gt;Targets
@@ -19743,6 +19904,7 @@ op_or_assign
 id|MPT_TARGET_FLAGS_VALID_SENSE
 suffix:semicolon
 )brace
+macro_line|#endif
 id|ddvprintk
 c_func
 (paren

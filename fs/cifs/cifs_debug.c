@@ -12,8 +12,8 @@ macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
 r_void
-DECL|function|dump_mem
-id|dump_mem
+DECL|function|cifs_dump_mem
+id|cifs_dump_mem
 c_func
 (paren
 r_char

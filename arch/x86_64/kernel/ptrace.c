@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -346,6 +347,37 @@ m_offsetof
 r_struct
 id|user_regs_struct
 comma
+id|ss
+)paren
+suffix:colon
+r_if
+c_cond
+(paren
+(paren
+id|value
+op_amp
+l_int|3
+)paren
+op_ne
+l_int|3
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+id|value
+op_and_assign
+l_int|0xffff
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+r_case
+m_offsetof
+(paren
+r_struct
+id|user_regs_struct
+comma
 id|fs_base
 )paren
 suffix:colon
@@ -470,8 +502,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|value
-op_logical_and
 (paren
 id|value
 op_amp
@@ -691,6 +721,26 @@ c_cond
 id|current-&gt;ptrace
 op_amp
 id|PT_PTRACED
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|ret
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|ptrace
+c_func
+(paren
+id|current-&gt;parent
+comma
+id|current
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 r_goto
 id|out

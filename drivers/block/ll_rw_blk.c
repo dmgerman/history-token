@@ -6293,8 +6293,6 @@ c_func
 (paren
 id|bio
 )paren
-op_rshift
-l_int|1
 suffix:semicolon
 id|BUG_ON
 c_func

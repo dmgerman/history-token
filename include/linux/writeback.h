@@ -190,7 +190,7 @@ id|dirty_background_ratio
 suffix:semicolon
 r_extern
 r_int
-id|dirty_async_ratio
+id|vm_dirty_ratio
 suffix:semicolon
 r_extern
 r_int

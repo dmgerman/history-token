@@ -537,18 +537,6 @@ comma
 id|inode-&gt;i_blksize
 )paren
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;&bslash;nFinddata alloc size (from smb) %lld&quot;
-comma
-id|findData.NumOfBytes
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

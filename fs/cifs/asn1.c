@@ -1290,16 +1290,7 @@ id|use_ntlmssp
 op_assign
 id|FALSE
 suffix:semicolon
-id|dump_mem
-c_func
-(paren
-l_string|&quot; Received SecBlob &quot;
-comma
-id|security_blob
-comma
-id|length
-)paren
-suffix:semicolon
+multiline_comment|/* cifs_dump_mem(&quot; Received SecBlob &quot;, security_blob, length); */
 id|asn1_open
 c_func
 (paren

@@ -40,6 +40,7 @@ op_assign
 id|PCI_IRQ_NONE
 suffix:semicolon
 macro_line|#endif
+macro_line|#if RTC_IRQ
 DECL|variable|rtc_has_irq
 r_static
 r_int
@@ -47,6 +48,7 @@ id|rtc_has_irq
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; *&t;We sponge a minor off of the misc major. No need slurping&n; *&t;up another valuable major dev number for this. If you add&n; *&t;an ioctl, make sure you don&squot;t conflict with SPARC&squot;s RTC&n; *&t;ioctls.&n; */
 DECL|variable|rtc_async_queue
 r_static
@@ -62,12 +64,14 @@ c_func
 id|rtc_wait
 )paren
 suffix:semicolon
+macro_line|#if RTC_IRQ
 DECL|variable|rtc_irq_timer
 r_static
 r_struct
 id|timer_list
 id|rtc_irq_timer
 suffix:semicolon
+macro_line|#endif
 r_static
 id|ssize_t
 id|rtc_read

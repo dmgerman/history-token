@@ -7990,6 +7990,9 @@ id|HIGH_BITS_OFFSET
 )paren
 id|port.iobase
 op_or_assign
+(paren
+r_int
+)paren
 id|req-&gt;port_high
 op_lshift
 id|HIGH_BITS_OFFSET

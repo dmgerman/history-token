@@ -1,19 +1,19 @@
-multiline_comment|/*&n; * Intermezzo. (C) 1998 Peter J. Braam&n; */
+multiline_comment|/* -*- mode: c; c-basic-offset: 8; indent-tabs-mode: nil; -*-&n; * vim:expandtab:shiftwidth=8:tabstop=8:&n; *&n; *  Copyright (C) 1998 Peter J. Braam &lt;braam@clusterfs.com&gt;&n; *&n; *   This file is part of InterMezzo, http://www.inter-mezzo.org.&n; *&n; *   InterMezzo is free software; you can redistribute it and/or&n; *   modify it under the terms of version 2 of the GNU General Public&n; *   License as published by the Free Software Foundation.&n; *&n; *   InterMezzo is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with InterMezzo; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ext2_fs.h&gt; 
 macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_upcall.h&gt;
 macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
-macro_line|#include &lt;linux/intermezzo_kml.h&gt;
 macro_line|#if defined(CONFIG_EXT2_FS)
 multiline_comment|/* EXT2 has no journalling, so these functions do nothing */
 DECL|function|presto_e2_freespace
@@ -157,11 +157,11 @@ c_cond
 (paren
 id|op
 op_ne
-id|PRESTO_OP_UNLINK
+id|KML_OPCODE_UNLINK
 op_logical_and
 id|op
 op_ne
-id|PRESTO_OP_RMDIR
+id|KML_OPCODE_RMDIR
 )paren
 op_logical_and
 id|avail_kmlblocks
@@ -212,12 +212,37 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|function|presto_e2_has_all_data
+r_static
+r_int
+id|presto_e2_has_all_data
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|variable|presto_ext2_journal_ops
 r_struct
 id|journal_ops
 id|presto_ext2_journal_ops
 op_assign
 (brace
+id|tr_all_data
+suffix:colon
+id|presto_e2_has_all_data
+comma
 id|tr_avail
 suffix:colon
 id|presto_e2_freespace

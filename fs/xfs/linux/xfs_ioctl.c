@@ -4,7 +4,6 @@ macro_line|#include &lt;xfs_fsops.h&gt;
 macro_line|#include &lt;xfs_dfrag.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
-macro_line|#include &lt;linux/iobuf.h&gt;
 r_extern
 r_int
 id|xfs_change_file_space
@@ -2498,6 +2497,8 @@ op_assign
 id|mp-&gt;m_sb.sb_blocksize
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * this only really needs to be BBSIZE.&n;&t;&t; * it is set to the file system block size to&n;&t;&t; * avoid having to do block zeroing on short writes.&n;&t;&t; */
+DECL|macro|KIO_MAX_ATOMIC_IO
+mdefine_line|#define KIO_MAX_ATOMIC_IO 512&t;/* FIXME: what do we really want here? */
 id|da.d_maxiosz
 op_assign
 id|XFS_FSB_TO_B

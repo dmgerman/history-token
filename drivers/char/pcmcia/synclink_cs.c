@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/char/pcmcia/synclink_cs.c&n; *&n; * $Id: synclink_cs.c,v 4.2 2002/04/22 14:36:43 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink PC Card&n; * multiprotocol serial adapter.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
+multiline_comment|/*&n; * linux/drivers/char/pcmcia/synclink_cs.c&n; *&n; * $Id: synclink_cs.c,v 4.4 2002/10/10 14:53:37 paulkf Exp $&n; *&n; * Device driver for Microgate SyncLink PC Card&n; * multiprotocol serial adapter.&n; *&n; * written by Paul Fulghum for Microgate Corporation&n; * paulkf@microgate.com&n; *&n; * Microgate and SyncLink are trademarks of Microgate Corporation&n; *&n; * This code is released under the GNU General Public License (GPL)&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
 DECL|macro|VERSION
 mdefine_line|#define VERSION(ver,rel,seq) (((ver)&lt;&lt;16) | ((rel)&lt;&lt;8) | (seq))
 macro_line|#if defined(__i386__)
@@ -1643,7 +1643,7 @@ r_char
 op_star
 id|driver_version
 op_assign
-l_string|&quot;$Revision: 4.2 $&quot;
+l_string|&quot;$Revision: 4.4 $&quot;
 suffix:semicolon
 DECL|variable|serial_driver
 DECL|variable|callout_driver
@@ -11820,14 +11820,14 @@ c_cond
 (paren
 id|timeout
 op_logical_and
+id|time_after
+c_func
 (paren
-(paren
+id|jiffies
+comma
 id|orig_jiffies
 op_plus
 id|timeout
-)paren
-OL
-id|jiffies
 )paren
 )paren
 r_break
@@ -11876,14 +11876,14 @@ c_cond
 (paren
 id|timeout
 op_logical_and
+id|time_after
+c_func
 (paren
-(paren
+id|jiffies
+comma
 id|orig_jiffies
 op_plus
 id|timeout
-)paren
-OL
-id|jiffies
 )paren
 )paren
 r_break
@@ -12257,15 +12257,13 @@ comma
 id|info-&gt;count
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|info-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -12287,9 +12285,12 @@ id|info-&gt;count
 op_decrement
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|info-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -14384,10 +14385,6 @@ r_void
 )paren
 (brace
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|rc
 suffix:semicolon
 id|printk
@@ -14413,17 +14410,6 @@ id|mgslpc_device_list
 )paren
 suffix:semicolon
 )brace
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -14474,12 +14460,6 @@ comma
 id|__LINE__
 comma
 id|rc
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 id|unregister_pccard_driver

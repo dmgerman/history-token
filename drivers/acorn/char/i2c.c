@@ -537,9 +537,9 @@ l_int|0
 suffix:semicolon
 id|new_rtctm.cs
 op_assign
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_div
-l_int|10000
+l_int|10000000
 suffix:semicolon
 id|new_rtctm.secs
 op_assign
@@ -1154,11 +1154,11 @@ op_amp
 id|year
 )paren
 suffix:semicolon
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
 id|rtctm.cs
 op_star
-l_int|10000
+l_int|10000000
 suffix:semicolon
 id|xtime.tv_sec
 op_assign

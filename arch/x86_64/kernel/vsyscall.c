@@ -11,7 +11,8 @@ macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 DECL|macro|__vsyscall
 mdefine_line|#define __vsyscall(nr) __attribute__ ((unused,__section__(&quot;.vsyscall_&quot; #nr)))
-singleline_comment|//#define NO_VSYSCALL 1
+DECL|macro|NO_VSYSCALL
+mdefine_line|#define NO_VSYSCALL 1
 macro_line|#ifdef NO_VSYSCALL
 macro_line|#include &lt;asm/unistd.h&gt;
 DECL|variable|__section_vxtime_sequence
@@ -100,21 +101,17 @@ id|tv
 (brace
 r_int
 id|sequence
+comma
+id|t
 suffix:semicolon
 r_int
 r_int
-id|usec
-comma
 id|sec
+comma
+id|usec
 suffix:semicolon
 r_do
 (brace
-r_int
-r_int
-id|eax
-comma
-id|edx
-suffix:semicolon
 id|sequence
 op_assign
 id|__vxtime_sequence
@@ -127,71 +124,47 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Read the Time Stamp Counter */
-id|rdtsc
+id|rdtscll
 c_func
 (paren
-id|eax
-comma
-id|edx
+id|t
 )paren
 suffix:semicolon
-multiline_comment|/* .. relative to previous jiffy (32 bits is enough) */
-id|eax
-op_sub_assign
-id|__last_tsc_low
-suffix:semicolon
-multiline_comment|/* tsc_low delta */
-multiline_comment|/*&n;&t;&t; * Time offset = (tsc_low delta) * fast_gettimeoffset_quotient&n;&t;&t; *             = (tsc_low delta) * (usecs_per_clock)&n;&t;&t; *             = (tsc_low delta) * (usecs_per_jiffy / clocks_per_jiffy)&n;&t;&t; *&n;&t;&t; * Using a mull instead of a divl saves up to 31 clock cycles&n;&t;&t; * in the critical path.&n;&t;&t; */
-id|edx
+id|sec
 op_assign
-(paren
-id|eax
-op_star
-id|__fast_gettimeoffset_quotient
-)paren
-op_rshift
-l_int|32
+id|__xtime.tv_sec
 suffix:semicolon
-multiline_comment|/* our adjusted time offset in microseconds */
 id|usec
 op_assign
-id|__delay_at_last_interrupt
+id|__xtime.tv_usec
 op_plus
-id|edx
-suffix:semicolon
-(brace
-r_int
-r_int
-id|lost
-op_assign
+(paren
 id|__jiffies
 op_minus
 id|__wall_jiffies
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|lost
 )paren
-id|usec
-op_add_assign
-id|lost
 op_star
 (paren
 l_int|1000000
 op_div
 id|HZ
 )paren
-suffix:semicolon
-)brace
-id|sec
-op_assign
-id|__xtime.tv_sec
-suffix:semicolon
-id|usec
-op_add_assign
-id|__xtime.tv_usec
+op_plus
+(paren
+id|t
+op_minus
+id|__hpet.last_tsc
+)paren
+op_star
+(paren
+l_int|1000000
+op_div
+id|HZ
+)paren
+op_div
+id|__hpet.ticks
+op_plus
+id|__hpet.offset
 suffix:semicolon
 id|rmb
 c_func
@@ -213,16 +186,16 @@ suffix:semicolon
 id|tv-&gt;tv_sec
 op_assign
 id|sec
+op_plus
+id|usec
+op_div
+l_int|1000000
 suffix:semicolon
 id|tv-&gt;tv_usec
 op_assign
 id|usec
-suffix:semicolon
-id|timeval_normalize
-c_func
-(paren
-id|tv
-)paren
+op_mod
+l_int|1000000
 suffix:semicolon
 )brace
 r_static

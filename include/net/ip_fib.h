@@ -3,6 +3,7 @@ macro_line|#ifndef _NET_IP_FIB_H
 DECL|macro|_NET_IP_FIB_H
 mdefine_line|#define _NET_IP_FIB_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;net/flow.h&gt;
 DECL|struct|kern_rta
 r_struct
 id|kern_rta
@@ -292,9 +293,9 @@ id|tb
 comma
 r_const
 r_struct
-id|rt_key
+id|flowi
 op_star
-id|key
+id|flp
 comma
 r_struct
 id|fib_result
@@ -441,9 +442,9 @@ id|table
 comma
 r_const
 r_struct
-id|rt_key
+id|flowi
 op_star
-id|key
+id|flp
 comma
 r_struct
 id|fib_result
@@ -531,9 +532,9 @@ c_func
 (paren
 r_const
 r_struct
-id|rt_key
+id|flowi
 op_star
-id|key
+id|flp
 comma
 r_struct
 id|fib_result
@@ -551,7 +552,7 @@ c_func
 (paren
 id|local_table
 comma
-id|key
+id|flp
 comma
 id|res
 )paren
@@ -563,7 +564,7 @@ c_func
 (paren
 id|main_table
 comma
-id|key
+id|flp
 comma
 id|res
 )paren
@@ -585,9 +586,9 @@ c_func
 (paren
 r_const
 r_struct
-id|rt_key
+id|flowi
 op_star
-id|key
+id|flp
 comma
 r_struct
 id|fib_result
@@ -617,7 +618,7 @@ c_func
 (paren
 id|main_table
 comma
-id|key
+id|flp
 comma
 id|res
 )paren
@@ -646,9 +647,9 @@ c_func
 (paren
 r_const
 r_struct
-id|rt_key
+id|flowi
 op_star
-id|key
+id|flp
 comma
 r_struct
 id|fib_result
@@ -755,9 +756,9 @@ c_func
 (paren
 r_const
 r_struct
-id|rt_key
+id|flowi
 op_star
-id|key
+id|flp
 comma
 r_struct
 id|fib_result
@@ -897,9 +898,9 @@ c_func
 (paren
 r_const
 r_struct
-id|rt_key
+id|flowi
 op_star
-id|key
+id|flp
 comma
 r_struct
 id|fib_result
@@ -946,7 +947,7 @@ op_star
 comma
 r_const
 r_struct
-id|rt_key
+id|flowi
 op_star
 comma
 r_struct

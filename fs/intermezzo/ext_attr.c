@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Extended attribute handling for presto.&n; *&n; * Copyright (C) 2001. All rights reserved.&n; * Shirish H. Phatak&n; * Tacit Networks, Inc.&n; *&n; */
+multiline_comment|/* -*- mode: c; c-basic-offset: 8; indent-tabs-mode: nil; -*-&n; * vim:expandtab:shiftwidth=8:tabstop=8:&n; * &n; *  Copyright (C) 2001 Tacit Networks, Inc.&n; *    Author: Shirish H. Phatak &lt;shirish@tacitnetworks.com&gt;&n; *&n; *   This file is part of InterMezzo, http://www.inter-mezzo.org.&n; *&n; *   InterMezzo is free software; you can redistribute it and/or&n; *   modify it under the terms of version 2 of the GNU General Public&n; *   License as published by the Free Software Foundation.&n; *&n; *   InterMezzo is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with InterMezzo; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Extended attribute handling for presto.&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
@@ -7,22 +7,22 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_upcall.h&gt;
 macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
-macro_line|#include &lt;linux/intermezzo_kml.h&gt;
 macro_line|#ifdef CONFIG_FS_EXT_ATTR
 macro_line|#include &lt;linux/ext_attr.h&gt;
 r_extern
@@ -39,26 +39,6 @@ comma
 r_int
 r_int
 id|value
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|presto_prep
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-comma
-r_struct
-id|presto_cache
-op_star
-op_star
-comma
-r_struct
-id|presto_file_set
-op_star
-op_star
 )paren
 suffix:semicolon
 multiline_comment|/* VFS interface */
@@ -172,7 +152,7 @@ id|inode-&gt;i_dentry
 )paren
 )paren
 (brace
-id|printk
+id|CERROR
 c_func
 (paren
 l_string|&quot;No alias for inode %d&bslash;n&quot;
@@ -259,9 +239,6 @@ c_func
 (paren
 id|buf
 comma
-r_char
-op_star
-comma
 id|buffer_len
 )paren
 suffix:semicolon
@@ -272,7 +249,7 @@ op_logical_neg
 id|buf
 )paren
 (brace
-id|printk
+id|CERROR
 c_func
 (paren
 l_string|&quot;InterMezzo: out of memory!!!&bslash;n&quot;
@@ -283,9 +260,8 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
+id|error
+op_assign
 id|copy_from_user
 c_func
 (paren
@@ -295,6 +271,11 @@ id|buffer
 comma
 id|buffer_len
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
 )paren
 r_return
 op_minus
@@ -583,7 +564,7 @@ op_logical_neg
 id|fset
 )paren
 (brace
-id|printk
+id|CERROR
 c_func
 (paren
 l_string|&quot;No fileset!&bslash;n&quot;

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *&t;An async IO implementation for Linux&n; *&t;Written by Benjamin LaHaise &lt;bcrl@redhat.com&gt;&n; *&n; *&t;Implements an efficient asynchronous io interface.&n; *&n; *&t;Copyright 2000, 2001, 2002 Red Hat, Inc.  All Rights Reserved.&n; *&n; *&t;See ../COPYING for licensing terms.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/aio_abi.h&gt;
@@ -10,15 +11,9 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/aio.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
@@ -5293,6 +5288,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|aio_put_req
+)paren
+suffix:semicolon
+DECL|variable|wait_on_sync_kiocb
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|wait_on_sync_kiocb
 )paren
 suffix:semicolon
 eof

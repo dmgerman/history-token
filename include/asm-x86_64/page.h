@@ -19,6 +19,10 @@ DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
 DECL|macro|CURRENT_MASK
 mdefine_line|#define CURRENT_MASK (~(THREAD_SIZE-1))
+DECL|macro|LARGE_PAGE_MASK
+mdefine_line|#define LARGE_PAGE_MASK (~(LARGE_PAGE_SIZE-1))
+DECL|macro|LARGE_PAGE_SIZE
+mdefine_line|#define LARGE_PAGE_SIZE (1UL &lt;&lt; PMD_SHIFT)
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 r_void
@@ -140,6 +144,10 @@ DECL|macro|__PAGE_OFFSET
 mdefine_line|#define __PAGE_OFFSET           0x0000010000000000
 DECL|macro|__PHYSICAL_MASK
 mdefine_line|#define __PHYSICAL_MASK&t;&t;0x000000ffffffffff
+DECL|macro|KERNEL_TEXT_SIZE
+mdefine_line|#define KERNEL_TEXT_SIZE  (40UL*1024*1024)
+DECL|macro|KERNEL_TEXT_START
+mdefine_line|#define KERNEL_TEXT_START 0xffffffff80000000UL 
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/stringify.h&gt;
 multiline_comment|/*&n; * Tell the user there is some problem.  The exception handler decodes this frame.&n; */
@@ -262,6 +270,8 @@ DECL|macro|pfn_valid
 mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
 DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+DECL|macro|pfn_to_kaddr
+mdefine_line|#define pfn_to_kaddr(pfn)      __va((pfn) &lt;&lt; PAGE_SHIFT)
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS  (VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;                                VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 macro_line|#endif /* __KERNEL__ */

@@ -20,6 +20,11 @@ r_int
 r_int
 id|fs_umask
 suffix:semicolon
+DECL|member|fs_dmask
+r_int
+r_int
+id|fs_dmask
+suffix:semicolon
 DECL|member|codepage
 r_int
 r_int
@@ -93,12 +98,6 @@ suffix:colon
 l_int|1
 comma
 multiline_comment|/* create escape sequences for unhandled Unicode */
-DECL|member|posixfs
-id|posixfs
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Allow names like makefile and Makefile to coexist */
 DECL|member|numtail
 id|numtail
 suffix:colon

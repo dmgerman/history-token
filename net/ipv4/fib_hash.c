@@ -998,9 +998,9 @@ id|tb
 comma
 r_const
 r_struct
-id|rt_key
+id|flowi
 op_star
-id|key
+id|flp
 comma
 r_struct
 id|fib_result
@@ -1060,7 +1060,7 @@ op_assign
 id|fz_key
 c_func
 (paren
-id|key-&gt;dst
+id|flp-&gt;fl4_dst
 comma
 id|fz
 )paren
@@ -1123,7 +1123,7 @@ id|f-&gt;fn_tos
 op_logical_and
 id|f-&gt;fn_tos
 op_ne
-id|key-&gt;tos
+id|flp-&gt;fl4_tos
 )paren
 r_continue
 suffix:semicolon
@@ -1146,7 +1146,7 @@ c_cond
 (paren
 id|f-&gt;fn_scope
 OL
-id|key-&gt;scope
+id|flp-&gt;fl4_scope
 )paren
 r_continue
 suffix:semicolon
@@ -1163,7 +1163,7 @@ c_func
 id|f
 )paren
 comma
-id|key
+id|flp
 comma
 id|res
 )paren
@@ -1370,9 +1370,9 @@ id|tb
 comma
 r_const
 r_struct
-id|rt_key
+id|flowi
 op_star
-id|key
+id|flp
 comma
 r_struct
 id|fib_result

@@ -19,6 +19,10 @@ macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/pcic.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+r_extern
+id|rwlock_t
+id|xtime_lock
+suffix:semicolon
 macro_line|#ifndef CONFIG_PCI
 DECL|function|sys_pciconfig_read
 id|asmlinkage
@@ -3233,6 +3237,14 @@ op_star
 id|regs
 )paren
 (brace
+id|write_lock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Dummy, to show that we remember */
 id|pcic_clear_clock_irq
 c_func
 (paren
@@ -3242,6 +3254,13 @@ id|do_timer
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 )brace
@@ -3441,18 +3460,7 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|tasklet_struct
-op_star
-id|t
-suffix:semicolon
-r_int
-r_int
-id|offset
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* &n;&t; * We devide all to 100&n;&t; * to have microsecond resolution and to avoid overflow&n;&t; */
+multiline_comment|/*&n;&t; * We devide all to 100&n;&t; * to have microsecond resolution and to avoid overflow&n;&t; */
 r_int
 r_int
 id|count
@@ -3486,33 +3494,7 @@ op_div
 l_int|100
 )paren
 suffix:semicolon
-id|t
-op_assign
-op_amp
-id|bh_task_vec
-(braket
-id|TIMER_BH
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|test_bit
-c_func
-(paren
-id|TASKLET_STATE_SCHED
-comma
-op_amp
-id|t-&gt;state
-)paren
-)paren
-id|offset
-op_assign
-l_int|1000000
-suffix:semicolon
 r_return
-id|offset
-op_plus
 id|count
 suffix:semicolon
 )brace
@@ -3520,10 +3502,6 @@ r_extern
 r_int
 r_int
 id|wall_jiffies
-suffix:semicolon
-r_extern
-id|rwlock_t
-id|xtime_lock
 suffix:semicolon
 DECL|function|pci_do_gettimeofday
 r_static

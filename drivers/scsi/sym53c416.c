@@ -1,7 +1,8 @@
-multiline_comment|/* &n; *  sym53c416.c&n; *  Low-level SCSI driver for sym53c416 chip.&n; *  Copyright (C) 1998 Lieven Willems (lw_linux@hotmail.com)&n; * &n; *  Changes : &n; * &n; *  Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; : Added io_request_lock locking&n; *  Alan Cox &lt;alan@redhat.com&gt; : Cleaned up code formatting&n; *&t;&t;&t;&t; Fixed an irq locking bug&n; *&t;&t;&t;&t; Added ISAPnP support&n; * &n; *  LILO command line usage: sym53c416=&lt;PORTBASE&gt;[,&lt;IRQ&gt;]&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2, or (at your option) any&n; *  later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; */
+multiline_comment|/* &n; *  sym53c416.c&n; *  Low-level SCSI driver for sym53c416 chip.&n; *  Copyright (C) 1998 Lieven Willems (lw_linux@hotmail.com)&n; * &n; *  Changes : &n; * &n; *  Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; : Added io_request_lock locking&n; *  Alan Cox &lt;alan@redhat.com&gt; : Cleaned up code formatting&n; *&t;&t;&t;&t; Fixed an irq locking bug&n; *&t;&t;&t;&t; Added ISAPnP support&n; *  Bjoern A. Zeeb &lt;bzeeb@zabbadoz.net&gt; : Initial irq locking updates&n; *&t;&t;&t;&t;&t;  Added another card with ISAPnP support&n; * &n; *  LILO command line usage: sym53c416=&lt;PORTBASE&gt;[,&lt;IRQ&gt;]&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2, or (at your option) any&n; *  later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -318,17 +319,10 @@ l_int|0
 )brace
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* #define DEBUG */
-multiline_comment|/* Macro for debugging purposes */
-macro_line|#ifdef DEBUG
-DECL|macro|DEB
-mdefine_line|#define DEB(x) x
-macro_line|#else
-DECL|macro|DEB
-mdefine_line|#define DEB(x)
-macro_line|#endif
 DECL|macro|MAXHOSTS
 mdefine_line|#define MAXHOSTS 4
+DECL|macro|SG_ADDRESS
+mdefine_line|#define SG_ADDRESS(buffer)     ((char *) (page_address((buffer)-&gt;page)+(buffer)-&gt;offset))
 DECL|enum|phases
 r_enum
 id|phases
@@ -523,6 +517,13 @@ id|TC_HIGH
 )paren
 suffix:semicolon
 )brace
+DECL|variable|sym53c416_lock
+r_static
+id|spinlock_t
+id|sym53c416_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/* Returns the number of bytes read */
 DECL|function|sym53c416_read
 r_static
@@ -570,15 +571,13 @@ op_assign
 id|READ_TIMEOUT
 suffix:semicolon
 multiline_comment|/* Do transfer */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|sym53c416_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_while
@@ -686,9 +685,12 @@ id|jiffies
 op_plus
 id|timeout
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|sym53c416_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -732,15 +734,13 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|sym53c416_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -764,9 +764,12 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|sym53c416_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -825,15 +828,13 @@ op_assign
 id|WRITE_TIMEOUT
 suffix:semicolon
 multiline_comment|/* Do transfer */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|sym53c416_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_while
@@ -955,9 +956,12 @@ id|jiffies
 op_plus
 id|timeout
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|sym53c416_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -985,15 +989,13 @@ id|timeout
 (brace
 suffix:semicolon
 )brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|sym53c416_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -1017,9 +1019,12 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|sym53c416_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1659,7 +1664,11 @@ c_func
 (paren
 id|base
 comma
-id|sglist-&gt;address
+id|SG_ADDRESS
+c_func
+(paren
+id|sglist
+)paren
 comma
 id|sglist-&gt;length
 )paren
@@ -1783,7 +1792,11 @@ c_func
 (paren
 id|base
 comma
-id|sglist-&gt;address
+id|SG_ADDRESS
+c_func
+(paren
+id|sglist
+)paren
 comma
 id|sglist-&gt;length
 )paren
@@ -2247,9 +2260,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_before_eq
+c_func
+(paren
 id|i
-op_le
+comma
 id|jiffies
+)paren
 )paren
 (brace
 multiline_comment|/* timed out */
@@ -2544,15 +2561,40 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|variable|id_table
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|isapnp_device_id
 id|id_table
 (braket
 )braket
+id|__devinitdata
 op_assign
 (brace
+(brace
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_ANY_ID
+comma
+id|ISAPNP_VENDOR
+c_func
+(paren
+l_char|&squot;S&squot;
+comma
+l_char|&squot;L&squot;
+comma
+l_char|&squot;I&squot;
+)paren
+comma
+id|ISAPNP_FUNCTION
+c_func
+(paren
+l_int|0x4161
+)paren
+comma
+l_int|0
+)brace
+comma
 (brace
 id|ISAPNP_ANY_ID
 comma
@@ -2578,7 +2620,7 @@ l_int|0
 )brace
 comma
 (brace
-l_int|0
+id|ISAPNP_DEVICE_SINGLE_END
 )brace
 )brace
 suffix:semicolon
@@ -2670,6 +2712,7 @@ suffix:semicolon
 )brace
 DECL|function|sym53c416_detect
 r_int
+id|__init
 id|sym53c416_detect
 c_func
 (paren
@@ -2866,6 +2909,26 @@ comma
 id|VERSION_STRING
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|id_table
+(braket
+id|i
+)braket
+dot
+id|vendor
+op_ne
+l_int|0
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 r_while
 c_loop
 (paren
@@ -2877,21 +2940,19 @@ c_func
 (paren
 l_int|NULL
 comma
-id|ISAPNP_VENDOR
-c_func
-(paren
-l_char|&squot;S&squot;
+id|id_table
+(braket
+id|i
+)braket
+dot
+id|vendor
 comma
-l_char|&squot;L&squot;
-comma
-l_char|&squot;I&squot;
-)paren
-comma
-id|ISAPNP_FUNCTION
-c_func
-(paren
-l_int|0x4163
-)paren
+id|id_table
+(braket
+id|i
+)braket
+dot
+id|function
 comma
 id|idev
 )paren
@@ -3010,6 +3071,7 @@ comma
 id|i
 )paren
 suffix:semicolon
+)brace
 )brace
 id|sym53c416_probe
 c_func
@@ -3176,15 +3238,13 @@ l_int|NULL
 r_continue
 suffix:semicolon
 )brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|sym53c416_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: Request_irq with CLI is not safe */
@@ -3212,9 +3272,12 @@ id|shpnt
 )paren
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|sym53c416_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3318,9 +3381,12 @@ suffix:semicolon
 id|count
 op_increment
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|sym53c416_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3500,15 +3566,13 @@ id|current_command-&gt;SCp.Message
 op_assign
 l_int|0
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|sym53c416_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -3575,9 +3639,12 @@ id|COMMAND_REG
 )paren
 suffix:semicolon
 multiline_comment|/* Now an interrupt will be generated which we will catch in out interrupt routine */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|sym53c416_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3651,7 +3718,7 @@ op_star
 id|SCpnt
 )paren
 (brace
-singleline_comment|//printk(&quot;sym53c416_abort&bslash;n&quot;);
+multiline_comment|/* printk(&quot;sym53c416_abort&bslash;n&quot;); */
 multiline_comment|/* We don&squot;t know how to abort for the moment */
 r_return
 id|SCSI_ABORT_SNOOZE
@@ -3684,7 +3751,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-singleline_comment|//printk(&quot;sym53c416_reset&bslash;n&quot;);
+multiline_comment|/* printk(&quot;sym53c416_reset&bslash;n&quot;); */
 id|base
 op_assign
 id|SCpnt-&gt;host-&gt;io_port

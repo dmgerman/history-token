@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/compatmac.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/genhd.h&gt;
 DECL|macro|LOCAL_END_REQUEST
 mdefine_line|#define LOCAL_END_REQUEST
 DECL|macro|MAJOR_NR
@@ -135,7 +137,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|set_capacit
+id|set_capacity
 c_func
 (paren
 id|disk
@@ -438,12 +440,16 @@ id|mtd
 id|printk
 c_func
 (paren
-l_string|&quot;MTD device %d doesn&squot;t appear to exist any more&bslash;n&quot;
+l_string|&quot;MTD device %s doesn&squot;t appear to exist any more&bslash;n&quot;
 comma
+id|kdevname
+c_func
+(paren
 id|DEVICE_NR
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
+)paren
 )paren
 )paren
 suffix:semicolon

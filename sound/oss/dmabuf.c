@@ -2265,6 +2265,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: not safe may miss events */
 id|t
 op_assign
 id|interruptible_sleep_on_timeout
@@ -2663,18 +2664,12 @@ id|DMODE_OUTPUT
 )paren
 (brace
 multiline_comment|/* Direction change */
-r_int
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/* release lock - it&squot;s not recursive */
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|dmap-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|DMAbuf_sync
@@ -2689,13 +2684,11 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|dmap-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|dmap-&gt;dma_mode

@@ -675,10 +675,13 @@ op_mod
 id|rsp
 )paren
 multiline_comment|/* rsp */
-DECL|variable|rax
 id|movq
-op_mod
-id|rax
+"$"
+(paren
+l_int|1
+op_lshift
+l_int|9
+)paren
 comma
 l_int|3
 op_star

@@ -443,7 +443,8 @@ id|Queue_t
 op_star
 id|queue
 comma
-r_void
+r_int
+r_int
 op_star
 id|exclude
 )paren

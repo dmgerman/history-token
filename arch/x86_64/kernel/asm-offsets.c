@@ -39,6 +39,12 @@ c_func
 id|thread
 )paren
 suffix:semicolon
+id|ENTRY
+c_func
+(paren
+id|pid
+)paren
+suffix:semicolon
 id|BLANK
 c_func
 (paren
@@ -47,7 +53,7 @@ suffix:semicolon
 DECL|macro|ENTRY
 macro_line|#undef ENTRY
 DECL|macro|ENTRY
-mdefine_line|#define ENTRY(entry) DEFINE(threadinfo__ ## entry, offsetof(struct thread_info, entry))
+mdefine_line|#define ENTRY(entry) DEFINE(threadinfo_ ## entry, offsetof(struct thread_info, entry))
 id|ENTRY
 c_func
 (paren
@@ -74,7 +80,7 @@ suffix:semicolon
 DECL|macro|ENTRY
 macro_line|#undef ENTRY
 DECL|macro|ENTRY
-mdefine_line|#define ENTRY(entry) DEFINE(pda__ ## entry, offsetof(struct x8664_pda, entry))
+mdefine_line|#define ENTRY(entry) DEFINE(pda_ ## entry, offsetof(struct x8664_pda, entry))
 id|ENTRY
 c_func
 (paren

@@ -17,17 +17,24 @@ r_int
 id|nr_pages
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Return a scatterlist for a locked iobuf (NULL on errors).  Memory&n; * for the scatterlist is allocated using kmalloc.  The caller must&n; * free the memory.&n; */
+multiline_comment|/*&n; * Return a scatterlist for a an array of userpages (NULL on errors).  Memory&n; * for the scatterlist is allocated using kmalloc.  The caller must&n; * free the memory.&n; */
 r_struct
 id|scatterlist
 op_star
-id|videobuf_iobuf_to_sg
+id|videobuf_pages_to_sg
 c_func
 (paren
 r_struct
-id|kiobuf
+id|page
 op_star
-id|iobuf
+op_star
+id|pages
+comma
+r_int
+id|nr_pages
+comma
+r_int
+id|offset
 )paren
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
@@ -37,11 +44,16 @@ r_struct
 id|videobuf_dmabuf
 (brace
 multiline_comment|/* for userland buffer */
-DECL|member|iobuf
+DECL|member|pages
 r_struct
-id|kiobuf
+id|page
 op_star
-id|iobuf
+op_star
+id|pages
+suffix:semicolon
+DECL|member|offset
+r_int
+id|offset
 suffix:semicolon
 multiline_comment|/* for kernel buffers */
 DECL|member|vmalloc

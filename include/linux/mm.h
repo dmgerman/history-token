@@ -1049,6 +1049,52 @@ mdefine_line|#define copy_hugetlb_page_range(dst, src, vma) (0)
 DECL|macro|free_hugepages
 mdefine_line|#define free_hugepages(mpnt)  do { } while(0)
 macro_line|#endif
+multiline_comment|/*&n; * Prototype to add a shrinker callback for ageable caches.&n; * &n; * These functions are passed a count `nr_to_scan&squot; and a gfpmask.  They should&n; * scan `nr_to_scan&squot; objects, attempting to free them.&n; *&n; * The callback must the number of objects which remain in the cache.&n; *&n; * The callback will be passes nr_to_scan == 0 when the VM is querying the&n; * cache size, so a fastpath for that case is appropriate.&n; */
+DECL|typedef|shrinker_t
+r_typedef
+r_int
+(paren
+op_star
+id|shrinker_t
+)paren
+(paren
+r_int
+id|nr_to_scan
+comma
+r_int
+r_int
+id|gfp_mask
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Add an aging callback.  The int is the number of &squot;seeks&squot; it takes&n; * to recreate one of the objects that these functions age.&n; */
+DECL|macro|DEFAULT_SEEKS
+mdefine_line|#define DEFAULT_SEEKS 2
+r_struct
+id|shrinker
+suffix:semicolon
+r_extern
+r_struct
+id|shrinker
+op_star
+id|set_shrinker
+c_func
+(paren
+r_int
+comma
+id|shrinker_t
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|remove_shrinker
+c_func
+(paren
+r_struct
+id|shrinker
+op_star
+id|shrinker
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * If the mapping doesn&squot;t provide a set_page_dirty a_op, then&n; * just fall through and assume that it wants buffer_heads.&n; * FIXME: make the method unconditional.&n; */
 DECL|function|set_page_dirty
 r_static

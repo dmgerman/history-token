@@ -1,11 +1,6 @@
 DECL|macro|NULL
 mdefine_line|#define NULL 0
-DECL|typedef|size_t
-r_typedef
-r_int
-r_int
-r_int
-suffix:semicolon
+singleline_comment|//typedef unsigned int size_t; 
 DECL|struct|screen_info
 r_struct
 id|screen_info
