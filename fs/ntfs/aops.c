@@ -1,4 +1,4 @@
-multiline_comment|/**&n; * aops.c - NTFS kernel address space operations and page cache handling.&n; * &t;    Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/**&n; * aops.c - NTFS kernel address space operations and page cache handling.&n; *&t;    Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -2095,11 +2095,11 @@ singleline_comment|// - read_cache_page()
 singleline_comment|// Again for each page do:
 singleline_comment|// - wait_on_page_locked()
 singleline_comment|// - Check (PageUptodate(page) &amp;&amp;
-singleline_comment|// &t;&t;&t;!PageError(page))
+singleline_comment|//&t;&t;&t;!PageError(page))
 singleline_comment|// Update initialized size in the attribute and
 singleline_comment|// in the inode.
 singleline_comment|// Again, for each page do:
-singleline_comment|// &t;__set_page_dirty_buffers();
+singleline_comment|//&t;__set_page_dirty_buffers();
 singleline_comment|// page_cache_release()
 singleline_comment|// We don&squot;t need to wait on the writes.
 singleline_comment|// Update iblock.
@@ -3982,11 +3982,11 @@ singleline_comment|// - read_cache_page()
 singleline_comment|// Again for each page do:
 singleline_comment|// - wait_on_page_locked()
 singleline_comment|// - Check (PageUptodate(page) &amp;&amp;
-singleline_comment|// &t;&t;&t;!PageError(page))
+singleline_comment|//&t;&t;&t;!PageError(page))
 singleline_comment|// Update initialized size in the attribute and
 singleline_comment|// in the inode.
 singleline_comment|// Again, for each page do:
-singleline_comment|// &t;__set_page_dirty_buffers();
+singleline_comment|//&t;__set_page_dirty_buffers();
 singleline_comment|// page_cache_release()
 singleline_comment|// We don&squot;t need to wait on the writes.
 singleline_comment|// Update iblock.
@@ -4184,7 +4184,7 @@ id|LCN_HOLE
 singleline_comment|// TODO: Instantiate the hole.
 singleline_comment|// clear_buffer_new(bh);
 singleline_comment|// unmap_underlying_metadata(bh-&gt;b_bdev,
-singleline_comment|// &t;&t;bh-&gt;b_blocknr);
+singleline_comment|//&t;&t;bh-&gt;b_blocknr);
 singleline_comment|// For non-uptodate buffers, need to
 singleline_comment|// zero out the region outside the
 singleline_comment|// request in this bh or all bhs,
@@ -5288,6 +5288,10 @@ l_string|&quot;Writing beyond the existing file size is &quot;
 l_string|&quot;not supported yet. Sorry.&quot;
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
 singleline_comment|// vi-&gt;i_size = pos;
 singleline_comment|// mark_inode_dirty(vi);
 )brace
@@ -5868,7 +5872,7 @@ id|page
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Bring the out of bounds area(s) uptodate by copying data&n;&t;&t; * from the mft record to the page.&n;&t; &t; */
+multiline_comment|/*&n;&t;&t; * Bring the out of bounds area(s) uptodate by copying data&n;&t;&t; * from the mft record to the page.&n;&t;&t; */
 r_if
 c_cond
 (paren
