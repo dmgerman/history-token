@@ -310,23 +310,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * linux/fs/nfs/inode.c&n; */
 r_extern
-r_struct
-id|super_block
-op_star
-id|nfs_read_super
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-comma
-r_void
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|nfs_zap_caches
 c_func

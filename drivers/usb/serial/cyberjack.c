@@ -571,6 +571,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|port-&gt;interrupt_in_urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -1014,6 +1016,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|port-&gt;write_urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -1358,6 +1362,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|port-&gt;read_urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -1628,6 +1634,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|port-&gt;read_urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -1868,6 +1876,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|port-&gt;write_urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

@@ -553,7 +553,11 @@ l_int|0
 suffix:semicolon
 id|dent
 op_assign
-id|inode-&gt;u.generic_ip
+id|PDE
+c_func
+(paren
+id|inode
+)paren
 suffix:semicolon
 r_if
 c_cond

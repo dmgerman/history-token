@@ -6433,6 +6433,9 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_int
+id|mem_flags
 )paren
 (brace
 r_int
@@ -7871,15 +7874,26 @@ id|usb_operations
 id|uhci_device_operations
 op_assign
 (brace
+id|allocate
+suffix:colon
 id|uhci_alloc_dev
 comma
+id|deallocate
+suffix:colon
 id|uhci_free_dev
 comma
+id|get_frame_number
+suffix:colon
 id|uhci_get_current_frame_number
 comma
+id|submit_urb
+suffix:colon
 id|uhci_submit_urb
 comma
+id|unlink_urb
+suffix:colon
 id|uhci_unlink_urb
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* Virtual Root Hub */
@@ -10134,6 +10148,8 @@ id|uhci_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 )brace

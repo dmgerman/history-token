@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
@@ -559,6 +560,17 @@ r_int
 id|orig
 )paren
 (brace
+id|loff_t
+id|ret
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -572,8 +584,11 @@ id|file-&gt;f_pos
 op_assign
 id|offset
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|file-&gt;f_pos
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_int|1
@@ -582,17 +597,19 @@ id|file-&gt;f_pos
 op_add_assign
 id|offset
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|file-&gt;f_pos
 suffix:semicolon
-r_default
-suffix:colon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-multiline_comment|/* SEEK_END not supported */
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 DECL|function|msr_read
 r_static

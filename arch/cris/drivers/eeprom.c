@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;i2c.h&quot;
 DECL|macro|D
@@ -1299,6 +1300,14 @@ id|orig
 )paren
 (brace
 multiline_comment|/*&n; *  orig 0: position from begning of eeprom&n; *  orig 1: relative from current position&n; *  orig 2: position from last eeprom address&n; */
+id|loff_t
+id|ret
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1308,6 +1317,8 @@ id|orig
 r_case
 l_int|0
 suffix:colon
+id|ret
+op_assign
 id|file-&gt;f_pos
 op_assign
 id|offset
@@ -1317,6 +1328,8 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
+id|ret
+op_assign
 id|file-&gt;f_pos
 op_add_assign
 id|offset
@@ -1326,6 +1339,8 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
+id|ret
+op_assign
 id|file-&gt;f_pos
 op_assign
 id|eeprom.size
@@ -1336,7 +1351,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_return
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
@@ -1354,7 +1370,13 @@ id|file-&gt;f_pos
 op_assign
 l_int|0
 suffix:semicolon
-r_return
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ret
+op_assign
 op_minus
 id|EOVERFLOW
 suffix:semicolon
@@ -1373,14 +1395,15 @@ id|eeprom.size
 op_minus
 l_int|1
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EOVERFLOW
 suffix:semicolon
 )brace
 r_return
 (paren
-id|file-&gt;f_pos
+id|ret
 )paren
 suffix:semicolon
 )brace

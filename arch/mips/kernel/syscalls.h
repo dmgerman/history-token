@@ -1598,4 +1598,18 @@ comma
 l_int|3
 )paren
 multiline_comment|/* 4220 */
+id|SYS
+c_func
+(paren
+id|sys_gettid
+comma
+l_int|0
+)paren
+id|SYS
+c_func
+(paren
+id|sys_tkill
+comma
+l_int|2
+)paren
 eof

@@ -337,8 +337,11 @@ id|server-&gt;ncp_filp
 suffix:semicolon
 id|sock
 op_assign
-op_amp
-id|file-&gt;f_dentry-&gt;d_inode-&gt;u.socket_i
+id|SOCKET_I
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode
+)paren
 suffix:semicolon
 id|init_timeout
 op_assign
@@ -1057,8 +1060,11 @@ id|server-&gt;ncp_filp
 suffix:semicolon
 id|sock
 op_assign
-op_amp
-id|file-&gt;f_dentry-&gt;d_inode-&gt;u.socket_i
+id|SOCKET_I
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode
+)paren
 suffix:semicolon
 id|dataread
 op_assign
@@ -1394,8 +1400,11 @@ id|server-&gt;ncp_filp
 suffix:semicolon
 id|sock
 op_assign
-op_amp
-id|file-&gt;f_dentry-&gt;d_inode-&gt;u.socket_i
+id|SOCKET_I
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode
+)paren
 suffix:semicolon
 id|ncptcp_xmit_hdr
 (braket
@@ -1905,8 +1914,11 @@ id|server-&gt;ncp_filp
 suffix:semicolon
 id|sock
 op_assign
-op_amp
-id|file-&gt;f_dentry-&gt;d_inode-&gt;u.socket_i
+id|SOCKET_I
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode
+)paren
 suffix:semicolon
 multiline_comment|/* N.B. this isn&squot;t needed ... check socket type? */
 r_if

@@ -817,11 +817,9 @@ r_return
 id|ino
 suffix:semicolon
 )brace
-DECL|function|autofs4_read_super
-r_struct
-id|super_block
-op_star
-id|autofs4_read_super
+DECL|function|autofs4_fill_super
+r_int
+id|autofs4_fill_super
 c_func
 (paren
 r_struct
@@ -1149,7 +1147,7 @@ op_assign
 id|root
 suffix:semicolon
 r_return
-id|s
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Failure ... clean up.&n;&t; */
 id|fail_fput
@@ -1206,7 +1204,8 @@ suffix:semicolon
 id|fail_unlock
 suffix:colon
 r_return
-l_int|NULL
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|autofs4_statfs

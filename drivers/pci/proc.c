@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|PCI_CFG_SPACE_SIZE
@@ -29,6 +30,14 @@ id|whence
 (brace
 id|loff_t
 r_new
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -67,13 +76,12 @@ id|off
 suffix:semicolon
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -130,7 +138,11 @@ id|proc_dir_entry
 op_star
 id|dp
 op_assign
-id|ino-&gt;u.generic_ip
+id|PDE
+c_func
+(paren
+id|ino
+)paren
 suffix:semicolon
 r_struct
 id|pci_dev
@@ -537,7 +549,11 @@ id|proc_dir_entry
 op_star
 id|dp
 op_assign
-id|ino-&gt;u.generic_ip
+id|PDE
+c_func
+(paren
+id|ino
+)paren
 suffix:semicolon
 r_struct
 id|pci_dev
@@ -912,7 +928,11 @@ id|proc_dir_entry
 op_star
 id|dp
 op_assign
-id|inode-&gt;u.generic_ip
+id|PDE
+c_func
+(paren
+id|inode
+)paren
 suffix:semicolon
 r_struct
 id|pci_dev
@@ -1039,7 +1059,11 @@ id|proc_dir_entry
 op_star
 id|dp
 op_assign
-id|inode-&gt;u.generic_ip
+id|PDE
+c_func
+(paren
+id|inode
+)paren
 suffix:semicolon
 r_struct
 id|pci_dev

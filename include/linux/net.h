@@ -8,6 +8,9 @@ macro_line|#include &lt;linux/wait.h&gt;
 r_struct
 id|poll_table_struct
 suffix:semicolon
+r_struct
+id|inode
+suffix:semicolon
 DECL|macro|NPROTO
 mdefine_line|#define NPROTO&t;&t;32&t;&t;/* should be enough for now..&t;*/
 DECL|macro|SYS_SOCKET
@@ -100,12 +103,6 @@ id|proto_ops
 op_star
 id|ops
 suffix:semicolon
-DECL|member|inode
-r_struct
-id|inode
-op_star
-id|inode
-suffix:semicolon
 DECL|member|fasync_list
 r_struct
 id|fasync_struct
@@ -141,8 +138,6 @@ id|passcred
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|SOCK_INODE
-mdefine_line|#define SOCK_INODE(S)&t;((S)-&gt;inode)
 r_struct
 id|scm_cookie
 suffix:semicolon

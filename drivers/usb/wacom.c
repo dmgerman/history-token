@@ -2259,6 +2259,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|wacom-&gt;irq
+comma
+id|GFP_KERNEL
 )paren
 )paren
 r_return

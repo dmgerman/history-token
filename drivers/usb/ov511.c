@@ -20674,6 +20674,8 @@ id|n
 )braket
 dot
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -25875,12 +25877,11 @@ id|rc
 suffix:semicolon
 id|pde
 op_assign
+id|PDE
+c_func
 (paren
-r_struct
-id|proc_dir_entry
-op_star
+id|inode
 )paren
-id|inode-&gt;u.generic_ip
 suffix:semicolon
 r_if
 c_cond

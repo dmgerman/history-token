@@ -599,6 +599,8 @@ DECL|macro|__NR_readahead
 mdefine_line|#define __NR_readahead&t;&t;&t;379
 DECL|macro|__NR_security
 mdefine_line|#define __NR_security&t;&t;&t;380 /* syscall for security modules */
+DECL|macro|__NR_tkill
+mdefine_line|#define __NR_tkill&t;&t;&t;381
 macro_line|#if defined(__GNUC__)
 DECL|macro|_syscall_return
 mdefine_line|#define _syscall_return(type)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (_sc_err ? errno = _sc_ret, _sc_ret = -1L : 0), (type) _sc_ret

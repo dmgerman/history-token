@@ -3048,29 +3048,6 @@ id|s-&gt;lock
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
-DECL|function|it8172_llseek
-r_static
-id|loff_t
-id|it8172_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 DECL|function|it8172_open_mixdev
 r_static
 r_int
@@ -3289,7 +3266,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|it8172_llseek
+id|no_llseek
 comma
 id|ioctl
 suffix:colon
@@ -7586,7 +7563,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|it8172_llseek
+id|no_llseek
 comma
 id|read
 suffix:colon

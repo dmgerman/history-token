@@ -1318,8 +1318,12 @@ DECL|macro|__NR_getpmsg
 mdefine_line|#define __NR_getpmsg            (__NR_Linux + 196)      /* some people actually want streams */
 DECL|macro|__NR_putpmsg
 mdefine_line|#define __NR_putpmsg            (__NR_Linux + 197)      /* some people actually want streams */
+DECL|macro|__NR_gettid
+mdefine_line|#define __NR_gettid             (__NR_Linux + 198)
+DECL|macro|__NR_tkill
+mdefine_line|#define __NR_tkill              (__NR_Linux + 199)
 DECL|macro|__NR_Linux_syscalls
-mdefine_line|#define __NR_Linux_syscalls     197
+mdefine_line|#define __NR_Linux_syscalls     199
 DECL|macro|HPUX_GATEWAY_ADDR
 mdefine_line|#define HPUX_GATEWAY_ADDR       0xC0000004
 DECL|macro|LINUX_GATEWAY_ADDR

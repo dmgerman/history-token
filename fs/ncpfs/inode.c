@@ -1605,8 +1605,11 @@ id|out_bad_file2
 suffix:semicolon
 id|sock
 op_assign
-op_amp
-id|sock_inode-&gt;u.socket_i
+id|SOCKET_I
+c_func
+(paren
+id|sock_inode
+)paren
 suffix:semicolon
 r_if
 c_cond

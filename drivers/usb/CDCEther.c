@@ -333,6 +333,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|ether_dev-&gt;rx_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 )paren
@@ -786,6 +788,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|ether_dev-&gt;tx_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 )paren
@@ -959,6 +963,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|ether_dev-&gt;rx_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 )paren

@@ -618,6 +618,8 @@ op_assign
 id|usb_submit_urb
 (paren
 id|priv-&gt;irq_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_ne
@@ -3898,6 +3900,8 @@ op_assign
 id|usb_submit_urb
 (paren
 id|urb
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 op_ne
@@ -5350,6 +5354,8 @@ op_assign
 id|usb_submit_urb
 (paren
 id|urb
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 op_ne

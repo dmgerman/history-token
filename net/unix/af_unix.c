@@ -2648,7 +2648,13 @@ op_assign
 id|S_IFSOCK
 op_or
 (paren
-id|sock-&gt;inode-&gt;i_mode
+id|SOCK_INODE
+c_func
+(paren
+id|sock
+)paren
+op_member_access_from_pointer
+id|i_mode
 op_amp
 op_complement
 id|current-&gt;fs-&gt;umask

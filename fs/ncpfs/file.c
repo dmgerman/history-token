@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ncp_fs.h&gt;
 macro_line|#include &quot;ncplib_kernel.h&quot;
 DECL|function|ncp_fsync
@@ -1219,7 +1220,7 @@ op_assign
 (brace
 id|llseek
 suffix:colon
-id|generic_file_llseek
+id|remote_llseek
 comma
 id|read
 suffix:colon

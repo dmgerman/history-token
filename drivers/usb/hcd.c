@@ -2961,6 +2961,9 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_int
+id|mem_flags
 )paren
 (brace
 r_int
@@ -2982,9 +2985,6 @@ id|flags
 suffix:semicolon
 r_int
 id|pipe
-suffix:semicolon
-r_int
-id|mem_flags
 suffix:semicolon
 r_if
 c_cond
@@ -3097,20 +3097,6 @@ id|pipe
 r_return
 op_minus
 id|EPIPE
-suffix:semicolon
-singleline_comment|// FIXME paging/swapping requests over USB should not use GFP_KERNEL
-singleline_comment|// and might even need to use GFP_NOIO ... that flag actually needs
-singleline_comment|// to be passed from the higher level.
-id|mem_flags
-op_assign
-id|in_interrupt
-(paren
-)paren
-ques
-c_cond
-id|GFP_ATOMIC
-suffix:colon
-id|GFP_KERNEL
 suffix:semicolon
 macro_line|#ifdef DEBUG
 (brace
@@ -4251,6 +4237,8 @@ op_assign
 id|usb_submit_urb
 (paren
 id|urb-&gt;next
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
@@ -26,6 +27,9 @@ id|whence
 (brace
 id|loff_t
 r_new
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 r_switch
 c_cond
@@ -68,12 +72,6 @@ id|off
 suffix:semicolon
 r_break
 suffix:semicolon
-r_default
-suffix:colon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -86,9 +84,21 @@ r_struct
 id|ConfigDev
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+)brace
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 (paren
@@ -133,7 +143,11 @@ id|proc_dir_entry
 op_star
 id|dp
 op_assign
-id|ino-&gt;u.generic_ip
+id|PDE
+c_func
+(paren
+id|ino
+)paren
 suffix:semicolon
 r_struct
 id|zorro_dev

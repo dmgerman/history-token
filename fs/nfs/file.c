@@ -102,7 +102,7 @@ op_assign
 (brace
 id|llseek
 suffix:colon
-id|generic_file_llseek
+id|remote_llseek
 comma
 id|read
 suffix:colon

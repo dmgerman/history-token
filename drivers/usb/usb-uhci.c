@@ -76,8 +76,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|SLAB_FLAG
 mdefine_line|#define SLAB_FLAG     (in_interrupt ()? SLAB_ATOMIC : SLAB_KERNEL)
-DECL|macro|KMALLOC_FLAG
-mdefine_line|#define KMALLOC_FLAG  (in_interrupt ()? GFP_ATOMIC : GFP_KERNEL)
 multiline_comment|/* CONFIG_USB_UHCI_HIGH_BANDWITH turns on Full Speed Bandwidth&n; * Reclamation: feature that puts loop on descriptor loop when&n; * there&squot;s some transfer going on. With FSBR, USB performance&n; * is optimal, but PCI can be slowed down up-to 5 times, slowing down&n; * system performance (eg. framebuffer devices).&n; */
 DECL|macro|CONFIG_USB_UHCI_HIGH_BANDWIDTH
 mdefine_line|#define CONFIG_USB_UHCI_HIGH_BANDWIDTH 
@@ -6854,6 +6852,9 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_int
+id|mem_flags
 )paren
 (brace
 id|uhci_t
@@ -6965,7 +6966,7 @@ id|uhci_desc_t
 op_star
 )paren
 comma
-id|KMALLOC_FLAG
+id|mem_flags
 )paren
 suffix:semicolon
 r_if
@@ -7484,6 +7485,9 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_int
+id|mem_flags
 )paren
 (brace
 id|uhci_t
@@ -7754,7 +7758,7 @@ r_sizeof
 id|urb_priv_t
 )paren
 comma
-id|KMALLOC_FLAG
+id|mem_flags
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -8022,6 +8026,8 @@ id|uhci_submit_iso_urb
 c_func
 (paren
 id|urb
+comma
+id|mem_flags
 )paren
 suffix:semicolon
 r_if
@@ -8053,6 +8059,8 @@ id|uhci_submit_iso_urb
 c_func
 (paren
 id|urb
+comma
+id|mem_flags
 )paren
 suffix:semicolon
 )brace
@@ -10367,15 +10375,26 @@ id|usb_operations
 id|uhci_device_operations
 op_assign
 (brace
+id|allocate
+suffix:colon
 id|uhci_alloc_dev
 comma
+id|deallocate
+suffix:colon
 id|uhci_free_dev
 comma
+id|get_frame_number
+suffix:colon
 id|uhci_get_current_frame_number
 comma
+id|submit_urb
+suffix:colon
 id|uhci_submit_urb
 comma
+id|unlink_urb
+suffix:colon
 id|uhci_unlink_urb
+comma
 )brace
 suffix:semicolon
 DECL|function|correct_data_toggles
@@ -12470,12 +12489,17 @@ op_amp
 id|s-&gt;urb_list_lock
 )paren
 suffix:semicolon
+singleline_comment|// FIXME!!!
+singleline_comment|// We need to know the real state, so 
+singleline_comment|// GFP_ATOMIC is probably not correct
 id|ret_submit
 op_assign
 id|uhci_submit_urb
 c_func
 (paren
 id|next_urb
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 id|spin_lock
@@ -12570,9 +12594,14 @@ id|urb-&gt;dev
 op_assign
 id|usb_dev
 suffix:semicolon
+singleline_comment|// FIXME!!!
+singleline_comment|// We need to know the real state, so 
+singleline_comment|// GFP_ATOMIC is probably not correct
 id|uhci_submit_urb
 (paren
 id|urb
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 )brace

@@ -447,6 +447,10 @@ DECL|macro|__NR_getdents64
 mdefine_line|#define __NR_getdents64&t;&t;220
 DECL|macro|__NR_fcntl64
 mdefine_line|#define __NR_fcntl64&t;&t;221
+DECL|macro|__NR_gettid
+mdefine_line|#define __NR_gettid&t;&t;222
+DECL|macro|__NR_tkill
+mdefine_line|#define __NR_tkill&t;&t;223
 multiline_comment|/* user-visible error numbers are in the range -1 - -125: see &lt;asm-sh/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;/* Avoid using &quot;res&quot; which is declared to be in register r0; &bslash;&n;&t;   errno might expand to a function call and clobber it.  */ &bslash;&n;&t;&t;int __err = -(res); &bslash;&n;&t;&t;errno = __err; &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)

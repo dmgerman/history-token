@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -3233,6 +3234,14 @@ id|orig
 (brace
 id|loff_t
 id|newoffs
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -3271,14 +3280,6 @@ l_int|1
 op_plus
 id|offs
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -3289,10 +3290,17 @@ id|PCILYNX_MAX_MEMORY
 op_plus
 l_int|1
 )paren
+(brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 id|file-&gt;f_pos
 op_assign
 id|newoffs

@@ -2910,7 +2910,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-multiline_comment|/* CLONE_PARENT and CLONE_THREAD re-use the old parent */
+multiline_comment|/* CLONE_PARENT re-uses the old parent */
 id|p-&gt;p_opptr
 op_assign
 id|current-&gt;p_opptr
@@ -2926,11 +2926,7 @@ op_logical_neg
 (paren
 id|clone_flags
 op_amp
-(paren
 id|CLONE_PARENT
-op_or
-id|CLONE_THREAD
-)paren
 )paren
 )paren
 (brace

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
@@ -1804,6 +1805,18 @@ r_int
 id|orig
 )paren
 (brace
+r_int
+r_int
+id|ret
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1817,8 +1830,11 @@ id|file-&gt;f_pos
 op_assign
 id|offset
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|file-&gt;f_pos
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_int|1
@@ -1827,23 +1843,19 @@ id|file-&gt;f_pos
 op_add_assign
 id|offset
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|file-&gt;f_pos
 suffix:semicolon
-r_case
-l_int|2
-suffix:colon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 DECL|function|proc_dol2crvec
 r_int

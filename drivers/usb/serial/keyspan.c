@@ -1219,6 +1219,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|this_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_ne
@@ -1498,6 +1500,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_ne
@@ -1960,6 +1964,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_ne
@@ -2205,6 +2211,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_ne
@@ -2583,6 +2591,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_ne
@@ -2989,6 +2999,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_ne
@@ -3265,6 +3277,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_ne
@@ -3526,6 +3540,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_ne
@@ -5729,6 +5745,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|this_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_ne
@@ -6082,6 +6100,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|this_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_ne
@@ -6573,6 +6593,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|this_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_ne
@@ -7004,6 +7026,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|s_priv-&gt;instat_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_ne

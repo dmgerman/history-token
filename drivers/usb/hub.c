@@ -1328,6 +1328,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|hub-&gt;urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -2111,6 +2113,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|hub-&gt;urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 r_return

@@ -2689,8 +2689,11 @@ id|file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
 id|socket
 op_assign
-op_amp
-id|inode-&gt;u.socket_i
+id|SOCKET_I
+c_func
+(paren
+id|inode
+)paren
 suffix:semicolon
 id|local.sin_family
 op_assign

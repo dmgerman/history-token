@@ -1008,6 +1008,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|us-&gt;current_urb
+comma
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if
@@ -1190,6 +1192,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|us-&gt;current_urb
+comma
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if

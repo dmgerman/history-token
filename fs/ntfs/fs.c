@@ -5773,10 +5773,7 @@ id|NTFS_SUPER_MAGIC
 suffix:semicolon
 id|sb-&gt;s_maxbytes
 op_assign
-op_complement
-l_int|0ULL
-op_rshift
-l_int|1
+id|MAX_LFS_FILESIZE
 suffix:semicolon
 id|ntfs_debug
 c_func

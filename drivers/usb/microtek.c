@@ -1524,6 +1524,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|transfer
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -2477,12 +2479,15 @@ id|desc-&gt;context.final_callback
 op_assign
 id|callback
 suffix:semicolon
+multiline_comment|/* here we need ATOMIC as we are called with the iolock */
 id|res
 op_assign
 id|usb_submit_urb
 c_func
 (paren
 id|desc-&gt;urb
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if

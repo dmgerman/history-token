@@ -436,6 +436,10 @@ DECL|macro|__NR_setfsgid32
 mdefine_line|#define __NR_setfsgid32&t;&t;216
 DECL|macro|__NR_getdents64
 mdefine_line|#define __NR_getdents64&t;&t;220
+DECL|macro|__NR_gettid
+mdefine_line|#define __NR_gettid&t;&t;221
+DECL|macro|__NR_tkill
+mdefine_line|#define __NR_tkill&t;&t;222
 multiline_comment|/* user-visible error numbers are in the range -1 - -122: see&n;   &lt;asm-m68k/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;/* avoid using res which is declared to be in register d0; &bslash;&n;&t;   errno might expand to a function call and clobber it.  */ &bslash;&n;&t;&t;int __err = -(res); &bslash;&n;&t;&t;errno = __err; &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)

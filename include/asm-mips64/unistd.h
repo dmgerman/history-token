@@ -881,9 +881,13 @@ DECL|macro|__NR_madvise
 mdefine_line|#define __NR_madvise&t;&t;&t;(__NR_Linux + 212)
 DECL|macro|__NR_getdents64
 mdefine_line|#define __NR_getdents64&t;&t;&t;(__NR_Linux + 213)
+DECL|macro|__NR_gettid
+mdefine_line|#define __NR_gettid&t;&t;&t;(__NR_Linux + 214)
+DECL|macro|__NR_tkill
+mdefine_line|#define __NR_tkill&t;&t;&t;(__NR_Linux + 215)
 multiline_comment|/*&n; * Offset of the last Linux flavoured syscall&n; */
 DECL|macro|__NR_Linux_syscalls
-mdefine_line|#define __NR_Linux_syscalls&t;&t;213
+mdefine_line|#define __NR_Linux_syscalls&t;&t;215
 macro_line|#ifndef _LANGUAGE_ASSEMBLY
 multiline_comment|/* XXX - _foo needs to be __foo, while __NR_bar could be _NR_bar. */
 DECL|macro|_syscall0

@@ -4894,29 +4894,15 @@ macro_line|#endif
 multiline_comment|/* fall through */
 r_default
 suffix:colon
-id|sigaddset
+id|sig_exit
 c_func
 (paren
-op_amp
-id|current-&gt;pending.signal
-comma
 id|signr
-)paren
-suffix:semicolon
-id|recalc_sigpending
-c_func
-(paren
-id|current
-)paren
-suffix:semicolon
-id|current-&gt;flags
-op_or_assign
-id|PF_SIGNALED
-suffix:semicolon
-id|do_exit
-c_func
-(paren
+comma
 id|exit_code
+comma
+op_amp
+id|info
 )paren
 suffix:semicolon
 multiline_comment|/* NOT REACHED */

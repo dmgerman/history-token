@@ -282,6 +282,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|husb-&gt;read_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 )paren
@@ -307,6 +309,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|husb-&gt;intr_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 )paren
@@ -1555,6 +1559,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|husb-&gt;read_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 )paren
@@ -1692,6 +1698,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 )paren
@@ -1795,6 +1803,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 )paren

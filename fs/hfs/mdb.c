@@ -269,18 +269,11 @@ op_amp
 id|mdb-&gt;entry_dirty
 )paren
 suffix:semicolon
-id|hfs_init_waitqueue
+id|init_MUTEX
 c_func
 (paren
 op_amp
-id|mdb-&gt;rename_wait
-)paren
-suffix:semicolon
-id|hfs_init_waitqueue
-c_func
-(paren
-op_amp
-id|mdb-&gt;bitmap_wait
+id|mdb-&gt;bitmap_sem
 )paren
 suffix:semicolon
 multiline_comment|/* See if this is an HFS filesystem */

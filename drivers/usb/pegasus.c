@@ -456,6 +456,7 @@ c_func
 id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
+multiline_comment|/* using ATOMIC, we&squot;d never wake up if we slept */
 r_if
 c_cond
 (paren
@@ -466,6 +467,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|pegasus-&gt;ctrl_urb
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 )paren
@@ -733,6 +736,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|pegasus-&gt;ctrl_urb
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 )paren
@@ -993,6 +998,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|pegasus-&gt;ctrl_urb
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 )paren
@@ -1125,6 +1132,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|pegasus-&gt;ctrl_urb
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 )paren
@@ -2742,6 +2751,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|pegasus-&gt;rx_urb
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 )paren
@@ -3155,6 +3166,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|pegasus-&gt;tx_urb
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 )paren
@@ -3436,6 +3449,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|pegasus-&gt;rx_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 )paren
@@ -3489,6 +3504,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|pegasus-&gt;intr_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 )paren

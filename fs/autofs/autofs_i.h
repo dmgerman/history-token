@@ -431,10 +431,8 @@ id|file_operations
 id|autofs_dir_operations
 suffix:semicolon
 multiline_comment|/* Initializing function */
-r_struct
-id|super_block
-op_star
-id|autofs_read_super
+r_int
+id|autofs_fill_super
 c_func
 (paren
 r_struct

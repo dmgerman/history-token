@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/hardware/dec21285.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
@@ -1097,6 +1098,15 @@ r_int
 id|orig
 )paren
 (brace
+r_int
+r_int
+id|ret
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1133,10 +1143,15 @@ id|offset
 OL
 l_int|0
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1148,10 +1163,15 @@ id|offset
 OG
 id|gbFlashSize
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|file-&gt;f_pos
 op_assign
 (paren
@@ -1160,8 +1180,11 @@ r_int
 )paren
 id|offset
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|file-&gt;f_pos
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_int|1
@@ -1177,10 +1200,15 @@ id|offset
 OG
 id|gbFlashSize
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1192,24 +1220,41 @@ id|offset
 OL
 l_int|0
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|file-&gt;f_pos
 op_add_assign
 id|offset
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|file-&gt;f_pos
+suffix:semicolon
+r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_return
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * assume that main Write routine did the parameter checking...&n; * so just go ahead and erase, what requested!&n; */
 DECL|function|erase_block

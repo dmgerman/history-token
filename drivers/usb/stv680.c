@@ -3585,6 +3585,8 @@ c_cond
 id|usb_submit_urb
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 id|PDEBUG
@@ -3884,6 +3886,8 @@ id|stv680-&gt;urb
 (braket
 id|i
 )braket
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

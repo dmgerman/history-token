@@ -73,6 +73,14 @@ r_int
 id|orig
 )paren
 (brace
+id|loff_t
+id|ret
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -86,8 +94,11 @@ id|file-&gt;f_pos
 op_assign
 id|offset
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|file-&gt;f_pos
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_int|1
@@ -96,23 +107,31 @@ id|file-&gt;f_pos
 op_add_assign
 id|offset
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|file-&gt;f_pos
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
 r_default
 suffix:colon
-r_return
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 DECL|function|usbdev_read
 r_static
@@ -1613,7 +1632,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;usbdevfs: process %d (%s) did not claim interface %u before use&bslash;n&quot;
+l_string|&quot;usbfs: process %d (%s) did not claim interface %u before use&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
@@ -2743,7 +2762,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;usbdevfs: USBDEVFS_CONTROL failed dev %d rqt %u rq %u len %u ret %d&bslash;n&quot;
+l_string|&quot;usbfs: USBDEVFS_CONTROL failed dev %d rqt %u rq %u len %u ret %d&bslash;n&quot;
 comma
 id|dev-&gt;devnum
 comma
@@ -3156,7 +3175,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;usbdevfs: USBDEVFS_BULK failed dev %d ep 0x%x len %u ret %d&bslash;n&quot;
+l_string|&quot;usbfs: USBDEVFS_BULK failed dev %d ep 0x%x len %u ret %d&bslash;n&quot;
 comma
 id|dev-&gt;devnum
 comma
@@ -4928,6 +4947,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|as-&gt;urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 )paren
@@ -4936,7 +4957,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;usbdevfs: usb_submit_urb returned %d&bslash;n&quot;
+l_string|&quot;usbfs: usb_submit_urb returned %d&bslash;n&quot;
 comma
 id|ret
 )paren

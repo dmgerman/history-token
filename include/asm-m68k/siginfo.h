@@ -268,6 +268,8 @@ DECL|macro|SI_ASYNCIO
 mdefine_line|#define SI_ASYNCIO&t;-4&t;&t;/* sent by AIO completion */
 DECL|macro|SI_SIGIO
 mdefine_line|#define SI_SIGIO&t;-5&t;&t;/* sent by queued SIGIO */
+DECL|macro|SI_TKILL
+mdefine_line|#define SI_TKILL&t;-6&t;&t;/* sent by tkill system call */
 DECL|macro|SI_FROMUSER
 mdefine_line|#define SI_FROMUSER(siptr)&t;((siptr)-&gt;si_code &lt;= 0)
 DECL|macro|SI_FROMKERNEL

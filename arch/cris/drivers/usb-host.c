@@ -587,6 +587,9 @@ id|epid
 comma
 r_char
 id|maxlen
+comma
+r_int
+id|mem_flags
 )paren
 suffix:semicolon
 r_static
@@ -604,6 +607,9 @@ id|epid
 comma
 r_char
 id|maxlen
+comma
+r_int
+id|mem_flags
 )paren
 suffix:semicolon
 r_static
@@ -615,6 +621,9 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_int
+id|mem_flags
 )paren
 suffix:semicolon
 r_static
@@ -626,6 +635,9 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_int
+id|mem_flags
 )paren
 suffix:semicolon
 r_static
@@ -2425,6 +2437,8 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+id|mem_flags
 )paren
 (brace
 id|USB_EP_Desc_t
@@ -2610,7 +2624,7 @@ r_sizeof
 id|etrax_urb_priv_t
 )paren
 comma
-id|GFP_KERNEL
+id|mem_flags
 )paren
 suffix:semicolon
 id|urb_priv-&gt;first_sb
@@ -2765,7 +2779,7 @@ c_func
 (paren
 id|usb_desc_cache
 comma
-id|GFP_KERNEL
+id|mem_flags
 )paren
 suffix:semicolon
 id|traffic_sb
@@ -2779,7 +2793,7 @@ c_func
 (paren
 id|usb_desc_cache
 comma
-id|GFP_KERNEL
+id|mem_flags
 )paren
 suffix:semicolon
 id|traffic_ep-&gt;hw_len
@@ -4166,6 +4180,9 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_int
+id|mem_flags
 )paren
 (brace
 r_char
@@ -4389,6 +4406,8 @@ comma
 id|epid
 comma
 id|maxlen
+comma
+id|mem_flags
 )paren
 suffix:semicolon
 )brace
@@ -4414,6 +4433,9 @@ id|epid
 comma
 r_char
 id|maxlen
+comma
+r_int
+id|mem_flags
 )paren
 (brace
 id|USB_SB_Desc_t
@@ -4443,7 +4465,7 @@ r_sizeof
 id|etrax_urb_priv_t
 )paren
 comma
-id|GFP_KERNEL
+id|mem_flags
 )paren
 suffix:semicolon
 id|sb_desc_1
@@ -4457,7 +4479,7 @@ c_func
 (paren
 id|usb_desc_cache
 comma
-id|GFP_KERNEL
+id|mem_flags
 )paren
 suffix:semicolon
 r_if
@@ -5336,6 +5358,8 @@ op_member_access_from_pointer
 id|pipe
 )paren
 )paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 )brace
@@ -5405,6 +5429,9 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_int
+id|mem_flags
 )paren
 (brace
 r_char
@@ -5628,6 +5655,8 @@ comma
 id|epid
 comma
 id|maxlen
+comma
+id|mem_flags
 )paren
 suffix:semicolon
 )brace
@@ -5653,6 +5682,9 @@ id|epid
 comma
 r_char
 id|maxlen
+comma
+r_int
+id|mem_flags
 )paren
 (brace
 id|USB_SB_Desc_t
@@ -5690,7 +5722,7 @@ r_sizeof
 id|etrax_urb_priv_t
 )paren
 comma
-id|GFP_KERNEL
+id|mem_flags
 )paren
 suffix:semicolon
 id|sb_desc_1
@@ -5704,7 +5736,7 @@ c_func
 (paren
 id|usb_desc_cache
 comma
-id|GFP_KERNEL
+id|mem_flags
 )paren
 suffix:semicolon
 id|sb_desc_2
@@ -5718,7 +5750,7 @@ c_func
 (paren
 id|usb_desc_cache
 comma
-id|GFP_KERNEL
+id|mem_flags
 )paren
 suffix:semicolon
 r_if
@@ -5849,7 +5881,7 @@ c_func
 (paren
 id|usb_desc_cache
 comma
-id|GFP_KERNEL
+id|mem_flags
 )paren
 suffix:semicolon
 id|sb_desc_1-&gt;next
@@ -6022,7 +6054,7 @@ c_func
 (paren
 id|usb_desc_cache
 comma
-id|GFP_KERNEL
+id|mem_flags
 )paren
 suffix:semicolon
 id|sb_desc_2-&gt;sw_len
@@ -6400,6 +6432,9 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_int
+id|mem_flags
 )paren
 (brace
 id|etrax_hc_t
@@ -6472,6 +6507,8 @@ id|etrax_usb_submit_ctrl_urb
 c_func
 (paren
 id|urb
+comma
+id|mem_flags
 )paren
 suffix:semicolon
 )brace
@@ -6494,6 +6531,8 @@ id|etrax_usb_submit_bulk_urb
 c_func
 (paren
 id|urb
+comma
+id|mem_flags
 )paren
 suffix:semicolon
 )brace
@@ -6564,6 +6603,8 @@ id|etrax_usb_submit_intr_urb
 c_func
 (paren
 id|urb
+comma
+id|mem_flags
 )paren
 suffix:semicolon
 )brace
@@ -7999,6 +8040,8 @@ op_member_access_from_pointer
 id|pipe
 )paren
 )paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 )brace

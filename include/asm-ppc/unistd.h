@@ -417,6 +417,8 @@ DECL|macro|__NR_mincore
 mdefine_line|#define __NR_mincore&t;&t;206
 DECL|macro|__NR_gettid
 mdefine_line|#define __NR_gettid&t;&t;207
+DECL|macro|__NR_tkill
+mdefine_line|#define __NR_tkill&t;&t;208
 DECL|macro|__NR
 mdefine_line|#define __NR(n)&t;#n
 DECL|macro|__syscall_return
