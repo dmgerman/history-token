@@ -5081,12 +5081,14 @@ id|fpu
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef ELF_CORE_COPY_XFPREGS
 id|elf_fpxregset_t
 op_star
 id|xfpu
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
 r_int
 id|thread_status_size
 op_assign
@@ -6150,12 +6152,14 @@ c_func
 id|fpu
 )paren
 suffix:semicolon
+macro_line|#ifdef ELF_CORE_COPY_XFPREGS
 id|kfree
 c_func
 (paren
 id|xfpu
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|has_dumped
 suffix:semicolon
