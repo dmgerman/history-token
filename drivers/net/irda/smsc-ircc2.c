@@ -4987,7 +4987,7 @@ id|IRCC_SCE_CFGB
 )paren
 suffix:semicolon
 multiline_comment|/* Setup DMA controller (must be done after enabling chip DMA) */
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 id|self-&gt;io.dma
@@ -5353,7 +5353,7 @@ id|IRCC_RX_SIZE_LO
 )paren
 suffix:semicolon
 multiline_comment|/* Setup DMA controller */
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 id|self-&gt;io.dma

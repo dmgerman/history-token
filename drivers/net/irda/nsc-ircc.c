@@ -5603,7 +5603,7 @@ op_plus
 id|ECR1
 )paren
 suffix:semicolon
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 id|self-&gt;io.dma
@@ -6162,7 +6162,7 @@ id|self-&gt;st_fifo.head
 op_assign
 l_int|0
 suffix:semicolon
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 id|self-&gt;io.dma

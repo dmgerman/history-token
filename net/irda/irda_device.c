@@ -1743,9 +1743,9 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_ISA
 multiline_comment|/*&n; * Function setup_dma (idev, buffer, count, mode)&n; *&n; *    Setup the DMA channel. Commonly used by ISA FIR drivers&n; *&n; */
-DECL|function|setup_dma
+DECL|function|irda_setup_dma
 r_void
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 r_int
@@ -1826,5 +1826,12 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|irda_setup_dma
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_setup_dma
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

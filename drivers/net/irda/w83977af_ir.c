@@ -2480,7 +2480,7 @@ id|self-&gt;tx_buff.len
 )paren
 suffix:semicolon
 macro_line|#else
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 id|self-&gt;io.dma
@@ -3100,7 +3100,7 @@ id|self-&gt;rx_buff.truesize
 )paren
 suffix:semicolon
 macro_line|#else
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 id|self-&gt;io.dma

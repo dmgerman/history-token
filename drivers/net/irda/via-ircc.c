@@ -3766,7 +3766,7 @@ comma
 id|OFF
 )paren
 suffix:semicolon
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 id|self-&gt;io.dma
@@ -4171,7 +4171,7 @@ comma
 id|OFF
 )paren
 suffix:semicolon
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 id|self-&gt;io.dma
@@ -4581,7 +4581,7 @@ comma
 id|ON
 )paren
 suffix:semicolon
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 id|self-&gt;io.dma2

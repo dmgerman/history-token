@@ -777,7 +777,7 @@ id|dongle
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISA
 r_void
-id|setup_dma
+id|irda_setup_dma
 c_func
 (paren
 r_int
