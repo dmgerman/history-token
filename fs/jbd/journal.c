@@ -704,6 +704,11 @@ comma
 l_string|&quot;Journal thread exiting.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -2704,9 +2704,14 @@ c_func
 )paren
 r_return
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|current-&gt;state
-op_assign
+op_ne
 id|TASK_RUNNING
+)paren
+r_return
 suffix:semicolon
 id|schedule
 c_func
