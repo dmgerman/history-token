@@ -4443,11 +4443,6 @@ r_if
 c_cond
 (paren
 id|xprt-&gt;snd_task
-op_logical_and
-id|xprt-&gt;snd_task-&gt;tk_rpcwait
-op_eq
-op_amp
-id|xprt-&gt;pending
 )paren
 id|rpc_wake_up_task
 c_func
