@@ -8714,7 +8714,7 @@ c_func
 (paren
 id|mddev
 comma
-id|disk-&gt;number
+id|disk-&gt;raid_disk
 )paren
 suffix:semicolon
 r_if
@@ -13561,9 +13561,6 @@ id|spare_active
 c_func
 (paren
 id|mddev
-comma
-op_amp
-id|mddev-&gt;spare
 )paren
 suffix:semicolon
 id|mark_disk_sync
@@ -13780,8 +13777,6 @@ id|spare_write
 c_func
 (paren
 id|mddev
-comma
-id|mddev-&gt;spare-&gt;number
 )paren
 suffix:semicolon
 id|mddev-&gt;recovery_running

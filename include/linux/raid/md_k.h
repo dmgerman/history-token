@@ -776,9 +776,6 @@ id|spare_write
 id|mddev_t
 op_star
 id|mddev
-comma
-r_int
-id|number
 )paren
 suffix:semicolon
 DECL|member|spare_inactive
@@ -803,11 +800,6 @@ id|spare_active
 id|mddev_t
 op_star
 id|mddev
-comma
-id|mdp_disk_t
-op_star
-op_star
-id|descriptor
 )paren
 suffix:semicolon
 DECL|member|sync_request
