@@ -1375,6 +1375,8 @@ id|entry
 )paren
 suffix:semicolon
 )brace
+DECL|macro|ptep_set_access_flags
+mdefine_line|#define ptep_set_access_flags(__vma, __address, __ptep, __entry, __dirty) &bslash;&n;&t;ptep_establish(__vma, __address, __ptep, __entry)
 multiline_comment|/*&n; * Test and clear dirty bit in storage key.&n; * We can&squot;t clear the changed bit atomically. This is a potential&n; * race against modification of the referenced bit. This function&n; * should therefore only be called if it is not mapped in any&n; * address space.&n; */
 DECL|macro|page_test_and_clear_dirty
 mdefine_line|#define page_test_and_clear_dirty(page)&t;&t;&t;&t;&t;  &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;struct page *__page = (page);&t;&t;&t;&t;&t;  &bslash;&n;&t;unsigned long __physpage = __pa((__page-mem_map) &lt;&lt; PAGE_SHIFT);  &bslash;&n;&t;int __skey;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;asm volatile (&quot;iske %0,%1&quot; : &quot;=d&quot; (__skey) : &quot;a&quot; (__physpage));   &bslash;&n;&t;if (__skey &amp; _PAGE_CHANGED) {&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;asm volatile (&quot;sske %0,%1&quot;&t;&t;&t;&t;  &bslash;&n;&t;&t;&t;      : : &quot;d&quot; (__skey &amp; ~_PAGE_CHANGED),&t;  &bslash;&n;&t;&t;&t;          &quot;a&quot; (__physpage));&t;&t;&t;  &bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;(__skey &amp; _PAGE_CHANGED);&t;&t;&t;&t;&t;  &bslash;&n;})
@@ -1584,6 +1586,8 @@ DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)
 DECL|macro|__HAVE_ARCH_PTEP_ESTABLISH
 mdefine_line|#define __HAVE_ARCH_PTEP_ESTABLISH
+DECL|macro|__HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
+mdefine_line|#define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
 DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
 mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
 DECL|macro|__HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
