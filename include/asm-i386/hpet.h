@@ -169,9 +169,7 @@ r_int
 id|a
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_RTC
-DECL|macro|CONFIG_HPET_EMULATE_RTC
-mdefine_line|#define CONFIG_HPET_EMULATE_RTC &t;1
+macro_line|#ifdef CONFIG_HPET_EMULATE_RTC
 r_extern
 r_int
 id|hpet_mask_rtc_irq_bit
@@ -254,7 +252,7 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_RTC */
+macro_line|#endif /* CONFIG_HPET_EMULATE_RTC */
 macro_line|#endif /* CONFIG_HPET_TIMER */
 macro_line|#endif /* _I386_HPET_H */
 eof
