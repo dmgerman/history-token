@@ -529,6 +529,7 @@ id|u8
 id|irq_num
 )paren
 (brace
+macro_line|#if !defined(CONFIG_X86_IO_APIC)&t;
 r_int
 id|rc
 suffix:semicolon
@@ -669,6 +670,7 @@ comma
 l_int|0x4d1
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
