@@ -212,6 +212,7 @@ r_class
 op_star
 id|cls
 comma
+r_const
 r_struct
 id|class_attribute
 op_star
@@ -260,6 +261,7 @@ r_class
 op_star
 id|cls
 comma
+r_const
 r_struct
 id|class_attribute
 op_star
@@ -440,6 +442,7 @@ id|class_device
 op_star
 id|class_dev
 comma
+r_const
 r_struct
 id|class_device_attribute
 op_star
@@ -483,6 +486,7 @@ id|class_device
 op_star
 id|class_dev
 comma
+r_const
 r_struct
 id|class_device_attribute
 op_star
