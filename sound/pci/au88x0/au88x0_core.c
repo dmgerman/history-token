@@ -11606,13 +11606,6 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|vortex-&gt;lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12734,13 +12727,6 @@ id|nr_ch
 op_assign
 id|nr_ch
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|vortex-&gt;lock
-)paren
-suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* AC97 Codec channel setup. FIXME: this has no effect on some cards !! */
 r_if
@@ -13333,6 +13319,13 @@ id|IRQ_PCMOUT
 )paren
 (brace
 multiline_comment|/* ALSA period acknowledge. */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|vortex-&gt;lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -13373,6 +13366,13 @@ id|i
 )paren
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|vortex-&gt;lock
+)paren
+suffix:semicolon
 id|snd_pcm_period_elapsed
 c_func
 (paren
@@ -13382,6 +13382,13 @@ id|i
 )braket
 dot
 id|substream
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|vortex-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -13427,6 +13434,13 @@ id|i
 )paren
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|vortex-&gt;lock
+)paren
+suffix:semicolon
 id|snd_pcm_period_elapsed
 c_func
 (paren
@@ -13438,9 +13452,23 @@ dot
 id|substream
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|vortex-&gt;lock
+)paren
+suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|vortex-&gt;lock
+)paren
+suffix:semicolon
 id|handled
 op_assign
 l_int|1
