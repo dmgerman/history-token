@@ -9466,6 +9466,24 @@ multiline_comment|/* Gigabyte GA-7VAXP */
 dot
 id|vendor
 op_assign
+l_int|0x147b
+comma
+dot
+id|device
+op_assign
+l_int|0x1401
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* ABIT KD7(-RAID) */
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x14ff
 comma
 dot
