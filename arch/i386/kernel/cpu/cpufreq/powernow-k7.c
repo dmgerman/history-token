@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  AMD K7 Powernow driver.&n; *  (C) 2003 Dave Jones &lt
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -279,6 +280,12 @@ op_minus
 l_int|1
 comma
 )brace
+suffix:semicolon
+multiline_comment|/* This parameter is used in order to force ACPI instead of legacy method for&n; * configuration purpose.&n; */
+DECL|variable|powernow_acpi_force
+r_static
+r_int
+id|powernow_acpi_force
 suffix:semicolon
 DECL|variable|powernow_table
 r_static
@@ -2461,9 +2468,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|dmi_broken
 op_amp
 id|BROKEN_CPUFREQ
+)paren
+op_logical_or
+id|powernow_acpi_force
 )paren
 (brace
 id|printk
@@ -2779,6 +2790,24 @@ id|powernow_table
 )paren
 suffix:semicolon
 )brace
+id|module_param
+c_func
+(paren
+id|powernow_acpi_force
+comma
+r_int
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|powernow_acpi_force
+comma
+l_string|&quot;Force ACPI to be used&quot;
+)paren
+suffix:semicolon
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;Dave Jones &lt;davej@codemonkey.org.uk&gt;&quot;
