@@ -298,6 +298,14 @@ id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|linkwatch_run_queue
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;dev_remove_pack&t; - remove packet handler&n; *&t;@pt: packet type declaration&n; *&n; *&t;Remove a protocol handler that was previously added to the kernel&n; *&t;protocol handlers by dev_add_pack(). The passed &amp;packet_type is removed&n; *&t;from the kernel lists and can be freed or reused once this function&n; *&t;returns.&n; */
 DECL|function|dev_remove_pack
 r_void
@@ -8897,6 +8905,26 @@ comma
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|test_bit
+c_func
+(paren
+id|__LINK_STATE_LINKWATCH_PENDING
+comma
+op_amp
+id|dev-&gt;state
+)paren
+)paren
+(brace
+multiline_comment|/* We must not have linkwatch events pending&n;&t;&t;&t;&t; * on unregister. If this happens, we simply&n;&t;&t;&t;&t; * run the queue unscheduled, resulting in a&n;&t;&t;&t;&t; * noop for this device&n;&t;&t;&t;&t; */
+id|linkwatch_run_queue
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 id|current-&gt;state
 op_assign

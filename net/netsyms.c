@@ -3074,5 +3074,12 @@ id|wireless_send_event
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_NET_RADIO || CONFIG_NET_PCMCIA_RADIO */
+DECL|variable|linkwatch_fire_event
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|linkwatch_fire_event
+)paren
+suffix:semicolon
 macro_line|#endif  /* CONFIG_NET */
 eof
