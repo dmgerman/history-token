@@ -3688,7 +3688,7 @@ r_sizeof
 id|u32
 )paren
 op_star
-l_int|17
+l_int|16
 comma
 id|GFP_KERNEL
 )paren
