@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|variable|page_pool
 DECL|variable|isa_page_pool
 r_static
