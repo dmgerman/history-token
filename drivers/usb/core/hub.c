@@ -7714,6 +7714,8 @@ c_func
 id|hdev
 comma
 id|port
+op_plus
+l_int|1
 comma
 id|USB_PORT_FEAT_SUSPEND
 )paren
