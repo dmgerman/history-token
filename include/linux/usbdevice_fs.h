@@ -40,6 +40,7 @@ suffix:semicolon
 multiline_comment|/* in milliseconds */
 DECL|member|data
 r_void
+id|__user
 op_star
 id|data
 suffix:semicolon
@@ -67,6 +68,7 @@ suffix:semicolon
 multiline_comment|/* in milliseconds */
 DECL|member|data
 r_void
+id|__user
 op_star
 id|data
 suffix:semicolon
@@ -200,6 +202,7 @@ id|flags
 suffix:semicolon
 DECL|member|buffer
 r_void
+id|__user
 op_star
 id|buffer
 suffix:semicolon
@@ -261,6 +264,7 @@ suffix:semicolon
 multiline_comment|/* MUST encode size + direction of data so the&n;&t;&t;&t;&t; * macros in &lt;asm/ioctl.h&gt; give correct values */
 DECL|member|data
 r_void
+id|__user
 op_star
 id|data
 suffix:semicolon
