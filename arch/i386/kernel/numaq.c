@@ -232,6 +232,9 @@ op_rshift
 l_int|8
 )braket
 op_assign
+(paren
+id|s8
+)paren
 id|nid
 suffix:semicolon
 id|cur

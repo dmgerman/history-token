@@ -653,7 +653,7 @@ id|PAGES_PER_ELEMENT
 )braket
 op_assign
 (paren
-r_int
+id|s8
 )paren
 id|nmcp-&gt;nid
 suffix:semicolon
