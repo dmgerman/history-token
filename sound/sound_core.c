@@ -1608,6 +1608,18 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+singleline_comment|// MODULE_ALIAS_CHARDEV_MAJOR(SOUND_MAJOR);
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;char-major-&quot;
+id|__stringify
+c_func
+(paren
+id|SOUND_MAJOR
+)paren
+)paren
+suffix:semicolon
 DECL|function|cleanup_soundcore
 r_static
 r_void

@@ -27,6 +27,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|SNDRV_MINOR_OSS_MIXER
+id|MODULE_ALIAS_SNDRV_MINOR
+c_func
+(paren
+id|SNDRV_MINOR_OSS_MIXER
+)paren
+suffix:semicolon
 DECL|function|snd_mixer_oss_open
 r_static
 r_int

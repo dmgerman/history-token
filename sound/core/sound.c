@@ -148,6 +148,18 @@ l_string|&quot;default:0666,base:8&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+singleline_comment|// MODULE_ALIAS_CHARDEV_MAJOR(CONFIG_SND_MAJOR);
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;char-major-&quot;
+id|__stringify
+c_func
+(paren
+id|CONFIG_SND_MAJOR
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* this one holds the actual max. card number currently available.&n; * as default, it&squot;s identical with cards_limit option.  when more&n; * modules are loaded manually, this limit number increases, too.&n; */
 DECL|variable|snd_ecards_limit
 r_int
