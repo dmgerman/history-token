@@ -356,6 +356,20 @@ c_func
 id|scsi_set_device_offline
 )paren
 suffix:semicolon
+DECL|variable|__scsi_mode_sense
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__scsi_mode_sense
+)paren
+suffix:semicolon
+DECL|variable|scsi_mode_sense
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_mode_sense
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This symbol is for the highlevel drivers (e.g. sg) only.&n; */
 DECL|variable|scsi_reset_provider
 id|EXPORT_SYMBOL
