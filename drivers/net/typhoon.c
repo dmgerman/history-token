@@ -57,9 +57,9 @@ mdefine_line|#define PKT_BUF_SZ&t;&t;1536
 DECL|macro|DRV_MODULE_NAME
 mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;typhoon&quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION &t;&quot;1.5.4&quot;
+mdefine_line|#define DRV_MODULE_VERSION &t;&quot;1.5.7&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;04/09/09&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;05/01/07&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&t;DRV_MODULE_NAME &quot;: &quot;
 DECL|macro|ERR_PFX
