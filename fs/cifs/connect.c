@@ -775,7 +775,6 @@ id|pdu_length
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB */
 id|temp
 op_assign
 (paren
@@ -1386,7 +1385,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;There are still active MIDs in queue and we are exiting but we can not delete mid_q_entries or TCP_Server_Info structure due to pending requests MEMORY LEAK!!&quot;
+l_string|&quot;Active MIDs in queue while exiting - can not delete mid_q_entries or TCP_Server_Info structure due to pending requests MEMORY LEAK!!&quot;
 )paren
 )paren
 suffix:semicolon
@@ -3367,6 +3366,7 @@ comma
 id|ntlm_session_key
 )paren
 suffix:semicolon
+multiline_comment|/* BB add call to save MAC key here BB */
 multiline_comment|/* for better security the weaker lanman hash not sent &n;&t;&t;&t;&t;   in AuthSessSetup so why bother calculating it */
 multiline_comment|/* toUpper(nls_info,&n;&t;&t;&t;&t;&t;password_with_pad);&n;&t;&t;&t;&t;SMBencrypt(password_with_pad,&n;&t;&t;&t;&t;&t;   pSesInfo-&gt;server-&gt;cryptKey, session_key); */
 id|rc
@@ -3400,6 +3400,16 @@ comma
 id|pSesInfo-&gt;server-&gt;cryptKey
 comma
 id|ntlm_session_key
+)paren
+suffix:semicolon
+id|cifs_calculate_mac_key
+c_func
+(paren
+id|pSesInfo-&gt;mac_signing_key
+comma
+id|ntlm_session_key
+comma
+id|pSesInfo-&gt;password_with_pad
 )paren
 suffix:semicolon
 id|rc

@@ -347,6 +347,8 @@ r_char
 id|mac_signing_key
 (braket
 id|CIFS_SESSION_KEY_SIZE
+op_plus
+l_int|16
 )braket
 suffix:semicolon
 DECL|member|serverOS

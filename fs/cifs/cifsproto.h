@@ -1657,6 +1657,26 @@ id|__u32
 id|expected_sequence_number
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|cifs_calculate_mac_key
+c_func
+(paren
+r_char
+op_star
+id|key
+comma
+r_const
+r_char
+op_star
+id|rn
+comma
+r_const
+r_char
+op_star
+id|pass
+)paren
+suffix:semicolon
 multiline_comment|/* BB routines below not implemented yet BB */
 r_extern
 r_int
