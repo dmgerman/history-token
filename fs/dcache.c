@@ -2269,9 +2269,12 @@ id|dentry-&gt;d_flags
 op_assign
 id|DCACHE_UNHASHED
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|dentry-&gt;d_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|dentry-&gt;d_inode
 op_assign

@@ -9284,9 +9284,12 @@ id|sbi-&gt;s_wait
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|sbi-&gt;bitmap_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_return
 (paren
