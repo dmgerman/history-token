@@ -406,7 +406,7 @@ op_logical_neg
 op_decrement
 id|mouse-&gt;open
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|mouse-&gt;irq
@@ -1052,7 +1052,7 @@ c_cond
 id|mouse
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|mouse-&gt;irq
