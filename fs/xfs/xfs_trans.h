@@ -57,8 +57,6 @@ DECL|macro|XFS_LI_DQUOT
 mdefine_line|#define XFS_LI_DQUOT&t;&t;0x123d
 DECL|macro|XFS_LI_QUOTAOFF
 mdefine_line|#define XFS_LI_QUOTAOFF&t;&t;0x123e
-DECL|macro|XFS_LI_RPC
-mdefine_line|#define XFS_LI_RPC&t;&t;0x123f&t;/* CXFS RPC return info */
 multiline_comment|/*&n; * Transaction types.  Used to distinguish types of buffers.&n; */
 DECL|macro|XFS_TRANS_SETATTR_NOT_SIZE
 mdefine_line|#define XFS_TRANS_SETATTR_NOT_SIZE&t;1
@@ -1779,28 +1777,6 @@ comma
 id|xfs_extlen_t
 )paren
 suffix:semicolon
-r_void
-id|xfs_trans_log_create_rpc
-c_func
-(paren
-id|xfs_trans_t
-op_star
-comma
-r_int
-comma
-id|xfs_ino_t
-)paren
-suffix:semicolon
-r_void
-id|xfs_trans_log_setattr_rpc
-c_func
-(paren
-id|xfs_trans_t
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 r_int
 id|xfs_trans_commit
 c_func
@@ -1812,15 +1788,6 @@ id|uint
 id|flags
 comma
 id|xfs_lsn_t
-op_star
-)paren
-suffix:semicolon
-r_void
-id|xfs_trans_commit_async
-c_func
-(paren
-r_struct
-id|xfs_mount
 op_star
 )paren
 suffix:semicolon

@@ -6141,25 +6141,25 @@ multiline_comment|/*    0x80000 */
 l_string|&quot;VROOT&quot;
 comma
 multiline_comment|/*   0x100000 */
-l_string|&quot;VNOSWAP&quot;
+l_string|&quot;INVALID0x200000&quot;
 comma
 multiline_comment|/*   0x200000 */
-l_string|&quot;VISSWAP&quot;
+l_string|&quot;INVALID00x400000&quot;
 comma
 multiline_comment|/*   0x400000 */
-l_string|&quot;VREPLICABLE&quot;
+l_string|&quot;INVALID0x800000&quot;
 comma
 multiline_comment|/*   0x800000 */
-l_string|&quot;VNOTREPLICABLE&quot;
+l_string|&quot;INVALID0x1000000&quot;
 comma
 multiline_comment|/*  0x1000000 */
-l_string|&quot;VDOCMP&quot;
+l_string|&quot;INVALID0x2000000&quot;
 comma
 multiline_comment|/*  0x2000000 */
 l_string|&quot;VSHARE&quot;
 comma
 multiline_comment|/*  0x4000000 */
-l_string|&quot;VFRLOCKS&quot;
+l_string|&quot;INVALID0x8000000&quot;
 comma
 multiline_comment|/*  0x8000000 */
 l_string|&quot;VENF_LOCKING&quot;
@@ -6357,7 +6357,7 @@ l_int|0
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;out of range 0x%x&bslash;n&quot;
+l_string|&quot;out of range 0x%x&quot;
 comma
 id|vp-&gt;v_type
 )paren
@@ -6366,12 +6366,21 @@ r_else
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;%s&bslash;n&quot;
+l_string|&quot;%s&quot;
 comma
 id|vnode_type
 (braket
 id|vp-&gt;v_type
 )braket
+)paren
+suffix:semicolon
+id|kdb_printf
+c_func
+(paren
+l_string|&quot; v_bh %p&bslash;n&quot;
+comma
+op_amp
+id|vp-&gt;v_bh
 )paren
 suffix:semicolon
 r_if
@@ -6484,6 +6493,16 @@ id|vp-&gt;v_trace
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_XFS_VNODE_TRACING */
+id|kdb_printf
+c_func
+(paren
+l_string|&quot;   v_vfsp 0x%p v_number %Lx&bslash;n&quot;
+comma
+id|vp-&gt;v_vfsp
+comma
+id|vp-&gt;v_number
+)paren
+suffix:semicolon
 )brace
 DECL|function|kdbm_vnode
 r_static
@@ -24326,40 +24345,18 @@ op_star
 id|io
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|IO_IS_XFS
-c_func
-(paren
-id|io
-)paren
-)paren
-(brace
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;io_obj 0x%p (xinode) io_mount 0x%p&bslash;n&quot;
+l_string|&quot;io_obj 0x%p io_flags 0x%x io_mount 0x%p&bslash;n&quot;
 comma
 id|io-&gt;io_obj
+comma
+id|io-&gt;io_flags
 comma
 id|io-&gt;io_mount
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|kdb_printf
-c_func
-(paren
-l_string|&quot;io_obj 0x%p (dcxvn) io_mount 0x%p&bslash;n&quot;
-comma
-id|io-&gt;io_obj
-comma
-id|io-&gt;io_mount
-)paren
-suffix:semicolon
-)brace
 id|kdb_printf
 c_func
 (paren

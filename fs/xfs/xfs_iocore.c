@@ -193,7 +193,7 @@ id|ip-&gt;i_iocore
 suffix:semicolon
 id|io-&gt;io_flags
 op_assign
-id|XFS_IOCORE_ISXFS
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -202,12 +202,10 @@ id|ip-&gt;i_d.di_flags
 op_amp
 id|XFS_DIFLAG_REALTIME
 )paren
-(brace
 id|io-&gt;io_flags
 op_or_assign
 id|XFS_IOCORE_RT
 suffix:semicolon
-)brace
 id|io-&gt;io_dmevmask
 op_assign
 id|ip-&gt;i_d.di_dmevmask

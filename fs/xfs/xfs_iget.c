@@ -1918,7 +1918,7 @@ id|ip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This routine removes an about-to-be-destroyed inode from&n; * all of the lists in which it is lcoated with the exception&n; * of the behavior chain.  It is used by xfs_ireclaim and&n; * by cxfs relocation cocde, in which case, we are removing&n; * the xfs_inode but leaving the vnode alone since it has&n; * been transformed into a client vnode.&n; */
+multiline_comment|/*&n; * This routine removes an about-to-be-destroyed inode from&n; * all of the lists in which it is located with the exception&n; * of the behavior chain. &n; */
 r_void
 DECL|function|xfs_iextract
 id|xfs_iextract
