@@ -498,7 +498,7 @@ op_assign
 id|__get_free_pages
 c_func
 (paren
-id|GFP_DMA
+id|GFP_KERNEL
 comma
 id|i
 )paren

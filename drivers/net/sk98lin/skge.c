@@ -14130,7 +14130,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* SkPciWriteCfgDWord */
-multiline_comment|/*****************************************************************************&n; *&n; *&t;SkPciWriteCfgWord - write a 16 bit value to pci config space&n; *&n; * Description:&n; *&t;This routine writes a 16 bit value to the pci configuration&n; *&t;space. The flag PciConfigUp indicates whether the config space&n; *&t;is accesible or must be set up first.&n; *&n; * Returns:&n; *&t;0 - indicate everything worked ok.&n; *&t;!= 0 - error indication&n; */
+multiline_comment|/*****************************************************************************&n; *&n; *&t;SkPciWriteCfgWord - write a 16 bit value to pci config space&n; *&n; * Description:&n; *&t;This routine writes a 16 bit value to the pci configuration&n; *&t;space. The flag PciConfigUp indicates whether the config space&n; *&t;is accessible or must be set up first.&n; *&n; * Returns:&n; *&t;0 - indicate everything worked ok.&n; *&t;!= 0 - error indication&n; */
 DECL|function|SkPciWriteCfgWord
 r_int
 id|SkPciWriteCfgWord
@@ -14166,7 +14166,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* SkPciWriteCfgWord */
-multiline_comment|/*****************************************************************************&n; *&n; *&t;SkPciWriteCfgWord - write a 8 bit value to pci config space&n; *&n; * Description:&n; *&t;This routine writes a 8 bit value to the pci configuration&n; *&t;space. The flag PciConfigUp indicates whether the config space&n; *&t;is accesible or must be set up first.&n; *&n; * Returns:&n; *&t;0 - indicate everything worked ok.&n; *&t;!= 0 - error indication&n; */
+multiline_comment|/*****************************************************************************&n; *&n; *&t;SkPciWriteCfgWord - write a 8 bit value to pci config space&n; *&n; * Description:&n; *&t;This routine writes a 8 bit value to the pci configuration&n; *&t;space. The flag PciConfigUp indicates whether the config space&n; *&t;is accessible or must be set up first.&n; *&n; * Returns:&n; *&t;0 - indicate everything worked ok.&n; *&t;!= 0 - error indication&n; */
 DECL|function|SkPciWriteCfgByte
 r_int
 id|SkPciWriteCfgByte

@@ -479,7 +479,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|do_update_one
@@ -506,12 +506,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|do_update_one
-c_func
-(paren
-l_int|NULL
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren

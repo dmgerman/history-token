@@ -8768,7 +8768,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* board running in Z3 space. Seperate video memory (3 apertures)&n;&t;&t;   and S3 register set */
+multiline_comment|/* board running in Z3 space. Separate video memory (3 apertures)&n;&t;&t;   and S3 register set */
 id|on_zorro2
 op_assign
 l_int|0

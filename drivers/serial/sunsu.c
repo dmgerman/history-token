@@ -1960,7 +1960,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Seperate interrupt handling path for keyboard/mouse ports.  */
+multiline_comment|/* Separate interrupt handling path for keyboard/mouse ports.  */
 r_static
 r_void
 id|sunsu_change_speed

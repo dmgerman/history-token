@@ -1187,7 +1187,7 @@ comma
 id|maxcpus
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Flush all other CPU&squot;s tlb and then mine.  Do this with smp_call_function()&n; * as we want to ensure all TLB&squot;s flushed before proceeding.&n; */
+multiline_comment|/*&n; * Flush all other CPU&squot;s tlb and then mine.  Do this with on_each_cpu()&n; * as we want to ensure all TLB&squot;s flushed before proceeding.&n; */
 r_extern
 r_void
 id|flush_tlb_all_local
@@ -1204,7 +1204,7 @@ c_func
 r_void
 )paren
 (brace
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 (paren
@@ -1224,11 +1224,6 @@ comma
 l_int|1
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|flush_tlb_all_local
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace

@@ -254,7 +254,7 @@ mdefine_line|#define S_SELECT&t;0x40&t;/**/
 DECL|macro|S_REQUEST
 mdefine_line|#define S_REQUEST&t;0x20    /* Request line from SCSI bus*/
 DECL|macro|S_ACK
-mdefine_line|#define S_ACK&t;&t;0x10    /* Acknowlege line from SCSI bus*/
+mdefine_line|#define S_ACK&t;&t;0x10    /* Acknowledge line from SCSI bus*/
 DECL|macro|S_BUSY
 mdefine_line|#define S_BUSY&t;&t;0x08    /* Busy line from SCSI bus*/
 DECL|macro|S_CD

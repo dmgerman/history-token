@@ -204,6 +204,10 @@ DECL|member|sinfo_tsn
 id|__u32
 id|sinfo_tsn
 suffix:semicolon
+DECL|member|sinfo_cumtsn
+id|__u32
+id|sinfo_cumtsn
+suffix:semicolon
 DECL|member|sinfo_assoc_id
 id|sctp_assoc_t
 id|sinfo_assoc_id
@@ -561,6 +565,15 @@ id|pdapi_assoc_id
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|enumerator|SCTP_PARTIAL_DELIVERY_ABORTED
+r_enum
+(brace
+id|SCTP_PARTIAL_DELIVERY_ABORTED
+op_assign
+l_int|0
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Described in Section 7.3&n; *   Ancillary Data and Notification Interest Options&n; */
 DECL|struct|sctp_event_subscribe
 r_struct
@@ -681,11 +694,11 @@ comma
 DECL|enumerator|SCTP_PEER_ADDR_CHANGE
 id|SCTP_PEER_ADDR_CHANGE
 comma
-DECL|enumerator|SCTP_REMOTE_ERROR
-id|SCTP_REMOTE_ERROR
-comma
 DECL|enumerator|SCTP_SEND_FAILED
 id|SCTP_SEND_FAILED
+comma
+DECL|enumerator|SCTP_REMOTE_ERROR
+id|SCTP_REMOTE_ERROR
 comma
 DECL|enumerator|SCTP_SHUTDOWN_EVENT
 id|SCTP_SHUTDOWN_EVENT

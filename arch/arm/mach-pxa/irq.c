@@ -284,7 +284,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * GPIO IRQs must be acknoledged.  This is for GPIO 0 and 1.&n; */
+multiline_comment|/*&n; * GPIO IRQs must be acknowledged.  This is for GPIO 0 and 1.&n; */
 DECL|function|pxa_ack_low_gpio
 r_static
 r_void

@@ -3262,7 +3262,7 @@ multiline_comment|/* Must wait other processors to flush their icache before con
 r_if
 c_cond
 (paren
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|ipi_imb
@@ -3279,11 +3279,6 @@ c_func
 (paren
 id|KERN_CRIT
 l_string|&quot;smp_imb: timed out&bslash;n&quot;
-)paren
-suffix:semicolon
-id|imb
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -3316,7 +3311,7 @@ multiline_comment|/* Although we don&squot;t have any data to pass, we do want t
 r_if
 c_cond
 (paren
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|ipi_flush_tlb_all
@@ -3337,11 +3332,6 @@ l_string|&quot;flush_tlb_all: timed out&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|tbia
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 DECL|macro|asn_locked
 mdefine_line|#define asn_locked() (cpu_data[smp_processor_id()].asn_lock)
@@ -3406,6 +3396,11 @@ op_star
 id|mm
 )paren
 (brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3490,6 +3485,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -3518,6 +3518,11 @@ l_string|&quot;flush_tlb_mm: timed out&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|struct|flush_tlb_page_struct
 r_struct
@@ -3629,6 +3634,11 @@ id|mm
 op_assign
 id|vma-&gt;vm_mm
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3717,6 +3727,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -3758,6 +3773,11 @@ l_string|&quot;flush_tlb_page: timed out&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_void
 DECL|function|flush_tlb_range
@@ -3879,6 +3899,11 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3963,6 +3988,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -3991,6 +4021,11 @@ l_string|&quot;flush_icache_page: timed out&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 "&f;"
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK

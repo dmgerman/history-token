@@ -34,7 +34,7 @@ mdefine_line|#define I810_UPLOAD_TEX1       0x20
 DECL|macro|I810_UPLOAD_CLIPRECTS
 mdefine_line|#define I810_UPLOAD_CLIPRECTS  0x40
 multiline_comment|/* Indices into buf.Setup where various bits of state are mirrored per&n; * context and per buffer.  These can be fired at the card as a unit,&n; * or in a piecewise fashion as required.&n; */
-multiline_comment|/* Destbuffer state &n; *    - backbuffer linear offset and pitch -- invarient in the current dri&n; *    - zbuffer linear offset and pitch -- also invarient&n; *    - drawing origin in back and depth buffers.&n; *&n; * Keep the depth/back buffer state here to acommodate private buffers&n; * in the future.&n; */
+multiline_comment|/* Destbuffer state &n; *    - backbuffer linear offset and pitch -- invarient in the current dri&n; *    - zbuffer linear offset and pitch -- also invarient&n; *    - drawing origin in back and depth buffers.&n; *&n; * Keep the depth/back buffer state here to accommodate private buffers&n; * in the future.&n; */
 DECL|macro|I810_DESTREG_DI0
 mdefine_line|#define I810_DESTREG_DI0  0&t;/* CMD_OP_DESTBUFFER_INFO (2 dwords) */
 DECL|macro|I810_DESTREG_DI1

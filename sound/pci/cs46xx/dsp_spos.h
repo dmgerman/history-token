@@ -262,7 +262,7 @@ DECL|macro|FG_INTERVAL_TIMER_PERIOD
 mdefine_line|#define FG_INTERVAL_TIMER_PERIOD                0x0051
 DECL|macro|BG_INTERVAL_TIMER_PERIOD
 mdefine_line|#define BG_INTERVAL_TIMER_PERIOD                0x0100
-multiline_comment|/* Only SP accesible registers */
+multiline_comment|/* Only SP accessible registers */
 DECL|macro|SP_ASER_COUNTDOWN
 mdefine_line|#define SP_ASER_COUNTDOWN 0x8040
 DECL|macro|SP_SPDOUT_FIFO

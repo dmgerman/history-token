@@ -4,9 +4,10 @@ mdefine_line|#define __LINUX_SMP_H
 multiline_comment|/*&n; *&t;Generic SMP support&n; *&t;&t;Alan Cox. &lt;alan@redhat.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_SMP
+macro_line|#include &lt;linux/preempt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/bug.h&gt;
 multiline_comment|/*&n; * main cross-CPU interfaces, handles INIT, TLB flush, STOP, etc.&n; * (defined in asm header):&n; */
@@ -93,6 +94,75 @@ r_int
 id|wait
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Call a function on all processors&n; */
+DECL|function|on_each_cpu
+r_static
+r_inline
+r_int
+id|on_each_cpu
+c_func
+(paren
+r_void
+(paren
+op_star
+id|func
+)paren
+(paren
+r_void
+op_star
+id|info
+)paren
+comma
+r_void
+op_star
+id|info
+comma
+r_int
+id|retry
+comma
+r_int
+id|wait
+)paren
+(brace
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|smp_call_function
+c_func
+(paren
+id|func
+comma
+id|info
+comma
+id|retry
+comma
+id|wait
+)paren
+suffix:semicolon
+id|func
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * True once the per process idle is forked&n; */
 r_extern
 r_int
@@ -179,6 +249,8 @@ DECL|macro|smp_threads_ready
 mdefine_line|#define smp_threads_ready&t;&t;&t;1
 DECL|macro|smp_call_function
 mdefine_line|#define smp_call_function(func,info,retry,wait)&t;({ 0; })
+DECL|macro|on_each_cpu
+mdefine_line|#define on_each_cpu(func,info,retry,wait)&t;({ func(info); 0; })
 DECL|function|smp_send_reschedule
 r_static
 r_inline

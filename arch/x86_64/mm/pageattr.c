@@ -714,13 +714,7 @@ r_int
 id|address
 )paren
 (brace
-id|preempt_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_SMP 
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|flush_kernel_map
@@ -734,22 +728,6 @@ comma
 l_int|1
 comma
 l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif&t;
-id|flush_kernel_map
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|address
-)paren
-suffix:semicolon
-id|preempt_enable
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace

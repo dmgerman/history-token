@@ -10,7 +10,7 @@ DECL|macro|UCPI_UBH
 mdefine_line|#define UCPI_UBH ((struct ufs_buffer_head *)ucpi)
 DECL|macro|USPI_UBH
 mdefine_line|#define USPI_UBH ((struct ufs_buffer_head *)uspi)
-multiline_comment|/*&n; * macros used for accesing structures&n; */
+multiline_comment|/*&n; * macros used for accessing structures&n; */
 r_static
 r_inline
 id|s32

@@ -127,16 +127,19 @@ id|swp_entry_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 r_struct
-id|sysinfo
-suffix:semicolon
-r_struct
 id|address_space
 suffix:semicolon
 r_struct
-id|zone
+id|pte_chain
+suffix:semicolon
+r_struct
+id|sysinfo
 suffix:semicolon
 r_struct
 id|writeback_control
+suffix:semicolon
+r_struct
+id|zone
 suffix:semicolon
 multiline_comment|/*&n; * A swap extent maps a range of a swapfile&squot;s PAGE_SIZE pages onto a range of&n; * disk blocks.  A list of swap extents maps the entire swapfile.  (Where the&n; * term `swapfile&squot; refers to either a blockdevice or an IS_REG file.  Apart&n; * from setup, they&squot;re handled identically.&n; *&n; * We always assume that blocks are of size PAGE_SIZE.&n; */
 DECL|struct|swap_extent
@@ -322,6 +325,15 @@ suffix:semicolon
 multiline_comment|/* Swap 50% full? Release swapcache more aggressively.. */
 DECL|macro|vm_swap_full
 mdefine_line|#define vm_swap_full() (nr_swap_pages*2 &lt; total_swap_pages)
+multiline_comment|/* linux/mm/oom_kill.c */
+r_extern
+r_void
+id|out_of_memory
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* linux/mm/page_alloc.c */
 r_extern
 r_int
@@ -376,21 +388,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* linux/mm/filemap.c */
-r_extern
-r_void
-id|FASTCALL
-c_func
-(paren
-id|mark_page_accessed
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* linux/mm/swap.c */
 r_extern
 r_void
@@ -426,6 +423,20 @@ id|FASTCALL
 c_func
 (paren
 id|activate_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|mark_page_accessed
 c_func
 (paren
 r_struct
@@ -490,19 +501,8 @@ r_extern
 r_int
 id|vm_swappiness
 suffix:semicolon
-multiline_comment|/* linux/mm/oom_kill.c */
-r_extern
-r_void
-id|out_of_memory
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* linux/mm/rmap.c */
-r_struct
-id|pte_chain
-suffix:semicolon
+macro_line|#ifdef CONFIG_MMU
 r_int
 id|FASTCALL
 c_func
@@ -604,6 +604,10 @@ op_star
 id|page
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|page_referenced
+mdefine_line|#define page_referenced(page) &bslash;&n;&t;TestClearPageReferenced(page)
+macro_line|#endif /* CONFIG_MMU */
 macro_line|#ifdef CONFIG_SWAP
 multiline_comment|/* linux/mm/page_io.c */
 r_extern
@@ -921,8 +925,6 @@ DECL|macro|free_page_and_swap_cache
 mdefine_line|#define free_page_and_swap_cache(page) &bslash;&n;&t;page_cache_release(page)
 DECL|macro|free_pages_and_swap_cache
 mdefine_line|#define free_pages_and_swap_cache(pages, nr) &bslash;&n;&t;release_pages((pages), (nr), 0);
-DECL|macro|page_referenced
-mdefine_line|#define page_referenced(page) &bslash;&n;&t;TestClearPageReferenced(page)
 DECL|macro|show_swap_cache_info
 mdefine_line|#define show_swap_cache_info()&t;&t;&t;/*NOTHING*/
 DECL|macro|free_swap_and_cache

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/drivers/pcmcia/sa1100_badge4.c&n; *&n; * BadgePAD 4 PCMCIA specific routines&n; *&n; *   Christopher Hoover &lt;ch@hpl.hp.com&gt;&n; *&n; * Copyright (C) 2002 Hewlett-Packard Company&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -168,6 +169,9 @@ DECL|function|badge4_pcmcia_configure_socket
 id|badge4_pcmcia_configure_socket
 c_func
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure
@@ -181,7 +185,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|conf-&gt;sock
+id|sock
 )paren
 (brace
 r_case
@@ -303,6 +307,8 @@ op_assign
 id|sa1111_pcmcia_configure_socket
 c_func
 (paren
+id|sock
+comma
 id|conf
 )paren
 suffix:semicolon
@@ -374,6 +380,11 @@ id|badge4_pcmcia_ops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|init
 op_assign
 id|badge4_pcmcia_init
@@ -387,11 +398,6 @@ dot
 id|socket_state
 op_assign
 id|sa1111_pcmcia_socket_state
-comma
-dot
-id|get_irq_info
-op_assign
-id|sa1111_pcmcia_get_irq_info
 comma
 dot
 id|configure_socket
@@ -415,7 +421,10 @@ r_int
 id|pcmcia_badge4_init
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 r_int
@@ -439,6 +448,8 @@ c_func
 (paren
 op_amp
 id|badge4_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -451,7 +462,10 @@ id|__devexit
 id|pcmcia_badge4_exit
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 id|sa1100_unregister_pcmcia
@@ -459,6 +473,8 @@ c_func
 (paren
 op_amp
 id|badge4_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace

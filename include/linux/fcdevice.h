@@ -46,7 +46,23 @@ op_star
 id|skb
 )paren
 suffix:semicolon
-singleline_comment|//extern unsigned short&t;fc_type_trans(struct sk_buff *skb, struct net_device *dev); 
+r_extern
+r_int
+r_int
+id|fc_type_trans
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
 r_extern
 r_struct
 id|net_device

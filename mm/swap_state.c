@@ -142,6 +142,15 @@ id|swapper_space.i_mmap_shared
 )paren
 comma
 dot
+id|i_shared_sem
+op_assign
+id|__MUTEX_INITIALIZER
+c_func
+(paren
+id|swapper_space.i_shared_sem
+)paren
+comma
+dot
 id|private_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED

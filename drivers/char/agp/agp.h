@@ -48,7 +48,7 @@ r_void
 r_if
 c_cond
 (paren
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|ipi_handler
@@ -67,11 +67,6 @@ c_func
 (paren
 id|PFX
 l_string|&quot;timed out waiting for the other CPUs!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|flush_agp_cache
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace

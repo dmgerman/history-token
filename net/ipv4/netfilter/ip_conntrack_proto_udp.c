@@ -172,9 +172,14 @@ multiline_comment|/* If we&squot;ve seen traffic both ways, this is some kind of
 r_if
 c_cond
 (paren
-id|conntrack-&gt;status
+id|test_bit
+c_func
+(paren
+id|IPS_SEEN_REPLY_BIT
+comma
 op_amp
-id|IPS_SEEN_REPLY
+id|conntrack-&gt;status
+)paren
 )paren
 (brace
 id|ip_ct_refresh

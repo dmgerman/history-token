@@ -727,6 +727,10 @@ id|completion
 op_star
 id|waiting
 suffix:semicolon
+DECL|member|retry_count
+r_int
+id|retry_count
+suffix:semicolon
 macro_line|#ifdef CONFIG_CISS_SCSI_TAPE
 DECL|member|scsi_cmd
 r_void

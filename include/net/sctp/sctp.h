@@ -482,6 +482,8 @@ DECL|macro|SCTP_INC_STATS_BH
 mdefine_line|#define SCTP_INC_STATS_BH(field)&t;SNMP_INC_STATS_BH(sctp_statistics, field)
 DECL|macro|SCTP_INC_STATS_USER
 mdefine_line|#define SCTP_INC_STATS_USER(field)&t;SNMP_INC_STATS_USER(sctp_statistics, field)
+DECL|macro|SCTP_DEC_STATS
+mdefine_line|#define SCTP_DEC_STATS(field)&t;&t;SNMP_DEC_STATS(sctp_statistics, field)
 multiline_comment|/* Determine if this is a valid kernel address.  */
 DECL|function|sctp_is_valid_kaddr
 r_static

@@ -363,6 +363,13 @@ c_func
 id|blk_queue_bounce
 )paren
 suffix:semicolon
+DECL|variable|blk_congestion_wait
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|blk_congestion_wait
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
 DECL|variable|kmap_high
 id|EXPORT_SYMBOL

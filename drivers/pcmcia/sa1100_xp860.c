@@ -1,7 +1,9 @@
 multiline_comment|/*&n; * drivers/pcmcia/sa1100_xp860.c&n; *&n; * XP860 PCMCIA specific routines&n; *&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
@@ -84,6 +86,9 @@ DECL|function|xp860_pcmcia_configure_socket
 id|xp860_pcmcia_configure_socket
 c_func
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure
@@ -110,7 +115,7 @@ multiline_comment|/* Neponset uses the Maxim MAX1600, with the following connect
 r_switch
 c_cond
 (paren
-id|conf-&gt;sock
+id|sock
 )paren
 (brace
 r_case
@@ -313,6 +318,8 @@ op_assign
 id|sa1111_pcmcia_configure_socket
 c_func
 (paren
+id|sock
+comma
 id|conf
 )paren
 suffix:semicolon
@@ -374,6 +381,11 @@ id|xp860_pcmcia_ops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|init
 op_assign
 id|xp860_pcmcia_init
@@ -387,11 +399,6 @@ dot
 id|socket_state
 op_assign
 id|sa1111_pcmcia_socket_state
-comma
-dot
-id|get_irq_info
-op_assign
-id|sa1111_pcmcia_get_irq_info
 comma
 dot
 id|configure_socket
@@ -416,7 +423,10 @@ id|__init
 id|pcmcia_xp860_init
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 r_int
@@ -440,6 +450,8 @@ c_func
 (paren
 op_amp
 id|xp860_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -452,7 +464,10 @@ id|__exit
 id|pcmcia_xp860_exit
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 id|sa1100_unregister_pcmcia
@@ -460,6 +475,8 @@ c_func
 (paren
 op_amp
 id|xp860_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace

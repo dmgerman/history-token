@@ -1409,7 +1409,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* try if the MIC register is accesible */
+multiline_comment|/* try if the MIC register is accessible */
 id|tmp
 op_assign
 id|snd_opl3sa2_read

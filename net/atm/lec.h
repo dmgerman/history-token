@@ -113,6 +113,10 @@ id|ETH_ALEN
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|LEC_MINIMUM_8023_SIZE
+mdefine_line|#define LEC_MINIMUM_8023_SIZE   62
+DECL|macro|LEC_MINIMUM_8025_SIZE
+mdefine_line|#define LEC_MINIMUM_8025_SIZE   16
 multiline_comment|/*&n; * Operations that LANE2 capable device can do. Two first functions&n; * are used to make the device do things. See spec 3.1.3 and 3.1.4.&n; *&n; * The third function is intented for the MPOA component sitting on&n; * top of the LANE device. The MPOA component assigns it&squot;s own function&n; * to (*associate_indicator)() and the LANE device will use that&n; * function to tell about TLVs it sees floating through.&n; *&n; */
 DECL|struct|lane2_ops
 r_struct

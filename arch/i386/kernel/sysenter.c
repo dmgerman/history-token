@@ -408,13 +408,7 @@ id|sysent
 )paren
 )paren
 suffix:semicolon
-id|enable_sep_cpu
-c_func
-(paren
-l_int|NULL
-)paren
-suffix:semicolon
-id|smp_call_function
+id|on_each_cpu
 c_func
 (paren
 id|enable_sep_cpu

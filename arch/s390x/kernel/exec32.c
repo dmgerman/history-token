@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Support for 32-bit Linux for S390 ELF binaries.&n; *&n; * Copyright (C) 2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Gerhard Tonn (ton@de.ibm.com)&n; *&n; * Seperated from binfmt_elf32.c to reduce exports for module enablement.&n; *&n; */
+multiline_comment|/*&n; * Support for 32-bit Linux for S390 ELF binaries.&n; *&n; * Copyright (C) 2000 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Gerhard Tonn (ton@de.ibm.com)&n; *&n; * Separated from binfmt_elf32.c to reduce exports for module enablement.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/file.h&gt;

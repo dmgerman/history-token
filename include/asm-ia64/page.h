@@ -63,6 +63,60 @@ DECL|macro|HPAGE_SIZE
 macro_line|# define HPAGE_SIZE&t;(__IA64_UL_CONST(1) &lt;&lt; HPAGE_SHIFT)
 DECL|macro|HPAGE_MASK
 macro_line|# define HPAGE_MASK&t;(~(HPAGE_SIZE - 1))
+r_static
+r_inline
+r_int
+DECL|function|check_valid_hugepage_range
+id|check_valid_hugepage_range
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|len
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|REGION_NUMBER
+c_func
+(paren
+id|addr
+)paren
+op_eq
+id|REGION_HPAGE
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|REGION_NUMBER
+c_func
+(paren
+id|addr
+op_plus
+id|len
+)paren
+op_eq
+id|REGION_HPAGE
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|macro|ARCH_HAS_VALID_HUGEPAGE_RANGE
+mdefine_line|#define ARCH_HAS_VALID_HUGEPAGE_RANGE
 macro_line|#endif /* CONFIG_HUGETLB_PAGE */
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|__pa

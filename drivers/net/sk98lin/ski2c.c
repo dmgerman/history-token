@@ -431,7 +431,7 @@ id|Bit
 suffix:semicolon
 )brace
 multiline_comment|/* SkI2cRcvBit */
-multiline_comment|/*&n; * Receive an ACK.&n; *&n; * returns&t;0 If acknoledged&n; *&t;&t;1 in case of an error&n; */
+multiline_comment|/*&n; * Receive an ACK.&n; *&n; * returns&t;0 If acknowledged&n; *&t;&t;1 in case of an error&n; */
 DECL|function|SkI2cRcvAck
 r_int
 id|SkI2cRcvAck

@@ -1,4 +1,4 @@
-multiline_comment|/* RadioTrack II driver for Linux radio support (C) 1998 Ben Pfaff&n; * &n; * Based on RadioTrack I/RadioReveal (C) 1997 M. Kirkwood&n; * Coverted to new API by Alan Cox &lt;Alan.Cox@linux.org&gt;&n; * Various bugfixes and enhancements by Russell Kroll &lt;rkroll@exploits.org&gt;&n; *&n; * TODO: Allow for more than one of these foolish entities :-)&n; *&n; */
+multiline_comment|/* RadioTrack II driver for Linux radio support (C) 1998 Ben Pfaff&n; * &n; * Based on RadioTrack I/RadioReveal (C) 1997 M. Kirkwood&n; * Converted to new API by Alan Cox &lt;Alan.Cox@linux.org&gt;&n; * Various bugfixes and enhancements by Russell Kroll &lt;rkroll@exploits.org&gt;&n; *&n; * TODO: Allow for more than one of these foolish entities :-)&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;&t;/* Modules &t;&t;&t;*/
 macro_line|#include &lt;linux/init.h&gt;&t;&t;/* Initdata&t;&t;&t;*/
 macro_line|#include &lt;linux/ioport.h&gt;&t;/* check_region, request_region&t;*/

@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * drivers/pcmcia/sa1100_graphicsmaster.c&n; *&n; * PCMCIA implementation routines for GraphicsMaster&n; *&n; * 9/18/01 Woojung&n; *         Fixed wrong PCMCIA voltage setting&n; * 7/5/01 Woojung Huh &lt;whuh@applieddata.net&gt;&n; *&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
@@ -67,6 +69,9 @@ DECL|function|graphicsmaster_pcmcia_configure_socket
 id|graphicsmaster_pcmcia_configure_socket
 c_func
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure
@@ -86,7 +91,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|conf-&gt;sock
+id|sock
 )paren
 (brace
 r_case
@@ -219,6 +224,8 @@ op_assign
 id|sa1111_pcmcia_configure_socket
 c_func
 (paren
+id|sock
+comma
 id|conf
 )paren
 suffix:semicolon
@@ -270,6 +277,11 @@ id|graphicsmaster_pcmcia_ops
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|init
 op_assign
 id|graphicsmaster_pcmcia_init
@@ -283,11 +295,6 @@ dot
 id|socket_state
 op_assign
 id|sa1111_pcmcia_socket_state
-comma
-dot
-id|get_irq_info
-op_assign
-id|sa1111_pcmcia_get_irq_info
 comma
 dot
 id|configure_socket
@@ -312,7 +319,10 @@ id|__init
 id|pcmcia_graphicsmaster_init
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 r_int
@@ -336,6 +346,8 @@ c_func
 (paren
 op_amp
 id|graphicsmaster_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -348,7 +360,10 @@ id|__exit
 id|pcmcia_graphicsmaster_exit
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 id|sa1100_unregister_pcmcia
@@ -356,6 +371,8 @@ c_func
 (paren
 op_amp
 id|graphicsmaster_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace

@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * drivers/pcmcia/sa1100_trizeps.c&n; *&n; * PCMCIA implementation routines for Trizeps&n; *&n; * Authors:&n; * Andreas Hofer &lt;ho@dsa-ac.de&gt;,&n; * Peter Lueg &lt;pl@dsa-ac.de&gt;,&n; * Guennadi Liakhovetski &lt;gl@dsa-ac.de&gt;&n; *&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/arch/trizeps.h&gt;
@@ -25,6 +27,13 @@ id|init
 (brace
 r_int
 id|res
+suffix:semicolon
+id|init-&gt;socket_irq
+(braket
+l_int|0
+)braket
+op_assign
+id|TRIZEPS_IRQ_PCMCIA_IRQ0
 suffix:semicolon
 multiline_comment|/* Enable CF bus: */
 id|TRIZEPS_BCR_clear
@@ -57,26 +66,8 @@ id|TRIZEPS_GPIO_PCMCIA_IRQ0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Set transition detect */
-singleline_comment|//&t;set_irq_type(SA1100_GPIO_TO_IRQ(GPIO_TRIZEPS_PCMCIA_CD0), IRQT_BOTHEDGE);
-id|set_irq_type
-c_func
-(paren
-id|TRIZEPS_IRQ_PCMCIA_IRQ0
-comma
-id|IRQT_FALLING
-)paren
-suffix:semicolon
 multiline_comment|/* Register SOCKET interrupts */
 multiline_comment|/* WHY? */
-id|set_irq_type
-c_func
-(paren
-id|TRIZEPS_IRQ_PCMCIA_CD0
-comma
-id|IRQT_NOEDGE
-)paren
-suffix:semicolon
 id|res
 op_assign
 id|request_irq
@@ -84,7 +75,7 @@ c_func
 (paren
 id|TRIZEPS_IRQ_PCMCIA_CD0
 comma
-id|init-&gt;handler
+id|sa1100_pcmcia_interrupt
 comma
 id|SA_INTERRUPT
 comma
@@ -105,6 +96,14 @@ r_goto
 id|irq_err
 suffix:semicolon
 )brace
+id|set_irq_type
+c_func
+(paren
+id|TRIZEPS_IRQ_PCMCIA_CD0
+comma
+id|IRQT_NOEDGE
+)paren
+suffix:semicolon
 singleline_comment|//MECR = 0x00060006; // Initialised on trizeps init
 singleline_comment|// return=sa1100_pcmcia_socket_count (sa1100_generic.c)
 singleline_comment|//        -&gt; number of PCMCIA Slots
@@ -172,13 +171,15 @@ suffix:semicolon
 multiline_comment|/**&n; *&n;&n; ******************************************************/
 DECL|function|trizeps_pcmcia_socket_state
 r_static
-r_int
-(def_block
+r_void
 id|trizeps_pcmcia_socket_state
 c_func
 (paren
+r_int
+id|sock
+comma
 r_struct
-id|pcmcia_state_array
+id|pcmcia_state
 op_star
 id|state_array
 )paren
@@ -186,46 +187,18 @@ id|state_array
 r_int
 r_int
 id|levels
+op_assign
+id|GPLR
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|state_array-&gt;size
-OL
-id|NUMBER_OF_TRIZEPS_PCMCIA_SLOTS
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|state_array-&gt;state
-comma
+id|sock
+op_eq
 l_int|0
-comma
-(paren
-id|state_array-&gt;size
 )paren
-op_star
-r_sizeof
-(paren
-r_struct
-id|pcmcia_state
-)paren
-)paren
-suffix:semicolon
-id|levels
-op_assign
-id|GPLR
-suffix:semicolon
-id|state_array-&gt;state
-(braket
-l_int|0
-)braket
-dot
-id|detect
+(brace
+id|state-&gt;detect
 op_assign
 (paren
 (paren
@@ -246,12 +219,7 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|state_array-&gt;state
-(braket
-l_int|0
-)braket
-dot
-id|ready
+id|state-&gt;ready
 op_assign
 (paren
 (paren
@@ -272,12 +240,7 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|state_array-&gt;state
-(braket
-l_int|0
-)braket
-dot
-id|bvd1
+id|state-&gt;bvd1
 op_assign
 (paren
 (paren
@@ -294,12 +257,7 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|state_array-&gt;state
-(braket
-l_int|0
-)braket
-dot
-id|bvd2
+id|state-&gt;bvd2
 op_assign
 (paren
 (paren
@@ -316,22 +274,12 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|state_array-&gt;state
-(braket
-l_int|0
-)braket
-dot
-id|wrprot
+id|state-&gt;wrprot
 op_assign
 l_int|0
 suffix:semicolon
 singleline_comment|// not write protected
-id|state_array-&gt;state
-(braket
-l_int|0
-)braket
-dot
-id|vs_3v
+id|state-&gt;vs_3v
 op_assign
 (paren
 (paren
@@ -349,12 +297,7 @@ suffix:colon
 l_int|0
 suffix:semicolon
 singleline_comment|//VS1=0 -&gt; vs_3v=1
-id|state_array-&gt;state
-(braket
-l_int|0
-)braket
-dot
-id|vs_Xv
+id|state-&gt;vs_Xv
 op_assign
 (paren
 (paren
@@ -372,57 +315,8 @@ suffix:colon
 l_int|0
 suffix:semicolon
 singleline_comment|//VS2=0 -&gt; vs_Xv=1
-r_return
-l_int|1
-suffix:semicolon
-singleline_comment|// success
 )brace
-)def_block
-multiline_comment|/**&n; *&n; *&n; ******************************************************/
-DECL|function|trizeps_pcmcia_get_irq_info
-r_static
-r_int
-(def_block
-id|trizeps_pcmcia_get_irq_info
-c_func
-(paren
-r_struct
-id|pcmcia_irq_info
-op_star
-id|info
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|info-&gt;sock
-)paren
-(brace
-r_case
-l_int|0
-suffix:colon
-id|info-&gt;irq
-op_assign
-id|TRIZEPS_IRQ_PCMCIA_IRQ0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|1
-suffix:colon
-singleline_comment|// MFTB2 use only one Slot
-r_default
-suffix:colon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
 )brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-)def_block
 multiline_comment|/**&n; *&n; *&n; ******************************************************/
 DECL|function|trizeps_pcmcia_configure_socket
 r_static
@@ -430,6 +324,9 @@ r_int
 id|trizeps_pcmcia_configure_socket
 c_func
 (paren
+r_int
+id|sock
+comma
 r_const
 r_struct
 id|pcmcia_configure
@@ -444,7 +341,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|configure-&gt;sock
+id|sock
 OG
 l_int|1
 )paren
@@ -592,40 +489,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|configure-&gt;irq
-)paren
-(brace
-id|enable_irq
-c_func
-(paren
-id|TRIZEPS_IRQ_PCMCIA_CD0
-)paren
-suffix:semicolon
-id|enable_irq
-c_func
-(paren
-id|TRIZEPS_IRQ_PCMCIA_IRQ0
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|disable_irq
-c_func
-(paren
-id|TRIZEPS_IRQ_PCMCIA_IRQ0
-)paren
-suffix:semicolon
-id|disable_irq
-c_func
-(paren
-id|TRIZEPS_IRQ_PCMCIA_CD0
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -640,6 +503,14 @@ r_int
 id|sock
 )paren
 (brace
+id|set_irq_type
+c_func
+(paren
+id|TRIZEPS_IRQ_PCMCIA_CD0
+comma
+id|IRQT_BOTHEDGE
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -654,6 +525,14 @@ r_int
 id|sock
 )paren
 (brace
+id|set_irq_type
+c_func
+(paren
+id|TRIZEPS_IRQ_PCMCIA_CD0
+comma
+id|IRQT_NOEDGE
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -665,6 +544,11 @@ id|pcmcia_low_level
 id|trizeps_pcmcia_ops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|init
 op_assign
@@ -679,11 +563,6 @@ dot
 id|socket_state
 op_assign
 id|trizeps_pcmcia_socket_state
-comma
-dot
-id|get_irq_info
-op_assign
-id|trizeps_pcmcia_get_irq_info
 comma
 dot
 id|configure_socket
@@ -708,7 +587,10 @@ id|__init
 id|pcmcia_trizeps_init
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 r_if
@@ -726,6 +608,8 @@ c_func
 (paren
 op_amp
 id|trizeps_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -740,7 +624,10 @@ id|__exit
 id|pcmcia_trizeps_exit
 c_func
 (paren
-r_void
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 id|sa1100_unregister_pcmcia
@@ -748,6 +635,8 @@ c_func
 (paren
 op_amp
 id|trizeps_pcmcia_ops
+comma
+id|dev
 )paren
 suffix:semicolon
 )brace

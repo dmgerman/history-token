@@ -4007,10 +4007,7 @@ id|i
 dot
 id|hooknum
 op_eq
-id|opposite_hook
-(braket
 id|hooknum
-)braket
 )paren
 (brace
 id|DEBUGP
@@ -4098,22 +4095,7 @@ op_amp
 id|skb-&gt;nfcache
 )paren
 suffix:semicolon
-multiline_comment|/* Outer packet needs to have IP header NATed like&n;                   it&squot;s a reply. */
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|info-&gt;manips
-(braket
-id|i
-)braket
-dot
-id|hooknum
-op_eq
-id|hooknum
-)paren
-(brace
+multiline_comment|/* Outer packet needs to have IP header NATed like&n;&t;                   it&squot;s a reply. */
 multiline_comment|/* Use mapping to map outer packet: 0 give no&n;                           per-proto mapping */
 id|DEBUGP
 c_func
