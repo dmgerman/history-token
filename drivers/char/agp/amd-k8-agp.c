@@ -76,7 +76,7 @@ id|pci_read_config_dword
 (paren
 id|dev
 comma
-id|AMD_X86_64_GARTCACHECTL
+id|AMD64_GARTCACHECTL
 comma
 op_amp
 id|tmp
@@ -90,7 +90,7 @@ id|pci_write_config_dword
 (paren
 id|dev
 comma
-id|AMD_X86_64_GARTCACHECTL
+id|AMD64_GARTCACHECTL
 comma
 id|tmp
 )paren
@@ -558,7 +558,7 @@ c_func
 (paren
 id|dev
 comma
-id|AMD_X86_64_GARTAPERTURECTL
+id|AMD64_GARTAPERTURECTL
 comma
 op_amp
 id|temp
@@ -671,7 +671,7 @@ id|pci_read_config_dword
 (paren
 id|hammer
 comma
-id|AMD_X86_64_GARTAPERTUREBASE
+id|AMD64_GARTAPERTUREBASE
 comma
 op_amp
 id|tmp
@@ -721,7 +721,7 @@ id|pci_write_config_dword
 (paren
 id|hammer
 comma
-id|AMD_X86_64_GARTTABLEBASE
+id|AMD64_GARTTABLEBASE
 comma
 id|tmp
 )paren
@@ -732,7 +732,7 @@ c_func
 (paren
 id|hammer
 comma
-id|AMD_X86_64_GARTAPERTURECTL
+id|AMD64_GARTAPERTURECTL
 comma
 op_amp
 id|tmp
@@ -756,7 +756,7 @@ c_func
 (paren
 id|hammer
 comma
-id|AMD_X86_64_GARTAPERTURECTL
+id|AMD64_GARTAPERTURECTL
 comma
 id|tmp
 )paren
@@ -927,7 +927,7 @@ id|hammers
 id|gart_iterator
 )braket
 comma
-id|AMD_X86_64_GARTAPERTURECTL
+id|AMD64_GARTAPERTURECTL
 comma
 op_amp
 id|tmp
@@ -936,9 +936,7 @@ suffix:semicolon
 id|tmp
 op_and_assign
 op_complement
-(paren
-id|AMD_X86_64_GARTEN
-)paren
+id|AMD64_GARTEN
 suffix:semicolon
 id|pci_write_config_dword
 (paren
@@ -947,7 +945,7 @@ id|hammers
 id|gart_iterator
 )braket
 comma
-id|AMD_X86_64_GARTAPERTURECTL
+id|AMD64_GARTAPERTURECTL
 comma
 id|tmp
 )paren

@@ -740,16 +740,17 @@ DECL|macro|AMD_TLBFLUSH
 mdefine_line|#define AMD_TLBFLUSH&t;0x0c&t;/* In mmio region (32-bit register) */
 DECL|macro|AMD_CACHEENTRY
 mdefine_line|#define AMD_CACHEENTRY&t;0x10&t;/* In mmio region (32-bit register) */
-DECL|macro|AMD_X86_64_GARTAPERTURECTL
-mdefine_line|#define AMD_X86_64_GARTAPERTURECTL&t;0x90
-DECL|macro|AMD_X86_64_GARTAPERTUREBASE
-mdefine_line|#define AMD_X86_64_GARTAPERTUREBASE&t;0x94
-DECL|macro|AMD_X86_64_GARTTABLEBASE
-mdefine_line|#define AMD_X86_64_GARTTABLEBASE&t;0x98
-DECL|macro|AMD_X86_64_GARTCACHECTL
-mdefine_line|#define AMD_X86_64_GARTCACHECTL&t;&t;0x9c
-DECL|macro|AMD_X86_64_GARTEN
-mdefine_line|#define AMD_X86_64_GARTEN&t;&t;1&lt;&lt;0
+multiline_comment|/* AMD64 registers */
+DECL|macro|AMD64_GARTAPERTURECTL
+mdefine_line|#define AMD64_GARTAPERTURECTL&t;0x90
+DECL|macro|AMD64_GARTAPERTUREBASE
+mdefine_line|#define AMD64_GARTAPERTUREBASE&t;0x94
+DECL|macro|AMD64_GARTTABLEBASE
+mdefine_line|#define AMD64_GARTTABLEBASE&t;0x98
+DECL|macro|AMD64_GARTCACHECTL
+mdefine_line|#define AMD64_GARTCACHECTL&t;&t;0x9c
+DECL|macro|AMD64_GARTEN
+mdefine_line|#define AMD64_GARTEN&t;&t;1&lt;&lt;0
 multiline_comment|/* ALi registers */
 DECL|macro|ALI_AGPCTRL
 mdefine_line|#define ALI_AGPCTRL&t;&t;&t;0xb8
