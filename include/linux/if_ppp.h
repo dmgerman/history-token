@@ -97,6 +97,7 @@ id|ppp_option_data
 (brace
 DECL|member|ptr
 id|__u8
+id|__user
 op_star
 id|ptr
 suffix:semicolon
