@@ -12,7 +12,9 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/sound.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* mmio access */
 DECL|macro|btwrite
 mdefine_line|#define btwrite(dat,adr)    writel((dat), (bta-&gt;mmio+(adr)))

@@ -25,6 +25,14 @@ macro_line|#include &lt;asm/hwrpb.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/console.h&gt;
+macro_line|#include &lt;asm/tlb.h&gt;
+DECL|variable|mmu_gathers
+id|mmu_gather_t
+id|mmu_gathers
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 DECL|variable|totalram_pages
 r_int
 r_int

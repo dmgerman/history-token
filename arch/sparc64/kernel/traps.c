@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: traps.c,v 1.76 2001/04/03 13:46:31 davem Exp $&n; * arch/sparc64/kernel/traps.c&n; *&n; * Copyright (C) 1995,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997,1999,2000 Jakub Jelinek (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: traps.c,v 1.78 2001/09/14 19:49:32 kanoj Exp $&n; * arch/sparc64/kernel/traps.c&n; *&n; * Copyright (C) 1995,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997,1999,2000 Jakub Jelinek (jakub@redhat.com)&n; */
 multiline_comment|/*&n; * I like traps on v9, :))))&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;  /* for jiffies */
@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/dcu.h&gt;
 macro_line|#include &lt;asm/estate.h&gt;
 macro_line|#include &lt;asm/chafsr.h&gt;
 macro_line|#include &lt;asm/psrcompat.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
@@ -2549,74 +2550,6 @@ id|ASI_PHYS_USE_EC
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SMP
-DECL|function|cheetah_tune_scheduling
-r_int
-r_int
-id|cheetah_tune_scheduling
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-r_int
-id|tick1
-comma
-id|tick2
-comma
-id|raw
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;rd %%tick, %0&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|tick1
-)paren
-)paren
-suffix:semicolon
-id|cheetah_flush_ecache
-c_func
-(paren
-)paren
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;rd %%tick, %0&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|tick2
-)paren
-)paren
-suffix:semicolon
-id|raw
-op_assign
-(paren
-id|tick2
-op_minus
-id|tick1
-)paren
-suffix:semicolon
-r_return
-(paren
-id|raw
-op_minus
-(paren
-id|raw
-op_rshift
-l_int|2
-)paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Unfortunately, the diagnostic access to the I-cache tags we need to&n; * use to clear the thing interferes with I-cache coherency transactions.&n; *&n; * So we must only flush the I-cache when it is disabled.&n; */
 DECL|function|cheetah_flush_icache
 r_static
@@ -7359,11 +7292,7 @@ op_ge
 (paren
 id|task_base
 op_plus
-(paren
-l_int|2
-op_star
-id|PAGE_SIZE
-)paren
+id|THREAD_SIZE
 )paren
 )paren
 r_break

@@ -1340,6 +1340,14 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* =3: total */
 )brace
+r_extern
+r_void
+id|__free_pte
+c_func
+(paren
+id|pte_t
+)paren
+suffix:semicolon
 multiline_comment|/* mmap.c */
 r_extern
 r_void

@@ -29,6 +29,11 @@ r_char
 op_star
 id|caller
 suffix:semicolon
+DECL|member|len
+r_int
+id|len
+suffix:semicolon
+multiline_comment|/* length of &quot;caller&quot; */
 DECL|member|fh
 r_struct
 id|nfs_fh

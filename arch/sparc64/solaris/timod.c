@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: timod.c,v 1.15 2001/08/13 18:56:10 davem Exp $&n; * timod.c: timod emulation.&n; *&n; * Copyright (C) 1998 Patrik Rak (prak3264@ss1000.ms.mff.cuni.cz)&n; *&n; * Streams &amp; timod emulation based on code&n; * Copyright (C) 1995, 1996 Mike Jagdis (jaggy@purplet.demon.co.uk)&n; *&n; */
+multiline_comment|/* $Id: timod.c,v 1.16 2001/09/18 22:29:06 davem Exp $&n; * timod.c: timod emulation.&n; *&n; * Copyright (C) 1998 Patrik Rak (prak3264@ss1000.ms.mff.cuni.cz)&n; *&n; * Streams &amp; timod emulation based on code&n; * Copyright (C) 1995, 1996 Mike Jagdis (jaggy@purplet.demon.co.uk)&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

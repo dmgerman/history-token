@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: processor.h,v 1.70 2001/03/27 02:36:38 davem Exp $&n; * include/asm-sparc64/processor.h&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: processor.h,v 1.75 2001/09/20 00:35:34 davem Exp $&n; * include/asm-sparc64/processor.h&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef __ASM_SPARC64_PROCESSOR_H
 DECL|macro|__ASM_SPARC64_PROCESSOR_H
 mdefine_line|#define __ASM_SPARC64_PROCESSOR_H
@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/pstate.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/* Bus types */
 DECL|macro|EISA_bus
 mdefine_line|#define EISA_bus 0
@@ -26,14 +27,13 @@ DECL|macro|wp_works_ok
 mdefine_line|#define wp_works_ok 1
 DECL|macro|wp_works_ok__is_a_macro
 mdefine_line|#define wp_works_ok__is_a_macro /* for versions in ksyms.c */
-multiline_comment|/* User lives in his very own context, and cannot reference us. */
-macro_line|#ifndef __ASSEMBLY__
+multiline_comment|/*&n; * User lives in his very own context, and cannot reference us. Note&n; * that TASK_SIZE is a misnomer, it really gives maximum user virtual &n; * address that the kernel will allocate out.&n; */
+DECL|macro|VA_BITS
+mdefine_line|#define VA_BITS&t;&t;44
+DECL|macro|VPTE_SIZE
+mdefine_line|#define VPTE_SIZE&t;(1UL &lt;&lt; (VA_BITS - PAGE_SHIFT + 3))
 DECL|macro|TASK_SIZE
-mdefine_line|#define TASK_SIZE&t;((unsigned long)-PGDIR_SIZE)
-macro_line|#else
-DECL|macro|TASK_SIZE
-mdefine_line|#define TASK_SIZE&t;0xfffffffc00000000
-macro_line|#endif
+mdefine_line|#define TASK_SIZE&t;((unsigned long)-VPTE_SIZE)
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|NSWINS
 mdefine_line|#define NSWINS&t;&t;7
@@ -206,6 +206,19 @@ DECL|macro|FAULT_CODE_WINFIXUP
 mdefine_line|#define FAULT_CODE_WINFIXUP&t;0x08&t;/* Miss happened during spill/fill&t;*/
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&bslash;&n;/* ksp, wstate, cwp, flags, current_ds, */ &t;&t;&bslash;&n;   0,   0,      0,   0,     KERNEL_DS,&t;&t;&t;&bslash;&n;/* w_saved, fpdepth, fault_code, use_blkcommit, */&t;&bslash;&n;   0,       0,       0,          0,&t;&t;&t;&bslash;&n;/* fault_address, fpsaved, __pad2, kregs, */&t;&t;&bslash;&n;   0,             { 0 },   0,      0,&t;&t;&t;&bslash;&n;/* utraps, gsr,   xfsr, */&t;&t;&t;&t;&bslash;&n;   0,&t;   { 0 }, { 0 },&t;&t;&t;&t;&bslash;&n;/* reg_window */&t;&t;&t;&t;&t;&bslash;&n;   { { { 0, }, { 0, } }, }, &t;&t;&t;&t;&bslash;&n;/* rwbuf_stkptrs */&t;&t;&t;&t;&t;&bslash;&n;   { 0, 0, 0, 0, 0, 0, 0, },&t;&t;&t;&t;&bslash;&n;/* user_cntd0, user_cndd1, kernel_cntd0, kernel_cntd0, pcr_reg */ &bslash;&n;   0,          0,          0,&t;&t; 0,            0, &bslash;&n;}
+macro_line|#ifdef __KERNEL__
+macro_line|#if PAGE_SHIFT == 13
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
+DECL|macro|THREAD_SHIFT
+mdefine_line|#define THREAD_SHIFT (PAGE_SHIFT + 1)
+macro_line|#else /* PAGE_SHIFT == 13 */
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE PAGE_SIZE
+DECL|macro|THREAD_SHIFT
+mdefine_line|#define THREAD_SHIFT PAGE_SHIFT
+macro_line|#endif /* PAGE_SHIFT == 13 */
+macro_line|#endif /* __KERNEL__ */
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Return saved PC of a blocked thread. */
 DECL|function|thread_saved_pc
@@ -381,19 +394,24 @@ mdefine_line|#define copy_segments(tsk, mm)&t;&t;do { } while (0)
 DECL|macro|release_segments
 mdefine_line|#define release_segments(mm)&t;&t;do { } while (0)
 DECL|macro|get_wchan
-mdefine_line|#define get_wchan(__TSK) &bslash;&n;({&t;extern void scheduling_functions_start_here(void); &bslash;&n;&t;extern void scheduling_functions_end_here(void); &bslash;&n;&t;unsigned long pc, fp, bias = 0; &bslash;&n;&t;unsigned long task_base = (unsigned long) (__TSK); &bslash;&n;&t;struct reg_window *rw; &bslash;&n;        unsigned long __ret = 0; &bslash;&n;&t;int count = 0; &bslash;&n;&t;if (!(__TSK) || (__TSK) == current || &bslash;&n;            (__TSK)-&gt;state == TASK_RUNNING) &bslash;&n;&t;&t;goto __out; &bslash;&n;&t;bias = STACK_BIAS; &bslash;&n;&t;fp = (__TSK)-&gt;thread.ksp + bias; &bslash;&n;&t;do { &bslash;&n;&t;&t;/* Bogus frame pointer? */ &bslash;&n;&t;&t;if (fp &lt; (task_base + sizeof(struct task_struct)) || &bslash;&n;&t;&t;    fp &gt;= (task_base + (2 * PAGE_SIZE))) &bslash;&n;&t;&t;&t;break; &bslash;&n;&t;&t;rw = (struct reg_window *) fp; &bslash;&n;&t;&t;pc = rw-&gt;ins[7]; &bslash;&n;&t;&t;if (pc &lt; ((unsigned long) scheduling_functions_start_here) || &bslash;&n;&t;&t;    pc &gt;= ((unsigned long) scheduling_functions_end_here)) { &bslash;&n;&t;&t;&t;__ret = pc; &bslash;&n;&t;&t;&t;goto __out; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;fp = rw-&gt;ins[6] + bias; &bslash;&n;&t;} while (++count &lt; 16); &bslash;&n;__out:&t;__ret; &bslash;&n;})
+mdefine_line|#define get_wchan(__TSK) &bslash;&n;({&t;extern void scheduling_functions_start_here(void); &bslash;&n;&t;extern void scheduling_functions_end_here(void); &bslash;&n;&t;unsigned long pc, fp, bias = 0; &bslash;&n;&t;unsigned long task_base = (unsigned long) (__TSK); &bslash;&n;&t;struct reg_window *rw; &bslash;&n;        unsigned long __ret = 0; &bslash;&n;&t;int count = 0; &bslash;&n;&t;if (!(__TSK) || (__TSK) == current || &bslash;&n;            (__TSK)-&gt;state == TASK_RUNNING) &bslash;&n;&t;&t;goto __out; &bslash;&n;&t;bias = STACK_BIAS; &bslash;&n;&t;fp = (__TSK)-&gt;thread.ksp + bias; &bslash;&n;&t;do { &bslash;&n;&t;&t;/* Bogus frame pointer? */ &bslash;&n;&t;&t;if (fp &lt; (task_base + sizeof(struct task_struct)) || &bslash;&n;&t;&t;    fp &gt;= (task_base + THREAD_SIZE)) &bslash;&n;&t;&t;&t;break; &bslash;&n;&t;&t;rw = (struct reg_window *) fp; &bslash;&n;&t;&t;pc = rw-&gt;ins[7]; &bslash;&n;&t;&t;if (pc &lt; ((unsigned long) scheduling_functions_start_here) || &bslash;&n;&t;&t;    pc &gt;= ((unsigned long) scheduling_functions_end_here)) { &bslash;&n;&t;&t;&t;__ret = pc; &bslash;&n;&t;&t;&t;goto __out; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;fp = rw-&gt;ins[6] + bias; &bslash;&n;&t;} while (++count &lt; 16); &bslash;&n;__out:&t;__ret; &bslash;&n;})
 DECL|macro|KSTK_EIP
 mdefine_line|#define KSTK_EIP(tsk)  ((tsk)-&gt;thread.kregs-&gt;tpc)
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)  ((tsk)-&gt;thread.kregs-&gt;u_regs[UREG_FP])
 macro_line|#ifdef __KERNEL__
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
 multiline_comment|/* Allocation and freeing of task_struct and kernel stack. */
+macro_line|#if PAGE_SHIFT == 13
 DECL|macro|alloc_task_struct
 mdefine_line|#define alloc_task_struct()   ((struct task_struct *)__get_free_pages(GFP_KERNEL, 1))
 DECL|macro|free_task_struct
 mdefine_line|#define free_task_struct(tsk) free_pages((unsigned long)(tsk),1)
+macro_line|#else /* PAGE_SHIFT == 13 */
+DECL|macro|alloc_task_struct
+mdefine_line|#define alloc_task_struct()   ((struct task_struct *)__get_free_pages(GFP_KERNEL, 0))
+DECL|macro|free_task_struct
+mdefine_line|#define free_task_struct(tsk) free_pages((unsigned long)(tsk),0)
+macro_line|#endif /* PAGE_SHIFT == 13 */
 DECL|macro|get_task_struct
 mdefine_line|#define get_task_struct(tsk)      atomic_inc(&amp;virt_to_page(tsk)-&gt;count)
 DECL|macro|init_task

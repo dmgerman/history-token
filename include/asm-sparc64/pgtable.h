@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgtable.h,v 1.145 2001/08/30 03:22:00 kanoj Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: pgtable.h,v 1.146 2001/09/11 02:20:23 kanoj Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#ifndef _SPARC64_PGTABLE_H
 DECL|macro|_SPARC64_PGTABLE_H
 mdefine_line|#define _SPARC64_PGTABLE_H
@@ -8,10 +8,9 @@ macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/* XXX All of this needs to be rethought so we can take advantage&n; * XXX cheetah&squot;s full 64-bit virtual address space, ie. no more hole&n; * XXX in the middle like on spitfire. -DaveM&n; */
 multiline_comment|/*&n; * Given a virtual address, the lowest PAGE_SHIFT bits determine offset&n; * into the page; the next higher PAGE_SHIFT-3 bits determine the pte#&n; * in the proper pagetable (the -3 is from the 8 byte ptes, and each page&n; * table is a single page long). The next higher PMD_BITS determine pmd# &n; * in the proper pmdtable (where we must have PMD_BITS &lt;= (PAGE_SHIFT-2) &n; * since the pmd entries are 4 bytes, and each pmd page is a single page &n; * long). Finally, the higher few bits determine pgde#.&n; */
-DECL|macro|VA_BITS
-mdefine_line|#define VA_BITS &t;44
 multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table can map */
 DECL|macro|PMD_SHIFT
 mdefine_line|#define PMD_SHIFT&t;(PAGE_SHIFT + (PAGE_SHIFT-3))
@@ -42,9 +41,9 @@ DECL|macro|REAL_PTRS_PER_PMD
 mdefine_line|#define REAL_PTRS_PER_PMD&t;(1UL &lt;&lt; PMD_BITS)
 DECL|macro|PTRS_PER_PMD
 mdefine_line|#define PTRS_PER_PMD&t;&t;((const int)((current-&gt;thread.flags &amp; SPARC_FLAG_32BIT) ? &bslash;&n;&t;&t;&t;&t; (1UL &lt;&lt; (32 - (PAGE_SHIFT-3) - PAGE_SHIFT)) : (REAL_PTRS_PER_PMD)))
-multiline_comment|/* We cannot use the top 16G because VPTE table lives there. */
+multiline_comment|/*&n; * We cannot use the top address range because VPTE table lives there. This&n; * formula finds the total legal virtual space in the processor, subtracts the&n; * vpte size, then aligns it to the number of bytes mapped by one pgde, and&n; * thus calculates the number of pgdes needed.&n; */
 DECL|macro|PTRS_PER_PGD
-mdefine_line|#define PTRS_PER_PGD&t;&t;((1UL &lt;&lt; (VA_BITS - PAGE_SHIFT - (PAGE_SHIFT-3) - PMD_BITS))-1)
+mdefine_line|#define PTRS_PER_PGD&t;(((1UL &lt;&lt; VA_BITS) - VPTE_SIZE + (1UL &lt;&lt; (PAGE_SHIFT + &bslash;&n;&t;&t;&t;(PAGE_SHIFT-3) + PMD_BITS)) - 1) / (1UL &lt;&lt; (PAGE_SHIFT + &bslash;&n;&t;&t;&t;(PAGE_SHIFT-3) + PMD_BITS)))
 multiline_comment|/* Kernel has a separate 44bit address space. */
 DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD&t;((const int)((current-&gt;thread.flags &amp; SPARC_FLAG_32BIT) ? &bslash;&n;&t;&t;&t;&t; (1) : (PTRS_PER_PGD)))

@@ -407,6 +407,13 @@ c_func
 id|xdr_decode_string
 )paren
 suffix:semicolon
+DECL|variable|xdr_decode_string_inplace
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xdr_decode_string_inplace
+)paren
+suffix:semicolon
 DECL|variable|xdr_decode_netobj
 id|EXPORT_SYMBOL
 c_func

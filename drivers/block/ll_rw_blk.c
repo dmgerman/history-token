@@ -16,7 +16,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
-macro_line|#include &lt;linux/raid/md.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/*&n; * MAC Floppy IWM hooks&n; */
 macro_line|#ifdef CONFIG_MAC_FLOPPY_IWM

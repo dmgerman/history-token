@@ -27,6 +27,14 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
+macro_line|#include &lt;asm/tlb.h&gt;
+DECL|variable|mmu_gathers
+id|mmu_gather_t
+id|mmu_gathers
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 DECL|variable|highstart_pfn
 DECL|variable|highend_pfn
 r_int

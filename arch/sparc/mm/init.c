@@ -23,6 +23,14 @@ macro_line|#include &lt;asm/vac-ops.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/vaddrs.h&gt;
+macro_line|#include &lt;asm/tlb.h&gt;
+DECL|variable|mmu_gathers
+id|mmu_gather_t
+id|mmu_gathers
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 DECL|variable|sparc_valid_addr_bitmap
 r_int
 r_int

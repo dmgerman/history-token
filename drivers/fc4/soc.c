@@ -4239,11 +4239,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|sco_cleanup
+DECL|function|soc_cleanup
 r_static
 r_void
 id|__exit
-id|sco_cleanup
+id|soc_cleanup
 c_func
 (paren
 r_void

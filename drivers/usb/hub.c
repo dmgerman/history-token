@@ -675,7 +675,7 @@ id|hub-&gt;descriptor
 id|err
 c_func
 (paren
-l_string|&quot;Unable to kmalloc %d bytes for hub descriptor&quot;
+l_string|&quot;Unable to kmalloc %Zd bytes for hub descriptor&quot;
 comma
 r_sizeof
 (paren

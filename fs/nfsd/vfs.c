@@ -144,15 +144,13 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd: nfsd_lookup(fh %s, %*.*s)&bslash;n&quot;
+l_string|&quot;nfsd: nfsd_lookup(fh %s, %.*s)&bslash;n&quot;
 comma
 id|SVCFH_fmt
 c_func
 (paren
 id|fhp
 )paren
-comma
-id|len
 comma
 id|len
 comma
@@ -4607,7 +4605,7 @@ id|ffhp
 comma
 r_char
 op_star
-id|fname
+id|name
 comma
 r_int
 id|len
@@ -4708,7 +4706,7 @@ c_cond
 id|isdotent
 c_func
 (paren
-id|fname
+id|name
 comma
 id|len
 )paren
@@ -4735,7 +4733,7 @@ op_assign
 id|lookup_one_len
 c_func
 (paren
-id|fname
+id|name
 comma
 id|ddir
 comma

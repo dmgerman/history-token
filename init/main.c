@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/raid/md.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
@@ -2070,7 +2069,7 @@ c_func
 r_void
 )paren
 (brace
-id|IO_APIC_init_uniprocessor
+id|APIC_init_uniprocessor
 c_func
 (paren
 )paren

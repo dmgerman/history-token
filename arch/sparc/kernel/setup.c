@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: setup.c,v 1.124 2001/04/14 21:13:46 davem Exp $&n; *  linux/arch/sparc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 2000  Anton Blanchard (anton@samba.org)&n; */
+multiline_comment|/*  $Id: setup.c,v 1.125 2001/09/20 00:35:30 davem Exp $&n; *  linux/arch/sparc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 2000  Anton Blanchard (anton@samba.org)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1810,21 +1810,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Due to stack alignment restrictions and assumptions... */
-id|init_mm.mmap-&gt;vm_page_prot
-op_assign
-id|PAGE_SHARED
-suffix:semicolon
-id|init_mm.mmap-&gt;vm_start
-op_assign
-id|PAGE_OFFSET
-suffix:semicolon
-id|init_mm.mmap-&gt;vm_end
-op_assign
-id|PAGE_OFFSET
-op_plus
-id|highest_paddr
-suffix:semicolon
 id|init_mm.context
 op_assign
 (paren

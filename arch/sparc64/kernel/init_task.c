@@ -2,6 +2,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 DECL|variable|init_fs
 r_static
 r_struct
@@ -56,4 +57,20 @@ id|init_task_union.task
 )paren
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * This is to make the init_task+stack of the right size for &gt;8k pagesize.&n; * The definition of task_union in sched.h makes it 16k wide.&n; */
+macro_line|#if PAGE_SHIFT != 13
+DECL|variable|init_task_stack
+r_char
+id|init_task_stack
+(braket
+id|THREAD_SIZE
+op_minus
+id|INIT_TASK_SIZE
+)braket
+op_assign
+(brace
+l_int|0
+)brace
+suffix:semicolon
+macro_line|#endif
 eof

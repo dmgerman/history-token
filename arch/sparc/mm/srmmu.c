@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: srmmu.c,v 1.230 2001/07/17 16:17:33 anton Exp $&n; * srmmu.c:  SRMMU specific routines for memory management.&n; *&n; * Copyright (C) 1995 David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1995 Pete Zaitcev&n; * Copyright (C) 1996 Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1999,2000 Anton Blanchard (anton@samba.org)&n; */
+multiline_comment|/* $Id: srmmu.c,v 1.231 2001/09/20 00:35:31 davem Exp $&n; * srmmu.c:  SRMMU specific routines for memory management.&n; *&n; * Copyright (C) 1995 David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1995 Pete Zaitcev&n; * Copyright (C) 1996 Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1999,2000 Anton Blanchard (anton@samba.org)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -6120,10 +6120,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|init_mm.mmap-&gt;vm_start
-op_assign
-id|PAGE_OFFSET
-suffix:semicolon
 id|BTFIXUPSET_SIMM13
 c_func
 (paren

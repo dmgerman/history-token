@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.39 2001/06/08 02:33:37 davem Exp $&n; * time.c: UltraSparc timer and TOD clock support.&n; *&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Eddie C. Dost   (ecd@skynet.be)&n; *&n; * Based largely on code which is:&n; *&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; */
+multiline_comment|/* $Id: time.c,v 1.40 2001/09/06 02:44:28 davem Exp $&n; * time.c: UltraSparc timer and TOD clock support.&n; *&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Eddie C. Dost   (ecd@skynet.be)&n; *&n; * Based largely on code which is:&n; *&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1973,6 +1973,14 @@ c_func
 (paren
 id|model
 comma
+l_string|&quot;m5819&quot;
+)paren
+op_logical_and
+id|strcmp
+c_func
+(paren
+id|model
+comma
 l_string|&quot;ds1287&quot;
 )paren
 )paren
@@ -2203,6 +2211,16 @@ op_eq
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|isa_chain
+op_ne
+l_int|NULL
+)paren
+r_goto
+id|try_isa_clock
+suffix:semicolon
 id|prom_printf
 c_func
 (paren
@@ -2227,6 +2245,15 @@ c_func
 id|model
 comma
 l_string|&quot;ds1287&quot;
+)paren
+op_logical_or
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|model
+comma
+l_string|&quot;m5819&quot;
 )paren
 )paren
 (brace
@@ -2275,6 +2302,8 @@ id|isa_device
 op_star
 id|isadev
 suffix:semicolon
+id|try_isa_clock
+suffix:colon
 id|for_each_isadev
 c_func
 (paren
@@ -2322,6 +2351,15 @@ id|model
 comma
 l_string|&quot;ds1287&quot;
 )paren
+op_logical_or
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|model
+comma
+l_string|&quot;m5819&quot;
+)paren
 )paren
 (brace
 id|ds1287_regs
@@ -2342,6 +2380,8 @@ op_plus
 id|MOSTEK_48T59_48T02
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
 )brace
 macro_line|#endif
 r_else

@@ -32,6 +32,17 @@ r_int
 id|nmi_perfctr_msr
 suffix:semicolon
 multiline_comment|/* the MSR to reset in NMI handler */
+r_extern
+r_void
+id|show_registers
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 DECL|macro|K7_EVNTSEL_ENABLE
 mdefine_line|#define K7_EVNTSEL_ENABLE&t;(1 &lt;&lt; 22)
 DECL|macro|K7_EVNTSEL_INT

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ioctl32.c,v 1.123 2001/09/02 03:52:07 davem Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
+multiline_comment|/* $Id: ioctl32.c,v 1.125 2001/09/18 22:29:05 davem Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -82,6 +82,7 @@ macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/hci.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/usbdevice_fs.h&gt;
+macro_line|#include &lt;linux/nbd.h&gt;
 multiline_comment|/* Use this to get at 32-bit user passed pointers. &n;   See sys_sparc32.c for description about these. */
 DECL|macro|A
 mdefine_line|#define A(__x) ((unsigned long)(__x))
@@ -22472,6 +22473,11 @@ c_func
 (paren
 id|BLKBSZSET
 )paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|BLKGETSIZE64
+)paren
 multiline_comment|/* RAID */
 id|COMPATIBLE_IOCTL
 c_func
@@ -25231,6 +25237,52 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|MEMGETREGIONINFO
+)paren
+multiline_comment|/* NBD */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|NBD_SET_SOCK
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|NBD_SET_BLKSIZE
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|NBD_SET_SIZE
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|NBD_DO_IT
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|NBD_CLEAR_SOCK
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|NBD_CLEAR_QUE
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|NBD_PRINT_DEBUG
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|NBD_SET_SIZE_BLOCKS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|NBD_DISCONNECT
 )paren
 multiline_comment|/* And these ioctls need translation */
 id|HANDLE_IOCTL

@@ -26,10 +26,15 @@ DECL|macro|NFSDDBG_FACILITY
 mdefine_line|#define NFSDDBG_FACILITY&t;NFSDDBG_SVC
 DECL|macro|NFSD_BUFSIZE
 mdefine_line|#define NFSD_BUFSIZE&t;&t;(1024 + NFSSVC_MAXBLKSIZE)
+multiline_comment|/* these signals will be delivered to an nfsd thread &n; * when handling a request&n; */
 DECL|macro|ALLOWED_SIGS
 mdefine_line|#define ALLOWED_SIGS&t;(sigmask(SIGKILL))
+multiline_comment|/* these signals will be delivered to an nfsd thread&n; * when not handling a request. i.e. when waiting&n; */
 DECL|macro|SHUTDOWN_SIGS
-mdefine_line|#define SHUTDOWN_SIGS&t;(sigmask(SIGKILL) | sigmask(SIGINT) | sigmask(SIGQUIT))
+mdefine_line|#define SHUTDOWN_SIGS&t;(sigmask(SIGKILL) | sigmask(SIGHUP) | sigmask(SIGINT) | sigmask(SIGQUIT))
+multiline_comment|/* if the last thread dies with SIGHUP, then the exports table is&n; * left unchanged ( like 2.4-{0-9} ).  Any other signal will clear&n; * the exports table (like 2.2).&n; */
+DECL|macro|SIG_NOCLEAN
+mdefine_line|#define&t;SIG_NOCLEAN&t;SIGHUP
 r_extern
 r_struct
 id|svc_program
@@ -346,7 +351,7 @@ suffix:semicolon
 id|send_sig
 c_func
 (paren
-id|SIGKILL
+id|SIG_NOCLEAN
 comma
 id|nl-&gt;task
 comma
@@ -786,14 +791,9 @@ id|signo
 )paren
 r_break
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;nfsd: terminating on signal %d&bslash;n&quot;
-comma
+id|err
+op_assign
 id|signo
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Release lockd */
@@ -811,6 +811,34 @@ op_eq
 l_int|1
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;nfsd: last server has exited&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+op_ne
+id|SIG_NOCLEAN
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;nfsd: unexporting all filesystems&bslash;n&quot;
+)paren
+suffix:semicolon
+id|nfsd_export_shutdown
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 id|nfsd_serv
 op_assign
 l_int|NULL

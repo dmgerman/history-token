@@ -22,6 +22,14 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_ATARI
 macro_line|#include &lt;asm/atari_stram.h&gt;
 macro_line|#endif
+macro_line|#include &lt;asm/tlb.h&gt;
+DECL|variable|mmu_gathers
+id|mmu_gather_t
+id|mmu_gathers
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 DECL|variable|totalram_pages
 r_int
 r_int

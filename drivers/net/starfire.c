@@ -2537,12 +2537,14 @@ suffix:semicolon
 )brace
 macro_line|#ifdef ZEROCOPY
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: scatter-gather and hardware TCP cksumming enabled.&bslash;n&quot;
 comma
 id|dev-&gt;name
-comma
+)paren
+suffix:semicolon
 macro_line|#else  /* not ZEROCOPY */
 id|printk
 c_func

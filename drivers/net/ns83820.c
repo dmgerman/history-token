@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/in.h&gt;&t;/* for IPPROTO_... */
 macro_line|#include &lt;linux/eeprom.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 singleline_comment|//#include &lt;linux/skbrefill.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* Dprintk is used for more interesting debug events */
 DECL|macro|Dprintk
 macro_line|#undef Dprintk

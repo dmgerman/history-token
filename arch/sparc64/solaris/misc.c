@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: misc.c,v 1.32 2001/03/24 09:36:11 davem Exp $&n; * misc.c: Miscelaneous syscall emulation for Solaris&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: misc.c,v 1.33 2001/09/18 22:29:06 davem Exp $&n; * misc.c: Miscelaneous syscall emulation for Solaris&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/types.h&gt;
@@ -4113,21 +4113,37 @@ id|exec_domain
 id|solaris_exec_domain
 op_assign
 (brace
+id|name
+suffix:colon
 l_string|&quot;Solaris&quot;
 comma
+id|handler
+suffix:colon
 l_int|NULL
 comma
-l_int|1
-comma
+id|pers_low
+suffix:colon
 l_int|1
 comma
 multiline_comment|/* PER_SVR4 personality */
+id|pers_high
+suffix:colon
+l_int|1
+comma
+id|signal_map
+suffix:colon
 id|solaris_to_linux_signals
 comma
+id|signal_invmap
+suffix:colon
 id|linux_to_solaris_signals
 comma
+id|module
+suffix:colon
 id|THIS_MODULE
 comma
+id|next
+suffix:colon
 l_int|NULL
 )brace
 suffix:semicolon

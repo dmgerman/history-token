@@ -1,4 +1,5 @@
 multiline_comment|/* credit winbond-840.c&n; */
+macro_line|#include &lt;asm/io.h&gt;
 DECL|struct|eeprom_ops
 r_struct
 id|eeprom_ops

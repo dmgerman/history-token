@@ -464,7 +464,7 @@ op_logical_neg
 (paren
 id|p
 op_assign
-id|xdr_decode_string
+id|xdr_decode_string_inplace
 c_func
 (paren
 id|p
@@ -473,7 +473,7 @@ op_amp
 id|lock-&gt;caller
 comma
 op_amp
-id|len
+id|lock-&gt;len
 comma
 id|NLM_MAXSTRLEN
 )paren
@@ -1470,9 +1470,6 @@ op_assign
 op_amp
 id|argp-&gt;lock
 suffix:semicolon
-r_int
-id|len
-suffix:semicolon
 id|memset
 c_func
 (paren
@@ -1523,7 +1520,7 @@ op_logical_neg
 (paren
 id|p
 op_assign
-id|xdr_decode_string
+id|xdr_decode_string_inplace
 c_func
 (paren
 id|p
@@ -1532,7 +1529,7 @@ op_amp
 id|lock-&gt;caller
 comma
 op_amp
-id|len
+id|lock-&gt;len
 comma
 id|NLM_MAXSTRLEN
 )paren
@@ -1746,9 +1743,6 @@ op_assign
 op_amp
 id|argp-&gt;lock
 suffix:semicolon
-r_int
-id|len
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1756,7 +1750,7 @@ op_logical_neg
 (paren
 id|p
 op_assign
-id|xdr_decode_string
+id|xdr_decode_string_inplace
 c_func
 (paren
 id|p
@@ -1765,7 +1759,7 @@ op_amp
 id|lock-&gt;caller
 comma
 op_amp
-id|len
+id|lock-&gt;len
 comma
 id|NLM_MAXSTRLEN
 )paren
@@ -1821,7 +1815,7 @@ op_logical_neg
 (paren
 id|p
 op_assign
-id|xdr_decode_string
+id|xdr_decode_string_inplace
 c_func
 (paren
 id|p

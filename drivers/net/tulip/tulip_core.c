@@ -7266,6 +7266,8 @@ id|pdev-&gt;slot_name
 suffix:semicolon
 id|tp-&gt;csr0
 op_assign
+id|csr0
+op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* check for sane cache line size. from acenic.c. */

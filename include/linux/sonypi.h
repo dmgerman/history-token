@@ -66,6 +66,12 @@ DECL|macro|SONYPI_EVENT_FNKEY_B
 mdefine_line|#define SONYPI_EVENT_FNKEY_B&t;&t;&t;30
 DECL|macro|SONYPI_EVENT_BLUETOOTH_PRESSED
 mdefine_line|#define SONYPI_EVENT_BLUETOOTH_PRESSED&t;&t;31
+DECL|macro|SONYPI_EVENT_PKEY_P1
+mdefine_line|#define SONYPI_EVENT_PKEY_P1                    32
+DECL|macro|SONYPI_EVENT_PKEY_P2
+mdefine_line|#define SONYPI_EVENT_PKEY_P2                    33
+DECL|macro|SONYPI_EVENT_PKEY_P3
+mdefine_line|#define SONYPI_EVENT_PKEY_P3                    34
 multiline_comment|/* brightness etc. ioctls */
 DECL|macro|SONYPI_IOCGBRT
 mdefine_line|#define SONYPI_IOCGBRT&t;_IOR(&squot;v&squot;, 0, __u8)

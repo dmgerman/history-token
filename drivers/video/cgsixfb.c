@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: cgsixfb.c,v 1.24 2001/02/13 01:17:14 davem Exp $&n; * cgsixfb.c: CGsix (GX,GXplus) frame buffer driver&n; *&n; * Copyright (C) 1996,1998 Jakub Jelinek (jj@ultra.linux.cz)&n; * Copyright (C) 1996 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; */
+multiline_comment|/* $Id: cgsixfb.c,v 1.25 2001/09/19 00:04:33 davem Exp $&n; * cgsixfb.c: CGsix (GX,GXplus) frame buffer driver&n; *&n; * Copyright (C) 1996,1998 Jakub Jelinek (jj@ultra.linux.cz)&n; * Copyright (C) 1996 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

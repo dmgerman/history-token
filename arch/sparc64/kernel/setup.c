@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: setup.c,v 1.65 2001/06/03 13:41:13 ecd Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: setup.c,v 1.66 2001/09/20 00:35:31 davem Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2115,21 +2115,6 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Due to stack alignment restrictions and assumptions... */
-id|init_mm.mmap-&gt;vm_page_prot
-op_assign
-id|PAGE_SHARED
-suffix:semicolon
-id|init_mm.mmap-&gt;vm_start
-op_assign
-id|PAGE_OFFSET
-suffix:semicolon
-id|init_mm.mmap-&gt;vm_end
-op_assign
-id|PAGE_OFFSET
-op_plus
-id|highest_paddr
-suffix:semicolon
 id|init_task.thread.kregs
 op_assign
 op_amp

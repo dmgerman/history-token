@@ -8513,9 +8513,7 @@ c_cond
 (paren
 id|nr
 op_ge
-id|mddev-&gt;sb-&gt;raid_disks
-op_plus
-id|mddev-&gt;sb-&gt;spare_disks
+id|MD_SB_DISKS
 )paren
 r_return
 op_minus

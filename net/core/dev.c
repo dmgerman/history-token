@@ -8019,10 +8019,20 @@ id|dev
 op_ne
 l_int|0
 )paren
+(brace
+macro_line|#ifdef CONFIG_NET_DIVERT
+id|free_divert_blk
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 id|dev-&gt;ifindex
 op_assign
 id|dev_new_index
@@ -8084,6 +8094,14 @@ op_eq
 l_int|0
 )paren
 (brace
+macro_line|#ifdef CONFIG_NET_DIVERT
+id|free_divert_blk
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 op_minus
 id|EEXIST

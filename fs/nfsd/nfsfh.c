@@ -29,12 +29,11 @@ r_struct
 id|nfsd_getdents_callback
 (brace
 DECL|member|name
-r_struct
-id|qstr
+r_char
 op_star
 id|name
 suffix:semicolon
-multiline_comment|/* name that was found. name-&gt;name already points to a buffer */
+multiline_comment|/* name that was found. It already points to a buffer NAME_MAX+1 is size */
 DECL|member|ino
 r_int
 r_int
@@ -90,24 +89,6 @@ id|buf
 op_assign
 id|__buf
 suffix:semicolon
-r_struct
-id|qstr
-op_star
-id|qs
-op_assign
-id|buf-&gt;name
-suffix:semicolon
-r_char
-op_star
-id|nbuf
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|qs-&gt;name
-suffix:semicolon
-multiline_comment|/* cast is to get rid of &quot;const&quot; */
 r_int
 id|result
 op_assign
@@ -138,21 +119,17 @@ op_eq
 id|ino
 )paren
 (brace
-id|qs-&gt;len
-op_assign
-id|len
-suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|nbuf
+id|buf-&gt;name
 comma
 id|name
 comma
 id|len
 )paren
 suffix:semicolon
-id|nbuf
+id|buf-&gt;name
 (braket
 id|len
 )braket
@@ -173,11 +150,11 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Read a directory and return the name of the specified entry.&n; * i_sem is already down().&n; * The whole thing is a total BS. It should not be done via readdir(), damnit!&n; * Oh, well, as soon as it will be in filesystems...&n; */
-DECL|function|get_ino_name
+multiline_comment|/**&n; * nfsd_get_name - default nfsd_operations-&gt;get_name function&n; * @dentry: the directory in which to find a name&n; * @name:   a pointer to a %NAME_MAX+1 char buffer to store the name&n; * @child:  the dentry for the child directory.&n; *&n; * calls readdir on the parent until it finds an entry with&n; * the same inode number as the child, and returns that.&n; */
+DECL|function|nfsd_get_name
 r_static
 r_int
-id|get_ino_name
+id|nfsd_get_name
 c_func
 (paren
 r_struct
@@ -185,14 +162,14 @@ id|dentry
 op_star
 id|dentry
 comma
-r_struct
-id|qstr
+r_char
 op_star
 id|name
 comma
-r_int
-r_int
-id|ino
+r_struct
+id|dentry
+op_star
+id|child
 )paren
 (brace
 r_struct
@@ -290,7 +267,7 @@ id|name
 suffix:semicolon
 id|buffer.ino
 op_assign
-id|ino
+id|child-&gt;d_inode-&gt;i_ino
 suffix:semicolon
 id|buffer.found
 op_assign
@@ -313,18 +290,16 @@ id|buffer.sequence
 suffix:semicolon
 id|error
 op_assign
-id|file.f_op
-op_member_access_from_pointer
-id|readdir
+id|vfs_readdir
 c_func
 (paren
 op_amp
 id|file
 comma
+id|filldir_one
+comma
 op_amp
 id|buffer
-comma
-id|filldir_one
 )paren
 suffix:semicolon
 r_if
@@ -864,16 +839,6 @@ id|name-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-id|name-&gt;hash
-op_assign
-id|full_name_hash
-c_func
-(paren
-id|name-&gt;name
-comma
-id|name-&gt;len
-)paren
-suffix:semicolon
 id|tdentry
 op_assign
 id|d_alloc
@@ -1324,6 +1289,8 @@ r_int
 id|err
 op_assign
 l_int|0
+comma
+id|nerr
 suffix:semicolon
 r_struct
 id|qstr
@@ -1340,16 +1307,20 @@ id|list_head
 op_star
 id|lp
 suffix:semicolon
-r_struct
-id|dentry
-op_star
-id|tmp
-suffix:semicolon
-multiline_comment|/* child is an IS_ROOT (anonymous) dentry, but it is hypothesised that&n;&t; * it should be a child of parent.&n;&t; * We see if we can find a name and, if we can - splice it in.&n;&t; * We hold the i_sem on the parent the whole time to try to follow locking protocols.&n;&t; */
-id|qs.name
+multiline_comment|/* child is an IS_ROOT (anonymous) dentry, but it is hypothesised that&n;&t; * it should be a child of parent.&n;&t; * We see if we can find a name and, if we can - splice it in.&n;&t; * We lookup the name before locking (i_sem) the directory as namelookup&n;&t; * also claims i_sem.  If the name gets changed then we will loop around&n;&t; * and try again in find_fh_dentry.&n;&t; */
+id|nerr
 op_assign
+id|nfsd_get_name
+c_func
+(paren
+id|parent
+comma
 id|namebuf
+comma
+id|child
+)paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * We now claim the parent i_sem so that no-one else tries to create&n;&t; * a dentry in the parent while we are.&n;&t; */
 id|down
 c_func
 (paren
@@ -1368,7 +1339,7 @@ id|parent
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* Possibly a new dentry has been made for this child-&gt;d_inode in&n;&t; * parent by a lookup.  In this case return that dentry. caller must&n;&t; * notice and act accordingly&n;&t; */
+multiline_comment|/* Possibly a new dentry has been made for this child-&gt;d_inode in&n;&t; * parent by a lookup.  In this case return that dentry. Caller must&n;&t; * notice and act accordingly&n;&t; */
 id|spin_lock
 c_func
 (paren
@@ -1376,23 +1347,18 @@ op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each
+c_func
 (paren
 id|lp
-op_assign
-id|child-&gt;d_inode-&gt;i_dentry.next
-suffix:semicolon
-id|lp
-op_ne
+comma
 op_amp
 id|child-&gt;d_inode-&gt;i_dentry
-suffix:semicolon
-id|lp
-op_assign
-id|lp-&gt;next
 )paren
 (brace
+r_struct
+id|dentry
+op_star
 id|tmp
 op_assign
 id|list_entry
@@ -1409,6 +1375,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|tmp-&gt;d_hash
+)paren
+op_logical_and
 id|tmp-&gt;d_parent
 op_eq
 id|parent
@@ -1441,31 +1415,35 @@ op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
-multiline_comment|/* well, if we can find a name for child in parent, it should be safe to splice it in */
-id|err
-op_assign
-id|get_ino_name
-c_func
-(paren
-id|parent
-comma
-op_amp
-id|qs
-comma
-id|child-&gt;d_inode-&gt;i_ino
-)paren
-suffix:semicolon
+multiline_comment|/* now we need that name.  If there was an error getting it, now is th&n;&t; * time to bail out.&n;&t; */
 r_if
 c_cond
 (paren
+(paren
 id|err
+op_assign
+id|nerr
+)paren
 )paren
 r_goto
 id|out
 suffix:semicolon
-id|tmp
+id|qs.name
 op_assign
-id|d_lookup
+id|namebuf
+suffix:semicolon
+id|qs.len
+op_assign
+id|strlen
+c_func
+(paren
+id|namebuf
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|find_inode_number
 c_func
 (paren
 id|parent
@@ -1473,11 +1451,8 @@ comma
 op_amp
 id|qs
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tmp
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Now that IS odd.  I wonder what it means... */
@@ -1494,12 +1469,6 @@ comma
 id|parent-&gt;d_name.name
 comma
 id|qs.name
-)paren
-suffix:semicolon
-id|dput
-c_func
-(paren
-id|tmp
 )paren
 suffix:semicolon
 r_goto
@@ -2918,7 +2887,7 @@ id|access
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef NFSD_PARANOIA
+macro_line|#ifdef NFSD_PARANOIA_EXTREME
 r_if
 c_cond
 (paren

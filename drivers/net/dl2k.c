@@ -1,6 +1,6 @@
 multiline_comment|/*  D-Link DL2000-based Gigabit Ethernet Adapter Linux driver */
 multiline_comment|/*&n;    Copyright (c) 2001 by D-Link Corporation&n;    Written by Edward Peng.&lt;edward_peng@dlink.com.tw&gt;&n;    Created 03-May-2001, base on Linux&squot; sundance.c.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;*/
-multiline_comment|/*&n;    Rev&t;&t;Date&t;&t;Description&n;    ==========================================================================&n;    0.01&t;2001/05/03&t;Create DL2000-based linux driver&n;    0.02&t;2001/05/21&t;Add VLAN and hardware checksum support.&n;    1.00&t;2001/06/26&t;Add jumbo frame support.&n;*/
+multiline_comment|/*&n;    Rev&t;&t;Date&t;&t;Description&n;    ==========================================================================&n;    0.01&t;2001/05/03&t;Create DL2000-based linux driver&n;    0.02&t;2001/05/21&t;Add VLAN and hardware checksum support.&n;    1.00&t;2001/06/26&t;Add jumbo frame support.&n;    1.01&t;2001/08/21&t;Add two parameters, int_count and int_timeout.&n;*/
 macro_line|#include &quot;dl2k.h&quot;
 DECL|variable|__devinitdata
 r_static
@@ -11,7 +11,7 @@ id|version
 id|__devinitdata
 op_assign
 id|KERN_INFO
-l_string|&quot;D-Link DL2000-based linux driver v1.00 2001/06/26&bslash;n&quot;
+l_string|&quot;D-Link DL2000-based linux driver v1.01 2001/08/30&bslash;n&quot;
 suffix:semicolon
 DECL|macro|MAX_UNITS
 mdefine_line|#define MAX_UNITS 8
@@ -53,6 +53,18 @@ r_static
 r_int
 id|copy_thresh
 suffix:semicolon
+DECL|variable|int_count
+r_static
+r_int
+id|int_count
+suffix:semicolon
+multiline_comment|/* Rx frame count each interrupt */
+DECL|variable|int_timeout
+r_static
+r_int
+id|int_timeout
+suffix:semicolon
+multiline_comment|/* Rx DMA wait time in 64ns increments */
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;Edward Peng&quot;
@@ -118,15 +130,29 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+(paren
+id|int_count
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+(paren
+id|int_timeout
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Enable the default interrupts */
 DECL|macro|EnableInt
-mdefine_line|#define EnableInt() &bslash;&n;writew(RxComplete| RxDMAComplete | HostError | IntRequested | TxComplete| &bslash;&n;       TxDMAComplete| UpdateStats | LinkEvent, ioaddr + IntEnable)
+mdefine_line|#define EnableInt() &bslash;&n;writew(RxDMAComplete | HostError | IntRequested | TxComplete| &bslash;&n;       UpdateStats | LinkEvent, ioaddr + IntEnable)
 DECL|variable|max_intrloop
 r_static
 r_int
 id|max_intrloop
 op_assign
-l_int|25
+l_int|50
 suffix:semicolon
 DECL|variable|multicast_filter_limit
 r_static
@@ -972,6 +998,31 @@ id|card_idx
 suffix:colon
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|int_count
+op_ne
+l_int|0
+op_logical_and
+id|int_timeout
+op_ne
+l_int|0
+)paren
+(brace
+id|np-&gt;int_count
+op_assign
+id|int_count
+suffix:semicolon
+id|np-&gt;int_timeout
+op_assign
+id|int_timeout
+suffix:semicolon
+id|np-&gt;coalesce
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 )brace
 id|dev-&gt;open
 op_assign
@@ -1035,7 +1086,6 @@ suffix:semicolon
 id|ring_space
 op_assign
 id|pci_alloc_consistent
-c_func
 (paren
 id|pdev
 comma
@@ -1070,7 +1120,6 @@ suffix:semicolon
 id|ring_space
 op_assign
 id|pci_alloc_consistent
-c_func
 (paren
 id|pdev
 comma
@@ -1216,7 +1265,6 @@ suffix:semicolon
 id|err_out_unmap_rx
 suffix:colon
 id|pci_free_consistent
-c_func
 (paren
 id|pdev
 comma
@@ -1230,7 +1278,6 @@ suffix:semicolon
 id|err_out_unmap_tx
 suffix:colon
 id|pci_free_consistent
-c_func
 (paren
 id|pdev
 comma
@@ -1878,6 +1925,26 @@ id|set_multicast
 id|dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|np-&gt;coalesce
+)paren
+(brace
+id|writel
+(paren
+id|np-&gt;int_count
+op_or
+id|np-&gt;int_timeout
+op_lshift
+l_int|16
+comma
+id|ioaddr
+op_plus
+id|RxDMAIntCtrl
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Set RIO to poll every N*320nsec. */
 id|writeb
 (paren
@@ -1925,6 +1992,14 @@ id|np-&gt;vlan
 multiline_comment|/* priority field in RxDMAIntCtrl  */
 id|writel
 (paren
+id|readl
+c_func
+(paren
+id|ioaddr
+op_plus
+id|RxDMAIntCtrl
+)paren
+op_or
 l_int|0x7
 op_lshift
 l_int|10
@@ -2162,7 +2237,6 @@ dot
 id|next_desc
 op_assign
 id|cpu_to_le64
-c_func
 (paren
 id|np-&gt;rx_ring_dma
 op_plus
@@ -2284,10 +2358,8 @@ dot
 id|fraginfo
 op_assign
 id|cpu_to_le64
-c_func
 (paren
 id|pci_map_single
-c_func
 (paren
 id|np-&gt;pdev
 comma
@@ -2487,6 +2559,7 @@ l_int|45
 suffix:semicolon
 )brace
 multiline_comment|/* Send one packet each time at 10Mbps mode */
+multiline_comment|/* Tx coalescing loop do not exceed 8 */
 r_if
 c_cond
 (paren
@@ -2512,7 +2585,6 @@ op_assign
 id|cpu_to_le64
 (paren
 id|pci_map_single
-c_func
 (paren
 id|np-&gt;pdev
 comma
@@ -2778,6 +2850,20 @@ id|ioaddr
 op_plus
 id|IntStatus
 )paren
+op_amp
+(paren
+id|HostError
+op_or
+id|TxComplete
+op_or
+id|IntRequested
+op_or
+id|UpdateStats
+op_or
+id|LinkEvent
+op_or
+id|RxDMAComplete
+)paren
 suffix:semicolon
 id|writew
 (paren
@@ -2820,6 +2906,13 @@ l_int|0
 r_break
 suffix:semicolon
 multiline_comment|/* Processing received packets */
+r_if
+c_cond
+(paren
+id|int_status
+op_amp
+id|RxDMAComplete
+)paren
 id|receive_packet
 (paren
 id|dev
@@ -2835,11 +2928,6 @@ id|TxComplete
 )paren
 (brace
 r_int
-id|cnt
-op_assign
-l_int|20
-suffix:semicolon
-r_int
 id|tx_status
 op_assign
 id|readl
@@ -2849,16 +2937,6 @@ op_plus
 id|TxStatus
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|tx_status
-op_amp
-l_int|0x80
-)paren
-(brace
-multiline_comment|/* TxComplete */
-multiline_comment|/* Handle TxError */
 r_if
 c_cond
 (paren
@@ -2873,27 +2951,6 @@ comma
 id|tx_status
 )paren
 suffix:semicolon
-id|tx_status
-op_assign
-id|readl
-(paren
-id|ioaddr
-op_plus
-id|TxStatus
-)paren
-suffix:semicolon
-multiline_comment|/* too much TxError */
-r_if
-c_cond
-(paren
-op_decrement
-id|cnt
-OL
-l_int|0
-)paren
-r_break
-suffix:semicolon
-)brace
 multiline_comment|/* Send one packet each time at 10Mbps mode */
 r_if
 c_cond
@@ -2912,7 +2969,6 @@ id|netif_wake_queue
 id|dev
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Free used tx skbuffs */
 r_for
@@ -2966,7 +3022,6 @@ id|entry
 )braket
 suffix:semicolon
 id|pci_unmap_single
-c_func
 (paren
 id|np-&gt;pdev
 comma
@@ -2994,6 +3049,7 @@ id|entry
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* If the ring is no longer full, clear tx_full and &n;&t;&t;   call netif_wake_queue() */
 r_if
@@ -3060,7 +3116,7 @@ id|dev
 suffix:semicolon
 id|writel
 (paren
-l_int|1000
+l_int|1
 comma
 id|ioaddr
 op_plus
@@ -3161,6 +3217,22 @@ l_int|0x10
 id|np-&gt;stats.tx_fifo_errors
 op_increment
 suffix:semicolon
+id|writew
+(paren
+id|readw
+(paren
+id|ioaddr
+op_plus
+id|TxStartThresh
+)paren
+op_plus
+l_int|0x10
+comma
+id|ioaddr
+op_plus
+id|TxStartThresh
+)paren
+suffix:semicolon
 multiline_comment|/* Transmit Underrun need to set TxReset, DMARest, FIFOReset */
 id|writew
 (paren
@@ -3169,6 +3241,8 @@ op_or
 id|DMAReset
 op_or
 id|FIFOReset
+op_or
+id|NetworkReset
 comma
 id|ioaddr
 op_plus
@@ -3219,12 +3293,92 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Free completed descriptors */
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|np-&gt;cur_tx
+op_minus
+id|np-&gt;old_tx
+OG
+l_int|0
+suffix:semicolon
+id|np-&gt;old_tx
+op_increment
+)paren
+(brace
+r_int
+id|entry
+op_assign
+id|np-&gt;old_tx
+op_mod
+id|TX_RING_SIZE
+suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|np-&gt;tx_ring
+(braket
+id|entry
+)braket
+dot
+id|status
+op_amp
+id|TFDDone
+)paren
+)paren
+r_break
+suffix:semicolon
+id|skb
+op_assign
+id|np-&gt;tx_skbuff
+(braket
+id|entry
+)braket
+suffix:semicolon
+id|pci_unmap_single
+(paren
+id|np-&gt;pdev
+comma
+id|np-&gt;tx_ring
+(braket
+id|entry
+)braket
+dot
+id|fraginfo
+comma
+id|skb-&gt;len
+comma
+id|PCI_DMA_TODEVICE
+)paren
+suffix:semicolon
+id|dev_kfree_skb_irq
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|np-&gt;tx_skbuff
+(braket
+id|entry
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Reset TFDListPtr */
 id|writel
 (paren
 id|np-&gt;tx_ring_dma
 op_plus
-id|frame_id
+id|np-&gt;old_tx
 op_star
 r_sizeof
 (paren
@@ -3516,7 +3670,6 @@ id|pkt_len
 )paren
 suffix:semicolon
 id|pci_dma_sync_single
-c_func
 (paren
 id|np-&gt;pdev
 comma
@@ -3544,7 +3697,7 @@ c_cond
 (paren
 id|frame_status
 op_amp
-l_int|0x00100000
+l_int|0x00300000
 )paren
 id|np-&gt;stats.rx_length_errors
 op_increment
@@ -3597,7 +3750,6 @@ id|copy_thresh
 )paren
 (brace
 id|pci_unmap_single
-c_func
 (paren
 id|np-&gt;pdev
 comma
@@ -3836,10 +3988,8 @@ dot
 id|fraginfo
 op_assign
 id|cpu_to_le64
-c_func
 (paren
 id|pci_map_single
-c_func
 (paren
 id|np-&gt;pdev
 comma
@@ -6053,7 +6203,7 @@ l_int|32
 )paren
 suffix:semicolon
 multiline_comment|/* ST(2), OP(2), ADDR(5), REG#(5), TA(2), Data(16) total 32 bits */
-multiline_comment|/* ST,OP,AAAAA,RRRRR,TA = 0101xxxxxxxxxx10&squot;b = 0x0502 for write */
+multiline_comment|/* ST,OP,AAAAA,RRRRR,TA = 0101xxxxxxxxxx10&squot;b = 0x5002 for write */
 id|cmd
 op_assign
 (paren
@@ -7070,7 +7220,6 @@ id|skb
 )paren
 (brace
 id|pci_unmap_single
-c_func
 (paren
 id|np-&gt;pdev
 comma
@@ -7129,7 +7278,6 @@ id|skb
 )paren
 (brace
 id|pci_unmap_single
-c_func
 (paren
 id|np-&gt;pdev
 comma
@@ -7204,7 +7352,6 @@ id|dev
 )paren
 suffix:semicolon
 id|pci_free_consistent
-c_func
 (paren
 id|pdev
 comma
@@ -7216,7 +7363,6 @@ id|np-&gt;rx_ring_dma
 )paren
 suffix:semicolon
 id|pci_free_consistent
-c_func
 (paren
 id|pdev
 comma

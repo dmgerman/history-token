@@ -1470,10 +1470,6 @@ suffix:semicolon
 id|bdev-&gt;bd_cache_openers
 op_increment
 suffix:semicolon
-id|bdev-&gt;bd_inode
-op_assign
-id|inode
-suffix:semicolon
 )brace
 )brace
 id|MOD_INC_USE_COUNT

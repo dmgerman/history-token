@@ -1,5 +1,5 @@
 multiline_comment|/* yellowfin.c: A Packet Engines G-NIC ethernet driver for linux. */
-multiline_comment|/*&n;&t;Written 1997-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is for the Packet Engines G-NIC PCI Gigabit Ethernet adapter.&n;&t;It also supports the Symbios Logic version of the same chip core.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/yellowfin.html&n;&n;&n;&t;Linux kernel changelog:&n;&t;-----------------------&n;&n;&t;LK1.1.1 (jgarzik): Port to 2.4 kernel&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;* Merge in becker version 1.05&n;&n;&t;LK1.1.3 (jgarzik):&n;&t;* Various cleanups&n;&t;* Update yellowfin_timer to correctly calculate duplex.&n;&t;(suggested by Manfred Spraul)&n;&t;&n;*/
+multiline_comment|/*&n;&t;Written 1997-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is for the Packet Engines G-NIC PCI Gigabit Ethernet adapter.&n;&t;It also supports the Symbios Logic version of the same chip core.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/yellowfin.html&n;&n;&n;&t;Linux kernel changelog:&n;&t;-----------------------&n;&n;&t;LK1.1.1 (jgarzik): Port to 2.4 kernel&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;* Merge in becker version 1.05&n;&n;&t;LK1.1.3 (jgarzik):&n;&t;* Various cleanups&n;&t;* Update yellowfin_timer to correctly calculate duplex.&n;&t;(suggested by Manfred Spraul)&n;&n;&t;LK1.1.4 (val@nmt.edu):&n;&t;* Fix three endian-ness bugs&n;&t;* Support dual function SYM53C885E ethernet chip&n;&t;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;yellowfin&quot;
 DECL|macro|DRV_VERSION
@@ -621,6 +621,10 @@ comma
 id|YELLOWFIN_SIZE
 comma
 id|HasMII
+op_or
+id|IsGigabit
+op_or
+id|FullTxStatus
 )brace
 comma
 (brace
@@ -914,7 +918,7 @@ DECL|struct|tx_status_words
 r_struct
 id|tx_status_words
 (brace
-macro_line|#if defined(__powerpc__)
+macro_line|#ifdef __BIG_ENDIAN
 DECL|member|tx_errs
 id|u16
 id|tx_errs
@@ -944,7 +948,7 @@ suffix:semicolon
 id|u16
 id|paused
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* __BIG_ENDIAN */
 )brace
 suffix:semicolon
 multiline_comment|/* Bits in yellowfin_desc.cmd */
@@ -3569,6 +3573,9 @@ id|i
 dot
 id|addr
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|pci_map_single
 c_func
 (paren
@@ -3579,6 +3586,7 @@ comma
 id|yp-&gt;rx_buf_sz
 comma
 id|PCI_DMA_FROMDEVICE
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -5237,6 +5245,9 @@ l_int|0xffff
 suffix:semicolon
 id|frame_status
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|get_unaligned
 c_func
 (paren
@@ -5252,6 +5263,7 @@ id|data_size
 op_minus
 l_int|2
 )braket
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -5883,6 +5895,9 @@ id|entry
 dot
 id|addr
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|pci_map_single
 c_func
 (paren
@@ -5893,6 +5908,7 @@ comma
 id|yp-&gt;rx_buf_sz
 comma
 id|PCI_DMA_FROMDEVICE
+)paren
 )paren
 suffix:semicolon
 )brace

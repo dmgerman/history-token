@@ -21,12 +21,13 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 DECL|macro|TX_RING_SIZE
-mdefine_line|#define TX_RING_SIZE&t;16
+mdefine_line|#define TX_RING_SIZE&t;128
 DECL|macro|TX_QUEUE_LEN
-mdefine_line|#define TX_QUEUE_LEN&t;10&t;/* Limit ring entries actually used.  */
+mdefine_line|#define TX_QUEUE_LEN&t;96&t;/* Limit ring entries actually used.  */
 DECL|macro|RX_RING_SIZE
-mdefine_line|#define RX_RING_SIZE&t;16
+mdefine_line|#define RX_RING_SIZE &t;128
 DECL|macro|TX_TOTAL_SIZE
 mdefine_line|#define TX_TOTAL_SIZE&t;TX_RING_SIZE*sizeof(struct netdev_desc)
 DECL|macro|RX_TOTAL_SIZE
@@ -664,6 +665,16 @@ DECL|enumerator|DuplexSelect
 id|DuplexSelect
 op_assign
 l_int|0x20
+comma
+DECL|enumerator|TxFlowControlEnable
+id|TxFlowControlEnable
+op_assign
+l_int|0x80
+comma
+DECL|enumerator|RxFlowControlEnable
+id|RxFlowControlEnable
+op_assign
+l_int|0x0100
 comma
 DECL|enumerator|RcvFCS
 id|RcvFCS
@@ -2545,6 +2556,23 @@ r_int
 r_int
 id|jumbo
 suffix:semicolon
+DECL|member|int_count
+r_int
+r_int
+id|int_count
+suffix:semicolon
+DECL|member|int_timeout
+r_int
+r_int
+id|int_timeout
+suffix:semicolon
+DECL|member|coalesce
+r_int
+r_int
+id|coalesce
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|last_tx
 r_struct
 id|netdev_desc
@@ -3190,10 +3218,8 @@ l_int|7
 id|phead
 op_assign
 id|bus_to_virt
-c_func
 (paren
 id|le64_to_cpu
-c_func
 (paren
 id|desc-&gt;fraginfo
 op_amp
@@ -3262,5 +3288,5 @@ mdefine_line|#define DEBUG_PKT_DUMP(x,len) {}
 DECL|macro|DEBUG_PRINT
 mdefine_line|#define DEBUG_PRINT() {}
 macro_line|#endif
-macro_line|#endif /* __DL2K_H__ */
+macro_line|#endif&t;&t;&t;&t;/* __DL2K_H__ */
 eof

@@ -2402,16 +2402,6 @@ id|file
 )paren
 suffix:semicolon
 multiline_comment|/* Undo any partial mapping done by a device driver. */
-id|flush_cache_range
-c_func
-(paren
-id|mm
-comma
-id|vma-&gt;vm_start
-comma
-id|vma-&gt;vm_end
-)paren
-suffix:semicolon
 id|zap_page_range
 c_func
 (paren
@@ -2422,16 +2412,6 @@ comma
 id|vma-&gt;vm_end
 op_minus
 id|vma-&gt;vm_start
-)paren
-suffix:semicolon
-id|flush_tlb_range
-c_func
-(paren
-id|mm
-comma
-id|vma-&gt;vm_start
-comma
-id|vma-&gt;vm_end
 )paren
 suffix:semicolon
 id|free_vma
@@ -4080,16 +4060,6 @@ suffix:semicolon
 id|mm-&gt;map_count
 op_decrement
 suffix:semicolon
-id|flush_cache_range
-c_func
-(paren
-id|mm
-comma
-id|st
-comma
-id|end
-)paren
-suffix:semicolon
 id|zap_page_range
 c_func
 (paren
@@ -4098,16 +4068,6 @@ comma
 id|st
 comma
 id|size
-)paren
-suffix:semicolon
-id|flush_tlb_range
-c_func
-(paren
-id|mm
-comma
-id|st
-comma
-id|end
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Fix the mapping, and free the old area if it wasn&squot;t reused.&n;&t;&t; */
