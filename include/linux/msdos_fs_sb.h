@@ -49,12 +49,6 @@ r_char
 id|name_check
 suffix:semicolon
 multiline_comment|/* r = relaxed, n = normal, s = strict */
-DECL|member|conversion
-r_int
-r_char
-id|conversion
-suffix:semicolon
-multiline_comment|/* b = binary, t = text, a = auto */
 DECL|member|quiet
 r_int
 id|quiet
