@@ -2048,10 +2048,13 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* &quot;acpismp=force&quot; turns on ACPI again */
-r_else
 r_if
 c_cond
 (paren
+id|c
+op_eq
+l_char|&squot; &squot;
+op_logical_and
 op_logical_neg
 id|memcmp
 c_func
@@ -2060,7 +2063,7 @@ id|from
 comma
 l_string|&quot;acpismp=force&quot;
 comma
-l_int|14
+l_int|13
 )paren
 )paren
 id|acpi_disabled
@@ -4129,7 +4132,7 @@ id|cmdline_p
 )paren
 suffix:semicolon
 macro_line|#endif&t;
-macro_line|#ifdef CONFIG_ACPI_BOOT
+macro_line|#ifdef CONFIG_ACPI
 multiline_comment|/*&n;&t; * Parse the ACPI tables for possible boot-time SMP configuration.&n;&t; */
 r_if
 c_cond
