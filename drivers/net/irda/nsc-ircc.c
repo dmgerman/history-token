@@ -245,6 +245,29 @@ comma
 id|nsc_ircc_init_338
 )brace
 comma
+multiline_comment|/* Contributed by Steffen Pingel - IBM X40 */
+(brace
+l_string|&quot;PC8738x&quot;
+comma
+(brace
+l_int|0x164e
+comma
+l_int|0x4e
+comma
+l_int|0x0
+)brace
+comma
+l_int|0x20
+comma
+l_int|0xf4
+comma
+l_int|0xff
+comma
+id|nsc_ircc_probe_39x
+comma
+id|nsc_ircc_init_39x
+)brace
+comma
 multiline_comment|/* Contributed by Jan Frey - IBM A30/A31 */
 (brace
 l_string|&quot;PC8739x&quot;
@@ -271,32 +294,6 @@ comma
 (brace
 l_int|NULL
 )brace
-macro_line|#if 0
-multiline_comment|/* Probably bogus, &quot;PC8739x&quot; should be the real thing. Jean II */
-multiline_comment|/* Contributed by Kevin Thayer - OmniBook 6100 */
-(brace
-l_string|&quot;PC87338?&quot;
-comma
-(brace
-l_int|0x2e
-comma
-l_int|0x15c
-comma
-l_int|0x398
-)brace
-comma
-l_int|0x08
-comma
-l_int|0x00
-comma
-l_int|0xf8
-comma
-id|nsc_ircc_probe_338
-comma
-id|nsc_ircc_init_338
-)brace
-comma
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* Max 4 instances for now */
