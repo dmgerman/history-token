@@ -4,12 +4,13 @@ macro_line|#ifndef __ASM_IBM4XX_H__
 DECL|macro|__ASM_IBM4XX_H__
 mdefine_line|#define __ASM_IBM4XX_H__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
 macro_line|#ifdef CONFIG_40x
 macro_line|#if defined(CONFIG_ASH)
 macro_line|#include &lt;platforms/4xx/ash.h&gt;
 macro_line|#endif
-macro_line|#if defined (CONFIG_CEDAR)
-macro_line|#include &lt;platforms/4xx/cedar.h&gt;
+macro_line|#if defined(CONFIG_BUBINGA)
+macro_line|#include &lt;platforms/4xx/bubinga.h&gt;
 macro_line|#endif
 macro_line|#if defined(CONFIG_CPCI405)
 macro_line|#include &lt;platforms/4xx/cpci405.h&gt;
@@ -26,15 +27,23 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_REDWOOD_5)
 macro_line|#include &lt;platforms/4xx/redwood5.h&gt;
 macro_line|#endif
+macro_line|#if defined(CONFIG_REDWOOD_6)
+macro_line|#include &lt;platforms/4xx/redwood6.h&gt;
+macro_line|#endif
+macro_line|#if defined(CONFIG_SYCAMORE)
+macro_line|#include &lt;platforms/4xx/sycamore.h&gt;
+macro_line|#endif
 macro_line|#if defined(CONFIG_WALNUT)
 macro_line|#include &lt;platforms/4xx/walnut.h&gt;
 macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#ifdef CONFIG_40x
 multiline_comment|/*&n; * The &quot;residual&quot; board information structure the boot loader passes&n; * into the kernel.&n; */
 r_extern
 id|bd_t
 id|__res
 suffix:semicolon
+macro_line|#endif
 r_void
 id|ppc4xx_setup_arch
 c_func
@@ -103,11 +112,13 @@ macro_line|#if defined(CONFIG_OCOTEA)
 macro_line|#include &lt;platforms/4xx/ocotea.h&gt;
 macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#ifdef CONFIG_40x
 multiline_comment|/*&n; * The &quot;residual&quot; board information structure the boot loader passes&n; * into the kernel.&n; */
 r_extern
 id|bd_t
 id|__res
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif /* CONFIG_40x */
 macro_line|#endif /* __ASM_IBM4XX_H__ */

@@ -12,7 +12,7 @@ id|ibm440gp_get_clocks
 c_func
 (paren
 r_struct
-id|ibm440gp_clocks
+id|ibm44x_clocks
 op_star
 id|p
 comma
@@ -222,7 +222,9 @@ l_int|0x00400000
 )paren
 (brace
 multiline_comment|/* External UART clock */
-id|p-&gt;uart
+id|p-&gt;uart0
+op_assign
+id|p-&gt;uart1
 op_assign
 id|ser_clk
 suffix:semicolon
@@ -245,7 +247,9 @@ l_int|0x1f
 op_plus
 l_int|1
 suffix:semicolon
-id|p-&gt;uart
+id|p-&gt;uart0
+op_assign
+id|p-&gt;uart1
 op_assign
 id|p-&gt;plb
 op_div
