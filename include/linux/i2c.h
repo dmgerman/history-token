@@ -512,8 +512,16 @@ id|usage_count
 suffix:semicolon
 multiline_comment|/* How many accesses currently  */
 multiline_comment|/* to the client&t;&t;*/
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+multiline_comment|/* the device structure&t;&t;*/
 )brace
 suffix:semicolon
+DECL|macro|to_i2c_client
+mdefine_line|#define to_i2c_client(d) container_of(d, struct i2c_client, dev)
 multiline_comment|/*&n; * The following structs are for those who like to implement new bus drivers:&n; * i2c_algorithm is the interface to a class of hardware solutions which can&n; * be addressed using the same bus algorithms - i.e. bit-banging or the PCF8584&n; * to name two of the most common.&n; */
 DECL|struct|i2c_algorithm
 r_struct
