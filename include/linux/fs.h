@@ -4018,6 +4018,16 @@ op_star
 id|sb
 )paren
 suffix:semicolon
+r_void
+id|deactivate_super
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+suffix:semicolon
 multiline_comment|/* Alas, no aliases. Too much hassle with bringing module.h everywhere */
 DECL|macro|fops_get
 mdefine_line|#define fops_get(fops) &bslash;&n;&t;(((fops) &amp;&amp; (fops)-&gt;owner)&t;&bslash;&n;&t;&t;? ( try_inc_mod_count((fops)-&gt;owner) ? (fops) : NULL ) &bslash;&n;&t;&t;: (fops))
