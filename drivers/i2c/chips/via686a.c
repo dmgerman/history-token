@@ -1862,10 +1862,6 @@ r_int
 id|address
 comma
 r_int
-r_int
-id|flags
-comma
-r_int
 id|kind
 )paren
 suffix:semicolon
@@ -3412,10 +3408,6 @@ id|adapter
 comma
 r_int
 id|address
-comma
-r_int
-r_int
-id|flags
 comma
 r_int
 id|kind
