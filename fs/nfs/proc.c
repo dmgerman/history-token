@@ -2002,9 +2002,9 @@ id|nfs_proc_readdir
 c_func
 (paren
 r_struct
-id|inode
+id|dentry
 op_star
-id|dir
+id|dentry
 comma
 r_struct
 id|rpc_cred
@@ -2027,6 +2027,13 @@ r_int
 id|plus
 )paren
 (brace
+r_struct
+id|inode
+op_star
+id|dir
+op_assign
+id|dentry-&gt;d_inode
+suffix:semicolon
 r_struct
 id|nfs_readdirargs
 id|arg

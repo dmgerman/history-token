@@ -1519,7 +1519,7 @@ id|readdir
 )paren
 (paren
 r_struct
-id|inode
+id|dentry
 op_star
 comma
 r_struct

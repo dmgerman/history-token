@@ -445,7 +445,7 @@ op_member_access_from_pointer
 id|readdir
 c_func
 (paren
-id|inode
+id|file-&gt;f_dentry
 comma
 id|cred
 comma
@@ -1375,7 +1375,7 @@ op_member_access_from_pointer
 id|readdir
 c_func
 (paren
-id|inode
+id|file-&gt;f_dentry
 comma
 id|cred
 comma
