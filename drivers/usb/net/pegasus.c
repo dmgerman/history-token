@@ -4730,6 +4730,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pegasus_get_drvinfo
+r_static
 r_void
 id|pegasus_get_drvinfo
 c_func
@@ -5774,6 +5775,7 @@ l_int|2
 suffix:semicolon
 )brace
 DECL|variable|pegasus_workqueue
+r_static
 r_struct
 id|workqueue_struct
 op_star
@@ -5784,6 +5786,7 @@ suffix:semicolon
 DECL|macro|CARRIER_CHECK_DELAY
 mdefine_line|#define CARRIER_CHECK_DELAY (2 * HZ)
 DECL|function|check_carrier
+r_static
 r_void
 id|check_carrier
 c_func
