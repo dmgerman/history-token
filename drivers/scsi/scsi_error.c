@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_dbg.h&gt;
@@ -4643,11 +4642,6 @@ c_func
 id|sem
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; *    Flush resources&n;&t; */
 id|daemonize
 c_func
@@ -4669,11 +4663,6 @@ suffix:semicolon
 id|shost-&gt;ehandler
 op_assign
 id|current
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Wake up the thread that created us.&n;&t; */
 id|SCSI_LOG_ERROR_RECOVERY
