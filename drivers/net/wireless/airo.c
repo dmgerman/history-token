@@ -1130,7 +1130,7 @@ DECL|member|mac
 id|u8
 id|mac
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|klen
@@ -1276,7 +1276,7 @@ DECL|member|macAddr
 id|u8
 id|macAddr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|rates
@@ -1609,7 +1609,7 @@ DECL|member|mac
 id|u8
 id|mac
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|mode
@@ -1649,7 +1649,7 @@ id|bssid
 l_int|4
 )braket
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|beaconPeriod
@@ -1766,7 +1766,7 @@ id|ap
 l_int|4
 )braket
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|typedef|APListRid
@@ -1820,14 +1820,14 @@ DECL|member|factoryAddr
 r_char
 id|factoryAddr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|aironetAddr
 r_char
 id|aironetAddr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|radioType
@@ -1842,7 +1842,7 @@ DECL|member|callid
 r_char
 id|callid
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|supportedRates
@@ -1933,7 +1933,7 @@ DECL|member|bssid
 id|u8
 id|bssid
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 multiline_comment|/* Mac address of the BSS */
@@ -2952,7 +2952,7 @@ id|spy_address
 id|IW_MAX_SPY
 )braket
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 DECL|member|spy_stat
@@ -8087,7 +8087,9 @@ suffix:semicolon
 r_else
 id|hdrlen
 op_assign
-l_int|12
+id|ETH_ALEN
+op_star
+l_int|2
 suffix:semicolon
 id|skb
 op_assign
@@ -8349,7 +8351,7 @@ id|apriv-&gt;spy_address
 id|i
 )braket
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 )paren
 (brace
@@ -9594,7 +9596,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|6
+id|ETH_ALEN
 suffix:semicolon
 id|i
 op_increment
@@ -11802,7 +11804,9 @@ c_cond
 (paren
 id|len
 OL
-l_int|12
+id|ETH_ALEN
+op_star
+l_int|2
 )paren
 (brace
 id|printk
@@ -11983,7 +11987,7 @@ r_struct
 id|u8
 id|addr4
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 suffix:semicolon
 id|u16
@@ -17078,7 +17082,7 @@ r_int
 r_char
 id|macaddr
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 op_assign
 (brace
@@ -17204,7 +17208,7 @@ id|wkr.mac
 comma
 id|macaddr
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 suffix:semicolon
 id|printk
@@ -20455,7 +20459,7 @@ r_int
 r_char
 id|bcast
 (braket
-l_int|6
+id|ETH_ALEN
 )braket
 op_assign
 (brace
@@ -20495,7 +20499,7 @@ id|bcast
 comma
 id|awrq-&gt;sa_data
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 )paren
 (brace
@@ -20584,7 +20588,7 @@ l_int|0
 comma
 id|awrq-&gt;sa_data
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 suffix:semicolon
 id|disable_MAC
@@ -20675,7 +20679,7 @@ id|status_rid.bssid
 l_int|0
 )braket
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 suffix:semicolon
 id|awrq-&gt;sa_family
@@ -23807,7 +23811,7 @@ id|sa_data
 comma
 id|BSSList.bssid
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 suffix:semicolon
 id|address
@@ -24050,7 +24054,7 @@ id|status_rid.bssid
 id|i
 )braket
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 suffix:semicolon
 id|address
@@ -24925,7 +24929,7 @@ id|i
 dot
 id|sa_data
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 suffix:semicolon
 multiline_comment|/* Reset stats */
@@ -25040,7 +25044,7 @@ id|local-&gt;spy_address
 id|i
 )braket
 comma
-l_int|6
+id|ETH_ALEN
 )paren
 suffix:semicolon
 id|address
