@@ -102,9 +102,9 @@ mdefine_line|#define&t;MPC10X_CFG_MAPB_OPTIONS_PFAE&t;0x40&t;/* PCI_FD_ALIAS_EN 
 DECL|macro|MPC10X_CFG_MAPB_OPTIONS_DR
 mdefine_line|#define&t;MPC10X_CFG_MAPB_OPTIONS_DR&t;0x20&t;/* DLL_RESET */
 DECL|macro|MPC10X_CFG_MAPB_OPTIONS_PCICH
-mdefine_line|#define&t;MPC10X_CFG_MAPB_OPTIONS_PCICH&t;0x80&t;/* PCI_COMPATIBILITY_HOLE */
+mdefine_line|#define&t;MPC10X_CFG_MAPB_OPTIONS_PCICH&t;0x08&t;/* PCI_COMPATIBILITY_HOLE */
 DECL|macro|MPC10X_CFG_MAPB_OPTIONS_PROCCH
-mdefine_line|#define&t;MPC10X_CFG_MAPB_OPTIONS_PROCCH&t;0x40&t;/* PROC_COMPATIBILITY_HOLE */
+mdefine_line|#define&t;MPC10X_CFG_MAPB_OPTIONS_PROCCH&t;0x04&t;/* PROC_COMPATIBILITY_HOLE */
 multiline_comment|/* Define offsets for the memory controller registers in the config space */
 DECL|macro|MPC10X_MCTLR_MEM_START_1
 mdefine_line|#define MPC10X_MCTLR_MEM_START_1&t;0x80&t;/* Banks 0-3 */
