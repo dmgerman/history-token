@@ -28,7 +28,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &quot;mv64340_eth.h&quot;
+macro_line|#include &quot;mv643xx_eth.h&quot;
 multiline_comment|/*&n; * The first part is the high level driver of the gigE ethernet ports. &n; */
 multiline_comment|/* Definition for configuring driver */
 DECL|macro|MV64340_RX_QUEUE_FILL_ON_TASK
@@ -4737,10 +4737,10 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;MV-64340 10/100/1000 Ethernet Driver&bslash;n&quot;
+l_string|&quot;MV-643xx 10/100/1000 Ethernet Driver&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MV64340_ETH_0
+macro_line|#ifdef CONFIG_MV643XX_ETH_0
 id|mv64340_dev0
 op_assign
 id|mv64340_eth_init
@@ -4765,7 +4765,7 @@ l_string|&quot;Error registering MV-64360 ethernet port 0&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_MV64340_ETH_1
+macro_line|#ifdef CONFIG_MV643XX_ETH_1
 id|mv64340_dev1
 op_assign
 id|mv64340_eth_init
@@ -4790,7 +4790,7 @@ l_string|&quot;Error registering MV-64360 ethernet port 1&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_MV64340_ETH_2
+macro_line|#ifdef CONFIG_MV643XX_ETH_2
 id|mv64340_dev2
 op_assign
 id|mv64340_eth_init

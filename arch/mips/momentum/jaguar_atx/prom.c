@@ -47,7 +47,7 @@ r_return
 l_string|&quot;Momentum Jaguar-ATX&quot;
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_MV64340_ETH
+macro_line|#ifdef CONFIG_MV643XX_ETH
 r_extern
 r_int
 r_char
@@ -1136,7 +1136,7 @@ id|mips_machtype
 op_assign
 id|MACH_MOMENCO_JAGUAR_ATX
 suffix:semicolon
-macro_line|#ifdef CONFIG_MV64340_ETH
+macro_line|#ifdef CONFIG_MV643XX_ETH
 multiline_comment|/* get the base MAC address for on-board ethernet ports */
 id|get_mac
 c_func

@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
-macro_line|#include &lt;asm/mv64340.h&gt;
+macro_line|#include &lt;linux/mv643xx.h&gt;
 DECL|macro|BIT0
 mdefine_line|#define&t;BIT0&t;0x00000001
 DECL|macro|BIT1
