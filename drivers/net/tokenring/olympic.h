@@ -131,6 +131,8 @@ DECL|macro|TIMER
 mdefine_line|#define TIMER 0x50
 DECL|macro|CLKCTL
 mdefine_line|#define CLKCTL 0x74
+DECL|macro|CLKCTL_PAUSE
+mdefine_line|#define CLKCTL_PAUSE (1&lt;&lt;15) 
 DECL|macro|PM_CON
 mdefine_line|#define PM_CON 0x4
 DECL|macro|BMCTL_SUM

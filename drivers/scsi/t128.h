@@ -96,15 +96,27 @@ op_star
 )paren
 suffix:semicolon
 r_int
-id|t128_reset
+id|t128_host_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
-comma
+)paren
+suffix:semicolon
 r_int
+id|t128_bus_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
 r_int
-id|reset_flags
+id|t128_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
 )paren
 suffix:semicolon
 r_int
@@ -146,7 +158,7 @@ mdefine_line|#define CAN_QUEUE 32
 macro_line|#endif
 multiline_comment|/* &n; * I hadn&squot;t thought of this with the earlier drivers - but to prevent&n; * macro definition conflicts, we shouldn&squot;t define all of the internal&n; * macros when this is being used solely for the host stub.&n; */
 DECL|macro|TRANTOR_T128
-mdefine_line|#define TRANTOR_T128 {&t;&t;&t;&t;&t;&bslash;&n;&t;name:           &quot;Trantor T128/T128F/T228&quot;,&t;&bslash;&n;&t;detect:         t128_detect,&t;&t;&t;&bslash;&n;&t;queuecommand:   t128_queue_command,&t;&t;&bslash;&n;&t;abort:          t128_abort,&t;&t;&t;&bslash;&n;&t;reset:          t128_reset,&t;&t;&t;&bslash;&n;&t;bios_param:     t128_biosparam,&t;&t;&t;&bslash;&n;&t;can_queue:      CAN_QUEUE,&t;&t;&t;&bslash;&n;        this_id:        7,&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize:   SG_ALL,&t;&t;&t;&t;&bslash;&n;&t;cmd_per_lun:    CMD_PER_LUN,&t;&t;&t;&bslash;&n;&t;use_clustering: DISABLE_CLUSTERING}
+mdefine_line|#define TRANTOR_T128 {&t;&t;&t;&t;&t;&bslash;&n;&t;name:           &quot;Trantor T128/T128F/T228&quot;,&t;&bslash;&n;&t;detect:         t128_detect,&t;&t;&t;&bslash;&n;&t;queuecommand:   t128_queue_command,&t;&t;&bslash;&n;&t;eh_abort_handler: t128_abort,&t;&t;&t;&bslash;&n;&t;eh_bus_reset_handler:    t128_bus_reset,&t;&bslash;&n;&t;eh_host_reset_handler:   t128_host_reset,&t;&bslash;&n;&t;eh_device_reset_handler: t128_device_reset,&t;&bslash;&n;&t;bios_param:     t128_biosparam,&t;&t;&t;&bslash;&n;&t;can_queue:      CAN_QUEUE,&t;&t;&t;&bslash;&n;        this_id:        7,&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize:   SG_ALL,&t;&t;&t;&t;&bslash;&n;&t;cmd_per_lun:    CMD_PER_LUN,&t;&t;&t;&bslash;&n;&t;use_clustering: DISABLE_CLUSTERING}
 macro_line|#ifndef HOSTS_C
 DECL|macro|NCR5380_implementation_fields
 mdefine_line|#define NCR5380_implementation_fields &bslash;&n;    unsigned long base
@@ -175,8 +187,12 @@ DECL|macro|NCR5380_queue_command
 mdefine_line|#define NCR5380_queue_command t128_queue_command
 DECL|macro|NCR5380_abort
 mdefine_line|#define NCR5380_abort t128_abort
-DECL|macro|NCR5380_reset
-mdefine_line|#define NCR5380_reset t128_reset
+DECL|macro|NCR5380_host_reset
+mdefine_line|#define NCR5380_host_reset t128_hostreset
+DECL|macro|NCR5380_device_reset
+mdefine_line|#define NCR5380_device_reset t128_device_reset
+DECL|macro|NCR5380_bus_reset
+mdefine_line|#define NCR5380_bus_reset t128_bus_reset
 DECL|macro|NCR5380_proc_info
 mdefine_line|#define NCR5380_proc_info t128_proc_info
 multiline_comment|/* 15 14 12 10 7 5 3 &n;   1101 0100 1010 1000 */

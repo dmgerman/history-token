@@ -8916,7 +8916,7 @@ id|poll_interval
 op_ne
 l_int|0
 )paren
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp

@@ -978,9 +978,9 @@ multiline_comment|/* ErrorCode */
 DECL|macro|ERROR_FLICKER_BELOW_MIN_EXP
 mdefine_line|#define ERROR_FLICKER_BELOW_MIN_EXP     0x01 /*flicker exposure got below minimum exposure */
 DECL|macro|ALOG
-mdefine_line|#define ALOG(lineno,fmt,args...) printk(fmt,lineno,##args)
+mdefine_line|#define ALOG(fmt,args...) printk(fmt, ##args)
 DECL|macro|LOG
-mdefine_line|#define LOG(fmt,args...) ALOG((__LINE__),KERN_INFO __FILE__&quot;:%s(%d):&quot;fmt, __FUNCTION__, ##args)
+mdefine_line|#define LOG(fmt,args...) ALOG(KERN_INFO __FILE__ &quot;:%s(%d):&quot; fmt, __FUNCTION__, __LINE__, ##args)
 macro_line|#ifdef _CPIA_DEBUG_
 DECL|macro|ADBG
 mdefine_line|#define ADBG(lineno,fmt,args...) printk(fmt, jiffies, lineno, ##args)

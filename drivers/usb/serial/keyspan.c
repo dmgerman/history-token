@@ -1981,6 +1981,7 @@ suffix:semicolon
 )brace
 m_exit
 suffix:colon
+suffix:semicolon
 )brace
 DECL|function|usa26_glocont_callback
 r_static
@@ -2612,6 +2613,7 @@ suffix:semicolon
 )brace
 m_exit
 suffix:colon
+suffix:semicolon
 )brace
 DECL|function|usa28_glocont_callback
 r_static
@@ -3030,6 +3032,7 @@ suffix:semicolon
 )brace
 m_exit
 suffix:colon
+suffix:semicolon
 )brace
 DECL|function|usa49_inack_callback
 r_static

@@ -422,7 +422,7 @@ op_assign
 l_int|0x2000
 suffix:semicolon
 multiline_comment|/* 8k FIFO for&n;&t;&t;&t;&t;&t;&t;pre-tmc18c30 chips */
-r_extern
+r_static
 r_void
 id|do_fdomain_16x0_intr
 c_func
@@ -873,6 +873,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;scsi%d: &lt;fdomain&gt; No BIOS; using scsi id %d&bslash;n&quot;
 comma
 id|shpnt-&gt;host_no
@@ -886,6 +887,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;scsi%d: &lt;fdomain&gt; BIOS version &quot;
 comma
 id|shpnt-&gt;host_no
@@ -950,6 +952,7 @@ multiline_comment|/* If this driver works for later FD PCI&n;&t;&t;&t;&t;   boar
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;scsi%d: &lt;fdomain&gt; %s chip at 0x%x irq &quot;
 comma
 id|shpnt-&gt;host_no
@@ -1070,13 +1073,14 @@ l_int|3
 id|printk
 c_func
 (paren
-l_string|&quot;scsi: &lt;fdomain&gt;&quot;
-l_string|&quot; Usage: fdomain=&lt;PORT_BASE&gt;,&lt;IRQ&gt;[,&lt;ADAPTER_ID&gt;]&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;scsi: &lt;fdomain&gt; Usage: fdomain=&lt;PORT_BASE&gt;,&lt;IRQ&gt;[,&lt;ADAPTER_ID&gt;]&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;scsi: &lt;fdomain&gt; Bad LILO/INSMOD parameters?&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1519,7 +1523,7 @@ id|options
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Check for board with lowest bios_base --&n;&t;&t;&t;&t;   this isn&squot;t valid for the 18c30 or for&n;&t;&t;&t;&t;   boards on the PCI bus, so just assume we&n;&t;&t;&t;&t;   have the right board. */
+multiline_comment|/* Check for board with lowest bios_base --&n;      this isn&squot;t valid for the 18c30 or for&n;      boards on the PCI bus, so just assume we&n;      have the right board. */
 r_if
 c_cond
 (paren
@@ -2097,18 +2101,6 @@ id|pdev
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
 macro_line|#if DEBUG_DETECT
 multiline_comment|/* Tell how to print a list of the known PCI devices from bios32 and&n;      list vendor and device IDs being used if in debug mode.  */
 id|printk
@@ -2249,8 +2241,8 @@ id|iobase
 id|printk
 c_func
 (paren
-l_string|&quot;scsi: &lt;fdomain&gt;&quot;
-l_string|&quot; PCI card detected, but driver not loaded (invalid port)&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;scsi: &lt;fdomain&gt; PCI card detected, but driver not loaded (invalid port)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2283,6 +2275,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|fdomain_16x0_detect
+r_static
 r_int
 id|fdomain_16x0_detect
 c_func
@@ -2610,12 +2603,10 @@ id|port_base
 op_plus
 id|Write_SCSI_Data
 suffix:semicolon
-id|fdomain_16x0_reset
+id|fdomain_16x0_bus_reset
 c_func
 (paren
 l_int|NULL
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -2630,8 +2621,8 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;scsi: &lt;fdomain&gt; Detection failed&quot;
-l_string|&quot; (loopback test failed at port base 0x%x)&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;scsi: &lt;fdomain&gt; Detection failed (loopback test failed at port base 0x%x)&bslash;n&quot;
 comma
 id|port_base
 )paren
@@ -2645,6 +2636,7 @@ id|setup_called
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;scsi: &lt;fdomain&gt; Bad LILO/INSMOD parameters?&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2719,7 +2711,7 @@ l_int|0x40
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Print out a banner here in case we can&squot;t&n;&t;&t;&t;&t;   get resources.  */
+multiline_comment|/* Print out a banner here in case we can&squot;t&n;   get resources.  */
 id|shpnt
 op_assign
 id|scsi_register
@@ -2779,8 +2771,8 @@ id|interrupt_level
 id|printk
 c_func
 (paren
-l_string|&quot;scsi: &lt;fdomain&gt;&quot;
-l_string|&quot; Card Detected, but driver not loaded (no IRQ)&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;scsi: &lt;fdomain&gt; Card Detected, but driver not loaded (no IRQ)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2831,6 +2823,7 @@ id|EINVAL
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;scsi: &lt;fdomain&gt; IRQ %d is bad!&bslash;n&quot;
 comma
 id|interrupt_level
@@ -2839,12 +2832,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;                This shouldn&squot;t happen!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;                Send mail to faith@acm.org&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2862,6 +2857,7 @@ id|EBUSY
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;scsi: &lt;fdomain&gt; IRQ %d is already in use!&bslash;n&quot;
 comma
 id|interrupt_level
@@ -2870,6 +2866,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;                Please use another IRQ!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2879,6 +2876,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;scsi: &lt;fdomain&gt; Error getting IRQ %d&bslash;n&quot;
 comma
 id|interrupt_level
@@ -2887,12 +2885,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;                This shouldn&squot;t happen!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;                Send mail to faith@acm.org&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2900,6 +2900,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;scsi: &lt;fdomain&gt; Detected, but driver not loaded (IRQ)&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3307,6 +3308,7 @@ suffix:semicolon
 multiline_comment|/* Maximum of one adapter will be detected. */
 )brace
 DECL|function|fdomain_16x0_info
+r_static
 r_const
 r_char
 op_star
@@ -3435,6 +3437,7 @@ suffix:semicolon
 multiline_comment|/* First pass at /proc information routine. */
 multiline_comment|/*&n; * inout : decides on the direction of the dataflow and the meaning of the &n; *         variables&n; * buffer: If inout==FALSE data is being written to it else read from it&n; * *start: If inout==FALSE start of the valid data in the buffer&n; * offset: If inout==FALSE offset from the beginning of the imaginary file &n; *         from which we start writing into the buffer&n; * length: If inout==FALSE max number of bytes to be written into the buffer &n; *         else number of bytes in the buffer&n; */
 DECL|function|fdomain_16x0_proc_info
+r_static
 r_int
 id|fdomain_16x0_proc_info
 c_func
@@ -3488,7 +3491,7 @@ id|inout
 )paren
 r_return
 op_minus
-id|ENOSYS
+id|EINVAL
 suffix:semicolon
 id|begin
 op_assign
@@ -3863,6 +3866,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|my_done
+r_static
 r_void
 id|my_done
 c_func
@@ -3936,6 +3940,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|do_fdomain_16x0_intr
+r_static
 r_void
 id|do_fdomain_16x0_intr
 c_func
@@ -4561,108 +4566,18 @@ id|current_SC-&gt;cmd_len
 )paren
 )paren
 (brace
-multiline_comment|/* We have to get the FIFO direction&n;&t;&t;&t;&t;   correct, so I&squot;ve made a table based&n;&t;&t;&t;&t;   on the SCSI Standard of which commands&n;&t;&t;&t;&t;   appear to require a DATA OUT phase.&n;&t;&t;&t;&t; */
-multiline_comment|/*&n;&t;p. 94: Command for all device types&n;&t;CHANGE DEFINITION            40 DATA OUT&n;&t;COMPARE                      39 DATA OUT&n;&t;COPY                         18 DATA OUT&n;&t;COPY AND VERIFY              3a DATA OUT&n;&t;INQUIRY                      12 &n;&t;LOG SELECT                   4c DATA OUT&n;&t;LOG SENSE                    4d&n;&t;MODE SELECT (6)              15 DATA OUT&n;&t;MODE SELECT (10)             55 DATA OUT&n;&t;MODE SENSE (6)               1a&n;&t;MODE SENSE (10)              5a&n;&t;READ BUFFER                  3c&n;&t;RECEIVE DIAGNOSTIC RESULTS   1c&n;&t;REQUEST SENSE                03&n;&t;SEND DIAGNOSTIC              1d DATA OUT&n;&t;TEST UNIT READY              00&n;&t;WRITE BUFFER                 3b DATA OUT&n;&n;&t;p.178: Commands for direct-access devices (not listed on p. 94)&n;&t;FORMAT UNIT                  04 DATA OUT&n;&t;LOCK-UNLOCK CACHE            36&n;&t;PRE-FETCH                    34&n;&t;PREVENT-ALLOW MEDIUM REMOVAL 1e&n;&t;READ (6)/RECEIVE             08&n;&t;READ (10)                    3c&n;&t;READ CAPACITY                25&n;&t;READ DEFECT DATA (10)        37&n;&t;READ LONG                    3e&n;&t;REASSIGN BLOCKS              07 DATA OUT&n;&t;RELEASE                      17&n;&t;RESERVE                      16 DATA OUT&n;&t;REZERO UNIT/REWIND           01&n;&t;SEARCH DATA EQUAL (10)       31 DATA OUT&n;&t;SEARCH DATA HIGH (10)        30 DATA OUT&n;&t;SEARCH DATA LOW (10)         32 DATA OUT&n;&t;SEEK (6)                     0b&n;&t;SEEK (10)                    2b&n;&t;SET LIMITS (10)              33&n;&t;START STOP UNIT              1b&n;&t;SYNCHRONIZE CACHE            35&n;&t;VERIFY (10)                  2f&n;&t;WRITE (6)/PRINT/SEND         0a DATA OUT&n;&t;WRITE (10)/SEND              2a DATA OUT&n;&t;WRITE AND VERIFY (10)        2e DATA OUT&n;&t;WRITE LONG                   3f DATA OUT&n;&t;WRITE SAME                   41 DATA OUT ?&n;&n;&t;p. 261: Commands for sequential-access devices (not previously listed)&n;&t;ERASE                        19&n;&t;LOAD UNLOAD                  1b&n;&t;LOCATE                       2b&n;&t;READ BLOCK LIMITS            05&n;&t;READ POSITION                34&n;&t;READ REVERSE                 0f&n;&t;RECOVER BUFFERED DATA        14&n;&t;SPACE                        11&n;&t;WRITE FILEMARKS              10 ?&n;&n;&t;p. 298: Commands for printer devices (not previously listed)&n;&t;****** NOT SUPPORTED BY THIS DRIVER, since 0b is SEEK (6) *****&n;&t;SLEW AND PRINT               0b DATA OUT  -- same as seek&n;&t;STOP PRINT                   1b&n;&t;SYNCHRONIZE BUFFER           10&n;&n;&t;p. 315: Commands for processor devices (not previously listed)&n;&t;&n;&t;p. 321: Commands for write-once devices (not previously listed)&n;&t;MEDIUM SCAN                  38&n;&t;READ (12)                    a8&n;&t;SEARCH DATA EQUAL (12)       b1 DATA OUT&n;&t;SEARCH DATA HIGH (12)        b0 DATA OUT&n;&t;SEARCH DATA LOW (12)         b2 DATA OUT&n;&t;SET LIMITS (12)              b3&n;&t;VERIFY (12)                  af&n;&t;WRITE (12)                   aa DATA OUT&n;&t;WRITE AND VERIFY (12)        ae DATA OUT&n;&n;&t;p. 332: Commands for CD-ROM devices (not previously listed)&n;&t;PAUSE/RESUME                 4b&n;&t;PLAY AUDIO (10)              45&n;&t;PLAY AUDIO (12)              a5&n;&t;PLAY AUDIO MSF               47&n;&t;PLAY TRACK RELATIVE (10)     49&n;&t;PLAY TRACK RELATIVE (12)     a9&n;&t;READ HEADER                  44&n;&t;READ SUB-CHANNEL             42&n;&t;READ TOC                     43&n;&n;&t;p. 370: Commands for scanner devices (not previously listed)&n;&t;GET DATA BUFFER STATUS       34&n;&t;GET WINDOW                   25&n;&t;OBJECT POSITION              31&n;&t;SCAN                         1b&n;&t;SET WINDOW                   24 DATA OUT&n;&n;&t;p. 391: Commands for optical memory devices (not listed)&n;&t;ERASE (10)                   2c&n;&t;ERASE (12)                   ac&n;&t;MEDIUM SCAN                  38 DATA OUT&n;&t;READ DEFECT DATA (12)        b7&n;&t;READ GENERATION              29&n;&t;READ UPDATED BLOCK           2d&n;&t;UPDATE BLOCK                 3d DATA OUT&n;&n;&t;p. 419: Commands for medium changer devices (not listed)&n;&t;EXCHANGE MEDIUM              46&n;&t;INITIALIZE ELEMENT STATUS    07&n;&t;MOVE MEDIUM                  a5&n;&t;POSITION TO ELEMENT          2b&n;&t;READ ELEMENT STATUS          b8&n;&t;REQUEST VOL. ELEMENT ADDRESS b5&n;&t;SEND VOLUME TAG              b6 DATA OUT&n;&n;&t;p. 454: Commands for communications devices (not listed previously)&n;&t;GET MESSAGE (6)              08&n;&t;GET MESSAGE (10)             28&n;&t;GET MESSAGE (12)             a8&n;      */
-r_switch
+r_if
 c_cond
 (paren
-id|current_SC-&gt;cmnd
-(braket
-l_int|0
-)braket
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|current_SC-&gt;sc_data_direction
+)paren
+op_eq
+id|PCI_DMA_TODEVICE
 )paren
 (brace
-r_case
-id|CHANGE_DEFINITION
-suffix:colon
-r_case
-id|COMPARE
-suffix:colon
-r_case
-id|COPY
-suffix:colon
-r_case
-id|COPY_VERIFY
-suffix:colon
-r_case
-id|LOG_SELECT
-suffix:colon
-r_case
-id|MODE_SELECT
-suffix:colon
-r_case
-id|MODE_SELECT_10
-suffix:colon
-r_case
-id|SEND_DIAGNOSTIC
-suffix:colon
-r_case
-id|WRITE_BUFFER
-suffix:colon
-r_case
-id|FORMAT_UNIT
-suffix:colon
-r_case
-id|REASSIGN_BLOCKS
-suffix:colon
-r_case
-id|RESERVE
-suffix:colon
-r_case
-id|SEARCH_EQUAL
-suffix:colon
-r_case
-id|SEARCH_HIGH
-suffix:colon
-r_case
-id|SEARCH_LOW
-suffix:colon
-r_case
-id|WRITE_6
-suffix:colon
-r_case
-id|WRITE_10
-suffix:colon
-r_case
-id|WRITE_VERIFY
-suffix:colon
-r_case
-l_int|0x3f
-suffix:colon
-r_case
-l_int|0x41
-suffix:colon
-r_case
-l_int|0xb1
-suffix:colon
-r_case
-l_int|0xb0
-suffix:colon
-r_case
-l_int|0xb2
-suffix:colon
-r_case
-l_int|0xaa
-suffix:colon
-r_case
-l_int|0xae
-suffix:colon
-r_case
-l_int|0x24
-suffix:colon
-r_case
-l_int|0x38
-suffix:colon
-r_case
-l_int|0x3d
-suffix:colon
-r_case
-l_int|0xb6
-suffix:colon
-r_case
-l_int|0xea
-suffix:colon
-multiline_comment|/* alternate number for WRITE LONG */
 id|current_SC-&gt;SCp.have_data_in
 op_assign
 op_minus
@@ -4678,13 +4593,9 @@ comma
 id|TMC_Cntl_port
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|0x00
-suffix:colon
-r_default
-suffix:colon
+)brace
+r_else
+(brace
 id|current_SC-&gt;SCp.have_data_in
 op_assign
 l_int|1
@@ -4698,8 +4609,6 @@ id|PARITY_MASK
 comma
 id|TMC_Cntl_port
 )paren
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 )brace
@@ -4843,7 +4752,13 @@ id|current_SC-&gt;SCp.buffer
 suffix:semicolon
 id|current_SC-&gt;SCp.ptr
 op_assign
-id|current_SC-&gt;SCp.buffer-&gt;address
+id|page_address
+c_func
+(paren
+id|current_SC-&gt;SCp.buffer-&gt;page
+)paren
+op_plus
+id|current_SC-&gt;SCp.buffer-&gt;offset
 suffix:semicolon
 id|current_SC-&gt;SCp.this_residual
 op_assign
@@ -4988,7 +4903,13 @@ id|current_SC-&gt;SCp.buffer
 suffix:semicolon
 id|current_SC-&gt;SCp.ptr
 op_assign
-id|current_SC-&gt;SCp.buffer-&gt;address
+id|page_address
+c_func
+(paren
+id|current_SC-&gt;SCp.buffer-&gt;page
+)paren
+op_plus
+id|current_SC-&gt;SCp.buffer-&gt;offset
 suffix:semicolon
 id|current_SC-&gt;SCp.this_residual
 op_assign
@@ -5301,6 +5222,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|fdomain_16x0_queue
+r_static
 r_int
 id|fdomain_16x0_queue
 c_func
@@ -5387,7 +5309,13 @@ id|current_SC-&gt;request_buffer
 suffix:semicolon
 id|current_SC-&gt;SCp.ptr
 op_assign
-id|current_SC-&gt;SCp.buffer-&gt;address
+id|page_address
+c_func
+(paren
+id|current_SC-&gt;SCp.buffer-&gt;page
+)paren
+op_plus
+id|current_SC-&gt;SCp.buffer-&gt;offset
 suffix:semicolon
 id|current_SC-&gt;SCp.this_residual
 op_assign
@@ -5533,6 +5461,7 @@ id|internal_done_flag
 suffix:semicolon
 )brace
 DECL|function|fdomain_16x0_command
+r_static
 r_int
 id|fdomain_16x0_command
 c_func
@@ -5556,6 +5485,10 @@ c_loop
 op_logical_neg
 id|internal_done_flag
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 id|internal_done_flag
 op_assign
@@ -5567,6 +5500,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* End of code derived from Tommy Thorn&squot;s work. */
 DECL|function|print_info
+r_static
 r_void
 id|print_info
 c_func
@@ -5601,6 +5535,7 @@ id|SCpnt-&gt;host
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;scsi: &lt;fdomain&gt; Cannot provide detailed information&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5610,6 +5545,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|fdomain_16x0_info
@@ -5637,7 +5573,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;arbitration &quot;
+l_string|&quot;arbitration&quot;
 )paren
 suffix:semicolon
 r_break
@@ -5648,7 +5584,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;selection &quot;
+l_string|&quot;selection&quot;
 )paren
 suffix:semicolon
 r_break
@@ -5659,7 +5595,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;other &quot;
+l_string|&quot;other&quot;
 )paren
 suffix:semicolon
 r_break
@@ -5669,7 +5605,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;unknown &quot;
+l_string|&quot;unknown&quot;
 )paren
 suffix:semicolon
 r_break
@@ -5678,7 +5614,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;(%d), target = %d cmnd = 0x%02x pieces = %d size = %u&bslash;n&quot;
+l_string|&quot; (%d), target = %d cmnd = 0x%02x pieces = %d size = %u&bslash;n&quot;
 comma
 id|SCpnt-&gt;SCp.phase
 comma
@@ -6005,6 +5941,7 @@ id|Configuration2
 suffix:semicolon
 )brace
 DECL|function|fdomain_16x0_abort
+r_static
 r_int
 id|fdomain_16x0_abort
 c_func
@@ -6014,10 +5951,6 @@ op_star
 id|SCpnt
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 macro_line|#if EVERY_ACCESS || ERRORS_ONLY || DEBUG_ABORT
 id|printk
 c_func
@@ -6026,17 +5959,6 @@ l_string|&quot;scsi: &lt;fdomain&gt; abort &quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6052,14 +5974,8 @@ l_string|&quot; (not in command)&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_return
-id|SCSI_ABORT_NOT_RUNNING
+id|FAILED
 suffix:semicolon
 )brace
 r_else
@@ -6092,12 +6008,6 @@ id|DID_ABORT
 op_lshift
 l_int|16
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Aborts are not done well. . . */
 id|my_done
 c_func
@@ -6108,61 +6018,20 @@ l_int|16
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_SUCCESS
+id|SUCCESS
 suffix:semicolon
 )brace
-DECL|function|fdomain_16x0_reset
+DECL|function|fdomain_16x0_bus_reset
+r_static
 r_int
-id|fdomain_16x0_reset
+id|fdomain_16x0_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|SCpnt
-comma
-r_int
-r_int
-id|ignored
 )paren
 (brace
-macro_line|#if DEBUG_RESET
-r_static
-r_int
-id|called_once
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
-macro_line|#if ERRORS_ONLY
-r_if
-c_cond
-(paren
-id|SCpnt
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;scsi: &lt;fdomain&gt; SCSI Bus Reset&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if DEBUG_RESET
-r_if
-c_cond
-(paren
-id|called_once
-)paren
-id|print_info
-c_func
-(paren
-id|current_SC
-)paren
-suffix:semicolon
-id|called_once
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 id|outb
 c_func
 (paren
@@ -6207,14 +6076,44 @@ comma
 id|TMC_Cntl_port
 )paren
 suffix:semicolon
-multiline_comment|/* Unless this is the very first call (i.e., SCPnt == NULL), everything&n;      is probably hosed at this point.  We will, however, try to keep&n;      things going by informing the high-level code that we need help. */
 r_return
-id|SCSI_RESET_WAKEUP
+id|SUCCESS
+suffix:semicolon
+)brace
+DECL|function|fdomain_16x0_host_reset
+r_static
+r_int
+id|fdomain_16x0_host_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+(brace
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+DECL|function|fdomain_16x0_device_reset
+r_static
+r_int
+id|fdomain_16x0_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+(brace
+r_return
+id|FAILED
 suffix:semicolon
 )brace
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 DECL|function|fdomain_16x0_biosparam
+r_static
 r_int
 id|fdomain_16x0_biosparam
 c_func
@@ -6734,6 +6633,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|fdomain_16x0_release
+r_static
 r_int
 id|fdomain_16x0_release
 c_func

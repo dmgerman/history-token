@@ -27,6 +27,7 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;aha152x.h&quot;
 macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 multiline_comment|/* DEFINES */
 multiline_comment|/* For PCMCIA cards, always use AUTOCONF */

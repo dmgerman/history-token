@@ -6,6 +6,7 @@ mdefine_line|#define PPA_CODE 1
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 r_int
@@ -97,7 +98,7 @@ DECL|typedef|ppa_struct
 id|ppa_struct
 suffix:semicolon
 DECL|macro|PPA_EMPTY
-mdefine_line|#define PPA_EMPTY&t;&bslash;&n;{&t;dev:&t;&t;NULL,&t;&t;&bslash;&n;&t;base:&t;&t;-1,&t;&t;&bslash;&n;&t;mode:&t;&t;PPA_AUTODETECT,&t;&bslash;&n;&t;host:&t;&t;-1,&t;&t;&bslash;&n;&t;cur_cmd:&t;NULL,&t;&t;&bslash;&n;&t;ppa_tq:&t;&t;{ routine: ppa_interrupt },&t;&bslash;&n;&t;jstart:&t;&t;0,&t;&t;&bslash;&n;&t;recon_tmo:      PPA_RECON_TMO,&t;&bslash;&n;&t;failed:&t;&t;0,&t;&t;&bslash;&n;&t;p_busy:&t;&t;0&t;&t;&bslash;&n;}
+mdefine_line|#define PPA_EMPTY&t;&bslash;&n;{&t;dev:&t;&t;NULL,&t;&t;&bslash;&n;&t;base:&t;&t;-1,&t;&t;&bslash;&n;&t;mode:&t;&t;PPA_AUTODETECT,&t;&bslash;&n;&t;host:&t;&t;-1,&t;&t;&bslash;&n;&t;cur_cmd:&t;NULL,&t;&t;&bslash;&n;&t;ppa_tq:&t;&t;{ func: ppa_interrupt },&t;&bslash;&n;&t;jstart:&t;&t;0,&t;&t;&bslash;&n;&t;recon_tmo:      PPA_RECON_TMO,&t;&bslash;&n;&t;failed:&t;&t;0,&t;&t;&bslash;&n;&t;p_busy:&t;&t;0&t;&t;&bslash;&n;}
 macro_line|#include  &quot;ppa.h&quot;
 DECL|macro|NO_HOSTS
 mdefine_line|#define NO_HOSTS 4
@@ -3560,10 +3561,6 @@ op_star
 )paren
 id|tmp
 suffix:semicolon
-id|tmp-&gt;ppa_tq.sync
-op_assign
-l_int|0
-suffix:semicolon
 id|schedule_delayed_work
 c_func
 (paren
@@ -4406,15 +4403,6 @@ op_assign
 id|ppa_hosts
 op_plus
 id|host_no
-suffix:semicolon
-id|ppa_hosts
-(braket
-id|host_no
-)braket
-dot
-id|ppa_tq.sync
-op_assign
-l_int|0
 suffix:semicolon
 id|schedule_work
 c_func

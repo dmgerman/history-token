@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 DECL|macro|N_DATA
 macro_line|#undef N_DATA
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;

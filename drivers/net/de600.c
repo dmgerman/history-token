@@ -6,25 +6,16 @@ id|version
 (braket
 )braket
 op_assign
-l_string|&quot;de600.c: $Revision: 1.40 $,  Bjorn Ekwall (bj0rn@blox.se)&bslash;n&quot;
+l_string|&quot;de600.c: $Revision: 1.41-2.5 $,  Bjorn Ekwall (bj0rn@blox.se)&bslash;n&quot;
 suffix:semicolon
-multiline_comment|/*&n; *&t;de600.c&n; *&n; *&t;Linux driver for the D-Link DE-600 Ethernet pocket adapter.&n; *&n; *&t;Portions (C) Copyright 1993, 1994 by Bjorn Ekwall&n; *&t;The Author may be reached as bj0rn@blox.se&n; *&n; *&t;Based on adapter information gathered from DE600.ASM by D-Link Inc.,&n; *&t;as included on disk C in the v.2.11 of PC/TCP from FTP Software.&n; *&t;For DE600.asm:&n; *&t;&t;Portions (C) Copyright 1990 D-Link, Inc.&n; *&t;&t;Copyright, 1988-1992, Russell Nelson, Crynwr Software&n; *&n; *&t;Adapted to the sample network driver core for linux,&n; *&t;written by: Donald Becker &lt;becker@super.org&gt;&n; *&t;&t;(Now at &lt;becker@scyld.com&gt;)&n; *&n; *&t;compile-command:&n; *&t;&quot;gcc -D__KERNEL__  -Wall -Wstrict-prototypes -O6 -fomit-frame-pointer &bslash;&n; *&t; -m486 -c de600.c&n; *&n; **************************************************************/
+multiline_comment|/*&n; *&t;de600.c&n; *&n; *&t;Linux driver for the D-Link DE-600 Ethernet pocket adapter.&n; *&n; *&t;Portions (C) Copyright 1993, 1994 by Bjorn Ekwall&n; *&t;The Author may be reached as bj0rn@blox.se&n; *&n; *&t;Based on adapter information gathered from DE600.ASM by D-Link Inc.,&n; *&t;as included on disk C in the v.2.11 of PC/TCP from FTP Software.&n; *&t;For DE600.asm:&n; *&t;&t;Portions (C) Copyright 1990 D-Link, Inc.&n; *&t;&t;Copyright, 1988-1992, Russell Nelson, Crynwr Software&n; *&n; *&t;Adapted to the sample network driver core for linux,&n; *&t;written by: Donald Becker &lt;becker@super.org&gt;&n; *&t;&t;(Now at &lt;becker@scyld.com&gt;)&n; *&n; **************************************************************/
 multiline_comment|/*&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2, or (at your option)&n; *&t;any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; **************************************************************/
 multiline_comment|/* Add more time here if your adapter won&squot;t work OK: */
 DECL|macro|DE600_SLOW_DOWN
-mdefine_line|#define DE600_SLOW_DOWN udelay(delay_time)
+mdefine_line|#define DE600_SLOW_DOWN&t;udelay(delay_time)
 multiline_comment|/*&n; * If you still have trouble reading/writing to the adapter,&n; * modify the following &quot;#define&quot;: (see &lt;asm/io.h&gt; for more info)&n;#define REALLY_SLOW_IO&n; */
 DECL|macro|SLOW_IO_BY_JUMPING
 mdefine_line|#define SLOW_IO_BY_JUMPING /* Looks &quot;better&quot; than dummy write to port 0x80 :-) */
-multiline_comment|/*&n; * If you want to enable automatic continuous checking for the DE600,&n; * keep this #define enabled.&n; * It doesn&squot;t cost much per packet, so I think it is worth it!&n; * If you disagree, comment away the #define, and live with it...&n; *&n; */
-DECL|macro|CHECK_LOST_DE600
-mdefine_line|#define CHECK_LOST_DE600
-multiline_comment|/*&n; * Enable this #define if you want the adapter to do a &quot;ifconfig down&quot; on&n; * itself when we have detected that something is possibly wrong with it.&n; * The default behaviour is to retry with &quot;adapter_init()&quot; until success.&n; * This should be used for debugging purposes only.&n; * (Depends on the CHECK_LOST_DE600 above)&n; *&n; */
-DECL|macro|SHUTDOWN_WHEN_LOST
-mdefine_line|#define SHUTDOWN_WHEN_LOST
-multiline_comment|/*&n; * See comment at &quot;de600_rspace()&quot;!&n; * This is an *ugly* hack, but for now it achieves its goal of&n; * faking a TCP flow-control that will not flood the poor DE600.&n; *&n; * Tricks TCP to announce a small max window (max 2 fast packets please :-)&n; *&n; * Comment away at your own risk!&n; *&n; * Update: Use the more general per-device maxwindow parameter instead.&n; */
-DECL|macro|FAKE_SMALL_MAX
-macro_line|#undef FAKE_SMALL_MAX
 multiline_comment|/* use 0 for production, 1 for verification, &gt;2 for debug */
 macro_line|#ifdef DE600_DEBUG
 DECL|macro|PRINTK
@@ -35,7 +26,6 @@ mdefine_line|#define DE600_DEBUG 0
 DECL|macro|PRINTK
 mdefine_line|#define PRINTK(x) /**/
 macro_line|#endif
-"&f;"
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -54,6 +44,7 @@ macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &quot;de600.h&quot;
 DECL|variable|de600_debug
 r_static
 r_int
@@ -78,6 +69,30 @@ comma
 l_string|&quot;DE-600 debug level (0-2)&quot;
 )paren
 suffix:semicolon
+DECL|variable|check_lost
+r_static
+r_int
+r_int
+id|check_lost
+op_assign
+l_int|1
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|check_lost
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|check_lost
+comma
+l_string|&quot;If set then check for unplugged de600&quot;
+)paren
+suffix:semicolon
 DECL|variable|delay_time
 r_static
 r_int
@@ -100,273 +115,6 @@ c_func
 id|delay_time
 comma
 l_string|&quot;DE-600 deley on I/O in microseconds&quot;
-)paren
-suffix:semicolon
-macro_line|#ifdef FAKE_SMALL_MAX
-r_static
-r_int
-r_int
-id|de600_rspace
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-)paren
-suffix:semicolon
-macro_line|#include &lt;net/sock.h&gt;
-macro_line|#endif
-DECL|typedef|byte
-r_typedef
-r_int
-r_char
-id|byte
-suffix:semicolon
-multiline_comment|/**************************************************&n; *                                                *&n; * Definition of D-Link Ethernet Pocket adapter   *&n; *                                                *&n; **************************************************/
-multiline_comment|/*&n; * D-Link Ethernet pocket adapter ports&n; */
-multiline_comment|/*&n; * OK, so I&squot;m cheating, but there are an awful lot of&n; * reads and writes in order to get anything in and out&n; * of the DE-600 with 4 bits at a time in the parallel port,&n; * so every saved instruction really helps :-)&n; *&n; * That is, I don&squot;t care what the device struct says&n; * but hope that Space.c will keep the rest of the drivers happy.&n; */
-macro_line|#ifndef DE600_IO
-DECL|macro|DE600_IO
-mdefine_line|#define DE600_IO 0x378
-macro_line|#endif
-DECL|macro|DATA_PORT
-mdefine_line|#define DATA_PORT&t;(DE600_IO)
-DECL|macro|STATUS_PORT
-mdefine_line|#define STATUS_PORT&t;(DE600_IO + 1)
-DECL|macro|COMMAND_PORT
-mdefine_line|#define COMMAND_PORT&t;(DE600_IO + 2)
-macro_line|#ifndef DE600_IRQ
-DECL|macro|DE600_IRQ
-mdefine_line|#define DE600_IRQ&t;7
-macro_line|#endif
-multiline_comment|/*&n; * It really should look like this, and autoprobing as well...&n; *&n;#define DATA_PORT&t;(dev-&gt;base_addr + 0)&n;#define STATUS_PORT&t;(dev-&gt;base_addr + 1)&n;#define COMMAND_PORT&t;(dev-&gt;base_addr + 2)&n;#define DE600_IRQ&t;dev-&gt;irq&n; */
-multiline_comment|/*&n; * D-Link COMMAND_PORT commands&n; */
-DECL|macro|SELECT_NIC
-mdefine_line|#define SELECT_NIC&t;0x04 /* select Network Interface Card */
-DECL|macro|SELECT_PRN
-mdefine_line|#define SELECT_PRN&t;0x1c /* select Printer */
-DECL|macro|NML_PRN
-mdefine_line|#define NML_PRN&t;&t;0xec /* normal Printer situation */
-DECL|macro|IRQEN
-mdefine_line|#define IRQEN&t;&t;0x10 /* enable IRQ line */
-multiline_comment|/*&n; * D-Link STATUS_PORT&n; */
-DECL|macro|RX_BUSY
-mdefine_line|#define RX_BUSY&t;&t;0x80
-DECL|macro|RX_GOOD
-mdefine_line|#define RX_GOOD&t;&t;0x40
-DECL|macro|TX_FAILED16
-mdefine_line|#define TX_FAILED16&t;0x10
-DECL|macro|TX_BUSY
-mdefine_line|#define TX_BUSY&t;&t;0x08
-multiline_comment|/*&n; * D-Link DATA_PORT commands&n; * command in low 4 bits&n; * data in high 4 bits&n; * select current data nibble with HI_NIBBLE bit&n; */
-DECL|macro|WRITE_DATA
-mdefine_line|#define WRITE_DATA&t;0x00 /* write memory */
-DECL|macro|READ_DATA
-mdefine_line|#define READ_DATA&t;0x01 /* read memory */
-DECL|macro|STATUS
-mdefine_line|#define STATUS&t;&t;0x02 /* read  status register */
-DECL|macro|COMMAND
-mdefine_line|#define COMMAND&t;&t;0x03 /* write command register (see COMMAND below) */
-DECL|macro|NULL_COMMAND
-mdefine_line|#define NULL_COMMAND&t;0x04 /* null command */
-DECL|macro|RX_LEN
-mdefine_line|#define RX_LEN&t;&t;0x05 /* read  received packet length */
-DECL|macro|TX_ADDR
-mdefine_line|#define TX_ADDR&t;&t;0x06 /* set adapter transmit memory address */
-DECL|macro|RW_ADDR
-mdefine_line|#define RW_ADDR&t;&t;0x07 /* set adapter read/write memory address */
-DECL|macro|HI_NIBBLE
-mdefine_line|#define HI_NIBBLE&t;0x08 /* read/write the high nibble of data,&n;&t;&t;&t;&t;or-ed with rest of command */
-multiline_comment|/*&n; * command register, accessed through DATA_PORT with low bits = COMMAND&n; */
-DECL|macro|RX_ALL
-mdefine_line|#define RX_ALL&t;&t;0x01 /* PROMISCUOUS */
-DECL|macro|RX_BP
-mdefine_line|#define RX_BP&t;&t;0x02 /* default: BROADCAST &amp; PHYSICAL ADDRESS */
-DECL|macro|RX_MBP
-mdefine_line|#define RX_MBP&t;&t;0x03 /* MULTICAST, BROADCAST &amp; PHYSICAL ADDRESS */
-DECL|macro|TX_ENABLE
-mdefine_line|#define TX_ENABLE&t;0x04 /* bit 2 */
-DECL|macro|RX_ENABLE
-mdefine_line|#define RX_ENABLE&t;0x08 /* bit 3 */
-DECL|macro|RESET
-mdefine_line|#define RESET&t;&t;0x80 /* set bit 7 high */
-DECL|macro|STOP_RESET
-mdefine_line|#define STOP_RESET&t;0x00 /* set bit 7 low */
-multiline_comment|/*&n; * data to command register&n; * (high 4 bits in write to DATA_PORT)&n; */
-DECL|macro|RX_PAGE2_SELECT
-mdefine_line|#define RX_PAGE2_SELECT&t;0x10 /* bit 4, only 2 pages to select */
-DECL|macro|RX_BASE_PAGE
-mdefine_line|#define RX_BASE_PAGE&t;0x20 /* bit 5, always set when specifying RX_ADDR */
-DECL|macro|FLIP_IRQ
-mdefine_line|#define FLIP_IRQ&t;0x40 /* bit 6 */
-multiline_comment|/*&n; * D-Link adapter internal memory:&n; *&n; * 0-2K 1:st transmit page (send from pointer up to 2K)&n; * 2-4K&t;2:nd transmit page (send from pointer up to 4K)&n; *&n; * 4-6K 1:st receive page (data from 4K upwards)&n; * 6-8K 2:nd receive page (data from 6K upwards)&n; *&n; * 8K+&t;Adapter ROM (contains magic code and last 3 bytes of Ethernet address)&n; */
-DECL|macro|MEM_2K
-mdefine_line|#define MEM_2K&t;&t;0x0800 /* 2048 */
-DECL|macro|MEM_4K
-mdefine_line|#define MEM_4K&t;&t;0x1000 /* 4096 */
-DECL|macro|MEM_6K
-mdefine_line|#define MEM_6K&t;&t;0x1800 /* 6144 */
-DECL|macro|NODE_ADDRESS
-mdefine_line|#define NODE_ADDRESS&t;0x2000 /* 8192 */
-DECL|macro|RUNT
-mdefine_line|#define RUNT 60&t;&t;/* Too small Ethernet packet */
-multiline_comment|/**************************************************&n; *                                                *&n; *             End of definition                  *&n; *                                                *&n; **************************************************/
-multiline_comment|/*&n; * Index to functions, as function prototypes.&n; */
-multiline_comment|/* Routines used internally. (See &quot;convenience macros&quot;) */
-r_static
-id|byte
-id|de600_read_status
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-id|byte
-id|de600_read_byte
-c_func
-(paren
-r_int
-r_char
-id|type
-comma
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* Put in the device structure. */
-r_static
-r_int
-id|de600_open
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_int
-id|de600_close
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_struct
-id|net_device_stats
-op_star
-id|get_stats
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_int
-id|de600_start_xmit
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* Dispatch from interrupts. */
-r_static
-r_void
-id|de600_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_static
-r_int
-id|de600_tx_intr
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_int
-id|irq_status
-)paren
-suffix:semicolon
-r_static
-r_void
-id|de600_rx_intr
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-multiline_comment|/* Initialization */
-r_static
-r_void
-id|trigger_interrupt
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_int
-id|de600_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_int
-id|adapter_init
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * D-Link driver variables:&n; */
@@ -412,30 +160,15 @@ r_static
 r_int
 id|was_down
 suffix:semicolon
-multiline_comment|/*&n; * Convenience macros/functions for D-Link adapter&n; */
-DECL|macro|select_prn
-mdefine_line|#define select_prn() outb_p(SELECT_PRN, COMMAND_PORT); DE600_SLOW_DOWN
-DECL|macro|select_nic
-mdefine_line|#define select_nic() outb_p(SELECT_NIC, COMMAND_PORT); DE600_SLOW_DOWN
-multiline_comment|/* Thanks for hints from Mark Burton &lt;markb@ordern.demon.co.uk&gt; */
-DECL|macro|de600_put_byte
-mdefine_line|#define de600_put_byte(data) ( &bslash;&n;&t;outb_p(((data) &lt;&lt; 4)   | WRITE_DATA            , DATA_PORT), &bslash;&n;&t;outb_p(((data) &amp; 0xf0) | WRITE_DATA | HI_NIBBLE, DATA_PORT))
-multiline_comment|/*&n; * The first two outb_p()&squot;s below could perhaps be deleted if there&n; * would be more delay in the last two. Not certain about it yet...&n; */
-DECL|macro|de600_put_command
-mdefine_line|#define de600_put_command(cmd) ( &bslash;&n;&t;outb_p(( rx_page        &lt;&lt; 4)   | COMMAND            , DATA_PORT), &bslash;&n;&t;outb_p(( rx_page        &amp; 0xf0) | COMMAND | HI_NIBBLE, DATA_PORT), &bslash;&n;&t;outb_p(((rx_page | cmd) &lt;&lt; 4)   | COMMAND            , DATA_PORT), &bslash;&n;&t;outb_p(((rx_page | cmd) &amp; 0xf0) | COMMAND | HI_NIBBLE, DATA_PORT))
-DECL|macro|de600_setup_address
-mdefine_line|#define de600_setup_address(addr,type) ( &bslash;&n;&t;outb_p((((addr) &lt;&lt; 4) &amp; 0xf0) | type            , DATA_PORT), &bslash;&n;&t;outb_p(( (addr)       &amp; 0xf0) | type | HI_NIBBLE, DATA_PORT), &bslash;&n;&t;outb_p((((addr) &gt;&gt; 4) &amp; 0xf0) | type            , DATA_PORT), &bslash;&n;&t;outb_p((((addr) &gt;&gt; 8) &amp; 0xf0) | type | HI_NIBBLE, DATA_PORT))
-DECL|macro|rx_page_adr
-mdefine_line|#define rx_page_adr() ((rx_page &amp; RX_PAGE2_SELECT)?(MEM_6K):(MEM_4K))
-multiline_comment|/* Flip bit, only 2 pages */
-DECL|macro|next_rx_page
-mdefine_line|#define next_rx_page() (rx_page ^= RX_PAGE2_SELECT)
-DECL|macro|tx_page_adr
-mdefine_line|#define tx_page_adr(a) (((a) + 1) * MEM_2K)
+DECL|variable|de600_lock
+r_static
+id|spinlock_t
+id|de600_lock
+suffix:semicolon
+DECL|function|de600_read_status
 r_static
 r_inline
-id|byte
-DECL|function|de600_read_status
+id|u8
 id|de600_read_status
 c_func
 (paren
@@ -445,7 +178,7 @@ op_star
 id|dev
 )paren
 (brace
-id|byte
+id|u8
 id|status
 suffix:semicolon
 id|outb_p
@@ -478,10 +211,10 @@ r_return
 id|status
 suffix:semicolon
 )brace
+DECL|function|de600_read_byte
 r_static
 r_inline
-id|byte
-DECL|function|de600_read_byte
+id|u8
 id|de600_read_byte
 c_func
 (paren
@@ -496,12 +229,9 @@ id|dev
 )paren
 (brace
 multiline_comment|/* dev used by macros */
-id|byte
+id|u8
 id|lo
 suffix:semicolon
-(paren
-r_void
-)paren
 id|outb_p
 c_func
 (paren
@@ -528,9 +258,6 @@ id|STATUS_PORT
 op_rshift
 l_int|4
 suffix:semicolon
-(paren
-r_void
-)paren
 id|outb_p
 c_func
 (paren
@@ -565,11 +292,10 @@ op_or
 id|lo
 suffix:semicolon
 )brace
-"&f;"
 multiline_comment|/*&n; * Open/initialize the board.  This is called (in the current kernel)&n; * after booting when &squot;ifconfig &lt;dev-&gt;name&gt; $IP_ADDR&squot; is run (in rc.inet1).&n; *&n; * This routine should set everything up anew at each open, even&n; * registers that &quot;should&quot; only need to be set once at boot, so that&n; * there is a non-reboot way to recover if something goes wrong.&n; */
+DECL|function|de600_open
 r_static
 r_int
-DECL|function|de600_open
 id|de600_open
 c_func
 (paren
@@ -579,6 +305,10 @@ op_star
 id|dev
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_int
 id|ret
 op_assign
@@ -603,7 +333,9 @@ id|ret
 )paren
 (brace
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: unable to get IRQ %d&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -615,27 +347,40 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_if
-c_cond
+id|spin_lock_irqsave
+c_func
 (paren
+op_amp
+id|de600_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|adapter_init
 c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|de600_lock
+comma
+id|flags
 )paren
-r_return
-op_minus
-id|EIO
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The inverse routine to de600_open().&n; */
+DECL|function|de600_close
 r_static
 r_int
-DECL|function|de600_close
 id|de600_close
 c_func
 (paren
@@ -677,17 +422,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|netif_running
-c_func
-(paren
-id|dev
-)paren
-)paren
-(brace
-multiline_comment|/* perhaps not needed? */
 id|free_irq
 c_func
 (paren
@@ -696,16 +430,15 @@ comma
 id|dev
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|get_stats
 r_static
 r_struct
 id|net_device_stats
 op_star
-DECL|function|get_stats
 id|get_stats
 c_func
 (paren
@@ -726,10 +459,10 @@ id|dev-&gt;priv
 )paren
 suffix:semicolon
 )brace
+DECL|function|trigger_interrupt
 r_static
 r_inline
 r_void
-DECL|function|trigger_interrupt
 id|trigger_interrupt
 c_func
 (paren
@@ -765,9 +498,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Copy a buffer to the adapter transmit page memory.&n; * Start sending.&n; */
+DECL|function|de600_start_xmit
 r_static
 r_int
-DECL|function|de600_start_xmit
 id|de600_start_xmit
 c_func
 (paren
@@ -795,7 +528,7 @@ suffix:semicolon
 r_int
 id|tickssofar
 suffix:semicolon
-id|byte
+id|u8
 op_star
 id|buffer
 op_assign
@@ -830,6 +563,7 @@ multiline_comment|/* else */
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: transmit timed out (%d), %s?&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -840,6 +574,15 @@ l_string|&quot;network cable problem&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Restart the adapter. */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|de600_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -850,10 +593,28 @@ id|dev
 )paren
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|de600_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|de600_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Start real output */
 id|PRINTK
@@ -885,15 +646,13 @@ id|len
 op_assign
 id|RUNT
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|de600_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|select_nic
@@ -927,7 +686,12 @@ op_mod
 id|TX_PAGES
 suffix:semicolon
 multiline_comment|/* Next free tx page */
-macro_line|#ifdef CHECK_LOST_DE600
+r_if
+c_cond
+(paren
+id|check_lost
+)paren
+(brace
 multiline_comment|/* This costs about 40 instructions per packet... */
 id|de600_setup_address
 c_func
@@ -973,9 +737,12 @@ id|dev
 )paren
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|de600_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -984,7 +751,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+)brace
 id|de600_setup_address
 c_func
 (paren
@@ -1077,39 +844,17 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|de600_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef FAKE_SMALL_MAX
-multiline_comment|/* This will &quot;patch&quot; the socket TCP proto at an early moment */
-r_if
-c_cond
-(paren
-id|skb-&gt;sk
-op_logical_and
-(paren
-id|skb-&gt;sk-&gt;protocol
-op_eq
-id|IPPROTO_TCP
-)paren
-op_logical_and
-(paren
-id|skb-&gt;sk-&gt;prot-&gt;rspace
-op_ne
-op_amp
-id|de600_rspace
-)paren
-)paren
-id|skb-&gt;sk-&gt;prot-&gt;rspace
-op_assign
-id|de600_rspace
-suffix:semicolon
-multiline_comment|/* Ugh! */
-macro_line|#endif
 id|dev_kfree_skb
+c_func
 (paren
 id|skb
 )paren
@@ -1118,11 +863,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-"&f;"
 multiline_comment|/*&n; * The typical workload of the driver:&n; * Handle the network interface interrupts.&n; */
+DECL|function|de600_interrupt
 r_static
 r_void
-DECL|function|de600_interrupt
 id|de600_interrupt
 c_func
 (paren
@@ -1146,7 +890,7 @@ id|dev
 op_assign
 id|dev_id
 suffix:semicolon
-id|byte
+id|u8
 id|irq_status
 suffix:semicolon
 r_int
@@ -1179,6 +923,7 @@ id|irq
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: bogus interrupt %d&bslash;n&quot;
 comma
 id|dev
@@ -1194,6 +939,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|de600_lock
+)paren
+suffix:semicolon
 id|select_nic
 c_func
 (paren
@@ -1320,12 +1072,19 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|de600_lock
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|function|de600_tx_intr
 r_static
 r_int
-DECL|function|de600_tx_intr
 id|de600_tx_intr
 c_func
 (paren
@@ -1446,9 +1205,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * We have a good packet, get it out of the adapter.&n; */
+DECL|function|de600_rx_intr
 r_static
 r_void
-DECL|function|de600_rx_intr
 id|de600_rx_intr
 c_func
 (paren
@@ -1464,10 +1223,6 @@ op_star
 id|skb
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|i
 suffix:semicolon
 r_int
@@ -1476,22 +1231,10 @@ suffix:semicolon
 r_int
 id|size
 suffix:semicolon
-r_register
 r_int
 r_char
 op_star
 id|buffer
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
 suffix:semicolon
 multiline_comment|/* Get size of received packet */
 id|size
@@ -1544,12 +1287,6 @@ c_func
 id|RX_ENABLE
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1569,6 +1306,7 @@ l_int|1535
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: Bogus packet size %d.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1737,11 +1475,11 @@ op_add_assign
 id|size
 suffix:semicolon
 multiline_comment|/* count all received bytes */
-multiline_comment|/*&n;&t; * If any worth-while packets have been received, netif_rx()&n;&t; * has done a mark_bh(INET_BH) for us and will work on them&n;&t; * when we get to the bottom-half routine.&n;&t; */
+multiline_comment|/*&n;&t; * If any worth-while packets have been received, netif_rx()&n;&t; * will work on them when we get to the tasklets.&n;&t; */
 )brace
+DECL|function|de600_probe
 r_int
 id|__init
-DECL|function|de600_probe
 id|de600_probe
 c_func
 (paren
@@ -1769,6 +1507,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: D-Link DE-600 pocket adapter&quot;
 comma
 id|dev-&gt;name
@@ -1963,33 +1702,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#if 0 /* Not yet */
-r_if
-c_cond
-(paren
-id|check_region
-c_func
-(paren
-id|DE600_IO
-comma
-l_int|3
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;, port 0x%x busy&bslash;n&quot;
-comma
-id|DE600_IO
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-macro_line|#endif
 id|request_region
 c_func
 (paren
@@ -2099,9 +1811,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|adapter_init
 r_static
 r_int
-DECL|function|adapter_init
 id|adapter_init
 c_func
 (paren
@@ -2113,21 +1825,6 @@ id|dev
 (brace
 r_int
 id|i
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
 suffix:semicolon
 id|select_nic
 c_func
@@ -2151,7 +1848,6 @@ c_func
 id|STOP_RESET
 )paren
 suffix:semicolon
-macro_line|#ifdef CHECK_LOST_DE600
 multiline_comment|/* Check if it is still there... */
 multiline_comment|/* Get the some bytes of the adapter ethernet address from the ROM */
 id|de600_setup_address
@@ -2202,14 +1898,9 @@ multiline_comment|/* was: if (de600_read_status(dev) &amp; 0xf0) { */
 id|printk
 c_func
 (paren
-l_string|&quot;Something has happened to the DE-600!  Please check it&quot;
-macro_line|#ifdef SHUTDOWN_WHEN_LOST
-l_string|&quot; and do a new ifconfig&quot;
-macro_line|#endif /* SHUTDOWN_WHEN_LOST */
-l_string|&quot;!&bslash;n&quot;
+l_string|&quot;Something has happened to the DE-600!  Please check it and do a new ifconfig!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef SHUTDOWN_WHEN_LOST
 multiline_comment|/* Goodbye, cruel world... */
 id|dev-&gt;flags
 op_and_assign
@@ -2222,7 +1913,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif /* SHUTDOWN_WHEN_LOST */
 id|was_down
 op_assign
 l_int|1
@@ -2234,18 +1924,11 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Transmit busy...  */
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/* failed */
 )brace
-macro_line|#endif /* CHECK_LOST_DE600 */
 r_if
 c_cond
 (paren
@@ -2255,7 +1938,10 @@ id|was_down
 id|printk
 c_func
 (paren
-l_string|&quot;Thanks, I feel much better now!&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: Thanks, I feel much better now!&bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
 suffix:semicolon
 id|was_down
@@ -2263,12 +1949,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|netif_start_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|tx_fifo_in
 op_assign
 l_int|0
@@ -2340,10 +2020,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|restore_flags
+id|netif_start_queue
 c_func
 (paren
-id|flags
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -2351,118 +2031,29 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* OK */
 )brace
-macro_line|#ifdef FAKE_SMALL_MAX
-multiline_comment|/*&n; *&t;The new router code (coming soon 8-) ) will fix this properly.&n; */
-DECL|macro|DE600_MIN_WINDOW
-mdefine_line|#define DE600_MIN_WINDOW 1024
-DECL|macro|DE600_MAX_WINDOW
-mdefine_line|#define DE600_MAX_WINDOW 2048
-DECL|macro|DE600_TCP_WINDOW_DIFF
-mdefine_line|#define DE600_TCP_WINDOW_DIFF 1024
-multiline_comment|/*&n; * Copied from &quot;net/inet/sock.c&quot;&n; *&n; * Sets a lower max receive window in order to achieve &lt;= 2&n; * packets arriving at the adapter in fast succession.&n; * (No way that a DE-600 can keep up with a net saturated&n; *  with packets homing in on it :-( )&n; *&n; * Since there are only 2 receive buffers in the DE-600&n; * and it takes some time to copy from the adapter,&n; * this is absolutely necessary for any TCP performance whatsoever!&n; *&n; * Note that the returned window info will never be smaller than&n; * DE600_MIN_WINDOW, i.e. 1024&n; * This differs from the standard function, that can return an&n; * arbitrarily small window!&n; */
-r_static
-r_int
-r_int
-DECL|function|de600_rspace
-id|de600_rspace
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-)paren
-(brace
-r_int
-id|amt
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sk
-op_ne
-l_int|NULL
-)paren
-(brace
-multiline_comment|/*&n; * Hack! You might want to play with commenting away the following line,&n; * if you know what you do!&n;  &t;sk-&gt;max_unacked = DE600_MAX_WINDOW - DE600_TCP_WINDOW_DIFF;&n; */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|sk-&gt;rmem_alloc
-)paren
-op_ge
-id|sk-&gt;rcvbuf
-op_minus
-l_int|2
-op_star
-id|DE600_MIN_WINDOW
-)paren
-r_return
-l_int|0
-suffix:semicolon
-id|amt
-op_assign
-id|min_t
-c_func
-(paren
-r_int
-comma
-(paren
-id|sk-&gt;rcvbuf
-op_minus
-id|atomic_read
-c_func
-(paren
-op_amp
-id|sk-&gt;rmem_alloc
-)paren
-)paren
-op_div
-l_int|2
-multiline_comment|/*-DE600_MIN_WINDOW*/
-comma
-id|DE600_MAX_WINDOW
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|amt
-OL
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_return
-id|amt
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
-"&f;"
-macro_line|#ifdef MODULE
 DECL|variable|de600_dev
 r_static
 r_struct
 id|net_device
 id|de600_dev
 suffix:semicolon
+DECL|function|de600_init
+r_static
 r_int
-DECL|function|init_module
-id|init_module
+id|__init
+id|de600_init
 c_func
 (paren
 r_void
 )paren
 (brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|de600_lock
+)paren
+suffix:semicolon
 id|de600_dev.init
 op_assign
 id|de600_probe
@@ -2487,9 +2078,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|de600_exit
+r_static
 r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+id|de600_exit
 c_func
 (paren
 r_void
@@ -2511,12 +2104,24 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
+DECL|variable|de600_init
+id|module_init
+c_func
+(paren
+id|de600_init
+)paren
+suffix:semicolon
+DECL|variable|de600_exit
+id|module_exit
+c_func
+(paren
+id|de600_exit
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Local variables:&n; *  kernel-compile-command: &quot;gcc -D__KERNEL__ -Ilinux/include -I../../net/inet -Wall -Wstrict-prototypes -O2 -m486 -c de600.c&quot;&n; *  module-compile-command: &quot;gcc -D__KERNEL__ -DMODULE -Ilinux/include -I../../net/inet -Wall -Wstrict-prototypes -O2 -m486 -c de600.c&quot;&n; *  compile-command: &quot;gcc -D__KERNEL__ -DMODULE -Ilinux/include -I../../net/inet -Wall -Wstrict-prototypes -O2 -m486 -c de600.c&quot;&n; * End:&n; */
 eof

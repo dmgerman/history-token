@@ -3949,12 +3949,12 @@ id|data
 )paren
 (brace
 r_int
-r_char
+r_int
 id|mode
 op_assign
 (paren
 r_int
-r_char
+r_int
 )paren
 id|data
 suffix:semicolon

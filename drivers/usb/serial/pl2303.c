@@ -1738,7 +1738,7 @@ comma
 l_int|0
 )paren
 comma
-id|VENDOR_WRITE_REQUEST_TYPE
+id|VENDOR_WRITE_REQUEST
 comma
 id|VENDOR_WRITE_REQUEST_TYPE
 comma

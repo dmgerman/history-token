@@ -830,6 +830,19 @@ id|SDpnt
 suffix:semicolon
 r_extern
 r_void
+id|scsi_adjust_queue_depth
+c_func
+(paren
+id|Scsi_Device
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|scsi_done
 c_func
 (paren
@@ -1240,6 +1253,18 @@ op_star
 id|current_cmnd
 suffix:semicolon
 multiline_comment|/* currently active command */
+DECL|member|queue_depth
+r_int
+r_int
+id|queue_depth
+suffix:semicolon
+multiline_comment|/* How deep of a queue we have */
+DECL|member|new_queue_depth
+r_int
+r_int
+id|new_queue_depth
+suffix:semicolon
+multiline_comment|/* How deep of a queue we want */
 DECL|member|id
 DECL|member|lun
 DECL|member|channel
@@ -1340,12 +1365,6 @@ r_char
 id|sync_max_offset
 suffix:semicolon
 multiline_comment|/* Not greater than this offset */
-DECL|member|queue_depth
-r_int
-r_char
-id|queue_depth
-suffix:semicolon
-multiline_comment|/* How deep a queue to use */
 DECL|member|online
 r_int
 id|online
@@ -1367,12 +1386,6 @@ suffix:semicolon
 DECL|member|random
 r_int
 id|random
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|has_cmdblocks
-r_int
-id|has_cmdblocks
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -1404,20 +1417,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Tell the Seagate driver to be &n;&t;&t;&t;&t; * painfully slow on this device */
-DECL|member|tagged_supported
-r_int
-id|tagged_supported
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Supports SCSI-II tagged queuing */
-DECL|member|tagged_queue
-r_int
-id|tagged_queue
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* SCSI-II tagged queuing enabled */
 DECL|member|disconnect
 r_int
 id|disconnect
@@ -1432,20 +1431,55 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Uses soft reset option */
-DECL|member|sync
+DECL|member|sdtr
 r_int
-id|sync
+id|sdtr
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Negotiate for sync transfers */
-DECL|member|wide
+multiline_comment|/* Device supports SDTR messages */
+DECL|member|wdtr
 r_int
-id|wide
+id|wdtr
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Negotiate for WIDE transfers */
+multiline_comment|/* Device supports WDTR messages */
+DECL|member|ppr
+r_int
+id|ppr
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Device supports PPR messages */
+DECL|member|tagged_supported
+r_int
+id|tagged_supported
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Supports SCSI-II tagged queuing */
+DECL|member|tagged_queue
+r_int
+id|tagged_queue
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* SCSI-II tagged queuing enabled */
+DECL|member|simple_tags
+r_int
+id|simple_tags
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Device supports simple queue tag messages */
+DECL|member|ordered_tags
+r_int
+id|ordered_tags
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Device supports ordered queue tag messages */
 DECL|member|single_lun
 r_int
 id|single_lun

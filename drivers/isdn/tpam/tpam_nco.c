@@ -1,7 +1,6 @@
 multiline_comment|/* $Id: tpam_nco.c,v 1.1.2.2 2001/09/23 22:25:03 kai Exp $&n; *&n; * Turbo PAM ISDN driver for Linux. &n; * (Kernel Driver - Low Level NCO Manipulation)&n; *&n; * Copyright 2001 Stelian Pop &lt;stelian.pop@fr.alcove.com&gt;, Alc&#xfffd;ve&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For all support questions please contact: &lt;support@auvertech.fr&gt;&n; *&n; */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;tpam.h&quot;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   olympic.c (c) 1999 Peter De Schrijver All Rights Reserved&n; *&t;&t;   1999/2000 Mike Phillips (mikep@linuxtr.net)&n; *&n; *  Linux driver for IBM PCI tokenring cards based on the Pit/Pit-Phy/Olympic&n; *  chipset. &n; *&n; *  Base Driver Skeleton:&n; *      Written 1993-94 by Donald Becker.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *  Thanks to Erik De Cock, Adrian Bridgett and Frank Fiene for their &n; *  assistance and perserverance with the testing of this driver.&n; *&n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; * &n; *  4/27/99 - Alpha Release 0.1.0&n; *            First release to the public&n; *&n; *  6/8/99  - Official Release 0.2.0   &n; *            Merged into the kernel code &n; *  8/18/99 - Updated driver for 2.3.13 kernel to use new pci&n; *&t;      resource. Driver also reports the card name returned by&n; *            the pci resource.&n; *  1/11/00 - Added spinlocks for smp&n; *  2/23/00 - Updated to dev_kfree_irq &n; *  3/10/00 - Fixed FDX enable which triggered other bugs also &n; *            squashed.&n; *  5/20/00 - Changes to handle Olympic on LinuxPPC. Endian changes.&n; *            The odd thing about the changes is that the fix for&n; *            endian issues with the big-endian data in the arb, asb...&n; *            was to always swab() the bytes, no matter what CPU.&n; *            That&squot;s because the read[wl]() functions always swap the&n; *            bytes on the way in on PPC.&n; *            Fixing the hardware descriptors was another matter,&n; *            because they weren&squot;t going through read[wl](), there all&n; *            the results had to be in memory in le32 values. kdaaker&n; *&n; * 12/23/00 - Added minimal Cardbus support (Thanks Donald).&n; *&n; * 03/09/01 - Add new pci api, dev_base_lock, general clean up. &n; *&n; * 03/27/01 - Add new dma pci (Thanks to Kyle Lucke) and alloc_trdev&n; *&t;      Change proc_fs behaviour, now one entry per adapter.&n; *&n; * 04/09/01 - Couple of bug fixes to the dma unmaps and ejecting the&n; *&t;      adapter when live does not take the system down with it.&n; * &n; * 06/02/01 - Clean up, copy skb for small packets&n; * &n; * 06/22/01 - Add EISR error handling routines &n; *&n; * 07/19/01 - Improve bad LAA reporting, strip out freemem&n; *&t;      into a separate function, its called from 3 &n; *&t;      different places now. &n; * 02/09/01 - Replaced sleep_on. &n; *&n; *  To Do:&n; *&n; *&t;     Wake on lan&t;&n; * &n; *  If Problems do Occur&n; *  Most problems can be rectified by either closing and opening the interface&n; *  (ifconfig down and up) or rmmod and insmod&squot;ing the driver (a bit difficult&n; *  if compiled into the kernel).&n; */
+multiline_comment|/*&n; *   olympic.c (c) 1999 Peter De Schrijver All Rights Reserved&n; *&t;&t;   1999/2000 Mike Phillips (mikep@linuxtr.net)&n; *&n; *  Linux driver for IBM PCI tokenring cards based on the Pit/Pit-Phy/Olympic&n; *  chipset. &n; *&n; *  Base Driver Skeleton:&n; *      Written 1993-94 by Donald Becker.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *  Thanks to Erik De Cock, Adrian Bridgett and Frank Fiene for their &n; *  assistance and perserverance with the testing of this driver.&n; *&n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; * &n; *  4/27/99 - Alpha Release 0.1.0&n; *            First release to the public&n; *&n; *  6/8/99  - Official Release 0.2.0   &n; *            Merged into the kernel code &n; *  8/18/99 - Updated driver for 2.3.13 kernel to use new pci&n; *&t;      resource. Driver also reports the card name returned by&n; *            the pci resource.&n; *  1/11/00 - Added spinlocks for smp&n; *  2/23/00 - Updated to dev_kfree_irq &n; *  3/10/00 - Fixed FDX enable which triggered other bugs also &n; *            squashed.&n; *  5/20/00 - Changes to handle Olympic on LinuxPPC. Endian changes.&n; *            The odd thing about the changes is that the fix for&n; *            endian issues with the big-endian data in the arb, asb...&n; *            was to always swab() the bytes, no matter what CPU.&n; *            That&squot;s because the read[wl]() functions always swap the&n; *            bytes on the way in on PPC.&n; *            Fixing the hardware descriptors was another matter,&n; *            because they weren&squot;t going through read[wl](), there all&n; *            the results had to be in memory in le32 values. kdaaker&n; *&n; * 12/23/00 - Added minimal Cardbus support (Thanks Donald).&n; *&n; * 03/09/01 - Add new pci api, dev_base_lock, general clean up. &n; *&n; * 03/27/01 - Add new dma pci (Thanks to Kyle Lucke) and alloc_trdev&n; *&t;      Change proc_fs behaviour, now one entry per adapter.&n; *&n; * 04/09/01 - Couple of bug fixes to the dma unmaps and ejecting the&n; *&t;      adapter when live does not take the system down with it.&n; * &n; * 06/02/01 - Clean up, copy skb for small packets&n; * &n; * 06/22/01 - Add EISR error handling routines &n; *&n; * 07/19/01 - Improve bad LAA reporting, strip out freemem&n; *&t;      into a separate function, its called from 3 &n; *&t;      different places now. &n; * 02/09/02 - Replaced sleep_on. &n; * 03/01/02 - Replace access to several registers from 32 bit to &n; * &t;      16 bit. Fixes alignment errors on PPC 64 bit machines.&n; * &t;      Thanks to Al Trautman for this one.&n; * 03/10/02 - Fix BUG in arb_cmd. Bug was there all along but was&n; * &t;      silently ignored until the error checking code &n; * &t;      went into version 1.0.0 &n; * 06/04/02 - Add correct start up sequence for the cardbus adapters.&n; * &t;      Required for strict compliance with pci power mgmt specs.&n; *  To Do:&n; *&n; *&t;     Wake on lan&t;&n; * &n; *  If Problems do Occur&n; *  Most problems can be rectified by either closing and opening the interface&n; *  (ifconfig down and up) or rmmod and insmod&squot;ing the driver (a bit difficult&n; *  if compiled into the kernel).&n; */
 multiline_comment|/* Change OLYMPIC_DEBUG to 1 to get verbose, and I mean really verbose, messages */
 DECL|macro|OLYMPIC_DEBUG
 mdefine_line|#define OLYMPIC_DEBUG 0
@@ -36,7 +36,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;Olympic.c v1.0.0 2/9/02  - Peter De Schrijver &amp; Mike Phillips&quot;
+l_string|&quot;Olympic.c v1.0.5 6/04/02 - Peter De Schrijver &amp; Mike Phillips&quot;
 suffix:semicolon
 DECL|variable|open_maj_error
 r_static
@@ -1184,10 +1184,10 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Autosense */
-id|writel
+id|writew
 c_func
 (paren
-id|readl
+id|readw
 c_func
 (paren
 id|olympic_mmio
@@ -1240,7 +1240,7 @@ comma
 id|olympic_priv-&gt;olympic_card_name
 )paren
 suffix:semicolon
-id|writel
+id|writew
 c_func
 (paren
 id|GPR_16MBPS
@@ -1274,7 +1274,7 @@ comma
 id|olympic_priv-&gt;olympic_card_name
 )paren
 suffix:semicolon
-id|writel
+id|writew
 c_func
 (paren
 l_int|0
@@ -1285,10 +1285,10 @@ id|GPR
 )paren
 suffix:semicolon
 )brace
-id|writel
+id|writew
 c_func
 (paren
-id|readl
+id|readw
 c_func
 (paren
 id|olympic_mmio
@@ -1319,6 +1319,93 @@ id|GPR
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Solo has been paused to meet the Cardbus power&n;&t; * specs if the adapter is cardbus. Check to &n;&t; * see its been paused and then restart solo. The&n;&t; * adapter should set the pause bit within 1 second.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|readl
+c_func
+(paren
+id|olympic_mmio
+op_plus
+id|BCTL
+)paren
+op_amp
+id|BCTL_MODE_INDICATOR
+)paren
+)paren
+(brace
+id|t
+op_assign
+id|jiffies
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+id|readl
+c_func
+(paren
+id|olympic_mmio
+op_plus
+id|CLKCTL
+)paren
+op_amp
+id|CLKCTL_PAUSE
+)paren
+(brace
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|jiffies
+op_minus
+id|t
+OG
+l_int|2
+op_star
+id|HZ
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;IBM Cardbus tokenring adapter not responsing.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+)brace
+id|writel
+c_func
+(paren
+id|readl
+c_func
+(paren
+id|olympic_mmio
+op_plus
+id|CLKCTL
+)paren
+op_amp
+op_complement
+id|CLKCTL_PAUSE
+comma
+id|olympic_mmio
+op_plus
+id|CLKCTL
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* start solo init */
 id|writel
 c_func
@@ -1390,7 +1477,7 @@ suffix:semicolon
 id|writel
 c_func
 (paren
-id|readl
+id|readw
 c_func
 (paren
 id|olympic_mmio
@@ -1433,7 +1520,7 @@ id|olympic_priv-&gt;olympic_lap
 op_plus
 (paren
 (paren
-id|readl
+id|readw
 c_func
 (paren
 id|olympic_mmio
@@ -1869,7 +1956,7 @@ multiline_comment|/* adapter is closed, so SRB is pointed to by LAPWWO */
 id|writel
 c_func
 (paren
-id|readl
+id|readw
 c_func
 (paren
 id|olympic_mmio
@@ -1888,7 +1975,7 @@ id|olympic_priv-&gt;olympic_lap
 op_plus
 (paren
 (paren
-id|readl
+id|readw
 c_func
 (paren
 id|olympic_mmio
@@ -1909,7 +1996,7 @@ c_func
 (paren
 l_string|&quot;LAPWWO: %x, LAPA: %x&bslash;n&quot;
 comma
-id|readl
+id|readw
 c_func
 (paren
 id|olympic_mmio
@@ -2327,7 +2414,7 @@ op_minus
 id|t
 )paren
 OG
-l_int|60
+l_int|10
 op_star
 id|HZ
 )paren
@@ -2370,6 +2457,10 @@ c_func
 (paren
 id|TASK_RUNNING
 )paren
+suffix:semicolon
+id|olympic_priv-&gt;srb_queued
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#if OLYMPIC_DEBUG
 id|printk
@@ -3290,7 +3381,21 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Rx_ring_dma_addr = %08x, rx_status_dma_addr = %08x&bslash;n&quot;
+"&quot;"
+id|Rx_ring_dma_addr
+op_assign
+op_mod
+l_int|08
+id|x
+comma
+id|rx_status_dma_addr
+op_assign
+op_mod
+l_int|08
+id|x
+"&bslash;"
+id|n
+"&quot;"
 comma
 id|olympic_priv-&gt;rx_ring_dma_addr
 comma
@@ -4356,7 +4461,7 @@ id|skb-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
-multiline_comment|/* Optimise based upon number of buffers used. &n;&t;&t;&t;   &t;   &t;   If only one buffer is used we can simply swap the buffers around.&n;&t;&t;&t;   &t;   &t;   If more than one then we must use the new buffer and copy the information&n;&t;&t;&t;   &t;   &t;   first. Ideally all frames would be in a single buffer, this can be tuned by&n;                               &t;   &t;   altering the buffer size. If the length of the packet is less than&n;&t;&t;&t;&t;&t;   1500 bytes we&squot;re going to copy it over anyway to stop packets getting&n;&t;&t;&t;&t;&t;   dropped from sockets with buffers small than our pkt_buf_sz. */
+multiline_comment|/* Optimise based upon number of buffers used. &n;&t;&t;&t;   &t;   &t;   If only one buffer is used we can simply swap the buffers around.&n;&t;&t;&t;   &t;   &t;   If more than one then we must use the new buffer and copy the information&n;&t;&t;&t;   &t;   &t;   first. Ideally all frames would be in a single buffer, this can be tuned by&n;                               &t;   &t;   altering the buffer size. If the length of the packet is less than&n;&t;&t;&t;&t;&t;   1500 bytes we&squot;re going to copy it over anyway to stop packets getting&n;&t;&t;&t;&t;&t;   dropped from sockets with buffers smaller than our pkt_buf_sz. */
 r_if
 c_cond
 (paren
@@ -6194,6 +6299,10 @@ id|BCTL
 )paren
 suffix:semicolon
 macro_line|#if OLYMPIC_DEBUG
+(brace
+r_int
+id|i
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -6238,6 +6347,7 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 id|free_irq
 c_func
@@ -7464,22 +7574,6 @@ op_plus
 id|olympic_priv-&gt;srb
 )paren
 suffix:semicolon
-id|writel
-c_func
-(paren
-id|readl
-c_func
-(paren
-id|olympic_mmio
-op_plus
-id|LAPA
-)paren
-comma
-id|olympic_mmio
-op_plus
-id|LAPWWO
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7894,7 +7988,7 @@ c_func
 (paren
 id|LISR_ARB_FREE
 comma
-id|olympic_priv-&gt;olympic_lap
+id|olympic_priv-&gt;olympic_mmio
 op_plus
 id|LISR_SUM
 )paren
