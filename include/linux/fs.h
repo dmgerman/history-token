@@ -1453,6 +1453,14 @@ r_int
 suffix:semicolon
 DECL|macro|MAX_NON_LFS
 mdefine_line|#define&t;MAX_NON_LFS&t;((1UL&lt;&lt;31) - 1)
+multiline_comment|/* Page cache limit. The filesystems should put that into their s_maxbytes &n;   limits, otherwise bad things can happen in VM. */
+macro_line|#if BITS_PER_LONG==32
+DECL|macro|MAX_LFS_FILESIZE
+mdefine_line|#define MAX_LFS_FILESIZE&t;(((u64)PAGE_CACHE_SIZE &lt;&lt; (BITS_PER_LONG-1))-1) 
+macro_line|#elif BITS_PER_LONG==64
+DECL|macro|MAX_LFS_FILESIZE
+mdefine_line|#define MAX_LFS_FILESIZE &t;0x7fffffffffffffff
+macro_line|#endif
 DECL|macro|FL_POSIX
 mdefine_line|#define FL_POSIX&t;1
 DECL|macro|FL_FLOCK

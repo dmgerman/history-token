@@ -1926,6 +1926,17 @@ id|sb-&gt;s_maxbytes
 op_assign
 id|fsinfo.maxfilesize
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sb-&gt;s_maxbytes
+OG
+id|MAX_LFS_FILESIZE
+)paren
+id|sb-&gt;s_maxbytes
+op_assign
+id|MAX_LFS_FILESIZE
+suffix:semicolon
 multiline_comment|/* Fire up the writeback cache */
 r_if
 c_cond
