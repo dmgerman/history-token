@@ -2140,13 +2140,14 @@ c_func
 id|cpucache_init
 )paren
 suffix:semicolon
-multiline_comment|/* Interface to system&squot;s page allocator. No need to hold the cache-lock.&n; */
+multiline_comment|/*&n; * Interface to system&squot;s page allocator. No need to hold the cache-lock.&n; *&n; * If we requested dmaable memory, we will get it. Even if we&n; * did not request dmaable memory, we might get it, but that&n; * would be relatively rare and ignorable.&n; */
 DECL|function|kmem_getpages
 r_static
 r_inline
 r_void
 op_star
 id|kmem_getpages
+c_func
 (paren
 id|kmem_cache_t
 op_star
@@ -2161,7 +2162,6 @@ r_void
 op_star
 id|addr
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we requested dmaable memory, we will get it. Even if we&n;&t; * did not request dmaable memory, we might get it, but that&n;&t; * would be relatively rare and ignorable.&n;&t; */
 id|flags
 op_or_assign
 id|cachep-&gt;gfpflags
@@ -2198,17 +2198,61 @@ comma
 id|cachep-&gt;gfporder
 )paren
 suffix:semicolon
-multiline_comment|/* Assume that now we have the pages no one else can legally&n;&t; * messes with the &squot;struct page&squot;s.&n;&t; * However vm_scan() might try to test the structure to see if&n;&t; * it is a named-page or buffer-page.  The members it tests are&n;&t; * of no interest here.....&n;&t; */
+r_if
+c_cond
+(paren
+id|addr
+)paren
+(brace
+r_int
+id|i
+op_assign
+(paren
+l_int|1
+op_lshift
+id|cachep-&gt;gfporder
+)paren
+suffix:semicolon
+r_struct
+id|page
+op_star
+id|page
+op_assign
+id|virt_to_page
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|i
+op_decrement
+)paren
+(brace
+id|SetPageSlab
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|page
+op_increment
+suffix:semicolon
+)brace
+)brace
 r_return
 id|addr
 suffix:semicolon
 )brace
-multiline_comment|/* Interface to system&squot;s page release. */
+multiline_comment|/*&n; * Interface to system&squot;s page release.&n; */
 DECL|function|kmem_freepages
 r_static
 r_inline
 r_void
 id|kmem_freepages
+c_func
 (paren
 id|kmem_cache_t
 op_star
@@ -2247,7 +2291,6 @@ id|nr_freed
 op_assign
 id|i
 suffix:semicolon
-multiline_comment|/* free_pages() does not clear the type bit - we do that.&n;&t; * The pages have been unlinked from their cache-slab,&n;&t; * but their &squot;struct page&squot;s might be accessed in&n;&t; * vm_scan(). Shouldn&squot;t be a worry.&n;&t; */
 r_while
 c_loop
 (paren
@@ -5703,12 +5746,6 @@ c_func
 id|page
 comma
 id|slabp
-)paren
-suffix:semicolon
-id|SetPageSlab
-c_func
-(paren
-id|page
 )paren
 suffix:semicolon
 id|inc_page_state

@@ -409,6 +409,11 @@ r_int
 id|time_adjust
 suffix:semicolon
 multiline_comment|/* The amount of adjtime left */
+r_extern
+r_int
+id|time_next_adjust
+suffix:semicolon
+multiline_comment|/* Value for time_adjust at next tick */
 multiline_comment|/* interface variables pps-&gt;timer interrupt */
 r_extern
 r_int

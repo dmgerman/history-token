@@ -19,8 +19,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 r_int
 id|max_threads
-comma
-id|system_running
 suffix:semicolon
 macro_line|#ifdef CONFIG_KMOD
 multiline_comment|/*&n;&t;modprobe_path is set via /proc/sys.&n;*/

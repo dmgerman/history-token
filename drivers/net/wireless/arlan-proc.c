@@ -5141,6 +5141,7 @@ singleline_comment|//{
 singleline_comment|//&t;{CTL_DEV, &quot;dev&quot;, NULL, 0, 0555, arlan_root_table},
 singleline_comment|//&t;{0}
 singleline_comment|//};
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|arlan_device_sysctl_header
 r_static
 r_struct
@@ -5244,4 +5245,5 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+macro_line|#endif
 eof

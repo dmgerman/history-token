@@ -1337,12 +1337,6 @@ id|ext_table_sum
 op_assign
 l_int|0
 suffix:semicolon
-id|i
-op_assign
-id|ext_table_size
-op_div
-id|DWSIZE
-suffix:semicolon
 r_int
 op_star
 id|ext_tablep
@@ -1360,6 +1354,12 @@ id|MC_HEADER_SIZE
 op_plus
 id|data_size
 )paren
+suffix:semicolon
+id|i
+op_assign
+id|ext_table_size
+op_div
+id|DWSIZE
 suffix:semicolon
 r_while
 c_loop

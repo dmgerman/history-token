@@ -14269,7 +14269,7 @@ l_int|0
 suffix:semicolon
 id|h
 OL
-id|MAX_ATP
+id|card
 suffix:semicolon
 id|h
 op_increment
@@ -14282,21 +14282,6 @@ comma
 op_star
 id|dev
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pdev
-(braket
-id|h
-)braket
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-id|count
-suffix:semicolon
-)brace
 multiline_comment|/* Found an atp870u/w. */
 id|base_io
 op_assign

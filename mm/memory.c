@@ -2126,6 +2126,8 @@ suffix:semicolon
 r_int
 r_int
 id|tlb_start
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* For tlb_finish_mmu */
 r_int
