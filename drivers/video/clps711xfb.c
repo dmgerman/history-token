@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1262,12 +1261,6 @@ r_sizeof
 op_star
 id|cfb
 )paren
-op_plus
-r_sizeof
-(paren
-r_struct
-id|display
-)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -1293,12 +1286,6 @@ r_sizeof
 op_star
 id|cfb
 )paren
-op_plus
-r_sizeof
-(paren
-r_struct
-id|display
-)paren
 )paren
 suffix:semicolon
 id|strcpy
@@ -1319,34 +1306,9 @@ op_assign
 op_amp
 id|clps7111fb_ops
 suffix:semicolon
-id|cfb-&gt;changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|cfb-&gt;switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|cfb-&gt;updatevar
-op_assign
-id|gen_update_var
-suffix:semicolon
 id|cfb-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
-suffix:semicolon
-id|cfb-&gt;disp
-op_assign
-(paren
-r_struct
-id|display
-op_star
-)paren
-(paren
-id|cfb
-op_plus
-l_int|1
-)paren
 suffix:semicolon
 id|clps711x_guess_lcd_params
 c_func
@@ -1497,18 +1459,6 @@ id|PDDR
 )paren
 suffix:semicolon
 )brace
-id|gen_set_var
-c_func
-(paren
-op_amp
-id|cfb-&gt;var
-comma
-op_minus
-l_int|1
-comma
-id|cfb
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|register_framebuffer

@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#ifdef CONFIG_KMOD
@@ -26,7 +25,10 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
+macro_line|#ifdef CONFIG_VT
+macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;
+macro_line|#endif
 multiline_comment|/*&n;     *  Frame buffer device initialization and setup routines&n;     */
 r_extern
 r_int
@@ -1436,6 +1438,7 @@ DECL|variable|num_registered_fb
 r_int
 id|num_registered_fb
 suffix:semicolon
+macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 r_extern
 r_int
 id|fbcon_softback_size
@@ -1461,6 +1464,7 @@ id|fbcon_is_default
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_FB_OF
 DECL|variable|__initdata
 r_static
@@ -1569,7 +1573,7 @@ op_star
 id|fi
 )paren
 op_member_access_from_pointer
-id|modename
+id|fix.id
 )paren
 suffix:semicolon
 op_star
@@ -2018,10 +2022,6 @@ op_assign
 id|info-&gt;fbops
 suffix:semicolon
 r_struct
-id|fb_cmap
-id|cmap
-suffix:semicolon
-r_struct
 id|fb_var_screeninfo
 id|var
 suffix:semicolon
@@ -2029,9 +2029,15 @@ r_struct
 id|fb_fix_screeninfo
 id|fix
 suffix:semicolon
+macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 r_struct
 id|fb_con2fbmap
 id|con2fb
+suffix:semicolon
+macro_line|#endif
+r_struct
+id|fb_cmap
+id|cmap
 suffix:semicolon
 r_int
 id|i
@@ -2108,13 +2114,16 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|i
-op_assign
+macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
+r_if
+c_cond
+(paren
 id|var.activate
 op_amp
 id|FB_ACTIVATE_ALL
-ques
-c_cond
+)paren
+id|i
+op_assign
 id|set_all_vcs
 c_func
 (paren
@@ -2127,20 +2136,16 @@ id|var
 comma
 id|info
 )paren
-suffix:colon
-id|fb
-op_member_access_from_pointer
+suffix:semicolon
+r_else
+macro_line|#endif
+id|i
+op_assign
 id|fb_set_var
 c_func
 (paren
 op_amp
 id|var
-comma
-id|PROC_CONSOLE
-c_func
-(paren
-id|info
-)paren
 comma
 id|info
 )paren
@@ -2239,8 +2244,6 @@ id|EFAULT
 suffix:semicolon
 r_return
 (paren
-id|fb
-op_member_access_from_pointer
 id|fb_set_cmap
 c_func
 (paren
@@ -2248,12 +2251,6 @@ op_amp
 id|cmap
 comma
 l_int|0
-comma
-id|PROC_CONSOLE
-c_func
-(paren
-id|info
-)paren
 comma
 id|info
 )paren
@@ -2287,26 +2284,16 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-r_return
-(paren
-id|fb
-op_member_access_from_pointer
-id|fb_get_cmap
+id|fb_copy_cmap
 c_func
 (paren
+op_amp
+id|info-&gt;cmap
+comma
 op_amp
 id|cmap
 comma
 l_int|0
-comma
-id|PROC_CONSOLE
-c_func
-(paren
-id|info
-)paren
-comma
-id|info
-)paren
 )paren
 suffix:semicolon
 r_case
@@ -2371,12 +2358,6 @@ c_func
 op_amp
 id|var
 comma
-id|PROC_CONSOLE
-c_func
-(paren
-id|info
-)paren
-comma
 id|info
 )paren
 )paren
@@ -2412,6 +2393,7 @@ suffix:semicolon
 r_return
 id|i
 suffix:semicolon
+macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 r_case
 id|FBIOGET_CON2FBMAP
 suffix:colon
@@ -2613,6 +2595,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#endif&t;/* CONFIG_FRAMEBUFFER_CONSOLE */
 r_case
 id|FBIOBLANK
 suffix:colon
@@ -2666,12 +2649,6 @@ comma
 id|cmd
 comma
 id|arg
-comma
-id|PROC_CONSOLE
-c_func
-(paren
-id|info
-)paren
 comma
 id|info
 )paren
@@ -3464,17 +3441,6 @@ op_star
 id|fb_info
 )paren
 (brace
-r_int
-id|i
-comma
-id|j
-suffix:semicolon
-r_char
-id|name_buf
-(braket
-l_int|8
-)braket
-suffix:semicolon
 r_static
 r_int
 id|fb_ever_opened
@@ -3482,11 +3448,25 @@ id|fb_ever_opened
 id|FB_MAX
 )braket
 suffix:semicolon
+macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 r_static
 r_int
 id|first
 op_assign
 l_int|1
+suffix:semicolon
+r_int
+id|j
+suffix:semicolon
+macro_line|#endif
+r_char
+id|name_buf
+(braket
+l_int|8
+)braket
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 r_if
 c_cond
@@ -3537,6 +3517,11 @@ comma
 id|i
 )paren
 suffix:semicolon
+id|fb_info-&gt;currcon
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|registered_fb
 (braket
 id|i
@@ -3561,6 +3546,7 @@ id|owner
 op_assign
 id|fb_info-&gt;fbops-&gt;owner
 suffix:semicolon
+macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 multiline_comment|/*&n;&t;&t; *  We assume initial frame buffer devices can be opened this&n;&t;&t; *  many times&n;&t;&t; */
 r_for
 c_loop
@@ -3666,6 +3652,50 @@ id|fbcon_is_default
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+r_if
+c_cond
+(paren
+id|owner
+)paren
+(brace
+id|__MOD_INC_USE_COUNT
+c_func
+(paren
+id|owner
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fb_info-&gt;fbops-&gt;fb_open
+op_logical_and
+id|fb_info-&gt;fbops
+op_member_access_from_pointer
+id|fb_open
+c_func
+(paren
+id|fb_info
+comma
+l_int|0
+)paren
+)paren
+id|__MOD_DEC_USE_COUNT
+c_func
+(paren
+id|owner
+)paren
+suffix:semicolon
+)brace
+id|fb_ever_opened
+(braket
+id|i
+)braket
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
 id|sprintf
 (paren
 id|name_buf
@@ -3730,6 +3760,7 @@ c_func
 id|fb_info-&gt;node
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 r_for
 c_loop
 (paren
@@ -3758,6 +3789,7 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3966,6 +3998,7 @@ id|options
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE 
 r_if
 c_cond
 (paren
@@ -4206,6 +4239,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_FB_OF
 r_if
 c_cond
