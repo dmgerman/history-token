@@ -226,13 +226,6 @@ id|opl3sa2_state
 id|OPL3SA2_CARDS_MAX
 )braket
 suffix:semicolon
-DECL|variable|opl3sa2_lock
-r_static
-id|spinlock_t
-id|opl3sa2_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/* Our parameters */
 DECL|variable|io
 r_static
@@ -3436,6 +3429,13 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_PNP */
 multiline_comment|/* End of component functions */
 macro_line|#ifdef CONFIG_PM
+DECL|variable|opl3sa2_lock
+r_static
+id|spinlock_t
+id|opl3sa2_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/* Power Management support functions */
 DECL|function|opl3sa2_suspend
 r_static

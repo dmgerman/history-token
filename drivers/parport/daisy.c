@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG /* undef me for production */
+macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
 DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(stuff...) printk (stuff)

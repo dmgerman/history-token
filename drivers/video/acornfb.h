@@ -124,6 +124,12 @@ DECL|struct|acornfb_par
 r_struct
 id|acornfb_par
 (brace
+DECL|member|dev
+r_struct
+id|device
+op_star
+id|dev
+suffix:semicolon
 DECL|member|screen_end
 r_int
 r_int

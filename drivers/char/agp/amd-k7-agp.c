@@ -7,6 +7,22 @@ macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/page-flags.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &quot;agp.h&quot;
+DECL|macro|AMD_MMBASE
+mdefine_line|#define AMD_MMBASE&t;0x14
+DECL|macro|AMD_APSIZE
+mdefine_line|#define AMD_APSIZE&t;0xac
+DECL|macro|AMD_MODECNTL
+mdefine_line|#define AMD_MODECNTL&t;0xb0
+DECL|macro|AMD_MODECNTL2
+mdefine_line|#define AMD_MODECNTL2&t;0xb2
+DECL|macro|AMD_GARTENABLE
+mdefine_line|#define AMD_GARTENABLE&t;0x02&t;/* In mmio region (16-bit register) */
+DECL|macro|AMD_ATTBASE
+mdefine_line|#define AMD_ATTBASE&t;0x04&t;/* In mmio region (32-bit register) */
+DECL|macro|AMD_TLBFLUSH
+mdefine_line|#define AMD_TLBFLUSH&t;0x0c&t;/* In mmio region (32-bit register) */
+DECL|macro|AMD_CACHEENTRY
+mdefine_line|#define AMD_CACHEENTRY&t;0x10&t;/* In mmio region (32-bit register) */
 DECL|struct|amd_page_map
 r_struct
 id|amd_page_map

@@ -13494,15 +13494,16 @@ id|mddev2
 suffix:semicolon
 r_int
 r_int
-id|max_sectors
-comma
 id|currspeed
 op_assign
 l_int|0
 comma
-id|j
-comma
 id|window
+suffix:semicolon
+id|sector_t
+id|max_sectors
+comma
+id|j
 suffix:semicolon
 r_int
 r_int
@@ -13511,8 +13512,7 @@ id|mark
 id|SYNC_MARKS
 )braket
 suffix:semicolon
-r_int
-r_int
+id|sector_t
 id|mark_cnt
 (braket
 id|SYNC_MARKS
@@ -13528,8 +13528,7 @@ id|list_head
 op_star
 id|tmp
 suffix:semicolon
-r_int
-r_int
+id|sector_t
 id|last_check
 suffix:semicolon
 multiline_comment|/* just incase thread restarts... */
@@ -13815,12 +13814,17 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: using %dk window, over a total of %d blocks.&bslash;n&quot;
+l_string|&quot;md: using %dk window, over a total of %Lu blocks.&bslash;n&quot;
 comma
 id|window
 op_div
 l_int|2
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|max_sectors
 op_div
 l_int|2
@@ -14092,9 +14096,15 @@ suffix:semicolon
 id|currspeed
 op_assign
 (paren
+(paren
+r_int
+r_int
+)paren
+(paren
 id|j
 op_minus
 id|mddev-&gt;resync_mark_cnt
+)paren
 )paren
 op_div
 l_int|2

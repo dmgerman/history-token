@@ -25,6 +25,17 @@ DECL|macro|INVGART
 mdefine_line|#define INVGART&t;&t;(1&lt;&lt;0)
 DECL|macro|GARTPTEERR
 mdefine_line|#define GARTPTEERR&t;(1&lt;&lt;1)
+multiline_comment|/* K8 On-cpu GART registers */
+DECL|macro|AMD64_GARTAPERTURECTL
+mdefine_line|#define AMD64_GARTAPERTURECTL&t;0x90
+DECL|macro|AMD64_GARTAPERTUREBASE
+mdefine_line|#define AMD64_GARTAPERTUREBASE&t;0x94
+DECL|macro|AMD64_GARTTABLEBASE
+mdefine_line|#define AMD64_GARTTABLEBASE&t;0x98
+DECL|macro|AMD64_GARTCACHECTL
+mdefine_line|#define AMD64_GARTCACHECTL&t;0x9c
+DECL|macro|AMD64_GARTEN
+mdefine_line|#define AMD64_GARTEN&t;&t;(1&lt;&lt;0)
 multiline_comment|/* NVIDIA K8 registers */
 DECL|macro|NVIDIA_X86_64_0_APBASE
 mdefine_line|#define NVIDIA_X86_64_0_APBASE&t;&t;0x10
@@ -1767,6 +1778,15 @@ suffix:colon
 id|revstring
 op_assign
 l_string|&quot;B2&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x14
+suffix:colon
+id|revstring
+op_assign
+l_string|&quot;B3&quot;
 suffix:semicolon
 r_break
 suffix:semicolon

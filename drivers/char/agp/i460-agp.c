@@ -5,6 +5,18 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &quot;agp.h&quot;
+DECL|macro|INTEL_I460_BAPBASE
+mdefine_line|#define INTEL_I460_BAPBASE&t;&t;0x98
+DECL|macro|INTEL_I460_GXBCTL
+mdefine_line|#define INTEL_I460_GXBCTL&t;&t;0xa0
+DECL|macro|INTEL_I460_AGPSIZ
+mdefine_line|#define INTEL_I460_AGPSIZ&t;&t;0xa2
+DECL|macro|INTEL_I460_ATTBASE
+mdefine_line|#define INTEL_I460_ATTBASE&t;&t;0xfe200000
+DECL|macro|INTEL_I460_GATT_VALID
+mdefine_line|#define INTEL_I460_GATT_VALID&t;&t;(1UL &lt;&lt; 24)
+DECL|macro|INTEL_I460_GATT_COHERENT
+mdefine_line|#define INTEL_I460_GATT_COHERENT&t;(1UL &lt;&lt; 25)
 multiline_comment|/*&n; * The i460 can operate with large (4MB) pages, but there is no sane way to support this&n; * within the current kernel/DRM environment, so we disable the relevant code for now.&n; * See also comments in ia64_alloc_page()...&n; */
 DECL|macro|I460_LARGE_IO_PAGES
 mdefine_line|#define I460_LARGE_IO_PAGES&t;&t;0

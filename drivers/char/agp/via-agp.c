@@ -5,6 +5,20 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &quot;agp.h&quot;
+DECL|macro|VIA_GARTCTRL
+mdefine_line|#define VIA_GARTCTRL&t;0x80
+DECL|macro|VIA_APSIZE
+mdefine_line|#define VIA_APSIZE&t;0x84
+DECL|macro|VIA_ATTBASE
+mdefine_line|#define VIA_ATTBASE&t;0x88
+DECL|macro|VIA_AGP3_GARTCTRL
+mdefine_line|#define VIA_AGP3_GARTCTRL&t;0x90
+DECL|macro|VIA_AGP3_APSIZE
+mdefine_line|#define VIA_AGP3_APSIZE&t;&t;0x94
+DECL|macro|VIA_AGP3_ATTBASE
+mdefine_line|#define VIA_AGP3_ATTBASE&t;0x98
+DECL|macro|VIA_AGPSEL
+mdefine_line|#define VIA_AGPSEL&t;&t;0xfd
 DECL|function|via_fetch_size
 r_static
 r_int

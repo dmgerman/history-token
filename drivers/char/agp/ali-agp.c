@@ -5,6 +5,20 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &quot;agp.h&quot;
+DECL|macro|ALI_AGPCTRL
+mdefine_line|#define ALI_AGPCTRL&t;0xb8
+DECL|macro|ALI_ATTBASE
+mdefine_line|#define ALI_ATTBASE&t;0xbc
+DECL|macro|ALI_TLBCTRL
+mdefine_line|#define ALI_TLBCTRL&t;0xc0
+DECL|macro|ALI_TAGCTRL
+mdefine_line|#define ALI_TAGCTRL&t;0xc4
+DECL|macro|ALI_CACHE_FLUSH_CTRL
+mdefine_line|#define ALI_CACHE_FLUSH_CTRL&t;0xD0
+DECL|macro|ALI_CACHE_FLUSH_ADDR_MASK
+mdefine_line|#define ALI_CACHE_FLUSH_ADDR_MASK&t;0xFFFFF000
+DECL|macro|ALI_CACHE_FLUSH_EN
+mdefine_line|#define ALI_CACHE_FLUSH_EN&t;0x100
 DECL|function|ali_fetch_size
 r_static
 r_int

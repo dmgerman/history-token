@@ -265,6 +265,10 @@ id|inode-&gt;i_security
 op_assign
 l_int|NULL
 suffix:semicolon
+id|inode-&gt;dirtied_when
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -323,10 +327,6 @@ id|mapping
 comma
 id|GFP_HIGHUSER
 )paren
-suffix:semicolon
-id|mapping-&gt;dirtied_when
-op_assign
-l_int|0
 suffix:semicolon
 id|mapping-&gt;assoc_mapping
 op_assign

@@ -698,8 +698,7 @@ id|stripe_head
 op_star
 id|sh
 comma
-r_int
-r_int
+id|sector_t
 id|sector
 comma
 r_int
@@ -901,8 +900,7 @@ id|raid5_conf_t
 op_star
 id|conf
 comma
-r_int
-r_int
+id|sector_t
 id|sector
 )paren
 (brace
@@ -919,8 +917,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;__find_stripe, sector %lu&bslash;n&quot;
+l_string|&quot;__find_stripe, sector %llu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sector
 )paren
 suffix:semicolon
@@ -956,8 +959,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;__stripe %lu not in cache&bslash;n&quot;
+l_string|&quot;__stripe %llu not in cache&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sector
 )paren
 suffix:semicolon
@@ -977,8 +985,7 @@ id|raid5_conf_t
 op_star
 id|conf
 comma
-r_int
-r_int
+id|sector_t
 id|sector
 comma
 r_int
@@ -996,8 +1003,13 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;get_stripe, sector %lu&bslash;n&quot;
+l_string|&quot;get_stripe, sector %llu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|sector
 )paren
 suffix:semicolon
@@ -2344,8 +2356,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Input: a &squot;big&squot; sector number,&n; * Output: index of the data and parity disk, and the sector # in them.&n; */
 DECL|function|raid5_compute_sector
 r_static
-r_int
-r_int
+id|sector_t
 id|raid5_compute_sector
 c_func
 (paren
@@ -2581,6 +2592,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Finally, compute the new sector number&n;&t; */
 id|new_sector
 op_assign
+(paren
+id|sector_t
+)paren
 id|stripe
 op_star
 id|sectors_per_chunk
@@ -2637,7 +2651,7 @@ id|conf-&gt;chunk_size
 op_rshift
 l_int|9
 suffix:semicolon
-r_int
+id|sector_t
 id|stripe
 suffix:semicolon
 r_int
@@ -7531,8 +7545,7 @@ id|dd_idx
 comma
 id|pd_idx
 suffix:semicolon
-r_int
-r_int
+id|sector_t
 id|first_sector
 suffix:semicolon
 r_int
@@ -7591,6 +7604,9 @@ op_assign
 id|raid5_compute_sector
 c_func
 (paren
+(paren
+id|sector_t
+)paren
 id|stripe
 op_star
 id|data_disks

@@ -7747,12 +7747,9 @@ r_struct
 id|cm_state
 op_star
 id|s
+suffix:semicolon
+id|s
 op_assign
-(paren
-r_struct
-id|cm_state
-op_star
-)paren
 id|file-&gt;private_data
 suffix:semicolon
 id|VALIDATE_STATE

@@ -683,8 +683,7 @@ id|sync_thread
 suffix:semicolon
 multiline_comment|/* doing resync or reconstruct */
 DECL|member|curr_resync
-r_int
-r_int
+id|sector_t
 id|curr_resync
 suffix:semicolon
 multiline_comment|/* blocks scheduled */
@@ -695,8 +694,7 @@ id|resync_mark
 suffix:semicolon
 multiline_comment|/* a recent timestamp */
 DECL|member|resync_mark_cnt
-r_int
-r_int
+id|sector_t
 id|resync_mark_cnt
 suffix:semicolon
 multiline_comment|/* blocks written at resync_mark */
