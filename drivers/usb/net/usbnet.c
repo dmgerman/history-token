@@ -1406,6 +1406,8 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* claim data interface and set it up ... with side effects.&n;&t; * network traffic can&squot;t flow until an altsetting is enabled.&n;&t; */
+id|status
+op_assign
 id|usb_driver_claim_interface
 (paren
 op_amp
@@ -1415,6 +1417,16 @@ id|info-&gt;data
 comma
 id|dev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+OL
+l_int|0
+)paren
+r_return
+id|status
 suffix:semicolon
 id|status
 op_assign
