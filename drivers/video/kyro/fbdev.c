@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/video/kyro/kyrofb.c&n; *&n; *  Copyright (C) 2002 STMicroelectronics&n; *  Copyright (C) 2003, 2004 Paul Mundt&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; *  linux/drivers/video/kyro/fbdev.c&n; *&n; *  Copyright (C) 2002 STMicroelectronics&n; *  Copyright (C) 2003, 2004 Paul Mundt&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -2685,6 +2685,9 @@ id|cmd
 r_case
 id|KYRO_IOCTL_OVERLAY_CREATE
 suffix:colon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -2698,6 +2701,10 @@ r_sizeof
 id|overlay_create
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -2732,6 +2739,9 @@ suffix:semicolon
 r_case
 id|KYRO_IOCTL_OVERLAY_VIEWPORT_SET
 suffix:colon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -2745,6 +2755,10 @@ r_sizeof
 id|overlay_viewport_set
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -2801,6 +2815,9 @@ suffix:semicolon
 r_case
 id|KYRO_IOCTL_UVSTRIDE
 suffix:colon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -2815,12 +2832,19 @@ r_int
 r_int
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|KYRO_IOCTL_STRIDE
 suffix:colon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -2835,12 +2859,19 @@ r_int
 r_int
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|KYRO_IOCTL_OVERLAY_OFFSET
 suffix:colon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -2855,6 +2886,10 @@ r_int
 r_int
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_break
 suffix:semicolon
