@@ -311,6 +311,17 @@ op_star
 id|log_vi
 )paren
 suffix:semicolon
+r_extern
+id|BOOL
+id|ntfs_empty_logfile
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|log_vi
+)paren
+suffix:semicolon
 macro_line|#endif /* NTFS_RW */
 macro_line|#endif /* _LINUX_NTFS_LOGFILE_H */
 eof

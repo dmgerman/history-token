@@ -1145,7 +1145,7 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_remount - change the mount options of a mounted ntfs filesystem&n; * @sb:&t;&t;superblock of mounted ntfs filesystem&n; * @flags:&t;remount flags&n; * @opt:&t;remount options string&n; *&n; * Change the mount options of an already mounted ntfs filesystem.&n; *&n; * NOTE: The VFS set the @sb-&gt;s_flags remount flags to @flags after&n; * ntfs_remount() returns successfully (i.e. returns 0). Otherwise,&n; * @sb-&gt;s_flags are not changed.&n; */
+multiline_comment|/**&n; * ntfs_remount - change the mount options of a mounted ntfs filesystem&n; * @sb:&t;&t;superblock of mounted ntfs filesystem&n; * @flags:&t;remount flags&n; * @opt:&t;remount options string&n; *&n; * Change the mount options of an already mounted ntfs filesystem.&n; *&n; * NOTE:  The VFS sets the @sb-&gt;s_flags remount flags to @flags after&n; * ntfs_remount() returns successfully (i.e. returns 0).  Otherwise,&n; * @sb-&gt;s_flags are not changed.&n; */
 DECL|function|ntfs_remount
 r_static
 r_int
@@ -1195,8 +1195,8 @@ id|MS_NOATIME
 op_or
 id|MS_NODIRATIME
 suffix:semicolon
-macro_line|#else
-multiline_comment|/*&n;&t; * For the read-write compiled driver, if we are remounting read-write,&n;&t; * make sure there aren&squot;t any volume errors.&n;&t; */
+macro_line|#else /* ! NTFS_RW */
+multiline_comment|/*&n;&t; * For the read-write compiled driver, if we are remounting read-write,&n;&t; * make sure there aren&squot;t any volume errors and empty the lofgile.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1215,6 +1215,14 @@ id|MS_RDONLY
 )paren
 )paren
 (brace
+r_static
+r_const
+r_char
+op_star
+id|es
+op_assign
+l_string|&quot;.  Cannot remount read-write.&quot;
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1230,8 +1238,41 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Volume has errors and is read-only. &quot;
-l_string|&quot;Cannot remount read-write.&quot;
+l_string|&quot;Volume has errors and is read-only%s&quot;
+comma
+id|es
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EROFS
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ntfs_empty_logfile
+c_func
+(paren
+id|vol-&gt;logfile_ino
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Failed to empty journal $LogFile%s&quot;
+comma
+id|es
+)paren
+suffix:semicolon
+id|NVolSetErrors
+c_func
+(paren
+id|vol
 )paren
 suffix:semicolon
 r_return
@@ -1249,7 +1290,7 @@ id|MS_NOATIME
 op_or
 id|MS_NODIRATIME
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* ! NTFS_RW */
 singleline_comment|// FIXME/TODO: If left like this we will have problems with rw-&gt;ro and
 singleline_comment|// ro-&gt;rw, as well as with sync-&gt;async and vice versa remounts.
 singleline_comment|// Note: The VFS already checks that there are no pending deletes and
@@ -1277,6 +1318,12 @@ id|opt
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Done.&quot;
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -4907,10 +4954,104 @@ c_func
 id|vol
 )paren
 suffix:semicolon
+multiline_comment|/* If a read-write mount, empty the logfile. */
 )brace
-singleline_comment|// FIXME: Empty the logfile, but only if not read-only.
-singleline_comment|// FIXME: What happens if someone remounts rw? We need to empty the file
-singleline_comment|// then. We need a flag to tell us whether we have done it already.
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_RDONLY
+)paren
+op_logical_and
+op_logical_neg
+id|ntfs_empty_logfile
+c_func
+(paren
+id|vol-&gt;logfile_ino
+)paren
+)paren
+(brace
+r_static
+r_const
+r_char
+op_star
+id|es1
+op_assign
+l_string|&quot;Failed to empty $LogFile&quot;
+suffix:semicolon
+r_static
+r_const
+r_char
+op_star
+id|es2
+op_assign
+l_string|&quot;.  Mount in Windows.&quot;
+suffix:semicolon
+multiline_comment|/* Convert to a read-only mount. */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|vol-&gt;on_errors
+op_amp
+(paren
+id|ON_ERRORS_REMOUNT_RO
+op_or
+id|ON_ERRORS_CONTINUE
+)paren
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;%s and neither on_errors=continue nor &quot;
+l_string|&quot;on_errors=remount-ro was specified%s&quot;
+comma
+id|es1
+comma
+id|es2
+)paren
+suffix:semicolon
+r_goto
+id|iput_logfile_err_out
+suffix:semicolon
+)brace
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_RDONLY
+op_or
+id|MS_NOATIME
+op_or
+id|MS_NODIRATIME
+suffix:semicolon
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;%s.  Mounting read-only%s&quot;
+comma
+id|es1
+comma
+id|es2
+)paren
+suffix:semicolon
+multiline_comment|/* This will prevent a read-write remount. */
+id|NVolSetErrors
+c_func
+(paren
+id|vol
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 multiline_comment|/*&n;&t; * Get the inode for the attribute definitions file and parse the&n;&t; * attribute definitions.&n;&t; */
 id|tmp_ino
