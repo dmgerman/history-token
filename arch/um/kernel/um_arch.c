@@ -1223,6 +1223,21 @@ id|physmem_size
 op_sub_assign
 id|highmem
 suffix:semicolon
+macro_line|#ifndef CONFIG_HIGHMEM
+id|highmem
+op_assign
+l_int|0
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;CONFIG_HIGHMEM not enabled - physical memory shrunk &quot;
+l_string|&quot;to %ld bytes&bslash;n&quot;
+comma
+id|physmem_size
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 id|high_physmem
 op_assign

@@ -13,6 +13,26 @@ id|swapper_pg_dir
 l_int|1024
 )braket
 suffix:semicolon
+r_extern
+r_void
+op_star
+id|um_virt_to_phys
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
+r_int
+r_int
+id|virt
+comma
+id|pte_t
+op_star
+id|pte_out
+)paren
+suffix:semicolon
 multiline_comment|/* zero page used for uninitialized stuff */
 r_extern
 r_int
