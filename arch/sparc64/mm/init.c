@@ -120,6 +120,11 @@ multiline_comment|/* Initial ramdisk setup */
 r_extern
 r_int
 r_int
+id|sparc_ramdisk_image64
+suffix:semicolon
+r_extern
+r_int
+r_int
 id|sparc_ramdisk_image
 suffix:semicolon
 r_extern
@@ -6372,12 +6377,25 @@ r_if
 c_cond
 (paren
 id|sparc_ramdisk_image
+op_logical_or
+id|sparc_ramdisk_image64
 )paren
 (brace
+r_int
+r_int
+id|ramdisk_image
+op_assign
+id|sparc_ramdisk_image
+ques
+c_cond
+id|sparc_ramdisk_image
+suffix:colon
+id|sparc_ramdisk_image64
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|sparc_ramdisk_image
+id|ramdisk_image
 op_ge
 (paren
 r_int
@@ -6389,13 +6407,13 @@ l_int|2
 op_star
 id|PAGE_SIZE
 )paren
-id|sparc_ramdisk_image
+id|ramdisk_image
 op_sub_assign
 id|KERNBASE
 suffix:semicolon
 id|initrd_start
 op_assign
-id|sparc_ramdisk_image
+id|ramdisk_image
 op_plus
 id|phys_base
 suffix:semicolon
@@ -6598,6 +6616,18 @@ op_minus
 id|initrd_start
 suffix:semicolon
 multiline_comment|/* Resert the initrd image area. */
+macro_line|#ifdef CONFIG_DEBUG_BOOTMEM
+id|prom_printf
+c_func
+(paren
+l_string|&quot;reserve_bootmem(initrd): base[%llx] size[%lx]&bslash;n&quot;
+comma
+id|initrd_start
+comma
+id|initrd_end
+)paren
+suffix:semicolon
+macro_line|#endif
 id|reserve_bootmem
 c_func
 (paren
@@ -6838,6 +6868,8 @@ r_if
 c_cond
 (paren
 id|sparc_ramdisk_image
+op_logical_or
+id|sparc_ramdisk_image64
 )paren
 id|real_end
 op_assign
