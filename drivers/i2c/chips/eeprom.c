@@ -93,17 +93,6 @@ suffix:semicolon
 multiline_comment|/* EEPROM registers */
 DECL|macro|EEPROM_REG_CHECKSUM
 mdefine_line|#define EEPROM_REG_CHECKSUM&t;0x3f
-multiline_comment|/* EEPROM memory types: */
-DECL|macro|ONE_K
-mdefine_line|#define ONE_K&t;&t;&t;1
-DECL|macro|TWO_K
-mdefine_line|#define TWO_K&t;&t;&t;2
-DECL|macro|FOUR_K
-mdefine_line|#define FOUR_K&t;&t;&t;3
-DECL|macro|EIGHT_K
-mdefine_line|#define EIGHT_K&t;&t;&t;4
-DECL|macro|SIXTEEN_K
-mdefine_line|#define SIXTEEN_K&t;&t;5
 multiline_comment|/* Size of EEPROM in bytes */
 DECL|macro|EEPROM_SIZE
 mdefine_line|#define EEPROM_SIZE&t;&t;256
