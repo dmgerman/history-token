@@ -113,7 +113,7 @@ id|ttyp
 op_assign
 l_int|NULL
 suffix:semicolon
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -159,7 +159,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp

@@ -92,7 +92,7 @@ c_cond
 id|files
 )paren
 (brace
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -128,7 +128,7 @@ op_eq
 id|skb-&gt;sk-&gt;socket-&gt;file
 )paren
 (brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -153,7 +153,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -263,7 +263,7 @@ c_cond
 id|files
 )paren
 (brace
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -307,7 +307,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
