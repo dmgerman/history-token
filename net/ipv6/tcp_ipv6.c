@@ -9640,6 +9640,7 @@ id|tw
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|tcp6_seq_show
 r_static
 r_int
@@ -9831,6 +9832,7 @@ id|tcp6_seq_afinfo
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|variable|tcpv6_prot
 r_struct
 id|proto
