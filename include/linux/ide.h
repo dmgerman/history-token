@@ -395,13 +395,6 @@ id|request_queue_t
 id|queue
 suffix:semicolon
 multiline_comment|/* per device request queue */
-DECL|member|next
-r_struct
-id|ata_device
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* circular list of hwgroup drives */
 multiline_comment|/* Those are directly injected jiffie values. They should go away and&n;&t; * we should use generic timers instead!!!&n;&t; */
 DECL|member|PADAM_sleep
 r_int
@@ -409,24 +402,6 @@ r_int
 id|PADAM_sleep
 suffix:semicolon
 multiline_comment|/* sleep until this time */
-DECL|member|PADAM_service_start
-r_int
-r_int
-id|PADAM_service_start
-suffix:semicolon
-multiline_comment|/* time we started last request */
-DECL|member|PADAM_service_time
-r_int
-r_int
-id|PADAM_service_time
-suffix:semicolon
-multiline_comment|/* service time of last request */
-DECL|member|PADAM_timeout
-r_int
-r_int
-id|PADAM_timeout
-suffix:semicolon
-multiline_comment|/* max time to wait for irq */
 multiline_comment|/* Flags requesting/indicating one of the following special commands&n;&t; * executed on the request queue.&n;&t; */
 DECL|macro|ATA_SPECIAL_GEOMETRY
 mdefine_line|#define ATA_SPECIAL_GEOMETRY&t;&t;0x01
@@ -1432,11 +1407,11 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* BUSY, SLEEPING */
-DECL|member|drive
+DECL|member|XXX_drive
 r_struct
 id|ata_device
 op_star
-id|drive
+id|XXX_drive
 suffix:semicolon
 multiline_comment|/* current drive */
 DECL|member|rq
