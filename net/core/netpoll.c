@@ -3063,6 +3063,11 @@ id|np-&gt;rx_list
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NETPOLL_RX
+r_if
+c_cond
+(paren
+id|np-&gt;dev
+)paren
 id|np-&gt;dev-&gt;netpoll_rx
 op_assign
 l_int|0
