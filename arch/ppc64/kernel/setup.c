@@ -449,7 +449,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#if !defined(CONFIG_PPC_ISERIES) &amp;&amp; defined(CONFIG_SMP)
-multiline_comment|/**&n; * setup_cpu_maps - initialize the following cpu maps:&n; *                  cpu_possible_map&n; *                  cpu_present_map&n; *                  cpu_sibling_map&n; *&n; * Having the possible map set up early allows us to restrict allocations&n; * of things like irqstacks to num_possible_cpus() rather than NR_CPUS.&n; *&n; * We do not initialize the online map here; cpus set their own bits in&n; * cpu_online_map as they come up.&n; *&n; * This function is valid only for Open Firmware systems.  finish_device_tree&n; * must be called before using this.&n; */
+multiline_comment|/**&n; * setup_cpu_maps - initialize the following cpu maps:&n; *                  cpu_possible_map&n; *                  cpu_present_map&n; *                  cpu_sibling_map&n; *&n; * Having the possible map set up early allows us to restrict allocations&n; * of things like irqstacks to num_possible_cpus() rather than NR_CPUS.&n; *&n; * We do not initialize the online map here; cpus set their own bits in&n; * cpu_online_map as they come up.&n; *&n; * This function is valid only for Open Firmware systems.  finish_device_tree&n; * must be called before using this.&n; *&n; * While we&squot;re here, we may as well set the &quot;physical&quot; cpu ids in the paca.&n; */
 DECL|function|setup_cpu_maps
 r_static
 r_void
@@ -525,6 +525,28 @@ op_amp
 id|len
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|intserv
+)paren
+id|intserv
+op_assign
+(paren
+id|u32
+op_star
+)paren
+id|get_property
+c_func
+(paren
+id|dn
+comma
+l_string|&quot;reg&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 id|nthreads
 op_assign
 id|len
@@ -567,6 +589,17 @@ c_func
 id|cpu
 comma
 id|cpu_present_map
+)paren
+suffix:semicolon
+id|set_hard_smp_processor_id
+c_func
+(paren
+id|cpu
+comma
+id|intserv
+(braket
+id|j
+)braket
 )paren
 suffix:semicolon
 id|cpu
