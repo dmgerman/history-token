@@ -1123,7 +1123,7 @@ id|jh_in-&gt;b_frozen_data
 id|kfree
 c_func
 (paren
-id|new_page
+id|tmp
 )paren
 suffix:semicolon
 r_goto
