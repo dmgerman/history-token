@@ -692,15 +692,6 @@ comma
 l_int|0x480
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|variable|pSkRootDir
-r_static
-r_struct
-id|proc_dir_entry
-op_star
-id|pSkRootDir
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*****************************************************************************&n; *&n; * &t;skge_probe - find all SK-98xx adapters&n; *&n; * Description:&n; *&t;This function scans the PCI bus for SK-98xx adapters. Resources for&n; *&t;each adapter are allocated and the adapter is brought into Init 1&n; *&t;state.&n; *&n; * Returns:&n; *&t;0, if everything is ok&n; *&t;!=0, on error&n; */
 DECL|function|skge_probe
 r_static
@@ -759,11 +750,6 @@ r_int
 id|retval
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
-r_int
-id|proc_root_initialized
-op_assign
-l_int|0
-suffix:semicolon
 r_struct
 id|proc_dir_entry
 op_star
@@ -1253,38 +1239,50 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|proc_root_initialized
+id|pSkRootDir
 )paren
 (brace
 id|pSkRootDir
 op_assign
-id|create_proc_entry
+id|proc_mkdir
 c_func
 (paren
 id|SK_Root_Dir_entry
 comma
-id|S_IFDIR
-op_or
-id|S_IWUSR
-op_or
-id|S_IRUGO
-op_or
-id|S_IXUGO
-comma
 id|proc_net
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pSkRootDir
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: Unable to create /proc/net/%s&quot;
+comma
+id|dev-&gt;name
+comma
+id|SK_Root_Dir_entry
+)paren
+suffix:semicolon
+r_else
 id|pSkRootDir-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-id|proc_root_initialized
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Create proc file */
+r_if
+c_cond
+(paren
+id|pSkRootDir
+op_logical_and
+(paren
 id|pProcFile
 op_assign
 id|create_proc_entry
@@ -1302,7 +1300,9 @@ id|S_IROTH
 comma
 id|pSkRootDir
 )paren
-suffix:semicolon
+)paren
+)paren
+(brace
 id|pProcFile-&gt;read_proc
 op_assign
 id|sk_proc_read
@@ -1336,6 +1336,7 @@ id|pProcFile-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
+)brace
 macro_line|#endif
 id|pNet-&gt;PortNr
 op_assign
@@ -1510,6 +1511,12 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
+r_if
+c_cond
+(paren
+id|pSkRootDir
+op_logical_and
+(paren
 id|pProcFile
 op_assign
 id|create_proc_entry
@@ -1527,7 +1534,9 @@ id|S_IROTH
 comma
 id|pSkRootDir
 )paren
-suffix:semicolon
+)paren
+)paren
+(brace
 id|pProcFile-&gt;read_proc
 op_assign
 id|sk_proc_read
@@ -1561,6 +1570,7 @@ id|pProcFile-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
+)brace
 macro_line|#endif
 id|memcpy
 c_func
@@ -2975,6 +2985,11 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* clear proc-dir */
+r_if
+c_cond
+(paren
+id|pSkRootDir
+)paren
 id|remove_proc_entry
 c_func
 (paren
