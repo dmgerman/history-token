@@ -1767,7 +1767,7 @@ id|bio
 suffix:semicolon
 id|ci.idx
 op_assign
-l_int|0
+id|bio-&gt;bi_idx
 suffix:semicolon
 id|atomic_inc
 c_func
