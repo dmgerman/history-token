@@ -15307,10 +15307,17 @@ id|sd
 op_assign
 id|SD_CPU_INIT
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
 id|sd-&gt;span
 op_assign
 id|nodemask
 suffix:semicolon
+macro_line|#else
+id|sd-&gt;span
+op_assign
+id|cpu_possible_map
+suffix:semicolon
+macro_line|#endif
 id|sd-&gt;parent
 op_assign
 id|p
@@ -15473,6 +15480,7 @@ id|cpu_to_isolated_group
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/* Set up physical groups */
 r_for
 c_loop
@@ -15531,6 +15539,19 @@ id|cpu_to_phys_group
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+id|init_sched_build_groups
+c_func
+(paren
+id|sched_group_phys
+comma
+id|cpu_possible_map
+comma
+op_amp
+id|cpu_to_phys_group
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/* Set up node groups */
 id|init_sched_build_groups
