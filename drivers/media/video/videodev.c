@@ -597,6 +597,15 @@ id|VIDIOC_G_AUDOUT
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|VIDIOC_CROPCAP_OLD
+suffix:colon
+id|cmd
+op_assign
+id|VIDIOC_CROPCAP
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 r_return
 id|cmd

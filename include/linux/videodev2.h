@@ -1846,7 +1846,7 @@ mdefine_line|#define VIDIOC_G_FREQUENCY&t;_IOWR (&squot;V&squot;, 56, struct v4l
 DECL|macro|VIDIOC_S_FREQUENCY
 mdefine_line|#define VIDIOC_S_FREQUENCY&t;_IOW  (&squot;V&squot;, 57, struct v4l2_frequency)
 DECL|macro|VIDIOC_CROPCAP
-mdefine_line|#define VIDIOC_CROPCAP&t;&t;_IOR  (&squot;V&squot;, 58, struct v4l2_cropcap)
+mdefine_line|#define VIDIOC_CROPCAP&t;&t;_IOWR (&squot;V&squot;, 58, struct v4l2_cropcap)
 DECL|macro|VIDIOC_G_CROP
 mdefine_line|#define VIDIOC_G_CROP&t;&t;_IOWR (&squot;V&squot;, 59, struct v4l2_crop)
 DECL|macro|VIDIOC_S_CROP
@@ -1878,6 +1878,8 @@ DECL|macro|VIDIOC_G_AUDIO_OLD
 mdefine_line|#define VIDIOC_G_AUDIO_OLD     &t;_IOWR (&squot;V&squot;, 33, struct v4l2_audio)
 DECL|macro|VIDIOC_G_AUDOUT_OLD
 mdefine_line|#define VIDIOC_G_AUDOUT_OLD    &t;_IOWR (&squot;V&squot;, 49, struct v4l2_audioout)
+DECL|macro|VIDIOC_CROPCAP_OLD
+mdefine_line|#define VIDIOC_CROPCAP_OLD     &t;_IOR  (&squot;V&squot;, 58, struct v4l2_cropcap)
 DECL|macro|BASE_VIDIOC_PRIVATE
 mdefine_line|#define BASE_VIDIOC_PRIVATE&t;192&t;&t;/* 192-255 are private */
 macro_line|#ifdef __KERNEL__
