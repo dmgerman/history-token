@@ -123,7 +123,7 @@ mdefine_line|#define PAGE_SHARED&t;&bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_
 DECL|macro|PAGE_SHARED_X
 mdefine_line|#define PAGE_SHARED_X&t;&bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_EXEC | _PAGE_WRITE | _PAGE_READ &bslash;&n;&t;&t;| _PAGE_USER | _PAGE_ACCESSED)
 DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY&t;&bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_EXEC | _PAGE_READ | _PAGE_USER &bslash;&n;&t;&t;| _PAGE_ACCESSED)
+mdefine_line|#define PAGE_COPY&t;&bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_READ | _PAGE_USER | _PAGE_ACCESSED)
 DECL|macro|PAGE_COPY_X
 mdefine_line|#define PAGE_COPY_X&t;&bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_EXEC | _PAGE_READ | _PAGE_USER &bslash;&n;&t;&t;| _PAGE_ACCESSED)
 DECL|macro|PAGE_READONLY
@@ -167,17 +167,17 @@ DECL|macro|PAGE_KERNEL_NOCACHE
 mdefine_line|#define PAGE_KERNEL_NOCACHE     __pgprot(0)
 macro_line|#endif /* CONFIG_MMU */
 multiline_comment|/*&n; * The i386 can&squot;t do page protection for execute, and considers that&n; * the same are read. Also, write permissions imply read permissions.&n; * This is the closest we can get..&n; */
-multiline_comment|/* rwx */
+multiline_comment|/* xwr */
 DECL|macro|__P000
 mdefine_line|#define __P000&t;PAGE_NONE
 DECL|macro|__P001
-mdefine_line|#define __P001&t;PAGE_READONLY_X
+mdefine_line|#define __P001&t;PAGE_READONLY
 DECL|macro|__P010
-mdefine_line|#define __P010&t;PAGE_COPY_X
+mdefine_line|#define __P010&t;PAGE_COPY
 DECL|macro|__P011
-mdefine_line|#define __P011&t;PAGE_COPY_X
+mdefine_line|#define __P011&t;PAGE_COPY
 DECL|macro|__P100
-mdefine_line|#define __P100&t;PAGE_READONLY
+mdefine_line|#define __P100&t;PAGE_READONLY_X
 DECL|macro|__P101
 mdefine_line|#define __P101&t;PAGE_READONLY_X
 DECL|macro|__P110
@@ -187,17 +187,17 @@ mdefine_line|#define __P111&t;PAGE_COPY_X
 DECL|macro|__S000
 mdefine_line|#define __S000&t;PAGE_NONE
 DECL|macro|__S001
-mdefine_line|#define __S001&t;PAGE_READONLY_X
+mdefine_line|#define __S001&t;PAGE_READONLY
 DECL|macro|__S010
 mdefine_line|#define __S010&t;PAGE_SHARED
 DECL|macro|__S011
-mdefine_line|#define __S011&t;PAGE_SHARED_X
+mdefine_line|#define __S011&t;PAGE_SHARED
 DECL|macro|__S100
-mdefine_line|#define __S100&t;PAGE_READONLY
+mdefine_line|#define __S100&t;PAGE_READONLY_X
 DECL|macro|__S101
 mdefine_line|#define __S101&t;PAGE_READONLY_X
 DECL|macro|__S110
-mdefine_line|#define __S110&t;PAGE_SHARED
+mdefine_line|#define __S110&t;PAGE_SHARED_X
 DECL|macro|__S111
 mdefine_line|#define __S111&t;PAGE_SHARED_X
 multiline_comment|/* page table for 0-4MB for everybody */
