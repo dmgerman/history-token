@@ -30272,7 +30272,7 @@ c_func
 (paren
 id|nbuff
 comma
-l_string|&quot;c0t%d&quot;
+l_string|&quot;sbp/c0t%d&quot;
 comma
 id|p-&gt;drv_id
 )paren
@@ -30282,7 +30282,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-id|devfs_handle
+l_int|NULL
 comma
 id|nbuff
 comma

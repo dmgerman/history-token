@@ -945,7 +945,7 @@ id|device
 r_char
 id|buffer
 (braket
-l_int|5
+l_int|10
 )braket
 suffix:semicolon
 id|dasd_devmap_t
@@ -1032,7 +1032,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;%04x&quot;
+l_string|&quot;dasd/%04x&quot;
 comma
 id|device-&gt;devinfo.devno
 )paren
@@ -1042,11 +1042,11 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-id|dasd_devfs_handle
+l_int|NULL
 comma
 id|buffer
 comma
-id|device
+l_int|NULL
 )paren
 suffix:semicolon
 id|device-&gt;gdp-&gt;de
