@@ -24305,6 +24305,16 @@ c_func
 (paren
 id|LOOP_CLR_FD
 )paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|LOOP_SET_STATUS64
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|LOOP_GET_STATUS64
+)paren
 multiline_comment|/* Big A */
 id|COMPATIBLE_IOCTL
 c_func
