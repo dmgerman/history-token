@@ -7,7 +7,7 @@ DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EVENTS
 id|ACPI_MODULE_NAME
 (paren
-l_string|&quot;evgpe&quot;
+l_string|&quot;evgpeblk&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_save_method_info&n; *&n; * PARAMETERS:  Callback from walk_namespace&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Called from acpi_walk_namespace. Expects each object to be a&n; *              control method under the _GPE portion of the namespace.&n; *              Extract the name and GPE type from the object, saving this&n; *              information for quick lookup during GPE dispatch&n; *&n; *              The name of each GPE control method is of the form:&n; *                  &quot;_Lnn&quot; or &quot;_Enn&quot;&n; *              Where:&n; *                  L      - means that the GPE is level triggered&n; *                  E      - means that the GPE is edge triggered&n; *                  nn     - is the GPE number [in HEX]&n; *&n; ******************************************************************************/
 r_static
@@ -196,6 +196,8 @@ id|gpe_block-&gt;block_base_number
 op_logical_or
 (paren
 id|gpe_number
+op_minus
+id|gpe_block-&gt;block_base_number
 op_ge
 (paren
 id|gpe_block-&gt;register_count
