@@ -838,21 +838,6 @@ op_assign
 op_amp
 id|ns87415_selectproc
 suffix:semicolon
-multiline_comment|/* Set a good latency timer and cache line size value. */
-(paren
-r_void
-)paren
-id|pci_write_config_byte
-c_func
-(paren
-id|dev
-comma
-id|PCI_LATENCY_TIMER
-comma
-l_int|64
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME: use pci_set_master() to ensure good latency timer value */
 multiline_comment|/*&n;&t; * We cannot probe for IRQ: both ports share common IRQ on INTA.&n;&t; * Also, leave IRQ masked during drive probing, to prevent infinite&n;&t; * interrupts from a potentially floating INTA..&n;&t; *&n;&t; * IRQs get unmasked in selectproc when drive is first used.&n;&t; */
 (paren
 r_void
