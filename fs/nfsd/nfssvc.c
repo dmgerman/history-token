@@ -705,7 +705,7 @@ id|serv
 comma
 id|rqstp
 comma
-l_int|5
+l_int|60
 op_star
 l_int|60
 op_star
@@ -715,10 +715,6 @@ id|HZ
 op_eq
 op_minus
 id|EAGAIN
-)paren
-id|cache_clean
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
