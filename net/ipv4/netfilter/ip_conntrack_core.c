@@ -155,11 +155,11 @@ op_eq
 id|curr-&gt;proto
 suffix:semicolon
 )brace
-DECL|function|__find_proto
+DECL|function|__ip_ct_find_proto
 r_struct
 id|ip_conntrack_protocol
 op_star
-id|__find_proto
+id|__ip_ct_find_proto
 c_func
 (paren
 id|u_int8_t
@@ -235,7 +235,7 @@ id|ip_conntrack_lock
 suffix:semicolon
 id|p
 op_assign
-id|__find_proto
+id|__ip_ct_find_proto
 c_func
 (paren
 id|protocol
