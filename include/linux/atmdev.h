@@ -120,13 +120,16 @@ multiline_comment|/* enable or disable single-copy */
 DECL|macro|ATM_SETBACKEND
 mdefine_line|#define ATM_SETBACKEND&t;_IOW(&squot;a&squot;,ATMIOC_SPECIAL+2,atm_backend_t)
 multiline_comment|/* set backend handler */
+DECL|macro|ATM_NEWBACKENDIF
+mdefine_line|#define ATM_NEWBACKENDIF _IOW(&squot;a&squot;,ATMIOC_SPECIAL+3,atm_backend_t)
+multiline_comment|/* use backend to make new if */
 multiline_comment|/*&n; * These are backend handkers that can be set via the ATM_SETBACKEND call&n; * above.  In the future we may support dynamic loading of these - for now,&n; * they&squot;re just being used to share the ATMIOC_BACKEND ioctls&n; */
 DECL|macro|ATM_BACKEND_RAW
 mdefine_line|#define ATM_BACKEND_RAW&t;&t;0&t;
 DECL|macro|ATM_BACKEND_PPP
 mdefine_line|#define ATM_BACKEND_PPP&t;&t;1&t;/* PPPoATM - RFC2364 */
-DECL|macro|ATM_BACKEND_BR_2684
-mdefine_line|#define ATM_BACKEND_BR_2684&t;2&t;/* Bridged RFC1483/2684 */
+DECL|macro|ATM_BACKEND_BR2684
+mdefine_line|#define ATM_BACKEND_BR2684&t;2&t;/* Bridged RFC1483/2684 */
 multiline_comment|/* for ATM_GETTYPE */
 DECL|macro|ATM_ITFTYP_LEN
 mdefine_line|#define ATM_ITFTYP_LEN&t;8&t;/* maximum length of interface type name */
