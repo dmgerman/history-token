@@ -492,11 +492,11 @@ DECL|macro|sx_dprintk
 mdefine_line|#define sx_dprintk(f, str...) /* nothing */
 macro_line|#endif
 DECL|macro|func_enter
-mdefine_line|#define func_enter() sx_dprintk (SX_DEBUG_FLOW, &quot;sx: enter &quot; __FUNCTION__ &quot;&bslash;n&quot;)
+mdefine_line|#define func_enter() sx_dprintk (SX_DEBUG_FLOW, &quot;sx: enter %s&bslash;b&quot;,__FUNCTION__)
 DECL|macro|func_exit
-mdefine_line|#define func_exit()  sx_dprintk (SX_DEBUG_FLOW, &quot;sx: exit  &quot; __FUNCTION__ &quot;&bslash;n&quot;)
+mdefine_line|#define func_exit()  sx_dprintk (SX_DEBUG_FLOW, &quot;sx: exit  %s&bslash;n&quot;, __FUNCTION__)
 DECL|macro|func_enter2
-mdefine_line|#define func_enter2() sx_dprintk (SX_DEBUG_FLOW, &quot;sx: enter &quot; __FUNCTION__ &bslash;&n;                                  &quot;(port %d)&bslash;n&quot;, port-&gt;line)
+mdefine_line|#define func_enter2() sx_dprintk (SX_DEBUG_FLOW, &quot;sx: enter %s (port %d)&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;&t;__FUNCTION__, port-&gt;line)
 multiline_comment|/* &n; *  Firmware loader driver specific routines&n; *&n; */
 DECL|variable|sx_fw_fops
 r_static

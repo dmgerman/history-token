@@ -529,9 +529,9 @@ mdefine_line|#define FS_DEBUG_TXMEM   0x00000800
 DECL|macro|FS_DEBUG_QSIZE
 mdefine_line|#define FS_DEBUG_QSIZE   0x00001000
 DECL|macro|func_enter
-mdefine_line|#define func_enter() fs_dprintk (FS_DEBUG_FLOW, &quot;fs: enter &quot; __FUNCTION__ &quot;&bslash;n&quot;)
+mdefine_line|#define func_enter() fs_dprintk (FS_DEBUG_FLOW, &quot;fs: enter %s&bslash;n&quot;, __FUNCTION__)
 DECL|macro|func_exit
-mdefine_line|#define func_exit()  fs_dprintk (FS_DEBUG_FLOW, &quot;fs: exit  &quot; __FUNCTION__ &quot;&bslash;n&quot;)
+mdefine_line|#define func_exit()  fs_dprintk (FS_DEBUG_FLOW, &quot;fs: exit  %s&bslash;n&quot;, __FUNCTION__)
 DECL|variable|fs_boards
 r_struct
 id|fs_dev

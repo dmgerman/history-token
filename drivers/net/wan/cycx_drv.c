@@ -1590,12 +1590,12 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s:&quot;
-id|__FUNCTION__
-l_string|&quot;: firmware format %u rejected! &quot;
+l_string|&quot;%s:%s: firmware format %u rejected! &quot;
 l_string|&quot;Expecting %u.&bslash;n&quot;
 comma
 id|modname
+comma
+id|__FUNCTION__
 comma
 id|cfm-&gt;version
 comma
@@ -1641,11 +1641,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s:&quot;
-id|__FUNCTION__
-l_string|&quot;: firmware corrupted!&bslash;n&quot;
+l_string|&quot;%s:%s: firmware corrupted!&bslash;n&quot;
 comma
 id|modname
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|printk
@@ -1711,9 +1711,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s:&quot;
+l_string|&quot;%s:%s: image sizes&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: image sizes&bslash;n&quot;
 comma
 id|modname
 )paren

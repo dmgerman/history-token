@@ -6172,8 +6172,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: out of memory&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

@@ -1092,8 +1092,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: busy timeout!!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: busy timeout!!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1154,8 +1155,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: timeout!!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: timeout!!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1427,8 +1429,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: busy timeout!!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: busy timeout!!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1482,8 +1485,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s: txno/txni/cnt=%d/%d/%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: txno/txni/cnt=%d/%d/%d&bslash;n&quot;
 comma
 id|gp-&gt;tx_next_out
 comma
@@ -1548,8 +1552,9 @@ c_func
 (paren
 l_int|0
 comma
+l_string|&quot;%s: rxno=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: rxno=%d&bslash;n&quot;
 comma
 id|gp-&gt;rx_next_out
 )paren
@@ -1860,8 +1865,9 @@ c_func
 (paren
 id|dbg_lvl
 comma
+l_string|&quot;%s: skb=%p, skb-&gt;data=%p, skb-&gt;len=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: skb=%p, skb-&gt;data=%p, skb-&gt;len=%d&bslash;n&quot;
 comma
 id|skb
 comma
@@ -2050,8 +2056,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: tblEntry1=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: tblEntry1=%x&bslash;n&quot;
 comma
 id|tblEntry1
 )paren
@@ -2101,8 +2108,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: tblEntry0=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: tblEntry0=%x&bslash;n&quot;
 comma
 id|tblEntry0
 )paren
@@ -2234,8 +2242,9 @@ l_int|3
 comma
 id|dev
 comma
+l_string|&quot;%s: nib swap/invt addr=&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: nib swap/invt addr=&quot;
 comma
 id|hash_ea
 )paren
@@ -2368,8 +2377,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: hashResult=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: hashResult=%x&bslash;n&quot;
 comma
 id|hashResult
 )paren
@@ -2402,10 +2412,11 @@ c_func
 (paren
 l_int|3
 comma
-id|__FUNCTION__
-l_string|&quot;: tblEntryAddr=%p&bslash;n&quot;
+l_string|&quot;%s: tblEntryAddr=%p&bslash;n&quot;
 comma
 id|tblEntryAddr
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_for
@@ -2452,8 +2463,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: skipping to %p&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: skipping to %p&bslash;n&quot;
 comma
 id|tblEntryAddr
 )paren
@@ -2508,8 +2520,9 @@ id|HASH_HOP_NUMBER
 id|err
 c_func
 (paren
+l_string|&quot;%s: expired!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: expired!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2762,8 +2775,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// Return if neither Rx or Tx abort bits are set
@@ -2815,8 +2829,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: SDMA comm = %x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: SDMA comm = %x&bslash;n&quot;
 comma
 id|GT96100ETH_READ
 c_func
@@ -2861,8 +2876,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s: timeout!!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: timeout!!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2906,8 +2922,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|disable_ether_irq
@@ -3356,8 +3373,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-id|__FUNCTION__
-l_string|&quot;: irq unknown - probing not supported&bslash;n&quot;
+l_string|&quot;%s: irq unknown - probing not supported&bslash;n&quot;
+comma
+id|__FUNCTION_
 )paren
 suffix:semicolon
 r_return
@@ -3493,8 +3511,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: no PHY found on MII%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: no PHY found on MII%d&bslash;n&quot;
 comma
 id|port_num
 )paren
@@ -3523,8 +3542,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: request_region failed&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: request_region failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3579,8 +3599,9 @@ id|gtif-&gt;mac_str
 id|err
 c_func
 (paren
+l_string|&quot;%s: MAC address parse failed&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: MAC address parse failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -3888,8 +3909,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: rx_ring=%p, tx_ring=%p&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: rx_ring=%p, tx_ring=%p&bslash;n&quot;
 comma
 id|gp-&gt;rx_ring
 comma
@@ -3973,8 +3995,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: hash=%p&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: hash=%p&bslash;n&quot;
 comma
 id|gp-&gt;hash_table
 )paren
@@ -4061,8 +4084,9 @@ suffix:semicolon
 id|err
 c_func
 (paren
+l_string|&quot;%s failed.  Returns %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; failed.  Returns %d&bslash;n&quot;
 comma
 id|retval
 )paren
@@ -4603,8 +4627,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: dev=%p&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: dev=%p&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -4614,8 +4639,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: scs10_lo=%4x, scs10_hi=%4x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: scs10_lo=%4x, scs10_hi=%4x&bslash;n&quot;
 comma
 id|GT96100_READ
 c_func
@@ -4635,8 +4661,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: scs32_lo=%4x, scs32_hi=%4x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: scs32_lo=%4x, scs32_hi=%4x&bslash;n&quot;
 comma
 id|GT96100_READ
 c_func
@@ -4714,8 +4741,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: CIU Config=%x/%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: CIU Config=%x/%x&bslash;n&quot;
 comma
 id|tmp
 comma
@@ -4858,8 +4886,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: Hash Tbl Ptr=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Hash Tbl Ptr=%x&bslash;n&quot;
 comma
 id|GT96100ETH_READ
 c_func
@@ -4882,8 +4911,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: Curr Tx Desc Ptr0=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Curr Tx Desc Ptr0=%x&bslash;n&quot;
 comma
 id|GT96100ETH_READ
 c_func
@@ -4906,8 +4936,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: 1st/Curr Rx Desc Ptr0=%x/%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: 1st/Curr Rx Desc Ptr0=%x/%x&bslash;n&quot;
 comma
 id|GT96100ETH_READ
 c_func
@@ -4974,8 +5005,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: PhyAD=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: PhyAD=%x&bslash;n&quot;
 comma
 id|GT96100_READ
 c_func
@@ -5043,8 +5075,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: SDMA Config=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: SDMA Config=%x&bslash;n&quot;
 comma
 id|GT96100ETH_READ
 c_func
@@ -5071,8 +5104,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: SDMA Comm=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: SDMA Comm=%x&bslash;n&quot;
 comma
 id|GT96100ETH_READ
 c_func
@@ -5101,8 +5135,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: Port Config=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Port Config=%x&bslash;n&quot;
 comma
 id|GT96100ETH_READ
 c_func
@@ -5160,8 +5195,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: Port Config Ext=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Port Config Ext=%x&bslash;n&quot;
 comma
 id|GT96100ETH_READ
 c_func
@@ -5220,8 +5256,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s: dev=%p&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: dev=%p&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -5303,8 +5340,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s: Initialization done.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Initialization done.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5328,8 +5366,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: dev=%p&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: dev=%p&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -5426,8 +5465,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: nextIn=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: nextIn=%d&bslash;n&quot;
 comma
 id|nextIn
 )paren
@@ -5476,8 +5516,9 @@ id|psrLink
 id|err
 c_func
 (paren
+l_string|&quot;%s: Link down, pkt dropped.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Link down, pkt dropped.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|gp-&gt;stats.tx_dropped
@@ -5516,8 +5557,9 @@ id|txOwn
 id|err
 c_func
 (paren
+l_string|&quot;%s: device owns descriptor, pkt dropped.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: device owns descriptor, pkt dropped.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|gp-&gt;stats.tx_dropped
@@ -5783,8 +5825,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: dev=%p, status=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: dev=%p, status=%x&bslash;n&quot;
 comma
 id|dev
 comma
@@ -5864,8 +5907,9 @@ c_func
 (paren
 l_int|4
 comma
+l_string|&quot;%s: Rx desc cmdstat=%x, nextOut=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Rx desc cmdstat=%x, nextOut=%d&bslash;n&quot;
 comma
 id|cmdstat
 comma
@@ -5998,8 +6042,9 @@ multiline_comment|/*&n;&t;&t;&t;&t; * This is the first descriptor of a&n;&t;&t;
 id|err
 c_func
 (paren
+l_string|&quot;%s: desc not first and last!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: desc not first and last!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dump_rx_desc
@@ -6062,8 +6107,9 @@ l_int|NULL
 id|err
 c_func
 (paren
+l_string|&quot;%s: Memory squeeze, dropping packet.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Memory squeeze, dropping packet.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|gp-&gt;stats.rx_dropped
@@ -6182,8 +6228,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: RxCDP did not increment?&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: RxCDP did not increment?&bslash;n&quot;
 )paren
 suffix:semicolon
 id|gp-&gt;rx_next_out
@@ -6306,8 +6353,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: Tx desc cmdstat=%x, nextOut=%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Tx desc cmdstat=%x, nextOut=%d&bslash;n&quot;
 comma
 id|cmdstat
 comma
@@ -6349,8 +6397,9 @@ c_func
 (paren
 l_int|2
 comma
+l_string|&quot;%s: Tx error, cmdstat = %x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Tx error, cmdstat = %x&bslash;n&quot;
 comma
 id|cmdstat
 )paren
@@ -6453,8 +6502,9 @@ c_func
 (paren
 l_int|2
 comma
-id|__FUNCTION__
-l_string|&quot;: Tx Ring was full, queue waked&bslash;n&quot;
+l_string|&quot;%s: Tx Ring was full, queue waked&bslash;n&quot;
+comma
+id|__FUNCTION_
 )paren
 suffix:semicolon
 )brace
@@ -6483,8 +6533,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: good Tx, skb=%p&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: good Tx, skb=%p&bslash;n&quot;
 comma
 id|gp-&gt;tx_skbuff
 (braket
@@ -6514,8 +6565,9 @@ r_else
 id|err
 c_func
 (paren
+l_string|&quot;%s: no skb!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: no skb!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -6537,8 +6589,9 @@ id|gp
 id|err
 c_func
 (paren
+l_string|&quot;%s: Tx queue inconsistent!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Tx queue inconsistent!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -6562,8 +6615,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: Restarting Tx DMA&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Restarting Tx DMA&bslash;n&quot;
 )paren
 suffix:semicolon
 id|GT96100ETH_WRITE
@@ -6637,8 +6691,9 @@ l_int|NULL
 id|err
 c_func
 (paren
+l_string|&quot;%s: null dev ptr&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: null dev ptr&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6649,8 +6704,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: entry, icr=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: entry, icr=%x&bslash;n&quot;
 comma
 id|GT96100ETH_READ
 c_func
@@ -6868,8 +6924,9 @@ c_func
 (paren
 l_int|0
 comma
-id|__FUNCTION__
 l_string|&quot;: Link up, waking queue.&bslash;n&quot;
+comma
+id|__FUNCTION_
 )paren
 suffix:semicolon
 id|netif_wake_queue
@@ -6903,8 +6960,9 @@ c_func
 (paren
 l_int|0
 comma
-id|__FUNCTION__
 l_string|&quot;Link down, stopping queue.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|netif_stop_queue
@@ -6982,8 +7040,9 @@ id|icrTxErrorLow
 id|err
 c_func
 (paren
+l_string|&quot;%s: Tx resource error&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Tx resource error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -7008,8 +7067,9 @@ id|icrTxUdr
 id|err
 c_func
 (paren
+l_string|&quot;%s: Tx underrun error&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Tx underrun error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -7048,8 +7108,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: hit max work&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: hit max work&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -7058,8 +7119,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: exit, icr=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: exit, icr=%x&bslash;n&quot;
 comma
 id|GT96100ETH_READ
 c_func
@@ -7228,8 +7290,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: dev=%p, flags=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: dev=%p, flags=%x&bslash;n&quot;
 comma
 id|dev
 comma
@@ -7398,8 +7461,9 @@ c_func
 (paren
 l_int|3
 comma
+l_string|&quot;%s: dev=%p&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: dev=%p&bslash;n&quot;
 comma
 id|dev
 )paren

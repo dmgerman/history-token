@@ -632,8 +632,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: usb_submit_urb ret %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: usb_submit_urb ret %d&bslash;n&quot;
 comma
 id|i
 )paren

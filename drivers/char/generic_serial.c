@@ -35,9 +35,9 @@ DECL|macro|gs_dprintk
 mdefine_line|#define gs_dprintk(f, str...) /* nothing */
 macro_line|#endif
 DECL|macro|func_enter
-mdefine_line|#define func_enter() gs_dprintk (GS_DEBUG_FLOW, &quot;gs: enter &quot; __FUNCTION__ &quot;&bslash;n&quot;)
+mdefine_line|#define func_enter() gs_dprintk (GS_DEBUG_FLOW, &quot;gs: enter %s&bslash;n&quot;, __FUNCTION__)
 DECL|macro|func_exit
-mdefine_line|#define func_exit()  gs_dprintk (GS_DEBUG_FLOW, &quot;gs: exit  &quot; __FUNCTION__ &quot;&bslash;n&quot;)
+mdefine_line|#define func_exit()  gs_dprintk (GS_DEBUG_FLOW, &quot;gs: exit  %s&bslash;n&quot;, __FUNCTION__)
 macro_line|#if NEW_WRITE_LOCKING
 DECL|macro|DECL
 mdefine_line|#define DECL      /* Nothing */
