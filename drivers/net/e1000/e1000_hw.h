@@ -188,6 +188,9 @@ comma
 DECL|enumerator|e1000_bus_speed_100
 id|e1000_bus_speed_100
 comma
+DECL|enumerator|e1000_bus_speed_120
+id|e1000_bus_speed_120
+comma
 DECL|enumerator|e1000_bus_speed_133
 id|e1000_bus_speed_133
 comma
@@ -1299,6 +1302,8 @@ DECL|macro|E1000_DEV_ID_82546EB_COPPER
 mdefine_line|#define E1000_DEV_ID_82546EB_COPPER      0x1010
 DECL|macro|E1000_DEV_ID_82546EB_FIBER
 mdefine_line|#define E1000_DEV_ID_82546EB_FIBER       0x1012
+DECL|macro|E1000_DEV_ID_82546EB_QUAD_COPPER
+mdefine_line|#define E1000_DEV_ID_82546EB_QUAD_COPPER 0x101D
 DECL|macro|E1000_DEV_ID_82541EI
 mdefine_line|#define E1000_DEV_ID_82541EI             0x1013
 DECL|macro|E1000_DEV_ID_82541EP
@@ -1306,7 +1311,7 @@ mdefine_line|#define E1000_DEV_ID_82541EP             0x1018
 DECL|macro|E1000_DEV_ID_82547EI
 mdefine_line|#define E1000_DEV_ID_82547EI             0x1019
 DECL|macro|NUM_DEV_IDS
-mdefine_line|#define NUM_DEV_IDS 19
+mdefine_line|#define NUM_DEV_IDS 20
 DECL|macro|NODE_ADDRESS_SIZE
 mdefine_line|#define NODE_ADDRESS_SIZE 6
 DECL|macro|ETH_LENGTH_OF_ADDRESS
