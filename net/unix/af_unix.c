@@ -330,6 +330,7 @@ l_int|0
 )braket
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * This may look like an off by one error but it is a bit more&n;&t;&t; * subtle. 108 is the longest valid AF_UNIX path for a binding.&n;&t;&t; * sun_path[108] doesnt as such exist.  However in kernel space&n;&t;&t; * we are guaranteed that it is a valid memory location in our&n;&t;&t; * kernel address buffer.&n;&t;&t; */
 (paren
 (paren
 r_char
