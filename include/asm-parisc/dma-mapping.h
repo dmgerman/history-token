@@ -4,7 +4,7 @@ mdefine_line|#define _PARISC_DMA_MAPPING_H
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
-multiline_comment|/*&n;** See Documentation/DMA-mapping.txt&n;*/
+multiline_comment|/* See Documentation/DMA-mapping.txt */
 DECL|struct|hppa_dma_ops
 r_struct
 id|hppa_dma_ops
@@ -1103,30 +1103,6 @@ comma
 r_int
 r_int
 id|align
-comma
-r_void
-(paren
-op_star
-id|alignf
-)paren
-(paren
-r_void
-op_star
-comma
-r_struct
-id|resource
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-comma
-r_void
-op_star
-id|alignf_data
 )paren
 suffix:semicolon
 macro_line|#else /* !CONFIG_IOMMU_CCIO */
@@ -1135,7 +1111,7 @@ mdefine_line|#define ccio_get_iommu(dev) NULL
 DECL|macro|ccio_request_resource
 mdefine_line|#define ccio_request_resource(dev, res) request_resource(&amp;iomem_resource, res)
 DECL|macro|ccio_allocate_resource
-mdefine_line|#define ccio_allocate_resource(dev, res, size, min, max, align, alignf, data) &bslash;&n;&t;&t;allocate_resource(&amp;iomem_resource, res, size, min, max, &bslash;&n;&t;&t;&t;&t;align, alignf, data)
+mdefine_line|#define ccio_allocate_resource(dev, res, size, min, max, align) &bslash;&n;&t;&t;allocate_resource(&amp;iomem_resource, res, size, min, max, &bslash;&n;&t;&t;&t;&t;align, NULL, NULL)
 macro_line|#endif /* !CONFIG_IOMMU_CCIO */
 macro_line|#ifdef CONFIG_IOMMU_SBA
 r_struct

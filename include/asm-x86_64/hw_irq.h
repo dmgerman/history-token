@@ -42,7 +42,7 @@ multiline_comment|/*&n; * First APIC vector available to drivers: (vectors 0x30-
 DECL|macro|FIRST_DEVICE_VECTOR
 mdefine_line|#define FIRST_DEVICE_VECTOR&t;0x31
 DECL|macro|FIRST_SYSTEM_VECTOR
-mdefine_line|#define FIRST_SYSTEM_VECTOR&t;0xef
+mdefine_line|#define FIRST_SYSTEM_VECTOR&t;0xef   /* duplicated in irq.h */
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 id|u8
@@ -404,6 +404,8 @@ id|i
 (brace
 )brace
 macro_line|#endif
+DECL|macro|platform_legacy_irq
+mdefine_line|#define platform_legacy_irq(irq)&t;((irq) &lt; 16)
 macro_line|#endif
 macro_line|#endif /* _ASM_HW_IRQ_H */
 eof

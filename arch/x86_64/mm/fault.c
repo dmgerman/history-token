@@ -157,6 +157,24 @@ l_int|2
 r_return
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|regs-&gt;cs
+op_amp
+l_int|3
+)paren
+op_ne
+l_int|0
+op_logical_and
+id|regs-&gt;rip
+op_ge
+id|TASK_SIZE
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -1290,9 +1308,16 @@ id|tsk-&gt;thread.cr2
 op_assign
 id|address
 suffix:semicolon
+multiline_comment|/* Kernel addresses are always protection faults */
 id|tsk-&gt;thread.error_code
 op_assign
 id|error_code
+op_or
+(paren
+id|address
+op_ge
+id|TASK_SIZE
+)paren
 suffix:semicolon
 id|tsk-&gt;thread.trap_no
 op_assign
@@ -1424,7 +1449,7 @@ comma
 id|error_code
 )paren
 suffix:semicolon
-multiline_comment|/* Execute summary in case the body of the oops scrolled away */
+multiline_comment|/* Executive summary in case the body of the oops scrolled away */
 id|printk
 c_func
 (paren

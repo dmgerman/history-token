@@ -862,7 +862,7 @@ l_int|4
 )paren
 )paren
 (brace
-id|panic
+id|printk
 c_func
 (paren
 l_string|&quot;SMP mptable: bad signature [%c%c%c%c]!&bslash;n&quot;
@@ -909,7 +909,7 @@ id|mpc-&gt;mpc_length
 )paren
 )paren
 (brace
-id|panic
+id|printk
 c_func
 (paren
 l_string|&quot;SMP mptable: checksum error!&bslash;n&quot;
@@ -3413,11 +3413,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_int
-id|vector
-op_assign
-l_int|0
-suffix:semicolon
-r_int
 id|ioapic
 op_assign
 op_minus
@@ -3647,6 +3642,29 @@ comma
 id|ioapic_pin
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|use_pci_vector
+c_func
+(paren
+)paren
+op_logical_and
+op_logical_neg
+id|platform_legacy_irq
+c_func
+(paren
+id|irq
+)paren
+)paren
+id|irq
+op_assign
+id|IO_APIC_VECTOR
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
 id|entry-&gt;irq
 op_assign
 id|irq
@@ -3670,8 +3688,10 @@ op_lshift
 id|bit
 )paren
 suffix:semicolon
-id|vector
-op_assign
+r_if
+c_cond
+(paren
+op_logical_neg
 id|io_apic_set_pci_routing
 c_func
 (paren
@@ -3685,21 +3705,41 @@ id|edge_level
 comma
 id|active_high_low
 )paren
-suffix:semicolon
+)paren
+(brace
 r_if
 c_cond
 (paren
-id|vector
+id|use_pci_vector
+c_func
+(paren
 )paren
+op_logical_and
+op_logical_neg
+id|platform_legacy_irq
+c_func
+(paren
+id|irq
+)paren
+)paren
+id|irq
+op_assign
+id|IO_APIC_VECTOR
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
 id|entry-&gt;irq
 op_assign
 id|irq
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%02x:%02x:%02x[%c] -&gt; %d-%d -&gt; vector 0x%02x&quot;
+l_string|&quot;%02x:%02x:%02x[%c] -&gt; %d-%d&quot;
 l_string|&quot; -&gt; IRQ %d&bslash;n&quot;
 comma
 id|entry-&gt;id.segment
@@ -3722,8 +3762,6 @@ dot
 id|apic_id
 comma
 id|ioapic_pin
-comma
-id|vector
 comma
 id|entry-&gt;irq
 )paren

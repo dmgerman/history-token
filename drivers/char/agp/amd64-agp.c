@@ -45,6 +45,13 @@ id|hammers
 id|MAX_HAMMER_GARTS
 )braket
 suffix:semicolon
+DECL|variable|aperture_resource
+r_static
+r_struct
+id|resource
+op_star
+id|aperture_resource
+suffix:semicolon
 DECL|variable|agp_try_unsupported
 r_static
 r_int
@@ -1076,10 +1083,6 @@ id|u32
 id|size
 )paren
 (brace
-r_static
-r_int
-id|not_first_call
-suffix:semicolon
 id|u32
 id|pfn
 comma
@@ -1227,8 +1230,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|not_first_call
+id|aperture_resource
 op_logical_and
+op_logical_neg
+(paren
+id|aperture_resource
+op_assign
 id|request_mem_region
 c_func
 (paren
@@ -1238,8 +1245,7 @@ id|size
 comma
 l_string|&quot;aperture&quot;
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
 id|printk
@@ -1254,10 +1260,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|not_first_call
-op_assign
-l_int|1
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -1605,7 +1607,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_ERR
 id|PFX
 l_string|&quot;No usable aperture found.&bslash;n&quot;
 )paren
@@ -1615,7 +1617,7 @@ multiline_comment|/* should port this to i386 */
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_ERR
 id|PFX
 l_string|&quot;Consider rebooting with iommu=memaper=2 to get a good aperture.&bslash;n&quot;
 )paren
@@ -1638,18 +1640,19 @@ id|nr_garts
 op_assign
 id|i
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
 id|i
-op_eq
+OG
 id|MAX_HAMMER_GARTS
 )paren
 (brace
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_ERR
 id|PFX
 l_string|&quot;Too many northbridges for AGP&bslash;n&quot;
 )paren
@@ -1659,6 +1662,12 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#else
+multiline_comment|/* Uniprocessor case, return after finding first bridge.&n;&t;&t;   (There may be more, but in UP, we don&squot;t care). */
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
 )brace
 r_return
 id|i
@@ -2387,6 +2396,17 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|aperture_resource
+)paren
+id|release_resource
+c_func
+(paren
+id|aperture_resource
+)paren
+suffix:semicolon
 id|pci_unregister_driver
 c_func
 (paren

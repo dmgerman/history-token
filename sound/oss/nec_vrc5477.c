@@ -8876,7 +8876,7 @@ suffix:semicolon
 DECL|function|vrc5477_ac97_remove
 r_static
 r_void
-id|__devinit
+id|__devexit
 id|vrc5477_ac97_remove
 c_func
 (paren
@@ -9050,7 +9050,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|vrc5477_ac97_remove
+)paren
 comma
 )brace
 suffix:semicolon

@@ -35,10 +35,6 @@ macro_line|#ifndef SUPPORT_VLB_SYNC&t;&t;/* 1 to support weird 32-bit chips */
 DECL|macro|SUPPORT_VLB_SYNC
 mdefine_line|#define SUPPORT_VLB_SYNC&t;1&t;/* 0 to reduce kernel size */
 macro_line|#endif
-macro_line|#ifndef DISK_RECOVERY_TIME&t;&t;/* off=0; on=access_delay_time */
-DECL|macro|DISK_RECOVERY_TIME
-mdefine_line|#define DISK_RECOVERY_TIME&t;0&t;/*  for hardware that needs it */
-macro_line|#endif
 macro_line|#ifndef OK_TO_RESET_CONTROLLER&t;&t;/* 1 needed for good error recovery */
 DECL|macro|OK_TO_RESET_CONTROLLER
 mdefine_line|#define OK_TO_RESET_CONTROLLER&t;1&t;/* 0 for use with AH2372A/B interface */
@@ -270,13 +266,13 @@ DECL|macro|IDE_MAX
 mdefine_line|#define IDE_MAX(a,b)&t;((a)&gt;(b) ? (a):(b))
 multiline_comment|/*&n; * Timeouts for various operations:&n; */
 DECL|macro|WAIT_DRQ
-mdefine_line|#define WAIT_DRQ&t;(5*HZ/100)&t;/* 50msec - spec allows up to 20ms */
+mdefine_line|#define WAIT_DRQ&t;(HZ/10)&t;&t;/* 100msec - spec allows up to 20ms */
 macro_line|#if defined(CONFIG_APM) || defined(CONFIG_APM_MODULE)
 DECL|macro|WAIT_READY
 mdefine_line|#define WAIT_READY&t;(5*HZ)&t;&t;/* 5sec - some laptops are very slow */
 macro_line|#else
 DECL|macro|WAIT_READY
-mdefine_line|#define WAIT_READY&t;(3*HZ/100)&t;/* 30msec - should be instantaneous */
+mdefine_line|#define WAIT_READY&t;(HZ/10)&t;&t;/* 100msec - should be instantaneous */
 macro_line|#endif /* CONFIG_APM || CONFIG_APM_MODULE */
 DECL|macro|WAIT_PIDENTIFY
 mdefine_line|#define WAIT_PIDENTIFY&t;(10*HZ)&t;/* 10sec  - should be less than 3ms (?), if all ATAPI CD is closed at boot */
@@ -3338,14 +3334,6 @@ r_int
 id|select_data
 suffix:semicolon
 multiline_comment|/* for use by chipset-specific code */
-macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
-DECL|member|last_time
-r_int
-r_int
-id|last_time
-suffix:semicolon
-multiline_comment|/* time when previous rq was done */
-macro_line|#endif
 DECL|member|noprobe
 r_int
 id|noprobe
@@ -6164,6 +6152,32 @@ mdefine_line|#define BAD_DMA_DRIVE&t;&t;0
 DECL|macro|GOOD_DMA_DRIVE
 mdefine_line|#define GOOD_DMA_DRIVE&t;&t;1
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
+r_extern
+r_int
+id|ide_build_sglist
+c_func
+(paren
+id|ide_drive_t
+op_star
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ide_raw_build_sglist
+c_func
+(paren
+id|ide_drive_t
+op_star
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|ide_build_dmatable

@@ -613,15 +613,7 @@ id|size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Default memory pool we donnot need to involve in DMA.&n; *&n; *  If DMA abtraction is not needed, the generic allocator &n; *  calls directly some kernel allocator.&n; *&n; *  With DMA abstraction, we use functions (methods), to &n; *  distinguish between non DMAable memory and DMAable memory.&n; */
-macro_line|#ifndef&t;SYM_OPT_BUS_DMA_ABSTRACTION
-DECL|variable|mp0
-r_static
-r_struct
-id|sym_m_pool
-id|mp0
-suffix:semicolon
-macro_line|#else
+multiline_comment|/*&n; *  Default memory pool we donnot need to involve in DMA.&n; *&n; *  With DMA abstraction, we use functions (methods), to &n; *  distinguish between non DMAable memory and DMAable memory.&n; */
 DECL|function|___mp0_get_mem_cluster
 r_static
 id|m_addr_t
@@ -709,7 +701,6 @@ id|___mp0_get_mem_cluster
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif&t;/* SYM_OPT_BUS_DMA_ABSTRACTION */
 multiline_comment|/*&n; * Actual memory allocation routine for non-DMAed memory.&n; */
 DECL|function|sym_calloc_unlocked
 r_void
@@ -778,7 +769,6 @@ id|name
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;SYM_OPT_BUS_DMA_ABSTRACTION
 multiline_comment|/*&n; *  Methods that maintains DMAable pools according to user allocations.&n; *  New pools are created on the fly when a new pool id is provided.&n; *  They are deleted on the fly when they get emptied.&n; */
 multiline_comment|/* Get a memory cluster that matches the DMA contraints of a given pool */
 DECL|function|___get_dma_mem_cluster
@@ -1496,5 +1486,4 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* SYM_OPT_BUS_DMA_ABSTRACTION */
 eof

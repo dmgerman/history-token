@@ -520,6 +520,30 @@ id|quadlet_t
 id|arg
 )paren
 suffix:semicolon
+multiline_comment|/* Iterate the hosts, calling a given function with supplied data for each&n; * host. */
+r_int
+id|nodemgr_for_each_host
+c_func
+(paren
+r_void
+op_star
+id|__data
+comma
+r_int
+(paren
+op_star
+id|cb
+)paren
+(paren
+r_struct
+id|hpsb_host
+op_star
+comma
+r_void
+op_star
+)paren
+)paren
+suffix:semicolon
 r_void
 id|init_ieee1394_nodemgr
 c_func
@@ -533,6 +557,12 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+multiline_comment|/* The template for a host device */
+r_extern
+r_struct
+id|device
+id|nodemgr_dev_template_host
 suffix:semicolon
 macro_line|#endif /* _IEEE1394_NODEMGR_H */
 eof

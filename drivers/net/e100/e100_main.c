@@ -417,12 +417,11 @@ id|tcb
 )paren
 suffix:semicolon
 multiline_comment|/* Global Data structures and variables */
-DECL|variable|__devinitdata
+DECL|variable|e100_copyright
 r_char
 id|e100_copyright
 (braket
 )braket
-id|__devinitdata
 op_assign
 l_string|&quot;Copyright (c) 2003 Intel Corporation&quot;
 suffix:semicolon
@@ -2330,7 +2329,6 @@ multiline_comment|/* flushes last write, read-safe */
 )brace
 r_static
 r_int
-id|__devinit
 DECL|function|e100_found1
 id|e100_found1
 c_func
@@ -3735,7 +3733,6 @@ id|e100_cleanup_module
 suffix:semicolon
 multiline_comment|/**&n; * e100_check_options - check command line options&n; * @board: board number&n; * @bdp: atapter&squot;s private data struct&n; *&n; * This routine does range checking on command-line options&n; */
 r_void
-id|__devinit
 DECL|function|e100_check_options
 id|e100_check_options
 c_func
@@ -4028,7 +4025,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * e100_set_int_option - check and set an integer option&n; * @option: a pointer to the relevant option field&n; * @val: the value specified&n; * @min: the minimum valid value&n; * @max: the maximum valid value&n; * @default_val: the default value&n; * @name: the name of the option&n; *&n; * This routine does range checking on a command-line option.&n; * If the option&squot;s value is &squot;-1&squot; use the specified default.&n; * Otherwise, if the value is invalid, change it to the default.&n; */
 r_void
-id|__devinit
 DECL|function|e100_set_int_option
 id|e100_set_int_option
 c_func
@@ -4142,7 +4138,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * e100_set_bool_option - check and set a boolean option&n; * @bdp: atapter&squot;s private data struct&n; * @val: the value specified&n; * @mask: the mask for the relevant option&n; * @default_val: the default value&n; * @name: the name of the option&n; *&n; * This routine checks a boolean command-line option.&n; * If the option&squot;s value is &squot;-1&squot; use the specified default.&n; * Otherwise, if the value is invalid (not 0 or 1), &n; * change it to the default.&n; */
 r_void
-id|__devinit
 DECL|function|e100_set_bool_option
 id|e100_set_bool_option
 c_func
@@ -5288,7 +5283,6 @@ multiline_comment|/**&n; * e100init - initialize the adapter&n; * @bdp: atapter&
 r_static
 r_int
 r_char
-id|__devinit
 DECL|function|e100_init
 id|e100_init
 c_func
@@ -5434,7 +5428,6 @@ multiline_comment|/**&n; * e100_sw_init - initialize software structs&n; * @bdp:
 r_static
 r_int
 r_char
-id|__devinit
 DECL|function|e100_sw_init
 id|e100_sw_init
 c_func
@@ -5519,7 +5512,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__devinit
 DECL|function|e100_tco_workaround
 id|e100_tco_workaround
 c_func
@@ -6204,7 +6196,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/**&n; * e100_alloc_space - allocate private driver data&n; * @bdp: atapter&squot;s private data struct&n; *&n; * This routine allocates memory for the driver. Memory allocated is for the&n; * selftest and statistics structures.&n; *&n; * Returns:&n; *      0: if the operation was successful&n; *      %-ENOMEM: if memory allocation failed&n; */
 r_int
 r_char
-id|__devinit
 DECL|function|e100_alloc_space
 id|e100_alloc_space
 c_func
@@ -9622,7 +9613,6 @@ multiline_comment|/**&n; * e100_clr_cntrs - clear statistics counters&n; * @bdp:
 r_static
 r_int
 r_char
-id|__devinit
 DECL|function|e100_clr_cntrs
 id|e100_clr_cntrs
 c_func
@@ -10921,7 +10911,6 @@ multiline_comment|/*       EEPROM  Functions                                    
 multiline_comment|/***************************************************************************/
 multiline_comment|/* Read PWA (printed wired assembly) number */
 r_void
-id|__devinit
 DECL|function|e100_rd_pwa_no
 id|e100_rd_pwa_no
 c_func
@@ -10961,7 +10950,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Read the permanent ethernet address from the eprom. */
 r_void
-id|__devinit
 DECL|function|e100_rd_eaddr
 id|e100_rd_eaddr
 c_func
@@ -11190,7 +11178,6 @@ multiline_comment|/*       Auxilary Functions                                   
 multiline_comment|/***************************************************************************/
 multiline_comment|/* Print the board&squot;s configuration */
 r_void
-id|__devinit
 DECL|function|e100_print_brd_conf
 id|e100_print_brd_conf
 c_func
@@ -11254,7 +11241,6 @@ multiline_comment|/**&n; * e100_pci_setup - setup the adapter&squot;s PCI inform
 r_static
 r_int
 r_char
-id|__devinit
 DECL|function|e100_pci_setup
 id|e100_pci_setup
 c_func
@@ -14794,7 +14780,6 @@ suffix:semicolon
 r_static
 r_inline
 r_int
-id|__devinit
 DECL|function|e100_10BaseT_adapter
 id|e100_10BaseT_adapter
 c_func
@@ -14829,7 +14814,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__devinit
 DECL|function|e100_get_speed_duplex_caps
 id|e100_get_speed_duplex_caps
 c_func

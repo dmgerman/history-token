@@ -863,6 +863,12 @@ id|calc_highpages
 c_func
 (paren
 )paren
+op_rshift
+(paren
+l_int|20
+op_minus
+id|PAGE_SHIFT
+)paren
 )paren
 suffix:semicolon
 )brace

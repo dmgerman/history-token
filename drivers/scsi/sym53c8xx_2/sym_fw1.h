@@ -920,22 +920,6 @@ id|snoopend
 l_int|2
 )braket
 suffix:semicolon
-macro_line|#ifdef SYM_OPT_NO_BUS_MEMORY_MAPPING
-DECL|member|start_ram
-id|u32
-id|start_ram
-(braket
-l_int|1
-)braket
-suffix:semicolon
-DECL|member|scripta0_ba
-id|u32
-id|scripta0_ba
-(braket
-l_int|4
-)braket
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|SYM_FWA_SCR
@@ -5260,41 +5244,6 @@ id|SCR_INT
 comma
 l_int|99
 comma
-macro_line|#ifdef SYM_OPT_NO_BUS_MEMORY_MAPPING
-multiline_comment|/*&n;&t; *  We may use MEMORY MOVE instructions to load the on chip-RAM,&n;&t; *  if it happens that mapping PCI memory is not possible.&n;&t; *  But writing the RAM from the CPU is the preferred method, &n;&t; *  since PCI 2.2 seems to disallow PCI self-mastering.&n;&t; */
-)brace
-multiline_comment|/*-------------------------&lt; START_RAM &gt;------------------------*/
-comma
-(brace
-multiline_comment|/*&n;&t; *  Load the script into on-chip RAM, &n;&t; *  and jump to start point.&n;&t; */
-id|SCR_COPY
-(paren
-r_sizeof
-(paren
-r_struct
-id|SYM_FWA_SCR
-)paren
-)paren
-comma
-)brace
-multiline_comment|/*-------------------------&lt; SCRIPTA0_BA &gt;----------------------*/
-comma
-(brace
-l_int|0
-comma
-id|PADDR_A
-(paren
-id|start
-)paren
-comma
-id|SCR_JUMP
-comma
-id|PADDR_A
-(paren
-id|init
-)paren
-comma
-macro_line|#endif /* SYM_OPT_NO_BUS_MEMORY_MAPPING */
 )brace
 multiline_comment|/*--------------------------&lt;&gt;----------------------------------*/
 )brace

@@ -562,7 +562,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|request_resource
+id|insert_resource
 c_func
 (paren
 id|root
@@ -1071,16 +1071,6 @@ suffix:semicolon
 r_char
 op_star
 id|name
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;PCI: Probing PCI hardware on bus (%04x:%02x)&bslash;n&quot;
-comma
-id|domain
-comma
-id|bus
-)paren
 suffix:semicolon
 id|controller
 op_assign

@@ -231,12 +231,11 @@ op_assign
 id|tsk-&gt;thread.kregs
 suffix:semicolon
 r_struct
-id|thread_struct
+id|thread_info
 op_star
 id|t
 op_assign
-op_amp
-id|tsk-&gt;thread
+id|tsk-&gt;thread_info
 suffix:semicolon
 r_int
 id|v
@@ -397,7 +396,7 @@ l_int|0
 suffix:colon
 id|v
 op_assign
-id|tsk-&gt;thread_info-&gt;ksp
+id|t-&gt;ksp
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -406,7 +405,7 @@ l_int|4
 suffix:colon
 id|v
 op_assign
-id|tsk-&gt;thread_info-&gt;kpc
+id|t-&gt;kpc
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -415,7 +414,7 @@ l_int|8
 suffix:colon
 id|v
 op_assign
-id|tsk-&gt;thread_info-&gt;kpsr
+id|t-&gt;kpsr
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -424,7 +423,7 @@ l_int|12
 suffix:colon
 id|v
 op_assign
-id|tsk-&gt;thread_info-&gt;uwinmask
+id|t-&gt;uwinmask
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -683,12 +682,11 @@ op_assign
 id|tsk-&gt;thread.kregs
 suffix:semicolon
 r_struct
-id|thread_struct
+id|thread_info
 op_star
 id|t
 op_assign
-op_amp
-id|tsk-&gt;thread
+id|tsk-&gt;thread_info
 suffix:semicolon
 r_int
 r_int

@@ -6,6 +6,11 @@ DECL|struct|timer_opts
 r_struct
 id|timer_opts
 (brace
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
 DECL|member|init
 r_int
 (paren

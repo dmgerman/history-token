@@ -30,6 +30,8 @@ DECL|macro|PCI_COMMAND_SERR
 mdefine_line|#define  PCI_COMMAND_SERR&t;0x100&t;/* Enable SERR */
 DECL|macro|PCI_COMMAND_FAST_BACK
 mdefine_line|#define  PCI_COMMAND_FAST_BACK&t;0x200&t;/* Enable back-to-back writes */
+DECL|macro|PCI_COMMAND_INTX_DISABLE
+mdefine_line|#define  PCI_COMMAND_INTX_DISABLE 0x400 /* INTx Emulation Disable */
 DECL|macro|PCI_STATUS
 mdefine_line|#define PCI_STATUS&t;&t;0x06&t;/* 16 bits */
 DECL|macro|PCI_STATUS_CAP_LIST
@@ -305,6 +307,10 @@ DECL|macro|PCI_CAP_ID_CHSWP
 mdefine_line|#define  PCI_CAP_ID_CHSWP&t;0x06&t;/* CompactPCI HotSwap */
 DECL|macro|PCI_CAP_ID_PCIX
 mdefine_line|#define  PCI_CAP_ID_PCIX&t;0x07&t;/* PCI-X */
+DECL|macro|PCI_CAP_ID_EXP
+mdefine_line|#define  PCI_CAP_ID_EXP &t;0x10&t;/* PCI Express */
+DECL|macro|PCI_CAP_ID_MSIX
+mdefine_line|#define  PCI_CAP_ID_MSIX&t;0x11&t;/* MSI-X */
 DECL|macro|PCI_CAP_LIST_NEXT
 mdefine_line|#define PCI_CAP_LIST_NEXT&t;1&t;/* Next capability in the list */
 DECL|macro|PCI_CAP_FLAGS
@@ -434,6 +440,8 @@ DECL|macro|PCI_MSI_FLAGS_QMASK
 mdefine_line|#define  PCI_MSI_FLAGS_QMASK&t;0x0e&t;/* Maximum queue size available */
 DECL|macro|PCI_MSI_FLAGS_ENABLE
 mdefine_line|#define  PCI_MSI_FLAGS_ENABLE&t;0x01&t;/* MSI feature enabled */
+DECL|macro|PCI_MSI_FLAGS_MASKBIT
+mdefine_line|#define  PCI_MSI_FLAGS_MASKBIT&t;0x100&t;/* 64-bit mask bits allowed */
 DECL|macro|PCI_MSI_RFU
 mdefine_line|#define PCI_MSI_RFU&t;&t;3&t;/* Rest of capability flags */
 DECL|macro|PCI_MSI_ADDRESS_LO
@@ -444,6 +452,8 @@ DECL|macro|PCI_MSI_DATA_32
 mdefine_line|#define PCI_MSI_DATA_32&t;&t;8&t;/* 16 bits of data for 32-bit devices */
 DECL|macro|PCI_MSI_DATA_64
 mdefine_line|#define PCI_MSI_DATA_64&t;&t;12&t;/* 16 bits of data for 64-bit devices */
+DECL|macro|PCI_MSI_MASK_BIT
+mdefine_line|#define PCI_MSI_MASK_BIT&t;16&t;/* Mask bits register */
 multiline_comment|/* CompactPCI Hotswap Register */
 DECL|macro|PCI_CHSWP_CSR
 mdefine_line|#define PCI_CHSWP_CSR&t;&t;2&t;/* Control and Status Register */
@@ -2434,6 +2444,124 @@ r_struct
 id|pci_dev
 op_star
 id|isa_bridge
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifndef CONFIG_PCI_USE_VECTOR
+DECL|function|pci_scan_msi_device
+r_static
+r_inline
+r_void
+id|pci_scan_msi_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+)brace
+DECL|function|pci_enable_msi
+r_static
+r_inline
+r_int
+id|pci_enable_msi
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|msi_remove_pci_irq_vectors
+r_static
+r_inline
+r_void
+id|msi_remove_pci_irq_vectors
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+)brace
+macro_line|#else
+r_extern
+r_void
+id|pci_scan_msi_device
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pci_enable_msi
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|msi_remove_pci_irq_vectors
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|msi_alloc_vectors
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+op_star
+id|vector
+comma
+r_int
+id|nvec
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|msi_free_vectors
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+op_star
+id|vector
+comma
+r_int
+id|nvec
+)paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* CONFIG_PCI */

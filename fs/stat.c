@@ -432,7 +432,7 @@ c_func
 id|vfs_fstat
 )paren
 suffix:semicolon
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__sparc__) &amp;&amp; !defined(__ia64__) &bslash;&n;  &amp;&amp; !defined(CONFIG_ARCH_S390) &amp;&amp; !defined(__hppa__) &amp;&amp; !defined(__x86_64__) &bslash;&n;  &amp;&amp; !defined(__arm__) &amp;&amp; !defined(CONFIG_V850) &amp;&amp; !defined(__powerpc64__)
+macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__sparc__) &amp;&amp; !defined(__ia64__) &bslash;&n;  &amp;&amp; !defined(CONFIG_ARCH_S390) &amp;&amp; !defined(__hppa__) &bslash;&n;  &amp;&amp; !defined(__arm__) &amp;&amp; !defined(CONFIG_V850) &amp;&amp; !defined(__powerpc64__)
 multiline_comment|/*&n; * For backward compatibility?  Maybe this should be moved&n; * into arch/i386 instead?&n; */
 DECL|function|cp_old_stat
 r_static

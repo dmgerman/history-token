@@ -168,6 +168,15 @@ mdefine_line|#define OCT_VID&t;&t;&t;0x0B39&t;/* OCT vendor ID */
 multiline_comment|/* Note: OCT US101 is also rebadged as Dick Smith Electronics (NZ) XH6381 */
 DECL|macro|OCT_US101_PID
 mdefine_line|#define OCT_US101_PID&t;&t;0x0421&t;/* OCT US101 USB to RS-232 */
+multiline_comment|/*&n; * Protego product ids&n; */
+DECL|macro|PROTEGO_SPECIAL_1
+mdefine_line|#define PROTEGO_SPECIAL_1&t;0xFC70&t;/* special/unknown device */
+DECL|macro|PROTEGO_R2X0
+mdefine_line|#define PROTEGO_R2X0&t;&t;0xFC71&t;/* R200-USB TRNG unit (R210, R220, and R230) */
+DECL|macro|PROTEGO_SPECIAL_3
+mdefine_line|#define PROTEGO_SPECIAL_3&t;0xFC72&t;/* special/unknown device */
+DECL|macro|PROTEGO_SPECIAL_4
+mdefine_line|#define PROTEGO_SPECIAL_4&t;0xFC73&t;/* special/unknown device */ 
 multiline_comment|/* Commands */
 DECL|macro|FTDI_SIO_RESET
 mdefine_line|#define FTDI_SIO_RESET &t;&t;0 /* Reset the port */

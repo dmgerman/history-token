@@ -1756,6 +1756,7 @@ c_func
 id|disarm_decr
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_STD_MMU
 r_extern
 r_int
 id|mol_trampoline
@@ -1768,7 +1769,6 @@ id|mol_trampoline
 )paren
 suffix:semicolon
 multiline_comment|/* For MOL */
-macro_line|#ifdef CONFIG_PPC_STD_MMU
 DECL|variable|flush_hash_pages
 id|EXPORT_SYMBOL
 c_func

@@ -20,7 +20,7 @@ id|regs
 suffix:semicolon
 r_extern
 r_int
-id|synaptics_init
+id|synaptics_detect
 c_func
 (paren
 r_struct
@@ -31,18 +31,7 @@ id|psmouse
 suffix:semicolon
 r_extern
 r_int
-id|synaptics_pt_init
-c_func
-(paren
-r_struct
-id|psmouse
-op_star
-id|psmouse
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|synaptics_disconnect
+id|synaptics_init
 c_func
 (paren
 r_struct
@@ -260,13 +249,6 @@ r_int
 id|old_w
 suffix:semicolon
 multiline_comment|/* Previous w value */
-DECL|member|ptport
-r_struct
-id|serio
-op_star
-id|ptport
-suffix:semicolon
-multiline_comment|/* pass-through port */
 )brace
 suffix:semicolon
 macro_line|#endif /* _SYNAPTICS_H */

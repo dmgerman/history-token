@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MCT (Magic Control Technology Corp.) USB RS232 Converter Driver&n; *&n; *   Copyright (C) 2000 Wolfgang Grandegger (wolfgang@ces.ch)&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; * This program is largely derived from the Belkin USB Serial Adapter Driver&n; * (see belkin_sa.[ch]). All of the information about the device was acquired&n; * by using SniffUSB on Windows98. For technical details see mct_u232.h.&n; *&n; * William G. Greathouse and Greg Kroah-Hartman provided great help on how to&n; * do the reverse engineering and how to write a USB serial device driver.&n; *&n; * TO BE DONE, TO BE CHECKED:&n; *   DTR/RTS signal handling may be incomplete or incorrect. I have mainly&n; *   implemented what I have seen with SniffUSB or found in belkin_sa.c.&n; *   For further TODOs check also belkin_sa.c.&n; *&n; * TEST STATUS:&n; *   Basic tests have been performed with minicom/zmodem transfers and&n; *   modem dialing under Linux 2.4.0-test10 (for me it works fine).&n; *&n; * 10-Nov-2001 Wolfgang Grandegger&n; *   - Fixed an endianess problem with the baudrate selection for PowerPC.&n; *&n; * 06-Dec-2001 Martin Hamilton &lt;martinh@gnu.org&gt;&n; *&t;Added support for the Belkin F5U109 DB9 adaptor&n; *&n; * 30-May-2001 Greg Kroah-Hartman&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * 04-May-2001 Stelian Pop&n; *   - Set the maximum bulk output size for Sitecom U232-P25 model to 16 bytes&n; *     instead of the device reported 32 (using 32 bytes causes many data&n; *     loss, Windows driver uses 16 too).&n; *&n; * 02-May-2001 Stelian Pop&n; *   - Fixed the baud calculation for Sitecom U232-P25 model&n; *&n; * 08-Apr-2001 gb&n; *   - Identify version on module load.&n; *&n; * 06-Jan-2001 Cornel Ciocirlan &n; *   - Added support for Sitecom U232-P25 model (Product Id 0x0230)&n; *   - Added support for D-Link DU-H3SP USB BAY (Product Id 0x0200)&n; *&n; * 29-Nov-2000 Greg Kroah-Hartman&n; *   - Added device id table to fit with 2.4.0-test11 structure.&n; *   - took out DEAL_WITH_TWO_INT_IN_ENDPOINTS #define as it&squot;s not needed&n; *     (lots of things will change if/when the usb-serial core changes to&n; *     handle these issues.&n; *&n; * 27-Nov-2000 Wolfgang Grandegger&n; *   A version for kernel 2.4.0-test10 released to the Linux community &n; *   (via linux-usb-devel).&n; */
+multiline_comment|/*&n; * MCT (Magic Control Technology Corp.) USB RS232 Converter Driver&n; *&n; *   Copyright (C) 2000 Wolfgang Grandegger (wolfgang@ces.ch)&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; * This program is largely derived from the Belkin USB Serial Adapter Driver&n; * (see belkin_sa.[ch]). All of the information about the device was acquired&n; * by using SniffUSB on Windows98. For technical details see mct_u232.h.&n; *&n; * William G. Greathouse and Greg Kroah-Hartman provided great help on how to&n; * do the reverse engineering and how to write a USB serial device driver.&n; *&n; * TO BE DONE, TO BE CHECKED:&n; *   DTR/RTS signal handling may be incomplete or incorrect. I have mainly&n; *   implemented what I have seen with SniffUSB or found in belkin_sa.c.&n; *   For further TODOs check also belkin_sa.c.&n; *&n; * TEST STATUS:&n; *   Basic tests have been performed with minicom/zmodem transfers and&n; *   modem dialing under Linux 2.4.0-test10 (for me it works fine).&n; *&n; * 04-Nov-2003 Bill Marr &lt;marr at flex dot com&gt;&n; *   - Mimic Windows driver by sending 2 USB &squot;device request&squot; messages&n; *     following normal &squot;baud rate change&squot; message.  This allows data to be&n; *     transmitted to RS-232 devices which don&squot;t assert the &squot;CTS&squot; signal.&n; *&n; * 10-Nov-2001 Wolfgang Grandegger&n; *   - Fixed an endianess problem with the baudrate selection for PowerPC.&n; *&n; * 06-Dec-2001 Martin Hamilton &lt;martinh@gnu.org&gt;&n; *&t;Added support for the Belkin F5U109 DB9 adaptor&n; *&n; * 30-May-2001 Greg Kroah-Hartman&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * 04-May-2001 Stelian Pop&n; *   - Set the maximum bulk output size for Sitecom U232-P25 model to 16 bytes&n; *     instead of the device reported 32 (using 32 bytes causes many data&n; *     loss, Windows driver uses 16 too).&n; *&n; * 02-May-2001 Stelian Pop&n; *   - Fixed the baud calculation for Sitecom U232-P25 model&n; *&n; * 08-Apr-2001 gb&n; *   - Identify version on module load.&n; *&n; * 06-Jan-2001 Cornel Ciocirlan &n; *   - Added support for Sitecom U232-P25 model (Product Id 0x0230)&n; *   - Added support for D-Link DU-H3SP USB BAY (Product Id 0x0200)&n; *&n; * 29-Nov-2000 Greg Kroah-Hartman&n; *   - Added device id table to fit with 2.4.0-test11 structure.&n; *   - took out DEAL_WITH_TWO_INT_IN_ENDPOINTS #define as it&squot;s not needed&n; *     (lots of things will change if/when the usb-serial core changes to&n; *     handle these issues.&n; *&n; * 27-Nov-2000 Wolfgang Grandegger&n; *   A version for kernel 2.4.0-test10 released to the Linux community &n; *   (via linux-usb-devel).&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -30,7 +30,7 @@ macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;mct_u232.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.1&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.2&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Wolfgang Grandegger &lt;wolfgang@ces.ch&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -618,6 +618,12 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
+r_int
+r_char
+id|zero_byte
+op_assign
+l_int|0
+suffix:semicolon
 id|divisor
 op_assign
 id|cpu_to_le32
@@ -688,6 +694,103 @@ comma
 id|value
 comma
 id|divisor
+)paren
+suffix:semicolon
+multiline_comment|/* Mimic the MCT-supplied Windows driver (version 1.21P.0104), which&n;&t;   always sends two extra USB &squot;device request&squot; messages after the&n;&t;   &squot;baud rate change&squot; message.  The actual functionality of the&n;&t;   request codes in these messages is not fully understood but these&n;&t;   particular codes are never seen in any operation besides a baud&n;&t;   rate change.  Both of these messages send a single byte of data&n;&t;   whose value is always zero.  The second of these two extra messages&n;&t;   is required in order for data to be properly written to an RS-232&n;&t;   device which does not assert the &squot;CTS&squot; signal. */
+id|rc
+op_assign
+id|usb_control_msg
+c_func
+(paren
+id|serial-&gt;dev
+comma
+id|usb_sndctrlpipe
+c_func
+(paren
+id|serial-&gt;dev
+comma
+l_int|0
+)paren
+comma
+id|MCT_U232_SET_UNKNOWN1_REQUEST
+comma
+id|MCT_U232_SET_REQUEST_TYPE
+comma
+l_int|0
+comma
+l_int|0
+comma
+op_amp
+id|zero_byte
+comma
+id|MCT_U232_SET_UNKNOWN1_SIZE
+comma
+id|WDR_TIMEOUT
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+OL
+l_int|0
+)paren
+id|err
+c_func
+(paren
+l_string|&quot;Sending USB device request code %d failed (error = %d)&quot;
+comma
+id|MCT_U232_SET_UNKNOWN1_REQUEST
+comma
+id|rc
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|usb_control_msg
+c_func
+(paren
+id|serial-&gt;dev
+comma
+id|usb_sndctrlpipe
+c_func
+(paren
+id|serial-&gt;dev
+comma
+l_int|0
+)paren
+comma
+id|MCT_U232_SET_UNKNOWN2_REQUEST
+comma
+id|MCT_U232_SET_REQUEST_TYPE
+comma
+l_int|0
+comma
+l_int|0
+comma
+op_amp
+id|zero_byte
+comma
+id|MCT_U232_SET_UNKNOWN2_SIZE
+comma
+id|WDR_TIMEOUT
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+OL
+l_int|0
+)paren
+id|err
+c_func
+(paren
+l_string|&quot;Sending USB device request code %d failed (error = %d)&quot;
+comma
+id|MCT_U232_SET_UNKNOWN2_REQUEST
+comma
+id|rc
 )paren
 suffix:semicolon
 r_return

@@ -3,6 +3,7 @@ multiline_comment|/*&n; * I hate traps on the sparc, grrr...&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;  /* for jiffies */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -437,12 +438,29 @@ l_int|0x7
 id|printk
 c_func
 (paren
-l_string|&quot;Caller[%08lx]&bslash;n&quot;
+l_string|&quot;Caller[%08lx]&quot;
 comma
 id|rw-&gt;ins
 (braket
 l_int|7
 )braket
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;: %s&bslash;n&quot;
+comma
+id|rw-&gt;ins
+(braket
+l_int|7
+)braket
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rw
@@ -2416,6 +2434,36 @@ r_struct
 id|thread_info
 comma
 id|kwim
+)paren
+op_logical_or
+id|TI_REG_WINDOW
+op_ne
+m_offsetof
+(paren
+r_struct
+id|thread_info
+comma
+id|reg_window
+)paren
+op_logical_or
+id|TI_RWIN_SPTRS
+op_ne
+m_offsetof
+(paren
+r_struct
+id|thread_info
+comma
+id|rwbuf_stkptrs
+)paren
+op_logical_or
+id|TI_W_SAVED
+op_ne
+m_offsetof
+(paren
+r_struct
+id|thread_info
+comma
+id|w_saved
 )paren
 )paren
 id|thread_info_offsets_are_bolixed_pete

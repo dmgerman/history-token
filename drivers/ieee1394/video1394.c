@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * video1394.c - video driver for OHCI 1394 boards&n; * Copyright (C)1999,2000 Sebastien Rougeaux &lt;sebastien.rougeaux@anu.edu.au&gt;&n; *                        Peter Schlaile &lt;udbz@rz.uni-karlsruhe.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
 multiline_comment|/* jds -- add private data to file to keep track of iso contexts associated&n;   with each open -- so release won&squot;t kill all iso transfers */
+multiline_comment|/* Damien Douxchamps: Fix failure when the number of DMA pages per frame is&n;   one */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
@@ -1778,7 +1779,16 @@ op_or
 l_int|0x1
 )paren
 suffix:semicolon
-multiline_comment|/* the second descriptor will read PAGE_SIZE-4 bytes */
+multiline_comment|/* If there is *not* only one DMA page per frame (hence, d-&gt;nb_cmd==2) */
+r_if
+c_cond
+(paren
+id|d-&gt;nb_cmd
+OG
+l_int|2
+)paren
+(brace
+multiline_comment|/* The second descriptor will read PAGE_SIZE-4 bytes */
 id|ir_prg
 (braket
 l_int|1
@@ -1971,7 +1981,7 @@ l_int|0x1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* the last descriptor will generate an interrupt */
+multiline_comment|/* The last descriptor will generate an interrupt */
 id|ir_prg
 (braket
 id|i
@@ -2029,6 +2039,67 @@ id|d-&gt;dma.kvirt
 )paren
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Only one DMA page is used. Read d-&gt;left_size immediately and */
+multiline_comment|/* generate an interrupt as this is also the last page. */
+id|ir_prg
+(braket
+l_int|1
+)braket
+dot
+id|control
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|DMA_CTL_INPUT_MORE
+op_or
+id|DMA_CTL_UPDATE
+op_or
+id|DMA_CTL_IRQ
+op_or
+id|DMA_CTL_BRANCH
+op_or
+(paren
+id|d-&gt;left_size
+op_minus
+l_int|4
+)paren
+)paren
+suffix:semicolon
+id|ir_prg
+(braket
+l_int|1
+)braket
+dot
+id|address
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|dma_region_offset_to_bus
+c_func
+(paren
+op_amp
+id|d-&gt;dma
+comma
+(paren
+id|buf
+op_plus
+l_int|4
+)paren
+op_minus
+(paren
+r_int
+r_int
+)paren
+id|d-&gt;dma.kvirt
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|initialize_dma_ir_ctx
 r_static

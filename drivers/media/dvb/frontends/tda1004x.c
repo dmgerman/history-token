@@ -1,5 +1,5 @@
 multiline_comment|/*&n;     Driver for Philips tda1004xh OFDM Frontend&n;&n;     This program is free software; you can redistribute it and/or modify&n;     it under the terms of the GNU General Public License as published by&n;     the Free Software Foundation; either version 2 of the License, or&n;     (at your option) any later version.&n;&n;     This program is distributed in the hope that it will be useful,&n;     but WITHOUT ANY WARRANTY; without even the implied warranty of&n;     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;&n;     GNU General Public License for more details.&n;&n;     You should have received a copy of the GNU General Public License&n;     along with this program; if not, write to the Free Software&n;     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;   */
-multiline_comment|/*&n;    This driver needs a copy of the DLL &quot;ttlcdacc.dll&quot; from the Haupauge or Technotrend&n;    windows driver saved as &squot;/etc/dvb/tda1004x.mc&squot;.&n;    You can also pass the complete file name with the module parameter &squot;tda1004x_firmware&squot;.&n;&n;    Currently the DLL from v2.15a of the technotrend driver is supported. Other versions can&n;    be added reasonably painlessly.&n;&n;    Windows driver URL: http://www.technotrend.de/&n; */
+multiline_comment|/*&n;    This driver needs a copy of the DLL &quot;ttlcdacc.dll&quot; from the Haupauge or Technotrend&n;    windows driver saved as &squot;/usr/lib/hotplug/firmware/tda1004x.mc&squot;.&n;    You can also pass the complete file name with the module parameter &squot;tda1004x_firmware&squot;.&n;&n;    Currently the DLL from v2.15a of the technotrend driver is supported. Other versions can&n;    be added reasonably painlessly.&n;&n;    Windows driver URL: http://www.technotrend.de/&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -16,7 +16,7 @@ macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dvb_functions.h&quot;
 macro_line|#ifndef DVB_TDA1004X_FIRMWARE_FILE
 DECL|macro|DVB_TDA1004X_FIRMWARE_FILE
-mdefine_line|#define DVB_TDA1004X_FIRMWARE_FILE &quot;/etc/dvb/tda1004x.mc&quot;
+mdefine_line|#define DVB_TDA1004X_FIRMWARE_FILE &quot;/usr/lib/hotplug/firmware/tda1004x.mc&quot;
 macro_line|#endif
 DECL|variable|tda1004x_debug
 r_static
@@ -162,8 +162,6 @@ comma
 dot
 id|caps
 op_assign
-id|FE_CAN_INVERSION_AUTO
-op_or
 id|FE_CAN_FEC_1_2
 op_or
 id|FE_CAN_FEC_2_3
