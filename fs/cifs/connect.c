@@ -1487,7 +1487,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Invalid size or format for SMB found with length %d and pdu_lenght %d&quot;
+l_string|&quot;Invalid size or format for SMB found with length %d and pdu_length %d&quot;
 comma
 id|length
 comma
