@@ -184,15 +184,6 @@ c_func
 id|node_data
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_NUMAQ
-DECL|variable|pfn_to_nid
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pfn_to_nid
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_NUMAQ
 DECL|variable|xquad_portio
