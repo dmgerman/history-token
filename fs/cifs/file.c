@@ -5849,7 +5849,8 @@ c_func
 id|tmp_inode-&gt;i_sb
 )paren
 suffix:semicolon
-id|pfindData-&gt;ExtFileAttributes
+id|__u32
+id|attr
 op_assign
 id|le32_to_cpu
 c_func
@@ -5857,7 +5858,8 @@ c_func
 id|pfindData-&gt;ExtFileAttributes
 )paren
 suffix:semicolon
-id|pfindData-&gt;AllocationSize
+id|__u64
+id|allocation_size
 op_assign
 id|le64_to_cpu
 c_func
@@ -5865,7 +5867,8 @@ c_func
 id|pfindData-&gt;AllocationSize
 )paren
 suffix:semicolon
-id|pfindData-&gt;EndOfFile
+id|__u64
+id|end_of_file
 op_assign
 id|le64_to_cpu
 c_func
@@ -5875,7 +5878,7 @@ id|pfindData-&gt;EndOfFile
 suffix:semicolon
 id|cifsInfo-&gt;cifsAttrs
 op_assign
-id|pfindData-&gt;ExtFileAttributes
+id|attr
 suffix:semicolon
 id|cifsInfo-&gt;time
 op_assign
@@ -5956,14 +5959,14 @@ comma
 (paren
 l_string|&quot;CIFS FFIRST: Attributes came in as 0x%x&quot;
 comma
-id|pfindData-&gt;ExtFileAttributes
+id|attr
 )paren
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|pfindData-&gt;ExtFileAttributes
+id|attr
 op_amp
 id|ATTR_REPARSE
 )paren
@@ -5983,7 +5986,7 @@ r_else
 r_if
 c_cond
 (paren
-id|pfindData-&gt;ExtFileAttributes
+id|attr
 op_amp
 id|ATTR_DIRECTORY
 )paren
@@ -6031,7 +6034,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pfindData-&gt;ExtFileAttributes
+id|attr
 op_amp
 id|ATTR_READONLY
 )paren
@@ -6086,7 +6089,7 @@ c_func
 (paren
 id|tmp_inode
 comma
-id|pfindData-&gt;EndOfFile
+id|end_of_file
 )paren
 suffix:semicolon
 multiline_comment|/* 512 bytes (2**9) is the fake blocksize that must be used */
@@ -6098,7 +6101,7 @@ l_int|512
 op_minus
 l_int|1
 op_plus
-id|pfindData-&gt;AllocationSize
+id|allocation_size
 )paren
 op_rshift
 l_int|9
@@ -6107,9 +6110,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pfindData-&gt;AllocationSize
+id|allocation_size
 OL
-id|pfindData-&gt;EndOfFile
+id|end_of_file
 )paren
 id|cFYI
 c_func
@@ -7193,10 +7196,7 @@ id|pqstring-&gt;name
 op_assign
 id|pfindData-&gt;FileName
 suffix:semicolon
-id|pqstring-&gt;len
-op_assign
-id|pfindData-&gt;FileNameLength
-suffix:semicolon
+multiline_comment|/* pqstring-&gt;len is already set by caller */
 id|construct_dentry
 c_func
 (paren
@@ -8364,7 +8364,8 @@ op_eq
 id|FALSE
 )paren
 (brace
-id|pfindData-&gt;FileNameLength
+id|__u32
+id|len
 op_assign
 id|le32_to_cpu
 c_func
@@ -8379,7 +8380,7 @@ id|Unicode
 op_eq
 id|TRUE
 )paren
-id|pfindData-&gt;FileNameLength
+id|len
 op_assign
 id|cifs_strfromUCS_le
 (paren
@@ -8391,11 +8392,7 @@ op_star
 )paren
 id|pfindData-&gt;FileName
 comma
-(paren
-id|pfindData
-op_member_access_from_pointer
-id|FileNameLength
-)paren
+id|len
 op_div
 l_int|2
 comma
@@ -8404,14 +8401,14 @@ id|cifs_sb-&gt;local_nls
 suffix:semicolon
 id|qstring.len
 op_assign
-id|pfindData-&gt;FileNameLength
+id|len
 suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
 (paren
-id|qstring.len
+id|len
 op_ne
 l_int|1
 )paren
@@ -8428,7 +8425,7 @@ l_char|&squot;.&squot;
 op_logical_and
 (paren
 (paren
-id|qstring.len
+id|len
 op_ne
 l_int|2
 )paren
@@ -9211,7 +9208,8 @@ id|i
 op_increment
 )paren
 (brace
-id|pfindData-&gt;FileNameLength
+id|__u32
+id|len
 op_assign
 id|le32_to_cpu
 c_func
@@ -9236,7 +9234,7 @@ id|Unicode
 op_eq
 id|TRUE
 )paren
-id|pfindData-&gt;FileNameLength
+id|len
 op_assign
 id|cifs_strfromUCS_le
 (paren
@@ -9248,9 +9246,7 @@ op_star
 )paren
 id|pfindData-&gt;FileName
 comma
-(paren
-id|pfindData-&gt;FileNameLength
-)paren
+id|len
 op_div
 l_int|2
 comma
@@ -9259,14 +9255,14 @@ id|cifs_sb-&gt;local_nls
 suffix:semicolon
 id|qstring.len
 op_assign
-id|pfindData-&gt;FileNameLength
+id|len
 suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
 (paren
-id|qstring.len
+id|len
 op_ne
 l_int|1
 )paren
@@ -9283,7 +9279,7 @@ l_char|&squot;.&squot;
 op_logical_and
 (paren
 (paren
-id|qstring.len
+id|len
 op_ne
 l_int|2
 )paren
