@@ -3544,9 +3544,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|x86_do_profile
+id|profile_tick
 c_func
 (paren
+id|CPU_PROFILING
+comma
 id|regs
 )paren
 suffix:semicolon

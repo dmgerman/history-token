@@ -7,8 +7,15 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
+DECL|macro|CPU_PROFILING
+mdefine_line|#define CPU_PROFILING&t;1
+DECL|macro|SCHED_PROFILING
+mdefine_line|#define SCHED_PROFILING&t;2
 r_struct
 id|proc_dir_entry
+suffix:semicolon
+r_struct
+id|pt_regs
 suffix:semicolon
 multiline_comment|/* parse command line */
 r_int
@@ -36,6 +43,27 @@ c_func
 (paren
 r_struct
 id|proc_dir_entry
+op_star
+)paren
+suffix:semicolon
+r_void
+id|profile_tick
+c_func
+(paren
+r_int
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_void
+id|profile_hit
+c_func
+(paren
+r_int
+comma
+r_void
 op_star
 )paren
 suffix:semicolon

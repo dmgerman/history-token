@@ -3972,17 +3972,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|sparc64_do_profile
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 DECL|macro|prof_multiplier
 mdefine_line|#define prof_multiplier(__cpu)&t;&t;cpu_data(__cpu).multiplier
 DECL|macro|prof_counter
@@ -4077,9 +4066,11 @@ suffix:semicolon
 )brace
 r_do
 (brace
-id|sparc64_do_profile
+id|profile_tick
 c_func
 (paren
+id|CPU_PROFILING
+comma
 id|regs
 )paren
 suffix:semicolon

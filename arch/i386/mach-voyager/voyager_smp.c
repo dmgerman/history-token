@@ -4784,9 +4784,11 @@ suffix:semicolon
 r_int
 id|weight
 suffix:semicolon
-id|x86_do_profile
+id|profile_tick
 c_func
 (paren
+id|CPU_PROFILING
+comma
 id|regs
 )paren
 suffix:semicolon
