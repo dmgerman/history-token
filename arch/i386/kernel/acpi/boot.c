@@ -20,6 +20,10 @@ id|acpi_disabled
 suffix:semicolon
 r_extern
 r_int
+id|acpi_irq
+suffix:semicolon
+r_extern
+r_int
 id|acpi_ht
 suffix:semicolon
 DECL|variable|acpi_lapic
@@ -1020,6 +1024,9 @@ r_if
 c_cond
 (paren
 id|acpi_disabled
+op_logical_or
+op_logical_neg
+id|acpi_irq
 )paren
 (brace
 r_return
