@@ -1256,7 +1256,7 @@ comma
 id|scc-&gt;conf.dma2
 )paren
 suffix:semicolon
-id|pnpc_set_drvdata
+id|pnp_set_card_drvdata
 c_func
 (paren
 id|card
@@ -1292,7 +1292,7 @@ id|sb_card_config
 op_star
 id|scc
 op_assign
-id|pnpc_get_drvdata
+id|pnp_get_card_drvdata
 c_func
 (paren
 id|card
@@ -1327,7 +1327,7 @@ suffix:semicolon
 DECL|variable|sb_pnp_driver
 r_static
 r_struct
-id|pnpc_driver
+id|pnp_card_driver
 id|sb_pnp_driver
 op_assign
 (brace
@@ -1489,7 +1489,7 @@ id|pnp
 (brace
 id|pres
 op_assign
-id|pnpc_register_driver
+id|pnp_register_card_driver
 c_func
 (paren
 op_amp
@@ -1562,7 +1562,7 @@ id|legacy
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PNP_CARD
-id|pnpc_unregister_driver
+id|pnp_unregister_card_driver
 c_func
 (paren
 op_amp
