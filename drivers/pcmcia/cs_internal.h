@@ -991,6 +991,10 @@ id|u_long
 comma
 r_int
 id|force_low
+comma
+id|socket_info_t
+op_star
+id|s
 )paren
 suffix:semicolon
 r_int
@@ -1010,6 +1014,10 @@ comma
 r_char
 op_star
 id|name
+comma
+id|socket_info_t
+op_star
+id|s
 )paren
 suffix:semicolon
 r_int
@@ -1032,6 +1040,10 @@ comma
 r_char
 op_star
 id|name
+comma
+id|socket_info_t
+op_star
+id|s
 )paren
 suffix:semicolon
 r_int

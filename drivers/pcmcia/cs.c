@@ -3467,6 +3467,8 @@ comma
 id|align
 comma
 id|name
+comma
+id|s
 )paren
 op_eq
 l_int|0
@@ -3578,6 +3580,8 @@ comma
 l_int|0
 comma
 id|name
+comma
+id|s
 )paren
 op_eq
 l_int|0
@@ -3652,6 +3656,8 @@ comma
 l_int|0
 comma
 id|name
+comma
+id|s
 )paren
 op_eq
 l_int|0
@@ -9087,6 +9093,8 @@ id|handle
 )paren
 op_member_access_from_pointer
 id|dev_info
+comma
+id|s
 )paren
 )paren
 r_return
