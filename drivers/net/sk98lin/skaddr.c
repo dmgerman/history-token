@@ -45,6 +45,8 @@ multiline_comment|/* None. */
 multiline_comment|/* global variables ***********************************************************/
 multiline_comment|/* 64-bit hash values with all bits set. */
 DECL|variable|OnesHash
+r_static
+r_const
 id|SK_U16
 id|OnesHash
 (braket
