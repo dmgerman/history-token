@@ -3368,6 +3368,13 @@ op_assign
 l_int|0
 suffix:semicolon
 singleline_comment|// pointer to item we are going to deal with
+r_int
+id|item_pos
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* Position in indirect item */
 r_if
 c_cond
 (paren
@@ -3719,13 +3726,6 @@ id|i
 op_increment
 )paren
 (brace
-r_int
-id|item_pos
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/* Position in indirect item */
 id|head
 op_assign
 id|page_buffers

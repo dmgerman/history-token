@@ -2743,7 +2743,7 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-id|fsync_bdev
+id|sync_blockdev
 c_func
 (paren
 id|journal-&gt;j_dev

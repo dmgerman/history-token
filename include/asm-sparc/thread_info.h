@@ -122,7 +122,7 @@ comma
 r_void
 )paren
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info() BTFIXUP_CALL(alloc_thread_info)()
+mdefine_line|#define alloc_thread_info(tsk) BTFIXUP_CALL(alloc_thread_info)()
 id|BTFIXUPDEF_CALL
 c_func
 (paren

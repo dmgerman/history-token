@@ -841,6 +841,11 @@ r_return
 id|def_sym
 suffix:semicolon
 )brace
+multiline_comment|/* no choice? reset tristate value */
+id|sym-&gt;curr.tri
+op_assign
+id|no
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon

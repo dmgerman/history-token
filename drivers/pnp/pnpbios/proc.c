@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/pnpbios.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|proc_pnp
 r_static
 r_struct
@@ -846,6 +847,11 @@ r_int
 )paren
 id|data
 suffix:semicolon
+r_int
+id|ret
+op_assign
+id|count
+suffix:semicolon
 id|node
 op_assign
 id|pnpbios_kmalloc
@@ -880,10 +886,16 @@ comma
 id|node
 )paren
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|EIO
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -897,11 +909,20 @@ r_struct
 id|pnp_bios_node
 )paren
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-id|memcpy
+r_goto
+id|out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|copy_from_user
 c_func
 (paren
 id|node-&gt;data
@@ -910,7 +931,17 @@ id|buf
 comma
 id|count
 )paren
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -926,10 +957,22 @@ id|node
 op_ne
 l_int|0
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|ret
+op_assign
+id|count
+suffix:semicolon
+id|out
+suffix:colon
 id|kfree
 c_func
 (paren
@@ -937,7 +980,7 @@ id|node
 )paren
 suffix:semicolon
 r_return
-id|count
+id|ret
 suffix:semicolon
 )brace
 DECL|function|pnpbios_interface_attach_device
