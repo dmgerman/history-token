@@ -601,6 +601,12 @@ r_struct
 id|_snd_ac97_bus
 id|ac97_bus_t
 suffix:semicolon
+DECL|typedef|ac97_bus_ops_t
+r_typedef
+r_struct
+id|_snd_ac97_bus_ops
+id|ac97_bus_ops_t
+suffix:semicolon
 DECL|typedef|ac97_t
 r_typedef
 r_struct
@@ -798,11 +804,10 @@ id|ac97
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|_snd_ac97_bus
+DECL|struct|_snd_ac97_bus_ops
 r_struct
-id|_snd_ac97_bus
+id|_snd_ac97_bus_ops
 (brace
-multiline_comment|/* -- lowlevel (hardware) driver specific -- */
 DECL|member|reset
 r_void
 (paren
@@ -875,6 +880,18 @@ id|ac97_t
 op_star
 id|ac97
 )paren
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|_snd_ac97_bus
+r_struct
+id|_snd_ac97_bus
+(brace
+multiline_comment|/* -- lowlevel (hardware) driver specific -- */
+DECL|member|ops
+id|ac97_bus_ops_t
+op_star
+id|ops
 suffix:semicolon
 DECL|member|private_data
 r_void
@@ -1308,9 +1325,16 @@ id|snd_card_t
 op_star
 id|card
 comma
-id|ac97_bus_t
+r_int
+id|num
+comma
+id|ac97_bus_ops_t
 op_star
-id|_bus
+id|ops
+comma
+r_void
+op_star
+id|private_data
 comma
 id|ac97_bus_t
 op_star
