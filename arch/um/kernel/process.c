@@ -136,7 +136,6 @@ id|SA_ONSTACK
 suffix:colon
 l_int|0
 suffix:semicolon
-multiline_comment|/* NODEFER is set here because SEGV isn&squot;t turned back on when the&n;&t; * handler is ready to receive signals.  This causes any segfault&n;&t; * during a copy_user to kill the process because the fault is blocked.&n;&t; */
 id|set_handler
 c_func
 (paren
@@ -148,8 +147,6 @@ id|__sighandler_t
 id|sig_handler
 comma
 id|flags
-op_or
-id|SA_NODEFER
 comma
 id|SIGUSR1
 comma
