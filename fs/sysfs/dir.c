@@ -128,12 +128,7 @@ op_logical_neg
 id|sd
 )paren
 r_return
-id|ERR_PTR
-c_func
-(paren
-op_minus
-id|ENOMEM
-)paren
+l_int|NULL
 suffix:semicolon
 id|memset
 c_func
@@ -231,7 +226,10 @@ op_logical_neg
 id|sd
 )paren
 r_return
-l_int|0
+op_minus
+id|ENOMEMurn
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|sd-&gt;s_mode
 op_assign
