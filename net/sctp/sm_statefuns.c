@@ -10931,6 +10931,15 @@ op_star
 )paren
 op_amp
 id|chunk-&gt;dest
+comma
+id|sctp_sk
+c_func
+(paren
+id|sctp_get_ctl_sock
+c_func
+(paren
+)paren
+)paren
 )paren
 suffix:semicolon
 id|packet

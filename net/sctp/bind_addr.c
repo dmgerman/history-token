@@ -862,10 +862,10 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/********************************************************************&n; * 2nd Level Abstractions&n; ********************************************************************/
-multiline_comment|/* Does this contain a specified address? */
-DECL|function|sctp_bind_addr_has_addr
+multiline_comment|/* Does this contain a specified address?  Allow wildcarding. */
+DECL|function|sctp_bind_addr_match
 r_int
-id|sctp_bind_addr_has_addr
+id|sctp_bind_addr_match
 c_func
 (paren
 id|sctp_bind_addr_t
@@ -877,6 +877,11 @@ r_union
 id|sctp_addr
 op_star
 id|addr
+comma
+r_struct
+id|sctp_opt
+op_star
+id|opt
 )paren
 (brace
 r_struct
@@ -914,13 +919,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sctp_cmp_addr
+id|opt-&gt;pf
+op_member_access_from_pointer
+id|cmp_addr
 c_func
 (paren
 op_amp
 id|laddr-&gt;a
 comma
 id|addr
+comma
+id|opt
 )paren
 )paren
 r_return
@@ -1070,7 +1079,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/* Is addr one of the wildcards?  */
+multiline_comment|/* Is this a wildcard address?  */
 DECL|function|sctp_is_any
 r_int
 id|sctp_is_any
@@ -1083,66 +1092,34 @@ op_star
 id|addr
 )paren
 (brace
-r_int
-id|retval
+r_struct
+id|sctp_func
+op_star
+id|af
 op_assign
-l_int|0
-suffix:semicolon
-r_switch
-c_cond
+id|sctp_get_af_specific
+c_func
 (paren
 id|addr-&gt;sa.sa_family
 )paren
-(brace
-r_case
-id|AF_INET
-suffix:colon
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|INADDR_ANY
-op_eq
-id|addr-&gt;v4.sin_addr.s_addr
+op_logical_neg
+id|af
 )paren
-id|retval
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AF_INET6
-suffix:colon
-id|SCTP_V6
-c_func
-(paren
-r_if
-(paren
-id|IPV6_ADDR_ANY
-op_eq
-id|sctp_ipv6_addr_type
-c_func
-(paren
-op_amp
-id|addr-&gt;v6.sin6_addr
-)paren
-)paren
-id|retval
-op_assign
-l_int|1
-suffix:semicolon
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
-)brace
+r_return
+l_int|0
 suffix:semicolon
 r_return
-id|retval
+id|af
+op_member_access_from_pointer
+id|is_any
+c_func
+(paren
+id|addr
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Is &squot;addr&squot; valid for &squot;scope&squot;?  */
@@ -1170,17 +1147,7 @@ c_func
 id|addr
 )paren
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|addr-&gt;sa.sa_family
-)paren
-(brace
-r_case
-id|AF_INET
-suffix:colon
-multiline_comment|/* According to the SCTP IPv4 address scoping document -&n;&t;&t; * &lt;draft-stewart-tsvwg-sctp-ipv4-00.txt&gt;, the scope has&n;&t;&t; * a heirarchy of 5 levels:&n;&t;&t; * Level 0 - unusable SCTP addresses&n;&t;&t; * Level 1 - loopback address&n;&t;&t; * Level 2 - link-local addresses&n;&t;&t; * Level 3 - private addresses.&n;&t;&t; * Level 4 - global addresses&n;&t;&t; * For INIT and INIT-ACK address list, let L be the level of&n;&t;&t; * of requested destination address, sender and receiver&n;&t;&t; * SHOULD include all of its addresses with level greater&n;&t;&t; * than or equal to L.&n;&t;&t; */
-multiline_comment|/* The unusable SCTP addresses will not be considered with&n;&t;&t; * any defined scopes.&n;&t;&t; */
+multiline_comment|/* The unusable SCTP addresses will not be considered with&n;&t; * any defined scopes.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1191,7 +1158,7 @@ id|addr_scope
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Note that we are assuming that the scoping are the same&n;&t;&t; * for both IPv4 addresses and IPv6 addresses, i.e., if the&n;&t;&t; * scope is link local, both IPv4 link local addresses and&n;&t;&t; * IPv6 link local addresses would be treated as in the&n;&t;&t; * scope.  There is no filtering for IPv4 vs. IPv6 addresses&n;&t;&t; * based on scoping alone.&n;&t;&t; */
+multiline_comment|/*&n;&t; * For INIT and INIT-ACK address list, let L be the level of&n;&t; * of requested destination address, sender and receiver&n;&t; * SHOULD include all of its addresses with level greater&n;&t; * than or equal to L.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1201,31 +1168,6 @@ id|scope
 )paren
 r_return
 l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AF_INET6
-suffix:colon
-multiline_comment|/* FIXME:&n;&t;&t; * This is almost certainly wrong since scopes have an&n;&t;&t; * heirarchy.  I don&squot;t know what RFC to look at.&n;&t;&t; * There may be some guidance in the SCTP implementors&n;&t;&t; * guide (an Internet Draft as of October 2001).&n;&t;&t; *&n;&t;&t; * Further verification on the correctness of the IPv6&n;&t;&t; * scoping is needed.  According to the IPv6 scoping draft,&n;&t;&t; * the link local and site local address may require&n;&t;&t; * further scoping.&n;&t;&t; *&n;&t;&t; * Is the heirachy of the IPv6 scoping the same as what&squot;s&n;&t;&t; * defined for IPv4?&n;&t;&t; * If the same heirarchy indeed applies to both famiies,&n;&t;&t; * this function can be simplified with one set of code.&n;&t;&t; * (see the comments for IPv4 above)&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|addr_scope
-op_le
-id|scope
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 suffix:semicolon
 r_return
 l_int|0
