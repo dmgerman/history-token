@@ -701,7 +701,7 @@ r_int
 suffix:semicolon
 multiline_comment|/* &n; * NFSv4 State&n; */
 macro_line|#ifdef CONFIG_NFSD_V4
-r_void
+r_int
 id|nfs4_state_init
 c_func
 (paren
@@ -732,9 +732,21 @@ id|leasetime
 suffix:semicolon
 macro_line|#else
 DECL|function|nfs4_state_init
-r_void
+r_int
 r_static
 r_inline
+(def_block
+id|nfs4_state_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)def_block
 DECL|function|nfs4_state_shutdown
 r_void
 r_static
