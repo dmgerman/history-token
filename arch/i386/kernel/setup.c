@@ -3062,6 +3062,29 @@ suffix:semicolon
 )brace
 )brace
 )brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;noexec=&quot;
+comma
+l_int|7
+)paren
+)paren
+id|noexec_setup
+c_func
+(paren
+id|from
+op_plus
+l_int|7
+)paren
+suffix:semicolon
 macro_line|#ifdef  CONFIG_X86_SMP
 multiline_comment|/*&n;&t;&t; * If the BIOS enumerates physical processors before logical,&n;&t;&t; * maxcpus=N at enumeration-time can be used to disable HT.&n;&t;&t; */
 r_else

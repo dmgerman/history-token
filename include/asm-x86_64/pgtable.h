@@ -50,6 +50,17 @@ DECL|macro|swapper_pg_dir
 mdefine_line|#define swapper_pg_dir init_level4_pgt
 r_extern
 r_void
+id|nonx_setup
+c_func
+(paren
+r_const
+r_char
+op_star
+id|str
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|paging_init
 c_func
 (paren

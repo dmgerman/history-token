@@ -1728,12 +1728,12 @@ id|_PAGE_NX
 suffix:semicolon
 multiline_comment|/*&n; * noexec = on|off&n; *&n; * Control non executable mappings.&n; *&n; * on      Enable&n; * off     Disable&n; */
 DECL|function|noexec_setup
-r_static
-r_int
+r_void
 id|__init
 id|noexec_setup
 c_func
 (paren
+r_const
 r_char
 op_star
 id|str
@@ -1791,18 +1791,7 @@ op_complement
 id|_PAGE_NX
 suffix:semicolon
 )brace
-r_return
-l_int|1
-suffix:semicolon
 )brace
-id|__setup
-c_func
-(paren
-l_string|&quot;noexec=&quot;
-comma
-id|noexec_setup
-)paren
-suffix:semicolon
 DECL|variable|nx_enabled
 r_int
 id|nx_enabled

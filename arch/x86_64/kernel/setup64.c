@@ -125,12 +125,12 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* noexec=on|off&n;Control non executable mappings for 64bit processes.&n;&n;on&t;Enable(default)&n;off&t;Disable&n;*/
 DECL|function|nonx_setup
-r_static
-r_int
+r_void
 id|__init
 id|nonx_setup
 c_func
 (paren
+r_const
 r_char
 op_star
 id|str
@@ -182,18 +182,7 @@ op_complement
 id|_PAGE_NX
 suffix:semicolon
 )brace
-r_return
-l_int|1
-suffix:semicolon
 )brace
-id|__setup
-c_func
-(paren
-l_string|&quot;noexec=&quot;
-comma
-id|nonx_setup
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Great future plan:&n; * Declare PDA itself and support (irqstack,tss,pgd) as per cpu data.&n; * Always point %gs to its beginning&n; */
 DECL|function|setup_per_cpu_areas
 r_void
