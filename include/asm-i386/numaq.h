@@ -4,25 +4,23 @@ DECL|macro|NUMAQ_H
 mdefine_line|#define NUMAQ_H
 macro_line|#ifdef CONFIG_X86_NUMAQ
 macro_line|#include &lt;asm/smpboot.h&gt;
-multiline_comment|/*&n; * for now assume that 64Gb is max amount of RAM for whole system&n; *    64Gb * 1024Mb/Gb = 65536 Mb&n; *    65536 Mb / 256Mb = 256&n; */
+multiline_comment|/*&n; * for now assume that 64Gb is max amount of RAM for whole system&n; *    64Gb / 4096bytes/page = 16777216 pages&n; */
+DECL|macro|MAX_NR_PAGES
+mdefine_line|#define MAX_NR_PAGES 16777216
 DECL|macro|MAX_ELEMENTS
 mdefine_line|#define MAX_ELEMENTS 256
-DECL|macro|ELEMENT_REPRESENTS
-mdefine_line|#define ELEMENT_REPRESENTS 8 /* 256 Mb */
+DECL|macro|PAGES_PER_ELEMENT
+mdefine_line|#define PAGES_PER_ELEMENT (16777216/256)
+DECL|macro|pfn_to_pgdat
+mdefine_line|#define pfn_to_pgdat(pfn) NODE_DATA(pfn_to_nid(pfn))
+DECL|macro|PHYSADDR_TO_NID
+mdefine_line|#define PHYSADDR_TO_NID(pa) pfn_to_nid(pa &gt;&gt; PAGE_SHIFT)
 DECL|macro|MAX_NUMNODES
 mdefine_line|#define MAX_NUMNODES&t;&t;8
 macro_line|#ifdef CONFIG_NUMA
 DECL|macro|_cpu_to_node
 mdefine_line|#define _cpu_to_node(cpu) (cpu_to_logical_apicid(cpu) &gt;&gt; 4)
 macro_line|#endif /* CONFIG_NUMA */
-r_extern
-r_int
-id|pa_to_nid
-c_func
-(paren
-id|u64
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|pfn_to_nid

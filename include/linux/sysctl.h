@@ -409,12 +409,6 @@ op_assign
 l_int|55
 comma
 multiline_comment|/* int: PID # limit */
-DECL|enumerator|KERN_HUGETLB_PAGE_NUM
-id|KERN_HUGETLB_PAGE_NUM
-op_assign
-l_int|56
-comma
-multiline_comment|/* int: Number of available Huge Pages */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */
@@ -492,41 +486,42 @@ op_assign
 l_int|12
 comma
 multiline_comment|/* dirty_async_ratio */
-DECL|enumerator|VM_DIRTY_SYNC
-id|VM_DIRTY_SYNC
-op_assign
-l_int|13
-comma
-multiline_comment|/* dirty_sync_ratio */
 DECL|enumerator|VM_DIRTY_WB_CS
 id|VM_DIRTY_WB_CS
 op_assign
-l_int|14
+l_int|13
 comma
 multiline_comment|/* dirty_writeback_centisecs */
 DECL|enumerator|VM_DIRTY_EXPIRE_CS
 id|VM_DIRTY_EXPIRE_CS
 op_assign
-l_int|15
+l_int|14
 comma
 multiline_comment|/* dirty_expire_centisecs */
 DECL|enumerator|VM_NR_PDFLUSH_THREADS
 id|VM_NR_PDFLUSH_THREADS
 op_assign
-l_int|16
+l_int|15
 comma
 multiline_comment|/* nr_pdflush_threads */
 DECL|enumerator|VM_OVERCOMMIT_RATIO
 id|VM_OVERCOMMIT_RATIO
 op_assign
-l_int|17
+l_int|16
 comma
 multiline_comment|/* percent of RAM to allow overcommit in */
 DECL|enumerator|VM_PAGEBUF
 id|VM_PAGEBUF
 op_assign
-l_int|18
+l_int|17
+comma
 multiline_comment|/* struct: Control pagebuf parameters */
+DECL|enumerator|VM_HUGETLB_PAGES
+id|VM_HUGETLB_PAGES
+op_assign
+l_int|18
+comma
+multiline_comment|/* int: Number of available Huge Pages */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */

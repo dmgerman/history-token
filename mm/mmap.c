@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -1812,6 +1811,33 @@ id|VM_MAYWRITE
 op_or
 id|VM_MAYEXEC
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|MAP_LOCKED
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_IPC_LOCK
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+id|vm_flags
+op_or_assign
+id|VM_LOCKED
+suffix:semicolon
+)brace
 multiline_comment|/* mlock MCL_FUTURE? */
 r_if
 c_cond
@@ -4503,7 +4529,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Munmap is split into 2 main parts -- this part which finds&n; * what needs doing, and the areas themselves, which do the&n; * work.  This now handles partial unmappings.&n; * Jeremy Fitzhardine &lt;jeremy@sw.oz.au&gt;&n; */
+multiline_comment|/* Munmap is split into 2 main parts -- this part which finds&n; * what needs doing, and the areas themselves, which do the&n; * work.  This now handles partial unmappings.&n; * Jeremy Fitzhardinge &lt;jeremy@goop.org&gt;&n; */
 DECL|function|do_munmap
 r_int
 id|do_munmap

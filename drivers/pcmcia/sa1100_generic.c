@@ -2209,7 +2209,7 @@ id|MAX_WIN
 op_star
 id|map
 op_assign
-id|skt-&gt;mem_map
+id|skt-&gt;pc_mem_map
 (braket
 id|map-&gt;map
 )braket
@@ -2484,7 +2484,7 @@ id|map-&gt;sys_start
 op_assign
 id|start
 suffix:semicolon
-id|skt-&gt;mem_map
+id|skt-&gt;pc_mem_map
 (braket
 id|map-&gt;map
 )braket

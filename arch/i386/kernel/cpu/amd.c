@@ -40,7 +40,7 @@ suffix:semicolon
 r_int
 id|mbytes
 op_assign
-id|max_mapnr
+id|num_physpages
 op_rshift
 (paren
 l_int|20

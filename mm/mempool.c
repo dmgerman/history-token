@@ -649,6 +649,11 @@ op_or
 id|__GFP_IO
 )paren
 suffix:semicolon
+r_int
+id|pf_flags
+op_assign
+id|current-&gt;flags
+suffix:semicolon
 id|repeat_alloc
 suffix:colon
 id|current-&gt;flags
@@ -668,9 +673,8 @@ id|pool-&gt;pool_data
 )paren
 suffix:semicolon
 id|current-&gt;flags
-op_and_assign
-op_complement
-id|PF_NOWARN
+op_assign
+id|pf_flags
 suffix:semicolon
 r_if
 c_cond

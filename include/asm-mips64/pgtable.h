@@ -795,10 +795,28 @@ macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x)&t;&t;(mem_map+(unsigned long)((pte_val(x) &gt;&gt; PAGE_SHIFT)))
 macro_line|#else
-DECL|macro|mips64_pte_pagenr
-mdefine_line|#define mips64_pte_pagenr(x) &bslash;&n;&t;(PLAT_NODE_DATA_STARTNR(PHYSADDR_TO_NID(pte_val(x))) + &bslash;&n;&t;PLAT_NODE_DATA_LOCALNR(pte_val(x), PHYSADDR_TO_NID(pte_val(x))))
 DECL|macro|pte_page
-mdefine_line|#define pte_page(x)&t;&t;(mem_map+mips64_pte_pagenr(x))
+mdefine_line|#define pte_page(x) ( NODE_MEM_MAP(PHYSADDR_TO_NID(pte_val(x))) +
+id|PLAT_NODE_DATA_LOCALNR
+c_func
+(paren
+id|pte_val
+c_func
+(paren
+id|x
+)paren
+comma
+id|PHYSADDR_TO_NID
+c_func
+(paren
+id|pte_val
+c_func
+(paren
+id|x
+)paren
+)paren
+)paren
+)paren
 macro_line|#endif
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
 DECL|function|pte_read

@@ -171,13 +171,6 @@ id|exit_mm
 )paren
 suffix:semicolon
 multiline_comment|/* internal kernel memory management */
-DECL|variable|_alloc_pages
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|_alloc_pages
-)paren
-suffix:semicolon
 DECL|variable|__alloc_pages
 id|EXPORT_SYMBOL
 c_func
@@ -346,18 +339,26 @@ c_func
 id|vmalloc_to_page
 )paren
 suffix:semicolon
-DECL|variable|mem_map
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|mem_map
-)paren
-suffix:semicolon
 DECL|variable|remap_page_range
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|remap_page_range
+)paren
+suffix:semicolon
+macro_line|#ifndef CONFIG_DISCONTIGMEM
+DECL|variable|contig_page_data
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|contig_page_data
+)paren
+suffix:semicolon
+DECL|variable|mem_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mem_map
 )paren
 suffix:semicolon
 DECL|variable|max_mapnr
@@ -367,6 +368,7 @@ c_func
 id|max_mapnr
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|high_memory
 id|EXPORT_SYMBOL
 c_func
