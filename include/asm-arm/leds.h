@@ -29,6 +29,12 @@ DECL|enumerator|led_release
 id|led_release
 comma
 multiline_comment|/* restore idle &amp; timer leds */
+DECL|enumerator|led_start_timer_mode
+id|led_start_timer_mode
+comma
+DECL|enumerator|led_stop_timer_mode
+id|led_stop_timer_mode
+comma
 DECL|enumerator|led_green_on
 id|led_green_on
 comma
@@ -46,6 +52,12 @@ id|led_red_on
 comma
 DECL|enumerator|led_red_off
 id|led_red_off
+comma
+DECL|enumerator|led_blue_on
+id|led_blue_on
+comma
+DECL|enumerator|led_blue_off
+id|led_blue_off
 comma
 multiline_comment|/*&n;&t; * I want this between led_timer and led_start, but&n;&t; * someone has decided to export this to user space&n;&t; */
 DECL|enumerator|led_halted

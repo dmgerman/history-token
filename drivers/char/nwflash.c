@@ -2303,14 +2303,12 @@ id|id
 suffix:semicolon
 id|FLASH_BASE
 op_assign
-id|__ioremap
+id|ioremap
 c_func
 (paren
 id|DC21285_FLASH
 comma
 id|KFLASH_SIZE4
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if

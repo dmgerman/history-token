@@ -23,6 +23,6 @@ mdefine_line|#define domain_val(dom,type)&t;((type) &lt;&lt; 2*(dom))
 DECL|macro|set_domain
 mdefine_line|#define set_domain(x)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&bslash;&n;&t;&quot;mcr&t;p15, 0, %0, c3, c0&t;@ set domain&quot;&t;&bslash;&n;&t;  : : &quot;r&quot; (x));&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|modify_domain
-mdefine_line|#define modify_domain(dom,type)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int domain = current-&gt;thread.domain;&t;&bslash;&n;&t;domain &amp;= ~domain_val(dom, DOMAIN_MANAGER);&t;&bslash;&n;&t;domain |= domain_val(dom, type);&t;&t;&bslash;&n;&t;current-&gt;thread.domain = domain;&t;&t;&bslash;&n;&t;set_domain(current-&gt;thread.domain);&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define modify_domain(dom,type)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct thread_info *thread = current_thread_info();&t;&bslash;&n;&t;unsigned int domain = thread-&gt;cpu_domain;&t;&t;&bslash;&n;&t;domain &amp;= ~domain_val(dom, DOMAIN_MANAGER);&t;&t;&bslash;&n;&t;thread-&gt;cpu_domain = domain | domain_val(dom, type);&t;&bslash;&n;&t;set_domain(thread-&gt;cpu_domain);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#endif
 eof

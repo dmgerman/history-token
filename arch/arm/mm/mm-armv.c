@@ -150,8 +150,6 @@ id|nowrite_setup
 suffix:semicolon
 DECL|macro|FIRST_KERNEL_PGD_NR
 mdefine_line|#define FIRST_KERNEL_PGD_NR&t;(FIRST_USER_PGD_NR + USER_PTRS_PER_PGD)
-DECL|macro|clean_cache_area
-mdefine_line|#define clean_cache_area(start,size) &bslash;&n;&t;cpu_cache_clean_invalidate_range((unsigned long)start, ((unsigned long)start) + size, 0);
 multiline_comment|/*&n; * need to get a 16k page for level 1&n; */
 DECL|function|get_pgd_slow
 id|pgd_t
@@ -365,8 +363,7 @@ id|pgd_t
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * FIXME: this should not be necessary&n;&t; */
-id|clean_cache_area
+id|clean_dcache_area
 c_func
 (paren
 id|new_pgd
