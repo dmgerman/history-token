@@ -1227,12 +1227,6 @@ id|link_count
 comma
 id|total_link_count
 suffix:semicolon
-DECL|member|locks
-r_int
-r_int
-id|locks
-suffix:semicolon
-multiline_comment|/* How many file locks are being held */
 multiline_comment|/* ipc stuff */
 DECL|member|sysvsem
 r_struct
