@@ -414,6 +414,7 @@ r_static
 r_struct
 id|pci_controller
 op_star
+id|__devinit
 DECL|function|alloc_pci_controller
 id|alloc_pci_controller
 (paren
@@ -473,6 +474,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+id|__devinit
 DECL|function|alloc_resource
 id|alloc_resource
 (paren
@@ -578,6 +580,7 @@ suffix:semicolon
 )brace
 r_static
 id|u64
+id|__devinit
 DECL|function|add_io_space
 id|add_io_space
 (paren
@@ -731,6 +734,7 @@ suffix:semicolon
 )brace
 r_static
 id|acpi_status
+id|__devinit
 DECL|function|count_window
 id|count_window
 (paren
@@ -823,6 +827,7 @@ suffix:semicolon
 suffix:semicolon
 r_static
 id|acpi_status
+id|__devinit
 DECL|function|add_window
 id|add_window
 (paren
@@ -1032,6 +1037,7 @@ suffix:semicolon
 r_struct
 id|pci_bus
 op_star
+id|__devinit
 DECL|function|pci_acpi_scan_root
 id|pci_acpi_scan_root
 (paren
