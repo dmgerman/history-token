@@ -697,6 +697,11 @@ multiline_comment|/* mostly `TIME_OK&squot; */
 multiline_comment|/* Save for later - semantics of adjtime is to return old value */
 id|save_adjust
 op_assign
+id|time_next_adjust
+ques
+c_cond
+id|time_next_adjust
+suffix:colon
 id|time_adjust
 suffix:semicolon
 macro_line|#if 0&t;/* STA_CLOCKERR is never set yet */
@@ -893,9 +898,20 @@ id|ADJ_OFFSET_SINGLESHOT
 )paren
 (brace
 multiline_comment|/* adjtime() is independent from ntp_adjtime() */
-id|time_adjust
+r_if
+c_cond
+(paren
+(paren
+id|time_next_adjust
 op_assign
 id|txc-&gt;offset
+)paren
+op_eq
+l_int|0
+)paren
+id|time_adjust
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_else

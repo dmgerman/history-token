@@ -1542,15 +1542,11 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|secpath_put
+id|secpath_reset
 c_func
 (paren
-id|skb-&gt;sp
+id|skb
 )paren
-suffix:semicolon
-id|skb-&gt;sp
-op_assign
-l_int|NULL
 suffix:semicolon
 id|skb-&gt;mac.raw
 op_assign

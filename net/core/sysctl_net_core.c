@@ -2,6 +2,7 @@ multiline_comment|/* -*- linux-c -*-&n; * sysctl_net_core.c: sysctl interface to
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#ifdef CONFIG_SYSCTL
 r_extern
 r_int
@@ -71,6 +72,54 @@ id|sysctl_divert_version
 )braket
 suffix:semicolon
 macro_line|#endif /* CONFIG_NET_DIVERT */
+multiline_comment|/*&n; * This strdup() is used for creating copies of network &n; * device names to be handed over to sysctl.&n; */
+DECL|function|net_sysctl_strdup
+r_char
+op_star
+id|net_sysctl_strdup
+c_func
+(paren
+r_const
+r_char
+op_star
+id|s
+)paren
+(brace
+r_char
+op_star
+id|rv
+op_assign
+id|kmalloc
+c_func
+(paren
+id|strlen
+c_func
+(paren
+id|s
+)paren
+op_plus
+l_int|1
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rv
+)paren
+id|strcpy
+c_func
+(paren
+id|rv
+comma
+id|s
+)paren
+suffix:semicolon
+r_return
+id|rv
+suffix:semicolon
+)brace
 DECL|variable|core_table
 id|ctl_table
 id|core_table
@@ -646,6 +695,13 @@ op_assign
 l_int|0
 )brace
 )brace
+suffix:semicolon
+DECL|variable|net_sysctl_strdup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|net_sysctl_strdup
+)paren
 suffix:semicolon
 macro_line|#endif
 eof

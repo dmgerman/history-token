@@ -157,6 +157,26 @@ op_div
 id|HZ
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If time_adjust is negative then NTP is slowing the clock&n;&t;&t; * so make sure not to go into next possible interval.&n;&t;&t; * Better to lose some accuracy than have time go backwards..&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|time_adjust
+OL
+l_int|0
+)paren
+op_logical_and
+id|usec
+OG
+id|tickadj
+)paren
+id|usec
+op_assign
+id|tickadj
+suffix:semicolon
 id|sec
 op_assign
 id|xtime.tv_sec

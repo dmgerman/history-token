@@ -2604,7 +2604,7 @@ op_assign
 id|sys_open
 c_func
 (paren
-l_string|&quot;/dev/initrd&quot;
+l_string|&quot;/initrd.image&quot;
 comma
 id|O_WRONLY
 op_or

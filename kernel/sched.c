@@ -9814,6 +9814,7 @@ multiline_comment|/* ratelimiting */
 r_if
 c_cond
 (paren
+(paren
 id|in_atomic
 c_func
 (paren
@@ -9823,6 +9824,9 @@ id|irqs_disabled
 c_func
 (paren
 )paren
+)paren
+op_logical_and
+id|system_running
 )paren
 (brace
 r_if

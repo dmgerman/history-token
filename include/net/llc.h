@@ -324,5 +324,28 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+r_extern
+r_int
+id|llc_proc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|llc_proc_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|llc_proc_init
+mdefine_line|#define llc_proc_init()&t;(0)
+DECL|macro|llc_proc_exit
+mdefine_line|#define llc_proc_exit()&t;do { } while(0)
+macro_line|#endif /* CONFIG_PROC_FS */
 macro_line|#endif /* LLC_H */
 eof

@@ -2872,7 +2872,7 @@ id|dev
 suffix:semicolon
 r_return
 op_minus
-id|ENOMEM
+id|EINVAL
 suffix:semicolon
 )brace
 macro_line|#endif

@@ -1,10 +1,10 @@
 macro_line|#include &lt;asm/types.h&gt;
-DECL|variable|__initdata
+DECL|variable|Dpram
+r_static
 id|u8
 id|Dpram
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 l_int|0xe5
@@ -585,12 +585,12 @@ l_int|0x00
 comma
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|Root
+r_static
 id|u8
 id|Root
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 l_int|0xb4

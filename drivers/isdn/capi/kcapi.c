@@ -215,14 +215,6 @@ id|card-&gt;owner
 r_return
 l_int|NULL
 suffix:semicolon
-id|DBG
-c_func
-(paren
-l_string|&quot;Reserve module: %s&quot;
-comma
-id|card-&gt;owner-&gt;name
-)paren
-suffix:semicolon
 r_return
 id|card
 suffix:semicolon
@@ -244,14 +236,6 @@ id|module_put
 c_func
 (paren
 id|card-&gt;owner
-)paren
-suffix:semicolon
-id|DBG
-c_func
-(paren
-l_string|&quot;Release module: %s&quot;
-comma
-id|card-&gt;owner-&gt;name
 )paren
 suffix:semicolon
 )brace

@@ -17,6 +17,12 @@ id|mca_drv
 r_int
 id|r
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|MCA_bus
+)paren
+(brace
 id|mca_drv-&gt;driver.bus
 op_assign
 op_amp
@@ -41,6 +47,7 @@ l_int|0
 r_return
 id|r
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -63,6 +70,11 @@ op_star
 id|mca_drv
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|MCA_bus
+)paren
 id|driver_unregister
 c_func
 (paren

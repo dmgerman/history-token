@@ -528,6 +528,10 @@ comma
 id|ETH_ALEN
 )paren
 suffix:semicolon
+id|skb-&gt;pkt_type
+op_assign
+id|PACKET_HOST
+suffix:semicolon
 )brace
 )brace
 r_else

@@ -9935,6 +9935,13 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|pcm-&gt;open_mutex
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9944,13 +9951,6 @@ l_int|0
 )paren
 r_goto
 id|__error
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|pcm-&gt;open_mutex
-)paren
 suffix:semicolon
 r_return
 id|err

@@ -285,41 +285,13 @@ id|hdr-&gt;hdr_buf_size
 op_assign
 id|arg-&gt;buf_size
 suffix:semicolon
-id|hdr-&gt;hdr_cur_pos
+id|hdr-&gt;hdr_cur_offs
 op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|buf
-)paren
-op_plus
 r_sizeof
 (paren
 op_star
 id|hdr
 )paren
-suffix:semicolon
-id|hdr-&gt;hdr_last_pos
-op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|buf
-)paren
-op_plus
-id|arg-&gt;buf_size
 suffix:semicolon
 id|hdr-&gt;hdr_overflows
 op_assign
@@ -333,7 +305,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;[%d] buffer=%p buf_size=%lu hdr_size=%lu hdr_version=%u&bslash;n&quot;
+l_string|&quot;[%d] buffer=%p buf_size=%lu hdr_size=%lu hdr_version=%u cur_offs=%lu&bslash;n&quot;
 comma
 id|task-&gt;pid
 comma
@@ -348,6 +320,8 @@ id|hdr
 )paren
 comma
 id|hdr-&gt;hdr_version
+comma
+id|hdr-&gt;hdr_cur_offs
 )paren
 )paren
 suffix:semicolon
@@ -471,11 +445,15 @@ id|buf
 suffix:semicolon
 id|cur
 op_assign
-id|hdr-&gt;hdr_cur_pos
+id|buf
+op_plus
+id|hdr-&gt;hdr_cur_offs
 suffix:semicolon
 id|last
 op_assign
-id|hdr-&gt;hdr_last_pos
+id|buf
+op_plus
+id|hdr-&gt;hdr_buf_size
 suffix:semicolon
 id|ovfl_pmd
 op_assign
@@ -652,10 +630,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * update position for next entry&n;&t; */
-id|hdr-&gt;hdr_cur_pos
-op_assign
-id|cur
-op_plus
+id|hdr-&gt;hdr_cur_offs
+op_add_assign
 r_sizeof
 (paren
 op_star
@@ -711,7 +687,7 @@ multiline_comment|/*&n;&t; * increment number of buffer overflow.&n;&t; * import
 id|hdr-&gt;hdr_overflows
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t; * if no notification is needed, then we saturate the buffer&n;&t; */
+multiline_comment|/*&n;&t; * if no notification requested, then we saturate the buffer&n;&t; */
 r_if
 c_cond
 (paren
@@ -720,10 +696,6 @@ op_eq
 l_int|0
 )paren
 (brace
-id|hdr-&gt;hdr_count
-op_assign
-l_int|0UL
-suffix:semicolon
 id|arg-&gt;ovfl_ctrl.bits.notify_user
 op_assign
 l_int|0
@@ -809,20 +781,8 @@ id|hdr-&gt;hdr_count
 op_assign
 l_int|0UL
 suffix:semicolon
-id|hdr-&gt;hdr_cur_pos
+id|hdr-&gt;hdr_cur_offs
 op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|buf
-)paren
-op_plus
 r_sizeof
 (paren
 op_star

@@ -2508,6 +2508,171 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SCSI_SATA
+DECL|function|quirk_intel_ide_combined
+r_static
+r_void
+id|__init
+id|quirk_intel_ide_combined
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+(brace
+id|u8
+id|prog
+comma
+id|comb
+comma
+id|tmp
+suffix:semicolon
+multiline_comment|/*&n;&t; * Narrow down to Intel SATA PCI devices.&n;&t; */
+r_switch
+c_cond
+(paren
+id|pdev-&gt;device
+)paren
+(brace
+multiline_comment|/* PCI ids taken from drivers/scsi/ata_piix.c */
+r_case
+l_int|0x24d1
+suffix:colon
+r_case
+l_int|0x24df
+suffix:colon
+r_case
+l_int|0x25a3
+suffix:colon
+r_case
+l_int|0x25b0
+suffix:colon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* we do not handle this PCI device */
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Read combined mode register.&n;&t; */
+id|pci_read_config_byte
+c_func
+(paren
+id|pdev
+comma
+l_int|0x90
+comma
+op_amp
+id|tmp
+)paren
+suffix:semicolon
+multiline_comment|/* combined mode reg */
+id|tmp
+op_and_assign
+l_int|0x6
+suffix:semicolon
+multiline_comment|/* interesting bits 2:1, PATA primary/secondary */
+r_if
+c_cond
+(paren
+id|tmp
+op_eq
+l_int|0x4
+)paren
+multiline_comment|/* bits 10x */
+id|comb
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* SATA port 0, PATA port 1 */
+r_else
+r_if
+c_cond
+(paren
+id|tmp
+op_eq
+l_int|0x6
+)paren
+multiline_comment|/* bits 11x */
+id|comb
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* PATA port 0, SATA port 1 */
+r_else
+r_return
+suffix:semicolon
+multiline_comment|/* not in combined mode */
+multiline_comment|/*&n;&t; * Read programming interface register.&n;&t; * (Tells us if it&squot;s legacy or native mode)&n;&t; */
+id|pci_read_config_byte
+c_func
+(paren
+id|pdev
+comma
+id|PCI_CLASS_PROG
+comma
+op_amp
+id|prog
+)paren
+suffix:semicolon
+multiline_comment|/* if SATA port is in native mode, we&squot;re ok. */
+r_if
+c_cond
+(paren
+id|prog
+op_amp
+id|comb
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* SATA port is in legacy mode.  Reserve port so that&n;&t; * IDE driver does not attempt to use it.  If request_region&n;&t; * fails, it will be obvious at boot time, so we don&squot;t bother&n;&t; * checking return values.&n;&t; */
+r_if
+c_cond
+(paren
+id|comb
+op_eq
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+)paren
+id|request_region
+c_func
+(paren
+l_int|0x1f0
+comma
+l_int|8
+comma
+l_string|&quot;libata&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* port 0 */
+r_else
+id|request_region
+c_func
+(paren
+l_int|0x170
+comma
+l_int|8
+comma
+l_string|&quot;libata&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* port 1 */
+)brace
+macro_line|#endif /* CONFIG_SCSI_SATA */
 multiline_comment|/*&n; *  The main table of quirks.&n; *&n; *  Note: any hooks for hotpluggable devices in this table must _NOT_&n; *        be declared __init.&n; */
 DECL|variable|__devinitdata
 r_static
@@ -3244,6 +3409,19 @@ comma
 id|asus_hides_smbus_lpc
 )brace
 comma
+macro_line|#ifdef CONFIG_SCSI_SATA
+multiline_comment|/* Fixup BIOSes that configure Parallel ATA (PATA / IDE) and&n;&t; * Serial ATA (SATA) into the same PCI ID.&n;&t; */
+(brace
+id|PCI_FIXUP_FINAL
+comma
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_ANY_ID
+comma
+id|quirk_intel_ide_combined
+)brace
+comma
+macro_line|#endif /* CONFIG_SCSI_SATA */
 (brace
 l_int|0
 )brace

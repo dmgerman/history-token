@@ -14732,7 +14732,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;load [%d] increased sys_use_dbreg=%lu&bslash;n&quot;
+l_string|&quot;load [%d] increased sys_use_dbreg=%u&bslash;n&quot;
 comma
 id|task-&gt;pid
 comma

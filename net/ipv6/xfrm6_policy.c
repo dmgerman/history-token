@@ -1083,6 +1083,10 @@ l_int|1
 )braket
 suffix:semicolon
 )brace
+id|fl-&gt;proto
+op_assign
+id|nexthdr
+suffix:semicolon
 r_return
 suffix:semicolon
 multiline_comment|/* XXX Why are there these headers? */
@@ -1100,6 +1104,10 @@ suffix:colon
 id|fl-&gt;fl_ipsec_spi
 op_assign
 l_int|0
+suffix:semicolon
+id|fl-&gt;proto
+op_assign
+id|nexthdr
 suffix:semicolon
 r_return
 suffix:semicolon

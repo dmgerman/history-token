@@ -1123,7 +1123,7 @@ id|jh_in-&gt;b_frozen_data
 id|kfree
 c_func
 (paren
-id|new_page
+id|tmp
 )paren
 suffix:semicolon
 r_goto
@@ -5548,6 +5548,24 @@ c_func
 id|bh
 comma
 l_string|&quot;remove journal_head&quot;
+)paren
+suffix:semicolon
+id|J_ASSERT_BH
+c_func
+(paren
+id|bh
+comma
+op_logical_neg
+id|jh-&gt;b_frozen_data
+)paren
+suffix:semicolon
+id|J_ASSERT_BH
+c_func
+(paren
+id|bh
+comma
+op_logical_neg
+id|jh-&gt;b_committed_data
 )paren
 suffix:semicolon
 id|bh-&gt;b_private

@@ -641,6 +641,20 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+id|client
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|i2c_client
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* fill client structure */
 id|sprintf
 c_func
@@ -938,13 +952,11 @@ id|i2c_driver
 id|driver
 op_assign
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,54)
 dot
 id|owner
 op_assign
 id|THIS_MODULE
 comma
-macro_line|#endif
 dot
 id|name
 op_assign

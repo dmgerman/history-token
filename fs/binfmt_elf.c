@@ -2455,6 +2455,27 @@ op_assign
 id|INTERPRETER_ELF
 suffix:semicolon
 )brace
+multiline_comment|/* Verify the interpreter has a valid arch */
+r_if
+c_cond
+(paren
+(paren
+id|interpreter_type
+op_eq
+id|INTERPRETER_ELF
+)paren
+op_logical_and
+op_logical_neg
+id|elf_check_arch
+c_func
+(paren
+op_amp
+id|interp_elf_ex
+)paren
+)paren
+r_goto
+id|out_free_dentry
+suffix:semicolon
 )brace
 r_else
 (brace

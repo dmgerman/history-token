@@ -152,7 +152,6 @@ id|ETH_ALEN
 )paren
 suffix:semicolon
 r_else
-(brace
 id|memcpy
 c_func
 (paren
@@ -173,7 +172,6 @@ id|pkt_type
 op_assign
 id|PACKET_HOST
 suffix:semicolon
-)brace
 r_return
 id|info-&gt;target
 suffix:semicolon

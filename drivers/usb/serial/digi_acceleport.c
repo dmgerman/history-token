@@ -6041,23 +6041,12 @@ c_func
 op_amp
 id|priv-&gt;dp_wakeup_work
 comma
-(paren
-r_void
-op_star
-)paren
 id|digi_wakeup_write_lock
 comma
-(paren
-r_void
-op_star
-)paren
-(paren
-op_amp
 id|serial-&gt;port
 (braket
 id|i
 )braket
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* initialize write wait queue for this port */
