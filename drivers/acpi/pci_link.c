@@ -1507,8 +1507,9 @@ multiline_comment|/* &gt;IRQ15 */
 )brace
 suffix:semicolon
 r_int
-DECL|function|acpi_pci_link_check
-id|acpi_pci_link_check
+DECL|function|acpi_irq_penalty_init
+id|acpi_irq_penalty_init
+c_func
 (paren
 r_void
 )paren
@@ -1535,7 +1536,7 @@ suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
-l_string|&quot;acpi_pci_link_check&quot;
+l_string|&quot;acpi_irq_penalty_init&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Update penalties to facilitate IRQ balancing.&n;&t; */
