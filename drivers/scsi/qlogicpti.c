@@ -5279,11 +5279,7 @@ id|sg
 comma
 id|Cmnd-&gt;use_sg
 comma
-id|scsi_to_sbus_dma_dir
-c_func
-(paren
 id|Cmnd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 id|ds
@@ -5523,11 +5519,7 @@ id|Cmnd-&gt;request_buffer
 comma
 id|Cmnd-&gt;request_bufflen
 comma
-id|scsi_to_sbus_dma_dir
-c_func
-(paren
 id|Cmnd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 id|cmd-&gt;dataseg
@@ -6983,11 +6975,7 @@ id|Cmnd-&gt;buffer
 comma
 id|Cmnd-&gt;use_sg
 comma
-id|scsi_to_sbus_dma_dir
-c_func
-(paren
 id|Cmnd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -7011,11 +6999,7 @@ id|Cmnd-&gt;SCp.ptr
 comma
 id|Cmnd-&gt;request_bufflen
 comma
-id|scsi_to_sbus_dma_dir
-c_func
-(paren
 id|Cmnd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace

@@ -5776,11 +5776,7 @@ id|sp-&gt;SCp.buffer
 comma
 id|sp-&gt;SCp.this_residual
 comma
-id|scsi_to_sbus_dma_dir
-c_func
-(paren
 id|sp-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 id|sp-&gt;SCp.ptr
@@ -5828,11 +5824,7 @@ id|sp-&gt;SCp.buffer
 comma
 id|sp-&gt;use_sg
 comma
-id|scsi_to_sbus_dma_dir
-c_func
-(paren
 id|sp-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 id|sp-&gt;SCp.this_residual
@@ -5894,11 +5886,7 @@ id|sp-&gt;buffer
 comma
 id|sp-&gt;use_sg
 comma
-id|scsi_to_sbus_dma_dir
-c_func
-(paren
 id|sp-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -5918,11 +5906,7 @@ id|sp-&gt;SCp.have_data_in
 comma
 id|sp-&gt;request_bufflen
 comma
-id|scsi_to_sbus_dma_dir
-c_func
-(paren
 id|sp-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
