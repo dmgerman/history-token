@@ -2376,6 +2376,8 @@ c_func
 (paren
 id|sg_list-&gt;sg
 comma
+l_int|0
+comma
 id|sg_list-&gt;count
 op_star
 r_sizeof
@@ -2383,8 +2385,6 @@ r_sizeof
 r_struct
 id|scatterlist
 )paren
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_for
