@@ -16,10 +16,10 @@ DECL|macro|MAX_WRITEBACK_PAGES
 mdefine_line|#define MAX_WRITEBACK_PAGES&t;1024
 multiline_comment|/*&n; * After a CPU has dirtied this many pages, balance_dirty_pages_ratelimited&n; * will look to see if it needs to force writeback or throttling.  Probably&n; * should be scaled by memory size.&n; */
 DECL|macro|RATELIMIT_PAGES
-mdefine_line|#define RATELIMIT_PAGES&t;&t;1000
+mdefine_line|#define RATELIMIT_PAGES&t;&t;((512 * 1024) / PAGE_SIZE)
 multiline_comment|/*&n; * When balance_dirty_pages decides that the caller needs to perform some&n; * non-background writeback, this is how many pages it will attempt to write.&n; * It should be somewhat larger than RATELIMIT_PAGES to ensure that reasonably&n; * large amounts of I/O are submitted.&n; */
 DECL|macro|SYNC_WRITEBACK_PAGES
-mdefine_line|#define SYNC_WRITEBACK_PAGES&t;1500
+mdefine_line|#define SYNC_WRITEBACK_PAGES&t;((RATELIMIT_PAGES * 3) / 2)
 multiline_comment|/* The following parameters are exported via /proc/sys/vm */
 multiline_comment|/*&n; * Dirty memory thresholds, in percentages&n; */
 multiline_comment|/*&n; * Start background writeback (via pdflush) at this level&n; */
@@ -108,6 +108,11 @@ r_int
 r_int
 id|dirty_and_writeback
 suffix:semicolon
+r_struct
+id|backing_dev_info
+op_star
+id|bdi
+suffix:semicolon
 id|get_page_state
 c_func
 (paren
@@ -151,6 +156,10 @@ id|tot
 op_div
 l_int|100
 suffix:semicolon
+id|bdi
+op_assign
+id|mapping-&gt;backing_dev_info
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -164,9 +173,11 @@ id|nr_to_write
 op_assign
 id|SYNC_WRITEBACK_PAGES
 suffix:semicolon
-id|writeback_unlocked_inodes
+id|writeback_backing_dev
 c_func
 (paren
+id|bdi
+comma
 op_amp
 id|nr_to_write
 comma
@@ -197,9 +208,11 @@ id|nr_to_write
 op_assign
 id|SYNC_WRITEBACK_PAGES
 suffix:semicolon
-id|writeback_unlocked_inodes
+id|writeback_backing_dev
 c_func
 (paren
+id|bdi
+comma
 op_amp
 id|nr_to_write
 comma
@@ -223,7 +236,7 @@ op_logical_neg
 id|writeback_in_progress
 c_func
 (paren
-id|mapping-&gt;backing_dev_info
+id|bdi
 )paren
 op_logical_and
 id|ps.nr_dirty
