@@ -66,7 +66,7 @@ DECL|macro|STAT
 macro_line|# define STAT(x...)
 macro_line|#endif
 DECL|macro|alloc_reg_state
-mdefine_line|#define alloc_reg_state()&t;kmalloc(sizeof(struct unw_state_record), GFP_ATOMIC)
+mdefine_line|#define alloc_reg_state()&t;kmalloc(sizeof(struct unw_reg_state), GFP_ATOMIC)
 DECL|macro|free_reg_state
 mdefine_line|#define free_reg_state(usr)&t;kfree(usr)
 DECL|macro|alloc_labeled_state
