@@ -266,46 +266,15 @@ l_int|0
 suffix:semicolon
 singleline_comment|// python0 facility area (memory mapped io) (64-bit format) VIRTUAL address.
 r_extern
-id|HPTE
-op_star
-id|Hash
-comma
-op_star
-id|Hash_end
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|Hash_size
-comma
-id|Hash_mask
-suffix:semicolon
-r_extern
-r_int
-id|probingmem
-suffix:semicolon
-r_extern
 r_int
 r_int
 id|loops_per_jiffy
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
 r_extern
 r_int
-id|rd_doload
-suffix:semicolon
-multiline_comment|/* 1 = load ramdisk, 0 = don&squot;t load */
-r_extern
 r_int
-id|rd_prompt
+id|ppc_proc_freq
 suffix:semicolon
-multiline_comment|/* 1 = prompt for ramdisk, 0 = don&squot;t prompt */
-r_extern
-r_int
-id|rd_image_start
-suffix:semicolon
-multiline_comment|/* starting block # of image */
-macro_line|#endif
 r_extern
 r_int
 r_int
@@ -1329,16 +1298,6 @@ c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|ppc_proc_freq
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|ppc_tb_freq
 suffix:semicolon
 DECL|function|pSeries_calibrate_decr
 r_void

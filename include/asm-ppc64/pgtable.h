@@ -960,6 +960,9 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This gets called at the end of handling a page fault, when&n; * the kernel has put a new PTE into the page table for the process.&n; * We use it to put a corresponding HPTE into the hash table&n; * ahead of time, instead of waiting for the inevitable extra&n; * hash-table miss exception.&n; */
+r_struct
+id|vm_area_struct
+suffix:semicolon
 r_extern
 r_void
 id|update_mmu_cache

@@ -47,10 +47,6 @@ id|__initdata
 op_assign
 l_int|NULL
 suffix:semicolon
-r_extern
-r_int
-id|use_of_interrupt_tree
-suffix:semicolon
 r_void
 id|find_ISUs
 c_func

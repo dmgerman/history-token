@@ -200,10 +200,6 @@ r_void
 r_int
 id|i
 comma
-id|free
-op_assign
-l_int|0
-comma
 id|total
 op_assign
 l_int|0

@@ -11,7 +11,6 @@ DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-multiline_comment|/* #include &lt;linux/openpic.h&gt; */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
@@ -97,26 +96,6 @@ op_assign
 l_int|0
 comma
 )brace
-suffix:semicolon
-DECL|macro|TB_SYNC_PASSES
-mdefine_line|#define TB_SYNC_PASSES 4
-DECL|variable|tb_sync_flag
-r_volatile
-r_int
-r_int
-id|__initdata
-id|tb_sync_flag
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|tb_offset
-r_volatile
-r_int
-r_int
-id|__initdata
-id|tb_offset
-op_assign
-l_int|0
 suffix:semicolon
 r_extern
 r_int
@@ -2666,7 +2645,6 @@ id|ints
 )brace
 DECL|function|setup_profiling_timer
 r_int
-id|__init
 id|setup_profiling_timer
 c_func
 (paren
