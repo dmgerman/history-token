@@ -1420,6 +1420,9 @@ comma
 r_void
 op_star
 )paren
+(paren
+r_int
+)paren
 id|cpu
 )paren
 suffix:semicolon
@@ -1860,6 +1863,9 @@ id|cpu
 op_assign
 (paren
 r_int
+r_int
+)paren
+(paren
 r_int
 )paren
 id|data
