@@ -2802,6 +2802,10 @@ c_cond
 id|inet-&gt;num
 op_eq
 id|num
+op_logical_and
+id|sk-&gt;family
+op_eq
+id|PF_INET6
 )paren
 (brace
 r_struct
