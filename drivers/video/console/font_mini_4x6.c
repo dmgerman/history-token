@@ -1,7 +1,7 @@
 multiline_comment|/* Hand composed &quot;Miniscule&quot; 4x6 font, with binary data generated using&n; * Perl stub.&n; *&n; * Use &squot;perl -x mini_4x6.c &lt; mini_4x6.c &gt; new_version.c&squot; to regenerate&n; * binary data.&n; *&n; * Created by Kenneth Albanowski.&n; * No rights reserved, released to the public domain.&n; *&n; * Version 1.0&n; */
 multiline_comment|/*&n;&n;#!/usr/bin/perl -pn&n;&n;s{((0x)?[0-9a-fA-F]+)(.*&bslash;[([&bslash;*&bslash; ]{4})&bslash;])}{&n;&n;&t;($num,$pat,$bits) = ($1,$3,$4);&n;&t;&n;&t;$bits =~ s/([^&bslash;s0])|(.)/ defined($1) + 0 /ge;&n;&t;&n;&t;$num = ord(pack(&quot;B8&quot;, $bits));&n;&t;$num |= $num &gt;&gt; 4;&n;&t;$num = sprintf(&quot;0x%.2x&quot;, $num);&n;&t;&n;&t;#print &quot;$num,$pat,$bits&bslash;n&quot;;&n;&t;&n;&t;$num . $pat;&n;}ge;&n;&n;__END__;&n;*/
 multiline_comment|/* Note: binary data consists of one byte for each row of each character top&n;   to bottom, character 0 to character 255, six bytes per character. Each&n;   byte contains the same four character bits in both nybbles.&n;   MSBit to LSBit = left to right.&n; */
-macro_line|#include &quot;font.h&quot;
+macro_line|#include &lt;linux/font.h&gt;
 DECL|macro|FONTDATAMAX
 mdefine_line|#define FONTDATAMAX 1536
 DECL|variable|fontdata_mini_4x6

@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/selection.h&gt;
+macro_line|#include &lt;linux/font.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -36,7 +37,6 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#endif
 macro_line|#include &quot;fbcon.h&quot;
-macro_line|#include &quot;font.h&quot;
 macro_line|#ifdef FBCONDEBUG
 DECL|macro|DPRINTK
 macro_line|#  define DPRINTK(fmt, args...) printk(KERN_DEBUG &quot;%s: &quot; fmt, __FUNCTION__ , ## args)
