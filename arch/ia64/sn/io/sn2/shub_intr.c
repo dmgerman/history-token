@@ -18,6 +18,11 @@ macro_line|#include &lt;asm/sn/xtalk/xtalkaddrs.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
+DECL|typedef|pci_bridge_t
+r_typedef
+r_void
+id|pci_bridge_t
+suffix:semicolon
 multiline_comment|/* ARGSUSED */
 r_void
 DECL|function|hub_intr_init
