@@ -429,7 +429,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t; * Go into low thread priority and possibly&n;&t;&t;&t;&t; * low power mode.&n;&t;&t;&t;&t; */
 id|HMT_low
+c_func
+(paren
+)paren
+suffix:semicolon
+id|HMT_very_low
 c_func
 (paren
 )paren
@@ -613,7 +619,17 @@ id|cpu
 )paren
 )paren
 (brace
-multiline_comment|/* need_resched could be 1 or 0 at this &n;&t;&t;&t;&t; * point.  If it is 0, set it to 0, so&n;&t;&t;&t;&t; * an IPI/Prod is sent.  If it is 1, keep&n;&t;&t;&t;&t; * it that way &amp; schedule work.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Go into low thread priority and possibly&n;&t;&t;&t;&t; * low power mode.&n;&t;&t;&t;&t; */
+id|HMT_low
+c_func
+(paren
+)paren
+suffix:semicolon
+id|HMT_very_low
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -629,22 +645,13 @@ c_func
 OL
 id|start_snooze
 )paren
-(brace
-id|HMT_low
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Low thread priority */
 r_continue
 suffix:semicolon
-)brace
-id|HMT_very_low
+id|HMT_medium
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Low power mode */
 r_if
 c_cond
 (paren
@@ -685,7 +692,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* DRENG: Go HMT_medium here ? */
 id|local_irq_disable
 c_func
 (paren
