@@ -529,15 +529,13 @@ id|usb_hcd
 id|hcd
 suffix:semicolon
 multiline_comment|/* must come first! */
-macro_line|#ifdef CONFIG_PROC_FS
-multiline_comment|/* procfs */
-DECL|member|proc_entry
+multiline_comment|/* debugfs */
+DECL|member|dentry
 r_struct
-id|proc_dir_entry
+id|dentry
 op_star
-id|proc_entry
+id|dentry
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Grabbed from PCI */
 DECL|member|io_addr
 r_int

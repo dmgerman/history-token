@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/debugfs.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/dmapool.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
@@ -39,7 +39,7 @@ DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Linus &squot;Frodo Rabbit&squot; Torvalds, Johannes Erdfelt, &bslash;&n;Randy Dunlap, Georg Acher, Deti Fliegl, Thomas Sailer, Roman Weissgaerber, &bslash;&n;Alan Stern&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Universal Host Controller Interface driver&quot;
-multiline_comment|/*&n; * debug = 0, no debugging messages&n; * debug = 1, dump failed URB&squot;s except for stalls&n; * debug = 2, dump all failed URB&squot;s (including stalls)&n; *            show all queues in /proc/driver/uhci/[pci_addr]&n; * debug = 3, show all TD&squot;s in URB&squot;s when dumping&n; */
+multiline_comment|/*&n; * debug = 0, no debugging messages&n; * debug = 1, dump failed URB&squot;s except for stalls&n; * debug = 2, dump all failed URB&squot;s (including stalls)&n; *            show all queues in /debug/uhci/[pci_addr]&n; * debug = 3, show all TD&squot;s in URB&squot;s when dumping&n; */
 macro_line|#ifdef DEBUG
 DECL|variable|debug
 r_static
@@ -8077,27 +8077,23 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
 r_if
 c_cond
 (paren
-id|uhci-&gt;proc_entry
+id|uhci-&gt;dentry
 )paren
 (brace
-id|remove_proc_entry
+id|debugfs_remove
 c_func
 (paren
-id|uhci-&gt;hcd.self.bus_name
-comma
-id|uhci_proc_root
+id|uhci-&gt;dentry
 )paren
 suffix:semicolon
-id|uhci-&gt;proc_entry
+id|uhci-&gt;dentry
 op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 DECL|function|uhci_reset
 r_static
@@ -8187,13 +8183,11 @@ id|usb_device
 op_star
 id|udev
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 r_struct
-id|proc_dir_entry
+id|dentry
 op_star
-id|ent
+id|dentry
 suffix:semicolon
-macro_line|#endif
 id|io_size
 op_assign
 id|pci_resource_len
@@ -8212,10 +8206,9 @@ comma
 id|hcd-&gt;region
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-id|ent
+id|dentry
 op_assign
-id|create_proc_entry
+id|debugfs_create_file
 c_func
 (paren
 id|hcd-&gt;self.bus_name
@@ -8226,14 +8219,19 @@ id|S_IRUGO
 op_or
 id|S_IWUSR
 comma
-id|uhci_proc_root
+id|uhci_debugfs_root
+comma
+id|uhci
+comma
+op_amp
+id|uhci_debug_operations
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|ent
+id|dentry
 )paren
 (brace
 id|dev_err
@@ -8245,7 +8243,7 @@ c_func
 id|uhci
 )paren
 comma
-l_string|&quot;couldn&squot;t create uhci proc entry&bslash;n&quot;
+l_string|&quot;couldn&squot;t create uhci debugfs entry&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -8254,27 +8252,13 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|err_create_proc_entry
+id|err_create_debug_entry
 suffix:semicolon
 )brace
-id|ent-&gt;data
+id|uhci-&gt;dentry
 op_assign
-id|uhci
+id|dentry
 suffix:semicolon
-id|ent-&gt;proc_fops
-op_assign
-op_amp
-id|uhci_proc_operations
-suffix:semicolon
-id|ent-&gt;size
-op_assign
-l_int|0
-suffix:semicolon
-id|uhci-&gt;proc_entry
-op_assign
-id|ent
-suffix:semicolon
-macro_line|#endif
 id|uhci-&gt;fsbr
 op_assign
 l_int|0
@@ -9108,22 +9092,18 @@ l_int|NULL
 suffix:semicolon
 id|err_alloc_fl
 suffix:colon
-macro_line|#ifdef CONFIG_PROC_FS
-id|remove_proc_entry
+id|debugfs_remove
 c_func
 (paren
-id|hcd-&gt;self.bus_name
-comma
-id|uhci_proc_root
+id|uhci-&gt;dentry
 )paren
 suffix:semicolon
-id|uhci-&gt;proc_entry
+id|uhci-&gt;dentry
 op_assign
 l_int|NULL
 suffix:semicolon
-id|err_create_proc_entry
+id|err_create_debug_entry
 suffix:colon
-macro_line|#endif
 r_return
 id|retval
 suffix:semicolon
@@ -10018,15 +9998,12 @@ r_goto
 id|errbuf_failed
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
-id|uhci_proc_root
+id|uhci_debugfs_root
 op_assign
-id|create_proc_entry
+id|debugfs_create_dir
 c_func
 (paren
-l_string|&quot;driver/uhci&quot;
-comma
-id|S_IFDIR
+l_string|&quot;uhci&quot;
 comma
 l_int|NULL
 )paren
@@ -10035,12 +10012,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|uhci_proc_root
+id|uhci_debugfs_root
 )paren
 r_goto
-id|proc_failed
+id|debug_failed
 suffix:semicolon
-macro_line|#endif
 id|uhci_up_cachep
 op_assign
 id|kmem_cache_create
@@ -10111,18 +10087,14 @@ l_string|&quot;not all urb_priv&squot;s were freed!&quot;
 suffix:semicolon
 id|up_failed
 suffix:colon
-macro_line|#ifdef CONFIG_PROC_FS
-id|remove_proc_entry
+id|debugfs_remove
 c_func
 (paren
-l_string|&quot;driver/uhci&quot;
-comma
-l_int|NULL
+id|uhci_debugfs_root
 )paren
 suffix:semicolon
-id|proc_failed
+id|debug_failed
 suffix:colon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -10172,16 +10144,12 @@ c_func
 l_string|&quot;not all urb_priv&squot;s were freed!&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-id|remove_proc_entry
+id|debugfs_remove
 c_func
 (paren
-l_string|&quot;driver/uhci&quot;
-comma
-l_int|NULL
+id|uhci_debugfs_root
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
