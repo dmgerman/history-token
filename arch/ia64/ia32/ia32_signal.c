@@ -751,6 +751,10 @@ id|fdr
 suffix:semicolon
 r_int
 r_int
+id|new_fsr
+suffix:semicolon
+r_int
+r_int
 id|num128
 (braket
 l_int|2
@@ -831,6 +835,27 @@ suffix:colon
 l_string|&quot;=r&quot;
 (paren
 id|fdr
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * We need to clear the exception state before calling the signal&n;&t; * handler. Clear the bits 15, bits 0-7 in fp status word. Similar&n;&t; * to the functionality of fnclex instruction.&n;&t; */
+id|new_fsr
+op_assign
+id|fsr
+op_amp
+(paren
+op_complement
+l_int|0x80ff
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;mov ar.fsr=%0;&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
+(paren
+id|new_fsr
 )paren
 )paren
 suffix:semicolon
