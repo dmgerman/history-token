@@ -19,11 +19,13 @@ r_struct
 id|drive_list_entry
 (brace
 DECL|member|id_model
+r_const
 r_char
 op_star
 id|id_model
 suffix:semicolon
 DECL|member|id_firmware
+r_const
 r_char
 op_star
 id|id_firmware
@@ -31,6 +33,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|drive_whitelist
+r_static
+r_const
 r_struct
 id|drive_list_entry
 id|drive_whitelist
@@ -70,6 +74,8 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|variable|drive_blacklist
+r_static
+r_const
 r_struct
 id|drive_list_entry
 id|drive_blacklist
@@ -294,6 +300,7 @@ id|hd_driveid
 op_star
 id|id
 comma
+r_const
 r_struct
 id|drive_list_entry
 op_star
@@ -353,6 +360,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
 multiline_comment|/**&n; *&t;ide_dma_intr&t;-&t;IDE DMA interrupt handler&n; *&t;@drive: the drive the interrupt is for&n; *&n; *&t;Handle an interrupt completing a read/write DMA transfer on an &n; *&t;IDE device&n; */
 DECL|function|ide_dma_intr
 id|ide_startstop_t
@@ -2667,6 +2675,7 @@ c_func
 id|__ide_dma_test_irq
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PCI */
 DECL|function|__ide_dma_bad_drive
 r_int
 id|__ide_dma_bad_drive
@@ -2704,7 +2713,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Disabling (U)DMA for %s&bslash;n&quot;
+l_string|&quot;%s: Disabling (U)DMA for %s (blacklisted)&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
@@ -2759,6 +2768,7 @@ c_func
 id|__ide_dma_good_drive
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
 multiline_comment|/*&n; * Used for HOST FIFO counters for VDMA&n; * PIO over DMA, effective ATA-Bridge operator.&n; */
 DECL|function|__ide_dma_count
 r_int
@@ -4437,4 +4447,5 @@ c_func
 id|ide_setup_dma
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PCI */
 eof

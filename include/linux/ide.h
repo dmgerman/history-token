@@ -5768,6 +5768,23 @@ DECL|macro|BAD_DMA_DRIVE
 mdefine_line|#define BAD_DMA_DRIVE&t;&t;0
 DECL|macro|GOOD_DMA_DRIVE
 mdefine_line|#define GOOD_DMA_DRIVE&t;&t;1
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
+r_int
+id|__ide_dma_bad_drive
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_int
+id|__ide_dma_good_drive
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
 r_extern
 r_int
@@ -5965,24 +5982,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|__ide_dma_bad_drive
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|__ide_dma_good_drive
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|__ide_dma_count
 c_func
 (paren
@@ -6085,6 +6084,7 @@ id|drive
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_extern
 r_int
 id|ide_hwif_request_regions
