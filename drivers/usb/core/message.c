@@ -216,13 +216,13 @@ op_minus
 id|ECONNRESET
 )paren
 (brace
-id|dev_warn
+id|dev_dbg
 c_func
 (paren
 op_amp
 id|urb-&gt;dev-&gt;dev
 comma
-l_string|&quot;%s timed out on ep%d%s&bslash;n&quot;
+l_string|&quot;%s timed out on ep%d%s len=%d/%d&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
@@ -242,6 +242,10 @@ c_cond
 l_string|&quot;in&quot;
 suffix:colon
 l_string|&quot;out&quot;
+comma
+id|urb-&gt;actual_length
+comma
+id|urb-&gt;transfer_buffer_length
 )paren
 suffix:semicolon
 r_if
