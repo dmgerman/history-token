@@ -9,10 +9,9 @@ DECL|macro|UINPUT_NAME
 mdefine_line|#define UINPUT_NAME&t;&t;&quot;uinput&quot;
 DECL|macro|UINPUT_BUFFER_SIZE
 mdefine_line|#define UINPUT_BUFFER_SIZE&t;16
-DECL|macro|U_MAX_NAME_SIZE
-mdefine_line|#define U_MAX_NAME_SIZE&t;&t;50
+multiline_comment|/* state flags =&gt; bit index for {set|clear|test}_bit ops */
 DECL|macro|UIST_CREATED
-mdefine_line|#define UIST_CREATED&t;&t;1
+mdefine_line|#define UIST_CREATED&t;&t;0
 DECL|struct|uinput_device
 r_struct
 id|uinput_device
