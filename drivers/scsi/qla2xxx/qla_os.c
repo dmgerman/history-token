@@ -13170,7 +13170,7 @@ c_func
 (paren
 id|ha-&gt;srb_mempool
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
