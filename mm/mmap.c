@@ -5284,10 +5284,6 @@ op_assign
 id|current-&gt;signal-&gt;rlim
 suffix:semicolon
 multiline_comment|/* address space limit tests */
-id|rlim
-op_assign
-id|current-&gt;signal-&gt;rlim
-suffix:semicolon
 r_if
 c_cond
 (paren
