@@ -1322,10 +1322,10 @@ op_logical_neg
 (paren
 id|clp
 op_assign
-id|exp_getclient
+id|auth_unix_lookup
 c_func
 (paren
-id|sin
+id|sin-&gt;sin_addr
 )paren
 )paren
 )paren
@@ -1586,10 +1586,10 @@ op_logical_neg
 (paren
 id|clp
 op_assign
-id|exp_getclient
+id|auth_unix_lookup
 c_func
 (paren
-id|sin
+id|sin-&gt;sin_addr
 )paren
 )paren
 )paren

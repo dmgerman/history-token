@@ -2244,27 +2244,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Find a valid client given an inet address. We always move the most&n; * recently used client to the front of the hash chain to speed up&n; * future lookups.&n; * Locking against other processes is the responsibility of the caller.&n; */
-id|svc_client
-op_star
-DECL|function|exp_getclient
-id|exp_getclient
-c_func
-(paren
-r_struct
-id|sockaddr_in
-op_star
-id|sin
-)paren
-(brace
-r_return
-id|auth_unix_lookup
-c_func
-(paren
-id|sin-&gt;sin_addr
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Iterator */
 DECL|function|e_start
 r_static
