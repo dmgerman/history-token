@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  acpi_ksyms.c - ACPI Kernel Symbols ($Revision: 16 $)&
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
-macro_line|#include &quot;acpi_bus.h&quot;
+macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#ifdef CONFIG_ACPI_INTERPRETER
 multiline_comment|/* ACPI Debugger */
 macro_line|#ifdef ENABLE_DEBUGGER

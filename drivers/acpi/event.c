@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &quot;acpi_drivers.h&quot;
+macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT&t;&t;ACPI_SYSTEM_COMPONENT
 id|ACPI_MODULE_NAME

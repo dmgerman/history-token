@@ -24,7 +24,7 @@ suffix:semicolon
 DECL|macro|acpi_root_dir
 mdefine_line|#define acpi_root_dir bm_proc_root
 macro_line|#else
-macro_line|#include &quot;acpi_drivers.h&quot;
+macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 macro_line|#endif
 id|MODULE_AUTHOR
 c_func
