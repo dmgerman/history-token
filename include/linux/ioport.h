@@ -348,25 +348,5 @@ DECL|macro|get_ioport_list
 mdefine_line|#define get_ioport_list(buf)&t;get_resource_list(&amp;ioport_resource, buf, PAGE_SIZE)
 DECL|macro|get_mem_list
 mdefine_line|#define get_mem_list(buf)&t;get_resource_list(&amp;iomem_resource, buf, PAGE_SIZE)
-DECL|macro|HAVE_AUTOIRQ
-mdefine_line|#define HAVE_AUTOIRQ
-r_extern
-r_void
-id|autoirq_setup
-c_func
-(paren
-r_int
-id|waittime
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|autoirq_report
-c_func
-(paren
-r_int
-id|waittime
-)paren
-suffix:semicolon
 macro_line|#endif&t;/* _LINUX_IOPORT_H */
 eof
