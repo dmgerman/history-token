@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * Generic HDLC support routines for Linux&n; * Cisco HDLC support&n; *&n; * Copyright (C) 2000 - 2003 Krzysztof Halasa &lt;khc@pm.waw.pl&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License&n; * as published by the Free Software Foundation.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -13,6 +12,8 @@ macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/lapb.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/hdlc.h&gt;
+DECL|macro|DEBUG_HARD_HEADER
+macro_line|#undef DEBUG_HARD_HEADER
 DECL|macro|CISCO_MULTICAST
 mdefine_line|#define CISCO_MULTICAST&t;&t;0x8F&t;/* Cisco multicast address */
 DECL|macro|CISCO_UNICAST
@@ -63,7 +64,7 @@ id|hdlc_header
 op_star
 id|data
 suffix:semicolon
-macro_line|#ifdef CONFIG_HDLC_DEBUG_HARD_HEADER
+macro_line|#ifdef DEBUG_HARD_HEADER
 id|printk
 c_func
 (paren
@@ -949,6 +950,23 @@ id|hdlc
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_carrier_ok
+c_func
+(paren
+op_amp
+id|hdlc-&gt;netdev
+)paren
+)paren
+id|netif_carrier_off
+c_func
+(paren
+op_amp
+id|hdlc-&gt;netdev
+)paren
+suffix:semicolon
 )brace
 id|cisco_keepalive_send
 c_func
@@ -987,10 +1005,10 @@ id|hdlc-&gt;state.cisco.timer
 )paren
 suffix:semicolon
 )brace
-DECL|function|cisco_open
+DECL|function|cisco_start
 r_static
-r_int
-id|cisco_open
+r_void
+id|cisco_start
 c_func
 (paren
 id|hdlc_device
@@ -1045,14 +1063,11 @@ op_amp
 id|hdlc-&gt;state.cisco.timer
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-DECL|function|cisco_close
+DECL|function|cisco_stop
 r_static
 r_void
-id|cisco_close
+id|cisco_stop
 c_func
 (paren
 id|hdlc_device
@@ -1065,6 +1080,23 @@ c_func
 (paren
 op_amp
 id|hdlc-&gt;state.cisco.timer
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_carrier_ok
+c_func
+(paren
+op_amp
+id|hdlc-&gt;netdev
+)paren
+)paren
+id|netif_carrier_off
+c_func
+(paren
+op_amp
+id|hdlc-&gt;netdev
 )paren
 suffix:semicolon
 )brace
@@ -1272,23 +1304,37 @@ comma
 id|size
 )paren
 suffix:semicolon
-id|hdlc-&gt;open
-op_assign
-id|cisco_open
+id|memset
+c_func
+(paren
+op_amp
+id|hdlc-&gt;proto
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|hdlc-&gt;proto
+)paren
+)paren
 suffix:semicolon
-id|hdlc-&gt;stop
+id|hdlc-&gt;proto.start
 op_assign
-id|cisco_close
+id|cisco_start
 suffix:semicolon
-id|hdlc-&gt;netif_rx
+id|hdlc-&gt;proto.stop
+op_assign
+id|cisco_stop
+suffix:semicolon
+id|hdlc-&gt;proto.netif_rx
 op_assign
 id|cisco_rx
 suffix:semicolon
-id|hdlc-&gt;type_trans
+id|hdlc-&gt;proto.type_trans
 op_assign
 id|cisco_type_trans
 suffix:semicolon
-id|hdlc-&gt;proto
+id|hdlc-&gt;proto.id
 op_assign
 id|IF_PROTO_CISCO
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/fs/umsdos/ioctl.c&n; *&n; *  Written 1993 by Jacques Gelinas&n; *&n; *  Extended MS-DOS ioctl directory handling functions&n; */
+multiline_comment|/*&n; *  linux/fs/umsdos/ioctl.c&n; *&n; *  Written 1993 by Jacques Gelinas&n; *&n; *  Extended MS-DOS ioctl directory handling functions&n; *&n; *  Changes:&n; *  11/07/2003      Daniele Bellucci &lt;bellucda@tiscali.it&gt;&n; *                  - audit copy_to_user/put_user in umsdos_ioctl_fill.&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -77,6 +77,9 @@ op_eq
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_to_user
 (paren
 id|d-&gt;ent-&gt;d_name
@@ -85,7 +88,7 @@ id|name
 comma
 id|name_len
 )paren
-suffix:semicolon
+op_logical_or
 id|put_user
 (paren
 l_char|&squot;&bslash;0&squot;
@@ -94,7 +97,7 @@ id|d-&gt;ent-&gt;d_name
 op_plus
 id|name_len
 )paren
-suffix:semicolon
+op_logical_or
 id|put_user
 (paren
 id|name_len
@@ -102,7 +105,7 @@ comma
 op_amp
 id|d-&gt;ent-&gt;d_reclen
 )paren
-suffix:semicolon
+op_logical_or
 id|put_user
 (paren
 id|ino
@@ -110,7 +113,7 @@ comma
 op_amp
 id|d-&gt;ent-&gt;d_ino
 )paren
-suffix:semicolon
+op_logical_or
 id|put_user
 (paren
 id|offset
@@ -118,6 +121,10 @@ comma
 op_amp
 id|d-&gt;ent-&gt;d_off
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|d-&gt;count
 op_assign

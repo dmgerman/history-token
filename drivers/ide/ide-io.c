@@ -29,30 +29,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
-id|Error
-id|So
-id|the
-id|User
-id|Has
-id|To
-id|Fix
-id|the
-id|Compilation
-id|And
-id|Stop
-id|Hacking
-id|Port
-l_int|0x43
-id|Does
-id|anyone
-id|ever
-id|use
-id|this
-id|anyway
-ques
-c_cond
-ques
-c_cond
+macro_line|#error So the User Has To Fix the Compilation And Stop Hacking Port 0x43. Does anyone ever use this anyway ??
 multiline_comment|/*&n; * For really screwy hardware (hey, at least it *can* be used with Linux)&n; * we can enforce a minimum delay time between successive operations.&n; */
 DECL|function|read_timer
 r_static
@@ -219,6 +196,23 @@ id|nr_sectors
 id|nr_sectors
 op_assign
 id|rq-&gt;hard_cur_sectors
+suffix:semicolon
+multiline_comment|/*&n;&t; * if failfast is set on a request, override number of sectors and&n;&t; * complete the whole request right now&n;&t; */
+r_if
+c_cond
+(paren
+id|blk_noretry_request
+c_func
+(paren
+id|rq
+)paren
+op_logical_and
+op_logical_neg
+id|uptodate
+)paren
+id|nr_sectors
+op_assign
+id|rq-&gt;hard_nr_sectors
 suffix:semicolon
 multiline_comment|/*&n;&t; * decide whether to reenable DMA -- 3 is a random magic for now,&n;&t; * if we DMA timeout more than 3 times, just stay in PIO&n;&t; */
 r_if

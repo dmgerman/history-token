@@ -1508,7 +1508,7 @@ suffix:semicolon
 id|snprintf
 c_func
 (paren
-id|sdev-&gt;sdev_driverfs_dev.name
+id|sdev-&gt;sdev_gendev.name
 comma
 id|DEVICE_NAME_SIZE
 comma

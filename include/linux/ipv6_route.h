@@ -8,6 +8,8 @@ DECL|macro|RTF_ALLONLINK
 mdefine_line|#define RTF_ALLONLINK&t;0x00020000&t;/* fallback, no routers on link&t;*/
 DECL|macro|RTF_ADDRCONF
 mdefine_line|#define RTF_ADDRCONF&t;0x00040000&t;/* addrconf route - RA&t;&t;*/
+DECL|macro|RTF_PREFIX_RT
+mdefine_line|#define RTF_PREFIX_RT&t;0x00080000&t;/* A prefix only route - RA&t;*/
 DECL|macro|RTF_NONEXTHOP
 mdefine_line|#define RTF_NONEXTHOP&t;0x00200000&t;/* route with no nexthop&t;*/
 DECL|macro|RTF_EXPIRES

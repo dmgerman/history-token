@@ -117,7 +117,7 @@ r_int
 DECL|function|ia64_atomic64_add
 id|ia64_atomic64_add
 (paren
-r_int
+id|__s64
 id|i
 comma
 id|atomic64_t
@@ -257,7 +257,7 @@ r_int
 DECL|function|ia64_atomic64_sub
 id|ia64_atomic64_sub
 (paren
-r_int
+id|__s64
 id|i
 comma
 id|atomic64_t
@@ -358,7 +358,7 @@ r_int
 DECL|function|atomic64_add_negative
 id|atomic64_add_negative
 (paren
-r_int
+id|__s64
 id|i
 comma
 id|atomic64_t

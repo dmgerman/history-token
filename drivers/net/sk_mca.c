@@ -721,15 +721,13 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* disable interrupts */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|priv-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* wait until no transfer is pending */
@@ -822,9 +820,12 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* reenable interrupts */
-id|restore_flags
+id|spin_lock_irqrestore
 c_func
 (paren
+op_amp
+id|priv-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -864,15 +865,13 @@ r_int
 id|res
 suffix:semicolon
 multiline_comment|/* disable interrupts */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|priv-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* wait until no transfer is pending */
@@ -965,9 +964,12 @@ id|priv-&gt;ioregaddr
 )paren
 suffix:semicolon
 multiline_comment|/* reenable interrupts */
-id|restore_flags
+id|spin_lock_irqrestore
 c_func
 (paren
+op_amp
+id|priv-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3369,15 +3371,13 @@ id|skb-&gt;len
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* one more descriptor busy */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|priv-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|priv-&gt;nexttxput
@@ -3455,9 +3455,12 @@ op_or
 id|CSR0_TDMD
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_lock_irqrestore
 c_func
 (paren
+op_amp
+id|priv-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -4110,6 +4113,13 @@ r_sizeof
 r_struct
 id|net_device_stats
 )paren
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|priv-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* set base + irq for this device (irq not allocated so far) */

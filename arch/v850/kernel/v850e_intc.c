@@ -1,8 +1,8 @@
-multiline_comment|/*&n; * arch/v850/kernel/nb85e_intc.c -- NB85E cpu core interrupt controller (INTC)&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * arch/v850/kernel/v850e_intc.c -- V850E interrupt controller (INTC)&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-macro_line|#include &lt;asm/nb85e_intc.h&gt;
+macro_line|#include &lt;asm/v850e_intc.h&gt;
 DECL|function|irq_nop
 r_static
 r_void
@@ -13,21 +13,21 @@ id|irq
 )paren
 (brace
 )brace
-DECL|function|nb85e_intc_irq_startup
+DECL|function|v850e_intc_irq_startup
 r_static
 r_int
-id|nb85e_intc_irq_startup
+id|v850e_intc_irq_startup
 (paren
 r_int
 id|irq
 )paren
 (brace
-id|nb85e_intc_clear_pending_irq
+id|v850e_intc_clear_pending_irq
 (paren
 id|irq
 )paren
 suffix:semicolon
-id|nb85e_intc_enable_irq
+id|v850e_intc_enable_irq
 (paren
 id|irq
 )paren
@@ -36,10 +36,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|nb85e_intc_end_irq
+DECL|function|v850e_intc_end_irq
 r_static
 r_void
-id|nb85e_intc_end_irq
+id|v850e_intc_end_irq
 (paren
 r_int
 id|irq
@@ -104,13 +104,13 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Initialize HW_IRQ_TYPES for INTC-controlled irqs described in array&n;   INITS (which is terminated by an entry with the name field == 0).  */
-DECL|function|nb85e_intc_init_irq_types
+DECL|function|v850e_intc_init_irq_types
 r_void
 id|__init
-id|nb85e_intc_init_irq_types
+id|v850e_intc_init_irq_types
 (paren
 r_struct
-id|nb85e_intc_irq_init
+id|v850e_intc_irq_init
 op_star
 id|inits
 comma
@@ -121,7 +121,7 @@ id|hw_irq_types
 )paren
 (brace
 r_struct
-id|nb85e_intc_irq_init
+id|v850e_intc_irq_init
 op_star
 id|init
 suffix:semicolon
@@ -157,19 +157,19 @@ id|init-&gt;name
 suffix:semicolon
 id|hwit-&gt;startup
 op_assign
-id|nb85e_intc_irq_startup
+id|v850e_intc_irq_startup
 suffix:semicolon
 id|hwit-&gt;shutdown
 op_assign
-id|nb85e_intc_disable_irq
+id|v850e_intc_disable_irq
 suffix:semicolon
 id|hwit-&gt;enable
 op_assign
-id|nb85e_intc_enable_irq
+id|v850e_intc_enable_irq
 suffix:semicolon
 id|hwit-&gt;disable
 op_assign
-id|nb85e_intc_disable_irq
+id|v850e_intc_disable_irq
 suffix:semicolon
 id|hwit-&gt;ack
 op_assign
@@ -177,7 +177,7 @@ id|irq_nop
 suffix:semicolon
 id|hwit-&gt;end
 op_assign
-id|nb85e_intc_end_irq
+id|v850e_intc_end_irq
 suffix:semicolon
 multiline_comment|/* Initialize kernel IRQ infrastructure for this interrupt.  */
 id|init_irq_handlers
@@ -222,24 +222,24 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|nb85e_intc_irq_enabled
+id|v850e_intc_irq_enabled
 (paren
 id|irq
 )paren
 )paren
 multiline_comment|/* This write also (1) disables the&n;&t;&t;&t;&t;   interrupt, and (2) clears any pending&n;&t;&t;&t;&t;   interrupts.  */
-id|NB85E_INTC_IC
+id|V850E_INTC_IC
 (paren
 id|irq
 )paren
 op_assign
 (paren
-id|NB85E_INTC_IC_PR
+id|V850E_INTC_IC_PR
 (paren
 id|init-&gt;priority
 )paren
 op_or
-id|NB85E_INTC_IC_MK
+id|V850E_INTC_IC_MK
 )paren
 suffix:semicolon
 )brace

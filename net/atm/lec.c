@@ -3298,13 +3298,20 @@ id|priv-&gt;lecid
 op_logical_or
 op_logical_neg
 id|priv-&gt;lecd
+op_logical_or
+op_logical_neg
+(paren
+id|dev-&gt;flags
+op_amp
+id|IFF_UP
+)paren
 )paren
 (brace
 multiline_comment|/* Probably looping back, or if lecd is missing,&n;                           lecd has gone down */
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;Ignoring loopback frame...&bslash;n&quot;
+l_string|&quot;Ignoring frame...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -4811,7 +4818,6 @@ id|data
 )paren
 suffix:semicolon
 r_static
-id|__inline__
 r_void
 id|lec_arp_expire_arp
 c_func
@@ -6585,7 +6591,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -6661,7 +6667,7 @@ id|next
 op_assign
 id|entry-&gt;next
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -6703,7 +6709,7 @@ id|next
 op_assign
 id|entry-&gt;next
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -6745,13 +6751,7 @@ id|next
 op_assign
 id|entry-&gt;next
 suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|entry-&gt;timer
-)paren
-suffix:semicolon
+multiline_comment|/* No timer, LANEv2 7.1.20 and 2.3.5.3 */
 id|lec_arp_clear_vccs
 c_func
 (paren
@@ -7094,13 +7094,6 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|entry-&gt;timer
-)paren
-suffix:semicolon
 id|DPRINTK
 c_func
 (paren
@@ -7161,8 +7154,12 @@ id|entry-&gt;no_tries
 op_increment
 suffix:semicolon
 )brace
-id|entry-&gt;timer.expires
-op_assign
+id|mod_timer
+c_func
+(paren
+op_amp
+id|entry-&gt;timer
+comma
 id|jiffies
 op_plus
 (paren
@@ -7170,12 +7167,6 @@ l_int|1
 op_star
 id|HZ
 )paren
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|entry-&gt;timer
 )paren
 suffix:semicolon
 )brace
@@ -7409,13 +7400,6 @@ id|time_to_check
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|priv-&gt;lec_arp_timer
-)paren
 suffix:semicolon
 id|DPRINTK
 c_func
@@ -7716,17 +7700,15 @@ id|priv
 )paren
 suffix:semicolon
 )brace
-id|priv-&gt;lec_arp_timer.expires
-op_assign
-id|jiffies
-op_plus
-id|LEC_ARP_REFRESH_INTERVAL
-suffix:semicolon
-id|add_timer
+id|mod_timer
 c_func
 (paren
 op_amp
 id|priv-&gt;lec_arp_timer
+comma
+id|jiffies
+op_plus
+id|LEC_ARP_REFRESH_INTERVAL
 )paren
 suffix:semicolon
 )brace

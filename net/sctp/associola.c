@@ -1453,7 +1453,7 @@ id|SCTP_ACTIVE
 suffix:semicolon
 id|spc_state
 op_assign
-id|ADDRESS_AVAILABLE
+id|SCTP_ADDR_REACHABLE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1466,7 +1466,7 @@ id|SCTP_INACTIVE
 suffix:semicolon
 id|spc_state
 op_assign
-id|ADDRESS_UNREACHABLE
+id|SCTP_ADDR_UNREACHABLE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2420,7 +2420,7 @@ op_assign
 id|assoc-&gt;base.sk
 suffix:semicolon
 multiline_comment|/* Delete the association from the old endpoint&squot;s list of&n;&t; * associations.&n;&t; */
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp

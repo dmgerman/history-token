@@ -57,18 +57,6 @@ mdefine_line|#define ADDRESS2(x) __ADDRESS(__pa(x))&t;&t;/* Needed for x86-64 wh
 multiline_comment|/* References to section boundaries */
 r_extern
 r_char
-id|_text
-comma
-id|_etext
-comma
-id|_edata
-comma
-id|__bss_start
-comma
-id|_end
-suffix:semicolon
-r_extern
-r_char
 id|__nosave_begin
 comma
 id|__nosave_end

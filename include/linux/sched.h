@@ -65,6 +65,8 @@ DECL|macro|CLONE_UNTRACED
 mdefine_line|#define CLONE_UNTRACED&t;&t;0x00800000&t;/* set if the tracing process can&squot;t force CLONE_PTRACE on this clone */
 DECL|macro|CLONE_CHILD_SETTID
 mdefine_line|#define CLONE_CHILD_SETTID&t;0x01000000&t;/* set the TID in the child */
+DECL|macro|CLONE_STOPPED
+mdefine_line|#define CLONE_STOPPED&t;&t;0x02000000&t;/* Start in stopped state */
 multiline_comment|/*&n; * List of flags we want to share for kernel threads,&n; * if only because they are not used by them anyway.&n; */
 DECL|macro|CLONE_KERNEL
 mdefine_line|#define CLONE_KERNEL&t;(CLONE_FS | CLONE_FILES | CLONE_SIGHAND)
@@ -1410,6 +1412,8 @@ DECL|macro|PF_LESS_THROTTLE
 mdefine_line|#define PF_LESS_THROTTLE 0x01000000&t;/* Throttle me less: I clena memory */
 DECL|macro|PF_SYNCWRITE
 mdefine_line|#define PF_SYNCWRITE&t;0x00200000&t;/* I am doing a sync write */
+DECL|macro|PF_READAHEAD
+mdefine_line|#define PF_READAHEAD&t;0x00400000&t;/* I am doing read-ahead */
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_int

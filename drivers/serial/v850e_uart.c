@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * drivers/serial/nb85e_uart.c -- Serial I/O using V850E/NB85E on-chip UART&n; *&n; *  Copyright (C) 2001,02,03  NEC Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * drivers/serial/v850e_uart.c -- Serial I/O using V850E on-chip UART or UARTB&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/* This driver supports both the original V850E UART interface (called&n;   merely `UART&squot; in the docs) and the newer `UARTB&squot; interface, which is&n;   roughly a superset of the first one.  The selection is made at&n;   configure time -- if CONFIG_V850E_UARTB is defined, then UARTB is&n;   presumed, otherwise the old UART -- as these are on-CPU UARTS, a system&n;   can never have both.&n;&n;   The UARTB interface also has a 16-entry FIFO mode, which is not&n;   yet supported by this driver.  */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -7,115 +8,29 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
-macro_line|#include &lt;asm/nb85e_uart.h&gt;
-macro_line|#include &lt;asm/nb85e_utils.h&gt;
+macro_line|#include &lt;asm/v850e_uart.h&gt;
 multiline_comment|/* Initial UART state.  This may be overridden by machine-dependent headers. */
-macro_line|#ifndef NB85E_UART_INIT_BAUD
-DECL|macro|NB85E_UART_INIT_BAUD
-mdefine_line|#define NB85E_UART_INIT_BAUD&t;115200
+macro_line|#ifndef V850E_UART_INIT_BAUD
+DECL|macro|V850E_UART_INIT_BAUD
+mdefine_line|#define V850E_UART_INIT_BAUD&t;115200
 macro_line|#endif
-macro_line|#ifndef NB85E_UART_INIT_CFLAGS
-DECL|macro|NB85E_UART_INIT_CFLAGS
-mdefine_line|#define NB85E_UART_INIT_CFLAGS&t;(B115200 | CS8 | CREAD)
+macro_line|#ifndef V850E_UART_INIT_CFLAGS
+DECL|macro|V850E_UART_INIT_CFLAGS
+mdefine_line|#define V850E_UART_INIT_CFLAGS&t;(B115200 | CS8 | CREAD)
 macro_line|#endif
-multiline_comment|/* XXX This should be in a header file.  */
-DECL|macro|NB85E_UART_BRGC_MIN
-mdefine_line|#define NB85E_UART_BRGC_MIN&t;8
-multiline_comment|/* A string used for prefixing printed descriptions; since the same UART&n;   macro is actually used on other chips than the V850E/NB85E.  This must&n;   be a constant string.  */
-macro_line|#ifndef NB85E_UART_CHIP_NAME
-DECL|macro|NB85E_UART_CHIP_NAME
-mdefine_line|#define NB85E_UART_CHIP_NAME &quot;V850E/NB85E&quot;
+multiline_comment|/* A string used for prefixing printed descriptions; since the same UART&n;   macro is actually used on other chips than the V850E.  This must be a&n;   constant string.  */
+macro_line|#ifndef V850E_UART_CHIP_NAME
+DECL|macro|V850E_UART_CHIP_NAME
+mdefine_line|#define V850E_UART_CHIP_NAME&t;&quot;V850E&quot;
 macro_line|#endif
-"&f;"
-multiline_comment|/* Helper functions for doing baud-rate/frequency calculations.  */
-multiline_comment|/* Calculate the minimum value for CKSR on this processor.  */
-DECL|function|cksr_min
-r_static
-r_inline
-r_int
-id|cksr_min
-(paren
-r_void
-)paren
-(brace
-r_int
-id|min
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|freq
-op_assign
-id|NB85E_UART_BASE_FREQ
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|freq
-OG
-id|NB85E_UART_CKSR_MAX_FREQ
-)paren
-(brace
-id|freq
-op_rshift_assign
-l_int|1
-suffix:semicolon
-id|min
-op_increment
-suffix:semicolon
-)brace
-r_return
-id|min
-suffix:semicolon
-)brace
-multiline_comment|/* Minimum baud rate possible.  */
-DECL|macro|min_baud
-mdefine_line|#define min_baud() &bslash;&n;   ((NB85E_UART_BASE_FREQ &gt;&gt; NB85E_UART_CKSR_MAX) / (2 * 255) + 1)
-multiline_comment|/* Maximum baud rate possible.  The error is quite high at max, though.  */
-DECL|macro|max_baud
-mdefine_line|#define max_baud() &bslash;&n;   ((NB85E_UART_BASE_FREQ &gt;&gt; cksr_min()) / (2 * NB85E_UART_BRGC_MIN))
+DECL|macro|V850E_UART_MINOR_BASE
+mdefine_line|#define V850E_UART_MINOR_BASE&t;64&t;   /* First tty minor number */
 "&f;"
 multiline_comment|/* Low-level UART functions.  */
-multiline_comment|/* These masks define which control bits affect TX/RX modes, respectively.  */
-DECL|macro|RX_BITS
-mdefine_line|#define RX_BITS &bslash;&n;  (NB85E_UART_ASIM_PS_MASK | NB85E_UART_ASIM_CL_8 | NB85E_UART_ASIM_ISRM)
-DECL|macro|TX_BITS
-mdefine_line|#define TX_BITS &bslash;&n;  (NB85E_UART_ASIM_PS_MASK | NB85E_UART_ASIM_CL_8 | NB85E_UART_ASIM_SL_2)
-multiline_comment|/* The UART require various delays after writing control registers.  */
-DECL|function|nb85e_uart_delay
-r_static
-r_inline
-r_void
-id|nb85e_uart_delay
-(paren
-r_int
-id|cycles
-)paren
-(brace
-multiline_comment|/* The loop takes 2 insns, so loop CYCLES / 2 times.  */
-r_register
-r_int
-id|count
-op_assign
-id|cycles
-op_rshift
-l_int|1
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_decrement
-id|count
-op_ne
-l_int|0
-)paren
-multiline_comment|/* nothing */
-suffix:semicolon
-)brace
 multiline_comment|/* Configure and turn on uart channel CHAN, using the termios `control&n;   modes&squot; bits in CFLAGS, and a baud-rate of BAUD.  */
-DECL|function|nb85e_uart_configure
+DECL|function|v850e_uart_configure
 r_void
-id|nb85e_uart_configure
+id|v850e_uart_configure
 (paren
 r_int
 id|chan
@@ -130,152 +45,36 @@ id|baud
 r_int
 id|flags
 suffix:semicolon
-r_int
+id|v850e_uart_speed_t
+id|old_speed
+suffix:semicolon
+id|v850e_uart_config_t
+id|old_config
+suffix:semicolon
+id|v850e_uart_speed_t
+id|new_speed
+op_assign
+id|v850e_uart_calc_speed
+(paren
+id|baud
+)paren
+suffix:semicolon
+id|v850e_uart_config_t
 id|new_config
 op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* What we&squot;ll write to the control reg. */
-r_int
-id|new_clk_divlog2
-suffix:semicolon
-multiline_comment|/* New baud-rate generate clock divider. */
-r_int
-id|new_brgen_count
-suffix:semicolon
-multiline_comment|/* New counter max for baud-rate generator.*/
-multiline_comment|/* These are the current values corresponding to the above.  */
-r_int
-id|old_config
-comma
-id|old_clk_divlog2
-comma
-id|old_brgen_count
-suffix:semicolon
-multiline_comment|/* Calculate new baud-rate generator config values.  */
-multiline_comment|/* Calculate the log2 clock divider and baud-rate counter values&n;&t;   (note that the UART divides the resulting clock by 2, so&n;&t;   multiply BAUD by 2 here to compensate).  */
-id|calc_counter_params
-(paren
-id|NB85E_UART_BASE_FREQ
-comma
-id|baud
-op_star
-l_int|2
-comma
-id|cksr_min
-c_func
-(paren
-)paren
-comma
-id|NB85E_UART_CKSR_MAX
-comma
-l_int|8
-multiline_comment|/*bits*/
-comma
-op_amp
-id|new_clk_divlog2
-comma
-op_amp
-id|new_brgen_count
-)paren
-suffix:semicolon
-multiline_comment|/* Figure out new configuration of control register.  */
-r_if
-c_cond
+id|v850e_uart_calc_config
 (paren
 id|cflags
-op_amp
-id|CSTOPB
 )paren
-multiline_comment|/* Number of stop bits, 1 or 2.  */
-id|new_config
-op_or_assign
-id|NB85E_UART_ASIM_SL_2
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|cflags
-op_amp
-id|CSIZE
-)paren
-op_eq
-id|CS8
-)paren
-multiline_comment|/* Number of data bits, 7 or 8.  */
-id|new_config
-op_or_assign
-id|NB85E_UART_ASIM_CL_8
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|cflags
-op_amp
-id|PARENB
-)paren
-)paren
-multiline_comment|/* No parity check/generation.  */
-id|new_config
-op_or_assign
-id|NB85E_UART_ASIM_PS_NONE
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|cflags
-op_amp
-id|PARODD
-)paren
-multiline_comment|/* Odd parity check/generation.  */
-id|new_config
-op_or_assign
-id|NB85E_UART_ASIM_PS_ODD
-suffix:semicolon
-r_else
-multiline_comment|/* Even parity check/generation.  */
-id|new_config
-op_or_assign
-id|NB85E_UART_ASIM_PS_EVEN
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cflags
-op_amp
-id|CREAD
-)paren
-multiline_comment|/* Reading enabled.  */
-id|new_config
-op_or_assign
-id|NB85E_UART_ASIM_RXE
-suffix:semicolon
-id|new_config
-op_or_assign
-id|NB85E_UART_ASIM_TXE
-suffix:semicolon
-multiline_comment|/* Writing is always enabled.  */
-id|new_config
-op_or_assign
-id|NB85E_UART_ASIM_CAE
-suffix:semicolon
-id|new_config
-op_or_assign
-id|NB85E_UART_ASIM_ISRM
-suffix:semicolon
-multiline_comment|/* Errors generate a read-irq.  */
 multiline_comment|/* Disable interrupts while we&squot;re twiddling the hardware.  */
 id|local_irq_save
 (paren
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef NB85E_UART_PRE_CONFIGURE
-id|NB85E_UART_PRE_CONFIGURE
+macro_line|#ifdef V850E_UART_PRE_CONFIGURE
+id|V850E_UART_PRE_CONFIGURE
 (paren
 id|chan
 comma
@@ -287,21 +86,14 @@ suffix:semicolon
 macro_line|#endif
 id|old_config
 op_assign
-id|NB85E_UART_ASIM
+id|V850E_UART_CONFIG
 (paren
 id|chan
 )paren
 suffix:semicolon
-id|old_clk_divlog2
+id|old_speed
 op_assign
-id|NB85E_UART_CKSR
-(paren
-id|chan
-)paren
-suffix:semicolon
-id|old_brgen_count
-op_assign
-id|NB85E_UART_BRGC
+id|v850e_uart_speed
 (paren
 id|chan
 )paren
@@ -309,41 +101,35 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|new_clk_divlog2
-op_ne
-id|old_clk_divlog2
-op_logical_or
-id|new_brgen_count
-op_ne
-id|old_brgen_count
+op_logical_neg
+id|v850e_uart_speed_eq
+(paren
+id|old_speed
+comma
+id|new_speed
+)paren
 )paren
 (brace
 multiline_comment|/* The baud rate has changed.  First, disable the UART.  */
-id|NB85E_UART_ASIM
+id|V850E_UART_CONFIG
 (paren
 id|chan
 )paren
 op_assign
-l_int|0
+id|V850E_UART_CONFIG_FINI
 suffix:semicolon
 id|old_config
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Force the uart to be re-initialized. */
 multiline_comment|/* Reprogram the baud-rate generator.  */
-id|NB85E_UART_CKSR
+id|v850e_uart_set_speed
 (paren
 id|chan
+comma
+id|new_speed
 )paren
-op_assign
-id|new_clk_divlog2
-suffix:semicolon
-id|NB85E_UART_BRGC
-(paren
-id|chan
-)paren
-op_assign
-id|new_brgen_count
 suffix:semicolon
 )brace
 r_if
@@ -353,22 +139,25 @@ op_logical_neg
 (paren
 id|old_config
 op_amp
-id|NB85E_UART_ASIM_CAE
+id|V850E_UART_CONFIG_ENABLED
 )paren
 )paren
 (brace
-multiline_comment|/* If we are enabling the uart for the first time, start&n;&t;&t;   by turning on the enable bit, which must be done&n;&t;&t;   before turning on any other bits.  */
-id|NB85E_UART_ASIM
+multiline_comment|/* If we are using the uart for the first time, start by&n;&t;&t;   enabling it, which must be done before turning on any&n;&t;&t;   other bits.  */
+id|V850E_UART_CONFIG
 (paren
 id|chan
 )paren
 op_assign
-id|NB85E_UART_ASIM_CAE
+id|V850E_UART_CONFIG_INIT
 suffix:semicolon
-multiline_comment|/* Enabling the uart also resets it.  */
+multiline_comment|/* See the initial state.  */
 id|old_config
 op_assign
-id|NB85E_UART_ASIM_CAE
+id|V850E_UART_CONFIG
+(paren
+id|chan
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -404,14 +193,14 @@ c_cond
 (paren
 id|new_config
 op_amp
-id|RX_BITS
+id|V850E_UART_CONFIG_RX_BITS
 )paren
 id|enable
 op_or_assign
 (paren
 id|new_config
 op_amp
-id|NB85E_UART_ASIM_RXE
+id|V850E_UART_CONFIG_RX_ENABLE
 )paren
 suffix:semicolon
 r_if
@@ -419,14 +208,14 @@ c_cond
 (paren
 id|new_config
 op_amp
-id|TX_BITS
+id|V850E_UART_CONFIG_TX_BITS
 )paren
 id|enable
 op_or_assign
 (paren
 id|new_config
 op_amp
-id|NB85E_UART_ASIM_TXE
+id|V850E_UART_CONFIG_TX_ENABLE
 )paren
 suffix:semicolon
 multiline_comment|/* Figure out which of RX/TX needs to be disabled; note&n;&t;&t;   that this will only happen if they&squot;re not already&n;&t;&t;   disabled.  */
@@ -435,14 +224,14 @@ c_cond
 (paren
 id|changed_bits
 op_amp
-id|RX_BITS
+id|V850E_UART_CONFIG_RX_BITS
 )paren
 id|temp_disable
 op_or_assign
 (paren
 id|old_config
 op_amp
-id|NB85E_UART_ASIM_RXE
+id|V850E_UART_CONFIG_RX_ENABLE
 )paren
 suffix:semicolon
 r_if
@@ -450,14 +239,14 @@ c_cond
 (paren
 id|changed_bits
 op_amp
-id|TX_BITS
+id|V850E_UART_CONFIG_TX_BITS
 )paren
 id|temp_disable
 op_or_assign
 (paren
 id|old_config
 op_amp
-id|NB85E_UART_ASIM_TXE
+id|V850E_UART_CONFIG_TX_ENABLE
 )paren
 suffix:semicolon
 multiline_comment|/* We have to turn off RX and/or TX mode before changing&n;&t;&t;   any associated control bits.  */
@@ -466,7 +255,7 @@ c_cond
 (paren
 id|temp_disable
 )paren
-id|NB85E_UART_ASIM
+id|V850E_UART_CONFIG
 (paren
 id|chan
 )paren
@@ -485,7 +274,7 @@ op_amp
 op_complement
 id|enable
 )paren
-id|NB85E_UART_ASIM
+id|V850E_UART_CONFIG
 (paren
 id|chan
 )paren
@@ -495,20 +284,15 @@ op_amp
 op_complement
 id|enable
 suffix:semicolon
-multiline_comment|/* The UART may not be reset properly unless we&n;&t;&t;   wait at least 2 `basic-clocks&squot; until turning&n;&t;&t;   on the TXE/RXE bits again.  A `basic clock&squot;&n;&t;&t;   is the clock used by the baud-rate generator, i.e.,&n;&t;&t;   the cpu clock divided by the 2^new_clk_divlog2.  */
-id|nb85e_uart_delay
+id|v850e_uart_config_delay
 (paren
-l_int|1
-op_lshift
-(paren
-id|new_clk_divlog2
-op_plus
-l_int|1
-)paren
+id|new_config
+comma
+id|new_speed
 )paren
 suffix:semicolon
 multiline_comment|/* Write the final version, with enable bits turned on.  */
-id|NB85E_UART_ASIM
+id|V850E_UART_CONFIG
 (paren
 id|chan
 )paren
@@ -524,11 +308,11 @@ suffix:semicolon
 )brace
 "&f;"
 multiline_comment|/*  Low-level console. */
-macro_line|#ifdef CONFIG_V850E_NB85E_UART_CONSOLE
-DECL|function|nb85e_uart_cons_write
+macro_line|#ifdef CONFIG_V850E_UART_CONSOLE
+DECL|function|v850e_uart_cons_write
 r_static
 r_void
-id|nb85e_uart_cons_write
+id|v850e_uart_cons_write
 (paren
 r_struct
 id|console
@@ -560,7 +344,7 @@ suffix:semicolon
 r_int
 id|irq
 op_assign
-id|IRQ_INTST
+id|V850E_UART_TX_IRQ
 (paren
 id|chan
 )paren
@@ -572,35 +356,35 @@ id|irq_was_pending
 comma
 id|flags
 suffix:semicolon
-multiline_comment|/* We don&squot;t want to get `transmission completed&squot; (INTST)&n;&t;&t;   interrupts, since we&squot;re busy-waiting, so we disable&n;&t;&t;   them while sending (we don&squot;t disable interrupts&n;&t;&t;   entirely because sending over a serial line is really&n;&t;&t;   slow).  We save the status of INTST and restore it&n;&t;&t;   when we&squot;re done so that using printk doesn&squot;t&n;&t;&t;   interfere with normal serial transmission (other than&n;&t;&t;   interleaving the output, of course!).  This should&n;&t;&t;   work correctly even if this function is interrupted&n;&t;&t;   and the interrupt printks something.  */
-multiline_comment|/* Disable interrupts while fiddling with INTST.  */
+multiline_comment|/* We don&squot;t want to get `transmission completed&squot;&n;&t;&t;   interrupts, since we&squot;re busy-waiting, so we disable them&n;&t;&t;   while sending (we don&squot;t disable interrupts entirely&n;&t;&t;   because sending over a serial line is really slow).  We&n;&t;&t;   save the status of the tx interrupt and restore it when&n;&t;&t;   we&squot;re done so that using printk doesn&squot;t interfere with&n;&t;&t;   normal serial transmission (other than interleaving the&n;&t;&t;   output, of course!).  This should work correctly even if&n;&t;&t;   this function is interrupted and the interrupt printks&n;&t;&t;   something.  */
+multiline_comment|/* Disable interrupts while fiddling with tx interrupt.  */
 id|local_irq_save
 (paren
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Get current INTST status.  */
+multiline_comment|/* Get current tx interrupt status.  */
 id|irq_was_enabled
 op_assign
-id|nb85e_intc_irq_enabled
+id|v850e_intc_irq_enabled
 (paren
 id|irq
 )paren
 suffix:semicolon
 id|irq_was_pending
 op_assign
-id|nb85e_intc_irq_pending
+id|v850e_intc_irq_pending
 (paren
 id|irq
 )paren
 suffix:semicolon
-multiline_comment|/* Disable INTST if necessary.  */
+multiline_comment|/* Disable tx interrupt if necessary.  */
 r_if
 c_cond
 (paren
 id|irq_was_enabled
 )paren
-id|nb85e_intc_disable_irq
+id|v850e_intc_disable_irq
 (paren
 id|irq
 )paren
@@ -636,12 +420,12 @@ l_char|&squot;&bslash;n&squot;
 )paren
 (brace
 multiline_comment|/* We don&squot;t have the benefit of a tty&n;&t;&t;&t;&t;   driver, so translate NL into CR LF.  */
-id|nb85e_uart_wait_for_xmit_ok
+id|v850e_uart_wait_for_xmit_ok
 (paren
 id|chan
 )paren
 suffix:semicolon
-id|nb85e_uart_putc
+id|v850e_uart_putc
 (paren
 id|chan
 comma
@@ -649,12 +433,12 @@ l_char|&squot;&bslash;r&squot;
 )paren
 suffix:semicolon
 )brace
-id|nb85e_uart_wait_for_xmit_ok
+id|v850e_uart_wait_for_xmit_ok
 (paren
 id|chan
 )paren
 suffix:semicolon
-id|nb85e_uart_putc
+id|v850e_uart_putc
 (paren
 id|chan
 comma
@@ -665,15 +449,15 @@ id|count
 op_decrement
 suffix:semicolon
 )brace
-multiline_comment|/* Restore saved INTST status.  */
+multiline_comment|/* Restore saved tx interrupt status.  */
 r_if
 c_cond
 (paren
 id|irq_was_enabled
 )paren
 (brace
-multiline_comment|/* Wait for the last character we sent to be&n;&t;&t;&t;   completely transmitted (as we&squot;ll get an INTST&n;&t;&t;&t;   interrupt at that point).  */
-id|nb85e_uart_wait_for_xmit_done
+multiline_comment|/* Wait for the last character we sent to be&n;&t;&t;&t;   completely transmitted (as we&squot;ll get an&n;&t;&t;&t;   interrupt interrupt at that point).  */
+id|v850e_uart_wait_for_xmit_done
 (paren
 id|chan
 )paren
@@ -685,13 +469,13 @@ c_cond
 op_logical_neg
 id|irq_was_pending
 )paren
-id|nb85e_intc_clear_pending_irq
+id|v850e_intc_clear_pending_irq
 (paren
 id|irq
 )paren
 suffix:semicolon
 multiline_comment|/* ... and then turn back on handling.  */
-id|nb85e_intc_enable_irq
+id|v850e_intc_enable_irq
 (paren
 id|irq
 )paren
@@ -702,13 +486,13 @@ suffix:semicolon
 r_extern
 r_struct
 id|uart_driver
-id|nb85e_uart_driver
+id|v850e_uart_driver
 suffix:semicolon
-DECL|variable|nb85e_uart_cons
+DECL|variable|v850e_uart_cons
 r_static
 r_struct
 id|console
-id|nb85e_uart_cons
+id|v850e_uart_cons
 op_assign
 (brace
 dot
@@ -719,7 +503,7 @@ comma
 dot
 id|write
 op_assign
-id|nb85e_uart_cons_write
+id|v850e_uart_cons_write
 comma
 dot
 id|device
@@ -734,7 +518,7 @@ comma
 dot
 id|cflag
 op_assign
-id|NB85E_UART_INIT_CFLAGS
+id|V850E_UART_INIT_CFLAGS
 comma
 dot
 id|index
@@ -746,58 +530,83 @@ dot
 id|data
 op_assign
 op_amp
-id|nb85e_uart_driver
+id|v850e_uart_driver
 comma
 )brace
 suffix:semicolon
-DECL|function|nb85e_uart_cons_init
+DECL|function|v850e_uart_cons_init
 r_void
-id|nb85e_uart_cons_init
+id|v850e_uart_cons_init
 (paren
 r_int
 id|chan
 )paren
 (brace
-id|nb85e_uart_configure
+id|v850e_uart_configure
 (paren
 id|chan
 comma
-id|NB85E_UART_INIT_CFLAGS
+id|V850E_UART_INIT_CFLAGS
 comma
-id|NB85E_UART_INIT_BAUD
+id|V850E_UART_INIT_BAUD
 )paren
 suffix:semicolon
-id|nb85e_uart_cons.index
+id|v850e_uart_cons.index
 op_assign
 id|chan
 suffix:semicolon
 id|register_console
 (paren
 op_amp
-id|nb85e_uart_cons
+id|v850e_uart_cons
 )paren
 suffix:semicolon
 id|printk
 (paren
 l_string|&quot;Console: %s on-chip UART channel %d&bslash;n&quot;
 comma
-id|NB85E_UART_CHIP_NAME
+id|V850E_UART_CHIP_NAME
 comma
 id|chan
 )paren
 suffix:semicolon
 )brace
-DECL|macro|NB85E_UART_CONSOLE
-mdefine_line|#define NB85E_UART_CONSOLE &amp;nb85e_uart_cons
-macro_line|#else /* !CONFIG_V850E_NB85E_UART_CONSOLE */
-DECL|macro|NB85E_UART_CONSOLE
-mdefine_line|#define NB85E_UART_CONSOLE 0
-macro_line|#endif /* CONFIG_V850E_NB85E_UART_CONSOLE */
+multiline_comment|/* This is what the init code actually calls.  */
+DECL|function|v850e_uart_console_init
+r_static
+r_int
+id|v850e_uart_console_init
+(paren
+r_void
+)paren
+(brace
+id|v850e_uart_cons_init
+(paren
+id|V850E_UART_CONSOLE_CHANNEL
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|v850e_uart_console_init
+id|console_initcall
+c_func
+(paren
+id|v850e_uart_console_init
+)paren
+suffix:semicolon
+DECL|macro|V850E_UART_CONSOLE
+mdefine_line|#define V850E_UART_CONSOLE &amp;v850e_uart_cons
+macro_line|#else /* !CONFIG_V850E_UART_CONSOLE */
+DECL|macro|V850E_UART_CONSOLE
+mdefine_line|#define V850E_UART_CONSOLE 0
+macro_line|#endif /* CONFIG_V850E_UART_CONSOLE */
 "&f;"
 multiline_comment|/* TX/RX interrupt handlers.  */
 r_static
 r_void
-id|nb85e_uart_stop_tx
+id|v850e_uart_stop_tx
 (paren
 r_struct
 id|uart_port
@@ -808,9 +617,9 @@ r_int
 id|tty_stop
 )paren
 suffix:semicolon
-DECL|function|nb85e_uart_tx
+DECL|function|v850e_uart_tx
 r_void
-id|nb85e_uart_tx
+id|v850e_uart_tx
 (paren
 r_struct
 id|uart_port
@@ -837,7 +646,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|nb85e_uart_xmit_ok
+id|v850e_uart_xmit_ok
 (paren
 id|port-&gt;line
 )paren
@@ -901,7 +710,7 @@ r_else
 r_goto
 id|no_xmit
 suffix:semicolon
-id|nb85e_uart_putc
+id|v850e_uart_putc
 (paren
 id|port-&gt;line
 comma
@@ -939,7 +748,7 @@ id|xmit
 op_logical_or
 id|stopped
 )paren
-id|nb85e_uart_stop_tx
+id|v850e_uart_stop_tx
 (paren
 id|port
 comma
@@ -947,10 +756,11 @@ id|stopped
 )paren
 suffix:semicolon
 )brace
-DECL|function|nb85e_uart_tx_irq
+DECL|function|v850e_uart_tx_irq
 r_static
-r_void
-id|nb85e_uart_tx_irq
+id|irqreturn_t
+id|v850e_uart_tx_irq
+c_func
 (paren
 r_int
 id|irq
@@ -972,16 +782,20 @@ id|port
 op_assign
 id|data
 suffix:semicolon
-id|nb85e_uart_tx
+id|v850e_uart_tx
 (paren
 id|port
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
-DECL|function|nb85e_uart_rx_irq
+DECL|function|v850e_uart_rx_irq
 r_static
-r_void
-id|nb85e_uart_rx_irq
+id|irqreturn_t
+id|v850e_uart_rx_irq
+c_func
 (paren
 r_int
 id|irq
@@ -1011,7 +825,7 @@ suffix:semicolon
 r_int
 id|ch
 op_assign
-id|NB85E_UART_RXB
+id|v850e_uart_getc
 (paren
 id|port-&gt;line
 )paren
@@ -1019,7 +833,7 @@ suffix:semicolon
 r_int
 id|err
 op_assign
-id|NB85E_UART_ASIS
+id|v850e_uart_err
 (paren
 id|port-&gt;line
 )paren
@@ -1035,7 +849,7 @@ c_cond
 (paren
 id|err
 op_amp
-id|NB85E_UART_ASIS_OVE
+id|V850E_UART_ERR_OVERRUN
 )paren
 (brace
 id|ch_stat
@@ -1052,7 +866,7 @@ c_cond
 (paren
 id|err
 op_amp
-id|NB85E_UART_ASIS_FE
+id|V850E_UART_ERR_FRAME
 )paren
 (brace
 id|ch_stat
@@ -1069,7 +883,7 @@ c_cond
 (paren
 id|err
 op_amp
-id|NB85E_UART_ASIS_PE
+id|V850E_UART_ERR_PARITY
 )paren
 (brace
 id|ch_stat
@@ -1098,13 +912,16 @@ id|tty_schedule_flip
 id|port-&gt;info-&gt;tty
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 "&f;"
 multiline_comment|/* Control functions for the serial framework.  */
-DECL|function|nb85e_uart_nop
+DECL|function|v850e_uart_nop
 r_static
 r_void
-id|nb85e_uart_nop
+id|v850e_uart_nop
 (paren
 r_struct
 id|uart_port
@@ -1113,10 +930,10 @@ id|port
 )paren
 (brace
 )brace
-DECL|function|nb85e_uart_success
+DECL|function|v850e_uart_success
 r_static
 r_int
-id|nb85e_uart_success
+id|v850e_uart_success
 (paren
 r_struct
 id|uart_port
@@ -1128,10 +945,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|nb85e_uart_tx_empty
+DECL|function|v850e_uart_tx_empty
 r_static
 r_int
-id|nb85e_uart_tx_empty
+id|v850e_uart_tx_empty
 (paren
 r_struct
 id|uart_port
@@ -1144,10 +961,10 @@ id|TIOCSER_TEMT
 suffix:semicolon
 multiline_comment|/* Can&squot;t detect.  */
 )brace
-DECL|function|nb85e_uart_set_mctrl
+DECL|function|v850e_uart_set_mctrl
 r_static
 r_void
-id|nb85e_uart_set_mctrl
+id|v850e_uart_set_mctrl
 (paren
 r_struct
 id|uart_port
@@ -1158,8 +975,8 @@ r_int
 id|mctrl
 )paren
 (brace
-macro_line|#ifdef NB85E_UART_SET_RTS
-id|NB85E_UART_SET_RTS
+macro_line|#ifdef V850E_UART_SET_RTS
+id|V850E_UART_SET_RTS
 (paren
 id|port-&gt;line
 comma
@@ -1172,10 +989,10 @@ id|TIOCM_RTS
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|function|nb85e_uart_get_mctrl
+DECL|function|v850e_uart_get_mctrl
 r_static
 r_int
-id|nb85e_uart_get_mctrl
+id|v850e_uart_get_mctrl
 (paren
 r_struct
 id|uart_port
@@ -1192,10 +1009,10 @@ op_or
 id|TIOCM_DSR
 suffix:semicolon
 multiline_comment|/* We may support CTS.  */
-macro_line|#ifdef NB85E_UART_CTS
+macro_line|#ifdef V850E_UART_CTS
 id|mctrl
 op_or_assign
-id|NB85E_UART_CTS
+id|V850E_UART_CTS
 c_func
 (paren
 id|port-&gt;line
@@ -1216,10 +1033,10 @@ r_return
 id|mctrl
 suffix:semicolon
 )brace
-DECL|function|nb85e_uart_start_tx
+DECL|function|v850e_uart_start_tx
 r_static
 r_void
-id|nb85e_uart_start_tx
+id|v850e_uart_start_tx
 (paren
 r_struct
 id|uart_port
@@ -1230,32 +1047,32 @@ r_int
 id|tty_start
 )paren
 (brace
-id|nb85e_intc_disable_irq
+id|v850e_intc_disable_irq
 (paren
-id|IRQ_INTST
+id|V850E_UART_TX_IRQ
 (paren
 id|port-&gt;line
 )paren
 )paren
 suffix:semicolon
-id|nb85e_uart_tx
+id|v850e_uart_tx
 (paren
 id|port
 )paren
 suffix:semicolon
-id|nb85e_intc_enable_irq
+id|v850e_intc_enable_irq
 (paren
-id|IRQ_INTST
+id|V850E_UART_TX_IRQ
 (paren
 id|port-&gt;line
 )paren
 )paren
 suffix:semicolon
 )brace
-DECL|function|nb85e_uart_stop_tx
+DECL|function|v850e_uart_stop_tx
 r_static
 r_void
-id|nb85e_uart_stop_tx
+id|v850e_uart_stop_tx
 (paren
 r_struct
 id|uart_port
@@ -1266,19 +1083,19 @@ r_int
 id|tty_stop
 )paren
 (brace
-id|nb85e_intc_disable_irq
+id|v850e_intc_disable_irq
 (paren
-id|IRQ_INTST
+id|V850E_UART_TX_IRQ
 (paren
 id|port-&gt;line
 )paren
 )paren
 suffix:semicolon
 )brace
-DECL|function|nb85e_uart_start_rx
+DECL|function|v850e_uart_start_rx
 r_static
 r_void
-id|nb85e_uart_start_rx
+id|v850e_uart_start_rx
 (paren
 r_struct
 id|uart_port
@@ -1286,19 +1103,19 @@ op_star
 id|port
 )paren
 (brace
-id|nb85e_intc_enable_irq
+id|v850e_intc_enable_irq
 (paren
-id|IRQ_INTSR
+id|V850E_UART_RX_IRQ
 (paren
 id|port-&gt;line
 )paren
 )paren
 suffix:semicolon
 )brace
-DECL|function|nb85e_uart_stop_rx
+DECL|function|v850e_uart_stop_rx
 r_static
 r_void
-id|nb85e_uart_stop_rx
+id|v850e_uart_stop_rx
 (paren
 r_struct
 id|uart_port
@@ -1306,19 +1123,19 @@ op_star
 id|port
 )paren
 (brace
-id|nb85e_intc_disable_irq
+id|v850e_intc_disable_irq
 (paren
-id|IRQ_INTSR
+id|V850E_UART_RX_IRQ
 (paren
 id|port-&gt;line
 )paren
 )paren
 suffix:semicolon
 )brace
-DECL|function|nb85e_uart_break_ctl
+DECL|function|v850e_uart_break_ctl
 r_static
 r_void
-id|nb85e_uart_break_ctl
+id|v850e_uart_break_ctl
 (paren
 r_struct
 id|uart_port
@@ -1331,10 +1148,10 @@ id|break_ctl
 (brace
 multiline_comment|/* Umm, do this later.  */
 )brace
-DECL|function|nb85e_uart_startup
+DECL|function|v850e_uart_startup
 r_static
 r_int
-id|nb85e_uart_startup
+id|v850e_uart_startup
 (paren
 r_struct
 id|uart_port
@@ -1350,16 +1167,16 @@ id|err
 op_assign
 id|request_irq
 (paren
-id|IRQ_INTSR
+id|V850E_UART_RX_IRQ
 (paren
 id|port-&gt;line
 )paren
 comma
-id|nb85e_uart_rx_irq
+id|v850e_uart_rx_irq
 comma
 id|SA_INTERRUPT
 comma
-l_string|&quot;nb85e_uart&quot;
+l_string|&quot;v850e_uart&quot;
 comma
 id|port
 )paren
@@ -1377,16 +1194,16 @@ id|err
 op_assign
 id|request_irq
 (paren
-id|IRQ_INTST
+id|V850E_UART_TX_IRQ
 (paren
 id|port-&gt;line
 )paren
 comma
-id|nb85e_uart_tx_irq
+id|v850e_uart_tx_irq
 comma
 id|SA_INTERRUPT
 comma
-l_string|&quot;nb85e_uart&quot;
+l_string|&quot;v850e_uart&quot;
 comma
 id|port
 )paren
@@ -1399,7 +1216,7 @@ id|err
 (brace
 id|free_irq
 (paren
-id|IRQ_INTSR
+id|V850E_UART_RX_IRQ
 (paren
 id|port-&gt;line
 )paren
@@ -1411,7 +1228,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-id|nb85e_uart_start_rx
+id|v850e_uart_start_rx
 (paren
 id|port
 )paren
@@ -1420,10 +1237,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|nb85e_uart_shutdown
+DECL|function|v850e_uart_shutdown
 r_static
 r_void
-id|nb85e_uart_shutdown
+id|v850e_uart_shutdown
 (paren
 r_struct
 id|uart_port
@@ -1434,7 +1251,7 @@ id|port
 multiline_comment|/* Disable port interrupts.  */
 id|free_irq
 (paren
-id|IRQ_INTST
+id|V850E_UART_TX_IRQ
 (paren
 id|port-&gt;line
 )paren
@@ -1444,7 +1261,7 @@ id|port
 suffix:semicolon
 id|free_irq
 (paren
-id|IRQ_INTSR
+id|V850E_UART_RX_IRQ
 (paren
 id|port-&gt;line
 )paren
@@ -1453,20 +1270,20 @@ id|port
 )paren
 suffix:semicolon
 multiline_comment|/* Turn off xmit/recv enable bits.  */
-id|NB85E_UART_ASIM
+id|V850E_UART_CONFIG
 (paren
 id|port-&gt;line
 )paren
 op_and_assign
 op_complement
 (paren
-id|NB85E_UART_ASIM_TXE
+id|V850E_UART_CONFIG_TX_ENABLE
 op_or
-id|NB85E_UART_ASIM_RXE
+id|V850E_UART_CONFIG_RX_ENABLE
 )paren
 suffix:semicolon
 multiline_comment|/* Then reset the channel.  */
-id|NB85E_UART_ASIM
+id|V850E_UART_CONFIG
 (paren
 id|port-&gt;line
 )paren
@@ -1476,8 +1293,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|nb85e_uart_set_termios
-id|nb85e_uart_set_termios
+DECL|function|v850e_uart_set_termios
+id|v850e_uart_set_termios
 (paren
 r_struct
 id|uart_port
@@ -1547,7 +1364,7 @@ id|termios-&gt;c_cflag
 op_assign
 id|cflags
 suffix:semicolon
-id|nb85e_uart_configure
+id|v850e_uart_configure
 (paren
 id|port-&gt;line
 comma
@@ -1561,12 +1378,12 @@ id|termios
 comma
 id|old
 comma
-id|min_baud
+id|v850e_uart_min_baud
 c_func
 (paren
 )paren
 comma
-id|max_baud
+id|v850e_uart_max_baud
 c_func
 (paren
 )paren
@@ -1574,12 +1391,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|nb85e_uart_type
+DECL|function|v850e_uart_type
 r_static
 r_const
 r_char
 op_star
-id|nb85e_uart_type
+id|v850e_uart_type
 (paren
 r_struct
 id|uart_port
@@ -1590,18 +1407,18 @@ id|port
 r_return
 id|port-&gt;type
 op_eq
-id|PORT_NB85E_UART
+id|PORT_V850E_UART
 ques
 c_cond
-l_string|&quot;nb85e_uart&quot;
+l_string|&quot;v850e_uart&quot;
 suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|nb85e_uart_config_port
+DECL|function|v850e_uart_config_port
 r_static
 r_void
-id|nb85e_uart_config_port
+id|v850e_uart_config_port
 (paren
 r_struct
 id|uart_port
@@ -1621,13 +1438,13 @@ id|UART_CONFIG_TYPE
 )paren
 id|port-&gt;type
 op_assign
-id|PORT_NB85E_UART
+id|PORT_V850E_UART
 suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|nb85e_uart_verify_port
-id|nb85e_uart_verify_port
+DECL|function|v850e_uart_verify_port
+id|v850e_uart_verify_port
 (paren
 r_struct
 id|uart_port
@@ -1649,7 +1466,7 @@ id|PORT_UNKNOWN
 op_logical_and
 id|ser-&gt;type
 op_ne
-id|PORT_NB85E_UART
+id|PORT_V850E_UART
 )paren
 r_return
 op_minus
@@ -1660,7 +1477,7 @@ c_cond
 (paren
 id|ser-&gt;irq
 op_ne
-id|IRQ_INTST
+id|V850E_UART_TX_IRQ
 (paren
 id|port-&gt;line
 )paren
@@ -1673,102 +1490,102 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|nb85e_uart_ops
+DECL|variable|v850e_uart_ops
 r_static
 r_struct
 id|uart_ops
-id|nb85e_uart_ops
+id|v850e_uart_ops
 op_assign
 (brace
 dot
 id|tx_empty
 op_assign
-id|nb85e_uart_tx_empty
+id|v850e_uart_tx_empty
 comma
 dot
 id|get_mctrl
 op_assign
-id|nb85e_uart_get_mctrl
+id|v850e_uart_get_mctrl
 comma
 dot
 id|set_mctrl
 op_assign
-id|nb85e_uart_set_mctrl
+id|v850e_uart_set_mctrl
 comma
 dot
 id|start_tx
 op_assign
-id|nb85e_uart_start_tx
+id|v850e_uart_start_tx
 comma
 dot
 id|stop_tx
 op_assign
-id|nb85e_uart_stop_tx
+id|v850e_uart_stop_tx
 comma
 dot
 id|stop_rx
 op_assign
-id|nb85e_uart_stop_rx
+id|v850e_uart_stop_rx
 comma
 dot
 id|enable_ms
 op_assign
-id|nb85e_uart_nop
+id|v850e_uart_nop
 comma
 dot
 id|break_ctl
 op_assign
-id|nb85e_uart_break_ctl
+id|v850e_uart_break_ctl
 comma
 dot
 id|startup
 op_assign
-id|nb85e_uart_startup
+id|v850e_uart_startup
 comma
 dot
 id|shutdown
 op_assign
-id|nb85e_uart_shutdown
+id|v850e_uart_shutdown
 comma
 dot
 id|set_termios
 op_assign
-id|nb85e_uart_set_termios
+id|v850e_uart_set_termios
 comma
 dot
 id|type
 op_assign
-id|nb85e_uart_type
+id|v850e_uart_type
 comma
 dot
 id|release_port
 op_assign
-id|nb85e_uart_nop
+id|v850e_uart_nop
 comma
 dot
 id|request_port
 op_assign
-id|nb85e_uart_success
+id|v850e_uart_success
 comma
 dot
 id|config_port
 op_assign
-id|nb85e_uart_config_port
+id|v850e_uart_config_port
 comma
 dot
 id|verify_port
 op_assign
-id|nb85e_uart_verify_port
+id|v850e_uart_verify_port
 comma
 )brace
 suffix:semicolon
 "&f;"
 multiline_comment|/* Initialization and cleanup.  */
-DECL|variable|nb85e_uart_driver
+DECL|variable|v850e_uart_driver
 r_static
 r_struct
 id|uart_driver
-id|nb85e_uart_driver
+id|v850e_uart_driver
 op_assign
 (brace
 dot
@@ -1779,7 +1596,7 @@ comma
 dot
 id|driver_name
 op_assign
-l_string|&quot;nb85e_uart&quot;
+l_string|&quot;v850e_uart&quot;
 comma
 dot
 id|devfs_name
@@ -1799,34 +1616,34 @@ comma
 dot
 id|minor
 op_assign
-id|NB85E_UART_MINOR_BASE
+id|V850E_UART_MINOR_BASE
 comma
 dot
 id|nr
 op_assign
-id|NB85E_UART_NUM_CHANNELS
+id|V850E_UART_NUM_CHANNELS
 comma
 dot
 id|cons
 op_assign
-id|NB85E_UART_CONSOLE
+id|V850E_UART_CONSOLE
 comma
 )brace
 suffix:semicolon
-DECL|variable|nb85e_uart_ports
+DECL|variable|v850e_uart_ports
 r_static
 r_struct
 id|uart_port
-id|nb85e_uart_ports
+id|v850e_uart_ports
 (braket
-id|NB85E_UART_NUM_CHANNELS
+id|V850E_UART_NUM_CHANNELS
 )braket
 suffix:semicolon
-DECL|function|nb85e_uart_init
+DECL|function|v850e_uart_init
 r_static
 r_int
 id|__init
-id|nb85e_uart_init
+id|v850e_uart_init
 (paren
 r_void
 )paren
@@ -1839,7 +1656,7 @@ id|printk
 id|KERN_INFO
 l_string|&quot;%s on-chip UART&bslash;n&quot;
 comma
-id|NB85E_UART_CHIP_NAME
+id|V850E_UART_CHIP_NAME
 )paren
 suffix:semicolon
 id|rval
@@ -1847,7 +1664,7 @@ op_assign
 id|uart_register_driver
 (paren
 op_amp
-id|nb85e_uart_driver
+id|v850e_uart_driver
 )paren
 suffix:semicolon
 r_if
@@ -1870,7 +1687,7 @@ l_int|0
 suffix:semicolon
 id|chan
 OL
-id|NB85E_UART_NUM_CHANNELS
+id|V850E_UART_NUM_CHANNELS
 suffix:semicolon
 id|chan
 op_increment
@@ -1882,7 +1699,7 @@ op_star
 id|port
 op_assign
 op_amp
-id|nb85e_uart_ports
+id|v850e_uart_ports
 (braket
 id|chan
 )braket
@@ -1901,7 +1718,7 @@ suffix:semicolon
 id|port-&gt;ops
 op_assign
 op_amp
-id|nb85e_uart_ops
+id|v850e_uart_ops
 suffix:semicolon
 id|port-&gt;line
 op_assign
@@ -1918,7 +1735,7 @@ suffix:semicolon
 multiline_comment|/* We actually use multiple IRQs, but the serial&n;&t;&t;&t;   framework seems to mainly use this for&n;&t;&t;&t;   informational purposes anyway.  Here we use the TX&n;&t;&t;&t;   irq.  */
 id|port-&gt;irq
 op_assign
-id|IRQ_INTST
+id|V850E_UART_TX_IRQ
 (paren
 id|chan
 )paren
@@ -1930,36 +1747,32 @@ op_assign
 r_void
 op_star
 )paren
-id|NB85E_UART_BASE_ADDR
+id|V850E_UART_BASE_ADDR
 (paren
 id|chan
 )paren
 suffix:semicolon
 id|port-&gt;mapbase
 op_assign
-id|NB85E_UART_BASE_ADDR
+id|V850E_UART_BASE_ADDR
 (paren
 id|chan
 )paren
 suffix:semicolon
-multiline_comment|/* The framework insists on knowing the uart&squot;s master&n;&t;&t;&t;   clock freq, though it doesn&squot;t seem to do anything&n;&t;&t;&t;   useful for us with it.  We must make it at least&n;&t;&t;&t;   higher than (the maximum baud rate * 16), otherwise&n;&t;&t;&t;   the framework will puke during its internal&n;&t;&t;&t;   calculations, and force the baud rate to be 9600.&n;&t;&t;&t;   To be accurate though, just repeat the calculation&n;&t;&t;&t;   we use when actually setting the speed.&n;&n;&t;&t;&t;   The `* 8&squot; means `* 16 / 2&squot;:  16 to account for for&n;&t;&t;&t;   the serial framework&squot;s built-in bias, and 2 because&n;&t;&t;&t;   there&squot;s an additional / 2 in the hardware.  */
+multiline_comment|/* The framework insists on knowing the uart&squot;s master&n;&t;&t;&t;   clock freq, though it doesn&squot;t seem to do anything&n;&t;&t;&t;   useful for us with it.  We must make it at least&n;&t;&t;&t;   higher than (the maximum baud rate * 16), otherwise&n;&t;&t;&t;   the framework will puke during its internal&n;&t;&t;&t;   calculations, and force the baud rate to be 9600.&n;&t;&t;&t;   To be accurate though, just repeat the calculation&n;&t;&t;&t;   we use when actually setting the speed.  */
 id|port-&gt;uartclk
 op_assign
-(paren
-id|NB85E_UART_BASE_FREQ
-op_rshift
-id|cksr_min
+id|v850e_uart_max_clock
 c_func
 (paren
 )paren
-)paren
 op_star
-l_int|8
+l_int|16
 suffix:semicolon
 id|uart_add_one_port
 (paren
 op_amp
-id|nb85e_uart_driver
+id|v850e_uart_driver
 comma
 id|port
 )paren
@@ -1970,11 +1783,11 @@ r_return
 id|rval
 suffix:semicolon
 )brace
-DECL|function|nb85e_uart_exit
+DECL|function|v850e_uart_exit
 r_static
 r_void
 id|__exit
-id|nb85e_uart_exit
+id|v850e_uart_exit
 (paren
 r_void
 )paren
@@ -1991,7 +1804,7 @@ l_int|0
 suffix:semicolon
 id|chan
 OL
-id|NB85E_UART_NUM_CHANNELS
+id|V850E_UART_NUM_CHANNELS
 suffix:semicolon
 id|chan
 op_increment
@@ -1999,10 +1812,10 @@ op_increment
 id|uart_remove_one_port
 (paren
 op_amp
-id|nb85e_uart_driver
+id|v850e_uart_driver
 comma
 op_amp
-id|nb85e_uart_ports
+id|v850e_uart_ports
 (braket
 id|chan
 )braket
@@ -2011,20 +1824,20 @@ suffix:semicolon
 id|uart_unregister_driver
 (paren
 op_amp
-id|nb85e_uart_driver
+id|v850e_uart_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|nb85e_uart_init
+DECL|variable|v850e_uart_init
 id|module_init
 (paren
-id|nb85e_uart_init
+id|v850e_uart_init
 )paren
 suffix:semicolon
-DECL|variable|nb85e_uart_exit
+DECL|variable|v850e_uart_exit
 id|module_exit
 (paren
-id|nb85e_uart_exit
+id|v850e_uart_exit
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -2035,7 +1848,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 (paren
 l_string|&quot;NEC &quot;
-id|NB85E_UART_CHIP_NAME
+id|V850E_UART_CHIP_NAME
 l_string|&quot; on-chip UART&quot;
 )paren
 suffix:semicolon

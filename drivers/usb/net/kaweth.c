@@ -4290,6 +4290,15 @@ id|kaweth-&gt;net-&gt;features
 op_or_assign
 id|NETIF_F_HIGHDMA
 suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|netdev
+comma
+op_amp
+id|intf-&gt;dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4305,7 +4314,7 @@ l_int|0
 id|kaweth_err
 c_func
 (paren
-l_string|&quot;Error calling init_etherdev.&quot;
+l_string|&quot;Error registering netdev.&quot;
 )paren
 suffix:semicolon
 r_goto

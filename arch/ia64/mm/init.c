@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/patch.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -32,21 +33,6 @@ id|mmu_gather
 comma
 id|mmu_gathers
 )paren
-suffix:semicolon
-multiline_comment|/* References to section boundaries: */
-r_extern
-r_char
-id|_stext
-comma
-id|_etext
-comma
-id|_edata
-comma
-id|__init_begin
-comma
-id|__init_end
-comma
-id|_end
 suffix:semicolon
 r_extern
 r_void
@@ -542,7 +528,6 @@ r_int
 id|ia64_imva
 c_func
 (paren
-op_amp
 id|__init_begin
 )paren
 suffix:semicolon
@@ -555,7 +540,6 @@ r_int
 id|ia64_imva
 c_func
 (paren
-op_amp
 id|__init_end
 )paren
 suffix:semicolon
@@ -610,10 +594,8 @@ id|KERN_INFO
 l_string|&quot;Freeing unused kernel memory: %ldkB freed&bslash;n&quot;
 comma
 (paren
-op_amp
 id|__init_end
 op_minus
-op_amp
 id|__init_begin
 )paren
 op_rshift
@@ -1241,12 +1223,6 @@ r_struct
 id|page
 op_star
 id|page
-suffix:semicolon
-r_extern
-r_char
-id|__start_gate_section
-(braket
-)braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * Map the gate page twice: once read-only to export the ELF headers etc. and once&n;&t; * execute-only page to enable privilege-promotion via &quot;epc&quot;:&n;&t; */
 id|page
@@ -2804,13 +2780,10 @@ c_func
 op_amp
 id|kcore_kernel
 comma
-op_amp
 id|_stext
 comma
-op_amp
 id|_end
 op_minus
-op_amp
 id|_stext
 )paren
 suffix:semicolon
@@ -2846,14 +2819,12 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
 id|_etext
 op_minus
 (paren
 r_int
 r_int
 )paren
-op_amp
 id|_stext
 suffix:semicolon
 id|datasize
@@ -2862,14 +2833,12 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
 id|_edata
 op_minus
 (paren
 r_int
 r_int
 )paren
-op_amp
 id|_etext
 suffix:semicolon
 id|initsize
@@ -2878,14 +2847,12 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
 id|__init_end
 op_minus
 (paren
 r_int
 r_int
 )paren
-op_amp
 id|__init_begin
 suffix:semicolon
 id|printk

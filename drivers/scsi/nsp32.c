@@ -7134,6 +7134,13 @@ op_amp
 id|pdev-&gt;dev
 )paren
 suffix:semicolon
+multiline_comment|/* XXX handle failure */
+id|scsi_scan_host
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 id|pci_set_drvdata
 c_func
 (paren

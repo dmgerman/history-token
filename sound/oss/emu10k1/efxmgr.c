@@ -261,6 +261,30 @@ id|NUM_GPRS
 )paren
 r_return
 suffix:semicolon
+singleline_comment|//fixme: once patch manager is up, remember to fix this for the audigy
+r_if
+c_cond
+(paren
+id|card-&gt;is_audigy
+)paren
+(brace
+id|sblive_writeptr
+c_func
+(paren
+id|card
+comma
+id|A_GPR_BASE
+op_plus
+id|addr
+comma
+l_int|0
+comma
+id|val
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -337,6 +361,7 @@ comma
 id|val
 )paren
 suffix:semicolon
+)brace
 )brace
 singleline_comment|//TODO: make this configurable:
 DECL|macro|VOLCTRL_CHANNEL

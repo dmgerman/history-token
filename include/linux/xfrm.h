@@ -300,7 +300,7 @@ id|xfrm_address_t
 id|saddr
 suffix:semicolon
 DECL|member|reqid
-id|__u16
+id|__u32
 id|reqid
 suffix:semicolon
 DECL|member|mode
@@ -420,13 +420,13 @@ DECL|member|seq
 id|__u32
 id|seq
 suffix:semicolon
+DECL|member|reqid
+id|__u32
+id|reqid
+suffix:semicolon
 DECL|member|family
 id|__u16
 id|family
-suffix:semicolon
-DECL|member|reqid
-id|__u16
-id|reqid
 suffix:semicolon
 DECL|member|mode
 id|__u8

@@ -85,5 +85,7 @@ DECL|macro|RAW1394_IOC_ISO_XMIT_PACKETS
 mdefine_line|#define RAW1394_IOC_ISO_XMIT_PACKETS&t;&t;&bslash;&n;&t;_IOW (&squot;#&squot;, 0x27, struct raw1394_iso_packets)
 DECL|macro|RAW1394_IOC_ISO_XMIT_SYNC
 mdefine_line|#define RAW1394_IOC_ISO_XMIT_SYNC&t;&t;&bslash;&n;&t;_IO  (&squot;#&squot;, 0x28)
+DECL|macro|RAW1394_IOC_ISO_RECV_FLUSH
+mdefine_line|#define RAW1394_IOC_ISO_RECV_FLUSH              &bslash;&n;&t;_IO  (&squot;#&squot;, 0x29)
 macro_line|#endif /* __IEEE1394_IOCTL_H */
 eof

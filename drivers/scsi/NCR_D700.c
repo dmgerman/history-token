@@ -637,6 +637,13 @@ comma
 id|p-&gt;dev
 )paren
 suffix:semicolon
+multiline_comment|/* XXX handle failure */
+id|scsi_scan_host
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 id|p-&gt;hosts
 (braket
 id|siop
@@ -1415,13 +1422,6 @@ c_func
 (paren
 op_amp
 id|NCR_D700_driver
-)paren
-suffix:semicolon
-id|scsi_sysfs_release_attributes
-c_func
-(paren
-op_amp
-id|NCR_D700_driver_template
 )paren
 suffix:semicolon
 )brace

@@ -2906,7 +2906,7 @@ op_amp
 l_int|7
 )paren
 OL
-l_int|8
+l_int|6
 )paren
 )paren
 )paren

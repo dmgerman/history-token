@@ -2117,10 +2117,8 @@ id|KERN_INFO
 l_string|&quot;Freeing unused kernel memory: %dk freed&bslash;n&quot;
 comma
 (paren
-op_amp
 id|__init_end
 op_minus
-op_amp
 id|__init_begin
 )paren
 op_rshift

@@ -17,11 +17,6 @@ DECL|struct|scsi_device
 r_struct
 id|scsi_device
 (brace
-DECL|member|sdev_classdev
-r_struct
-id|class_device
-id|sdev_classdev
-suffix:semicolon
 DECL|member|siblings
 r_struct
 id|list_head
@@ -369,15 +364,20 @@ suffix:semicolon
 multiline_comment|/* what device_blocked counts down from  */
 DECL|macro|SCSI_DEFAULT_DEVICE_BLOCKED
 mdefine_line|#define SCSI_DEFAULT_DEVICE_BLOCKED&t;3
-DECL|member|sdev_driverfs_dev
+DECL|member|sdev_gendev
 r_struct
 id|device
-id|sdev_driverfs_dev
+id|sdev_gendev
+suffix:semicolon
+DECL|member|sdev_classdev
+r_struct
+id|class_device
+id|sdev_classdev
 suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|to_scsi_device
-mdefine_line|#define&t;to_scsi_device(d)&t;&bslash;&n;&t;container_of(d, struct scsi_device, sdev_driverfs_dev)
+mdefine_line|#define&t;to_scsi_device(d)&t;&bslash;&n;&t;container_of(d, struct scsi_device, sdev_gendev)
 r_extern
 r_struct
 id|scsi_device

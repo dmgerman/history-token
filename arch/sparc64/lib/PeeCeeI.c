@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: PeeCeeI.c,v 1.4 1999/09/06 01:17:35 davem Exp $&n; * PeeCeeI.c: The emerging standard...&n; *&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|function|outsb
@@ -1478,5 +1476,4 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* CONFIG_PCI */
 eof

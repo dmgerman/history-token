@@ -2,16 +2,49 @@ multiline_comment|/*     &n; ***************************************************
 macro_line|#ifndef _EFXMGR_H
 DECL|macro|_EFXMGR_H
 mdefine_line|#define _EFXMGR_H
+DECL|struct|emu_efx_info_t
+r_struct
+id|emu_efx_info_t
+(brace
+DECL|member|opcode_shift
+r_int
+id|opcode_shift
+suffix:semicolon
+DECL|member|high_operand_shift
+r_int
+id|high_operand_shift
+suffix:semicolon
+DECL|member|instruction_start
+r_int
+id|instruction_start
+suffix:semicolon
+DECL|member|gpr_base
+r_int
+id|gpr_base
+suffix:semicolon
+DECL|member|output_base
+r_int
+id|output_base
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|WRITE_EFX
-mdefine_line|#define WRITE_EFX(a, b, c) sblive_writeptr((a), MICROCODEBASE + (b), 0, (c))
+mdefine_line|#define WRITE_EFX(a, b, c) sblive_writeptr((a), emu_efx_info[card-&gt;is_audigy].instruction_start + (b), 0, (c))
 DECL|macro|OP
-mdefine_line|#define OP(op, z, w, x, y) &bslash;&n;&t;do { WRITE_EFX(card, (pc) * 2, ((x) &lt;&lt; 10) | (y)); &bslash;&n;&t;WRITE_EFX(card, (pc) * 2 + 1, ((op) &lt;&lt; 20) | ((z) &lt;&lt; 10) | (w)); &bslash;&n;&t;++pc; } while (0)
+mdefine_line|#define OP(op, z, w, x, y) &bslash;&n;&t;do { WRITE_EFX(card, (pc) * 2, ((x) &lt;&lt; emu_efx_info[card-&gt;is_audigy].high_operand_shift) | (y)); &bslash;&n;&t;WRITE_EFX(card, (pc) * 2 + 1, ((op) &lt;&lt; emu_efx_info[card-&gt;is_audigy].opcode_shift ) | ((z) &lt;&lt; emu_efx_info[card-&gt;is_audigy].high_operand_shift) | (w)); &bslash;&n;&t;++pc; } while (0)
 DECL|macro|NUM_INPUTS
 mdefine_line|#define NUM_INPUTS 0x20
 DECL|macro|NUM_OUTPUTS
 mdefine_line|#define NUM_OUTPUTS 0x20
 DECL|macro|NUM_GPRS
 mdefine_line|#define NUM_GPRS 0x100
+DECL|macro|A_NUM_INPUTS
+mdefine_line|#define A_NUM_INPUTS 0x60
+DECL|macro|A_NUM_OUTPUTS
+mdefine_line|#define A_NUM_OUTPUTS 0x60  
+singleline_comment|//fixme: this may or may not be true
+DECL|macro|A_NUM_GPRS
+mdefine_line|#define A_NUM_GPRS 0x200
 DECL|macro|GPR_NAME_SIZE
 mdefine_line|#define GPR_NAME_SIZE   32
 DECL|macro|PATCH_NAME_SIZE
@@ -270,6 +303,10 @@ DECL|macro|GPR_BASE
 mdefine_line|#define GPR_BASE 0x100
 DECL|macro|OUTPUT_BASE
 mdefine_line|#define OUTPUT_BASE 0x20
+DECL|macro|A_GPR_BASE
+mdefine_line|#define A_GPR_BASE 0x400
+DECL|macro|A_OUTPUT_BASE
+mdefine_line|#define A_OUTPUT_BASE 0x60
 DECL|macro|MAX_PATCHES_PAGES
 mdefine_line|#define MAX_PATCHES_PAGES 32
 DECL|struct|patch_manager

@@ -655,6 +655,7 @@ id|sdev
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 r_struct
 id|linux_ebus
 op_star
@@ -677,9 +678,11 @@ suffix:semicolon
 r_int
 id|len
 comma
-id|err
-comma
 id|nregs
+suffix:semicolon
+macro_line|#endif
+r_int
+id|err
 suffix:semicolon
 id|for_all_sbusdev
 c_func

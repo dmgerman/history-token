@@ -2261,6 +2261,14 @@ id|ret
 OG
 l_int|0
 )paren
+(brace
+id|ret
+op_assign
+r_sizeof
+(paren
+id|compat_ulong_t
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2276,6 +2284,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+)brace
 r_return
 id|ret
 suffix:semicolon

@@ -210,7 +210,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|cluster_size
+id|sec_per_clus
 )paren
 )paren
 (brace
@@ -403,8 +403,15 @@ c_func
 id|inode-&gt;i_sb
 )paren
 suffix:semicolon
+r_const
 r_int
-id|cluster
+r_int
+id|cluster_size
+op_assign
+id|sbi-&gt;cluster_size
+suffix:semicolon
+r_int
+id|nr_clusters
 suffix:semicolon
 multiline_comment|/* Why no return value?  Surely the disk could fail... */
 r_if
@@ -430,12 +437,6 @@ id|inode
 r_return
 multiline_comment|/* -EPERM */
 suffix:semicolon
-id|cluster
-op_assign
-l_int|1
-op_lshift
-id|sbi-&gt;cluster_bits
-suffix:semicolon
 multiline_comment|/* &n;&t; * This protects against truncating a file bigger than it was then&n;&t; * trying to write into the hole.&n;&t; */
 r_if
 c_cond
@@ -460,6 +461,20 @@ id|mmu_private
 op_assign
 id|inode-&gt;i_size
 suffix:semicolon
+id|nr_clusters
+op_assign
+(paren
+id|inode-&gt;i_size
+op_plus
+(paren
+id|cluster_size
+op_minus
+l_int|1
+)paren
+)paren
+op_rshift
+id|sbi-&gt;cluster_bits
+suffix:semicolon
 id|lock_kernel
 c_func
 (paren
@@ -470,17 +485,7 @@ c_func
 (paren
 id|inode
 comma
-(paren
-id|inode-&gt;i_size
-op_plus
-(paren
-id|cluster
-op_minus
-l_int|1
-)paren
-)paren
-op_rshift
-id|sbi-&gt;cluster_bits
+id|nr_clusters
 )paren
 suffix:semicolon
 id|MSDOS_I

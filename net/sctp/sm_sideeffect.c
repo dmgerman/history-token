@@ -2864,6 +2864,8 @@ id|sctp_make_shutdown
 c_func
 (paren
 id|asoc
+comma
+id|chunk
 )paren
 suffix:semicolon
 r_if

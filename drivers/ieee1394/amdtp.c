@@ -1,5 +1,5 @@
 multiline_comment|/* -*- c-basic-offset: 8 -*-&n; *&n; * amdtp.c - Audio and Music Data Transmission Protocol Driver&n; * Copyright (C) 2001 Kristian H&#xfffd;gsberg&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
-multiline_comment|/* OVERVIEW&n; * --------&n; *&n; * The AMDTP driver is designed to expose the IEEE1394 bus as a&n; * regular OSS soundcard, i.e. you can link /dev/dsp to /dev/amdtp and&n; * then your favourite MP3 player, game or whatever sound program will&n; * output to an IEEE1394 isochronous channel.  The signal destination&n; * could be a set of IEEE1394 loudspeakers (if and when such things&n; * become available) or an amplifier with IEEE1394 input (like the&n; * Sony STR-LSA1).  The driver only handles the actual streaming, some&n; * connection management is also required for this to actually work.&n; * That is outside the scope of this driver, and furthermore it is not&n; * really standardized yet.&n; *&n; * The Audio and Music Data Tranmission Protocol is available at&n; *&n; *     http://www.1394ta.org/Download/Technology/Specifications/2001/AM20Final-jf2.pdf&n; *&n; *&n; * TODO&n; * ----&n; *&n; * - We should be able to change input sample format between LE/BE, as&n; *   we already shift the bytes around when we construct the iso&n; *   packets.&n; *&n; * - Fix DMA stop after bus reset!&n; *&n; * - Clean up iso context handling in ohci1394.&n; *&n; *&n; * MAYBE TODO&n; * ----------&n; *&n; * - Receive data for local playback or recording.  Playback requires&n; *   soft syncing with the sound card.&n; *&n; * - Signal processing, i.e. receive packets, do some processing, and&n; *   transmit them again using the same packet structure and timestamps&n; *   offset by processing time.&n; *&n; * - Maybe make an ALSA interface, that is, create a file_ops&n; *   implementation that recognizes ALSA ioctls and uses defaults for&n; *   things that can&squot;t be controlled through ALSA (iso channel).&n; */
+multiline_comment|/* OVERVIEW&n; * --------&n; *&n; * The AMDTP driver is designed to expose the IEEE1394 bus as a&n; * regular OSS soundcard, i.e. you can link /dev/dsp to /dev/amdtp and&n; * then your favourite MP3 player, game or whatever sound program will&n; * output to an IEEE1394 isochronous channel.  The signal destination&n; * could be a set of IEEE1394 loudspeakers (if and when such things&n; * become available) or an amplifier with IEEE1394 input (like the&n; * Sony STR-LSA1).  The driver only handles the actual streaming, some&n; * connection management is also required for this to actually work.&n; * That is outside the scope of this driver, and furthermore it is not&n; * really standardized yet.&n; *&n; * The Audio and Music Data Tranmission Protocol is available at&n; *&n; *     http://www.1394ta.org/Download/Technology/Specifications/2001/AM20Final-jf2.pdf&n; *&n; *&n; * TODO&n; * ----&n; *&n; * - We should be able to change input sample format between LE/BE, as&n; *   we already shift the bytes around when we construct the iso&n; *   packets.&n; *&n; * - Fix DMA stop after bus reset!&n; *&n; * - Clean up iso context handling in ohci1394.&n; *&n; *&n; * MAYBE TODO&n; * ----------&n; *&n; * - Receive data for local playback or recording.  Playback requires&n; *   soft syncing with the sound card.&n; *&n; * - Signal processing, i.e. receive packets, do some processing, and&n; *   transmit them again using the same packet structure and timestamps&n; *   offset by processing time.&n; *&n; * - Maybe make an ALSA interface, that is, create a file_ops&n; *   implementation that recognizes ALSA ioctls and uses defaults for&n; *   things that can&squot;t be controlled through ALSA (iso channel).&n; *&n; *   Changes:&n; *&n; * - Audit copy_from_user in amdtp_write.&n; *                           Daniele Bellucci &lt;bellucda@tiscali.it&gt;&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -4181,6 +4181,9 @@ op_amp
 id|length
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -4192,6 +4195,10 @@ id|i
 comma
 id|length
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond

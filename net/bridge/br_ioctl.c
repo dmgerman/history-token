@@ -167,6 +167,13 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|br-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -193,6 +200,13 @@ c_func
 id|br
 comma
 id|dev
+)paren
+suffix:semicolon
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|br-&gt;lock
 )paren
 suffix:semicolon
 id|dev_put
