@@ -50,7 +50,6 @@ op_star
 id|vaddr
 )paren
 (brace
-r_return
 id|kunmap_atomic
 c_func
 (paren
