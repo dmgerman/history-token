@@ -1685,7 +1685,7 @@ c_func
 id|write_one_page
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * For address_spaces which do not use buffers.  Just tag the page as dirty in&n; * its radix tree.&n; *&n; * __set_page_dirty_nobuffers() may return -ENOSPC.  But if it does, the page&n; * is still safe, as long as it actually manages to find some blocks at&n; * writeback time.&n; *&n; * This is also used when a single buffer is being dirtied: we want to set the&n; * page dirty in that case, but not all the buffers.  This is a &quot;bottom-up&quot;&n; * dirtying, whereas __set_page_dirty_buffers() is a &quot;top-down&quot; dirtying.&n; */
+multiline_comment|/*&n; * For address_spaces which do not use buffers.  Just tag the page as dirty in&n; * its radix tree.&n; *&n; * This is also used when a single buffer is being dirtied: we want to set the&n; * page dirty in that case, but not all the buffers.  This is a &quot;bottom-up&quot;&n; * dirtying, whereas __set_page_dirty_buffers() is a &quot;top-down&quot; dirtying.&n; *&n; * Most callers have locked the page, which pins the address_space in memory.&n; * But zap_pte_range() does not lock the page, however in that case the&n; * mapping is pinned by the vma&squot;s -&gt;vm_file reference.&n; *&n; * We take care to handle the case where the page was truncated from the&n; * mapping by re-checking page_mapping() insode tree_lock.&n; */
 DECL|function|__set_page_dirty_nobuffers
 r_int
 id|__set_page_dirty_nobuffers
@@ -1748,7 +1748,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 )paren
 (brace
 multiline_comment|/* Race with truncate? */
@@ -1802,13 +1806,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|PageSwapCache
-c_func
-(paren
-id|page
+id|mapping-&gt;host
 )paren
-)paren
+(brace
+multiline_comment|/* !PageAnon &amp;&amp; !swapper_space */
 id|__mark_inode_dirty
 c_func
 (paren
@@ -1817,6 +1818,7 @@ comma
 id|I_DIRTY_PAGES
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 r_return
