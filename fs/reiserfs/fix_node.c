@@ -8789,7 +8789,7 @@ op_logical_neg
 id|buf
 )paren
 (brace
-multiline_comment|/* getting memory with GFP_KERNEL priority may involve&n;               balancing now (due to indirect_to_direct conversion on&n;               dcache shrinking). So, release path and collected&n;               resourses here */
+multiline_comment|/* getting memory with GFP_KERNEL priority may involve&n;               balancing now (due to indirect_to_direct conversion on&n;               dcache shrinking). So, release path and collected&n;               resources here */
 id|free_buffers_in_tb
 (paren
 id|tb

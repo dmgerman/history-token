@@ -4,7 +4,7 @@ DECL|macro|_ASM_IA64_SN_ALENLIST_H
 mdefine_line|#define _ASM_IA64_SN_ALENLIST_H
 macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* Definition of Address/Length List */
-multiline_comment|/*&n; * An Address/Length List is used when setting up for an I/O DMA operation.&n; * A driver creates an Address/Length List that describes to the the DMA &n; * interface where in memory the DMA should go.  The bus interface sets up &n; * mapping registers, if required, and returns a suitable list of &quot;physical &n; * addresses&quot; or &quot;I/O address&quot; to the driver.  The driver then uses these &n; * to set up an appropriate scatter/gather operation(s).&n; */
+multiline_comment|/*&n; * An Address/Length List is used when setting up for an I/O DMA operation.&n; * A driver creates an Address/Length List that describes to the DMA &n; * interface where in memory the DMA should go.  The bus interface sets up &n; * mapping registers, if required, and returns a suitable list of &quot;physical &n; * addresses&quot; or &quot;I/O address&quot; to the driver.  The driver then uses these &n; * to set up an appropriate scatter/gather operation(s).&n; */
 macro_line|#ifdef __cplusplus
 r_extern
 l_string|&quot;C&quot;

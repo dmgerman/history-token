@@ -12,24 +12,27 @@ id|vm_ops
 )paren
 op_assign
 (brace
+dot
 id|nopage
-suffix:colon
+op_assign
 id|DRM
 c_func
 (paren
 id|vm_nopage
 )paren
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|DRM
 c_func
 (paren
 id|vm_open
 )paren
 comma
+dot
 id|close
-suffix:colon
+op_assign
 id|DRM
 c_func
 (paren
@@ -48,24 +51,27 @@ id|vm_shm_ops
 )paren
 op_assign
 (brace
+dot
 id|nopage
-suffix:colon
+op_assign
 id|DRM
 c_func
 (paren
 id|vm_shm_nopage
 )paren
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|DRM
 c_func
 (paren
 id|vm_open
 )paren
 comma
+dot
 id|close
-suffix:colon
+op_assign
 id|DRM
 c_func
 (paren
@@ -84,24 +90,27 @@ id|vm_dma_ops
 )paren
 op_assign
 (brace
+dot
 id|nopage
-suffix:colon
+op_assign
 id|DRM
 c_func
 (paren
 id|vm_dma_nopage
 )paren
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|DRM
 c_func
 (paren
 id|vm_open
 )paren
 comma
+dot
 id|close
-suffix:colon
+op_assign
 id|DRM
 c_func
 (paren
@@ -120,24 +129,27 @@ id|vm_sg_ops
 )paren
 op_assign
 (brace
+dot
 id|nopage
-suffix:colon
+op_assign
 id|DRM
 c_func
 (paren
 id|vm_sg_nopage
 )paren
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|DRM
 c_func
 (paren
 id|vm_open
 )paren
 comma
+dot
 id|close
-suffix:colon
+op_assign
 id|DRM
 c_func
 (paren
@@ -1498,7 +1510,7 @@ c_func
 id|vm_dma_ops
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt;= 0x020414
+macro_line|#if LINUX_VERSION_CODE &lt;= 0x02040e /* KERNEL_VERSION(2,4,14) */
 id|vma-&gt;vm_flags
 op_or_assign
 id|VM_LOCKED
@@ -2033,7 +2045,7 @@ op_star
 id|map
 suffix:semicolon
 multiline_comment|/* Don&squot;t let this area swap.  Change when&n;&t;&t;&t;&t;   DRM_KERNEL advisory is supported. */
-macro_line|#if LINUX_VERSION_CODE &lt;= 0x020414
+macro_line|#if LINUX_VERSION_CODE &lt;= 0x02040e /* KERNEL_VERSION(2,4,14) */
 id|vma-&gt;vm_flags
 op_or_assign
 id|VM_LOCKED
@@ -2066,7 +2078,7 @@ op_star
 )paren
 id|map
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt;= 0x020414
+macro_line|#if LINUX_VERSION_CODE &lt;= 0x02040e /* KERNEL_VERSION(2,4,14) */
 id|vma-&gt;vm_flags
 op_or_assign
 id|VM_LOCKED
@@ -2087,7 +2099,7 @@ id|EINVAL
 suffix:semicolon
 multiline_comment|/* This should never happen. */
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt;= 0x020414
+macro_line|#if LINUX_VERSION_CODE &lt;= 0x02040e /* KERNEL_VERSION(2,4,14) */
 id|vma-&gt;vm_flags
 op_or_assign
 id|VM_LOCKED

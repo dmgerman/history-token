@@ -5,5 +5,7 @@ mdefine_line|#define _ASM_CACHE_H
 multiline_comment|/* bytes per L1 cache line */
 DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define L1_CACHE_BYTES&t;&t;(1 &lt;&lt; CONFIG_L1_CACHE_SHIFT)
+DECL|macro|L1_CACHE_SHIFT_MAX
+mdefine_line|#define L1_CACHE_SHIFT_MAX 7&t;/* largest L1 which this arch supports */
 macro_line|#endif /* _ASM_CACHE_H */
 eof

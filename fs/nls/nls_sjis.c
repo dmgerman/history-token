@@ -18,12 +18,14 @@ id|nls_table
 id|table
 op_assign
 (brace
+dot
 id|charset
-suffix:colon
+op_assign
 l_string|&quot;sjis&quot;
 comma
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
 )brace

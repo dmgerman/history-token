@@ -223,8 +223,6 @@ multiline_comment|/* initial part of arg list */
 suffix:semicolon
 DECL|macro|elf_addr_t
 mdefine_line|#define elf_addr_t&t;u32
-DECL|macro|elf_caddr_t
-mdefine_line|#define elf_caddr_t&t;u32
 DECL|macro|init_elf_binfmt
 mdefine_line|#define init_elf_binfmt init_elf32_binfmt
 DECL|macro|CONFIG_BINFMT_ELF

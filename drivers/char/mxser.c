@@ -2636,6 +2636,7 @@ op_increment
 r_while
 c_loop
 (paren
+(paren
 id|pdev
 op_assign
 id|pci_find_device
@@ -2656,6 +2657,7 @@ dot
 id|device
 comma
 id|pdev
+)paren
 )paren
 )paren
 (brace

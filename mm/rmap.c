@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * mm/rmap.c - physical to virtual reverse mappings&n; *&n; * Copyright 2001, Rik van Riel &lt;riel@conectiva.com.br&gt;&n; * Released under the General Public License (GPL).&n; *&n; *&n; * Simple, low overhead pte-based reverse mapping scheme.&n; * This is kept modular because we may want to experiment&n; * with object-based reverse mapping schemes. Please try&n; * to keep this thing as modular as possible.&n; */
-multiline_comment|/*&n; * Locking:&n; * - the page-&gt;pte.chain is protected by the PG_chainlock bit,&n; *   which nests within the pagemap_lru_lock, then the&n; *   mm-&gt;page_table_lock, and then the page lock.&n; * - because swapout locking is opposite to the locking order&n; *   in the page fault path, the swapout path uses trylocks&n; *   on the mm-&gt;page_table_lock&n; */
+multiline_comment|/*&n; * Locking:&n; * - the page-&gt;pte.chain is protected by the PG_chainlock bit,&n; *   which nests within the zone-&gt;lru_lock, then the&n; *   mm-&gt;page_table_lock, and then the page lock.&n; * - because swapout locking is opposite to the locking order&n; *   in the page fault path, the swapout path uses trylocks&n; *   on the mm-&gt;page_table_lock&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
@@ -745,7 +745,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * try_to_unmap_one - worker function for try_to_unmap&n; * @page: page to unmap&n; * @ptep: page table entry to unmap from page&n; *&n; * Internal helper function for try_to_unmap, called for each page&n; * table entry mapping a page. Because locking order here is opposite&n; * to the locking order used by the page fault path, we use trylocks.&n; * Locking:&n; *&t;pagemap_lru_lock&t;&t;page_launder()&n; *&t;    page lock&t;&t;&t;page_launder(), trylock&n; *&t;&t;pte_chain_lock&t;&t;page_launder()&n; *&t;&t;    mm-&gt;page_table_lock&t;try_to_unmap_one(), trylock&n; */
+multiline_comment|/**&n; * try_to_unmap_one - worker function for try_to_unmap&n; * @page: page to unmap&n; * @ptep: page table entry to unmap from page&n; *&n; * Internal helper function for try_to_unmap, called for each page&n; * table entry mapping a page. Because locking order here is opposite&n; * to the locking order used by the page fault path, we use trylocks.&n; * Locking:&n; *&t;zone-&gt;lru_lock&t;&t;&t;page_launder()&n; *&t;    page lock&t;&t;&t;page_launder(), trylock&n; *&t;&t;pte_chain_lock&t;&t;page_launder()&n; *&t;&t;    mm-&gt;page_table_lock&t;try_to_unmap_one(), trylock&n; */
 r_static
 r_int
 id|FASTCALL
@@ -984,7 +984,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * try_to_unmap - try to remove all page table mappings to a page&n; * @page: the page to get unmapped&n; *&n; * Tries to remove all the page table entries which are mapping this&n; * page, used in the pageout path.  Caller must hold pagemap_lru_lock&n; * and the page lock.  Return values are:&n; *&n; * SWAP_SUCCESS&t;- we succeeded in removing all mappings&n; * SWAP_AGAIN&t;- we missed a trylock, try again later&n; * SWAP_FAIL&t;- the page is unswappable&n; * SWAP_ERROR&t;- an error occurred&n; */
+multiline_comment|/**&n; * try_to_unmap - try to remove all page table mappings to a page&n; * @page: the page to get unmapped&n; *&n; * Tries to remove all the page table entries which are mapping this&n; * page, used in the pageout path.  Caller must hold zone-&gt;lru_lock&n; * and the page lock.  Return values are:&n; *&n; * SWAP_SUCCESS&t;- we succeeded in removing all mappings&n; * SWAP_AGAIN&t;- we missed a trylock, try again later&n; * SWAP_FAIL&t;- the page is unswappable&n; * SWAP_ERROR&t;- an error occurred&n; */
 DECL|function|try_to_unmap
 r_int
 id|try_to_unmap

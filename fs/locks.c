@@ -5903,6 +5903,15 @@ r_struct
 id|file_lock
 id|lock
 suffix:semicolon
+multiline_comment|/*&n;&t; * If there are no locks held on this file, we don&squot;t need to call&n;&t; * posix_lock_file().  Another process could be setting a lock on this&n;&t; * file at the same time, but we wouldn&squot;t remove that lock anyway.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_flock
+)paren
+r_return
+suffix:semicolon
 id|lock.fl_type
 op_assign
 id|F_UNLCK
