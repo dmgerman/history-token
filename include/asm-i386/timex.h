@@ -4,12 +4,19 @@ DECL|macro|_ASMi386_TIMEX_H
 mdefine_line|#define _ASMi386_TIMEX_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
+macro_line|#ifdef CONFIG_X86_PC9800
+r_extern
+r_int
+id|CLOCK_TICK_RATE
+suffix:semicolon
+macro_line|#else
 macro_line|#ifdef CONFIG_MELAN
 DECL|macro|CLOCK_TICK_RATE
 macro_line|#  define CLOCK_TICK_RATE 1189200 /* AMD Elan has different frequency! */
 macro_line|#else
 DECL|macro|CLOCK_TICK_RATE
 macro_line|#  define CLOCK_TICK_RATE 1193180 /* Underlying HZ */
+macro_line|#endif
 macro_line|#endif
 DECL|macro|CLOCK_TICK_FACTOR
 mdefine_line|#define CLOCK_TICK_FACTOR&t;20&t;/* Factor of both 1000000 and CLOCK_TICK_RATE */
