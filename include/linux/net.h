@@ -147,6 +147,9 @@ suffix:semicolon
 r_struct
 id|page
 suffix:semicolon
+r_struct
+id|kiocb
+suffix:semicolon
 DECL|struct|proto_ops
 r_struct
 id|proto_ops
@@ -415,6 +418,11 @@ id|sendmsg
 )paren
 (paren
 r_struct
+id|kiocb
+op_star
+id|iocb
+comma
+r_struct
 id|socket
 op_star
 id|sock
@@ -440,6 +448,11 @@ op_star
 id|recvmsg
 )paren
 (paren
+r_struct
+id|kiocb
+op_star
+id|iocb
+comma
 r_struct
 id|socket
 op_star
