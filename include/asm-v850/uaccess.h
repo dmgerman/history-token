@@ -141,6 +141,10 @@ DECL|macro|__copy_from_user
 mdefine_line|#define __copy_from_user(to, from, n)&t;(memcpy (to, from, n), 0)
 DECL|macro|__copy_to_user
 mdefine_line|#define __copy_to_user(to, from, n)&t;(memcpy(to, from, n), 0)
+DECL|macro|__copy_to_user_inatomic
+mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+DECL|macro|__copy_from_user_inatomic
+mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 DECL|macro|copy_from_user
 mdefine_line|#define copy_from_user(to, from, n)&t;__copy_from_user (to, from, n)
 DECL|macro|copy_to_user

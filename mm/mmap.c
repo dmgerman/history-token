@@ -230,6 +230,11 @@ id|file
 op_assign
 id|vma-&gt;vm_file
 suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

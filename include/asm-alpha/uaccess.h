@@ -361,6 +361,10 @@ DECL|macro|__copy_to_user
 mdefine_line|#define __copy_to_user(to,from,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__chk_user_ptr(to);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__copy_tofrom_user_nocheck((__force void *)(to),(from),(n));&t;&bslash;&n;})
 DECL|macro|__copy_from_user
 mdefine_line|#define __copy_from_user(to,from,n)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__chk_user_ptr(from);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__copy_tofrom_user_nocheck((to),(__force void *)(from),(n));&t;&bslash;&n;})
+DECL|macro|__copy_to_user_inatomic
+mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+DECL|macro|__copy_from_user_inatomic
+mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 r_extern
 r_inline
 r_int

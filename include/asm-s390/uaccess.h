@@ -202,6 +202,10 @@ id|to
 )paren
 suffix:semicolon
 )brace
+DECL|macro|__copy_to_user_inatomic
+mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+DECL|macro|__copy_from_user_inatomic
+mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 multiline_comment|/**&n; * copy_to_user: - Copy a block of data into user space.&n; * @to:   Destination address, in user space.&n; * @from: Source address, in kernel space.&n; * @n:    Number of bytes to copy.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Copy data from kernel space to user space.&n; *&n; * Returns number of bytes that could not be copied.&n; * On success, this will be zero.&n; */
 r_static
 r_inline

@@ -597,6 +597,10 @@ r_int
 id|size
 )paren
 suffix:semicolon
+DECL|macro|__copy_to_user_inatomic
+mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+DECL|macro|__copy_from_user_inatomic
+mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 r_static
 r_inline
 r_int

@@ -5221,6 +5221,11 @@ comma
 id|size
 )paren
 suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6015,6 +6020,11 @@ r_struct
 id|buffer_head
 op_star
 id|old_bh
+suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
 suffix:semicolon
 id|old_bh
 op_assign
