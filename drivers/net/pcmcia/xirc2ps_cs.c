@@ -6888,6 +6888,16 @@ comma
 l_string|&quot;xirc2ps_cs&quot;
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|info-&gt;bus_info
+comma
+l_string|&quot;PCMCIA 0x%lx&quot;
+comma
+id|dev-&gt;base_addr
+)paren
+suffix:semicolon
 )brace
 DECL|variable|netdev_ethtool_ops
 r_static
