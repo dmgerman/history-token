@@ -6213,6 +6213,7 @@ op_star
 )paren
 id|cursor-&gt;image.data
 suffix:semicolon
+r_const
 r_char
 op_star
 id|mask
