@@ -159,6 +159,14 @@ r_int
 id|resume
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|software_suspend
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#else&t;/* CONFIG_SOFTWARE_SUSPEND */
 DECL|function|software_suspend
 r_static
