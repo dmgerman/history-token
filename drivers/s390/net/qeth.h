@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/ccwgroup.h&gt;
 macro_line|#include &quot;qeth_mpc.h&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.109 $&quot;
+mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.110 $&quot;
 macro_line|#ifdef CONFIG_QETH_IPV6
 DECL|macro|QETH_VERSION_IPV6
 mdefine_line|#define QETH_VERSION_IPV6 &t;&quot;:IPv6&quot;
@@ -699,10 +699,6 @@ multiline_comment|/*&n;&t; * inbound: filled by hardware; owned by driver in ord
 DECL|enumerator|QETH_QDIO_BUF_PRIMED
 id|QETH_QDIO_BUF_PRIMED
 comma
-multiline_comment|/*&n;&t; * inbound only: an error condition has been detected for a buffer&n;&t; *     the buffer will be discarded (not read out)&n;&t; */
-DECL|enumerator|QETH_QDIO_BUF_ERROR
-id|QETH_QDIO_BUF_ERROR
-comma
 )brace
 suffix:semicolon
 DECL|enum|qeth_qdio_info_states
@@ -833,9 +829,7 @@ op_star
 id|buffer
 suffix:semicolon
 DECL|member|state
-r_volatile
-r_enum
-id|qeth_qdio_buffer_states
+id|atomic_t
 id|state
 suffix:semicolon
 DECL|member|next_element_to_fill
