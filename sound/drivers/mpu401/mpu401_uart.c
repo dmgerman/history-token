@@ -419,10 +419,6 @@ r_int
 id|data
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|mpu401_t
 op_star
 id|mpu
@@ -433,13 +429,11 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|mpu-&gt;timer_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*mpu-&gt;mode |= MPU401_MODE_TIMER;*/
@@ -456,13 +450,11 @@ op_amp
 id|mpu-&gt;timer
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|mpu-&gt;timer_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
