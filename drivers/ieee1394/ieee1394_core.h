@@ -473,5 +473,10 @@ r_struct
 id|bus_type
 id|ieee1394_bus_type
 suffix:semicolon
+r_extern
+r_struct
+r_class
+id|hpsb_host_class
+suffix:semicolon
 macro_line|#endif /* _IEEE1394_CORE_H */
 eof
