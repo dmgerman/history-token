@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for SanDisk SDDR-09 SmartMedia reader&n; *&n; *   (c) 2000, 2001 Robert Baruch (autophile@starband.net)&n; *   (c) 2002 Andries Brouwer (aeb@cwi.nl)&n; *&n; * The SanDisk SDDR-09 SmartMedia reader uses the Shuttle EUSB-01 chip.&n; * This chip is a programmable USB controller. In the SDDR-09, it has&n; * been programmed to obey a certain limited set of SCSI commands.&n; * This driver translates the &quot;real&quot; SCSI commands to the SDDR-09 SCSI&n; * commands.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* Driver for SanDisk SDDR-09 SmartMedia reader&n; *&n; * $Id: sddr09.c,v 1.24 2002/04/22 03:39:43 mdharm Exp $&n; *   (c) 2000, 2001 Robert Baruch (autophile@starband.net)&n; *   (c) 2002 Andries Brouwer (aeb@cwi.nl)&n; * Developed with the assistance of:&n; *   (c) 2002 Alan Stern &lt;stern@rowland.org&gt;&n; *&n; * The SanDisk SDDR-09 SmartMedia reader uses the Shuttle EUSB-01 chip.&n; * This chip is a programmable USB controller. In the SDDR-09, it has&n; * been programmed to obey a certain limited set of SCSI commands.&n; * This driver translates the &quot;real&quot; SCSI commands to the SDDR-09 SCSI&n; * commands.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;usb.h&quot;
@@ -1096,10 +1096,10 @@ l_string|&quot;-- Stall on control pipe. Clearing&bslash;n&quot;
 suffix:semicolon
 id|result
 op_assign
-id|usb_clear_halt
+id|usb_stor_clear_halt
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
 id|pipe
 )paren
@@ -1107,7 +1107,7 @@ suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- usb_clear_halt() returns %d&bslash;n&quot;
+l_string|&quot;-- usb_stor_clear_halt() returns %d&bslash;n&quot;
 comma
 id|result
 )paren
@@ -1355,10 +1355,10 @@ comma
 id|act_len
 )paren
 suffix:semicolon
-id|usb_clear_halt
+id|usb_stor_clear_halt
 c_func
 (paren
-id|us-&gt;pusb_dev
+id|us
 comma
 id|pipe
 )paren
@@ -6416,49 +6416,6 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Define lba-pba translation table&n;&t; */
 singleline_comment|// Each block is 64 bytes of control data, so block i is located in
 singleline_comment|// scatterlist block i*64/128k = i*(2^6)*(2^-17) = i*(2^-11)
-macro_line|#if 0
-multiline_comment|/* No translation */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|numblocks
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|lba
-op_assign
-id|i
-suffix:semicolon
-id|info-&gt;pba_to_lba
-(braket
-id|i
-)braket
-op_assign
-id|lba
-suffix:semicolon
-id|info-&gt;lba_to_pba
-(braket
-id|lba
-)braket
-op_assign
-id|i
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;sddr09: no translation today&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#else
 r_for
 c_loop
 (paren
@@ -6911,7 +6868,6 @@ op_assign
 id|i
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * Approximate capacity. This is not entirely correct yet,&n;&t; * since a zone with less than 1000 usable pages leads to&n;&t; * missing LBAs. Especially if it is the last zone, some&n;&t; * LBAs can be past capacity.&n;&t; */
 id|lbact
 op_assign

@@ -1,6 +1,6 @@
-macro_line|#ifndef __LINUX_UHCI_H
-DECL|macro|__LINUX_UHCI_H
-mdefine_line|#define __LINUX_UHCI_H
+macro_line|#ifndef __LINUX_UHCI_HCD_H
+DECL|macro|__LINUX_UHCI_HCD_H
+mdefine_line|#define __LINUX_UHCI_HCD_H
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 multiline_comment|/*&n; * Universal Host Controller Interface data structures and defines&n; */
@@ -86,13 +86,13 @@ mdefine_line|#define   USBLEGSUP_DEFAULT&t;0x2000&t;/* only PIRQ enable set */
 DECL|macro|UHCI_NULL_DATA_SIZE
 mdefine_line|#define UHCI_NULL_DATA_SIZE&t;0x7FF&t;/* for UHCI controller TD */
 DECL|macro|UHCI_PTR_BITS
-mdefine_line|#define UHCI_PTR_BITS&t;&t;0x000F
+mdefine_line|#define UHCI_PTR_BITS&t;&t;cpu_to_le32(0x000F)
 DECL|macro|UHCI_PTR_TERM
-mdefine_line|#define UHCI_PTR_TERM&t;&t;0x0001
+mdefine_line|#define UHCI_PTR_TERM&t;&t;cpu_to_le32(0x0001)
 DECL|macro|UHCI_PTR_QH
-mdefine_line|#define UHCI_PTR_QH&t;&t;0x0002
+mdefine_line|#define UHCI_PTR_QH&t;&t;cpu_to_le32(0x0002)
 DECL|macro|UHCI_PTR_DEPTH
-mdefine_line|#define UHCI_PTR_DEPTH&t;&t;0x0004
+mdefine_line|#define UHCI_PTR_DEPTH&t;&t;cpu_to_le32(0x0004)
 DECL|macro|UHCI_NUMFRAMES
 mdefine_line|#define UHCI_NUMFRAMES&t;&t;1024&t;/* in the frame list [array] */
 DECL|macro|UHCI_MAX_SOF_NUMBER
@@ -185,6 +185,8 @@ l_int|16
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * for TD &lt;status&gt;:&n; */
+DECL|macro|td_status
+mdefine_line|#define td_status(td)&t;&t;le32_to_cpu((td)-&gt;status)
 DECL|macro|TD_CTRL_SPD
 mdefine_line|#define TD_CTRL_SPD&t;&t;(1 &lt;&lt; 29)&t;/* Short Packet Detect */
 DECL|macro|TD_CTRL_C_ERR_MASK
@@ -212,34 +214,42 @@ mdefine_line|#define TD_CTRL_CRCTIMEO&t;(1 &lt;&lt; 18)&t;/* CRC/Time Out Error 
 DECL|macro|TD_CTRL_BITSTUFF
 mdefine_line|#define TD_CTRL_BITSTUFF&t;(1 &lt;&lt; 17)&t;/* Bit Stuff Error */
 DECL|macro|TD_CTRL_ACTLEN_MASK
-mdefine_line|#define TD_CTRL_ACTLEN_MASK&t;0x7FF&t;&t;/* actual length, encoded as n - 1 */
+mdefine_line|#define TD_CTRL_ACTLEN_MASK&t;0x7FF&t;/* actual length, encoded as n - 1 */
 DECL|macro|TD_CTRL_ANY_ERROR
 mdefine_line|#define TD_CTRL_ANY_ERROR&t;(TD_CTRL_STALLED | TD_CTRL_DBUFERR | &bslash;&n;&t;&t;&t;&t; TD_CTRL_BABBLE | TD_CTRL_CRCTIME | TD_CTRL_BITSTUFF)
+DECL|macro|uhci_maxerr
+mdefine_line|#define uhci_maxerr(err)&t;&t;((err) &lt;&lt; TD_CTRL_C_ERR_SHIFT)
 DECL|macro|uhci_status_bits
-mdefine_line|#define uhci_status_bits(ctrl_sts)&t;(ctrl_sts &amp; 0xFE0000)
+mdefine_line|#define uhci_status_bits(ctrl_sts)&t;((ctrl_sts) &amp; 0xFE0000)
 DECL|macro|uhci_actual_length
-mdefine_line|#define uhci_actual_length(ctrl_sts)&t;((ctrl_sts + 1) &amp; TD_CTRL_ACTLEN_MASK) /* 1-based */
+mdefine_line|#define uhci_actual_length(ctrl_sts)&t;(((ctrl_sts) + 1) &amp; TD_CTRL_ACTLEN_MASK) /* 1-based */
 multiline_comment|/*&n; * for TD &lt;info&gt;: (a.k.a. Token)&n; */
+DECL|macro|td_token
+mdefine_line|#define td_token(td)&t;&t;le32_to_cpu((td)-&gt;token)
+DECL|macro|TD_TOKEN_DEVADDR_SHIFT
+mdefine_line|#define TD_TOKEN_DEVADDR_SHIFT&t;8
 DECL|macro|TD_TOKEN_TOGGLE_SHIFT
 mdefine_line|#define TD_TOKEN_TOGGLE_SHIFT&t;19
 DECL|macro|TD_TOKEN_TOGGLE
 mdefine_line|#define TD_TOKEN_TOGGLE&t;&t;(1 &lt;&lt; 19)
-DECL|macro|TD_TOKEN_PID_MASK
-mdefine_line|#define TD_TOKEN_PID_MASK&t;0xFF
+DECL|macro|TD_TOKEN_EXPLEN_SHIFT
+mdefine_line|#define TD_TOKEN_EXPLEN_SHIFT&t;21
 DECL|macro|TD_TOKEN_EXPLEN_MASK
 mdefine_line|#define TD_TOKEN_EXPLEN_MASK&t;0x7FF&t;&t;/* expected length, encoded as n - 1 */
-DECL|macro|uhci_maxlen
-mdefine_line|#define uhci_maxlen(token)&t;((token) &gt;&gt; 21)
+DECL|macro|TD_TOKEN_PID_MASK
+mdefine_line|#define TD_TOKEN_PID_MASK&t;0xFF
+DECL|macro|uhci_explen
+mdefine_line|#define uhci_explen(len)&t;((len) &lt;&lt; TD_TOKEN_EXPLEN_SHIFT)
 DECL|macro|uhci_expected_length
-mdefine_line|#define uhci_expected_length(info) (((info &gt;&gt; 21) + 1) &amp; TD_TOKEN_EXPLEN_MASK) /* 1-based */
+mdefine_line|#define uhci_expected_length(token) ((((token) &gt;&gt; 21) + 1) &amp; TD_TOKEN_EXPLEN_MASK)
 DECL|macro|uhci_toggle
 mdefine_line|#define uhci_toggle(token)&t;(((token) &gt;&gt; TD_TOKEN_TOGGLE_SHIFT) &amp; 1)
 DECL|macro|uhci_endpoint
 mdefine_line|#define uhci_endpoint(token)&t;(((token) &gt;&gt; 15) &amp; 0xf)
 DECL|macro|uhci_devaddr
-mdefine_line|#define uhci_devaddr(token)&t;(((token) &gt;&gt; 8) &amp; 0x7f)
+mdefine_line|#define uhci_devaddr(token)&t;(((token) &gt;&gt; TD_TOKEN_DEVADDR_SHIFT) &amp; 0x7f)
 DECL|macro|uhci_devep
-mdefine_line|#define uhci_devep(token)&t;(((token) &gt;&gt; 8) &amp; 0x7ff)
+mdefine_line|#define uhci_devep(token)&t;(((token) &gt;&gt; TD_TOKEN_DEVADDR_SHIFT) &amp; 0x7ff)
 DECL|macro|uhci_packetid
 mdefine_line|#define uhci_packetid(token)&t;((token) &amp; TD_TOKEN_PID_MASK)
 DECL|macro|uhci_packetout
@@ -260,9 +270,9 @@ DECL|member|status
 id|__u32
 id|status
 suffix:semicolon
-DECL|member|info
+DECL|member|token
 id|__u32
-id|info
+id|token
 suffix:semicolon
 DECL|member|buffer
 id|__u32
@@ -447,63 +457,18 @@ l_int|7
 suffix:semicolon
 multiline_comment|/* int128 for 128-255 ms (Max.) */
 )brace
-DECL|struct|virt_root_hub
-r_struct
-id|virt_root_hub
-(brace
-DECL|member|dev
-r_struct
-id|usb_device
-op_star
-id|dev
-suffix:semicolon
-DECL|member|devnum
-r_int
-id|devnum
-suffix:semicolon
-multiline_comment|/* Address of Root Hub endpoint */
-DECL|member|urb
-r_struct
-id|urb
-op_star
-id|urb
-suffix:semicolon
-DECL|member|int_addr
-r_void
-op_star
-id|int_addr
-suffix:semicolon
-DECL|member|send
-r_int
-id|send
-suffix:semicolon
-DECL|member|interval
-r_int
-id|interval
-suffix:semicolon
-DECL|member|numports
-r_int
-id|numports
-suffix:semicolon
-DECL|member|c_p_r
-r_int
-id|c_p_r
-(braket
-l_int|8
-)braket
-suffix:semicolon
-DECL|member|rh_int_timer
-r_struct
-id|timer_list
-id|rh_int_timer
-suffix:semicolon
-)brace
-suffix:semicolon
+DECL|macro|hcd_to_uhci
+mdefine_line|#define hcd_to_uhci(hcd_ptr) list_entry(hcd_ptr, struct uhci_hcd, hcd)
 multiline_comment|/*&n; * This describes the full uhci information.&n; *&n; * Note how the &quot;proper&quot; USB information is just&n; * a subset of what the full implementation needs.&n; */
-DECL|struct|uhci
+DECL|struct|uhci_hcd
 r_struct
-id|uhci
+id|uhci_hcd
 (brace
+DECL|member|hcd
+r_struct
+id|usb_hcd
+id|hcd
+suffix:semicolon
 DECL|member|dev
 r_struct
 id|pci_dev
@@ -646,18 +611,33 @@ id|list_head
 id|complete_list
 suffix:semicolon
 multiline_comment|/* P: uhci-&gt;complete_list_lock */
-DECL|member|rh
+DECL|member|rh_dev
 r_struct
-id|virt_root_hub
-id|rh
+id|usb_device
+op_star
+id|rh_dev
 suffix:semicolon
-multiline_comment|/* private data of the virtual root hub */
+multiline_comment|/* Root hub */
+DECL|member|rh_numports
+r_int
+id|rh_numports
+suffix:semicolon
+DECL|member|stall_timer
+r_struct
+id|timer_list
+id|stall_timer
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|urb_priv
 r_struct
 id|urb_priv
 (brace
+DECL|member|urb_list
+r_struct
+id|list_head
+id|urb_list
+suffix:semicolon
 DECL|member|urb
 r_struct
 id|urb
@@ -753,90 +733,5 @@ multiline_comment|/* P: uhci-&gt;complete_list_lock */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Locking in uhci.c&n; *&n; * spinlocks are used extensively to protect the many lists and data&n; * structures we have. It&squot;s not that pretty, but it&squot;s necessary. We&n; * need to be done with all of the locks (except complete_list_lock) when&n; * we call urb-&gt;complete. I&squot;ve tried to make it simple enough so I don&squot;t&n; * have to spend hours racking my brain trying to figure out if the&n; * locking is safe.&n; *&n; * Here&squot;s the safe locking order to prevent deadlocks:&n; *&n; * #1 uhci-&gt;urb_list_lock&n; * #2 urb-&gt;lock&n; * #3 uhci-&gt;urb_remove_list_lock, uhci-&gt;frame_list_lock, &n; *   uhci-&gt;qh_remove_list_lock&n; * #4 uhci-&gt;complete_list_lock&n; *&n; * If you&squot;re going to grab 2 or more locks at once, ALWAYS grab the lock&n; * at the lowest level FIRST and NEVER grab locks at the same level at the&n; * same time.&n; * &n; * So, if you need uhci-&gt;urb_list_lock, grab it before you grab urb-&gt;lock&n; */
-multiline_comment|/* -------------------------------------------------------------------------&n;   Virtual Root HUB&n;   ------------------------------------------------------------------------- */
-multiline_comment|/* destination of request */
-DECL|macro|RH_DEVICE
-mdefine_line|#define RH_DEVICE&t;&t;0x00
-DECL|macro|RH_INTERFACE
-mdefine_line|#define RH_INTERFACE&t;&t;0x01
-DECL|macro|RH_ENDPOINT
-mdefine_line|#define RH_ENDPOINT&t;&t;0x02
-DECL|macro|RH_OTHER
-mdefine_line|#define RH_OTHER&t;&t;0x03
-DECL|macro|RH_CLASS
-mdefine_line|#define RH_CLASS&t;&t;0x20
-DECL|macro|RH_VENDOR
-mdefine_line|#define RH_VENDOR&t;&t;0x40
-multiline_comment|/* Requests: bRequest &lt;&lt; 8 | bmRequestType */
-DECL|macro|RH_GET_STATUS
-mdefine_line|#define RH_GET_STATUS&t;&t;0x0080
-DECL|macro|RH_CLEAR_FEATURE
-mdefine_line|#define RH_CLEAR_FEATURE&t;0x0100
-DECL|macro|RH_SET_FEATURE
-mdefine_line|#define RH_SET_FEATURE&t;&t;0x0300
-DECL|macro|RH_SET_ADDRESS
-mdefine_line|#define RH_SET_ADDRESS&t;&t;0x0500
-DECL|macro|RH_GET_DESCRIPTOR
-mdefine_line|#define RH_GET_DESCRIPTOR&t;0x0680
-DECL|macro|RH_SET_DESCRIPTOR
-mdefine_line|#define RH_SET_DESCRIPTOR&t;0x0700
-DECL|macro|RH_GET_CONFIGURATION
-mdefine_line|#define RH_GET_CONFIGURATION&t;0x0880
-DECL|macro|RH_SET_CONFIGURATION
-mdefine_line|#define RH_SET_CONFIGURATION&t;0x0900
-DECL|macro|RH_GET_STATE
-mdefine_line|#define RH_GET_STATE&t;&t;0x0280
-DECL|macro|RH_GET_INTERFACE
-mdefine_line|#define RH_GET_INTERFACE&t;0x0A80
-DECL|macro|RH_SET_INTERFACE
-mdefine_line|#define RH_SET_INTERFACE&t;0x0B00
-DECL|macro|RH_SYNC_FRAME
-mdefine_line|#define RH_SYNC_FRAME&t;&t;0x0C80
-multiline_comment|/* Our Vendor Specific Request */
-DECL|macro|RH_SET_EP
-mdefine_line|#define RH_SET_EP&t;&t;0x2000
-multiline_comment|/* Hub port features */
-DECL|macro|RH_PORT_CONNECTION
-mdefine_line|#define RH_PORT_CONNECTION&t;0x00
-DECL|macro|RH_PORT_ENABLE
-mdefine_line|#define RH_PORT_ENABLE&t;&t;0x01
-DECL|macro|RH_PORT_SUSPEND
-mdefine_line|#define RH_PORT_SUSPEND&t;&t;0x02
-DECL|macro|RH_PORT_OVER_CURRENT
-mdefine_line|#define RH_PORT_OVER_CURRENT&t;0x03
-DECL|macro|RH_PORT_RESET
-mdefine_line|#define RH_PORT_RESET&t;&t;0x04
-DECL|macro|RH_PORT_POWER
-mdefine_line|#define RH_PORT_POWER&t;&t;0x08
-DECL|macro|RH_PORT_LOW_SPEED
-mdefine_line|#define RH_PORT_LOW_SPEED&t;0x09
-DECL|macro|RH_C_PORT_CONNECTION
-mdefine_line|#define RH_C_PORT_CONNECTION&t;0x10
-DECL|macro|RH_C_PORT_ENABLE
-mdefine_line|#define RH_C_PORT_ENABLE&t;0x11
-DECL|macro|RH_C_PORT_SUSPEND
-mdefine_line|#define RH_C_PORT_SUSPEND&t;0x12
-DECL|macro|RH_C_PORT_OVER_CURRENT
-mdefine_line|#define RH_C_PORT_OVER_CURRENT&t;0x13
-DECL|macro|RH_C_PORT_RESET
-mdefine_line|#define RH_C_PORT_RESET&t;&t;0x14
-multiline_comment|/* Hub features */
-DECL|macro|RH_C_HUB_LOCAL_POWER
-mdefine_line|#define RH_C_HUB_LOCAL_POWER&t;0x00
-DECL|macro|RH_C_HUB_OVER_CURRENT
-mdefine_line|#define RH_C_HUB_OVER_CURRENT&t;0x01
-DECL|macro|RH_DEVICE_REMOTE_WAKEUP
-mdefine_line|#define RH_DEVICE_REMOTE_WAKEUP&t;0x00
-DECL|macro|RH_ENDPOINT_STALL
-mdefine_line|#define RH_ENDPOINT_STALL&t;0x01
-multiline_comment|/* Our Vendor Specific feature */
-DECL|macro|RH_REMOVE_EP
-mdefine_line|#define RH_REMOVE_EP&t;&t;0x00
-DECL|macro|RH_ACK
-mdefine_line|#define RH_ACK&t;&t;&t;0x01
-DECL|macro|RH_REQ_ERR
-mdefine_line|#define RH_REQ_ERR&t;&t;-1
-DECL|macro|RH_NACK
-mdefine_line|#define RH_NACK&t;&t;&t;0x00
 macro_line|#endif
 eof

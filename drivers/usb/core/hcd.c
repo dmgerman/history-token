@@ -4016,7 +4016,7 @@ id|urb-&gt;dev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 (paren
 id|dev
 )paren
@@ -4661,7 +4661,7 @@ op_ne
 id|USB_STATE_QUIESCING
 )paren
 (brace
-id|usb_inc_dev_use
+id|usb_get_dev
 (paren
 id|urb-&gt;dev
 )paren
@@ -5393,6 +5393,11 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|hcd-&gt;driver-&gt;free_config
+)paren
 id|hcd-&gt;driver-&gt;free_config
 (paren
 id|hcd

@@ -1015,29 +1015,13 @@ r_int
 id|len
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * As of USB 2.0, full/low speed devices are segregated into trees.&n; * One type grows from USB 1.1 host controllers (OHCI, UHCI etc).&n; * The other type grows from high speed hubs when they connect to&n; * full/low speed devices using &quot;Transaction Translators&quot; (TTs).&n; *&n; * TTs should only be known to the hub driver, and high speed bus&n; * drivers (only EHCI for now).  They affect periodic scheduling and&n; * sometimes control/bulk error recovery.&n; */
-DECL|struct|usb_tt
-r_struct
-id|usb_tt
-(brace
-DECL|member|hub
-r_struct
-id|usb_device
-op_star
-id|hub
-suffix:semicolon
-multiline_comment|/* upstream highspeed hub */
-DECL|member|multi
-r_int
-id|multi
-suffix:semicolon
-multiline_comment|/* true means one TT per port */
-)brace
-suffix:semicolon
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/* This is arbitrary.&n; * From USB 2.0 spec Table 11-13, offset 7, a hub can&n; * have up to 255 ports. The most yet reported is 10.&n; */
 DECL|macro|USB_MAXCHILDREN
 mdefine_line|#define USB_MAXCHILDREN&t;&t;(16)
+r_struct
+id|usb_tt
+suffix:semicolon
 DECL|struct|usb_device
 r_struct
 id|usb_device
@@ -1226,6 +1210,48 @@ id|USB_MAXCHILDREN
 suffix:semicolon
 )brace
 suffix:semicolon
+r_extern
+r_struct
+id|usb_device
+op_star
+id|usb_alloc_dev
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|parent
+comma
+r_struct
+id|usb_bus
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|usb_device
+op_star
+id|usb_get_dev
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_free_dev
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+)paren
+suffix:semicolon
+DECL|macro|usb_put_dev
+mdefine_line|#define usb_put_dev usb_free_dev
 multiline_comment|/* for when layers above USB add new non-USB drivers */
 r_extern
 r_void
@@ -1258,56 +1284,6 @@ op_star
 id|usb_dev
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * usb_inc_dev_use - record another reference to a device&n; * @dev: the device being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally record such references in&n; * their probe() methods, when they bind to an interface, and release&n; * them usb_dec_dev_use(), in their disconnect() methods.&n; */
-DECL|function|usb_inc_dev_use
-r_static
-r_inline
-r_void
-id|usb_inc_dev_use
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-(brace
-id|atomic_inc
-(paren
-op_amp
-id|dev-&gt;refcnt
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * usb_dec_dev_use - drop a reference to a device&n; * @dev: the device no longer being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally release such references in&n; * their disconnect() methods, and record them in probe().&n; *&n; * Note that driver disconnect() methods must guarantee that when they&n; * return, all of their outstanding references to the device (and its&n; * interfaces) are cleaned up.  That means that all pending URBs from&n; * this driver must have completed, and that no more copies of the device&n; * handle are saved in driver records (including other kernel threads).&n; */
-DECL|function|usb_dec_dev_use
-r_static
-r_inline
-r_void
-id|usb_dec_dev_use
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|atomic_dec_and_test
-(paren
-op_amp
-id|dev-&gt;refcnt
-)paren
-)paren
-(brace
-multiline_comment|/* May only go to zero when usbcore finishes&n;&t;&t; * usb_disconnect() processing:  khubd or HCDs.&n;&t;&t; *&n;&t;&t; * If you hit this BUG() it&squot;s likely a problem&n;&t;&t; * with some driver&squot;s disconnect() routine.&n;&t;&t; */
-id|BUG
-(paren
-)paren
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/* used these for multi-interface device registration */
 r_extern
 r_int
@@ -2520,6 +2496,7 @@ DECL|macro|USB_CTRL_SET_TIMEOUT
 mdefine_line|#define USB_CTRL_SET_TIMEOUT 3
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/*&n; * Calling this entity a &quot;pipe&quot; is glorifying it. A USB pipe&n; * is something embarrassingly simple: it basically consists&n; * of the following information:&n; *  - device number (7 bits)&n; *  - endpoint number (4 bits)&n; *  - current Data0/1 state (1 bit) [Historical; now gone]&n; *  - direction (1 bit)&n; *  - speed (1 bit) [Historical and specific to USB 1.1; now gone.]&n; *  - max packet size (2 bits: 8, 16, 32 or 64) [Historical; now gone.]&n; *  - pipe type (2 bits: control, interrupt, bulk, isochronous)&n; *&n; * That&squot;s 18 bits. Really. Nothing more. And the USB people have&n; * documented these eighteen bits as some kind of glorious&n; * virtual data structure.&n; *&n; * Let&squot;s not fall in that trap. We&squot;ll just encode it as a simple&n; * unsigned int. The encoding is:&n; *&n; *  - max size:&t;&t;bits 0-1&t;[Historical; now gone.]&n; *  - direction:&t;bit 7&t;&t;(0 = Host-to-Device [Out],&n; *&t;&t;&t;&t;&t; 1 = Device-to-Host [In])&n; *  - device:&t;&t;bits 8-14&n; *  - endpoint:&t;&t;bits 15-18&n; *  - Data0/1:&t;&t;bit 19&t;&t;[Historical; now gone. ]&n; *  - lowspeed:&t;&t;bit 26&t;&t;[Historical; now gone. ]&n; *  - pipe type:&t;bits 30-31&t;(00 = isochronous, 01 = interrupt,&n; *&t;&t;&t;&t;&t; 10 = control, 11 = bulk)&n; *&n; * Why? Because it&squot;s arbitrary, and whatever encoding we select is really&n; * up to us. This one happens to share a lot of bit positions with the UHCI&n; * specification, so that much of the uhci driver can just mask the bits&n; * appropriately.&n; */
+multiline_comment|/* NOTE:  these are not the standard USB_ENDPOINT_XFER_* values!! */
 DECL|macro|PIPE_ISOCHRONOUS
 mdefine_line|#define PIPE_ISOCHRONOUS&t;&t;0
 DECL|macro|PIPE_INTERRUPT
