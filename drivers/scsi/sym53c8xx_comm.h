@@ -369,6 +369,13 @@ id|pci_dev
 op_star
 id|pcidev_t
 suffix:semicolon
+DECL|typedef|device_t
+r_typedef
+r_struct
+id|device
+op_star
+id|device_t
+suffix:semicolon
 DECL|macro|PCIDEV_NULL
 mdefine_line|#define PCIDEV_NULL&t;&t;(0)
 DECL|macro|PciBusNumber
@@ -566,6 +573,12 @@ r_typedef
 r_int
 r_int
 id|pcidev_t
+suffix:semicolon
+DECL|typedef|device_t
+r_typedef
+id|unsinged
+r_int
+id|device_t
 suffix:semicolon
 DECL|macro|PCIDEV_NULL
 mdefine_line|#define PCIDEV_NULL&t;&t;(~0u)
@@ -1146,7 +1159,9 @@ suffix:semicolon
 multiline_comment|/* Enough bits to bit-hack addresses */
 DECL|typedef|m_bush_t
 r_typedef
-id|pcidev_t
+r_struct
+id|device
+op_star
 id|m_bush_t
 suffix:semicolon
 multiline_comment|/* Something that addresses DMAable */
@@ -2125,7 +2140,7 @@ op_assign
 (paren
 id|m_addr_t
 )paren
-id|pci_alloc_consistent
+id|dma_alloc_coherent
 c_func
 (paren
 id|mp-&gt;bush
@@ -2295,7 +2310,7 @@ id|vbpp
 op_member_access_from_pointer
 id|next
 suffix:semicolon
-id|pci_free_consistent
+id|dma_free_coherent
 c_func
 (paren
 id|mp-&gt;bush
@@ -2831,28 +2846,28 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;/* SCSI_NCR_DYNAMIC_DMA_MAPPING */
 DECL|macro|_m_calloc_dma
-mdefine_line|#define _m_calloc_dma(np, s, n)&t;&t;__m_calloc_dma(np-&gt;pdev, s, n)
+mdefine_line|#define _m_calloc_dma(np, s, n)&t;&t;__m_calloc_dma(np-&gt;dev, s, n)
 DECL|macro|_m_free_dma
-mdefine_line|#define _m_free_dma(np, p, s, n)&t;__m_free_dma(np-&gt;pdev, p, s, n)
+mdefine_line|#define _m_free_dma(np, p, s, n)&t;__m_free_dma(np-&gt;dev, p, s, n)
 DECL|macro|m_calloc_dma
 mdefine_line|#define m_calloc_dma(s, n)&t;&t;_m_calloc_dma(np, s, n)
 DECL|macro|m_free_dma
 mdefine_line|#define m_free_dma(p, s, n)&t;&t;_m_free_dma(np, p, s, n)
 DECL|macro|_vtobus
-mdefine_line|#define _vtobus(np, p)&t;&t;&t;__vtobus(np-&gt;pdev, p)
+mdefine_line|#define _vtobus(np, p)&t;&t;&t;__vtobus(np-&gt;dev, p)
 DECL|macro|vtobus
 mdefine_line|#define vtobus(p)&t;&t;&t;_vtobus(np, p)
 multiline_comment|/*&n; *  Deal with DMA mapping/unmapping.&n; */
 macro_line|#ifndef SCSI_NCR_DYNAMIC_DMA_MAPPING
 multiline_comment|/* Linux versions prior to pci bus iommu kernel interface */
 DECL|macro|__unmap_scsi_data
-mdefine_line|#define __unmap_scsi_data(pdev, cmd)&t;do {; } while (0)
+mdefine_line|#define __unmap_scsi_data(dev, cmd)&t;do {; } while (0)
 DECL|macro|__map_scsi_single_data
-mdefine_line|#define __map_scsi_single_data(pdev, cmd) (__vtobus(pdev,(cmd)-&gt;request_buffer))
+mdefine_line|#define __map_scsi_single_data(dev, cmd) (__vtobus(dev,(cmd)-&gt;request_buffer))
 DECL|macro|__map_scsi_sg_data
-mdefine_line|#define __map_scsi_sg_data(pdev, cmd)&t;((cmd)-&gt;use_sg)
+mdefine_line|#define __map_scsi_sg_data(dev, cmd)&t;((cmd)-&gt;use_sg)
 DECL|macro|__sync_scsi_data
-mdefine_line|#define __sync_scsi_data(pdev, cmd)&t;do {; } while (0)
+mdefine_line|#define __sync_scsi_data(dev, cmd)&t;do {; } while (0)
 DECL|macro|scsi_sg_dma_address
 mdefine_line|#define scsi_sg_dma_address(sc)&t;&t;vtobus((sc)-&gt;address)
 DECL|macro|scsi_sg_dma_len
@@ -2870,17 +2885,22 @@ r_void
 id|__unmap_scsi_data
 c_func
 (paren
-id|pcidev_t
-id|pdev
+id|device_t
+id|dev
 comma
 id|Scsi_Cmnd
 op_star
 id|cmd
 )paren
 (brace
-r_int
+r_enum
+id|dma_data_direction
 id|dma_dir
 op_assign
+(paren
+r_enum
+id|dma_data_direction
+)paren
 id|scsi_to_pci_dma_dir
 c_func
 (paren
@@ -2896,10 +2916,10 @@ id|cmd-&gt;__data_mapped
 r_case
 l_int|2
 suffix:colon
-id|pci_unmap_sg
+id|dma_unmap_sg
 c_func
 (paren
-id|pdev
+id|dev
 comma
 id|cmd-&gt;buffer
 comma
@@ -2913,10 +2933,10 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|pci_unmap_single
+id|dma_unmap_single
 c_func
 (paren
-id|pdev
+id|dev
 comma
 id|cmd-&gt;__data_mapping
 comma
@@ -2939,8 +2959,8 @@ id|u_long
 id|__map_scsi_single_data
 c_func
 (paren
-id|pcidev_t
-id|pdev
+id|device_t
+id|dev
 comma
 id|Scsi_Cmnd
 op_star
@@ -2950,9 +2970,14 @@ id|cmd
 id|dma_addr_t
 id|mapping
 suffix:semicolon
-r_int
+r_enum
+id|dma_data_direction
 id|dma_dir
 op_assign
+(paren
+r_enum
+id|dma_data_direction
+)paren
 id|scsi_to_pci_dma_dir
 c_func
 (paren
@@ -2971,10 +2996,10 @@ l_int|0
 suffix:semicolon
 id|mapping
 op_assign
-id|pci_map_single
+id|dma_map_single
 c_func
 (paren
-id|pdev
+id|dev
 comma
 id|cmd-&gt;request_buffer
 comma
@@ -3001,8 +3026,8 @@ r_int
 id|__map_scsi_sg_data
 c_func
 (paren
-id|pcidev_t
-id|pdev
+id|device_t
+id|dev
 comma
 id|Scsi_Cmnd
 op_star
@@ -3012,9 +3037,14 @@ id|cmd
 r_int
 id|use_sg
 suffix:semicolon
-r_int
+r_enum
+id|dma_data_direction
 id|dma_dir
 op_assign
+(paren
+r_enum
+id|dma_data_direction
+)paren
 id|scsi_to_pci_dma_dir
 c_func
 (paren
@@ -3033,10 +3063,10 @@ l_int|0
 suffix:semicolon
 id|use_sg
 op_assign
-id|pci_map_sg
+id|dma_map_sg
 c_func
 (paren
-id|pdev
+id|dev
 comma
 id|cmd-&gt;buffer
 comma
@@ -3063,17 +3093,22 @@ r_void
 id|__sync_scsi_data
 c_func
 (paren
-id|pcidev_t
-id|pdev
+id|device_t
+id|dev
 comma
 id|Scsi_Cmnd
 op_star
 id|cmd
 )paren
 (brace
-r_int
+r_enum
+id|dma_data_direction
 id|dma_dir
 op_assign
+(paren
+r_enum
+id|dma_data_direction
+)paren
 id|scsi_to_pci_dma_dir
 c_func
 (paren
@@ -3089,10 +3124,10 @@ id|cmd-&gt;__data_mapped
 r_case
 l_int|2
 suffix:colon
-id|pci_dma_sync_sg
+id|dma_sync_sg
 c_func
 (paren
-id|pdev
+id|dev
 comma
 id|cmd-&gt;buffer
 comma
@@ -3106,10 +3141,10 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|pci_dma_sync_single
+id|dma_sync_single
 c_func
 (paren
-id|pdev
+id|dev
 comma
 id|cmd-&gt;__data_mapping
 comma
@@ -3128,13 +3163,13 @@ DECL|macro|scsi_sg_dma_len
 mdefine_line|#define scsi_sg_dma_len(sc)&t;&t;sg_dma_len(sc)
 macro_line|#endif&t;/* SCSI_NCR_DYNAMIC_DMA_MAPPING */
 DECL|macro|unmap_scsi_data
-mdefine_line|#define unmap_scsi_data(np, cmd)&t;__unmap_scsi_data(np-&gt;pdev, cmd)
+mdefine_line|#define unmap_scsi_data(np, cmd)&t;__unmap_scsi_data(np-&gt;dev, cmd)
 DECL|macro|map_scsi_single_data
-mdefine_line|#define map_scsi_single_data(np, cmd)&t;__map_scsi_single_data(np-&gt;pdev, cmd)
+mdefine_line|#define map_scsi_single_data(np, cmd)&t;__map_scsi_single_data(np-&gt;dev, cmd)
 DECL|macro|map_scsi_sg_data
-mdefine_line|#define map_scsi_sg_data(np, cmd)&t;__map_scsi_sg_data(np-&gt;pdev, cmd)
+mdefine_line|#define map_scsi_sg_data(np, cmd)&t;__map_scsi_sg_data(np-&gt;dev, cmd)
 DECL|macro|sync_scsi_data
-mdefine_line|#define sync_scsi_data(np, cmd)&t;&t;__sync_scsi_data(np-&gt;pdev, cmd)
+mdefine_line|#define sync_scsi_data(np, cmd)&t;&t;__sync_scsi_data(np-&gt;dev, cmd)
 multiline_comment|/*==========================================================&n;**&n;**&t;SCSI data transfer direction&n;**&n;**&t;Until some linux kernel version near 2.3.40, &n;**&t;low-level scsi drivers were not told about data &n;**&t;transfer direction. We check the existence of this &n;**&t;feature that has been expected for a _long_ time by &n;**&t;all SCSI driver developers by just testing against &n;**&t;the definition of SCSI_DATA_UNKNOWN. Indeed this is &n;**&t;a hack, but testing against a kernel version would &n;**&t;have been a shame. ;-)&n;**&n;**==========================================================&n;*/
 macro_line|#ifdef&t;SCSI_DATA_UNKNOWN
 DECL|macro|scsi_data_direction
@@ -3337,9 +3372,9 @@ multiline_comment|/*==========================================================&n
 r_typedef
 r_struct
 (brace
-DECL|member|pdev
-id|pcidev_t
-id|pdev
+DECL|member|dev
+id|device_t
+id|dev
 suffix:semicolon
 DECL|member|slot
 id|ncr_slot
@@ -8621,9 +8656,10 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;/* SCSI_NCR_PCI_FIX_UP_SUPPORT */
 multiline_comment|/*&n;&t;**    Initialise ncr_device structure with items required by ncr_attach.&n;&t;*/
-id|device-&gt;pdev
+id|device-&gt;dev
 op_assign
-id|pdev
+op_amp
+id|pdev-&gt;dev
 suffix:semicolon
 id|device-&gt;slot.bus
 op_assign
