@@ -647,6 +647,10 @@ id|skb-&gt;pkt_type
 op_assign
 id|PACKET_HOST
 suffix:semicolon
+id|skb-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 r_return
 id|netif_rx
 c_func
@@ -1074,6 +1078,10 @@ id|skb-&gt;pkt_type
 op_assign
 id|PACKET_HOST
 suffix:semicolon
+id|skb-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|netif_rx
 c_func
 (paren
@@ -1175,6 +1183,10 @@ suffix:semicolon
 id|skb-&gt;pkt_type
 op_assign
 id|PACKET_HOST
+suffix:semicolon
+id|skb-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 id|netif_rx
 c_func

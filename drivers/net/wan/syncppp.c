@@ -884,6 +884,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -915,6 +919,10 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -1021,6 +1029,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 r_return
 suffix:semicolon
 macro_line|#endif
@@ -1041,6 +1053,10 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 r_return
 suffix:semicolon
