@@ -5246,14 +5246,6 @@ id|cifsInfo-&gt;time
 op_assign
 id|jiffies
 suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|cifsInfo-&gt;inUse
-)paren
-suffix:semicolon
-multiline_comment|/* inc on every refresh of inode info */
 multiline_comment|/* Linux can not store file creation time unfortunately so ignore it */
 id|tmp_inode-&gt;i_atime
 op_assign
@@ -5294,6 +5286,19 @@ suffix:semicolon
 multiline_comment|/* treat dos attribute of read-only as read-only mode bit e.g. 555? */
 multiline_comment|/* 2767 perms - indicate mandatory locking */
 multiline_comment|/* BB fill in uid and gid here? with help from winbind? &n;&t;&t;&t;or retrieve from NTFS stream extended attribute */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|cifsInfo-&gt;inUse
+)paren
+op_eq
+l_int|0
+)paren
+(brace
 id|tmp_inode-&gt;i_uid
 op_assign
 id|cifs_sb-&gt;mnt_uid
@@ -5307,6 +5312,7 @@ id|tmp_inode-&gt;i_mode
 op_assign
 id|cifs_sb-&gt;mnt_file_mode
 suffix:semicolon
+)brace
 id|cFYI
 c_func
 (paren
@@ -5353,10 +5359,24 @@ op_assign
 id|DT_DIR
 suffix:semicolon
 multiline_comment|/* override default perms since we do not lock dirs */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|cifsInfo-&gt;inUse
+)paren
+op_eq
+l_int|0
+)paren
+(brace
 id|tmp_inode-&gt;i_mode
 op_assign
 id|cifs_sb-&gt;mnt_dir_mode
 suffix:semicolon
+)brace
 id|tmp_inode-&gt;i_mode
 op_or_assign
 id|S_IFDIR
@@ -5392,6 +5412,29 @@ suffix:semicolon
 )brace
 multiline_comment|/* could add code here - to validate if device or weird share type? */
 multiline_comment|/* can not fill in nlink here as in qpathinfo version and Unx search */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|cifsInfo-&gt;inUse
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|atomic_set
+c_func
+(paren
+op_amp
+id|cifsInfo-&gt;inUse
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
 id|i_size_write
 c_func
 (paren
