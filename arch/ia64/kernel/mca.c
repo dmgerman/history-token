@@ -1003,7 +1003,7 @@ id|IA64_MCA_RENDEZ_VECTOR
 comma
 id|IA64_MCA_RENDEZ_TIMEOUT
 comma
-l_int|0
+id|SAL_MC_PARAM_RZ_ALWAYS
 )paren
 )paren
 )paren
