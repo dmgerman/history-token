@@ -1,8 +1,8 @@
 macro_line|#ifndef _ASM_IA64_INTRINSICS_H
 DECL|macro|_ASM_IA64_INTRINSICS_H
 mdefine_line|#define _ASM_IA64_INTRINSICS_H
-multiline_comment|/*&n; * Compiler-dependent intrinsics.&n; *&n; * Copyright (C) 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
-macro_line|#include &lt;kernel/config.h&gt;
+multiline_comment|/*&n; * Compiler-dependent intrinsics.&n; *&n; * Copyright (C) 2002-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * Force an unresolved reference if someone tries to use&n; * ia64_fetch_and_add() with a bad value.&n; */
 r_extern
 r_int
