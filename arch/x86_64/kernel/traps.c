@@ -2495,6 +2495,9 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|notify_die
 c_func
 (paren
@@ -2510,6 +2513,10 @@ l_int|13
 comma
 id|SIGSEGV
 )paren
+op_eq
+id|NOTIFY_STOP
+)paren
+r_return
 suffix:semicolon
 id|die
 c_func
