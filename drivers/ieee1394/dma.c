@@ -480,12 +480,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|dma-&gt;sglist
-)paren
-(brace
 id|vfree
 c_func
 (paren
@@ -496,13 +490,6 @@ id|dma-&gt;sglist
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|dma-&gt;kvirt
-)paren
-(brace
 id|vfree
 c_func
 (paren
@@ -517,7 +504,6 @@ id|dma-&gt;n_pages
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* find the scatterlist index and remaining offset corresponding to a&n;   given offset from the beginning of the buffer */
 DECL|function|dma_region_find
