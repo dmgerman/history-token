@@ -3900,6 +3900,40 @@ macro_line|#else
 DECL|macro|need_lockbreak
 macro_line|# define need_lockbreak(lock) 0
 macro_line|#endif
+multiline_comment|/*&n; * Does a critical section need to be broken due to another&n; * task waiting or preemption being signalled:&n; */
+DECL|function|lock_need_resched
+r_static
+r_inline
+r_int
+id|lock_need_resched
+c_func
+(paren
+id|spinlock_t
+op_star
+id|lock
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|need_lockbreak
+c_func
+(paren
+id|lock
+)paren
+op_logical_or
+id|need_resched
+c_func
+(paren
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   callers must hold sighand-&gt;siglock.  */
 r_extern
 id|FASTCALL
