@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/signal.h&quot;
 macro_line|#include &quot;linux/kernel.h&quot;
+macro_line|#include &quot;linux/interrupt.h&quot;
 macro_line|#include &quot;asm/system.h&quot;
 macro_line|#include &quot;asm/pgalloc.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
@@ -398,17 +399,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|schedule_tail
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|prev
-)paren
-suffix:semicolon
 DECL|function|new_thread_handler
 r_static
 r_void
@@ -441,7 +431,12 @@ id|arg
 op_assign
 id|current-&gt;thread.request.u.thread.arg
 suffix:semicolon
-id|current-&gt;thread.regs.regs.mode.tt
+id|UPT_SC
+c_func
+(paren
+op_amp
+id|current-&gt;thread.regs.regs
+)paren
 op_assign
 (paren
 r_void
@@ -603,7 +598,12 @@ r_int
 id|sig
 )paren
 (brace
-id|current-&gt;thread.regs.regs.mode.tt
+id|UPT_SC
+c_func
+(paren
+op_amp
+id|current-&gt;thread.regs.regs
+)paren
 op_assign
 (paren
 r_void
@@ -644,6 +644,11 @@ c_func
 id|SIGVTALRM
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|sti
+c_func
+(paren
 )paren
 suffix:semicolon
 id|force_flush_all
@@ -734,6 +739,11 @@ r_int
 id|sig
 op_assign
 id|sigusr1
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
 suffix:semicolon
 id|init_new_thread_stack
 c_func
@@ -949,15 +959,30 @@ id|current-&gt;thread.forking
 id|sc_to_sc
 c_func
 (paren
-id|p-&gt;thread.regs.regs.mode.tt
+id|UPT_SC
+c_func
+(paren
+op_amp
+id|p-&gt;thread.regs.regs
+)paren
 comma
-id|current-&gt;thread.regs.regs.mode.tt
+id|UPT_SC
+c_func
+(paren
+op_amp
+id|current-&gt;thread.regs.regs
+)paren
 )paren
 suffix:semicolon
 id|SC_SET_SYSCALL_RETURN
 c_func
 (paren
-id|p-&gt;thread.regs.regs.mode.tt
+id|UPT_SC
+c_func
+(paren
+op_amp
+id|p-&gt;thread.regs.regs
+)paren
 comma
 l_int|0
 )paren
@@ -973,7 +998,12 @@ l_int|0
 id|SC_SP
 c_func
 (paren
-id|p-&gt;thread.regs.regs.mode.tt
+id|UPT_SC
+c_func
+(paren
+op_amp
+id|p-&gt;thread.regs.regs
+)paren
 )paren
 op_assign
 id|sp
