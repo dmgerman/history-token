@@ -13,7 +13,8 @@ r_int
 id|sctp_copy_one_addr
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 comma
 r_union
@@ -35,7 +36,8 @@ r_void
 id|sctp_bind_addr_clean
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 )paren
 suffix:semicolon
@@ -46,12 +48,14 @@ r_int
 id|sctp_bind_addr_copy
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|dest
 comma
 r_const
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|src
 comma
@@ -224,7 +228,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Create a new SCTP_bind_addr from nothing.  */
 DECL|function|sctp_bind_addr_new
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|sctp_bind_addr_new
 c_func
@@ -233,7 +238,8 @@ r_int
 id|gfp
 )paren
 (brace
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|retval
 suffix:semicolon
@@ -242,7 +248,8 @@ op_assign
 id|t_new
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 comma
 id|gfp
 )paren
@@ -286,7 +293,8 @@ r_void
 id|sctp_bind_addr_init
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 comma
@@ -317,7 +325,8 @@ r_void
 id|sctp_bind_addr_clean
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 )paren
@@ -386,7 +395,8 @@ r_void
 id|sctp_bind_addr_free
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 )paren
@@ -424,7 +434,8 @@ r_int
 id|sctp_add_bind_addr
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 comma
@@ -513,7 +524,8 @@ r_int
 id|sctp_del_bind_addr
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 comma
@@ -610,7 +622,8 @@ id|sctp_bind_addrs_to_raw
 c_func
 (paren
 r_const
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 comma
@@ -789,7 +802,8 @@ r_int
 id|sctp_raw_to_bind_addrs
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 comma
@@ -959,7 +973,8 @@ r_int
 id|sctp_bind_addr_match
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 comma
@@ -1038,7 +1053,8 @@ r_int
 id|sctp_copy_one_addr
 c_func
 (paren
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|dest
 comma

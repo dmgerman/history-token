@@ -1783,7 +1783,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Return an ecne chunk to get prepended to a packet.&n; * Note:  We are sly and return a shared, prealloced chunk.  FIXME:&n; * No we don&squot;t, but we could/should.&n; */
 DECL|function|sctp_get_ecne_prepend
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_get_ecne_prepend
 c_func
@@ -1826,7 +1827,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Use this function for the packet prepend callback when no ECNE&n; * packet is desired (e.g. some packets don&squot;t like to be bundled).&n; */
 DECL|function|sctp_get_no_prepend
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_get_no_prepend
 c_func
@@ -1881,7 +1883,8 @@ id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -1920,7 +1923,8 @@ c_func
 (paren
 id|entry
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|transmitted_list
 )paren
@@ -1990,7 +1994,8 @@ c_func
 (paren
 id|entry
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|transmitted_list
 )paren
@@ -2149,7 +2154,8 @@ id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -2894,7 +2900,8 @@ r_int
 id|len
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sack
 suffix:semicolon

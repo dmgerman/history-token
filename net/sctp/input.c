@@ -240,7 +240,8 @@ id|transport
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -750,7 +751,8 @@ op_star
 id|skb
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -763,7 +765,8 @@ multiline_comment|/* One day chunk will live inside the skb, but for&n;&t; * now
 id|chunk
 op_assign
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 id|skb

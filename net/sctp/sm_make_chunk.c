@@ -95,7 +95,8 @@ r_void
 id|sctp_init_cause
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -181,7 +182,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* 3.3.2 Initiation (INIT) (1)&n; *&n; * This chunk is used to initiate a SCTP association between two&n; * endpoints. The format of the INIT chunk is shown below:&n; *&n; *     0                   1                   2                   3&n; *     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |   Type = 1    |  Chunk Flags  |      Chunk Length             |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |                         Initiate Tag                          |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |           Advertised Receiver Window Credit (a_rwnd)          |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |  Number of Outbound Streams   |  Number of Inbound Streams    |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |                          Initial TSN                          |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    &bslash;                                                               &bslash;&n; *    /              Optional/Variable-Length Parameters              /&n; *    &bslash;                                                               &bslash;&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *&n; *&n; * The INIT chunk contains the following parameters. Unless otherwise&n; * noted, each parameter MUST only be included once in the INIT chunk.&n; *&n; * Fixed Parameters                     Status&n; * ----------------------------------------------&n; * Initiate Tag                        Mandatory&n; * Advertised Receiver Window Credit   Mandatory&n; * Number of Outbound Streams          Mandatory&n; * Number of Inbound Streams           Mandatory&n; * Initial TSN                         Mandatory&n; *&n; * Variable Parameters                  Status     Type Value&n; * -------------------------------------------------------------&n; * IPv4 Address (Note 1)               Optional    5&n; * IPv6 Address (Note 1)               Optional    6&n; * Cookie Preservative                 Optional    9&n; * Reserved for ECN Capable (Note 2)   Optional    32768 (0x8000)&n; * Host Name Address (Note 3)          Optional    11&n; * Supported Address Types (Note 4)    Optional    12&n; */
 DECL|function|sctp_make_init
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_init
 c_func
@@ -193,7 +195,8 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 comma
@@ -214,7 +217,8 @@ suffix:semicolon
 r_int
 id|chunksize
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 op_assign
@@ -478,7 +482,8 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|sctp_make_init_ack
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_init_ack
 c_func
@@ -490,7 +495,8 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -504,7 +510,8 @@ id|unkparam_len
 id|sctp_inithdr_t
 id|initack
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -773,7 +780,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* 3.3.11 Cookie Echo (COOKIE ECHO) (10):&n; *&n; * This chunk is used only during the initialization of an association.&n; * It is sent by the initiator of an association to its peer to complete&n; * the initialization process. This chunk MUST precede any DATA chunk&n; * sent within the association, but MAY be bundled with one or more DATA&n; * chunks in the same packet.&n; *&n; *      0                   1                   2                   3&n; *      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *     |   Type = 10   |Chunk  Flags   |         Length                |&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *     /                     Cookie                                    /&n; *     &bslash;                                                               &bslash;&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *&n; * Chunk Flags: 8 bit&n; *&n; *   Set to zero on transmit and ignored on receipt.&n; *&n; * Length: 16 bits (unsigned integer)&n; *&n; *   Set to the size of the chunk in bytes, including the 4 bytes of&n; *   the chunk header and the size of the Cookie.&n; *&n; * Cookie: variable size&n; *&n; *   This field must contain the exact cookie received in the&n; *   State Cookie parameter from the previous INIT ACK.&n; *&n; *   An implementation SHOULD make the cookie as small as possible&n; *   to insure interoperability.&n; */
 DECL|function|sctp_make_cookie_echo
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_cookie_echo
 c_func
@@ -785,12 +793,14 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -863,7 +873,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* 3.3.12 Cookie Acknowledgement (COOKIE ACK) (11):&n; *&n; * This chunk is used only during the initialization of an&n; * association.  It is used to acknowledge the receipt of a COOKIE&n; * ECHO chunk.  This chunk MUST precede any DATA or SACK chunk sent&n; * within the association, but MAY be bundled with one or more DATA&n; * chunks or SACK chunk in the same SCTP packet.&n; *&n; *      0                   1                   2                   3&n; *      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *     |   Type = 11   |Chunk  Flags   |     Length = 4                |&n; *     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *&n; * Chunk Flags: 8 bits&n; *&n; *   Set to zero on transmit and ignored on receipt.&n; */
 DECL|function|sctp_make_cookie_ack
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_cookie_ack
 c_func
@@ -875,12 +886,14 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -916,7 +929,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Appendix A: Explicit Congestion Notification:&n; *  CWR:&n; *&n; *  RFC 2481 details a specific bit for a sender to send in the header of&n; *  its next outbound TCP segment to indicate to its peer that it has&n; *  reduced its congestion window.  This is termed the CWR bit.  For&n; *  SCTP the same indication is made by including the CWR chunk.&n; *  This chunk contains one data element, i.e. the TSN number that&n; *  was sent in the ECNE chunk.  This element represents the lowest&n; *  TSN number in the datagram that was originally marked with the&n; *  CE bit.&n; *&n; *     0                   1                   2                   3&n; *     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    | Chunk Type=13 | Flags=00000000|    Chunk Length = 8           |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    |                      Lowest TSN Number                        |&n; *    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *&n; *     Note: The CWR is considered a Control chunk.&n; */
 DECL|function|sctp_make_cwr
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_cwr
 c_func
@@ -932,12 +946,14 @@ id|__u32
 id|lowest_tsn
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -1012,7 +1028,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Make an ECNE chunk.  This is a congestion experienced report.  */
 DECL|function|sctp_make_ecne
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_ecne
 c_func
@@ -1028,7 +1045,8 @@ id|__u32
 id|lowest_tsn
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -1093,7 +1111,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Make a DATA chunk for the given association from the provided&n; * parameters.  However, do not populate the data payload.&n; */
 DECL|function|sctp_make_datafrag_empty
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_datafrag_empty
 c_func
@@ -1119,7 +1138,8 @@ id|__u16
 id|ssn
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -1132,9 +1152,8 @@ suffix:semicolon
 multiline_comment|/* We assign the TSN as LATE as possible, not here when&n;&t; * creating the chunk.&n;&t; */
 id|dp.tsn
 op_assign
-l_int|1000000
+l_int|0
 suffix:semicolon
-multiline_comment|/* This marker is a debugging aid. */
 id|dp.stream
 op_assign
 id|htons
@@ -1151,14 +1170,6 @@ c_func
 id|sinfo-&gt;sinfo_ppid
 )paren
 suffix:semicolon
-id|dp.ssn
-op_assign
-id|htons
-c_func
-(paren
-id|ssn
-)paren
-suffix:semicolon
 multiline_comment|/* Set the flags for an unordered send.  */
 r_if
 c_cond
@@ -1167,9 +1178,24 @@ id|sinfo-&gt;sinfo_flags
 op_amp
 id|MSG_UNORDERED
 )paren
+(brace
 id|flags
 op_or_assign
 id|SCTP_DATA_UNORDERED
+suffix:semicolon
+id|dp.ssn
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+id|dp.ssn
+op_assign
+id|htons
+c_func
+(paren
+id|ssn
+)paren
 suffix:semicolon
 id|chunk_len
 op_assign
@@ -1242,7 +1268,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Make a DATA chunk for the given association.  Populate the data&n; * payload.&n; */
 DECL|function|sctp_make_datafrag
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_datafrag
 c_func
@@ -1273,7 +1300,8 @@ id|__u16
 id|ssn
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -1314,7 +1342,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Make a DATA chunk for the given association to ride on stream id&n; * &squot;stream&squot;, with a payload id of &squot;payload&squot;, and a body of &squot;data&squot;.&n; */
 DECL|function|sctp_make_data
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_data
 c_func
@@ -1339,7 +1368,8 @@ op_star
 id|data
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 op_assign
@@ -1378,7 +1408,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Make a DATA chunk for the given association to ride on stream id&n; * &squot;stream&squot;, with a payload id of &squot;payload&squot;, and a body big enough to&n; * hold &squot;data_len&squot; octets of data.  We use this version when we need&n; * to build the message AFTER allocating memory.&n; */
 DECL|function|sctp_make_data_empty
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_data_empty
 c_func
@@ -1421,7 +1452,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Create a selective ackowledgement (SACK) for the given&n; * association.  This reports on which TSN&squot;s we&squot;ve seen to date,&n; * including duplicates and gaps.&n; */
 DECL|function|sctp_make_sack
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_sack
 c_func
@@ -1433,7 +1465,8 @@ op_star
 id|asoc
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -1735,7 +1768,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Make a SHUTDOWN chunk. */
 DECL|function|sctp_make_shutdown
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_shutdown
 c_func
@@ -1747,7 +1781,8 @@ op_star
 id|asoc
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -1823,7 +1858,8 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|sctp_make_shutdown_ack
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_shutdown_ack
 c_func
@@ -1835,12 +1871,14 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -1875,7 +1913,8 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|sctp_make_shutdown_complete
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_shutdown_complete
 c_func
@@ -1887,12 +1926,14 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -1943,7 +1984,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Create an ABORT.  Note that we set the T bit if we have no&n; * association.&n; */
 DECL|function|sctp_make_abort
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_abort
 c_func
@@ -1955,7 +1997,8 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -1964,7 +2007,8 @@ r_int
 id|hint
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -2015,7 +2059,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Helper to create ABORT with a NO_USER_DATA error.  */
 DECL|function|sctp_make_abort_no_data
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_abort_no_data
 c_func
@@ -2027,7 +2072,8 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -2035,7 +2081,8 @@ id|__u32
 id|tsn
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -2119,7 +2166,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Helper to create ABORT with a SCTP_ERROR_USER_ABORT error.  */
 DECL|function|sctp_make_abort_user
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_abort_user
 c_func
@@ -2131,7 +2179,8 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -2142,7 +2191,8 @@ op_star
 id|msg
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -2327,7 +2377,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Make a HEARTBEAT chunk.  */
 DECL|function|sctp_make_heartbeat
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_heartbeat
 c_func
@@ -2354,7 +2405,8 @@ r_int
 id|paylen
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 op_assign
@@ -2408,7 +2460,8 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|sctp_make_heartbeat_ack
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_heartbeat_ack
 c_func
@@ -2420,7 +2473,8 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -2434,8 +2488,11 @@ r_int
 id|paylen
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
+id|retval
+suffix:semicolon
 id|retval
 op_assign
 id|sctp_make_chunk
@@ -2489,7 +2546,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Create an Operation Error chunk with the specified space reserved.&n; * This routine can be used for containing multiple causes in the chunk.&n; */
 DECL|function|sctp_make_op_error_space
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_op_error_space
 c_func
@@ -2501,7 +2559,8 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -2509,7 +2568,8 @@ r_int
 id|size
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -2559,7 +2619,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Create an Operation Error chunk.  */
 DECL|function|sctp_make_op_error
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_op_error
 c_func
@@ -2571,7 +2632,8 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -2587,8 +2649,11 @@ r_int
 id|paylen
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
+id|retval
+suffix:semicolon
 id|retval
 op_assign
 id|sctp_make_op_error_space
@@ -2631,7 +2696,8 @@ suffix:semicolon
 multiline_comment|/********************************************************************&n; * 2nd Level Abstractions&n; ********************************************************************/
 multiline_comment|/* Turn an skb into a chunk.&n; * FIXME: Eventually move the structure directly inside the skb-&gt;cb[].&n; */
 DECL|function|sctp_chunkify
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_chunkify
 c_func
@@ -2653,14 +2719,16 @@ op_star
 id|sk
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 op_assign
 id|t_new
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 comma
 id|GFP_ATOMIC
 )paren
@@ -2683,7 +2751,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 )paren
 )paren
 suffix:semicolon
@@ -2716,7 +2785,7 @@ op_star
 )paren
 id|asoc
 suffix:semicolon
-id|retval-&gt;num_times_sent
+id|retval-&gt;resent
 op_assign
 l_int|0
 suffix:semicolon
@@ -2798,7 +2867,8 @@ r_void
 id|sctp_init_addrs
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -2854,7 +2924,8 @@ id|sctp_source
 c_func
 (paren
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
@@ -2882,7 +2953,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Create a new chunk, setting the type and flags headers from the&n; * arguments, reserving enough space for a &squot;paylen&squot; byte payload.&n; */
 DECL|function|sctp_make_chunk
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_make_chunk
 c_func
@@ -2903,7 +2975,8 @@ r_int
 id|paylen
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|retval
 suffix:semicolon
@@ -3064,7 +3137,8 @@ r_void
 id|sctp_free_chunk
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
@@ -3115,7 +3189,8 @@ op_star
 id|sctp_addto_chunk
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -3220,7 +3295,8 @@ r_int
 id|sctp_user_addto_chunk
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -3353,7 +3429,8 @@ id|len
 comma
 id|first_len
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -3761,7 +3838,8 @@ c_loop
 id|chunk
 op_assign
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 id|__skb_dequeue
@@ -3789,7 +3867,8 @@ r_void
 id|sctp_chunk_assign_ssn
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
@@ -3885,7 +3964,8 @@ r_void
 id|sctp_chunk_assign_tsn
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
@@ -4105,7 +4185,8 @@ op_star
 id|asoc
 comma
 r_const
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|init_chunk
 comma
@@ -4438,7 +4519,8 @@ id|sctp_association
 op_star
 id|asoc
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -4449,7 +4531,8 @@ r_int
 op_star
 id|error
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 op_star
 id|errp
@@ -5057,11 +5140,13 @@ comma
 id|sctp_param_t
 id|paramtype
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 op_star
 id|errp
@@ -5161,11 +5246,13 @@ id|sctp_association
 op_star
 id|asoc
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 op_star
 id|errp
@@ -5233,11 +5320,13 @@ r_union
 id|sctp_params
 id|param
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 op_star
 id|errp
@@ -5314,11 +5403,13 @@ r_union
 id|sctp_params
 id|param
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 op_star
 id|errp
@@ -5510,11 +5601,13 @@ comma
 id|sctp_cid_t
 id|cid
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 op_star
 id|err_chunk
@@ -5630,11 +5723,13 @@ id|sctp_init_chunk_t
 op_star
 id|peer_init
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 op_star
 id|errp

@@ -905,7 +905,8 @@ id|sockaddr_storage_list
 op_star
 id|addr
 suffix:semicolon
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 suffix:semicolon
@@ -1007,7 +1008,8 @@ id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon

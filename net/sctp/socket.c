@@ -48,7 +48,8 @@ r_void
 id|sctp_set_owner_w
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
@@ -589,7 +590,8 @@ id|ep
 op_assign
 id|sp-&gt;ep
 suffix:semicolon
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 op_assign
@@ -1365,7 +1367,8 @@ suffix:semicolon
 r_int
 id|cnt
 suffix:semicolon
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 op_assign
@@ -2131,7 +2134,8 @@ id|sctp_transport
 op_star
 id|transport
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 op_assign
@@ -3118,7 +3122,8 @@ c_loop
 id|chunk
 op_assign
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 id|__skb_dequeue
@@ -7512,7 +7517,8 @@ id|optlen
 id|sctp_assoc_t
 id|id
 suffix:semicolon
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 suffix:semicolon
@@ -7676,7 +7682,8 @@ op_star
 id|optlen
 )paren
 (brace
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 suffix:semicolon
@@ -11031,7 +11038,8 @@ r_void
 id|sctp_set_owner_w
 c_func
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
@@ -11065,7 +11073,8 @@ multiline_comment|/* Save the chunk pointer in skb for sctp_wfree to use later. 
 op_star
 (paren
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 op_star
 )paren
@@ -11224,7 +11233,8 @@ id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -11239,7 +11249,8 @@ op_assign
 op_star
 (paren
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 op_star
 )paren

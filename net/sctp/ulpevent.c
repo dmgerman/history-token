@@ -562,7 +562,8 @@ id|sctp_association
 op_star
 id|asoc
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -806,7 +807,8 @@ id|sctp_association
 op_star
 id|asoc
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma
@@ -1141,7 +1143,8 @@ id|sctp_association
 op_star
 id|asoc
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 comma

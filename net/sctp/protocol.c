@@ -1325,7 +1325,8 @@ r_struct
 id|flowi
 id|fl
 suffix:semicolon
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 suffix:semicolon

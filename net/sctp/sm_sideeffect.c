@@ -37,7 +37,8 @@ multiline_comment|/* Helper function for delayed processing of SCTP ECNE chunk. 
 multiline_comment|/* RFC 2960 Appendix A&n; *&n; * RFC 2481 details a specific bit for a sender to send in&n; * the header of its next outbound TCP segment to indicate to&n; * its peer that it has reduced its congestion window.  This&n; * is termed the CWR bit.  For SCTP the same indication is made&n; * by including the CWR chunk.  This chunk contains one data&n; * element, i.e. the TSN number that was sent in the ECNE chunk.&n; * This element represents the lowest TSN number in the datagram&n; * that was originally marked with the CE bit.&n; */
 DECL|function|sctp_do_ecn_ecne_work
 r_static
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|sctp_do_ecn_ecne_work
 c_func
@@ -50,12 +51,14 @@ comma
 id|__u32
 id|lowest_tsn
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|repl
 suffix:semicolon
@@ -1529,7 +1532,8 @@ id|sctp_transport
 op_star
 id|t
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
@@ -1726,7 +1730,8 @@ id|sctp_association
 op_star
 id|asoc
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 )paren
@@ -2338,11 +2343,13 @@ id|sctp_cmd_t
 op_star
 id|cmd
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|new_obj
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 op_assign
@@ -2382,16 +2389,15 @@ id|SCTP_EVENT_T_TIMEOUT
 op_ne
 id|event_type
 )paren
-(brace
 id|chunk
 op_assign
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 id|event_arg
 suffix:semicolon
-)brace
 multiline_comment|/* Note:  This whole file is a huge candidate for rework.&n;&t; * For example, each command could either have its own handler, so&n;&t; * the loop would look like:&n;&t; *     while (cmds)&n;&t; *         cmd-&gt;handle(x, y, z)&n;&t; * --jgrimm&n;&t; */
 r_while
 c_loop
