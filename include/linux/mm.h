@@ -1885,9 +1885,9 @@ op_star
 id|vmalloc_to_page
 c_func
 (paren
-r_int
-r_int
-id|adr
+r_void
+op_star
+id|addr
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
