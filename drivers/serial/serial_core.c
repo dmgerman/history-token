@@ -4739,12 +4739,6 @@ c_func
 id|state-&gt;close_delay
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 )brace
 )brace
 r_else

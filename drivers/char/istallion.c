@@ -5822,12 +5822,6 @@ c_func
 id|len
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*****************************************************************************/

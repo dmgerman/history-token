@@ -787,10 +787,6 @@ c_func
 id|njiffies
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
 id|func_exit
 c_func
 (paren
@@ -850,10 +846,6 @@ c_func
 (paren
 id|njiffies
 )paren
-suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
 suffix:semicolon
 id|func_exit
 c_func

@@ -10031,10 +10031,6 @@ op_star
 l_int|5
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
 macro_line|#ifdef CY_DEBUG_WAIT_UNTIL_SENT
 id|printk
 c_func

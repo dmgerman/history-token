@@ -5143,10 +5143,6 @@ c_func
 id|len
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/*****************************************************************************/
