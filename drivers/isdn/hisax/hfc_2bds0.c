@@ -614,9 +614,7 @@ c_func
 id|cs
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|WriteReg
 c_func
 (paren
 id|cs

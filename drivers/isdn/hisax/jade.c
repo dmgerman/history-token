@@ -12,6 +12,76 @@ id|jade_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+r_static
+r_inline
+id|u8
+DECL|function|jade_read_reg
+id|jade_read_reg
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+comma
+r_int
+id|jade
+comma
+id|u8
+id|addr
+)paren
+(brace
+r_return
+id|cs
+op_member_access_from_pointer
+id|BC_Read_Reg
+c_func
+(paren
+id|cs
+comma
+id|jade
+comma
+id|addr
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|jade_write_reg
+id|jade_write_reg
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+comma
+r_int
+id|jade
+comma
+id|u8
+id|addr
+comma
+id|u8
+id|val
+)paren
+(brace
+id|cs
+op_member_access_from_pointer
+id|BC_Write_Reg
+c_func
+(paren
+id|cs
+comma
+id|jade
+comma
+id|addr
+comma
+id|val
+)paren
+suffix:semicolon
+)brace
 r_int
 id|__init
 DECL|function|JadeVersion
@@ -38,9 +108,7 @@ id|to
 op_assign
 l_int|50
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -71,9 +139,7 @@ l_int|1
 suffix:semicolon
 id|ver
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|jade_read_reg
 c_func
 (paren
 id|cs
@@ -127,9 +193,7 @@ suffix:semicolon
 multiline_comment|/* Read version */
 id|ver
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|jade_read_reg
 c_func
 (paren
 id|cs
@@ -198,9 +262,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Write the data */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -216,9 +278,7 @@ id|value
 )paren
 suffix:semicolon
 multiline_comment|/* Say JADE we wanna write indirect reg &squot;reg&squot; */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -250,9 +310,7 @@ l_int|1
 suffix:semicolon
 id|ret
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|jade_read_reg
 c_func
 (paren
 id|cs
@@ -393,9 +451,7 @@ id|bcs-&gt;channel
 op_assign
 id|bc
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -416,9 +472,7 @@ l_int|0x00
 )paren
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -434,9 +488,7 @@ id|jadeCCR0_ITF
 )paren
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -488,9 +540,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -502,9 +552,7 @@ comma
 l_int|0x07
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -524,9 +572,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -538,9 +584,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -555,9 +599,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -569,9 +611,7 @@ comma
 l_int|0x04
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -595,9 +635,7 @@ r_case
 id|L1_MODE_NULL
 )paren
 suffix:colon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -616,9 +654,7 @@ r_case
 id|L1_MODE_TRANS
 )paren
 suffix:colon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -643,9 +679,7 @@ r_case
 id|L1_MODE_HDLC
 )paren
 suffix:colon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -670,9 +704,7 @@ c_cond
 id|mode
 )paren
 (brace
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -688,9 +720,7 @@ id|jadeRCMD_RMC
 )paren
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -703,9 +733,7 @@ id|jadeXCMD_XRES
 )paren
 suffix:semicolon
 multiline_comment|/* Unmask ints */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -720,9 +748,7 @@ suffix:semicolon
 )brace
 r_else
 multiline_comment|/* Mask ints */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -1335,9 +1361,7 @@ id|hw.hscx.hscx
 op_assign
 l_int|1
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -1349,9 +1373,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -1365,9 +1387,7 @@ l_int|0x00
 suffix:semicolon
 id|val
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|jade_read_reg
 c_func
 (paren
 id|cs
@@ -1389,9 +1409,7 @@ id|val
 suffix:semicolon
 id|val
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|jade_read_reg
 c_func
 (paren
 id|cs
@@ -1413,9 +1431,7 @@ id|val
 suffix:semicolon
 id|val
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|jade_read_reg
 c_func
 (paren
 id|cs
@@ -1437,9 +1453,7 @@ id|val
 suffix:semicolon
 id|val
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|jade_read_reg
 c_func
 (paren
 id|cs
@@ -1460,9 +1474,7 @@ id|val
 )paren
 suffix:semicolon
 multiline_comment|/* Unmask ints */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -1474,9 +1486,7 @@ comma
 l_int|0xF8
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -1510,9 +1520,7 @@ l_int|0x2f
 )paren
 suffix:semicolon
 multiline_comment|/* Transparent Mode, RxTx inactive, No Test, No RFS/TFS */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -1524,9 +1532,7 @@ comma
 id|jadeMODE_TMO
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -1539,9 +1545,7 @@ id|jadeMODE_TMO
 )paren
 suffix:semicolon
 multiline_comment|/* Power down, 1-Idle, RxTx least significant bit first */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -1553,9 +1557,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -1568,9 +1570,7 @@ l_int|0x00
 )paren
 suffix:semicolon
 multiline_comment|/* Mask all interrupts */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -1582,9 +1582,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs
@@ -1612,9 +1610,7 @@ id|jadeINDIRECT_HAH2
 )paren
 suffix:semicolon
 multiline_comment|/* Unmask HDLC int (don&#xfffd;t forget DSP int later on)*/
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|jade_write_reg
 c_func
 (paren
 id|cs

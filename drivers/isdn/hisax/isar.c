@@ -109,6 +109,76 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_static
 r_inline
+id|u8
+DECL|function|isar_read_reg
+id|isar_read_reg
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+comma
+r_int
+id|mode
+comma
+id|u8
+id|addr
+)paren
+(brace
+r_return
+id|cs
+op_member_access_from_pointer
+id|BC_Read_Reg
+c_func
+(paren
+id|cs
+comma
+id|mode
+comma
+id|addr
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|isar_write_reg
+id|isar_write_reg
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+id|cs
+comma
+r_int
+id|mode
+comma
+id|u8
+id|addr
+comma
+id|u8
+id|val
+)paren
+(brace
+id|cs
+op_member_access_from_pointer
+id|BC_Write_Reg
+c_func
+(paren
+id|cs
+comma
+id|mode
+comma
+id|addr
+comma
+id|val
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
 r_int
 DECL|function|waitforHIA
 id|waitforHIA
@@ -127,9 +197,7 @@ r_while
 c_loop
 (paren
 (paren
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|isar_read_reg
 c_func
 (paren
 id|cs
@@ -250,9 +318,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -264,9 +330,7 @@ comma
 id|creg
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -278,9 +342,7 @@ comma
 id|len
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -300,9 +362,7 @@ op_logical_and
 id|len
 )paren
 (brace
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -331,9 +391,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -435,9 +493,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -495,9 +551,7 @@ id|msg
 r_int
 id|i
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -522,9 +576,7 @@ id|msg
 l_int|0
 )braket
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|isar_read_reg
 c_func
 (paren
 id|cs
@@ -553,9 +605,7 @@ id|msg
 id|i
 )braket
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|isar_read_reg
 c_func
 (paren
 id|cs
@@ -652,9 +702,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -687,9 +735,7 @@ id|ireg
 (brace
 id|ireg-&gt;iis
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|isar_read_reg
 c_func
 (paren
 id|cs
@@ -701,9 +747,7 @@ id|ISAR_IIS
 suffix:semicolon
 id|ireg-&gt;cmsb
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|isar_read_reg
 c_func
 (paren
 id|cs
@@ -715,9 +759,7 @@ id|ISAR_CTRL_H
 suffix:semicolon
 id|ireg-&gt;clsb
 op_assign
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|isar_read_reg
 c_func
 (paren
 id|cs
@@ -800,9 +842,7 @@ c_loop
 (paren
 op_logical_neg
 (paren
-id|cs
-op_member_access_from_pointer
-id|BC_Read_Reg
+id|isar_read_reg
 c_func
 (paren
 id|cs
@@ -945,9 +985,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* disable ISAR IRQ */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -1350,9 +1388,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* disable ISAR IRQ */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -2113,9 +2149,7 @@ l_string|&quot;isar start dsp success&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* NORMAL mode entered */
 multiline_comment|/* Enable IRQs of ISAR */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -2528,9 +2562,7 @@ c_cond
 id|ret
 )paren
 multiline_comment|/* disable ISAR IRQ */
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -2887,9 +2919,7 @@ comma
 l_string|&quot;isar zero len frame&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -2940,9 +2970,7 @@ comma
 id|ireg-&gt;clsb
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3023,9 +3051,7 @@ id|KERN_WARNING
 l_string|&quot;HiSax: skb out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3070,9 +3096,7 @@ comma
 l_string|&quot;isar_rcv_frame: incoming packet too large&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3143,9 +3167,7 @@ id|bcs-&gt;hw.isar.rcvidx
 op_assign
 l_int|0
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3326,9 +3348,7 @@ comma
 l_string|&quot;isar_rcv_frame: not ACTIV&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3471,9 +3491,7 @@ comma
 l_string|&quot;isar_rcv_frame: no more data&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3538,9 +3556,7 @@ id|KERN_WARNING
 l_string|&quot;HiSax: skb out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3581,9 +3597,7 @@ comma
 id|bcs-&gt;hw.isar.cmd
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3630,9 +3644,7 @@ comma
 l_string|&quot;isar_rcv_frame: incoming packet too large&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3681,9 +3693,7 @@ id|bcs-&gt;hw.isar.rcvidx
 op_assign
 l_int|0
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3885,9 +3895,7 @@ comma
 l_string|&quot;isar_rcv_frame: no more data&quot;
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -3955,9 +3963,7 @@ comma
 id|bcs-&gt;mode
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -6717,9 +6723,7 @@ comma
 id|ireg-&gt;clsb
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -6737,9 +6741,7 @@ suffix:semicolon
 r_case
 id|ISAR_IIS_GSTEV
 suffix:colon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -6830,9 +6832,7 @@ comma
 id|ireg-&gt;cmsb
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -6955,9 +6955,7 @@ comma
 id|ireg-&gt;clsb
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
@@ -7032,9 +7030,7 @@ comma
 id|ireg-&gt;clsb
 )paren
 suffix:semicolon
-id|cs
-op_member_access_from_pointer
-id|BC_Write_Reg
+id|isar_write_reg
 c_func
 (paren
 id|cs
