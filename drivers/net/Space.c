@@ -97,14 +97,14 @@ id|dev
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|hp_plus_probe
-c_func
-(paren
 r_struct
 id|net_device
 op_star
-id|dev
+id|hp_plus_probe
+c_func
+(paren
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_extern
@@ -1004,14 +1004,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_HPLAN_PLUS
-(brace
-id|hp_plus_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 (brace
 l_int|NULL
 comma
@@ -1030,6 +1022,14 @@ id|isa_probes2
 id|__initdata
 op_assign
 (brace
+macro_line|#ifdef CONFIG_HPLAN_PLUS
+(brace
+id|hp_plus_probe
+comma
+l_int|0
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_E2100&t;&t;/* Cabletron E21xx series. */
 (brace
 id|e2100_probe
