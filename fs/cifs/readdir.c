@@ -10,7 +10,7 @@ macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;cifs_fs_sb.h&quot;
 macro_line|#include &quot;cifsfs.h&quot;
 multiline_comment|/* BB fixme - add debug wrappers around this function to disable it fixme BB */
-multiline_comment|/* static void dump_cifs_file_struct(struct file *file, char *label)&n;{&n;&t;struct cifsFileInfo * cf;&n;&n;&t;if(file) {&n;&t;&t;cf = (struct cifsFileInfo *)file-&gt;private_data;&n;&t;&t;if(cf == NULL) {&n;&t;&t;&t;cFYI(1,(&quot;empty cifs private file data&quot;));&n;&t;&t;&t;return;&n;&t;&t;}&n;&t;&t;if(cf-&gt;invalidHandle) {&n;&t;&t;&t;cFYI(1,(&quot;invalid handle&quot;));&n;&t;&t;}&n;&t;&t;if(cf-&gt;srch_inf.endOfSearch) {&n;&t;&t;&t;cFYI(1,(&quot;end of search&quot;));&n;&t;&t;}&n;&t;&t;if(cf-&gt;srch_inf.emptyDir) {&n;&t;&t;&t;cFYI(1,(&quot;empty dir&quot;));&n;&t;&t;}&n;&t;&t;&n;&t;}&n;} */
+multiline_comment|/* static void dump_cifs_file_struct(struct file *file, char *label)&n;{&n;&t;struct cifsFileInfo * cf;&n;&n;&t;if(file) {&n;&t;&t;cf = file-&gt;private_data;&n;&t;&t;if(cf == NULL) {&n;&t;&t;&t;cFYI(1,(&quot;empty cifs private file data&quot;));&n;&t;&t;&t;return;&n;&t;&t;}&n;&t;&t;if(cf-&gt;invalidHandle) {&n;&t;&t;&t;cFYI(1,(&quot;invalid handle&quot;));&n;&t;&t;}&n;&t;&t;if(cf-&gt;srch_inf.endOfSearch) {&n;&t;&t;&t;cFYI(1,(&quot;end of search&quot;));&n;&t;&t;}&n;&t;&t;if(cf-&gt;srch_inf.emptyDir) {&n;&t;&t;&t;cFYI(1,(&quot;empty dir&quot;));&n;&t;&t;}&n;&t;&t;&n;&t;}&n;} */
 multiline_comment|/* Returns one if new inode created (which therefore needs to be hashed) */
 multiline_comment|/* Might check in the future if inode number changed so we can rehash inode */
 DECL|function|construct_dentry
@@ -1311,11 +1311,6 @@ suffix:semicolon
 )brace
 id|cifsFile
 op_assign
-(paren
-r_struct
-id|cifsFileInfo
-op_star
-)paren
 id|file-&gt;private_data
 suffix:semicolon
 id|cifsFile-&gt;invalidHandle
@@ -1495,19 +1490,12 @@ op_assign
 id|FALSE
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|full_path
-)paren
-(brace
 id|kfree
 c_func
 (paren
 id|full_path
 )paren
 suffix:semicolon
-)brace
 r_return
 id|rc
 suffix:semicolon
@@ -2138,11 +2126,6 @@ id|cifsFileInfo
 op_star
 id|cifsFile
 op_assign
-(paren
-r_struct
-id|cifsFileInfo
-op_star
-)paren
 id|file-&gt;private_data
 suffix:semicolon
 multiline_comment|/* check if index in the buffer */
@@ -2218,12 +2201,6 @@ comma
 id|cifsFile-&gt;netfid
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cifsFile-&gt;search_resume_name
-)paren
-(brace
 id|kfree
 c_func
 (paren
@@ -2234,7 +2211,6 @@ id|cifsFile-&gt;search_resume_name
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2521,13 +2497,15 @@ id|pos_in_buf
 )paren
 )paren
 (brace
+multiline_comment|/* BB fixme - check if we should flag this error */
 id|cERROR
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;reached end of buf searching for pos in buf %d index to find %lld rc %d&quot;
+l_string|&quot;reached end of buf searching for pos in buf&quot;
+l_string|&quot; %d index to find %lld rc %d&quot;
 comma
 id|pos_in_buf
 comma
@@ -2537,7 +2515,6 @@ id|rc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB removeme BB */
 )brace
 id|rc
 op_assign
@@ -3797,11 +3774,6 @@ suffix:semicolon
 )brace
 id|cifsFile
 op_assign
-(paren
-r_struct
-id|cifsFileInfo
-op_star
-)paren
 id|file-&gt;private_data
 suffix:semicolon
 r_if
@@ -3834,8 +3806,8 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* else {&n;&t;&t;&t;cifsFile-&gt;invalidHandle = TRUE;&n;&t;&t;&t;CIFSFindClose(xid, pTcon, cifsFile-&gt;netfid);&n;&t;&t;} &n;&t;&t;if(cifsFile-&gt;search_resume_name) {&n;&t;&t;&t;kfree(cifsFile-&gt;search_resume_name);&n;&t;&t;&t;cifsFile-&gt;search_resume_name = NULL;&n;&t;&t;} */
-multiline_comment|/* BB account for . and .. in f_pos */
+multiline_comment|/* else {&n;&t;&t;&t;cifsFile-&gt;invalidHandle = TRUE;&n;&t;&t;&t;CIFSFindClose(xid, pTcon, cifsFile-&gt;netfid);&n;&t;&t;} &n;&t;&t;kfree(cifsFile-&gt;search_resume_name);&n;&t;&t;cifsFile-&gt;search_resume_name = NULL; */
+multiline_comment|/* BB account for . and .. in f_pos as special case */
 multiline_comment|/* dump_cifs_file_struct(file, &quot;rdir after default &quot;);*/
 id|rc
 op_assign
@@ -3987,13 +3959,14 @@ op_eq
 l_int|NULL
 )paren
 (brace
+multiline_comment|/* evaluate whether this case is an error */
 id|cERROR
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;beyond end of smb with num to fill %d i %d&quot;
+l_string|&quot;past end of SMB num to fill %d i %d&quot;
 comma
 id|num_to_fill
 comma
@@ -4001,11 +3974,11 @@ id|i
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB removeme BB */
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&t;&t;&t;if((!(cifs_sb-&gt;mnt_cifs_flags &amp; CIFS_MOUNT_SERVER_INUM)) || &n;&t;&t;&t;   (cifsFile-&gt;srch_inf.info_level != something that supports server inodes)) {&n;&t;&t;&t;&t;create dentry&n;&t;&t;&t;&t;create inode&n;&t;&t;&t;&t;fill in inode new_inode (which makes number locally)&n;&t;&t;&t;}&n;&t;&t;&t;also create local inode for per reasons unless new mount parm says otherwise */
+multiline_comment|/* BB FIXME - need to enable the below code BB */
+multiline_comment|/* if((!(cifs_sb-&gt;mnt_cifs_flags &amp; CIFS_MOUNT_SERVER_INUM)) ||&n;&t;&t;&t;   (cifsFile-&gt;srch_inf.info_level != &n;&t;&t;&t;&t;   something that supports server inodes)) {&n;&t;&t;&t;&t;create dentry&n;&t;&t;&t;&t;create inode&n;&t;&t;&t;&t;fill in inode new_inode (getting local i_ino)&n;&t;&t;&t;}&n;&t;&t;&t;also create local inode for performance reasons (so we &n;&t;&t;&t;have a cache of inode metadata) unless this new mount &n;&t;&t;&t;parm says otherwise */
 id|rc
 op_assign
 id|cifs_filldir
@@ -4071,21 +4044,12 @@ id|end_of_smb
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|tmp_buf
-op_ne
-l_int|NULL
-)paren
-(brace
 id|kfree
 c_func
 (paren
 id|tmp_buf
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace

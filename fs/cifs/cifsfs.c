@@ -876,11 +876,6 @@ id|cifs_inode
 suffix:semicolon
 id|cifs_inode
 op_assign
-(paren
-r_struct
-id|cifsInodeInfo
-op_star
-)paren
 id|kmem_cache_alloc
 c_func
 (paren
@@ -2396,11 +2391,6 @@ id|cifsInodeInfo
 op_star
 id|cifsi
 op_assign
-(paren
-r_struct
-id|cifsInodeInfo
-op_star
-)paren
 id|inode
 suffix:semicolon
 r_if
