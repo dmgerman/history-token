@@ -106,6 +106,12 @@ comma
 l_string|&quot;IRQ number (5=default)&quot;
 )paren
 suffix:semicolon
+id|__obsolete_setup
+c_func
+(paren
+l_string|&quot;inport_irq=&quot;
+)paren
+suffix:semicolon
 DECL|variable|inport_used
 r_static
 r_int
