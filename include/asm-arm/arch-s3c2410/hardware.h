@@ -57,6 +57,25 @@ r_int
 id|pin
 )paren
 suffix:semicolon
+multiline_comment|/* s3c2410_gpio_irqfilter&n; *&n; * set the irq filtering on the given pin&n; *&n; * on = 0 =&gt; disable filtering&n; *      1 =&gt; enable filtering&n; *&n; * config = S3C2410_EINTFLT_PCLK or S3C2410_EINTFLT_EXTCLK orred with&n; *          width of filter (0 through 63)&n; *&n; *&n;*/
+r_extern
+r_int
+id|s3c2410_gpio_irqfilter
+c_func
+(paren
+r_int
+r_int
+id|pin
+comma
+r_int
+r_int
+id|on
+comma
+r_int
+r_int
+id|config
+)paren
+suffix:semicolon
 multiline_comment|/* s3c2410_gpio_pullup&n; *&n; * configure the pull-up control on the given pin&n; *&n; * to = 1 =&gt; disable the pull-up&n; *      0 =&gt; enable the pull-up&n; *&n; * eg;&n; *&n; *   s3c2410_gpio_pullup(S3C2410_GPB0, 0);&n; *   s3c2410_gpio_pullup(S3C2410_GPE8, 0);&n;*/
 r_extern
 r_void
