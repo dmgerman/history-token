@@ -11,7 +11,7 @@ mdefine_line|#define likely(x)&t;__builtin_expect((x),1)
 DECL|macro|unlikely
 mdefine_line|#define unlikely(x)&t;__builtin_expect((x),0)
 multiline_comment|/*&n; * Allow us to mark functions as &squot;deprecated&squot; and have gcc emit a nice&n; * warning for each use, in hopes of speeding the functions removal.&n; * Usage is:&n; * &t;&t;int __deprecated foo(void)&n; */
-macro_line|#if ( __GNUC__ == 3 &amp;&amp; __GNUC_MINOR &gt; 0 ) || __GNUC__ &gt; 3
+macro_line|#if ( __GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt; 0 ) || __GNUC__ &gt; 3
 DECL|macro|__deprecated
 mdefine_line|#define __deprecated&t;__attribute__((deprecated))
 macro_line|#else
