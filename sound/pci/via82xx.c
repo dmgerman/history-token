@@ -10038,6 +10038,24 @@ multiline_comment|/* ABIT KD7(-RAID) */
 dot
 id|vendor
 op_assign
+l_int|0x147b
+comma
+dot
+id|device
+op_assign
+l_int|0x1413
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* ABIT KV8 Pro */
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x14ff
 comma
 dot
