@@ -835,6 +835,13 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
+multiline_comment|/* enable MWI */
+id|pci_set_mwi
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 multiline_comment|/* setup the network device interface and its structure */
 r_if
 c_cond
