@@ -1028,6 +1028,50 @@ DECL|typedef|drm_irq_busid_t
 )brace
 id|drm_irq_busid_t
 suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|_DRM_VBLANK_ABSOLUTE
+id|_DRM_VBLANK_ABSOLUTE
+op_assign
+l_int|0x0
+comma
+multiline_comment|/* Wait for specific vblank sequence number */
+DECL|enumerator|_DRM_VBLANK_RELATIVE
+id|_DRM_VBLANK_RELATIVE
+op_assign
+l_int|0x1
+multiline_comment|/* Wait for given number of vblanks */
+DECL|typedef|drm_vblank_seq_type_t
+)brace
+id|drm_vblank_seq_type_t
+suffix:semicolon
+DECL|struct|drm_radeon_vbl_wait
+r_typedef
+r_struct
+id|drm_radeon_vbl_wait
+(brace
+DECL|member|type
+id|drm_vblank_seq_type_t
+id|type
+suffix:semicolon
+DECL|member|sequence
+r_int
+r_int
+id|sequence
+suffix:semicolon
+DECL|member|tval_sec
+r_int
+id|tval_sec
+suffix:semicolon
+DECL|member|tval_usec
+r_int
+id|tval_usec
+suffix:semicolon
+DECL|typedef|drm_wait_vblank_t
+)brace
+id|drm_wait_vblank_t
+suffix:semicolon
 DECL|struct|drm_agp_mode
 r_typedef
 r_struct
@@ -1273,6 +1317,8 @@ DECL|macro|DRM_IOCTL_SG_ALLOC
 mdefine_line|#define DRM_IOCTL_SG_ALLOC&t;&t;DRM_IOW( 0x38, drm_scatter_gather_t)
 DECL|macro|DRM_IOCTL_SG_FREE
 mdefine_line|#define DRM_IOCTL_SG_FREE&t;&t;DRM_IOW( 0x39, drm_scatter_gather_t)
+DECL|macro|DRM_IOCTL_WAIT_VBLANK
+mdefine_line|#define DRM_IOCTL_WAIT_VBLANK&t;&t;DRM_IOWR(0x3a, drm_wait_vblank_t)
 multiline_comment|/* Device specfic ioctls should only be in their respective headers&n; * The device specific ioctl range is 0x40 to 0x79.                  */
 DECL|macro|DRM_COMMAND_BASE
 mdefine_line|#define DRM_COMMAND_BASE                0x40

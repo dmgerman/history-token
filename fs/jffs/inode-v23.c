@@ -1024,7 +1024,7 @@ id|len
 id|invalidate_inode_pages
 c_func
 (paren
-id|inode
+id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 )brace
@@ -6742,7 +6742,7 @@ suffix:semicolon
 id|invalidate_inode_pages
 c_func
 (paren
-id|inode
+id|inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|out_isem

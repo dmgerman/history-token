@@ -7121,7 +7121,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|llc_conn_free_ev
+id|kfree_skb
 c_func
 (paren
 id|skb

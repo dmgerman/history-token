@@ -5122,7 +5122,7 @@ c_func
 id|csn
 )paren
 suffix:semicolon
-macro_line|#if 1
+macro_line|#if 0
 multiline_comment|/* to avoid malfunction when the isapnptools package is used */
 multiline_comment|/* we must set RDP to our value again */
 multiline_comment|/* it is possible to set RDP only in the isolation phase */

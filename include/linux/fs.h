@@ -5115,8 +5115,9 @@ id|invalidate_inode_pages
 c_func
 (paren
 r_struct
-id|inode
+id|address_space
 op_star
+id|mapping
 )paren
 suffix:semicolon
 r_extern

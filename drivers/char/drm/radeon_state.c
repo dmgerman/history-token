@@ -9343,16 +9343,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|RADEON_PARAM_IRQ_ACTIVE
+id|RADEON_PARAM_IRQ_NR
 suffix:colon
 id|value
 op_assign
 id|dev-&gt;irq
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon

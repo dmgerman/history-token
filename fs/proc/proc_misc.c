@@ -1011,6 +1011,64 @@ id|seq_release
 comma
 )brace
 suffix:semicolon
+r_extern
+r_struct
+id|seq_operations
+id|vmstat_op
+suffix:semicolon
+DECL|function|vmstat_open
+r_static
+r_int
+id|vmstat_open
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+(brace
+r_return
+id|seq_open
+c_func
+(paren
+id|file
+comma
+op_amp
+id|vmstat_op
+)paren
+suffix:semicolon
+)brace
+DECL|variable|proc_vmstat_file_operations
+r_static
+r_struct
+id|file_operations
+id|proc_vmstat_file_operations
+op_assign
+(brace
+id|open
+suffix:colon
+id|vmstat_open
+comma
+id|read
+suffix:colon
+id|seq_read
+comma
+id|llseek
+suffix:colon
+id|seq_lseek
+comma
+id|release
+suffix:colon
+id|seq_release
+comma
+)brace
+suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_HARDWARE
 DECL|function|hardware_read_proc
 r_static
@@ -1466,6 +1524,14 @@ comma
 id|system
 op_assign
 l_int|0
+comma
+id|idle
+op_assign
+l_int|0
+comma
+id|iowait
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|major
@@ -1525,6 +1591,20 @@ id|kstat.per_cpu_system
 id|i
 )braket
 suffix:semicolon
+id|idle
+op_add_assign
+id|kstat.per_cpu_idle
+(braket
+id|i
+)braket
+suffix:semicolon
+id|iowait
+op_add_assign
+id|kstat.per_cpu_iowait
+(braket
+id|i
+)braket
+suffix:semicolon
 macro_line|#if !defined(CONFIG_ARCH_S390)
 r_for
 c_loop
@@ -1559,7 +1639,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;cpu  %u %u %u %lu&bslash;n&quot;
+l_string|&quot;cpu  %u %u %u %u %u&bslash;n&quot;
 comma
 id|jiffies_to_clock_t
 c_func
@@ -1582,20 +1662,13 @@ comma
 id|jiffies_to_clock_t
 c_func
 (paren
-id|jif
-op_star
-id|num_online_cpus
+id|idle
+)paren
+comma
+id|jiffies_to_clock_t
 c_func
 (paren
-)paren
-op_minus
-(paren
-id|user
-op_plus
-id|nice
-op_plus
-id|system
-)paren
+id|iowait
 )paren
 )paren
 suffix:semicolon
@@ -1635,7 +1708,7 @@ id|page
 op_plus
 id|len
 comma
-l_string|&quot;cpu%d %u %u %u %lu&bslash;n&quot;
+l_string|&quot;cpu%d %u %u %u %u %u&bslash;n&quot;
 comma
 id|i
 comma
@@ -1669,26 +1742,19 @@ comma
 id|jiffies_to_clock_t
 c_func
 (paren
-id|jif
-op_minus
-(paren
-id|kstat.per_cpu_user
-(braket
-id|i
-)braket
-"&bslash;"
-op_plus
-id|kstat.per_cpu_nice
-(braket
-id|i
-)braket
-"&bslash;"
-op_plus
-id|kstat.per_cpu_system
+id|kstat.per_cpu_idle
 (braket
 id|i
 )braket
 )paren
+comma
+id|jiffies_to_clock_t
+c_func
+(paren
+id|kstat.per_cpu_iowait
+(braket
+id|i
+)braket
 )paren
 )paren
 suffix:semicolon
@@ -1702,21 +1768,7 @@ id|page
 op_plus
 id|len
 comma
-l_string|&quot;page %u %u&bslash;n&quot;
-l_string|&quot;swap %u %u&bslash;n&quot;
 l_string|&quot;intr %u&quot;
-comma
-id|kstat.pgpgin
-op_rshift
-l_int|1
-comma
-id|kstat.pgpgout
-op_rshift
-l_int|1
-comma
-id|kstat.pswpin
-comma
-id|kstat.pswpout
 comma
 id|sum
 )paren
@@ -1896,39 +1948,9 @@ id|page
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;npageallocs %u&bslash;n&quot;
-l_string|&quot;pagefrees %u&bslash;n&quot;
-l_string|&quot;pageactiv %u&bslash;n&quot;
-l_string|&quot;pagedeact %u&bslash;n&quot;
-l_string|&quot;pagefault %u&bslash;n&quot;
-l_string|&quot;majorfault %u&bslash;n&quot;
-l_string|&quot;pagescan %u&bslash;n&quot;
-l_string|&quot;pagesteal %u&bslash;n&quot;
-l_string|&quot;pageoutrun %u&bslash;n&quot;
-l_string|&quot;allocstall %u&bslash;n&quot;
-l_string|&quot;ctxt %lu&bslash;n&quot;
+l_string|&quot;&bslash;nctxt %lu&bslash;n&quot;
 l_string|&quot;btime %lu&bslash;n&quot;
 l_string|&quot;processes %lu&bslash;n&quot;
-comma
-id|kstat.pgalloc
-comma
-id|kstat.pgfree
-comma
-id|kstat.pgactivate
-comma
-id|kstat.pgdeactivate
-comma
-id|kstat.pgfault
-comma
-id|kstat.pgmajfault
-comma
-id|kstat.pgscan
-comma
-id|kstat.pgsteal
-comma
-id|kstat.pageoutrun
-comma
-id|kstat.allocstall
 comma
 id|nr_context_switches
 c_func
@@ -3296,6 +3318,17 @@ id|S_IRUGO
 comma
 op_amp
 id|fragmentation_file_operations
+)paren
+suffix:semicolon
+id|create_seq_entry
+c_func
+(paren
+l_string|&quot;vmstat&quot;
+comma
+id|S_IRUGO
+comma
+op_amp
+id|proc_vmstat_file_operations
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MODULES

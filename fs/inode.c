@@ -399,6 +399,7 @@ c_cond
 (paren
 id|inode-&gt;i_sb-&gt;s_op-&gt;destroy_inode
 )paren
+(brace
 id|inode-&gt;i_sb-&gt;s_op
 op_member_access_from_pointer
 id|destroy_inode
@@ -407,7 +408,17 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
+id|BUG_ON
+c_func
+(paren
+id|inode-&gt;i_data.page_tree.rnode
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
 id|kmem_cache_free
 c_func
 (paren
@@ -418,6 +429,7 @@ id|inode
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * These are initializations that only need to be done&n; * once, because the fields are idempotent across use&n; * of the inode, so let the slab aware of that.&n; */
 DECL|function|inode_init_once

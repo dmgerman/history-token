@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Equalizer Load-balancer for serial network interfaces.
 macro_line|#ifndef _LINUX_IF_EQL_H
 DECL|macro|_LINUX_IF_EQL_H
 mdefine_line|#define _LINUX_IF_EQL_H
-macro_line|#include &lt;linux/timer.h&gt;
 DECL|macro|EQL_DEFAULT_SLAVE_PRIORITY
 mdefine_line|#define EQL_DEFAULT_SLAVE_PRIORITY 28800
 DECL|macro|EQL_DEFAULT_MAX_SLAVES
@@ -23,11 +22,19 @@ DECL|macro|EQL_GETMASTRCFG
 mdefine_line|#define EQL_GETMASTRCFG (SIOCDEVPRIVATE + 4)
 DECL|macro|EQL_SETMASTRCFG
 mdefine_line|#define EQL_SETMASTRCFG (SIOCDEVPRIVATE + 5)
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|struct|slave
 r_typedef
 r_struct
 id|slave
 (brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
 DECL|member|dev
 r_struct
 id|net_device
@@ -50,12 +57,6 @@ DECL|member|bytes_queued
 r_int
 id|bytes_queued
 suffix:semicolon
-DECL|member|next
-r_struct
-id|slave
-op_star
-id|next
-suffix:semicolon
 DECL|typedef|slave_t
 )brace
 id|slave_t
@@ -65,15 +66,14 @@ r_typedef
 r_struct
 id|slave_queue
 (brace
-DECL|member|head
-id|slave_t
-op_star
-id|head
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
-DECL|member|best_slave
-id|slave_t
-op_star
-id|best_slave
+DECL|member|all_slaves
+r_struct
+id|list_head
+id|all_slaves
 suffix:semicolon
 DECL|member|num_slaves
 r_int
@@ -84,10 +84,6 @@ r_struct
 id|net_device
 op_star
 id|master_dev
-suffix:semicolon
-DECL|member|lock
-r_char
-id|lock
 suffix:semicolon
 DECL|typedef|slave_queue_t
 )brace
@@ -100,7 +96,6 @@ id|equalizer
 (brace
 DECL|member|queue
 id|slave_queue_t
-op_star
 id|queue
 suffix:semicolon
 DECL|member|min_slaves
@@ -114,7 +109,6 @@ suffix:semicolon
 DECL|member|stats
 r_struct
 id|net_device_stats
-op_star
 id|stats
 suffix:semicolon
 DECL|member|timer
@@ -122,14 +116,11 @@ r_struct
 id|timer_list
 id|timer
 suffix:semicolon
-DECL|member|timer_on
-r_char
-id|timer_on
-suffix:semicolon
 DECL|typedef|equalizer_t
 )brace
 id|equalizer_t
 suffix:semicolon
+macro_line|#endif /* __KERNEL__ */
 DECL|struct|master_config
 r_typedef
 r_struct
