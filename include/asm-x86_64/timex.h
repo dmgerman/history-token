@@ -3,11 +3,12 @@ macro_line|#ifndef _ASMx8664_TIMEX_H
 DECL|macro|_ASMx8664_TIMEX_H
 mdefine_line|#define _ASMx8664_TIMEX_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/8253pit.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/vsyscall.h&gt;
 macro_line|#include &lt;asm/hpet.h&gt;
 DECL|macro|CLOCK_TICK_RATE
-mdefine_line|#define CLOCK_TICK_RATE&t;1193182 /* Underlying HZ */
+mdefine_line|#define CLOCK_TICK_RATE&t;PIT_TICK_RATE&t;/* Underlying HZ */
 DECL|macro|CLOCK_TICK_FACTOR
 mdefine_line|#define CLOCK_TICK_FACTOR&t;20&t;/* Factor of both 1000000 and CLOCK_TICK_RATE */
 DECL|macro|FINETUNE
