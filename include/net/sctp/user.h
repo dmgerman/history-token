@@ -121,6 +121,30 @@ comma
 multiline_comment|/* peel off association. */
 DECL|macro|SCTP_SOCKOPT_PEELOFF
 mdefine_line|#define SCTP_SOCKOPT_PEELOFF&t;SCTP_SOCKOPT_PEELOFF
+DECL|enumerator|SCTP_GET_PEER_ADDRS_NUM
+id|SCTP_GET_PEER_ADDRS_NUM
+comma
+multiline_comment|/* Get number of peer addresss. */
+DECL|macro|SCTP_GET_PEER_ADDRS_NUM
+mdefine_line|#define SCTP_GET_PEER_ADDRS_NUM&t;SCTP_GET_PEER_ADDRS_NUM
+DECL|enumerator|SCTP_GET_PEER_ADDRS
+id|SCTP_GET_PEER_ADDRS
+comma
+multiline_comment|/* Get all peer addresss. */
+DECL|macro|SCTP_GET_PEER_ADDRS
+mdefine_line|#define SCTP_GET_PEER_ADDRS&t;SCTP_GET_PEER_ADDRS
+DECL|enumerator|SCTP_GET_LOCAL_ADDRS_NUM
+id|SCTP_GET_LOCAL_ADDRS_NUM
+comma
+multiline_comment|/* Get number of local addresss. */
+DECL|macro|SCTP_GET_LOCAL_ADDRS_NUM
+mdefine_line|#define SCTP_GET_LOCAL_ADDRS_NUM&t;SCTP_GET_LOCAL_ADDRS_NUM
+DECL|enumerator|SCTP_GET_LOCAL_ADDRS
+id|SCTP_GET_LOCAL_ADDRS
+comma
+multiline_comment|/* Get all local addresss. */
+DECL|macro|SCTP_GET_LOCAL_ADDRS
+mdefine_line|#define SCTP_GET_LOCAL_ADDRS&t;SCTP_GET_LOCAL_ADDRS
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * 5.2 SCTP msg_control Structures&n; *&n; * A key element of all SCTP-specific socket extensions is the use of&n; * ancillary data to specify and access SCTP-specific data via the&n; * struct msghdr&squot;s msg_control member used in sendmsg() and recvmsg().&n; * Fine-grained control over initialization and sending parameters are&n; * handled with ancillary data.&n; *&n; * Each ancillary data item is preceeded by a struct cmsghdr (see&n; * Section 5.1), which defines the function and purpose of the data&n; * contained in in the cmsg_data[] member.&n; */
@@ -910,6 +934,27 @@ suffix:semicolon
 DECL|member|ssto_streamid_end
 id|__u16
 id|ssto_streamid_end
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * 8.3 8.5 get all peer/local addresses on a socket&n; * This parameter struct is for getsockopt&n; */
+DECL|struct|sctp_getaddrs
+r_struct
+id|sctp_getaddrs
+(brace
+DECL|member|assoc_id
+id|sctp_assoc_t
+id|assoc_id
+suffix:semicolon
+DECL|member|addr_num
+r_int
+id|addr_num
+suffix:semicolon
+DECL|member|addrs
+r_struct
+id|sockaddr_storage
+op_star
+id|addrs
 suffix:semicolon
 )brace
 suffix:semicolon
