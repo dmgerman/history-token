@@ -3997,4 +3997,11 @@ c_func
 id|ip_conntrack_put
 )paren
 suffix:semicolon
+DECL|variable|ip_ct_log_invalid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_ct_log_invalid
+)paren
+suffix:semicolon
 eof
