@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2003&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; *&t;jfs_imap.c: inode allocation map manager&n; *&n; * Serialization:&n; *   Each AG has a simple lock which is used to control the serialization of&n; *&t;the AG level lists.  This lock should be taken first whenever an AG&n; *&t;level list will be modified or accessed.&n; *&n; *   Each IAG is locked by obtaining the buffer for the IAG page.&n; *&n; *   There is also a inode lock for the inode map inode.  A read lock needs to&n; *&t;be taken whenever an IAG is read from the map or the global level&n; *&t;information is read.  A write lock needs to be taken whenever the global&n; *&t;level information is modified or an atomic operation needs to be used.&n; *&n; *&t;If more than one IAG is read at one time, the read lock may not&n; *&t;be given up until all of the IAG&squot;s are read.  Otherwise, a deadlock&n; *&t;may occur when trying to obtain the read lock while another thread&n; *&t;holding the read lock is waiting on the IAG already being held.&n; *&n; *   The control page of the inode map is read into memory by diMount().&n; *&t;Thereafter it should only be modified in memory and then it will be&n; *&t;written out when the filesystem is unmounted by diUnmount().&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
@@ -1354,18 +1354,12 @@ id|dp-&gt;di_number
 )paren
 )paren
 (brace
-id|jfs_err
-c_func
-(paren
-l_string|&quot;diRead: i_ino != di_number&quot;
-)paren
-suffix:semicolon
-id|updateSuper
+id|jfs_error
 c_func
 (paren
 id|ip-&gt;i_sb
 comma
-id|FM_DIRTY
+l_string|&quot;diRead: i_ino != di_number&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -2129,7 +2123,19 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-m_assert
+r_if
+c_cond
+(paren
+op_logical_neg
+id|addressPXD
+c_func
+(paren
+op_amp
+(paren
+id|jfs_ip-&gt;ixpxd
+)paren
+)paren
+op_logical_or
 (paren
 id|lengthPXD
 c_func
@@ -2139,7 +2145,7 @@ op_amp
 id|jfs_ip-&gt;ixpxd
 )paren
 )paren
-op_eq
+op_ne
 id|JFS_IP
 c_func
 (paren
@@ -2148,19 +2154,21 @@ id|ipimap
 op_member_access_from_pointer
 id|i_imap-&gt;im_nbperiext
 )paren
-suffix:semicolon
-m_assert
-(paren
-id|addressPXD
+)paren
+(brace
+id|jfs_error
 c_func
 (paren
-op_amp
-(paren
-id|jfs_ip-&gt;ixpxd
-)paren
-)paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;diWrite: ixpxd invalid&quot;
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * read the page of disk inode containing the specified inode:&n;&t; */
 multiline_comment|/* compute the block address of the page */
 id|blkno
@@ -3157,7 +3165,6 @@ id|inum
 )paren
 suffix:semicolon
 multiline_comment|/* make sure that the iag is contained within &n;&t; * the map.&n;&t; */
-singleline_comment|//assert(iagno &lt; imap-&gt;im_nextiag);
 r_if
 c_cond
 (paren
@@ -3166,21 +3173,6 @@ op_ge
 id|imap-&gt;im_nextiag
 )paren
 (brace
-id|jfs_err
-c_func
-(paren
-l_string|&quot;diFree: inum = %d, iagno = %d, nextiag = %d&quot;
-comma
-(paren
-id|uint
-)paren
-id|inum
-comma
-id|iagno
-comma
-id|imap-&gt;im_nextiag
-)paren
-suffix:semicolon
 id|dump_mem
 c_func
 (paren
@@ -3191,12 +3183,21 @@ comma
 l_int|32
 )paren
 suffix:semicolon
-id|updateSuper
+id|jfs_error
 c_func
 (paren
 id|ip-&gt;i_sb
 comma
-id|FM_DIRTY
+l_string|&quot;diFree: inum = %d, iagno = %d, nextiag = %d&quot;
+comma
+(paren
+id|uint
+)paren
+id|inum
+comma
+id|iagno
+comma
+id|imap-&gt;im_nextiag
 )paren
 suffix:semicolon
 r_return
@@ -3313,7 +3314,10 @@ id|HIGHORDER
 op_rshift
 id|bitno
 suffix:semicolon
-m_assert
+r_if
+c_cond
+(paren
+op_logical_neg
 (paren
 id|le32_to_cpu
 c_func
@@ -3326,29 +3330,21 @@ id|extno
 op_amp
 id|mask
 )paren
-suffix:semicolon
-macro_line|#ifdef _STILL_TO_PORT
-m_assert
-(paren
-(paren
-id|le32_to_cpu
+)paren
+(brace
+id|jfs_error
 c_func
 (paren
-id|iagp-&gt;pmap
-(braket
-id|extno
-)braket
-)paren
-op_amp
-id|mask
-)paren
-op_eq
-l_int|0
+id|ip-&gt;i_sb
+comma
+l_string|&quot;diFree: wmap shows inode already free&quot;
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/*  _STILL_TO_PORT */
-m_assert
+)brace
+r_if
+c_cond
 (paren
+op_logical_neg
 id|addressPXD
 c_func
 (paren
@@ -3359,7 +3355,40 @@ id|extno
 )braket
 )paren
 )paren
+(brace
+id|release_metapage
+c_func
+(paren
+id|mp
+)paren
 suffix:semicolon
+id|IREAD_UNLOCK
+c_func
+(paren
+id|ipimap
+)paren
+suffix:semicolon
+id|AG_UNLOCK
+c_func
+(paren
+id|imap
+comma
+id|agno
+)paren
+suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;diFree: invalid inoext&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* compute the bitmap for the extent reflecting the freed inode.&n;&t; */
 id|bitmap
 op_assign
@@ -3393,12 +3422,6 @@ dot
 id|numinos
 )paren
 (brace
-id|jfs_err
-c_func
-(paren
-l_string|&quot;diFree: numfree &gt; numinos&quot;
-)paren
-suffix:semicolon
 id|release_metapage
 c_func
 (paren
@@ -3419,12 +3442,12 @@ comma
 id|agno
 )paren
 suffix:semicolon
-id|updateSuper
+id|jfs_error
 c_func
 (paren
 id|ip-&gt;i_sb
 comma
-id|FM_DIRTY
+l_string|&quot;diFree: numfree &gt; numinos&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4024,13 +4047,6 @@ id|cmp
 r_goto
 id|error_out
 suffix:semicolon
-m_assert
-(paren
-id|cmp
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
 id|ciagp
 op_assign
 (paren
@@ -4112,13 +4128,6 @@ id|dmp
 )paren
 r_goto
 id|error_out
-suffix:semicolon
-m_assert
-(paren
-id|dmp
-op_ne
-l_int|NULL
-)paren
 suffix:semicolon
 id|diagp
 op_assign
@@ -4374,16 +4383,26 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* update the inode extent address and working map &n;&t; * to reflect the free extent.&n;&t; * the permanent map should have been updated already &n;&t; * for the inode being freed.&n;&t; */
-m_assert
+r_if
+c_cond
 (paren
 id|iagp-&gt;pmap
 (braket
 id|extno
 )braket
-op_eq
+op_ne
 l_int|0
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;diFree: the pmap does not show inode free&quot;
+)paren
 suffix:semicolon
+)brace
 id|iagp-&gt;wmap
 (braket
 id|extno
@@ -4701,7 +4720,6 @@ comma
 id|COMMIT_FORCE
 )paren
 suffix:semicolon
-singleline_comment|// D233382
 id|txEnd
 c_func
 (paren
@@ -5182,6 +5200,14 @@ c_func
 id|ipimap
 )paren
 suffix:semicolon
+id|AG_UNLOCK
+c_func
+(paren
+id|imap
+comma
+id|agno
+)paren
+suffix:semicolon
 r_return
 (paren
 id|rc
@@ -5513,6 +5539,7 @@ id|diFindFree
 c_func
 (paren
 id|le32_to_cpu
+c_func
 (paren
 id|iagp-&gt;wmap
 (braket
@@ -5523,13 +5550,41 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|rem
-OL
+op_ge
 id|INOSPEREXT
 )paren
+(brace
+id|IREAD_UNLOCK
+c_func
+(paren
+id|ipimap
+)paren
 suffix:semicolon
+id|AG_UNLOCK
+c_func
+(paren
+id|imap
+comma
+id|agno
+)paren
+suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;diAlloc: can&squot;t find free bit &quot;
+l_string|&quot;in wmap&quot;
+)paren
+suffix:semicolon
+r_return
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* determine the inode number within the&n;&t;&t;&t;&t; * iag and allocate the inode from the&n;&t;&t;&t;&t; * map.&n;&t;&t;&t;&t; */
 id|ino
 op_assign
@@ -5564,7 +5619,6 @@ c_cond
 (paren
 id|rc
 )paren
-(brace
 m_assert
 (paren
 id|rc
@@ -5573,7 +5627,6 @@ op_minus
 id|EIO
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 multiline_comment|/* set the results of the allocation&n;&t;&t;&t;&t;&t; * and write the iag.&n;&t;&t;&t;&t;&t; */
@@ -5913,18 +5966,12 @@ OG
 id|numinos
 )paren
 (brace
-id|jfs_err
-c_func
-(paren
-l_string|&quot;diAllocAG: numfree &gt; numinos&quot;
-)paren
-suffix:semicolon
-id|updateSuper
+id|jfs_error
 c_func
 (paren
 id|ip-&gt;i_sb
 comma
-id|FM_DIRTY
+l_string|&quot;diAllocAG: numfree &gt; numinos&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6306,7 +6353,6 @@ op_star
 id|mp-&gt;data
 suffix:semicolon
 multiline_comment|/* better be free inodes in this iag if it is on the&n;&t; * list.&n;&t; */
-singleline_comment|//assert(iagp-&gt;nfreeinos);
 r_if
 c_cond
 (paren
@@ -6314,38 +6360,18 @@ op_logical_neg
 id|iagp-&gt;nfreeinos
 )paren
 (brace
-id|jfs_err
+id|IREAD_UNLOCK
 c_func
 (paren
-l_string|&quot;diAllocIno: nfreeinos = 0, but iag on freelist&quot;
+id|imap-&gt;im_ipimap
 )paren
 suffix:semicolon
-id|jfs_err
-c_func
-(paren
-l_string|&quot;  agno = %d, iagno = %d&quot;
-comma
-id|agno
-comma
-id|iagno
-)paren
-suffix:semicolon
-id|dump_mem
-c_func
-(paren
-l_string|&quot;iag&quot;
-comma
-id|iagp
-comma
-l_int|64
-)paren
-suffix:semicolon
-id|updateSuper
+id|jfs_error
 c_func
 (paren
 id|ip-&gt;i_sb
 comma
-id|FM_DIRTY
+l_string|&quot;diAllocIno: nfreeinos = 0, but iag on freelist&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6366,13 +6392,33 @@ id|sword
 op_increment
 )paren
 (brace
-m_assert
+r_if
+c_cond
 (paren
 id|sword
-OL
+op_ge
 id|SMAPSZ
 )paren
+(brace
+id|IREAD_UNLOCK
+c_func
+(paren
+id|imap-&gt;im_ipimap
+)paren
 suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;diAllocIno: free inode not found in summary map&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6403,13 +6449,33 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|rem
-OL
+op_ge
 id|EXTSPERSUM
 )paren
+(brace
+id|IREAD_UNLOCK
+c_func
+(paren
+id|imap-&gt;im_ipimap
+)paren
 suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;diAllocIno: no free extent found&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|extno
 op_assign
 (paren
@@ -6438,13 +6504,33 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|rem
-OL
+op_ge
 id|INOSPEREXT
 )paren
+(brace
+id|IREAD_UNLOCK
+c_func
+(paren
+id|imap-&gt;im_ipimap
+)paren
 suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;diAllocIno: free inode not found&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* compute the inode number within the iag. &n;&t; */
 id|ino
 op_assign
@@ -6662,10 +6748,22 @@ id|mp
 )paren
 )paren
 (brace
-m_assert
+id|IREAD_UNLOCK
+c_func
 (paren
-l_int|0
+id|imap-&gt;im_ipimap
 )paren
+suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;diAllocExt: error reading iag&quot;
+)paren
+suffix:semicolon
+r_return
+id|rc
 suffix:semicolon
 )brace
 id|iagp
@@ -6691,13 +6789,39 @@ id|sword
 op_increment
 )paren
 (brace
-m_assert
+r_if
+c_cond
 (paren
 id|sword
-OL
+op_ge
 id|SMAPSZ
 )paren
+(brace
+id|release_metapage
+c_func
+(paren
+id|mp
+)paren
 suffix:semicolon
+id|IREAD_UNLOCK
+c_func
+(paren
+id|imap-&gt;im_ipimap
+)paren
+suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;diAllocExt: free ext summary map not found&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6728,13 +6852,39 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|rem
-OL
+op_ge
 id|EXTSPERSUM
 )paren
+(brace
+id|release_metapage
+c_func
+(paren
+id|mp
+)paren
 suffix:semicolon
+id|IREAD_UNLOCK
+c_func
+(paren
+id|imap-&gt;im_ipimap
+)paren
+suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ip-&gt;i_sb
+comma
+l_string|&quot;diAllocExt: free extent not found&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|extno
 op_assign
 (paren
@@ -7084,7 +7234,9 @@ op_rshift
 id|bitno
 suffix:semicolon
 multiline_comment|/* the inode should be free and backed.&n;&t; */
-m_assert
+r_if
+c_cond
+(paren
 (paren
 (paren
 id|le32_to_cpu
@@ -7098,11 +7250,10 @@ id|extno
 op_amp
 id|mask
 )paren
-op_eq
+op_ne
 l_int|0
 )paren
-suffix:semicolon
-m_assert
+op_logical_or
 (paren
 (paren
 id|le32_to_cpu
@@ -7116,11 +7267,10 @@ id|extno
 op_amp
 id|mask
 )paren
-op_eq
+op_ne
 l_int|0
 )paren
-suffix:semicolon
-m_assert
+op_logical_or
 (paren
 id|addressPXD
 c_func
@@ -7131,10 +7281,46 @@ id|iagp-&gt;inoext
 id|extno
 )braket
 )paren
-op_ne
+op_eq
 l_int|0
 )paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|amp
+)paren
+id|release_metapage
+c_func
+(paren
+id|amp
+)paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bmp
+)paren
+id|release_metapage
+c_func
+(paren
+id|bmp
+)paren
+suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|imap-&gt;im_ipimap-&gt;i_sb
+comma
+l_string|&quot;diAllocBit: iag inconsistent&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* mark the inode as allocated in the working map.&n;&t; */
 id|iagp-&gt;wmap
 (braket
@@ -7398,11 +7584,26 @@ op_star
 id|sbi
 suffix:semicolon
 multiline_comment|/* better have free extents.&n;&t; */
-m_assert
+r_if
+c_cond
 (paren
+op_logical_neg
 id|iagp-&gt;nfreeexts
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|imap-&gt;im_ipimap-&gt;i_sb
+comma
+l_string|&quot;diNewExt: no free extents&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* get the inode map inode.&n;&t; */
 id|ipimap
 op_assign
@@ -7715,13 +7916,31 @@ op_star
 id|cmp-&gt;data
 suffix:semicolon
 )brace
-m_assert
+r_if
+c_cond
 (paren
 id|ciagp
-op_ne
+op_eq
 l_int|NULL
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|imap-&gt;im_ipimap-&gt;i_sb
+comma
+l_string|&quot;diNewExt: ciagp == NULL&quot;
+)paren
 suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+r_goto
+id|error_out
+suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* allocate disk space for the inode extent.&n;&t; */
@@ -8531,17 +8750,43 @@ c_func
 id|ipimap
 )paren
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|ipimap-&gt;i_size
 op_rshift
 id|L2PSIZE
-op_eq
+op_ne
 id|imap-&gt;im_nextiag
 op_plus
 l_int|1
 )paren
+(brace
+id|IWRITE_UNLOCK
+c_func
+(paren
+id|ipimap
+)paren
 suffix:semicolon
+id|IAGFREE_UNLOCK
+c_func
+(paren
+id|imap
+)paren
+suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|imap-&gt;im_ipimap-&gt;i_sb
+comma
+l_string|&quot;diNewIAG: ipimap-&gt;i_size is wrong&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* get the next avaliable iag number */
 id|iagno
 op_assign
@@ -8643,7 +8888,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|//bp = bmAssign(ipimap, blkno, xaddr, PSIZE, bmREAD_PAGE);
 r_if
 c_cond
 (paren
@@ -9295,13 +9539,27 @@ id|inum
 )paren
 suffix:semicolon
 multiline_comment|/* make sure that the iag is contained within the map */
-m_assert
+r_if
+c_cond
 (paren
 id|iagno
-OL
+op_ge
 id|imap-&gt;im_nextiag
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|ipimap-&gt;i_sb
+comma
+l_string|&quot;diUpdatePMap: the iag is outside the map&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* read the iag */
 id|IREAD_LOCK
 c_func
@@ -9408,21 +9666,15 @@ id|mask
 )paren
 )paren
 (brace
-id|jfs_err
-c_func
-(paren
-l_string|&quot;diUpdatePMap: inode %ld not marked as &quot;
-l_string|&quot;allocated in wmap!&quot;
-comma
-id|inum
-)paren
-suffix:semicolon
-id|updateSuper
+id|jfs_error
 c_func
 (paren
 id|ipimap-&gt;i_sb
 comma
-id|FM_DIRTY
+l_string|&quot;diUpdatePMap: inode %ld not marked as &quot;
+l_string|&quot;allocated in wmap!&quot;
+comma
+id|inum
 )paren
 suffix:semicolon
 )brace
@@ -9444,21 +9696,15 @@ id|mask
 )paren
 )paren
 (brace
-id|jfs_err
-c_func
-(paren
-l_string|&quot;diUpdatePMap: inode %ld not marked as &quot;
-l_string|&quot;allocated in pmap!&quot;
-comma
-id|inum
-)paren
-suffix:semicolon
-id|updateSuper
+id|jfs_error
 c_func
 (paren
 id|ipimap-&gt;i_sb
 comma
-id|FM_DIRTY
+l_string|&quot;diUpdatePMap: inode %ld not marked as &quot;
+l_string|&quot;allocated in pmap!&quot;
+comma
+id|inum
 )paren
 suffix:semicolon
 )brace
@@ -9480,7 +9726,10 @@ multiline_comment|/*&n;&t; * mark the inode allocated in persistent map:&n;&t; *
 r_else
 (brace
 multiline_comment|/* The inode should be already allocated in the working map&n;&t;&t; * and should be free in persistent map;&n;&t;&t; */
-m_assert
+r_if
+c_cond
+(paren
+op_logical_neg
 (paren
 id|le32_to_cpu
 c_func
@@ -9493,8 +9742,24 @@ id|extno
 op_amp
 id|mask
 )paren
+)paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|ipimap-&gt;i_sb
+comma
+l_string|&quot;diUpdatePMap: the inode is not allocated in &quot;
+l_string|&quot;the working map&quot;
+)paren
 suffix:semicolon
-m_assert
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+r_if
+c_cond
 (paren
 (paren
 id|le32_to_cpu
@@ -9508,10 +9773,24 @@ id|extno
 op_amp
 id|mask
 )paren
-op_eq
+op_ne
 l_int|0
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|ipimap-&gt;i_sb
+comma
+l_string|&quot;diUpdatePMap: the inode is not free in the &quot;
+l_string|&quot;persistent map&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* update the bitmap for the extent of the allocated inode */
 id|iagp-&gt;pmap
 (braket
@@ -9696,7 +9975,6 @@ id|log
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//      bmLazyWrite(mp, log-&gt;flag &amp; JFS_COMMIT);
 id|write_metapage
 c_func
 (paren
@@ -9933,17 +10211,37 @@ op_star
 )paren
 id|bp-&gt;data
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|le32_to_cpu
 c_func
 (paren
 id|iagp-&gt;iagnum
 )paren
-op_eq
+op_ne
 id|i
 )paren
+(brace
+id|release_metapage
+c_func
+(paren
+id|bp
+)paren
 suffix:semicolon
+id|jfs_error
+c_func
+(paren
+id|ipimap-&gt;i_sb
+comma
+l_string|&quot;diExtendFs: unexpected value of iagnum&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 multiline_comment|/* leave free iag in the free iag list */
 r_if
 c_cond
@@ -9982,7 +10280,6 @@ id|agstart
 op_rshift
 id|mp-&gt;db_agl2size
 suffix:semicolon
-multiline_comment|/*&n;printf(&quot;diExtendFS: iag:%d agstart:%Ld agno:%d&bslash;n&quot;, i, agstart, n);&n;*/
 multiline_comment|/* compute backed inodes */
 id|numinos
 op_assign
@@ -10285,20 +10582,20 @@ id|bp
 )paren
 suffix:semicolon
 )brace
-id|ASSERT
-c_func
+r_if
+c_cond
 (paren
 id|xnuminos
-op_eq
+op_ne
 id|atomic_read
 c_func
 (paren
 op_amp
 id|imap-&gt;im_numinos
 )paren
-op_logical_and
+op_logical_or
 id|xnumfree
-op_eq
+op_ne
 id|atomic_read
 c_func
 (paren
@@ -10306,7 +10603,20 @@ op_amp
 id|imap-&gt;im_numfree
 )paren
 )paren
+(brace
+id|jfs_error
+c_func
+(paren
+id|ipimap-&gt;i_sb
+comma
+l_string|&quot;diExtendFs: numinos or numfree incorrect&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 r_return
 id|rcx
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2003&n; *   Portions Copyright (c) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2003&n; *   Portions Copyright (C) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; *      jfs_txnmgr.c: transaction manager&n; *&n; * notes:&n; * transaction starts with txBegin() and ends with txCommit()&n; * or txAbort().&n; *&n; * tlock is acquired at the time of update;&n; * (obviate scan at commit time for xtree and dtree)&n; * tlock and mp points to each other;&n; * (no hashlist for mp -&gt; tlock).&n; *&n; * special cases:&n; * tlock on in-memory inode:&n; * in-place tlock in the in-memory inode itself;&n; * converted to page lock by iWrite() at commit time.&n; *&n; * tlock during write()/mmap() under anonymous transaction (tid = 0):&n; * transferred (?) to transaction at commit time.&n; *&n; * use the page itself to update allocation maps&n; * (obviate intermediate replication of allocation/deallocation data)&n; * hold on to mp+lock thru update of maps&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -4335,13 +4335,6 @@ id|tlckFREE
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; *      free inode extent&n;&t;&t; *&n;&t;&t; * (pages of the freed inode extent have been invalidated and&n;&t;&t; * a maplock for free of the extent has been formatted at&n;&t;&t; * txLock() time);&n;&t;&t; *&n;&t;&t; * the tlock had been acquired on the inode allocation map page&n;&t;&t; * (iag) that specifies the freed extent, even though the map&n;&t;&t; * page is not itself logged, to prevent pageout of the map&n;&t;&t; * page before the log;&n;&t;&t; */
-m_assert
-(paren
-id|tlck-&gt;type
-op_amp
-id|tlckFREE
-)paren
-suffix:semicolon
 multiline_comment|/* log LOG_NOREDOINOEXT of the freed inode extent for&n;&t;&t; * logredo() to start NoRedoPage filters, and to update&n;&t;&t; * imap and bmap for free of the extent;&n;&t;&t; */
 id|lrd-&gt;type
 op_assign
@@ -8565,12 +8558,12 @@ c_cond
 (paren
 id|dirty
 )paren
-id|updateSuper
+id|jfs_error
 c_func
 (paren
 id|tblk-&gt;sb
 comma
-id|FM_DIRTY
+l_string|&quot;txAbort&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8719,12 +8712,12 @@ id|tid
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * mark filesystem dirty&n;&t; */
-id|updateSuper
+id|jfs_error
 c_func
 (paren
 id|cd-&gt;sb
 comma
-id|FM_DIRTY
+l_string|&quot;txAbortCommit&quot;
 )paren
 suffix:semicolon
 )brace
