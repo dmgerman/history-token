@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* block_sync_page() */
 macro_line|#include &lt;asm/pgtable.h&gt;
-multiline_comment|/*&n; * swapper_inode doesn&squot;t do anything much.  It is really only here to&n; * avoid some special-casing in other parts of the kernel.&n; *&n; * We set i_size to &quot;infinity&quot; to keep the page I/O functions happy.  The swap&n; * block allocator makes sure that allocations are in-range.  A strange&n; * number is chosen to prevent various arith overflows elsewhere.  For example,&n; * `lblock&squot; in block_read_full_page().&n; */
+multiline_comment|/*&n; * swapper_inode doesn&squot;t do anything much.  It is really only here to&n; * avoid some special-casing in other parts of the kernel.&n; */
 DECL|variable|swapper_inode
 r_static
 r_struct
@@ -20,16 +20,6 @@ id|i_mapping
 suffix:colon
 op_amp
 id|swapper_space
-comma
-id|i_size
-suffix:colon
-id|PAGE_SIZE
-op_star
-l_int|0xffffffffLL
-comma
-id|i_blkbits
-suffix:colon
-id|PAGE_SHIFT
 comma
 )brace
 suffix:semicolon

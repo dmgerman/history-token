@@ -925,7 +925,8 @@ r_int
 op_star
 id|nr_to_write
 comma
-r_int
+r_enum
+id|writeback_sync_modes
 id|sync_mode
 comma
 r_int
