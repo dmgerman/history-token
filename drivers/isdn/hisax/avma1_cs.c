@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -178,8 +177,9 @@ r_void
 id|avma1cs_release
 c_func
 (paren
-id|u_long
-id|arg
+id|dev_link_t
+op_star
+id|link
 )paren
 suffix:semicolon
 r_static
@@ -320,18 +320,6 @@ r_struct
 id|dev_link_t
 )paren
 )paren
-suffix:semicolon
-id|link-&gt;release.function
-op_assign
-op_amp
-id|avma1cs_release
-suffix:semicolon
-id|link-&gt;release.data
-op_assign
-(paren
-id|u_long
-)paren
-id|link
 suffix:semicolon
 multiline_comment|/* The io structure describes IO port mapping */
 id|link-&gt;io.NumPorts1
@@ -1396,9 +1384,6 @@ l_int|0
 id|avma1cs_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|link
 )paren
 suffix:semicolon
@@ -1474,20 +1459,11 @@ r_void
 id|avma1cs_release
 c_func
 (paren
-id|u_long
-id|arg
-)paren
-(brace
 id|dev_link_t
 op_star
 id|link
-op_assign
-(paren
-id|dev_link_t
-op_star
 )paren
-id|arg
-suffix:semicolon
+(brace
 id|local_info_t
 op_star
 id|local
@@ -1646,23 +1622,12 @@ id|link-&gt;state
 op_amp
 id|DEV_CONFIG
 )paren
-(brace
-id|link-&gt;release.expires
-op_assign
-id|jiffies
-op_plus
-id|HZ
-op_div
-l_int|20
-suffix:semicolon
-id|add_timer
+id|avma1cs_release
 c_func
 (paren
-op_amp
-id|link-&gt;release
+id|link
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -1838,9 +1803,6 @@ id|DEV_CONFIG
 id|avma1cs_release
 c_func
 (paren
-(paren
-id|u_long
-)paren
 id|dev_list
 )paren
 suffix:semicolon
