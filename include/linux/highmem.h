@@ -158,6 +158,11 @@ comma
 id|vaddr
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|page
+)paren
 id|clear_user_highpage
 c_func
 (paren
