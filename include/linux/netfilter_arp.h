@@ -16,5 +16,12 @@ DECL|macro|NF_ARP_FORWARD
 mdefine_line|#define NF_ARP_FORWARD&t;2
 DECL|macro|NF_ARP_NUMHOOKS
 mdefine_line|#define NF_ARP_NUMHOOKS&t;3
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|arpt_mutex
+)paren
+suffix:semicolon
 macro_line|#endif /* __LINUX_ARP_NETFILTER_H */
 eof
