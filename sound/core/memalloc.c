@@ -562,7 +562,7 @@ id|SNDRV_DMA_TYPE_SBUS
 suffix:colon
 id|dmab-&gt;area
 op_assign
-id|snd_malloc_pci_pages
+id|snd_malloc_sbus_pages
 c_func
 (paren
 id|dev-&gt;dev.sbus
@@ -706,9 +706,9 @@ c_func
 (paren
 id|dev-&gt;dev.sbus
 comma
-id|dmab-&gt;size
+id|dmab-&gt;bytes
 comma
-id|dmab-&gt;are
+id|dmab-&gt;area
 comma
 id|dmab-&gt;addr
 )paren
