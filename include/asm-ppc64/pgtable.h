@@ -181,6 +181,47 @@ macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* shift to put page number into pte */
 DECL|macro|PTE_SHIFT
 mdefine_line|#define PTE_SHIFT (16)
+multiline_comment|/* We allow 2^41 bytes of real memory, so we need 29 bits in the PMD&n; * to give the PTE page number.  The bottom two bits are for flags. */
+DECL|macro|PMD_TO_PTEPAGE_SHIFT
+mdefine_line|#define PMD_TO_PTEPAGE_SHIFT (2)
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|macro|_PMD_HUGEPAGE
+mdefine_line|#define _PMD_HUGEPAGE&t;0x00000001U
+DECL|macro|HUGEPTE_BATCH_SIZE
+mdefine_line|#define HUGEPTE_BATCH_SIZE (1&lt;&lt;(HPAGE_SHIFT-PMD_SHIFT))
+r_int
+id|hash_huge_page
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|access
+comma
+r_int
+r_int
+id|ea
+comma
+r_int
+r_int
+id|vsid
+comma
+r_int
+id|local
+)paren
+suffix:semicolon
+DECL|macro|HAVE_ARCH_UNMAPPED_AREA
+mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
+macro_line|#else
+DECL|macro|hash_huge_page
+mdefine_line|#define hash_huge_page(mm,a,ea,vsid,local)&t;-1
+DECL|macro|_PMD_HUGEPAGE
+mdefine_line|#define _PMD_HUGEPAGE&t;0
+macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; *&n; * mk_pte takes a (struct page *) as input&n; */
 DECL|macro|mk_pte
@@ -199,17 +240,19 @@ mdefine_line|#define pte_pfn(x)&t;&t;((unsigned long)((pte_val(x) &gt;&gt; PTE_S
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x)&t;&t;pfn_to_page(pte_pfn(x))
 DECL|macro|pmd_set
-mdefine_line|#define pmd_set(pmdp, ptep) &t;(pmd_val(*(pmdp)) = (__ba_to_bpn(ptep)))
+mdefine_line|#define pmd_set(pmdp, ptep) &t;&bslash;&n;&t;(pmd_val(*(pmdp)) = (__ba_to_bpn(ptep) &lt;&lt; PMD_TO_PTEPAGE_SHIFT))
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(pmd)&t;&t;(!pmd_val(pmd))
+DECL|macro|pmd_hugepage
+mdefine_line|#define&t;pmd_hugepage(pmd)&t;(!!(pmd_val(pmd) &amp; _PMD_HUGEPAGE))
 DECL|macro|pmd_bad
-mdefine_line|#define&t;pmd_bad(pmd)&t;&t;((pmd_val(pmd)) == 0)
+mdefine_line|#define&t;pmd_bad(pmd)&t;&t;(((pmd_val(pmd)) == 0) || pmd_hugepage(pmd))
 DECL|macro|pmd_present
-mdefine_line|#define&t;pmd_present(pmd)&t;((pmd_val(pmd)) != 0)
+mdefine_line|#define&t;pmd_present(pmd)&t;((!pmd_hugepage(pmd)) &bslash;&n;&t;&t;&t;&t; &amp;&amp; (pmd_val(pmd) &amp; ~_PMD_HUGEPAGE) != 0)
 DECL|macro|pmd_clear
 mdefine_line|#define&t;pmd_clear(pmdp)&t;&t;(pmd_val(*(pmdp)) = 0)
 DECL|macro|pmd_page_kernel
-mdefine_line|#define pmd_page_kernel(pmd)&t;(__bpn_to_ba(pmd_val(pmd)))
+mdefine_line|#define pmd_page_kernel(pmd)&t;&bslash;&n;&t;(__bpn_to_ba(pmd_val(pmd) &gt;&gt; PMD_TO_PTEPAGE_SHIFT))
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd)&t;&t;virt_to_page(pmd_page_kernel(pmd))
 DECL|macro|pgd_set

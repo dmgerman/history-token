@@ -1511,10 +1511,8 @@ id|xics_interrupt_node
 (brace
 r_int
 r_int
-r_int
 id|addr
 suffix:semicolon
-r_int
 r_int
 r_int
 id|size
@@ -1523,8 +1521,6 @@ suffix:semicolon
 id|inodes
 (braket
 id|NR_CPUS
-op_star
-l_int|2
 )braket
 suffix:semicolon
 id|ppc64_boot_msg
