@@ -2966,7 +2966,7 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: inftl_writeblock(inftl=0x%x,block=%d,&quot;
+l_string|&quot;INFTL: inftl_writeblock(inftl=0x%x,block=%ld,&quot;
 l_string|&quot;buffer=0x%x)&bslash;n&quot;
 comma
 (paren
@@ -3180,7 +3180,7 @@ c_func
 (paren
 id|MTD_DEBUG_LEVEL3
 comma
-l_string|&quot;INFTL: inftl_readblock(inftl=0x%x,block=%d,&quot;
+l_string|&quot;INFTL: inftl_readblock(inftl=0x%x,block=%ld,&quot;
 l_string|&quot;buffer=0x%x)&bslash;n&quot;
 comma
 (paren
