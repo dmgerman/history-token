@@ -66,12 +66,11 @@ suffix:semicolon
 macro_line|#endif /* ifdef MODULE */
 multiline_comment|/*&n; * Register block address- see header for details&n; * -----------------------------------------&n; * | DP | ALARM | FLIP | 4 | 3 | 2 | 1 | 0 |&n; * -----------------------------------------&n; *&n; * DP &t;&t;- Toggles decimal point on/off &n; * ALARM&t;- Toggles &quot;Alarm&quot; LED green/red&n; * FLIP&t;&t;- Inverts display for upside-down mounted board&n; * bits 0-4&t;- 7-segment display contents&n; */
 DECL|variable|d7s_regs
-r_volatile
-id|u8
+r_static
+r_void
+id|__iomem
 op_star
 id|d7s_regs
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|d7s_free
 r_static
