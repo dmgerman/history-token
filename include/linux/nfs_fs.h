@@ -216,10 +216,12 @@ id|vfs_inode
 )paren
 suffix:semicolon
 )brace
+DECL|macro|NFS_SB
+mdefine_line|#define NFS_SB(s)&t;&t;(&amp;s-&gt;u.nfs_sb.s_server)
 DECL|macro|NFS_FH
 mdefine_line|#define NFS_FH(inode)&t;&t;&t;(&amp;NFS_I(inode)-&gt;fh)
 DECL|macro|NFS_SERVER
-mdefine_line|#define NFS_SERVER(inode)&t;&t;(&amp;(inode)-&gt;i_sb-&gt;u.nfs_sb.s_server)
+mdefine_line|#define NFS_SERVER(inode)&t;&t;(NFS_SB(inode-&gt;i_sb))
 DECL|macro|NFS_CLIENT
 mdefine_line|#define NFS_CLIENT(inode)&t;&t;(NFS_SERVER(inode)-&gt;client)
 DECL|macro|NFS_PROTO
