@@ -230,15 +230,6 @@ mdefine_line|#define sctp_chunk_is_data(a) (a-&gt;chunk_hdr-&gt;type == SCTP_CID
 multiline_comment|/* Calculate the actual data size in a data chunk */
 DECL|macro|SCTP_DATA_SNDSIZE
 mdefine_line|#define SCTP_DATA_SNDSIZE(c) ((int)((unsigned long)(c-&gt;chunk_end)&bslash;&n;&t;&t;       &t;&t;- (unsigned long)(c-&gt;chunk_hdr)&bslash;&n;&t;&t;&t;&t;- sizeof(sctp_data_chunk_t)))
-multiline_comment|/* This is a table of printable names of sctp_param_t&squot;s.  */
-r_extern
-r_const
-r_char
-op_star
-id|sctp_param_tbl
-(braket
-)braket
-suffix:semicolon
 DECL|macro|SCTP_MAX_ERROR_CAUSE
 mdefine_line|#define SCTP_MAX_ERROR_CAUSE  SCTP_ERROR_NONEXIST_IP
 DECL|macro|SCTP_NUM_ERROR_CAUSE

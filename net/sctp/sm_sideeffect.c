@@ -6,6 +6,84 @@ macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
+r_static
+r_int
+id|sctp_cmd_interpreter
+c_func
+(paren
+id|sctp_event_t
+id|event_type
+comma
+id|sctp_subtype_t
+id|subtype
+comma
+id|sctp_state_t
+id|state
+comma
+r_struct
+id|sctp_endpoint
+op_star
+id|ep
+comma
+r_struct
+id|sctp_association
+op_star
+id|asoc
+comma
+r_void
+op_star
+id|event_arg
+comma
+id|sctp_disposition_t
+id|status
+comma
+id|sctp_cmd_seq_t
+op_star
+id|commands
+comma
+r_int
+id|gfp
+)paren
+suffix:semicolon
+r_static
+r_int
+id|sctp_side_effects
+c_func
+(paren
+id|sctp_event_t
+id|event_type
+comma
+id|sctp_subtype_t
+id|subtype
+comma
+id|sctp_state_t
+id|state
+comma
+r_struct
+id|sctp_endpoint
+op_star
+id|ep
+comma
+r_struct
+id|sctp_association
+op_star
+id|asoc
+comma
+r_void
+op_star
+id|event_arg
+comma
+id|sctp_disposition_t
+id|status
+comma
+id|sctp_cmd_seq_t
+op_star
+id|commands
+comma
+r_int
+id|gfp
+)paren
+suffix:semicolon
 multiline_comment|/********************************************************************&n; * Helper functions&n; ********************************************************************/
 multiline_comment|/* A helper function for delayed processing of INET ECN CE bit. */
 DECL|function|sctp_do_ecn_ce_work
@@ -153,6 +231,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Generate SACK if necessary.  We call this at the end of a packet.  */
 DECL|function|sctp_gen_sack
+r_static
 r_int
 id|sctp_gen_sack
 c_func
@@ -609,6 +688,7 @@ id|asoc
 suffix:semicolon
 )brace
 DECL|function|sctp_generate_t1_cookie_event
+r_static
 r_void
 id|sctp_generate_t1_cookie_event
 c_func
@@ -640,6 +720,7 @@ id|SCTP_EVENT_TIMEOUT_T1_COOKIE
 suffix:semicolon
 )brace
 DECL|function|sctp_generate_t1_init_event
+r_static
 r_void
 id|sctp_generate_t1_init_event
 c_func
@@ -671,6 +752,7 @@ id|SCTP_EVENT_TIMEOUT_T1_INIT
 suffix:semicolon
 )brace
 DECL|function|sctp_generate_t2_shutdown_event
+r_static
 r_void
 id|sctp_generate_t2_shutdown_event
 c_func
@@ -702,6 +784,7 @@ id|SCTP_EVENT_TIMEOUT_T2_SHUTDOWN
 suffix:semicolon
 )brace
 DECL|function|sctp_generate_t4_rto_event
+r_static
 r_void
 id|sctp_generate_t4_rto_event
 c_func
@@ -733,6 +816,7 @@ id|SCTP_EVENT_TIMEOUT_T4_RTO
 suffix:semicolon
 )brace
 DECL|function|sctp_generate_t5_shutdown_guard_event
+r_static
 r_void
 id|sctp_generate_t5_shutdown_guard_event
 c_func
@@ -765,6 +849,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* sctp_generate_t5_shutdown_guard_event() */
 DECL|function|sctp_generate_autoclose_event
+r_static
 r_void
 id|sctp_generate_autoclose_event
 c_func
@@ -944,6 +1029,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Inject a SACK Timeout event into the state machine.  */
 DECL|function|sctp_generate_sack_event
+r_static
 r_void
 id|sctp_generate_sack_event
 c_func
@@ -2614,6 +2700,7 @@ DECL|macro|DEBUG_POST
 macro_line|#undef DEBUG_POST
 multiline_comment|/*****************************************************************&n; * This the master state function side effect processing function.&n; *****************************************************************/
 DECL|function|sctp_side_effects
+r_static
 r_int
 id|sctp_side_effects
 c_func
@@ -2837,6 +2924,7 @@ suffix:semicolon
 multiline_comment|/********************************************************************&n; * 2nd Level Abstractions&n; ********************************************************************/
 multiline_comment|/* This is the side-effect interpreter.  */
 DECL|function|sctp_cmd_interpreter
+r_static
 r_int
 id|sctp_cmd_interpreter
 c_func

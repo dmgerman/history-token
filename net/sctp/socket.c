@@ -682,6 +682,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Look up the transport from an address and an assoc id. If both address and&n; * id are specified, the associations matching the address and the id should be&n; * the same.&n; */
 DECL|function|sctp_addr_id2transport
+r_static
 r_struct
 id|sctp_transport
 op_star
@@ -833,6 +834,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* API 3.1.2 bind() - UDP Style Syntax&n; * The syntax of bind() is,&n; *&n; *   ret = bind(int sd, struct sockaddr *addr, int addrlen);&n; *&n; *   sd      - the socket descriptor returned by socket().&n; *   addr    - the address structure (struct sockaddr_in or struct&n; *             sockaddr_in6 [RFC 2553]),&n; *   addr_len - the size of the address structure.&n; */
 DECL|function|sctp_bind
+id|SCTP_STATIC
 r_int
 id|sctp_bind
 c_func

@@ -22,6 +22,7 @@ id|sk_buff
 op_star
 )paren
 suffix:semicolon
+r_static
 r_struct
 id|sctp_association
 op_star
@@ -52,6 +53,7 @@ op_star
 id|transportp
 )paren
 suffix:semicolon
+r_static
 r_struct
 id|sctp_endpoint
 op_star
@@ -63,6 +65,32 @@ r_union
 id|sctp_addr
 op_star
 id|laddr
+)paren
+suffix:semicolon
+r_static
+r_struct
+id|sctp_association
+op_star
+id|__sctp_lookup_association
+c_func
+(paren
+r_const
+r_union
+id|sctp_addr
+op_star
+id|local
+comma
+r_const
+r_union
+id|sctp_addr
+op_star
+id|peer
+comma
+r_struct
+id|sctp_transport
+op_star
+op_star
+id|pt
 )paren
 suffix:semicolon
 multiline_comment|/* Calculate the SCTP checksum of an SCTP packet.  */
@@ -1739,6 +1767,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Insert endpoint into the hash table.  */
 DECL|function|__sctp_hash_endpoint
+r_static
 r_void
 id|__sctp_hash_endpoint
 c_func
@@ -1866,6 +1895,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Remove endpoint from the hash table.  */
 DECL|function|__sctp_unhash_endpoint
+r_static
 r_void
 id|__sctp_unhash_endpoint
 c_func
@@ -1978,6 +2008,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Look up an endpoint. */
 DECL|function|__sctp_rcv_lookup_endpoint
+r_static
 r_struct
 id|sctp_endpoint
 op_star
@@ -2114,37 +2145,9 @@ r_return
 id|ep
 suffix:semicolon
 )brace
-multiline_comment|/* Add an association to the hash. Local BH-safe. */
-DECL|function|sctp_hash_established
-r_void
-id|sctp_hash_established
-c_func
-(paren
-r_struct
-id|sctp_association
-op_star
-id|asoc
-)paren
-(brace
-id|sctp_local_bh_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|__sctp_hash_established
-c_func
-(paren
-id|asoc
-)paren
-suffix:semicolon
-id|sctp_local_bh_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Insert association into the hash table.  */
 DECL|function|__sctp_hash_established
+r_static
 r_void
 id|__sctp_hash_established
 c_func
@@ -2244,10 +2247,10 @@ id|head-&gt;lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Remove association from the hash table.  Local BH-safe. */
-DECL|function|sctp_unhash_established
+multiline_comment|/* Add an association to the hash. Local BH-safe. */
+DECL|function|sctp_hash_established
 r_void
-id|sctp_unhash_established
+id|sctp_hash_established
 c_func
 (paren
 r_struct
@@ -2261,7 +2264,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__sctp_unhash_established
+id|__sctp_hash_established
 c_func
 (paren
 id|asoc
@@ -2275,6 +2278,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Remove association from the hash table.  */
 DECL|function|__sctp_unhash_established
+r_static
 r_void
 id|__sctp_unhash_established
 c_func
@@ -2358,8 +2362,38 @@ id|head-&gt;lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Remove association from the hash table.  Local BH-safe. */
+DECL|function|sctp_unhash_established
+r_void
+id|sctp_unhash_established
+c_func
+(paren
+r_struct
+id|sctp_association
+op_star
+id|asoc
+)paren
+(brace
+id|sctp_local_bh_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|__sctp_unhash_established
+c_func
+(paren
+id|asoc
+)paren
+suffix:semicolon
+id|sctp_local_bh_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Look up an association. */
 DECL|function|__sctp_lookup_association
+r_static
 r_struct
 id|sctp_association
 op_star
@@ -2518,6 +2552,7 @@ id|asoc
 suffix:semicolon
 )brace
 multiline_comment|/* Look up an association. BH-safe. */
+id|SCTP_STATIC
 DECL|function|sctp_lookup_association
 r_struct
 id|sctp_association
@@ -2838,6 +2873,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Lookup an association for an inbound skb. */
 DECL|function|__sctp_rcv_lookup
+r_static
 r_struct
 id|sctp_association
 op_star
