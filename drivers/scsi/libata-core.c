@@ -11547,12 +11547,6 @@ id|ap-&gt;host
 suffix:semicolon
 multiline_comment|/* FIXME: check return val */
 )brace
-id|kfree
-c_func
-(paren
-id|host_set
-)paren
-suffix:semicolon
 id|pci_release_regions
 c_func
 (paren
@@ -11636,6 +11630,12 @@ l_int|8
 suffix:semicolon
 )brace
 )brace
+id|kfree
+c_func
+(paren
+id|host_set
+)paren
+suffix:semicolon
 id|pci_disable_device
 c_func
 (paren
