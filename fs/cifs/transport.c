@@ -601,24 +601,7 @@ op_plus
 id|MSG_NOSIGNAL
 suffix:semicolon
 multiline_comment|/* BB add more flags?*/
-multiline_comment|/* smb header is converted in header_assemble. bcc and rest of SMB word&n;&t;   area, and byte area if necessary, is converted to littleendian in &n;&t;   cifssmb.c and RFC1001 len is converted to bigendian in smb_send */
-r_if
-c_cond
-(paren
-id|smb_buf_length
-OG
-l_int|12
-)paren
-id|smb_buffer-&gt;Flags2
-op_assign
-id|cpu_to_le16
-c_func
-(paren
-id|smb_buffer-&gt;Flags2
-)paren
-suffix:semicolon
-multiline_comment|/* if(smb_buffer-&gt;Flags2 &amp; SMBFLG2_SECURITY_SIGNATURE)&n;&t;&t;sign_smb(smb_buffer); */
-multiline_comment|/* BB enable when signing tested more */
+multiline_comment|/* smb header is converted in header_assemble. bcc and rest of SMB word&n;&t;   area, and byte area if necessary, is converted to littleendian in &n;&t;   cifssmb.c and RFC1001 len is converted to bigendian in smb_send &n;&t;   Flags2 is converted in SendReceive */
 id|smb_buffer-&gt;smb_buf_length
 op_assign
 id|cpu_to_be32
@@ -824,6 +807,31 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|in_buf-&gt;smb_buf_length
+OG
+l_int|12
+)paren
+id|in_buf-&gt;Flags2
+op_assign
+id|cpu_to_le16
+c_func
+(paren
+id|in_buf-&gt;Flags2
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|cifs_sign_smb
+c_func
+(paren
+id|in_buf
+comma
+id|ses
+)paren
+suffix:semicolon
 id|midQ-&gt;midState
 op_assign
 id|MID_REQUEST_SUBMITTED
@@ -1047,7 +1055,7 @@ l_int|4
 multiline_comment|/* include 4 byte RFC1001 header */
 )paren
 suffix:semicolon
-multiline_comment|/* convert the length back to a form that we can use */
+multiline_comment|/* int cifs_verify_signature(out_buf, ses-&gt;mac_signing_key,&n;        __u32 expected_sequence_number); */
 id|dump_smb
 c_func
 (paren
@@ -1056,6 +1064,7 @@ comma
 l_int|92
 )paren
 suffix:semicolon
+multiline_comment|/* convert the length into a more usable form */
 id|out_buf-&gt;smb_buf_length
 op_assign
 id|be32_to_cpu

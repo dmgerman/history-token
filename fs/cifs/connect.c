@@ -3212,6 +3212,10 @@ id|pSesInfo-&gt;capabilities
 op_assign
 id|pSesInfo-&gt;server-&gt;capabilities
 suffix:semicolon
+id|pSesInfo-&gt;sequence_number
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3406,8 +3410,6 @@ c_func
 id|xid
 comma
 id|pSesInfo
-comma
-id|session_key
 comma
 id|ntlm_session_key
 comma
@@ -5183,12 +5185,6 @@ id|session_key
 id|CIFS_SESSION_KEY_SIZE
 )braket
 comma
-r_char
-id|session_key2
-(braket
-id|CIFS_SESSION_KEY_SIZE
-)braket
-comma
 r_const
 r_struct
 id|nls_table
@@ -5432,7 +5428,7 @@ c_func
 id|smb_buffer
 )paren
 suffix:semicolon
-multiline_comment|/* memcpy(bcc_ptr, (char *) session_key, CIFS_SESSION_KEY_SIZE);&n;&t;   bcc_ptr += CIFS_SESSION_KEY_SIZE; */
+multiline_comment|/* memcpy(bcc_ptr, (char *) lm_session_key, CIFS_SESSION_KEY_SIZE);&n;&t;   bcc_ptr += CIFS_SESSION_KEY_SIZE; */
 id|memcpy
 c_func
 (paren
@@ -5442,7 +5438,7 @@ comma
 r_char
 op_star
 )paren
-id|session_key2
+id|session_key
 comma
 id|CIFS_SESSION_KEY_SIZE
 )paren

@@ -2468,7 +2468,7 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|outbuf-&gt;SecuritySignature
+id|outbuf-&gt;Signature.SecuritySignature
 comma
 id|calc_md5_mac
 comma
