@@ -33,14 +33,6 @@ id|num_counters
 op_assign
 id|NUM_COUNTERS_NON_HT
 suffix:semicolon
-DECL|variable|num_cccrs
-r_static
-r_int
-r_int
-id|num_cccrs
-op_assign
-id|NUM_CCCRS_NON_HT
-suffix:semicolon
 multiline_comment|/* this has to be checked dynamically since the&n;   hyper-threadedness of a chip is discovered at&n;   kernel boot-time. */
 DECL|function|setup_num_counters
 r_static
@@ -60,16 +52,37 @@ id|smp_num_siblings
 op_eq
 l_int|2
 )paren
-(brace
 id|num_counters
 op_assign
 id|NUM_COUNTERS_HT2
 suffix:semicolon
-id|num_cccrs
-op_assign
-id|NUM_CCCRS_HT2
-suffix:semicolon
+macro_line|#endif
 )brace
+DECL|function|addr_increment
+r_static
+r_int
+r_inline
+id|addr_increment
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_SMP
+r_return
+id|smp_num_siblings
+op_eq
+l_int|2
+ques
+c_cond
+l_int|2
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#else
+r_return
+l_int|1
+suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/* tables to simulate simplified hardware view of p4 registers */
@@ -126,7 +139,7 @@ l_int|2
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* nb: these CTR_* defines are a duplicate of defines in&n;   libop/op_events.c. */
+multiline_comment|/* nb: these CTR_* defines are a duplicate of defines in&n;   event/i386.p4*events. */
 DECL|macro|CTR_BPU_0
 mdefine_line|#define CTR_BPU_0      (1 &lt;&lt; 0)
 DECL|macro|CTR_MS_0
@@ -216,6 +229,39 @@ id|MSR_P4_IQ_PERFCTR5
 comma
 id|MSR_P4_IQ_CCCR5
 )brace
+)brace
+suffix:semicolon
+DECL|macro|NUM_UNUSED_CCCRS
+mdefine_line|#define NUM_UNUSED_CCCRS&t;NUM_CCCRS_NON_HT - NUM_COUNTERS_NON_HT
+multiline_comment|/* All cccr we don&squot;t use. */
+DECL|variable|p4_unused_cccr
+r_static
+r_int
+id|p4_unused_cccr
+(braket
+id|NUM_UNUSED_CCCRS
+)braket
+op_assign
+(brace
+id|MSR_P4_BPU_CCCR1
+comma
+id|MSR_P4_BPU_CCCR3
+comma
+id|MSR_P4_MS_CCCR1
+comma
+id|MSR_P4_MS_CCCR3
+comma
+id|MSR_P4_FLAME_CCCR1
+comma
+id|MSR_P4_FLAME_CCCR3
+comma
+id|MSR_P4_IQ_CCCR0
+comma
+id|MSR_P4_IQ_CCCR1
+comma
+id|MSR_P4_IQ_CCCR2
+comma
+id|MSR_P4_IQ_CCCR3
 )brace
 suffix:semicolon
 multiline_comment|/* p4 event codes in libop/op_event.h are indices into this table. */
@@ -495,11 +541,9 @@ id|MSR_P4_FSB_ESCR0
 )brace
 comma
 (brace
-op_minus
-l_int|1
+l_int|0
 comma
-op_minus
-l_int|1
+l_int|0
 )brace
 )brace
 )brace
@@ -518,11 +562,9 @@ id|MSR_P4_FSB_ESCR1
 )brace
 comma
 (brace
-op_minus
-l_int|1
+l_int|0
 comma
-op_minus
-l_int|1
+l_int|0
 )brace
 )brace
 )brace
@@ -562,11 +604,9 @@ id|MSR_P4_BSU_ESCR0
 )brace
 comma
 (brace
-op_minus
-l_int|1
+l_int|0
 comma
-op_minus
-l_int|1
+l_int|0
 )brace
 )brace
 )brace
@@ -586,11 +626,9 @@ multiline_comment|/* guess */
 )brace
 comma
 (brace
-op_minus
-l_int|1
+l_int|0
 comma
-op_minus
-l_int|1
+l_int|0
 )brace
 )brace
 )brace
@@ -1074,7 +1112,7 @@ mdefine_line|#define ESCR_SET_USR_1(escr, usr) ((escr) |= (((usr) &amp; 1)))
 DECL|macro|ESCR_SET_OS_1
 mdefine_line|#define ESCR_SET_OS_1(escr, os) ((escr) |= (((os) &amp; 1) &lt;&lt; 1))
 DECL|macro|ESCR_SET_EVENT_SELECT
-mdefine_line|#define ESCR_SET_EVENT_SELECT(escr, sel) ((escr) |= (((sel) &amp; 0x1f) &lt;&lt; 25))
+mdefine_line|#define ESCR_SET_EVENT_SELECT(escr, sel) ((escr) |= (((sel) &amp; 0x3f) &lt;&lt; 25))
 DECL|macro|ESCR_SET_EVENT_MASK
 mdefine_line|#define ESCR_SET_EVENT_MASK(escr, mask) ((escr) |= (((mask) &amp; 0xffff) &lt;&lt; 9))
 DECL|macro|ESCR_READ
@@ -1111,15 +1149,9 @@ DECL|macro|CTR_WRITE
 mdefine_line|#define CTR_WRITE(l,i) do {wrmsr(p4_counters[(i)].counter_address, -(u32)(l), -1);} while (0);
 DECL|macro|CTR_OVERFLOW_P
 mdefine_line|#define CTR_OVERFLOW_P(ctr) (!((ctr) &amp; 0x80000000))
-multiline_comment|/* these access the underlying cccrs 1-18, not the subset of 8 bound to &quot;virtual counters&quot; */
-DECL|macro|RAW_CCCR_READ
-mdefine_line|#define RAW_CCCR_READ(low, high, i) do {rdmsr (MSR_P4_BPU_CCCR0 + (i), (low), (high));} while (0);
-DECL|macro|RAW_CCCR_WRITE
-mdefine_line|#define RAW_CCCR_WRITE(low, high, i) do {wrmsr (MSR_P4_BPU_CCCR0 + (i), (low), (high));} while (0);
 multiline_comment|/* this assigns a &quot;stagger&quot; to the current CPU, which is used throughout&n;   the code in this module as an extra array offset, to select the &quot;even&quot;&n;   or &quot;odd&quot; part of all the divided resources. */
 DECL|function|get_stagger
 r_static
-r_inline
 r_int
 r_int
 id|get_stagger
@@ -1215,7 +1247,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* the 8 counter registers we pay attention to */
+multiline_comment|/* the counter registers we pay attention to */
 r_for
 c_loop
 (paren
@@ -1230,6 +1262,7 @@ suffix:semicolon
 op_increment
 id|i
 )paren
+(brace
 id|msrs-&gt;counters.addrs
 (braket
 id|i
@@ -1248,17 +1281,21 @@ id|i
 dot
 id|counter_address
 suffix:semicolon
+)brace
+multiline_comment|/* FIXME: bad feeling, we don&squot;t save the 10 counters we don&squot;t use. */
 multiline_comment|/* 18 CCCR registers */
 r_for
 c_loop
 (paren
 id|i
 op_assign
-id|stag
+l_int|0
 comma
 id|addr
 op_assign
 id|MSR_P4_BPU_CCCR0
+op_plus
+id|stag
 suffix:semicolon
 id|addr
 op_le
@@ -1269,12 +1306,12 @@ id|i
 comma
 id|addr
 op_add_assign
+id|addr_increment
+c_func
 (paren
-l_int|1
-op_plus
-id|stag
 )paren
 )paren
+(brace
 id|msrs-&gt;controls.addrs
 (braket
 id|i
@@ -1282,13 +1319,16 @@ id|i
 op_assign
 id|addr
 suffix:semicolon
-multiline_comment|/* 43 ESCR registers */
+)brace
+multiline_comment|/* 43 ESCR registers in three discontiguous group */
 r_for
 c_loop
 (paren
 id|addr
 op_assign
 id|MSR_P4_BSU_ESCR0
+op_plus
+id|stag
 suffix:semicolon
 id|addr
 op_le
@@ -1299,10 +1339,9 @@ id|i
 comma
 id|addr
 op_add_assign
+id|addr_increment
+c_func
 (paren
-l_int|1
-op_plus
-id|stag
 )paren
 )paren
 (brace
@@ -1320,6 +1359,8 @@ c_loop
 id|addr
 op_assign
 id|MSR_P4_MS_ESCR0
+op_plus
+id|stag
 suffix:semicolon
 id|addr
 op_le
@@ -1330,10 +1371,9 @@ id|i
 comma
 id|addr
 op_add_assign
+id|addr_increment
+c_func
 (paren
-l_int|1
-op_plus
-id|stag
 )paren
 )paren
 (brace
@@ -1351,6 +1391,8 @@ c_loop
 id|addr
 op_assign
 id|MSR_P4_IX_ESCR0
+op_plus
+id|stag
 suffix:semicolon
 id|addr
 op_le
@@ -1361,10 +1403,9 @@ id|i
 comma
 id|addr
 op_add_assign
+id|addr_increment
+c_func
 (paren
-l_int|1
-op_plus
-id|stag
 )paren
 )paren
 (brace
@@ -1424,7 +1465,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* and two copies of the second to the odd thread,&n;&t;&t;   for the 31st and 32nd control registers */
+multiline_comment|/* and two copies of the second to the odd thread,&n;&t;&t;   for the 22st and 23nd control registers */
 id|msrs-&gt;controls.addrs
 (braket
 id|i
@@ -1508,7 +1549,13 @@ id|counter_bit
 op_assign
 l_int|1
 op_lshift
+id|VIRT_CTR
+c_func
+(paren
+id|stag
+comma
 id|ctr
+)paren
 suffix:semicolon
 multiline_comment|/* find our event binding structure. */
 r_if
@@ -1792,6 +1839,24 @@ r_return
 suffix:semicolon
 )brace
 )brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;oprofile: P4 event code 0x%lx no binding, stag %d ctr %d&bslash;n&quot;
+comma
+id|counter_config
+(braket
+id|ctr
+)braket
+dot
+id|event
+comma
+id|stag
+comma
+id|ctr
+)paren
+suffix:semicolon
 )brace
 DECL|function|p4_setup_ctrs
 r_static
@@ -1863,35 +1928,41 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* clear all cccrs (including those outside our concern) */
+multiline_comment|/* clear the cccrs we will use */
 r_for
 c_loop
 (paren
 id|i
 op_assign
-id|stag
+l_int|0
 suffix:semicolon
 id|i
 OL
-id|num_cccrs
+id|num_counters
 suffix:semicolon
 id|i
-op_add_assign
-(paren
-l_int|1
-op_plus
-id|stag
-)paren
+op_increment
 )paren
 (brace
-id|RAW_CCCR_READ
+id|rdmsr
 c_func
 (paren
+id|p4_counters
+(braket
+id|VIRT_CTR
+c_func
+(paren
+id|stag
+comma
+id|i
+)paren
+)braket
+dot
+id|cccr_address
+comma
 id|low
 comma
 id|high
-comma
-id|i
 )paren
 suffix:semicolon
 id|CCCR_CLEAR
@@ -1906,18 +1977,88 @@ c_func
 id|low
 )paren
 suffix:semicolon
-id|RAW_CCCR_WRITE
+id|wrmsr
 c_func
 (paren
-id|low
-comma
-id|high
+id|p4_counters
+(braket
+id|VIRT_CTR
+c_func
+(paren
+id|stag
 comma
 id|i
 )paren
+)braket
+dot
+id|cccr_address
+comma
+id|low
+comma
+id|high
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/* clear all escrs (including those outside out concern) */
+multiline_comment|/* clear cccrs outside our concern */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+id|stag
+suffix:semicolon
+id|i
+OL
+id|NUM_UNUSED_CCCRS
+suffix:semicolon
+id|i
+op_add_assign
+id|addr_increment
+c_func
+(paren
+)paren
+)paren
+(brace
+id|rdmsr
+c_func
+(paren
+id|p4_unused_cccr
+(braket
+id|i
+)braket
+comma
+id|low
+comma
+id|high
+)paren
+suffix:semicolon
+id|CCCR_CLEAR
+c_func
+(paren
+id|low
+)paren
+suffix:semicolon
+id|CCCR_SET_REQUIRED_BITS
+c_func
+(paren
+id|low
+)paren
+suffix:semicolon
+id|wrmsr
+c_func
+(paren
+id|p4_unused_cccr
+(braket
+id|i
+)braket
+comma
+id|low
+comma
+id|high
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* clear all escrs (including those outside our concern) */
 r_for
 c_loop
 (paren
@@ -1933,10 +2074,9 @@ id|MSR_P4_SSU_ESCR0
 suffix:semicolon
 id|addr
 op_add_assign
+id|addr_increment
+c_func
 (paren
-l_int|1
-op_plus
-id|stag
 )paren
 )paren
 (brace
@@ -1966,10 +2106,9 @@ id|MSR_P4_TC_ESCR1
 suffix:semicolon
 id|addr
 op_add_assign
+id|addr_increment
+c_func
 (paren
-l_int|1
-op_plus
-id|stag
 )paren
 )paren
 (brace
@@ -1999,10 +2138,9 @@ id|MSR_P4_CRU_ESCR3
 suffix:semicolon
 id|addr
 op_add_assign
+id|addr_increment
+c_func
 (paren
-l_int|1
-op_plus
-id|stag
 )paren
 )paren
 (brace
@@ -2242,12 +2380,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|counter_config
+id|reset_value
 (braket
 id|i
 )braket
-dot
-id|event
 )paren
 r_continue
 suffix:semicolon
@@ -2346,22 +2482,6 @@ id|i
 )braket
 comma
 id|real
-)paren
-suffix:semicolon
-multiline_comment|/* P4 quirk: you have to re-unmask the apic vector */
-id|apic_write
-c_func
-(paren
-id|APIC_LVTPC
-comma
-id|apic_read
-c_func
-(paren
-id|APIC_LVTPC
-)paren
-op_amp
-op_complement
-id|APIC_LVT_MASKED
 )paren
 suffix:semicolon
 )brace
