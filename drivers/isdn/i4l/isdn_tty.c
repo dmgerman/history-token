@@ -10048,6 +10048,9 @@ op_star
 id|c
 )paren
 (brace
+id|isdn_ctrl
+id|cmd
+suffix:semicolon
 id|modem_info
 op_star
 id|info
@@ -10323,6 +10326,17 @@ op_eq
 l_int|1
 )paren
 (brace
+id|isdn_slot_command
+c_func
+(paren
+id|info-&gt;isdn_slot
+comma
+id|ISDN_CMD_ACCEPTB
+comma
+op_amp
+id|cmd
+)paren
+suffix:semicolon
 id|info-&gt;dialing
 op_assign
 l_int|2
