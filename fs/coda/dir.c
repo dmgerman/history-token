@@ -296,6 +296,7 @@ r_int
 id|coda_hasmknod
 suffix:semicolon
 DECL|variable|coda_dentry_operations
+r_static
 r_struct
 id|dentry_operations
 id|coda_dentry_operations
