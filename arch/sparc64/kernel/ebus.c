@@ -1963,6 +1963,15 @@ id|dev-&gt;prom_name
 comma
 l_string|&quot;i2c&quot;
 )paren
+op_logical_or
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|dev-&gt;prom_name
+comma
+l_string|&quot;SUNW,lombus&quot;
+)paren
 )paren
 r_return
 l_int|1
