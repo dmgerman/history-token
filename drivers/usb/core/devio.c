@@ -1160,6 +1160,7 @@ op_amp
 id|as-&gt;asynclist
 )paren
 suffix:semicolon
+multiline_comment|/* drop the spinlock so the completion handler can run */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -1169,8 +1170,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* usb_unlink_urb calls the completion handler with status == -ENOENT */
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|as-&gt;urb
@@ -5190,7 +5190,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|as-&gt;urb
