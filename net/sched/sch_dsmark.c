@@ -1820,11 +1820,6 @@ c_func
 id|p-&gt;q
 )paren
 suffix:semicolon
-id|p-&gt;q
-op_assign
-op_amp
-id|noop_qdisc
-suffix:semicolon
 id|kfree
 c_func
 (paren

@@ -1400,11 +1400,6 @@ c_func
 id|q-&gt;qdisc
 )paren
 suffix:semicolon
-id|q-&gt;qdisc
-op_assign
-op_amp
-id|noop_qdisc
-suffix:semicolon
 )brace
 DECL|function|tbf_dump
 r_static

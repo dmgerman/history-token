@@ -792,7 +792,6 @@ suffix:semicolon
 id|prio
 op_increment
 )paren
-(brace
 id|qdisc_destroy
 c_func
 (paren
@@ -802,15 +801,6 @@ id|prio
 )braket
 )paren
 suffix:semicolon
-id|q-&gt;queues
-(braket
-id|prio
-)braket
-op_assign
-op_amp
-id|noop_qdisc
-suffix:semicolon
-)brace
 )brace
 DECL|function|prio_tune
 r_static
