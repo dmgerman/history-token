@@ -5,7 +5,6 @@ macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#ifdef CONFIG_QIFACE_COMPAT
 macro_line|#include &lt;linux/quotacompat.h&gt;
 macro_line|#endif
@@ -1937,11 +1936,11 @@ c_func
 id|dst
 comma
 op_amp
-id|dqstats_array
+id|dqstats
 comma
 r_sizeof
 (paren
-id|dqstats_array
+id|dqstats
 )paren
 )paren
 suffix:semicolon
@@ -2376,11 +2375,11 @@ c_func
 id|dst
 comma
 op_amp
-id|dqstats_array
+id|dqstats
 comma
 r_sizeof
 (paren
-id|dqstats_array
+id|dqstats
 )paren
 )paren
 suffix:semicolon
