@@ -1475,7 +1475,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -1494,7 +1494,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

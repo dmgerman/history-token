@@ -1683,7 +1683,7 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1927,7 +1927,7 @@ id|stab_cache_pointer
 op_assign
 l_int|0
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -45,7 +45,7 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

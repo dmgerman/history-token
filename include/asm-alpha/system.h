@@ -658,24 +658,16 @@ DECL|macro|getipl
 mdefine_line|#define getipl()&t;&t;(rdps() &amp; 7)
 DECL|macro|setipl
 mdefine_line|#define setipl(ipl)&t;&t;((void) swpipl(ipl))
-DECL|macro|__cli
-mdefine_line|#define __cli()&t;&t;&t;do { setipl(IPL_MAX); barrier(); } while(0)
-DECL|macro|__sti
-mdefine_line|#define __sti()&t;&t;&t;do { barrier(); setipl(IPL_MIN); } while(0)
-DECL|macro|__save_flags
-mdefine_line|#define __save_flags(flags)&t;((flags) = rdps())
-DECL|macro|__save_and_cli
-mdefine_line|#define __save_and_cli(flags)&t;do { (flags) = swpipl(IPL_MAX); barrier(); } while(0)
-DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(flags)&t;do { barrier(); setipl(flags); barrier(); } while(0)
-DECL|macro|local_irq_save
-mdefine_line|#define local_irq_save(flags)&t;&t;__save_and_cli(flags)
-DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(flags)&t;__restore_flags(flags)
 DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable()&t;&t;__cli()
+mdefine_line|#define local_irq_disable()&t;&t;&t;do { setipl(IPL_MAX); barrier(); } while(0)
 DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()&t;&t;__sti()
+mdefine_line|#define local_irq_enable()&t;&t;&t;do { barrier(); setipl(IPL_MIN); } while(0)
+DECL|macro|local_save_flags
+mdefine_line|#define local_save_flags(flags)&t;((flags) = rdps())
+DECL|macro|local_irq_save
+mdefine_line|#define local_irq_save(flags)&t;do { (flags) = swpipl(IPL_MAX); barrier(); } while(0)
+DECL|macro|local_irq_restore
+mdefine_line|#define local_irq_restore(flags)&t;do { barrier(); setipl(flags); barrier(); } while(0)
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_int
@@ -728,15 +720,15 @@ DECL|macro|restore_flags
 mdefine_line|#define restore_flags(flags)    __global_restore_flags(flags)
 macro_line|#else /* CONFIG_SMP */
 DECL|macro|cli
-mdefine_line|#define cli()&t;&t;&t;__cli()
+mdefine_line|#define cli()&t;&t;&t;local_irq_disable()
 DECL|macro|sti
-mdefine_line|#define sti()&t;&t;&t;__sti()
+mdefine_line|#define sti()&t;&t;&t;local_irq_enable()
 DECL|macro|save_flags
-mdefine_line|#define save_flags(flags)&t;__save_flags(flags)
+mdefine_line|#define save_flags(flags)&t;local_save_flags(flags)
 DECL|macro|save_and_cli
-mdefine_line|#define save_and_cli(flags)&t;__save_and_cli(flags)
+mdefine_line|#define save_and_cli(flags)&t;local_irq_save(flags)
 DECL|macro|restore_flags
-mdefine_line|#define restore_flags(flags)&t;__restore_flags(flags)
+mdefine_line|#define restore_flags(flags)&t;local_irq_restore(flags)
 macro_line|#endif /* CONFIG_SMP */
 multiline_comment|/*&n; * TB routines..&n; */
 DECL|macro|__tbi

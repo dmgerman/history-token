@@ -1434,7 +1434,7 @@ id|regs-&gt;psw.mask
 op_amp
 id|PSW_PROBLEM_STATE
 )paren
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -2004,7 +2004,7 @@ id|regs-&gt;psw.mask
 op_amp
 id|PSW_PROBLEM_STATE
 )paren
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -2153,7 +2153,7 @@ id|regs-&gt;psw.mask
 op_amp
 id|PSW_PROBLEM_STATE
 )paren
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

@@ -1174,7 +1174,7 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-singleline_comment|//if (!(action-&gt;flags &amp; SA_INTERRUPT)) __sti(); /* reenable ints */
+singleline_comment|//if (!(action-&gt;flags &amp; SA_INTERRUPT)) local_irq_enable(); /* reenable ints */
 r_do
 (brace
 id|action
@@ -1200,7 +1200,7 @@ c_loop
 id|action
 )paren
 suffix:semicolon
-singleline_comment|//__cli(); /* disable ints */
+singleline_comment|//local_irq_disable(); /* disable ints */
 r_if
 c_cond
 (paren

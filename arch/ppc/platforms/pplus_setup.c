@@ -327,7 +327,7 @@ id|i
 op_assign
 l_int|10000
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -408,7 +408,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren

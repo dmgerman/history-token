@@ -360,7 +360,7 @@ op_assign
 op_star
 id|tty-&gt;termios
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -424,7 +424,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

@@ -393,7 +393,7 @@ r_int
 r_int
 id|addr
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 op_star
@@ -423,7 +423,7 @@ id|bio
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * it&squot;s a highmem page&n;&t; */
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -514,7 +514,7 @@ comma
 id|KM_BIO_SRC_IRQ
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 op_star
