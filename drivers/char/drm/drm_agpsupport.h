@@ -1711,6 +1711,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif
+r_case
+id|HP_ZX1
+suffix:colon
+id|head-&gt;chipset
+op_assign
+l_string|&quot;HP ZX1&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|head-&gt;chipset
