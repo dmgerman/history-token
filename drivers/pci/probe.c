@@ -848,7 +848,7 @@ op_assign
 (paren
 id|l
 op_amp
-id|PCI_ROM_ADDRESS_ENABLE
+id|IORESOURCE_ROM_ENABLE
 )paren
 op_or
 id|IORESOURCE_MEM

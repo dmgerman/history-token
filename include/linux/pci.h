@@ -962,6 +962,18 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* config space saved at suspend time */
+DECL|member|rom_attr
+r_struct
+id|bin_attribute
+op_star
+id|rom_attr
+suffix:semicolon
+multiline_comment|/* attribute descriptor for sysfs ROM entry */
+DECL|member|rom_attr_enabled
+r_int
+id|rom_attr_enabled
+suffix:semicolon
+multiline_comment|/* has display of the rom attribute been enabled? */
 macro_line|#ifdef CONFIG_PCI_NAMES
 DECL|macro|PCI_NAME_SIZE
 mdefine_line|#define PCI_NAME_SIZE&t;96
@@ -2364,6 +2376,64 @@ id|dev
 comma
 r_int
 id|i
+)paren
+suffix:semicolon
+multiline_comment|/* ROM control related routines */
+r_void
+id|__iomem
+op_star
+id|pci_map_rom
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_int
+op_star
+id|size
+)paren
+suffix:semicolon
+r_void
+id|__iomem
+op_star
+id|pci_map_rom_copy
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_int
+op_star
+id|size
+)paren
+suffix:semicolon
+r_void
+id|pci_unmap_rom
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_void
+id|__iomem
+op_star
+id|rom
+)paren
+suffix:semicolon
+r_void
+id|pci_remove_rom
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
 )paren
 suffix:semicolon
 multiline_comment|/* Power management related routines */
