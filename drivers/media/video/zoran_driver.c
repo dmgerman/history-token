@@ -13851,6 +13851,11 @@ c_func
 id|zr
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 op_star
 id|std
 )paren
@@ -13922,6 +13927,11 @@ c_func
 id|zr
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 op_star
 id|std
 )paren
@@ -15174,6 +15184,11 @@ c_func
 id|zr
 )paren
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 op_star
 id|std
 )paren
