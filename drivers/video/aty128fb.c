@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: aty128fb.c,v 1.1.1.1.36.1 1999/12/11 09:03:05 Exp $&n; *  linux/drivers/video/aty128fb.c -- Frame buffer device for ATI Rage128&n; *&n; *  Copyright (C) 1999-2000, Brad Douglas &lt;brad@neruo.com&gt;&n; *  Copyright (C) 1999, Anthony Tong &lt;atong@uiuc.edu&gt;&n; *&n; *                Ani Joshi / Jeff Garzik&n; *                      - Code cleanup&n; *&n; *                Michel D&#xfffd;nzer &lt;michdaen@iiic.ethz.ch&gt;&n; *                      - 15/16 bit cleanup&n; *                      - fix panning&n; *&n; *                Benjamin Herrenschmidt&n; *                      - pmac-specific PM stuff&n; *&n; *                Andreas Hundt &lt;andi@convergence.de&gt;&n; *                      - FB_ACTIVATE fixes&n; *&n; *&t;&t;  Paul Mackerras &lt;paulus@samba.org&gt;&n; *&t;&t;&t;- Convert to new framebuffer API,&n; *&t;&t;&t;  fix colormap setting at 16 bits/pixel (565)&n; *&n; *  Based off of Geert&squot;s atyfb.c and vfb.c.&n; *&n; *  TODO:&n; *&t;&t;- monitor sensing (DDC)&n; *              - virtual display&n; *&t;&t;- other platform support (only ppc/x86 supported)&n; *&t;&t;- hardware cursor support&n; *&t;&t;- ioctl()&squot;s&n; *&n; *    Please cc: your patches to brad@neruo.com.&n; */
+multiline_comment|/* $Id: aty128fb.c,v 1.1.1.1.36.1 1999/12/11 09:03:05 Exp $&n; *  linux/drivers/video/aty128fb.c -- Frame buffer device for ATI Rage128&n; *&n; *  Copyright (C) 1999-2000, Brad Douglas &lt;brad@neruo.com&gt;&n; *  Copyright (C) 1999, Anthony Tong &lt;atong@uiuc.edu&gt;&n; *&n; *                Ani Joshi / Jeff Garzik&n; *                      - Code cleanup&n; *&n; *                Michel D&#xfffd;nzer &lt;michdaen@iiic.ethz.ch&gt;&n; *                      - 15/16 bit cleanup&n; *                      - fix panning&n; *&n; *                Benjamin Herrenschmidt&n; *                      - pmac-specific PM stuff&n; *&n; *                Andreas Hundt &lt;andi@convergence.de&gt;&n; *                      - FB_ACTIVATE fixes&n; *&n; *&t;&t;  Paul Mackerras &lt;paulus@samba.org&gt;&n; *&t;&t;&t;- Convert to new framebuffer API,&n; *&t;&t;&t;  fix colormap setting at 16 bits/pixel (565)&n; *&n; *&t;&t;  Paul Mundt &n; *&t;&t;  &t;- PCI hotplug&n; *&n; *  Based off of Geert&squot;s atyfb.c and vfb.c.&n; *&n; *  TODO:&n; *&t;&t;- monitor sensing (DDC)&n; *              - virtual display&n; *&t;&t;- other platform support (only ppc/x86 supported)&n; *&t;&t;- hardware cursor support&n; *&t;&t;- ioctl()&squot;s&n; *&n; *    Please cc: your patches to brad@neruo.com.&n; */
 multiline_comment|/*&n; * A special note of gratitude to ATI&squot;s devrel for providing documentation,&n; * example code and hardware. Thanks Nitya.&t;-atong and brad&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -37,11 +37,6 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_BOOTX_TEXT
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#endif /* CONFIG_BOOTX_TEXT */
-macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/fbcon-cfb8.h&gt;
-macro_line|#include &lt;video/fbcon-cfb16.h&gt;
-macro_line|#include &lt;video/fbcon-cfb24.h&gt;
-macro_line|#include &lt;video/fbcon-cfb32.h&gt;
 macro_line|#ifdef CONFIG_MTRR
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#endif
@@ -1144,11 +1139,6 @@ r_struct
 id|fb_info
 id|fb_info
 suffix:semicolon
-DECL|member|disp
-r_struct
-id|display
-id|disp
-suffix:semicolon
 DECL|member|par
 r_struct
 id|aty128fb_par
@@ -1281,9 +1271,6 @@ id|fb_var_screeninfo
 op_star
 id|var
 comma
-r_int
-id|con
-comma
 r_struct
 id|fb_info
 op_star
@@ -1324,9 +1311,6 @@ id|cmd
 comma
 id|u_long
 id|arg
-comma
-r_int
-id|con
 comma
 r_struct
 id|fb_info
@@ -1537,11 +1521,6 @@ dot
 id|owner
 op_assign
 id|THIS_MODULE
-comma
-dot
-id|fb_set_var
-op_assign
-id|gen_set_var
 comma
 dot
 id|fb_check_var
@@ -5717,9 +5696,6 @@ id|fb_var_screeninfo
 op_star
 id|var
 comma
-r_int
-id|con
-comma
 r_struct
 id|fb_info
 op_star
@@ -7326,11 +7302,6 @@ id|info-&gt;par
 op_assign
 id|par
 suffix:semicolon
-id|info-&gt;disp
-op_assign
-op_amp
-id|lump-&gt;disp
-suffix:semicolon
 id|info-&gt;fix
 op_assign
 id|aty128fb_fix
@@ -7457,7 +7428,6 @@ op_assign
 id|aty128find_ROM
 c_func
 (paren
-id|info
 )paren
 )paren
 )paren
@@ -7488,7 +7458,7 @@ suffix:semicolon
 id|aty128_get_pllinfo
 c_func
 (paren
-id|info
+id|par
 comma
 id|bios_seg
 )paren
@@ -7531,21 +7501,21 @@ c_cond
 id|mtrr
 )paren
 (brace
-id|info-&gt;mtrr.vram
+id|par-&gt;mtrr.vram
 op_assign
 id|mtrr_add
 c_func
 (paren
 id|info-&gt;fix.smem_start
 comma
-id|info-&gt;vram_size
+id|par-&gt;vram_size
 comma
 id|MTRR_TYPE_WRCOMB
 comma
 l_int|1
 )paren
 suffix:semicolon
-id|info-&gt;mtrr.vram_valid
+id|par-&gt;mtrr.vram_valid
 op_assign
 l_int|1
 suffix:semicolon
@@ -8883,9 +8853,6 @@ id|cmd
 comma
 id|u_long
 id|arg
-comma
-r_int
-id|con
 comma
 r_struct
 id|fb_info

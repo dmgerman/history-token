@@ -267,27 +267,6 @@ op_star
 id|dispsw
 suffix:semicolon
 multiline_comment|/* low level operations */
-DECL|member|dispsw_data
-r_void
-op_star
-id|dispsw_data
-suffix:semicolon
-multiline_comment|/* optional dispsw helper data */
-macro_line|#if 0
-r_struct
-id|fb_fix_cursorinfo
-id|fcrsr
-suffix:semicolon
-r_struct
-id|fb_var_cursorinfo
-op_star
-id|vcrsr
-suffix:semicolon
-r_struct
-id|fb_cursorstate
-id|crsrstate
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Filled in by the low-level console driver */
 DECL|member|conp
 r_struct

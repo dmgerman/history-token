@@ -23,7 +23,7 @@ mdefine_line|#define FBIOPUTCMAP&t;&t;0x4605
 DECL|macro|FBIOPAN_DISPLAY
 mdefine_line|#define FBIOPAN_DISPLAY&t;&t;0x4606
 DECL|macro|FBIO_CURSOR
-mdefine_line|#define FBIO_CURSOR            _IOWR(&squot;F&squot;, 0x08, struct fbcursor)
+mdefine_line|#define FBIO_CURSOR            _IOWR(&squot;F&squot;, 0x08, struct fb_cursor)
 multiline_comment|/* 0x4607-0x460B are defined below */
 multiline_comment|/* #define FBIOGET_MONITORSPEC&t;0x460C */
 multiline_comment|/* #define FBIOPUT_MONITORSPEC&t;0x460D */
@@ -477,11 +477,16 @@ id|__u32
 id|vmode
 suffix:semicolon
 multiline_comment|/* see FB_VMODE_*&t;&t;*/
+DECL|member|rotate
+id|__u32
+id|rotate
+suffix:semicolon
+multiline_comment|/* angle we rotate counter clockwise */
 DECL|member|reserved
 id|__u32
 id|reserved
 (braket
-l_int|6
+l_int|5
 )braket
 suffix:semicolon
 multiline_comment|/* Reserved for future compatibility */
@@ -523,23 +528,6 @@ op_star
 id|transp
 suffix:semicolon
 multiline_comment|/* transparency, can be NULL */
-)brace
-suffix:semicolon
-DECL|struct|fb_index
-r_struct
-id|fb_index
-(brace
-DECL|member|len
-id|__u32
-id|len
-suffix:semicolon
-multiline_comment|/* number of entries */
-DECL|member|entry
-id|__u32
-op_star
-id|entry
-suffix:semicolon
-multiline_comment|/* &quot;pseudopalette&quot; color index entries */
 )brace
 suffix:semicolon
 DECL|struct|fb_con2fbmap
@@ -650,110 +638,6 @@ suffix:semicolon
 multiline_comment|/* reserved for future compatibility */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * hardware cursor control&n; */
-DECL|macro|FB_CUR_SETCUR
-mdefine_line|#define FB_CUR_SETCUR   0x01
-DECL|macro|FB_CUR_SETPOS
-mdefine_line|#define FB_CUR_SETPOS   0x02
-DECL|macro|FB_CUR_SETHOT
-mdefine_line|#define FB_CUR_SETHOT   0x04
-DECL|macro|FB_CUR_SETCMAP
-mdefine_line|#define FB_CUR_SETCMAP  0x08
-DECL|macro|FB_CUR_SETSHAPE
-mdefine_line|#define FB_CUR_SETSHAPE 0x10
-DECL|macro|FB_CUR_SETDEST
-mdefine_line|#define FB_CUR_SETDEST&t;0x20
-DECL|macro|FB_CUR_SETSIZE
-mdefine_line|#define FB_CUR_SETSIZE&t;0x40
-DECL|macro|FB_CUR_SETALL
-mdefine_line|#define FB_CUR_SETALL   0xFF
-DECL|struct|fbcurpos
-r_struct
-id|fbcurpos
-(brace
-DECL|member|x
-DECL|member|y
-id|__u16
-id|x
-comma
-id|y
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|fbcursor
-r_struct
-id|fbcursor
-(brace
-DECL|member|set
-id|__u16
-id|set
-suffix:semicolon
-multiline_comment|/* what to set */
-DECL|member|enable
-id|__u16
-id|enable
-suffix:semicolon
-multiline_comment|/* cursor on/off */
-DECL|member|rop
-id|__u8
-id|rop
-suffix:semicolon
-multiline_comment|/* bitop operation */
-DECL|member|depth
-id|__u8
-id|depth
-suffix:semicolon
-multiline_comment|/* color depth of image */
-DECL|member|pos
-r_struct
-id|fbcurpos
-id|pos
-suffix:semicolon
-multiline_comment|/* cursor position */
-DECL|member|hot
-r_struct
-id|fbcurpos
-id|hot
-suffix:semicolon
-multiline_comment|/* cursor hot spot */
-DECL|member|size
-r_struct
-id|fbcurpos
-id|size
-suffix:semicolon
-multiline_comment|/* cursor bit map size */
-DECL|member|cmap
-r_struct
-id|fb_cmap
-id|cmap
-suffix:semicolon
-multiline_comment|/* color map info */
-DECL|member|index
-r_struct
-id|fb_index
-op_star
-id|index
-suffix:semicolon
-DECL|member|image
-r_char
-op_star
-id|image
-suffix:semicolon
-multiline_comment|/* cursor image bits */
-DECL|member|mask
-r_char
-op_star
-id|mask
-suffix:semicolon
-multiline_comment|/* cursor mask bits */
-DECL|member|dest
-r_char
-op_star
-id|dest
-suffix:semicolon
-multiline_comment|/* destination */
-)brace
-suffix:semicolon
 multiline_comment|/* Internal HW accel */
 DECL|macro|ROP_COPY
 mdefine_line|#define ROP_COPY 0
@@ -763,15 +647,6 @@ DECL|struct|fb_copyarea
 r_struct
 id|fb_copyarea
 (brace
-DECL|member|sx
-id|__u32
-id|sx
-suffix:semicolon
-multiline_comment|/* screen-relative */
-DECL|member|sy
-id|__u32
-id|sy
-suffix:semicolon
 DECL|member|dx
 id|__u32
 id|dx
@@ -787,6 +662,14 @@ suffix:semicolon
 DECL|member|height
 id|__u32
 id|height
+suffix:semicolon
+DECL|member|sx
+id|__u32
+id|sx
+suffix:semicolon
+DECL|member|sy
+id|__u32
+id|sy
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -863,6 +746,87 @@ op_star
 id|data
 suffix:semicolon
 multiline_comment|/* Pointer to image data */
+DECL|member|cmap
+r_struct
+id|fb_cmap
+id|cmap
+suffix:semicolon
+multiline_comment|/* color map info */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * hardware cursor control&n; */
+DECL|macro|FB_CUR_SETCUR
+mdefine_line|#define FB_CUR_SETCUR   0x01
+DECL|macro|FB_CUR_SETPOS
+mdefine_line|#define FB_CUR_SETPOS   0x02
+DECL|macro|FB_CUR_SETHOT
+mdefine_line|#define FB_CUR_SETHOT   0x04
+DECL|macro|FB_CUR_SETCMAP
+mdefine_line|#define FB_CUR_SETCMAP  0x08
+DECL|macro|FB_CUR_SETSHAPE
+mdefine_line|#define FB_CUR_SETSHAPE 0x10
+DECL|macro|FB_CUR_SETDEST
+mdefine_line|#define FB_CUR_SETDEST&t;0x20
+DECL|macro|FB_CUR_SETSIZE
+mdefine_line|#define FB_CUR_SETSIZE&t;0x40
+DECL|macro|FB_CUR_SETALL
+mdefine_line|#define FB_CUR_SETALL   0xFF
+DECL|struct|fbcurpos
+r_struct
+id|fbcurpos
+(brace
+DECL|member|x
+DECL|member|y
+id|__u16
+id|x
+comma
+id|y
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|fb_cursor
+r_struct
+id|fb_cursor
+(brace
+DECL|member|set
+id|__u16
+id|set
+suffix:semicolon
+multiline_comment|/* what to set */
+DECL|member|enable
+id|__u16
+id|enable
+suffix:semicolon
+multiline_comment|/* cursor on/off */
+DECL|member|rop
+id|__u16
+id|rop
+suffix:semicolon
+multiline_comment|/* bitop operation */
+DECL|member|mask
+r_char
+op_star
+id|mask
+suffix:semicolon
+multiline_comment|/* cursor mask bits */
+DECL|member|dest
+r_char
+op_star
+id|dest
+suffix:semicolon
+multiline_comment|/* destination */
+DECL|member|hot
+r_struct
+id|fbcurpos
+id|hot
+suffix:semicolon
+multiline_comment|/* cursor hot spot */
+DECL|member|image
+r_struct
+id|fb_image
+id|image
+suffix:semicolon
+multiline_comment|/* Cursor image */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
@@ -1142,9 +1106,26 @@ op_star
 id|info
 comma
 r_struct
-id|fbcursor
+id|fb_cursor
 op_star
 id|cursor
+)paren
+suffix:semicolon
+multiline_comment|/* Rotates the display */
+DECL|member|fb_rotate
+r_void
+(paren
+op_star
+id|fb_rotate
+)paren
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_int
+id|angle
 )paren
 suffix:semicolon
 multiline_comment|/* perform polling on fb device */
@@ -1276,7 +1257,7 @@ suffix:semicolon
 multiline_comment|/* Current Monitor specs */
 DECL|member|cursor
 r_struct
-id|fbcursor
+id|fb_cursor
 id|cursor
 suffix:semicolon
 multiline_comment|/* Current cursor */
@@ -1446,7 +1427,7 @@ op_star
 id|info
 comma
 r_struct
-id|fbcursor
+id|fb_cursor
 op_star
 id|cursor
 )paren
