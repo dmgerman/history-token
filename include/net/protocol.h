@@ -154,6 +154,62 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* This is used to register socket interfaces for IP protocols.  */
+DECL|struct|inet_protosw
+r_struct
+id|inet_protosw
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+multiline_comment|/* These two fields form the lookup key.  */
+DECL|member|type
+r_int
+r_int
+id|type
+suffix:semicolon
+multiline_comment|/* This is the 2nd argument to socket(2). */
+DECL|member|protocol
+r_int
+id|protocol
+suffix:semicolon
+multiline_comment|/* This is the L4 protocol number.  */
+DECL|member|prot
+r_struct
+id|proto
+op_star
+id|prot
+suffix:semicolon
+DECL|member|ops
+r_struct
+id|proto_ops
+op_star
+id|ops
+suffix:semicolon
+DECL|member|capability
+r_int
+id|capability
+suffix:semicolon
+multiline_comment|/* Which (if any) capability do&n;&t;&t;&t;&t;      * we need to use this socket&n;&t;&t;&t;&t;      * interface?&n;                                      */
+DECL|member|no_check
+r_char
+id|no_check
+suffix:semicolon
+multiline_comment|/* checksum on rcv/xmit/none? */
+DECL|member|flags
+r_int
+r_char
+id|flags
+suffix:semicolon
+multiline_comment|/* See INET_PROTOSW_* below.  */
+)brace
+suffix:semicolon
+DECL|macro|INET_PROTOSW_REUSE
+mdefine_line|#define INET_PROTOSW_REUSE 0x01&t;     /* Are ports automatically reusable? */
+DECL|macro|INET_PROTOSW_PERMANENT
+mdefine_line|#define INET_PROTOSW_PERMANENT 0x02  /* Permanent protocols are unremovable. */
 r_extern
 r_struct
 id|inet_protocol
@@ -169,6 +225,14 @@ id|inet_protos
 id|MAX_INET_PROTOS
 )braket
 suffix:semicolon
+r_extern
+r_struct
+id|list_head
+id|inetsw
+(braket
+id|SOCK_MAX
+)braket
+suffix:semicolon
 macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
 r_extern
 r_struct
@@ -177,6 +241,14 @@ op_star
 id|inet6_protos
 (braket
 id|MAX_INET_PROTOS
+)braket
+suffix:semicolon
+r_extern
+r_struct
+id|list_head
+id|inetsw6
+(braket
+id|SOCK_MAX
 )braket
 suffix:semicolon
 macro_line|#endif
@@ -202,6 +274,28 @@ op_star
 id|prot
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|inet_register_protosw
+c_func
+(paren
+r_struct
+id|inet_protosw
+op_star
+id|p
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|inet_unregister_protosw
+c_func
+(paren
+r_struct
+id|inet_protosw
+op_star
+id|p
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
 r_extern
 r_void
@@ -223,6 +317,28 @@ r_struct
 id|inet6_protocol
 op_star
 id|prot
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|inet6_register_protosw
+c_func
+(paren
+r_struct
+id|inet_protosw
+op_star
+id|p
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|inet6_unregister_protosw
+c_func
+(paren
+r_struct
+id|inet_protosw
+op_star
+id|p
 )paren
 suffix:semicolon
 macro_line|#endif

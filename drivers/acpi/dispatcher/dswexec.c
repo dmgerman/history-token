@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *              $Revision: 55 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *              $Revision: 61 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -8,7 +8,7 @@ macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          DISPATCHER
+mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|MODULE_NAME
 (paren
 l_string|&quot;dswexec&quot;
@@ -105,7 +105,7 @@ suffix:semicolon
 )brace
 id|status
 op_assign
-id|acpi_aml_resolve_to_value
+id|acpi_ex_resolve_to_value
 (paren
 op_amp
 id|walk_state-&gt;operands
@@ -170,7 +170,7 @@ id|cleanup
 suffix:semicolon
 )brace
 multiline_comment|/* Truncate the predicate to 32-bits if necessary */
-id|acpi_aml_truncate_for32bit_table
+id|acpi_ex_truncate_for32bit_table
 (paren
 id|obj_desc
 comma
@@ -215,7 +215,7 @@ id|walk_state
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Delete the predicate result object (we know that&n;&t; * we don&squot;t need it anymore)&n;&t; */
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|obj_desc
 )paren
@@ -366,7 +366,7 @@ c_cond
 (paren
 id|op-&gt;opcode
 op_eq
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 (brace
 id|op_info-&gt;flags
@@ -552,10 +552,6 @@ id|ACPI_PARSE_OBJECT
 op_star
 id|next_op
 suffix:semicolon
-id|ACPI_NAMESPACE_NODE
-op_star
-id|node
-suffix:semicolon
 id|ACPI_PARSE_OBJECT
 op_star
 id|first_arg
@@ -569,9 +565,6 @@ suffix:semicolon
 id|ACPI_OPCODE_INFO
 op_star
 id|op_info
-suffix:semicolon
-id|u32
-id|operand_index
 suffix:semicolon
 id|opcode
 op_assign
@@ -769,12 +762,6 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-id|operand_index
-op_assign
-id|walk_state-&gt;num_operands
-op_minus
-l_int|1
-suffix:semicolon
 multiline_comment|/* Done with this result state (Now that operand stack is built) */
 id|status
 op_assign
@@ -808,7 +795,7 @@ suffix:colon
 multiline_comment|/* 1 Operand, 0 External_result, 0 Internal_result */
 id|status
 op_assign
-id|acpi_aml_exec_monadic1
+id|acpi_ex_monadic1
 (paren
 id|opcode
 comma
@@ -823,7 +810,7 @@ suffix:colon
 multiline_comment|/* 1 Operand, 0 External_result, 1 Internal_result */
 id|status
 op_assign
-id|acpi_aml_exec_monadic2
+id|acpi_ex_monadic2
 (paren
 id|opcode
 comma
@@ -841,7 +828,7 @@ suffix:colon
 multiline_comment|/* 1 Operand, 1 External_result, 1 Internal_result */
 id|status
 op_assign
-id|acpi_aml_exec_monadic2_r
+id|acpi_ex_monadic2_r
 (paren
 id|opcode
 comma
@@ -859,7 +846,7 @@ suffix:colon
 multiline_comment|/* 2 Operands, 0 External_result, 0 Internal_result */
 id|status
 op_assign
-id|acpi_aml_exec_dyadic1
+id|acpi_ex_dyadic1
 (paren
 id|opcode
 comma
@@ -874,7 +861,7 @@ suffix:colon
 multiline_comment|/* 2 Operands, 0 External_result, 1 Internal_result */
 id|status
 op_assign
-id|acpi_aml_exec_dyadic2
+id|acpi_ex_dyadic2
 (paren
 id|opcode
 comma
@@ -892,7 +879,7 @@ suffix:colon
 multiline_comment|/* 2 Operands, 1 or 2 External_results, 1 Internal_result */
 id|status
 op_assign
-id|acpi_aml_exec_dyadic2_r
+id|acpi_ex_dyadic2_r
 (paren
 id|opcode
 comma
@@ -911,7 +898,7 @@ multiline_comment|/* Synchronization Operator */
 multiline_comment|/* 2 Operands, 0 External_result, 1 Internal_result */
 id|status
 op_assign
-id|acpi_aml_exec_dyadic2_s
+id|acpi_ex_dyadic2_s
 (paren
 id|opcode
 comma
@@ -930,7 +917,7 @@ multiline_comment|/* Type 2 opcode with 3 operands */
 multiline_comment|/* 3 Operands, 1 External_result, 1 Internal_result */
 id|status
 op_assign
-id|acpi_aml_exec_index
+id|acpi_ex_index
 (paren
 id|walk_state
 comma
@@ -947,7 +934,7 @@ multiline_comment|/* Type 2 opcode with 6 operands */
 multiline_comment|/* 6 Operands, 0 External_result, 1 Internal_result */
 id|status
 op_assign
-id|acpi_aml_exec_match
+id|acpi_ex_match
 (paren
 id|walk_state
 comma
@@ -963,7 +950,7 @@ suffix:colon
 multiline_comment|/* 1 or 2 operands, 0 Internal Result */
 id|status
 op_assign
-id|acpi_aml_exec_reconfiguration
+id|acpi_ex_reconfiguration
 (paren
 id|opcode
 comma
@@ -978,7 +965,7 @@ suffix:colon
 multiline_comment|/* 3 Operands, 0 External_result, 0 Internal_result */
 id|status
 op_assign
-id|acpi_aml_exec_fatal
+id|acpi_ex_fatal
 (paren
 id|walk_state
 )paren
@@ -1039,10 +1026,6 @@ multiline_comment|/* Next_op points to the op that holds the method name */
 id|next_op
 op_assign
 id|first_arg
-suffix:semicolon
-id|node
-op_assign
-id|next_op-&gt;node
 suffix:semicolon
 multiline_comment|/* Next_op points to first argument op */
 id|next_op
@@ -1130,7 +1113,7 @@ suffix:semicolon
 )brace
 id|status
 op_assign
-id|acpi_ds_eval_field_unit_operands
+id|acpi_ds_eval_buffer_field_operands
 (paren
 id|walk_state
 comma
@@ -1235,7 +1218,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * ACPI 2.0 support for 64-bit integers:&n;&t; * Truncate numeric result value if we are executing from a 32-bit ACPI table&n;&t; */
-id|acpi_aml_truncate_for32bit_table
+id|acpi_ex_truncate_for32bit_table
 (paren
 id|result_obj
 comma

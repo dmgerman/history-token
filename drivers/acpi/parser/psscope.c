@@ -1,9 +1,9 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psscope - Parser scope stack management routines&n; *              $Revision: 24 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psscope - Parser scope stack management routines&n; *              $Revision: 27 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          PARSER
+mdefine_line|#define _COMPONENT          ACPI_PARSER
 id|MODULE_NAME
 (paren
 l_string|&quot;psscope&quot;
@@ -73,7 +73,7 @@ id|scope
 suffix:semicolon
 id|scope
 op_assign
-id|acpi_cm_create_generic_state
+id|acpi_ut_create_generic_state
 (paren
 )paren
 suffix:semicolon
@@ -146,7 +146,7 @@ id|scope
 suffix:semicolon
 id|scope
 op_assign
-id|acpi_cm_create_generic_state
+id|acpi_ut_create_generic_state
 (paren
 )paren
 suffix:semicolon
@@ -180,7 +180,7 @@ op_assign
 id|parser_state-&gt;pkg_end
 suffix:semicolon
 multiline_comment|/* Push onto scope stack */
-id|acpi_cm_push_generic_state
+id|acpi_ut_push_generic_state
 (paren
 op_amp
 id|parser_state-&gt;scope
@@ -254,7 +254,7 @@ id|scope-&gt;common.next
 (brace
 id|scope
 op_assign
-id|acpi_cm_pop_generic_state
+id|acpi_ut_pop_generic_state
 (paren
 op_amp
 id|parser_state-&gt;scope
@@ -281,7 +281,7 @@ op_assign
 id|scope-&gt;parse_scope.pkg_end
 suffix:semicolon
 multiline_comment|/* All done with this scope state structure */
-id|acpi_cm_delete_generic_state
+id|acpi_ut_delete_generic_state
 (paren
 id|scope
 )paren
@@ -342,13 +342,13 @@ id|parser_state-&gt;scope
 (brace
 id|scope
 op_assign
-id|acpi_cm_pop_generic_state
+id|acpi_ut_pop_generic_state
 (paren
 op_amp
 id|parser_state-&gt;scope
 )paren
 suffix:semicolon
-id|acpi_cm_delete_generic_state
+id|acpi_ut_delete_generic_state
 (paren
 id|scope
 )paren

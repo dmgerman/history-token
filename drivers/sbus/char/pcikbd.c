@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pcikbd.c,v 1.57 2001/06/03 13:41:13 ecd Exp $&n; * pcikbd.c: Ultra/AX PC keyboard support.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * JavaStation support by Pete A. Zaitcev.&n; *&n; * This code is mainly put together from various places in&n; * drivers/char, please refer to these sources for credits&n; * to the original authors.&n; */
+multiline_comment|/* $Id: pcikbd.c,v 1.58 2001/06/10 06:51:03 davem Exp $&n; * pcikbd.c: Ultra/AX PC keyboard support.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * JavaStation support by Pete A. Zaitcev.&n; *&n; * This code is mainly put together from various places in&n; * drivers/char, please refer to these sources for credits&n; * to the original authors.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1295,9 +1295,62 @@ id|KBD_REPLY_ACK
 id|printk
 c_func
 (paren
-l_string|&quot;Prom Enter: Enable Keyboard: no ACK&bslash;n&quot;
+l_string|&quot;Prom Leave: Enable Keyboard: no ACK&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Reset keyboard rate */
+id|pcikbd_write
+c_func
+(paren
+id|KBD_DATA_REG
+comma
+id|KBD_CMD_SET_RATE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pcikbd_wait_for_input
+c_func
+(paren
+)paren
+op_ne
+id|KBD_REPLY_ACK
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Prom Leave: Set rate: no ACK&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|pcikbd_write
+c_func
+(paren
+id|KBD_DATA_REG
+comma
+l_int|0x00
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pcikbd_wait_for_input
+c_func
+(paren
+)paren
+op_ne
+id|KBD_REPLY_ACK
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Prom Leave: Set rate: no ACK&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|pcikbd_translate
 r_int

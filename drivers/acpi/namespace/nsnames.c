@@ -1,11 +1,11 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsnames - Name manipulation and search&n; *              $Revision: 54 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsnames - Name manipulation and search&n; *              $Revision: 59 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          NAMESPACE
+mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
 id|MODULE_NAME
 (paren
 l_string|&quot;nsnames&quot;
@@ -97,7 +97,7 @@ suffix:semicolon
 multiline_comment|/* Allocate a buffer to be returned to caller */
 id|name_buffer
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 id|size
 op_plus
@@ -304,9 +304,6 @@ c_cond
 (paren
 op_logical_neg
 id|acpi_gbl_root_node
-op_logical_or
-op_logical_neg
-id|target_handle
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * If the name space has not been initialized,&n;&t;&t; * this function should not have been called.&n;&t;&t; */

@@ -1,10 +1,10 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nswalk - Functions for walking the APCI namespace&n; *              $Revision: 19 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nswalk - Functions for walking the APCI namespace&n; *              $Revision: 22 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          NAMESPACE
+mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
 id|MODULE_NAME
 (paren
 l_string|&quot;nswalk&quot;
@@ -15,7 +15,7 @@ op_star
 DECL|function|acpi_ns_get_next_object
 id|acpi_ns_get_next_object
 (paren
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 comma
 id|ACPI_NAMESPACE_NODE
@@ -123,7 +123,7 @@ id|ACPI_STATUS
 DECL|function|acpi_ns_walk_namespace
 id|acpi_ns_walk_namespace
 (paren
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 comma
 id|ACPI_HANDLE
@@ -135,7 +135,7 @@ comma
 id|u8
 id|unlock_before_callback
 comma
-id|WALK_CALLBACK
+id|ACPI_WALK_CALLBACK
 id|user_function
 comma
 r_void
@@ -159,7 +159,7 @@ id|ACPI_NAMESPACE_NODE
 op_star
 id|parent_node
 suffix:semicolon
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|child_type
 suffix:semicolon
 id|u32
@@ -256,7 +256,7 @@ c_cond
 id|unlock_before_callback
 )paren
 (brace
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -281,7 +281,7 @@ c_cond
 id|unlock_before_callback
 )paren
 (brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren

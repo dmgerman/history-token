@@ -247,7 +247,12 @@ suffix:semicolon
 )brace
 r_return
 op_minus
+(paren
+(paren
+r_int
+)paren
 id|HIPPI_HLEN
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Rebuild the HIPPI MAC header. This is called after an ARP has&n; * completed on this sk_buff. We now let ARP fill in the other fields.&n; */

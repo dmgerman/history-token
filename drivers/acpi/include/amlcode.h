@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 46 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: amlcode.h - Definitions for AML, as included in &quot;definition blocks&quot;&n; *                   Declarations and definitions contained herein are derived&n; *                   directly from the ACPI specification.&n; *       $Revision: 52 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __AMLCODE_H__
 DECL|macro|__AMLCODE_H__
@@ -136,18 +136,18 @@ DECL|macro|AML_INDEX_OP
 mdefine_line|#define AML_INDEX_OP                (u16) 0x88
 DECL|macro|AML_MATCH_OP
 mdefine_line|#define AML_MATCH_OP                (u16) 0x89
-DECL|macro|AML_DWORD_FIELD_OP
-mdefine_line|#define AML_DWORD_FIELD_OP          (u16) 0x8a
-DECL|macro|AML_WORD_FIELD_OP
-mdefine_line|#define AML_WORD_FIELD_OP           (u16) 0x8b
-DECL|macro|AML_BYTE_FIELD_OP
-mdefine_line|#define AML_BYTE_FIELD_OP           (u16) 0x8c
-DECL|macro|AML_BIT_FIELD_OP
-mdefine_line|#define AML_BIT_FIELD_OP            (u16) 0x8d
+DECL|macro|AML_CREATE_DWORD_FIELD_OP
+mdefine_line|#define AML_CREATE_DWORD_FIELD_OP   (u16) 0x8a
+DECL|macro|AML_CREATE_WORD_FIELD_OP
+mdefine_line|#define AML_CREATE_WORD_FIELD_OP    (u16) 0x8b
+DECL|macro|AML_CREATE_BYTE_FIELD_OP
+mdefine_line|#define AML_CREATE_BYTE_FIELD_OP    (u16) 0x8c
+DECL|macro|AML_CREATE_BIT_FIELD_OP
+mdefine_line|#define AML_CREATE_BIT_FIELD_OP     (u16) 0x8d
 DECL|macro|AML_TYPE_OP
 mdefine_line|#define AML_TYPE_OP                 (u16) 0x8e
-DECL|macro|AML_QWORD_FIELD_OP
-mdefine_line|#define AML_QWORD_FIELD_OP          (u16) 0x8f     /* ACPI 2.0 */
+DECL|macro|AML_CREATE_QWORD_FIELD_OP
+mdefine_line|#define AML_CREATE_QWORD_FIELD_OP   (u16) 0x8f     /* ACPI 2.0 */
 DECL|macro|AML_LAND_OP
 mdefine_line|#define AML_LAND_OP                 (u16) 0x90
 DECL|macro|AML_LOR_OP
@@ -239,8 +239,8 @@ DECL|macro|AML_FATAL_OP
 mdefine_line|#define AML_FATAL_OP                (u16) 0x5b32
 DECL|macro|AML_REGION_OP
 mdefine_line|#define AML_REGION_OP               (u16) 0x5b80
-DECL|macro|AML_DEF_FIELD_OP
-mdefine_line|#define AML_DEF_FIELD_OP            (u16) 0x5b81
+DECL|macro|AML_FIELD_OP
+mdefine_line|#define AML_FIELD_OP                (u16) 0x5b81
 DECL|macro|AML_DEVICE_OP
 mdefine_line|#define AML_DEVICE_OP               (u16) 0x5b82
 DECL|macro|AML_PROCESSOR_OP
@@ -263,22 +263,22 @@ mdefine_line|#define AML_LLESSEQUAL_OP           (u16) 0x9294
 DECL|macro|AML_LNOTEQUAL_OP
 mdefine_line|#define AML_LNOTEQUAL_OP            (u16) 0x9293
 multiline_comment|/*&n; * Internal opcodes&n; * Use only &quot;Unknown&quot; AML opcodes, don&squot;t attempt to use&n; * any valid ACPI ASCII values (A-Z, 0-9, &squot;-&squot;)&n; */
-DECL|macro|AML_NAMEPATH_OP
-mdefine_line|#define AML_NAMEPATH_OP             (u16) 0x002d
-DECL|macro|AML_NAMEDFIELD_OP
-mdefine_line|#define AML_NAMEDFIELD_OP           (u16) 0x0030
-DECL|macro|AML_RESERVEDFIELD_OP
-mdefine_line|#define AML_RESERVEDFIELD_OP        (u16) 0x0031
-DECL|macro|AML_ACCESSFIELD_OP
-mdefine_line|#define AML_ACCESSFIELD_OP          (u16) 0x0032
-DECL|macro|AML_BYTELIST_OP
-mdefine_line|#define AML_BYTELIST_OP             (u16) 0x0033
-DECL|macro|AML_STATICSTRING_OP
-mdefine_line|#define AML_STATICSTRING_OP         (u16) 0x0034
-DECL|macro|AML_METHODCALL_OP
-mdefine_line|#define AML_METHODCALL_OP           (u16) 0x0035
-DECL|macro|AML_RETURN_VALUE_OP
-mdefine_line|#define AML_RETURN_VALUE_OP         (u16) 0x0036
+DECL|macro|AML_INT_NAMEPATH_OP
+mdefine_line|#define AML_INT_NAMEPATH_OP         (u16) 0x002d
+DECL|macro|AML_INT_NAMEDFIELD_OP
+mdefine_line|#define AML_INT_NAMEDFIELD_OP       (u16) 0x0030
+DECL|macro|AML_INT_RESERVEDFIELD_OP
+mdefine_line|#define AML_INT_RESERVEDFIELD_OP    (u16) 0x0031
+DECL|macro|AML_INT_ACCESSFIELD_OP
+mdefine_line|#define AML_INT_ACCESSFIELD_OP      (u16) 0x0032
+DECL|macro|AML_INT_BYTELIST_OP
+mdefine_line|#define AML_INT_BYTELIST_OP         (u16) 0x0033
+DECL|macro|AML_INT_STATICSTRING_OP
+mdefine_line|#define AML_INT_STATICSTRING_OP     (u16) 0x0034
+DECL|macro|AML_INT_METHODCALL_OP
+mdefine_line|#define AML_INT_METHODCALL_OP       (u16) 0x0035
+DECL|macro|AML_INT_RETURN_VALUE_OP
+mdefine_line|#define AML_INT_RETURN_VALUE_OP     (u16) 0x0036
 DECL|macro|ARG_NONE
 mdefine_line|#define ARG_NONE                    0x0
 multiline_comment|/*&n; * Argument types for the AML Parser&n; * Each field in the Arg_types u32 is 5 bits, allowing for a maximum of 6 arguments.&n; * There can be up to 31 unique argument types&n; */
@@ -321,7 +321,7 @@ mdefine_line|#define ARGP_SIMPLENAME             0x12
 multiline_comment|/*&n; * Resolved argument types for the AML Interpreter&n; * Each field in the Arg_types u32 is 5 bits, allowing for a maximum of 6 arguments.&n; * There can be up to 31 unique argument types (0 is end-of-arg-list indicator)&n; */
 multiline_comment|/* &quot;Standard&quot; ACPI types are 1-15 (0x0F) */
 DECL|macro|ARGI_INTEGER
-mdefine_line|#define ARGI_INTEGER                 ACPI_TYPE_INTEGER        /* 1 */
+mdefine_line|#define ARGI_INTEGER                ACPI_TYPE_INTEGER       /* 1 */
 DECL|macro|ARGI_STRING
 mdefine_line|#define ARGI_STRING                 ACPI_TYPE_STRING        /* 2 */
 DECL|macro|ARGI_BUFFER
@@ -346,9 +346,9 @@ mdefine_line|#define ARGI_ANYTYPE                0x12
 DECL|macro|ARGI_COMPUTEDATA
 mdefine_line|#define ARGI_COMPUTEDATA            0x13     /* Buffer, String, or Integer */
 DECL|macro|ARGI_DATAOBJECT
-mdefine_line|#define ARGI_DATAOBJECT             0x14     /* Buffer, string, package or reference to a Node - Used only by Size_of operator*/
+mdefine_line|#define ARGI_DATAOBJECT             0x14     /* Buffer, String, package or reference to a Node - Used only by Size_of operator*/
 DECL|macro|ARGI_COMPLEXOBJ
-mdefine_line|#define ARGI_COMPLEXOBJ             0x15     /* Buffer or package */
+mdefine_line|#define ARGI_COMPLEXOBJ             0x15     /* Buffer, String, or package (Used by INDEX op only) */
 DECL|macro|ARGI_INTEGER_REF
 mdefine_line|#define ARGI_INTEGER_REF            0x16
 DECL|macro|ARGI_OBJECT_REF
@@ -455,6 +455,12 @@ id|REGION_CMOS
 comma
 DECL|enumerator|REGION_PCI_BAR
 id|REGION_PCI_BAR
+comma
+DECL|enumerator|REGION_FIXED_HW
+id|REGION_FIXED_HW
+op_assign
+l_int|0x7F
+comma
 DECL|typedef|AML_REGION_TYPES
 )brace
 id|AML_REGION_TYPES
@@ -497,12 +503,12 @@ DECL|typedef|AML_MATCH_OPERATOR
 id|AML_MATCH_OPERATOR
 suffix:semicolon
 DECL|macro|MAX_MATCH_OPERATOR
-mdefine_line|#define MAX_MATCH_OPERATOR      5
+mdefine_line|#define MAX_MATCH_OPERATOR          5
 multiline_comment|/* Field Access Types */
 DECL|macro|ACCESS_TYPE_MASK
-mdefine_line|#define ACCESS_TYPE_MASK        0x0f
+mdefine_line|#define ACCESS_TYPE_MASK            0x0f
 DECL|macro|ACCESS_TYPE_SHIFT
-mdefine_line|#define ACCESS_TYPE_SHIFT       0
+mdefine_line|#define ACCESS_TYPE_SHIFT           0
 r_typedef
 r_enum
 (brace
@@ -526,6 +532,12 @@ id|ACCESS_DWORD_ACC
 op_assign
 l_int|3
 comma
+DECL|enumerator|ACCESS_QWORD_ACC
+id|ACCESS_QWORD_ACC
+op_assign
+l_int|4
+comma
+multiline_comment|/* ACPI 2.0 */
 DECL|enumerator|ACCESS_BLOCK_ACC
 id|ACCESS_BLOCK_ACC
 op_assign
@@ -546,9 +558,9 @@ id|AML_ACCESS_TYPE
 suffix:semicolon
 multiline_comment|/* Field Lock Rules */
 DECL|macro|LOCK_RULE_MASK
-mdefine_line|#define LOCK_RULE_MASK          0x10
+mdefine_line|#define LOCK_RULE_MASK              0x10
 DECL|macro|LOCK_RULE_SHIFT
-mdefine_line|#define LOCK_RULE_SHIFT         4
+mdefine_line|#define LOCK_RULE_SHIFT             4
 r_typedef
 r_enum
 (brace
@@ -567,9 +579,9 @@ id|AML_LOCK_RULE
 suffix:semicolon
 multiline_comment|/* Field Update Rules */
 DECL|macro|UPDATE_RULE_MASK
-mdefine_line|#define UPDATE_RULE_MASK        0x060
+mdefine_line|#define UPDATE_RULE_MASK            0x060
 DECL|macro|UPDATE_RULE_SHIFT
-mdefine_line|#define UPDATE_RULE_SHIFT       5
+mdefine_line|#define UPDATE_RULE_SHIFT           5
 r_typedef
 r_enum
 (brace
@@ -593,27 +605,29 @@ id|AML_UPDATE_RULE
 suffix:semicolon
 multiline_comment|/* bit fields in Method_flags byte */
 DECL|macro|METHOD_FLAGS_ARG_COUNT
-mdefine_line|#define METHOD_FLAGS_ARG_COUNT  0x07
+mdefine_line|#define METHOD_FLAGS_ARG_COUNT      0x07
 DECL|macro|METHOD_FLAGS_SERIALIZED
-mdefine_line|#define METHOD_FLAGS_SERIALIZED 0x08
+mdefine_line|#define METHOD_FLAGS_SERIALIZED     0x08
+DECL|macro|METHOD_FLAGS_SYNCH_LEVEL
+mdefine_line|#define METHOD_FLAGS_SYNCH_LEVEL    0xF0
 multiline_comment|/* Array sizes.  Used for range checking also */
 DECL|macro|NUM_REGION_TYPES
-mdefine_line|#define NUM_REGION_TYPES        7
+mdefine_line|#define NUM_REGION_TYPES            7
 DECL|macro|NUM_ACCESS_TYPES
-mdefine_line|#define NUM_ACCESS_TYPES        7
+mdefine_line|#define NUM_ACCESS_TYPES            7
 DECL|macro|NUM_UPDATE_RULES
-mdefine_line|#define NUM_UPDATE_RULES        3
+mdefine_line|#define NUM_UPDATE_RULES            3
 DECL|macro|NUM_MATCH_OPS
-mdefine_line|#define NUM_MATCH_OPS           7
+mdefine_line|#define NUM_MATCH_OPS               7
 DECL|macro|NUM_OPCODES
-mdefine_line|#define NUM_OPCODES             256
+mdefine_line|#define NUM_OPCODES                 256
 DECL|macro|NUM_FIELD_NAMES
-mdefine_line|#define NUM_FIELD_NAMES         2
+mdefine_line|#define NUM_FIELD_NAMES             2
 DECL|macro|USER_REGION_BEGIN
-mdefine_line|#define USER_REGION_BEGIN       0x80
+mdefine_line|#define USER_REGION_BEGIN           0x80
 multiline_comment|/*&n; * AML tables&n; */
 macro_line|#ifdef DEFINE_AML_GLOBALS
-multiline_comment|/* External declarations of the AML tables */
+multiline_comment|/* External declarations for the AML tables */
 r_extern
 id|u8
 id|acpi_gbl_aml

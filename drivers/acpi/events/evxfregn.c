@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfregn - External Interfaces, ACPI Operation Regions and&n; *                         Address Spaces.&n; *              $Revision: 27 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfregn - External Interfaces, ACPI Operation Regions and&n; *                         Address Spaces.&n; *              $Revision: 34 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -7,12 +7,12 @@ macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          EVENT_HANDLING
+mdefine_line|#define _COMPONENT          ACPI_EVENTS
 id|MODULE_NAME
 (paren
 l_string|&quot;evxfregn&quot;
 )paren
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_install_address_space_handler&n; *&n; * PARAMETERS:  Device          - Handle for the device&n; *              Space_id        - The address space ID&n; *              Handler         - Address of the handler&n; *              Setup           - Address of the setup function&n; *              Context         - Value passed to the handler on each access&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for all Op_regions of a given Space_id.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_install_address_space_handler&n; *&n; * PARAMETERS:  Device          - Handle for the device&n; *              Space_id        - The address space ID&n; *              Handler         - Address of the handler&n; *              Setup           - Address of the setup function&n; *              Context         - Value passed to the handler on each access&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for all Op_regions of a given Space_id.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_install_address_space_handler
 id|acpi_install_address_space_handler
@@ -20,13 +20,13 @@ id|acpi_install_address_space_handler
 id|ACPI_HANDLE
 id|device
 comma
-id|ACPI_ADDRESS_SPACE_TYPE
+id|ACPI_ADR_SPACE_TYPE
 id|space_id
 comma
-id|ADDRESS_SPACE_HANDLER
+id|ACPI_ADR_SPACE_HANDLER
 id|handler
 comma
-id|ADDRESS_SPACE_SETUP
+id|ACPI_ADR_SPACE_SETUP
 id|setup
 comma
 r_void
@@ -51,7 +51,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 suffix:semicolon
 id|u16
@@ -59,6 +59,27 @@ id|flags
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -94,7 +115,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -178,11 +199,11 @@ id|space_id
 )paren
 (brace
 r_case
-id|ADDRESS_SPACE_SYSTEM_MEMORY
+id|ACPI_ADR_SPACE_SYSTEM_MEMORY
 suffix:colon
 id|handler
 op_assign
-id|acpi_aml_system_memory_space_handler
+id|acpi_ex_system_memory_space_handler
 suffix:semicolon
 id|setup
 op_assign
@@ -191,11 +212,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ADDRESS_SPACE_SYSTEM_IO
+id|ACPI_ADR_SPACE_SYSTEM_IO
 suffix:colon
 id|handler
 op_assign
-id|acpi_aml_system_io_space_handler
+id|acpi_ex_system_io_space_handler
 suffix:semicolon
 id|setup
 op_assign
@@ -204,11 +225,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ADDRESS_SPACE_PCI_CONFIG
+id|ACPI_ADR_SPACE_PCI_CONFIG
 suffix:colon
 id|handler
 op_assign
-id|acpi_aml_pci_config_space_handler
+id|acpi_ex_pci_config_space_handler
 suffix:semicolon
 id|setup
 op_assign
@@ -247,9 +268,6 @@ id|obj_desc
 op_assign
 id|acpi_ns_get_attached_object
 (paren
-(paren
-id|ACPI_HANDLE
-)paren
 id|node
 )paren
 suffix:semicolon
@@ -320,7 +338,7 @@ suffix:semicolon
 )brace
 id|obj_desc
 op_assign
-id|acpi_cm_create_internal_object
+id|acpi_ut_create_internal_object
 (paren
 id|type
 )paren
@@ -372,7 +390,7 @@ id|status
 )paren
 )paren
 (brace
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|obj_desc
 )paren
@@ -385,7 +403,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *  Now we can install the handler&n;&t; *&n;&t; *  At this point we know that there is no existing handler.&n;&t; *  So, we just allocate the object for the handler and link it&n;&t; *  into the list.&n;&t; */
 id|handler_obj
 op_assign
-id|acpi_cm_create_internal_object
+id|acpi_ut_create_internal_object
 (paren
 id|INTERNAL_TYPE_ADDRESS_HANDLER
 )paren
@@ -480,7 +498,7 @@ id|handler_obj
 suffix:semicolon
 id|unlock_and_exit
 suffix:colon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -491,7 +509,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_remove_address_space_handler&n; *&n; * PARAMETERS:  Space_id        - The address space ID&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for accesses on an Operation Region&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_remove_address_space_handler&n; *&n; * PARAMETERS:  Space_id        - The address space ID&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for accesses on an Operation Region&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_remove_address_space_handler
 id|acpi_remove_address_space_handler
@@ -499,10 +517,10 @@ id|acpi_remove_address_space_handler
 id|ACPI_HANDLE
 id|device
 comma
-id|ACPI_ADDRESS_SPACE_TYPE
+id|ACPI_ADR_SPACE_TYPE
 id|space_id
 comma
-id|ADDRESS_SPACE_HANDLER
+id|ACPI_ADR_SPACE_HANDLER
 id|handler
 )paren
 (brace
@@ -532,6 +550,27 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -567,7 +606,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -600,9 +639,6 @@ id|obj_desc
 op_assign
 id|acpi_ns_get_attached_object
 (paren
-(paren
-id|ACPI_HANDLE
-)paren
 id|node
 )paren
 suffix:semicolon
@@ -665,7 +701,7 @@ c_func
 (paren
 id|region_obj
 comma
-id|FALSE
+id|TRUE
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; *  Walk the list, since we took the first region and it&n;&t;&t;&t;&t; *  was removed from the list by the dissassociate call&n;&t;&t;&t;&t; *  we just get the first item on the list again&n;&t;&t;&t;&t; */
@@ -681,12 +717,12 @@ op_assign
 id|handler_obj-&gt;addr_handler.next
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; *  Now we can delete the handler object&n;&t;&t;&t; */
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|handler_obj
 )paren
 suffix:semicolon
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|handler_obj
 )paren
@@ -713,7 +749,7 @@ id|AE_NOT_EXIST
 suffix:semicolon
 id|unlock_and_exit
 suffix:colon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren

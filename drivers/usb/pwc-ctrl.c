@@ -758,8 +758,6 @@ c_cond
 (paren
 id|pEntry-&gt;compressed
 )paren
-id|ret
-op_assign
 id|pdev-&gt;decompressor
 op_member_access_from_pointer
 id|init
@@ -769,19 +767,8 @@ id|pdev-&gt;release
 comma
 id|buf
 comma
-op_amp
 id|pdev-&gt;decompress_data
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-r_return
-id|ret
 suffix:semicolon
 multiline_comment|/* Set various parameters */
 id|pdev-&gt;vframes
@@ -1089,8 +1076,6 @@ id|pChoose-&gt;bandlength
 OG
 l_int|0
 )paren
-id|ret
-op_assign
 id|pdev-&gt;decompressor
 op_member_access_from_pointer
 id|init
@@ -1100,19 +1085,8 @@ id|pdev-&gt;release
 comma
 id|buf
 comma
-op_amp
 id|pdev-&gt;decompress_data
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-r_return
-id|ret
 suffix:semicolon
 multiline_comment|/* Set various parameters */
 id|pdev-&gt;vframes
@@ -1408,8 +1382,6 @@ id|pChoose-&gt;bandlength
 OG
 l_int|0
 )paren
-id|ret
-op_assign
 id|pdev-&gt;decompressor
 op_member_access_from_pointer
 id|init
@@ -1419,19 +1391,8 @@ id|pdev-&gt;release
 comma
 id|buf
 comma
-op_amp
 id|pdev-&gt;decompress_data
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-r_return
-id|ret
 suffix:semicolon
 multiline_comment|/* All set and go */
 id|pdev-&gt;vframes
@@ -1700,7 +1661,6 @@ id|ret
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* If the video mode was not supported, we still adjust the view size,&n;&t;   since xawtv (Again! Stupid program...) doesn&squot;t care zit about &n;&t;   return values.&n;&t; */
 id|pdev-&gt;view.x
 op_assign
 id|width
@@ -1720,7 +1680,7 @@ c_func
 (paren
 id|TRACE_SIZE
 comma
-l_string|&quot;Set viewport to %dx%d, image size is %dx%d. Palette = %d.&bslash;n&quot;
+l_string|&quot;Set viewport to %dx%d, image size is %dx%d, palette = %d.&bslash;n&quot;
 comma
 id|width
 comma
@@ -1741,6 +1701,14 @@ dot
 id|y
 comma
 id|pdev-&gt;vpalette
+)paren
+suffix:semicolon
+id|Debug
+c_func
+(paren
+l_string|&quot;bandlength = %d&bslash;n&quot;
+comma
+id|pdev-&gt;vbandlength
 )paren
 suffix:semicolon
 r_return
@@ -1888,8 +1856,10 @@ id|factor
 op_div
 l_int|4
 suffix:semicolon
+multiline_comment|/* Align offset, or you&squot;ll get some very weird results in&n;&t;   YUV420 mode... x must be multiple of 4 (to get the Y&squot;s in &n;&t;   place), and y even (or you&squot;ll mixup U &amp; V). This is less of a&n;&t;   problem for YUV420P.&n;&t; */
 id|pdev-&gt;offset.x
 op_assign
+(paren
 (paren
 id|pdev-&gt;view.x
 op_minus
@@ -1897,9 +1867,13 @@ id|pdev-&gt;image.x
 )paren
 op_div
 l_int|2
+)paren
+op_amp
+l_int|0xFFFC
 suffix:semicolon
 id|pdev-&gt;offset.y
 op_assign
+(paren
 (paren
 id|pdev-&gt;view.y
 op_minus
@@ -1907,56 +1881,11 @@ id|pdev-&gt;image.y
 )paren
 op_div
 l_int|2
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pdev-&gt;vpalette
-op_eq
-id|VIDEO_PALETTE_YUV420
-op_logical_or
-id|pdev-&gt;vpalette
-op_eq
-id|VIDEO_PALETTE_YUV420P
 )paren
-(brace
-multiline_comment|/* Align offset, or you&squot;ll get some very weird results in&n;&t;&t;   YUV mode... x must be multiple of 4 (to get the Y&squot;s in &n;&t;&t;   place), and y even (or you&squot;ll mixup U &amp; V).&n;&t;&t; */
-id|pdev-&gt;offset.x
-op_and_assign
-l_int|0xFFFC
-suffix:semicolon
-id|pdev-&gt;offset.y
-op_and_assign
+op_amp
 l_int|0xFFFE
 suffix:semicolon
-multiline_comment|/* This is the offset in the Y area, hence no factor */
-id|pdev-&gt;offset.size
-op_assign
-(paren
-id|pdev-&gt;offset.y
-op_star
-id|pdev-&gt;view.x
-op_plus
-id|pdev-&gt;offset.x
-)paren
-suffix:semicolon
-)brace
-r_else
-id|pdev-&gt;offset.size
-op_assign
-(paren
-id|pdev-&gt;offset.y
-op_star
-id|pdev-&gt;view.x
-op_plus
-id|pdev-&gt;offset.x
-)paren
-op_star
-id|factor
-op_div
-l_int|4
-suffix:semicolon
-multiline_comment|/* Set buffers to gray */
+multiline_comment|/* Fill buffers with gray or black */
 r_for
 c_loop
 (paren

@@ -1,9 +1,9 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: hwtimer.c - ACPI Power Management Timer Interface&n; *              $Revision: 5 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: hwtimer.c - ACPI Power Management Timer Interface&n; *              $Revision: 10 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          HARDWARE
+mdefine_line|#define _COMPONENT          ACPI_HARDWARE
 id|MODULE_NAME
 (paren
 l_string|&quot;hwtimer&quot;
@@ -18,6 +18,30 @@ op_star
 id|resolution
 )paren
 (brace
+id|ACPI_STATUS
+id|status
+suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -69,6 +93,30 @@ op_star
 id|ticks
 )paren
 (brace
+id|ACPI_STATUS
+id|status
+suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -235,7 +283,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Compute Duration:&n;&t; * -----------------&n;&t; * Since certain compilers (gcc/Linux, argh!) don&squot;t support 64-bit&n;&t; * divides in kernel-space we have to do some trickery to preserve&n;&t; * accuracy while using 32-bit math.&n;&t; *&n;&t; * TODO: Change to use 64-bit math when supported.&n;&t; *&n;&t; * The process is as follows:&n;&t; *  1. Compute the number of seconds by dividing Delta Ticks by&n;&t; *     the timer frequency.&n;&t; *  2. Compute the number of milliseconds in the remainder from step #1&n;&t; *     by multiplying by 1000 and then dividing by the timer frequency.&n;&t; *  3. Compute the number of microseconds in the remainder from step #2&n;&t; *     by multiplying by 1000 and then dividing by the timer frequency.&n;&t; *  4. Add the results from steps 1, 2, and 3 to get the total duration.&n;&t; *&n;&t; * Example: The time elapsed for Delta_ticks = 0xFFFFFFFF should be&n;&t; *          1199864031 microseconds.  This is computed as follows:&n;&t; *          Step #1: Seconds = 1199; Remainder = 3092840&n;&t; *          Step #2: Milliseconds = 864; Remainder = 113120&n;&t; *          Step #3: Microseconds = 31; Remainder = &lt;don&squot;t care!&gt;&n;&t; */
+multiline_comment|/*&n;&t; * Compute Duration:&n;&t; * -----------------&n;&t; * Since certain compilers (gcc/Linux, argh!) don&squot;t support 64-bit&n;&t; * divides in kernel-space we have to do some trickery to preserve&n;&t; * accuracy while using 32-bit math.&n;&t; *&n;&t; * TBD: Change to use 64-bit math when supported.&n;&t; *&n;&t; * The process is as follows:&n;&t; *  1. Compute the number of seconds by dividing Delta Ticks by&n;&t; *     the timer frequency.&n;&t; *  2. Compute the number of milliseconds in the remainder from step #1&n;&t; *     by multiplying by 1000 and then dividing by the timer frequency.&n;&t; *  3. Compute the number of microseconds in the remainder from step #2&n;&t; *     by multiplying by 1000 and then dividing by the timer frequency.&n;&t; *  4. Add the results from steps 1, 2, and 3 to get the total duration.&n;&t; *&n;&t; * Example: The time elapsed for Delta_ticks = 0xFFFFFFFF should be&n;&t; *          1199864031 microseconds.  This is computed as follows:&n;&t; *          Step #1: Seconds = 1199; Remainder = 3092840&n;&t; *          Step #2: Milliseconds = 864; Remainder = 113120&n;&t; *          Step #3: Microseconds = 31; Remainder = &lt;don&squot;t care!&gt;&n;&t; */
 multiline_comment|/* Step #1 */
 id|seconds
 op_assign

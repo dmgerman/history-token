@@ -1,4 +1,4 @@
-multiline_comment|/*&n;  Keyspan USB to Serial Converter driver&n; &n;  (C) Copyright (C) 2000&n;      Hugh Blemings &lt;hugh@linuxcare.com&gt;&n;   &n;  This program is free software; you can redistribute it and/or modify&n;  it under the terms of the GNU General Public License as published by&n;  the Free Software Foundation; either version 2 of the License, or&n;  (at your option) any later version.&n;&n;  See http://www.linuxcare.com.au/hugh/keyspan.html for more&n;  information on this driver.&n;  &n;  Code in this driver inspired by and in a number of places taken&n;  from Brian Warner&squot;s original Keyspan-PDA driver.&n;&n;  This driver has been put together with the support of Innosys, Inc.&n;  and Keyspan, Inc the manufacturers of the Keyspan USB-serial products.&n;  Thanks Guys :)&n;  &n;  Thanks to Paulus for miscellaneous tidy ups, some largish chunks&n;  of much nicer and/or completely new code and (perhaps most uniquely)&n;  having the patience to sit down and explain why and where he&squot;d changed&n;  stuff. &n;  &n;  Tip &squot;o the hat to Linuxcare for supporting staff in their work on&n;  open source projects.&n;&n;  Change History&n;   (04/08/2001) gb&n;&t;Identify version on module load.&n;   &n;   (11/01/2000) Adam J. Richter&n;&t;usb_device_id table support.&n;   &n;    Tue Oct 10 23:15:33 EST 2000 Hugh&n;      Merged Paul&squot;s changes with my USA-49W mods.  Work in progress&n;      still...&n;  &n;    Wed Jul 19 14:00:42 EST 2000 gkh&n;      Added module_init and module_exit functions to handle the fact that&n;      this driver is a loadable module now.&n; &n;    Tue Jul 18 16:14:52 EST 2000 Hugh&n;      Basic character input/output for USA-19 now mostly works,&n;      fixed at 9600 baud for the moment.&n;&n;    Sat Jul  8 11:11:48 EST 2000 Hugh&n;      First public release - nothing works except the firmware upload.&n;      Tested on PPC and x86 architectures, seems to behave...&n;*/
+multiline_comment|/*&n;  Keyspan USB to Serial Converter driver&n; &n;  (C) Copyright (C) 2000&n;      Hugh Blemings &lt;hugh@linuxcare.com&gt;&n;   &n;  This program is free software; you can redistribute it and/or modify&n;  it under the terms of the GNU General Public License as published by&n;  the Free Software Foundation; either version 2 of the License, or&n;  (at your option) any later version.&n;&n;  See http://www.linuxcare.com.au/hugh/keyspan.html for more&n;  information on this driver.&n;  &n;  Code in this driver inspired by and in a number of places taken&n;  from Brian Warner&squot;s original Keyspan-PDA driver.&n;&n;  This driver has been put together with the support of Innosys, Inc.&n;  and Keyspan, Inc the manufacturers of the Keyspan USB-serial products.&n;  Thanks Guys :)&n;  &n;  Thanks to Paulus for miscellaneous tidy ups, some largish chunks&n;  of much nicer and/or completely new code and (perhaps most uniquely)&n;  having the patience to sit down and explain why and where he&squot;d changed&n;  stuff. &n;  &n;  Tip &squot;o the hat to Linuxcare for supporting staff in their work on&n;  open source projects.&n;&n;  Change History&n;    Thu May 31 11:56:42 PDT 2001 gkh&n;      switched from using spinlock to a semaphore&n;   &n;   (04/08/2001) gb&n;&t;Identify version on module load.&n;   &n;   (11/01/2000) Adam J. Richter&n;&t;usb_device_id table support.&n;   &n;    Tue Oct 10 23:15:33 EST 2000 Hugh&n;      Merged Paul&squot;s changes with my USA-49W mods.  Work in progress&n;      still...&n;  &n;    Wed Jul 19 14:00:42 EST 2000 gkh&n;      Added module_init and module_exit functions to handle the fact that&n;      this driver is a loadable module now.&n; &n;    Tue Jul 18 16:14:52 EST 2000 Hugh&n;      Basic character input/output for USA-19 now mostly works,&n;      fixed at 9600 baud for the moment.&n;&n;    Sat Jul  8 11:11:48 EST 2000 Hugh&n;      First public release - nothing works except the firmware upload.&n;      Tested on PPC and x86 architectures, seems to behave...&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -3275,10 +3275,6 @@ id|already_active
 comma
 id|err
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|urb_t
 op_star
 id|urb
@@ -3316,12 +3312,10 @@ suffix:semicolon
 multiline_comment|/*  dbg(&quot;keyspan_open called.&quot;); */
 id|MOD_INC_USE_COUNT
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 op_increment
@@ -3335,12 +3329,10 @@ id|port-&gt;active
 op_assign
 l_int|1
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 r_if
@@ -3526,10 +3518,6 @@ id|keyspan_port_private
 op_star
 id|p_priv
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/*  dbg(&quot;keyspan_close called&quot;); */
 id|s_priv
 op_assign
@@ -3557,12 +3545,10 @@ op_member_access_from_pointer
 r_private
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 r_if
@@ -3642,12 +3628,10 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 id|MOD_DEC_USE_COUNT

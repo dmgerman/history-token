@@ -1,9 +1,9 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: hwacpi - ACPI Hardware Initialization/Mode Interface&n; *              $Revision: 36 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: hwacpi - ACPI Hardware Initialization/Mode Interface&n; *              $Revision: 40 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          HARDWARE
+mdefine_line|#define _COMPONENT          ACPI_HARDWARE
 id|MODULE_NAME
 (paren
 l_string|&quot;hwacpi&quot;
@@ -43,7 +43,7 @@ id|AE_NO_ACPI_TABLES
 suffix:semicolon
 )brace
 multiline_comment|/* Must support *some* mode! */
-multiline_comment|/*&n;&t;if (!(System_flags &amp; SYS_MODES_MASK)) {&n;&t;&t;Restore_acpi_chipset = FALSE;&n;&n;&t;&t;return (AE_ERROR);&n;&t;}&n;&n;*/
+multiline_comment|/*&n;&t;if (!(System_flags &amp; SYS_MODES_MASK))&n;&t;{&n;&t;&t;Restore_acpi_chipset = FALSE;&n;&n;&t;&t;return (AE_ERROR);&n;&t;}&n;&n;*/
 r_switch
 c_cond
 (paren
@@ -144,7 +144,7 @@ id|acpi_gbl_FADT-&gt;gpe0blk_len
 multiline_comment|/* GPE0 specified in FADT  */
 id|acpi_gbl_gpe0enable_register_save
 op_assign
-id|acpi_cm_allocate
+id|acpi_ut_allocate
 (paren
 id|DIV_2
 (paren
@@ -224,7 +224,7 @@ id|acpi_gbl_FADT-&gt;gpe1_blk_len
 multiline_comment|/* GPE1 defined */
 id|acpi_gbl_gpe1_enable_register_save
 op_assign
-id|acpi_cm_allocate
+id|acpi_ut_allocate
 (paren
 id|DIV_2
 (paren
@@ -309,7 +309,7 @@ id|mode
 id|ACPI_STATUS
 id|status
 op_assign
-id|AE_ERROR
+id|AE_NO_HARDWARE_RESPONSE
 suffix:semicolon
 r_if
 c_cond

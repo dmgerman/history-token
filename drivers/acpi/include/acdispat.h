@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acdispat.h - dispatcher (parser to interpreter interface)&n; *       $Revision: 35 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acdispat.h - dispatcher (parser to interpreter interface)&n; *       $Revision: 40 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACDISPAT_H_
 DECL|macro|_ACDISPAT_H_
@@ -7,11 +7,6 @@ DECL|macro|NAMEOF_LOCAL_NTE
 mdefine_line|#define NAMEOF_LOCAL_NTE    &quot;__L0&quot;
 DECL|macro|NAMEOF_ARG_NTE
 mdefine_line|#define NAMEOF_ARG_NTE      &quot;__A0&quot;
-multiline_comment|/* For Acpi_ds_method_data_set_value */
-DECL|macro|MTH_TYPE_LOCAL
-mdefine_line|#define MTH_TYPE_LOCAL              0
-DECL|macro|MTH_TYPE_ARG
-mdefine_line|#define MTH_TYPE_ARG                1
 multiline_comment|/* Common interfaces */
 id|ACPI_STATUS
 id|acpi_ds_obj_stack_push
@@ -63,7 +58,7 @@ id|walk_state
 suffix:semicolon
 multiline_comment|/* dsopcode - support for late evaluation */
 id|ACPI_STATUS
-id|acpi_ds_get_field_unit_arguments
+id|acpi_ds_get_buffer_field_arguments
 (paren
 id|ACPI_OPERAND_OBJECT
 op_star
@@ -191,7 +186,8 @@ id|ACPI_PARSE_OBJECT
 op_star
 id|op
 comma
-id|ACPI_HANDLE
+id|ACPI_NAMESPACE_NODE
+op_star
 id|region_node
 comma
 id|ACPI_WALK_STATE
@@ -298,10 +294,28 @@ id|op
 suffix:semicolon
 multiline_comment|/* dsmthdat - method data (locals/args) */
 id|ACPI_STATUS
+id|acpi_ds_store_object_to_local
+(paren
+id|u16
+id|opcode
+comma
+id|u32
+id|index
+comma
+id|ACPI_OPERAND_OBJECT
+op_star
+id|src_desc
+comma
+id|ACPI_WALK_STATE
+op_star
+id|walk_state
+)paren
+suffix:semicolon
+id|ACPI_STATUS
 id|acpi_ds_method_data_get_entry
 (paren
-id|u32
-id|type
+id|u16
+id|opcode
 comma
 id|u32
 id|index
@@ -333,11 +347,11 @@ op_star
 id|obj_desc
 )paren
 suffix:semicolon
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|acpi_ds_method_data_get_type
 (paren
-id|u32
-id|type
+id|u16
+id|opcode
 comma
 id|u32
 id|index
@@ -350,8 +364,8 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_ds_method_data_get_value
 (paren
-id|u32
-id|type
+id|u16
+id|opcode
 comma
 id|u32
 id|index
@@ -367,28 +381,10 @@ id|dest_desc
 )paren
 suffix:semicolon
 id|ACPI_STATUS
-id|acpi_ds_method_data_set_value
-(paren
-id|u32
-id|type
-comma
-id|u32
-id|index
-comma
-id|ACPI_OPERAND_OBJECT
-op_star
-id|src_desc
-comma
-id|ACPI_WALK_STATE
-op_star
-id|walk_state
-)paren
-suffix:semicolon
-id|ACPI_STATUS
 id|acpi_ds_method_data_delete_value
 (paren
-id|u32
-id|type
+id|u16
+id|opcode
 comma
 id|u32
 id|index
@@ -416,10 +412,10 @@ id|walk_state
 suffix:semicolon
 id|ACPI_NAMESPACE_NODE
 op_star
-id|acpi_ds_method_data_get_nte
+id|acpi_ds_method_data_get_node
 (paren
-id|u32
-id|type
+id|u16
+id|opcode
 comma
 id|u32
 id|index
@@ -440,8 +436,8 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_ds_method_data_set_entry
 (paren
-id|u32
-id|type
+id|u16
+id|opcode
 comma
 id|u32
 id|index
@@ -509,6 +505,10 @@ comma
 id|ACPI_OPERAND_OBJECT
 op_star
 id|obj_desc
+comma
+id|ACPI_NAMESPACE_NODE
+op_star
+id|calling_method_node
 )paren
 suffix:semicolon
 multiline_comment|/* dsobj - Parser/Interpreter interface - object initialization and conversion */
@@ -615,7 +615,7 @@ id|op
 suffix:semicolon
 multiline_comment|/* dsregn - Parser/Interpreter interface - Op Region parsing */
 id|ACPI_STATUS
-id|acpi_ds_eval_field_unit_operands
+id|acpi_ds_eval_buffer_field_operands
 (paren
 id|ACPI_WALK_STATE
 op_star
@@ -709,7 +709,7 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|acpi_ds_map_opcode_to_data_type
 (paren
 id|u16
@@ -720,7 +720,7 @@ op_star
 id|out_flags
 )paren
 suffix:semicolon
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|acpi_ds_map_named_opcode_to_data_type
 (paren
 id|u16
@@ -735,7 +735,7 @@ id|ACPI_NAMESPACE_NODE
 op_star
 id|node
 comma
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 comma
 id|ACPI_WALK_STATE

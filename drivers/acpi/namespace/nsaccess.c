@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsaccess - Top-level functions for accessing ACPI namespace&n; *              $Revision: 119 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsaccess - Top-level functions for accessing ACPI namespace&n; *              $Revision: 126 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -6,7 +6,7 @@ macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          NAMESPACE
+mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
 id|MODULE_NAME
 (paren
 l_string|&quot;nsaccess&quot;
@@ -38,7 +38,7 @@ id|ACPI_OPERAND_OBJECT
 op_star
 id|obj_desc
 suffix:semicolon
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -86,9 +86,6 @@ l_int|NULL
 comma
 id|init_val-&gt;name
 comma
-(paren
-id|OBJECT_TYPE_INTERNAL
-)paren
 id|init_val-&gt;type
 comma
 id|IMODE_LOAD_PASS2
@@ -111,11 +108,8 @@ id|init_val-&gt;val
 multiline_comment|/*&n;&t;&t;&t; * Entry requests an initial value, allocate a&n;&t;&t;&t; * descriptor for it.&n;&t;&t;&t; */
 id|obj_desc
 op_assign
-id|acpi_cm_create_internal_object
+id|acpi_ut_create_internal_object
 (paren
-(paren
-id|OBJECT_TYPE_INTERNAL
-)paren
 id|init_val-&gt;type
 )paren
 suffix:semicolon
@@ -165,9 +159,6 @@ id|ACPI_TYPE_STRING
 suffix:colon
 id|obj_desc-&gt;string.length
 op_assign
-(paren
-id|u16
-)paren
 id|STRLEN
 (paren
 id|init_val-&gt;val
@@ -176,7 +167,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * Allocate a buffer for the string.  All&n;&t;&t;&t;&t; * String.Pointers must be allocated buffers!&n;&t;&t;&t;&t; * (makes deletion simpler)&n;&t;&t;&t;&t; */
 id|obj_desc-&gt;string.pointer
 op_assign
-id|acpi_cm_allocate
+id|acpi_ut_allocate
 (paren
 (paren
 id|obj_desc-&gt;string.length
@@ -192,7 +183,7 @@ op_logical_neg
 id|obj_desc-&gt;string.pointer
 )paren
 (brace
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|obj_desc
 )paren
@@ -318,7 +309,7 @@ id|init_val-&gt;type
 )paren
 )paren
 suffix:semicolon
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|obj_desc
 )paren
@@ -344,7 +335,7 @@ suffix:semicolon
 )brace
 id|unlock_and_exit
 suffix:colon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -368,7 +359,7 @@ id|NATIVE_CHAR
 op_star
 id|pathname
 comma
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 comma
 id|OPERATING_MODE
@@ -423,10 +414,10 @@ id|null_name_path
 op_assign
 id|FALSE
 suffix:semicolon
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type_to_check_for
 suffix:semicolon
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|this_search_type
 suffix:semicolon
 id|u32
@@ -498,11 +489,11 @@ op_assign
 id|scope_info-&gt;scope.node
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * This check is explicitly split provide relax the Type_to_check_for&n;&t; * conditions for Bank_field_defn. Originally, both Bank_field_defn and&n;&t; * Def_field_defn caused Type_to_check_for to be set to ACPI_TYPE_REGION,&n;&t; * but the Bank_field_defn may also check for a Field definition as well&n;&t; * as an Operation_region.&n;&t; */
+multiline_comment|/*&n;&t; * This check is explicitly split to relax the Type_to_check_for&n;&t; * conditions for Bank_field_defn. Originally, both Bank_field_defn and&n;&t; * Def_field_defn caused Type_to_check_for to be set to ACPI_TYPE_REGION,&n;&t; * but the Bank_field_defn may also check for a Field definition as well&n;&t; * as an Operation_region.&n;&t; */
 r_if
 c_cond
 (paren
-id|INTERNAL_TYPE_DEF_FIELD_DEFN
+id|INTERNAL_TYPE_FIELD_DEFN
 op_eq
 id|type
 )paren

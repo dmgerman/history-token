@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Extension Header handling for IPv6&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&n; *&t;Andi Kleen&t;&t;&lt;ak@muc.de&gt;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;$Id: exthdrs.c,v 1.12 2001/01/22 02:36:37 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Extension Header handling for IPv6&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&n; *&t;Andi Kleen&t;&t;&lt;ak@muc.de&gt;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;$Id: exthdrs.c,v 1.13 2001/06/19 15:58:56 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 multiline_comment|/* Changes:&n; *&t;yoshfuji&t;&t;: ensure not to overrun while parsing &n; *&t;&t;&t;&t;  tlv options.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -227,6 +227,10 @@ id|skb
 )paren
 r_goto
 id|bad
+suffix:semicolon
+id|off
+op_add_assign
+l_int|2
 suffix:semicolon
 id|len
 op_sub_assign

@@ -132,7 +132,7 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-macro_line|#elif defined(__alpha__) || defined(__ia64__)
+macro_line|#elif defined(__alpha__) || defined(__ia64__) || defined(__sparc__)
 multiline_comment|/* ??? I wonder if we&squot;ll really need to flush caches, or if the&n;&t;   core logic can manage to keep the system coherent.  The ARM&n;&t;   speaks only of using `cflush&squot; to get things in memory in&n;&t;   preparation for power failure.&n;&n;&t;   If we do need to call `cflush&squot;, we&squot;ll need a target page,&n;&t;   as we can only flush one page at a time.&n;&n;&t;   Ditto for IA-64. --davidm 00/08/07 */
 id|mb
 c_func

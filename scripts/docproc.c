@@ -59,6 +59,11 @@ id|vp
 op_assign
 l_int|2
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 id|pid_t
 id|pid
 suffix:semicolon
@@ -473,7 +478,8 @@ c_func
 (paren
 id|pid
 comma
-l_int|NULL
+op_amp
+id|ret
 comma
 l_int|0
 )paren
@@ -482,7 +488,7 @@ suffix:semicolon
 )brace
 m_exit
 (paren
-l_int|0
+id|ret
 )paren
 suffix:semicolon
 )brace

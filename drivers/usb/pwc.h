@@ -33,6 +33,8 @@ DECL|macro|TRACE_FLOW
 mdefine_line|#define TRACE_FLOW&t;0x0020
 DECL|macro|TRACE_SIZE
 mdefine_line|#define TRACE_SIZE&t;0x0040
+DECL|macro|TRACE_PWCX
+mdefine_line|#define TRACE_PWCX&t;0x0080
 DECL|macro|TRACE_SEQUENCE
 mdefine_line|#define TRACE_SEQUENCE&t;0x1000
 DECL|macro|Trace
@@ -50,34 +52,13 @@ DECL|macro|TOUCAM_TRAILER_SIZE
 mdefine_line|#define TOUCAM_TRAILER_SIZE&t;&t;4
 multiline_comment|/* Version block */
 DECL|macro|PWC_MAJOR
-mdefine_line|#define PWC_MAJOR&t;7
+mdefine_line|#define PWC_MAJOR&t;8
 DECL|macro|PWC_MINOR
-mdefine_line|#define PWC_MINOR&t;1
-DECL|macro|PWC_RELEASE
-mdefine_line|#define PWC_RELEASE &t;&quot;7.1&quot;
-macro_line|#if defined(CONFIG_ARM)
-DECL|macro|PWC_PROCESSOR
-mdefine_line|#define PWC_PROCESSOR &quot;ARM&quot;
-macro_line|#endif
-macro_line|#if defined(CONFIG_M686)
-DECL|macro|PWC_PROCESSOR
-mdefine_line|#define PWC_PROCESSOR &quot;PPro&quot;
-macro_line|#endif
-macro_line|#if !defined(PWC_PROCESSOR)
-DECL|macro|PWC_PROCESSOR
-mdefine_line|#define PWC_PROCESSOR &quot;P5&quot;
-macro_line|#endif  
-macro_line|#if defined(__SMP__) || defined(CONFIG_SMP)
-DECL|macro|PWC_SMP
-mdefine_line|#define PWC_SMP &quot;(SMP)&quot;
-macro_line|#else
-DECL|macro|PWC_SMP
-mdefine_line|#define PWC_SMP &quot;(UP)&quot;
-macro_line|#endif
+mdefine_line|#define PWC_MINOR&t;0
 DECL|macro|PWC_VERSION
-mdefine_line|#define PWC_VERSION PWC_RELEASE &quot; &quot; PWC_PROCESSOR &quot; &quot; PWC_SMP
+mdefine_line|#define PWC_VERSION &t;&quot;8.0&quot;
 DECL|macro|PWC_NAME
-mdefine_line|#define PWC_NAME &quot;pwc&quot;
+mdefine_line|#define PWC_NAME &t;&quot;pwc&quot;
 multiline_comment|/* Turn certain features on/off */
 DECL|macro|PWC_INT_PIPE
 mdefine_line|#define PWC_INT_PIPE 0
@@ -299,7 +280,7 @@ r_char
 id|vsync
 suffix:semicolon
 multiline_comment|/* used by isoc handler */
-multiline_comment|/* The image acquisition requires 3 to 5 steps:&n;      1. data is gathered in short packets from the USB controller&n;      2. data is synchronized and packed into a frame buffer&n;      3. in case data is compressed, decompress it into a separate buffer&n;      4. data is optionally converted to RGB/YUV &n;      5. data is transfered to the user process&n;&n;      Note that MAX_ISO_BUFS != MAX_FRAMES != MAX_IMAGES.... &n;      We have in effect a back-to-back-double-buffer system.&n;    */
+multiline_comment|/* The image acquisition requires 3 to 4 steps:&n;      1. data is gathered in short packets from the USB controller&n;      2. data is synchronized and packed into a frame buffer&n;      3a. in case data is compressed, decompress it directly into image buffer&n;      3b. in case data is uncompressed, copy into image buffer with viewport&n;      4. data is transfered to the user process&n;&n;      Note that MAX_ISO_BUFS != MAX_FRAMES != MAX_IMAGES.... &n;      We have in effect a back-to-back-double-buffer system.&n;    */
 multiline_comment|/* 1: isoc */
 DECL|member|sbuf
 r_struct
@@ -320,6 +301,7 @@ id|pwc_frame_buf
 op_star
 id|fbuf
 suffix:semicolon
+multiline_comment|/* all frames */
 DECL|member|empty_frames
 DECL|member|empty_frames_tail
 r_struct
@@ -330,6 +312,7 @@ comma
 op_star
 id|empty_frames_tail
 suffix:semicolon
+multiline_comment|/* all empty frames */
 DECL|member|full_frames
 DECL|member|full_frames_tail
 r_struct
@@ -340,18 +323,21 @@ comma
 op_star
 id|full_frames_tail
 suffix:semicolon
-DECL|member|read_frame
-r_struct
-id|pwc_frame_buf
-op_star
-id|read_frame
-suffix:semicolon
+multiline_comment|/* all filled frames */
 DECL|member|fill_frame
 r_struct
 id|pwc_frame_buf
 op_star
 id|fill_frame
 suffix:semicolon
+multiline_comment|/* frame currently filled */
+DECL|member|read_frame
+r_struct
+id|pwc_frame_buf
+op_star
+id|read_frame
+suffix:semicolon
+multiline_comment|/* frame currently read by user process */
 DECL|member|frame_size
 r_int
 id|frame_size
@@ -388,12 +374,6 @@ op_star
 id|decompress_data
 suffix:semicolon
 multiline_comment|/* private data for decompression engine */
-DECL|member|decompress_buffer
-r_void
-op_star
-id|decompress_buffer
-suffix:semicolon
-multiline_comment|/* decompressed data */
 multiline_comment|/* 4: image */
 multiline_comment|/* We have an &squot;image&squot; and a &squot;view&squot;, where &squot;image&squot; is the fixed-size image&n;      as delivered by the camera, and &squot;view&squot; is the size requested by the&n;      program. The camera image is centered in this viewport, laced with &n;      a gray or black border. view_min &lt;= image &lt;= view &lt;= view_max;&n;    */
 DECL|member|image_mask
@@ -458,7 +438,6 @@ id|MAX_IMAGES
 )braket
 suffix:semicolon
 multiline_comment|/* For MCAPTURE and SYNC */
-multiline_comment|/* Kernel specific structures. These were once moved to the end &n;      of the structure and padded with bytes after I found out&n;      some of these have different sizes in different kernel versions.&n;      But since this is now a source release, I don&squot;t have this problem&n;      anymore.&n;&n;      Fortunately none of these structures are needed in the pwcx module.&n;    */
 DECL|member|modlock
 r_struct
 id|semaphore
@@ -476,11 +455,6 @@ id|wait_queue_head_t
 id|frameq
 suffix:semicolon
 multiline_comment|/* When waiting for a frame to finish... */
-DECL|member|pollq
-id|wait_queue_head_t
-id|pollq
-suffix:semicolon
-multiline_comment|/* poll() has it&squot;s own waitqueue */
 DECL|member|remove_ok
 id|wait_queue_head_t
 id|remove_ok

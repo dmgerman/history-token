@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sys_sparc32.c,v 1.176 2001/04/14 01:12:02 davem Exp $&n; * sys_sparc32.c: Conversion between 32bit and 64bit native syscalls.&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; */
+multiline_comment|/* $Id: sys_sparc32.c,v 1.177 2001/06/10 06:48:46 davem Exp $&n; * sys_sparc32.c: Conversion between 32bit and 64bit native syscalls.&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -19298,6 +19298,7 @@ id|ENOSYS
 suffix:semicolon
 )brace
 macro_line|#endif  /* CONFIG_MODULES */
+macro_line|#if defined(CONFIG_NFSD) || defined(CONFIG_NFSD_MODULE)
 multiline_comment|/* Stuff for NFS server syscalls... */
 DECL|struct|nfsctl_svc32
 r_struct
@@ -20987,6 +20988,42 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#else /* !NFSD */
+r_extern
+id|asmlinkage
+r_int
+id|sys_ni_syscall
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|function|sys32_nfsservctl
+r_int
+id|asmlinkage
+id|sys32_nfsservctl
+c_func
+(paren
+r_int
+id|cmd
+comma
+r_void
+op_star
+id|notused
+comma
+r_void
+op_star
+id|notused2
+)paren
+(brace
+r_return
+id|sys_ni_syscall
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* Translations due to time_t size differences.  Which affects all&n;   sorts of things, like timeval and itimerval.  */
 r_extern
 r_struct

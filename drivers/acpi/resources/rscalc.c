@@ -1,21 +1,21 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscalc - Acpi_rs_calculate_byte_stream_length&n; *                       Acpi_rs_calculate_list_length&n; *              $Revision: 21 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscalc - Calculate stream and list lengths&n; *              $Revision: 30 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          RESOURCE_MANAGER
+mdefine_line|#define _COMPONENT          ACPI_RESOURCES
 id|MODULE_NAME
 (paren
 l_string|&quot;rscalc&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_calculate_byte_stream_length&n; *&n; * PARAMETERS:  Linked_list         - Pointer to the resource linked list&n; *              Size_needed         - u32 pointer of the size buffer needed&n; *                                      to properly return the parsed data&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid ACPI_STATUS code&n; *&n; * DESCRIPTION: Takes the resource byte stream and parses it once, calculating&n; *              the size buffer needed to hold the linked list that conveys&n; *              the resource data.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_calculate_byte_stream_length&n; *&n; * PARAMETERS:  Linked_list         - Pointer to the resource linked list&n; *              Size_needed         - u32 pointer of the size buffer needed&n; *                                    to properly return the parsed data&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Takes the resource byte stream and parses it once, calculating&n; *              the size buffer needed to hold the linked list that conveys&n; *              the resource data.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_rs_calculate_byte_stream_length
 id|acpi_rs_calculate_byte_stream_length
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -32,7 +32,7 @@ suffix:semicolon
 id|u32
 id|segment_size
 suffix:semicolon
-id|EXTENDED_IRQ_RESOURCE
+id|ACPI_RESOURCE_EXT_IRQ
 op_star
 id|ex_irq
 op_assign
@@ -50,7 +50,7 @@ op_logical_neg
 id|done
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Init the variable that will hold the size to add to the&n;&t;&t; *  total.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Init the variable that will hold the size to add to the total.&n;&t;&t; */
 id|segment_size
 op_assign
 l_int|0
@@ -62,10 +62,9 @@ id|linked_list-&gt;id
 )paren
 (brace
 r_case
-id|irq
+id|ACPI_RSTYPE_IRQ
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * IRQ Resource&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * For an IRQ Resource, Byte 3, although optional, will&n;&t;&t;&t; *  always be created - it holds IRQ information.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * IRQ Resource&n;&t;&t;&t; * For an IRQ Resource, Byte 3, although optional, will&n;&t;&t;&t; * always be created - it holds IRQ information.&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|4
@@ -73,10 +72,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|dma
+id|ACPI_RSTYPE_DMA
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * DMA Resource&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * DMA Resource&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|3
@@ -84,10 +82,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|start_dependent_functions
+id|ACPI_RSTYPE_START_DPF
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Start Dependent Functions Resource&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * For a Start_dependent_functions Resource, Byte 1,&n;&t;&t;&t; * although optional, will always be created.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Start Dependent Functions Resource&n;&t;&t;&t; * For a Start_dependent_functions Resource, Byte 1,&n;&t;&t;&t; * although optional, will always be created.&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|2
@@ -95,10 +92,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|end_dependent_functions
+id|ACPI_RSTYPE_END_DPF
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * End Dependent Functions Resource&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * End Dependent Functions Resource&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|1
@@ -106,10 +102,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|io
+id|ACPI_RSTYPE_IO
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * IO Port Resource&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * IO Port Resource&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|8
@@ -117,10 +112,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|fixed_io
+id|ACPI_RSTYPE_FIXED_IO
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Fixed IO Port Resource&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Fixed IO Port Resource&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|4
@@ -128,10 +122,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|vendor_specific
+id|ACPI_RSTYPE_VENDOR
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Vendor Defined Resource&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * For a Vendor Specific resource, if the Length is&n;&t;&t;&t; *  between 1 and 7 it will be created as a Small&n;&t;&t;&t; *  Resource data type, otherwise it is a Large&n;&t;&t;&t; *  Resource data type.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Vendor Defined Resource&n;&t;&t;&t; * For a Vendor Specific resource, if the Length is&n;&t;&t;&t; * between 1 and 7 it will be created as a Small&n;&t;&t;&t; * Resource data type, otherwise it is a Large&n;&t;&t;&t; * Resource data type.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -159,10 +152,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|end_tag
+id|ACPI_RSTYPE_END_TAG
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * End Tag&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * End Tag&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|2
@@ -174,10 +166,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|memory24
+id|ACPI_RSTYPE_MEM24
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * 24-Bit Memory Resource&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 24-Bit Memory Resource&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|12
@@ -185,10 +176,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|memory32
+id|ACPI_RSTYPE_MEM32
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * 32-Bit Memory Range Resource&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 32-Bit Memory Range Resource&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|20
@@ -196,10 +186,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|fixed_memory32
+id|ACPI_RSTYPE_FIXED_MEM32
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * 32-Bit Fixed Memory Resource&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 32-Bit Fixed Memory Resource&n;&t;&t;&t; * For this resource the size is static&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|12
@@ -207,10 +196,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|address16
+id|ACPI_RSTYPE_ADDRESS16
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * 16-Bit Address Resource&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * The base size of this byte stream is 16. If a&n;&t;&t;&t; *  Resource Source string is not NULL, add 1 for&n;&t;&t;&t; *  the Index + the length of the null terminated&n;&t;&t;&t; *  string Resource Source + 1 for the null.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 16-Bit Address Resource&n;&t;&t;&t; * The base size of this byte stream is 16. If a&n;&t;&t;&t; * Resource Source string is not NULL, add 1 for&n;&t;&t;&t; * the Index + the length of the null terminated&n;&t;&t;&t; * string Resource Source + 1 for the null.&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|16
@@ -220,7 +208,7 @@ c_cond
 (paren
 l_int|NULL
 op_ne
-id|linked_list-&gt;data.address16.resource_source
+id|linked_list-&gt;data.address16.resource_source.string_ptr
 )paren
 (brace
 id|segment_size
@@ -228,17 +216,16 @@ op_add_assign
 (paren
 l_int|1
 op_plus
-id|linked_list-&gt;data.address16.resource_source_string_length
+id|linked_list-&gt;data.address16.resource_source.string_length
 )paren
 suffix:semicolon
 )brace
 r_break
 suffix:semicolon
 r_case
-id|address32
+id|ACPI_RSTYPE_ADDRESS32
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * 32-Bit Address Resource&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * The base size of this byte stream is 26. If a Resource&n;&t;&t;&t; *  Source string is not NULL, add 1 for the Index + the&n;&t;&t;&t; *  length of the null terminated string Resource Source +&n;&t;&t;&t; *  1 for the null.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 32-Bit Address Resource&n;&t;&t;&t; * The base size of this byte stream is 26. If a Resource&n;&t;&t;&t; * Source string is not NULL, add 1 for the Index + the&n;&t;&t;&t; * length of the null terminated string Resource Source +&n;&t;&t;&t; * 1 for the null.&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|26
@@ -248,7 +235,7 @@ c_cond
 (paren
 l_int|NULL
 op_ne
-id|linked_list-&gt;data.address16.resource_source
+id|linked_list-&gt;data.address32.resource_source.string_ptr
 )paren
 (brace
 id|segment_size
@@ -256,23 +243,48 @@ op_add_assign
 (paren
 l_int|1
 op_plus
-id|linked_list-&gt;data.address16.resource_source_string_length
+id|linked_list-&gt;data.address32.resource_source.string_length
 )paren
 suffix:semicolon
 )brace
 r_break
 suffix:semicolon
 r_case
-id|extended_irq
+id|ACPI_RSTYPE_ADDRESS64
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Extended IRQ Resource&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * The base size of this byte stream is 9. This is for an&n;&t;&t;&t; *  Interrupt table length of 1.  For each additional&n;&t;&t;&t; *  interrupt, add 4.&n;&t;&t;&t; * If a Resource Source string is not NULL, add 1 for the&n;&t;&t;&t; *  Index + the length of the null terminated string&n;&t;&t;&t; *  Resource Source + 1 for the null.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 64-Bit Address Resource&n;&t;&t;&t; * The base size of this byte stream is 46. If a Resource&n;&t;&t;&t; * Source string is not NULL, add 1 for the Index + the&n;&t;&t;&t; * length of the null terminated string Resource Source +&n;&t;&t;&t; * 1 for the null.&n;&t;&t;&t; */
+id|segment_size
+op_assign
+l_int|46
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|NULL
+op_ne
+id|linked_list-&gt;data.address64.resource_source.string_ptr
+)paren
+(brace
+id|segment_size
+op_add_assign
+(paren
+l_int|1
+op_plus
+id|linked_list-&gt;data.address64.resource_source.string_length
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|ACPI_RSTYPE_EXT_IRQ
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * Extended IRQ Resource&n;&t;&t;&t; * The base size of this byte stream is 9. This is for an&n;&t;&t;&t; * Interrupt table length of 1.  For each additional&n;&t;&t;&t; * interrupt, add 4.&n;&t;&t;&t; * If a Resource Source string is not NULL, add 1 for the&n;&t;&t;&t; * Index + the length of the null terminated string&n;&t;&t;&t; * Resource Source + 1 for the null.&n;&t;&t;&t; */
 id|segment_size
 op_assign
 l_int|9
-suffix:semicolon
-id|segment_size
-op_add_assign
+op_plus
+(paren
 (paren
 id|linked_list-&gt;data.extended_irq.number_of_interrupts
 op_minus
@@ -280,13 +292,14 @@ l_int|1
 )paren
 op_star
 l_int|4
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 l_int|NULL
 op_ne
-id|ex_irq-&gt;resource_source
+id|ex_irq-&gt;resource_source.string_ptr
 )paren
 (brace
 id|segment_size
@@ -294,7 +307,7 @@ op_add_assign
 (paren
 l_int|1
 op_plus
-id|linked_list-&gt;data.extended_irq.resource_source_string_length
+id|linked_list-&gt;data.extended_irq.resource_source.string_length
 )paren
 suffix:semicolon
 )brace
@@ -302,10 +315,10 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * If we get here, everything is out of sync,&n;&t;&t;&t; *  so exit with an error&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If we get here, everything is out of sync,&n;&t;&t;&t; * so exit with an error&n;&t;&t;&t; */
 r_return
 (paren
-id|AE_AML_ERROR
+id|AE_AML_INVALID_RESOURCE_TYPE
 )paren
 suffix:semicolon
 r_break
@@ -320,19 +333,12 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Point to the next object&n;&t;&t; */
 id|linked_list
 op_assign
+id|POINTER_ADD
 (paren
-id|RESOURCE
-op_star
-)paren
-(paren
-(paren
-id|NATIVE_UINT
-)paren
+id|ACPI_RESOURCE
+comma
 id|linked_list
-op_plus
-(paren
-id|NATIVE_UINT
-)paren
+comma
 id|linked_list-&gt;length
 )paren
 suffix:semicolon
@@ -349,7 +355,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_calculate_list_length&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource byte stream&n; *              Byte_stream_buffer_length - Size of Byte_stream_buffer&n; *              Size_needed             - u32 pointer of the size buffer&n; *                                          needed to properly return the&n; *                                          parsed data&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid ACPI_STATUS code&n; *&n; * DESCRIPTION: Takes the resource byte stream and parses it once, calculating&n; *              the size buffer needed to hold the linked list that conveys&n; *              the resource data.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_calculate_list_length&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource byte stream&n; *              Byte_stream_buffer_length - Size of Byte_stream_buffer&n; *              Size_needed             - u32 pointer of the size buffer&n; *                                        needed to properly return the&n; *                                        parsed data&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Takes the resource byte stream and parses it once, calculating&n; *              the size buffer needed to hold the linked list that conveys&n; *              the resource data.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_rs_calculate_list_length
 id|acpi_rs_calculate_list_length
@@ -419,22 +425,15 @@ OL
 id|byte_stream_buffer_length
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Look at the next byte in the stream&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The next byte in the stream is the resource type&n;&t;&t; */
 id|resource_type
 op_assign
+id|acpi_rs_get_resource_type
+(paren
 op_star
 id|byte_stream_buffer
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * See if this is a small or large resource&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|resource_type
-op_amp
-l_int|0x80
 )paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * Large Resource Type&n;&t;&t;&t; */
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -442,28 +441,26 @@ id|resource_type
 )paren
 (brace
 r_case
-id|MEMORY_RANGE_24
+id|RESOURCE_DESC_MEMORY_24
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * 24-Bit Memory Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 24-Bit Memory Resource&n;&t;&t;&t; */
 id|bytes_consumed
 op_assign
 l_int|12
 suffix:semicolon
 id|structure_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|MEMORY24_RESOURCE
+id|ACPI_RESOURCE_MEM24
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|LARGE_VENDOR_DEFINED
+id|RESOURCE_DESC_LARGE_VENDOR
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * Vendor Defined Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Vendor Defined Resource&n;&t;&t;&t; */
 id|buffer
 op_assign
 id|byte_stream_buffer
@@ -485,7 +482,7 @@ id|temp16
 op_plus
 l_int|3
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Ensure a 32-bit boundary for the structure&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Ensure a 32-bit boundary for the structure&n;&t;&t;&t; */
 id|temp16
 op_assign
 (paren
@@ -498,12 +495,10 @@ id|temp16
 suffix:semicolon
 id|structure_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|VENDOR_RESOURCE
+id|ACPI_RESOURCE_VENDOR
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 op_plus
 (paren
 id|temp16
@@ -517,47 +512,43 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|MEMORY_RANGE_32
+id|RESOURCE_DESC_MEMORY_32
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * 32-Bit Memory Range Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 32-Bit Memory Range Resource&n;&t;&t;&t; */
 id|bytes_consumed
 op_assign
 l_int|20
 suffix:semicolon
 id|structure_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|MEMORY32_RESOURCE
+id|ACPI_RESOURCE_MEM32
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|FIXED_MEMORY_RANGE_32
+id|RESOURCE_DESC_FIXED_MEMORY_32
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * 32-Bit Fixed Memory Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 32-Bit Fixed Memory Resource&n;&t;&t;&t; */
 id|bytes_consumed
 op_assign
 l_int|12
 suffix:semicolon
 id|structure_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|FIXED_MEMORY32_RESOURCE
+id|ACPI_RESOURCE_FIXED_MEM32
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|DWORD_ADDRESS_SPACE
+id|RESOURCE_DESC_QWORD_ADDRESS_SPACE
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * 32-Bit Address Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 64-Bit Address Resource&n;&t;&t;&t; */
 id|buffer
 op_assign
 id|byte_stream_buffer
@@ -579,7 +570,89 @@ id|temp16
 op_plus
 l_int|3
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Resource Source Index and Resource Source are&n;&t;&t;&t;&t; *  optional elements.  Check the length of the&n;&t;&t;&t;&t; *  Bytestream.  If it is greater than 23, that&n;&t;&t;&t;&t; *  means that an Index exists and is followed by&n;&t;&t;&t;&t; *  a null termininated string.  Therefore, set&n;&t;&t;&t;&t; *  the temp variable to the length minus the minimum&n;&t;&t;&t;&t; *  byte stream length plus the byte for the Index to&n;&t;&t;&t;&t; *  determine the size of the NULL terminiated string.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Resource Source Index and Resource Source are&n;&t;&t;&t; * optional elements.  Check the length of the&n;&t;&t;&t; * Bytestream.  If it is greater than 43, that&n;&t;&t;&t; * means that an Index exists and is followed by&n;&t;&t;&t; * a null termininated string.  Therefore, set&n;&t;&t;&t; * the temp variable to the length minus the minimum&n;&t;&t;&t; * byte stream length plus the byte for the Index to&n;&t;&t;&t; * determine the size of the NULL terminiated string.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+l_int|43
+OL
+id|temp16
+)paren
+(brace
+id|temp8
+op_assign
+(paren
+id|u8
+)paren
+(paren
+id|temp16
+op_minus
+l_int|44
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|temp8
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t;&t; * Ensure a 64-bit boundary for the structure&n;&t;&t;&t; */
+id|temp8
+op_assign
+(paren
+id|u8
+)paren
+id|ROUND_UP_TO_64_bITS
+(paren
+id|temp8
+)paren
+suffix:semicolon
+id|structure_size
+op_assign
+id|SIZEOF_RESOURCE
+(paren
+id|ACPI_RESOURCE_ADDRESS64
+)paren
+op_plus
+(paren
+id|temp8
+op_star
+r_sizeof
+(paren
+id|u8
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|RESOURCE_DESC_DWORD_ADDRESS_SPACE
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * 32-Bit Address Resource&n;&t;&t;&t; */
+id|buffer
+op_assign
+id|byte_stream_buffer
+suffix:semicolon
+op_increment
+id|buffer
+suffix:semicolon
+id|MOVE_UNALIGNED16_TO_16
+(paren
+op_amp
+id|temp16
+comma
+id|buffer
+)paren
+suffix:semicolon
+id|bytes_consumed
+op_assign
+id|temp16
+op_plus
+l_int|3
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Resource Source Index and Resource Source are&n;&t;&t;&t; * optional elements.  Check the length of the&n;&t;&t;&t; * Bytestream.  If it is greater than 23, that&n;&t;&t;&t; * means that an Index exists and is followed by&n;&t;&t;&t; * a null termininated string.  Therefore, set&n;&t;&t;&t; * the temp variable to the length minus the minimum&n;&t;&t;&t; * byte stream length plus the byte for the Index to&n;&t;&t;&t; * determine the size of the NULL terminiated string.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -607,7 +680,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Ensure a 32-bit boundary for the structure&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Ensure a 32-bit boundary for the structure&n;&t;&t;&t; */
 id|temp8
 op_assign
 (paren
@@ -620,12 +693,10 @@ id|temp8
 suffix:semicolon
 id|structure_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|ADDRESS32_RESOURCE
+id|ACPI_RESOURCE_ADDRESS32
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 op_plus
 (paren
 id|temp8
@@ -639,9 +710,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|WORD_ADDRESS_SPACE
+id|RESOURCE_DESC_WORD_ADDRESS_SPACE
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * 16-Bit Address Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 16-Bit Address Resource&n;&t;&t;&t; */
 id|buffer
 op_assign
 id|byte_stream_buffer
@@ -663,7 +734,7 @@ id|temp16
 op_plus
 l_int|3
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Resource Source Index and Resource Source are&n;&t;&t;&t;&t; *  optional elements.  Check the length of the&n;&t;&t;&t;&t; *  Bytestream.  If it is greater than 13, that&n;&t;&t;&t;&t; *  means that an Index exists and is followed by&n;&t;&t;&t;&t; *  a null termininated string.  Therefore, set&n;&t;&t;&t;&t; *  the temp variable to the length minus the minimum&n;&t;&t;&t;&t; *  byte stream length plus the byte for the Index to&n;&t;&t;&t;&t; *  determine the size of the NULL terminiated string.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Resource Source Index and Resource Source are&n;&t;&t;&t; * optional elements.  Check the length of the&n;&t;&t;&t; * Bytestream.  If it is greater than 13, that&n;&t;&t;&t; * means that an Index exists and is followed by&n;&t;&t;&t; * a null termininated string.  Therefore, set&n;&t;&t;&t; * the temp variable to the length minus the minimum&n;&t;&t;&t; * byte stream length plus the byte for the Index to&n;&t;&t;&t; * determine the size of the NULL terminiated string.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -691,7 +762,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Ensure a 32-bit boundry for the structure&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Ensure a 32-bit boundary for the structure&n;&t;&t;&t; */
 id|temp8
 op_assign
 (paren
@@ -704,12 +775,10 @@ id|temp8
 suffix:semicolon
 id|structure_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|ADDRESS16_RESOURCE
+id|ACPI_RESOURCE_ADDRESS16
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 op_plus
 (paren
 id|temp8
@@ -723,9 +792,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|EXTENDED_IRQ
+id|RESOURCE_DESC_EXTENDED_XRUPT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * Extended IRQ&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Extended IRQ&n;&t;&t;&t; */
 id|buffer
 op_assign
 id|byte_stream_buffer
@@ -747,7 +816,7 @@ id|temp16
 op_plus
 l_int|3
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Point past the length field and the&n;&t;&t;&t;&t; *  Interrupt vector flags to save off the&n;&t;&t;&t;&t; *  Interrupt table length to the Temp8 variable.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Point past the length field and the&n;&t;&t;&t; * Interrupt vector flags to save off the&n;&t;&t;&t; * Interrupt table length to the Temp8 variable.&n;&t;&t;&t; */
 id|buffer
 op_add_assign
 l_int|3
@@ -757,7 +826,7 @@ op_assign
 op_star
 id|buffer
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * To compensate for multiple interrupt numbers,&n;&t;&t;&t;&t; *  Add 4 bytes for each additional interrupts&n;&t;&t;&t;&t; *  greater than 1&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * To compensate for multiple interrupt numbers, add 4 bytes for&n;&t;&t;&t; * each additional interrupts greater than 1&n;&t;&t;&t; */
 id|additional_bytes
 op_assign
 (paren
@@ -773,7 +842,7 @@ op_star
 l_int|4
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Resource Source Index and Resource Source are&n;&t;&t;&t;&t; *  optional elements.  Check the length of the&n;&t;&t;&t;&t; *  Bytestream.  If it is greater than 9, that&n;&t;&t;&t;&t; *  means that an Index exists and is followed by&n;&t;&t;&t;&t; *  a null termininated string.  Therefore, set&n;&t;&t;&t;&t; *  the temp variable to the length minus the minimum&n;&t;&t;&t;&t; *  byte stream length plus the byte for the Index to&n;&t;&t;&t;&t; *  determine the size of the NULL terminiated string.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Resource Source Index and Resource Source are&n;&t;&t;&t; * optional elements.  Check the length of the&n;&t;&t;&t; * Bytestream.  If it is greater than 9, that&n;&t;&t;&t; * means that an Index exists and is followed by&n;&t;&t;&t; * a null termininated string.  Therefore, set&n;&t;&t;&t; * the temp variable to the length minus the minimum&n;&t;&t;&t; * byte stream length plus the byte for the Index to&n;&t;&t;&t; * determine the size of the NULL terminiated string.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -807,7 +876,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Ensure a 32-bit boundry for the structure&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Ensure a 32-bit boundary for the structure&n;&t;&t;&t; */
 id|temp8
 op_assign
 (paren
@@ -820,12 +889,10 @@ id|temp8
 suffix:semicolon
 id|structure_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|EXTENDED_IRQ_RESOURCE
+id|ACPI_RESOURCE_EXT_IRQ
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 op_plus
 (paren
 id|additional_bytes
@@ -847,38 +914,10 @@ id|u8
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* TBD: [Future] 64-bit not currently supported */
-multiline_comment|/*&n;&t;&t;&t;case 0x8A:&n;&t;&t;&t;&t;break;&n;*/
-r_default
-suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * If we get here, everything is out of sync,&n;&t;&t;&t;&t; *  so exit with an error&n;&t;&t;&t;&t; */
-r_return
-(paren
-id|AE_AML_ERROR
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t;&t; * Small Resource Type&n;&t;&t;&t; *  Only bits 7:3 are valid&n;&t;&t;&t; */
-id|resource_type
-op_rshift_assign
-l_int|3
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|resource_type
-)paren
-(brace
 r_case
-id|IRQ_FORMAT
+id|RESOURCE_DESC_IRQ_FORMAT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * IRQ Resource&n;&t;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t;&t; * Determine if it there are two or three&n;&t;&t;&t;&t; *  trailing bytes&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * IRQ Resource.&n;&t;&t;&t; * Determine if it there are two or three trailing bytes&n;&t;&t;&t; */
 id|buffer
 op_assign
 id|byte_stream_buffer
@@ -908,11 +947,11 @@ op_assign
 l_int|3
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Point past the descriptor&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Point past the descriptor&n;&t;&t;&t; */
 op_increment
 id|buffer
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Look at the number of bits set&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Look at the number of bits set&n;&t;&t;&t; */
 id|MOVE_UNALIGNED16_TO_16
 (paren
 op_amp
@@ -955,12 +994,10 @@ suffix:semicolon
 )brace
 id|structure_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|IO_RESOURCE
+id|ACPI_RESOURCE_IO
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 op_plus
 (paren
 id|number_of_interrupts
@@ -974,9 +1011,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|DMA_FORMAT
+id|RESOURCE_DESC_DMA_FORMAT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * DMA Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * DMA Resource&n;&t;&t;&t; */
 id|buffer
 op_assign
 id|byte_stream_buffer
@@ -985,11 +1022,11 @@ id|bytes_consumed
 op_assign
 l_int|3
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Point past the descriptor&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Point past the descriptor&n;&t;&t;&t; */
 op_increment
 id|buffer
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Look at the number of bits set&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Look at the number of bits set&n;&t;&t;&t; */
 id|temp8
 op_assign
 op_star
@@ -1029,12 +1066,10 @@ suffix:semicolon
 )brace
 id|structure_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|DMA_RESOURCE
+id|ACPI_RESOURCE_DMA
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 op_plus
 (paren
 id|number_of_channels
@@ -1048,10 +1083,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|START_DEPENDENT_TAG
+id|RESOURCE_DESC_START_DEPENDENT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * Start Dependent Functions Resource&n;&t;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t;&t; * Determine if it there are two or three trailing bytes&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Start Dependent Functions Resource&n;&t;&t;&t; * Determine if it there are two or three trailing bytes&n;&t;&t;&t; */
 id|buffer
 op_assign
 id|byte_stream_buffer
@@ -1083,71 +1117,65 @@ suffix:semicolon
 )brace
 id|structure_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|START_DEPENDENT_FUNCTIONS_RESOURCE
+id|ACPI_RESOURCE_START_DPF
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|END_DEPENDENT_TAG
+id|RESOURCE_DESC_END_DEPENDENT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * End Dependent Functions Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * End Dependent Functions Resource&n;&t;&t;&t; */
 id|bytes_consumed
 op_assign
 l_int|1
 suffix:semicolon
 id|structure_size
 op_assign
-id|RESOURCE_LENGTH
+id|ACPI_RESOURCE_LENGTH
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|IO_PORT_DESCRIPTOR
+id|RESOURCE_DESC_IO_PORT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * IO Port Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * IO Port Resource&n;&t;&t;&t; */
 id|bytes_consumed
 op_assign
 l_int|8
 suffix:semicolon
 id|structure_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|IO_RESOURCE
+id|ACPI_RESOURCE_IO
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|FIXED_LOCATION_IO_DESCRIPTOR
+id|RESOURCE_DESC_FIXED_IO_PORT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * Fixed IO Port Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Fixed IO Port Resource&n;&t;&t;&t; */
 id|bytes_consumed
 op_assign
 l_int|4
 suffix:semicolon
 id|structure_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|FIXED_IO_RESOURCE
+id|ACPI_RESOURCE_FIXED_IO
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SMALL_VENDOR_DEFINED
+id|RESOURCE_DESC_SMALL_VENDOR
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * Vendor Specific Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Vendor Specific Resource&n;&t;&t;&t; */
 id|buffer
 op_assign
 id|byte_stream_buffer
@@ -1174,7 +1202,7 @@ id|temp8
 op_plus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Ensure a 32-bit boundry for the structure&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Ensure a 32-bit boundary for the structure&n;&t;&t;&t; */
 id|temp8
 op_assign
 (paren
@@ -1187,12 +1215,10 @@ id|temp8
 suffix:semicolon
 id|structure_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|VENDOR_RESOURCE
+id|ACPI_RESOURCE_VENDOR
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 op_plus
 (paren
 id|temp8
@@ -1206,16 +1232,16 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|END_TAG
+id|RESOURCE_DESC_END_TAG
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * End Tag&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * End Tag&n;&t;&t;&t; */
 id|bytes_consumed
 op_assign
 l_int|2
 suffix:semicolon
 id|structure_size
 op_assign
-id|RESOURCE_LENGTH
+id|ACPI_RESOURCE_LENGTH
 suffix:semicolon
 id|byte_stream_buffer_length
 op_assign
@@ -1225,18 +1251,15 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * If we get here, everything is out of sync,&n;&t;&t;&t;&t; *  so exit with an error&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If we get here, everything is out of sync,&n;&t;&t;&t; *  so exit with an error&n;&t;&t;&t; */
 r_return
 (paren
-id|AE_AML_ERROR
+id|AE_AML_INVALID_RESOURCE_TYPE
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* switch */
-)brace
-multiline_comment|/* if(Resource_type &amp; 0x80) */
 multiline_comment|/*&n;&t;&t; * Update the return value and counter&n;&t;&t; */
 id|buffer_size
 op_add_assign
@@ -1264,7 +1287,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_calculate_pci_routing_table_length&n; *&n; * PARAMETERS:  Package_object          - Pointer to the package object&n; *              Buffer_size_needed      - u32 pointer of the size buffer&n; *                                          needed to properly return the&n; *                                          parsed data&n; *&n; * RETURN:      Status  AE_OK&n; *&n; * DESCRIPTION: Given a package representing a PCI routing table, this&n; *                calculates the size of the corresponding linked list of&n; *                descriptions.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_calculate_pci_routing_table_length&n; *&n; * PARAMETERS:  Package_object          - Pointer to the package object&n; *              Buffer_size_needed      - u32 pointer of the size buffer&n; *                                        needed to properly return the&n; *                                        parsed data&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Given a package representing a PCI routing table, this&n; *              calculates the size of the corresponding linked list of&n; *              descriptions.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_rs_calculate_pci_routing_table_length
 id|acpi_rs_calculate_pci_routing_table_length
@@ -1313,8 +1336,7 @@ id|number_of_elements
 op_assign
 id|package_object-&gt;package.count
 suffix:semicolon
-multiline_comment|/*&n;&t; * Calculate the size of the return buffer.&n;&t; * The base size is the number of elements * the sizes of the&n;&t; * structures.  Additional space for the strings is added below.&n;&t; * The minus one is to subtract the size of the u8 Source[1]&n;&t; * member because it is added below.&n;&t; *&n;&t; * NOTE: The Number_of_elements is incremented by one to add an end&n;&t; * table structure that is essentially a structure of zeros.&n;&t; */
-multiline_comment|/*&n;&t; * But each PRT_ENTRY structure has a pointer to a string and&n;&t; * the size of that string must be found.&n;&t; */
+multiline_comment|/*&n;&t; * Calculate the size of the return buffer.&n;&t; * The base size is the number of elements * the sizes of the&n;&t; * structures.  Additional space for the strings is added below.&n;&t; * The minus one is to subtract the size of the u8 Source[1]&n;&t; * member because it is added below.&n;&t; *&n;&t; * But each PRT_ENTRY structure has a pointer to a string and&n;&t; * the size of that string must be found.&n;&t; */
 id|top_object_list
 op_assign
 id|package_object-&gt;package.elements
@@ -1400,9 +1422,9 @@ op_star
 id|sub_object_list
 )paren
 op_member_access_from_pointer
-id|reference.op_code
+id|reference.opcode
 op_eq
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 )paren
 )paren
@@ -1482,7 +1504,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t; * If no name was found, then this is a NULL, which is&n;&t;&t;&t; *  translated as a u32 zero.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If no name was found, then this is a NULL, which is&n;&t;&t;&t; * translated as a u32 zero.&n;&t;&t;&t; */
 id|temp_size_needed
 op_add_assign
 r_sizeof
@@ -1504,10 +1526,16 @@ id|top_object_list
 op_increment
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Adding an extra element to the end of the list, essentially a NULL terminator&n;&t; */
 op_star
 id|buffer_size_needed
 op_assign
 id|temp_size_needed
+op_plus
+r_sizeof
+(paren
+id|PCI_ROUTING_TABLE
+)paren
 suffix:semicolon
 r_return
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsobject - Utilities for objects attached to namespace&n; *                         table entries&n; *              $Revision: 49 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsobject - Utilities for objects attached to namespace&n; *                         table entries&n; *              $Revision: 55 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -6,7 +6,7 @@ macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;actables.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          NAMESPACE
+mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
 id|MODULE_NAME
 (paren
 l_string|&quot;nsobject&quot;
@@ -24,7 +24,7 @@ id|ACPI_OPERAND_OBJECT
 op_star
 id|object
 comma
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 )paren
 (brace
@@ -36,7 +36,7 @@ id|ACPI_OPERAND_OBJECT
 op_star
 id|previous_obj_desc
 suffix:semicolon
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|obj_type
 op_assign
 id|ACPI_TYPE_ANY
@@ -307,7 +307,7 @@ comma
 id|object
 )paren
 suffix:semicolon
-multiline_comment|/* Check for a recognized Op_code */
+multiline_comment|/* Check for a recognized Opcode */
 r_switch
 c_cond
 (paren
@@ -414,7 +414,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * Must increment the new value&squot;s reference count&n;&t; * (if it is an internal object)&n;&t; */
-id|acpi_cm_add_reference
+id|acpi_ut_add_reference
 (paren
 id|obj_desc
 )paren
@@ -448,13 +448,13 @@ id|previous_obj_desc
 )paren
 (brace
 multiline_comment|/* One for the attach to the Node */
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|previous_obj_desc
 )paren
 suffix:semicolon
 multiline_comment|/* Now delete */
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|previous_obj_desc
 )paren
@@ -500,7 +500,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Found a valid value */
-multiline_comment|/*&n;&t; * Not every value is an object allocated via Acpi_cm_callocate,&n;&t; * - must check&n;&t; */
+multiline_comment|/*&n;&t; * Not every value is an object allocated via Acpi_ut_callocate,&n;&t; * - must check&n;&t; */
 r_if
 c_cond
 (paren
@@ -512,7 +512,7 @@ id|obj_desc
 )paren
 (brace
 multiline_comment|/* Attempt to delete the object (and all subobjects) */
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|obj_desc
 )paren
@@ -521,21 +521,22 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_attached_object&n; *&n; * PARAMETERS:  Handle              - Parent Node to be examined&n; *&n; * RETURN:      Current value of the object field from the Node whose&n; *              handle is passed&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_attached_object&n; *&n; * PARAMETERS:  Node             - Parent Node to be examined&n; *&n; * RETURN:      Current value of the object field from the Node whose&n; *              handle is passed&n; *&n; ******************************************************************************/
 r_void
 op_star
 DECL|function|acpi_ns_get_attached_object
 id|acpi_ns_get_attached_object
 (paren
-id|ACPI_HANDLE
-id|handle
+id|ACPI_NAMESPACE_NODE
+op_star
+id|node
 )paren
 (brace
 r_if
 c_cond
 (paren
 op_logical_neg
-id|handle
+id|node
 )paren
 (brace
 multiline_comment|/* handle invalid */
@@ -547,15 +548,7 @@ suffix:semicolon
 )brace
 r_return
 (paren
-(paren
-(paren
-id|ACPI_NAMESPACE_NODE
-op_star
-)paren
-id|handle
-)paren
-op_member_access_from_pointer
-id|object
+id|node-&gt;object
 )paren
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxface - External interfaces for ACPI events&n; *              $Revision: 101 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxface - External interfaces for ACPI events&n; *              $Revision: 110 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -7,12 +7,12 @@ macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          EVENT_HANDLING
+mdefine_line|#define _COMPONENT          ACPI_EVENTS
 id|MODULE_NAME
 (paren
 l_string|&quot;evxface&quot;
 )paren
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_install_fixed_event_handler&n; *&n; * PARAMETERS:  Event           - Event type to enable.&n; *              Handler         - Pointer to the handler function for the&n; *                                event&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Saves the pointer to the handler function and then enables the&n; *              event.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_install_fixed_event_handler&n; *&n; * PARAMETERS:  Event           - Event type to enable.&n; *              Handler         - Pointer to the handler function for the&n; *                                event&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Saves the pointer to the handler function and then enables the&n; *              event.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_install_fixed_event_handler
 id|acpi_install_fixed_event_handler
@@ -20,7 +20,7 @@ id|acpi_install_fixed_event_handler
 id|u32
 id|event
 comma
-id|FIXED_EVENT_HANDLER
+id|ACPI_EVENT_HANDLER
 id|handler
 comma
 r_void
@@ -30,16 +30,35 @@ id|context
 (brace
 id|ACPI_STATUS
 id|status
-op_assign
-id|AE_OK
 suffix:semicolon
-multiline_comment|/* Sanity check the parameters. */
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Parameter validation */
 r_if
 c_cond
 (paren
 id|event
-op_ge
-id|NUM_FIXED_EVENTS
+OG
+id|ACPI_EVENT_MAX
 )paren
 (brace
 r_return
@@ -48,7 +67,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_EVENTS
 )paren
@@ -97,7 +116,6 @@ suffix:semicolon
 id|status
 op_assign
 id|acpi_enable_event
-c_func
 (paren
 id|event
 comma
@@ -109,7 +127,6 @@ c_cond
 (paren
 op_logical_neg
 id|ACPI_SUCCESS
-c_func
 (paren
 id|status
 )paren
@@ -134,17 +151,10 @@ id|context
 op_assign
 l_int|NULL
 suffix:semicolon
-id|status
-op_assign
-id|AE_ERROR
-suffix:semicolon
-r_goto
-id|cleanup
-suffix:semicolon
 )brace
 id|cleanup
 suffix:colon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_EVENTS
 )paren
@@ -155,7 +165,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_remove_fixed_event_handler&n; *&n; * PARAMETERS:  Event           - Event type to disable.&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disables the event and unregisters the event handler.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_remove_fixed_event_handler&n; *&n; * PARAMETERS:  Event           - Event type to disable.&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disables the event and unregisters the event handler.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_remove_fixed_event_handler
 id|acpi_remove_fixed_event_handler
@@ -163,7 +173,7 @@ id|acpi_remove_fixed_event_handler
 id|u32
 id|event
 comma
-id|FIXED_EVENT_HANDLER
+id|ACPI_EVENT_HANDLER
 id|handler
 )paren
 (brace
@@ -172,13 +182,34 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-multiline_comment|/* Sanity check the parameters. */
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Parameter validation */
 r_if
 c_cond
 (paren
 id|event
-op_ge
-id|NUM_FIXED_EVENTS
+OG
+id|ACPI_EVENT_MAX
 )paren
 (brace
 r_return
@@ -187,7 +218,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_EVENTS
 )paren
@@ -203,33 +234,7 @@ comma
 id|ACPI_EVENT_FIXED
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ACPI_SUCCESS
-c_func
-(paren
-id|status
-)paren
-)paren
-(brace
-id|status
-op_assign
-id|AE_ERROR
-suffix:semicolon
-id|acpi_cm_release_mutex
-(paren
-id|ACPI_MTX_EVENTS
-)paren
-suffix:semicolon
-r_return
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Remove the handler */
+multiline_comment|/* Always Remove the handler */
 id|acpi_gbl_fixed_event_handlers
 (braket
 id|event
@@ -248,7 +253,7 @@ id|context
 op_assign
 l_int|NULL
 suffix:semicolon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_EVENTS
 )paren
@@ -259,7 +264,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_install_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              Handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: System_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: Driver_handler (80-ff)&n; *              Handler         - Address of the handler&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_install_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              Handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: System_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: Driver_handler (80-ff)&n; *              Handler         - Address of the handler&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_install_notify_handler
 id|acpi_install_notify_handler
@@ -270,7 +275,7 @@ comma
 id|u32
 id|handler_type
 comma
-id|NOTIFY_HANDLER
+id|ACPI_NOTIFY_HANDLER
 id|handler
 comma
 r_void
@@ -295,6 +300,27 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -317,7 +343,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -471,9 +497,6 @@ id|obj_desc
 op_assign
 id|acpi_ns_get_attached_object
 (paren
-(paren
-id|ACPI_HANDLE
-)paren
 id|device_node
 )paren
 suffix:semicolon
@@ -522,7 +545,7 @@ r_else
 multiline_comment|/* Create a new object */
 id|obj_desc
 op_assign
-id|acpi_cm_create_internal_object
+id|acpi_ut_create_internal_object
 (paren
 id|device_node-&gt;type
 )paren
@@ -574,7 +597,7 @@ suffix:semicolon
 multiline_comment|/* Install the handler */
 id|notify_obj
 op_assign
-id|acpi_cm_create_internal_object
+id|acpi_ut_create_internal_object
 (paren
 id|INTERNAL_TYPE_NOTIFY
 )paren
@@ -630,7 +653,7 @@ suffix:semicolon
 )brace
 id|unlock_and_exit
 suffix:colon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -641,7 +664,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_remove_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              Handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: System_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: Driver_handler (80-ff)&n; *              Handler         - Address of the handler&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_remove_notify_handler&n; *&n; * PARAMETERS:  Device          - The device for which notifies will be handled&n; *              Handler_type    - The type of handler:&n; *                                  ACPI_SYSTEM_NOTIFY: System_handler (00-7f)&n; *                                  ACPI_DEVICE_NOTIFY: Driver_handler (80-ff)&n; *              Handler         - Address of the handler&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a handler for notifies on an ACPI device&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_remove_notify_handler
 id|acpi_remove_notify_handler
@@ -652,7 +675,7 @@ comma
 id|u32
 id|handler_type
 comma
-id|NOTIFY_HANDLER
+id|ACPI_NOTIFY_HANDLER
 id|handler
 )paren
 (brace
@@ -673,6 +696,27 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -695,7 +739,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -848,9 +892,6 @@ id|obj_desc
 op_assign
 id|acpi_ns_get_attached_object
 (paren
-(paren
-id|ACPI_HANDLE
-)paren
 id|device_node
 )paren
 suffix:semicolon
@@ -934,7 +975,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|notify_obj
 )paren
@@ -942,7 +983,7 @@ suffix:semicolon
 )brace
 id|unlock_and_exit
 suffix:colon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -953,7 +994,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_install_gpe_handler&n; *&n; * PARAMETERS:  Gpe_number      - The GPE number.  The numbering scheme is&n; *                                bank 0 first, then bank 1.&n; *              Type            - Whether this GPE should be treated as an&n; *                                edge- or level-triggered interrupt.&n; *              Handler         - Address of the handler&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for a General Purpose Event.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_install_gpe_handler&n; *&n; * PARAMETERS:  Gpe_number      - The GPE number.  The numbering scheme is&n; *                                bank 0 first, then bank 1.&n; *              Type            - Whether this GPE should be treated as an&n; *                                edge- or level-triggered interrupt.&n; *              Handler         - Address of the handler&n; *              Context         - Value passed to the handler on each GPE&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for a General Purpose Event.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_install_gpe_handler
 id|acpi_install_gpe_handler
@@ -964,7 +1005,7 @@ comma
 id|u32
 id|type
 comma
-id|GPE_HANDLER
+id|ACPI_GPE_HANDLER
 id|handler
 comma
 r_void
@@ -977,6 +1018,27 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -987,7 +1049,7 @@ op_logical_or
 (paren
 id|gpe_number
 OG
-id|NUM_GPE
+id|ACPI_GPE_MAX
 )paren
 )paren
 (brace
@@ -1015,7 +1077,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_EVENTS
 )paren
@@ -1084,7 +1146,7 @@ id|gpe_number
 suffix:semicolon
 id|cleanup
 suffix:colon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_EVENTS
 )paren
@@ -1095,7 +1157,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_remove_gpe_handler&n; *&n; * PARAMETERS:  Gpe_number      - The event to remove a handler&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a handler for a General Purpose Acpi_event.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_remove_gpe_handler&n; *&n; * PARAMETERS:  Gpe_number      - The event to remove a handler&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a handler for a General Purpose Acpi_event.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_remove_gpe_handler
 id|acpi_remove_gpe_handler
@@ -1103,7 +1165,7 @@ id|acpi_remove_gpe_handler
 id|u32
 id|gpe_number
 comma
-id|GPE_HANDLER
+id|ACPI_GPE_HANDLER
 id|handler
 )paren
 (brace
@@ -1112,6 +1174,27 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -1122,7 +1205,7 @@ op_logical_or
 (paren
 id|gpe_number
 OG
-id|NUM_GPE
+id|ACPI_GPE_MAX
 )paren
 )paren
 (brace
@@ -1156,7 +1239,7 @@ id|acpi_hw_disable_gpe
 id|gpe_number
 )paren
 suffix:semicolon
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_EVENTS
 )paren
@@ -1209,7 +1292,7 @@ l_int|NULL
 suffix:semicolon
 id|cleanup
 suffix:colon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_EVENTS
 )paren
@@ -1220,7 +1303,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_acquire_global_lock&n; *&n; * PARAMETERS:  Timeout         - How long the caller is willing to wait&n; *              Out_handle      - A handle to the lock if acquired&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Acquire the ACPI Global Lock&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_acquire_global_lock&n; *&n; * PARAMETERS:  Timeout         - How long the caller is willing to wait&n; *              Out_handle      - A handle to the lock if acquired&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Acquire the ACPI Global Lock&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_acquire_global_lock
 id|acpi_acquire_global_lock
@@ -1231,10 +1314,48 @@ r_void
 id|ACPI_STATUS
 id|status
 suffix:semicolon
-id|acpi_aml_enter_interpreter
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|status
+op_assign
+id|acpi_ex_enter_interpreter
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * TBD: [Restructure] add timeout param to internal interface, and&n;&t; * perhaps INTERPRETER_LOCKED&n;&t; */
 id|status
 op_assign
@@ -1242,7 +1363,7 @@ id|acpi_ev_acquire_global_lock
 (paren
 )paren
 suffix:semicolon
-id|acpi_aml_exit_interpreter
+id|acpi_ex_exit_interpreter
 (paren
 )paren
 suffix:semicolon
@@ -1252,7 +1373,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_release_global_lock&n; *&n; * PARAMETERS:  Handle      - Returned from Acpi_acquire_global_lock&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release the ACPI Global Lock&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_release_global_lock&n; *&n; * PARAMETERS:  Handle      - Returned from Acpi_acquire_global_lock&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release the ACPI Global Lock&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_release_global_lock
 id|acpi_release_global_lock
@@ -1260,6 +1381,30 @@ id|acpi_release_global_lock
 r_void
 )paren
 (brace
+id|ACPI_STATUS
+id|status
+suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 id|acpi_ev_release_global_lock
 (paren
 )paren

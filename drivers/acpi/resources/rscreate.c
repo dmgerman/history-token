@@ -1,16 +1,16 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscreate - Acpi_rs_create_resource_list&n; *                         Acpi_rs_create_pci_routing_table&n; *                         Acpi_rs_create_byte_stream&n; *              $Revision: 25 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscreate - Create resource lists/tables&n; *              $Revision: 33 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          RESOURCE_MANAGER
+mdefine_line|#define _COMPONENT          ACPI_RESOURCES
 id|MODULE_NAME
 (paren
 l_string|&quot;rscreate&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_create_resource_list&n; *&n; * PARAMETERS:&n; *              Byte_stream_buffer      - Pointer to the resource byte stream&n; *              Output_buffer           - Pointer to the user&squot;s buffer&n; *              Output_buffer_length    - Pointer to the size of Output_buffer&n; *&n; * RETURN:      Status  - AE_OK if okay, else a valid ACPI_STATUS code&n; *              If Output_buffer is not large enough, Output_buffer_length&n; *              indicates how large Output_buffer should be, else it&n; *              indicates how may u8 elements of Output_buffer are valid.&n; *&n; * DESCRIPTION: Takes the byte stream returned from a _CRS, _PRS control method&n; *              execution and parses the stream to create a linked list&n; *              of device resources.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_create_resource_list&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource byte stream&n; *              Output_buffer           - Pointer to the user&squot;s buffer&n; *              Output_buffer_length    - Pointer to the size of Output_buffer&n; *&n; * RETURN:      Status  - AE_OK if okay, else a valid ACPI_STATUS code&n; *              If Output_buffer is not large enough, Output_buffer_length&n; *              indicates how large Output_buffer should be, else it&n; *              indicates how may u8 elements of Output_buffer are valid.&n; *&n; * DESCRIPTION: Takes the byte stream returned from a _CRS, _PRS control method&n; *              execution and parses the stream to create a linked list&n; *              of device resources.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_rs_create_resource_list
 id|acpi_rs_create_resource_list
@@ -34,8 +34,6 @@ suffix:semicolon
 id|u8
 op_star
 id|byte_stream_start
-op_assign
-l_int|NULL
 suffix:semicolon
 id|u32
 id|list_size_needed
@@ -44,8 +42,6 @@ l_int|0
 suffix:semicolon
 id|u32
 id|byte_stream_buffer_length
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Params already validated, so we don&squot;t re-validate here&n;&t; */
 id|byte_stream_buffer_length
@@ -159,7 +155,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_create_pci_routing_table&n; *&n; * PARAMETERS:&n; *              Package_object          - Pointer to an ACPI_OPERAND_OBJECT&n; *                                          package&n; *              Output_buffer           - Pointer to the user&squot;s buffer&n; *              Output_buffer_length    - Size of Output_buffer&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid ACPI_STATUS code.&n; *              If the Output_buffer is too small, the error will be&n; *              AE_BUFFER_OVERFLOW and Output_buffer_length will point&n; *              to the size buffer needed.&n; *&n; * DESCRIPTION: Takes the ACPI_OPERAND_OBJECT  package and creates a&n; *              linked list of PCI interrupt descriptions&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_create_pci_routing_table&n; *&n; * PARAMETERS:  Package_object          - Pointer to an ACPI_OPERAND_OBJECT&n; *                                        package&n; *              Output_buffer           - Pointer to the user&squot;s buffer&n; *              Output_buffer_length    - Size of Output_buffer&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid ACPI_STATUS code.&n; *              If the Output_buffer is too small, the error will be&n; *              AE_BUFFER_OVERFLOW and Output_buffer_length will point&n; *              to the size buffer needed.&n; *&n; * DESCRIPTION: Takes the ACPI_OPERAND_OBJECT  package and creates a&n; *              linked list of PCI interrupt descriptions&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_rs_create_pci_routing_table
 id|acpi_rs_create_pci_routing_table
@@ -235,7 +231,6 @@ multiline_comment|/*&n;&t; * Params already validated, so we don&squot;t re-vali
 id|status
 op_assign
 id|acpi_rs_calculate_pci_routing_table_length
-c_func
 (paren
 id|package_object
 comma
@@ -243,6 +238,23 @@ op_amp
 id|buffer_size_needed
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ACPI_SUCCESS
+c_func
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * If the data will fit into the available buffer&n;&t; * call to fill in the list&n;&t; */
 r_if
 c_cond
@@ -437,9 +449,9 @@ op_star
 id|sub_object_list
 )paren
 op_member_access_from_pointer
-id|reference.op_code
+id|reference.opcode
 op_ne
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 (brace
 r_return
@@ -613,12 +625,12 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_create_byte_stream&n; *&n; * PARAMETERS:&n; *              Linked_list_buffer      - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s buffer&n; *              Output_buffer_length    - Size of Output_buffer&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid ACPI_STATUS code.&n; *              If the Output_buffer is too small, the error will be&n; *              AE_BUFFER_OVERFLOW and Output_buffer_length will point&n; *              to the size buffer needed.&n; *&n; * DESCRIPTION: Takes the linked list of device resources and&n; *              creates a bytestream to be used as input for the&n; *              _SRS control method.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_create_byte_stream&n; *&n; * PARAMETERS:  Linked_list_buffer      - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s buffer&n; *              Output_buffer_length    - Size of Output_buffer&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid ACPI_STATUS code.&n; *              If the Output_buffer is too small, the error will be&n; *              AE_BUFFER_OVERFLOW and Output_buffer_length will point&n; *              to the size buffer needed.&n; *&n; * DESCRIPTION: Takes the linked list of device resources and&n; *              creates a bytestream to be used as input for the&n; *              _SRS control method.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_rs_create_byte_stream
 id|acpi_rs_create_byte_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list_buffer
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *              $Revision: 38 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *              $Revision: 45 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -7,7 +7,7 @@ macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          DISPATCHER
+mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|MODULE_NAME
 (paren
 l_string|&quot;dswstate&quot;
@@ -32,6 +32,11 @@ id|walk_state
 id|ACPI_GENERIC_STATE
 op_star
 id|state
+suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Ds_result_insert&quot;
+)paren
 suffix:semicolon
 id|state
 op_assign
@@ -115,6 +120,11 @@ id|ACPI_GENERIC_STATE
 op_star
 id|state
 suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Ds_result_remove&quot;
+)paren
+suffix:semicolon
 id|state
 op_assign
 id|walk_state-&gt;results
@@ -195,6 +205,11 @@ suffix:semicolon
 id|ACPI_GENERIC_STATE
 op_star
 id|state
+suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Ds_result_pop&quot;
+)paren
 suffix:semicolon
 id|state
 op_assign
@@ -309,6 +324,11 @@ id|ACPI_GENERIC_STATE
 op_star
 id|state
 suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Ds_result_pop_from_bottom&quot;
+)paren
+suffix:semicolon
 id|state
 op_assign
 id|walk_state-&gt;results
@@ -419,6 +439,11 @@ id|ACPI_GENERIC_STATE
 op_star
 id|state
 suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Ds_result_push&quot;
+)paren
+suffix:semicolon
 id|state
 op_assign
 id|walk_state-&gt;results
@@ -495,7 +520,7 @@ id|state
 suffix:semicolon
 id|state
 op_assign
-id|acpi_cm_create_generic_state
+id|acpi_ut_create_generic_state
 (paren
 )paren
 suffix:semicolon
@@ -512,7 +537,7 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_push_generic_state
+id|acpi_ut_push_generic_state
 (paren
 op_amp
 id|walk_state-&gt;results
@@ -557,13 +582,13 @@ suffix:semicolon
 )brace
 id|state
 op_assign
-id|acpi_cm_pop_generic_state
+id|acpi_ut_pop_generic_state
 (paren
 op_amp
 id|walk_state-&gt;results
 )paren
 suffix:semicolon
-id|acpi_cm_delete_generic_state
+id|acpi_ut_delete_generic_state
 (paren
 id|state
 )paren
@@ -612,7 +637,7 @@ id|i
 )braket
 )paren
 (brace
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|walk_state-&gt;operands
 (braket
@@ -705,6 +730,11 @@ op_eq
 l_int|0
 )paren
 (brace
+op_star
+id|object
+op_assign
+l_int|NULL
+suffix:semicolon
 r_return
 (paren
 id|AE_AML_NO_OPERAND
@@ -726,6 +756,11 @@ id|walk_state-&gt;num_operands
 )braket
 )paren
 (brace
+op_star
+id|object
+op_assign
+l_int|NULL
+suffix:semicolon
 r_return
 (paren
 id|AE_AML_NO_OPERAND
@@ -885,7 +920,7 @@ c_cond
 id|obj_desc
 )paren
 (brace
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|walk_state-&gt;operands
 (braket
@@ -1100,7 +1135,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|status
 suffix:semicolon
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_CACHES
 )paren
@@ -1130,7 +1165,7 @@ suffix:semicolon
 id|acpi_gbl_walk_state_cache_depth
 op_decrement
 suffix:semicolon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_CACHES
 )paren
@@ -1139,15 +1174,15 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* The cache is empty, create a new object */
-multiline_comment|/* Avoid deadlock with Acpi_cm_callocate */
-id|acpi_cm_release_mutex
+multiline_comment|/* Avoid deadlock with Acpi_ut_callocate */
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_CACHES
 )paren
 suffix:semicolon
 id|walk_state
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 r_sizeof
 (paren
@@ -1184,6 +1219,10 @@ suffix:semicolon
 id|walk_state-&gt;method_desc
 op_assign
 id|mth_desc
+suffix:semicolon
+id|walk_state-&gt;walk_list
+op_assign
+id|walk_list
 suffix:semicolon
 multiline_comment|/* Init the method args/local */
 macro_line|#ifndef _ACPI_ASL_COMPILER
@@ -1280,7 +1319,7 @@ id|walk_state-&gt;control_state
 op_assign
 id|state-&gt;common.next
 suffix:semicolon
-id|acpi_cm_delete_generic_state
+id|acpi_ut_delete_generic_state
 (paren
 id|state
 )paren
@@ -1301,7 +1340,7 @@ id|walk_state-&gt;scope_info
 op_assign
 id|state-&gt;common.next
 suffix:semicolon
-id|acpi_cm_delete_generic_state
+id|acpi_ut_delete_generic_state
 (paren
 id|state
 )paren
@@ -1322,7 +1361,7 @@ id|walk_state-&gt;results
 op_assign
 id|state-&gt;common.next
 suffix:semicolon
-id|acpi_cm_delete_generic_state
+id|acpi_ut_delete_generic_state
 (paren
 id|state
 )paren
@@ -1337,7 +1376,7 @@ op_ge
 id|MAX_WALK_CACHE_DEPTH
 )paren
 (brace
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|walk_state
 )paren
@@ -1346,7 +1385,7 @@ suffix:semicolon
 multiline_comment|/* Otherwise put this object back into the cache */
 r_else
 (brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_CACHES
 )paren
@@ -1380,7 +1419,7 @@ suffix:semicolon
 id|acpi_gbl_walk_state_cache_depth
 op_increment
 suffix:semicolon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_CACHES
 )paren
@@ -1413,7 +1452,7 @@ id|next
 op_assign
 id|acpi_gbl_walk_state_cache-&gt;next
 suffix:semicolon
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|acpi_gbl_walk_state_cache
 )paren

@@ -1,14 +1,68 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rslist - Acpi_rs_byte_stream_to_list&n; *                       Acpi_list_to_byte_stream&n; *              $Revision: 11 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rslist - Linked list utilities&n; *              $Revision: 17 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          RESOURCE_MANAGER
+mdefine_line|#define _COMPONENT          ACPI_RESOURCES
 id|MODULE_NAME
 (paren
 l_string|&quot;rslist&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_byte_stream_to_list&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource byte stream&n; *              Byte_stream_buffer_length - Length of Byte_stream_buffer&n; *              Output_buffer           - Pointer to the buffer that will&n; *                                          contain the output structures&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid ACPI_STATUS code&n; *&n; * DESCRIPTION: Takes the resource byte stream and parses it, creating a&n; *              linked list of resources in the caller&squot;s output buffer&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_get_resource_type&n; *&n; * PARAMETERS:  Resource_start_byte     - Byte 0 of a resource descriptor&n; *&n; * RETURN:      The Resource Type (Name) with no extraneous bits&n; *&n; * DESCRIPTION: Extract the Resource Type/Name from the first byte of&n; *              a resource descriptor.&n; *&n; ******************************************************************************/
+id|u8
+DECL|function|acpi_rs_get_resource_type
+id|acpi_rs_get_resource_type
+(paren
+id|u8
+id|resource_start_byte
+)paren
+(brace
+multiline_comment|/*&n;&t; * Determine if this is a small or large resource&n;&t; */
+r_switch
+c_cond
+(paren
+id|resource_start_byte
+op_amp
+id|RESOURCE_DESC_TYPE_MASK
+)paren
+(brace
+r_case
+id|RESOURCE_DESC_TYPE_SMALL
+suffix:colon
+multiline_comment|/*&n;&t;&t; * Small Resource Type -- Only bits 6:3 are valid&n;&t;&t; */
+r_return
+(paren
+(paren
+id|u8
+)paren
+(paren
+id|resource_start_byte
+op_amp
+id|RESOURCE_DESC_SMALL_MASK
+)paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|RESOURCE_DESC_TYPE_LARGE
+suffix:colon
+multiline_comment|/*&n;&t;&t; * Large Resource Type -- All bits are valid&n;&t;&t; */
+r_return
+(paren
+id|resource_start_byte
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_return
+(paren
+l_int|0xFF
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_byte_stream_to_list&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource byte stream&n; *              Byte_stream_buffer_length - Length of Byte_stream_buffer&n; *              Output_buffer           - Pointer to the buffer that will&n; *                                        contain the output structures&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Takes the resource byte stream and parses it, creating a&n; *              linked list of resources in the caller&squot;s output buffer&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_rs_byte_stream_to_list
 id|acpi_rs_byte_stream_to_list
@@ -73,22 +127,15 @@ op_eq
 id|end_tag_processed
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Look at the next byte in the stream&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The next byte in the stream is the resource type&n;&t;&t; */
 id|resource_type
 op_assign
+id|acpi_rs_get_resource_type
+(paren
 op_star
 id|byte_stream_buffer
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * See if this is a small or large resource&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|resource_type
-op_amp
-l_int|0x80
 )paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * Large Resource Type&n;&t;&t;&t; */
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -96,13 +143,12 @@ id|resource_type
 )paren
 (brace
 r_case
-id|MEMORY_RANGE_24
+id|RESOURCE_DESC_MEMORY_24
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * 24-Bit Memory Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 24-Bit Memory Resource&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_rs_memory24_resource
-c_func
 (paren
 id|byte_stream_buffer
 comma
@@ -118,13 +164,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|LARGE_VENDOR_DEFINED
+id|RESOURCE_DESC_LARGE_VENDOR
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * Vendor Defined Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Vendor Defined Resource&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_rs_vendor_resource
-c_func
 (paren
 id|byte_stream_buffer
 comma
@@ -140,13 +185,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|MEMORY_RANGE_32
+id|RESOURCE_DESC_MEMORY_32
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * 32-Bit Memory Range Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 32-Bit Memory Range Resource&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_rs_memory32_range_resource
-c_func
 (paren
 id|byte_stream_buffer
 comma
@@ -162,13 +206,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|FIXED_MEMORY_RANGE_32
+id|RESOURCE_DESC_FIXED_MEMORY_32
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * 32-Bit Fixed Memory Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 32-Bit Fixed Memory Resource&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_rs_fixed_memory32_resource
-c_func
 (paren
 id|byte_stream_buffer
 comma
@@ -184,13 +227,33 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|DWORD_ADDRESS_SPACE
+id|RESOURCE_DESC_QWORD_ADDRESS_SPACE
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * 32-Bit Address Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 64-Bit Address Resource&n;&t;&t;&t; */
+id|status
+op_assign
+id|acpi_rs_address64_resource
+(paren
+id|byte_stream_buffer
+comma
+op_amp
+id|bytes_consumed
+comma
+id|buffer
+comma
+op_amp
+id|structure_size
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|RESOURCE_DESC_DWORD_ADDRESS_SPACE
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * 32-Bit Address Resource&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_rs_address32_resource
-c_func
 (paren
 id|byte_stream_buffer
 comma
@@ -206,13 +269,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|WORD_ADDRESS_SPACE
+id|RESOURCE_DESC_WORD_ADDRESS_SPACE
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * 16-Bit Address Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 16-Bit Address Resource&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_rs_address16_resource
-c_func
 (paren
 id|byte_stream_buffer
 comma
@@ -228,13 +290,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|EXTENDED_IRQ
+id|RESOURCE_DESC_EXTENDED_XRUPT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * Extended IRQ&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Extended IRQ&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_rs_extended_irq_resource
-c_func
 (paren
 id|byte_stream_buffer
 comma
@@ -249,41 +310,13 @@ id|structure_size
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* TBD: [Future] 64-bit not currently supported */
-multiline_comment|/*&n;&t;&t;&t;case 0x8A:&n;&t;&t;&t;&t;break;&n;*/
-r_default
-suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * If we get here, everything is out of sync,&n;&t;&t;&t;&t; *  so exit with an error&n;&t;&t;&t;&t; */
-r_return
-(paren
-id|AE_AML_ERROR
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t;&t; * Small Resource Type&n;&t;&t;&t; *  Only bits 7:3 are valid&n;&t;&t;&t; */
-id|resource_type
-op_rshift_assign
-l_int|3
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|resource_type
-)paren
-(brace
 r_case
-id|IRQ_FORMAT
+id|RESOURCE_DESC_IRQ_FORMAT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * IRQ Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * IRQ Resource&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_rs_irq_resource
-c_func
 (paren
 id|byte_stream_buffer
 comma
@@ -299,13 +332,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|DMA_FORMAT
+id|RESOURCE_DESC_DMA_FORMAT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * DMA Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * DMA Resource&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_rs_dma_resource
-c_func
 (paren
 id|byte_stream_buffer
 comma
@@ -321,13 +353,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|START_DEPENDENT_TAG
+id|RESOURCE_DESC_START_DEPENDENT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * Start Dependent Functions Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Start Dependent Functions Resource&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_rs_start_dependent_functions_resource
-c_func
 (paren
 id|byte_stream_buffer
 comma
@@ -343,13 +374,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|END_DEPENDENT_TAG
+id|RESOURCE_DESC_END_DEPENDENT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * End Dependent Functions Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * End Dependent Functions Resource&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_rs_end_dependent_functions_resource
-c_func
 (paren
 id|byte_stream_buffer
 comma
@@ -365,13 +395,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|IO_PORT_DESCRIPTOR
+id|RESOURCE_DESC_IO_PORT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * IO Port Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * IO Port Resource&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_rs_io_resource
-c_func
 (paren
 id|byte_stream_buffer
 comma
@@ -387,13 +416,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|FIXED_LOCATION_IO_DESCRIPTOR
+id|RESOURCE_DESC_FIXED_IO_PORT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * Fixed IO Port Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Fixed IO Port Resource&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_rs_fixed_io_resource
-c_func
 (paren
 id|byte_stream_buffer
 comma
@@ -409,13 +437,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SMALL_VENDOR_DEFINED
+id|RESOURCE_DESC_SMALL_VENDOR
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * Vendor Specific Resource&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Vendor Specific Resource&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_rs_vendor_resource
-c_func
 (paren
 id|byte_stream_buffer
 comma
@@ -431,45 +458,57 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|END_TAG
+id|RESOURCE_DESC_END_TAG
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * End Tag&n;&t;&t;&t;&t; */
-id|status
-op_assign
-id|acpi_rs_end_tag_resource
-c_func
-(paren
-id|byte_stream_buffer
-comma
-op_amp
-id|bytes_consumed
-comma
-id|buffer
-comma
-op_amp
-id|structure_size
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * End Tag&n;&t;&t;&t; */
 id|end_tag_processed
 op_assign
 id|TRUE
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-multiline_comment|/*&n;&t;&t;&t;&t; * If we get here, everything is out of sync,&n;&t;&t;&t;&t; *  so exit with an error&n;&t;&t;&t;&t; */
-r_return
+id|status
+op_assign
+id|acpi_rs_end_tag_resource
 (paren
-id|AE_AML_ERROR
+id|byte_stream_buffer
+comma
+op_amp
+id|bytes_consumed
+comma
+id|buffer
+comma
+op_amp
+id|structure_size
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * Invalid/Unknowns resource type&n;&t;&t;&t; */
+id|status
+op_assign
+id|AE_AML_ERROR
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
-multiline_comment|/* switch */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ACPI_SUCCESS
+c_func
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/* end else */
 multiline_comment|/*&n;&t;&t; * Update the return value and counter&n;&t;&t; */
 id|bytes_parsed
 op_add_assign
@@ -509,12 +548,12 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_list_to_byte_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Byte_steam_size_needed  - Calculated size of the byte stream&n; *                                          needed from calling&n; *                                          Acpi_rs_calculate_byte_stream_length()&n; *                                          The size of the Output_buffer is&n; *                                          guaranteed to be &gt;=&n; *                                          Byte_stream_size_needed&n; *              Output_buffer           - Pointer to the buffer that will&n; *                                          contain the byte stream&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid ACPI_STATUS code&n; *&n; * DESCRIPTION: Takes the resource linked list and parses it, creating a&n; *              byte stream of resources in the caller&squot;s output buffer&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_list_to_byte_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Byte_steam_size_needed  - Calculated size of the byte stream&n; *                                        needed from calling&n; *                                        Acpi_rs_calculate_byte_stream_length()&n; *                                        The size of the Output_buffer is&n; *                                        guaranteed to be &gt;=&n; *                                        Byte_stream_size_needed&n; *              Output_buffer           - Pointer to the buffer that will&n; *                                        contain the byte stream&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Takes the resource linked list and parses it, creating a&n; *              byte stream of resources in the caller&squot;s output buffer&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_rs_list_to_byte_stream
 id|acpi_rs_list_to_byte_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -561,7 +600,7 @@ id|linked_list-&gt;id
 )paren
 (brace
 r_case
-id|irq
+id|ACPI_RSTYPE_IRQ
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * IRQ Resource&n;&t;&t;&t; */
 id|status
@@ -580,7 +619,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|dma
+id|ACPI_RSTYPE_DMA
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * DMA Resource&n;&t;&t;&t; */
 id|status
@@ -599,7 +638,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|start_dependent_functions
+id|ACPI_RSTYPE_START_DPF
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Start Dependent Functions Resource&n;&t;&t;&t; */
 id|status
@@ -618,7 +657,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|end_dependent_functions
+id|ACPI_RSTYPE_END_DPF
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * End Dependent Functions Resource&n;&t;&t;&t; */
 id|status
@@ -637,7 +676,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|io
+id|ACPI_RSTYPE_IO
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * IO Port Resource&n;&t;&t;&t; */
 id|status
@@ -656,7 +695,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|fixed_io
+id|ACPI_RSTYPE_FIXED_IO
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Fixed IO Port Resource&n;&t;&t;&t; */
 id|status
@@ -675,7 +714,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|vendor_specific
+id|ACPI_RSTYPE_VENDOR
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Vendor Defined Resource&n;&t;&t;&t; */
 id|status
@@ -694,7 +733,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|end_tag
+id|ACPI_RSTYPE_END_TAG
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * End Tag&n;&t;&t;&t; */
 id|status
@@ -718,7 +757,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|memory24
+id|ACPI_RSTYPE_MEM24
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * 24-Bit Memory Resource&n;&t;&t;&t; */
 id|status
@@ -737,7 +776,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|memory32
+id|ACPI_RSTYPE_MEM32
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * 32-Bit Memory Range Resource&n;&t;&t;&t; */
 id|status
@@ -756,7 +795,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|fixed_memory32
+id|ACPI_RSTYPE_FIXED_MEM32
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * 32-Bit Fixed Memory Resource&n;&t;&t;&t; */
 id|status
@@ -775,7 +814,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|address16
+id|ACPI_RSTYPE_ADDRESS16
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * 16-Bit Address Descriptor Resource&n;&t;&t;&t; */
 id|status
@@ -794,7 +833,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|address32
+id|ACPI_RSTYPE_ADDRESS32
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * 32-Bit Address Descriptor Resource&n;&t;&t;&t; */
 id|status
@@ -813,7 +852,26 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|extended_irq
+id|ACPI_RSTYPE_ADDRESS64
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * 64-Bit Address Descriptor Resource&n;&t;&t;&t; */
+id|status
+op_assign
+id|acpi_rs_address64_stream
+(paren
+id|linked_list
+comma
+op_amp
+id|buffer
+comma
+op_amp
+id|bytes_consumed
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_RSTYPE_EXT_IRQ
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Extended IRQ Resource&n;&t;&t;&t; */
 id|status
@@ -834,15 +892,31 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * If we get here, everything is out of sync,&n;&t;&t;&t; *  so exit with an error&n;&t;&t;&t; */
-r_return
-(paren
+id|status
+op_assign
 id|AE_BAD_DATA
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
 multiline_comment|/* switch (Linked_list-&gt;Id) */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ACPI_SUCCESS
+c_func
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Set the Buffer to point to the open byte&n;&t;&t; */
 id|buffer
 op_add_assign
@@ -851,19 +925,12 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Point to the next object&n;&t;&t; */
 id|linked_list
 op_assign
+id|POINTER_ADD
 (paren
-id|RESOURCE
-op_star
-)paren
-(paren
-(paren
-id|NATIVE_UINT
-)paren
+id|ACPI_RESOURCE
+comma
 id|linked_list
-op_plus
-(paren
-id|NATIVE_UINT
-)paren
+comma
 id|linked_list-&gt;length
 )paren
 suffix:semicolon

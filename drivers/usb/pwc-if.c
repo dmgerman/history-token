@@ -213,9 +213,9 @@ r_static
 r_int
 id|default_palette
 op_assign
-id|VIDEO_PALETTE_RGB24
+id|VIDEO_PALETTE_YUV420P
 suffix:semicolon
-multiline_comment|/* This is normal for webcams */
+multiline_comment|/* This format is understood by most tools */
 DECL|variable|default_fbufs
 r_static
 r_int
@@ -239,6 +239,8 @@ op_assign
 id|TRACE_MODULE
 op_or
 id|TRACE_FLOW
+op_or
+id|TRACE_PWCX
 suffix:semicolon
 DECL|variable|power_save
 r_static
@@ -432,7 +434,6 @@ id|hardware
 suffix:colon
 id|VID_HARDWARE_PWC
 comma
-multiline_comment|/* Let&squot;s pretend for now */
 id|open
 suffix:colon
 id|pwc_video_open
@@ -1301,13 +1302,27 @@ id|FRAME_SIZE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Allocate decompressor buffer space */
+multiline_comment|/* Allocate decompressor table space */
 id|kbuf
 op_assign
-id|vmalloc
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pdev-&gt;decompressor
+op_ne
+l_int|NULL
+)paren
+(brace
+id|kbuf
+op_assign
+id|kmalloc
 c_func
 (paren
-id|FRAME_SIZE
+id|pdev-&gt;decompressor-&gt;table_size
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -1321,7 +1336,7 @@ l_int|NULL
 id|Err
 c_func
 (paren
-l_string|&quot;Failed to allocate compressed image buffer.&bslash;n&quot;
+l_string|&quot;Failed to allocate decompress table.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1329,17 +1344,8 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|memset
-c_func
-(paren
-id|kbuf
-comma
-l_int|0
-comma
-id|FRAME_SIZE
-)paren
-suffix:semicolon
-id|pdev-&gt;decompress_buffer
+)brace
+id|pdev-&gt;decompress_data
 op_assign
 id|kbuf
 suffix:semicolon
@@ -1626,7 +1632,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Intermediate decompression buffer */
+multiline_comment|/* Intermediate decompression buffer &amp; tables */
 id|Trace
 c_func
 (paren
@@ -1638,17 +1644,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pdev-&gt;decompress_buffer
+id|pdev-&gt;decompress_data
 op_ne
 l_int|NULL
 )paren
-id|vfree
+(brace
+id|kfree
 c_func
 (paren
-id|pdev-&gt;decompress_buffer
+id|pdev-&gt;decompress_data
 )paren
 suffix:semicolon
-id|pdev-&gt;decompress_buffer
+id|pdev-&gt;decompress_data
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+id|pdev-&gt;decompressor
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1693,7 +1705,7 @@ l_string|&quot;Leaving free_buffers().&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* The frame &amp; image buffer mess. &n;&n;   Yes, this is a mess. Well, it used to be simple, but alas...  In this&n;   module, 3 buffers schemes are used to get the data from the USB bus to&n;   the user program. The first scheme involves the ISO buffers (called thus&n;   since they transport ISO data from the USB controller), and not really&n;   interesting. Suffices to say the data from this buffer is quickly &n;   gathered in an interrupt handler (pwc_isoc_hanlder) and placed into the &n;   frame buffer.&n;   &n;   The frame buffer is the second scheme, and is the central element here.&n;   It collects the data from a single frame from the camera (hence, the&n;   name). Frames are delimited by the USB camera with a short USB packet,&n;   so that&squot;s easy to detect. The frame buffers form a list that is filled&n;   by the camera+USB controller and drained by the user process through &n;   either read() or mmap().&n;   &n;   The image buffer is the third scheme, in which frames are decompressed&n;   and converted into any of the desired image formats (rgb, bgr, yuv, etc).&n;   For mmap() there is more than one image buffer available.&n;&n;   The frame buffers provide the image buffering, in case the user process&n;   is a bit slow. This introduces lag and some undesired side-effects.&n;   The problem arises when the frame buffer is full. I used to drop the last &n;   frame, which makes the data in the queue stale very quickly. But dropping &n;   the frame at the head of the queue proved to be a litte bit more difficult.&n;   I tried a circular linked scheme, but this introduced more problems than&n;   it solved.&n;&n;   Because filling and draining are completely asynchronous processes, this&n;   requires some fiddling with pointers and mutexes.&n;   &n;   Eventually, I came up with a system with 2 lists: an &squot;empty&squot; frame list&n;   and a &squot;full&squot; frame list:&n;     * Initially, all frame buffers but one are on the &squot;empty&squot; list; the one&n;       remaining buffer is our initial fill frame.&n;     * If a frame is needed for filling, we take it from the &squot;empty&squot; list, &n;       unless that list is empty, in which case we take the buffer at the &n;       head of the &squot;full&squot; list.&n;     * When our fill buffer has been filled, it is appended to the &squot;full&squot; &n;       list.&n;     * If a frame is needed by read() or mmap(), it is taken from the head of &n;       the &squot;full&squot; list, handled, and then appended to the &squot;empty&squot; list. If no&n;       buffer is present on the &squot;full&squot; list, we wait.&n;   The advantage is that the buffer that is currently being decompressed/&n;   converted, is on neither list, and thus not in our way (any other scheme &n;   I tried had the problem of old data lingering in the queue).&n;&n;   Whatever strategy you choose, it always remains a tradeoff: with more&n;   frame buffers the chances of a missed frame are reduced. On the other&n;   hand, on slower machines it introduces lag because the queue will &n;   always be full.&n; */
+multiline_comment|/* The frame &amp; image buffer mess. &n;&n;   Yes, this is a mess. Well, it used to be simple, but alas...  In this&n;   module, 3 buffers schemes are used to get the data from the USB bus to&n;   the user program. The first scheme involves the ISO buffers (called thus&n;   since they transport ISO data from the USB controller), and not really&n;   interesting. Suffices to say the data from this buffer is quickly &n;   gathered in an interrupt handler (pwc_isoc_handler) and placed into the &n;   frame buffer.&n;   &n;   The frame buffer is the second scheme, and is the central element here.&n;   It collects the data from a single frame from the camera (hence, the&n;   name). Frames are delimited by the USB camera with a short USB packet,&n;   so that&squot;s easy to detect. The frame buffers form a list that is filled&n;   by the camera+USB controller and drained by the user process through &n;   either read() or mmap().&n;   &n;   The image buffer is the third scheme, in which frames are decompressed&n;   and possibly converted into planar format. For mmap() there is more than&n;   one image buffer available.&n;&n;   The frame buffers provide the image buffering, in case the user process&n;   is a bit slow. This introduces lag and some undesired side-effects.&n;   The problem arises when the frame buffer is full. I used to drop the last &n;   frame, which makes the data in the queue stale very quickly. But dropping &n;   the frame at the head of the queue proved to be a litte bit more difficult.&n;   I tried a circular linked scheme, but this introduced more problems than&n;   it solved.&n;&n;   Because filling and draining are completely asynchronous processes, this&n;   requires some fiddling with pointers and mutexes.&n;   &n;   Eventually, I came up with a system with 2 lists: an &squot;empty&squot; frame list&n;   and a &squot;full&squot; frame list:&n;     * Initially, all frame buffers but one are on the &squot;empty&squot; list; the one&n;       remaining buffer is our initial fill frame.&n;     * If a frame is needed for filling, we take it from the &squot;empty&squot; list, &n;       unless that list is empty, in which case we take the buffer at the &n;       head of the &squot;full&squot; list.&n;     * When our fill buffer has been filled, it is appended to the &squot;full&squot; &n;       list.&n;     * If a frame is needed by read() or mmap(), it is taken from the head of &n;       the &squot;full&squot; list, handled, and then appended to the &squot;empty&squot; list. If no&n;       buffer is present on the &squot;full&squot; list, we wait.&n;   The advantage is that the buffer that is currently being decompressed/&n;   converted, is on neither list, and thus not in our way (any other scheme &n;   I tried had the problem of old data lingering in the queue).&n;&n;   Whatever strategy you choose, it always remains a tradeoff: with more&n;   frame buffers the chances of a missed frame are reduced. On the other&n;   hand, on slower machines it introduces lag because the queue will &n;   always be full.&n; */
 multiline_comment|/**&n;  &bslash;brief Find next frame buffer to fill. Take from empty or full list, whichever comes first.&n; */
 DECL|function|pwc_next_fill_frame
 r_static
@@ -1863,7 +1875,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n;  &bslash;brief Reset all buffers, pointers and lists, except for the image_used[] buffer. &n;  &n;  If the image_used[] buffer is cleared too mmap()/VIDIOCSYNC will run into trouble.&n; */
+multiline_comment|/**&n;  &bslash;brief Reset all buffers, pointers and lists, except for the image_used[] buffer. &n;  &n;  If the image_used[] buffer is cleared too, mmap()/VIDIOCSYNC will run into trouble.&n; */
 DECL|function|pwc_reset_buffers
 r_static
 r_void
@@ -2199,6 +2211,7 @@ op_mod
 id|default_mbufs
 suffix:semicolon
 )brace
+multiline_comment|/* XXX: 2001-06-17: The YUV420 palette will be phased out soon */
 DECL|function|pwc_set_palette
 r_static
 r_int
@@ -2220,6 +2233,10 @@ c_cond
 id|pal
 op_eq
 id|VIDEO_PALETTE_YUV420
+op_logical_or
+id|pal
+op_eq
+id|VIDEO_PALETTE_YUV420P
 macro_line|#if PWC_DEBUG
 op_logical_or
 id|pal
@@ -2400,38 +2417,11 @@ c_func
 l_string|&quot;pwc_isoc_handler without valid fill frame.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|pdev-&gt;frameq
-)paren
-)paren
 id|wake_up_interruptible
 c_func
 (paren
 op_amp
 id|pdev-&gt;frameq
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|pdev-&gt;pollq
-)paren
-)paren
-id|wake_up_interruptible
-c_func
-(paren
-op_amp
-id|pdev-&gt;pollq
 )paren
 suffix:semicolon
 r_return
@@ -2806,17 +2796,6 @@ c_cond
 (paren
 id|awake
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|pdev-&gt;frameq
-)paren
-)paren
 id|wake_up_interruptible
 c_func
 (paren
@@ -2824,24 +2803,6 @@ op_amp
 id|pdev-&gt;frameq
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|waitqueue_active
-c_func
-(paren
-op_amp
-id|pdev-&gt;pollq
-)paren
-)paren
-id|wake_up_interruptible
-c_func
-(paren
-op_amp
-id|pdev-&gt;pollq
-)paren
-suffix:semicolon
-)brace
 )brace
 DECL|function|pwc_isoc_init
 r_static
@@ -3116,6 +3077,15 @@ dot
 id|urb
 )paren
 suffix:semicolon
+id|pdev-&gt;sbuf
+(braket
+id|i
+)braket
+dot
+id|urb
+op_assign
+l_int|NULL
+suffix:semicolon
 id|i
 op_decrement
 suffix:semicolon
@@ -3290,6 +3260,15 @@ comma
 id|i
 comma
 id|ret
+)paren
+suffix:semicolon
+r_else
+id|Trace
+c_func
+(paren
+id|TRACE_OPEN
+comma
+l_string|&quot;pwc_isoc_init(): URB submitted.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3798,6 +3777,27 @@ id|i
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Find our decompressor, if any */
+id|pdev-&gt;decompressor
+op_assign
+id|pwc_find_decompressor
+c_func
+(paren
+id|pdev-&gt;type
+)paren
+suffix:semicolon
+macro_line|#if PWC_DEBUG&t;
+id|Debug
+c_func
+(paren
+l_string|&quot;Found decompressor for %d at 0x%p&bslash;n&quot;
+comma
+id|pdev-&gt;type
+comma
+id|pdev-&gt;decompressor
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* So far, so good. Allocate memory. */
 id|i
 op_assign
@@ -3820,7 +3820,7 @@ c_func
 (paren
 id|TRACE_OPEN
 comma
-l_string|&quot;Failed to allocate memory.&bslash;n&quot;
+l_string|&quot;Failed to allocate buffer memory.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|up
@@ -3882,27 +3882,6 @@ macro_line|#if PWC_DEBUG&t;
 id|pdev-&gt;sequence
 op_assign
 l_int|0
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Find our decompressor, if any */
-id|pdev-&gt;decompressor
-op_assign
-id|pwc_find_decompressor
-c_func
-(paren
-id|pdev-&gt;type
-)paren
-suffix:semicolon
-macro_line|#if PWC_DEBUG&t;
-id|Debug
-c_func
-(paren
-l_string|&quot;Found decompressor for %d at 0x%p&bslash;n&quot;
-comma
-id|pdev-&gt;type
-comma
-id|pdev-&gt;decompressor
-)paren
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Set some defaults */
@@ -4347,12 +4326,6 @@ id|pdev-&gt;vopen
 op_assign
 l_int|0
 suffix:semicolon
-id|pwc_free_buffers
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4365,8 +4338,6 @@ id|pdev-&gt;decompressor
 op_member_access_from_pointer
 m_exit
 (paren
-op_amp
-id|pdev-&gt;decompress_data
 )paren
 suffix:semicolon
 id|pdev-&gt;decompressor
@@ -4377,9 +4348,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|pdev-&gt;decompressor
-op_assign
-l_int|NULL
+id|pwc_free_buffers
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 multiline_comment|/* wake up _disconnect() routine */
 r_if
@@ -4395,7 +4368,7 @@ id|pdev-&gt;remove_ok
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;FIXME: what about two parallel reads ????&n; */
+multiline_comment|/*&n; *&t;FIXME: what about two parallel reads ????&n; *      ANSWER: Not supported. You can&squot;t open the device more than once,&n;                despite what the V4L1 interface says. First, I don&squot;t see &n;                the need, second there&squot;s no mechanism of alerting the &n;                2nd/3rd/... process of events like changing image size.&n;                And I don&squot;t see the point of blocking that for the &n;                2nd/3rd/... process.&n;                In multi-threaded environments reading parallel from any&n;                device is tricky anyhow.&n; */
 DECL|function|pwc_video_read
 r_static
 r_int
@@ -4423,6 +4396,14 @@ r_struct
 id|pwc_device
 op_star
 id|pdev
+suffix:semicolon
+id|DECLARE_WAITQUEUE
+c_func
+(paren
+id|wait
+comma
+id|current
+)paren
 suffix:semicolon
 id|Trace
 c_func
@@ -4493,19 +4474,16 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* See if a frame is completed, process that */
-r_if
-c_cond
+multiline_comment|/* Do wait queueing according to the (doc)book */
+id|add_wait_queue
+c_func
 (paren
-id|noblock
-op_logical_and
-id|pdev-&gt;full_frames
-op_eq
-l_int|NULL
+op_amp
+id|pdev-&gt;frameq
+comma
+op_amp
+id|wait
 )paren
-r_return
-op_minus
-id|EAGAIN
 suffix:semicolon
 r_while
 c_loop
@@ -4515,28 +4493,29 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|interruptible_sleep_on
+r_if
+c_cond
+(paren
+id|noblock
+)paren
+(brace
+id|remove_wait_queue
 c_func
 (paren
 op_amp
 id|pdev-&gt;frameq
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pdev-&gt;unplugged
-)paren
-(brace
-id|Debug
-c_func
-(paren
-l_string|&quot;pwc_video_read: Device got unplugged (2).&bslash;n&quot;
-)paren
+id|current-&gt;state
+op_assign
+id|TASK_RUNNING
 suffix:semicolon
 r_return
 op_minus
-id|EPIPE
+id|EWOULDBLOCK
 suffix:semicolon
 )brace
 r_if
@@ -4548,12 +4527,51 @@ c_func
 id|current
 )paren
 )paren
+(brace
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|pdev-&gt;frameq
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_RUNNING
+suffix:semicolon
 r_return
 op_minus
-id|EINTR
+id|ERESTARTSYS
 suffix:semicolon
 )brace
-multiline_comment|/* Decompress &amp; convert now */
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_INTERRUPTIBLE
+suffix:semicolon
+)brace
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|pdev-&gt;frameq
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_RUNNING
+suffix:semicolon
+multiline_comment|/* Decompress [, convert] and release frame */
 r_if
 c_cond
 (paren
@@ -4730,7 +4748,7 @@ c_func
 id|file
 comma
 op_amp
-id|pdev-&gt;pollq
+id|pdev-&gt;frameq
 comma
 id|wait
 )paren
@@ -4794,6 +4812,14 @@ r_struct
 id|pwc_device
 op_star
 id|pdev
+suffix:semicolon
+id|DECLARE_WAITQUEUE
+c_func
+(paren
+id|wait
+comma
+id|current
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5210,7 +5236,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; *&t;FIXME:&t;Suppose we are mid read&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *&t;FIXME:&t;Suppose we are mid read&n;&t;&t;&t;        ANSWER: No problem: the firmware of the camera&n;&t;&t;&t;                can handle brightness/contrast/etc&n;&t;&t;&t;                changes at _any_ time, and the palette&n;&t;&t;&t;                is used exactly once in the uncompress&n;&t;&t;&t;                routine.&n;&t;&t;&t; */
 id|pwc_set_brightness
 c_func
 (paren
@@ -5380,7 +5406,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;size = pwc_decode_size(pdev, vw.width, vw.height);&n;&t;&t;&t;if (size &lt; 0)&n;&t;&t;&t;&t;return -EINVAL;&n;*/
 id|fps
 op_assign
 (paren
@@ -5746,7 +5771,6 @@ comma
 l_string|&quot;VIDIOCMCAPTURE: changing size to please xawtv :-(.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;size = pwc_decode_size(pdev, vm.width, vm.height);&n;&t;&t;&t;&t;if (size &lt; 0)&n;&t;&t;&t;&t;&t;return -EINVAL;&n;*/
 id|ret
 op_assign
 id|pwc_try_video_mode
@@ -5853,6 +5877,7 @@ comma
 id|mbuf
 )paren
 suffix:semicolon
+multiline_comment|/* bounds check */
 r_if
 c_cond
 (paren
@@ -5883,7 +5908,17 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* We (re)use the frame-waitqueue here. That may&n;&t;&t;&t;   conflict with read(), but any programmer that uses&n;&t;&t;&t;   read() and mmap() simultaneously should be given &n;&t;&t;&t;   a job at Micro$oft. As janitor.&n;&t;&t;&t;   &n;&t;&t;&t;   FIXME: needs auditing for safety.&n;&t;&t;&t; */
+multiline_comment|/* Add ourselves to the frame wait-queue.&n;&t;&t;&t;   &n;&t;&t;&t;   FIXME: needs auditing for safety.&n;&t;&t;&t;   QUSTION: In what respect? I think that using the&n;&t;&t;&t;            frameq is safe now.&n;&t;&t;&t; */
+id|add_wait_queue
+c_func
+(paren
+op_amp
+id|pdev-&gt;frameq
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -5892,30 +5927,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|interruptible_sleep_on
-c_func
-(paren
-op_amp
-id|pdev-&gt;frameq
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pdev-&gt;unplugged
-)paren
-(brace
-id|Debug
-c_func
-(paren
-l_string|&quot;VIDIOCSYNC: Device got unplugged.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EPIPE
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5925,11 +5936,50 @@ c_func
 id|current
 )paren
 )paren
+(brace
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|pdev-&gt;frameq
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_RUNNING
+suffix:semicolon
 r_return
 op_minus
-id|EINTR
+id|ERESTARTSYS
 suffix:semicolon
 )brace
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_INTERRUPTIBLE
+suffix:semicolon
+)brace
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|pdev-&gt;frameq
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_RUNNING
+suffix:semicolon
 multiline_comment|/* The frame is ready. Expand in the image buffer &n;&t;&t;&t;   requested by the user. I don&squot;t care if you &n;&t;&t;&t;   mmap() 5 buffers and request data in this order: &n;&t;&t;&t;   buffer 4 2 3 0 1 2 3 0 4 3 1 . . .&n;&t;&t;&t;   Grabber hardware may not be so forgiving.&n;&t;&t;&t; */
 id|Trace
 c_func
@@ -6516,13 +6566,6 @@ id|init_waitqueue_head
 c_func
 (paren
 op_amp
-id|pdev-&gt;pollq
-)paren
-suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
 id|pdev-&gt;remove_ok
 )paren
 suffix:semicolon
@@ -6867,13 +6910,6 @@ op_amp
 id|pdev-&gt;frameq
 )paren
 suffix:semicolon
-id|wake_up
-c_func
-(paren
-op_amp
-id|pdev-&gt;pollq
-)paren
-suffix:semicolon
 multiline_comment|/* Wait until we get a &squot;go&squot; from _close(). This&n;&t;&t;&t;   had a gigantic race condition, since we kfree()&n;&t;&t;&t;   stuff here, but we have to wait until close() &n;&t;&t;&t;   is finished. */
 id|Trace
 c_func
@@ -7056,7 +7092,7 @@ c_func
 (paren
 id|palette
 comma
-l_string|&quot;Initial colour format of images. One of rgb24, bgr24, rgb32, bgr32, yuyv, yuv420, yuv420p&quot;
+l_string|&quot;Initial colour format of images. One of yuv420, yuv420p&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -7352,12 +7388,28 @@ id|default_palette
 op_assign
 id|VIDEO_PALETTE_YUV420
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|palette
+comma
+l_string|&quot;yuv420p&quot;
+)paren
+)paren
+id|default_palette
+op_assign
+id|VIDEO_PALETTE_YUV420P
+suffix:semicolon
 r_else
 (brace
 id|Err
 c_func
 (paren
-l_string|&quot;Palette not recognized: try palette=yuv420.&bslash;n&quot;
+l_string|&quot;Palette not recognized: try palette=yuv420 or yuv420p.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

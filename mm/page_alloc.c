@@ -1572,12 +1572,18 @@ c_cond
 (paren
 id|progress
 op_logical_or
+(paren
 id|gfp_mask
 op_amp
 id|__GFP_IO
 )paren
+)paren
 r_goto
 id|try_again
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t; * Fail in case no progress was made and the&n;&t;&t;&t;&t; * allocation may not be able to block on IO.&n;&t;&t;&t;&t; */
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

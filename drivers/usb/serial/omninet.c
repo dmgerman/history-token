@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB ZyXEL omni.net LCD PLUS driver&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * Please report both successes and troubles to the author at omninet@kroah.com&n; * &n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *&n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (08/28/2000) gkh&n; *&t;Added locks for SMP safeness.&n; *&t;Fixed MOD_INC and MOD_DEC logic and the ability to open a port more &n; *&t;than once.&n; *&t;Fixed potential race in omninet_write_bulk_callback&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; */
+multiline_comment|/*&n; * USB ZyXEL omni.net LCD PLUS driver&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * Please report both successes and troubles to the author at omninet@kroah.com&n; * &n; * (05/30/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *&n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (08/28/2000) gkh&n; *&t;Added locks for SMP safeness.&n; *&t;Fixed MOD_INC and MOD_DEC logic and the ability to open a port more &n; *&t;than once.&n; *&t;Fixed potential race in omninet_write_bulk_callback&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -32,7 +32,7 @@ macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.1&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Anonymous&quot;
 DECL|macro|DRIVER_DESC
@@ -304,11 +304,9 @@ op_star
 id|od
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|result
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -352,12 +350,10 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 id|MOD_INC_USE_COUNT
@@ -417,12 +413,10 @@ id|port-&gt;active
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
@@ -498,18 +492,14 @@ id|result
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+id|result
 suffix:semicolon
 )brace
 DECL|function|omninet_close
@@ -542,10 +532,6 @@ r_struct
 id|omninet_data
 op_star
 id|od
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_if
 c_cond
@@ -585,18 +571,14 @@ id|serial
 )paren
 r_return
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 op_decrement
 id|port-&gt;open_count
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond
@@ -655,13 +637,13 @@ id|od
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|macro|OMNINET_DATAOFFSET
@@ -1000,10 +982,6 @@ op_star
 id|wport-&gt;write_urb-&gt;transfer_buffer
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|result
 suffix:semicolon
 singleline_comment|//&t;dbg(&quot;omninet_write port %d&quot;, port-&gt;number);
@@ -1049,14 +1027,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-(paren
-op_amp
-id|port-&gt;port_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|count
 op_assign
 (paren
@@ -1076,6 +1046,9 @@ c_cond
 id|from_user
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -1087,7 +1060,19 @@ id|buf
 comma
 id|count
 )paren
+op_ne
+l_int|0
+)paren
+(brace
+id|result
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -1153,7 +1138,6 @@ c_cond
 (paren
 id|result
 )paren
-(brace
 id|err
 c_func
 (paren
@@ -1163,31 +1147,15 @@ comma
 id|result
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|port-&gt;port_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-singleline_comment|//&t;dbg(&quot;omninet_write returns %d&quot;, count);
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|port-&gt;port_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-(paren
+r_else
+id|result
+op_assign
 id|count
-)paren
+suffix:semicolon
+m_exit
+suffix:colon
+r_return
+id|result
 suffix:semicolon
 )brace
 DECL|function|omninet_write_room

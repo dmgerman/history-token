@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acexcep.h - Exception codes returned by the ACPI subsystem&n; *       $Revision: 41 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acexcep.h - Exception codes returned by the ACPI subsystem&n; *       $Revision: 46 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACEXCEP_H__
 DECL|macro|__ACEXCEP_H__
@@ -63,8 +63,20 @@ DECL|macro|AE_TIME
 mdefine_line|#define AE_TIME                         (ACPI_STATUS) (0x0013 | AE_CODE_ENVIRONMENTAL)
 DECL|macro|AE_UNKNOWN_STATUS
 mdefine_line|#define AE_UNKNOWN_STATUS               (ACPI_STATUS) (0x0014 | AE_CODE_ENVIRONMENTAL)
+DECL|macro|AE_ACQUIRE_DEADLOCK
+mdefine_line|#define AE_ACQUIRE_DEADLOCK             (ACPI_STATUS) (0x0015 | AE_CODE_ENVIRONMENTAL)
+DECL|macro|AE_RELEASE_DEADLOCK
+mdefine_line|#define AE_RELEASE_DEADLOCK             (ACPI_STATUS) (0x0016 | AE_CODE_ENVIRONMENTAL)
+DECL|macro|AE_NOT_ACQUIRED
+mdefine_line|#define AE_NOT_ACQUIRED                 (ACPI_STATUS) (0x0017 | AE_CODE_ENVIRONMENTAL)
+DECL|macro|AE_ALREADY_ACQUIRED
+mdefine_line|#define AE_ALREADY_ACQUIRED             (ACPI_STATUS) (0x0018 | AE_CODE_ENVIRONMENTAL)
+DECL|macro|AE_NO_HARDWARE_RESPONSE
+mdefine_line|#define AE_NO_HARDWARE_RESPONSE         (ACPI_STATUS) (0x0019 | AE_CODE_ENVIRONMENTAL)
+DECL|macro|AE_NO_GLOBAL_LOCK
+mdefine_line|#define AE_NO_GLOBAL_LOCK               (ACPI_STATUS) (0x001A | AE_CODE_ENVIRONMENTAL)
 DECL|macro|AE_CODE_ENV_MAX
-mdefine_line|#define AE_CODE_ENV_MAX                 0x0014
+mdefine_line|#define AE_CODE_ENV_MAX                 0x001A
 multiline_comment|/*&n; * Programmer exceptions&n; */
 DECL|macro|AE_BAD_PARAMETER
 mdefine_line|#define AE_BAD_PARAMETER                (ACPI_STATUS) (0x0001 | AE_CODE_PROGRAMMER)
@@ -130,8 +142,18 @@ DECL|macro|AE_AML_STRING_LIMIT
 mdefine_line|#define AE_AML_STRING_LIMIT             (ACPI_STATUS) (0x0013 | AE_CODE_AML)
 DECL|macro|AE_AML_NO_RETURN_VALUE
 mdefine_line|#define AE_AML_NO_RETURN_VALUE          (ACPI_STATUS) (0x0014 | AE_CODE_AML)
+DECL|macro|AE_AML_METHOD_LIMIT
+mdefine_line|#define AE_AML_METHOD_LIMIT             (ACPI_STATUS) (0x0015 | AE_CODE_AML)
+DECL|macro|AE_AML_NOT_OWNER
+mdefine_line|#define AE_AML_NOT_OWNER                (ACPI_STATUS) (0x0016 | AE_CODE_AML)
+DECL|macro|AE_AML_MUTEX_ORDER
+mdefine_line|#define AE_AML_MUTEX_ORDER              (ACPI_STATUS) (0x0017 | AE_CODE_AML)
+DECL|macro|AE_AML_MUTEX_NOT_ACQUIRED
+mdefine_line|#define AE_AML_MUTEX_NOT_ACQUIRED       (ACPI_STATUS) (0x0018 | AE_CODE_AML)
+DECL|macro|AE_AML_INVALID_RESOURCE_TYPE
+mdefine_line|#define AE_AML_INVALID_RESOURCE_TYPE    (ACPI_STATUS) (0x0019 | AE_CODE_AML)
 DECL|macro|AE_CODE_AML_MAX
-mdefine_line|#define AE_CODE_AML_MAX                 0x0014
+mdefine_line|#define AE_CODE_AML_MAX                 0x0019
 multiline_comment|/*&n; * Internal exceptions used for control&n; */
 DECL|macro|AE_CTRL_RETURN_VALUE
 mdefine_line|#define AE_CTRL_RETURN_VALUE            (ACPI_STATUS) (0x0001 | AE_CODE_CONTROL)
@@ -203,6 +225,18 @@ comma
 l_string|&quot;AE_TIME&quot;
 comma
 l_string|&quot;AE_UNKNOWN_STATUS&quot;
+comma
+l_string|&quot;AE_ACQUIRE_DEADLOCK&quot;
+comma
+l_string|&quot;AE_RELEASE_DEADLOCK&quot;
+comma
+l_string|&quot;AE_NOT_ACQUIRED&quot;
+comma
+l_string|&quot;AE_ALREADY_ACQUIRED&quot;
+comma
+l_string|&quot;AE_NO_HARDWARE_RESPONSE&quot;
+comma
+l_string|&quot;AE_NO_GLOBAL_LOCK&quot;
 comma
 )brace
 suffix:semicolon
@@ -294,6 +328,16 @@ comma
 l_string|&quot;AE_AML_STRING_LIMIT&quot;
 comma
 l_string|&quot;AE_AML_NO_RETURN_VALUE&quot;
+comma
+l_string|&quot;AE_AML_METHOD_LIMIT&quot;
+comma
+l_string|&quot;AE_AML_NOT_OWNER&quot;
+comma
+l_string|&quot;AE_AML_MUTEX_ORDER&quot;
+comma
+l_string|&quot;AE_AML_MUTEX_NOT_ACQUIRED&quot;
+comma
+l_string|&quot;AE_AML_INVALID_RESOURCE_TYPE&quot;
 comma
 )brace
 suffix:semicolon

@@ -1,24 +1,24 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acpiosxf.h - All interfaces to the OS-dependent layer.  These&n; *                    interfaces must be implemented by the OS-dependent&n; *                    front-end to the ACPI subsystem.&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acpiosxf.h - All interfaces to the OS Services Layer (OSL).  These&n; *                    interfaces must be implemented by OSL to interface the&n; *                    ACPI components to the host operating system.&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-macro_line|#ifndef __ACPIOSD_H__
-DECL|macro|__ACPIOSD_H__
-mdefine_line|#define __ACPIOSD_H__
-macro_line|#include &quot;acenv.h&quot;
+macro_line|#ifndef __ACPIOSXF_H__
+DECL|macro|__ACPIOSXF_H__
+mdefine_line|#define __ACPIOSXF_H__
+macro_line|#include &quot;platform/acenv.h&quot;
 macro_line|#include &quot;actypes.h&quot;
 multiline_comment|/* Priorities for Acpi_os_queue_for_execution */
 DECL|macro|OSD_PRIORITY_GPE
-mdefine_line|#define OSD_PRIORITY_GPE    1
+mdefine_line|#define OSD_PRIORITY_GPE            1
 DECL|macro|OSD_PRIORITY_HIGH
-mdefine_line|#define OSD_PRIORITY_HIGH   2
+mdefine_line|#define OSD_PRIORITY_HIGH           2
 DECL|macro|OSD_PRIORITY_MED
-mdefine_line|#define OSD_PRIORITY_MED    3
+mdefine_line|#define OSD_PRIORITY_MED            3
 DECL|macro|OSD_PRIORITY_LO
-mdefine_line|#define OSD_PRIORITY_LO     4
+mdefine_line|#define OSD_PRIORITY_LO             4
 DECL|macro|ACPI_NO_UNIT_LIMIT
-mdefine_line|#define ACPI_NO_UNIT_LIMIT  ((u32) -1)
+mdefine_line|#define ACPI_NO_UNIT_LIMIT          ((u32) -1)
 DECL|macro|ACPI_MUTEX_SEM
-mdefine_line|#define ACPI_MUTEX_SEM      1
-multiline_comment|/*&n; * Types specific to the OS-dependent layer interfaces&n; */
+mdefine_line|#define ACPI_MUTEX_SEM              1
+multiline_comment|/*&n; * Types specific to the OS service interfaces&n; */
 r_typedef
 DECL|typedef|OSD_HANDLER
 id|u32
@@ -45,7 +45,7 @@ op_star
 id|context
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Initialization and shutdown primitives  (Optional)&n; */
+multiline_comment|/*&n; * OSL Initialization and shutdown primitives&n; */
 id|ACPI_STATUS
 id|acpi_os_initialize
 (paren
@@ -191,7 +191,13 @@ id|OSD_HANDLER
 id|service_routine
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Scheduling&n; */
+multiline_comment|/*&n; * Threads and Scheduling&n; */
+id|u32
+id|acpi_os_get_thread_id
+(paren
+r_void
+)paren
+suffix:semicolon
 id|ACPI_STATUS
 id|acpi_os_queue_for_execution
 (paren
@@ -458,6 +464,12 @@ id|u32
 id|length
 )paren
 suffix:semicolon
+id|u32
+id|acpi_os_get_timer
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Debug print routines&n; */
 id|s32
 id|acpi_os_printf
@@ -514,5 +526,5 @@ op_star
 id|message
 )paren
 suffix:semicolon
-macro_line|#endif /* __ACPIOSD_H__ */
+macro_line|#endif /* __ACPIOSXF_H__ */
 eof

@@ -1,17 +1,16 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed and General Purpose Acpi_event&n; *                          handling and dispatch&n; *              $Revision: 34 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed and General Purpose Acpi_event&n; *                          handling and dispatch&n; *              $Revision: 43 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;accommon.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          EVENT_HANDLING
+mdefine_line|#define _COMPONENT          ACPI_EVENTS
 id|MODULE_NAME
 (paren
 l_string|&quot;evevent&quot;
 )paren
-multiline_comment|/**************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Ensures that the system control interrupt (SCI) is properly&n; *              configured, disables SCI event sources, installs the SCI&n; *              handler&n; *&n; *************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Ensures that the system control interrupt (SCI) is properly&n; *              configured, disables SCI event sources, installs the SCI&n; *              handler&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ev_initialize
 id|acpi_ev_initialize
@@ -176,7 +175,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_fixed_event_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize the Fixed Acpi_event data structures&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_fixed_event_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize the Fixed Acpi_event data structures&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ev_fixed_event_initialize
 id|acpi_ev_fixed_event_initialize
@@ -200,7 +199,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUM_FIXED_EVENTS
+id|ACPI_NUM_FIXED_EVENTS
 suffix:semicolon
 id|i
 op_increment
@@ -286,7 +285,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_fixed_event_detect&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Checks the PM status register for fixed events&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_fixed_event_detect&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Checks the PM status register for fixed events&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ev_fixed_event_detect
 id|acpi_ev_fixed_event_detect
@@ -350,7 +349,7 @@ id|ACPI_EVENT_PMTIMER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* global event (BIOS want&squot;s the global lock) */
+multiline_comment|/* global event (BIOS wants the global lock) */
 r_if
 c_cond
 (paren
@@ -431,7 +430,7 @@ id|int_status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_fixed_event_dispatch&n; *&n; * PARAMETERS:  Event               - Event type&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Clears the status bit for the requested event, calls the&n; *              handler that previously registered for the event.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_fixed_event_dispatch&n; *&n; * PARAMETERS:  Event               - Event type&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Clears the status bit for the requested event, calls the&n; *              handler that previously registered for the event.&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ev_fixed_event_dispatch
 id|acpi_ev_fixed_event_dispatch
@@ -588,7 +587,7 @@ id|context
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_gpe_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize the GPE data structures&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_gpe_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize the GPE data structures&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ev_gpe_initialize
 id|acpi_ev_gpe_initialize
@@ -664,7 +663,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Allocate the Gpe information block&n;&t; */
 id|acpi_gbl_gpe_registers
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 id|acpi_gbl_gpe_register_count
 op_star
@@ -690,7 +689,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Allocate the Gpe dispatch handler block&n;&t; * There are eight distinct GP events per register.&n;&t; * Initialization to zeros is sufficient&n;&t; */
 id|acpi_gbl_gpe_info
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 id|MUL_8
 (paren
@@ -710,7 +709,7 @@ op_logical_neg
 id|acpi_gbl_gpe_info
 )paren
 (brace
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|acpi_gbl_gpe_registers
 )paren
@@ -731,7 +730,7 @@ r_int
 )paren
 id|ACPI_GPE_INVALID
 comma
-id|NUM_GPE
+id|ACPI_NUM_GPE
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize the Gpe information and validation blocks.  A goal of these&n;&t; * blocks is to hide the fact that there are two separate GPE register sets&n;&t; * In a given block, the status registers occupy the first half, and&n;&t; * the enable registers occupy the second half.&n;&t; */
@@ -1023,7 +1022,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_save_method_info&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Called from Acpi_walk_namespace. Expects each object to be a&n; *              control method under the _GPE portion of the namespace.&n; *              Extract the name and GPE type from the object, saving this&n; *              information for quick lookup during GPE dispatch&n; *&n; *              The name of each GPE control method is of the form:&n; *                  &quot;_Lnn&quot; or &quot;_Enn&quot;&n; *              Where:&n; *                  L      - means that the GPE is level triggered&n; *                  E      - means that the GPE is edge triggered&n; *                  nn     - is the GPE number&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_save_method_info&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Called from Acpi_walk_namespace. Expects each object to be a&n; *              control method under the _GPE portion of the namespace.&n; *              Extract the name and GPE type from the object, saving this&n; *              information for quick lookup during GPE dispatch&n; *&n; *              The name of each GPE control method is of the form:&n; *                  &quot;_Lnn&quot; or &quot;_Enn&quot;&n; *              Where:&n; *                  L      - means that the GPE is level triggered&n; *                  E      - means that the GPE is edge triggered&n; *                  nn     - is the GPE number&n; *&n; ******************************************************************************/
 r_static
 id|ACPI_STATUS
 DECL|function|acpi_ev_save_method_info
@@ -1058,6 +1057,11 @@ l_int|1
 suffix:semicolon
 id|u8
 id|type
+suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Ev_save_method_info&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Extract the name from the object and convert to a string */
 id|MOVE_UNALIGNED32_TO_32
@@ -1207,7 +1211,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_init_gpe_control_methods&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Obtain the control methods associated with the GPEs.&n; *&n; *              NOTE: Must be called AFTER namespace initialization!&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_init_gpe_control_methods&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Obtain the control methods associated with the GPEs.&n; *&n; *              NOTE: Must be called AFTER namespace initialization!&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ev_init_gpe_control_methods
 id|acpi_ev_init_gpe_control_methods
@@ -1270,7 +1274,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_gpe_detect&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Detect if any GP events have occurred&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_gpe_detect&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Detect if any GP events have occurred&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ev_gpe_detect
 id|acpi_ev_gpe_detect
@@ -1435,7 +1439,7 @@ id|int_status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_asynch_execute_gpe_method&n; *&n; * PARAMETERS:  Gpe_number      - The 0-based Gpe number&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Perform the actual execution of a GPE control method.  This&n; *              function is called from an invocation of Acpi_os_queue_for_execution&n; *              (and therefore does NOT execute at interrupt level) so that&n; *              the control method itself is not executed in the context of&n; *              the SCI interrupt handler.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_asynch_execute_gpe_method&n; *&n; * PARAMETERS:  Gpe_number      - The 0-based Gpe number&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Perform the actual execution of a GPE control method.  This&n; *              function is called from an invocation of Acpi_os_queue_for_execution&n; *              (and therefore does NOT execute at interrupt level) so that&n; *              the control method itself is not executed in the context of&n; *              the SCI interrupt handler.&n; *&n; ******************************************************************************/
 r_static
 r_void
 DECL|function|acpi_ev_asynch_execute_gpe_method
@@ -1458,7 +1462,7 @@ id|ACPI_GPE_LEVEL_INFO
 id|gpe_info
 suffix:semicolon
 multiline_comment|/*&n;&t; * Take a snapshot of the GPE info for this level&n;&t; */
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_EVENTS
 )paren
@@ -1470,7 +1474,7 @@ id|acpi_gbl_gpe_info
 id|gpe_number
 )braket
 suffix:semicolon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_EVENTS
 )paren
@@ -1516,7 +1520,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_gpe_dispatch&n; *&n; * PARAMETERS:  Gpe_number      - The 0-based Gpe number&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Handle and dispatch a General Purpose Acpi_event.&n; *              Clears the status bit for the requested event.&n; *&n; * TBD: [Investigate] is this still valid or necessary:&n; * The Gpe handler differs from the fixed events in that it clears the enable&n; * bit rather than the status bit to clear the interrupt.  This allows&n; * software outside of interrupt context to determine what caused the SCI and&n; * dispatch the correct AML.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_gpe_dispatch&n; *&n; * PARAMETERS:  Gpe_number      - The 0-based Gpe number&n; *&n; * RETURN:      INTERRUPT_HANDLED or INTERRUPT_NOT_HANDLED&n; *&n; * DESCRIPTION: Handle and dispatch a General Purpose Acpi_event.&n; *              Clears the status bit for the requested event.&n; *&n; * TBD: [Investigate] is this still valid or necessary:&n; * The Gpe handler differs from the fixed events in that it clears the enable&n; * bit rather than the status bit to clear the interrupt.  This allows&n; * software outside of interrupt context to determine what caused the SCI and&n; * dispatch the correct AML.&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ev_gpe_dispatch
 id|acpi_ev_gpe_dispatch
@@ -1528,7 +1532,6 @@ id|gpe_number
 id|ACPI_GPE_LEVEL_INFO
 id|gpe_info
 suffix:semicolon
-multiline_comment|/*DEBUG_INCREMENT_EVENT_COUNT (EVENT_GENERAL);*/
 multiline_comment|/*&n;&t; * Valid GPE number?&n;&t; */
 r_if
 c_cond
@@ -1633,9 +1636,6 @@ comma
 (paren
 r_void
 op_star
-)paren
-(paren
-id|NATIVE_UINT
 )paren
 id|gpe_number
 )paren

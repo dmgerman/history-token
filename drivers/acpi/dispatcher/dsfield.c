@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsfield - Dispatcher field routines&n; *              $Revision: 31 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsfield - Dispatcher field routines&n; *              $Revision: 41 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -6,7 +6,7 @@ macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          DISPATCHER
+mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|MODULE_NAME
 (paren
 l_string|&quot;dsfield&quot;
@@ -18,7 +18,7 @@ DECL|macro|FIELD_LOCK_RULE_MASK
 mdefine_line|#define FIELD_LOCK_RULE_MASK        0x10
 DECL|macro|FIELD_UPDATE_RULE_MASK
 mdefine_line|#define FIELD_UPDATE_RULE_MASK      0x60
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_field&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *              Region_node - Object for the containing Operation Region&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new field in the specified operation region&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_field&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *              Region_node     - Object for the containing Operation Region&n; *  `           Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new field in the specified operation region&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ds_create_field
 id|acpi_ds_create_field
@@ -51,11 +51,6 @@ id|node
 suffix:semicolon
 id|u8
 id|field_flags
-suffix:semicolon
-id|u8
-id|access_attribute
-op_assign
-l_int|0
 suffix:semicolon
 id|u32
 id|field_bit_position
@@ -140,7 +135,7 @@ id|arg-&gt;opcode
 )paren
 (brace
 r_case
-id|AML_RESERVEDFIELD_OP
+id|AML_INT_RESERVEDFIELD_OP
 suffix:colon
 id|field_bit_position
 op_add_assign
@@ -149,16 +144,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|AML_ACCESSFIELD_OP
+id|AML_INT_ACCESSFIELD_OP
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Get a new Access_type and Access_attribute for all&n;&t;&t;&t; * entries (until end or another Access_as keyword)&n;&t;&t;&t; */
-id|access_attribute
-op_assign
-(paren
-id|u8
-)paren
-id|arg-&gt;value.integer
-suffix:semicolon
 id|field_flags
 op_assign
 (paren
@@ -186,7 +174,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|AML_NAMEDFIELD_OP
+id|AML_INT_NAMEDFIELD_OP
 suffix:colon
 id|status
 op_assign
@@ -209,7 +197,7 @@ id|arg
 op_member_access_from_pointer
 id|name
 comma
-id|INTERNAL_TYPE_DEF_FIELD
+id|INTERNAL_TYPE_REGION_FIELD
 comma
 id|IMODE_LOAD_PASS1
 comma
@@ -241,15 +229,13 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Initialize an object for the new Node that is on&n;&t;&t;&t; * the object stack&n;&t;&t;&t; */
 id|status
 op_assign
-id|acpi_aml_prep_def_field_value
+id|acpi_ex_prep_region_field_value
 (paren
 id|node
 comma
 id|region_node
 comma
 id|field_flags
-comma
-id|access_attribute
 comma
 id|field_bit_position
 comma
@@ -290,7 +276,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_bank_field&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *              Region_node - Object for the containing Operation Region&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new bank field in the specified operation region&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_bank_field&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *              Region_node     - Object for the containing Operation Region&n; *  `           Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new bank field in the specified operation region&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ds_create_bank_field
 id|acpi_ds_create_bank_field
@@ -330,11 +316,6 @@ id|bank_value
 suffix:semicolon
 id|u8
 id|field_flags
-suffix:semicolon
-id|u8
-id|access_attribute
-op_assign
-l_int|0
 suffix:semicolon
 id|u32
 id|field_bit_position
@@ -470,7 +451,7 @@ id|arg-&gt;opcode
 )paren
 (brace
 r_case
-id|AML_RESERVEDFIELD_OP
+id|AML_INT_RESERVEDFIELD_OP
 suffix:colon
 id|field_bit_position
 op_add_assign
@@ -479,16 +460,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|AML_ACCESSFIELD_OP
+id|AML_INT_ACCESSFIELD_OP
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Get a new Access_type and Access_attribute for&n;&t;&t;&t; * all entries (until end or another Access_as keyword)&n;&t;&t;&t; */
-id|access_attribute
-op_assign
-(paren
-id|u8
-)paren
-id|arg-&gt;value.integer
-suffix:semicolon
 id|field_flags
 op_assign
 (paren
@@ -516,7 +490,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|AML_NAMEDFIELD_OP
+id|AML_INT_NAMEDFIELD_OP
 suffix:colon
 id|status
 op_assign
@@ -539,7 +513,7 @@ id|arg
 op_member_access_from_pointer
 id|name
 comma
-id|INTERNAL_TYPE_DEF_FIELD
+id|INTERNAL_TYPE_REGION_FIELD
 comma
 id|IMODE_LOAD_PASS1
 comma
@@ -571,7 +545,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Initialize an object for the new Node that is on&n;&t;&t;&t; * the object stack&n;&t;&t;&t; */
 id|status
 op_assign
-id|acpi_aml_prep_bank_field_value
+id|acpi_ex_prep_bank_field_value
 (paren
 id|node
 comma
@@ -582,8 +556,6 @@ comma
 id|bank_value
 comma
 id|field_flags
-comma
-id|access_attribute
 comma
 id|field_bit_position
 comma
@@ -624,7 +596,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_index_field&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *              Region_node - Object for the containing Operation Region&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new index field in the specified operation region&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_index_field&n; *&n; * PARAMETERS:  Op              - Op containing the Field definition and args&n; *              Region_node     - Object for the containing Operation Region&n; *  `           Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create a new index field in the specified operation region&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ds_create_index_field
 id|acpi_ds_create_index_field
@@ -633,7 +605,8 @@ id|ACPI_PARSE_OBJECT
 op_star
 id|op
 comma
-id|ACPI_HANDLE
+id|ACPI_NAMESPACE_NODE
+op_star
 id|region_node
 comma
 id|ACPI_WALK_STATE
@@ -662,11 +635,6 @@ id|data_register_node
 suffix:semicolon
 id|u8
 id|field_flags
-suffix:semicolon
-id|u8
-id|access_attribute
-op_assign
-l_int|0
 suffix:semicolon
 id|u32
 id|field_bit_position
@@ -787,7 +755,7 @@ id|arg-&gt;opcode
 )paren
 (brace
 r_case
-id|AML_RESERVEDFIELD_OP
+id|AML_INT_RESERVEDFIELD_OP
 suffix:colon
 id|field_bit_position
 op_add_assign
@@ -796,16 +764,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|AML_ACCESSFIELD_OP
+id|AML_INT_ACCESSFIELD_OP
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Get a new Access_type and Access_attribute for all&n;&t;&t;&t; * entries (until end or another Access_as keyword)&n;&t;&t;&t; */
-id|access_attribute
-op_assign
-(paren
-id|u8
-)paren
-id|arg-&gt;value.integer
-suffix:semicolon
 id|field_flags
 op_assign
 (paren
@@ -833,7 +794,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|AML_NAMEDFIELD_OP
+id|AML_INT_NAMEDFIELD_OP
 suffix:colon
 id|status
 op_assign
@@ -888,7 +849,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Initialize an object for the new Node that is on&n;&t;&t;&t; * the object stack&n;&t;&t;&t; */
 id|status
 op_assign
-id|acpi_aml_prep_index_field_value
+id|acpi_ex_prep_index_field_value
 (paren
 id|node
 comma
@@ -897,8 +858,6 @@ comma
 id|data_register_node
 comma
 id|field_flags
-comma
-id|access_attribute
 comma
 id|field_bit_position
 comma

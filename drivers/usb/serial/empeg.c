@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Empeg empeg-car player driver&n; *&n; *&t;Copyright (C) 2000&n; *&t;    Gary Brubaker (xavyer@ix.netcom.com)&n; *&n; *&t;Copyright (C) 1999, 2000&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License, as published by&n; *&t;the Free Software Foundation, version 2.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (04/08/2001) gb&n; *      Identify version on module load.&n; * &n; * (01/22/2001) gb&n; *&t;Added write_room() and chars_in_buffer() support. &n; * &n; * (12/21/2000) gb&n; *&t;Moved termio stuff inside the port-&gt;active check.&n; *&t;Moved MOD_DEC_USE_COUNT to end of empeg_close().&n; * &n; * (12/03/2000) gb&n; *&t;Added port-&gt;tty-&gt;ldisc.set_termios(port-&gt;tty, NULL) to empeg_open()&n; *&t;This notifies the tty driver that the termios have changed.&n; * &n; * (11/13/2000) gb&n; *&t;Moved tty-&gt;low_latency = 1 from empeg_read_bulk_callback() to empeg_open()&n; *&t;(It only needs to be set once - Doh!)&n; * &n; * (11/11/2000) gb&n; *&t;Updated to work with id_table structure.&n; * &n; * (11/04/2000) gb&n; *&t;Forked this from visor.c, and hacked it up to work with an&n; *&t;Empeg ltd. empeg-car player.  Constructive criticism welcomed.&n; *&t;I would like to say, &squot;Thank You&squot; to Greg Kroah-Hartman for the&n; *&t;use of his code, and for his guidance, advice and patience. :)&n; *&t;A &squot;Thank You&squot; is in order for John Ripley of Empeg ltd for his&n; *&t;advice, and patience too.&n; * &n; */
+multiline_comment|/*&n; * USB Empeg empeg-car player driver&n; *&n; *&t;Copyright (C) 2000, 2001&n; *&t;    Gary Brubaker (xavyer@ix.netcom.com)&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License, as published by&n; *&t;the Free Software Foundation, version 2.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (05/30/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (04/08/2001) gb&n; *      Identify version on module load.&n; * &n; * (01/22/2001) gb&n; *&t;Added write_room() and chars_in_buffer() support. &n; * &n; * (12/21/2000) gb&n; *&t;Moved termio stuff inside the port-&gt;active check.&n; *&t;Moved MOD_DEC_USE_COUNT to end of empeg_close().&n; * &n; * (12/03/2000) gb&n; *&t;Added port-&gt;tty-&gt;ldisc.set_termios(port-&gt;tty, NULL) to empeg_open()&n; *&t;This notifies the tty driver that the termios have changed.&n; * &n; * (11/13/2000) gb&n; *&t;Moved tty-&gt;low_latency = 1 from empeg_read_bulk_callback() to empeg_open()&n; *&t;(It only needs to be set once - Doh!)&n; * &n; * (11/11/2000) gb&n; *&t;Updated to work with id_table structure.&n; * &n; * (11/04/2000) gb&n; *&t;Forked this from visor.c, and hacked it up to work with an&n; *&t;Empeg ltd. empeg-car player.  Constructive criticism welcomed.&n; *&t;I would like to say, &squot;Thank You&squot; to Greg Kroah-Hartman for the&n; *&t;use of his code, and for his guidance, advice and patience. :)&n; *&t;A &squot;Thank You&squot; is in order for John Ripley of Empeg ltd for his&n; *&t;advice, and patience too.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -32,7 +32,7 @@ macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.1&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;, Gary Brubaker &lt;xavyer@ix.netcom.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -399,11 +399,10 @@ op_assign
 id|port-&gt;serial
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|result
+op_assign
+l_int|0
+suffix:semicolon
 suffix:semicolon
 r_if
 c_cond
@@ -428,12 +427,10 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 op_increment
@@ -583,16 +580,14 @@ id|result
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|result
 suffix:semicolon
 )brace
 DECL|function|empeg_close
@@ -620,10 +615,6 @@ r_int
 r_char
 op_star
 id|transfer_buffer
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_if
 c_cond
@@ -663,12 +654,10 @@ id|serial
 )paren
 r_return
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 op_decrement
@@ -731,12 +720,10 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 multiline_comment|/* Uncomment the following line if you want to see some statistics in your syslog */
@@ -1095,7 +1082,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 (paren
 op_amp
-id|port-&gt;port_lock
+id|write_urb_pool_lock
 comma
 id|flags
 )paren
@@ -1139,7 +1126,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 (paren
 op_amp
-id|port-&gt;port_lock
+id|write_urb_pool_lock
 comma
 id|flags
 )paren
@@ -1194,7 +1181,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 (paren
 op_amp
-id|port-&gt;port_lock
+id|write_urb_pool_lock
 comma
 id|flags
 )paren
@@ -1238,7 +1225,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 (paren
 op_amp
-id|port-&gt;port_lock
+id|write_urb_pool_lock
 comma
 id|flags
 )paren
@@ -1590,10 +1577,6 @@ op_star
 id|port
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -1603,12 +1586,10 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 id|usb_unlink_urb
@@ -1616,12 +1597,10 @@ id|usb_unlink_urb
 id|port-&gt;read_urb
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 r_return
@@ -1639,10 +1618,6 @@ id|port
 )paren
 (brace
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|result
 suffix:semicolon
 id|dbg
@@ -1654,12 +1629,10 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 id|port-&gt;read_urb-&gt;dev
@@ -1688,12 +1661,10 @@ comma
 id|result
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 r_return

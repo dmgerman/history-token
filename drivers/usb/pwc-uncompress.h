@@ -1,9 +1,11 @@
 multiline_comment|/* (C) 1999-2001 Nemosoft Unv. (webcam@smcc.demon.nl)&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
+multiline_comment|/* This file is the bridge between the kernel module and the plugin; it&n;   describes the structures and datatypes used in both modules. Any&n;   significant change should be reflected by increasing the &n;   pwc_decompressor_version major number.&n; */
 macro_line|#ifndef PWC_DEC_H
 DECL|macro|PWC_DEC_H
 mdefine_line|#define PWC_DEC_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &quot;pwc.h&quot;
 macro_line|#ifdef __cplusplus
 r_extern
 l_string|&quot;C&quot;
@@ -18,9 +20,14 @@ DECL|member|type
 r_int
 id|type
 suffix:semicolon
-multiline_comment|/* type of camera (645, 646, etc) */
-DECL|member|init
+multiline_comment|/* type of camera (645, 680, etc) */
+DECL|member|table_size
 r_int
+id|table_size
+suffix:semicolon
+multiline_comment|/* memory needed */
+DECL|member|init
+r_void
 (paren
 op_star
 id|init
@@ -35,8 +42,7 @@ id|buffer
 comma
 r_void
 op_star
-op_star
-id|data
+id|table
 )paren
 suffix:semicolon
 multiline_comment|/* Initialization routine; should be called after each set_video_mode */
@@ -48,45 +54,50 @@ m_exit
 )paren
 (paren
 r_void
-op_star
-op_star
-id|data
 )paren
 suffix:semicolon
 multiline_comment|/* Cleanup routine */
 DECL|member|decompress
-r_int
+r_void
 (paren
 op_star
 id|decompress
 )paren
 (paren
-r_void
+r_struct
+id|pwc_coord
 op_star
-id|data
+id|image
 comma
-r_int
-id|width
-comma
-r_int
-id|height
-comma
-r_int
-id|bandlength
-comma
-r_void
+r_struct
+id|pwc_coord
 op_star
-id|dst
+id|view
+comma
+r_struct
+id|pwc_coord
+op_star
+id|offset
 comma
 r_void
 op_star
 id|src
 comma
+r_void
+op_star
+id|dst
+comma
 r_int
 id|planar
+comma
+r_void
+op_star
+id|table
+comma
+r_int
+id|bandlength
 )paren
 suffix:semicolon
-multiline_comment|/* The decompression routine itself */
 DECL|member|lock
 r_void
 (paren

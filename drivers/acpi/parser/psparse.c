@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psparse - Parser top level AML parse routines&n; *              $Revision: 74 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psparse - Parser top level AML parse routines&n; *              $Revision: 85 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * Parse the AML and build an operation tree as most interpreters,&n; * like Perl, do.  Parsing is done by hand rather than with a YACC&n; * generated parser to tightly constrain stack and dynamic memory&n; * usage.  At the same time, parsing is kept flexible and the code&n; * fairly compact by parsing based on a list of AML opcode&n; * templates in Aml_op_info[]&n; */
 macro_line|#include &quot;acpi.h&quot;
@@ -7,8 +7,9 @@ macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
+macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          PARSER
+mdefine_line|#define _COMPONENT          ACPI_PARSER
 id|MODULE_NAME
 (paren
 l_string|&quot;psparse&quot;
@@ -89,7 +90,7 @@ suffix:semicolon
 id|aml
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t; * Original code special cased LNOTEQUAL, LLESSEQUAL, LGREATEREQUAL.&n;&t; * These opcodes are no longer recognized. Instead, they are broken into&n;&t; * two opcodes.&n;&t; *&n;&t; *&n;&t; *    if (Opcode == AML_EXTOP&n;&t; *       || (Opcode == AML_LNOT&n;&t; *          &amp;&amp; (GET8 (Acpi_aml) == AML_LEQUAL&n;&t; *               || GET8 (Acpi_aml) == AML_LGREATER&n;&t; *               || GET8 (Acpi_aml) == AML_LLESS)))&n;&t; *&n;&t; *     extended Opcode, !=, &lt;=, or &gt;=&n;&t; */
+multiline_comment|/*&n;&t; * Original code special cased LNOTEQUAL, LLESSEQUAL, LGREATEREQUAL.&n;&t; * These opcodes are no longer recognized. Instead, they are broken into&n;&t; * two opcodes.&n;&t; *&n;&t; *&n;&t; *    if (Opcode == AML_EXTOP&n;&t; *       || (Opcode == AML_LNOT&n;&t; *          &amp;&amp; (GET8 (Aml) == AML_LEQUAL&n;&t; *               || GET8 (Aml) == AML_LGREATER&n;&t; *               || GET8 (Aml) == AML_LLESS)))&n;&t; *&n;&t; *     extended Opcode, !=, &lt;=, or &gt;=&n;&t; */
 r_if
 c_cond
 (paren
@@ -128,7 +129,7 @@ id|opcode
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_create_state&n; *&n; * PARAMETERS:  Acpi_aml            - Acpi_aml code pointer&n; *              Acpi_aml_size       - Length of AML code&n; *&n; * RETURN:      A new parser state object&n; *&n; * DESCRIPTION: Create and initialize a new parser state object&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_create_state&n; *&n; * PARAMETERS:  Aml             - Aml code pointer&n; *              Aml_size        - Length of AML code&n; *&n; * RETURN:      A new parser state object&n; *&n; * DESCRIPTION: Create and initialize a new parser state object&n; *&n; ******************************************************************************/
 id|ACPI_PARSE_STATE
 op_star
 DECL|function|acpi_ps_create_state
@@ -148,7 +149,7 @@ id|parser_state
 suffix:semicolon
 id|parser_state
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 r_sizeof
 (paren
@@ -392,7 +393,7 @@ op_logical_and
 (paren
 id|op-&gt;opcode
 op_ne
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 )paren
 (brace
@@ -449,31 +450,31 @@ op_logical_or
 (paren
 id|op-&gt;parent-&gt;opcode
 op_eq
-id|AML_BIT_FIELD_OP
+id|AML_CREATE_BIT_FIELD_OP
 )paren
 op_logical_or
 (paren
 id|op-&gt;parent-&gt;opcode
 op_eq
-id|AML_BYTE_FIELD_OP
+id|AML_CREATE_BYTE_FIELD_OP
 )paren
 op_logical_or
 (paren
 id|op-&gt;parent-&gt;opcode
 op_eq
-id|AML_WORD_FIELD_OP
+id|AML_CREATE_WORD_FIELD_OP
 )paren
 op_logical_or
 (paren
 id|op-&gt;parent-&gt;opcode
 op_eq
-id|AML_DWORD_FIELD_OP
+id|AML_CREATE_DWORD_FIELD_OP
 )paren
 op_logical_or
 (paren
 id|op-&gt;parent-&gt;opcode
 op_eq
-id|AML_QWORD_FIELD_OP
+id|AML_CREATE_QWORD_FIELD_OP
 )paren
 )paren
 (brace
@@ -481,7 +482,7 @@ id|replacement_op
 op_assign
 id|acpi_ps_alloc_op
 (paren
-id|AML_RETURN_VALUE_OP
+id|AML_INT_RETURN_VALUE_OP
 )paren
 suffix:semicolon
 r_if
@@ -506,7 +507,7 @@ id|replacement_op
 op_assign
 id|acpi_ps_alloc_op
 (paren
-id|AML_RETURN_VALUE_OP
+id|AML_INT_RETURN_VALUE_OP
 )paren
 suffix:semicolon
 r_if
@@ -883,7 +884,7 @@ id|arg_types
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_PTRDIFF
+id|u32
 id|aml_offset
 suffix:semicolon
 id|u16
@@ -1122,7 +1123,7 @@ suffix:colon
 multiline_comment|/*&n;&t;&t;&t;&t; * Starts with a valid prefix or ASCII char, this is a name&n;&t;&t;&t;&t; * string.  Convert the bare name string to a namepath.&n;&t;&t;&t;&t; */
 id|opcode
 op_assign
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 suffix:semicolon
 id|arg_types
 op_assign
@@ -1358,25 +1359,31 @@ op_logical_or
 (paren
 id|op-&gt;opcode
 op_eq
-id|AML_BIT_FIELD_OP
+id|AML_CREATE_BIT_FIELD_OP
 )paren
 op_logical_or
 (paren
 id|op-&gt;opcode
 op_eq
-id|AML_BYTE_FIELD_OP
+id|AML_CREATE_BYTE_FIELD_OP
 )paren
 op_logical_or
 (paren
 id|op-&gt;opcode
 op_eq
-id|AML_WORD_FIELD_OP
+id|AML_CREATE_WORD_FIELD_OP
 )paren
 op_logical_or
 (paren
 id|op-&gt;opcode
 op_eq
-id|AML_DWORD_FIELD_OP
+id|AML_CREATE_DWORD_FIELD_OP
+)paren
+op_logical_or
+(paren
+id|op-&gt;opcode
+op_eq
+id|AML_CREATE_QWORD_FIELD_OP
 )paren
 )paren
 (brace
@@ -1531,7 +1538,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 suffix:colon
 multiline_comment|/* AML_NAMESTRING_ARG */
 id|acpi_ps_get_next_namepath
@@ -1643,9 +1650,14 @@ id|parser_state-&gt;aml
 suffix:semicolon
 id|deferred_op-&gt;length
 op_assign
+(paren
+id|u32
+)paren
+(paren
 id|parser_state-&gt;pkg_end
 op_minus
 id|parser_state-&gt;aml
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * Skip body of method.  For Op_regions, we must continue&n;&t;&t;&t;&t;&t;&t; * parsing because the opregion is not a standalone&n;&t;&t;&t;&t;&t;&t; * package (We don&squot;t know where the end is).&n;&t;&t;&t;&t;&t;&t; */
 id|parser_state-&gt;aml
@@ -1714,9 +1726,14 @@ id|deferred_op
 multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * Skip parsing of control method or opregion body,&n;&t;&t;&t;&t;&t;&t; * because we don&squot;t have enough info in the first pass&n;&t;&t;&t;&t;&t;&t; * to parse them correctly.&n;&t;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t;&t; * Completed parsing an Op_region declaration, we now&n;&t;&t;&t;&t;&t;&t; * know the length.&n;&t;&t;&t;&t;&t;&t; */
 id|deferred_op-&gt;length
 op_assign
+(paren
+id|u32
+)paren
+(paren
 id|parser_state-&gt;aml
 op_minus
 id|deferred_op-&gt;data
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -1733,31 +1750,31 @@ op_logical_or
 (paren
 id|op-&gt;opcode
 op_eq
-id|AML_BIT_FIELD_OP
+id|AML_CREATE_BIT_FIELD_OP
 )paren
 op_logical_or
 (paren
 id|op-&gt;opcode
 op_eq
-id|AML_BYTE_FIELD_OP
+id|AML_CREATE_BYTE_FIELD_OP
 )paren
 op_logical_or
 (paren
 id|op-&gt;opcode
 op_eq
-id|AML_WORD_FIELD_OP
+id|AML_CREATE_WORD_FIELD_OP
 )paren
 op_logical_or
 (paren
 id|op-&gt;opcode
 op_eq
-id|AML_DWORD_FIELD_OP
+id|AML_CREATE_DWORD_FIELD_OP
 )paren
 op_logical_or
 (paren
 id|op-&gt;opcode
 op_eq
-id|AML_QWORD_FIELD_OP
+id|AML_CREATE_QWORD_FIELD_OP
 )paren
 )paren
 (brace
@@ -1772,9 +1789,14 @@ id|op
 suffix:semicolon
 id|deferred_op-&gt;length
 op_assign
+(paren
+id|u32
+)paren
+(paren
 id|parser_state-&gt;aml
 op_minus
 id|deferred_op-&gt;data
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* This op complete, notify the dispatcher */
@@ -2375,6 +2397,14 @@ id|walk_list.walk_state
 op_assign
 l_int|NULL
 suffix:semicolon
+id|walk_list.acquired_mutex_list.prev
+op_assign
+l_int|NULL
+suffix:semicolon
+id|walk_list.acquired_mutex_list.next
+op_assign
+l_int|NULL
+suffix:semicolon
 id|walk_state
 op_assign
 id|acpi_ds_create_walk_state
@@ -2647,7 +2677,7 @@ id|acpi_ps_cleanup_scope
 id|walk_state-&gt;parser_state
 )paren
 suffix:semicolon
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|walk_state-&gt;parser_state
 )paren
@@ -2714,7 +2744,7 @@ id|return_desc
 )paren
 (brace
 multiline_comment|/* Caller doesn&squot;t want it, must delete it */
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|return_desc
 )paren
@@ -2722,6 +2752,16 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Normal exit */
+id|acpi_ex_release_all_mutexes
+(paren
+(paren
+id|ACPI_OPERAND_OBJECT
+op_star
+)paren
+op_amp
+id|walk_list.acquired_mutex_list
+)paren
+suffix:semicolon
 id|acpi_gbl_current_walk_list
 op_assign
 id|prev_walk_list
@@ -2744,9 +2784,19 @@ id|acpi_ps_cleanup_scope
 id|parser_state
 )paren
 suffix:semicolon
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|parser_state
+)paren
+suffix:semicolon
+id|acpi_ex_release_all_mutexes
+(paren
+(paren
+id|ACPI_OPERAND_OBJECT
+op_star
+)paren
+op_amp
+id|walk_list.acquired_mutex_list
 )paren
 suffix:semicolon
 id|acpi_gbl_current_walk_list

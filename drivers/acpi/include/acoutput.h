@@ -1,56 +1,58 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acoutput.h -- debug output&n; *       $Revision: 70 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acoutput.h -- debug output&n; *       $Revision: 78 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACOUTPUT_H__
 DECL|macro|__ACOUTPUT_H__
 mdefine_line|#define __ACOUTPUT_H__
 multiline_comment|/*&n; * Debug levels and component IDs.  These are used to control the&n; * granularity of the output of the DEBUG_PRINT macro -- on a per-&n; * component basis and a per-exception-type basis.&n; */
 multiline_comment|/* Component IDs -- used in the global &quot;Debug_layer&quot; */
-DECL|macro|GLOBAL
-mdefine_line|#define GLOBAL                      0x00000001
-DECL|macro|COMMON
-mdefine_line|#define COMMON                      0x00000002
-DECL|macro|PARSER
-mdefine_line|#define PARSER                      0x00000004
-DECL|macro|DISPATCHER
-mdefine_line|#define DISPATCHER                  0x00000008
-DECL|macro|INTERPRETER
-mdefine_line|#define INTERPRETER                 0x00000010
-DECL|macro|NAMESPACE
-mdefine_line|#define NAMESPACE                   0x00000020
-DECL|macro|RESOURCE_MANAGER
-mdefine_line|#define RESOURCE_MANAGER            0x00000040
-DECL|macro|TABLE_MANAGER
-mdefine_line|#define TABLE_MANAGER               0x00000080
-DECL|macro|EVENT_HANDLING
-mdefine_line|#define EVENT_HANDLING              0x00000100
-DECL|macro|HARDWARE
-mdefine_line|#define HARDWARE                    0x00000200
-DECL|macro|MISCELLANEOUS
-mdefine_line|#define MISCELLANEOUS               0x00000400
-DECL|macro|OS_DEPENDENT
-mdefine_line|#define OS_DEPENDENT                0x00000800
-DECL|macro|BUS_MANAGER
-mdefine_line|#define BUS_MANAGER                 0x00001000
-DECL|macro|PROCESSOR_CONTROL
-mdefine_line|#define PROCESSOR_CONTROL           0x00002000
-DECL|macro|SYSTEM_CONTROL
-mdefine_line|#define SYSTEM_CONTROL              0x00004000
-DECL|macro|THERMAL_CONTROL
-mdefine_line|#define THERMAL_CONTROL             0x00008000
-DECL|macro|POWER_CONTROL
-mdefine_line|#define POWER_CONTROL               0x00010000
-DECL|macro|EMBEDDED_CONTROLLER
-mdefine_line|#define EMBEDDED_CONTROLLER         0x00020000
-DECL|macro|BATTERY
-mdefine_line|#define BATTERY                     0x00040000
-DECL|macro|DEBUGGER
-mdefine_line|#define DEBUGGER                    0x00100000
-DECL|macro|COMPILER
-mdefine_line|#define COMPILER                    0x00200000
-DECL|macro|ALL_COMPONENTS
-mdefine_line|#define ALL_COMPONENTS              0x001FFFFF
-DECL|macro|COMPONENT_DEFAULT
-mdefine_line|#define COMPONENT_DEFAULT           (ALL_COMPONENTS)
+DECL|macro|ACPI_UTILITIES
+mdefine_line|#define ACPI_UTILITIES              0x00000001
+DECL|macro|ACPI_HARDWARE
+mdefine_line|#define ACPI_HARDWARE               0x00000002
+DECL|macro|ACPI_EVENTS
+mdefine_line|#define ACPI_EVENTS                 0x00000004
+DECL|macro|ACPI_TABLES
+mdefine_line|#define ACPI_TABLES                 0x00000008
+DECL|macro|ACPI_NAMESPACE
+mdefine_line|#define ACPI_NAMESPACE              0x00000010
+DECL|macro|ACPI_PARSER
+mdefine_line|#define ACPI_PARSER                 0x00000020
+DECL|macro|ACPI_DISPATCHER
+mdefine_line|#define ACPI_DISPATCHER             0x00000040
+DECL|macro|ACPI_EXECUTER
+mdefine_line|#define ACPI_EXECUTER               0x00000080
+DECL|macro|ACPI_RESOURCES
+mdefine_line|#define ACPI_RESOURCES              0x00000100
+DECL|macro|ACPI_DEBUGGER
+mdefine_line|#define ACPI_DEBUGGER               0x00000200
+DECL|macro|ACPI_OS_SERVICES
+mdefine_line|#define ACPI_OS_SERVICES            0x00000400
+DECL|macro|ACPI_BUS
+mdefine_line|#define ACPI_BUS                    0x00001000
+DECL|macro|ACPI_SYSTEM
+mdefine_line|#define ACPI_SYSTEM                 0x00002000
+DECL|macro|ACPI_POWER
+mdefine_line|#define ACPI_POWER                  0x00004000
+DECL|macro|ACPI_EC
+mdefine_line|#define ACPI_EC                     0x00008000
+DECL|macro|ACPI_AC_ADAPTER
+mdefine_line|#define ACPI_AC_ADAPTER             0x00010000
+DECL|macro|ACPI_BATTERY
+mdefine_line|#define ACPI_BATTERY                0x00020000
+DECL|macro|ACPI_BUTTON
+mdefine_line|#define ACPI_BUTTON                 0x00040000
+DECL|macro|ACPI_PROCESSOR
+mdefine_line|#define ACPI_PROCESSOR              0x00080000
+DECL|macro|ACPI_THERMAL
+mdefine_line|#define ACPI_THERMAL                0x00100000
+DECL|macro|ACPI_ALL_COMPONENTS
+mdefine_line|#define ACPI_ALL_COMPONENTS         0x00FFFFFF
+DECL|macro|ACPI_COMPONENT_DEFAULT
+mdefine_line|#define ACPI_COMPONENT_DEFAULT      (ACPI_ALL_COMPONENTS)
+DECL|macro|ACPI_COMPILER
+mdefine_line|#define ACPI_COMPILER               0x10000000
+DECL|macro|ACPI_TOOLS
+mdefine_line|#define ACPI_TOOLS                  0x20000000
 multiline_comment|/* Exception level -- used in the global &quot;Debug_level&quot; */
 DECL|macro|ACPI_OK
 mdefine_line|#define ACPI_OK                     0x00000001
@@ -67,6 +69,8 @@ mdefine_line|#define ACPI_DEBUG_OBJECT           0x00000020
 DECL|macro|ACPI_ALL
 mdefine_line|#define ACPI_ALL                    0x0000003F
 multiline_comment|/* Trace level -- also used in the global &quot;Debug_level&quot; */
+DECL|macro|TRACE_THREADS
+mdefine_line|#define TRACE_THREADS               0x00000080
 DECL|macro|TRACE_PARSE
 mdefine_line|#define TRACE_PARSE                 0x00000100
 DECL|macro|TRACE_DISPATCH
@@ -108,7 +112,7 @@ mdefine_line|#define TRACE_MUTEX                 0x04000000
 DECL|macro|TRACE_INIT
 mdefine_line|#define TRACE_INIT                  0x08000000
 DECL|macro|TRACE_ALL
-mdefine_line|#define TRACE_ALL                   0x0FFFFF00
+mdefine_line|#define TRACE_ALL                   0x0FFFFF80
 multiline_comment|/* Exceptionally verbose output -- also used in the global &quot;Debug_level&quot; */
 DECL|macro|VERBOSE_AML_DISASSEMBLE
 mdefine_line|#define VERBOSE_AML_DISASSEMBLE     0x10000000

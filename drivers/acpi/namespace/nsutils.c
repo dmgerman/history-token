@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsutils - Utilities for accessing ACPI namespace, accessing&n; *                        parents and siblings and Scope manipulation&n; *              $Revision: 77 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsutils - Utilities for accessing ACPI namespace, accessing&n; *                        parents and siblings and Scope manipulation&n; *              $Revision: 83 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -6,12 +6,12 @@ macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;actables.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          NAMESPACE
+mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
 id|MODULE_NAME
 (paren
 l_string|&quot;nsutils&quot;
 )paren
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_valid_root_prefix&n; *&n; * PARAMETERS:  Prefix          - Character to be checked&n; *&n; * RETURN:      TRUE if a valid prefix&n; *&n; * DESCRIPTION: Check if a character is a valid ACPI Root prefix&n; *&n; ***************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_valid_root_prefix&n; *&n; * PARAMETERS:  Prefix          - Character to be checked&n; *&n; * RETURN:      TRUE if a valid prefix&n; *&n; * DESCRIPTION: Check if a character is a valid ACPI Root prefix&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ns_valid_root_prefix
 id|acpi_ns_valid_root_prefix
@@ -33,7 +33,7 @@ l_char|&squot;&bslash;&bslash;&squot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_valid_path_separator&n; *&n; * PARAMETERS:  Sep              - Character to be checked&n; *&n; * RETURN:      TRUE if a valid path separator&n; *&n; * DESCRIPTION: Check if a character is a valid ACPI path separator&n; *&n; ***************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_valid_path_separator&n; *&n; * PARAMETERS:  Sep              - Character to be checked&n; *&n; * RETURN:      TRUE if a valid path separator&n; *&n; * DESCRIPTION: Check if a character is a valid ACPI path separator&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ns_valid_path_separator
 id|acpi_ns_valid_path_separator
@@ -55,26 +55,27 @@ l_char|&squot;.&squot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_type&n; *&n; * PARAMETERS:  Handle              - Parent Node to be examined&n; *&n; * RETURN:      Type field from Node whose handle is passed&n; *&n; ***************************************************************************/
-id|OBJECT_TYPE_INTERNAL
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_type&n; *&n; * PARAMETERS:  Handle              - Parent Node to be examined&n; *&n; * RETURN:      Type field from Node whose handle is passed&n; *&n; ******************************************************************************/
+id|ACPI_OBJECT_TYPE8
 DECL|function|acpi_ns_get_type
 id|acpi_ns_get_type
 (paren
-id|ACPI_HANDLE
-id|handle
+id|ACPI_NAMESPACE_NODE
+op_star
+id|node
 )paren
 (brace
 r_if
 c_cond
 (paren
 op_logical_neg
-id|handle
+id|node
 )paren
 (brace
 id|REPORT_WARNING
 (paren
 (paren
-l_string|&quot;Ns_get_type: Null handle&bslash;n&quot;
+l_string|&quot;Ns_get_type: Null Node ptr&quot;
 )paren
 )paren
 suffix:semicolon
@@ -86,24 +87,16 @@ suffix:semicolon
 )brace
 r_return
 (paren
-(paren
-(paren
-id|ACPI_NAMESPACE_NODE
-op_star
-)paren
-id|handle
-)paren
-op_member_access_from_pointer
-id|type
+id|node-&gt;type
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_local&n; *&n; * PARAMETERS:  Type            - A namespace object type&n; *&n; * RETURN:      LOCAL if names must be found locally in objects of the&n; *              passed type, 0 if enclosing scopes should be searched&n; *&n; ***************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_local&n; *&n; * PARAMETERS:  Type            - A namespace object type&n; *&n; * RETURN:      LOCAL if names must be found locally in objects of the&n; *              passed type, 0 if enclosing scopes should be searched&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ns_local
 id|acpi_ns_local
 (paren
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 )paren
 (brace
@@ -111,7 +104,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|acpi_cm_valid_object_type
+id|acpi_ut_valid_object_type
 (paren
 id|type
 )paren
@@ -145,94 +138,57 @@ id|NSP_LOCAL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_internalize_name&n; *&n; * PARAMETERS:  *External_name            - External representation of name&n; *              **Converted Name        - Where to return the resulting&n; *                                        internal represention of the name&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an external representation (e.g. &quot;&bslash;_PR_.CPU0&quot;)&n; *              to internal form (e.g. 5c 2f 02 5f 50 52 5f 43 50 55 30)&n; *&n; ****************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_internal_name_length&n; *&n; * PARAMETERS:  Info            - Info struct initialized with the&n; *                                external name pointer.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Calculate the length of the internal (AML) namestring&n; *              corresponding to the external (ASL) namestring.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
-DECL|function|acpi_ns_internalize_name
-id|acpi_ns_internalize_name
+DECL|function|acpi_ns_get_internal_name_length
+id|acpi_ns_get_internal_name_length
 (paren
-id|NATIVE_CHAR
+id|ACPI_NAMESTRING_INFO
 op_star
-id|external_name
-comma
-id|NATIVE_CHAR
-op_star
-op_star
-id|converted_name
+id|info
 )paren
 (brace
 id|NATIVE_CHAR
 op_star
-id|result
-op_assign
-l_int|NULL
-suffix:semicolon
-id|NATIVE_CHAR
-op_star
-id|internal_name
-suffix:semicolon
-id|u32
-id|num_segments
-op_assign
-l_int|0
-suffix:semicolon
-id|u8
-id|fully_qualified
-op_assign
-id|FALSE
+id|next_external_char
 suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|u32
-id|num_carats
+id|next_external_char
+op_assign
+id|info-&gt;external_name
+suffix:semicolon
+id|info-&gt;num_carats
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-op_logical_neg
-id|external_name
-)paren
-op_logical_or
-(paren
-op_star
-id|external_name
-op_eq
+id|info-&gt;num_segments
+op_assign
 l_int|0
-)paren
-op_logical_or
-(paren
-op_logical_neg
-id|converted_name
-)paren
-)paren
-(brace
-r_return
-(paren
-id|AE_BAD_PARAMETER
-)paren
 suffix:semicolon
-)brace
+id|info-&gt;fully_qualified
+op_assign
+id|FALSE
+suffix:semicolon
 multiline_comment|/*&n;&t; * For the internal name, the required length is 4 bytes&n;&t; * per segment, plus 1 each for Root_prefix, Multi_name_prefix_op,&n;&t; * segment count, trailing null (which is not really needed,&n;&t; * but no there&squot;s harm in putting it there)&n;&t; *&n;&t; * strlen() + 1 covers the first Name_seg, which has no&n;&t; * path separator&n;&t; */
 r_if
 c_cond
 (paren
 id|acpi_ns_valid_root_prefix
 (paren
-id|external_name
+id|next_external_char
 (braket
 l_int|0
 )braket
 )paren
 )paren
 (brace
-id|fully_qualified
+id|info-&gt;fully_qualified
 op_assign
 id|TRUE
 suffix:semicolon
-id|external_name
+id|next_external_char
 op_increment
 suffix:semicolon
 )brace
@@ -243,15 +199,15 @@ r_while
 c_loop
 (paren
 op_star
-id|external_name
+id|next_external_char
 op_eq
 l_char|&squot;^&squot;
 )paren
 (brace
-id|num_carats
+id|info-&gt;num_carats
 op_increment
 suffix:semicolon
-id|external_name
+id|next_external_char
 op_increment
 suffix:semicolon
 )brace
@@ -261,10 +217,10 @@ r_if
 c_cond
 (paren
 op_star
-id|external_name
+id|next_external_char
 )paren
 (brace
-id|num_segments
+id|info-&gt;num_segments
 op_assign
 l_int|1
 suffix:semicolon
@@ -275,7 +231,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|external_name
+id|next_external_char
 (braket
 id|i
 )braket
@@ -289,53 +245,82 @@ c_cond
 (paren
 id|acpi_ns_valid_path_separator
 (paren
-id|external_name
+id|next_external_char
 (braket
 id|i
 )braket
 )paren
 )paren
 (brace
-id|num_segments
+id|info-&gt;num_segments
 op_increment
 suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* We need a segment to store the internal version of the name */
-id|internal_name
+id|info-&gt;length
 op_assign
-id|acpi_cm_callocate
-(paren
 (paren
 id|ACPI_NAME_SIZE
 op_star
-id|num_segments
+id|info-&gt;num_segments
 )paren
 op_plus
 l_int|4
 op_plus
-id|num_carats
-)paren
+id|info-&gt;num_carats
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|internal_name
-)paren
-(brace
+id|info-&gt;next_external_char
+op_assign
+id|next_external_char
+suffix:semicolon
 r_return
 (paren
-id|AE_NO_MEMORY
+id|AE_OK
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_build_internal_name&n; *&n; * PARAMETERS:  Info            - Info struct fully initialized&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Construct the internal (AML) namestring&n; *              corresponding to the external (ASL) namestring.&n; *&n; ******************************************************************************/
+id|ACPI_STATUS
+DECL|function|acpi_ns_build_internal_name
+id|acpi_ns_build_internal_name
+(paren
+id|ACPI_NAMESTRING_INFO
+op_star
+id|info
+)paren
+(brace
+id|u32
+id|num_segments
+op_assign
+id|info-&gt;num_segments
+suffix:semicolon
+id|NATIVE_CHAR
+op_star
+id|internal_name
+op_assign
+id|info-&gt;internal_name
+suffix:semicolon
+id|NATIVE_CHAR
+op_star
+id|external_name
+op_assign
+id|info-&gt;next_external_char
+suffix:semicolon
+id|NATIVE_CHAR
+op_star
+id|result
+op_assign
+l_int|NULL
+suffix:semicolon
+id|u32
+id|i
+suffix:semicolon
 multiline_comment|/* Setup the correct prefixes, counts, and pointers */
 r_if
 c_cond
 (paren
-id|fully_qualified
+id|info-&gt;fully_qualified
 )paren
 (brace
 id|internal_name
@@ -426,7 +411,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|num_carats
+id|info-&gt;num_carats
 )paren
 (brace
 r_for
@@ -438,7 +423,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|num_carats
+id|info-&gt;num_carats
 suffix:semicolon
 id|i
 op_increment
@@ -573,7 +558,7 @@ l_int|0
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Pad the segment with underscore(s) if&n;&t;&t;&t;&t; * segment is short&n;&t;&t;&t;&t; */
+multiline_comment|/* Pad the segment with underscore(s) if segment is short */
 id|result
 (braket
 id|i
@@ -584,7 +569,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Convert s8 to uppercase and save it */
+multiline_comment|/* Convert the character to uppercase and save it */
 id|result
 (braket
 id|i
@@ -623,11 +608,6 @@ l_int|0
 )paren
 )paren
 (brace
-id|acpi_cm_free
-(paren
-id|internal_name
-)paren
-suffix:semicolon
 r_return
 (paren
 id|AE_BAD_PARAMETER
@@ -643,13 +623,135 @@ op_add_assign
 id|ACPI_NAME_SIZE
 suffix:semicolon
 )brace
-multiline_comment|/* Return the completed name */
-multiline_comment|/* Terminate the string! */
+multiline_comment|/* Terminate the string */
 op_star
 id|result
 op_assign
 l_int|0
 suffix:semicolon
+r_return
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_internalize_name&n; *&n; * PARAMETERS:  *External_name          - External representation of name&n; *              **Converted Name        - Where to return the resulting&n; *                                        internal represention of the name&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an external representation (e.g. &quot;&bslash;_PR_.CPU0&quot;)&n; *              to internal form (e.g. 5c 2f 02 5f 50 52 5f 43 50 55 30)&n; *&n; *******************************************************************************/
+id|ACPI_STATUS
+DECL|function|acpi_ns_internalize_name
+id|acpi_ns_internalize_name
+(paren
+id|NATIVE_CHAR
+op_star
+id|external_name
+comma
+id|NATIVE_CHAR
+op_star
+op_star
+id|converted_name
+)paren
+(brace
+id|NATIVE_CHAR
+op_star
+id|internal_name
+suffix:semicolon
+id|ACPI_NAMESTRING_INFO
+id|info
+suffix:semicolon
+id|ACPI_STATUS
+id|status
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+op_logical_neg
+id|external_name
+)paren
+op_logical_or
+(paren
+op_star
+id|external_name
+op_eq
+l_int|0
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|converted_name
+)paren
+)paren
+(brace
+r_return
+(paren
+id|AE_BAD_PARAMETER
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Get the length of the new internal name */
+id|info.external_name
+op_assign
+id|external_name
+suffix:semicolon
+id|acpi_ns_get_internal_name_length
+(paren
+op_amp
+id|info
+)paren
+suffix:semicolon
+multiline_comment|/* We need a segment to store the internal  name */
+id|internal_name
+op_assign
+id|acpi_ut_callocate
+(paren
+id|info.length
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|internal_name
+)paren
+(brace
+r_return
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Build the name */
+id|info.internal_name
+op_assign
+id|internal_name
+suffix:semicolon
+id|status
+op_assign
+id|acpi_ns_build_internal_name
+(paren
+op_amp
+id|info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|acpi_ut_free
+(paren
+id|internal_name
+)paren
+suffix:semicolon
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 op_star
 id|converted_name
 op_assign
@@ -661,7 +763,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_externalize_name&n; *&n; * PARAMETERS:  *Internal_name         - Internal representation of name&n; *              **Converted_name       - Where to return the resulting&n; *                                        external representation of name&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert internal name (e.g. 5c 2f 02 5f 50 52 5f 43 50 55 30)&n; *              to its external form (e.g. &quot;&bslash;_PR_.CPU0&quot;)&n; *&n; ****************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_externalize_name&n; *&n; * PARAMETERS:  *Internal_name         - Internal representation of name&n; *              **Converted_name       - Where to return the resulting&n; *                                       external representation of name&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert internal name (e.g. 5c 2f 02 5f 50 52 5f 43 50 55 30)&n; *              to its external form (e.g. &quot;&bslash;_PR_.CPU0&quot;)&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ns_externalize_name
 id|acpi_ns_externalize_name
@@ -949,7 +1051,7 @@ op_star
 id|converted_name
 )paren
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 op_star
 id|converted_name_length
@@ -1116,7 +1218,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_convert_handle_to_entry&n; *&n; * PARAMETERS:  Handle          - Handle to be converted to an Node&n; *&n; * RETURN:      A Name table entry pointer&n; *&n; * DESCRIPTION: Convert a namespace handle to a real Node&n; *&n; ****************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_convert_handle_to_entry&n; *&n; * PARAMETERS:  Handle          - Handle to be converted to an Node&n; *&n; * RETURN:      A Name table entry pointer&n; *&n; * DESCRIPTION: Convert a namespace handle to a real Node&n; *&n; ******************************************************************************/
 id|ACPI_NAMESPACE_NODE
 op_star
 DECL|function|acpi_ns_convert_handle_to_entry
@@ -1183,7 +1285,7 @@ id|handle
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_convert_entry_to_handle&n; *&n; * PARAMETERS:  Node          - Node to be converted to a Handle&n; *&n; * RETURN:      An USER ACPI_HANDLE&n; *&n; * DESCRIPTION: Convert a real Node to a namespace handle&n; *&n; ****************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_convert_entry_to_handle&n; *&n; * PARAMETERS:  Node          - Node to be converted to a Handle&n; *&n; * RETURN:      An USER ACPI_HANDLE&n; *&n; * DESCRIPTION: Convert a real Node to a namespace handle&n; *&n; ******************************************************************************/
 id|ACPI_HANDLE
 DECL|function|acpi_ns_convert_entry_to_handle
 id|acpi_ns_convert_entry_to_handle
@@ -1202,9 +1304,9 @@ id|ACPI_HANDLE
 id|node
 )paren
 suffix:semicolon
-multiline_comment|/* ---------------------------------------------------&n;&n;&t;if (!Node) {&n;&t;&t;return (NULL);&n;&t;}&n;&n;&t;if (Node == Acpi_gbl_Root_node) {&n;&t;&t;return (ACPI_ROOT_OBJECT);&n;&t;}&n;&n;&n;&t;return ((ACPI_HANDLE) Node);&n;------------------------------------------------------*/
+multiline_comment|/* ---------------------------------------------------&n;&n;&t;if (!Node)&n;&t;{&n;&t;&t;return (NULL);&n;&t;}&n;&n;&t;if (Node == Acpi_gbl_Root_node)&n;&t;{&n;&t;&t;return (ACPI_ROOT_OBJECT);&n;&t;}&n;&n;&n;&t;return ((ACPI_HANDLE) Node);&n;------------------------------------------------------*/
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_terminate&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: free memory allocated for table storage.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_terminate&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: free memory allocated for table storage.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_terminate
 id|acpi_ns_terminate
@@ -1224,8 +1326,7 @@ id|this_node
 op_assign
 id|acpi_gbl_root_node
 suffix:semicolon
-multiline_comment|/*&n;&t; * 1) Free the entire namespace -- all objects, tables, and stacks&n;&t; */
-multiline_comment|/*&n;&t; * Delete all objects linked to the root&n;&t; * (additional table descriptors)&n;&t; */
+multiline_comment|/*&n;&t; * 1) Free the entire namespace -- all objects, tables, and stacks&n;&t; *&n;&t; * Delete all objects linked to the root&n;&t; * (additional table descriptors)&n;&t; */
 id|acpi_ns_delete_namespace_subtree
 (paren
 id|this_node
@@ -1250,7 +1351,7 @@ id|acpi_ns_detach_object
 id|this_node
 )paren
 suffix:semicolon
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|obj_desc
 )paren
@@ -1269,12 +1370,12 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_opens_scope&n; *&n; * PARAMETERS:  Type        - A valid namespace type&n; *&n; * RETURN:      NEWSCOPE if the passed type &quot;opens a name scope&quot; according&n; *              to the ACPI specification, else 0&n; *&n; ***************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_opens_scope&n; *&n; * PARAMETERS:  Type        - A valid namespace type&n; *&n; * RETURN:      NEWSCOPE if the passed type &quot;opens a name scope&quot; according&n; *              to the ACPI specification, else 0&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ns_opens_scope
 id|acpi_ns_opens_scope
 (paren
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 )paren
 (brace
@@ -1282,7 +1383,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|acpi_cm_valid_object_type
+id|acpi_ut_valid_object_type
 (paren
 id|type
 )paren
@@ -1318,7 +1419,7 @@ id|NSP_NEWSCOPE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_node&n; *&n; * PARAMETERS:  *Pathname   - Name to be found, in external (ASL) format. The&n; *                            &bslash; (backslash) and ^ (carat) prefixes, and the&n; *                            . (period) to separate segments are supported.&n; *              Start_node  - Root of subtree to be searched, or NS_ALL for the&n; *                            root of the name space.  If Name is fully&n; *                            qualified (first s8 is &squot;&bslash;&squot;), the passed value&n; *                            of Scope will not be accessed.&n; *              Return_node - Where the Node is returned&n; *&n; * DESCRIPTION: Look up a name relative to a given scope and return the&n; *              corresponding Node.  NOTE: Scope can be null.&n; *&n; * MUTEX:       Locks namespace&n; *&n; ***************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_node&n; *&n; * PARAMETERS:  *Pathname   - Name to be found, in external (ASL) format. The&n; *                            &bslash; (backslash) and ^ (carat) prefixes, and the&n; *                            . (period) to separate segments are supported.&n; *              Start_node  - Root of subtree to be searched, or NS_ALL for the&n; *                            root of the name space.  If Name is fully&n; *                            qualified (first s8 is &squot;&bslash;&squot;), the passed value&n; *                            of Scope will not be accessed.&n; *              Return_node - Where the Node is returned&n; *&n; * DESCRIPTION: Look up a name relative to a given scope and return the&n; *              corresponding Node.  NOTE: Scope can be null.&n; *&n; * MUTEX:       Locks namespace&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ns_get_node
 id|acpi_ns_get_node
@@ -1402,7 +1503,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -1435,13 +1536,13 @@ comma
 id|return_node
 )paren
 suffix:semicolon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
 multiline_comment|/* Cleanup */
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|internal_path
 )paren
@@ -1452,7 +1553,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_find_parent_name&n; *&n; * PARAMETERS:  *Child_node            - Named Obj whose name is to be found&n; *&n; * RETURN:      The ACPI name&n; *&n; * DESCRIPTION: Search for the given obj in its parent scope and return the&n; *              name segment, or &quot;????&quot; if the parent name can&squot;t be found&n; *              (which &quot;should not happen&quot;).&n; *&n; ***************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_find_parent_name&n; *&n; * PARAMETERS:  *Child_node            - Named Obj whose name is to be found&n; *&n; * RETURN:      The ACPI name&n; *&n; * DESCRIPTION: Search for the given obj in its parent scope and return the&n; *              name segment, or &quot;????&quot; if the parent name can&squot;t be found&n; *              (which &quot;should not happen&quot;).&n; *&n; ******************************************************************************/
 id|ACPI_NAME
 DECL|function|acpi_ns_find_parent_name
 id|acpi_ns_find_parent_name
@@ -1506,7 +1607,7 @@ id|ACPI_UNKNOWN_NAME
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_parent_object&n; *&n; * PARAMETERS:  Node       - Current table entry&n; *&n; * RETURN:      Parent entry of the given entry&n; *&n; * DESCRIPTION: Obtain the parent entry for a given entry in the namespace.&n; *&n; ***************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_parent_object&n; *&n; * PARAMETERS:  Node       - Current table entry&n; *&n; * RETURN:      Parent entry of the given entry&n; *&n; * DESCRIPTION: Obtain the parent entry for a given entry in the namespace.&n; *&n; ******************************************************************************/
 id|ACPI_NAMESPACE_NODE
 op_star
 DECL|function|acpi_ns_get_parent_object
@@ -1553,7 +1654,7 @@ id|node-&gt;peer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_next_valid_object&n; *&n; * PARAMETERS:  Node       - Current table entry&n; *&n; * RETURN:      Next valid object in the table.  NULL if no more valid&n; *              objects&n; *&n; * DESCRIPTION: Find the next valid object within a name table.&n; *              Useful for implementing NULL-end-of-list loops.&n; *&n; ***************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_next_valid_object&n; *&n; * PARAMETERS:  Node       - Current table entry&n; *&n; * RETURN:      Next valid object in the table.  NULL if no more valid&n; *              objects&n; *&n; * DESCRIPTION: Find the next valid object within a name table.&n; *              Useful for implementing NULL-end-of-list loops.&n; *&n; ******************************************************************************/
 id|ACPI_NAMESPACE_NODE
 op_star
 DECL|function|acpi_ns_get_next_valid_object

@@ -204,7 +204,7 @@ r_else
 id|PRINTK
 c_func
 (paren
-l_string|&quot;waiting for %d bh&bslash;n&quot;
+l_string|&quot;raid1: waiting for %d bh&bslash;n&quot;
 comma
 id|cnt
 )paren
@@ -4177,7 +4177,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;dirty sb detected, updating.&bslash;n&quot;
+l_string|&quot;raid1: dirty sb detected, updating.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|mddev-&gt;sb_dirty

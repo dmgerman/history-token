@@ -1,10 +1,10 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbinstal - ACPI table installation and removal&n; *              $Revision: 36 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbinstal - ACPI table installation and removal&n; *              $Revision: 39 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;actables.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          TABLE_MANAGER
+mdefine_line|#define _COMPONENT          ACPI_TABLES
 id|MODULE_NAME
 (paren
 l_string|&quot;tbinstal&quot;
@@ -52,7 +52,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* Lock tables while installing */
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_TABLES
 )paren
@@ -67,7 +67,7 @@ comma
 id|table_info
 )paren
 suffix:semicolon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_TABLES
 )paren
@@ -305,7 +305,7 @@ id|list_head-&gt;pointer
 (brace
 id|table_desc
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 r_sizeof
 (paren
@@ -405,7 +405,7 @@ id|ACPI_TABLE_HEADER
 suffix:semicolon
 id|table_desc-&gt;table_id
 op_assign
-id|acpi_cm_allocate_owner_id
+id|acpi_ut_allocate_owner_id
 (paren
 id|OWNER_TYPE_TABLE
 )paren
@@ -508,7 +508,7 @@ id|ACPI_TABLE_MAX
 r_return
 suffix:semicolon
 )brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_TABLES
 )paren
@@ -586,7 +586,7 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_TABLES
 )paren
@@ -691,7 +691,7 @@ suffix:semicolon
 r_case
 id|ACPI_MEM_ALLOCATED
 suffix:colon
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|table_desc-&gt;base_pointer
 )paren
@@ -808,7 +808,7 @@ id|next_desc
 op_assign
 id|table_desc-&gt;next
 suffix:semicolon
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|table_desc
 )paren

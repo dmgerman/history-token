@@ -1367,21 +1367,17 @@ mdefine_line|#define R128_MAX_VB_AGE&t;&t;&t;0xffffffff
 DECL|macro|R128_MAX_VB_VERTS
 mdefine_line|#define R128_MAX_VB_VERTS&t;&t;(0xffff)
 DECL|macro|R128_BASE
-mdefine_line|#define R128_BASE(reg)&t;&t;((u32)(dev_priv-&gt;mmio-&gt;handle))
+mdefine_line|#define R128_BASE(reg)&t;&t;((unsigned long)(dev_priv-&gt;mmio-&gt;handle))
 DECL|macro|R128_ADDR
 mdefine_line|#define R128_ADDR(reg)&t;&t;(R128_BASE(reg) + reg)
-DECL|macro|R128_DEREF
-mdefine_line|#define R128_DEREF(reg)&t;&t;*(__volatile__ int *)R128_ADDR(reg)
 DECL|macro|R128_READ
-mdefine_line|#define R128_READ(reg)&t;&t;R128_DEREF(reg)
+mdefine_line|#define R128_READ(reg)&t;&t;readl(R128_ADDR(reg))
 DECL|macro|R128_WRITE
-mdefine_line|#define R128_WRITE(reg,val)&t;do { R128_DEREF(reg) = val; } while (0)
-DECL|macro|R128_DEREF8
-mdefine_line|#define R128_DEREF8(reg)&t;*(__volatile__ char *)R128_ADDR(reg)
+mdefine_line|#define R128_WRITE(reg,val)&t;writel(val,R128_ADDR(reg))
 DECL|macro|R128_READ8
-mdefine_line|#define R128_READ8(reg)&t;&t;R128_DEREF8(reg)
+mdefine_line|#define R128_READ8(reg)&t;&t;readb(R128_ADDR(reg))
 DECL|macro|R128_WRITE8
-mdefine_line|#define R128_WRITE8(reg,val)&t;do { R128_DEREF8(reg) = val; } while (0)
+mdefine_line|#define R128_WRITE8(reg,val)&t;writeb(val,R128_ADDR(reg))
 DECL|macro|R128_WRITE_PLL
 mdefine_line|#define R128_WRITE_PLL(addr,val)                                              &bslash;&n;do {                                                                          &bslash;&n;&t;R128_WRITE8(R128_CLOCK_CNTL_INDEX, ((addr) &amp; 0x1f) | R128_PLL_WR_EN); &bslash;&n;&t;R128_WRITE(R128_CLOCK_CNTL_DATA, (val));                              &bslash;&n;} while (0)
 r_extern

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB HandSpring Visor driver&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (05/28/2000) gkh&n; *&t;Added initial support for the Palm m500 and Palm m505 devices.&n; *&n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *&n; * (01/21/2000) gkh&n; *&t;Added write_room and chars_in_buffer, as they were previously using the&n; *&t;generic driver versions which is all wrong now that we are using an urb&n; *&t;pool.  Thanks to Wolfgang Grandegger for pointing this out to me.&n; *&t;Removed count assignment in the write function, which was not needed anymore&n; *&t;either.  Thanks to Al Borchers for pointing this out.&n; *&n; * (12/12/2000) gkh&n; *&t;Moved MOD_DEC to end of visor_close to be nicer, as the final write &n; *&t;message can sleep.&n; * &n; * (11/12/2000) gkh&n; *&t;Fixed bug with data being dropped on the floor by forcing tty-&gt;low_latency&n; *&t;to be on.  Hopefully this fixes the OHCI issue!&n; *&n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Got rid of always calling kmalloc for every urb we wrote out to the&n; *&t;device.&n; *&t;Added visor_read_callback so we can keep track of bytes in and out for&n; *&t;those people who like to know the speed of their device.&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (09/06/2000) gkh&n; *&t;Fixed oops in visor_exit.  Need to uncomment usb_unlink_urb call _after_&n; *&t;the host controller drivers set urb-&gt;dev = NULL when the urb is finished.&n; *&n; * (08/28/2000) gkh&n; *&t;Added locks for SMP safeness.&n; *&n; * (08/08/2000) gkh&n; *&t;Fixed endian problem in visor_startup.&n; *&t;Fixed MOD_INC and MOD_DEC logic and the ability to open a port more &n; *&t;than once.&n; * &n; * (07/23/2000) gkh&n; *&t;Added pool of write urbs to speed up transfers to the visor.&n; * &n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (07/03/2000) gkh&n; *&t;Added visor_set_ioctl and visor_set_termios functions (they don&squot;t do much&n; *&t;of anything, but are good for debugging.)&n; * &n; * (06/25/2000) gkh&n; *&t;Fixed bug in visor_unthrottle that should help with the disconnect in PPP&n; *&t;bug that people have been reporting.&n; *&n; * (06/23/2000) gkh&n; *&t;Cleaned up debugging statements in a quest to find UHCI timeout bug.&n; *&n; * (04/27/2000) Ryan VanderBijl&n; * &t;Fixed memory leak in visor_close&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; */
+multiline_comment|/*&n; * USB HandSpring Visor driver&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (05/30/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (05/28/2000) gkh&n; *&t;Added initial support for the Palm m500 and Palm m505 devices.&n; *&n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *&n; * (01/21/2000) gkh&n; *&t;Added write_room and chars_in_buffer, as they were previously using the&n; *&t;generic driver versions which is all wrong now that we are using an urb&n; *&t;pool.  Thanks to Wolfgang Grandegger for pointing this out to me.&n; *&t;Removed count assignment in the write function, which was not needed anymore&n; *&t;either.  Thanks to Al Borchers for pointing this out.&n; *&n; * (12/12/2000) gkh&n; *&t;Moved MOD_DEC to end of visor_close to be nicer, as the final write &n; *&t;message can sleep.&n; * &n; * (11/12/2000) gkh&n; *&t;Fixed bug with data being dropped on the floor by forcing tty-&gt;low_latency&n; *&t;to be on.  Hopefully this fixes the OHCI issue!&n; *&n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Got rid of always calling kmalloc for every urb we wrote out to the&n; *&t;device.&n; *&t;Added visor_read_callback so we can keep track of bytes in and out for&n; *&t;those people who like to know the speed of their device.&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (09/06/2000) gkh&n; *&t;Fixed oops in visor_exit.  Need to uncomment usb_unlink_urb call _after_&n; *&t;the host controller drivers set urb-&gt;dev = NULL when the urb is finished.&n; *&n; * (08/28/2000) gkh&n; *&t;Added locks for SMP safeness.&n; *&n; * (08/08/2000) gkh&n; *&t;Fixed endian problem in visor_startup.&n; *&t;Fixed MOD_INC and MOD_DEC logic and the ability to open a port more &n; *&t;than once.&n; * &n; * (07/23/2000) gkh&n; *&t;Added pool of write urbs to speed up transfers to the visor.&n; * &n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (07/03/2000) gkh&n; *&t;Added visor_set_ioctl and visor_set_termios functions (they don&squot;t do much&n; *&t;of anything, but are good for debugging.)&n; * &n; * (06/25/2000) gkh&n; *&t;Fixed bug in visor_unthrottle that should help with the disconnect in PPP&n; *&t;bug that people have been reporting.&n; *&n; * (06/23/2000) gkh&n; *&t;Cleaned up debugging statements in a quest to find UHCI timeout bug.&n; *&n; * (04/27/2000) Ryan VanderBijl&n; * &t;Fixed memory leak in visor_close&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -33,7 +33,7 @@ macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;visor.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.1&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.2&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -692,11 +692,9 @@ op_assign
 id|port-&gt;serial
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|result
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -721,12 +719,10 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 op_increment
@@ -806,16 +802,14 @@ id|result
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|result
 suffix:semicolon
 )brace
 DECL|function|visor_close
@@ -843,10 +837,6 @@ r_int
 r_char
 op_star
 id|transfer_buffer
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_if
 c_cond
@@ -886,12 +876,10 @@ id|serial
 )paren
 r_return
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 op_decrement
@@ -982,12 +970,10 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 multiline_comment|/* Uncomment the following line if you want to see some statistics in your syslog */
@@ -1342,7 +1328,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 (paren
 op_amp
-id|port-&gt;port_lock
+id|write_urb_pool_lock
 comma
 id|flags
 )paren
@@ -1385,7 +1371,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 (paren
 op_amp
-id|port-&gt;port_lock
+id|write_urb_pool_lock
 comma
 id|flags
 )paren
@@ -1440,7 +1426,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 (paren
 op_amp
-id|port-&gt;port_lock
+id|write_urb_pool_lock
 comma
 id|flags
 )paren
@@ -1483,7 +1469,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 (paren
 op_amp
-id|port-&gt;port_lock
+id|write_urb_pool_lock
 comma
 id|flags
 )paren
@@ -1831,10 +1817,6 @@ op_star
 id|port
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -1844,12 +1826,10 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 id|usb_unlink_urb
@@ -1857,12 +1837,10 @@ id|usb_unlink_urb
 id|port-&gt;read_urb
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 r_return
@@ -1880,10 +1858,6 @@ id|port
 )paren
 (brace
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|result
 suffix:semicolon
 id|dbg
@@ -1895,12 +1869,10 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 id|port-&gt;read_urb-&gt;dev
@@ -1929,12 +1901,10 @@ comma
 id|result
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 r_return

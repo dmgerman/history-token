@@ -88,6 +88,8 @@ multiline_comment|/* getting packets at the dev&t;*/
 multiline_comment|/* level.  For writing rarp and&t;*/
 multiline_comment|/* other similar things on the&t;*/
 multiline_comment|/* user level.&t;&t;&t;*/
+DECL|macro|SOCK_MAX
+mdefine_line|#define&t;SOCK_MAX&t;(SOCK_PACKET+1)
 macro_line|#endif
 macro_line|#endif /* _ASM_IA64_SOCKET_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsmethod - Parser/Interpreter interface - control method parsing&n; *              $Revision: 56 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsmethod - Parser/Interpreter interface - control method parsing&n; *              $Revision: 63 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -9,7 +9,7 @@ macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;actables.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          DISPATCHER
+mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|MODULE_NAME
 (paren
 l_string|&quot;dsmethod&quot;
@@ -101,7 +101,7 @@ id|status
 op_assign
 id|acpi_os_create_semaphore
 (paren
-l_int|1
+id|obj_desc-&gt;method.concurrency
 comma
 id|obj_desc-&gt;method.concurrency
 comma
@@ -158,7 +158,7 @@ id|op-&gt;node
 op_assign
 id|node
 suffix:semicolon
-multiline_comment|/*&n;&t; * Parse the method, first pass&n;&t; *&n;&t; * The first pass load is&n;&t; * where newly declared named objects are&n;&t; * added into the namespace.  Actual evaluation of&n;&t; * the named objects (what would be called a &quot;second&n;&t; * pass&quot;) happens during the actual execution of the&n;&t; * method so that operands to the named objects can&n;&t; * take on dynamic run-time values.&n;&t; */
+multiline_comment|/*&n;&t; * Parse the method, first pass&n;&t; *&n;&t; * The first pass load is where newly declared named objects are&n;&t; * added into the namespace.  Actual evaluation of&n;&t; * the named objects (what would be called a &quot;second&n;&t; * pass&quot;) happens during the actual execution of the&n;&t; * method so that operands to the named objects can&n;&t; * take on dynamic run-time values.&n;&t; */
 id|status
 op_assign
 id|acpi_ps_parse_aml
@@ -202,7 +202,7 @@ suffix:semicolon
 multiline_comment|/* Get a new Owner_id for objects created by this method */
 id|owner_id
 op_assign
-id|acpi_cm_allocate_owner_id
+id|acpi_ut_allocate_owner_id
 (paren
 id|OWNER_TYPE_METHOD
 )paren
@@ -224,7 +224,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_begin_method_execution&n; *&n; * PARAMETERS:  Method_node        - Node of the method&n; *              Obj_desc            - The method object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Prepare a method for execution.  Parses the method if necessary,&n; *              increments the thread count, and waits at the method semaphore&n; *              for clearance to execute.&n; *&n; * MUTEX:       Locks/unlocks parser.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_begin_method_execution&n; *&n; * PARAMETERS:  Method_node         - Node of the method&n; *              Obj_desc            - The method object&n; *              Calling_method_node - Caller of this method (if non-null)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Prepare a method for execution.  Parses the method if necessary,&n; *              increments the thread count, and waits at the method semaphore&n; *              for clearance to execute.&n; *&n; * MUTEX:       Locks/unlocks parser.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ds_begin_method_execution
 id|acpi_ds_begin_method_execution
@@ -236,6 +236,10 @@ comma
 id|ACPI_OPERAND_OBJECT
 op_star
 id|obj_desc
+comma
+id|ACPI_NAMESPACE_NODE
+op_star
+id|calling_method_node
 )paren
 (brace
 id|ACPI_STATUS
@@ -256,36 +260,41 @@ id|AE_NULL_ENTRY
 )paren
 suffix:semicolon
 )brace
-id|obj_desc
-op_assign
-id|acpi_ns_get_attached_object
-(paren
-id|method_node
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|obj_desc
-)paren
-(brace
-r_return
-(paren
-id|AE_NULL_OBJECT
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * If there is a concurrency limit on this method, we need to&n;&t; * obtain a unit from the method semaphore.  This releases the&n;&t; * interpreter if we block&n;&t; */
+multiline_comment|/*&n;&t; * If there is a concurrency limit on this method, we need to&n;&t; * obtain a unit from the method semaphore.&n;&t; */
 r_if
 c_cond
 (paren
 id|obj_desc-&gt;method.semaphore
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Allow recursive method calls, up to the reentrancy/concurrency&n;&t;&t; * limit imposed by the SERIALIZED rule and the Sync_level method&n;&t;&t; * parameter.&n;&t;&t; *&n;&t;&t; * The point of this code is to avoid permanently blocking a&n;&t;&t; * thread that is making recursive method calls.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|method_node
+op_eq
+id|calling_method_node
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|obj_desc-&gt;method.thread_count
+op_ge
+id|obj_desc-&gt;method.concurrency
+)paren
+(brace
+r_return
+(paren
+id|AE_AML_METHOD_LIMIT
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t;&t; * Get a unit from the method semaphore. This releases the&n;&t;&t; * interpreter if we block&n;&t;&t; */
 id|status
 op_assign
-id|acpi_aml_system_wait_semaphore
+id|acpi_ex_system_wait_semaphore
 (paren
 id|obj_desc-&gt;method.semaphore
 comma
@@ -293,7 +302,7 @@ id|WAIT_FOREVER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Increment the method parse tree thread count since there&n;&t; * is one additional thread executing in it.  If configured&n;&t; * for deletion-on-exit, the parse tree will be deleted when&n;&t; * the last thread completes execution of the method&n;&t; */
+multiline_comment|/*&n;&t; * Increment the method parse tree thread count since it has been&n;&t; * reentered one more time (even if it is the same thread)&n;&t; */
 id|obj_desc-&gt;method.thread_count
 op_increment
 suffix:semicolon
@@ -389,6 +398,8 @@ id|acpi_ds_begin_method_execution
 id|method_node
 comma
 id|obj_desc
+comma
+id|this_walk_state-&gt;method_node
 )paren
 suffix:semicolon
 r_if
@@ -619,7 +630,7 @@ id|i
 op_increment
 )paren
 (brace
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|this_walk_state-&gt;operands
 (braket
@@ -712,7 +723,7 @@ id|status
 )paren
 )paren
 (brace
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|return_desc
 )paren
@@ -727,7 +738,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Delete the return value if it will not be used by the&n;&t;&t;&t; * calling method&n;&t;&t;&t; */
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|return_desc
 )paren
@@ -750,9 +761,6 @@ op_star
 id|walk_state
 )paren
 (brace
-id|ACPI_STATUS
-id|status
-suffix:semicolon
 id|ACPI_OPERAND_OBJECT
 op_star
 id|obj_desc
@@ -786,7 +794,7 @@ id|walk_state
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Lock the parser while we terminate this method.&n;&t; * If this is the last thread executing the method,&n;&t; * we have additional cleanup to perform&n;&t; */
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_PARSER
 )paren
@@ -798,8 +806,6 @@ c_cond
 id|walk_state-&gt;method_desc-&gt;method.semaphore
 )paren
 (brace
-id|status
-op_assign
 id|acpi_os_signal_semaphore
 (paren
 id|walk_state-&gt;method_desc-&gt;method.semaphore
@@ -825,7 +831,7 @@ op_assign
 id|walk_state-&gt;method_node
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Delete any namespace entries created immediately underneath&n;&t;&t; * the method&n;&t;&t; */
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -848,13 +854,13 @@ id|acpi_ns_delete_namespace_by_owner
 id|walk_state-&gt;method_desc-&gt;method.owning_id
 )paren
 suffix:semicolon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_PARSER
 )paren

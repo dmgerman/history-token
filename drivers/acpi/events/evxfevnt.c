@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfevnt - External Interfaces, ACPI event disable/enable&n; *              $Revision: 28 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfevnt - External Interfaces, ACPI event disable/enable&n; *              $Revision: 33 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -7,12 +7,12 @@ macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          EVENT_HANDLING
+mdefine_line|#define _COMPONENT          ACPI_EVENTS
 id|MODULE_NAME
 (paren
 l_string|&quot;evxfevnt&quot;
 )paren
-multiline_comment|/**************************************************************************&n; *&n; * FUNCTION:    Acpi_enable&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Transfers the system into ACPI mode.&n; *&n; *************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_enable&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Transfers the system into ACPI mode.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_enable
 id|acpi_enable
@@ -84,7 +84,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; *&n; * FUNCTION:    Acpi_disable&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Returns the system to original ACPI/legacy mode, and&n; *              uninstalls the SCI interrupt handler.&n; *&n; *************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_disable&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Returns the system to original ACPI/legacy mode, and&n; *              uninstalls the SCI interrupt handler.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_disable
 id|acpi_disable
@@ -95,6 +95,27 @@ r_void
 id|ACPI_STATUS
 id|status
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Restore original mode  */
 id|status
 op_assign
@@ -133,7 +154,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_enable_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be enabled&n; *              Type            - The type of event&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_enable_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be enabled&n; *              Type            - The type of event&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_enable_event
 id|acpi_enable_event
@@ -153,6 +174,27 @@ suffix:semicolon
 id|u32
 id|register_id
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* The Type must be either Fixed Acpi_event or GPE */
 r_switch
 c_cond
@@ -255,7 +297,7 @@ id|register_id
 (brace
 r_return
 (paren
-id|AE_ERROR
+id|AE_NO_HARDWARE_RESPONSE
 )paren
 suffix:semicolon
 )brace
@@ -270,8 +312,8 @@ c_cond
 (paren
 (paren
 id|event
-op_ge
-id|NUM_GPE
+OG
+id|ACPI_GPE_MAX
 )paren
 op_logical_or
 (paren
@@ -311,7 +353,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_disable_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be enabled&n; *              Type            - The type of event&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disable an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_disable_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be enabled&n; *              Type            - The type of event&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disable an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_disable_event
 id|acpi_disable_event
@@ -331,6 +373,27 @@ suffix:semicolon
 id|u32
 id|register_id
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* The Type must be either Fixed Acpi_event or GPE */
 r_switch
 c_cond
@@ -433,7 +496,7 @@ id|register_id
 (brace
 r_return
 (paren
-id|AE_ERROR
+id|AE_NO_HARDWARE_RESPONSE
 )paren
 suffix:semicolon
 )brace
@@ -448,8 +511,8 @@ c_cond
 (paren
 (paren
 id|event
-op_ge
-id|NUM_GPE
+OG
+id|ACPI_GPE_MAX
 )paren
 op_logical_or
 (paren
@@ -489,7 +552,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_clear_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be cleared&n; *              Type            - The type of event&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Clear an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_clear_event&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE to be cleared&n; *              Type            - The type of event&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Clear an ACPI event (fixed and general purpose)&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_clear_event
 id|acpi_clear_event
@@ -509,6 +572,27 @@ suffix:semicolon
 id|u32
 id|register_id
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* The Type must be either Fixed Acpi_event or GPE */
 r_switch
 c_cond
@@ -604,8 +688,8 @@ c_cond
 (paren
 (paren
 id|event
-op_ge
-id|NUM_GPE
+OG
+id|ACPI_GPE_MAX
 )paren
 op_logical_or
 (paren
@@ -644,7 +728,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_event_status&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE&n; *              Type            - The type of event&n; *              Status          - Where the current status of the event will&n; *                                be returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Obtains and returns the current status of the event&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_event_status&n; *&n; * PARAMETERS:  Event           - The fixed event or GPE&n; *              Type            - The type of event&n; *              Status          - Where the current status of the event will&n; *                                be returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Obtains and returns the current status of the event&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_get_event_status
 id|acpi_get_event_status
@@ -668,6 +752,27 @@ suffix:semicolon
 id|u32
 id|register_id
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -777,8 +882,8 @@ c_cond
 (paren
 (paren
 id|event
-op_ge
-id|NUM_GPE
+OG
+id|ACPI_GPE_MAX
 )paren
 op_logical_or
 (paren

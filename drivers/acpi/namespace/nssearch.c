@@ -1,16 +1,16 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nssearch - Namespace search&n; *              $Revision: 64 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nssearch - Namespace search&n; *              $Revision: 70 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          NAMESPACE
+mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
 id|MODULE_NAME
 (paren
 l_string|&quot;nssearch&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_search_node&n; *&n; * PARAMETERS:  *Target_name        - Ascii ACPI name to search for&n; *              *Node           - Starting table where search will begin&n; *              Type                - Object type to match&n; *              **Return_node   - Where the matched Named obj is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Search a single namespace table.  Performs a simple search,&n; *              does not add entries or search parents.&n; *&n; *&n; *      Named object lists are built (and subsequently dumped) in the&n; *      order in which the names are encountered during the namespace load;&n; *&n; *      All namespace searching is linear in this implementation, but&n; *      could be easily modified to support any improved search&n; *      algorithm.  However, the linear search was chosen for simplicity&n; *      and because the trees are small and the other interpreter&n; *      execution overhead is relatively high.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_search_node&n; *&n; * PARAMETERS:  *Target_name        - Ascii ACPI name to search for&n; *              *Node               - Starting table where search will begin&n; *              Type                - Object type to match&n; *              **Return_node       - Where the matched Named obj is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Search a single namespace table.  Performs a simple search,&n; *              does not add entries or search parents.&n; *&n; *&n; *      Named object lists are built (and subsequently dumped) in the&n; *      order in which the names are encountered during the namespace load;&n; *&n; *      All namespace searching is linear in this implementation, but&n; *      could be easily modified to support any improved search&n; *      algorithm.  However, the linear search was chosen for simplicity&n; *      and because the trees are small and the other interpreter&n; *      execution overhead is relatively high.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ns_search_node
 id|acpi_ns_search_node
@@ -22,7 +22,7 @@ id|ACPI_NAMESPACE_NODE
 op_star
 id|node
 comma
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 comma
 id|ACPI_NAMESPACE_NODE
@@ -55,13 +55,12 @@ op_eq
 id|target_name
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Found matching entry.  Capture type if&n;&t;&t;&t; * appropriate before returning the entry.&n;&t;&t;&t; */
-multiline_comment|/*&n;&t;&t;&t; * The Def_field_defn and Bank_field_defn cases&n;&t;&t;&t; * are actually looking up the Region in which&n;&t;&t;&t; * the field will be defined&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Found matching entry.  Capture the type if appropriate, before&n;&t;&t;&t; * returning the entry.&n;&t;&t;&t; *&n;&t;&t;&t; * The Def_field_defn and Bank_field_defn cases are actually looking up&n;&t;&t;&t; * the Region in which the field will be defined&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 (paren
-id|INTERNAL_TYPE_DEF_FIELD_DEFN
+id|INTERNAL_TYPE_FIELD_DEFN
 op_eq
 id|type
 )paren
@@ -78,7 +77,7 @@ op_assign
 id|ACPI_TYPE_REGION
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Scope, Def_any, and Index_field_defn are bogus&n;&t;&t;&t; * &quot;types&quot; which do not actually have anything&n;&t;&t;&t; * to do with the type of the name being looked&n;&t;&t;&t; * up.  For any other value of Type, if the type&n;&t;&t;&t; * stored in the entry is Any (i.e. unknown),&n;&t;&t;&t; * save the actual type.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Scope, Def_any, and Index_field_defn are bogus &quot;types&quot; which do not&n;&t;&t;&t; * actually have anything to do with the type of the name being&n;&t;&t;&t; * looked up.  For any other value of Type, if the type stored in&n;&t;&t;&t; * the entry is Any (i.e. unknown), save the actual type.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -144,7 +143,7 @@ id|AE_NOT_FOUND
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_search_parent_tree&n; *&n; * PARAMETERS:  *Target_name        - Ascii ACPI name to search for&n; *              *Node           - Starting table where search will begin&n; *              Type                - Object type to match&n; *              **Return_node   - Where the matched Named Obj is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Called when a name has not been found in the current namespace&n; *              table.  Before adding it or giving up, ACPI scope rules require&n; *              searching enclosing scopes in cases identified by Acpi_ns_local().&n; *&n; *              &quot;A name is located by finding the matching name in the current&n; *              name space, and then in the parent name space. If the parent&n; *              name space does not contain the name, the search continues&n; *              recursively until either the name is found or the name space&n; *              does not have a parent (the root of the name space).  This&n; *              indicates that the name is not found&quot; (From ACPI Specification,&n; *              section 5.3)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_search_parent_tree&n; *&n; * PARAMETERS:  *Target_name        - Ascii ACPI name to search for&n; *              *Node               - Starting table where search will begin&n; *              Type                - Object type to match&n; *              **Return_node       - Where the matched Named Obj is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Called when a name has not been found in the current namespace&n; *              table.  Before adding it or giving up, ACPI scope rules require&n; *              searching enclosing scopes in cases identified by Acpi_ns_local().&n; *&n; *              &quot;A name is located by finding the matching name in the current&n; *              name space, and then in the parent name space. If the parent&n; *              name space does not contain the name, the search continues&n; *              recursively until either the name is found or the name space&n; *              does not have a parent (the root of the name space).  This&n; *              indicates that the name is not found&quot; (From ACPI Specification,&n; *              section 5.3)&n; *&n; ******************************************************************************/
 r_static
 id|ACPI_STATUS
 DECL|function|acpi_ns_search_parent_tree
@@ -157,7 +156,7 @@ id|ACPI_NAMESPACE_NODE
 op_star
 id|node
 comma
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 comma
 id|ACPI_NAMESPACE_NODE
@@ -257,7 +256,7 @@ id|AE_NOT_FOUND
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_search_and_enter&n; *&n; * PARAMETERS:  Target_name         - Ascii ACPI name to search for (4 chars)&n; *              Walk_state          - Current state of the walk&n; *              *Node           - Starting table where search will begin&n; *              Interpreter_mode    - Add names only in MODE_Load_pass_x.&n; *                                    Otherwise,search only.&n; *              Type                - Object type to match&n; *              Flags               - Flags describing the search restrictions&n; *              **Return_node   - Where the Node is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Search for a name segment in a single name table,&n; *              optionally adding it if it is not found.  If the passed&n; *              Type is not Any and the type previously stored in the&n; *              entry was Any (i.e. unknown), update the stored type.&n; *&n; *              In IMODE_EXECUTE, search only.&n; *              In other modes, search and add if not found.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_search_and_enter&n; *&n; * PARAMETERS:  Target_name         - Ascii ACPI name to search for (4 chars)&n; *              Walk_state          - Current state of the walk&n; *              *Node               - Starting table where search will begin&n; *              Interpreter_mode    - Add names only in MODE_Load_pass_x.&n; *                                    Otherwise,search only.&n; *              Type                - Object type to match&n; *              Flags               - Flags describing the search restrictions&n; *              **Return_node       - Where the Node is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Search for a name segment in a single name table,&n; *              optionally adding it if it is not found.  If the passed&n; *              Type is not Any and the type previously stored in the&n; *              entry was Any (i.e. unknown), update the stored type.&n; *&n; *              In IMODE_EXECUTE, search only.&n; *              In other modes, search and add if not found.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ns_search_and_enter
 id|acpi_ns_search_and_enter
@@ -276,7 +275,7 @@ comma
 id|OPERATING_MODE
 id|interpreter_mode
 comma
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 comma
 id|u32
@@ -327,7 +326,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|acpi_cm_valid_acpi_name
+id|acpi_ut_valid_acpi_name
 (paren
 id|target_name
 )paren
@@ -373,7 +372,7 @@ op_ne
 id|AE_NOT_FOUND
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * If we found it AND the request specifies that a&n;&t;&t; * find is an error, return the error&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If we found it AND the request specifies that a find is an error,&n;&t;&t; * return the error&n;&t;&t; */
 r_if
 c_cond
 (paren

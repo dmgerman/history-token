@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsload - namespace loading/expanding/contracting procedures&n; *              $Revision: 35 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsload - namespace loading/expanding/contracting procedures&n; *              $Revision: 41 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -8,12 +8,12 @@ macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          NAMESPACE
+mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
 id|MODULE_NAME
 (paren
 l_string|&quot;nsload&quot;
 )paren
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_load_namespace&n; *&n; * PARAMETERS:  Display_aml_during_load&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load the name space from what ever is pointed to by DSDT.&n; *              (DSDT points to either the BIOS or a buffer.)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_load_namespace&n; *&n; * PARAMETERS:  Display_aml_during_load&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load the name space from what ever is pointed to by DSDT.&n; *              (DSDT points to either the BIOS or a buffer.)&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ns_load_namespace
 id|acpi_ns_load_namespace
@@ -301,7 +301,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_load_table&n; *&n; * PARAMETERS:  *Pcode_addr         - Address of pcode block&n; *              Pcode_length        - Length of pcode block&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load one ACPI table into the namespace&n; *&n; ****************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_load_table&n; *&n; * PARAMETERS:  *Pcode_addr         - Address of pcode block&n; *              Pcode_length        - Length of pcode block&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load one ACPI table into the namespace&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ns_load_table
 id|acpi_ns_load_table
@@ -345,7 +345,7 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Parse the table and load the namespace with all named&n;&t; * objects found within.  Control methods are NOT parsed&n;&t; * at this time.  In fact, the control methods cannot be&n;&t; * parsed until the entire namespace is loaded, because&n;&t; * if a control method makes a forward reference (call)&n;&t; * to another control method, we can&squot;t continue parsing&n;&t; * because we don&squot;t know how many arguments to parse next!&n;&t; */
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -359,7 +359,7 @@ comma
 id|node-&gt;child
 )paren
 suffix:semicolon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -395,7 +395,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_load_table_by_type&n; *&n; * PARAMETERS:  Table_type          - Id of the table type to load&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load an ACPI table or tables into the namespace.  All tables&n; *              of the given type are loaded.  The mechanism allows this&n; *              routine to be called repeatedly.&n; *&n; *****************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_load_table_by_type&n; *&n; * PARAMETERS:  Table_type          - Id of the table type to load&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load an ACPI table or tables into the namespace.  All tables&n; *              of the given type are loaded.  The mechanism allows this&n; *              routine to be called repeatedly.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ns_load_table_by_type
 id|acpi_ns_load_table_by_type
@@ -412,15 +412,11 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|ACPI_TABLE_HEADER
-op_star
-id|table_ptr
-suffix:semicolon
 id|ACPI_TABLE_DESC
 op_star
 id|table_desc
 suffix:semicolon
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_TABLES
 )paren
@@ -516,10 +512,6 @@ id|i
 op_increment
 )paren
 (brace
-id|table_ptr
-op_assign
-id|table_desc-&gt;pointer
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Only attempt to load table if it is not&n;&t;&t;&t; * already loaded!&n;&t;&t;&t; */
 r_if
 c_cond
@@ -593,10 +585,6 @@ id|i
 op_increment
 )paren
 (brace
-id|table_ptr
-op_assign
-id|table_desc-&gt;pointer
-suffix:semicolon
 multiline_comment|/* Only attempt to load table if it is not already loaded! */
 r_if
 c_cond
@@ -644,10 +632,12 @@ id|status
 op_assign
 id|AE_SUPPORT
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 id|unlock_and_exit
 suffix:colon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_TABLES
 )paren
@@ -658,7 +648,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_subtree&n; *&n; * PARAMETERS:  Start_handle        - Handle in namespace where search begins&n; *&n; * RETURNS      Status&n; *&n; * DESCRIPTION: Walks the namespace starting at the given handle and deletes&n; *              all objects, entries, and scopes in the entire subtree.&n; *&n; *              TBD: [Investigate] What if any part of this subtree is in use?&n; *              (i.e. on one of the object stacks?)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_subtree&n; *&n; * PARAMETERS:  Start_handle        - Handle in namespace where search begins&n; *&n; * RETURNS      Status&n; *&n; * DESCRIPTION: Walks the namespace starting at the given handle and deletes&n; *              all objects, entries, and scopes in the entire subtree.&n; *&n; *              TBD: [Investigate] What if any part of this subtree is in use?&n; *              (i.e. on one of the object stacks?)&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ns_delete_subtree
 id|acpi_ns_delete_subtree
@@ -807,7 +797,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; *  FUNCTION:       Acpi_ns_unload_name_space&n; *&n; *  PARAMETERS:     Handle          - Root of namespace subtree to be deleted&n; *&n; *  RETURN:         Status&n; *&n; *  DESCRIPTION:    Shrinks the namespace, typically in response to an undocking&n; *                  event.  Deletes an entire subtree starting from (and&n; *                  including) the given handle.&n; *&n; ****************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; *  FUNCTION:       Acpi_ns_unload_name_space&n; *&n; *  PARAMETERS:     Handle          - Root of namespace subtree to be deleted&n; *&n; *  RETURN:         Status&n; *&n; *  DESCRIPTION:    Shrinks the namespace, typically in response to an undocking&n; *                  event.  Deletes an entire subtree starting from (and&n; *                  including) the given handle.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ns_unload_namespace
 id|acpi_ns_unload_namespace

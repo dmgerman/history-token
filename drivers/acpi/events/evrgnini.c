@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evrgnini- ACPI Address_space (Op_region) init&n; *              $Revision: 33 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evrgnini- ACPI Address_space (Op_region) init&n; *              $Revision: 40 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -6,12 +6,12 @@ macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          EVENT_HANDLING
+mdefine_line|#define _COMPONENT          ACPI_EVENTS
 id|MODULE_NAME
 (paren
 l_string|&quot;evrgnini&quot;
 )paren
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_system_memory_region_setup&n; *&n; * PARAMETERS:  Region_obj          - region we are interested in&n; *              Function            - start or stop&n; *              Handler_context     - Address space handler context&n; *              Region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling, a nop for now&n; *&n; ****************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_system_memory_region_setup&n; *&n; * PARAMETERS:  Region_obj          - region we are interested in&n; *              Function            - start or stop&n; *              Handler_context     - Address space handler context&n; *              Region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling, a nop for now&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ev_system_memory_region_setup
 id|acpi_ev_system_memory_region_setup
@@ -47,7 +47,7 @@ op_star
 id|region_context
 )paren
 (brace
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 op_star
 id|region_context
@@ -69,11 +69,11 @@ multiline_comment|/* Activate.  Create a new context */
 op_star
 id|region_context
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 r_sizeof
 (paren
-id|MEM_HANDLER_CONTEXT
+id|ACPI_MEM_SPACE_CONTEXT
 )paren
 )paren
 suffix:semicolon
@@ -99,7 +99,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_io_space_region_setup&n; *&n; * PARAMETERS:  Region_obj          - region we are interested in&n; *              Function            - start or stop&n; *              Handler_context     - Address space handler context&n; *              Region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; ****************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_io_space_region_setup&n; *&n; * PARAMETERS:  Region_obj          - region we are interested in&n; *              Function            - start or stop&n; *              Handler_context     - Address space handler context&n; *              Region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ev_io_space_region_setup
 id|acpi_ev_io_space_region_setup
@@ -148,7 +148,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_pci_config_region_setup&n; *&n; * PARAMETERS:  Region_obj          - region we are interested in&n; *              Function            - start or stop&n; *              Handler_context     - Address space handler context&n; *              Region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; * MUTEX:       Assumes namespace is not locked&n; *&n; ****************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_pci_config_region_setup&n; *&n; * PARAMETERS:  Region_obj          - region we are interested in&n; *              Function            - start or stop&n; *              Handler_context     - Address space handler context&n; *              Region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; * MUTEX:       Assumes namespace is not locked&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ev_pci_config_region_setup
 id|acpi_ev_pci_config_region_setup
@@ -177,7 +177,7 @@ suffix:semicolon
 id|ACPI_INTEGER
 id|temp
 suffix:semicolon
-id|PCI_HANDLER_CONTEXT
+id|ACPI_PCI_SPACE_CONTEXT
 op_star
 id|pci_context
 op_assign
@@ -202,7 +202,7 @@ op_star
 )paren
 id|handle
 suffix:semicolon
-id|DEVICE_ID
+id|ACPI_DEVICE_ID
 id|object_hID
 suffix:semicolon
 id|handler_obj
@@ -218,7 +218,9 @@ id|handler_obj
 (brace
 multiline_comment|/*&n;&t;&t; *  No installed handler. This shouldn&squot;t happen because the dispatch&n;&t;&t; *  routine checks before we get here, but we check again just in case.&n;&t;&t; */
 r_return
+(paren
 id|AE_NOT_EXIST
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -235,7 +237,7 @@ c_cond
 id|pci_context
 )paren
 (brace
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|pci_context
 )paren
@@ -255,11 +257,11 @@ suffix:semicolon
 multiline_comment|/* Create a new context */
 id|pci_context
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 r_sizeof
 (paren
-id|PCI_HANDLER_CONTEXT
+id|ACPI_PCI_SPACE_CONTEXT
 )paren
 )paren
 suffix:semicolon
@@ -279,7 +281,6 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *  For PCI Config space access, we have to pass the segment, bus,&n;&t; *  device and function numbers.  This routine must acquire those.&n;&t; */
 multiline_comment|/*&n;&t; *  First get device and function numbers from the _ADR object&n;&t; *  in the parent&squot;s scope.&n;&t; */
 id|ACPI_ASSERT
-c_func
 (paren
 id|region_obj-&gt;region.node
 )paren
@@ -294,7 +295,7 @@ suffix:semicolon
 multiline_comment|/* Acpi_evaluate the _ADR object */
 id|status
 op_assign
-id|acpi_cm_evaluate_numeric_object
+id|acpi_ut_evaluate_numeric_object
 (paren
 id|METHOD_NAME__ADR
 comma
@@ -314,7 +315,6 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  Got it..&n;&t;&t; */
 id|pci_context-&gt;dev_func
 op_assign
 (paren
@@ -344,8 +344,7 @@ id|acpi_gbl_root_node
 (brace
 id|status
 op_assign
-id|acpi_cm_execute_HID
-c_func
+id|acpi_ut_execute_HID
 (paren
 id|node
 comma
@@ -368,7 +367,6 @@ c_cond
 op_logical_neg
 (paren
 id|STRNCMP
-c_func
 (paren
 id|object_hID.buffer
 comma
@@ -383,11 +381,10 @@ id|PCI_ROOT_HID_STRING
 )paren
 (brace
 id|acpi_install_address_space_handler
-c_func
 (paren
 id|node
 comma
-id|ADDRESS_SPACE_PCI_CONFIG
+id|ACPI_ADR_SPACE_PCI_CONFIG
 comma
 id|ACPI_DEFAULT_HANDLER
 comma
@@ -403,7 +400,6 @@ suffix:semicolon
 id|node
 op_assign
 id|acpi_ns_get_parent_object
-c_func
 (paren
 id|node
 )paren
@@ -419,7 +415,7 @@ suffix:semicolon
 )brace
 id|status
 op_assign
-id|acpi_cm_evaluate_numeric_object
+id|acpi_ut_evaluate_numeric_object
 (paren
 id|METHOD_NAME__SEG
 comma
@@ -438,7 +434,6 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  Got it..&n;&t;&t; */
 id|pci_context-&gt;seg
 op_assign
 (paren
@@ -449,7 +444,7 @@ suffix:semicolon
 )brace
 id|status
 op_assign
-id|acpi_cm_evaluate_numeric_object
+id|acpi_ut_evaluate_numeric_object
 (paren
 id|METHOD_NAME__BBN
 comma
@@ -468,7 +463,6 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  Got it..&n;&t;&t; */
 id|pci_context-&gt;bus
 op_assign
 (paren
@@ -488,7 +482,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_default_region_setup&n; *&n; * PARAMETERS:  Region_obj          - region we are interested in&n; *              Function            - start or stop&n; *              Handler_context     - Address space handler context&n; *              Region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; ****************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_default_region_setup&n; *&n; * PARAMETERS:  Region_obj          - region we are interested in&n; *              Function            - start or stop&n; *              Handler_context     - Address space handler context&n; *              Region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ev_default_region_setup
 id|acpi_ev_default_region_setup
@@ -537,7 +531,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_initialize_region&n; *&n; * PARAMETERS:  Region_obj - Region we are initializing&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initializes the region, finds any _REG methods and saves them&n; *              for execution at a later time&n; *&n; *              Get the appropriate address space handler for a newly&n; *              created region.&n; *&n; *              This also performs address space specific intialization.  For&n; *              example, PCI regions must have an _ADR object that contains&n; *              a PCI address in the scope of the defintion.  This address is&n; *              required to perform an access to PCI config space.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_initialize_region&n; *&n; * PARAMETERS:  Region_obj - Region we are initializing&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initializes the region, finds any _REG methods and saves them&n; *              for execution at a later time&n; *&n; *              Get the appropriate address space handler for a newly&n; *              created region.&n; *&n; *              This also performs address space specific intialization.  For&n; *              example, PCI regions must have an _ADR object that contains&n; *              a PCI address in the scope of the definition.  This address is&n; *              required to perform an access to PCI config space.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ev_initialize_region
 id|acpi_ev_initialize_region
@@ -558,7 +552,7 @@ id|ACPI_OPERAND_OBJECT
 op_star
 id|obj_desc
 suffix:semicolon
-id|ACPI_ADDRESS_SPACE_TYPE
+id|ACPI_ADR_SPACE_TYPE
 id|space_id
 suffix:semicolon
 id|ACPI_NAMESPACE_NODE
@@ -596,7 +590,6 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 id|ACPI_ASSERT
-c_func
 (paren
 id|region_obj-&gt;region.node
 )paren
@@ -674,9 +667,6 @@ id|obj_desc
 op_assign
 id|acpi_ns_get_attached_object
 (paren
-(paren
-id|ACPI_HANDLE
-)paren
 id|node
 )paren
 suffix:semicolon

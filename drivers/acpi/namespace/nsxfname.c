@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsxfname - Public interfaces to the ACPI subsystem&n; *                         ACPI Namespace oriented interfaces&n; *              $Revision: 75 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsxfname - Public interfaces to the ACPI subsystem&n; *                         ACPI Namespace oriented interfaces&n; *              $Revision: 79 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -8,7 +8,7 @@ macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          NAMESPACE
+mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
 id|MODULE_NAME
 (paren
 l_string|&quot;nsxfname&quot;
@@ -44,6 +44,28 @@ id|prefix_node
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Parameter Validation */
 r_if
 c_cond
 (paren
@@ -67,7 +89,7 @@ c_cond
 id|parent
 )paren
 (brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -86,7 +108,7 @@ op_logical_neg
 id|prefix_node
 )paren
 (brace
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -97,7 +119,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -196,6 +218,27 @@ id|ACPI_NAMESPACE_NODE
 op_star
 id|node
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Buffer pointer must be valid always */
 r_if
 c_cond
@@ -264,7 +307,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Wants the single segment ACPI name.&n;&t; * Validate handle and convert to an Node&n;&t; */
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -346,7 +389,7 @@ id|AE_OK
 suffix:semicolon
 id|unlock_and_exit
 suffix:colon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -370,10 +413,10 @@ op_star
 id|info
 )paren
 (brace
-id|DEVICE_ID
+id|ACPI_DEVICE_ID
 id|hid
 suffix:semicolon
-id|DEVICE_ID
+id|ACPI_DEVICE_ID
 id|uid
 suffix:semicolon
 id|ACPI_STATUS
@@ -393,6 +436,27 @@ id|ACPI_NAMESPACE_NODE
 op_star
 id|node
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -410,7 +474,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -429,7 +493,7 @@ op_logical_neg
 id|node
 )paren
 (brace
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -448,7 +512,7 @@ id|info-&gt;name
 op_assign
 id|node-&gt;name
 suffix:semicolon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -476,7 +540,7 @@ suffix:semicolon
 multiline_comment|/* Execute the _HID method and save the result */
 id|status
 op_assign
-id|acpi_cm_execute_HID
+id|acpi_ut_execute_HID
 (paren
 id|node
 comma
@@ -513,7 +577,7 @@ suffix:semicolon
 multiline_comment|/* Execute the _UID method and save the result */
 id|status
 op_assign
-id|acpi_cm_execute_UID
+id|acpi_ut_execute_UID
 (paren
 id|node
 comma
@@ -545,7 +609,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Execute the _STA method and save the result&n;&t; * _STA is not always present&n;&t; */
 id|status
 op_assign
-id|acpi_cm_execute_STA
+id|acpi_ut_execute_STA
 (paren
 id|node
 comma
@@ -574,7 +638,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Execute the _ADR method and save result if successful&n;&t; * _ADR is not always present&n;&t; */
 id|status
 op_assign
-id|acpi_cm_evaluate_numeric_object
+id|acpi_ut_evaluate_numeric_object
 (paren
 id|METHOD_NAME__ADR
 comma

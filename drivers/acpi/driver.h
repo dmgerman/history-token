@@ -117,18 +117,5 @@ r_volatile
 id|acpi_sstate_t
 id|acpi_sleep_state
 suffix:semicolon
-multiline_comment|/*&n; * table.c&n; */
-r_extern
-id|FADT_DESCRIPTOR
-id|acpi_fadt
-suffix:semicolon
-r_int
-id|acpi_find_and_load_tables
-c_func
-(paren
-id|u64
-id|rsdp
-)paren
-suffix:semicolon
 macro_line|#endif /* __DRIVER_H */
 eof

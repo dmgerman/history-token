@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of ACPI_OPERAND_OBJECT  (Internal object only)&n; *       $Revision: 78 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of ACPI_OPERAND_OBJECT  (Internal object only)&n; *       $Revision: 89 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACOBJECT_H
 DECL|macro|_ACOBJECT_H
@@ -7,7 +7,7 @@ multiline_comment|/*&n; * The ACPI_OPERAND_OBJECT  is used to pass AML operands 
 multiline_comment|/******************************************************************************&n; *&n; * Common Descriptors&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; * Common area for all objects.&n; *&n; * Data_type is used to differentiate between internal descriptors, and MUST&n; * be the first byte in this structure.&n; */
 DECL|macro|ACPI_OBJECT_COMMON_HEADER
-mdefine_line|#define ACPI_OBJECT_COMMON_HEADER           /* 32-bits plus 8-bit flag */&bslash;&n;&t;u8                          data_type;          /* To differentiate various internal objs */&bslash;&n;&t;u8                          type;               /* ACPI_OBJECT_TYPE */&bslash;&n;&t;u16                         reference_count;    /* For object deletion management */&bslash;&n;&t;u8                          flags; &bslash;&n;
+mdefine_line|#define ACPI_OBJECT_COMMON_HEADER           /* SIZE/ALIGNMENT: 32-bits plus trailing 8-bit flag */&bslash;&n;&t;u8                          data_type;          /* To differentiate various internal objs */&bslash;&n;&t;u8                          type;               /* ACPI_OBJECT_TYPE */&bslash;&n;&t;u16                         reference_count;    /* For object deletion management */&bslash;&n;&t;u8                          flags; &bslash;&n;
 multiline_comment|/* Defines for flag byte above */
 DECL|macro|AOPOBJ_STATIC_ALLOCATION
 mdefine_line|#define AOPOBJ_STATIC_ALLOCATION    0x1
@@ -15,9 +15,12 @@ DECL|macro|AOPOBJ_DATA_VALID
 mdefine_line|#define AOPOBJ_DATA_VALID           0x2
 DECL|macro|AOPOBJ_INITIALIZED
 mdefine_line|#define AOPOBJ_INITIALIZED          0x4
-multiline_comment|/*&n; * Common bitfield for the field objects&n; */
+multiline_comment|/*&n; * Common bitfield for the field objects&n; * &quot;Field Datum&quot;    -- a datum from the actual field object&n; * &quot;Buffer Datum&quot;   -- a datum from a user buffer, read from or to be written to the field&n; */
 DECL|macro|ACPI_COMMON_FIELD_INFO
-mdefine_line|#define ACPI_COMMON_FIELD_INFO              /* Three 32-bit values plus 8*/&bslash;&n;&t;u8                          granularity;&bslash;&n;&t;u16                         length; &bslash;&n;&t;u32                         offset;             /* Byte offset within containing object */&bslash;&n;&t;u8                          bit_offset;         /* Bit offset within min read/write data unit */&bslash;&n;&t;u8                          access;             /* Access_type */&bslash;&n;&t;u8                          lock_rule;&bslash;&n;&t;u8                          update_rule;&bslash;&n;&t;u8                          access_attribute;
+mdefine_line|#define ACPI_COMMON_FIELD_INFO              /* SIZE/ALIGNMENT: 24 bits + three 32-bit values */&bslash;&n;&t;u8                          access_flags;&bslash;&n;&t;u16                         bit_length;         /* Length of field in bits */&bslash;&n;&t;u32                         base_byte_offset;   /* Byte offset within containing object */&bslash;&n;&t;u8                          access_bit_width;   /* Read/Write size in bits (from ASL Access_type)*/&bslash;&n;&t;u8                          access_byte_width;  /* Read/Write size in bytes */&bslash;&n;&t;u8                          update_rule;        /* How neighboring field bits are handled */&bslash;&n;&t;u8                          lock_rule;          /* Global Lock: 1 = &quot;Must Lock&quot; */&bslash;&n;&t;u8                          start_field_bit_offset;/* Bit offset within first field datum (0-63) */&bslash;&n;&t;u8                          datum_valid_bits;   /* Valid bit in first &quot;Field datum&quot; */&bslash;&n;&t;u8                          end_field_valid_bits; /* Valid bits in the last &quot;field datum&quot; */&bslash;&n;&t;u8                          end_buffer_valid_bits; /* Valid bits in the last &quot;buffer datum&quot; */&bslash;&n;&t;u32                         value;              /* Value to store into the Bank or Index register */
+multiline_comment|/* Access flag bits */
+DECL|macro|AFIELD_SINGLE_DATUM
+mdefine_line|#define AFIELD_SINGLE_DATUM         0x1
 multiline_comment|/******************************************************************************&n; *&n; * Individual Object Descriptors&n; *&n; *****************************************************************************/
 r_typedef
 r_struct
@@ -127,36 +130,6 @@ id|ACPI_OBJECT_PACKAGE
 suffix:semicolon
 r_typedef
 r_struct
-multiline_comment|/* FIELD UNIT */
-(brace
-id|ACPI_OBJECT_COMMON_HEADER
-id|ACPI_COMMON_FIELD_INFO
-DECL|member|extra
-r_union
-id|acpi_operand_obj
-op_star
-id|extra
-suffix:semicolon
-multiline_comment|/* Pointer to executable AML (in field definition) */
-DECL|member|node
-id|ACPI_NAMESPACE_NODE
-op_star
-id|node
-suffix:semicolon
-multiline_comment|/* containing object */
-DECL|member|container
-r_union
-id|acpi_operand_obj
-op_star
-id|container
-suffix:semicolon
-multiline_comment|/* Containing object (Buffer) */
-DECL|typedef|ACPI_OBJECT_FIELD_UNIT
-)brace
-id|ACPI_OBJECT_FIELD_UNIT
-suffix:semicolon
-r_typedef
-r_struct
 multiline_comment|/* DEVICE - has handle and notification handler/context */
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
@@ -244,8 +217,10 @@ DECL|typedef|ACPI_OBJECT_METHOD
 )brace
 id|ACPI_OBJECT_METHOD
 suffix:semicolon
+DECL|struct|acpi_obj_mutex
 r_typedef
 r_struct
+id|acpi_obj_mutex
 multiline_comment|/* MUTEX */
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
@@ -253,11 +228,34 @@ DECL|member|sync_level
 id|u16
 id|sync_level
 suffix:semicolon
+DECL|member|acquisition_depth
+id|u16
+id|acquisition_depth
+suffix:semicolon
 DECL|member|semaphore
 r_void
 op_star
 id|semaphore
 suffix:semicolon
+DECL|member|owner
+r_void
+op_star
+id|owner
+suffix:semicolon
+DECL|member|prev
+r_union
+id|acpi_operand_obj
+op_star
+id|prev
+suffix:semicolon
+multiline_comment|/* Link for list of acquired mutexes */
+DECL|member|next
+r_union
+id|acpi_operand_obj
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* Link for list of acquired mutexes */
 DECL|typedef|ACPI_OBJECT_MUTEX
 )brace
 id|ACPI_OBJECT_MUTEX
@@ -412,23 +410,41 @@ DECL|typedef|ACPI_OBJECT_THERMAL_ZONE
 )brace
 id|ACPI_OBJECT_THERMAL_ZONE
 suffix:semicolon
-multiline_comment|/*&n; * Internal types&n; */
+multiline_comment|/*&n; * Fields.  All share a common header/info field.&n; */
 r_typedef
 r_struct
-multiline_comment|/* FIELD */
+multiline_comment|/* COMMON FIELD (for BUFFER, REGION, BANK, and INDEX fields) */
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 id|ACPI_COMMON_FIELD_INFO
-DECL|member|container
+DECL|member|region_obj
 r_union
 id|acpi_operand_obj
 op_star
-id|container
+id|region_obj
 suffix:semicolon
-multiline_comment|/* Containing object */
-DECL|typedef|ACPI_OBJECT_FIELD
+multiline_comment|/* Containing Operation Region object */
+multiline_comment|/* (REGION/BANK fields only) */
+DECL|typedef|ACPI_OBJECT_FIELD_COMMON
 )brace
-id|ACPI_OBJECT_FIELD
+id|ACPI_OBJECT_FIELD_COMMON
+suffix:semicolon
+r_typedef
+r_struct
+multiline_comment|/* REGION FIELD */
+(brace
+id|ACPI_OBJECT_COMMON_HEADER
+id|ACPI_COMMON_FIELD_INFO
+DECL|member|region_obj
+r_union
+id|acpi_operand_obj
+op_star
+id|region_obj
+suffix:semicolon
+multiline_comment|/* Containing Op_region object */
+DECL|typedef|ACPI_OBJECT_REGION_FIELD
+)brace
+id|ACPI_OBJECT_REGION_FIELD
 suffix:semicolon
 r_typedef
 r_struct
@@ -436,23 +452,20 @@ multiline_comment|/* BANK FIELD */
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 id|ACPI_COMMON_FIELD_INFO
-DECL|member|value
-id|u32
-id|value
-suffix:semicolon
-multiline_comment|/* Value to store into Bank_select */
-DECL|member|bank_select
-id|ACPI_HANDLE
-id|bank_select
-suffix:semicolon
-multiline_comment|/* Bank select register */
-DECL|member|container
+DECL|member|region_obj
 r_union
 id|acpi_operand_obj
 op_star
-id|container
+id|region_obj
 suffix:semicolon
-multiline_comment|/* Containing object */
+multiline_comment|/* Containing Op_region object */
+DECL|member|bank_register_obj
+r_union
+id|acpi_operand_obj
+op_star
+id|bank_register_obj
+suffix:semicolon
+multiline_comment|/* Bank_select Register object */
 DECL|typedef|ACPI_OBJECT_BANK_FIELD
 )brace
 id|ACPI_OBJECT_BANK_FIELD
@@ -461,28 +474,59 @@ r_typedef
 r_struct
 multiline_comment|/* INDEX FIELD */
 (brace
-multiline_comment|/*&n;&t; * No container pointer needed since the index and data register definitions&n;&t; * will define how to access the respective registers&n;&t; */
 id|ACPI_OBJECT_COMMON_HEADER
 id|ACPI_COMMON_FIELD_INFO
-DECL|member|value
-id|u32
-id|value
-suffix:semicolon
-multiline_comment|/* Value to store into Index register */
-DECL|member|index
-id|ACPI_HANDLE
-id|index
+multiline_comment|/*&n;&t; * No &quot;Region_obj&quot; pointer needed since the Index and Data registers&n;&t; * are each field definitions unto themselves.&n;&t; */
+DECL|member|index_obj
+r_union
+id|acpi_operand_obj
+op_star
+id|index_obj
 suffix:semicolon
 multiline_comment|/* Index register */
-DECL|member|data
-id|ACPI_HANDLE
-id|data
+DECL|member|data_obj
+r_union
+id|acpi_operand_obj
+op_star
+id|data_obj
 suffix:semicolon
 multiline_comment|/* Data register */
 DECL|typedef|ACPI_OBJECT_INDEX_FIELD
 )brace
 id|ACPI_OBJECT_INDEX_FIELD
 suffix:semicolon
+multiline_comment|/* The Buffer_field is different in that it is part of a Buffer, not an Op_region */
+r_typedef
+r_struct
+multiline_comment|/* BUFFER FIELD */
+(brace
+id|ACPI_OBJECT_COMMON_HEADER
+id|ACPI_COMMON_FIELD_INFO
+DECL|member|extra
+r_union
+id|acpi_operand_obj
+op_star
+id|extra
+suffix:semicolon
+multiline_comment|/* Pointer to executable AML (in field definition) */
+DECL|member|node
+id|ACPI_NAMESPACE_NODE
+op_star
+id|node
+suffix:semicolon
+multiline_comment|/* Parent (containing) object node */
+DECL|member|buffer_obj
+r_union
+id|acpi_operand_obj
+op_star
+id|buffer_obj
+suffix:semicolon
+multiline_comment|/* Containing Buffer object */
+DECL|typedef|ACPI_OBJECT_BUFFER_FIELD
+)brace
+id|ACPI_OBJECT_BUFFER_FIELD
+suffix:semicolon
+multiline_comment|/*&n; * Handlers&n; */
 r_typedef
 r_struct
 multiline_comment|/* NOTIFY HANDLER */
@@ -495,7 +539,7 @@ id|node
 suffix:semicolon
 multiline_comment|/* Parent device */
 DECL|member|handler
-id|NOTIFY_HANDLER
+id|ACPI_NOTIFY_HANDLER
 id|handler
 suffix:semicolon
 DECL|member|context
@@ -524,7 +568,7 @@ id|u16
 id|hflags
 suffix:semicolon
 DECL|member|handler
-id|ADDRESS_SPACE_HANDLER
+id|ACPI_ADR_SPACE_HANDLER
 id|handler
 suffix:semicolon
 DECL|member|node
@@ -539,7 +583,7 @@ op_star
 id|context
 suffix:semicolon
 DECL|member|setup
-id|ADDRESS_SPACE_SETUP
+id|ACPI_ADR_SPACE_SETUP
 id|setup
 suffix:semicolon
 DECL|member|region_list
@@ -570,9 +614,9 @@ id|u8
 id|target_type
 suffix:semicolon
 multiline_comment|/* Used for Index_op */
-DECL|member|op_code
+DECL|member|opcode
 id|u16
-id|op_code
+id|opcode
 suffix:semicolon
 DECL|member|offset
 id|u32
@@ -670,9 +714,9 @@ DECL|member|package
 id|ACPI_OBJECT_PACKAGE
 id|package
 suffix:semicolon
-DECL|member|field_unit
-id|ACPI_OBJECT_FIELD_UNIT
-id|field_unit
+DECL|member|buffer_field
+id|ACPI_OBJECT_BUFFER_FIELD
+id|buffer_field
 suffix:semicolon
 DECL|member|device
 id|ACPI_OBJECT_DEVICE
@@ -706,8 +750,12 @@ DECL|member|thermal_zone
 id|ACPI_OBJECT_THERMAL_ZONE
 id|thermal_zone
 suffix:semicolon
+DECL|member|common_field
+id|ACPI_OBJECT_FIELD_COMMON
+id|common_field
+suffix:semicolon
 DECL|member|field
-id|ACPI_OBJECT_FIELD
+id|ACPI_OBJECT_REGION_FIELD
 id|field
 suffix:semicolon
 DECL|member|bank_field

@@ -1,11 +1,11 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsxfobj - Public interfaces to the ACPI subsystem&n; *                         ACPI Object oriented interfaces&n; *              $Revision: 80 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsxfobj - Public interfaces to the ACPI subsystem&n; *                         ACPI Object oriented interfaces&n; *              $Revision: 86 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          NAMESPACE
+mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
 id|MODULE_NAME
 (paren
 l_string|&quot;nsxfobj&quot;
@@ -70,6 +70,27 @@ suffix:semicolon
 id|u32
 id|object_length
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * If there are parameters to be passed to the object&n;&t; * (which must be a control method), the external objects&n;&t; * must be converted to internal objects&n;&t; */
 r_if
 c_cond
@@ -109,7 +130,7 @@ id|ACPI_OPERAND_OBJECT
 suffix:semicolon
 id|param_ptr
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 id|param_length
 op_plus
@@ -174,7 +195,7 @@ id|object_ptr
 id|i
 )braket
 suffix:semicolon
-id|acpi_cm_init_static_object
+id|acpi_ut_init_static_object
 (paren
 op_amp
 id|object_ptr
@@ -209,7 +230,7 @@ op_increment
 (brace
 id|status
 op_assign
-id|acpi_cm_copy_eobject_to_iobject
+id|acpi_ut_copy_eobject_to_iobject
 (paren
 op_amp
 id|param_objects-&gt;pointer
@@ -232,7 +253,7 @@ id|status
 )paren
 )paren
 (brace
-id|acpi_cm_delete_internal_object_list
+id|acpi_ut_delete_internal_object_list
 (paren
 id|param_ptr
 )paren
@@ -390,7 +411,7 @@ id|status
 multiline_comment|/*&n;&t;&t;&t;&t; * Find out how large a buffer is needed&n;&t;&t;&t;&t; * to contain the returned object&n;&t;&t;&t;&t; */
 id|status
 op_assign
-id|acpi_cm_get_object_size
+id|acpi_ut_get_object_size
 (paren
 id|return_obj
 comma
@@ -431,7 +452,7 @@ r_else
 multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; *  We have enough space for the object, build it&n;&t;&t;&t;&t;&t;&t; */
 id|status
 op_assign
-id|acpi_cm_copy_iobject_to_eobject
+id|acpi_ut_copy_iobject_to_eobject
 (paren
 id|return_obj
 comma
@@ -455,7 +476,7 @@ id|return_obj
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Delete the internal return object. (Or at least&n;&t;&t; * decrement the reference count by one)&n;&t;&t; */
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|return_obj
 )paren
@@ -469,7 +490,7 @@ id|param_ptr
 )paren
 (brace
 multiline_comment|/* Free the allocated parameter block */
-id|acpi_cm_delete_internal_object_list
+id|acpi_ut_delete_internal_object_list
 (paren
 id|param_ptr
 )paren
@@ -521,6 +542,27 @@ id|child_node
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -536,7 +578,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -606,7 +648,7 @@ op_assign
 id|acpi_ns_get_next_object
 (paren
 (paren
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 )paren
 id|type
 comma
@@ -647,7 +689,7 @@ suffix:semicolon
 )brace
 id|unlock_and_exit
 suffix:colon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -675,6 +717,30 @@ id|ACPI_NAMESPACE_NODE
 op_star
 id|node
 suffix:semicolon
+id|ACPI_STATUS
+id|status
+suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Parameter Validation */
 r_if
 c_cond
@@ -709,7 +775,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -729,7 +795,7 @@ op_logical_neg
 id|node
 )paren
 (brace
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -745,7 +811,7 @@ id|ret_type
 op_assign
 id|node-&gt;type
 suffix:semicolon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -778,7 +844,27 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-multiline_comment|/* No trace macro, too verbose */
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -807,7 +893,7 @@ id|AE_NULL_ENTRY
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -865,7 +951,7 @@ suffix:semicolon
 )brace
 id|unlock_and_exit
 suffix:colon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -890,7 +976,7 @@ comma
 id|u32
 id|max_depth
 comma
-id|WALK_CALLBACK
+id|ACPI_WALK_CALLBACK
 id|user_function
 comma
 r_void
@@ -906,6 +992,27 @@ id|return_value
 id|ACPI_STATUS
 id|status
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -934,7 +1041,7 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Lock the namespace around the walk.&n;&t; * The namespace will be unlocked/locked around each call&n;&t; * to the user function - since this function&n;&t; * must be allowed to make Acpi calls itself.&n;&t; */
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -944,7 +1051,7 @@ op_assign
 id|acpi_ns_walk_namespace
 (paren
 (paren
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 )paren
 id|type
 comma
@@ -961,7 +1068,7 @@ comma
 id|return_value
 )paren
 suffix:semicolon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -1004,7 +1111,7 @@ suffix:semicolon
 id|u32
 id|flags
 suffix:semicolon
-id|DEVICE_ID
+id|ACPI_DEVICE_ID
 id|device_id
 suffix:semicolon
 id|ACPI_GET_DEVICES_INFO
@@ -1015,7 +1122,7 @@ id|info
 op_assign
 id|context
 suffix:semicolon
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -1027,7 +1134,7 @@ id|acpi_ns_convert_handle_to_entry
 id|obj_handle
 )paren
 suffix:semicolon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -1048,7 +1155,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Run _STA to determine if device is present&n;&t; */
 id|status
 op_assign
-id|acpi_cm_execute_STA
+id|acpi_ut_execute_STA
 (paren
 id|node
 comma
@@ -1066,7 +1173,9 @@ id|status
 )paren
 (brace
 r_return
-id|AE_OK
+(paren
+id|AE_CTRL_DEPTH
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -1098,7 +1207,7 @@ l_int|NULL
 (brace
 id|status
 op_assign
-id|acpi_cm_execute_HID
+id|acpi_ut_execute_HID
 (paren
 id|node
 comma
@@ -1132,7 +1241,7 @@ id|status
 (brace
 r_return
 (paren
-id|status
+id|AE_CTRL_DEPTH
 )paren
 suffix:semicolon
 )brace
@@ -1187,7 +1296,7 @@ id|NATIVE_CHAR
 op_star
 id|HID
 comma
-id|WALK_CALLBACK
+id|ACPI_WALK_CALLBACK
 id|user_function
 comma
 r_void
@@ -1206,6 +1315,27 @@ suffix:semicolon
 id|ACPI_GET_DEVICES_INFO
 id|info
 suffix:semicolon
+multiline_comment|/* Ensure that ACPI has been initialized */
+id|ACPI_IS_INITIALIZATION_COMPLETE
+(paren
+id|status
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Parameter validation */
 r_if
 c_cond
@@ -1234,7 +1364,7 @@ op_assign
 id|HID
 suffix:semicolon
 multiline_comment|/*&n;&t; * Lock the namespace around the walk.&n;&t; * The namespace will be unlocked/locked around each call&n;&t; * to the user function - since this function&n;&t; * must be allowed to make Acpi calls itself.&n;&t; */
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -1259,7 +1389,7 @@ comma
 id|return_value
 )paren
 suffix:semicolon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren

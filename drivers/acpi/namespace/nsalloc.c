@@ -1,10 +1,10 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsalloc - Namespace allocation and deletion utilities&n; *              $Revision: 45 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsalloc - Namespace allocation and deletion utilities&n; *              $Revision: 50 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          NAMESPACE
+mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
 id|MODULE_NAME
 (paren
 l_string|&quot;nsalloc&quot;
@@ -25,7 +25,7 @@ id|node
 suffix:semicolon
 id|node
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 r_sizeof
 (paren
@@ -178,7 +178,7 @@ id|node
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|node
 )paren
@@ -205,7 +205,7 @@ op_star
 id|node
 comma
 multiline_comment|/* New Child*/
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 )paren
 (brace
@@ -301,7 +301,7 @@ id|type
 )paren
 op_logical_or
 (paren
-id|INTERNAL_TYPE_DEF_FIELD_DEFN
+id|INTERNAL_TYPE_FIELD_DEFN
 op_eq
 id|type
 )paren
@@ -320,7 +320,7 @@ r_if
 c_cond
 (paren
 (paren
-id|INTERNAL_TYPE_DEF_FIELD_DEFN
+id|INTERNAL_TYPE_FIELD_DEFN
 op_eq
 id|type
 )paren
@@ -472,7 +472,7 @@ id|child_node
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|child_node
 )paren
@@ -590,7 +590,7 @@ id|acpi_ns_detach_object
 id|child_node
 )paren
 suffix:semicolon
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|obj_desc
 )paren
@@ -807,7 +807,7 @@ id|acpi_ns_detach_object
 id|child_node
 )paren
 suffix:semicolon
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|obj_desc
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Serial Converter driver&n; *&n; * Copyright (C) 1999, 2000 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (c) 2000 Peter Berger (pberger@brimson.com)&n; * Copyright (c) 2000 Al Borchers (borchers@steinerpoint.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * This driver was originally based on the ACM driver by Armin Fuerst (which was &n; * based on a driver by Brad Keryan)&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *&n; * 2001_02_05 gkh&n; *&t;Fixed buffer overflows bug with the generic serial driver.  Thanks to&n; *&t;Todd Squires &lt;squirest@ct0.com&gt; for fixing this.&n; *&n; * (01/10/2001) gkh&n; *&t;Fixed bug where the generic serial adaptor grabbed _any_ device that was&n; *&t;offered to it.&n; *&n; * (12/12/2000) gkh&n; *&t;Removed MOD_INC and MOD_DEC from poll and disconnect functions, and&n; *&t;moved them to the serial_open and serial_close functions.&n; *&t;Also fixed bug with there not being a MOD_DEC for the generic driver&n; *&t;(thanks to Gary Brubaker for finding this.)&n; *&n; * (11/29/2000) gkh&n; *&t;Small NULL pointer initialization cleanup which saves a bit of disk image&n; *&n; * (11/01/2000) Adam J. Richter&n; *&t;instead of using idVendor/idProduct pairs, usb serial drivers&n; *&t;now identify their hardware interest with usb_device_id tables,&n; *&t;which they usually have anyhow for use with MODULE_DEVICE_TABLE.&n; *&n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (08/28/2000) gkh&n; *&t;Added port_lock to port structure.&n; *&t;Added locks for SMP safeness to generic driver&n; *&t;Fixed the ability to open a generic device&squot;s port more than once.&n; *&n; * (07/23/2000) gkh&n; *&t;Added bulk_out_endpointAddress to port structure.&n; *&n; * (07/19/2000) gkh, pberger, and borchers&n; *&t;Modifications to allow usb-serial drivers to be modules.&n; *&n; * (07/03/2000) gkh&n; *&t;Added more debugging to serial_ioctl call&n; * &n; * (06/25/2000) gkh&n; *&t;Changed generic_write_bulk_callback to not call wake_up_interruptible&n; *&t;directly, but to have port_softint do it at a safer time.&n; *&n; * (06/23/2000) gkh&n; *&t;Cleaned up debugging statements in a quest to find UHCI timeout bug.&n; *&n; * (05/22/2000) gkh&n; *&t;Changed the makefile, enabling the big CONFIG_USB_SERIAL_SOMTHING to be &n; *&t;removed from the individual device source files.&n; *&n; * (05/03/2000) gkh&n; *&t;Added the Digi Acceleport driver from Al Borchers and Peter Berger.&n; * &n; * (05/02/2000) gkh&n; *&t;Changed devfs and tty register code to work properly now. This was based on&n; *&t;the ACM driver changes by Vojtech Pavlik.&n; *&n; * (04/27/2000) Ryan VanderBijl&n; * &t;Put calls to *_paranoia_checks into one function.&n; * &n; * (04/23/2000) gkh&n; *&t;Fixed bug that Randy Dunlap found for Generic devices with no bulk out ports.&n; *&t;Moved when the startup code printed out the devices that are supported.&n; *&n; * (04/19/2000) gkh&n; *&t;Added driver for ZyXEL omni.net lcd plus ISDN TA&n; *&t;Made startup info message specify which drivers were compiled in.&n; *&n; * (04/03/2000) gkh&n; *&t;Changed the probe process to remove the module unload races.&n; *&t;Changed where the tty layer gets initialized to have devfs work nicer.&n; *&t;Added initial devfs support.&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; * (03/19/2000) gkh&n; *&t;Fixed oops that could happen when device was removed while a program&n; *&t;was talking to the device.&n; *&t;Removed the static urbs and now all urbs are created and destroyed&n; *&t;dynamically.&n; *&t;Reworked the internal interface. Now everything is based on the &n; *&t;usb_serial_port structure instead of the larger usb_serial structure.&n; *&t;This fixes the bug that a multiport device could not have more than&n; *&t;one port open at one time.&n; *&n; * (03/17/2000) gkh&n; *&t;Added config option for debugging messages.&n; *&t;Added patch for keyspan pda from Brian Warner.&n; *&n; * (03/06/2000) gkh&n; *&t;Added the keyspan pda code from Brian Warner &lt;warner@lothar.com&gt;&n; *&t;Moved a bunch of the port specific stuff into its own structure. This&n; *&t;is in anticipation of the true multiport devices (there&squot;s a bug if you&n; *&t;try to access more than one port of any multiport device right now)&n; *&n; * (02/21/2000) gkh&n; *&t;Made it so that any serial devices only have to specify which functions&n; *&t;they want to overload from the generic function calls (great, &n; *&t;inheritance in C, in a driver, just what I wanted...)&n; *&t;Added support for set_termios and ioctl function calls. No drivers take&n; *&t;advantage of this yet.&n; *&t;Removed the #ifdef MODULE, now there is no module specific code.&n; *&t;Cleaned up a few comments in usb-serial.h that were wrong (thanks again&n; *&t;to Miles Lott).&n; *&t;Small fix to get_free_serial.&n; *&n; * (02/14/2000) gkh&n; *&t;Removed the Belkin and Peracom functionality from the driver due to&n; *&t;the lack of support from the vendor, and me not wanting people to &n; *&t;accidenatly buy the device, expecting it to work with Linux.&n; *&t;Added read_bulk_callback and write_bulk_callback to the type structure&n; *&t;for the needs of the FTDI and WhiteHEAT driver.&n; *&t;Changed all reverences to FTDI to FTDI_SIO at the request of Bill&n; *&t;Ryder.&n; *&t;Changed the output urb size back to the max endpoint size to make&n; *&t;the ftdi_sio driver have it easier, and due to the fact that it didn&squot;t&n; *&t;really increase the speed any.&n; *&n; * (02/11/2000) gkh&n; *&t;Added VISOR_FUNCTION_CONSOLE to the visor startup function. This was a&n; *&t;patch from Miles Lott (milos@insync.net).&n; *&t;Fixed bug with not restoring the minor range that a device grabs, if&n; *&t;the startup function fails (thanks Miles for finding this).&n; *&n; * (02/05/2000) gkh&n; *&t;Added initial framework for the Keyspan PDA serial converter so that&n; *&t;Brian Warner has a place to put his code.&n; *&t;Made the ezusb specific functions generic enough that different&n; *&t;devices can use them (whiteheat and keyspan_pda both need them).&n; *&t;Split out a whole bunch of structure and other stuff to a seperate&n; *&t;usb-serial.h file.&n; *&t;Made the Visor connection messages a little more understandable, now&n; *&t;that Miles Lott (milos@insync.net) has gotten the Generic channel to&n; *&t;work. Also made them always show up in the log file.&n; * &n; * (01/25/2000) gkh&n; *&t;Added initial framework for FTDI serial converter so that Bill Ryder&n; *&t;has a place to put his code.&n; *&t;Added the vendor specific info from Handspring. Now we can print out&n; *&t;informational debug messages as well as understand what is happening.&n; *&n; * (01/23/2000) gkh&n; *&t;Fixed problem of crash when trying to open a port that didn&squot;t have a&n; *&t;device assigned to it. Made the minor node finding a little smarter,&n; *&t;now it looks to find a continous space for the new device.&n; *&n; * (01/21/2000) gkh&n; *&t;Fixed bug in visor_startup with patch from Miles Lott (milos@insync.net)&n; *&t;Fixed get_serial_by_minor which was all messed up for multi port &n; *&t;devices. Fixed multi port problem for generic devices. Now the number&n; *&t;of ports is determined by the number of bulk out endpoints for the&n; *&t;generic device.&n; *&n; * (01/19/2000) gkh&n; *&t;Removed lots of cruft that was around from the old (pre urb) driver &n; *&t;interface.&n; *&t;Made the serial_table dynamic. This should save lots of memory when&n; *&t;the number of minor nodes goes up to 256.&n; *&t;Added initial support for devices that have more than one port. &n; *&t;Added more debugging comments for the Visor, and added a needed &n; *&t;set_configuration call.&n; *&n; * (01/17/2000) gkh&n; *&t;Fixed the WhiteHEAT firmware (my processing tool had a bug)&n; *&t;and added new debug loader firmware for it.&n; *&t;Removed the put_char function as it isn&squot;t really needed.&n; *&t;Added visor startup commands as found by the Win98 dump.&n; * &n; * (01/13/2000) gkh&n; *&t;Fixed the vendor id for the generic driver to the one I meant it to be.&n; *&n; * (01/12/2000) gkh&n; *&t;Forget the version numbering...that&squot;s pretty useless...&n; *&t;Made the driver able to be compiled so that the user can select which&n; *&t;converter they want to use. This allows people who only want the Visor&n; *&t;support to not pay the memory size price of the WhiteHEAT.&n; *&t;Fixed bug where the generic driver (idVendor=0000 and idProduct=0000)&n; *&t;grabbed the root hub. Not good.&n; * &n; * version 0.4.0 (01/10/2000) gkh&n; *&t;Added whiteheat.h containing the firmware for the ConnectTech WhiteHEAT&n; *&t;device. Added startup function to allow firmware to be downloaded to&n; *&t;a device if it needs to be.&n; *&t;Added firmware download logic to the WhiteHEAT device.&n; *&t;Started to add #defines to split up the different drivers for potential&n; *&t;configuration option.&n; *&t;&n; * version 0.3.1 (12/30/99) gkh&n; *      Fixed problems with urb for bulk out.&n; *      Added initial support for multiple sets of endpoints. This enables&n; *      the Handspring Visor to be attached successfully. Only the first&n; *      bulk in / bulk out endpoint pair is being used right now.&n; *&n; * version 0.3.0 (12/27/99) gkh&n; *&t;Added initial support for the Handspring Visor based on a patch from&n; *&t;Miles Lott (milos@sneety.insync.net)&n; *&t;Cleaned up the code a bunch and converted over to using urbs only.&n; *&n; * version 0.2.3 (12/21/99) gkh&n; *&t;Added initial support for the Connect Tech WhiteHEAT converter.&n; *&t;Incremented the number of ports in expectation of getting the&n; *&t;WhiteHEAT to work properly (4 ports per connection).&n; *&t;Added notification on insertion and removal of what port the&n; *&t;device is/was connected to (and what kind of device it was).&n; *&n; * version 0.2.2 (12/16/99) gkh&n; *&t;Changed major number to the new allocated number. We&squot;re legal now!&n; *&n; * version 0.2.1 (12/14/99) gkh&n; *&t;Fixed bug that happens when device node is opened when there isn&squot;t a&n; *&t;device attached to it. Thanks to marek@webdesign.no for noticing this.&n; *&n; * version 0.2.0 (11/10/99) gkh&n; *&t;Split up internals to make it easier to add different types of serial &n; *&t;converters to the code.&n; *&t;Added a &quot;generic&quot; driver that gets it&squot;s vendor and product id&n; *&t;from when the module is loaded. Thanks to David E. Nelson (dnelson@jump.net)&n; *&t;for the idea and sample code (from the usb scanner driver.)&n; *&t;Cleared up any licensing questions by releasing it under the GNU GPL.&n; *&n; * version 0.1.2 (10/25/99) gkh&n; * &t;Fixed bug in detecting device.&n; *&n; * version 0.1.1 (10/05/99) gkh&n; * &t;Changed the major number to not conflict with anything else.&n; *&n; * version 0.1 (09/28/99) gkh&n; * &t;Can recognize the two different devices and start up a read from&n; *&t;device when asked to. Writes also work. No control signals yet, this&n; *&t;all is vendor specific data (i.e. no spec), also no control for&n; *&t;different baud rates or other bit settings.&n; *&t;Currently we are using the same devid as the acm driver. This needs&n; *&t;to change.&n; * &n; */
+multiline_comment|/*&n; * USB Serial Converter driver&n; *&n; * Copyright (C) 1999 - 2001 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (c) 2000 Peter Berger (pberger@brimson.com)&n; * Copyright (c) 2000 Al Borchers (borchers@steinerpoint.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * This driver was originally based on the ACM driver by Armin Fuerst (which was &n; * based on a driver by Brad Keryan)&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (06/06/2001) gkh&n; *&t;added evil hack that is needed for the prolific pl2303 device due to the&n; *&t;crazy way its endpoints are set up.&n; *&n; * (05/30/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *&n; * 2001_02_05 gkh&n; *&t;Fixed buffer overflows bug with the generic serial driver.  Thanks to&n; *&t;Todd Squires &lt;squirest@ct0.com&gt; for fixing this.&n; *&n; * (01/10/2001) gkh&n; *&t;Fixed bug where the generic serial adaptor grabbed _any_ device that was&n; *&t;offered to it.&n; *&n; * (12/12/2000) gkh&n; *&t;Removed MOD_INC and MOD_DEC from poll and disconnect functions, and&n; *&t;moved them to the serial_open and serial_close functions.&n; *&t;Also fixed bug with there not being a MOD_DEC for the generic driver&n; *&t;(thanks to Gary Brubaker for finding this.)&n; *&n; * (11/29/2000) gkh&n; *&t;Small NULL pointer initialization cleanup which saves a bit of disk image&n; *&n; * (11/01/2000) Adam J. Richter&n; *&t;instead of using idVendor/idProduct pairs, usb serial drivers&n; *&t;now identify their hardware interest with usb_device_id tables,&n; *&t;which they usually have anyhow for use with MODULE_DEVICE_TABLE.&n; *&n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (08/28/2000) gkh&n; *&t;Added port_lock to port structure.&n; *&t;Added locks for SMP safeness to generic driver&n; *&t;Fixed the ability to open a generic device&squot;s port more than once.&n; *&n; * (07/23/2000) gkh&n; *&t;Added bulk_out_endpointAddress to port structure.&n; *&n; * (07/19/2000) gkh, pberger, and borchers&n; *&t;Modifications to allow usb-serial drivers to be modules.&n; *&n; * (07/03/2000) gkh&n; *&t;Added more debugging to serial_ioctl call&n; * &n; * (06/25/2000) gkh&n; *&t;Changed generic_write_bulk_callback to not call wake_up_interruptible&n; *&t;directly, but to have port_softint do it at a safer time.&n; *&n; * (06/23/2000) gkh&n; *&t;Cleaned up debugging statements in a quest to find UHCI timeout bug.&n; *&n; * (05/22/2000) gkh&n; *&t;Changed the makefile, enabling the big CONFIG_USB_SERIAL_SOMTHING to be &n; *&t;removed from the individual device source files.&n; *&n; * (05/03/2000) gkh&n; *&t;Added the Digi Acceleport driver from Al Borchers and Peter Berger.&n; * &n; * (05/02/2000) gkh&n; *&t;Changed devfs and tty register code to work properly now. This was based on&n; *&t;the ACM driver changes by Vojtech Pavlik.&n; *&n; * (04/27/2000) Ryan VanderBijl&n; * &t;Put calls to *_paranoia_checks into one function.&n; * &n; * (04/23/2000) gkh&n; *&t;Fixed bug that Randy Dunlap found for Generic devices with no bulk out ports.&n; *&t;Moved when the startup code printed out the devices that are supported.&n; *&n; * (04/19/2000) gkh&n; *&t;Added driver for ZyXEL omni.net lcd plus ISDN TA&n; *&t;Made startup info message specify which drivers were compiled in.&n; *&n; * (04/03/2000) gkh&n; *&t;Changed the probe process to remove the module unload races.&n; *&t;Changed where the tty layer gets initialized to have devfs work nicer.&n; *&t;Added initial devfs support.&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; * (03/19/2000) gkh&n; *&t;Fixed oops that could happen when device was removed while a program&n; *&t;was talking to the device.&n; *&t;Removed the static urbs and now all urbs are created and destroyed&n; *&t;dynamically.&n; *&t;Reworked the internal interface. Now everything is based on the &n; *&t;usb_serial_port structure instead of the larger usb_serial structure.&n; *&t;This fixes the bug that a multiport device could not have more than&n; *&t;one port open at one time.&n; *&n; * (03/17/2000) gkh&n; *&t;Added config option for debugging messages.&n; *&t;Added patch for keyspan pda from Brian Warner.&n; *&n; * (03/06/2000) gkh&n; *&t;Added the keyspan pda code from Brian Warner &lt;warner@lothar.com&gt;&n; *&t;Moved a bunch of the port specific stuff into its own structure. This&n; *&t;is in anticipation of the true multiport devices (there&squot;s a bug if you&n; *&t;try to access more than one port of any multiport device right now)&n; *&n; * (02/21/2000) gkh&n; *&t;Made it so that any serial devices only have to specify which functions&n; *&t;they want to overload from the generic function calls (great, &n; *&t;inheritance in C, in a driver, just what I wanted...)&n; *&t;Added support for set_termios and ioctl function calls. No drivers take&n; *&t;advantage of this yet.&n; *&t;Removed the #ifdef MODULE, now there is no module specific code.&n; *&t;Cleaned up a few comments in usb-serial.h that were wrong (thanks again&n; *&t;to Miles Lott).&n; *&t;Small fix to get_free_serial.&n; *&n; * (02/14/2000) gkh&n; *&t;Removed the Belkin and Peracom functionality from the driver due to&n; *&t;the lack of support from the vendor, and me not wanting people to &n; *&t;accidenatly buy the device, expecting it to work with Linux.&n; *&t;Added read_bulk_callback and write_bulk_callback to the type structure&n; *&t;for the needs of the FTDI and WhiteHEAT driver.&n; *&t;Changed all reverences to FTDI to FTDI_SIO at the request of Bill&n; *&t;Ryder.&n; *&t;Changed the output urb size back to the max endpoint size to make&n; *&t;the ftdi_sio driver have it easier, and due to the fact that it didn&squot;t&n; *&t;really increase the speed any.&n; *&n; * (02/11/2000) gkh&n; *&t;Added VISOR_FUNCTION_CONSOLE to the visor startup function. This was a&n; *&t;patch from Miles Lott (milos@insync.net).&n; *&t;Fixed bug with not restoring the minor range that a device grabs, if&n; *&t;the startup function fails (thanks Miles for finding this).&n; *&n; * (02/05/2000) gkh&n; *&t;Added initial framework for the Keyspan PDA serial converter so that&n; *&t;Brian Warner has a place to put his code.&n; *&t;Made the ezusb specific functions generic enough that different&n; *&t;devices can use them (whiteheat and keyspan_pda both need them).&n; *&t;Split out a whole bunch of structure and other stuff to a seperate&n; *&t;usb-serial.h file.&n; *&t;Made the Visor connection messages a little more understandable, now&n; *&t;that Miles Lott (milos@insync.net) has gotten the Generic channel to&n; *&t;work. Also made them always show up in the log file.&n; * &n; * (01/25/2000) gkh&n; *&t;Added initial framework for FTDI serial converter so that Bill Ryder&n; *&t;has a place to put his code.&n; *&t;Added the vendor specific info from Handspring. Now we can print out&n; *&t;informational debug messages as well as understand what is happening.&n; *&n; * (01/23/2000) gkh&n; *&t;Fixed problem of crash when trying to open a port that didn&squot;t have a&n; *&t;device assigned to it. Made the minor node finding a little smarter,&n; *&t;now it looks to find a continous space for the new device.&n; *&n; * (01/21/2000) gkh&n; *&t;Fixed bug in visor_startup with patch from Miles Lott (milos@insync.net)&n; *&t;Fixed get_serial_by_minor which was all messed up for multi port &n; *&t;devices. Fixed multi port problem for generic devices. Now the number&n; *&t;of ports is determined by the number of bulk out endpoints for the&n; *&t;generic device.&n; *&n; * (01/19/2000) gkh&n; *&t;Removed lots of cruft that was around from the old (pre urb) driver &n; *&t;interface.&n; *&t;Made the serial_table dynamic. This should save lots of memory when&n; *&t;the number of minor nodes goes up to 256.&n; *&t;Added initial support for devices that have more than one port. &n; *&t;Added more debugging comments for the Visor, and added a needed &n; *&t;set_configuration call.&n; *&n; * (01/17/2000) gkh&n; *&t;Fixed the WhiteHEAT firmware (my processing tool had a bug)&n; *&t;and added new debug loader firmware for it.&n; *&t;Removed the put_char function as it isn&squot;t really needed.&n; *&t;Added visor startup commands as found by the Win98 dump.&n; * &n; * (01/13/2000) gkh&n; *&t;Fixed the vendor id for the generic driver to the one I meant it to be.&n; *&n; * (01/12/2000) gkh&n; *&t;Forget the version numbering...that&squot;s pretty useless...&n; *&t;Made the driver able to be compiled so that the user can select which&n; *&t;converter they want to use. This allows people who only want the Visor&n; *&t;support to not pay the memory size price of the WhiteHEAT.&n; *&t;Fixed bug where the generic driver (idVendor=0000 and idProduct=0000)&n; *&t;grabbed the root hub. Not good.&n; * &n; * version 0.4.0 (01/10/2000) gkh&n; *&t;Added whiteheat.h containing the firmware for the ConnectTech WhiteHEAT&n; *&t;device. Added startup function to allow firmware to be downloaded to&n; *&t;a device if it needs to be.&n; *&t;Added firmware download logic to the WhiteHEAT device.&n; *&t;Started to add #defines to split up the different drivers for potential&n; *&t;configuration option.&n; *&t;&n; * version 0.3.1 (12/30/99) gkh&n; *      Fixed problems with urb for bulk out.&n; *      Added initial support for multiple sets of endpoints. This enables&n; *      the Handspring Visor to be attached successfully. Only the first&n; *      bulk in / bulk out endpoint pair is being used right now.&n; *&n; * version 0.3.0 (12/27/99) gkh&n; *&t;Added initial support for the Handspring Visor based on a patch from&n; *&t;Miles Lott (milos@sneety.insync.net)&n; *&t;Cleaned up the code a bunch and converted over to using urbs only.&n; *&n; * version 0.2.3 (12/21/99) gkh&n; *&t;Added initial support for the Connect Tech WhiteHEAT converter.&n; *&t;Incremented the number of ports in expectation of getting the&n; *&t;WhiteHEAT to work properly (4 ports per connection).&n; *&t;Added notification on insertion and removal of what port the&n; *&t;device is/was connected to (and what kind of device it was).&n; *&n; * version 0.2.2 (12/16/99) gkh&n; *&t;Changed major number to the new allocated number. We&squot;re legal now!&n; *&n; * version 0.2.1 (12/14/99) gkh&n; *&t;Fixed bug that happens when device node is opened when there isn&squot;t a&n; *&t;device attached to it. Thanks to marek@webdesign.no for noticing this.&n; *&n; * version 0.2.0 (11/10/99) gkh&n; *&t;Split up internals to make it easier to add different types of serial &n; *&t;converters to the code.&n; *&t;Added a &quot;generic&quot; driver that gets it&squot;s vendor and product id&n; *&t;from when the module is loaded. Thanks to David E. Nelson (dnelson@jump.net)&n; *&t;for the idea and sample code (from the usb scanner driver.)&n; *&t;Cleared up any licensing questions by releasing it under the GNU GPL.&n; *&n; * version 0.1.2 (10/25/99) gkh&n; * &t;Fixed bug in detecting device.&n; *&n; * version 0.1.1 (10/05/99) gkh&n; * &t;Changed the major number to not conflict with anything else.&n; *&n; * version 0.1 (09/28/99) gkh&n; * &t;Can recognize the two different devices and start up a read from&n; *&t;device when asked to. Writes also work. No control signals yet, this&n; *&t;all is vendor specific data (i.e. no spec), also no control for&n; *&t;different baud rates or other bit settings.&n; *&t;Currently we are using the same devid as the acm driver. This needs&n; *&t;to change.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -32,14 +32,15 @@ id|debug
 suffix:semicolon
 macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
+macro_line|#include &quot;pl2303.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.2&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman, greg@kroah.com, http:
 singleline_comment|//www.kroah.com/linux-usb/&quot;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC &quot;USB Serial Driver&quot;
+mdefine_line|#define DRIVER_DESC &quot;USB Serial Driver core&quot;
 DECL|macro|MAX
 mdefine_line|#define MAX(a,b)&t;(((a)&gt;(b))?(a):(b))
 multiline_comment|/* function prototypes for a &quot;generic&quot; type serial converter (no flow control, not all endpoints needed) */
@@ -2051,11 +2052,9 @@ op_assign
 id|port-&gt;serial
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|result
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2082,12 +2081,10 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 op_increment
@@ -2174,16 +2171,14 @@ id|result
 suffix:semicolon
 )brace
 )brace
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|result
 suffix:semicolon
 )brace
 DECL|function|generic_close
@@ -2209,10 +2204,6 @@ id|serial
 op_assign
 id|port-&gt;serial
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -2222,12 +2213,10 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 op_decrement
@@ -2271,12 +2260,10 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
@@ -2311,10 +2298,6 @@ op_star
 id|serial
 op_assign
 id|port-&gt;serial
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_int
 id|result
@@ -2377,14 +2360,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-(paren
-op_amp
-id|port-&gt;port_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|count
 op_assign
 (paren
@@ -2486,7 +2461,6 @@ c_cond
 (paren
 id|result
 )paren
-(brace
 id|err
 c_func
 (paren
@@ -2496,30 +2470,13 @@ comma
 id|result
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|port-&gt;port_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|port-&gt;port_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-(paren
+r_else
+id|result
+op_assign
 id|count
-)paren
+suffix:semicolon
+r_return
+id|result
 suffix:semicolon
 )brace
 multiline_comment|/* no bulk out, so return 0 bytes written */
@@ -2566,6 +2523,7 @@ c_cond
 (paren
 id|serial-&gt;num_bulk_out
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -2578,6 +2536,7 @@ id|room
 op_assign
 id|port-&gt;bulk_out_size
 suffix:semicolon
+)brace
 id|dbg
 c_func
 (paren
@@ -2630,6 +2589,7 @@ c_cond
 (paren
 id|serial-&gt;num_bulk_out
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -2642,6 +2602,7 @@ id|chars
 op_assign
 id|port-&gt;write_urb-&gt;transfer_buffer_length
 suffix:semicolon
+)brace
 id|dbg
 (paren
 id|__FUNCTION__
@@ -3540,6 +3501,138 @@ id|num_interrupt_in
 suffix:semicolon
 )brace
 )brace
+macro_line|#if defined(CONFIG_USB_SERIAL_PL2303) || defined(CONFIG_USB_SERIAL_PL2303_MODULE)
+multiline_comment|/* BEGIN HORRIBLE HACK FOR PL2303 */
+multiline_comment|/* this is needed due to the looney way its endpoints are set up */
+r_if
+c_cond
+(paren
+id|ifnum
+op_eq
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|dev-&gt;descriptor.idVendor
+op_eq
+id|PL2303_VENDOR_ID
+)paren
+op_logical_and
+(paren
+id|dev-&gt;descriptor.idProduct
+op_eq
+id|PL2303_PRODUCT_ID
+)paren
+)paren
+op_logical_or
+(paren
+(paren
+id|dev-&gt;descriptor.idVendor
+op_eq
+id|ATEN_VENDOR_ID
+)paren
+op_logical_and
+(paren
+id|dev-&gt;descriptor.idProduct
+op_eq
+id|ATEN_PRODUCT_ID
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* check out the endpoints of the other interface*/
+id|interface
+op_assign
+op_amp
+id|dev-&gt;actconfig-&gt;interface
+(braket
+id|ifnum
+op_xor
+l_int|1
+)braket
+suffix:semicolon
+id|iface_desc
+op_assign
+op_amp
+id|interface-&gt;altsetting
+(braket
+l_int|0
+)braket
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|iface_desc-&gt;bNumEndpoints
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+id|endpoint
+op_assign
+op_amp
+id|iface_desc-&gt;endpoint
+(braket
+id|i
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|endpoint-&gt;bEndpointAddress
+op_amp
+l_int|0x80
+)paren
+op_logical_and
+(paren
+(paren
+id|endpoint-&gt;bmAttributes
+op_amp
+l_int|3
+)paren
+op_eq
+l_int|0x03
+)paren
+)paren
+(brace
+multiline_comment|/* we found a interrupt in endpoint */
+id|dbg
+c_func
+(paren
+l_string|&quot;found interrupt in for Prolific device on separate interface&quot;
+)paren
+suffix:semicolon
+id|interrupt_pipe
+op_assign
+id|HAS
+suffix:semicolon
+id|interrupt_in_endpoint
+(braket
+id|num_interrupt_in
+)braket
+op_assign
+id|endpoint
+suffix:semicolon
+op_increment
+id|num_interrupt_in
+suffix:semicolon
+)brace
+)brace
+)brace
+)brace
+multiline_comment|/* END HORRIBLE HACK FOR PL2303 */
+macro_line|#endif
 multiline_comment|/* verify that we found all of the endpoints that we need */
 r_if
 c_cond
@@ -4157,10 +4250,10 @@ id|port-&gt;tqueue.data
 op_assign
 id|port
 suffix:semicolon
-id|spin_lock_init
+id|init_MUTEX
 (paren
 op_amp
-id|port-&gt;port_lock
+id|port-&gt;sem
 )paren
 suffix:semicolon
 )brace

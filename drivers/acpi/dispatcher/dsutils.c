@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsutils - Dispatcher utilities&n; *              $Revision: 52 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsutils - Dispatcher utilities&n; *              $Revision: 58 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -8,7 +8,7 @@ macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          PARSER
+mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|MODULE_NAME
 (paren
 l_string|&quot;dsutils&quot;
@@ -172,31 +172,31 @@ op_logical_or
 (paren
 id|op-&gt;parent-&gt;opcode
 op_eq
-id|AML_BIT_FIELD_OP
+id|AML_CREATE_BIT_FIELD_OP
 )paren
 op_logical_or
 (paren
 id|op-&gt;parent-&gt;opcode
 op_eq
-id|AML_BYTE_FIELD_OP
+id|AML_CREATE_BYTE_FIELD_OP
 )paren
 op_logical_or
 (paren
 id|op-&gt;parent-&gt;opcode
 op_eq
-id|AML_WORD_FIELD_OP
+id|AML_CREATE_WORD_FIELD_OP
 )paren
 op_logical_or
 (paren
 id|op-&gt;parent-&gt;opcode
 op_eq
-id|AML_DWORD_FIELD_OP
+id|AML_CREATE_DWORD_FIELD_OP
 )paren
 op_logical_or
 (paren
 id|op-&gt;parent-&gt;opcode
 op_eq
-id|AML_QWORD_FIELD_OP
+id|AML_CREATE_QWORD_FIELD_OP
 )paren
 )paren
 (brace
@@ -302,7 +302,7 @@ id|status
 )paren
 )paren
 (brace
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|result_obj
 )paren
@@ -341,7 +341,7 @@ suffix:semicolon
 id|u32
 id|name_length
 suffix:semicolon
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|data_type
 suffix:semicolon
 id|ACPI_OPERAND_OBJECT
@@ -368,7 +368,7 @@ c_cond
 (paren
 id|arg-&gt;opcode
 op_eq
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 op_logical_and
 (paren
@@ -379,7 +379,7 @@ id|arg-&gt;value.string
 multiline_comment|/* Get the entire name string from the AML stream */
 id|status
 op_assign
-id|acpi_aml_get_name_string
+id|acpi_ex_get_name_string
 (paren
 id|ACPI_TYPE_ANY
 comma
@@ -426,7 +426,7 @@ op_logical_and
 (paren
 id|parent_op-&gt;opcode
 op_ne
-id|AML_METHODCALL_OP
+id|AML_INT_METHODCALL_OP
 )paren
 op_logical_and
 (paren
@@ -438,7 +438,7 @@ op_logical_and
 (paren
 id|parent_op-&gt;opcode
 op_ne
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 )paren
 (brace
@@ -484,7 +484,7 @@ id|obj_desc
 )paren
 suffix:semicolon
 multiline_comment|/* Free the namestring created above */
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|name_string
 )paren
@@ -589,7 +589,7 @@ c_cond
 (paren
 id|arg-&gt;opcode
 op_eq
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * If the name is null, this means that this is an&n;&t;&t;&t; * optional result parameter that was not specified&n;&t;&t;&t; * in the original ASL.  Create an Reference for a&n;&t;&t;&t; * placeholder&n;&t;&t;&t; */
@@ -688,7 +688,7 @@ r_else
 multiline_comment|/* Create an ACPI_INTERNAL_OBJECT for the argument */
 id|obj_desc
 op_assign
-id|acpi_cm_create_internal_object
+id|acpi_ut_create_internal_object
 (paren
 id|data_type
 )paren
@@ -730,7 +730,7 @@ id|status
 )paren
 )paren
 (brace
-id|acpi_cm_delete_object_desc
+id|acpi_ut_delete_object_desc
 (paren
 id|obj_desc
 )paren
@@ -896,7 +896,7 @@ op_assign
 id|AE_OK
 suffix:semicolon
 multiline_comment|/*&n;&t; * Attempt to resolve each of the valid operands&n;&t; * Method arguments are passed by value, not by reference&n;&t; */
-multiline_comment|/*&n;&t; * TBD: [Investigate] Note from previous parser:&n;&t; *   Ref_of problem with Acpi_aml_resolve_to_value() conversion.&n;&t; */
+multiline_comment|/*&n;&t; * TBD: [Investigate] Note from previous parser:&n;&t; *   Ref_of problem with Acpi_ex_resolve_to_value() conversion.&n;&t; */
 r_for
 c_loop
 (paren
@@ -914,7 +914,7 @@ op_increment
 (brace
 id|status
 op_assign
-id|acpi_aml_resolve_to_value
+id|acpi_ex_resolve_to_value
 (paren
 op_amp
 id|walk_state-&gt;operands
@@ -945,7 +945,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_map_opcode_to_data_type&n; *&n; * PARAMETERS:  Opcode          - AML opcode to map&n; *              Out_flags       - Additional info about the opcode&n; *&n; * RETURN:      The ACPI type associated with the opcode&n; *&n; * DESCRIPTION: Convert a raw AML opcode to the associated ACPI data type,&n; *              if any.  If the opcode returns a value as part of the&n; *              intepreter execution, a flag is returned in Out_flags.&n; *&n; ******************************************************************************/
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 DECL|function|acpi_ds_map_opcode_to_data_type
 id|acpi_ds_map_opcode_to_data_type
 (paren
@@ -957,7 +957,7 @@ op_star
 id|out_flags
 )paren
 (brace
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|data_type
 op_assign
 id|INTERNAL_TYPE_INVALID
@@ -970,6 +970,11 @@ id|u32
 id|flags
 op_assign
 l_int|0
+suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Ds_map_opcode_to_data_type&quot;
+)paren
 suffix:semicolon
 id|op_info
 op_assign
@@ -1039,7 +1044,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 suffix:colon
 id|data_type
 op_assign
@@ -1196,7 +1201,7 @@ id|data_type
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_map_named_opcode_to_data_type&n; *&n; * PARAMETERS:  Opcode              - The Named AML opcode to map&n; *&n; * RETURN:      The ACPI type associated with the named opcode&n; *&n; * DESCRIPTION: Convert a raw Named AML opcode to the associated data type.&n; *              Named opcodes are a subsystem of the AML opcodes.&n; *&n; ******************************************************************************/
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 DECL|function|acpi_ds_map_named_opcode_to_data_type
 id|acpi_ds_map_named_opcode_to_data_type
 (paren
@@ -1204,7 +1209,7 @@ id|u16
 id|opcode
 )paren
 (brace
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|data_type
 suffix:semicolon
 multiline_comment|/* Decode Opcode */
@@ -1269,12 +1274,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|AML_DEF_FIELD_OP
+id|AML_FIELD_OP
 suffix:colon
-multiline_comment|/* Def_field_op */
+multiline_comment|/* Field_op */
 id|data_type
 op_assign
-id|INTERNAL_TYPE_DEF_FIELD_DEFN
+id|INTERNAL_TYPE_FIELD_DEFN
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1299,7 +1304,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|AML_NAMEDFIELD_OP
+id|AML_INT_NAMEDFIELD_OP
 suffix:colon
 multiline_comment|/* NO CASE IN ORIGINAL  */
 id|data_type
@@ -1313,7 +1318,7 @@ id|AML_NAME_OP
 suffix:colon
 multiline_comment|/* Name_op - special code in original */
 r_case
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 suffix:colon
 id|data_type
 op_assign

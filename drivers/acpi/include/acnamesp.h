@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acnamesp.h - Namespace subcomponent prototypes and defines&n; *       $Revision: 103 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acnamesp.h - Namespace subcomponent prototypes and defines&n; *       $Revision: 106 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACNAMESP_H__
 DECL|macro|__ACNAMESP_H__
@@ -99,7 +99,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_ns_walk_namespace
 (paren
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 comma
 id|ACPI_HANDLE
@@ -111,7 +111,7 @@ comma
 id|u8
 id|unlock_before_callback
 comma
-id|WALK_CALLBACK
+id|ACPI_WALK_CALLBACK
 id|user_function
 comma
 r_void
@@ -128,7 +128,7 @@ id|ACPI_NAMESPACE_NODE
 op_star
 id|acpi_ns_get_next_object
 (paren
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 comma
 id|ACPI_NAMESPACE_NODE
@@ -208,7 +208,7 @@ id|NATIVE_CHAR
 op_star
 id|name
 comma
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 comma
 id|OPERATING_MODE
@@ -330,7 +330,7 @@ suffix:semicolon
 r_void
 id|acpi_ns_dump_objects
 (paren
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 comma
 id|u32
@@ -454,7 +454,7 @@ multiline_comment|/*&n; * Scope manipulation - nsscope&n; */
 id|u32
 id|acpi_ns_opens_scope
 (paren
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 )paren
 suffix:semicolon
@@ -504,25 +504,6 @@ id|search_for
 )paren
 suffix:semicolon
 id|ACPI_STATUS
-id|acpi_ns_name_compare
-(paren
-id|ACPI_HANDLE
-id|obj_handle
-comma
-id|u32
-id|level
-comma
-r_void
-op_star
-id|context
-comma
-r_void
-op_star
-op_star
-id|return_value
-)paren
-suffix:semicolon
-id|ACPI_STATUS
 id|acpi_ns_get_node
 (paren
 id|NATIVE_CHAR
@@ -559,23 +540,8 @@ id|ACPI_OPERAND_OBJECT
 op_star
 id|object
 comma
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
-)paren
-suffix:semicolon
-r_void
-op_star
-id|acpi_ns_compare_value
-(paren
-id|ACPI_HANDLE
-id|obj_handle
-comma
-id|u32
-id|level
-comma
-r_void
-op_star
-id|obj_desc
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Namespace searching and entry - nssearch&n; */
@@ -596,7 +562,7 @@ comma
 id|OPERATING_MODE
 id|interpreter_mode
 comma
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 comma
 id|u32
@@ -618,7 +584,7 @@ id|ACPI_NAMESPACE_NODE
 op_star
 id|node
 comma
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 comma
 id|ACPI_NAMESPACE_NODE
@@ -644,7 +610,7 @@ op_star
 id|node
 comma
 multiline_comment|/* New Child*/
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 )paren
 suffix:semicolon
@@ -663,26 +629,44 @@ id|NATIVE_CHAR
 id|sep
 )paren
 suffix:semicolon
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|acpi_ns_get_type
 (paren
-id|ACPI_HANDLE
-id|obj_handle
+id|ACPI_NAMESPACE_NODE
+op_star
+id|node
 )paren
 suffix:semicolon
 r_void
 op_star
 id|acpi_ns_get_attached_object
 (paren
-id|ACPI_HANDLE
-id|obj_handle
+id|ACPI_NAMESPACE_NODE
+op_star
+id|node
 )paren
 suffix:semicolon
 id|u32
 id|acpi_ns_local
 (paren
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
+)paren
+suffix:semicolon
+id|ACPI_STATUS
+id|acpi_ns_build_internal_name
+(paren
+id|ACPI_NAMESTRING_INFO
+op_star
+id|info
+)paren
+suffix:semicolon
+id|ACPI_STATUS
+id|acpi_ns_get_internal_name_length
+(paren
+id|ACPI_NAMESTRING_INFO
+op_star
+id|info
 )paren
 suffix:semicolon
 id|ACPI_STATUS

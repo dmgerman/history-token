@@ -1,10 +1,10 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsinit - namespace initialization&n; *              $Revision: 15 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsinit - namespace initialization&n; *              $Revision: 25 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          NAMESPACE
+mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
 id|MODULE_NAME
 (paren
 l_string|&quot;nsinit&quot;
@@ -68,7 +68,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_initialize_devices&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      ACPI_STATUS&n; *&n; * DESCRIPTION: Walk the entire namespace and initialize all ACPI devices.&n; *              This means running _INI on all present devices.&n; *&n; *              Also: Install PCI config space handler for all PCI root bridges.&n; *              A PCI root bridge is found by searching for devices containing&n; *              a HID with the value EISAID(&quot;PNP0A03&quot;)&n; *&n; *****************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_initialize_devices&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      ACPI_STATUS&n; *&n; * DESCRIPTION: Walk the entire namespace and initialize all ACPI devices.&n; *              This means running _INI on all present devices.&n; *&n; *              Note: We install PCI config space handler on region access,&n; *              not here.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ns_initialize_devices
 id|acpi_ns_initialize_devices
@@ -141,7 +141,7 @@ op_star
 id|return_value
 )paren
 (brace
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 suffix:semicolon
 id|ACPI_STATUS
@@ -235,7 +235,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACPI_TYPE_FIELD_UNIT
+id|ACPI_TYPE_BUFFER_FIELD
 suffix:colon
 id|info-&gt;field_count
 op_increment
@@ -256,7 +256,7 @@ op_increment
 suffix:semicolon
 id|status
 op_assign
-id|acpi_ds_get_field_unit_arguments
+id|acpi_ds_get_buffer_field_arguments
 (paren
 id|obj_desc
 )paren
@@ -275,7 +275,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_init_one_device&n; *&n; * PARAMETERS:  WALK_CALLBACK&n; *&n; * RETURN:      ACPI_STATUS&n; *&n; * DESCRIPTION: This is called once per device soon after ACPI is enabled&n; *              to initialize each device. It determines if the device is&n; *              present, and if so, calls _INI.&n; *&n; *****************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_init_one_device&n; *&n; * PARAMETERS:  ACPI_WALK_CALLBACK&n; *&n; * RETURN:      ACPI_STATUS&n; *&n; * DESCRIPTION: This is called once per device soon after ACPI is enabled&n; *              to initialize each device. It determines if the device is&n; *              present, and if so, calls _INI.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ns_init_one_device
 id|acpi_ns_init_one_device
@@ -319,7 +319,7 @@ suffix:semicolon
 id|info-&gt;device_count
 op_increment
 suffix:semicolon
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -338,7 +338,7 @@ op_logical_neg
 id|node
 )paren
 (brace
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -349,7 +349,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_NAMESPACE
 )paren
@@ -357,7 +357,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Run _STA to determine if we can run _INI on the device.&n;&t; */
 id|status
 op_assign
-id|acpi_cm_execute_STA
+id|acpi_ut_execute_STA
 (paren
 id|node
 comma

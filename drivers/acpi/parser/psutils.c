@@ -1,10 +1,10 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psutils - Parser miscellaneous utilities (Parser only)&n; *              $Revision: 32 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psutils - Parser miscellaneous utilities (Parser only)&n; *              $Revision: 37 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          PARSER
+mdefine_line|#define _COMPONENT          ACPI_PARSER
 id|MODULE_NAME
 (paren
 l_string|&quot;psutils&quot;
@@ -88,6 +88,11 @@ id|size
 suffix:semicolon
 id|u8
 id|flags
+suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Ps_alloc_op&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Allocate the minimum required size object */
 r_if
@@ -181,7 +186,7 @@ id|ACPI_PARSE_OBJECT
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * The generic op is by far the most common (16 to 1), and therefore&n;&t;&t; * the op cache is implemented with this type.&n;&t;&t; *&n;&t;&t; * Check if there is an Op already available in the cache&n;&t;&t; */
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_CACHES
 )paren
@@ -224,7 +229,7 @@ id|ACPI_PARSE_OBJECT
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_CACHES
 )paren
@@ -233,7 +238,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t; * The generic op is by far the most common (16 to 1), and therefore&n;&t;&t; * the op cache is implemented with this type.&n;&t;&t; *&n;&t;&t; * Check if there is an Op already available in the cache&n;&t;&t; */
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_CACHES
 )paren
@@ -284,7 +289,7 @@ id|ACPI_PARSE2_OBJECT
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_CACHES
 )paren
@@ -300,7 +305,7 @@ id|op
 (brace
 id|op
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 id|size
 )paren
@@ -341,6 +346,11 @@ op_star
 id|op
 )paren
 (brace
+id|PROC_NAME
+(paren
+l_string|&quot;Ps_free_op&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -376,7 +386,7 @@ id|op-&gt;flags
 op_assign
 id|PARSEOP_IN_CACHE
 suffix:semicolon
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_CACHES
 )paren
@@ -392,7 +402,7 @@ id|acpi_gbl_parse_cache
 op_assign
 id|op
 suffix:semicolon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_CACHES
 )paren
@@ -430,7 +440,7 @@ id|op-&gt;flags
 op_assign
 id|PARSEOP_IN_CACHE
 suffix:semicolon
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_CACHES
 )paren
@@ -454,7 +464,7 @@ op_star
 )paren
 id|op
 suffix:semicolon
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_CACHES
 )paren
@@ -464,7 +474,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * Not a GENERIC OP, or the cache is full, just free the Op&n;&t; */
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|op
 )paren
@@ -494,7 +504,7 @@ id|next
 op_assign
 id|acpi_gbl_parse_cache-&gt;next
 suffix:semicolon
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|acpi_gbl_parse_cache
 )paren
@@ -519,7 +529,7 @@ id|next
 op_assign
 id|acpi_gbl_ext_parse_cache-&gt;next
 suffix:semicolon
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|acpi_gbl_ext_parse_cache
 )paren
@@ -638,7 +648,7 @@ id|AML_PROCESSOR_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_DEF_FIELD_OP
+id|AML_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
@@ -650,7 +660,7 @@ id|AML_BANK_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_NAMEDFIELD_OP
+id|AML_INT_NAMEDFIELD_OP
 op_logical_or
 id|opcode
 op_eq
@@ -678,27 +688,31 @@ id|AML_CREATE_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_BIT_FIELD_OP
+id|AML_CREATE_BIT_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_BYTE_FIELD_OP
+id|AML_CREATE_BYTE_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_WORD_FIELD_OP
+id|AML_CREATE_WORD_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_DWORD_FIELD_OP
+id|AML_CREATE_DWORD_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_METHODCALL_OP
+id|AML_CREATE_QWORD_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_NAMEPATH_OP
+id|AML_INT_METHODCALL_OP
+op_logical_or
+id|opcode
+op_eq
+id|AML_INT_NAMEPATH_OP
 )paren
 )paren
 suffix:semicolon
@@ -743,7 +757,7 @@ id|AML_PROCESSOR_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_DEF_FIELD_OP
+id|AML_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
@@ -775,7 +789,7 @@ id|AML_REGION_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_NAMEDFIELD_OP
+id|AML_INT_NAMEDFIELD_OP
 )paren
 )paren
 suffix:semicolon
@@ -821,7 +835,7 @@ id|AML_PROCESSOR_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_NAMEDFIELD_OP
+id|AML_INT_NAMEDFIELD_OP
 op_logical_or
 id|opcode
 op_eq
@@ -849,27 +863,31 @@ id|AML_CREATE_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_BIT_FIELD_OP
+id|AML_CREATE_BIT_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_BYTE_FIELD_OP
+id|AML_CREATE_BYTE_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_WORD_FIELD_OP
+id|AML_CREATE_WORD_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_DWORD_FIELD_OP
+id|AML_CREATE_DWORD_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_METHODCALL_OP
+id|AML_CREATE_QWORD_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_NAMEPATH_OP
+id|AML_INT_METHODCALL_OP
+op_logical_or
+id|opcode
+op_eq
+id|AML_INT_NAMEPATH_OP
 )paren
 )paren
 suffix:semicolon
@@ -935,7 +953,7 @@ id|AML_REGION_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_NAMEDFIELD_OP
+id|AML_INT_NAMEDFIELD_OP
 )paren
 )paren
 suffix:semicolon
@@ -964,19 +982,23 @@ id|AML_CREATE_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_BIT_FIELD_OP
+id|AML_CREATE_BIT_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_BYTE_FIELD_OP
+id|AML_CREATE_BYTE_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_WORD_FIELD_OP
+id|AML_CREATE_WORD_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_DWORD_FIELD_OP
+id|AML_CREATE_DWORD_FIELD_OP
+op_logical_or
+id|opcode
+op_eq
+id|AML_CREATE_QWORD_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
@@ -1002,7 +1024,7 @@ id|u8
 (paren
 id|opcode
 op_eq
-id|AML_BYTELIST_OP
+id|AML_INT_BYTELIST_OP
 )paren
 )paren
 suffix:semicolon
@@ -1028,7 +1050,7 @@ id|AML_CREATE_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_DEF_FIELD_OP
+id|AML_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
@@ -1062,19 +1084,23 @@ id|AML_CREATE_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_BIT_FIELD_OP
+id|AML_CREATE_BIT_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_BYTE_FIELD_OP
+id|AML_CREATE_BYTE_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_WORD_FIELD_OP
+id|AML_CREATE_WORD_FIELD_OP
 op_logical_or
 id|opcode
 op_eq
-id|AML_DWORD_FIELD_OP
+id|AML_CREATE_DWORD_FIELD_OP
+op_logical_or
+id|opcode
+op_eq
+id|AML_CREATE_QWORD_FIELD_OP
 )paren
 )paren
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB FTDI SIO driver&n; *&n; * &t;Copyright (C) 1999, 2000&n; * &t;    Greg Kroah-Hartman (greg@kroah.com)&n; *          Bill Ryder (bryder@sgi.com)&n; *&n; * &t;This program is free software; you can redistribute it and/or modify&n; * &t;it under the terms of the GNU General Public License as published by&n; * &t;the Free Software Foundation; either version 2 of the License, or&n; * &t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * See http://reality.sgi.com/bryder_wellington/ftdi_sio for upto date testing info&n; *     and extra documentation&n; * &n; * (23/May/2001)   Bill Ryder&n; *     Added runtime debug patch (thanx Tyson D Sawyer).&n; *     Cleaned up comments for 8U232&n; *     Added parity, framing and overrun error handling&n; *     Added receive break handling.&n; * &n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *       &n; * (18/March/2001) Bill Ryder&n; *     (Not released)&n; *     Added send break handling. (requires kernel patch too)&n; *     Fixed 8U232AM hardware RTS/CTS etc status reporting.&n; *     Added flipbuf fix copied from generic device&n; * &n; * (12/3/2000) Bill Ryder&n; *     Added support for 8U232AM device.&n; *     Moved PID and VIDs into header file only.&n; *     Turned on low-latency for the tty (device will do high baudrates)&n; *     Added shutdown routine to close files when device removed.&n; *     More debug and error message cleanups.&n; *     &n; *&n; * (11/13/2000) Bill Ryder&n; *     Added spinlock protected open code and close code.&n; *     Multiple opens work (sort of - see webpage mentioned above).&n; *     Cleaned up comments. Removed multiple PID/VID definitions.&n; *     Factorised cts/dtr code&n; *     Made use of __FUNCTION__ in dbg&squot;s&n; *      &n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (04/04/2000) Bill Ryder &n; *      Fixed bugs in TCGET/TCSET ioctls (by removing them - they are &n; *        handled elsewhere in the tty io driver chain).&n; *&n; * (03/30/2000) Bill Ryder &n; *      Implemented lots of ioctls&n; * &t;Fixed a race condition in write&n; * &t;Changed some dbg&squot;s to errs&n; *&n; * (03/26/2000) gkh&n; * &t;Split driver up into device specific pieces.&n; *&n; */
+multiline_comment|/*&n; * USB FTDI SIO driver&n; *&n; * &t;Copyright (C) 1999 - 2001&n; * &t;    Greg Kroah-Hartman (greg@kroah.com)&n; *          Bill Ryder (bryder@sgi.com)&n; *&n; * &t;This program is free software; you can redistribute it and/or modify&n; * &t;it under the terms of the GNU General Public License as published by&n; * &t;the Free Software Foundation; either version 2 of the License, or&n; * &t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * See http://reality.sgi.com/bryder_wellington/ftdi_sio for upto date testing info&n; *     and extra documentation&n; * &n; * (31/May/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (23/May/2001)   Bill Ryder&n; *     Added runtime debug patch (thanx Tyson D Sawyer).&n; *     Cleaned up comments for 8U232&n; *     Added parity, framing and overrun error handling&n; *     Added receive break handling.&n; * &n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *       &n; * (18/March/2001) Bill Ryder&n; *     (Not released)&n; *     Added send break handling. (requires kernel patch too)&n; *     Fixed 8U232AM hardware RTS/CTS etc status reporting.&n; *     Added flipbuf fix copied from generic device&n; * &n; * (12/3/2000) Bill Ryder&n; *     Added support for 8U232AM device.&n; *     Moved PID and VIDs into header file only.&n; *     Turned on low-latency for the tty (device will do high baudrates)&n; *     Added shutdown routine to close files when device removed.&n; *     More debug and error message cleanups.&n; *     &n; *&n; * (11/13/2000) Bill Ryder&n; *     Added spinlock protected open code and close code.&n; *     Multiple opens work (sort of - see webpage mentioned above).&n; *     Cleaned up comments. Removed multiple PID/VID definitions.&n; *     Factorised cts/dtr code&n; *     Made use of __FUNCTION__ in dbg&squot;s&n; *      &n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (04/04/2000) Bill Ryder &n; *      Fixed bugs in TCGET/TCSET ioctls (by removing them - they are &n; *        handled elsewhere in the tty io driver chain).&n; *&n; * (03/30/2000) Bill Ryder &n; *      Implemented lots of ioctls&n; * &t;Fixed a race condition in write&n; * &t;Changed some dbg&squot;s to errs&n; *&n; * (03/26/2000) gkh&n; * &t;Split driver up into device specific pieces.&n; *&n; */
 multiline_comment|/* Bill Ryder - bryder@sgi.com - wrote the FTDI_SIO implementation */
 multiline_comment|/* Thanx to FTDI for so kindly providing details of the protocol required */
 multiline_comment|/*   to talk to the device */
@@ -862,12 +862,9 @@ op_assign
 id|port-&gt;serial
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* Used for spinlock */
-r_int
 id|result
+op_assign
+l_int|0
 suffix:semicolon
 r_char
 id|buf
@@ -882,12 +879,10 @@ c_func
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 id|MOD_INC_USE_COUNT
@@ -905,14 +900,6 @@ id|port-&gt;active
 id|port-&gt;active
 op_assign
 l_int|1
-suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|port-&gt;port_lock
-comma
-id|flags
-)paren
 suffix:semicolon
 multiline_comment|/* This will push the characters through immediately rather &n;&t;&t;   than queue a task to deliver them */
 id|port-&gt;tty-&gt;low_latency
@@ -1081,22 +1068,14 @@ id|result
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-multiline_comment|/* the port was already active - so no initialisation is done */
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
-)brace
 r_return
-(paren
-l_int|0
-)paren
+id|result
 suffix:semicolon
 )brace
 multiline_comment|/* ftdi_sio_open */
@@ -1136,22 +1115,16 @@ id|buf
 l_int|1
 )braket
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|dbg
 c_func
 (paren
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 op_decrement
@@ -1165,14 +1138,6 @@ op_le
 l_int|0
 )paren
 (brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|port-&gt;port_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1307,14 +1272,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|port-&gt;port_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Send a HUP if necessary */
 r_if
 c_cond
@@ -1335,6 +1292,12 @@ id|port-&gt;tty
 suffix:semicolon
 )brace
 )brace
+id|up
+(paren
+op_amp
+id|port-&gt;sem
+)paren
+suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace

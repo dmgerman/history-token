@@ -57,6 +57,31 @@ op_star
 id|out_buffer
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * ACPI Memory manager&n; */
+r_void
+op_star
+id|acpi_allocate
+(paren
+id|u32
+id|size
+)paren
+suffix:semicolon
+r_void
+op_star
+id|acpi_callocate
+(paren
+id|u32
+id|size
+)paren
+suffix:semicolon
+r_void
+id|acpi_free
+(paren
+r_void
+op_star
+id|address
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * ACPI table manipulation interfaces&n; */
 id|ACPI_STATUS
 id|acpi_find_root_pointer
@@ -116,6 +141,24 @@ op_star
 id|ret_buffer
 )paren
 suffix:semicolon
+id|ACPI_STATUS
+id|acpi_get_firmware_table
+(paren
+id|ACPI_STRING
+id|signature
+comma
+id|u32
+id|instance
+comma
+id|u32
+id|flags
+comma
+id|ACPI_TABLE_HEADER
+op_star
+op_star
+id|table_pointer
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Namespace and name interfaces&n; */
 id|ACPI_STATUS
 id|acpi_walk_namespace
@@ -129,7 +172,7 @@ comma
 id|u32
 id|max_depth
 comma
-id|WALK_CALLBACK
+id|ACPI_WALK_CALLBACK
 id|user_function
 comma
 r_void
@@ -149,7 +192,7 @@ id|NATIVE_CHAR
 op_star
 id|HID
 comma
-id|WALK_CALLBACK
+id|ACPI_WALK_CALLBACK
 id|user_function
 comma
 r_void
@@ -259,14 +302,14 @@ op_star
 id|out_handle
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Acpi_event handler interfaces&n; */
+multiline_comment|/*&n; * Event handler interfaces&n; */
 id|ACPI_STATUS
 id|acpi_install_fixed_event_handler
 (paren
 id|u32
 id|acpi_event
 comma
-id|FIXED_EVENT_HANDLER
+id|ACPI_EVENT_HANDLER
 id|handler
 comma
 r_void
@@ -280,7 +323,7 @@ id|acpi_remove_fixed_event_handler
 id|u32
 id|acpi_event
 comma
-id|FIXED_EVENT_HANDLER
+id|ACPI_EVENT_HANDLER
 id|handler
 )paren
 suffix:semicolon
@@ -293,7 +336,7 @@ comma
 id|u32
 id|handler_type
 comma
-id|NOTIFY_HANDLER
+id|ACPI_NOTIFY_HANDLER
 id|handler
 comma
 r_void
@@ -310,7 +353,7 @@ comma
 id|u32
 id|handler_type
 comma
-id|NOTIFY_HANDLER
+id|ACPI_NOTIFY_HANDLER
 id|handler
 )paren
 suffix:semicolon
@@ -320,13 +363,13 @@ id|acpi_install_address_space_handler
 id|ACPI_HANDLE
 id|device
 comma
-id|ACPI_ADDRESS_SPACE_TYPE
+id|ACPI_ADR_SPACE_TYPE
 id|space_id
 comma
-id|ADDRESS_SPACE_HANDLER
+id|ACPI_ADR_SPACE_HANDLER
 id|handler
 comma
-id|ADDRESS_SPACE_SETUP
+id|ACPI_ADR_SPACE_SETUP
 id|setup
 comma
 r_void
@@ -340,10 +383,10 @@ id|acpi_remove_address_space_handler
 id|ACPI_HANDLE
 id|device
 comma
-id|ACPI_ADDRESS_SPACE_TYPE
+id|ACPI_ADR_SPACE_TYPE
 id|space_id
 comma
-id|ADDRESS_SPACE_HANDLER
+id|ACPI_ADR_SPACE_HANDLER
 id|handler
 )paren
 suffix:semicolon
@@ -356,7 +399,7 @@ comma
 id|u32
 id|type
 comma
-id|GPE_HANDLER
+id|ACPI_GPE_HANDLER
 id|handler
 comma
 r_void
@@ -382,7 +425,7 @@ id|acpi_remove_gpe_handler
 id|u32
 id|gpe_number
 comma
-id|GPE_HANDLER
+id|ACPI_GPE_HANDLER
 id|handler
 )paren
 suffix:semicolon

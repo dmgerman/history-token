@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acglobal.h - Declarations for global variables&n; *       $Revision: 96 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acglobal.h - Declarations for global variables&n; *       $Revision: 101 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACGLOBAL_H__
 DECL|macro|__ACGLOBAL_H__
@@ -282,12 +282,6 @@ id|ACPI_EXTERN
 id|u8
 id|acpi_gbl_global_lock_acquired
 suffix:semicolon
-DECL|variable|acpi_gbl_global_lock_set
-id|ACPI_EXTERN
-id|u8
-id|acpi_gbl_global_lock_set
-suffix:semicolon
-multiline_comment|/* TBD: [Restructure] OBSOLETE?? */
 DECL|variable|acpi_gbl_step_to_next_call
 id|ACPI_EXTERN
 id|u8
@@ -297,6 +291,11 @@ DECL|variable|acpi_gbl_acpi_hardware_present
 id|ACPI_EXTERN
 id|u8
 id|acpi_gbl_acpi_hardware_present
+suffix:semicolon
+DECL|variable|acpi_gbl_global_lock_present
+id|ACPI_EXTERN
+id|u8
+id|acpi_gbl_global_lock_present
 suffix:semicolon
 DECL|variable|acpi_gbl_drv_notify
 id|ACPI_EXTERN
@@ -331,6 +330,7 @@ r_extern
 id|NATIVE_CHAR
 id|acpi_gbl_hex_to_ascii
 (braket
+l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Namespace globals&n; *&n; ****************************************************************************/
@@ -367,13 +367,13 @@ multiline_comment|/* Used to detect memory leaks (DEBUG ONLY) */
 macro_line|#ifdef ACPI_DEBUG
 DECL|variable|acpi_gbl_head_alloc_ptr
 id|ACPI_EXTERN
-id|ALLOCATION_INFO
+id|ACPI_ALLOCATION_INFO
 op_star
 id|acpi_gbl_head_alloc_ptr
 suffix:semicolon
 DECL|variable|acpi_gbl_tail_alloc_ptr
 id|ACPI_EXTERN
-id|ALLOCATION_INFO
+id|ACPI_ALLOCATION_INFO
 op_star
 id|acpi_gbl_tail_alloc_ptr
 suffix:semicolon
@@ -385,16 +385,10 @@ id|ACPI_WALK_LIST
 op_star
 id|acpi_gbl_current_walk_list
 suffix:semicolon
-multiline_comment|/*&n; * Handle to the last method found - used during pass1 of load&n; */
-DECL|variable|acpi_gbl_last_method
-id|ACPI_EXTERN
-id|ACPI_HANDLE
-id|acpi_gbl_last_method
-suffix:semicolon
 multiline_comment|/*&n; * Table of Address Space handlers&n; */
 DECL|variable|acpi_gbl_address_spaces
 id|ACPI_EXTERN
-id|ACPI_ADDRESS_SPACE_INFO
+id|ACPI_ADR_SPACE_INFO
 id|acpi_gbl_address_spaces
 (braket
 id|ACPI_NUM_ADDRESS_SPACES
@@ -431,7 +425,7 @@ id|ACPI_EXTERN
 id|ACPI_FIXED_EVENT_INFO
 id|acpi_gbl_fixed_event_handlers
 (braket
-id|NUM_FIXED_EVENTS
+id|ACPI_NUM_FIXED_EVENTS
 )braket
 suffix:semicolon
 DECL|variable|acpi_gbl_gpe_obj_handle
@@ -462,7 +456,7 @@ id|ACPI_EXTERN
 id|u8
 id|acpi_gbl_gpe_valid
 (braket
-id|NUM_GPE
+id|ACPI_NUM_GPE
 )braket
 suffix:semicolon
 multiline_comment|/* Acpi_event counter for debug only */
@@ -472,7 +466,7 @@ id|ACPI_EXTERN
 id|u32
 id|acpi_gbl_event_count
 (braket
-id|NUM_FIXED_EVENTS
+id|ACPI_NUM_FIXED_EVENTS
 )braket
 suffix:semicolon
 macro_line|#endif

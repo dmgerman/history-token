@@ -1,39 +1,32 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actbl2.h - ACPI Specification Revision 2.0 Tables&n; *       $Revision: 21 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: actbl2.h - ACPI Specification Revision 2.0 Tables&n; *       $Revision: 24 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTBL2_H__
 DECL|macro|__ACTBL2_H__
 mdefine_line|#define __ACTBL2_H__
-multiline_comment|/**************************************/
-multiline_comment|/* Prefered Power Management Profiles */
-multiline_comment|/**************************************/
+multiline_comment|/*&n; * Prefered Power Management Profiles&n; */
 DECL|macro|PM_UNSPECIFIED
-mdefine_line|#define PM_UNSPECIFIED        0
+mdefine_line|#define PM_UNSPECIFIED                  0
 DECL|macro|PM_DESKTOP
-mdefine_line|#define PM_DESKTOP            1
+mdefine_line|#define PM_DESKTOP                      1
 DECL|macro|PM_MOBILE
-mdefine_line|#define PM_MOBILE             2
+mdefine_line|#define PM_MOBILE                       2
 DECL|macro|PM_WORKSTATION
-mdefine_line|#define PM_WORKSTATION        3
+mdefine_line|#define PM_WORKSTATION                  3
 DECL|macro|PM_ENTERPRISE_SERVER
-mdefine_line|#define PM_ENTERPRISE_SERVER  4
+mdefine_line|#define PM_ENTERPRISE_SERVER            4
 DECL|macro|PM_SOHO_SERVER
-mdefine_line|#define PM_SOHO_SERVER        5
+mdefine_line|#define PM_SOHO_SERVER                  5
 DECL|macro|PM_APPLIANCE_PC
-mdefine_line|#define PM_APPLIANCE_PC       6
-multiline_comment|/*********************************************/
-multiline_comment|/* ACPI Boot Arch Flags, See spec Table 5-10 */
-multiline_comment|/*********************************************/
+mdefine_line|#define PM_APPLIANCE_PC                 6
+multiline_comment|/*&n; * ACPI Boot Arch Flags&n; */
 DECL|macro|BAF_LEGACY_DEVICES
-mdefine_line|#define BAF_LEGACY_DEVICES             0x0001
+mdefine_line|#define BAF_LEGACY_DEVICES              0x0001
 DECL|macro|BAF_8042_KEYBOARD_CONTROLLER
-mdefine_line|#define BAF_8042_KEYBOARD_CONTROLLER   0x0002
+mdefine_line|#define BAF_8042_KEYBOARD_CONTROLLER    0x0002
 DECL|macro|FADT2_REVISION_ID
-mdefine_line|#define FADT2_REVISION_ID     3
+mdefine_line|#define FADT2_REVISION_ID               3
 macro_line|#pragma pack(1)
-multiline_comment|/*************************************/
-multiline_comment|/* ACPI Specification Rev 2.0 for    */
-multiline_comment|/* the Root System Description Table */
-multiline_comment|/*************************************/
+multiline_comment|/*&n; * ACPI Specification Rev 2.0 for the Root System Description Table&n; */
 r_typedef
 r_struct
 (brace
@@ -55,10 +48,7 @@ DECL|typedef|RSDT_DESCRIPTOR_REV2
 )brace
 id|RSDT_DESCRIPTOR_REV2
 suffix:semicolon
-multiline_comment|/********************************************/
-multiline_comment|/* ACPI Specification Rev 2.0 for the       */
-multiline_comment|/* Extended System Description Table (XSDT) */
-multiline_comment|/********************************************/
+multiline_comment|/*&n; * ACPI Specification Rev 2.0 for the Extended System Description Table (XSDT)&n; */
 r_typedef
 r_struct
 (brace
@@ -80,10 +70,7 @@ DECL|typedef|XSDT_DESCRIPTOR_REV2
 )brace
 id|XSDT_DESCRIPTOR_REV2
 suffix:semicolon
-multiline_comment|/***************************************/
-multiline_comment|/* ACPI Specification Rev 2.0 for      */
-multiline_comment|/* the Firmware ACPI Control Structure */
-multiline_comment|/***************************************/
+multiline_comment|/*&n; * ACPI Specification Rev 2.0 for the Firmware ACPI Control Structure&n; */
 r_typedef
 r_struct
 (brace
@@ -151,10 +138,7 @@ DECL|typedef|FACS_DESCRIPTOR_REV2
 )brace
 id|FACS_DESCRIPTOR_REV2
 suffix:semicolon
-multiline_comment|/***************************************/
-multiline_comment|/* ACPI Specification Rev 2.0 for      */
-multiline_comment|/* the Generic Address Structure (GAS) */
-multiline_comment|/***************************************/
+multiline_comment|/*&n; * ACPI Specification Rev 2.0 for the Generic Address Structure (GAS)&n; */
 r_typedef
 r_struct
 (brace
@@ -183,14 +167,11 @@ id|UINT64
 id|address
 suffix:semicolon
 multiline_comment|/* 64-bit address of struct or register */
-DECL|typedef|ACPI_GAS
+DECL|typedef|ACPI_GENERIC_ADDRESS
 )brace
-id|ACPI_GAS
+id|ACPI_GENERIC_ADDRESS
 suffix:semicolon
-multiline_comment|/************************************/
-multiline_comment|/* ACPI Specification Rev 2.0 for   */
-multiline_comment|/* the Fixed ACPI Description Table */
-multiline_comment|/************************************/
+multiline_comment|/*&n; * ACPI Specification Rev 2.0 for the Fixed ACPI Description Table&n; */
 r_typedef
 r_struct
 (brace
@@ -353,12 +334,12 @@ DECL|member|duty_offset
 id|u8
 id|duty_offset
 suffix:semicolon
-multiline_comment|/* Processor_&#xfffd;s duty cycle index in processor&squot;s P_CNT reg*/
+multiline_comment|/* Processor&#xfffd;s duty cycle index in processor&squot;s P_CNT reg*/
 DECL|member|duty_width
 id|u8
 id|duty_width
 suffix:semicolon
-multiline_comment|/* Processor_&#xfffd;s duty cycle value bit width in P_CNT register.*/
+multiline_comment|/* Processor&#xfffd;s duty cycle value bit width in P_CNT register.*/
 DECL|member|day_alrm
 id|u8
 id|day_alrm
@@ -491,7 +472,7 @@ l_int|18
 suffix:semicolon
 multiline_comment|/* reserved - must be zero */
 DECL|member|reset_register
-id|ACPI_GAS
+id|ACPI_GENERIC_ADDRESS
 id|reset_register
 suffix:semicolon
 multiline_comment|/* Reset register address in GAS format */
@@ -519,42 +500,42 @@ id|Xdsdt
 suffix:semicolon
 multiline_comment|/* 64-bit physical address of DSDT */
 DECL|member|Xpm1a_evt_blk
-id|ACPI_GAS
+id|ACPI_GENERIC_ADDRESS
 id|Xpm1a_evt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 1a Acpi_event Reg Blk address */
 DECL|member|Xpm1b_evt_blk
-id|ACPI_GAS
+id|ACPI_GENERIC_ADDRESS
 id|Xpm1b_evt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 1b Acpi_event Reg Blk address */
 DECL|member|Xpm1a_cnt_blk
-id|ACPI_GAS
+id|ACPI_GENERIC_ADDRESS
 id|Xpm1a_cnt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 1a Control Reg Blk address */
 DECL|member|Xpm1b_cnt_blk
-id|ACPI_GAS
+id|ACPI_GENERIC_ADDRESS
 id|Xpm1b_cnt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 1b Control Reg Blk address */
 DECL|member|Xpm2_cnt_blk
-id|ACPI_GAS
+id|ACPI_GENERIC_ADDRESS
 id|Xpm2_cnt_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt 2 Control Reg Blk address */
 DECL|member|Xpm_tmr_blk
-id|ACPI_GAS
+id|ACPI_GENERIC_ADDRESS
 id|Xpm_tmr_blk
 suffix:semicolon
 multiline_comment|/* Extended Power Mgt Timer Ctrl Reg Blk address */
 DECL|member|Xgpe0blk
-id|ACPI_GAS
+id|ACPI_GENERIC_ADDRESS
 id|Xgpe0blk
 suffix:semicolon
 multiline_comment|/* Extended General Purpose Acpi_event 0 Reg Blk address */
 DECL|member|Xgpe1_blk
-id|ACPI_GAS
+id|ACPI_GENERIC_ADDRESS
 id|Xgpe1_blk
 suffix:semicolon
 multiline_comment|/* Extended General Purpose Acpi_event 1 Reg Blk address */

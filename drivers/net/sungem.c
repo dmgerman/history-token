@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sungem.c,v 1.13 2001/04/20 08:16:28 davem Exp $&n; * sungem.c: Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sungem.c,v 1.17 2001/06/17 09:22:46 jgarzik Exp $&n; * sungem.c: Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -2341,6 +2341,10 @@ suffix:semicolon
 id|gp-&gt;net_stats.rx_bytes
 op_add_assign
 id|len
+suffix:semicolon
+id|gp-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 id|next
 suffix:colon
@@ -8339,6 +8343,8 @@ id|gp
 suffix:semicolon
 r_int
 id|i
+comma
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -8357,12 +8363,33 @@ comma
 id|version
 )paren
 suffix:semicolon
+id|err
+op_assign
 id|pci_enable_device
 c_func
 (paren
 id|pdev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;Cannot enable MMIO operation, &quot;
+l_string|&quot;aborting.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 id|pci_set_master
 c_func
 (paren
@@ -8493,52 +8520,9 @@ r_goto
 id|err_out_free_netdev
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pci_enable_device
-c_func
-(paren
-id|pdev
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;Cannot enable MMIO operation, &quot;
-l_string|&quot;aborting.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|err_out_free_mmio_res
-suffix:semicolon
-)brace
-id|pci_set_master
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
 id|gp
 op_assign
 id|dev-&gt;priv
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|gp
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|gp
-)paren
-)paren
 suffix:semicolon
 id|gp-&gt;pdev
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * &t;NET3&t;Protocol independent device support routines.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Derived from the non IP parts of dev.c 1.0.19&n; * &t;&t;Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&n; *&t;Additional Authors:&n; *&t;&t;Florian la Roche &lt;rzsfl@rz.uni-sb.de&gt;&n; *&t;&t;Alan Cox &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;David Hinds &lt;dhinds@allegro.stanford.edu&gt;&n; *&t;&t;Alexey Kuznetsov &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&t;&t;Adam Sulmicki &lt;adam@cfar.umd.edu&gt;&n; *              Pekka Riikonen &lt;priikone@poesidon.pspt.fi&gt;&n; *&n; *&t;Changes:&n; *&t;&t;Alan Cox&t;:&t;device private ioctl copies fields back.&n; *&t;&t;Alan Cox&t;:&t;Transmit queue code does relevant stunts to&n; *&t;&t;&t;&t;&t;keep the queue safe.&n; *&t;&t;Alan Cox&t;:&t;Fixed double lock.&n; *&t;&t;Alan Cox&t;:&t;Fixed promisc NULL pointer trap&n; *&t;&t;????????&t;:&t;Support the full private ioctl range&n; *&t;&t;Alan Cox&t;:&t;Moved ioctl permission check into drivers&n; *&t;&t;Tim Kordas&t;:&t;SIOCADDMULTI/SIOCDELMULTI&n; *&t;&t;Alan Cox&t;:&t;100 backlog just doesn&squot;t cut it when&n; *&t;&t;&t;&t;&t;you start doing multicast video 8)&n; *&t;&t;Alan Cox&t;:&t;Rewrote net_bh and list manager.&n; *&t;&t;Alan Cox&t;: &t;Fix ETH_P_ALL echoback lengths.&n; *&t;&t;Alan Cox&t;:&t;Took out transmit every packet pass&n; *&t;&t;&t;&t;&t;Saved a few bytes in the ioctl handler&n; *&t;&t;Alan Cox&t;:&t;Network driver sets packet type before calling netif_rx. Saves&n; *&t;&t;&t;&t;&t;a function call a packet.&n; *&t;&t;Alan Cox&t;:&t;Hashed net_bh()&n; *&t;&t;Richard Kooijman:&t;Timestamp fixes.&n; *&t;&t;Alan Cox&t;:&t;Wrong field in SIOCGIFDSTADDR&n; *&t;&t;Alan Cox&t;:&t;Device lock protection.&n; *&t;&t;Alan Cox&t;: &t;Fixed nasty side effect of device close changes.&n; *&t;&t;Rudi Cilibrasi&t;:&t;Pass the right thing to set_mac_address()&n; *&t;&t;Dave Miller&t;:&t;32bit quantity for the device lock to make it work out&n; *&t;&t;&t;&t;&t;on a Sparc.&n; *&t;&t;Bjorn Ekwall&t;:&t;Added KERNELD hack.&n; *&t;&t;Alan Cox&t;:&t;Cleaned up the backlog initialise.&n; *&t;&t;Craig Metz&t;:&t;SIOCGIFCONF fix if space for under&n; *&t;&t;&t;&t;&t;1 device.&n; *&t;    Thomas Bogendoerfer :&t;Return ENODEV for dev_open, if there&n; *&t;&t;&t;&t;&t;is no device open function.&n; *&t;&t;Andi Kleen&t;:&t;Fix error reporting for SIOCGIFCONF&n; *&t;    Michael Chastain&t;:&t;Fix signed/unsigned for SIOCGIFCONF&n; *&t;&t;Cyrus Durgin&t;:&t;Cleaned for KMOD&n; *&t;&t;Adam Sulmicki   :&t;Bug Fix : Network Device Unload&n; *&t;&t;&t;&t;&t;A network device unload needs to purge&n; *&t;&t;&t;&t;&t;the backlog queue.&n; *&t;Paul Rusty Russell&t;:&t;SIOCSIFNAME&n; *              Pekka Riikonen  :&t;Netdev boot-time settings code&n; *              Andrew Morton   :       Make unregister_netdevice wait indefinitely on dev-&gt;refcnt&n; * &t;&t;J Hadi Salim&t;:&t;- Backlog queue sampling&n; *&t;&t;&t;&t;        - netif_rx() feedback&t;&n; */
+multiline_comment|/*&n; * &t;NET3&t;Protocol independent device support routines.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Derived from the non IP parts of dev.c 1.0.19&n; * &t;&t;Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&n; *&t;Additional Authors:&n; *&t;&t;Florian la Roche &lt;rzsfl@rz.uni-sb.de&gt;&n; *&t;&t;Alan Cox &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;David Hinds &lt;dhinds@allegro.stanford.edu&gt;&n; *&t;&t;Alexey Kuznetsov &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&t;&t;Adam Sulmicki &lt;adam@cfar.umd.edu&gt;&n; *              Pekka Riikonen &lt;priikone@poesidon.pspt.fi&gt;&n; *&n; *&t;Changes:&n; *              D.J. Barrow     :       Fixed bug where dev-&gt;refcnt gets set to 2&n; *                                      if register_netdev gets called before&n; *                                      net_dev_init &amp; also removed a few lines&n; *                                      of code in the process.&n; *&t;&t;Alan Cox&t;:&t;device private ioctl copies fields back.&n; *&t;&t;Alan Cox&t;:&t;Transmit queue code does relevant stunts to&n; *&t;&t;&t;&t;&t;keep the queue safe.&n; *&t;&t;Alan Cox&t;:&t;Fixed double lock.&n; *&t;&t;Alan Cox&t;:&t;Fixed promisc NULL pointer trap&n; *&t;&t;????????&t;:&t;Support the full private ioctl range&n; *&t;&t;Alan Cox&t;:&t;Moved ioctl permission check into drivers&n; *&t;&t;Tim Kordas&t;:&t;SIOCADDMULTI/SIOCDELMULTI&n; *&t;&t;Alan Cox&t;:&t;100 backlog just doesn&squot;t cut it when&n; *&t;&t;&t;&t;&t;you start doing multicast video 8)&n; *&t;&t;Alan Cox&t;:&t;Rewrote net_bh and list manager.&n; *&t;&t;Alan Cox&t;: &t;Fix ETH_P_ALL echoback lengths.&n; *&t;&t;Alan Cox&t;:&t;Took out transmit every packet pass&n; *&t;&t;&t;&t;&t;Saved a few bytes in the ioctl handler&n; *&t;&t;Alan Cox&t;:&t;Network driver sets packet type before calling netif_rx. Saves&n; *&t;&t;&t;&t;&t;a function call a packet.&n; *&t;&t;Alan Cox&t;:&t;Hashed net_bh()&n; *&t;&t;Richard Kooijman:&t;Timestamp fixes.&n; *&t;&t;Alan Cox&t;:&t;Wrong field in SIOCGIFDSTADDR&n; *&t;&t;Alan Cox&t;:&t;Device lock protection.&n; *&t;&t;Alan Cox&t;: &t;Fixed nasty side effect of device close changes.&n; *&t;&t;Rudi Cilibrasi&t;:&t;Pass the right thing to set_mac_address()&n; *&t;&t;Dave Miller&t;:&t;32bit quantity for the device lock to make it work out&n; *&t;&t;&t;&t;&t;on a Sparc.&n; *&t;&t;Bjorn Ekwall&t;:&t;Added KERNELD hack.&n; *&t;&t;Alan Cox&t;:&t;Cleaned up the backlog initialise.&n; *&t;&t;Craig Metz&t;:&t;SIOCGIFCONF fix if space for under&n; *&t;&t;&t;&t;&t;1 device.&n; *&t;    Thomas Bogendoerfer :&t;Return ENODEV for dev_open, if there&n; *&t;&t;&t;&t;&t;is no device open function.&n; *&t;&t;Andi Kleen&t;:&t;Fix error reporting for SIOCGIFCONF&n; *&t;    Michael Chastain&t;:&t;Fix signed/unsigned for SIOCGIFCONF&n; *&t;&t;Cyrus Durgin&t;:&t;Cleaned for KMOD&n; *&t;&t;Adam Sulmicki   :&t;Bug Fix : Network Device Unload&n; *&t;&t;&t;&t;&t;A network device unload needs to purge&n; *&t;&t;&t;&t;&t;the backlog queue.&n; *&t;Paul Rusty Russell&t;:&t;SIOCSIFNAME&n; *              Pekka Riikonen  :&t;Netdev boot-time settings code&n; *              Andrew Morton   :       Make unregister_netdevice wait indefinitely on dev-&gt;refcnt&n; * &t;&t;J Hadi Salim&t;:&t;- Backlog queue sampling&n; *&t;&t;&t;&t;        - netif_rx() feedback&t;&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -7795,6 +7795,13 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/**&n; *&t;register_netdevice&t;- register a network device&n; *&t;@dev: device to register&n; *&t;&n; *&t;Take a completed network device structure and add it to the kernel&n; *&t;interfaces. A %NETDEV_REGISTER message is sent to the netdev notifier&n; *&t;chain. 0 is returned on success. A negative errno code is returned&n; *&t;on a failure to set up the device, or if the name is a duplicate.&n; *&n; *&t;Callers must hold the rtnl semaphore.  See the comment at the&n; *&t;end of Space.c for details about the locking.  You may want&n; *&t;register_netdev() instead of this.&n; *&n; *&t;BUGS:&n; *&t;The locking appears insufficient to guarantee two parallel registers&n; *&t;will not get the same name.&n; */
+r_int
+id|net_dev_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|register_netdevice
 r_int
 id|register_netdevice
@@ -7850,126 +7857,11 @@ c_cond
 (paren
 id|dev_boot_phase
 )paren
-(brace
-macro_line|#ifdef CONFIG_NET_DIVERT
-id|ret
-op_assign
-id|alloc_divert_blk
+id|net_dev_init
 c_func
 (paren
-id|dev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-r_return
-id|ret
-suffix:semicolon
-macro_line|#endif /* CONFIG_NET_DIVERT */
-multiline_comment|/* This is NOT bug, but I am not sure, that all the&n;&t;&t;   devices, initialized before netdev module is started&n;&t;&t;   are sane. &n;&n;&t;&t;   Now they are chained to device boot list&n;&t;&t;   and probed later. If a module is initialized&n;&t;&t;   before netdev, but assumes that dev-&gt;init&n;&t;&t;   is really called by register_netdev(), it will fail.&n;&n;&t;&t;   So that this message should be printed for a while.&n;&t;&t; */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;early initialization of device %s is deferred&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-multiline_comment|/* Check for existence, and append to tail of chain */
-r_for
-c_loop
-(paren
-id|dp
-op_assign
-op_amp
-id|dev_base
-suffix:semicolon
-(paren
-id|d
-op_assign
-op_star
-id|dp
-)paren
-op_ne
-l_int|NULL
-suffix:semicolon
-id|dp
-op_assign
-op_amp
-id|d-&gt;next
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|d
-op_eq
-id|dev
-op_logical_or
-id|strcmp
-c_func
-(paren
-id|d-&gt;name
-comma
-id|dev-&gt;name
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-r_return
-op_minus
-id|EEXIST
-suffix:semicolon
-)brace
-)brace
-id|dev-&gt;next
-op_assign
-l_int|NULL
-suffix:semicolon
-id|write_lock_bh
-c_func
-(paren
-op_amp
-id|dev_base_lock
-)paren
-suffix:semicolon
-op_star
-id|dp
-op_assign
-id|dev
-suffix:semicolon
-id|dev_hold
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|write_unlock_bh
-c_func
-(paren
-op_amp
-id|dev_base_lock
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; *&t;Default initial state at registry is that the&n;&t;&t; *&t;device is present.&n;&t;&t; */
-id|set_bit
-c_func
-(paren
-id|__LINK_STATE_PRESENT
-comma
-op_amp
-id|dev-&gt;state
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_NET_DIVERT
 id|ret
 op_assign
@@ -8750,6 +8642,15 @@ id|dp
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev_boot_phase
+)paren
+r_return
+l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_SCHED
 id|pktsched_init

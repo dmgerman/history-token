@@ -1,14 +1,14 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsio - Acpi_rs_io_resource&n; *                     Acpi_rs_fixed_io_resource&n; *                     Acpi_rs_io_stream&n; *                     Acpi_rs_fixed_io_stream&n; *                     Acpi_rs_dma_resource&n; *                     Acpi_rs_dma_stream&n; *              $Revision: 12 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsio - IO and DMA resource descriptors&n; *              $Revision: 14 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          RESOURCE_MANAGER
+mdefine_line|#define _COMPONENT          ACPI_RESOURCES
 id|MODULE_NAME
 (paren
 l_string|&quot;rsio&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_io_resource&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource input byte&n; *                                          stream&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                          the number of bytes consumed from&n; *                                          the Byte_stream_buffer&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Structure_size          - u32 pointer that is filled with&n; *                                          the number of bytes in the filled&n; *                                          in structure&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid ACPI_STATUS code&n; *&n; * DESCRIPTION: Take the resource byte stream and fill out the appropriate&n; *                  structure pointed to by the Output_buffer. Return the&n; *                  number of bytes consumed from the byte stream.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_io_resource&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource input byte&n; *                                        stream&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes consumed from&n; *                                        the Byte_stream_buffer&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Structure_size          - u32 pointer that is filled with&n; *                                        the number of bytes in the filled&n; *                                        in structure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the resource byte stream and fill out the appropriate&n; *              structure pointed to by the Output_buffer. Return the&n; *              number of bytes consumed from the byte stream.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_rs_io_resource
 id|acpi_rs_io_resource
@@ -37,12 +37,12 @@ id|buffer
 op_assign
 id|byte_stream_buffer
 suffix:semicolon
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|output_struct
 op_assign
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 )paren
 op_star
@@ -61,12 +61,10 @@ suffix:semicolon
 id|u32
 id|struct_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|IO_RESOURCE
+id|ACPI_RESOURCE_IO
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 suffix:semicolon
 multiline_comment|/*&n;&t; * The number of bytes consumed are Constant&n;&t; */
 op_star
@@ -76,7 +74,7 @@ l_int|8
 suffix:semicolon
 id|output_struct-&gt;id
 op_assign
-id|io
+id|ACPI_RSTYPE_IO
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check Decode&n;&t; */
 id|buffer
@@ -173,7 +171,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_fixed_io_resource&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource input byte&n; *                                          stream&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                          the number of bytes consumed from&n; *                                          the Byte_stream_buffer&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Structure_size          - u32 pointer that is filled with&n; *                                          the number of bytes in the filled&n; *                                          in structure&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid ACPI_STATUS code&n; *&n; * DESCRIPTION: Take the resource byte stream and fill out the appropriate&n; *                  structure pointed to by the Output_buffer. Return the&n; *                  number of bytes consumed from the byte stream.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_fixed_io_resource&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource input byte&n; *                                        stream&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes consumed from&n; *                                        the Byte_stream_buffer&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Structure_size          - u32 pointer that is filled with&n; *                                        the number of bytes in the filled&n; *                                        in structure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the resource byte stream and fill out the appropriate&n; *              structure pointed to by the Output_buffer. Return the&n; *              number of bytes consumed from the byte stream.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_rs_fixed_io_resource
 id|acpi_rs_fixed_io_resource
@@ -202,12 +200,12 @@ id|buffer
 op_assign
 id|byte_stream_buffer
 suffix:semicolon
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|output_struct
 op_assign
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 )paren
 op_star
@@ -226,12 +224,10 @@ suffix:semicolon
 id|u32
 id|struct_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|FIXED_IO_RESOURCE
+id|ACPI_RESOURCE_FIXED_IO
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 suffix:semicolon
 multiline_comment|/*&n;&t; * The number of bytes consumed are Constant&n;&t; */
 op_star
@@ -241,7 +237,7 @@ l_int|4
 suffix:semicolon
 id|output_struct-&gt;id
 op_assign
-id|fixed_io
+id|ACPI_RSTYPE_FIXED_IO
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check Range Base Address&n;&t; */
 id|buffer
@@ -291,12 +287,12 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_io_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                          the number of bytes of the&n; *                                          Output_buffer used&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid ACPI_STATUS code&n; *&n; * DESCRIPTION: Take the linked list resource structure and fills in the&n; *                  the appropriate bytes in a byte stream&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_io_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes of the&n; *                                        Output_buffer used&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the linked list resource structure and fills in the&n; *              the appropriate bytes in a byte stream&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_rs_io_stream
 id|acpi_rs_io_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -436,18 +432,10 @@ multiline_comment|/*&n;&t; * Return the number of bytes consumed in this operati
 op_star
 id|bytes_consumed
 op_assign
+id|POINTER_DIFF
 (paren
-id|u32
-)paren
-(paren
-(paren
-id|NATIVE_UINT
-)paren
 id|buffer
-op_minus
-(paren
-id|NATIVE_UINT
-)paren
+comma
 op_star
 id|output_buffer
 )paren
@@ -458,12 +446,12 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_fixed_io_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                          the number of bytes of the&n; *                                          Output_buffer used&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid ACPI_STATUS code&n; *&n; * DESCRIPTION: Take the linked list resource structure and fills in the&n; *                  the appropriate bytes in a byte stream&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_fixed_io_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes of the&n; *                                        Output_buffer used&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the linked list resource structure and fills in the&n; *              the appropriate bytes in a byte stream&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_rs_fixed_io_stream
 id|acpi_rs_fixed_io_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -545,18 +533,10 @@ multiline_comment|/*&n;&t; * Return the number of bytes consumed in this operati
 op_star
 id|bytes_consumed
 op_assign
+id|POINTER_DIFF
 (paren
-id|u32
-)paren
-(paren
-(paren
-id|NATIVE_UINT
-)paren
 id|buffer
-op_minus
-(paren
-id|NATIVE_UINT
-)paren
+comma
 op_star
 id|output_buffer
 )paren
@@ -567,7 +547,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dma_resource&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource input byte&n; *                                          stream&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                          the number of bytes consumed from&n; *                                          the Byte_stream_buffer&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Structure_size          - u32 pointer that is filled with&n; *                                          the number of bytes in the filled&n; *                                          in structure&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid ACPI_STATUS code&n; *&n; * DESCRIPTION: Take the resource byte stream and fill out the appropriate&n; *                  structure pointed to by the Output_buffer. Return the&n; *                  number of bytes consumed from the byte stream.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dma_resource&n; *&n; * PARAMETERS:  Byte_stream_buffer      - Pointer to the resource input byte&n; *                                        stream&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes consumed from&n; *                                        the Byte_stream_buffer&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Structure_size          - u32 pointer that is filled with&n; *                                        the number of bytes in the filled&n; *                                        in structure&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the resource byte stream and fill out the appropriate&n; *              structure pointed to by the Output_buffer. Return the&n; *              number of bytes consumed from the byte stream.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_rs_dma_resource
 id|acpi_rs_dma_resource
@@ -596,12 +576,12 @@ id|buffer
 op_assign
 id|byte_stream_buffer
 suffix:semicolon
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|output_struct
 op_assign
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 )paren
 op_star
@@ -621,12 +601,10 @@ suffix:semicolon
 id|u32
 id|struct_size
 op_assign
-r_sizeof
+id|SIZEOF_RESOURCE
 (paren
-id|DMA_RESOURCE
+id|ACPI_RESOURCE_DMA
 )paren
-op_plus
-id|RESOURCE_LENGTH_NO_DATA
 suffix:semicolon
 multiline_comment|/*&n;&t; * The number of bytes consumed are Constant&n;&t; */
 op_star
@@ -636,7 +614,7 @@ l_int|3
 suffix:semicolon
 id|output_struct-&gt;id
 op_assign
-id|dma
+id|ACPI_RSTYPE_DMA
 suffix:semicolon
 multiline_comment|/*&n;&t; * Point to the 8-bits of Byte 1&n;&t; */
 id|buffer
@@ -777,12 +755,12 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dma_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                          the number of bytes of the&n; *                                          Output_buffer used&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid ACPI_STATUS code&n; *&n; * DESCRIPTION: Take the linked list resource structure and fills in the&n; *                  the appropriate bytes in a byte stream&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_rs_dma_stream&n; *&n; * PARAMETERS:  Linked_list             - Pointer to the resource linked list&n; *              Output_buffer           - Pointer to the user&squot;s return buffer&n; *              Bytes_consumed          - u32 pointer that is filled with&n; *                                        the number of bytes of the&n; *                                        Output_buffer used&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Take the linked list resource structure and fills in the&n; *              the appropriate bytes in a byte stream&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_rs_dma_stream
 id|acpi_rs_dma_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -921,18 +899,10 @@ multiline_comment|/*&n;&t; * Return the number of bytes consumed in this operati
 op_star
 id|bytes_consumed
 op_assign
+id|POINTER_DIFF
 (paren
-id|u32
-)paren
-(paren
-(paren
-id|NATIVE_UINT
-)paren
 id|buffer
-op_minus
-(paren
-id|NATIVE_UINT
-)paren
+comma
 op_star
 id|output_buffer
 )paren

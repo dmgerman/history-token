@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;TCP over IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: tcp_ipv6.c,v 1.136 2001/04/20 20:46:19 davem Exp $&n; *&n; *&t;Based on: &n; *&t;linux/net/ipv4/tcp.c&n; *&t;linux/net/ipv4/tcp_input.c&n; *&t;linux/net/ipv4/tcp_output.c&n; *&n; *&t;Fixes:&n; *&t;Hideaki YOSHIFUJI&t;:&t;sin6_scope_id support&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;TCP over IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: tcp_ipv6.c,v 1.137 2001/06/13 16:25:03 davem Exp $&n; *&n; *&t;Based on: &n; *&t;linux/net/ipv4/tcp.c&n; *&t;linux/net/ipv4/tcp_input.c&n; *&t;linux/net/ipv4/tcp_output.c&n; *&n; *&t;Fixes:&n; *&t;Hideaki YOSHIFUJI&t;:&t;sin6_scope_id support&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
@@ -9644,6 +9644,51 @@ l_string|&quot;TCPv6&quot;
 multiline_comment|/* name&t;&t;&t;*/
 )brace
 suffix:semicolon
+r_extern
+r_struct
+id|proto_ops
+id|inet6_stream_ops
+suffix:semicolon
+DECL|variable|tcpv6_protosw
+r_static
+r_struct
+id|inet_protosw
+id|tcpv6_protosw
+op_assign
+(brace
+id|type
+suffix:colon
+id|SOCK_STREAM
+comma
+id|protocol
+suffix:colon
+id|IPPROTO_TCP
+comma
+id|prot
+suffix:colon
+op_amp
+id|tcpv6_prot
+comma
+id|ops
+suffix:colon
+op_amp
+id|inet6_stream_ops
+comma
+id|capability
+suffix:colon
+op_minus
+l_int|1
+comma
+id|no_check
+suffix:colon
+l_int|0
+comma
+id|flags
+suffix:colon
+id|INET_PROTOSW_PERMANENT
+comma
+)brace
+suffix:semicolon
 DECL|function|tcpv6_init
 r_void
 id|__init
@@ -9659,6 +9704,13 @@ c_func
 (paren
 op_amp
 id|tcpv6_protocol
+)paren
+suffix:semicolon
+id|inet6_register_protosw
+c_func
+(paren
+op_amp
+id|tcpv6_protosw
 )paren
 suffix:semicolon
 )brace

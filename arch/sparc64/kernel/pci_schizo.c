@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_schizo.c,v 1.17 2001/06/04 23:20:32 ecd Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: pci_schizo.c,v 1.19 2001/06/20 21:31:00 davem Exp $&n; * pci_schizo.c: SCHIZO specific PCI controller support.&n; *&n; * Copyright (C) 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -4964,6 +4964,49 @@ id|SCHIZO_PCIAFSR_SUNUS
 )paren
 suffix:semicolon
 multiline_comment|/* Make all Safari error conditions fatal except unmapped errors&n;&t; * which we make generate interrupts.&n;&t; */
+macro_line|#if 1
+multiline_comment|/* XXX Something wrong with some Excalibur systems&n;&t; * XXX Sun is shipping.  The behavior on a 2-cpu&n;&t; * XXX machine is that both CPU1 parity error bits&n;&t; * XXX are set and are immediately set again when&n;&t; * XXX their error status bits are cleared.  Just&n;&t; * XXX ignore them for now.  -DaveM&n;&t; */
+id|schizo_write
+c_func
+(paren
+id|base
+op_plus
+id|SCHIZO_SAFARI_ERRCTRL
+comma
+(paren
+id|SCHIZO_SAFERRCTRL_EN
+op_or
+(paren
+id|SAFARI_ERROR_BADCMD
+op_or
+id|SAFARI_ERROR_SSMDIS
+op_or
+id|SAFARI_ERROR_BADMA
+op_or
+id|SAFARI_ERROR_BADMB
+op_or
+id|SAFARI_ERROR_BADMC
+op_or
+id|SAFARI_ERROR_CIQTO
+op_or
+id|SAFARI_ERROR_LPQTO
+op_or
+id|SAFARI_ERROR_SFPQTO
+op_or
+id|SAFARI_ERROR_UFPQTO
+op_or
+id|SAFARI_ERROR_APERR
+op_or
+id|SAFARI_ERROR_BUSERR
+op_or
+id|SAFARI_ERROR_TIMEOUT
+op_or
+id|SAFARI_ERROR_ILL
+)paren
+)paren
+)paren
+suffix:semicolon
+macro_line|#else
 id|schizo_write
 c_func
 (paren
@@ -5012,6 +5055,7 @@ id|SAFARI_ERROR_ILL
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|schizo_write
 c_func
 (paren
@@ -6323,6 +6367,16 @@ c_func
 (paren
 op_amp
 id|iomem_resource
+comma
+op_amp
+id|pbm-&gt;mem_space
+)paren
+suffix:semicolon
+id|pci_register_legacy_regions
+c_func
+(paren
+op_amp
+id|pbm-&gt;io_space
 comma
 op_amp
 id|pbm-&gt;mem_space

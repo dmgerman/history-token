@@ -1,10 +1,10 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswscope - Scope stack manipulation&n; *              $Revision: 42 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswscope - Scope stack manipulation&n; *              $Revision: 45 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          NAMESPACE
+mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|MODULE_NAME
 (paren
 l_string|&quot;dswscope&quot;
@@ -40,7 +40,7 @@ id|walk_state-&gt;scope_info
 op_assign
 id|scope_info-&gt;scope.next
 suffix:semicolon
-id|acpi_cm_delete_generic_state
+id|acpi_ut_delete_generic_state
 (paren
 id|scope_info
 )paren
@@ -56,7 +56,7 @@ id|ACPI_NAMESPACE_NODE
 op_star
 id|node
 comma
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 comma
 id|ACPI_WALK_STATE
@@ -94,7 +94,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|acpi_aml_validate_object_type
+id|acpi_ex_validate_object_type
 (paren
 id|type
 )paren
@@ -111,7 +111,7 @@ suffix:semicolon
 multiline_comment|/* Allocate a new scope object */
 id|scope_info
 op_assign
-id|acpi_cm_create_generic_state
+id|acpi_ut_create_generic_state
 (paren
 )paren
 suffix:semicolon
@@ -141,7 +141,7 @@ id|u16
 id|type
 suffix:semicolon
 multiline_comment|/* Push new scope object onto stack */
-id|acpi_cm_push_generic_state
+id|acpi_ut_push_generic_state
 (paren
 op_amp
 id|walk_state-&gt;scope_info
@@ -172,7 +172,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Pop scope info object off the stack.&n;&t; */
 id|scope_info
 op_assign
-id|acpi_cm_pop_generic_state
+id|acpi_ut_pop_generic_state
 (paren
 op_amp
 id|walk_state-&gt;scope_info
@@ -191,7 +191,7 @@ id|AE_STACK_UNDERFLOW
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_delete_generic_state
+id|acpi_ut_delete_generic_state
 (paren
 id|scope_info
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: pswalk - Parser routines to walk parsed op tree(s)&n; *              $Revision: 52 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: pswalk - Parser routines to walk parsed op tree(s)&n; *              $Revision: 55 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -7,7 +7,7 @@ macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          PARSER
+mdefine_line|#define _COMPONENT          ACPI_PARSER
 id|MODULE_NAME
 (paren
 l_string|&quot;pswalk&quot;
@@ -326,6 +326,14 @@ id|walk_list.walk_state
 op_assign
 l_int|NULL
 suffix:semicolon
+id|walk_list.acquired_mutex_list.prev
+op_assign
+l_int|NULL
+suffix:semicolon
+id|walk_list.acquired_mutex_list.next
+op_assign
+l_int|NULL
+suffix:semicolon
 id|walk_state
 op_assign
 id|acpi_ds_create_walk_state
@@ -397,6 +405,16 @@ id|acpi_ps_delete_completed_op
 suffix:semicolon
 )brace
 multiline_comment|/* We are done with this walk */
+id|acpi_ex_release_all_mutexes
+(paren
+(paren
+id|ACPI_OPERAND_OBJECT
+op_star
+)paren
+op_amp
+id|walk_list.acquired_mutex_list
+)paren
+suffix:semicolon
 id|acpi_ds_delete_walk_state
 (paren
 id|walk_state

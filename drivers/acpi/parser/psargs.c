@@ -1,11 +1,11 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psargs - Parse AML opcode arguments&n; *              $Revision: 43 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psargs - Parse AML opcode arguments&n; *              $Revision: 47 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          PARSER
+mdefine_line|#define _COMPONENT          ACPI_PARSER
 id|MODULE_NAME
 (paren
 l_string|&quot;psargs&quot;
@@ -430,7 +430,7 @@ id|acpi_ps_init_op
 (paren
 id|arg
 comma
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 suffix:semicolon
 id|arg-&gt;value.name
@@ -512,7 +512,7 @@ id|name_op
 op_assign
 id|acpi_ps_alloc_op
 (paren
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 suffix:semicolon
 r_if
@@ -526,7 +526,7 @@ id|acpi_ps_init_op
 (paren
 id|arg
 comma
-id|AML_METHODCALL_OP
+id|AML_INT_METHODCALL_OP
 )paren
 suffix:semicolon
 id|name_op-&gt;value.name
@@ -569,7 +569,7 @@ id|acpi_ps_init_op
 (paren
 id|arg
 comma
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 suffix:semicolon
 id|arg-&gt;value.name
@@ -646,7 +646,7 @@ id|acpi_ps_init_op
 (paren
 id|arg
 comma
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 suffix:semicolon
 id|arg-&gt;value.name
@@ -731,7 +731,7 @@ id|name_op
 op_assign
 id|acpi_ps_alloc_op
 (paren
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 suffix:semicolon
 r_if
@@ -745,7 +745,7 @@ id|acpi_ps_init_op
 (paren
 id|arg
 comma
-id|AML_METHODCALL_OP
+id|AML_INT_METHODCALL_OP
 )paren
 suffix:semicolon
 id|name_op-&gt;value.name
@@ -803,7 +803,7 @@ id|acpi_ps_init_op
 (paren
 id|arg
 comma
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 suffix:semicolon
 id|arg-&gt;value.name
@@ -960,7 +960,7 @@ id|acpi_ps_init_op
 (paren
 id|arg
 comma
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 suffix:semicolon
 id|arg-&gt;value.name
@@ -987,7 +987,7 @@ op_star
 id|parser_state
 )paren
 (brace
-id|ACPI_PTRDIFF
+id|u32
 id|aml_offset
 op_assign
 id|parser_state-&gt;aml
@@ -1018,7 +1018,7 @@ r_default
 suffix:colon
 id|opcode
 op_assign
-id|AML_NAMEDFIELD_OP
+id|AML_INT_NAMEDFIELD_OP
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1027,7 +1027,7 @@ l_int|0x00
 suffix:colon
 id|opcode
 op_assign
-id|AML_RESERVEDFIELD_OP
+id|AML_INT_RESERVEDFIELD_OP
 suffix:semicolon
 id|parser_state-&gt;aml
 op_increment
@@ -1039,7 +1039,7 @@ l_int|0x01
 suffix:colon
 id|opcode
 op_assign
-id|AML_ACCESSFIELD_OP
+id|AML_INT_ACCESSFIELD_OP
 suffix:semicolon
 id|parser_state-&gt;aml
 op_increment
@@ -1073,7 +1073,7 @@ id|opcode
 )paren
 (brace
 r_case
-id|AML_NAMEDFIELD_OP
+id|AML_INT_NAMEDFIELD_OP
 suffix:colon
 multiline_comment|/* Get the 4-character name */
 id|MOVE_UNALIGNED32_TO_32
@@ -1106,7 +1106,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|AML_RESERVEDFIELD_OP
+id|AML_INT_RESERVEDFIELD_OP
 suffix:colon
 multiline_comment|/* Get the length which is encoded as a package length */
 id|field-&gt;value.size
@@ -1119,7 +1119,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|AML_ACCESSFIELD_OP
+id|AML_INT_ACCESSFIELD_OP
 suffix:colon
 multiline_comment|/* Get Access_type and Access_atrib and merge into the field Op */
 id|field-&gt;value.integer
@@ -1338,7 +1338,7 @@ id|arg
 op_assign
 id|acpi_ps_alloc_op
 (paren
-id|AML_BYTELIST_OP
+id|AML_INT_BYTELIST_OP
 )paren
 suffix:semicolon
 r_if
@@ -1414,7 +1414,7 @@ id|arg
 op_assign
 id|acpi_ps_alloc_op
 (paren
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 suffix:semicolon
 r_if

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;NET3:&t;Implementation of the ICMP protocol layer. &n; *&t;&n; *&t;&t;Alan Cox, &lt;alan@redhat.com&gt;&n; *&n; *&t;Version: $Id: icmp.c,v 1.76 2001/05/10 01:20:58 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Some of the function names and the icmp unreach table for this&n; *&t;module were derived from [icmp.c 1.0.11 06/02/93] by&n; *&t;Ross Biro, Fred N. van Kempen, Mark Evans, Alan Cox, Gerhard Koerting.&n; *&t;Other than that this module is a complete rewrite.&n; *&n; *&t;Fixes:&n; *&t;&t;Mike Shaver&t;:&t;RFC1122 checks.&n; *&t;&t;Alan Cox&t;:&t;Multicast ping reply as self.&n; *&t;&t;Alan Cox&t;:&t;Fix atomicity lockup in ip_build_xmit &n; *&t;&t;&t;&t;&t;call.&n; *&t;&t;Alan Cox&t;:&t;Added 216,128 byte paths to the MTU &n; *&t;&t;&t;&t;&t;code.&n; *&t;&t;Martin Mares&t;:&t;RFC1812 checks.&n; *&t;&t;Martin Mares&t;:&t;Can be configured to follow redirects &n; *&t;&t;&t;&t;&t;if acting as a router _without_ a&n; *&t;&t;&t;&t;&t;routing protocol (RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;Echo requests may be configured to &n; *&t;&t;&t;&t;&t;be ignored (RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;Limitation of ICMP error message &n; *&t;&t;&t;&t;&t;transmit rate (RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;TOS and Precedence set correctly &n; *&t;&t;&t;&t;&t;(RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;Now copying as much data from the &n; *&t;&t;&t;&t;&t;original packet as we can without&n; *&t;&t;&t;&t;&t;exceeding 576 bytes (RFC 1812).&n; *&t;Willy Konynenberg&t;:&t;Transparent proxying support.&n; *&t;&t;Keith Owens&t;:&t;RFC1191 correction for 4.2BSD based &n; *&t;&t;&t;&t;&t;path MTU bug.&n; *&t;&t;Thomas Quinot&t;:&t;ICMP Dest Unreach codes up to 15 are&n; *&t;&t;&t;&t;&t;valid (RFC 1812).&n; *&t;&t;Andi Kleen&t;:&t;Check all packet lengths properly&n; *&t;&t;&t;&t;&t;and moved all kfree_skb() up to&n; *&t;&t;&t;&t;&t;icmp_rcv.&n; *&t;&t;Andi Kleen&t;:&t;Move the rate limit bookkeeping&n; *&t;&t;&t;&t;&t;into the dest entry and use a token&n; *&t;&t;&t;&t;&t;bucket filter (thanks to ANK). Make&n; *&t;&t;&t;&t;&t;the rates sysctl configurable.&n; *&t;&t;Yu Tianli&t;:&t;Fixed two ugly bugs in icmp_send&n; *&t;&t;&t;&t;&t;- IP option length was accounted wrongly&n; *&t;&t;&t;&t;&t;- ICMP header length was not accounted at all.&n; *              Tristan Greaves :       Added sysctl option to ignore bogus broadcast&n; *                                      responses from broken routers.&n; *&n; * To Fix:&n; *&n; *&t;- Should use skb_pull() instead of all the manual checking.&n; *&t;  This would also greatly simply some upper layer error handlers. --AK&n; *&n; */
+multiline_comment|/*&n; *&t;NET3:&t;Implementation of the ICMP protocol layer. &n; *&t;&n; *&t;&t;Alan Cox, &lt;alan@redhat.com&gt;&n; *&n; *&t;Version: $Id: icmp.c,v 1.77 2001/06/14 13:40:46 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Some of the function names and the icmp unreach table for this&n; *&t;module were derived from [icmp.c 1.0.11 06/02/93] by&n; *&t;Ross Biro, Fred N. van Kempen, Mark Evans, Alan Cox, Gerhard Koerting.&n; *&t;Other than that this module is a complete rewrite.&n; *&n; *&t;Fixes:&n; *&t;&t;Mike Shaver&t;:&t;RFC1122 checks.&n; *&t;&t;Alan Cox&t;:&t;Multicast ping reply as self.&n; *&t;&t;Alan Cox&t;:&t;Fix atomicity lockup in ip_build_xmit &n; *&t;&t;&t;&t;&t;call.&n; *&t;&t;Alan Cox&t;:&t;Added 216,128 byte paths to the MTU &n; *&t;&t;&t;&t;&t;code.&n; *&t;&t;Martin Mares&t;:&t;RFC1812 checks.&n; *&t;&t;Martin Mares&t;:&t;Can be configured to follow redirects &n; *&t;&t;&t;&t;&t;if acting as a router _without_ a&n; *&t;&t;&t;&t;&t;routing protocol (RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;Echo requests may be configured to &n; *&t;&t;&t;&t;&t;be ignored (RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;Limitation of ICMP error message &n; *&t;&t;&t;&t;&t;transmit rate (RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;TOS and Precedence set correctly &n; *&t;&t;&t;&t;&t;(RFC 1812).&n; *&t;&t;Martin Mares&t;:&t;Now copying as much data from the &n; *&t;&t;&t;&t;&t;original packet as we can without&n; *&t;&t;&t;&t;&t;exceeding 576 bytes (RFC 1812).&n; *&t;Willy Konynenberg&t;:&t;Transparent proxying support.&n; *&t;&t;Keith Owens&t;:&t;RFC1191 correction for 4.2BSD based &n; *&t;&t;&t;&t;&t;path MTU bug.&n; *&t;&t;Thomas Quinot&t;:&t;ICMP Dest Unreach codes up to 15 are&n; *&t;&t;&t;&t;&t;valid (RFC 1812).&n; *&t;&t;Andi Kleen&t;:&t;Check all packet lengths properly&n; *&t;&t;&t;&t;&t;and moved all kfree_skb() up to&n; *&t;&t;&t;&t;&t;icmp_rcv.&n; *&t;&t;Andi Kleen&t;:&t;Move the rate limit bookkeeping&n; *&t;&t;&t;&t;&t;into the dest entry and use a token&n; *&t;&t;&t;&t;&t;bucket filter (thanks to ANK). Make&n; *&t;&t;&t;&t;&t;the rates sysctl configurable.&n; *&t;&t;Yu Tianli&t;:&t;Fixed two ugly bugs in icmp_send&n; *&t;&t;&t;&t;&t;- IP option length was accounted wrongly&n; *&t;&t;&t;&t;&t;- ICMP header length was not accounted at all.&n; *              Tristan Greaves :       Added sysctl option to ignore bogus broadcast&n; *                                      responses from broken routers.&n; *&n; * To Fix:&n; *&n; *&t;- Should use skb_pull() instead of all the manual checking.&n; *&t;  This would also greatly simply some upper layer error handlers. --AK&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -2869,13 +2869,6 @@ r_goto
 id|drop
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;A spare long used to speed up statistics updating&n; */
-DECL|variable|dummy
-r_static
-r_int
-r_int
-id|dummy
-suffix:semicolon
 multiline_comment|/* &n; * &t;Configurable rate limits.&n; *&t;Someone should check if these default values are correct.&n; *&t;Note that these values interact with the routing cache GC timeout.&n; *&t;If you chose them too high they won&squot;t take effect, because the&n; *&t;dst_entry gets expired too early. The same should happen when&n; *&t;the cache grows too big.&n; */
 DECL|variable|sysctl_icmp_destunreach_time
 r_int
@@ -2947,6 +2940,11 @@ id|sysctl_icmp_echoreply_time
 comma
 (brace
 op_amp
+id|icmp_statistics
+(braket
+l_int|0
+)braket
+dot
 id|dummy
 comma
 op_amp
@@ -2965,6 +2963,11 @@ comma
 comma
 (brace
 op_amp
+id|icmp_statistics
+(braket
+l_int|0
+)braket
+dot
 id|dummy
 comma
 op_amp
@@ -3057,6 +3060,11 @@ comma
 comma
 (brace
 op_amp
+id|icmp_statistics
+(braket
+l_int|0
+)braket
+dot
 id|dummy
 comma
 op_amp
@@ -3075,6 +3083,11 @@ comma
 comma
 (brace
 op_amp
+id|icmp_statistics
+(braket
+l_int|0
+)braket
+dot
 id|dummy
 comma
 op_amp
@@ -3117,6 +3130,11 @@ comma
 comma
 (brace
 op_amp
+id|icmp_statistics
+(braket
+l_int|0
+)braket
+dot
 id|dummy
 comma
 op_amp
@@ -3135,6 +3153,11 @@ comma
 comma
 (brace
 op_amp
+id|icmp_statistics
+(braket
+l_int|0
+)braket
+dot
 id|dummy
 comma
 op_amp
@@ -3254,9 +3277,19 @@ comma
 multiline_comment|/* INFO (15) */
 (brace
 op_amp
+id|icmp_statistics
+(braket
+l_int|0
+)braket
+dot
 id|dummy
 comma
 op_amp
+id|icmp_statistics
+(braket
+l_int|0
+)braket
+dot
 id|dummy
 comma
 id|icmp_discard
@@ -3268,9 +3301,19 @@ comma
 multiline_comment|/* INFO REPLY (16) */
 (brace
 op_amp
+id|icmp_statistics
+(braket
+l_int|0
+)braket
+dot
 id|dummy
 comma
 op_amp
+id|icmp_statistics
+(braket
+l_int|0
+)braket
+dot
 id|dummy
 comma
 id|icmp_discard

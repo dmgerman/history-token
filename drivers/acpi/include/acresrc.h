@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acresrc.h - Resource Manager function prototypes&n; *       $Revision: 22 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acresrc.h - Resource Manager function prototypes&n; *       $Revision: 25 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACRESRC_H__
 DECL|macro|__ACRESRC_H__
@@ -67,7 +67,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_create_byte_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list_buffer
 comma
@@ -100,7 +100,7 @@ multiline_comment|/*&n; *Function prototypes called from Acpi_rs_create*APIs&n; 
 r_void
 id|acpi_rs_dump_resource_list
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|resource
 )paren
@@ -148,7 +148,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_calculate_byte_stream_length
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list_buffer
 comma
@@ -188,7 +188,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_list_to_byte_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -246,7 +246,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_io_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -263,7 +263,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_fixed_io_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -301,7 +301,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_irq_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -339,7 +339,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_dma_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -377,7 +377,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_address16_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -415,7 +415,45 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_address32_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
+op_star
+id|linked_list
+comma
+id|u8
+op_star
+op_star
+id|output_buffer
+comma
+id|u32
+op_star
+id|bytes_consumed
+)paren
+suffix:semicolon
+id|ACPI_STATUS
+id|acpi_rs_address64_resource
+(paren
+id|u8
+op_star
+id|byte_stream_buffer
+comma
+id|u32
+op_star
+id|bytes_consumed
+comma
+id|u8
+op_star
+op_star
+id|output_buffer
+comma
+id|u32
+op_star
+id|structure_size
+)paren
+suffix:semicolon
+id|ACPI_STATUS
+id|acpi_rs_address64_stream
+(paren
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -474,7 +512,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_start_dependent_functions_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -491,7 +529,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_end_dependent_functions_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -529,7 +567,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_memory24_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -588,7 +626,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_memory32_range_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -605,7 +643,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_fixed_memory32_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -643,7 +681,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_extended_irq_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -681,7 +719,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_end_tag_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -719,7 +757,7 @@ suffix:semicolon
 id|ACPI_STATUS
 id|acpi_rs_vendor_stream
 (paren
-id|RESOURCE
+id|ACPI_RESOURCE
 op_star
 id|linked_list
 comma
@@ -731,6 +769,13 @@ comma
 id|u32
 op_star
 id|bytes_consumed
+)paren
+suffix:semicolon
+id|u8
+id|acpi_rs_get_resource_type
+(paren
+id|u8
+id|resource_start_byte
 )paren
 suffix:semicolon
 macro_line|#endif  /* __ACRESRC_H__ */

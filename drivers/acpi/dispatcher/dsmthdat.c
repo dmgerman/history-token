@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsmthdat - control method arguments and local variables&n; *              $Revision: 39 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsmthdat - control method arguments and local variables&n; *              $Revision: 46 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -7,7 +7,7 @@ macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          DISPATCHER
+mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|MODULE_NAME
 (paren
 l_string|&quot;dsmthdat&quot;
@@ -25,7 +25,7 @@ id|walk_state
 id|u32
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t; * Walk_state fields are initialized to zero by the&n;&t; * Acpi_cm_callocate().&n;&t; *&n;&t; * An Node is assigned to each argument and local so&n;&t; * that Ref_of() can return a pointer to the Node.&n;&t; */
+multiline_comment|/*&n;&t; * Walk_state fields are initialized to zero by the&n;&t; * Acpi_ut_callocate().&n;&t; *&n;&t; * An Node is assigned to each argument and local so&n;&t; * that Ref_of() can return a pointer to the Node.&n;&t; */
 multiline_comment|/* Init the method arguments */
 r_for
 c_loop
@@ -235,7 +235,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Was given a ref when stored */
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|object
 )paren
@@ -284,7 +284,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Was given a ref when stored */
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|object
 )paren
@@ -375,9 +375,9 @@ id|pindex
 multiline_comment|/*&n;&t;&t;&t; * A valid parameter.&n;&t;&t;&t; * Set the current method argument to the&n;&t;&t;&t; * Params[Pindex++] argument object descriptor&n;&t;&t;&t; */
 id|status
 op_assign
-id|acpi_ds_method_data_set_value
+id|acpi_ds_store_object_to_local
 (paren
-id|MTH_TYPE_ARG
+id|AML_ARG_OP
 comma
 id|mindex
 comma
@@ -417,13 +417,13 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_get_entry&n; *&n; * PARAMETERS:  Type                - Either MTH_TYPE_LOCAL or MTH_TYPE_ARG&n; *              Index               - Which local_var or argument to get&n; *              Entry               - Pointer to where a pointer to the stack&n; *                                    entry is returned.&n; *              Walk_state          - Current walk state object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the address of the stack entry given by Type:Index&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_get_entry&n; *&n; * PARAMETERS:  Opcode              - Either AML_LOCAL_OP or AML_ARG_OP&n; *              Index               - Which local_var or argument to get&n; *              Entry               - Pointer to where a pointer to the stack&n; *                                    entry is returned.&n; *              Walk_state          - Current walk state object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get the address of the object entry given by Opcode:Index&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ds_method_data_get_entry
 id|acpi_ds_method_data_get_entry
 (paren
-id|u32
-id|type
+id|u16
+id|opcode
 comma
 id|u32
 id|index
@@ -439,15 +439,15 @@ op_star
 id|entry
 )paren
 (brace
-multiline_comment|/*&n;&t; * Get the requested object.&n;&t; * The stack &quot;Type&quot; is either a Local_variable or an Argument&n;&t; */
+multiline_comment|/*&n;&t; * Get the requested object.&n;&t; * The stack &quot;Opcode&quot; is either a Local_variable or an Argument&n;&t; */
 r_switch
 c_cond
 (paren
-id|type
+id|opcode
 )paren
 (brace
 r_case
-id|MTH_TYPE_LOCAL
+id|AML_LOCAL_OP
 suffix:colon
 r_if
 c_cond
@@ -482,7 +482,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|MTH_TYPE_ARG
+id|AML_ARG_OP
 suffix:colon
 r_if
 c_cond
@@ -530,13 +530,13 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_set_entry&n; *&n; * PARAMETERS:  Type                - Either MTH_TYPE_LOCAL or MTH_TYPE_ARG&n; *              Index               - Which local_var or argument to get&n; *              Object              - Object to be inserted into the stack entry&n; *              Walk_state          - Current walk state object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Insert an object onto the method stack at entry Type:Index.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_set_entry&n; *&n; * PARAMETERS:  Opcode              - Either AML_LOCAL_OP or AML_ARG_OP&n; *              Index               - Which local_var or argument to get&n; *              Object              - Object to be inserted into the stack entry&n; *              Walk_state          - Current walk state object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Insert an object onto the method stack at entry Opcode:Index.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ds_method_data_set_entry
 id|acpi_ds_method_data_set_entry
 (paren
-id|u32
-id|type
+id|u16
+id|opcode
 comma
 id|u32
 id|index
@@ -563,7 +563,7 @@ id|status
 op_assign
 id|acpi_ds_method_data_get_entry
 (paren
-id|type
+id|opcode
 comma
 id|index
 comma
@@ -589,7 +589,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* Increment ref count so object can&squot;t be deleted while installed */
-id|acpi_cm_add_reference
+id|acpi_ut_add_reference
 (paren
 id|object
 )paren
@@ -606,13 +606,13 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_get_type&n; *&n; * PARAMETERS:  Type                - Either MTH_TYPE_LOCAL or MTH_TYPE_ARG&n; *              Index               - Which local_var or argument whose type&n; *                                      to get&n; *              Walk_state          - Current walk state object&n; *&n; * RETURN:      Data type of selected Arg or Local&n; *              Used only in Exec_monadic2()/Type_op.&n; *&n; ******************************************************************************/
-id|OBJECT_TYPE_INTERNAL
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_get_type&n; *&n; * PARAMETERS:  Opcode              - Either AML_LOCAL_OP or AML_ARG_OP&n; *              Index               - Which local_var or argument whose type&n; *                                      to get&n; *              Walk_state          - Current walk state object&n; *&n; * RETURN:      Data type of selected Arg or Local&n; *              Used only in Exec_monadic2()/Type_op.&n; *&n; ******************************************************************************/
+id|ACPI_OBJECT_TYPE8
 DECL|function|acpi_ds_method_data_get_type
 id|acpi_ds_method_data_get_type
 (paren
-id|u32
-id|type
+id|u16
+id|opcode
 comma
 id|u32
 id|index
@@ -639,7 +639,7 @@ id|status
 op_assign
 id|acpi_ds_method_data_get_entry
 (paren
-id|type
+id|opcode
 comma
 id|index
 comma
@@ -693,14 +693,14 @@ id|object-&gt;common.type
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_get_nte&n; *&n; * PARAMETERS:  Type                - Either MTH_TYPE_LOCAL or MTH_TYPE_ARG&n; *              Index               - Which local_var or argument whose type&n; *                                      to get&n; *              Walk_state          - Current walk state object&n; *&n; * RETURN:      Get the Node associated with a local or arg.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_get_node&n; *&n; * PARAMETERS:  Opcode              - Either AML_LOCAL_OP or AML_ARG_OP&n; *              Index               - Which local_var or argument whose type&n; *                                      to get&n; *              Walk_state          - Current walk state object&n; *&n; * RETURN:      Get the Node associated with a local or arg.&n; *&n; ******************************************************************************/
 id|ACPI_NAMESPACE_NODE
 op_star
-DECL|function|acpi_ds_method_data_get_nte
-id|acpi_ds_method_data_get_nte
+DECL|function|acpi_ds_method_data_get_node
+id|acpi_ds_method_data_get_node
 (paren
-id|u32
-id|type
+id|u16
+id|opcode
 comma
 id|u32
 id|index
@@ -719,11 +719,11 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|type
+id|opcode
 )paren
 (brace
 r_case
-id|MTH_TYPE_LOCAL
+id|AML_LOCAL_OP
 suffix:colon
 r_if
 c_cond
@@ -750,7 +750,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|MTH_TYPE_ARG
+id|AML_ARG_OP
 suffix:colon
 r_if
 c_cond
@@ -787,13 +787,13 @@ id|node
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_get_value&n; *&n; * PARAMETERS:  Type                - Either MTH_TYPE_LOCAL or MTH_TYPE_ARG&n; *              Index               - Which local_var or argument to get&n; *              Walk_state          - Current walk state object&n; *              *Dest_desc          - Ptr to Descriptor into which selected Arg&n; *                                    or Local value should be copied&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve value of selected Arg or Local from the method frame&n; *              at the current top of the method stack.&n; *              Used only in Acpi_aml_resolve_to_value().&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_get_value&n; *&n; * PARAMETERS:  Opcode              - Either AML_LOCAL_OP or AML_ARG_OP&n; *              Index               - Which local_var or argument to get&n; *              Walk_state          - Current walk state object&n; *              *Dest_desc          - Ptr to Descriptor into which selected Arg&n; *                                    or Local value should be copied&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve value of selected Arg or Local from the method frame&n; *              at the current top of the method stack.&n; *              Used only in Acpi_ex_resolve_to_value().&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ds_method_data_get_value
 id|acpi_ds_method_data_get_value
 (paren
-id|u32
-id|type
+id|u16
+id|opcode
 comma
 id|u32
 id|index
@@ -839,7 +839,7 @@ id|status
 op_assign
 id|acpi_ds_method_data_get_entry
 (paren
-id|type
+id|opcode
 comma
 id|index
 comma
@@ -882,11 +882,11 @@ multiline_comment|/*&n;&t;&t; * Index points to uninitialized object stack value
 r_switch
 c_cond
 (paren
-id|type
+id|opcode
 )paren
 (brace
 r_case
-id|MTH_TYPE_ARG
+id|AML_ARG_OP
 suffix:colon
 r_return
 (paren
@@ -896,7 +896,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|MTH_TYPE_LOCAL
+id|AML_LOCAL_OP
 suffix:colon
 r_return
 (paren
@@ -913,7 +913,7 @@ id|dest_desc
 op_assign
 id|object
 suffix:semicolon
-id|acpi_cm_add_reference
+id|acpi_ut_add_reference
 (paren
 id|object
 )paren
@@ -924,13 +924,13 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_delete_value&n; *&n; * PARAMETERS:  Type                - Either MTH_TYPE_LOCAL or MTH_TYPE_ARG&n; *              Index               - Which local_var or argument to delete&n; *              Walk_state          - Current walk state object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Delete the entry at Type:Index on the method stack.  Inserts&n; *              a null into the stack slot after the object is deleted.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_delete_value&n; *&n; * PARAMETERS:  Opcode              - Either AML_LOCAL_OP or AML_ARG_OP&n; *              Index               - Which local_var or argument to delete&n; *              Walk_state          - Current walk state object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Delete the entry at Opcode:Index on the method stack.  Inserts&n; *              a null into the stack slot after the object is deleted.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
 DECL|function|acpi_ds_method_data_delete_value
 id|acpi_ds_method_data_delete_value
 (paren
-id|u32
-id|type
+id|u16
+id|opcode
 comma
 id|u32
 id|index
@@ -957,7 +957,7 @@ id|status
 op_assign
 id|acpi_ds_method_data_get_entry
 (paren
-id|type
+id|opcode
 comma
 id|index
 comma
@@ -1012,7 +1012,7 @@ id|ACPI_DESC_TYPE_INTERNAL
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * There is a valid object in this slot&n;&t;&t; * Decrement the reference count by one to balance the&n;&t;&t; * increment when the object was stored in the slot.&n;&t;&t; */
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|object
 )paren
@@ -1024,13 +1024,13 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_method_data_set_value&n; *&n; * PARAMETERS:  Type                - Either MTH_TYPE_LOCAL or MTH_TYPE_ARG&n; *              Index               - Which local_var or argument to set&n; *              Src_desc            - Value to be stored&n; *              Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store a value in an Arg or Local.  The Src_desc is installed&n; *              as the new value for the Arg or Local and the reference count&n; *              for Src_desc is incremented.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_store_object_to_local&n; *&n; * PARAMETERS:  Opcode              - Either AML_LOCAL_OP or AML_ARG_OP&n; *              Index               - Which local_var or argument to set&n; *              Src_desc            - Value to be stored&n; *              Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store a value in an Arg or Local.  The Src_desc is installed&n; *              as the new value for the Arg or Local and the reference count&n; *              for Src_desc is incremented.&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
-DECL|function|acpi_ds_method_data_set_value
-id|acpi_ds_method_data_set_value
+DECL|function|acpi_ds_store_object_to_local
+id|acpi_ds_store_object_to_local
 (paren
-id|u32
-id|type
+id|u16
+id|opcode
 comma
 id|u32
 id|index
@@ -1071,7 +1071,7 @@ id|status
 op_assign
 id|acpi_ds_method_data_get_entry
 (paren
-id|type
+id|opcode
 comma
 id|index
 comma
@@ -1120,9 +1120,9 @@ r_if
 c_cond
 (paren
 (paren
-id|type
+id|opcode
 op_eq
-id|MTH_TYPE_ARG
+id|AML_ARG_OP
 )paren
 op_logical_and
 (paren
@@ -1170,10 +1170,11 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_ENABLE_IMPLICIT_CONVERSION
 multiline_comment|/*&n;&t;&t; * Perform &quot;Implicit conversion&quot; of the new object to the type of the&n;&t;&t; * existing object&n;&t;&t; */
 id|status
 op_assign
-id|acpi_aml_convert_to_target_type
+id|acpi_ex_convert_to_target_type
 (paren
 (paren
 op_star
@@ -1201,10 +1202,11 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n;&t;&t; * Delete the existing object&n;&t;&t; * before storing the new one&n;&t;&t; */
 id|acpi_ds_method_data_delete_value
 (paren
-id|type
+id|opcode
 comma
 id|index
 comma
@@ -1217,7 +1219,7 @@ id|status
 op_assign
 id|acpi_ds_method_data_set_entry
 (paren
-id|type
+id|opcode
 comma
 id|index
 comma

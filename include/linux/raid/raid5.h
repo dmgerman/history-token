@@ -72,6 +72,16 @@ id|MD_SB_DISKS
 )braket
 suffix:semicolon
 multiline_comment|/* write request buffers of the MD device that have been scheduled for write */
+DECL|member|bh_page
+r_struct
+id|page
+op_star
+id|bh_page
+(braket
+id|MD_SB_DISKS
+)braket
+suffix:semicolon
+multiline_comment|/* saved bh_cache[n]-&gt;b_page when reading around the cache */
 DECL|member|sector
 r_int
 r_int
@@ -126,6 +136,11 @@ DECL|macro|STRIPE_SYNCING
 mdefine_line|#define&t;STRIPE_SYNCING&t;&t;3
 DECL|macro|STRIPE_INSYNC
 mdefine_line|#define&t;STRIPE_INSYNC&t;&t;4
+DECL|macro|STRIPE_PREREAD_ACTIVE
+mdefine_line|#define&t;STRIPE_PREREAD_ACTIVE&t;5
+DECL|macro|STRIPE_DELAYED
+mdefine_line|#define&t;STRIPE_DELAYED&t;&t;6
+multiline_comment|/*&n; * Plugging:&n; *&n; * To improve write throughput, we need to delay the handling of some&n; * stripes until there has been a chance that several write requests&n; * for the one stripe have all been collected.&n; * In particular, any write request that would require pre-reading&n; * is put on a &quot;delayed&quot; queue until there are no stripes currently&n; * in a pre-read phase.  Further, if the &quot;delayed&quot; queue is empty when&n; * a stripe is put on it then we &quot;plug&quot; the queue and do not process it&n; * until an unplg call is made. (the tq_disk list is run).&n; *&n; * When preread is initiated on a stripe, we set PREREAD_ACTIVE and add&n; * it to the count of prereading stripes.&n; * When write is initiated, or the stripe refcnt == 0 (just in case) we&n; * clear the PREREAD_ACTIVE flag and decrement the count&n; * Whenever the delayed queue is empty and the device is not plugged, we&n; * move any strips from delayed to handle and clear the DELAYED flag and set PREREAD_ACTIVE.&n; * In stripe_handle, if we find pre-reading is necessary, we do it if&n; * PREREAD_ACTIVE is set, else we set DELAYED which will send it to the delayed queue.&n; * HANDLE gets cleared if stripe_handle leave nothing locked.&n; */
 DECL|struct|disk_info
 r_struct
 id|disk_info
@@ -237,6 +252,17 @@ id|list_head
 id|handle_list
 suffix:semicolon
 multiline_comment|/* stripes needing handling */
+DECL|member|delayed_list
+r_struct
+id|list_head
+id|delayed_list
+suffix:semicolon
+multiline_comment|/* stripes that have plugged requests */
+DECL|member|preread_active_stripes
+id|atomic_t
+id|preread_active_stripes
+suffix:semicolon
+multiline_comment|/* stripes with scheduled io */
 multiline_comment|/*&n;&t; * Free stripes pool&n;&t; */
 DECL|member|active_stripes
 id|atomic_t
@@ -251,9 +277,23 @@ DECL|member|wait_for_stripe
 id|md_wait_queue_head_t
 id|wait_for_stripe
 suffix:semicolon
+DECL|member|inactive_blocked
+r_int
+id|inactive_blocked
+suffix:semicolon
+multiline_comment|/* release of inactive stripes blocked,&n;&t;&t;&t;&t;&t;&t;&t; * waiting for 25% to be free&n;&t;&t;&t;&t;&t;&t;&t; */
 DECL|member|device_lock
 id|md_spinlock_t
 id|device_lock
+suffix:semicolon
+DECL|member|plugged
+r_int
+id|plugged
+suffix:semicolon
+DECL|member|plug_tq
+r_struct
+id|tq_struct
+id|plug_tq
 suffix:semicolon
 )brace
 suffix:semicolon

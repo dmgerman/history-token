@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MCT (Magic Control Technology Corp.) USB RS232 Converter Driver&n; *&n; *   Copyright (C) 2000 Wolfgang Grandegger (wolfgang@ces.ch)&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; * This program is largely derived from the Belkin USB Serial Adapter Driver&n; * (see belkin_sa.[ch]). All of the information about the device was acquired&n; * by using SniffUSB on Windows98. For technical details see mct_u232.h.&n; *&n; * William G. Greathouse and Greg Kroah-Hartman provided great help on how to&n; * do the reverse engineering and how to write a USB serial device driver.&n; *&n; * TO BE DONE, TO BE CHECKED:&n; *   DTR/RTS signal handling may be incomplete or incorrect. I have mainly&n; *   implemented what I have seen with SniffUSB or found in belkin_sa.c.&n; *   For further TODOs check also belkin_sa.c.&n; *&n; * TEST STATUS:&n; *   Basic tests have been performed with minicom/zmodem transfers and&n; *   modem dialing under Linux 2.4.0-test10 (for me it works fine).&n; *&n; * 04-May-2001 Stelian Pop&n; *   - Set the maximum bulk output size for Sitecom U232-P25 model to 16 bytes&n; *     instead of the device reported 32 (using 32 bytes causes many data&n; *     loss, Windows driver uses 16 too).&n; *&n; * 02-May-2001 Stelian Pop&n; *   - Fixed the baud calculation for Sitecom U232-P25 model&n; *&n; * 08-Apr-2001 gb&n; *   - Identify version on module load.&n; *&n; * 06-Jan-2001 Cornel Ciocirlan &n; *   - Added support for Sitecom U232-P25 model (Product Id 0x0230)&n; *   - Added support for D-Link DU-H3SP USB BAY (Product Id 0x0200)&n; *&n; * 29-Nov-2000 Greg Kroah-Hartman&n; *   - Added device id table to fit with 2.4.0-test11 structure.&n; *   - took out DEAL_WITH_TWO_INT_IN_ENDPOINTS #define as it&squot;s not needed&n; *     (lots of things will change if/when the usb-serial core changes to&n; *     handle these issues.&n; *&n; * 27-Nov-2000 Wolfgang Grandegger&n; *   A version for kernel 2.4.0-test10 released to the Linux community &n; *   (via linux-usb-devel).&n; */
+multiline_comment|/*&n; * MCT (Magic Control Technology Corp.) USB RS232 Converter Driver&n; *&n; *   Copyright (C) 2000 Wolfgang Grandegger (wolfgang@ces.ch)&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; * This program is largely derived from the Belkin USB Serial Adapter Driver&n; * (see belkin_sa.[ch]). All of the information about the device was acquired&n; * by using SniffUSB on Windows98. For technical details see mct_u232.h.&n; *&n; * William G. Greathouse and Greg Kroah-Hartman provided great help on how to&n; * do the reverse engineering and how to write a USB serial device driver.&n; *&n; * TO BE DONE, TO BE CHECKED:&n; *   DTR/RTS signal handling may be incomplete or incorrect. I have mainly&n; *   implemented what I have seen with SniffUSB or found in belkin_sa.c.&n; *   For further TODOs check also belkin_sa.c.&n; *&n; * TEST STATUS:&n; *   Basic tests have been performed with minicom/zmodem transfers and&n; *   modem dialing under Linux 2.4.0-test10 (for me it works fine).&n; *&n; * 30-May-2001 Greg Kroah-Hartman&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * 04-May-2001 Stelian Pop&n; *   - Set the maximum bulk output size for Sitecom U232-P25 model to 16 bytes&n; *     instead of the device reported 32 (using 32 bytes causes many data&n; *     loss, Windows driver uses 16 too).&n; *&n; * 02-May-2001 Stelian Pop&n; *   - Fixed the baud calculation for Sitecom U232-P25 model&n; *&n; * 08-Apr-2001 gb&n; *   - Identify version on module load.&n; *&n; * 06-Jan-2001 Cornel Ciocirlan &n; *   - Added support for Sitecom U232-P25 model (Product Id 0x0230)&n; *   - Added support for D-Link DU-H3SP USB BAY (Product Id 0x0200)&n; *&n; * 29-Nov-2000 Greg Kroah-Hartman&n; *   - Added device id table to fit with 2.4.0-test11 structure.&n; *   - took out DEAL_WITH_TWO_INT_IN_ENDPOINTS #define as it&squot;s not needed&n; *     (lots of things will change if/when the usb-serial core changes to&n; *     handle these issues.&n; *&n; * 27-Nov-2000 Wolfgang Grandegger&n; *   A version for kernel 2.4.0-test10 released to the Linux community &n; *   (via linux-usb-devel).&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -33,7 +33,7 @@ macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;mct_u232.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.1&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Wolfgang Grandegger &lt;wolfgang@ces.ch&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -1398,10 +1398,6 @@ op_star
 id|filp
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|usb_serial
 op_star
@@ -1423,6 +1419,11 @@ id|port
 op_member_access_from_pointer
 r_private
 suffix:semicolon
+r_int
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -1432,12 +1433,10 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 op_increment
@@ -1568,33 +1567,46 @@ id|port-&gt;read_urb-&gt;dev
 op_assign
 id|port-&gt;serial-&gt;dev
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|retval
+op_assign
 id|usb_submit_urb
 c_func
 (paren
 id|port-&gt;read_urb
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
+(brace
 id|err
 c_func
 (paren
 l_string|&quot;usb_submit_urb(read bulk) failed&quot;
 )paren
 suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
 id|port-&gt;interrupt_in_urb-&gt;dev
 op_assign
 id|port-&gt;serial-&gt;dev
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|retval
+op_assign
 id|usb_submit_urb
 c_func
 (paren
 id|port-&gt;interrupt_in_urb
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 id|err
 c_func
@@ -1603,12 +1615,12 @@ l_string|&quot; usb_submit_urb(read int) failed&quot;
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+m_exit
+suffix:colon
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 r_return
@@ -1632,10 +1644,6 @@ op_star
 id|filp
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -1645,18 +1653,14 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 op_decrement
 id|port-&gt;open_count
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond
@@ -1688,13 +1692,13 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/* mct_u232_close */
@@ -1729,10 +1733,6 @@ op_star
 id|serial
 op_assign
 id|port-&gt;serial
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_int
 id|result
@@ -1816,12 +1816,10 @@ OG
 l_int|0
 )paren
 (brace
-id|spin_lock_irqsave
+id|down
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 id|size
@@ -1935,24 +1933,20 @@ comma
 id|result
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 r_return
-id|bytes_sent
+id|result
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|up
 (paren
 op_amp
-id|port-&gt;port_lock
-comma
-id|flags
+id|port-&gt;sem
 )paren
 suffix:semicolon
 id|bytes_sent

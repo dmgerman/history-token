@@ -262,7 +262,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;zone %d&bslash;n&quot;
+l_string|&quot;raid0: zone %d&bslash;n&quot;
 comma
 id|i
 )paren
@@ -292,7 +292,7 @@ id|j
 id|printk
 c_func
 (paren
-l_string|&quot; checking %s ...&quot;
+l_string|&quot;raid0: checking %s ...&quot;
 comma
 id|partition_name
 c_func
@@ -379,7 +379,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; zone-&gt;nb_dev: %d, size: %ld&bslash;n&quot;
+l_string|&quot;raid0: zone-&gt;nb_dev: %d, size: %ld&bslash;n&quot;
 comma
 id|zone-&gt;nb_dev
 comma
@@ -417,7 +417,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;current zone offset: %ld&bslash;n&quot;
+l_string|&quot;raid0: current zone offset: %ld&bslash;n&quot;
 comma
 id|current_offset
 )paren
@@ -426,7 +426,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;done.&bslash;n&quot;
+l_string|&quot;raid0: done.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

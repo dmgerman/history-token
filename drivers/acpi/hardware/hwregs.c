@@ -1,10 +1,10 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *              $Revision: 88 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *              $Revision: 97 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          HARDWARE
+mdefine_line|#define _COMPONENT          ACPI_HARDWARE
 id|MODULE_NAME
 (paren
 l_string|&quot;hwregs&quot;
@@ -90,7 +90,7 @@ suffix:semicolon
 id|u16
 id|index
 suffix:semicolon
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_HARDWARE
 )paren
@@ -237,7 +237,7 @@ l_int|0xff
 suffix:semicolon
 )brace
 )brace
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_HARDWARE
 )paren
@@ -346,9 +346,10 @@ id|AE_NOT_EXIST
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *  We got something, now ensure it is correct.  The object must&n;&t; *  be a package and must have at least 2 numeric values as the&n;&t; *  two elements&n;&t; */
+multiline_comment|/* Even though Acpi_evaluate_object resolves package references,&n;&t; * Ns_evaluate dpesn&squot;t. So, we do it here.&n;&t; */
 id|status
 op_assign
-id|acpi_cm_resolve_package_references
+id|acpi_ut_resolve_package_references
 c_func
 (paren
 id|obj_desc
@@ -453,7 +454,7 @@ op_member_access_from_pointer
 id|integer.value
 suffix:semicolon
 )brace
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|obj_desc
 )paren
@@ -499,6 +500,9 @@ id|value
 op_assign
 l_int|0
 suffix:semicolon
+id|va_list
+id|marker
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -507,9 +511,6 @@ op_eq
 id|ACPI_WRITE
 )paren
 (brace
-id|va_list
-id|marker
-suffix:semicolon
 id|va_start
 (paren
 id|marker
@@ -540,18 +541,17 @@ op_eq
 id|use_lock
 )paren
 (brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_HARDWARE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Decode the Register ID&n;&t; *  Register id = Register block id | bit id&n;&t; *&n;&t; * Check bit id to fine locate Register offset.&n;&t; *  check Mask to determine Register offset, and then read-write.&n;&t; */
+multiline_comment|/*&n;&t; * Decode the Register ID&n;&t; * Register id = Register block id | bit id&n;&t; *&n;&t; * Check bit id to fine locate Register offset.&n;&t; * Check Mask to determine Register offset, and then read-write.&n;&t; */
 r_switch
 c_cond
 (paren
 id|REGISTER_BLOCK_ID
-c_func
 (paren
 id|register_id
 )paren
@@ -1144,7 +1144,7 @@ suffix:colon
 r_case
 id|PROCESSOR_BLOCK
 suffix:colon
-multiline_comment|/* not used */
+multiline_comment|/* Not used by any callers at this time - therefore, not implemented */
 r_default
 suffix:colon
 id|mask
@@ -1162,7 +1162,7 @@ op_eq
 id|use_lock
 )paren
 (brace
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_HARDWARE
 )paren
@@ -1213,7 +1213,7 @@ op_eq
 id|use_lock
 )paren
 (brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_HARDWARE
 )paren
@@ -1481,7 +1481,7 @@ op_eq
 id|use_lock
 )paren
 (brace
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_HARDWARE
 )paren
@@ -1519,7 +1519,7 @@ op_eq
 id|use_lock
 )paren
 (brace
-id|acpi_cm_acquire_mutex
+id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_HARDWARE
 )paren
@@ -1824,7 +1824,7 @@ op_eq
 id|use_lock
 )paren
 (brace
-id|acpi_cm_release_mutex
+id|acpi_ut_release_mutex
 (paren
 id|ACPI_MTX_HARDWARE
 )paren
@@ -1841,7 +1841,7 @@ id|acpi_hw_low_level_read
 id|u32
 id|width
 comma
-id|ACPI_GAS
+id|ACPI_GENERIC_ADDRESS
 op_star
 id|reg
 comma
@@ -1896,7 +1896,7 @@ id|reg-&gt;address_space_id
 )paren
 (brace
 r_case
-id|ADDRESS_SPACE_SYSTEM_MEMORY
+id|ACPI_ADR_SPACE_SYSTEM_MEMORY
 suffix:colon
 id|mem_address
 op_assign
@@ -1958,7 +1958,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ADDRESS_SPACE_SYSTEM_IO
+id|ACPI_ADR_SPACE_SYSTEM_IO
 suffix:colon
 id|io_address
 op_assign
@@ -2020,7 +2020,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ADDRESS_SPACE_PCI_CONFIG
+id|ACPI_ADR_SPACE_PCI_CONFIG
 suffix:colon
 id|pci_dev_func
 op_assign
@@ -2132,7 +2132,7 @@ comma
 id|u32
 id|value
 comma
-id|ACPI_GAS
+id|ACPI_GENERIC_ADDRESS
 op_star
 id|reg
 comma
@@ -2181,7 +2181,7 @@ id|reg-&gt;address_space_id
 )paren
 (brace
 r_case
-id|ADDRESS_SPACE_SYSTEM_MEMORY
+id|ACPI_ADR_SPACE_SYSTEM_MEMORY
 suffix:colon
 id|mem_address
 op_assign
@@ -2252,7 +2252,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ADDRESS_SPACE_SYSTEM_IO
+id|ACPI_ADR_SPACE_SYSTEM_IO
 suffix:colon
 id|io_address
 op_assign
@@ -2323,7 +2323,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ADDRESS_SPACE_PCI_CONFIG
+id|ACPI_ADR_SPACE_PCI_CONFIG
 suffix:colon
 id|pci_dev_func
 op_assign

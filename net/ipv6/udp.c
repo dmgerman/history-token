@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;UDP over IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;Based on linux/ipv4/udp.c&n; *&n; *&t;$Id: udp.c,v 1.62 2001/03/06 21:15:11 davem Exp $&n; *&n; *&t;Fixes:&n; *&t;Hideaki YOSHIFUJI&t;:&t;sin6_scope_id support&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;UDP over IPv6&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;Based on linux/ipv4/udp.c&n; *&n; *&t;$Id: udp.c,v 1.63 2001/06/13 16:25:03 davem Exp $&n; *&n; *&t;Fixes:&n; *&t;Hideaki YOSHIFUJI&t;:&t;sin6_scope_id support&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -4645,6 +4645,51 @@ id|udp_v6_get_port
 comma
 )brace
 suffix:semicolon
+r_extern
+r_struct
+id|proto_ops
+id|inet6_dgram_ops
+suffix:semicolon
+DECL|variable|udpv6_protosw
+r_static
+r_struct
+id|inet_protosw
+id|udpv6_protosw
+op_assign
+(brace
+id|type
+suffix:colon
+id|SOCK_DGRAM
+comma
+id|protocol
+suffix:colon
+id|IPPROTO_UDP
+comma
+id|prot
+suffix:colon
+op_amp
+id|udpv6_prot
+comma
+id|ops
+suffix:colon
+op_amp
+id|inet6_dgram_ops
+comma
+id|capability
+suffix:colon
+op_minus
+l_int|1
+comma
+id|no_check
+suffix:colon
+id|UDP_CSUM_DEFAULT
+comma
+id|flags
+suffix:colon
+id|INET_PROTOSW_PERMANENT
+comma
+)brace
+suffix:semicolon
 DECL|function|udpv6_init
 r_void
 id|__init
@@ -4659,6 +4704,13 @@ c_func
 (paren
 op_amp
 id|udpv6_protocol
+)paren
+suffix:semicolon
+id|inet6_register_protosw
+c_func
+(paren
+op_amp
+id|udpv6_protosw
 )paren
 suffix:semicolon
 )brace

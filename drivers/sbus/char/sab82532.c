@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sab82532.c,v 1.60 2001/05/29 05:56:06 ecd Exp $&n; * sab82532.c: ASYNC Driver for the SIEMENS SAB82532 DUSCC.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Rewrote buffer handling to use CIRC(Circular Buffer) macros.&n; *   Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&n; *&n; */
+multiline_comment|/* $Id: sab82532.c,v 1.62 2001/06/10 06:48:47 davem Exp $&n; * sab82532.c: ASYNC Driver for the SIEMENS SAB82532 DUSCC.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Rewrote buffer handling to use CIRC(Circular Buffer) macros.&n; *   Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -1481,7 +1481,7 @@ macro_line|#ifdef SERIAL_DEBUG_FIFO
 id|printk
 c_func
 (paren
-l_string|&quot;%s: XPR, but no XFW (???)&bslash;n&quot;
+l_string|&quot;%s: XPR, but no XFW (?)&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2497,6 +2497,7 @@ id|status
 suffix:semicolon
 id|done
 suffix:colon
+suffix:semicolon
 macro_line|#ifdef SERIAL_DEBUG_INTR
 id|printk
 c_func
@@ -9881,7 +9882,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.60 $&quot;
+l_string|&quot;$Revision: 1.62 $&quot;
 suffix:semicolon
 r_char
 op_star

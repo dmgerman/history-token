@@ -1440,6 +1440,17 @@ suffix:semicolon
 id|err_bad_prog
 suffix:colon
 macro_line|#ifdef RPC_PARANOIA
+r_if
+c_cond
+(paren
+id|prog
+op_ne
+l_int|100227
+op_logical_or
+id|progp-&gt;pg_prog
+op_ne
+l_int|100003
+)paren
 id|printk
 c_func
 (paren
@@ -1450,6 +1461,7 @@ comma
 id|progp-&gt;pg_prog
 )paren
 suffix:semicolon
+multiline_comment|/* else it is just a Solaris client seeing if ACLs are supported */
 macro_line|#endif
 id|serv-&gt;sv_stats-&gt;rpcbadfmt
 op_increment

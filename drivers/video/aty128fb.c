@@ -942,7 +942,8 @@ id|constants
 suffix:semicolon
 multiline_comment|/* PLL and others      */
 DECL|member|regbase_phys
-id|u32
+r_int
+r_int
 id|regbase_phys
 suffix:semicolon
 multiline_comment|/* physical mmio       */
@@ -953,12 +954,14 @@ id|regbase
 suffix:semicolon
 multiline_comment|/* remapped mmio       */
 DECL|member|frame_buffer_phys
-id|u32
+r_int
+r_int
 id|frame_buffer_phys
 suffix:semicolon
 multiline_comment|/* physical fb memory  */
 DECL|member|frame_buffer
-id|u32
+r_void
+op_star
 id|frame_buffer
 suffix:semicolon
 multiline_comment|/* remaped framebuffer */
@@ -6149,10 +6152,6 @@ id|info
 suffix:semicolon
 id|display-&gt;screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|info-&gt;frame_buffer
 suffix:semicolon
 id|display-&gt;visual
@@ -8226,7 +8225,8 @@ id|info
 op_assign
 l_int|NULL
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|fb_addr
 comma
 id|reg_addr
@@ -8454,9 +8454,6 @@ id|fb_addr
 suffix:semicolon
 id|info-&gt;frame_buffer
 op_assign
-(paren
-id|u32
-)paren
 id|ioremap
 c_func
 (paren
@@ -8635,20 +8632,12 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|info-&gt;frame_buffer
 )paren
 suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|info-&gt;regbase
 )paren
 suffix:semicolon
@@ -12055,7 +12044,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-op_amp
 id|info-&gt;frame_buffer
 )paren
 suffix:semicolon

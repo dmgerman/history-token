@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actables.h - ACPI table management&n; *       $Revision: 29 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: actables.h - ACPI table management&n; *       $Revision: 31 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTABLES_H__
 DECL|macro|__ACTABLES_H__
@@ -43,6 +43,18 @@ id|acpi_tb_build_common_facs
 id|ACPI_TABLE_DESC
 op_star
 id|table_info
+)paren
+suffix:semicolon
+id|u32
+id|acpi_tb_get_table_count
+(paren
+id|RSDP_DESCRIPTOR
+op_star
+id|RSDP
+comma
+id|ACPI_TABLE_HEADER
+op_star
+id|RSDT
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * tbget - Table &quot;get&quot; routines&n; */
@@ -93,6 +105,39 @@ comma
 id|ACPI_TABLE_DESC
 op_star
 id|table_info
+)paren
+suffix:semicolon
+id|ACPI_PHYSICAL_ADDRESS
+id|acpi_tb_get_rsdt_address
+(paren
+r_void
+)paren
+suffix:semicolon
+id|ACPI_STATUS
+id|acpi_tb_validate_rsdt
+(paren
+id|ACPI_TABLE_HEADER
+op_star
+id|table_ptr
+)paren
+suffix:semicolon
+id|ACPI_STATUS
+id|acpi_tb_get_table_pointer
+(paren
+id|ACPI_PHYSICAL_ADDRESS
+id|physical_address
+comma
+id|u32
+id|flags
+comma
+id|u32
+op_star
+id|size
+comma
+id|ACPI_TABLE_HEADER
+op_star
+op_star
+id|table_ptr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * tbgetall - Get all firmware ACPI tables&n; */
@@ -209,6 +254,9 @@ id|acpi_tb_find_rsdp
 id|ACPI_TABLE_DESC
 op_star
 id|table_info
+comma
+id|u32
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * tbutils - common table utilities&n; */
@@ -230,7 +278,7 @@ id|u32
 op_star
 id|size
 comma
-r_void
+id|ACPI_TABLE_HEADER
 op_star
 op_star
 id|logical_address

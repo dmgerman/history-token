@@ -240,7 +240,8 @@ id|aper_size_type
 id|size_type
 suffix:semicolon
 DECL|member|key_list
-id|u32
+r_int
+r_int
 op_star
 id|key_list
 suffix:semicolon

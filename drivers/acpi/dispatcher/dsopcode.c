@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsopcode - Dispatcher Op Region support and handling of&n; *                         &quot;control&quot; opcodes&n; *              $Revision: 32 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsopcode - Dispatcher Op Region support and handling of&n; *                         &quot;control&quot; opcodes&n; *              $Revision: 44 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -9,15 +9,15 @@ macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;actables.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          DISPATCHER
+mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|MODULE_NAME
 (paren
 l_string|&quot;dsopcode&quot;
 )paren
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_get_field_unit_arguments&n; *&n; * PARAMETERS:  Obj_desc        - A valid Field_unit object&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Get Field_unit Buffer and Index. This implements the late&n; *              evaluation of these field attributes.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_get_buffer_field_arguments&n; *&n; * PARAMETERS:  Obj_desc        - A valid Buffer_field object&n; *&n; * RETURN:      Status.&n; *&n; * DESCRIPTION: Get Buffer_field Buffer and Index. This implements the late&n; *              evaluation of these field attributes.&n; *&n; ****************************************************************************/
 id|ACPI_STATUS
-DECL|function|acpi_ds_get_field_unit_arguments
-id|acpi_ds_get_field_unit_arguments
+DECL|function|acpi_ds_get_buffer_field_arguments
+id|acpi_ds_get_buffer_field_arguments
 (paren
 id|ACPI_OPERAND_OBJECT
 op_star
@@ -61,14 +61,14 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Get the AML pointer (method object) and Field_unit node */
+multiline_comment|/* Get the AML pointer (method object) and Buffer_field node */
 id|extra_desc
 op_assign
-id|obj_desc-&gt;field_unit.extra
+id|obj_desc-&gt;buffer_field.extra
 suffix:semicolon
 id|node
 op_assign
-id|obj_desc-&gt;field_unit.node
+id|obj_desc-&gt;buffer_field.node
 suffix:semicolon
 multiline_comment|/*&n;&t; * Allocate a new parser op to be the root of the parsed&n;&t; * Op_region tree&n;&t; */
 id|op
@@ -125,7 +125,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Pass1: Parse the entire Field_unit declaration */
+multiline_comment|/* Pass1: Parse the entire Buffer_field declaration */
 id|status
 op_assign
 id|acpi_ps_parse_aml
@@ -252,12 +252,12 @@ id|op
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The pseudo-method object is no longer needed since the region is&n;&t; * now initialized&n;&t; */
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
-id|obj_desc-&gt;field_unit.extra
+id|obj_desc-&gt;buffer_field.extra
 )paren
 suffix:semicolon
-id|obj_desc-&gt;field_unit.extra
+id|obj_desc-&gt;buffer_field.extra
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -551,10 +551,10 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_eval_field_unit_operands&n; *&n; * PARAMETERS:  Op              - A valid Field_unit Op object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get Field_unit Buffer and Index&n; *              Called from Acpi_ds_exec_end_op during Field_unit parse tree walk&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_eval_buffer_field_operands&n; *&n; * PARAMETERS:  Op              - A valid Buffer_field Op object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get Buffer_field Buffer and Index&n; *              Called from Acpi_ds_exec_end_op during Buffer_field parse tree walk&n; *&n; * ACPI SPECIFICATION REFERENCES:&n; *  Each of the Buffer Field opcodes is defined as specified in in-line&n; *  comments below. For each one, use the following definitions.&n; *&n; *  Def_bit_field   :=  Bit_field_op    Src_buf Bit_idx Destination&n; *  Def_byte_field  :=  Byte_field_op   Src_buf Byte_idx Destination&n; *  Def_create_field := Create_field_op Src_buf Bit_idx Num_bits Name_string&n; *  Def_dWord_field :=  DWord_field_op  Src_buf Byte_idx Destination&n; *  Def_word_field  :=  Word_field_op   Src_buf Byte_idx Destination&n; *  Bit_index       :=  Term_arg=&gt;Integer&n; *  Byte_index      :=  Term_arg=&gt;Integer&n; *  Destination     :=  Name_string&n; *  Num_bits        :=  Term_arg=&gt;Integer&n; *  Source_buf      :=  Term_arg=&gt;Buffer&n; *&n; ****************************************************************************/
 id|ACPI_STATUS
-DECL|function|acpi_ds_eval_field_unit_operands
-id|acpi_ds_eval_field_unit_operands
+DECL|function|acpi_ds_eval_buffer_field_operands
+id|acpi_ds_eval_buffer_field_operands
 (paren
 id|ACPI_WALK_STATE
 op_star
@@ -570,7 +570,7 @@ id|status
 suffix:semicolon
 id|ACPI_OPERAND_OBJECT
 op_star
-id|field_desc
+id|obj_desc
 suffix:semicolon
 id|ACPI_NAMESPACE_NODE
 op_star
@@ -586,8 +586,11 @@ suffix:semicolon
 id|u32
 id|bit_offset
 suffix:semicolon
-id|u16
+id|u32
 id|bit_count
+suffix:semicolon
+id|u8
+id|field_flags
 suffix:semicolon
 id|ACPI_OPERAND_OBJECT
 op_star
@@ -618,7 +621,7 @@ id|num_operands
 op_assign
 l_int|3
 suffix:semicolon
-multiline_comment|/*&n;&t; * This is where we evaluate the address and length fields of the Op_field_unit declaration&n;&t; */
+multiline_comment|/*&n;&t; * This is where we evaluate the address and length fields of the&n;&t; * Create_xxx_field declaration&n;&t; */
 id|node
 op_assign
 id|op-&gt;node
@@ -653,7 +656,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-id|field_desc
+id|obj_desc
 op_assign
 id|acpi_ns_get_attached_object
 (paren
@@ -664,7 +667,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|field_desc
+id|obj_desc
 )paren
 (brace
 r_return
@@ -676,7 +679,7 @@ suffix:semicolon
 multiline_comment|/* Resolve the operands */
 id|status
 op_assign
-id|acpi_aml_resolve_operands
+id|acpi_ex_resolve_operands
 (paren
 id|op-&gt;opcode
 comma
@@ -760,7 +763,7 @@ id|u32
 )paren
 id|off_desc-&gt;integer.value
 suffix:semicolon
-multiline_comment|/*&n;&t; * If Res_desc is a Name, it will be a direct name pointer after&n;&t; * Acpi_aml_resolve_operands()&n;&t; */
+multiline_comment|/*&n;&t; * If Res_desc is a Name, it will be a direct name pointer after&n;&t; * Acpi_ex_resolve_operands()&n;&t; */
 r_if
 c_cond
 (paren
@@ -788,72 +791,6 @@ c_cond
 id|op-&gt;opcode
 )paren
 (brace
-multiline_comment|/* Def_create_bit_field */
-r_case
-id|AML_BIT_FIELD_OP
-suffix:colon
-multiline_comment|/* Offset is in bits, Field is a bit */
-id|bit_offset
-op_assign
-id|offset
-suffix:semicolon
-id|bit_count
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/* Def_create_byte_field */
-r_case
-id|AML_BYTE_FIELD_OP
-suffix:colon
-multiline_comment|/* Offset is in bytes, field is a byte */
-id|bit_offset
-op_assign
-l_int|8
-op_star
-id|offset
-suffix:semicolon
-id|bit_count
-op_assign
-l_int|8
-suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/* Def_create_word_field */
-r_case
-id|AML_WORD_FIELD_OP
-suffix:colon
-multiline_comment|/* Offset is in bytes, field is a word */
-id|bit_offset
-op_assign
-l_int|8
-op_star
-id|offset
-suffix:semicolon
-id|bit_count
-op_assign
-l_int|16
-suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/* Def_create_dWord_field */
-r_case
-id|AML_DWORD_FIELD_OP
-suffix:colon
-multiline_comment|/* Offset is in bytes, field is a dword */
-id|bit_offset
-op_assign
-l_int|8
-op_star
-id|offset
-suffix:semicolon
-id|bit_count
-op_assign
-l_int|32
-suffix:semicolon
-r_break
-suffix:semicolon
 multiline_comment|/* Def_create_field */
 r_case
 id|AML_CREATE_FIELD_OP
@@ -866,9 +803,116 @@ suffix:semicolon
 id|bit_count
 op_assign
 (paren
-id|u16
+id|u32
 )paren
 id|cnt_desc-&gt;integer.value
+suffix:semicolon
+id|field_flags
+op_assign
+id|ACCESS_BYTE_ACC
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* Def_create_bit_field */
+r_case
+id|AML_CREATE_BIT_FIELD_OP
+suffix:colon
+multiline_comment|/* Offset is in bits, Field is one bit */
+id|bit_offset
+op_assign
+id|offset
+suffix:semicolon
+id|bit_count
+op_assign
+l_int|1
+suffix:semicolon
+id|field_flags
+op_assign
+id|ACCESS_BYTE_ACC
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* Def_create_byte_field */
+r_case
+id|AML_CREATE_BYTE_FIELD_OP
+suffix:colon
+multiline_comment|/* Offset is in bytes, field is one byte */
+id|bit_offset
+op_assign
+l_int|8
+op_star
+id|offset
+suffix:semicolon
+id|bit_count
+op_assign
+l_int|8
+suffix:semicolon
+id|field_flags
+op_assign
+id|ACCESS_BYTE_ACC
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* Def_create_word_field */
+r_case
+id|AML_CREATE_WORD_FIELD_OP
+suffix:colon
+multiline_comment|/* Offset is in bytes, field is one word */
+id|bit_offset
+op_assign
+l_int|8
+op_star
+id|offset
+suffix:semicolon
+id|bit_count
+op_assign
+l_int|16
+suffix:semicolon
+id|field_flags
+op_assign
+id|ACCESS_WORD_ACC
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* Def_create_dWord_field */
+r_case
+id|AML_CREATE_DWORD_FIELD_OP
+suffix:colon
+multiline_comment|/* Offset is in bytes, field is one dword */
+id|bit_offset
+op_assign
+l_int|8
+op_star
+id|offset
+suffix:semicolon
+id|bit_count
+op_assign
+l_int|32
+suffix:semicolon
+id|field_flags
+op_assign
+id|ACCESS_DWORD_ACC
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* Def_create_qWord_field */
+r_case
+id|AML_CREATE_QWORD_FIELD_OP
+suffix:colon
+multiline_comment|/* Offset is in bytes, field is one qword */
+id|bit_offset
+op_assign
+l_int|8
+op_star
+id|offset
+suffix:semicolon
+id|bit_count
+op_assign
+l_int|64
+suffix:semicolon
+id|field_flags
+op_assign
+id|ACCESS_QWORD_ACC
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -896,12 +940,11 @@ suffix:colon
 r_if
 c_cond
 (paren
+(paren
 id|bit_offset
 op_plus
-(paren
-id|u32
-)paren
 id|bit_count
+)paren
 OG
 (paren
 l_int|8
@@ -921,55 +964,40 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/* Construct the remainder of the field object */
-id|field_desc-&gt;field_unit.access
+multiline_comment|/*&n;&t;&t; * Initialize areas of the field object that are common to all fields&n;&t;&t; * For Field_flags, use LOCK_RULE = 0 (NO_LOCK), UPDATE_RULE = 0 (UPDATE_PRESERVE)&n;&t;&t; */
+id|status
 op_assign
+id|acpi_ex_prep_common_field_object
 (paren
-id|u8
-)paren
-id|ACCESS_ANY_ACC
-suffix:semicolon
-id|field_desc-&gt;field_unit.lock_rule
-op_assign
-(paren
-id|u8
-)paren
-id|GLOCK_NEVER_LOCK
-suffix:semicolon
-id|field_desc-&gt;field_unit.update_rule
-op_assign
-(paren
-id|u8
-)paren
-id|UPDATE_PRESERVE
-suffix:semicolon
-id|field_desc-&gt;field_unit.length
-op_assign
+id|obj_desc
+comma
+id|field_flags
+comma
+id|bit_offset
+comma
 id|bit_count
-suffix:semicolon
-id|field_desc-&gt;field_unit.bit_offset
-op_assign
-(paren
-id|u8
-)paren
-(paren
-id|bit_offset
-op_mod
-l_int|8
 )paren
 suffix:semicolon
-id|field_desc-&gt;field_unit.offset
-op_assign
-id|DIV_8
+r_if
+c_cond
 (paren
-id|bit_offset
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|status
 )paren
 suffix:semicolon
-id|field_desc-&gt;field_unit.container
+)brace
+id|obj_desc-&gt;buffer_field.buffer_obj
 op_assign
 id|src_desc
 suffix:semicolon
-multiline_comment|/* Reference count for Src_desc inherits Field_desc count */
+multiline_comment|/* Reference count for Src_desc inherits Obj_desc count */
 id|src_desc-&gt;common.reference_count
 op_assign
 (paren
@@ -978,7 +1006,7 @@ id|u16
 (paren
 id|src_desc-&gt;common.reference_count
 op_plus
-id|field_desc-&gt;common.reference_count
+id|obj_desc-&gt;common.reference_count
 )paren
 suffix:semicolon
 r_break
@@ -986,26 +1014,6 @@ suffix:semicolon
 multiline_comment|/* Improper object type */
 r_default
 suffix:colon
-(brace
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|src_desc-&gt;common.type
-OG
-(paren
-id|u8
-)paren
-id|INTERNAL_TYPE_REFERENCE
-)paren
-op_logical_or
-op_logical_neg
-id|acpi_cm_valid_object_type
-(paren
-id|src_desc-&gt;common.type
-)paren
-)paren
 id|status
 op_assign
 id|AE_AML_OPERAND_TYPE
@@ -1023,7 +1031,7 @@ id|op-&gt;opcode
 )paren
 (brace
 multiline_comment|/* Delete object descriptor unique to Create_field */
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|cnt_desc
 )paren
@@ -1036,12 +1044,12 @@ suffix:semicolon
 id|cleanup
 suffix:colon
 multiline_comment|/* Always delete the operands */
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|off_desc
 )paren
 suffix:semicolon
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|src_desc
 )paren
@@ -1054,7 +1062,7 @@ op_eq
 id|op-&gt;opcode
 )paren
 (brace
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|cnt_desc
 )paren
@@ -1070,7 +1078,7 @@ id|status
 )paren
 )paren
 (brace
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|res_desc
 )paren
@@ -1079,8 +1087,8 @@ multiline_comment|/* Result descriptor */
 )brace
 r_else
 (brace
-multiline_comment|/* Now the address and length are valid for this op_field_unit */
-id|field_desc-&gt;field_unit.flags
+multiline_comment|/* Now the address and length are valid for this Buffer_field */
+id|obj_desc-&gt;buffer_field.flags
 op_or_assign
 id|AOPOBJ_DATA_VALID
 suffix:semicolon
@@ -1167,7 +1175,7 @@ suffix:semicolon
 multiline_comment|/* Resolve the length and address operands to numbers */
 id|status
 op_assign
-id|acpi_aml_resolve_operands
+id|acpi_ex_resolve_operands
 (paren
 id|op-&gt;opcode
 comma
@@ -1228,7 +1236,7 @@ id|u32
 )paren
 id|operand_desc-&gt;integer.value
 suffix:semicolon
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|operand_desc
 )paren
@@ -1250,7 +1258,7 @@ id|ACPI_PHYSICAL_ADDRESS
 )paren
 id|operand_desc-&gt;integer.value
 suffix:semicolon
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|operand_desc
 )paren
@@ -1289,6 +1297,11 @@ id|ACPI_GENERIC_STATE
 op_star
 id|control_state
 suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Ds_exec_begin_control_op&quot;
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1304,7 +1317,7 @@ suffix:colon
 multiline_comment|/*&n;&t;&t; * IF/WHILE: Create a new control state to manage these&n;&t;&t; * constructs. We need to manage these as a stack, in order&n;&t;&t; * to handle nesting.&n;&t;&t; */
 id|control_state
 op_assign
-id|acpi_cm_create_control_state
+id|acpi_ut_create_control_state
 (paren
 )paren
 suffix:semicolon
@@ -1322,7 +1335,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|acpi_cm_push_generic_state
+id|acpi_ut_push_generic_state
 (paren
 op_amp
 id|walk_state-&gt;control_state
@@ -1398,6 +1411,11 @@ id|ACPI_GENERIC_STATE
 op_star
 id|control_state
 suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Ds_exec_end_control_op&quot;
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1418,13 +1436,13 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Pop the control state that was created at the start&n;&t;&t; * of the IF and free it&n;&t;&t; */
 id|control_state
 op_assign
-id|acpi_cm_pop_generic_state
+id|acpi_ut_pop_generic_state
 (paren
 op_amp
 id|walk_state-&gt;control_state
 )paren
 suffix:semicolon
-id|acpi_cm_delete_generic_state
+id|acpi_ut_delete_generic_state
 (paren
 id|control_state
 )paren
@@ -1454,7 +1472,7 @@ suffix:semicolon
 multiline_comment|/* Pop this control state and free it */
 id|control_state
 op_assign
-id|acpi_cm_pop_generic_state
+id|acpi_ut_pop_generic_state
 (paren
 op_amp
 id|walk_state-&gt;control_state
@@ -1464,7 +1482,7 @@ id|walk_state-&gt;aml_last_while
 op_assign
 id|control_state-&gt;control.aml_predicate_start
 suffix:semicolon
-id|acpi_cm_delete_generic_state
+id|acpi_ut_delete_generic_state
 (paren
 id|control_state
 )paren
@@ -1509,7 +1527,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * If value being returned is a Reference (such as&n;&t;&t;&t; * an arg or local), resolve it now because it may&n;&t;&t;&t; * cease to exist at the end of the method.&n;&t;&t;&t; */
 id|status
 op_assign
-id|acpi_aml_resolve_to_value
+id|acpi_ex_resolve_to_value
 (paren
 op_amp
 id|walk_state-&gt;operands
@@ -1559,10 +1577,50 @@ l_int|0
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * The return value has come from a previous calculation.&n;&t;&t;&t; *&n;&t;&t;&t; * If value being returned is a Reference (such as&n;&t;&t;&t; * an arg or local), resolve it now because it may&n;&t;&t;&t; * cease to exist at the end of the method.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * The return value has come from a previous calculation.&n;&t;&t;&t; *&n;&t;&t;&t; * If value being returned is a Reference (such as&n;&t;&t;&t; * an arg or local), resolve it now because it may&n;&t;&t;&t; * cease to exist at the end of the method.&n;&t;&t;&t; *&n;&t;&t;&t; * Allow references created by the Index operator to return unchanged.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|VALID_DESCRIPTOR_TYPE
+(paren
+id|walk_state-&gt;results-&gt;results.obj_desc
+(braket
+l_int|0
+)braket
+comma
+id|ACPI_DESC_TYPE_INTERNAL
+)paren
+op_logical_and
+(paren
+(paren
+id|walk_state-&gt;results-&gt;results.obj_desc
+(braket
+l_int|0
+)braket
+)paren
+op_member_access_from_pointer
+id|common.type
+op_eq
+id|INTERNAL_TYPE_REFERENCE
+)paren
+op_logical_and
+(paren
+(paren
+id|walk_state-&gt;results-&gt;results.obj_desc
+(braket
+l_int|0
+)braket
+)paren
+op_member_access_from_pointer
+id|reference.opcode
+op_ne
+id|AML_INDEX_OP
+)paren
+)paren
+(brace
 id|status
 op_assign
-id|acpi_aml_resolve_to_value
+id|acpi_ex_resolve_to_value
 (paren
 op_amp
 id|walk_state-&gt;results-&gt;results.obj_desc
@@ -1588,6 +1646,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+)brace
 id|walk_state-&gt;return_desc
 op_assign
 id|walk_state-&gt;results-&gt;results.obj_desc
@@ -1605,7 +1664,7 @@ c_cond
 id|walk_state-&gt;num_operands
 )paren
 (brace
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|walk_state-&gt;operands
 (braket

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsobject - Dispatcher object management routines&n; *              $Revision: 57 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsobject - Dispatcher object management routines&n; *              $Revision: 65 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -7,7 +7,7 @@ macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          DISPATCHER
+mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|MODULE_NAME
 (paren
 l_string|&quot;dsobject&quot;
@@ -33,7 +33,7 @@ op_star
 id|return_value
 )paren
 (brace
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 suffix:semicolon
 id|ACPI_STATUS
@@ -51,6 +51,11 @@ id|context
 suffix:semicolon
 id|u8
 id|table_revision
+suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Ds_init_one_object&quot;
+)paren
 suffix:semicolon
 id|info-&gt;object_count
 op_increment
@@ -280,6 +285,11 @@ id|ACPI_OPCODE_INFO
 op_star
 id|op_info
 suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Ds_init_object_from_op&quot;
+)paren
+suffix:semicolon
 id|op_info
 op_assign
 id|acpi_ps_get_opcode_info
@@ -349,7 +359,7 @@ suffix:semicolon
 multiline_comment|/* Resolve the object (could be an arg or local) */
 id|status
 op_assign
-id|acpi_aml_resolve_to_value
+id|acpi_ex_resolve_to_value
 (paren
 op_amp
 id|arg_desc
@@ -366,7 +376,7 @@ id|status
 )paren
 )paren
 (brace
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|arg_desc
 )paren
@@ -386,7 +396,7 @@ op_ne
 id|ACPI_TYPE_INTEGER
 )paren
 (brace
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|arg_desc
 )paren
@@ -410,7 +420,7 @@ id|u32
 )paren
 id|arg_desc-&gt;integer.value
 suffix:semicolon
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|arg_desc
 )paren
@@ -457,7 +467,7 @@ id|obj_desc
 op_member_access_from_pointer
 id|buffer.pointer
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 (paren
 op_star
@@ -511,7 +521,7 @@ c_cond
 (paren
 id|byte_list-&gt;opcode
 op_ne
-id|AML_BYTELIST_OP
+id|AML_INT_BYTELIST_OP
 )paren
 (brace
 r_return
@@ -546,7 +556,7 @@ r_case
 id|ACPI_TYPE_PACKAGE
 suffix:colon
 multiline_comment|/*&n;&t;&t; * When called, an internal package object has already&n;&t;&t; *  been built and is pointed to by *Obj_desc.&n;&t;&t; *  Acpi_ds_build_internal_object build another internal&n;&t;&t; *  package object, so remove reference to the original&n;&t;&t; *  so that it is deleted.  Error checking is done&n;&t;&t; *  within the remove reference function.&n;&t;&t; */
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 c_func
 (paren
 op_star
@@ -632,7 +642,7 @@ op_star
 id|obj_desc
 )paren
 op_member_access_from_pointer
-id|reference.op_code
+id|reference.opcode
 op_assign
 id|AML_LOCAL_OP
 suffix:semicolon
@@ -658,7 +668,7 @@ op_star
 id|obj_desc
 )paren
 op_member_access_from_pointer
-id|reference.op_code
+id|reference.opcode
 op_assign
 id|AML_ARG_OP
 suffix:semicolon
@@ -685,7 +695,7 @@ c_cond
 (paren
 id|op-&gt;opcode
 op_eq
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 (brace
 multiline_comment|/* Node was saved in Op */
@@ -704,7 +714,7 @@ op_star
 id|obj_desc
 )paren
 op_member_access_from_pointer
-id|reference.op_code
+id|reference.opcode
 op_assign
 id|opcode
 suffix:semicolon
@@ -748,7 +758,7 @@ id|ACPI_OPERAND_OBJECT
 op_star
 id|obj_desc
 suffix:semicolon
-id|OBJECT_TYPE_INTERNAL
+id|ACPI_OBJECT_TYPE8
 id|type
 suffix:semicolon
 id|ACPI_STATUS
@@ -766,7 +776,7 @@ c_cond
 (paren
 id|op-&gt;opcode
 op_eq
-id|AML_NAMEPATH_OP
+id|AML_INT_NAMEPATH_OP
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * This is an object reference.  If The name was&n;&t;&t; * previously looked up in the NS, it is stored in this op.&n;&t;&t; * Otherwise, go ahead and look it up now&n;&t;&t; */
@@ -857,7 +867,7 @@ id|op-&gt;aml_offset
 )paren
 )paren
 suffix:semicolon
-id|acpi_cm_free
+id|acpi_ut_free
 (paren
 id|name
 )paren
@@ -914,7 +924,7 @@ suffix:semicolon
 multiline_comment|/* Create and init the internal ACPI object */
 id|obj_desc
 op_assign
-id|acpi_cm_create_internal_object
+id|acpi_ut_create_internal_object
 (paren
 id|type
 )paren
@@ -955,7 +965,7 @@ id|status
 )paren
 )paren
 (brace
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|obj_desc
 )paren
@@ -1011,7 +1021,7 @@ id|AE_OK
 suffix:semicolon
 id|obj_desc
 op_assign
-id|acpi_cm_create_internal_object
+id|acpi_ut_create_internal_object
 (paren
 id|ACPI_TYPE_PACKAGE
 )paren
@@ -1041,7 +1051,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Allocate the array of pointers (ptrs to the&n;&t; * individual objects) Add an extra pointer slot so&n;&t; * that the list is always null terminated.&n;&t; */
 id|obj_desc-&gt;package.elements
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 (paren
 id|obj_desc-&gt;package.count
@@ -1063,15 +1073,7 @@ op_logical_neg
 id|obj_desc-&gt;package.elements
 )paren
 (brace
-multiline_comment|/* Package vector allocation failure   */
-id|REPORT_ERROR
-(paren
-(paren
-l_string|&quot;Ds_build_internal_package_obj: Package vector allocation failure&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|acpi_cm_delete_object_desc
+id|acpi_ut_delete_object_desc
 (paren
 id|obj_desc
 )paren
@@ -1289,9 +1291,6 @@ id|status
 op_assign
 id|acpi_ns_attach_object
 (paren
-(paren
-id|ACPI_HANDLE
-)paren
 id|node
 comma
 id|obj_desc
@@ -1322,7 +1321,7 @@ id|status
 suffix:semicolon
 id|cleanup
 suffix:colon
-id|acpi_cm_remove_reference
+id|acpi_ut_remove_reference
 (paren
 id|obj_desc
 )paren

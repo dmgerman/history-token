@@ -1,10 +1,10 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbutils - Table manipulation utilities&n; *              $Revision: 33 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbutils - Table manipulation utilities&n; *              $Revision: 38 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          TABLE_MANAGER
+mdefine_line|#define _COMPONENT          ACPI_TABLES
 id|MODULE_NAME
 (paren
 l_string|&quot;tbutils&quot;
@@ -288,6 +288,11 @@ id|table_header
 id|ACPI_NAME
 id|signature
 suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Tb_validate_table_header&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Verify that this is a valid address */
 r_if
 c_cond
@@ -324,7 +329,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|acpi_cm_valid_acpi_name
+id|acpi_ut_valid_acpi_name
 (paren
 id|signature
 )paren
@@ -333,7 +338,10 @@ id|signature
 id|REPORT_WARNING
 (paren
 (paren
-l_string|&quot;Invalid table signature found&bslash;n&quot;
+l_string|&quot;Invalid table signature %4.4s found&bslash;n&quot;
+comma
+op_amp
+id|signature
 )paren
 )paren
 suffix:semicolon
@@ -386,7 +394,7 @@ id|u32
 op_star
 id|size
 comma
-r_void
+id|ACPI_TABLE_HEADER
 op_star
 op_star
 id|logical_address

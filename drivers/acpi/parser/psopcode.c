@@ -1,10 +1,10 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psopcode - Parser opcode information table&n; *              $Revision: 27 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psopcode - Parser opcode information table&n; *              $Revision: 32 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          PARSER
+mdefine_line|#define _COMPONENT          ACPI_PARSER
 id|MODULE_NAME
 (paren
 l_string|&quot;psopcode&quot;
@@ -145,18 +145,18 @@ DECL|macro|ARGP_INDEX_OP
 mdefine_line|#define ARGP_INDEX_OP                   ARGP_LIST3 (ARGP_TERMARG,    ARGP_TERMARG,       ARGP_TARGET)
 DECL|macro|ARGP_MATCH_OP
 mdefine_line|#define ARGP_MATCH_OP                   ARGP_LIST6 (ARGP_TERMARG,    ARGP_BYTEDATA,      ARGP_TERMARG,   ARGP_BYTEDATA,  ARGP_TERMARG,   ARGP_TERMARG)
-DECL|macro|ARGP_DWORD_FIELD_OP
-mdefine_line|#define ARGP_DWORD_FIELD_OP             ARGP_LIST3 (ARGP_TERMARG,    ARGP_TERMARG,       ARGP_NAME)
-DECL|macro|ARGP_WORD_FIELD_OP
-mdefine_line|#define ARGP_WORD_FIELD_OP              ARGP_LIST3 (ARGP_TERMARG,    ARGP_TERMARG,       ARGP_NAME)
-DECL|macro|ARGP_BYTE_FIELD_OP
-mdefine_line|#define ARGP_BYTE_FIELD_OP              ARGP_LIST3 (ARGP_TERMARG,    ARGP_TERMARG,       ARGP_NAME)
-DECL|macro|ARGP_BIT_FIELD_OP
-mdefine_line|#define ARGP_BIT_FIELD_OP               ARGP_LIST3 (ARGP_TERMARG,    ARGP_TERMARG,       ARGP_NAME)
+DECL|macro|ARGP_CREATE_DWORD_FIELD_OP
+mdefine_line|#define ARGP_CREATE_DWORD_FIELD_OP      ARGP_LIST3 (ARGP_TERMARG,    ARGP_TERMARG,       ARGP_NAME)
+DECL|macro|ARGP_CREATE_WORD_FIELD_OP
+mdefine_line|#define ARGP_CREATE_WORD_FIELD_OP       ARGP_LIST3 (ARGP_TERMARG,    ARGP_TERMARG,       ARGP_NAME)
+DECL|macro|ARGP_CREATE_BYTE_FIELD_OP
+mdefine_line|#define ARGP_CREATE_BYTE_FIELD_OP       ARGP_LIST3 (ARGP_TERMARG,    ARGP_TERMARG,       ARGP_NAME)
+DECL|macro|ARGP_CREATE_BIT_FIELD_OP
+mdefine_line|#define ARGP_CREATE_BIT_FIELD_OP        ARGP_LIST3 (ARGP_TERMARG,    ARGP_TERMARG,       ARGP_NAME)
 DECL|macro|ARGP_TYPE_OP
 mdefine_line|#define ARGP_TYPE_OP                    ARGP_LIST1 (ARGP_SUPERNAME)
-DECL|macro|ARGP_QWORD_FIELD_OP
-mdefine_line|#define ARGP_QWORD_FIELD_OP             ARGP_LIST3 (ARGP_TERMARG,    ARGP_TERMARG,       ARGP_NAME)
+DECL|macro|ARGP_CREATE_QWORD_FIELD_OP
+mdefine_line|#define ARGP_CREATE_QWORD_FIELD_OP      ARGP_LIST3 (ARGP_TERMARG,    ARGP_TERMARG,       ARGP_NAME)
 DECL|macro|ARGP_LAND_OP
 mdefine_line|#define ARGP_LAND_OP                    ARGP_LIST2 (ARGP_TERMARG,    ARGP_TERMARG)
 DECL|macro|ARGP_LOR_OP
@@ -241,8 +241,8 @@ DECL|macro|ARGP_FATAL_OP
 mdefine_line|#define ARGP_FATAL_OP                   ARGP_LIST3 (ARGP_BYTEDATA,   ARGP_DWORDDATA,     ARGP_TERMARG)
 DECL|macro|ARGP_REGION_OP
 mdefine_line|#define ARGP_REGION_OP                  ARGP_LIST4 (ARGP_NAME,       ARGP_BYTEDATA,      ARGP_TERMARG,   ARGP_TERMARG)
-DECL|macro|ARGP_DEF_FIELD_OP
-mdefine_line|#define ARGP_DEF_FIELD_OP               ARGP_LIST4 (ARGP_PKGLENGTH,  ARGP_NAMESTRING,    ARGP_BYTEDATA,  ARGP_FIELDLIST)
+DECL|macro|ARGP_FIELD_OP
+mdefine_line|#define ARGP_FIELD_OP                   ARGP_LIST4 (ARGP_PKGLENGTH,  ARGP_NAMESTRING,    ARGP_BYTEDATA,  ARGP_FIELDLIST)
 DECL|macro|ARGP_DEVICE_OP
 mdefine_line|#define ARGP_DEVICE_OP                  ARGP_LIST3 (ARGP_PKGLENGTH,  ARGP_NAME,          ARGP_OBJLIST)
 DECL|macro|ARGP_PROCESSOR_OP
@@ -277,7 +277,7 @@ DECL|macro|ARGP_ACCESSFIELD_OP
 mdefine_line|#define ARGP_ACCESSFIELD_OP             ARGP_LIST1 (ARGP_NAMESTRING)
 DECL|macro|ARGP_STATICSTRING_OP
 mdefine_line|#define ARGP_STATICSTRING_OP            ARGP_LIST1 (ARGP_NAMESTRING)
-multiline_comment|/*&n; * All AML opcodes and the runtime arguments for each.  Used by the AML interpreter  Each list is compressed&n; * into a 32-bit number and stored in the master opcode table at the end of this file.&n; *&n; * (Used by Acpi_aml_prep_operands procedure and the ASL Compiler)&n; */
+multiline_comment|/*&n; * All AML opcodes and the runtime arguments for each.  Used by the AML interpreter  Each list is compressed&n; * into a 32-bit number and stored in the master opcode table at the end of this file.&n; *&n; * (Used by Prep_operands procedure and the ASL Compiler)&n; */
 DECL|macro|ARGI_ZERO_OP
 mdefine_line|#define ARGI_ZERO_OP                    ARG_NONE
 DECL|macro|ARGI_ONE_OP
@@ -388,18 +388,18 @@ DECL|macro|ARGI_INDEX_OP
 mdefine_line|#define ARGI_INDEX_OP                   ARGI_LIST3 (ARGI_COMPLEXOBJ, ARGI_INTEGER,       ARGI_TARGETREF)
 DECL|macro|ARGI_MATCH_OP
 mdefine_line|#define ARGI_MATCH_OP                   ARGI_LIST6 (ARGI_PACKAGE,    ARGI_INTEGER,       ARGI_INTEGER,      ARGI_INTEGER,   ARGI_INTEGER,   ARGI_INTEGER)
-DECL|macro|ARGI_DWORD_FIELD_OP
-mdefine_line|#define ARGI_DWORD_FIELD_OP             ARGI_LIST3 (ARGI_BUFFER,     ARGI_INTEGER,       ARGI_REFERENCE)
-DECL|macro|ARGI_WORD_FIELD_OP
-mdefine_line|#define ARGI_WORD_FIELD_OP              ARGI_LIST3 (ARGI_BUFFER,     ARGI_INTEGER,       ARGI_REFERENCE)
-DECL|macro|ARGI_BYTE_FIELD_OP
-mdefine_line|#define ARGI_BYTE_FIELD_OP              ARGI_LIST3 (ARGI_BUFFER,     ARGI_INTEGER,       ARGI_REFERENCE)
-DECL|macro|ARGI_BIT_FIELD_OP
-mdefine_line|#define ARGI_BIT_FIELD_OP               ARGI_LIST3 (ARGI_BUFFER,     ARGI_INTEGER,       ARGI_REFERENCE)
+DECL|macro|ARGI_CREATE_DWORD_FIELD_OP
+mdefine_line|#define ARGI_CREATE_DWORD_FIELD_OP      ARGI_LIST3 (ARGI_BUFFER,     ARGI_INTEGER,       ARGI_REFERENCE)
+DECL|macro|ARGI_CREATE_WORD_FIELD_OP
+mdefine_line|#define ARGI_CREATE_WORD_FIELD_OP       ARGI_LIST3 (ARGI_BUFFER,     ARGI_INTEGER,       ARGI_REFERENCE)
+DECL|macro|ARGI_CREATE_BYTE_FIELD_OP
+mdefine_line|#define ARGI_CREATE_BYTE_FIELD_OP       ARGI_LIST3 (ARGI_BUFFER,     ARGI_INTEGER,       ARGI_REFERENCE)
+DECL|macro|ARGI_CREATE_BIT_FIELD_OP
+mdefine_line|#define ARGI_CREATE_BIT_FIELD_OP        ARGI_LIST3 (ARGI_BUFFER,     ARGI_INTEGER,       ARGI_REFERENCE)
 DECL|macro|ARGI_TYPE_OP
 mdefine_line|#define ARGI_TYPE_OP                    ARGI_LIST1 (ARGI_ANYTYPE)
-DECL|macro|ARGI_QWORD_FIELD_OP
-mdefine_line|#define ARGI_QWORD_FIELD_OP             ARGI_LIST3 (ARGI_BUFFER,     ARGI_INTEGER,       ARGI_REFERENCE)
+DECL|macro|ARGI_CREATE_QWORD_FIELD_OP
+mdefine_line|#define ARGI_CREATE_QWORD_FIELD_OP      ARGI_LIST3 (ARGI_BUFFER,     ARGI_INTEGER,       ARGI_REFERENCE)
 DECL|macro|ARGI_LAND_OP
 mdefine_line|#define ARGI_LAND_OP                    ARGI_LIST2 (ARGI_INTEGER,    ARGI_INTEGER)
 DECL|macro|ARGI_LOR_OP
@@ -484,8 +484,8 @@ DECL|macro|ARGI_FATAL_OP
 mdefine_line|#define ARGI_FATAL_OP                   ARGI_LIST3 (ARGI_INTEGER,    ARGI_INTEGER,       ARGI_INTEGER)
 DECL|macro|ARGI_REGION_OP
 mdefine_line|#define ARGI_REGION_OP                  ARGI_LIST2 (ARGI_INTEGER,    ARGI_INTEGER)
-DECL|macro|ARGI_DEF_FIELD_OP
-mdefine_line|#define ARGI_DEF_FIELD_OP               ARGI_INVALID_OPCODE
+DECL|macro|ARGI_FIELD_OP
+mdefine_line|#define ARGI_FIELD_OP                   ARGI_INVALID_OPCODE
 DECL|macro|ARGI_DEVICE_OP
 mdefine_line|#define ARGI_DEVICE_OP                  ARGI_INVALID_OPCODE
 DECL|macro|ARGI_PROCESSOR_OP
@@ -529,7 +529,7 @@ id|aml_op_info
 )braket
 op_assign
 (brace
-multiline_comment|/* Index          Opcode                                   Type                   Class                 Has Arguments?   Name                 Parser Args             Interpreter Args */
+multiline_comment|/* Index          Opcode                                   Type                   Class                 Has Arguments?   Name                 Parser Args               Interpreter Args */
 multiline_comment|/*  00 */
 multiline_comment|/* AML_ZERO_OP */
 id|OP_INFO_ENTRY
@@ -1398,7 +1398,7 @@ id|ARGI_MATCH_OP
 )paren
 comma
 multiline_comment|/*  33 */
-multiline_comment|/* AML_DWORD_FIELD_OP */
+multiline_comment|/* AML_CREATE_DWORD_FIELD_OP */
 id|OP_INFO_ENTRY
 (paren
 id|ACPI_OP_TYPE_OPCODE
@@ -1409,13 +1409,13 @@ id|AML_HAS_ARGS
 comma
 l_string|&quot;Create_dWord_field&quot;
 comma
-id|ARGP_DWORD_FIELD_OP
+id|ARGP_CREATE_DWORD_FIELD_OP
 comma
-id|ARGI_DWORD_FIELD_OP
+id|ARGI_CREATE_DWORD_FIELD_OP
 )paren
 comma
 multiline_comment|/*  34 */
-multiline_comment|/* AML_WORD_FIELD_OP */
+multiline_comment|/* AML_CREATE_WORD_FIELD_OP */
 id|OP_INFO_ENTRY
 (paren
 id|ACPI_OP_TYPE_OPCODE
@@ -1426,13 +1426,13 @@ id|AML_HAS_ARGS
 comma
 l_string|&quot;Create_word_field&quot;
 comma
-id|ARGP_WORD_FIELD_OP
+id|ARGP_CREATE_WORD_FIELD_OP
 comma
-id|ARGI_WORD_FIELD_OP
+id|ARGI_CREATE_WORD_FIELD_OP
 )paren
 comma
 multiline_comment|/*  35 */
-multiline_comment|/* AML_BYTE_FIELD_OP */
+multiline_comment|/* AML_CREATE_BYTE_FIELD_OP */
 id|OP_INFO_ENTRY
 (paren
 id|ACPI_OP_TYPE_OPCODE
@@ -1443,13 +1443,13 @@ id|AML_HAS_ARGS
 comma
 l_string|&quot;Create_byte_field&quot;
 comma
-id|ARGP_BYTE_FIELD_OP
+id|ARGP_CREATE_BYTE_FIELD_OP
 comma
-id|ARGI_BYTE_FIELD_OP
+id|ARGI_CREATE_BYTE_FIELD_OP
 )paren
 comma
 multiline_comment|/*  36 */
-multiline_comment|/* AML_BIT_FIELD_OP */
+multiline_comment|/* AML_CREATE_BIT_FIELD_OP */
 id|OP_INFO_ENTRY
 (paren
 id|ACPI_OP_TYPE_OPCODE
@@ -1460,9 +1460,9 @@ id|AML_HAS_ARGS
 comma
 l_string|&quot;Create_bit_field&quot;
 comma
-id|ARGP_BIT_FIELD_OP
+id|ARGP_CREATE_BIT_FIELD_OP
 comma
-id|ARGI_BIT_FIELD_OP
+id|ARGI_CREATE_BIT_FIELD_OP
 )paren
 comma
 multiline_comment|/*  37 */
@@ -2045,7 +2045,7 @@ id|ARGI_REGION_OP
 )paren
 comma
 multiline_comment|/*  59 */
-multiline_comment|/* AML_DEF_FIELD_OP */
+multiline_comment|/* AML_FIELD_OP */
 id|OP_INFO_ENTRY
 (paren
 id|ACPI_OP_TYPE_OPCODE
@@ -2056,9 +2056,9 @@ id|AML_HAS_ARGS
 comma
 l_string|&quot;Field&quot;
 comma
-id|ARGP_DEF_FIELD_OP
+id|ARGP_FIELD_OP
 comma
-id|ARGI_DEF_FIELD_OP
+id|ARGI_FIELD_OP
 )paren
 comma
 multiline_comment|/*  5_a */
@@ -2216,7 +2216,7 @@ id|ARGI_LGREATEREQUAL_OP
 )paren
 comma
 multiline_comment|/*  63 */
-multiline_comment|/* AML_NAMEPATH_OP */
+multiline_comment|/* AML_INT_NAMEPATH_OP */
 id|OP_INFO_ENTRY
 (paren
 id|ACPI_OP_TYPE_OPCODE
@@ -2233,7 +2233,7 @@ id|ARGI_NAMEPATH_OP
 )paren
 comma
 multiline_comment|/*  64 */
-multiline_comment|/* AML_METHODCALL_OP */
+multiline_comment|/* AML_INT_METHODCALL_OP */
 id|OP_INFO_ENTRY
 (paren
 id|ACPI_OP_TYPE_OPCODE
@@ -2250,7 +2250,7 @@ id|ARGI_METHODCALL_OP
 )paren
 comma
 multiline_comment|/*  65 */
-multiline_comment|/* AML_BYTELIST_OP */
+multiline_comment|/* AML_INT_BYTELIST_OP */
 id|OP_INFO_ENTRY
 (paren
 id|ACPI_OP_TYPE_OPCODE
@@ -2267,7 +2267,7 @@ id|ARGI_BYTELIST_OP
 )paren
 comma
 multiline_comment|/*  66 */
-multiline_comment|/* AML_RESERVEDFIELD_OP */
+multiline_comment|/* AML_INT_RESERVEDFIELD_OP */
 id|OP_INFO_ENTRY
 (paren
 id|ACPI_OP_TYPE_OPCODE
@@ -2284,7 +2284,7 @@ id|ARGI_RESERVEDFIELD_OP
 )paren
 comma
 multiline_comment|/*  67 */
-multiline_comment|/* AML_NAMEDFIELD_OP */
+multiline_comment|/* AML_INT_NAMEDFIELD_OP */
 id|OP_INFO_ENTRY
 (paren
 id|ACPI_OP_TYPE_OPCODE
@@ -2301,7 +2301,7 @@ id|ARGI_NAMEDFIELD_OP
 )paren
 comma
 multiline_comment|/*  68 */
-multiline_comment|/* AML_ACCESSFIELD_OP */
+multiline_comment|/* AML_INT_ACCESSFIELD_OP */
 id|OP_INFO_ENTRY
 (paren
 id|ACPI_OP_TYPE_OPCODE
@@ -2318,7 +2318,7 @@ id|ARGI_ACCESSFIELD_OP
 )paren
 comma
 multiline_comment|/*  69 */
-multiline_comment|/* AML_STATICSTRING_OP */
+multiline_comment|/* AML_INT_STATICSTRING_OP */
 id|OP_INFO_ENTRY
 (paren
 id|ACPI_OP_TYPE_OPCODE
@@ -2335,7 +2335,7 @@ id|ARGI_STATICSTRING_OP
 )paren
 comma
 multiline_comment|/*  6_a */
-multiline_comment|/* AML_RETURN_VALUE_OP */
+multiline_comment|/* AML_INT_RETURN_VALUE_OP */
 id|OP_INFO_ENTRY
 (paren
 id|ACPI_OP_TYPE_OPCODE
@@ -2472,7 +2472,7 @@ id|ARGI_MOD_OP
 )paren
 comma
 multiline_comment|/*  72 */
-multiline_comment|/* AML_QWORD_FIELD_OP */
+multiline_comment|/* AML_CREATE_QWORD_FIELD_OP */
 id|OP_INFO_ENTRY
 (paren
 id|ACPI_OP_TYPE_OPCODE
@@ -2483,9 +2483,9 @@ id|AML_HAS_ARGS
 comma
 l_string|&quot;Create_qWord_field&quot;
 comma
-id|ARGP_QWORD_FIELD_OP
+id|ARGP_CREATE_QWORD_FIELD_OP
 comma
-id|ARGI_QWORD_FIELD_OP
+id|ARGI_CREATE_QWORD_FIELD_OP
 )paren
 comma
 multiline_comment|/*  73 */
@@ -2583,7 +2583,7 @@ id|OPTYPE_MONADIC2_r
 op_or
 id|AML_HAS_ARGS
 comma
-l_string|&quot;Copy&quot;
+l_string|&quot;Copy_object&quot;
 comma
 id|ARGP_COPY_OP
 comma
@@ -3542,6 +3542,11 @@ id|upper_opcode
 suffix:semicolon
 id|u8
 id|lower_opcode
+suffix:semicolon
+id|PROC_NAME
+(paren
+l_string|&quot;Ps_get_opcode_info&quot;
+)paren
 suffix:semicolon
 multiline_comment|/* Split the 16-bit opcode into separate bytes */
 id|upper_opcode

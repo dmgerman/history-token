@@ -1,53 +1,37 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbconvrt - ACPI Table conversion utilities&n; *              $Revision: 19 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbconvrt - ACPI Table conversion utilities&n; *              $Revision: 23 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;actables.h&quot;
 macro_line|#include &quot;actbl.h&quot;
 DECL|macro|_COMPONENT
-mdefine_line|#define _COMPONENT          TABLE_MANAGER
+mdefine_line|#define _COMPONENT          ACPI_TABLES
 id|MODULE_NAME
 (paren
 l_string|&quot;tbconvrt&quot;
 )paren
-multiline_comment|/*&n; * Build a GAS structure from earlier ACPI table entries (V1.0 and 0.71 extensions)&n; *&n; * 1) Address space&n; * 2) Length in bytes -- convert to length in bits&n; * 3) Bit offset is zero&n; * 4) Reserved field is zero&n; * 5) Expand address to 64 bits&n; */
-DECL|macro|ASL_BUILD_GAS_FROM_ENTRY
-mdefine_line|#define ASL_BUILD_GAS_FROM_ENTRY(a,b,c,d)   {a.address_space_id = (u8) d;&bslash;&n;&t;&t;&t;   a.register_bit_width = (u8) MUL_8 (b);&bslash;&n;&t;&t;&t;   a.register_bit_offset = 0;&bslash;&n;&t;&t;&t;   a.reserved = 0;&bslash;&n;&t;&t;&t;   ACPI_STORE_ADDRESS (a.address,c);}
-multiline_comment|/* ACPI V1.0 entries -- address space is always I/O */
-DECL|macro|ASL_BUILD_GAS_FROM_V1_ENTRY
-mdefine_line|#define ASL_BUILD_GAS_FROM_V1_ENTRY(a,b,c)  ASL_BUILD_GAS_FROM_ENTRY(a,b,c,ADDRESS_SPACE_SYSTEM_IO)
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_convert_to_xsdt&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
-id|ACPI_STATUS
-DECL|function|acpi_tb_convert_to_xsdt
-id|acpi_tb_convert_to_xsdt
-(paren
-id|ACPI_TABLE_DESC
-op_star
-id|table_info
-comma
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_get_table_count&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
 id|u32
+DECL|function|acpi_tb_get_table_count
+id|acpi_tb_get_table_count
+(paren
+id|RSDP_DESCRIPTOR
 op_star
-id|number_of_tables
+id|RSDP
+comma
+id|ACPI_TABLE_HEADER
+op_star
+id|RSDT
 )paren
 (brace
 id|u32
-id|table_size
-suffix:semicolon
-id|u32
 id|pointer_size
-suffix:semicolon
-id|u32
-id|i
-suffix:semicolon
-id|XSDT_DESCRIPTOR
-op_star
-id|new_table
 suffix:semicolon
 macro_line|#ifndef _IA64
 r_if
 c_cond
 (paren
-id|acpi_gbl_RSDP-&gt;revision
+id|RSDP-&gt;revision
 OL
 l_int|2
 )paren
@@ -72,15 +56,10 @@ id|UINT64
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Determine the number of tables pointed to by the RSDT/XSDT.&n;&t; * This is defined by the ACPI Specification to be the number of&n;&t; * pointers contained within the RSDT/XSDT.  The size of the pointers&n;&t; * is architecture-dependent.&n;&t; */
-id|table_size
-op_assign
-id|table_info-&gt;pointer-&gt;length
-suffix:semicolon
-op_star
-id|number_of_tables
-op_assign
+r_return
 (paren
-id|table_size
+(paren
+id|RSDT-&gt;length
 op_minus
 r_sizeof
 (paren
@@ -89,6 +68,42 @@ id|ACPI_TABLE_HEADER
 )paren
 op_div
 id|pointer_size
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_convert_to_xsdt&n; *&n; * PARAMETERS:&n; *&n; * RETURN:&n; *&n; * DESCRIPTION:&n; *&n; ******************************************************************************/
+id|ACPI_STATUS
+DECL|function|acpi_tb_convert_to_xsdt
+id|acpi_tb_convert_to_xsdt
+(paren
+id|ACPI_TABLE_DESC
+op_star
+id|table_info
+comma
+id|u32
+op_star
+id|number_of_tables
+)paren
+(brace
+id|u32
+id|table_size
+suffix:semicolon
+id|u32
+id|i
+suffix:semicolon
+id|XSDT_DESCRIPTOR
+op_star
+id|new_table
+suffix:semicolon
+op_star
+id|number_of_tables
+op_assign
+id|acpi_tb_get_table_count
+(paren
+id|acpi_gbl_RSDP
+comma
+id|table_info-&gt;pointer
+)paren
 suffix:semicolon
 multiline_comment|/* Compute size of the converted XSDT */
 id|table_size
@@ -111,7 +126,7 @@ suffix:semicolon
 multiline_comment|/* Allocate an XSDT */
 id|new_table
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 id|table_size
 )paren
@@ -319,7 +334,7 @@ multiline_comment|/* Acpi_gbl_FADT is valid */
 multiline_comment|/* Allocate and zero the 2.0 buffer */
 id|FADT2
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 r_sizeof
 (paren
@@ -956,7 +971,7 @@ suffix:semicolon
 multiline_comment|/* Allocate a common FACS */
 id|common_facs
 op_assign
-id|acpi_cm_callocate
+id|acpi_ut_callocate
 (paren
 r_sizeof
 (paren

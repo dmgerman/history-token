@@ -237,8 +237,8 @@ comma
 DECL|enumerator|ACPI_PMTIMER
 id|ACPI_PMTIMER
 comma
-DECL|enumerator|ACPI_BATTERY
-id|ACPI_BATTERY
+DECL|enumerator|ACPI_BATT
+id|ACPI_BATT
 comma
 )brace
 suffix:semicolon

@@ -147,6 +147,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef HAS_FIRMWARE
 macro_line|#include &quot;starfire_firmware.h&quot;
 macro_line|#endif /* HAS_FIRMWARE */
@@ -1603,7 +1604,7 @@ id|dev
 suffix:semicolon
 r_static
 r_int
-id|netdev_ioctl
+id|mii_ioctl
 c_func
 (paren
 r_struct
@@ -2288,7 +2289,7 @@ suffix:semicolon
 id|dev-&gt;do_ioctl
 op_assign
 op_amp
-id|netdev_ioctl
+id|mii_ioctl
 suffix:semicolon
 r_if
 c_cond

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acevents.h - Event subcomponent prototypes and defines&n; *       $Revision: 63 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acevents.h - Event subcomponent prototypes and defines&n; *       $Revision: 65 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACEVENTS_H__
 DECL|macro|__ACEVENTS_H__
@@ -77,14 +77,23 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Acpi_evnotify - Device Notify handling and dispatch&n; */
-r_void
-id|acpi_ev_notify_dispatch
+id|ACPI_STATUS
+id|acpi_ev_queue_notify_request
 (paren
-id|ACPI_HANDLE
-id|device
+id|ACPI_NAMESPACE_NODE
+op_star
+id|node
 comma
 id|u32
 id|notify_value
+)paren
+suffix:semicolon
+r_void
+id|acpi_ev_notify_dispatch
+(paren
+r_void
+op_star
+id|context
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Acpi_evregion - Address Space handling&n; */
@@ -281,20 +290,5 @@ id|acpi_ev_terminate
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* Debug support */
-macro_line|#ifdef ACPI_DEBUG
-id|u32
-id|acpi_ev_sci_count
-(paren
-id|u32
-id|acpi_event
-)paren
-suffix:semicolon
-DECL|macro|DEBUG_INCREMENT_EVENT_COUNT
-mdefine_line|#define DEBUG_INCREMENT_EVENT_COUNT(a)   acpi_gbl_event_count[a]++;
-macro_line|#else
-DECL|macro|DEBUG_INCREMENT_EVENT_COUNT
-mdefine_line|#define DEBUG_INCREMENT_EVENT_COUNT(a)
-macro_line|#endif
 macro_line|#endif  /* __ACEVENTS_H__  */
 eof

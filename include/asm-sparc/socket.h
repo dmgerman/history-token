@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: socket.h,v 1.16 2001/01/30 07:48:30 davem Exp $ */
+multiline_comment|/* $Id: socket.h,v 1.17 2001/06/13 16:25:03 davem Exp $ */
 macro_line|#ifndef _ASM_SOCKET_H
 DECL|macro|_ASM_SOCKET_H
 mdefine_line|#define _ASM_SOCKET_H
@@ -91,6 +91,8 @@ multiline_comment|/* getting packets at the dev&t;*/
 multiline_comment|/* level.  For writing rarp and&t;*/
 multiline_comment|/* other similar things on the&t;*/
 multiline_comment|/* user level.&t;&t;&t;*/
+DECL|macro|SOCK_MAX
+mdefine_line|#define&t;SOCK_MAX&t;(SOCK_PACKET+1)
 macro_line|#endif
 macro_line|#endif /* _ASM_SOCKET_H */
 eof

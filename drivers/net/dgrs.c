@@ -1123,10 +1123,13 @@ id|len
 id|printk
 c_func
 (paren
-l_string|&quot;%s: cbp = %x&bslash;n&quot;
+l_string|&quot;%s: cbp = %lx&bslash;n&quot;
 comma
 id|devN-&gt;name
 comma
+(paren
+r_int
+)paren
 id|H2S
 c_func
 (paren
@@ -1363,10 +1366,13 @@ id|len
 id|printk
 c_func
 (paren
-l_string|&quot;%s: cbp = %x&bslash;n&quot;
+l_string|&quot;%s: cbp = %lx&bslash;n&quot;
 comma
 id|devN-&gt;name
 comma
+(paren
+r_int
+)paren
 id|H2S
 c_func
 (paren
@@ -1533,10 +1539,13 @@ id|len
 id|printk
 c_func
 (paren
-l_string|&quot;%s: cbp = %x&bslash;n&quot;
+l_string|&quot;%s: cbp = %lx&bslash;n&quot;
 comma
 id|devN-&gt;name
 comma
+(paren
+r_int
+)paren
 id|H2S
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci_psycho.c,v 1.25 2001/06/04 23:20:32 ecd Exp $&n; * pci_psycho.c: PSYCHO/U2P specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_psycho.c,v 1.26 2001/06/13 06:34:30 davem Exp $&n; * pci_psycho.c: PSYCHO/U2P specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -5935,6 +5935,16 @@ c_func
 (paren
 op_amp
 id|iomem_resource
+comma
+op_amp
+id|pbm-&gt;mem_space
+)paren
+suffix:semicolon
+id|pci_register_legacy_regions
+c_func
+(paren
+op_amp
+id|pbm-&gt;io_space
 comma
 op_amp
 id|pbm-&gt;mem_space
