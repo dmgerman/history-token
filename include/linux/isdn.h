@@ -929,13 +929,12 @@ id|spinlock_t
 id|queue_lock
 suffix:semicolon
 multiline_comment|/* lock to protect queue            */
-DECL|member|next
+DECL|member|global_list
 r_struct
-id|isdn_net_dev_s
-op_star
-id|next
+id|list_head
+id|global_list
 suffix:semicolon
-multiline_comment|/* Pointer to next isdn-interface   */
+multiline_comment|/* global list of all isdn_net_devs */
 DECL|member|dev
 r_struct
 id|net_device
@@ -1773,12 +1772,6 @@ id|ISDN_MAX_DRIVERS
 )braket
 suffix:semicolon
 multiline_comment|/* Array of drivers           */
-DECL|member|netdev
-id|isdn_net_dev
-op_star
-id|netdev
-suffix:semicolon
-multiline_comment|/* Linked list of net-if&squot;s    */
 DECL|member|drvid
 r_char
 id|drvid
