@@ -127,6 +127,12 @@ r_struct
 id|semaphore
 id|commit_sem
 suffix:semicolon
+multiline_comment|/* xattr_sem allows us to access the xattrs without taking i_sem */
+DECL|member|xattr_sem
+r_struct
+id|rw_semaphore
+id|xattr_sem
+suffix:semicolon
 DECL|member|xtlid
 id|lid_t
 id|xtlid
