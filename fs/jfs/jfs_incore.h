@@ -358,11 +358,11 @@ r_int
 id|l2niperblk
 suffix:semicolon
 multiline_comment|/* 2: log2 inodes per page&t;*/
-DECL|member|reserved
-r_int
-id|reserved
+DECL|member|logdev
+id|kdev_t
+id|logdev
 suffix:semicolon
-multiline_comment|/* 2: log2 inodes per page&t;*/
+multiline_comment|/* 2: external log device&t;*/
 DECL|member|logpxd
 id|pxd_t
 id|logpxd
