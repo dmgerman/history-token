@@ -162,7 +162,7 @@ DECL|macro|smp_mb__before_clear_bit
 mdefine_line|#define smp_mb__before_clear_bit()&t;barrier()
 DECL|macro|smp_mb__after_clear_bit
 mdefine_line|#define smp_mb__after_clear_bit()&t;barrier()
-multiline_comment|/**&n; * __change_bit - Toggle a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * Unlike change_bit(), this function is non-atomic and may be reordered.&n; * If it&squot;s called on the same region of memory simultaneously, the effect&n; * may be that only one operation succeeds.&n; */
+multiline_comment|/**&n; * __change_bit - Toggle a bit in memory&n; * @nr: the bit to change&n; * @addr: the address to start counting from&n; *&n; * Unlike change_bit(), this function is non-atomic and may be reordered.&n; * If it&squot;s called on the same region of memory simultaneously, the effect&n; * may be that only one operation succeeds.&n; */
 DECL|function|__change_bit
 r_static
 id|__inline__
@@ -198,7 +198,7 @@ id|nr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * change_bit - Toggle a bit in memory&n; * @nr: Bit to clear&n; * @addr: Address to start counting from&n; *&n; * change_bit() is atomic and may not be reordered.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
+multiline_comment|/**&n; * change_bit - Toggle a bit in memory&n; * @nr: Bit to change&n; * @addr: Address to start counting from&n; *&n; * change_bit() is atomic and may not be reordered.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
 DECL|function|change_bit
 r_static
 id|__inline__
@@ -331,7 +331,7 @@ r_return
 id|oldbit
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
+multiline_comment|/**&n; * test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to clear&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_clear_bit
 r_static
 id|__inline__
@@ -381,7 +381,7 @@ r_return
 id|oldbit
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * __test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is non-atomic and can be reordered.  &n; * If two examples of this operation race, one can appear to succeed&n; * but actually fail.  You must protect multiple accesses with a lock.&n; */
+multiline_comment|/**&n; * __test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to clear&n; * @addr: Address to count from&n; *&n; * This operation is non-atomic and can be reordered.  &n; * If two examples of this operation race, one can appear to succeed&n; * but actually fail.  You must protect multiple accesses with a lock.&n; */
 DECL|function|__test_and_clear_bit
 r_static
 id|__inline__
@@ -476,7 +476,7 @@ r_return
 id|oldbit
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * test_and_change_bit - Change a bit and return its new value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
+multiline_comment|/**&n; * test_and_change_bit - Change a bit and return its new value&n; * @nr: Bit to change&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_change_bit
 r_static
 id|__inline__
