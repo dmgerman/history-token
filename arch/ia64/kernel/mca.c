@@ -141,11 +141,6 @@ r_static
 id|ia64_mc_info_t
 id|ia64_mc_info
 suffix:semicolon
-r_extern
-r_struct
-id|hw_interrupt_type
-id|irq_type_iosapic_level
-suffix:semicolon
 DECL|variable|ia64_mca_tlb_list
 r_struct
 id|ia64_mca_tlb_info
@@ -3973,11 +3968,6 @@ suffix:semicolon
 id|desc-&gt;status
 op_or_assign
 id|IRQ_PER_CPU
-suffix:semicolon
-id|desc-&gt;handler
-op_assign
-op_amp
-id|irq_type_iosapic_level
 suffix:semicolon
 id|setup_irq
 c_func
