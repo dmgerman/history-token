@@ -105,6 +105,13 @@ id|mempool_t
 op_star
 id|r1buf_pool
 suffix:semicolon
+DECL|member|thread_name
+r_char
+id|thread_name
+(braket
+id|MD_THREAD_NAME_MAX
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|typedef|conf_t

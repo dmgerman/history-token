@@ -26,6 +26,8 @@ DECL|macro|LEVEL_LINEAR
 mdefine_line|#define&t;LEVEL_LINEAR&t;&t;(-1)
 DECL|macro|MaxSector
 mdefine_line|#define MaxSector (~(sector_t)0)
+DECL|macro|MD_THREAD_NAME_MAX
+mdefine_line|#define MD_THREAD_NAME_MAX 14
 DECL|function|pers_to_level
 r_static
 r_inline
