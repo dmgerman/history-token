@@ -8509,6 +8509,10 @@ id|wc.dlid_path_bits
 op_assign
 l_int|0
 suffix:semicolon
+id|wc.qp_num
+op_assign
+id|IB_QP0
+suffix:semicolon
 id|local-&gt;mad_priv-&gt;header.recv_wc.wc
 op_assign
 op_amp

@@ -1729,6 +1729,15 @@ id|lock
 )paren
 suffix:semicolon
 )brace
+id|entry-&gt;qp_num
+op_assign
+(paren
+op_star
+id|cur_qp
+)paren
+op_member_access_from_pointer
+id|qpn
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -1244,6 +1244,10 @@ DECL|member|imm_data
 id|__be32
 id|imm_data
 suffix:semicolon
+DECL|member|qp_num
+id|u32
+id|qp_num
+suffix:semicolon
 DECL|member|src_qp
 id|u32
 id|src_qp
