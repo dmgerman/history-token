@@ -3,6 +3,7 @@ macro_line|#ifndef __ASM_SOFTIRQ_H
 DECL|macro|__ASM_SOFTIRQ_H
 mdefine_line|#define __ASM_SOFTIRQ_H
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/preempt.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
@@ -19,6 +20,6 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|local_bh_enable
-mdefine_line|#define local_bh_enable()&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__local_bh_enable();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id()))&t;&bslash;&n;&t;&t;/* Use the async. stack for softirq */&t;&t;&t;&bslash;&n;&t;&t;do_call_softirq();&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define local_bh_enable()&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__local_bh_enable();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id()))&t;&bslash;&n;&t;&t;/* Use the async. stack for softirq */&t;&t;&t;&bslash;&n;&t;&t;do_call_softirq();&t;&t;&t;&t;&t;&bslash;&n;&t;preempt_check_resched();&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif&t;/* __ASM_SOFTIRQ_H */
 eof
