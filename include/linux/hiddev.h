@@ -252,6 +252,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* hiddev_usage_ref_multi is used for sending multiple bytes to a control.&n; * It really manifests itself as setting the value of consecutive usages */
+DECL|macro|HID_MAX_MULTI_USAGES
+mdefine_line|#define HID_MAX_MULTI_USAGES 1024
 DECL|struct|hiddev_usage_ref_multi
 r_struct
 id|hiddev_usage_ref_multi
@@ -269,7 +271,7 @@ DECL|member|values
 id|__s32
 id|values
 (braket
-id|HID_MAX_USAGES
+id|HID_MAX_MULTI_USAGES
 )braket
 suffix:semicolon
 )brace
@@ -332,6 +334,18 @@ mdefine_line|#define HIDDEV_FLAGS&t;&t;0x3
 multiline_comment|/* To traverse the input report descriptor info for a HID device, perform the &n; * following:&n; *&n; *  rinfo.report_type = HID_REPORT_TYPE_INPUT;&n; *  rinfo.report_id = HID_REPORT_ID_FIRST;&n; *  ret = ioctl(fd, HIDIOCGREPORTINFO, &amp;rinfo);&n; *&n; *  while (ret &gt;= 0) {&n; *      for (i = 0; i &lt; rinfo.num_fields; i++) { &n; *&t;    finfo.report_type = rinfo.report_type;&n; *          finfo.report_id = rinfo.report_id;&n; *          finfo.field_index = i;&n; *          ioctl(fd, HIDIOCGFIELDINFO, &amp;finfo);&n; *          for (j = 0; j &lt; finfo.maxusage; j++) {&n; *              uref.field_index = i;&n; *&t;&t;uref.usage_index = j;&n; *&t;&t;ioctl(fd, HIDIOCGUCODE, &amp;uref);&n; *&t;&t;ioctl(fd, HIDIOCGUSAGE, &amp;uref);&n; *          }&n; *&t;}&n; *&t;uref.report_id |= HID_REPORT_ID_NEXT;&n; *&t;ret = ioctl(fd, HIDIOCGREPORTINFO, &amp;uref);&n; *  }&n; */
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * In-kernel definitions.&n; */
+r_struct
+id|hid_device
+suffix:semicolon
+r_struct
+id|hid_usage
+suffix:semicolon
+r_struct
+id|hid_field
+suffix:semicolon
+r_struct
+id|hid_report
+suffix:semicolon
 macro_line|#ifdef CONFIG_USB_HIDDEV
 r_int
 id|hiddev_connect
