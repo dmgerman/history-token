@@ -480,6 +480,12 @@ op_assign
 l_int|66
 comma
 multiline_comment|/* int: unknown nmi panic flag */
+DECL|enumerator|KERN_BOOTLOADER_TYPE
+id|KERN_BOOTLOADER_TYPE
+op_assign
+l_int|67
+comma
+multiline_comment|/* int: boot loader type */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */

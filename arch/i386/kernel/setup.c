@@ -194,6 +194,11 @@ id|pci_mem_start
 op_assign
 l_int|0x10000000
 suffix:semicolon
+multiline_comment|/* Boot loader ID as an integer, for the benefit of proc_dointvec */
+DECL|variable|bootloader_type
+r_int
+id|bootloader_type
+suffix:semicolon
 multiline_comment|/* user-defined highmem size */
 DECL|variable|highmem_pages
 r_static
@@ -5655,6 +5660,10 @@ suffix:semicolon
 id|aux_device_present
 op_assign
 id|AUX_DEVICE_INFO
+suffix:semicolon
+id|bootloader_type
+op_assign
+id|LOADER_TYPE
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
 id|rd_image_start

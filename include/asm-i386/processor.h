@@ -782,6 +782,11 @@ r_int
 r_int
 id|mca_pentium_flag
 suffix:semicolon
+multiline_comment|/* Boot loader type from the setup header */
+r_extern
+r_int
+id|bootloader_type
+suffix:semicolon
 multiline_comment|/*&n; * User space process size: 3GB (default).&n; */
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;(PAGE_OFFSET)
