@@ -13541,7 +13541,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif&t;&t;&t;&t;/* CONFIG_PROC_FS */
-multiline_comment|/*-------------------------------------------------------------&n; * Return the disk geometry for a particular disk&n; * Input:&n; *   Disk *disk - Disk geometry&n; *   kdev_t dev - Device node&n; *   int *geom  - Returns geometry fields&n; *     geom[0] = heads&n; *     geom[1] = sectors&n; *     geom[2] = cylinders&n; *-------------------------------------------------------------*/
+multiline_comment|/*-------------------------------------------------------------&n; * Return the disk geometry for a particular disk&n; * Input:&n; *   Disk *disk - Disk geometry&n; *   struct block_device *dev - Device node&n; *   int *geom  - Returns geometry fields&n; *     geom[0] = heads&n; *     geom[1] = sectors&n; *     geom[2] = cylinders&n; *-------------------------------------------------------------*/
 DECL|function|megaraid_biosparam
 r_int
 id|megaraid_biosparam
@@ -13550,8 +13550,10 @@ id|Disk
 op_star
 id|disk
 comma
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_int
 op_star
@@ -13668,7 +13670,7 @@ c_func
 (paren
 id|disk
 comma
-id|dev
+id|bdev
 comma
 id|geom
 )paren
@@ -13763,7 +13765,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function : static int mega_partsize(Disk * disk, kdev_t dev, int *geom)&n; *&n; * Purpose : to determine the BIOS mapping used to create the partition&n; *&t;&t;&t;table, storing the results (cyls, hds, and secs) in geom&n; *&n; * Note:&t;Code is picked from scsicam.h&n; *&n; * Returns : -1 on failure, 0 on success.&n; */
+multiline_comment|/*&n; * Function : static int mega_partsize(Disk * disk, struct block_device *bdev, int *geom)&n; *&n; * Purpose : to determine the BIOS mapping used to create the partition&n; *&t;&t;&t;table, storing the results (cyls, hds, and secs) in geom&n; *&n; * Note:&t;Code is picked from scsicam.h&n; *&n; * Returns : -1 on failure, 0 on success.&n; */
 r_static
 r_int
 DECL|function|mega_partsize
@@ -13774,8 +13776,10 @@ id|Disk
 op_star
 id|disk
 comma
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_int
 op_star
@@ -13824,7 +13828,7 @@ op_assign
 id|scsi_bios_ptable
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 )paren
 )paren
@@ -14740,9 +14744,6 @@ id|arg
 r_int
 id|adapno
 suffix:semicolon
-id|kdev_t
-id|dev
-suffix:semicolon
 id|u32
 id|inlen
 suffix:semicolon
@@ -14835,10 +14836,6 @@ id|inode
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-id|dev
-op_assign
-id|inode-&gt;i_rdev
 suffix:semicolon
 r_if
 c_cond

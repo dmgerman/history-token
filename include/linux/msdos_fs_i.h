@@ -8,8 +8,7 @@ r_struct
 id|msdos_inode_info
 (brace
 DECL|member|mmu_private
-r_int
-r_int
+id|loff_t
 id|mmu_private
 suffix:semicolon
 DECL|member|i_start

@@ -854,7 +854,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|cli
+id|__cli
 c_func
 (paren
 )paren

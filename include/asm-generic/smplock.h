@@ -9,7 +9,7 @@ DECL|macro|kernel_locked
 mdefine_line|#define kernel_locked()&t;&t;spin_is_locked(&amp;kernel_flag)
 multiline_comment|/*&n; * Release global kernel lock and global interrupt lock&n; */
 DECL|macro|release_kernel_lock
-mdefine_line|#define release_kernel_lock(task, cpu) &bslash;&n;do { &bslash;&n;&t;if (task-&gt;lock_depth &gt;= 0) &bslash;&n;&t;&t;spin_unlock(&amp;kernel_flag); &bslash;&n;&t;release_irqlock(cpu); &bslash;&n;&t;__sti(); &bslash;&n;} while (0)
+mdefine_line|#define release_kernel_lock(task) &bslash;&n;do { &bslash;&n;&t;if (task-&gt;lock_depth &gt;= 0) &bslash;&n;&t;&t;spin_unlock(&amp;kernel_flag); &bslash;&n;&t;__sti(); &bslash;&n;} while (0)
 multiline_comment|/*&n; * Re-acquire the kernel lock&n; */
 DECL|macro|reacquire_kernel_lock
 mdefine_line|#define reacquire_kernel_lock(task) &bslash;&n;do { &bslash;&n;&t;if (task-&gt;lock_depth &gt;= 0) &bslash;&n;&t;&t;spin_lock(&amp;kernel_flag); &bslash;&n;} while (0)

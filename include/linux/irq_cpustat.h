@@ -23,10 +23,6 @@ macro_line|#endif
 multiline_comment|/* arch independent irq_stat fields */
 DECL|macro|softirq_pending
 mdefine_line|#define softirq_pending(cpu)&t;__IRQ_STAT((cpu), __softirq_pending)
-DECL|macro|local_irq_count
-mdefine_line|#define local_irq_count(cpu)&t;__IRQ_STAT((cpu), __local_irq_count)
-DECL|macro|local_bh_count
-mdefine_line|#define local_bh_count(cpu)&t;__IRQ_STAT((cpu), __local_bh_count)
 DECL|macro|syscall_count
 mdefine_line|#define syscall_count(cpu)&t;__IRQ_STAT((cpu), __syscall_count)
 DECL|macro|ksoftirqd_task

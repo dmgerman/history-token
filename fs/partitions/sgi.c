@@ -1,12 +1,4 @@
 multiline_comment|/*&n; *  fs/partitions/sgi.c&n; *&n; *  Code extracted from drivers/block/genhd.c&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/genhd.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;sgi.h&quot;
 DECL|function|sgi_partition
@@ -15,21 +7,14 @@ id|sgi_partition
 c_func
 (paren
 r_struct
-id|gendisk
+id|parsed_partitions
 op_star
-id|hd
+id|state
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
-comma
-r_int
-r_int
-id|first_sector
-comma
-r_int
-id|current_minor
 )paren
 (brace
 r_int
@@ -38,6 +23,11 @@ comma
 id|csum
 comma
 id|magic
+suffix:semicolon
+r_int
+id|slot
+op_assign
+l_int|1
 suffix:semicolon
 r_int
 r_int
@@ -327,27 +317,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|blocks
 )paren
-(brace
-r_continue
-suffix:semicolon
-)brace
-id|add_gd_partition
+id|put_partition
 c_func
 (paren
-id|hd
+id|state
 comma
-id|current_minor
+id|slot
+op_increment
 comma
 id|start
 comma
 id|blocks
 )paren
-suffix:semicolon
-id|current_minor
-op_increment
 suffix:semicolon
 )brace
 id|printk

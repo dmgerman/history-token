@@ -4,7 +4,6 @@ DECL|macro|_3W_XXXX_H
 mdefine_line|#define _3W_XXXX_H
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
 multiline_comment|/* AEN strings */
 DECL|variable|tw_aen_string
 r_static
@@ -1525,7 +1524,9 @@ id|Disk
 op_star
 id|disk
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 id|dev
 comma
 r_int

@@ -325,6 +325,11 @@ r_int
 id|yes
 )paren
 (brace
+r_int
+id|loglevel_save
+op_assign
+id|console_loglevel
+suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
@@ -342,21 +347,9 @@ id|oops_in_progress
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-id|global_irq_lock
-op_assign
-l_int|0
+r_return
 suffix:semicolon
-multiline_comment|/* Many serial drivers do __global_cli() */
-macro_line|#endif
 )brace
-r_else
-(brace
-r_int
-id|loglevel_save
-op_assign
-id|console_loglevel
-suffix:semicolon
 macro_line|#ifdef CONFIG_VT
 id|unblank_screen
 c_func
@@ -368,7 +361,7 @@ id|oops_in_progress
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * OK, the message is on the console.  Now we call printk()&n;&t;&t; * without oops_in_progress set so that printk will give klogd&n;&t;&t; * a poke.  Hold onto your hats...&n;&t;&t; */
+multiline_comment|/*&n;&t; * OK, the message is on the console.  Now we call printk()&n;&t; * without oops_in_progress set so that printk will give klogd&n;&t; * a poke.  Hold onto your hats...&n;&t; */
 id|console_loglevel
 op_assign
 l_int|15
@@ -384,7 +377,6 @@ id|console_loglevel
 op_assign
 id|loglevel_save
 suffix:semicolon
-)brace
 )brace
 id|asmlinkage
 r_void
