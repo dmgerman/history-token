@@ -56,12 +56,12 @@ id|s3c2410_rtc_freq
 op_assign
 l_int|1
 suffix:semicolon
-DECL|variable|s3c2410_rtc_pie_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|s3c2410_rtc_pie_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* IRQ Handlers */
 DECL|function|s3c2410_rtc_alarmirq
