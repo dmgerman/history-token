@@ -3,11 +3,7 @@ macro_line|#ifndef _ASM_CURRENT_H
 DECL|macro|_ASM_CURRENT_H
 mdefine_line|#define _ASM_CURRENT_H
 multiline_comment|/*&n; * At the sparc64 DaveM keeps current_thread_info in %g4.&n; * We might want to consider doing the same to shave a few cycles.&n; */
-singleline_comment|// Applications do not include kernel headers anymore, period.
-singleline_comment|// #ifdef __KERNEL__
-macro_line|#ifndef _ASM_THREAD_INFO_H
-macro_line|#include &lt;asm/thread_info.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/thread_info.h&gt;
 r_struct
 id|task_struct
 suffix:semicolon
@@ -36,6 +32,5 @@ suffix:semicolon
 )brace
 DECL|macro|current
 mdefine_line|#define current __get_current()
-singleline_comment|// #endif /* __KERNEL__ */
 macro_line|#endif /* !(_ASM_CURRENT_H) */
 eof
