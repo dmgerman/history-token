@@ -435,7 +435,11 @@ op_star
 )paren
 (paren
 (paren
+(paren
 id|regs-&gt;r12
+op_amp
+l_int|0xffffffff
+)paren
 op_amp
 op_minus
 l_int|16
