@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &quot;pci-i386.h&quot;
+macro_line|#include &quot;pci.h&quot;
 r_void
 DECL|function|pcibios_update_resource
 id|pcibios_update_resource

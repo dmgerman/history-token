@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
-macro_line|#include &quot;pci-i386.h&quot;
+macro_line|#include &quot;pci.h&quot;
 DECL|macro|PIRQ_SIGNATURE
 mdefine_line|#define PIRQ_SIGNATURE&t;((&squot;$&squot; &lt;&lt; 0) + (&squot;P&squot; &lt;&lt; 8) + (&squot;I&squot; &lt;&lt; 16) + (&squot;R&squot; &lt;&lt; 24))
 DECL|macro|PIRQ_VERSION

@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &quot;pci-i386.h&quot;
+macro_line|#include &quot;pci.h&quot;
 DECL|variable|pci_probe
 r_int
 r_int
