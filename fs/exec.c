@@ -2560,6 +2560,10 @@ id|newsig-&gt;group_stop_count
 op_assign
 l_int|0
 suffix:semicolon
+id|newsig-&gt;curr_target
+op_assign
+l_int|NULL
+suffix:semicolon
 id|init_sigpending
 c_func
 (paren
