@@ -811,6 +811,16 @@ suffix:semicolon
 id|sigset_t
 id|set
 suffix:semicolon
+multiline_comment|/* Always make any pending restarted system calls return -EINTR */
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
+suffix:semicolon
 multiline_comment|/*&n;&t; * Since we stacked the signal on a 64-bit boundary,&n;&t; * then &squot;sp&squot; should be word aligned here.  If it&squot;s&n;&t; * not, then the user is trying to mess with us.&n;&t; */
 r_if
 c_cond
@@ -1003,6 +1013,16 @@ id|frame
 suffix:semicolon
 id|sigset_t
 id|set
+suffix:semicolon
+multiline_comment|/* Always make any pending restarted system calls return -EINTR */
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
 suffix:semicolon
 multiline_comment|/*&n;&t; * Since we stacked the signal on a 64-bit boundary,&n;&t; * then &squot;sp&squot; should be word aligned here.  If it&squot;s&n;&t; * not, then the user is trying to mess with us.&n;&t; */
 r_if
@@ -2181,15 +2201,6 @@ r_case
 op_minus
 id|ERESTART_RESTARTBLOCK
 suffix:colon
-id|current_thread_info
-c_func
-(paren
-)paren
-op_member_access_from_pointer
-id|restart_block.fn
-op_assign
-id|do_no_restart_syscall
-suffix:semicolon
 r_case
 op_minus
 id|ERESTARTNOHAND
