@@ -2,7 +2,6 @@ macro_line|#ifndef _LINUX_LINKAGE_H
 DECL|macro|_LINUX_LINKAGE_H
 mdefine_line|#define _LINUX_LINKAGE_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/linkage.h&gt;
 macro_line|#ifdef __cplusplus
 DECL|macro|CPP_ASMLINKAGE
@@ -17,10 +16,10 @@ mdefine_line|#define asmlinkage CPP_ASMLINKAGE
 macro_line|#endif
 macro_line|#ifndef __ALIGN
 DECL|macro|__ALIGN
-mdefine_line|#define __ALIGN .align 4,0x90
-macro_line|#endif
+mdefine_line|#define __ALIGN&t;&t;.align 4,0x90
 DECL|macro|__ALIGN_STR
-mdefine_line|#define __ALIGN_STR __stringify(__ALIGN)
+mdefine_line|#define __ALIGN_STR&t;&quot;.align 4,0x90&quot;
+macro_line|#endif
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|ALIGN
 mdefine_line|#define ALIGN __ALIGN
