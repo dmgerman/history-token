@@ -1140,7 +1140,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|ia64_mca_cpu_t
+r_struct
+id|ia64_mca_cpu
 )paren
 )paren
 op_star
@@ -1317,7 +1318,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|ia64_mca_cpu_t
+r_struct
+id|ia64_mca_cpu
 )paren
 )paren
 op_star
@@ -1408,7 +1410,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|ia64_mca_cpu_t
+r_struct
+id|ia64_mca_cpu
 )paren
 )paren
 suffix:semicolon

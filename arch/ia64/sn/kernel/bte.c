@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
-macro_line|#include &quot;shubio.h&quot;
+macro_line|#include &lt;asm/sn/shubio.h&gt;
 macro_line|#include &lt;asm/nodedata.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;

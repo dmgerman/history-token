@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#include &lt;asm/meminit.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -42,6 +43,50 @@ suffix:semicolon
 DECL|variable|ia64_mca_serialize
 id|u64
 id|ia64_mca_serialize
+suffix:semicolon
+id|DEFINE_PER_CPU
+c_func
+(paren
+id|u64
+comma
+id|ia64_mca_data
+)paren
+suffix:semicolon
+multiline_comment|/* == __per_cpu_mca[smp_processor_id()] */
+id|DEFINE_PER_CPU
+c_func
+(paren
+id|u64
+comma
+id|ia64_mca_per_cpu_pte
+)paren
+suffix:semicolon
+multiline_comment|/* PTE to map per-CPU area */
+id|DEFINE_PER_CPU
+c_func
+(paren
+id|u64
+comma
+id|ia64_mca_pal_pte
+)paren
+suffix:semicolon
+multiline_comment|/* PTE to map PAL code */
+id|DEFINE_PER_CPU
+c_func
+(paren
+id|u64
+comma
+id|ia64_mca_pal_base
+)paren
+suffix:semicolon
+multiline_comment|/* vaddr PAL code granule */
+DECL|variable|__per_cpu_mca
+r_int
+r_int
+id|__per_cpu_mca
+(braket
+id|NR_CPUS
+)braket
 suffix:semicolon
 multiline_comment|/* In mca_asm.S */
 r_extern
@@ -3768,6 +3813,115 @@ l_string|&quot;cpe_poll&quot;
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_ACPI */
+multiline_comment|/* Do per-CPU MCA-related initialization.  */
+r_void
+id|__devinit
+DECL|function|ia64_mca_cpu_init
+id|ia64_mca_cpu_init
+c_func
+(paren
+r_void
+op_star
+id|cpu_data
+)paren
+(brace
+r_void
+op_star
+id|pal_vaddr
+suffix:semicolon
+multiline_comment|/*&n;         * The MCA info structure was allocated earlier and its&n;         * physical address saved in __per_cpu_mca[cpu].  Copy that&n;         * address * to ia64_mca_data so we can access it as a per-CPU&n;         * variable.&n;         */
+id|__get_cpu_var
+c_func
+(paren
+id|ia64_mca_data
+)paren
+op_assign
+id|__per_cpu_mca
+(braket
+id|smp_processor_id
+c_func
+(paren
+)paren
+)braket
+suffix:semicolon
+multiline_comment|/*&n;&t; * Stash away a copy of the PTE needed to map the per-CPU page.&n;&t; * We may need it during MCA recovery.&n;&t; */
+id|__get_cpu_var
+c_func
+(paren
+id|ia64_mca_per_cpu_pte
+)paren
+op_assign
+id|pte_val
+c_func
+(paren
+id|mk_pte_phys
+c_func
+(paren
+id|__pa
+c_func
+(paren
+id|cpu_data
+)paren
+comma
+id|PAGE_KERNEL
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;         * Also, stash away a copy of the PAL address and the PTE&n;         * needed to map it.&n;         */
+id|pal_vaddr
+op_assign
+id|efi_get_pal_addr
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pal_vaddr
+)paren
+r_return
+suffix:semicolon
+id|__get_cpu_var
+c_func
+(paren
+id|ia64_mca_pal_base
+)paren
+op_assign
+id|GRANULEROUNDDOWN
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|pal_vaddr
+)paren
+suffix:semicolon
+id|__get_cpu_var
+c_func
+(paren
+id|ia64_mca_pal_pte
+)paren
+op_assign
+id|pte_val
+c_func
+(paren
+id|mk_pte_phys
+c_func
+(paren
+id|__pa
+c_func
+(paren
+id|pal_vaddr
+)paren
+comma
+id|PAGE_KERNEL
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * ia64_mca_init&n; *&n; *  Do all the system level mca specific initialization.&n; *&n; *&t;1. Register spinloop and wakeup request interrupt vectors&n; *&n; *&t;2. Register OS_MCA handler entry point&n; *&n; *&t;3. Register OS_INIT handler entry point&n; *&n; *  4. Initialize MCA/CMC/INIT related log buffers maintained by the OS.&n; *&n; *  Note that this initialization is done very early before some kernel&n; *  services are available.&n; *&n; *  Inputs  :   None&n; *&n; *  Outputs :   None&n; */
 r_void
 id|__init
