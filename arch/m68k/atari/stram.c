@@ -3704,6 +3704,7 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -3770,10 +3771,6 @@ suffix:semicolon
 id|stram_disk-&gt;first_minor
 op_assign
 id|STRAM_MINOR
-suffix:semicolon
-id|stram_disk-&gt;minor_shift
-op_assign
-l_int|0
 suffix:semicolon
 id|stram_disk-&gt;fops
 op_assign

@@ -1604,6 +1604,7 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1623,10 +1624,6 @@ suffix:semicolon
 id|initrd_disk-&gt;first_minor
 op_assign
 id|INITRD_MINOR
-suffix:semicolon
-id|initrd_disk-&gt;minor_shift
-op_assign
-l_int|0
 suffix:semicolon
 id|initrd_disk-&gt;fops
 op_assign
@@ -1665,6 +1662,7 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1767,10 +1765,6 @@ suffix:semicolon
 id|disk-&gt;first_minor
 op_assign
 id|i
-suffix:semicolon
-id|disk-&gt;minor_shift
-op_assign
-l_int|0
 suffix:semicolon
 id|disk-&gt;fops
 op_assign

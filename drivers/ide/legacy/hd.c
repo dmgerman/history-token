@@ -3633,6 +3633,7 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|64
 )paren
 suffix:semicolon
 r_if
@@ -3652,10 +3653,6 @@ id|disk-&gt;first_minor
 op_assign
 id|drive
 op_lshift
-l_int|6
-suffix:semicolon
-id|disk-&gt;minor_shift
-op_assign
 l_int|6
 suffix:semicolon
 id|disk-&gt;fops

@@ -12693,6 +12693,7 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -12709,10 +12710,6 @@ op_assign
 id|MAJOR_NR
 suffix:semicolon
 id|disk-&gt;first_minor
-op_assign
-l_int|0
-suffix:semicolon
-id|disk-&gt;minor_shift
 op_assign
 l_int|0
 suffix:semicolon

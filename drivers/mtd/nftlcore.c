@@ -189,6 +189,9 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
+op_lshift
+id|NFTL_PARTN_BITS
 )paren
 suffix:semicolon
 r_if
@@ -440,10 +443,6 @@ id|gd-&gt;first_minor
 op_assign
 id|firstfree
 op_lshift
-id|NFTL_PARTN_BITS
-suffix:semicolon
-id|gd-&gt;minor_shift
-op_assign
 id|NFTL_PARTN_BITS
 suffix:semicolon
 id|set_capacity

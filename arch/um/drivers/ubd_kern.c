@@ -1637,6 +1637,9 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
+op_lshift
+id|UBD_SHIFT
 )paren
 suffix:semicolon
 r_if
@@ -1657,10 +1660,6 @@ id|disk-&gt;first_minor
 op_assign
 id|n
 op_lshift
-id|UBD_SHIFT
-suffix:semicolon
-id|disk-&gt;minor_shift
-op_assign
 id|UBD_SHIFT
 suffix:semicolon
 id|disk-&gt;fops
@@ -1707,6 +1706,9 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
+op_lshift
+id|UBD_SHIFT
 )paren
 suffix:semicolon
 r_if
@@ -1735,10 +1737,6 @@ id|fake_disk-&gt;first_minor
 op_assign
 id|n
 op_lshift
-id|UBD_SHIFT
-suffix:semicolon
-id|fake_disk-&gt;minor_shift
-op_assign
 id|UBD_SHIFT
 suffix:semicolon
 id|fake_disk-&gt;fops

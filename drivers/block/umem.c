@@ -5018,6 +5018,9 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
+op_lshift
+id|MM_SHIFT
 )paren
 suffix:semicolon
 r_if
@@ -5111,10 +5114,6 @@ id|disk-&gt;first_minor
 op_assign
 id|i
 op_lshift
-id|MM_SHIFT
-suffix:semicolon
-id|disk-&gt;minor_shift
-op_assign
 id|MM_SHIFT
 suffix:semicolon
 id|disk-&gt;fops

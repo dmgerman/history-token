@@ -7823,6 +7823,7 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_if

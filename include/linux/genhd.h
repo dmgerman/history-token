@@ -217,6 +217,8 @@ DECL|macro|GENHD_FL_DEVFS
 mdefine_line|#define GENHD_FL_DEVFS&t;4
 DECL|macro|GENHD_FL_CD
 mdefine_line|#define GENHD_FL_CD&t;8
+DECL|macro|GENHD_FL_UP
+mdefine_line|#define GENHD_FL_UP&t;16
 DECL|struct|gendisk
 r_struct
 id|gendisk
@@ -1004,7 +1006,8 @@ op_star
 id|alloc_disk
 c_func
 (paren
-r_void
+r_int
+id|minors
 )paren
 suffix:semicolon
 r_extern

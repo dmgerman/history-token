@@ -2313,6 +2313,7 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -2459,10 +2460,6 @@ id|disk-&gt;fops
 op_assign
 op_amp
 id|jsfd_fops
-suffix:semicolon
-id|disk-&gt;minor_shift
-op_assign
-l_int|0
 suffix:semicolon
 id|set_capacity
 c_func

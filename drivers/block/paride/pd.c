@@ -3350,6 +3350,9 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
+op_lshift
+id|PD_BITS
 )paren
 suffix:semicolon
 r_if
@@ -3376,10 +3379,6 @@ id|p-&gt;disk_name
 comma
 id|disk-&gt;name
 )paren
-suffix:semicolon
-id|p-&gt;minor_shift
-op_assign
-id|PD_BITS
 suffix:semicolon
 id|p-&gt;fops
 op_assign

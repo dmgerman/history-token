@@ -1516,7 +1516,9 @@ id|i
 id|j
 )braket
 op_member_access_from_pointer
-id|part
+id|flags
+op_amp
+id|GENHD_FL_UP
 )paren
 id|del_gendisk
 c_func
@@ -1805,6 +1807,9 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
+op_lshift
+id|NWD_SHIFT
 )paren
 suffix:semicolon
 r_if
@@ -2218,10 +2223,6 @@ id|disk-&gt;first_minor
 op_assign
 id|j
 op_lshift
-id|NWD_SHIFT
-suffix:semicolon
-id|disk-&gt;minor_shift
-op_assign
 id|NWD_SHIFT
 suffix:semicolon
 id|disk-&gt;flags
@@ -7380,7 +7381,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|disk-&gt;part
+id|disk-&gt;flags
+op_amp
+id|GENDH_FL_UP
 )paren
 id|del_gendisk
 c_func
