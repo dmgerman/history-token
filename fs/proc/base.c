@@ -1792,6 +1792,10 @@ l_int|1
 )braket
 op_ne
 l_char|&squot;&bslash;0&squot;
+op_logical_and
+id|len
+OL
+id|PAGE_SIZE
 )paren
 (brace
 id|len
