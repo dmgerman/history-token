@@ -29706,9 +29706,21 @@ c_cond
 (paren
 id|err
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;(%s) transition to D0 failed&bslash;n&quot;
+comma
+id|tp-&gt;pdev-&gt;slot_name
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
+)brace
 multiline_comment|/* 5700 B0 chips do not support checksumming correctly due&n;&t; * to hardware bugs.&n;&t; */
 r_if
 c_cond
@@ -30045,10 +30057,24 @@ id|grc_misc_cfg
 op_ne
 id|GRC_MISC_CFG_BOARD_ID_AC91002A1
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;(%s) unknown board id 0x%x&bslash;n&quot;
+comma
+id|tp-&gt;pdev-&gt;slot_name
+comma
+id|grc_misc_cfg
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -30094,6 +30120,26 @@ c_func
 id|tp
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PFX
+l_string|&quot;(%s) phy probe failed, err %d&bslash;n&quot;
+comma
+id|tp-&gt;pdev-&gt;slot_name
+comma
+id|err
+)paren
+suffix:semicolon
+multiline_comment|/* ... but do not return immediately ... */
+)brace
 id|tg3_read_partno
 c_func
 (paren
