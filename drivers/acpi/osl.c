@@ -56,6 +56,7 @@ macro_line|#endif /*ENABLE_DEBUGGER*/
 DECL|variable|acpi_irq_irq
 r_static
 r_int
+r_int
 id|acpi_irq_irq
 suffix:semicolon
 DECL|variable|acpi_irq_handler
@@ -625,7 +626,9 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;Overriding _OS definition&bslash;n&quot;
+l_string|&quot;Overriding _OS definition %s&bslash;n&quot;
+comma
+id|acpi_os_name
 )paren
 suffix:semicolon
 op_star
@@ -715,7 +718,7 @@ id|acpi_os_install_interrupt_handler
 c_func
 (paren
 id|u32
-id|irq
+id|gsi
 comma
 id|OSD_HANDLER
 id|handler
@@ -725,24 +728,26 @@ op_star
 id|context
 )paren
 (brace
-multiline_comment|/*&n;&t; * Ignore the irq from the core, and use the value in our copy of the&n;&t; * FADT. It may not be the same if an interrupt source override exists&n;&t; * for the SCI.&n;&t; */
+r_int
+r_int
 id|irq
+suffix:semicolon
+multiline_comment|/*&n;&t; * Ignore the GSI from the core, and use the value in our copy of the&n;&t; * FADT. It may not be the same if an interrupt source override exists&n;&t; * for the SCI.&n;&t; */
+id|gsi
 op_assign
 id|acpi_fadt.sci_int
-suffix:semicolon
-macro_line|#if defined(CONFIG_IA64) || defined(CONFIG_PCI_USE_VECTOR)
-id|irq
-op_assign
-id|acpi_irq_to_vector
-c_func
-(paren
-id|irq
-)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+id|acpi_gsi_to_irq
+c_func
+(paren
+id|gsi
+comma
+op_amp
 id|irq
+)paren
 OL
 l_int|0
 )paren
@@ -752,16 +757,15 @@ c_func
 (paren
 id|KERN_ERR
 id|PREFIX
-l_string|&quot;SCI (ACPI interrupt %d) not registered&bslash;n&quot;
+l_string|&quot;SCI (ACPI GSI %d) not registered&bslash;n&quot;
 comma
-id|acpi_fadt.sci_int
+id|gsi
 )paren
 suffix:semicolon
 r_return
 id|AE_OK
 suffix:semicolon
 )brace
-macro_line|#endif
 id|acpi_irq_handler
 op_assign
 id|handler
@@ -828,16 +832,6 @@ c_cond
 id|irq
 )paren
 (brace
-macro_line|#if defined(CONFIG_IA64) || defined(CONFIG_PCI_USE_VECTOR)
-id|irq
-op_assign
-id|acpi_irq_to_vector
-c_func
-(paren
-id|irq
-)paren
-suffix:semicolon
-macro_line|#endif
 id|free_irq
 c_func
 (paren

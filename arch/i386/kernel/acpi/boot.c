@@ -62,12 +62,35 @@ macro_line|#endif&t;/* CONFIG_X86_LOCAL_APIC */
 macro_line|#endif&t;/* X86 */
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
+macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|variable|__initdata
 r_int
 id|acpi_noirq
 id|__initdata
 suffix:semicolon
 multiline_comment|/* skip ACPI IRQ initialization */
+DECL|variable|__initdata
+r_int
+id|acpi_pci_disabled
+id|__initdata
+suffix:semicolon
+multiline_comment|/* skip ACPI PCI scan and IRQ initialization */
+macro_line|#else
+DECL|variable|__initdata
+r_int
+id|acpi_noirq
+id|__initdata
+op_assign
+l_int|1
+suffix:semicolon
+DECL|variable|__initdata
+r_int
+id|acpi_pci_disabled
+id|__initdata
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 DECL|variable|__initdata
 r_int
 id|acpi_ht
@@ -96,6 +119,11 @@ suffix:semicolon
 DECL|variable|__initdata
 r_int
 id|acpi_sci_override_gsi
+id|__initdata
+suffix:semicolon
+DECL|variable|__initdata
+r_int
+id|acpi_skip_timer_override
 id|__initdata
 suffix:semicolon
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
@@ -887,6 +915,31 @@ comma
 id|intsrc-&gt;flags.polarity
 comma
 id|intsrc-&gt;flags.trigger
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|acpi_skip_timer_override
+op_logical_and
+id|intsrc-&gt;bus_irq
+op_eq
+l_int|0
+op_logical_and
+id|intsrc-&gt;global_irq
+op_eq
+l_int|2
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|PREFIX
+l_string|&quot;BIOS IRQ0 pin2 override ignored.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1955,12 +2008,6 @@ r_return
 id|count
 suffix:semicolon
 )brace
-multiline_comment|/* Build a default routing table for legacy (ISA) interrupts. */
-id|mp_config_acpi_legacy_irqs
-c_func
-(paren
-)paren
-suffix:semicolon
 id|count
 op_assign
 id|acpi_table_parse_madt
@@ -2009,6 +2056,12 @@ comma
 l_int|0
 comma
 l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Fill in identity legacy mapings where no override */
+id|mp_config_acpi_legacy_irqs
+c_func
+(paren
 )paren
 suffix:semicolon
 id|count

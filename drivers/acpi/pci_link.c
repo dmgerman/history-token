@@ -175,6 +175,7 @@ DECL|variable|acpi_link
 id|acpi_link
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                            PCI Link Device Management&n;   -------------------------------------------------------------------------- */
+multiline_comment|/*&n; * set context (link) possible list from resource list&n; */
 r_static
 id|acpi_status
 DECL|function|acpi_pci_link_check_possible
@@ -367,7 +368,7 @@ c_func
 (paren
 id|ACPI_DB_WARN
 comma
-l_string|&quot;Blank IRQ resource&bslash;n&quot;
+l_string|&quot;Blank EXT IRQ resource&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -626,11 +627,12 @@ op_logical_neg
 id|p-&gt;number_of_interrupts
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * IRQ descriptors may have no IRQ# bits set,&n;&t;&t;&t; * particularly those those w/ _STA disabled&n;&t;&t;&t; */
 id|ACPI_DEBUG_PRINT
 c_func
 (paren
 (paren
-id|ACPI_DB_WARN
+id|ACPI_DB_INFO
 comma
 l_string|&quot;Blank IRQ resource&bslash;n&quot;
 )paren
@@ -673,13 +675,14 @@ op_logical_neg
 id|p-&gt;number_of_interrupts
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * extended IRQ descriptors must&n;&t;&t;&t; * return at least 1 IRQ&n;&t;&t;&t; */
 id|ACPI_DEBUG_PRINT
 c_func
 (paren
 (paren
 id|ACPI_DB_WARN
 comma
-l_string|&quot;Blank IRQ resource&bslash;n&quot;
+l_string|&quot;Blank EXT IRQ resource&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -718,6 +721,7 @@ r_return
 id|AE_CTRL_TERMINATE
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Run _CRS and set link-&gt;irq.active&n; *&n; * return value:&n; * 0 - success&n; * !0 - failure&n; */
 r_static
 r_int
 DECL|function|acpi_pci_link_get_current
@@ -770,7 +774,14 @@ id|link-&gt;irq.active
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Make sure the link is enabled (no use querying if it isn&squot;t). */
+multiline_comment|/* in practice, status disabled is meaningless, ignore it */
+r_if
+c_cond
+(paren
+id|acpi_strict
+)paren
+(brace
+multiline_comment|/* Query _STA, set link-&gt;device-&gt;status */
 id|result
 op_assign
 id|acpi_bus_get_status
@@ -823,6 +834,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+)brace
 multiline_comment|/* &n;&t; * Query and parse _CRS to get the current IRQ assignment. &n;&t; */
 id|status
 op_assign
@@ -871,6 +883,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|acpi_strict
+op_logical_and
 op_logical_neg
 id|irq
 )paren
@@ -881,7 +895,7 @@ c_func
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;No IRQ resource found&bslash;n&quot;
+l_string|&quot;_CRS returned 0&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -890,11 +904,7 @@ op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
-r_goto
-id|end
-suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Note that we don&squot;t validate that the current IRQ (_CRS) exists&n;&t; * within the possible IRQs (_PRS): we blindly assume that whatever&n;&t; * IRQ a boot-enabled Link device is set to is the correct one.&n;&t; * (Required to support systems such as the Toshiba 5005-S504.)&n;&t; */
 id|link-&gt;irq.active
 op_assign
 id|irq
@@ -918,100 +928,6 @@ c_func
 (paren
 id|result
 )paren
-suffix:semicolon
-)brace
-r_static
-r_int
-DECL|function|acpi_pci_link_try_get_current
-id|acpi_pci_link_try_get_current
-(paren
-r_struct
-id|acpi_pci_link
-op_star
-id|link
-comma
-r_int
-id|irq
-)paren
-(brace
-r_int
-id|result
-suffix:semicolon
-id|ACPI_FUNCTION_TRACE
-c_func
-(paren
-l_string|&quot;acpi_pci_link_try_get_current&quot;
-)paren
-suffix:semicolon
-id|result
-op_assign
-id|acpi_pci_link_get_current
-c_func
-(paren
-id|link
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
-op_logical_and
-id|link-&gt;irq.active
-)paren
-(brace
-id|return_VALUE
-c_func
-(paren
-id|result
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|link-&gt;irq.active
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-c_func
-(paren
-(paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;No active IRQ resource found&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;_CRS returns NULL! Using IRQ %d for&quot;
-l_string|&quot;device (%s [%s]).&bslash;n&quot;
-comma
-id|irq
-comma
-id|acpi_device_name
-c_func
-(paren
-id|link-&gt;device
-)paren
-comma
-id|acpi_device_bid
-c_func
-(paren
-id|link-&gt;device
-)paren
-)paren
-suffix:semicolon
-id|link-&gt;irq.active
-op_assign
-id|irq
-suffix:semicolon
-)brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 r_static
@@ -1074,11 +990,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|valid
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|resource_type
 op_assign
 l_int|0
 suffix:semicolon
@@ -1184,46 +1095,6 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-id|resource_type
-op_assign
-id|link-&gt;irq.resource_type
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|resource_type
-op_ne
-id|ACPI_RSTYPE_IRQ
-op_logical_and
-id|resource_type
-op_ne
-id|ACPI_RSTYPE_EXT_IRQ
-)paren
-(brace
-multiline_comment|/* If IRQ&lt;=15, first try with a &quot;normal&quot; IRQ descriptor. If that fails, try with&n;&t; * an extended one */
-r_if
-c_cond
-(paren
-id|irq
-op_le
-l_int|15
-)paren
-(brace
-id|resource_type
-op_assign
-id|ACPI_RSTYPE_IRQ
-suffix:semicolon
-)brace
-r_else
-(brace
-id|resource_type
-op_assign
-id|ACPI_RSTYPE_EXT_IRQ
-suffix:semicolon
-)brace
-)brace
-id|retry_programming
-suffix:colon
 id|memset
 c_func
 (paren
@@ -1238,11 +1109,10 @@ id|resource
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* NOTE: PCI interrupts are always level / active_low / shared. But not all&n;&t;   interrupts &gt; 15 are PCI interrupts. Rely on the ACPI IRQ definition for &n;&t;   parameters */
 r_switch
 c_cond
 (paren
-id|resource_type
+id|link-&gt;irq.resource_type
 )paren
 (brace
 r_case
@@ -1267,6 +1137,22 @@ suffix:semicolon
 id|resource.res.data.irq.active_high_low
 op_assign
 id|link-&gt;irq.active_high_low
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|link-&gt;irq.edge_level
+op_eq
+id|ACPI_EDGE_SENSITIVE
+)paren
+id|resource.res.data.irq.shared_exclusive
+op_assign
+id|ACPI_EXCLUSIVE
+suffix:semicolon
+r_else
+id|resource.res.data.irq.shared_exclusive
+op_assign
+id|ACPI_SHARED
 suffix:semicolon
 id|resource.res.data.irq.number_of_interrupts
 op_assign
@@ -1308,6 +1194,22 @@ id|resource.res.data.extended_irq.active_high_low
 op_assign
 id|link-&gt;irq.active_high_low
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|link-&gt;irq.edge_level
+op_eq
+id|ACPI_EDGE_SENSITIVE
+)paren
+id|resource.res.data.irq.shared_exclusive
+op_assign
+id|ACPI_EXCLUSIVE
+suffix:semicolon
+r_else
+id|resource.res.data.irq.shared_exclusive
+op_assign
+id|ACPI_SHARED
+suffix:semicolon
 id|resource.res.data.extended_irq.number_of_interrupts
 op_assign
 l_int|1
@@ -1321,6 +1223,23 @@ id|irq
 suffix:semicolon
 multiline_comment|/* ignore resource_source, it&squot;s optional */
 r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;ACPI BUG: resource_type %d&bslash;n&quot;
+comma
+id|link-&gt;irq.resource_type
+)paren
+suffix:semicolon
+id|return_VALUE
+c_func
+(paren
+op_minus
+id|EINVAL
+)paren
 suffix:semicolon
 )brace
 id|resource.end.id
@@ -1339,38 +1258,6 @@ op_amp
 id|buffer
 )paren
 suffix:semicolon
-multiline_comment|/* if we failed and IRQ &lt;= 15, try again with an extended descriptor */
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-c_func
-(paren
-id|status
-)paren
-op_logical_and
-(paren
-id|resource_type
-op_eq
-id|ACPI_RSTYPE_IRQ
-)paren
-)paren
-(brace
-id|resource_type
-op_assign
-id|ACPI_RSTYPE_EXT_IRQ
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|PREFIX
-l_string|&quot;Retrying with extended IRQ descriptor&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|retry_programming
-suffix:semicolon
-)brace
 multiline_comment|/* check for total failure */
 r_if
 c_cond
@@ -1400,7 +1287,7 @@ id|ENODEV
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Make sure the device is enabled. */
+multiline_comment|/* Query _STA, set device-&gt;status */
 id|result
 op_assign
 id|acpi_bus_get_status
@@ -1439,33 +1326,34 @@ op_logical_neg
 id|link-&gt;device-&gt;status.enabled
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|printk
 c_func
 (paren
-(paren
-id|ACPI_DB_ERROR
+id|KERN_WARNING
+id|PREFIX
+l_string|&quot;%s [%s] disabled and referenced, BIOS bug.&bslash;n&quot;
 comma
-l_string|&quot;Link disabled&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|return_VALUE
+id|acpi_device_name
 c_func
 (paren
-op_minus
-id|ENODEV
+id|link-&gt;device
+)paren
+comma
+id|acpi_device_bid
+c_func
+(paren
+id|link-&gt;device
+)paren
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Make sure the active IRQ is the one we requested. */
+multiline_comment|/* Query _CRS, set link-&gt;irq.active */
 id|result
 op_assign
-id|acpi_pci_link_try_get_current
+id|acpi_pci_link_get_current
 c_func
 (paren
 id|link
-comma
-id|irq
 )paren
 suffix:semicolon
 r_if
@@ -1481,6 +1369,7 @@ id|result
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Is current setting not what we set?&n;&t; * set link-&gt;irq.active&n;&t; */
 r_if
 c_cond
 (paren
@@ -1489,41 +1378,34 @@ op_ne
 id|irq
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+multiline_comment|/*&n;&t;&t; * policy: when _CRS doesn&squot;t return what we just _SRS&n;&t;&t; * assume _SRS worked and override _CRS value.&n;&t;&t; */
+id|printk
 c_func
 (paren
+id|KERN_WARNING
+id|PREFIX
+l_string|&quot;%s [%s] BIOS reported IRQ %d, using IRQ %d&bslash;n&quot;
+comma
+id|acpi_device_name
+c_func
 (paren
-id|ACPI_DB_ERROR
+id|link-&gt;device
+)paren
 comma
-l_string|&quot;Attempt to enable at IRQ %d resulted in IRQ %d&bslash;n&quot;
-comma
-id|irq
+id|acpi_device_bid
+c_func
+(paren
+id|link-&gt;device
+)paren
 comma
 id|link-&gt;irq.active
-)paren
+comma
+id|irq
 )paren
 suffix:semicolon
 id|link-&gt;irq.active
 op_assign
-l_int|0
-suffix:semicolon
-id|acpi_ut_evaluate_object
-(paren
-id|link-&gt;handle
-comma
-l_string|&quot;_DIS&quot;
-comma
-l_int|0
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|return_VALUE
-c_func
-(paren
-op_minus
-id|ENODEV
-)paren
+id|irq
 suffix:semicolon
 )brace
 id|ACPI_DEBUG_PRINT
@@ -1566,6 +1448,7 @@ mdefine_line|#define PIRQ_PENALTY_ISA_ALWAYS&t;&t;(16*16*16*16*16*16)
 DECL|variable|acpi_irq_penalty
 r_static
 r_int
+id|__initdata
 id|acpi_irq_penalty
 (braket
 id|ACPI_MAX_IRQS
@@ -1821,10 +1704,42 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * search for active IRQ in list of possible IRQs.&n;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|link-&gt;irq.possible_count
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
 r_if
 c_cond
 (paren
 id|link-&gt;irq.active
+op_eq
+id|link-&gt;irq.possible
+(braket
+id|i
+)braket
+)paren
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * if active found, use it; else pick entry from end of possible list.&n;&t; */
+r_if
+c_cond
+(paren
+id|i
+op_ne
+id|link-&gt;irq.possible_count
 )paren
 (brace
 id|irq
@@ -1838,8 +1753,26 @@ id|irq
 op_assign
 id|link-&gt;irq.possible
 (braket
-l_int|0
+id|link-&gt;irq.possible_count
+op_minus
+l_int|1
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_strict
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PREFIX
+l_string|&quot;_CRS %d not found&quot;
+l_string|&quot; in _PRS&bslash;n&quot;
+comma
+id|link-&gt;irq.active
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -1913,7 +1846,8 @@ id|printk
 c_func
 (paren
 id|PREFIX
-l_string|&quot;Unable to set IRQ for %s [%s] (likely buggy ACPI BIOS). Aborting ACPI-based IRQ routing. Try pci=noacpi or acpi=off&bslash;n&quot;
+l_string|&quot;Unable to set IRQ for %s [%s] (likely buggy ACPI BIOS).&bslash;n&quot;
+l_string|&quot;Try pci=noacpi or acpi=off&bslash;n&quot;
 comma
 id|acpi_device_name
 c_func
@@ -2147,7 +2081,7 @@ c_func
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Link disabled&bslash;n&quot;
+l_string|&quot;Link active IRQ is 0!&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -2342,7 +2276,6 @@ c_func
 id|link
 )paren
 suffix:semicolon
-singleline_comment|//#ifdef CONFIG_ACPI_DEBUG
 id|printk
 c_func
 (paren
@@ -2420,10 +2353,43 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;)&bslash;n&quot;
+l_string|&quot;)&quot;
 )paren
 suffix:semicolon
-singleline_comment|//#endif /* CONFIG_ACPI_DEBUG */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|found
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; *%d&quot;
+comma
+id|link-&gt;irq.active
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|link-&gt;device-&gt;status.enabled
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;, disabled.&quot;
+)paren
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* TBD: Acquire/release lock */
 id|list_add_tail
 c_func
@@ -2788,7 +2754,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|acpi_disabled
+id|acpi_pci_disabled
 )paren
 id|return_VALUE
 c_func
