@@ -2,7 +2,10 @@ macro_line|#ifndef _LINUX_INETDEVICE_H
 DECL|macro|_LINUX_INETDEVICE_H
 mdefine_line|#define _LINUX_INETDEVICE_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/if.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
 DECL|struct|ipv4_devconf
 r_struct
 id|ipv4_devconf
