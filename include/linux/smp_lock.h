@@ -2,6 +2,7 @@ macro_line|#ifndef __LINUX_SMPLOCK_H
 DECL|macro|__LINUX_SMPLOCK_H
 mdefine_line|#define __LINUX_SMPLOCK_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#ifdef CONFIG_LOCK_KERNEL
 DECL|macro|kernel_locked
