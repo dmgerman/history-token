@@ -2954,6 +2954,7 @@ id|scsi_scan_host
 (paren
 id|shpnt
 )paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
