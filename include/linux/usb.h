@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/errno.h&gt;        /* for -ENODEV */
 macro_line|#include &lt;linux/delay.h&gt;&t;/* for mdelay() */
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* for in_interrupt() */
 macro_line|#include &lt;linux/list.h&gt;&t;&t;/* for struct list_head */
+macro_line|#include &lt;linux/kref.h&gt;&t;&t;/* for struct kref */
 macro_line|#include &lt;linux/device.h&gt;&t;/* for struct device */
 macro_line|#include &lt;linux/fs.h&gt;&t;&t;/* for struct file_operations */
 macro_line|#include &lt;linux/completion.h&gt;&t;/* for struct completion */
@@ -1196,16 +1197,17 @@ r_struct
 id|urb
 (brace
 multiline_comment|/* private, usb core and host controller only fields in the urb */
+DECL|member|kref
+r_struct
+id|kref
+id|kref
+suffix:semicolon
+multiline_comment|/* reference count of the URB */
 DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
 multiline_comment|/* lock for the URB */
-DECL|member|count
-id|atomic_t
-id|count
-suffix:semicolon
-multiline_comment|/* reference count of the URB */
 DECL|member|hcpriv
 r_void
 op_star
