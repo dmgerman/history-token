@@ -50,10 +50,10 @@ l_string|&quot;{NeoMagic,NM256ZX}}&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * some compile conditions.&n; */
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -61,11 +61,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -73,20 +73,20 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
 op_assign
 id|SNDRV_DEFAULT_ENABLE_PNP
 suffix:semicolon
-DECL|variable|snd_playback_bufsize
+DECL|variable|playback_bufsize
 r_static
 r_int
-id|snd_playback_bufsize
+id|playback_bufsize
 (braket
 id|SNDRV_CARDS
 )braket
@@ -107,10 +107,10 @@ op_assign
 l_int|16
 )brace
 suffix:semicolon
-DECL|variable|snd_capture_bufsize
+DECL|variable|capture_bufsize
 r_static
 r_int
-id|snd_capture_bufsize
+id|capture_bufsize
 (braket
 id|SNDRV_CARDS
 )braket
@@ -131,10 +131,10 @@ op_assign
 l_int|16
 )brace
 suffix:semicolon
-DECL|variable|snd_force_ac97
+DECL|variable|force_ac97
 r_static
 r_int
-id|snd_force_ac97
+id|force_ac97
 (braket
 id|SNDRV_CARDS
 )braket
@@ -156,10 +156,10 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* disabled as default */
-DECL|variable|snd_buffer_top
+DECL|variable|buffer_top
 r_static
 r_int
-id|snd_buffer_top
+id|buffer_top
 (braket
 id|SNDRV_CARDS
 )braket
@@ -181,10 +181,10 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* not specified */
-DECL|variable|snd_use_cache
+DECL|variable|use_cache
 r_static
 r_int
-id|snd_use_cache
+id|use_cache
 (braket
 id|SNDRV_CARDS
 )braket
@@ -206,10 +206,10 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* disabled */
-DECL|variable|snd_vaio_hack
+DECL|variable|vaio_hack
 r_static
 r_int
-id|snd_vaio_hack
+id|vaio_hack
 (braket
 id|SNDRV_CARDS
 )braket
@@ -234,7 +234,7 @@ multiline_comment|/* disabled */
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -248,7 +248,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for &quot;
 id|CARD_NAME
@@ -258,7 +258,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -266,7 +266,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -280,7 +280,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for &quot;
 id|CARD_NAME
@@ -290,7 +290,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -298,7 +298,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -312,7 +312,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable this soundcard.&quot;
 )paren
@@ -320,7 +320,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -328,7 +328,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_playback_bufsize
+id|playback_bufsize
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -342,7 +342,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_playback_bufsize
+id|playback_bufsize
 comma
 l_string|&quot;DAC frame size in kB for &quot;
 id|CARD_NAME
@@ -352,7 +352,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_playback_bufsize
+id|playback_bufsize
 comma
 id|SNDRV_ENABLED
 )paren
@@ -360,7 +360,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_capture_bufsize
+id|capture_bufsize
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -374,7 +374,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_capture_bufsize
+id|capture_bufsize
 comma
 l_string|&quot;ADC frame size in kB for &quot;
 id|CARD_NAME
@@ -384,7 +384,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_capture_bufsize
+id|capture_bufsize
 comma
 id|SNDRV_ENABLED
 )paren
@@ -392,7 +392,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_force_ac97
+id|force_ac97
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -406,7 +406,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_force_ac97
+id|force_ac97
 comma
 l_string|&quot;Force to use AC97 codec for &quot;
 id|CARD_NAME
@@ -416,7 +416,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_force_ac97
+id|force_ac97
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,&quot;
@@ -426,7 +426,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_buffer_top
+id|buffer_top
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -440,7 +440,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_buffer_top
+id|buffer_top
 comma
 l_string|&quot;Set the top address of audio buffer for &quot;
 id|CARD_NAME
@@ -450,7 +450,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_buffer_top
+id|buffer_top
 comma
 id|SNDRV_ENABLED
 )paren
@@ -458,7 +458,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_use_cache
+id|use_cache
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -472,7 +472,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_use_cache
+id|use_cache
 comma
 l_string|&quot;Enable the cache for coefficient table access.&quot;
 )paren
@@ -480,7 +480,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_use_cache
+id|use_cache
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,&quot;
@@ -490,7 +490,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_vaio_hack
+id|vaio_hack
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -504,7 +504,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_vaio_hack
+id|vaio_hack
 comma
 l_string|&quot;Enable workaround for Sony VAIO notebooks.&quot;
 )paren
@@ -512,7 +512,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_vaio_hack
+id|vaio_hack
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,&quot;
@@ -5811,7 +5811,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;    snd_force_ac97=1&bslash;n&quot;
+l_string|&quot;    force_ac97=1&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -6306,7 +6306,7 @@ r_const
 r_struct
 id|pci_device_id
 op_star
-id|id
+id|pci_id
 )paren
 (brace
 r_static
@@ -6326,7 +6326,7 @@ id|err
 suffix:semicolon
 r_int
 r_int
-id|buffer_top
+id|xbuffer_top
 suffix:semicolon
 r_if
 c_cond
@@ -6361,7 +6361,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -6380,12 +6380,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -6462,20 +6462,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_vaio_hack
+id|vaio_hack
 (braket
 id|dev
 )braket
 )paren
-id|buffer_top
+id|xbuffer_top
 op_assign
 l_int|0x25a800
 suffix:semicolon
 multiline_comment|/* this avoids conflicts with XFree86 server */
 r_else
+id|xbuffer_top
+op_assign
 id|buffer_top
-op_assign
-id|snd_buffer_top
 (braket
 id|dev
 )braket
@@ -6483,14 +6483,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_playback_bufsize
+id|playback_bufsize
 (braket
 id|dev
 )braket
 OL
 l_int|4
 )paren
-id|snd_playback_bufsize
+id|playback_bufsize
 (braket
 id|dev
 )braket
@@ -6500,14 +6500,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_playback_bufsize
+id|playback_bufsize
 (braket
 id|dev
 )braket
 OG
 l_int|128
 )paren
-id|snd_playback_bufsize
+id|playback_bufsize
 (braket
 id|dev
 )braket
@@ -6517,14 +6517,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_capture_bufsize
+id|capture_bufsize
 (braket
 id|dev
 )braket
 OL
 l_int|4
 )paren
-id|snd_capture_bufsize
+id|capture_bufsize
 (braket
 id|dev
 )braket
@@ -6534,14 +6534,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_capture_bufsize
+id|capture_bufsize
 (braket
 id|dev
 )braket
 OG
 l_int|128
 )paren
-id|snd_capture_bufsize
+id|capture_bufsize
 (braket
 id|dev
 )braket
@@ -6561,7 +6561,7 @@ id|card
 comma
 id|pci
 comma
-id|snd_playback_bufsize
+id|playback_bufsize
 (braket
 id|dev
 )braket
@@ -6569,7 +6569,7 @@ op_star
 l_int|1024
 comma
 multiline_comment|/* in bytes */
-id|snd_capture_bufsize
+id|capture_bufsize
 (braket
 id|dev
 )braket
@@ -6577,14 +6577,14 @@ op_star
 l_int|1024
 comma
 multiline_comment|/* in bytes */
-id|snd_force_ac97
+id|force_ac97
 (braket
 id|dev
 )braket
 comma
-id|buffer_top
+id|xbuffer_top
 comma
-id|snd_use_cache
+id|use_cache
 (braket
 id|dev
 )braket
@@ -6846,7 +6846,7 @@ c_func
 id|alsa_card_nm256_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-nm256=snd_enable,snd_index,snd_id,&n;&t;&t;&t;snd_playback_bufsize,snd_capture_bufsize,&n;&t;&t;&t;snd_force_ac97,snd_buffer_top,snd_use_cache */
+multiline_comment|/* format is: snd-nm256=enable,index,id,&n;&t;&t;&t;playback_bufsize,capture_bufsize,&n;&t;&t;&t;force_ac97,buffer_top,use_cache */
 DECL|function|alsa_card_nm256_setup
 r_static
 r_int
@@ -6887,7 +6887,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -6902,7 +6902,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -6917,7 +6917,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -6932,7 +6932,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_playback_bufsize
+id|playback_bufsize
 (braket
 id|nr_dev
 )braket
@@ -6947,7 +6947,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_capture_bufsize
+id|capture_bufsize
 (braket
 id|nr_dev
 )braket
@@ -6962,7 +6962,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_force_ac97
+id|force_ac97
 (braket
 id|nr_dev
 )braket
@@ -6977,7 +6977,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_buffer_top
+id|buffer_top
 (braket
 id|nr_dev
 )braket
@@ -6992,7 +6992,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_use_cache
+id|use_cache
 (braket
 id|nr_dev
 )braket

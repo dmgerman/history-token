@@ -52,10 +52,10 @@ l_string|&quot;{ESS,ES688 AudioDrive,pnp:ESS6881},&quot;
 l_string|&quot;{ESS,ES1688 AudioDrive,pnp:ESS1681}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -63,11 +63,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -75,10 +75,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -86,10 +86,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE
 suffix:semicolon
 multiline_comment|/* Enable this card */
-DECL|variable|snd_port
+DECL|variable|port
 r_static
 r_int
-id|snd_port
+id|port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -97,10 +97,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* 0x220,0x240,0x260 */
-DECL|variable|snd_mpu_port
+DECL|variable|mpu_port
 r_static
 r_int
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -122,10 +122,10 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|snd_irq
+DECL|variable|irq
 r_static
 r_int
-id|snd_irq
+id|irq
 (braket
 id|SNDRV_CARDS
 )braket
@@ -133,10 +133,10 @@ op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
 multiline_comment|/* 5,7,9,10 */
-DECL|variable|snd_mpu_irq
+DECL|variable|mpu_irq
 r_static
 r_int
-id|snd_mpu_irq
+id|mpu_irq
 (braket
 id|SNDRV_CARDS
 )braket
@@ -144,10 +144,10 @@ op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
 multiline_comment|/* 5,7,9,10 */
-DECL|variable|snd_dma8
+DECL|variable|dma8
 r_static
 r_int
-id|snd_dma8
+id|dma8
 (braket
 id|SNDRV_CARDS
 )braket
@@ -158,7 +158,7 @@ multiline_comment|/* 0,1,3 */
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -172,7 +172,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for ESx688 soundcard.&quot;
 )paren
@@ -180,7 +180,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -188,7 +188,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -202,7 +202,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for ESx688 soundcard.&quot;
 )paren
@@ -210,7 +210,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -218,7 +218,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -232,7 +232,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable ESx688 soundcard.&quot;
 )paren
@@ -240,7 +240,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -248,7 +248,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -262,7 +262,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;Port # for ESx688 driver.&quot;
 )paren
@@ -270,7 +270,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_port
+id|port
 comma
 id|SNDRV_PORT12_DESC
 )paren
@@ -278,7 +278,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -292,7 +292,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 l_string|&quot;MPU-401 port # for ESx688 driver.&quot;
 )paren
@@ -300,7 +300,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_mpu_port
+id|mpu_port
 comma
 id|SNDRV_PORT12_DESC
 )paren
@@ -308,7 +308,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -322,7 +322,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;IRQ # for ESx688 driver.&quot;
 )paren
@@ -330,7 +330,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 id|SNDRV_IRQ_DESC
 )paren
@@ -338,7 +338,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_mpu_irq
+id|mpu_irq
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -352,7 +352,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_mpu_irq
+id|mpu_irq
 comma
 l_string|&quot;MPU-401 IRQ # for ESx688 driver.&quot;
 )paren
@@ -360,7 +360,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_mpu_irq
+id|mpu_irq
 comma
 id|SNDRV_IRQ_DESC
 )paren
@@ -368,7 +368,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_dma8
+id|dma8
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -382,7 +382,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_dma8
+id|dma8
 comma
 l_string|&quot;8-bit DMA # for ESx688 driver.&quot;
 )paren
@@ -390,7 +390,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_dma8
+id|dma8
 comma
 id|SNDRV_DMA8_DESC
 )paren
@@ -454,11 +454,11 @@ l_int|1
 )brace
 suffix:semicolon
 r_int
-id|irq
+id|xirq
 comma
-id|dma
+id|xdma
 comma
-id|mpu_irq
+id|xmpu_irq
 suffix:semicolon
 id|snd_card_t
 op_star
@@ -484,12 +484,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -510,9 +510,9 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|irq
+id|xirq
 op_assign
-id|snd_irq
+id|irq
 (braket
 id|dev
 )braket
@@ -520,7 +520,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|irq
+id|xirq
 op_eq
 id|SNDRV_AUTO_IRQ
 )paren
@@ -529,7 +529,7 @@ r_if
 c_cond
 (paren
 (paren
-id|irq
+id|xirq
 op_assign
 id|snd_legacy_find_free_irq
 c_func
@@ -559,16 +559,16 @@ id|EBUSY
 suffix:semicolon
 )brace
 )brace
-id|mpu_irq
+id|xmpu_irq
 op_assign
-id|snd_mpu_irq
+id|mpu_irq
 (braket
 id|dev
 )braket
 suffix:semicolon
-id|dma
+id|xdma
 op_assign
-id|snd_dma8
+id|dma8
 (braket
 id|dev
 )braket
@@ -576,7 +576,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dma
+id|xdma
 op_eq
 id|SNDRV_AUTO_DMA
 )paren
@@ -585,7 +585,7 @@ r_if
 c_cond
 (paren
 (paren
-id|dma
+id|xdma
 op_assign
 id|snd_legacy_find_free_dma
 c_func
@@ -626,21 +626,21 @@ c_func
 (paren
 id|card
 comma
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
 comma
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|dev
 )braket
 comma
-id|irq
+id|xirq
 comma
-id|mpu_irq
+id|xmpu_irq
 comma
-id|dma
+id|xdma
 comma
 id|ES1688_HW_AUTO
 comma
@@ -794,7 +794,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mpu_irq
+id|xmpu_irq
 op_ge
 l_int|0
 )paren
@@ -818,7 +818,7 @@ id|chip-&gt;mpu_port
 comma
 l_int|0
 comma
-id|mpu_irq
+id|xmpu_irq
 comma
 id|SA_INTERRUPT
 comma
@@ -867,9 +867,9 @@ id|pcm-&gt;name
 comma
 id|chip-&gt;port
 comma
-id|irq
+id|xirq
 comma
-id|dma
+id|xdma
 )paren
 suffix:semicolon
 r_if
@@ -918,7 +918,7 @@ c_func
 (paren
 r_int
 r_int
-id|port
+id|xport
 )paren
 (brace
 r_static
@@ -944,12 +944,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
 op_logical_or
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -958,12 +958,12 @@ id|SNDRV_AUTO_PORT
 )paren
 r_continue
 suffix:semicolon
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
 op_assign
-id|port
+id|xport
 suffix:semicolon
 id|res
 op_assign
@@ -980,7 +980,7 @@ id|res
 OL
 l_int|0
 )paren
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -1044,7 +1044,7 @@ id|dev
 OL
 id|SNDRV_CARDS
 op_logical_and
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -1056,7 +1056,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -1163,7 +1163,7 @@ c_func
 id|alsa_card_es1688_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-es1688=snd_enable,snd_index,snd_id,&n;&t;&t;&t; snd_port,snd_mpu_port,&n;&t;&t;&t; snd_irq,snd_mpu_irq,&n;&t;&t;&t; snd_dma8 */
+multiline_comment|/* format is: snd-es1688=enable,index,id,&n;&t;&t;&t; port,mpu_port,&n;&t;&t;&t; irq,mpu_irq,&n;&t;&t;&t; dma8 */
 DECL|function|alsa_card_es1688_setup
 r_static
 r_int
@@ -1204,7 +1204,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -1219,7 +1219,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -1234,7 +1234,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -1253,7 +1253,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_port
+id|port
 (braket
 id|nr_dev
 )braket
@@ -1272,7 +1272,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_mpu_port
+id|mpu_port
 (braket
 id|nr_dev
 )braket
@@ -1287,7 +1287,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_irq
+id|irq
 (braket
 id|nr_dev
 )braket
@@ -1302,7 +1302,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_mpu_irq
+id|mpu_irq
 (braket
 id|nr_dev
 )braket
@@ -1317,7 +1317,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_dma8
+id|dma8
 (braket
 id|nr_dev
 )braket

@@ -6,17 +6,17 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
-DECL|variable|snd_preallocate_dma
+DECL|variable|preallocate_dma
 r_static
 r_int
-id|snd_preallocate_dma
+id|preallocate_dma
 op_assign
 l_int|1
 suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_preallocate_dma
+id|preallocate_dma
 comma
 l_string|&quot;i&quot;
 )paren
@@ -24,7 +24,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_preallocate_dma
+id|preallocate_dma
 comma
 l_string|&quot;Preallocate DMA memory when the PCM devices are initialized.&quot;
 )paren
@@ -32,22 +32,22 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_preallocate_dma
+id|preallocate_dma
 comma
 id|SNDRV_BOOLEAN_TRUE_DESC
 )paren
 suffix:semicolon
-DECL|variable|snd_maximum_substreams
+DECL|variable|maximum_substreams
 r_static
 r_int
-id|snd_maximum_substreams
+id|maximum_substreams
 op_assign
 l_int|4
 suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_maximum_substreams
+id|maximum_substreams
 comma
 l_string|&quot;i&quot;
 )paren
@@ -55,7 +55,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_maximum_substreams
+id|maximum_substreams
 comma
 l_string|&quot;Maximum substreams with preallocated DMA memory.&quot;
 )paren
@@ -63,7 +63,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_maximum_substreams
+id|maximum_substreams
 comma
 id|SNDRV_BOOLEAN_TRUE_DESC
 )paren
@@ -693,11 +693,11 @@ op_logical_neg
 id|size
 op_logical_or
 op_logical_neg
-id|snd_preallocate_dma
+id|preallocate_dma
 op_logical_or
 id|substream-&gt;number
 op_ge
-id|snd_maximum_substreams
+id|maximum_substreams
 )paren
 (brace
 id|size

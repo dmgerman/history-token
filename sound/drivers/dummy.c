@@ -93,10 +93,10 @@ macro_line|#ifndef USE_PERIODS_MAX
 DECL|macro|USE_PERIODS_MAX
 mdefine_line|#define USE_PERIODS_MAX &t;1024
 macro_line|#endif
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -104,11 +104,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -116,10 +116,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -142,10 +142,10 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
-DECL|variable|snd_pcm_devs
+DECL|variable|pcm_devs
 r_static
 r_int
-id|snd_pcm_devs
+id|pcm_devs
 (braket
 id|SNDRV_CARDS
 )braket
@@ -166,10 +166,10 @@ op_assign
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|snd_pcm_substreams
+DECL|variable|pcm_substreams
 r_static
 r_int
-id|snd_pcm_substreams
+id|pcm_substreams
 (braket
 id|SNDRV_CARDS
 )braket
@@ -190,11 +190,11 @@ op_assign
 l_int|8
 )brace
 suffix:semicolon
-singleline_comment|//static int snd_midi_devs[SNDRV_CARDS] = {[0 ... (SNDRV_CARDS - 1)] = 2};
+singleline_comment|//static int midi_devs[SNDRV_CARDS] = {[0 ... (SNDRV_CARDS - 1)] = 2};
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -208,7 +208,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for dummy soundcard.&quot;
 )paren
@@ -216,7 +216,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -224,7 +224,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -238,7 +238,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for dummy soundcard.&quot;
 )paren
@@ -246,7 +246,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -254,7 +254,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -268,7 +268,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable this dummy soundcard.&quot;
 )paren
@@ -276,7 +276,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -284,7 +284,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_pcm_devs
+id|pcm_devs
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -298,7 +298,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_pcm_devs
+id|pcm_devs
 comma
 l_string|&quot;PCM devices # (0-4) for dummy driver.&quot;
 )paren
@@ -306,7 +306,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_pcm_devs
+id|pcm_devs
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0,4}},default:1,dialog:list&quot;
@@ -315,7 +315,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_pcm_substreams
+id|pcm_substreams
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -329,7 +329,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_pcm_substreams
+id|pcm_substreams
 comma
 l_string|&quot;PCM substreams # (1-16) for dummy driver.&quot;
 )paren
@@ -337,15 +337,15 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_pcm_substreams
+id|pcm_substreams
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{1,16}},default:8,dialog:list&quot;
 )paren
 suffix:semicolon
-singleline_comment|//MODULE_PARM(snd_midi_devs, &quot;1-&quot; __MODULE_STRING(SNDRV_CARDS) &quot;i&quot;);
-singleline_comment|//MODULE_PARM_DESC(snd_midi_devs, &quot;MIDI devices # (0-2) for dummy driver.&quot;);
-singleline_comment|//MODULE_PARM_SYNTAX(snd_midi_devs, SNDRV_ENABLED &quot;,allows:{{0,2}},default:8,dialog:list&quot;);
+singleline_comment|//MODULE_PARM(midi_devs, &quot;1-&quot; __MODULE_STRING(SNDRV_CARDS) &quot;i&quot;);
+singleline_comment|//MODULE_PARM_DESC(midi_devs, &quot;MIDI devices # (0-2) for dummy driver.&quot;);
+singleline_comment|//MODULE_PARM_SYNTAX(midi_devs, SNDRV_ENABLED &quot;,allows:{{0,2}},default:8,dialog:list&quot;);
 DECL|macro|MIXER_ADDR_MASTER
 mdefine_line|#define MIXER_ADDR_MASTER&t;0
 DECL|macro|MIXER_ADDR_LINE
@@ -2502,7 +2502,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -2516,12 +2516,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -2572,7 +2572,7 @@ id|MAX_PCM_DEVICES
 op_logical_and
 id|idx
 OL
-id|snd_pcm_devs
+id|pcm_devs
 (braket
 id|dev
 )braket
@@ -2584,14 +2584,14 @@ op_increment
 r_if
 c_cond
 (paren
-id|snd_pcm_substreams
+id|pcm_substreams
 (braket
 id|dev
 )braket
 OL
 l_int|1
 )paren
-id|snd_pcm_substreams
+id|pcm_substreams
 (braket
 id|dev
 )braket
@@ -2601,14 +2601,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_pcm_substreams
+id|pcm_substreams
 (braket
 id|dev
 )braket
 OG
 id|MAX_PCM_SUBSTREAMS
 )paren
-id|snd_pcm_substreams
+id|pcm_substreams
 (braket
 id|dev
 )braket
@@ -2628,7 +2628,7 @@ id|dummy
 comma
 id|idx
 comma
-id|snd_pcm_substreams
+id|pcm_substreams
 (braket
 id|dev
 )braket
@@ -2754,7 +2754,7 @@ id|dev
 OL
 id|SNDRV_CARDS
 op_logical_and
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -2868,7 +2868,7 @@ c_func
 id|alsa_card_dummy_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-dummy=snd_enable,snd_index,snd_id,&n;&t;&t;&t;snd_pcm_devs,snd_pcm_substreams */
+multiline_comment|/* format is: snd-dummy=enable,index,id,&n;&t;&t;&t;pcm_devs,pcm_substreams */
 DECL|function|alsa_card_dummy_setup
 r_static
 r_int
@@ -2909,7 +2909,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -2924,7 +2924,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -2939,7 +2939,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -2954,7 +2954,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_pcm_devs
+id|pcm_devs
 (braket
 id|nr_dev
 )braket
@@ -2969,7 +2969,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_pcm_substreams
+id|pcm_substreams
 (braket
 id|nr_dev
 )braket

@@ -44,10 +44,10 @@ c_func
 l_string|&quot;{{Generic,USB Audio}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -55,11 +55,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -67,10 +67,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -78,10 +78,10 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE_PNP
 suffix:semicolon
 multiline_comment|/* Enable this card */
-DECL|variable|snd_vid
+DECL|variable|vid
 r_static
 r_int
-id|snd_vid
+id|vid
 (braket
 id|SNDRV_CARDS
 )braket
@@ -104,10 +104,10 @@ l_int|1
 )brace
 suffix:semicolon
 multiline_comment|/* Vendor ID for this card */
-DECL|variable|snd_pid
+DECL|variable|pid
 r_static
 r_int
-id|snd_pid
+id|pid
 (braket
 id|SNDRV_CARDS
 )braket
@@ -133,7 +133,7 @@ multiline_comment|/* Product ID for this card */
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -147,7 +147,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for the USB audio adapter.&quot;
 )paren
@@ -155,7 +155,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -163,7 +163,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -177,7 +177,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for the USB audio adapter.&quot;
 )paren
@@ -185,7 +185,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -193,7 +193,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -207,7 +207,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable USB audio adapter.&quot;
 )paren
@@ -215,7 +215,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -223,7 +223,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_vid
+id|vid
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -237,7 +237,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_vid
+id|vid
 comma
 l_string|&quot;Vendor ID for the USB audio device.&quot;
 )paren
@@ -245,7 +245,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_vid
+id|vid
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{-1,0xffff}},base:16&quot;
@@ -254,7 +254,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_pid
+id|pid
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -268,7 +268,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_pid
+id|pid
 comma
 l_string|&quot;Product ID for the USB audio device.&quot;
 )paren
@@ -276,7 +276,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_pid
+id|pid
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{-1,0xffff}},base:16&quot;
@@ -9983,7 +9983,7 @@ r_const
 r_struct
 id|usb_device_id
 op_star
-id|id
+id|usb_id
 )paren
 (brace
 r_struct
@@ -10003,7 +10003,7 @@ r_const
 id|snd_usb_audio_quirk_t
 op_star
 )paren
-id|id-&gt;driver_info
+id|usb_id-&gt;driver_info
 suffix:semicolon
 r_int
 id|i
@@ -10146,7 +10146,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|snd_enable
+id|enable
 (braket
 id|i
 )braket
@@ -10158,7 +10158,7 @@ id|i
 )braket
 op_logical_and
 (paren
-id|snd_vid
+id|vid
 (braket
 id|i
 )braket
@@ -10166,7 +10166,7 @@ op_eq
 op_minus
 l_int|1
 op_logical_or
-id|snd_vid
+id|vid
 (braket
 id|i
 )braket
@@ -10175,7 +10175,7 @@ id|dev-&gt;descriptor.idVendor
 )paren
 op_logical_and
 (paren
-id|snd_pid
+id|pid
 (braket
 id|i
 )braket
@@ -10183,7 +10183,7 @@ op_eq
 op_minus
 l_int|1
 op_logical_or
-id|snd_pid
+id|pid
 (braket
 id|i
 )braket
@@ -10197,12 +10197,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|i
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|i
 )braket
@@ -10754,7 +10754,7 @@ id|snd_usb_audio_cleanup
 )paren
 suffix:semicolon
 macro_line|#ifndef MODULE
-multiline_comment|/*&n; * format is snd-usb-audio=snd_enable,snd_index,snd_id&n; */
+multiline_comment|/*&n; * format is snd-usb-audio=enable,index,id&n; */
 DECL|function|snd_usb_audio_module_setup
 r_static
 r_int
@@ -10795,7 +10795,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -10810,7 +10810,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -10825,7 +10825,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
