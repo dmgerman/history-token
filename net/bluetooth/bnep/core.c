@@ -3142,22 +3142,41 @@ c_func
 r_void
 )paren
 (brace
+id|bnep_sock_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|BT_INFO
 c_func
 (paren
-l_string|&quot;BNEP: BNEP2 ver %s&bslash;n&quot;
-l_string|&quot;BNEP: Copyright (C) 2002 Inventel&bslash;n&quot;
-l_string|&quot;BNEP: Written 2001,2002 by&bslash;n&quot;
-l_string|&quot;BNEP: &bslash;tClement Moreau &lt;clement.moreau@inventel.fr&gt; &quot;
-l_string|&quot;David Libault &lt;david.libault@inventel.fr&gt;&bslash;n&quot;
-l_string|&quot;BNEP: Copyright (C) 2002 Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&quot;
+l_string|&quot;Bluetooth BNEP ver %s&quot;
 comma
 id|VERSION
 )paren
 suffix:semicolon
-id|bnep_sock_init
+id|BT_INFO
 c_func
 (paren
+l_string|&quot;Copyright (C) 2001,2002 Inventel Systemes&quot;
+)paren
+suffix:semicolon
+id|BT_INFO
+c_func
+(paren
+l_string|&quot;Written 2001,2002 by Clement Moreau &lt;clement.moreau@inventel.fr&gt;&quot;
+)paren
+suffix:semicolon
+id|BT_INFO
+c_func
+(paren
+l_string|&quot;Written 2001,2002 by David Libault &lt;david.libault@inventel.fr&gt;&quot;
+)paren
+suffix:semicolon
+id|BT_INFO
+c_func
+(paren
+l_string|&quot;Copyright (C) 2002 Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3197,14 +3216,14 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;BNEP ver &quot;
+l_string|&quot;Bluetooth BNEP ver &quot;
 id|VERSION
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;David Libault &lt;david.libault@inventel.fr&gt; Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&quot;
+l_string|&quot;David Libault &lt;david.libault@inventel.fr&gt;, Maxim Krasnyanskiy &lt;maxk@qualcomm.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
