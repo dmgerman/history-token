@@ -5244,7 +5244,7 @@ id|tmp
 op_lshift
 l_int|2
 )paren
-op_le
+OL
 id|len1
 )paren
 id|cd-&gt;offset
