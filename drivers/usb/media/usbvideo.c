@@ -7394,7 +7394,7 @@ l_int|1
 id|info
 c_func
 (paren
-l_string|&quot;%s: %d. bytes, noblock=%d.&quot;
+l_string|&quot;%s: %Zd. bytes, noblock=%d.&quot;
 comma
 id|__FUNCTION__
 comma
@@ -7778,7 +7778,7 @@ l_int|1
 id|err
 c_func
 (paren
-l_string|&quot;%s: {copy} count used=%d, new seqRead_Index=%ld&quot;
+l_string|&quot;%s: {copy} count used=%Zd, new seqRead_Index=%ld&quot;
 comma
 id|__FUNCTION__
 comma

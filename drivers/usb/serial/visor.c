@@ -2407,7 +2407,7 @@ c_func
 (paren
 id|dev
 comma
-l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
+l_string|&quot;%s - kmalloc(%Zd) failed.&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2776,7 +2776,7 @@ c_func
 (paren
 id|dev
 comma
-l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
+l_string|&quot;%s - kmalloc(%Zd) failed.&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
