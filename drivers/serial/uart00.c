@@ -535,6 +535,10 @@ id|UART_TSR_TX_LEVEL_MSK
 op_eq
 l_int|15
 )paren
+id|barrier
+c_func
+(paren
+)paren
 suffix:semicolon
 id|UART_PUT_CHAR
 c_func
@@ -603,6 +607,10 @@ id|UART_TSR_TX_LEVEL_MSK
 )paren
 op_eq
 l_int|15
+)paren
+id|barrier
+c_func
+(paren
 )paren
 suffix:semicolon
 id|UART_PUT_CHAR
