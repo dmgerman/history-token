@@ -906,6 +906,13 @@ id|bdi
 r_goto
 id|keep_locked
 suffix:semicolon
+id|write_lock
+c_func
+(paren
+op_amp
+id|mapping-&gt;page_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -945,13 +952,6 @@ op_assign
 l_int|1
 comma
 )brace
-suffix:semicolon
-id|write_lock
-c_func
-(paren
-op_amp
-id|mapping-&gt;page_lock
-)paren
 suffix:semicolon
 id|list_move
 c_func
@@ -1030,6 +1030,13 @@ r_goto
 id|keep
 suffix:semicolon
 )brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|mapping-&gt;page_lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * If the page has buffers, try to free the buffer mappings&n;&t;&t; * associated with this page. If we succeed we try to free&n;&t;&t; * the page as well.&n;&t;&t; *&n;&t;&t; * We do this even if the page is PageDirty().&n;&t;&t; * try_to_release_page() does not perform I/O, but it is&n;&t;&t; * possible for a page to have PageDirty set, but it is actually&n;&t;&t; * clean (all its buffers are clean).  This happens if the&n;&t;&t; * buffers were written out directly, with submit_bh(). ext3&n;&t;&t; * will do this, as well as the blockdev mapping. &n;&t;&t; * try_to_release_page() will discover that cleanness and will&n;&t;&t; * drop the buffers and mark the page clean - it can be freed.&n;&t;&t; *&n;&t;&t; * Rarely, pages can have buffers and no -&gt;mapping.  These are&n;&t;&t; * the pages which were not successfully invalidated in&n;&t;&t; * truncate_complete_page().  We try to drop those buffers here&n;&t;&t; * and if that worked, and the page is no longer mapped into&n;&t;&t; * process address space (page_count == 0) it can be freed.&n;&t;&t; * Otherwise, leave the page on the LRU so it is swappable.&n;&t;&t; */
 r_if
