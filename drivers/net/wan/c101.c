@@ -1568,7 +1568,6 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/* XXX: are we OK with having that done when card is already up? */
 id|sca_init_sync_port
 c_func
 (paren
