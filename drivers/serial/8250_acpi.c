@@ -415,4 +415,16 @@ c_func
 id|acpi_serial_exit
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Generic 8250/16x50 ACPI serial driver&quot;
+)paren
+suffix:semicolon
 eof
