@@ -1109,7 +1109,15 @@ suffix:semicolon
 r_else
 id|quot
 op_assign
+(paren
 id|port-&gt;uartclk
+op_plus
+(paren
+l_int|8
+op_star
+id|baud
+)paren
+)paren
 op_div
 (paren
 l_int|16

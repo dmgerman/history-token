@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * net/sched/estimator.c&t;Simple rate estimator.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; */
+multiline_comment|/*&n; * net/sched/gen_estimator.c&t;Simple rate estimator.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; * Changes:&n; *              Jamal Hadi Salim - moved it to net/core and reshulfed&n; *              names to make it usable in general net subsystem.&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -18,25 +18,31 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;net/pkt_sched.h&gt;
+macro_line|#include &lt;net/gen_stats.h&gt;
 multiline_comment|/*&n;   This code is NOT intended to be used for statistics collection,&n;   its purpose is to provide a base for statistical multiplexing&n;   for controlled load service.&n;   If you need only statistics, run a user level daemon which&n;   periodically reads byte counters.&n;&n;   Unfortunately, rate estimation is not a very easy task.&n;   F.e. I did not find a simple way to estimate the current peak rate&n;   and even failed to formulate the problem 8)8)&n;&n;   So I preferred not to built an estimator into the scheduler,&n;   but run this task separately.&n;   Ideally, it should be kernel thread(s), but for now it runs&n;   from timers, which puts apparent top bounds on the number of rated&n;   flows, has minimal overhead on small, but is enough&n;   to handle controlled load service, sets of aggregates.&n;&n;   We measure rate over A=(1&lt;&lt;interval) seconds and evaluate EWMA:&n;&n;   avrate = avrate*(1-W) + rate*W&n;&n;   where W is chosen as negative power of 2: W = 2^(-ewma_log)&n;&n;   The resulting time constant is:&n;&n;   T = A/(-ln(1-W))&n;&n;&n;   NOTES.&n;&n;   * The stored value for avbps is scaled by 2^5, so that maximal&n;     rate is ~1Gbit, avpps is scaled by 2^10.&n;&n;   * Minimal interval is HZ/4=250msec (it is the greatest common divisor&n;     for HZ=100 and HZ=1024 8)), maximal interval&n;     is (HZ*2^EST_MAX_INTERVAL)/4 = 8sec. Shorter intervals&n;     are too expensive, longer ones can be implemented&n;     at user level painlessly.&n; */
 DECL|macro|EST_MAX_INTERVAL
 mdefine_line|#define EST_MAX_INTERVAL&t;5
-DECL|struct|qdisc_estimator
+DECL|struct|gen_estimator
 r_struct
-id|qdisc_estimator
+id|gen_estimator
 (brace
 DECL|member|next
 r_struct
-id|qdisc_estimator
+id|gen_estimator
 op_star
 id|next
 suffix:semicolon
-DECL|member|stats
+DECL|member|bstats
 r_struct
-id|tc_stats
+id|gnet_stats_basic
 op_star
-id|stats
+id|bstats
+suffix:semicolon
+DECL|member|rate_est
+r_struct
+id|gnet_stats_rate_est
+op_star
+id|rate_est
 suffix:semicolon
 DECL|member|stats_lock
 id|spinlock_t
@@ -69,9 +75,9 @@ id|avbps
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|qdisc_estimator_head
+DECL|struct|gen_estimator_head
 r_struct
-id|qdisc_estimator_head
+id|gen_estimator_head
 (brace
 DECL|member|timer
 r_struct
@@ -80,7 +86,7 @@ id|timer
 suffix:semicolon
 DECL|member|list
 r_struct
-id|qdisc_estimator
+id|gen_estimator
 op_star
 id|list
 suffix:semicolon
@@ -89,7 +95,7 @@ suffix:semicolon
 DECL|variable|elist
 r_static
 r_struct
-id|qdisc_estimator_head
+id|gen_estimator_head
 id|elist
 (braket
 id|EST_MAX_INTERVAL
@@ -125,7 +131,7 @@ r_int
 id|arg
 suffix:semicolon
 r_struct
-id|qdisc_estimator
+id|gen_estimator
 op_star
 id|e
 suffix:semicolon
@@ -155,13 +161,6 @@ op_assign
 id|e-&gt;next
 )paren
 (brace
-r_struct
-id|tc_stats
-op_star
-id|st
-op_assign
-id|e-&gt;stats
-suffix:semicolon
 id|u64
 id|nbytes
 suffix:semicolon
@@ -179,11 +178,11 @@ id|e-&gt;stats_lock
 suffix:semicolon
 id|nbytes
 op_assign
-id|st-&gt;bytes
+id|e-&gt;bstats-&gt;bytes
 suffix:semicolon
 id|npackets
 op_assign
-id|st-&gt;packets
+id|e-&gt;bstats-&gt;packets
 suffix:semicolon
 id|rate
 op_assign
@@ -219,7 +218,7 @@ id|e-&gt;avbps
 op_rshift
 id|e-&gt;ewma_log
 suffix:semicolon
-id|st-&gt;bps
+id|e-&gt;rate_est-&gt;bps
 op_assign
 (paren
 id|e-&gt;avbps
@@ -263,7 +262,7 @@ id|e-&gt;avpps
 op_rshift
 id|e-&gt;ewma_log
 suffix:semicolon
-id|e-&gt;stats-&gt;pps
+id|e-&gt;rate_est-&gt;pps
 op_assign
 (paren
 id|e-&gt;avpps
@@ -312,15 +311,20 @@ id|est_lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|qdisc_new_estimator
+DECL|function|gen_new_estimator
 r_int
-id|qdisc_new_estimator
+id|gen_new_estimator
 c_func
 (paren
 r_struct
-id|tc_stats
+id|gnet_stats_basic
 op_star
-id|stats
+id|bstats
+comma
+r_struct
+id|gnet_stats_rate_est
+op_star
+id|rate_est
 comma
 id|spinlock_t
 op_star
@@ -333,12 +337,12 @@ id|opt
 )paren
 (brace
 r_struct
-id|qdisc_estimator
+id|gen_estimator
 op_star
 id|est
 suffix:semicolon
 r_struct
-id|tc_estimator
+id|gnet_estimator
 op_star
 id|parm
 op_assign
@@ -423,9 +427,13 @@ id|parm-&gt;interval
 op_plus
 l_int|2
 suffix:semicolon
-id|est-&gt;stats
+id|est-&gt;bstats
 op_assign
-id|stats
+id|bstats
+suffix:semicolon
+id|est-&gt;rate_est
+op_assign
+id|rate_est
 suffix:semicolon
 id|est-&gt;stats_lock
 op_assign
@@ -437,21 +445,21 @@ id|parm-&gt;ewma_log
 suffix:semicolon
 id|est-&gt;last_bytes
 op_assign
-id|stats-&gt;bytes
+id|bstats-&gt;bytes
 suffix:semicolon
 id|est-&gt;avbps
 op_assign
-id|stats-&gt;bps
+id|rate_est-&gt;bps
 op_lshift
 l_int|5
 suffix:semicolon
 id|est-&gt;last_packets
 op_assign
-id|stats-&gt;packets
+id|bstats-&gt;packets
 suffix:semicolon
 id|est-&gt;avpps
 op_assign
-id|stats-&gt;pps
+id|rate_est-&gt;pps
 op_lshift
 l_int|10
 suffix:semicolon
@@ -561,22 +569,27 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|qdisc_kill_estimator
+DECL|function|gen_kill_estimator
 r_void
-id|qdisc_kill_estimator
+id|gen_kill_estimator
 c_func
 (paren
 r_struct
-id|tc_stats
+id|gnet_stats_basic
 op_star
-id|stats
+id|bstats
+comma
+r_struct
+id|gnet_stats_rate_est
+op_star
+id|rate_est
 )paren
 (brace
 r_int
 id|idx
 suffix:semicolon
 r_struct
-id|qdisc_estimator
+id|gen_estimator
 op_star
 id|est
 comma
@@ -630,9 +643,13 @@ l_int|NULL
 r_if
 c_cond
 (paren
-id|est-&gt;stats
+id|est-&gt;rate_est
 op_ne
-id|stats
+id|rate_est
+op_logical_or
+id|est-&gt;bstats
+op_ne
+id|bstats
 )paren
 (brace
 id|pest
@@ -700,18 +717,18 @@ id|timer
 suffix:semicolon
 )brace
 )brace
-DECL|variable|qdisc_kill_estimator
+DECL|variable|gen_kill_estimator
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|qdisc_kill_estimator
+id|gen_kill_estimator
 )paren
 suffix:semicolon
-DECL|variable|qdisc_new_estimator
+DECL|variable|gen_new_estimator
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|qdisc_new_estimator
+id|gen_new_estimator
 )paren
 suffix:semicolon
 eof

@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
-macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#if 0
 macro_line|#include &lt;asm/debug-ll.h&gt;
 mdefine_line|#define dbg(x...) llprintk(x)
