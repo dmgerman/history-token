@@ -1351,19 +1351,6 @@ c_func
 id|sock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;TCP doesn&squot;t require the rpciod now - other things may&n;&t; *&t;but rpciod handles that not us.&n;&t; */
-r_if
-c_cond
-(paren
-id|xprt-&gt;stream
-)paren
-(brace
-id|rpciod_down
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Mark a transport as disconnected&n; */
 r_static
@@ -3562,11 +3549,25 @@ id|skb_reader_t
 id|desc
 op_assign
 (brace
+dot
+id|skb
+op_assign
 id|skb
 comma
+dot
+id|offset
+op_assign
 id|offset
 comma
+dot
+id|count
+op_assign
 id|len
+comma
+dot
+id|csum
+op_assign
+l_int|0
 )brace
 suffix:semicolon
 id|dprintk
@@ -5892,19 +5893,6 @@ id|xprt-&gt;inet
 op_assign
 id|sk
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;TCP requires the rpc I/O daemon is present&n;&t; */
-r_if
-c_cond
-(paren
-id|xprt-&gt;stream
-)paren
-(brace
-id|rpciod_up
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 r_return
 suffix:semicolon
 )brace
@@ -6247,7 +6235,7 @@ c_cond
 (paren
 id|xprt
 )paren
-id|rpc_free
+id|kfree
 c_func
 (paren
 id|xprt
@@ -6391,7 +6379,7 @@ c_func
 id|xprt
 )paren
 suffix:semicolon
-id|rpc_free
+id|kfree
 c_func
 (paren
 id|xprt

@@ -23,36 +23,23 @@ macro_line|#ifdef RPC_DEBUG
 DECL|macro|NFS_DEBUG
 macro_line|# define NFS_DEBUG
 macro_line|#endif
-multiline_comment|/*&n; * NFS_MAX_DIRCACHE controls the number of simultaneously cached&n; * directory chunks. Each chunk holds the list of nfs_entry&squot;s returned&n; * in a single readdir call in a memory region of size PAGE_SIZE.&n; *&n; * Note that at most server-&gt;rsize bytes of the cache memory are used.&n; */
-DECL|macro|NFS_MAX_DIRCACHE
-mdefine_line|#define NFS_MAX_DIRCACHE&t;&t;16
 DECL|macro|NFS_MAX_FILE_IO_BUFFER_SIZE
 mdefine_line|#define NFS_MAX_FILE_IO_BUFFER_SIZE&t;32768
 DECL|macro|NFS_DEF_FILE_IO_BUFFER_SIZE
 mdefine_line|#define NFS_DEF_FILE_IO_BUFFER_SIZE&t;4096
 multiline_comment|/*&n; * The upper limit on timeouts for the exponential backoff algorithm.&n; */
-DECL|macro|NFS_MAX_RPC_TIMEOUT
-mdefine_line|#define NFS_MAX_RPC_TIMEOUT&t;&t;(6*HZ)
-DECL|macro|NFS_READ_DELAY
-mdefine_line|#define NFS_READ_DELAY&t;&t;&t;(2*HZ)
 DECL|macro|NFS_WRITEBACK_DELAY
 mdefine_line|#define NFS_WRITEBACK_DELAY&t;&t;(5*HZ)
 DECL|macro|NFS_WRITEBACK_LOCKDELAY
 mdefine_line|#define NFS_WRITEBACK_LOCKDELAY&t;&t;(60*HZ)
 DECL|macro|NFS_COMMIT_DELAY
 mdefine_line|#define NFS_COMMIT_DELAY&t;&t;(5*HZ)
-multiline_comment|/*&n; * Size of the lookup cache in units of number of entries cached.&n; * It is better not to make this too large although the optimum&n; * depends on a usage and environment.&n; */
-DECL|macro|NFS_LOOKUP_CACHE_SIZE
-mdefine_line|#define NFS_LOOKUP_CACHE_SIZE&t;&t;64
 multiline_comment|/*&n; * superblock magic number for NFS&n; */
 DECL|macro|NFS_SUPER_MAGIC
 mdefine_line|#define NFS_SUPER_MAGIC&t;&t;&t;0x6969
 multiline_comment|/*&n; * These are the default flags for swap requests&n; */
 DECL|macro|NFS_RPC_SWAPFLAGS
 mdefine_line|#define NFS_RPC_SWAPFLAGS&t;&t;(RPC_TASK_SWAPPER|RPC_TASK_ROOTCREDS)
-multiline_comment|/* Flags in the RPC client structure */
-DECL|macro|NFS_CLNTF_BUFSIZE
-mdefine_line|#define NFS_CLNTF_BUFSIZE&t;0x0001&t;/* readdir buffer in longwords */
 DECL|macro|NFS_RW_SYNC
 mdefine_line|#define NFS_RW_SYNC&t;&t;0x0001&t;/* O_SYNC handling */
 DECL|macro|NFS_RW_SWAP
@@ -219,10 +206,8 @@ DECL|macro|NFS_INO_ADVISE_RDPLUS
 mdefine_line|#define NFS_INO_ADVISE_RDPLUS   0x0002          /* advise readdirplus */
 DECL|macro|NFS_INO_REVALIDATING
 mdefine_line|#define NFS_INO_REVALIDATING&t;0x0004&t;&t;/* revalidating attrs */
-DECL|macro|NFS_IS_SNAPSHOT
-mdefine_line|#define NFS_IS_SNAPSHOT&t;&t;0x0010&t;&t;/* a snapshot file */
 DECL|macro|NFS_INO_FLUSH
-mdefine_line|#define NFS_INO_FLUSH&t;&t;0x0020&t;&t;/* inode is due for flushing */
+mdefine_line|#define NFS_INO_FLUSH&t;&t;0x0008&t;&t;/* inode is due for flushing */
 DECL|function|NFS_I
 r_static
 r_inline
@@ -261,12 +246,8 @@ DECL|macro|NFS_CLIENT
 mdefine_line|#define NFS_CLIENT(inode)&t;&t;(NFS_SERVER(inode)-&gt;client)
 DECL|macro|NFS_PROTO
 mdefine_line|#define NFS_PROTO(inode)&t;&t;(NFS_SERVER(inode)-&gt;rpc_ops)
-DECL|macro|NFS_REQUESTLIST
-mdefine_line|#define NFS_REQUESTLIST(inode)&t;&t;(NFS_SERVER(inode)-&gt;rw_requests)
 DECL|macro|NFS_ADDR
 mdefine_line|#define NFS_ADDR(inode)&t;&t;&t;(RPC_PEERADDR(NFS_CLIENT(inode)))
-DECL|macro|NFS_CONGESTED
-mdefine_line|#define NFS_CONGESTED(inode)&t;&t;(RPC_CONGESTED(NFS_CLIENT(inode)))
 DECL|macro|NFS_COOKIEVERF
 mdefine_line|#define NFS_COOKIEVERF(inode)&t;&t;(NFS_I(inode)-&gt;cookieverf)
 DECL|macro|NFS_READTIME
@@ -281,8 +262,6 @@ DECL|macro|NFS_CACHE_ISIZE
 mdefine_line|#define NFS_CACHE_ISIZE(inode)&t;&t;(NFS_I(inode)-&gt;read_cache_isize)
 DECL|macro|NFS_CHANGE_ATTR
 mdefine_line|#define NFS_CHANGE_ATTR(inode)&t;&t;(NFS_I(inode)-&gt;change_attr)
-DECL|macro|NFS_NEXTSCAN
-mdefine_line|#define NFS_NEXTSCAN(inode)&t;&t;(NFS_I(inode)-&gt;nextscan)
 DECL|macro|NFS_CACHEINV
 mdefine_line|#define NFS_CACHEINV(inode) &bslash;&n;do { &bslash;&n;&t;NFS_READTIME(inode) = jiffies - NFS_MAXATTRTIMEO(inode) - 1; &bslash;&n;} while (0)
 DECL|macro|NFS_ATTRTIMEO
@@ -408,24 +387,6 @@ c_func
 (paren
 r_struct
 id|inode
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|nfs_inode_is_stale
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|nfs_fh
-op_star
-comma
-r_struct
-id|nfs_fattr
 op_star
 )paren
 suffix:semicolon
@@ -880,34 +841,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|nfs_scan_lru_dirty
-c_func
-(paren
-r_struct
-id|nfs_server
-op_star
-comma
-r_struct
-id|list_head
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|nfs_scan_lru_dirty_timeout
-c_func
-(paren
-r_struct
-id|nfs_server
-op_star
-comma
-r_struct
-id|list_head
-op_star
-)paren
-suffix:semicolon
 macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 r_extern
 r_int
@@ -941,34 +874,6 @@ id|list_head
 op_star
 comma
 r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|nfs_scan_lru_commit
-c_func
-(paren
-r_struct
-id|nfs_server
-op_star
-comma
-r_struct
-id|list_head
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|nfs_scan_lru_commit_timeout
-c_func
-(paren
-r_struct
-id|nfs_server
-op_star
-comma
-r_struct
-id|list_head
-op_star
 )paren
 suffix:semicolon
 macro_line|#else

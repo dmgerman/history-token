@@ -25,7 +25,7 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-multiline_comment|/* FIXME: soem day we shouldnt need to look in here! */
+multiline_comment|/* FIXME: some day we shouldnt need to look in here! */
 macro_line|#include &quot;legacy/pdc4030.h&quot;
 DECL|variable|driver_blocked
 r_static

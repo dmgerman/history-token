@@ -106,27 +106,6 @@ op_star
 id|hostname
 suffix:semicolon
 multiline_comment|/* remote hostname */
-DECL|member|rw_requests
-r_struct
-id|nfs_reqlist
-op_star
-id|rw_requests
-suffix:semicolon
-multiline_comment|/* async read/write requests */
-DECL|member|lru_read
-r_struct
-id|list_head
-id|lru_read
-comma
-DECL|member|lru_dirty
-id|lru_dirty
-comma
-DECL|member|lru_commit
-id|lru_commit
-comma
-DECL|member|lru_busy
-id|lru_busy
-suffix:semicolon
 DECL|member|fh
 r_struct
 id|nfs_fh

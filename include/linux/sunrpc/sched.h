@@ -5,9 +5,6 @@ mdefine_line|#define _LINUX_SUNRPC_SCHED_H_
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/sunrpc/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-multiline_comment|/*&n; * Define this if you want to test the fast scheduler for async calls.&n; * This is still experimental and may not work.&n; */
-DECL|macro|CONFIG_RPC_FASTSCHED
-macro_line|#undef  CONFIG_RPC_FASTSCHED
 multiline_comment|/*&n; * This is the actual RPC procedure call info.&n; */
 DECL|struct|rpc_message
 r_struct
@@ -103,6 +100,10 @@ op_star
 id|tk_buffer
 suffix:semicolon
 multiline_comment|/* XDR buffer */
+DECL|member|tk_bufsize
+r_int
+id|tk_bufsize
+suffix:semicolon
 DECL|member|tk_garb_retry
 id|__u8
 id|tk_garb_retry
@@ -540,14 +541,13 @@ r_int
 suffix:semicolon
 r_void
 op_star
-id|rpc_allocate
+id|rpc_malloc
 c_func
 (paren
-r_int
-r_int
-id|flags
+r_struct
+id|rpc_task
+op_star
 comma
-r_int
 r_int
 )paren
 suffix:semicolon
@@ -555,7 +555,8 @@ r_void
 id|rpc_free
 c_func
 (paren
-r_void
+r_struct
+id|rpc_task
 op_star
 )paren
 suffix:semicolon
@@ -589,34 +590,20 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-r_static
-id|__inline__
+r_int
+id|rpc_init_mempool
+c_func
+(paren
 r_void
-op_star
-DECL|function|rpc_malloc
-id|rpc_malloc
-c_func
-(paren
-r_struct
-id|rpc_task
-op_star
-id|task
-comma
-r_int
-r_int
-id|size
-)paren
-(brace
-r_return
-id|rpc_allocate
-c_func
-(paren
-id|task-&gt;tk_flags
-comma
-id|size
 )paren
 suffix:semicolon
-)brace
+r_void
+id|rpc_destroy_mempool
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_static
 id|__inline__
 r_void

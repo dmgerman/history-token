@@ -14,14 +14,11 @@ macro_line|#include &lt;linux/sunrpc/stats.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_mount.h&gt;
 macro_line|#include &lt;linux/nfs4_mount.h&gt;
-macro_line|#include &lt;linux/nfs_flushd.h&gt;
 macro_line|#include &lt;linux/lockd/bind.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|CONFIG_NFS_SNAPSHOT
-mdefine_line|#define CONFIG_NFS_SNAPSHOT 1
 DECL|macro|NFSDBG_FACILITY
 mdefine_line|#define NFSDBG_FACILITY&t;&t;NFSDBG_VFS
 DECL|macro|NFS_PARANOIA
@@ -510,13 +507,6 @@ id|rpc_clnt
 op_star
 id|rpc
 suffix:semicolon
-multiline_comment|/*&n;&t; * First get rid of the request flushing daemon.&n;&t; * Relies on rpc_shutdown_client() waiting on all&n;&t; * client tasks to finish.&n;&t; */
-id|nfs_reqlist_exit
-c_func
-(paren
-id|server
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -532,12 +522,6 @@ id|rpc_shutdown_client
 c_func
 (paren
 id|rpc
-)paren
-suffix:semicolon
-id|nfs_reqlist_free
-c_func
-(paren
-id|server
 )paren
 suffix:semicolon
 r_if
@@ -988,34 +972,6 @@ op_assign
 op_amp
 id|nfs_sops
 suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|server-&gt;lru_read
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|server-&gt;lru_dirty
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|server-&gt;lru_commit
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|server-&gt;lru_busy
-)paren
-suffix:semicolon
 multiline_comment|/* Did getting the root inode fail? */
 id|root_inode
 op_assign
@@ -1373,30 +1329,6 @@ id|sb-&gt;s_maxbytes
 op_assign
 id|MAX_LFS_FILESIZE
 suffix:semicolon
-multiline_comment|/* Fire up the writeback cache */
-r_if
-c_cond
-(paren
-id|nfs_reqlist_alloc
-c_func
-(paren
-id|server
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;NFS: cannot initialize writeback cache.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|failure_kill_reqlist
-suffix:semicolon
-)brace
 multiline_comment|/* We&squot;re airborne Set socket buffersize */
 id|rpc_setbufsize
 c_func
@@ -1416,14 +1348,6 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* Yargs. It didn&squot;t work out. */
-id|failure_kill_reqlist
-suffix:colon
-id|nfs_reqlist_exit
-c_func
-(paren
-id|server
-)paren
-suffix:semicolon
 id|out_free_all
 suffix:colon
 r_if
@@ -1435,12 +1359,6 @@ id|iput
 c_func
 (paren
 id|root_inode
-)paren
-suffix:semicolon
-id|nfs_reqlist_free
-c_func
-(paren
-id|server
 )paren
 suffix:semicolon
 r_return

@@ -702,13 +702,6 @@ c_func
 id|hwrpb
 )paren
 suffix:semicolon
-DECL|variable|wrusp
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|wrusp
-)paren
-suffix:semicolon
 DECL|variable|start_thread
 id|EXPORT_SYMBOL
 c_func

@@ -61,6 +61,7 @@ suffix:semicolon
 multiline_comment|/* if !exponential */
 DECL|member|to_retries
 r_int
+r_int
 id|to_retries
 suffix:semicolon
 multiline_comment|/* max # of retries */
@@ -152,6 +153,7 @@ id|rq_bytes_sent
 suffix:semicolon
 multiline_comment|/* Bytes we have sent */
 DECL|member|rq_xtime
+r_int
 r_int
 id|rq_xtime
 suffix:semicolon
