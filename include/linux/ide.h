@@ -2146,7 +2146,7 @@ id|cds
 suffix:semicolon
 multiline_comment|/* chipset device struct */
 DECL|member|rw_disk
-id|ide_startstop_t
+r_void
 (paren
 op_star
 id|rw_disk
@@ -2158,8 +2158,6 @@ comma
 r_struct
 id|request
 op_star
-comma
-id|sector_t
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -4433,23 +4431,6 @@ comma
 r_int
 r_int
 id|timeout
-)paren
-suffix:semicolon
-id|ide_startstop_t
-id|__ide_do_rw_disk
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
-comma
-id|sector_t
-id|block
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * ide_stall_queue() can be used by a drive to give excess bandwidth back&n; * to the hwgroup by sleeping for timeout jiffies.&n; */
