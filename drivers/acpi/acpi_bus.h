@@ -3,11 +3,7 @@ macro_line|#ifndef __ACPI_BUS_H__
 DECL|macro|__ACPI_BUS_H__
 mdefine_line|#define __ACPI_BUS_H__
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,4))
-macro_line|#include &lt;linux/device.h&gt;
-DECL|macro|CONFIG_LDM
-mdefine_line|#define CONFIG_LDM
-macro_line|#endif
+macro_line|#include &lt;linux/driverfs_fs.h&gt;
 macro_line|#include &quot;include/acpi.h&quot;
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
@@ -881,13 +877,11 @@ r_void
 op_star
 id|driver_data
 suffix:semicolon
-macro_line|#ifdef CONFIG_LDM
-DECL|member|dev
+DECL|member|driverfs_dir
 r_struct
-id|device
-id|dev
+id|driver_dir_entry
+id|driverfs_dir
 suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|acpi_driver_data
@@ -1004,6 +998,24 @@ r_struct
 id|acpi_driver
 op_star
 id|driver
+)paren
+suffix:semicolon
+r_int
+id|acpi_create_dir
+c_func
+(paren
+r_struct
+id|acpi_device
+op_star
+)paren
+suffix:semicolon
+r_void
+id|acpi_remove_dir
+c_func
+(paren
+r_struct
+id|acpi_device
+op_star
 )paren
 suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_BUS*/

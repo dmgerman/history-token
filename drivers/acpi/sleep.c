@@ -18,6 +18,10 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;sleep&quot;
 )paren
+DECL|macro|ACPI_SYSTEM_FILE_SLEEP
+mdefine_line|#define ACPI_SYSTEM_FILE_SLEEP&t;&t;&quot;sleep&quot;
+DECL|macro|ACPI_SYSTEM_FILE_ALARM
+mdefine_line|#define ACPI_SYSTEM_FILE_ALARM&t;&t;&quot;alarm&quot;
 DECL|variable|sleep_states
 r_static
 id|u8
