@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

@@ -22,17 +22,14 @@ DECL|struct|mod_arch_specific
 r_struct
 id|mod_arch_specific
 (brace
-multiline_comment|/* How much of the core is actually taken up with core (then&n;           we know the rest is for the PLT */
-DECL|member|core_plt_offset
+multiline_comment|/* Indices of PLT sections within module. */
+DECL|member|core_plt_section
+DECL|member|init_plt_section
 r_int
 r_int
-id|core_plt_offset
-suffix:semicolon
-multiline_comment|/* Same for init */
-DECL|member|init_plt_offset
-r_int
-r_int
-id|init_plt_offset
+id|core_plt_section
+comma
+id|init_plt_section
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -42,5 +39,20 @@ DECL|macro|Elf_Sym
 mdefine_line|#define Elf_Sym Elf32_Sym
 DECL|macro|Elf_Ehdr
 mdefine_line|#define Elf_Ehdr Elf32_Ehdr
+multiline_comment|/* Make empty sections for module_frob_arch_sections to expand. */
+macro_line|#ifdef MODULE
+id|asm
+c_func
+(paren
+l_string|&quot;.section .plt,&bslash;&quot;aws&bslash;&quot;,@nobits; .align 3; .previous&quot;
+)paren
+suffix:semicolon
+id|asm
+c_func
+(paren
+l_string|&quot;.section .plt.init,&bslash;&quot;aws&bslash;&quot;,@nobits; .align 3; .previous&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* _ASM_PPC_MODULE_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.h&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *     (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptbase.h,v 1.136 2002/10/21 13:51:54 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.h&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *     (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptbase.h,v 1.141 2002/12/03 21:26:32 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 macro_line|#ifndef MPTBASE_H_INCLUDED
@@ -27,9 +27,9 @@ DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2002 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;2.03.00.02&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;2.03.01.01&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-2.03.00.02&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-2.03.01.01&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver
@@ -101,7 +101,9 @@ DECL|macro|CAN_SLEEP
 mdefine_line|#define&t; CAN_SLEEP&t;&t;&t;1
 DECL|macro|NO_SLEEP
 mdefine_line|#define  NO_SLEEP&t;&t;&t;0
-multiline_comment|/* &n; * SCSI transfer rate defines. &n; */
+DECL|macro|MPT_COALESCING_TIMEOUT
+mdefine_line|#define MPT_COALESCING_TIMEOUT&t;&t;0x10
+multiline_comment|/*&n; * SCSI transfer rate defines.&n; */
 DECL|macro|MPT_ULTRA320
 mdefine_line|#define MPT_ULTRA320&t;&t;&t;0x08
 DECL|macro|MPT_ULTRA160
@@ -1128,6 +1130,8 @@ DECL|macro|MPT_SCSICFG_DV_NOT_DONE
 mdefine_line|#define MPT_SCSICFG_DV_NOT_DONE&t;&t;0x08&t;/* DV has not been performed */
 DECL|macro|MPT_SCSICFG_BLK_NEGO
 mdefine_line|#define MPT_SCSICFG_BLK_NEGO&t;&t;0x10&t;/* WriteSDP1 with WDTR and SDTR disabled */
+DECL|macro|MPT_SCSICFG_RELOAD_IOC_PG3
+mdefine_line|#define MPT_SCSICFG_RELOAD_IOC_PG3&t;0x20&t;/* IOC Pg 3 data is obsolete */
 multiline_comment|/* Args passed to writeSDP1: */
 DECL|macro|MPT_SCSICFG_USE_NVRAM
 mdefine_line|#define MPT_SCSICFG_USE_NVRAM&t;&t;0x01&t;/* WriteSDP1 using NVRAM */
@@ -1834,6 +1838,13 @@ mdefine_line|#define nehprintk(x) printk x
 macro_line|#else
 DECL|macro|nehprintk
 mdefine_line|#define nehprintk(x)
+macro_line|#endif
+macro_line|#if defined(MPT_DEBUG_CONFIG) || defined(MPT_DEBUG)
+DECL|macro|dcprintk
+mdefine_line|#define dcprintk(x) printk x
+macro_line|#else
+DECL|macro|dcprintk
+mdefine_line|#define dcprintk(x)
 macro_line|#endif
 DECL|macro|MPT_INDEX_2_MFPTR
 mdefine_line|#define MPT_INDEX_2_MFPTR(ioc,idx) &bslash;&n;&t;(MPT_FRAME_HDR*)( (u8*)(ioc)-&gt;req_frames + (ioc)-&gt;req_sz * (idx) )
@@ -2738,6 +2749,16 @@ id|fw_image_t
 op_star
 op_star
 id|alt_img
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|mpt_read_ioc_pg_3
+c_func
+(paren
+id|MPT_ADAPTER
+op_star
+id|ioc
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  Public data decl&squot;s...&n; */

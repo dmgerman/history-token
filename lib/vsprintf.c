@@ -2370,9 +2370,6 @@ id|base
 suffix:semicolon
 r_int
 id|field_width
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 r_int
 id|is_sign
@@ -2518,6 +2515,11 @@ r_continue
 suffix:semicolon
 )brace
 multiline_comment|/* get field width */
+id|field_width
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren

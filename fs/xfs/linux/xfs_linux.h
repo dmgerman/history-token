@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;asm/param.h&gt;

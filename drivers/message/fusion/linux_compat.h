@@ -304,35 +304,28 @@ mdefine_line|#define MPT_HOST_LOCK(flags) &bslash;&n;                spin_lock_i
 DECL|macro|MPT_HOST_UNLOCK
 mdefine_line|#define MPT_HOST_UNLOCK(flags) &bslash;&n;                spin_unlock_irqrestore(&amp;io_request_lock, flags)
 macro_line|#endif
-multiline_comment|/*&n; *  We use our new error handling code if the kernel version is 2.5.1 or newer.&n; */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,1)
+multiline_comment|/*&n; *  We use our new error handling code if the kernel version is 2.4.18 or newer.&n; */
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,18)
 DECL|macro|MPT_SCSI_USE_NEW_EH
 mdefine_line|#define MPT_SCSI_USE_NEW_EH
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,28)
-DECL|macro|mptscsih_lock
-mdefine_line|#define mptscsih_lock(iocp, flags) &bslash;&n;                spin_lock_irqsave(&amp;iocp-&gt;FreeQlock, flags)
-macro_line|#else
-DECL|macro|mptscsih_lock
-mdefine_line|#define mptscsih_lock(iocp, flags) &bslash;&n;({&t;save_flags(flags); &bslash;&n;&t;cli(); &bslash;&n;})
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,28)
-DECL|macro|mptscsih_unlock
-mdefine_line|#define mptscsih_unlock(iocp, flags) &bslash;&n;                spin_unlock_irqrestore(&amp;iocp-&gt;FreeQlock, flags)
-macro_line|#else
-DECL|macro|mptscsih_unlock
-mdefine_line|#define mptscsih_unlock(iocp, flags)  restore_flags(flags);
-macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,41)
 DECL|macro|mpt_work_struct
-mdefine_line|#define mpt_work_struct work_struct 
+mdefine_line|#define mpt_work_struct work_struct
 DECL|macro|MPT_INIT_WORK
 mdefine_line|#define MPT_INIT_WORK(_task, _func, _data) INIT_WORK(_task, _func, _data)
 macro_line|#else
 DECL|macro|mpt_work_struct
-mdefine_line|#define mpt_work_struct tq_struct 
+mdefine_line|#define mpt_work_struct tq_struct
 DECL|macro|MPT_INIT_WORK
 mdefine_line|#define MPT_INIT_WORK(_task, _func, _data) &bslash;&n;({&t;(_task)-&gt;sync = 0; &bslash;&n;&t;(_task)-&gt;routine = (_func); &bslash;&n;&t;(_task)-&gt;data = (void *) (_data); &bslash;&n;})
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,28)
+DECL|macro|mptscsih_sync_irq
+mdefine_line|#define mptscsih_sync_irq(_irq) synchronize_irq(_irq)
+macro_line|#else
+DECL|macro|mptscsih_sync_irq
+mdefine_line|#define mptscsih_sync_irq(_irq) synchronize_irq()
 macro_line|#endif
 multiline_comment|/*}-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 macro_line|#endif /* _LINUX_COMPAT_H */

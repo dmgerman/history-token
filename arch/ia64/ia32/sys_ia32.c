@@ -34,6 +34,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/ipc.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;

@@ -4,6 +4,7 @@ DECL|macro|_LINUX_QUOTA_
 mdefine_line|#define _LINUX_QUOTA_
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|macro|__DQUOT_VERSION__
 mdefine_line|#define __DQUOT_VERSION__&t;&quot;dquot_6.5.1&quot;
 DECL|macro|__DQUOT_NUM_VERSION__
@@ -20,6 +21,14 @@ id|__u64
 id|qsize_t
 suffix:semicolon
 multiline_comment|/* Type in which we store sizes */
+r_extern
+id|spinlock_t
+id|dq_list_lock
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|dq_data_lock
+suffix:semicolon
 multiline_comment|/* Size of blocks in which are counted size limits */
 DECL|macro|QUOTABLOCK_BITS
 mdefine_line|#define QUOTABLOCK_BITS 10
@@ -225,6 +234,7 @@ id|dqi_format
 suffix:semicolon
 DECL|member|dqi_flags
 r_int
+r_int
 id|dqi_flags
 suffix:semicolon
 DECL|member|dqi_bgrace
@@ -257,10 +267,14 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|DQF_MASK
 mdefine_line|#define DQF_MASK 0xffff&t;&t;/* Mask for format specific flags */
+DECL|macro|DQF_INFO_DIRTY_B
+mdefine_line|#define DQF_INFO_DIRTY_B 16
+DECL|macro|DQF_ANY_DQUOT_DIRTY_B
+mdefine_line|#define DQF_ANY_DQUOT_DIRTY_B 17
 DECL|macro|DQF_INFO_DIRTY
-mdefine_line|#define DQF_INFO_DIRTY 0x10000  /* Is info dirty? */
+mdefine_line|#define DQF_INFO_DIRTY (1 &lt;&lt; DQF_INFO_DIRTY_B)&t;/* Is info dirty? */
 DECL|macro|DQF_ANY_DQUOT_DIRTY
-mdefine_line|#define DQF_ANY_DQUOT_DIRTY 0x20000&t;/* Is any dquot dirty? */
+mdefine_line|#define DQF_ANY_DQUOT_DIRTY (1 &lt;&lt; DQF_ANY_DQUOT_DIRTY B)&t;/* Is any dquot dirty? */
 DECL|function|mark_info_dirty
 r_extern
 r_inline
@@ -274,15 +288,22 @@ op_star
 id|info
 )paren
 (brace
+id|set_bit
+c_func
+(paren
+id|DQF_INFO_DIRTY_B
+comma
+op_amp
 id|info-&gt;dqi_flags
-op_or_assign
-id|DQF_INFO_DIRTY
+)paren
 suffix:semicolon
 )brace
 DECL|macro|info_dirty
-mdefine_line|#define info_dirty(info) ((info)-&gt;dqi_flags &amp; DQF_INFO_DIRTY)
+mdefine_line|#define info_dirty(info) test_bit(DQF_INFO_DIRTY_B, &amp;(info)-&gt;dqi_flags)
+DECL|macro|info_any_dquot_dirty
+mdefine_line|#define info_any_dquot_dirty(info) test_bit(DQF_ANY_DQUOT_DIRTY_B, &amp;(info)-&gt;dqi_flags)
 DECL|macro|info_any_dirty
-mdefine_line|#define info_any_dirty(info) ((info)-&gt;dqi_flags &amp; DQF_INFO_DIRTY ||&bslash;&n;&t;&t;&t;      (info)-&gt;dqi_flags &amp; DQF_ANY_DQUOT_DIRTY)
+mdefine_line|#define info_any_dirty(info) (info_dirty(info) || info_any_dquot_dirty(info))
 DECL|macro|sb_dqopt
 mdefine_line|#define sb_dqopt(sb) (&amp;(sb)-&gt;s_dquot)
 DECL|struct|dqstats
@@ -330,18 +351,22 @@ id|dqstats
 suffix:semicolon
 DECL|macro|NR_DQHASH
 mdefine_line|#define NR_DQHASH 43            /* Just an arbitrary number */
-DECL|macro|DQ_LOCKED
-mdefine_line|#define DQ_LOCKED     0x01&t;/* dquot under IO */
+DECL|macro|DQ_MOD_B
+mdefine_line|#define DQ_MOD_B&t;0
+DECL|macro|DQ_BLKS_B
+mdefine_line|#define DQ_BLKS_B&t;1
+DECL|macro|DQ_INODES_B
+mdefine_line|#define DQ_INODES_B&t;2
+DECL|macro|DQ_FAKE_B
+mdefine_line|#define DQ_FAKE_B&t;3
 DECL|macro|DQ_MOD
-mdefine_line|#define DQ_MOD        0x02&t;/* dquot modified since read */
+mdefine_line|#define DQ_MOD        (1 &lt;&lt; DQ_MOD_B)&t;/* dquot modified since read */
 DECL|macro|DQ_BLKS
-mdefine_line|#define DQ_BLKS       0x10&t;/* uid/gid has been warned about blk limit */
+mdefine_line|#define DQ_BLKS       (1 &lt;&lt; DQ_BLKS_B)&t;/* uid/gid has been warned about blk limit */
 DECL|macro|DQ_INODES
-mdefine_line|#define DQ_INODES     0x20&t;/* uid/gid has been warned about inode limit */
+mdefine_line|#define DQ_INODES     (1 &lt;&lt; DQ_INODES_B)&t;/* uid/gid has been warned about inode limit */
 DECL|macro|DQ_FAKE
-mdefine_line|#define DQ_FAKE       0x40&t;/* no limits only usage */
-DECL|macro|DQ_INVAL
-mdefine_line|#define DQ_INVAL      0x80&t;/* dquot is going to be invalidated */
+mdefine_line|#define DQ_FAKE       (1 &lt;&lt; DQ_FAKE_B)&t;/* no limits only usage */
 DECL|struct|dquot
 r_struct
 id|dquot
@@ -364,26 +389,17 @@ id|list_head
 id|dq_free
 suffix:semicolon
 multiline_comment|/* Free list element */
-DECL|member|dq_wait_lock
-id|wait_queue_head_t
-id|dq_wait_lock
+DECL|member|dq_lock
+r_struct
+id|semaphore
+id|dq_lock
 suffix:semicolon
-multiline_comment|/* Pointer to waitqueue on dquot lock */
-DECL|member|dq_wait_free
-id|wait_queue_head_t
-id|dq_wait_free
-suffix:semicolon
-multiline_comment|/* Pointer to waitqueue for quota to be unused */
+multiline_comment|/* dquot IO lock */
 DECL|member|dq_count
-r_int
+id|atomic_t
 id|dq_count
 suffix:semicolon
 multiline_comment|/* Use count */
-DECL|member|dq_dup_ref
-r_int
-id|dq_dup_ref
-suffix:semicolon
-multiline_comment|/* Number of duplicated refences */
 multiline_comment|/* fields after this point are cleared when invalidating */
 DECL|member|dq_sb
 r_struct
@@ -403,22 +419,17 @@ id|loff_t
 id|dq_off
 suffix:semicolon
 multiline_comment|/* Offset of dquot on disk */
+DECL|member|dq_flags
+r_int
+r_int
+id|dq_flags
+suffix:semicolon
+multiline_comment|/* See DQ_* */
 DECL|member|dq_type
 r_int
 id|dq_type
 suffix:semicolon
 multiline_comment|/* Type of quota */
-DECL|member|dq_flags
-r_int
-id|dq_flags
-suffix:semicolon
-multiline_comment|/* See DQ_* */
-DECL|member|dq_referenced
-r_int
-r_int
-id|dq_referenced
-suffix:semicolon
-multiline_comment|/* Number of times this dquot was &n;&t;&t;&t;&t;&t;   referenced during its lifetime */
 DECL|member|dq_dqb
 r_struct
 id|mem_dqblk
@@ -903,10 +914,10 @@ suffix:semicolon
 multiline_comment|/* lock device while I/O in progress */
 DECL|member|dqoff_sem
 r_struct
-id|semaphore
+id|rw_semaphore
 id|dqoff_sem
 suffix:semicolon
-multiline_comment|/* serialize quota_off() and quota_on() on device */
+multiline_comment|/* serialize quota_off() and quota_on() on device and ops using quota_info struct, pointers from inode to dquots */
 DECL|member|files
 r_struct
 id|file
@@ -940,56 +951,13 @@ multiline_comment|/* Operations for each type */
 suffix:semicolon
 multiline_comment|/* Inline would be better but we need to dereference super_block which is not defined yet */
 DECL|macro|mark_dquot_dirty
-mdefine_line|#define mark_dquot_dirty(dquot) do {&bslash;&n;&t;dquot-&gt;dq_flags |= DQ_MOD;&bslash;&n;&t;sb_dqopt(dquot-&gt;dq_sb)-&gt;info[dquot-&gt;dq_type].dqi_flags |= DQF_ANY_DQUOT_DIRTY;&bslash;&n;} while (0)
+mdefine_line|#define mark_dquot_dirty(dquot) do {&bslash;&n;&t;set_bit(DQF_ANY_DQUOT_DIRTY_B, &amp;(sb_dqopt((dquot)-&gt;dq_sb)-&gt;info[(dquot)-&gt;dq_type].dqi_flags));&bslash;&n;&t;set_bit(DQ_MOD_B, &amp;(dquot)-&gt;dq_flags);&bslash;&n;} while (0)
 DECL|macro|dquot_dirty
-mdefine_line|#define dquot_dirty(dquot) ((dquot)-&gt;dq_flags &amp; DQ_MOD)
-DECL|function|is_enabled
-r_static
-r_inline
-r_int
-id|is_enabled
-c_func
-(paren
-r_struct
-id|quota_info
-op_star
-id|dqopt
-comma
-r_int
-id|type
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|type
-)paren
-(brace
-r_case
-id|USRQUOTA
-suffix:colon
-r_return
-id|dqopt-&gt;flags
-op_amp
-id|DQUOT_USR_ENABLED
-suffix:semicolon
-r_case
-id|GRPQUOTA
-suffix:colon
-r_return
-id|dqopt-&gt;flags
-op_amp
-id|DQUOT_GRP_ENABLED
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|macro|sb_any_quota_enabled
-mdefine_line|#define sb_any_quota_enabled(sb) (is_enabled(sb_dqopt(sb), USRQUOTA) | is_enabled(sb_dqopt(sb), GRPQUOTA))
+mdefine_line|#define dquot_dirty(dquot) test_bit(DQ_MOD_B, &amp;(dquot)-&gt;dq_flags)
 DECL|macro|sb_has_quota_enabled
-mdefine_line|#define sb_has_quota_enabled(sb, type) (is_enabled(sb_dqopt(sb), type))
+mdefine_line|#define sb_has_quota_enabled(sb, type) ((type)==USRQUOTA ? &bslash;&n;&t;(sb_dqopt(sb)-&gt;flags &amp; DQUOT_USR_ENABLED) : (sb_dqopt(sb)-&gt;flags &amp; DQUOT_GRP_ENABLED))
+DECL|macro|sb_any_quota_enabled
+mdefine_line|#define sb_any_quota_enabled(sb) (sb_has_quota_enabled(sb, USRQUOTA) | &bslash;&n;&t;&t;&t;&t;  sb_has_quota_enabled(sb, GRPQUOTA))
 r_int
 id|register_quota_format
 c_func

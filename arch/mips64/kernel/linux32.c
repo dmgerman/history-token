@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;

@@ -42,6 +42,7 @@ macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
+macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;

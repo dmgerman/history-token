@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptctl.c&n; *      Fusion MPT misc device (ioctl) driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      A big THANKS to Eddie C. Dost for fixing the ioctl path&n; *      and most importantly f/w download on sparc64 platform!&n; *      (plus Eddie&squot;s other helpful hints and insights)&n; *&n; *      Thanks to Arnaldo Carvalho de Melo for finding and patching&n; *      a potential memory leak in mptctl_do_fw_download(),&n; *      and for some kmalloc insight:-)&n; *&n; *      (see also mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston, Noah Romer&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptctl.c,v 1.61 2002/10/17 20:15:57 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptctl.c&n; *      Fusion MPT misc device (ioctl) driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      A big THANKS to Eddie C. Dost for fixing the ioctl path&n; *      and most importantly f/w download on sparc64 platform!&n; *      (plus Eddie&squot;s other helpful hints and insights)&n; *&n; *      Thanks to Arnaldo Carvalho de Melo for finding and patching&n; *      a potential memory leak in mptctl_do_fw_download(),&n; *      and for some kmalloc insight:-)&n; *&n; *      (see also mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston, Noah Romer&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptctl.c,v 1.63 2002/12/03 21:26:33 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -11319,18 +11319,21 @@ suffix:semicolon
 macro_line|#endif&t;&t;/*} linux &gt;= 2.3.x */
 macro_line|#endif&t;&t;/*} sparc */
 multiline_comment|/* Register this device */
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|misc_register
 c_func
 (paren
 op_amp
 id|mptctl_miscdev
 )paren
-op_eq
-op_minus
-l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
 )paren
 (brace
 id|printk
@@ -11342,11 +11345,6 @@ l_string|&quot;: Can&squot;t register misc device [minor=%d].&bslash;n&quot;
 comma
 id|MPT_MINOR
 )paren
-suffix:semicolon
-id|err
-op_assign
-op_minus
-id|EBUSY
 suffix:semicolon
 r_goto
 id|out_fail
