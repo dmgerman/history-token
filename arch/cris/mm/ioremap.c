@@ -2,8 +2,10 @@ multiline_comment|/*&n; * arch/cris/mm/ioremap.c&n; *&n; * Re-map IO memory to k
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|function|remap_area_pte
-r_static
+r_extern
 r_inline
 r_void
 id|remap_area_pte
@@ -33,10 +35,6 @@ id|flags
 r_int
 r_int
 id|end
-suffix:semicolon
-r_int
-r_int
-id|pfn
 suffix:semicolon
 id|address
 op_and_assign
@@ -72,12 +70,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pfn
-op_assign
-id|phys_addr
-op_rshift
-id|PAGE_SHIFT
-suffix:semicolon
 r_do
 (brace
 r_if
@@ -109,10 +101,10 @@ c_func
 (paren
 id|pte
 comma
-id|pfn_pte
+id|mk_pte_phys
 c_func
 (paren
-id|pfn
+id|phys_addr
 comma
 id|__pgprot
 c_func
@@ -136,8 +128,9 @@ id|address
 op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
-id|pfn
-op_increment
+id|phys_addr
+op_add_assign
+id|PAGE_SIZE
 suffix:semicolon
 id|pte
 op_increment
@@ -232,7 +225,7 @@ id|pte_t
 op_star
 id|pte
 op_assign
-id|pte_alloc
+id|pte_alloc_kernel
 c_func
 (paren
 op_amp
@@ -658,6 +651,8 @@ id|PAGE_ALIGN
 c_func
 (paren
 id|last_addr
+op_plus
+l_int|1
 )paren
 op_minus
 id|phys_addr

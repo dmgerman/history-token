@@ -1,9 +1,11 @@
-multiline_comment|/* CRIS pgtable.h - macros and functions to manipulate page tables&n; *&n; * HISTORY:&n; *&n; * $Log: pgtable.h,v $&n; * Revision 1.14  2001/12/10 03:08:50  bjornw&n; * Added pgtable_cache_init dummy&n; *&n; * Revision 1.13  2001/11/12 18:05:38  pkj&n; * Added declaration of paging_init().&n; *&n; * Revision 1.12  2001/08/11 00:28:00  bjornw&n; * PAGE_CHG_MASK and PAGE_NONE had somewhat untraditional values&n; *&n; * Revision 1.11  2001/04/04 14:38:36  bjornw&n; * Removed bad_pagetable handling and the _kernel functions&n; *&n; * Revision 1.10  2001/03/23 07:46:42  starvik&n; * Corrected according to review remarks&n; *&n; * Revision 1.9  2000/11/22 14:57:53  bjornw&n; * * extern inline -&gt; static inline&n; * * include asm-generic/pgtable.h&n; *&n; * Revision 1.8  2000/11/21 13:56:16  bjornw&n; * Use CONFIG_CRIS_LOW_MAP for the low VM map instead of explicit CPU type&n; *&n; * Revision 1.7  2000/10/06 15:05:32  bjornw&n; * VMALLOC area changed in memory mapping change&n; *&n; * Revision 1.6  2000/10/04 16:59:14  bjornw&n; * Changed comments&n; *&n; * Revision 1.5  2000/09/13 14:39:53  bjornw&n; * New macros&n; *&n; * Revision 1.4  2000/08/17 15:38:48  bjornw&n; * 2.4.0-test6 modifications:&n; *   * flush_dcache_page added&n; *   * MAP_NR removed&n; *   * virt_to_page added&n; *&n; * Plus some comments and type-clarifications.&n; *&n; * Revision 1.3  2000/08/15 16:33:35  bjornw&n; * pmd_bad should recognize both kernel and user page-tables&n; *&n; * Revision 1.2  2000/07/10 17:06:01  bjornw&n; * Fixed warnings&n; *&n; * Revision 1.1.1.1  2000/07/10 16:32:31  bjornw&n; * CRIS architecture, working draft&n; *&n; *&n; * Revision 1.11  2000/05/29 14:55:56  bjornw&n; * Small tweaks of pte_mk routines&n; *&n; * Revision 1.10  2000/01/27 01:49:06  bjornw&n; * * Ooops. The physical frame number in a PTE entry needs to point to the&n; *   DRAM directly, not to what the kernel thinks is DRAM (due to KSEG mapping).&n; *   Hence we need to strip bit 31 so 0xcXXXXXXX -&gt; 0x4XXXXXXX.&n; *&n; * Revision 1.9  2000/01/26 16:25:50  bjornw&n; * Fixed PAGE_KERNEL bits&n; *&n; * Revision 1.8  2000/01/23 22:53:22  bjornw&n; * Correct flush_tlb_* macros and externs&n; *&n; * Revision 1.7  2000/01/18 16:22:55  bjornw&n; * Use PAGE_MASK instead of PFN_MASK.&n; *&n; * Revision 1.6  2000/01/17 02:42:53  bjornw&n; * Added the pmd_set macro.&n; *&n; * Revision 1.5  2000/01/16 19:53:42  bjornw&n; * Removed VMALLOC_OFFSET. Changed definitions of swapper_pg_dir and zero_page.&n; *&n; * Revision 1.4  2000/01/14 16:38:20  bjornw&n; * PAGE_DIRTY -&gt; PAGE_SILENT_WRITE, removed PAGE_COW from PAGE_COPY.&n; *&n; * Revision 1.3  1999/12/04 20:12:21  bjornw&n; * * PTE bits have moved to asm/mmu.h&n; * * Fixed definitions of the higher level page protection bits&n; * * Added the pte_* functions, including dirty/accessed SW simulation&n; *   (these are exactly the same as for the MIPS port)&n; *&n; * Revision 1.2  1999/12/04 00:41:54  bjornw&n; * * Fixed page table offsets, sizes and shifts&n; * * Removed reference to i386 SMP stuff&n; * * Added stray comments about Linux/CRIS mm design&n; * * Include asm/mmu.h which will contain MMU details&n; *&n; * Revision 1.1  1999/12/03 15:04:02  bjornw&n; * Copied from include/asm-etrax100. For the new CRIS architecture.&n; */
+multiline_comment|/*&n; * CRIS pgtable.h - macros and functions to manipulate page tables.&n; */
 macro_line|#ifndef _CRIS_PGTABLE_H
 DECL|macro|_CRIS_PGTABLE_H
 mdefine_line|#define _CRIS_PGTABLE_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
+macro_line|#include &lt;asm/arch/pgtable.h&gt;
 multiline_comment|/*&n; * The Linux memory management assumes a three-level page table setup. On&n; * CRIS, we use that, but &quot;fold&quot; the mid level into the top-level page&n; * table. Since the MMU TLB is software loaded through an interrupt, it&n; * supports any page table structure, so we could have used a three-level&n; * setup, but for the amounts of memory we normally use, a two-level is&n; * probably more efficient.&n; *&n; * This file contains the functions and defines necessary to modify and use&n; * the CRIS page table tree.&n; */
 r_extern
 r_void
@@ -13,117 +15,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* The cache doesn&squot;t need to be flushed when TLB entries change because &n; * the cache is mapped to physical memory, not virtual memory&n; */
-DECL|macro|flush_cache_all
-mdefine_line|#define flush_cache_all()&t;&t;&t;do { } while (0)
-DECL|macro|flush_cache_mm
-mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;do { } while (0)
-DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(vma, start, end)&t;do { } while (0)
-DECL|macro|flush_cache_page
-mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;do { } while (0)
-DECL|macro|flush_dcache_page
-mdefine_line|#define flush_dcache_page(page)                 do { } while (0)
-DECL|macro|flush_icache_range
-mdefine_line|#define flush_icache_range(start, end)          do { } while (0)
-DECL|macro|flush_icache_page
-mdefine_line|#define flush_icache_page(vma,pg)               do { } while (0)
-DECL|macro|flush_icache_user_range
-mdefine_line|#define flush_icache_user_range(vma,pg,adr,len) do { } while (0)
-multiline_comment|/*&n; * TLB flushing (implemented in arch/cris/mm/tlb.c):&n; *&n; *  - flush_tlb() flushes the current mm struct TLBs&n; *  - flush_tlb_all() flushes all processes TLBs&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(vma, start, end) flushes a range of pages&n; *&n; */
-r_extern
-r_void
-id|flush_tlb_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|flush_tlb_mm
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|flush_tlb_page
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|flush_tlb_range
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-suffix:semicolon
-DECL|function|flush_tlb_pgtables
-r_static
-r_inline
-r_void
-id|flush_tlb_pgtables
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-(brace
-multiline_comment|/* CRIS does not keep any page table caches in TLB */
-)brace
-DECL|function|flush_tlb
-r_static
-r_inline
-r_void
-id|flush_tlb
-c_func
-(paren
-r_void
-)paren
-(brace
-id|flush_tlb_mm
-c_func
-(paren
-id|current-&gt;mm
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Certain architectures need to do special things when pte&squot;s&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval) ((*(pteptr)) = (pteval))
@@ -158,77 +49,6 @@ DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD       (TASK_SIZE/PGDIR_SIZE)
 DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR       0
-multiline_comment|/*&n; * Kernels own virtual memory area. &n; */
-macro_line|#ifdef CONFIG_CRIS_LOW_MAP
-DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START     KSEG_7
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
-DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END       KSEG_8
-macro_line|#else
-DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START     KSEG_D
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
-DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END       KSEG_E
-macro_line|#endif
-multiline_comment|/* Define some higher level generic page attributes. The PTE bits are&n; * defined in asm-cris/mmu.h, and these are just combinations of those.&n; */
-DECL|macro|__READABLE
-mdefine_line|#define __READABLE      (_PAGE_READ | _PAGE_SILENT_READ | _PAGE_ACCESSED)
-DECL|macro|__WRITEABLE
-mdefine_line|#define __WRITEABLE     (_PAGE_WRITE | _PAGE_SILENT_WRITE | _PAGE_MODIFIED)
-DECL|macro|_PAGE_TABLE
-mdefine_line|#define _PAGE_TABLE     (_PAGE_PRESENT | __READABLE | __WRITEABLE)
-DECL|macro|_PAGE_CHG_MASK
-mdefine_line|#define _PAGE_CHG_MASK  (PAGE_MASK | _PAGE_ACCESSED | _PAGE_MODIFIED)
-DECL|macro|PAGE_NONE
-mdefine_line|#define PAGE_NONE       __pgprot(_PAGE_PRESENT | _PAGE_ACCESSED)
-DECL|macro|PAGE_SHARED
-mdefine_line|#define PAGE_SHARED     __pgprot(_PAGE_PRESENT | __READABLE | _PAGE_WRITE | &bslash;&n;&t;&t;&t;&t; _PAGE_ACCESSED)
-DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY       __pgprot(_PAGE_PRESENT | __READABLE)  
-singleline_comment|// | _PAGE_COW
-DECL|macro|PAGE_READONLY
-mdefine_line|#define PAGE_READONLY   __pgprot(_PAGE_PRESENT | __READABLE)
-DECL|macro|PAGE_KERNEL
-mdefine_line|#define PAGE_KERNEL     __pgprot(_PAGE_GLOBAL | _PAGE_KERNEL | &bslash;&n;&t;&t;&t;&t; _PAGE_PRESENT | __READABLE | __WRITEABLE)
-DECL|macro|_KERNPG_TABLE
-mdefine_line|#define _KERNPG_TABLE   (_PAGE_TABLE | _PAGE_KERNEL)
-multiline_comment|/*&n; * CRIS can&squot;t do page protection for execute, and considers read the same.&n; * Also, write permissions imply read permissions. This is the closest we can&n; * get..&n; */
-DECL|macro|__P000
-mdefine_line|#define __P000&t;PAGE_NONE
-DECL|macro|__P001
-mdefine_line|#define __P001&t;PAGE_READONLY
-DECL|macro|__P010
-mdefine_line|#define __P010&t;PAGE_COPY
-DECL|macro|__P011
-mdefine_line|#define __P011&t;PAGE_COPY
-DECL|macro|__P100
-mdefine_line|#define __P100&t;PAGE_READONLY
-DECL|macro|__P101
-mdefine_line|#define __P101&t;PAGE_READONLY
-DECL|macro|__P110
-mdefine_line|#define __P110&t;PAGE_COPY
-DECL|macro|__P111
-mdefine_line|#define __P111&t;PAGE_COPY
-DECL|macro|__S000
-mdefine_line|#define __S000&t;PAGE_NONE
-DECL|macro|__S001
-mdefine_line|#define __S001&t;PAGE_READONLY
-DECL|macro|__S010
-mdefine_line|#define __S010&t;PAGE_SHARED
-DECL|macro|__S011
-mdefine_line|#define __S011&t;PAGE_SHARED
-DECL|macro|__S100
-mdefine_line|#define __S100&t;PAGE_READONLY
-DECL|macro|__S101
-mdefine_line|#define __S101&t;PAGE_READONLY
-DECL|macro|__S110
-mdefine_line|#define __S110&t;PAGE_SHARED
-DECL|macro|__S111
-mdefine_line|#define __S111&t;PAGE_SHARED
 multiline_comment|/* zero page used for uninitialized stuff */
 r_extern
 r_int
@@ -270,7 +90,7 @@ DECL|macro|pmd_clear
 mdefine_line|#define pmd_clear(xp)&t;do { pmd_val(*(xp)) = 0; } while (0)
 multiline_comment|/*&n; * The &quot;pgd_xxx()&quot; functions here are trivial for a folded two-level&n; * setup: the pgd is never bad, and a pmd always exists (as it&squot;s folded&n; * into the pgd entry)&n; */
 DECL|function|pgd_none
-r_static
+r_extern
 r_inline
 r_int
 id|pgd_none
@@ -285,7 +105,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pgd_bad
-r_static
+r_extern
 r_inline
 r_int
 id|pgd_bad
@@ -300,7 +120,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pgd_present
-r_static
+r_extern
 r_inline
 r_int
 id|pgd_present
@@ -315,7 +135,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|pgd_clear
-r_static
+r_extern
 r_inline
 r_void
 id|pgd_clear
@@ -329,7 +149,7 @@ id|pgdp
 )brace
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
 DECL|function|pte_read
-r_static
+r_extern
 r_inline
 r_int
 id|pte_read
@@ -350,7 +170,7 @@ id|_PAGE_READ
 suffix:semicolon
 )brace
 DECL|function|pte_write
-r_static
+r_extern
 r_inline
 r_int
 id|pte_write
@@ -371,7 +191,7 @@ id|_PAGE_WRITE
 suffix:semicolon
 )brace
 DECL|function|pte_exec
-r_static
+r_extern
 r_inline
 r_int
 id|pte_exec
@@ -392,7 +212,7 @@ id|_PAGE_READ
 suffix:semicolon
 )brace
 DECL|function|pte_dirty
-r_static
+r_extern
 r_inline
 r_int
 id|pte_dirty
@@ -413,7 +233,7 @@ id|_PAGE_MODIFIED
 suffix:semicolon
 )brace
 DECL|function|pte_young
-r_static
+r_extern
 r_inline
 r_int
 id|pte_young
@@ -433,8 +253,29 @@ op_amp
 id|_PAGE_ACCESSED
 suffix:semicolon
 )brace
+DECL|function|pte_file
+r_extern
+r_inline
+r_int
+id|pte_file
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_FILE
+suffix:semicolon
+)brace
 DECL|function|pte_wrprotect
-r_static
+r_extern
 r_inline
 id|pte_t
 id|pte_wrprotect
@@ -462,7 +303,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_rdprotect
-r_static
+r_extern
 r_inline
 id|pte_t
 id|pte_rdprotect
@@ -490,7 +331,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_exprotect
-r_static
+r_extern
 r_inline
 id|pte_t
 id|pte_exprotect
@@ -518,7 +359,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkclean
-r_static
+r_extern
 r_inline
 id|pte_t
 id|pte_mkclean
@@ -546,7 +387,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkold
-r_static
+r_extern
 r_inline
 id|pte_t
 id|pte_mkold
@@ -574,7 +415,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkwrite
-r_static
+r_extern
 r_inline
 id|pte_t
 id|pte_mkwrite
@@ -616,7 +457,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkread
-r_static
+r_extern
 r_inline
 id|pte_t
 id|pte_mkread
@@ -658,7 +499,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkexec
-r_static
+r_extern
 r_inline
 id|pte_t
 id|pte_mkexec
@@ -700,7 +541,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkdirty
-r_static
+r_extern
 r_inline
 id|pte_t
 id|pte_mkdirty
@@ -742,7 +583,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkyoung
-r_static
+r_extern
 r_inline
 id|pte_t
 id|pte_mkyoung
@@ -819,7 +660,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 multiline_comment|/* What actually goes as arguments to the various functions is less than&n; * obvious, but a rule of thumb is that struct page&squot;s goes as struct page *,&n; * really physical DRAM addresses are unsigned long&squot;s, and DRAM &quot;virtual&quot;&n; * addresses (the 0xc0xxxxxx&squot;s) goes as void *&squot;s.&n; */
 DECL|function|__mk_pte
-r_static
+r_extern
 r_inline
 id|pte_t
 id|__mk_pte
@@ -864,7 +705,7 @@ mdefine_line|#define mk_pte(page, pgprot) __mk_pte(page_address(page), (pgprot))
 DECL|macro|mk_pte_phys
 mdefine_line|#define mk_pte_phys(physpage, pgprot) &bslash;&n;({                                                                      &bslash;&n;        pte_t __pte;                                                    &bslash;&n;                                                                        &bslash;&n;        pte_val(__pte) = (physpage) + pgprot_val(pgprot);               &bslash;&n;        __pte;                                                          &bslash;&n;})
 DECL|function|pte_modify
-r_static
+r_extern
 r_inline
 id|pte_t
 id|pte_modify
@@ -905,7 +746,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* pte_val refers to a page in the 0x4xxxxxxx physical DRAM interval&n; * __pte_page(pte_val) refers to the &quot;virtual&quot; DRAM interval&n; * pte_pagenr refers to the page-number counted starting from the virtual DRAM start&n; */
 DECL|function|__pte_page
-r_static
+r_extern
 r_inline
 r_int
 r_int
@@ -943,30 +784,8 @@ mdefine_line|#define __page_address(page)    (PAGE_OFFSET + (((page) - mem_map) 
 DECL|macro|pte_page
 mdefine_line|#define pte_page(pte)           (mem_map+pte_pagenr(pte))
 multiline_comment|/* only the pte&squot;s themselves need to point to physical DRAM (see above)&n; * the pagetable links are purely handled within the kernel SW and thus&n; * don&squot;t need the __pa and __va transformations.&n; */
-DECL|function|pmd_page
-r_static
-r_inline
-r_int
-r_int
-id|pmd_page
-c_func
-(paren
-id|pmd_t
-id|pmd
-)paren
-(brace
-r_return
-id|pmd_val
-c_func
-(paren
-id|pmd
-)paren
-op_amp
-id|PAGE_MASK
-suffix:semicolon
-)brace
 DECL|function|pmd_set
-r_static
+r_extern
 r_inline
 r_void
 id|pmd_set
@@ -997,12 +816,16 @@ r_int
 id|ptep
 suffix:semicolon
 )brace
+DECL|macro|pmd_page
+mdefine_line|#define pmd_page(pmd)&t;&t;(pfn_to_page(pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
+DECL|macro|pmd_page_kernel
+mdefine_line|#define pmd_page_kernel(pmd)&t;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
 multiline_comment|/* to find an entry in a page-table-directory. */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
 multiline_comment|/* to find an entry in a page-table-directory */
 DECL|function|pgd_offset
-r_static
+r_extern
 r_inline
 id|pgd_t
 op_star
@@ -1034,7 +857,7 @@ DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|function|pmd_offset
-r_static
+r_extern
 r_inline
 id|pmd_t
 op_star
@@ -1059,50 +882,22 @@ id|dir
 suffix:semicolon
 )brace
 multiline_comment|/* Find an entry in the third-level page table.. */
-DECL|function|pte_offset
-r_static
-r_inline
-id|pte_t
-op_star
-id|pte_offset
-c_func
-(paren
-id|pmd_t
-op_star
-id|dir
-comma
-r_int
-r_int
-id|address
-)paren
-(brace
-r_return
-(paren
-id|pte_t
-op_star
-)paren
-id|pmd_page
-c_func
-(paren
-op_star
-id|dir
-)paren
-op_plus
-(paren
-(paren
-id|address
-op_rshift
-id|PAGE_SHIFT
-)paren
-op_amp
-(paren
-id|PTRS_PER_PTE
-op_minus
-l_int|1
-)paren
-)paren
-suffix:semicolon
-)brace
+DECL|macro|__pte_offset
+mdefine_line|#define __pte_offset(address) &bslash;&n;&t;(((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
+DECL|macro|pte_offset_kernel
+mdefine_line|#define pte_offset_kernel(dir, address) &bslash;&n;&t;((pte_t *) pmd_page_kernel(*(dir)) +  __pte_offset(address))
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map(dir, address) &bslash;&n;&t;((pte_t *)page_address(pmd_page(*(dir))) + __pte_offset(address))
+DECL|macro|pte_offset_map_nested
+mdefine_line|#define pte_offset_map_nested(dir, address) pte_offset_map(dir, address)
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte) do { } while (0)
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte) do { } while (0)
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(x)&t;&t;((unsigned long)(__va((x).pte)) &gt;&gt; PAGE_SHIFT)
+DECL|macro|pfn_pte
+mdefine_line|#define pfn_pte(pfn, prot)&t;__pte((__pa((pfn) &lt;&lt; PAGE_SHIFT)) | pgprot_val(prot))
 DECL|macro|pte_ERROR
 mdefine_line|#define pte_ERROR(e) &bslash;&n;        printk(&quot;%s:%d: bad pte %p(%08lx).&bslash;n&quot;, __FILE__, __LINE__, &amp;(e), pte_val(e))
 DECL|macro|pmd_ERROR
@@ -1119,7 +914,7 @@ suffix:semicolon
 multiline_comment|/* defined in head.S */
 multiline_comment|/*&n; * CRIS doesn&squot;t have any external MMU info: the kernel page&n; * tables contain all the necessary information.&n; * &n; * Actually I am not sure on what this could be used for.&n; */
 DECL|function|update_mmu_cache
-r_static
+r_extern
 r_inline
 r_void
 id|update_mmu_cache
@@ -1157,6 +952,10 @@ macro_line|#include &lt;asm-generic/pgtable.h&gt;
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()   do { } while (0)
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(x)&t;(pte_val(x) &gt;&gt; 6)
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(x)&t;__pte(((x) &lt;&lt; 6) | _PAGE_FILE)
 DECL|typedef|pte_addr_t
 r_typedef
 id|pte_t

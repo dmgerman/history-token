@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_SEMAPHORE_HELPER_H
 DECL|macro|_ASM_SEMAPHORE_HELPER_H
 mdefine_line|#define _ASM_SEMAPHORE_HELPER_H
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 DECL|macro|read
 mdefine_line|#define read(a) ((a)-&gt;counter)
 DECL|macro|inc
@@ -13,7 +14,7 @@ DECL|macro|count_inc
 mdefine_line|#define count_inc(a) ((*(a))++)
 multiline_comment|/*&n; * These two _must_ execute atomically wrt each other.&n; */
 DECL|function|wake_one_more
-r_static
+r_extern
 r_inline
 r_void
 id|wake_one_more
@@ -34,7 +35,7 @@ id|sem-&gt;waking
 suffix:semicolon
 )brace
 DECL|function|waking_non_zero
-r_static
+r_extern
 r_inline
 r_int
 id|waking_non_zero
@@ -55,10 +56,15 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|save_and_cli
+id|local_save_flags
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
@@ -86,7 +92,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -97,7 +103,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|waking_non_zero_interruptible
-r_static
+r_extern
 r_inline
 r_int
 id|waking_non_zero_interruptible
@@ -123,10 +129,15 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|local_save_flags
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
@@ -178,7 +189,7 @@ op_minus
 id|EINTR
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -189,7 +200,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|waking_non_zero_trylock
-r_static
+r_extern
 r_inline
 r_int
 id|waking_non_zero_trylock
@@ -210,10 +221,15 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_and_cli
+id|local_save_flags
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
@@ -249,7 +265,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sys_cris.c,v 1.1.1.1 2001/12/17 13:59:27 bjornw Exp $&n; *&n; * linux/arch/cris/kernel/sys_cris.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on some platforms.&n; * Since we don&squot;t have to do any backwards compatibility, our&n; * versions are done in the most &quot;normal&quot; way possible.&n; *&n; */
+multiline_comment|/* $Id: sys_cris.c,v 1.5 2003/07/04 08:27:52 starvik Exp $&n; *&n; * linux/arch/cris/kernel/sys_cris.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on some platforms.&n; * Since we don&squot;t have to do any backwards compatibility, our&n; * versions are done in the most &quot;normal&quot; way possible.&n; *&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -22,6 +22,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 id|fildes
 )paren
@@ -230,6 +231,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 id|args
 )paren
@@ -399,6 +401,7 @@ r_int
 id|third
 comma
 r_void
+id|__user
 op_star
 id|ptr
 comma
@@ -432,18 +435,50 @@ r_case
 id|SEMOP
 suffix:colon
 r_return
-id|sys_semop
+id|sys_semtimedop
 (paren
 id|first
 comma
 (paren
 r_struct
 id|sembuf
+id|__user
 op_star
 )paren
 id|ptr
 comma
 id|second
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_case
+id|SEMTIMEDOP
+suffix:colon
+r_return
+id|sys_semtimedop
+c_func
+(paren
+id|first
+comma
+(paren
+r_struct
+id|sembuf
+id|__user
+op_star
+)paren
+id|ptr
+comma
+id|second
+comma
+(paren
+r_const
+r_struct
+id|timespec
+id|__user
+op_star
+)paren
+id|fifth
 )paren
 suffix:semicolon
 r_case
@@ -488,6 +523,7 @@ comma
 (paren
 r_void
 op_star
+id|__user
 op_star
 )paren
 id|ptr
@@ -521,6 +557,7 @@ comma
 (paren
 r_struct
 id|msgbuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -569,6 +606,7 @@ comma
 (paren
 r_struct
 id|ipc_kludge
+id|__user
 op_star
 )paren
 id|ptr
@@ -608,6 +646,7 @@ comma
 (paren
 r_struct
 id|msgbuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -647,6 +686,7 @@ comma
 (paren
 r_struct
 id|msqid_ds
+id|__user
 op_star
 )paren
 id|ptr
@@ -667,6 +707,7 @@ id|first
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|ptr
@@ -692,6 +733,7 @@ id|raddr
 comma
 (paren
 id|ulong
+id|__user
 op_star
 )paren
 id|third
@@ -706,6 +748,7 @@ id|sys_shmdt
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|ptr
@@ -737,6 +780,7 @@ comma
 (paren
 r_struct
 id|shmid_ds
+id|__user
 op_star
 )paren
 id|ptr
@@ -746,7 +790,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|EINVAL
+id|ENOSYS
 suffix:semicolon
 )brace
 )brace

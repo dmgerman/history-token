@@ -8,6 +8,8 @@ DECL|macro|PROT_WRITE
 mdefine_line|#define PROT_WRITE&t;0x2&t;&t;/* page can be written */
 DECL|macro|PROT_EXEC
 mdefine_line|#define PROT_EXEC&t;0x4&t;&t;/* page can be executed */
+DECL|macro|PROT_SEM
+mdefine_line|#define PROT_SEM&t;0x8&t;&t;/* page may be used for atomic ops */
 DECL|macro|PROT_NONE
 mdefine_line|#define PROT_NONE&t;0x0&t;&t;/* page can not be accessed */
 DECL|macro|MAP_SHARED
@@ -30,6 +32,10 @@ DECL|macro|MAP_LOCKED
 mdefine_line|#define MAP_LOCKED&t;0x2000&t;&t;/* pages are locked */
 DECL|macro|MAP_NORESERVE
 mdefine_line|#define MAP_NORESERVE&t;0x4000&t;&t;/* don&squot;t check for reservations */
+DECL|macro|MAP_POPULATE
+mdefine_line|#define MAP_POPULATE&t;0x8000&t;&t;/* populate (prefault) pagetables */
+DECL|macro|MAP_NONBLOCK
+mdefine_line|#define MAP_NONBLOCK&t;0x10000&t;&t;/* do not block on IO */
 DECL|macro|MS_ASYNC
 mdefine_line|#define MS_ASYNC&t;1&t;&t;/* sync memory asynchronously */
 DECL|macro|MS_INVALIDATE
