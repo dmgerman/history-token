@@ -102,11 +102,11 @@ mdefine_line|#define F_REG(reg, chan)&t;(0x200*(chan) + ((reg)&lt;&lt;2))
 multiline_comment|/***************************************&n; * Memory access functions/macros      *&n; * (required to support Alpha systems) *&n; ***************************************/
 macro_line|#ifdef __KERNEL__
 DECL|macro|cpc_writeb
-mdefine_line|#define cpc_writeb(port,val)&t;{writeb((ucchar)(val),(ulong)(port)); mb();}
+mdefine_line|#define cpc_writeb(port,val)&t;{writeb((ucchar)(val),(port)); mb();}
 DECL|macro|cpc_writew
-mdefine_line|#define cpc_writew(port,val)&t;{writew((ushort)(val),(ulong)(port)); mb();}
+mdefine_line|#define cpc_writew(port,val)&t;{writew((ushort)(val),(port)); mb();}
 DECL|macro|cpc_writel
-mdefine_line|#define cpc_writel(port,val)&t;{writel((uclong)(val),(ulong)(port)); mb();}
+mdefine_line|#define cpc_writel(port,val)&t;{writel((uclong)(val),(port)); mb();}
 DECL|macro|cpc_readb
 mdefine_line|#define cpc_readb(port)&t;&t;readb(port)
 DECL|macro|cpc_readw
@@ -700,7 +700,9 @@ id|plxphys
 suffix:semicolon
 multiline_comment|/* PLX registers MMIO base (physical) */
 DECL|member|plxbase
-id|uclong
+r_void
+id|__iomem
+op_star
 id|plxbase
 suffix:semicolon
 multiline_comment|/* PLX registers MMIO base (virtual) */
@@ -715,7 +717,9 @@ id|scaphys
 suffix:semicolon
 multiline_comment|/* SCA registers MMIO base (physical) */
 DECL|member|scabase
-id|uclong
+r_void
+id|__iomem
+op_star
 id|scabase
 suffix:semicolon
 multiline_comment|/* SCA registers MMIO base (virtual) */
@@ -730,7 +734,9 @@ id|ramphys
 suffix:semicolon
 multiline_comment|/* On-board RAM MMIO base (physical) */
 DECL|member|rambase
-id|uclong
+r_void
+id|__iomem
+op_star
 id|rambase
 suffix:semicolon
 multiline_comment|/* On-board RAM MMIO base (virtual) */
@@ -750,7 +756,9 @@ id|falcphys
 suffix:semicolon
 multiline_comment|/* FALC registers MMIO base (physical) */
 DECL|member|falcbase
-id|uclong
+r_void
+id|__iomem
+op_star
 id|falcbase
 suffix:semicolon
 multiline_comment|/* FALC registers MMIO base (virtual) */
