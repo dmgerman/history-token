@@ -1,5 +1,5 @@
 multiline_comment|/* drivers/net/eepro100.c: An Intel i82557-559 Ethernet driver for Linux. */
-multiline_comment|/*&n;   NOTICE: For use with late 2.3 kernels only.&n;   May not compile for kernels 2.3.43-47.&n;&t;Written 1996-1999 by Donald Becker.&n;&n;&t;The driver also contains updates by different kernel developers&n;&t;(see incomplete list below).&n;&t;Current maintainer is Andrey V. Savochkin &lt;saw@saw.sw.com.sg&gt;.&n;&t;Please use this email address and linux-kernel mailing list for bug reports.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver is for the Intel EtherExpress Pro100 (Speedo3) design.&n;&t;It should work with all i82557/558/559 boards.&n;&n;&t;Version history:&n;&t;1998 Apr - 2000 Feb  Andrey V. Savochkin &lt;saw@saw.sw.com.sg&gt;&n;&t;&t;Serious fixes for multicast filter list setting, TX timeout routine;&n;&t;&t;RX ring refilling logic;  other stuff&n;&t;2000 Feb  Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;&t;Convert to new PCI driver interface&n;&t;2000 Mar 24  Dragan Stancevic &lt;visitor@valinux.com&gt;&n;&t;&t;Disabled FC and ER, to avoid lockups when when we get FCP interrupts.&n;&t;2000 Jul 17 Goutham Rao &lt;goutham.rao@intel.com&gt;&n;&t;&t;PCI DMA API fixes, adding pci_dma_sync_single calls where neccesary&n;*/
+multiline_comment|/*&n;   NOTICE: For use with late 2.3 kernels only.&n;   May not compile for kernels 2.3.43-47.&n;&t;Written 1996-1999 by Donald Becker.&n;&n;&t;The driver also contains updates by different kernel developers&n;&t;(see incomplete list below).&n;&t;Current maintainer is Andrey V. Savochkin &lt;saw@saw.sw.com.sg&gt;.&n;&t;Please use this email address and linux-kernel mailing list for bug reports.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver is for the Intel EtherExpress Pro100 (Speedo3) design.&n;&t;It should work with all i82557/558/559 boards.&n;&n;&t;Version history:&n;&t;1998 Apr - 2000 Feb  Andrey V. Savochkin &lt;saw@saw.sw.com.sg&gt;&n;&t;&t;Serious fixes for multicast filter list setting, TX timeout routine;&n;&t;&t;RX ring refilling logic;  other stuff&n;&t;2000 Feb  Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;&t;Convert to new PCI driver interface&n;&t;2000 Mar 24  Dragan Stancevic &lt;visitor@valinux.com&gt;&n;&t;&t;Disabled FC and ER, to avoid lockups when when we get FCP interrupts.&n;&t;2000 Jul 17 Goutham Rao &lt;goutham.rao@intel.com&gt;&n;&t;&t;PCI DMA API fixes, adding pci_dma_sync_single calls where neccesary&n;    2000 Aug 31 David Mosberger &lt;davidm@hpl.hp.com&gt;&n;&t;    RX_ALIGN support: enables rx DMA without causing unaligned accesses.&n;*/
 DECL|variable|version
 r_static
 r_const
@@ -48,16 +48,17 @@ r_int
 id|rxdmacount
 multiline_comment|/* = 0 */
 suffix:semicolon
-multiline_comment|/* Set the copy breakpoint for the copy-only-tiny-buffer Rx method.&n;   Lower values use more memory, but are faster. */
-macro_line|#if defined(__alpha__) || defined(__sparc__) || defined(__mips__) || &bslash;&n;    defined(__arm__)
-DECL|variable|rx_copybreak
-r_static
-r_int
-id|rx_copybreak
-op_assign
-l_int|1518
-suffix:semicolon
+macro_line|#if defined(__ia64__) || defined(__alpha__) || defined(__sparc__) || defined(__mips__) || &bslash;&n;&t;defined(__arm__)
+multiline_comment|/* align rx buffers to 2 bytes so that IP header is aligned */
+DECL|macro|RX_ALIGN
+macro_line|# define RX_ALIGN
+DECL|macro|RxFD_ALIGNMENT
+macro_line|# define RxFD_ALIGNMENT&t;&t;__attribute__ ((aligned (2), packed))
 macro_line|#else
+DECL|macro|RxFD_ALIGNMENT
+macro_line|# define RxFD_ALIGNMENT
+macro_line|#endif
+multiline_comment|/* Set the copy breakpoint for the copy-only-tiny-buffer Rx method.&n;   Lower values use more memory, but are faster. */
 DECL|variable|rx_copybreak
 r_static
 r_int
@@ -65,7 +66,6 @@ id|rx_copybreak
 op_assign
 l_int|200
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Maximum events (Rx packets, etc.) to handle at each interrupt. */
 DECL|variable|max_interrupt_work
 r_static
@@ -928,6 +928,7 @@ id|descriptor
 (brace
 multiline_comment|/* A generic descriptor. */
 DECL|member|cmd_status
+r_volatile
 id|s32
 id|cmd_status
 suffix:semicolon
@@ -954,6 +955,7 @@ id|RxFD
 (brace
 multiline_comment|/* Receive frame descriptor. */
 DECL|member|status
+r_volatile
 id|s32
 id|status
 suffix:semicolon
@@ -971,7 +973,9 @@ DECL|member|count
 id|u32
 id|count
 suffix:semicolon
+DECL|variable|RxFD_ALIGNMENT
 )brace
+id|RxFD_ALIGNMENT
 suffix:semicolon
 multiline_comment|/* Selected elements of the Tx/RxFD.status word. */
 DECL|enum|RxFD_bits
@@ -1729,6 +1733,31 @@ op_star
 id|pdev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PM
+r_static
+r_int
+id|eepro100_suspend
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+id|u32
+id|state
+)paren
+suffix:semicolon
+r_static
+r_int
+id|eepro100_resume
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+macro_line|#endif
 r_static
 r_int
 id|do_eeprom_cmd
@@ -5635,6 +5664,17 @@ id|RxFD
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef RX_ALIGN
+id|skb_reserve
+c_func
+(paren
+id|skb
+comma
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* Align IP on 16 byte boundary */
+macro_line|#endif
 id|sp-&gt;rx_skbuff
 (braket
 id|i
@@ -7697,6 +7737,17 @@ id|RxFD
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef RX_ALIGN
+id|skb_reserve
+c_func
+(paren
+id|skb
+comma
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* Align IP on 16 byte boundary */
+macro_line|#endif
 id|sp-&gt;rx_skbuff
 (braket
 id|entry
@@ -11412,6 +11463,7 @@ id|probe
 suffix:colon
 id|eepro100_init_one
 comma
+macro_line|# if defined(MODULE) || defined(CONFIG_HOTPLUG)
 id|remove
 suffix:colon
 id|__devexit_p
@@ -11420,6 +11472,7 @@ c_func
 id|eepro100_remove_one
 )paren
 comma
+macro_line|# endif
 macro_line|#ifdef CONFIG_PM
 id|suspend
 suffix:colon
