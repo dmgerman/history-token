@@ -2,12 +2,6 @@ multiline_comment|/*&n; * Some of the code in this file has been gleaned from th
 macro_line|#ifndef _ASM_SRAT_H_
 DECL|macro|_ASM_SRAT_H_
 mdefine_line|#define _ASM_SRAT_H_
-r_extern
-r_int
-id|physnode_map
-(braket
-)braket
-suffix:semicolon
 DECL|macro|MAX_NUMNODES
 mdefine_line|#define MAX_NUMNODES&t;&t;8
 r_extern

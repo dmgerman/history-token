@@ -25,7 +25,7 @@ suffix:semicolon
 multiline_comment|/*&n; * numa interface - we expect the numa architecture specfic code to have&n; *                  populated the following initialisation.&n; *&n; * 1) numnodes         - the total number of nodes configured in the system&n; * 2) physnode_map     - the mapping between a pfn and owning node&n; * 3) node_start_pfn   - the starting page frame number for a node&n; * 3) node_end_pfn     - the ending page fram number for a node&n; */
 multiline_comment|/*&n; * physnode_map keeps track of the physical memory layout of a generic&n; * numa node on a 256Mb break (each element of the array will&n; * represent 256Mb of memory and will be marked by the node id.  so,&n; * if the first gig is on node 0, and the second gig is on node 1&n; * physnode_map will contain:&n; *&n; *     physnode_map[0-3] = 0;&n; *     physnode_map[4-7] = 1;&n; *     physnode_map[8- ] = -1;&n; */
 DECL|variable|physnode_map
-r_int
+id|u8
 id|physnode_map
 (braket
 id|MAX_ELEMENTS

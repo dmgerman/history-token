@@ -3,12 +3,6 @@ macro_line|#ifndef NUMAQ_H
 DECL|macro|NUMAQ_H
 mdefine_line|#define NUMAQ_H
 macro_line|#ifdef CONFIG_X86_NUMAQ
-r_extern
-r_int
-id|physnode_map
-(braket
-)braket
-suffix:semicolon
 DECL|macro|MAX_NUMNODES
 mdefine_line|#define MAX_NUMNODES&t;&t;8
 r_extern

@@ -131,12 +131,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_extern
-r_int
-id|physnode_map
-(braket
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * for each node mark the regions&n; *        TOPOFMEM = hi_shrd_mem_start + hi_shrd_mem_size&n; *&n; * need to be very careful to not mark 1024+ as belonging&n; * to node 0. will want 1027 to show as belonging to node 1&n; * example:&n; *  TOPOFMEM = 1024&n; * 1024 &gt;&gt; 8 = 4 (subtract 1 for starting at 0]&n; * tmpvar = TOPOFMEM - 256 = 768&n; * 1024 &gt;&gt; 8 = 4 (subtract 1 for starting at 0]&n; * &n; */
 DECL|function|initialize_physnode_map
 r_static
