@@ -1,12 +1,13 @@
+multiline_comment|/*&n; * Copyright (C) 1993, 2000 Linus Torvalds&n; *&n; * Delay routines, using a pre-computed &quot;loops_per_jiffy&quot; value.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt; /* for udelay&squot;s use of smp_processor_id */
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-multiline_comment|/*&n; * Copyright (C) 1993, 2000 Linus Torvalds&n; *&n; * Delay routines, using a pre-computed &quot;loops_per_jiffy&quot; value.&n; */
 multiline_comment|/*&n; * Use only for very small delays (&lt; 1 msec). &n; *&n; * The active part of our cycle counter is only 32-bits wide, and&n; * we&squot;re treating the difference between two marks as signed.  On&n; * a 1GHz box, that&squot;s about 2 seconds.&n; */
-DECL|function|__delay
 r_void
+DECL|function|__delay
 id|__delay
 c_func
 (paren
@@ -44,18 +45,21 @@ id|loops
 )paren
 suffix:semicolon
 )brace
-DECL|function|__udelay
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|LPJ
+mdefine_line|#define LPJ&t; cpu_data[smp_processor_id()].loops_per_jiffy
+macro_line|#else
+DECL|macro|LPJ
+mdefine_line|#define LPJ&t; loops_per_jiffy
+macro_line|#endif
 r_void
-id|__udelay
+DECL|function|udelay
+id|udelay
 c_func
 (paren
 r_int
 r_int
 id|usecs
-comma
-r_int
-r_int
-id|lpj
 )paren
 (brace
 id|usecs
@@ -74,7 +78,7 @@ op_div
 l_int|1000000
 )paren
 op_star
-id|lpj
+id|LPJ
 suffix:semicolon
 id|__delay
 c_func
@@ -88,42 +92,58 @@ l_int|32
 )paren
 suffix:semicolon
 )brace
-DECL|function|udelay
-r_void
+DECL|variable|udelay
+id|EXPORT_SYMBOL
+c_func
+(paren
 id|udelay
+)paren
+suffix:semicolon
+r_void
+DECL|function|ndelay
+id|ndelay
 c_func
 (paren
 r_int
 r_int
-id|usecs
+id|nsecs
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
-id|__udelay
-c_func
+id|nsecs
+op_mul_assign
 (paren
-id|usecs
-comma
-id|cpu_data
-(braket
-id|smp_processor_id
-c_func
 (paren
+(paren
+r_int
+r_int
 )paren
-)braket
-dot
-id|loops_per_jiffy
+id|HZ
+op_lshift
+l_int|32
+)paren
+op_div
+l_int|1000000000
+)paren
+op_star
+id|LPJ
+suffix:semicolon
+id|__delay
+c_func
+(paren
+(paren
+r_int
+)paren
+id|nsecs
+op_rshift
+l_int|32
 )paren
 suffix:semicolon
-macro_line|#else
-id|__udelay
-c_func
-(paren
-id|usecs
-comma
-id|loops_per_jiffy
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
+DECL|variable|ndelay
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ndelay
+)paren
+suffix:semicolon
 eof
