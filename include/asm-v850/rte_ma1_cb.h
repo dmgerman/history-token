@@ -3,6 +3,22 @@ macro_line|#ifndef __V850_RTE_MA1_CB_H__
 DECL|macro|__V850_RTE_MA1_CB_H__
 mdefine_line|#define __V850_RTE_MA1_CB_H__
 macro_line|#include &lt;asm/rte_cb.h&gt;&t;&t;/* Common defs for Midas RTE-CB boards.  */
+DECL|macro|PLATFORM
+mdefine_line|#define PLATFORM&t;&t;&quot;rte-v850e/ma1-cb&quot;
+DECL|macro|PLATFORM_LONG
+mdefine_line|#define PLATFORM_LONG&t;&t;&quot;Midas lab RTE-V850E/MA1-CB&quot;
+DECL|macro|CPU_CLOCK_FREQ
+mdefine_line|#define CPU_CLOCK_FREQ&t;&t;50000000 /* 50MHz */
+multiline_comment|/* 1MB of onboard SRAM.  Note that the monitor ROM uses parts of this&n;   for its own purposes, so care must be taken.  Some address lines are&n;   not decoded, so the SRAM area is mirrored every 1MB from 0x400000 to&n;   0x800000 (exclusive).  */
+DECL|macro|SRAM_ADDR
+mdefine_line|#define SRAM_ADDR&t;&t;0x00400000
+DECL|macro|SRAM_SIZE
+mdefine_line|#define SRAM_SIZE&t;&t;0x00100000 /* 1MB */
+multiline_comment|/* 32MB of onbard SDRAM.  */
+DECL|macro|SDRAM_ADDR
+mdefine_line|#define SDRAM_ADDR&t;&t;0x00800000
+DECL|macro|SDRAM_SIZE
+mdefine_line|#define SDRAM_SIZE&t;&t;0x02000000 /* 32MB */
 multiline_comment|/* CPU addresses of GBUS memory spaces.  */
 DECL|macro|GCS0_ADDR
 mdefine_line|#define GCS0_ADDR&t;&t;0x05000000 /* GCS0 - Common SRAM (2MB) */
@@ -24,30 +40,17 @@ DECL|macro|GCS6_ADDR
 mdefine_line|#define GCS6_ADDR&t;&t;0x07980000 /* GCS6 - PCI control registers */
 DECL|macro|GCS6_SIZE
 mdefine_line|#define GCS6_SIZE&t;&t;0x00000200 /*   512B */
-multiline_comment|/* The GBUS GINT0 - GINT4 interrupts are connected to the INTP000 - INTP011&n;   pins on the CPU.  These are shared among the GBUS interrupts.  */
+multiline_comment|/* For &lt;asm/page.h&gt; */
+DECL|macro|PAGE_OFFSET
+mdefine_line|#define PAGE_OFFSET &t;&t;SRAM_ADDR
+multiline_comment|/* The GBUS GINT0 - GINT3 interrupts are connected to the INTP000 - INTP011&n;   pins on the CPU.  These are shared among the GBUS interrupts.  */
 DECL|macro|IRQ_GINT
 mdefine_line|#define IRQ_GINT(n)&t;&t;IRQ_INTP(n)
 DECL|macro|IRQ_GINT_NUM
 mdefine_line|#define IRQ_GINT_NUM&t;&t;4
-DECL|macro|PLATFORM
-mdefine_line|#define PLATFORM&t;&t;&quot;rte-v850e/ma1-cb&quot;
-DECL|macro|PLATFORM_LONG
-mdefine_line|#define PLATFORM_LONG&t;&t;&quot;Midas lab RTE-V850E/MA1-CB&quot;
-DECL|macro|CPU_CLOCK_FREQ
-mdefine_line|#define CPU_CLOCK_FREQ&t;&t;50000000 /* 50MHz */
-multiline_comment|/* 1MB of onboard SRAM.  Note that the monitor ROM uses parts of this&n;   for its own purposes, so care must be taken.  Some address lines are&n;   not decoded, so the SRAM area is mirrored every 1MB from 0x400000 to&n;   0x800000 (exclusive).  */
-DECL|macro|SRAM_ADDR
-mdefine_line|#define SRAM_ADDR&t;&t;0x00400000
-DECL|macro|SRAM_SIZE
-mdefine_line|#define SRAM_SIZE&t;&t;0x00100000 /* 1MB */
-multiline_comment|/* 32MB of onbard SDRAM.  */
-DECL|macro|SDRAM_ADDR
-mdefine_line|#define SDRAM_ADDR&t;&t;0x00800000
-DECL|macro|SDRAM_SIZE
-mdefine_line|#define SDRAM_SIZE&t;&t;0x02000000 /* 32MB */
-multiline_comment|/* For &lt;asm/page.h&gt; */
-DECL|macro|PAGE_OFFSET
-mdefine_line|#define PAGE_OFFSET &t;&t;SRAM_ADDR
+multiline_comment|/* Used by &lt;asm/rte_cb.h&gt; to derive NUM_MACH_IRQS.  */
+DECL|macro|NUM_RTE_CB_IRQS
+mdefine_line|#define NUM_RTE_CB_IRQS&t;&t;NUM_CPU_IRQS
 macro_line|#ifdef CONFIG_ROM_KERNEL
 multiline_comment|/* Kernel is in ROM, starting at address 0.  */
 DECL|macro|INTV_BASE
