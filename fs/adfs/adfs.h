@@ -385,8 +385,10 @@ op_star
 id|sb
 comma
 r_int
+r_int
 id|frag_id
 comma
+r_int
 r_int
 id|offset
 )paren
