@@ -2762,12 +2762,12 @@ r_return
 id|BLKPREP_OK
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * scsi_check_sdev: if we can send requests to sdev, return 0 else return 1.&n; *&n; * Called with the queue_lock held.&n; */
-DECL|function|scsi_check_sdev
+multiline_comment|/*&n; * scsi_dev_queue_ready: if we can send requests to sdev, return 1 else&n; * return 0.&n; *&n; * Called with the queue_lock held.&n; */
+DECL|function|scsi_dev_queue_ready
 r_static
 r_inline
 r_int
-id|scsi_check_sdev
+id|scsi_dev_queue_ready
 c_func
 (paren
 r_struct
@@ -2789,7 +2789,7 @@ op_ge
 id|sdev-&gt;queue_depth
 )paren
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2840,7 +2840,7 @@ id|q
 )paren
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -2850,18 +2850,18 @@ c_cond
 id|sdev-&gt;device_blocked
 )paren
 r_return
-l_int|1
-suffix:semicolon
-r_return
 l_int|0
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
 )brace
-multiline_comment|/*&n; * scsi_check_shost: if we can send requests to shost, return 0 else return 1.&n; *&n; * Called with queue_lock and host_lock held.&n; */
-DECL|function|scsi_check_shost
+multiline_comment|/*&n; * scsi_host_queue_ready: if we can send requests to shost, return 1 else&n; * return 0.&n; *&n; * Called with queue_lock and host_lock held.&n; */
+DECL|function|scsi_host_queue_ready
 r_static
 r_inline
 r_int
-id|scsi_check_shost
+id|scsi_host_queue_ready
 c_func
 (paren
 r_struct
@@ -2886,7 +2886,7 @@ c_cond
 id|shost-&gt;in_recovery
 )paren
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2932,7 +2932,7 @@ id|q
 )paren
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -2948,7 +2948,7 @@ id|sdev-&gt;starved_entry
 )paren
 )paren
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -3008,11 +3008,11 @@ id|shost-&gt;starved_list
 )paren
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function:    scsi_request_fn()&n; *&n; * Purpose:     Main strategy routine for SCSI.&n; *&n; * Arguments:   q       - Pointer to actual queue.&n; *&n; * Returns:     Nothing&n; *&n; * Lock status: IO request lock assumed to be held when called.&n; */
@@ -3087,7 +3087,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|scsi_check_sdev
+op_logical_neg
+id|scsi_dev_queue_ready
 c_func
 (paren
 id|q
@@ -3109,7 +3110,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|scsi_check_shost
+op_logical_neg
+id|scsi_host_queue_ready
 c_func
 (paren
 id|q
