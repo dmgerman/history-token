@@ -2103,9 +2103,9 @@ id|iblock
 )paren
 op_logical_and
 (paren
-id|iblock
+id|ni-&gt;initialized_size
 OL
-id|dblock
+id|vi-&gt;i_size
 )paren
 )paren
 )paren
