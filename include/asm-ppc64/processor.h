@@ -1215,12 +1215,6 @@ suffix:semicolon
 )brace
 DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)&t;prefetchw(x)
-macro_line|#ifdef CONFIG_SCHED_SMT
-DECL|macro|ARCH_HAS_SCHED_DOMAIN
-mdefine_line|#define ARCH_HAS_SCHED_DOMAIN
-DECL|macro|ARCH_HAS_SCHED_WAKE_IDLE
-mdefine_line|#define ARCH_HAS_SCHED_WAKE_IDLE
-macro_line|#endif
 macro_line|#endif /* ASSEMBLY */
 multiline_comment|/*&n; * Number of entries in the SLB. If this ever changes we should handle&n; * it with a use a cpu feature fixup.&n; */
 DECL|macro|SLB_NUM_ENTRIES
