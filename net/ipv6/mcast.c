@@ -4699,6 +4699,10 @@ op_amp
 id|ma-&gt;mca_refcnt
 )paren
 suffix:semicolon
+id|ma-&gt;mca_flags
+op_or_assign
+id|MAF_TIMER_RUNNING
+suffix:semicolon
 )brace
 DECL|function|mld_marksources
 r_static
