@@ -14,6 +14,12 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+DECL|macro|DC395X_NAME
+mdefine_line|#define DC395X_NAME&t;&quot;dc395x&quot;
+DECL|macro|DC395X_BANNER
+mdefine_line|#define DC395X_BANNER&t;&quot;Tekram DC395(U/UW/F), DC315(U) - ASIC TRM-S1040&quot;
+DECL|macro|DC395X_VERSION
+mdefine_line|#define DC395X_VERSION&t;&quot;v2.05, 2004/03/08&quot;
 multiline_comment|/*---------------------------------------------------------------------------&n;                                  Features&n; ---------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Set to disable parts of the driver&n; */
 multiline_comment|/*#define DC395x_NO_DISCONNECT*/
