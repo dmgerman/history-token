@@ -41,10 +41,6 @@ mdefine_line|#define GRPQUOTA  1&t;&t;/* element used for group quotas */
 multiline_comment|/*&n; * Definitions for the default names of the quotas files.&n; */
 DECL|macro|INITQFNAMES
 mdefine_line|#define INITQFNAMES { &bslash;&n;&t;&quot;user&quot;,    /* USRQUOTA */ &bslash;&n;&t;&quot;group&quot;,   /* GRPQUOTA */ &bslash;&n;&t;&quot;undefined&quot;, &bslash;&n;};
-DECL|macro|QUOTAFILENAME
-mdefine_line|#define QUOTAFILENAME &quot;quota&quot;
-DECL|macro|QUOTAGROUP
-mdefine_line|#define QUOTAGROUP &quot;staff&quot;
 multiline_comment|/*&n; * Command definitions for the &squot;quotactl&squot; system call.&n; * The commands are broken into a main command defined below&n; * and a subcommand that is used to convey the type of&n; * quota that is being manipulated (see above).&n; */
 DECL|macro|SUBCMDMASK
 mdefine_line|#define SUBCMDMASK  0x00ff
@@ -53,7 +49,117 @@ mdefine_line|#define SUBCMDSHIFT 8
 DECL|macro|QCMD
 mdefine_line|#define QCMD(cmd, type)  (((cmd) &lt;&lt; SUBCMDSHIFT) | ((type) &amp; SUBCMDMASK))
 DECL|macro|Q_SYNC
-mdefine_line|#define Q_SYNC     0x0600&t;/* sync disk copy of a filesystems quotas */
+mdefine_line|#define Q_SYNC     0x800001&t;/* sync disk copy of a filesystems quotas */
+DECL|macro|Q_QUOTAON
+mdefine_line|#define Q_QUOTAON  0x800002&t;/* turn quotas on */
+DECL|macro|Q_QUOTAOFF
+mdefine_line|#define Q_QUOTAOFF 0x800003&t;/* turn quotas off */
+DECL|macro|Q_GETFMT
+mdefine_line|#define Q_GETFMT   0x800004&t;/* get quota format used on given filesystem */
+DECL|macro|Q_GETINFO
+mdefine_line|#define Q_GETINFO  0x800005&t;/* get information about quota files */
+DECL|macro|Q_SETINFO
+mdefine_line|#define Q_SETINFO  0x800006&t;/* set information about quota files */
+DECL|macro|Q_GETQUOTA
+mdefine_line|#define Q_GETQUOTA 0x800007&t;/* get user quota structure */
+DECL|macro|Q_SETQUOTA
+mdefine_line|#define Q_SETQUOTA 0x800008&t;/* set user quota structure */
+multiline_comment|/*&n; * Quota structure used for communication with userspace via quotactl&n; * Following flags are used to specify which fields are valid&n; */
+DECL|macro|QIF_BLIMITS
+mdefine_line|#define QIF_BLIMITS&t;1
+DECL|macro|QIF_SPACE
+mdefine_line|#define QIF_SPACE&t;2
+DECL|macro|QIF_ILIMITS
+mdefine_line|#define QIF_ILIMITS&t;4
+DECL|macro|QIF_INODES
+mdefine_line|#define QIF_INODES&t;8
+DECL|macro|QIF_BTIME
+mdefine_line|#define QIF_BTIME&t;16
+DECL|macro|QIF_ITIME
+mdefine_line|#define QIF_ITIME&t;32
+DECL|macro|QIF_LIMITS
+mdefine_line|#define QIF_LIMITS&t;(QIF_BLIMITS | QIF_ILIMITS)
+DECL|macro|QIF_USAGE
+mdefine_line|#define QIF_USAGE&t;(QIF_SPACE | QIF_INODES)
+DECL|macro|QIF_TIMES
+mdefine_line|#define QIF_TIMES&t;(QIF_BTIME | QIF_ITIME)
+DECL|macro|QIF_ALL
+mdefine_line|#define QIF_ALL&t;&t;(QIF_LIMITS | QIF_USAGE | QIF_TIMES)
+DECL|struct|if_dqblk
+r_struct
+id|if_dqblk
+(brace
+DECL|member|dqb_bhardlimit
+id|__u64
+id|dqb_bhardlimit
+suffix:semicolon
+DECL|member|dqb_bsoftlimit
+id|__u64
+id|dqb_bsoftlimit
+suffix:semicolon
+DECL|member|dqb_curspace
+id|__u64
+id|dqb_curspace
+suffix:semicolon
+DECL|member|dqb_ihardlimit
+id|__u64
+id|dqb_ihardlimit
+suffix:semicolon
+DECL|member|dqb_isoftlimit
+id|__u64
+id|dqb_isoftlimit
+suffix:semicolon
+DECL|member|dqb_curinodes
+id|__u64
+id|dqb_curinodes
+suffix:semicolon
+DECL|member|dqb_btime
+id|__u64
+id|dqb_btime
+suffix:semicolon
+DECL|member|dqb_itime
+id|__u64
+id|dqb_itime
+suffix:semicolon
+DECL|member|dqb_valid
+id|__u32
+id|dqb_valid
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Structure used for setting quota information about file via quotactl&n; * Following flags are used to specify which fields are valid&n; */
+DECL|macro|IIF_BGRACE
+mdefine_line|#define IIF_BGRACE&t;1
+DECL|macro|IIF_IGRACE
+mdefine_line|#define IIF_IGRACE&t;2
+DECL|macro|IIF_FLAGS
+mdefine_line|#define IIF_FLAGS&t;4
+DECL|macro|IIF_ALL
+mdefine_line|#define IIF_ALL&t;&t;(IIF_BGRACE | IIF_IGRACE | IIF_FLAGS)
+DECL|struct|if_dqinfo
+r_struct
+id|if_dqinfo
+(brace
+DECL|member|dqi_bgrace
+id|__u64
+id|dqi_bgrace
+suffix:semicolon
+DECL|member|dqi_igrace
+id|__u64
+id|dqi_igrace
+suffix:semicolon
+DECL|member|dqi_flags
+id|__u32
+id|dqi_flags
+suffix:semicolon
+DECL|member|dqi_valid
+id|__u32
+id|dqi_valid
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/xqm.h&gt;
 multiline_comment|/*&n; * Data for one user/group kept in memory&n; */
 DECL|struct|mem_dqblk
 r_struct
@@ -137,7 +243,6 @@ id|u
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
 DECL|macro|DQF_MASK
 mdefine_line|#define DQF_MASK 0xffff&t;&t;/* Mask for format specific flags */
 DECL|macro|DQF_INFO_DIRTY
@@ -164,27 +269,6 @@ DECL|macro|info_dirty
 mdefine_line|#define info_dirty(info) ((info)-&gt;dqi_flags &amp; DQF_INFO_DIRTY)
 DECL|macro|sb_dqopt
 mdefine_line|#define sb_dqopt(sb) (&amp;(sb)-&gt;s_dquot)
-macro_line|#endif  /* __KERNEL__ */
-multiline_comment|/*&n; * Shorthand notation.&n; */
-DECL|macro|dq_bhardlimit
-mdefine_line|#define&t;dq_bhardlimit&t;dq_dqb.dqb_bhardlimit
-DECL|macro|dq_bsoftlimit
-mdefine_line|#define&t;dq_bsoftlimit&t;dq_dqb.dqb_bsoftlimit
-DECL|macro|dq_curspace
-mdefine_line|#define&t;dq_curspace&t;dq_dqb.dqb_curspace
-DECL|macro|dq_ihardlimit
-mdefine_line|#define&t;dq_ihardlimit&t;dq_dqb.dqb_ihardlimit
-DECL|macro|dq_isoftlimit
-mdefine_line|#define&t;dq_isoftlimit&t;dq_dqb.dqb_isoftlimit
-DECL|macro|dq_curinodes
-mdefine_line|#define&t;dq_curinodes&t;dq_dqb.dqb_curinodes
-DECL|macro|dq_btime
-mdefine_line|#define&t;dq_btime&t;dq_dqb.dqb_btime
-DECL|macro|dq_itime
-mdefine_line|#define&t;dq_itime&t;dq_dqb.dqb_itime
-DECL|macro|dqoff
-mdefine_line|#define dqoff(UID)      ((loff_t)((UID) * sizeof (struct dqblk)))
-macro_line|#ifdef __KERNEL__
 r_extern
 r_int
 id|nr_dquots
@@ -392,7 +476,7 @@ r_int
 id|type
 )paren
 suffix:semicolon
-multiline_comment|/* Read main info about file */
+multiline_comment|/* Read main info about file - called on quotaon() */
 DECL|member|write_file_info
 r_int
 (paren
@@ -457,6 +541,320 @@ suffix:semicolon
 multiline_comment|/* Write (or delete) structure for one user */
 )brace
 suffix:semicolon
+multiline_comment|/* Operations working with dquots */
+DECL|struct|dquot_operations
+r_struct
+id|dquot_operations
+(brace
+DECL|member|initialize
+r_void
+(paren
+op_star
+id|initialize
+)paren
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|member|drop
+r_void
+(paren
+op_star
+id|drop
+)paren
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
+DECL|member|alloc_space
+r_int
+(paren
+op_star
+id|alloc_space
+)paren
+(paren
+r_struct
+id|inode
+op_star
+comma
+id|qsize_t
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|member|alloc_inode
+r_int
+(paren
+op_star
+id|alloc_inode
+)paren
+(paren
+r_const
+r_struct
+id|inode
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|member|free_space
+r_void
+(paren
+op_star
+id|free_space
+)paren
+(paren
+r_struct
+id|inode
+op_star
+comma
+id|qsize_t
+)paren
+suffix:semicolon
+DECL|member|free_inode
+r_void
+(paren
+op_star
+id|free_inode
+)paren
+(paren
+r_const
+r_struct
+id|inode
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|member|transfer
+r_int
+(paren
+op_star
+id|transfer
+)paren
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|iattr
+op_star
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* Operations handling requests from userspace */
+DECL|struct|quotactl_ops
+r_struct
+id|quotactl_ops
+(brace
+DECL|member|quota_on
+r_int
+(paren
+op_star
+id|quota_on
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_int
+comma
+r_int
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
+DECL|member|quota_off
+r_int
+(paren
+op_star
+id|quota_off
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|member|quota_sync
+r_int
+(paren
+op_star
+id|quota_sync
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|member|get_info
+r_int
+(paren
+op_star
+id|get_info
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_int
+comma
+r_struct
+id|if_dqinfo
+op_star
+)paren
+suffix:semicolon
+DECL|member|set_info
+r_int
+(paren
+op_star
+id|set_info
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_int
+comma
+r_struct
+id|if_dqinfo
+op_star
+)paren
+suffix:semicolon
+DECL|member|get_dqblk
+r_int
+(paren
+op_star
+id|get_dqblk
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_int
+comma
+id|qid_t
+comma
+r_struct
+id|if_dqblk
+op_star
+)paren
+suffix:semicolon
+DECL|member|set_dqblk
+r_int
+(paren
+op_star
+id|set_dqblk
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_int
+comma
+id|qid_t
+comma
+r_struct
+id|if_dqblk
+op_star
+)paren
+suffix:semicolon
+DECL|member|get_xstate
+r_int
+(paren
+op_star
+id|get_xstate
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_struct
+id|fs_quota_stat
+op_star
+)paren
+suffix:semicolon
+DECL|member|set_xstate
+r_int
+(paren
+op_star
+id|set_xstate
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|member|get_xquota
+r_int
+(paren
+op_star
+id|get_xquota
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_int
+comma
+id|qid_t
+comma
+r_struct
+id|fs_disk_quota
+op_star
+)paren
+suffix:semicolon
+DECL|member|set_xquota
+r_int
+(paren
+op_star
+id|set_xquota
+)paren
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_int
+comma
+id|qid_t
+comma
+r_struct
+id|fs_disk_quota
+op_star
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|quota_format_type
 r_struct
 id|quota_format_type
@@ -473,6 +871,13 @@ op_star
 id|qf_ops
 suffix:semicolon
 multiline_comment|/* Operations of format */
+DECL|member|qf_owner
+r_struct
+id|module
+op_star
+id|qf_owner
+suffix:semicolon
+multiline_comment|/* Module implementing quota format */
 DECL|member|qf_next
 r_struct
 id|quota_format_type
@@ -480,6 +885,73 @@ op_star
 id|qf_next
 suffix:semicolon
 )brace
+suffix:semicolon
+DECL|function|is_enabled
+r_static
+r_inline
+r_int
+id|is_enabled
+c_func
+(paren
+r_struct
+id|quota_info
+op_star
+id|dqopt
+comma
+r_int
+id|type
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|type
+)paren
+(brace
+r_case
+id|USRQUOTA
+suffix:colon
+r_return
+id|dqopt-&gt;flags
+op_amp
+id|DQUOT_USR_ENABLED
+suffix:semicolon
+r_case
+id|GRPQUOTA
+suffix:colon
+r_return
+id|dqopt-&gt;flags
+op_amp
+id|DQUOT_GRP_ENABLED
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|macro|sb_any_quota_enabled
+mdefine_line|#define sb_any_quota_enabled(sb) (is_enabled(sb_dqopt(sb), USRQUOTA) | is_enabled(sb_dqopt(sb), GRPQUOTA))
+DECL|macro|sb_has_quota_enabled
+mdefine_line|#define sb_has_quota_enabled(sb, type) (is_enabled(sb_dqopt(sb), type))
+r_int
+id|register_quota_format
+c_func
+(paren
+r_struct
+id|quota_format_type
+op_star
+id|fmt
+)paren
+suffix:semicolon
+r_void
+id|unregister_quota_format
+c_func
+(paren
+r_struct
+id|quota_format_type
+op_star
+id|fmt
+)paren
 suffix:semicolon
 macro_line|#else
 macro_line|# /* nodep */ include &lt;sys/cdefs.h&gt;
@@ -489,6 +961,7 @@ id|quotactl
 id|__P
 (paren
 (paren
+r_int
 r_int
 comma
 r_const

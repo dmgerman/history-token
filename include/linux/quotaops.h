@@ -8,6 +8,18 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#if defined(CONFIG_QUOTA)
 multiline_comment|/*&n; * declaration of quota_function calls in kernel.&n; */
 r_extern
+r_int
+id|sync_dquots
+c_func
+(paren
+id|kdev_t
+id|dev
+comma
+r_int
+id|type
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|dquot_initialize
 c_func
@@ -30,34 +42,6 @@ r_struct
 id|inode
 op_star
 id|inode
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|quota_off
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
-comma
-r_int
-id|type
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sync_dquots
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
-comma
-r_int
-id|type
 )paren
 suffix:semicolon
 r_extern
@@ -140,8 +124,20 @@ id|iattr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Operations supported for diskquotas.&n; */
-DECL|macro|sb_any_quota_enabled
-mdefine_line|#define sb_any_quota_enabled(sb) ((sb)-&gt;s_dquot.flags &amp; (DQUOT_USR_ENABLED | DQUOT_GRP_ENABLED))
+r_extern
+r_struct
+id|dquot_operations
+id|dquot_operations
+suffix:semicolon
+r_extern
+r_struct
+id|quotactl_ops
+id|vfs_quotactl_ops
+suffix:semicolon
+DECL|macro|sb_dquot_ops
+mdefine_line|#define sb_dquot_ops (&amp;dquot_operations)
+DECL|macro|sb_quotactl_ops
+mdefine_line|#define sb_quotactl_ops (&amp;vfs_quotactl_ops)
 DECL|function|DQUOT_INIT
 r_static
 id|__inline__
@@ -786,10 +782,65 @@ suffix:semicolon
 )brace
 DECL|macro|DQUOT_SYNC
 mdefine_line|#define DQUOT_SYNC(sb)&t;sync_dquots(sb, -1)
-DECL|macro|DQUOT_OFF
-mdefine_line|#define DQUOT_OFF(sb)&t;quota_off(sb, -1)
+DECL|function|DQUOT_OFF
+r_static
+id|__inline__
+r_int
+id|DQUOT_OFF
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_int
+id|ret
+op_assign
+op_minus
+id|ENOSYS
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sb-&gt;s_qcop
+op_logical_and
+id|sb-&gt;s_qcop-&gt;quota_off
+)paren
+id|ret
+op_assign
+id|sb-&gt;s_qcop
+op_member_access_from_pointer
+id|quota_off
+c_func
+(paren
+id|sb
+comma
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 macro_line|#else
 multiline_comment|/*&n; * NO-OP when quota not configured.&n; */
+DECL|macro|sb_dquot_ops
+mdefine_line|#define sb_dquot_ops&t;&t;&t;&t;(NULL)
+DECL|macro|sb_quotactl_ops
+mdefine_line|#define sb_quotactl_ops&t;&t;&t;&t;(NULL)
 DECL|macro|DQUOT_INIT
 mdefine_line|#define DQUOT_INIT(inode)&t;&t;&t;do { } while(0)
 DECL|macro|DQUOT_DROP
