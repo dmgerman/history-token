@@ -362,24 +362,6 @@ DECL|typedef|ia64_mca_os_to_sal_state_t
 )brace
 id|ia64_mca_os_to_sal_state_t
 suffix:semicolon
-DECL|typedef|prfunc_t
-r_typedef
-r_int
-(paren
-op_star
-id|prfunc_t
-)paren
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|ia64_mca_init
@@ -519,16 +501,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|ia64_log_print
-c_func
-(paren
-r_int
-comma
-id|prfunc_t
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|ia64_mca_cmc_vector_setup
 c_func
@@ -544,20 +516,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|macro|PLATFORM_CALL
-mdefine_line|#define PLATFORM_CALL(fn, args)&t;printk(&quot;Platform call TBD&bslash;n&quot;)
-DECL|macro|platform_mem_dev_err_print
-mdefine_line|#define platform_mem_dev_err_print ia64_log_prt_oem_data
-DECL|macro|platform_pci_bus_err_print
-mdefine_line|#define platform_pci_bus_err_print ia64_log_prt_oem_data
-DECL|macro|platform_pci_comp_err_print
-mdefine_line|#define platform_pci_comp_err_print ia64_log_prt_oem_data
-DECL|macro|platform_plat_specific_err_print
-mdefine_line|#define platform_plat_specific_err_print ia64_log_prt_oem_data
-DECL|macro|platform_host_ctlr_err_print
-mdefine_line|#define platform_host_ctlr_err_print ia64_log_prt_oem_data
-DECL|macro|platform_plat_bus_err_print
-mdefine_line|#define platform_plat_bus_err_print ia64_log_prt_oem_data
 DECL|macro|MCA_TEST
 macro_line|#undef&t;MCA_TEST
 DECL|macro|IA64_MCA_DEBUG_INFO
