@@ -212,11 +212,11 @@ DECL|macro|US_FL_SCM_MULT_TARG
 mdefine_line|#define US_FL_SCM_MULT_TARG   0x00000020 /* supports multiple targets */
 DECL|macro|US_FL_FIX_INQUIRY
 mdefine_line|#define US_FL_FIX_INQUIRY     0x00000040 /* INQUIRY response needs fixing */
-multiline_comment|/* device attached/detached states */
-DECL|macro|US_STATE_DETACHED
-mdefine_line|#define US_STATE_DETACHED&t;1
-DECL|macro|US_STATE_ATTACHED
-mdefine_line|#define US_STATE_ATTACHED&t;2
+multiline_comment|/* kernel thread actions */
+DECL|macro|US_ACT_COMMAND
+mdefine_line|#define US_ACT_COMMAND&t;&t;1
+DECL|macro|US_ACT_EXIT
+mdefine_line|#define US_ACT_EXIT&t;&t;5
 multiline_comment|/* processing state machine states */
 DECL|macro|US_STATE_IDLE
 mdefine_line|#define US_STATE_IDLE&t;&t;1
@@ -298,18 +298,13 @@ op_star
 id|next
 suffix:semicolon
 multiline_comment|/* next device */
-multiline_comment|/* The device we&squot;re working with&n;&t; * It&squot;s important to note:&n;&t; *    (o) you must hold dev_semaphore to change pusb_dev&n;&t; *    (o) device_state should change whenever pusb_dev does&n;&t; */
+multiline_comment|/* The device we&squot;re working with&n;&t; * It&squot;s important to note:&n;&t; *    (o) you must hold dev_semaphore to change pusb_dev&n;&t; *    (o) DEV_ATTACHED in bitflags should change whenever pusb_dev does&n;&t; */
 DECL|member|dev_semaphore
 r_struct
 id|semaphore
 id|dev_semaphore
 suffix:semicolon
 multiline_comment|/* protect pusb_dev */
-DECL|member|device_state
-id|atomic_t
-id|device_state
-suffix:semicolon
-multiline_comment|/* attached or detached */
 DECL|member|pusb_dev
 r_struct
 id|usb_device
@@ -478,6 +473,8 @@ suffix:semicolon
 multiline_comment|/* single-bit flags:&t; */
 DECL|macro|IP_WANTED
 mdefine_line|#define IP_WANTED&t;1&t;&t;&t; /* is an IRQ expected?&t; */
+DECL|macro|DEV_ATTACHED
+mdefine_line|#define DEV_ATTACHED&t;2&t;&t;&t; /* is the dev. attached?*/
 multiline_comment|/* interrupt communications data */
 DECL|member|irq_urb_sem
 r_struct
