@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 multiline_comment|/* #define _CPIA_DEBUG_&t;&t;define for verbose debug output */
@@ -347,7 +347,7 @@ id|port
 suffix:semicolon
 DECL|member|cb_task
 r_struct
-id|tq_struct
+id|work_struct
 id|cb_task
 suffix:semicolon
 DECL|member|open_count
@@ -1836,13 +1836,16 @@ op_ne
 id|PARPORT_IRQ_NONE
 )paren
 (brace
-id|cam-&gt;cb_task.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|cam-&gt;cb_task
+comma
 id|cb
-suffix:semicolon
-id|cam-&gt;cb_task.data
-op_assign
+comma
 id|cbdata
+)paren
 suffix:semicolon
 )brace
 r_else

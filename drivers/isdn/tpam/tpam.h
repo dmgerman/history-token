@@ -4,7 +4,7 @@ DECL|macro|_TPAM_PRIV_H_
 mdefine_line|#define _TPAM_PRIV_H_
 macro_line|#include &lt;linux/isdnif.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 multiline_comment|/* Maximum number of channels for this board */
 DECL|macro|TPAM_NBCHANNEL
 mdefine_line|#define TPAM_NBCHANNEL&t;&t;30
@@ -206,13 +206,13 @@ suffix:semicolon
 multiline_comment|/* receive queue */
 DECL|member|send_tq
 r_struct
-id|tq_struct
+id|work_struct
 id|send_tq
 suffix:semicolon
 multiline_comment|/* send task queue */
 DECL|member|recv_tq
 r_struct
-id|tq_struct
+id|work_struct
 id|recv_tq
 suffix:semicolon
 multiline_comment|/* receive task queue */

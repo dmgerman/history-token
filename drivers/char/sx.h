@@ -17,7 +17,6 @@ r_struct
 id|gs_port
 id|gs
 suffix:semicolon
-multiline_comment|/*&n;  struct tq_struct        tqueue;&n;  struct tq_struct        tqueue_hangup;&n;  */
 DECL|member|shutdown_wait
 r_struct
 id|wait_queue

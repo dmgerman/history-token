@@ -274,7 +274,7 @@ id|ctrlr_wait
 suffix:semicolon
 DECL|member|task
 r_struct
-id|tq_struct
+id|work_struct
 id|task
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM

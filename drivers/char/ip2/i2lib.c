@@ -5710,20 +5710,11 @@ id|bflags
 )paren
 suffix:semicolon
 macro_line|#ifdef USE_IQ
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|pCh-&gt;tqueue_input
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 macro_line|#else
@@ -6594,20 +6585,11 @@ id|dss_change
 )paren
 (brace
 macro_line|#ifdef USE_IQ
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|pCh-&gt;tqueue_status
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 macro_line|#else

@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/i2o.h&gt;
@@ -288,21 +288,12 @@ r_static
 r_int
 id|lan_context
 suffix:semicolon
-DECL|variable|i2o_post_buckets_task
-id|DECLARE_TASK_QUEUE
+r_struct
+id|DECLARE_WORK
 c_func
 (paren
-id|i2o_post_buckets_task
-)paren
-suffix:semicolon
-DECL|variable|run_i2o_post_buckets_task
-r_struct
-id|tq_struct
 id|run_i2o_post_buckets_task
-op_assign
-(brace
-id|routine
-suffix:colon
+comma
 (paren
 r_void
 (paren
@@ -315,14 +306,8 @@ op_star
 )paren
 id|run_task_queue
 comma
-id|data
-suffix:colon
-(paren
-r_void
-op_star
+l_int|NULL
 )paren
-l_int|0
-)brace
 suffix:semicolon
 multiline_comment|/* Functions to handle message failures and transaction errors:&n;==============================================================*/
 multiline_comment|/*&n; * i2o_lan_handle_failure(): Fail bit has been set since IOP&squot;s message&n; * layer cannot deliver the request to the target, or the target cannot&n; * process the request.&n; */
@@ -1508,20 +1493,11 @@ op_star
 )paren
 id|dev
 suffix:semicolon
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|run_i2o_post_buckets_task
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace
@@ -3951,7 +3927,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -4459,7 +4435,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -6805,21 +6781,24 @@ id|priv-&gt;i2o_batch_send_task.sync
 op_assign
 l_int|0
 suffix:semicolon
-id|priv-&gt;i2o_batch_send_task.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|priv-&gt;i2o_batch_send_task
+comma
 (paren
 r_void
 op_star
 )paren
 id|i2o_lan_batch_send
-suffix:semicolon
-id|priv-&gt;i2o_batch_send_task.data
-op_assign
+comma
 (paren
 r_void
 op_star
 )paren
 id|dev
+)paren
 suffix:semicolon
 id|dev-&gt;open
 op_assign

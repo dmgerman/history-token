@@ -46,7 +46,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;linux/termios.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#ifdef CONFIG_SYNCLINK_SYNCPPP_MODULE
 DECL|macro|CONFIG_SYNCLINK_SYNCPPP
 mdefine_line|#define CONFIG_SYNCLINK_SYNCPPP 1
@@ -387,7 +387,7 @@ suffix:semicolon
 multiline_comment|/* spinlock for synchronizing with ISR */
 DECL|member|task
 r_struct
-id|tq_struct
+id|work_struct
 id|task
 suffix:semicolon
 multiline_comment|/* task structure for scheduling bh */
@@ -5830,20 +5830,11 @@ comma
 id|info-&gt;device_name
 )paren
 suffix:semicolon
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|info-&gt;task
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 id|info-&gt;bh_requested
@@ -16612,17 +16603,16 @@ id|info-&gt;magic
 op_assign
 id|MGSL_MAGIC
 suffix:semicolon
-id|info-&gt;task.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|info-&gt;task.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|info-&gt;task
+comma
 id|mgsl_bh_handler
-suffix:semicolon
-id|info-&gt;task.data
-op_assign
+comma
 id|info
+)paren
 suffix:semicolon
 id|info-&gt;max_frame_size
 op_assign

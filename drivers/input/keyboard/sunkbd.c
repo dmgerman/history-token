@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -342,7 +342,7 @@ id|serio
 suffix:semicolon
 DECL|member|tq
 r_struct
-id|tq_struct
+id|work_struct
 id|tq
 suffix:semicolon
 DECL|member|name
@@ -446,7 +446,7 @@ id|data
 r_case
 id|SUNKBD_RET_RESET
 suffix:colon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -1173,13 +1173,16 @@ id|sunkbd-&gt;serio
 op_assign
 id|serio
 suffix:semicolon
-id|sunkbd-&gt;tq.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|sunkbd-&gt;tq
+comma
 id|sunkbd_reinit
-suffix:semicolon
-id|sunkbd-&gt;tq.data
-op_assign
+comma
 id|sunkbd
+)paren
 suffix:semicolon
 id|sunkbd-&gt;dev.keycode
 op_assign

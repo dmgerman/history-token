@@ -184,7 +184,7 @@ id|default_timeout
 suffix:semicolon
 DECL|member|tqueue
 r_struct
-id|tq_struct
+id|work_struct
 id|tqueue
 suffix:semicolon
 DECL|member|normal_termios

@@ -2310,28 +2310,20 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#if __HAVE_DMA_IRQ_BH
-id|INIT_LIST_HEAD
+id|INIT_WORK
 c_func
 (paren
 op_amp
-id|dev-&gt;tq.list
-)paren
-suffix:semicolon
-id|dev-&gt;tq.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;tq.routine
-op_assign
+id|dev-&gt;work
+comma
 id|DRM
 c_func
 (paren
 id|dma_immediate_bh
 )paren
-suffix:semicolon
-id|dev-&gt;tq.data
-op_assign
+comma
 id|dev
+)paren
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Before installing handler */

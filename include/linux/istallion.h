@@ -142,7 +142,7 @@ suffix:semicolon
 macro_line|#endif
 DECL|member|tqhangup
 r_struct
-id|tq_struct
+id|work_struct
 id|tqhangup
 suffix:semicolon
 DECL|member|normaltermios

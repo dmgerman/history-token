@@ -121,7 +121,7 @@ macro_line|#ifdef __KERNEL__
 multiline_comment|/* Kernel includes */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -415,19 +415,19 @@ suffix:semicolon
 multiline_comment|/* Poll timer                       */
 DECL|member|snd_tq
 r_struct
-id|tq_struct
+id|work_struct
 id|snd_tq
 suffix:semicolon
 multiline_comment|/* Task struct for xmit bh          */
 DECL|member|rcv_tq
 r_struct
-id|tq_struct
+id|work_struct
 id|rcv_tq
 suffix:semicolon
 multiline_comment|/* Task struct for rcv bh           */
 DECL|member|poll_tq
 r_struct
-id|tq_struct
+id|work_struct
 id|poll_tq
 suffix:semicolon
 multiline_comment|/* Task struct for polled rcv bh    */
@@ -507,20 +507,11 @@ op_star
 id|card
 )paren
 (brace
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|card-&gt;snd_tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace
@@ -536,20 +527,11 @@ op_star
 id|card
 )paren
 (brace
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|card-&gt;rcv_tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace
@@ -565,20 +547,11 @@ op_star
 id|card
 )paren
 (brace
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|card-&gt;poll_tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace

@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|macro|HISAX_STATUS_BUFSIZE
 mdefine_line|#define HISAX_STATUS_BUFSIZE 4096
@@ -7777,8 +7777,12 @@ id|cs-&gt;cardmsg
 op_assign
 id|hisax_cardmsg
 suffix:semicolon
-id|cs-&gt;tqueue.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|cs-&gt;tqueue
+comma
 (paren
 r_void
 op_star
@@ -7788,6 +7792,9 @@ r_void
 op_star
 )paren
 id|hisax_bh
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 id|cs-&gt;channel
 (braket
@@ -7931,20 +7938,11 @@ l_int|1
 op_lshift
 id|event
 suffix:semicolon
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|cs-&gt;tqueue
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace
@@ -8088,20 +8086,11 @@ l_int|1
 op_lshift
 id|event
 suffix:semicolon
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|bcs-&gt;tqueue
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace

@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -231,15 +231,15 @@ id|pardevice
 op_star
 id|pdev
 suffix:semicolon
-DECL|member|bh_running
+DECL|member|work_running
 r_int
 r_int
-id|bh_running
+id|work_running
 suffix:semicolon
-DECL|member|run_bh
+DECL|member|run_work
 r_struct
-id|tq_struct
-id|run_bh
+id|work_struct
+id|run_work
 suffix:semicolon
 DECL|member|modem
 r_int
@@ -3432,7 +3432,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|bc-&gt;bh_running
+id|bc-&gt;work_running
 )paren
 r_return
 suffix:semicolon
@@ -4026,14 +4026,13 @@ op_minus
 id|time2
 suffix:semicolon
 macro_line|#endif /* BAYCOM_DEBUG */
-id|queue_task
+id|schedule_delayed_work
 c_func
 (paren
 op_amp
-id|bc-&gt;run_bh
+id|bc-&gt;run_work
 comma
-op_amp
-id|tq_timer
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -4372,31 +4371,6 @@ id|parport
 op_star
 id|pp
 suffix:semicolon
-r_const
-r_struct
-id|tq_struct
-id|run_bh
-op_assign
-(brace
-dot
-id|routine
-op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-r_void
-op_star
-)paren
-id|epp_bh
-comma
-dot
-id|data
-op_assign
-id|dev
-)brace
-suffix:semicolon
 r_int
 r_int
 id|i
@@ -4634,11 +4608,26 @@ op_assign
 multiline_comment|/*pp-&gt;irq*/
 l_int|0
 suffix:semicolon
-id|bc-&gt;run_bh
-op_assign
-id|run_bh
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|bc-&gt;run_work
+comma
+(paren
+r_void
+op_star
+)paren
+(paren
+r_void
+op_star
+)paren
+id|epp_bh
+comma
+id|dev
+)paren
 suffix:semicolon
-id|bc-&gt;bh_running
+id|bc-&gt;work_running
 op_assign
 l_int|1
 suffix:semicolon
@@ -5045,14 +5034,13 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* start the bottom half stuff */
-id|queue_task
+id|schedule_delayed_work
 c_func
 (paren
 op_amp
-id|bc-&gt;run_bh
+id|bc-&gt;run_work
 comma
-op_amp
-id|tq_timer
+l_int|1
 )paren
 suffix:semicolon
 id|netif_start_queue
@@ -5157,18 +5145,15 @@ id|pp
 op_assign
 id|bc-&gt;pdev-&gt;port
 suffix:semicolon
-id|bc-&gt;bh_running
+id|bc-&gt;work_running
 op_assign
 l_int|0
 suffix:semicolon
-id|run_task_queue
+id|flush_scheduled_work
 c_func
 (paren
-op_amp
-id|tq_timer
 )paren
 suffix:semicolon
-multiline_comment|/* dequeue bottom half */
 id|bc-&gt;stat
 op_assign
 id|EPP_DCDBIT

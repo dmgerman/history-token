@@ -311,12 +311,12 @@ id|open_wait
 suffix:semicolon
 DECL|member|hangup_tq
 r_struct
-id|tq_struct
+id|work_struct
 id|hangup_tq
 suffix:semicolon
 DECL|member|bh_tqueue
 r_struct
-id|tq_struct
+id|work_struct
 id|bh_tqueue
 suffix:semicolon
 DECL|member|xmit_buf

@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/prctl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
@@ -1455,28 +1455,26 @@ r_void
 )paren
 (brace
 r_static
-r_struct
-id|tq_struct
-id|cad_tq
-op_assign
-(brace
-dot
-id|routine
-op_assign
+id|DECLARE_WORK
+c_func
+(paren
+id|cad_work
+comma
 id|deferred_cad
 comma
-)brace
+l_int|NULL
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|C_A_D
 )paren
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|cad_tq
+id|cad_work
 )paren
 suffix:semicolon
 r_else

@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -76,11 +75,6 @@ DECL|member|name
 r_char
 op_star
 id|name
-suffix:semicolon
-DECL|member|tq
-r_struct
-id|tq_struct
-id|tq
 suffix:semicolon
 DECL|member|cmdbuf
 r_int

@@ -4,7 +4,7 @@ DECL|macro|_IDT77252_H
 mdefine_line|#define _IDT77252_H 1
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*                                                                           */
 multiline_comment|/* Makros                                                                    */
@@ -773,7 +773,7 @@ suffix:semicolon
 multiline_comment|/* see blow */
 DECL|member|tqueue
 r_struct
-id|tq_struct
+id|work_struct
 id|tqueue
 suffix:semicolon
 DECL|member|tct_base
