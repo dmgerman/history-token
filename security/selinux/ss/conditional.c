@@ -1890,9 +1890,17 @@ comma
 id|expr
 )paren
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|expr
+)paren
+suffix:semicolon
 r_goto
 id|err
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

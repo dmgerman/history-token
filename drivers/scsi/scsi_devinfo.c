@@ -68,7 +68,6 @@ id|scsi_dev_info_list
 suffix:semicolon
 DECL|variable|scsi_dev_flags
 r_static
-id|__initdata
 r_char
 id|scsi_dev_flags
 (braket

@@ -50,13 +50,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 id|version
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 l_string|&quot;rrunner.c: v0.50 11/11/2002  Jes Sorensen (jes@wildopensource.com)&bslash;n&quot;
 suffix:semicolon

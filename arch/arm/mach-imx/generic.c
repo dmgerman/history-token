@@ -445,7 +445,7 @@ id|mfn
 op_assign
 id|pll
 op_amp
-l_int|0x3f
+l_int|0x3ff
 suffix:semicolon
 id|u32
 id|mfd
@@ -456,7 +456,7 @@ op_rshift
 l_int|16
 )paren
 op_amp
-l_int|0x3f
+l_int|0x3ff
 suffix:semicolon
 id|u32
 id|pd

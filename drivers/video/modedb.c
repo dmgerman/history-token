@@ -28,7 +28,6 @@ mdefine_line|#define DEFAULT_MODEDB_INDEX&t;0
 DECL|variable|modedb
 r_static
 r_const
-id|__init
 r_struct
 id|fb_videomode
 id|modedb

@@ -2752,7 +2752,6 @@ suffix:semicolon
 DECL|function|opl3sa2_clear_slots
 r_static
 r_void
-id|__init
 id|opl3sa2_clear_slots
 c_func
 (paren
