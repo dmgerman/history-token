@@ -142,9 +142,6 @@ comma
 id|current
 )paren
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 multiline_comment|/*&n;&t; * Set iothread to ensure that we aren&squot;t put to sleep by&n;&t; * the process freezing.  We handle suspension ourselves.&n;&t; */
 id|current-&gt;flags
 op_or_assign
@@ -205,12 +202,6 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|q-&gt;queue_lock
-)paren
-suffix:semicolon
 r_do
 (brace
 r_struct
@@ -219,6 +210,12 @@ op_star
 id|req
 op_assign
 l_int|NULL
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|q-&gt;queue_lock
+)paren
 suffix:semicolon
 id|set_current_state
 c_func
@@ -281,8 +278,6 @@ c_func
 id|TASK_RUNNING
 )paren
 suffix:semicolon
-id|ret
-op_assign
 id|mq
 op_member_access_from_pointer
 id|issue_fn
@@ -291,20 +286,6 @@ c_func
 id|mq
 comma
 id|req
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|q-&gt;queue_lock
-)paren
-suffix:semicolon
-id|end_request
-c_func
-(paren
-id|req
-comma
-id|ret
 )paren
 suffix:semicolon
 )brace

@@ -1201,11 +1201,23 @@ op_assign
 id|MMC_ERR_BADCRC
 suffix:semicolon
 multiline_comment|/*&n;&t; * There appears to be a hardware design bug here.  There seems to&n;&t; * be no way to find out how much data was transferred to the card.&n;&t; * This means that if there was an error on any block, we mark all&n;&t; * data blocks as being in error.&n;&t; */
+r_if
+c_cond
+(paren
+id|data-&gt;error
+op_eq
+id|MMC_ERR_NONE
+)paren
 id|data-&gt;bytes_xfered
 op_assign
 id|data-&gt;blocks
 op_lshift
 id|data-&gt;blksz_bits
+suffix:semicolon
+r_else
+id|data-&gt;bytes_xfered
+op_assign
+l_int|0
 suffix:semicolon
 id|pxamci_disable_irq
 c_func
