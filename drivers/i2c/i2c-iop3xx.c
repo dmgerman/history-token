@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/arch-iop3xx/iop321-irqs.h&gt;
 macro_line|#include &quot;i2c-iop3xx.h&quot;
 multiline_comment|/* ----- global defines ----------------------------------------------- */
 DECL|macro|PASSERT
-mdefine_line|#define PASSERT(x) do { if (!(x) ) &bslash;&n;                printk(KERN_CRIT &quot;PASSERT %s in %s:%d&bslash;n&quot;, #x, __FILE__, __LINE__ );&bslash;&n;        } while (0)
+mdefine_line|#define PASSERT(x) do { if (!(x) ) &bslash;&n;&t;&t;printk(KERN_CRIT &quot;PASSERT %s in %s:%d&bslash;n&quot;, #x, __FILE__, __LINE__ );&bslash;&n;&t;} while (0)
 multiline_comment|/* ----- global variables ---------------------------------------------&t;*/
 DECL|function|iic_cook_addr
 r_static
@@ -86,7 +86,7 @@ op_star
 id|iop3xx_adap
 )paren
 (brace
-singleline_comment|// Follows devman 9.3
+multiline_comment|/* Follows devman 9.3 */
 op_star
 id|iop3xx_adap-&gt;biu-&gt;CR
 op_assign
@@ -249,6 +249,7 @@ op_assign
 id|cr
 suffix:semicolon
 )brace
+multiline_comment|/* &n; * NB: the handler has to clear the source of the interrupt! &n; * Then it passes the SR flags of interest to BH via adap data&n; */
 DECL|function|iop3xx_i2c_handler
 r_static
 r_void
@@ -267,7 +268,6 @@ id|pt_regs
 op_star
 id|regs
 )paren
-multiline_comment|/* &n; * NB: the handler has to clear the source of the interrupt! &n; * Then it passes the SR flags of interest to BH via adap data&n; */
 (brace
 r_struct
 id|i2c_algo_iop3xx_data
@@ -310,6 +310,7 @@ id|iop3xx_adap-&gt;waitq
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* check all error conditions, clear them , report most important */
 DECL|function|iop3xx_adap_error
 r_static
 r_int
@@ -319,7 +320,6 @@ c_func
 id|u32
 id|sr
 )paren
-singleline_comment|// check all error conditions, clear them , report most important
 (brace
 r_int
 id|rc
@@ -425,12 +425,12 @@ id|sr
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * sleep until interrupted, then recover and analyse the SR&n; * saved by handler&n; */
-DECL|typedef|CompareFunc
+DECL|typedef|compare_func
 r_typedef
 r_int
 (paren
 op_star
-id|CompareFunc
+id|compare_func
 )paren
 (paren
 r_int
@@ -459,7 +459,7 @@ r_int
 op_star
 id|status
 comma
-id|CompareFunc
+id|compare_func
 id|compare
 )paren
 (brace
@@ -572,7 +572,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Concrete CompareFuncs &n; */
+multiline_comment|/*&n; * Concrete compare_funcs &n; */
 DECL|function|all_bits_clear
 r_static
 r_int
@@ -717,10 +717,7 @@ id|all_bits_clear
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// Description: This performs the IOP3xx initialization sequence
-singleline_comment|// Valid for IOP321. Maybe valid for IOP310?.
-singleline_comment|//
+multiline_comment|/*&n; * Description: This performs the IOP3xx initialization sequence&n; * Valid for IOP321. Maybe valid for IOP310?.&n; */
 DECL|function|iop3xx_adap_init
 r_static
 r_int
@@ -838,7 +835,7 @@ op_amp
 id|status
 )paren
 suffix:semicolon
-multiline_comment|/* this assert fires every time, contrary to IOP manual&t;&n;&t;PASSERT( (status&amp;IOP321_ISR_UNITBUSY)!=0 );&n;*/
+multiline_comment|/* this assert fires every time, contrary to IOP manual&t;&n;&t;PASSERT((status&amp;IOP321_ISR_UNITBUSY)!=0);&n;&t;*/
 id|PASSERT
 c_func
 (paren
@@ -1552,12 +1549,12 @@ id|iic_adap-&gt;timeout
 op_assign
 l_int|100
 suffix:semicolon
-multiline_comment|/* default values, should&t;*/
+multiline_comment|/* default values, should */
 id|iic_adap-&gt;retries
 op_assign
 l_int|3
 suffix:semicolon
-multiline_comment|/* be replaced by defines&t;*/
+multiline_comment|/* be replaced by defines */
 id|iop3xx_adap_init
 c_func
 (paren
@@ -1668,6 +1665,7 @@ dot
 id|irq
 op_assign
 id|IRQ_IOP321_I2C_0
+comma
 )brace
 suffix:semicolon
 DECL|variable|biu1
@@ -1706,6 +1704,7 @@ dot
 id|irq
 op_assign
 id|IRQ_IOP321_I2C_1
+comma
 )brace
 suffix:semicolon
 DECL|macro|ADAPTER_NAME_ROOT
@@ -1737,6 +1736,7 @@ op_assign
 l_int|1
 op_star
 id|HZ
+comma
 )brace
 suffix:semicolon
 DECL|variable|algo_iop3xx_data1
@@ -1763,6 +1763,7 @@ op_assign
 l_int|1
 op_star
 id|HZ
+comma
 )brace
 suffix:semicolon
 DECL|variable|iop3xx_ops0
@@ -1793,6 +1794,7 @@ id|algo_data
 op_assign
 op_amp
 id|algo_iop3xx_data0
+comma
 )brace
 suffix:semicolon
 DECL|variable|iop3xx_ops1
@@ -1823,6 +1825,7 @@ id|algo_data
 op_assign
 op_amp
 id|algo_iop3xx_data1
+comma
 )brace
 suffix:semicolon
 DECL|function|i2c_iop3xx_init
