@@ -1017,6 +1017,7 @@ suffix:semicolon
 DECL|macro|kmap_get_fixmap_pte
 mdefine_line|#define kmap_get_fixmap_pte(vaddr)&t;&t;&t;&t;&t;&bslash;&n;&t;pte_offset_kernel(pmd_offset(pud_offset(pgd_offset_k(vaddr), vaddr), (vaddr)), (vaddr))
 DECL|function|kmap_init
+r_static
 r_void
 id|__init
 id|kmap_init
@@ -1052,6 +1053,7 @@ id|PAGE_KERNEL
 suffix:semicolon
 )brace
 DECL|function|permanent_kmaps_init
+r_static
 r_void
 id|__init
 id|permanent_kmaps_init
@@ -1227,6 +1229,7 @@ suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|function|set_highmem_pages_init
+r_static
 r_void
 id|__init
 id|set_highmem_pages_init
@@ -1975,6 +1978,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Test if the WP bit works in supervisor mode. It isn&squot;t supported on 386&squot;s&n; * and also on some strange 486&squot;s (NexGen etc.). All 586+&squot;s are OK. This&n; * used to involve black magic jumps to work around some nasty CPU bugs,&n; * but fortunately the switch to using exceptions got rid of all that.&n; */
 DECL|function|test_wp_bit
+r_static
 r_void
 id|__init
 id|test_wp_bit

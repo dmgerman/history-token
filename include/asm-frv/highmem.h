@@ -38,14 +38,6 @@ id|pte_t
 op_star
 id|pkmap_page_table
 suffix:semicolon
-r_extern
-r_void
-id|kmap_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|macro|flush_cache_kmaps
 mdefine_line|#define flush_cache_kmaps()  do { } while (0)
 multiline_comment|/*&n; * Right now we initialize only a single pte table. It can be extended&n; * easily, subsequent pte tables have to be allocated in one physical&n; * chunk of RAM.&n; */

@@ -151,6 +151,7 @@ mdefine_line|#define BOOT_IOREMAP_PAGES 4
 DECL|macro|BOOT_IOREMAP_SIZE
 mdefine_line|#define BOOT_IOREMAP_SIZE (BOOT_IOREMAP_PAGES*PAGE_SIZE)
 DECL|variable|boot_ioremap_space
+r_static
 id|__initdata
 r_char
 id|boot_ioremap_space

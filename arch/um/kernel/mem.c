@@ -615,6 +615,7 @@ suffix:semicolon
 DECL|macro|kmap_get_fixmap_pte
 mdefine_line|#define kmap_get_fixmap_pte(vaddr)&t;&t;&t;&t;&t;&bslash;&n;&t;pte_offset_kernel(pmd_offset(pud_offset(pgd_offset_k(vaddr), (vaddr)),&bslash;&n; &t;&t;&t;  (vaddr)), (vaddr))
 DECL|function|kmap_init
+r_static
 r_void
 id|__init
 id|kmap_init
