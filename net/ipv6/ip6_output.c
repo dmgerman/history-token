@@ -283,6 +283,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ip6_output2
+r_static
 r_int
 id|ip6_output2
 c_func
@@ -1472,12 +1473,11 @@ id|inet6_skb_parm
 op_star
 id|opt
 op_assign
+id|IP6CB
+c_func
 (paren
-r_struct
-id|inet6_skb_parm
-op_star
+id|skb
 )paren
-id|skb-&gt;cb
 suffix:semicolon
 r_if
 c_cond

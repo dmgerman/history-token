@@ -1410,6 +1410,11 @@ c_cond
 id|sysctl_tcp_moderate_rcvbuf
 )paren
 (brace
+r_int
+id|new_clamp
+op_assign
+id|space
+suffix:semicolon
 multiline_comment|/* Receive space grows, normalize in order to&n;&t;&t;&t; * take into account packet headers and sk_buff&n;&t;&t;&t; * structure overhead.&n;&t;&t;&t; */
 id|space
 op_div_assign
@@ -1441,6 +1446,21 @@ id|sk_buff
 )paren
 )paren
 suffix:semicolon
+r_while
+c_loop
+(paren
+id|tcp_win_from_space
+c_func
+(paren
+id|rcvmem
+)paren
+OL
+id|tp-&gt;advmss
+)paren
+id|rcvmem
+op_add_assign
+l_int|128
+suffix:semicolon
 id|space
 op_mul_assign
 id|rcvmem
@@ -1465,10 +1485,17 @@ id|space
 OG
 id|sk-&gt;sk_rcvbuf
 )paren
+(brace
 id|sk-&gt;sk_rcvbuf
 op_assign
 id|space
 suffix:semicolon
+multiline_comment|/* Make the window clamp follow along.  */
+id|tp-&gt;window_clamp
+op_assign
+id|new_clamp
+suffix:semicolon
+)brace
 )brace
 )brace
 id|new_measure
