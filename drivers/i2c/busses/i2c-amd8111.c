@@ -1575,6 +1575,12 @@ id|I2C_ALGO_SMBUS
 op_or
 id|I2C_HW_SMBUS_AMD8111
 suffix:semicolon
+id|smbus-&gt;adapter
+dot
+r_class
+op_assign
+id|I2C_ADAP_CLASS_SMBUS
+suffix:semicolon
 id|smbus-&gt;adapter.algo
 op_assign
 op_amp

@@ -4605,7 +4605,7 @@ id|skb
 comma
 id|ICMPV6_DEST_UNREACH
 comma
-id|ICMPV6_ADDR_UNREACH
+id|ICMPV6_NOROUTE
 comma
 l_int|0
 comma

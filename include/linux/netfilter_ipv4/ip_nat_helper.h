@@ -152,6 +152,7 @@ op_star
 id|me
 )paren
 suffix:semicolon
+multiline_comment|/* These return true or false. */
 r_extern
 r_int
 id|ip_nat_mangle_tcp_packet
@@ -180,6 +181,7 @@ r_int
 r_int
 id|match_len
 comma
+r_const
 r_char
 op_star
 id|rep_buffer
@@ -217,6 +219,7 @@ r_int
 r_int
 id|match_len
 comma
+r_const
 r_char
 op_star
 id|rep_buffer
@@ -234,7 +237,8 @@ c_func
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
 comma
 r_struct
 id|ip_conntrack
@@ -244,17 +248,6 @@ comma
 r_enum
 id|ip_conntrack_info
 id|ctinfo
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ip_nat_delete_sack
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
 )paren
 suffix:semicolon
 macro_line|#endif

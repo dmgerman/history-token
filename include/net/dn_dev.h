@@ -94,12 +94,6 @@ r_int
 id|forwarding
 suffix:semicolon
 multiline_comment|/* 0=EndNode, 1=L1Router, 2=L2Router  */
-DECL|member|blksize
-r_int
-r_int
-id|blksize
-suffix:semicolon
-multiline_comment|/* Block Size                         */
 DECL|member|t2
 r_int
 r_int

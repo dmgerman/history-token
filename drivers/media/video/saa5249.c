@@ -806,19 +806,15 @@ op_star
 id|adap
 )paren
 (brace
-multiline_comment|/* Only attach these chips to the BT848 bus for now */
 r_if
 c_cond
 (paren
-id|adap-&gt;id
-op_eq
-(paren
-id|I2C_ALGO_BIT
-op_or
-id|I2C_HW_B_BT848
+id|adap
+op_member_access_from_pointer
+r_class
+op_amp
+id|I2C_ADAP_CLASS_TV_ANALOG
 )paren
-)paren
-(brace
 r_return
 id|i2c_probe
 c_func
@@ -831,7 +827,6 @@ comma
 id|saa5249_attach
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon

@@ -626,8 +626,6 @@ id|arg
 )paren
 suffix:semicolon
 multiline_comment|/* i2c */
-DECL|macro|I2C_CLIENTS_MAX
-mdefine_line|#define I2C_CLIENTS_MAX 16
 r_extern
 r_void
 id|bttv_bit_setscl

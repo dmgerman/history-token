@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Compaq Hot Plug Controller Driver&n; *&n; * Copyright (c) 1995,2001 Compaq Computer Corporation&n; * Copyright (c) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (c) 2001 IBM Corp.&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;greg@kroah.com&gt;&n; *&n; */
+multiline_comment|/*&n; * Compaq Hot Plug Controller Driver&n; *&n; * Copyright (c) 1995,2001 Compaq Computer Corporation&n; * Copyright (c) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (c) 2001 IBM Corp.&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;greg@kroah.com&gt;&n; *&n; * Jan 12, 2003 -&t;Added 66/100/133MHz PCI-X support,&n; * &t;&t;&t;Torben Mathiasen &lt;torben.mathiasen@hp.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -65,7 +65,7 @@ r_int
 id|debug
 suffix:semicolon
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&quot;0.9.6&quot;
+mdefine_line|#define DRIVER_VERSION&t;&quot;0.9.7&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&quot;Dan Zink &lt;dan.zink@compaq.com&gt;, Greg Kroah-Hartman &lt;greg@kroah.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -3424,6 +3424,9 @@ suffix:semicolon
 id|u8
 id|rev
 suffix:semicolon
+id|u8
+id|bus_cap
+suffix:semicolon
 id|u16
 id|temp_word
 suffix:semicolon
@@ -3743,6 +3746,146 @@ id|subsystem_vid
 r_case
 id|PCI_VENDOR_ID_COMPAQ
 suffix:colon
+r_if
+c_cond
+(paren
+id|rev
+op_ge
+l_int|0x13
+)paren
+(brace
+multiline_comment|/* CIOBX */
+id|ctrl-&gt;push_flag
+op_assign
+l_int|1
+suffix:semicolon
+id|ctrl-&gt;slot_switch_type
+op_assign
+l_int|1
+suffix:semicolon
+singleline_comment|// Switch is present
+id|ctrl-&gt;push_button
+op_assign
+l_int|1
+suffix:semicolon
+singleline_comment|// Pushbutton is present
+id|ctrl-&gt;pci_config_space
+op_assign
+l_int|1
+suffix:semicolon
+singleline_comment|// Index/data access to working registers 0 = not supported, 1 = supported
+id|ctrl-&gt;defeature_PHP
+op_assign
+l_int|1
+suffix:semicolon
+singleline_comment|// PHP is supported
+id|ctrl-&gt;pcix_support
+op_assign
+l_int|1
+suffix:semicolon
+singleline_comment|// PCI-X supported
+id|ctrl-&gt;pcix_speed_capability
+op_assign
+l_int|1
+suffix:semicolon
+id|pci_read_config_byte
+c_func
+(paren
+id|pdev
+comma
+l_int|0x41
+comma
+op_amp
+id|bus_cap
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bus_cap
+op_amp
+l_int|0x80
+)paren
+(brace
+id|dbg
+c_func
+(paren
+l_string|&quot;bus max supports 133MHz PCI-X&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ctrl-&gt;speed_capability
+op_assign
+id|PCI_SPEED_133MHz_PCIX
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|bus_cap
+op_amp
+l_int|0x40
+)paren
+(brace
+id|dbg
+c_func
+(paren
+l_string|&quot;bus max supports 100MHz PCI-X&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ctrl-&gt;speed_capability
+op_assign
+id|PCI_SPEED_100MHz_PCIX
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|bus_cap
+op_amp
+l_int|20
+)paren
+(brace
+id|dbg
+c_func
+(paren
+l_string|&quot;bus max supports 66MHz PCI-X&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ctrl-&gt;speed_capability
+op_assign
+id|PCI_SPEED_66MHz_PCIX
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|bus_cap
+op_amp
+l_int|10
+)paren
+(brace
+id|dbg
+c_func
+(paren
+l_string|&quot;bus max supports 66MHz PCI&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ctrl-&gt;speed_capability
+op_assign
+id|PCI_SPEED_66MHz
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -3917,9 +4060,51 @@ suffix:semicolon
 singleline_comment|// N/A since PCI-X not supported
 r_break
 suffix:semicolon
+r_case
+id|PCI_SUB_HPC_ID4
+suffix:colon
+multiline_comment|/* First PCI-X implementation, 100MHz */
+id|ctrl-&gt;push_flag
+op_assign
+l_int|1
+suffix:semicolon
+id|ctrl-&gt;slot_switch_type
+op_assign
+l_int|1
+suffix:semicolon
+singleline_comment|// Switch is present
+id|ctrl-&gt;speed_capability
+op_assign
+id|PCI_SPEED_100MHz_PCIX
+suffix:semicolon
+id|ctrl-&gt;push_button
+op_assign
+l_int|1
+suffix:semicolon
+singleline_comment|// Pushbutton is present
+id|ctrl-&gt;pci_config_space
+op_assign
+l_int|1
+suffix:semicolon
+singleline_comment|// Index/data access to working registers 0 = not supported, 1 = supported
+id|ctrl-&gt;defeature_PHP
+op_assign
+l_int|1
+suffix:semicolon
+singleline_comment|// PHP is supported
+id|ctrl-&gt;pcix_support
+op_assign
+l_int|1
+suffix:semicolon
+singleline_comment|// PCI-X supported
+id|ctrl-&gt;pcix_speed_capability
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
-singleline_comment|// TODO: Add SSIDs for CPQ systems that support PCI-X
 id|err
 c_func
 (paren
@@ -4176,16 +4361,9 @@ l_string|&quot;Hotplug controller capabilities:&bslash;n&quot;
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;    speed_capability       %s&bslash;n&quot;
+l_string|&quot;    speed_capability       %d&bslash;n&quot;
 comma
 id|ctrl-&gt;speed_capability
-op_eq
-id|PCI_SPEED_33MHz
-ques
-c_cond
-l_string|&quot;33MHz&quot;
-suffix:colon
-l_string|&quot;66Mhz&quot;
 )paren
 suffix:semicolon
 id|dbg
@@ -4534,7 +4712,6 @@ id|err_free_mem_region
 suffix:semicolon
 )brace
 singleline_comment|// Check for 66Mhz operation
-singleline_comment|// TODO: Add PCI-X support
 id|ctrl-&gt;speed
 op_assign
 id|get_controller_speed
@@ -4653,6 +4830,21 @@ singleline_comment|// The next line is required for cpqhp_find_available_resourc
 id|ctrl-&gt;interrupt
 op_assign
 id|pdev-&gt;irq
+suffix:semicolon
+id|ctrl-&gt;cfgspc_irq
+op_assign
+l_int|0
+suffix:semicolon
+id|pci_read_config_byte
+c_func
+(paren
+id|pdev
+comma
+id|PCI_INTERRUPT_LINE
+comma
+op_amp
+id|ctrl-&gt;cfgspc_irq
+)paren
 suffix:semicolon
 id|rc
 op_assign

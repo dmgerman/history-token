@@ -26,12 +26,6 @@ c_func
 l_string|&quot;Andras Kis-Szabo &lt;kisza@sch.bme.hu&gt;&quot;
 )paren
 suffix:semicolon
-macro_line|#if 0
-mdefine_line|#define DEBUGP printk
-macro_line|#else
-DECL|macro|DEBUGP
-mdefine_line|#define DEBUGP(format, args...)
-macro_line|#endif
 r_static
 r_int
 DECL|function|ipv6header_match
@@ -99,25 +93,7 @@ r_int
 r_int
 id|ptr
 suffix:semicolon
-r_struct
-id|inet6_skb_parm
-op_star
-id|opt
-op_assign
-(paren
-r_struct
-id|inet6_skb_parm
-op_star
-)paren
-id|skb-&gt;cb
-suffix:semicolon
 multiline_comment|/* Make sure this isn&squot;t an evil packet */
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;ipv6_header entered &bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* type of the 1st exthdr */
 id|nexthdr
 op_assign
@@ -143,167 +119,6 @@ id|temp
 op_assign
 l_int|0
 suffix:semicolon
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;ipv6_header nexthdr %02X &bslash;n&quot;
-comma
-id|nexthdr
-)paren
-suffix:semicolon
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;ipv6_header ptr %08X &bslash;n&quot;
-comma
-id|ptr
-)paren
-suffix:semicolon
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;ipv6_header skblen %04X &bslash;n&quot;
-comma
-id|skb-&gt;len
-)paren
-suffix:semicolon
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;ipv6_header skbdatalen %04X &bslash;n&quot;
-comma
-id|skb-&gt;data_len
-)paren
-suffix:semicolon
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;ipv6_header len %04X &bslash;n&quot;
-comma
-id|len
-)paren
-suffix:semicolon
-macro_line|#if 0
-r_for
-c_loop
-(paren
-id|temp
-op_assign
-l_int|0
-suffix:semicolon
-id|temp
-OL
-id|skb-&gt;len
-suffix:semicolon
-id|temp
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|temp
-op_mod
-l_int|16
-)paren
-)paren
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;&bslash;nipv6_header data &quot;
-)paren
-suffix:semicolon
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;%02X &quot;
-comma
-id|skb-&gt;data
-(braket
-id|temp
-)braket
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;&bslash;nipv6_header h.raw %02X %02X %02X %02X &bslash;n&quot;
-comma
-id|skb-&gt;h.raw
-(braket
-l_int|0
-)braket
-comma
-id|skb-&gt;h.raw
-(braket
-l_int|1
-)braket
-comma
-id|skb-&gt;h.raw
-(braket
-l_int|2
-)braket
-comma
-id|skb-&gt;h.raw
-(braket
-l_int|3
-)braket
-)paren
-suffix:semicolon
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;ipv6_header nh.raw %02X %02X %02X %02X &bslash;n&quot;
-comma
-id|skb-&gt;nh.raw
-(braket
-l_int|0
-)braket
-comma
-id|skb-&gt;nh.raw
-(braket
-l_int|1
-)braket
-comma
-id|skb-&gt;nh.raw
-(braket
-l_int|2
-)braket
-comma
-id|skb-&gt;nh.raw
-(braket
-l_int|3
-)braket
-)paren
-suffix:semicolon
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;ipv6_header CB %02X %02X %02X %02X %02X %02X %02X &bslash;n&quot;
-comma
-id|opt-&gt;iif
-comma
-id|opt-&gt;ra
-comma
-id|opt-&gt;hop
-comma
-id|opt-&gt;auth
-comma
-id|opt-&gt;dst0
-comma
-id|opt-&gt;srcrt
-comma
-id|opt-&gt;dst1
-)paren
-suffix:semicolon
-id|temp
-op_assign
-l_int|0
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -321,12 +136,6 @@ id|hdr
 suffix:semicolon
 r_int
 id|hdrlen
-suffix:semicolon
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;ipv6_header header iteration &bslash;n&quot;
-)paren
 suffix:semicolon
 multiline_comment|/* Is there enough space for the next ext header? */
 r_if
@@ -430,14 +239,6 @@ c_func
 id|hdr
 )paren
 suffix:semicolon
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;ipv6_header hdrlen %04X &bslash;n&quot;
-comma
-id|hdrlen
-)paren
-suffix:semicolon
 multiline_comment|/* set the flag */
 r_switch
 c_cond
@@ -492,14 +293,6 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;IPV6HEADER match: unknown nextheader %u&bslash;n&quot;
-comma
-id|nexthdr
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -525,18 +318,8 @@ id|ptr
 OG
 id|skb-&gt;len
 )paren
-(brace
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;ipv6_header new ptr %04X &bslash;n&quot;
-comma
-id|ptr
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -556,15 +339,6 @@ id|NEXTHDR_ESP
 id|temp
 op_or_assign
 id|MASK_PROTO
-suffix:semicolon
-id|DEBUGP
-(paren
-l_string|&quot;ipv6header: %02X %02X &bslash;n&quot;
-comma
-id|temp
-comma
-id|info-&gt;matchflags
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -648,27 +422,9 @@ id|ip6t_ipv6header_info
 )paren
 )paren
 )paren
-(brace
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;ip6t_ipv6header: matchsize != %u&bslash;n&quot;
-comma
-id|IP6T_ALIGN
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|ip6t_ipv6header_info
-)paren
-)paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 r_return
 l_int|1
 suffix:semicolon

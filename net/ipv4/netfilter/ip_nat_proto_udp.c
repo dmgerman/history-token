@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_core.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_rule.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_protocol.h&gt;
 r_static
@@ -314,18 +315,20 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|udp_manip_pkt
 id|udp_manip_pkt
 c_func
 (paren
 r_struct
-id|iphdr
+id|sk_buff
 op_star
-id|iph
+op_star
+id|pskb
 comma
 r_int
-id|len
+r_int
+id|hdroff
 comma
 r_const
 r_struct
@@ -342,21 +345,6 @@ r_struct
 id|udphdr
 op_star
 id|hdr
-op_assign
-(paren
-r_struct
-id|udphdr
-op_star
-)paren
-(paren
-(paren
-id|u_int32_t
-op_star
-)paren
-id|iph
-op_plus
-id|iph-&gt;ihl
-)paren
 suffix:semicolon
 id|u_int32_t
 id|oldip
@@ -364,6 +352,41 @@ suffix:semicolon
 id|u_int16_t
 op_star
 id|portptr
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|skb_ip_make_writable
+c_func
+(paren
+id|pskb
+comma
+id|hdroff
+op_plus
+r_sizeof
+(paren
+id|hdr
+)paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|hdr
+op_assign
+(paren
+r_void
+op_star
+)paren
+(paren
+op_star
+id|pskb
+)paren
+op_member_access_from_pointer
+id|data
+op_plus
+id|hdroff
 suffix:semicolon
 r_if
 c_cond
@@ -376,7 +399,12 @@ id|IP_NAT_MANIP_SRC
 multiline_comment|/* Get rid of src ip and src pt */
 id|oldip
 op_assign
-id|iph-&gt;saddr
+(paren
+op_star
+id|pskb
+)paren
+op_member_access_from_pointer
+id|nh.iph-&gt;saddr
 suffix:semicolon
 id|portptr
 op_assign
@@ -389,7 +417,12 @@ r_else
 multiline_comment|/* Get rid of dst ip and dst pt */
 id|oldip
 op_assign
-id|iph-&gt;daddr
+(paren
+op_star
+id|pskb
+)paren
+op_member_access_from_pointer
+id|nh.iph-&gt;daddr
 suffix:semicolon
 id|portptr
 op_assign
@@ -431,6 +464,9 @@ op_star
 id|portptr
 op_assign
 id|manip-&gt;u.udp.port
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 r_static
