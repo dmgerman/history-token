@@ -219,6 +219,18 @@ op_star
 id|bus
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|bus_type
+op_star
+id|find_bus
+c_func
+(paren
+r_char
+op_star
+id|name
+)paren
+suffix:semicolon
 multiline_comment|/* iterator helpers for buses */
 r_int
 id|bus_for_each_dev
