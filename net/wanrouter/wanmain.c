@@ -2112,24 +2112,6 @@ id|EINVAL
 suffix:semicolon
 )brace
 r_else
-r_if
-c_cond
-(paren
-id|dev_get
-c_func
-(paren
-id|dev-&gt;name
-)paren
-)paren
-(brace
-id|err
-op_assign
-op_minus
-id|EEXIST
-suffix:semicolon
-multiline_comment|/* name already exists */
-)brace
-r_else
 (brace
 macro_line|#ifdef WANDEBUG
 id|printk
