@@ -882,7 +882,11 @@ op_assign
 id|__alloc_bootmem
 c_func
 (paren
+id|PAGE_ALIGN
+c_func
+(paren
 id|size
+)paren
 comma
 id|PAGE_SIZE
 comma
