@@ -176,7 +176,7 @@ id|tsk
 )paren
 )paren
 (brace
-id|count_inc
+id|inc
 c_func
 (paren
 op_amp
@@ -244,7 +244,7 @@ id|sem-&gt;waking
 op_le
 l_int|0
 )paren
-id|count_inc
+id|inc
 c_func
 (paren
 op_amp

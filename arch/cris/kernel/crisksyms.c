@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/fasttimer.h&gt;
 r_extern
 r_void
 id|dump_thread
@@ -428,4 +429,35 @@ c_func
 id|memset
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ETRAX_FAST_TIMER
+multiline_comment|/* Fast timer functions */
+DECL|variable|fast_timer_list
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fast_timer_list
+)paren
+suffix:semicolon
+DECL|variable|start_one_shot_timer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|start_one_shot_timer
+)paren
+suffix:semicolon
+DECL|variable|del_fast_timer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|del_fast_timer
+)paren
+suffix:semicolon
+DECL|variable|schedule_usleep
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|schedule_usleep
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

@@ -1232,16 +1232,11 @@ r_int
 r_int
 r_int
 )paren
-id|get_lclk_frequency_10khz
+id|get_lcdclk_frequency_10khz
 c_func
 (paren
 )paren
 op_star
-(paren
-r_int
-r_int
-r_int
-)paren
 id|pixclock
 suffix:semicolon
 id|pcd

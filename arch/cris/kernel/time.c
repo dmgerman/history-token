@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.9 2003/07/04 08:27:52 starvik Exp $&n; *&n; *  linux/arch/cris/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 1999, 2000, 2001 Axis Communications AB&n; *&n; * 1994-07-02    Alan Modra&n; *&t;fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; * 1995-03-26    Markus Kuhn&n; *      fixed 500 ms bug at call to set_rtc_mmss, fixed DS12887&n; *      precision CMOS clock update&n; * 1996-05-03    Ingo Molnar&n; *      fixed time warps in do_[slow|fast]_gettimeoffset()&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; *&n; * Linux/CRIS specific code:&n; *&n; * Authors:    Bjorn Wesen&n; *             Johan Adolfsson  &n; *&n; */
+multiline_comment|/* $Id: time.c,v 1.14 2004/06/01 05:38:11 starvik Exp $&n; *&n; *  linux/arch/cris/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Copyright (C) 1999, 2000, 2001 Axis Communications AB&n; *&n; * 1994-07-02    Alan Modra&n; *&t;fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; * 1995-03-26    Markus Kuhn&n; *      fixed 500 ms bug at call to set_rtc_mmss, fixed DS12887&n; *      precision CMOS clock update&n; * 1996-05-03    Ingo Molnar&n; *      fixed time warps in do_[slow|fast]_gettimeoffset()&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; *&n; * Linux/CRIS specific code:&n; *&n; * Authors:    Bjorn Wesen&n; *             Johan Adolfsson  &n; *&n; */
 macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
@@ -31,6 +32,17 @@ r_extern
 r_int
 r_int
 id|wall_jiffies
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|loops_per_jiffy
+suffix:semicolon
+multiline_comment|/* init/main.c */
+DECL|variable|loops_per_usec
+r_int
+r_int
+id|loops_per_usec
 suffix:semicolon
 r_extern
 r_int
@@ -120,6 +132,26 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * If time_adjust is negative then NTP is slowing the clock&n;&t; * so make sure not to go into next possible interval.&n;&t; * Better to lose some accuracy than have time go backwards..&n;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|time_adjust
+OL
+l_int|0
+)paren
+op_logical_and
+id|usec
+OG
+id|tickadj
+)paren
+id|usec
+op_assign
+id|tickadj
+suffix:semicolon
 id|sec
 op_assign
 id|xtime.tv_sec
@@ -179,9 +211,19 @@ op_star
 id|tv
 )paren
 (brace
+id|time_t
+id|wtm_sec
+comma
+id|sec
+op_assign
+id|tv-&gt;tv_sec
+suffix:semicolon
 r_int
-r_int
-id|flags
+id|wtm_nsec
+comma
+id|nsec
+op_assign
+id|tv-&gt;tv_nsec
 suffix:semicolon
 r_if
 c_cond
@@ -198,28 +240,24 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|local_irq_save
+id|write_seqlock_irq
 c_func
 (paren
-id|flags
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* This is revolting. We need to set the xtime.tv_usec&n;&t; * correctly. However, the value in this location is&n;&t; * is value at the last tick.&n;&t; * Discover what correction gettimeofday&n;&t; * would have done, and then undo it!&n;&t; */
-id|tv-&gt;tv_nsec
+multiline_comment|/*&n;&t; * This is revolting. We need to set &quot;xtime&quot; correctly. However, the&n;&t; * value in this location is the value at the most recent update of&n;&t; * wall time.  Discover what correction gettimeofday() would have&n;&t; * made, and then undo it!&n;&t; */
+id|nsec
 op_sub_assign
 id|do_gettimeoffset
 c_func
 (paren
 )paren
 op_star
-l_int|1000
+id|NSEC_PER_USEC
 suffix:semicolon
-id|tv-&gt;tv_nsec
+id|nsec
 op_sub_assign
 (paren
 id|jiffies
@@ -229,29 +267,47 @@ id|wall_jiffies
 op_star
 id|TICK_NSEC
 suffix:semicolon
-r_while
-c_loop
+id|wtm_sec
+op_assign
+id|wall_to_monotonic.tv_sec
+op_plus
 (paren
-id|tv-&gt;tv_nsec
-OL
-l_int|0
-)paren
-(brace
-id|tv-&gt;tv_nsec
-op_add_assign
-id|NSEC_PER_SEC
-suffix:semicolon
-id|tv-&gt;tv_sec
-op_decrement
-suffix:semicolon
-)brace
 id|xtime.tv_sec
-op_assign
-id|tv-&gt;tv_sec
+op_minus
+id|sec
+)paren
 suffix:semicolon
-id|xtime.tv_nsec
+id|wtm_nsec
 op_assign
-id|tv-&gt;tv_nsec
+id|wall_to_monotonic.tv_nsec
+op_plus
+(paren
+id|xtime.tv_nsec
+op_minus
+id|nsec
+)paren
+suffix:semicolon
+id|set_normalized_timespec
+c_func
+(paren
+op_amp
+id|xtime
+comma
+id|sec
+comma
+id|nsec
+)paren
+suffix:semicolon
+id|set_normalized_timespec
+c_func
+(paren
+op_amp
+id|wall_to_monotonic
+comma
+id|wtm_sec
+comma
+id|wtm_nsec
+)paren
 suffix:semicolon
 id|time_adjust
 op_assign
@@ -262,11 +318,6 @@ id|time_status
 op_or_assign
 id|STA_UNSYNC
 suffix:semicolon
-id|time_state
-op_assign
-id|TIME_ERROR
-suffix:semicolon
-multiline_comment|/* p. 24, (a) */
 id|time_maxerror
 op_assign
 id|NTP_PHASE_LIMIT
@@ -275,10 +326,11 @@ id|time_esterror
 op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
-id|local_irq_restore
+id|write_sequnlock_irq
 c_func
 (paren
-id|flags
+op_amp
+id|xtime_lock
 )paren
 suffix:semicolon
 id|clock_was_set
@@ -323,6 +375,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;set_rtc_mmss(%lu)&bslash;n&quot;
 comma
 id|nowtime
@@ -537,6 +590,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;rtc: sec 0x%x min 0x%x hour 0x%x day 0x%x mon 0x%x year 0x%x&bslash;n&quot;
 comma
 id|sec
@@ -649,4 +703,61 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * Scheduler clock - returns current time in nanosec units.&n; */
+DECL|function|sched_clock
+r_int
+r_int
+r_int
+id|sched_clock
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+(paren
+r_int
+r_int
+r_int
+)paren
+id|jiffies
+op_star
+(paren
+l_int|1000000000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|init_udelay
+id|__init
+id|init_udelay
+c_func
+(paren
+r_void
+)paren
+(brace
+id|loops_per_usec
+op_assign
+(paren
+id|loops_per_jiffy
+op_star
+id|HZ
+)paren
+op_div
+l_int|1000000
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|init_udelay
+id|__initcall
+c_func
+(paren
+id|init_udelay
+)paren
+suffix:semicolon
 eof

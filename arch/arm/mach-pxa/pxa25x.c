@@ -321,11 +321,11 @@ c_func
 id|get_clk_frequency_khz
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Return the current lclk requency in units of 10kHz&n; */
-DECL|function|get_lclk_frequency_10khz
+multiline_comment|/*&n; * Return the current memory clock frequency in units of 10kHz&n; */
+DECL|function|get_memclk_frequency_10khz
 r_int
 r_int
-id|get_lclk_frequency_10khz
+id|get_memclk_frequency_10khz
 c_func
 (paren
 r_void
@@ -348,11 +348,35 @@ op_div
 l_int|10000
 suffix:semicolon
 )brace
-DECL|variable|get_lclk_frequency_10khz
+DECL|variable|get_memclk_frequency_10khz
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|get_lclk_frequency_10khz
+id|get_memclk_frequency_10khz
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Return the current LCD clock frequency in units of 10kHz&n; */
+DECL|function|get_lcdclk_frequency_10khz
+r_int
+r_int
+id|get_lcdclk_frequency_10khz
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|get_memclk_frequency_10khz
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|get_lcdclk_frequency_10khz
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_lcdclk_frequency_10khz
 )paren
 suffix:semicolon
 eof

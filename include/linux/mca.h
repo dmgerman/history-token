@@ -582,7 +582,6 @@ r_int
 id|slot
 comma
 id|MCA_ProcFn
-op_star
 id|fn
 comma
 r_void

@@ -5123,11 +5123,10 @@ r_return
 id|busiest
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Check this_cpu to ensure it is balanced within domain. Attempt to move&n; * tasks if there is an imbalance.&n; *&n; * Called with this_rq unlocked.&n; *&n; * This function is marked noinline to work around a compiler&n; * bug with gcc 3.3.3-hammer on x86-64.&n; */
+multiline_comment|/*&n; * Check this_cpu to ensure it is balanced within domain. Attempt to move&n; * tasks if there is an imbalance.&n; *&n; * Called with this_rq unlocked.&n; */
 DECL|function|load_balance
 r_static
 r_int
-id|noinline
 id|load_balance
 c_func
 (paren
@@ -5212,6 +5211,7 @@ id|busiest
 r_goto
 id|out_balanced
 suffix:semicolon
+multiline_comment|/*&n;&t; * This should be &quot;impossible&quot;, but since load&n;&t; * balancing is inherently racy and statistical,&n;&t; * it could happen in theory.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5774,6 +5774,21 @@ c_func
 (paren
 id|push_cpu
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * This condition is &quot;impossible&quot;, but since load&n;&t;&t; * balancing is inherently a bit racy and statistical,&n;&t;&t; * it can trigger.. Reported by Bjorn Helgaas on a&n;&t;&t; * 128-cpu setup.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|busiest
+op_eq
+id|rq
+)paren
+)paren
+r_goto
+id|next_group
 suffix:semicolon
 id|double_lock_balance
 c_func

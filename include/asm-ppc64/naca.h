@@ -59,11 +59,11 @@ id|u64
 id|interrupt_controller
 suffix:semicolon
 multiline_comment|/* Type of int controller    0x40 */
-DECL|member|slb_size
+DECL|member|unused1
 id|u64
-id|slb_size
+id|unused1
 suffix:semicolon
-multiline_comment|/* SLB size in entries       0x48 */
+multiline_comment|/* was SLB size in entries   0x48 */
 DECL|member|pftSize
 id|u64
 id|pftSize
