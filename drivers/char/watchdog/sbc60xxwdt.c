@@ -888,8 +888,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|err_out
-suffix:colon
+multiline_comment|/* err_out: */
 r_return
 id|rc
 suffix:semicolon
