@@ -2,6 +2,8 @@ multiline_comment|/*&n; * arch/i386/mm/ioremap.c&n; *&n; * Re-map IO memory to k
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|function|remap_area_pte
 r_static
 r_inline
