@@ -2644,8 +2644,7 @@ id|MAXSEQ
 id|dprintk
 c_func
 (paren
-l_string|&quot;svcauth_gss: discarding request with large&quot;
-l_string|&quot; sequence number %d&bslash;n&quot;
+l_string|&quot;RPC:      svcauth_gss: discarding request with large sequence number %d&bslash;n&quot;
 comma
 id|gc-&gt;gc_seq
 )paren
@@ -2675,8 +2674,7 @@ id|gc-&gt;gc_seq
 id|dprintk
 c_func
 (paren
-l_string|&quot;svcauth_gss: discarding request with old&quot;
-l_string|&quot; sequence number %d&bslash;n&quot;
+l_string|&quot;RPC:      svcauth_gss: discarding request with old sequence number %d&bslash;n&quot;
 comma
 id|gc-&gt;gc_seq
 )paren
@@ -3591,7 +3589,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: svcauth_gss: argv-&gt;iov_len = %zd&bslash;n&quot;
+l_string|&quot;RPC:      svcauth_gss: argv-&gt;iov_len = %zd&bslash;n&quot;
 comma
 id|argv-&gt;iov_len
 )paren

@@ -321,7 +321,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: get_key: unsupported algorithm %d&bslash;n&quot;
+l_string|&quot;RPC:      get_key: unsupported algorithm %d&bslash;n&quot;
 comma
 id|alg
 )paren
@@ -704,7 +704,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;Succesfully imported new context.&bslash;n&quot;
+l_string|&quot;RPC:      Succesfully imported new context.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -880,7 +880,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_verify_mic_kerberos returning %d&bslash;n&quot;
+l_string|&quot;RPC:      gss_verify_mic_kerberos returning %d&bslash;n&quot;
 comma
 id|maj_stat
 )paren
@@ -945,7 +945,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_get_mic_kerberos returning %d&bslash;n&quot;
+l_string|&quot;RPC:      gss_get_mic_kerberos returning %d&bslash;n&quot;
 comma
 id|err
 )paren

@@ -64,7 +64,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: krb5_encrypt: input data:&bslash;n&quot;
+l_string|&quot;RPC:      krb5_encrypt: input data:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_hexl
@@ -112,7 +112,7 @@ l_int|16
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_k5encrypt: tfm iv size to large %d&bslash;n&quot;
+l_string|&quot;RPC:      gss_k5encrypt: tfm iv size to large %d&bslash;n&quot;
 comma
 id|crypto_tfm_alg_ivsize
 c_func
@@ -208,7 +208,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: krb5_encrypt: output data:&bslash;n&quot;
+l_string|&quot;RPC:      krb5_encrypt: output data:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_hexl
@@ -230,7 +230,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;krb5_encrypt returns %d&bslash;n&quot;
+l_string|&quot;RPC:      krb5_encrypt returns %d&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -291,7 +291,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: krb5_decrypt: input data:&bslash;n&quot;
+l_string|&quot;RPC:      krb5_decrypt: input data:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_hexl
@@ -339,7 +339,7 @@ l_int|16
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_k5decrypt: tfm iv size to large %d&bslash;n&quot;
+l_string|&quot;RPC:      gss_k5decrypt: tfm iv size to large %d&bslash;n&quot;
 comma
 id|crypto_tfm_alg_ivsize
 c_func
@@ -435,7 +435,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: krb5_decrypt: output_data:&bslash;n&quot;
+l_string|&quot;RPC:      krb5_decrypt: output_data:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_hexl
@@ -457,7 +457,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;gss_k5decrypt returns %d&bslash;n&quot;
+l_string|&quot;RPC:      gss_k5decrypt returns %d&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -583,7 +583,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: krb5_make_checksum:&quot;
+l_string|&quot;RPC:      krb5_make_checksum:&quot;
 l_string|&quot; unsupported checksum %d&quot;
 comma
 id|cksumtype

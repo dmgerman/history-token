@@ -1209,7 +1209,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_parse_init_downcall returning %d&bslash;n&quot;
+l_string|&quot;RPC:      gss_parse_init_downcall returning %d&bslash;n&quot;
 comma
 id|err
 )paren
@@ -1346,10 +1346,24 @@ op_amp
 id|pos-&gt;count
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;RPC:      gss_find_upcall found msg %p&bslash;n&quot;
+comma
+id|pos
+)paren
+suffix:semicolon
 r_return
 id|pos
 suffix:semicolon
 )brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;RPC:      gss_find_upcall found nothing&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -1527,6 +1541,16 @@ id|res
 op_assign
 l_int|0
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;RPC: %4u gss_upcall for uid %u&bslash;n&quot;
+comma
+id|task-&gt;tk_pid
+comma
+id|uid
+)paren
+suffix:semicolon
 id|retry
 suffix:colon
 id|spin_lock
@@ -1589,10 +1613,20 @@ c_cond
 op_logical_neg
 id|gss_new
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;RPC: %4u gss_upcall -ENOMEM&bslash;n&quot;
+comma
+id|task-&gt;tk_pid
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 r_goto
 id|retry
 suffix:semicolon
@@ -1761,12 +1795,23 @@ c_func
 id|gss_msg
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;RPC: %4u gss_upcall for uid %u result %d&quot;
+comma
+id|task-&gt;tk_pid
+comma
+id|uid
+comma
+id|res
+)paren
+suffix:semicolon
 r_return
 id|res
 suffix:semicolon
 id|out_sleep
 suffix:colon
-multiline_comment|/* Sleep forever */
 id|task-&gt;tk_timeout
 op_assign
 l_int|0
@@ -1789,6 +1834,14 @@ c_func
 (paren
 op_amp
 id|gss_auth-&gt;lock
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;RPC: %4u gss_upcall  sleeping&bslash;n&quot;
+comma
+id|task-&gt;tk_pid
 )paren
 suffix:semicolon
 r_if
@@ -2221,6 +2274,14 @@ c_func
 id|clnt
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;RPC:      gss_pipe_downcall returning length %u&bslash;n&quot;
+comma
+id|mlen
+)paren
+suffix:semicolon
 r_return
 id|mlen
 suffix:semicolon
@@ -2246,7 +2307,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_pipe_downcall returning %d&bslash;n&quot;
+l_string|&quot;RPC:      gss_pipe_downcall returning %d&bslash;n&quot;
 comma
 id|err
 )paren
@@ -2440,6 +2501,14 @@ OL
 l_int|0
 )paren
 (brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;RPC:      gss_pipe_destroy_msg releasing msg %p&bslash;n&quot;
+comma
+id|gss_msg
+)paren
+suffix:semicolon
 id|atomic_inc
 c_func
 (paren
@@ -2542,7 +2611,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: creating GSS authenticator for client %p&bslash;n&quot;
+l_string|&quot;RPC:      creating GSS authenticator for client %p&bslash;n&quot;
 comma
 id|clnt
 )paren
@@ -2731,7 +2800,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: destroying GSS authenticator %p flavor %d&bslash;n&quot;
+l_string|&quot;RPC:      destroying GSS authenticator %p flavor %d&bslash;n&quot;
 comma
 id|auth
 comma
@@ -2780,7 +2849,7 @@ id|ctx
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_destroy_ctx&bslash;n&quot;
+l_string|&quot;RPC:      gss_destroy_ctx&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2848,7 +2917,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_destroy_cred &bslash;n&quot;
+l_string|&quot;RPC:      gss_destroy_cred &bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2901,7 +2970,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_create_cred for uid %d, flavor %d&bslash;n&quot;
+l_string|&quot;RPC:      gss_create_cred for uid %d, flavor %d&bslash;n&quot;
 comma
 id|acred-&gt;uid
 comma
@@ -2985,7 +3054,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_create_cred failed&bslash;n&quot;
+l_string|&quot;RPC:      gss_create_cred failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3125,7 +3194,9 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_marshal&bslash;n&quot;
+l_string|&quot;RPC: %4u gss_marshal&bslash;n&quot;
+comma
+id|task-&gt;tk_pid
 )paren
 suffix:semicolon
 op_star
@@ -3162,7 +3233,9 @@ l_int|0
 id|dprintk
 c_func
 (paren
-l_string|&quot;Bad pseudoflavor %d in gss_marshal&bslash;n&quot;
+l_string|&quot;RPC: %4u Bad pseudoflavor %d in gss_marshal&bslash;n&quot;
+comma
+id|task-&gt;tk_pid
 comma
 id|gss_cred-&gt;gc_flavor
 )paren
@@ -3539,7 +3612,9 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_validate&bslash;n&quot;
+l_string|&quot;RPC: %4u gss_validate&bslash;n&quot;
+comma
+id|task-&gt;tk_pid
 )paren
 suffix:semicolon
 id|flav
@@ -3703,6 +3778,14 @@ c_func
 id|ctx
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;RPC: %4u GSS gss_validate: gss_verify_mic succeeded.&bslash;n&quot;
+comma
+id|task-&gt;tk_pid
+)paren
+suffix:semicolon
 r_return
 id|p
 op_plus
@@ -3718,6 +3801,14 @@ id|gss_put_ctx
 c_func
 (paren
 id|ctx
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;RPC: %4u gss_validate failed.&bslash;n&quot;
+comma
+id|task-&gt;tk_pid
 )paren
 suffix:semicolon
 r_return
@@ -3847,7 +3938,9 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_wrap_body&bslash;n&quot;
+l_string|&quot;RPC: %4u gss_wrap_req&bslash;n&quot;
+comma
+id|task-&gt;tk_pid
 )paren
 suffix:semicolon
 id|BUG_ON
@@ -4131,7 +4224,9 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_wrap_req returning %d&bslash;n&quot;
+l_string|&quot;RPC: %4u gss_wrap_req returning %d&bslash;n&quot;
+comma
+id|task-&gt;tk_pid
 comma
 id|status
 )paren
@@ -4462,7 +4557,9 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_unwrap_resp returning %d&bslash;n&quot;
+l_string|&quot;RPC: %4u gss_unwrap_resp returning %d&bslash;n&quot;
+comma
+id|task-&gt;tk_pid
 comma
 id|status
 )paren

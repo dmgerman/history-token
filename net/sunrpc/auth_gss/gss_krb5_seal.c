@@ -152,7 +152,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_krb5_seal: ctx-&gt;signalg %d not&quot;
+l_string|&quot;RPC:      gss_krb5_seal: ctx-&gt;signalg %d not&quot;
 l_string|&quot; supported&bslash;n&quot;
 comma
 id|ctx-&gt;signalg
@@ -177,7 +177,7 @@ id|SEAL_ALG_DES
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_krb5_seal: ctx-&gt;sealalg %d not supported&bslash;n&quot;
+l_string|&quot;RPC:      gss_krb5_seal: ctx-&gt;sealalg %d not supported&bslash;n&quot;
 comma
 id|ctx-&gt;sealalg
 )paren
@@ -409,7 +409,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;make_seal_token: cksum data: &bslash;n&quot;
+l_string|&quot;RPC:      make_seal_token: cksum data: &bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_hexl

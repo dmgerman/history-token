@@ -170,7 +170,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_mech_register: registered mechanism with oid:&bslash;n&quot;
+l_string|&quot;RPC:      gss_mech_register: registered mechanism with oid:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_hexl
@@ -213,7 +213,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: unregistered mechanism with oid:&bslash;n&quot;
+l_string|&quot;RPC:      unregistered mechanism with oid:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_hexl
@@ -244,8 +244,7 @@ id|gm
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: We just unregistered a gss_mechanism which&quot;
-l_string|&quot; someone is still using.&bslash;n&quot;
+l_string|&quot;RPC:      We just unregistered a gss_mechanism which someone is still using.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -435,7 +434,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_mech_get_by_OID searching for mechanism with OID:&bslash;n&quot;
+l_string|&quot;RPC:      gss_mech_get_by_OID searching for mechanism with OID:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_hexl
@@ -513,7 +512,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_mech_get_by_OID %s it&bslash;n&quot;
+l_string|&quot;RPC:      gss_mech_get_by_OID %s it&bslash;n&quot;
 comma
 id|gm
 ques
@@ -845,7 +844,7 @@ id|context_handle
 id|dprintk
 c_func
 (paren
-l_string|&quot;gss_delete_sec_context deleting %p&bslash;n&quot;
+l_string|&quot;RPC:      gss_delete_sec_context deleting %p&bslash;n&quot;
 comma
 op_star
 id|context_handle
