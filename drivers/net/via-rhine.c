@@ -389,6 +389,9 @@ comma
 DECL|enumerator|VT3043
 id|VT3043
 comma
+DECL|enumerator|VT6105
+id|VT6105
+comma
 )brace
 suffix:semicolon
 DECL|struct|via_rhine_chip_info
@@ -499,6 +502,7 @@ id|CanHaveMII
 op_or
 id|ReqTxAlign
 )brace
+comma
 (brace
 l_string|&quot;VIA VT6105 Rhine-III&quot;
 comma
