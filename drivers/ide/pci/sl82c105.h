@@ -5,19 +5,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 r_static
-r_void
-id|init_setup_sl82c105
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-id|ide_pci_device_t
-op_star
-)paren
-suffix:semicolon
-r_static
 r_int
 r_int
 id|init_chipset_sl82c105
@@ -63,6 +50,7 @@ id|__initdata
 op_assign
 (brace
 (brace
+multiline_comment|/* 0 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_WINBOND
@@ -74,10 +62,6 @@ comma
 id|name
 suffix:colon
 l_string|&quot;W82C105&quot;
-comma
-id|init_setup
-suffix:colon
-id|init_setup_sl82c105
 comma
 id|init_chipset
 suffix:colon

@@ -387,19 +387,6 @@ comma
 suffix:semicolon
 macro_line|#endif /* DISPLAY_SIIMAGE_TIMINGS &amp;&amp; CONFIG_PROC_FS */&t;
 r_static
-r_void
-id|init_setup_siimage
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-comma
-id|ide_pci_device_t
-op_star
-)paren
-suffix:semicolon
-r_static
 r_int
 r_int
 id|init_chipset_siimage
@@ -454,6 +441,7 @@ id|__initdata
 op_assign
 (brace
 (brace
+multiline_comment|/* 0 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_CMD
@@ -465,10 +453,6 @@ comma
 id|name
 suffix:colon
 l_string|&quot;SiI680&quot;
-comma
-id|init_setup
-suffix:colon
-id|init_setup_siimage
 comma
 id|init_chipset
 suffix:colon
@@ -525,6 +509,7 @@ comma
 )brace
 comma
 (brace
+multiline_comment|/* 1 */
 id|vendor
 suffix:colon
 id|PCI_VENDOR_ID_CMD
@@ -536,10 +521,6 @@ comma
 id|name
 suffix:colon
 l_string|&quot;SiI3112 Serial ATA&quot;
-comma
-id|init_setup
-suffix:colon
-id|init_setup_siimage
 comma
 id|init_chipset
 suffix:colon

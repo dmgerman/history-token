@@ -2595,11 +2595,9 @@ DECL|macro|IDE_CHIPSET_PCI_MASK
 mdefine_line|#define IDE_CHIPSET_PCI_MASK&t;&bslash;&n;    ((1&lt;&lt;ide_pci)|(1&lt;&lt;ide_cmd646)|(1&lt;&lt;ide_ali14xx))
 DECL|macro|IDE_CHIPSET_IS_PCI
 mdefine_line|#define IDE_CHIPSET_IS_PCI(c)&t;((IDE_CHIPSET_PCI_MASK &gt;&gt; (c)) &amp; 1)
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 r_struct
 id|ide_pci_device_s
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
 DECL|struct|hwif_s
 r_typedef
 r_struct
@@ -2723,7 +2721,6 @@ id|hwif_chipset_t
 id|chipset
 suffix:semicolon
 multiline_comment|/* sub-module for tuning.. */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 DECL|member|pci_dev
 r_struct
 id|pci_dev
@@ -2738,7 +2735,6 @@ op_star
 id|cds
 suffix:semicolon
 multiline_comment|/* chipset device struct */
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
 macro_line|#if 0
 id|ide_hwif_ops_t
 op_star
@@ -3806,7 +3802,6 @@ id|ide_hwif_t
 op_star
 id|hwif
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 multiline_comment|/* for pci chipsets */
 DECL|member|pci_dev
 r_struct
@@ -3821,7 +3816,6 @@ id|ide_pci_device_s
 op_star
 id|cds
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
 multiline_comment|/* current request */
 DECL|member|rq
 r_struct
@@ -5876,7 +5870,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifndef _IDE_C
 r_extern
 r_struct
 id|block_device_operations
@@ -5890,7 +5883,6 @@ id|generic_subdriver_entries
 (braket
 )braket
 suffix:semicolon
-macro_line|#endif
 r_extern
 r_int
 id|ata_attach
@@ -5900,8 +5892,6 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef _IDE_C
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
 r_extern
 r_int
 id|ideprobe_init
@@ -5910,7 +5900,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 r_extern
 r_void
 id|ide_scan_pcibus
@@ -5921,9 +5910,28 @@ id|scan_direction
 )paren
 id|__init
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
-macro_line|#endif /* CONFIG_BLK_DEV_IDE */
-macro_line|#endif /* _IDE_C */
+r_extern
+r_int
+id|ide_pci_register_driver
+c_func
+(paren
+r_struct
+id|pci_driver
+op_star
+id|driver
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ide_pci_unregister_driver
+c_func
+(paren
+r_struct
+id|pci_driver
+op_star
+id|driver
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|default_hwif_iops
@@ -6006,7 +6014,6 @@ op_star
 id|driver
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|struct|ide_pci_host_proc_s
 r_typedef
@@ -6216,7 +6223,6 @@ DECL|typedef|ide_pci_device_t
 )brace
 id|ide_pci_device_t
 suffix:semicolon
-macro_line|#ifdef LINUX_PCI_H
 r_extern
 r_void
 id|ide_setup_pci_device
@@ -6247,9 +6253,6 @@ id|ide_pci_device_t
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif /* LINUX_PCI_H */
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|macro|BAD_DMA_DRIVE
 mdefine_line|#define BAD_DMA_DRIVE&t;&t;0
 DECL|macro|GOOD_DMA_DRIVE
@@ -6471,7 +6474,6 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_extern
 r_void
 id|hwif_unregister
