@@ -1654,9 +1654,9 @@ id|drv
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_register_driver - register a new pci driver&n; * @drv: the driver structure to register&n; * &n; * Adds the driver structure to the list of registered drivers.&n; * Returns a negative value on error. The driver remains registered&n; * even if no device was claimed during registration.&n; */
-r_int
+multiline_comment|/**&n; * pci_register_driver - register a new pci driver&n; * @drv: the driver structure to register&n; * &n; * Adds the driver structure to the list of registered drivers.&n; * Returns a negative value on error, otherwise 0. &n; * If no error occured, the driver remains registered even if &n; * no device was claimed during registration.&n; */
 DECL|function|pci_register_driver
+r_int
 id|pci_register_driver
 c_func
 (paren
@@ -1667,9 +1667,7 @@ id|drv
 )paren
 (brace
 r_int
-id|count
-op_assign
-l_int|0
+id|error
 suffix:semicolon
 multiline_comment|/* initialize common driver fields */
 id|drv-&gt;driver.name
@@ -1702,7 +1700,7 @@ id|drv-&gt;dynids
 )paren
 suffix:semicolon
 multiline_comment|/* register with core */
-id|count
+id|error
 op_assign
 id|driver_register
 c_func
@@ -1714,25 +1712,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|count
-op_ge
-l_int|0
+op_logical_neg
+id|error
 )paren
-(brace
 id|pci_populate_driver_dir
 c_func
 (paren
 id|drv
 )paren
 suffix:semicolon
-)brace
 r_return
-id|count
-ques
-c_cond
-id|count
-suffix:colon
-l_int|1
+id|error
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * pci_unregister_driver - unregister a pci driver&n; * @drv: the driver structure to unregister&n; * &n; * Deletes the driver structure from the list of registered PCI drivers,&n; * gives it a chance to clean up by calling its remove() function for&n; * each device it was responsible for, and marks those devices as&n; * driverless.&n; */
