@@ -952,6 +952,14 @@ r_int
 id|flags
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|xfrm_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* _NET_DST_H */
 eof
