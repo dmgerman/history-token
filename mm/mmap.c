@@ -2937,6 +2937,21 @@ id|mm-&gt;exec_vm
 op_add_assign
 id|pages
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+(paren
+id|VM_RESERVED
+op_or
+id|VM_IO
+)paren
+)paren
+id|mm-&gt;reserved_vm
+op_add_assign
+id|pages
+suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*&n; * The caller must hold down_write(current-&gt;mm-&gt;mmap_sem).&n; */

@@ -623,12 +623,15 @@ id|shared_vm
 suffix:semicolon
 DECL|member|exec_vm
 DECL|member|stack_vm
+DECL|member|reserved_vm
 DECL|member|def_flags
 r_int
 r_int
 id|exec_vm
 comma
 id|stack_vm
+comma
+id|reserved_vm
 comma
 id|def_flags
 suffix:semicolon

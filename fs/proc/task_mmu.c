@@ -74,7 +74,11 @@ l_string|&quot;VmStk:&bslash;t%8lu kB&bslash;n&quot;
 l_string|&quot;VmExe:&bslash;t%8lu kB&bslash;n&quot;
 l_string|&quot;VmLib:&bslash;t%8lu kB&bslash;n&quot;
 comma
+(paren
 id|mm-&gt;total_vm
+op_minus
+id|mm-&gt;reserved_vm
+)paren
 op_lshift
 (paren
 id|PAGE_SHIFT
