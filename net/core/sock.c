@@ -4502,6 +4502,13 @@ id|sock_wmalloc
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SYSCTL
+DECL|variable|sysctl_optmem_max
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysctl_optmem_max
+)paren
+suffix:semicolon
 DECL|variable|sysctl_rmem_max
 id|EXPORT_SYMBOL
 c_func

@@ -306,11 +306,6 @@ id|spinlock_t
 id|lock
 suffix:semicolon
 multiline_comment|/* For serializing operations */
-DECL|member|flags
-id|__u32
-id|flags
-suffix:semicolon
-multiline_comment|/* Interface flags */
 DECL|member|new_speed
 id|__u32
 id|new_speed
