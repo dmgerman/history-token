@@ -418,6 +418,33 @@ op_star
 id|bus
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|pcibios_fixup_device_resources
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_struct
+id|pci_bus
+op_star
+id|bus
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pci_read_irq_line
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif /* __PPC64_PCI_H */
 eof

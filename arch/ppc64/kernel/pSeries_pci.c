@@ -677,6 +677,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|pci_read_irq_line
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_read_irq_line
+)paren
+suffix:semicolon
 DECL|macro|ISA_SPACE_MASK
 mdefine_line|#define ISA_SPACE_MASK 0x1
 DECL|macro|ISA_SPACE_IO
@@ -2278,7 +2285,7 @@ macro_line|#endif
 )brace
 DECL|function|pcibios_fixup_device_resources
 r_void
-id|__init
+id|__devinit
 id|pcibios_fixup_device_resources
 c_func
 (paren
@@ -2402,6 +2409,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|variable|pcibios_fixup_device_resources
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcibios_fixup_device_resources
+)paren
+suffix:semicolon
 DECL|function|pcibios_fixup_bus
 r_void
 id|__devinit

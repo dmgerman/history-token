@@ -8524,7 +8524,7 @@ r_static
 r_struct
 id|device_node
 op_star
-id|__init
+id|__devinit
 DECL|function|intr_parent
 id|intr_parent
 c_func
@@ -8577,7 +8577,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Find out the size of each entry of the interrupts property&n; * for a node.&n; */
 r_static
 r_int
-id|__init
+id|__devinit
 DECL|function|prom_n_intr_cells
 id|prom_n_intr_cells
 c_func
@@ -8705,7 +8705,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Map an interrupt from a device up to the platform interrupt&n; * descriptor.&n; */
 r_static
 r_int
-id|__init
+id|__devinit
 DECL|function|map_interrupt
 id|map_interrupt
 c_func
@@ -13036,7 +13036,7 @@ r_static
 r_struct
 id|device_node
 op_star
-id|__init
+id|__devinit
 DECL|function|find_phandle
 id|find_phandle
 c_func

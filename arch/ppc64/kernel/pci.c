@@ -1461,6 +1461,13 @@ r_return
 id|hose-&gt;global_number
 suffix:semicolon
 )brace
+DECL|variable|pci_domain_nr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_domain_nr
+)paren
+suffix:semicolon
 multiline_comment|/* Set the name of the bus as it appears in /proc/bus/pci */
 DECL|function|pci_name_bus
 r_int
