@@ -51,10 +51,6 @@ comma
 r_struct
 id|dentry
 op_star
-comma
-r_struct
-id|nls_table
-op_star
 )paren
 suffix:semicolon
 r_extern
