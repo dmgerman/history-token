@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2005 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_inum.h&quot;
 macro_line|#include &quot;xfs_log.h&quot;
@@ -649,7 +649,7 @@ op_star
 r_private
 )paren
 suffix:semicolon
-multiline_comment|/* private indicates an unwritten extent lay beneath this IO,&n;&t; * see linvfs_get_block_core.&n;&t; */
+multiline_comment|/* private indicates an unwritten extent lay beneath this IO */
 r_if
 c_cond
 (paren
@@ -3206,15 +3206,12 @@ id|BMAPI_TRYLOCK
 suffix:semicolon
 r_int
 id|page_dirty
-op_assign
-l_int|1
-suffix:semicolon
-r_int
+comma
 id|delalloc
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Are we off the end of the file ? */
+multiline_comment|/* Is this page beyond the end of the file? */
 id|offset
 op_assign
 id|i_size_read
@@ -3327,9 +3324,16 @@ id|iomp
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/*&n;&t; * page_dirty is initially a count of buffers on the page and&n;&t; * is decrememted as we move each into a cleanable state.&n;&t; */
 id|len
 op_assign
 id|bh-&gt;b_size
+suffix:semicolon
+id|page_dirty
+op_assign
+id|PAGE_CACHE_SIZE
+op_div
+id|len
 suffix:semicolon
 r_do
 (brace
@@ -3550,8 +3554,7 @@ op_assign
 id|bh
 suffix:semicolon
 id|page_dirty
-op_assign
-l_int|0
+op_decrement
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Second case, allocate space for a delalloc buffer.&n;&t;&t; * We can return EAGAIN here in the release page case.&n;&t;&t; */
@@ -3678,8 +3681,7 @@ id|bh
 suffix:semicolon
 )brace
 id|page_dirty
-op_assign
-l_int|0
+op_decrement
 suffix:semicolon
 )brace
 )brace
@@ -3844,8 +3846,7 @@ id|bh
 suffix:semicolon
 )brace
 id|page_dirty
-op_assign
-l_int|0
+op_decrement
 suffix:semicolon
 )brace
 )brace
@@ -3885,8 +3886,7 @@ op_assign
 id|bh
 suffix:semicolon
 id|page_dirty
-op_assign
-l_int|0
+op_decrement
 suffix:semicolon
 )brace
 )brace
@@ -4073,8 +4073,8 @@ suffix:semicolon
 )brace
 id|STATIC
 r_int
-DECL|function|linvfs_get_block_core
-id|linvfs_get_block_core
+DECL|function|__linvfs_get_block
+id|__linvfs_get_block
 c_func
 (paren
 r_struct
@@ -4385,25 +4385,25 @@ c_cond
 id|create
 )paren
 (brace
-id|set_buffer_mapped
-c_func
-(paren
-id|bh_result
-)paren
-suffix:semicolon
 id|set_buffer_uptodate
 c_func
 (paren
 id|bh_result
 )paren
 suffix:semicolon
-)brace
+id|set_buffer_mapped
+c_func
+(paren
+id|bh_result
+)paren
+suffix:semicolon
 id|set_buffer_delay
 c_func
 (paren
 id|bh_result
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -4466,7 +4466,7 @@ id|create
 )paren
 (brace
 r_return
-id|linvfs_get_block_core
+id|__linvfs_get_block
 c_func
 (paren
 id|inode
@@ -4513,7 +4513,7 @@ id|create
 )paren
 (brace
 r_return
-id|linvfs_get_block_core
+id|__linvfs_get_block
 c_func
 (paren
 id|inode
