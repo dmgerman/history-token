@@ -7966,7 +7966,7 @@ id|IPPROTO_UDP
 )paren
 (brace
 id|tcb-&gt;tcbu.ipcb.ip_activation_high
-op_assign
+op_or_assign
 id|IPCB_HARDWAREPARSING_ENABLE
 suffix:semicolon
 id|tcb-&gt;tcbu.ipcb.ip_schedule
