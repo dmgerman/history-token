@@ -5551,6 +5551,7 @@ id|port
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|retinfo
 )paren
@@ -5646,6 +5647,7 @@ id|port
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|newinfo
 )paren
@@ -7501,6 +7503,11 @@ suffix:semicolon
 id|count
 op_assign
 id|status
+suffix:semicolon
+id|kfree
+(paren
+id|buffer
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* we are done with this urb, so let the host driver&n;&t; * really free it when it is finished with it */
@@ -9706,6 +9713,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -9817,6 +9825,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -9919,6 +9928,7 @@ comma
 (paren
 r_struct
 id|serial_struct
+id|__user
 op_star
 )paren
 id|arg
@@ -9937,6 +9947,7 @@ comma
 (paren
 r_struct
 id|serial_struct
+id|__user
 op_star
 )paren
 id|arg

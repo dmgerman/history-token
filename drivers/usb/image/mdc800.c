@@ -1848,6 +1848,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1870,6 +1871,7 @@ id|len
 suffix:semicolon
 multiline_comment|/* single transfer size */
 r_char
+id|__user
 op_star
 id|ptr
 op_assign
@@ -2232,6 +2234,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma

@@ -423,18 +423,24 @@ r_int
 id|nerrors
 suffix:semicolon
 multiline_comment|/* track consecutive errors */
-DECL|member|hub_list
-r_struct
-id|list_head
-id|hub_list
-suffix:semicolon
-multiline_comment|/* all hubs */
 DECL|member|event_list
 r_struct
 id|list_head
 id|event_list
 suffix:semicolon
 multiline_comment|/* hubs w/data or errs ready */
+DECL|member|event_bits
+r_int
+r_int
+id|event_bits
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* status change bitmask */
+macro_line|#if USB_MAXCHILDREN &gt; 31 /* 8*sizeof(unsigned long) - 1 */
+macro_line|#error event_bits[] is too short!
+macro_line|#endif
 DECL|member|descriptor
 r_struct
 id|usb_hub_descriptor
@@ -442,11 +448,6 @@ op_star
 id|descriptor
 suffix:semicolon
 multiline_comment|/* class descriptor */
-DECL|member|khubd_sem
-r_struct
-id|semaphore
-id|khubd_sem
-suffix:semicolon
 DECL|member|tt
 r_struct
 id|usb_tt
@@ -479,5 +480,57 @@ id|leds
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* use this for low-powered root hubs */
+r_static
+r_inline
+r_void
+DECL|function|hub_set_power_budget
+id|hub_set_power_budget
+(paren
+r_struct
+id|usb_device
+op_star
+id|hubdev
+comma
+r_int
+id|mA
+)paren
+(brace
+r_struct
+id|usb_hub
+op_star
+id|hub
+suffix:semicolon
+id|hub
+op_assign
+(paren
+r_struct
+id|usb_hub
+op_star
+)paren
+id|usb_get_intfdata
+(paren
+id|hubdev-&gt;actconfig-&gt;interface
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|hub-&gt;power_budget
+op_assign
+id|min
+c_func
+(paren
+id|mA
+comma
+(paren
+r_int
+)paren
+l_int|500
+)paren
+op_div
+l_int|2
+suffix:semicolon
+)brace
 macro_line|#endif /* __LINUX_HUB_H */
 eof

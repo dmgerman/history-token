@@ -3,6 +3,7 @@ macro_line|#include &quot;scsiglue.h&quot;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;transport.h&quot;
+macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;scsi/scsi_devinfo.h&gt;
@@ -37,16 +38,10 @@ op_star
 id|sdev
 )paren
 (brace
-multiline_comment|/*&n;&t; * Set default bflags. These can be overridden for individual&n;&t; * models and vendors via the scsi devinfo mechanism.&n;&t; */
+multiline_comment|/*&n;&t; * Set default bflags. These can be overridden for individual&n;&t; * models and vendors via the scsi devinfo mechanism.  The only&n;&t; * flag we need is to force 36-byte INQUIRYs; we don&squot;t use any&n;&t; * of the extra data and many devices choke if asked for more or&n;&t; * less than 36 bytes.&n;&t; */
 id|sdev-&gt;sdev_bflags
 op_assign
-(paren
-id|BLIST_MS_SKIP_PAGE_08
-op_or
-id|BLIST_MS_SKIP_PAGE_3F
-op_or
-id|BLIST_USE_10_BYTE_MS
-)paren
+id|BLIST_INQUIRY_36
 suffix:semicolon
 r_return
 l_int|0
@@ -106,6 +101,10 @@ op_logical_and
 id|us-&gt;pusb_dev-&gt;speed
 op_eq
 id|USB_SPEED_HIGH
+op_logical_and
+id|sdev-&gt;request_queue-&gt;max_sectors
+OG
+l_int|128
 )paren
 id|blk_queue_max_sectors
 c_func
@@ -115,7 +114,54 @@ comma
 l_int|128
 )paren
 suffix:semicolon
-multiline_comment|/* this is to satisify the compiler, tho I don&squot;t think the &n;&t; * return code is ever checked anywhere. */
+multiline_comment|/* We can&squot;t put these settings in slave_alloc() because that gets&n;&t; * called before the device type is known.  Consequently these&n;&t; * settings can&squot;t be overridden via the scsi devinfo mechanism. */
+r_if
+c_cond
+(paren
+id|sdev-&gt;type
+op_eq
+id|TYPE_DISK
+)paren
+(brace
+multiline_comment|/* Disk-type devices use MODE SENSE(6) if the protocol&n;&t;&t; * (SubClass) is Transparent SCSI, otherwise they use&n;&t;&t; * MODE SENSE(10). */
+r_if
+c_cond
+(paren
+id|us-&gt;subclass
+op_ne
+id|US_SC_SCSI
+)paren
+id|sdev-&gt;use_10_for_ms
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Many disks only accept MODE SENSE transfer lengths of&n;&t;&t; * 192 bytes (that&squot;s what Windows uses). */
+id|sdev-&gt;use_192_bytes_for_3f
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* A number of devices have problems with MODE SENSE for&n;&t;&t; * page x08, so we will skip it. */
+id|sdev-&gt;skip_ms_page_8
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#ifndef CONFIG_USB_STORAGE_RW_DETECT
+multiline_comment|/* Some devices may not like MODE SENSE with page=0x3f.&n;&t;&t; * Now that we&squot;re using 192-byte transfers this may no&n;&t;&t; * longer be a problem.  So this will be a configuration&n;&t;&t; * option. */
+id|sdev-&gt;skip_ms_page_3f
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
+)brace
+r_else
+(brace
+multiline_comment|/* Non-disk-type devices don&squot;t need to blacklist any pages&n;&t;&t; * or to force 192-byte transfer lengths for MODE SENSE.&n;&t;&t; * But they do need to use MODE SENSE(10). */
+id|sdev-&gt;use_10_for_ms
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* this is to satisfy the compiler, tho I don&squot;t think the &n;&t; * return code is ever checked anywhere. */
 r_return
 l_int|0
 suffix:semicolon

@@ -1139,7 +1139,7 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
-singleline_comment|// a readl() later syncs CLE with the HC
+singleline_comment|// a ohci_readl() later syncs CLE with the HC
 )brace
 r_else
 id|writel
@@ -1235,7 +1235,7 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
-singleline_comment|// a readl() later syncs BLE with the HC
+singleline_comment|// a ohci_readl() later syncs BLE with the HC
 )brace
 r_else
 id|writel
@@ -1741,7 +1741,7 @@ singleline_comment|// flush those writes, and get latest HCCA contents
 (paren
 r_void
 )paren
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|ohci-&gt;regs-&gt;control

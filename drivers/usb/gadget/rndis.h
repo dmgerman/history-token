@@ -59,6 +59,19 @@ DECL|macro|RNDIS_DF_CONNECTION_ORIENTED
 mdefine_line|#define RNDIS_DF_CONNECTION_ORIENTED&t;0x00000002U
 DECL|macro|RNDIS_MEDIUM_802_3
 mdefine_line|#define RNDIS_MEDIUM_802_3&t;&t;0x00000000U
+multiline_comment|/* from drivers/net/sk98lin/h/skgepnmi.h */
+DECL|macro|OID_PNP_CAPABILITIES
+mdefine_line|#define OID_PNP_CAPABILITIES&t;&t;&t;0xFD010100
+DECL|macro|OID_PNP_SET_POWER
+mdefine_line|#define OID_PNP_SET_POWER&t;&t;&t;0xFD010101
+DECL|macro|OID_PNP_QUERY_POWER
+mdefine_line|#define OID_PNP_QUERY_POWER&t;&t;&t;0xFD010102
+DECL|macro|OID_PNP_ADD_WAKE_UP_PATTERN
+mdefine_line|#define OID_PNP_ADD_WAKE_UP_PATTERN&t;&t;0xFD010103
+DECL|macro|OID_PNP_REMOVE_WAKE_UP_PATTERN
+mdefine_line|#define OID_PNP_REMOVE_WAKE_UP_PATTERN&t;&t;0xFD010104
+DECL|macro|OID_PNP_ENABLE_WAKE_UP
+mdefine_line|#define OID_PNP_ENABLE_WAKE_UP&t;&t;&t;0xFD010106
 multiline_comment|/* supported OIDs */
 DECL|variable|oid_supported_list
 r_static
@@ -69,7 +82,6 @@ id|oid_supported_list
 )braket
 op_assign
 (brace
-multiline_comment|/* mandatory general */
 multiline_comment|/* the general stuff */
 id|OID_GEN_SUPPORTED_LIST
 comma
@@ -82,8 +94,6 @@ comma
 id|OID_GEN_MAXIMUM_FRAME_SIZE
 comma
 id|OID_GEN_LINK_SPEED
-comma
-id|OID_GEN_TRANSMIT_BUFFER_SPACE
 comma
 id|OID_GEN_TRANSMIT_BLOCK_SIZE
 comma
@@ -99,14 +109,14 @@ id|OID_GEN_CURRENT_PACKET_FILTER
 comma
 id|OID_GEN_MAXIMUM_TOTAL_SIZE
 comma
-id|OID_GEN_MAC_OPTIONS
-comma
 id|OID_GEN_MEDIA_CONNECT_STATUS
 comma
 id|OID_GEN_PHYSICAL_MEDIUM
 comma
+macro_line|#if 0
 id|OID_GEN_RNDIS_CONFIG_PARAMETER
 comma
+macro_line|#endif
 multiline_comment|/* the statistical stuff */
 id|OID_GEN_XMIT_OK
 comma
@@ -118,6 +128,7 @@ id|OID_GEN_RCV_ERROR
 comma
 id|OID_GEN_RCV_NO_BUFFER
 comma
+macro_line|#ifdef&t;RNDIS_OPTIONAL_STATS
 id|OID_GEN_DIRECTED_BYTES_XMIT
 comma
 id|OID_GEN_DIRECTED_FRAMES_XMIT
@@ -146,6 +157,7 @@ id|OID_GEN_RCV_CRC_ERROR
 comma
 id|OID_GEN_TRANSMIT_QUEUE_LENGTH
 comma
+macro_line|#endif&t;/* RNDIS_OPTIONAL_STATS */
 multiline_comment|/* mandatory 802.3 */
 multiline_comment|/* the general stuff */
 id|OID_802_3_PERMANENT_ADDRESS
@@ -164,6 +176,40 @@ comma
 id|OID_802_3_XMIT_ONE_COLLISION
 comma
 id|OID_802_3_XMIT_MORE_COLLISIONS
+comma
+macro_line|#ifdef&t;RNDIS_OPTIONAL_STATS
+id|OID_802_3_XMIT_DEFERRED
+comma
+id|OID_802_3_XMIT_MAX_COLLISIONS
+comma
+id|OID_802_3_RCV_OVERRUN
+comma
+id|OID_802_3_XMIT_UNDERRUN
+comma
+id|OID_802_3_XMIT_HEARTBEAT_FAILURE
+comma
+id|OID_802_3_XMIT_TIMES_CRS_LOST
+comma
+id|OID_802_3_XMIT_LATE_COLLISIONS
+comma
+macro_line|#endif&t;/* RNDIS_OPTIONAL_STATS */
+macro_line|#ifdef&t;RNDIS_PM
+multiline_comment|/* PM and wakeup are mandatory for USB: */
+multiline_comment|/* power management */
+id|OID_PNP_CAPABILITIES
+comma
+id|OID_PNP_QUERY_POWER
+comma
+id|OID_PNP_SET_POWER
+comma
+multiline_comment|/* wake up host */
+id|OID_PNP_ENABLE_WAKE_UP
+comma
+id|OID_PNP_ADD_WAKE_UP_PATTERN
+comma
+id|OID_PNP_REMOVE_WAKE_UP_PATTERN
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|struct|rndis_init_msg_type

@@ -353,6 +353,8 @@ DECL|macro|VENDOR_AEILAB
 mdefine_line|#define&t;VENDOR_AEILAB&t;&t;0x3334
 DECL|macro|VENDOR_ALLIEDTEL
 mdefine_line|#define&t;VENDOR_ALLIEDTEL&t;0x07c9
+DECL|macro|VENDOR_ATEN
+mdefine_line|#define&t;VENDOR_ATEN&t;&t;0x0557
 DECL|macro|VENDOR_BELKIN
 mdefine_line|#define&t;VENDOR_BELKIN&t;&t;0x050d
 DECL|macro|VENDOR_BILLIONTON
@@ -408,6 +410,19 @@ comma
 id|VENDOR_3COM
 comma
 l_int|0x4601
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;ATEN USB Ethernet UC-110T&quot;
+comma
+id|VENDOR_ATEN
+comma
+l_int|0x2007
 comma
 id|DEFAULT_GPIO_RESET
 op_or

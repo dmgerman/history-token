@@ -858,7 +858,7 @@ DECL|macro|DBG
 macro_line|#undef DBG
 macro_line|#ifdef W9968CF_DEBUG
 DECL|macro|DBG
-macro_line|#&t;define DBG(level, fmt, args...) &bslash;&n;{ &bslash;&n;if ( ((specific_debug) &amp;&amp; (debug == (level))) || &bslash;&n;     ((!specific_debug) &amp;&amp; (debug &gt;= (level))) ) { &bslash;&n;&t;if ((level) == 1) &bslash;&n;&t;&t;err(fmt, ## args); &bslash;&n;&t;else if ((level) == 2 || (level) == 3) &bslash;&n;&t;&t;info(fmt, ## args); &bslash;&n;&t;else if ((level) == 4) &bslash;&n;&t;&t;warn(fmt, ## args); &bslash;&n;&t;else if ((level) &gt;= 5) &bslash;&n;&t;&t;info(&quot;[%s:%d] &quot; fmt, &bslash;&n;&t;&t;     __PRETTY_FUNCTION__, __LINE__ , ## args); &bslash;&n;} &bslash;&n;}
+macro_line|#&t;define DBG(level, fmt, args...) &bslash;&n;{ &bslash;&n;if ( ((specific_debug) &amp;&amp; (debug == (level))) || &bslash;&n;     ((!specific_debug) &amp;&amp; (debug &gt;= (level))) ) { &bslash;&n;&t;if ((level) == 1) &bslash;&n;&t;&t;err(fmt, ## args); &bslash;&n;&t;else if ((level) == 2 || (level) == 3) &bslash;&n;&t;&t;info(fmt, ## args); &bslash;&n;&t;else if ((level) == 4) &bslash;&n;&t;&t;warn(fmt, ## args); &bslash;&n;&t;else if ((level) &gt;= 5) &bslash;&n;&t;&t;info(&quot;[%s:%d] &quot; fmt, &bslash;&n;&t;&t;     __FUNCTION__, __LINE__ , ## args); &bslash;&n;} &bslash;&n;}
 macro_line|#else
 multiline_comment|/* Not debugging: nothing */
 DECL|macro|DBG

@@ -238,11 +238,9 @@ c_func
 op_amp
 id|port-&gt;serial-&gt;dev-&gt;dev
 comma
-l_string|&quot;%s converter now attached to ttyUSB%d (or usb/tts/%d for devfs)&bslash;n&quot;
+l_string|&quot;%s converter now attached to ttyUSB%d&bslash;n&quot;
 comma
 id|driver-&gt;name
-comma
-id|minor
 comma
 id|minor
 )paren

@@ -7930,6 +7930,22 @@ l_int|1
 op_lshift
 id|SELF_POWERED_USB_DEVICE
 )paren
+multiline_comment|/* erratum 0102 workaround */
+op_or
+(paren
+(paren
+id|dev-&gt;chiprev
+op_eq
+l_int|0100
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+l_int|1
+)paren
+op_lshift
+id|SUSPEND_IMMEDIATELY
 op_or
 (paren
 l_int|1
@@ -8008,6 +8024,12 @@ op_or
 l_int|1
 op_lshift
 id|ROOT_PORT_RESET_INTERRUPT_ENABLE
+)paren
+op_or
+(paren
+l_int|1
+op_lshift
+id|SUSPEND_REQUEST_CHANGE_INTERRUPT_ENABLE
 )paren
 comma
 op_amp
@@ -10449,7 +10471,7 @@ id|stat
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* NOTE: we don&squot;t actually suspend the hardware; that starts to&n;&t; * interact with PCI power management, and needs something like a&n;&t; * controller-&gt;suspend() call to clear SUSPEND_REQUEST_INTERRUPT.&n;&t; * we shouldn&squot;t see resume interrupts.&n;&t; * for rev 0100, this also avoids erratum 0102.&n;&t; */
+multiline_comment|/* NOTE: chip stays in PCI D0 state for now, but it could&n;&t; * enter D1 to save more power&n;&t; */
 id|tmp
 op_assign
 (paren
@@ -10466,6 +10488,26 @@ op_amp
 id|tmp
 )paren
 (brace
+id|writel
+(paren
+id|tmp
+comma
+op_amp
+id|dev-&gt;regs-&gt;irqstat1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat
+op_amp
+(paren
+l_int|1
+op_lshift
+id|SUSPEND_REQUEST_INTERRUPT
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -10477,12 +10519,7 @@ op_amp
 id|dev-&gt;gadget
 )paren
 suffix:semicolon
-id|stat
-op_and_assign
-op_complement
-id|tmp
-suffix:semicolon
-)brace
+multiline_comment|/* we use SUSPEND_IMMEDIATELY */
 id|stat
 op_and_assign
 op_complement
@@ -10492,6 +10529,28 @@ op_lshift
 id|SUSPEND_REQUEST_INTERRUPT
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|dev-&gt;driver-&gt;resume
+)paren
+id|dev-&gt;driver-&gt;resume
+(paren
+op_amp
+id|dev-&gt;gadget
+)paren
+suffix:semicolon
+multiline_comment|/* at high speed, note erratum 0133 */
+)brace
+id|stat
+op_and_assign
+op_complement
+id|tmp
+suffix:semicolon
+)brace
 multiline_comment|/* clear any other status/irqs */
 r_if
 c_cond
@@ -10515,6 +10574,12 @@ op_complement
 l_int|1
 op_lshift
 id|CONTROL_STATUS_INTERRUPT
+)paren
+op_or
+(paren
+l_int|1
+op_lshift
+id|SUSPEND_REQUEST_INTERRUPT
 )paren
 op_or
 (paren

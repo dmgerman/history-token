@@ -532,7 +532,7 @@ id|temp
 suffix:semicolon
 id|temp
 op_assign
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|regs-&gt;revision
@@ -578,7 +578,7 @@ l_string|&quot;NO&quot;
 suffix:semicolon
 id|temp
 op_assign
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|regs-&gt;control
@@ -687,7 +687,7 @@ id|OHCI_CTRL_CBSR
 suffix:semicolon
 id|temp
 op_assign
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|regs-&gt;cmdstatus
@@ -764,7 +764,7 @@ id|controller
 comma
 l_string|&quot;intrstatus&quot;
 comma
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|regs-&gt;intrstatus
@@ -781,7 +781,7 @@ id|controller
 comma
 l_string|&quot;intrenable&quot;
 comma
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|regs-&gt;intrenable
@@ -799,7 +799,7 @@ id|controller
 comma
 l_string|&quot;ed_periodcurrent&quot;
 comma
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|regs-&gt;ed_periodcurrent
@@ -816,7 +816,7 @@ id|controller
 comma
 l_string|&quot;ed_controlhead&quot;
 comma
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|regs-&gt;ed_controlhead
@@ -833,7 +833,7 @@ id|controller
 comma
 l_string|&quot;ed_controlcurrent&quot;
 comma
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|regs-&gt;ed_controlcurrent
@@ -850,7 +850,7 @@ id|controller
 comma
 l_string|&quot;ed_bulkhead&quot;
 comma
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|regs-&gt;ed_bulkhead
@@ -867,7 +867,7 @@ id|controller
 comma
 l_string|&quot;ed_bulkcurrent&quot;
 comma
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|regs-&gt;ed_bulkcurrent
@@ -884,7 +884,7 @@ id|controller
 comma
 l_string|&quot;donehead&quot;
 comma
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|regs-&gt;donehead
@@ -3177,7 +3177,7 @@ suffix:semicolon
 multiline_comment|/* other registers mostly affect frame timings */
 id|rdata
 op_assign
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|regs-&gt;fminterval
@@ -3229,7 +3229,7 @@ id|temp
 suffix:semicolon
 id|rdata
 op_assign
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|regs-&gt;fmremaining
@@ -3273,7 +3273,7 @@ id|temp
 suffix:semicolon
 id|rdata
 op_assign
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|regs-&gt;periodicstart
@@ -3304,7 +3304,7 @@ id|temp
 suffix:semicolon
 id|rdata
 op_assign
-id|readl
+id|ohci_readl
 (paren
 op_amp
 id|regs-&gt;lsthresh

@@ -38,6 +38,8 @@ DECL|macro|IOCNR_GET_BUS_ADDRESS
 mdefine_line|#define IOCNR_GET_BUS_ADDRESS&t;&t;5
 DECL|macro|IOCNR_GET_VID_PID
 mdefine_line|#define IOCNR_GET_VID_PID&t;&t;6
+DECL|macro|IOCNR_SOFT_RESET
+mdefine_line|#define IOCNR_SOFT_RESET&t;&t;7
 multiline_comment|/* Get device_id string: */
 DECL|macro|LPIOC_GET_DEVICE_ID
 mdefine_line|#define LPIOC_GET_DEVICE_ID(len) _IOC(_IOC_READ, &squot;P&squot;, IOCNR_GET_DEVICE_ID, len)
@@ -57,6 +59,9 @@ mdefine_line|#define LPIOC_GET_BUS_ADDRESS(len) _IOC(_IOC_READ, &squot;P&squot;,
 multiline_comment|/* Get two-int array: [0]=vendor ID, [1]=product ID: */
 DECL|macro|LPIOC_GET_VID_PID
 mdefine_line|#define LPIOC_GET_VID_PID(len) _IOC(_IOC_READ, &squot;P&squot;, IOCNR_GET_VID_PID, len)
+multiline_comment|/* Perform class specific soft reset */
+DECL|macro|LPIOC_SOFT_RESET
+mdefine_line|#define LPIOC_SOFT_RESET _IOC(_IOC_NONE, &squot;P&squot;, IOCNR_SOFT_RESET, 0);
 multiline_comment|/*&n; * A DEVICE_ID string may include the printer&squot;s serial number.&n; * It should end with a semi-colon (&squot;;&squot;).&n; * An example from an HP 970C DeskJet printer is (this is one long string,&n; * with the serial number changed):&n;MFG:HEWLETT-PACKARD;MDL:DESKJET 970C;CMD:MLC,PCL,PML;CLASS:PRINTER;DESCRIPTION:Hewlett-Packard DeskJet 970C;SERN:US970CSEPROF;VSTATUS:$HB0$NC0,ff,DN,IDLE,CUT,K1,C0,DP,NR,KP000,CP027;VP:0800,FL,B0;VJ:                    ;&n; */
 multiline_comment|/*&n; * USB Printer Requests&n; */
 DECL|macro|USBLP_REQ_GET_ID
@@ -2315,6 +2320,40 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|IOCNR_SOFT_RESET
+suffix:colon
+r_if
+c_cond
+(paren
+id|_IOC_DIR
+c_func
+(paren
+id|cmd
+)paren
+op_ne
+id|_IOC_NONE
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
+id|retval
+op_assign
+id|usblp_reset
+c_func
+(paren
+id|usblp
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|retval
@@ -3084,6 +3123,10 @@ op_assign
 id|usblp-&gt;dev
 suffix:semicolon
 id|usblp-&gt;readcount
+op_assign
+l_int|0
+suffix:semicolon
+id|usblp-&gt;rcomplete
 op_assign
 l_int|0
 suffix:semicolon
