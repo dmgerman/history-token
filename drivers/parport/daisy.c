@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * IEEE 1284.3 Parallel port daisy chain and multiplexor code&n; * &n; * Copyright (C) 1999, 2000  Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * ??-12-1998: Initial implementation.&n; * 31-01-1999: Make port-cloning transparent.&n; * 13-02-1999: Move DeviceID technique from parport_probe.&n; * 13-03-1999: Get DeviceID from non-IEEE 1284.3 devices too.&n; * 22-02-2000: Count devices that are actually detected.&n; *&n; * Any part of this program may be used in documents licensed under&n; * the GNU Free Documentation License, Version 1.1 or any later version&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG /* undef me for production */
