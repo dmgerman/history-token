@@ -10237,14 +10237,6 @@ op_amp
 id|iloc
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-r_goto
-id|out_brelse
-suffix:semicolon
 id|out_err
 suffix:colon
 id|ext3_std_error

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.141 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.142 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -23,6 +23,12 @@ DECL|variable|dasd_debug_area
 id|debug_info_t
 op_star
 id|dasd_debug_area
+suffix:semicolon
+DECL|variable|dasd_diag_discipline_pointer
+r_struct
+id|dasd_discipline
+op_star
+id|dasd_diag_discipline_pointer
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -8109,6 +8115,10 @@ comma
 l_string|&quot;debug area created&quot;
 )paren
 suffix:semicolon
+id|dasd_diag_discipline_pointer
+op_assign
+l_int|NULL
+suffix:semicolon
 id|rc
 op_assign
 id|devfs_mk_dir
@@ -8245,6 +8255,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|dasd_debug_area
+)paren
+suffix:semicolon
+DECL|variable|dasd_diag_discipline_pointer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dasd_diag_discipline_pointer
 )paren
 suffix:semicolon
 DECL|variable|dasd_add_request_head

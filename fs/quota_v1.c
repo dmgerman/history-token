@@ -207,6 +207,22 @@ c_func
 id|dquot-&gt;dq_id
 )paren
 suffix:semicolon
+multiline_comment|/* Set structure to 0s in case read fails/is after end of file */
+id|memset
+c_func
+(paren
+op_amp
+id|dqblk
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|v1_disk_dqblk
+)paren
+)paren
+suffix:semicolon
 id|fs
 op_assign
 id|get_fs

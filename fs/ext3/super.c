@@ -7343,6 +7343,9 @@ c_func
 id|journal_inode
 )paren
 suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
 )brace
 id|journal-&gt;j_private
 op_assign

@@ -373,6 +373,7 @@ suffix:semicolon
 )brace
 r_extern
 r_int
+r_int
 id|__copy_in_user_asm
 c_func
 (paren
@@ -413,6 +414,7 @@ r_int
 id|n
 )paren
 (brace
+r_return
 id|__copy_in_user_asm
 c_func
 (paren

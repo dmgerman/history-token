@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/lowcore.h&gt;
 macro_line|#include &quot;s390mach.h&quot;
 DECL|macro|DBG
@@ -13,12 +14,6 @@ r_static
 r_struct
 id|semaphore
 id|m_sem
-suffix:semicolon
-DECL|variable|s_sem
-r_static
-r_struct
-id|semaphore
-id|s_sem
 suffix:semicolon
 r_extern
 r_int
@@ -55,12 +50,15 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|css_trigger_slow_path
-c_func
-(paren
-r_void
-)paren
+r_struct
+id|workqueue_struct
+op_star
+id|slow_path_wq
+suffix:semicolon
+r_extern
+r_struct
+id|work_struct
+id|slow_path_work
 suffix:semicolon
 r_static
 r_void
@@ -102,58 +100,6 @@ c_func
 l_int|0
 )paren
 )paren
-suffix:semicolon
-)brace
-r_static
-r_int
-DECL|function|s390_mchk_slow_path
-id|s390_mchk_slow_path
-c_func
-(paren
-r_void
-op_star
-id|param
-)paren
-(brace
-r_struct
-id|semaphore
-op_star
-id|sem
-suffix:semicolon
-id|sem
-op_assign
-(paren
-r_struct
-id|semaphore
-op_star
-)paren
-id|param
-suffix:semicolon
-multiline_comment|/* Set a nice name. */
-id|daemonize
-c_func
-(paren
-l_string|&quot;kslowcrw&quot;
-)paren
-suffix:semicolon
-id|repeat
-suffix:colon
-id|down_interruptible
-c_func
-(paren
-id|sem
-)paren
-suffix:semicolon
-id|css_trigger_slow_path
-c_func
-(paren
-)paren
-suffix:semicolon
-r_goto
-id|repeat
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Retrieve CRWs and call function to handle event.&n; *&n; * Note : we currently process CRWs for io and chsc subchannels only&n; */
@@ -473,11 +419,13 @@ c_cond
 (paren
 id|slow
 )paren
-id|up
+id|queue_work
 c_func
 (paren
+id|slow_path_wq
+comma
 op_amp
-id|s_sem
+id|slow_path_work
 )paren
 suffix:semicolon
 r_goto
@@ -672,13 +620,6 @@ op_amp
 id|m_sem
 )paren
 suffix:semicolon
-id|init_MUTEX_LOCKED
-c_func
-(paren
-op_amp
-id|s_sem
-)paren
-suffix:semicolon
 id|ctl_clear_bit
 c_func
 (paren
@@ -746,19 +687,6 @@ id|s390_collect_crw_info
 comma
 op_amp
 id|m_sem
-comma
-id|CLONE_FS
-op_or
-id|CLONE_FILES
-)paren
-suffix:semicolon
-id|kernel_thread
-c_func
-(paren
-id|s390_mchk_slow_path
-comma
-op_amp
-id|s_sem
 comma
 id|CLONE_FS
 op_or

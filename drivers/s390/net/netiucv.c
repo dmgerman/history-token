@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: netiucv.c,v 1.53 2004/05/07 14:29:37 mschwide Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Driverfs integration and all bugs therein by Cornelia Huck(cohuck@de.ibm.com)&n; *&n; * Documentation used:&n; *  the source of the original IUCV driver by:&n; *    Stefan Hegewald &lt;hegewald@de.ibm.com&gt;&n; *    Hartmut Penner &lt;hpenner@de.ibm.com&gt;&n; *    Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *    Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *    Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV network driver $Revision: 1.53 $&n; *&n; */
+multiline_comment|/*&n; * $Id: netiucv.c,v 1.54 2004/05/28 08:04:14 braunu Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Driverfs integration and all bugs therein by Cornelia Huck(cohuck@de.ibm.com)&n; *&n; * Documentation used:&n; *  the source of the original IUCV driver by:&n; *    Stefan Hegewald &lt;hegewald@de.ibm.com&gt;&n; *    Hartmut Penner &lt;hpenner@de.ibm.com&gt;&n; *    Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *    Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *    Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV network driver $Revision: 1.54 $&n; *&n; */
 "&f;"
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -23,7 +23,6 @@ macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/ebcdic.h&gt;
 macro_line|#include &quot;iucv.h&quot;
 macro_line|#include &quot;fsm.h&quot;
 id|MODULE_AUTHOR
@@ -375,10 +374,48 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-singleline_comment|//static __u8 iucvMagic[16] = {
-singleline_comment|//&t;0xF0, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
-singleline_comment|//&t;0xF0, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40
-singleline_comment|//};
+DECL|variable|iucvMagic
+r_static
+id|__u8
+id|iucvMagic
+(braket
+l_int|16
+)braket
+op_assign
+(brace
+l_int|0xF0
+comma
+l_int|0x40
+comma
+l_int|0x40
+comma
+l_int|0x40
+comma
+l_int|0x40
+comma
+l_int|0x40
+comma
+l_int|0x40
+comma
+l_int|0x40
+comma
+l_int|0xF0
+comma
+l_int|0x40
+comma
+l_int|0x40
+comma
+l_int|0x40
+comma
+l_int|0x40
+comma
+l_int|0x40
+comma
+l_int|0x40
+comma
+l_int|0x40
+)brace
+suffix:semicolon
 multiline_comment|/**&n; * This mask means the 16-byte IUCV &quot;magic&quot; and the origin userid must&n; * match exactly as specified in order to give connection_pending()&n; * control.&n; */
 DECL|variable|mask
 r_static
@@ -2700,48 +2737,6 @@ id|msglimit
 suffix:semicolon
 r_int
 id|rc
-comma
-id|len
-suffix:semicolon
-id|__u8
-id|iucvMagic
-(braket
-l_int|16
-)braket
-op_assign
-(brace
-l_int|0xF0
-comma
-l_int|0x40
-comma
-l_int|0x40
-comma
-l_int|0x40
-comma
-l_int|0x40
-comma
-l_int|0x40
-comma
-l_int|0x40
-comma
-l_int|0x40
-comma
-l_int|0xF0
-comma
-l_int|0x40
-comma
-l_int|0x40
-comma
-l_int|0x40
-comma
-l_int|0x40
-comma
-l_int|0x40
-comma
-l_int|0x40
-comma
-l_int|0x40
-)brace
 suffix:semicolon
 id|pr_debug
 c_func
@@ -2749,42 +2744,6 @@ c_func
 l_string|&quot;%s() called&bslash;n&quot;
 comma
 id|__FUNCTION__
-)paren
-suffix:semicolon
-id|len
-op_assign
-(paren
-id|IFNAMSIZ
-OL
-r_sizeof
-(paren
-id|conn-&gt;netdev-&gt;name
-)paren
-)paren
-ques
-c_cond
-id|IFNAMSIZ
-suffix:colon
-r_sizeof
-(paren
-id|conn-&gt;netdev-&gt;name
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|iucvMagic
-comma
-id|conn-&gt;netdev-&gt;name
-comma
-id|len
-)paren
-suffix:semicolon
-id|ASCEBC
-(paren
-id|iucvMagic
-comma
-id|len
 )paren
 suffix:semicolon
 r_if
@@ -7766,7 +7725,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.53 $&quot;
+l_string|&quot;$Revision: 1.54 $&quot;
 suffix:semicolon
 r_char
 op_star
