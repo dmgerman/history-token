@@ -1422,10 +1422,10 @@ DECL|member|name
 r_char
 id|name
 (braket
-l_int|6
+l_int|80
 )braket
 suffix:semicolon
-multiline_comment|/* name of interface, eg. &quot;ide0&quot; */
+multiline_comment|/* name of interface */
 DECL|member|index
 id|byte
 id|index
