@@ -969,10 +969,6 @@ r_int
 )paren
 id|base
 suffix:semicolon
-id|host-&gt;irq
-op_assign
-id|NO_IRQ
-suffix:semicolon
 id|host-&gt;dma_channel
 op_assign
 id|NO_DMA
@@ -1002,7 +998,7 @@ l_int|0x2000
 suffix:semicolon
 id|info-&gt;info.scsi.irq
 op_assign
-id|host-&gt;irq
+id|NO_IRQ
 suffix:semicolon
 id|info-&gt;info.scsi.io_shift
 op_assign

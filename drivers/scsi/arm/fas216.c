@@ -10962,7 +10962,7 @@ id|info-&gt;scsi.type
 comma
 id|info-&gt;host-&gt;io_port
 comma
-id|info-&gt;host-&gt;irq
+id|info-&gt;scsi.irq
 comma
 id|info-&gt;host-&gt;dma_channel
 )paren

@@ -2120,10 +2120,6 @@ r_int
 )paren
 id|base
 suffix:semicolon
-id|host-&gt;irq
-op_assign
-id|ec-&gt;irq
-suffix:semicolon
 id|host-&gt;dma_channel
 op_assign
 id|ec-&gt;dma
@@ -2191,7 +2187,7 @@ id|EESOX_FAS216_SHIFT
 suffix:semicolon
 id|info-&gt;info.scsi.irq
 op_assign
-id|host-&gt;irq
+id|ec-&gt;irq
 suffix:semicolon
 id|info-&gt;info.ifcfg.clockrate
 op_assign
@@ -2291,7 +2287,7 @@ op_assign
 id|request_irq
 c_func
 (paren
-id|host-&gt;irq
+id|ec-&gt;irq
 comma
 id|eesoxscsi_intr
 comma
@@ -2315,7 +2311,7 @@ l_string|&quot;scsi%d: IRQ%d not free: %d&bslash;n&quot;
 comma
 id|host-&gt;host_no
 comma
-id|host-&gt;irq
+id|ec-&gt;irq
 comma
 id|ret
 )paren
@@ -2416,7 +2412,7 @@ suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|host-&gt;irq
+id|ec-&gt;irq
 comma
 id|host
 )paren
@@ -2535,7 +2531,7 @@ suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|host-&gt;irq
+id|ec-&gt;irq
 comma
 id|info
 )paren
