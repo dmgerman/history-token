@@ -2239,16 +2239,6 @@ id|ide_proc_entry_t
 op_star
 id|proc
 suffix:semicolon
-DECL|member|driver_init
-r_int
-(paren
-op_star
-id|driver_init
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|member|driver_reinit
 r_int
 (paren
@@ -2259,13 +2249,6 @@ id|driver_reinit
 id|ide_drive_t
 op_star
 )paren
-suffix:semicolon
-multiline_comment|/* FIXME: Single linked list of drivers for iteration.&n;&t; */
-DECL|member|next
-r_struct
-id|ide_driver_s
-op_star
-id|next
 suffix:semicolon
 DECL|typedef|ide_driver_t
 )brace
@@ -2283,12 +2266,6 @@ id|ide_hwifs
 )braket
 suffix:semicolon
 multiline_comment|/* master data repository */
-r_extern
-r_struct
-id|ide_driver_s
-op_star
-id|ide_drivers
-suffix:semicolon
 macro_line|#endif
 r_extern
 r_int
@@ -3534,26 +3511,6 @@ r_void
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDESCSI */
 macro_line|#endif /* _IDE_C */
-r_extern
-r_int
-id|ide_register_module
-(paren
-r_struct
-id|ide_driver_s
-op_star
-id|d
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ide_unregister_module
-(paren
-r_struct
-id|ide_driver_s
-op_star
-id|d
-)paren
-suffix:semicolon
 id|ide_drive_t
 op_star
 id|ide_scan_devices
@@ -3754,6 +3711,14 @@ c_func
 id|ide_drive_t
 op_star
 id|drive
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|revalidate_drives
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* _IDE_H */

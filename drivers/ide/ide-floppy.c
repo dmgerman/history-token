@@ -8267,13 +8267,6 @@ DECL|macro|idefloppy_proc
 mdefine_line|#define&t;idefloppy_proc&t;NULL
 macro_line|#endif&t;/* CONFIG_PROC_FS */
 r_int
-id|idefloppy_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
 id|idefloppy_reinit
 c_func
 (paren
@@ -8364,10 +8357,6 @@ comma
 id|proc
 suffix:colon
 id|idefloppy_proc
-comma
-id|driver_init
-suffix:colon
-id|idefloppy_init
 comma
 id|driver_reinit
 suffix:colon
@@ -8549,11 +8538,9 @@ id|failed
 op_decrement
 suffix:semicolon
 )brace
-id|ide_register_module
+id|revalidate_drives
 c_func
 (paren
-op_amp
-id|idefloppy_driver
 )paren
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
@@ -8645,13 +8632,6 @@ id|idefloppy_proc
 suffix:semicolon
 macro_line|#endif
 )brace
-id|ide_unregister_module
-c_func
-(paren
-op_amp
-id|idefloppy_driver
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;idefloppy_init will register the driver for each floppy.&n; */
 DECL|function|idefloppy_init
@@ -8838,11 +8818,9 @@ id|failed
 op_decrement
 suffix:semicolon
 )brace
-id|ide_register_module
+id|revalidate_drives
 c_func
 (paren
-op_amp
-id|idefloppy_driver
 )paren
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
