@@ -1203,6 +1203,11 @@ id|skb-&gt;nh.iph-&gt;tos
 )paren
 )brace
 )brace
+comma
+dot
+id|proto
+op_assign
+id|IPPROTO_ICMP
 )brace
 suffix:semicolon
 r_if
@@ -1582,6 +1587,11 @@ id|tos
 )paren
 )brace
 )brace
+comma
+dot
+id|proto
+op_assign
+id|IPPROTO_ICMP
 )brace
 suffix:semicolon
 r_if
@@ -1717,6 +1727,11 @@ id|tos
 )paren
 )brace
 )brace
+comma
+dot
+id|proto
+op_assign
+id|IPPROTO_ICMP
 )brace
 suffix:semicolon
 id|ip_rt_put
