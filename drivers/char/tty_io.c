@@ -412,11 +412,6 @@ op_star
 id|tty
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|tty-&gt;write_buf
-)paren
 id|kfree
 c_func
 (paren
@@ -3808,6 +3803,12 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|tty-&gt;write_buf
+)paren
+suffix:semicolon
 id|tty-&gt;write_cnt
 op_assign
 id|chunk

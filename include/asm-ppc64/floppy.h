@@ -3,6 +3,7 @@ macro_line|#ifndef __ASM_PPC64_FLOPPY_H
 DECL|macro|__ASM_PPC64_FLOPPY_H
 mdefine_line|#define __ASM_PPC64_FLOPPY_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
 DECL|macro|fd_inb
 mdefine_line|#define fd_inb(port)&t;&t;&t;inb_p(port)
 DECL|macro|fd_outb

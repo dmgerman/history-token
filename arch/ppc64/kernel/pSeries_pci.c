@@ -16,7 +16,7 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
-macro_line|#include &quot;open_pic.h&quot;
+macro_line|#include &quot;mpic.h&quot;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/* RTAS tokens */
 DECL|variable|read_pci_config
@@ -48,6 +48,12 @@ r_extern
 r_int
 r_int
 id|pci_probe_only
+suffix:semicolon
+r_extern
+r_struct
+id|mpic
+op_star
+id|pSeries_mpic
 suffix:semicolon
 DECL|function|rtas_read_config
 r_static
@@ -1742,6 +1748,8 @@ c_cond
 id|naca-&gt;interrupt_controller
 op_eq
 id|IC_OPEN_PIC
+op_logical_and
+id|pSeries_mpic
 )paren
 (brace
 r_int
@@ -1757,9 +1765,11 @@ l_int|2
 op_minus
 l_int|1
 suffix:semicolon
-id|openpic_setup_ISU
+id|mpic_assign_isu
 c_func
 (paren
+id|pSeries_mpic
+comma
 id|index
 comma
 id|opprop
@@ -2352,11 +2362,6 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|device_node
-op_star
-id|i8042
-suffix:semicolon
 id|request_region
 c_func
 (paren
@@ -2415,41 +2420,6 @@ comma
 l_int|0x20
 comma
 l_string|&quot;dma2&quot;
-)paren
-suffix:semicolon
-DECL|macro|I8042_DATA_REG
-mdefine_line|#define I8042_DATA_REG 0x60
-multiline_comment|/*&n;&t; * Some machines have an unterminated i8042 so check the device&n;&t; * tree and reserve the region if it does not appear. Later on&n;&t; * the i8042 code will try and reserve this region and fail.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|i8042
-op_assign
-id|of_find_node_by_type
-c_func
-(paren
-l_int|NULL
-comma
-l_string|&quot;8042&quot;
-)paren
-)paren
-)paren
-id|request_region
-c_func
-(paren
-id|I8042_DATA_REG
-comma
-l_int|16
-comma
-l_string|&quot;reserved (no i8042)&quot;
-)paren
-suffix:semicolon
-id|of_node_put
-c_func
-(paren
-id|i8042
 )paren
 suffix:semicolon
 )brace
