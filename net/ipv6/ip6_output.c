@@ -3086,6 +3086,11 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
+op_star
+id|dst
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren

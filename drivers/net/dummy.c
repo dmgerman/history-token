@@ -303,7 +303,6 @@ suffix:semicolon
 DECL|function|dummy_free_one
 r_static
 r_void
-id|__exit
 id|dummy_free_one
 c_func
 (paren

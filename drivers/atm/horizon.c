@@ -82,14 +82,12 @@ suffix:semicolon
 DECL|variable|max_tx_size
 r_static
 r_int
-r_int
 id|max_tx_size
 op_assign
 l_int|9000
 suffix:semicolon
 DECL|variable|max_rx_size
 r_static
-r_int
 r_int
 id|max_rx_size
 op_assign
@@ -10427,7 +10425,7 @@ r_if
 c_cond
 (paren
 id|max_tx_size
-OG
+template_param
 id|TX_AAL5_LIMIT
 )paren
 id|PRINTK
@@ -10445,7 +10443,7 @@ r_if
 c_cond
 (paren
 id|max_rx_size
-OG
+template_param
 id|RX_AAL5_LIMIT
 )paren
 id|PRINTK
@@ -10503,7 +10501,7 @@ c_func
 (paren
 id|max_tx_size
 comma
-l_string|&quot;h&quot;
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -10511,7 +10509,7 @@ c_func
 (paren
 id|max_rx_size
 comma
-l_string|&quot;h&quot;
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM

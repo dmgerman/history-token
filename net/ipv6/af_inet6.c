@@ -1294,6 +1294,8 @@ op_amp
 id|addr-&gt;sin6_addr
 comma
 id|dev
+comma
+l_int|0
 )paren
 )paren
 (brace

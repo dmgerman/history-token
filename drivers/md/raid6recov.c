@@ -534,7 +534,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* data+Q failure.  Reconstruct data from P,&n;&t;&t;&t;   then rebuild syndrome. */
-multiline_comment|/* FIX */
+multiline_comment|/* NOT IMPLEMENTED - equivalent to RAID-5 */
 )brace
 )brace
 r_else

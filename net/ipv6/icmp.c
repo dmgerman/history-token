@@ -1011,6 +1011,8 @@ op_amp
 id|hdr-&gt;daddr
 comma
 id|skb-&gt;dev
+comma
+l_int|0
 )paren
 )paren
 id|saddr

@@ -113,7 +113,7 @@ op_amp
 id|raid6_intx32
 comma
 macro_line|#endif
-macro_line|#if defined(__i386__) || defined(__x86_64__)
+macro_line|#if defined(__i386__)
 op_amp
 id|raid6_mmxx1
 comma
@@ -134,6 +134,12 @@ id|raid6_sse2x2
 comma
 macro_line|#endif
 macro_line|#if defined(__x86_64__)
+op_amp
+id|raid6_sse2x1
+comma
+op_amp
+id|raid6_sse2x2
+comma
 op_amp
 id|raid6_sse2x4
 comma

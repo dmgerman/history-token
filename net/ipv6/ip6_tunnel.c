@@ -3151,11 +3151,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|ltype
 op_amp
 id|IPV6_ADDR_UNICAST
-)paren
 op_logical_and
 op_logical_neg
 id|ipv6_chk_addr
@@ -3164,6 +3162,8 @@ c_func
 id|laddr
 comma
 id|ldev
+comma
+l_int|0
 )paren
 )paren
 id|l_ok
@@ -3173,11 +3173,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|rtype
 op_amp
 id|IPV6_ADDR_UNICAST
-)paren
 op_logical_and
 id|ipv6_chk_addr
 c_func
@@ -3185,6 +3183,8 @@ c_func
 id|raddr
 comma
 l_int|NULL
+comma
+l_int|0
 )paren
 )paren
 id|r_ok
