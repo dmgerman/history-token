@@ -775,41 +775,6 @@ l_string|&quot;sync; isync&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|__delay
-r_extern
-r_inline
-r_void
-id|__delay
-c_func
-(paren
-r_int
-r_int
-id|loops
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|loops
-op_ne
-l_int|0
-)paren
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;mtctr %0; 1: bdnz 1b&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|loops
-)paren
-suffix:colon
-l_string|&quot;ctr&quot;
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* (Ref: 64-bit PowerPC ELF ABI Spplement; Ian Lance Taylor, Zembu Labs).&n; A PPC stack frame looks like this:&n;&n; High Address&n;    Back Chain&n;    FP reg save area&n;    GP reg save area&n;    Local var space&n;    Parameter save area&t;&t;(SP+48)&n;    TOC save area&t;&t;(SP+40)&n;    link editor doubleword&t;(SP+32)&n;    compiler doubleword&t;&t;(SP+24)&n;    LR save&t;&t;&t;(SP+16)&n;    CR save&t;&t;&t;(SP+8)&n;    Back Chain&t;&t;&t;(SP+0)&n;&n; Note that the LR (ret addr) may not be saved in the current frame if&n; no functions have been called from the current function.&n; */
 multiline_comment|/*&n; A traceback table typically follows each function.&n; The find_tb_table() func will fill in this struct.  Note that the struct&n; is not an exact match with the encoded table defined by the ABI.  It is&n; defined here more for programming convenience.&n; */
 DECL|struct|tbtable
