@@ -2404,7 +2404,7 @@ id|USB_REQ_GET_INTERFACE
 comma
 id|USB_DIR_IN
 op_or
-id|USB_DT_DEVICE
+id|USB_RECIP_INTERFACE
 comma
 l_int|0
 comma
