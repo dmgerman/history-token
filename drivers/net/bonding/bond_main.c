@@ -11478,7 +11478,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|dev-&gt;destructor
+id|bond_dev-&gt;destructor
 op_assign
 id|free_netdev
 suffix:semicolon
