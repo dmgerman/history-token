@@ -599,6 +599,10 @@ r_struct
 id|list_head
 id|openFileList
 suffix:semicolon
+DECL|member|write_behind_rc
+r_int
+id|write_behind_rc
+suffix:semicolon
 DECL|member|cifsAttrs
 id|__u32
 id|cifsAttrs
