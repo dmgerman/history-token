@@ -485,6 +485,7 @@ id|ioc
 comma
 (paren
 id|scs_ioctl
+id|__user
 op_star
 )paren
 id|cmdptr

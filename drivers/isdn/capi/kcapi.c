@@ -3115,6 +3115,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|data
 )paren
@@ -3187,10 +3188,6 @@ op_assign
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|cdef
 comma
@@ -3222,10 +3219,6 @@ op_assign
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|cdef
 comma
@@ -3465,10 +3458,6 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|ldef
 comma
@@ -3501,10 +3490,6 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|ldef
 comma
@@ -3755,10 +3740,6 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|rdef
 comma
@@ -3867,6 +3848,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|data
 )paren
@@ -3921,10 +3903,6 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|fdef
 comma
@@ -4011,10 +3989,6 @@ op_assign
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|cdef
 comma

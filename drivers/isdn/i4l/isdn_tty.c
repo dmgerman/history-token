@@ -6459,6 +6459,7 @@ id|info
 comma
 (paren
 id|uint
+id|__user
 op_star
 )paren
 id|arg

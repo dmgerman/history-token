@@ -97,6 +97,7 @@ op_star
 id|os_handle
 comma
 r_void
+id|__user
 op_star
 id|dst
 comma
@@ -124,6 +125,7 @@ id|dst
 comma
 r_const
 r_void
+id|__user
 op_star
 id|src
 comma
@@ -633,6 +635,7 @@ id|maint_read_write
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|buf
 comma

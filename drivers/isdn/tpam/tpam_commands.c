@@ -433,6 +433,7 @@ id|tdl
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -480,6 +481,7 @@ id|tdl.address
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -531,6 +533,7 @@ id|tdl
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -570,6 +573,7 @@ id|card
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg

@@ -2403,6 +2403,7 @@ op_star
 id|os_handle
 comma
 r_void
+id|__user
 op_star
 id|dst
 comma
@@ -2458,6 +2459,7 @@ id|dst
 comma
 r_const
 r_void
+id|__user
 op_star
 id|src
 comma
@@ -2567,6 +2569,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2706,6 +2709,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma

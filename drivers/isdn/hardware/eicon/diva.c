@@ -1646,6 +1646,7 @@ id|os_handle
 comma
 r_const
 r_void
+id|__user
 op_star
 id|src
 comma
@@ -1887,6 +1888,7 @@ id|os_handle
 comma
 r_const
 r_void
+id|__user
 op_star
 id|src
 comma
@@ -2098,6 +2100,7 @@ op_star
 id|os_handle
 comma
 r_void
+id|__user
 op_star
 id|dst
 comma
