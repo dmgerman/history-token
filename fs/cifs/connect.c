@@ -1241,7 +1241,6 @@ r_else
 r_if
 c_cond
 (paren
-(paren
 id|temp
 (braket
 l_int|0
@@ -1251,13 +1250,6 @@ op_eq
 r_char
 )paren
 id|RFC1002_NEGATIVE_SESSION_RESPONSE
-)paren
-op_logical_and
-(paren
-id|length
-op_eq
-l_int|5
-)paren
 )paren
 (brace
 multiline_comment|/* we get this from Windows 98 instead of error on SMB negprot response */
