@@ -1,5 +1,5 @@
 DECL|macro|QLA_MODEL_NAMES
-mdefine_line|#define QLA_MODEL_NAMES         0x1B
+mdefine_line|#define QLA_MODEL_NAMES         0x21
 multiline_comment|/*&n; * Adapter model names.&n; */
 DECL|variable|qla2x00_model_name
 r_char
@@ -90,6 +90,18 @@ comma
 multiline_comment|/* 0x119 */
 l_string|&quot;QLA200C&quot;
 multiline_comment|/* 0x11A */
+l_string|&quot;QLA200P&quot;
+multiline_comment|/* 0x11B */
+l_string|&quot;QLA200P&quot;
+multiline_comment|/* 0x11C */
+l_string|&quot;QLA4040&quot;
+multiline_comment|/* 0x11D */
+l_string|&quot;QLA4040&quot;
+multiline_comment|/* 0x11E */
+l_string|&quot;QLA4040C&quot;
+multiline_comment|/* 0x11F */
+l_string|&quot;QLA4040C&quot;
+multiline_comment|/* 0x120 */
 )brace
 suffix:semicolon
 DECL|variable|qla2x00_model_desc
@@ -181,6 +193,22 @@ comma
 multiline_comment|/* 0x119 */
 l_string|&quot;133MHz PCI-X to 2Gb FC Copper&quot;
 multiline_comment|/* 0x11A */
+l_string|&quot;133MHz PCI-X to 2Gb FC SFP&quot;
+multiline_comment|/* 0x11B */
+l_string|&quot;133MHz PCI-X to 2Gb FC SFP&quot;
+multiline_comment|/* 0x11C */
+l_string|&quot;Optical- 133MHz to 1Gb NIC with IPSEC&quot;
+comma
+multiline_comment|/* 0x11D */
+l_string|&quot;Optical- 133MHz to 1Gb iSCSI with IPSEC&quot;
+comma
+multiline_comment|/* 0x11E */
+l_string|&quot;Copper- 133MHz to 1Gb NIC with IPSEC&quot;
+comma
+multiline_comment|/* 0x11F */
+l_string|&quot;Copper- 133MHz to 1Gb iSCSI with IPSEC&quot;
+comma
+multiline_comment|/* 0x120 */
 )brace
 suffix:semicolon
 eof
