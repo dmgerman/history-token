@@ -6835,6 +6835,13 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|old_dentry-&gt;d_inode-&gt;i_sem
+)paren
+suffix:semicolon
 id|DQUOT_INIT
 c_func
 (paren
@@ -6853,6 +6860,13 @@ comma
 id|dir
 comma
 id|new_dentry
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|old_dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_if
