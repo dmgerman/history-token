@@ -4404,7 +4404,7 @@ l_int|2
 suffix:semicolon
 id|arq-&gt;request-&gt;flags
 op_or_assign
-id|REQ_HARDBARRIER
+id|REQ_SOFTBARRIER
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * arq is the selected appropriate request.&n;&t; */

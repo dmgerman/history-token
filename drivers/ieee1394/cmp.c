@@ -529,7 +529,6 @@ id|u64
 id|addr
 comma
 r_int
-r_int
 id|length
 comma
 id|u16
