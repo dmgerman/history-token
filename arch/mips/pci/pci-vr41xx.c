@@ -1074,7 +1074,7 @@ suffix:semicolon
 id|writel
 c_func
 (paren
-id|CONFIG_DONE
+id|BLOODY_CONFIG_DONE
 comma
 id|PCIENREG
 )paren
