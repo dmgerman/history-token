@@ -260,9 +260,11 @@ r_int
 r_int
 id|key_down
 (braket
-l_int|256
-op_div
-id|BITS_PER_LONG
+id|NBITS
+c_func
+(paren
+id|KEY_MAX
+)paren
 )braket
 suffix:semicolon
 multiline_comment|/* keyboard key bitmap */
@@ -354,7 +356,7 @@ r_int
 r_char
 id|kbd_sysrq_xlate
 (braket
-l_int|128
+id|KEY_MAX
 )braket
 op_assign
 l_string|&quot;&bslash;000&bslash;0331234567890-=&bslash;177&bslash;t&quot;
@@ -5532,6 +5534,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|keycode
+OG
+id|NR_KEYS
+)paren
+r_return
+suffix:semicolon
 id|keysym
 op_assign
 id|key_map
