@@ -1195,7 +1195,7 @@ id|acpi_gbl_gpe_lock
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace

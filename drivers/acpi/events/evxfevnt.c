@@ -456,7 +456,46 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
-multiline_comment|/* Enable the requested GPE number */
+multiline_comment|/* Check for Wake vs Runtime GPE */
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|ACPI_EVENT_WAKE_ENABLE
+)paren
+(brace
+multiline_comment|/* Ensure the requested wake GPE is disabled */
+id|status
+op_assign
+id|acpi_hw_disable_gpe
+(paren
+id|gpe_event_info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_goto
+id|unlock_and_exit
+suffix:semicolon
+)brace
+multiline_comment|/* Defer Enable of Wake GPE until sleep time */
+id|acpi_hw_enable_gpe_for_wakeup
+(paren
+id|gpe_event_info
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Enable the requested runtime GPE  */
 id|status
 op_assign
 id|acpi_hw_enable_gpe
@@ -477,19 +516,6 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|flags
-op_amp
-id|ACPI_EVENT_WAKE_ENABLE
-)paren
-(brace
-id|acpi_hw_enable_gpe_for_wakeup
-(paren
-id|gpe_event_info
-)paren
-suffix:semicolon
 )brace
 id|unlock_and_exit
 suffix:colon

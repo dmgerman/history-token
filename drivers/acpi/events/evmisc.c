@@ -55,6 +55,35 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_queue_notify_request&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Dispatch a device notification event to a previously&n; *              installed handler.&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_DEBUG_OUTPUT
+DECL|variable|acpi_notify_value_names
+r_static
+r_const
+r_char
+op_star
+id|acpi_notify_value_names
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;Bus Check&quot;
+comma
+l_string|&quot;Device Check&quot;
+comma
+l_string|&quot;Device Wake&quot;
+comma
+l_string|&quot;Eject request&quot;
+comma
+l_string|&quot;Device Check Light&quot;
+comma
+l_string|&quot;Frequency Mismatch&quot;
+comma
+l_string|&quot;Bus Mode Mismatch&quot;
+comma
+l_string|&quot;Power Fault&quot;
+)brace
+suffix:semicolon
+macro_line|#endif
 id|acpi_status
 DECL|function|acpi_ev_queue_notify_request
 id|acpi_ev_queue_notify_request
@@ -95,7 +124,7 @@ id|ACPI_FUNCTION_NAME
 l_string|&quot;ev_queue_notify_request&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * For value 1 (Ejection Request), some device method may need to be run.&n;&t; * For value 2 (Device Wake) if _PRW exists, the _PS0 method may need to be run.&n;&t; * For value 0x80 (Status Change) on the power button or sleep button,&n;&t; * initiate soft-off or sleep operation?&n;&t; */
+multiline_comment|/*&n;&t; * For value 3 (Ejection Request), some device method may need to be run.&n;&t; * For value 2 (Device Wake) if _PRW exists, the _PS0 method may need to be run.&n;&t; * For value 0x80 (Status Change) on the power button or sleep button,&n;&t; * initiate soft-off or sleep operation?&n;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -109,82 +138,41 @@ id|node
 )paren
 )paren
 suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
 id|notify_value
+op_le
+l_int|7
 )paren
 (brace
-r_case
-l_int|0
-suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Notify value: Re-enumerate Devices&bslash;n&quot;
+l_string|&quot;Notify value: %s&bslash;n&quot;
+comma
+id|acpi_notify_value_names
+(braket
+id|notify_value
+)braket
 )paren
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|1
-suffix:colon
+)brace
+r_else
+(brace
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Notify value: Ejection Request&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|2
-suffix:colon
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;Notify value: Device Wake&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|0x80
-suffix:colon
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;Notify value: Status Change&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;Unknown Notify Value: %X &bslash;n&quot;
+l_string|&quot;notify value: 0x2.2_x **Device Specific**&bslash;n&quot;
 comma
 id|notify_value
 )paren
 )paren
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Get the notify object attached to the NS Node&n;&t; */

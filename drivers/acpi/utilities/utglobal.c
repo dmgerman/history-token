@@ -545,31 +545,34 @@ comma
 multiline_comment|/* 21 Alias            */
 id|ACPI_NS_NORMAL
 comma
-multiline_comment|/* 22 Notify           */
+multiline_comment|/* 22 method_alias     */
 id|ACPI_NS_NORMAL
 comma
-multiline_comment|/* 23 Address Handler  */
+multiline_comment|/* 23 Notify           */
+id|ACPI_NS_NORMAL
+comma
+multiline_comment|/* 24 Address Handler  */
 id|ACPI_NS_NEWSCOPE
 op_or
 id|ACPI_NS_LOCAL
 comma
-multiline_comment|/* 24 Resource Desc    */
+multiline_comment|/* 25 Resource Desc    */
 id|ACPI_NS_NEWSCOPE
 op_or
 id|ACPI_NS_LOCAL
 comma
-multiline_comment|/* 25 Resource Field   */
+multiline_comment|/* 26 Resource Field   */
 id|ACPI_NS_NEWSCOPE
 comma
-multiline_comment|/* 26 Scope            */
+multiline_comment|/* 27 Scope            */
 id|ACPI_NS_NORMAL
 comma
-multiline_comment|/* 27 Extra            */
+multiline_comment|/* 28 Extra            */
 id|ACPI_NS_NORMAL
 comma
-multiline_comment|/* 28 Data             */
+multiline_comment|/* 29 Data             */
 id|ACPI_NS_NORMAL
-multiline_comment|/* 29 Invalid          */
+multiline_comment|/* 30 Invalid          */
 )brace
 suffix:semicolon
 multiline_comment|/* Hex to ASCII conversion table */
@@ -1317,27 +1320,30 @@ multiline_comment|/* 21 */
 l_string|&quot;Alias&quot;
 comma
 multiline_comment|/* 22 */
-l_string|&quot;Notify&quot;
+l_string|&quot;method_alias&quot;
 comma
 multiline_comment|/* 23 */
-l_string|&quot;addr_handler&quot;
+l_string|&quot;Notify&quot;
 comma
 multiline_comment|/* 24 */
-l_string|&quot;resource_desc&quot;
+l_string|&quot;addr_handler&quot;
 comma
 multiline_comment|/* 25 */
-l_string|&quot;resource_fld&quot;
+l_string|&quot;resource_desc&quot;
 comma
 multiline_comment|/* 26 */
-l_string|&quot;Scope&quot;
+l_string|&quot;resource_fld&quot;
 comma
 multiline_comment|/* 27 */
-l_string|&quot;Extra&quot;
+l_string|&quot;Scope&quot;
 comma
 multiline_comment|/* 28 */
+l_string|&quot;Extra&quot;
+comma
+multiline_comment|/* 29 */
 l_string|&quot;Data&quot;
 comma
-multiline_comment|/* 39 */
+multiline_comment|/* 30 */
 l_string|&quot;Invalid&quot;
 )brace
 suffix:semicolon
@@ -1432,6 +1438,13 @@ r_struct
 id|acpi_namespace_node
 op_star
 id|node
+op_assign
+(paren
+r_struct
+id|acpi_namespace_node
+op_star
+)paren
+id|object
 suffix:semicolon
 r_if
 c_cond
@@ -1446,15 +1459,19 @@ l_string|&quot;NULL NODE&quot;
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|object
+op_eq
+id|ACPI_ROOT_OBJECT
+)paren
+(brace
 id|node
 op_assign
-(paren
-r_struct
-id|acpi_namespace_node
-op_star
-)paren
-id|object
+id|acpi_gbl_root_node
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1828,6 +1845,10 @@ suffix:semicolon
 id|acpi_gbl_all_methods_serialized
 op_assign
 id|FALSE
+suffix:semicolon
+id|acpi_gbl_leave_wake_gpes_disabled
+op_assign
+id|TRUE
 suffix:semicolon
 multiline_comment|/* Memory allocation and cache lists */
 id|ACPI_MEMSET
