@@ -950,7 +950,8 @@ id|event
 op_assign
 l_int|NULL
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|flags
 op_assign
 l_int|0
@@ -1094,7 +1095,8 @@ op_star
 id|event
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|flags
 op_assign
 l_int|0

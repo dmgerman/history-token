@@ -3380,7 +3380,7 @@ id|input_devclass
 suffix:semicolon
 )brace
 DECL|variable|input_init
-id|module_init
+id|subsys_initcall
 c_func
 (paren
 id|input_init
