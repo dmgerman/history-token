@@ -586,6 +586,8 @@ id|newinode
 comma
 id|full_path
 comma
+l_int|NULL
+comma
 id|inode-&gt;i_sb
 )paren
 suffix:semicolon
@@ -875,6 +877,8 @@ id|fid
 comma
 op_amp
 id|oplock
+comma
+l_int|NULL
 comma
 id|cifs_sb-&gt;local_nls
 )paren
