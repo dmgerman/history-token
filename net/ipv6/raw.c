@@ -1663,7 +1663,7 @@ id|sin6-&gt;sin6_family
 op_assign
 id|AF_INET6
 suffix:semicolon
-id|memcpy
+id|ipv6_addr_copy
 c_func
 (paren
 op_amp
@@ -1671,12 +1671,6 @@ id|sin6-&gt;sin6_addr
 comma
 op_amp
 id|skb-&gt;nh.ipv6h-&gt;saddr
-comma
-r_sizeof
-(paren
-r_struct
-id|in6_addr
-)paren
 )paren
 suffix:semicolon
 id|sin6-&gt;sin6_flowinfo

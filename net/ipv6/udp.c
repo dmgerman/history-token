@@ -2194,7 +2194,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|memcpy
+id|ipv6_addr_copy
 c_func
 (paren
 op_amp
@@ -2202,12 +2202,6 @@ id|sin6-&gt;sin6_addr
 comma
 op_amp
 id|skb-&gt;nh.ipv6h-&gt;saddr
-comma
-r_sizeof
-(paren
-r_struct
-id|in6_addr
-)paren
 )paren
 suffix:semicolon
 r_if
