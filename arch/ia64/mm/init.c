@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -731,7 +730,7 @@ id|totalram_pages
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This is like put_dirty_page() but installs a clean page in the kernel&squot;s page table.&n; */
+multiline_comment|/*&n; * This installs a clean page in the kernel&squot;s page table.&n; */
 r_struct
 id|page
 op_star

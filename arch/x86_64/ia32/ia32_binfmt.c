@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
-macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;asm/segment.h&gt; 
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -888,6 +887,20 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+id|mpnt
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|mpnt
+)paren
+)paren
+suffix:semicolon
 id|down_write
 c_func
 (paren
@@ -960,32 +973,6 @@ id|PAGE_COPY_EXEC
 suffix:colon
 id|PAGE_COPY
 suffix:semicolon
-id|mpnt-&gt;vm_ops
-op_assign
-l_int|NULL
-suffix:semicolon
-id|mpnt-&gt;vm_pgoff
-op_assign
-l_int|0
-suffix:semicolon
-id|mpnt-&gt;vm_file
-op_assign
-l_int|NULL
-suffix:semicolon
-id|mpol_set_vma_default
-c_func
-(paren
-id|mpnt
-)paren
-suffix:semicolon
-id|mpnt-&gt;vm_private_data
-op_assign
-(paren
-r_void
-op_star
-)paren
-l_int|0
-suffix:semicolon
 id|insert_vm_struct
 c_func
 (paren
@@ -1043,16 +1030,14 @@ id|i
 op_assign
 l_int|NULL
 suffix:semicolon
-id|put_dirty_page
+id|install_arg_page
 c_func
 (paren
-id|current
+id|mpnt
 comma
 id|page
 comma
 id|stack_base
-comma
-id|mpnt-&gt;vm_page_prot
 )paren
 suffix:semicolon
 )brace

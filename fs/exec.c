@@ -25,7 +25,6 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
-macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -1066,16 +1065,16 @@ id|copy_strings_kernel
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MMU
-multiline_comment|/*&n; * This routine is used to map in a page into an address space: needed by&n; * execve() for the initial stack and environment pages.&n; *&n; * tsk-&gt;mm-&gt;mmap_sem is held for writing.&n; */
-DECL|function|put_dirty_page
+multiline_comment|/*&n; * This routine is used to map in a page into an address space: needed by&n; * execve() for the initial stack and environment pages.&n; *&n; * vma-&gt;vm_mm-&gt;mmap_sem is held for writing.&n; */
+DECL|function|install_arg_page
 r_void
-id|put_dirty_page
+id|install_arg_page
 c_func
 (paren
 r_struct
-id|task_struct
+id|vm_area_struct
 op_star
-id|tsk
+id|vma
 comma
 r_struct
 id|page
@@ -1085,9 +1084,6 @@ comma
 r_int
 r_int
 id|address
-comma
-id|pgprot_t
-id|prot
 )paren
 (brace
 r_struct
@@ -1095,7 +1091,7 @@ id|mm_struct
 op_star
 id|mm
 op_assign
-id|tsk-&gt;mm
+id|vma-&gt;vm_mm
 suffix:semicolon
 id|pgd_t
 op_star
@@ -1108,6 +1104,12 @@ suffix:semicolon
 id|pte_t
 op_star
 id|pte
+suffix:semicolon
+id|flush_dcache_page
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 id|pgd
 op_assign
@@ -1199,12 +1201,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|flush_dcache_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|set_pte
 c_func
 (paren
@@ -1221,7 +1217,7 @@ c_func
 (paren
 id|page
 comma
-id|prot
+id|vma-&gt;vm_page_prot
 )paren
 )paren
 )paren
@@ -1273,7 +1269,7 @@ c_func
 (paren
 id|SIGKILL
 comma
-id|tsk
+id|current
 )paren
 suffix:semicolon
 )brace
@@ -1818,16 +1814,14 @@ id|i
 op_assign
 l_int|NULL
 suffix:semicolon
-id|put_dirty_page
+id|install_arg_page
 c_func
 (paren
-id|current
+id|mpnt
 comma
 id|page
 comma
 id|stack_base
-comma
-id|mpnt-&gt;vm_page_prot
 )paren
 suffix:semicolon
 )brace
