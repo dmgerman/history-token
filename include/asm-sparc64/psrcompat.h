@@ -39,7 +39,7 @@ mdefine_line|#define PSR_V8PLUS  0xff000000         /* fake impl/ver, meaning a 
 DECL|macro|PSR_XCC
 mdefine_line|#define PSR_XCC&t;    0x000f0000         /* if PSR_V8PLUS, this is %xcc */
 DECL|function|tstate_to_psr
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -86,7 +86,7 @@ id|PSR_V8PLUS
 suffix:semicolon
 )brace
 DECL|function|psr_to_tstate_icc
-r_extern
+r_static
 r_inline
 r_int
 r_int
