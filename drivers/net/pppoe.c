@@ -3982,6 +3982,7 @@ id|pppoe_hash_lock
 suffix:semicolon
 )brace
 DECL|variable|pppoe_seq_ops
+r_static
 r_struct
 id|seq_operations
 id|pppoe_seq_ops

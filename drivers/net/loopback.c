@@ -638,6 +638,7 @@ id|stats
 suffix:semicolon
 )brace
 DECL|function|loopback_get_link
+r_static
 id|u32
 id|loopback_get_link
 c_func

@@ -1747,7 +1747,7 @@ l_int|0
 comma
 l_int|1
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 id|up
@@ -1860,7 +1860,7 @@ l_int|0
 comma
 l_int|1
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -2115,7 +2115,7 @@ id|ov-&gt;cbuf
 comma
 id|n
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 id|up

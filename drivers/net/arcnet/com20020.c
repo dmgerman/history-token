@@ -673,11 +673,6 @@ suffix:semicolon
 multiline_comment|/* Initialize the rest of the device structure. */
 id|lp
 op_assign
-(paren
-r_struct
-id|arcnet_local
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|lp-&gt;hw.owner
@@ -998,11 +993,6 @@ id|arcnet_local
 op_star
 id|lp
 op_assign
-(paren
-r_struct
-id|arcnet_local
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 id|u_int
@@ -1361,11 +1351,6 @@ id|arcnet_local
 op_star
 id|lp
 op_assign
-(paren
-r_struct
-id|arcnet_local
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int

@@ -7,6 +7,8 @@ DECL|macro|FTDI_8U232AM_PID
 mdefine_line|#define FTDI_8U232AM_PID 0x6001 /* Similar device to SIO above */
 DECL|macro|FTDI_8U232AM_ALT_PID
 mdefine_line|#define FTDI_8U232AM_ALT_PID 0x6006 /* FTDI&squot;s alternate PID for above */
+DECL|macro|FTDI_8U232AM_ALT_ALT_PID
+mdefine_line|#define FTDI_8U232AM_ALT_ALT_PID 0xf3c0 /* FTDI&squot;s second alternate PID for above */
 DECL|macro|FTDI_8U2232C_PID
 mdefine_line|#define FTDI_8U2232C_PID 0x6010 /* Dual channel device */
 DECL|macro|FTDI_RELAIS_PID

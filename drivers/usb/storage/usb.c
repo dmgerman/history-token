@@ -12,7 +12,7 @@ macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;initializers.h&quot;
-macro_line|#ifdef CONFIG_USB_STORAGE_HP8200e
+macro_line|#ifdef CONFIG_USB_STORAGE_USBAT
 macro_line|#include &quot;shuttle_usbat.h&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_USB_STORAGE_SDDR09
@@ -336,7 +336,6 @@ id|US_PR_BULK
 )paren
 )brace
 comma
-macro_line|#if !defined(CONFIG_BLK_DEV_UB) &amp;&amp; !defined(CONFIG_BLK_DEV_UB_MODULE)
 (brace
 id|USB_INTERFACE_INFO
 c_func
@@ -349,7 +348,6 @@ id|US_PR_BULK
 )paren
 )brace
 comma
-macro_line|#endif
 multiline_comment|/* Terminating entry */
 (brace
 )brace
@@ -587,7 +585,6 @@ op_assign
 id|US_PR_BULK
 )brace
 comma
-macro_line|#if !defined(CONFIG_BLK_DEV_UB) &amp;&amp; !defined(CONFIG_BLK_DEV_UB_MODULE)
 (brace
 dot
 id|useProtocol
@@ -600,7 +597,6 @@ op_assign
 id|US_PR_BULK
 )brace
 comma
-macro_line|#endif
 multiline_comment|/* Terminating entry */
 (brace
 l_int|NULL
@@ -1558,6 +1554,19 @@ id|us-&gt;flags
 op_assign
 id|unusual_dev-&gt;flags
 suffix:semicolon
+multiline_comment|/*&n;&t; * This flag is only needed when we&squot;re in high-speed, so let&squot;s&n;&t; * disable it if we&squot;re in full-speed&n;&t; */
+r_if
+c_cond
+(paren
+id|dev-&gt;speed
+op_ne
+id|USB_SPEED_HIGH
+)paren
+id|us-&gt;flags
+op_and_assign
+op_complement
+id|US_FL_GO_SLOW
+suffix:semicolon
 multiline_comment|/* Log a message if a non-generic unusual_dev entry contains an&n;&t; * unnecessary subclass or protocol override.  This may stimulate&n;&t; * reports from users that will help us remove unneeded entries&n;&t; * from the unusual_devs.h table.&n;&t; */
 r_if
 c_cond
@@ -1681,177 +1690,6 @@ id|msg
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Read the device&squot;s string descriptors */
-r_if
-c_cond
-(paren
-id|dev-&gt;descriptor.iManufacturer
-)paren
-id|usb_string
-c_func
-(paren
-id|dev
-comma
-id|dev-&gt;descriptor.iManufacturer
-comma
-id|us-&gt;vendor
-comma
-r_sizeof
-(paren
-id|us-&gt;vendor
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;descriptor.iProduct
-)paren
-id|usb_string
-c_func
-(paren
-id|dev
-comma
-id|dev-&gt;descriptor.iProduct
-comma
-id|us-&gt;product
-comma
-r_sizeof
-(paren
-id|us-&gt;product
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;descriptor.iSerialNumber
-)paren
-id|usb_string
-c_func
-(paren
-id|dev
-comma
-id|dev-&gt;descriptor.iSerialNumber
-comma
-id|us-&gt;serial
-comma
-r_sizeof
-(paren
-id|us-&gt;serial
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Use the unusual_dev strings if the device didn&squot;t provide them */
-r_if
-c_cond
-(paren
-id|strlen
-c_func
-(paren
-id|us-&gt;vendor
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|unusual_dev-&gt;vendorName
-)paren
-id|strlcpy
-c_func
-(paren
-id|us-&gt;vendor
-comma
-id|unusual_dev-&gt;vendorName
-comma
-r_sizeof
-(paren
-id|us-&gt;vendor
-)paren
-)paren
-suffix:semicolon
-r_else
-id|strcpy
-c_func
-(paren
-id|us-&gt;vendor
-comma
-l_string|&quot;Unknown&quot;
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|strlen
-c_func
-(paren
-id|us-&gt;product
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|unusual_dev-&gt;productName
-)paren
-id|strlcpy
-c_func
-(paren
-id|us-&gt;product
-comma
-id|unusual_dev-&gt;productName
-comma
-r_sizeof
-(paren
-id|us-&gt;product
-)paren
-)paren
-suffix:semicolon
-r_else
-id|strcpy
-c_func
-(paren
-id|us-&gt;product
-comma
-l_string|&quot;Unknown&quot;
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|strlen
-c_func
-(paren
-id|us-&gt;serial
-)paren
-op_eq
-l_int|0
-)paren
-id|strcpy
-c_func
-(paren
-id|us-&gt;serial
-comma
-l_string|&quot;None&quot;
-)paren
-suffix:semicolon
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;Vendor: %s,  Product: %s&bslash;n&quot;
-comma
-id|us-&gt;vendor
-comma
-id|us-&gt;product
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Get the transport settings */
 DECL|function|get_transport
@@ -1931,7 +1769,7 @@ id|usb_stor_Bulk_reset
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_USB_STORAGE_HP8200e
+macro_line|#ifdef CONFIG_USB_STORAGE_USBAT
 r_case
 id|US_PR_SCM_ATAPI
 suffix:colon
@@ -1941,7 +1779,7 @@ l_string|&quot;SCM/ATAPI&quot;
 suffix:semicolon
 id|us-&gt;transport
 op_assign
-id|hp8200e_transport
+id|usbat_transport
 suffix:semicolon
 id|us-&gt;transport_reset
 op_assign

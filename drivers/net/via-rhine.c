@@ -604,6 +604,8 @@ suffix:semicolon
 macro_line|#ifdef USE_MMIO
 multiline_comment|/* Registers we check that mmio and reg are the same. */
 DECL|variable|mmio_verify_registers
+r_static
+r_const
 r_int
 id|mmio_verify_registers
 (braket
@@ -8190,6 +8192,19 @@ id|ioaddr
 op_assign
 id|rp-&gt;base
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|rp-&gt;quirks
+op_amp
+id|rqWOL
+)paren
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* Nothing to do for non-WOL adapters */
 id|rhine_power_init
 c_func
 (paren

@@ -25,6 +25,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;linux/usb_ch9.h&gt;
+macro_line|#include &lt;linux/usb_cdc.h&gt;
 macro_line|#include &lt;linux/usb_gadget.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -460,6 +461,10 @@ multiline_comment|/* use non-CDC for backwards compatibility */
 DECL|macro|DEV_CONFIG_SUBSET
 mdefine_line|#define&t;DEV_CONFIG_SUBSET
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_GADGET_S3C2410
+DECL|macro|DEV_CONFIG_CDC
+mdefine_line|#define DEV_CONFIG_CDC
+macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|macro|DEFAULT_QLEN
 mdefine_line|#define DEFAULT_QLEN&t;2&t;/* double buffering by default */
@@ -785,13 +790,12 @@ comma
 dot
 id|bInterfaceSubClass
 op_assign
-l_int|6
+id|USB_CDC_SUBCLASS_ETHERNET
 comma
-multiline_comment|/* ethernet control model */
 dot
 id|bInterfaceProtocol
 op_assign
-l_int|0
+id|USB_CDC_PROTO_NONE
 comma
 dot
 id|iInterface
@@ -839,15 +843,13 @@ comma
 dot
 id|bInterfaceSubClass
 op_assign
-l_int|2
+id|USB_CDC_SUBCLASS_ACM
 comma
-multiline_comment|/* abstract control model */
 dot
 id|bInterfaceProtocol
 op_assign
-l_int|0xff
+id|USB_CDC_ACM_PROTO_VENDOR
 comma
-multiline_comment|/* vendor specific */
 dot
 id|iInterface
 op_assign
@@ -857,40 +859,11 @@ comma
 suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(DEV_CONFIG_CDC) || defined(CONFIG_USB_ETH_RNDIS)
-multiline_comment|/* &quot;Header Functional Descriptor&quot; from CDC spec  5.2.3.1 */
-DECL|struct|header_desc
-r_struct
-id|header_desc
-(brace
-DECL|member|bLength
-id|u8
-id|bLength
-suffix:semicolon
-DECL|member|bDescriptorType
-id|u8
-id|bDescriptorType
-suffix:semicolon
-DECL|member|bDescriptorSubType
-id|u8
-id|bDescriptorSubType
-suffix:semicolon
-DECL|member|bcdCDC
-id|u16
-id|bcdCDC
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
 DECL|variable|header_desc
 r_static
 r_const
 r_struct
-id|header_desc
+id|usb_cdc_header_desc
 id|header_desc
 op_assign
 (brace
@@ -908,7 +881,7 @@ comma
 dot
 id|bDescriptorSubType
 op_assign
-l_int|0
+id|USB_CDC_HEADER_TYPE
 comma
 dot
 id|bcdCDC
@@ -920,45 +893,11 @@ l_int|0x0110
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* &quot;Union Functional Descriptor&quot; from CDC spec 5.2.3.8 */
-DECL|struct|union_desc
-r_struct
-id|union_desc
-(brace
-DECL|member|bLength
-id|u8
-id|bLength
-suffix:semicolon
-DECL|member|bDescriptorType
-id|u8
-id|bDescriptorType
-suffix:semicolon
-DECL|member|bDescriptorSubType
-id|u8
-id|bDescriptorSubType
-suffix:semicolon
-DECL|member|bMasterInterface0
-id|u8
-id|bMasterInterface0
-suffix:semicolon
-DECL|member|bSlaveInterface0
-id|u8
-id|bSlaveInterface0
-suffix:semicolon
-multiline_comment|/* ... and there could be other slave interfaces */
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
 DECL|variable|union_desc
 r_static
 r_const
 r_struct
-id|union_desc
+id|usb_cdc_union_desc
 id|union_desc
 op_assign
 (brace
@@ -976,7 +915,7 @@ comma
 dot
 id|bDescriptorSubType
 op_assign
-l_int|6
+id|USB_CDC_UNION_TYPE
 comma
 dot
 id|bMasterInterface0
@@ -994,44 +933,11 @@ multiline_comment|/* index of DATA interface */
 suffix:semicolon
 macro_line|#endif&t;/* CDC || RNDIS */
 macro_line|#ifdef&t;CONFIG_USB_ETH_RNDIS
-multiline_comment|/* &quot;Call Management Descriptor&quot; from CDC spec  5.2.3.3 */
-DECL|struct|call_mgmt_descriptor
-r_struct
-id|call_mgmt_descriptor
-(brace
-DECL|member|bLength
-id|u8
-id|bLength
-suffix:semicolon
-DECL|member|bDescriptorType
-id|u8
-id|bDescriptorType
-suffix:semicolon
-DECL|member|bDescriptorSubType
-id|u8
-id|bDescriptorSubType
-suffix:semicolon
-DECL|member|bmCapabilities
-id|u8
-id|bmCapabilities
-suffix:semicolon
-DECL|member|bDataInterface
-id|u8
-id|bDataInterface
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
 DECL|variable|call_mgmt_descriptor
 r_static
 r_const
 r_struct
-id|call_mgmt_descriptor
+id|usb_cdc_call_mgmt_descriptor
 id|call_mgmt_descriptor
 op_assign
 (brace
@@ -1049,7 +955,7 @@ comma
 dot
 id|bDescriptorSubType
 op_assign
-l_int|0x01
+id|USB_CDC_CALL_MANAGEMENT_TYPE
 comma
 dot
 id|bmCapabilities
@@ -1063,39 +969,10 @@ l_int|0x01
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* &quot;Abstract Control Management Descriptor&quot; from CDC spec  5.2.3.4 */
-DECL|struct|acm_descriptor
-r_struct
-id|acm_descriptor
-(brace
-DECL|member|bLength
-id|u8
-id|bLength
-suffix:semicolon
-DECL|member|bDescriptorType
-id|u8
-id|bDescriptorType
-suffix:semicolon
-DECL|member|bDescriptorSubType
-id|u8
-id|bDescriptorSubType
-suffix:semicolon
-DECL|member|bmCapabilities
-id|u8
-id|bmCapabilities
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
 DECL|variable|acm_descriptor
 r_static
 r_struct
-id|acm_descriptor
+id|usb_cdc_acm_descriptor
 id|acm_descriptor
 op_assign
 (brace
@@ -1113,67 +990,22 @@ comma
 dot
 id|bDescriptorSubType
 op_assign
-l_int|0x02
+id|USB_CDC_ACM_TYPE
 comma
 dot
 id|bmCapabilities
 op_assign
-l_int|0X00
+l_int|0x00
 comma
 )brace
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef&t;DEV_CONFIG_CDC
-multiline_comment|/* &quot;Ethernet Networking Functional Descriptor&quot; from CDC spec 5.2.3.16 */
-DECL|struct|ether_desc
-r_struct
-id|ether_desc
-(brace
-DECL|member|bLength
-id|u8
-id|bLength
-suffix:semicolon
-DECL|member|bDescriptorType
-id|u8
-id|bDescriptorType
-suffix:semicolon
-DECL|member|bDescriptorSubType
-id|u8
-id|bDescriptorSubType
-suffix:semicolon
-DECL|member|iMACAddress
-id|u8
-id|iMACAddress
-suffix:semicolon
-DECL|member|bmEthernetStatistics
-id|u32
-id|bmEthernetStatistics
-suffix:semicolon
-DECL|member|wMaxSegmentSize
-id|u16
-id|wMaxSegmentSize
-suffix:semicolon
-DECL|member|wNumberMCFilters
-id|u16
-id|wNumberMCFilters
-suffix:semicolon
-DECL|member|bNumberPowerFilters
-id|u8
-id|bNumberPowerFilters
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
 DECL|variable|ether_desc
 r_static
 r_const
 r_struct
-id|ether_desc
+id|usb_cdc_ether_desc
 id|ether_desc
 op_assign
 (brace
@@ -1191,7 +1023,7 @@ comma
 dot
 id|bDescriptorSubType
 op_assign
-l_int|0x0f
+id|USB_CDC_ETHERNET_TYPE
 comma
 multiline_comment|/* this descriptor actually adds value, surprise! */
 dot
@@ -3758,48 +3590,7 @@ id|result
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/* section 3.8.2 table 11 of the CDC spec lists Ethernet notifications&n; * section 3.6.2.1 table 5 specifies ACM notifications, accepted by RNDIS&n; * and RNDIS also defines its own bit-incompatible notifications&n; */
-DECL|macro|CDC_NOTIFY_NETWORK_CONNECTION
-mdefine_line|#define CDC_NOTIFY_NETWORK_CONNECTION&t;0x00&t;/* required; 6.3.1 */
-DECL|macro|CDC_NOTIFY_RESPONSE_AVAILABLE
-mdefine_line|#define CDC_NOTIFY_RESPONSE_AVAILABLE&t;0x01&t;/* optional; 6.3.2 */
-DECL|macro|CDC_NOTIFY_SPEED_CHANGE
-mdefine_line|#define CDC_NOTIFY_SPEED_CHANGE&t;&t;0x2a&t;/* required; 6.3.8 */
 macro_line|#ifdef&t;DEV_CONFIG_CDC
-DECL|struct|cdc_notification
-r_struct
-id|cdc_notification
-(brace
-DECL|member|bmRequestType
-id|u8
-id|bmRequestType
-suffix:semicolon
-DECL|member|bNotificationType
-id|u8
-id|bNotificationType
-suffix:semicolon
-DECL|member|wValue
-id|u16
-id|wValue
-suffix:semicolon
-DECL|member|wIndex
-id|u16
-id|wIndex
-suffix:semicolon
-DECL|member|wLength
-id|u16
-id|wLength
-suffix:semicolon
-multiline_comment|/* SPEED_CHANGE data looks like this */
-DECL|member|data
-id|u32
-id|data
-(braket
-l_int|2
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|function|eth_status_complete
 r_static
 r_void
@@ -3817,7 +3608,7 @@ id|req
 )paren
 (brace
 r_struct
-id|cdc_notification
+id|usb_cdc_notification
 op_star
 id|event
 op_assign
@@ -3841,20 +3632,30 @@ c_cond
 (paren
 id|event-&gt;bNotificationType
 op_eq
-id|CDC_NOTIFY_NETWORK_CONNECTION
+id|USB_CDC_NOTIFY_NETWORK_CONNECTION
 op_logical_and
 id|value
 op_eq
 l_int|0
 )paren
 (brace
+id|__le32
+op_star
+id|data
+op_assign
+id|req-&gt;buf
+op_plus
+r_sizeof
+op_star
+id|event
+suffix:semicolon
 id|event-&gt;bmRequestType
 op_assign
 l_int|0xA1
 suffix:semicolon
 id|event-&gt;bNotificationType
 op_assign
-id|CDC_NOTIFY_SPEED_CHANGE
+id|USB_CDC_NOTIFY_SPEED_CHANGE
 suffix:semicolon
 id|event-&gt;wValue
 op_assign
@@ -3878,16 +3679,19 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* SPEED_CHANGE data is up/down speeds in bits/sec */
-id|event-&gt;data
+id|data
 (braket
 l_int|0
 )braket
 op_assign
-id|event-&gt;data
+id|data
 (braket
 l_int|1
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 (paren
 id|dev-&gt;gadget-&gt;speed
 op_eq
@@ -3917,6 +3721,7 @@ op_star
 l_int|1000
 op_star
 l_int|8
+)paren
 )paren
 suffix:semicolon
 id|req-&gt;length
@@ -4002,7 +3807,7 @@ op_star
 id|req
 suffix:semicolon
 r_struct
-id|cdc_notification
+id|usb_cdc_notification
 op_star
 id|event
 suffix:semicolon
@@ -4111,7 +3916,7 @@ l_int|0xA1
 suffix:semicolon
 id|event-&gt;bNotificationType
 op_assign
-id|CDC_NOTIFY_NETWORK_CONNECTION
+id|USB_CDC_NOTIFY_NETWORK_CONNECTION
 suffix:semicolon
 id|event-&gt;wValue
 op_assign
@@ -4230,32 +4035,6 @@ id|req-&gt;length
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* see section 3.8.2 table 10 of the CDC spec for more ethernet&n; * requests, mostly for filters (multicast, pm) and statistics&n; * section 3.6.2.1 table 4 has ACM requests; RNDIS requires the&n; * encapsulated command mechanism.&n; */
-DECL|macro|CDC_SEND_ENCAPSULATED_COMMAND
-mdefine_line|#define CDC_SEND_ENCAPSULATED_COMMAND&t;&t;0x00&t;/* optional */
-DECL|macro|CDC_GET_ENCAPSULATED_RESPONSE
-mdefine_line|#define CDC_GET_ENCAPSULATED_RESPONSE&t;&t;0x01&t;/* optional */
-DECL|macro|CDC_SET_ETHERNET_MULTICAST_FILTERS
-mdefine_line|#define CDC_SET_ETHERNET_MULTICAST_FILTERS&t;0x40&t;/* optional */
-DECL|macro|CDC_SET_ETHERNET_PM_PATTERN_FILTER
-mdefine_line|#define CDC_SET_ETHERNET_PM_PATTERN_FILTER&t;0x41&t;/* optional */
-DECL|macro|CDC_GET_ETHERNET_PM_PATTERN_FILTER
-mdefine_line|#define CDC_GET_ETHERNET_PM_PATTERN_FILTER&t;0x42&t;/* optional */
-DECL|macro|CDC_SET_ETHERNET_PACKET_FILTER
-mdefine_line|#define CDC_SET_ETHERNET_PACKET_FILTER&t;&t;0x43&t;/* required */
-DECL|macro|CDC_GET_ETHERNET_STATISTIC
-mdefine_line|#define CDC_GET_ETHERNET_STATISTIC&t;&t;0x44&t;/* optional */
-multiline_comment|/* table 62; bits in cdc_filter */
-DECL|macro|CDC_PACKET_TYPE_PROMISCUOUS
-mdefine_line|#define&t;CDC_PACKET_TYPE_PROMISCUOUS&t;&t;(1 &lt;&lt; 0)
-DECL|macro|CDC_PACKET_TYPE_ALL_MULTICAST
-mdefine_line|#define&t;CDC_PACKET_TYPE_ALL_MULTICAST&t;&t;(1 &lt;&lt; 1) /* no filter */
-DECL|macro|CDC_PACKET_TYPE_DIRECTED
-mdefine_line|#define&t;CDC_PACKET_TYPE_DIRECTED&t;&t;(1 &lt;&lt; 2)
-DECL|macro|CDC_PACKET_TYPE_BROADCAST
-mdefine_line|#define&t;CDC_PACKET_TYPE_BROADCAST&t;&t;(1 &lt;&lt; 3)
-DECL|macro|CDC_PACKET_TYPE_MULTICAST
-mdefine_line|#define&t;CDC_PACKET_TYPE_MULTICAST&t;&t;(1 &lt;&lt; 4) /* filtered */
 macro_line|#ifdef CONFIG_USB_ETH_RNDIS
 DECL|function|rndis_response_complete
 r_static
@@ -4300,7 +4079,7 @@ comma
 id|req-&gt;length
 )paren
 suffix:semicolon
-multiline_comment|/* done sending after CDC_GET_ENCAPSULATED_RESPONSE */
+multiline_comment|/* done sending after USB_CDC_GET_ENCAPSULATED_RESPONSE */
 )brace
 DECL|function|rndis_command_complete
 r_static
@@ -4328,7 +4107,7 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-multiline_comment|/* received RNDIS command from CDC_SEND_ENCAPSULATED_COMMAND */
+multiline_comment|/* received RNDIS command from USB_CDC_SEND_ENCAPSULATED_COMMAND */
 id|spin_lock
 c_func
 (paren
@@ -4418,6 +4197,21 @@ op_assign
 op_minus
 id|EOPNOTSUPP
 suffix:semicolon
+id|u16
+id|wIndex
+op_assign
+id|ctrl-&gt;wIndex
+suffix:semicolon
+id|u16
+id|wValue
+op_assign
+id|ctrl-&gt;wValue
+suffix:semicolon
+id|u16
+id|wLength
+op_assign
+id|ctrl-&gt;wLength
+suffix:semicolon
 multiline_comment|/* descriptors just go into the pre-allocated ep0 buffer,&n;&t; * while config change events may enable network traffic.&n;&t; */
 id|req-&gt;complete
 op_assign
@@ -4444,7 +4238,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|ctrl-&gt;wValue
+id|wValue
 op_rshift
 l_int|8
 )paren
@@ -4456,7 +4250,7 @@ id|value
 op_assign
 id|min
 (paren
-id|ctrl-&gt;wLength
+id|wLength
 comma
 (paren
 id|u16
@@ -4493,7 +4287,7 @@ id|value
 op_assign
 id|min
 (paren
-id|ctrl-&gt;wLength
+id|wLength
 comma
 (paren
 id|u16
@@ -4538,11 +4332,11 @@ id|gadget-&gt;speed
 comma
 id|req-&gt;buf
 comma
-id|ctrl-&gt;wValue
+id|wValue
 op_rshift
 l_int|8
 comma
-id|ctrl-&gt;wValue
+id|wValue
 op_amp
 l_int|0xff
 comma
@@ -4560,7 +4354,7 @@ id|value
 op_assign
 id|min
 (paren
-id|ctrl-&gt;wLength
+id|wLength
 comma
 (paren
 id|u16
@@ -4580,7 +4374,7 @@ id|usb_gadget_get_string
 op_amp
 id|stringtab
 comma
-id|ctrl-&gt;wValue
+id|wValue
 op_amp
 l_int|0xff
 comma
@@ -4598,7 +4392,7 @@ id|value
 op_assign
 id|min
 (paren
-id|ctrl-&gt;wLength
+id|wLength
 comma
 (paren
 id|u16
@@ -4660,7 +4454,7 @@ id|eth_set_config
 (paren
 id|dev
 comma
-id|ctrl-&gt;wValue
+id|wValue
 comma
 id|GFP_ATOMIC
 )paren
@@ -4698,7 +4492,7 @@ id|value
 op_assign
 id|min
 (paren
-id|ctrl-&gt;wLength
+id|wLength
 comma
 (paren
 id|u16
@@ -4721,7 +4515,7 @@ op_logical_or
 op_logical_neg
 id|dev-&gt;config
 op_logical_or
-id|ctrl-&gt;wIndex
+id|wIndex
 OG
 l_int|1
 )paren
@@ -4733,7 +4527,7 @@ c_cond
 op_logical_neg
 id|dev-&gt;cdc
 op_logical_and
-id|ctrl-&gt;wIndex
+id|wIndex
 op_ne
 l_int|0
 )paren
@@ -4774,7 +4568,7 @@ macro_line|#ifdef DEV_CONFIG_CDC
 r_switch
 c_cond
 (paren
-id|ctrl-&gt;wIndex
+id|wIndex
 )paren
 (brace
 r_case
@@ -4784,7 +4578,7 @@ multiline_comment|/* control/master intf */
 r_if
 c_cond
 (paren
-id|ctrl-&gt;wValue
+id|wValue
 op_ne
 l_int|0
 )paren
@@ -4822,7 +4616,7 @@ multiline_comment|/* data intf */
 r_if
 c_cond
 (paren
-id|ctrl-&gt;wValue
+id|wValue
 OG
 l_int|1
 )paren
@@ -4842,7 +4636,7 @@ multiline_comment|/* CDC requires the data transfers not be done from&n;&t;&t;&t
 r_if
 c_cond
 (paren
-id|ctrl-&gt;wValue
+id|wValue
 op_eq
 l_int|1
 )paren
@@ -4964,7 +4758,7 @@ op_logical_or
 op_logical_neg
 id|dev-&gt;config
 op_logical_or
-id|ctrl-&gt;wIndex
+id|wIndex
 OG
 l_int|1
 )paren
@@ -4980,7 +4774,7 @@ op_logical_or
 id|dev-&gt;rndis
 )paren
 op_logical_and
-id|ctrl-&gt;wIndex
+id|wIndex
 op_ne
 l_int|0
 )paren
@@ -4992,7 +4786,7 @@ c_cond
 (paren
 id|dev-&gt;rndis
 op_logical_or
-id|ctrl-&gt;wIndex
+id|wIndex
 op_ne
 l_int|1
 )paren
@@ -5027,7 +4821,7 @@ id|value
 op_assign
 id|min
 (paren
-id|ctrl-&gt;wLength
+id|wLength
 comma
 (paren
 id|u16
@@ -5039,7 +4833,7 @@ r_break
 suffix:semicolon
 macro_line|#ifdef DEV_CONFIG_CDC
 r_case
-id|CDC_SET_ETHERNET_PACKET_FILTER
+id|USB_CDC_SET_ETHERNET_PACKET_FILTER
 suffix:colon
 multiline_comment|/* see 6.2.30: no data, wIndex = interface,&n;&t;&t; * wValue = packet filter bitmap&n;&t;&t; */
 r_if
@@ -5058,11 +4852,11 @@ id|dev-&gt;cdc
 op_logical_or
 id|dev-&gt;rndis
 op_logical_or
-id|ctrl-&gt;wLength
+id|wLength
 op_ne
 l_int|0
 op_logical_or
-id|ctrl-&gt;wIndex
+id|wIndex
 OG
 l_int|1
 )paren
@@ -5074,13 +4868,13 @@ id|dev
 comma
 l_string|&quot;NOP packet filter %04x&bslash;n&quot;
 comma
-id|ctrl-&gt;wValue
+id|wValue
 )paren
 suffix:semicolon
 multiline_comment|/* NOTE: table 62 has 5 filter bits to reduce traffic,&n;&t;&t; * and we &quot;must&quot; support multicast and promiscuous.&n;&t;&t; * this NOP implements a bad filter (always promisc)&n;&t;&t; */
 id|dev-&gt;cdc_filter
 op_assign
-id|ctrl-&gt;wValue
+id|wValue
 suffix:semicolon
 id|value
 op_assign
@@ -5092,7 +4886,7 @@ macro_line|#endif /* DEV_CONFIG_CDC */
 macro_line|#ifdef CONFIG_USB_ETH_RNDIS&t;&t;
 multiline_comment|/* RNDIS uses the CDC command encapsulation mechanism to implement&n;&t; * an RPC scheme, with much getting/setting of attributes by OID.&n;&t; */
 r_case
-id|CDC_SEND_ENCAPSULATED_COMMAND
+id|USB_CDC_SEND_ENCAPSULATED_COMMAND
 suffix:colon
 r_if
 c_cond
@@ -5108,22 +4902,22 @@ op_logical_or
 op_logical_neg
 id|dev-&gt;rndis
 op_logical_or
-id|ctrl-&gt;wLength
+id|wLength
 OG
 id|USB_BUFSIZ
 op_logical_or
-id|ctrl-&gt;wValue
+id|wValue
 op_logical_or
 id|rndis_control_intf.bInterfaceNumber
 op_ne
-id|ctrl-&gt;wIndex
+id|wIndex
 )paren
 r_break
 suffix:semicolon
 multiline_comment|/* read the request, then process it */
 id|value
 op_assign
-id|ctrl-&gt;wLength
+id|wLength
 suffix:semicolon
 id|req-&gt;complete
 op_assign
@@ -5133,7 +4927,7 @@ multiline_comment|/* later, rndis_control_ack () sends a notification */
 r_break
 suffix:semicolon
 r_case
-id|CDC_GET_ENCAPSULATED_RESPONSE
+id|USB_CDC_GET_ENCAPSULATED_RESPONSE
 suffix:colon
 r_if
 c_cond
@@ -5149,14 +4943,14 @@ op_eq
 id|ctrl-&gt;bRequestType
 op_logical_and
 id|dev-&gt;rndis
-singleline_comment|// &amp;&amp; ctrl-&gt;wLength &gt;= 0x0400
+singleline_comment|// &amp;&amp; wLength &gt;= 0x0400
 op_logical_and
 op_logical_neg
-id|ctrl-&gt;wValue
+id|wValue
 op_logical_and
 id|rndis_control_intf.bInterfaceNumber
 op_eq
-id|ctrl-&gt;wIndex
+id|wIndex
 )paren
 (brace
 id|u8
@@ -5219,11 +5013,11 @@ id|ctrl-&gt;bRequestType
 comma
 id|ctrl-&gt;bRequest
 comma
-id|ctrl-&gt;wValue
+id|wValue
 comma
-id|ctrl-&gt;wIndex
+id|wIndex
 comma
-id|ctrl-&gt;wLength
+id|wLength
 )paren
 suffix:semicolon
 )brace
@@ -5244,7 +5038,7 @@ id|req-&gt;zero
 op_assign
 id|value
 OL
-id|ctrl-&gt;wLength
+id|wLength
 op_logical_and
 (paren
 id|value
@@ -5740,6 +5534,8 @@ op_assign
 id|alloc_skb
 (paren
 id|size
+op_plus
+id|NET_IP_ALIGN
 comma
 id|gfp_flags
 )paren
@@ -5759,6 +5555,15 @@ r_goto
 id|enomem
 suffix:semicolon
 )brace
+multiline_comment|/* Some platforms perform better when IP packets are aligned,&n;&t; * but on at least one, checksumming fails otherwise.  Note:&n;&t; * this doesn&squot;t account for variable-sized RNDIS headers.&n;&t; */
+id|skb_reserve
+c_func
+(paren
+id|skb
+comma
+id|NET_IP_ALIGN
+)paren
+suffix:semicolon
 id|req-&gt;buf
 op_assign
 id|skb-&gt;data
@@ -6725,7 +6530,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/* FIXME check dev-&gt;cdc_filter to decide whether to send this,&n;&t; * instead of acting as if CDC_PACKET_TYPE_PROMISCUOUS were&n;&t; * always set.  RNDIS has the same kind of outgoing filter.&n;&t; */
+multiline_comment|/* FIXME check dev-&gt;cdc_filter to decide whether to send this,&n;&t; * instead of acting as if USB_CDC_PACKET_TYPE_PROMISCUOUS were&n;&t; * always set.  RNDIS has the same kind of outgoing filter.&n;&t; */
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -7239,7 +7044,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* Send RNDIS RESPONSE_AVAILABLE notification;&n;&t; * CDC_NOTIFY_RESPONSE_AVAILABLE should work too&n;&t; */
+multiline_comment|/* Send RNDIS RESPONSE_AVAILABLE notification;&n;&t; * USB_CDC_NOTIFY_RESPONSE_AVAILABLE should work too&n;&t; */
 id|resp-&gt;length
 op_assign
 l_int|8
@@ -7251,7 +7056,7 @@ suffix:semicolon
 op_star
 (paren
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|resp-&gt;buf
@@ -7265,7 +7070,7 @@ suffix:semicolon
 op_star
 (paren
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|resp-&gt;buf
@@ -8140,6 +7945,25 @@ l_int|0x0211
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|gadget_is_s3c2410
+c_func
+(paren
+id|gadget
+)paren
+)paren
+(brace
+id|device_desc.bcdDevice
+op_assign
+id|__constant_cpu_to_le16
+(paren
+l_int|0x0212
+)paren
+suffix:semicolon
+)brace
+r_else
 (brace
 multiline_comment|/* can&squot;t assume CDC works.  don&squot;t want to default to&n;&t;&t; * anything less functional on CDC-capable hardware,&n;&t;&t; * so we fail in this case.&n;&t;&t; */
 id|dev_err
@@ -8460,6 +8284,8 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+macro_line|#ifdef DEV_CONFIG_CDC
+multiline_comment|/* pxa25x only does CDC subset; often used with RNDIS */
 )brace
 r_else
 r_if
@@ -8473,6 +8299,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* FIXME remove endpoint from descriptor list */
+macro_line|#endif
 )brace
 )brace
 macro_line|#endif

@@ -2094,6 +2094,7 @@ id|cp
 suffix:semicolon
 multiline_comment|/*&n; * Procedures exported to if_ppp.c.&n; */
 DECL|variable|ppp_deflate
+r_static
 r_struct
 id|compressor
 id|ppp_deflate
@@ -2176,6 +2177,7 @@ id|THIS_MODULE
 )brace
 suffix:semicolon
 DECL|variable|ppp_deflate_draft
+r_static
 r_struct
 id|compressor
 id|ppp_deflate_draft

@@ -544,7 +544,7 @@ c_func
 (paren
 l_string|&quot;bus/gsc&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -583,7 +583,7 @@ c_func
 (paren
 l_string|&quot;bus/runway&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -607,7 +607,7 @@ c_func
 (paren
 l_string|&quot;bus/mckinley&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

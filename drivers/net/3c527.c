@@ -286,6 +286,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|mc32_adapters
+r_static
 r_const
 r_struct
 id|mca_adapters_t

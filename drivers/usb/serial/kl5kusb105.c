@@ -530,7 +530,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Handle vendor specific USB requests&n; */
 DECL|macro|KLSI_TIMEOUT
-mdefine_line|#define KLSI_TIMEOUT&t; (HZ * 5 ) /* default urb timeout */
+mdefine_line|#define KLSI_TIMEOUT&t; 5000 /* default urb timeout */
 DECL|function|klsi_105_chg_port_settings
 r_static
 r_int

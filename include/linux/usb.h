@@ -74,6 +74,12 @@ id|usb_host_endpoint
 op_star
 id|endpoint
 suffix:semicolon
+DECL|member|string
+r_char
+op_star
+id|string
+suffix:semicolon
+multiline_comment|/* iInterface string, if present */
 DECL|member|extra
 r_int
 r_char
@@ -263,7 +269,7 @@ DECL|macro|ref_to_usb_interface_cache
 mdefine_line|#define&t;ref_to_usb_interface_cache(r) &bslash;&n;&t;&t;container_of(r, struct usb_interface_cache, ref)
 DECL|macro|altsetting_to_usb_interface_cache
 mdefine_line|#define&t;altsetting_to_usb_interface_cache(a) &bslash;&n;&t;&t;container_of(a, struct usb_interface_cache, altsetting[0])
-multiline_comment|/**&n; * struct usb_host_config - representation of a device&squot;s configuration&n; * @desc: the device&squot;s configuration descriptor.&n; * @interface: array of pointers to usb_interface structures, one for each&n; *&t;interface in the configuration.  The number of interfaces is stored&n; *&t;in desc.bNumInterfaces.  These pointers are valid only while the&n; *&t;the configuration is active.&n; * @intf_cache: array of pointers to usb_interface_cache structures, one&n; *&t;for each interface in the configuration.  These structures exist&n; *&t;for the entire life of the device.&n; * @extra: pointer to buffer containing all extra descriptors associated&n; *&t;with this configuration (those preceding the first interface&n; *&t;descriptor).&n; * @extralen: length of the extra descriptors buffer.&n; *&n; * USB devices may have multiple configurations, but only one can be active&n; * at any time.  Each encapsulates a different operational environment;&n; * for example, a dual-speed device would have separate configurations for&n; * full-speed and high-speed operation.  The number of configurations&n; * available is stored in the device descriptor as bNumConfigurations.&n; *&n; * A configuration can contain multiple interfaces.  Each corresponds to&n; * a different function of the USB device, and all are available whenever&n; * the configuration is active.  The USB standard says that interfaces&n; * are supposed to be numbered from 0 to desc.bNumInterfaces-1, but a lot&n; * of devices get this wrong.  In addition, the interface array is not&n; * guaranteed to be sorted in numerical order.  Use usb_ifnum_to_if() to&n; * look up an interface entry based on its number.&n; *&n; * Device drivers should not attempt to activate configurations.  The choice&n; * of which configuration to install is a policy decision based on such&n; * considerations as available power, functionality provided, and the user&squot;s&n; * desires (expressed through hotplug scripts).  However, drivers can call&n; * usb_reset_configuration() to reinitialize the current configuration and&n; * all its interfaces.&n; */
+multiline_comment|/**&n; * struct usb_host_config - representation of a device&squot;s configuration&n; * @desc: the device&squot;s configuration descriptor.&n; * @string: pointer to the cached version of the iConfiguration string, if&n; *&t;present for this configuration.&n; * @interface: array of pointers to usb_interface structures, one for each&n; *&t;interface in the configuration.  The number of interfaces is stored&n; *&t;in desc.bNumInterfaces.  These pointers are valid only while the&n; *&t;the configuration is active.&n; * @intf_cache: array of pointers to usb_interface_cache structures, one&n; *&t;for each interface in the configuration.  These structures exist&n; *&t;for the entire life of the device.&n; * @extra: pointer to buffer containing all extra descriptors associated&n; *&t;with this configuration (those preceding the first interface&n; *&t;descriptor).&n; * @extralen: length of the extra descriptors buffer.&n; *&n; * USB devices may have multiple configurations, but only one can be active&n; * at any time.  Each encapsulates a different operational environment;&n; * for example, a dual-speed device would have separate configurations for&n; * full-speed and high-speed operation.  The number of configurations&n; * available is stored in the device descriptor as bNumConfigurations.&n; *&n; * A configuration can contain multiple interfaces.  Each corresponds to&n; * a different function of the USB device, and all are available whenever&n; * the configuration is active.  The USB standard says that interfaces&n; * are supposed to be numbered from 0 to desc.bNumInterfaces-1, but a lot&n; * of devices get this wrong.  In addition, the interface array is not&n; * guaranteed to be sorted in numerical order.  Use usb_ifnum_to_if() to&n; * look up an interface entry based on its number.&n; *&n; * Device drivers should not attempt to activate configurations.  The choice&n; * of which configuration to install is a policy decision based on such&n; * considerations as available power, functionality provided, and the user&squot;s&n; * desires (expressed through hotplug scripts).  However, drivers can call&n; * usb_reset_configuration() to reinitialize the current configuration and&n; * all its interfaces.&n; */
 DECL|struct|usb_host_config
 r_struct
 id|usb_host_config
@@ -272,6 +278,11 @@ DECL|member|desc
 r_struct
 id|usb_config_descriptor
 id|desc
+suffix:semicolon
+DECL|member|string
+r_char
+op_star
+id|string
 suffix:semicolon
 multiline_comment|/* the interfaces associated with this configuration,&n;&t; * stored in no particular order */
 DECL|member|interface
@@ -479,6 +490,20 @@ id|bus
 )paren
 suffix:semicolon
 multiline_comment|/* function to destroy this bus&squot;s memory */
+macro_line|#if defined(CONFIG_USB_MON) || defined(CONFIG_USB_MON_MODULE)
+DECL|member|mon_bus
+r_struct
+id|mon_bus
+op_star
+id|mon_bus
+suffix:semicolon
+multiline_comment|/* non-null when associated */
+DECL|member|monitored
+r_int
+id|monitored
+suffix:semicolon
+multiline_comment|/* non-zero when monitored */
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|to_usb_bus
@@ -626,6 +651,22 @@ r_int
 id|string_langid
 suffix:semicolon
 multiline_comment|/* language ID for strings */
+DECL|member|product
+r_char
+op_star
+id|product
+suffix:semicolon
+DECL|member|manufacturer
+r_char
+op_star
+id|manufacturer
+suffix:semicolon
+DECL|member|serial
+r_char
+op_star
+id|serial
+suffix:semicolon
+multiline_comment|/* static strings from the device */
 DECL|member|filelist
 r_struct
 id|list_head
@@ -2093,11 +2134,11 @@ r_int
 id|alternate
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * timeouts, in seconds, used for sending/receiving control messages&n; * they typically complete within a few frames (msec) after they&squot;re issued&n; * USB identifies 5 second timeouts, maybe more in a few cases, and a few&n; * slow devices (like some MGE Ellipse UPSes) actually push that limit.&n; */
+multiline_comment|/*&n; * timeouts, in milliseconds, used for sending/receiving control messages&n; * they typically complete within a few frames (msec) after they&squot;re issued&n; * USB identifies 5 second timeouts, maybe more in a few cases, and a few&n; * slow devices (like some MGE Ellipse UPSes) actually push that limit.&n; */
 DECL|macro|USB_CTRL_GET_TIMEOUT
-mdefine_line|#define USB_CTRL_GET_TIMEOUT&t;5
+mdefine_line|#define USB_CTRL_GET_TIMEOUT&t;5000
 DECL|macro|USB_CTRL_SET_TIMEOUT
-mdefine_line|#define USB_CTRL_SET_TIMEOUT&t;5
+mdefine_line|#define USB_CTRL_SET_TIMEOUT&t;5000
 multiline_comment|/**&n; * struct usb_sg_request - support for scatter/gather I/O&n; * @status: zero indicates success, else negative errno&n; * @bytes: counts bytes transferred.&n; *&n; * These requests are initialized using usb_sg_init(), and then are used&n; * as request handles passed to usb_sg_wait() or usb_sg_cancel().  Most&n; * members of the request object aren&squot;t for driver access.&n; *&n; * The status and bytecount values are valid only after usb_sg_wait()&n; * returns.  If the status is zero, then the bytecount matches the total&n; * from the request.&n; *&n; * After an error completion, drivers may need to clear a halt condition&n; * on the endpoint.&n; */
 DECL|struct|usb_sg_request
 r_struct

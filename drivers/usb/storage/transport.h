@@ -15,7 +15,7 @@ DECL|macro|US_PR_CB
 mdefine_line|#define US_PR_CB&t;0x01&t;&t;/* Control/Bulk w/o interrupt */
 DECL|macro|US_PR_BULK
 mdefine_line|#define US_PR_BULK&t;0x50&t;&t;/* bulk only */
-macro_line|#ifdef CONFIG_USB_STORAGE_HP8200e
+macro_line|#ifdef CONFIG_USB_STORAGE_USBAT
 DECL|macro|US_PR_SCM_ATAPI
 mdefine_line|#define US_PR_SCM_ATAPI&t;0x80&t;&t;/* SCM-ATAPI bridge */
 macro_line|#endif
@@ -135,9 +135,6 @@ DECL|macro|US_BULK_CS_WRAP_LEN
 mdefine_line|#define US_BULK_CS_WRAP_LEN&t;13
 DECL|macro|US_BULK_CS_SIGN
 mdefine_line|#define US_BULK_CS_SIGN&t;&t;0x53425355&t;/* spells out &squot;USBS&squot; */
-multiline_comment|/* This is for Olympus Camedia digital cameras */
-DECL|macro|US_BULK_CS_OLYMPUS_SIGN
-mdefine_line|#define US_BULK_CS_OLYMPUS_SIGN&t;&t;0x55425355&t;/* spells out &squot;USBU&squot; */
 DECL|macro|US_BULK_STAT_OK
 mdefine_line|#define US_BULK_STAT_OK&t;&t;0
 DECL|macro|US_BULK_STAT_FAIL

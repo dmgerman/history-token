@@ -112,6 +112,20 @@ c_func
 (paren
 id|FTDI_VID
 comma
+id|FTDI_8U232AM_ALT_ALT_PID
+comma
+l_int|0
+comma
+l_int|0x3ff
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE_VER
+c_func
+(paren
+id|FTDI_VID
+comma
 id|FTDI_RELAIS_PID
 comma
 l_int|0
@@ -1225,6 +1239,20 @@ c_func
 id|FTDI_VID
 comma
 id|FTDI_8U232AM_ALT_PID
+comma
+l_int|0x400
+comma
+l_int|0xffff
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE_VER
+c_func
+(paren
+id|FTDI_VID
+comma
+id|FTDI_8U232AM_ALT_ALT_PID
 comma
 l_int|0x400
 comma
@@ -2849,6 +2877,16 @@ c_func
 id|FTDI_VID
 comma
 id|FTDI_8U232AM_ALT_PID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|FTDI_VID
+comma
+id|FTDI_8U232AM_ALT_ALT_PID
 )paren
 )brace
 comma
@@ -5084,7 +5122,7 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|WDR_TIMEOUT
-mdefine_line|#define WDR_TIMEOUT (HZ * 5 ) /* default urb timeout */
+mdefine_line|#define WDR_TIMEOUT 5000 /* default urb timeout */
 multiline_comment|/* High and low are for DTR, RTS etc etc */
 DECL|macro|HIGH
 mdefine_line|#define HIGH 1

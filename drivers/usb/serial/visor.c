@@ -3731,9 +3731,7 @@ id|data
 comma
 l_int|1
 comma
-id|HZ
-op_star
-l_int|3
+l_int|3000
 )paren
 suffix:semicolon
 r_if
@@ -3815,9 +3813,7 @@ id|data
 comma
 l_int|1
 comma
-id|HZ
-op_star
-l_int|3
+l_int|3000
 )paren
 suffix:semicolon
 r_if

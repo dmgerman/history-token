@@ -633,11 +633,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|msecs_to_jiffies
-c_func
-(paren
 id|CTRL_TIMEOUT
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -702,11 +698,7 @@ id|data
 comma
 id|count
 comma
-id|msecs_to_jiffies
-c_func
-(paren
 id|CTRL_TIMEOUT
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2795,11 +2787,7 @@ id|wraplen
 comma
 l_int|NULL
 comma
-id|msecs_to_jiffies
-c_func
-(paren
 id|TRANSMIT_TIMEOUT
-)paren
 )paren
 )paren
 id|stir-&gt;stats.tx_errors

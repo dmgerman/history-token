@@ -478,7 +478,7 @@ id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
 multiline_comment|/* set up my own style of waitqueue */
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -537,7 +537,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -710,6 +710,10 @@ op_star
 id|sem
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|rwsemtrace
 c_func
 (paren
@@ -718,11 +722,13 @@ comma
 l_string|&quot;Entering rwsem_wake&quot;
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|sem-&gt;wait_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* do nothing if list empty */
@@ -747,11 +753,13 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|sem-&gt;wait_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|rwsemtrace
@@ -781,6 +789,10 @@ op_star
 id|sem
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|rwsemtrace
 c_func
 (paren
@@ -789,11 +801,13 @@ comma
 l_string|&quot;Entering rwsem_downgrade_wake&quot;
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|sem-&gt;wait_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* do nothing if list empty */
@@ -818,11 +832,13 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|sem-&gt;wait_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|rwsemtrace

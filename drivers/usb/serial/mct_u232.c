@@ -411,7 +411,7 @@ multiline_comment|/* Modem Status Register */
 suffix:semicolon
 multiline_comment|/*&n; * Handle vendor specific USB requests&n; */
 DECL|macro|WDR_TIMEOUT
-mdefine_line|#define WDR_TIMEOUT (HZ * 5 ) /* default urb timeout */
+mdefine_line|#define WDR_TIMEOUT 5000 /* default urb timeout */
 multiline_comment|/*&n; * Later day 2.6.0-test kernels have new baud rates like B230400 which&n; * we do not know how to support. We ignore them for the moment.&n; * XXX Rate-limit the error message, it&squot;s user triggerable.&n; */
 DECL|function|mct_u232_calculate_baud_rate
 r_static

@@ -439,7 +439,7 @@ id|u32
 comma
 id|B2C2_WAIT_FOR_OPERATION_RDW
 op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -529,7 +529,7 @@ id|u32
 comma
 id|B2C2_WAIT_FOR_OPERATION_RDW
 op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if
@@ -722,7 +722,7 @@ id|buflen
 comma
 id|nWaitTime
 op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_return
@@ -903,7 +903,7 @@ id|buflen
 comma
 id|nWaitTime
 op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_return
@@ -1004,7 +1004,7 @@ id|buflen
 comma
 id|nWaitTime
 op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_return

@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;linux/usb_cdc.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &quot;cdc-acm.h&quot;
@@ -114,9 +115,7 @@ id|buf
 comma
 id|len
 comma
-id|HZ
-op_star
-l_int|5
+l_int|5000
 )paren
 suffix:semicolon
 id|dbg
@@ -146,11 +145,11 @@ suffix:semicolon
 )brace
 multiline_comment|/* devices aren&squot;t required to support these requests.&n; * the cdc acm descriptor tells whether they do...&n; */
 DECL|macro|acm_set_control
-mdefine_line|#define acm_set_control(acm, control)&t;acm_ctrl_msg(acm, ACM_REQ_SET_CONTROL, control, NULL, 0)
+mdefine_line|#define acm_set_control(acm, control) &bslash;&n;&t;acm_ctrl_msg(acm, USB_CDC_REQ_SET_CONTROL_LINE_STATE, control, NULL, 0)
 DECL|macro|acm_set_line
-mdefine_line|#define acm_set_line(acm, line)&t;&t;acm_ctrl_msg(acm, ACM_REQ_SET_LINE, 0, line, sizeof(struct acm_line))
+mdefine_line|#define acm_set_line(acm, line) &bslash;&n;&t;acm_ctrl_msg(acm, USB_CDC_REQ_SET_LINE_CODING, 0, line, sizeof *(line))
 DECL|macro|acm_send_break
-mdefine_line|#define acm_send_break(acm, ms)&t;&t;acm_ctrl_msg(acm, ACM_REQ_SEND_BREAK, ms, NULL, 0)
+mdefine_line|#define acm_send_break(acm, ms) &bslash;&n;&t;acm_ctrl_msg(acm, USB_CDC_REQ_SEND_BREAK, ms, NULL, 0)
 multiline_comment|/*&n; * Interrupt handlers for various ACM device responses&n; */
 multiline_comment|/* control interface reports status changes with &quot;interrupt&quot; transfers */
 DECL|function|acm_ctrl_irq
@@ -178,7 +177,7 @@ op_assign
 id|urb-&gt;context
 suffix:semicolon
 r_struct
-id|usb_ctrlrequest
+id|usb_cdc_notification
 op_star
 id|dr
 op_assign
@@ -277,11 +276,11 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dr-&gt;bRequest
+id|dr-&gt;bNotificationType
 )paren
 (brace
 r_case
-id|ACM_IRQ_NETWORK
+id|USB_CDC_NOTIFY_NETWORK_CONNECTION
 suffix:colon
 id|dbg
 c_func
@@ -299,7 +298,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACM_IRQ_LINE_STATE
+id|USB_CDC_NOTIFY_SERIAL_STATE
 suffix:colon
 id|newctrl
 op_assign
@@ -428,9 +427,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
-l_string|&quot;unknown control event received: request %d index %d len %d data0 %d data1 %d&quot;
+l_string|&quot;unknown notification %d received: index %d len %d data0 %d data1 %d&quot;
 comma
-id|dr-&gt;bRequest
+id|dr-&gt;bNotificationType
 comma
 id|dr-&gt;wIndex
 comma
@@ -2056,7 +2055,7 @@ op_assign
 id|tty-&gt;termios
 suffix:semicolon
 r_struct
-id|acm_line
+id|usb_cdc_line_coding
 id|newline
 suffix:semicolon
 r_int
@@ -2076,7 +2075,7 @@ id|acm
 )paren
 r_return
 suffix:semicolon
-id|newline.speed
+id|newline.dwDTERate
 op_assign
 id|cpu_to_le32p
 c_func
@@ -2104,7 +2103,7 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|newline.stopbits
+id|newline.bCharFormat
 op_assign
 id|termios-&gt;c_cflag
 op_amp
@@ -2115,7 +2114,7 @@ l_int|2
 suffix:colon
 l_int|0
 suffix:semicolon
-id|newline.parity
+id|newline.bParityType
 op_assign
 id|termios-&gt;c_cflag
 op_amp
@@ -2146,7 +2145,7 @@ l_int|0
 suffix:colon
 l_int|0
 suffix:semicolon
-id|newline.databits
+id|newline.bDataBits
 op_assign
 id|acm_tty_size
 (braket
@@ -2175,12 +2174,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|newline.speed
+id|newline.dwDTERate
 )paren
 (brace
-id|newline.speed
+id|newline.dwDTERate
 op_assign
-id|acm-&gt;line.speed
+id|acm-&gt;line.dwDTERate
 suffix:semicolon
 id|newctrl
 op_and_assign
@@ -2223,10 +2222,7 @@ op_amp
 id|newline
 comma
 r_sizeof
-(paren
-r_struct
-id|acm_line
-)paren
+id|newline
 )paren
 )paren
 (brace
@@ -2240,10 +2236,7 @@ op_amp
 id|newline
 comma
 r_sizeof
-(paren
-r_struct
-id|acm_line
-)paren
+id|newline
 )paren
 suffix:semicolon
 id|dbg
@@ -2251,13 +2244,17 @@ c_func
 (paren
 l_string|&quot;set line: %d %d %d %d&quot;
 comma
-id|newline.speed
+id|le32_to_cpu
+c_func
+(paren
+id|newline.dwDTERate
+)paren
 comma
-id|newline.stopbits
+id|newline.bCharFormat
 comma
-id|newline.parity
+id|newline.bParityType
 comma
-id|newline.databits
+id|newline.bDataBits
 )paren
 suffix:semicolon
 id|acm_set_line
@@ -2290,7 +2287,7 @@ id|id
 )paren
 (brace
 r_struct
-id|union_desc
+id|usb_cdc_union_desc
 op_star
 id|union_header
 op_assign
@@ -2529,7 +2526,7 @@ l_int|2
 )paren
 (brace
 r_case
-id|CDC_UNION_TYPE
+id|USB_CDC_UNION_TYPE
 suffix:colon
 multiline_comment|/* we&squot;ve found it */
 r_if
@@ -2552,7 +2549,7 @@ id|union_header
 op_assign
 (paren
 r_struct
-id|union_desc
+id|usb_cdc_union_desc
 op_star
 )paren
 id|buffer
@@ -2560,21 +2557,21 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CDC_COUNTRY_TYPE
+id|USB_CDC_COUNTRY_TYPE
 suffix:colon
 multiline_comment|/* maybe somehow export */
 r_break
 suffix:semicolon
 multiline_comment|/* for now we ignore it */
 r_case
-id|CDC_HEADER_TYPE
+id|USB_CDC_HEADER_TYPE
 suffix:colon
 multiline_comment|/* maybe check version */
 r_break
 suffix:semicolon
 multiline_comment|/* for now we ignore it */
 r_case
-id|CDC_AC_MANAGEMENT_TYPE
+id|USB_CDC_ACM_TYPE
 suffix:colon
 id|ac_management_function
 op_assign
@@ -2586,7 +2583,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CDC_CALL_MANAGEMENT_TYPE
+id|USB_CDC_CALL_MANAGEMENT_TYPE
 suffix:colon
 id|call_management_function
 op_assign
@@ -3454,7 +3451,7 @@ comma
 id|acm-&gt;ctrlout
 )paren
 suffix:semicolon
-id|acm-&gt;line.speed
+id|acm-&gt;line.dwDTERate
 op_assign
 id|cpu_to_le32
 c_func
@@ -3462,7 +3459,7 @@ c_func
 l_int|9600
 )paren
 suffix:semicolon
-id|acm-&gt;line.databits
+id|acm-&gt;line.bDataBits
 op_assign
 l_int|8
 suffix:semicolon
@@ -3837,9 +3834,9 @@ c_func
 (paren
 id|USB_CLASS_COMM
 comma
-l_int|2
+id|USB_CDC_SUBCLASS_ACM
 comma
-l_int|1
+id|USB_CDC_ACM_PROTO_AT_V25TER
 )paren
 )brace
 comma
@@ -3849,9 +3846,9 @@ c_func
 (paren
 id|USB_CLASS_COMM
 comma
-l_int|2
+id|USB_CDC_SUBCLASS_ACM
 comma
-l_int|2
+id|USB_CDC_ACM_PROTO_AT_PCCA101
 )paren
 )brace
 comma
@@ -3861,9 +3858,9 @@ c_func
 (paren
 id|USB_CLASS_COMM
 comma
-l_int|2
+id|USB_CDC_SUBCLASS_ACM
 comma
-l_int|3
+id|USB_CDC_ACM_PROTO_AT_PCCA101_WAKE
 )paren
 )brace
 comma
@@ -3873,9 +3870,9 @@ c_func
 (paren
 id|USB_CLASS_COMM
 comma
-l_int|2
+id|USB_CDC_SUBCLASS_ACM
 comma
-l_int|4
+id|USB_CDC_ACM_PROTO_AT_GSM
 )paren
 )brace
 comma
@@ -3885,9 +3882,9 @@ c_func
 (paren
 id|USB_CLASS_COMM
 comma
-l_int|2
+id|USB_CDC_SUBCLASS_ACM
 comma
-l_int|5
+id|USB_CDC_ACM_PROTO_AT_3G
 )paren
 )brace
 comma
@@ -3897,13 +3894,13 @@ c_func
 (paren
 id|USB_CLASS_COMM
 comma
-l_int|2
+id|USB_CDC_SUBCLASS_ACM
 comma
-l_int|6
+id|USB_CDC_ACM_PROTO_AT_CDMA
 )paren
 )brace
 comma
-multiline_comment|/* NOTE:  COMM/2/0xff is likely MSFT RNDIS ... NOT a modem!! */
+multiline_comment|/* NOTE:  COMM/ACM/0xff is likely MSFT RNDIS ... NOT a modem!! */
 (brace
 )brace
 )brace

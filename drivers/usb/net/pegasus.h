@@ -246,6 +246,11 @@ r_struct
 id|tasklet_struct
 id|rx_tl
 suffix:semicolon
+DECL|member|carrier_check
+r_struct
+id|work_struct
+id|carrier_check
+suffix:semicolon
 DECL|member|ctrl_urb
 DECL|member|rx_urb
 DECL|member|tx_urb

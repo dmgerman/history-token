@@ -51,9 +51,7 @@ id|data
 comma
 id|len
 comma
-l_int|5
-op_star
-id|HZ
+l_int|5000
 )paren
 suffix:semicolon
 )brace

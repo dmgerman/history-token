@@ -799,7 +799,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|5125
+l_int|5512
 suffix:colon
 id|newrate
 op_assign

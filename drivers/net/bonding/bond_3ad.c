@@ -7463,6 +7463,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * bond_3ad_rx_indication - handle a received frame&n; * @lacpdu: received lacpdu&n; * @slave: slave struct to work on&n; * @length: length of the data received&n; *&n; * It is assumed that frames that were sent on this NIC don&squot;t returned as new&n; * received frames (loopback). Since only the payload is given to this&n; * function, it check for loopback.&n; */
 DECL|function|bond_3ad_rx_indication
+r_static
 r_void
 id|bond_3ad_rx_indication
 c_func

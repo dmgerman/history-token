@@ -5635,11 +5635,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_div
-l_int|10
-op_plus
-l_int|1
+l_int|100
 )paren
 suffix:semicolon
 r_if

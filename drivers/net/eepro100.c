@@ -447,33 +447,6 @@ l_string|&quot;maximum number of filtered multicast addresses&quot;
 suffix:semicolon
 DECL|macro|RUN_AT
 mdefine_line|#define RUN_AT(x) (jiffies + (x))
-multiline_comment|/* ACPI power states don&squot;t universally work (yet) */
-macro_line|#ifndef CONFIG_PM
-DECL|macro|pci_set_power_state
-macro_line|#undef pci_set_power_state
-DECL|macro|pci_set_power_state
-mdefine_line|#define pci_set_power_state null_set_power_state
-DECL|function|null_set_power_state
-r_static
-r_inline
-r_int
-id|null_set_power_state
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-r_int
-id|state
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_PM */
 DECL|macro|netdevice_start
 mdefine_line|#define netdevice_start(dev)
 DECL|macro|netdevice_stop

@@ -37,6 +37,7 @@ op_assign
 id|txn_alloc_irq
 c_func
 (paren
+id|GSC_EIM_WIDTH
 )paren
 suffix:semicolon
 r_if
@@ -71,8 +72,6 @@ id|txn_alloc_data
 c_func
 (paren
 id|irq
-comma
-id|GSC_EIM_WIDTH
 )paren
 suffix:semicolon
 id|i-&gt;irq
@@ -149,8 +148,6 @@ id|txn_alloc_data
 c_func
 (paren
 id|irq
-comma
-id|GSC_EIM_WIDTH
 )paren
 suffix:semicolon
 id|i-&gt;irq

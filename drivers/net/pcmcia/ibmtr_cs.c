@@ -1161,9 +1161,6 @@ l_int|12
 suffix:semicolon
 id|ti-&gt;sram_virt
 op_assign
-(paren
-id|u_long
-)paren
 id|ioremap
 c_func
 (paren
@@ -1171,6 +1168,10 @@ id|req.Base
 comma
 id|req.Size
 )paren
+suffix:semicolon
+id|ti-&gt;sram_phys
+op_assign
+id|req.Base
 suffix:semicolon
 id|CS_CHECK
 c_func
@@ -1434,10 +1435,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|ti-&gt;mmio
 )paren
 suffix:semicolon
@@ -1541,7 +1538,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|priv-&gt;sram_virt
+id|priv-&gt;sram_phys
 op_or_assign
 l_int|1
 suffix:semicolon

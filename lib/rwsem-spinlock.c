@@ -451,7 +451,7 @@ comma
 l_string|&quot;Entering __down_read&quot;
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -477,7 +477,7 @@ multiline_comment|/* granted */
 id|sem-&gt;activity
 op_increment
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -526,7 +526,7 @@ id|sem-&gt;wait_list
 )paren
 suffix:semicolon
 multiline_comment|/* we don&squot;t need to touch the semaphore struct anymore */
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -592,6 +592,10 @@ id|sem
 )paren
 (brace
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
 id|ret
 op_assign
 l_int|0
@@ -604,11 +608,13 @@ comma
 l_string|&quot;Entering __down_read_trylock&quot;
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|sem-&gt;wait_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -635,11 +641,13 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|sem-&gt;wait_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|rwsemtrace
@@ -685,7 +693,7 @@ comma
 l_string|&quot;Entering __down_write&quot;
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -713,7 +721,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -762,7 +770,7 @@ id|sem-&gt;wait_list
 )paren
 suffix:semicolon
 multiline_comment|/* we don&squot;t need to touch the semaphore struct anymore */
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -828,6 +836,10 @@ id|sem
 )paren
 (brace
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
 id|ret
 op_assign
 l_int|0
@@ -840,11 +852,13 @@ comma
 l_string|&quot;Entering __down_write_trylock&quot;
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|sem-&gt;wait_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -873,11 +887,13 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|sem-&gt;wait_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|rwsemtrace
@@ -905,6 +921,10 @@ op_star
 id|sem
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|rwsemtrace
 c_func
 (paren
@@ -913,11 +933,13 @@ comma
 l_string|&quot;Entering __up_read&quot;
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|sem-&gt;wait_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -944,11 +966,13 @@ c_func
 id|sem
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|sem-&gt;wait_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|rwsemtrace
@@ -973,6 +997,10 @@ op_star
 id|sem
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|rwsemtrace
 c_func
 (paren
@@ -981,11 +1009,13 @@ comma
 l_string|&quot;Entering __up_write&quot;
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|sem-&gt;wait_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|sem-&gt;activity
@@ -1013,11 +1043,13 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|sem-&gt;wait_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|rwsemtrace
@@ -1042,6 +1074,10 @@ op_star
 id|sem
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|rwsemtrace
 c_func
 (paren
@@ -1050,11 +1086,13 @@ comma
 l_string|&quot;Entering __downgrade_write&quot;
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|sem-&gt;wait_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|sem-&gt;activity
@@ -1082,11 +1120,13 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|sem-&gt;wait_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|rwsemtrace

@@ -31,6 +31,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef SB1000_DEBUG
 DECL|variable|sb1000_debug
+r_static
 r_int
 id|sb1000_debug
 op_assign
@@ -38,6 +39,7 @@ id|SB1000_DEBUG
 suffix:semicolon
 macro_line|#else
 DECL|variable|sb1000_debug
+r_static
 r_int
 id|sb1000_debug
 op_assign
@@ -503,7 +505,6 @@ id|name
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|sb1000_get_firmware_version
 c_func
@@ -530,7 +531,6 @@ id|do_end
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|sb1000_get_frequency
 c_func
@@ -552,7 +552,6 @@ id|frequency
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|sb1000_set_frequency
 c_func
@@ -573,7 +572,6 @@ id|frequency
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|sb1000_get_PIDs
 c_func
@@ -596,7 +594,6 @@ id|PID
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|sb1000_set_PIDs
 c_func
@@ -1206,6 +1203,7 @@ suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * SB1000 hardware routines to be used during open/configuration phases&n; */
 DECL|variable|TimeOutJiffies
+r_static
 r_const
 r_int
 id|TimeOutJiffies
@@ -2004,6 +2002,7 @@ suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * SB1000 hardware routines to be used during frame rx interrupt&n; */
 DECL|variable|Sb1000TimeOutJiffies
+r_static
 r_const
 r_int
 id|Sb1000TimeOutJiffies
@@ -3288,7 +3287,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* get SB1000 firmware version */
 r_static
-r_inline
 r_int
 DECL|function|sb1000_get_firmware_version
 id|sb1000_get_firmware_version
@@ -3442,7 +3440,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* get SB1000 frequency */
 r_static
-r_inline
 r_int
 DECL|function|sb1000_get_frequency
 id|sb1000_get_frequency
@@ -3587,7 +3584,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* set SB1000 frequency */
 r_static
-r_inline
 r_int
 DECL|function|sb1000_set_frequency
 id|sb1000_set_frequency
@@ -3768,7 +3764,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* get SB1000 PIDs */
 r_static
-r_inline
 r_int
 DECL|function|sb1000_get_PIDs
 id|sb1000_get_PIDs
@@ -4081,7 +4076,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* set SB1000 PIDs */
 r_static
-r_inline
 r_int
 DECL|function|sb1000_set_PIDs
 id|sb1000_set_PIDs
