@@ -59,6 +59,7 @@ id|rtc_port
 suffix:semicolon
 DECL|member|max_asn
 r_int
+r_int
 id|max_asn
 suffix:semicolon
 DECL|member|max_isa_dma_address
