@@ -13,9 +13,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef __sparc__
 macro_line|#  include &lt;asm/irq.h&gt;
 macro_line|#endif
+macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
-macro_line|#include &quot;../scsi.h&quot;&t;&t;/* XXX: DID_* */
 macro_line|#ifndef bzero
 DECL|macro|bzero
 mdefine_line|#define bzero(d, n)&t;memset((d), 0, (n))
@@ -281,25 +282,15 @@ DECL|macro|CAM_REQ_TOO_BIG
 mdefine_line|#define&t;CAM_REQ_TOO_BIG&t;&t;DID_ERROR
 DECL|macro|CAM_RESRC_UNAVAIL
 mdefine_line|#define&t;CAM_RESRC_UNAVAIL&t;DID_ERROR
-multiline_comment|/*&n; *  Remap SCSI data direction values.&n; */
-macro_line|#ifndef&t;SCSI_DATA_UNKNOWN
-DECL|macro|SCSI_DATA_UNKNOWN
-mdefine_line|#define&t;SCSI_DATA_UNKNOWN&t;0
-DECL|macro|SCSI_DATA_WRITE
-mdefine_line|#define&t;SCSI_DATA_WRITE&t;&t;1
-DECL|macro|SCSI_DATA_READ
-mdefine_line|#define&t;SCSI_DATA_READ&t;&t;2
-DECL|macro|SCSI_DATA_NONE
-mdefine_line|#define&t;SCSI_DATA_NONE&t;&t;3
-macro_line|#endif
+multiline_comment|/*&n; *  Remap data direction values.&n; */
 DECL|macro|CAM_DIR_NONE
-mdefine_line|#define CAM_DIR_NONE&t;&t;SCSI_DATA_NONE
+mdefine_line|#define CAM_DIR_NONE&t;&t;DMA_NONE
 DECL|macro|CAM_DIR_IN
-mdefine_line|#define CAM_DIR_IN&t;&t;SCSI_DATA_READ
+mdefine_line|#define CAM_DIR_IN&t;&t;DMA_FROM_DEVICE
 DECL|macro|CAM_DIR_OUT
-mdefine_line|#define CAM_DIR_OUT&t;&t;SCSI_DATA_WRITE
+mdefine_line|#define CAM_DIR_OUT&t;&t;DMA_TO_DEVICE
 DECL|macro|CAM_DIR_UNKNOWN
-mdefine_line|#define CAM_DIR_UNKNOWN&t;&t;SCSI_DATA_UNKNOWN
+mdefine_line|#define CAM_DIR_UNKNOWN&t;&t;DMA_BIDIRECTIONAL
 multiline_comment|/*&n; *  These ones are used as return code from &n; *  error recovery handlers under Linux.&n; */
 DECL|macro|SCSI_SUCCESS
 mdefine_line|#define SCSI_SUCCESS&t;SUCCESS
