@@ -7671,14 +7671,6 @@ id|use_clustering
 op_assign
 id|ENABLE_CLUSTERING
 comma
-multiline_comment|/* Sparc32&squot;s iommu code cannot handle highmem pages yet. */
-macro_line|#ifdef CONFIG_SPARC64
-dot
-id|highmem_io
-op_assign
-l_int|1
-comma
-macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;

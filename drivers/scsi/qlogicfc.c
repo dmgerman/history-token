@@ -10635,11 +10635,6 @@ id|use_clustering
 op_assign
 id|ENABLE_CLUSTERING
 comma
-dot
-id|highmem_io
-op_assign
-l_int|1
-comma
 )brace
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;

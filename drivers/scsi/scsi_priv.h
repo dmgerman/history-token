@@ -365,6 +365,26 @@ multiline_comment|/* scsi_proc.c */
 macro_line|#ifdef CONFIG_PROC_FS
 r_extern
 r_void
+id|scsi_proc_hostdir_add
+c_func
+(paren
+r_struct
+id|scsi_host_template
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_proc_hostdir_rm
+c_func
+(paren
+r_struct
+id|scsi_host_template
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|scsi_proc_host_add
 c_func
 (paren
@@ -400,6 +420,10 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#else
+DECL|macro|scsi_proc_hostdir_add
+macro_line|# define scsi_proc_hostdir_add(sht)&t;do { } while (0)
+DECL|macro|scsi_proc_hostdir_rm
+macro_line|# define scsi_proc_hostdir_rm(sht)&t;do { } while (0)
 DECL|macro|scsi_proc_host_add
 macro_line|# define scsi_proc_host_add(shost)&t;do { } while (0)
 DECL|macro|scsi_proc_host_rm
@@ -463,16 +487,6 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|scsi_device_unregister
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|scsi_sysfs_init_host
 c_func
 (paren
@@ -525,6 +539,11 @@ r_extern
 r_struct
 r_class
 id|shost_class
+suffix:semicolon
+r_extern
+r_struct
+r_class
+id|sdev_class
 suffix:semicolon
 r_extern
 r_struct

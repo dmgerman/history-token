@@ -357,11 +357,11 @@ c_func
 id|scsi_remove_device
 )paren
 suffix:semicolon
-DECL|variable|scsi_set_device_offline
+DECL|variable|scsi_device_cancel
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|scsi_set_device_offline
+id|scsi_device_cancel
 )paren
 suffix:semicolon
 DECL|variable|__scsi_mode_sense

@@ -3,16 +3,6 @@ macro_line|#ifndef&t;_IO_HBA_QLA1280_H&t;/* wrapper symbol for kernel use */
 DECL|macro|_IO_HBA_QLA1280_H
 mdefine_line|#define&t;_IO_HBA_QLA1280_H&t;/* subject to change without notice */
 macro_line|#ifndef HOSTS_C&t;&t;&t;/* included in hosts.c */
-multiline_comment|/*&n; * Enable define statement to ignore Data Underrun Errors,&n; * remove define statement to enable detection.&n; */
-multiline_comment|/* #define  DATA_UNDERRUN_ERROR_DISABLE */
-macro_line|#ifndef TRUE
-DECL|macro|TRUE
-mdefine_line|#define TRUE 1
-macro_line|#endif
-macro_line|#ifndef FALSE
-DECL|macro|FALSE
-mdefine_line|#define FALSE 0
-macro_line|#endif
 multiline_comment|/*&n; * Data bit definitions.&n; */
 DECL|macro|BIT_0
 mdefine_line|#define BIT_0&t;0x1
@@ -78,59 +68,17 @@ DECL|macro|BIT_30
 mdefine_line|#define BIT_30&t;0x40000000
 DECL|macro|BIT_31
 mdefine_line|#define BIT_31&t;0x80000000
-multiline_comment|/*&n; *  Local Macro Definitions.&n; */
-macro_line|#if defined(QL_DEBUG_LEVEL_1) || defined(QL_DEBUG_LEVEL_2) || &bslash;&n;    defined(QL_DEBUG_LEVEL_3) || defined(QL_DEBUG_LEVEL_4) || &bslash;&n;    defined(QL_DEBUG_LEVEL_5) || defined(QL_DEBUG_LEVEL_6) || &bslash;&n;    defined(QL_DEBUG_LEVEL_7)
-DECL|macro|QL_DEBUG_ROUTINES
-mdefine_line|#define QL_DEBUG_ROUTINES
-macro_line|#endif
-multiline_comment|/*&n; * I/O port macros&n;*/
-multiline_comment|/* #define MEMORY_MAPPED_IO */
-multiline_comment|/* Enable memory mapped I/O */
-DECL|macro|MEMORY_MAPPED_IO
-macro_line|#undef MEMORY_MAPPED_IO&t;&t;/* Disable memory mapped I/O */
-macro_line|#ifdef QL_DEBUG_LEVEL_1
-DECL|macro|RD_REG_BYTE
-mdefine_line|#define RD_REG_BYTE(addr)&t;&t;qla1280_getbyte((u8 *)addr)
-DECL|macro|RD_REG_WORD
-mdefine_line|#define RD_REG_WORD(addr)&t;&t;qla1280_getword((u16 *)addr)
-DECL|macro|RD_REG_DWORD
-mdefine_line|#define RD_REG_DWORD(addr)&t;&t;qla1280_getdword((u32 *)addr)
-DECL|macro|WRT_REG_BYTE
-mdefine_line|#define WRT_REG_BYTE(addr, data)&t;qla1280_putbyte((u8 *)addr, data)
-DECL|macro|WRT_REG_WORD
-mdefine_line|#define WRT_REG_WORD(addr, data)&t;qla1280_putword((u16 *)addr, data)
-DECL|macro|WRT_REG_DWORD
-mdefine_line|#define WRT_REG_DWORD(addr, data)&t;qla1280_putdword((u32 *)addr, data)
-macro_line|#else&t;&t;&t;&t;/* QL_DEBUG_LEVEL_1 */
-macro_line|#ifdef MEMORY_MAPPED_IO
-DECL|macro|RD_REG_BYTE
-mdefine_line|#define RD_REG_BYTE(addr)&t;&t;readb(addr)
+macro_line|#if MEMORY_MAPPED_IO
 DECL|macro|RD_REG_WORD
 mdefine_line|#define RD_REG_WORD(addr)&t;&t;readw(addr)
-DECL|macro|RD_REG_DWORD
-mdefine_line|#define RD_REG_DWORD(addr)&t;&t;readl(addr)
-DECL|macro|WRT_REG_BYTE
-mdefine_line|#define WRT_REG_BYTE(addr, data)&t;writeb(data, addr)
 DECL|macro|WRT_REG_WORD
 mdefine_line|#define WRT_REG_WORD(addr, data)&t;writew(data, addr)
-DECL|macro|WRT_REG_DWORD
-mdefine_line|#define WRT_REG_DWORD(addr, data)&t;writel(data, addr)
 macro_line|#else&t;&t;&t;&t;/* MEMORY_MAPPED_IO */
-DECL|macro|RD_REG_BYTE
-mdefine_line|#define RD_REG_BYTE(addr)&t;&t;inb((unsigned long)addr)
 DECL|macro|RD_REG_WORD
 mdefine_line|#define RD_REG_WORD(addr)&t;&t;inw((unsigned long)addr)
-DECL|macro|RD_REG_DWORD
-mdefine_line|#define RD_REG_DWORD(addr)&t;&t;inl((unsigned long)addr)
-multiline_comment|/* Parameters are reversed in Linux */
-DECL|macro|WRT_REG_BYTE
-mdefine_line|#define WRT_REG_BYTE(addr, data)&t;outb(data, (unsigned long)addr)
 DECL|macro|WRT_REG_WORD
 mdefine_line|#define WRT_REG_WORD(addr, data)&t;outw(data, (unsigned long)addr)
-DECL|macro|WRT_REG_DWORD
-mdefine_line|#define WRT_REG_DWORD(addr, data)&t;outl(data, (unsigned long)addr)
 macro_line|#endif&t;&t;&t;&t;/* MEMORY_MAPPED_IO */
-macro_line|#endif&t;&t;&t;&t;/* QL_DEBUG_LEVEL_1 */
 multiline_comment|/*&n; * Host adapter default definitions.&n; */
 DECL|macro|MAX_BUSES
 mdefine_line|#define MAX_BUSES&t;2&t;/* 2 */
@@ -150,23 +98,21 @@ mdefine_line|#define QLA1280_WDG_TIME_QUANTUM&t;5&t;/* In seconds */
 multiline_comment|/* Command retry count (0-65535) */
 DECL|macro|COMMAND_RETRY_COUNT
 mdefine_line|#define COMMAND_RETRY_COUNT&t;&t;255
-multiline_comment|/* Maximum outstanding commands in ISP queues (1-65535) */
+multiline_comment|/* Maximum outstanding commands in ISP queues */
 DECL|macro|MAX_OUTSTANDING_COMMANDS
 mdefine_line|#define MAX_OUTSTANDING_COMMANDS&t;512
+DECL|macro|INVALID_HANDLE
+mdefine_line|#define INVALID_HANDLE&t;&t;&t;(MAX_OUTSTANDING_COMMANDS + 2)
 multiline_comment|/* ISP request and response entry counts (37-65535) */
 DECL|macro|REQUEST_ENTRY_CNT
 mdefine_line|#define REQUEST_ENTRY_CNT&t;&t;256 /* Number of request entries. */
 DECL|macro|RESPONSE_ENTRY_CNT
 mdefine_line|#define RESPONSE_ENTRY_CNT&t;&t;16  /* Number of response entries. */
-multiline_comment|/* Maximum equipage per controller */
-DECL|macro|MAX_EQ
-mdefine_line|#define MAX_EQ&t;&t;&t;&t;(MAX_BUSES * MAX_TARGETS * MAX_LUNS)
 multiline_comment|/* Number of segments 1 - 65535 */
 DECL|macro|SG_SEGMENTS
 mdefine_line|#define SG_SEGMENTS&t;&t;&t;32  /* Cmd entry + 6 continuations */
 multiline_comment|/*&n; * SCSI Request Block structure  (sp)  that is placed&n; * on cmd-&gt;SCp location of every I/O&n; */
 DECL|struct|srb
-r_typedef
 r_struct
 id|srb
 (brace
@@ -200,7 +146,7 @@ r_uint8
 id|dir
 suffix:semicolon
 multiline_comment|/* direction of transfer */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,18)
+multiline_comment|/*&n;&t; * This should be moved around to save space.&n;&t; */
 DECL|member|saved_dma_handle
 id|dma_addr_t
 id|saved_dma_handle
@@ -213,10 +159,7 @@ id|completion
 op_star
 id|wait
 suffix:semicolon
-macro_line|#endif
-DECL|typedef|srb_t
 )brace
-id|srb_t
 suffix:semicolon
 multiline_comment|/*&n; * SRB flag definitions&n; */
 DECL|macro|SRB_TIMEOUT
@@ -229,18 +172,19 @@ DECL|macro|SRB_ABORTED
 mdefine_line|#define SRB_ABORTED&t;&t;BIT_3&t;/* Command aborted command already */
 multiline_comment|/*&n; * Logical Unit Queue structure&n; */
 DECL|struct|scsi_lu
-r_typedef
 r_struct
 id|scsi_lu
 (brace
 DECL|member|q_first
-id|srb_t
+r_struct
+id|srb
 op_star
 id|q_first
 suffix:semicolon
 multiline_comment|/* First block on LU queue */
 DECL|member|q_last
-id|srb_t
+r_struct
+id|srb
 op_star
 id|q_last
 suffix:semicolon
@@ -293,31 +237,7 @@ r_uint16
 id|q_outcnt
 suffix:semicolon
 multiline_comment|/* Pending jobs for this LU */
-macro_line|#if QL1280_TARGET_MODE_SUPPORT
-DECL|member|q_func
-r_void
-(paren
-op_star
-id|q_func
-)paren
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Target driver event handler */
-DECL|member|q_param
-r_int32
-id|q_param
-suffix:semicolon
-multiline_comment|/* Target driver event param */
-DECL|member|q_lock
-r_uint8
-id|q_lock
-suffix:semicolon
-multiline_comment|/* Device Queue Lock */
-macro_line|#endif
-DECL|typedef|scsi_lu_t
 )brace
-id|scsi_lu_t
 suffix:semicolon
 multiline_comment|/*&n; * Logical Unit flags&n; */
 DECL|macro|QLA1280_QBUSY
@@ -586,74 +506,80 @@ DECL|macro|MBA_SCSI_COMPLETION
 mdefine_line|#define MBA_SCSI_COMPLETION&t;0x8020&t;/* Completion response. */
 multiline_comment|/*&n; * ISP mailbox commands&n; */
 DECL|macro|MBC_NOP
-mdefine_line|#define MBC_NOP                     0&t;/* No Operation. */
+mdefine_line|#define MBC_NOP&t;&t;&t;&t;0&t;/* No Operation */
 DECL|macro|MBC_LOAD_RAM
-mdefine_line|#define MBC_LOAD_RAM                1&t;/* Load RAM. */
+mdefine_line|#define MBC_LOAD_RAM&t;&t;&t;1&t;/* Load RAM */
 DECL|macro|MBC_EXECUTE_FIRMWARE
-mdefine_line|#define MBC_EXECUTE_FIRMWARE        2&t;/* Execute firmware. */
+mdefine_line|#define MBC_EXECUTE_FIRMWARE&t;&t;2&t;/* Execute firmware */
 DECL|macro|MBC_DUMP_RAM
-mdefine_line|#define MBC_DUMP_RAM&t;&t;     3   /* Dump RAM contents */
+mdefine_line|#define MBC_DUMP_RAM&t;&t;&t;3&t;/* Dump RAM contents */
 DECL|macro|MBC_WRITE_RAM_WORD
-mdefine_line|#define MBC_WRITE_RAM_WORD          4&t;/* Write ram word. */
+mdefine_line|#define MBC_WRITE_RAM_WORD&t;&t;4&t;/* Write ram word */
 DECL|macro|MBC_READ_RAM_WORD
-mdefine_line|#define MBC_READ_RAM_WORD           5&t;/* Read ram word. */
+mdefine_line|#define MBC_READ_RAM_WORD&t;&t;5&t;/* Read ram word */
 DECL|macro|MBC_MAILBOX_REGISTER_TEST
-mdefine_line|#define MBC_MAILBOX_REGISTER_TEST   6&t;/* Wrap incoming mailboxes */
+mdefine_line|#define MBC_MAILBOX_REGISTER_TEST&t;6&t;/* Wrap incoming mailboxes */
 DECL|macro|MBC_VERIFY_CHECKSUM
-mdefine_line|#define MBC_VERIFY_CHECKSUM         7&t;/* Verify checksum. */
+mdefine_line|#define MBC_VERIFY_CHECKSUM&t;&t;7&t;/* Verify checksum */
 DECL|macro|MBC_ABOUT_FIRMWARE
-mdefine_line|#define MBC_ABOUT_FIRMWARE          8&t;/* Get firmware revision. */
+mdefine_line|#define MBC_ABOUT_FIRMWARE&t;&t;8&t;/* Get firmware revision */
 DECL|macro|MBC_INIT_REQUEST_QUEUE
-mdefine_line|#define MBC_INIT_REQUEST_QUEUE      0x10&t;/* Initialize request queue. */
+mdefine_line|#define MBC_INIT_REQUEST_QUEUE&t;&t;0x10&t;/* Initialize request queue */
 DECL|macro|MBC_INIT_RESPONSE_QUEUE
-mdefine_line|#define MBC_INIT_RESPONSE_QUEUE     0x11&t;/* Initialize response queue. */
+mdefine_line|#define MBC_INIT_RESPONSE_QUEUE&t;&t;0x11&t;/* Initialize response queue */
 DECL|macro|MBC_EXECUTE_IOCB
-mdefine_line|#define MBC_EXECUTE_IOCB            0x12&t;/* Execute IOCB command. */
+mdefine_line|#define MBC_EXECUTE_IOCB&t;&t;0x12&t;/* Execute IOCB command */
 DECL|macro|MBC_ABORT_COMMAND
-mdefine_line|#define MBC_ABORT_COMMAND           0x15&t;/* Abort IOCB command. */
+mdefine_line|#define MBC_ABORT_COMMAND&t;&t;0x15&t;/* Abort IOCB command */
 DECL|macro|MBC_ABORT_DEVICE
-mdefine_line|#define MBC_ABORT_DEVICE            0x16&t;/* Abort device (ID/LUN). */
+mdefine_line|#define MBC_ABORT_DEVICE&t;&t;0x16&t;/* Abort device (ID/LUN) */
 DECL|macro|MBC_ABORT_TARGET
-mdefine_line|#define MBC_ABORT_TARGET            0x17&t;/* Abort target (ID). */
+mdefine_line|#define MBC_ABORT_TARGET&t;&t;0x17&t;/* Abort target (ID) */
 DECL|macro|MBC_BUS_RESET
-mdefine_line|#define MBC_BUS_RESET               0x18&t;/* SCSI bus reset. */
+mdefine_line|#define MBC_BUS_RESET&t;&t;&t;0x18&t;/* SCSI bus reset */
 DECL|macro|MBC_GET_RETRY_COUNT
-mdefine_line|#define MBC_GET_RETRY_COUNT         0x22&t;/* Get retry count and delay. */
+mdefine_line|#define MBC_GET_RETRY_COUNT&t;&t;0x22&t;/* Get retry count and delay */
 DECL|macro|MBC_GET_TARGET_PARAMETERS
-mdefine_line|#define MBC_GET_TARGET_PARAMETERS   0x28&t;/* Get target parameters. */
+mdefine_line|#define MBC_GET_TARGET_PARAMETERS&t;0x28&t;/* Get target parameters */
 DECL|macro|MBC_SET_INITIATOR_ID
-mdefine_line|#define MBC_SET_INITIATOR_ID        0x30&t;/* Set initiator SCSI ID. */
+mdefine_line|#define MBC_SET_INITIATOR_ID&t;&t;0x30&t;/* Set initiator SCSI ID */
 DECL|macro|MBC_SET_SELECTION_TIMEOUT
-mdefine_line|#define MBC_SET_SELECTION_TIMEOUT   0x31&t;/* Set selection timeout. */
+mdefine_line|#define MBC_SET_SELECTION_TIMEOUT&t;0x31&t;/* Set selection timeout */
 DECL|macro|MBC_SET_RETRY_COUNT
-mdefine_line|#define MBC_SET_RETRY_COUNT         0x32&t;/* Set retry count and delay. */
+mdefine_line|#define MBC_SET_RETRY_COUNT&t;&t;0x32&t;/* Set retry count and delay */
 DECL|macro|MBC_SET_TAG_AGE_LIMIT
-mdefine_line|#define MBC_SET_TAG_AGE_LIMIT       0x33&t;/* Set tag age limit. */
+mdefine_line|#define MBC_SET_TAG_AGE_LIMIT&t;&t;0x33&t;/* Set tag age limit */
 DECL|macro|MBC_SET_CLOCK_RATE
-mdefine_line|#define MBC_SET_CLOCK_RATE          0x34&t;/* Set clock rate. */
+mdefine_line|#define MBC_SET_CLOCK_RATE&t;&t;0x34&t;/* Set clock rate */
 DECL|macro|MBC_SET_ACTIVE_NEGATION
-mdefine_line|#define MBC_SET_ACTIVE_NEGATION     0x35&t;/* Set active negation state. */
+mdefine_line|#define MBC_SET_ACTIVE_NEGATION&t;&t;0x35&t;/* Set active negation state */
 DECL|macro|MBC_SET_ASYNC_DATA_SETUP
-mdefine_line|#define MBC_SET_ASYNC_DATA_SETUP    0x36&t;/* Set async data setup time. */
+mdefine_line|#define MBC_SET_ASYNC_DATA_SETUP&t;0x36&t;/* Set async data setup time */
 DECL|macro|MBC_SET_PCI_CONTROL
-mdefine_line|#define MBC_SET_PCI_CONTROL         0x37&t;/* Set BUS control parameters. */
+mdefine_line|#define MBC_SET_PCI_CONTROL&t;&t;0x37&t;/* Set BUS control parameters */
 DECL|macro|MBC_SET_TARGET_PARAMETERS
-mdefine_line|#define MBC_SET_TARGET_PARAMETERS   0x38&t;/* Set target parameters. */
+mdefine_line|#define MBC_SET_TARGET_PARAMETERS&t;0x38&t;/* Set target parameters */
 DECL|macro|MBC_SET_DEVICE_QUEUE
-mdefine_line|#define MBC_SET_DEVICE_QUEUE        0x39&t;/* Set device queue parameters */
+mdefine_line|#define MBC_SET_DEVICE_QUEUE&t;&t;0x39&t;/* Set device queue parameters */
+DECL|macro|MBC_SET_RESET_DELAY_PARAMETERS
+mdefine_line|#define MBC_SET_RESET_DELAY_PARAMETERS&t;0x3A&t;/* Set reset delay parameters */
 DECL|macro|MBC_SET_SYSTEM_PARAMETER
-mdefine_line|#define MBC_SET_SYSTEM_PARAMETER    0x45&t;/* Set system parameter word. */
+mdefine_line|#define MBC_SET_SYSTEM_PARAMETER&t;0x45&t;/* Set system parameter word */
 DECL|macro|MBC_SET_FIRMWARE_FEATURES
-mdefine_line|#define MBC_SET_FIRMWARE_FEATURES   0x4A&t;/* Set firmware feature word. */
+mdefine_line|#define MBC_SET_FIRMWARE_FEATURES&t;0x4A&t;/* Set firmware feature word */
 DECL|macro|MBC_INIT_REQUEST_QUEUE_A64
-mdefine_line|#define MBC_INIT_REQUEST_QUEUE_A64  0x52&t;/* Initialize request queue A64 */
+mdefine_line|#define MBC_INIT_REQUEST_QUEUE_A64&t;0x52&t;/* Initialize request queue A64 */
 DECL|macro|MBC_INIT_RESPONSE_QUEUE_A64
-mdefine_line|#define MBC_INIT_RESPONSE_QUEUE_A64 0x53&t;/* Initialize response q A64. */
+mdefine_line|#define MBC_INIT_RESPONSE_QUEUE_A64&t;0x53&t;/* Initialize response q A64 */
 DECL|macro|MBC_ENABLE_TARGET_MODE
-mdefine_line|#define MBC_ENABLE_TARGET_MODE      0x55&t;/* Enable target mode. */
+mdefine_line|#define MBC_ENABLE_TARGET_MODE&t;&t;0x55&t;/* Enable target mode */
+DECL|macro|MBC_SET_DATA_OVERRUN_RECOVERY
+mdefine_line|#define MBC_SET_DATA_OVERRUN_RECOVERY&t;0x5A&t;/* Set data overrun recovery mode */
 multiline_comment|/*&n; * ISP Get/Set Target Parameters mailbox command control flags.&n; */
+DECL|macro|TP_PPR
+mdefine_line|#define TP_PPR&t;&t;&t;BIT_5&t;/* PPR */
 DECL|macro|TP_RENEGOTIATE
-mdefine_line|#define TP_RENEGOTIATE          BIT_8&t;/* Renegotiate on error. */
+mdefine_line|#define TP_RENEGOTIATE&t;&t;BIT_8&t;/* Renegotiate on error. */
 DECL|macro|TP_STOP_QUEUE
 mdefine_line|#define TP_STOP_QUEUE           BIT_9&t;/* Stop que on check condition */
 DECL|macro|TP_AUTO_REQUEST_SENSE
@@ -681,31 +607,36 @@ DECL|macro|NV_MASK_OP
 mdefine_line|#define NV_MASK_OP&t;&t;(BIT_26 | BIT_25 | BIT_24)
 DECL|macro|NV_DELAY_COUNT
 mdefine_line|#define NV_DELAY_COUNT&t;&t;10
-multiline_comment|/*&n; *  QLogic ISP1280 NVRAM structure definition.&n; *&n; * NOTE: the firmware structure is byte reversed on big-endian systems&n; * because it is read a word at a time from the chip, so the in-memory&n; * representation becomes correct&n; */
-r_typedef
+multiline_comment|/*&n; *  QLogic ISP1280/ISP12160 NVRAM structure definition.&n; */
+DECL|struct|nvram
 r_struct
+id|nvram
 (brace
-macro_line|#if defined(__BIG_ENDIAN)
-DECL|member|id1
-r_uint8
-id|id1
-suffix:semicolon
-multiline_comment|/* 1 */
 DECL|member|id0
 r_uint8
 id|id0
 suffix:semicolon
 multiline_comment|/* 0 */
-DECL|member|id3
+DECL|member|id1
 r_uint8
-id|id3
+id|id1
 suffix:semicolon
-multiline_comment|/* 3 */
+multiline_comment|/* 1 */
 DECL|member|id2
 r_uint8
 id|id2
 suffix:semicolon
 multiline_comment|/* 2 */
+DECL|member|id3
+r_uint8
+id|id3
+suffix:semicolon
+multiline_comment|/* 3 */
+DECL|member|version
+r_uint8
+id|version
+suffix:semicolon
+multiline_comment|/* 4 */
 r_struct
 (brace
 DECL|member|bios_configuration_mode
@@ -755,63 +686,58 @@ DECL|member|cntr_flags_1
 id|cntr_flags_1
 suffix:semicolon
 multiline_comment|/* 5 */
-DECL|member|version
-r_uint8
-id|version
-suffix:semicolon
-multiline_comment|/* 4 */
 r_struct
 (brace
 DECL|member|boot_lun_number
-r_uint8
+r_uint16
 id|boot_lun_number
 suffix:colon
 l_int|5
 suffix:semicolon
 DECL|member|scsi_bus_number
-r_uint8
+r_uint16
 id|scsi_bus_number
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|unused_6
-r_uint8
+r_uint16
 id|unused_6
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|unused_7
-r_uint8
+r_uint16
 id|unused_7
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|boot_target_number
-r_uint8
+r_uint16
 id|boot_target_number
 suffix:colon
 l_int|4
 suffix:semicolon
 DECL|member|unused_12
-r_uint8
+r_uint16
 id|unused_12
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|unused_13
-r_uint8
+r_uint16
 id|unused_13
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|unused_14
-r_uint8
+r_uint16
 id|unused_14
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|unused_15
-r_uint8
+r_uint16
 id|unused_15
 suffix:colon
 l_int|1
@@ -841,6 +767,47 @@ r_uint16
 id|unused_14
 suffix:semicolon
 multiline_comment|/* 14, 15 */
+r_union
+(brace
+DECL|member|c
+r_uint8
+id|c
+suffix:semicolon
+r_struct
+(brace
+DECL|member|reserved
+r_uint8
+id|reserved
+suffix:colon
+l_int|2
+suffix:semicolon
+DECL|member|burst_enable
+r_uint8
+id|burst_enable
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|reserved_1
+r_uint8
+id|reserved_1
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|fifo_threshold
+r_uint8
+id|fifo_threshold
+suffix:colon
+l_int|4
+suffix:semicolon
+DECL|member|f
+)brace
+id|f
+suffix:semicolon
+DECL|member|isp_config
+)brace
+id|isp_config
+suffix:semicolon
+multiline_comment|/* 16 */
 multiline_comment|/* Termination&n;&t; * 0 = Disable, 1 = high only, 3 = Auto term&n;&t; */
 r_union
 (brace
@@ -895,47 +862,6 @@ DECL|member|termination
 id|termination
 suffix:semicolon
 multiline_comment|/* 17 */
-r_union
-(brace
-DECL|member|c
-r_uint8
-id|c
-suffix:semicolon
-r_struct
-(brace
-DECL|member|reserved
-r_uint8
-id|reserved
-suffix:colon
-l_int|2
-suffix:semicolon
-DECL|member|burst_enable
-r_uint8
-id|burst_enable
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|reserved_1
-r_uint8
-id|reserved_1
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|fifo_threshold
-r_uint8
-id|fifo_threshold
-suffix:colon
-l_int|4
-suffix:semicolon
-DECL|member|f
-)brace
-id|f
-suffix:semicolon
-DECL|member|isp_config
-)brace
-id|isp_config
-suffix:semicolon
-multiline_comment|/* 16 */
 DECL|member|isp_parameter
 r_uint16
 id|isp_parameter
@@ -973,15 +899,15 @@ id|unused_3
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|unused_4
+DECL|member|disable_iosbs_with_bus_reset_status
 r_uint16
-id|unused_4
+id|disable_iosbs_with_bus_reset_status
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|unused_5
+DECL|member|disable_synchronous_backoff
 r_uint16
-id|unused_5
+id|disable_synchronous_backoff
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -991,15 +917,15 @@ id|unused_6
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|unused_7
+DECL|member|synchronous_backoff_reporting
 r_uint16
-id|unused_7
+id|synchronous_backoff_reporting
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|unused_8
+DECL|member|disable_reselection_fairness
 r_uint16
-id|unused_8
+id|disable_reselection_fairness
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -1061,11 +987,6 @@ suffix:semicolon
 multiline_comment|/* 22, 23 */
 r_struct
 (brace
-DECL|member|bus_reset_delay
-r_uint8
-id|bus_reset_delay
-suffix:semicolon
-multiline_comment|/* 25 */
 r_struct
 (brace
 DECL|member|initiator_id
@@ -1103,21 +1024,21 @@ DECL|member|config_1
 id|config_1
 suffix:semicolon
 multiline_comment|/* 24 */
-DECL|member|retry_delay
+DECL|member|bus_reset_delay
 r_uint8
-id|retry_delay
+id|bus_reset_delay
 suffix:semicolon
-multiline_comment|/* 27 */
+multiline_comment|/* 25 */
 DECL|member|retry_count
 r_uint8
 id|retry_count
 suffix:semicolon
 multiline_comment|/* 26 */
-DECL|member|unused_29
+DECL|member|retry_delay
 r_uint8
-id|unused_29
+id|retry_delay
 suffix:semicolon
-multiline_comment|/* 29 */
+multiline_comment|/* 27 */
 r_struct
 (brace
 DECL|member|async_data_setup_time
@@ -1155,6 +1076,11 @@ DECL|member|config_2
 id|config_2
 suffix:semicolon
 multiline_comment|/* 28 */
+DECL|member|unused_29
+r_uint8
+id|unused_29
+suffix:semicolon
+multiline_comment|/* 29 */
 DECL|member|selection_timeout
 r_uint16
 id|selection_timeout
@@ -1182,11 +1108,6 @@ suffix:semicolon
 multiline_comment|/* 38, 39 */
 r_struct
 (brace
-DECL|member|execution_throttle
-r_uint8
-id|execution_throttle
-suffix:semicolon
-multiline_comment|/* 41 */
 r_union
 (brace
 DECL|member|c
@@ -1219,15 +1140,15 @@ id|tag_queuing
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|sync_data_transfers
+DECL|member|enable_sync
 r_uint8
-id|sync_data_transfers
+id|enable_sync
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|wide_data_transfers
+DECL|member|enable_wide
 r_uint8
-id|wide_data_transfers
+id|enable_wide
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -1252,6 +1173,23 @@ DECL|member|parameter
 id|parameter
 suffix:semicolon
 multiline_comment|/* 40 */
+DECL|member|execution_throttle
+r_uint8
+id|execution_throttle
+suffix:semicolon
+multiline_comment|/* 41 */
+DECL|member|sync_period
+r_uint8
+id|sync_period
+suffix:semicolon
+multiline_comment|/* 42 */
+r_union
+(brace
+multiline_comment|/* 43 */
+DECL|member|flags_43
+r_uint8
+id|flags_43
+suffix:semicolon
 r_struct
 (brace
 DECL|member|sync_offset
@@ -1284,1183 +1222,10 @@ id|unused_7
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|flags
+DECL|member|flags1x80
 )brace
-id|flags
+id|flags1x80
 suffix:semicolon
-multiline_comment|/* 43 */
-DECL|member|sync_period
-r_uint8
-id|sync_period
-suffix:semicolon
-multiline_comment|/* 42 */
-DECL|member|unused_44
-r_uint16
-id|unused_44
-suffix:semicolon
-multiline_comment|/* 44, 45 */
-DECL|member|target
-)brace
-id|target
-(braket
-id|MAX_TARGETS
-)braket
-suffix:semicolon
-DECL|member|bus
-)brace
-id|bus
-(braket
-id|MAX_BUSES
-)braket
-suffix:semicolon
-DECL|member|unused_248
-r_uint16
-id|unused_248
-suffix:semicolon
-multiline_comment|/* 248, 249 */
-DECL|member|subsystem_id
-r_uint16
-id|subsystem_id
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* 250, 251, 252, 253 */
-DECL|member|chksum
-r_uint8
-id|chksum
-suffix:semicolon
-multiline_comment|/* 255 */
-DECL|member|unused_254
-r_uint8
-id|unused_254
-suffix:semicolon
-multiline_comment|/* 254 */
-macro_line|#elif defined(__LITTLE_ENDIAN)
-r_uint8
-id|id0
-suffix:semicolon
-multiline_comment|/* 0 */
-r_uint8
-id|id1
-suffix:semicolon
-multiline_comment|/* 1 */
-r_uint8
-id|id2
-suffix:semicolon
-multiline_comment|/* 2 */
-r_uint8
-id|id3
-suffix:semicolon
-multiline_comment|/* 3 */
-r_uint8
-id|version
-suffix:semicolon
-multiline_comment|/* 4 */
-r_struct
-(brace
-r_uint8
-id|bios_configuration_mode
-suffix:colon
-l_int|2
-suffix:semicolon
-r_uint8
-id|bios_disable
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|selectable_scsi_boot_enable
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|cd_rom_boot_enable
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|disable_loading_risc_code
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|enable_64bit_addressing
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|cntr_flags_1
-suffix:semicolon
-multiline_comment|/* 5 */
-r_struct
-(brace
-r_uint8
-id|boot_lun_number
-suffix:colon
-l_int|5
-suffix:semicolon
-r_uint8
-id|scsi_bus_number
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_6
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|boot_target_number
-suffix:colon
-l_int|4
-suffix:semicolon
-r_uint8
-id|unused_12
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_13
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_14
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_15
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|cntr_flags_2
-suffix:semicolon
-multiline_comment|/* 6, 7 */
-r_uint16
-id|unused_8
-suffix:semicolon
-multiline_comment|/* 8, 9 */
-r_uint16
-id|unused_10
-suffix:semicolon
-multiline_comment|/* 10, 11 */
-r_uint16
-id|unused_12
-suffix:semicolon
-multiline_comment|/* 12, 13 */
-r_uint16
-id|unused_14
-suffix:semicolon
-multiline_comment|/* 14, 15 */
-r_union
-(brace
-r_uint8
-id|c
-suffix:semicolon
-r_struct
-(brace
-r_uint8
-id|reserved
-suffix:colon
-l_int|2
-suffix:semicolon
-r_uint8
-id|burst_enable
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|reserved_1
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|fifo_threshold
-suffix:colon
-l_int|4
-suffix:semicolon
-)brace
-id|f
-suffix:semicolon
-)brace
-id|isp_config
-suffix:semicolon
-multiline_comment|/* 16 */
-multiline_comment|/* Termination&n;&t; * 0 = Disable, 1 = high only, 3 = Auto term&n;&t; */
-r_union
-(brace
-r_uint8
-id|c
-suffix:semicolon
-r_struct
-(brace
-r_uint8
-id|scsi_bus_1_control
-suffix:colon
-l_int|2
-suffix:semicolon
-r_uint8
-id|scsi_bus_0_control
-suffix:colon
-l_int|2
-suffix:semicolon
-r_uint8
-id|unused_0
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_1
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_2
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|auto_term_support
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|f
-suffix:semicolon
-)brace
-id|termination
-suffix:semicolon
-multiline_comment|/* 17 */
-r_uint16
-id|isp_parameter
-suffix:semicolon
-multiline_comment|/* 18, 19 */
-r_union
-(brace
-r_uint16
-id|w
-suffix:semicolon
-r_struct
-(brace
-r_uint8
-id|enable_fast_posting
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|report_lvd_bus_transition
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_2
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_3
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_4
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_5
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_6
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_8
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_9
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_10
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_11
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_12
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_13
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_14
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_15
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|f
-suffix:semicolon
-)brace
-id|firmware_feature
-suffix:semicolon
-multiline_comment|/* 20, 21 */
-r_uint16
-id|unused_22
-suffix:semicolon
-multiline_comment|/* 22, 23 */
-r_struct
-(brace
-r_struct
-(brace
-r_uint8
-id|initiator_id
-suffix:colon
-l_int|4
-suffix:semicolon
-r_uint8
-id|scsi_reset_disable
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|scsi_bus_size
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|scsi_bus_type
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|config_1
-suffix:semicolon
-multiline_comment|/* 24 */
-r_uint8
-id|bus_reset_delay
-suffix:semicolon
-multiline_comment|/* 25 */
-r_uint8
-id|retry_count
-suffix:semicolon
-multiline_comment|/* 26 */
-r_uint8
-id|retry_delay
-suffix:semicolon
-multiline_comment|/* 27 */
-r_struct
-(brace
-r_uint8
-id|async_data_setup_time
-suffix:colon
-l_int|4
-suffix:semicolon
-r_uint8
-id|req_ack_active_negation
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|data_line_active_negation
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_6
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|config_2
-suffix:semicolon
-multiline_comment|/* 28 */
-r_uint8
-id|unused_29
-suffix:semicolon
-multiline_comment|/* 29 */
-r_uint16
-id|selection_timeout
-suffix:semicolon
-multiline_comment|/* 30, 31 */
-r_uint16
-id|max_queue_depth
-suffix:semicolon
-multiline_comment|/* 32, 33 */
-r_uint16
-id|unused_34
-suffix:semicolon
-multiline_comment|/* 34, 35 */
-r_uint16
-id|unused_36
-suffix:semicolon
-multiline_comment|/* 36, 37 */
-r_uint16
-id|unused_38
-suffix:semicolon
-multiline_comment|/* 38, 39 */
-r_struct
-(brace
-r_union
-(brace
-r_uint8
-id|c
-suffix:semicolon
-r_struct
-(brace
-r_uint8
-id|renegotiate_on_error
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|stop_queue_on_check
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|auto_request_sense
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|tag_queuing
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|sync_data_transfers
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|wide_data_transfers
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|parity_checking
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|disconnect_allowed
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|f
-suffix:semicolon
-)brace
-id|parameter
-suffix:semicolon
-multiline_comment|/* 40 */
-r_uint8
-id|execution_throttle
-suffix:semicolon
-multiline_comment|/* 41 */
-r_uint8
-id|sync_period
-suffix:semicolon
-multiline_comment|/* 42 */
-r_struct
-(brace
-r_uint8
-id|sync_offset
-suffix:colon
-l_int|4
-suffix:semicolon
-r_uint8
-id|device_enable
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|lun_disable
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_6
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|flags
-suffix:semicolon
-multiline_comment|/* 43 */
-r_uint16
-id|unused_44
-suffix:semicolon
-multiline_comment|/* 44, 45 */
-)brace
-id|target
-(braket
-id|MAX_TARGETS
-)braket
-suffix:semicolon
-)brace
-id|bus
-(braket
-id|MAX_BUSES
-)braket
-suffix:semicolon
-r_uint16
-id|unused_248
-suffix:semicolon
-multiline_comment|/* 248, 249 */
-r_uint16
-id|subsystem_id
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* 250, 251, 252, 253 */
-r_uint8
-id|unused_254
-suffix:semicolon
-multiline_comment|/* 254 */
-r_uint8
-id|chksum
-suffix:semicolon
-multiline_comment|/* 255 */
-macro_line|#else
-macro_line|#error neither __BIG_ENDIAN nor __LITTLE_ENDIAN is defined
-macro_line|#endif
-DECL|typedef|nvram_t
-)brace
-id|nvram_t
-suffix:semicolon
-multiline_comment|/*&n; *  QLogic ISP12160 NVRAM structure definition.&n; *&n; * NOTE: the firmware structure is byte reversed on big-endian systems&n; * because it is read a word at a time from the chip, so the in-memory&n; * representation becomes correct&n; */
-r_typedef
-r_struct
-(brace
-macro_line|#if defined(__BIG_ENDIAN)
-DECL|member|id1
-r_uint8
-id|id1
-suffix:semicolon
-multiline_comment|/* 1 */
-DECL|member|id0
-r_uint8
-id|id0
-suffix:semicolon
-multiline_comment|/* 0 */
-DECL|member|id3
-r_uint8
-id|id3
-suffix:semicolon
-multiline_comment|/* 3 */
-DECL|member|id2
-r_uint8
-id|id2
-suffix:semicolon
-multiline_comment|/* 2 */
-multiline_comment|/* Host/Bios Flags */
-r_struct
-(brace
-DECL|member|bios_configuration_mode
-r_uint8
-id|bios_configuration_mode
-suffix:colon
-l_int|2
-suffix:semicolon
-DECL|member|bios_disable
-r_uint8
-id|bios_disable
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|selectable_scsi_boot_enable
-r_uint8
-id|selectable_scsi_boot_enable
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|cd_rom_boot_enable
-r_uint8
-id|cd_rom_boot_enable
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|disable_loading_risc_code
-r_uint8
-id|disable_loading_risc_code
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_6
-r_uint8
-id|unused_6
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_7
-r_uint8
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|cntr_flags_1
-)brace
-id|cntr_flags_1
-suffix:semicolon
-multiline_comment|/* 5 */
-DECL|member|version
-r_uint8
-id|version
-suffix:semicolon
-multiline_comment|/* 4 */
-multiline_comment|/* Selectable Boot Support */
-r_struct
-(brace
-DECL|member|boot_lun_number
-r_uint16
-id|boot_lun_number
-suffix:colon
-l_int|5
-suffix:semicolon
-DECL|member|scsi_bus_number
-r_uint16
-id|scsi_bus_number
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_6
-r_uint16
-id|unused_6
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_7
-r_uint16
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|boot_target_number
-r_uint16
-id|boot_target_number
-suffix:colon
-l_int|4
-suffix:semicolon
-DECL|member|unused_12
-r_uint16
-id|unused_12
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_13
-r_uint16
-id|unused_13
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_14
-r_uint16
-id|unused_14
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_15
-r_uint16
-id|unused_15
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|cntr_flags_2
-)brace
-id|cntr_flags_2
-suffix:semicolon
-multiline_comment|/* 6, 7 */
-DECL|member|unused_8
-r_uint16
-id|unused_8
-suffix:semicolon
-multiline_comment|/* 8, 9 */
-DECL|member|unused_10
-r_uint16
-id|unused_10
-suffix:semicolon
-multiline_comment|/* 10, 11 */
-DECL|member|unused_12
-r_uint16
-id|unused_12
-suffix:semicolon
-multiline_comment|/* 12, 13 */
-DECL|member|unused_14
-r_uint16
-id|unused_14
-suffix:semicolon
-multiline_comment|/* 14, 15 */
-multiline_comment|/* Termination&n;&t; * 0 = Disable, 1 = high only, 3 = Auto term&n;&t; */
-r_union
-(brace
-DECL|member|c
-r_uint8
-id|c
-suffix:semicolon
-r_struct
-(brace
-DECL|member|scsi_bus_1_control
-r_uint8
-id|scsi_bus_1_control
-suffix:colon
-l_int|2
-suffix:semicolon
-DECL|member|scsi_bus_0_control
-r_uint8
-id|scsi_bus_0_control
-suffix:colon
-l_int|2
-suffix:semicolon
-DECL|member|unused_0
-r_uint8
-id|unused_0
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_1
-r_uint8
-id|unused_1
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_2
-r_uint8
-id|unused_2
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|auto_term_support
-r_uint8
-id|auto_term_support
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|f
-)brace
-id|f
-suffix:semicolon
-DECL|member|termination
-)brace
-id|termination
-suffix:semicolon
-multiline_comment|/* 17 */
-multiline_comment|/* Auto Term - 3                          */
-multiline_comment|/* High Only - 1 (GPIO2 = 1 &amp; GPIO3 = 0)  */
-multiline_comment|/* Disable - 0 (GPIO2 = 0 &amp; GPIO3 = X)    */
-multiline_comment|/* ISP Config Parameters */
-r_union
-(brace
-DECL|member|c
-r_uint8
-id|c
-suffix:semicolon
-r_struct
-(brace
-DECL|member|reserved
-r_uint8
-id|reserved
-suffix:colon
-l_int|2
-suffix:semicolon
-DECL|member|burst_enable
-r_uint8
-id|burst_enable
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|reserved_1
-r_uint8
-id|reserved_1
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|fifo_threshold
-r_uint8
-id|fifo_threshold
-suffix:colon
-l_int|4
-suffix:semicolon
-DECL|member|f
-)brace
-id|f
-suffix:semicolon
-DECL|member|isp_config
-)brace
-id|isp_config
-suffix:semicolon
-multiline_comment|/* 16 */
-DECL|member|isp_parameter
-r_uint16
-id|isp_parameter
-suffix:semicolon
-multiline_comment|/* 18, 19 */
-r_union
-(brace
-DECL|member|w
-r_uint16
-id|w
-suffix:semicolon
-r_struct
-(brace
-DECL|member|enable_fast_posting
-r_uint16
-id|enable_fast_posting
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|report_lvd_bus_transition
-r_uint16
-id|report_lvd_bus_transition
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_2
-r_uint16
-id|unused_2
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_3
-r_uint16
-id|unused_3
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_4
-r_uint16
-id|unused_4
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_5
-r_uint16
-id|unused_5
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_6
-r_uint16
-id|unused_6
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_7
-r_uint16
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_8
-r_uint16
-id|unused_8
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_9
-r_uint16
-id|unused_9
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_10
-r_uint16
-id|unused_10
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_11
-r_uint16
-id|unused_11
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_12
-r_uint16
-id|unused_12
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_13
-r_uint16
-id|unused_13
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_14
-r_uint16
-id|unused_14
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_15
-r_uint16
-id|unused_15
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|f
-)brace
-id|f
-suffix:semicolon
-DECL|member|firmware_feature
-)brace
-id|firmware_feature
-suffix:semicolon
-multiline_comment|/* 20, 21 */
-DECL|member|unused_22
-r_uint16
-id|unused_22
-suffix:semicolon
-multiline_comment|/* 22, 23 */
-r_struct
-(brace
-DECL|member|bus_reset_delay
-r_uint8
-id|bus_reset_delay
-suffix:semicolon
-multiline_comment|/* 25 */
-r_struct
-(brace
-DECL|member|initiator_id
-r_uint8
-id|initiator_id
-suffix:colon
-l_int|4
-suffix:semicolon
-DECL|member|scsi_reset_disable
-r_uint8
-id|scsi_reset_disable
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|scsi_bus_size
-r_uint8
-id|scsi_bus_size
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|scsi_bus_type
-r_uint8
-id|scsi_bus_type
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_7
-r_uint8
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|config_1
-)brace
-id|config_1
-suffix:semicolon
-multiline_comment|/* 24 */
-DECL|member|retry_delay
-r_uint8
-id|retry_delay
-suffix:semicolon
-multiline_comment|/* 27 */
-DECL|member|retry_count
-r_uint8
-id|retry_count
-suffix:semicolon
-multiline_comment|/* 26 */
-DECL|member|unused_29
-r_uint8
-id|unused_29
-suffix:semicolon
-multiline_comment|/* 29 */
-multiline_comment|/* Adapter Capabilities bits */
-r_struct
-(brace
-DECL|member|async_data_setup_time
-r_uint8
-id|async_data_setup_time
-suffix:colon
-l_int|4
-suffix:semicolon
-DECL|member|req_ack_active_negation
-r_uint8
-id|req_ack_active_negation
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|data_line_active_negation
-r_uint8
-id|data_line_active_negation
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_6
-r_uint8
-id|unused_6
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|unused_7
-r_uint8
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|config_2
-)brace
-id|config_2
-suffix:semicolon
-multiline_comment|/* 28 */
-DECL|member|selection_timeout
-r_uint16
-id|selection_timeout
-suffix:semicolon
-multiline_comment|/* 30, 31 */
-DECL|member|max_queue_depth
-r_uint16
-id|max_queue_depth
-suffix:semicolon
-multiline_comment|/* 32, 33 */
-DECL|member|unused_34
-r_uint16
-id|unused_34
-suffix:semicolon
-multiline_comment|/* 34, 35 */
-DECL|member|unused_36
-r_uint16
-id|unused_36
-suffix:semicolon
-multiline_comment|/* 36, 37 */
-DECL|member|unused_38
-r_uint16
-id|unused_38
-suffix:semicolon
-multiline_comment|/* 38, 39 */
-r_struct
-(brace
-DECL|member|execution_throttle
-r_uint8
-id|execution_throttle
-suffix:semicolon
-multiline_comment|/* 41 */
-r_union
-(brace
-DECL|member|c
-r_uint8
-id|c
-suffix:semicolon
-r_struct
-(brace
-DECL|member|renegotiate_on_error
-r_uint8
-id|renegotiate_on_error
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|stop_queue_on_check
-r_uint8
-id|stop_queue_on_check
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|auto_request_sense
-r_uint8
-id|auto_request_sense
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|tag_queuing
-r_uint8
-id|tag_queuing
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|sync_data_transfers
-r_uint8
-id|sync_data_transfers
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|wide_data_transfers
-r_uint8
-id|wide_data_transfers
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|parity_checking
-r_uint8
-id|parity_checking
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|disconnect_allowed
-r_uint8
-id|disconnect_allowed
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|f
-)brace
-id|f
-suffix:semicolon
-DECL|member|parameter
-)brace
-id|parameter
-suffix:semicolon
-multiline_comment|/* 40 */
 r_struct
 (brace
 DECL|member|sync_offset
@@ -2487,21 +1252,21 @@ id|unused_7
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|flags1
+DECL|member|flags1x160
 )brace
-id|flags1
+id|flags1x160
 suffix:semicolon
-multiline_comment|/* 43 */
-DECL|member|sync_period
+DECL|member|flags
+)brace
+id|flags
+suffix:semicolon
+r_union
+(brace
+multiline_comment|/* PPR flags for the 1x160 controllers */
+DECL|member|unused_44
 r_uint8
-id|sync_period
+id|unused_44
 suffix:semicolon
-multiline_comment|/* 42 */
-DECL|member|unused_45
-r_uint8
-id|unused_45
-suffix:semicolon
-multiline_comment|/* 45 */
 r_struct
 (brace
 DECL|member|ppr_options
@@ -2528,11 +1293,20 @@ id|enable_ppr
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|flags2
+DECL|member|flags
 )brace
-id|flags2
+id|flags
 suffix:semicolon
 multiline_comment|/* 44 */
+DECL|member|ppr_1x160
+)brace
+id|ppr_1x160
+suffix:semicolon
+DECL|member|unused_45
+r_uint8
+id|unused_45
+suffix:semicolon
+multiline_comment|/* 45 */
 DECL|member|target
 )brace
 id|target
@@ -2560,596 +1334,34 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* 250, 251, 252, 253 */
+r_union
+(brace
+multiline_comment|/* 254 */
+DECL|member|unused_254
+r_uint8
+id|unused_254
+suffix:semicolon
+DECL|member|system_id_pointer
+r_uint8
+id|system_id_pointer
+suffix:semicolon
+DECL|member|sysid_1x160
+)brace
+id|sysid_1x160
+suffix:semicolon
 DECL|member|chksum
 r_uint8
 id|chksum
 suffix:semicolon
 multiline_comment|/* 255 */
-DECL|member|System_Id_Pointer
-r_uint8
-id|System_Id_Pointer
-suffix:semicolon
-multiline_comment|/* 254 */
-macro_line|#elif defined(__LITTLE_ENDIAN)
-r_uint8
-id|id0
-suffix:semicolon
-multiline_comment|/* 0 */
-r_uint8
-id|id1
-suffix:semicolon
-multiline_comment|/* 1 */
-r_uint8
-id|id2
-suffix:semicolon
-multiline_comment|/* 2 */
-r_uint8
-id|id3
-suffix:semicolon
-multiline_comment|/* 3 */
-r_uint8
-id|version
-suffix:semicolon
-multiline_comment|/* 4 */
-multiline_comment|/* Host/Bios Flags */
-r_struct
-(brace
-r_uint8
-id|bios_configuration_mode
-suffix:colon
-l_int|2
-suffix:semicolon
-r_uint8
-id|bios_disable
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|selectable_scsi_boot_enable
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|cd_rom_boot_enable
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|disable_loading_risc_code
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_6
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
 )brace
-id|cntr_flags_1
-suffix:semicolon
-multiline_comment|/* 5 */
-multiline_comment|/* Selectable Boot Support */
-r_struct
-(brace
-r_uint16
-id|boot_lun_number
-suffix:colon
-l_int|5
-suffix:semicolon
-r_uint16
-id|scsi_bus_number
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_6
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|boot_target_number
-suffix:colon
-l_int|4
-suffix:semicolon
-r_uint16
-id|unused_12
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_13
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_14
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_15
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|cntr_flags_2
-suffix:semicolon
-multiline_comment|/* 6, 7 */
-r_uint16
-id|unused_8
-suffix:semicolon
-multiline_comment|/* 8, 9 */
-r_uint16
-id|unused_10
-suffix:semicolon
-multiline_comment|/* 10, 11 */
-r_uint16
-id|unused_12
-suffix:semicolon
-multiline_comment|/* 12, 13 */
-r_uint16
-id|unused_14
-suffix:semicolon
-multiline_comment|/* 14, 15 */
-multiline_comment|/* ISP Config Parameters */
-r_union
-(brace
-r_uint8
-id|c
-suffix:semicolon
-r_struct
-(brace
-r_uint8
-id|reserved
-suffix:colon
-l_int|2
-suffix:semicolon
-r_uint8
-id|burst_enable
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|reserved_1
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|fifo_threshold
-suffix:colon
-l_int|4
-suffix:semicolon
-)brace
-id|f
-suffix:semicolon
-)brace
-id|isp_config
-suffix:semicolon
-multiline_comment|/* 16 */
-multiline_comment|/* Termination&n;&t; * 0 = Disable, 1 = high only, 3 = Auto term&n;&t; */
-r_union
-(brace
-r_uint8
-id|c
-suffix:semicolon
-r_struct
-(brace
-r_uint8
-id|scsi_bus_1_control
-suffix:colon
-l_int|2
-suffix:semicolon
-r_uint8
-id|scsi_bus_0_control
-suffix:colon
-l_int|2
-suffix:semicolon
-r_uint8
-id|unused_0
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_1
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_2
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|auto_term_support
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|f
-suffix:semicolon
-)brace
-id|termination
-suffix:semicolon
-multiline_comment|/* 17 */
-multiline_comment|/* Auto Term - 3                          */
-multiline_comment|/* High Only - 1 (GPIO2 = 1 &amp; GPIO3 = 0)  */
-multiline_comment|/* Disable - 0 (GPIO2 = 0 &amp; GPIO3 = X)    */
-r_uint16
-id|isp_parameter
-suffix:semicolon
-multiline_comment|/* 18, 19 */
-r_union
-(brace
-r_uint16
-id|w
-suffix:semicolon
-r_struct
-(brace
-r_uint16
-id|enable_fast_posting
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|report_lvd_bus_transition
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_2
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_3
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_4
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_5
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_6
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_8
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_9
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_10
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_11
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_12
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_13
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_14
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint16
-id|unused_15
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|f
-suffix:semicolon
-)brace
-id|firmware_feature
-suffix:semicolon
-multiline_comment|/* 20, 21 */
-r_uint16
-id|unused_22
-suffix:semicolon
-multiline_comment|/* 22, 23 */
-r_struct
-(brace
-r_struct
-(brace
-r_uint8
-id|initiator_id
-suffix:colon
-l_int|4
-suffix:semicolon
-r_uint8
-id|scsi_reset_disable
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|scsi_bus_size
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|scsi_bus_type
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|config_1
-suffix:semicolon
-multiline_comment|/* 24 */
-r_uint8
-id|bus_reset_delay
-suffix:semicolon
-multiline_comment|/* 25 */
-r_uint8
-id|retry_count
-suffix:semicolon
-multiline_comment|/* 26 */
-r_uint8
-id|retry_delay
-suffix:semicolon
-multiline_comment|/* 27 */
-multiline_comment|/* Adapter Capabilities bits */
-r_struct
-(brace
-r_uint8
-id|async_data_setup_time
-suffix:colon
-l_int|4
-suffix:semicolon
-r_uint8
-id|req_ack_active_negation
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|data_line_active_negation
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_6
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|config_2
-suffix:semicolon
-multiline_comment|/* 28 */
-r_uint8
-id|unused_29
-suffix:semicolon
-multiline_comment|/* 29 */
-r_uint16
-id|selection_timeout
-suffix:semicolon
-multiline_comment|/* 30, 31 */
-r_uint16
-id|max_queue_depth
-suffix:semicolon
-multiline_comment|/* 32, 33 */
-r_uint16
-id|unused_34
-suffix:semicolon
-multiline_comment|/* 34, 35 */
-r_uint16
-id|unused_36
-suffix:semicolon
-multiline_comment|/* 36, 37 */
-r_uint16
-id|unused_38
-suffix:semicolon
-multiline_comment|/* 38, 39 */
-r_struct
-(brace
-r_union
-(brace
-r_uint8
-id|c
-suffix:semicolon
-r_struct
-(brace
-r_uint8
-id|renegotiate_on_error
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|stop_queue_on_check
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|auto_request_sense
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|tag_queuing
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|sync_data_transfers
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|wide_data_transfers
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|parity_checking
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|disconnect_allowed
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|f
-suffix:semicolon
-)brace
-id|parameter
-suffix:semicolon
-multiline_comment|/* 40 */
-r_uint8
-id|execution_throttle
-suffix:semicolon
-multiline_comment|/* 41 */
-r_uint8
-id|sync_period
-suffix:semicolon
-multiline_comment|/* 42 */
-r_struct
-(brace
-r_uint8
-id|sync_offset
-suffix:colon
-l_int|5
-suffix:semicolon
-r_uint8
-id|device_enable
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_6
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|unused_7
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|flags1
-suffix:semicolon
-multiline_comment|/* 43 */
-r_struct
-(brace
-r_uint8
-id|ppr_options
-suffix:colon
-l_int|4
-suffix:semicolon
-r_uint8
-id|ppr_bus_width
-suffix:colon
-l_int|2
-suffix:semicolon
-r_uint8
-id|unused_8
-suffix:colon
-l_int|1
-suffix:semicolon
-r_uint8
-id|enable_ppr
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-id|flags2
-suffix:semicolon
-multiline_comment|/* 43 */
-r_uint8
-id|unused_45
-suffix:semicolon
-multiline_comment|/* 45 */
-)brace
-id|target
-(braket
-id|MAX_TARGETS
-)braket
-suffix:semicolon
-)brace
-id|bus
-(braket
-id|MAX_BUSES
-)braket
-suffix:semicolon
-r_uint16
-id|unused_248
-suffix:semicolon
-multiline_comment|/* 248, 249 */
-r_uint16
-id|subsystem_id
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* 250, 251, 252, 253 */
-r_uint8
-id|System_Id_Pointer
-suffix:semicolon
-multiline_comment|/* 254 */
-r_uint8
-id|chksum
-suffix:semicolon
-multiline_comment|/* 255 */
-macro_line|#else
-macro_line|#error neither __BIG_ENDIAN nor __LITTLE_ENDIAN is defined
-macro_line|#endif
-DECL|typedef|nvram160_t
-)brace
-id|nvram160_t
 suffix:semicolon
 multiline_comment|/*&n; * ISP queue - command entry structure definition.&n; */
 DECL|macro|MAX_CMDSZ
 mdefine_line|#define MAX_CMDSZ&t;12&t;&t;/* SCSI maximum CDB size. */
-r_typedef
+DECL|struct|cmd_entry
 r_struct
+id|cmd_entry
 (brace
 DECL|member|entry_type
 r_uint8
@@ -3260,13 +1472,12 @@ r_uint32
 id|dseg_3_length
 suffix:semicolon
 multiline_comment|/* Data segment 3 length. */
-DECL|typedef|cmd_entry_t
 )brace
-id|cmd_entry_t
 suffix:semicolon
 multiline_comment|/*&n; * ISP queue - continuation entry structure definition.&n; */
-r_typedef
+DECL|struct|cont_entry
 r_struct
+id|cont_entry
 (brace
 DECL|member|entry_type
 r_uint8
@@ -3365,13 +1576,12 @@ r_uint32
 id|dseg_6_length
 suffix:semicolon
 multiline_comment|/* Data segment 6 length. */
-DECL|typedef|cont_entry_t
 )brace
-id|cont_entry_t
 suffix:semicolon
 multiline_comment|/*&n; * ISP queue - status entry structure definition.&n; */
-r_typedef
+DECL|struct|response
 r_struct
+id|response
 (brace
 DECL|member|entry_type
 r_uint8
@@ -3472,16 +1682,12 @@ l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* Request sense data. */
-DECL|typedef|sts_entry_t
-DECL|typedef|response_t
 )brace
-id|sts_entry_t
-comma
-id|response_t
 suffix:semicolon
 multiline_comment|/*&n; * ISP queue - marker entry structure definition.&n; */
-r_typedef
+DECL|struct|mrk_entry
 r_struct
+id|mrk_entry
 (brace
 DECL|member|entry_type
 r_uint8
@@ -3537,13 +1743,12 @@ id|reserved_1
 l_int|53
 )braket
 suffix:semicolon
-DECL|typedef|mrk_entry_t
 )brace
-id|mrk_entry_t
 suffix:semicolon
-multiline_comment|/*&n; * ISP queue - extended command entry structure definition.&n; */
-r_typedef
+multiline_comment|/*&n; * ISP queue - extended command entry structure definition.&n; *&n; * Unused by the driver!&n; */
+DECL|struct|ecmd_entry
 r_struct
+id|ecmd_entry
 (brace
 DECL|member|entry_type
 r_uint8
@@ -3614,9 +1819,7 @@ l_int|88
 )braket
 suffix:semicolon
 multiline_comment|/* SCSI command words. */
-DECL|typedef|ecmd_entry_t
 )brace
-id|ecmd_entry_t
 suffix:semicolon
 multiline_comment|/*&n; * ISP queue - 64-Bit addressing, command entry structure definition.&n; */
 r_typedef
@@ -3733,8 +1936,9 @@ comma
 id|request_t
 suffix:semicolon
 multiline_comment|/*&n; * ISP queue - 64-Bit addressing, continuation entry structure definition.&n; */
-r_typedef
+DECL|struct|cont_a64_entry
 r_struct
+id|cont_a64_entry
 (brace
 DECL|member|entry_type
 r_uint8
@@ -3823,13 +2027,12 @@ r_uint32
 id|dseg_4_length
 suffix:semicolon
 multiline_comment|/* Data segment 4 length. */
-DECL|typedef|cont_a64_entry_t
 )brace
-id|cont_a64_entry_t
 suffix:semicolon
 multiline_comment|/*&n; * ISP queue - enable LUN entry structure definition.&n; */
-r_typedef
+DECL|struct|elun_entry
 r_struct
+id|elun_entry
 (brace
 DECL|member|entry_type
 r_uint8
@@ -3912,13 +2115,12 @@ id|reserved_6
 l_int|20
 )braket
 suffix:semicolon
-DECL|typedef|elun_entry_t
 )brace
-id|elun_entry_t
 suffix:semicolon
-multiline_comment|/*&n; * ISP queue - modify LUN entry structure definition.&n; */
-r_typedef
+multiline_comment|/*&n; * ISP queue - modify LUN entry structure definition.&n; *&n; * Unused by the driver!&n; */
+DECL|struct|modify_lun_entry
 r_struct
+id|modify_lun_entry
 (brace
 DECL|member|entry_type
 r_uint8
@@ -4001,13 +2203,12 @@ id|reserved_7
 l_int|20
 )braket
 suffix:semicolon
-DECL|typedef|modify_lun_entry_t
 )brace
-id|modify_lun_entry_t
 suffix:semicolon
 multiline_comment|/*&n; * ISP queue - immediate notify entry structure definition.&n; */
-r_typedef
+DECL|struct|notify_entry
 r_struct
+id|notify_entry
 (brace
 DECL|member|entry_type
 r_uint8
@@ -4099,13 +2300,12 @@ id|sense_data
 l_int|18
 )braket
 suffix:semicolon
-DECL|typedef|notify_entry_t
 )brace
-id|notify_entry_t
 suffix:semicolon
 multiline_comment|/*&n; * ISP queue - notify acknowledge entry structure definition.&n; */
-r_typedef
+DECL|struct|nack_entry
 r_struct
+id|nack_entry
 (brace
 DECL|member|entry_type
 r_uint8
@@ -4171,13 +2371,12 @@ id|reserved_4
 l_int|22
 )braket
 suffix:semicolon
-DECL|typedef|nack_entry_t
 )brace
-id|nack_entry_t
 suffix:semicolon
 multiline_comment|/*&n; * ISP queue - Accept Target I/O (ATIO) entry structure definition.&n; */
-r_typedef
+DECL|struct|atio_entry
 r_struct
+id|atio_entry
 (brace
 DECL|member|entry_type
 r_uint8
@@ -4256,13 +2455,12 @@ id|sense_data
 l_int|18
 )braket
 suffix:semicolon
-DECL|typedef|atio_entry_t
 )brace
-id|atio_entry_t
 suffix:semicolon
 multiline_comment|/*&n; * ISP queue - Continue Target I/O (CTIO) entry structure definition.&n; */
-r_typedef
+DECL|struct|ctio_entry
 r_struct
+id|ctio_entry
 (brace
 DECL|member|entry_type
 r_uint8
@@ -4386,13 +2584,12 @@ r_uint32
 id|dseg_3_length
 suffix:semicolon
 multiline_comment|/* Data segment 3 length. */
-DECL|typedef|ctio_entry_t
 )brace
-id|ctio_entry_t
 suffix:semicolon
 multiline_comment|/*&n; * ISP queue - CTIO returned entry structure definition.&n; */
-r_typedef
+DECL|struct|ctio_ret_entry
 r_struct
+id|ctio_ret_entry
 (brace
 DECL|member|entry_type
 r_uint8
@@ -4503,13 +2700,12 @@ id|sense_data
 l_int|18
 )braket
 suffix:semicolon
-DECL|typedef|ctio_ret_entry_t
 )brace
-id|ctio_ret_entry_t
 suffix:semicolon
 multiline_comment|/*&n; * ISP queue - CTIO A64 entry structure definition.&n; */
-r_typedef
+DECL|struct|ctio_a64_entry
 r_struct
+id|ctio_a64_entry
 (brace
 DECL|member|entry_type
 r_uint8
@@ -4626,13 +2822,12 @@ r_uint32
 id|dseg_1_length
 suffix:semicolon
 multiline_comment|/* Data segment 1 length. */
-DECL|typedef|ctio_a64_entry_t
 )brace
-id|ctio_a64_entry_t
 suffix:semicolon
 multiline_comment|/*&n; * ISP queue - CTIO returned entry structure definition.&n; */
-r_typedef
+DECL|struct|ctio_a64_ret_entry
 r_struct
+id|ctio_a64_ret_entry
 (brace
 DECL|member|entry_type
 r_uint8
@@ -4730,13 +2925,11 @@ id|sense_data
 l_int|18
 )braket
 suffix:semicolon
-DECL|typedef|ctio_a64_ret_entry_t
 )brace
-id|ctio_a64_ret_entry_t
 suffix:semicolon
 multiline_comment|/*&n; * ISP request and response queue entry sizes&n; */
 DECL|macro|RESPONSE_ENTRY_SIZE
-mdefine_line|#define RESPONSE_ENTRY_SIZE&t;(sizeof(response_t))
+mdefine_line|#define RESPONSE_ENTRY_SIZE&t;(sizeof(struct response))
 DECL|macro|REQUEST_ENTRY_SIZE
 mdefine_line|#define REQUEST_ENTRY_SIZE&t;(sizeof(request_t))
 multiline_comment|/*&n; * ISP status entry - completion status definitions.&n; */
@@ -4836,48 +3029,10 @@ DECL|macro|OF_FORCE_DISC
 mdefine_line|#define OF_FORCE_DISC       BIT_30&t;/* Disconnects mandatory */
 DECL|macro|OF_SSTS
 mdefine_line|#define OF_SSTS             BIT_31&t;/* Send SCSI status */
-macro_line|#if QL1280_TARGET_MODE_SUPPORT
-multiline_comment|/*&n; * Target Read/Write buffer structure.&n; */
-DECL|macro|TARGET_DATA_OFFSET
-mdefine_line|#define TARGET_DATA_OFFSET&t;4
-DECL|macro|TARGET_DATA_SIZE
-mdefine_line|#define TARGET_DATA_SIZE&t;0x2000&t;/* 8K */
-DECL|macro|TARGET_INQ_OFFSET
-mdefine_line|#define TARGET_INQ_OFFSET&t;(TARGET_DATA_OFFSET + TARGET_DATA_SIZE)
-DECL|macro|TARGET_SENSE_SIZE
-mdefine_line|#define TARGET_SENSE_SIZE&t;18
-DECL|macro|TARGET_BUF_SIZE
-mdefine_line|#define TARGET_BUF_SIZE&t;&t;36
-r_typedef
+multiline_comment|/*&n; * BUS parameters/settings structure - UNUSED&n; */
+DECL|struct|bus_param
 r_struct
-(brace
-DECL|member|hdr
-r_uint8
-id|hdr
-(braket
-l_int|4
-)braket
-suffix:semicolon
-DECL|member|data
-r_uint8
-id|data
-(braket
-id|TARGET_DATA_SIZE
-)braket
-suffix:semicolon
-DECL|member|inq
-r_struct
-id|ident
-id|inq
-suffix:semicolon
-DECL|typedef|tgt_t
-)brace
-id|tgt_t
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n; * BUS parameters/settings structure&n; */
-r_typedef
-r_struct
+id|bus_param
 (brace
 DECL|member|id
 r_uint8
@@ -4937,9 +3092,49 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* SCSI Bus is Dead, when 5 back to back resets failed */
-DECL|typedef|bus_param_t
 )brace
-id|bus_param_t
+suffix:semicolon
+DECL|struct|qla_driver_setup
+r_struct
+id|qla_driver_setup
+(brace
+DECL|member|no_sync
+r_uint32
+id|no_sync
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|no_wide
+r_uint32
+id|no_wide
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|no_ppr
+r_uint32
+id|no_ppr
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|no_nvram
+r_uint32
+id|no_nvram
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|sync_mask
+r_uint16
+id|sync_mask
+suffix:semicolon
+DECL|member|wide_mask
+r_uint16
+id|wide_mask
+suffix:semicolon
+DECL|member|ppr_mask
+r_uint16
+id|ppr_mask
+suffix:semicolon
+)brace
 suffix:semicolon
 multiline_comment|/*&n; * Linux Host Adapter structure&n; */
 DECL|struct|scsi_qla_host
@@ -4967,26 +3162,7 @@ op_star
 id|iobase
 suffix:semicolon
 multiline_comment|/* Base Memory-mapped I/O address */
-DECL|member|pci_bus
-r_uint8
-id|pci_bus
-suffix:semicolon
-DECL|member|pci_device_fn
-r_uint8
-id|pci_device_fn
-suffix:semicolon
-DECL|member|devnum
-r_uint8
-id|devnum
-suffix:semicolon
-DECL|member|pdev
-r_struct
-id|pci_dev
-op_star
-id|pdev
-suffix:semicolon
 DECL|member|mmpbase
-r_volatile
 r_int
 r_char
 op_star
@@ -5003,6 +3179,28 @@ r_int
 r_int
 id|instance
 suffix:semicolon
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
+DECL|member|device_id
+r_uint32
+id|device_id
+suffix:semicolon
+DECL|member|pci_bus
+r_uint8
+id|pci_bus
+suffix:semicolon
+DECL|member|pci_device_fn
+r_uint8
+id|pci_device_fn
+suffix:semicolon
+DECL|member|devnum
+r_uint8
+id|devnum
+suffix:semicolon
 DECL|member|revision
 r_uint8
 id|revision
@@ -5016,11 +3214,6 @@ r_int
 r_int
 id|actthreads
 suffix:semicolon
-DECL|member|qthreads
-r_int
-r_int
-id|qthreads
-suffix:semicolon
 DECL|member|isr_count
 r_int
 r_int
@@ -5032,13 +3225,10 @@ r_int
 r_int
 id|spurious_int
 suffix:semicolon
-DECL|member|device_id
-r_uint32
-id|device_id
-suffix:semicolon
 multiline_comment|/* Outstandings ISP commands. */
 DECL|member|outstanding_cmds
-id|srb_t
+r_struct
+id|srb
 op_star
 id|outstanding_cmds
 (braket
@@ -5047,29 +3237,20 @@ id|MAX_OUTSTANDING_COMMANDS
 suffix:semicolon
 multiline_comment|/* BUS configuration data */
 DECL|member|bus_settings
-id|bus_param_t
+r_struct
+id|bus_param
 id|bus_settings
 (braket
 id|MAX_BUSES
 )braket
 suffix:semicolon
-multiline_comment|/* Device LUN queues. */
-DECL|member|dev
-r_struct
-id|scsi_lu
-op_star
-id|dev
-(braket
-id|MAX_EQ
-)braket
-suffix:semicolon
-multiline_comment|/* Logical unit queues */
+macro_line|#if 0
 multiline_comment|/* bottom half run queue */
-DECL|member|run_qla_bh
 r_struct
-id|work_struct
+id|tq_struct
 id|run_qla_bh
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Received ISP mailbox data. */
 DECL|member|mailbox_out
 r_volatile
@@ -5122,13 +3303,15 @@ id|response_dma
 suffix:semicolon
 multiline_comment|/* Physical address. */
 DECL|member|response_ring
-id|response_t
+r_struct
+id|response
 op_star
 id|response_ring
 suffix:semicolon
 multiline_comment|/* Base virtual address */
 DECL|member|response_ring_ptr
-id|response_t
+r_struct
+id|response
 op_star
 id|response_ring_ptr
 suffix:semicolon
@@ -5138,29 +3321,6 @@ r_uint16
 id|rsp_ring_index
 suffix:semicolon
 multiline_comment|/* Current index. */
-macro_line|#if QL1280_TARGET_MODE_SUPPORT
-multiline_comment|/* Target buffer and sense data. */
-DECL|member|tbuf_dma
-id|dma_addr_t
-id|tbuf_dma
-suffix:semicolon
-multiline_comment|/* Physical address. */
-DECL|member|tsense_dma
-id|dma_addr_t
-id|tsense_dma
-suffix:semicolon
-multiline_comment|/* Physical address. */
-DECL|member|tbuf
-id|tgt_t
-op_star
-id|tbuf
-suffix:semicolon
-DECL|member|tsense
-r_uint8
-op_star
-id|tsense
-suffix:semicolon
-macro_line|#endif
 macro_line|#if WATCHDOGTIMER
 multiline_comment|/* Watchdog queue, lock and total timer */
 DECL|member|watchdog_q_lock
@@ -5169,13 +3329,15 @@ id|watchdog_q_lock
 suffix:semicolon
 multiline_comment|/* Lock for watchdog queue */
 DECL|member|wdg_q_first
-id|srb_t
+r_struct
+id|srb
 op_star
 id|wdg_q_first
 suffix:semicolon
 multiline_comment|/* First job on watchdog queue */
 DECL|member|wdg_q_last
-id|srb_t
+r_struct
+id|srb
 op_star
 id|wdg_q_last
 suffix:semicolon
@@ -5191,116 +3353,123 @@ id|watchdogactive
 suffix:semicolon
 macro_line|#endif
 DECL|member|done_q_first
-id|srb_t
+r_struct
+id|srb
 op_star
 id|done_q_first
 suffix:semicolon
 multiline_comment|/* First job on done queue */
 DECL|member|done_q_last
-id|srb_t
+r_struct
+id|srb
 op_star
 id|done_q_last
 suffix:semicolon
 multiline_comment|/* Last job on done queue */
+DECL|member|mailbox_wait
+r_struct
+id|completion
+op_star
+id|mailbox_wait
+suffix:semicolon
 r_volatile
 r_struct
 (brace
-DECL|member|mbox_int
-r_uint32
-id|mbox_int
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 0 */
 DECL|member|mbox_busy
 r_uint32
 id|mbox_busy
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 1 */
+multiline_comment|/* 0 */
 DECL|member|online
 r_uint32
 id|online
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 2 */
+multiline_comment|/* 1 */
 DECL|member|reset_marker
 r_uint32
 id|reset_marker
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 3 */
-DECL|member|isp_abort_needed
-r_uint32
-id|isp_abort_needed
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 4 */
+multiline_comment|/* 2 */
 DECL|member|disable_host_adapter
 r_uint32
 id|disable_host_adapter
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 5 */
+multiline_comment|/* 4 */
 DECL|member|reset_active
 r_uint32
 id|reset_active
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 6 */
+multiline_comment|/* 5 */
 DECL|member|abort_isp_active
 r_uint32
 id|abort_isp_active
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 7 */
+multiline_comment|/* 6 */
 DECL|member|disable_risc_code_load
 r_uint32
 id|disable_risc_code_load
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 8 */
+multiline_comment|/* 7 */
 DECL|member|enable_64bit_addressing
 r_uint32
 id|enable_64bit_addressing
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 9 */
+multiline_comment|/* 8 */
 DECL|member|in_reset
 r_uint32
 id|in_reset
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* 10 */
+multiline_comment|/* 9 */
 DECL|member|ints_enabled
 r_uint32
 id|ints_enabled
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|ignore_nvram
+r_uint32
+id|ignore_nvram
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#ifdef __ia64__
+DECL|member|use_pci_vchannel
+r_uint32
+id|use_pci_vchannel
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#endif
 DECL|member|flags
 )brace
 id|flags
 suffix:semicolon
-multiline_comment|/* needed holders for PCI ordered list of hosts */
-DECL|member|io_port
-r_int
-r_int
-id|io_port
+DECL|member|nvram
+r_struct
+id|nvram
+id|nvram
 suffix:semicolon
-DECL|member|irq
-r_uint32
-id|irq
+DECL|member|nvram_valid
+r_int
+id|nvram_valid
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -5311,6 +3480,26 @@ DECL|macro|LU_Q
 mdefine_line|#define LU_Q(ha, b, t, l)&t;(ha-&gt;dev[SUBDEV(b, t, l)])
 macro_line|#endif&t;&t;&t;&t;/* HOSTS_C */
 multiline_comment|/*&n; *  Linux - SCSI Driver Interface Function Prototypes.&n; */
+r_int
+id|qla1280_proc_info
+c_func
+(paren
+r_char
+op_star
+comma
+r_char
+op_star
+op_star
+comma
+id|off_t
+comma
+r_int
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
 r_const
 r_char
 op_star
@@ -5358,25 +3547,22 @@ op_star
 )paren
 )paren
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; 0x020545
 r_int
-id|qla1280_abort
+id|qla1280_biosparam
 c_func
 (paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_int
-id|qla1280_reset
-c_func
-(paren
-id|Scsi_Cmnd
+id|Disk
 op_star
 comma
+id|kdev_t
+comma
 r_int
-r_int
+(braket
+)braket
 )paren
 suffix:semicolon
+macro_line|#else
 r_int
 id|qla1280_biosparam
 c_func
@@ -5392,45 +3578,69 @@ comma
 id|sector_t
 comma
 r_int
-(braket
-)braket
+op_star
 )paren
 suffix:semicolon
-r_static
+macro_line|#endif
 r_int
-id|qla1280_slave_configure
-c_func
-(paren
-id|Scsi_Device
-op_star
-)paren
-suffix:semicolon
-id|irqreturn_t
-id|qla1280_intr_handler
-c_func
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_void
+id|__init
 id|qla1280_setup
 c_func
 (paren
 r_char
 op_star
 id|s
-comma
-r_int
-op_star
-id|dummy
 )paren
 suffix:semicolon
+r_int
+id|qla1280_eh_abort
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
+r_int
+id|qla1280_eh_device_reset
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
+r_int
+id|qla1280_eh_bus_reset
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
+r_int
+id|qla1280_eh_adapter_reset
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; 0x020545
+DECL|macro|USE_NEW_EH
+mdefine_line|#define USE_NEW_EH&t;.use_new_eh_code= 1
+macro_line|#else
+DECL|macro|USE_NEW_EH
+mdefine_line|#define USE_NEW_EH
+macro_line|#endif
+multiline_comment|/*&n; * Scsi_Host_template (see hosts.h)&n; * Device driver Interfaces to mid-level SCSI driver.&n; */
+DECL|macro|QLA1280_LINUX_TEMPLATE
+mdefine_line|#define QLA1280_LINUX_TEMPLATE {&t;&t;&t;&t;&bslash;&n;&t;.module = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.proc_dir = NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;.proc_info = qla1280_proc_info,&t;&t;&t;&t;&bslash;&n;&t;.name = &quot;Qlogic ISP 1280/12160&quot;,&t;&t;&t;&bslash;&n;&t;.detect = qla1280_detect,&t;&t;&t;&t;&bslash;&n;&t;.release = qla1280_release,&t;&t;&t;&t;&bslash;&n;&t;.info = qla1280_info,&t;&t;&t;&t;&t;&bslash;&n;&t;.ioctl = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.command = NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;.queuecommand = qla1280_queuecommand,&t;&t;&t;&bslash;&n;&t;.eh_strategy_handler = NULL,&t;&t;&t;&t;&bslash;&n;&t;.eh_abort_handler = qla1280_eh_abort,&t;&t;&t;&bslash;&n;&t;.eh_device_reset_handler = qla1280_eh_device_reset,&t;&bslash;&n;&t;.eh_bus_reset_handler = qla1280_eh_bus_reset,&t;&t;&bslash;&n;&t;.eh_host_reset_handler = qla1280_eh_adapter_reset,&t;&bslash;&n;&t;.bios_param = qla1280_biosparam,&t;&t;&t;&bslash;&n;&t;.can_queue = 255,&t;/* max simultaneous cmds      */&bslash;&n;&t;.this_id = -1,&t;&t;/* scsi id of host adapter    */&bslash;&n;&t;.sg_tablesize = SG_ALL,&t;/* max scatter-gather cmds    */&bslash;&n;&t;.cmd_per_lun = 3,&t;/* cmds per lun (linked cmds) */&bslash;&n;&t;.present = 0,&t;&t;/* number of 1280&squot;s present   */&bslash;&n;&t;.unchecked_isa_dma = 0,&t;/* no memory DMA restrictions */&bslash;&n;&t;.use_clustering = ENABLE_CLUSTERING,&t;&t;&t;&bslash;&n;&t;.emulated = 0,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;USE_NEW_EH&t;&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#endif&t;&t;&t;&t;/* _IO_HBA_QLA1280_H */
 eof
