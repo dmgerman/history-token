@@ -4442,6 +4442,7 @@ id|sys_getcwd
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|buf
 comma
