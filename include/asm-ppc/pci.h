@@ -755,8 +755,27 @@ suffix:semicolon
 multiline_comment|/* Tell drivers/pci/proc.c that we have pci_mmap_page_range() */
 DECL|macro|HAVE_PCI_MMAP
 mdefine_line|#define HAVE_PCI_MMAP&t;1
+r_extern
+r_void
+id|pcibios_resource_to_bus
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_struct
+id|pci_bus_region
+op_star
+id|region
+comma
+r_struct
+id|resource
+op_star
+id|res
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* __KERNEL__ */
-multiline_comment|/* generic pci stuff */
-macro_line|#include &lt;asm-generic/pci.h&gt;
 macro_line|#endif /* __PPC_PCI_H */
 eof
