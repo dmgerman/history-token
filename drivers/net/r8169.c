@@ -7695,6 +7695,10 @@ comma
 id|PCI_DMA_TODEVICE
 )paren
 suffix:semicolon
+id|desc-&gt;opts1
+op_assign
+l_int|0x00
+suffix:semicolon
 id|desc-&gt;opts2
 op_assign
 l_int|0x00
