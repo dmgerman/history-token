@@ -1,6 +1,7 @@
-macro_line|#ifndef __LINUX_PARPORT_GSC_H
-DECL|macro|__LINUX_PARPORT_GSC_H
-mdefine_line|#define __LINUX_PARPORT_GSC_H
+multiline_comment|/*&n; *&t;Low-level parallel-support for PC-style hardware integrated in the&n; *&t;LASI-Controller (on GSC-Bus) for HP-PARISC Workstations&n; *&n; *&t;(C) 1999-2001 by Helge Deller &lt;deller@gmx.de&gt;&n; *&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * based on parport_pc.c by&n; * &t;    Grant Guenther &lt;grant@torque.net&gt;&n; * &t;    Phil Blundell &lt;Philip.Blundell@pobox.com&gt;&n; *          Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; *&t;    Jose Renau &lt;renau@acm.org&gt;&n; *          David Campbell &lt;campbell@torque.net&gt;&n; *          Andrea Arcangeli&n; */
+macro_line|#ifndef&t;__DRIVERS_PARPORT_PARPORT_GSC_H
+DECL|macro|__DRIVERS_PARPORT_PARPORT_GSC_H
+mdefine_line|#define&t;__DRIVERS_PARPORT_PARPORT_GSC_H
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 DECL|macro|DEBUG_PARPORT
@@ -132,8 +133,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|parport_gsc_write_data
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|parport_gsc_write_data
 c_func
@@ -174,8 +175,8 @@ id|p
 suffix:semicolon
 )brace
 DECL|function|parport_gsc_read_data
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_char
 id|parport_gsc_read_data
@@ -218,10 +219,11 @@ suffix:semicolon
 multiline_comment|/* __parport_gsc_frob_control differs from parport_gsc_frob_control in that&n; * it doesn&squot;t do any extra masking. */
 DECL|function|__parport_gsc_frob_control
 r_static
-id|__inline__
+r_inline
 r_int
 r_char
 id|__parport_gsc_frob_control
+c_func
 (paren
 r_struct
 id|parport
@@ -313,10 +315,11 @@ id|ctr
 suffix:semicolon
 )brace
 DECL|function|parport_gsc_data_reverse
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|parport_gsc_data_reverse
+c_func
 (paren
 r_struct
 id|parport
@@ -335,10 +338,11 @@ l_int|0x20
 suffix:semicolon
 )brace
 DECL|function|parport_gsc_data_forward
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|parport_gsc_data_forward
+c_func
 (paren
 r_struct
 id|parport
@@ -357,10 +361,11 @@ l_int|0x00
 suffix:semicolon
 )brace
 DECL|function|parport_gsc_write_control
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|parport_gsc_write_control
+c_func
 (paren
 r_struct
 id|parport
@@ -425,8 +430,8 @@ id|wm
 suffix:semicolon
 )brace
 DECL|function|parport_gsc_read_control
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_char
 id|parport_gsc_read_control
@@ -469,11 +474,12 @@ suffix:semicolon
 multiline_comment|/* Use soft copy */
 )brace
 DECL|function|parport_gsc_frob_control
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_char
 id|parport_gsc_frob_control
+c_func
 (paren
 r_struct
 id|parport
@@ -574,8 +580,8 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|parport_gsc_read_status
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_char
 id|parport_gsc_read_status
@@ -599,8 +605,8 @@ id|p
 suffix:semicolon
 )brace
 DECL|function|parport_gsc_disable_irq
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|parport_gsc_disable_irq
 c_func
@@ -622,8 +628,8 @@ l_int|0x00
 suffix:semicolon
 )brace
 DECL|function|parport_gsc_enable_irq
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|parport_gsc_enable_irq
 c_func
@@ -734,6 +740,7 @@ r_struct
 id|parport
 op_star
 id|parport_gsc_probe_port
+c_func
 (paren
 r_int
 r_int
@@ -755,5 +762,5 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif&t;/* __DRIVERS_PARPORT_PARPORT_GSC_H */
 eof
