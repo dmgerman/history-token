@@ -1085,6 +1085,10 @@ id|PAGE_OFFSET
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* The allocator is very picky about the address of the first&n;&t;   allocatable page -- it must be at least as aligned as the&n;&t;   maximum allocation -- so try to detect cases where it will get&n;&t;   confused and signal them at compile time (this is a common&n;&t;   problem when porting to a new platform with ).  There is a&n;&t;   similar runtime check in free_area_init_core.  */
+macro_line|#if ((PAGE_OFFSET &gt;&gt; PAGE_SHIFT) &amp; ((1UL &lt;&lt; (MAX_ORDER - 1)) - 1))
+macro_line|#error MAX_ORDER is too large for given PAGE_OFFSET (use CONFIG_FORCE_MAX_ZONEORDER to change it)
+macro_line|#endif
 id|free_area_init_node
 (paren
 l_int|0
