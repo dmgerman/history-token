@@ -1017,9 +1017,15 @@ comma
 dot
 id|pio_mask
 op_assign
-l_int|0x03
+l_int|0x1f
 comma
-multiline_comment|/* pio3-4 */
+multiline_comment|/* pio0-4 */
+dot
+id|mwdma_mask
+op_assign
+l_int|0x07
+comma
+multiline_comment|/* mwdma0-2 */
 dot
 id|udma_mask
 op_assign
@@ -7210,6 +7216,15 @@ id|board_idx
 )braket
 dot
 id|pio_mask
+suffix:semicolon
+id|probe_ent-&gt;mwdma_mask
+op_assign
+id|pdc_port_info
+(braket
+id|board_idx
+)braket
+dot
+id|mwdma_mask
 suffix:semicolon
 id|probe_ent-&gt;udma_mask
 op_assign
