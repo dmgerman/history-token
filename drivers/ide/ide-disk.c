@@ -9243,6 +9243,9 @@ op_star
 id|filp
 )paren
 (brace
+id|u8
+id|cf
+suffix:semicolon
 id|ide_drive_t
 op_star
 id|drive
@@ -9264,9 +9267,6 @@ l_int|1
 (brace
 id|ide_task_t
 id|args
-suffix:semicolon
-id|u8
-id|cf
 suffix:semicolon
 id|memset
 c_func
@@ -9325,11 +9325,12 @@ id|drive-&gt;doorlocking
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 id|drive-&gt;wcache
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Cache enabled ? */
+multiline_comment|/* Cache enabled? */
 r_if
 c_cond
 (paren
@@ -9341,7 +9342,7 @@ id|drive-&gt;wcache
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Cache command set available ? */
+multiline_comment|/* Cache command set available? */
 r_if
 c_cond
 (paren
@@ -9383,13 +9384,10 @@ l_int|0x30
 op_ne
 l_int|0
 )paren
-(brace
 id|drive-&gt;wcache
 op_assign
 l_int|1
 suffix:semicolon
-)brace
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -9465,6 +9463,12 @@ id|drive
 op_assign
 id|inode-&gt;i_bdev-&gt;bd_disk-&gt;private_data
 suffix:semicolon
+id|ide_cacheflush_p
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9529,12 +9533,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|ide_cacheflush_p
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
 id|drive-&gt;usage
 op_decrement
 suffix:semicolon
