@@ -127,7 +127,15 @@ r_int
 )paren
 id|addr
 comma
-l_int|235
+m_offsetof
+(paren
+r_struct
+id|tss_struct
+comma
+id|__cacheline_filler
+)paren
+op_minus
+l_int|1
 comma
 l_int|0x89
 )paren
