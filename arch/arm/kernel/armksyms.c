@@ -369,6 +369,13 @@ c_func
 id|memscan
 )paren
 suffix:semicolon
+DECL|variable|memchr
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|memchr
+)paren
+suffix:semicolon
 DECL|variable|__memzero
 id|EXPORT_SYMBOL_NOVERS
 c_func
