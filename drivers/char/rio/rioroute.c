@@ -3037,7 +3037,7 @@ r_if
 c_cond
 (paren
 id|UnitId
-OG
+op_ge
 id|MAX_RUP
 )paren
 multiline_comment|/* dontcha just lurv unsigned maths! */
