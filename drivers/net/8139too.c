@@ -9605,7 +9605,7 @@ id|SIOCETHTOOL
 multiline_comment|/* With SIOCETHTOOL, this would corrupt the pointer.  */
 id|data-&gt;phy_id
 op_and_assign
-l_int|0x1f
+l_int|0x3f
 suffix:semicolon
 id|data-&gt;reg_num
 op_and_assign
