@@ -370,24 +370,6 @@ id|baud
 suffix:semicolon
 r_static
 r_void
-id|ali_ircc_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_static
-r_void
 id|ali_ircc_suspend
 c_func
 (paren
@@ -2600,7 +2582,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Function ali_ircc_interrupt (irq, dev_id, regs)&n; *&n; *    An interrupt from the chip has arrived. Time to do some work&n; *&n; */
 DECL|function|ali_ircc_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|ali_ircc_interrupt
 c_func
 (paren
@@ -2662,6 +2644,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|self
@@ -2725,6 +2708,9 @@ l_string|&quot;%s(), ----------------- End ------------------&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function ali_ircc_fir_interrupt(irq, struct ali_ircc_cb *self, regs)&n; *&n; *    Handle MIR/FIR interrupt&n; *&n; */

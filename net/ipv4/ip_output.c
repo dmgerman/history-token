@@ -854,7 +854,12 @@ c_cond
 (paren
 id|skb-&gt;len
 OG
-id|dev-&gt;mtu
+id|dst_pmtu
+c_func
+(paren
+op_amp
+id|rt-&gt;u.dst
+)paren
 op_logical_or
 id|skb_shinfo
 c_func
@@ -905,7 +910,11 @@ c_cond
 (paren
 id|skb-&gt;len
 OG
-id|skb-&gt;dst-&gt;dev-&gt;mtu
+id|dst_pmtu
+c_func
+(paren
+id|skb-&gt;dst
+)paren
 op_logical_or
 id|skb_shinfo
 c_func
