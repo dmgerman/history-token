@@ -1215,16 +1215,6 @@ id|notifier_call
 op_assign
 id|ali_notify_sys
 comma
-dot
-id|next
-op_assign
-l_int|NULL
-comma
-dot
-id|priority
-op_assign
-l_int|0
-comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;watchdog_init&t;-&t;module initialiser&n; *&n; *&t;Scan for a suitable watchdog and if so initialize it. Return an error&n; *&t;if we cannot, the error causes the module to unload&n; */

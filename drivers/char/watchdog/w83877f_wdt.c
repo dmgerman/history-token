@@ -1023,16 +1023,6 @@ id|notifier_call
 op_assign
 id|wdt_notify_sys
 comma
-dot
-id|next
-op_assign
-l_int|NULL
-comma
-dot
-id|priority
-op_assign
-l_int|0
-comma
 )brace
 suffix:semicolon
 DECL|function|w83877f_wdt_unload

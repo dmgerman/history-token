@@ -1392,16 +1392,6 @@ id|notifier_call
 op_assign
 id|wdt_notify_sys
 comma
-dot
-id|next
-op_assign
-l_int|NULL
-comma
-dot
-id|priority
-op_assign
-l_int|0
-comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; *&t;cleanup_module:&n; *&n; *&t;Unload the watchdog. You cannot do this with any file handles open.&n; *&t;If your watchdog is set to continue ticking on close and you unload&n; *&t;it, well it keeps ticking. We won&squot;t get the interrupt but the board&n; *&t;will not touch PC memory so all is fine. You just have to load a new&n; *&t;module in 60 seconds or reboot.&n; */
