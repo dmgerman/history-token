@@ -441,12 +441,12 @@ id|server
 (brace
 r_int
 id|length
-comma
-id|total_read
 suffix:semicolon
 r_int
 r_int
 id|pdu_length
+comma
+id|total_read
 suffix:semicolon
 r_struct
 id|smb_hdr
