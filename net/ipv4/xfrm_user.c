@@ -4459,6 +4459,7 @@ id|dst_groups
 op_assign
 id|XFRMGRP_EXPIRE
 suffix:semicolon
+r_return
 id|netlink_broadcast
 c_func
 (paren
@@ -4472,9 +4473,6 @@ id|XFRMGRP_EXPIRE
 comma
 id|GFP_ATOMIC
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* XXX Make this xfrm_state.c:xfrm_get_acqseq() */
@@ -4793,6 +4791,7 @@ id|dst_groups
 op_assign
 id|XFRMGRP_ACQUIRE
 suffix:semicolon
+r_return
 id|netlink_broadcast
 c_func
 (paren
@@ -4806,9 +4805,6 @@ id|XFRMGRP_ACQUIRE
 comma
 id|GFP_ATOMIC
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* User gives us xfrm_user_policy_info followed by an array of 0&n; * or more templates.&n; */
