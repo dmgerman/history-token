@@ -763,7 +763,7 @@ id|bh
 )braket
 )paren
 suffix:semicolon
-r_void
+r_int
 id|sync_dirty_buffer
 c_func
 (paren

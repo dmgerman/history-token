@@ -10869,9 +10869,9 @@ id|bh
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * For a data-integrity writeout, we need to wait upon any in-progress I/O&n; * and then start new I/O and then wait upon it.&n; */
+multiline_comment|/*&n; * For a data-integrity writeout, we need to wait upon any in-progress I/O&n; * and then start new I/O and then wait upon it.  The caller must have a ref on&n; * the buffer_head.&n; */
 DECL|function|sync_dirty_buffer
-r_void
+r_int
 id|sync_dirty_buffer
 c_func
 (paren
@@ -10881,6 +10881,11 @@ op_star
 id|bh
 )paren
 (brace
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 id|WARN_ON
 c_func
 (paren
@@ -10920,6 +10925,8 @@ id|bh-&gt;b_end_io
 op_assign
 id|end_buffer_write_sync
 suffix:semicolon
+id|ret
+op_assign
 id|submit_bh
 c_func
 (paren
@@ -10934,6 +10941,24 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+op_logical_and
+op_logical_neg
+id|buffer_uptodate
+c_func
+(paren
+id|bh
+)paren
+)paren
+id|ret
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -10944,6 +10969,9 @@ id|bh
 )paren
 suffix:semicolon
 )brace
+r_return
+id|ret
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * try_to_free_buffers() checks if all the buffers on this particular page&n; * are unused, and releases them if so.&n; *&n; * Exclusion against try_to_free_buffers may be obtained by either&n; * locking the page or by holding its mapping&squot;s private_lock.&n; *&n; * If the page is dirty but all the buffers are clean then we need to&n; * be sure to mark the page clean as well.  This is because the page&n; * may be against a block device, and a later reattachment of buffers&n; * to a dirty page will set *all* buffers dirty.  Which would corrupt&n; * filesystem data on the same device.&n; *&n; * The same applies to regular filesystem pages: if all the buffers are&n; * clean then we set the page clean and proceed.  To do that, we require&n; * total exclusion from __set_page_dirty_buffers().  That is obtained with&n; * private_lock.&n; *&n; * try_to_free_buffers() is non-blocking.&n; */
 DECL|function|buffer_busy
