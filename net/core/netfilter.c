@@ -3693,7 +3693,7 @@ id|sk_buff
 op_star
 comma
 r_struct
-id|nf_ct_info
+id|sk_buff
 op_star
 )paren
 suffix:semicolon

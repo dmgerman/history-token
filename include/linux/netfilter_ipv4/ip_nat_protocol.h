@@ -14,11 +14,6 @@ DECL|struct|ip_nat_protocol
 r_struct
 id|ip_nat_protocol
 (brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
 multiline_comment|/* Protocol name */
 DECL|member|name
 r_const
@@ -168,6 +163,17 @@ id|range
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|MAX_IP_NAT_PROTO
+mdefine_line|#define MAX_IP_NAT_PROTO 256
+r_extern
+r_struct
+id|ip_nat_protocol
+op_star
+id|ip_nat_protos
+(braket
+id|MAX_IP_NAT_PROTO
+)braket
+suffix:semicolon
 multiline_comment|/* Protocol registration. */
 r_extern
 r_int
@@ -190,6 +196,47 @@ id|ip_nat_protocol
 op_star
 id|proto
 )paren
+suffix:semicolon
+DECL|function|ip_nat_find_proto
+r_static
+r_inline
+r_struct
+id|ip_nat_protocol
+op_star
+id|ip_nat_find_proto
+c_func
+(paren
+id|u_int8_t
+id|protocol
+)paren
+(brace
+r_return
+id|ip_nat_protos
+(braket
+id|protocol
+)braket
+suffix:semicolon
+)brace
+multiline_comment|/* Built-in protocols. */
+r_extern
+r_struct
+id|ip_nat_protocol
+id|ip_nat_protocol_tcp
+suffix:semicolon
+r_extern
+r_struct
+id|ip_nat_protocol
+id|ip_nat_protocol_udp
+suffix:semicolon
+r_extern
+r_struct
+id|ip_nat_protocol
+id|ip_nat_protocol_icmp
+suffix:semicolon
+r_extern
+r_struct
+id|ip_nat_protocol
+id|ip_nat_unknown_protocol
 suffix:semicolon
 r_extern
 r_int

@@ -548,7 +548,7 @@ op_star
 id|pskb
 )paren
 op_member_access_from_pointer
-id|nfct-&gt;master
+id|nfct
 suffix:semicolon
 r_if
 c_cond
@@ -741,10 +741,7 @@ id|nf_conntrack_put
 c_func
 (paren
 op_amp
-id|h-&gt;ctrack-&gt;infos
-(braket
-l_int|0
-)braket
+id|h-&gt;ctrack-&gt;ct_general
 )paren
 suffix:semicolon
 r_if
@@ -831,10 +828,7 @@ id|nf_conntrack_put
 c_func
 (paren
 op_amp
-id|h-&gt;ctrack-&gt;infos
-(braket
-l_int|0
-)braket
+id|h-&gt;ctrack-&gt;ct_general
 )paren
 suffix:semicolon
 id|ret

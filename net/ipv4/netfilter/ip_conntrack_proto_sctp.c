@@ -1899,8 +1899,7 @@ op_ne
 l_int|0
 )paren
 r_return
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1918,8 +1917,7 @@ op_ne
 l_int|0
 )paren
 r_return
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 multiline_comment|/* If an OOTB packet has any of these chunks discard (Sec 8.4) */
 r_if
@@ -1966,8 +1964,7 @@ id|map
 )paren
 (brace
 r_return
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 id|newconntrack
@@ -2064,8 +2061,7 @@ l_int|0
 )paren
 (brace
 r_return
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 id|DEBUGP
@@ -2088,8 +2084,7 @@ r_else
 (brace
 multiline_comment|/* Sec 8.5.1 (A) */
 r_return
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -2150,15 +2145,6 @@ id|ip_conntrack_protocol
 id|ip_conntrack_protocol_sctp
 op_assign
 (brace
-dot
-id|list
-op_assign
-(brace
-l_int|NULL
-comma
-l_int|NULL
-)brace
-comma
 dot
 id|proto
 op_assign

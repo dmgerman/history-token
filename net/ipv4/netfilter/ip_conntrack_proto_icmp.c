@@ -806,11 +806,12 @@ multiline_comment|/* Update skb to refer to this connection */
 id|skb-&gt;nfct
 op_assign
 op_amp
-id|h-&gt;ctrack-&gt;infos
-(braket
+id|h-&gt;ctrack-&gt;ct_general
+suffix:semicolon
+id|skb-&gt;nfctinfo
+op_assign
 op_star
 id|ctinfo
-)braket
 suffix:semicolon
 r_return
 op_minus
