@@ -549,6 +549,15 @@ OL
 l_int|2
 )paren
 (brace
+id|paca
+(braket
+id|i
+)braket
+dot
+id|active
+op_assign
+l_int|1
+suffix:semicolon
 op_increment
 id|np
 suffix:semicolon

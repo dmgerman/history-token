@@ -747,7 +747,7 @@ c_cond
 (paren
 id|cpu
 op_eq
-l_int|0
+id|boot_cpuid
 )paren
 (brace
 id|write_lock

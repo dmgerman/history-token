@@ -597,7 +597,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* for kernel thread, set `current&squot; and stackptr in new task */
+multiline_comment|/* for kernel thread, set stackptr in new task */
 id|childregs-&gt;gpr
 (braket
 l_int|1
@@ -610,17 +610,6 @@ r_sizeof
 r_struct
 id|pt_regs
 )paren
-suffix:semicolon
-id|childregs-&gt;gpr
-(braket
-l_int|13
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|p
 suffix:semicolon
 id|p-&gt;thread.regs
 op_assign
