@@ -1,9 +1,9 @@
-multiline_comment|/* &n; * Motion Eye video4linux driver for Sony Vaio PictureBook&n; *&n; * Copyright (C) 2001-2003 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; * &n; * Some parts borrowed from various video4linux drivers, especially&n; * bttv-driver.c and zoran.c, see original files for credits.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * Motion Eye video4linux driver for Sony Vaio PictureBook&n; *&n; * Copyright (C) 2001-2004 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; *&n; * Some parts borrowed from various video4linux drivers, especially&n; * bttv-driver.c and zoran.c, see original files for credits.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#ifndef _MEYE_PRIV_H_
 DECL|macro|_MEYE_PRIV_H_
 mdefine_line|#define _MEYE_PRIV_H_
 DECL|macro|MEYE_DRIVER_MAJORVERSION
-mdefine_line|#define MEYE_DRIVER_MAJORVERSION&t;1
+mdefine_line|#define MEYE_DRIVER_MAJORVERSION&t; 1
 DECL|macro|MEYE_DRIVER_MINORVERSION
 mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;10
 DECL|macro|MEYE_DRIVER_VERSION
@@ -19,7 +19,7 @@ multiline_comment|/* Motion JPEG chip PCI configuration registers */
 DECL|macro|MCHIP_PCI_POWER_CSR
 mdefine_line|#define MCHIP_PCI_POWER_CSR&t;&t;0x54
 DECL|macro|MCHIP_PCI_MCORE_STATUS
-mdefine_line|#define MCHIP_PCI_MCORE_STATUS&t;&t;0x60&t;/* see HIC_STATUS   */
+mdefine_line|#define MCHIP_PCI_MCORE_STATUS&t;&t;0x60&t;&t;/* see HIC_STATUS   */
 DECL|macro|MCHIP_PCI_HOSTUSEREQ_SET
 mdefine_line|#define MCHIP_PCI_HOSTUSEREQ_SET&t;0x64
 DECL|macro|MCHIP_PCI_HOSTUSEREQ_CLR
@@ -70,7 +70,7 @@ mdefine_line|#define MCHIP_MM_INTA_PCI_ERR&t;&t;0x00000040&t;/* PCI error */
 DECL|macro|MCHIP_MM_INTA_PCI_ERR_MASK
 mdefine_line|#define MCHIP_MM_INTA_PCI_ERR_MASK&t;0x00004000
 DECL|macro|MCHIP_MM_PT_ADDR
-mdefine_line|#define MCHIP_MM_PT_ADDR&t;&t;0x08&t;&t;/* page table address */
+mdefine_line|#define MCHIP_MM_PT_ADDR&t;&t;0x08&t;&t;/* page table address*/
 multiline_comment|/* n*4kB */
 DECL|macro|MCHIP_NB_PAGES
 mdefine_line|#define MCHIP_NB_PAGES&t;&t;&t;1024&t;&t;/* pages for display */
@@ -413,7 +413,6 @@ DECL|struct|meye
 r_struct
 id|meye
 (brace
-multiline_comment|/* mchip related */
 DECL|member|mchip_dev
 r_struct
 id|pci_dev
@@ -494,7 +493,6 @@ id|MEYE_MAX_BUFNBRS
 )braket
 suffix:semicolon
 multiline_comment|/* mmap count */
-multiline_comment|/* other */
 DECL|member|lock
 r_struct
 id|semaphore
