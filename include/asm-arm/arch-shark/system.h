@@ -16,7 +16,7 @@ id|mode
 r_int
 id|temp
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren

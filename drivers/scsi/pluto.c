@@ -175,7 +175,7 @@ op_star
 id|SCpnt
 )paren
 (brace
-id|SCpnt-&gt;request.rq_status
+id|SCpnt-&gt;request-&gt;rq_status
 op_assign
 id|RQ_SCSI_DONE
 suffix:semicolon
@@ -619,7 +619,7 @@ c_func
 id|INQUIRY
 )paren
 suffix:semicolon
-id|SCpnt-&gt;request.rq_status
+id|SCpnt-&gt;request-&gt;rq_status
 op_assign
 id|RQ_SCSI_BUSY
 suffix:semicolon
@@ -722,7 +722,7 @@ id|fcs
 id|i
 )braket
 dot
-id|cmd.request.rq_status
+id|cmd.request-&gt;rq_status
 op_ne
 id|RQ_SCSI_DONE
 )paren

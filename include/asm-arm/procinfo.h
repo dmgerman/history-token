@@ -105,20 +105,22 @@ macro_line|#endif&t;/* __ASSEMBLY__ */
 DECL|macro|PROC_INFO_SZ
 mdefine_line|#define PROC_INFO_SZ&t;44
 DECL|macro|HWCAP_SWP
-mdefine_line|#define HWCAP_SWP&t; 1
+mdefine_line|#define HWCAP_SWP&t;1
 DECL|macro|HWCAP_HALF
-mdefine_line|#define HWCAP_HALF&t; 2
+mdefine_line|#define HWCAP_HALF&t;2
 DECL|macro|HWCAP_THUMB
-mdefine_line|#define HWCAP_THUMB&t; 4
+mdefine_line|#define HWCAP_THUMB&t;4
 DECL|macro|HWCAP_26BIT
-mdefine_line|#define HWCAP_26BIT&t; 8&t;/* Play it safe */
+mdefine_line|#define HWCAP_26BIT&t;8&t;/* Play it safe */
 DECL|macro|HWCAP_FAST_MULT
-mdefine_line|#define HWCAP_FAST_MULT&t; 16
+mdefine_line|#define HWCAP_FAST_MULT&t;16
 DECL|macro|HWCAP_FPA
-mdefine_line|#define HWCAP_FPA        32
+mdefine_line|#define HWCAP_FPA&t;32
 DECL|macro|HWCAP_VFP
-mdefine_line|#define HWCAP_VFP        64
+mdefine_line|#define HWCAP_VFP&t;64
 DECL|macro|HWCAP_EDSP
-mdefine_line|#define HWCAP_EDSP&t; 128
+mdefine_line|#define HWCAP_EDSP&t;128
+DECL|macro|HWCAP_JAVA
+mdefine_line|#define HWCAP_JAVA&t;256
 macro_line|#endif
 eof

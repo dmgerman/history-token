@@ -55,8 +55,6 @@ multiline_comment|/*&n; * PFS-168 definitions:&n; */
 DECL|macro|SA1111_BASE
 mdefine_line|#define SA1111_BASE             (0x40000000)
 macro_line|#ifndef __ASSEMBLY__
-DECL|macro|machine_has_neponset
-mdefine_line|#define machine_has_neponset() (0)
 DECL|macro|PFS168_COM5_VBASE
 mdefine_line|#define PFS168_COM5_VBASE&t;&t;(*((volatile unsigned char *)(0xf0000000UL)))
 DECL|macro|PFS168_COM6_VBASE

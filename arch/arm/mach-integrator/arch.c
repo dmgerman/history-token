@@ -122,6 +122,9 @@ id|integrator_mouse
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|integrator_init
 id|__initcall

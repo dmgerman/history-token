@@ -5401,7 +5401,7 @@ op_assign
 op_amp
 id|sem
 suffix:semicolon
-id|fc-&gt;rst_pkt-&gt;request.rq_status
+id|fc-&gt;rst_pkt-&gt;request-&gt;rq_status
 op_assign
 id|RQ_SCSI_BUSY
 suffix:semicolon
