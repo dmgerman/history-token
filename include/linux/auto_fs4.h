@@ -17,6 +17,11 @@ DECL|macro|AUTOFS_MIN_PROTO_VERSION
 mdefine_line|#define AUTOFS_MIN_PROTO_VERSION&t;3
 DECL|macro|AUTOFS_MAX_PROTO_VERSION
 mdefine_line|#define AUTOFS_MAX_PROTO_VERSION&t;4
+multiline_comment|/* Mask for expire behaviour */
+DECL|macro|AUTOFS_EXP_IMMEDIATE
+mdefine_line|#define AUTOFS_EXP_IMMEDIATE&t;&t;1
+DECL|macro|AUTOFS_EXP_LEAVES
+mdefine_line|#define AUTOFS_EXP_LEAVES&t;&t;2
 multiline_comment|/* New message type */
 DECL|macro|autofs_ptype_expire_multi
 mdefine_line|#define autofs_ptype_expire_multi&t;2&t;/* Expire entry (umount request) */

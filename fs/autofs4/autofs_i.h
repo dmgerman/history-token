@@ -13,6 +13,8 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* #define DEBUG */
@@ -505,4 +507,83 @@ id|autofs_sb_info
 op_star
 )paren
 suffix:semicolon
+DECL|function|simple_positive
+r_static
+r_inline
+r_int
+id|simple_positive
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+)paren
+(brace
+r_return
+id|dentry-&gt;d_inode
+op_logical_and
+op_logical_neg
+id|d_unhashed
+c_func
+(paren
+id|dentry
+)paren
+suffix:semicolon
+)brace
+DECL|function|simple_empty_nolock
+r_static
+r_inline
+r_int
+id|simple_empty_nolock
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+)paren
+(brace
+r_struct
+id|dentry
+op_star
+id|child
+suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+id|list_for_each_entry
+c_func
+(paren
+id|child
+comma
+op_amp
+id|dentry-&gt;d_subdirs
+comma
+id|d_child
+)paren
+r_if
+c_cond
+(paren
+id|simple_positive
+c_func
+(paren
+id|child
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|ret
+op_assign
+l_int|1
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|ret
+suffix:semicolon
+)brace
 eof

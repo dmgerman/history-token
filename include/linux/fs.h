@@ -4730,6 +4730,16 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|may_umount_tree
+c_func
+(paren
+r_struct
+id|vfsmount
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|may_umount
 c_func
 (paren
