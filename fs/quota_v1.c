@@ -529,12 +529,12 @@ r_struct
 id|v2_disk_dqheader
 (brace
 DECL|member|dqh_magic
-id|__u32
+id|__le32
 id|dqh_magic
 suffix:semicolon
 multiline_comment|/* Magic number identifying file */
 DECL|member|dqh_version
-id|__u32
+id|__le32
 id|dqh_version
 suffix:semicolon
 multiline_comment|/* File version */
