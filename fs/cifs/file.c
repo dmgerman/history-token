@@ -734,6 +734,27 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+)paren
+(brace
+multiline_comment|/* BB no need to lock inode until after invalidate*/
+multiline_comment|/* since namei code should already have it locked?*/
+id|filemap_fdatawrite
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+)paren
+suffix:semicolon
+id|filemap_fdatawait
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+)paren
+suffix:semicolon
+)brace
 id|cFYI
 c_func
 (paren
@@ -5753,7 +5774,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; File inode &quot;
+l_string|&quot;File inode&quot;
 )paren
 )paren
 suffix:semicolon
@@ -5790,7 +5811,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; Directory inode&quot;
+l_string|&quot;Directory inode&quot;
 )paren
 )paren
 suffix:semicolon
@@ -5822,7 +5843,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; Symbolic Link inode &quot;
+l_string|&quot;Symbolic Link inode&quot;
 )paren
 )paren
 suffix:semicolon
@@ -5842,7 +5863,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; Init special inode &quot;
+l_string|&quot;Special inode&quot;
 )paren
 )paren
 suffix:semicolon
