@@ -128,8 +128,10 @@ id|nexthdr
 (brace
 r_struct
 id|ipv6_opt_hdr
+id|_hdr
+comma
 op_star
-id|hdr
+id|hp
 suffix:semicolon
 r_int
 id|hdrlen
@@ -184,17 +186,30 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|hdr
+id|hp
 op_assign
+id|skb_header_pointer
+c_func
 (paren
-r_struct
-id|ipv6_opt_hdr
-op_star
-)paren
-(paren
-id|skb-&gt;data
-op_plus
+id|skb
+comma
 id|ptr
+comma
+r_sizeof
+(paren
+id|_hdr
+)paren
+comma
+op_amp
+id|_hdr
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|hp
+op_eq
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Calculate the header length */
@@ -222,7 +237,7 @@ id|NEXTHDR_AUTH
 id|hdrlen
 op_assign
 (paren
-id|hdr-&gt;hdrlen
+id|hp-&gt;hdrlen
 op_plus
 l_int|2
 )paren
@@ -235,7 +250,7 @@ op_assign
 id|ipv6_optlen
 c_func
 (paren
-id|hdr
+id|hp
 )paren
 suffix:semicolon
 multiline_comment|/* set the flag */
@@ -300,7 +315,7 @@ suffix:semicolon
 )brace
 id|nexthdr
 op_assign
-id|hdr-&gt;nexthdr
+id|hp-&gt;nexthdr
 suffix:semicolon
 id|len
 op_sub_assign
