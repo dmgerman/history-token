@@ -72,22 +72,6 @@ c_func
 (paren
 id|u_short
 )paren
-macro_line|#ifdef SYM_OPT_NO_BUS_MEMORY_MAPPING
-id|SYM_GEN_Z
-c_func
-(paren
-id|u_short
-comma
-id|start_ram
-)paren
-id|SYM_GEN_Z
-c_func
-(paren
-id|u_short
-comma
-id|start_ram64
-)paren
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *  Generates structure interface that contains &n; *  bus addresses within script A, B and Z.&n; */
@@ -148,22 +132,6 @@ c_func
 (paren
 id|u32
 )paren
-macro_line|#ifdef SYM_OPT_NO_BUS_MEMORY_MAPPING
-id|SYM_GEN_Z
-c_func
-(paren
-id|u32
-comma
-id|start_ram
-)paren
-id|SYM_GEN_Z
-c_func
-(paren
-id|u32
-comma
-id|start_ram64
-)paren
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|SYM_GEN_A
