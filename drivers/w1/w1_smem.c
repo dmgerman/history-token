@@ -443,6 +443,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|w1_smem_init
+r_static
 r_int
 id|__init
 id|w1_smem_init
@@ -461,6 +462,7 @@ id|w1_smem_family
 suffix:semicolon
 )brace
 DECL|function|w1_smem_fini
+r_static
 r_void
 id|__exit
 id|w1_smem_fini
