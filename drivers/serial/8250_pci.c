@@ -14,6 +14,8 @@ macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;8250.h&quot;
+DECL|macro|SERIAL_DEBUG_PCI
+macro_line|#undef SERIAL_DEBUG_PCI
 multiline_comment|/*&n; * Definitions for PCI support.&n; */
 DECL|macro|FL_BASE_MASK
 mdefine_line|#define FL_BASE_MASK&t;&t;0x0007
