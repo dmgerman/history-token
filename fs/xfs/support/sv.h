@@ -70,7 +70,7 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|set_current_state
+id|__set_current_state
 c_func
 (paren
 id|state
@@ -86,12 +86,6 @@ id|schedule_timeout
 c_func
 (paren
 id|timeout
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
 )paren
 suffix:semicolon
 id|remove_wait_queue
