@@ -151,7 +151,8 @@ c_func
 id|imm_struct
 op_star
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon

@@ -1,5 +1,16 @@
 multiline_comment|/* imm.c   --  low level driver for the IOMEGA MatchMaker&n; * parallel port SCSI host adapter.&n; * &n; * (The IMM is the embedded controller in the ZIP Plus drive.)&n; * &n; * Current Maintainer: David Campbell (Perth, Western Australia)&n; *                     campbell@torque.net&n; *&n; * My unoffical company acronym list is 21 pages long:&n; *      FLA:    Four letter acronym with built in facility for&n; *              future expansion to five letters.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/parport.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 multiline_comment|/* The following #define is to avoid a clash with hosts.c */
 DECL|macro|IMM_PROBE_SPP
 mdefine_line|#define IMM_PROBE_SPP   0x0001
@@ -11,15 +22,6 @@ DECL|macro|IMM_PROBE_EPP17
 mdefine_line|#define IMM_PROBE_EPP17 0x0100
 DECL|macro|IMM_PROBE_EPP19
 mdefine_line|#define IMM_PROBE_EPP19 0x0200
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;linux/parport.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
 r_typedef
 r_struct
 (brace
@@ -46,7 +48,8 @@ id|mode
 suffix:semicolon
 multiline_comment|/* Transfer mode                */
 DECL|member|cur_cmd
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cur_cmd
 suffix:semicolon
@@ -2527,7 +2530,8 @@ r_int
 id|imm_send_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -2593,7 +2597,8 @@ r_int
 id|imm_completion
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -2965,7 +2970,8 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
@@ -3224,7 +3230,8 @@ id|imm_struct
 op_star
 id|dev
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -3872,7 +3879,8 @@ r_int
 id|imm_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -3882,7 +3890,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -4099,7 +4108,8 @@ r_int
 id|imm_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -4227,7 +4237,8 @@ r_int
 id|imm_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -4743,7 +4754,8 @@ suffix:semicolon
 )brace
 DECL|variable|imm_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|imm_template
 op_assign
 (brace
