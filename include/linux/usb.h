@@ -24,7 +24,7 @@ id|usb_driver
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Host-side wrappers for standard USB descriptors ... these are parsed&n; * from the data provided by devices.  Parsing turns them from a flat&n; * sequence of descriptors into a hierarchy:&n; *&n; *  - devices have one (usually) or more configs;&n; *  - configs have one (often) or more interfaces;&n; *  - interfaces have one (usually) or more settings;&n; *  - each interface setting has zero or (usually) more endpoints.&n; *&n; * And there might be other descriptors mixed in with those.&n; *&n; * Devices may also have class-specific or vendor-specific descriptors.&n; */
-multiline_comment|/* host-side wrapper for parsed endpoint descriptors */
+multiline_comment|/**&n; * struct usb_host_endpoint - host-side endpoint descriptor and queue&n; * @desc: descriptor for this endpoint, wMaxPacketSize in native byteorder&n; * @urb_list: urbs queued to this endpoint; maintained by usbcore&n; * @hcpriv: for use by HCD; typically holds hardware dma queue head (QH)&n; *&t;with one or more transfer descriptors (TDs) per urb&n; * @extra: descriptors following this endpoint in the configuration&n; * @extralen: how many bytes of &quot;extra&quot; are valid&n; *&n; * USB requests are always queued to a given endpoint, identified by a&n; * descriptor within an active interface in a given USB configuration.&n; */
 DECL|struct|usb_host_endpoint
 r_struct
 id|usb_host_endpoint
@@ -33,6 +33,16 @@ DECL|member|desc
 r_struct
 id|usb_endpoint_descriptor
 id|desc
+suffix:semicolon
+DECL|member|urb_list
+r_struct
+id|list_head
+id|urb_list
+suffix:semicolon
+DECL|member|hcpriv
+r_void
+op_star
+id|hcpriv
 suffix:semicolon
 DECL|member|extra
 r_int
@@ -616,12 +626,6 @@ r_int
 id|string_langid
 suffix:semicolon
 multiline_comment|/* language ID for strings */
-DECL|member|hcpriv
-r_void
-op_star
-id|hcpriv
-suffix:semicolon
-multiline_comment|/* Host Controller private data */
 DECL|member|filelist
 r_struct
 id|list_head

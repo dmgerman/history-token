@@ -71,12 +71,6 @@ id|timer_list
 id|rh_timer
 suffix:semicolon
 multiline_comment|/* drives root hub */
-DECL|member|dev_list
-r_struct
-id|list_head
-id|dev_list
-suffix:semicolon
-multiline_comment|/* devices on this bus */
 multiline_comment|/*&n;&t; * hardware info/state&n;&t; */
 DECL|member|driver
 r_struct
@@ -182,34 +176,6 @@ op_amp
 id|hcd-&gt;self
 suffix:semicolon
 )brace
-DECL|struct|hcd_dev
-r_struct
-id|hcd_dev
-(brace
-multiline_comment|/* usb_device.hcpriv points to this */
-DECL|member|dev_list
-r_struct
-id|list_head
-id|dev_list
-suffix:semicolon
-multiline_comment|/* on this hcd */
-DECL|member|urb_list
-r_struct
-id|list_head
-id|urb_list
-suffix:semicolon
-multiline_comment|/* pending on this dev */
-multiline_comment|/* per-configuration HC/HCD state, such as QH or ED */
-DECL|member|ep
-r_void
-op_star
-id|ep
-(braket
-l_int|32
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 singleline_comment|// urb.hcpriv is really hardware-specific
 DECL|struct|hcd_timeout
 r_struct
@@ -234,30 +200,6 @@ DECL|struct|usb_operations
 r_struct
 id|usb_operations
 (brace
-DECL|member|allocate
-r_int
-(paren
-op_star
-id|allocate
-)paren
-(paren
-r_struct
-id|usb_device
-op_star
-)paren
-suffix:semicolon
-DECL|member|deallocate
-r_int
-(paren
-op_star
-id|deallocate
-)paren
-(paren
-r_struct
-id|usb_device
-op_star
-)paren
-suffix:semicolon
 DECL|member|get_frame_number
 r_int
 (paren
@@ -363,8 +305,10 @@ id|usb_device
 op_star
 id|udev
 comma
-r_int
-id|bEndpointAddress
+r_struct
+id|usb_host_endpoint
+op_star
+id|ep
 )paren
 suffix:semicolon
 multiline_comment|/* global suspend/resume of bus */
@@ -553,6 +497,11 @@ op_star
 id|hcd
 comma
 r_struct
+id|usb_host_endpoint
+op_star
+id|ep
+comma
+r_struct
 id|urb
 op_star
 id|urb
@@ -593,12 +542,9 @@ op_star
 id|hcd
 comma
 r_struct
-id|hcd_dev
+id|usb_host_endpoint
 op_star
-id|dev
-comma
-r_int
-id|bEndpointAddress
+id|ep
 )paren
 suffix:semicolon
 multiline_comment|/* root hub support */
