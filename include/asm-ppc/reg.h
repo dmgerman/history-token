@@ -875,15 +875,6 @@ DECL|macro|PVR_8245
 mdefine_line|#define PVR_8245&t;0x80811014
 DECL|macro|PVR_8260
 mdefine_line|#define PVR_8260&t;PVR_8240
-multiline_comment|/* System Version Numbers */
-DECL|macro|SVR_8540
-mdefine_line|#define SVR_8540&t;0x80300000
-DECL|macro|SVR_8541E
-mdefine_line|#define SVR_8541E&t;0x807A0000
-DECL|macro|SVR_8555E
-mdefine_line|#define SVR_8555E&t;0x80790000
-DECL|macro|SVR_8560
-mdefine_line|#define SVR_8560&t;0x80700000
 macro_line|#if 0
 multiline_comment|/* Segment Registers */
 mdefine_line|#define SR0&t;0
