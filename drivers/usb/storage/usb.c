@@ -1557,7 +1557,7 @@ op_lshift
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Most USB devices can&squot;t handle START_STOP.  But we&n;&t;&t; * need something for media-change, so we&squot;ll use TUR&n;&t;&t; * instead.&n;&t;&t; */
+multiline_comment|/* Most USB devices can&squot;t handle START_STOP.  But we&n;&t;&t; * need something for media-change, so we&squot;ll use TUR&n;&t;&t; * instead.&n;&t;&t; *&n;&t;&t; * We specifically allow this command through if either:&n;&t;&t; * (a) it&squot;s a load/eject command (cmnd[4] &amp; 2)&n;&t;&t; * (b) it&squot;s a multi-target unit (i.e. legacy SCSI adaptor)&n;&t;&t; */
 r_else
 r_if
 c_cond
@@ -1568,6 +1568,23 @@ l_int|0
 )braket
 op_eq
 id|START_STOP
+op_logical_and
+op_logical_neg
+(paren
+id|us-&gt;srb-&gt;cmnd
+(braket
+l_int|4
+)braket
+op_amp
+l_int|2
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|us-&gt;flags
+op_amp
+id|US_FL_SCM_MULT_TARG
+)paren
 )paren
 (brace
 r_int
