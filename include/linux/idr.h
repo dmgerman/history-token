@@ -16,6 +16,8 @@ macro_line|# define IDR_FULL 0xffffffffffffffff
 macro_line|#else
 macro_line|# error &quot;BITS_PER_LONG is not 32 or 64&quot;
 macro_line|#endif
+DECL|macro|IDR_SIZE
+mdefine_line|#define IDR_SIZE (1 &lt;&lt; IDR_BITS)
 DECL|macro|IDR_MASK
 mdefine_line|#define IDR_MASK ((1 &lt;&lt; IDR_BITS)-1)
 multiline_comment|/* Define the size of the id&squot;s */
@@ -95,6 +97,10 @@ id|lock
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|IDR_INIT
+mdefine_line|#define IDR_INIT(name)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.top&t;&t;= NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;.id_free&t;= NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;.count&t;&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.layers &t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.id_free_cnt&t;= 0,&t;&t;&t;&t;&t;&bslash;&n;&t;.lock&t;&t;= SPIN_LOCK_UNLOCKED,&t;&t;&t;&bslash;&n;}
+DECL|macro|DEFINE_IDR
+mdefine_line|#define DEFINE_IDR(name)&t;struct idr name = IDR_INIT(name)
 multiline_comment|/*&n; * This is what we export.&n; */
 r_void
 op_star
