@@ -5457,6 +5457,28 @@ id|__devinitdata
 op_assign
 (brace
 (brace
+dot
+id|vendor
+op_assign
+l_int|0x103c
+comma
+dot
+id|device
+op_assign
+l_int|0x006b
+comma
+dot
+id|name
+op_assign
+l_string|&quot;HP Pavilion ZV5030US&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_MUTE_LED
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* terminator */
 )brace
