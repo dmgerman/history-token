@@ -1584,6 +1584,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Accel functions&n; */
+macro_line|#ifdef CONFIG_FB_HGA_ACCEL
 DECL|function|hgafb_fillrect
 r_static
 r_void
@@ -1929,6 +1931,14 @@ id|d
 suffix:semicolon
 )brace
 )brace
+macro_line|#else /* !CONFIG_FB_HGA_ACCEL */
+DECL|macro|hgafb_fillrect
+mdefine_line|#define hgafb_fillrect cfb_fillrect
+DECL|macro|hgafb_copyarea
+mdefine_line|#define hgafb_copyarea cfb_copyarea
+DECL|macro|hgafb_imageblit
+mdefine_line|#define hgafb_imageblit cfb_imageblit
+macro_line|#endif /* CONFIG_FB_HGA_ACCEL */
 DECL|variable|hgafb_ops
 r_static
 r_struct
@@ -1969,21 +1979,18 @@ comma
 dot
 id|fb_fillrect
 op_assign
-id|cfb_fillrect
+id|hgafb_fillrect
 comma
-singleline_comment|//hgafb_fillrect,
 dot
 id|fb_copyarea
 op_assign
-id|cfb_copyarea
+id|hgafb_copyarea
 comma
-singleline_comment|//hgafb_copyarea,
 dot
 id|fb_imageblit
 op_assign
-id|cfb_imageblit
+id|hgafb_imageblit
 comma
-singleline_comment|//hgafb_imageblit,
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * Functions in fb_info&n; * &n; * ------------------------------------------------------------------------- */
