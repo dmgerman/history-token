@@ -2673,6 +2673,11 @@ id|pppoe_sendmsg
 c_func
 (paren
 r_struct
+id|kiocb
+op_star
+id|iocb
+comma
+r_struct
 id|socket
 op_star
 id|sock
@@ -3351,6 +3356,11 @@ r_int
 id|pppoe_rcvmsg
 c_func
 (paren
+r_struct
+id|kiocb
+op_star
+id|iocb
+comma
 r_struct
 id|socket
 op_star
