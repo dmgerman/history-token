@@ -2,26 +2,45 @@ macro_line|#ifndef _IP_CONNTRACK_AMANDA_H
 DECL|macro|_IP_CONNTRACK_AMANDA_H
 mdefine_line|#define _IP_CONNTRACK_AMANDA_H
 multiline_comment|/* AMANDA tracking. */
-DECL|struct|ip_ct_amanda_expect
 r_struct
-id|ip_ct_amanda_expect
-(brace
-DECL|member|port
-id|u_int16_t
-id|port
+id|ip_conntrack_expect
 suffix:semicolon
-multiline_comment|/* port number of this expectation */
-DECL|member|offset
-id|u_int16_t
-id|offset
-suffix:semicolon
-multiline_comment|/* offset of port in ctrl packet */
-DECL|member|len
-id|u_int16_t
-id|len
-suffix:semicolon
-multiline_comment|/* length of the port number string */
-)brace
+r_extern
+r_int
+r_int
+(paren
+op_star
+id|ip_nat_amanda_hook
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+op_star
+id|pskb
+comma
+r_struct
+id|ip_conntrack
+op_star
+id|ct
+comma
+r_enum
+id|ip_conntrack_info
+id|ctinfo
+comma
+r_int
+r_int
+id|matchoff
+comma
+r_int
+r_int
+id|matchlen
+comma
+r_struct
+id|ip_conntrack_expect
+op_star
+id|exp
+)paren
 suffix:semicolon
 macro_line|#endif /* _IP_CONNTRACK_AMANDA_H */
 eof

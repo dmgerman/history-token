@@ -23,5 +23,34 @@ DECL|macro|TFTP_OPCODE_ACK
 mdefine_line|#define TFTP_OPCODE_ACK&t;&t;4
 DECL|macro|TFTP_OPCODE_ERROR
 mdefine_line|#define TFTP_OPCODE_ERROR&t;5
+DECL|variable|ip_nat_tftp_hook
+r_int
+r_int
+(paren
+op_star
+id|ip_nat_tftp_hook
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+op_star
+id|pskb
+comma
+r_struct
+id|ip_conntrack
+op_star
+id|ct
+comma
+r_enum
+id|ip_conntrack_info
+id|ctinfo
+comma
+r_struct
+id|ip_conntrack_expect
+op_star
+id|exp
+)paren
+suffix:semicolon
 macro_line|#endif /* _IP_CT_TFTP */
 eof

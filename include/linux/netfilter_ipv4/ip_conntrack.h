@@ -163,14 +163,6 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
-multiline_comment|/* per conntrack: nat application helper private data */
-DECL|union|ip_conntrack_nat_help
-r_union
-id|ip_conntrack_nat_help
-(brace
-multiline_comment|/* insert nat helper private data here */
-)brace
-suffix:semicolon
 macro_line|#endif
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -367,11 +359,6 @@ DECL|member|info
 r_struct
 id|ip_nat_info
 id|info
-suffix:semicolon
-DECL|member|help
-r_union
-id|ip_conntrack_nat_help
-id|help
 suffix:semicolon
 macro_line|#if defined(CONFIG_IP_NF_TARGET_MASQUERADE) || &bslash;&n;&t;defined(CONFIG_IP_NF_TARGET_MASQUERADE_MODULE)
 DECL|member|masq_index
@@ -768,12 +755,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|CONNTRACK_STAT_INC
 mdefine_line|#define CONNTRACK_STAT_INC(count) (__get_cpu_var(ip_conntrack_stat).count++)
-multiline_comment|/* eg. PROVIDES_CONNTRACK(ftp); */
-DECL|macro|PROVIDES_CONNTRACK
-mdefine_line|#define PROVIDES_CONNTRACK(name)                        &bslash;&n;        int needs_ip_conntrack_##name;                  &bslash;&n;        EXPORT_SYMBOL(needs_ip_conntrack_##name)
-multiline_comment|/*. eg. NEEDS_CONNTRACK(ftp); */
-DECL|macro|NEEDS_CONNTRACK
-mdefine_line|#define NEEDS_CONNTRACK(name)                                           &bslash;&n;        extern int needs_ip_conntrack_##name;                           &bslash;&n;        static int *need_ip_conntrack_##name __attribute_used__ = &amp;needs_ip_conntrack_##name
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _IP_CONNTRACK_H */
 eof
