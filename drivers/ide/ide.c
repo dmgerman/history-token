@@ -3031,14 +3031,6 @@ id|hwif-&gt;ide_dma_host_off
 op_assign
 id|old_hwif.ide_dma_host_off
 suffix:semicolon
-id|hwif-&gt;ide_dma_bad_drive
-op_assign
-id|old_hwif.ide_dma_bad_drive
-suffix:semicolon
-id|hwif-&gt;ide_dma_good_drive
-op_assign
-id|old_hwif.ide_dma_good_drive
-suffix:semicolon
 id|hwif-&gt;ide_dma_count
 op_assign
 id|old_hwif.ide_dma_count

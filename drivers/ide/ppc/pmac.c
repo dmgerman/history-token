@@ -9237,16 +9237,6 @@ op_assign
 op_amp
 id|pmac_ide_dma_host_on
 suffix:semicolon
-id|hwif-&gt;ide_dma_good_drive
-op_assign
-op_amp
-id|__ide_dma_good_drive
-suffix:semicolon
-id|hwif-&gt;ide_dma_bad_drive
-op_assign
-op_amp
-id|__ide_dma_bad_drive
-suffix:semicolon
 id|hwif-&gt;ide_dma_verbose
 op_assign
 op_amp
