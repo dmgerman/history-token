@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/iSeries/iSeries_io.h&gt;
 macro_line|#endif  
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;asm-generic/iomap.h&gt;
 DECL|macro|__ide_mm_insw
 mdefine_line|#define __ide_mm_insw(p, a, c) _insw_ns((volatile u16 *)(p), (a), (c))
 DECL|macro|__ide_mm_insl
