@@ -400,9 +400,6 @@ r_case
 id|ACSI_MAJOR
 suffix:colon
 r_case
-id|XT_DISK_MAJOR
-suffix:colon
-r_case
 id|I2O_MAJOR
 suffix:colon
 r_case

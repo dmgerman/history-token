@@ -3269,6 +3269,8 @@ c_func
 id|i_rdev
 )paren
 )braket
+dot
+id|nr_sects
 op_assign
 id|cards
 (braket
@@ -3314,7 +3316,6 @@ c_cond
 (paren
 id|cmd
 op_eq
-r_case
 id|HDIO_GETGEO
 )paren
 (brace

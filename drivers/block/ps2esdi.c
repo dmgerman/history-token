@@ -598,6 +598,7 @@ comma
 id|first_minor
 suffix:colon
 l_int|64
+comma
 id|major_name
 suffix:colon
 l_string|&quot;edb&quot;
@@ -2123,11 +2124,6 @@ comma
 id|count
 suffix:semicolon
 multiline_comment|/* since, this routine is called with interrupts cleared - they &n;&t;   must be before it finishes  */
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#if 0
 id|printk
 c_func
@@ -2646,6 +2642,13 @@ id|drive
 )paren
 suffix:semicolon
 multiline_comment|/* send the command block to the controller */
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|ps2esdi_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2656,6 +2659,13 @@ id|cmd_blk
 )paren
 )paren
 (brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|ps2esdi_lock
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2686,6 +2696,13 @@ suffix:semicolon
 multiline_comment|/* check for failure to put out the command block */
 r_else
 (brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|ps2esdi_lock
+)paren
+suffix:semicolon
 macro_line|#if 0
 id|printk
 c_func
@@ -5414,7 +5431,7 @@ c_func
 id|get_start_sect
 c_func
 (paren
-id|inode-&gt;b_rdev
+id|inode-&gt;i_bdev
 )paren
 comma
 (paren
