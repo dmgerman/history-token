@@ -19,7 +19,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|ia32_boot_gdt_init
+id|ia32_mem_init
 (paren
 r_void
 )paren
