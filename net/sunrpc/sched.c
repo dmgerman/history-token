@@ -2414,6 +2414,7 @@ c_cond
 (paren
 id|clnt
 )paren
+(brace
 id|atomic_inc
 c_func
 (paren
@@ -2421,6 +2422,16 @@ op_amp
 id|clnt-&gt;cl_users
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|clnt-&gt;cl_softrtry
+)paren
+id|task-&gt;tk_flags
+op_or_assign
+id|RPC_TASK_SOFT
+suffix:semicolon
+)brace
 macro_line|#ifdef RPC_DEBUG
 id|task-&gt;tk_magic
 op_assign

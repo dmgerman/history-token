@@ -8048,7 +8048,7 @@ comma
 op_amp
 id|msg
 comma
-l_int|0
+id|RPC_TASK_SOFT
 comma
 id|renew_done
 comma

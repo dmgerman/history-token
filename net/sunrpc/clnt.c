@@ -3111,7 +3111,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|clnt-&gt;cl_softrtry
+id|RPC_IS_SOFT
+c_func
+(paren
+id|task
+)paren
 )paren
 (brace
 r_if
@@ -3281,7 +3285,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|clnt-&gt;cl_softrtry
+id|RPC_IS_SOFT
+c_func
+(paren
+id|task
+)paren
 )paren
 (brace
 id|task-&gt;tk_action
