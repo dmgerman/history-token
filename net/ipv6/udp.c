@@ -3939,7 +3939,7 @@ id|inet-&gt;dport
 suffix:semicolon
 id|sin.sin_addr.s_addr
 op_assign
-id|daddr-&gt;s6_addr
+id|daddr-&gt;s6_addr32
 (braket
 l_int|3
 )braket
