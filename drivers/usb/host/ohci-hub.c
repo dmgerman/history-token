@@ -629,7 +629,7 @@ id|ohci_dbg
 (paren
 id|ohci
 comma
-l_string|&quot;odd resume&bslash;n&quot;
+l_string|&quot;already resumed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|status
@@ -756,7 +756,7 @@ id|temp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Some controllers (lucent) need extra-long delays */
+multiline_comment|/* Some controllers (lucent erratum) need extra-long delays */
 id|hcd-&gt;state
 op_assign
 id|HC_STATE_RESUMING
@@ -867,6 +867,7 @@ op_amp
 id|ohci-&gt;regs-&gt;hcca
 )paren
 suffix:semicolon
+multiline_comment|/* Sometimes PCI D3 suspend trashes frame timings ... */
 id|periodic_reinit
 (paren
 id|ohci

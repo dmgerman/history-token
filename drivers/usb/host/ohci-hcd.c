@@ -1764,16 +1764,6 @@ id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
 )brace
-id|ohci_writel
-(paren
-id|ohci
-comma
-id|ohci-&gt;fminterval
-comma
-op_amp
-id|ohci-&gt;regs-&gt;fminterval
-)paren
-suffix:semicolon
 multiline_comment|/* Tell the controller where the control and bulk lists are&n;&t; * The lists are empty now. */
 id|ohci_writel
 (paren
@@ -2447,6 +2437,13 @@ comma
 l_string|&quot;resume detect&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|hcd-&gt;state
+op_ne
+id|HC_STATE_QUIESCING
+)paren
 id|schedule_work
 c_func
 (paren

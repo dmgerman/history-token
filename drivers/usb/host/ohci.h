@@ -1723,11 +1723,12 @@ DECL|macro|FI
 mdefine_line|#define&t;FI&t;&t;&t;0x2edf&t;&t;/* 12000 bits per frame (-1) */
 DECL|macro|FSMP
 mdefine_line|#define&t;FSMP(fi) &t;&t;(0x7fff &amp; ((6 * ((fi) - 210)) / 7))
+DECL|macro|FIT
+mdefine_line|#define&t;FIT&t;&t;&t;(1 &lt;&lt; 31)
 DECL|macro|LSTHRESH
 mdefine_line|#define LSTHRESH&t;&t;0x628&t;&t;/* lowspeed bit threshold */
 DECL|function|periodic_reinit
 r_static
-r_inline
 r_void
 id|periodic_reinit
 (paren
@@ -1742,7 +1743,37 @@ id|fi
 op_assign
 id|ohci-&gt;fminterval
 op_amp
-l_int|0x0ffff
+l_int|0x03fff
+suffix:semicolon
+id|u32
+id|fit
+op_assign
+id|ohci_readl
+c_func
+(paren
+id|ohci
+comma
+op_amp
+id|ohci-&gt;regs-&gt;fminterval
+)paren
+op_amp
+id|FIT
+suffix:semicolon
+id|ohci_writel
+(paren
+id|ohci
+comma
+(paren
+id|fit
+op_xor
+id|FIT
+)paren
+op_or
+id|ohci-&gt;fminterval
+comma
+op_amp
+id|ohci-&gt;regs-&gt;fminterval
+)paren
 suffix:semicolon
 id|ohci_writel
 (paren

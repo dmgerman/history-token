@@ -918,6 +918,22 @@ comma
 id|size
 )paren
 suffix:semicolon
+multiline_comment|/* broken fminterval means traffic won&squot;t flow! */
+id|ohci_dbg
+(paren
+id|controller
+comma
+l_string|&quot;fminterval %08x&bslash;n&quot;
+comma
+id|ohci_readl
+(paren
+id|controller
+comma
+op_amp
+id|regs-&gt;fminterval
+)paren
+)paren
+suffix:semicolon
 )brace
 DECL|macro|dbg_port_sw
 mdefine_line|#define dbg_port_sw(hc,num,value,next,size) &bslash;&n;&t;ohci_dbg_sw (hc, next, size, &bslash;&n;&t;&t;&quot;roothub.portstatus [%d] &quot; &bslash;&n;&t;&t;&quot;0x%08x%s%s%s%s%s%s%s%s%s%s%s%s&bslash;n&quot;, &bslash;&n;&t;&t;num, temp, &bslash;&n;&t;&t;(temp &amp; RH_PS_PRSC) ? &quot; PRSC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_OCIC) ? &quot; OCIC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PSSC) ? &quot; PSSC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PESC) ? &quot; PESC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_CSC) ? &quot; CSC&quot; : &quot;&quot;, &bslash;&n; &t;&t;&bslash;&n;&t;&t;(temp &amp; RH_PS_LSDA) ? &quot; LSDA&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PPS) ? &quot; PPS&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PRS) ? &quot; PRS&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_POCI) ? &quot; POCI&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PSS) ? &quot; PSS&quot; : &quot;&quot;, &bslash;&n; &t;&t;&bslash;&n;&t;&t;(temp &amp; RH_PS_PES) ? &quot; PES&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_CCS) ? &quot; CCS&quot; : &quot;&quot; &bslash;&n;&t;&t;);
@@ -3125,6 +3141,7 @@ op_amp
 id|size
 comma
 l_string|&quot;bus %s, device %s&bslash;n&quot;
+l_string|&quot;%s&bslash;n&quot;
 l_string|&quot;%s version &quot;
 id|DRIVER_VERSION
 l_string|&quot;&bslash;n&quot;
@@ -3132,6 +3149,8 @@ comma
 id|hcd-&gt;self.controller-&gt;bus-&gt;name
 comma
 id|hcd-&gt;self.controller-&gt;bus_id
+comma
+id|hcd-&gt;product_desc
 comma
 id|hcd_name
 )paren
