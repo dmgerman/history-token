@@ -272,7 +272,6 @@ id|likely
 c_func
 (paren
 id|pass
-op_increment
 OL
 l_int|2
 )paren
@@ -300,6 +299,9 @@ c_cond
 id|tbl-&gt;it_mapsize
 suffix:colon
 id|limit
+suffix:semicolon
+id|pass
+op_increment
 suffix:semicolon
 r_goto
 id|again
