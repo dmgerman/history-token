@@ -5425,6 +5425,10 @@ id|np-&gt;cork.fl
 op_assign
 id|fl
 suffix:semicolon
+id|np-&gt;cork.hop_limit
+op_assign
+id|hlimit
+suffix:semicolon
 id|inet-&gt;cork.fragsize
 op_assign
 id|mtu
@@ -6699,7 +6703,7 @@ l_int|0
 suffix:semicolon
 id|hdr-&gt;hop_limit
 op_assign
-id|np-&gt;hop_limit
+id|np-&gt;cork.hop_limit
 suffix:semicolon
 id|hdr-&gt;nexthdr
 op_assign
