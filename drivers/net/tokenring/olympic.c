@@ -10076,7 +10076,11 @@ id|olympic_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|olympic_remove_one
+)paren
 )brace
 suffix:semicolon
 DECL|function|olympic_pci_init

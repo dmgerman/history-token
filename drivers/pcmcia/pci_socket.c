@@ -1030,7 +1030,11 @@ id|cardbus_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|cardbus_remove
+)paren
 comma
 id|suspend
 suffix:colon

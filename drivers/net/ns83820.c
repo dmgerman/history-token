@@ -6171,7 +6171,11 @@ id|ns83820_init_one
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|ns83820_remove_one
+)paren
 comma
 macro_line|#if 0&t;/* FIXME: implement */
 id|suspend

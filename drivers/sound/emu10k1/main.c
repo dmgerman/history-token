@@ -4987,7 +4987,11 @@ id|emu10k1_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|emu10k1_remove
+)paren
 comma
 )brace
 suffix:semicolon

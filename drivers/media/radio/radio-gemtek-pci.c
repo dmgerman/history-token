@@ -1543,7 +1543,11 @@ id|gemtek_pci_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|gemtek_pci_remove
+)paren
 )brace
 suffix:semicolon
 DECL|function|gemtek_pci_init_module

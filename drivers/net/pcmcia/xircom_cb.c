@@ -668,7 +668,11 @@ id|xircom_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|xircom_remove
+)paren
 comma
 )brace
 suffix:semicolon
