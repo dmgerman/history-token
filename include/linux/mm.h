@@ -1551,20 +1551,6 @@ r_int
 suffix:semicolon
 multiline_comment|/* mm/page-writeback.c */
 r_int
-id|generic_writepages
-c_func
-(paren
-r_struct
-id|address_space
-op_star
-id|mapping
-comma
-r_int
-op_star
-id|nr_to_write
-)paren
-suffix:semicolon
-r_int
 id|write_one_page
 c_func
 (paren

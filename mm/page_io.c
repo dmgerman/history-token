@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* for block_sync_page() */
+macro_line|#include &lt;linux/mpage.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 r_static
 r_struct
