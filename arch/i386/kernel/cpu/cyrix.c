@@ -838,6 +838,11 @@ id|p
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|dev
+suffix:semicolon
 multiline_comment|/* Bit 31 in normal CPUID used for nonstandard 3DNow ID;&n;&t;   3DNow is IDd by bit 31 in extended CPUID (1*32+31) anyway */
 id|clear_bit
 c_func
@@ -1114,10 +1119,9 @@ l_int|16
 suffix:semicolon
 multiline_comment|/* Yep 16K integrated cache thats it */
 multiline_comment|/*&n;&t;&t; *  The 5510/5520 companion chips have a funky PIT.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|pci_find_device
+id|dev
+op_assign
+id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_CYRIX
@@ -1126,7 +1130,26 @@ id|PCI_DEVICE_ID_CYRIX_5510
 comma
 l_int|NULL
 )paren
-op_logical_or
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev
+)paren
+(brace
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|pit_latch_buggy
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+id|dev
+op_assign
 id|pci_find_device
 c_func
 (paren
@@ -1136,11 +1159,24 @@ id|PCI_DEVICE_ID_CYRIX_5520
 comma
 l_int|NULL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev
 )paren
+(brace
+id|pci_dev_put
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|pit_latch_buggy
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 multiline_comment|/* GXm supports extended cpuid levels &squot;ala&squot; AMD */
 r_if
 c_cond
