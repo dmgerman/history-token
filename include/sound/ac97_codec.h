@@ -841,6 +841,7 @@ op_star
 id|ac97
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PM
 DECL|member|resume
 r_void
 (paren
@@ -853,6 +854,7 @@ op_star
 id|ac97
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|struct|_snd_ac97_bus_ops

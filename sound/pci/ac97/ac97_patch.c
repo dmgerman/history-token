@@ -3792,6 +3792,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Analog Device AD18xx, AD19xx codecs&n; */
+macro_line|#ifdef CONFIG_PM
 DECL|function|ad18xx_resume
 r_static
 r_void
@@ -4167,6 +4168,7 @@ id|ac97
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|patch_ad1819
 r_int
 id|patch_ad1819
@@ -4636,11 +4638,13 @@ id|snd_ac97_build_ops
 id|patch_ad1881_build_ops
 op_assign
 (brace
+macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
 op_amp
 id|ad18xx_resume
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|patch_ad1881
@@ -5145,11 +5149,13 @@ op_assign
 op_amp
 id|patch_ad1885_specific
 comma
+macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
 op_amp
 id|ad18xx_resume
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|patch_ad1885
@@ -5597,10 +5603,12 @@ id|build_specific
 op_assign
 id|patch_ad1981a_specific
 comma
+macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
 id|ad18xx_resume
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|patch_ad1981a
@@ -5751,10 +5759,12 @@ id|build_specific
 op_assign
 id|patch_ad1981b_specific
 comma
+macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
 id|ad18xx_resume
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|patch_ad1981b
@@ -6371,10 +6381,12 @@ id|build_specific
 op_assign
 id|patch_ad1888_specific
 comma
+macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
 id|ad18xx_resume
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|patch_ad1888
@@ -6504,10 +6516,12 @@ id|build_specific
 op_assign
 id|patch_ad1980_specific
 comma
+macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
 id|ad18xx_resume
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|patch_ad1980
@@ -6638,10 +6652,12 @@ id|build_specific
 op_assign
 id|patch_ad1985_specific
 comma
+macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
 id|ad18xx_resume
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|patch_ad1985
