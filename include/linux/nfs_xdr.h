@@ -2069,6 +2069,12 @@ r_int
 id|pgbase
 suffix:semicolon
 multiline_comment|/* zero-copy data */
+DECL|member|bitmask
+r_const
+id|u32
+op_star
+id|bitmask
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|nfs4_readdir_res

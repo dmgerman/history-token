@@ -8647,6 +8647,17 @@ id|count
 op_assign
 id|count
 comma
+dot
+id|bitmask
+op_assign
+id|NFS_SERVER
+c_func
+(paren
+id|dentry-&gt;d_inode
+)paren
+op_member_access_from_pointer
+id|attr_bitmask
+comma
 )brace
 suffix:semicolon
 r_struct
