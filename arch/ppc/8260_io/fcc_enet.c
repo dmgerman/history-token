@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Fast Ethernet Controller (FCC) driver for Motorola MPC8260.&n; * Copyright (c) 2000 MontaVista Software, Inc.   Dan Malek (dmalek@jlc.net)&n; *&n; * This version of the driver is a combination of the 8xx fec and&n; * 8260 SCC Ethernet drivers.  This version has some additional&n; * configuration options, which should probably be moved out of&n; * here.  This driver currently works for the EST SBC8260,&n; * SBS Diablo/BCM, Embedded Planet RPX6, TQM8260, and others.&n; *&n; * Right now, I am very watseful with the buffers.  I allocate memory&n; * pages and then divide them into 2K frame buffers.  This way I know I&n; * have buffers large enough to hold one frame within one buffer descriptor.&n; * Once I get this working, I will use 64 or 128 byte CPM buffers, which&n; * will be much more memory efficient and will easily handle lots of&n; * small packets.  Since this is a cache coherent processor and CPM,&n; * I could also preallocate SKB&squot;s and use them directly on the interface.&n; *&n; */
+multiline_comment|/*&n; * Fast Ethernet Controller (FCC) driver for Motorola MPC8260.&n; * Copyright (c) 2000 MontaVista Software, Inc.   Dan Malek (dmalek@jlc.net)&n; *&n; * This version of the driver is a combination of the 8xx fec and&n; * 8260 SCC Ethernet drivers.  This version has some additional&n; * configuration options, which should probably be moved out of&n; * here.  This driver currently works for the EST SBC8260,&n; * SBS Diablo/BCM, Embedded Planet RPX6, TQM8260, and others.&n; *&n; * Right now, I am very watseful with the buffers.  I allocate memory&n; * pages and then divide them into 2K frame buffers.  This way I know I&n; * have buffers large enough to hold one frame within one buffer descriptor.&n; * Once I get this working, I will use 64 or 128 byte CPM buffers, which&n; * will be much more memory efficient and will easily handle lots of&n; * small packets.  Since this is a cache coherent processor and CPM,&n; * I could also preallocate SKB&squot;s and use them directly on the interface.&n; *&n; * 2004-12&t;Leo Li (leoli@freescale.com)&n; * - Rework the FCC clock configuration part, make it easier to configure.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -15,12 +15,32 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/immap_cpm2.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/signal.h&gt;
+multiline_comment|/* We can&squot;t use the PHY interrupt if we aren&squot;t using MDIO. */
+macro_line|#if !defined(CONFIG_USE_MDIO)
+DECL|macro|PHY_INTERRUPT
+macro_line|#undef PHY_INTERRUPT
+macro_line|#endif
+multiline_comment|/* If we have a PHY interrupt, we will advertise both full-duplex and half-&n; * duplex capabilities.  If we don&squot;t have a PHY interrupt, then we will only&n; * advertise half-duplex capabilities.&n; */
+DECL|macro|MII_ADVERTISE_HALF
+mdefine_line|#define MII_ADVERTISE_HALF&t;(ADVERTISE_100HALF | ADVERTISE_10HALF | &bslash;&n;&t;&t;&t;&t; ADVERTISE_CSMA)
+DECL|macro|MII_ADVERTISE_ALL
+mdefine_line|#define MII_ADVERTISE_ALL&t;(ADVERTISE_100FULL | ADVERTISE_10FULL | &bslash;&n;&t;&t;&t;&t; MII_ADVERTISE_HALF)
+macro_line|#ifdef PHY_INTERRUPT
+DECL|macro|MII_ADVERTISE_DEFAULT
+mdefine_line|#define MII_ADVERTISE_DEFAULT&t;MII_ADVERTISE_ALL
+macro_line|#else
+DECL|macro|MII_ADVERTISE_DEFAULT
+mdefine_line|#define MII_ADVERTISE_DEFAULT&t;MII_ADVERTISE_HALF
+macro_line|#endif
 macro_line|#include &lt;asm/cpm2.h&gt;
 multiline_comment|/* The transmitter timeout&n; */
 DECL|macro|TX_TIMEOUT
@@ -94,25 +114,6 @@ DECL|typedef|phy_info_t
 )brace
 id|phy_info_t
 suffix:semicolon
-multiline_comment|/* Register definitions for the PHY. */
-DECL|macro|MII_REG_CR
-mdefine_line|#define MII_REG_CR          0  /* Control Register                         */
-DECL|macro|MII_REG_SR
-mdefine_line|#define MII_REG_SR          1  /* Status Register                          */
-DECL|macro|MII_REG_PHYIR1
-mdefine_line|#define MII_REG_PHYIR1      2  /* PHY Identification Register 1            */
-DECL|macro|MII_REG_PHYIR2
-mdefine_line|#define MII_REG_PHYIR2      3  /* PHY Identification Register 2            */
-DECL|macro|MII_REG_ANAR
-mdefine_line|#define MII_REG_ANAR        4  /* A-N Advertisement Register               */
-DECL|macro|MII_REG_ANLPAR
-mdefine_line|#define MII_REG_ANLPAR      5  /* A-N Link Partner Ability Register        */
-DECL|macro|MII_REG_ANER
-mdefine_line|#define MII_REG_ANER        6  /* A-N Expansion Register                   */
-DECL|macro|MII_REG_ANNPTR
-mdefine_line|#define MII_REG_ANNPTR      7  /* A-N Next Page Transmit Register          */
-DECL|macro|MII_REG_ANLPRNPR
-mdefine_line|#define MII_REG_ANLPRNPR    8  /* A-N Link Partner Received Next Page Reg. */
 multiline_comment|/* values for phy_status */
 DECL|macro|PHY_CONF_ANE
 mdefine_line|#define PHY_CONF_ANE&t;0x0001  /* 1 auto-negotiation enabled */
@@ -158,14 +159,14 @@ DECL|macro|TX_RING_SIZE
 mdefine_line|#define TX_RING_SIZE&t;&t;16&t;/* Must be power of two */
 DECL|macro|TX_RING_MOD_MASK
 mdefine_line|#define TX_RING_MOD_MASK&t;15&t;/*   for this to work */
-multiline_comment|/* The FCC stores dest/src/type, data, and checksum for receive packets.&n; */
+multiline_comment|/* The FCC stores dest/src/type, data, and checksum for receive packets.&n; * size includes support for VLAN&n; */
 DECL|macro|PKT_MAXBUF_SIZE
-mdefine_line|#define PKT_MAXBUF_SIZE&t;&t;1518
+mdefine_line|#define PKT_MAXBUF_SIZE&t;&t;1522
 DECL|macro|PKT_MINBUF_SIZE
 mdefine_line|#define PKT_MINBUF_SIZE&t;&t;64
-multiline_comment|/* Maximum input DMA size.  Must be a should(?) be a multiple of 4.&n;*/
+multiline_comment|/* Maximum input DMA size.  Must be a should(?) be a multiple of 4.&n; * size includes support for VLAN&n; */
 DECL|macro|PKT_MAXDMA_SIZE
-mdefine_line|#define PKT_MAXDMA_SIZE&t;&t;1520
+mdefine_line|#define PKT_MAXDMA_SIZE&t;&t;1524
 multiline_comment|/* Maximum input buffer size.  Must be a multiple of 32.&n;*/
 DECL|macro|PKT_MAXBLR_SIZE
 mdefine_line|#define PKT_MAXBLR_SIZE&t;&t;1536
@@ -248,17 +249,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_static
-r_void
-id|set_multicast_list
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
+multiline_comment|/* static void set_multicast_list(struct net_device *dev); */
 r_static
 r_void
 id|fcc_restart
@@ -271,6 +262,17 @@ id|dev
 comma
 r_int
 id|duplex
+)paren
+suffix:semicolon
+r_static
+r_void
+id|fcc_stop
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 suffix:semicolon
 r_static
@@ -289,6 +291,80 @@ id|addr
 )paren
 suffix:semicolon
 multiline_comment|/* These will be configurable for the FCC choice.&n; * Multiple ports can be configured.  There is little choice among the&n; * I/O pins to the PHY, except the clocks.  We will need some board&n; * dependent clock selection.&n; * Why in the hell did I put these inside #ifdef&squot;s?  I dunno, maybe to&n; * help show what pins are used for each device.&n; */
+multiline_comment|/* Since the CLK setting changes greatly from board to board, I changed&n; * it to a easy way.  You just need to specify which CLK number to use.&n; * Note that only limited choices can be make on each port.&n; */
+multiline_comment|/* FCC1 Clock Source Configuration.  There are board specific.&n;   Can only choose from CLK9-12 */
+macro_line|#ifdef CONFIG_SBC82xx
+DECL|macro|F1_RXCLK
+mdefine_line|#define F1_RXCLK&t;9
+DECL|macro|F1_TXCLK
+mdefine_line|#define F1_TXCLK&t;10
+macro_line|#elif defined(CONFIG_ADS8272)
+DECL|macro|F1_RXCLK
+mdefine_line|#define F1_RXCLK&t;11
+DECL|macro|F1_TXCLK
+mdefine_line|#define F1_TXCLK&t;10
+macro_line|#else
+DECL|macro|F1_RXCLK
+mdefine_line|#define F1_RXCLK&t;12
+DECL|macro|F1_TXCLK
+mdefine_line|#define F1_TXCLK&t;11
+macro_line|#endif
+multiline_comment|/* FCC2 Clock Source Configuration.  There are board specific.&n;   Can only choose from CLK13-16 */
+macro_line|#ifdef CONFIG_ADS8272
+DECL|macro|F2_RXCLK
+mdefine_line|#define F2_RXCLK&t;15
+DECL|macro|F2_TXCLK
+mdefine_line|#define F2_TXCLK&t;16
+macro_line|#else
+DECL|macro|F2_RXCLK
+mdefine_line|#define F2_RXCLK&t;13
+DECL|macro|F2_TXCLK
+mdefine_line|#define F2_TXCLK&t;14
+macro_line|#endif
+multiline_comment|/* FCC3 Clock Source Configuration.  There are board specific.&n;   Can only choose from CLK13-16 */
+DECL|macro|F3_RXCLK
+mdefine_line|#define F3_RXCLK&t;15
+DECL|macro|F3_TXCLK
+mdefine_line|#define F3_TXCLK&t;16
+multiline_comment|/* Automatically generates register configurations */
+DECL|macro|PC_CLK
+mdefine_line|#define PC_CLK(x)&t;((uint)(1&lt;&lt;(x-1)))&t;/* FCC CLK I/O ports */
+DECL|macro|CMXFCR_RF1CS
+mdefine_line|#define CMXFCR_RF1CS(x)&t;((uint)((x-5)&lt;&lt;27))&t;/* FCC1 Receive Clock Source */
+DECL|macro|CMXFCR_TF1CS
+mdefine_line|#define CMXFCR_TF1CS(x)&t;((uint)((x-5)&lt;&lt;24))&t;/* FCC1 Transmit Clock Source */
+DECL|macro|CMXFCR_RF2CS
+mdefine_line|#define CMXFCR_RF2CS(x)&t;((uint)((x-9)&lt;&lt;19))&t;/* FCC2 Receive Clock Source */
+DECL|macro|CMXFCR_TF2CS
+mdefine_line|#define CMXFCR_TF2CS(x) ((uint)((x-9)&lt;&lt;16))&t;/* FCC2 Transmit Clock Source */
+DECL|macro|CMXFCR_RF3CS
+mdefine_line|#define CMXFCR_RF3CS(x)&t;((uint)((x-9)&lt;&lt;11))&t;/* FCC3 Receive Clock Source */
+DECL|macro|CMXFCR_TF3CS
+mdefine_line|#define CMXFCR_TF3CS(x) ((uint)((x-9)&lt;&lt;8))&t;/* FCC3 Transmit Clock Source */
+DECL|macro|PC_F1RXCLK
+mdefine_line|#define PC_F1RXCLK&t;PC_CLK(F1_RXCLK)
+DECL|macro|PC_F1TXCLK
+mdefine_line|#define PC_F1TXCLK&t;PC_CLK(F1_TXCLK)
+DECL|macro|CMX1_CLK_ROUTE
+mdefine_line|#define CMX1_CLK_ROUTE&t;(CMXFCR_RF1CS(F1_RXCLK) | CMXFCR_TF1CS(F1_TXCLK))
+DECL|macro|CMX1_CLK_MASK
+mdefine_line|#define CMX1_CLK_MASK&t;((uint)0xff000000)
+DECL|macro|PC_F2RXCLK
+mdefine_line|#define PC_F2RXCLK&t;PC_CLK(F2_RXCLK)
+DECL|macro|PC_F2TXCLK
+mdefine_line|#define PC_F2TXCLK&t;PC_CLK(F2_TXCLK)
+DECL|macro|CMX2_CLK_ROUTE
+mdefine_line|#define CMX2_CLK_ROUTE&t;(CMXFCR_RF2CS(F2_RXCLK) | CMXFCR_TF2CS(F2_TXCLK))
+DECL|macro|CMX2_CLK_MASK
+mdefine_line|#define CMX2_CLK_MASK&t;((uint)0x00ff0000)
+DECL|macro|PC_F3RXCLK
+mdefine_line|#define PC_F3RXCLK&t;PC_CLK(F3_RXCLK)
+DECL|macro|PC_F3TXCLK
+mdefine_line|#define PC_F3TXCLK&t;PC_CLK(F3_TXCLK)
+DECL|macro|CMX3_CLK_ROUTE
+mdefine_line|#define CMX3_CLK_ROUTE&t;(CMXFCR_RF3CS(F3_RXCLK) | CMXFCR_TF3CS(F3_TXCLK))
+DECL|macro|CMX3_CLK_MASK
+mdefine_line|#define CMX3_CLK_MASK&t;((uint)0x0000ff00)
 multiline_comment|/* I/O Pin assignment for FCC1.  I don&squot;t yet know the best way to do this,&n; * but there is little variation among the choices.&n; */
 DECL|macro|PA1_COL
 mdefine_line|#define PA1_COL&t;&t;((uint)0x00000001)
@@ -306,44 +382,14 @@ DECL|macro|PA1_TXDAT
 mdefine_line|#define PA1_TXDAT&t;((uint)0x00003c00)
 DECL|macro|PA1_RXDAT
 mdefine_line|#define PA1_RXDAT&t;((uint)0x0003c000)
-DECL|macro|PA1_PSORA0
-mdefine_line|#define PA1_PSORA0&t;(PA1_RXDAT | PA1_TXDAT)
-DECL|macro|PA1_PSORA1
-mdefine_line|#define PA1_PSORA1&t;(PA1_COL | PA1_CRS | PA1_TXER | PA1_TXEN | &bslash;&n;&t;&t;&t;&t;PA1_RXDV | PA1_RXER)
-DECL|macro|PA1_DIRA0
-mdefine_line|#define PA1_DIRA0&t;(PA1_RXDAT | PA1_CRS | PA1_COL | PA1_RXER | PA1_RXDV)
-DECL|macro|PA1_DIRA1
-mdefine_line|#define PA1_DIRA1&t;(PA1_TXDAT | PA1_TXEN | PA1_TXER)
-macro_line|#ifdef CONFIG_SBC82xx
-multiline_comment|/* rx is clk9, tx is clk10 */
-DECL|macro|PC_F1RXCLK
-mdefine_line|#define PC_F1RXCLK     ((uint)0x00000100)
-DECL|macro|PC_F1TXCLK
-mdefine_line|#define PC_F1TXCLK     ((uint)0x00000200)
-DECL|macro|CMX1_CLK_ROUTE
-mdefine_line|#define CMX1_CLK_ROUTE ((uint)0x25000000)
-DECL|macro|CMX1_CLK_MASK
-mdefine_line|#define CMX1_CLK_MASK  ((uint)0xff000000)
-macro_line|#elif defined(CONFIG_ADS8272)
-DECL|macro|PC_F1RXCLK
-mdefine_line|#define PC_F1RXCLK&t;((uint)0x00000400)
-DECL|macro|PC_F1TXCLK
-mdefine_line|#define PC_F1TXCLK&t;((uint)0x00000200)
-DECL|macro|CMX1_CLK_ROUTE
-mdefine_line|#define CMX1_CLK_ROUTE&t;((uint)0x36000000)
-DECL|macro|CMX1_CLK_MASK
-mdefine_line|#define CMX1_CLK_MASK&t;((uint)0xff000000)
-macro_line|#else /* other boards */
-multiline_comment|/* CLK12 is receive, CLK11 is transmit.  These are board specific. */
-DECL|macro|PC_F1RXCLK
-mdefine_line|#define PC_F1RXCLK&t;((uint)0x00000800)
-DECL|macro|PC_F1TXCLK
-mdefine_line|#define PC_F1TXCLK&t;((uint)0x00000400)
-DECL|macro|CMX1_CLK_ROUTE
-mdefine_line|#define CMX1_CLK_ROUTE&t;((uint)0x3e000000)
-DECL|macro|CMX1_CLK_MASK
-mdefine_line|#define CMX1_CLK_MASK&t;((uint)0xff000000)
-macro_line|#endif
+DECL|macro|PA1_PSORA_BOUT
+mdefine_line|#define PA1_PSORA_BOUT&t;(PA1_RXDAT | PA1_TXDAT)
+DECL|macro|PA1_PSORA_BIN
+mdefine_line|#define PA1_PSORA_BIN&t;(PA1_COL | PA1_CRS | PA1_TXER | PA1_TXEN | &bslash;&n;&t;&t;&t;&t;PA1_RXDV | PA1_RXER)
+DECL|macro|PA1_DIRA_BOUT
+mdefine_line|#define PA1_DIRA_BOUT&t;(PA1_RXDAT | PA1_CRS | PA1_COL | PA1_RXER | PA1_RXDV)
+DECL|macro|PA1_DIRA_BIN
+mdefine_line|#define PA1_DIRA_BIN&t;(PA1_TXDAT | PA1_TXEN | PA1_TXER)
 multiline_comment|/* I/O Pin assignment for FCC2.  I don&squot;t yet know the best way to do this,&n; * but there is little variation among the choices.&n; */
 DECL|macro|PB2_TXER
 mdefine_line|#define PB2_TXER&t;((uint)0x00000001)
@@ -361,34 +407,14 @@ DECL|macro|PB2_TXDAT
 mdefine_line|#define PB2_TXDAT&t;((uint)0x000003c0)
 DECL|macro|PB2_RXDAT
 mdefine_line|#define PB2_RXDAT&t;((uint)0x00003c00)
-DECL|macro|PB2_PSORB0
-mdefine_line|#define PB2_PSORB0&t;(PB2_RXDAT | PB2_TXDAT | PB2_CRS | PB2_COL | &bslash;&n;&t;&t;&t;&t;PB2_RXER | PB2_RXDV | PB2_TXER)
-DECL|macro|PB2_PSORB1
-mdefine_line|#define PB2_PSORB1&t;(PB2_TXEN)
-DECL|macro|PB2_DIRB0
-mdefine_line|#define PB2_DIRB0&t;(PB2_RXDAT | PB2_CRS | PB2_COL | PB2_RXER | PB2_RXDV)
-DECL|macro|PB2_DIRB1
-mdefine_line|#define PB2_DIRB1&t;(PB2_TXDAT | PB2_TXEN | PB2_TXER)
-multiline_comment|/* CLK13 is receive, CLK14 is transmit.  These are board dependent.&n;*/
-macro_line|#ifdef CONFIG_ADS8272
-DECL|macro|PC_F2RXCLK
-mdefine_line|#define PC_F2RXCLK&t;((uint)0x00004000)
-DECL|macro|PC_F2TXCLK
-mdefine_line|#define PC_F2TXCLK&t;((uint)0x00008000)
-DECL|macro|CMX2_CLK_ROUTE
-mdefine_line|#define CMX2_CLK_ROUTE&t;((uint)0x00370000)
-DECL|macro|CMX2_CLK_MASK
-mdefine_line|#define CMX2_CLK_MASK&t;((uint)0x00ff0000)
-macro_line|#else
-DECL|macro|PC_F2RXCLK
-mdefine_line|#define PC_F2RXCLK&t;((uint)0x00001000)
-DECL|macro|PC_F2TXCLK
-mdefine_line|#define PC_F2TXCLK&t;((uint)0x00002000)
-DECL|macro|CMX2_CLK_ROUTE
-mdefine_line|#define CMX2_CLK_ROUTE&t;((uint)0x00250000)
-DECL|macro|CMX2_CLK_MASK
-mdefine_line|#define CMX2_CLK_MASK&t;((uint)0x00ff0000)
-macro_line|#endif
+DECL|macro|PB2_PSORB_BOUT
+mdefine_line|#define PB2_PSORB_BOUT&t;(PB2_RXDAT | PB2_TXDAT | PB2_CRS | PB2_COL | &bslash;&n;&t;&t;&t;&t;PB2_RXER | PB2_RXDV | PB2_TXER)
+DECL|macro|PB2_PSORB_BIN
+mdefine_line|#define PB2_PSORB_BIN&t;(PB2_TXEN)
+DECL|macro|PB2_DIRB_BOUT
+mdefine_line|#define PB2_DIRB_BOUT&t;(PB2_RXDAT | PB2_CRS | PB2_COL | PB2_RXER | PB2_RXDV)
+DECL|macro|PB2_DIRB_BIN
+mdefine_line|#define PB2_DIRB_BIN&t;(PB2_TXDAT | PB2_TXEN | PB2_TXER)
 multiline_comment|/* I/O Pin assignment for FCC3.  I don&squot;t yet know the best way to do this,&n; * but there is little variation among the choices.&n; */
 DECL|macro|PB3_RXDV
 mdefine_line|#define PB3_RXDV&t;((uint)0x00004000)
@@ -402,29 +428,43 @@ DECL|macro|PB3_COL
 mdefine_line|#define PB3_COL&t;&t;((uint)0x00040000)
 DECL|macro|PB3_CRS
 mdefine_line|#define PB3_CRS&t;&t;((uint)0x00080000)
+macro_line|#ifndef CONFIG_RPX8260
 DECL|macro|PB3_TXDAT
 mdefine_line|#define PB3_TXDAT&t;((uint)0x0f000000)
+DECL|macro|PC3_TXDAT
+mdefine_line|#define PC3_TXDAT&t;((uint)0x00000000)
+macro_line|#else
+DECL|macro|PB3_TXDAT
+mdefine_line|#define PB3_TXDAT&t;((uint)0x0f000000)
+DECL|macro|PC3_TXDAT
+mdefine_line|#define PC3_TXDAT&t;0
+macro_line|#endif
 DECL|macro|PB3_RXDAT
 mdefine_line|#define PB3_RXDAT&t;((uint)0x00f00000)
-DECL|macro|PB3_PSORB0
-mdefine_line|#define PB3_PSORB0&t;(PB3_RXDAT | PB3_TXDAT | PB3_CRS | PB3_COL | &bslash;&n;&t;&t;&t;&t;PB3_RXER | PB3_RXDV | PB3_TXER | PB3_TXEN)
-DECL|macro|PB3_PSORB1
-mdefine_line|#define PB3_PSORB1&t;(0)
-DECL|macro|PB3_DIRB0
-mdefine_line|#define PB3_DIRB0&t;(PB3_RXDAT | PB3_CRS | PB3_COL | PB3_RXER | PB3_RXDV)
-DECL|macro|PB3_DIRB1
-mdefine_line|#define PB3_DIRB1&t;(PB3_TXDAT | PB3_TXEN | PB3_TXER)
-multiline_comment|/* CLK15 is receive, CLK16 is transmit.  These are board dependent.&n;*/
-DECL|macro|PC_F3RXCLK
-mdefine_line|#define PC_F3RXCLK&t;((uint)0x00004000)
-DECL|macro|PC_F3TXCLK
-mdefine_line|#define PC_F3TXCLK&t;((uint)0x00008000)
-DECL|macro|CMX3_CLK_ROUTE
-mdefine_line|#define CMX3_CLK_ROUTE&t;((uint)0x00003700)
-DECL|macro|CMX3_CLK_MASK
-mdefine_line|#define CMX3_CLK_MASK&t;((uint)0x0000ff00)
+DECL|macro|PB3_PSORB_BOUT
+mdefine_line|#define PB3_PSORB_BOUT&t;(PB3_RXDAT | PB3_TXDAT | PB3_CRS | PB3_COL | &bslash;&n;&t;&t;&t;&t;PB3_RXER | PB3_RXDV | PB3_TXER | PB3_TXEN)
+DECL|macro|PB3_PSORB_BIN
+mdefine_line|#define PB3_PSORB_BIN&t;(0)
+DECL|macro|PB3_DIRB_BOUT
+mdefine_line|#define PB3_DIRB_BOUT&t;(PB3_RXDAT | PB3_CRS | PB3_COL | PB3_RXER | PB3_RXDV)
+DECL|macro|PB3_DIRB_BIN
+mdefine_line|#define PB3_DIRB_BIN&t;(PB3_TXDAT | PB3_TXEN | PB3_TXER)
+DECL|macro|PC3_PSORC_BOUT
+mdefine_line|#define PC3_PSORC_BOUT&t;(PC3_TXDAT)
+DECL|macro|PC3_PSORC_BIN
+mdefine_line|#define PC3_PSORC_BIN&t;(0)
+DECL|macro|PC3_DIRC_BOUT
+mdefine_line|#define PC3_DIRC_BOUT&t;(0)
+DECL|macro|PC3_DIRC_BIN
+mdefine_line|#define PC3_DIRC_BIN&t;(PC3_TXDAT)
 multiline_comment|/* MII status/control serial interface.&n;*/
-macro_line|#ifdef&t;CONFIG_TQM8260
+macro_line|#if defined(CONFIG_RPX8260)
+multiline_comment|/* The EP8260 doesn&squot;t use Port C for MDIO */
+DECL|macro|PC_MDIO
+mdefine_line|#define PC_MDIO&t;&t;((uint)0x00000000)
+DECL|macro|PC_MDCK
+mdefine_line|#define PC_MDCK&t;&t;((uint)0x00000000)
+macro_line|#elif defined(CONFIG_TQM8260)
 multiline_comment|/* TQM8260 has MDIO and MDCK on PC30 and PC31 respectively */
 DECL|macro|PC_MDIO
 mdefine_line|#define PC_MDIO&t;&t;((uint)0x00000002)
@@ -435,12 +475,33 @@ DECL|macro|PC_MDIO
 mdefine_line|#define PC_MDIO&t;&t;((uint)0x00002000)
 DECL|macro|PC_MDCK
 mdefine_line|#define PC_MDCK&t;&t;((uint)0x00001000)
+macro_line|#elif defined(CONFIG_EST8260) || defined(CONFIG_ADS8260) || defined(CONFIG_PQ2FADS)
+DECL|macro|PC_MDIO
+mdefine_line|#define PC_MDIO&t;&t;((uint)0x00400000)
+DECL|macro|PC_MDCK
+mdefine_line|#define PC_MDCK&t;&t;((uint)0x00200000)
 macro_line|#else
 DECL|macro|PC_MDIO
 mdefine_line|#define PC_MDIO&t;&t;((uint)0x00000004)
 DECL|macro|PC_MDCK
 mdefine_line|#define PC_MDCK&t;&t;((uint)0x00000020)
 macro_line|#endif
+macro_line|#if defined(CONFIG_USE_MDIO) &amp;&amp; (!defined(PC_MDIO) || !defined(PC_MDCK))
+macro_line|#error &quot;Must define PC_MDIO and PC_MDCK if using MDIO&quot;
+macro_line|#endif
+multiline_comment|/* PHY addresses */
+multiline_comment|/* default to dynamic config of phy addresses */
+DECL|macro|FCC1_PHY_ADDR
+mdefine_line|#define FCC1_PHY_ADDR 0
+macro_line|#ifdef CONFIG_PQ2FADS
+DECL|macro|FCC2_PHY_ADDR
+mdefine_line|#define FCC2_PHY_ADDR 0
+macro_line|#else
+DECL|macro|FCC2_PHY_ADDR
+mdefine_line|#define FCC2_PHY_ADDR 2
+macro_line|#endif
+DECL|macro|FCC3_PHY_ADDR
+mdefine_line|#define FCC3_PHY_ADDR 3
 multiline_comment|/* A table of information for supporting FCCs.  This does two things.&n; * First, we know how many FCCs we have and they are always externally&n; * numbered from zero.  Second, it holds control register and I/O&n; * information that could be different among board designs.&n; */
 DECL|struct|fcc_info
 r_typedef
@@ -450,6 +511,10 @@ id|fcc_info
 DECL|member|fc_fccnum
 id|uint
 id|fc_fccnum
+suffix:semicolon
+DECL|member|fc_phyaddr
+id|uint
+id|fc_phyaddr
 suffix:semicolon
 DECL|member|fc_cpmblock
 id|uint
@@ -503,6 +568,8 @@ macro_line|#ifdef CONFIG_FCC1_ENET
 (brace
 l_int|0
 comma
+id|FCC1_PHY_ADDR
+comma
 id|CPM_CR_FCC1_SBLOCK
 comma
 id|CPM_CR_FCC1_PAGE
@@ -521,23 +588,17 @@ id|CMX1_CLK_ROUTE
 comma
 id|CMX1_CLK_MASK
 comma
-macro_line|# if defined(CONFIG_TQM8260) || defined(CONFIG_ADS8272)
 id|PC_MDIO
 comma
 id|PC_MDCK
 )brace
 comma
-macro_line|# else
-l_int|0x00000004
-comma
-l_int|0x00000100
-)brace
-comma
-macro_line|# endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_FCC2_ENET
 (brace
 l_int|1
+comma
+id|FCC2_PHY_ADDR
 comma
 id|CPM_CR_FCC2_SBLOCK
 comma
@@ -557,29 +618,17 @@ id|CMX2_CLK_ROUTE
 comma
 id|CMX2_CLK_MASK
 comma
-macro_line|# if defined(CONFIG_TQM8260) || defined(CONFIG_ADS8272)
 id|PC_MDIO
 comma
 id|PC_MDCK
 )brace
 comma
-macro_line|# elif defined(CONFIG_EST8260) || defined(CONFIG_ADS8260)
-l_int|0x00400000
-comma
-l_int|0x00200000
-)brace
-comma
-macro_line|# else
-l_int|0x00000002
-comma
-l_int|0x00000080
-)brace
-comma
-macro_line|# endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_FCC3_ENET
 (brace
 l_int|2
+comma
+id|FCC3_PHY_ADDR
 comma
 id|CPM_CR_FCC3_SBLOCK
 comma
@@ -599,19 +648,11 @@ id|CMX3_CLK_ROUTE
 comma
 id|CMX3_CLK_MASK
 comma
-macro_line|# if defined(CONFIG_TQM8260) || defined(CONFIG_ADS8272)
 id|PC_MDIO
 comma
 id|PC_MDCK
 )brace
 comma
-macro_line|# else
-l_int|0x00000001
-comma
-l_int|0x00000040
-)brace
-comma
-macro_line|# endif
 macro_line|#endif
 )brace
 suffix:semicolon
@@ -638,11 +679,6 @@ DECL|member|skb_dirty
 id|ushort
 id|skb_dirty
 suffix:semicolon
-DECL|member|n_pkts
-id|atomic_t
-id|n_pkts
-suffix:semicolon
-multiline_comment|/* Number of packets in tx ring */
 multiline_comment|/* CPM dual port RAM relative addresses.&n;&t;*/
 DECL|member|rx_bd_base
 id|cbd_t
@@ -688,9 +724,9 @@ r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
-DECL|member|tx_full
+DECL|member|tx_free
 id|uint
-id|tx_full
+id|tx_free
 suffix:semicolon
 DECL|member|lock
 id|spinlock_t
@@ -714,10 +750,15 @@ id|phy_info_t
 op_star
 id|phy
 suffix:semicolon
-DECL|member|phy_task
+DECL|member|phy_relink
 r_struct
-id|tq_struct
-id|phy_task
+id|work_struct
+id|phy_relink
+suffix:semicolon
+DECL|member|phy_display_config
+r_struct
+id|work_struct
+id|phy_display_config
 suffix:semicolon
 DECL|member|sequence_done
 id|uint
@@ -865,20 +906,25 @@ id|cmd
 suffix:semicolon
 r_static
 r_void
-id|fcc_stop
+id|mii_do_cmd
 c_func
 (paren
 r_struct
 id|net_device
 op_star
 id|dev
+comma
+r_const
+id|phy_cmd_t
+op_star
+id|c
 )paren
 suffix:semicolon
 multiline_comment|/* Make MII read/write commands for the FCC.&n;*/
 DECL|macro|mk_mii_read
-mdefine_line|#define mk_mii_read(REG)&t;(0x60020000 | ((REG &amp; 0x1f) &lt;&lt; 18))
+mdefine_line|#define mk_mii_read(REG)&t;(0x60020000 | (((REG) &amp; 0x1f) &lt;&lt; 18))
 DECL|macro|mk_mii_write
-mdefine_line|#define mk_mii_write(REG, VAL)&t;(0x50020000 | ((REG &amp; 0x1f) &lt;&lt; 18) | &bslash;&n;&t;&t;&t;&t;&t;&t;(VAL &amp; 0xffff))
+mdefine_line|#define mk_mii_write(REG, VAL)&t;(0x50020000 | (((REG) &amp; 0x1f) &lt;&lt; 18) | &bslash;&n;&t;&t;&t;&t;&t;&t;((VAL) &amp; 0xffff))
 DECL|macro|mk_mii_end
 mdefine_line|#define mk_mii_end&t;0
 macro_line|#endif&t;/* CONFIG_USE_MDIO */
@@ -916,21 +962,6 @@ id|cbd_t
 op_star
 id|bdp
 suffix:semicolon
-r_int
-id|idx
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cep-&gt;link
-)paren
-(brace
-multiline_comment|/* Link is down or autonegotiation is in progress. */
-r_return
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* Fill in a Tx ring entry */
 id|bdp
 op_assign
@@ -940,12 +971,17 @@ macro_line|#ifndef final_version
 r_if
 c_cond
 (paren
+op_logical_neg
+id|cep-&gt;tx_free
+op_logical_or
+(paren
 id|bdp-&gt;cbd_sc
 op_amp
 id|BD_ENET_TX_READY
 )paren
+)paren
 (brace
-multiline_comment|/* Ooops.  All transmit buffers are full.  Bail out.&n;&t;&t; * This should not happen, since cep-&gt;tx_full should be set.&n;&t;&t; */
+multiline_comment|/* Ooops.  All transmit buffers are full.  Bail out.&n;&t;&t; * This should not happen, since the tx queue should be stopped.&n;&t;&t; */
 id|printk
 c_func
 (paren
@@ -1004,56 +1040,9 @@ id|cep-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* Save skb pointer. */
-id|idx
-op_assign
+id|cep-&gt;tx_skbuff
+(braket
 id|cep-&gt;skb_cur
-op_amp
-id|TX_RING_MOD_MASK
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cep-&gt;tx_skbuff
-(braket
-id|idx
-)braket
-)paren
-(brace
-multiline_comment|/* This should never happen (any more).&n;&t;&t;   Leave the sanity check in for now... */
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;EEP. cep-&gt;tx_skbuff[%d] is %p not NULL in %s&bslash;n&quot;
-comma
-id|idx
-comma
-id|cep-&gt;tx_skbuff
-(braket
-id|idx
-)braket
-comma
-id|__func__
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Expect to lose %d bytes of sock space&quot;
-comma
-id|cep-&gt;tx_skbuff
-(braket
-id|idx
-)braket
-op_member_access_from_pointer
-id|truesize
-)paren
-suffix:semicolon
-)brace
-id|cep-&gt;tx_skbuff
-(braket
-id|idx
 )braket
 op_assign
 id|skb
@@ -1063,14 +1052,14 @@ op_add_assign
 id|skb-&gt;len
 suffix:semicolon
 id|cep-&gt;skb_cur
-op_increment
-suffix:semicolon
-id|atomic_inc
-c_func
+op_assign
 (paren
-op_amp
-id|cep-&gt;n_pkts
+id|cep-&gt;skb_cur
+op_plus
+l_int|1
 )paren
+op_amp
+id|TX_RING_MOD_MASK
 suffix:semicolon
 multiline_comment|/* Send it on its way.  Tell CPM its ready, interrupt when done,&n;&t; * its the last BD of the frame, and to put the CRC on the end.&n;&t; */
 id|bdp-&gt;cbd_sc
@@ -1112,47 +1101,19 @@ r_else
 id|bdp
 op_increment
 suffix:semicolon
-multiline_comment|/* If the tx_ring is full, stop the queue */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|cep-&gt;n_pkts
-)paren
-op_ge
-(paren
-id|TX_RING_SIZE
-op_minus
-l_int|1
-)paren
-)paren
-(brace
 r_if
 c_cond
 (paren
 op_logical_neg
-id|netif_queue_stopped
-c_func
-(paren
-id|dev
+op_decrement
+id|cep-&gt;tx_free
 )paren
-)paren
-(brace
 id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-id|cep-&gt;tx_full
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
 id|cep-&gt;cur_tx
 op_assign
 (paren
@@ -1219,16 +1180,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; Ring data dump: cur_tx %p%s cur_rx %p.&bslash;n&quot;
+l_string|&quot; Ring data dump: cur_tx %p tx_free %d cur_rx %p.&bslash;n&quot;
 comma
 id|cep-&gt;cur_tx
 comma
-id|cep-&gt;tx_full
-ques
-c_cond
-l_string|&quot; (full)&quot;
-suffix:colon
-l_string|&quot;&quot;
+id|cep-&gt;tx_free
 comma
 id|cep-&gt;cur_rx
 )paren
@@ -1320,8 +1276,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-op_logical_neg
-id|cep-&gt;tx_full
+id|cep-&gt;tx_free
 )paren
 id|netif_wake_queue
 c_func
@@ -1374,9 +1329,6 @@ suffix:semicolon
 r_int
 id|must_restart
 suffix:semicolon
-r_int
-id|idx
-suffix:semicolon
 id|cep
 op_assign
 (paren
@@ -1393,12 +1345,25 @@ id|cep-&gt;fccp-&gt;fcc_fcce
 suffix:semicolon
 id|cep-&gt;fccp-&gt;fcc_fcce
 op_assign
+(paren
 id|int_events
+op_amp
+id|cep-&gt;fccp-&gt;fcc_fccm
+)paren
 suffix:semicolon
 id|must_restart
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef PHY_INTERRUPT
+multiline_comment|/* We have to be careful here to make sure that we aren&squot;t&n;&t; * interrupted by a PHY interrupt.&n;&t; */
+id|disable_irq_nosync
+c_func
+(paren
+id|PHY_INTERRUPT
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Handle receive event in its own function.&n;&t;*/
 r_if
 c_cond
@@ -1453,17 +1418,9 @@ l_int|0
 r_if
 c_cond
 (paren
-(paren
-id|bdp
+id|cep-&gt;tx_free
 op_eq
-id|cep-&gt;cur_tx
-)paren
-op_logical_and
-(paren
-id|cep-&gt;tx_full
-op_eq
-l_int|0
-)paren
+id|TX_RING_SIZE
 )paren
 r_break
 suffix:semicolon
@@ -1560,37 +1517,31 @@ id|cep-&gt;stats.collisions
 op_increment
 suffix:semicolon
 multiline_comment|/* Free the sk buffer associated with this last transmit. */
-id|idx
-op_assign
-id|cep-&gt;skb_dirty
-op_amp
-id|TX_RING_MOD_MASK
-suffix:semicolon
 id|dev_kfree_skb_irq
 c_func
 (paren
 id|cep-&gt;tx_skbuff
 (braket
-id|idx
+id|cep-&gt;skb_dirty
 )braket
 )paren
 suffix:semicolon
 id|cep-&gt;tx_skbuff
 (braket
-id|idx
+id|cep-&gt;skb_dirty
 )braket
 op_assign
 l_int|NULL
 suffix:semicolon
 id|cep-&gt;skb_dirty
-op_increment
-suffix:semicolon
-id|atomic_dec
-c_func
+op_assign
 (paren
-op_amp
-id|cep-&gt;n_pkts
+id|cep-&gt;skb_dirty
+op_plus
+l_int|1
 )paren
+op_amp
+id|TX_RING_MOD_MASK
 suffix:semicolon
 multiline_comment|/* Update pointer to next buffer descriptor to be transmitted. */
 r_if
@@ -1613,13 +1564,11 @@ multiline_comment|/* Since we have freed up a buffer, the ring is no longer&n;&t
 r_if
 c_cond
 (paren
-id|cep-&gt;tx_full
+op_logical_neg
+id|cep-&gt;tx_free
+op_increment
 )paren
 (brace
-id|cep-&gt;tx_full
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1721,10 +1670,22 @@ op_amp
 id|FCC_ENET_BSY
 )paren
 (brace
+id|cep-&gt;fccp-&gt;fcc_fcce
+op_assign
+id|FCC_ENET_BSY
+suffix:semicolon
 id|cep-&gt;stats.rx_dropped
 op_increment
 suffix:semicolon
 )brace
+macro_line|#ifdef PHY_INTERRUPT
+id|enable_irq
+c_func
+(paren
+id|PHY_INTERRUPT
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
@@ -2050,13 +2011,42 @@ op_star
 id|dev
 )paren
 (brace
-multiline_comment|/* Don&squot;t know what to do yet. */
+macro_line|#ifdef&t;CONFIG_USE_MDIO
+r_struct
+id|fcc_enet_private
+op_star
+id|fep
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+macro_line|#endif
 id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+id|fcc_stop
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+macro_line|#ifdef&t;CONFIG_USE_MDIO
+r_if
+c_cond
+(paren
+id|fep-&gt;phy
+)paren
+id|mii_do_cmd
+c_func
+(paren
+id|dev
+comma
+id|fep-&gt;phy-&gt;shutdown
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -2293,7 +2283,7 @@ c_cond
 (paren
 id|mii_reg
 op_amp
-l_int|0x0004
+id|BMSR_LSTATUS
 )paren
 id|s
 op_or_assign
@@ -2304,7 +2294,7 @@ c_cond
 (paren
 id|mii_reg
 op_amp
-l_int|0x0010
+id|BMSR_RFAULT
 )paren
 id|s
 op_or_assign
@@ -2315,7 +2305,7 @@ c_cond
 (paren
 id|mii_reg
 op_amp
-l_int|0x0020
+id|BMSR_ANEGCOMPLETE
 )paren
 id|s
 op_or_assign
@@ -2324,19 +2314,6 @@ suffix:semicolon
 id|fep-&gt;phy_status
 op_assign
 id|s
-suffix:semicolon
-id|fep-&gt;link
-op_assign
-(paren
-id|s
-op_amp
-id|PHY_STAT_LINK
-)paren
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|mii_parse_cr
@@ -2381,7 +2358,7 @@ c_cond
 (paren
 id|mii_reg
 op_amp
-l_int|0x1000
+id|BMCR_ANENABLE
 )paren
 id|s
 op_or_assign
@@ -2392,7 +2369,7 @@ c_cond
 (paren
 id|mii_reg
 op_amp
-l_int|0x4000
+id|BMCR_LOOPBACK
 )paren
 id|s
 op_or_assign
@@ -2443,7 +2420,7 @@ c_cond
 (paren
 id|mii_reg
 op_amp
-l_int|0x0020
+id|ADVERTISE_10HALF
 )paren
 id|s
 op_or_assign
@@ -2454,7 +2431,7 @@ c_cond
 (paren
 id|mii_reg
 op_amp
-l_int|0x0040
+id|ADVERTISE_10FULL
 )paren
 id|s
 op_or_assign
@@ -2465,7 +2442,7 @@ c_cond
 (paren
 id|mii_reg
 op_amp
-l_int|0x0080
+id|ADVERTISE_100HALF
 )paren
 id|s
 op_or_assign
@@ -2476,7 +2453,7 @@ c_cond
 (paren
 id|mii_reg
 op_amp
-l_int|0x00100
+id|ADVERTISE_100FULL
 )paren
 id|s
 op_or_assign
@@ -2487,6 +2464,131 @@ op_assign
 id|s
 suffix:semicolon
 )brace
+multiline_comment|/* ------------------------------------------------------------------------- */
+multiline_comment|/* Generic PHY support.  Should work for all PHYs, but does not support link&n; * change interrupts.&n; */
+macro_line|#ifdef CONFIG_FCC_GENERIC_PHY
+DECL|variable|phy_info_generic
+r_static
+id|phy_info_t
+id|phy_info_generic
+op_assign
+(brace
+l_int|0x00000000
+comma
+multiline_comment|/* 0--&gt;match any PHY */
+l_string|&quot;GENERIC&quot;
+comma
+(paren
+r_const
+id|phy_cmd_t
+(braket
+)braket
+)paren
+(brace
+multiline_comment|/* config */
+multiline_comment|/* advertise only half-duplex capabilities */
+(brace
+id|mk_mii_write
+c_func
+(paren
+id|MII_ADVERTISE
+comma
+id|MII_ADVERTISE_HALF
+)paren
+comma
+id|mii_parse_anar
+)brace
+comma
+multiline_comment|/* enable auto-negotiation */
+(brace
+id|mk_mii_write
+c_func
+(paren
+id|MII_BMCR
+comma
+id|BMCR_ANENABLE
+)paren
+comma
+id|mii_parse_cr
+)brace
+comma
+(brace
+id|mk_mii_end
+comma
+)brace
+)brace
+comma
+(paren
+r_const
+id|phy_cmd_t
+(braket
+)braket
+)paren
+(brace
+multiline_comment|/* startup */
+multiline_comment|/* restart auto-negotiation */
+(brace
+id|mk_mii_write
+c_func
+(paren
+id|MII_BMCR
+comma
+id|BMCR_ANENABLE
+op_or
+id|BMCR_ANRESTART
+)paren
+comma
+l_int|NULL
+)brace
+comma
+(brace
+id|mk_mii_end
+comma
+)brace
+)brace
+comma
+(paren
+r_const
+id|phy_cmd_t
+(braket
+)braket
+)paren
+(brace
+multiline_comment|/* ack_int */
+multiline_comment|/* We don&squot;t actually use the ack_int table with a generic&n;&t;&t; * PHY, but putting a reference to mii_parse_sr here keeps&n;&t;&t; * us from getting a compiler warning about unused static&n;&t;&t; * functions in the case where we only compile in generic&n;&t;&t; * PHY support.&n;&t;&t; */
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MII_BMSR
+)paren
+comma
+id|mii_parse_sr
+)brace
+comma
+(brace
+id|mk_mii_end
+comma
+)brace
+)brace
+comma
+(paren
+r_const
+id|phy_cmd_t
+(braket
+)braket
+)paren
+(brace
+multiline_comment|/* shutdown */
+(brace
+id|mk_mii_end
+comma
+)brace
+)brace
+comma
+)brace
+suffix:semicolon
+macro_line|#endif&t;/* ifdef CONFIG_FCC_GENERIC_PHY */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* The Level one LXT970 is used by many boards&t;&t;&t;&t;     */
 macro_line|#ifdef CONFIG_FCC_LXT970
@@ -2603,7 +2705,7 @@ id|phy_cmd_t
 (brace
 multiline_comment|/* config */
 macro_line|#if 0
-singleline_comment|//&t;&t;{ mk_mii_write(MII_REG_ANAR, 0x0021), NULL },
+singleline_comment|//&t;&t;{ mk_mii_write(MII_ADVERTISE, 0x0021), NULL },
 multiline_comment|/* Set default operation of 100-TX....for some reason&n;&t;&t; * some of these bits are set on power up, which is wrong.&n;&t;&t; */
 (brace
 id|mk_mii_write
@@ -2622,7 +2724,7 @@ macro_line|#endif
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_CR
+id|MII_BMCR
 )paren
 comma
 id|mii_parse_cr
@@ -2632,7 +2734,7 @@ comma
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_ANAR
+id|MII_ADVERTISE
 )paren
 comma
 id|mii_parse_anar
@@ -2668,7 +2770,7 @@ comma
 id|mk_mii_write
 c_func
 (paren
-id|MII_REG_CR
+id|MII_BMCR
 comma
 l_int|0x1200
 )paren
@@ -2696,7 +2798,7 @@ multiline_comment|/* read SR and ISR to acknowledge */
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_SR
+id|MII_BMSR
 )paren
 comma
 id|mii_parse_sr
@@ -2888,25 +2990,30 @@ id|phy_cmd_t
 )paren
 (brace
 multiline_comment|/* config */
-singleline_comment|//&t;&t;{ mk_mii_write(MII_REG_ANAR, 0x021), NULL }, /* 10  Mbps, HD */
+multiline_comment|/* configure link capabilities to advertise */
 (brace
-id|mk_mii_read
+id|mk_mii_write
 c_func
 (paren
-id|MII_REG_CR
-)paren
+id|MII_ADVERTISE
 comma
-id|mii_parse_cr
-)brace
-comma
-(brace
-id|mk_mii_read
-c_func
-(paren
-id|MII_REG_ANAR
+id|MII_ADVERTISE_DEFAULT
 )paren
 comma
 id|mii_parse_anar
+)brace
+comma
+multiline_comment|/* enable auto-negotiation */
+(brace
+id|mk_mii_write
+c_func
+(paren
+id|MII_BMCR
+comma
+id|BMCR_ANENABLE
+)paren
+comma
+id|mii_parse_cr
 )brace
 comma
 (brace
@@ -2935,28 +3042,19 @@ comma
 l_int|NULL
 )brace
 comma
+multiline_comment|/* restart auto-negotiation */
 (brace
 id|mk_mii_write
 c_func
 (paren
-id|MII_REG_CR
+id|MII_BMCR
 comma
-l_int|0x1200
+id|BMCR_ANENABLE
+op_or
+id|BMCR_ANRESTART
 )paren
 comma
 l_int|NULL
-)brace
-comma
-multiline_comment|/* autonegotiate */
-multiline_comment|/* Somehow does the 971 tell me that the link is down&n;&t;&t; * the first read after power-up.&n;&t;&t; * read here to get a valid value in ack_int */
-(brace
-id|mk_mii_read
-c_func
-(paren
-id|MII_REG_SR
-)paren
-comma
-id|mii_parse_sr
 )brace
 comma
 (brace
@@ -2978,7 +3076,17 @@ multiline_comment|/* find out the current status */
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_SR
+id|MII_BMSR
+)paren
+comma
+l_int|NULL
+)brace
+comma
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MII_BMSR
 )paren
 comma
 id|mii_parse_sr
@@ -3039,7 +3147,7 @@ comma
 comma
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_FEC_LXT970 */
+macro_line|#endif /* CONFIG_FCC_LXT971 */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* The Quality Semiconductor QS6612 is used on the RPX CLLF                  */
 macro_line|#ifdef CONFIG_FCC_QS6612
@@ -3163,7 +3271,7 @@ id|phy_cmd_t
 )paren
 (brace
 multiline_comment|/* config */
-singleline_comment|//&t;{ mk_mii_write(MII_REG_ANAR, 0x061), NULL }, /* 10  Mbps */
+singleline_comment|//&t;{ mk_mii_write(MII_ADVERTISE, 0x061), NULL }, /* 10  Mbps */
 multiline_comment|/* The PHY powers up isolated on the RPX,&n;&t;&t; * so send a command to allow operation.&n;&t;&t; */
 (brace
 id|mk_mii_write
@@ -3182,7 +3290,7 @@ multiline_comment|/* parse cr and anar to get some info */
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_CR
+id|MII_BMCR
 )paren
 comma
 id|mii_parse_cr
@@ -3192,7 +3300,7 @@ comma
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_ANAR
+id|MII_ADVERTISE
 )paren
 comma
 id|mii_parse_anar
@@ -3228,7 +3336,7 @@ comma
 id|mk_mii_write
 c_func
 (paren
-id|MII_REG_CR
+id|MII_BMCR
 comma
 l_int|0x1200
 )paren
@@ -3266,7 +3374,7 @@ comma
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_SR
+id|MII_BMSR
 )paren
 comma
 id|mii_parse_sr
@@ -3276,7 +3384,7 @@ comma
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_ANER
+id|MII_EXPANSION
 )paren
 comma
 l_int|NULL
@@ -3456,7 +3564,7 @@ multiline_comment|/* parse cr and anar to get some info */
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_CR
+id|MII_BMCR
 )paren
 comma
 id|mii_parse_cr
@@ -3466,7 +3574,7 @@ comma
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_ANAR
+id|MII_ADVERTISE
 )paren
 comma
 id|mii_parse_anar
@@ -3502,7 +3610,7 @@ comma
 id|mk_mii_write
 c_func
 (paren
-id|MII_REG_CR
+id|MII_BMCR
 comma
 l_int|0x1200
 )paren
@@ -3540,7 +3648,7 @@ comma
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_SR
+id|MII_BMSR
 )paren
 comma
 id|mii_parse_sr
@@ -3550,7 +3658,7 @@ comma
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_ANER
+id|MII_EXPANSION
 )paren
 comma
 l_int|NULL
@@ -3602,6 +3710,563 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_FEC_DM9131 */
+macro_line|#ifdef CONFIG_FCC_DM9161
+multiline_comment|/* ------------------------------------------------------------------------- */
+multiline_comment|/* DM9161 Control register values */
+DECL|macro|MIIM_DM9161_CR_STOP
+mdefine_line|#define MIIM_DM9161_CR_STOP     0x0400
+DECL|macro|MIIM_DM9161_CR_RSTAN
+mdefine_line|#define MIIM_DM9161_CR_RSTAN    0x1200
+DECL|macro|MIIM_DM9161_SCR
+mdefine_line|#define MIIM_DM9161_SCR         0x10
+DECL|macro|MIIM_DM9161_SCR_INIT
+mdefine_line|#define MIIM_DM9161_SCR_INIT    0x0610
+multiline_comment|/* DM9161 Specified Configuration and Status Register */
+DECL|macro|MIIM_DM9161_SCSR
+mdefine_line|#define MIIM_DM9161_SCSR        0x11
+DECL|macro|MIIM_DM9161_SCSR_100F
+mdefine_line|#define MIIM_DM9161_SCSR_100F   0x8000
+DECL|macro|MIIM_DM9161_SCSR_100H
+mdefine_line|#define MIIM_DM9161_SCSR_100H   0x4000
+DECL|macro|MIIM_DM9161_SCSR_10F
+mdefine_line|#define MIIM_DM9161_SCSR_10F    0x2000
+DECL|macro|MIIM_DM9161_SCSR_10H
+mdefine_line|#define MIIM_DM9161_SCSR_10H    0x1000
+multiline_comment|/* DM9161 10BT register */
+DECL|macro|MIIM_DM9161_10BTCSR
+mdefine_line|#define MIIM_DM9161_10BTCSR &t;0x12
+DECL|macro|MIIM_DM9161_10BTCSR_INIT
+mdefine_line|#define MIIM_DM9161_10BTCSR_INIT 0x7800
+multiline_comment|/* DM9161 Interrupt Register */
+DECL|macro|MIIM_DM9161_INTR
+mdefine_line|#define MIIM_DM9161_INTR        0x15
+DECL|macro|MIIM_DM9161_INTR_PEND
+mdefine_line|#define MIIM_DM9161_INTR_PEND           0x8000
+DECL|macro|MIIM_DM9161_INTR_DPLX_MASK
+mdefine_line|#define MIIM_DM9161_INTR_DPLX_MASK      0x0800
+DECL|macro|MIIM_DM9161_INTR_SPD_MASK
+mdefine_line|#define MIIM_DM9161_INTR_SPD_MASK       0x0400
+DECL|macro|MIIM_DM9161_INTR_LINK_MASK
+mdefine_line|#define MIIM_DM9161_INTR_LINK_MASK      0x0200
+DECL|macro|MIIM_DM9161_INTR_MASK
+mdefine_line|#define MIIM_DM9161_INTR_MASK           0x0100
+DECL|macro|MIIM_DM9161_INTR_DPLX_CHANGE
+mdefine_line|#define MIIM_DM9161_INTR_DPLX_CHANGE    0x0010
+DECL|macro|MIIM_DM9161_INTR_SPD_CHANGE
+mdefine_line|#define MIIM_DM9161_INTR_SPD_CHANGE     0x0008
+DECL|macro|MIIM_DM9161_INTR_LINK_CHANGE
+mdefine_line|#define MIIM_DM9161_INTR_LINK_CHANGE    0x0004
+DECL|macro|MIIM_DM9161_INTR_INIT
+mdefine_line|#define MIIM_DM9161_INTR_INIT           0x0000
+DECL|macro|MIIM_DM9161_INTR_STOP
+mdefine_line|#define MIIM_DM9161_INTR_STOP   &bslash;&n;(MIIM_DM9161_INTR_DPLX_MASK | MIIM_DM9161_INTR_SPD_MASK &bslash;&n;  | MIIM_DM9161_INTR_LINK_MASK | MIIM_DM9161_INTR_MASK)
+DECL|function|mii_parse_dm9161_sr
+r_static
+r_void
+id|mii_parse_dm9161_sr
+c_func
+(paren
+id|uint
+id|mii_reg
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_volatile
+r_struct
+id|fcc_enet_private
+op_star
+id|fep
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|uint
+id|regstat
+comma
+id|timeout
+op_assign
+l_int|0xffff
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+(paren
+id|mii_reg
+op_amp
+l_int|0x0020
+)paren
+op_logical_and
+id|timeout
+op_decrement
+)paren
+(brace
+id|regstat
+op_assign
+id|mk_mii_read
+c_func
+(paren
+id|MII_BMSR
+)paren
+suffix:semicolon
+id|regstat
+op_or_assign
+id|fep-&gt;phy_addr
+op_lshift
+l_int|23
+suffix:semicolon
+id|mii_reg
+op_assign
+id|mii_send_receive
+c_func
+(paren
+id|fep-&gt;fip
+comma
+id|regstat
+)paren
+suffix:semicolon
+)brace
+id|mii_parse_sr
+c_func
+(paren
+id|mii_reg
+comma
+id|dev
+)paren
+suffix:semicolon
+)brace
+DECL|function|mii_parse_dm9161_scsr
+r_static
+r_void
+id|mii_parse_dm9161_scsr
+c_func
+(paren
+id|uint
+id|mii_reg
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_volatile
+r_struct
+id|fcc_enet_private
+op_star
+id|fep
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|uint
+id|s
+op_assign
+id|fep-&gt;phy_status
+suffix:semicolon
+id|s
+op_and_assign
+op_complement
+(paren
+id|PHY_STAT_SPMASK
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+(paren
+id|mii_reg
+op_rshift
+l_int|12
+)paren
+op_amp
+l_int|0xf
+)paren
+(brace
+r_case
+l_int|1
+suffix:colon
+(brace
+id|s
+op_or_assign
+id|PHY_STAT_10HDX
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;10BaseT Half Duplex&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_case
+l_int|2
+suffix:colon
+(brace
+id|s
+op_or_assign
+id|PHY_STAT_10FDX
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;10BaseT Full Duplex&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_case
+l_int|4
+suffix:colon
+(brace
+id|s
+op_or_assign
+id|PHY_STAT_100HDX
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;100BaseT Half Duplex&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_case
+l_int|8
+suffix:colon
+(brace
+id|s
+op_or_assign
+id|PHY_STAT_100FDX
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;100BaseT Full Duplex&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+id|fep-&gt;phy_status
+op_assign
+id|s
+suffix:semicolon
+)brace
+DECL|function|mii_dm9161_wait
+r_static
+r_void
+id|mii_dm9161_wait
+c_func
+(paren
+id|uint
+id|mii_reg
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_int
+id|timeout
+op_assign
+id|HZ
+suffix:semicolon
+multiline_comment|/* Davicom takes a bit to come up after a reset,&n;&t; * so wait here for a bit */
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|timeout
+)paren
+suffix:semicolon
+)brace
+DECL|variable|phy_info_dm9161
+r_static
+id|phy_info_t
+id|phy_info_dm9161
+op_assign
+(brace
+l_int|0x00181b88
+comma
+l_string|&quot;Davicom DM9161E&quot;
+comma
+(paren
+r_const
+id|phy_cmd_t
+(braket
+)braket
+)paren
+(brace
+multiline_comment|/* config */
+(brace
+id|mk_mii_write
+c_func
+(paren
+id|MII_BMCR
+comma
+id|MIIM_DM9161_CR_STOP
+)paren
+comma
+l_int|NULL
+)brace
+comma
+multiline_comment|/* Do not bypass the scrambler/descrambler */
+(brace
+id|mk_mii_write
+c_func
+(paren
+id|MIIM_DM9161_SCR
+comma
+id|MIIM_DM9161_SCR_INIT
+)paren
+comma
+l_int|NULL
+)brace
+comma
+multiline_comment|/* Configure 10BTCSR register */
+(brace
+id|mk_mii_write
+c_func
+(paren
+id|MIIM_DM9161_10BTCSR
+comma
+id|MIIM_DM9161_10BTCSR_INIT
+)paren
+comma
+l_int|NULL
+)brace
+comma
+multiline_comment|/* Configure some basic stuff */
+(brace
+id|mk_mii_write
+c_func
+(paren
+id|MII_BMCR
+comma
+l_int|0x1000
+)paren
+comma
+l_int|NULL
+)brace
+comma
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MII_BMCR
+)paren
+comma
+id|mii_parse_cr
+)brace
+comma
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MII_ADVERTISE
+)paren
+comma
+id|mii_parse_anar
+)brace
+comma
+(brace
+id|mk_mii_end
+comma
+)brace
+)brace
+comma
+(paren
+r_const
+id|phy_cmd_t
+(braket
+)braket
+)paren
+(brace
+multiline_comment|/* startup */
+multiline_comment|/* Restart Auto Negotiation */
+(brace
+id|mk_mii_write
+c_func
+(paren
+id|MII_BMCR
+comma
+id|MIIM_DM9161_CR_RSTAN
+)paren
+comma
+l_int|NULL
+)brace
+comma
+multiline_comment|/* Status is read once to clear old link state */
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MII_BMSR
+)paren
+comma
+id|mii_dm9161_wait
+)brace
+comma
+multiline_comment|/* Auto-negotiate */
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MII_BMSR
+)paren
+comma
+id|mii_parse_dm9161_sr
+)brace
+comma
+multiline_comment|/* Read the status */
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MIIM_DM9161_SCSR
+)paren
+comma
+id|mii_parse_dm9161_scsr
+)brace
+comma
+multiline_comment|/* Clear any pending interrupts */
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MIIM_DM9161_INTR
+)paren
+comma
+l_int|NULL
+)brace
+comma
+multiline_comment|/* Enable Interrupts */
+(brace
+id|mk_mii_write
+c_func
+(paren
+id|MIIM_DM9161_INTR
+comma
+id|MIIM_DM9161_INTR_INIT
+)paren
+comma
+l_int|NULL
+)brace
+comma
+(brace
+id|mk_mii_end
+comma
+)brace
+)brace
+comma
+(paren
+r_const
+id|phy_cmd_t
+(braket
+)braket
+)paren
+(brace
+multiline_comment|/* ack_int */
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MIIM_DM9161_INTR
+)paren
+comma
+l_int|NULL
+)brace
+comma
+macro_line|#if 0
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MII_BMSR
+)paren
+comma
+l_int|NULL
+)brace
+comma
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MII_BMSR
+)paren
+comma
+id|mii_parse_dm9161_sr
+)brace
+comma
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MIIM_DM9161_SCSR
+)paren
+comma
+id|mii_parse_dm9161_scsr
+)brace
+comma
+macro_line|#endif
+(brace
+id|mk_mii_end
+comma
+)brace
+)brace
+comma
+(paren
+r_const
+id|phy_cmd_t
+(braket
+)braket
+)paren
+(brace
+multiline_comment|/* shutdown */
+(brace
+id|mk_mii_read
+c_func
+(paren
+id|MIIM_DM9161_INTR
+)paren
+comma
+l_int|NULL
+)brace
+comma
+(brace
+id|mk_mii_write
+c_func
+(paren
+id|MIIM_DM9161_INTR
+comma
+id|MIIM_DM9161_INTR_STOP
+)paren
+comma
+l_int|NULL
+)brace
+comma
+(brace
+id|mk_mii_end
+comma
+)brace
+)brace
+comma
+)brace
+suffix:semicolon
+macro_line|#endif /* CONFIG_FCC_DM9161 */
 DECL|variable|phy_info
 r_static
 id|phy_info_t
@@ -3631,6 +4296,17 @@ op_amp
 id|phy_info_dm9131
 comma
 macro_line|#endif /* CONFIG_FEC_DM9131 */
+macro_line|#ifdef CONFIG_FCC_DM9161
+op_amp
+id|phy_info_dm9161
+comma
+macro_line|#endif /* CONFIG_FCC_DM9161 */
+macro_line|#ifdef CONFIG_FCC_GENERIC_PHY
+multiline_comment|/* Generic PHY support.  This must be the last PHY in the table.&n;&t; * It will be used to support any PHY that doesn&squot;t match a previous&n;&t; * entry in the table.&n;&t; */
+op_amp
+id|phy_info_generic
+comma
+macro_line|#endif /* CONFIG_FCC_GENERIC_PHY */
 l_int|NULL
 )brace
 suffix:semicolon
@@ -3640,12 +4316,18 @@ r_void
 id|mii_display_status
 c_func
 (paren
+r_void
+op_star
+id|data
+)paren
+(brace
 r_struct
 id|net_device
 op_star
 id|dev
-)paren
-(brace
+op_assign
+id|data
+suffix:semicolon
 r_volatile
 r_struct
 id|fcc_enet_private
@@ -3804,12 +4486,18 @@ r_void
 id|mii_display_config
 c_func
 (paren
+r_void
+op_star
+id|data
+)paren
+(brace
 r_struct
 id|net_device
 op_star
 id|dev
-)paren
-(brace
+op_assign
+id|data
+suffix:semicolon
 r_volatile
 r_struct
 id|fcc_enet_private
@@ -3964,6 +4652,12 @@ id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|duplex
+op_assign
+l_int|0
+suffix:semicolon
+id|fep-&gt;old_link
+op_assign
+id|fep-&gt;link
 suffix:semicolon
 id|fep-&gt;link
 op_assign
@@ -3978,26 +4672,22 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|mii_display_status
+macro_line|#ifdef MDIO_DEBUG
+id|printk
 c_func
 (paren
-id|dev
+l_string|&quot;  mii_relink:  link=%d&bslash;n&quot;
+comma
+id|fep-&gt;link
 )paren
 suffix:semicolon
-id|fep-&gt;old_link
-op_assign
-id|fep-&gt;link
-suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
 id|fep-&gt;link
 )paren
 (brace
-id|duplex
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4021,15 +4711,16 @@ comma
 id|duplex
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|fcc_stop
+macro_line|#ifdef MDIO_DEBUG
+id|printk
 c_func
 (paren
-id|dev
+l_string|&quot;  mii_relink:  duplex=%d&bslash;n&quot;
+comma
+id|duplex
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 DECL|function|mii_queue_relink
@@ -4054,23 +4745,17 @@ id|fep
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|fep-&gt;phy_task.routine
-op_assign
-(paren
-r_void
-op_star
-)paren
 id|mii_relink
-suffix:semicolon
-id|fep-&gt;phy_task.data
-op_assign
+c_func
+(paren
 id|dev
+)paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|fep-&gt;phy_task
+id|fep-&gt;phy_relink
 )paren
 suffix:semicolon
 )brace
@@ -4096,23 +4781,11 @@ id|fep
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|fep-&gt;phy_task.routine
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|mii_display_config
-suffix:semicolon
-id|fep-&gt;phy_task.data
-op_assign
-id|dev
-suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|fep-&gt;phy_task
+id|fep-&gt;phy_display_config
 )paren
 suffix:semicolon
 )brace
@@ -4127,7 +4800,7 @@ op_assign
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_CR
+id|MII_BMCR
 )paren
 comma
 id|mii_queue_relink
@@ -4150,7 +4823,7 @@ op_assign
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_CR
+id|MII_BMCR
 )paren
 comma
 id|mii_queue_config
@@ -4190,6 +4863,14 @@ id|fep
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;mii_reg: %08x&bslash;n&quot;
+comma
+id|mii_reg
+)paren
+suffix:semicolon
 id|fep-&gt;phy_id
 op_or_assign
 (paren
@@ -4216,6 +4897,7 @@ op_increment
 r_if
 c_cond
 (paren
+(paren
 id|phy_info
 (braket
 id|i
@@ -4228,6 +4910,15 @@ id|fep-&gt;phy_id
 op_rshift
 l_int|4
 )paren
+)paren
+op_logical_or
+op_logical_neg
+id|phy_info
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|id
 )paren
 (brace
 r_break
@@ -4260,6 +4951,10 @@ id|phy_info
 (braket
 id|i
 )braket
+suffix:semicolon
+id|fep-&gt;phy_id_done
+op_assign
+l_int|1
 suffix:semicolon
 id|printk
 c_func
@@ -4313,11 +5008,11 @@ op_assign
 (paren
 id|mii_reg
 op_amp
-l_int|0xfff
+l_int|0xffff
 )paren
 )paren
 op_ne
-l_int|0xfff
+l_int|0xffff
 )paren
 (brace
 multiline_comment|/* Got first part of ID, now get remainder. */
@@ -4335,7 +5030,7 @@ comma
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_PHYIR2
+id|MII_PHYSID2
 )paren
 comma
 id|mii_discover_phy3
@@ -4363,7 +5058,7 @@ comma
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_PHYIR1
+id|MII_PHYSID1
 )paren
 comma
 id|mii_discover_phy
@@ -4381,6 +5076,8 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
+macro_line|#ifdef PHY_INTERRUPT
 multiline_comment|/* This interrupt occurs when the PHY detects a link change. */
 r_static
 id|irqreturn_t
@@ -4415,6 +5112,25 @@ id|fep
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+id|fcc_info_t
+op_star
+id|fip
+op_assign
+id|fep-&gt;fip
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fep-&gt;phy
+)paren
+(brace
+multiline_comment|/* We don&squot;t want to be interrupted by an FCC&n;&t;&t; * interrupt here.&n;&t;&t; */
+id|disable_irq_nosync
+c_func
+(paren
+id|fip-&gt;fc_interrupt
+)paren
+suffix:semicolon
 id|mii_do_cmd
 c_func
 (paren
@@ -4423,6 +5139,7 @@ comma
 id|fep-&gt;phy-&gt;ack_int
 )paren
 suffix:semicolon
+multiline_comment|/* restart and display status */
 id|mii_do_cmd
 c_func
 (paren
@@ -4431,16 +5148,22 @@ comma
 id|phy_cmd_relink
 )paren
 suffix:semicolon
-multiline_comment|/* restart and display status */
+id|enable_irq
+c_func
+(paren
+id|fip-&gt;fc_interrupt
+)paren
+suffix:semicolon
+)brace
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* CONFIG_USE_MDIO */
+macro_line|#endif&t;/* ifdef PHY_INTERRUPT */
+macro_line|#if 0 /* This should be fixed someday */
 multiline_comment|/* Set or clear the multicast filter for this adaptor.&n; * Skeleton taken from sunlance driver.&n; * The CPM Ethernet implementation allows Multicast as well as individual&n; * MAC address filtering.  Some of the drivers check to make sure it is&n; * a group multicast address, and discard those that are not.  I guess I&n; * will do the same for now, but just remove the test if you want&n; * individual filtering as well (do the upper net layers want or support&n; * this kind of feature?).&n; */
 r_static
 r_void
-DECL|function|set_multicast_list
 id|set_multicast_list
 c_func
 (paren
@@ -4572,6 +5295,10 @@ id|dev-&gt;mc_count
 suffix:semicolon
 id|i
 op_increment
+comma
+id|dmi
+op_assign
+id|dmi-&gt;next
 )paren
 (brace
 multiline_comment|/* Only support group multicast for now.&n;&t;&t;&t;&t;*/
@@ -4667,6 +5394,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#endif /* if 0 */
 multiline_comment|/* Set the individual MAC address.&n; */
 DECL|function|fcc_enet_set_mac_address
 r_int
@@ -4974,10 +5702,7 @@ id|dev-&gt;get_stats
 op_assign
 id|fcc_enet_get_stats
 suffix:semicolon
-id|dev-&gt;set_multicast_list
-op_assign
-id|set_multicast_list
-suffix:semicolon
+multiline_comment|/* dev-&gt;set_multicast_list = set_multicast_list; */
 id|dev-&gt;set_mac_address
 op_assign
 id|fcc_enet_set_mac_address
@@ -5060,9 +5785,13 @@ l_int|5
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_USE_MDIO
 multiline_comment|/* Queue up command to detect the PHY and initialize the&n;&t; &t;* remainder of the interface.&n;&t; &t;*/
-id|cep-&gt;phy_addr
+id|cep-&gt;phy_id_done
 op_assign
 l_int|0
+suffix:semicolon
+id|cep-&gt;phy_addr
+op_assign
+id|fip-&gt;fc_phyaddr
 suffix:semicolon
 id|mii_queue
 c_func
@@ -5072,10 +5801,32 @@ comma
 id|mk_mii_read
 c_func
 (paren
-id|MII_REG_PHYIR1
+id|MII_PHYSID1
 )paren
 comma
 id|mii_discover_phy
+)paren
+suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|cep-&gt;phy_relink
+comma
+id|mii_display_status
+comma
+id|dev
+)paren
+suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|cep-&gt;phy_display_config
+comma
+id|mii_display_config
+comma
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_USE_MDIO */
@@ -5214,27 +5965,27 @@ multiline_comment|/* Configure port A and C pins for FCC1 Ethernet.&n;&t;&t; */
 id|io-&gt;iop_pdira
 op_and_assign
 op_complement
-id|PA1_DIRA0
+id|PA1_DIRA_BOUT
 suffix:semicolon
 id|io-&gt;iop_pdira
 op_or_assign
-id|PA1_DIRA1
+id|PA1_DIRA_BIN
 suffix:semicolon
 id|io-&gt;iop_psora
 op_and_assign
 op_complement
-id|PA1_PSORA0
+id|PA1_PSORA_BOUT
 suffix:semicolon
 id|io-&gt;iop_psora
 op_or_assign
-id|PA1_PSORA1
+id|PA1_PSORA_BIN
 suffix:semicolon
 id|io-&gt;iop_ppara
 op_or_assign
 (paren
-id|PA1_DIRA0
+id|PA1_DIRA_BOUT
 op_or
-id|PA1_DIRA1
+id|PA1_DIRA_BIN
 )paren
 suffix:semicolon
 )brace
@@ -5250,27 +6001,27 @@ multiline_comment|/* Configure port B and C pins for FCC Ethernet.&n;&t;&t; */
 id|io-&gt;iop_pdirb
 op_and_assign
 op_complement
-id|PB2_DIRB0
+id|PB2_DIRB_BOUT
 suffix:semicolon
 id|io-&gt;iop_pdirb
 op_or_assign
-id|PB2_DIRB1
+id|PB2_DIRB_BIN
 suffix:semicolon
 id|io-&gt;iop_psorb
 op_and_assign
 op_complement
-id|PB2_PSORB0
+id|PB2_PSORB_BOUT
 suffix:semicolon
 id|io-&gt;iop_psorb
 op_or_assign
-id|PB2_PSORB1
+id|PB2_PSORB_BIN
 suffix:semicolon
 id|io-&gt;iop_pparb
 op_or_assign
 (paren
-id|PB2_DIRB0
+id|PB2_DIRB_BOUT
 op_or
-id|PB2_DIRB1
+id|PB2_DIRB_BIN
 )paren
 suffix:semicolon
 )brace
@@ -5286,27 +6037,53 @@ multiline_comment|/* Configure port B and C pins for FCC Ethernet.&n;&t;&t; */
 id|io-&gt;iop_pdirb
 op_and_assign
 op_complement
-id|PB3_DIRB0
+id|PB3_DIRB_BOUT
 suffix:semicolon
 id|io-&gt;iop_pdirb
 op_or_assign
-id|PB3_DIRB1
+id|PB3_DIRB_BIN
 suffix:semicolon
 id|io-&gt;iop_psorb
 op_and_assign
 op_complement
-id|PB3_PSORB0
+id|PB3_PSORB_BOUT
 suffix:semicolon
 id|io-&gt;iop_psorb
 op_or_assign
-id|PB3_PSORB1
+id|PB3_PSORB_BIN
 suffix:semicolon
 id|io-&gt;iop_pparb
 op_or_assign
 (paren
-id|PB3_DIRB0
+id|PB3_DIRB_BOUT
 op_or
-id|PB3_DIRB1
+id|PB3_DIRB_BIN
+)paren
+suffix:semicolon
+id|io-&gt;iop_pdirc
+op_and_assign
+op_complement
+id|PC3_DIRC_BOUT
+suffix:semicolon
+id|io-&gt;iop_pdirc
+op_or_assign
+id|PC3_DIRC_BIN
+suffix:semicolon
+id|io-&gt;iop_psorc
+op_and_assign
+op_complement
+id|PC3_PSORC_BOUT
+suffix:semicolon
+id|io-&gt;iop_psorc
+op_or_assign
+id|PC3_PSORC_BIN
+suffix:semicolon
+id|io-&gt;iop_pparc
+op_or_assign
+(paren
+id|PC3_DIRC_BOUT
+op_or
+id|PC3_DIRC_BIN
 )paren
 suffix:semicolon
 )brace
@@ -5762,6 +6539,7 @@ id|i
 op_decrement
 )paren
 (brace
+multiline_comment|/*&n; * The EP8260 only uses FCC3, so we can safely give it the real&n; * MAC address.&n; */
 macro_line|#ifdef CONFIG_SBC82xx
 r_if
 c_cond
@@ -5805,6 +6583,7 @@ id|i
 suffix:semicolon
 )brace
 macro_line|#else
+macro_line|#ifndef CONFIG_RPX8260
 r_if
 c_cond
 (paren
@@ -5848,8 +6627,8 @@ id|i
 )braket
 suffix:semicolon
 )brace
-macro_line|#endif
 r_else
+macro_line|#endif
 (brace
 op_star
 id|eap
@@ -5866,6 +6645,7 @@ id|i
 )braket
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 id|ep-&gt;fen_taddrh
 op_assign
@@ -6114,15 +6894,6 @@ id|cep-&gt;skb_dirty
 op_assign
 l_int|0
 suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|cep-&gt;n_pkts
-comma
-l_int|0
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Let &squot;er rip.&n;*/
 r_static
@@ -6167,21 +6938,144 @@ id|fccp
 op_assign
 id|cep-&gt;fccp
 suffix:semicolon
+macro_line|#ifdef CONFIG_RPX8260
+macro_line|#ifdef PHY_INTERRUPT
+multiline_comment|/* Route PHY interrupt to IRQ.  The following code only works for&n;&t; * IRQ1 - IRQ7.  It does not work for Port C interrupts.&n;&t; */
+op_star
+(paren
+(paren
+r_volatile
+id|u_char
+op_star
+)paren
+(paren
+id|RPX_CSR_ADDR
+op_plus
+l_int|13
+)paren
+)paren
+op_and_assign
+op_complement
+id|BCSR13_FETH_IRQMASK
+suffix:semicolon
+op_star
+(paren
+(paren
+r_volatile
+id|u_char
+op_star
+)paren
+(paren
+id|RPX_CSR_ADDR
+op_plus
+l_int|13
+)paren
+)paren
+op_or_assign
+(paren
+(paren
+id|PHY_INTERRUPT
+op_minus
+id|SIU_INT_IRQ1
+op_plus
+l_int|1
+)paren
+op_lshift
+l_int|4
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Initialize MDIO pins. */
+op_star
+(paren
+(paren
+r_volatile
+id|u_char
+op_star
+)paren
+(paren
+id|RPX_CSR_ADDR
+op_plus
+l_int|4
+)paren
+)paren
+op_and_assign
+op_complement
+id|BCSR4_MII_MDC
+suffix:semicolon
+op_star
+(paren
+(paren
+r_volatile
+id|u_char
+op_star
+)paren
+(paren
+id|RPX_CSR_ADDR
+op_plus
+l_int|4
+)paren
+)paren
+op_or_assign
+id|BCSR4_MII_READ
+op_or
+id|BCSR4_MII_MDIO
+suffix:semicolon
+multiline_comment|/* Enable external LXT971 PHY. */
+op_star
+(paren
+(paren
+r_volatile
+id|u_char
+op_star
+)paren
+(paren
+id|RPX_CSR_ADDR
+op_plus
+l_int|4
+)paren
+)paren
+op_or_assign
+id|BCSR4_EN_PHY
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|1000
+)paren
+suffix:semicolon
+op_star
+(paren
+(paren
+r_volatile
+id|u_char
+op_star
+)paren
+(paren
+id|RPX_CSR_ADDR
+op_plus
+l_int|4
+)paren
+)paren
+op_or_assign
+id|BCSR4_EN_MII
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|1000
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* ifdef CONFIG_RPX8260 */
 id|fccp-&gt;fcc_fcce
 op_assign
 l_int|0xffff
 suffix:semicolon
 multiline_comment|/* Clear any pending events */
-multiline_comment|/* Enable interrupts for transmit error, complete frame&n;&t; * received, and any transmit buffer we have also set the&n;&t; * interrupt flag.&n;&t; */
+multiline_comment|/* Leave FCC interrupts masked for now.  Will be unmasked by&n;&t; * fcc_restart().&n;&t; */
 id|fccp-&gt;fcc_fccm
 op_assign
-(paren
-id|FCC_ENET_TXE
-op_or
-id|FCC_ENET_RXF
-op_or
-id|FCC_ENET_TXB
-)paren
+l_int|0
 suffix:semicolon
 multiline_comment|/* Install our interrupt handler.&n;&t;*/
 r_if
@@ -6211,7 +7105,63 @@ comma
 id|fip-&gt;fc_interrupt
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_USE_MDIO
+macro_line|#ifdef&t;PHY_INTERRUPT
+macro_line|#ifdef CONFIG_ADS8272
+r_if
+c_cond
+(paren
+id|request_irq
+c_func
+(paren
+id|PHY_INTERRUPT
+comma
+id|mii_link_interrupt
+comma
+id|SA_SHIRQ
+comma
+l_string|&quot;mii&quot;
+comma
+id|dev
+)paren
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;Can&squot;t get MII IRQ %d&bslash;n&quot;
+comma
+id|PHY_INTERRUPT
+)paren
+suffix:semicolon
+macro_line|#else
+multiline_comment|/* Make IRQn edge triggered.  This does not work if PHY_INTERRUPT is&n;&t; * on Port C.&n;&t; */
+(paren
+(paren
+r_volatile
+id|cpm2_map_t
+op_star
+)paren
+id|CPM_MAP_ADDR
+)paren
+op_member_access_from_pointer
+id|im_intctl.ic_siexr
+op_or_assign
+(paren
+l_int|1
+op_lshift
+(paren
+l_int|14
+op_minus
+(paren
+id|PHY_INTERRUPT
+op_minus
+id|SIU_INT_IRQ1
+)paren
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6234,12 +7184,14 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;Can&squot;t get MII IRQ %d&bslash;n&quot;
 comma
-id|fip-&gt;fc_interrupt
+id|PHY_INTERRUPT
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_USE_MDIO */
+macro_line|#endif
+macro_line|#endif&t;/* PHY_INTERRUPT */
 multiline_comment|/* Set GFMR to enable Ethernet operating mode.&n;&t; */
 id|fccp-&gt;fcc_gfmr
 op_assign
@@ -6260,7 +7212,7 @@ op_assign
 id|FCC_PSMR_ENCRC
 suffix:semicolon
 macro_line|#ifdef CONFIG_PQ2ADS
-multiline_comment|/* Enable the PHY.&n;&t;*/
+multiline_comment|/* Enable the PHY. */
 op_star
 (paren
 r_volatile
@@ -6291,6 +7243,38 @@ op_or_assign
 id|BCSR1_FETH_RST
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_PQ2ADS) || defined(CONFIG_PQ2FADS)
+multiline_comment|/* Enable the 2nd PHY. */
+op_star
+(paren
+r_volatile
+id|uint
+op_star
+)paren
+(paren
+id|BCSR_ADDR
+op_plus
+l_int|12
+)paren
+op_and_assign
+op_complement
+id|BCSR3_FETHIEN2
+suffix:semicolon
+op_star
+(paren
+r_volatile
+id|uint
+op_star
+)paren
+(paren
+id|BCSR_ADDR
+op_plus
+l_int|12
+)paren
+op_or_assign
+id|BCSR3_FETH2_RST
+suffix:semicolon
+macro_line|#endif
 macro_line|#if defined(CONFIG_USE_MDIO) || defined(CONFIG_TQM8260)
 multiline_comment|/* start in full duplex mode, and negotiate speed&n;&t; */
 id|fcc_restart
@@ -6313,10 +7297,35 @@ macro_line|#endif
 )brace
 macro_line|#ifdef&t;CONFIG_USE_MDIO
 multiline_comment|/* MII command/status interface.&n; * I&squot;m not going to describe all of the details.  You can find the&n; * protocol definition in many other places, including the data sheet&n; * of most PHY parts.&n; * I wonder what &quot;they&quot; were thinking (maybe weren&squot;t) when they leave&n; * the I2C in the CPM but I have to toggle these bits......&n; */
-DECL|macro|FCC_PDATC_MDIO
-mdefine_line|#define FCC_PDATC_MDIO(bit)&t;&t;&t;&t;&t;&bslash;&n;&t;if (bit)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;io-&gt;iop_pdatc |= fip-&gt;fc_mdio;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;io-&gt;iop_pdatc &amp;= ~fip-&gt;fc_mdio;
-DECL|macro|FCC_PDATC_MDC
-mdefine_line|#define FCC_PDATC_MDC(bit)&t;&t;&t;&t;&t;&bslash;&n;&t;if (bit)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;io-&gt;iop_pdatc |= fip-&gt;fc_mdck;&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;io-&gt;iop_pdatc &amp;= ~fip-&gt;fc_mdck;
+macro_line|#ifdef CONFIG_RPX8260
+multiline_comment|/* The EP8260 has the MDIO pins in a BCSR instead of on Port C&n;&t; * like most other boards.&n;&t; */
+DECL|macro|MDIO_ADDR
+mdefine_line|#define MDIO_ADDR ((volatile u_char *)(RPX_CSR_ADDR + 4))
+DECL|macro|MAKE_MDIO_OUTPUT
+mdefine_line|#define MAKE_MDIO_OUTPUT *MDIO_ADDR &amp;= ~BCSR4_MII_READ
+DECL|macro|MAKE_MDIO_INPUT
+mdefine_line|#define MAKE_MDIO_INPUT  *MDIO_ADDR |=  BCSR4_MII_READ | BCSR4_MII_MDIO
+DECL|macro|OUT_MDIO
+mdefine_line|#define OUT_MDIO(bit)&t;&t;&t;&t;&bslash;&n;&t;if (bit)&t;&t;&t;&t;&bslash;&n;&t;&t;*MDIO_ADDR |=  BCSR4_MII_MDIO;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*MDIO_ADDR &amp;= ~BCSR4_MII_MDIO;
+DECL|macro|IN_MDIO
+mdefine_line|#define IN_MDIO (*MDIO_ADDR &amp; BCSR4_MII_MDIO)
+DECL|macro|OUT_MDC
+mdefine_line|#define OUT_MDC(bit)&t;&t;&t;&t;&bslash;&n;&t;if (bit)&t;&t;&t;&t;&bslash;&n;&t;&t;*MDIO_ADDR |=  BCSR4_MII_MDC;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*MDIO_ADDR &amp;= ~BCSR4_MII_MDC;
+macro_line|#else&t;/* ifdef CONFIG_RPX8260 */
+multiline_comment|/* This is for the usual case where the MDIO pins are on Port C.&n;&t; */
+DECL|macro|MDIO_ADDR
+mdefine_line|#define MDIO_ADDR (((volatile cpm2_map_t *)CPM_MAP_ADDR)-&gt;im_ioport)
+DECL|macro|MAKE_MDIO_OUTPUT
+mdefine_line|#define MAKE_MDIO_OUTPUT MDIO_ADDR.iop_pdirc |= fip-&gt;fc_mdio
+DECL|macro|MAKE_MDIO_INPUT
+mdefine_line|#define MAKE_MDIO_INPUT MDIO_ADDR.iop_pdirc &amp;= ~fip-&gt;fc_mdio
+DECL|macro|OUT_MDIO
+mdefine_line|#define OUT_MDIO(bit)&t;&t;&t;&t;&bslash;&n;&t;if (bit)&t;&t;&t;&t;&bslash;&n;&t;&t;MDIO_ADDR.iop_pdatc |= fip-&gt;fc_mdio;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&bslash;&n;&t;&t;MDIO_ADDR.iop_pdatc &amp;= ~fip-&gt;fc_mdio;
+DECL|macro|IN_MDIO
+mdefine_line|#define IN_MDIO ((MDIO_ADDR.iop_pdatc) &amp; fip-&gt;fc_mdio)
+DECL|macro|OUT_MDC
+mdefine_line|#define OUT_MDC(bit)&t;&t;&t;&t;&bslash;&n;&t;if (bit)&t;&t;&t;&t;&bslash;&n;&t;&t;MDIO_ADDR.iop_pdatc |= fip-&gt;fc_mdck;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&bslash;&n;&t;&t;MDIO_ADDR.iop_pdatc &amp;= ~fip-&gt;fc_mdck;
+macro_line|#endif&t;/* ifdef CONFIG_RPX8260 */
 r_static
 id|uint
 DECL|function|mii_send_receive
@@ -6341,36 +7350,11 @@ id|i
 comma
 id|off
 suffix:semicolon
-r_volatile
-id|cpm2_map_t
-op_star
-id|immap
-suffix:semicolon
-r_volatile
-id|iop_cpm2_t
-op_star
-id|io
-suffix:semicolon
-id|immap
+r_const
+r_int
+id|us
 op_assign
-(paren
-id|cpm2_map_t
-op_star
-)paren
-id|CPM_MAP_ADDR
-suffix:semicolon
-id|io
-op_assign
-op_amp
-id|immap-&gt;im_ioport
-suffix:semicolon
-id|io-&gt;iop_pdirc
-op_or_assign
-(paren
-id|fip-&gt;fc_mdio
-op_or
-id|fip-&gt;fc_mdck
-)paren
+l_int|1
 suffix:semicolon
 id|read_op
 op_assign
@@ -6385,6 +7369,20 @@ l_int|0x60000000
 )paren
 suffix:semicolon
 multiline_comment|/* Write preamble&n;&t; */
+id|OUT_MDIO
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|MAKE_MDIO_OUTPUT
+suffix:semicolon
+id|OUT_MDIO
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6400,34 +7398,28 @@ id|i
 op_increment
 )paren
 (brace
-id|FCC_PDATC_MDC
+id|udelay
+c_func
+(paren
+id|us
+)paren
+suffix:semicolon
+id|OUT_MDC
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+id|us
+)paren
+suffix:semicolon
+id|OUT_MDC
 c_func
 (paren
 l_int|0
-)paren
-suffix:semicolon
-id|FCC_PDATC_MDIO
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|FCC_PDATC_MDC
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -6461,13 +7453,7 @@ op_decrement
 id|off
 )paren
 (brace
-id|FCC_PDATC_MDC
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-id|FCC_PDATC_MDIO
+id|OUT_MDIO
 c_func
 (paren
 (paren
@@ -6482,10 +7468,10 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|1
+id|us
 )paren
 suffix:semicolon
-id|FCC_PDATC_MDC
+id|OUT_MDC
 c_func
 (paren
 l_int|1
@@ -6494,7 +7480,13 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|1
+id|us
+)paren
+suffix:semicolon
+id|OUT_MDC
+c_func
+(paren
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -6512,45 +7504,30 @@ id|retval
 op_rshift_assign
 l_int|16
 suffix:semicolon
-id|FCC_PDATC_MDC
+id|MAKE_MDIO_INPUT
+suffix:semicolon
+id|udelay
+c_func
+(paren
+id|us
+)paren
+suffix:semicolon
+id|OUT_MDC
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+id|us
+)paren
+suffix:semicolon
+id|OUT_MDC
 c_func
 (paren
 l_int|0
-)paren
-suffix:semicolon
-id|io-&gt;iop_pdirc
-op_and_assign
-op_complement
-id|fip-&gt;fc_mdio
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|FCC_PDATC_MDC
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|FCC_PDATC_MDC
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|1
 )paren
 suffix:semicolon
 r_for
@@ -6559,10 +7536,6 @@ c_loop
 id|i
 op_assign
 l_int|0
-comma
-id|off
-op_assign
-l_int|15
 suffix:semicolon
 id|i
 OL
@@ -6570,15 +7543,24 @@ l_int|16
 suffix:semicolon
 id|i
 op_increment
-comma
-id|off
-op_decrement
 )paren
 (brace
-id|FCC_PDATC_MDC
+id|udelay
+c_func
+(paren
+id|us
+)paren
+suffix:semicolon
+id|OUT_MDC
 c_func
 (paren
 l_int|1
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+id|us
 )paren
 suffix:semicolon
 id|retval
@@ -6588,91 +7570,50 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|io-&gt;iop_pdatc
-op_amp
-id|fip-&gt;fc_mdio
+id|IN_MDIO
 )paren
 id|retval
 op_increment
 suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|FCC_PDATC_MDC
+id|OUT_MDC
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
+)brace
+)brace
+id|MAKE_MDIO_INPUT
+suffix:semicolon
 id|udelay
+c_func
+(paren
+id|us
+)paren
+suffix:semicolon
+id|OUT_MDC
 c_func
 (paren
 l_int|1
 )paren
 suffix:semicolon
-)brace
-)brace
-id|io-&gt;iop_pdirc
-op_or_assign
+id|udelay
+c_func
 (paren
-id|fip-&gt;fc_mdio
-op_or
-id|fip-&gt;fc_mdck
+id|us
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|32
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|FCC_PDATC_MDC
+id|OUT_MDC
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
-id|FCC_PDATC_MDIO
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|FCC_PDATC_MDC
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
 r_return
 id|retval
 suffix:semicolon
 )brace
+macro_line|#endif&t;/* CONFIG_USE_MDIO */
 r_static
 r_void
 DECL|function|fcc_stop
@@ -6685,17 +7626,10 @@ op_star
 id|dev
 )paren
 (brace
-r_volatile
-id|fcc_t
-op_star
-id|fccp
-suffix:semicolon
 r_struct
 id|fcc_enet_private
 op_star
-id|fcp
-suffix:semicolon
-id|fcp
+id|fep
 op_assign
 (paren
 r_struct
@@ -6706,9 +7640,95 @@ op_star
 id|dev-&gt;priv
 )paren
 suffix:semicolon
+r_volatile
+id|fcc_t
+op_star
 id|fccp
 op_assign
-id|fcp-&gt;fccp
+id|fep-&gt;fccp
+suffix:semicolon
+id|fcc_info_t
+op_star
+id|fip
+op_assign
+id|fep-&gt;fip
+suffix:semicolon
+r_volatile
+id|fcc_enet_t
+op_star
+id|ep
+op_assign
+id|fep-&gt;ep
+suffix:semicolon
+r_volatile
+id|cpm_cpm2_t
+op_star
+id|cp
+op_assign
+id|cpmp
+suffix:semicolon
+r_volatile
+id|cbd_t
+op_star
+id|bdp
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|fccp-&gt;fcc_gfmr
+op_amp
+(paren
+id|FCC_GFMR_ENR
+op_or
+id|FCC_GFMR_ENT
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* already down */
+id|fccp-&gt;fcc_fccm
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* issue the graceful stop tx command */
+r_while
+c_loop
+(paren
+id|cp-&gt;cp_cpcr
+op_amp
+id|CPM_CR_FLG
+)paren
+suffix:semicolon
+id|cp-&gt;cp_cpcr
+op_assign
+id|mk_cr_cmd
+c_func
+(paren
+id|fip-&gt;fc_cpmpage
+comma
+id|fip-&gt;fc_cpmblock
+comma
+l_int|0x0c
+comma
+id|CPM_CR_GRA_STOP_TX
+)paren
+op_or
+id|CPM_CR_FLG
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|cp-&gt;cp_cpcr
+op_amp
+id|CPM_CR_FLG
+)paren
 suffix:semicolon
 multiline_comment|/* Disable transmit/receive */
 id|fccp-&gt;fcc_gfmr
@@ -6720,8 +7740,153 @@ op_or
 id|FCC_GFMR_ENT
 )paren
 suffix:semicolon
+multiline_comment|/* issue the restart tx command */
+id|fccp-&gt;fcc_fcce
+op_assign
+id|FCC_ENET_GRA
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|cp-&gt;cp_cpcr
+op_amp
+id|CPM_CR_FLG
+)paren
+suffix:semicolon
+id|cp-&gt;cp_cpcr
+op_assign
+id|mk_cr_cmd
+c_func
+(paren
+id|fip-&gt;fc_cpmpage
+comma
+id|fip-&gt;fc_cpmblock
+comma
+l_int|0x0c
+comma
+id|CPM_CR_RESTART_TX
+)paren
+op_or
+id|CPM_CR_FLG
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|cp-&gt;cp_cpcr
+op_amp
+id|CPM_CR_FLG
+)paren
+suffix:semicolon
+multiline_comment|/* free tx buffers */
+id|fep-&gt;skb_cur
+op_assign
+id|fep-&gt;skb_dirty
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+op_le
+id|TX_RING_MOD_MASK
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|fep-&gt;tx_skbuff
+(braket
+id|i
+)braket
+op_ne
+l_int|NULL
+)paren
+(brace
+id|dev_kfree_skb
+c_func
+(paren
+id|fep-&gt;tx_skbuff
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+id|fep-&gt;tx_skbuff
+(braket
+id|i
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
-macro_line|#endif&t;/* CONFIG_USE_MDIO */
+)brace
+id|fep-&gt;dirty_tx
+op_assign
+id|fep-&gt;cur_tx
+op_assign
+id|fep-&gt;tx_bd_base
+suffix:semicolon
+id|fep-&gt;tx_free
+op_assign
+id|TX_RING_SIZE
+suffix:semicolon
+id|ep-&gt;fen_genfcc.fcc_tbptr
+op_assign
+id|ep-&gt;fen_genfcc.fcc_tbase
+suffix:semicolon
+multiline_comment|/* Initialize the tx buffer descriptors. */
+id|bdp
+op_assign
+id|fep-&gt;tx_bd_base
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|TX_RING_SIZE
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|bdp-&gt;cbd_sc
+op_assign
+l_int|0
+suffix:semicolon
+id|bdp-&gt;cbd_datlen
+op_assign
+l_int|0
+suffix:semicolon
+id|bdp-&gt;cbd_bufaddr
+op_assign
+l_int|0
+suffix:semicolon
+id|bdp
+op_increment
+suffix:semicolon
+)brace
+multiline_comment|/* Set the last buffer to wrap. */
+id|bdp
+op_decrement
+suffix:semicolon
+id|bdp-&gt;cbd_sc
+op_or_assign
+id|BD_SC_WRAP
+suffix:semicolon
+)brace
 r_static
 r_void
 DECL|function|fcc_restart
@@ -6737,17 +7902,10 @@ r_int
 id|duplex
 )paren
 (brace
-r_volatile
-id|fcc_t
-op_star
-id|fccp
-suffix:semicolon
 r_struct
 id|fcc_enet_private
 op_star
-id|fcp
-suffix:semicolon
-id|fcp
+id|fep
 op_assign
 (paren
 r_struct
@@ -6758,9 +7916,19 @@ op_star
 id|dev-&gt;priv
 )paren
 suffix:semicolon
+r_volatile
+id|fcc_t
+op_star
 id|fccp
 op_assign
-id|fcp-&gt;fccp
+id|fep-&gt;fccp
+suffix:semicolon
+multiline_comment|/* stop any transmissions in progress */
+id|fcc_stop
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6781,6 +7949,17 @@ op_complement
 id|FCC_PSMR_FDE
 op_or
 id|FCC_PSMR_LPB
+)paren
+suffix:semicolon
+multiline_comment|/* Enable interrupts for transmit error, complete frame&n;&t; * received, and any transmit buffer we have also set the&n;&t; * interrupt flag.&n;&t; */
+id|fccp-&gt;fcc_fccm
+op_assign
+(paren
+id|FCC_ENET_TXE
+op_or
+id|FCC_ENET_RXF
+op_or
+id|FCC_ENET_TXB
 )paren
 suffix:semicolon
 multiline_comment|/* Enable transmit/receive */
@@ -6825,6 +8004,15 @@ c_cond
 id|fep-&gt;phy
 )paren
 (brace
+id|fcc_restart
+c_func
+(paren
+id|dev
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* always start in half-duplex */
 id|mii_do_cmd
 c_func
 (paren
@@ -6892,6 +8080,15 @@ id|fep-&gt;link
 op_assign
 l_int|1
 suffix:semicolon
+id|fcc_restart
+c_func
+(paren
+id|dev
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* always start in half-duplex */
 id|netif_start_queue
 c_func
 (paren
