@@ -2071,11 +2071,6 @@ c_func
 r_void
 )paren
 (brace
-id|early_cpu_detect
-c_func
-(paren
-)paren
-suffix:semicolon
 id|intel_cpu_init
 c_func
 (paren
@@ -2117,6 +2112,11 @@ c_func
 )paren
 suffix:semicolon
 id|umc_init_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
+id|early_cpu_detect
 c_func
 (paren
 )paren
