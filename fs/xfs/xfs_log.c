@@ -1673,19 +1673,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Initialize log manager data.  This routine is intended to be called when&n; * a system boots up.  It is not a per filesystem initialization.&n; *&n; * As you can see, we currently do nothing.&n; */
-r_int
-DECL|function|xfs_log_init
-id|xfs_log_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *  1. Reserve an amount of on-disk log space and return a ticket corresponding&n; *&t;to the reservation.&n; *  2. Potentially, push buffers at tail of log to disk.&n; *&n; * Each reservation is going to reserve extra space for a log record header.&n; * When writes happen to the on-disk log, we don&squot;t subtract the length of the&n; * log record header from any reservation.  By wasting space in each&n; * reservation, we prevent over allocation problems.&n; */
 r_int
 DECL|function|xfs_log_reserve

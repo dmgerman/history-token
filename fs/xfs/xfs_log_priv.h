@@ -158,11 +158,11 @@ mdefine_line|#define LOG_LOCK(log)&t;&t;mutex_spinlock(&amp;(log)-&gt;l_iclogloc
 DECL|macro|LOG_UNLOCK
 mdefine_line|#define LOG_UNLOCK(log, s)&t;mutex_spinunlock(&amp;(log)-&gt;l_icloglock, s)
 DECL|macro|xlog_panic
-mdefine_line|#define xlog_panic(s)&t;&t;{cmn_err(CE_PANIC, s); }
+mdefine_line|#define xlog_panic(args...)&t;cmn_err(CE_PANIC, ## args)
 DECL|macro|xlog_exit
-mdefine_line|#define xlog_exit(s)&t;&t;{cmn_err(CE_PANIC, s); }
+mdefine_line|#define xlog_exit(args...)&t;cmn_err(CE_PANIC, ## args)
 DECL|macro|xlog_warn
-mdefine_line|#define xlog_warn(s)&t;&t;{cmn_err(CE_WARN, s); }
+mdefine_line|#define xlog_warn(args...)&t;cmn_err(CE_WARN, ## args)
 multiline_comment|/*&n; * In core log state&n; */
 DECL|macro|XLOG_STATE_ACTIVE
 mdefine_line|#define XLOG_STATE_ACTIVE    0x0001 /* Current IC log being written to */
