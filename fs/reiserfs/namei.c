@@ -745,13 +745,6 @@ op_plus
 id|MAX_GENERATION_NUMBER
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// a portion of this function, particularly the VFS interface portion,
-singleline_comment|// was derived from minix or ext2&squot;s analog and evolved as the
-singleline_comment|// prototype did. You should be able to tell which portion by looking
-singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions contain no code
-singleline_comment|// used as a template unless they are so labeled.
-singleline_comment|//
 DECL|function|reiserfs_match
 r_static
 r_int
@@ -1054,13 +1047,6 @@ r_return
 id|GOTO_PREVIOUS_ITEM
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// a portion of this function, particularly the VFS interface portion,
-singleline_comment|// was derived from minix or ext2&squot;s analog and evolved as the
-singleline_comment|// prototype did. You should be able to tell which portion by looking
-singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions contain no code
-singleline_comment|// used as a template unless they are so labeled.
-singleline_comment|//
 singleline_comment|// may return NAME_FOUND, NAME_FOUND_INVISIBLE, NAME_NOT_FOUND
 singleline_comment|// FIXME: should add something like IOERROR
 DECL|function|reiserfs_find_entry
@@ -1104,7 +1090,7 @@ c_cond
 (paren
 id|namelen
 OG
-id|REISERFS_MAX_NAME_LEN
+id|REISERFS_MAX_NAME
 (paren
 id|dir-&gt;i_sb-&gt;s_blocksize
 )paren
@@ -1227,13 +1213,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* while (1) */
 )brace
-singleline_comment|//
-singleline_comment|// a portion of this function, particularly the VFS interface portion,
-singleline_comment|// was derived from minix or ext2&squot;s analog and evolved as the
-singleline_comment|// prototype did. You should be able to tell which portion by looking
-singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions contain no code
-singleline_comment|// used as a template unless they are so labeled.
-singleline_comment|//
 DECL|function|reiserfs_lookup
 r_static
 r_struct
@@ -1274,12 +1253,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dentry-&gt;d_name.len
-OG
-id|REISERFS_MAX_NAME_LEN
+id|REISERFS_MAX_NAME
 (paren
 id|dir-&gt;i_sb-&gt;s_blocksize
 )paren
+OL
+id|dentry-&gt;d_name.len
 )paren
 r_return
 id|ERR_PTR
@@ -1617,13 +1596,6 @@ r_return
 id|parent
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// a portion of this function, particularly the VFS interface portion,
-singleline_comment|// was derived from minix or ext2&squot;s analog and evolved as the
-singleline_comment|// prototype did. You should be able to tell which portion by looking
-singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions contain no code
-singleline_comment|// used as a template unless they are so labeled.
-singleline_comment|//
 multiline_comment|/* add entry to the directory (entry can be hidden). &n;&n;insert definition of when hidden directories are used here -Hans&n;&n; Does not mark dir   inode dirty, do it after successesfull call to it */
 DECL|function|reiserfs_add_entry
 r_static
@@ -1732,7 +1704,7 @@ c_cond
 (paren
 id|namelen
 OG
-id|REISERFS_MAX_NAME_LEN
+id|REISERFS_MAX_NAME
 (paren
 id|dir-&gt;i_sb-&gt;s_blocksize
 )paren
@@ -2415,13 +2387,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// a portion of this function, particularly the VFS interface portion,
-singleline_comment|// was derived from minix or ext2&squot;s analog and evolved as the
-singleline_comment|// prototype did. You should be able to tell which portion by looking
-singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions contain no code
-singleline_comment|// used as a template unless they are so labeled.
-singleline_comment|//
 DECL|function|reiserfs_create
 r_static
 r_int
@@ -2460,6 +2425,11 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
 id|inode
 op_assign
 id|new_inode
@@ -2467,12 +2437,7 @@ c_func
 (paren
 id|dir-&gt;i_sb
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|inode
+)paren
 )paren
 (brace
 r_return
@@ -2664,13 +2629,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// a portion of this function, particularly the VFS interface portion,
-singleline_comment|// was derived from minix or ext2&squot;s analog and evolved as the
-singleline_comment|// prototype did. You should be able to tell which portion by looking
-singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions contain no code
-singleline_comment|// used as a template unless they are so labeled.
-singleline_comment|//
 DECL|function|reiserfs_mknod
 r_static
 r_int
@@ -2712,6 +2670,11 @@ id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
 id|inode
 op_assign
 id|new_inode
@@ -2719,12 +2682,7 @@ c_func
 (paren
 id|dir-&gt;i_sb
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|inode
+)paren
 )paren
 (brace
 r_return
@@ -2916,13 +2874,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// a portion of this function, particularly the VFS interface portion,
-singleline_comment|// was derived from minix or ext2&squot;s analog and evolved as the
-singleline_comment|// prototype did. You should be able to tell which portion by looking
-singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions contain no code
-singleline_comment|// used as a template unless they are so labeled.
-singleline_comment|//
 DECL|function|reiserfs_mkdir
 r_static
 r_int
@@ -2967,6 +2918,11 @@ id|S_IFDIR
 op_or
 id|mode
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
 id|inode
 op_assign
 id|new_inode
@@ -2974,12 +2930,7 @@ c_func
 (paren
 id|dir-&gt;i_sb
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|inode
+)paren
 )paren
 (brace
 r_return
@@ -3230,13 +3181,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// a portion of this function, particularly the VFS interface portion,
-singleline_comment|// was derived from minix or ext2&squot;s analog and evolved as the
-singleline_comment|// prototype did. You should be able to tell which portion by looking
-singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions contain no code
-singleline_comment|// used as a template unless they are so labeled.
-singleline_comment|//
 DECL|function|reiserfs_rmdir
 r_static
 r_int
@@ -3609,13 +3553,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// a portion of this function, particularly the VFS interface portion,
-singleline_comment|// was derived from minix or ext2&squot;s analog and evolved as the
-singleline_comment|// prototype did. You should be able to tell which portion by looking
-singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions contain no code
-singleline_comment|// used as a template unless they are so labeled.
-singleline_comment|//
 DECL|function|reiserfs_unlink
 r_static
 r_int
@@ -3982,13 +3919,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// a portion of this function, particularly the VFS interface portion,
-singleline_comment|// was derived from minix or ext2&squot;s analog and evolved as the
-singleline_comment|// prototype did. You should be able to tell which portion by looking
-singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions contain no code
-singleline_comment|// used as a template unless they are so labeled.
-singleline_comment|//
 DECL|function|reiserfs_symlink
 r_static
 r_int
@@ -3997,7 +3927,7 @@ id|reiserfs_symlink
 r_struct
 id|inode
 op_star
-id|dir
+id|parent_dir
 comma
 r_struct
 id|dentry
@@ -4043,19 +3973,19 @@ id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
 id|inode
 op_assign
 id|new_inode
 c_func
 (paren
-id|dir-&gt;i_sb
+id|parent_dir-&gt;i_sb
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|inode
+)paren
 )paren
 (brace
 r_return
@@ -4070,7 +4000,7 @@ c_func
 (paren
 id|inode
 comma
-id|dir
+id|parent_dir
 comma
 id|mode
 )paren
@@ -4107,7 +4037,7 @@ id|item_len
 OG
 id|MAX_DIRECT_ITEM_LEN
 (paren
-id|dir-&gt;i_sb-&gt;s_blocksize
+id|parent_dir-&gt;i_sb-&gt;s_blocksize
 )paren
 )paren
 (brace
@@ -4134,7 +4064,7 @@ id|item_len
 comma
 id|GFP_NOFS
 comma
-id|dir-&gt;i_sb
+id|parent_dir-&gt;i_sb
 )paren
 suffix:semicolon
 r_if
@@ -4189,7 +4119,7 @@ c_func
 op_amp
 id|th
 comma
-id|dir-&gt;i_sb
+id|parent_dir-&gt;i_sb
 comma
 id|jbegin_count
 )paren
@@ -4201,7 +4131,7 @@ id|reiserfs_new_inode
 op_amp
 id|th
 comma
-id|dir
+id|parent_dir
 comma
 id|mode
 comma
@@ -4223,7 +4153,7 @@ id|name
 comma
 id|item_len
 comma
-id|dir-&gt;i_sb
+id|parent_dir-&gt;i_sb
 )paren
 suffix:semicolon
 r_if
@@ -4246,7 +4176,7 @@ suffix:semicolon
 id|reiserfs_update_inode_transaction
 c_func
 (paren
-id|dir
+id|parent_dir
 )paren
 suffix:semicolon
 id|inode-&gt;i_op
@@ -4269,7 +4199,7 @@ id|reiserfs_add_entry
 op_amp
 id|th
 comma
-id|dir
+id|parent_dir
 comma
 id|dentry-&gt;d_name.name
 comma
@@ -4304,7 +4234,7 @@ c_func
 op_amp
 id|th
 comma
-id|dir-&gt;i_sb
+id|parent_dir-&gt;i_sb
 comma
 id|jbegin_count
 )paren
@@ -4332,7 +4262,7 @@ c_func
 op_amp
 id|th
 comma
-id|dir-&gt;i_sb
+id|parent_dir-&gt;i_sb
 comma
 id|jbegin_count
 )paren
@@ -4348,13 +4278,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// a portion of this function, particularly the VFS interface portion,
-singleline_comment|// was derived from minix or ext2&squot;s analog and evolved as the
-singleline_comment|// prototype did. You should be able to tell which portion by looking
-singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions contain no code
-singleline_comment|// used as a template unless they are so labeled.
-singleline_comment|//
 DECL|function|reiserfs_link
 r_static
 r_int
@@ -4399,6 +4322,9 @@ op_assign
 id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
+suffix:semicolon
+id|time_t
+id|ctime
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -4510,9 +4436,13 @@ suffix:semicolon
 id|inode-&gt;i_nlink
 op_increment
 suffix:semicolon
-id|inode-&gt;i_ctime
+id|ctime
 op_assign
 id|CURRENT_TIME
+suffix:semicolon
+id|inode-&gt;i_ctime
+op_assign
+id|ctime
 suffix:semicolon
 id|reiserfs_update_sd
 (paren
@@ -4757,13 +4687,6 @@ op_assign
 id|key-&gt;k_objectid
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// a portion of this function, particularly the VFS interface portion,
-singleline_comment|// was derived from minix or ext2&squot;s analog and evolved as the
-singleline_comment|// prototype did. You should be able to tell which portion by looking
-singleline_comment|// at the ext2 code and comparing. It&squot;s subfunctions contain no code
-singleline_comment|// used as a template unless they are so labeled.
-singleline_comment|//
 multiline_comment|/* &n; * process, that is going to call fix_nodes/do_balance must hold only&n; * one path. If it holds 2 or more, it can get into endless waiting in&n; * get_empty_nodes or its clones &n; */
 DECL|function|reiserfs_rename
 r_static
@@ -4831,7 +4754,7 @@ op_star
 id|old_inode
 comma
 op_star
-id|new_inode
+id|new_dentry_inode
 suffix:semicolon
 r_int
 id|windex
@@ -4842,6 +4765,12 @@ id|th
 suffix:semicolon
 r_int
 id|jbegin_count
+suffix:semicolon
+id|umode_t
+id|old_inode_mode
+suffix:semicolon
+id|time_t
+id|ctime
 suffix:semicolon
 multiline_comment|/* two balancings: old name removal, new name insertion or &quot;save&quot; link,&n;       stat data updates: old directory and new directory and maybe block&n;       containing &quot;..&quot; of renamed directory */
 id|jbegin_count
@@ -4856,7 +4785,7 @@ id|old_inode
 op_assign
 id|old_dentry-&gt;d_inode
 suffix:semicolon
-id|new_inode
+id|new_dentry_inode
 op_assign
 id|new_dentry-&gt;d_inode
 suffix:semicolon
@@ -4934,13 +4863,17 @@ op_minus
 id|ENOENT
 suffix:semicolon
 )brace
+id|old_inode_mode
+op_assign
+id|old_inode-&gt;i_mode
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|S_ISDIR
 c_func
 (paren
-id|old_inode-&gt;i_mode
+id|old_inode_mode
 )paren
 )paren
 (brace
@@ -4950,7 +4883,7 @@ singleline_comment|// already
 r_if
 c_cond
 (paren
-id|new_inode
+id|new_dentry_inode
 )paren
 (brace
 r_if
@@ -4960,7 +4893,7 @@ op_logical_neg
 id|reiserfs_empty_dir
 c_func
 (paren
-id|new_inode
+id|new_dentry_inode
 )paren
 )paren
 (brace
@@ -5088,13 +5021,11 @@ op_minus
 id|EEXIST
 )paren
 (brace
-singleline_comment|// FIXME: is it possible, that new_inode == 0 here? If yes, it
-singleline_comment|// is not clear how does ext2 handle that
 r_if
 c_cond
 (paren
 op_logical_neg
-id|new_inode
+id|new_dentry_inode
 )paren
 (brace
 id|reiserfs_panic
@@ -5161,12 +5092,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|new_inode
+id|new_dentry_inode
 )paren
 id|reiserfs_update_inode_transaction
 c_func
 (paren
-id|new_inode
+id|new_dentry_inode
 )paren
 suffix:semicolon
 r_while
@@ -5372,7 +5303,7 @@ comma
 op_amp
 id|new_de
 comma
-id|new_inode
+id|new_dentry_inode
 )paren
 op_logical_or
 id|item_moved
@@ -5419,7 +5350,7 @@ c_cond
 id|S_ISDIR
 c_func
 (paren
-id|old_inode-&gt;i_mode
+id|old_inode_mode
 )paren
 )paren
 id|reiserfs_restore_prepared_buffer
@@ -5438,7 +5369,7 @@ c_cond
 id|S_ISDIR
 c_func
 (paren
-id|old_inode-&gt;i_mode
+id|old_inode_mode
 )paren
 )paren
 (brace
@@ -5500,7 +5431,7 @@ c_func
 id|S_ISDIR
 c_func
 (paren
-id|old_inode-&gt;i_mode
+id|old_inode_mode
 )paren
 op_logical_and
 op_logical_neg
@@ -5577,7 +5508,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|new_inode
+id|new_dentry_inode
 )paren
 (brace
 singleline_comment|// adjust link number of the victim
@@ -5587,24 +5518,28 @@ c_cond
 id|S_ISDIR
 c_func
 (paren
-id|new_inode-&gt;i_mode
+id|new_dentry_inode-&gt;i_mode
 )paren
 )paren
 (brace
-id|new_inode-&gt;i_nlink
+id|new_dentry_inode-&gt;i_nlink
 op_assign
 l_int|0
 suffix:semicolon
 )brace
 r_else
 (brace
-id|new_inode-&gt;i_nlink
+id|new_dentry_inode-&gt;i_nlink
 op_decrement
 suffix:semicolon
 )brace
-id|new_inode-&gt;i_ctime
+id|ctime
 op_assign
 id|CURRENT_TIME
+suffix:semicolon
+id|new_dentry_inode-&gt;i_ctime
+op_assign
+id|ctime
 suffix:semicolon
 )brace
 r_if
@@ -5613,7 +5548,7 @@ c_cond
 id|S_ISDIR
 c_func
 (paren
-id|old_inode-&gt;i_mode
+id|old_inode_mode
 )paren
 )paren
 (brace
@@ -5643,7 +5578,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|new_inode
+id|new_dentry_inode
 )paren
 multiline_comment|/* there (in new_dir) was no directory, so it got new link&n;&t;       (&quot;..&quot;  of renamed directory) */
 id|INC_DIR_INODE_NLINK
@@ -5743,13 +5678,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|new_inode
+id|new_dentry_inode
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|new_inode-&gt;i_nlink
+id|new_dentry_inode-&gt;i_nlink
 op_eq
 l_int|0
 )paren
@@ -5758,7 +5693,7 @@ id|add_save_link
 op_amp
 id|th
 comma
-id|new_inode
+id|new_dentry_inode
 comma
 l_int|0
 multiline_comment|/* not truncate */
@@ -5769,7 +5704,7 @@ id|reiserfs_update_sd
 op_amp
 id|th
 comma
-id|new_inode
+id|new_dentry_inode
 )paren
 suffix:semicolon
 )brace

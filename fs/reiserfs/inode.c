@@ -39,10 +39,6 @@ r_int
 id|create
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// initially this function was derived from minix or ext2&squot;s analog and
-singleline_comment|// evolved as the prototype did
-singleline_comment|//
 DECL|function|reiserfs_delete_inode
 r_void
 id|reiserfs_delete_inode
@@ -451,8 +447,7 @@ id|j-&gt;j_dirty_buffers
 suffix:semicolon
 )brace
 singleline_comment|//
-singleline_comment|// FIXME: we might cache recently accessed indirect item (or at least
-singleline_comment|// first 15 pointers just like ext2 does
+singleline_comment|// FIXME: we might cache recently accessed indirect item
 singleline_comment|// Ugh.  Not too eager for that....
 singleline_comment|//  I cut the code until such time as I see a convincing argument (benchmark).
 singleline_comment|// I don&squot;t want a bloated inode struct..., and I don&squot;t like code complexity....
@@ -1957,12 +1952,6 @@ id|tag
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// initially this function was derived from ext2&squot;s analog and evolved
-singleline_comment|// as the prototype did.  You&squot;ll need to look at the ext2 version to
-singleline_comment|// determine which parts are derivative, if any, understanding that
-singleline_comment|// there are only so many ways to code to a given interface.
-singleline_comment|//
 DECL|function|reiserfs_get_block
 r_int
 id|reiserfs_get_block
@@ -5780,10 +5769,6 @@ op_star
 id|lenp
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// initially this function was derived from minix or ext2&squot;s analog and
-singleline_comment|// evolved as the prototype did
-singleline_comment|//
 multiline_comment|/* looks for stat data, then copies fields to it, marks the buffer&n;   containing stat data as dirty */
 multiline_comment|/* reiserfs inodes are never really dirty, since the dirty inode call&n;** always logs them.  This call allows the VFS inode marking routines&n;** to properly mark inodes for datasync and such, but only actually&n;** does something when called for a synchronous update.&n;*/
 DECL|function|reiserfs_write_inode
@@ -8825,9 +8810,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// this is exactly what 2.3.99-pre9&squot;s ext2_readpage is
-singleline_comment|//
 DECL|function|reiserfs_readpage
 r_static
 r_int
@@ -8853,9 +8835,6 @@ id|reiserfs_get_block
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// modified from ext2_writepage is
-singleline_comment|//
 DECL|function|reiserfs_writepage
 r_static
 r_int
@@ -8888,9 +8867,6 @@ id|page
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// from ext2_prepare_write, but modified
-singleline_comment|//
 DECL|function|reiserfs_prepare_write
 r_int
 id|reiserfs_prepare_write
@@ -8946,9 +8922,6 @@ id|reiserfs_get_block
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// this is exactly what 2.3.99-pre9&squot;s ext2_bmap is
-singleline_comment|//
 DECL|function|reiserfs_aop_bmap
 r_static
 r_int

@@ -2358,10 +2358,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// a portion of this function, was derived from minix or ext2&squot;s
-singleline_comment|// analog. You should be able to tell which portion by looking at the
-singleline_comment|// ext2 code and comparing. 
 DECL|function|__discard_prealloc
 r_static
 r_void

@@ -487,7 +487,7 @@ c_cond
 (paren
 id|d_reclen
 OG
-id|REISERFS_MAX_NAME_LEN
+id|REISERFS_MAX_NAME
 c_func
 (paren
 id|inode-&gt;i_sb-&gt;s_blocksize
@@ -786,7 +786,6 @@ suffix:semicolon
 multiline_comment|/* while */
 id|end
 suffix:colon
-singleline_comment|// FIXME: ext2_readdir does not reset f_pos
 id|filp-&gt;f_pos
 op_assign
 id|next_pos

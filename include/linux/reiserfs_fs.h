@@ -2296,10 +2296,8 @@ multiline_comment|/* name by bh, ih and entry_num */
 DECL|macro|B_I_E_NAME
 mdefine_line|#define B_I_E_NAME(bh,ih,entry_num) ((char *)(bh-&gt;b_data + ih_location(ih) + deh_location(B_I_DEH(bh,ih)+(entry_num))))
 singleline_comment|// two entries per block (at least)
-singleline_comment|//#define REISERFS_MAX_NAME_LEN(block_size) 
-singleline_comment|//((block_size - BLKH_SIZE - IH_SIZE - DEH_SIZE * 2) / 2)
-DECL|macro|REISERFS_MAX_NAME_LEN
-mdefine_line|#define REISERFS_MAX_NAME_LEN(block_size) 255
+DECL|macro|REISERFS_MAX_NAME
+mdefine_line|#define REISERFS_MAX_NAME(block_size) 255
 multiline_comment|/* this structure is used for operations on directory entries. It is&n;   not a disk structure. */
 multiline_comment|/* When reiserfs_find_entry or search_by_entry_key find directory&n;   entry, they return filled reiserfs_dir_entry structure */
 DECL|struct|reiserfs_dir_entry
