@@ -63,6 +63,12 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+id|inc_page_state
+c_func
+(paren
+id|nr_page_table_pages
+)paren
+suffix:semicolon
 )brace
 DECL|function|pgtable_remove_rmap
 r_static
@@ -84,6 +90,12 @@ suffix:semicolon
 id|page-&gt;index
 op_assign
 l_int|0
+suffix:semicolon
+id|dec_page_state
+c_func
+(paren
+id|nr_page_table_pages
+)paren
 suffix:semicolon
 )brace
 DECL|function|ptep_to_mm

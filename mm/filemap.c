@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -5878,6 +5879,12 @@ l_int|NULL
 suffix:semicolon
 id|page_not_uptodate
 suffix:colon
+id|KERNEL_STAT_INC
+c_func
+(paren
+id|pgmajfault
+)paren
+suffix:semicolon
 id|lock_page
 c_func
 (paren

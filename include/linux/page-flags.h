@@ -71,6 +71,21 @@ r_int
 id|nr_inactive
 suffix:semicolon
 multiline_comment|/* on inactive_list LRU */
+DECL|member|nr_page_table_pages
+r_int
+r_int
+id|nr_page_table_pages
+suffix:semicolon
+DECL|member|nr_pte_chain_pages
+r_int
+r_int
+id|nr_pte_chain_pages
+suffix:semicolon
+DECL|member|used_pte_chains_bytes
+r_int
+r_int
+id|used_pte_chains_bytes
+suffix:semicolon
 )brace
 id|____cacheline_aligned_in_smp
 id|page_states

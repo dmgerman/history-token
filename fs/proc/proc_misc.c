@@ -587,6 +587,9 @@ l_string|&quot;SwapTotal:    %8lu kB&bslash;n&quot;
 l_string|&quot;SwapFree:     %8lu kB&bslash;n&quot;
 l_string|&quot;Dirty:        %8lu kB&bslash;n&quot;
 l_string|&quot;Writeback:    %8lu kB&bslash;n&quot;
+l_string|&quot;PageTables:   %8lu kB&bslash;n&quot;
+l_string|&quot;PteChainTot:  %8lu kB&bslash;n&quot;
+l_string|&quot;PteChainUsed: %8lu kB&bslash;n&quot;
 comma
 id|K
 c_func
@@ -683,6 +686,22 @@ c_func
 (paren
 id|ps.nr_writeback
 )paren
+comma
+id|K
+c_func
+(paren
+id|ps.nr_page_table_pages
+)paren
+comma
+id|K
+c_func
+(paren
+id|ps.nr_pte_chain_pages
+)paren
+comma
+id|ps.used_pte_chains_bytes
+op_rshift
+l_int|10
 )paren
 suffix:semicolon
 r_return
@@ -1703,9 +1722,39 @@ id|page
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;nctxt %lu&bslash;n&quot;
+l_string|&quot;&bslash;npageallocs %u&bslash;n&quot;
+l_string|&quot;pagefrees %u&bslash;n&quot;
+l_string|&quot;pageactiv %u&bslash;n&quot;
+l_string|&quot;pagedeact %u&bslash;n&quot;
+l_string|&quot;pagefault %u&bslash;n&quot;
+l_string|&quot;majorfault %u&bslash;n&quot;
+l_string|&quot;pagescan %u&bslash;n&quot;
+l_string|&quot;pagesteal %u&bslash;n&quot;
+l_string|&quot;pageoutrun %u&bslash;n&quot;
+l_string|&quot;allocstall %u&bslash;n&quot;
+l_string|&quot;ctxt %lu&bslash;n&quot;
 l_string|&quot;btime %lu&bslash;n&quot;
 l_string|&quot;processes %lu&bslash;n&quot;
+comma
+id|kstat.pgalloc
+comma
+id|kstat.pgfree
+comma
+id|kstat.pgactivate
+comma
+id|kstat.pgdeactivate
+comma
+id|kstat.pgfault
+comma
+id|kstat.pgmajfault
+comma
+id|kstat.pgscan
+comma
+id|kstat.pgsteal
+comma
+id|kstat.pageoutrun
+comma
+id|kstat.allocstall
 comma
 id|nr_context_switches
 c_func

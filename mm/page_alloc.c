@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/mm/page_alloc.c&n; *&n; *  Manages the free list, the system allocates free pages here.&n; *  Note that kmalloc() lives in slab.c&n; *&n; *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *  Swap reorganised 29.12.95, Stephen Tweedie&n; *  Support of BIGMEM added by Gerhard Wichert, Siemens AG, July 1999&n; *  Reshaped it to be a zoned allocator, Ingo Molnar, Red Hat, 1999&n; *  Discontiguous memory support, Kanoj Sarcar, SGI, Nov 1999&n; *  Zone balancing, Kanoj Sarcar, SGI, Jan 2000&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -248,6 +249,16 @@ suffix:semicolon
 id|zone_t
 op_star
 id|zone
+suffix:semicolon
+id|KERNEL_STAT_ADD
+c_func
+(paren
+id|pgfree
+comma
+l_int|1
+op_lshift
+id|order
+)paren
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -1533,6 +1544,16 @@ suffix:semicolon
 r_int
 id|freed
 suffix:semicolon
+id|KERNEL_STAT_ADD
+c_func
+(paren
+id|pgalloc
+comma
+l_int|1
+op_lshift
+id|order
+)paren
+suffix:semicolon
 id|zone
 op_assign
 id|zonelist-&gt;zones
@@ -1834,6 +1855,12 @@ id|__GFP_WAIT
 )paren
 r_goto
 id|nopage
+suffix:semicolon
+id|KERNEL_STAT_INC
+c_func
+(paren
+id|allocstall
+)paren
 suffix:semicolon
 id|page
 op_assign
@@ -2553,6 +2580,18 @@ suffix:semicolon
 id|ret-&gt;nr_inactive
 op_add_assign
 id|ps-&gt;nr_inactive
+suffix:semicolon
+id|ret-&gt;nr_page_table_pages
+op_add_assign
+id|ps-&gt;nr_page_table_pages
+suffix:semicolon
+id|ret-&gt;nr_pte_chain_pages
+op_add_assign
+id|ps-&gt;nr_pte_chain_pages
+suffix:semicolon
+id|ret-&gt;used_pte_chains_bytes
+op_add_assign
+id|ps-&gt;used_pte_chains_bytes
 suffix:semicolon
 )brace
 )brace
