@@ -10695,7 +10695,7 @@ suffix:semicolon
 id|pci_set_master
 c_func
 (paren
-id|pci
+id|chip-&gt;pci
 )paren
 suffix:semicolon
 multiline_comment|/* first lets just bring everything back. .*/
