@@ -958,9 +958,6 @@ DECL|macro|ANY_I2C_BUS
 mdefine_line|#define ANY_I2C_BUS&t;&t;0xffff
 DECL|macro|ANY_I2C_ISA_BUS
 mdefine_line|#define ANY_I2C_ISA_BUS&t;&t;9191
-multiline_comment|/* The length of the option lists */
-DECL|macro|I2C_CLIENT_MAX_OPTS
-mdefine_line|#define I2C_CLIENT_MAX_OPTS 48
 multiline_comment|/* ----- functions exported by i2c.o */
 multiline_comment|/* administration...&n; */
 r_extern
@@ -1427,19 +1424,15 @@ multiline_comment|/* ----- I2C-DEV: char device interface stuff ----------------
 DECL|macro|I2C_MAJOR
 mdefine_line|#define I2C_MAJOR&t;89&t;&t;/* Device major number&t;&t;*/
 multiline_comment|/* These defines are used for probing i2c client addresses */
+multiline_comment|/* The length of the option lists */
+DECL|macro|I2C_CLIENT_MAX_OPTS
+mdefine_line|#define I2C_CLIENT_MAX_OPTS 48
 multiline_comment|/* Default fill of many variables */
 DECL|macro|I2C_CLIENT_DEFAULTS
 mdefine_line|#define I2C_CLIENT_DEFAULTS {I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END, &bslash;&n;                          I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END, &bslash;&n;                          I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END, &bslash;&n;                          I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END, &bslash;&n;                          I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END, &bslash;&n;                          I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END, &bslash;&n;                          I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END, &bslash;&n;                          I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END, &bslash;&n;                          I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END, &bslash;&n;                          I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END, &bslash;&n;                          I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END, &bslash;&n;                          I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END, &bslash;&n;                          I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END, &bslash;&n;                          I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END, &bslash;&n;                          I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END, &bslash;&n;                          I2C_CLIENT_END, I2C_CLIENT_END, I2C_CLIENT_END}
-multiline_comment|/* This is ugly. We need to evaluate I2C_CLIENT_MAX_OPTS before it is &n;   stringified */
-DECL|macro|I2C_CLIENT_MODPARM_AUX1
-mdefine_line|#define I2C_CLIENT_MODPARM_AUX1(x) &quot;1-&quot; #x &quot;h&quot;
-DECL|macro|I2C_CLIENT_MODPARM_AUX
-mdefine_line|#define I2C_CLIENT_MODPARM_AUX(x) I2C_CLIENT_MODPARM_AUX1(x)
-DECL|macro|I2C_CLIENT_MODPARM
-mdefine_line|#define I2C_CLIENT_MODPARM I2C_CLIENT_MODPARM_AUX(I2C_CLIENT_MAX_OPTS)
 multiline_comment|/* I2C_CLIENT_MODULE_PARM creates a module parameter, and puts it in the&n;   module header */
 DECL|macro|I2C_CLIENT_MODULE_PARM
-mdefine_line|#define I2C_CLIENT_MODULE_PARM(var,desc) &bslash;&n;  static unsigned short var[I2C_CLIENT_MAX_OPTS] = I2C_CLIENT_DEFAULTS; &bslash;&n;  static unsigned int var##_num; &bslash;&n;  /*MODULE_PARM(var,I2C_CLIENT_MODPARM);*/ &bslash;&n;  module_param_array(var, short, &amp;var##_num, 0); &bslash;&n;  MODULE_PARM_DESC(var,desc)
+mdefine_line|#define I2C_CLIENT_MODULE_PARM(var,desc) &bslash;&n;  static unsigned short var[I2C_CLIENT_MAX_OPTS] = I2C_CLIENT_DEFAULTS; &bslash;&n;  static unsigned int var##_num; &bslash;&n;  module_param_array(var, short, &amp;var##_num, 0); &bslash;&n;  MODULE_PARM_DESC(var,desc)
 multiline_comment|/* This is the one you want to use in your own modules */
 DECL|macro|I2C_CLIENT_INSMOD
 mdefine_line|#define I2C_CLIENT_INSMOD &bslash;&n;  I2C_CLIENT_MODULE_PARM(probe, &bslash;&n;                      &quot;List of adapter,address pairs to scan additionally&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(probe_range, &bslash;&n;                      &quot;List of adapter,start-addr,end-addr triples to scan &quot; &bslash;&n;                      &quot;additionally&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(ignore, &bslash;&n;                      &quot;List of adapter,address pairs not to scan&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(ignore_range, &bslash;&n;                      &quot;List of adapter,start-addr,end-addr triples not to &quot; &bslash;&n;                      &quot;scan&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(force, &bslash;&n;                      &quot;List of adapter,address pairs to boldly assume &quot; &bslash;&n;                      &quot;to be present&quot;); &bslash;&n;&t;static struct i2c_client_address_data addr_data = {&t;&t;&bslash;&n;&t;&t;&t;.normal_i2c = &t;&t;normal_i2c,&t;&t;&bslash;&n;&t;&t;&t;.normal_i2c_range =&t;normal_i2c_range,&t;&bslash;&n;&t;&t;&t;.probe =&t;&t;probe,&t;&t;&t;&bslash;&n;&t;&t;&t;.probe_range =&t;&t;probe_range,&t;&t;&bslash;&n;&t;&t;&t;.ignore =&t;&t;ignore,&t;&t;&t;&bslash;&n;&t;&t;&t;.ignore_range =&t;&t;ignore_range,&t;&t;&bslash;&n;&t;&t;&t;.force =&t;&t;force,&t;&t;&t;&bslash;&n;&t;&t;}
