@@ -1453,7 +1453,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|macro|MAY_PTRACE
-mdefine_line|#define MAY_PTRACE(task) &bslash;&n;&t;(task == current || &bslash;&n;&t;(task-&gt;parent == current &amp;&amp; &bslash;&n;&t;(task-&gt;ptrace &amp; PT_PTRACED) &amp;&amp;  task-&gt;state == TASK_STOPPED &amp;&amp; &bslash;&n;&t; security_ptrace(current,task) == 0))
+mdefine_line|#define MAY_PTRACE(task) &bslash;&n;&t;(task == current || &bslash;&n;&t;(task-&gt;parent == current &amp;&amp; &bslash;&n;&t;(task-&gt;ptrace &amp; PT_PTRACED) &amp;&amp; &bslash;&n;&t; (task-&gt;state == TASK_STOPPED || task-&gt;state == TASK_TRACED) &amp;&amp; &bslash;&n;&t; security_ptrace(current,task) == 0))
 DECL|function|may_ptrace_attach
 r_static
 r_int

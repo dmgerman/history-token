@@ -1685,8 +1685,9 @@ id|current-&gt;thread.work.syscall_trace
 )paren
 r_return
 suffix:semicolon
-id|current-&gt;exit_code
-op_assign
+id|ptrace_notify
+c_func
+(paren
 id|SIGTRAP
 op_or
 (paren
@@ -1701,22 +1702,6 @@ l_int|0x80
 suffix:colon
 l_int|0
 )paren
-suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_STOPPED
-suffix:semicolon
-id|notify_parent
-c_func
-(paren
-id|current
-comma
-id|SIGCHLD
-)paren
-suffix:semicolon
-id|schedule
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * this isn&squot;t the same as continuing with a signal, but it will do&n;&t; * for normal use.  strace only continues with a signal if the&n;&t; * stopping signal is not SIGTRAP.  -brl&n;&t; */

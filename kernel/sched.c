@@ -3421,6 +3421,8 @@ id|p
 comma
 id|TASK_STOPPED
 op_or
+id|TASK_TRACED
+op_or
 id|TASK_INTERRUPTIBLE
 op_or
 id|TASK_UNINTERRUPTIBLE
@@ -12129,9 +12131,11 @@ l_string|&quot;D&quot;
 comma
 l_string|&quot;T&quot;
 comma
+l_string|&quot;t&quot;
+comma
 l_string|&quot;Z&quot;
 comma
-l_string|&quot;W&quot;
+l_string|&quot;X&quot;
 )brace
 suffix:semicolon
 id|printk
