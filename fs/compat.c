@@ -1830,6 +1830,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifndef HAVE_ARCH_GET_COMPAT_FLOCK64
 DECL|function|get_compat_flock64
 r_static
 r_int
@@ -1918,6 +1919,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifndef HAVE_ARCH_PUT_COMPAT_FLOCK64
 DECL|function|put_compat_flock64
 r_static
 r_int
@@ -2006,6 +2009,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 r_extern
 id|asmlinkage
 r_int

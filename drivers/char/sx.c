@@ -165,15 +165,6 @@ id|ptr
 suffix:semicolon
 r_static
 r_void
-id|sx_hungup
-(paren
-r_void
-op_star
-id|ptr
-)paren
-suffix:semicolon
-r_static
-r_void
 id|sx_close
 (paren
 r_void
@@ -491,8 +482,6 @@ comma
 id|sx_chars_in_buffer
 comma
 id|sx_close
-comma
-id|sx_hungup
 comma
 )brace
 suffix:semicolon
@@ -4977,14 +4966,6 @@ id|port-&gt;gs.tty
 op_assign
 id|tty
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|port-&gt;gs.count
-)paren
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|port-&gt;gs.count
 op_increment
 suffix:semicolon
@@ -5020,13 +5001,6 @@ id|retval
 (brace
 id|port-&gt;gs.count
 op_decrement
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|port-&gt;gs.count
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|retval
@@ -5122,14 +5096,6 @@ l_string|&quot;sx: Card didn&squot;t respond to LOPEN command.&bslash;n&quot;
 suffix:semicolon
 id|port-&gt;gs.count
 op_decrement
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|port-&gt;gs.count
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -5240,32 +5206,6 @@ c_func
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* I haven&squot;t the foggiest why the decrement use count has to happen&n;   here. The whole linux serial drivers stuff needs to be redesigned.&n;   My guess is that this is a hack to minimize the impact of a bug&n;   elsewhere. Thinking about it some more. (try it sometime) Try&n;   running minicom on a serial port that is driven by a modularized&n;   driver. Have the modem hangup. Then remove the driver module. Then&n;   exit minicom.  I expect an &quot;oops&quot;.  -- REW */
-DECL|function|sx_hungup
-r_static
-r_void
-id|sx_hungup
-(paren
-r_void
-op_star
-id|ptr
-)paren
-(brace
-multiline_comment|/*&n;&t;struct sx_port *port = ptr; &n;  */
-id|func_enter
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Don&squot;t force the SX card to close. mgetty doesn&squot;t like it !!!!!! -- pvdl */
-multiline_comment|/* For some reson we added this code. Don&squot;t know why anymore ;-( -- pvdl */
-multiline_comment|/*&n;&t;sx_setsignals (port, 0, 0);&n;&t;sx_reconfigure_port(port);&t;&n;&t;sx_send_command (port, HS_CLOSE, 0, 0);&n;&n;&t;if (sx_read_channel_byte (port, hi_hstat) != HS_IDLE_CLOSED) {&n;&t;&t;if (sx_send_command (port, HS_FORCE_CLOSED, -1, HS_IDLE_CLOSED) != 1) {&n;&t;&t;&t;printk (KERN_ERR &n;&t;&t;&t;        &quot;sx: sent the force_close command, but card didn&squot;t react&bslash;n&quot;);&n;&t;&t;} else&n;&t;&t;&t;sx_dprintk (SX_DEBUG_CLOSE, &quot;sent the force_close command.&bslash;n&quot;);&n;&t;}&n;&t;*/
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-id|func_exit
-(paren
-)paren
 suffix:semicolon
 )brace
 DECL|function|sx_close
@@ -5450,8 +5390,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|func_exit
 (paren
 )paren
@@ -8753,6 +8691,10 @@ suffix:semicolon
 id|sx_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
+suffix:semicolon
+id|sx_driver.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|sx_driver.driver_name
 op_assign

@@ -1,45 +1,9 @@
 multiline_comment|/*&n; *  fs/partitions/msdos.c&n; *&n; *  Code extracted from drivers/block/genhd.c&n; *  Copyright (C) 1991-1998  Linus Torvalds&n; *&n; *  Thanks to Branko Lankester, lankeste@fwi.uva.nl, who found a bug&n; *  in the early extended-partition checks and added DM partitions&n; *&n; *  Support for DiskManager v6.0x added by Mark Lord,&n; *  with information provided by OnTrack.  This now works for linux fdisk&n; *  and LILO, as well as loadlin and bootln.  Note that disks other than&n; *  /dev/hda *must* have a &quot;DOS&quot; type 0x51 partition in the first slot (hda1).&n; *&n; *  More flexible handling of extended partitions - aeb, 950831&n; *&n; *  Check partition table on IDE disks for common CHS translations&n; *&n; *  Re-organised Feb 1998 Russell King&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_bdev() */
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-macro_line|#include &lt;linux/hdreg.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;&t;/* IDE xlate */
-macro_line|#elif defined(CONFIG_BLK_DEV_IDE_MODULE)
-macro_line|#include &lt;linux/module.h&gt;
-DECL|variable|ide_xlate_1024_hook
-r_int
-(paren
-op_star
-id|ide_xlate_1024_hook
-)paren
-(paren
-r_struct
-id|block_device
-op_star
-comma
-r_int
-comma
-r_int
-comma
-r_const
-r_char
-op_star
-)paren
-suffix:semicolon
-DECL|variable|ide_xlate_1024_hook
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_xlate_1024_hook
-)paren
-suffix:semicolon
-DECL|macro|ide_xlate_1024
-mdefine_line|#define ide_xlate_1024 ide_xlate_1024_hook
-macro_line|#endif
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;msdos.h&quot;
 macro_line|#include &quot;efi.h&quot;
-multiline_comment|/*&n; * Many architectures don&squot;t like unaligned accesses, which is&n; * frequently the case with the nr_sects and start_sect partition&n; * table entries.&n; */
+multiline_comment|/*&n; * Many architectures don&squot;t like unaligned accesses, while&n; * the nr_sects and start_sect partition table entries are&n; * at a 2 (mod 4) address.&n; */
 macro_line|#include &lt;asm/unaligned.h&gt;
 DECL|macro|SYS_IND
 mdefine_line|#define SYS_IND(p)&t;(get_unaligned(&amp;p-&gt;sys_ind))

@@ -212,7 +212,7 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* Must go first  --  used as unasigned */
+multiline_comment|/* Must go first  --  used as unassigned */
 (brace
 l_string|&quot;VAC UART&quot;
 comma

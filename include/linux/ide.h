@@ -4549,25 +4549,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This routine is called from the partition-table code in genhd.c&n; * to &quot;convert&quot; a drive to a logical geometry with fewer than 1024 cyls.&n; */
-r_extern
-r_int
-id|ide_xlate_1024
-c_func
-(paren
-r_struct
-id|block_device
-op_star
-comma
-r_int
-comma
-r_int
-comma
-r_const
-r_char
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Return the current idea about the total capacity of this drive.&n; */
 r_extern
 r_int
