@@ -5510,7 +5510,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|filemap_fdatasync
 c_func
 (paren
@@ -5520,7 +5520,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|filemap_fdatawait
 c_func
 (paren
