@@ -771,7 +771,9 @@ multiline_comment|/* could not register sclp event. Die. */
 id|printk
 c_func
 (paren
-l_string|&quot;cpi: could not register to hardware console.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;cpi: could not register to hardware &quot;
+l_string|&quot;console.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -793,7 +795,9 @@ id|EvTyp_CtlProgIdent_Mask
 id|printk
 c_func
 (paren
-l_string|&quot;cpi: no control program identification support&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;cpi: no control program identification &quot;
+l_string|&quot;support&bslash;n&quot;
 )paren
 suffix:semicolon
 id|sclp_unregister
@@ -828,6 +832,7 @@ id|req
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;cpi: couldn&squot;t allocate request&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -862,12 +867,44 @@ op_amp
 id|sem
 suffix:semicolon
 multiline_comment|/* Add request to sclp queue */
+id|rc
+op_assign
 id|sclp_add_request
 c_func
 (paren
 id|req
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;cpi: could not start request&bslash;n&quot;
+)paren
+suffix:semicolon
+id|cpi_free_req
+c_func
+(paren
+id|req
+)paren
+suffix:semicolon
+id|sclp_unregister
+c_func
+(paren
+op_amp
+id|sclp_cpi_event
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
 multiline_comment|/* make &quot;insmod&quot; sleep until callback arrives */
 id|down
 c_func
@@ -900,6 +937,7 @@ l_int|0x0020
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;cpi: failed with response code 0x%x&bslash;n&quot;
 comma
 id|rc
