@@ -21,7 +21,6 @@ multiline_comment|/*&n; * Simple spin lock operations.  There are two variants, 
 r_typedef
 r_struct
 (brace
-macro_line|#ifndef __s390x__
 DECL|member|lock
 r_volatile
 r_int
@@ -29,15 +28,6 @@ r_int
 id|lock
 suffix:semicolon
 DECL|typedef|spinlock_t
-)brace
-id|spinlock_t
-suffix:semicolon
-macro_line|#else /* __s390x__ */
-r_volatile
-r_int
-r_int
-id|lock
-suffix:semicolon
 )brace
 id|__attribute__
 (paren
@@ -50,7 +40,6 @@ l_int|4
 )paren
 id|spinlock_t
 suffix:semicolon
-macro_line|#endif /* __s390x__ */
 DECL|macro|SPIN_LOCK_UNLOCKED
 mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { 0 }
 DECL|macro|spin_lock_init
@@ -207,11 +196,10 @@ id|__asm__
 id|__volatile
 c_func
 (paren
-l_string|&quot;    slr   %0,%0&bslash;n&quot;
 l_string|&quot;    basr  %1,0&bslash;n&quot;
 l_string|&quot;0:  cs    %0,%1,0(%3)&quot;
 suffix:colon
-l_string|&quot;=&amp;d&quot;
+l_string|&quot;=d&quot;
 (paren
 id|result
 )paren
@@ -235,6 +223,11 @@ comma
 l_string|&quot;m&quot;
 (paren
 id|lp-&gt;lock
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+l_int|0
 )paren
 suffix:colon
 l_string|&quot;cc&quot;
@@ -377,17 +370,15 @@ id|__volatile__
 c_func
 (paren
 macro_line|#ifndef __s390x__
-l_string|&quot;   slr  %0,%0&bslash;n&quot;
 l_string|&quot;   lhi  %1,1&bslash;n&quot;
 l_string|&quot;   sll  %1,31&bslash;n&quot;
 l_string|&quot;   cs   %0,%1,0(%3)&quot;
 macro_line|#else /* __s390x__ */
-l_string|&quot;   slgr  %0,%0&bslash;n&quot;
 l_string|&quot;   llihh %1,0x8000&bslash;n&quot;
 l_string|&quot;0: csg %0,%1,0(%3)&bslash;n&quot;
 macro_line|#endif /* __s390x__ */
 suffix:colon
-l_string|&quot;=&amp;d&quot;
+l_string|&quot;=d&quot;
 (paren
 id|result
 )paren
@@ -411,6 +402,11 @@ comma
 l_string|&quot;m&quot;
 (paren
 id|rw-&gt;lock
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+l_int|0
 )paren
 suffix:colon
 l_string|&quot;cc&quot;

@@ -2027,7 +2027,7 @@ suffix:semicolon
 id|lc-&gt;restart_psw.addr
 op_assign
 id|PSW_ADDR_AMODE
-op_plus
+op_or
 (paren
 r_int
 r_int
@@ -2041,7 +2041,7 @@ suffix:semicolon
 id|lc-&gt;external_new_psw.addr
 op_assign
 id|PSW_ADDR_AMODE
-op_plus
+op_or
 (paren
 r_int
 r_int
@@ -2055,7 +2055,7 @@ suffix:semicolon
 id|lc-&gt;svc_new_psw.addr
 op_assign
 id|PSW_ADDR_AMODE
-op_plus
+op_or
 (paren
 r_int
 r_int
@@ -2069,7 +2069,7 @@ suffix:semicolon
 id|lc-&gt;program_new_psw.addr
 op_assign
 id|PSW_ADDR_AMODE
-op_plus
+op_or
 (paren
 r_int
 r_int
@@ -2083,7 +2083,7 @@ suffix:semicolon
 id|lc-&gt;mcck_new_psw.addr
 op_assign
 id|PSW_ADDR_AMODE
-op_plus
+op_or
 (paren
 r_int
 r_int
@@ -2097,7 +2097,7 @@ suffix:semicolon
 id|lc-&gt;io_new_psw.addr
 op_assign
 id|PSW_ADDR_AMODE
-op_plus
+op_or
 (paren
 r_int
 r_int
