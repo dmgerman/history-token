@@ -1026,5 +1026,6 @@ mdefine_line|#define dma_cache_wback_inv(_start,_size)&t;do { flush_kernel_dcach
 multiline_comment|/* PA machines have an MM I/O space from 0xf0000000-0xffffffff in 32&n; * bit mode and from 0xfffffffff0000000-0xfffffffffffffff in 64 bit&n; * mode (essentially just sign extending.  This macro takes in a 32&n; * bit I/O address (still with the leading f) and outputs the correct&n; * value for either 32 or 64 bit mode */
 DECL|macro|F_EXTEND
 mdefine_line|#define F_EXTEND(x) ((unsigned long)((x) | (0xffffffff00000000ULL)))
+macro_line|#include &lt;asm-generic/iomap.h&gt;
 macro_line|#endif
 eof
