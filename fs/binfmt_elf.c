@@ -262,7 +262,7 @@ suffix:semicolon
 multiline_comment|/* We need to explicitly zero any fractional pages&n;   after the data section (i.e. bss).  This would&n;   contain the junk from the file that should not&n;   be in memory */
 DECL|function|padzero
 r_static
-r_void
+r_int
 id|padzero
 c_func
 (paren
@@ -295,6 +295,9 @@ id|ELF_MIN_ALIGN
 op_minus
 id|nbyte
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|clear_user
 c_func
 (paren
@@ -307,8 +310,15 @@ id|elf_bss
 comma
 id|nbyte
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* Let&squot;s use some macros to make this stack manipulation a litle clearer */
 macro_line|#ifdef CONFIG_STACK_GROWSUP
@@ -327,7 +337,7 @@ DECL|macro|STACK_ALLOC
 mdefine_line|#define STACK_ALLOC(sp, len) ({ sp -= len ; sp; })
 macro_line|#endif
 r_static
-r_void
+r_int
 DECL|function|create_elf_tables
 id|create_elf_tables
 c_func
@@ -479,6 +489,9 @@ comma
 id|len
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -488,6 +501,10 @@ id|k_platform
 comma
 id|len
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 multiline_comment|/* Create the ELF interpreter info */
@@ -806,6 +823,9 @@ id|bprm-&gt;p
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Now, let&squot;s put argc (and argv, envp if appropriate) on the stack */
+r_if
+c_cond
+(paren
 id|__put_user
 c_func
 (paren
@@ -814,6 +834,10 @@ comma
 id|sp
 op_increment
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -942,12 +966,16 @@ op_star
 id|MAX_ARG_PAGES
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|p
 op_add_assign
 id|len
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|__put_user
 c_func
 (paren
@@ -955,6 +983,10 @@ l_int|0
 comma
 id|argv
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|current-&gt;mm-&gt;arg_end
 op_assign
@@ -1016,12 +1048,16 @@ op_star
 id|MAX_ARG_PAGES
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|p
 op_add_assign
 id|len
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|__put_user
 c_func
 (paren
@@ -1029,6 +1065,10 @@ l_int|0
 comma
 id|envp
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|current-&gt;mm-&gt;env_end
 op_assign
@@ -1046,6 +1086,9 @@ id|envp
 op_plus
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -1060,6 +1103,13 @@ r_sizeof
 id|elf_addr_t
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifndef elf_map
@@ -1624,12 +1674,25 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * Now fill out the bss section.  First pad the last page up&n;&t; * to the page boundary, and then perform a mmap to make sure&n;&t; * that there are zero-mapped pages up to and including the &n;&t; * last bss page.&n;&t; */
+r_if
+c_cond
+(paren
 id|padzero
 c_func
 (paren
 id|elf_bss
 )paren
+)paren
+(brace
+id|error
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_goto
+id|out_close
+suffix:semicolon
+)brace
 id|elf_bss
 op_assign
 id|ELF_PAGESTART
@@ -3241,6 +3304,9 @@ id|elf_brk
 op_minus
 id|elf_bss
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|clear_user
 c_func
 (paren
@@ -3255,7 +3321,27 @@ id|load_bias
 comma
 id|nbyte
 )paren
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+id|send_sig
+c_func
+(paren
+id|SIGKILL
+comma
+id|current
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_goto
+id|out_free_dentry
+suffix:semicolon
+)brace
 )brace
 )brace
 r_if
@@ -3616,12 +3702,36 @@ r_goto
 id|out_free_dentry
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|padzero
 c_func
 (paren
 id|elf_bss
 )paren
+)paren
+(brace
+id|send_sig
+c_func
+(paren
+id|SIGSEGV
+comma
+id|current
+comma
+l_int|0
+)paren
 suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+multiline_comment|/* Nobody gets to see this, but.. */
+r_goto
+id|out_free_dentry
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4355,12 +4465,25 @@ id|elf_phdata-&gt;p_vaddr
 op_plus
 id|elf_phdata-&gt;p_filesz
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|padzero
 c_func
 (paren
 id|elf_bss
 )paren
+)paren
+(brace
+id|error
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_goto
+id|out_free_ph
+suffix:semicolon
+)brace
 id|len
 op_assign
 id|ELF_PAGESTART
@@ -5151,7 +5274,7 @@ suffix:semicolon
 )brace
 DECL|function|fill_psinfo
 r_static
-r_void
+r_int
 id|fill_psinfo
 c_func
 (paren
@@ -5210,6 +5333,9 @@ id|ELF_PRARGSZ
 op_minus
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -5226,6 +5352,10 @@ id|mm-&gt;arg_start
 comma
 id|len
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_for
 c_loop
@@ -5369,6 +5499,7 @@ id|psinfo-&gt;pr_fname
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Here is the structure in which status of each thread is captured. */
