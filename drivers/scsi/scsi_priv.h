@@ -60,49 +60,6 @@ mdefine_line|#define SCSI_SENSE_VALID(scmd) &bslash;&n;&t;(((scmd)-&gt;sense_buf
 multiline_comment|/*&n; * Special value for scanning to specify scanning or rescanning of all&n; * possible channels, (target) ids, or luns on a given shost.&n; */
 DECL|macro|SCAN_WILD_CARD
 mdefine_line|#define SCAN_WILD_CARD&t;~0
-multiline_comment|/*&n; * scsi_target: representation of a scsi target, for now, this is only&n; * used for single_lun devices. If no one has active IO to the target,&n; * starget_sdev_user is NULL, else it points to the active sdev.&n; */
-DECL|struct|scsi_target
-r_struct
-id|scsi_target
-(brace
-DECL|member|starget_sdev_user
-r_struct
-id|scsi_device
-op_star
-id|starget_sdev_user
-suffix:semicolon
-DECL|member|dev
-r_struct
-id|device
-id|dev
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|to_scsi_target
-mdefine_line|#define to_scsi_target(d)&t;container_of(d, struct scsi_target, dev)
-DECL|function|scsi_target
-r_static
-r_inline
-r_struct
-id|scsi_target
-op_star
-id|scsi_target
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-id|sdev
-)paren
-(brace
-r_return
-id|to_scsi_target
-c_func
-(paren
-id|sdev-&gt;sdev_gendev.parent
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* hosts.c */
 r_extern
 r_int

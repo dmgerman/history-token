@@ -195,7 +195,7 @@ id|sdev-&gt;sdev_gendev
 suffix:semicolon
 )brace
 DECL|macro|fc_transport_show_function
-mdefine_line|#define fc_transport_show_function(field, format_string, cast)&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_fc_transport_##field (struct class_device *cdev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev = transport_class_to_sdev(cdev);&t;&bslash;&n;&t;struct fc_transport_attrs *tp;&t;&t;&t;&t;&t;&bslash;&n;&t;struct fc_internal *i = to_fc_internal(sdev-&gt;host-&gt;transportt);&t;&bslash;&n;&t;tp = (struct fc_transport_attrs *)&amp;sdev-&gt;transport_data;&t;&bslash;&n;&t;if (i-&gt;f-&gt;get_##field)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;i-&gt;f-&gt;get_##field(sdev);&t;&t;&t;&t;&bslash;&n;&t;return snprintf(buf, 20, format_string, cast tp-&gt;field);&t;&bslash;&n;}
+mdefine_line|#define fc_transport_show_function(field, format_string, cast)&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_fc_transport_##field (struct class_device *cdev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev = transport_class_to_sdev(cdev);&t;&bslash;&n;&t;struct fc_transport_attrs *tp;&t;&t;&t;&t;&t;&bslash;&n;&t;struct fc_internal *i = to_fc_internal(sdev-&gt;host-&gt;transportt);&t;&bslash;&n;&t;tp = (struct fc_transport_attrs *)&amp;sdev-&gt;sdev_data;&t;&t;&bslash;&n;&t;if (i-&gt;f-&gt;get_##field)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;i-&gt;f-&gt;get_##field(sdev);&t;&t;&t;&t;&bslash;&n;&t;return snprintf(buf, 20, format_string, cast tp-&gt;field);&t;&bslash;&n;}
 DECL|macro|fc_transport_store_function
 mdefine_line|#define fc_transport_store_function(field, format_string)&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;store_fc_transport_##field(struct class_device *cdev, const char *buf,&t;&bslash;&n;&t;&t;&t;   size_t count)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev = transport_class_to_sdev(cdev);&t;&bslash;&n;&t;struct fc_internal *i = to_fc_internal(sdev-&gt;host-&gt;transportt);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;val = simple_strtoul(buf, NULL, 0);&t;&t;&t;&t;&bslash;&n;&t;i-&gt;f-&gt;set_##field(sdev, val);&t;&t;&t;&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|fc_transport_rd_attr
@@ -303,7 +303,7 @@ id|fc_internal
 )paren
 )paren
 suffix:semicolon
-id|i-&gt;t.attrs
+id|i-&gt;t.device_attrs
 op_assign
 op_amp
 id|i-&gt;attrs
@@ -311,19 +311,17 @@ id|i-&gt;attrs
 l_int|0
 )braket
 suffix:semicolon
-id|i-&gt;t
-dot
-r_class
+id|i-&gt;t.device_class
 op_assign
 op_amp
 id|fc_transport_class
 suffix:semicolon
-id|i-&gt;t.setup
+id|i-&gt;t.device_setup
 op_assign
 op_amp
 id|fc_setup_transport_attrs
 suffix:semicolon
-id|i-&gt;t.size
+id|i-&gt;t.device_size
 op_assign
 r_sizeof
 (paren

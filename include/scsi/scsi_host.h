@@ -761,6 +761,17 @@ r_struct
 id|list_head
 id|sht_legacy_list
 suffix:semicolon
+multiline_comment|/*&n;&t; * Points to the transport data (if any) which is allocated&n;&t; * separately&n;&t; */
+DECL|member|shost_data
+r_void
+op_star
+id|shost_data
+suffix:semicolon
+DECL|member|transport_classdev
+r_struct
+id|class_device
+id|transport_classdev
+suffix:semicolon
 multiline_comment|/*&n;&t; * We should ensure that this is aligned, both for better performance&n;&t; * and also because some compilers (m68k) don&squot;t automatically force&n;&t; * alignment to a long boundary.&n;&t; */
 DECL|member|hostdata
 r_int
@@ -790,6 +801,8 @@ DECL|macro|dev_to_shost
 mdefine_line|#define&t;&t;dev_to_shost(d)&t;&t;&bslash;&n;&t;container_of(d, struct Scsi_Host, shost_gendev)
 DECL|macro|class_to_shost
 mdefine_line|#define&t;&t;class_to_shost(d)&t;&bslash;&n;&t;container_of(d, struct Scsi_Host, shost_classdev)
+DECL|macro|transport_class_to_shost
+mdefine_line|#define&t;&t;transport_class_to_shost(class_dev) &bslash;&n;&t;container_of(class_dev, struct Scsi_Host, transport_classdev)
 r_extern
 r_struct
 id|Scsi_Host

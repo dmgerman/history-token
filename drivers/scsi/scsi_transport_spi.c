@@ -35,9 +35,9 @@ DECL|macro|SPI_MAX_ECHO_BUFFER_SIZE
 mdefine_line|#define SPI_MAX_ECHO_BUFFER_SIZE&t;4096
 multiline_comment|/* Private data accessors (keep these out of the header file) */
 DECL|macro|spi_dv_pending
-mdefine_line|#define spi_dv_pending(x) (((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;dv_pending)
+mdefine_line|#define spi_dv_pending(x) (((struct spi_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;dv_pending)
 DECL|macro|spi_dv_sem
-mdefine_line|#define spi_dv_sem(x) (((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;dv_sem)
+mdefine_line|#define spi_dv_sem(x) (((struct spi_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;dv_sem)
 DECL|struct|spi_internal
 r_struct
 id|spi_internal
@@ -344,7 +344,7 @@ id|sdev-&gt;sdev_gendev
 suffix:semicolon
 )brace
 DECL|macro|spi_transport_show_function
-mdefine_line|#define spi_transport_show_function(field, format_string)&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_spi_transport_##field(struct class_device *cdev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev = transport_class_to_sdev(cdev);&t;&bslash;&n;&t;struct spi_transport_attrs *tp;&t;&t;&t;&t;&t;&bslash;&n;&t;struct spi_internal *i = to_spi_internal(sdev-&gt;host-&gt;transportt); &bslash;&n;&t;tp = (struct spi_transport_attrs *)&amp;sdev-&gt;transport_data;&t;&bslash;&n;&t;if (i-&gt;f-&gt;get_##field)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;i-&gt;f-&gt;get_##field(sdev);&t;&t;&t;&t;&bslash;&n;&t;return snprintf(buf, 20, format_string, tp-&gt;field);&t;&t;&bslash;&n;}
+mdefine_line|#define spi_transport_show_function(field, format_string)&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_spi_transport_##field(struct class_device *cdev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev = transport_class_to_sdev(cdev);&t;&bslash;&n;&t;struct spi_transport_attrs *tp;&t;&t;&t;&t;&t;&bslash;&n;&t;struct spi_internal *i = to_spi_internal(sdev-&gt;host-&gt;transportt); &bslash;&n;&t;tp = (struct spi_transport_attrs *)&amp;sdev-&gt;sdev_data;&t;&t;&bslash;&n;&t;if (i-&gt;f-&gt;get_##field)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;i-&gt;f-&gt;get_##field(sdev);&t;&t;&t;&t;&bslash;&n;&t;return snprintf(buf, 20, format_string, tp-&gt;field);&t;&t;&bslash;&n;}
 DECL|macro|spi_transport_store_function
 mdefine_line|#define spi_transport_store_function(field, format_string)&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;store_spi_transport_##field(struct class_device *cdev, const char *buf, &bslash;&n;&t;&t;&t;    size_t count)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev = transport_class_to_sdev(cdev);&t;&bslash;&n;&t;struct spi_internal *i = to_spi_internal(sdev-&gt;host-&gt;transportt); &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;val = simple_strtoul(buf, NULL, 0);&t;&t;&t;&t;&bslash;&n;&t;i-&gt;f-&gt;set_##field(sdev, val);&t;&t;&t;&t;&t;&bslash;&n;&t;return count;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|spi_transport_rd_attr
@@ -533,7 +533,7 @@ id|spi_transport_attrs
 op_star
 )paren
 op_amp
-id|sdev-&gt;transport_data
+id|sdev-&gt;sdev_data
 suffix:semicolon
 r_if
 c_cond
@@ -2663,7 +2663,7 @@ id|spi_internal
 )paren
 )paren
 suffix:semicolon
-id|i-&gt;t.attrs
+id|i-&gt;t.device_attrs
 op_assign
 op_amp
 id|i-&gt;attrs
@@ -2671,19 +2671,17 @@ id|i-&gt;attrs
 l_int|0
 )braket
 suffix:semicolon
-id|i-&gt;t
-dot
-r_class
+id|i-&gt;t.device_class
 op_assign
 op_amp
 id|spi_transport_class
 suffix:semicolon
-id|i-&gt;t.setup
+id|i-&gt;t.device_setup
 op_assign
 op_amp
 id|spi_setup_transport_attrs
 suffix:semicolon
-id|i-&gt;t.size
+id|i-&gt;t.device_size
 op_assign
 r_sizeof
 (paren

@@ -102,25 +102,25 @@ multiline_comment|/* semaphore to serialise dv */
 suffix:semicolon
 multiline_comment|/* accessor functions */
 DECL|macro|spi_period
-mdefine_line|#define spi_period(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;period)
+mdefine_line|#define spi_period(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;period)
 DECL|macro|spi_offset
-mdefine_line|#define spi_offset(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;offset)
+mdefine_line|#define spi_offset(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;offset)
 DECL|macro|spi_width
-mdefine_line|#define spi_width(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;width)
+mdefine_line|#define spi_width(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;width)
 DECL|macro|spi_iu
-mdefine_line|#define spi_iu(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;iu)
+mdefine_line|#define spi_iu(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;iu)
 DECL|macro|spi_dt
-mdefine_line|#define spi_dt(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;dt)
+mdefine_line|#define spi_dt(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;dt)
 DECL|macro|spi_qas
-mdefine_line|#define spi_qas(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;qas)
+mdefine_line|#define spi_qas(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;qas)
 DECL|macro|spi_wr_flow
-mdefine_line|#define spi_wr_flow(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;wr_flow)
+mdefine_line|#define spi_wr_flow(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;wr_flow)
 DECL|macro|spi_rd_strm
-mdefine_line|#define spi_rd_strm(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;rd_strm)
+mdefine_line|#define spi_rd_strm(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;rd_strm)
 DECL|macro|spi_rti
-mdefine_line|#define spi_rti(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;rti)
+mdefine_line|#define spi_rti(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;rti)
 DECL|macro|spi_pcomp_en
-mdefine_line|#define spi_pcomp_en(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;pcomp_en)
+mdefine_line|#define spi_pcomp_en(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;pcomp_en)
 multiline_comment|/* The functions by which the transport class and the driver communicate */
 DECL|struct|spi_function_template
 r_struct

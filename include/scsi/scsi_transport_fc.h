@@ -26,11 +26,11 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* accessor functions */
 DECL|macro|fc_port_id
-mdefine_line|#define fc_port_id(x)&t;(((struct fc_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;port_id)
+mdefine_line|#define fc_port_id(x)&t;(((struct fc_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;port_id)
 DECL|macro|fc_node_name
-mdefine_line|#define fc_node_name(x)&t;(((struct fc_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;node_name)
+mdefine_line|#define fc_node_name(x)&t;(((struct fc_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;node_name)
 DECL|macro|fc_port_name
-mdefine_line|#define fc_port_name(x)&t;(((struct fc_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;port_name)
+mdefine_line|#define fc_port_name(x)&t;(((struct fc_transport_attrs *)&amp;(x)-&gt;sdev_data)-&gt;port_name)
 multiline_comment|/* The functions by which the transport class and the driver communicate */
 DECL|struct|fc_function_template
 r_struct
