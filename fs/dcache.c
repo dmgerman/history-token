@@ -5378,6 +5378,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|chrdev_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|vfs_caches_init
 r_void
 id|__init
@@ -5480,6 +5488,11 @@ id|mempages
 )paren
 suffix:semicolon
 id|bdev_cache_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|chrdev_init
 c_func
 (paren
 )paren

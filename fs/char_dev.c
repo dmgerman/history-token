@@ -2363,8 +2363,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|chrdev_init
-r_static
-r_int
+r_void
 id|__init
 id|chrdev_init
 c_func
@@ -2397,15 +2396,5 @@ op_amp
 id|cdev_subsys
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-DECL|variable|chrdev_init
-id|subsys_initcall
-c_func
-(paren
-id|chrdev_init
-)paren
-suffix:semicolon
 eof
