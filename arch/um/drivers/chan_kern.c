@@ -1178,7 +1178,6 @@ id|len
 )paren
 )paren
 )paren
-(brace
 id|reactivate_fd
 c_func
 (paren
@@ -1187,19 +1186,6 @@ comma
 id|write_irq
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_eq
-op_minus
-id|EAGAIN
-)paren
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 )brace
 )brace
 r_return
