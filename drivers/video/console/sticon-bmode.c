@@ -30,8 +30,8 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/font.h&gt;
+macro_line|#include &quot;fbcon.h&quot;
+macro_line|#include &quot;font.h&quot;
 macro_line|#include &quot;sti-bmode.h&quot;
 multiline_comment|/* The latency of the STI functions cannot really be reduced by setting&n; * this to 0;  STI doesn&squot;t seem to be designed to allow calling a different&n; * function (or the same function with different arguments) after a&n; * function exited with 1 as return value.&n; *&n; * As all of the functions below could be called from interrupt context,&n; * we have to spin_lock_irqsave around the do { ret = bla(); } while(ret==1)&n; * block.  Really bad latency there.&n; *&n; * Probably the best solution to all this is have the generic code manage&n; * the screen buffer and a kernel thread to call STI occasionally.&n; * &n; * Luckily, the frame buffer guys have the same problem so we can just wait&n; * for them to fix it and steal their solution.   prumpf&n; *&n; * Actually, another long-term viable solution is to completely do STI&n; * support in userspace - that way we avoid the potential license issues&n; * of using proprietary fonts, too. */
 DECL|macro|STI_WAIT

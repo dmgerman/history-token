@@ -4,8 +4,8 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/fbcon-ilbm.h&gt;
+macro_line|#include &quot;fbcon.h&quot;
+macro_line|#include &quot;fbcon-ilbm.h&quot;
 multiline_comment|/*&n;     *  Interleaved bitplanes &#xfffd; la Amiga&n;     *&n;     *  This code heavily relies on the fact that&n;     *&n;     *      next_line == interleave == next_plane*bits_per_pixel&n;     *&n;     *  But maybe it can be merged with the code for normal bitplanes without&n;     *  much performance loss?&n;     */
 DECL|function|fbcon_ilbm_setup
 r_void

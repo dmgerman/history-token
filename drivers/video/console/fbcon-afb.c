@@ -4,8 +4,8 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/fbcon-afb.h&gt;
+macro_line|#include &quot;fbcon.h&quot;
+macro_line|#include &quot;fbcon-afb.h&quot;
 multiline_comment|/*&n;     *  Bitplanes &#xfffd; la Amiga&n;     */
 DECL|variable|expand_table
 r_static
