@@ -4,12 +4,14 @@ macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
-r_extern
+DECL|variable|xfrm6_dst_ops
+r_static
 r_struct
 id|dst_ops
 id|xfrm6_dst_ops
 suffix:semicolon
-r_extern
+DECL|variable|xfrm6_policy_afinfo
+r_static
 r_struct
 id|xfrm_policy_afinfo
 id|xfrm6_policy_afinfo
@@ -28,6 +30,7 @@ id|RW_LOCK_UNLOCKED
 )brace
 suffix:semicolon
 DECL|function|xfrm6_dst_lookup
+r_static
 r_int
 id|xfrm6_dst_lookup
 c_func
@@ -1221,6 +1224,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|variable|xfrm6_dst_ops
+r_static
 r_struct
 id|dst_ops
 id|xfrm6_dst_ops
@@ -1267,6 +1271,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|xfrm6_policy_afinfo
+r_static
 r_struct
 id|xfrm_policy_afinfo
 id|xfrm6_policy_afinfo
@@ -1317,6 +1322,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|xfrm6_policy_init
+r_static
 r_void
 id|__init
 id|xfrm6_policy_init
@@ -1334,6 +1340,7 @@ id|xfrm6_policy_afinfo
 suffix:semicolon
 )brace
 DECL|function|xfrm6_policy_fini
+r_static
 r_void
 id|__exit
 id|xfrm6_policy_fini

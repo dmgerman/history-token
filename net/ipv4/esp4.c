@@ -29,6 +29,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|esp_output
+r_static
 r_int
 id|esp_output
 c_func
@@ -719,6 +720,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Note: detecting truncated vs. non-truncated authentication data is very&n; * expensive, so we only support truncated data, which is the recommended&n; * and common case.&n; */
 DECL|function|esp_input
+r_static
 r_int
 id|esp_input
 c_func
@@ -1328,6 +1330,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|esp_post_input
+r_static
 r_int
 id|esp_post_input
 c_func
@@ -1563,6 +1566,7 @@ id|esp-&gt;auth.icv_trunc_len
 suffix:semicolon
 )brace
 DECL|function|esp4_err
+r_static
 r_void
 id|esp4_err
 c_func
@@ -1684,6 +1688,7 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|esp_destroy
+r_static
 r_void
 id|esp_destroy
 c_func
@@ -1785,6 +1790,7 @@ id|esp
 suffix:semicolon
 )brace
 DECL|function|esp_init_state
+r_static
 r_int
 id|esp_init_state
 c_func

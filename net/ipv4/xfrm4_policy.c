@@ -2,12 +2,14 @@ multiline_comment|/* &n; * xfrm4_policy.c&n; *&n; * Changes:&n; *&t;Kazunori MIY
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
-r_extern
+DECL|variable|xfrm4_dst_ops
+r_static
 r_struct
 id|dst_ops
 id|xfrm4_dst_ops
 suffix:semicolon
-r_extern
+DECL|variable|xfrm4_policy_afinfo
+r_static
 r_struct
 id|xfrm_policy_afinfo
 id|xfrm4_policy_afinfo
@@ -1153,6 +1155,7 @@ id|mtu
 suffix:semicolon
 )brace
 DECL|variable|xfrm4_dst_ops
+r_static
 r_struct
 id|dst_ops
 id|xfrm4_dst_ops
@@ -1199,6 +1202,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|xfrm4_policy_afinfo
+r_static
 r_struct
 id|xfrm_policy_afinfo
 id|xfrm4_policy_afinfo
@@ -1249,6 +1253,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|xfrm4_policy_init
+r_static
 r_void
 id|__init
 id|xfrm4_policy_init
@@ -1266,6 +1271,7 @@ id|xfrm4_policy_afinfo
 suffix:semicolon
 )brace
 DECL|function|xfrm4_policy_fini
+r_static
 r_void
 id|__exit
 id|xfrm4_policy_fini

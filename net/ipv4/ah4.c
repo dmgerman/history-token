@@ -502,6 +502,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|ah_input
+r_static
 r_int
 id|ah_input
 c_func
@@ -863,6 +864,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|ah4_err
+r_static
 r_void
 id|ah4_err
 c_func

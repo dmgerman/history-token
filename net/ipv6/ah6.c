@@ -466,6 +466,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ah6_output
+r_static
 r_int
 id|ah6_output
 c_func
@@ -829,6 +830,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|ah6_input
+r_static
 r_int
 id|ah6_input
 c_func
@@ -1227,6 +1229,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|ah6_err
+r_static
 r_void
 id|ah6_err
 c_func
@@ -1794,6 +1797,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|ah6_init
+r_static
 r_int
 id|__init
 id|ah6_init

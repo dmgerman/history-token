@@ -12,6 +12,7 @@ macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;linux/icmpv6.h&gt;
 DECL|function|esp6_output
+r_static
 r_int
 id|esp6_output
 c_func
@@ -582,6 +583,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|esp6_input
+r_static
 r_int
 id|esp6_input
 c_func
@@ -1290,6 +1292,7 @@ id|esp-&gt;auth.icv_full_len
 suffix:semicolon
 )brace
 DECL|function|esp6_err
+r_static
 r_void
 id|esp6_err
 c_func
@@ -1418,6 +1421,7 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|esp6_destroy
+r_static
 r_void
 id|esp6_destroy
 c_func
@@ -1519,6 +1523,7 @@ id|esp
 suffix:semicolon
 )brace
 DECL|function|esp6_init_state
+r_static
 r_int
 id|esp6_init_state
 c_func
@@ -2017,6 +2022,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|esp6_init
+r_static
 r_int
 id|__init
 id|esp6_init
