@@ -248,16 +248,6 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|show_trace_task
-c_func
-(paren
-id|task_t
-op_star
-id|tsk
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * TASK is a pointer to the task whose backtrace we want to see (or NULL for current&n; * task), SP is the stack pointer of the first frame that should be shown in the back&n; * trace (or NULL if the entire call-chain of the task should be shown).&n; */
 r_extern
 r_void
