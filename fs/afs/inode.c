@@ -420,8 +420,9 @@ id|afs_iget_data
 id|data
 op_assign
 (brace
+dot
 id|fid
-suffix:colon
+op_assign
 op_star
 id|fid
 )brace
