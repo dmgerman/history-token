@@ -225,8 +225,6 @@ id|NR_PTYS
 )braket
 suffix:semicolon
 macro_line|#endif
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
 DECL|function|pty_close
 r_static
 r_void
@@ -601,7 +599,7 @@ r_break
 suffix:semicolon
 id|n
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|n

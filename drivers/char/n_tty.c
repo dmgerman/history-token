@@ -21,10 +21,6 @@ DECL|macro|IS_CONSOLE_DEV
 mdefine_line|#define IS_CONSOLE_DEV(dev)&t;(kdev_val(dev) == __mkdev(TTY_MAJOR,0))
 DECL|macro|IS_SYSCONS_DEV
 mdefine_line|#define IS_SYSCONS_DEV(dev)&t;(kdev_val(dev) == __mkdev(TTYAUX_MAJOR,1))
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
 multiline_comment|/* number of characters left in xmit buffer before select has we have room */
 DECL|macro|WAKEUP_CHARS
 mdefine_line|#define WAKEUP_CHARS 256
@@ -3444,12 +3440,7 @@ id|cpuflags
 suffix:semicolon
 id|i
 op_assign
-id|MIN
-c_func
-(paren
-id|count
-comma
-id|MIN
+id|min
 c_func
 (paren
 id|N_TTY_BUF_SIZE
@@ -3460,6 +3451,15 @@ id|N_TTY_BUF_SIZE
 op_minus
 id|tty-&gt;read_head
 )paren
+suffix:semicolon
+id|i
+op_assign
+id|min
+c_func
+(paren
+id|count
+comma
+id|i
 )paren
 suffix:semicolon
 id|memcpy
@@ -3502,12 +3502,7 @@ id|i
 suffix:semicolon
 id|i
 op_assign
-id|MIN
-c_func
-(paren
-id|count
-comma
-id|MIN
+id|min
 c_func
 (paren
 id|N_TTY_BUF_SIZE
@@ -3518,6 +3513,15 @@ id|N_TTY_BUF_SIZE
 op_minus
 id|tty-&gt;read_head
 )paren
+suffix:semicolon
+id|i
+op_assign
+id|min
+c_func
+(paren
+id|count
+comma
+id|i
 )paren
 suffix:semicolon
 id|memcpy
@@ -4519,13 +4523,7 @@ id|flags
 suffix:semicolon
 id|n
 op_assign
-id|MIN
-c_func
-(paren
-op_star
-id|nr
-comma
-id|MIN
+id|min
 c_func
 (paren
 id|tty-&gt;read_cnt
@@ -4534,6 +4532,19 @@ id|N_TTY_BUF_SIZE
 op_minus
 id|tty-&gt;read_tail
 )paren
+suffix:semicolon
+id|n
+op_assign
+id|min
+c_func
+(paren
+(paren
+id|ssize_t
+)paren
+op_star
+id|nr
+comma
+id|n
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore

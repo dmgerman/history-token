@@ -377,14 +377,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
-macro_line|#ifndef MAX
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b)&t;((a) &lt; (b) ? (b) : (a))
-macro_line|#endif
 DECL|function|alloc_tty_struct
 r_static
 r_struct
@@ -2925,14 +2917,18 @@ r_int
 r_int
 id|size
 op_assign
-id|MAX
+id|max
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|PAGE_SIZE
 op_star
 l_int|2
 comma
-l_int|16384
+l_int|16384UL
 )paren
 suffix:semicolon
 r_if
