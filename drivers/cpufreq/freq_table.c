@@ -883,6 +883,11 @@ dot
 id|mode
 op_assign
 l_int|0444
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 )brace
 comma
 dot
