@@ -18,7 +18,7 @@ mdefine_line|#define MODULE_DEVICES(val) MODULE_GENERIC_STRING(info_devices, val
 DECL|macro|MODULE_PARM_SYNTAX
 mdefine_line|#define MODULE_PARM_SYNTAX(id, val) MODULE_GENERIC_STRING(info_parm_##id, val)
 DECL|macro|SNDRV_AUTO_PORT
-mdefine_line|#define SNDRV_AUTO_PORT&t;&t;0xffff
+mdefine_line|#define SNDRV_AUTO_PORT&t;&t;1
 DECL|macro|SNDRV_AUTO_IRQ
 mdefine_line|#define SNDRV_AUTO_IRQ&t;&t;0xffff
 DECL|macro|SNDRV_AUTO_DMA
@@ -57,7 +57,7 @@ DECL|macro|SNDRV_DEFAULT_ENABLE_ISAPNP
 mdefine_line|#define SNDRV_DEFAULT_ENABLE_ISAPNP SNDRV_DEFAULT_ENABLE
 macro_line|#endif
 DECL|macro|SNDRV_DEFAULT_PORT
-mdefine_line|#define SNDRV_DEFAULT_PORT&t;{ SNDRV_AUTO_PORT, [1 ... (SNDRV_CARDS-1)] = -1 }
+mdefine_line|#define SNDRV_DEFAULT_PORT&t;{ [0 ... (SNDRV_CARDS-1)] = SNDRV_AUTO_PORT }
 DECL|macro|SNDRV_DEFAULT_IRQ
 mdefine_line|#define SNDRV_DEFAULT_IRQ&t;{ [0 ... (SNDRV_CARDS-1)] = SNDRV_AUTO_IRQ }
 DECL|macro|SNDRV_DEFAULT_DMA
@@ -524,5 +524,53 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* simple wrapper for long variable.&n; * the value more than 32bit won&squot;t work!&n; */
+DECL|function|get_option_long
+r_inline
+r_static
+r_int
+id|get_option_long
+c_func
+(paren
+r_char
+op_star
+op_star
+id|str
+comma
+r_int
+op_star
+id|valp
+)paren
+(brace
+r_int
+id|val
+comma
+id|ret
+suffix:semicolon
+id|ret
+op_assign
+id|get_option
+c_func
+(paren
+id|str
+comma
+op_amp
+id|val
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+op_star
+id|valp
+op_assign
+id|val
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 macro_line|#endif /* __SOUND_INITVAL_H */
 eof

@@ -7650,10 +7650,6 @@ c_cond
 id|entry
 )paren
 (brace
-id|entry-&gt;content
-op_assign
-id|SNDRV_INFO_CONTENT_TEXT
-suffix:semicolon
 id|entry-&gt;private_data
 op_assign
 id|rmidi

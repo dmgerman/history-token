@@ -1355,9 +1355,13 @@ r_int
 r_int
 )paren
 (paren
-id|tmr-&gt;preferred_resolution
+l_int|1000000000uL
 op_div
+(paren
 id|r
+op_star
+id|tmr-&gt;preferred_resolution
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -1607,14 +1607,6 @@ id|snd_pcm_reg
 l_int|2
 )braket
 suffix:semicolon
-r_void
-id|snd_pcm_lock
-c_func
-(paren
-r_int
-id|unlock
-)paren
-suffix:semicolon
 r_int
 id|snd_pcm_new
 c_func

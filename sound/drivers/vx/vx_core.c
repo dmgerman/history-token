@@ -2836,6 +2836,8 @@ id|entry
 comma
 id|chip
 comma
+l_int|1024
+comma
 id|vx_proc_read
 )paren
 suffix:semicolon

@@ -649,6 +649,8 @@ id|entry
 comma
 id|gus
 comma
+l_int|1024
+comma
 id|snd_gus_irq_info_read
 )paren
 suffix:semicolon

@@ -6888,6 +6888,8 @@ id|entry
 comma
 id|sonic
 comma
+l_int|1024
+comma
 id|snd_sonicvibes_proc_read
 )paren
 suffix:semicolon
@@ -7240,7 +7242,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-id|pci_set_dma_mask
+id|pci_set_consistent_dma_mask
 c_func
 (paren
 id|pci
